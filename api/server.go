@@ -133,3 +133,30 @@ func (c *Client) GetIP(id string, privateIPOnly bool) (string, error) {
 
 	return s.Server.Interfaces[0].IPAddress, nil
 }
+
+func (c *Client) SearchServerByName(name string) (*sakura.Server, error) {
+
+	//名前での検索
+	var (
+		method = "GET"
+		uri    = "server"
+		body   = sakura.Request{
+			Filter: map[string]interface{}{"Name": name},
+		}
+	)
+	data, err := c.newRequest(method, uri, body)
+	if err != nil {
+		return nil, err
+	}
+
+	var res sakura.SearchResponse
+	if err := json.Unmarshal(data, &res); err != nil {
+		return nil, err
+	}
+	if res.Count > 0 {
+		return &res.Servers[0], nil
+	} else {
+		return nil, fmt.Errorf("server [%s] is not found", name)
+	}
+
+}
