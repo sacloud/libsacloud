@@ -1,13 +1,20 @@
 package resources
 
+import "time"
+
 // CommonServiceItem type of CommonServiceItem
 type CommonServiceGslbItem struct {
 	*Resource
-	Name        string
-	Description string                    `json:",omitempty"`
-	Status      CommonServiceGslbStatus   `json:",omitempty"`
-	Provider    CommonServiceGslbProvider `json:",omitempty"`
-	Settings    CommonServiceGslbSettings `json:",omitempty"`
+	Name         string
+	Description  string                    `json:",omitempty"`
+	Status       CommonServiceGslbStatus   `json:",omitempty"`
+	Provider     CommonServiceGslbProvider `json:",omitempty"`
+	Settings     CommonServiceGslbSettings `json:",omitempty"`
+	ServiceClass string                    `json:",omitempty`
+	CreatedAt    time.Time                 `json:",omitempty"`
+	ModifiedAt   time.Time                 `json:",omitempty"`
+	Icon         *Icon                     `json:",omitempty`
+	Tags         []string                  `json:",omitempty`
 }
 
 type CommonServiceGslbSettings struct {
@@ -32,7 +39,7 @@ func CreateNewGslbCommonServiceItem(gslbName string) *CommonServiceGslbItem {
 		},
 		Settings: CommonServiceGslbSettings{
 			GSLB: GslbRecordSets{
-				DelayLoop:   "10",
+				DelayLoop:   10,
 				HealthCheck: defaultGslbHealthCheck,
 				Weighted:    "True",
 			},
@@ -46,7 +53,7 @@ func (d *CommonServiceGslbItem) HasGslbServer() bool {
 }
 
 type GslbRecordSets struct {
-	DelayLoop   string          `json:",omitempty"`
+	DelayLoop   int             `json:",omitempty"`
 	HealthCheck GslbHealthCheck `json:",omitempty"`
 	Weighted    string          `json:",omitempty"`
 	Servers     []GslbServer    `json:",omitempty"`

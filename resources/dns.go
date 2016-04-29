@@ -1,13 +1,20 @@
 package resources
 
+import "time"
+
 // CommonServiceItem type of CommonServiceItem
 type CommonServiceDnsItem struct {
 	*Resource
-	Name        string
-	Description string                   `json:",omitempty"`
-	Status      CommonServiceDnsStatus   `json:",omitempty"`
-	Provider    CommonServiceDnsProvider `json:",omitempty"`
-	Settings    CommonServiceDnsSettings `json:",omitempty"`
+	Name         string
+	Description  string                   `json:",omitempty"`
+	Status       CommonServiceDnsStatus   `json:",omitempty"`
+	Provider     CommonServiceDnsProvider `json:",omitempty"`
+	Settings     CommonServiceDnsSettings `json:",omitempty"`
+	ServiceClass string                   `json:",omitempty`
+	CreatedAt    time.Time                `json:",omitempty"`
+	ModifiedAt   time.Time                `json:",omitempty"`
+	Icon         *Icon                    `json:",omitempty`
+	Tags         []string                 `json:",omitempty`
 }
 
 type CommonServiceDnsSettings struct {

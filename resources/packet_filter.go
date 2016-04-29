@@ -5,7 +5,7 @@ type PacketFilter struct {
 	*Resource
 	Name                string
 	Description         string `json:",omitempty"`
-	RequiredHostVersion string `json:",omitempty"`
+	RequiredHostVersion int    `json:",omitempty"`
 	//	Expression          string `json:",omitempty"`
 	Notice string `json:",omitempty"`
 }
