@@ -7,6 +7,6 @@ type Interface struct {
 	IPAddress     string        `json:",omitempty"`
 	UserIPAddress string        `json:",omitempty"`
 	HostName      string        `json:",omitempty"`
-	Switch        *Switch       `json:",omitempty`
-	PacketFilter  *PacketFilter `json:",omitempty`
+	Switch        *Switch       `json:",omitempty"`
+	PacketFilter  *PacketFilter `json:",omitempty"`
 }

@@ -1,0 +1,8 @@
+libsacloud:
+  build: .
+  environment: &env
+    - SAKURACLOUD_ACCESS_TOKEN
+    - SAKURACLOUD_ACCESS_TOKEN_SECRET
+    - SAKURACLOUD_REGION
+  volumes: &vol
+    - .:/go/src/github.com/yamamoto-febc/libsacloud

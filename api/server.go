@@ -134,6 +134,7 @@ func (c *Client) GetIP(id string, privateIPOnly bool) (string, error) {
 	return s.Server.Interfaces[0].IPAddress, nil
 }
 
+// SearchServerByName Search server by name
 func (c *Client) SearchServerByName(name string) (*sakura.Server, error) {
 
 	//名前での検索
@@ -155,8 +156,7 @@ func (c *Client) SearchServerByName(name string) (*sakura.Server, error) {
 	}
 	if res.Count > 0 {
 		return &res.Servers[0], nil
-	} else {
-		return nil, fmt.Errorf("server [%s] is not found", name)
 	}
+	return nil, fmt.Errorf("server [%s] is not found", name)
 
 }

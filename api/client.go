@@ -24,6 +24,7 @@ type Client struct {
 	Region            string
 }
 
+// NewClient Create new API client
 func NewClient(token, tokenSecret, region string) *Client {
 	return &Client{AccessToken: token, AccessTokenSecret: tokenSecret, Region: region}
 }

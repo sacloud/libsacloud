@@ -10,11 +10,11 @@ type Server struct {
 	HostName          string              `json:",omitempty"`
 	Description       string              `json:",omitempty"`
 	Availability      string              `json:",omitempty"`
-	ServiceClass      string              `json:",omitempty`
+	ServiceClass      string              `json:",omitempty"`
 	CreatedAt         time.Time           `json:",omitempty"`
 	Icon              NumberResource      `json:",omitempty"`
 	ServerPlan        *ServerPlan         `json:",omitempty"`
-	Zone              *Zone               `json:",omitempty`
+	Zone              *Zone               `json:",omitempty"`
 	Tags              []string            `json:",omitempty"`
 	ConnectedSwitches []map[string]string `json:",omitempty"`
 	Disks             []Disk              `json:",omitempty"`

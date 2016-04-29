@@ -5,18 +5,18 @@ import (
 	"testing"
 )
 
-const testDnsDomain = "docker-machine-sakuracloud.com"
+const testDNSDomain = "docker-machine-sakuracloud.com"
 
 func TestUpdateDnsCommonServiceItem(t *testing.T) {
-	item, err := client.getDnsCommonServiceItem(testDnsDomain) //存在しないため新たに作る
+	item, err := client.getDNSCommonServiceItem(testDNSDomain) //存在しないため新たに作る
 	assert.NoError(t, err)
 	assert.NotNil(t, item)
-	assert.Equal(t, item.Name, testDnsDomain)
+	assert.Equal(t, item.Name, testDNSDomain)
 
 	//IPを追加して保存してみる
-	item.Settings.DNS.AddDnsRecordSet("test1", "192.168.0.1")
+	item.Settings.DNS.AddDNSRecordSet("test1", "192.168.0.1")
 
-	item, err = client.updateDnsRecord(item)
+	item, err = client.updateDNSRecord(item)
 	assert.NoError(t, err)
 	assert.NotNil(t, item)
 	assert.Equal(t, item.Settings.DNS.ResourceRecordSets[0].Name, "test1")
@@ -24,9 +24,9 @@ func TestUpdateDnsCommonServiceItem(t *testing.T) {
 	assert.Equal(t, item.Settings.DNS.ResourceRecordSets[0].Type, "A")
 
 	//IPを追加して保存してみる(２個目)
-	item.Settings.DNS.AddDnsRecordSet("test2", "192.168.0.2")
+	item.Settings.DNS.AddDNSRecordSet("test2", "192.168.0.2")
 
-	item, err = client.updateDnsRecord(item)
+	item, err = client.updateDNSRecord(item)
 	assert.NoError(t, err)
 	assert.NotNil(t, item)
 	assert.Equal(t, item.Settings.DNS.ResourceRecordSets[1].Name, "test2")
@@ -36,14 +36,14 @@ func TestUpdateDnsCommonServiceItem(t *testing.T) {
 }
 
 func init() {
-	testSetupHandlers = append(testSetupHandlers, cleanupDnsCommonServiceItem)
-	testTearDownHandlers = append(testTearDownHandlers, cleanupDnsCommonServiceItem)
+	testSetupHandlers = append(testSetupHandlers, cleanupDNSCommonServiceItem)
+	testTearDownHandlers = append(testTearDownHandlers, cleanupDNSCommonServiceItem)
 }
 
-func cleanupDnsCommonServiceItem() {
-	item, _ := client.getDnsCommonServiceItem(testDnsDomain)
+func cleanupDNSCommonServiceItem() {
+	item, _ := client.getDNSCommonServiceItem(testDNSDomain)
 
 	if item.ID != "" {
-		client.deleteCommonServiceDnsItem(item)
+		client.deleteCommonServiceDNSItem(item)
 	}
 }

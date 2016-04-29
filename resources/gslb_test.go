@@ -59,7 +59,7 @@ var testGSLBJSON = `
 `
 
 func TestMarshalGSLBJSON(t *testing.T) {
-	var gslb CommonServiceGslbItem
+	var gslb CommonServiceGSLBItem
 	err := json.Unmarshal([]byte(testGSLBJSON), &gslb)
 
 	assert.NoError(t, err)

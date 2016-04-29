@@ -37,6 +37,7 @@ type Instance struct {
 	CDROMStorage *Storage `json:",omitempty"`
 }
 
+// Storage type of Storage
 type Storage struct {
 	*Resource
 	Class       string `json:",omitempty"`
