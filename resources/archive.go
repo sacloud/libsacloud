@@ -22,6 +22,6 @@ type Archive struct {
 	SourceDisk      *Disk           `json:",omitempty"`
 	SourceArchive   *Archive        `json:",omitempty"`
 	Storage         *Storage        `json:",omitempty"`
-	Tags            []string        `json:",omitempty`
+	Tags            []string        `json:",omitempty"`
 	//BundleInfo
 }

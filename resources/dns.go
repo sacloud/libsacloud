@@ -2,62 +2,68 @@ package resources
 
 import "time"
 
-// CommonServiceItem type of CommonServiceItem
-type CommonServiceDnsItem struct {
+// CommonServiceDNSItem type of CommonServiceDNSItem
+type CommonServiceDNSItem struct {
 	*Resource
 	Name         string
 	Description  string                   `json:",omitempty"`
-	Status       CommonServiceDnsStatus   `json:",omitempty"`
-	Provider     CommonServiceDnsProvider `json:",omitempty"`
-	Settings     CommonServiceDnsSettings `json:",omitempty"`
-	ServiceClass string                   `json:",omitempty`
+	Status       CommonServiceDNSStatus   `json:",omitempty"`
+	Provider     CommonServiceDNSProvider `json:",omitempty"`
+	Settings     CommonServiceDNSSettings `json:",omitempty"`
+	ServiceClass string                   `json:",omitempty"`
 	CreatedAt    time.Time                `json:",omitempty"`
 	ModifiedAt   time.Time                `json:",omitempty"`
-	Icon         *Icon                    `json:",omitempty`
-	Tags         []string                 `json:",omitempty`
+	Icon         *Icon                    `json:",omitempty"`
+	Tags         []string                 `json:",omitempty"`
 }
 
-type CommonServiceDnsSettings struct {
-	DNS DnsRecordSets `json:",omitempty"`
+// CommonServiceDNSSettings type of CommonServiceDnsSettings
+type CommonServiceDNSSettings struct {
+	DNS DNSRecordSets `json:",omitempty"`
 }
 
-type CommonServiceDnsStatus struct {
+// CommonServiceDNSStatus type of CommonServiceDNSStatus
+type CommonServiceDNSStatus struct {
 	Zone string   `json:",omitempty"`
 	NS   []string `json:",omitempty"`
 }
 
-type CommonServiceDnsProvider struct {
+// CommonServiceDNSProvider type of CommonServiceDNSProvider
+type CommonServiceDNSProvider struct {
 	Class string `json:",omitempty"`
 }
 
-// CreateNewDnsCommonServiceItem Create new CommonServiceItem
-func CreateNewDnsCommonServiceItem(zoneName string) *CommonServiceDnsItem {
-	return &CommonServiceDnsItem{
+// CreateNewDNSCommonServiceItem Create new CommonServiceDNSItem
+func CreateNewDNSCommonServiceItem(zoneName string) *CommonServiceDNSItem {
+	return &CommonServiceDNSItem{
 		Resource: &Resource{ID: ""},
 		Name:     zoneName,
-		Status: CommonServiceDnsStatus{
+		Status: CommonServiceDNSStatus{
 			Zone: zoneName,
 		},
-		Provider: CommonServiceDnsProvider{
+		Provider: CommonServiceDNSProvider{
 			Class: "dns",
 		},
-		Settings: CommonServiceDnsSettings{
-			DNS: DnsRecordSets{},
+		Settings: CommonServiceDNSSettings{
+			DNS: DNSRecordSets{},
 		},
 	}
 
 }
 
-func (d *CommonServiceDnsItem) HasDnsRecord() bool {
+// HasDNSRecord return has record
+func (d *CommonServiceDNSItem) HasDNSRecord() bool {
 	return len(d.Settings.DNS.ResourceRecordSets) > 0
 }
 
-type DnsRecordSets struct {
-	ResourceRecordSets []DnsRecordSet
+// DNSRecordSets type of dns records
+type DNSRecordSets struct {
+	ResourceRecordSets []DNSRecordSet
 }
 
-func (d *DnsRecordSets) AddDnsRecordSet(name string, ip string) {
-	var record DnsRecordSet
+// AddDNSRecordSet Add dns record
+func (d *DNSRecordSets) AddDNSRecordSet(name string, ip string) {
+	var record DNSRecordSet
 	var isExist = false
 	for i := range d.ResourceRecordSets {
 		if d.ResourceRecordSets[i].Name == name && d.ResourceRecordSets[i].Type == "A" {
@@ -67,7 +73,7 @@ func (d *DnsRecordSets) AddDnsRecordSet(name string, ip string) {
 	}
 
 	if !isExist {
-		record = DnsRecordSet{
+		record = DNSRecordSet{
 			Name:  name,
 			Type:  "A",
 			RData: ip,
@@ -76,8 +82,9 @@ func (d *DnsRecordSets) AddDnsRecordSet(name string, ip string) {
 	}
 }
 
-func (d *DnsRecordSets) DeleteDnsRecordSet(name string, ip string) {
-	res := []DnsRecordSet{}
+// DeleteDNSRecordSet Delete dns record
+func (d *DNSRecordSets) DeleteDNSRecordSet(name string, ip string) {
+	res := []DNSRecordSet{}
 	for i := range d.ResourceRecordSets {
 		if d.ResourceRecordSets[i].Name != name || d.ResourceRecordSets[i].Type != "A" || d.ResourceRecordSets[i].RData != ip {
 			res = append(res, d.ResourceRecordSets[i])
@@ -87,7 +94,8 @@ func (d *DnsRecordSets) DeleteDnsRecordSet(name string, ip string) {
 	d.ResourceRecordSets = res
 }
 
-type DnsRecordSet struct {
+// DNSRecordSet type of dns records
+type DNSRecordSet struct {
 	Name  string `json:",omitempty"`
 	Type  string `json:",omitempty"`
 	RData string `json:",omitempty"`

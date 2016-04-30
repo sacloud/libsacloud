@@ -1,5 +1,6 @@
 package resources
 
+// Switch type of switch
 type Switch struct {
 	*Resource
 	Name       string  `json:",omitempty"`
@@ -8,6 +9,7 @@ type Switch struct {
 	UserSubnet *Subnet `json:",omitempty"`
 }
 
+// Subnet type of Subnet
 type Subnet struct {
 	*Resource
 	NetworkAddress string `json:",omitempty"`

@@ -11,11 +11,11 @@ type searchGslbResponse struct {
 	Total                  int                            `json:",omitempty"`
 	From                   int                            `json:",omitempty"`
 	Count                  int                            `json:",omitempty"`
-	CommonServiceGslbItems []sakura.CommonServiceGslbItem `json:"CommonServiceItems,omitempty"`
+	CommonServiceGslbItems []sakura.CommonServiceGSLBItem `json:"CommonServiceItems,omitempty"`
 }
 
 type gslbRequest struct {
-	CommonServiceGslbItem *sakura.CommonServiceGslbItem `json:"CommonServiceItem,omitempty"`
+	CommonServiceGslbItem *sakura.CommonServiceGSLBItem `json:"CommonServiceItem,omitempty"`
 	From                  int                           `json:",omitempty"`
 	Count                 int                           `json:",omitempty"`
 	Sort                  []string                      `json:",omitempty"`
@@ -26,7 +26,7 @@ type gslbRequest struct {
 
 type gslbResponse struct {
 	*sakura.ResultFlagValue
-	*sakura.CommonServiceGslbItem `json:"CommonServiceItem,omitempty"`
+	*sakura.CommonServiceGSLBItem `json:"CommonServiceItem,omitempty"`
 }
 
 // SetupGslbRecord create or update Gslb
@@ -58,7 +58,7 @@ func (c *Client) DeleteGslbServer(gslbName string, ip string) error {
 	}
 	gslbItem.Settings.GSLB.DeleteServer(ip)
 
-	if gslbItem.HasGslbServer() {
+	if gslbItem.HasGSLBServer() {
 		_, err = c.updateGslbServers(gslbItem)
 		if err != nil {
 			return err
@@ -74,7 +74,7 @@ func (c *Client) DeleteGslbServer(gslbName string, ip string) error {
 	return nil
 }
 
-func (c *Client) getGslbCommonServiceItem(gslbName string) (*sakura.CommonServiceGslbItem, error) {
+func (c *Client) getGslbCommonServiceItem(gslbName string) (*sakura.CommonServiceGSLBItem, error) {
 
 	var (
 		method = "GET"
@@ -98,7 +98,7 @@ func (c *Client) getGslbCommonServiceItem(gslbName string) (*sakura.CommonServic
 	}
 
 	var gslb searchGslbResponse
-	var gslbItem *sakura.CommonServiceGslbItem
+	var gslbItem *sakura.CommonServiceGSLBItem
 	if err := json.Unmarshal(data, &gslb); err != nil {
 		return nil, err
 	}
@@ -106,13 +106,13 @@ func (c *Client) getGslbCommonServiceItem(gslbName string) (*sakura.CommonServic
 	if gslb.Count > 0 {
 		gslbItem = &gslb.CommonServiceGslbItems[0]
 	} else {
-		gslbItem = sakura.CreateNewGslbCommonServiceItem(gslbName)
+		gslbItem = sakura.CreateNewGSLBCommonServiceItem(gslbName)
 	}
 
 	return gslbItem, nil
 }
 
-func (c *Client) updateGslbServers(gslbItem *sakura.CommonServiceGslbItem) (*sakura.CommonServiceGslbItem, error) {
+func (c *Client) updateGslbServers(gslbItem *sakura.CommonServiceGSLBItem) (*sakura.CommonServiceGSLBItem, error) {
 
 	var (
 		method string
@@ -139,10 +139,10 @@ func (c *Client) updateGslbServers(gslbItem *sakura.CommonServiceGslbItem) (*sak
 		return nil, err
 	}
 
-	return res.CommonServiceGslbItem, nil
+	return res.CommonServiceGSLBItem, nil
 }
 
-func (c *Client) deleteCommonServiceGslbItem(item *sakura.CommonServiceGslbItem) error {
+func (c *Client) deleteCommonServiceGslbItem(item *sakura.CommonServiceGSLBItem) error {
 	var (
 		method string
 		uri    string

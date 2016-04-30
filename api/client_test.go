@@ -6,8 +6,8 @@ import (
 	"testing"
 )
 
-var testSetupHandlers []func() = []func(){}
-var testTearDownHandlers []func() = []func(){}
+var testSetupHandlers []func()
+var testTearDownHandlers []func()
 
 func TestMain(m *testing.M) {
 	//環境変数にトークン/シークレットがある場合のみテスト実施
@@ -15,7 +15,7 @@ func TestMain(m *testing.M) {
 	accessTokenSecret := os.Getenv("SAKURACLOUD_ACCESS_TOKEN_SECRET")
 
 	if accessToken == "" || accessTokenSecret == "" {
-		log.Fatal("Please Set ENV 'SAKURACLOUD_ACCESS_TOKEN' and 'SAKURACLOUD_ACCESS_TOKEN_SECRET'")
+		log.Println("Please Set ENV 'SAKURACLOUD_ACCESS_TOKEN' and 'SAKURACLOUD_ACCESS_TOKEN_SECRET'")
 		os.Exit(0) // exit normal
 	}
 	region := os.Getenv("SAKURACLOUD_REGION")

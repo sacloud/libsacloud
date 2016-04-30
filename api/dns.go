@@ -7,15 +7,15 @@ import (
 	"strings"
 )
 
-type searchDnsResponse struct {
+type searchDNSResponse struct {
 	Total                 int                           `json:",omitempty"`
 	From                  int                           `json:",omitempty"`
 	Count                 int                           `json:",omitempty"`
-	CommonServiceDnsItems []sakura.CommonServiceDnsItem `json:"CommonServiceItems,omitempty"`
+	CommonServiceDNSItems []sakura.CommonServiceDNSItem `json:"CommonServiceItems,omitempty"`
 }
 
 type dnsRequest struct {
-	CommonServiceDnsItem *sakura.CommonServiceDnsItem `json:"CommonServiceItem,omitempty"`
+	CommonServiceDNSItem *sakura.CommonServiceDNSItem `json:"CommonServiceItem,omitempty"`
 	From                 int                          `json:",omitempty"`
 	Count                int                          `json:",omitempty"`
 	Sort                 []string                     `json:",omitempty"`
@@ -25,13 +25,13 @@ type dnsRequest struct {
 }
 type dnsResponse struct {
 	*sakura.ResultFlagValue
-	*sakura.CommonServiceDnsItem `json:"CommonServiceItem,omitempty"`
+	*sakura.CommonServiceDNSItem `json:"CommonServiceItem,omitempty"`
 }
 
-// SetupDnsRecord get dns zone commonserviceitem id
-func (c *Client) SetupDnsRecord(zoneName string, hostName string, ip string) ([]string, error) {
+// SetupDNSRecord get dns zone commonserviceitem id
+func (c *Client) SetupDNSRecord(zoneName string, hostName string, ip string) ([]string, error) {
 
-	dnsItem, err := c.getDnsCommonServiceItem(zoneName)
+	dnsItem, err := c.getDNSCommonServiceItem(zoneName)
 	if err != nil {
 		return nil, err
 	}
@@ -40,9 +40,9 @@ func (c *Client) SetupDnsRecord(zoneName string, hostName string, ip string) ([]
 		hostName = strings.Replace(hostName, zoneName, "", -1)
 	}
 
-	dnsItem.Settings.DNS.AddDnsRecordSet(hostName, ip)
+	dnsItem.Settings.DNS.AddDNSRecordSet(hostName, ip)
 
-	res, err := c.updateDnsRecord(dnsItem)
+	res, err := c.updateDNSRecord(dnsItem)
 	if err != nil {
 		return nil, err
 	}
@@ -55,22 +55,22 @@ func (c *Client) SetupDnsRecord(zoneName string, hostName string, ip string) ([]
 
 }
 
-// DeleteDnsRecord delete dns record
-func (c *Client) DeleteDnsRecord(zoneName string, hostName string, ip string) error {
-	dnsItem, err := c.getDnsCommonServiceItem(zoneName)
+// DeleteDNSRecord delete dns record
+func (c *Client) DeleteDNSRecord(zoneName string, hostName string, ip string) error {
+	dnsItem, err := c.getDNSCommonServiceItem(zoneName)
 	if err != nil {
 		return err
 	}
-	dnsItem.Settings.DNS.DeleteDnsRecordSet(hostName, ip)
+	dnsItem.Settings.DNS.DeleteDNSRecordSet(hostName, ip)
 
-	if dnsItem.HasDnsRecord() {
-		_, err = c.updateDnsRecord(dnsItem)
+	if dnsItem.HasDNSRecord() {
+		_, err = c.updateDNSRecord(dnsItem)
 		if err != nil {
 			return err
 		}
 
 	} else {
-		err = c.deleteCommonServiceDnsItem(dnsItem)
+		err = c.deleteCommonServiceDNSItem(dnsItem)
 		if err != nil {
 			return err
 		}
@@ -79,7 +79,7 @@ func (c *Client) DeleteDnsRecord(zoneName string, hostName string, ip string) er
 	return nil
 }
 
-func (c *Client) getDnsCommonServiceItem(zoneName string) (*sakura.CommonServiceDnsItem, error) {
+func (c *Client) getDNSCommonServiceItem(zoneName string) (*sakura.CommonServiceDNSItem, error) {
 
 	var (
 		method = "GET"
@@ -101,23 +101,23 @@ func (c *Client) getDnsCommonServiceItem(zoneName string) (*sakura.CommonService
 	if err != nil {
 		return nil, err
 	}
-	var dnsZone searchDnsResponse
+	var dnsZone searchDNSResponse
 	if err := json.Unmarshal(data, &dnsZone); err != nil {
 		return nil, err
 	}
 
 	//すでに登録されている場合
-	var dnsItem *sakura.CommonServiceDnsItem
+	var dnsItem *sakura.CommonServiceDNSItem
 	if dnsZone.Count > 0 {
-		dnsItem = &dnsZone.CommonServiceDnsItems[0]
+		dnsItem = &dnsZone.CommonServiceDNSItems[0]
 	} else {
-		dnsItem = sakura.CreateNewDnsCommonServiceItem(zoneName)
+		dnsItem = sakura.CreateNewDNSCommonServiceItem(zoneName)
 	}
 
 	return dnsItem, nil
 }
 
-func (c *Client) updateDnsRecord(dnsItem *sakura.CommonServiceDnsItem) (*sakura.CommonServiceDnsItem, error) {
+func (c *Client) updateDNSRecord(dnsItem *sakura.CommonServiceDNSItem) (*sakura.CommonServiceDNSItem, error) {
 
 	var (
 		method string
@@ -132,7 +132,7 @@ func (c *Client) updateDnsRecord(dnsItem *sakura.CommonServiceDnsItem) (*sakura.
 		uri = fmt.Sprintf("/commonserviceitem/%s", dnsItem.ID)
 	}
 	n := dnsRequest{
-		CommonServiceDnsItem: dnsItem,
+		CommonServiceDNSItem: dnsItem,
 	}
 
 	data, err := c.newRequest(method, uri, n)
@@ -144,10 +144,10 @@ func (c *Client) updateDnsRecord(dnsItem *sakura.CommonServiceDnsItem) (*sakura.
 		return nil, err
 	}
 
-	return res.CommonServiceDnsItem, nil
+	return res.CommonServiceDNSItem, nil
 }
 
-func (c *Client) deleteCommonServiceDnsItem(item *sakura.CommonServiceDnsItem) error {
+func (c *Client) deleteCommonServiceDNSItem(item *sakura.CommonServiceDNSItem) error {
 	var (
 		method string
 		uri    string
