@@ -6,7 +6,8 @@ import (
 )
 
 func TestGetUbuntuArchiveID(t *testing.T) {
-	id, err := client.GetUbuntuArchiveID()
+	archiveAPI := client.Archive
+	id, err := archiveAPI.GetUbuntuArchiveID()
 	assert.NoError(t, err)
 	assert.NotEmpty(t, id)
 	t.Logf("ubuntu archive ID : %s", id)

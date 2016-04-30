@@ -1,7 +1,7 @@
 package resources
 
-// ServerPlan type of ServerPlan
-type ServerPlan struct {
+// ProductServer type of ServerPlan
+type ProductServer struct {
 	*NumberResource
 	Name         string `json:",omitempty"`
 	Description  string `json:",omitempty"`

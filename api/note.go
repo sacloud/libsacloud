@@ -1,7 +1,6 @@
 package api
 
 import (
-	"encoding/json"
 	"fmt"
 	sakura "github.com/yamamoto-febc/libsacloud/resources"
 	"time"
@@ -64,97 +63,111 @@ const (
 	exit 0`
 )
 
+type NoteAPI struct {
+	*baseAPI
+}
+
+func NewNoteAPI(client *Client) *NoteAPI {
+	return &NoteAPI{
+		&baseAPI{
+			client: client,
+			FuncGetResourceURL: func() string {
+				return "note"
+			},
+		},
+	}
+}
+
+func (api *NoteAPI) request(f func(*sakura.Response) error) (*sakura.Note, error) {
+	res := &sakura.Response{}
+	err := f(res)
+	if err != nil {
+		return nil, err
+	}
+	return res.Note, nil
+}
+
+func (api *NoteAPI) createRequest(value *sakura.Note) *sakura.Request {
+	return &sakura.Request{Note: value}
+}
+
+func (api *NoteAPI) Create(value *sakura.Note) (*sakura.Note, error) {
+	return api.request(func(res *sakura.Response) error {
+		return api.create(api.createRequest(value), res)
+	})
+}
+
+func (api *NoteAPI) Read(id string) (*sakura.Note, error) {
+	return api.request(func(res *sakura.Response) error {
+		return api.read(id, nil, res)
+	})
+}
+
+func (api *NoteAPI) Update(id string, value *sakura.Note) (*sakura.Note, error) {
+	return api.request(func(res *sakura.Response) error {
+		return api.update(id, api.createRequest(value), res)
+	})
+}
+
+func (api *NoteAPI) Delete(id string) (*sakura.Note, error) {
+	return api.request(func(res *sakura.Response) error {
+		return api.delete(id, nil, res)
+	})
+}
+
 // GetAllowSudoNoteID get ubuntu customize note id
 // FIXME
 // workaround for [Non root ssh create sudo can't get password](https://github.com/docker/machine/issues/1569)
 // [PR #1586](https://github.com/docker/machine/pull/1586)がマージされるまで暫定
 // スクリプト(Note)を使ってubuntuユーザがsudo可能にする
-func (c *Client) GetAllowSudoNoteID(serverID string) (string, error) {
-	noteName := fmt.Sprintf("_99_%s_%d__", serverID, time.Now().UnixNano())
-	return c.getCustomizeNoteID(noteName, sakuraAllowSudoScriptBody)
+func (api *NoteAPI) GetAllowSudoNoteID(noteNamePrefix string) (string, error) {
+	noteName := fmt.Sprintf("_99_%s_%d__", noteNamePrefix, time.Now().UnixNano())
+	return api.findOrCreateBy(noteName, sakuraAllowSudoScriptBody)
 }
 
 // GetAddIPCustomizeNoteID get add ip customize note id
-func (c *Client) GetAddIPCustomizeNoteID(serverID string, ip string, subnet string) (string, error) {
-	noteName := fmt.Sprintf("_30_%s_%d__", serverID, time.Now().UnixNano())
+func (api *NoteAPI) GetAddIPCustomizeNoteID(noteNamePrefix string, ip string, subnet string) (string, error) {
+	noteName := fmt.Sprintf("_30_%s_%d__", noteNamePrefix, time.Now().UnixNano())
 	noteBody := fmt.Sprintf(sakuraAddIPForEth1ScriptBodyFormat, ip, subnet)
-	return c.getCustomizeNoteID(noteName, noteBody)
+	return api.findOrCreateBy(noteName, noteBody)
 }
 
 // GetChangeGatewayCustomizeNoteID get change gateway address customize note id
-func (c *Client) GetChangeGatewayCustomizeNoteID(serverID string, gateway string) (string, error) {
-	noteName := fmt.Sprintf("_20_%s_%d__", serverID, time.Now().UnixNano())
+func (api *NoteAPI) GetChangeGatewayCustomizeNoteID(noteNamePrefix string, gateway string) (string, error) {
+	noteName := fmt.Sprintf("_20_%s_%d__", noteNamePrefix, time.Now().UnixNano())
 	noteBody := fmt.Sprintf(sakuraChangeDefaultGatewayScriptBody, gateway)
-	return c.getCustomizeNoteID(noteName, noteBody)
+	return api.findOrCreateBy(noteName, noteBody)
 }
 
 // GetDisableEth0CustomizeNoteID get disable eth0 customize note id
-func (c *Client) GetDisableEth0CustomizeNoteID(serverID string) (string, error) {
-	noteName := fmt.Sprintf("_10_%s_%d__", serverID, time.Now().UnixNano())
-	return c.getCustomizeNoteID(noteName, sakuraDisableEth0ScriptBody)
+func (api *NoteAPI) GetDisableEth0CustomizeNoteID(noteNamePrefix string) (string, error) {
+	noteName := fmt.Sprintf("_10_%s_%d__", noteNamePrefix, time.Now().UnixNano())
+	return api.findOrCreateBy(noteName, sakuraDisableEth0ScriptBody)
 }
 
-func (c *Client) getCustomizeNoteID(noteName string, noteBody string) (string, error) {
+func (api *NoteAPI) findOrCreateBy(noteName string, noteBody string) (string, error) {
 
-	var (
-		method = "GET"
-		uri    = "note"
-		body   = sakura.Request{
-			Filter: map[string]interface{}{"Name": noteName},
-		}
-	)
-	bodyJSON, err := json.Marshal(body)
+	var body = &sakura.Request{}
+	body.AddFilter("Name", noteName)
+
+	existsNotes, err := api.Find(body)
 	if err != nil {
 		return "", err
 	}
-	uri = fmt.Sprintf("%s?%s", uri, bodyJSON)
-	data, err := c.newRequest(method, uri, nil)
-	if err != nil {
-		return "", err
-	}
-	var existsNote sakura.SearchResponse
-	if err := json.Unmarshal(data, &existsNote); err != nil {
-		return "", err
-	}
-
 	//すでに登録されている場合
-	if existsNote.Count > 0 {
-		return existsNote.Notes[0].ID, nil
+	if existsNotes.Count > 0 {
+		return existsNotes.Notes[0].ID, nil
 	}
 
-	//ない場合はここで作成する
-	method = "POST"
-	uri = "note"
-	n := sakura.Request{
-		Note: &sakura.Note{
-			Name:    noteName,
-			Content: noteBody,
-		},
+	note := &sakura.Note{
+		Name:    noteName,
+		Content: noteBody,
 	}
 
-	data, err = c.newRequest(method, uri, n)
+	res, err := api.Create(note)
 	if err != nil {
 		return "", err
 	}
-	var s sakura.Response
-	if err := json.Unmarshal(data, &s); err != nil {
-		return "", err
-	}
 
-	return s.Note.ID, nil
-
-}
-
-// DeleteNote delete note
-func (c *Client) DeleteNote(id string) error {
-	var (
-		method = "DELETE"
-		uri    = fmt.Sprintf("note/%s", id)
-	)
-
-	_, err := c.newRequest(method, uri, nil)
-	if err != nil {
-		return err
-	}
-	return nil
+	return res.ID, nil
 }

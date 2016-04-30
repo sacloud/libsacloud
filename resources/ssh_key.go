@@ -2,5 +2,6 @@ package resources
 
 // SSHKey type of sshkey
 type SSHKey struct {
-	PublicKey string
+	ID        string `json:",omitempty"`
+	PublicKey string `json:",omitempty"`
 }

@@ -2,18 +2,19 @@ package api
 
 import (
 	"encoding/json"
-	"fmt"
 	sakura "github.com/yamamoto-febc/libsacloud/resources"
 	"strings"
 )
 
-type searchDNSResponse struct {
+//HACK: さくらのAPI側仕様: CommonServiceItemsの内容によってJSONフォーマットが異なるため
+//      DNS/GSLB/シンプル監視それぞれでリクエスト/レスポンスデータ型を定義する。
+
+type SearchDNSResponse struct {
 	Total                 int                           `json:",omitempty"`
 	From                  int                           `json:",omitempty"`
 	Count                 int                           `json:",omitempty"`
 	CommonServiceDNSItems []sakura.CommonServiceDNSItem `json:"CommonServiceItems,omitempty"`
 }
-
 type dnsRequest struct {
 	CommonServiceDNSItem *sakura.CommonServiceDNSItem `json:"CommonServiceItem,omitempty"`
 	From                 int                          `json:",omitempty"`
@@ -28,10 +29,78 @@ type dnsResponse struct {
 	*sakura.CommonServiceDNSItem `json:"CommonServiceItem,omitempty"`
 }
 
-// SetupDNSRecord get dns zone commonserviceitem id
-func (c *Client) SetupDNSRecord(zoneName string, hostName string, ip string) ([]string, error) {
+// DNSAPI API Client for SAKURA CLOUD DNS
+type DNSAPI struct {
+	*baseAPI
+}
 
-	dnsItem, err := c.getDNSCommonServiceItem(zoneName)
+func NewDNSAPI(client *Client) *DNSAPI {
+	return &DNSAPI{
+		&baseAPI{
+			client: client,
+			FuncGetResourceURL: func() string {
+				return "commonserviceitem"
+			},
+		},
+	}
+}
+
+func (api *DNSAPI) Find(condition *sakura.Request) (*SearchDNSResponse, error) {
+
+	//DNS固定
+	condition.AddFilter("Provider.Class", "dns")
+	data, err := api.client.newRequest("GET", api.getResourceURL(), condition)
+	if err != nil {
+		return nil, err
+	}
+	var res SearchDNSResponse
+	if err := json.Unmarshal(data, &res); err != nil {
+		return nil, err
+	}
+	return &res, nil
+}
+
+func (api *DNSAPI) request(f func(*dnsResponse) error) (*sakura.CommonServiceDNSItem, error) {
+	res := &dnsResponse{}
+	err := f(res)
+	if err != nil {
+		return nil, err
+	}
+	return res.CommonServiceDNSItem, nil
+}
+
+func (api *DNSAPI) createRequest(value *sakura.CommonServiceDNSItem) *dnsRequest {
+	return &dnsRequest{CommonServiceDNSItem: value}
+}
+
+func (api *DNSAPI) Create(value *sakura.CommonServiceDNSItem) (*sakura.CommonServiceDNSItem, error) {
+	return api.request(func(res *dnsResponse) error {
+		return api.create(api.createRequest(value), res)
+	})
+}
+
+func (api *DNSAPI) Read(id string) (*sakura.CommonServiceDNSItem, error) {
+	return api.request(func(res *dnsResponse) error {
+		return api.read(id, nil, res)
+	})
+}
+
+func (api *DNSAPI) Update(id string, value *sakura.CommonServiceDNSItem) (*sakura.CommonServiceDNSItem, error) {
+	return api.request(func(res *dnsResponse) error {
+		return api.update(id, api.createRequest(value), res)
+	})
+}
+
+func (api *DNSAPI) Delete(id string) (*sakura.CommonServiceDNSItem, error) {
+	return api.request(func(res *dnsResponse) error {
+		return api.delete(id, nil, res)
+	})
+}
+
+// SetupDNSRecord get dns zone commonserviceitem id
+func (api *DNSAPI) SetupDNSRecord(zoneName string, hostName string, ip string) ([]string, error) {
+
+	dnsItem, err := api.findOrCreateBy(zoneName)
 	if err != nil {
 		return nil, err
 	}
@@ -42,7 +111,7 @@ func (c *Client) SetupDNSRecord(zoneName string, hostName string, ip string) ([]
 
 	dnsItem.Settings.DNS.AddDNSRecordSet(hostName, ip)
 
-	res, err := c.updateDNSRecord(dnsItem)
+	res, err := api.updateDNSRecord(dnsItem)
 	if err != nil {
 		return nil, err
 	}
@@ -56,21 +125,21 @@ func (c *Client) SetupDNSRecord(zoneName string, hostName string, ip string) ([]
 }
 
 // DeleteDNSRecord delete dns record
-func (c *Client) DeleteDNSRecord(zoneName string, hostName string, ip string) error {
-	dnsItem, err := c.getDNSCommonServiceItem(zoneName)
+func (api *DNSAPI) DeleteDNSRecord(zoneName string, hostName string, ip string) error {
+	dnsItem, err := api.findOrCreateBy(zoneName)
 	if err != nil {
 		return err
 	}
 	dnsItem.Settings.DNS.DeleteDNSRecordSet(hostName, ip)
 
 	if dnsItem.HasDNSRecord() {
-		_, err = c.updateDNSRecord(dnsItem)
+		_, err = api.updateDNSRecord(dnsItem)
 		if err != nil {
 			return err
 		}
 
 	} else {
-		err = c.deleteCommonServiceDNSItem(dnsItem)
+		_, err = api.Delete(dnsItem.ID)
 		if err != nil {
 			return err
 		}
@@ -79,37 +148,19 @@ func (c *Client) DeleteDNSRecord(zoneName string, hostName string, ip string) er
 	return nil
 }
 
-func (c *Client) getDNSCommonServiceItem(zoneName string) (*sakura.CommonServiceDNSItem, error) {
+func (api *DNSAPI) findOrCreateBy(zoneName string) (*sakura.CommonServiceDNSItem, error) {
 
-	var (
-		method = "GET"
-		uri    = "commonserviceitem"
-		body   = sakura.Request{
-			Filter: map[string]interface{}{
-				"Name":           zoneName,
-				"Provider.Class": "dns",
-			},
-		}
-	)
-
-	bodyJSON, err := json.Marshal(body)
+	req := &sakura.Request{}
+	req.AddFilter("Name", zoneName)
+	res, err := api.Find(req)
 	if err != nil {
-		return nil, err
-	}
-	uri = fmt.Sprintf("%s?%s", uri, bodyJSON)
-	data, err := c.newRequest(method, uri, nil)
-	if err != nil {
-		return nil, err
-	}
-	var dnsZone searchDNSResponse
-	if err := json.Unmarshal(data, &dnsZone); err != nil {
 		return nil, err
 	}
 
 	//すでに登録されている場合
 	var dnsItem *sakura.CommonServiceDNSItem
-	if dnsZone.Count > 0 {
-		dnsItem = &dnsZone.CommonServiceDNSItems[0]
+	if res.Count > 0 {
+		dnsItem = &res.CommonServiceDNSItems[0]
 	} else {
 		dnsItem = sakura.CreateNewDNSCommonServiceItem(zoneName)
 	}
@@ -117,49 +168,20 @@ func (c *Client) getDNSCommonServiceItem(zoneName string) (*sakura.CommonService
 	return dnsItem, nil
 }
 
-func (c *Client) updateDNSRecord(dnsItem *sakura.CommonServiceDNSItem) (*sakura.CommonServiceDNSItem, error) {
+func (api *DNSAPI) updateDNSRecord(dnsItem *sakura.CommonServiceDNSItem) (*sakura.CommonServiceDNSItem, error) {
 
-	var (
-		method string
-		uri    string
-	)
+	var item *sakura.CommonServiceDNSItem
+	var err error
+
 	if dnsItem.ID == "" {
-		method = "POST"
-		uri = "/commonserviceitem"
-
+		item, err = api.Create(dnsItem)
 	} else {
-		method = "PUT"
-		uri = fmt.Sprintf("/commonserviceitem/%s", dnsItem.ID)
-	}
-	n := dnsRequest{
-		CommonServiceDNSItem: dnsItem,
+		item, err = api.Update(dnsItem.ID, dnsItem)
 	}
 
-	data, err := c.newRequest(method, uri, n)
 	if err != nil {
 		return nil, err
 	}
-	var res dnsResponse
-	if err := json.Unmarshal(data, &res); err != nil {
-		return nil, err
-	}
 
-	return res.CommonServiceDNSItem, nil
-}
-
-func (c *Client) deleteCommonServiceDNSItem(item *sakura.CommonServiceDNSItem) error {
-	var (
-		method string
-		uri    string
-	)
-	method = "DELETE"
-	uri = fmt.Sprintf("/commonserviceitem/%s", item.ID)
-
-	_, err := c.newRequest(method, uri, item)
-	if err != nil {
-		return err
-	}
-
-	return nil
-
+	return item, nil
 }

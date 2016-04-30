@@ -13,7 +13,7 @@ type Server struct {
 	ServiceClass      string              `json:",omitempty"`
 	CreatedAt         time.Time           `json:",omitempty"`
 	Icon              NumberResource      `json:",omitempty"`
-	ServerPlan        *ServerPlan         `json:",omitempty"`
+	ServerPlan        *ProductServer      `json:",omitempty"`
 	Zone              *Zone               `json:",omitempty"`
 	Tags              []string            `json:",omitempty"`
 	ConnectedSwitches []map[string]string `json:",omitempty"`

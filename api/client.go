@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	//"log"
 	"net/http"
 )
 
@@ -22,11 +23,43 @@ type Client struct {
 	AccessToken       string
 	AccessTokenSecret string
 	Region            string
+	*api
 }
 
 // NewClient Create new API client
 func NewClient(token, tokenSecret, region string) *Client {
-	return &Client{AccessToken: token, AccessTokenSecret: tokenSecret, Region: region}
+	c := &Client{AccessToken: token, AccessTokenSecret: tokenSecret, Region: region}
+	c.api = newAPI(c)
+	return c
+}
+
+type api struct {
+	Archive      *ArchiveAPI
+	Note         *NoteAPI
+	Disk         *DiskAPI
+	DNS          *DNSAPI
+	GSLB         *GSLBAPI
+	PacketFilter *PacketFilterAPI
+	Product      *productAPI
+	Server       *ServerAPI
+}
+type productAPI struct {
+	Server *ProductServerAPI
+}
+
+func newAPI(client *Client) *api {
+	return &api{
+		Archive:      NewArchiveAPI(client),
+		Note:         NewNoteAPI(client),
+		Disk:         NewDiskAPI(client),
+		DNS:          NewDNSAPI(client),
+		GSLB:         NewGSLBAPI(client),
+		PacketFilter: NewPacketFilterAPI(client),
+		Product: &productAPI{
+			Server: NewProductServerAPI(client),
+		},
+		Server: NewServerAPI(client),
+	}
 }
 
 func (c *Client) getEndpoint() string {
@@ -77,9 +110,11 @@ func (c *Client) newRequest(method, uri string, body interface{}) ([]byte, error
 		} else {
 			req, err = http.NewRequest(method, url, bytes.NewBuffer(bodyJSON))
 		}
+		//log.Printf("********* method : %#v , url : %s , body : %#v", method, url, string(bodyJSON))
 
 	} else {
 		req, err = http.NewRequest(method, url, nil)
+		//log.Printf("********* method : %#v , url : %s ", method, url)
 	}
 
 	if err != nil {
@@ -94,7 +129,9 @@ func (c *Client) newRequest(method, uri string, body interface{}) ([]byte, error
 		return nil, err
 	}
 	defer resp.Body.Close()
+
 	data, err := ioutil.ReadAll(resp.Body)
+	//log.Printf("******** response: %s", string(data))
 	if !c.isOkStatus(resp.StatusCode) {
 		return nil, fmt.Errorf("Error in response: %s", data)
 	}
