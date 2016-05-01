@@ -8,7 +8,7 @@ import (
 const testDNSDomain = "docker-machine-sakuracloud.com"
 
 func TestUpdateDnsCommonServiceItem(t *testing.T) {
-	item, err := client.getDNSCommonServiceItem(testDNSDomain) //存在しないため新たに作る
+	item, err := client.DNS.findOrCreateBy(testDNSDomain) //存在しないため新たに作る
 	assert.NoError(t, err)
 	assert.NotNil(t, item)
 	assert.Equal(t, item.Name, testDNSDomain)
@@ -16,7 +16,7 @@ func TestUpdateDnsCommonServiceItem(t *testing.T) {
 	//IPを追加して保存してみる
 	item.Settings.DNS.AddDNSRecordSet("test1", "192.168.0.1")
 
-	item, err = client.updateDNSRecord(item)
+	item, err = client.DNS.updateDNSRecord(item)
 	assert.NoError(t, err)
 	assert.NotNil(t, item)
 	assert.Equal(t, item.Settings.DNS.ResourceRecordSets[0].Name, "test1")
@@ -26,7 +26,7 @@ func TestUpdateDnsCommonServiceItem(t *testing.T) {
 	//IPを追加して保存してみる(２個目)
 	item.Settings.DNS.AddDNSRecordSet("test2", "192.168.0.2")
 
-	item, err = client.updateDNSRecord(item)
+	item, err = client.DNS.updateDNSRecord(item)
 	assert.NoError(t, err)
 	assert.NotNil(t, item)
 	assert.Equal(t, item.Settings.DNS.ResourceRecordSets[1].Name, "test2")
@@ -41,9 +41,9 @@ func init() {
 }
 
 func cleanupDNSCommonServiceItem() {
-	item, _ := client.getDNSCommonServiceItem(testDNSDomain)
+	item, _ := client.DNS.findOrCreateBy(testDNSDomain)
 
 	if item.ID != "" {
-		client.deleteCommonServiceDNSItem(item)
+		client.DNS.Delete(item.ID)
 	}
 }

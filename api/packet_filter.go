@@ -1,30 +1,81 @@
 package api
 
 import (
-	"encoding/json"
 	"fmt"
 	sakura "github.com/yamamoto-febc/libsacloud/resources"
 	"regexp"
 )
 
+type PacketFilterAPI struct {
+	*baseAPI
+}
+
+func NewPacketFilterAPI(client *Client) *PacketFilterAPI {
+	return &PacketFilterAPI{
+		&baseAPI{
+			client: client,
+			FuncGetResourceURL: func() string {
+				return "packetfilter"
+			},
+		},
+	}
+}
+
+func (api *PacketFilterAPI) request(f func(*sakura.Response) error) (*sakura.PacketFilter, error) {
+	res := &sakura.Response{}
+	err := f(res)
+	if err != nil {
+		return nil, err
+	}
+	return res.PacketFilter, nil
+}
+
+func (api *PacketFilterAPI) createRequest(value *sakura.PacketFilter) *sakura.Request {
+	return &sakura.Request{PacketFilter: value}
+}
+
+func (api *PacketFilterAPI) Create(value *sakura.PacketFilter) (*sakura.PacketFilter, error) {
+	return api.request(func(res *sakura.Response) error {
+		return api.create(api.createRequest(value), res)
+	})
+}
+
+func (api *PacketFilterAPI) Read(id string) (*sakura.PacketFilter, error) {
+	return api.request(func(res *sakura.Response) error {
+		return api.read(id, nil, res)
+	})
+}
+
+func (api *PacketFilterAPI) Update(id string, value *sakura.PacketFilter) (*sakura.PacketFilter, error) {
+	return api.request(func(res *sakura.Response) error {
+		return api.update(id, api.createRequest(value), res)
+	})
+}
+
+func (api *PacketFilterAPI) Delete(id string) (*sakura.PacketFilter, error) {
+	return api.request(func(res *sakura.Response) error {
+		return api.delete(id, nil, res)
+	})
+}
+
 // ConnectPacketFilterToSharedNIC connect packet filter to eth0(shared)
-func (c *Client) ConnectPacketFilterToSharedNIC(server *sakura.Server, idOrNameFilter string) error {
+func (api *PacketFilterAPI) ConnectPacketFilterToSharedNIC(server *sakura.Server, idOrNameFilter string) error {
 	if server.Interfaces != nil && len(server.Interfaces) > 0 {
-		return c.connectPacketFilter(&server.Interfaces[0], idOrNameFilter)
+		return api.connectPacketFilter(&server.Interfaces[0], idOrNameFilter)
 	}
 	return nil
 }
 
 // ConnectPacketFilterToPrivateNIC connect packet filter to eth1(private)
-func (c *Client) ConnectPacketFilterToPrivateNIC(server *sakura.Server, idOrNameFilter string) error {
+func (api *PacketFilterAPI) ConnectPacketFilterToPrivateNIC(server *sakura.Server, idOrNameFilter string) error {
 	if server.Interfaces != nil && len(server.Interfaces) > 1 {
-		return c.connectPacketFilter(&server.Interfaces[1], idOrNameFilter)
+		return api.connectPacketFilter(&server.Interfaces[1], idOrNameFilter)
 	}
 	return nil
 }
 
 // ConnectPacketFilter connect filter to nic
-func (c *Client) connectPacketFilter(nic *sakura.Interface, idOrNameFilter string) error {
+func (api *PacketFilterAPI) connectPacketFilter(nic *sakura.Interface, idOrNameFilter string) error {
 	if idOrNameFilter == "" {
 		return nil
 	}
@@ -32,47 +83,20 @@ func (c *Client) connectPacketFilter(nic *sakura.Interface, idOrNameFilter strin
 	var id string
 	//id or name ?
 	if match, _ := regexp.MatchString(`^[0-9]+$`, idOrNameFilter); match {
-		//IDでの検索
-		var (
-			method = "GET"
-			uri    = fmt.Sprintf("packetfilter/%s", idOrNameFilter)
-		)
-		data, _ := c.newRequest(method, uri, nil)
+		res, err := api.Read(idOrNameFilter)
 
-		var res sakura.Response
-		if err := json.Unmarshal(data, &res); err != nil {
-		} else {
-			if res.IsOk {
-				id = res.PacketFilter.ID
-			}
+		if err == nil {
+			id = res.ID
 		}
-		// else {
-		// 	return fmt.Errorf("PacketFilter [%s](id):Not Found", idOrNameFilter)
-		// }
 	}
 
 	//search
 	if id == "" {
 		//名前での検索
-		var (
-			method = "GET"
-			uri    = "packetfilter"
-			body   = sakura.Request{
-				Filter: map[string]interface{}{"Name": idOrNameFilter},
-			}
-		)
-		bodyJSON, err := json.Marshal(body)
+		req := &sakura.Request{}
+		req.AddFilter("Name", idOrNameFilter)
+		res, err := api.Find(req)
 		if err != nil {
-			return err
-		}
-		uri = fmt.Sprintf("%s?%s", uri, bodyJSON)
-		data, err := c.newRequest(method, uri, nil)
-		if err != nil {
-			return err
-		}
-
-		var res sakura.SearchResponse
-		if err := json.Unmarshal(data, &res); err != nil {
 			return err
 		}
 		if res.Count > 0 {
@@ -87,15 +111,19 @@ func (c *Client) connectPacketFilter(nic *sakura.Interface, idOrNameFilter strin
 		return nil
 	}
 
-	//connect
+	_, err := api.ConnectToInterface(nic.ID, id)
+	return err
+}
+
+func (api *PacketFilterAPI) ConnectToInterface(nicID string, packetFilterID string) (bool, error) {
 	var (
 		method = "PUT"
-		uri    = fmt.Sprintf("/interface/%s/to/packetfilter/%s", nic.ID, id)
+		uri    = fmt.Sprintf("/%s/%s/to/packetfilter/%s", api.getResourceURL(), nicID, packetFilterID)
 	)
-
-	_, err := c.newRequest(method, uri, nil)
+	res := &sakura.ResultFlagValue{}
+	err := api.baseAPI.request(method, uri, nil, res)
 	if err != nil {
-		return err
+		return false, err
 	}
-	return nil
+	return res.IsOk, nil
 }

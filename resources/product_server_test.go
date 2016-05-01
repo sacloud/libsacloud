@@ -16,12 +16,12 @@ var testServerPlanJSON = `
 }
 `
 
-func TestMarshalServerPlanJSON(t *testing.T) {
-	var serverPlan ServerPlan
-	err := json.Unmarshal([]byte(testServerPlanJSON), &serverPlan)
+func TestMarshalProductServerJSON(t *testing.T) {
+	var productServer ProductServer
+	err := json.Unmarshal([]byte(testServerPlanJSON), &productServer)
 
 	assert.NoError(t, err)
-	assert.NotEmpty(t, serverPlan)
+	assert.NotEmpty(t, productServer)
 
-	assert.NotEmpty(t, serverPlan.ID)
+	assert.NotEmpty(t, productServer.ID)
 }

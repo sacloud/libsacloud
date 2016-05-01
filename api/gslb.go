@@ -2,20 +2,22 @@ package api
 
 import (
 	"encoding/json"
-	"fmt"
 	//	"strings"
 	sakura "github.com/yamamoto-febc/libsacloud/resources"
 )
 
-type searchGslbResponse struct {
+//HACK: さくらのAPI側仕様: CommonServiceItemsの内容によってJSONフォーマットが異なるため
+//      DNS/GSLB/シンプル監視それぞれでリクエスト/レスポンスデータ型を定義する。
+
+type SearchGSLBResponse struct {
 	Total                  int                            `json:",omitempty"`
 	From                   int                            `json:",omitempty"`
 	Count                  int                            `json:",omitempty"`
-	CommonServiceGslbItems []sakura.CommonServiceGSLBItem `json:"CommonServiceItems,omitempty"`
+	CommonServiceGSLBItems []sakura.CommonServiceGSLBItem `json:"CommonServiceItems,omitempty"`
 }
 
 type gslbRequest struct {
-	CommonServiceGslbItem *sakura.CommonServiceGSLBItem `json:"CommonServiceItem,omitempty"`
+	CommonServiceGSLBItem *sakura.CommonServiceGSLBItem `json:"CommonServiceItem,omitempty"`
 	From                  int                           `json:",omitempty"`
 	Count                 int                           `json:",omitempty"`
 	Sort                  []string                      `json:",omitempty"`
@@ -29,16 +31,84 @@ type gslbResponse struct {
 	*sakura.CommonServiceGSLBItem `json:"CommonServiceItem,omitempty"`
 }
 
-// SetupGslbRecord create or update Gslb
-func (c *Client) SetupGslbRecord(gslbName string, ip string) ([]string, error) {
+// GSLBAPI API Client for SAKURA CLOUD GSLB
+type GSLBAPI struct {
+	*baseAPI
+}
 
-	gslbItem, err := c.getGslbCommonServiceItem(gslbName)
+func NewGSLBAPI(client *Client) *GSLBAPI {
+	return &GSLBAPI{
+		&baseAPI{
+			client: client,
+			FuncGetResourceURL: func() string {
+				return "commonserviceitem"
+			},
+		},
+	}
+}
+
+func (api *GSLBAPI) Find(condition *sakura.Request) (*SearchGSLBResponse, error) {
+
+	//DNS固定
+	condition.AddFilter("Provider.Class", "gslb")
+	data, err := api.client.newRequest("GET", api.getResourceURL(), condition)
+	if err != nil {
+		return nil, err
+	}
+	var res SearchGSLBResponse
+	if err := json.Unmarshal(data, &res); err != nil {
+		return nil, err
+	}
+	return &res, nil
+}
+
+func (api *GSLBAPI) request(f func(*gslbResponse) error) (*sakura.CommonServiceGSLBItem, error) {
+	res := &gslbResponse{}
+	err := f(res)
+	if err != nil {
+		return nil, err
+	}
+	return res.CommonServiceGSLBItem, nil
+}
+
+func (api *GSLBAPI) createRequest(value *sakura.CommonServiceGSLBItem) *gslbResponse {
+	return &gslbResponse{CommonServiceGSLBItem: value}
+}
+
+func (api *GSLBAPI) Create(value *sakura.CommonServiceGSLBItem) (*sakura.CommonServiceGSLBItem, error) {
+	return api.request(func(res *gslbResponse) error {
+		return api.create(api.createRequest(value), res)
+	})
+}
+
+func (api *GSLBAPI) Read(id string) (*sakura.CommonServiceGSLBItem, error) {
+	return api.request(func(res *gslbResponse) error {
+		return api.read(id, nil, res)
+	})
+}
+
+func (api *GSLBAPI) Update(id string, value *sakura.CommonServiceGSLBItem) (*sakura.CommonServiceGSLBItem, error) {
+	return api.request(func(res *gslbResponse) error {
+		return api.update(id, api.createRequest(value), res)
+	})
+}
+
+func (api *GSLBAPI) Delete(id string) (*sakura.CommonServiceGSLBItem, error) {
+	return api.request(func(res *gslbResponse) error {
+		return api.delete(id, nil, res)
+	})
+}
+
+// SetupGSLBRecord create or update Gslb
+func (api *GSLBAPI) SetupGSLBRecord(gslbName string, ip string) ([]string, error) {
+
+	gslbItem, err := api.findOrCreateBy(gslbName)
 
 	if err != nil {
 		return nil, err
 	}
 	gslbItem.Settings.GSLB.AddServer(ip)
-	res, err := c.updateGslbServers(gslbItem)
+	res, err := api.updateGSLBServers(gslbItem)
 	if err != nil {
 		return nil, err
 	}
@@ -50,22 +120,22 @@ func (c *Client) SetupGslbRecord(gslbName string, ip string) ([]string, error) {
 
 }
 
-// DeleteGslbServer delete gslb server
-func (c *Client) DeleteGslbServer(gslbName string, ip string) error {
-	gslbItem, err := c.getGslbCommonServiceItem(gslbName)
+// DeleteGSLBServer delete gslb server
+func (api *GSLBAPI) DeleteGSLBServer(gslbName string, ip string) error {
+	gslbItem, err := api.findOrCreateBy(gslbName)
 	if err != nil {
 		return err
 	}
 	gslbItem.Settings.GSLB.DeleteServer(ip)
 
 	if gslbItem.HasGSLBServer() {
-		_, err = c.updateGslbServers(gslbItem)
+		_, err = api.updateGSLBServers(gslbItem)
 		if err != nil {
 			return err
 		}
 
 	} else {
-		err = c.deleteCommonServiceGslbItem(gslbItem)
+		_, err = api.Delete(gslbItem.ID)
 		if err != nil {
 			return err
 		}
@@ -74,37 +144,19 @@ func (c *Client) DeleteGslbServer(gslbName string, ip string) error {
 	return nil
 }
 
-func (c *Client) getGslbCommonServiceItem(gslbName string) (*sakura.CommonServiceGSLBItem, error) {
+func (api *GSLBAPI) findOrCreateBy(gslbName string) (*sakura.CommonServiceGSLBItem, error) {
 
-	var (
-		method = "GET"
-		uri    = "commonserviceitem"
-		body   = sakura.Request{
-			Filter: map[string]interface{}{
-				"Provider.Class": "gslb",
-				"Name":           gslbName,
-			},
-		}
-	)
-
-	bodyJSON, err := json.Marshal(body)
-	if err != nil {
-		return nil, err
-	}
-	uri = fmt.Sprintf("%s?%s", uri, bodyJSON)
-	data, err := c.newRequest(method, uri, nil)
+	req := &sakura.Request{}
+	req.AddFilter("Name", gslbName)
+	res, err := api.Find(req)
 	if err != nil {
 		return nil, err
 	}
 
-	var gslb searchGslbResponse
+	//すでに登録されている場合
 	var gslbItem *sakura.CommonServiceGSLBItem
-	if err := json.Unmarshal(data, &gslb); err != nil {
-		return nil, err
-	}
-
-	if gslb.Count > 0 {
-		gslbItem = &gslb.CommonServiceGslbItems[0]
+	if res.Count > 0 {
+		gslbItem = &res.CommonServiceGSLBItems[0]
 	} else {
 		gslbItem = sakura.CreateNewGSLBCommonServiceItem(gslbName)
 	}
@@ -112,49 +164,20 @@ func (c *Client) getGslbCommonServiceItem(gslbName string) (*sakura.CommonServic
 	return gslbItem, nil
 }
 
-func (c *Client) updateGslbServers(gslbItem *sakura.CommonServiceGSLBItem) (*sakura.CommonServiceGSLBItem, error) {
+func (api *GSLBAPI) updateGSLBServers(gslbItem *sakura.CommonServiceGSLBItem) (*sakura.CommonServiceGSLBItem, error) {
 
-	var (
-		method string
-		uri    string
-	)
+	var item *sakura.CommonServiceGSLBItem
+	var err error
+
 	if gslbItem.ID == "" {
-		method = "POST"
-		uri = "/commonserviceitem"
-
+		item, err = api.Create(gslbItem)
 	} else {
-		method = "PUT"
-		uri = fmt.Sprintf("/commonserviceitem/%s", gslbItem.ID)
-	}
-	n := gslbRequest{
-		CommonServiceGslbItem: gslbItem,
+		item, err = api.Update(gslbItem.ID, gslbItem)
 	}
 
-	data, err := c.newRequest(method, uri, n)
 	if err != nil {
 		return nil, err
 	}
-	var res gslbResponse
-	if err := json.Unmarshal(data, &res); err != nil {
-		return nil, err
-	}
 
-	return res.CommonServiceGSLBItem, nil
-}
-
-func (c *Client) deleteCommonServiceGslbItem(item *sakura.CommonServiceGSLBItem) error {
-	var (
-		method string
-		uri    string
-	)
-	method = "DELETE"
-	uri = fmt.Sprintf("/commonserviceitem/%s", item.ID)
-
-	_, err := c.newRequest(method, uri, item)
-	if err != nil {
-		return err
-	}
-
-	return nil
-
+	return item, nil
 }

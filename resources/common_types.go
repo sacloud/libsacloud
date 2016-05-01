@@ -16,28 +16,30 @@ type EAvailability struct {
 }
 
 // IsAvailable Return availability
-func IsAvailable(a *EAvailability) bool {
+func (a *EAvailability) IsAvailable() bool {
 	return a.Availability == "available"
 }
 
 // SakuraCloudResources type of resources
 type SakuraCloudResources struct {
-	Server       *Server       `json:",omitempty"`
-	Disk         *Disk         `json:",omitempty"`
-	Note         *Note         `json:",omitempty"`
-	PacketFilter *PacketFilter `json:",omitempty"`
-	ServerPlan   *ServerPlan   `json:",omitempty"`
+	Server        *Server        `json:",omitempty"`
+	Disk          *Disk          `json:",omitempty"`
+	Note          *Note          `json:",omitempty"`
+	PacketFilter  *PacketFilter  `json:",omitempty"`
+	ProductServer *ProductServer `json:"ServerPlan,omitempty"`
+	Archive       *Archive       `json:",omitempty"`
 	//CommonServiceDnsItem  *CommonServiceDnsItem  `json:"CommonServiceItem,omitempty"`
 	//CommonServiceGslbItem *CommonServiceGslbItem `json:"CommonServiceItem,omitempty"`
 }
 
 // SakuraCloudResourceList type of resources
 type SakuraCloudResourceList struct {
-	Servers       []Server       `json:",omitempty"`
-	Notes         []Note         `json:",omitempty"`
-	Archives      []Archive      `json:",omitempty"`
-	PacketFilters []PacketFilter `json:",omitempty"`
-	ServerPlans   []ServerPlan   `json:",omitempty"`
+	Servers        []Server        `json:",omitempty"`
+	Disks          []Disk          `json:",omitempty"`
+	Notes          []Note          `json:",omitempty"`
+	Archives       []Archive       `json:",omitempty"`
+	PacketFilters  []PacketFilter  `json:",omitempty"`
+	ProductServers []ProductServer `json:"ServerPlans,omitempty"`
 	//CommonServiceDnsItems  []CommonServiceDnsItem  `json:"CommonServiceItems,omitempty"`
 	//CommonServiceGslbItems []CommonServiceGslbItem `json:"CommonServiceItems,omitempty"`
 }
@@ -45,9 +47,12 @@ type SakuraCloudResourceList struct {
 // Request type of SakuraCloud API Request
 type Request struct {
 	// *SakuraCloudResources
-	Server *Server `json:",omitempty"`
-	Disk   *Disk   `json:",omitempty"`
-	Note   *Note   `json:",omitempty"`
+	Server       *Server        `json:",omitempty"`
+	Disk         *Disk          `json:",omitempty"`
+	Note         *Note          `json:",omitempty"`
+	Archive      *Archive       `json:",omitempty"`
+	PacketFilter *PacketFilter  `json:",omitempty"`
+	ServerPlan   *ProductServer `json:",omitempty"`
 	//CommonServiceDnsItem  *CommonServiceDnsItem  `json:"CommonServiceItem,omitempty"`
 	//CommonServiceGslbItem *CommonServiceGslbItem `json:"CommonServiceItem,omitempty"`
 	Interface *Interface             `json:",omitempty"`
@@ -57,6 +62,38 @@ type Request struct {
 	Filter    map[string]interface{} `json:",omitempty"`
 	Exclude   []string               `json:",omitempty"`
 	Include   []string               `json:",omitempty"`
+}
+
+func (r *Request) AddFilter(key string, value interface{}) *Request {
+	if r.Filter == nil {
+		r.Filter = map[string]interface{}{}
+	}
+	r.Filter[key] = value
+	return r
+}
+
+func (r *Request) AddSort(keyName string) *Request {
+	if r.Sort == nil {
+		r.Sort = []string{}
+	}
+	r.Sort = append(r.Sort, keyName)
+	return r
+}
+
+func (r *Request) AddExclude(keyName string) *Request {
+	if r.Exclude == nil {
+		r.Exclude = []string{}
+	}
+	r.Exclude = append(r.Exclude, keyName)
+	return r
+}
+
+func (r *Request) AddInclude(keyName string) *Request {
+	if r.Include == nil {
+		r.Include = []string{}
+	}
+	r.Include = append(r.Include, keyName)
+	return r
 }
 
 // ResultFlagValue type of api result
