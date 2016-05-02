@@ -2,7 +2,7 @@ package api
 
 import (
 	"encoding/json"
-	sakura "github.com/yamamoto-febc/libsacloud/resources"
+	"github.com/yamamoto-febc/libsacloud/sacloud"
 	"strings"
 )
 
@@ -10,23 +10,23 @@ import (
 //      DNS/GSLB/シンプル監視それぞれでリクエスト/レスポンスデータ型を定義する。
 
 type SearchDNSResponse struct {
-	Total                 int                           `json:",omitempty"`
-	From                  int                           `json:",omitempty"`
-	Count                 int                           `json:",omitempty"`
-	CommonServiceDNSItems []sakura.CommonServiceDNSItem `json:"CommonServiceItems,omitempty"`
+	Total                 int           `json:",omitempty"`
+	From                  int           `json:",omitempty"`
+	Count                 int           `json:",omitempty"`
+	CommonServiceDNSItems []sacloud.DNS `json:"CommonServiceItems,omitempty"`
 }
 type dnsRequest struct {
-	CommonServiceDNSItem *sakura.CommonServiceDNSItem `json:"CommonServiceItem,omitempty"`
-	From                 int                          `json:",omitempty"`
-	Count                int                          `json:",omitempty"`
-	Sort                 []string                     `json:",omitempty"`
-	Filter               map[string]interface{}       `json:",omitempty"`
-	Exclude              []string                     `json:",omitempty"`
-	Include              []string                     `json:",omitempty"`
+	CommonServiceDNSItem *sacloud.DNS           `json:"CommonServiceItem,omitempty"`
+	From                 int                    `json:",omitempty"`
+	Count                int                    `json:",omitempty"`
+	Sort                 []string               `json:",omitempty"`
+	Filter               map[string]interface{} `json:",omitempty"`
+	Exclude              []string               `json:",omitempty"`
+	Include              []string               `json:",omitempty"`
 }
 type dnsResponse struct {
-	*sakura.ResultFlagValue
-	*sakura.CommonServiceDNSItem `json:"CommonServiceItem,omitempty"`
+	*sacloud.ResultFlagValue
+	*sacloud.DNS `json:"CommonServiceItem,omitempty"`
 }
 
 // DNSAPI API Client for SAKURA CLOUD DNS
@@ -45,7 +45,7 @@ func NewDNSAPI(client *Client) *DNSAPI {
 	}
 }
 
-func (api *DNSAPI) Find(condition *sakura.Request) (*SearchDNSResponse, error) {
+func (api *DNSAPI) Find(condition *sacloud.Request) (*SearchDNSResponse, error) {
 
 	//DNS固定
 	condition.AddFilter("Provider.Class", "dns")
@@ -60,38 +60,38 @@ func (api *DNSAPI) Find(condition *sakura.Request) (*SearchDNSResponse, error) {
 	return &res, nil
 }
 
-func (api *DNSAPI) request(f func(*dnsResponse) error) (*sakura.CommonServiceDNSItem, error) {
+func (api *DNSAPI) request(f func(*dnsResponse) error) (*sacloud.DNS, error) {
 	res := &dnsResponse{}
 	err := f(res)
 	if err != nil {
 		return nil, err
 	}
-	return res.CommonServiceDNSItem, nil
+	return res.DNS, nil
 }
 
-func (api *DNSAPI) createRequest(value *sakura.CommonServiceDNSItem) *dnsRequest {
+func (api *DNSAPI) createRequest(value *sacloud.DNS) *dnsRequest {
 	return &dnsRequest{CommonServiceDNSItem: value}
 }
 
-func (api *DNSAPI) Create(value *sakura.CommonServiceDNSItem) (*sakura.CommonServiceDNSItem, error) {
+func (api *DNSAPI) Create(value *sacloud.DNS) (*sacloud.DNS, error) {
 	return api.request(func(res *dnsResponse) error {
 		return api.create(api.createRequest(value), res)
 	})
 }
 
-func (api *DNSAPI) Read(id string) (*sakura.CommonServiceDNSItem, error) {
+func (api *DNSAPI) Read(id string) (*sacloud.DNS, error) {
 	return api.request(func(res *dnsResponse) error {
 		return api.read(id, nil, res)
 	})
 }
 
-func (api *DNSAPI) Update(id string, value *sakura.CommonServiceDNSItem) (*sakura.CommonServiceDNSItem, error) {
+func (api *DNSAPI) Update(id string, value *sacloud.DNS) (*sacloud.DNS, error) {
 	return api.request(func(res *dnsResponse) error {
 		return api.update(id, api.createRequest(value), res)
 	})
 }
 
-func (api *DNSAPI) Delete(id string) (*sakura.CommonServiceDNSItem, error) {
+func (api *DNSAPI) Delete(id string) (*sacloud.DNS, error) {
 	return api.request(func(res *dnsResponse) error {
 		return api.delete(id, nil, res)
 	})
@@ -148,9 +148,9 @@ func (api *DNSAPI) DeleteDNSRecord(zoneName string, hostName string, ip string) 
 	return nil
 }
 
-func (api *DNSAPI) findOrCreateBy(zoneName string) (*sakura.CommonServiceDNSItem, error) {
+func (api *DNSAPI) findOrCreateBy(zoneName string) (*sacloud.DNS, error) {
 
-	req := &sakura.Request{}
+	req := &sacloud.Request{}
 	req.AddFilter("Name", zoneName)
 	res, err := api.Find(req)
 	if err != nil {
@@ -158,19 +158,19 @@ func (api *DNSAPI) findOrCreateBy(zoneName string) (*sakura.CommonServiceDNSItem
 	}
 
 	//すでに登録されている場合
-	var dnsItem *sakura.CommonServiceDNSItem
+	var dnsItem *sacloud.DNS
 	if res.Count > 0 {
 		dnsItem = &res.CommonServiceDNSItems[0]
 	} else {
-		dnsItem = sakura.CreateNewDNSCommonServiceItem(zoneName)
+		dnsItem = sacloud.CreateNewDNS(zoneName)
 	}
 
 	return dnsItem, nil
 }
 
-func (api *DNSAPI) updateDNSRecord(dnsItem *sakura.CommonServiceDNSItem) (*sakura.CommonServiceDNSItem, error) {
+func (api *DNSAPI) updateDNSRecord(dnsItem *sacloud.DNS) (*sacloud.DNS, error) {
 
-	var item *sakura.CommonServiceDNSItem
+	var item *sacloud.DNS
 	var err error
 
 	if dnsItem.ID == "" {

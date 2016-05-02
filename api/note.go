@@ -2,7 +2,7 @@ package api
 
 import (
 	"fmt"
-	sakura "github.com/yamamoto-febc/libsacloud/resources"
+	"github.com/yamamoto-febc/libsacloud/sacloud"
 	"time"
 )
 
@@ -78,8 +78,8 @@ func NewNoteAPI(client *Client) *NoteAPI {
 	}
 }
 
-func (api *NoteAPI) request(f func(*sakura.Response) error) (*sakura.Note, error) {
-	res := &sakura.Response{}
+func (api *NoteAPI) request(f func(*sacloud.Response) error) (*sacloud.Note, error) {
+	res := &sacloud.Response{}
 	err := f(res)
 	if err != nil {
 		return nil, err
@@ -87,30 +87,30 @@ func (api *NoteAPI) request(f func(*sakura.Response) error) (*sakura.Note, error
 	return res.Note, nil
 }
 
-func (api *NoteAPI) createRequest(value *sakura.Note) *sakura.Request {
-	return &sakura.Request{Note: value}
+func (api *NoteAPI) createRequest(value *sacloud.Note) *sacloud.Request {
+	return &sacloud.Request{Note: value}
 }
 
-func (api *NoteAPI) Create(value *sakura.Note) (*sakura.Note, error) {
-	return api.request(func(res *sakura.Response) error {
+func (api *NoteAPI) Create(value *sacloud.Note) (*sacloud.Note, error) {
+	return api.request(func(res *sacloud.Response) error {
 		return api.create(api.createRequest(value), res)
 	})
 }
 
-func (api *NoteAPI) Read(id string) (*sakura.Note, error) {
-	return api.request(func(res *sakura.Response) error {
+func (api *NoteAPI) Read(id string) (*sacloud.Note, error) {
+	return api.request(func(res *sacloud.Response) error {
 		return api.read(id, nil, res)
 	})
 }
 
-func (api *NoteAPI) Update(id string, value *sakura.Note) (*sakura.Note, error) {
-	return api.request(func(res *sakura.Response) error {
+func (api *NoteAPI) Update(id string, value *sacloud.Note) (*sacloud.Note, error) {
+	return api.request(func(res *sacloud.Response) error {
 		return api.update(id, api.createRequest(value), res)
 	})
 }
 
-func (api *NoteAPI) Delete(id string) (*sakura.Note, error) {
-	return api.request(func(res *sakura.Response) error {
+func (api *NoteAPI) Delete(id string) (*sacloud.Note, error) {
+	return api.request(func(res *sacloud.Response) error {
 		return api.delete(id, nil, res)
 	})
 }
@@ -147,7 +147,7 @@ func (api *NoteAPI) GetDisableEth0CustomizeNoteID(noteNamePrefix string) (string
 
 func (api *NoteAPI) findOrCreateBy(noteName string, noteBody string) (string, error) {
 
-	var body = &sakura.Request{}
+	var body = &sacloud.Request{}
 	body.AddFilter("Name", noteName)
 
 	existsNotes, err := api.Find(body)
@@ -159,7 +159,7 @@ func (api *NoteAPI) findOrCreateBy(noteName string, noteBody string) (string, er
 		return existsNotes.Notes[0].ID, nil
 	}
 
-	note := &sakura.Note{
+	note := &sacloud.Note{
 		Name:    noteName,
 		Content: noteBody,
 	}

@@ -2,7 +2,7 @@ package api
 
 import (
 	"fmt"
-	sakura "github.com/yamamoto-febc/libsacloud/resources"
+	"github.com/yamamoto-febc/libsacloud/sacloud"
 	"strconv"
 )
 
@@ -21,8 +21,8 @@ func NewProductServerAPI(client *Client) *ProductServerAPI {
 	}
 }
 
-func (api *ProductServerAPI) request(f func(*sakura.Response) error) (*sakura.ProductServer, error) {
-	res := &sakura.Response{}
+func (api *ProductServerAPI) request(f func(*sacloud.Response) error) (*sacloud.ProductServer, error) {
+	res := &sacloud.Response{}
 	err := f(res)
 	if err != nil {
 		return nil, err
@@ -30,8 +30,8 @@ func (api *ProductServerAPI) request(f func(*sakura.Response) error) (*sakura.Pr
 	return res.ProductServer, nil
 }
 
-func (api *ProductServerAPI) Read(id int64) (*sakura.ProductServer, error) {
-	return api.request(func(res *sakura.Response) error {
+func (api *ProductServerAPI) Read(id int64) (*sacloud.ProductServer, error) {
+	return api.request(func(res *sacloud.Response) error {
 		return api.read(fmt.Sprintf("%d", id), nil, res)
 	})
 }

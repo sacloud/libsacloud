@@ -3,32 +3,32 @@ package api
 import (
 	"encoding/json"
 	//	"strings"
-	sakura "github.com/yamamoto-febc/libsacloud/resources"
+	"github.com/yamamoto-febc/libsacloud/sacloud"
 )
 
 //HACK: さくらのAPI側仕様: CommonServiceItemsの内容によってJSONフォーマットが異なるため
 //      DNS/GSLB/シンプル監視それぞれでリクエスト/レスポンスデータ型を定義する。
 
 type SearchGSLBResponse struct {
-	Total                  int                            `json:",omitempty"`
-	From                   int                            `json:",omitempty"`
-	Count                  int                            `json:",omitempty"`
-	CommonServiceGSLBItems []sakura.CommonServiceGSLBItem `json:"CommonServiceItems,omitempty"`
+	Total                  int            `json:",omitempty"`
+	From                   int            `json:",omitempty"`
+	Count                  int            `json:",omitempty"`
+	CommonServiceGSLBItems []sacloud.GSLB `json:"CommonServiceItems,omitempty"`
 }
 
 type gslbRequest struct {
-	CommonServiceGSLBItem *sakura.CommonServiceGSLBItem `json:"CommonServiceItem,omitempty"`
-	From                  int                           `json:",omitempty"`
-	Count                 int                           `json:",omitempty"`
-	Sort                  []string                      `json:",omitempty"`
-	Filter                map[string]interface{}        `json:",omitempty"`
-	Exclude               []string                      `json:",omitempty"`
-	Include               []string                      `json:",omitempty"`
+	CommonServiceGSLBItem *sacloud.GSLB          `json:"CommonServiceItem,omitempty"`
+	From                  int                    `json:",omitempty"`
+	Count                 int                    `json:",omitempty"`
+	Sort                  []string               `json:",omitempty"`
+	Filter                map[string]interface{} `json:",omitempty"`
+	Exclude               []string               `json:",omitempty"`
+	Include               []string               `json:",omitempty"`
 }
 
 type gslbResponse struct {
-	*sakura.ResultFlagValue
-	*sakura.CommonServiceGSLBItem `json:"CommonServiceItem,omitempty"`
+	*sacloud.ResultFlagValue
+	*sacloud.GSLB `json:"CommonServiceItem,omitempty"`
 }
 
 // GSLBAPI API Client for SAKURA CLOUD GSLB
@@ -47,7 +47,7 @@ func NewGSLBAPI(client *Client) *GSLBAPI {
 	}
 }
 
-func (api *GSLBAPI) Find(condition *sakura.Request) (*SearchGSLBResponse, error) {
+func (api *GSLBAPI) Find(condition *sacloud.Request) (*SearchGSLBResponse, error) {
 
 	//DNS固定
 	condition.AddFilter("Provider.Class", "gslb")
@@ -62,38 +62,38 @@ func (api *GSLBAPI) Find(condition *sakura.Request) (*SearchGSLBResponse, error)
 	return &res, nil
 }
 
-func (api *GSLBAPI) request(f func(*gslbResponse) error) (*sakura.CommonServiceGSLBItem, error) {
+func (api *GSLBAPI) request(f func(*gslbResponse) error) (*sacloud.GSLB, error) {
 	res := &gslbResponse{}
 	err := f(res)
 	if err != nil {
 		return nil, err
 	}
-	return res.CommonServiceGSLBItem, nil
+	return res.GSLB, nil
 }
 
-func (api *GSLBAPI) createRequest(value *sakura.CommonServiceGSLBItem) *gslbResponse {
-	return &gslbResponse{CommonServiceGSLBItem: value}
+func (api *GSLBAPI) createRequest(value *sacloud.GSLB) *gslbResponse {
+	return &gslbResponse{GSLB: value}
 }
 
-func (api *GSLBAPI) Create(value *sakura.CommonServiceGSLBItem) (*sakura.CommonServiceGSLBItem, error) {
+func (api *GSLBAPI) Create(value *sacloud.GSLB) (*sacloud.GSLB, error) {
 	return api.request(func(res *gslbResponse) error {
 		return api.create(api.createRequest(value), res)
 	})
 }
 
-func (api *GSLBAPI) Read(id string) (*sakura.CommonServiceGSLBItem, error) {
+func (api *GSLBAPI) Read(id string) (*sacloud.GSLB, error) {
 	return api.request(func(res *gslbResponse) error {
 		return api.read(id, nil, res)
 	})
 }
 
-func (api *GSLBAPI) Update(id string, value *sakura.CommonServiceGSLBItem) (*sakura.CommonServiceGSLBItem, error) {
+func (api *GSLBAPI) Update(id string, value *sacloud.GSLB) (*sacloud.GSLB, error) {
 	return api.request(func(res *gslbResponse) error {
 		return api.update(id, api.createRequest(value), res)
 	})
 }
 
-func (api *GSLBAPI) Delete(id string) (*sakura.CommonServiceGSLBItem, error) {
+func (api *GSLBAPI) Delete(id string) (*sacloud.GSLB, error) {
 	return api.request(func(res *gslbResponse) error {
 		return api.delete(id, nil, res)
 	})
@@ -144,9 +144,9 @@ func (api *GSLBAPI) DeleteGSLBServer(gslbName string, ip string) error {
 	return nil
 }
 
-func (api *GSLBAPI) findOrCreateBy(gslbName string) (*sakura.CommonServiceGSLBItem, error) {
+func (api *GSLBAPI) findOrCreateBy(gslbName string) (*sacloud.GSLB, error) {
 
-	req := &sakura.Request{}
+	req := &sacloud.Request{}
 	req.AddFilter("Name", gslbName)
 	res, err := api.Find(req)
 	if err != nil {
@@ -154,19 +154,19 @@ func (api *GSLBAPI) findOrCreateBy(gslbName string) (*sakura.CommonServiceGSLBIt
 	}
 
 	//すでに登録されている場合
-	var gslbItem *sakura.CommonServiceGSLBItem
+	var gslbItem *sacloud.GSLB
 	if res.Count > 0 {
 		gslbItem = &res.CommonServiceGSLBItems[0]
 	} else {
-		gslbItem = sakura.CreateNewGSLBCommonServiceItem(gslbName)
+		gslbItem = sacloud.CreateNewGSLB(gslbName)
 	}
 
 	return gslbItem, nil
 }
 
-func (api *GSLBAPI) updateGSLBServers(gslbItem *sakura.CommonServiceGSLBItem) (*sakura.CommonServiceGSLBItem, error) {
+func (api *GSLBAPI) updateGSLBServers(gslbItem *sacloud.GSLB) (*sacloud.GSLB, error) {
 
-	var item *sakura.CommonServiceGSLBItem
+	var item *sacloud.GSLB
 	var err error
 
 	if gslbItem.ID == "" {

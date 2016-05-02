@@ -2,7 +2,7 @@ package api
 
 import (
 	"github.com/stretchr/testify/assert"
-	sakura "github.com/yamamoto-febc/libsacloud/resources"
+	"github.com/yamamoto-febc/libsacloud/sacloud"
 	"testing"
 )
 
@@ -15,7 +15,7 @@ func TestCRUDByPacketFilterAPI(t *testing.T) {
 	api := client.PacketFilter
 
 	//CREATE
-	var packetFilter = &sakura.PacketFilter{
+	var packetFilter = &sacloud.PacketFilter{
 		Name:        testPacketFilterName,
 		Description: "aaaaaaa",
 		Expression:  []string{},
@@ -57,7 +57,7 @@ func init() {
 
 func cleanupTestPacketFilter() {
 	api := client.PacketFilter
-	req := &sakura.Request{}
+	req := &sacloud.Request{}
 	req.AddFilter("Name", testPacketFilterName)
 	res, _ := api.Find(req)
 	if res.Count > 0 {

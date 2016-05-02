@@ -2,7 +2,7 @@ package api
 
 import (
 	"github.com/stretchr/testify/assert"
-	sakura "github.com/yamamoto-febc/libsacloud/resources"
+	"github.com/yamamoto-febc/libsacloud/sacloud"
 	"log"
 	"testing"
 )
@@ -20,9 +20,9 @@ func TestCRUDByBaseAPI(t *testing.T) {
 	}
 
 	//CREATE
-	var res = &sakura.Response{}
-	var note = &sakura.Request{
-		Note: &sakura.Note{
+	var res = &sacloud.Response{}
+	var note = &sacloud.Request{
+		Note: &sacloud.Note{
 			Name:    testTargetNoteName,
 			Content: testTargetNoteContentBefore,
 		},
@@ -37,8 +37,8 @@ func TestCRUDByBaseAPI(t *testing.T) {
 	var id = res.Note.ID
 
 	//READ
-	res = &sakura.Response{}
-	note = &sakura.Request{}
+	res = &sacloud.Response{}
+	note = &sacloud.Request{}
 
 	err = baseAPI.read(id, nil, res)
 	assert.NoError(t, err)
@@ -49,7 +49,7 @@ func TestCRUDByBaseAPI(t *testing.T) {
 	note.Note = res.Note
 
 	//UPDATE
-	res = &sakura.Response{}
+	res = &sacloud.Response{}
 	note.Note.Content = testTargetNoteContentAfter
 
 	err = baseAPI.update(id, note, res)
@@ -59,7 +59,7 @@ func TestCRUDByBaseAPI(t *testing.T) {
 	assert.Equal(t, res.Note.Content, testTargetNoteContentAfter)
 
 	//DELETE
-	res = &sakura.Response{}
+	res = &sacloud.Response{}
 
 	err = baseAPI.delete(id, nil, res)
 	assert.NoError(t, err)
@@ -80,7 +80,7 @@ func cleanupTestNote() {
 	}
 
 	//Find
-	res, _ := baseAPI.Find(&sakura.Request{
+	res, _ := baseAPI.Find(&sacloud.Request{
 		Filter: map[string]interface{}{
 			"Name": testTargetNoteName,
 		},
