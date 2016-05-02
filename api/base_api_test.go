@@ -21,12 +21,8 @@ func TestCRUDByBaseAPI(t *testing.T) {
 
 	//CREATE
 	var res = &sacloud.Response{}
-	var note = &sacloud.Request{
-		Note: &sacloud.Note{
-			Name:    testTargetNoteName,
-			Content: testTargetNoteContentBefore,
-		},
-	}
+	var note = &sacloud.Request{}
+	note.Note = &sacloud.Note{Name: testTargetNoteName, Content: testTargetNoteContentBefore}
 
 	err := baseAPI.create(note, res)
 	assert.NoError(t, err)
@@ -80,12 +76,13 @@ func cleanupTestNote() {
 	}
 
 	//Find
-	res, _ := baseAPI.Find(&sacloud.Request{
-		Filter: map[string]interface{}{
-			"Name": testTargetNoteName,
-		},
-	})
+	//res, _ := baseAPI.Find(&sacloud.Request{
+	//	Filter: map[string]interface{}{
+	//		"Name": testTargetNoteName,
+	//	},
+	//})
 
+	res, _ := baseAPI.withNameLike(testTargetNoteName).Find()
 	if res != nil && res.Count > 0 && res.Notes[0].Name == testTargetNoteName {
 		err := baseAPI.delete(res.Notes[0].ID, nil, nil)
 		if err != nil {

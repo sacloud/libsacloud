@@ -11,6 +11,14 @@ type PacketFilter struct {
 	// PackerFilterのCREATE時は文字列、以外は数値となる。現状利用しないためコメントとしておく
 	// RequiredHostVersion int    `json:",omitempty"`
 
-	Notice     string `json:",omitempty"`
-	Expression []string
+	Notice     string                   `json:",omitempty"`
+	Expression []PacketFilterExpression `json:",omitempty"`
+}
+
+type PacketFilterExpression struct {
+	Protocol        string `json:",omitempty"`
+	SourceNetwork   string `json:",omitempty"`
+	SourcePort      string `json:",omitempty"`
+	DestinationPort string `json:",omitempty"`
+	Action          string `json:",omitempty"`
 }

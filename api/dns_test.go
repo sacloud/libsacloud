@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-const testDNSDomain = "docker-machine-sakuracloud.com"
+const testDNSDomain = "test.domain.libsacloud.com"
 
 func TestUpdateDnsCommonServiceItem(t *testing.T) {
 	item, err := client.DNS.findOrCreateBy(testDNSDomain) //存在しないため新たに作る

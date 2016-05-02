@@ -21,17 +21,14 @@ func NewDiskAPI(client *Client) *DiskAPI {
 	}
 }
 
-func (api *DiskAPI) request(f func(*sacloud.Response) error) (*sacloud.Disk, error) {
-	res := &sacloud.Response{}
-	err := f(res)
-	if err != nil {
-		return nil, err
-	}
-	return res.Disk, nil
+func (api *DiskAPI) SortByConnectionOrder(reverse bool) *DiskAPI {
+	api.sortBy("ConnectionOrder", reverse)
+	return api
 }
 
-func (api *DiskAPI) createRequest(value *sacloud.Disk) *sacloud.Request {
-	return &sacloud.Request{Disk: value}
+func (api *DiskAPI) WithServerID(id string) *DiskAPI {
+	api.FilterBy("Server.ID", id)
+	return api
 }
 
 func (api *DiskAPI) Create(value *sacloud.Disk) (*sacloud.Disk, error) {
@@ -48,22 +45,8 @@ func (api *DiskAPI) Create(value *sacloud.Disk) (*sacloud.Disk, error) {
 	return res.Disk, nil
 }
 
-func (api *DiskAPI) Read(id string) (*sacloud.Disk, error) {
-	return api.request(func(res *sacloud.Response) error {
-		return api.read(id, nil, res)
-	})
-}
-
-func (api *DiskAPI) Update(id string, value *sacloud.Disk) (*sacloud.Disk, error) {
-	return api.request(func(res *sacloud.Response) error {
-		return api.update(id, api.createRequest(value), res)
-	})
-}
-
-func (api *DiskAPI) Delete(id string) (*sacloud.Disk, error) {
-	return api.request(func(res *sacloud.Response) error {
-		return api.delete(id, nil, res)
-	})
+func (api *DiskAPI) NewCondig() *sacloud.DiskEditValue {
+	return &sacloud.DiskEditValue{}
 }
 
 func (api *DiskAPI) Config(id string, disk *sacloud.DiskEditValue) (bool, error) {
@@ -72,12 +55,7 @@ func (api *DiskAPI) Config(id string, disk *sacloud.DiskEditValue) (bool, error)
 		uri    = fmt.Sprintf("%s/%s/config", api.getResourceURL(), id)
 	)
 
-	res := &sacloud.ResultFlagValue{}
-	err := api.baseAPI.request(method, uri, nil, res)
-	if err != nil {
-		return false, err
-	}
-	return res.IsOk, nil
+	return api.modify(method, uri, disk)
 }
 
 func (api *DiskAPI) install(id string, body *sacloud.Disk) (bool, error) {
@@ -86,13 +64,7 @@ func (api *DiskAPI) install(id string, body *sacloud.Disk) (bool, error) {
 		uri    = fmt.Sprintf("%s/%s/install", api.getResourceURL(), id)
 	)
 
-	res := &sacloud.ResultFlagValue{}
-	err := api.baseAPI.request(method, uri, body, res)
-	if err != nil {
-		return false, err
-	}
-	return res.IsOk, nil
-
+	return api.modify(method, uri, body)
 }
 
 func (api *DiskAPI) ReinstallFromBlank(id string, sizeMB int) (bool, error) {
@@ -125,12 +97,7 @@ func (api *DiskAPI) ToBlank(diskID string) (bool, error) {
 		method = "PUT"
 		uri    = fmt.Sprintf("%s/%s/to/blank", api.getResourceURL(), diskID)
 	)
-	res := &sacloud.ResultFlagValue{}
-	err := api.baseAPI.request(method, uri, nil, res)
-	if err != nil {
-		return false, err
-	}
-	return res.IsOk, nil
+	return api.modify(method, uri, nil)
 }
 
 func (api *DiskAPI) DisconnectFromServer(diskID string) (bool, error) {
@@ -138,12 +105,7 @@ func (api *DiskAPI) DisconnectFromServer(diskID string) (bool, error) {
 		method = "DELETE"
 		uri    = fmt.Sprintf("%s/%s/to/server", api.getResourceURL(), diskID)
 	)
-	res := &sacloud.ResultFlagValue{}
-	err := api.baseAPI.request(method, uri, nil, res)
-	if err != nil {
-		return false, err
-	}
-	return res.IsOk, nil
+	return api.modify(method, uri, nil)
 }
 
 func (api *DiskAPI) ConnectToServer(diskID string, serverID string) (bool, error) {
@@ -151,12 +113,7 @@ func (api *DiskAPI) ConnectToServer(diskID string, serverID string) (bool, error
 		method = "PUT"
 		uri    = fmt.Sprintf("%s/%s/to/server/%s", api.getResourceURL(), diskID, serverID)
 	)
-	res := &sacloud.ResultFlagValue{}
-	err := api.baseAPI.request(method, uri, nil, res)
-	if err != nil {
-		return false, err
-	}
-	return res.IsOk, nil
+	return api.modify(method, uri, nil)
 }
 
 // State get disk state
@@ -168,8 +125,8 @@ func (api *DiskAPI) State(diskID string) (bool, error) {
 	return disk.IsAvailable(), nil
 }
 
-// WaitForAvailable wait until became to available
-func (api *DiskAPI) WaitForAvailable(diskID string, timeout time.Duration) error {
+// SleepWhileCopying wait until became to available
+func (api *DiskAPI) SleepWhileCopying(diskID string, timeout time.Duration) error {
 	current := 0 * time.Second
 	interval := 5 * time.Second
 	for {
@@ -184,7 +141,7 @@ func (api *DiskAPI) WaitForAvailable(diskID string, timeout time.Duration) error
 		time.Sleep(interval)
 		current += interval
 
-		if current > timeout {
+		if timeout > 0 && current > timeout {
 			return fmt.Errorf("Timeout: WaitforAvailable")
 		}
 	}

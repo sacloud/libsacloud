@@ -142,7 +142,7 @@ func TestMarshalLoadBalancerJSON(t *testing.T) {
 	assert.NotEmpty(t, lb.Remark.Switch)
 	assert.NotEmpty(t, lb.Remark.VRRP)
 	assert.NotEmpty(t, lb.Remark.Zone)
-	assert.NotEmpty(t, lb.Remark.Plan)
+	//assert.NotEmpty(t, lb.Remark.Plan)
 
 	assert.NotEmpty(t, lb.Instance)
 	assert.NotEmpty(t, lb.Interfaces)

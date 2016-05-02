@@ -3,6 +3,7 @@ package sacloud
 import (
 	"encoding/json"
 	"github.com/stretchr/testify/assert"
+	"net"
 	"testing"
 )
 
@@ -197,5 +198,17 @@ func TestMarshalRouterJSON(t *testing.T) {
 	assert.NotEmpty(t, router.Subnets[0].IPAddresses.Min)
 	assert.NotEmpty(t, router.Internet)
 	assert.NotEmpty(t, router.IPv6Nets)
+
+}
+
+func TestIPHandling(t *testing.T) {
+	ip := net.ParseIP("192.168.0.1").To4()
+	assert.Equal(t, ip.String(), "192.168.0.1")
+	assert.Equal(t, byte(192), ip[0])
+	assert.Equal(t, byte(168), ip[1])
+	assert.Equal(t, byte(0), ip[2])
+	assert.Equal(t, byte(1), ip[3])
+
+	assert.Equal(t, byte(2), ip[3]+1)
 
 }

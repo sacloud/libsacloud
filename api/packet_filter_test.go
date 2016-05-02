@@ -15,10 +15,14 @@ func TestCRUDByPacketFilterAPI(t *testing.T) {
 	api := client.PacketFilter
 
 	//CREATE
-	var packetFilter = &sacloud.PacketFilter{
-		Name:        testPacketFilterName,
-		Description: "aaaaaaa",
-		Expression:  []string{},
+	packetFilter := api.New()
+	packetFilter.Name = testPacketFilterName
+	packetFilter.Description = "aaaaaaa"
+	packetFilter.Expression = []sacloud.PacketFilterExpression{
+		{
+			Protocol: "tcp",
+			Action:   "deny",
+		},
 	}
 
 	res, err := api.Create(packetFilter)
@@ -57,9 +61,7 @@ func init() {
 
 func cleanupTestPacketFilter() {
 	api := client.PacketFilter
-	req := &sacloud.Request{}
-	req.AddFilter("Name", testPacketFilterName)
-	res, _ := api.Find(req)
+	res, _ := api.withNameLike(testPacketFilterName).Find()
 	if res.Count > 0 {
 		api.Delete(res.PacketFilters[0].ID)
 	}

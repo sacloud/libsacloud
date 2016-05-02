@@ -7,8 +7,10 @@ import (
 )
 
 type baseAPI struct {
-	client             *Client
-	FuncGetResourceURL func() string
+	client                  *Client
+	FuncGetResourceURL      func() string
+	FuncBaseSearchCondition func() *sacloud.Request
+	state                   *sacloud.Request
 }
 
 func (b *baseAPI) getResourceURL() string {
@@ -18,9 +20,110 @@ func (b *baseAPI) getResourceURL() string {
 	return ""
 }
 
-func (b *baseAPI) Find(condition *sacloud.Request) (*sacloud.SearchResponse, error) {
+func (b *baseAPI) getSearchState() *sacloud.Request {
+	if b.state == nil {
+		b.reset()
+	}
+	return b.state
+}
+func (b *baseAPI) sortBy(key string, reverse bool) *baseAPI {
+	return b.setStateValue(func(state *sacloud.Request) {
+		if state.Sort == nil {
+			state.Sort = []string{}
+		}
 
-	data, err := b.client.newRequest("GET", b.getResourceURL(), condition)
+		col := key
+		if reverse {
+			col = "-" + col
+		}
+		state.Sort = append(state.Sort, col)
+
+	})
+
+}
+
+func (b *baseAPI) reset() *baseAPI {
+	if b.FuncBaseSearchCondition == nil {
+		b.state = &sacloud.Request{}
+	} else {
+		b.state = b.FuncBaseSearchCondition()
+	}
+	return b
+}
+
+func (b *baseAPI) setStateValue(setFunc func(*sacloud.Request)) *baseAPI {
+	state := b.getSearchState()
+	setFunc(state)
+	return b
+
+}
+
+func (b *baseAPI) offset(offset int) *baseAPI {
+	return b.setStateValue(func(state *sacloud.Request) {
+		state.From = offset
+	})
+}
+
+func (b *baseAPI) limit(limit int) *baseAPI {
+	return b.setStateValue(func(state *sacloud.Request) {
+		state.Count = limit
+	})
+}
+
+func (b *baseAPI) include(key string) *baseAPI {
+	return b.setStateValue(func(state *sacloud.Request) {
+		if state.Include == nil {
+			state.Include = []string{}
+		}
+		state.Include = append(state.Include, key)
+	})
+}
+
+func (b *baseAPI) exclude(key string) *baseAPI {
+	return b.setStateValue(func(state *sacloud.Request) {
+		if state.Exclude == nil {
+			state.Exclude = []string{}
+		}
+		state.Exclude = append(state.Exclude, key)
+	})
+}
+
+func (b *baseAPI) filterBy(key string, value interface{}, multiple bool) *baseAPI {
+	return b.setStateValue(func(state *sacloud.Request) {
+		if state.Filter == nil {
+			state.Filter = map[string]interface{}{}
+		}
+		if multiple {
+			if state.Filter[key] == nil {
+				state.Filter[key] = []interface{}{}
+			}
+
+			state.Filter[key] = append(state.Filter[key].([]interface{}), value)
+		} else {
+			state.Filter[key] = value
+		}
+	})
+}
+
+func (b *baseAPI) withNameLike(name string) *baseAPI {
+	return b.filterBy("Name", name, false)
+}
+
+func (b *baseAPI) withTag(tag string) *baseAPI {
+	return b.filterBy("Tags.Name", tag, false)
+}
+
+func (b *baseAPI) withTags(tags []string) *baseAPI {
+	return b.filterBy("Tags.Name", tags, false)
+}
+
+func (b *baseAPI) sortByName(reverse bool) *baseAPI {
+	return b.sortBy("Name", reverse)
+}
+
+func (b *baseAPI) Find() (*sacloud.SearchResponse, error) {
+
+	data, err := b.client.newRequest("GET", b.getResourceURL(), b.getSearchState())
 	if err != nil {
 		return nil, err
 	}
@@ -77,4 +180,21 @@ func (b *baseAPI) delete(id string, body interface{}, res interface{}) error {
 		uri    = fmt.Sprintf("%s/%s", b.getResourceURL(), id)
 	)
 	return b.request(method, uri, body, res)
+}
+
+func (b *baseAPI) modify(method string, uri string, body interface{}) (bool, error) {
+	res := &sacloud.ResultFlagValue{}
+	err := b.request(method, uri, body, res)
+	if err != nil {
+		return false, err
+	}
+	return res.IsOk, nil
+}
+
+func (b *baseAPI) action(method string, uri string, body interface{}, res interface{}) (bool, error) {
+	err := b.request(method, uri, body, res)
+	if err != nil {
+		return false, err
+	}
+	return true, nil
 }

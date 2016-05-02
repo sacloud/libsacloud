@@ -1,6 +1,8 @@
 package sacloud
 
-import "time"
+import (
+	"time"
+)
 
 // Server type of create server request values
 type Server struct {
@@ -10,17 +12,24 @@ type Server struct {
 	HostName    string `json:",omitempty"`
 	Description string `json:",omitempty"`
 	*EAvailability
-	ServiceClass      string         `json:",omitempty"`
-	CreatedAt         time.Time      `json:",omitempty"`
-	Icon              NumberResource `json:",omitempty"`
-	ServerPlan        *ProductServer `json:",omitempty"`
-	Zone              *Zone          `json:",omitempty"`
-	Tags              []string       `json:",omitempty"`
-	ConnectedSwitches []interface{}  `json:",omitempty" libsacloud:"requestOnly"`
+	ServiceClass      string          `json:",omitempty"`
+	CreatedAt         *time.Time      `json:",omitempty"`
+	Icon              *NumberResource `json:",omitempty"`
+	ServerPlan        *ProductServer  `json:",omitempty"`
+	Zone              *Zone           `json:",omitempty"`
+	Tags              []string        `json:",omitempty"`
+	ConnectedSwitches []interface{}   `json:",omitempty" libsacloud:"requestOnly"`
 	//InterfaceNum      int            `json:",omitempty" libsacloud:"requestOnly"` !Not support! ConnectedSwitchesで代替
 	Disks      []Disk      `json:",omitempty"`
 	Interfaces []Interface `json:",omitempty"`
 	Instance   *Instance   `json:",omitempty"`
+}
+
+func (s *Server) SetServerPlanByID(planID string) {
+	if s.ServerPlan == nil {
+		s.ServerPlan = &ProductServer{NumberResource: &NumberResource{}}
+	}
+	s.ServerPlan.SetIDByString(planID)
 }
 
 func (s *Server) ClearConnectedSwitches() {
@@ -59,9 +68,9 @@ type KeyboardRequest struct {
 
 // MouseRequest type of send-mouse request
 type MouseRequest struct {
-	X       int                  `json:",omitempty"`
-	Y       int                  `json:",omitempty"`
-	Z       int                  `json:",omitempty"`
+	X       *int                 `json:",omitempty"`
+	Y       *int                 `json:",omitempty"`
+	Z       *int                 `json:",omitempty"`
 	Buttons *MouseRequestButtons `json:",omitempty"`
 }
 

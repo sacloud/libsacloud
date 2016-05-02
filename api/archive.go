@@ -2,7 +2,9 @@ package api
 
 import (
 	"errors"
+	"fmt"
 	"github.com/yamamoto-febc/libsacloud/sacloud"
+	"time"
 )
 
 const (
@@ -24,53 +26,16 @@ func NewArchiveAPI(client *Client) *ArchiveAPI {
 	}
 }
 
-func (api *ArchiveAPI) request(f func(*sacloud.Response) error) (*sacloud.Archive, error) {
-	res := &sacloud.Response{}
-	err := f(res)
-	if err != nil {
-		return nil, err
-	}
-	return res.Archive, nil
-}
-
-func (api *ArchiveAPI) createRequest(value *sacloud.Archive) *sacloud.Request {
-	return &sacloud.Request{Archive: value}
-}
-
-func (api *ArchiveAPI) Create(value *sacloud.Archive) (*sacloud.Archive, error) {
-	return api.request(func(res *sacloud.Response) error {
-		return api.create(api.createRequest(value), res)
-	})
-}
-
-func (api *ArchiveAPI) Read(id string) (*sacloud.Archive, error) {
-	return api.request(func(res *sacloud.Response) error {
-		return api.read(id, nil, res)
-	})
-}
-
-func (api *ArchiveAPI) Update(id string, value *sacloud.Archive) (*sacloud.Archive, error) {
-	return api.request(func(res *sacloud.Response) error {
-		return api.update(id, api.createRequest(value), res)
-	})
-}
-
-func (api *ArchiveAPI) Delete(id string) (*sacloud.Archive, error) {
-	return api.request(func(res *sacloud.Response) error {
-		return api.delete(id, nil, res)
-	})
-}
-
 // GetUbuntuArchiveID get ubuntu archive id
 func (api *ArchiveAPI) GetUbuntuArchiveID() (string, error) {
 
-	var req = &sacloud.Request{}
-	req.AddFilter("Name", sakuraCloudPublicImageSearchWords).
-		AddFilter("Scope", "shared").
-		AddInclude("ID").
-		AddInclude("Name")
+	res, err := api.
+		WithNameLike(sakuraCloudPublicImageSearchWords).
+		WithSharedScope().
+		Include("ID").
+		Include("Name").
+		Find()
 
-	res, err := api.Find(req)
 	if err != nil {
 		return "", err
 	}
@@ -81,4 +46,51 @@ func (api *ArchiveAPI) GetUbuntuArchiveID() (string, error) {
 	}
 
 	return "", errors.New("Archive'Ubuntu Server 14.04 LTS 64bit' not found.")
+}
+
+func (api *ArchiveAPI) OpenFTP(id string, reset bool) (*sacloud.FTPServer, error) {
+	var (
+		method = "PUT"
+		uri    = fmt.Sprintf("%s/%s/ftp", api.getResourceURL(), id)
+		body   = map[string]bool{"ChangePassword": reset}
+		res    = &sacloud.Response{}
+	)
+
+	result, err := api.action(method, uri, body, res)
+	if !result || err != nil {
+		return nil, err
+	}
+
+	return res.FTPServer, nil
+}
+
+func (api *ArchiveAPI) CloseFTP(id string) (bool, error) {
+	var (
+		method = "PUT"
+		uri    = fmt.Sprintf("%s/%s/ftp", api.getResourceURL(), id)
+	)
+	return api.modify(method, uri, nil)
+
+}
+
+func (api *ArchiveAPI) SleepWhileCopying(id string, timeout time.Duration) error {
+
+	current := 0 * time.Second
+	interval := 5 * time.Second
+	for {
+		archive, err := api.Read(id)
+		if err != nil {
+			return err
+		}
+
+		if archive.IsAvailable() {
+			return nil
+		}
+		time.Sleep(interval)
+		current += interval
+
+		if timeout > 0 && current > timeout {
+			return fmt.Errorf("Timeout: SleepWhileCopying[disk:%s]", id)
+		}
+	}
 }

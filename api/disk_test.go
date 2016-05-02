@@ -28,8 +28,8 @@ func TestCRUDByDiskAPI(t *testing.T) {
 	diskID := res.ID
 
 	//wait
-	err = diskAPI.WaitForAvailable(diskID, 5+time.Minute) //日によって時間がかかることもあるため5分待つ
-	assert.NoError(t, err)                                //timeoutしたらerrに値が格納されている
+	err = diskAPI.SleepWhileCopying(diskID, 5+time.Minute) //日によって時間がかかることもあるため5分待つ
+	assert.NoError(t, err)                                 //timeoutしたらerrに値が格納されている
 
 	//READ
 	disk, err = diskAPI.Read(diskID)
@@ -78,8 +78,8 @@ func TestCreateDiskFromSource(t *testing.T) {
 	diskID := res.ID
 
 	//wait
-	err = diskAPI.WaitForAvailable(diskID, 5*time.Minute) //日によって時間がかかることもあるため5分待つ
-	assert.NoError(t, err)                                //timeoutしたらerrに値が格納されている
+	err = diskAPI.SleepWhileCopying(diskID, 5*time.Minute) //日によって時間がかかることもあるため5分待つ
+	assert.NoError(t, err)                                 //timeoutしたらerrに値が格納されている
 
 	createdDisk, err := diskAPI.Read(diskID)
 	assert.NoError(t, err)
@@ -99,9 +99,7 @@ func init() {
 
 func cleanupTestDisk() {
 	diskAPI := client.Disk
-	req := &sacloud.Request{}
-	req.AddFilter("Name", testDiskName)
-	res, err := diskAPI.Find(req)
+	res, err := diskAPI.withNameLike(testDiskName).Find()
 	if err == nil && res.Count > 0 {
 		diskAPI.Delete(res.Disks[0].ID)
 	}

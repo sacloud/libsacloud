@@ -12,9 +12,9 @@ type Note struct {
 	Content     string `json:",omitempty"`
 	Description string `json:",omitempty"`
 	*EAvailability
-	CreatedAt  time.Time `json:",omitempty"`
-	ModifiedAt time.Time `json:",omitempty"`
-	Icon       *Icon     `json:",omitempty"`
-	Tags       []string  `json:",omitempty"`
+	CreatedAt  *time.Time `json:",omitempty"`
+	ModifiedAt *time.Time `json:",omitempty"`
+	Icon       *Icon      `json:",omitempty"`
+	Tags       []string   `json:",omitempty"`
 	//TODO Remarkオブジェクトのパース
 }
