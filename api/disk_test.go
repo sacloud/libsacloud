@@ -2,7 +2,7 @@ package api
 
 import (
 	"github.com/stretchr/testify/assert"
-	sakura "github.com/yamamoto-febc/libsacloud/resources"
+	"github.com/yamamoto-febc/libsacloud/sacloud"
 	"testing"
 	"time"
 )
@@ -13,10 +13,10 @@ func TestCRUDByDiskAPI(t *testing.T) {
 	diskAPI := client.Disk
 
 	//CREATE : empty disk
-	disk := &sakura.Disk{
+	disk := &sacloud.Disk{
 		Name:       testDiskName,
-		Plan:       sakura.DiskPlanSSD,
-		Connection: sakura.DiskConnectionVirtio,
+		Plan:       sacloud.DiskPlanSSD,
+		Connection: sacloud.DiskConnectionVirtio,
 		SizeMB:     20480,
 	}
 
@@ -37,17 +37,17 @@ func TestCRUDByDiskAPI(t *testing.T) {
 	assert.NotEmpty(t, disk)
 	assert.NotEmpty(t, disk.ID)
 	assert.True(t, disk.IsAvailable())
-	assert.Equal(t, disk.Connection, sakura.DiskConnectionVirtio)
+	assert.Equal(t, disk.Connection, sacloud.DiskConnectionVirtio)
 
 	//UPDATE
-	diskUpdateValue := &sakura.Disk{
-		Connection: sakura.DiskConnectionIDE,
+	diskUpdateValue := &sacloud.Disk{
+		Connection: sacloud.DiskConnectionIDE,
 	}
 
 	disk, err = diskAPI.Update(diskID, diskUpdateValue)
 	assert.NoError(t, err)
 	assert.NotEmpty(t, disk)
-	assert.Equal(t, disk.Connection, sakura.DiskConnectionIDE)
+	assert.Equal(t, disk.Connection, sacloud.DiskConnectionIDE)
 
 	//DELETE
 	disk, err = diskAPI.Delete(diskID)
@@ -62,10 +62,10 @@ func TestCreateDiskFromSource(t *testing.T) {
 	assert.NoError(t, err)
 
 	//CREATE : empty disk
-	disk := &sakura.Disk{
+	disk := &sacloud.Disk{
 		Name:       testDiskName,
-		Plan:       sakura.DiskPlanSSD,
-		Connection: sakura.DiskConnectionVirtio,
+		Plan:       sacloud.DiskPlanSSD,
+		Connection: sacloud.DiskConnectionVirtio,
 		SizeMB:     20480,
 	}
 	disk.SetSourceArchive(archiveID) //ソースアーカイブはIDだけ指定する
@@ -99,7 +99,7 @@ func init() {
 
 func cleanupTestDisk() {
 	diskAPI := client.Disk
-	req := &sakura.Request{}
+	req := &sacloud.Request{}
 	req.AddFilter("Name", testDiskName)
 	res, err := diskAPI.Find(req)
 	if err == nil && res.Count > 0 {

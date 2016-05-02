@@ -2,7 +2,7 @@ package api
 
 import (
 	"fmt"
-	sakura "github.com/yamamoto-febc/libsacloud/resources"
+	"github.com/yamamoto-febc/libsacloud/sacloud"
 	"time"
 )
 
@@ -21,8 +21,8 @@ func NewDiskAPI(client *Client) *DiskAPI {
 	}
 }
 
-func (api *DiskAPI) request(f func(*sakura.Response) error) (*sakura.Disk, error) {
-	res := &sakura.Response{}
+func (api *DiskAPI) request(f func(*sacloud.Response) error) (*sacloud.Disk, error) {
+	res := &sacloud.Response{}
 	err := f(res)
 	if err != nil {
 		return nil, err
@@ -30,14 +30,14 @@ func (api *DiskAPI) request(f func(*sakura.Response) error) (*sakura.Disk, error
 	return res.Disk, nil
 }
 
-func (api *DiskAPI) createRequest(value *sakura.Disk) *sakura.Request {
-	return &sakura.Request{Disk: value}
+func (api *DiskAPI) createRequest(value *sacloud.Disk) *sacloud.Request {
+	return &sacloud.Request{Disk: value}
 }
 
-func (api *DiskAPI) Create(value *sakura.Disk) (*sakura.Disk, error) {
+func (api *DiskAPI) Create(value *sacloud.Disk) (*sacloud.Disk, error) {
 	//HACK: さくらのAPI側仕様: 戻り値:Successがbool値へ変換できないため文字列で受ける
 	type diskResponse struct {
-		*sakura.Response
+		*sacloud.Response
 		Success string `json:",omitempty"`
 	}
 	res := &diskResponse{}
@@ -48,31 +48,31 @@ func (api *DiskAPI) Create(value *sakura.Disk) (*sakura.Disk, error) {
 	return res.Disk, nil
 }
 
-func (api *DiskAPI) Read(id string) (*sakura.Disk, error) {
-	return api.request(func(res *sakura.Response) error {
+func (api *DiskAPI) Read(id string) (*sacloud.Disk, error) {
+	return api.request(func(res *sacloud.Response) error {
 		return api.read(id, nil, res)
 	})
 }
 
-func (api *DiskAPI) Update(id string, value *sakura.Disk) (*sakura.Disk, error) {
-	return api.request(func(res *sakura.Response) error {
+func (api *DiskAPI) Update(id string, value *sacloud.Disk) (*sacloud.Disk, error) {
+	return api.request(func(res *sacloud.Response) error {
 		return api.update(id, api.createRequest(value), res)
 	})
 }
 
-func (api *DiskAPI) Delete(id string) (*sakura.Disk, error) {
-	return api.request(func(res *sakura.Response) error {
+func (api *DiskAPI) Delete(id string) (*sacloud.Disk, error) {
+	return api.request(func(res *sacloud.Response) error {
 		return api.delete(id, nil, res)
 	})
 }
 
-func (api *DiskAPI) Config(id string, disk *sakura.DiskEditValue) (bool, error) {
+func (api *DiskAPI) Config(id string, disk *sacloud.DiskEditValue) (bool, error) {
 	var (
 		method = "PUT"
 		uri    = fmt.Sprintf("%s/%s/config", api.getResourceURL(), id)
 	)
 
-	res := &sakura.ResultFlagValue{}
+	res := &sacloud.ResultFlagValue{}
 	err := api.baseAPI.request(method, uri, nil, res)
 	if err != nil {
 		return false, err
@@ -80,13 +80,13 @@ func (api *DiskAPI) Config(id string, disk *sakura.DiskEditValue) (bool, error) 
 	return res.IsOk, nil
 }
 
-func (api *DiskAPI) install(id string, body *sakura.Disk) (bool, error) {
+func (api *DiskAPI) install(id string, body *sacloud.Disk) (bool, error) {
 	var (
 		method = "PUT"
 		uri    = fmt.Sprintf("%s/%s/install", api.getResourceURL(), id)
 	)
 
-	res := &sakura.ResultFlagValue{}
+	res := &sacloud.ResultFlagValue{}
 	err := api.baseAPI.request(method, uri, body, res)
 	if err != nil {
 		return false, err
@@ -96,25 +96,25 @@ func (api *DiskAPI) install(id string, body *sakura.Disk) (bool, error) {
 }
 
 func (api *DiskAPI) ReinstallFromBlank(id string, sizeMB int) (bool, error) {
-	var body = &sakura.Disk{
+	var body = &sacloud.Disk{
 		SizeMB: sizeMB,
 	}
 	return api.install(id, body)
 }
 
 func (api *DiskAPI) ReinstallFromArchive(id string, archiveID string) (bool, error) {
-	var body = &sakura.Disk{
-		SourceArchive: &sakura.Archive{
-			Resource: &sakura.Resource{ID: archiveID},
+	var body = &sacloud.Disk{
+		SourceArchive: &sacloud.Archive{
+			Resource: &sacloud.Resource{ID: archiveID},
 		},
 	}
 	return api.install(id, body)
 }
 
 func (api *DiskAPI) ReinstallFromDisk(id string, diskID string) (bool, error) {
-	var body = &sakura.Disk{
-		SourceDisk: &sakura.Disk{
-			Resource: &sakura.Resource{ID: diskID},
+	var body = &sacloud.Disk{
+		SourceDisk: &sacloud.Disk{
+			Resource: &sacloud.Resource{ID: diskID},
 		},
 	}
 	return api.install(id, body)
@@ -125,7 +125,7 @@ func (api *DiskAPI) ToBlank(diskID string) (bool, error) {
 		method = "PUT"
 		uri    = fmt.Sprintf("%s/%s/to/blank", api.getResourceURL(), diskID)
 	)
-	res := &sakura.ResultFlagValue{}
+	res := &sacloud.ResultFlagValue{}
 	err := api.baseAPI.request(method, uri, nil, res)
 	if err != nil {
 		return false, err
@@ -138,7 +138,7 @@ func (api *DiskAPI) DisconnectFromServer(diskID string) (bool, error) {
 		method = "DELETE"
 		uri    = fmt.Sprintf("%s/%s/to/server", api.getResourceURL(), diskID)
 	)
-	res := &sakura.ResultFlagValue{}
+	res := &sacloud.ResultFlagValue{}
 	err := api.baseAPI.request(method, uri, nil, res)
 	if err != nil {
 		return false, err
@@ -151,7 +151,7 @@ func (api *DiskAPI) ConnectToServer(diskID string, serverID string) (bool, error
 		method = "PUT"
 		uri    = fmt.Sprintf("%s/%s/to/server/%s", api.getResourceURL(), diskID, serverID)
 	)
-	res := &sakura.ResultFlagValue{}
+	res := &sacloud.ResultFlagValue{}
 	err := api.baseAPI.request(method, uri, nil, res)
 	if err != nil {
 		return false, err

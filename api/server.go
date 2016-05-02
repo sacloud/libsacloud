@@ -2,7 +2,7 @@ package api
 
 import (
 	"fmt"
-	sakura "github.com/yamamoto-febc/libsacloud/resources"
+	"github.com/yamamoto-febc/libsacloud/sacloud"
 )
 
 type ServerAPI struct {
@@ -20,8 +20,8 @@ func NewServerAPI(client *Client) *ServerAPI {
 	}
 }
 
-func (api *ServerAPI) request(f func(*sakura.Response) error) (*sakura.Server, error) {
-	res := &sakura.Response{}
+func (api *ServerAPI) request(f func(*sacloud.Response) error) (*sacloud.Server, error) {
+	res := &sacloud.Response{}
 	err := f(res)
 	if err != nil {
 		return nil, err
@@ -29,30 +29,30 @@ func (api *ServerAPI) request(f func(*sakura.Response) error) (*sakura.Server, e
 	return res.Server, nil
 }
 
-func (api *ServerAPI) createRequest(value *sakura.Server) *sakura.Request {
-	return &sakura.Request{Server: value}
+func (api *ServerAPI) createRequest(value *sacloud.Server) *sacloud.Request {
+	return &sacloud.Request{Server: value}
 }
 
-func (api *ServerAPI) Create(value *sakura.Server) (*sakura.Server, error) {
-	return api.request(func(res *sakura.Response) error {
+func (api *ServerAPI) Create(value *sacloud.Server) (*sacloud.Server, error) {
+	return api.request(func(res *sacloud.Response) error {
 		return api.create(api.createRequest(value), res)
 	})
 }
 
-func (api *ServerAPI) Read(id string) (*sakura.Server, error) {
-	return api.request(func(res *sakura.Response) error {
+func (api *ServerAPI) Read(id string) (*sacloud.Server, error) {
+	return api.request(func(res *sacloud.Response) error {
 		return api.read(id, nil, res)
 	})
 }
 
-func (api *ServerAPI) Update(id string, value *sakura.Server) (*sakura.Server, error) {
-	return api.request(func(res *sakura.Response) error {
+func (api *ServerAPI) Update(id string, value *sacloud.Server) (*sacloud.Server, error) {
+	return api.request(func(res *sacloud.Response) error {
 		return api.update(id, api.createRequest(value), res)
 	})
 }
 
-func (api *ServerAPI) Delete(id string, disks []string) (*sakura.Server, error) {
-	return api.request(func(res *sakura.Response) error {
+func (api *ServerAPI) Delete(id string, disks []string) (*sacloud.Server, error) {
+	return api.request(func(res *sacloud.Response) error {
 		body := &struct{ WithDisk []string }{disks}
 		if disks == nil {
 			body = nil
@@ -62,7 +62,7 @@ func (api *ServerAPI) Delete(id string, disks []string) (*sakura.Server, error) 
 }
 
 // CreateWithAdditionalIP create server
-func (api *ServerAPI) CreateWithAdditionalIP(spec *sakura.Server, addIPAddress string) (*sakura.Server, error) {
+func (api *ServerAPI) CreateWithAdditionalIP(spec *sacloud.Server, addIPAddress string) (*sacloud.Server, error) {
 
 	server, err := api.Create(spec)
 	if err != nil {
@@ -78,13 +78,13 @@ func (api *ServerAPI) CreateWithAdditionalIP(spec *sakura.Server, addIPAddress s
 	return server, nil
 }
 
-func (api *ServerAPI) updateIPAddress(server *sakura.Server, ip string) error {
+func (api *ServerAPI) updateIPAddress(server *sacloud.Server, ip string) error {
 	//TODO 高レベルAPIへ移動
 	var (
 		method = "PUT"
 		uri    = fmt.Sprintf("interface/%s", server.Interfaces[1].ID)
-		body   = sakura.Request{
-			Interface: &sakura.Interface{UserIPAddress: ip},
+		body   = sacloud.Request{
+			Interface: &sacloud.Interface{UserIPAddress: ip},
 		}
 	)
 
@@ -113,7 +113,7 @@ func (api *ServerAPI) PowerOn(id string) error {
 		uri    = fmt.Sprintf("%s/%s/power", api.getResourceURL(), id)
 	)
 
-	res := &sakura.ResultFlagValue{}
+	res := &sacloud.ResultFlagValue{}
 	err := api.baseAPI.request(method, uri, nil, res)
 	if err != nil {
 		return err
@@ -128,7 +128,7 @@ func (api *ServerAPI) PowerOff(id string) error {
 		uri    = fmt.Sprintf("%s/%s/power", api.getResourceURL(), id)
 	)
 
-	res := &sakura.ResultFlagValue{}
+	res := &sacloud.ResultFlagValue{}
 	err := api.baseAPI.request(method, uri, nil, res)
 	if err != nil {
 		return err
@@ -164,9 +164,9 @@ func (api *ServerAPI) PowerOff(id string) error {
 //}
 
 // SearchServerByName Search server by name
-func (api *ServerAPI) SearchServerByName(name string) (*sakura.Server, error) {
+func (api *ServerAPI) SearchServerByName(name string) (*sacloud.Server, error) {
 
-	req := &sakura.Request{}
+	req := &sacloud.Request{}
 	req.AddFilter("Name", name)
 
 	res, err := api.Find(req)

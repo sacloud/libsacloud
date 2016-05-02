@@ -2,7 +2,7 @@ package api
 
 import (
 	"fmt"
-	sakura "github.com/yamamoto-febc/libsacloud/resources"
+	"github.com/yamamoto-febc/libsacloud/sacloud"
 	"regexp"
 )
 
@@ -21,8 +21,8 @@ func NewPacketFilterAPI(client *Client) *PacketFilterAPI {
 	}
 }
 
-func (api *PacketFilterAPI) request(f func(*sakura.Response) error) (*sakura.PacketFilter, error) {
-	res := &sakura.Response{}
+func (api *PacketFilterAPI) request(f func(*sacloud.Response) error) (*sacloud.PacketFilter, error) {
+	res := &sacloud.Response{}
 	err := f(res)
 	if err != nil {
 		return nil, err
@@ -30,36 +30,36 @@ func (api *PacketFilterAPI) request(f func(*sakura.Response) error) (*sakura.Pac
 	return res.PacketFilter, nil
 }
 
-func (api *PacketFilterAPI) createRequest(value *sakura.PacketFilter) *sakura.Request {
-	return &sakura.Request{PacketFilter: value}
+func (api *PacketFilterAPI) createRequest(value *sacloud.PacketFilter) *sacloud.Request {
+	return &sacloud.Request{PacketFilter: value}
 }
 
-func (api *PacketFilterAPI) Create(value *sakura.PacketFilter) (*sakura.PacketFilter, error) {
-	return api.request(func(res *sakura.Response) error {
+func (api *PacketFilterAPI) Create(value *sacloud.PacketFilter) (*sacloud.PacketFilter, error) {
+	return api.request(func(res *sacloud.Response) error {
 		return api.create(api.createRequest(value), res)
 	})
 }
 
-func (api *PacketFilterAPI) Read(id string) (*sakura.PacketFilter, error) {
-	return api.request(func(res *sakura.Response) error {
+func (api *PacketFilterAPI) Read(id string) (*sacloud.PacketFilter, error) {
+	return api.request(func(res *sacloud.Response) error {
 		return api.read(id, nil, res)
 	})
 }
 
-func (api *PacketFilterAPI) Update(id string, value *sakura.PacketFilter) (*sakura.PacketFilter, error) {
-	return api.request(func(res *sakura.Response) error {
+func (api *PacketFilterAPI) Update(id string, value *sacloud.PacketFilter) (*sacloud.PacketFilter, error) {
+	return api.request(func(res *sacloud.Response) error {
 		return api.update(id, api.createRequest(value), res)
 	})
 }
 
-func (api *PacketFilterAPI) Delete(id string) (*sakura.PacketFilter, error) {
-	return api.request(func(res *sakura.Response) error {
+func (api *PacketFilterAPI) Delete(id string) (*sacloud.PacketFilter, error) {
+	return api.request(func(res *sacloud.Response) error {
 		return api.delete(id, nil, res)
 	})
 }
 
 // ConnectPacketFilterToSharedNIC connect packet filter to eth0(shared)
-func (api *PacketFilterAPI) ConnectPacketFilterToSharedNIC(server *sakura.Server, idOrNameFilter string) error {
+func (api *PacketFilterAPI) ConnectPacketFilterToSharedNIC(server *sacloud.Server, idOrNameFilter string) error {
 	if server.Interfaces != nil && len(server.Interfaces) > 0 {
 		return api.connectPacketFilter(&server.Interfaces[0], idOrNameFilter)
 	}
@@ -67,7 +67,7 @@ func (api *PacketFilterAPI) ConnectPacketFilterToSharedNIC(server *sakura.Server
 }
 
 // ConnectPacketFilterToPrivateNIC connect packet filter to eth1(private)
-func (api *PacketFilterAPI) ConnectPacketFilterToPrivateNIC(server *sakura.Server, idOrNameFilter string) error {
+func (api *PacketFilterAPI) ConnectPacketFilterToPrivateNIC(server *sacloud.Server, idOrNameFilter string) error {
 	if server.Interfaces != nil && len(server.Interfaces) > 1 {
 		return api.connectPacketFilter(&server.Interfaces[1], idOrNameFilter)
 	}
@@ -75,7 +75,7 @@ func (api *PacketFilterAPI) ConnectPacketFilterToPrivateNIC(server *sakura.Serve
 }
 
 // ConnectPacketFilter connect filter to nic
-func (api *PacketFilterAPI) connectPacketFilter(nic *sakura.Interface, idOrNameFilter string) error {
+func (api *PacketFilterAPI) connectPacketFilter(nic *sacloud.Interface, idOrNameFilter string) error {
 	if idOrNameFilter == "" {
 		return nil
 	}
@@ -93,7 +93,7 @@ func (api *PacketFilterAPI) connectPacketFilter(nic *sakura.Interface, idOrNameF
 	//search
 	if id == "" {
 		//名前での検索
-		req := &sakura.Request{}
+		req := &sacloud.Request{}
 		req.AddFilter("Name", idOrNameFilter)
 		res, err := api.Find(req)
 		if err != nil {
@@ -120,7 +120,7 @@ func (api *PacketFilterAPI) ConnectToInterface(nicID string, packetFilterID stri
 		method = "PUT"
 		uri    = fmt.Sprintf("/%s/%s/to/packetfilter/%s", api.getResourceURL(), nicID, packetFilterID)
 	)
-	res := &sakura.ResultFlagValue{}
+	res := &sacloud.ResultFlagValue{}
 	err := api.baseAPI.request(method, uri, nil, res)
 	if err != nil {
 		return false, err

@@ -3,7 +3,7 @@ package api
 import (
 	"encoding/json"
 	"fmt"
-	sakura "github.com/yamamoto-febc/libsacloud/resources"
+	"github.com/yamamoto-febc/libsacloud/sacloud"
 )
 
 type baseAPI struct {
@@ -18,13 +18,13 @@ func (b *baseAPI) getResourceURL() string {
 	return ""
 }
 
-func (b *baseAPI) Find(condition *sakura.Request) (*sakura.SearchResponse, error) {
+func (b *baseAPI) Find(condition *sacloud.Request) (*sacloud.SearchResponse, error) {
 
 	data, err := b.client.newRequest("GET", b.getResourceURL(), condition)
 	if err != nil {
 		return nil, err
 	}
-	var res sakura.SearchResponse
+	var res sacloud.SearchResponse
 	if err := json.Unmarshal(data, &res); err != nil {
 		return nil, err
 	}

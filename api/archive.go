@@ -2,7 +2,7 @@ package api
 
 import (
 	"errors"
-	sakura "github.com/yamamoto-febc/libsacloud/resources"
+	"github.com/yamamoto-febc/libsacloud/sacloud"
 )
 
 const (
@@ -24,8 +24,8 @@ func NewArchiveAPI(client *Client) *ArchiveAPI {
 	}
 }
 
-func (api *ArchiveAPI) request(f func(*sakura.Response) error) (*sakura.Archive, error) {
-	res := &sakura.Response{}
+func (api *ArchiveAPI) request(f func(*sacloud.Response) error) (*sacloud.Archive, error) {
+	res := &sacloud.Response{}
 	err := f(res)
 	if err != nil {
 		return nil, err
@@ -33,30 +33,30 @@ func (api *ArchiveAPI) request(f func(*sakura.Response) error) (*sakura.Archive,
 	return res.Archive, nil
 }
 
-func (api *ArchiveAPI) createRequest(value *sakura.Archive) *sakura.Request {
-	return &sakura.Request{Archive: value}
+func (api *ArchiveAPI) createRequest(value *sacloud.Archive) *sacloud.Request {
+	return &sacloud.Request{Archive: value}
 }
 
-func (api *ArchiveAPI) Create(value *sakura.Archive) (*sakura.Archive, error) {
-	return api.request(func(res *sakura.Response) error {
+func (api *ArchiveAPI) Create(value *sacloud.Archive) (*sacloud.Archive, error) {
+	return api.request(func(res *sacloud.Response) error {
 		return api.create(api.createRequest(value), res)
 	})
 }
 
-func (api *ArchiveAPI) Read(id string) (*sakura.Archive, error) {
-	return api.request(func(res *sakura.Response) error {
+func (api *ArchiveAPI) Read(id string) (*sacloud.Archive, error) {
+	return api.request(func(res *sacloud.Response) error {
 		return api.read(id, nil, res)
 	})
 }
 
-func (api *ArchiveAPI) Update(id string, value *sakura.Archive) (*sakura.Archive, error) {
-	return api.request(func(res *sakura.Response) error {
+func (api *ArchiveAPI) Update(id string, value *sacloud.Archive) (*sacloud.Archive, error) {
+	return api.request(func(res *sacloud.Response) error {
 		return api.update(id, api.createRequest(value), res)
 	})
 }
 
-func (api *ArchiveAPI) Delete(id string) (*sakura.Archive, error) {
-	return api.request(func(res *sakura.Response) error {
+func (api *ArchiveAPI) Delete(id string) (*sacloud.Archive, error) {
+	return api.request(func(res *sacloud.Response) error {
 		return api.delete(id, nil, res)
 	})
 }
@@ -64,7 +64,7 @@ func (api *ArchiveAPI) Delete(id string) (*sakura.Archive, error) {
 // GetUbuntuArchiveID get ubuntu archive id
 func (api *ArchiveAPI) GetUbuntuArchiveID() (string, error) {
 
-	var req = &sakura.Request{}
+	var req = &sacloud.Request{}
 	req.AddFilter("Name", sakuraCloudPublicImageSearchWords).
 		AddFilter("Scope", "shared").
 		AddInclude("ID").
