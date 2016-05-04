@@ -34,31 +34,71 @@ func NewClient(token, tokenSecret, region string) *Client {
 }
 
 type api struct {
-	Archive      *ArchiveAPI
-	Note         *NoteAPI
-	Disk         *DiskAPI
-	DNS          *DNSAPI
-	GSLB         *GSLBAPI
-	PacketFilter *PacketFilterAPI
-	Product      *productAPI
-	Server       *ServerAPI
+	Archive       *ArchiveAPI
+	Bridge        *BridgeAPI
+	CDROM         *CDROMAPI
+	Disk          *DiskAPI
+	DNS           *DNSAPI
+	Facility      *facilityAPI
+	GSLB          *GSLBAPI
+	Icon          *IconAPI
+	Interface     *InterfaceAPI
+	Internet      *InternetAPI
+	License       *LicenseAPI
+	LoadBalancer  *LoadBalancerAPI
+	Note          *NoteAPI
+	PacketFilter  *PacketFilterAPI
+	Product       *productAPI
+	Server        *ServerAPI
+	SimpleMonitor *SimpleMonitorAPI
+	SSHKey        *SSHKeyAPI
+	Switch        *SwitchAPI
+	VPCRouter     *VPCRouterAPI
 }
 type productAPI struct {
-	Server *ProductServerAPI
+	Server   *ProductServerAPI
+	License  *ProductLicenseAPI
+	Disk     *ProductDiskAPI
+	Internet *ProductInternetAPI
+	Price    *PublicPriceAPI
+}
+
+type facilityAPI struct {
+	Region *RegionAPI
+	Zone   *ZoneAPI
 }
 
 func newAPI(client *Client) *api {
 	return &api{
-		Archive:      NewArchiveAPI(client),
-		Note:         NewNoteAPI(client),
-		Disk:         NewDiskAPI(client),
-		DNS:          NewDNSAPI(client),
+		Archive: NewArchiveAPI(client),
+		Bridge:  NewBridgeAPI(client),
+		CDROM:   NewCDROMAPI(client),
+		Disk:    NewDiskAPI(client),
+		DNS:     NewDNSAPI(client),
+		Facility: &facilityAPI{
+			Region: NewRegionAPI(client),
+			Zone:   NewZoneAPI(client),
+		},
 		GSLB:         NewGSLBAPI(client),
+		Icon:         NewIconAPI(client),
+		Interface:    NewInterfaceAPI(client),
+		Internet:     NewInternetAPI(client),
+		License:      NewLicenseAPI(client),
+		LoadBalancer: NewLoadBalancerAPI(client),
+		Note:         NewNoteAPI(client),
 		PacketFilter: NewPacketFilterAPI(client),
 		Product: &productAPI{
-			Server: NewProductServerAPI(client),
+			Server:   NewProductServerAPI(client),
+			License:  NewProductLicenseAPI(client),
+			Disk:     NewProductDiskAPI(client),
+			Internet: NewProductInternetAPI(client),
+			Price:    NewPublicPriceAPI(client),
 		},
-		Server: NewServerAPI(client),
+		Server:        NewServerAPI(client),
+		SimpleMonitor: NewSimpleMonitorAPI(client),
+		SSHKey:        NewSSHKeyAPI(client),
+		Switch:        NewSwitchAPI(client),
+		VPCRouter:     NewVPCRouterAPI(client),
 	}
 }
 

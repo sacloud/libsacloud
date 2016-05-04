@@ -2,7 +2,7 @@ package sacloud
 
 import "time"
 
-type appliance struct {
+type Appliance struct {
 	*Resource
 	Class       string `json:",omitempty"`
 	Name        string `json:",omitempty"`
@@ -12,12 +12,12 @@ type appliance struct {
 	SettingHash string `json:",omitempty"`
 	//Remark      *ApplianceRemark `json:",omitempty"`
 	*EAvailability
-	Instance struct {
-		Status          string    `json:",omitempty"`
-		StatusChangedAt time.Time `json:",omitempty"`
+	Instance *struct {
+		Status          string     `json:",omitempty"`
+		StatusChangedAt *time.Time `json:",omitempty"`
 	} `json:",omitempty"`
 	ServiceClass string      `json:",omitempty"`
-	CreatedAt    time.Time   `json:",omitempty"`
+	CreatedAt    *time.Time  `json:",omitempty"`
 	Icon         *Icon       `json:",omitempty"`
 	Switch       *Switch     `json:",omitempty"`
 	Interfaces   []Interface `json:",omitempty"`
@@ -27,19 +27,25 @@ type appliance struct {
 //HACK Appliance:Zone.IDがRoute/LoadBalancerの場合でデータ型が異なるため
 //それぞれのstruct定義でZoneだけ上書きした構造体を定義して使う
 
-type applianceRemarkBase struct {
+type ApplianceRemarkBase struct {
 	Servers []interface{}
-	Switch  *struct {
-		ID    string `json:",omitempty"`
-		Scope string `json:",omitempty"`
-	} `json:",omitempty"`
+	Switch  *ApplianceRemarkSwitch `json:",omitempty"`
 	//Zone *NumberResource `json:",omitempty"`
-	VRRP *struct {
-		VRID int `json:",omitempty"`
-	} `json:",omitempty"`
-	Network *struct {
-		NetworkMaskLen int    `json:",omitempty"`
-		DefaultRoute   string `json:",omitempty"`
-	} `json:",omitempty"`
-	Plan *NumberResource
+	VRRP    *ApplianceRemarkVRRP    `json:",omitempty"`
+	Network *ApplianceRemarkNetwork `json:",omitempty"`
+	//Plan    *NumberResource
+}
+
+type ApplianceRemarkSwitch struct {
+	ID    string `json:",omitempty"`
+	Scope string `json:",omitempty"`
+}
+
+type ApplianceRemarkVRRP struct {
+	VRID int `json:",omitempty"`
+}
+
+type ApplianceRemarkNetwork struct {
+	NetworkMaskLen int    `json:",omitempty"`
+	DefaultRoute   string `json:",omitempty"`
 }

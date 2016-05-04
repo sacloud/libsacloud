@@ -2,7 +2,6 @@ package api
 
 import (
 	"github.com/stretchr/testify/assert"
-	"github.com/yamamoto-febc/libsacloud/sacloud"
 	"testing"
 )
 
@@ -15,10 +14,9 @@ func TestCRUDByNoteAPI(t *testing.T) {
 	noteAPI := client.Note
 
 	//CREATE
-	var note = &sacloud.Note{
-		Name:    testTargetNoteName,
-		Content: testTargetNoteContentBefore,
-	}
+	var note = noteAPI.New()
+	note.Name = testTargetNoteName
+	note.Content = testTargetNoteContentBefore
 
 	res, err := noteAPI.Create(note)
 	assert.NoError(t, err)
@@ -74,9 +72,7 @@ func init() {
 
 func cleanupFindOrCreateByNote() {
 	noteAPI := client.Note
-	req := &sacloud.Request{}
-	req.AddFilter("Name", testFindOrCreateByName)
-	res, _ := noteAPI.Find(req)
+	res, _ := noteAPI.withNameLike(testFindOrCreateByName).Find()
 	if res.Count > 0 {
 		noteAPI.Delete(res.Notes[0].ID)
 	}

@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-const testGslbName = "test_docker_machine_sakuracloud_gslb"
+const testGslbName = "test_libsakuracloud_gslb"
 
 func TestGslbGet(t *testing.T) {
 	item, err := client.GSLB.findOrCreateBy(testGslbName)

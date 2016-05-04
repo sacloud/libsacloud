@@ -11,8 +11,8 @@ type GSLB struct {
 	Provider     GSLBProvider `json:",omitempty"`
 	Settings     GSLBSettings `json:",omitempty"`
 	ServiceClass string       `json:",omitempty"`
-	CreatedAt    time.Time    `json:",omitempty"`
-	ModifiedAt   time.Time    `json:",omitempty"`
+	CreatedAt    *time.Time   `json:",omitempty"`
+	ModifiedAt   *time.Time   `json:",omitempty"`
 	Icon         *Icon        `json:",omitempty"`
 	Tags         []string     `json:",omitempty"`
 }

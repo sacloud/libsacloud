@@ -4,15 +4,14 @@ import "time"
 
 // Instance type of instance
 type Instance struct {
-	Server            Resource              `json:",omitempty"`
-	Status            EServerInstanceStatus `json:",omitempty"`
-	BeforeStatus      EServerInstanceStatus `json:",omitempty"`
-	StatusChangedAt   time.Time             `json:",omitempty"`
-	MigrationProgress string                `json:",omitempty"`
-	MigrationSchedule string                `json:",omitempty"`
-	IsMigrating       bool                  `json:",omitempty"`
-	MigrationAllowed  string                `json:",omitempty"`
-	ModifiedAt        time.Time             `json:",omitempty"`
+	Server Resource `json:",omitempty"`
+	*EServerInstanceStatus
+	StatusChangedAt   *time.Time `json:",omitempty"`
+	MigrationProgress string     `json:",omitempty"`
+	MigrationSchedule string     `json:",omitempty"`
+	IsMigrating       bool       `json:",omitempty"`
+	MigrationAllowed  string     `json:",omitempty"`
+	ModifiedAt        *time.Time `json:",omitempty"`
 	Host              struct {
 		Name          string `json:",omitempty"`
 		InfoURL       string `json:",omitempty"`

@@ -9,6 +9,7 @@ type Disk struct {
 	*Resource
 	Index           int             `json:",omitempty"`
 	Name            string          `json:",omitempty"`
+	Description     string          `json:",omitempty"`
 	Connection      EDiskConnection `json:",omitempty"`
 	ConnectionOrder int             `json:",omitempty"`
 	ReinstallCount  int             `json:",omitempty"`
@@ -24,13 +25,14 @@ type Disk struct {
 	SourceArchive *Archive `json:",omitempty"`
 	SourceDisk    *Disk    `json:",omitempty"`
 	//BundleInfo
-	CreatedAt time.Time `json:",omitempty"`
-	Icon      *Icon     `json:",omitempty"`
+	CreatedAt *time.Time `json:",omitempty"`
+	Icon      *Icon      `json:",omitempty"`
+	Tags      []string   `json:",omitempty"`
 }
 
 var (
-	DiskPlanHDD                          = &NumberResource{ID: 2}
-	DiskPlanSSD                          = &NumberResource{ID: 4}
+	DiskPlanHDD                          = &NumberResource{ID: "2"}
+	DiskPlanSSD                          = &NumberResource{ID: "4"}
 	DiskConnectionVirtio EDiskConnection = "virtio"
 	DiskConnectionIDE    EDiskConnection = "ide"
 )
@@ -60,4 +62,11 @@ type DiskEditValue struct {
 		NetworkMaskLen string `json:",omitempty"`
 	} `json:",omitempty"`
 	Notes []Resource `json:",omitempty"`
+}
+
+func (d *DiskEditValue) AddNote(noteID string) {
+	if d.Notes == nil {
+		d.Notes = []Resource{}
+	}
+	d.Notes = append(d.Notes, Resource{ID: noteID})
 }

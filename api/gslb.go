@@ -43,15 +43,18 @@ func NewGSLBAPI(client *Client) *GSLBAPI {
 			FuncGetResourceURL: func() string {
 				return "commonserviceitem"
 			},
+			FuncBaseSearchCondition: func() *sacloud.Request {
+				res := &sacloud.Request{}
+				res.AddFilter("Provider.Class", "gslb")
+				return res
+			},
 		},
 	}
 }
 
 func (api *GSLBAPI) Find(condition *sacloud.Request) (*SearchGSLBResponse, error) {
 
-	//DNS固定
-	condition.AddFilter("Provider.Class", "gslb")
-	data, err := api.client.newRequest("GET", api.getResourceURL(), condition)
+	data, err := api.client.newRequest("GET", api.getResourceURL(), api.getSearchState())
 	if err != nil {
 		return nil, err
 	}
@@ -73,6 +76,10 @@ func (api *GSLBAPI) request(f func(*gslbResponse) error) (*sacloud.GSLB, error) 
 
 func (api *GSLBAPI) createRequest(value *sacloud.GSLB) *gslbResponse {
 	return &gslbResponse{GSLB: value}
+}
+
+func (api *GSLBAPI) New() *sacloud.GSLB {
+	return &sacloud.GSLB{}
 }
 
 func (api *GSLBAPI) Create(value *sacloud.GSLB) (*sacloud.GSLB, error) {

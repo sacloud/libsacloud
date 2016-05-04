@@ -3,6 +3,7 @@ package api
 import (
 	"fmt"
 	"github.com/yamamoto-febc/libsacloud/sacloud"
+	"time"
 )
 
 type ServerAPI struct {
@@ -20,49 +21,37 @@ func NewServerAPI(client *Client) *ServerAPI {
 	}
 }
 
-func (api *ServerAPI) request(f func(*sacloud.Response) error) (*sacloud.Server, error) {
-	res := &sacloud.Response{}
-	err := f(res)
-	if err != nil {
-		return nil, err
-	}
-	return res.Server, nil
+func (api *ServerAPI) WithPlan(planID string) *ServerAPI {
+	return api.FilterBy("ServerPlan.ID", planID)
 }
 
-func (api *ServerAPI) createRequest(value *sacloud.Server) *sacloud.Request {
-	return &sacloud.Request{Server: value}
+func (api *ServerAPI) WithStatus(status string) *ServerAPI {
+	return api.FilterBy("Instance.Status", status)
+}
+func (api *ServerAPI) WithStatusUp(status string) *ServerAPI {
+	return api.WithStatus("up")
+}
+func (api *ServerAPI) WithStatusDown(status string) *ServerAPI {
+	return api.WithStatus("down")
 }
 
-func (api *ServerAPI) Create(value *sacloud.Server) (*sacloud.Server, error) {
-	return api.request(func(res *sacloud.Response) error {
-		return api.create(api.createRequest(value), res)
-	})
+func (api *ServerAPI) WithISOImage(imageID string) *ServerAPI {
+	return api.FilterBy("Instance.CDROM.ID", imageID)
 }
 
-func (api *ServerAPI) Read(id string) (*sacloud.Server, error) {
-	return api.request(func(res *sacloud.Response) error {
-		return api.read(id, nil, res)
-	})
+func (api *ServerAPI) SortByCPU(reverse bool) *ServerAPI {
+	api.sortBy("ServerPlan.CPU", reverse)
+	return api
 }
 
-func (api *ServerAPI) Update(id string, value *sacloud.Server) (*sacloud.Server, error) {
-	return api.request(func(res *sacloud.Response) error {
-		return api.update(id, api.createRequest(value), res)
-	})
-}
-
-func (api *ServerAPI) Delete(id string, disks []string) (*sacloud.Server, error) {
-	return api.request(func(res *sacloud.Response) error {
-		body := &struct{ WithDisk []string }{disks}
-		if disks == nil {
-			body = nil
-		}
-		return api.delete(id, body, res)
-	})
+func (api *ServerAPI) SortByMemory(reverse bool) *ServerAPI {
+	api.sortBy("ServerPlan.MemoryMB", reverse)
+	return api
 }
 
 // CreateWithAdditionalIP create server
 func (api *ServerAPI) CreateWithAdditionalIP(spec *sacloud.Server, addIPAddress string) (*sacloud.Server, error) {
+	//TODO 高レベルAPIへ移動
 
 	server, err := api.Create(spec)
 	if err != nil {
@@ -83,10 +72,9 @@ func (api *ServerAPI) updateIPAddress(server *sacloud.Server, ip string) error {
 	var (
 		method = "PUT"
 		uri    = fmt.Sprintf("interface/%s", server.Interfaces[1].ID)
-		body   = sacloud.Request{
-			Interface: &sacloud.Interface{UserIPAddress: ip},
-		}
+		body   = sacloud.Request{}
 	)
+	body.Interface = &sacloud.Interface{UserIPAddress: ip}
 
 	_, err := api.client.newRequest(method, uri, body)
 	if err != nil {
@@ -106,75 +94,218 @@ func (api *ServerAPI) State(id string) (string, error) {
 	return server.Availability, nil
 }
 
-// PowerOn power on
-func (api *ServerAPI) PowerOn(id string) error {
+func (api *ServerAPI) IsUp(id string) (bool, error) {
+	server, err := api.Read(id)
+	if err != nil {
+		return false, err
+	}
+	return server.Instance.IsUp(), nil
+}
+
+func (api *ServerAPI) IsDown(id string) (bool, error) {
+	server, err := api.Read(id)
+	if err != nil {
+		return false, err
+	}
+	return server.Instance.IsDown(), nil
+}
+
+// Boot power on
+func (api *ServerAPI) Boot(id string) (bool, error) {
 	var (
 		method = "PUT"
 		uri    = fmt.Sprintf("%s/%s/power", api.getResourceURL(), id)
 	)
-
-	res := &sacloud.ResultFlagValue{}
-	err := api.baseAPI.request(method, uri, nil, res)
-	if err != nil {
-		return err
-	}
-	return nil
+	return api.modify(method, uri, nil)
 }
 
-// PowerOff power off
-func (api *ServerAPI) PowerOff(id string) error {
+// Shutdown power off
+func (api *ServerAPI) Shutdown(id string) (bool, error) {
 	var (
 		method = "DELETE"
 		uri    = fmt.Sprintf("%s/%s/power", api.getResourceURL(), id)
 	)
 
-	res := &sacloud.ResultFlagValue{}
-	err := api.baseAPI.request(method, uri, nil, res)
-	if err != nil {
-		return err
-	}
-	return nil
+	return api.modify(method, uri, nil)
 }
 
-//TODO 高レベルAPIヘ移動
-//// GetIP get public ip address
-//func (c *Client) GetIP(id string, privateIPOnly bool) (string, error) {
-//
-//
-//
-//	var (
-//		method = "GET"
-//		uri    = fmt.Sprintf("%s/%s", "server", id)
-//	)
-//
-//	data, err := c.newRequest(method, uri, nil)
-//	if err != nil {
-//		return "", err
-//	}
-//	var s sakura.Response
-//	if err := json.Unmarshal(data, &s); err != nil {
-//		return "", err
-//	}
-//
-//	if privateIPOnly && len(s.Server.Interfaces) > 1 {
-//		return s.Server.Interfaces[1].UserIPAddress, nil
-//	}
-//
-//	return s.Server.Interfaces[0].IPAddress, nil
-//}
+// Stop force shutdown
+func (api *ServerAPI) Stop(id string) (bool, error) {
+	var (
+		method = "DELETE"
+		uri    = fmt.Sprintf("%s/%s/power", api.getResourceURL(), id)
+	)
 
-// SearchServerByName Search server by name
-func (api *ServerAPI) SearchServerByName(name string) (*sacloud.Server, error) {
+	return api.modify(method, uri, map[string]bool{"Force": true})
+}
 
-	req := &sacloud.Request{}
-	req.AddFilter("Name", name)
+func (api *ServerAPI) RebootForce(id string) (bool, error) {
+	var (
+		method = "PUT"
+		uri    = fmt.Sprintf("%s/%s/reset", api.getResourceURL(), id)
+	)
 
-	res, err := api.Find(req)
+	return api.modify(method, uri, nil)
+}
+
+func (api *ServerAPI) SleepUntilUp(serverID string, timeout time.Duration) error {
+	current := 0 * time.Second
+	interval := 5 * time.Second
+	for {
+
+		up, err := api.IsUp(serverID)
+		if err != nil {
+			return err
+		}
+
+		if up {
+			return nil
+		}
+		time.Sleep(interval)
+		current += interval
+
+		if timeout > 0 && current > timeout {
+			return fmt.Errorf("Timeout: WaitforAvailable")
+		}
+	}
+}
+
+func (api *ServerAPI) SleepUntilDown(serverID string, timeout time.Duration) error {
+	current := 0 * time.Second
+	interval := 5 * time.Second
+	for {
+
+		down, err := api.IsDown(serverID)
+		if err != nil {
+			return err
+		}
+
+		if down {
+			return nil
+		}
+		time.Sleep(interval)
+		current += interval
+
+		if timeout > 0 && current > timeout {
+			return fmt.Errorf("Timeout: WaitforAvailable")
+		}
+	}
+}
+
+func (api *ServerAPI) ChangePlan(serverID string, planID string) (bool, error) {
+	var (
+		method = "PUT"
+		uri    = fmt.Sprintf("%s/%s/to/plan/%s", api.getResourceURL(), serverID, planID)
+	)
+
+	return api.modify(method, uri, nil)
+}
+
+func (api *ServerAPI) FindDisk(serverID string) ([]sacloud.Disk, error) {
+	server, err := api.Read(serverID)
 	if err != nil {
 		return nil, err
 	}
-	if res.Count > 0 {
-		return &res.Servers[0], nil
+	return server.Disks, nil
+}
+
+func (api *ServerAPI) InsertCDROM(serverID string, cdromID string) (bool, error) {
+	var (
+		method = "PUT"
+		uri    = fmt.Sprintf("%s/%s/cdrom", api.getResourceURL(), serverID)
+	)
+
+	req := &sacloud.Request{
+		SakuraCloudResources: sacloud.SakuraCloudResources{
+			CDROM: &sacloud.CDROM{Resource: &sacloud.Resource{ID: cdromID}},
+		},
 	}
-	return nil, fmt.Errorf("server [%s] is not found", name)
+
+	return api.modify(method, uri, req)
+}
+
+func (api *ServerAPI) EjectCDROM(serverID string, cdromID string) (bool, error) {
+	var (
+		method = "PUT"
+		uri    = fmt.Sprintf("%s/%s/cdrom", api.getResourceURL(), serverID)
+	)
+
+	req := &sacloud.Request{
+		SakuraCloudResources: sacloud.SakuraCloudResources{
+			CDROM: &sacloud.CDROM{Resource: &sacloud.Resource{ID: cdromID}},
+		},
+	}
+
+	return api.modify(method, uri, req)
+}
+
+func (api *ServerAPI) NewKeyboardRequest() *sacloud.KeyboardRequest {
+	return &sacloud.KeyboardRequest{}
+}
+
+func (api *ServerAPI) SendKey(serverID string, body *sacloud.KeyboardRequest) (bool, error) {
+	var (
+		method = "PUT"
+		uri    = fmt.Sprintf("%s/%s/keyboard", api.getResourceURL(), serverID)
+	)
+
+	return api.modify(method, uri, body)
+}
+
+func (api *ServerAPI) NewMouseRequest() *sacloud.MouseRequest {
+	return &sacloud.MouseRequest{
+		Buttons: &sacloud.MouseRequestButtons{},
+	}
+}
+
+func (api *ServerAPI) SendMouse(serverID string, mouseIndex string, body *sacloud.MouseRequest) (bool, error) {
+	var (
+		method = "PUT"
+		uri    = fmt.Sprintf("%s/%s/mouse/%s", api.getResourceURL(), serverID, mouseIndex)
+	)
+
+	return api.modify(method, uri, body)
+}
+
+func (api *ServerAPI) NewVNCSnapshotRequest() *sacloud.VNCSnapshotRequest {
+	return &sacloud.VNCSnapshotRequest{}
+}
+
+func (api *ServerAPI) GetVNCProxy(serverID string) (*sacloud.VNCProxyResponse, error) {
+	var (
+		method = "GET"
+		uri    = fmt.Sprintf("%s/%s/vnc/proxy", api.getResourceURL(), serverID)
+		res    = &sacloud.VNCProxyResponse{}
+	)
+	err := api.baseAPI.request(method, uri, nil, res)
+	if err != nil {
+		return nil, err
+	}
+	return res, nil
+}
+
+func (api *ServerAPI) GetVNCSize(serverID string) (*sacloud.VNCSizeResponse, error) {
+	var (
+		method = "GET"
+		uri    = fmt.Sprintf("%s/%s/vnc/size", api.getResourceURL(), serverID)
+		res    = &sacloud.VNCSizeResponse{}
+	)
+	err := api.baseAPI.request(method, uri, nil, res)
+	if err != nil {
+		return nil, err
+	}
+	return res, nil
+}
+
+func (api *ServerAPI) GetVNCSnapshot(serverID string, body *sacloud.VNCSnapshotRequest) (*sacloud.VNCSnapshotResponse, error) {
+	var (
+		method = "GET"
+		uri    = fmt.Sprintf("%s/%s/vnc/snapshot", api.getResourceURL(), serverID)
+		res    = &sacloud.VNCSnapshotResponse{}
+	)
+	err := api.baseAPI.request(method, uri, body, res)
+	if err != nil {
+		return nil, err
+	}
+	return res, nil
 }

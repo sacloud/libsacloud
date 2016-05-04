@@ -11,8 +11,8 @@ type CDROM struct {
 	SizeMB       int    `json:",omitempty"`
 	Scope        string `json:",omitempty"`
 	*EAvailability
-	ServiceClass string    `json:",omitempty"`
-	CreatedAt    time.Time `json:",omitempty"`
-	Icon         string    `json:",omitempty"`
-	Storage      *Storage  `json:",omitempty"`
+	ServiceClass string     `json:",omitempty"`
+	CreatedAt    *time.Time `json:",omitempty"`
+	Icon         string     `json:",omitempty"`
+	Storage      *Storage   `json:",omitempty"`
 }

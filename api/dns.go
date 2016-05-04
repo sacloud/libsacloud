@@ -41,15 +41,18 @@ func NewDNSAPI(client *Client) *DNSAPI {
 			FuncGetResourceURL: func() string {
 				return "commonserviceitem"
 			},
+			FuncBaseSearchCondition: func() *sacloud.Request {
+				res := &sacloud.Request{}
+				res.AddFilter("Provider.Class", "dns")
+				return res
+			},
 		},
 	}
 }
 
 func (api *DNSAPI) Find(condition *sacloud.Request) (*SearchDNSResponse, error) {
 
-	//DNS固定
-	condition.AddFilter("Provider.Class", "dns")
-	data, err := api.client.newRequest("GET", api.getResourceURL(), condition)
+	data, err := api.client.newRequest("GET", api.getResourceURL(), api.getSearchState())
 	if err != nil {
 		return nil, err
 	}
@@ -70,13 +73,18 @@ func (api *DNSAPI) request(f func(*dnsResponse) error) (*sacloud.DNS, error) {
 }
 
 func (api *DNSAPI) createRequest(value *sacloud.DNS) *dnsRequest {
-	return &dnsRequest{CommonServiceDNSItem: value}
+	req := &dnsRequest{}
+	req.CommonServiceDNSItem = value
+	return req
 }
-
 func (api *DNSAPI) Create(value *sacloud.DNS) (*sacloud.DNS, error) {
 	return api.request(func(res *dnsResponse) error {
 		return api.create(api.createRequest(value), res)
 	})
+}
+
+func (api *DNSAPI) New() *sacloud.DNS {
+	return &sacloud.DNS{}
 }
 
 func (api *DNSAPI) Read(id string) (*sacloud.DNS, error) {

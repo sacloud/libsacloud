@@ -4,8 +4,9 @@ import "time"
 
 type Bridge struct {
 	*Resource
-	Name string `json:",omitempty"`
-	Info struct {
+	Name        string `json:",omitempty"`
+	Description string `json:",omitempty"`
+	Info        struct {
 		Switched []struct {
 			*Resource
 			Name string `json:",omitempty"`
@@ -15,9 +16,9 @@ type Bridge struct {
 			}
 		}
 	}
-	ServiceClass string    `json:",omitempty"`
-	CreatedAt    time.Time `json:",omitempty"`
-	Region       *Region   `json:",omitempty"`
+	ServiceClass string     `json:",omitempty"`
+	CreatedAt    *time.Time `json:",omitempty"`
+	Region       *Region    `json:",omitempty"`
 	SwitchInZone struct {
 		*Resource
 		Name           string `json:",omitempty"`

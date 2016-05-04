@@ -1,13 +1,13 @@
 package sacloud
 
 type LoadBalancer struct {
-	*appliance
+	*Appliance
 	Remark   *LoadBalancerRemark   `json:",omitempty"`
 	Settings *LoadBalancerSettings `json:",omitempty"`
 }
 
 type LoadBalancerRemark struct {
-	*applianceRemarkBase
+	*ApplianceRemarkBase
 	Zone *NumberResource
 }
 
@@ -36,4 +36,8 @@ type LoadBalancerHealthCheck struct {
 	Protocol string `json:",omitempty"`
 	Path     string `json:",omitempty"`
 	Status   string `json:",omitempty"`
+}
+
+func CreateNewLoadBalancer() *LoadBalancer {
+	return &LoadBalancer{}
 }

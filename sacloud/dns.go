@@ -11,8 +11,8 @@ type DNS struct {
 	Provider     DNSProvider `json:",omitempty"`
 	Settings     DNSSettings `json:",omitempty"`
 	ServiceClass string      `json:",omitempty"`
-	CreatedAt    time.Time   `json:",omitempty"`
-	ModifiedAt   time.Time   `json:",omitempty"`
+	CreatedAt    *time.Time  `json:",omitempty"`
+	ModifiedAt   *time.Time  `json:",omitempty"`
 	Icon         *Icon       `json:",omitempty"`
 	Tags         []string    `json:",omitempty"`
 }

@@ -1,15 +1,26 @@
 package sacloud
 
-import "time"
+import (
+	"encoding/json"
+	"fmt"
+	"time"
+)
 
 // Resource type of sakuracloud resource(have ID:string)
 type Resource struct {
 	ID string `json:",omitempty"`
 }
 
-// NumberResource type of sakuracloud resource(int64)
+// NumberResource type of sakuracloud resource(number or string)
 type NumberResource struct {
-	ID int64 `json:",omitempty"`
+	ID json.Number `json:",omitempty"`
+}
+
+func (n *NumberResource) SetIDByString(id string) {
+	n.ID = json.Number(id)
+}
+func (n *NumberResource) SetIDByNumber(id int64) {
+	n.ID = json.Number(fmt.Sprintf("%d", id))
 }
 
 // EAvailability Enum of sakuracloud
@@ -17,13 +28,24 @@ type EAvailability struct {
 	Availability string `json:",omitempty"`
 }
 
-// IsAvailable Return availability
+// IsAvailable Return availability is "available"
 func (a *EAvailability) IsAvailable() bool {
 	return a.Availability == "available"
 }
 
 //EServerInstanceStatus Enum [up / cleaning / down]
-type EServerInstanceStatus string
+type EServerInstanceStatus struct {
+	Status       string `json:",omitempty"`
+	BeforeStatus string `json:",omitempty"`
+}
+
+func (e *EServerInstanceStatus) IsUp() bool {
+	return e.Status == "up"
+}
+
+func (e *EServerInstanceStatus) IsDown() bool {
+	return e.Status == "down"
+}
 
 // EScope Enum [shared / user]
 type EScope string
@@ -33,47 +55,79 @@ type EDiskConnection string
 
 // SakuraCloudResources type of resources
 type SakuraCloudResources struct {
-	Server        *Server        `json:",omitempty"`
-	Disk          *Disk          `json:",omitempty"`
-	Note          *Note          `json:",omitempty"`
-	PacketFilter  *PacketFilter  `json:",omitempty"`
-	ProductServer *ProductServer `json:"ServerPlan,omitempty"`
-	Archive       *Archive       `json:",omitempty"`
-	FTPServer     *FTPServer     `json:",omitempty"`
-	//CommonServiceItemとApplianceはapiパッケージにて別途定義
-}
-
-// SakuraCloudResourceList type of resources
-type SakuraCloudResourceList struct {
-	Servers        []Server          `json:",omitempty"`
-	Disks          []Disk            `json:",omitempty"`
-	Notes          []Note            `json:",omitempty"`
-	Archives       []Archive         `json:",omitempty"`
-	PacketFilters  []PacketFilter    `json:",omitempty"`
-	Licenses       []License         `json:",omitempty"`
-	DiskPlans      []ProductDisk     `json:",omitempty"`
-	InternetPlans  []ProductInternet `json:",omitempty"`
-	LicenseInfo    []ProductLicense  `json:",omitempty"`
-	ServerPlans    []ProductServer   `json:",omitempty"`
-	ServiceClasses []PublicPrice     `json:",omitempty"`
-	//CommonServiceItemとApplianceはapiパッケージにて別途定義
-}
-
-// Request type of SakuraCloud API Request
-type Request struct {
-	// *SakuraCloudResources
 	Server       *Server       `json:",omitempty"`
 	Disk         *Disk         `json:",omitempty"`
 	Note         *Note         `json:",omitempty"`
 	Archive      *Archive      `json:",omitempty"`
 	PacketFilter *PacketFilter `json:",omitempty"`
-	License      *License      `json:",omitempty"`
+	Bridge       *Bridge       `json:",omitempty"`
+	Icon         *Icon         `json:",omitempty"`
+	Image        *Image        `json:",omitempty"`
 	Interface    *Interface    `json:",omitempty"`
+	Internet     *Internet     `json:",omitempty"`
+	License      *License      `json:",omitempty"`
+	Switch       *Switch       `json:",omitempty"`
+	CDROM        *CDROM        `json:",omitempty"`
+	SSHKey       *SSHKey       `json:",omitempty"`
 
 	DiskPlan     *ProductDisk     `json:",omitempty"`
 	InternetPlan *ProductInternet `json:",omitempty"`
 	LicenseInfo  *ProductLicense  `json:",omitempty"`
 	ServerPlan   *ProductServer   `json:",omitempty"`
+
+	Region    *Region    `json:",omitempty"`
+	Zone      *Zone      `json:",omitempty"`
+	FTPServer *FTPServer `json:",omitempty"`
+	//CommonServiceItemとApplianceはapiパッケージにて別途定義
+}
+
+// SakuraCloudResourceList type of resources
+type SakuraCloudResourceList struct {
+	Servers       []Server       `json:",omitempty"`
+	Disks         []Disk         `json:",omitempty"`
+	Notes         []Note         `json:",omitempty"`
+	Archives      []Archive      `json:",omitempty"`
+	PacketFilters []PacketFilter `json:",omitempty"`
+	Bridges       []Bridge       `json:",omitempty"`
+	Icons         []Icon         `json:",omitempty"`
+	Interfaces    []Interface    `json:",omitempty"`
+	Internet      []Internet     `json:",omitempty"`
+	Licenses      []License      `json:",omitempty"`
+	Switches      []Switch       `json:",omitempty"`
+	CDROMs        []CDROM        `json:",omitempty"`
+	SSHKeys       []SSHKey       `json:",omitempty"`
+
+	DiskPlans     []ProductDisk     `json:",omitempty"`
+	InternetPlans []ProductInternet `json:",omitempty"`
+	LicenseInfo   []ProductLicense  `json:",omitempty"`
+	ServerPlans   []ProductServer   `json:",omitempty"`
+
+	Regions []Region `json:",omitempty"`
+	Zones   []Zone   `json:",omitempty"`
+
+	ServiceClasses []PublicPrice `json:",omitempty"`
+
+	//CommonServiceItemとApplianceはapiパッケージにて別途定義
+}
+
+// Request type of SakuraCloud API Request
+type Request struct {
+	SakuraCloudResources
+	//Server       *Server       `json:",omitempty"`
+	//Disk         *Disk         `json:",omitempty"`
+	//Note         *Note         `json:",omitempty"`
+	//Archive      *Archive      `json:",omitempty"`
+	//PacketFilter *PacketFilter `json:",omitempty"`
+	//Bridge       *Bridge       `json:",omitempty"`
+	//Icon         *Icon         `json:",omitempty"`
+	//Interface    *Interface    `json:",omitempty"`
+	//License      *License      `json:",omitempty"`
+	//Switch       *Switch       `json:",omitempty"`
+	//
+	//DiskPlan     *ProductDisk     `json:",omitempty"`
+	//InternetPlan *ProductInternet `json:",omitempty"`
+	//LicenseInfo  *ProductLicense  `json:",omitempty"`
+	//ServerPlan   *ProductServer   `json:",omitempty"`
 
 	//CommonServiceDnsItem  *CommonServiceDnsItem  `json:"CommonServiceItem,omitempty"`
 	//CommonServiceGslbItem *CommonServiceGslbItem `json:"CommonServiceItem,omitempty"`
@@ -129,7 +183,7 @@ type SearchResponse struct {
 	From  int `json:",omitempty"`
 	Count int `json:",omitempty"`
 	*SakuraCloudResourceList
-	ResponsedAt time.Time `json:",omitempty"`
+	ResponsedAt *time.Time `json:",omitempty"`
 }
 
 // Response type of GET response

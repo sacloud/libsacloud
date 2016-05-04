@@ -17,7 +17,7 @@ type Archive struct {
 	JobStatus       string          `json:",omitempty"`
 	OriginalArchive *Resource       `json:",omitempty"`
 	ServiceClass    string          `json:",omitempty"`
-	CreatedAt       time.Time       `json:",omitempty"`
+	CreatedAt       *time.Time      `json:",omitempty"`
 	Icon            *Icon           `json:",omitempty"`
 	Plan            *NumberResource `json:",omitempty"`
 	SourceDisk      *Disk           `json:",omitempty"`
