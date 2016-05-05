@@ -191,3 +191,17 @@ type Response struct {
 	*ResultFlagValue
 	*SakuraCloudResources
 }
+
+type MigrationJobStatus struct {
+	Status string `json:",omitempty"`
+	Delays *struct {
+		Start *struct {
+			Max int `json:",omitempty"`
+			Min int `json:",omitempty"`
+		} `json:",omitempty"`
+		Finish *struct {
+			Max int `json:",omitempty"`
+			Min int `json:",omitempty"`
+		} `json:",omitempty"`
+	}
+}

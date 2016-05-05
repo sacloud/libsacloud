@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	//"log"
+	"log"
 	"net/http"
 )
 
@@ -24,11 +24,12 @@ type Client struct {
 	AccessTokenSecret string
 	Region            string
 	*api
+	TraceMode bool
 }
 
 // NewClient Create new API client
 func NewClient(token, tokenSecret, region string) *Client {
-	c := &Client{AccessToken: token, AccessTokenSecret: tokenSecret, Region: region}
+	c := &Client{AccessToken: token, AccessTokenSecret: tokenSecret, Region: region, TraceMode: false}
 	c.api = newAPI(c)
 	return c
 }
@@ -150,11 +151,15 @@ func (c *Client) newRequest(method, uri string, body interface{}) ([]byte, error
 		} else {
 			req, err = http.NewRequest(method, url, bytes.NewBuffer(bodyJSON))
 		}
-		//log.Printf("********* method : %#v , url : %s , body : %#v", method, url, string(bodyJSON))
+		if c.TraceMode {
+			log.Printf("[libsacloud:Client#request] method : %#v , url : %s , body : %#v", method, url, string(bodyJSON))
+		}
 
 	} else {
 		req, err = http.NewRequest(method, url, nil)
-		//log.Printf("********* method : %#v , url : %s ", method, url)
+		if c.TraceMode {
+			log.Printf("[libsacloud:Client#request] method : %#v , url : %s ", method, url)
+		}
 	}
 
 	if err != nil {
@@ -162,6 +167,9 @@ func (c *Client) newRequest(method, uri string, body interface{}) ([]byte, error
 	}
 
 	req.SetBasicAuth(c.AccessToken, c.AccessTokenSecret)
+	if c.TraceMode {
+		req.Header.Add("X-Sakura-API-Beautify", "1") // format response-JSON
+	}
 	req.Method = method
 
 	resp, err := client.Do(req)
@@ -171,7 +179,9 @@ func (c *Client) newRequest(method, uri string, body interface{}) ([]byte, error
 	defer resp.Body.Close()
 
 	data, err := ioutil.ReadAll(resp.Body)
-	//log.Printf("******** response: %s", string(data))
+	if c.TraceMode {
+		log.Printf("[libsacloud:Client#response] : %s", string(data))
+	}
 	if !c.isOkStatus(resp.StatusCode) {
 		return nil, fmt.Errorf("Error in response: %s", data)
 	}

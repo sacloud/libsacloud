@@ -19,20 +19,22 @@ This sample is a translation of the examples of [saklient](http://sakura-interne
 Original sample codes is [here](http://sakura-internet.github.io/saklient.doc/).
 
 
+##  Create a server
+
 ```go
 
 package main
 
 import (
 	"fmt"
-	"github.com/yamamoto-febc/libsacloud/api"
-	"github.com/yamamoto-febc/libsacloud/sacloud"
+	API "github.com/yamamoto-febc/libsacloud/api"
 	"os"
 	"time"
 )
 
 func main() {
 
+	// settings
 	var (
 		token        = os.Args[1]
 		secret       = os.Args[2]
@@ -47,11 +49,12 @@ func main() {
 		sshPublicKey = "ssh-rsa AAAA..."
 	)
 
-	client := api.NewClient(token, secret, zone)
+	// authorize
+	api := API.NewClient(token, secret, zone)
 
 	//search archives
 	fmt.Println("searching archives")
-	res, _ := client.Archive.
+	res, _ := api.Archive.
 		WithNameLike("CentOS 6.7 64bit").
 		WithSharedScope().
 		Limit(1).
@@ -61,7 +64,7 @@ func main() {
 
 	// search scripts
 	fmt.Println("searching scripts")
-	res, _ = client.Note.
+	res, _ = api.Note.
 		WithNameLike("WordPress").
 		WithSharedScope().
 		Limit(1).
@@ -70,60 +73,60 @@ func main() {
 
 	// create a disk
 	fmt.Println("creating a disk")
-	disk := client.Disk.New()
+	disk := api.Disk.New()
 	disk.Name = name
 	disk.Name = name
 	disk.Description = description
 	disk.Tags = []string{tag}
-	disk.Plan = sacloud.DiskPlanSSD
+	disk.SetDiskPlanToSSD()
 	disk.SetSourceArchive(archive.ID)
 
-	disk, _ = client.Disk.Create(disk)
+	disk, _ = api.Disk.Create(disk)
 
 	// create a server
 	fmt.Println("creating a server")
-	server := client.Server.New()
+	server := api.Server.New()
 	server.Name = name
 	server.Description = description
 	server.Tags = []string{tag}
 
 	// (set ServerPlan)
-	plan, _ := client.Product.Server.GetBySpec(cpu, mem)
+	plan, _ := api.Product.Server.GetBySpec(cpu, mem)
 	server.SetServerPlanByID(plan.ID.String())
 
-	server, _ = client.Server.Create(server)
+	server, _ = api.Server.Create(server)
 
 	// connect to shared segment
 
 	fmt.Println("connecting the server to shared segment")
-	iface, _ := client.Interface.CreateAndConnectToServer(server.ID)
-	client.Interface.ConnectToSharedSegment(iface.ID)
+	iface, _ := api.Interface.CreateAndConnectToServer(server.ID)
+	api.Interface.ConnectToSharedSegment(iface.ID)
 
 	// wait disk copy
-	err := client.Disk.SleepWhileCopying(disk.ID, 120*time.Second)
+	err := api.Disk.SleepWhileCopying(disk.ID, 120*time.Second)
 	if err != nil {
 		fmt.Println("failed")
 		os.Exit(1)
 	}
 
 	// config the disk
-	diskconf := client.Disk.NewCondig()
+	diskconf := api.Disk.NewCondig()
 	diskconf.HostName = hostName
 	diskconf.Password = password
 	diskconf.SSHKey.PublicKey = sshPublicKey
 	diskconf.AddNote(script.ID)
-	client.Disk.Config(disk.ID, diskconf)
+	api.Disk.Config(disk.ID, diskconf)
 
 	// boot
 	fmt.Println("booting the server")
-	client.Server.Boot(server.ID)
+	api.Server.Boot(server.ID)
 
 	// stop
 	time.Sleep(3 * time.Second)
 	fmt.Println("stopping the server")
-	client.Server.Stop(server.ID)
+	api.Server.Stop(server.ID)
 
-	err = client.Server.SleepUntilDown(server.ID, 120*time.Second)
+	err = api.Server.SleepUntilDown(server.ID, 120*time.Second)
 	if err != nil {
 		fmt.Println("failed")
 		os.Exit(1)
@@ -131,21 +134,97 @@ func main() {
 
 	// disconnect the disk from the server
 	fmt.Println("disconnecting the disk")
-	client.Disk.DisconnectFromServer(disk.ID)
+	api.Disk.DisconnectFromServer(disk.ID)
 
 	// delete the server
 	fmt.Println("deleting the server")
-	client.Server.Delete(server.ID)
+	api.Server.Delete(server.ID)
 
 	// delete the disk
 	fmt.Println("deleting the disk")
-	client.Disk.Delete(disk.ID)
+	api.Disk.Delete(disk.ID)
 
 }
 
-````
+```
 
+## Download a disk image
 
+**Pre requirements**
+  * install ftps libs. please run `go get github.com/webguerilla/ftps`
+  * create a disk named "GitLab"
+
+```go
+
+package main
+
+import (
+	"fmt"
+	"github.com/webguerilla/ftps"
+	API "github.com/yamamoto-febc/libsacloud/api"
+	"os"
+	"time"
+)
+
+func main() {
+
+	// settings
+	var (
+		token   = os.Args[1]
+		secret  = os.Args[2]
+		zone    = os.Args[3]
+		srcName = "GitLab"
+	)
+
+	// authorize
+	api := API.NewClient(token, secret, zone)
+
+	// search the source disk
+	res, _ := api.Disk.
+		WithNameLike(srcName).
+		Limit(1).
+		Find()
+	if res.Count == 0 {
+		panic("Disk `GitLab` not found")
+	}
+
+	disk := res.Disks[0]
+
+	// copy the disk to a new archive
+	fmt.Println("copying the disk to a new archive")
+
+	archive := api.Archive.New()
+	archive.Name = fmt.Sprintf("Copy:%s", disk.Name)
+	archive.SetSourceDisk(disk.ID)
+	archive, _ = api.Archive.Create(archive)
+	api.Archive.SleepWhileCopying(archive.ID, 180*time.Second)
+
+	// get FTP information
+	ftp, _ := api.Archive.OpenFTP(archive.ID, false)
+	fmt.Println("FTP information:")
+	fmt.Println("  user: " + ftp.User)
+	fmt.Println("  pass: " + ftp.Password)
+	fmt.Println("  host: " + ftp.HostName)
+
+	// download the archive via FTPS
+	ftpsClient := &ftps.FTPS{}
+	ftpsClient.TLSConfig.InsecureSkipVerify = true
+	ftpsClient.Connect(ftp.HostName, 21)
+	ftpsClient.Login(ftp.User, ftp.Password)
+	err := ftpsClient.RetrieveFile("archive.img", "archive.img")
+	if err != nil {
+		panic(err)
+	}
+	ftpsClient.Quit()
+
+	// delete the archive after download
+	fmt.Println("deleting the archive")
+	api.Archive.CloseFTP(archive.ID)
+	api.Archive.Delete(archive.ID)
+
+}
+
+```
 
 # License
 
