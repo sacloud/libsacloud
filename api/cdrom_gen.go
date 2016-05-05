@@ -96,11 +96,11 @@ func (api *CDROMAPI) New() *sacloud.CDROM {
 	return &sacloud.CDROM{}
 }
 
-func (api *CDROMAPI) Create(value *sacloud.CDROM) (*sacloud.CDROM, error) {
-	return api.request(func(res *sacloud.Response) error {
-		return api.create(api.createRequest(value), res)
-	})
-}
+//func (api *CDROMAPI) Create(value *sacloud.CDROM) (*sacloud.CDROM, error) {
+//	return api.request(func(res *sacloud.Response) error {
+//		return api.create(api.createRequest(value), res)
+//	})
+//}
 
 func (api *CDROMAPI) Read(id string) (*sacloud.CDROM, error) {
 	return api.request(func(res *sacloud.Response) error {
