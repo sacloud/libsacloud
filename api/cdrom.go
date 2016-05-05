@@ -21,6 +21,18 @@ func NewCDROMAPI(client *Client) *CDROMAPI {
 	}
 }
 
+func (api *CDROMAPI) Create(value *sacloud.CDROM) (*sacloud.CDROM, *sacloud.FTPServer, error) {
+	f := func(res *sacloud.Response) error {
+		return api.create(api.createRequest(value), res)
+	}
+	res := &sacloud.Response{}
+	err := f(res)
+	if err != nil {
+		return nil, nil, err
+	}
+	return res.CDROM, res.FTPServer, nil
+}
+
 func (api *CDROMAPI) OpenFTP(id string, reset bool) (*sacloud.FTPServer, error) {
 	var (
 		method = "PUT"
@@ -39,7 +51,7 @@ func (api *CDROMAPI) OpenFTP(id string, reset bool) (*sacloud.FTPServer, error) 
 
 func (api *CDROMAPI) CloseFTP(id string) (bool, error) {
 	var (
-		method = "PUT"
+		method = "DELETE"
 		uri    = fmt.Sprintf("%s/%s/ftp", api.getResourceURL(), id)
 	)
 	return api.modify(method, uri, nil)

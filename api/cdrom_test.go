@@ -16,7 +16,7 @@ func TestCRUDCDROM(t *testing.T) {
 	newCD.Description = "hoge"
 	newCD.SizeMB = 5120
 
-	cd, err := api.Create(newCD)
+	cd, _, err := api.Create(newCD)
 
 	assert.NoError(t, err)
 	assert.NotEmpty(t, cd)
