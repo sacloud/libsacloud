@@ -18,7 +18,14 @@ var testArchiveJSON = `
             "SizeMB": 102400,
             "MigratedMB": 102400,
             "WaitingJobCount": null,
-            "JobStatus": null,
+            "JobStatus": {
+		"Status":"waiting",
+		"Delays":
+		{
+			"Start":{"Max":0,"Min":0},
+			"Finish":{"Max":900,"Min":205}
+		}
+	    },
             "OriginalArchive": {
                 "ID": "112800288256"
             },

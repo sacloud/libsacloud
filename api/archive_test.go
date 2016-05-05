@@ -3,6 +3,7 @@ package api
 import (
 	"github.com/stretchr/testify/assert"
 	"testing"
+	"time"
 )
 
 const testArchiveName = "libsacloud_test_archive"
@@ -95,6 +96,32 @@ func TestCRUDAndFTP(t *testing.T) {
 	//Delete
 	_, err = api.Delete(archiveID)
 	assert.NoError(t, err)
+}
+
+func TestCreateAndWait(t *testing.T) {
+
+	archiveAPI := client.Archive
+	id, err := archiveAPI.GetUbuntuArchiveID()
+
+	assert.NoError(t, err)
+	assert.NotEmpty(t, id)
+
+	//CREATE
+	newArchive := archiveAPI.New()
+	newArchive.Name = testArchiveName
+	newArchive.Description = "hoge"
+	newArchive.SetSourceArchive(id)
+
+	archive, err := archiveAPI.Create(newArchive)
+
+	assert.NoError(t, err)
+	assert.NotEmpty(t, archive)
+
+	err = archiveAPI.SleepWhileCopying(archive.ID, 180*time.Second)
+	assert.NoError(t, err)
+
+	archiveAPI.Delete(archive.ID)
+
 }
 
 func init() {

@@ -22,8 +22,9 @@ type Disk struct {
 		MountIndex string `json:",omitempty"`
 		Class      string `json:",omitempty"`
 	}
-	SourceArchive *Archive `json:",omitempty"`
-	SourceDisk    *Disk    `json:",omitempty"`
+	SourceArchive *Archive            `json:",omitempty"`
+	SourceDisk    *Disk               `json:",omitempty"`
+	JobStatus     *MigrationJobStatus `json:",omitempty"`
 	//BundleInfo
 	CreatedAt *time.Time `json:",omitempty"`
 	Icon      *Icon      `json:",omitempty"`
@@ -36,6 +37,14 @@ var (
 	DiskConnectionVirtio EDiskConnection = "virtio"
 	DiskConnectionIDE    EDiskConnection = "ide"
 )
+
+func (d *Disk) SetDiskPlanToHDD() {
+	d.Plan = DiskPlanHDD
+}
+func (d *Disk) SetDiskPlanToSSD() {
+	d.Plan = DiskPlanSSD
+
+}
 
 func (d *Disk) SetSourceArchive(sourceID string) {
 	d.SourceArchive = &Archive{
