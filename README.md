@@ -16,8 +16,9 @@ See list of implemented API clients [here](https://godoc.org/github.com/yamamoto
 
 This sample is a translation of the examples of [saklient](http://sakura-internet.github.io/saklient.doc/) to golang.
 
-Original sample codes is [here](http://sakura-internet.github.io/saklient.doc/).
+Original(saklient) sample codes is [here](http://sakura-internet.github.io/saklient.doc/).
 
+This sample's repository is [here](https://github.com/yamamoto-febc/libsacloud-sample).
 
 ##  Create a server
 
