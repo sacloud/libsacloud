@@ -113,24 +113,6 @@ type SakuraCloudResourceList struct {
 // Request type of SakuraCloud API Request
 type Request struct {
 	SakuraCloudResources
-	//Server       *Server       `json:",omitempty"`
-	//Disk         *Disk         `json:",omitempty"`
-	//Note         *Note         `json:",omitempty"`
-	//Archive      *Archive      `json:",omitempty"`
-	//PacketFilter *PacketFilter `json:",omitempty"`
-	//Bridge       *Bridge       `json:",omitempty"`
-	//Icon         *Icon         `json:",omitempty"`
-	//Interface    *Interface    `json:",omitempty"`
-	//License      *License      `json:",omitempty"`
-	//Switch       *Switch       `json:",omitempty"`
-	//
-	//DiskPlan     *ProductDisk     `json:",omitempty"`
-	//InternetPlan *ProductInternet `json:",omitempty"`
-	//LicenseInfo  *ProductLicense  `json:",omitempty"`
-	//ServerPlan   *ProductServer   `json:",omitempty"`
-
-	//CommonServiceDnsItem  *CommonServiceDnsItem  `json:"CommonServiceItem,omitempty"`
-	//CommonServiceGslbItem *CommonServiceGslbItem `json:"CommonServiceItem,omitempty"`
 	From    int                    `json:",omitempty"`
 	Count   int                    `json:",omitempty"`
 	Sort    []string               `json:",omitempty"`

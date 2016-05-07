@@ -198,3 +198,20 @@ func (b *baseAPI) action(method string, uri string, body interface{}, res interf
 	}
 	return true, nil
 }
+
+func (b *baseAPI) monitor(id string, body *sacloud.ResourceMonitorRequest) (*sacloud.MonitorValues, error) {
+	var (
+		method = "GET"
+		uri    = fmt.Sprintf("%s/%s/monitor", b.getResourceURL(), id)
+	)
+	res := &sacloud.ResourceMonitorResponse{}
+	err := b.request(method, uri, body, res)
+	if err != nil {
+		return nil, err
+	}
+	return res.Data, nil
+}
+
+func (b *baseAPI) NewResourceMonitorRequest() *sacloud.ResourceMonitorRequest {
+	return &sacloud.ResourceMonitorRequest{}
+}

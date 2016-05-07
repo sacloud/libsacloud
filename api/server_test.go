@@ -113,11 +113,25 @@ func TestServerOperations(t *testing.T) {
 func TestSearchServer(t *testing.T) {
 	assert.True(t, true)
 
-	//client.Region = "is1b"
+	//client.Region = "is1a"
 	//api := client.Server
 	//s, err := api.withNameLike("sakura-dev").Find()
 	//assert.NoError(t, err)
 	//assert.NotEmpty(t, s)
+	//
+	//server := s.Servers[0]
+	//monitor, err := api.Monitor(server.ID, nil)
+	//assert.NoError(t, err)
+	//assert.NotEmpty(t, monitor)
+	//
+	//monitor, err = client.Disk.Monitor(server.Disks[0].ID, nil)
+	//assert.NoError(t, err)
+	//assert.NotEmpty(t, monitor)
+	//
+	//monitor, err = client.Interface.Monitor(server.Interfaces[0].ID, nil)
+	//assert.NoError(t, err)
+	//assert.NotEmpty(t, monitor)
+
 }
 
 func init() {

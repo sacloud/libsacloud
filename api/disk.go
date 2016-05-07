@@ -146,3 +146,7 @@ func (api *DiskAPI) SleepWhileCopying(diskID string, timeout time.Duration) erro
 		}
 	}
 }
+
+func (api *DiskAPI) Monitor(id string, body *sacloud.ResourceMonitorRequest) (*sacloud.MonitorValues, error) {
+	return api.baseAPI.monitor(id, body)
+}

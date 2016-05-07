@@ -309,3 +309,7 @@ func (api *ServerAPI) GetVNCSnapshot(serverID string, body *sacloud.VNCSnapshotR
 	}
 	return res, nil
 }
+
+func (api *ServerAPI) Monitor(id string, body *sacloud.ResourceMonitorRequest) (*sacloud.MonitorValues, error) {
+	return api.baseAPI.monitor(id, body)
+}

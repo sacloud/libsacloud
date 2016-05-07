@@ -51,3 +51,7 @@ func (api *InterfaceAPI) DisconnectFromSwitch(interfaceID string) (bool, error) 
 	)
 	return api.modify(method, uri, nil)
 }
+
+func (api *InterfaceAPI) Monitor(id string, body *sacloud.ResourceMonitorRequest) (*sacloud.MonitorValues, error) {
+	return api.baseAPI.monitor(id, body)
+}
