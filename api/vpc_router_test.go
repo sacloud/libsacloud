@@ -134,8 +134,8 @@ func cleanupVPCRouter() {
 }
 
 func cleanupInternetForVPCRouter() {
-	items, _ := client.VPCRouter.Reset().WithNameLike(testVPCRouterSwitchName).Find()
-	for _, item := range items.VPCRouters {
-		client.VPCRouter.Delete(item.ID)
+	items, _ := client.Internet.Reset().WithNameLike(testVPCRouterSwitchName).Find()
+	for _, item := range items.Internet {
+		client.Internet.Delete(item.ID)
 	}
 }
