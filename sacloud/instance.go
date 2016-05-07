@@ -25,7 +25,7 @@ type Instance struct {
 
 // Storage type of Storage
 type Storage struct {
-	*Resource
+	*NumberResource
 	Class       string `json:",omitempty"`
 	Name        string `json:",omitempty"`
 	Description string `json:",omitempty"`
