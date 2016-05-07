@@ -20,7 +20,7 @@ func TestMain(m *testing.M) {
 	}
 	region := os.Getenv("SAKURACLOUD_REGION")
 	if region == "" {
-		region = "is1a"
+		region = "tk1v"
 	}
 	client = NewClient(accessToken, accessTokenSecret, region)
 

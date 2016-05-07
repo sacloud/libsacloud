@@ -8,6 +8,11 @@ import (
 const testGslbName = "test_libsakuracloud_gslb"
 
 func TestGslbGet(t *testing.T) {
+
+	currentRegion := client.Region
+	defer func() { client.Region = currentRegion }()
+	client.Region = "is1a"
+
 	item, err := client.GSLB.findOrCreateBy(testGslbName)
 	assert.NoError(t, err)
 	assert.NotNil(t, item)

@@ -8,6 +8,11 @@ import (
 const testSimpleMonitorName = "8.8.8.8"
 
 func TestSimpleMonitorCRUD(t *testing.T) {
+
+	currentRegion := client.Region
+	defer func() { client.Region = currentRegion }()
+	client.Region = "is1a"
+
 	api := client.SimpleMonitor
 
 	//CREATE

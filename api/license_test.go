@@ -8,6 +8,10 @@ import (
 const testLicenseName = "libsacloud_test_License"
 
 func TestLicenseCRUD(t *testing.T) {
+	currentRegion := client.Region
+	defer func() { client.Region = currentRegion }()
+	client.Region = "is1a"
+
 	api := client.License
 
 	resLicenseInfo, _ := client.Product.License.include("ID").Find()

@@ -8,6 +8,10 @@ import (
 const testDNSDomain = "test.domain.libsacloud.com"
 
 func TestUpdateDnsCommonServiceItem(t *testing.T) {
+	currentRegion := client.Region
+	defer func() { client.Region = currentRegion }()
+	client.Region = "is1a"
+
 	item, err := client.DNS.findOrCreateBy(testDNSDomain) //存在しないため新たに作る
 	assert.NoError(t, err)
 	assert.NotNil(t, item)
