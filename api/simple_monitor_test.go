@@ -9,15 +9,14 @@ const testSimpleMonitorName = "8.8.8.8"
 
 func TestSimpleMonitorCRUD(t *testing.T) {
 
-	currentRegion := client.Region
-	defer func() { client.Region = currentRegion }()
-	client.Region = "is1a"
+	currentRegion := client.Zone
+	defer func() { client.Zone = currentRegion }()
+	client.Zone = "is1a"
 
 	api := client.SimpleMonitor
 
 	//CREATE
-	newItem := api.New()
-	newItem.SetTarget(testSimpleMonitorName)
+	newItem := api.New(testSimpleMonitorName)
 	newItem.Description = "before"
 	newItem.SetDelayLoop(60)
 	newItem.EnableNotifyEmail()

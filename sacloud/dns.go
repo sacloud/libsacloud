@@ -1,6 +1,9 @@
 package sacloud
 
-import "time"
+import (
+	"fmt"
+	"time"
+)
 
 // DNS type of DNS(CommonServiceItem)
 type DNS struct {
@@ -51,9 +54,53 @@ func CreateNewDNS(zoneName string) *DNS {
 
 }
 
+func (d *DNS) SetZone(zone string) {
+	d.Name = zone
+	d.Status.Zone = zone
+}
+
 // HasDNSRecord return has record
 func (d *DNS) HasDNSRecord() bool {
 	return len(d.Settings.DNS.ResourceRecordSets) > 0
+}
+
+func (d *DNS) CreateNewRecord(name string, rtype string, rdata string, ttl int) *DNSRecordSet {
+	return &DNSRecordSet{
+		Name:  name,
+		Type:  rtype,
+		RData: rdata,
+		TTL:   ttl,
+	}
+}
+
+func (d *DNS) CreateNewMXRecord(name string, rdata string, ttl int, priority int) *DNSRecordSet {
+	return &DNSRecordSet{
+		Name:  name,
+		Type:  "MX",
+		RData: fmt.Sprintf("%d %s", priority, rdata),
+		TTL:   ttl,
+	}
+}
+
+func (d *DNS) AddRecord(record *DNSRecordSet) {
+	var recordSet = d.Settings.DNS.ResourceRecordSets
+	var isExist = false
+	for i := range recordSet {
+		if recordSet[i].Name == record.Name && recordSet[i].Type == record.Type {
+			d.Settings.DNS.ResourceRecordSets[i].RData = record.RData
+			d.Settings.DNS.ResourceRecordSets[i].TTL = record.TTL
+			isExist = true
+		}
+	}
+
+	if !isExist {
+		d.Settings.DNS.ResourceRecordSets = append(d.Settings.DNS.ResourceRecordSets, *record)
+	}
+
+}
+
+func (d *DNS) ClearRecords() {
+	d.Settings.DNS = DNSRecordSets{}
 }
 
 // DNSRecordSets type of dns records

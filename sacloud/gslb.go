@@ -45,6 +45,7 @@ func CreateNewGSLB(gslbName string) *GSLB {
 				DelayLoop:   10,
 				HealthCheck: defaultGSLBHealthCheck,
 				Weighted:    "True",
+				Servers:     []GSLBServer{},
 			},
 		},
 	}
@@ -54,6 +55,33 @@ func CreateNewGSLB(gslbName string) *GSLB {
 // HasGSLBServer return has server
 func (d *GSLB) HasGSLBServer() bool {
 	return len(d.Settings.GSLB.Servers) > 0
+}
+
+func (d *GSLB) CreateGSLBServer(ip string) *GSLBServer {
+	return &GSLBServer{
+		IPAddress: ip,
+		Enabled:   "True",
+		Weight:    "1",
+	}
+}
+
+func (d *GSLB) AddGSLBServer(server *GSLBServer) {
+	var isExist = false
+	for i := range d.Settings.GSLB.Servers {
+		if d.Settings.GSLB.Servers[i].IPAddress == server.IPAddress {
+			d.Settings.GSLB.Servers[i].Enabled = server.Enabled
+			d.Settings.GSLB.Servers[i].Weight = server.Weight
+			isExist = true
+		}
+	}
+
+	if !isExist {
+		d.Settings.GSLB.Servers = append(d.Settings.GSLB.Servers, *server)
+	}
+}
+
+func (d *GSLB) ClearGSLBServer() {
+	d.Settings.GSLB.Servers = []GSLBServer{}
 }
 
 // GSLBRecordSets type of GSLBRecordSets

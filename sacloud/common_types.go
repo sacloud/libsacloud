@@ -11,6 +11,10 @@ type Resource struct {
 	ID string `json:",omitempty"`
 }
 
+func (r *Resource) GetResourceKey() *Resource {
+	return r
+}
+
 // NumberResource type of sakuracloud resource(number or string)
 type NumberResource struct {
 	ID json.Number `json:",omitempty"`
@@ -21,6 +25,9 @@ func (n *NumberResource) SetIDByString(id string) {
 }
 func (n *NumberResource) SetIDByNumber(id int64) {
 	n.ID = json.Number(fmt.Sprintf("%d", id))
+}
+func (n *NumberResource) GetResourceKey() *NumberResource {
+	return n
 }
 
 // EAvailability Enum of sakuracloud

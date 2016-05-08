@@ -83,8 +83,8 @@ func (api *DNSAPI) Create(value *sacloud.DNS) (*sacloud.DNS, error) {
 	})
 }
 
-func (api *DNSAPI) New() *sacloud.DNS {
-	return &sacloud.DNS{}
+func (api *DNSAPI) New(zoneName string) *sacloud.DNS {
+	return sacloud.CreateNewDNS(zoneName)
 }
 
 func (api *DNSAPI) Read(id string) (*sacloud.DNS, error) {

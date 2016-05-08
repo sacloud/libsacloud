@@ -22,14 +22,14 @@ var (
 type Client struct {
 	AccessToken       string
 	AccessTokenSecret string
-	Region            string
+	Zone              string
 	*api
 	TraceMode bool
 }
 
 // NewClient Create new API client
-func NewClient(token, tokenSecret, region string) *Client {
-	c := &Client{AccessToken: token, AccessTokenSecret: tokenSecret, Region: region, TraceMode: false}
+func NewClient(token, tokenSecret, zone string) *Client {
+	c := &Client{AccessToken: token, AccessTokenSecret: tokenSecret, Zone: zone, TraceMode: false}
 	c.api = newAPI(c)
 	return c
 }
@@ -104,7 +104,7 @@ func newAPI(client *Client) *api {
 }
 
 func (c *Client) getEndpoint() string {
-	return fmt.Sprintf("%s/%s/%s", sakuraCloudAPIRoot, c.Region, sakuraCloudAPIRootSuffix)
+	return fmt.Sprintf("%s/%s/%s", sakuraCloudAPIRoot, c.Zone, sakuraCloudAPIRootSuffix)
 }
 
 func (c *Client) isOkStatus(code int) bool {

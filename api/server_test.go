@@ -51,9 +51,9 @@ func TestServerCRUD(t *testing.T) {
 
 func TestServerOperations(t *testing.T) {
 
-	currentRegion := client.Region
-	defer func() { client.Region = currentRegion }()
-	client.Region = "is1a"
+	currentRegion := client.Zone
+	defer func() { client.Zone = currentRegion }()
+	client.Zone = "is1a"
 
 	api := client.Server
 

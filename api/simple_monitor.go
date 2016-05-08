@@ -76,8 +76,8 @@ func (api *SimpleMonitorAPI) createRequest(value *sacloud.SimpleMonitor) *simple
 	return &simpleMonitorResponse{SimpleMonitor: value}
 }
 
-func (api *SimpleMonitorAPI) New() *sacloud.SimpleMonitor {
-	return sacloud.CreateNewSimpleMonitor("")
+func (api *SimpleMonitorAPI) New(target string) *sacloud.SimpleMonitor {
+	return sacloud.CreateNewSimpleMonitor(target)
 }
 
 func (api *SimpleMonitorAPI) Create(value *sacloud.SimpleMonitor) (*sacloud.SimpleMonitor, error) {

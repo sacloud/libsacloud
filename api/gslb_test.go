@@ -9,9 +9,9 @@ const testGslbName = "test_libsakuracloud_gslb"
 
 func TestGslbGet(t *testing.T) {
 
-	currentRegion := client.Region
-	defer func() { client.Region = currentRegion }()
-	client.Region = "is1a"
+	currentRegion := client.Zone
+	defer func() { client.Zone = currentRegion }()
+	client.Zone = "is1a"
 
 	item, err := client.GSLB.findOrCreateBy(testGslbName)
 	assert.NoError(t, err)
@@ -36,6 +36,30 @@ func TestGslbGet(t *testing.T) {
 	assert.Equal(t, item.Settings.GSLB.Servers[1].Weight, "1")
 	assert.Equal(t, item.Settings.GSLB.Servers[1].Enabled, "True")
 
+	client.GSLB.Delete(item.ID)
+
+}
+
+func TestGSLBCreate(t *testing.T) {
+	currentRegion := client.Zone
+	defer func() { client.Zone = currentRegion }()
+	client.Zone = "is1a"
+
+	item := client.GSLB.New(testGslbName)
+	assert.Equal(t, item.Name, testGslbName)
+
+	//IPを追加して保存してみる
+	item.AddGSLBServer(item.CreateGSLBServer("8.8.8.8"))
+	item.AddGSLBServer(item.CreateGSLBServer("8.8.4.4"))
+
+	assert.Equal(t, item.Settings.GSLB.Servers[0].IPAddress, "8.8.8.8")
+	assert.Equal(t, item.Settings.GSLB.Servers[0].Weight, "1")
+	assert.Equal(t, item.Settings.GSLB.Servers[0].Enabled, "True")
+	assert.Equal(t, item.Settings.GSLB.Servers[1].IPAddress, "8.8.4.4")
+	assert.Equal(t, item.Settings.GSLB.Servers[1].Weight, "1")
+	assert.Equal(t, item.Settings.GSLB.Servers[1].Enabled, "True")
+
+	client.GSLB.Delete(item.ID)
 }
 
 func init() {

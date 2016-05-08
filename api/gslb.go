@@ -78,8 +78,8 @@ func (api *GSLBAPI) createRequest(value *sacloud.GSLB) *gslbResponse {
 	return &gslbResponse{GSLB: value}
 }
 
-func (api *GSLBAPI) New() *sacloud.GSLB {
-	return &sacloud.GSLB{}
+func (api *GSLBAPI) New(name string) *sacloud.GSLB {
+	return sacloud.CreateNewGSLB(name)
 }
 
 func (api *GSLBAPI) Create(value *sacloud.GSLB) (*sacloud.GSLB, error) {
