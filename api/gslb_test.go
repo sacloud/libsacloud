@@ -48,9 +48,16 @@ func TestGSLBCreate(t *testing.T) {
 	item := client.GSLB.New(testGslbName)
 	assert.Equal(t, item.Name, testGslbName)
 
+	item.Settings.GSLB.HealthCheck.Host = "libsacloud.com"
+
 	//IPを追加して保存してみる
 	item.AddGSLBServer(item.CreateGSLBServer("8.8.8.8"))
 	item.AddGSLBServer(item.CreateGSLBServer("8.8.4.4"))
+
+	item, err := client.GSLB.Create(item)
+
+	assert.NoError(t, err)
+	assert.NotEmpty(t, item.Settings.GSLB.HealthCheck.Host, "libsacloud.com")
 
 	assert.Equal(t, item.Settings.GSLB.Servers[0].IPAddress, "8.8.8.8")
 	assert.Equal(t, item.Settings.GSLB.Servers[0].Weight, "1")

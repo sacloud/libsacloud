@@ -134,12 +134,14 @@ type GSLBServer struct {
 // GSLBHealthCheck type of GSLBHealthCheck
 type GSLBHealthCheck struct {
 	Protocol string `json:",omitempty"`
+	Host     string `json:",omitempty"`
 	Path     string `json:",omitempty"`
 	Status   string `json:",omitempty"`
 }
 
 var defaultGSLBHealthCheck = GSLBHealthCheck{
 	Protocol: "http",
+	Host:     "",
 	Path:     "/",
 	Status:   "200",
 }
