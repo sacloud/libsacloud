@@ -88,6 +88,10 @@ func CreateNewSimpleMonitor(target string) *SimpleMonitor {
 
 }
 
+func AllowSimpleMonitorHealthCheckProtocol() []string {
+	return []string{"http", "https", "ping", "tcp", "dns", "ssh"}
+}
+
 func createSimpleMonitorNotifyEmail() *SimpleMonitorNotify {
 	return &SimpleMonitorNotify{
 		Enabled: "True",

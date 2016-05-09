@@ -51,7 +51,10 @@ func CreateNewDNS(zoneName string) *DNS {
 			DNS: DNSRecordSets{},
 		},
 	}
+}
 
+func AllowDNSTypes() []string {
+	return []string{"A", "AAAA", "CNAME", "NS", "MX", "TXT"}
 }
 
 func (d *DNS) SetZone(zone string) {

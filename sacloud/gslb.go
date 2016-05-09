@@ -52,6 +52,10 @@ func CreateNewGSLB(gslbName string) *GSLB {
 
 }
 
+func AllowGSLBHealthCheckProtocol() []string {
+	return []string{"http", "https", "ping", "tcp"}
+}
+
 // HasGSLBServer return has server
 func (d *GSLB) HasGSLBServer() bool {
 	return len(d.Settings.GSLB.Servers) > 0
@@ -137,6 +141,7 @@ type GSLBHealthCheck struct {
 	Host     string `json:",omitempty"`
 	Path     string `json:",omitempty"`
 	Status   string `json:",omitempty"`
+	Port     string `json:",omitempty"`
 }
 
 var defaultGSLBHealthCheck = GSLBHealthCheck{
