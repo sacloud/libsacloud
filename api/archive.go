@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	sakuraCloudPublicImageSearchWords = "Ubuntu%20Server%2014%2064bit"
+	sakuraCloudPublicImageSearchWords = "Ubuntu Server 14.04.4 LTS 64bit"
 )
 
 type ArchiveAPI struct {

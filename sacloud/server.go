@@ -57,7 +57,7 @@ func (s *Server) AddEmptyConnectedParam() {
 	if s.ConnectedSwitches == nil {
 		s.ClearConnectedSwitches()
 	}
-	s.ConnectedSwitches = append(s.ConnectedSwitches, "null")
+	s.ConnectedSwitches = append(s.ConnectedSwitches, nil)
 }
 
 // KeyboardRequest type of send-key request

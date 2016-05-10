@@ -57,6 +57,9 @@ func (e *EServerInstanceStatus) IsDown() bool {
 // EScope Enum [shared / user]
 type EScope string
 
+var ESCopeShared = EScope("shared")
+var ESCopeUser = EScope("user")
+
 // EDiskConnection Enum [virtio / ide]
 type EDiskConnection string
 

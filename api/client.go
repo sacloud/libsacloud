@@ -145,7 +145,6 @@ func (c *Client) newRequest(method, uri string, body interface{}) ([]byte, error
 			return nil, err
 		}
 		if method == "GET" {
-
 			url = fmt.Sprintf("%s/%s?%s", c.getEndpoint(), uri, bytes.NewBuffer(bodyJSON))
 			req, err = http.NewRequest(method, url, nil)
 		} else {

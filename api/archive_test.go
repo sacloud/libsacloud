@@ -16,6 +16,14 @@ func TestGetUbuntuArchiveID(t *testing.T) {
 	t.Logf("ubuntu archive ID : %s", id)
 }
 
+func TestGetUbuntuArchiveByName(t *testing.T) {
+	archiveAPI := client.Archive
+	res, err := archiveAPI.WithNameLike("Ubuntu Server 14.04.4 LTS 64bit").Find()
+	assert.NoError(t, err)
+	assert.NotEmpty(t, res)
+	assert.Equal(t, len(res.Archives), 1)
+}
+
 func TestFindState(t *testing.T) {
 	api := client.Archive
 

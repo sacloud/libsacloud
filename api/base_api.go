@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/yamamoto-febc/libsacloud/sacloud"
+	"net/url"
 )
 
 type baseAPI struct {
@@ -90,6 +91,15 @@ func (b *baseAPI) exclude(key string) *baseAPI {
 
 func (b *baseAPI) filterBy(key string, value interface{}, multiple bool) *baseAPI {
 	return b.setStateValue(func(state *sacloud.Request) {
+
+		//HACK さくらのクラウド側でqueryStringでの+エスケープに対応していないため、
+		// %20にエスケープされるurl.Pathを利用する。
+		// http://qiita.com/shibukawa/items/c0730092371c0e243f62
+		if strValue, ok := value.(string); ok {
+			u := &url.URL{Path: strValue}
+			value = u.String()
+		}
+
 		if state.Filter == nil {
 			state.Filter = map[string]interface{}{}
 		}

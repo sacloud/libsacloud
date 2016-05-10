@@ -83,7 +83,7 @@ func (api *DiskAPI) SortBySize(reverse bool) *DiskAPI {
 ************************************************/
 
 func (api *DiskAPI) New() *sacloud.Disk {
-	return &sacloud.Disk{}
+	return sacloud.CreateNewDisk()
 }
 
 //func (api *DiskAPI) Create(value *sacloud.Disk) (*sacloud.Disk, error) {

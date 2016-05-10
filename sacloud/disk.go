@@ -26,6 +26,7 @@ type Disk struct {
 	SourceDisk    *Disk               `json:",omitempty"`
 	JobStatus     *MigrationJobStatus `json:",omitempty"`
 	//BundleInfo
+	Server    *Server    `json:",omitempty"`
 	CreatedAt *time.Time `json:",omitempty"`
 	Icon      *Icon      `json:",omitempty"`
 	Tags      []string   `json:",omitempty"`
@@ -38,12 +39,17 @@ var (
 	DiskConnectionIDE    EDiskConnection = "ide"
 )
 
+func CreateNewDisk() *Disk {
+	return &Disk{
+		Plan: &NumberResource{ID: ""},
+	}
+}
+
 func (d *Disk) SetDiskPlanToHDD() {
 	d.Plan = DiskPlanHDD
 }
 func (d *Disk) SetDiskPlanToSSD() {
 	d.Plan = DiskPlanSSD
-
 }
 
 func (d *Disk) SetSourceArchive(sourceID string) {
