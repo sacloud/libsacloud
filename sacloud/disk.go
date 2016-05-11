@@ -66,22 +66,68 @@ func (d *Disk) SetSourceDisk(sourceID string) {
 
 // DiskEditValue type of disk edit request value
 type DiskEditValue struct {
-	Password      string   `json:",omitempty"`
-	SSHKey        SSHKey   `json:",omitempty"`
-	SSHKeys       []SSHKey `json:",omitempty"`
-	DisablePWAuth bool     `json:",omitempty"`
-	HostName      string   `json:",omitempty"`
-	UserIPAddress string   `json:",omitempty"`
-	UserSubnet    struct {
+	Password      *string   `json:",omitempty"`
+	SSHKey        *SSHKey   `json:",omitempty"`
+	SSHKeys       []*SSHKey `json:",omitempty"`
+	DisablePWAuth *bool     `json:",omitempty"`
+	HostName      *string   `json:",omitempty"`
+	UserIPAddress *string   `json:",omitempty"`
+	UserSubnet    *struct {
 		DefaultRoute   string `json:",omitempty"`
 		NetworkMaskLen string `json:",omitempty"`
 	} `json:",omitempty"`
-	Notes []Resource `json:",omitempty"`
+	Notes []*Resource `json:",omitempty"`
+}
+
+func (d *DiskEditValue) SetHostName(value string) {
+	d.HostName = &value
+}
+func (d *DiskEditValue) SetPassword(value string) {
+	d.Password = &value
+}
+func (d *DiskEditValue) SetSSHKeys(keyIDs []string) {
+	d.SSHKeys = []*SSHKey{}
+	for _, keyID := range keyIDs {
+		d.SSHKeys = append(d.SSHKeys, &SSHKey{Resource: &Resource{ID: keyID}})
+	}
+}
+func (d *DiskEditValue) SetDisablePWAuth(disable bool) {
+	d.DisablePWAuth = &disable
+}
+func (d *DiskEditValue) SetNotes(noteIDs []string) {
+	d.Notes = []*Resource{}
+	for _, noteID := range noteIDs {
+		d.Notes = append(d.Notes, &Resource{ID: noteID})
+	}
+
 }
 
 func (d *DiskEditValue) AddNote(noteID string) {
 	if d.Notes == nil {
-		d.Notes = []Resource{}
+		d.Notes = []*Resource{}
 	}
-	d.Notes = append(d.Notes, Resource{ID: noteID})
+	d.Notes = append(d.Notes, &Resource{ID: noteID})
+}
+
+func (d *DiskEditValue) SetUserIPAddress(ip string) {
+	d.UserIPAddress = &ip
+}
+func (d *DiskEditValue) SetDefaultRoute(route string) {
+	if d.UserSubnet == nil {
+		d.UserSubnet = &struct {
+			DefaultRoute   string `json:",omitempty"`
+			NetworkMaskLen string `json:",omitempty"`
+		}{}
+	}
+	d.UserSubnet.DefaultRoute = route
+}
+
+func (d *DiskEditValue) SetNetworkMaskLen(length string) {
+	if d.UserSubnet == nil {
+		d.UserSubnet = &struct {
+			DefaultRoute   string `json:",omitempty"`
+			NetworkMaskLen string `json:",omitempty"`
+		}{}
+	}
+	d.UserSubnet.NetworkMaskLen = length
 }

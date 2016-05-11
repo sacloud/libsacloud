@@ -24,6 +24,14 @@ func TestGetUbuntuArchiveByName(t *testing.T) {
 	assert.Equal(t, len(res.Archives), 1)
 }
 
+func TestGetCentOSArvhiveByName(t *testing.T) {
+	archiveAPI := client.Archive
+	res, err := archiveAPI.WithNameLike("CentOS 7.2 64bit").Find()
+	assert.NoError(t, err)
+	assert.NotEmpty(t, res)
+	assert.Equal(t, len(res.Archives), 1)
+}
+
 func TestFindState(t *testing.T) {
 	api := client.Archive
 

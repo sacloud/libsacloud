@@ -192,13 +192,15 @@ func (api *ServerAPI) SleepUntilDown(serverID string, timeout time.Duration) err
 	}
 }
 
-func (api *ServerAPI) ChangePlan(serverID string, planID string) (bool, error) {
+func (api *ServerAPI) ChangePlan(serverID string, planID string) (*sacloud.Server, error) {
 	var (
 		method = "PUT"
 		uri    = fmt.Sprintf("%s/%s/to/plan/%s", api.getResourceURL(), serverID, planID)
 	)
 
-	return api.modify(method, uri, nil)
+	return api.request(func(res *sacloud.Response) error {
+		return api.baseAPI.request(method, uri, nil, res)
+	})
 }
 
 func (api *ServerAPI) FindDisk(serverID string) ([]sacloud.Disk, error) {
