@@ -11,7 +11,6 @@ const testDiskName = "libsacloud_test_disk_name"
 
 func TestCRUDByDiskAPI(t *testing.T) {
 	diskAPI := client.Disk
-
 	//CREATE : empty disk
 	disk := &sacloud.Disk{
 		Name:       testDiskName,
