@@ -196,6 +196,13 @@ func TestMarshalRouterJSON(t *testing.T) {
 	assert.NotEmpty(t, router.ID)
 	assert.NotEmpty(t, router.Subnets)
 	assert.NotEmpty(t, router.Subnets[0].IPAddresses.Min)
+
+	ipaddresses, err := router.GetIPAddressList()
+	assert.NoError(t, err)
+	assert.NotEmpty(t, ipaddresses)
+	assert.Equal(t, router.Subnets[0].IPAddresses.Min, ipaddresses[0])
+	assert.Equal(t, router.Subnets[0].IPAddresses.Max, ipaddresses[len(ipaddresses)-1])
+
 	assert.NotEmpty(t, router.Internet)
 	assert.NotEmpty(t, router.IPv6Nets)
 
