@@ -58,6 +58,33 @@ func TestInternetCRUD(t *testing.T) {
 	assert.NoError(t, err)
 	assert.NotEqual(t, item.Description, "before")
 
+	item, err = api.UpdateBandWidth(id, 500) //IDが変わる
+	assert.NoError(t, err)
+
+	id = item.ID
+
+	item = nil
+	err = nil
+	current = 0 * time.Second
+	//READ
+	for item == nil && timeout > current {
+		item, err = api.Read(id)
+
+		if err != nil {
+			time.Sleep(interval)
+			current = current + interval
+			err = nil
+		}
+	}
+
+	if err != nil || current > timeout {
+		assert.Fail(t, "Timeout: Can't read /internet/"+id)
+	}
+
+	assert.NoError(t, err)
+
+	assert.Equal(t, item.BandWidthMbps, 500)
+
 	//Delete
 	_, err = api.Delete(id)
 	assert.NoError(t, err)
