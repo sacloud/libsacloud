@@ -25,28 +25,12 @@ func TestInternetCRUD(t *testing.T) {
 
 	id := item.ID
 
-	timeout := 120 * time.Second
-	current := 0 * time.Second
-	interval := 5 * time.Second
-
-	item = nil
-	err = nil
-	//READ
-	for item == nil && timeout > current {
-		item, err = api.Read(id)
-
-		if err != nil {
-			time.Sleep(interval)
-			current = current + interval
-			err = nil
-		}
-	}
-
-	if err != nil || current > timeout {
+	err = api.SleepWhileCreating(id, 120*time.Second)
+	if err != nil {
 		assert.Fail(t, "Timeout: Can't read /internet/"+id)
 	}
 
-	//item, err = api.Read(id)
+	item, err = api.Read(id)
 	assert.NoError(t, err)
 	assert.NotNil(t, item)
 	assert.NotEmpty(t, item)
@@ -63,26 +47,13 @@ func TestInternetCRUD(t *testing.T) {
 
 	id = item.ID
 
-	item = nil
-	err = nil
-	current = 0 * time.Second
-	//READ
-	for item == nil && timeout > current {
-		item, err = api.Read(id)
-
-		if err != nil {
-			time.Sleep(interval)
-			current = current + interval
-			err = nil
-		}
-	}
-
-	if err != nil || current > timeout {
+	err = api.SleepWhileCreating(id, 120*time.Second)
+	if err != nil {
 		assert.Fail(t, "Timeout: Can't read /internet/"+id)
 	}
-
 	assert.NoError(t, err)
 
+	item, err = api.Read(id)
 	assert.Equal(t, item.BandWidthMbps, 500)
 
 	//Delete

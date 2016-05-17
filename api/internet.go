@@ -3,6 +3,7 @@ package api
 import (
 	"fmt"
 	"github.com/yamamoto-febc/libsacloud/sacloud"
+	"time"
 )
 
 type InternetAPI struct {
@@ -31,4 +32,32 @@ func (api *InternetAPI) UpdateBandWidth(id string, bandWidth int) (*sacloud.Inte
 	return api.request(func(res *sacloud.Response) error {
 		return api.baseAPI.request(method, uri, body, res)
 	})
+}
+
+func (api *InternetAPI) SleepWhileCreating(internetID string, timeout time.Duration) error {
+	current := 0 * time.Second
+	interval := 5 * time.Second
+
+	var item *sacloud.Internet
+	var err error
+	//READ
+	for item == nil && timeout > current {
+		item, err = api.Read(internetID)
+
+		if err != nil {
+			time.Sleep(interval)
+			current = current + interval
+			err = nil
+		}
+	}
+
+	if err != nil {
+		return err
+	}
+	if current > timeout {
+		return fmt.Errorf("Timeout: Can't read /internet/%s", internetID)
+	}
+
+	return nil
+
 }
