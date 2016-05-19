@@ -2,7 +2,6 @@ package api
 
 import (
 	"github.com/stretchr/testify/assert"
-	"github.com/yamamoto-febc/libsacloud/sacloud"
 	"testing"
 )
 
@@ -18,12 +17,8 @@ func TestCRUDByPacketFilterAPI(t *testing.T) {
 	packetFilter := api.New()
 	packetFilter.Name = testPacketFilterName
 	packetFilter.Description = "aaaaaaa"
-	packetFilter.Expression = []sacloud.PacketFilterExpression{
-		{
-			Protocol: "tcp",
-			Action:   "deny",
-		},
-	}
+	packetFilter.AddTCPRule("", "", "", "", false)
+	packetFilter.AddUDPRule("", "", "", "", false)
 
 	res, err := api.Create(packetFilter)
 	assert.NoError(t, err)
@@ -37,6 +32,8 @@ func TestCRUDByPacketFilterAPI(t *testing.T) {
 	assert.NoError(t, err)
 	assert.NotEmpty(t, res)
 	assert.NotEmpty(t, res.Description)
+
+	assert.Equal(t, len(res.Expression), 2)
 
 	//UPDATE
 	packetFilter.Description = testPacketFilterDesciprionAfter
