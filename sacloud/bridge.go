@@ -7,14 +7,7 @@ type Bridge struct {
 	Name        string `json:",omitempty"`
 	Description string `json:",omitempty"`
 	Info        struct {
-		Switched []struct {
-			*Resource
-			Name string `json:",omitempty"`
-			Zone []struct {
-				*NumberResource
-				Name string `json:",omitempty"`
-			}
-		}
+		Switches []Switch
 	}
 	ServiceClass string     `json:",omitempty"`
 	CreatedAt    *time.Time `json:",omitempty"`
