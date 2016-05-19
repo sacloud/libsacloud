@@ -39,6 +39,29 @@ func TestVPCRouterCRUD(t *testing.T) {
 	assert.NoError(t, err)
 	assert.NotEqual(t, item.Description, "before")
 
+	////connect to switch
+	//sw := client.Switch.New()
+	//sw.Name = testSwitchName
+	//
+	//sw, err = client.Switch.Create(sw)
+	//assert.NoError(t, err)
+	//assert.NotEmpty(t, sw)
+	//
+	//err = client.VPCRouter.AddStandardInterface(item.ID, sw.ID, "192.168.11.1", 24)
+	//assert.NoError(t, err)
+	//
+	//_, err = client.VPCRouter.Config(item.ID)
+	//assert.NoError(t, err)
+	//
+	//item, err = api.Read(id)
+	//assert.NoError(t, err)
+	//assert.NotEmpty(t, item)
+	//
+	////check connected switch
+	//assert.Equal(t, item.Settings.Router.Interfaces[1].IPAddress[0], "192.168.11.1")
+	//assert.Equal(t, item.Settings.Router.Interfaces[1].NetworkMaskLen, 24)
+	//assert.Equal(t, item.Settings.Router.Interfaces[1].VirtualIPAddress, "")
+
 	//Delete
 	_, err = api.Delete(id)
 	assert.NoError(t, err)
