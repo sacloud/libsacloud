@@ -66,7 +66,7 @@ func (api *InterfaceAPI) ConnectToPacketFilter(interfaceID string, packetFilterI
 
 func (api *InterfaceAPI) DisconnectFromPacketFilter(interfaceID string) (bool, error) {
 	var (
-		method = "DELTE"
+		method = "DELETE"
 		uri    = fmt.Sprintf("/%s/%s/to/packetfilter", api.getResourceURL(), interfaceID)
 	)
 	return api.modify(method, uri, nil)
