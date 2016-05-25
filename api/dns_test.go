@@ -53,15 +53,16 @@ func TestCreateDNSRecords(t *testing.T) {
 
 	//IPを追加して保存してみる
 	item.AddRecord(item.CreateNewRecord("test1", "A", "192.168.0.1", 3600))
-	item.AddRecord(item.CreateNewRecord("test2", "A", "192.168.0.2", 3600))
+	item.AddRecord(item.CreateNewRecord("test1", "A", "192.168.0.2", 3600))
 
 	item, err := client.DNS.Create(item)
 	assert.NoError(t, err)
 	assert.NotNil(t, item)
+	assert.Equal(t, len(item.Settings.DNS.ResourceRecordSets), 2)
 	assert.Equal(t, item.Settings.DNS.ResourceRecordSets[0].Name, "test1")
 	assert.Equal(t, item.Settings.DNS.ResourceRecordSets[0].RData, "192.168.0.1")
 	assert.Equal(t, item.Settings.DNS.ResourceRecordSets[0].Type, "A")
-	assert.Equal(t, item.Settings.DNS.ResourceRecordSets[1].Name, "test2")
+	assert.Equal(t, item.Settings.DNS.ResourceRecordSets[1].Name, "test1")
 	assert.Equal(t, item.Settings.DNS.ResourceRecordSets[1].RData, "192.168.0.2")
 	assert.Equal(t, item.Settings.DNS.ResourceRecordSets[1].Type, "A")
 
