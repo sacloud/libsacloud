@@ -76,6 +76,26 @@ var (
 		"Protocol": "ssh",
 		"Port": "22"
 	}`
+	testSMTPMonitoringJSON = `
+	{
+		"Protocol": "smtp",
+		"Port": "25"
+	}`
+	testPOP3MonitoringJSON = `
+	{
+		"Protocol": "pop3",
+		"Port": "110"
+	}`
+
+	testSNMPMonitoringJSON = `
+	{
+		"Protocol":"snmp",
+		"Community":"gggg",
+		"SNMPVersion":"2c",
+		"OID":".1.3.6.1.2.1.1.5.0",
+		"ExpectedData":"12"
+	}
+	`
 )
 
 func TestMarshalSimpleMonitorJSON(t *testing.T) {
@@ -116,5 +136,26 @@ func TestMarshalSimpleMonitorJSON(t *testing.T) {
 	assert.NoError(t, err)
 	assert.NotEmpty(t, simpleMonitor.Settings.SimpleMonitor.HealthCheck.Protocol)
 	assert.NotEmpty(t, simpleMonitor.Settings.SimpleMonitor.HealthCheck.Port)
+
+	//smtp
+	err = json.Unmarshal([]byte(fmt.Sprintf(testSimpleMonitorJSONTemplate, testSMTPMonitoringJSON)), &simpleMonitor)
+	assert.NoError(t, err)
+	assert.NotEmpty(t, simpleMonitor.Settings.SimpleMonitor.HealthCheck.Protocol)
+	assert.NotEmpty(t, simpleMonitor.Settings.SimpleMonitor.HealthCheck.Port)
+
+	//pop3
+	err = json.Unmarshal([]byte(fmt.Sprintf(testSimpleMonitorJSONTemplate, testPOP3MonitoringJSON)), &simpleMonitor)
+	assert.NoError(t, err)
+	assert.NotEmpty(t, simpleMonitor.Settings.SimpleMonitor.HealthCheck.Protocol)
+	assert.NotEmpty(t, simpleMonitor.Settings.SimpleMonitor.HealthCheck.Port)
+
+	//snmp
+	err = json.Unmarshal([]byte(fmt.Sprintf(testSimpleMonitorJSONTemplate, testSNMPMonitoringJSON)), &simpleMonitor)
+	assert.NoError(t, err)
+	assert.NotEmpty(t, simpleMonitor.Settings.SimpleMonitor.HealthCheck.Protocol)
+	assert.NotEmpty(t, simpleMonitor.Settings.SimpleMonitor.HealthCheck.Community)
+	assert.NotEmpty(t, simpleMonitor.Settings.SimpleMonitor.HealthCheck.SNMPVersion)
+	assert.NotEmpty(t, simpleMonitor.Settings.SimpleMonitor.HealthCheck.OID)
+	assert.NotEmpty(t, simpleMonitor.Settings.SimpleMonitor.HealthCheck.ExpectedData)
 
 }
