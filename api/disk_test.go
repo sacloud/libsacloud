@@ -57,8 +57,9 @@ func TestCRUDByDiskAPI(t *testing.T) {
 func TestCreateDiskFromSource(t *testing.T) {
 	diskAPI := client.Disk
 
-	archiveID, err := client.Archive.GetUbuntuArchiveID()
+	archives, err := client.Archive.WithNameLike("CentOS 7.2 64bit").Find()
 	assert.NoError(t, err)
+	archiveID := archives.Archives[0].ID
 
 	//CREATE : empty disk
 	disk := &sacloud.Disk{

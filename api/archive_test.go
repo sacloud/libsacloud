@@ -8,22 +8,6 @@ import (
 
 const testArchiveName = "libsacloud_test_archive"
 
-func TestGetUbuntuArchiveID(t *testing.T) {
-	archiveAPI := client.Archive
-	id, err := archiveAPI.GetUbuntuArchiveID()
-	assert.NoError(t, err)
-	assert.NotEmpty(t, id)
-	t.Logf("ubuntu archive ID : %s", id)
-}
-
-func TestGetUbuntuArchiveByName(t *testing.T) {
-	archiveAPI := client.Archive
-	res, err := archiveAPI.WithNameLike("Ubuntu Server 14.04.4 LTS 64bit").Find()
-	assert.NoError(t, err)
-	assert.NotEmpty(t, res)
-	assert.Equal(t, len(res.Archives), 1)
-}
-
 func TestGetCentOSArvhiveByName(t *testing.T) {
 	archiveAPI := client.Archive
 	res, err := archiveAPI.WithNameLike("CentOS 7.2 64bit").Find()
@@ -117,9 +101,10 @@ func TestCRUDAndFTP(t *testing.T) {
 func TestCreateAndWait(t *testing.T) {
 
 	archiveAPI := client.Archive
-	id, err := archiveAPI.GetUbuntuArchiveID()
+	archives, err := archiveAPI.WithNameLike("CentOS 7.2 64bit").Find()
 
 	assert.NoError(t, err)
+	id := archives.Archives[0].ID
 	assert.NotEmpty(t, id)
 
 	//CREATE

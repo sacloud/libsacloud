@@ -46,22 +46,6 @@ func TestCRUDByNoteAPI(t *testing.T) {
 	assert.NotEmpty(t, res)
 }
 
-func TestFindAndCreateIfAbsentNote(t *testing.T) {
-	noteAPI := client.Note
-	//存在しないノート名で検索すると新規作成の上IDを返してくれる
-	createdNoteID, err := noteAPI.findOrCreateBy(testFindOrCreateByName, testFindOrCreateByContent)
-
-	assert.NoError(t, err)
-	assert.NotEmpty(t, createdNoteID)
-
-	//すでに同じ名前のノートがあるため作成していないはず
-	searchedNoteID, err := noteAPI.findOrCreateBy(testFindOrCreateByName, testFindOrCreateByContent)
-
-	assert.NoError(t, err)
-	assert.NotEmpty(t, searchedNoteID)
-	assert.Equal(t, createdNoteID, searchedNoteID)
-}
-
 func init() {
 	testSetupHandlers = append(testSetupHandlers, cleanupTestNote)
 	testSetupHandlers = append(testSetupHandlers, cleanupFindOrCreateByNote)
