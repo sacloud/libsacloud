@@ -61,7 +61,8 @@ var (
 		"Protocol": "http",
 		"Path": "\/index.html",
 		"Status": "200",
-		"Port": "80"
+		"Port": "80",
+		"Host" : "www.libsacloud.com"
 	}`
 
 	testDNSMonitoringJSON = `
@@ -123,6 +124,7 @@ func TestMarshalSimpleMonitorJSON(t *testing.T) {
 	assert.NotEmpty(t, simpleMonitor.Settings.SimpleMonitor.HealthCheck.Path)
 	assert.NotEmpty(t, simpleMonitor.Settings.SimpleMonitor.HealthCheck.Port)
 	assert.NotEmpty(t, simpleMonitor.Settings.SimpleMonitor.HealthCheck.Status)
+	assert.NotEmpty(t, simpleMonitor.Settings.SimpleMonitor.HealthCheck.Host)
 
 	//dns
 	err = json.Unmarshal([]byte(fmt.Sprintf(testSimpleMonitorJSONTemplate, testDNSMonitoringJSON)), &simpleMonitor)

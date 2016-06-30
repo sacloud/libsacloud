@@ -11,7 +11,7 @@ func TestSimpleMonitorCRUD(t *testing.T) {
 
 	currentRegion := client.Zone
 	defer func() { client.Zone = currentRegion }()
-	client.Zone = "is1a"
+	client.Zone = "is1b"
 
 	api := client.SimpleMonitor
 
@@ -20,7 +20,7 @@ func TestSimpleMonitorCRUD(t *testing.T) {
 	newItem.Description = "before"
 	newItem.SetDelayLoop(60)
 	newItem.EnableNotifyEmail()
-	newItem.SetHealthCheckPing()
+	newItem.SetHealthCheckHTTP("80", "/index.html", "200", "www.libsacloud.com")
 
 	item, err := api.Create(newItem)
 

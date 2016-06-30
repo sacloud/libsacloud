@@ -29,7 +29,8 @@ var testGSLBJSON = `
                             "Enabled": "True",
                             "Weight": "30"
                         }
-                    ]
+                    ],
+                    "SorryServer" : "133.242.224.11"
                 }
             },
             "Status": {
