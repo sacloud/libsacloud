@@ -124,6 +124,47 @@ var (
         ]
     }
     	`
+
+	createLoadBalancerValues = &CreateLoadBalancerValue{
+		SwitchID:     "9999999999",
+		VRID:         1,
+		Plan:         LoadBalancerPlanStandard,
+		IPAddress1:   "192.168.11.11",
+		MaskLen:      28,
+		DefaultRoute: "192.168.11.1",
+		Name:         "TestLoadBalancer",
+		Description:  "TestDescription",
+		Tags:         []string{"tag1", "tag2", "tag3"},
+		Icon:         &Resource{ID: "9999999999"},
+	}
+	loadBalancerSettings = []*LoadBalancerSetting{
+		{
+			VirtualIPAddress: "192.168.11.101",
+			Port:             "8080",
+			DelayLoop:        "30",
+			SorryServer:      "192.168.11.201",
+			Servers: []*LoadBalancerServer{
+				{
+					IPAddress: "192.168.11.51",
+					Port:      "8080",
+					HealthCheck: &LoadBalancerHealthCheck{
+						Protocol: "http",
+						Path:     "/",
+						Status:   "200",
+					},
+				},
+				{
+					IPAddress: "192.168.11.52",
+					Port:      "8080",
+					HealthCheck: &LoadBalancerHealthCheck{
+						Protocol: "http",
+						Path:     "/",
+						Status:   "200",
+					},
+				},
+			},
+		},
+	}
 )
 
 func TestMarshalLoadBalancerJSON(t *testing.T) {
@@ -162,5 +203,100 @@ func TestMarshalLoadBalancerJSON(t *testing.T) {
 	assert.NotEmpty(t, lb.Settings.LoadBalancer[0].Servers[1].HealthCheck.Protocol)
 	assert.Empty(t, lb.Settings.LoadBalancer[0].Servers[1].HealthCheck.Path)
 	assert.Empty(t, lb.Settings.LoadBalancer[0].Servers[1].HealthCheck.Status)
+
+}
+
+func TestCreateNewLoadBalancerSingle(t *testing.T) {
+
+	lb, err := CreateNewLoadBalancerSingle(createLoadBalancerValues, loadBalancerSettings)
+	assert.NoError(t, err)
+	assert.NotEmpty(t, lb)
+
+	assert.Equal(t, lb.Class, "loadbalancer")
+
+	assert.Equal(t, lb.Remark.Switch.ID, "9999999999")
+	assert.Equal(t, lb.Remark.VRRP.VRID, 1)
+	plan, err := lb.Plan.ID.Int64()
+	assert.NoError(t, err)
+	assert.Equal(t, LoadBalancerPlan(plan), LoadBalancerPlanStandard)
+
+	assert.Equal(t, lb.Remark.Servers[0].(map[string]string)["IPAddress"], "192.168.11.11")
+	assert.Equal(t, lb.Remark.Network.NetworkMaskLen, 28)
+	assert.Equal(t, lb.Remark.Network.DefaultRoute, "192.168.11.1")
+	assert.Equal(t, lb.Name, "TestLoadBalancer")
+	assert.Equal(t, lb.Description, "TestDescription")
+	assert.Equal(t, lb.Tags, []string{"tag1", "tag2", "tag3"})
+	assert.Equal(t, lb.Icon.ID, "9999999999")
+
+	assert.Equal(t, len(lb.Settings.LoadBalancer), 1)
+	setting := lb.Settings.LoadBalancer[0]
+
+	assert.Equal(t, setting.VirtualIPAddress, "192.168.11.101")
+	assert.Equal(t, setting.Port, "8080")
+	assert.Equal(t, setting.DelayLoop, "30")
+	assert.Equal(t, setting.SorryServer, "192.168.11.201")
+	assert.Equal(t, len(setting.Servers), 2)
+
+	assert.Equal(t, setting.Servers[0].IPAddress, "192.168.11.51")
+	assert.Equal(t, setting.Servers[0].Port, "8080")
+	assert.Equal(t, setting.Servers[0].HealthCheck.Protocol, "http")
+	assert.Equal(t, setting.Servers[0].HealthCheck.Path, "/")
+	assert.Equal(t, setting.Servers[0].HealthCheck.Status, "200")
+
+	assert.Equal(t, setting.Servers[1].IPAddress, "192.168.11.52")
+	assert.Equal(t, setting.Servers[1].Port, "8080")
+	assert.Equal(t, setting.Servers[1].HealthCheck.Protocol, "http")
+	assert.Equal(t, setting.Servers[1].HealthCheck.Path, "/")
+	assert.Equal(t, setting.Servers[1].HealthCheck.Status, "200")
+}
+
+func TestCreateNewLoadBalancerDouble(t *testing.T) {
+	values := &CreateDoubleLoadBalancerValue{
+		CreateLoadBalancerValue: createLoadBalancerValues,
+		IPAddress2:              "192.168.11.12",
+	}
+
+	lb, err := CreateNewLoadBalancerDouble(values, loadBalancerSettings)
+	assert.NoError(t, err)
+	assert.NotEmpty(t, lb)
+
+	assert.Equal(t, lb.Class, "loadbalancer")
+
+	assert.Equal(t, lb.Remark.Switch.ID, "9999999999")
+	assert.Equal(t, lb.Remark.VRRP.VRID, 1)
+	plan, err := lb.Plan.ID.Int64()
+	assert.NoError(t, err)
+	assert.Equal(t, LoadBalancerPlan(plan), LoadBalancerPlanStandard)
+
+	assert.Equal(t, lb.Remark.Servers[0].(map[string]string)["IPAddress"], "192.168.11.11")
+	assert.Equal(t, lb.Remark.Servers[1].(map[string]string)["IPAddress"], "192.168.11.12")
+
+	assert.Equal(t, lb.Remark.Network.NetworkMaskLen, 28)
+	assert.Equal(t, lb.Remark.Network.DefaultRoute, "192.168.11.1")
+	assert.Equal(t, lb.Name, "TestLoadBalancer")
+	assert.Equal(t, lb.Description, "TestDescription")
+	assert.Equal(t, lb.Tags, []string{"tag1", "tag2", "tag3"})
+	assert.Equal(t, lb.Icon.ID, "9999999999")
+
+	assert.Equal(t, len(lb.Settings.LoadBalancer), 1)
+	setting := lb.Settings.LoadBalancer[0]
+
+	assert.Equal(t, setting.VirtualIPAddress, "192.168.11.101")
+	assert.Equal(t, setting.Port, "8080")
+	assert.Equal(t, setting.DelayLoop, "30")
+	assert.Equal(t, setting.SorryServer, "192.168.11.201")
+	assert.Equal(t, len(setting.Servers), 2)
+
+	assert.Equal(t, setting.Servers[0].IPAddress, "192.168.11.51")
+	assert.Equal(t, setting.Servers[0].Port, "8080")
+	assert.Equal(t, setting.Servers[0].HealthCheck.Protocol, "http")
+	assert.Equal(t, setting.Servers[0].HealthCheck.Path, "/")
+	assert.Equal(t, setting.Servers[0].HealthCheck.Status, "200")
+
+	assert.Equal(t, setting.Servers[1].IPAddress, "192.168.11.52")
+	assert.Equal(t, setting.Servers[1].Port, "8080")
+	assert.Equal(t, setting.Servers[1].HealthCheck.Protocol, "http")
+	assert.Equal(t, setting.Servers[1].HealthCheck.Path, "/")
+	assert.Equal(t, setting.Servers[1].HealthCheck.Status, "200")
 
 }

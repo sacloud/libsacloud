@@ -2,55 +2,120 @@ package api
 
 import (
 	"github.com/stretchr/testify/assert"
+	"github.com/yamamoto-febc/libsacloud/sacloud"
 	"testing"
+	"time"
 )
 
-func TestLoadBalancer(t *testing.T) {
-	assert.True(t, true)
+const testLoadBalancerName = "libsacloud_test_LoadBalancer"
+
+var (
+	createLoadBalancerValues = &sacloud.CreateLoadBalancerValue{
+		VRID:         1,
+		Plan:         sacloud.LoadBalancerPlanStandard,
+		IPAddress1:   "192.168.11.11",
+		MaskLen:      24,
+		DefaultRoute: "192.168.11.1",
+		Name:         "TestLoadBalancer",
+		Description:  "TestDescription",
+		Tags:         []string{"tag1", "tag2", "tag3"},
+	}
+	loadBalancerSettings = []*sacloud.LoadBalancerSetting{
+		{
+			VirtualIPAddress: "192.168.11.101",
+			Port:             "8080",
+			DelayLoop:        "30",
+			SorryServer:      "192.168.11.201",
+			Servers: []*sacloud.LoadBalancerServer{
+				{
+					IPAddress: "192.168.11.51",
+					Port:      "8080",
+					HealthCheck: &sacloud.LoadBalancerHealthCheck{
+						Protocol: "http",
+						Path:     "/",
+						Status:   "200",
+					},
+				},
+				{
+					IPAddress: "192.168.11.52",
+					Port:      "8080",
+					HealthCheck: &sacloud.LoadBalancerHealthCheck{
+						Protocol: "http",
+						Path:     "/",
+						Status:   "200",
+					},
+				},
+			},
+		},
+	}
+)
+
+func TestLoadBalancerCRUD(t *testing.T) {
+	api := client.LoadBalancer
+
+	//prerequired
+	sw := client.Switch.New()
+	sw.Name = testLoadBalancerName
+	sw, err := client.Switch.Create(sw)
+
+	assert.NoError(t, err)
+	assert.NotEmpty(t, sw)
+
+	//CREATE
+	createLoadBalancerValues.SwitchID = sw.ID
+	newItem, err := sacloud.CreateNewLoadBalancerSingle(createLoadBalancerValues, loadBalancerSettings)
+	assert.NoError(t, err)
+
+	item, err := api.Create(newItem)
+
+	assert.NoError(t, err)
+	assert.NotEmpty(t, item)
+
+	id := item.ID
+
+	api.SleepWhileCopying(id, 10*time.Minute)
+
+	//READ
+	item, err = api.Read(id)
+	assert.NoError(t, err)
+	assert.NotEmpty(t, item)
+
+	//UPDATE
+	item.Description = "after"
+	item, err = api.Update(id, item)
+
+	assert.NoError(t, err)
+	assert.NotEqual(t, item.Description, "before")
+
+	//power off
+	_, err = api.Stop(id)
+	assert.NoError(t, err)
+
+	api.SleepUntilDown(id, 10*time.Minute)
+
+	//Delete
+	_, err = api.Delete(id)
+	assert.NoError(t, err)
+
+	_, err = client.Switch.Delete(sw.ID)
+	assert.NoError(t, err)
+
 }
 
-//const testLoadBalancerName = "libsacloud_test_LoadBalancer"
-//
-//func TestLoadBalancerCRUD(t *testing.T) {
-//	api := client.LoadBalancer
-//
-//	//CREATE
-//	newItem := api.New()
-//	newItem.Name = testLoadBalancerName
-//	newItem.Description = "before"
-//
-//	item, err := api.Create(newItem)
-//
-//	assert.NoError(t, err)
-//	assert.NotEmpty(t, item)
-//
-//	id := item.ID
-//
-//	//READ
-//	item, err = api.Read(id)
-//	assert.NoError(t, err)
-//	assert.NotEmpty(t, item)
-//
-//	//UPDATE
-//	item.Description = "after"
-//	item, err = api.Update(id, item)
-//
-//	assert.NoError(t, err)
-//	assert.NotEqual(t, item.Description, "before")
-//
-//	//Delete
-//	_, err = api.Delete(id)
-//	assert.NoError(t, err)
-//}
-//
-//func init() {
-//	testSetupHandlers = append(testSetupHandlers, cleanupLoadBalancer)
-//	testTearDownHandlers = append(testTearDownHandlers, cleanupLoadBalancer)
-//}
-//
-//func cleanupLoadBalancer() {
-//	items, _ := client.LoadBalancer.Reset().WithNameLike(testLoadBalancerName).Find()
-//	for _, item := range items.LoadBalancers {
-//		client.LoadBalancer.Delete(item.ID)
-//	}
-//}
+func init() {
+	testSetupHandlers = append(testSetupHandlers, cleanupLoadBalancer)
+	testTearDownHandlers = append(testTearDownHandlers, cleanupLoadBalancer)
+}
+
+func cleanupLoadBalancer() {
+	sw, _ := client.Switch.Reset().WithNameLike(testLoadBalancerName).Find()
+	for _, item := range sw.Switches {
+		client.Switch.Delete(item.ID)
+	}
+
+	items, _ := client.LoadBalancer.Reset().WithNameLike(testLoadBalancerName).Find()
+	for _, item := range items.LoadBalancers {
+		client.LoadBalancer.Delete(item.ID)
+	}
+
+}
