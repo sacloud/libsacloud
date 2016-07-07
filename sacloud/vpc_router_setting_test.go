@@ -211,4 +211,6 @@ func TestMarshalVPCRouterSettingJSON(t *testing.T) {
 
 	assert.NoError(t, err)
 	assert.NotEmpty(t, setting)
+
+	assert.Equal(t, *setting.VRID, 1)
 }

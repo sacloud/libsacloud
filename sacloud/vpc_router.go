@@ -27,6 +27,15 @@ func CreateNewVPCRouter() *VPCRouter {
 				Switch:  &ApplianceRemarkSwitch{},
 			},
 		},
+		Settings: &VPCRouterSettings{
+			Router: &VPCRouterSetting{},
+		},
+	}
+}
+
+func (v *VPCRouter) InitVPCRouterSetting() {
+	v.Settings = &VPCRouterSettings{
+		Router: &VPCRouterSetting{},
 	}
 }
 
@@ -69,7 +78,7 @@ func (v *VPCRouter) setPremiumServices(switchID string, virtualIPAddress string,
 					NetworkMaskLen:   networkMaskLen,
 				},
 			},
-			VRID: vrid,
+			VRID: &vrid,
 		},
 	}
 

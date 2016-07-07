@@ -141,6 +141,54 @@ func TestVPCRouterPremiumCRUD(t *testing.T) {
 	assert.NoError(t, err)
 }
 
+//func TestVPCRouterCRUDWithL2TP(t *testing.T) {
+//	api := client.VPCRouter
+//
+//	//CREATE
+//	newItem := api.New()
+//	newItem.SetStandardPlan()
+//	newItem.Name = testVPCRouterName
+//	newItem.Description = "l2tp"
+//	item, err := api.Create(newItem)
+//
+//	assert.NoError(t, err)
+//	assert.NotEmpty(t, item)
+//
+//	id := item.ID
+//
+//	//wait
+//	api.SleepWhileCopying(id, 300*time.Second)
+//
+//	////connect to switch
+//	//sw := client.Switch.New()
+//	//sw.Name = testSwitchName
+//	//
+//	//sw, err = client.Switch.Create(sw)
+//	//assert.NoError(t, err)
+//	//assert.NotEmpty(t, sw)
+//	//
+//	//err = client.VPCRouter.AddStandardInterface(item.ID, sw.ID, "192.168.100.1", 24)
+//	//assert.NoError(t, err)
+//
+//	item.InitVPCRouterSetting()
+//	item.Settings.Router.EnableL2TPIPsecServer("secret-hogehoge", "192.168.100.100", "192.168.100.200")
+//	item.Settings.Router.AddRemoteAccessUser("user01", "password")
+//
+//	//update
+//	item, err = api.Update(id, item)
+//	assert.NoError(t, err)
+//	assert.NotEmpty(t, item)
+//
+//	// config
+//	res, err := api.Config(id)
+//	assert.NoError(t, err)
+//	assert.True(t, res)
+//
+//	//Delete
+//	//_, err = api.Delete(id)
+//	//assert.NoError(t, err)
+//}
+
 func init() {
 	testSetupHandlers = append(testSetupHandlers, cleanupVPCRouter)
 	testTearDownHandlers = append(testTearDownHandlers, cleanupVPCRouter)
