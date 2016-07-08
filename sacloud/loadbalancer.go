@@ -137,3 +137,22 @@ func (l *LoadBalancer) DeleteLoadBalancerSetting(vip string, port string) {
 
 	l.Settings.LoadBalancer = res
 }
+
+func (s *LoadBalancerSetting) AddServer(server *LoadBalancerServer) {
+	if s.Servers == nil {
+		s.Servers = []*LoadBalancerServer{}
+	}
+	s.Servers = append(s.Servers, server)
+}
+
+func (s *LoadBalancerSetting) DeleteServer(ip string, port string) {
+	res := []*LoadBalancerServer{}
+	for _, server := range s.Servers {
+		if server.IPAddress != ip || server.Port != port {
+			res = append(res, server)
+		}
+	}
+
+	s.Servers = res
+
+}

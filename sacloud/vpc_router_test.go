@@ -152,7 +152,7 @@ func TestMarshalVPCRouterJSON(t *testing.T) {
 	assert.NotEmpty(t, router.Settings.Router)
 
 	//for standard
-	assert.Empty(t, router.Settings.Router.VRID)
+	assert.Nil(t, router.Settings.Router.VRID)
 	assert.NotEmpty(t, router.Settings.Router.Interfaces)
 
 	assert.Nil(t, router.Settings.Router.Interfaces[0])
