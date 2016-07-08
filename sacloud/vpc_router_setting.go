@@ -22,7 +22,6 @@ type VPCRouterInterface struct {
 	VirtualIPAddress string   `json:",omitempty"`
 }
 
-// VPCRouterStaticNAT
 type VPCRouterStaticNAT struct {
 	Config  []*VPCRouterStaticNATConfig `json:",omitempty"`
 	Enabled string                      `json:",omitempty"`
@@ -49,7 +48,6 @@ func (s *VPCRouterSetting) AddStaticNAT(globalAddress string, privateAddress str
 	})
 }
 
-// VPCRouterPortForwarding
 type VPCRouterPortForwarding struct {
 	Config  []*VPCRouterPortForwardingConfig `json:",omitempty"`
 	Enabled string                           `json:",omitempty"`
@@ -80,7 +78,6 @@ func (s *VPCRouterSetting) AddPortForwarding(protocol string, globalPort int, pr
 	})
 }
 
-// VPCRouterFirewall
 type VPCRouterFirewall struct {
 	Config  []*VPCRouterFirewallSetting `json:",omitempty"`
 	Enabled string                      `json:",omitempty"`
@@ -103,7 +100,7 @@ func (s *VPCRouterSetting) addFirewallRule(direction string, rule *VPCRouterFire
 		s.Firewall = &VPCRouterFirewall{
 			Enabled: "True",
 			Config: []*VPCRouterFirewallSetting{
-				&VPCRouterFirewallSetting{
+				{
 					Receive: []*VPCRouterFirewallRule{},
 					Send:    []*VPCRouterFirewallRule{},
 				},
