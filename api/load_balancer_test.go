@@ -73,7 +73,7 @@ func TestLoadBalancerCRUD(t *testing.T) {
 
 	id := item.ID
 
-	api.SleepWhileCopying(id, 10*time.Minute)
+	api.SleepWhileCopying(id, 20*time.Minute)
 
 	//READ
 	item, err = api.Read(id)
@@ -91,7 +91,46 @@ func TestLoadBalancerCRUD(t *testing.T) {
 	_, err = api.Stop(id)
 	assert.NoError(t, err)
 
-	api.SleepUntilDown(id, 10*time.Minute)
+	api.SleepUntilDown(id, 20*time.Minute)
+
+	//Delete
+	_, err = api.Delete(id)
+	assert.NoError(t, err)
+
+	_, err = client.Switch.Delete(sw.ID)
+	assert.NoError(t, err)
+
+}
+
+func TestLoadBalancerCRUDWithoutVIP(t *testing.T) {
+	api := client.LoadBalancer
+
+	//prerequired
+	sw := client.Switch.New()
+	sw.Name = testLoadBalancerName
+	sw, err := client.Switch.Create(sw)
+
+	assert.NoError(t, err)
+	assert.NotEmpty(t, sw)
+
+	//CREATE
+	createLoadBalancerValues.SwitchID = sw.ID
+	newItem, err := sacloud.CreateNewLoadBalancerSingle(createLoadBalancerValues, nil)
+	assert.NoError(t, err)
+
+	item, err := api.Create(newItem)
+	assert.NoError(t, err)
+	assert.NotEmpty(t, item)
+
+	id := item.ID
+
+	api.SleepWhileCopying(id, 20*time.Minute)
+
+	//power off
+	_, err = api.Stop(id)
+	assert.NoError(t, err)
+
+	api.SleepUntilDown(id, 20*time.Minute)
 
 	//Delete
 	_, err = api.Delete(id)
