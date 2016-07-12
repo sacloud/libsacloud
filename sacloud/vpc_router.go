@@ -47,17 +47,17 @@ func (v *VPCRouter) SetStandardPlan() {
 	v.Settings = nil
 }
 
-func (v *VPCRouter) SetPremiumPlan(switchID string, virtualIPAddress string, ipAddress1 string, ipAddress2 string, vrid int, networkMaskLen int) {
+func (v *VPCRouter) SetPremiumPlan(switchID string, virtualIPAddress string, ipAddress1 string, ipAddress2 string, vrid int) {
 	v.Plan.SetIDByNumber(2)
-	v.setPremiumServices(switchID, virtualIPAddress, ipAddress1, ipAddress2, vrid, networkMaskLen)
+	v.setPremiumServices(switchID, virtualIPAddress, ipAddress1, ipAddress2, vrid)
 }
 
-func (v *VPCRouter) SetHighSpecPlan(switchID string, virtualIPAddress string, ipAddress1 string, ipAddress2 string, vrid int, networkMaskLen int) {
+func (v *VPCRouter) SetHighSpecPlan(switchID string, virtualIPAddress string, ipAddress1 string, ipAddress2 string, vrid int) {
 	v.Plan.SetIDByNumber(3)
-	v.setPremiumServices(switchID, virtualIPAddress, ipAddress1, ipAddress2, vrid, networkMaskLen)
+	v.setPremiumServices(switchID, virtualIPAddress, ipAddress1, ipAddress2, vrid)
 }
 
-func (v *VPCRouter) setPremiumServices(switchID string, virtualIPAddress string, ipAddress1 string, ipAddress2 string, vrid int, networkMaskLen int) {
+func (v *VPCRouter) setPremiumServices(switchID string, virtualIPAddress string, ipAddress1 string, ipAddress2 string, vrid int) {
 	v.Remark.Switch = &ApplianceRemarkSwitch{
 		ID: switchID,
 	}
@@ -75,7 +75,6 @@ func (v *VPCRouter) setPremiumServices(switchID string, virtualIPAddress string,
 						ipAddress2,
 					},
 					VirtualIPAddress: virtualIPAddress,
-					NetworkMaskLen:   networkMaskLen,
 				},
 			},
 			VRID: &vrid,

@@ -117,7 +117,7 @@ func TestVPCRouterPremiumCRUD(t *testing.T) {
 
 	//CREATE
 	newItem := api.New()
-	newItem.SetPremiumPlan(sw.ID, vip, ip1, ip2, 1, internet.NetworkMaskLen)
+	newItem.SetPremiumPlan(sw.ID, vip, ip1, ip2, 1)
 	newItem.Name = testVPCRouterName
 	newItem.Description = "before"
 	item, err := api.Create(newItem)
