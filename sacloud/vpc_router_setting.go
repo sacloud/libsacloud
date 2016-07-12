@@ -23,7 +23,7 @@ type VPCRouterInterface struct {
 	IPAliases        []string `json:",omitempty"`
 }
 
-func (s *VPCRouterSetting) AddInterface(vip string, ipaddress []string, maskLen int, ipaliases []string) {
+func (s *VPCRouterSetting) AddInterface(vip string, ipaddress []string, maskLen int) {
 	if s.Interfaces == nil {
 		s.Interfaces = []*VPCRouterInterface{nil}
 	}
@@ -31,7 +31,6 @@ func (s *VPCRouterSetting) AddInterface(vip string, ipaddress []string, maskLen 
 		VirtualIPAddress: vip,
 		IPAddress:        ipaddress,
 		NetworkMaskLen:   maskLen,
-		IPAliases:        ipaliases,
 	})
 }
 
