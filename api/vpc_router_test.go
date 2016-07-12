@@ -20,7 +20,7 @@ func TestVPCRouterCRUD(t *testing.T) {
 
 	// hack
 	newItem.InitVPCRouterSetting()
-	newItem.Settings.Router.AddInterface("192.168.11.1", 24)
+	newItem.Settings.Router.AddInterface("", []string{"192.168.11.1"}, 24)
 	newItem.Settings.Router.EnableL2TPIPsecServer("preshared", "192.168.11.100", "192.168.11.200")
 	newItem.Settings.Router.AddRemoteAccessUser("yamamoto", "hogehogeo")
 

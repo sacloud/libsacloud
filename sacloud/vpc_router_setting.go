@@ -22,12 +22,12 @@ type VPCRouterInterface struct {
 	VirtualIPAddress string   `json:",omitempty"`
 }
 
-func (s *VPCRouterSetting) AddInterface(ipAddress string, maskLen int) {
+func (s *VPCRouterSetting) AddInterface(vip string, ipaddress []string, maskLen int) {
 	if s.Interfaces == nil {
 		s.Interfaces = []*VPCRouterInterface{nil}
 	}
 	s.Interfaces = append(s.Interfaces, &VPCRouterInterface{
-		IPAddress:      []string{ipAddress},
+		IPAddress:      ipaddress,
 		NetworkMaskLen: maskLen,
 	})
 }
