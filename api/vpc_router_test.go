@@ -17,6 +17,13 @@ func TestVPCRouterCRUD(t *testing.T) {
 	newItem.SetStandardPlan()
 	newItem.Name = testVPCRouterName
 	newItem.Description = "before"
+
+	// hack
+	newItem.InitVPCRouterSetting()
+	newItem.Settings.Router.AddInterface("192.168.11.1", 24)
+	newItem.Settings.Router.EnableL2TPIPsecServer("preshared", "192.168.11.100", "192.168.11.200")
+	newItem.Settings.Router.AddRemoteAccessUser("yamamoto", "hogehogeo")
+
 	item, err := api.Create(newItem)
 
 	assert.NoError(t, err)
@@ -33,34 +40,33 @@ func TestVPCRouterCRUD(t *testing.T) {
 	assert.NotEmpty(t, item)
 
 	//UPDATE
-	item.Description = "after"
-	item, err = api.Update(id, item)
-
-	assert.NoError(t, err)
-	assert.NotEqual(t, item.Description, "before")
-
-	////connect to switch
-	//sw := client.Switch.New()
-	//sw.Name = testSwitchName
+	//item.Description = "after"
+	//item.Settings.Router.Interfaces = nil
+	//item, err = api.Update(id, item)
 	//
-	//sw, err = client.Switch.Create(sw)
 	//assert.NoError(t, err)
-	//assert.NotEmpty(t, sw)
+	//assert.NotEqual(t, item.Description, "before")
 	//
-	//err = client.VPCRouter.AddStandardInterface(item.ID, sw.ID, "192.168.11.1", 24)
-	//assert.NoError(t, err)
+	//////connect to switch
+	////sw := client.Switch.New()
+	////sw.Name = testSwitchName
+	////
+	////sw, err = client.Switch.Create(sw)
+	////assert.NoError(t, err)
+	////assert.NotEmpty(t, sw)
+	////
 	//
 	//_, err = client.VPCRouter.Config(item.ID)
 	//assert.NoError(t, err)
-	//
-	//item, err = api.Read(id)
-	//assert.NoError(t, err)
-	//assert.NotEmpty(t, item)
-	//
-	////check connected switch
-	//assert.Equal(t, item.Settings.Router.Interfaces[1].IPAddress[0], "192.168.11.1")
-	//assert.Equal(t, item.Settings.Router.Interfaces[1].NetworkMaskLen, 24)
-	//assert.Equal(t, item.Settings.Router.Interfaces[1].VirtualIPAddress, "")
+
+	item, err = api.Read(id)
+	assert.NoError(t, err)
+	assert.NotEmpty(t, item)
+
+	//check connected switch
+	assert.Equal(t, item.Settings.Router.Interfaces[1].IPAddress[0], "192.168.11.1")
+	assert.Equal(t, item.Settings.Router.Interfaces[1].NetworkMaskLen, 24)
+	assert.Equal(t, item.Settings.Router.Interfaces[1].VirtualIPAddress, "")
 
 	//Delete
 	_, err = api.Delete(id)

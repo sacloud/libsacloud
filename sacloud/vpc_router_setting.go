@@ -22,6 +22,16 @@ type VPCRouterInterface struct {
 	VirtualIPAddress string   `json:",omitempty"`
 }
 
+func (s *VPCRouterSetting) AddInterface(ipAddress string, maskLen int) {
+	if s.Interfaces == nil {
+		s.Interfaces = []*VPCRouterInterface{nil}
+	}
+	s.Interfaces = append(s.Interfaces, &VPCRouterInterface{
+		IPAddress:      []string{ipAddress},
+		NetworkMaskLen: maskLen,
+	})
+}
+
 type VPCRouterStaticNAT struct {
 	Config  []*VPCRouterStaticNATConfig `json:",omitempty"`
 	Enabled string                      `json:",omitempty"`
