@@ -100,6 +100,15 @@ func (api *VPCRouterAPI) Update(id string, value *sacloud.VPCRouter) (*sacloud.V
 	})
 }
 
+func (api *VPCRouterAPI) UpdateSetting(id string, value *sacloud.VPCRouter) (*sacloud.VPCRouter, error) {
+	req := &sacloud.VPCRouter{
+		Settings: value.Settings,
+	}
+	return api.request(func(res *vpcRouterResponse) error {
+		return api.update(id, api.createRequest(req), res)
+	})
+}
+
 func (api *VPCRouterAPI) Delete(id string) (*sacloud.VPCRouter, error) {
 	return api.request(func(res *vpcRouterResponse) error {
 		return api.delete(id, nil, res)
