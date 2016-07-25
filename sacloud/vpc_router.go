@@ -34,9 +34,15 @@ func CreateNewVPCRouter() *VPCRouter {
 }
 
 func (v *VPCRouter) InitVPCRouterSetting() {
-	v.Settings = &VPCRouterSettings{
+	settings := &VPCRouterSettings{
 		Router: &VPCRouterSetting{},
 	}
+
+	if v.Settings != nil && v.Settings.Router != nil && v.Settings.Router.Interfaces != nil {
+		settings.Router.Interfaces = v.Settings.Router.Interfaces
+	}
+
+	v.Settings = settings
 }
 
 func (v *VPCRouter) SetStandardPlan() {

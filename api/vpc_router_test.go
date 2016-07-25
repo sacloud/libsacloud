@@ -22,7 +22,7 @@ func TestVPCRouterCRUD(t *testing.T) {
 	newItem.InitVPCRouterSetting()
 	newItem.Settings.Router.AddInterface("", []string{"192.168.11.1"}, 24)
 	newItem.Settings.Router.EnableL2TPIPsecServer("preshared", "192.168.11.100", "192.168.11.200")
-	newItem.Settings.Router.AddRemoteAccessUser("yamamoto", "hogehogeo")
+	newItem.Settings.Router.AddRemoteAccessUser("hogehoge", "hogehogeo")
 
 	item, err := api.Create(newItem)
 
@@ -147,53 +147,79 @@ func TestVPCRouterPremiumCRUD(t *testing.T) {
 	assert.NoError(t, err)
 }
 
-//func TestVPCRouterCRUDWithL2TP(t *testing.T) {
-//	api := client.VPCRouter
-//
-//	//CREATE
-//	newItem := api.New()
-//	newItem.SetStandardPlan()
-//	newItem.Name = testVPCRouterName
-//	newItem.Description = "l2tp"
-//	item, err := api.Create(newItem)
-//
-//	assert.NoError(t, err)
-//	assert.NotEmpty(t, item)
-//
-//	id := item.ID
-//
-//	//wait
-//	api.SleepWhileCopying(id, 300*time.Second)
-//
-//	////connect to switch
-//	//sw := client.Switch.New()
-//	//sw.Name = testSwitchName
-//	//
-//	//sw, err = client.Switch.Create(sw)
-//	//assert.NoError(t, err)
-//	//assert.NotEmpty(t, sw)
-//	//
-//	//err = client.VPCRouter.AddStandardInterface(item.ID, sw.ID, "192.168.100.1", 24)
-//	//assert.NoError(t, err)
-//
-//	item.InitVPCRouterSetting()
-//	item.Settings.Router.EnableL2TPIPsecServer("secret-hogehoge", "192.168.100.100", "192.168.100.200")
-//	item.Settings.Router.AddRemoteAccessUser("user01", "password")
-//
-//	//update
-//	item, err = api.Update(id, item)
-//	assert.NoError(t, err)
-//	assert.NotEmpty(t, item)
-//
-//	// config
-//	res, err := api.Config(id)
-//	assert.NoError(t, err)
-//	assert.True(t, res)
-//
-//	//Delete
-//	//_, err = api.Delete(id)
-//	//assert.NoError(t, err)
-//}
+func TestVPCRouterCRUDWithL2TP(t *testing.T) {
+	api := client.VPCRouter
+
+	//CREATE
+	newItem := api.New()
+	newItem.SetStandardPlan()
+	newItem.Name = testVPCRouterName
+
+	newItem.Description = "l2tp"
+	item, err := api.Create(newItem)
+
+	assert.NoError(t, err)
+	assert.NotEmpty(t, item)
+
+	id := item.ID
+
+	//wait
+	api.SleepWhileCopying(id, 300*time.Second)
+
+	////connect to switch
+	sw := client.Switch.New()
+	sw.Name = testVPCRouterName
+
+	sw, err = client.Switch.Create(sw)
+	assert.NoError(t, err)
+	assert.NotEmpty(t, sw)
+
+	item, err = client.VPCRouter.AddStandardInterface(item.ID, sw.ID, "192.168.100.1", 24)
+	assert.NoError(t, err)
+
+	item.InitVPCRouterSetting()
+	item.Settings.Router.EnableL2TPIPsecServer("secrethogehoge", "192.168.100.100", "192.168.100.200")
+	item.Settings.Router.AddRemoteAccessUser("user01", "password")
+
+	//update
+	item, err = api.UpdateSetting(id, item)
+
+	assert.NoError(t, err)
+	assert.NotEmpty(t, item)
+
+	//add
+	sw2 := client.Switch.New()
+	sw2.Name = testVPCRouterName
+
+	sw2, err = client.Switch.Create(sw)
+	assert.NoError(t, err)
+	assert.NotEmpty(t, sw2)
+
+	item, err = client.VPCRouter.AddStandardInterface(item.ID, sw2.ID, "192.168.200.1", 24)
+	assert.NoError(t, err)
+	assert.NotEmpty(t, item)
+
+	assert.Len(t, item.Settings.Router.Interfaces, 3)
+	assert.Equal(t, item.Settings.Router.Interfaces[1].IPAddress[0], "192.168.100.1")
+	assert.Equal(t, item.Settings.Router.Interfaces[2].IPAddress[0], "192.168.200.1")
+
+	//delete
+	item, err = client.VPCRouter.DeleteInterfaceAt(item.ID, 2)
+	assert.NoError(t, err)
+	assert.NotEmpty(t, item)
+	assert.Nil(t, item.Settings.Router.Interfaces[2])
+	assert.Equal(t, item.Settings.Router.Interfaces[1].IPAddress[0], "192.168.100.1")
+
+	// config
+	res, err := api.Config(id)
+	assert.NoError(t, err)
+	assert.True(t, res)
+
+	//Delete
+	_, err = api.Delete(id)
+	assert.NoError(t, err)
+
+}
 
 func init() {
 	testSetupHandlers = append(testSetupHandlers, cleanupVPCRouter)
@@ -206,6 +232,10 @@ func init() {
 func cleanupVPCRouter() {
 	items, _ := client.VPCRouter.Reset().WithNameLike(testVPCRouterName).Find()
 	for _, item := range items.VPCRouters {
+		client.VPCRouter.Delete(item.ID)
+	}
+	sw, _ := client.Switch.Reset().WithNameLike(testVPCRouterName).Find()
+	for _, item := range sw.Switches {
 		client.VPCRouter.Delete(item.ID)
 	}
 }
