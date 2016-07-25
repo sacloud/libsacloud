@@ -45,6 +45,19 @@ func (v *VPCRouter) InitVPCRouterSetting() {
 	v.Settings = settings
 }
 
+func (v *VPCRouter) IsStandardPlan() bool {
+	id, _ := v.Plan.ID.Int64()
+	return id == 1
+}
+func (v *VPCRouter) IsPremiumPlan() bool {
+	id, _ := v.Plan.ID.Int64()
+	return id == 2
+}
+func (v *VPCRouter) IsHighSpecPlan() bool {
+	id, _ := v.Plan.ID.Int64()
+	return id == 3
+}
+
 func (v *VPCRouter) SetStandardPlan() {
 	v.Plan.SetIDByNumber(1)
 	v.Remark.Switch = &ApplianceRemarkSwitch{
