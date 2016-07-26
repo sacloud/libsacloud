@@ -236,7 +236,7 @@ func cleanupVPCRouter() {
 	}
 	sw, _ := client.Switch.Reset().WithNameLike(testVPCRouterName).Find()
 	for _, item := range sw.Switches {
-		client.VPCRouter.Delete(item.ID)
+		client.Switch.Delete(item.ID)
 	}
 }
 
