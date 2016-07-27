@@ -88,6 +88,15 @@ func (s *VPCRouterSetting) RemoveStaticNAT(globalAddress string, privateAddress 
 	s.StaticNAT.Enabled = "True"
 }
 
+func (s *VPCRouterSetting) FindStaticNAT(globalAddress string, privateAddress string) *VPCRouterStaticNATConfig {
+	for _, c := range s.StaticNAT.Config {
+		if c.GlobalAddress == globalAddress && c.PrivateAddress == privateAddress {
+			return c
+		}
+	}
+	return nil
+}
+
 type VPCRouterPortForwarding struct {
 	Config  []*VPCRouterPortForwardingConfig `json:",omitempty"`
 	Enabled string                           `json:",omitempty"`
@@ -142,6 +151,15 @@ func (s *VPCRouterSetting) RemovePortForwarding(protocol string, globalPort int,
 		return
 	}
 	s.PortForwarding.Enabled = "True"
+}
+func (s *VPCRouterSetting) FindPortForwarding(protocol string, globalPort int, privateAddress string, privatePort int) *VPCRouterPortForwardingConfig {
+	for _, c := range s.PortForwarding.Config {
+		if c.Protocol == protocol && c.GlobalPort == fmt.Sprintf("%d", globalPort) &&
+			c.PrivateAddress == privateAddress && c.PrivatePort == fmt.Sprintf("%d", privatePort) {
+			return c
+		}
+	}
+	return nil
 }
 
 type VPCRouterFirewall struct {
@@ -231,6 +249,30 @@ func (s *VPCRouterSetting) removeFirewallRule(direction string, rule *VPCRouterF
 
 }
 
+func (s *VPCRouterSetting) findFirewallRule(direction string, rule *VPCRouterFirewallRule) *VPCRouterFirewallRule {
+	switch direction {
+	case "send":
+		for _, c := range s.Firewall.Config[0].Send {
+			if c.Action == rule.Action && c.Protocol == rule.Protocol &&
+				c.SourceNetwork == rule.SourceNetwork && c.SourcePort == rule.SourcePort &&
+				c.DestinationNetwork == rule.DestinationNetwork && c.DestinationPort == rule.DestinationPort {
+				return c
+			}
+		}
+	case "receive":
+		for _, c := range s.Firewall.Config[0].Receive {
+			if c.Action == rule.Action && c.Protocol == rule.Protocol &&
+				c.SourceNetwork == rule.SourceNetwork && c.SourcePort == rule.SourcePort &&
+				c.DestinationNetwork == rule.DestinationNetwork && c.DestinationPort == rule.DestinationPort {
+				return c
+			}
+		}
+	}
+
+	return nil
+
+}
+
 func (s *VPCRouterSetting) AddFirewallRuleSend(isAllow bool, protocol string, sourceNetwork string, sourcePort string, destNetwork string, destPort string) {
 	action := "deny"
 	if isAllow {
@@ -247,6 +289,7 @@ func (s *VPCRouterSetting) AddFirewallRuleSend(isAllow bool, protocol string, so
 
 	s.addFirewallRule("send", rule)
 }
+
 func (s *VPCRouterSetting) RemoveFirewallRuleSend(isAllow bool, protocol string, sourceNetwork string, sourcePort string, destNetwork string, destPort string) {
 	action := "deny"
 	if isAllow {
@@ -262,6 +305,23 @@ func (s *VPCRouterSetting) RemoveFirewallRuleSend(isAllow bool, protocol string,
 	}
 
 	s.removeFirewallRule("send", rule)
+}
+
+func (s *VPCRouterSetting) FindFirewallRuleSend(isAllow bool, protocol string, sourceNetwork string, sourcePort string, destNetwork string, destPort string) *VPCRouterFirewallRule {
+	action := "deny"
+	if isAllow {
+		action = "allow"
+	}
+	rule := &VPCRouterFirewallRule{
+		Action:             action,
+		Protocol:           protocol,
+		SourceNetwork:      sourceNetwork,
+		SourcePort:         sourcePort,
+		DestinationNetwork: destNetwork,
+		DestinationPort:    destPort,
+	}
+
+	return s.findFirewallRule("send", rule)
 }
 
 func (s *VPCRouterSetting) AddFirewallRuleReceive(isAllow bool, protocol string, sourceNetwork string, sourcePort string, destNetwork string, destPort string) {
@@ -296,6 +356,23 @@ func (s *VPCRouterSetting) RemoveFirewallRuleReceive(isAllow bool, protocol stri
 	}
 
 	s.removeFirewallRule("receive", rule)
+}
+
+func (s *VPCRouterSetting) FindFirewallRuleReceive(isAllow bool, protocol string, sourceNetwork string, sourcePort string, destNetwork string, destPort string) *VPCRouterFirewallRule {
+	action := "deny"
+	if isAllow {
+		action = "allow"
+	}
+	rule := &VPCRouterFirewallRule{
+		Action:             action,
+		Protocol:           protocol,
+		SourceNetwork:      sourceNetwork,
+		SourcePort:         sourcePort,
+		DestinationNetwork: destNetwork,
+		DestinationPort:    destPort,
+	}
+
+	return s.findFirewallRule("receive", rule)
 }
 
 type VPCRouterDHCPServer struct {
@@ -354,6 +431,15 @@ func (s *VPCRouterSetting) RemoveDHCPServer(nicIndex int, rangeStart string, ran
 
 }
 
+func (s *VPCRouterSetting) FindDHCPServer(nicIndex int, rangeStart string, rangeStop string) *VPCRouterDHCPServerConfig {
+	for _, c := range s.DHCPServer.Config {
+		if c.Interface == fmt.Sprintf("eth%d", nicIndex) && c.RangeStart == rangeStart && c.RangeStop == rangeStop {
+			return c
+		}
+	}
+	return nil
+}
+
 type VPCRouterDHCPStaticMapping struct {
 	Config  []*VPCRouterDHCPStaticMappingConfig `json:",omitempty"`
 	Enabled string                              `json:",omitempty"`
@@ -404,6 +490,15 @@ func (s *VPCRouterSetting) RemoveDHCPStaticMapping(ipAddress string, macAddress 
 	}
 	s.DHCPStaticMapping.Enabled = "True"
 
+}
+
+func (s *VPCRouterSetting) FindDHCPStaticMapping(ipAddress string, macAddress string) *VPCRouterDHCPStaticMappingConfig {
+	for _, c := range s.DHCPStaticMapping.Config {
+		if c.IPAddress == ipAddress && c.MACAddress == macAddress {
+			return c
+		}
+	}
+	return nil
 }
 
 type VPCRouterL2TPIPsecServer struct {
@@ -519,6 +614,15 @@ func (s *VPCRouterSetting) RemoveRemoteAccessUser(userName string, password stri
 	s.RemoteAccessUsers.Enabled = "True"
 }
 
+func (s *VPCRouterSetting) FindRemoteAccessUser(userName string, password string) *VPCRouterRemoteAccessUsersConfig {
+	for _, c := range s.RemoteAccessUsers.Config {
+		if c.UserName == userName && c.Password == password {
+			return c
+		}
+	}
+	return nil
+}
+
 type VPCRouterSiteToSiteIPsecVPN struct {
 	Config  []*VPCRouterSiteToSiteIPsecVPNConfig `json:",omitempty"`
 	Enabled string                               `json:",omitempty"`
@@ -583,6 +687,23 @@ func (s *VPCRouterSetting) RemoveSiteToSiteIPsecVPN(localPrefix []string, peer s
 		return
 	}
 	s.SiteToSiteIPsecVPN.Enabled = "True"
+}
+
+func (s *VPCRouterSetting) FindSiteToSiteIPsecVPN(localPrefix []string, peer string, preSharedSecret string, remoteID string, routes []string) *VPCRouterSiteToSiteIPsecVPNConfig {
+	config := &VPCRouterSiteToSiteIPsecVPNConfig{
+		LocalPrefix:     localPrefix,
+		Peer:            peer,
+		PreSharedSecret: preSharedSecret,
+		RemoteID:        remoteID,
+		Routes:          routes,
+	}
+
+	for _, c := range s.SiteToSiteIPsecVPN.Config {
+		if s.isSameSiteToSiteIPsecVPNConfig(c, config) {
+			return c
+		}
+	}
+	return nil
 }
 
 func (s *VPCRouterSetting) isSameSiteToSiteIPsecVPNConfig(c1 *VPCRouterSiteToSiteIPsecVPNConfig, c2 *VPCRouterSiteToSiteIPsecVPNConfig) bool {
