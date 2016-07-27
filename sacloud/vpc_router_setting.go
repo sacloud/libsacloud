@@ -1,6 +1,9 @@
 package sacloud
 
-import "fmt"
+import (
+	"fmt"
+	"reflect"
+)
 
 type VPCRouterSetting struct {
 	Interfaces         []*VPCRouterInterface        `json:",omitempty"`
@@ -60,6 +63,31 @@ func (s *VPCRouterSetting) AddStaticNAT(globalAddress string, privateAddress str
 	})
 }
 
+func (s *VPCRouterSetting) RemoveStaticNAT(globalAddress string, privateAddress string) {
+	if s.StaticNAT == nil {
+		return
+	}
+
+	if s.StaticNAT.Config == nil {
+		s.StaticNAT.Enabled = "False"
+		return
+	}
+
+	dest := []*VPCRouterStaticNATConfig{}
+	for _, c := range s.StaticNAT.Config {
+		if c.GlobalAddress != globalAddress || c.PrivateAddress != privateAddress {
+			dest = append(dest, c)
+		}
+	}
+	s.StaticNAT.Config = dest
+	if len(s.StaticNAT.Config) == 0 {
+		s.StaticNAT.Enabled = "False"
+		s.StaticNAT.Config = nil
+		return
+	}
+	s.StaticNAT.Enabled = "True"
+}
+
 type VPCRouterPortForwarding struct {
 	Config  []*VPCRouterPortForwardingConfig `json:",omitempty"`
 	Enabled string                           `json:",omitempty"`
@@ -88,6 +116,32 @@ func (s *VPCRouterSetting) AddPortForwarding(protocol string, globalPort int, pr
 		PrivateAddress: privateAddress,
 		PrivatePort:    fmt.Sprintf("%d", privatePort),
 	})
+}
+
+func (s *VPCRouterSetting) RemovePortForwarding(protocol string, globalPort int, privateAddress string, privatePort int) {
+	if s.PortForwarding == nil {
+		return
+	}
+
+	if s.PortForwarding.Config == nil {
+		s.PortForwarding.Enabled = "False"
+		return
+	}
+
+	dest := []*VPCRouterPortForwardingConfig{}
+	for _, c := range s.PortForwarding.Config {
+		if c.Protocol != protocol || c.GlobalPort != fmt.Sprintf("%d", globalPort) ||
+			c.PrivateAddress != privateAddress || c.PrivatePort != fmt.Sprintf("%d", privatePort) {
+			dest = append(dest, c)
+		}
+	}
+	s.PortForwarding.Config = dest
+	if len(s.PortForwarding.Config) == 0 {
+		s.PortForwarding.Enabled = "False"
+		s.PortForwarding.Config = nil
+		return
+	}
+	s.PortForwarding.Enabled = "True"
 }
 
 type VPCRouterFirewall struct {
@@ -127,6 +181,56 @@ func (s *VPCRouterSetting) addFirewallRule(direction string, rule *VPCRouterFire
 	}
 }
 
+func (s *VPCRouterSetting) removeFirewallRule(direction string, rule *VPCRouterFirewallRule) {
+
+	if s.Firewall == nil {
+		return
+	}
+
+	if s.Firewall.Config == nil {
+		s.Firewall.Enabled = "False"
+		return
+	}
+
+	switch direction {
+	case "send":
+		dest := []*VPCRouterFirewallRule{}
+		for _, c := range s.Firewall.Config[0].Send {
+			if c.Action != rule.Action || c.Protocol != rule.Protocol ||
+				c.SourceNetwork != rule.SourceNetwork || c.SourcePort != rule.SourcePort ||
+				c.DestinationNetwork != rule.DestinationNetwork || c.DestinationPort != rule.DestinationPort {
+				dest = append(dest, c)
+			}
+		}
+		s.Firewall.Config[0].Send = dest
+	case "receive":
+		dest := []*VPCRouterFirewallRule{}
+		for _, c := range s.Firewall.Config[0].Receive {
+			if c.Action != rule.Action || c.Protocol != rule.Protocol ||
+				c.SourceNetwork != rule.SourceNetwork || c.SourcePort != rule.SourcePort ||
+				c.DestinationNetwork != rule.DestinationNetwork || c.DestinationPort != rule.DestinationPort {
+				dest = append(dest, c)
+			}
+		}
+		s.Firewall.Config[0].Receive = dest
+	}
+
+	if len(s.Firewall.Config) == 0 {
+		s.Firewall.Enabled = "False"
+		s.Firewall.Config = nil
+		return
+	}
+
+	if len(s.Firewall.Config[0].Send) == 0 && len(s.Firewall.Config[0].Send) == 0 {
+		s.Firewall.Enabled = "False"
+		s.Firewall.Config = nil
+		return
+	}
+
+	s.PortForwarding.Enabled = "True"
+
+}
+
 func (s *VPCRouterSetting) AddFirewallRuleSend(isAllow bool, protocol string, sourceNetwork string, sourcePort string, destNetwork string, destPort string) {
 	action := "deny"
 	if isAllow {
@@ -143,6 +247,23 @@ func (s *VPCRouterSetting) AddFirewallRuleSend(isAllow bool, protocol string, so
 
 	s.addFirewallRule("send", rule)
 }
+func (s *VPCRouterSetting) RemoveFirewallRuleSend(isAllow bool, protocol string, sourceNetwork string, sourcePort string, destNetwork string, destPort string) {
+	action := "deny"
+	if isAllow {
+		action = "allow"
+	}
+	rule := &VPCRouterFirewallRule{
+		Action:             action,
+		Protocol:           protocol,
+		SourceNetwork:      sourceNetwork,
+		SourcePort:         sourcePort,
+		DestinationNetwork: destNetwork,
+		DestinationPort:    destPort,
+	}
+
+	s.removeFirewallRule("send", rule)
+}
+
 func (s *VPCRouterSetting) AddFirewallRuleReceive(isAllow bool, protocol string, sourceNetwork string, sourcePort string, destNetwork string, destPort string) {
 	action := "deny"
 	if isAllow {
@@ -158,6 +279,23 @@ func (s *VPCRouterSetting) AddFirewallRuleReceive(isAllow bool, protocol string,
 	}
 
 	s.addFirewallRule("receive", rule)
+}
+
+func (s *VPCRouterSetting) RemoveFirewallRuleReceive(isAllow bool, protocol string, sourceNetwork string, sourcePort string, destNetwork string, destPort string) {
+	action := "deny"
+	if isAllow {
+		action = "allow"
+	}
+	rule := &VPCRouterFirewallRule{
+		Action:             action,
+		Protocol:           protocol,
+		SourceNetwork:      sourceNetwork,
+		SourcePort:         sourcePort,
+		DestinationNetwork: destNetwork,
+		DestinationPort:    destPort,
+	}
+
+	s.removeFirewallRule("receive", rule)
 }
 
 type VPCRouterDHCPServer struct {
@@ -189,6 +327,33 @@ func (s *VPCRouterSetting) AddDHCPServer(nicIndex int, rangeStart string, rangeS
 
 }
 
+func (s *VPCRouterSetting) RemoveDHCPServer(nicIndex int, rangeStart string, rangeStop string) {
+	if s.DHCPServer == nil {
+		return
+	}
+
+	if s.DHCPServer.Config == nil {
+		s.DHCPServer.Enabled = "False"
+		return
+	}
+
+	dest := []*VPCRouterDHCPServerConfig{}
+	for _, c := range s.DHCPServer.Config {
+		if c.Interface != fmt.Sprintf("eth%d", nicIndex) || c.RangeStart != rangeStart || c.RangeStop != rangeStop {
+			dest = append(dest, c)
+		}
+	}
+	s.DHCPServer.Config = dest
+
+	if len(s.DHCPServer.Config) == 0 {
+		s.DHCPServer.Enabled = "False"
+		s.DHCPServer.Config = nil
+		return
+	}
+	s.DHCPServer.Enabled = "True"
+
+}
+
 type VPCRouterDHCPStaticMapping struct {
 	Config  []*VPCRouterDHCPStaticMappingConfig `json:",omitempty"`
 	Enabled string                              `json:",omitempty"`
@@ -212,6 +377,33 @@ func (s *VPCRouterSetting) AddDHCPStaticMapping(ipAddress string, macAddress str
 		IPAddress:  ipAddress,
 		MACAddress: macAddress,
 	})
+}
+
+func (s *VPCRouterSetting) RemoveDHCPStaticMapping(ipAddress string, macAddress string) {
+	if s.DHCPStaticMapping == nil {
+		return
+	}
+
+	if s.DHCPStaticMapping.Config == nil {
+		s.DHCPStaticMapping.Enabled = "False"
+		return
+	}
+
+	dest := []*VPCRouterDHCPStaticMappingConfig{}
+	for _, c := range s.DHCPStaticMapping.Config {
+		if c.IPAddress != ipAddress || c.MACAddress != macAddress {
+			dest = append(dest, c)
+		}
+	}
+	s.DHCPStaticMapping.Config = dest
+
+	if len(s.DHCPStaticMapping.Config) == 0 {
+		s.DHCPStaticMapping.Enabled = "False"
+		s.DHCPStaticMapping.Config = nil
+		return
+	}
+	s.DHCPStaticMapping.Enabled = "True"
+
 }
 
 type VPCRouterL2TPIPsecServer struct {
@@ -268,6 +460,15 @@ func (s *VPCRouterSetting) EnablePPTPServer(rangeStart string, rangeStop string)
 	}
 }
 
+func (s *VPCRouterSetting) DisablePPTPServer() {
+	if s.PPTPServer == nil {
+		s.PPTPServer = &VPCRouterPPTPServer{
+			Enabled: "False",
+		}
+	}
+	s.PPTPServer.Config = nil
+}
+
 type VPCRouterRemoteAccessUsers struct {
 	Config  []*VPCRouterRemoteAccessUsersConfig `json:",omitempty"`
 	Enabled string                              `json:",omitempty"`
@@ -290,6 +491,32 @@ func (s *VPCRouterSetting) AddRemoteAccessUser(userName string, password string)
 		UserName: userName,
 		Password: password,
 	})
+}
+
+func (s *VPCRouterSetting) RemoveRemoteAccessUser(userName string, password string) {
+	if s.RemoteAccessUsers == nil {
+		return
+	}
+
+	if s.RemoteAccessUsers.Config == nil {
+		s.RemoteAccessUsers.Enabled = "False"
+		return
+	}
+
+	dest := []*VPCRouterRemoteAccessUsersConfig{}
+	for _, c := range s.RemoteAccessUsers.Config {
+		if c.UserName != userName || c.Password != password {
+			dest = append(dest, c)
+		}
+	}
+	s.RemoteAccessUsers.Config = dest
+
+	if len(s.RemoteAccessUsers.Config) == 0 {
+		s.RemoteAccessUsers.Enabled = "False"
+		s.RemoteAccessUsers.Config = nil
+		return
+	}
+	s.RemoteAccessUsers.Enabled = "True"
 }
 
 type VPCRouterSiteToSiteIPsecVPN struct {
@@ -322,4 +549,46 @@ func (s *VPCRouterSetting) AddSiteToSiteIPsecVPN(localPrefix []string, peer stri
 		RemoteID:        remoteID,
 		Routes:          routes,
 	})
+}
+
+func (s *VPCRouterSetting) RemoveSiteToSiteIPsecVPN(localPrefix []string, peer string, preSharedSecret string, remoteID string, routes []string) {
+	config := &VPCRouterSiteToSiteIPsecVPNConfig{
+		LocalPrefix:     localPrefix,
+		Peer:            peer,
+		PreSharedSecret: preSharedSecret,
+		RemoteID:        remoteID,
+		Routes:          routes,
+	}
+
+	if s.SiteToSiteIPsecVPN == nil {
+		return
+	}
+
+	if s.SiteToSiteIPsecVPN.Config == nil {
+		s.SiteToSiteIPsecVPN.Enabled = "False"
+		return
+	}
+
+	dest := []*VPCRouterSiteToSiteIPsecVPNConfig{}
+	for _, c := range s.SiteToSiteIPsecVPN.Config {
+		if !s.isSameSiteToSiteIPsecVPNConfig(c, config) {
+			dest = append(dest, c)
+		}
+	}
+	s.SiteToSiteIPsecVPN.Config = dest
+
+	if len(s.SiteToSiteIPsecVPN.Config) == 0 {
+		s.SiteToSiteIPsecVPN.Enabled = "False"
+		s.SiteToSiteIPsecVPN.Config = nil
+		return
+	}
+	s.SiteToSiteIPsecVPN.Enabled = "True"
+}
+
+func (s *VPCRouterSetting) isSameSiteToSiteIPsecVPNConfig(c1 *VPCRouterSiteToSiteIPsecVPNConfig, c2 *VPCRouterSiteToSiteIPsecVPNConfig) bool {
+	return reflect.DeepEqual(c1.LocalPrefix, c2.LocalPrefix) &&
+		c1.Peer == c2.Peer &&
+		c1.PreSharedSecret == c2.PreSharedSecret &&
+		c1.RemoteID == c2.RemoteID &&
+		reflect.DeepEqual(c1.Routes, c2.Routes)
 }
