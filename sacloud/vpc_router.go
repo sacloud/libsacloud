@@ -41,6 +41,9 @@ func (v *VPCRouter) InitVPCRouterSetting() {
 	if v.Settings != nil && v.Settings.Router != nil && v.Settings.Router.Interfaces != nil {
 		settings.Router.Interfaces = v.Settings.Router.Interfaces
 	}
+	if v.Settings != nil && v.Settings.Router != nil && v.Settings.Router.VRID != nil {
+		settings.Router.VRID = v.Settings.Router.VRID
+	}
 
 	v.Settings = settings
 }

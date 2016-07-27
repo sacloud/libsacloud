@@ -108,7 +108,7 @@ type VPCRouterPortForwardingConfig struct {
 	PrivatePort    string `json:",omitempty"`
 }
 
-func (s *VPCRouterSetting) AddPortForwarding(protocol string, globalPort int, privateAddress string, privatePort int) {
+func (s *VPCRouterSetting) AddPortForwarding(protocol string, globalPort string, privateAddress string, privatePort string) {
 	if s.PortForwarding == nil {
 		s.PortForwarding = &VPCRouterPortForwarding{
 			Enabled: "True",
@@ -121,13 +121,13 @@ func (s *VPCRouterSetting) AddPortForwarding(protocol string, globalPort int, pr
 
 	s.PortForwarding.Config = append(s.PortForwarding.Config, &VPCRouterPortForwardingConfig{
 		Protocol:       protocol,
-		GlobalPort:     fmt.Sprintf("%d", globalPort),
+		GlobalPort:     globalPort,
 		PrivateAddress: privateAddress,
-		PrivatePort:    fmt.Sprintf("%d", privatePort),
+		PrivatePort:    privatePort,
 	})
 }
 
-func (s *VPCRouterSetting) RemovePortForwarding(protocol string, globalPort int, privateAddress string, privatePort int) {
+func (s *VPCRouterSetting) RemovePortForwarding(protocol string, globalPort string, privateAddress string, privatePort string) {
 	if s.PortForwarding == nil {
 		return
 	}
@@ -139,8 +139,8 @@ func (s *VPCRouterSetting) RemovePortForwarding(protocol string, globalPort int,
 
 	dest := []*VPCRouterPortForwardingConfig{}
 	for _, c := range s.PortForwarding.Config {
-		if c.Protocol != protocol || c.GlobalPort != fmt.Sprintf("%d", globalPort) ||
-			c.PrivateAddress != privateAddress || c.PrivatePort != fmt.Sprintf("%d", privatePort) {
+		if c.Protocol != protocol || c.GlobalPort != globalPort ||
+			c.PrivateAddress != privateAddress || c.PrivatePort != privatePort {
 			dest = append(dest, c)
 		}
 	}
@@ -152,10 +152,10 @@ func (s *VPCRouterSetting) RemovePortForwarding(protocol string, globalPort int,
 	}
 	s.PortForwarding.Enabled = "True"
 }
-func (s *VPCRouterSetting) FindPortForwarding(protocol string, globalPort int, privateAddress string, privatePort int) *VPCRouterPortForwardingConfig {
+func (s *VPCRouterSetting) FindPortForwarding(protocol string, globalPort string, privateAddress string, privatePort string) *VPCRouterPortForwardingConfig {
 	for _, c := range s.PortForwarding.Config {
-		if c.Protocol == protocol && c.GlobalPort == fmt.Sprintf("%d", globalPort) &&
-			c.PrivateAddress == privateAddress && c.PrivatePort == fmt.Sprintf("%d", privatePort) {
+		if c.Protocol == protocol && c.GlobalPort == globalPort &&
+			c.PrivateAddress == privateAddress && c.PrivatePort == privatePort {
 			return c
 		}
 	}
@@ -527,10 +527,9 @@ func (s *VPCRouterSetting) EnableL2TPIPsecServer(preSharedSecret string, rangeSt
 
 func (s *VPCRouterSetting) DisableL2TPIPsecServer() {
 	if s.L2TPIPsecServer == nil {
-		s.L2TPIPsecServer = &VPCRouterL2TPIPsecServer{
-			Enabled: "False",
-		}
+		s.L2TPIPsecServer = &VPCRouterL2TPIPsecServer{}
 	}
+	s.L2TPIPsecServer.Enabled = "False"
 	s.L2TPIPsecServer.Config = nil
 }
 
@@ -557,10 +556,9 @@ func (s *VPCRouterSetting) EnablePPTPServer(rangeStart string, rangeStop string)
 
 func (s *VPCRouterSetting) DisablePPTPServer() {
 	if s.PPTPServer == nil {
-		s.PPTPServer = &VPCRouterPPTPServer{
-			Enabled: "False",
-		}
+		s.PPTPServer = &VPCRouterPPTPServer{}
 	}
+	s.PPTPServer.Enabled = "False"
 	s.PPTPServer.Config = nil
 }
 
