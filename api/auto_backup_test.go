@@ -71,6 +71,10 @@ func init() {
 }
 
 func cleanupAutoBackupCommonServiceItem() {
+	currentRegion := client.Zone
+	defer func() { client.Zone = currentRegion }()
+	client.Zone = "is1b"
+
 	items, _ := client.AutoBackup.Reset().WithNameLike(testAutoBackupName).Find()
 	for _, item := range items.CommonServiceAutoBackupItems {
 		client.AutoBackup.Delete(item.ID)

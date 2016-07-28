@@ -249,10 +249,9 @@ func (api *VPCRouterAPI) SleepWhileCopying(vpcRouterID string, timeout time.Dura
 			if errCount > maxRetryCount {
 				return err
 			}
-			continue
 		}
 
-		if router.IsAvailable() {
+		if router != nil && router.IsAvailable() {
 			return nil
 		}
 		time.Sleep(interval)
