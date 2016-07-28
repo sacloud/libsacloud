@@ -32,7 +32,7 @@ func TestVPCRouterCRUD(t *testing.T) {
 	id := item.ID
 
 	//wait
-	api.SleepWhileCopying(id, 300*time.Second)
+	api.SleepWhileCopying(id, 300*time.Second, 3)
 
 	//READ
 	item, err = api.Read(id)
@@ -128,7 +128,7 @@ func TestVPCRouterPremiumCRUD(t *testing.T) {
 	id := item.ID
 
 	//wait
-	api.SleepWhileCopying(id, 300*time.Second)
+	api.SleepWhileCopying(id, 300*time.Second, 3)
 
 	//READ
 	item, err = api.Read(id)
@@ -164,7 +164,7 @@ func TestVPCRouterCRUDWithL2TP(t *testing.T) {
 	id := item.ID
 
 	//wait
-	api.SleepWhileCopying(id, 300*time.Second)
+	api.SleepWhileCopying(id, 300*time.Second, 3)
 
 	////connect to switch
 	sw := client.Switch.New()

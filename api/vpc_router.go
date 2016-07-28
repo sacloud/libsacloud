@@ -238,13 +238,18 @@ func (api *VPCRouterAPI) SleepUntilDown(routerID string, timeout time.Duration) 
 }
 
 // SleepWhileCopying wait until became to available
-func (api *VPCRouterAPI) SleepWhileCopying(vpcRouterID string, timeout time.Duration) error {
+func (api *VPCRouterAPI) SleepWhileCopying(vpcRouterID string, timeout time.Duration, maxRetryCount int) error {
 	current := 0 * time.Second
 	interval := 5 * time.Second
+	errCount := 0
 	for {
 		router, err := api.Read(vpcRouterID)
 		if err != nil {
-			return err
+			errCount++
+			if errCount > maxRetryCount {
+				return err
+			}
+			continue
 		}
 
 		if router.IsAvailable() {

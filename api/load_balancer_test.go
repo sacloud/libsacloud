@@ -73,7 +73,7 @@ func TestLoadBalancerCRUD(t *testing.T) {
 
 	id := item.ID
 
-	api.SleepWhileCopying(id, 20*time.Minute)
+	api.SleepWhileCopying(id, 20*time.Minute, 3)
 
 	//READ
 	item, err = api.Read(id)
@@ -88,10 +88,16 @@ func TestLoadBalancerCRUD(t *testing.T) {
 	assert.NotEqual(t, item.Description, "before")
 
 	//power off
-	_, err = api.Stop(id)
-	assert.NoError(t, err)
+	for i := 0; i < 10; i++ {
+		_, err = api.Stop(id)
+		assert.NoError(t, err)
 
-	api.SleepUntilDown(id, 20*time.Minute)
+		err = api.SleepUntilDown(id, 10*time.Second)
+		if err == nil {
+			break
+		}
+	}
+	assert.NoError(t, err)
 
 	//Delete
 	_, err = api.Delete(id)
@@ -124,13 +130,20 @@ func TestLoadBalancerCRUDWithoutVIP(t *testing.T) {
 
 	id := item.ID
 
-	api.SleepWhileCopying(id, 20*time.Minute)
+	api.SleepWhileCopying(id, 20*time.Minute, 3)
 
 	//power off
-	_, err = api.Stop(id)
-	assert.NoError(t, err)
+	//power off
+	for i := 0; i < 10; i++ {
+		_, err = api.Stop(id)
+		assert.NoError(t, err)
 
-	api.SleepUntilDown(id, 20*time.Minute)
+		err = api.SleepUntilDown(id, 10*time.Second)
+		if err == nil {
+			break
+		}
+	}
+	assert.NoError(t, err)
 
 	//Delete
 	_, err = api.Delete(id)

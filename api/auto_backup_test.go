@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-const testAutoBackupName = "test_libsakuracloud_gslb"
+const testAutoBackupName = "test_libsakuracloud_ab"
 
 func TestAutoBackupCRUD(t *testing.T) {
 
