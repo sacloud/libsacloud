@@ -183,14 +183,17 @@ func (s *VPCRouterSetting) addFirewallRule(direction string, rule *VPCRouterFire
 	if s.Firewall == nil {
 		s.Firewall = &VPCRouterFirewall{
 			Enabled: "True",
-			Config: []*VPCRouterFirewallSetting{
-				{
-					Receive: []*VPCRouterFirewallRule{},
-					Send:    []*VPCRouterFirewallRule{},
-				},
+		}
+	}
+	if s.Firewall.Config == nil || len(s.Firewall.Config) == 0 {
+		s.Firewall.Config = []*VPCRouterFirewallSetting{
+			{
+				Receive: []*VPCRouterFirewallRule{},
+				Send:    []*VPCRouterFirewallRule{},
 			},
 		}
 	}
+
 	switch direction {
 	case "send":
 		s.Firewall.Config[0].Send = append(s.Firewall.Config[0].Send, rule)
