@@ -16,6 +16,7 @@ type VPCRouterSetting struct {
 	PPTPServer         *VPCRouterPPTPServer         `json:",omitempty"`
 	RemoteAccessUsers  *VPCRouterRemoteAccessUsers  `json:",omitempty"`
 	SiteToSiteIPsecVPN *VPCRouterSiteToSiteIPsecVPN `json:",omitempty"`
+	StaticRoutes       *VPCRouterStaticRoutes       `json:",omitempty"`
 	VRID               *int                         `json:",omitempty"`
 }
 
@@ -713,4 +714,63 @@ func (s *VPCRouterSetting) isSameSiteToSiteIPsecVPNConfig(c1 *VPCRouterSiteToSit
 		c1.PreSharedSecret == c2.PreSharedSecret &&
 		c1.RemoteID == c2.RemoteID &&
 		reflect.DeepEqual(c1.Routes, c2.Routes)
+}
+
+type VPCRouterStaticRoutes struct {
+	Config  []*VPCRouterStaticRoutesConfig `json:",omitempty"`
+	Enabled string                         `json:",omitempty"`
+}
+type VPCRouterStaticRoutesConfig struct {
+	Prefix  string `json:",omitempty"`
+	NextHop string `json:",omitempty"`
+}
+
+func (s *VPCRouterSetting) AddStaticRoute(prefix string, nextHop string) {
+	if s.StaticRoutes == nil {
+		s.StaticRoutes = &VPCRouterStaticRoutes{
+			Enabled: "True",
+		}
+	}
+	if s.StaticRoutes.Config == nil {
+		s.StaticRoutes.Config = []*VPCRouterStaticRoutesConfig{}
+	}
+	s.StaticRoutes.Config = append(s.StaticRoutes.Config, &VPCRouterStaticRoutesConfig{
+		Prefix:  prefix,
+		NextHop: nextHop,
+	})
+}
+
+func (s *VPCRouterSetting) RemoveStaticRoute(prefix string, nextHop string) {
+	if s.StaticRoutes == nil {
+		return
+	}
+
+	if s.StaticRoutes.Config == nil {
+		s.StaticRoutes.Enabled = "False"
+		return
+	}
+
+	dest := []*VPCRouterStaticRoutesConfig{}
+	for _, c := range s.StaticRoutes.Config {
+		if c.Prefix != prefix || c.NextHop != nextHop {
+			dest = append(dest, c)
+		}
+	}
+	s.StaticRoutes.Config = dest
+
+	if len(s.StaticRoutes.Config) == 0 {
+		s.StaticRoutes.Enabled = "False"
+		s.StaticRoutes.Config = nil
+		return
+	}
+	s.StaticRoutes.Enabled = "True"
+}
+
+func (s *VPCRouterSetting) FindStaticRoute(prefix string, nextHop string) *VPCRouterStaticRoutesConfig {
+	for _, c := range s.StaticRoutes.Config {
+		if c.Prefix == prefix && c.NextHop == nextHop {
+			return c
+		}
+	}
+	return nil
 }
