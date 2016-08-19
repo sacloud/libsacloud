@@ -197,7 +197,7 @@ func CreateNewPostgreSQLDatabase(values *CreateDatabaseValue) *Database {
 		},
 	}
 
-	if values.SwitchID == "" {
+	if values.SwitchID == "" || values.SwitchID == "shared" {
 		db.Remark.Switch = &ApplianceRemarkSwitch{
 			Scope: "shared",
 		}

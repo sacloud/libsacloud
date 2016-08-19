@@ -100,6 +100,15 @@ func (api *DatabaseAPI) Update(id string, value *sacloud.Database) (*sacloud.Dat
 	})
 }
 
+func (api *DatabaseAPI) UpdateSetting(id string, value *sacloud.Database) (*sacloud.Database, error) {
+	req := &sacloud.Database{
+		Settings: value.Settings,
+	}
+	return api.request(func(res *databaseResponse) error {
+		return api.update(id, api.createRequest(req), res)
+	})
+}
+
 func (api *DatabaseAPI) Delete(id string) (*sacloud.Database, error) {
 	return api.request(func(res *databaseResponse) error {
 		return api.delete(id, nil, res)
