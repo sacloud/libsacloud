@@ -73,12 +73,12 @@ func TestLoadBalancerCRUD(t *testing.T) {
 
 	id := item.ID
 
-	api.SleepWhileCopying(id, 20*time.Minute, 3)
+	err = api.SleepWhileCopying(id, 20*time.Minute, 3)
 	if !assert.NoError(t, err) {
 		return
 	}
 
-	api.SleepUntilUp(id, 10*time.Minute)
+	err = api.SleepUntilUp(id, 10*time.Minute)
 	if !assert.NoError(t, err) {
 		return
 	}
@@ -134,8 +134,15 @@ func TestLoadBalancerCRUDWithoutVIP(t *testing.T) {
 
 	id := item.ID
 
-	api.SleepWhileCopying(id, 20*time.Minute, 3)
+	err = api.SleepWhileCopying(id, 20*time.Minute, 3)
+	if !assert.NoError(t, err) {
+		return
+	}
 
+	err = api.SleepUntilUp(id, 10*time.Minute)
+	if !assert.NoError(t, err) {
+		return
+	}
 	//power off
 	_, err = api.Stop(id)
 	assert.NoError(t, err)
