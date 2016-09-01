@@ -25,7 +25,7 @@ func TestAutoBackupCRUD(t *testing.T) {
 	ab := api.New(testAutoBackupName, disk.ID)
 
 	ab.Description = "before"
-	ab.SetBackupHour(6)
+	ab.SetBackupHour(12)
 	ab.SetBackupMaximumNumberOfArchives(2)
 	ab.SetBackupSpanWeekdays([]string{"mon", "tue", "wed"})
 
@@ -35,7 +35,7 @@ func TestAutoBackupCRUD(t *testing.T) {
 	assert.NotNil(t, item)
 	assert.Equal(t, item.Name, testAutoBackupName)
 	assert.Equal(t, item.Description, "before")
-	assert.Equal(t, item.Settings.Autobackup.BackupHour, 6)
+	assert.Equal(t, item.Settings.Autobackup.BackupHour, 12)
 	assert.Equal(t, item.Settings.Autobackup.MaximumNumberOfArchives, 2)
 	assert.Equal(t, item.Settings.Autobackup.BackupSpanWeekdays, []string{"mon", "tue", "wed"})
 
@@ -48,7 +48,7 @@ func TestAutoBackupCRUD(t *testing.T) {
 
 	//UPDATE
 	item.Description = "after"
-	item.SetBackupHour(12)
+	item.SetBackupHour(18)
 	item.SetBackupMaximumNumberOfArchives(3)
 	item.SetBackupSpanWeekdays([]string{"mon", "tue", "sat", "sun"})
 
@@ -56,7 +56,7 @@ func TestAutoBackupCRUD(t *testing.T) {
 
 	assert.NoError(t, err)
 	assert.NotEqual(t, item.Description, "before")
-	assert.Equal(t, item.Settings.Autobackup.BackupHour, 12)
+	assert.Equal(t, item.Settings.Autobackup.BackupHour, 18)
 	assert.Equal(t, item.Settings.Autobackup.MaximumNumberOfArchives, 3)
 	assert.Equal(t, item.Settings.Autobackup.BackupSpanWeekdays, []string{"mon", "tue", "sat", "sun"})
 
