@@ -69,27 +69,27 @@ func TestCRUDAndFTP(t *testing.T) {
 	assert.NotEmpty(t, archive)
 
 	//Open
-	ftpServer, err := api.OpenFTP(archive.ID, false)
+	ftpServer, err := api.OpenFTP(archive.ID)
 	assert.NoError(t, err)
 	assert.NotEmpty(t, ftpServer.Password)
 
 	password := ftpServer.Password
 
-	//Close
-	res, err := api.CloseFTP(archiveID)
-	assert.NoError(t, err)
-	assert.True(t, res)
+	////Close
+	//res, err := api.CloseFTP(archiveID)
+	//assert.NoError(t, err)
+	//assert.True(t, res)
 
 	//Re-Open(password not changed)
 	//ftpServer, err = api.OpenFTP(archive.ID, false)
 	//assert.NoError(t, err)
 	//assert.Equal(t, ftpServer.Password, password)
-	//
-	////Close
-	//api.CloseFTP(archiveID)
+
+	//Close
+	api.CloseFTP(archiveID)
 
 	//Re-Open(will password change)
-	ftpServer, err = api.OpenFTP(archive.ID, false)
+	ftpServer, err = api.OpenFTP(archive.ID)
 	assert.NoError(t, err)
 	assert.NotEqual(t, ftpServer.Password, password)
 

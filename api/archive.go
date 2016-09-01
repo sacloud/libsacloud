@@ -21,15 +21,15 @@ func NewArchiveAPI(client *Client) *ArchiveAPI {
 	}
 }
 
-func (api *ArchiveAPI) OpenFTP(id string, reset bool) (*sacloud.FTPServer, error) {
+func (api *ArchiveAPI) OpenFTP(id string) (*sacloud.FTPServer, error) {
 	var (
 		method = "PUT"
 		uri    = fmt.Sprintf("%s/%s/ftp", api.getResourceURL(), id)
-		body   = map[string]bool{"ChangePassword": reset}
-		res    = &sacloud.Response{}
+		//body   = map[string]bool{"ChangePassword": reset}
+		res = &sacloud.Response{}
 	)
 
-	result, err := api.action(method, uri, body, res)
+	result, err := api.action(method, uri, nil, res)
 	if !result || err != nil {
 		return nil, err
 	}
@@ -39,7 +39,7 @@ func (api *ArchiveAPI) OpenFTP(id string, reset bool) (*sacloud.FTPServer, error
 
 func (api *ArchiveAPI) CloseFTP(id string) (bool, error) {
 	var (
-		method = "PUT"
+		method = "DELETE"
 		uri    = fmt.Sprintf("%s/%s/ftp", api.getResourceURL(), id)
 	)
 	return api.modify(method, uri, nil)
