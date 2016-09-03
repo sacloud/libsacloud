@@ -39,7 +39,7 @@ type DNSProvider struct {
 // CreateNewDNS Create new CommonServiceDNSItem
 func CreateNewDNS(zoneName string) *DNS {
 	return &DNS{
-		Resource: &Resource{ID: ""},
+		Resource: &Resource{},
 		Name:     zoneName,
 		Status: DNSStatus{
 			Zone: zoneName,

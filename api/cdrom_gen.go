@@ -102,19 +102,19 @@ func (api *CDROMAPI) New() *sacloud.CDROM {
 //	})
 //}
 
-func (api *CDROMAPI) Read(id string) (*sacloud.CDROM, error) {
+func (api *CDROMAPI) Read(id int64) (*sacloud.CDROM, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.read(id, nil, res)
 	})
 }
 
-func (api *CDROMAPI) Update(id string, value *sacloud.CDROM) (*sacloud.CDROM, error) {
+func (api *CDROMAPI) Update(id int64, value *sacloud.CDROM) (*sacloud.CDROM, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.update(id, api.createRequest(value), res)
 	})
 }
 
-func (api *CDROMAPI) Delete(id string) (*sacloud.CDROM, error) {
+func (api *CDROMAPI) Delete(id int64) (*sacloud.CDROM, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.delete(id, nil, res)
 	})

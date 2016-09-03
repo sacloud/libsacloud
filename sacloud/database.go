@@ -16,8 +16,8 @@ type DatabaseRemark struct {
 	*ApplianceRemarkBase
 	DBConf  *DatabaseCommonRemarks
 	Network *DatabaseRemarkNetwork
-	Zone    *NumberResource
-	Plan    *NumberResource
+	Zone    *Resource
+	Plan    *Resource
 }
 
 type DatabaseRemarkNetwork struct {
@@ -162,7 +162,7 @@ func CreateNewPostgreSQLDatabase(values *CreateDatabaseValue) *Database {
 			Icon: &Icon{
 				Resource: values.Icon,
 			},
-			Plan: &NumberResource{ID: json.Number(fmt.Sprintf("%d", values.Plan))},
+			Plan: &Resource{ID: int64(values.Plan)},
 		},
 		Remark: &DatabaseRemark{
 			ApplianceRemarkBase: &ApplianceRemarkBase{
@@ -178,7 +178,7 @@ func CreateNewPostgreSQLDatabase(values *CreateDatabaseValue) *Database {
 					ReplicaPassword:  values.AdminPassword,
 				},
 			},
-			Plan: &NumberResource{ID: json.Number(fmt.Sprintf("%d", values.Plan))},
+			Plan: &Resource{ID: int64(values.Plan)},
 		},
 		Settings: &DatabaseSettings{
 			DBConf: &DatabaseSetting{

@@ -1,7 +1,6 @@
 package api
 
 import (
-	"encoding/json"
 	"fmt"
 	"github.com/stretchr/testify/assert"
 	"github.com/yamamoto-febc/libsacloud/sacloud"
@@ -34,14 +33,14 @@ func TestDatabaseCRUD(t *testing.T) {
 	v.ServicePort = "54321"
 	v.BackupRotate = 8
 	v.BackupTime = "00:30"
-	v.SwitchID = sw.ID
+	v.SwitchID = fmt.Sprintf("%d", sw.ID)
 	v.IPAddress1 = "192.168.11.100"
 	v.MaskLen = 24
 	v.DefaultRoute = "192.168.11.1"
 	v.Name = testDatabaseName
 
 	newItem := api.New(v)
-	newItem.Remark.Zone = &sacloud.NumberResource{ID: json.Number(fmt.Sprintf("%d", 21001))}
+	newItem.Remark.Zone = &sacloud.Resource{ID: 21001}
 
 	item, err := api.Create(newItem)
 

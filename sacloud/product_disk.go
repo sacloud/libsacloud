@@ -2,7 +2,7 @@ package sacloud
 
 // ProductDisk type of DiskPlan
 type ProductDisk struct {
-	*NumberResource
+	*Resource
 	Index        int    `json:",omitempty"`
 	StorageClass string `json:",omitempty"`
 	DisplayOrder int    `json:",omitempty"`

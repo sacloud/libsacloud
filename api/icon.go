@@ -17,7 +17,7 @@ func NewIconAPI(client *Client) *IconAPI {
 	}
 }
 
-func (api *IconAPI) GetImage(id string, size string) (*sacloud.Image, error) {
+func (api *IconAPI) GetImage(id int64, size string) (*sacloud.Image, error) {
 
 	res := &sacloud.Response{}
 	err := api.read(id, map[string]string{"Size": size}, res)

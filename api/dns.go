@@ -87,19 +87,19 @@ func (api *DNSAPI) New(zoneName string) *sacloud.DNS {
 	return sacloud.CreateNewDNS(zoneName)
 }
 
-func (api *DNSAPI) Read(id string) (*sacloud.DNS, error) {
+func (api *DNSAPI) Read(id int64) (*sacloud.DNS, error) {
 	return api.request(func(res *dnsResponse) error {
 		return api.read(id, nil, res)
 	})
 }
 
-func (api *DNSAPI) Update(id string, value *sacloud.DNS) (*sacloud.DNS, error) {
+func (api *DNSAPI) Update(id int64, value *sacloud.DNS) (*sacloud.DNS, error) {
 	return api.request(func(res *dnsResponse) error {
 		return api.update(id, api.createRequest(value), res)
 	})
 }
 
-func (api *DNSAPI) Delete(id string) (*sacloud.DNS, error) {
+func (api *DNSAPI) Delete(id int64) (*sacloud.DNS, error) {
 	return api.request(func(res *dnsResponse) error {
 		return api.delete(id, nil, res)
 	})
@@ -124,7 +124,7 @@ func (api *DNSAPI) SetupDNSRecord(zoneName string, hostName string, ip string) (
 		return nil, err
 	}
 
-	if dnsItem.ID == "" {
+	if dnsItem.ID == sacloud.EmptyID {
 		return res.Status.NS, nil
 	}
 
@@ -179,7 +179,7 @@ func (api *DNSAPI) updateDNSRecord(dnsItem *sacloud.DNS) (*sacloud.DNS, error) {
 	var item *sacloud.DNS
 	var err error
 
-	if dnsItem.ID == "" {
+	if dnsItem.ID == sacloud.EmptyID {
 		item, err = api.Create(dnsItem)
 	} else {
 		item, err = api.Update(dnsItem.ID, dnsItem)

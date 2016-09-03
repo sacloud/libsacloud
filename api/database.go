@@ -88,19 +88,19 @@ func (api *DatabaseAPI) Create(value *sacloud.Database) (*sacloud.Database, erro
 	})
 }
 
-func (api *DatabaseAPI) Read(id string) (*sacloud.Database, error) {
+func (api *DatabaseAPI) Read(id int64) (*sacloud.Database, error) {
 	return api.request(func(res *databaseResponse) error {
 		return api.read(id, nil, res)
 	})
 }
 
-func (api *DatabaseAPI) Update(id string, value *sacloud.Database) (*sacloud.Database, error) {
+func (api *DatabaseAPI) Update(id int64, value *sacloud.Database) (*sacloud.Database, error) {
 	return api.request(func(res *databaseResponse) error {
 		return api.update(id, api.createRequest(value), res)
 	})
 }
 
-func (api *DatabaseAPI) UpdateSetting(id string, value *sacloud.Database) (*sacloud.Database, error) {
+func (api *DatabaseAPI) UpdateSetting(id int64, value *sacloud.Database) (*sacloud.Database, error) {
 	req := &sacloud.Database{
 		Settings: value.Settings,
 	}
@@ -109,21 +109,21 @@ func (api *DatabaseAPI) UpdateSetting(id string, value *sacloud.Database) (*sacl
 	})
 }
 
-func (api *DatabaseAPI) Delete(id string) (*sacloud.Database, error) {
+func (api *DatabaseAPI) Delete(id int64) (*sacloud.Database, error) {
 	return api.request(func(res *databaseResponse) error {
 		return api.delete(id, nil, res)
 	})
 }
 
-func (api *DatabaseAPI) Config(id string) (bool, error) {
+func (api *DatabaseAPI) Config(id int64) (bool, error) {
 	var (
 		method = "PUT"
-		uri    = fmt.Sprintf("%s/%s/config", api.getResourceURL(), id)
+		uri    = fmt.Sprintf("%s/%d/config", api.getResourceURL(), id)
 	)
 	return api.modify(method, uri, nil)
 }
 
-func (api *DatabaseAPI) IsUp(id string) (bool, error) {
+func (api *DatabaseAPI) IsUp(id int64) (bool, error) {
 	lb, err := api.Read(id)
 	if err != nil {
 		return false, err
@@ -131,7 +131,7 @@ func (api *DatabaseAPI) IsUp(id string) (bool, error) {
 	return lb.Instance.IsUp(), nil
 }
 
-func (api *DatabaseAPI) IsDown(id string) (bool, error) {
+func (api *DatabaseAPI) IsDown(id int64) (bool, error) {
 	lb, err := api.Read(id)
 	if err != nil {
 		return false, err
@@ -140,53 +140,53 @@ func (api *DatabaseAPI) IsDown(id string) (bool, error) {
 }
 
 // Boot power on
-func (api *DatabaseAPI) Boot(id string) (bool, error) {
+func (api *DatabaseAPI) Boot(id int64) (bool, error) {
 	var (
 		method = "PUT"
-		uri    = fmt.Sprintf("%s/%s/power", api.getResourceURL(), id)
+		uri    = fmt.Sprintf("%s/%d/power", api.getResourceURL(), id)
 	)
 	return api.modify(method, uri, nil)
 }
 
 // Shutdown power off
-func (api *DatabaseAPI) Shutdown(id string) (bool, error) {
+func (api *DatabaseAPI) Shutdown(id int64) (bool, error) {
 	var (
 		method = "DELETE"
-		uri    = fmt.Sprintf("%s/%s/power", api.getResourceURL(), id)
+		uri    = fmt.Sprintf("%s/%d/power", api.getResourceURL(), id)
 	)
 
 	return api.modify(method, uri, nil)
 }
 
 // Stop force shutdown
-func (api *DatabaseAPI) Stop(id string) (bool, error) {
+func (api *DatabaseAPI) Stop(id int64) (bool, error) {
 	var (
 		method = "DELETE"
-		uri    = fmt.Sprintf("%s/%s/power", api.getResourceURL(), id)
+		uri    = fmt.Sprintf("%s/%d/power", api.getResourceURL(), id)
 	)
 
 	return api.modify(method, uri, map[string]bool{"Force": true})
 }
 
-func (api *DatabaseAPI) RebootForce(id string) (bool, error) {
+func (api *DatabaseAPI) RebootForce(id int64) (bool, error) {
 	var (
 		method = "PUT"
-		uri    = fmt.Sprintf("%s/%s/reset", api.getResourceURL(), id)
+		uri    = fmt.Sprintf("%s/%d/reset", api.getResourceURL(), id)
 	)
 
 	return api.modify(method, uri, nil)
 }
 
-func (api *DatabaseAPI) ResetForce(id string, recycleProcess bool) (bool, error) {
+func (api *DatabaseAPI) ResetForce(id int64, recycleProcess bool) (bool, error) {
 	var (
 		method = "PUT"
-		uri    = fmt.Sprintf("%s/%s/reset", api.getResourceURL(), id)
+		uri    = fmt.Sprintf("%s/%d/reset", api.getResourceURL(), id)
 	)
 
 	return api.modify(method, uri, map[string]bool{"RecycleProcess": recycleProcess})
 }
 
-func (api *DatabaseAPI) SleepUntilUp(id string, timeout time.Duration) error {
+func (api *DatabaseAPI) SleepUntilUp(id int64, timeout time.Duration) error {
 	current := 0 * time.Second
 	interval := 5 * time.Second
 	for {
@@ -208,7 +208,7 @@ func (api *DatabaseAPI) SleepUntilUp(id string, timeout time.Duration) error {
 	}
 }
 
-func (api *DatabaseAPI) SleepUntilDown(id string, timeout time.Duration) error {
+func (api *DatabaseAPI) SleepUntilDown(id int64, timeout time.Duration) error {
 	current := 0 * time.Second
 	interval := 5 * time.Second
 	for {
@@ -231,7 +231,7 @@ func (api *DatabaseAPI) SleepUntilDown(id string, timeout time.Duration) error {
 }
 
 // SleepWhileCopying wait until became to available
-func (api *DatabaseAPI) SleepWhileCopying(id string, timeout time.Duration, maxRetryCount int) error {
+func (api *DatabaseAPI) SleepWhileCopying(id int64, timeout time.Duration, maxRetryCount int) error {
 	current := 0 * time.Second
 	interval := 5 * time.Second
 	errCount := 0

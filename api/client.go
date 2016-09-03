@@ -162,7 +162,8 @@ func (c *Client) newRequest(method, uri string, body interface{}) ([]byte, error
 			req, err = http.NewRequest(method, url, bytes.NewBuffer(bodyJSON))
 		}
 		if c.TraceMode {
-			log.Printf("[libsacloud:Client#request] method : %#v , url : %s , body : %#v", method, url, string(bodyJSON))
+			b, _ := json.MarshalIndent(body, "", "\t")
+			log.Printf("[libsacloud:Client#request] method : %#v , url : %s , \nbody : %s", method, url, b)
 		}
 
 	} else {
@@ -177,9 +178,10 @@ func (c *Client) newRequest(method, uri string, body interface{}) ([]byte, error
 	}
 
 	req.SetBasicAuth(c.AccessToken, c.AccessTokenSecret)
-	if c.TraceMode {
-		req.Header.Add("X-Sakura-API-Beautify", "1") // format response-JSON
-	}
+	req.Header.Add("X-Sakura-Bigint-As-Int", "1") //Use BigInt on resource ids.
+	//if c.TraceMode {
+	//	req.Header.Add("X-Sakura-API-Beautify", "1") // format response-JSON
+	//}
 	req.Method = method
 
 	resp, err := client.Do(req)
@@ -190,7 +192,10 @@ func (c *Client) newRequest(method, uri string, body interface{}) ([]byte, error
 
 	data, err := ioutil.ReadAll(resp.Body)
 	if c.TraceMode {
-		log.Printf("[libsacloud:Client#response] : %s", string(data))
+		v := &map[string]interface{}{}
+		json.Unmarshal(data, v)
+		b, _ := json.MarshalIndent(v, "", "\t")
+		log.Printf("[libsacloud:Client#response] : %s", b)
 	}
 	if !c.isOkStatus(resp.StatusCode) {
 

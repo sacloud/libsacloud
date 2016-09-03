@@ -40,7 +40,7 @@ type SimpleMonitorStatus struct {
 
 // SimpleMonitorProvider type of CommonServiceDNSProvider
 type SimpleMonitorProvider struct {
-	*NumberResource
+	*Resource
 	Class        string `json:",omitempty"`
 	Name         string `json:",omitempty"`
 	ServiceClass string `json:",omitempty"`

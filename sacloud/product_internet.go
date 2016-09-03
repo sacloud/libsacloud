@@ -2,7 +2,7 @@ package sacloud
 
 // ProductInternet type of InternetPlan
 type ProductInternet struct {
-	*NumberResource
+	*Resource
 	Index         int    `json:",omitempty"`
 	Name          string `json:",omitempty"`
 	BandWidthMbps int    `json:",omitempty"`

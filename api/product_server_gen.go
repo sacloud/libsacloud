@@ -102,19 +102,19 @@ func (api *ProductServerAPI) SortByName(reverse bool) *ProductServerAPI {
 // 	})
 // }
 
-func (api *ProductServerAPI) Read(id string) (*sacloud.ProductServer, error) {
+func (api *ProductServerAPI) Read(id int64) (*sacloud.ProductServer, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.read(id, nil, res)
 	})
 }
 
-// func (api *ProductServerAPI) Update(id string, value *sacloud.ProductServer) (*sacloud.ProductServer, error) {
+// func (api *ProductServerAPI) Update(id int64, value *sacloud.ProductServer) (*sacloud.ProductServer, error) {
 // 	return api.request(func(res *sacloud.Response) error {
 // 		return api.update(id, api.createRequest(value), res)
 // 	})
 // }
 
-// func (api *ProductServerAPI) Delete(id string) (*sacloud.ProductServer, error) {
+// func (api *ProductServerAPI) Delete(id int64) (*sacloud.ProductServer, error) {
 // 	return api.request(func(res *sacloud.Response) error {
 // 		return api.delete(id, nil, res)
 // 	})

@@ -102,19 +102,19 @@ func (api *IconAPI) Create(value *sacloud.Icon) (*sacloud.Icon, error) {
 	})
 }
 
-func (api *IconAPI) Read(id string) (*sacloud.Icon, error) {
+func (api *IconAPI) Read(id int64) (*sacloud.Icon, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.read(id, nil, res)
 	})
 }
 
-func (api *IconAPI) Update(id string, value *sacloud.Icon) (*sacloud.Icon, error) {
+func (api *IconAPI) Update(id int64, value *sacloud.Icon) (*sacloud.Icon, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.update(id, api.createRequest(value), res)
 	})
 }
 
-func (api *IconAPI) Delete(id string) (*sacloud.Icon, error) {
+func (api *IconAPI) Delete(id int64) (*sacloud.Icon, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.delete(id, nil, res)
 	})

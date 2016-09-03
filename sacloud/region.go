@@ -1,7 +1,7 @@
 package sacloud
 
 type Region struct {
-	*NumberResource
+	*Resource
 	Name        string   `json:",omitempty"`
 	Description string   `json:",omitempty"`
 	NameServers []string `json:",omitempty"`

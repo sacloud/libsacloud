@@ -33,10 +33,10 @@ func (api *CDROMAPI) Create(value *sacloud.CDROM) (*sacloud.CDROM, *sacloud.FTPS
 	return res.CDROM, res.FTPServer, nil
 }
 
-func (api *CDROMAPI) OpenFTP(id string, reset bool) (*sacloud.FTPServer, error) {
+func (api *CDROMAPI) OpenFTP(id int64, reset bool) (*sacloud.FTPServer, error) {
 	var (
 		method = "PUT"
-		uri    = fmt.Sprintf("%s/%s/ftp", api.getResourceURL(), id)
+		uri    = fmt.Sprintf("%s/%d/ftp", api.getResourceURL(), id)
 		body   = map[string]bool{"ChangePassword": reset}
 		res    = &sacloud.Response{}
 	)
@@ -49,16 +49,16 @@ func (api *CDROMAPI) OpenFTP(id string, reset bool) (*sacloud.FTPServer, error) 
 	return res.FTPServer, nil
 }
 
-func (api *CDROMAPI) CloseFTP(id string) (bool, error) {
+func (api *CDROMAPI) CloseFTP(id int64) (bool, error) {
 	var (
 		method = "DELETE"
-		uri    = fmt.Sprintf("%s/%s/ftp", api.getResourceURL(), id)
+		uri    = fmt.Sprintf("%s/%d/ftp", api.getResourceURL(), id)
 	)
 	return api.modify(method, uri, nil)
 
 }
 
-func (api *CDROMAPI) SleepWhileCopying(id string, timeout time.Duration) error {
+func (api *CDROMAPI) SleepWhileCopying(id int64, timeout time.Duration) error {
 
 	current := 0 * time.Second
 	interval := 5 * time.Second
@@ -75,7 +75,7 @@ func (api *CDROMAPI) SleepWhileCopying(id string, timeout time.Duration) error {
 		current += interval
 
 		if timeout > 0 && current > timeout {
-			return fmt.Errorf("Timeout: SleepWhileCopying[disk:%s]", id)
+			return fmt.Errorf("Timeout: SleepWhileCopying[disk:%d]", id)
 		}
 	}
 }

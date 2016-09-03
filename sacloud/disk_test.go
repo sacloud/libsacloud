@@ -8,7 +8,7 @@ import (
 
 var testDiskJSON = `
 {
-	"ID": "123456789012",
+	"ID": 123456789012,
 	"Name": "libsacloud-disk-test-name",
 	"Connection": "virtio",
 	"ConnectionOrder": 1,
@@ -19,8 +19,8 @@ var testDiskJSON = `
 		"ID": 4
 	},
 	"Storage": {
-		"ID": "1234567890",
-		"MountIndex": "1234567890",
+		"ID": 1234567890,
+		"MountIndex": 1234567890,
 		"Class": "iscsi1204"
 	},
 	"BundleInfo": null
@@ -29,7 +29,7 @@ var testDiskJSON = `
 
 var testDiskMigratingJSON = `
 {
-            "ID": "123456789012",
+            "ID": 123456789012,
             "Name": "hogedisk",
             "Description": "aaaaa",
             "Connection": "virtio",

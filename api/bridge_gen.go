@@ -102,19 +102,19 @@ func (api *BridgeAPI) Create(value *sacloud.Bridge) (*sacloud.Bridge, error) {
 	})
 }
 
-func (api *BridgeAPI) Read(id string) (*sacloud.Bridge, error) {
+func (api *BridgeAPI) Read(id int64) (*sacloud.Bridge, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.read(id, nil, res)
 	})
 }
 
-func (api *BridgeAPI) Update(id string, value *sacloud.Bridge) (*sacloud.Bridge, error) {
+func (api *BridgeAPI) Update(id int64, value *sacloud.Bridge) (*sacloud.Bridge, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.update(id, api.createRequest(value), res)
 	})
 }
 
-func (api *BridgeAPI) Delete(id string) (*sacloud.Bridge, error) {
+func (api *BridgeAPI) Delete(id int64) (*sacloud.Bridge, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.delete(id, nil, res)
 	})

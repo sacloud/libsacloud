@@ -1,6 +1,7 @@
 package api
 
 import (
+	"fmt"
 	"github.com/stretchr/testify/assert"
 	"testing"
 	"time"
@@ -27,7 +28,7 @@ func TestInternetCRUD(t *testing.T) {
 
 	err = api.SleepWhileCreating(id, 120*time.Second)
 	if err != nil {
-		assert.Fail(t, "Timeout: Can't read /internet/"+id)
+		assert.Fail(t, fmt.Sprintf("Timeout: Can't read /internet/%d", id))
 	}
 
 	item, err = api.Read(id)
@@ -49,7 +50,7 @@ func TestInternetCRUD(t *testing.T) {
 
 	err = api.SleepWhileCreating(id, 120*time.Second)
 	if err != nil {
-		assert.Fail(t, "Timeout: Can't read /internet/"+id)
+		assert.Fail(t, fmt.Sprintf("Timeout: Can't read /internet/%d", id))
 	}
 	assert.NoError(t, err)
 

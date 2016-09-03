@@ -3,6 +3,7 @@ package api
 import (
 	"fmt"
 	"github.com/yamamoto-febc/libsacloud/sacloud"
+	"strconv"
 )
 
 type ProductServerAPI struct {
@@ -20,16 +21,16 @@ func NewProductServerAPI(client *Client) *ProductServerAPI {
 	}
 }
 
-func (api *ProductServerAPI) getPlanIDBySpec(core int, memGB int) (string, error) {
+func (api *ProductServerAPI) getPlanIDBySpec(core int, memGB int) (int64, error) {
 	//assert args
 	if core <= 0 {
-		return "", fmt.Errorf("Invalid Parameter: CPU Core")
+		return -1, fmt.Errorf("Invalid Parameter: CPU Core")
 	}
 	if memGB <= 0 {
-		return "", fmt.Errorf("Invalid Parameter: Memory Size(GB)")
+		return -1, fmt.Errorf("Invalid Parameter: Memory Size(GB)")
 	}
 
-	return fmt.Sprintf("%d%03d", memGB, core), nil
+	return strconv.ParseInt(fmt.Sprintf("%d%03d", memGB, core), 10, 64)
 }
 
 // IsValidPlan return validate result
@@ -49,7 +50,7 @@ func (api *ProductServerAPI) IsValidPlan(core int, memGB int) (bool, error) {
 		return true, nil
 	}
 
-	return false, fmt.Errorf("Server Plan[%s] Not Found", planID)
+	return false, fmt.Errorf("Server Plan[%d] Not Found", planID)
 
 }
 

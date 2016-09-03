@@ -8,7 +8,7 @@ import (
 
 var testIconJSON = `
 {
-	"ID": "123456789012",
+	"ID": 123456789012,
 	"URL": "https:\/\/secure.sakura.ad.jp\/cloud\/zone\/is1b\/api\/cloud\/1.1\/icon\/123456789012.png",
 	"Name": "TEST",
 	"Scope": "shared"

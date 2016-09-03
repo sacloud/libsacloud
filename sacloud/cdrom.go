@@ -4,7 +4,7 @@ import "time"
 
 type CDROM struct {
 	*Resource
-	DisplayOrder string `json:",omitempty"`
+	DisplayOrder int64  `json:",omitempty"`
 	StorageClass string `json:",omitempty"`
 	Name         string `json:",omitempty"`
 	Description  string `json:",omitempty"`

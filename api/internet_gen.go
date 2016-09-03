@@ -102,19 +102,19 @@ func (api *InternetAPI) Create(value *sacloud.Internet) (*sacloud.Internet, erro
 	})
 }
 
-func (api *InternetAPI) Read(id string) (*sacloud.Internet, error) {
+func (api *InternetAPI) Read(id int64) (*sacloud.Internet, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.read(id, nil, res)
 	})
 }
 
-func (api *InternetAPI) Update(id string, value *sacloud.Internet) (*sacloud.Internet, error) {
+func (api *InternetAPI) Update(id int64, value *sacloud.Internet) (*sacloud.Internet, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.update(id, api.createRequest(value), res)
 	})
 }
 
-func (api *InternetAPI) Delete(id string) (*sacloud.Internet, error) {
+func (api *InternetAPI) Delete(id int64) (*sacloud.Internet, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.delete(id, nil, res)
 	})

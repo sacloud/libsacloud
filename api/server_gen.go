@@ -102,19 +102,19 @@ func (api *ServerAPI) Create(value *sacloud.Server) (*sacloud.Server, error) {
 	})
 }
 
-func (api *ServerAPI) Read(id string) (*sacloud.Server, error) {
+func (api *ServerAPI) Read(id int64) (*sacloud.Server, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.read(id, nil, res)
 	})
 }
 
-func (api *ServerAPI) Update(id string, value *sacloud.Server) (*sacloud.Server, error) {
+func (api *ServerAPI) Update(id int64, value *sacloud.Server) (*sacloud.Server, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.update(id, api.createRequest(value), res)
 	})
 }
 
-func (api *ServerAPI) Delete(id string) (*sacloud.Server, error) {
+func (api *ServerAPI) Delete(id int64) (*sacloud.Server, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.delete(id, nil, res)
 	})

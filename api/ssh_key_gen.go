@@ -102,19 +102,19 @@ func (api *SSHKeyAPI) Create(value *sacloud.SSHKey) (*sacloud.SSHKey, error) {
 	})
 }
 
-func (api *SSHKeyAPI) Read(id string) (*sacloud.SSHKey, error) {
+func (api *SSHKeyAPI) Read(id int64) (*sacloud.SSHKey, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.read(id, nil, res)
 	})
 }
 
-func (api *SSHKeyAPI) Update(id string, value *sacloud.SSHKey) (*sacloud.SSHKey, error) {
+func (api *SSHKeyAPI) Update(id int64, value *sacloud.SSHKey) (*sacloud.SSHKey, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.update(id, api.createRequest(value), res)
 	})
 }
 
-func (api *SSHKeyAPI) Delete(id string) (*sacloud.SSHKey, error) {
+func (api *SSHKeyAPI) Delete(id int64) (*sacloud.SSHKey, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.delete(id, nil, res)
 	})

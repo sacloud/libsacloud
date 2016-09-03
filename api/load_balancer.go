@@ -88,33 +88,33 @@ func (api *LoadBalancerAPI) Create(value *sacloud.LoadBalancer) (*sacloud.LoadBa
 	})
 }
 
-func (api *LoadBalancerAPI) Read(id string) (*sacloud.LoadBalancer, error) {
+func (api *LoadBalancerAPI) Read(id int64) (*sacloud.LoadBalancer, error) {
 	return api.request(func(res *loadBalancerResponse) error {
 		return api.read(id, nil, res)
 	})
 }
 
-func (api *LoadBalancerAPI) Update(id string, value *sacloud.LoadBalancer) (*sacloud.LoadBalancer, error) {
+func (api *LoadBalancerAPI) Update(id int64, value *sacloud.LoadBalancer) (*sacloud.LoadBalancer, error) {
 	return api.request(func(res *loadBalancerResponse) error {
 		return api.update(id, api.createRequest(value), res)
 	})
 }
 
-func (api *LoadBalancerAPI) Delete(id string) (*sacloud.LoadBalancer, error) {
+func (api *LoadBalancerAPI) Delete(id int64) (*sacloud.LoadBalancer, error) {
 	return api.request(func(res *loadBalancerResponse) error {
 		return api.delete(id, nil, res)
 	})
 }
 
-func (api *LoadBalancerAPI) Config(id string) (bool, error) {
+func (api *LoadBalancerAPI) Config(id int64) (bool, error) {
 	var (
 		method = "PUT"
-		uri    = fmt.Sprintf("%s/%s/config", api.getResourceURL(), id)
+		uri    = fmt.Sprintf("%s/%d/config", api.getResourceURL(), id)
 	)
 	return api.modify(method, uri, nil)
 }
 
-func (api *LoadBalancerAPI) IsUp(id string) (bool, error) {
+func (api *LoadBalancerAPI) IsUp(id int64) (bool, error) {
 	lb, err := api.Read(id)
 	if err != nil {
 		return false, err
@@ -122,7 +122,7 @@ func (api *LoadBalancerAPI) IsUp(id string) (bool, error) {
 	return lb.Instance.IsUp(), nil
 }
 
-func (api *LoadBalancerAPI) IsDown(id string) (bool, error) {
+func (api *LoadBalancerAPI) IsDown(id int64) (bool, error) {
 	lb, err := api.Read(id)
 	if err != nil {
 		return false, err
@@ -131,53 +131,53 @@ func (api *LoadBalancerAPI) IsDown(id string) (bool, error) {
 }
 
 // Boot power on
-func (api *LoadBalancerAPI) Boot(id string) (bool, error) {
+func (api *LoadBalancerAPI) Boot(id int64) (bool, error) {
 	var (
 		method = "PUT"
-		uri    = fmt.Sprintf("%s/%s/power", api.getResourceURL(), id)
+		uri    = fmt.Sprintf("%s/%d/power", api.getResourceURL(), id)
 	)
 	return api.modify(method, uri, nil)
 }
 
 // Shutdown power off
-func (api *LoadBalancerAPI) Shutdown(id string) (bool, error) {
+func (api *LoadBalancerAPI) Shutdown(id int64) (bool, error) {
 	var (
 		method = "DELETE"
-		uri    = fmt.Sprintf("%s/%s/power", api.getResourceURL(), id)
+		uri    = fmt.Sprintf("%s/%d/power", api.getResourceURL(), id)
 	)
 
 	return api.modify(method, uri, nil)
 }
 
 // Stop force shutdown
-func (api *LoadBalancerAPI) Stop(id string) (bool, error) {
+func (api *LoadBalancerAPI) Stop(id int64) (bool, error) {
 	var (
 		method = "DELETE"
-		uri    = fmt.Sprintf("%s/%s/power", api.getResourceURL(), id)
+		uri    = fmt.Sprintf("%s/%d/power", api.getResourceURL(), id)
 	)
 
 	return api.modify(method, uri, map[string]bool{"Force": true})
 }
 
-func (api *LoadBalancerAPI) RebootForce(id string) (bool, error) {
+func (api *LoadBalancerAPI) RebootForce(id int64) (bool, error) {
 	var (
 		method = "PUT"
-		uri    = fmt.Sprintf("%s/%s/reset", api.getResourceURL(), id)
+		uri    = fmt.Sprintf("%s/%d/reset", api.getResourceURL(), id)
 	)
 
 	return api.modify(method, uri, nil)
 }
 
-func (api *LoadBalancerAPI) ResetForce(id string, recycleProcess bool) (bool, error) {
+func (api *LoadBalancerAPI) ResetForce(id int64, recycleProcess bool) (bool, error) {
 	var (
 		method = "PUT"
-		uri    = fmt.Sprintf("%s/%s/reset", api.getResourceURL(), id)
+		uri    = fmt.Sprintf("%s/%d/reset", api.getResourceURL(), id)
 	)
 
 	return api.modify(method, uri, map[string]bool{"RecycleProcess": recycleProcess})
 }
 
-func (api *LoadBalancerAPI) SleepUntilUp(id string, timeout time.Duration) error {
+func (api *LoadBalancerAPI) SleepUntilUp(id int64, timeout time.Duration) error {
 	current := 0 * time.Second
 	interval := 5 * time.Second
 	for {
@@ -199,7 +199,7 @@ func (api *LoadBalancerAPI) SleepUntilUp(id string, timeout time.Duration) error
 	}
 }
 
-func (api *LoadBalancerAPI) SleepUntilDown(id string, timeout time.Duration) error {
+func (api *LoadBalancerAPI) SleepUntilDown(id int64, timeout time.Duration) error {
 	current := 0 * time.Second
 	interval := 5 * time.Second
 	for {
@@ -222,7 +222,7 @@ func (api *LoadBalancerAPI) SleepUntilDown(id string, timeout time.Duration) err
 }
 
 // SleepWhileCopying wait until became to available
-func (api *LoadBalancerAPI) SleepWhileCopying(id string, timeout time.Duration, maxRetryCount int) error {
+func (api *LoadBalancerAPI) SleepWhileCopying(id int64, timeout time.Duration, maxRetryCount int) error {
 	current := 0 * time.Second
 	interval := 5 * time.Second
 	errCount := 0

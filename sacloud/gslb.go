@@ -35,7 +35,7 @@ type GSLBProvider struct {
 // CreateNewGSLB Create new GLSB(CommonServiceItem)
 func CreateNewGSLB(gslbName string) *GSLB {
 	return &GSLB{
-		Resource: &Resource{ID: ""},
+		Resource: &Resource{},
 		Name:     gslbName,
 		Provider: GSLBProvider{
 			Class: "gslb",

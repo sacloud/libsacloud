@@ -1,7 +1,6 @@
 package sacloud
 
 import (
-	"encoding/json"
 	"time"
 )
 
@@ -15,13 +14,13 @@ type Disk struct {
 	ConnectionOrder int             `json:",omitempty"`
 	ReinstallCount  int             `json:",omitempty"`
 	*EAvailability
-	SizeMB     int             `json:",omitempty"`
-	MigratedMB int             `json:",omitempty"`
-	Plan       *NumberResource `json:",omitempty"`
+	SizeMB     int       `json:",omitempty"`
+	MigratedMB int       `json:",omitempty"`
+	Plan       *Resource `json:",omitempty"`
 	Storage    struct {
-		*NumberResource
-		MountIndex json.Number `json:",omitempty"`
-		Class      string      `json:",omitempty"`
+		*Resource
+		MountIndex int64  `json:",omitempty"`
+		Class      string `json:",omitempty"`
 	}
 	SourceArchive *Archive            `json:",omitempty"`
 	SourceDisk    *Disk               `json:",omitempty"`
@@ -34,8 +33,8 @@ type Disk struct {
 }
 
 var (
-	DiskPlanHDD                          = &NumberResource{ID: "2"}
-	DiskPlanSSD                          = &NumberResource{ID: "4"}
+	DiskPlanHDD                          = &Resource{ID: 2}
+	DiskPlanSSD                          = &Resource{ID: 4}
 	DiskConnectionVirtio EDiskConnection = "virtio"
 	DiskConnectionIDE    EDiskConnection = "ide"
 )
@@ -55,13 +54,13 @@ func (d *Disk) SetDiskPlanToSSD() {
 	d.Plan = DiskPlanSSD
 }
 
-func (d *Disk) SetSourceArchive(sourceID string) {
+func (d *Disk) SetSourceArchive(sourceID int64) {
 	d.SourceArchive = &Archive{
 		Resource: &Resource{ID: sourceID},
 	}
 }
 
-func (d *Disk) SetSourceDisk(sourceID string) {
+func (d *Disk) SetSourceDisk(sourceID int64) {
 	d.SourceDisk = &Disk{
 		Resource: &Resource{ID: sourceID},
 	}
@@ -91,7 +90,7 @@ func (d *DiskEditValue) SetPassword(value string) {
 func (d *DiskEditValue) SetSSHKeys(keyIDs []string) {
 	d.SSHKeys = []*SSHKey{}
 	for _, keyID := range keyIDs {
-		d.SSHKeys = append(d.SSHKeys, &SSHKey{Resource: &Resource{ID: keyID}})
+		d.SSHKeys = append(d.SSHKeys, &SSHKey{Resource: NewResourceByStringID(keyID)})
 	}
 }
 func (d *DiskEditValue) SetDisablePWAuth(disable bool) {
@@ -100,7 +99,7 @@ func (d *DiskEditValue) SetDisablePWAuth(disable bool) {
 func (d *DiskEditValue) SetNotes(noteIDs []string) {
 	d.Notes = []*Resource{}
 	for _, noteID := range noteIDs {
-		d.Notes = append(d.Notes, &Resource{ID: noteID})
+		d.Notes = append(d.Notes, NewResourceByStringID(noteID))
 	}
 
 }
@@ -109,7 +108,7 @@ func (d *DiskEditValue) AddNote(noteID string) {
 	if d.Notes == nil {
 		d.Notes = []*Resource{}
 	}
-	d.Notes = append(d.Notes, &Resource{ID: noteID})
+	d.Notes = append(d.Notes, NewResourceByStringID(noteID))
 }
 
 func (d *DiskEditValue) SetUserIPAddress(ip string) {

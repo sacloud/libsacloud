@@ -167,27 +167,27 @@ func (b *baseAPI) create(body interface{}, res interface{}) error {
 	return b.request(method, uri, body, res)
 }
 
-func (b *baseAPI) read(id string, body interface{}, res interface{}) error {
+func (b *baseAPI) read(id int64, body interface{}, res interface{}) error {
 	var (
 		method = "GET"
-		uri    = fmt.Sprintf("%s/%s", b.getResourceURL(), id)
+		uri    = fmt.Sprintf("%s/%d", b.getResourceURL(), id)
 	)
 
 	return b.request(method, uri, body, res)
 }
 
-func (b *baseAPI) update(id string, body interface{}, res interface{}) error {
+func (b *baseAPI) update(id int64, body interface{}, res interface{}) error {
 	var (
 		method = "PUT"
-		uri    = fmt.Sprintf("%s/%s", b.getResourceURL(), id)
+		uri    = fmt.Sprintf("%s/%d", b.getResourceURL(), id)
 	)
 	return b.request(method, uri, body, res)
 }
 
-func (b *baseAPI) delete(id string, body interface{}, res interface{}) error {
+func (b *baseAPI) delete(id int64, body interface{}, res interface{}) error {
 	var (
 		method = "DELETE"
-		uri    = fmt.Sprintf("%s/%s", b.getResourceURL(), id)
+		uri    = fmt.Sprintf("%s/%d", b.getResourceURL(), id)
 	)
 	return b.request(method, uri, body, res)
 }
@@ -209,10 +209,10 @@ func (b *baseAPI) action(method string, uri string, body interface{}, res interf
 	return true, nil
 }
 
-func (b *baseAPI) monitor(id string, body *sacloud.ResourceMonitorRequest) (*sacloud.MonitorValues, error) {
+func (b *baseAPI) monitor(id int64, body *sacloud.ResourceMonitorRequest) (*sacloud.MonitorValues, error) {
 	var (
 		method = "GET"
-		uri    = fmt.Sprintf("%s/%s/monitor", b.getResourceURL(), id)
+		uri    = fmt.Sprintf("%s/%d/monitor", b.getResourceURL(), id)
 	)
 	res := &sacloud.ResourceMonitorResponse{}
 	err := b.request(method, uri, body, res)

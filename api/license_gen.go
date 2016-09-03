@@ -102,19 +102,19 @@ func (api *LicenseAPI) Create(value *sacloud.License) (*sacloud.License, error) 
 	})
 }
 
-func (api *LicenseAPI) Read(id string) (*sacloud.License, error) {
+func (api *LicenseAPI) Read(id int64) (*sacloud.License, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.read(id, nil, res)
 	})
 }
 
-func (api *LicenseAPI) Update(id string, value *sacloud.License) (*sacloud.License, error) {
+func (api *LicenseAPI) Update(id int64, value *sacloud.License) (*sacloud.License, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.update(id, api.createRequest(value), res)
 	})
 }
 
-func (api *LicenseAPI) Delete(id string) (*sacloud.License, error) {
+func (api *LicenseAPI) Delete(id int64) (*sacloud.License, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.delete(id, nil, res)
 	})

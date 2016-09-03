@@ -102,19 +102,19 @@ func (api *InterfaceAPI) Create(value *sacloud.Interface) (*sacloud.Interface, e
 	})
 }
 
-func (api *InterfaceAPI) Read(id string) (*sacloud.Interface, error) {
+func (api *InterfaceAPI) Read(id int64) (*sacloud.Interface, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.read(id, nil, res)
 	})
 }
 
-func (api *InterfaceAPI) Update(id string, value *sacloud.Interface) (*sacloud.Interface, error) {
+func (api *InterfaceAPI) Update(id int64, value *sacloud.Interface) (*sacloud.Interface, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.update(id, api.createRequest(value), res)
 	})
 }
 
-func (api *InterfaceAPI) Delete(id string) (*sacloud.Interface, error) {
+func (api *InterfaceAPI) Delete(id int64) (*sacloud.Interface, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.delete(id, nil, res)
 	})

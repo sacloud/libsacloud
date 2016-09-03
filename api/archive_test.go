@@ -10,6 +10,7 @@ const testArchiveName = "libsacloud_test_archive"
 
 func TestGetCentOSArvhiveByName(t *testing.T) {
 	archiveAPI := client.Archive
+
 	res, err := archiveAPI.WithNameLike("CentOS 7.2 64bit").Find()
 	assert.NoError(t, err)
 	assert.NotEmpty(t, res)
@@ -41,6 +42,7 @@ func TestFindState(t *testing.T) {
 	assert.Empty(t, state.Exclude)
 
 	res, err := api.withNameLike("CentOS").limit(1).Find()
+
 	assert.NoError(t, err)
 	assert.NotEmpty(t, res)
 	assert.Equal(t, res.Count, 1)

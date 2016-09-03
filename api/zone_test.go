@@ -15,7 +15,7 @@ func TestZone_Find(t *testing.T) {
 
 	id := res.Zones[0].ID
 
-	zone, err := api.Read(id.String())
+	zone, err := api.Read(id)
 	assert.NoError(t, err)
 	assert.NotEmpty(t, zone)
 	assert.NotEmpty(t, zone.ID)

@@ -98,19 +98,19 @@ func (api *ProductLicenseAPI) SortByName(reverse bool) *ProductLicenseAPI {
 // 	})
 // }
 
-func (api *ProductLicenseAPI) Read(id string) (*sacloud.ProductLicense, error) {
+func (api *ProductLicenseAPI) Read(id int64) (*sacloud.ProductLicense, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.read(id, nil, res)
 	})
 }
 
-// func (api *ProductLicenseAPI) Update(id string, value *sacloud.ProductLicense) (*sacloud.ProductLicense, error) {
+// func (api *ProductLicenseAPI) Update(id int64, value *sacloud.ProductLicense) (*sacloud.ProductLicense, error) {
 // 	return api.request(func(res *sacloud.Response) error {
 // 		return api.update(id, api.createRequest(value), res)
 // 	})
 // }
 
-// func (api *ProductLicenseAPI) Delete(id string) (*sacloud.ProductLicense, error) {
+// func (api *ProductLicenseAPI) Delete(id int64) (*sacloud.ProductLicense, error) {
 // 	return api.request(func(res *sacloud.Response) error {
 // 		return api.delete(id, nil, res)
 // 	})

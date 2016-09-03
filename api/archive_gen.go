@@ -98,19 +98,19 @@ func (api *ArchiveAPI) Create(value *sacloud.Archive) (*sacloud.Archive, error) 
 	})
 }
 
-func (api *ArchiveAPI) Read(id string) (*sacloud.Archive, error) {
+func (api *ArchiveAPI) Read(id int64) (*sacloud.Archive, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.read(id, nil, res)
 	})
 }
 
-func (api *ArchiveAPI) Update(id string, value *sacloud.Archive) (*sacloud.Archive, error) {
+func (api *ArchiveAPI) Update(id int64, value *sacloud.Archive) (*sacloud.Archive, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.update(id, api.createRequest(value), res)
 	})
 }
 
-func (api *ArchiveAPI) Delete(id string) (*sacloud.Archive, error) {
+func (api *ArchiveAPI) Delete(id int64) (*sacloud.Archive, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.delete(id, nil, res)
 	})

@@ -1,10 +1,5 @@
 package sacloud
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 type LoadBalancer struct {
 	*Appliance
 	Remark   *LoadBalancerRemark   `json:",omitempty"`
@@ -13,7 +8,8 @@ type LoadBalancer struct {
 
 type LoadBalancerRemark struct {
 	*ApplianceRemarkBase
-	Zone *NumberResource
+	// TODO Zone
+	//Zone *Resource
 }
 
 type LoadBalancerSettings struct {
@@ -78,7 +74,7 @@ func CreateNewLoadBalancerSingle(values *CreateLoadBalancerValue, settings []*Lo
 			Name:        values.Name,
 			Description: values.Description,
 			Tags:        values.Tags,
-			Plan:        &NumberResource{ID: json.Number(fmt.Sprintf("%d", values.Plan))},
+			Plan:        &Resource{ID: int64(values.Plan)},
 			Icon: &Icon{
 				Resource: values.Icon,
 			},

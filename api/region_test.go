@@ -15,7 +15,7 @@ func TestRegion_Find(t *testing.T) {
 
 	id := res.Regions[0].ID
 
-	region, err := api.Read(id.String())
+	region, err := api.Read(id)
 	assert.NoError(t, err)
 	assert.NotEmpty(t, region)
 	assert.NotEmpty(t, region.ID)

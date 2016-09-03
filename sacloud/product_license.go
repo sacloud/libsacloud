@@ -4,7 +4,7 @@ import "time"
 
 // ProductLicense type of ServerPlan
 type ProductLicense struct {
-	*NumberResource
+	*Resource
 	Index        int        `json:",omitempty"`
 	Name         string     `json:",omitempty"`
 	ServiceClass string     `json:",omitempty"`

@@ -2,7 +2,7 @@ package sacloud
 
 // ProductServer type of ServerPlan
 type ProductServer struct {
-	*NumberResource
+	*Resource
 	Index        int    `json:",omitempty"`
 	Name         string `json:",omitempty"`
 	Description  string `json:",omitempty"`

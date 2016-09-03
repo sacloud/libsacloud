@@ -102,19 +102,19 @@ func (api *NoteAPI) Create(value *sacloud.Note) (*sacloud.Note, error) {
 	})
 }
 
-func (api *NoteAPI) Read(id string) (*sacloud.Note, error) {
+func (api *NoteAPI) Read(id int64) (*sacloud.Note, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.read(id, nil, res)
 	})
 }
 
-func (api *NoteAPI) Update(id string, value *sacloud.Note) (*sacloud.Note, error) {
+func (api *NoteAPI) Update(id int64, value *sacloud.Note) (*sacloud.Note, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.update(id, api.createRequest(value), res)
 	})
 }
 
-func (api *NoteAPI) Delete(id string) (*sacloud.Note, error) {
+func (api *NoteAPI) Delete(id int64) (*sacloud.Note, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.delete(id, nil, res)
 	})
