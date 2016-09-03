@@ -102,19 +102,19 @@ func (api *PacketFilterAPI) Create(value *sacloud.PacketFilter) (*sacloud.Packet
 	})
 }
 
-func (api *PacketFilterAPI) Read(id string) (*sacloud.PacketFilter, error) {
+func (api *PacketFilterAPI) Read(id int64) (*sacloud.PacketFilter, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.read(id, nil, res)
 	})
 }
 
-func (api *PacketFilterAPI) Update(id string, value *sacloud.PacketFilter) (*sacloud.PacketFilter, error) {
+func (api *PacketFilterAPI) Update(id int64, value *sacloud.PacketFilter) (*sacloud.PacketFilter, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.update(id, api.createRequest(value), res)
 	})
 }
 
-func (api *PacketFilterAPI) Delete(id string) (*sacloud.PacketFilter, error) {
+func (api *PacketFilterAPI) Delete(id int64) (*sacloud.PacketFilter, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.delete(id, nil, res)
 	})

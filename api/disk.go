@@ -26,7 +26,7 @@ func (api *DiskAPI) SortByConnectionOrder(reverse bool) *DiskAPI {
 	return api
 }
 
-func (api *DiskAPI) WithServerID(id string) *DiskAPI {
+func (api *DiskAPI) WithServerID(id int64) *DiskAPI {
 	api.FilterBy("Server.ID", id)
 	return api
 }
@@ -49,41 +49,40 @@ func (api *DiskAPI) NewCondig() *sacloud.DiskEditValue {
 	return &sacloud.DiskEditValue{}
 }
 
-func (api *DiskAPI) Config(id string, disk *sacloud.DiskEditValue) (bool, error) {
+func (api *DiskAPI) Config(id int64, disk *sacloud.DiskEditValue) (bool, error) {
 	var (
 		method = "PUT"
-		uri    = fmt.Sprintf("%s/%s/config", api.getResourceURL(), id)
+		uri    = fmt.Sprintf("%s/%d/config", api.getResourceURL(), id)
 	)
 
 	return api.modify(method, uri, disk)
 }
 
-func (api *DiskAPI) install(id string, body *sacloud.Disk) (bool, error) {
+func (api *DiskAPI) install(id int64, body *sacloud.Disk) (bool, error) {
 	var (
 		method = "PUT"
-		uri    = fmt.Sprintf("%s/%s/install", api.getResourceURL(), id)
+		uri    = fmt.Sprintf("%s/%d/install", api.getResourceURL(), id)
 	)
 
 	return api.modify(method, uri, body)
 }
 
-func (api *DiskAPI) ReinstallFromBlank(id string, sizeMB int) (bool, error) {
+func (api *DiskAPI) ReinstallFromBlank(id int64, sizeMB int) (bool, error) {
 	var body = &sacloud.Disk{
 		SizeMB: sizeMB,
 	}
 	return api.install(id, body)
 }
 
-func (api *DiskAPI) ReinstallFromArchive(id string, archiveID string) (bool, error) {
+func (api *DiskAPI) ReinstallFromArchive(id int64, archiveID int64) (bool, error) {
 	var body = &sacloud.Disk{
-		SourceArchive: &sacloud.Archive{
-			Resource: &sacloud.Resource{ID: archiveID},
-		},
+		SourceArchive: &sacloud.Archive{},
 	}
+	body.SourceArchive.ID = id
 	return api.install(id, body)
 }
 
-func (api *DiskAPI) ReinstallFromDisk(id string, diskID string) (bool, error) {
+func (api *DiskAPI) ReinstallFromDisk(id int64, diskID int64) (bool, error) {
 	var body = &sacloud.Disk{
 		SourceDisk: &sacloud.Disk{
 			Resource: &sacloud.Resource{ID: diskID},
@@ -92,32 +91,32 @@ func (api *DiskAPI) ReinstallFromDisk(id string, diskID string) (bool, error) {
 	return api.install(id, body)
 }
 
-func (api *DiskAPI) ToBlank(diskID string) (bool, error) {
+func (api *DiskAPI) ToBlank(diskID int64) (bool, error) {
 	var (
 		method = "PUT"
-		uri    = fmt.Sprintf("%s/%s/to/blank", api.getResourceURL(), diskID)
+		uri    = fmt.Sprintf("%s/%d/to/blank", api.getResourceURL(), diskID)
 	)
 	return api.modify(method, uri, nil)
 }
 
-func (api *DiskAPI) DisconnectFromServer(diskID string) (bool, error) {
+func (api *DiskAPI) DisconnectFromServer(diskID int64) (bool, error) {
 	var (
 		method = "DELETE"
-		uri    = fmt.Sprintf("%s/%s/to/server", api.getResourceURL(), diskID)
+		uri    = fmt.Sprintf("%s/%d/to/server", api.getResourceURL(), diskID)
 	)
 	return api.modify(method, uri, nil)
 }
 
-func (api *DiskAPI) ConnectToServer(diskID string, serverID string) (bool, error) {
+func (api *DiskAPI) ConnectToServer(diskID int64, serverID int64) (bool, error) {
 	var (
 		method = "PUT"
-		uri    = fmt.Sprintf("%s/%s/to/server/%s", api.getResourceURL(), diskID, serverID)
+		uri    = fmt.Sprintf("%s/%d/to/server/%d", api.getResourceURL(), diskID, serverID)
 	)
 	return api.modify(method, uri, nil)
 }
 
 // State get disk state
-func (api *DiskAPI) State(diskID string) (bool, error) {
+func (api *DiskAPI) State(diskID int64) (bool, error) {
 	disk, err := api.Read(diskID)
 	if err != nil {
 		return false, err
@@ -126,7 +125,7 @@ func (api *DiskAPI) State(diskID string) (bool, error) {
 }
 
 // SleepWhileCopying wait until became to available
-func (api *DiskAPI) SleepWhileCopying(diskID string, timeout time.Duration) error {
+func (api *DiskAPI) SleepWhileCopying(diskID int64, timeout time.Duration) error {
 	current := 0 * time.Second
 	interval := 5 * time.Second
 	for {
@@ -147,6 +146,6 @@ func (api *DiskAPI) SleepWhileCopying(diskID string, timeout time.Duration) erro
 	}
 }
 
-func (api *DiskAPI) Monitor(id string, body *sacloud.ResourceMonitorRequest) (*sacloud.MonitorValues, error) {
+func (api *DiskAPI) Monitor(id int64, body *sacloud.ResourceMonitorRequest) (*sacloud.MonitorValues, error) {
 	return api.baseAPI.monitor(id, body)
 }

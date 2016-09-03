@@ -7,7 +7,7 @@ type Appliance struct {
 	Class       string `json:",omitempty"`
 	Name        string `json:",omitempty"`
 	Description string `json:",omitempty"`
-	Plan        *NumberResource
+	Plan        *Resource
 	//Settings
 	SettingHash string `json:",omitempty"`
 	//Remark      *ApplianceRemark `json:",omitempty"`
@@ -27,10 +27,10 @@ type Appliance struct {
 type ApplianceRemarkBase struct {
 	Servers []interface{}
 	Switch  *ApplianceRemarkSwitch `json:",omitempty"`
-	//Zone *NumberResource `json:",omitempty"`
+	//Zone *Resource `json:",omitempty"`
 	VRRP    *ApplianceRemarkVRRP    `json:",omitempty"`
 	Network *ApplianceRemarkNetwork `json:",omitempty"`
-	//Plan    *NumberResource
+	//Plan    *Resource
 }
 
 //type ApplianceServer struct {

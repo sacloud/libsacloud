@@ -25,13 +25,13 @@ type Instance struct {
 
 // Storage type of Storage
 type Storage struct {
-	*NumberResource
+	*Resource
 	Class       string `json:",omitempty"`
 	Name        string `json:",omitempty"`
 	Description string `json:",omitempty"`
 	Zone        *Zone  `json:",omitempty"`
 	DiskPlan    struct {
-		*NumberResource
+		*Resource
 		StorageClass string `json:",omitempty"`
 		Name         string `json:",omitempty"`
 	} `json:",omitempty"`

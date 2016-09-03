@@ -8,7 +8,7 @@ import (
 
 var testNoteJSON = `
 {
-	"ID": "112800309940",
+	"ID": 112800309940,
 	"Name": "lb-dsr",
 	"Class": "shell",
 	"Scope": "shared",

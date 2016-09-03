@@ -21,10 +21,10 @@ func NewInternetAPI(client *Client) *InternetAPI {
 	}
 }
 
-func (api *InternetAPI) UpdateBandWidth(id string, bandWidth int) (*sacloud.Internet, error) {
+func (api *InternetAPI) UpdateBandWidth(id int64, bandWidth int) (*sacloud.Internet, error) {
 	var (
 		method = "PUT"
-		uri    = fmt.Sprintf("%s/%s/bandwidth", api.getResourceURL(), id)
+		uri    = fmt.Sprintf("%s/%d/bandwidth", api.getResourceURL(), id)
 		body   = &sacloud.Request{}
 	)
 	body.Internet = &sacloud.Internet{BandWidthMbps: bandWidth}
@@ -34,7 +34,7 @@ func (api *InternetAPI) UpdateBandWidth(id string, bandWidth int) (*sacloud.Inte
 	})
 }
 
-func (api *InternetAPI) SleepWhileCreating(internetID string, timeout time.Duration) error {
+func (api *InternetAPI) SleepWhileCreating(internetID int64, timeout time.Duration) error {
 	current := 0 * time.Second
 	interval := 5 * time.Second
 
@@ -55,7 +55,7 @@ func (api *InternetAPI) SleepWhileCreating(internetID string, timeout time.Durat
 		return err
 	}
 	if current > timeout {
-		return fmt.Errorf("Timeout: Can't read /internet/%s", internetID)
+		return fmt.Errorf("Timeout: Can't read /internet/%d", internetID)
 	}
 
 	return nil

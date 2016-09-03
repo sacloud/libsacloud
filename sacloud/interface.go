@@ -12,10 +12,10 @@ type Interface struct {
 	PacketFilter  *PacketFilter `json:",omitempty"`
 }
 
-func (i *Interface) SetNewServerID(id string) {
+func (i *Interface) SetNewServerID(id int64) {
 	i.Server = &Server{Resource: &Resource{ID: id}}
 }
 
-func (i *Interface) SetNewSwitchID(id string) {
+func (i *Interface) SetNewSwitchID(id int64) {
 	i.Switch = &Switch{Resource: &Resource{ID: id}}
 }

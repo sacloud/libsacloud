@@ -9,7 +9,7 @@ import (
 var testInstanceJSON = `
 {
 	"Server": {
-		"ID": "123456789012"
+		"ID": 123456789012
 	},
 	"Status": "up",
 	"BeforeStatus": "down",
@@ -33,7 +33,7 @@ var testInstanceJSON = `
 
 var testStorageJSON = `
 {
-	"ID": "1234567890",
+	"ID": 1234567890,
 	"Class": "iscsi1204",
 	"Name": "sac-is1b-arc-st01",
 	"Description": "",

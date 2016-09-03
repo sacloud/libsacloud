@@ -8,7 +8,7 @@ import (
 
 var testDNSJSON = `
  {
-	"ID": "123456789012",
+	"ID": 123456789012,
 	"Name": "libsacloud-test.com",
 	"Description": "",
 	"Settings": {
@@ -45,7 +45,7 @@ var testDNSJSON = `
 		"ServiceClass": "cloud\/dns"
 	},
 	"Icon": {
-		"ID": "112300511382",
+		"ID": 112300511382,
 		"URL": "https:\/\/secure.sakura.ad.jp\/cloud\/zone\/is1b\/api\/cloud\/1.1\/icon\/112300511382.png",
 		"Name": "DNS",
 		"Scope": "shared"

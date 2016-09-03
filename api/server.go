@@ -28,14 +28,14 @@ func (api *ServerAPI) WithPlan(planID string) *ServerAPI {
 func (api *ServerAPI) WithStatus(status string) *ServerAPI {
 	return api.FilterBy("Instance.Status", status)
 }
-func (api *ServerAPI) WithStatusUp(status string) *ServerAPI {
+func (api *ServerAPI) WithStatusUp() *ServerAPI {
 	return api.WithStatus("up")
 }
-func (api *ServerAPI) WithStatusDown(status string) *ServerAPI {
+func (api *ServerAPI) WithStatusDown() *ServerAPI {
 	return api.WithStatus("down")
 }
 
-func (api *ServerAPI) WithISOImage(imageID string) *ServerAPI {
+func (api *ServerAPI) WithISOImage(imageID int64) *ServerAPI {
 	return api.FilterBy("Instance.CDROM.ID", imageID)
 }
 
@@ -49,14 +49,14 @@ func (api *ServerAPI) SortByMemory(reverse bool) *ServerAPI {
 	return api
 }
 
-func (api *ServerAPI) DeleteWithDisk(id string, disks []string) (*sacloud.Server, error) {
+func (api *ServerAPI) DeleteWithDisk(id int64, disks []int64) (*sacloud.Server, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.delete(id, map[string]interface{}{"WithDisk": disks}, res)
 	})
 }
 
 // State get server state
-func (api *ServerAPI) State(id string) (string, error) {
+func (api *ServerAPI) State(id int64) (string, error) {
 	server, err := api.Read(id)
 	if err != nil {
 		return "", err
@@ -64,7 +64,7 @@ func (api *ServerAPI) State(id string) (string, error) {
 	return server.Availability, nil
 }
 
-func (api *ServerAPI) IsUp(id string) (bool, error) {
+func (api *ServerAPI) IsUp(id int64) (bool, error) {
 	server, err := api.Read(id)
 	if err != nil {
 		return false, err
@@ -72,7 +72,7 @@ func (api *ServerAPI) IsUp(id string) (bool, error) {
 	return server.Instance.IsUp(), nil
 }
 
-func (api *ServerAPI) IsDown(id string) (bool, error) {
+func (api *ServerAPI) IsDown(id int64) (bool, error) {
 	server, err := api.Read(id)
 	if err != nil {
 		return false, err
@@ -81,49 +81,49 @@ func (api *ServerAPI) IsDown(id string) (bool, error) {
 }
 
 // Boot power on
-func (api *ServerAPI) Boot(id string) (bool, error) {
+func (api *ServerAPI) Boot(id int64) (bool, error) {
 	var (
 		method = "PUT"
-		uri    = fmt.Sprintf("%s/%s/power", api.getResourceURL(), id)
+		uri    = fmt.Sprintf("%s/%d/power", api.getResourceURL(), id)
 	)
 	return api.modify(method, uri, nil)
 }
 
 // Shutdown power off
-func (api *ServerAPI) Shutdown(id string) (bool, error) {
+func (api *ServerAPI) Shutdown(id int64) (bool, error) {
 	var (
 		method = "DELETE"
-		uri    = fmt.Sprintf("%s/%s/power", api.getResourceURL(), id)
+		uri    = fmt.Sprintf("%s/%d/power", api.getResourceURL(), id)
 	)
 
 	return api.modify(method, uri, nil)
 }
 
 // Stop force shutdown
-func (api *ServerAPI) Stop(id string) (bool, error) {
+func (api *ServerAPI) Stop(id int64) (bool, error) {
 	var (
 		method = "DELETE"
-		uri    = fmt.Sprintf("%s/%s/power", api.getResourceURL(), id)
+		uri    = fmt.Sprintf("%s/%d/power", api.getResourceURL(), id)
 	)
 
 	return api.modify(method, uri, map[string]bool{"Force": true})
 }
 
-func (api *ServerAPI) RebootForce(id string) (bool, error) {
+func (api *ServerAPI) RebootForce(id int64) (bool, error) {
 	var (
 		method = "PUT"
-		uri    = fmt.Sprintf("%s/%s/reset", api.getResourceURL(), id)
+		uri    = fmt.Sprintf("%s/%d/reset", api.getResourceURL(), id)
 	)
 
 	return api.modify(method, uri, nil)
 }
 
-func (api *ServerAPI) SleepUntilUp(serverID string, timeout time.Duration) error {
+func (api *ServerAPI) SleepUntilUp(id int64, timeout time.Duration) error {
 	current := 0 * time.Second
 	interval := 5 * time.Second
 	for {
 
-		up, err := api.IsUp(serverID)
+		up, err := api.IsUp(id)
 		if err != nil {
 			return err
 		}
@@ -140,12 +140,12 @@ func (api *ServerAPI) SleepUntilUp(serverID string, timeout time.Duration) error
 	}
 }
 
-func (api *ServerAPI) SleepUntilDown(serverID string, timeout time.Duration) error {
+func (api *ServerAPI) SleepUntilDown(id int64, timeout time.Duration) error {
 	current := 0 * time.Second
 	interval := 5 * time.Second
 	for {
 
-		down, err := api.IsDown(serverID)
+		down, err := api.IsDown(id)
 		if err != nil {
 			return err
 		}
@@ -162,10 +162,10 @@ func (api *ServerAPI) SleepUntilDown(serverID string, timeout time.Duration) err
 	}
 }
 
-func (api *ServerAPI) ChangePlan(serverID string, planID string) (*sacloud.Server, error) {
+func (api *ServerAPI) ChangePlan(serverID int64, planID string) (*sacloud.Server, error) {
 	var (
 		method = "PUT"
-		uri    = fmt.Sprintf("%s/%s/to/plan/%s", api.getResourceURL(), serverID, planID)
+		uri    = fmt.Sprintf("%s/%d/to/plan/%s", api.getResourceURL(), serverID, planID)
 	)
 
 	return api.request(func(res *sacloud.Response) error {
@@ -173,7 +173,7 @@ func (api *ServerAPI) ChangePlan(serverID string, planID string) (*sacloud.Serve
 	})
 }
 
-func (api *ServerAPI) FindDisk(serverID string) ([]sacloud.Disk, error) {
+func (api *ServerAPI) FindDisk(serverID int64) ([]sacloud.Disk, error) {
 	server, err := api.Read(serverID)
 	if err != nil {
 		return nil, err
@@ -181,10 +181,10 @@ func (api *ServerAPI) FindDisk(serverID string) ([]sacloud.Disk, error) {
 	return server.Disks, nil
 }
 
-func (api *ServerAPI) InsertCDROM(serverID string, cdromID string) (bool, error) {
+func (api *ServerAPI) InsertCDROM(serverID int64, cdromID int64) (bool, error) {
 	var (
 		method = "PUT"
-		uri    = fmt.Sprintf("%s/%s/cdrom", api.getResourceURL(), serverID)
+		uri    = fmt.Sprintf("%s/%d/cdrom", api.getResourceURL(), serverID)
 	)
 
 	req := &sacloud.Request{
@@ -196,10 +196,10 @@ func (api *ServerAPI) InsertCDROM(serverID string, cdromID string) (bool, error)
 	return api.modify(method, uri, req)
 }
 
-func (api *ServerAPI) EjectCDROM(serverID string, cdromID string) (bool, error) {
+func (api *ServerAPI) EjectCDROM(serverID int64, cdromID int64) (bool, error) {
 	var (
-		method = "PUT"
-		uri    = fmt.Sprintf("%s/%s/cdrom", api.getResourceURL(), serverID)
+		method = "DELETE"
+		uri    = fmt.Sprintf("%s/%d/cdrom", api.getResourceURL(), serverID)
 	)
 
 	req := &sacloud.Request{
@@ -215,10 +215,10 @@ func (api *ServerAPI) NewKeyboardRequest() *sacloud.KeyboardRequest {
 	return &sacloud.KeyboardRequest{}
 }
 
-func (api *ServerAPI) SendKey(serverID string, body *sacloud.KeyboardRequest) (bool, error) {
+func (api *ServerAPI) SendKey(serverID int64, body *sacloud.KeyboardRequest) (bool, error) {
 	var (
 		method = "PUT"
-		uri    = fmt.Sprintf("%s/%s/keyboard", api.getResourceURL(), serverID)
+		uri    = fmt.Sprintf("%s/%d/keyboard", api.getResourceURL(), serverID)
 	)
 
 	return api.modify(method, uri, body)
@@ -230,10 +230,10 @@ func (api *ServerAPI) NewMouseRequest() *sacloud.MouseRequest {
 	}
 }
 
-func (api *ServerAPI) SendMouse(serverID string, mouseIndex string, body *sacloud.MouseRequest) (bool, error) {
+func (api *ServerAPI) SendMouse(serverID int64, mouseIndex string, body *sacloud.MouseRequest) (bool, error) {
 	var (
 		method = "PUT"
-		uri    = fmt.Sprintf("%s/%s/mouse/%s", api.getResourceURL(), serverID, mouseIndex)
+		uri    = fmt.Sprintf("%s/%d/mouse/%s", api.getResourceURL(), serverID, mouseIndex)
 	)
 
 	return api.modify(method, uri, body)
@@ -243,10 +243,10 @@ func (api *ServerAPI) NewVNCSnapshotRequest() *sacloud.VNCSnapshotRequest {
 	return &sacloud.VNCSnapshotRequest{}
 }
 
-func (api *ServerAPI) GetVNCProxy(serverID string) (*sacloud.VNCProxyResponse, error) {
+func (api *ServerAPI) GetVNCProxy(serverID int64) (*sacloud.VNCProxyResponse, error) {
 	var (
 		method = "GET"
-		uri    = fmt.Sprintf("%s/%s/vnc/proxy", api.getResourceURL(), serverID)
+		uri    = fmt.Sprintf("%s/%d/vnc/proxy", api.getResourceURL(), serverID)
 		res    = &sacloud.VNCProxyResponse{}
 	)
 	err := api.baseAPI.request(method, uri, nil, res)
@@ -256,10 +256,10 @@ func (api *ServerAPI) GetVNCProxy(serverID string) (*sacloud.VNCProxyResponse, e
 	return res, nil
 }
 
-func (api *ServerAPI) GetVNCSize(serverID string) (*sacloud.VNCSizeResponse, error) {
+func (api *ServerAPI) GetVNCSize(serverID int64) (*sacloud.VNCSizeResponse, error) {
 	var (
 		method = "GET"
-		uri    = fmt.Sprintf("%s/%s/vnc/size", api.getResourceURL(), serverID)
+		uri    = fmt.Sprintf("%s/%d/vnc/size", api.getResourceURL(), serverID)
 		res    = &sacloud.VNCSizeResponse{}
 	)
 	err := api.baseAPI.request(method, uri, nil, res)
@@ -269,10 +269,10 @@ func (api *ServerAPI) GetVNCSize(serverID string) (*sacloud.VNCSizeResponse, err
 	return res, nil
 }
 
-func (api *ServerAPI) GetVNCSnapshot(serverID string, body *sacloud.VNCSnapshotRequest) (*sacloud.VNCSnapshotResponse, error) {
+func (api *ServerAPI) GetVNCSnapshot(serverID int64, body *sacloud.VNCSnapshotRequest) (*sacloud.VNCSnapshotResponse, error) {
 	var (
 		method = "GET"
-		uri    = fmt.Sprintf("%s/%s/vnc/snapshot", api.getResourceURL(), serverID)
+		uri    = fmt.Sprintf("%s/%d/vnc/snapshot", api.getResourceURL(), serverID)
 		res    = &sacloud.VNCSnapshotResponse{}
 	)
 	err := api.baseAPI.request(method, uri, body, res)
@@ -282,6 +282,6 @@ func (api *ServerAPI) GetVNCSnapshot(serverID string, body *sacloud.VNCSnapshotR
 	return res, nil
 }
 
-func (api *ServerAPI) Monitor(id string, body *sacloud.ResourceMonitorRequest) (*sacloud.MonitorValues, error) {
+func (api *ServerAPI) Monitor(id int64, body *sacloud.ResourceMonitorRequest) (*sacloud.MonitorValues, error) {
 	return api.baseAPI.monitor(id, body)
 }

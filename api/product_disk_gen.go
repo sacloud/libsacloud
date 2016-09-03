@@ -102,19 +102,19 @@ func (api *ProductDiskAPI) SortByName(reverse bool) *ProductDiskAPI {
 // 	})
 // }
 
-func (api *ProductDiskAPI) Read(id string) (*sacloud.ProductDisk, error) {
+func (api *ProductDiskAPI) Read(id int64) (*sacloud.ProductDisk, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.read(id, nil, res)
 	})
 }
 
-// func (api *ProductDiskAPI) Update(id string, value *sacloud.ProductDisk) (*sacloud.ProductDisk, error) {
+// func (api *ProductDiskAPI) Update(id int64, value *sacloud.ProductDisk) (*sacloud.ProductDisk, error) {
 // 	return api.request(func(res *sacloud.Response) error {
 // 		return api.update(id, api.createRequest(value), res)
 // 	})
 // }
 
-// func (api *ProductDiskAPI) Delete(id string) (*sacloud.ProductDisk, error) {
+// func (api *ProductDiskAPI) Delete(id int64) (*sacloud.ProductDisk, error) {
 // 	return api.request(func(res *sacloud.Response) error {
 // 		return api.delete(id, nil, res)
 // 	})

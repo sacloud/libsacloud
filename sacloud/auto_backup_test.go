@@ -10,7 +10,7 @@ var testAutoBackupJSON = `
 {
         "CreatedAt": "2016-07-07T10:58:36+09:00",
         "Description": "\u30d0\u30c3\u30af\u30a2\u30c3\u30d7\u306a\u306e\u306a\u306e",
-        "ID": "112800693628",
+        "ID": 112800693628,
         "Icon": null,
         "ModifiedAt": "2016-07-07T10:58:36+09:00",
         "Name": "sakura-windows",

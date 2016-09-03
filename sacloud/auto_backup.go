@@ -1,6 +1,9 @@
 package sacloud
 
-import "time"
+import (
+	"fmt"
+	"time"
+)
 
 // AutoBackup type of AutoBackup(CommonServiceItem)
 type AutoBackup struct {
@@ -19,19 +22,21 @@ type AutoBackup struct {
 
 // AutoBackupSettings type of AutoBackupSettings
 type AutoBackupSettings struct {
-	AccountID  string                `json:"AccountId,omitempty"`
+	//TODO AccountID should be int64
+	//AccountID  string                `json:"AccountId,omitempty"`
 	DiskID     string                `json:"DiskId,omitempty"`
-	ZoneID     int                   `json:"ZoneId,omitempty"`
+	ZoneID     int64                 `json:"ZoneId,omitempty"`
 	ZoneName   string                `json:",omitempty"`
 	Autobackup *AutoBackupRecordSets `json:",omitempty"`
 }
 
 // AutoBackupStatus type of AutoBackupStatus
 type AutoBackupStatus struct {
-	AccountID string `json:"AccountId,omitempty"`
-	DiskID    string `json:"DiskId,omitempty"`
-	ZoneID    int    `json:"ZoneId,omitempty"`
-	ZoneName  string `json:",omitempty"`
+	//TODO Account ID should be int64
+	//AccountID string `json:"AccountId,omitempty"`
+	DiskID   string `json:"DiskId,omitempty"`
+	ZoneID   int64  `json:"ZoneId,omitempty"`
+	ZoneName string `json:",omitempty"`
 }
 
 // AutoBackupProvider type of AutoBackupProvider
@@ -40,12 +45,12 @@ type AutoBackupProvider struct {
 }
 
 // CreateNewAutoBackup Create new AutoBackup(CommonServiceItem)
-func CreateNewAutoBackup(backupName string, diskID string) *AutoBackup {
+func CreateNewAutoBackup(backupName string, diskID int64) *AutoBackup {
 	return &AutoBackup{
-		Resource: &Resource{ID: ""},
+		Resource: &Resource{},
 		Name:     backupName,
 		Status: &AutoBackupStatus{
-			DiskID: diskID,
+			DiskID: fmt.Sprintf("%d", diskID),
 		},
 		Provider: &AutoBackupProvider{
 			Class: "autobackup",

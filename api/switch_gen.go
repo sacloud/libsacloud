@@ -102,19 +102,19 @@ func (api *SwitchAPI) Create(value *sacloud.Switch) (*sacloud.Switch, error) {
 	})
 }
 
-func (api *SwitchAPI) Read(id string) (*sacloud.Switch, error) {
+func (api *SwitchAPI) Read(id int64) (*sacloud.Switch, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.read(id, nil, res)
 	})
 }
 
-func (api *SwitchAPI) Update(id string, value *sacloud.Switch) (*sacloud.Switch, error) {
+func (api *SwitchAPI) Update(id int64, value *sacloud.Switch) (*sacloud.Switch, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.update(id, api.createRequest(value), res)
 	})
 }
 
-func (api *SwitchAPI) Delete(id string) (*sacloud.Switch, error) {
+func (api *SwitchAPI) Delete(id int64) (*sacloud.Switch, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.delete(id, nil, res)
 	})

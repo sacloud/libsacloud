@@ -86,19 +86,19 @@ func (api *SimpleMonitorAPI) Create(value *sacloud.SimpleMonitor) (*sacloud.Simp
 	})
 }
 
-func (api *SimpleMonitorAPI) Read(id string) (*sacloud.SimpleMonitor, error) {
+func (api *SimpleMonitorAPI) Read(id int64) (*sacloud.SimpleMonitor, error) {
 	return api.request(func(res *simpleMonitorResponse) error {
 		return api.read(id, nil, res)
 	})
 }
 
-func (api *SimpleMonitorAPI) Update(id string, value *sacloud.SimpleMonitor) (*sacloud.SimpleMonitor, error) {
+func (api *SimpleMonitorAPI) Update(id int64, value *sacloud.SimpleMonitor) (*sacloud.SimpleMonitor, error) {
 	return api.request(func(res *simpleMonitorResponse) error {
 		return api.update(id, api.createRequest(value), res)
 	})
 }
 
-func (api *SimpleMonitorAPI) Delete(id string) (*sacloud.SimpleMonitor, error) {
+func (api *SimpleMonitorAPI) Delete(id int64) (*sacloud.SimpleMonitor, error) {
 	return api.request(func(res *simpleMonitorResponse) error {
 		return api.delete(id, nil, res)
 	})

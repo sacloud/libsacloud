@@ -8,7 +8,7 @@ import (
 
 var testServerJSON = `
 {
-    "ID": "999999999999",
+    "ID": 999999999999,
     "Name": "lisacloud-test-server-name",
     "HostName": "libsacloud-test-server-name.com",
     "Description": "Description",

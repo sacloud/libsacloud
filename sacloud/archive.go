@@ -5,8 +5,8 @@ import "time"
 // Archive type of Public Archive
 type Archive struct {
 	*Resource
-	Index        int    `json:",omitempty"`
-	DisplayOrder string `json:",omitempty"`
+	Index        int   `json:",omitempty"`
+	DisplayOrder int64 `json:",omitempty"`
 	Name         string
 	Description  string `json:",omitempty"`
 	Scope        string `json:",omitempty"`
@@ -19,7 +19,7 @@ type Archive struct {
 	ServiceClass    string              `json:",omitempty"`
 	CreatedAt       *time.Time          `json:",omitempty"`
 	Icon            *Icon               `json:",omitempty"`
-	Plan            *NumberResource     `json:",omitempty"`
+	Plan            *Resource           `json:",omitempty"`
 	SourceDisk      *Disk               `json:",omitempty"`
 	SourceArchive   *Archive            `json:",omitempty"`
 	Storage         *Storage            `json:",omitempty"`
@@ -27,13 +27,13 @@ type Archive struct {
 	//BundleInfo
 }
 
-func (d *Archive) SetSourceArchive(sourceID string) {
+func (d *Archive) SetSourceArchive(sourceID int64) {
 	d.SourceArchive = &Archive{
 		Resource: &Resource{ID: sourceID},
 	}
 }
 
-func (d *Archive) SetSourceDisk(sourceID string) {
+func (d *Archive) SetSourceDisk(sourceID int64) {
 	d.SourceDisk = &Disk{
 		Resource: &Resource{ID: sourceID},
 	}

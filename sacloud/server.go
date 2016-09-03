@@ -12,13 +12,13 @@ type Server struct {
 	HostName    string `json:",omitempty"`
 	Description string `json:",omitempty"`
 	*EAvailability
-	ServiceClass      string          `json:",omitempty"`
-	CreatedAt         *time.Time      `json:",omitempty"`
-	Icon              *NumberResource `json:",omitempty"`
-	ServerPlan        *ProductServer  `json:",omitempty"`
-	Zone              *Zone           `json:",omitempty"`
-	Tags              []string        //`json:",omitempty"`
-	ConnectedSwitches []interface{}   `json:",omitempty" libsacloud:"requestOnly"`
+	ServiceClass      string         `json:",omitempty"`
+	CreatedAt         *time.Time     `json:",omitempty"`
+	Icon              *Resource      `json:",omitempty"`
+	ServerPlan        *ProductServer `json:",omitempty"`
+	Zone              *Zone          `json:",omitempty"`
+	Tags              []string       //`json:",omitempty"`
+	ConnectedSwitches []interface{}  `json:",omitempty" libsacloud:"requestOnly"`
 	//InterfaceNum      int            `json:",omitempty" libsacloud:"requestOnly"` !Not support! ConnectedSwitchesで代替
 	Disks      []Disk      `json:",omitempty"`
 	Interfaces []Interface `json:",omitempty"`
@@ -27,9 +27,8 @@ type Server struct {
 
 func (s *Server) SetServerPlanByID(planID string) {
 	if s.ServerPlan == nil {
-		s.ServerPlan = &ProductServer{NumberResource: &NumberResource{}}
+		s.ServerPlan = &ProductServer{Resource: NewResourceByStringID(planID)}
 	}
-	s.ServerPlan.SetIDByString(planID)
 }
 
 func (s *Server) ClearConnectedSwitches() {

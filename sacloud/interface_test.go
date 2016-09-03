@@ -8,7 +8,7 @@ import (
 
 var testPublicInterfaceJSON = `
 {
-	"ID": "112800430558",
+	"ID": 112800430558,
 	"MACAddress": "9C:A3:BA:30:E4:D0",
 	"IPAddress": "133.242.224.41",
 	"UserIPAddress": null,
@@ -20,7 +20,7 @@ var testPublicInterfaceJSON = `
 
 var testPrivateInterfaceJSON = `
 {
-	"ID": "112800442276",
+	"ID": 112800442276,
 	"MACAddress": "9C:A3:BA:30:86:9C",
 	"IPAddress": null,
 	"UserIPAddress": "192.168.200.50",

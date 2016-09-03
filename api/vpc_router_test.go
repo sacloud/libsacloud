@@ -1,6 +1,7 @@
 package api
 
 import (
+	"fmt"
 	"github.com/stretchr/testify/assert"
 	"testing"
 	"time"
@@ -101,7 +102,7 @@ func TestVPCRouterPremiumCRUD(t *testing.T) {
 	}
 
 	if err != nil || current > timeout {
-		assert.Fail(t, "Timeout: Can't read /internet/"+inetID)
+		assert.Fail(t, fmt.Sprintf("Timeout: Can't read /internet/%d", inetID))
 	}
 
 	assert.NotNil(t, internet)
@@ -117,7 +118,7 @@ func TestVPCRouterPremiumCRUD(t *testing.T) {
 
 	//CREATE
 	newItem := api.New()
-	newItem.SetPremiumPlan(sw.ID, vip, ip1, ip2, 1, nil)
+	newItem.SetPremiumPlan(fmt.Sprintf("%d", sw.ID), vip, ip1, ip2, 1, nil)
 	newItem.Name = testVPCRouterName
 	newItem.Description = "before"
 	item, err := api.Create(newItem)

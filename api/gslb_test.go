@@ -79,7 +79,7 @@ func init() {
 func cleanupGslbCommonServiceItem() {
 	item, _ := client.GSLB.findOrCreateBy(testGslbName)
 
-	if item.ID != "" {
+	if item.ID > 0 {
 		client.GSLB.Delete(item.ID)
 	}
 }

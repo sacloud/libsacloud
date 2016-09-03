@@ -2,7 +2,7 @@ package sacloud
 
 // Zone type of zone
 type Zone struct {
-	*NumberResource
+	*Resource
 	DisplayOrder int    `json:",omitempty"`
 	Name         string `json:",omitempty"`
 	Description  string `json:",omitempty"`

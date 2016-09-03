@@ -88,19 +88,19 @@ func (api *GSLBAPI) Create(value *sacloud.GSLB) (*sacloud.GSLB, error) {
 	})
 }
 
-func (api *GSLBAPI) Read(id string) (*sacloud.GSLB, error) {
+func (api *GSLBAPI) Read(id int64) (*sacloud.GSLB, error) {
 	return api.request(func(res *gslbResponse) error {
 		return api.read(id, nil, res)
 	})
 }
 
-func (api *GSLBAPI) Update(id string, value *sacloud.GSLB) (*sacloud.GSLB, error) {
+func (api *GSLBAPI) Update(id int64, value *sacloud.GSLB) (*sacloud.GSLB, error) {
 	return api.request(func(res *gslbResponse) error {
 		return api.update(id, api.createRequest(value), res)
 	})
 }
 
-func (api *GSLBAPI) Delete(id string) (*sacloud.GSLB, error) {
+func (api *GSLBAPI) Delete(id int64) (*sacloud.GSLB, error) {
 	return api.request(func(res *gslbResponse) error {
 		return api.delete(id, nil, res)
 	})
@@ -120,7 +120,7 @@ func (api *GSLBAPI) SetupGSLBRecord(gslbName string, ip string) ([]string, error
 		return nil, err
 	}
 
-	if gslbItem.ID == "" {
+	if gslbItem.ID == sacloud.EmptyID {
 		return []string{res.Status.FQDN}, nil
 	}
 	return nil, nil
@@ -176,7 +176,7 @@ func (api *GSLBAPI) updateGSLBServers(gslbItem *sacloud.GSLB) (*sacloud.GSLB, er
 	var item *sacloud.GSLB
 	var err error
 
-	if gslbItem.ID == "" {
+	if gslbItem.ID == sacloud.EmptyID {
 		item, err = api.Create(gslbItem)
 	} else {
 		item, err = api.Update(gslbItem.ID, gslbItem)

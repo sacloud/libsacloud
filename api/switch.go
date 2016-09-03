@@ -20,26 +20,26 @@ func NewSwitchAPI(client *Client) *SwitchAPI {
 	}
 }
 
-func (api *SwitchAPI) DisconnectFromBridge(switchID string) (bool, error) {
+func (api *SwitchAPI) DisconnectFromBridge(switchID int64) (bool, error) {
 	var (
 		method = "DELETE"
-		uri    = fmt.Sprintf("%s/%s/to/bridge", api.getResourceURL(), switchID)
+		uri    = fmt.Sprintf("%s/%d/to/bridge", api.getResourceURL(), switchID)
 	)
 	return api.modify(method, uri, nil)
 }
 
-func (api *SwitchAPI) ConnectToBridge(switchID string, bridgeID string) (bool, error) {
+func (api *SwitchAPI) ConnectToBridge(switchID int64, bridgeID int64) (bool, error) {
 	var (
 		method = "PUT"
-		uri    = fmt.Sprintf("%s/%s/to/bridge/%s", api.getResourceURL(), switchID, bridgeID)
+		uri    = fmt.Sprintf("%s/%d/to/bridge/%d", api.getResourceURL(), switchID, bridgeID)
 	)
 	return api.modify(method, uri, nil)
 }
 
-func (api *SwitchAPI) GetServers(switchID string) ([]sacloud.Server, error) {
+func (api *SwitchAPI) GetServers(switchID int64) ([]sacloud.Server, error) {
 	var (
 		method = "GET"
-		uri    = fmt.Sprintf("%s/%s/server", api.getResourceURL(), switchID)
+		uri    = fmt.Sprintf("%s/%d/server", api.getResourceURL(), switchID)
 		res    = &sacloud.SearchResponse{}
 	)
 	err := api.baseAPI.request(method, uri, nil, res)

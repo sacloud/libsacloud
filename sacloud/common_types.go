@@ -1,33 +1,30 @@
 package sacloud
 
 import (
-	"encoding/json"
-	"fmt"
+	"strconv"
 	"time"
 )
 
 // Resource type of sakuracloud resource(have ID:string)
 type Resource struct {
-	ID string `json:",omitempty"`
+	ID int64 `json:",omitempty"`
 }
 
-func (r *Resource) GetResourceKey() *Resource {
-	return r
+var EmptyID int64
+
+func NewResource(id int64) *Resource {
+	return &Resource{ID: id}
+}
+func NewResourceByStringID(id string) *Resource {
+	intID, err := strconv.ParseInt(id, 10, 64)
+	if err != nil {
+		panic(err)
+	}
+	return &Resource{ID: intID}
 }
 
-// NumberResource type of sakuracloud resource(number or string)
-type NumberResource struct {
-	ID json.Number `json:",omitempty"`
-}
-
-func (n *NumberResource) SetIDByString(id string) {
-	n.ID = json.Number(id)
-}
-func (n *NumberResource) SetIDByNumber(id int64) {
-	n.ID = json.Number(fmt.Sprintf("%d", id))
-}
-func (n *NumberResource) GetResourceKey() *NumberResource {
-	return n
+func (n *Resource) SetID(id int64) {
+	n.ID = id
 }
 
 // EAvailability Enum of sakuracloud

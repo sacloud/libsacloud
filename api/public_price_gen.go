@@ -102,19 +102,19 @@ func (api *PublicPriceAPI) SortByName(reverse bool) *PublicPriceAPI {
 // 	})
 // }
 
-// func (api *PublicPriceAPI) Read(id string) (*sacloud.PublicPrice, error) {
+// func (api *PublicPriceAPI) Read(id int64) (*sacloud.PublicPrice, error) {
 // 	return api.request(func(res *sacloud.Response) error {
 // 		return api.read(id, nil, res)
 // 	})
 // }
 
-// func (api *PublicPriceAPI) Update(id string, value *sacloud.PublicPrice) (*sacloud.PublicPrice, error) {
+// func (api *PublicPriceAPI) Update(id int64, value *sacloud.PublicPrice) (*sacloud.PublicPrice, error) {
 // 	return api.request(func(res *sacloud.Response) error {
 // 		return api.update(id, api.createRequest(value), res)
 // 	})
 // }
 
-// func (api *PublicPriceAPI) Delete(id string) (*sacloud.PublicPrice, error) {
+// func (api *PublicPriceAPI) Delete(id int64) (*sacloud.PublicPrice, error) {
 // 	return api.request(func(res *sacloud.Response) error {
 // 		return api.delete(id, nil, res)
 // 	})

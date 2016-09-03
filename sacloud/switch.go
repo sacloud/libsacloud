@@ -29,7 +29,7 @@ type Switch struct {
 
 // Subnet type of Subnet
 type Subnet struct {
-	*NumberResource
+	*Resource
 	NetworkAddress string `json:",omitempty"`
 	NetworkMaskLen int    `json:",omitempty"`
 	DefaultRoute   string `json:",omitempty"`
@@ -44,7 +44,7 @@ type Subnet struct {
 }
 
 type IPv6Net struct {
-	*NumberResource
+	*Resource
 	IPv6Prefix    string `json:",omitempty"`
 	IPv6PrefixLen int    `json:",omitempty"`
 	Scope         string `json:",omitempty"`
@@ -54,7 +54,7 @@ type IPv6Net struct {
 func (s *Switch) GetDefaultIPAddressesForVPCRouter() (string, string, string, error) {
 
 	if s.Subnets == nil || len(s.Subnets) < 1 {
-		return "", "", "", fmt.Errorf("switch[%s].Subnets is nil", s.ID)
+		return "", "", "", fmt.Errorf("switch[%d].Subnets is nil", s.ID)
 	}
 
 	baseAddress := net.ParseIP(s.Subnets[0].IPAddresses.Min).To4()
@@ -66,7 +66,7 @@ func (s *Switch) GetDefaultIPAddressesForVPCRouter() (string, string, string, er
 
 func (s *Switch) GetIPAddressList() ([]string, error) {
 	if s.Subnets == nil || len(s.Subnets) < 1 {
-		return nil, fmt.Errorf("switch[%s].Subnets is nil", s.ID)
+		return nil, fmt.Errorf("switch[%d].Subnets is nil", s.ID)
 	}
 
 	//さくらのクラウドの仕様上/24までしか割り当てできないためこのロジックでOK
