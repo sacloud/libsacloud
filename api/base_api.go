@@ -12,13 +12,28 @@ type baseAPI struct {
 	FuncGetResourceURL      func() string
 	FuncBaseSearchCondition func() *sacloud.Request
 	state                   *sacloud.Request
+	apiRootSuffix           string
 }
 
+var (
+	sakuraCloudAPIRootSuffix    = "api/cloud/1.1"
+	sakuraBillingAPIRootSuffix  = "api/system/1.0"
+	sakuraWebAccelAPIRootSuffix = "api/webaccel/1.0"
+)
+
 func (b *baseAPI) getResourceURL() string {
-	if b.FuncGetResourceURL != nil {
-		return b.FuncGetResourceURL()
+
+	suffix := b.apiRootSuffix
+	//デフォルト : クラウドAPI
+	if suffix == "" {
+		suffix = sakuraCloudAPIRootSuffix
 	}
-	return ""
+
+	url := ""
+	if b.FuncGetResourceURL != nil {
+		url = b.FuncGetResourceURL()
+	}
+	return fmt.Sprintf("%s/%s", suffix, url)
 }
 
 func (b *baseAPI) getSearchState() *sacloud.Request {

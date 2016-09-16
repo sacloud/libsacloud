@@ -11,8 +11,7 @@ import (
 )
 
 const (
-	sakuraCloudAPIRoot       = "https://secure.sakura.ad.jp/cloud/zone"
-	sakuraCloudAPIRootSuffix = "api/cloud/1.1"
+	sakuraCloudAPIRoot = "https://secure.sakura.ad.jp/cloud/zone"
 )
 
 var (
@@ -42,8 +41,10 @@ func (c *Client) Clone() *Client {
 }
 
 type api struct {
+	AuthStatus    *AuthStatusAPI
 	AutoBackup    *AutoBackupAPI
 	Archive       *ArchiveAPI
+	Bill          *BillAPI
 	Bridge        *BridgeAPI
 	CDROM         *CDROMAPI
 	Database      *DatabaseAPI
@@ -80,8 +81,10 @@ type facilityAPI struct {
 
 func newAPI(client *Client) *api {
 	return &api{
+		AuthStatus: NewAuthStatusAPI(client),
 		AutoBackup: NewAutoBackupAPI(client),
 		Archive:    NewArchiveAPI(client),
+		Bill:       NewBillAPI(client),
 		Bridge:     NewBridgeAPI(client),
 		CDROM:      NewCDROMAPI(client),
 		Database:   NewDatabaseAPI(client),
@@ -115,7 +118,7 @@ func newAPI(client *Client) *api {
 }
 
 func (c *Client) getEndpoint() string {
-	return fmt.Sprintf("%s/%s/%s", sakuraCloudAPIRoot, c.Zone, sakuraCloudAPIRootSuffix)
+	return fmt.Sprintf("%s/%s", sakuraCloudAPIRoot, c.Zone)
 }
 
 func (c *Client) isOkStatus(code int) bool {
