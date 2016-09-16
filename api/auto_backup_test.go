@@ -76,8 +76,10 @@ func cleanupAutoBackupCommonServiceItem() {
 	client.Zone = "is1b"
 
 	items, _ := client.AutoBackup.Reset().WithNameLike(testAutoBackupName).Find()
-	for _, item := range items.CommonServiceAutoBackupItems {
-		client.AutoBackup.Delete(item.ID)
+	if items.CommonServiceAutoBackupItems != nil {
+		for _, item := range items.CommonServiceAutoBackupItems {
+			client.AutoBackup.Delete(item.ID)
+		}
 	}
 
 	disks, _ := client.Disk.Reset().WithNameLike(testAutoBackupName).Find()
