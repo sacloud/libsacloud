@@ -10,6 +10,11 @@ type Resource struct {
 	ID int64 `json:",omitempty"`
 }
 
+type ResourceIDHolder interface {
+	SetID(int64)
+	GetID() int64
+}
+
 var EmptyID int64
 
 func NewResource(id int64) *Resource {
@@ -25,6 +30,12 @@ func NewResourceByStringID(id string) *Resource {
 
 func (n *Resource) SetID(id int64) {
 	n.ID = id
+}
+func (n *Resource) GetID() int64 {
+	if n == nil {
+		return -1
+	}
+	return n.ID
 }
 
 // EAvailability Enum of sakuracloud
