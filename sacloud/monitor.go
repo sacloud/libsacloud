@@ -41,6 +41,11 @@ type MonitorSummary struct {
 
 type MonitorValues map[string]*MonitorValue
 
+type FlatMonitorValue struct {
+	Time  time.Time
+	Value float64
+}
+
 func (m *MonitorValues) Calc() *MonitorSummary {
 
 	res := &MonitorSummary{}
@@ -80,4 +85,49 @@ func (m *MonitorValues) calcBy(f func(m *MonitorValue) *float64) *MonitorSummary
 	}
 
 	return res
+}
+
+func (m *MonitorValues) FlattenCPUTimeValue() ([]FlatMonitorValue, error) {
+	return m.flattenValue(func(v *MonitorValue) *float64 { return v.CPUTime })
+}
+func (m *MonitorValues) FlattenDiskWriteValue() ([]FlatMonitorValue, error) {
+	return m.flattenValue(func(v *MonitorValue) *float64 { return v.Write })
+}
+func (m *MonitorValues) FlattenDiskReadValue() ([]FlatMonitorValue, error) {
+	return m.flattenValue(func(v *MonitorValue) *float64 { return v.Read })
+}
+func (m *MonitorValues) FlattenPacketSendValue() ([]FlatMonitorValue, error) {
+	return m.flattenValue(func(v *MonitorValue) *float64 { return v.Send })
+}
+func (m *MonitorValues) FlattenPacketReceiveValue() ([]FlatMonitorValue, error) {
+	return m.flattenValue(func(v *MonitorValue) *float64 { return v.Receive })
+}
+
+func (m *MonitorValues) flattenValue(f func(*MonitorValue) *float64) ([]FlatMonitorValue, error) {
+	var res []FlatMonitorValue
+
+	for k, v := range map[string]*MonitorValue(*m) {
+		if f(v) == nil {
+			continue
+		}
+		time, err := time.Parse(time.RFC3339, k) // RFC3339 ≒ ISO8601
+		if err != nil {
+			return res, err
+		}
+		res = append(res, FlatMonitorValue{
+			Time:  time,
+			Value: *f(v),
+		})
+	}
+	return res, nil
+}
+
+func (m *MonitorValue) HasValue() bool {
+	values := []*float64{m.CPUTime, m.Read, m.Receive, m.Send, m.Write}
+	for _, v := range values {
+		if v != nil {
+			return true
+		}
+	}
+	return false
 }
