@@ -64,6 +64,27 @@ var tesDiskResourceMonitorJSON = `
     }
 `
 
+var testInternetMonitorJSON = `
+{
+	"2016-09-22T11:00:00+09:00": {
+	    "In": 0,
+	    "Out": 0
+	},
+	"2016-09-22T11:05:00+09:00": {
+	    "In": 0,
+	    "Out": 0
+	},
+	"2016-09-22T11:10:00+09:00": {
+	    "In": 0,
+	    "Out": 0
+	},
+	"2016-09-22T11:15:00+09:00": {
+	    "In": null,
+	    "Out": null
+	}
+}
+`
+
 var testDatabaseMonitorJSON = `
     {
 	"2016-09-22T08:20:00+09:00": {

@@ -11,6 +11,8 @@ type MonitorValue struct {
 	Read            *float64 `json:",omitempty"`
 	Receive         *float64 `json:",omitempty"`
 	Send            *float64 `json:",omitempty"`
+	In              *float64 `json:",omitempty"`
+	Out             *float64 `json:",omitempty"`
 	TotalMemorySize *float64 `json:"Total-Memory-Size,omitempty"`
 	UsedMemorySize  *float64 `json:"Used-Memory-Size,omitempty"`
 	TotalDisk1Size  *float64 `json:"Total-Disk1-Size,omitempty"`
@@ -109,6 +111,13 @@ func (m *MonitorValues) FlattenPacketReceiveValue() ([]FlatMonitorValue, error) 
 	return m.flattenValue(func(v *MonitorValue) *float64 { return v.Receive })
 }
 
+func (m *MonitorValues) FlattenInternetInValue() ([]FlatMonitorValue, error) {
+	return m.flattenValue(func(v *MonitorValue) *float64 { return v.In })
+}
+func (m *MonitorValues) FlattenInternetOutValue() ([]FlatMonitorValue, error) {
+	return m.flattenValue(func(v *MonitorValue) *float64 { return v.Out })
+}
+
 func (m *MonitorValues) FlattenTotalMemorySizeValue() ([]FlatMonitorValue, error) {
 	return m.flattenValue(func(v *MonitorValue) *float64 { return v.TotalMemorySize })
 }
@@ -152,6 +161,7 @@ func (m *MonitorValue) HasValue() bool {
 		m.CPUTime,
 		m.Read, m.Receive,
 		m.Send, m.Write,
+		m.In, m.Out,
 		m.TotalMemorySize, m.UsedMemorySize,
 		m.TotalDisk1Size, m.UsedDisk1Size,
 		m.TotalDisk2Size, m.UsedDisk2Size,
