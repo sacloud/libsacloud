@@ -6,11 +6,17 @@ import (
 )
 
 type MonitorValue struct {
-	CPUTime *float64 `json:"CPU-TIME,omitempty"`
-	Write   *float64 `json:",omitempty"`
-	Read    *float64 `json:",omitempty"`
-	Receive *float64 `json:",omitempty"`
-	Send    *float64 `json:",omitempty"`
+	CPUTime         *float64 `json:"CPU-TIME,omitempty"`
+	Write           *float64 `json:",omitempty"`
+	Read            *float64 `json:",omitempty"`
+	Receive         *float64 `json:",omitempty"`
+	Send            *float64 `json:",omitempty"`
+	TotalMemorySize *float64 `json:"Total-Memory-Size,omitempty"`
+	UsedMemorySize  *float64 `json:"Used-Memory-Size,omitempty"`
+	TotalDisk1Size  *float64 `json:"Total-Disk1-Size,omitempty"`
+	UsedDisk1Size   *float64 `json:"Used-Disk1-Size,omitempty"`
+	TotalDisk2Size  *float64 `json:"Total-Disk2-Size,omitempty"`
+	UsedDisk2Size   *float64 `json:"Used-Disk2-Size,omitempty"`
 }
 
 type ResourceMonitorRequest struct {
@@ -103,6 +109,25 @@ func (m *MonitorValues) FlattenPacketReceiveValue() ([]FlatMonitorValue, error) 
 	return m.flattenValue(func(v *MonitorValue) *float64 { return v.Receive })
 }
 
+func (m *MonitorValues) FlattenTotalMemorySizeValue() ([]FlatMonitorValue, error) {
+	return m.flattenValue(func(v *MonitorValue) *float64 { return v.TotalMemorySize })
+}
+func (m *MonitorValues) FlattenUsedMemorySizeValue() ([]FlatMonitorValue, error) {
+	return m.flattenValue(func(v *MonitorValue) *float64 { return v.UsedMemorySize })
+}
+func (m *MonitorValues) FlattenTotalDisk1SizeValue() ([]FlatMonitorValue, error) {
+	return m.flattenValue(func(v *MonitorValue) *float64 { return v.TotalDisk1Size })
+}
+func (m *MonitorValues) FlattenUsedDisk1SizeValue() ([]FlatMonitorValue, error) {
+	return m.flattenValue(func(v *MonitorValue) *float64 { return v.UsedDisk1Size })
+}
+func (m *MonitorValues) FlattenTotalDisk2SizeValue() ([]FlatMonitorValue, error) {
+	return m.flattenValue(func(v *MonitorValue) *float64 { return v.TotalDisk2Size })
+}
+func (m *MonitorValues) FlattenUsedDisk2SizeValue() ([]FlatMonitorValue, error) {
+	return m.flattenValue(func(v *MonitorValue) *float64 { return v.UsedDisk2Size })
+}
+
 func (m *MonitorValues) flattenValue(f func(*MonitorValue) *float64) ([]FlatMonitorValue, error) {
 	var res []FlatMonitorValue
 
@@ -123,7 +148,14 @@ func (m *MonitorValues) flattenValue(f func(*MonitorValue) *float64) ([]FlatMoni
 }
 
 func (m *MonitorValue) HasValue() bool {
-	values := []*float64{m.CPUTime, m.Read, m.Receive, m.Send, m.Write}
+	values := []*float64{
+		m.CPUTime,
+		m.Read, m.Receive,
+		m.Send, m.Write,
+		m.TotalMemorySize, m.UsedMemorySize,
+		m.TotalDisk1Size, m.UsedDisk1Size,
+		m.TotalDisk2Size, m.UsedDisk2Size,
+	}
 	for _, v := range values {
 		if v != nil {
 			return true

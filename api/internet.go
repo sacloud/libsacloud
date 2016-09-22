@@ -61,3 +61,7 @@ func (api *InternetAPI) SleepWhileCreating(internetID int64, timeout time.Durati
 	return nil
 
 }
+
+func (api *InternetAPI) Monitor(id int64, body *sacloud.ResourceMonitorRequest) (*sacloud.MonitorValues, error) {
+	return api.baseAPI.monitor(id, body)
+}

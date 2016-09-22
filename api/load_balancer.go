@@ -247,3 +247,7 @@ func (api *LoadBalancerAPI) SleepWhileCopying(id int64, timeout time.Duration, m
 		}
 	}
 }
+
+func (api *LoadBalancerAPI) Monitor(id int64, body *sacloud.ResourceMonitorRequest) (*sacloud.MonitorValues, error) {
+	return api.baseAPI.applianceMonitorBy(id, "interface", 0, body)
+}

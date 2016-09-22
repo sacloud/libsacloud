@@ -260,3 +260,19 @@ func (api *DatabaseAPI) SleepWhileCopying(id int64, timeout time.Duration, maxRe
 		}
 	}
 }
+
+func (api *DatabaseAPI) MonitorCPU(id int64, nicIndex int, body *sacloud.ResourceMonitorRequest) (*sacloud.MonitorValues, error) {
+	return api.baseAPI.applianceMonitorBy(id, "cpu", 0, body)
+}
+func (api *DatabaseAPI) MonitorDatabase(id int64, nicIndex int, body *sacloud.ResourceMonitorRequest) (*sacloud.MonitorValues, error) {
+	return api.baseAPI.applianceMonitorBy(id, "database", 0, nicIndex, body)
+}
+func (api *DatabaseAPI) MonitorInterface(id int64, nicIndex int, body *sacloud.ResourceMonitorRequest) (*sacloud.MonitorValues, error) {
+	return api.baseAPI.applianceMonitorBy(id, "interface", 0, nicIndex, body)
+}
+func (api *DatabaseAPI) MonitorSystemDisk(id int64, nicIndex int, body *sacloud.ResourceMonitorRequest) (*sacloud.MonitorValues, error) {
+	return api.baseAPI.applianceMonitorBy(id, "disk", 1, nicIndex, body)
+}
+func (api *DatabaseAPI) MonitorBackupDisk(id int64, nicIndex int, body *sacloud.ResourceMonitorRequest) (*sacloud.MonitorValues, error) {
+	return api.baseAPI.applianceMonitorBy(id, "disk", 2, nicIndex, body)
+}

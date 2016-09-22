@@ -237,6 +237,23 @@ func (b *baseAPI) monitor(id int64, body *sacloud.ResourceMonitorRequest) (*sacl
 	return res.Data, nil
 }
 
+func (b *baseAPI) applianceMonitorBy(id int64, target string, nicIndex int, body *sacloud.ResourceMonitorRequest) (*sacloud.MonitorValues, error) {
+	var (
+		method = "GET"
+		uri    = fmt.Sprintf("%s/%d/%s/%d/monitor", b.getResourceURL(), id, target, nicIndex)
+	)
+	if nicIndex == 0 {
+		uri = fmt.Sprintf("%s/%d/%s/monitor", b.getResourceURL(), id, target)
+	}
+
+	res := &sacloud.ResourceMonitorResponse{}
+	err := b.request(method, uri, body, res)
+	if err != nil {
+		return nil, err
+	}
+	return res.Data, nil
+}
+
 func (b *baseAPI) NewResourceMonitorRequest() *sacloud.ResourceMonitorRequest {
 	return &sacloud.ResourceMonitorRequest{}
 }

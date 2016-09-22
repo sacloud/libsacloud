@@ -398,3 +398,7 @@ func (api *VPCRouterAPI) DeleteInterfaceAt(routerID int64, index int) (*sacloud.
 	return res, nil
 
 }
+
+func (api *VPCRouterAPI) MonitorBy(id int64, nicIndex int, body *sacloud.ResourceMonitorRequest) (*sacloud.MonitorValues, error) {
+	return api.baseAPI.applianceMonitorBy(id, "interface", nicIndex, body)
+}

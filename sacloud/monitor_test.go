@@ -64,6 +64,43 @@ var tesDiskResourceMonitorJSON = `
     }
 `
 
+var testDatabaseMonitorJSON = `
+    {
+	"2016-09-22T08:20:00+09:00": {
+	    "Total-Memory-Size": null,
+	    "Used-Memory-Size": null,
+	    "Total-Disk1-Size": null,
+	    "Used-Disk1-Size": null,
+	    "Total-Disk2-Size": null,
+	    "Used-Disk2-Size": null
+	},
+	"2016-09-22T08:25:00+09:00": {
+	    "Total-Memory-Size": null,
+	    "Used-Memory-Size": null,
+	    "Total-Disk1-Size": null,
+	    "Used-Disk1-Size": null,
+	    "Total-Disk2-Size": null,
+	    "Used-Disk2-Size": null
+	},
+	"2016-09-22T08:30:00+09:00": {
+	    "Total-Memory-Size": 1884224,
+	    "Used-Memory-Size": 239448,
+	    "Total-Disk1-Size": 18544316,
+	    "Used-Disk1-Size": 15761644,
+	    "Total-Disk2-Size": 100982868,
+	    "Used-Disk2-Size": 1880016
+	},
+	"2016-09-22T08:35:00+09:00": {
+	    "Total-Memory-Size": 1884224,
+	    "Used-Memory-Size": 239340,
+	    "Total-Disk1-Size": 18544316,
+	    "Used-Disk1-Size": 15761596,
+	    "Total-Disk2-Size": 100982868,
+	    "Used-Disk2-Size": 1880064
+	}
+    }
+`
+
 var testResourceMonitorResponseJSON = `
 {
     "Data": ` + testCPUResourceMonitorJSON + `,
