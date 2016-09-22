@@ -2,7 +2,6 @@ package sacloud
 
 import (
 	"encoding/json"
-	"fmt"
 	"strings"
 )
 
@@ -16,8 +15,10 @@ type DatabaseRemark struct {
 	*ApplianceRemarkBase
 	DBConf  *DatabaseCommonRemarks
 	Network *DatabaseRemarkNetwork
-	Zone    *Resource
-	Plan    *Resource
+	Zone    struct {
+		ID json.Number `json:",omitempty"`
+	}
+	Plan *Resource
 }
 
 type DatabaseRemarkNetwork struct {
@@ -81,7 +82,7 @@ var DatabasePlanMini = DatabasePlan(1)
 //var DatabasePlanPremium = DatabasePlan(2)
 
 type DatabaseBackupSetting struct {
-	Rotate string `json:",omitempty"`
+	Rotate int    `json:",omitempty"`
 	Time   string `json:",omitempty"`
 }
 
@@ -183,7 +184,7 @@ func CreateNewPostgreSQLDatabase(values *CreateDatabaseValue) *Database {
 		Settings: &DatabaseSettings{
 			DBConf: &DatabaseSetting{
 				Backup: &DatabaseBackupSetting{
-					Rotate: fmt.Sprintf("%d", values.BackupRotate),
+					Rotate: values.BackupRotate,
 					Time:   values.BackupTime,
 				},
 				Common: &DatabaseCommonSetting{

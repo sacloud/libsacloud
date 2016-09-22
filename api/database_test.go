@@ -40,7 +40,7 @@ func TestDatabaseCRUD(t *testing.T) {
 	v.Name = testDatabaseName
 
 	newItem := api.New(v)
-	newItem.Remark.Zone = &sacloud.Resource{ID: 21001}
+	//newItem.Remark.Zone = &sacloud.Resource{ID: 21001}
 
 	item, err := api.Create(newItem)
 
@@ -58,8 +58,14 @@ func TestDatabaseCRUD(t *testing.T) {
 
 	//READ
 	item, err = api.Read(id)
+
 	assert.NoError(t, err)
 	assert.NotEmpty(t, item)
+
+	//FIND
+	items, err := api.Reset().Find()
+	assert.NoError(t, err)
+	assert.NotEmpty(t, items)
 
 	//UPDATE
 	item.Description = "after"

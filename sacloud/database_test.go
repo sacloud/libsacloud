@@ -28,7 +28,7 @@ var (
                     "WebUI": "8.8.8.8"
                 },
                 "Backup": {
-                    "Rotate": "8",
+                    "Rotate": 8,
                     "Time": "00:45"
                 }
             }
