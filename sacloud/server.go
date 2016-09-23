@@ -12,13 +12,14 @@ type Server struct {
 	HostName    string `json:",omitempty"`
 	Description string `json:",omitempty"`
 	*EAvailability
-	ServiceClass      string         `json:",omitempty"`
-	CreatedAt         *time.Time     `json:",omitempty"`
-	Icon              *Resource      `json:",omitempty"`
-	ServerPlan        *ProductServer `json:",omitempty"`
-	Zone              *Zone          `json:",omitempty"`
-	Tags              []string       //`json:",omitempty"`
-	ConnectedSwitches []interface{}  `json:",omitempty" libsacloud:"requestOnly"`
+	ServiceClass string         `json:",omitempty"`
+	CreatedAt    *time.Time     `json:",omitempty"`
+	Icon         *Resource      `json:",omitempty"`
+	ServerPlan   *ProductServer `json:",omitempty"`
+	Zone         *Zone          `json:",omitempty"`
+	*TagsType
+	//Tags              []string       //`json:",omitempty"`
+	ConnectedSwitches []interface{} `json:",omitempty" libsacloud:"requestOnly"`
 	//InterfaceNum      int            `json:",omitempty" libsacloud:"requestOnly"` !Not support! ConnectedSwitchesで代替
 	Disks      []Disk      `json:",omitempty"`
 	Interfaces []Interface `json:",omitempty"`

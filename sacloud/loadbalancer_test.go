@@ -227,6 +227,7 @@ func TestCreateNewLoadBalancerSingle(t *testing.T) {
 	assert.Equal(t, lb.Name, "TestLoadBalancer")
 	assert.Equal(t, lb.Description, "TestDescription")
 	assert.Equal(t, lb.Tags, []string{"tag1", "tag2", "tag3"})
+	assert.Equal(t, lb.TagsType, &TagsType{Tags: []string{"tag1", "tag2", "tag3"}})
 	//assert.Equal(t, lb.Icon.ID, 9999999999)
 
 	assert.Equal(t, len(lb.Settings.LoadBalancer), 1)
@@ -276,7 +277,7 @@ func TestCreateNewLoadBalancerDouble(t *testing.T) {
 	assert.Equal(t, lb.Remark.Network.DefaultRoute, "192.168.11.1")
 	assert.Equal(t, lb.Name, "TestLoadBalancer")
 	assert.Equal(t, lb.Description, "TestDescription")
-	assert.Equal(t, lb.Tags, []string{"tag1", "tag2", "tag3"})
+	assert.Equal(t, lb.TagsType, &TagsType{Tags: []string{"tag1", "tag2", "tag3"}})
 	//assert.Equal(t, lb.Icon.ID, 9999999999)
 
 	assert.Equal(t, len(lb.Settings.LoadBalancer), 1)

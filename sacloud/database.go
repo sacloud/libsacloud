@@ -159,7 +159,9 @@ func CreateNewPostgreSQLDatabase(values *CreateDatabaseValue) *Database {
 			Class:       "database",
 			Name:        values.Name,
 			Description: values.Description,
-			Tags:        values.Tags,
+			TagsType: &TagsType{
+				Tags: values.Tags,
+			},
 			Icon: &Icon{
 				Resource: values.Icon,
 			},

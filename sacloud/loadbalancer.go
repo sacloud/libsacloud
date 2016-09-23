@@ -73,7 +73,7 @@ func CreateNewLoadBalancerSingle(values *CreateLoadBalancerValue, settings []*Lo
 			Class:       "loadbalancer",
 			Name:        values.Name,
 			Description: values.Description,
-			Tags:        values.Tags,
+			TagsType:        &TagsType{Tags: values.Tags},
 			Plan:        &Resource{ID: int64(values.Plan)},
 			Icon: &Icon{
 				Resource: values.Icon,

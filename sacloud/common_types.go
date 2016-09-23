@@ -217,3 +217,65 @@ type MigrationJobStatus struct {
 		} `json:",omitempty"`
 	}
 }
+
+type TagsType struct {
+	Tags []string `json:",omitempty"`
+}
+
+var (
+	// TagGroupA サーバをグループ化し起動ホストを分離します(グループA)
+	TagGroupA = "@group=a"
+	// TagGroupB サーバをグループ化し起動ホストを分離します(グループB)
+	TagGroupB = "@group=b"
+	// TagGroupC サーバをグループ化し起動ホストを分離します(グループC)
+	TagGroupC = "@group=b"
+	// TagGroupD サーバをグループ化し起動ホストを分離します(グループD)
+	TagGroupD = "@group=b"
+
+	// TagAutoReboot サーバ停止時に自動起動します
+	TagAutoReboot = "@aut-reboot"
+
+	// TagKeyboardUS リモートスクリーン画面でUSキーボード入力します
+	TagKeyboardUS = "@keyboard-us"
+
+	// TagBootCDROM 優先ブートデバイスをCD-ROMに設定します
+	TagBootCDROM = "@boot-cdrom"
+	// TagBootNetwork 優先ブートデバイスをPXE bootに設定します
+	TagBootNetwork = "@boot-network"
+
+	// TagVirtIONetPCI サーバの仮想NICをvirtio-netに変更します
+	TagVirtIONetPCI = "@virtio-net-pci"
+)
+
+func (t *TagsType) HasTag(target string) bool {
+
+	for _, tag := range t.Tags {
+		if target == tag {
+			return true
+		}
+	}
+
+	return false
+}
+
+func (t *TagsType) AppendTag(target string) {
+	if t.HasTag(target) {
+		return
+	}
+
+	t.Tags = append(t.Tags, target)
+}
+
+func (t *TagsType) RemoveTag(target string) {
+	if !t.HasTag(target) {
+		return
+	}
+	res := []string{}
+	for _, tag := range t.Tags {
+		if tag != target {
+			res = append(res, tag)
+		}
+	}
+
+	t.Tags = res
+}

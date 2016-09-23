@@ -15,6 +15,6 @@ type Note struct {
 	CreatedAt  *time.Time `json:",omitempty"`
 	ModifiedAt *time.Time `json:",omitempty"`
 	Icon       *Icon      `json:",omitempty"`
-	Tags       []string   //`json:",omitempty"`
+	*TagsType
 	//TODO Remarkオブジェクトのパース
 }

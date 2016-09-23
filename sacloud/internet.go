@@ -16,8 +16,8 @@ type Internet struct {
 	CreatedAt      *time.Time `json:",omitempty"`
 	Icon           *Icon      `json:",omitempty"`
 
-	Switch *Switch  `json:",omitempty"`
-	Tags   []string //`json:",omitempty"`
+	Switch *Switch `json:",omitempty"`
+	*TagsType
 
 	//TODO Zone
 	// Zone           *Zone      `json:",omitempty"`
