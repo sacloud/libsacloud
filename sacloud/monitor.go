@@ -25,6 +25,20 @@ type ResourceMonitorRequest struct {
 	Start *time.Time `json:",omitempty"`
 	End   *time.Time `json:",omitempty"`
 }
+
+func NewResourceMonitorRequest(start *time.Time, end *time.Time) *ResourceMonitorRequest {
+	res := &ResourceMonitorRequest{}
+	if start != nil {
+		t := start.Truncate(time.Second)
+		res.Start = &t
+	}
+	if end != nil {
+		t := end.Truncate(time.Second)
+		res.End = &t
+	}
+	return res
+}
+
 type ResourceMonitorResponse struct {
 	Data *MonitorValues `json:",omitempty"`
 }
