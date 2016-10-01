@@ -93,7 +93,9 @@ func (api *SwitchAPI) SortByName(reverse bool) *SwitchAPI {
 ************************************************/
 
 func (api *SwitchAPI) New() *sacloud.Switch {
-	return &sacloud.Switch{}
+	return &sacloud.Switch{
+		TagsType: &sacloud.TagsType{},
+	}
 }
 
 func (api *SwitchAPI) Create(value *sacloud.Switch) (*sacloud.Switch, error) {

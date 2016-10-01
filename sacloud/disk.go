@@ -44,6 +44,7 @@ func CreateNewDisk() *Disk {
 		Plan:       DiskPlanSSD,
 		Connection: DiskConnectionVirtio,
 		SizeMB:     20480,
+		TagsType:   &TagsType{},
 	}
 }
 

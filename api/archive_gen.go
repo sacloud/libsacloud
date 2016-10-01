@@ -117,7 +117,9 @@ func (api *ArchiveAPI) Delete(id int64) (*sacloud.Archive, error) {
 }
 
 func (api *ArchiveAPI) New() *sacloud.Archive {
-	return &sacloud.Archive{}
+	return &sacloud.Archive{
+		TagsType: &sacloud.TagsType{},
+	}
 }
 
 /************************************************

@@ -93,7 +93,9 @@ func (api *IconAPI) SortByName(reverse bool) *IconAPI {
 ************************************************/
 
 func (api *IconAPI) New() *sacloud.Icon {
-	return &sacloud.Icon{}
+	return &sacloud.Icon{
+		TagsType: &sacloud.TagsType{},
+	}
 }
 
 func (api *IconAPI) Create(value *sacloud.Icon) (*sacloud.Icon, error) {

@@ -48,6 +48,7 @@ func CreateNewGSLB(gslbName string) *GSLB {
 				Servers:     []GSLBServer{},
 			},
 		},
+		TagsType: &TagsType{},
 	}
 
 }

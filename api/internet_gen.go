@@ -93,7 +93,9 @@ func (api *InternetAPI) SortByName(reverse bool) *InternetAPI {
 ************************************************/
 
 func (api *InternetAPI) New() *sacloud.Internet {
-	return &sacloud.Internet{}
+	return &sacloud.Internet{
+		TagsType: &sacloud.TagsType{},
+	}
 }
 
 func (api *InternetAPI) Create(value *sacloud.Internet) (*sacloud.Internet, error) {

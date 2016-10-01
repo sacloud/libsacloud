@@ -93,7 +93,9 @@ func (api *CDROMAPI) SortBySize(reverse bool) *CDROMAPI {
 ************************************************/
 
 func (api *CDROMAPI) New() *sacloud.CDROM {
-	return &sacloud.CDROM{}
+	return &sacloud.CDROM{
+		TagsType: &sacloud.TagsType{},
+	}
 }
 
 //func (api *CDROMAPI) Create(value *sacloud.CDROM) (*sacloud.CDROM, error) {

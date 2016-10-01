@@ -89,6 +89,7 @@ func CreateNewSimpleMonitor(target string) *SimpleMonitor {
 				},
 			},
 		},
+		TagsType: &TagsType{},
 	}
 
 }
