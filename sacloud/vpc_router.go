@@ -19,8 +19,9 @@ type VPCRouterSettings struct {
 func CreateNewVPCRouter() *VPCRouter {
 	return &VPCRouter{
 		Appliance: &Appliance{
-			Class: "vpcrouter",
-			Plan:  &Resource{},
+			Class:    "vpcrouter",
+			Plan:     &Resource{},
+			TagsType: &TagsType{},
 		},
 		Remark: &VPCRouterRemark{
 			ApplianceRemarkBase: &ApplianceRemarkBase{

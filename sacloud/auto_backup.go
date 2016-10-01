@@ -60,6 +60,7 @@ func CreateNewAutoBackup(backupName string, diskID int64) *AutoBackup {
 				BackupSpanType: "weekdays",
 			},
 		},
+		TagsType: &TagsType{},
 	}
 }
 

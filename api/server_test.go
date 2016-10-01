@@ -2,7 +2,6 @@ package api
 
 import (
 	"github.com/stretchr/testify/assert"
-	"github.com/yamamoto-febc/libsacloud/sacloud"
 	"testing"
 	"time"
 )

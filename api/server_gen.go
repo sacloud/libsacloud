@@ -93,7 +93,9 @@ func (api *ServerAPI) SortByName(reverse bool) *ServerAPI {
 ************************************************/
 
 func (api *ServerAPI) New() *sacloud.Server {
-	return &sacloud.Server{}
+	return &sacloud.Server{
+		TagsType: &sacloud.TagsType{},
+	}
 }
 
 func (api *ServerAPI) Create(value *sacloud.Server) (*sacloud.Server, error) {

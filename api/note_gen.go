@@ -93,7 +93,9 @@ func (api *NoteAPI) SortByName(reverse bool) *NoteAPI {
 ************************************************/
 
 func (api *NoteAPI) New() *sacloud.Note {
-	return &sacloud.Note{}
+	return &sacloud.Note{
+		TagsType: &sacloud.TagsType{},
+	}
 }
 
 func (api *NoteAPI) Create(value *sacloud.Note) (*sacloud.Note, error) {

@@ -50,6 +50,7 @@ func CreateNewDNS(zoneName string) *DNS {
 		Settings: DNSSettings{
 			DNS: DNSRecordSets{},
 		},
+		TagsType: &TagsType{},
 	}
 }
 
