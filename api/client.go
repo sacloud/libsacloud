@@ -65,6 +65,7 @@ type api struct {
 	SSHKey        *SSHKeyAPI
 	Switch        *SwitchAPI
 	VPCRouter     *VPCRouterAPI
+	WebAccel      *WebAccelAPI
 }
 type productAPI struct {
 	Server   *ProductServerAPI
@@ -114,6 +115,7 @@ func newAPI(client *Client) *api {
 		SSHKey:        NewSSHKeyAPI(client),
 		Switch:        NewSwitchAPI(client),
 		VPCRouter:     NewVPCRouterAPI(client),
+		WebAccel:      NewWebAccelAPI(client),
 	}
 }
 

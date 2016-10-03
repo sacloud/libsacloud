@@ -33,6 +33,14 @@ func (b *baseAPI) getResourceURL() string {
 	if b.FuncGetResourceURL != nil {
 		url = b.FuncGetResourceURL()
 	}
+
+	if suffix == "" {
+		return url
+	}
+	if url == "" {
+		return suffix
+	}
+
 	return fmt.Sprintf("%s/%s", suffix, url)
 }
 
