@@ -56,6 +56,8 @@ type api struct {
 	Interface     *InterfaceAPI
 	Internet      *InternetAPI
 	IPAddress     *IPAddressAPI
+	IPv6Addr      *IPv6AddrAPI
+	IPv6Net       *IPv6NetAPI
 	License       *LicenseAPI
 	LoadBalancer  *LoadBalancerAPI
 	Note          *NoteAPI
@@ -102,6 +104,8 @@ func newAPI(client *Client) *api {
 		Interface:    NewInterfaceAPI(client),
 		Internet:     NewInternetAPI(client),
 		IPAddress:    NewIPAddressAPI(client),
+		IPv6Addr:     NewIPv6AddrAPI(client),
+		IPv6Net:      NewIPv6NetAPI(client),
 		License:      NewLicenseAPI(client),
 		LoadBalancer: NewLoadBalancerAPI(client),
 		Note:         NewNoteAPI(client),
