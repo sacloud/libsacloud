@@ -88,6 +88,8 @@ type SakuraCloudResources struct {
 	Interface    *Interface    `json:",omitempty"`
 	Internet     *Internet     `json:",omitempty"`
 	IPAddress    *IPAddress    `json:",omitempty"`
+	IPv6Addr     *IPv6Addr     `json:",omitempty"`
+	IPv6Net      *IPv6Net      `json:",omitempty"`
 	License      *License      `json:",omitempty"`
 	Switch       *Switch       `json:",omitempty"`
 	CDROM        *CDROM        `json:",omitempty"`
@@ -117,6 +119,8 @@ type SakuraCloudResourceList struct {
 	Interfaces    []Interface    `json:",omitempty"`
 	Internet      []Internet     `json:",omitempty"`
 	IPAddress     []IPAddress    `json:",omitempty"`
+	IPv6Addrs     []IPv6Addr     `json:",omitempty"`
+	IPv6Nets      []IPv6Net      `json:",omitempty"`
 	Licenses      []License      `json:",omitempty"`
 	Switches      []Switch       `json:",omitempty"`
 	CDROMs        []CDROM        `json:",omitempty"`

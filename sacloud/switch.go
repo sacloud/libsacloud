@@ -35,13 +35,6 @@ type SwitchSubnet struct {
 		Max string `json:",omitempty"`
 	}
 }
-type IPv6Net struct {
-	*Resource
-	IPv6Prefix    string `json:",omitempty"`
-	IPv6PrefixLen int    `json:",omitempty"`
-	Scope         string `json:",omitempty"`
-	ServiceClass  string `json:",omitempty"`
-}
 
 func (s *Switch) GetDefaultIPAddressesForVPCRouter() (string, string, string, error) {
 

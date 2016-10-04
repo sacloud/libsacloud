@@ -34,6 +34,34 @@ func (api *InternetAPI) UpdateBandWidth(id int64, bandWidth int) (*sacloud.Inter
 	})
 }
 
+func (api *InternetAPI) EnableIPv6(id int64) (*sacloud.IPv6Net, error) {
+	var (
+		method = "POST"
+		uri    = fmt.Sprintf("%s/%d/ipv6net", api.getResourceURL(), id)
+	)
+
+	res := &sacloud.Response{}
+	err := api.baseAPI.request(method, uri, nil, res)
+	if err != nil {
+		return nil, err
+	}
+	return res.IPv6Net, nil
+}
+
+func (api *InternetAPI) DisableIPv6(id int64, ipv6NetID int64) (bool, error) {
+	var (
+		method = "DELETE"
+		uri    = fmt.Sprintf("%s/%d/ipv6net/%d", api.getResourceURL(), id, ipv6NetID)
+	)
+
+	res := &sacloud.Response{}
+	err := api.baseAPI.request(method, uri, nil, res)
+	if err != nil {
+		return false, err
+	}
+	return true, nil
+}
+
 func (api *InternetAPI) SleepWhileCreating(internetID int64, timeout time.Duration) error {
 	current := 0 * time.Second
 	interval := 5 * time.Second
