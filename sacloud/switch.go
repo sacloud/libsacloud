@@ -21,28 +21,20 @@ type Switch struct {
 	CreatedAt   *time.Time `json:",omitempty"`
 	Icon        *Icon      `json:",omitempty"`
 	*TagsType
-	Subnets  []Subnet  `json:",omitempty"`
-	IPv6Nets []IPv6Net `json:",omitempty"`
-	Internet *Internet `json:",omitempty"`
-	Bridge   *Bridge   `json:",omitempty"`
+	Subnets  []SwitchSubnet `json:",omitempty"`
+	IPv6Nets []IPv6Net      `json:",omitempty"`
+	Internet *Internet      `json:",omitempty"`
+	Bridge   *Bridge        `json:",omitempty"`
 }
 
-// Subnet type of Subnet
-type Subnet struct {
-	*Resource
-	NetworkAddress string `json:",omitempty"`
-	NetworkMaskLen int    `json:",omitempty"`
-	DefaultRoute   string `json:",omitempty"`
-	//NextHop ???
-	//StaticRoute ???
-	ServiceClass string `json:",omitempty"`
-	IPAddresses  struct {
+// SwitchSubnet type of Subnet
+type SwitchSubnet struct {
+	*Subnet
+	IPAddresses struct {
 		Min string `json:",omitempty"`
 		Max string `json:",omitempty"`
 	}
-	Internet *Internet `json:",omitempty"`
 }
-
 type IPv6Net struct {
 	*Resource
 	IPv6Prefix    string `json:",omitempty"`

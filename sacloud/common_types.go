@@ -87,10 +87,12 @@ type SakuraCloudResources struct {
 	Image        *Image        `json:",omitempty"`
 	Interface    *Interface    `json:",omitempty"`
 	Internet     *Internet     `json:",omitempty"`
+	IPAddress    *IPAddress    `json:",omitempty"`
 	License      *License      `json:",omitempty"`
 	Switch       *Switch       `json:",omitempty"`
 	CDROM        *CDROM        `json:",omitempty"`
 	SSHKey       *SSHKey       `json:",omitempty"`
+	Subnet       *Subnet       `json:",omitempty"`
 
 	DiskPlan     *ProductDisk     `json:",omitempty"`
 	InternetPlan *ProductInternet `json:",omitempty"`
@@ -114,10 +116,12 @@ type SakuraCloudResourceList struct {
 	Icons         []Icon         `json:",omitempty"`
 	Interfaces    []Interface    `json:",omitempty"`
 	Internet      []Internet     `json:",omitempty"`
+	IPAddress     []IPAddress    `json:",omitempty"`
 	Licenses      []License      `json:",omitempty"`
 	Switches      []Switch       `json:",omitempty"`
 	CDROMs        []CDROM        `json:",omitempty"`
 	SSHKeys       []SSHKey       `json:",omitempty"`
+	Subnets       []Subnet       `json:",omitempty"`
 
 	DiskPlans     []ProductDisk     `json:",omitempty"`
 	InternetPlans []ProductInternet `json:",omitempty"`

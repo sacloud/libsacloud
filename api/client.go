@@ -55,6 +55,7 @@ type api struct {
 	Icon          *IconAPI
 	Interface     *InterfaceAPI
 	Internet      *InternetAPI
+	IPAddress     *IPAddressAPI
 	License       *LicenseAPI
 	LoadBalancer  *LoadBalancerAPI
 	Note          *NoteAPI
@@ -63,6 +64,7 @@ type api struct {
 	Server        *ServerAPI
 	SimpleMonitor *SimpleMonitorAPI
 	SSHKey        *SSHKeyAPI
+	Subnet        *SubnetAPI
 	Switch        *SwitchAPI
 	VPCRouter     *VPCRouterAPI
 	WebAccel      *WebAccelAPI
@@ -99,6 +101,7 @@ func newAPI(client *Client) *api {
 		Icon:         NewIconAPI(client),
 		Interface:    NewInterfaceAPI(client),
 		Internet:     NewInternetAPI(client),
+		IPAddress:    NewIPAddressAPI(client),
 		License:      NewLicenseAPI(client),
 		LoadBalancer: NewLoadBalancerAPI(client),
 		Note:         NewNoteAPI(client),
@@ -113,6 +116,7 @@ func newAPI(client *Client) *api {
 		Server:        NewServerAPI(client),
 		SimpleMonitor: NewSimpleMonitorAPI(client),
 		SSHKey:        NewSSHKeyAPI(client),
+		Subnet:        NewSubnetAPI(client),
 		Switch:        NewSwitchAPI(client),
 		VPCRouter:     NewVPCRouterAPI(client),
 		WebAccel:      NewWebAccelAPI(client),
