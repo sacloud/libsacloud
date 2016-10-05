@@ -25,10 +25,10 @@ type Disk struct {
 	SourceArchive *Archive            `json:",omitempty"`
 	SourceDisk    *Disk               `json:",omitempty"`
 	JobStatus     *MigrationJobStatus `json:",omitempty"`
-	//BundleInfo
-	Server    *Server    `json:",omitempty"`
-	CreatedAt *time.Time `json:",omitempty"`
-	Icon      *Icon      `json:",omitempty"`
+	BundleInfo    interface{}         `json:",omitempty"`
+	Server        *Server             `json:",omitempty"`
+	CreatedAt     *time.Time          `json:",omitempty"`
+	Icon          *Icon               `json:",omitempty"`
 	*TagsType
 }
 

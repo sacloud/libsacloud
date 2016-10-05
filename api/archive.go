@@ -67,3 +67,41 @@ func (api *ArchiveAPI) SleepWhileCopying(id int64, timeout time.Duration) error 
 		}
 	}
 }
+
+func (api *ArchiveAPI) CanEditDisk(id int64) (bool, error) {
+
+	archive, err := api.Read(id)
+	if err != nil {
+		return false, err
+	}
+
+	if archive == nil {
+		return false, nil
+	}
+
+	// BundleInfoがあれば編集不可
+	if archive.BundleInfo != nil {
+		// Windows
+		return false, nil
+	}
+
+	// ソースアーカイブ/ソースディスクともに持っていない場合
+	if archive.SourceArchive == nil && archive.SourceDisk == nil {
+		//ブランクディスクがソース
+		return false, nil
+	}
+
+	for _, t := range allowDiskEditTags {
+		if archive.HasTag(t) {
+			// 対応OSインストール済みディスク
+			return true, nil
+		}
+	}
+
+	// ここまできても判定できないならソースに投げる
+	if archive.SourceDisk != nil {
+		return api.CanEditDisk(archive.SourceDisk.ID)
+	}
+	return client.Archive.CanEditDisk(archive.SourceArchive.ID)
+
+}

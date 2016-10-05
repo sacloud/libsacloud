@@ -92,6 +92,36 @@ func TestCreateDiskFromSource(t *testing.T) {
 	assert.NotEmpty(t, disk)
 }
 
+//func TestCanEditDisk(t *testing.T) {
+//	api := client.Disk
+//	client.Zone = "is1a"
+//
+//	// CentOS
+//	res, err := api.CanEditDisk(123456789012)
+//	assert.NoError(t, err)
+//	assert.True(t, res)
+//
+//	// SourceDisk/Archive not found
+//	res, err = api.CanEditDisk(123456789012)
+//	assert.Error(t, err)
+//	assert.False(t, res)
+//
+//	// Blank
+//	res, err = api.CanEditDisk(123456789012)
+//	assert.NoError(t, err)
+//	assert.False(t, res)
+//
+//	// windows
+//	res, err = api.CanEditDisk(123456789012)
+//	assert.NoError(t, err)
+//	assert.False(t, res)
+//	// windows-child
+//	res, err = api.CanEditDisk(123456789012)
+//	assert.NoError(t, err)
+//	assert.False(t, res)
+//
+//}
+
 func init() {
 	testSetupHandlers = append(testSetupHandlers, cleanupTestDisk)
 	testTearDownHandlers = append(testTearDownHandlers, cleanupTestDisk)
