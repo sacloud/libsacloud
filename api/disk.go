@@ -6,6 +6,15 @@ import (
 	"time"
 )
 
+var (
+	allowDiskEditTags = []string{
+		"distro-debian",
+		"distro-ubuntu",
+		"distro-centos",
+		"distro-sl",
+	}
+)
+
 type DiskAPI struct {
 	*baseAPI
 }
@@ -148,4 +157,42 @@ func (api *DiskAPI) SleepWhileCopying(diskID int64, timeout time.Duration) error
 
 func (api *DiskAPI) Monitor(id int64, body *sacloud.ResourceMonitorRequest) (*sacloud.MonitorValues, error) {
 	return api.baseAPI.monitor(id, body)
+}
+
+func (api *DiskAPI) CanEditDisk(id int64) (bool, error) {
+
+	disk, err := api.Read(id)
+	if err != nil {
+		return false, err
+	}
+
+	if disk == nil {
+		return false, nil
+	}
+
+	// BundleInfoがあれば編集不可
+	if disk.BundleInfo != nil {
+		// Windows
+		return false, nil
+	}
+
+	// ソースアーカイブ/ソースディスクともに持っていない場合
+	if disk.SourceArchive == nil && disk.SourceDisk == nil {
+		//ブランクディスクがソース
+		return false, nil
+	}
+
+	for _, t := range allowDiskEditTags {
+		if disk.HasTag(t) {
+			// 対応OSインストール済みディスク
+			return true, nil
+		}
+	}
+
+	// ここまできても判定できないならソースに投げる
+	if disk.SourceDisk != nil {
+		return api.CanEditDisk(disk.SourceDisk.ID)
+	}
+	return client.Archive.CanEditDisk(disk.SourceArchive.ID)
+
 }

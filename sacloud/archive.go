@@ -23,8 +23,8 @@ type Archive struct {
 	SourceDisk      *Disk               `json:",omitempty"`
 	SourceArchive   *Archive            `json:",omitempty"`
 	Storage         *Storage            `json:",omitempty"`
+	BundleInfo      interface{}         `json:",omitempty"`
 	*TagsType
-	//BundleInfo
 }
 
 func (d *Archive) SetSourceArchive(sourceID int64) {
