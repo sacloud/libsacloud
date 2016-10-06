@@ -1,6 +1,7 @@
 package sacloud
 
 import (
+	"encoding/json"
 	"fmt"
 	"time"
 )
@@ -22,8 +23,7 @@ type AutoBackup struct {
 
 // AutoBackupSettings type of AutoBackupSettings
 type AutoBackupSettings struct {
-	//TODO AccountID should be int64
-	//AccountID  string                `json:"AccountId,omitempty"`
+	AccountID  json.Number           `json:"AccountId,omitempty"`
 	DiskID     string                `json:"DiskId,omitempty"`
 	ZoneID     int64                 `json:"ZoneId,omitempty"`
 	ZoneName   string                `json:",omitempty"`
@@ -32,11 +32,10 @@ type AutoBackupSettings struct {
 
 // AutoBackupStatus type of AutoBackupStatus
 type AutoBackupStatus struct {
-	//TODO Account ID should be int64
-	//AccountID string `json:"AccountId,omitempty"`
-	DiskID   string `json:"DiskId,omitempty"`
-	ZoneID   int64  `json:"ZoneId,omitempty"`
-	ZoneName string `json:",omitempty"`
+	AccountID json.Number `json:"AccountId,omitempty"`
+	DiskID    string      `json:"DiskId,omitempty"`
+	ZoneID    int64       `json:"ZoneId,omitempty"`
+	ZoneName  string      `json:",omitempty"`
 }
 
 // AutoBackupProvider type of AutoBackupProvider

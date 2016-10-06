@@ -117,7 +117,6 @@ func (api *BillAPI) getContract(uri string) (*BillResponse, error) {
 
 func (api *BillAPI) GetDetail(memberCD string, billNo int64) (*BillDetailResponse, error) {
 
-	//TODO マルチスレッド非対応
 	oldFunc := api.FuncGetResourceURL
 	defer func() { api.FuncGetResourceURL = oldFunc }()
 	api.FuncGetResourceURL = func() string {
@@ -139,7 +138,6 @@ func (api *BillAPI) GetDetail(memberCD string, billNo int64) (*BillDetailRespons
 
 func (api *BillAPI) GetDetailCSV(memberCD string, billNo int64) (*BillDetailCSVResponse, error) {
 
-	//TODO マルチスレッド非対応
 	oldFunc := api.FuncGetResourceURL
 	defer func() { api.FuncGetResourceURL = oldFunc }()
 	api.FuncGetResourceURL = func() string {
