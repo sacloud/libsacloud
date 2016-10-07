@@ -2,6 +2,7 @@ package api
 
 import (
 	"github.com/stretchr/testify/assert"
+	"github.com/yamamoto-febc/libsacloud/sacloud"
 	"testing"
 	"time"
 )
@@ -124,6 +125,33 @@ func TestCreateAndWait(t *testing.T) {
 	assert.NoError(t, err)
 
 	archiveAPI.Delete(archive.ID)
+
+}
+
+func TestArchiveAPI_FindStableOSs(t *testing.T) {
+
+	api := client.Archive
+	type target struct {
+		label string
+		f     func() (*sacloud.Archive, error)
+	}
+
+	targets := []target{
+		{label: "CentOS", f: api.FindLatestStableCentOS},
+		{label: "Debian", f: api.FindLatestStableDebian},
+		{label: "Ubuntu", f: api.FindLatestStableUbuntu},
+		{label: "VyOS", f: api.FindLatestStableVyOS},
+		{label: "CoreOS", f: api.FindLatestStableCoreOS},
+		{label: "Kusanagi", f: api.FindLatestStableKusanagi},
+	}
+
+	for _, ts := range targets {
+		res, err := ts.f()
+		assert.NoError(t, err)
+		assert.NotNil(t, res)
+		t.Logf("Zone:%s / Current Stable %s: %#v", client.Zone, ts.label, res.Resource)
+
+	}
 
 }
 
