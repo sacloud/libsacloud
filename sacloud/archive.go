@@ -38,3 +38,15 @@ func (d *Archive) SetSourceDisk(sourceID int64) {
 		Resource: &Resource{ID: sourceID},
 	}
 }
+
+type ArchiveOSTypes int
+
+const (
+	CentOS ArchiveOSTypes = iota
+	Ubuntu
+	Debian
+	VyOS
+	CoreOS
+	Kusanagi
+	Custom
+)

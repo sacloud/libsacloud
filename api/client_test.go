@@ -6,8 +6,11 @@ import (
 	"testing"
 )
 
-var testSetupHandlers []func()
-var testTearDownHandlers []func()
+var (
+	client               *Client
+	testSetupHandlers    []func()
+	testTearDownHandlers []func()
+)
 
 func TestMain(m *testing.M) {
 	//環境変数にトークン/シークレットがある場合のみテスト実施

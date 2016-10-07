@@ -192,6 +192,6 @@ func (api *DiskAPI) CanEditDisk(id int64) (bool, error) {
 	if disk.SourceDisk != nil {
 		return api.CanEditDisk(disk.SourceDisk.ID)
 	}
-	return client.Archive.CanEditDisk(disk.SourceArchive.ID)
+	return api.client.Archive.CanEditDisk(disk.SourceArchive.ID)
 
 }

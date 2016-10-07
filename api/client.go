@@ -8,14 +8,11 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"time"
 )
 
 const (
 	sakuraCloudAPIRoot = "https://secure.sakura.ad.jp/cloud/zone"
-)
-
-var (
-	client *Client
 )
 
 // Client type of sakuracloud api client config values
@@ -24,12 +21,13 @@ type Client struct {
 	AccessTokenSecret string
 	Zone              string
 	*api
-	TraceMode bool
+	TraceMode              bool
+	DefaultTimeoutDuration time.Duration
 }
 
 // NewClient Create new API client
 func NewClient(token, tokenSecret, zone string) *Client {
-	c := &Client{AccessToken: token, AccessTokenSecret: tokenSecret, Zone: zone, TraceMode: false}
+	c := &Client{AccessToken: token, AccessTokenSecret: tokenSecret, Zone: zone, TraceMode: false, DefaultTimeoutDuration: 20 * time.Minute}
 	c.api = newAPI(c)
 	return c
 }
