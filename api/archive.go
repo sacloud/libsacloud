@@ -3,12 +3,23 @@ package api
 import (
 	"fmt"
 	"github.com/yamamoto-febc/libsacloud/sacloud"
+	"strings"
 	"time"
 )
 
 type ArchiveAPI struct {
 	*baseAPI
 }
+
+var (
+	ArchiveLatestStableCentOSTags   = []string{"current-stable", "distro-centos"}
+	ArchiveLatestStableUbuntuTags   = []string{"current-stable", "distro-ubuntu"}
+	ArchiveLatestStableDebianTags   = []string{"current-stable", "distro-debian"}
+	ArchiveLatestStableVyOSTags     = []string{"current-stable", "distro-vyos"}
+	ArchiveLatestStableCoreOSTags   = []string{"current-stable", "distro-coreos"}
+	ArchiveLatestStableKusanagiTags = []string{"current-stable", "pkg-kusanagi"}
+	//ArchiveLatestStableSiteGuardTags = []string{"current-stable", "pkg-siteguard"} //tk1aではcurrent-stableタグが付いていないため絞り込めない
+)
 
 func NewArchiveAPI(client *Client) *ArchiveAPI {
 	return &ArchiveAPI{
@@ -103,5 +114,38 @@ func (api *ArchiveAPI) CanEditDisk(id int64) (bool, error) {
 		return api.CanEditDisk(archive.SourceDisk.ID)
 	}
 	return client.Archive.CanEditDisk(archive.SourceArchive.ID)
+
+}
+
+func (api *ArchiveAPI) FindLatestStableCentOS() (*sacloud.Archive, error) {
+	return api.findByOSTags(ArchiveLatestStableCentOSTags)
+}
+func (api *ArchiveAPI) FindLatestStableDebian() (*sacloud.Archive, error) {
+	return api.findByOSTags(ArchiveLatestStableDebianTags)
+}
+func (api *ArchiveAPI) FindLatestStableUbuntu() (*sacloud.Archive, error) {
+	return api.findByOSTags(ArchiveLatestStableUbuntuTags)
+}
+func (api *ArchiveAPI) FindLatestStableVyOS() (*sacloud.Archive, error) {
+	return api.findByOSTags(ArchiveLatestStableVyOSTags)
+}
+func (api *ArchiveAPI) FindLatestStableCoreOS() (*sacloud.Archive, error) {
+	return api.findByOSTags(ArchiveLatestStableCoreOSTags)
+}
+func (api *ArchiveAPI) FindLatestStableKusanagi() (*sacloud.Archive, error) {
+	return api.findByOSTags(ArchiveLatestStableKusanagiTags)
+}
+
+func (api *ArchiveAPI) findByOSTags(tags []string) (*sacloud.Archive, error) {
+	res, err := api.Reset().WithTags(tags).Find()
+	if err != nil {
+		return nil, fmt.Errorf("Archive [%s] error : %s", strings.Join(tags, ","), err)
+	}
+
+	if len(res.Archives) == 0 {
+		return nil, fmt.Errorf("Archive [%s] Not Found", strings.Join(tags, ","))
+	}
+
+	return &res.Archives[0], nil
 
 }

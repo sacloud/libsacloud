@@ -7,11 +7,10 @@ import (
 )
 
 var (
+	// allowDiskEditTags ディスクの編集可否判定に用いるタグ
 	allowDiskEditTags = []string{
-		"distro-debian",
-		"distro-ubuntu",
-		"distro-centos",
-		"distro-sl",
+		"os-unix",
+		"os-linux",
 	}
 )
 
