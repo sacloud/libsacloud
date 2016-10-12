@@ -9,6 +9,7 @@ import (
 
 type ArchiveAPI struct {
 	*baseAPI
+	FindFuncMapPerOSType map[sacloud.ArchiveOSTypes]func() (*sacloud.Archive, error)
 }
 
 var (
@@ -22,14 +23,25 @@ var (
 )
 
 func NewArchiveAPI(client *Client) *ArchiveAPI {
-	return &ArchiveAPI{
-		&baseAPI{
+	api := &ArchiveAPI{
+		baseAPI: &baseAPI{
 			client: client,
 			FuncGetResourceURL: func() string {
 				return "archive"
 			},
 		},
 	}
+
+	api.FindFuncMapPerOSType = map[sacloud.ArchiveOSTypes]func() (*sacloud.Archive, error){
+		sacloud.CentOS:   api.FindLatestStableCentOS,
+		sacloud.Ubuntu:   api.FindLatestStableUbuntu,
+		sacloud.Debian:   api.FindLatestStableDebian,
+		sacloud.VyOS:     api.FindLatestStableVyOS,
+		sacloud.CoreOS:   api.FindLatestStableCoreOS,
+		sacloud.Kusanagi: api.FindLatestStableKusanagi,
+	}
+
+	return api
 }
 
 func (api *ArchiveAPI) OpenFTP(id int64) (*sacloud.FTPServer, error) {
@@ -113,7 +125,7 @@ func (api *ArchiveAPI) CanEditDisk(id int64) (bool, error) {
 	if archive.SourceDisk != nil {
 		return api.CanEditDisk(archive.SourceDisk.ID)
 	}
-	return client.Archive.CanEditDisk(archive.SourceArchive.ID)
+	return api.client.Archive.CanEditDisk(archive.SourceArchive.ID)
 
 }
 
@@ -134,6 +146,13 @@ func (api *ArchiveAPI) FindLatestStableCoreOS() (*sacloud.Archive, error) {
 }
 func (api *ArchiveAPI) FindLatestStableKusanagi() (*sacloud.Archive, error) {
 	return api.findByOSTags(ArchiveLatestStableKusanagiTags)
+}
+func (api *ArchiveAPI) FindByOSType(os sacloud.ArchiveOSTypes) (*sacloud.Archive, error) {
+	if f, ok := api.FindFuncMapPerOSType[os]; ok {
+		return f()
+	}
+
+	return nil, fmt.Errorf("OSType [%s] is invalid", os)
 }
 
 func (api *ArchiveAPI) findByOSTags(tags []string) (*sacloud.Archive, error) {

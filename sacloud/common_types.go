@@ -1,6 +1,7 @@
 package sacloud
 
 import (
+	"fmt"
 	"strconv"
 	"time"
 )
@@ -36,6 +37,13 @@ func (n *Resource) GetID() int64 {
 		return -1
 	}
 	return n.ID
+}
+
+func (n *Resource) GetStrID() string {
+	if n == nil {
+		return ""
+	}
+	return fmt.Sprintf("%d", n.ID)
 }
 
 // EAvailability Enum of sakuracloud
@@ -241,7 +249,7 @@ var (
 	TagGroupD = "@group=b"
 
 	// TagAutoReboot サーバ停止時に自動起動します
-	TagAutoReboot = "@aut-reboot"
+	TagAutoReboot = "@auto-reboot"
 
 	// TagKeyboardUS リモートスクリーン画面でUSキーボード入力します
 	TagKeyboardUS = "@keyboard-us"

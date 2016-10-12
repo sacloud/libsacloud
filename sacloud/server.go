@@ -60,6 +60,17 @@ func (s *Server) AddEmptyConnectedParam() {
 	s.ConnectedSwitches = append(s.ConnectedSwitches, nil)
 }
 
+// GetDiskIDs ディスクID配列を返す
+func (s *Server) GetDiskIDs() []int64 {
+
+	ids := []int64{}
+	for _, disk := range s.Disks {
+		ids = append(ids, disk.ID)
+	}
+	return ids
+
+}
+
 // KeyboardRequest type of send-key request
 type KeyboardRequest struct {
 	Keys []string `json:",omitempty"`

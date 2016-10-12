@@ -14,10 +14,11 @@ type Disk struct {
 	ConnectionOrder int             `json:",omitempty"`
 	ReinstallCount  int             `json:",omitempty"`
 	*EAvailability
-	SizeMB     int       `json:",omitempty"`
-	MigratedMB int       `json:",omitempty"`
-	Plan       *Resource `json:",omitempty"`
-	Storage    struct {
+	SizeMB      int       `json:",omitempty"`
+	MigratedMB  int       `json:",omitempty"`
+	Plan        *Resource `json:",omitempty"`
+	DistantFrom []int64   `json:",omitempty"`
+	Storage     struct {
 		*Resource
 		MountIndex int64  `json:",omitempty"`
 		Class      string `json:",omitempty"`
@@ -32,12 +33,20 @@ type Disk struct {
 	*TagsType
 }
 
+type DiskPlanID int64
+
 var (
-	DiskPlanHDD                          = &Resource{ID: 2}
-	DiskPlanSSD                          = &Resource{ID: 4}
+	DiskPlanHDDID                        = DiskPlanID(2)
+	DiskPlanSSDID                        = DiskPlanID(4)
+	DiskPlanHDD                          = &Resource{ID: int64(DiskPlanHDDID)}
+	DiskPlanSSD                          = &Resource{ID: int64(DiskPlanSSDID)}
 	DiskConnectionVirtio EDiskConnection = "virtio"
 	DiskConnectionIDE    EDiskConnection = "ide"
 )
+
+func (d DiskPlanID) ToResource() *Resource {
+	return &Resource{ID: int64(d)}
+}
 
 func CreateNewDisk() *Disk {
 	return &Disk{
