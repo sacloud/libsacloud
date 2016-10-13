@@ -9,34 +9,40 @@ import (
 )
 
 /************************************************
-   To support influent interface for Find()
+   To support fluent interface for Find()
 ************************************************/
 
+// Reset 検索条件リセット
 func (api *AutoBackupAPI) Reset() *AutoBackupAPI {
 	api.reset()
 	return api
 }
 
+// Offset オフセット
 func (api *AutoBackupAPI) Offset(offset int) *AutoBackupAPI {
 	api.offset(offset)
 	return api
 }
 
+// Limit リミット
 func (api *AutoBackupAPI) Limit(limit int) *AutoBackupAPI {
 	api.limit(limit)
 	return api
 }
 
+// Include 取得する項目
 func (api *AutoBackupAPI) Include(key string) *AutoBackupAPI {
 	api.include(key)
 	return api
 }
 
+// Exclude 除外する項目
 func (api *AutoBackupAPI) Exclude(key string) *AutoBackupAPI {
 	api.exclude(key)
 	return api
 }
 
+// FilterBy 指定キーでのフィルタ
 func (api *AutoBackupAPI) FilterBy(key string, value interface{}) *AutoBackupAPI {
 	api.filterBy(key, value, false)
 	return api
@@ -47,13 +53,17 @@ func (api *AutoBackupAPI) FilterBy(key string, value interface{}) *AutoBackupAPI
 // 	return api
 // }
 
+// WithNameLike 名称条件
 func (api *AutoBackupAPI) WithNameLike(name string) *AutoBackupAPI {
 	return api.FilterBy("Name", name)
 }
 
+// WithTag タグ条件
 func (api *AutoBackupAPI) WithTag(tag string) *AutoBackupAPI {
 	return api.FilterBy("Tags.Name", tag)
 }
+
+// WithTags タグ(複数)条件
 func (api *AutoBackupAPI) WithTags(tags []string) *AutoBackupAPI {
 	return api.FilterBy("Tags.Name", []interface{}{tags})
 }
@@ -73,11 +83,13 @@ func (api *AutoBackupAPI) WithTags(tags []string) *AutoBackupAPI {
 // 	return api
 // }
 
+// SortBy 指定キーでのソート
 func (api *AutoBackupAPI) SortBy(key string, reverse bool) *AutoBackupAPI {
 	api.sortBy(key, reverse)
 	return api
 }
 
+// SortByName 名前でのソート
 func (api *AutoBackupAPI) SortByName(reverse bool) *AutoBackupAPI {
 	api.sortByName(reverse)
 	return api

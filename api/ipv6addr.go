@@ -5,10 +5,12 @@ import (
 	"github.com/yamamoto-febc/libsacloud/sacloud"
 )
 
+// IPv6AddrAPI IPv6アドレスAPI
 type IPv6AddrAPI struct {
 	*baseAPI
 }
 
+// NewIPv6AddrAPI IPv6アドレスAPI新規作成
 func NewIPv6AddrAPI(client *Client) *IPv6AddrAPI {
 	return &IPv6AddrAPI{
 		&baseAPI{
@@ -20,6 +22,7 @@ func NewIPv6AddrAPI(client *Client) *IPv6AddrAPI {
 	}
 }
 
+// Read 読み取り
 func (api *IPv6AddrAPI) Read(ip string) (*sacloud.IPv6Addr, error) {
 	return api.request(func(res *sacloud.Response) error {
 		var (
@@ -32,9 +35,11 @@ func (api *IPv6AddrAPI) Read(ip string) (*sacloud.IPv6Addr, error) {
 
 }
 
+// Create 新規作成
 func (api *IPv6AddrAPI) Create(ip string, hostName string) (*sacloud.IPv6Addr, error) {
 
 	type request struct {
+		// IPv6Addr
 		IPv6Addr map[string]string
 	}
 
@@ -51,9 +56,11 @@ func (api *IPv6AddrAPI) Create(ip string, hostName string) (*sacloud.IPv6Addr, e
 	})
 }
 
+// Update 更新
 func (api *IPv6AddrAPI) Update(ip string, hostName string) (*sacloud.IPv6Addr, error) {
 
 	type request struct {
+		// IPv6Addr
 		IPv6Addr map[string]string
 	}
 
@@ -69,9 +76,11 @@ func (api *IPv6AddrAPI) Update(ip string, hostName string) (*sacloud.IPv6Addr, e
 	})
 }
 
+// Delete 削除
 func (api *IPv6AddrAPI) Delete(ip string) (*sacloud.IPv6Addr, error) {
 
 	type request struct {
+		// IPv6Addr
 		IPv6Addr map[string]string
 	}
 

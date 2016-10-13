@@ -6,21 +6,29 @@ import (
 	"time"
 )
 
-// Resource type of sakuracloud resource(have ID:string)
+// Resource IDを持つ、さくらのクラウド上のリソース
 type Resource struct {
+	// ID ID
 	ID int64 `json:",omitempty"`
 }
 
+// ResourceIDHolder ID保持インターフェース
 type ResourceIDHolder interface {
+	// SetID
 	SetID(int64)
+	// GetID
 	GetID() int64
 }
 
-var EmptyID int64
+// EmptyID 空ID
+const EmptyID int64 = 0
 
+// NewResource 新規リソース作成
 func NewResource(id int64) *Resource {
 	return &Resource{ID: id}
 }
+
+// NewResourceByStringID ID文字列からリソース作成
 func NewResourceByStringID(id string) *Resource {
 	intID, err := strconv.ParseInt(id, 10, 64)
 	if err != nil {
@@ -29,9 +37,12 @@ func NewResourceByStringID(id string) *Resource {
 	return &Resource{ID: intID}
 }
 
+// SetID ID 設定
 func (n *Resource) SetID(id int64) {
 	n.ID = id
 }
+
+// GetID ID 取得
 func (n *Resource) GetID() int64 {
 	if n == nil {
 		return -1
@@ -39,6 +50,7 @@ func (n *Resource) GetID() int64 {
 	return n.ID
 }
 
+// GetStrID 文字列でID取得
 func (n *Resource) GetStrID() string {
 	if n == nil {
 		return ""
@@ -46,119 +58,182 @@ func (n *Resource) GetStrID() string {
 	return fmt.Sprintf("%d", n.ID)
 }
 
-// EAvailability Enum of sakuracloud
+// EAvailability 有効状態
 type EAvailability struct {
+	// Availability 有効状態
 	Availability string `json:",omitempty"`
 }
 
-// IsAvailable Return availability is "available"
+// IsAvailable 有効状態が"有効"か判定
 func (a *EAvailability) IsAvailable() bool {
 	return a.Availability == "available"
 }
 
+// IsFailed 有効状態が"失敗"か判定
 func (a *EAvailability) IsFailed() bool {
 	return a.Availability == "failed"
 }
 
-//EServerInstanceStatus Enum [up / cleaning / down]
+// EServerInstanceStatus サーバーインスタンスステータス
 type EServerInstanceStatus struct {
-	Status       string `json:",omitempty"`
+	// Status 現在のステータス
+	Status string `json:",omitempty"`
+	// BeforeStatus 前のステータス
 	BeforeStatus string `json:",omitempty"`
 }
 
+// IsUp インスタンスが起動しているか判定
 func (e *EServerInstanceStatus) IsUp() bool {
 	return e.Status == "up"
 }
 
+// IsDown インスタンスがダウンしているか確認
 func (e *EServerInstanceStatus) IsDown() bool {
 	return e.Status == "down"
 }
 
-// EScope Enum [shared / user]
+// EScope スコープ
 type EScope string
 
-var ESCopeShared = EScope("shared")
-var ESCopeUser = EScope("user")
+var (
+	// ESCopeShared sharedスコープ
+	ESCopeShared = EScope("shared")
+	// ESCopeUser userスコープ
+	ESCopeUser = EScope("user")
+)
 
-// EDiskConnection Enum [virtio / ide]
+// EDiskConnection ディスク接続方法
 type EDiskConnection string
 
-// SakuraCloudResources type of resources
+// SakuraCloudResources さくらのクラウド上のリソース種別一覧
 type SakuraCloudResources struct {
-	Server       *Server       `json:",omitempty"`
-	Disk         *Disk         `json:",omitempty"`
-	Note         *Note         `json:",omitempty"`
-	Archive      *Archive      `json:",omitempty"`
+	// Server サーバー
+	Server *Server `json:",omitempty"`
+	// Disk ディスク
+	Disk *Disk `json:",omitempty"`
+	// Note スタートアップスクリプト
+	Note *Note `json:",omitempty"`
+	// Archive アーカイブ
+	Archive *Archive `json:",omitempty"`
+	// PacketFilter パケットフィルタ
 	PacketFilter *PacketFilter `json:",omitempty"`
-	Bridge       *Bridge       `json:",omitempty"`
-	Icon         *Icon         `json:",omitempty"`
-	Image        *Image        `json:",omitempty"`
-	Interface    *Interface    `json:",omitempty"`
-	Internet     *Internet     `json:",omitempty"`
-	IPAddress    *IPAddress    `json:",omitempty"`
-	IPv6Addr     *IPv6Addr     `json:",omitempty"`
-	IPv6Net      *IPv6Net      `json:",omitempty"`
-	License      *License      `json:",omitempty"`
-	Switch       *Switch       `json:",omitempty"`
-	CDROM        *CDROM        `json:",omitempty"`
-	SSHKey       *SSHKey       `json:",omitempty"`
-	Subnet       *Subnet       `json:",omitempty"`
-
-	DiskPlan     *ProductDisk     `json:",omitempty"`
+	// Bridge ブリッジ
+	Bridge *Bridge `json:",omitempty"`
+	// Icon アイコン
+	Icon *Icon `json:",omitempty"`
+	// Image 画像
+	Image *Image `json:",omitempty"`
+	// Interface インターフェース
+	Interface *Interface `json:",omitempty"`
+	// Internet ルーター
+	Internet *Internet `json:",omitempty"`
+	// IPAddress IPv4アドレス
+	IPAddress *IPAddress `json:",omitempty"`
+	// IPv6Addr IPv6アドレス
+	IPv6Addr *IPv6Addr `json:",omitempty"`
+	// IPv6Net IPv6ネットワーク
+	IPv6Net *IPv6Net `json:",omitempty"`
+	// License ライセンス
+	License *License `json:",omitempty"`
+	// Switch スイッチ
+	Switch *Switch `json:",omitempty"`
+	// CDROM ISOイメージ
+	CDROM *CDROM `json:",omitempty"`
+	// SSHKey 公開鍵
+	SSHKey *SSHKey `json:",omitempty"`
+	// Subnet IPv4ネットワーク
+	Subnet *Subnet `json:",omitempty"`
+	// DiskPlan ディスクプラン
+	DiskPlan *ProductDisk `json:",omitempty"`
+	// InternetPlan ルータープラン
 	InternetPlan *ProductInternet `json:",omitempty"`
-	LicenseInfo  *ProductLicense  `json:",omitempty"`
-	ServerPlan   *ProductServer   `json:",omitempty"`
-
-	Region    *Region    `json:",omitempty"`
-	Zone      *Zone      `json:",omitempty"`
+	// LicenseInfo ライセンス情報
+	LicenseInfo *ProductLicense `json:",omitempty"`
+	// ServerPlan サーバープラン
+	ServerPlan *ProductServer `json:",omitempty"`
+	// Region リージョン
+	Region *Region `json:",omitempty"`
+	// Zone ゾーン
+	Zone *Zone `json:",omitempty"`
+	// FTPServer FTPサーバー情報
 	FTPServer *FTPServer `json:",omitempty"`
-	//CommonServiceItemとApplianceはapiパッケージにて別途定義
+
+	//REMARK: CommonServiceItemとApplianceはapiパッケージにて別途定義
 }
 
-// SakuraCloudResourceList type of resources
+// SakuraCloudResourceList さくらのクラウド上のリソース種別一覧(複数形)
 type SakuraCloudResourceList struct {
-	Servers       []Server       `json:",omitempty"`
-	Disks         []Disk         `json:",omitempty"`
-	Notes         []Note         `json:",omitempty"`
-	Archives      []Archive      `json:",omitempty"`
+	// Servers サーバー
+	Servers []Server `json:",omitempty"`
+	// Disks ディスク
+	Disks []Disk `json:",omitempty"`
+	// Notes スタートアップスクリプト
+	Notes []Note `json:",omitempty"`
+	// Archives アーカイブ
+	Archives []Archive `json:",omitempty"`
+	// PacketFilters パケットフィルタ
 	PacketFilters []PacketFilter `json:",omitempty"`
-	Bridges       []Bridge       `json:",omitempty"`
-	Icons         []Icon         `json:",omitempty"`
-	Interfaces    []Interface    `json:",omitempty"`
-	Internet      []Internet     `json:",omitempty"`
-	IPAddress     []IPAddress    `json:",omitempty"`
-	IPv6Addrs     []IPv6Addr     `json:",omitempty"`
-	IPv6Nets      []IPv6Net      `json:",omitempty"`
-	Licenses      []License      `json:",omitempty"`
-	Switches      []Switch       `json:",omitempty"`
-	CDROMs        []CDROM        `json:",omitempty"`
-	SSHKeys       []SSHKey       `json:",omitempty"`
-	Subnets       []Subnet       `json:",omitempty"`
-
-	DiskPlans     []ProductDisk     `json:",omitempty"`
+	// Bridges ブリッジ
+	Bridges []Bridge `json:",omitempty"`
+	// Icons アイコン
+	Icons []Icon `json:",omitempty"`
+	// Interfaces インターフェース
+	Interfaces []Interface `json:",omitempty"`
+	// Internet ルーター
+	Internet []Internet `json:",omitempty"`
+	// IPAddress IPv4アドレス
+	IPAddress []IPAddress `json:",omitempty"`
+	// IPv6Addrs IPv6アドレス
+	IPv6Addrs []IPv6Addr `json:",omitempty"`
+	// IPv6Nets IPv6ネットワーク
+	IPv6Nets []IPv6Net `json:",omitempty"`
+	// Licenses ライセンス
+	Licenses []License `json:",omitempty"`
+	// Switches スイッチ
+	Switches []Switch `json:",omitempty"`
+	// CDROMs ISOイメージ
+	CDROMs []CDROM `json:",omitempty"`
+	// SSHKeys 公開鍵
+	SSHKeys []SSHKey `json:",omitempty"`
+	// Subnets IPv4ネットワーク
+	Subnets []Subnet `json:",omitempty"`
+	// DiskPlans ディスクプラン
+	DiskPlans []ProductDisk `json:",omitempty"`
+	// InternetPlans ルータープラン
 	InternetPlans []ProductInternet `json:",omitempty"`
-	LicenseInfo   []ProductLicense  `json:",omitempty"`
-	ServerPlans   []ProductServer   `json:",omitempty"`
-
+	// LicenseInfo ライセンス情報
+	LicenseInfo []ProductLicense `json:",omitempty"`
+	// ServerPlans サーバープラン
+	ServerPlans []ProductServer `json:",omitempty"`
+	// Regions リージョン
 	Regions []Region `json:",omitempty"`
-	Zones   []Zone   `json:",omitempty"`
+	// Zones ゾーン
+	Zones []Zone `json:",omitempty"`
+	// ServiceClasses サービスクラス(価格情報)
+	ServiceClasses []PublicPrice `json:",omitempty"` // remark : 単体取得APIは無いため、複数形でのみ定義
 
-	ServiceClasses []PublicPrice `json:",omitempty"`
-
-	//CommonServiceItemとApplianceはapiパッケージにて別途定義
+	//REMARK:CommonServiceItemとApplianceはapiパッケージにて別途定義
 }
 
-// Request type of SakuraCloud API Request
+// Request APIリクエスト型
 type Request struct {
+	// SakuraCloudResources さくらのクラウドリソース
 	SakuraCloudResources
-	From    int                    `json:",omitempty"`
-	Count   int                    `json:",omitempty"`
-	Sort    []string               `json:",omitempty"`
-	Filter  map[string]interface{} `json:",omitempty"`
-	Exclude []string               `json:",omitempty"`
-	Include []string               `json:",omitempty"`
+	// From ページング FROM
+	From int `json:",omitempty"`
+	// Count 取得件数
+	Count int `json:",omitempty"`
+	// Sort ソート
+	Sort []string `json:",omitempty"`
+	// Filter フィルタ
+	Filter map[string]interface{} `json:",omitempty"`
+	// Exclude 除外する項目
+	Exclude []string `json:",omitempty"`
+	// Include 取得する項目
+	Include []string `json:",omitempty"`
 }
 
+// AddFilter フィルタの追加
 func (r *Request) AddFilter(key string, value interface{}) *Request {
 	if r.Filter == nil {
 		r.Filter = map[string]interface{}{}
@@ -167,6 +242,7 @@ func (r *Request) AddFilter(key string, value interface{}) *Request {
 	return r
 }
 
+// AddSort ソートの追加
 func (r *Request) AddSort(keyName string) *Request {
 	if r.Sort == nil {
 		r.Sort = []string{}
@@ -175,6 +251,7 @@ func (r *Request) AddSort(keyName string) *Request {
 	return r
 }
 
+// AddExclude 除外対象の追加
 func (r *Request) AddExclude(keyName string) *Request {
 	if r.Exclude == nil {
 		r.Exclude = []string{}
@@ -183,6 +260,7 @@ func (r *Request) AddExclude(keyName string) *Request {
 	return r
 }
 
+// AddInclude 選択対象の追加
 func (r *Request) AddInclude(keyName string) *Request {
 	if r.Include == nil {
 		r.Include = []string{}
@@ -191,50 +269,73 @@ func (r *Request) AddInclude(keyName string) *Request {
 	return r
 }
 
-// ResultFlagValue type of api result
+// ResultFlagValue レスポンス値でのフラグ項目
 type ResultFlagValue struct {
-	IsOk    bool `json:"is_ok,omitempty"`
+	// IsOk is_ok項目
+	IsOk bool `json:"is_ok,omitempty"`
+	// Success success項目
 	Success bool `json:",omitempty"`
 }
 
-// SearchResponse  type of search/find response
+// SearchResponse 検索レスポンス
 type SearchResponse struct {
+	// Total トータル件数
 	Total int `json:",omitempty"`
-	From  int `json:",omitempty"`
+	// From ページング開始ページ
+	From int `json:",omitempty"`
+	// Count 件数
 	Count int `json:",omitempty"`
 	*SakuraCloudResourceList
+	// ResponsedAt 応答日時
 	ResponsedAt *time.Time `json:",omitempty"`
 }
 
-// Response type of GET response
+// Response レスポンス型
 type Response struct {
 	*ResultFlagValue
 	*SakuraCloudResources
 }
 
+// ResultErrorValue レスポンスエラー型
 type ResultErrorValue struct {
-	IsFatal      bool   `json:"is_fatal,omitempty"`
-	Serial       string `json:"serial,omitempty"`
-	Status       string `json:"status,omitempty"`
-	ErrorCode    string `json:"error_code,omitempty"`
+	// IsFatal
+	IsFatal bool `json:"is_fatal,omitempty"`
+	// Serial
+	Serial string `json:"serial,omitempty"`
+	// Status
+	Status string `json:"status,omitempty"`
+	// ErrorCode
+	ErrorCode string `json:"error_code,omitempty"`
+	// ErrorMessage
 	ErrorMessage string `json:"error_msg,omitempty"`
 }
 
+// MigrationJobStatus マイグレーションジョブステータス
 type MigrationJobStatus struct {
+	// Status ステータス
 	Status string `json:",omitempty"`
+	// Delays Delays
 	Delays *struct {
+		// Start 開始
 		Start *struct {
+			// Max 最大
 			Max int `json:",omitempty"`
+			// Min 最小
 			Min int `json:",omitempty"`
 		} `json:",omitempty"`
+		// Finish 終了
 		Finish *struct {
+			// Max 最大
 			Max int `json:",omitempty"`
+			// Min 最小
 			Min int `json:",omitempty"`
 		} `json:",omitempty"`
 	}
 }
 
+// TagsType タグ内包型
 type TagsType struct {
+	// Tags タグ
 	Tags []string `json:",omitempty"`
 }
 
@@ -263,6 +364,7 @@ var (
 	TagVirtIONetPCI = "@virtio-net-pci"
 )
 
+// HasTag 指定のタグを持っているか判定
 func (t *TagsType) HasTag(target string) bool {
 
 	for _, tag := range t.Tags {
@@ -274,6 +376,7 @@ func (t *TagsType) HasTag(target string) bool {
 	return false
 }
 
+// AppendTag タグを追加
 func (t *TagsType) AppendTag(target string) {
 	if t.HasTag(target) {
 		return
@@ -282,6 +385,7 @@ func (t *TagsType) AppendTag(target string) {
 	t.Tags = append(t.Tags, target)
 }
 
+// RemoveTag タグを削除
 func (t *TagsType) RemoveTag(target string) {
 	if !t.HasTag(target) {
 		return

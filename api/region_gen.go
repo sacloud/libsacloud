@@ -9,34 +9,40 @@ import (
 )
 
 /************************************************
-   To support influent interface for Find()
+   To support fluent interface for Find()
 ************************************************/
 
+// Reset 検索条件のリセット
 func (api *RegionAPI) Reset() *RegionAPI {
 	api.reset()
 	return api
 }
 
+// Offset オフセット
 func (api *RegionAPI) Offset(offset int) *RegionAPI {
 	api.offset(offset)
 	return api
 }
 
+// Limit リミット
 func (api *RegionAPI) Limit(limit int) *RegionAPI {
 	api.limit(limit)
 	return api
 }
 
+// Include 取得する項目
 func (api *RegionAPI) Include(key string) *RegionAPI {
 	api.include(key)
 	return api
 }
 
+// Exclude 除外する項目
 func (api *RegionAPI) Exclude(key string) *RegionAPI {
 	api.exclude(key)
 	return api
 }
 
+// FilterBy 指定キーでのフィルター
 func (api *RegionAPI) FilterBy(key string, value interface{}) *RegionAPI {
 	api.filterBy(key, value, false)
 	return api
@@ -47,16 +53,20 @@ func (api *RegionAPI) FilterBy(key string, value interface{}) *RegionAPI {
 // 	return api
 // }
 
+// WithNameLike 名称条件
 func (api *RegionAPI) WithNameLike(name string) *RegionAPI {
 	return api.FilterBy("Name", name)
 }
 
-func (api *RegionAPI) WithTag(tag string) *RegionAPI {
-	return api.FilterBy("Tags.Name", tag)
-}
-func (api *RegionAPI) WithTags(tags []string) *RegionAPI {
-	return api.FilterBy("Tags.Name", []interface{}{tags})
-}
+//// WithTag
+//func (api *RegionAPI) WithTag(tag string) *RegionAPI {
+//	return api.FilterBy("Tags.Name", tag)
+//}
+//
+//// WithTags
+//func (api *RegionAPI) WithTags(tags []string) *RegionAPI {
+//	return api.FilterBy("Tags.Name", []interface{}{tags})
+//}
 
 // func (api *RegionAPI) WithSizeGib(size int) *RegionAPI {
 // 	api.FilterBy("SizeMB", size*1024)
@@ -73,11 +83,13 @@ func (api *RegionAPI) WithTags(tags []string) *RegionAPI {
 // 	return api
 // }
 
+// SortBy 指定キーでのソート
 func (api *RegionAPI) SortBy(key string, reverse bool) *RegionAPI {
 	api.sortBy(key, reverse)
 	return api
 }
 
+// SortByName 名称でのソート
 func (api *RegionAPI) SortByName(reverse bool) *RegionAPI {
 	api.sortByName(reverse)
 	return api
@@ -102,6 +114,7 @@ func (api *RegionAPI) SortByName(reverse bool) *RegionAPI {
 // 	})
 // }
 
+// Read 読み取り
 func (api *RegionAPI) Read(id int64) (*sacloud.Region, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.read(id, nil, res)

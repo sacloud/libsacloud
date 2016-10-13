@@ -3,6 +3,7 @@ package builder
 import (
 	"github.com/stretchr/testify/assert"
 	"github.com/yamamoto-febc/libsacloud/sacloud"
+	"github.com/yamamoto-febc/libsacloud/sacloud/ostype"
 	"testing"
 )
 
@@ -33,7 +34,7 @@ func TestServerBuilder_buildParams(t *testing.T) {
 	//builder.GetPassword()
 
 	// Unix系アーカイブからのインストールの場合、パスワードの設定などのディスクの編集ができるようになる。
-	tempBuilder := FromPublicArchiveUnix(client, sacloud.CentOS, serverBuilderTestServerName, serverBuilderTestPassword)
+	tempBuilder := FromPublicArchiveUnix(client, ostype.CentOS, serverBuilderTestServerName, serverBuilderTestPassword)
 
 	assert.NotNil(t, tempBuilder)
 	assert.Equal(t, tempBuilder.GetPassword(), serverBuilderTestPassword)
@@ -52,7 +53,7 @@ func TestServerBuilder_DisklessDefaults(t *testing.T) {
 
 func TestDisklessServerBuilder_FromPublicArchiveUnixDefaults(t *testing.T) {
 
-	b := FromPublicArchiveUnix(client, sacloud.CentOS, serverBuilderTestServerName, serverBuilderTestPassword)
+	b := FromPublicArchiveUnix(client, ostype.CentOS, serverBuilderTestServerName, serverBuilderTestPassword)
 
 	assert.Equal(t, b.GetServerName(), serverBuilderTestServerName) // サーバー名
 	assert.Equal(t, b.GetCore(), 1)                                 // コア数 : デフォルト1
@@ -67,7 +68,7 @@ func TestDisklessServerBuilder_FromPublicArchiveUnixDefaults(t *testing.T) {
 
 func TestServerBuilder_Build_WithMinimum(t *testing.T) {
 
-	result, err := FromPublicArchiveUnix(client, sacloud.CentOS, serverBuilderTestServerName, serverBuilderTestPassword).AddPublicNWConnectedNIC().Build()
+	result, err := FromPublicArchiveUnix(client, ostype.CentOS, serverBuilderTestServerName, serverBuilderTestPassword).AddPublicNWConnectedNIC().Build()
 
 	assert.NoError(t, err)
 	assert.NotNil(t, result)
@@ -80,7 +81,7 @@ func TestServerBuilder_Build_WithMinimum(t *testing.T) {
 
 func TestServerBuilder_Build_WithSSHKeyAndNoteEphemeral(t *testing.T) {
 
-	builder := FromPublicArchiveUnix(client, sacloud.CentOS, serverBuilderTestServerName, serverBuilderTestPassword)
+	builder := FromPublicArchiveUnix(client, ostype.CentOS, serverBuilderTestServerName, serverBuilderTestPassword)
 
 	res, err := builder.
 		AddPublicNWConnectedNIC().
@@ -116,7 +117,7 @@ func TestServerBuilder_Build_WithSSHKeyAndNoteEphemeral(t *testing.T) {
 
 func TestServerBuilder_Build_WithSSHKeyAndNote(t *testing.T) {
 
-	builder := FromPublicArchiveUnix(client, sacloud.CentOS, serverBuilderTestServerName, serverBuilderTestPassword)
+	builder := FromPublicArchiveUnix(client, ostype.CentOS, serverBuilderTestServerName, serverBuilderTestPassword)
 
 	res, err := builder.
 		AddPublicNWConnectedNIC().
@@ -149,7 +150,7 @@ func TestServerBuilder_Build_WithSSHKeyAndNote(t *testing.T) {
 
 func TestServerBuilder_Build_WithEventHandler(t *testing.T) {
 
-	builder := FromPublicArchiveUnix(client, sacloud.CentOS, serverBuilderTestServerName, serverBuilderTestPassword)
+	builder := FromPublicArchiveUnix(client, ostype.CentOS, serverBuilderTestServerName, serverBuilderTestPassword)
 
 	serverEvents := []ServerBuildEvents{
 		ServerBuildOnStart,

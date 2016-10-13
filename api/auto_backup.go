@@ -6,10 +6,15 @@ import (
 	"github.com/yamamoto-febc/libsacloud/sacloud"
 )
 
+// SearchAutoBackupResponse 自動バックアップ 検索レスポンス
 type SearchAutoBackupResponse struct {
-	Total                        int                  `json:",omitempty"`
-	From                         int                  `json:",omitempty"`
-	Count                        int                  `json:",omitempty"`
+	// Total 総件数
+	Total int `json:",omitempty"`
+	// From ページング開始位置
+	From int `json:",omitempty"`
+	// Count 件数
+	Count int `json:",omitempty"`
+	// CommonServiceAutoBackupItems 自動バックアップ リスト
 	CommonServiceAutoBackupItems []sacloud.AutoBackup `json:"CommonServiceItems,omitempty"`
 }
 
@@ -28,11 +33,12 @@ type autoBackupResponse struct {
 	*sacloud.AutoBackup `json:"CommonServiceItem,omitempty"`
 }
 
-// AutoBackupAPI API Client for SAKURA CLOUD AutoBackup
+// AutoBackupAPI 自動バックアップAPI
 type AutoBackupAPI struct {
 	*baseAPI
 }
 
+// NewAutoBackupAPI 自動バックアップAPI作成
 func NewAutoBackupAPI(client *Client) *AutoBackupAPI {
 	return &AutoBackupAPI{
 		&baseAPI{
@@ -49,6 +55,7 @@ func NewAutoBackupAPI(client *Client) *AutoBackupAPI {
 	}
 }
 
+// Find 検索
 func (api *AutoBackupAPI) Find() (*SearchAutoBackupResponse, error) {
 
 	data, err := api.client.newRequest("GET", api.getResourceURL(), api.getSearchState())
@@ -75,28 +82,33 @@ func (api *AutoBackupAPI) createRequest(value *sacloud.AutoBackup) *autoBackupRe
 	return &autoBackupResponse{AutoBackup: value}
 }
 
+// New 新規作成用パラメーター作成
 func (api *AutoBackupAPI) New(name string, diskID int64) *sacloud.AutoBackup {
 	return sacloud.CreateNewAutoBackup(name, diskID)
 }
 
+// Create 新規作成
 func (api *AutoBackupAPI) Create(value *sacloud.AutoBackup) (*sacloud.AutoBackup, error) {
 	return api.request(func(res *autoBackupResponse) error {
 		return api.create(api.createRequest(value), res)
 	})
 }
 
+// Read 読み取り
 func (api *AutoBackupAPI) Read(id int64) (*sacloud.AutoBackup, error) {
 	return api.request(func(res *autoBackupResponse) error {
 		return api.read(id, nil, res)
 	})
 }
 
+// Update 更新
 func (api *AutoBackupAPI) Update(id int64, value *sacloud.AutoBackup) (*sacloud.AutoBackup, error) {
 	return api.request(func(res *autoBackupResponse) error {
 		return api.update(id, api.createRequest(value), res)
 	})
 }
 
+// Delete 削除
 func (api *AutoBackupAPI) Delete(id int64) (*sacloud.AutoBackup, error) {
 	return api.request(func(res *autoBackupResponse) error {
 		return api.delete(id, nil, res)

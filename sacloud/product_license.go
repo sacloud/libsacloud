@@ -2,13 +2,17 @@ package sacloud
 
 import "time"
 
-// ProductLicense type of ServerPlan
+// ProductLicense ライセンスプラン
 type ProductLicense struct {
 	*Resource
-	Index        int        `json:",omitempty"`
-	Name         string     `json:",omitempty"`
-	ServiceClass string     `json:",omitempty"`
-	TermsOfUse   string     `json:",omitempty"`
-	CreatedAt    *time.Time `json:",omitempty"`
-	ModifiedAt   *time.Time `json:",omitempty"`
+	// Name 名称
+	Name string `json:",omitempty"`
+	// ServiceClass サービスクラス
+	ServiceClass string `json:",omitempty"`
+	// TermsOfUse 利用規約
+	TermsOfUse string `json:",omitempty"`
+	// CreatedAt 作成日時
+	CreatedAt *time.Time `json:",omitempty"`
+	// ModifiedAt 変更日時
+	ModifiedAt *time.Time `json:",omitempty"`
 }

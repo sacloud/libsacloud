@@ -9,34 +9,40 @@ import (
 )
 
 /************************************************
-   To support influent interface for Find()
+   To support fluent interface for Find()
 ************************************************/
 
+// Reset 検索条件のリセット
 func (api *DiskAPI) Reset() *DiskAPI {
 	api.reset()
 	return api
 }
 
+// Offset オフセット
 func (api *DiskAPI) Offset(offset int) *DiskAPI {
 	api.offset(offset)
 	return api
 }
 
+// Limit リミット
 func (api *DiskAPI) Limit(limit int) *DiskAPI {
 	api.limit(limit)
 	return api
 }
 
+// Include 取得する項目
 func (api *DiskAPI) Include(key string) *DiskAPI {
 	api.include(key)
 	return api
 }
 
+// Exclude 除外する項目
 func (api *DiskAPI) Exclude(key string) *DiskAPI {
 	api.exclude(key)
 	return api
 }
 
+// FilterBy 指定キーでのフィルター
 func (api *DiskAPI) FilterBy(key string, value interface{}) *DiskAPI {
 	api.filterBy(key, value, false)
 	return api
@@ -47,32 +53,40 @@ func (api *DiskAPI) FilterBy(key string, value interface{}) *DiskAPI {
 // 	return api
 // }
 
+// WithNameLike 名称条件
 func (api *DiskAPI) WithNameLike(name string) *DiskAPI {
 	return api.FilterBy("Name", name)
 }
 
+// WithTag タグ条件
 func (api *DiskAPI) WithTag(tag string) *DiskAPI {
 	return api.FilterBy("Tags.Name", tag)
 }
+
+// WithTags タグ(複数)条件
 func (api *DiskAPI) WithTags(tags []string) *DiskAPI {
 	return api.FilterBy("Tags.Name", []interface{}{tags})
 }
 
+// WithSizeGib サイズ条件
 func (api *DiskAPI) WithSizeGib(size int) *DiskAPI {
 	api.FilterBy("SizeMB", size*1024)
 	return api
 }
 
+// SortBy 指定キーでのソート
 func (api *DiskAPI) SortBy(key string, reverse bool) *DiskAPI {
 	api.sortBy(key, reverse)
 	return api
 }
 
+// SortByName 名称でのソート
 func (api *DiskAPI) SortByName(reverse bool) *DiskAPI {
 	api.sortByName(reverse)
 	return api
 }
 
+// SortBySize サイズでのソート
 func (api *DiskAPI) SortBySize(reverse bool) *DiskAPI {
 	api.sortBy("SizeMB", reverse)
 	return api
@@ -82,6 +96,7 @@ func (api *DiskAPI) SortBySize(reverse bool) *DiskAPI {
   To support CRUD(Create/Read/Update/Delete)
 ************************************************/
 
+// New 新規作成用パラメーター作成
 func (api *DiskAPI) New() *sacloud.Disk {
 	return sacloud.CreateNewDisk()
 }
@@ -92,18 +107,21 @@ func (api *DiskAPI) New() *sacloud.Disk {
 //	})
 //}
 
+// Read 読み取り
 func (api *DiskAPI) Read(id int64) (*sacloud.Disk, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.read(id, nil, res)
 	})
 }
 
+// Update 更新
 func (api *DiskAPI) Update(id int64, value *sacloud.Disk) (*sacloud.Disk, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.update(id, api.createRequest(value), res)
 	})
 }
 
+// Delete 削除
 func (api *DiskAPI) Delete(id int64) (*sacloud.Disk, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.delete(id, nil, res)

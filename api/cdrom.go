@@ -6,10 +6,12 @@ import (
 	"time"
 )
 
+// CDROMAPI ISOイメージAPI
 type CDROMAPI struct {
 	*baseAPI
 }
 
+// NewCDROMAPI ISOイメージAPI新規作成
 func NewCDROMAPI(client *Client) *CDROMAPI {
 	return &CDROMAPI{
 		&baseAPI{
@@ -21,6 +23,7 @@ func NewCDROMAPI(client *Client) *CDROMAPI {
 	}
 }
 
+// Create 新規作成
 func (api *CDROMAPI) Create(value *sacloud.CDROM) (*sacloud.CDROM, *sacloud.FTPServer, error) {
 	f := func(res *sacloud.Response) error {
 		return api.create(api.createRequest(value), res)
@@ -33,6 +36,7 @@ func (api *CDROMAPI) Create(value *sacloud.CDROM) (*sacloud.CDROM, *sacloud.FTPS
 	return res.CDROM, res.FTPServer, nil
 }
 
+// OpenFTP FTP接続開始
 func (api *CDROMAPI) OpenFTP(id int64, reset bool) (*sacloud.FTPServer, error) {
 	var (
 		method = "PUT"
@@ -49,6 +53,7 @@ func (api *CDROMAPI) OpenFTP(id int64, reset bool) (*sacloud.FTPServer, error) {
 	return res.FTPServer, nil
 }
 
+// CloseFTP FTP接続終了
 func (api *CDROMAPI) CloseFTP(id int64) (bool, error) {
 	var (
 		method = "DELETE"
@@ -58,6 +63,7 @@ func (api *CDROMAPI) CloseFTP(id int64) (bool, error) {
 
 }
 
+// SleepWhileCopying コピー終了まで待機
 func (api *CDROMAPI) SleepWhileCopying(id int64, timeout time.Duration) error {
 
 	current := 0 * time.Second

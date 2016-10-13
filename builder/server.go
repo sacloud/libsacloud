@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/yamamoto-febc/libsacloud/api"
 	"github.com/yamamoto-febc/libsacloud/sacloud"
+	"github.com/yamamoto-febc/libsacloud/sacloud/ostype"
 )
 
 /**********************************************************
@@ -127,7 +128,7 @@ func FromDiskless(client *api.Client, name string) *DisklessServerBuilder {
 }
 
 // FromPublicArchiveUnix ディスクの編集が可能なLinux(Unix)系パブリックアーカイブを利用するビルダー
-func FromPublicArchiveUnix(client *api.Client, os sacloud.ArchiveOSTypes, name string, password string) *PublicArchiveUnixServerBuilder {
+func FromPublicArchiveUnix(client *api.Client, os ostype.ArchiveOSTypes, name string, password string) *PublicArchiveUnixServerBuilder {
 
 	b := newServerBuilder(client, name)
 	b.fromPublicArchiveUnix(os, password)
@@ -184,7 +185,7 @@ func FromArchive(client *api.Client, name string, sourceArchiveID int64) *Common
   Inner functions
 ---------------------------------------------------------*/
 
-func (b *serverBuilder) fromPublicArchiveUnix(os sacloud.ArchiveOSTypes, password string) {
+func (b *serverBuilder) fromPublicArchiveUnix(os ostype.ArchiveOSTypes, password string) {
 	archive, err := b.client.Archive.FindByOSType(os)
 	if err != nil {
 		b.errors = append(b.errors, err)

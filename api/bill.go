@@ -10,10 +10,12 @@ import (
 	"time"
 )
 
+// BillAPI 請求情報API
 type BillAPI struct {
 	*baseAPI
 }
 
+// NewBillAPI 請求情報API作成
 func NewBillAPI(client *Client) *BillAPI {
 	return &BillAPI{
 		&baseAPI{
@@ -26,28 +28,43 @@ func NewBillAPI(client *Client) *BillAPI {
 	}
 }
 
+// BillResponse 請求情報レスポンス
 type BillResponse struct {
 	*sacloud.ResultFlagValue
-	Count       int        `json:",omitempty"`
+	// Count 件数
+	Count int `json:",omitempty"`
+	// ResponsedAt 応答日時
 	ResponsedAt *time.Time `json:",omitempty"`
-	Bills       []*sacloud.Bill
+	// Bills 請求情報 リスト
+	Bills []*sacloud.Bill
 }
 
+// BillDetailResponse 請求明細レスポンス
 type BillDetailResponse struct {
 	*sacloud.ResultFlagValue
-	Count       int        `json:",omitempty"`
+	// Count 件数
+	Count int `json:",omitempty"`
+	// ResponsedAt 応答日時
 	ResponsedAt *time.Time `json:",omitempty"`
+	// BillDetails 請求明細 リスト
 	BillDetails []*sacloud.BillDetail
 }
 
+// BillDetailCSVResponse 請求明細CSVレスポンス
 type BillDetailCSVResponse struct {
 	*sacloud.ResultFlagValue
-	Count       int        `json:",omitempty"`
+	// Count 件数
+	Count int `json:",omitempty"`
+	// ResponsedAt 応答日時
 	ResponsedAt *time.Time `json:",omitempty"`
-	Filename    string     `json:",omitempty"`
-	RawBody     string     `json:"Body,omitempty"`
-	HeaderRow   []string
-	BodyRows    [][]string
+	// Filename ファイル名
+	Filename string `json:",omitempty"`
+	// RawBody ボディ(未加工)
+	RawBody string `json:"Body,omitempty"`
+	// HeaderRow ヘッダ行
+	HeaderRow []string
+	// BodyRows ボディ(各行/各列での配列)
+	BodyRows [][]string
 }
 
 func (res *BillDetailCSVResponse) buildCSVBody() {
@@ -79,22 +96,26 @@ func (res *BillDetailCSVResponse) buildCSVBody() {
 	}
 }
 
+// ByContract アカウントIDごとの請求取得
 func (api *BillAPI) ByContract(accountID int64) (*BillResponse, error) {
 
 	uri := fmt.Sprintf("%s/by-contract/%d", api.getResourceURL(), accountID)
 	return api.getContract(uri)
 }
 
+// ByContractYear 年指定での請求取得
 func (api *BillAPI) ByContractYear(accountID int64, year int) (*BillResponse, error) {
 	uri := fmt.Sprintf("%s/by-contract/%d/%d", api.getResourceURL(), accountID, year)
 	return api.getContract(uri)
 }
 
+// ByContractYearMonth 年月指定での請求指定
 func (api *BillAPI) ByContractYearMonth(accountID int64, year int, month int) (*BillResponse, error) {
 	uri := fmt.Sprintf("%s/by-contract/%d/%d/%d", api.getResourceURL(), accountID, year, month)
 	return api.getContract(uri)
 }
 
+// Read 読み取り
 func (api *BillAPI) Read(billNo int64) (*BillResponse, error) {
 	uri := fmt.Sprintf("%s/id/%d/", api.getResourceURL(), billNo)
 	return api.getContract(uri)
@@ -115,6 +136,7 @@ func (api *BillAPI) getContract(uri string) (*BillResponse, error) {
 
 }
 
+// GetDetail 請求明細取得
 func (api *BillAPI) GetDetail(memberCD string, billNo int64) (*BillDetailResponse, error) {
 
 	oldFunc := api.FuncGetResourceURL
@@ -136,6 +158,7 @@ func (api *BillAPI) GetDetail(memberCD string, billNo int64) (*BillDetailRespons
 
 }
 
+// GetDetailCSV 請求明細CSV取得
 func (api *BillAPI) GetDetailCSV(memberCD string, billNo int64) (*BillDetailCSVResponse, error) {
 
 	oldFunc := api.FuncGetResourceURL

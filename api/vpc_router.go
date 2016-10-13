@@ -10,10 +10,15 @@ import (
 //HACK: さくらのAPI側仕様: Applianceの内容によってJSONフォーマットが異なるため
 //      ロードバランサ/VPCルータそれぞれでリクエスト/レスポンスデータ型を定義する。
 
+// SearchVPCRouterResponse VPCルーター検索レスポンス
 type SearchVPCRouterResponse struct {
-	Total      int                 `json:",omitempty"`
-	From       int                 `json:",omitempty"`
-	Count      int                 `json:",omitempty"`
+	// Total 総件数
+	Total int `json:",omitempty"`
+	// From ページング開始位置
+	From int `json:",omitempty"`
+	// Count 件数
+	Count int `json:",omitempty"`
+	// VPCRouters VPCルーター リスト
 	VPCRouters []sacloud.VPCRouter `json:"Appliances,omitempty"`
 }
 
@@ -33,10 +38,12 @@ type vpcRouterResponse struct {
 	Success            interface{} `json:",omitempty"` //HACK: さくらのAPI側仕様: 戻り値:Successがbool値へ変換できないためinterface{}
 }
 
+// VPCRouterAPI VPCルーターAPI
 type VPCRouterAPI struct {
 	*baseAPI
 }
 
+// NewVPCRouterAPI VPCルーターAPI作成
 func NewVPCRouterAPI(client *Client) *VPCRouterAPI {
 	return &VPCRouterAPI{
 		&baseAPI{
@@ -53,6 +60,7 @@ func NewVPCRouterAPI(client *Client) *VPCRouterAPI {
 	}
 }
 
+// Find 検索
 func (api *VPCRouterAPI) Find() (*SearchVPCRouterResponse, error) {
 	data, err := api.client.newRequest("GET", api.getResourceURL(), api.getSearchState())
 	if err != nil {
@@ -78,30 +86,36 @@ func (api *VPCRouterAPI) createRequest(value *sacloud.VPCRouter) *vpcRouterRespo
 	return &vpcRouterResponse{VPCRouter: value}
 }
 
+// New 新規作成用パラメーター作成
 func (api *VPCRouterAPI) New() *sacloud.VPCRouter {
 	return sacloud.CreateNewVPCRouter()
 }
 
+// Create 新規作成
 func (api *VPCRouterAPI) Create(value *sacloud.VPCRouter) (*sacloud.VPCRouter, error) {
 	return api.request(func(res *vpcRouterResponse) error {
 		return api.create(api.createRequest(value), res)
 	})
 }
 
+// Read 読み取り
 func (api *VPCRouterAPI) Read(id int64) (*sacloud.VPCRouter, error) {
 	return api.request(func(res *vpcRouterResponse) error {
 		return api.read(id, nil, res)
 	})
 }
 
+// Update 更新
 func (api *VPCRouterAPI) Update(id int64, value *sacloud.VPCRouter) (*sacloud.VPCRouter, error) {
 	return api.request(func(res *vpcRouterResponse) error {
 		return api.update(id, api.createRequest(value), res)
 	})
 }
 
+// UpdateSetting 設定更新
 func (api *VPCRouterAPI) UpdateSetting(id int64, value *sacloud.VPCRouter) (*sacloud.VPCRouter, error) {
 	req := &sacloud.VPCRouter{
+		// Settings
 		Settings: value.Settings,
 	}
 	return api.request(func(res *vpcRouterResponse) error {
@@ -109,12 +123,14 @@ func (api *VPCRouterAPI) UpdateSetting(id int64, value *sacloud.VPCRouter) (*sac
 	})
 }
 
+// Delete 削除
 func (api *VPCRouterAPI) Delete(id int64) (*sacloud.VPCRouter, error) {
 	return api.request(func(res *vpcRouterResponse) error {
 		return api.delete(id, nil, res)
 	})
 }
 
+// Config 設定変更の反映
 func (api *VPCRouterAPI) Config(id int64) (bool, error) {
 	var (
 		method = "PUT"
@@ -123,6 +139,7 @@ func (api *VPCRouterAPI) Config(id int64) (bool, error) {
 	return api.modify(method, uri, nil)
 }
 
+// ConnectToSwitch 指定のインデックス位置のNICをスイッチへ接続
 func (api *VPCRouterAPI) ConnectToSwitch(id int64, switchID int64, nicIndex int) (bool, error) {
 	var (
 		method = "PUT"
@@ -131,6 +148,7 @@ func (api *VPCRouterAPI) ConnectToSwitch(id int64, switchID int64, nicIndex int)
 	return api.modify(method, uri, nil)
 }
 
+// DisconnectFromSwitch 指定のインデックス位置のNICをスイッチから切断
 func (api *VPCRouterAPI) DisconnectFromSwitch(id int64, nicIndex int) (bool, error) {
 	var (
 		method = "DELETE"
@@ -139,6 +157,7 @@ func (api *VPCRouterAPI) DisconnectFromSwitch(id int64, nicIndex int) (bool, err
 	return api.modify(method, uri, nil)
 }
 
+// IsUp 起動しているか判定
 func (api *VPCRouterAPI) IsUp(id int64) (bool, error) {
 	router, err := api.Read(id)
 	if err != nil {
@@ -147,6 +166,7 @@ func (api *VPCRouterAPI) IsUp(id int64) (bool, error) {
 	return router.Instance.IsUp(), nil
 }
 
+// IsDown ダウンしているか判定
 func (api *VPCRouterAPI) IsDown(id int64) (bool, error) {
 	router, err := api.Read(id)
 	if err != nil {
@@ -155,7 +175,7 @@ func (api *VPCRouterAPI) IsDown(id int64) (bool, error) {
 	return router.Instance.IsDown(), nil
 }
 
-// Boot power on
+// Boot 起動
 func (api *VPCRouterAPI) Boot(id int64) (bool, error) {
 	var (
 		method = "PUT"
@@ -164,7 +184,7 @@ func (api *VPCRouterAPI) Boot(id int64) (bool, error) {
 	return api.modify(method, uri, nil)
 }
 
-// Shutdown power off
+// Shutdown シャットダウン(graceful)
 func (api *VPCRouterAPI) Shutdown(id int64) (bool, error) {
 	var (
 		method = "DELETE"
@@ -174,7 +194,7 @@ func (api *VPCRouterAPI) Shutdown(id int64) (bool, error) {
 	return api.modify(method, uri, nil)
 }
 
-// Stop force shutdown
+// Stop シャットダウン(force)
 func (api *VPCRouterAPI) Stop(id int64) (bool, error) {
 	var (
 		method = "DELETE"
@@ -184,6 +204,7 @@ func (api *VPCRouterAPI) Stop(id int64) (bool, error) {
 	return api.modify(method, uri, map[string]bool{"Force": true})
 }
 
+// RebootForce 再起動
 func (api *VPCRouterAPI) RebootForce(id int64) (bool, error) {
 	var (
 		method = "PUT"
@@ -193,6 +214,7 @@ func (api *VPCRouterAPI) RebootForce(id int64) (bool, error) {
 	return api.modify(method, uri, nil)
 }
 
+// SleepUntilUp 起動するまで待機
 func (api *VPCRouterAPI) SleepUntilUp(routerID int64, timeout time.Duration) error {
 	current := 0 * time.Second
 	interval := 5 * time.Second
@@ -215,6 +237,7 @@ func (api *VPCRouterAPI) SleepUntilUp(routerID int64, timeout time.Duration) err
 	}
 }
 
+// SleepUntilDown ダウンするまで待機
 func (api *VPCRouterAPI) SleepUntilDown(routerID int64, timeout time.Duration) error {
 	current := 0 * time.Second
 	interval := 5 * time.Second
@@ -237,7 +260,10 @@ func (api *VPCRouterAPI) SleepUntilDown(routerID int64, timeout time.Duration) e
 	}
 }
 
-// SleepWhileCopying wait until became to available
+// SleepWhileCopying コピー終了まで待機
+//
+// maxRetryCount: リクエストタイミングによって、コピー完了までの間に404エラーとなる場合がある。
+// 通常そのまま待てばコピー完了するため、404エラーが発生してもmaxRetryCountで指定した回数分は待機する。
 func (api *VPCRouterAPI) SleepWhileCopying(vpcRouterID int64, timeout time.Duration, maxRetryCount int) error {
 	current := 0 * time.Second
 	interval := 5 * time.Second
@@ -263,6 +289,7 @@ func (api *VPCRouterAPI) SleepWhileCopying(vpcRouterID int64, timeout time.Durat
 	}
 }
 
+// AddStandardInterface スタンダードプランでのインターフェース追加
 func (api *VPCRouterAPI) AddStandardInterface(routerID int64, switchID int64, ipaddress string, maskLen int) (*sacloud.VPCRouter, error) {
 	return api.addInterface(routerID, switchID, &sacloud.VPCRouterInterface{
 		IPAddress:        []string{ipaddress},
@@ -271,6 +298,7 @@ func (api *VPCRouterAPI) AddStandardInterface(routerID int64, switchID int64, ip
 	})
 }
 
+// AddPremiumInterface プレミアムプランでのインターフェース追加
 func (api *VPCRouterAPI) AddPremiumInterface(routerID int64, switchID int64, ipaddresses []string, maskLen int, virtualIP string) (*sacloud.VPCRouter, error) {
 	return api.addInterface(routerID, switchID, &sacloud.VPCRouterInterface{
 		IPAddress:        ipaddresses,
@@ -300,6 +328,7 @@ func (api *VPCRouterAPI) addInterface(routerID int64, switchID int64, routerNIC 
 	return api.addInterfaceAt(routerID, switchID, routerNIC, index)
 }
 
+// AddStandardInterfaceAt スタンダードプランでの指定位置へのインターフェース追加
 func (api *VPCRouterAPI) AddStandardInterfaceAt(routerID int64, switchID int64, ipaddress string, maskLen int, index int) (*sacloud.VPCRouter, error) {
 	return api.addInterfaceAt(routerID, switchID, &sacloud.VPCRouterInterface{
 		IPAddress:        []string{ipaddress},
@@ -308,6 +337,7 @@ func (api *VPCRouterAPI) AddStandardInterfaceAt(routerID int64, switchID int64, 
 	}, index)
 }
 
+// AddPremiumInterfaceAt プレミアムプランでの指定位置へのインターフェース追加
 func (api *VPCRouterAPI) AddPremiumInterfaceAt(routerID int64, switchID int64, ipaddresses []string, maskLen int, virtualIP string, index int) (*sacloud.VPCRouter, error) {
 	return api.addInterfaceAt(routerID, switchID, &sacloud.VPCRouterInterface{
 		IPAddress:        ipaddresses,
@@ -362,6 +392,7 @@ func (api *VPCRouterAPI) addInterfaceAt(routerID int64, switchID int64, routerNI
 
 }
 
+// DeleteInterfaceAt 指定位置のインターフェース削除
 func (api *VPCRouterAPI) DeleteInterfaceAt(routerID int64, index int) (*sacloud.VPCRouter, error) {
 	router, err := api.Read(routerID)
 	if err != nil {
@@ -372,7 +403,9 @@ func (api *VPCRouterAPI) DeleteInterfaceAt(routerID int64, index int) (*sacloud.
 
 	if router.Settings == nil {
 		req.Settings = &sacloud.VPCRouterSettings{
+			// Router
 			Router: &sacloud.VPCRouterSetting{
+				// Interfaces
 				Interfaces: []*sacloud.VPCRouterInterface{nil},
 			},
 		}
@@ -399,6 +432,7 @@ func (api *VPCRouterAPI) DeleteInterfaceAt(routerID int64, index int) (*sacloud.
 
 }
 
+// MonitorBy 指定位置のインターフェースのアクティビティーモニター取得
 func (api *VPCRouterAPI) MonitorBy(id int64, nicIndex int, body *sacloud.ResourceMonitorRequest) (*sacloud.MonitorValues, error) {
 	return api.baseAPI.applianceMonitorBy(id, "interface", nicIndex, body)
 }

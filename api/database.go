@@ -10,10 +10,15 @@ import (
 //HACK: さくらのAPI側仕様: Applianceの内容によってJSONフォーマットが異なるため
 //      ロードバランサ/VPCルータそれぞれでリクエスト/レスポンスデータ型を定義する。
 
+// SearchDatabaseResponse データベース検索レスポンス
 type SearchDatabaseResponse struct {
-	Total     int                `json:",omitempty"`
-	From      int                `json:",omitempty"`
-	Count     int                `json:",omitempty"`
+	// Total 総件数
+	Total int `json:",omitempty"`
+	// From ページング開始位置
+	From int `json:",omitempty"`
+	// Count 件数
+	Count int `json:",omitempty"`
+	// Databases データベースリスト
 	Databases []sacloud.Database `json:"Appliances,omitempty"`
 }
 
@@ -30,13 +35,16 @@ type databaseRequest struct {
 type databaseResponse struct {
 	*sacloud.ResultFlagValue
 	*sacloud.Database `json:"Appliance,omitempty"`
-	Success           interface{} `json:",omitempty"` //HACK: さくらのAPI側仕様: 戻り値:Successがbool値へ変換できないためinterface{}
+	// Success
+	Success interface{} `json:",omitempty"` //HACK: さくらのAPI側仕様: 戻り値:Successがbool値へ変換できないためinterface{}で受ける
 }
 
+// DatabaseAPI データベースAPI
 type DatabaseAPI struct {
 	*baseAPI
 }
 
+// NewDatabaseAPI データベースAPI作成
 func NewDatabaseAPI(client *Client) *DatabaseAPI {
 	return &DatabaseAPI{
 		&baseAPI{
@@ -53,6 +61,7 @@ func NewDatabaseAPI(client *Client) *DatabaseAPI {
 	}
 }
 
+// Find 検索
 func (api *DatabaseAPI) Find() (*SearchDatabaseResponse, error) {
 	data, err := api.client.newRequest("GET", api.getResourceURL(), api.getSearchState())
 	if err != nil {
@@ -78,30 +87,36 @@ func (api *DatabaseAPI) createRequest(value *sacloud.Database) *databaseResponse
 	return &databaseResponse{Database: value}
 }
 
+// New 新規作成用パラメーター作成
 func (api *DatabaseAPI) New(values *sacloud.CreateDatabaseValue) *sacloud.Database {
-	return sacloud.CreateNewPostgreSQLDatabase(values)
+	return sacloud.CreateNewDatabase(values)
 }
 
+// Create 新規作成
 func (api *DatabaseAPI) Create(value *sacloud.Database) (*sacloud.Database, error) {
 	return api.request(func(res *databaseResponse) error {
 		return api.create(api.createRequest(value), res)
 	})
 }
 
+// Read 読み取り
 func (api *DatabaseAPI) Read(id int64) (*sacloud.Database, error) {
 	return api.request(func(res *databaseResponse) error {
 		return api.read(id, nil, res)
 	})
 }
 
+// Update 更新
 func (api *DatabaseAPI) Update(id int64, value *sacloud.Database) (*sacloud.Database, error) {
 	return api.request(func(res *databaseResponse) error {
 		return api.update(id, api.createRequest(value), res)
 	})
 }
 
+// UpdateSetting 設定更新
 func (api *DatabaseAPI) UpdateSetting(id int64, value *sacloud.Database) (*sacloud.Database, error) {
 	req := &sacloud.Database{
+		// Settings
 		Settings: value.Settings,
 	}
 	return api.request(func(res *databaseResponse) error {
@@ -109,12 +124,14 @@ func (api *DatabaseAPI) UpdateSetting(id int64, value *sacloud.Database) (*saclo
 	})
 }
 
+// Delete 削除
 func (api *DatabaseAPI) Delete(id int64) (*sacloud.Database, error) {
 	return api.request(func(res *databaseResponse) error {
 		return api.delete(id, nil, res)
 	})
 }
 
+// Config 設定変更の反映
 func (api *DatabaseAPI) Config(id int64) (bool, error) {
 	var (
 		method = "PUT"
@@ -123,6 +140,7 @@ func (api *DatabaseAPI) Config(id int64) (bool, error) {
 	return api.modify(method, uri, nil)
 }
 
+// IsUp 起動しているか判定
 func (api *DatabaseAPI) IsUp(id int64) (bool, error) {
 	lb, err := api.Read(id)
 	if err != nil {
@@ -131,6 +149,7 @@ func (api *DatabaseAPI) IsUp(id int64) (bool, error) {
 	return lb.Instance.IsUp(), nil
 }
 
+// IsDown ダウンしているか判定
 func (api *DatabaseAPI) IsDown(id int64) (bool, error) {
 	lb, err := api.Read(id)
 	if err != nil {
@@ -139,7 +158,7 @@ func (api *DatabaseAPI) IsDown(id int64) (bool, error) {
 	return lb.Instance.IsDown(), nil
 }
 
-// Boot power on
+// Boot 起動
 func (api *DatabaseAPI) Boot(id int64) (bool, error) {
 	var (
 		method = "PUT"
@@ -148,7 +167,7 @@ func (api *DatabaseAPI) Boot(id int64) (bool, error) {
 	return api.modify(method, uri, nil)
 }
 
-// Shutdown power off
+// Shutdown シャットダウン(graceful)
 func (api *DatabaseAPI) Shutdown(id int64) (bool, error) {
 	var (
 		method = "DELETE"
@@ -158,7 +177,7 @@ func (api *DatabaseAPI) Shutdown(id int64) (bool, error) {
 	return api.modify(method, uri, nil)
 }
 
-// Stop force shutdown
+// Stop シャットダウン(force)
 func (api *DatabaseAPI) Stop(id int64) (bool, error) {
 	var (
 		method = "DELETE"
@@ -168,6 +187,7 @@ func (api *DatabaseAPI) Stop(id int64) (bool, error) {
 	return api.modify(method, uri, map[string]bool{"Force": true})
 }
 
+// RebootForce 再起動
 func (api *DatabaseAPI) RebootForce(id int64) (bool, error) {
 	var (
 		method = "PUT"
@@ -177,6 +197,7 @@ func (api *DatabaseAPI) RebootForce(id int64) (bool, error) {
 	return api.modify(method, uri, nil)
 }
 
+// ResetForce リセット
 func (api *DatabaseAPI) ResetForce(id int64, recycleProcess bool) (bool, error) {
 	var (
 		method = "PUT"
@@ -186,6 +207,7 @@ func (api *DatabaseAPI) ResetForce(id int64, recycleProcess bool) (bool, error) 
 	return api.modify(method, uri, map[string]bool{"RecycleProcess": recycleProcess})
 }
 
+// SleepUntilUp 起動するまで待機
 func (api *DatabaseAPI) SleepUntilUp(id int64, timeout time.Duration) error {
 	current := 0 * time.Second
 	interval := 5 * time.Second
@@ -208,6 +230,7 @@ func (api *DatabaseAPI) SleepUntilUp(id int64, timeout time.Duration) error {
 	}
 }
 
+// SleepUntilDown ダウンするまで待機
 func (api *DatabaseAPI) SleepUntilDown(id int64, timeout time.Duration) error {
 	current := 0 * time.Second
 	interval := 5 * time.Second
@@ -230,7 +253,7 @@ func (api *DatabaseAPI) SleepUntilDown(id int64, timeout time.Duration) error {
 	}
 }
 
-// SleepWhileCopying wait until became to available
+// SleepWhileCopying コピー終了まで待機
 func (api *DatabaseAPI) SleepWhileCopying(id int64, timeout time.Duration, maxRetryCount int) error {
 	current := 0 * time.Second
 	interval := 5 * time.Second
@@ -261,18 +284,27 @@ func (api *DatabaseAPI) SleepWhileCopying(id int64, timeout time.Duration, maxRe
 	}
 }
 
+// MonitorCPU CPUアクティビティーモニター取得
 func (api *DatabaseAPI) MonitorCPU(id int64, body *sacloud.ResourceMonitorRequest) (*sacloud.MonitorValues, error) {
 	return api.baseAPI.applianceMonitorBy(id, "cpu", 0, body)
 }
+
+// MonitorDatabase データーベース固有項目アクティビティモニター取得
 func (api *DatabaseAPI) MonitorDatabase(id int64, body *sacloud.ResourceMonitorRequest) (*sacloud.MonitorValues, error) {
 	return api.baseAPI.applianceMonitorBy(id, "database", 0, body)
 }
+
+// MonitorInterface NICアクティビティーモニター取得
 func (api *DatabaseAPI) MonitorInterface(id int64, body *sacloud.ResourceMonitorRequest) (*sacloud.MonitorValues, error) {
 	return api.baseAPI.applianceMonitorBy(id, "interface", 0, body)
 }
+
+// MonitorSystemDisk システムディスクアクティビティーモニター取得
 func (api *DatabaseAPI) MonitorSystemDisk(id int64, body *sacloud.ResourceMonitorRequest) (*sacloud.MonitorValues, error) {
 	return api.baseAPI.applianceMonitorBy(id, "disk", 1, body)
 }
+
+// MonitorBackupDisk バックアップディスクアクティビティーモニター取得
 func (api *DatabaseAPI) MonitorBackupDisk(id int64, body *sacloud.ResourceMonitorRequest) (*sacloud.MonitorValues, error) {
 	return api.baseAPI.applianceMonitorBy(id, "disk", 2, body)
 }

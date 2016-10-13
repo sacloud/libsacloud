@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"github.com/yamamoto-febc/libsacloud"
 	"github.com/yamamoto-febc/libsacloud/sacloud"
 	"io/ioutil"
 	"log"
@@ -15,75 +16,96 @@ const (
 	sakuraCloudAPIRoot = "https://secure.sakura.ad.jp/cloud/zone"
 )
 
-// Client type of sakuracloud api client config values
+// Client APIクライアント
 type Client struct {
-	AccessToken       string
+	// AccessToken アクセストークン
+	AccessToken string
+	// AccessTokenSecret アクセストークンシークレット
 	AccessTokenSecret string
-	Zone              string
-	*api
-	TraceMode              bool
+	// Zone 対象ゾーン
+	Zone string
+	*API
+	// TraceMode トレースモード
+	TraceMode bool
+	// DefaultTimeoutDuration デフォルトタイムアウト間隔
 	DefaultTimeoutDuration time.Duration
+	// ユーザーエージェント
+	UserAgent string
 }
 
-// NewClient Create new API client
+// NewClient APIクライアント作成
 func NewClient(token, tokenSecret, zone string) *Client {
-	c := &Client{AccessToken: token, AccessTokenSecret: tokenSecret, Zone: zone, TraceMode: false, DefaultTimeoutDuration: 20 * time.Minute}
-	c.api = newAPI(c)
+	c := &Client{
+		AccessToken:            token,
+		AccessTokenSecret:      tokenSecret,
+		Zone:                   zone,
+		TraceMode:              false,
+		DefaultTimeoutDuration: 20 * time.Minute,
+		UserAgent:              fmt.Sprintf("libsacloud/%s", libsacloud.Version),
+	}
+	c.API = newAPI(c)
 	return c
 }
 
+// Clone APIクライアント クローン作成
 func (c *Client) Clone() *Client {
 	n := &Client{AccessToken: c.AccessToken, AccessTokenSecret: c.AccessTokenSecret, Zone: c.Zone, TraceMode: c.TraceMode}
-	n.api = newAPI(n)
+	n.API = newAPI(n)
 	return n
 }
 
-type api struct {
-	AuthStatus    *AuthStatusAPI
-	AutoBackup    *AutoBackupAPI
-	Archive       *ArchiveAPI
-	Bill          *BillAPI
-	Bridge        *BridgeAPI
-	CDROM         *CDROMAPI
-	Database      *DatabaseAPI
-	Disk          *DiskAPI
-	DNS           *DNSAPI
-	Facility      *facilityAPI
-	GSLB          *GSLBAPI
-	Icon          *IconAPI
-	Interface     *InterfaceAPI
-	Internet      *InternetAPI
-	IPAddress     *IPAddressAPI
-	IPv6Addr      *IPv6AddrAPI
-	IPv6Net       *IPv6NetAPI
-	License       *LicenseAPI
-	LoadBalancer  *LoadBalancerAPI
-	Note          *NoteAPI
-	PacketFilter  *PacketFilterAPI
-	Product       *productAPI
-	Server        *ServerAPI
-	SimpleMonitor *SimpleMonitorAPI
-	SSHKey        *SSHKeyAPI
-	Subnet        *SubnetAPI
-	Switch        *SwitchAPI
-	VPCRouter     *VPCRouterAPI
-	WebAccel      *WebAccelAPI
-}
-type productAPI struct {
-	Server   *ProductServerAPI
-	License  *ProductLicenseAPI
-	Disk     *ProductDiskAPI
-	Internet *ProductInternetAPI
-	Price    *PublicPriceAPI
+// API libsacloudでサポートしているAPI群
+type API struct {
+	AuthStatus    *AuthStatusAPI    // 認証状態API
+	AutoBackup    *AutoBackupAPI    // 自動バックアップAPI
+	Archive       *ArchiveAPI       // アーカイブAPI
+	Bill          *BillAPI          // 請求情報API
+	Bridge        *BridgeAPI        // ブリッジAPi
+	CDROM         *CDROMAPI         // ISOイメージAPI
+	Database      *DatabaseAPI      // データベースAPI
+	Disk          *DiskAPI          // ディスクAPI
+	DNS           *DNSAPI           // DNS API
+	Facility      *FacilityAPI      // ファシリティAPI
+	GSLB          *GSLBAPI          // GSLB API
+	Icon          *IconAPI          // アイコンAPI
+	Interface     *InterfaceAPI     // インターフェースAPI
+	Internet      *InternetAPI      // ルーターAPI
+	IPAddress     *IPAddressAPI     // IPアドレスAPI
+	IPv6Addr      *IPv6AddrAPI      // IPv6アドレスAPI
+	IPv6Net       *IPv6NetAPI       // IPv6ネットワークAPI
+	License       *LicenseAPI       // ライセンスAPI
+	LoadBalancer  *LoadBalancerAPI  // ロードバランサーAPI
+	Note          *NoteAPI          // スタートアップスクリプトAPI
+	PacketFilter  *PacketFilterAPI  // パケットフィルタAPI
+	Product       *ProductAPI       // 製品情報API
+	Server        *ServerAPI        // サーバーAPI
+	SimpleMonitor *SimpleMonitorAPI // シンプル監視API
+	SSHKey        *SSHKeyAPI        // 公開鍵API
+	Subnet        *SubnetAPI        // IPv4ネットワークAPI
+	Switch        *SwitchAPI        // スイッチAPI
+	VPCRouter     *VPCRouterAPI     // VPCルーターAPI
+	WebAccel      *WebAccelAPI      // ウェブアクセラレータAPI
+
 }
 
-type facilityAPI struct {
-	Region *RegionAPI
-	Zone   *ZoneAPI
+// ProductAPI 製品情報関連API群
+type ProductAPI struct {
+	Server   *ProductServerAPI   // サーバープランAPI
+	License  *ProductLicenseAPI  // ライセンスプランAPI
+	Disk     *ProductDiskAPI     // ディスクプランAPI
+	Internet *ProductInternetAPI // ルータープランAPI
+	Price    *PublicPriceAPI     // 価格情報API
+
 }
 
-func newAPI(client *Client) *api {
-	return &api{
+// FacilityAPI ファシリティ関連API群
+type FacilityAPI struct {
+	Region *RegionAPI // リージョンAPI
+	Zone   *ZoneAPI   // ゾーンAPI
+}
+
+func newAPI(client *Client) *API {
+	return &API{
 		AuthStatus: NewAuthStatusAPI(client),
 		AutoBackup: NewAutoBackupAPI(client),
 		Archive:    NewArchiveAPI(client),
@@ -93,7 +115,7 @@ func newAPI(client *Client) *api {
 		Database:   NewDatabaseAPI(client),
 		Disk:       NewDiskAPI(client),
 		DNS:        NewDNSAPI(client),
-		Facility: &facilityAPI{
+		Facility: &FacilityAPI{
 			Region: NewRegionAPI(client),
 			Zone:   NewZoneAPI(client),
 		},
@@ -108,7 +130,7 @@ func newAPI(client *Client) *api {
 		LoadBalancer: NewLoadBalancerAPI(client),
 		Note:         NewNoteAPI(client),
 		PacketFilter: NewPacketFilterAPI(client),
-		Product: &productAPI{
+		Product: &ProductAPI{
 			Server:   NewProductServerAPI(client),
 			License:  NewProductLicenseAPI(client),
 			Disk:     NewProductDiskAPI(client),
@@ -162,7 +184,8 @@ func (c *Client) newRequest(method, uri string, body interface{}) ([]byte, error
 	)
 
 	if body != nil {
-		bodyJSON, err := json.Marshal(body)
+		var bodyJSON []byte
+		bodyJSON, err = json.Marshal(body)
 		if err != nil {
 			return nil, err
 		}
@@ -193,6 +216,7 @@ func (c *Client) newRequest(method, uri string, body interface{}) ([]byte, error
 	//if c.TraceMode {
 	//	req.Header.Add("X-Sakura-API-Beautify", "1") // format response-JSON
 	//}
+	req.Header.Add("User-Agent", c.UserAgent)
 	req.Method = method
 
 	resp, err := client.Do(req)

@@ -5,10 +5,12 @@ import (
 	"github.com/yamamoto-febc/libsacloud/sacloud"
 )
 
+// IPAddressAPI IPアドレスAPI
 type IPAddressAPI struct {
 	*baseAPI
 }
 
+// NewIPAddressAPI IPアドレスAPI新規作成
 func NewIPAddressAPI(client *Client) *IPAddressAPI {
 	return &IPAddressAPI{
 		&baseAPI{
@@ -20,6 +22,7 @@ func NewIPAddressAPI(client *Client) *IPAddressAPI {
 	}
 }
 
+// Read 読み取り
 func (api *IPAddressAPI) Read(ip string) (*sacloud.IPAddress, error) {
 	return api.request(func(res *sacloud.Response) error {
 		var (
@@ -32,9 +35,11 @@ func (api *IPAddressAPI) Read(ip string) (*sacloud.IPAddress, error) {
 
 }
 
+// Update 更新(ホスト名逆引き設定)
 func (api *IPAddressAPI) Update(ip string, hostName string) (*sacloud.IPAddress, error) {
 
 	type request struct {
+		// IPAddress
 		IPAddress map[string]string
 	}
 

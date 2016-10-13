@@ -5,44 +5,59 @@ import (
 	"regexp"
 )
 
-// PacketFilter type of PacketFilter
+// PacketFilter パケットフィルタ
 type PacketFilter struct {
 	*Resource
-	Index       int `json:",omitempty"`
-	Name        string
+	// Name 名称
+	Name string
+	// Description 説明
 	Description string `json:",omitempty"`
 
 	//HACK API呼び出しルートにより数字/文字列が混在する
 	// PackerFilterのCREATE時は文字列、以外は数値となる。現状利用しないためコメントとしておく
 	// RequiredHostVersion int    `json:",omitempty"`
 
-	Notice     string                    `json:",omitempty"`
+	// Notice Notice
+	Notice string `json:",omitempty"`
+	// Expression ルール
 	Expression []*PacketFilterExpression `json:",omitempty"`
 }
 
+// AllowPacketFilterProtocol パケットフィルタが対応するプロトコルリスト
 func AllowPacketFilterProtocol() []string {
 	return []string{"tcp", "udp", "icmp", "fragment", "ip"}
 }
 
+// PacketFilterExpression フィルタリングルール
 type PacketFilterExpression struct {
-	Protocol        string `json:",omitempty"`
-	SourceNetwork   string `json:",omitempty"`
-	SourcePort      string `json:",omitempty"`
+	// Protocol プロトコル
+	Protocol string `json:",omitempty"`
+	// SourceNetwork 送信元ネットワーク
+	SourceNetwork string `json:",omitempty"`
+	// SourcePort 送信元ポート
+	SourcePort string `json:",omitempty"`
+	// DestinationPort 宛先ポート
 	DestinationPort string `json:",omitempty"`
-	Action          string `json:",omitempty"`
-	Description     string `json:",omitempty"`
+	// Action 許可/拒否
+	Action string `json:",omitempty"`
+	// Description 説明
+	Description string `json:",omitempty"`
 }
 
+// CreateNewPacketFilter パケットフィルタ作成
 func CreateNewPacketFilter() *PacketFilter {
 	return &PacketFilter{
+		// Expression
 		Expression: []*PacketFilterExpression{},
 	}
 }
 
+// ClearRules ルールのクリア
 func (p *PacketFilter) ClearRules() {
 	p.Expression = []*PacketFilterExpression{}
 }
 
+// AddTCPRule TCPルール追加
 func (p *PacketFilter) AddTCPRule(sourceNetwork string, sourcePort string, destPort string, description string, isAllow bool) error {
 
 	err := p.validatePort(sourcePort)
@@ -67,6 +82,7 @@ func (p *PacketFilter) AddTCPRule(sourceNetwork string, sourcePort string, destP
 	return nil
 }
 
+// AddUDPRule UDPルール追加
 func (p *PacketFilter) AddUDPRule(sourceNetwork string, sourcePort string, destPort string, description string, isAllow bool) error {
 
 	err := p.validatePort(sourcePort)
@@ -91,6 +107,7 @@ func (p *PacketFilter) AddUDPRule(sourceNetwork string, sourcePort string, destP
 	return nil
 }
 
+// AddICMPRule ICMPルール追加
 func (p *PacketFilter) AddICMPRule(sourceNetwork string, description string, isAllow bool) error {
 
 	exp := &PacketFilterExpression{
@@ -104,6 +121,7 @@ func (p *PacketFilter) AddICMPRule(sourceNetwork string, description string, isA
 	return nil
 }
 
+// AddFragmentRule フラグメントルール追加
 func (p *PacketFilter) AddFragmentRule(sourceNetwork string, description string, isAllow bool) error {
 
 	exp := &PacketFilterExpression{
@@ -117,6 +135,7 @@ func (p *PacketFilter) AddFragmentRule(sourceNetwork string, description string,
 	return nil
 }
 
+// AddIPRule IPルール追加
 func (p *PacketFilter) AddIPRule(sourceNetwork string, description string, isAllow bool) error {
 
 	exp := &PacketFilterExpression{

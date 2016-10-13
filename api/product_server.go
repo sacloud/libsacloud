@@ -6,14 +6,17 @@ import (
 	"strconv"
 )
 
+// ProductServerAPI サーバープランAPI
 type ProductServerAPI struct {
 	*baseAPI
 }
 
+// NewProductServerAPI サーバープランAPI作成
 func NewProductServerAPI(client *Client) *ProductServerAPI {
 	return &ProductServerAPI{
 		&baseAPI{
 			client: client,
+			// FuncGetResourceURL
 			FuncGetResourceURL: func() string {
 				return "product/server"
 			},
@@ -33,7 +36,7 @@ func (api *ProductServerAPI) getPlanIDBySpec(core int, memGB int) (int64, error)
 	return strconv.ParseInt(fmt.Sprintf("%d%03d", memGB, core), 10, 64)
 }
 
-// IsValidPlan return validate result
+// IsValidPlan 指定のコア数/メモリサイズのプランが存在し、有効であるか判定
 func (api *ProductServerAPI) IsValidPlan(core int, memGB int) (bool, error) {
 
 	planID, err := api.getPlanIDBySpec(core, memGB)
@@ -54,7 +57,7 @@ func (api *ProductServerAPI) IsValidPlan(core int, memGB int) (bool, error) {
 
 }
 
-// GetBySpec return valid plan
+// GetBySpec 指定のコア数/メモリサイズのサーバープランを取得
 func (api *ProductServerAPI) GetBySpec(core int, memGB int) (*sacloud.ProductServer, error) {
 	planID, err := api.getPlanIDBySpec(core, memGB)
 

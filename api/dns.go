@@ -9,10 +9,15 @@ import (
 //HACK: さくらのAPI側仕様: CommonServiceItemsの内容によってJSONフォーマットが異なるため
 //      DNS/GSLB/シンプル監視それぞれでリクエスト/レスポンスデータ型を定義する。
 
+// SearchDNSResponse DNS検索レスポンス
 type SearchDNSResponse struct {
-	Total                 int           `json:",omitempty"`
-	From                  int           `json:",omitempty"`
-	Count                 int           `json:",omitempty"`
+	// Total 総件数
+	Total int `json:",omitempty"`
+	// From ページング開始位置
+	From int `json:",omitempty"`
+	// Count 件数
+	Count int `json:",omitempty"`
+	// CommonServiceDNSItems DNSリスト
 	CommonServiceDNSItems []sacloud.DNS `json:"CommonServiceItems,omitempty"`
 }
 type dnsRequest struct {
@@ -29,11 +34,12 @@ type dnsResponse struct {
 	*sacloud.DNS `json:"CommonServiceItem,omitempty"`
 }
 
-// DNSAPI API Client for SAKURA CLOUD DNS
+// DNSAPI DNS API
 type DNSAPI struct {
 	*baseAPI
 }
 
+// NewDNSAPI DNS API作成
 func NewDNSAPI(client *Client) *DNSAPI {
 	return &DNSAPI{
 		&baseAPI{
@@ -50,6 +56,7 @@ func NewDNSAPI(client *Client) *DNSAPI {
 	}
 }
 
+// Find 検索
 func (api *DNSAPI) Find() (*SearchDNSResponse, error) {
 
 	data, err := api.client.newRequest("GET", api.getResourceURL(), api.getSearchState())
@@ -77,35 +84,41 @@ func (api *DNSAPI) createRequest(value *sacloud.DNS) *dnsRequest {
 	req.CommonServiceDNSItem = value
 	return req
 }
+
+// Create 新規作成
 func (api *DNSAPI) Create(value *sacloud.DNS) (*sacloud.DNS, error) {
 	return api.request(func(res *dnsResponse) error {
 		return api.create(api.createRequest(value), res)
 	})
 }
 
+// New 新規作成用パラメーター作成
 func (api *DNSAPI) New(zoneName string) *sacloud.DNS {
 	return sacloud.CreateNewDNS(zoneName)
 }
 
+// Read 読み取り
 func (api *DNSAPI) Read(id int64) (*sacloud.DNS, error) {
 	return api.request(func(res *dnsResponse) error {
 		return api.read(id, nil, res)
 	})
 }
 
+// Update 更新
 func (api *DNSAPI) Update(id int64, value *sacloud.DNS) (*sacloud.DNS, error) {
 	return api.request(func(res *dnsResponse) error {
 		return api.update(id, api.createRequest(value), res)
 	})
 }
 
+// Delete 削除
 func (api *DNSAPI) Delete(id int64) (*sacloud.DNS, error) {
 	return api.request(func(res *dnsResponse) error {
 		return api.delete(id, nil, res)
 	})
 }
 
-// SetupDNSRecord get dns zone commonserviceitem id
+// SetupDNSRecord DNSレコード作成
 func (api *DNSAPI) SetupDNSRecord(zoneName string, hostName string, ip string) ([]string, error) {
 
 	dnsItem, err := api.findOrCreateBy(zoneName)
@@ -132,7 +145,7 @@ func (api *DNSAPI) SetupDNSRecord(zoneName string, hostName string, ip string) (
 
 }
 
-// DeleteDNSRecord delete dns record
+// DeleteDNSRecord DNSレコード削除
 func (api *DNSAPI) DeleteDNSRecord(zoneName string, hostName string, ip string) error {
 	dnsItem, err := api.findOrCreateBy(zoneName)
 	if err != nil {

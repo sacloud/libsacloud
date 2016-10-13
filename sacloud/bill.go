@@ -2,24 +2,38 @@ package sacloud
 
 import "time"
 
-// Bill type of SakuraCloud Bill
+// Bill 請求情報
 type Bill struct {
-	Amount         int64      `json:",omitempty"`
-	BillID         int64      `json:",omitempty"`
-	Date           *time.Time `json:",omitempty"`
-	MemberID       string     `json:",omitempty"`
-	Paid           bool       `json:",omitempty"`
-	PayLimit       *time.Time `json:",omitempty"`
-	PaymentClassID int        `json:",omitempty"`
+	// Amount 金額
+	Amount int64 `json:",omitempty"`
+	// BillID 請求ID
+	BillID int64 `json:",omitempty"`
+	// Date 請求日
+	Date *time.Time `json:",omitempty"`
+	// MemberID 会員ID
+	MemberID string `json:",omitempty"`
+	// Paid 支払済フラグ
+	Paid bool `json:",omitempty"`
+	// PayLimit 支払い期限
+	PayLimit *time.Time `json:",omitempty"`
+	// PaymentClassID 支払いクラスID
+	PaymentClassID int `json:",omitempty"`
 }
 
-// BillDetail type of SakuraCloud BillDetail
+// BillDetail 支払い明細情報
 type BillDetail struct {
-	Amount         int64  `json:",omitempty"`
-	ContractID     int64  `json:",omitempty"`
-	Description    string `json:",omitempty"`
-	Index          int    `json:",omitempty"`
-	ServiceClassID int64  `json:",omitempty"`
-	Usage          int64  `json:",omitempty"`
-	Zone           string `json:",omitempty"`
+	// Amount 金額
+	Amount int64 `json:",omitempty"`
+	// ContractID 契約ID
+	ContractID int64 `json:",omitempty"`
+	// Description 説明
+	Description string `json:",omitempty"`
+	// Index インデックス
+	Index int `json:",omitempty"`
+	// ServiceClassID サービスクラスID
+	ServiceClassID int64 `json:",omitempty"`
+	// Usage 秒数
+	Usage int64 `json:",omitempty"`
+	// Zone ゾーン
+	Zone string `json:",omitempty"`
 }

@@ -14,14 +14,17 @@ var (
 	}
 )
 
+// DiskAPI ディスクAPI
 type DiskAPI struct {
 	*baseAPI
 }
 
+// NewDiskAPI ディスクAPI作成
 func NewDiskAPI(client *Client) *DiskAPI {
 	return &DiskAPI{
 		&baseAPI{
 			client: client,
+			// FuncGetResourceURL
 			FuncGetResourceURL: func() string {
 				return "disk"
 			},
@@ -29,20 +32,24 @@ func NewDiskAPI(client *Client) *DiskAPI {
 	}
 }
 
+// SortByConnectionOrder 接続順でのソート
 func (api *DiskAPI) SortByConnectionOrder(reverse bool) *DiskAPI {
 	api.sortBy("ConnectionOrder", reverse)
 	return api
 }
 
+// WithServerID サーバーID条件
 func (api *DiskAPI) WithServerID(id int64) *DiskAPI {
 	api.FilterBy("Server.ID", id)
 	return api
 }
 
+// Create 新規作成
 func (api *DiskAPI) Create(value *sacloud.Disk) (*sacloud.Disk, error) {
 	//HACK: さくらのAPI側仕様: 戻り値:Successがbool値へ変換できないため文字列で受ける
 	type diskResponse struct {
 		*sacloud.Response
+		// Success
 		Success string `json:",omitempty"`
 	}
 	res := &diskResponse{}
@@ -53,10 +60,12 @@ func (api *DiskAPI) Create(value *sacloud.Disk) (*sacloud.Disk, error) {
 	return res.Disk, nil
 }
 
+// NewCondig ディスクの修正用パラメーター作成
 func (api *DiskAPI) NewCondig() *sacloud.DiskEditValue {
 	return &sacloud.DiskEditValue{}
 }
 
+// Config ディスクの修正
 func (api *DiskAPI) Config(id int64, disk *sacloud.DiskEditValue) (bool, error) {
 	var (
 		method = "PUT"
@@ -75,6 +84,7 @@ func (api *DiskAPI) install(id int64, body *sacloud.Disk) (bool, error) {
 	return api.modify(method, uri, body)
 }
 
+// ReinstallFromBlank ブランクディスクから再インストール
 func (api *DiskAPI) ReinstallFromBlank(id int64, sizeMB int) (bool, error) {
 	var body = &sacloud.Disk{
 		SizeMB: sizeMB,
@@ -82,6 +92,7 @@ func (api *DiskAPI) ReinstallFromBlank(id int64, sizeMB int) (bool, error) {
 	return api.install(id, body)
 }
 
+// ReinstallFromArchive アーカイブからの再インストール
 func (api *DiskAPI) ReinstallFromArchive(id int64, archiveID int64) (bool, error) {
 	var body = &sacloud.Disk{
 		SourceArchive: &sacloud.Archive{},
@@ -90,6 +101,7 @@ func (api *DiskAPI) ReinstallFromArchive(id int64, archiveID int64) (bool, error
 	return api.install(id, body)
 }
 
+// ReinstallFromDisk ディスクからの再インストール
 func (api *DiskAPI) ReinstallFromDisk(id int64, diskID int64) (bool, error) {
 	var body = &sacloud.Disk{
 		SourceDisk: &sacloud.Disk{
@@ -99,6 +111,7 @@ func (api *DiskAPI) ReinstallFromDisk(id int64, diskID int64) (bool, error) {
 	return api.install(id, body)
 }
 
+// ToBlank ディスクを空にする
 func (api *DiskAPI) ToBlank(diskID int64) (bool, error) {
 	var (
 		method = "PUT"
@@ -107,6 +120,7 @@ func (api *DiskAPI) ToBlank(diskID int64) (bool, error) {
 	return api.modify(method, uri, nil)
 }
 
+// DisconnectFromServer サーバーとの接続解除
 func (api *DiskAPI) DisconnectFromServer(diskID int64) (bool, error) {
 	var (
 		method = "DELETE"
@@ -115,6 +129,7 @@ func (api *DiskAPI) DisconnectFromServer(diskID int64) (bool, error) {
 	return api.modify(method, uri, nil)
 }
 
+// ConnectToServer サーバーとの接続
 func (api *DiskAPI) ConnectToServer(diskID int64, serverID int64) (bool, error) {
 	var (
 		method = "PUT"
@@ -123,7 +138,7 @@ func (api *DiskAPI) ConnectToServer(diskID int64, serverID int64) (bool, error) 
 	return api.modify(method, uri, nil)
 }
 
-// State get disk state
+// State ディスクの状態を取得し有効な状態か判定
 func (api *DiskAPI) State(diskID int64) (bool, error) {
 	disk, err := api.Read(diskID)
 	if err != nil {
@@ -132,7 +147,7 @@ func (api *DiskAPI) State(diskID int64) (bool, error) {
 	return disk.IsAvailable(), nil
 }
 
-// SleepWhileCopying wait until became to available
+// SleepWhileCopying コピー終了まで待機
 func (api *DiskAPI) SleepWhileCopying(diskID int64, timeout time.Duration) error {
 	current := 0 * time.Second
 	interval := 5 * time.Second
@@ -154,10 +169,12 @@ func (api *DiskAPI) SleepWhileCopying(diskID int64, timeout time.Duration) error
 	}
 }
 
+// Monitor アクティビティーモニター取得
 func (api *DiskAPI) Monitor(id int64, body *sacloud.ResourceMonitorRequest) (*sacloud.MonitorValues, error) {
 	return api.baseAPI.monitor(id, body)
 }
 
+// CanEditDisk ディスクの修正が可能か判定
 func (api *DiskAPI) CanEditDisk(id int64) (bool, error) {
 
 	disk, err := api.Read(id)

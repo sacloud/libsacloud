@@ -9,34 +9,40 @@ import (
 )
 
 /************************************************
-   To support influent interface for Find()
+   To support fluent interface for Find()
 ************************************************/
 
+// Reset 検索条件のリセット
 func (api *ProductDiskAPI) Reset() *ProductDiskAPI {
 	api.reset()
 	return api
 }
 
+// Offset オフセット
 func (api *ProductDiskAPI) Offset(offset int) *ProductDiskAPI {
 	api.offset(offset)
 	return api
 }
 
+// Limit リミット
 func (api *ProductDiskAPI) Limit(limit int) *ProductDiskAPI {
 	api.limit(limit)
 	return api
 }
 
+// Include 取得する項目
 func (api *ProductDiskAPI) Include(key string) *ProductDiskAPI {
 	api.include(key)
 	return api
 }
 
+// Exclude 除外する項目
 func (api *ProductDiskAPI) Exclude(key string) *ProductDiskAPI {
 	api.exclude(key)
 	return api
 }
 
+// FilterBy 指定キーでのフィルター
 func (api *ProductDiskAPI) FilterBy(key string, value interface{}) *ProductDiskAPI {
 	api.filterBy(key, value, false)
 	return api
@@ -47,13 +53,17 @@ func (api *ProductDiskAPI) FilterBy(key string, value interface{}) *ProductDiskA
 // 	return api
 // }
 
+// WithNameLike 名称条件
 func (api *ProductDiskAPI) WithNameLike(name string) *ProductDiskAPI {
 	return api.FilterBy("Name", name)
 }
 
+// WithTag タグ条件
 func (api *ProductDiskAPI) WithTag(tag string) *ProductDiskAPI {
 	return api.FilterBy("Tags.Name", tag)
 }
+
+// WithTags タグ(複数)条件
 func (api *ProductDiskAPI) WithTags(tags []string) *ProductDiskAPI {
 	return api.FilterBy("Tags.Name", []interface{}{tags})
 }
@@ -73,11 +83,13 @@ func (api *ProductDiskAPI) WithTags(tags []string) *ProductDiskAPI {
 // 	return api
 // }
 
+// SortBy 指定キーでのソート
 func (api *ProductDiskAPI) SortBy(key string, reverse bool) *ProductDiskAPI {
 	api.sortBy(key, reverse)
 	return api
 }
 
+// SortByName 名称でのソート
 func (api *ProductDiskAPI) SortByName(reverse bool) *ProductDiskAPI {
 	api.sortByName(reverse)
 	return api
@@ -102,6 +114,7 @@ func (api *ProductDiskAPI) SortByName(reverse bool) *ProductDiskAPI {
 // 	})
 // }
 
+// Read 読み取り
 func (api *ProductDiskAPI) Read(id int64) (*sacloud.ProductDisk, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.read(id, nil, res)

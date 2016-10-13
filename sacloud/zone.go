@@ -1,21 +1,28 @@
 package sacloud
 
-// Zone type of zone
+// Zone ゾーン
 type Zone struct {
 	*Resource
-	DisplayOrder int    `json:",omitempty"`
-	Name         string `json:",omitempty"`
-	Description  string `json:",omitempty"`
-	IsDummy      bool   `json:",omitempty"`
-	VNCProxy     struct {
-		HostName  string `json:",omitempty"`
+	// Name 名称
+	Name string `json:",omitempty"`
+	// Description 説明
+	Description string `json:",omitempty"`
+	// IsDummy ダミーフラグ
+	IsDummy bool `json:",omitempty"`
+	// VNCProxy VPCプロキシ
+	VNCProxy struct {
+		// HostName ホスト名
+		HostName string `json:",omitempty"`
+		// IPAddress IPアドレス
 		IPAddress string `json:",omitempty"`
 	} `json:",omitempty"`
+	// FTPServer FTPサーバー
 	FTPServer struct {
-		HostName  string `json:",omitempty"`
+		// HostName ホスト名
+		HostName string `json:",omitempty"`
+		// IPAddress IPアドレス
 		IPAddress string `json:",omitempty"`
 	} `json:",omitempty"`
-	//Settings struct {
-	//}
+	// Region リージョン
 	Region *Region `json:",omitempty"`
 }

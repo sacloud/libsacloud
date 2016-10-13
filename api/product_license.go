@@ -1,9 +1,11 @@
 package api
 
+// ProductLicenseAPI ライセンスプランAPI
 type ProductLicenseAPI struct {
 	*baseAPI
 }
 
+// NewProductLicenseAPI ライセンスプランAPI作成
 func NewProductLicenseAPI(client *Client) *ProductLicenseAPI {
 	return &ProductLicenseAPI{
 		&baseAPI{

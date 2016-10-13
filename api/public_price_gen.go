@@ -9,34 +9,40 @@ import (
 )
 
 /************************************************
-   To support influent interface for Find()
+   To support fluent interface for Find()
 ************************************************/
 
+// Reset 検索条件のリセット
 func (api *PublicPriceAPI) Reset() *PublicPriceAPI {
 	api.reset()
 	return api
 }
 
+// Offset オフセット
 func (api *PublicPriceAPI) Offset(offset int) *PublicPriceAPI {
 	api.offset(offset)
 	return api
 }
 
+// Limit リミット
 func (api *PublicPriceAPI) Limit(limit int) *PublicPriceAPI {
 	api.limit(limit)
 	return api
 }
 
+// Include 取得する項目
 func (api *PublicPriceAPI) Include(key string) *PublicPriceAPI {
 	api.include(key)
 	return api
 }
 
+// Exclude 除外する項目
 func (api *PublicPriceAPI) Exclude(key string) *PublicPriceAPI {
 	api.exclude(key)
 	return api
 }
 
+// FilterBy 指定キーでのフィルター
 func (api *PublicPriceAPI) FilterBy(key string, value interface{}) *PublicPriceAPI {
 	api.filterBy(key, value, false)
 	return api
@@ -47,16 +53,20 @@ func (api *PublicPriceAPI) FilterBy(key string, value interface{}) *PublicPriceA
 // 	return api
 // }
 
+// WithNameLike 名称条件(DisplayName)
 func (api *PublicPriceAPI) WithNameLike(name string) *PublicPriceAPI {
-	return api.FilterBy("Name", name)
+	return api.FilterBy("DisplayName", name)
 }
 
-func (api *PublicPriceAPI) WithTag(tag string) *PublicPriceAPI {
-	return api.FilterBy("Tags.Name", tag)
-}
-func (api *PublicPriceAPI) WithTags(tags []string) *PublicPriceAPI {
-	return api.FilterBy("Tags.Name", []interface{}{tags})
-}
+//// WithTag
+//func (api *PublicPriceAPI) WithTag(tag string) *PublicPriceAPI {
+//	return api.FilterBy("Tags.Name", tag)
+//}
+
+//// WithTags
+//func (api *PublicPriceAPI) WithTags(tags []string) *PublicPriceAPI {
+//	return api.FilterBy("Tags.Name", []interface{}{tags})
+//}
 
 // func (api *PublicPriceAPI) WithSizeGib(size int) *PublicPriceAPI {
 // 	api.FilterBy("SizeMB", size*1024)
@@ -73,13 +83,15 @@ func (api *PublicPriceAPI) WithTags(tags []string) *PublicPriceAPI {
 // 	return api
 // }
 
+// SortBy 指定キーでのソート
 func (api *PublicPriceAPI) SortBy(key string, reverse bool) *PublicPriceAPI {
 	api.sortBy(key, reverse)
 	return api
 }
 
+// SortByName 名称でのソート(DisplayName)
 func (api *PublicPriceAPI) SortByName(reverse bool) *PublicPriceAPI {
-	api.sortByName(reverse)
+	api.sortBy("DisplayName", reverse)
 	return api
 }
 

@@ -9,34 +9,40 @@ import (
 )
 
 /************************************************
-   To support influent interface for Find()
+   To support fluent interface for Find()
 ************************************************/
 
+// Reset 検索条件のリセット
 func (api *LoadBalancerAPI) Reset() *LoadBalancerAPI {
 	api.reset()
 	return api
 }
 
+// Offset オフセット
 func (api *LoadBalancerAPI) Offset(offset int) *LoadBalancerAPI {
 	api.offset(offset)
 	return api
 }
 
+// Limit リミット
 func (api *LoadBalancerAPI) Limit(limit int) *LoadBalancerAPI {
 	api.limit(limit)
 	return api
 }
 
+// Include 取得する項目
 func (api *LoadBalancerAPI) Include(key string) *LoadBalancerAPI {
 	api.include(key)
 	return api
 }
 
+// Exclude 除外する項目
 func (api *LoadBalancerAPI) Exclude(key string) *LoadBalancerAPI {
 	api.exclude(key)
 	return api
 }
 
+// FilterBy 指定キーでのフィルター
 func (api *LoadBalancerAPI) FilterBy(key string, value interface{}) *LoadBalancerAPI {
 	api.filterBy(key, value, false)
 	return api
@@ -47,13 +53,17 @@ func (api *LoadBalancerAPI) FilterBy(key string, value interface{}) *LoadBalance
 // 	return api
 // }
 
+// WithNameLike 名称条件
 func (api *LoadBalancerAPI) WithNameLike(name string) *LoadBalancerAPI {
 	return api.FilterBy("Name", name)
 }
 
+// WithTag タグ条件
 func (api *LoadBalancerAPI) WithTag(tag string) *LoadBalancerAPI {
 	return api.FilterBy("Tags.Name", tag)
 }
+
+// WithTags タグ(複数)条件
 func (api *LoadBalancerAPI) WithTags(tags []string) *LoadBalancerAPI {
 	return api.FilterBy("Tags.Name", []interface{}{tags})
 }
@@ -73,11 +83,13 @@ func (api *LoadBalancerAPI) WithTags(tags []string) *LoadBalancerAPI {
 // 	return api
 // }
 
+// SortBy 指定キーでのソート
 func (api *LoadBalancerAPI) SortBy(key string, reverse bool) *LoadBalancerAPI {
 	api.sortBy(key, reverse)
 	return api
 }
 
+// SortByName 名称でのソート
 func (api *LoadBalancerAPI) SortByName(reverse bool) *LoadBalancerAPI {
 	api.sortByName(reverse)
 	return api

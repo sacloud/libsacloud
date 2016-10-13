@@ -9,34 +9,40 @@ import (
 )
 
 /************************************************
-   To support influent interface for Find()
+   To support fluent interface for Find()
 ************************************************/
 
+// Reset 検索条件リセット
 func (api *BridgeAPI) Reset() *BridgeAPI {
 	api.reset()
 	return api
 }
 
+// Offset オフセット
 func (api *BridgeAPI) Offset(offset int) *BridgeAPI {
 	api.offset(offset)
 	return api
 }
 
+// Limit リミット
 func (api *BridgeAPI) Limit(limit int) *BridgeAPI {
 	api.limit(limit)
 	return api
 }
 
+// Include 取得する項目
 func (api *BridgeAPI) Include(key string) *BridgeAPI {
 	api.include(key)
 	return api
 }
 
+// Exclude 除外する項目
 func (api *BridgeAPI) Exclude(key string) *BridgeAPI {
 	api.exclude(key)
 	return api
 }
 
+// FilterBy 指定キーでのフィルター
 func (api *BridgeAPI) FilterBy(key string, value interface{}) *BridgeAPI {
 	api.filterBy(key, value, false)
 	return api
@@ -47,13 +53,17 @@ func (api *BridgeAPI) FilterBy(key string, value interface{}) *BridgeAPI {
 // 	return api
 // }
 
+// WithNameLike 名称条件
 func (api *BridgeAPI) WithNameLike(name string) *BridgeAPI {
 	return api.FilterBy("Name", name)
 }
 
+// WithTag タグ条件
 func (api *BridgeAPI) WithTag(tag string) *BridgeAPI {
 	return api.FilterBy("Tags.Name", tag)
 }
+
+// WithTags タグ(複数)条件
 func (api *BridgeAPI) WithTags(tags []string) *BridgeAPI {
 	return api.FilterBy("Tags.Name", []interface{}{tags})
 }
@@ -73,11 +83,13 @@ func (api *BridgeAPI) WithTags(tags []string) *BridgeAPI {
 // 	return api
 // }
 
+// SortBy 指定キーでのソート
 func (api *BridgeAPI) SortBy(key string, reverse bool) *BridgeAPI {
 	api.sortBy(key, reverse)
 	return api
 }
 
+// SortByName 名称でのソート
 func (api *BridgeAPI) SortByName(reverse bool) *BridgeAPI {
 	api.sortByName(reverse)
 	return api
@@ -92,28 +104,33 @@ func (api *BridgeAPI) SortByName(reverse bool) *BridgeAPI {
   To support CRUD(Create/Read/Update/Delete)
 ************************************************/
 
+// New 新規作成用パラメーター作成
 func (api *BridgeAPI) New() *sacloud.Bridge {
 	return &sacloud.Bridge{}
 }
 
+// Create 新規作成
 func (api *BridgeAPI) Create(value *sacloud.Bridge) (*sacloud.Bridge, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.create(api.createRequest(value), res)
 	})
 }
 
+// Read 読み取り
 func (api *BridgeAPI) Read(id int64) (*sacloud.Bridge, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.read(id, nil, res)
 	})
 }
 
+// Update 更新
 func (api *BridgeAPI) Update(id int64, value *sacloud.Bridge) (*sacloud.Bridge, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.update(id, api.createRequest(value), res)
 	})
 }
 
+// Delete 削除
 func (api *BridgeAPI) Delete(id int64) (*sacloud.Bridge, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.delete(id, nil, res)

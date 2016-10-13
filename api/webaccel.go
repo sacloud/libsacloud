@@ -6,10 +6,12 @@ import (
 	"github.com/yamamoto-febc/libsacloud/sacloud"
 )
 
+// WebAccelAPI ウェブアクセラレータAPI
 type WebAccelAPI struct {
 	*baseAPI
 }
 
+// NewWebAccelAPI ウェブアクセラレータAPI
 func NewWebAccelAPI(client *Client) *WebAccelAPI {
 	return &WebAccelAPI{
 		&baseAPI{
@@ -22,14 +24,17 @@ func NewWebAccelAPI(client *Client) *WebAccelAPI {
 	}
 }
 
+// WebAccelDeleteCacheResponse ウェブアクセラレータ キャッシュ削除レスポンス
 type WebAccelDeleteCacheResponse struct {
 	*sacloud.ResultFlagValue
 	Results []*sacloud.DeleteCacheResult
 }
 
+// DeleteCache キャッシュ削除
 func (api *WebAccelAPI) DeleteCache(urls ...string) (*WebAccelDeleteCacheResponse, error) {
 
 	type request struct {
+		// URL
 		URL []string
 	}
 

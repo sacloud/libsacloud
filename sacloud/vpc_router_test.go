@@ -165,6 +165,7 @@ func TestMarshalVPCRouterJSON(t *testing.T) {
 
 	//for premium
 	err = json.Unmarshal([]byte(fmt.Sprintf(testVPCRouterJSONTemplate, testVPCRouterPremiumJSON)), &router)
+	assert.NoError(t, err)
 
 	assert.NotEmpty(t, router.Settings.Router.VRID)
 	assert.NotEmpty(t, router.Settings.Router.Interfaces)

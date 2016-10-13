@@ -9,34 +9,40 @@ import (
 )
 
 /************************************************
-   To support influent interface for Find()
+   To support fluent interface for Find()
 ************************************************/
 
+// Reset 検索条件のリセット
 func (api *IconAPI) Reset() *IconAPI {
 	api.reset()
 	return api
 }
 
+// Offset オフセット
 func (api *IconAPI) Offset(offset int) *IconAPI {
 	api.offset(offset)
 	return api
 }
 
+// Limit リミット
 func (api *IconAPI) Limit(limit int) *IconAPI {
 	api.limit(limit)
 	return api
 }
 
+// Include 取得する項目
 func (api *IconAPI) Include(key string) *IconAPI {
 	api.include(key)
 	return api
 }
 
+// Exclude 除外する項目
 func (api *IconAPI) Exclude(key string) *IconAPI {
 	api.exclude(key)
 	return api
 }
 
+// FilterBy 指定キーでのフィルター
 func (api *IconAPI) FilterBy(key string, value interface{}) *IconAPI {
 	api.filterBy(key, value, false)
 	return api
@@ -47,13 +53,17 @@ func (api *IconAPI) FilterBy(key string, value interface{}) *IconAPI {
 // 	return api
 // }
 
+// WithNameLike 名称条件
 func (api *IconAPI) WithNameLike(name string) *IconAPI {
 	return api.FilterBy("Name", name)
 }
 
+// WithTag タグ条件
 func (api *IconAPI) WithTag(tag string) *IconAPI {
 	return api.FilterBy("Tags.Name", tag)
 }
+
+// WithTags タグ(複数)条件
 func (api *IconAPI) WithTags(tags []string) *IconAPI {
 	return api.FilterBy("Tags.Name", []interface{}{tags})
 }
@@ -63,21 +73,25 @@ func (api *IconAPI) WithTags(tags []string) *IconAPI {
 // 	return api
 // }
 
+// WithSharedScope 公開スコープ条件
 func (api *IconAPI) WithSharedScope() *IconAPI {
 	api.FilterBy("Scope", "shared")
 	return api
 }
 
+// WithUserScope ユーザースコープ条件
 func (api *IconAPI) WithUserScope() *IconAPI {
 	api.FilterBy("Scope", "user")
 	return api
 }
 
+// SortBy 指定キーでのソート
 func (api *IconAPI) SortBy(key string, reverse bool) *IconAPI {
 	api.sortBy(key, reverse)
 	return api
 }
 
+// SortByName 名称でのソート
 func (api *IconAPI) SortByName(reverse bool) *IconAPI {
 	api.sortByName(reverse)
 	return api
@@ -92,30 +106,36 @@ func (api *IconAPI) SortByName(reverse bool) *IconAPI {
   To support CRUD(Create/Read/Update/Delete)
 ************************************************/
 
+// New 新規作成用パラメーター作成
 func (api *IconAPI) New() *sacloud.Icon {
 	return &sacloud.Icon{
+		// TagsType
 		TagsType: &sacloud.TagsType{},
 	}
 }
 
+// Create 新規作成
 func (api *IconAPI) Create(value *sacloud.Icon) (*sacloud.Icon, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.create(api.createRequest(value), res)
 	})
 }
 
+// Read 読み取り
 func (api *IconAPI) Read(id int64) (*sacloud.Icon, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.read(id, nil, res)
 	})
 }
 
+// Update 更新
 func (api *IconAPI) Update(id int64, value *sacloud.Icon) (*sacloud.Icon, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.update(id, api.createRequest(value), res)
 	})
 }
 
+// Delete 削除
 func (api *IconAPI) Delete(id int64) (*sacloud.Icon, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.delete(id, nil, res)
