@@ -277,9 +277,7 @@ func (s *VPCRouterSetting) removeFirewallRule(direction string, rule *VPCRouterF
 	case "send":
 		dest := []*VPCRouterFirewallRule{}
 		for _, c := range s.Firewall.Config[0].Send {
-			if c.Action != rule.Action || c.Protocol != rule.Protocol ||
-				c.SourceNetwork != rule.SourceNetwork || c.SourcePort != rule.SourcePort ||
-				c.DestinationNetwork != rule.DestinationNetwork || c.DestinationPort != rule.DestinationPort {
+			if !s.isSameRule(rule, c) {
 				dest = append(dest, c)
 			}
 		}
@@ -287,9 +285,7 @@ func (s *VPCRouterSetting) removeFirewallRule(direction string, rule *VPCRouterF
 	case "receive":
 		dest := []*VPCRouterFirewallRule{}
 		for _, c := range s.Firewall.Config[0].Receive {
-			if c.Action != rule.Action || c.Protocol != rule.Protocol ||
-				c.SourceNetwork != rule.SourceNetwork || c.SourcePort != rule.SourcePort ||
-				c.DestinationNetwork != rule.DestinationNetwork || c.DestinationPort != rule.DestinationPort {
+			if !s.isSameRule(rule, c) {
 				dest = append(dest, c)
 			}
 		}
@@ -316,17 +312,13 @@ func (s *VPCRouterSetting) findFirewallRule(direction string, rule *VPCRouterFir
 	switch direction {
 	case "send":
 		for _, c := range s.Firewall.Config[0].Send {
-			if c.Action == rule.Action && c.Protocol == rule.Protocol &&
-				c.SourceNetwork == rule.SourceNetwork && c.SourcePort == rule.SourcePort &&
-				c.DestinationNetwork == rule.DestinationNetwork && c.DestinationPort == rule.DestinationPort {
+			if s.isSameRule(rule, c) {
 				return c
 			}
 		}
 	case "receive":
 		for _, c := range s.Firewall.Config[0].Receive {
-			if c.Action == rule.Action && c.Protocol == rule.Protocol &&
-				c.SourceNetwork == rule.SourceNetwork && c.SourcePort == rule.SourcePort &&
-				c.DestinationNetwork == rule.DestinationNetwork && c.DestinationPort == rule.DestinationPort {
+			if s.isSameRule(rule, c) {
 				return c
 			}
 		}
@@ -334,6 +326,15 @@ func (s *VPCRouterSetting) findFirewallRule(direction string, rule *VPCRouterFir
 
 	return nil
 
+}
+
+func (s *VPCRouterSetting) isSameRule(r1 *VPCRouterFirewallRule, r2 *VPCRouterFirewallRule) bool {
+	return r1.Action == r2.Action &&
+		r1.Protocol == r2.Protocol &&
+		r1.SourceNetwork == r2.SourceNetwork &&
+		r1.SourcePort == r2.SourcePort &&
+		r1.DestinationNetwork == r2.DestinationNetwork &&
+		r1.DestinationPort == r2.DestinationPort
 }
 
 // AddFirewallRuleSend 送信ルール 追加
