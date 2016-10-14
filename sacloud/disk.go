@@ -147,9 +147,19 @@ func (d *DiskEditValue) SetPassword(value string) {
 	d.Password = &value
 }
 
+// AddSSHKeys 公開鍵 設定
+func (d *DiskEditValue) AddSSHKeys(keyID string) {
+	if d.SSHKeys == nil {
+		d.SSHKeys = []*SSHKey{}
+	}
+	d.SSHKeys = append(d.SSHKeys, &SSHKey{Resource: NewResourceByStringID(keyID)})
+}
+
 // SetSSHKeys 公開鍵 設定
 func (d *DiskEditValue) SetSSHKeys(keyIDs []string) {
-	d.SSHKeys = []*SSHKey{}
+	if d.SSHKeys == nil {
+		d.SSHKeys = []*SSHKey{}
+	}
 	for _, keyID := range keyIDs {
 		d.SSHKeys = append(d.SSHKeys, &SSHKey{Resource: NewResourceByStringID(keyID)})
 	}
@@ -161,6 +171,16 @@ func (d *DiskEditValue) AddSSHKeyByString(key string) {
 		d.SSHKeys = []*SSHKey{}
 	}
 	d.SSHKeys = append(d.SSHKeys, &SSHKey{PublicKey: key})
+}
+
+// SetSSHKeyByString 公開鍵(文字列) 設定
+func (d *DiskEditValue) SetSSHKeyByString(keys []string) {
+	if d.SSHKeys == nil {
+		d.SSHKeys = []*SSHKey{}
+	}
+	for _, key := range keys {
+		d.SSHKeys = append(d.SSHKeys, &SSHKey{PublicKey: key})
+	}
 }
 
 // SetDisablePWAuth パスワード認証無効化フラグ 設定

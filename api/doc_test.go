@@ -262,6 +262,9 @@ func Example() {
 	diskConf.AddNote(script.GetStrID())
 	client.Disk.Config(disk.ID, diskConf)
 
+	// connect to server
+	client.Disk.ConnectToServer(disk.ID, server.ID)
+
 	// boot
 	fmt.Println("booting the server")
 	client.Server.Boot(server.ID)
