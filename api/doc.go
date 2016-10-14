@@ -9,14 +9,14 @@
 //
 // APIクライアントの作成にはAPIトークン、APIシークレット、対象ゾーン情報が必要です。
 //
-// あらかじめさくらのクラウド コントロールパネルにてAPIキーを発行しておいてください。
+// あらかじめ、さくらのクラウド コントロールパネルにてAPIキーを発行しておいてください。
 //
 //	token := "PUT YOUR TOKEN"
 //	secret := "PUT YOUR SECRET"
 //	zone := "tk1a"
 //
 //	// クライアントの作成
-//	client := api.NewClient(token, secret, zone)//
+//	client := api.NewClient(token, secret, zone)
 //
 // Select target resource
 //

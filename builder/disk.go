@@ -98,12 +98,17 @@ type DiskBuilder struct {
 	currentDiskBuildResult *DiskBuildResult
 }
 
-var (
-	defaultDiskPlanID             = sacloud.DiskPlanSSDID
-	defaultDiskConnection         = sacloud.DiskConnectionVirtio
-	defaultDiskSize               = 20
-	defaultDiskIsSSHKeysEphemeral = true
-	defaultDiskIsNotesEphemeral   = true
+const (
+	// DefaultDiskPlanID ディスクプラン(デフォルト値)
+	DefaultDiskPlanID = sacloud.DiskPlanSSDID
+	// DefaultDiskConnection ディスク接続方法(デフォルト値)
+	DefaultDiskConnection = sacloud.DiskConnectionVirtio
+	// DefaultDiskSize ディスクサイズ(デフォルト値)
+	DefaultDiskSize = 20
+	// DefaultDiskIsSSHKeysEphemeral ディスク作成後の公開鍵削除フラグ(デフォルト値)
+	DefaultDiskIsSSHKeysEphemeral = true
+	// DefaultDiskIsNotesEphemeral ディスク作成後のスタートアップスクリプト削除フラグ(デフォルト値)
+	DefaultDiskIsNotesEphemeral = true
 )
 
 // NewDiskBuilder ディスクビルダーの作成
@@ -114,12 +119,12 @@ func NewDiskBuilder(client *api.Client, name string) *DiskBuilder {
 		},
 		buildEventHandlers: map[DiskBuildEvents]DiskBuildEventHandler{},
 		name:               name,
-		size:               defaultDiskSize,
-		planID:             defaultDiskPlanID,
-		connection:         defaultDiskConnection,
+		size:               DefaultDiskSize,
+		planID:             DefaultDiskPlanID,
+		connection:         DefaultDiskConnection,
 		TagsType:           &sacloud.TagsType{},
-		isSSHKeysEphemeral: defaultDiskIsSSHKeysEphemeral,
-		isNotesEphemeral:   defaultDiskIsNotesEphemeral,
+		isSSHKeysEphemeral: DefaultDiskIsSSHKeysEphemeral,
+		isNotesEphemeral:   DefaultDiskIsNotesEphemeral,
 	}
 }
 

@@ -23,9 +23,9 @@ func NewAuthStatusAPI(client *Client) *AuthStatusAPI {
 }
 
 // Read 読み取り
-func (b *AuthStatusAPI) Read() (*sacloud.AuthStatus, error) {
+func (api *AuthStatusAPI) Read() (*sacloud.AuthStatus, error) {
 
-	data, err := b.client.newRequest("GET", b.getResourceURL(), nil)
+	data, err := api.client.newRequest("GET", api.getResourceURL(), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -37,6 +37,6 @@ func (b *AuthStatusAPI) Read() (*sacloud.AuthStatus, error) {
 }
 
 // Find 検索
-func (b *AuthStatusAPI) Find() (*sacloud.AuthStatus, error) {
-	return b.Read()
+func (api *AuthStatusAPI) Find() (*sacloud.AuthStatus, error) {
+	return api.Read()
 }
