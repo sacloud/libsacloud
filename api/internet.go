@@ -6,10 +6,12 @@ import (
 	"time"
 )
 
+// InternetAPI ルーターAPI
 type InternetAPI struct {
 	*baseAPI
 }
 
+// NewInternetAPI ルーターAPI作成
 func NewInternetAPI(client *Client) *InternetAPI {
 	return &InternetAPI{
 		&baseAPI{
@@ -21,10 +23,11 @@ func NewInternetAPI(client *Client) *InternetAPI {
 	}
 }
 
-func (api *InternetAPI) UpdateBandWidth(id string, bandWidth int) (*sacloud.Internet, error) {
+// UpdateBandWidth 帯域幅更新
+func (api *InternetAPI) UpdateBandWidth(id int64, bandWidth int) (*sacloud.Internet, error) {
 	var (
 		method = "PUT"
-		uri    = fmt.Sprintf("%s/%s/bandwidth", api.getResourceURL(), id)
+		uri    = fmt.Sprintf("%s/%d/bandwidth", api.getResourceURL(), id)
 		body   = &sacloud.Request{}
 	)
 	body.Internet = &sacloud.Internet{BandWidthMbps: bandWidth}
@@ -34,7 +37,38 @@ func (api *InternetAPI) UpdateBandWidth(id string, bandWidth int) (*sacloud.Inte
 	})
 }
 
-func (api *InternetAPI) SleepWhileCreating(internetID string, timeout time.Duration) error {
+// EnableIPv6 IPv6有効化
+func (api *InternetAPI) EnableIPv6(id int64) (*sacloud.IPv6Net, error) {
+	var (
+		method = "POST"
+		uri    = fmt.Sprintf("%s/%d/ipv6net", api.getResourceURL(), id)
+	)
+
+	res := &sacloud.Response{}
+	err := api.baseAPI.request(method, uri, nil, res)
+	if err != nil {
+		return nil, err
+	}
+	return res.IPv6Net, nil
+}
+
+// DisableIPv6 IPv6無効化
+func (api *InternetAPI) DisableIPv6(id int64, ipv6NetID int64) (bool, error) {
+	var (
+		method = "DELETE"
+		uri    = fmt.Sprintf("%s/%d/ipv6net/%d", api.getResourceURL(), id, ipv6NetID)
+	)
+
+	res := &sacloud.Response{}
+	err := api.baseAPI.request(method, uri, nil, res)
+	if err != nil {
+		return false, err
+	}
+	return true, nil
+}
+
+// SleepWhileCreating 作成完了まで待機
+func (api *InternetAPI) SleepWhileCreating(internetID int64, timeout time.Duration) error {
 	current := 0 * time.Second
 	interval := 5 * time.Second
 
@@ -55,9 +89,14 @@ func (api *InternetAPI) SleepWhileCreating(internetID string, timeout time.Durat
 		return err
 	}
 	if current > timeout {
-		return fmt.Errorf("Timeout: Can't read /internet/%s", internetID)
+		return fmt.Errorf("Timeout: Can't read /internet/%d", internetID)
 	}
 
 	return nil
 
+}
+
+// Monitor アクティビティーモニター取得
+func (api *InternetAPI) Monitor(id int64, body *sacloud.ResourceMonitorRequest) (*sacloud.MonitorValues, error) {
+	return api.baseAPI.monitor(id, body)
 }

@@ -9,34 +9,40 @@ import (
 )
 
 /************************************************
-   To support influent interface for Find()
+   To support fluent interface for Find()
 ************************************************/
 
+// Reset 検索条件のリセット
 func (api *ServerAPI) Reset() *ServerAPI {
 	api.reset()
 	return api
 }
 
+// Offset オフセット
 func (api *ServerAPI) Offset(offset int) *ServerAPI {
 	api.offset(offset)
 	return api
 }
 
+// Limit リミット
 func (api *ServerAPI) Limit(limit int) *ServerAPI {
 	api.limit(limit)
 	return api
 }
 
+// Include 取得する項目
 func (api *ServerAPI) Include(key string) *ServerAPI {
 	api.include(key)
 	return api
 }
 
+// Exclude 除外する項目
 func (api *ServerAPI) Exclude(key string) *ServerAPI {
 	api.exclude(key)
 	return api
 }
 
+// FilterBy 指定キーでのフィルター
 func (api *ServerAPI) FilterBy(key string, value interface{}) *ServerAPI {
 	api.filterBy(key, value, false)
 	return api
@@ -47,13 +53,17 @@ func (api *ServerAPI) FilterBy(key string, value interface{}) *ServerAPI {
 // 	return api
 // }
 
+// WithNameLike 名称条件
 func (api *ServerAPI) WithNameLike(name string) *ServerAPI {
 	return api.FilterBy("Name", name)
 }
 
+// WithTag タグ条件
 func (api *ServerAPI) WithTag(tag string) *ServerAPI {
 	return api.FilterBy("Tags.Name", tag)
 }
+
+// WithTags タグ(複数)条件
 func (api *ServerAPI) WithTags(tags []string) *ServerAPI {
 	return api.FilterBy("Tags.Name", []interface{}{tags})
 }
@@ -73,11 +83,13 @@ func (api *ServerAPI) WithTags(tags []string) *ServerAPI {
 // 	return api
 // }
 
+// SortBy 指定キーでのソート
 func (api *ServerAPI) SortBy(key string, reverse bool) *ServerAPI {
 	api.sortBy(key, reverse)
 	return api
 }
 
+// SortByName 名称でのソート
 func (api *ServerAPI) SortByName(reverse bool) *ServerAPI {
 	api.sortByName(reverse)
 	return api
@@ -92,29 +104,37 @@ func (api *ServerAPI) SortByName(reverse bool) *ServerAPI {
   To support CRUD(Create/Read/Update/Delete)
 ************************************************/
 
+// New 新規作成用パラメーター作成
 func (api *ServerAPI) New() *sacloud.Server {
-	return &sacloud.Server{}
+	return &sacloud.Server{
+		// TagsType
+		TagsType: &sacloud.TagsType{},
+	}
 }
 
+// Create 新規作成
 func (api *ServerAPI) Create(value *sacloud.Server) (*sacloud.Server, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.create(api.createRequest(value), res)
 	})
 }
 
-func (api *ServerAPI) Read(id string) (*sacloud.Server, error) {
+// Read 読み取り
+func (api *ServerAPI) Read(id int64) (*sacloud.Server, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.read(id, nil, res)
 	})
 }
 
-func (api *ServerAPI) Update(id string, value *sacloud.Server) (*sacloud.Server, error) {
+// Update 更新
+func (api *ServerAPI) Update(id int64, value *sacloud.Server) (*sacloud.Server, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.update(id, api.createRequest(value), res)
 	})
 }
 
-func (api *ServerAPI) Delete(id string) (*sacloud.Server, error) {
+// Delete 削除
+func (api *ServerAPI) Delete(id int64) (*sacloud.Server, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.delete(id, nil, res)
 	})

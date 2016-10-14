@@ -10,7 +10,7 @@ import (
 var (
 	testSimpleMonitorJSONTemplate = `
 	{
-		"ID": "123456789012",
+		"ID": 123456789012,
 		"Name": "133.242.224.255",
 		"Description": "sakura-dev",
 		"Settings": {

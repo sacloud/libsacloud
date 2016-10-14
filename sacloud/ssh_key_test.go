@@ -8,7 +8,7 @@ import (
 
 var testSSHKeyJSON = `
 {
-	"ID": "123456789012",
+	"ID": 123456789012,
 	"Name": "test_key",
 	"Description": "",
 	"PublicKey": "ssh-rsa xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",

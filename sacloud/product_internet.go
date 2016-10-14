@@ -1,11 +1,13 @@
 package sacloud
 
-// ProductInternet type of InternetPlan
+// ProductInternet ルータープラン
 type ProductInternet struct {
-	*NumberResource
-	Index         int    `json:",omitempty"`
-	Name          string `json:",omitempty"`
-	BandWidthMbps int    `json:",omitempty"`
-	ServiceClass  string `json:",omitempty"`
+	*Resource
+	// Name 名称
+	Name string `json:",omitempty"`
+	// BandWidthMbps 帯域幅
+	BandWidthMbps int `json:",omitempty"`
+	// ServiceClass サービスクラス
+	ServiceClass string `json:",omitempty"`
 	*EAvailability
 }

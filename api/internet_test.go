@@ -1,6 +1,7 @@
 package api
 
 import (
+	"fmt"
 	"github.com/stretchr/testify/assert"
 	"testing"
 	"time"
@@ -27,7 +28,7 @@ func TestInternetCRUD(t *testing.T) {
 
 	err = api.SleepWhileCreating(id, 120*time.Second)
 	if err != nil {
-		assert.Fail(t, "Timeout: Can't read /internet/"+id)
+		assert.Fail(t, fmt.Sprintf("Timeout: Can't read /internet/%d", id))
 	}
 
 	item, err = api.Read(id)
@@ -42,6 +43,7 @@ func TestInternetCRUD(t *testing.T) {
 	assert.NoError(t, err)
 	assert.NotEqual(t, item.Description, "before")
 
+	// UPDATE BandWidth
 	item, err = api.UpdateBandWidth(id, 500) //IDが変わる
 	assert.NoError(t, err)
 
@@ -49,12 +51,23 @@ func TestInternetCRUD(t *testing.T) {
 
 	err = api.SleepWhileCreating(id, 120*time.Second)
 	if err != nil {
-		assert.Fail(t, "Timeout: Can't read /internet/"+id)
+		assert.Fail(t, fmt.Sprintf("Timeout: Can't read /internet/%d", id))
 	}
 	assert.NoError(t, err)
 
 	item, err = api.Read(id)
 	assert.Equal(t, item.BandWidthMbps, 500)
+
+	// Enable/Disable IPv6
+	ipv6Net, err := api.EnableIPv6(id)
+	assert.NoError(t, err)
+	assert.Equal(t, ipv6Net.Switch.Internet.ID, id)
+
+	// disable
+	item, err = api.Read(id)
+	res, err := api.DisableIPv6(id, item.Switch.IPv6Nets[0].ID)
+	assert.NoError(t, err)
+	assert.True(t, res)
 
 	//Delete
 	_, err = api.Delete(id)

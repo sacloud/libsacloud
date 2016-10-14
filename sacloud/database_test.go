@@ -10,7 +10,7 @@ import (
 var (
 	testDatabaseJSON = `
 {
-        "ID": "999999999999",
+        "ID": 999999999999,
         "Class": "database",
         "Name": "\u540d\u79f0\u672a\u8a2d\u5b9a \u30c7\u30fc\u30bf\u30d9\u30fc\u30b9 15690ceb5d8",
         "Description": "",
@@ -28,7 +28,7 @@ var (
                     "WebUI": "8.8.8.8"
                 },
                 "Backup": {
-                    "Rotate": "8",
+                    "Rotate": 8,
                     "Time": "00:45"
                 }
             }
@@ -76,7 +76,7 @@ var (
                 "UserIPAddress": null,
                 "HostName": null,
                 "Switch": {
-                    "ID": "999999999999",
+                    "ID": 999999999999,
                     "Name": "\u30b9\u30a4\u30c3\u30c1",
                     "Scope": "shared",
                     "Subnet": {

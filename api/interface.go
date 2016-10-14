@@ -5,10 +5,12 @@ import (
 	"github.com/yamamoto-febc/libsacloud/sacloud"
 )
 
+// InterfaceAPI インターフェースAPI
 type InterfaceAPI struct {
 	*baseAPI
 }
 
+// NewInterfaceAPI インターフェースAPI作成
 func NewInterfaceAPI(client *Client) *InterfaceAPI {
 	return &InterfaceAPI{
 		&baseAPI{
@@ -20,54 +22,62 @@ func NewInterfaceAPI(client *Client) *InterfaceAPI {
 	}
 }
 
-func (api *InterfaceAPI) CreateAndConnectToServer(serverID string) (*sacloud.Interface, error) {
+// CreateAndConnectToServer 新規作成しサーバーへ接続する
+func (api *InterfaceAPI) CreateAndConnectToServer(serverID int64) (*sacloud.Interface, error) {
 	iface := api.New()
 	iface.Server = &sacloud.Server{
+		// Resource
 		Resource: &sacloud.Resource{ID: serverID},
 	}
 	return api.Create(iface)
 }
 
-func (api *InterfaceAPI) ConnectToSwitch(interfaceID string, switchID string) (bool, error) {
+// ConnectToSwitch スイッチへ接続する
+func (api *InterfaceAPI) ConnectToSwitch(interfaceID int64, switchID int64) (bool, error) {
 	var (
 		method = "PUT"
-		uri    = fmt.Sprintf("%s/%s/to/switch/%s", api.getResourceURL(), interfaceID, switchID)
+		uri    = fmt.Sprintf("%s/%d/to/switch/%d", api.getResourceURL(), interfaceID, switchID)
 	)
 	return api.modify(method, uri, nil)
 }
 
-func (api *InterfaceAPI) ConnectToSharedSegment(interfaceID string) (bool, error) {
+// ConnectToSharedSegment 共有セグメントへ接続する
+func (api *InterfaceAPI) ConnectToSharedSegment(interfaceID int64) (bool, error) {
 	var (
 		method = "PUT"
-		uri    = fmt.Sprintf("%s/%s/to/switch/shared", api.getResourceURL(), interfaceID)
+		uri    = fmt.Sprintf("%s/%d/to/switch/shared", api.getResourceURL(), interfaceID)
 	)
 	return api.modify(method, uri, nil)
 }
 
-func (api *InterfaceAPI) DisconnectFromSwitch(interfaceID string) (bool, error) {
+// DisconnectFromSwitch スイッチと切断する
+func (api *InterfaceAPI) DisconnectFromSwitch(interfaceID int64) (bool, error) {
 	var (
 		method = "DELETE"
-		uri    = fmt.Sprintf("%s/%s/to/switch", api.getResourceURL(), interfaceID)
+		uri    = fmt.Sprintf("%s/%d/to/switch", api.getResourceURL(), interfaceID)
 	)
 	return api.modify(method, uri, nil)
 }
 
-func (api *InterfaceAPI) Monitor(id string, body *sacloud.ResourceMonitorRequest) (*sacloud.MonitorValues, error) {
+// Monitor アクティビティーモニター取得
+func (api *InterfaceAPI) Monitor(id int64, body *sacloud.ResourceMonitorRequest) (*sacloud.MonitorValues, error) {
 	return api.baseAPI.monitor(id, body)
 }
 
-func (api *InterfaceAPI) ConnectToPacketFilter(interfaceID string, packetFilterID string) (bool, error) {
+// ConnectToPacketFilter パケットフィルター適用
+func (api *InterfaceAPI) ConnectToPacketFilter(interfaceID int64, packetFilterID int64) (bool, error) {
 	var (
 		method = "PUT"
-		uri    = fmt.Sprintf("/%s/%s/to/packetfilter/%s", api.getResourceURL(), interfaceID, packetFilterID)
+		uri    = fmt.Sprintf("/%s/%d/to/packetfilter/%d", api.getResourceURL(), interfaceID, packetFilterID)
 	)
 	return api.modify(method, uri, nil)
 }
 
-func (api *InterfaceAPI) DisconnectFromPacketFilter(interfaceID string) (bool, error) {
+// DisconnectFromPacketFilter パケットフィルター切断
+func (api *InterfaceAPI) DisconnectFromPacketFilter(interfaceID int64) (bool, error) {
 	var (
 		method = "DELETE"
-		uri    = fmt.Sprintf("/%s/%s/to/packetfilter", api.getResourceURL(), interfaceID)
+		uri    = fmt.Sprintf("/%s/%d/to/packetfilter", api.getResourceURL(), interfaceID)
 	)
 	return api.modify(method, uri, nil)
 }

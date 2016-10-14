@@ -9,34 +9,40 @@ import (
 )
 
 /************************************************
-   To support influent interface for Find()
+   To support fluent interface for Find()
 ************************************************/
 
+// Reset 検索条件のリセット
 func (api *DatabaseAPI) Reset() *DatabaseAPI {
 	api.reset()
 	return api
 }
 
+// Offset オフセット
 func (api *DatabaseAPI) Offset(offset int) *DatabaseAPI {
 	api.offset(offset)
 	return api
 }
 
+// Limit リミット
 func (api *DatabaseAPI) Limit(limit int) *DatabaseAPI {
 	api.limit(limit)
 	return api
 }
 
+// Include 取得する項目
 func (api *DatabaseAPI) Include(key string) *DatabaseAPI {
 	api.include(key)
 	return api
 }
 
+// Exclude 除外する項目
 func (api *DatabaseAPI) Exclude(key string) *DatabaseAPI {
 	api.exclude(key)
 	return api
 }
 
+// FilterBy 指定項目でのフィルター
 func (api *DatabaseAPI) FilterBy(key string, value interface{}) *DatabaseAPI {
 	api.filterBy(key, value, false)
 	return api
@@ -47,13 +53,17 @@ func (api *DatabaseAPI) FilterBy(key string, value interface{}) *DatabaseAPI {
 // 	return api
 // }
 
+// WithNameLike 名称条件
 func (api *DatabaseAPI) WithNameLike(name string) *DatabaseAPI {
 	return api.FilterBy("Name", name)
 }
 
+// WithTag タグ条件
 func (api *DatabaseAPI) WithTag(tag string) *DatabaseAPI {
 	return api.FilterBy("Tags.Name", tag)
 }
+
+// WithTags タグ(複数)条件
 func (api *DatabaseAPI) WithTags(tags []string) *DatabaseAPI {
 	return api.FilterBy("Tags.Name", []interface{}{tags})
 }
@@ -73,11 +83,13 @@ func (api *DatabaseAPI) WithTags(tags []string) *DatabaseAPI {
 // 	return api
 // }
 
+// SortBy 指定キーでのソート
 func (api *DatabaseAPI) SortBy(key string, reverse bool) *DatabaseAPI {
 	api.sortBy(key, reverse)
 	return api
 }
 
+// SortByName 名称でのソート
 func (api *DatabaseAPI) SortByName(reverse bool) *DatabaseAPI {
 	api.sortByName(reverse)
 	return api

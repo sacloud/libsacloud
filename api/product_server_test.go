@@ -9,7 +9,7 @@ func TestGetProductServer(t *testing.T) {
 	api := client.Product.Server
 
 	//READ
-	res, err := api.Read("1001") // 1core 1GB
+	res, err := api.Read(1001) // 1core 1GB
 	assert.NoError(t, err)
 	assert.NotEmpty(t, res)
 	assert.NotEmpty(t, res.ID)

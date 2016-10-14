@@ -10,10 +10,15 @@ import (
 //HACK: さくらのAPI側仕様: Applianceの内容によってJSONフォーマットが異なるため
 //      ロードバランサ/VPCルータそれぞれでリクエスト/レスポンスデータ型を定義する。
 
+// SearchLoadBalancerResponse ロードバランサー検索レスポンス
 type SearchLoadBalancerResponse struct {
-	Total         int                    `json:",omitempty"`
-	From          int                    `json:",omitempty"`
-	Count         int                    `json:",omitempty"`
+	// Total 総件数
+	Total int `json:",omitempty"`
+	// From ページング開始位置
+	From int `json:",omitempty"`
+	// Count 件数
+	Count int `json:",omitempty"`
+	// LoadBalancers ロードバランサー リスト
 	LoadBalancers []sacloud.LoadBalancer `json:"Appliances,omitempty"`
 }
 
@@ -33,10 +38,12 @@ type loadBalancerResponse struct {
 	Success               interface{} `json:",omitempty"` //HACK: さくらのAPI側仕様: 戻り値:Successがbool値へ変換できないためinterface{}
 }
 
+// LoadBalancerAPI ロードバランサーAPI
 type LoadBalancerAPI struct {
 	*baseAPI
 }
 
+// NewLoadBalancerAPI ロードバランサーAPI作成
 func NewLoadBalancerAPI(client *Client) *LoadBalancerAPI {
 	return &LoadBalancerAPI{
 		&baseAPI{
@@ -53,6 +60,7 @@ func NewLoadBalancerAPI(client *Client) *LoadBalancerAPI {
 	}
 }
 
+// Find 検索
 func (api *LoadBalancerAPI) Find() (*SearchLoadBalancerResponse, error) {
 	data, err := api.client.newRequest("GET", api.getResourceURL(), api.getSearchState())
 	if err != nil {
@@ -82,39 +90,45 @@ func (api *LoadBalancerAPI) createRequest(value *sacloud.LoadBalancer) *loadBala
 //	return sacloud.CreateNewLoadBalancer()
 //}
 
+// Create 新規作成
 func (api *LoadBalancerAPI) Create(value *sacloud.LoadBalancer) (*sacloud.LoadBalancer, error) {
 	return api.request(func(res *loadBalancerResponse) error {
 		return api.create(api.createRequest(value), res)
 	})
 }
 
-func (api *LoadBalancerAPI) Read(id string) (*sacloud.LoadBalancer, error) {
+// Read 読み取り
+func (api *LoadBalancerAPI) Read(id int64) (*sacloud.LoadBalancer, error) {
 	return api.request(func(res *loadBalancerResponse) error {
 		return api.read(id, nil, res)
 	})
 }
 
-func (api *LoadBalancerAPI) Update(id string, value *sacloud.LoadBalancer) (*sacloud.LoadBalancer, error) {
+// Update 更新
+func (api *LoadBalancerAPI) Update(id int64, value *sacloud.LoadBalancer) (*sacloud.LoadBalancer, error) {
 	return api.request(func(res *loadBalancerResponse) error {
 		return api.update(id, api.createRequest(value), res)
 	})
 }
 
-func (api *LoadBalancerAPI) Delete(id string) (*sacloud.LoadBalancer, error) {
+// Delete 削除
+func (api *LoadBalancerAPI) Delete(id int64) (*sacloud.LoadBalancer, error) {
 	return api.request(func(res *loadBalancerResponse) error {
 		return api.delete(id, nil, res)
 	})
 }
 
-func (api *LoadBalancerAPI) Config(id string) (bool, error) {
+// Config 設定変更の反映
+func (api *LoadBalancerAPI) Config(id int64) (bool, error) {
 	var (
 		method = "PUT"
-		uri    = fmt.Sprintf("%s/%s/config", api.getResourceURL(), id)
+		uri    = fmt.Sprintf("%s/%d/config", api.getResourceURL(), id)
 	)
 	return api.modify(method, uri, nil)
 }
 
-func (api *LoadBalancerAPI) IsUp(id string) (bool, error) {
+// IsUp 起動しているか判定
+func (api *LoadBalancerAPI) IsUp(id int64) (bool, error) {
 	lb, err := api.Read(id)
 	if err != nil {
 		return false, err
@@ -122,7 +136,8 @@ func (api *LoadBalancerAPI) IsUp(id string) (bool, error) {
 	return lb.Instance.IsUp(), nil
 }
 
-func (api *LoadBalancerAPI) IsDown(id string) (bool, error) {
+// IsDown ダウンしているか判定
+func (api *LoadBalancerAPI) IsDown(id int64) (bool, error) {
 	lb, err := api.Read(id)
 	if err != nil {
 		return false, err
@@ -130,54 +145,57 @@ func (api *LoadBalancerAPI) IsDown(id string) (bool, error) {
 	return lb.Instance.IsDown(), nil
 }
 
-// Boot power on
-func (api *LoadBalancerAPI) Boot(id string) (bool, error) {
+// Boot 起動
+func (api *LoadBalancerAPI) Boot(id int64) (bool, error) {
 	var (
 		method = "PUT"
-		uri    = fmt.Sprintf("%s/%s/power", api.getResourceURL(), id)
+		uri    = fmt.Sprintf("%s/%d/power", api.getResourceURL(), id)
 	)
 	return api.modify(method, uri, nil)
 }
 
-// Shutdown power off
-func (api *LoadBalancerAPI) Shutdown(id string) (bool, error) {
+// Shutdown シャットダウン(graceful)
+func (api *LoadBalancerAPI) Shutdown(id int64) (bool, error) {
 	var (
 		method = "DELETE"
-		uri    = fmt.Sprintf("%s/%s/power", api.getResourceURL(), id)
+		uri    = fmt.Sprintf("%s/%d/power", api.getResourceURL(), id)
 	)
 
 	return api.modify(method, uri, nil)
 }
 
-// Stop force shutdown
-func (api *LoadBalancerAPI) Stop(id string) (bool, error) {
+// Stop シャットダウン(force)
+func (api *LoadBalancerAPI) Stop(id int64) (bool, error) {
 	var (
 		method = "DELETE"
-		uri    = fmt.Sprintf("%s/%s/power", api.getResourceURL(), id)
+		uri    = fmt.Sprintf("%s/%d/power", api.getResourceURL(), id)
 	)
 
 	return api.modify(method, uri, map[string]bool{"Force": true})
 }
 
-func (api *LoadBalancerAPI) RebootForce(id string) (bool, error) {
+// RebootForce 再起動
+func (api *LoadBalancerAPI) RebootForce(id int64) (bool, error) {
 	var (
 		method = "PUT"
-		uri    = fmt.Sprintf("%s/%s/reset", api.getResourceURL(), id)
+		uri    = fmt.Sprintf("%s/%d/reset", api.getResourceURL(), id)
 	)
 
 	return api.modify(method, uri, nil)
 }
 
-func (api *LoadBalancerAPI) ResetForce(id string, recycleProcess bool) (bool, error) {
+// ResetForce リセット
+func (api *LoadBalancerAPI) ResetForce(id int64, recycleProcess bool) (bool, error) {
 	var (
 		method = "PUT"
-		uri    = fmt.Sprintf("%s/%s/reset", api.getResourceURL(), id)
+		uri    = fmt.Sprintf("%s/%d/reset", api.getResourceURL(), id)
 	)
 
 	return api.modify(method, uri, map[string]bool{"RecycleProcess": recycleProcess})
 }
 
-func (api *LoadBalancerAPI) SleepUntilUp(id string, timeout time.Duration) error {
+// SleepUntilUp 起動するまで待機
+func (api *LoadBalancerAPI) SleepUntilUp(id int64, timeout time.Duration) error {
 	current := 0 * time.Second
 	interval := 5 * time.Second
 	for {
@@ -199,7 +217,8 @@ func (api *LoadBalancerAPI) SleepUntilUp(id string, timeout time.Duration) error
 	}
 }
 
-func (api *LoadBalancerAPI) SleepUntilDown(id string, timeout time.Duration) error {
+// SleepUntilDown ダウンするまで待機
+func (api *LoadBalancerAPI) SleepUntilDown(id int64, timeout time.Duration) error {
 	current := 0 * time.Second
 	interval := 5 * time.Second
 	for {
@@ -221,8 +240,8 @@ func (api *LoadBalancerAPI) SleepUntilDown(id string, timeout time.Duration) err
 	}
 }
 
-// SleepWhileCopying wait until became to available
-func (api *LoadBalancerAPI) SleepWhileCopying(id string, timeout time.Duration, maxRetryCount int) error {
+// SleepWhileCopying コピー終了まで待機
+func (api *LoadBalancerAPI) SleepWhileCopying(id int64, timeout time.Duration, maxRetryCount int) error {
 	current := 0 * time.Second
 	interval := 5 * time.Second
 	errCount := 0
@@ -246,4 +265,9 @@ func (api *LoadBalancerAPI) SleepWhileCopying(id string, timeout time.Duration, 
 			return fmt.Errorf("Timeout: SleepWhileCopying")
 		}
 	}
+}
+
+// Monitor アクティビティーモニター取得
+func (api *LoadBalancerAPI) Monitor(id int64, body *sacloud.ResourceMonitorRequest) (*sacloud.MonitorValues, error) {
+	return api.baseAPI.applianceMonitorBy(id, "interface", 0, body)
 }

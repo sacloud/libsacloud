@@ -12,23 +12,46 @@ type baseAPI struct {
 	FuncGetResourceURL      func() string
 	FuncBaseSearchCondition func() *sacloud.Request
 	state                   *sacloud.Request
+	apiRootSuffix           string
 }
 
-func (b *baseAPI) getResourceURL() string {
-	if b.FuncGetResourceURL != nil {
-		return b.FuncGetResourceURL()
+var (
+	sakuraCloudAPIRootSuffix    = "api/cloud/1.1"
+	sakuraBillingAPIRootSuffix  = "api/system/1.0"
+	sakuraWebAccelAPIRootSuffix = "api/webaccel/1.0"
+)
+
+func (api *baseAPI) getResourceURL() string {
+
+	suffix := api.apiRootSuffix
+	//デフォルト : クラウドAPI
+	if suffix == "" {
+		suffix = sakuraCloudAPIRootSuffix
 	}
-	return ""
+
+	url := ""
+	if api.FuncGetResourceURL != nil {
+		url = api.FuncGetResourceURL()
+	}
+
+	if suffix == "" {
+		return url
+	}
+	if url == "" {
+		return suffix
+	}
+
+	return fmt.Sprintf("%s/%s", suffix, url)
 }
 
-func (b *baseAPI) getSearchState() *sacloud.Request {
-	if b.state == nil {
-		b.reset()
+func (api *baseAPI) getSearchState() *sacloud.Request {
+	if api.state == nil {
+		api.reset()
 	}
-	return b.state
+	return api.state
 }
-func (b *baseAPI) sortBy(key string, reverse bool) *baseAPI {
-	return b.setStateValue(func(state *sacloud.Request) {
+func (api *baseAPI) sortBy(key string, reverse bool) *baseAPI {
+	return api.setStateValue(func(state *sacloud.Request) {
 		if state.Sort == nil {
 			state.Sort = []string{}
 		}
@@ -43,36 +66,36 @@ func (b *baseAPI) sortBy(key string, reverse bool) *baseAPI {
 
 }
 
-func (b *baseAPI) reset() *baseAPI {
-	if b.FuncBaseSearchCondition == nil {
-		b.state = &sacloud.Request{}
+func (api *baseAPI) reset() *baseAPI {
+	if api.FuncBaseSearchCondition == nil {
+		api.state = &sacloud.Request{}
 	} else {
-		b.state = b.FuncBaseSearchCondition()
+		api.state = api.FuncBaseSearchCondition()
 	}
-	return b
+	return api
 }
 
-func (b *baseAPI) setStateValue(setFunc func(*sacloud.Request)) *baseAPI {
-	state := b.getSearchState()
+func (api *baseAPI) setStateValue(setFunc func(*sacloud.Request)) *baseAPI {
+	state := api.getSearchState()
 	setFunc(state)
-	return b
+	return api
 
 }
 
-func (b *baseAPI) offset(offset int) *baseAPI {
-	return b.setStateValue(func(state *sacloud.Request) {
+func (api *baseAPI) offset(offset int) *baseAPI {
+	return api.setStateValue(func(state *sacloud.Request) {
 		state.From = offset
 	})
 }
 
-func (b *baseAPI) limit(limit int) *baseAPI {
-	return b.setStateValue(func(state *sacloud.Request) {
+func (api *baseAPI) limit(limit int) *baseAPI {
+	return api.setStateValue(func(state *sacloud.Request) {
 		state.Count = limit
 	})
 }
 
-func (b *baseAPI) include(key string) *baseAPI {
-	return b.setStateValue(func(state *sacloud.Request) {
+func (api *baseAPI) include(key string) *baseAPI {
+	return api.setStateValue(func(state *sacloud.Request) {
 		if state.Include == nil {
 			state.Include = []string{}
 		}
@@ -80,8 +103,8 @@ func (b *baseAPI) include(key string) *baseAPI {
 	})
 }
 
-func (b *baseAPI) exclude(key string) *baseAPI {
-	return b.setStateValue(func(state *sacloud.Request) {
+func (api *baseAPI) exclude(key string) *baseAPI {
+	return api.setStateValue(func(state *sacloud.Request) {
 		if state.Exclude == nil {
 			state.Exclude = []string{}
 		}
@@ -89,8 +112,8 @@ func (b *baseAPI) exclude(key string) *baseAPI {
 	})
 }
 
-func (b *baseAPI) filterBy(key string, value interface{}, multiple bool) *baseAPI {
-	return b.setStateValue(func(state *sacloud.Request) {
+func (api *baseAPI) filterBy(key string, value interface{}, multiple bool) *baseAPI {
+	return api.setStateValue(func(state *sacloud.Request) {
 
 		//HACK さくらのクラウド側でqueryStringでの+エスケープに対応していないため、
 		// %20にエスケープされるurl.Pathを利用する。
@@ -115,25 +138,25 @@ func (b *baseAPI) filterBy(key string, value interface{}, multiple bool) *baseAP
 	})
 }
 
-func (b *baseAPI) withNameLike(name string) *baseAPI {
-	return b.filterBy("Name", name, false)
+func (api *baseAPI) withNameLike(name string) *baseAPI {
+	return api.filterBy("Name", name, false)
 }
 
-func (b *baseAPI) withTag(tag string) *baseAPI {
-	return b.filterBy("Tags.Name", tag, false)
+func (api *baseAPI) withTag(tag string) *baseAPI {
+	return api.filterBy("Tags.Name", tag, false)
 }
 
-func (b *baseAPI) withTags(tags []string) *baseAPI {
-	return b.filterBy("Tags.Name", tags, false)
+func (api *baseAPI) withTags(tags []string) *baseAPI {
+	return api.filterBy("Tags.Name", tags, false)
 }
 
-func (b *baseAPI) sortByName(reverse bool) *baseAPI {
-	return b.sortBy("Name", reverse)
+func (api *baseAPI) sortByName(reverse bool) *baseAPI {
+	return api.sortBy("Name", reverse)
 }
 
-func (b *baseAPI) Find() (*sacloud.SearchResponse, error) {
+func (api *baseAPI) Find() (*sacloud.SearchResponse, error) {
 
-	data, err := b.client.newRequest("GET", b.getResourceURL(), b.getSearchState())
+	data, err := api.client.newRequest("GET", api.getResourceURL(), api.getSearchState())
 	if err != nil {
 		return nil, err
 	}
@@ -144,8 +167,8 @@ func (b *baseAPI) Find() (*sacloud.SearchResponse, error) {
 	return &res, nil
 }
 
-func (b *baseAPI) request(method string, uri string, body interface{}, res interface{}) error {
-	data, err := b.client.newRequest(method, uri, body)
+func (api *baseAPI) request(method string, uri string, body interface{}, res interface{}) error {
+	data, err := api.client.newRequest(method, uri, body)
 	if err != nil {
 		return err
 	}
@@ -158,70 +181,87 @@ func (b *baseAPI) request(method string, uri string, body interface{}, res inter
 	return nil
 }
 
-func (b *baseAPI) create(body interface{}, res interface{}) error {
+func (api *baseAPI) create(body interface{}, res interface{}) error {
 	var (
 		method = "POST"
-		uri    = b.getResourceURL()
+		uri    = api.getResourceURL()
 	)
 
-	return b.request(method, uri, body, res)
+	return api.request(method, uri, body, res)
 }
 
-func (b *baseAPI) read(id string, body interface{}, res interface{}) error {
+func (api *baseAPI) read(id int64, body interface{}, res interface{}) error {
 	var (
 		method = "GET"
-		uri    = fmt.Sprintf("%s/%s", b.getResourceURL(), id)
+		uri    = fmt.Sprintf("%s/%d", api.getResourceURL(), id)
 	)
 
-	return b.request(method, uri, body, res)
+	return api.request(method, uri, body, res)
 }
 
-func (b *baseAPI) update(id string, body interface{}, res interface{}) error {
+func (api *baseAPI) update(id int64, body interface{}, res interface{}) error {
 	var (
 		method = "PUT"
-		uri    = fmt.Sprintf("%s/%s", b.getResourceURL(), id)
+		uri    = fmt.Sprintf("%s/%d", api.getResourceURL(), id)
 	)
-	return b.request(method, uri, body, res)
+	return api.request(method, uri, body, res)
 }
 
-func (b *baseAPI) delete(id string, body interface{}, res interface{}) error {
+func (api *baseAPI) delete(id int64, body interface{}, res interface{}) error {
 	var (
 		method = "DELETE"
-		uri    = fmt.Sprintf("%s/%s", b.getResourceURL(), id)
+		uri    = fmt.Sprintf("%s/%d", api.getResourceURL(), id)
 	)
-	return b.request(method, uri, body, res)
+	return api.request(method, uri, body, res)
 }
 
-func (b *baseAPI) modify(method string, uri string, body interface{}) (bool, error) {
+func (api *baseAPI) modify(method string, uri string, body interface{}) (bool, error) {
 	res := &sacloud.ResultFlagValue{}
-	err := b.request(method, uri, body, res)
+	err := api.request(method, uri, body, res)
 	if err != nil {
 		return false, err
 	}
 	return res.IsOk, nil
 }
 
-func (b *baseAPI) action(method string, uri string, body interface{}, res interface{}) (bool, error) {
-	err := b.request(method, uri, body, res)
+func (api *baseAPI) action(method string, uri string, body interface{}, res interface{}) (bool, error) {
+	err := api.request(method, uri, body, res)
 	if err != nil {
 		return false, err
 	}
 	return true, nil
 }
 
-func (b *baseAPI) monitor(id string, body *sacloud.ResourceMonitorRequest) (*sacloud.MonitorValues, error) {
+func (api *baseAPI) monitor(id int64, body *sacloud.ResourceMonitorRequest) (*sacloud.MonitorValues, error) {
 	var (
 		method = "GET"
-		uri    = fmt.Sprintf("%s/%s/monitor", b.getResourceURL(), id)
+		uri    = fmt.Sprintf("%s/%d/monitor", api.getResourceURL(), id)
 	)
 	res := &sacloud.ResourceMonitorResponse{}
-	err := b.request(method, uri, body, res)
+	err := api.request(method, uri, body, res)
 	if err != nil {
 		return nil, err
 	}
 	return res.Data, nil
 }
 
-func (b *baseAPI) NewResourceMonitorRequest() *sacloud.ResourceMonitorRequest {
+func (api *baseAPI) applianceMonitorBy(id int64, target string, nicIndex int, body *sacloud.ResourceMonitorRequest) (*sacloud.MonitorValues, error) {
+	var (
+		method = "GET"
+		uri    = fmt.Sprintf("%s/%d/%s/%d/monitor", api.getResourceURL(), id, target, nicIndex)
+	)
+	if nicIndex == 0 {
+		uri = fmt.Sprintf("%s/%d/%s/monitor", api.getResourceURL(), id, target)
+	}
+
+	res := &sacloud.ResourceMonitorResponse{}
+	err := api.request(method, uri, body, res)
+	if err != nil {
+		return nil, err
+	}
+	return res.Data, nil
+}
+
+func (api *baseAPI) NewResourceMonitorRequest() *sacloud.ResourceMonitorRequest {
 	return &sacloud.ResourceMonitorRequest{}
 }

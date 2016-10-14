@@ -2,6 +2,7 @@ package api
 
 import (
 	"github.com/stretchr/testify/assert"
+	"github.com/yamamoto-febc/libsacloud/sacloud"
 	"testing"
 	"time"
 )
@@ -10,10 +11,22 @@ const testArchiveName = "libsacloud_test_archive"
 
 func TestGetCentOSArvhiveByName(t *testing.T) {
 	archiveAPI := client.Archive
+
 	res, err := archiveAPI.WithNameLike("CentOS 7.2 64bit").Find()
 	assert.NoError(t, err)
 	assert.NotEmpty(t, res)
 	assert.Equal(t, len(res.Archives), 1)
+}
+
+func TestGetArchiveWithLimitOffset(t *testing.T) {
+	archiveAPI := client.Archive
+	res, err := archiveAPI.Reset().Limit(2).Offset(1).Include("Name").Include("CreatedAt").Find()
+	assert.NoError(t, err)
+	assert.NotEmpty(t, res)
+	assert.Equal(t, len(res.Archives), 2)
+	assert.Equal(t, res.From, 1)
+	assert.Equal(t, res.Count, 2)
+	assert.True(t, res.Total > 2)
 }
 
 func TestFindState(t *testing.T) {
@@ -41,6 +54,7 @@ func TestFindState(t *testing.T) {
 	assert.Empty(t, state.Exclude)
 
 	res, err := api.withNameLike("CentOS").limit(1).Find()
+
 	assert.NoError(t, err)
 	assert.NotEmpty(t, res)
 	assert.Equal(t, res.Count, 1)
@@ -122,6 +136,33 @@ func TestCreateAndWait(t *testing.T) {
 	assert.NoError(t, err)
 
 	archiveAPI.Delete(archive.ID)
+
+}
+
+func TestArchiveAPI_FindStableOSs(t *testing.T) {
+
+	api := client.Archive
+	type target struct {
+		label string
+		f     func() (*sacloud.Archive, error)
+	}
+
+	targets := []target{
+		{label: "CentOS", f: api.FindLatestStableCentOS},
+		{label: "Debian", f: api.FindLatestStableDebian},
+		{label: "Ubuntu", f: api.FindLatestStableUbuntu},
+		{label: "VyOS", f: api.FindLatestStableVyOS},
+		{label: "CoreOS", f: api.FindLatestStableCoreOS},
+		{label: "Kusanagi", f: api.FindLatestStableKusanagi},
+	}
+
+	for _, ts := range targets {
+		res, err := ts.f()
+		assert.NoError(t, err)
+		assert.NotNil(t, res)
+		t.Logf("Zone:%s / Current Stable %s: %#v", client.Zone, ts.label, res.Resource)
+
+	}
 
 }
 

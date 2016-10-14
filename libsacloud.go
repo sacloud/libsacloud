@@ -1,4 +1,5 @@
 // Package libsacloud is the SAKURA CLOUD API v1.1 Client for Go.
-package main
+package libsacloud
 
-func main() {}
+// Version バージョン
+const Version = "1.0.0"

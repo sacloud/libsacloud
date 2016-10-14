@@ -1,6 +1,7 @@
 package api
 
 import (
+	"fmt"
 	"github.com/stretchr/testify/assert"
 	"github.com/yamamoto-febc/libsacloud/sacloud"
 	"testing"
@@ -62,7 +63,7 @@ func TestLoadBalancerCRUD(t *testing.T) {
 	assert.NotEmpty(t, sw)
 
 	//CREATE
-	createLoadBalancerValues.SwitchID = sw.ID
+	createLoadBalancerValues.SwitchID = fmt.Sprintf("%d", sw.ID)
 	newItem, err := sacloud.CreateNewLoadBalancerSingle(createLoadBalancerValues, loadBalancerSettings)
 	assert.NoError(t, err)
 
@@ -124,7 +125,7 @@ func TestLoadBalancerCRUDWithoutVIP(t *testing.T) {
 	assert.NotEmpty(t, sw)
 
 	//CREATE
-	createLoadBalancerValues.SwitchID = sw.ID
+	createLoadBalancerValues.SwitchID = fmt.Sprintf("%d", sw.ID)
 	newItem, err := sacloud.CreateNewLoadBalancerSingle(createLoadBalancerValues, nil)
 	assert.NoError(t, err)
 

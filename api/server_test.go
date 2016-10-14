@@ -112,25 +112,50 @@ func TestServerOperations(t *testing.T) {
 
 func TestSearchServer(t *testing.T) {
 	assert.True(t, true)
-
-	//client.Region = "is1a"
+	//
+	//client.Zone = "is1a"
 	//api := client.Server
-	//s, err := api.withNameLike("sakura-dev").Find()
+	//s, err := api.Reset().withNameLike("sakura-dev").Find()
 	//assert.NoError(t, err)
 	//assert.NotEmpty(t, s)
 	//
 	//server := s.Servers[0]
-	//monitor, err := api.Monitor(server.ID, nil)
+	//
+	//now := time.Now()
+	//before10 := now.Add(-10 * time.Minute)
+	//
+	//// HACK : /monitor系APIはナノ秒があるとうまく範囲指定ができない
+	////req := &sacloud.ResourceMonitorRequest{
+	////	Start: &now,
+	////	End:   &now,
+	////}
+	//req := sacloud.NewResourceMonitorRequest(&before10, &now)
+	//
+	//monitor, err := api.Monitor(server.ID, req)
+	//
 	//assert.NoError(t, err)
 	//assert.NotEmpty(t, monitor)
 	//
-	//monitor, err = client.Disk.Monitor(server.Disks[0].ID, nil)
+	//rawMonitorValue := map[string]*sacloud.MonitorValue(*monitor)
+	//
+	//assert.True(t, len(rawMonitorValue) >= 2)
+	//assert.True(t, len(rawMonitorValue) <= 3)
+	//
+	//monitor, err = client.Disk.Monitor(server.Disks[0].ID, req)
 	//assert.NoError(t, err)
 	//assert.NotEmpty(t, monitor)
 	//
-	//monitor, err = client.Interface.Monitor(server.Interfaces[0].ID, nil)
+	//rawMonitorValue = map[string]*sacloud.MonitorValue(*monitor)
+	//assert.True(t, len(rawMonitorValue) >= 2)
+	//assert.True(t, len(rawMonitorValue) <= 3)
+	//
+	//monitor, err = client.Interface.Monitor(server.Interfaces[0].ID, req)
 	//assert.NoError(t, err)
 	//assert.NotEmpty(t, monitor)
+	//
+	//rawMonitorValue = map[string]*sacloud.MonitorValue(*monitor)
+	//assert.True(t, len(rawMonitorValue) >= 2)
+	//assert.True(t, len(rawMonitorValue) <= 3)
 
 }
 

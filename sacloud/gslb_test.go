@@ -8,7 +8,7 @@ import (
 
 var testGSLBJSON = `
         {
-            "ID": "123456789012",
+            "ID": 123456789012,
             "Name": "hogeGSLB",
             "Description": "GSLB\u306e\u307b\u3052\u3067\u3059",
             "Settings": {
@@ -46,7 +46,7 @@ var testGSLBJSON = `
                 "ServiceClass": "cloud\/gslb"
             },
             "Icon": {
-                "ID": "112800442534",
+                "ID": 112800442534,
                 "URL": "https:\/\/secure.sakura.ad.jp\/cloud\/zone\/is1b\/api\/cloud\/1.1\/icon\/112800442534.png",
                 "Name": "\u30c6\u30b9\u30c8\u30a2\u30a4\u30b3\u30f3",
                 "Scope": "user"

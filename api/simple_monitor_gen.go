@@ -9,34 +9,40 @@ import (
 )
 
 /************************************************
-   To support influent interface for Find()
+   To support fluent interface for Find()
 ************************************************/
 
+// Reset 検索条件のリセット
 func (api *SimpleMonitorAPI) Reset() *SimpleMonitorAPI {
 	api.reset()
 	return api
 }
 
+// Offset オフセット
 func (api *SimpleMonitorAPI) Offset(offset int) *SimpleMonitorAPI {
 	api.offset(offset)
 	return api
 }
 
+// Limit リミット
 func (api *SimpleMonitorAPI) Limit(limit int) *SimpleMonitorAPI {
 	api.limit(limit)
 	return api
 }
 
+// Include 取得する項目
 func (api *SimpleMonitorAPI) Include(key string) *SimpleMonitorAPI {
 	api.include(key)
 	return api
 }
 
+// Exclude 除外する項目
 func (api *SimpleMonitorAPI) Exclude(key string) *SimpleMonitorAPI {
 	api.exclude(key)
 	return api
 }
 
+// FilterBy 指定キーでのフィルター
 func (api *SimpleMonitorAPI) FilterBy(key string, value interface{}) *SimpleMonitorAPI {
 	api.filterBy(key, value, false)
 	return api
@@ -47,13 +53,17 @@ func (api *SimpleMonitorAPI) FilterBy(key string, value interface{}) *SimpleMoni
 // 	return api
 // }
 
+// WithNameLike 名称条件
 func (api *SimpleMonitorAPI) WithNameLike(name string) *SimpleMonitorAPI {
 	return api.FilterBy("Name", name)
 }
 
+// WithTag タグ条件
 func (api *SimpleMonitorAPI) WithTag(tag string) *SimpleMonitorAPI {
 	return api.FilterBy("Tags.Name", tag)
 }
+
+// WithTags タグ(複数)条件
 func (api *SimpleMonitorAPI) WithTags(tags []string) *SimpleMonitorAPI {
 	return api.FilterBy("Tags.Name", []interface{}{tags})
 }
@@ -73,11 +83,13 @@ func (api *SimpleMonitorAPI) WithTags(tags []string) *SimpleMonitorAPI {
 // 	return api
 // }
 
+// SortBy 指定キーでのソート
 func (api *SimpleMonitorAPI) SortBy(key string, reverse bool) *SimpleMonitorAPI {
 	api.sortBy(key, reverse)
 	return api
 }
 
+// SortByName 名称でのソート
 func (api *SimpleMonitorAPI) SortByName(reverse bool) *SimpleMonitorAPI {
 	api.sortByName(reverse)
 	return api

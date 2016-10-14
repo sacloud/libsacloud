@@ -1,25 +1,34 @@
 package sacloud
 
+// VPCRouter VPCルーター
 type VPCRouter struct {
 	*Appliance
-	Remark   *VPCRouterRemark   `json:",omitempty"`
+	// Remark リマーク
+	Remark *VPCRouterRemark `json:",omitempty"`
+	// Settings VPCルーター設定リスト
 	Settings *VPCRouterSettings `json:",omitempty"`
 }
 
+// VPCRouterRemark リマーク
 type VPCRouterRemark struct {
 	*ApplianceRemarkBase
-	Zone *Resource
+	// TODO Zone
+	//Zone *Resource
 }
 
+// VPCRouterSettings VPCルーター設定リスト
 type VPCRouterSettings struct {
+	// Router VPCルーター設定
 	Router *VPCRouterSetting `json:",omitempty"`
 }
 
+// CreateNewVPCRouter VPCルーター作成
 func CreateNewVPCRouter() *VPCRouter {
 	return &VPCRouter{
 		Appliance: &Appliance{
-			Class: "vpcrouter",
-			Plan:  &NumberResource{},
+			Class:    "vpcrouter",
+			Plan:     &Resource{},
+			TagsType: &TagsType{},
 		},
 		Remark: &VPCRouterRemark{
 			ApplianceRemarkBase: &ApplianceRemarkBase{
@@ -33,6 +42,7 @@ func CreateNewVPCRouter() *VPCRouter {
 	}
 }
 
+// InitVPCRouterSetting VPCルーター設定初期化
 func (v *VPCRouter) InitVPCRouterSetting() {
 	settings := &VPCRouterSettings{
 		Router: &VPCRouterSetting{},
@@ -48,34 +58,40 @@ func (v *VPCRouter) InitVPCRouterSetting() {
 	v.Settings = settings
 }
 
+// IsStandardPlan スタンダードプランか判定
 func (v *VPCRouter) IsStandardPlan() bool {
-	id, _ := v.Plan.ID.Int64()
-	return id == 1
-}
-func (v *VPCRouter) IsPremiumPlan() bool {
-	id, _ := v.Plan.ID.Int64()
-	return id == 2
-}
-func (v *VPCRouter) IsHighSpecPlan() bool {
-	id, _ := v.Plan.ID.Int64()
-	return id == 3
+	return v.Plan.ID == 1
 }
 
+// IsPremiumPlan プレミアうプランか判定
+func (v *VPCRouter) IsPremiumPlan() bool {
+	return v.Plan.ID == 2
+}
+
+// IsHighSpecPlan ハイスペックプランか判定
+func (v *VPCRouter) IsHighSpecPlan() bool {
+	return v.Plan.ID == 3
+}
+
+// SetStandardPlan スタンダードプランへ設定
 func (v *VPCRouter) SetStandardPlan() {
-	v.Plan.SetIDByNumber(1)
+	v.Plan.SetID(1)
 	v.Remark.Switch = &ApplianceRemarkSwitch{
+		// Scope
 		Scope: "shared",
 	}
 	v.Settings = nil
 }
 
+// SetPremiumPlan プレミアムプランへ設定
 func (v *VPCRouter) SetPremiumPlan(switchID string, virtualIPAddress string, ipAddress1 string, ipAddress2 string, vrid int, ipAliases []string) {
-	v.Plan.SetIDByNumber(2)
+	v.Plan.SetID(2)
 	v.setPremiumServices(switchID, virtualIPAddress, ipAddress1, ipAddress2, vrid, ipAliases)
 }
 
+// SetHighSpecPlan ハイスペックプランへ設定
 func (v *VPCRouter) SetHighSpecPlan(switchID string, virtualIPAddress string, ipAddress1 string, ipAddress2 string, vrid int, ipAliases []string) {
-	v.Plan.SetIDByNumber(3)
+	v.Plan.SetID(3)
 	v.setPremiumServices(switchID, virtualIPAddress, ipAddress1, ipAddress2, vrid, ipAliases)
 }
 

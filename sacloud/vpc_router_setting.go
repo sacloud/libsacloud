@@ -5,28 +5,49 @@ import (
 	"reflect"
 )
 
+// VPCRouterSetting VPCルーター設定
 type VPCRouterSetting struct {
-	Interfaces         []*VPCRouterInterface        `json:",omitempty"`
-	StaticNAT          *VPCRouterStaticNAT          `json:",omitempty"`
-	PortForwarding     *VPCRouterPortForwarding     `json:",omitempty"`
-	Firewall           *VPCRouterFirewall           `json:",omitempty"`
-	DHCPServer         *VPCRouterDHCPServer         `json:",omitempty"`
-	DHCPStaticMapping  *VPCRouterDHCPStaticMapping  `json:",omitempty"`
-	L2TPIPsecServer    *VPCRouterL2TPIPsecServer    `json:",omitempty"`
-	PPTPServer         *VPCRouterPPTPServer         `json:",omitempty"`
-	RemoteAccessUsers  *VPCRouterRemoteAccessUsers  `json:",omitempty"`
+	// Interfaces NIC設定
+	Interfaces []*VPCRouterInterface `json:",omitempty"`
+	// StaticNAT スタティックNAT設定
+	StaticNAT *VPCRouterStaticNAT `json:",omitempty"`
+	// PortForwarding ポートフォワーディング設定
+	PortForwarding *VPCRouterPortForwarding `json:",omitempty"`
+	// Firewall ファイアウォール設定
+	Firewall *VPCRouterFirewall `json:",omitempty"`
+	// DHCPServer DHCPサーバー設定
+	DHCPServer *VPCRouterDHCPServer `json:",omitempty"`
+	// DHCPStaticMapping DHCPスタティックマッピング設定
+	DHCPStaticMapping *VPCRouterDHCPStaticMapping `json:",omitempty"`
+	// L2TPIPsecServer L2TP/IPSecサーバー設定
+	L2TPIPsecServer *VPCRouterL2TPIPsecServer `json:",omitempty"`
+	// PPTPServer PPTPサーバー設定
+	PPTPServer *VPCRouterPPTPServer `json:",omitempty"`
+	// RemoteAccessUsers リモートアクセスユーザー設定
+	RemoteAccessUsers *VPCRouterRemoteAccessUsers `json:",omitempty"`
+	// SiteToSiteIPsecVPN サイト間VPN設定
 	SiteToSiteIPsecVPN *VPCRouterSiteToSiteIPsecVPN `json:",omitempty"`
-	StaticRoutes       *VPCRouterStaticRoutes       `json:",omitempty"`
-	VRID               *int                         `json:",omitempty"`
+	// StaticRoutes スタティックルート設定
+	StaticRoutes *VPCRouterStaticRoutes `json:",omitempty"`
+	// VRID VRID
+	VRID *int `json:",omitempty"`
+	// SyslogHost syslog転送先ホスト
+	SyslogHost string `json:",omitempty"`
 }
 
+// VPCRouterInterface NIC設定
 type VPCRouterInterface struct {
-	IPAddress        []string `json:",omitempty"`
-	NetworkMaskLen   int      `json:",omitempty"`
-	VirtualIPAddress string   `json:",omitempty"`
-	IPAliases        []string `json:",omitempty"`
+	// IPAddress IPアドレスリスト
+	IPAddress []string `json:",omitempty"`
+	// NetworkMaskLen ネットワークマスク長
+	NetworkMaskLen int `json:",omitempty"`
+	// VirtualIPAddress 仮想IPアドレス
+	VirtualIPAddress string `json:",omitempty"`
+	// IPAliases IPエイリアス
+	IPAliases []string `json:",omitempty"`
 }
 
+// AddInterface NIC追加
 func (s *VPCRouterSetting) AddInterface(vip string, ipaddress []string, maskLen int) {
 	if s.Interfaces == nil {
 		s.Interfaces = []*VPCRouterInterface{nil}
@@ -38,15 +59,23 @@ func (s *VPCRouterSetting) AddInterface(vip string, ipaddress []string, maskLen 
 	})
 }
 
+// VPCRouterStaticNAT スタティックNAT設定
 type VPCRouterStaticNAT struct {
-	Config  []*VPCRouterStaticNATConfig `json:",omitempty"`
-	Enabled string                      `json:",omitempty"`
+	// Config スタティックNAT設定
+	Config []*VPCRouterStaticNATConfig `json:",omitempty"`
+	// Enabled 有効/無効
+	Enabled string `json:",omitempty"`
 }
+
+// VPCRouterStaticNATConfig スタティックNAT設定
 type VPCRouterStaticNATConfig struct {
-	GlobalAddress  string `json:",omitempty"`
+	// GlobalAddress グローバルIPアドレス
+	GlobalAddress string `json:",omitempty"`
+	// PrivateAddress プライベートIPアドレス
 	PrivateAddress string `json:",omitempty"`
 }
 
+// AddStaticNAT スタティックNAT設定 追加
 func (s *VPCRouterSetting) AddStaticNAT(globalAddress string, privateAddress string) {
 	if s.StaticNAT == nil {
 		s.StaticNAT = &VPCRouterStaticNAT{
@@ -64,6 +93,7 @@ func (s *VPCRouterSetting) AddStaticNAT(globalAddress string, privateAddress str
 	})
 }
 
+// RemoveStaticNAT スタティックNAT設定 削除
 func (s *VPCRouterSetting) RemoveStaticNAT(globalAddress string, privateAddress string) {
 	if s.StaticNAT == nil {
 		return
@@ -89,6 +119,7 @@ func (s *VPCRouterSetting) RemoveStaticNAT(globalAddress string, privateAddress 
 	s.StaticNAT.Enabled = "True"
 }
 
+// FindStaticNAT スタティックNAT設定検索
 func (s *VPCRouterSetting) FindStaticNAT(globalAddress string, privateAddress string) *VPCRouterStaticNATConfig {
 	for _, c := range s.StaticNAT.Config {
 		if c.GlobalAddress == globalAddress && c.PrivateAddress == privateAddress {
@@ -98,17 +129,27 @@ func (s *VPCRouterSetting) FindStaticNAT(globalAddress string, privateAddress st
 	return nil
 }
 
+// VPCRouterPortForwarding ポートフォワーディング設定
 type VPCRouterPortForwarding struct {
-	Config  []*VPCRouterPortForwardingConfig `json:",omitempty"`
-	Enabled string                           `json:",omitempty"`
-}
-type VPCRouterPortForwardingConfig struct {
-	Protocol       string `json:",omitempty"` // tcp/udp only
-	GlobalPort     string `json:",omitempty"`
-	PrivateAddress string `json:",omitempty"`
-	PrivatePort    string `json:",omitempty"`
+	// Config ポートフォワーディング設定
+	Config []*VPCRouterPortForwardingConfig `json:",omitempty"`
+	// Enabled 有効/無効
+	Enabled string `json:",omitempty"`
 }
 
+// VPCRouterPortForwardingConfig ポートフォワーディング設定
+type VPCRouterPortForwardingConfig struct {
+	// Protocol プロトコル
+	Protocol string `json:",omitempty"` // tcp/udp only
+	// GlobalPort グローバル側ポート
+	GlobalPort string `json:",omitempty"`
+	// PrivateAddress プライベートIPアドレス
+	PrivateAddress string `json:",omitempty"`
+	// PrivatePort プライベート側ポート
+	PrivatePort string `json:",omitempty"`
+}
+
+// AddPortForwarding ポートフォワーディング 追加
 func (s *VPCRouterSetting) AddPortForwarding(protocol string, globalPort string, privateAddress string, privatePort string) {
 	if s.PortForwarding == nil {
 		s.PortForwarding = &VPCRouterPortForwarding{
@@ -128,6 +169,7 @@ func (s *VPCRouterSetting) AddPortForwarding(protocol string, globalPort string,
 	})
 }
 
+// RemovePortForwarding ポートフォワーディング 削除
 func (s *VPCRouterSetting) RemovePortForwarding(protocol string, globalPort string, privateAddress string, privatePort string) {
 	if s.PortForwarding == nil {
 		return
@@ -153,6 +195,8 @@ func (s *VPCRouterSetting) RemovePortForwarding(protocol string, globalPort stri
 	}
 	s.PortForwarding.Enabled = "True"
 }
+
+// FindPortForwarding ポートフォワーディング検索
 func (s *VPCRouterSetting) FindPortForwarding(protocol string, globalPort string, privateAddress string, privatePort string) *VPCRouterPortForwardingConfig {
 	for _, c := range s.PortForwarding.Config {
 		if c.Protocol == protocol && c.GlobalPort == globalPort &&
@@ -163,21 +207,36 @@ func (s *VPCRouterSetting) FindPortForwarding(protocol string, globalPort string
 	return nil
 }
 
+// VPCRouterFirewall ファイアウォール設定
 type VPCRouterFirewall struct {
-	Config  []*VPCRouterFirewallSetting `json:",omitempty"`
-	Enabled string                      `json:",omitempty"`
+	// Config ファイアウォール設定
+	Config []*VPCRouterFirewallSetting `json:",omitempty"`
+	// Enabled 有効/無効
+	Enabled string `json:",omitempty"`
 }
+
+// VPCRouterFirewallSetting ファイアウォール設定
 type VPCRouterFirewallSetting struct {
+	// Receive 受信ルール
 	Receive []*VPCRouterFirewallRule `json:",omitempty"`
-	Send    []*VPCRouterFirewallRule `json:",omitempty"`
+	// Send 送信ルール
+	Send []*VPCRouterFirewallRule `json:",omitempty"`
 }
+
+// VPCRouterFirewallRule ファイアウォール ルール
 type VPCRouterFirewallRule struct {
-	Action             string `json:",omitempty"`
-	Protocol           string `json:",omitempty"`
-	SourceNetwork      string `json:",omitempty"`
-	SourcePort         string `json:",omitempty"`
+	// Action 許可/拒否
+	Action string `json:",omitempty"`
+	// Protocol プロトコル
+	Protocol string `json:",omitempty"`
+	// SourceNetwork 送信元ネットワーク
+	SourceNetwork string `json:",omitempty"`
+	// SourcePort 送信元ポート
+	SourcePort string `json:",omitempty"`
+	// DestinationNetwork 宛先ネットワーク
 	DestinationNetwork string `json:",omitempty"`
-	DestinationPort    string `json:",omitempty"`
+	// DestinationPort 宛先ポート
+	DestinationPort string `json:",omitempty"`
 }
 
 func (s *VPCRouterSetting) addFirewallRule(direction string, rule *VPCRouterFirewallRule) {
@@ -277,6 +336,7 @@ func (s *VPCRouterSetting) findFirewallRule(direction string, rule *VPCRouterFir
 
 }
 
+// AddFirewallRuleSend 送信ルール 追加
 func (s *VPCRouterSetting) AddFirewallRuleSend(isAllow bool, protocol string, sourceNetwork string, sourcePort string, destNetwork string, destPort string) {
 	action := "deny"
 	if isAllow {
@@ -294,6 +354,7 @@ func (s *VPCRouterSetting) AddFirewallRuleSend(isAllow bool, protocol string, so
 	s.addFirewallRule("send", rule)
 }
 
+// RemoveFirewallRuleSend 送信ルール 削除
 func (s *VPCRouterSetting) RemoveFirewallRuleSend(isAllow bool, protocol string, sourceNetwork string, sourcePort string, destNetwork string, destPort string) {
 	action := "deny"
 	if isAllow {
@@ -311,6 +372,7 @@ func (s *VPCRouterSetting) RemoveFirewallRuleSend(isAllow bool, protocol string,
 	s.removeFirewallRule("send", rule)
 }
 
+// FindFirewallRuleSend 送信ルール 検索
 func (s *VPCRouterSetting) FindFirewallRuleSend(isAllow bool, protocol string, sourceNetwork string, sourcePort string, destNetwork string, destPort string) *VPCRouterFirewallRule {
 	action := "deny"
 	if isAllow {
@@ -328,6 +390,7 @@ func (s *VPCRouterSetting) FindFirewallRuleSend(isAllow bool, protocol string, s
 	return s.findFirewallRule("send", rule)
 }
 
+// AddFirewallRuleReceive 受信ルール 追加
 func (s *VPCRouterSetting) AddFirewallRuleReceive(isAllow bool, protocol string, sourceNetwork string, sourcePort string, destNetwork string, destPort string) {
 	action := "deny"
 	if isAllow {
@@ -345,6 +408,7 @@ func (s *VPCRouterSetting) AddFirewallRuleReceive(isAllow bool, protocol string,
 	s.addFirewallRule("receive", rule)
 }
 
+// RemoveFirewallRuleReceive 受信ルール 削除
 func (s *VPCRouterSetting) RemoveFirewallRuleReceive(isAllow bool, protocol string, sourceNetwork string, sourcePort string, destNetwork string, destPort string) {
 	action := "deny"
 	if isAllow {
@@ -362,6 +426,7 @@ func (s *VPCRouterSetting) RemoveFirewallRuleReceive(isAllow bool, protocol stri
 	s.removeFirewallRule("receive", rule)
 }
 
+// FindFirewallRuleReceive 受信ルール 検索
 func (s *VPCRouterSetting) FindFirewallRuleReceive(isAllow bool, protocol string, sourceNetwork string, sourcePort string, destNetwork string, destPort string) *VPCRouterFirewallRule {
 	action := "deny"
 	if isAllow {
@@ -379,16 +444,25 @@ func (s *VPCRouterSetting) FindFirewallRuleReceive(isAllow bool, protocol string
 	return s.findFirewallRule("receive", rule)
 }
 
+// VPCRouterDHCPServer DHCPサーバー設定
 type VPCRouterDHCPServer struct {
-	Config  []*VPCRouterDHCPServerConfig `json:",omitempty"`
-	Enabled string                       `json:",omitempty"`
-}
-type VPCRouterDHCPServerConfig struct {
-	Interface  string `json:",omitempty"`
-	RangeStart string `json:",omitempty"`
-	RangeStop  string `json:",omitempty"`
+	// Config DHCPサーバー設定
+	Config []*VPCRouterDHCPServerConfig `json:",omitempty"`
+	// Enabled 有効/無効
+	Enabled string `json:",omitempty"`
 }
 
+// VPCRouterDHCPServerConfig DHCPサーバー設定
+type VPCRouterDHCPServerConfig struct {
+	// Interface 対象NIC
+	Interface string `json:",omitempty"`
+	// RangeStart 割り当て範囲 開始アドレス
+	RangeStart string `json:",omitempty"`
+	// RangeStop 割り当て範囲 終了アドレス
+	RangeStop string `json:",omitempty"`
+}
+
+// AddDHCPServer DHCPサーバー設定追加
 func (s *VPCRouterSetting) AddDHCPServer(nicIndex int, rangeStart string, rangeStop string) {
 	if s.DHCPServer == nil {
 		s.DHCPServer = &VPCRouterDHCPServer{
@@ -408,6 +482,7 @@ func (s *VPCRouterSetting) AddDHCPServer(nicIndex int, rangeStart string, rangeS
 
 }
 
+// RemoveDHCPServer DHCPサーバー設定削除
 func (s *VPCRouterSetting) RemoveDHCPServer(nicIndex int, rangeStart string, rangeStop string) {
 	if s.DHCPServer == nil {
 		return
@@ -435,6 +510,7 @@ func (s *VPCRouterSetting) RemoveDHCPServer(nicIndex int, rangeStart string, ran
 
 }
 
+// FindDHCPServer DHCPサーバー設定 検索
 func (s *VPCRouterSetting) FindDHCPServer(nicIndex int, rangeStart string, rangeStop string) *VPCRouterDHCPServerConfig {
 	for _, c := range s.DHCPServer.Config {
 		if c.Interface == fmt.Sprintf("eth%d", nicIndex) && c.RangeStart == rangeStart && c.RangeStop == rangeStop {
@@ -444,15 +520,23 @@ func (s *VPCRouterSetting) FindDHCPServer(nicIndex int, rangeStart string, range
 	return nil
 }
 
+// VPCRouterDHCPStaticMapping DHCPスタティックマッピング設定
 type VPCRouterDHCPStaticMapping struct {
-	Config  []*VPCRouterDHCPStaticMappingConfig `json:",omitempty"`
-	Enabled string                              `json:",omitempty"`
+	// Config DHCPスタティックマッピング設定
+	Config []*VPCRouterDHCPStaticMappingConfig `json:",omitempty"`
+	// Enabled 有効/無効
+	Enabled string `json:",omitempty"`
 }
+
+// VPCRouterDHCPStaticMappingConfig DHCPスタティックマッピング設定
 type VPCRouterDHCPStaticMappingConfig struct {
-	IPAddress  string `json:",omitempty"`
+	// IPAddress 割り当てIPアドレス
+	IPAddress string `json:",omitempty"`
+	// MACAddress ソースMACアドレス
 	MACAddress string `json:",omitempty"`
 }
 
+// AddDHCPStaticMapping DHCPスタティックマッピング設定追加
 func (s *VPCRouterSetting) AddDHCPStaticMapping(ipAddress string, macAddress string) {
 	if s.DHCPStaticMapping == nil {
 		s.DHCPStaticMapping = &VPCRouterDHCPStaticMapping{
@@ -469,6 +553,7 @@ func (s *VPCRouterSetting) AddDHCPStaticMapping(ipAddress string, macAddress str
 	})
 }
 
+// RemoveDHCPStaticMapping DHCPスタティックマッピング設定 削除
 func (s *VPCRouterSetting) RemoveDHCPStaticMapping(ipAddress string, macAddress string) {
 	if s.DHCPStaticMapping == nil {
 		return
@@ -496,6 +581,7 @@ func (s *VPCRouterSetting) RemoveDHCPStaticMapping(ipAddress string, macAddress 
 
 }
 
+// FindDHCPStaticMapping DHCPスタティックマッピング設定 検索
 func (s *VPCRouterSetting) FindDHCPStaticMapping(ipAddress string, macAddress string) *VPCRouterDHCPStaticMappingConfig {
 	for _, c := range s.DHCPStaticMapping.Config {
 		if c.IPAddress == ipAddress && c.MACAddress == macAddress {
@@ -505,17 +591,25 @@ func (s *VPCRouterSetting) FindDHCPStaticMapping(ipAddress string, macAddress st
 	return nil
 }
 
+// VPCRouterL2TPIPsecServer L2TP/IPSecサーバー設定
 type VPCRouterL2TPIPsecServer struct {
-	Config  *VPCRouterL2TPIPsecServerConfig `json:",omitempty"`
-	Enabled string                          `json:",omitempty"`
+	// Config L2TP/IPSecサーバー設定
+	Config *VPCRouterL2TPIPsecServerConfig `json:",omitempty"`
+	// Enabled 有効/無効
+	Enabled string `json:",omitempty"`
 }
 
+// VPCRouterL2TPIPsecServerConfig L2TP/IPSecサーバー設定
 type VPCRouterL2TPIPsecServerConfig struct {
+	// PreSharedSecret 事前共有シークレット
 	PreSharedSecret string `json:",omitempty"`
-	RangeStart      string `json:",omitempty"`
-	RangeStop       string `json:",omitempty"`
+	// RangeStart 割り当て範囲 開始IPアドレス
+	RangeStart string `json:",omitempty"`
+	// RangeStop 割り当て範囲 終了IPアドレス
+	RangeStop string `json:",omitempty"`
 }
 
+// EnableL2TPIPsecServer L2TP/IPSecサーバー設定 有効化
 func (s *VPCRouterSetting) EnableL2TPIPsecServer(preSharedSecret string, rangeStart string, rangeStop string) {
 	if s.L2TPIPsecServer == nil {
 		s.L2TPIPsecServer = &VPCRouterL2TPIPsecServer{
@@ -529,6 +623,7 @@ func (s *VPCRouterSetting) EnableL2TPIPsecServer(preSharedSecret string, rangeSt
 	}
 }
 
+// DisableL2TPIPsecServer L2TP/IPSecサーバー設定 無効化
 func (s *VPCRouterSetting) DisableL2TPIPsecServer() {
 	if s.L2TPIPsecServer == nil {
 		s.L2TPIPsecServer = &VPCRouterL2TPIPsecServer{}
@@ -537,15 +632,23 @@ func (s *VPCRouterSetting) DisableL2TPIPsecServer() {
 	s.L2TPIPsecServer.Config = nil
 }
 
+// VPCRouterPPTPServer PPTPサーバー設定
 type VPCRouterPPTPServer struct {
-	Config  *VPCRouterPPTPServerConfig `json:",omitempty"`
-	Enabled string                     `json:",omitempty"`
-}
-type VPCRouterPPTPServerConfig struct {
-	RangeStart string `json:",omitempty"`
-	RangeStop  string `json:",omitempty"`
+	// Config PPTPサーバー設定
+	Config *VPCRouterPPTPServerConfig `json:",omitempty"`
+	// Enabled 有効/無効
+	Enabled string `json:",omitempty"`
 }
 
+// VPCRouterPPTPServerConfig PPTPサーバー設定
+type VPCRouterPPTPServerConfig struct {
+	// RangeStart 割り当て範囲 開始IPアドレス
+	RangeStart string `json:",omitempty"`
+	// RangeStop 割り当て範囲 終了IPアドレス
+	RangeStop string `json:",omitempty"`
+}
+
+// EnablePPTPServer PPTPサーバー設定 有効化
 func (s *VPCRouterSetting) EnablePPTPServer(rangeStart string, rangeStop string) {
 	if s.PPTPServer == nil {
 		s.PPTPServer = &VPCRouterPPTPServer{
@@ -558,6 +661,7 @@ func (s *VPCRouterSetting) EnablePPTPServer(rangeStart string, rangeStop string)
 	}
 }
 
+// DisablePPTPServer PPTPサーバー設定 無効化
 func (s *VPCRouterSetting) DisablePPTPServer() {
 	if s.PPTPServer == nil {
 		s.PPTPServer = &VPCRouterPPTPServer{}
@@ -566,15 +670,23 @@ func (s *VPCRouterSetting) DisablePPTPServer() {
 	s.PPTPServer.Config = nil
 }
 
+// VPCRouterRemoteAccessUsers リモートアクセスユーザー設定
 type VPCRouterRemoteAccessUsers struct {
-	Config  []*VPCRouterRemoteAccessUsersConfig `json:",omitempty"`
-	Enabled string                              `json:",omitempty"`
+	// Config リモートアクセスユーザー設定
+	Config []*VPCRouterRemoteAccessUsersConfig `json:",omitempty"`
+	// Enabled 有効/無効
+	Enabled string `json:",omitempty"`
 }
+
+// VPCRouterRemoteAccessUsersConfig リモートアクセスユーザー設定
 type VPCRouterRemoteAccessUsersConfig struct {
+	// UserName ユーザー名
 	UserName string `json:",omitempty"`
+	// Password パスワード
 	Password string `json:",omitempty"`
 }
 
+// AddRemoteAccessUser リモートアクセスユーザー設定 追加
 func (s *VPCRouterSetting) AddRemoteAccessUser(userName string, password string) {
 	if s.RemoteAccessUsers == nil {
 		s.RemoteAccessUsers = &VPCRouterRemoteAccessUsers{
@@ -590,6 +702,7 @@ func (s *VPCRouterSetting) AddRemoteAccessUser(userName string, password string)
 	})
 }
 
+// RemoveRemoteAccessUser リモートアクセスユーザー設定 削除
 func (s *VPCRouterSetting) RemoveRemoteAccessUser(userName string, password string) {
 	if s.RemoteAccessUsers == nil {
 		return
@@ -616,6 +729,7 @@ func (s *VPCRouterSetting) RemoveRemoteAccessUser(userName string, password stri
 	s.RemoteAccessUsers.Enabled = "True"
 }
 
+// FindRemoteAccessUser リモートアクセスユーザー設定 検索
 func (s *VPCRouterSetting) FindRemoteAccessUser(userName string, password string) *VPCRouterRemoteAccessUsersConfig {
 	for _, c := range s.RemoteAccessUsers.Config {
 		if c.UserName == userName && c.Password == password {
@@ -625,19 +739,29 @@ func (s *VPCRouterSetting) FindRemoteAccessUser(userName string, password string
 	return nil
 }
 
+// VPCRouterSiteToSiteIPsecVPN サイト間VPC設定
 type VPCRouterSiteToSiteIPsecVPN struct {
-	Config  []*VPCRouterSiteToSiteIPsecVPNConfig `json:",omitempty"`
-	Enabled string                               `json:",omitempty"`
+	// Config サイト間VPC設定
+	Config []*VPCRouterSiteToSiteIPsecVPNConfig `json:",omitempty"`
+	// Enabled 有効/無効
+	Enabled string `json:",omitempty"`
 }
 
+// VPCRouterSiteToSiteIPsecVPNConfig サイト間VPC設定
 type VPCRouterSiteToSiteIPsecVPNConfig struct {
-	LocalPrefix     []string `json:",omitempty"`
-	Peer            string   `json:",omitempty"`
-	PreSharedSecret string   `json:",omitempty"`
-	RemoteID        string   `json:",omitempty"`
-	Routes          []string `json:",omitempty"`
+	// LocalPrefix ローカルプレフィックス リスト
+	LocalPrefix []string `json:",omitempty"`
+	// Peer 対向IPアドレス
+	Peer string `json:",omitempty"`
+	// PreSharedSecret 事前共有シークレット
+	PreSharedSecret string `json:",omitempty"`
+	// RemoteID 対向ID
+	RemoteID string `json:",omitempty"`
+	// Routes 対向プレフィックス リスト
+	Routes []string `json:",omitempty"`
 }
 
+// AddSiteToSiteIPsecVPN サイト間VPC設定 追加
 func (s *VPCRouterSetting) AddSiteToSiteIPsecVPN(localPrefix []string, peer string, preSharedSecret string, remoteID string, routes []string) {
 	if s.SiteToSiteIPsecVPN == nil {
 		s.SiteToSiteIPsecVPN = &VPCRouterSiteToSiteIPsecVPN{
@@ -657,6 +781,7 @@ func (s *VPCRouterSetting) AddSiteToSiteIPsecVPN(localPrefix []string, peer stri
 	})
 }
 
+// RemoveSiteToSiteIPsecVPN サイト間VPC設定 削除
 func (s *VPCRouterSetting) RemoveSiteToSiteIPsecVPN(localPrefix []string, peer string, preSharedSecret string, remoteID string, routes []string) {
 	config := &VPCRouterSiteToSiteIPsecVPNConfig{
 		LocalPrefix:     localPrefix,
@@ -691,6 +816,7 @@ func (s *VPCRouterSetting) RemoveSiteToSiteIPsecVPN(localPrefix []string, peer s
 	s.SiteToSiteIPsecVPN.Enabled = "True"
 }
 
+// FindSiteToSiteIPsecVPN  サイト間VPC設定 検索
 func (s *VPCRouterSetting) FindSiteToSiteIPsecVPN(localPrefix []string, peer string, preSharedSecret string, remoteID string, routes []string) *VPCRouterSiteToSiteIPsecVPNConfig {
 	config := &VPCRouterSiteToSiteIPsecVPNConfig{
 		LocalPrefix:     localPrefix,
@@ -716,15 +842,23 @@ func (s *VPCRouterSetting) isSameSiteToSiteIPsecVPNConfig(c1 *VPCRouterSiteToSit
 		reflect.DeepEqual(c1.Routes, c2.Routes)
 }
 
+// VPCRouterStaticRoutes スタティックルート設定
 type VPCRouterStaticRoutes struct {
-	Config  []*VPCRouterStaticRoutesConfig `json:",omitempty"`
-	Enabled string                         `json:",omitempty"`
+	// Config スタティックルート設定
+	Config []*VPCRouterStaticRoutesConfig `json:",omitempty"`
+	// Enabled 有効/無効
+	Enabled string `json:",omitempty"`
 }
+
+// VPCRouterStaticRoutesConfig スタティックルート設定
 type VPCRouterStaticRoutesConfig struct {
-	Prefix  string `json:",omitempty"`
+	// Prefix プレフィックス
+	Prefix string `json:",omitempty"`
+	// NextHop ネクストホップ
 	NextHop string `json:",omitempty"`
 }
 
+// AddStaticRoute スタティックルート設定 追加
 func (s *VPCRouterSetting) AddStaticRoute(prefix string, nextHop string) {
 	if s.StaticRoutes == nil {
 		s.StaticRoutes = &VPCRouterStaticRoutes{
@@ -740,6 +874,7 @@ func (s *VPCRouterSetting) AddStaticRoute(prefix string, nextHop string) {
 	})
 }
 
+// RemoveStaticRoute スタティックルート設定 削除
 func (s *VPCRouterSetting) RemoveStaticRoute(prefix string, nextHop string) {
 	if s.StaticRoutes == nil {
 		return
@@ -766,6 +901,7 @@ func (s *VPCRouterSetting) RemoveStaticRoute(prefix string, nextHop string) {
 	s.StaticRoutes.Enabled = "True"
 }
 
+// FindStaticRoute スタティックルート設定 検索
 func (s *VPCRouterSetting) FindStaticRoute(prefix string, nextHop string) *VPCRouterStaticRoutesConfig {
 	for _, c := range s.StaticRoutes.Config {
 		if c.Prefix == prefix && c.NextHop == nextHop {

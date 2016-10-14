@@ -9,34 +9,40 @@ import (
 )
 
 /************************************************
-   To support influent interface for Find()
+   To support fluent interface for Find()
 ************************************************/
 
+// Reset 検索条件のリセット
 func (api *DNSAPI) Reset() *DNSAPI {
 	api.reset()
 	return api
 }
 
+// Offset オフセット
 func (api *DNSAPI) Offset(offset int) *DNSAPI {
 	api.offset(offset)
 	return api
 }
 
+// Limit リミット
 func (api *DNSAPI) Limit(limit int) *DNSAPI {
 	api.limit(limit)
 	return api
 }
 
+// Include 取得する項目
 func (api *DNSAPI) Include(key string) *DNSAPI {
 	api.include(key)
 	return api
 }
 
+// Exclude 除外する項目
 func (api *DNSAPI) Exclude(key string) *DNSAPI {
 	api.exclude(key)
 	return api
 }
 
+// FilterBy 指定キーでのフィルター
 func (api *DNSAPI) FilterBy(key string, value interface{}) *DNSAPI {
 	api.filterBy(key, value, false)
 	return api
@@ -47,13 +53,17 @@ func (api *DNSAPI) FilterBy(key string, value interface{}) *DNSAPI {
 // 	return api
 // }
 
+// WithNameLike 名称条件
 func (api *DNSAPI) WithNameLike(name string) *DNSAPI {
 	return api.FilterBy("Name", name)
 }
 
+// WithTag タグ条件
 func (api *DNSAPI) WithTag(tag string) *DNSAPI {
 	return api.FilterBy("Tags.Name", tag)
 }
+
+// WithTags タグ(複数)条件
 func (api *DNSAPI) WithTags(tags []string) *DNSAPI {
 	return api.FilterBy("Tags.Name", []interface{}{tags})
 }
@@ -73,11 +83,13 @@ func (api *DNSAPI) WithTags(tags []string) *DNSAPI {
 // 	return api
 // }
 
+// SortBy 指定キーでのソート
 func (api *DNSAPI) SortBy(key string, reverse bool) *DNSAPI {
 	api.sortBy(key, reverse)
 	return api
 }
 
+// SortByName 名称でのソート
 func (api *DNSAPI) SortByName(reverse bool) *DNSAPI {
 	api.sortByName(reverse)
 	return api

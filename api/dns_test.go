@@ -88,7 +88,7 @@ func init() {
 func cleanupDNSCommonServiceItem() {
 	item, _ := client.DNS.findOrCreateBy(testDNSDomain)
 
-	if item.ID != "" {
+	if item.ID > 0 {
 		client.DNS.Delete(item.ID)
 	}
 }

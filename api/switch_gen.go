@@ -9,34 +9,40 @@ import (
 )
 
 /************************************************
-   To support influent interface for Find()
+   To support fluent interface for Find()
 ************************************************/
 
+// Reset 検索条件のリセット
 func (api *SwitchAPI) Reset() *SwitchAPI {
 	api.reset()
 	return api
 }
 
+// Offset オフセット
 func (api *SwitchAPI) Offset(offset int) *SwitchAPI {
 	api.offset(offset)
 	return api
 }
 
+// Limit リミット
 func (api *SwitchAPI) Limit(limit int) *SwitchAPI {
 	api.limit(limit)
 	return api
 }
 
+// Include 取得する項目
 func (api *SwitchAPI) Include(key string) *SwitchAPI {
 	api.include(key)
 	return api
 }
 
+// Exclude 除外する項目
 func (api *SwitchAPI) Exclude(key string) *SwitchAPI {
 	api.exclude(key)
 	return api
 }
 
+// FilterBy 指定キーでのフィルター
 func (api *SwitchAPI) FilterBy(key string, value interface{}) *SwitchAPI {
 	api.filterBy(key, value, false)
 	return api
@@ -47,13 +53,17 @@ func (api *SwitchAPI) FilterBy(key string, value interface{}) *SwitchAPI {
 // 	return api
 // }
 
+// WithNameLike 名称条件
 func (api *SwitchAPI) WithNameLike(name string) *SwitchAPI {
 	return api.FilterBy("Name", name)
 }
 
+// WithTag タグ条件
 func (api *SwitchAPI) WithTag(tag string) *SwitchAPI {
 	return api.FilterBy("Tags.Name", tag)
 }
+
+// WithTags タグ(複数)条件
 func (api *SwitchAPI) WithTags(tags []string) *SwitchAPI {
 	return api.FilterBy("Tags.Name", []interface{}{tags})
 }
@@ -73,11 +83,13 @@ func (api *SwitchAPI) WithTags(tags []string) *SwitchAPI {
 // 	return api
 // }
 
+// SortBy 指定キーでのソート
 func (api *SwitchAPI) SortBy(key string, reverse bool) *SwitchAPI {
 	api.sortBy(key, reverse)
 	return api
 }
 
+// SortByName 名称でのソート
 func (api *SwitchAPI) SortByName(reverse bool) *SwitchAPI {
 	api.sortByName(reverse)
 	return api
@@ -92,29 +104,37 @@ func (api *SwitchAPI) SortByName(reverse bool) *SwitchAPI {
   To support CRUD(Create/Read/Update/Delete)
 ************************************************/
 
+// New 新規作成用パラメーター作成
 func (api *SwitchAPI) New() *sacloud.Switch {
-	return &sacloud.Switch{}
+	return &sacloud.Switch{
+		// TagsType
+		TagsType: &sacloud.TagsType{},
+	}
 }
 
+// Create 新規作成
 func (api *SwitchAPI) Create(value *sacloud.Switch) (*sacloud.Switch, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.create(api.createRequest(value), res)
 	})
 }
 
-func (api *SwitchAPI) Read(id string) (*sacloud.Switch, error) {
+// Read 読み取り
+func (api *SwitchAPI) Read(id int64) (*sacloud.Switch, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.read(id, nil, res)
 	})
 }
 
-func (api *SwitchAPI) Update(id string, value *sacloud.Switch) (*sacloud.Switch, error) {
+// Update 更新
+func (api *SwitchAPI) Update(id int64, value *sacloud.Switch) (*sacloud.Switch, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.update(id, api.createRequest(value), res)
 	})
 }
 
-func (api *SwitchAPI) Delete(id string) (*sacloud.Switch, error) {
+// Delete 削除
+func (api *SwitchAPI) Delete(id int64) (*sacloud.Switch, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.delete(id, nil, res)
 	})

@@ -8,7 +8,7 @@ import (
 
 var testLicenseJSON = `
 {
-	"ID": "123456789012",
+	"ID": 123456789012,
 	"Name": "test_license (1)",
 	"CreatedAt": "2016-05-02T13:58:27+09:00",
 	"ModifiedAt": "2016-05-02T13:58:27+09:00",

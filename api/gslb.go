@@ -9,10 +9,15 @@ import (
 //HACK: さくらのAPI側仕様: CommonServiceItemsの内容によってJSONフォーマットが異なるため
 //      DNS/GSLB/シンプル監視それぞれでリクエスト/レスポンスデータ型を定義する。
 
+// SearchGSLBResponse GSLB検索レスポンス
 type SearchGSLBResponse struct {
-	Total                  int            `json:",omitempty"`
-	From                   int            `json:",omitempty"`
-	Count                  int            `json:",omitempty"`
+	// Total 総件数
+	Total int `json:",omitempty"`
+	// From ページング開始位置
+	From int `json:",omitempty"`
+	// Count 件数
+	Count int `json:",omitempty"`
+	// CommonServiceGSLBItems GSLBリスト
 	CommonServiceGSLBItems []sacloud.GSLB `json:"CommonServiceItems,omitempty"`
 }
 
@@ -31,11 +36,12 @@ type gslbResponse struct {
 	*sacloud.GSLB `json:"CommonServiceItem,omitempty"`
 }
 
-// GSLBAPI API Client for SAKURA CLOUD GSLB
+// GSLBAPI GSLB API
 type GSLBAPI struct {
 	*baseAPI
 }
 
+// NewGSLBAPI GSLB API作成
 func NewGSLBAPI(client *Client) *GSLBAPI {
 	return &GSLBAPI{
 		&baseAPI{
@@ -52,6 +58,7 @@ func NewGSLBAPI(client *Client) *GSLBAPI {
 	}
 }
 
+// Find 検索
 func (api *GSLBAPI) Find() (*SearchGSLBResponse, error) {
 
 	data, err := api.client.newRequest("GET", api.getResourceURL(), api.getSearchState())
@@ -78,35 +85,40 @@ func (api *GSLBAPI) createRequest(value *sacloud.GSLB) *gslbResponse {
 	return &gslbResponse{GSLB: value}
 }
 
+// New 新規作成用パラメーター作成
 func (api *GSLBAPI) New(name string) *sacloud.GSLB {
 	return sacloud.CreateNewGSLB(name)
 }
 
+// Create 新規作成
 func (api *GSLBAPI) Create(value *sacloud.GSLB) (*sacloud.GSLB, error) {
 	return api.request(func(res *gslbResponse) error {
 		return api.create(api.createRequest(value), res)
 	})
 }
 
-func (api *GSLBAPI) Read(id string) (*sacloud.GSLB, error) {
+// Read 読み取り
+func (api *GSLBAPI) Read(id int64) (*sacloud.GSLB, error) {
 	return api.request(func(res *gslbResponse) error {
 		return api.read(id, nil, res)
 	})
 }
 
-func (api *GSLBAPI) Update(id string, value *sacloud.GSLB) (*sacloud.GSLB, error) {
+// Update 更新
+func (api *GSLBAPI) Update(id int64, value *sacloud.GSLB) (*sacloud.GSLB, error) {
 	return api.request(func(res *gslbResponse) error {
 		return api.update(id, api.createRequest(value), res)
 	})
 }
 
-func (api *GSLBAPI) Delete(id string) (*sacloud.GSLB, error) {
+// Delete 削除
+func (api *GSLBAPI) Delete(id int64) (*sacloud.GSLB, error) {
 	return api.request(func(res *gslbResponse) error {
 		return api.delete(id, nil, res)
 	})
 }
 
-// SetupGSLBRecord create or update Gslb
+// SetupGSLBRecord GSLB配下にサーバー追加
 func (api *GSLBAPI) SetupGSLBRecord(gslbName string, ip string) ([]string, error) {
 
 	gslbItem, err := api.findOrCreateBy(gslbName)
@@ -120,14 +132,14 @@ func (api *GSLBAPI) SetupGSLBRecord(gslbName string, ip string) ([]string, error
 		return nil, err
 	}
 
-	if gslbItem.ID == "" {
+	if gslbItem.ID == sacloud.EmptyID {
 		return []string{res.Status.FQDN}, nil
 	}
 	return nil, nil
 
 }
 
-// DeleteGSLBServer delete gslb server
+// DeleteGSLBServer GSLB配下のサーバー削除
 func (api *GSLBAPI) DeleteGSLBServer(gslbName string, ip string) error {
 	gslbItem, err := api.findOrCreateBy(gslbName)
 	if err != nil {
@@ -176,7 +188,7 @@ func (api *GSLBAPI) updateGSLBServers(gslbItem *sacloud.GSLB) (*sacloud.GSLB, er
 	var item *sacloud.GSLB
 	var err error
 
-	if gslbItem.ID == "" {
+	if gslbItem.ID == sacloud.EmptyID {
 		item, err = api.Create(gslbItem)
 	} else {
 		item, err = api.Update(gslbItem.ID, gslbItem)

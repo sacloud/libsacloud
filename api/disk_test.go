@@ -57,9 +57,9 @@ func TestCRUDByDiskAPI(t *testing.T) {
 func TestCreateDiskFromSource(t *testing.T) {
 	diskAPI := client.Disk
 
-	archives, err := client.Archive.WithNameLike("CentOS 7.2 64bit").Find()
+	archive, err := client.Archive.FindLatestStableCentOS()
 	assert.NoError(t, err)
-	archiveID := archives.Archives[0].ID
+	archiveID := archive.ID
 
 	//CREATE : empty disk
 	disk := &sacloud.Disk{
@@ -91,6 +91,36 @@ func TestCreateDiskFromSource(t *testing.T) {
 	assert.NoError(t, err)
 	assert.NotEmpty(t, disk)
 }
+
+//func TestCanEditDisk(t *testing.T) {
+//	api := client.Disk
+//	client.Zone = "is1a"
+//
+//	// CentOS
+//	res, err := api.CanEditDisk(123456789012)
+//	assert.NoError(t, err)
+//	assert.True(t, res)
+//
+//	// SourceDisk/Archive not found
+//	res, err = api.CanEditDisk(123456789012)
+//	assert.Error(t, err)
+//	assert.False(t, res)
+//
+//	// Blank
+//	res, err = api.CanEditDisk(123456789012)
+//	assert.NoError(t, err)
+//	assert.False(t, res)
+//
+//	// windows
+//	res, err = api.CanEditDisk(123456789012)
+//	assert.NoError(t, err)
+//	assert.False(t, res)
+//	// windows-child
+//	res, err = api.CanEditDisk(123456789012)
+//	assert.NoError(t, err)
+//	assert.False(t, res)
+//
+//}
 
 func init() {
 	testSetupHandlers = append(testSetupHandlers, cleanupTestDisk)

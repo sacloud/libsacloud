@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-var testResourceMonitorJSON = `
+var testCPUResourceMonitorJSON = `
     {
         "2016-05-07T12:15:00+09:00": {
             "CPU-TIME": 0.5
@@ -22,17 +22,116 @@ var testResourceMonitorJSON = `
         }
     }
 `
+var testNICResourceMonitorJSON = `
+    {
+        "2016-05-07T12:15:00+09:00": {
+            "Receive": 305.02666667,
+            "Send": 17.39
+        },
+        "2016-05-07T12:20:00+09:00": {
+            "Receive": 283.50333333,
+            "Send": 14.336666667
+        },
+        "2016-05-07T12:25:00+09:00": {
+            "Receive": 304.03,
+            "Send": 14.643333333
+        },
+        "2016-05-07T12:30:00+09:00": {
+            "Receive": null,
+            "Send": null
+        }
+    }
+`
+
+var tesDiskResourceMonitorJSON = `
+    {
+        "2016-05-07T12:15:00+09:00": {
+            "Read": 0,
+            "Write": 286.72
+        },
+        "2016-05-07T12:20:00+09:00": {
+            "Read": 0,
+            "Write": 204.8
+        },
+        "2016-05-07T12:25:00+09:00": {
+            "Read": 0,
+            "Write": 81.92
+        },
+        "2016-05-07T12:30:00+09:00": {
+            "Read": null,
+            "Write": null
+        }
+    }
+`
+
+var testInternetMonitorJSON = `
+{
+	"2016-09-22T11:00:00+09:00": {
+	    "In": 0,
+	    "Out": 0
+	},
+	"2016-09-22T11:05:00+09:00": {
+	    "In": 0,
+	    "Out": 0
+	},
+	"2016-09-22T11:10:00+09:00": {
+	    "In": 0,
+	    "Out": 0
+	},
+	"2016-09-22T11:15:00+09:00": {
+	    "In": null,
+	    "Out": null
+	}
+}
+`
+
+var testDatabaseMonitorJSON = `
+    {
+	"2016-09-22T08:20:00+09:00": {
+	    "Total-Memory-Size": null,
+	    "Used-Memory-Size": null,
+	    "Total-Disk1-Size": null,
+	    "Used-Disk1-Size": null,
+	    "Total-Disk2-Size": null,
+	    "Used-Disk2-Size": null
+	},
+	"2016-09-22T08:25:00+09:00": {
+	    "Total-Memory-Size": null,
+	    "Used-Memory-Size": null,
+	    "Total-Disk1-Size": null,
+	    "Used-Disk1-Size": null,
+	    "Total-Disk2-Size": null,
+	    "Used-Disk2-Size": null
+	},
+	"2016-09-22T08:30:00+09:00": {
+	    "Total-Memory-Size": 1884224,
+	    "Used-Memory-Size": 239448,
+	    "Total-Disk1-Size": 18544316,
+	    "Used-Disk1-Size": 15761644,
+	    "Total-Disk2-Size": 100982868,
+	    "Used-Disk2-Size": 1880016
+	},
+	"2016-09-22T08:35:00+09:00": {
+	    "Total-Memory-Size": 1884224,
+	    "Used-Memory-Size": 239340,
+	    "Total-Disk1-Size": 18544316,
+	    "Used-Disk1-Size": 15761596,
+	    "Total-Disk2-Size": 100982868,
+	    "Used-Disk2-Size": 1880064
+	}
+    }
+`
 
 var testResourceMonitorResponseJSON = `
 {
-    "Data": ` + testResourceMonitorJSON + `,
+    "Data": ` + testCPUResourceMonitorJSON + `,
     "is_ok" : true
 }
 `
 
 func TestMarshalResourceMonitorJSON(t *testing.T) {
 	var m MonitorValues
-	err := json.Unmarshal([]byte(testResourceMonitorJSON), &m)
+	err := json.Unmarshal([]byte(testCPUResourceMonitorJSON), &m)
 
 	assert.NoError(t, err)
 	assert.NotEmpty(t, m)
@@ -48,9 +147,24 @@ func TestMarshalCPUResourceMonitorJSON(t *testing.T) {
 
 }
 
+func TestFlattenMonitorValues(t *testing.T) {
+	var monitor MonitorValues
+	json.Unmarshal([]byte(testCPUResourceMonitorJSON), &monitor)
+
+	res, err := monitor.FlattenCPUTimeValue()
+	assert.NoError(t, err)
+	assert.Len(t, res, 3)
+
+	// 順不同なため以下テストは通らない
+	//t.Logf("values : %#v", res)
+	//assert.Equal(t, res[0].Value, 0.5)
+	//assert.Equal(t, res[1].Value, 0.1)
+	//assert.Equal(t, res[2].Value, 0)
+}
+
 func TestResourceMonitorCalc(t *testing.T) {
 	var monitor MonitorValues
-	json.Unmarshal([]byte(testResourceMonitorJSON), &monitor)
+	json.Unmarshal([]byte(testCPUResourceMonitorJSON), &monitor)
 
 	var sum = 0.6
 	var count float64 = 3

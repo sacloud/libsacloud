@@ -5,41 +5,54 @@ import (
 	"time"
 )
 
-// DNS type of DNS(CommonServiceItem)
+// DNS DNS(CommonServiceItem)
 type DNS struct {
 	*Resource
-	Name         string
-	Description  string      `json:",omitempty"`
-	Status       DNSStatus   `json:",omitempty"`
-	Provider     DNSProvider `json:",omitempty"`
-	Settings     DNSSettings `json:",omitempty"`
-	ServiceClass string      `json:",omitempty"`
-	CreatedAt    *time.Time  `json:",omitempty"`
-	ModifiedAt   *time.Time  `json:",omitempty"`
-	Icon         *Icon       `json:",omitempty"`
-	Tags         []string    //`json:",omitempty"`
+	// Name ゾーン名
+	Name string
+	// Description 説明
+	Description string `json:",omitempty"`
+	// Status ステータス
+	Status DNSStatus `json:",omitempty"`
+	// Provider プロバイダ
+	Provider DNSProvider `json:",omitempty"`
+	// Settings 設定
+	Settings DNSSettings `json:",omitempty"`
+	// ServiceClass サービスクラス
+	ServiceClass string `json:",omitempty"`
+	// CreatedAt 作成日時
+	CreatedAt *time.Time `json:",omitempty"`
+	// ModifiedAt 変更日時
+	ModifiedAt *time.Time `json:",omitempty"`
+	// Icon アイコン
+	Icon *Icon `json:",omitempty"`
+	*TagsType
 }
 
-// DNSSettings type of DNSSettings
+// DNSSettings DNS設定リスト
 type DNSSettings struct {
+	// DNS DNSレコード設定リスト
 	DNS DNSRecordSets `json:",omitempty"`
 }
 
-// DNSStatus type of DNSStatus
+// DNSStatus DNSステータス
 type DNSStatus struct {
-	Zone string   `json:",omitempty"`
-	NS   []string `json:",omitempty"`
+	// Zone 対象ゾーン
+	Zone string `json:",omitempty"`
+	// NS ネームサーバーリスト
+	NS []string `json:",omitempty"`
 }
 
-// DNSProvider type of CommonServiceDNSProvider
+// DNSProvider プロバイダ
 type DNSProvider struct {
+	// Class クラス
 	Class string `json:",omitempty"`
 }
 
-// CreateNewDNS Create new CommonServiceDNSItem
+// CreateNewDNS DNS作成
 func CreateNewDNS(zoneName string) *DNS {
 	return &DNS{
-		Resource: &Resource{ID: ""},
+		Resource: &Resource{},
 		Name:     zoneName,
 		Status: DNSStatus{
 			Zone: zoneName,
@@ -50,50 +63,69 @@ func CreateNewDNS(zoneName string) *DNS {
 		Settings: DNSSettings{
 			DNS: DNSRecordSets{},
 		},
+		TagsType: &TagsType{},
 	}
 }
 
+// AllowDNSTypes DNSレコード種別リスト
 func AllowDNSTypes() []string {
 	return []string{"A", "AAAA", "CNAME", "NS", "MX", "TXT", "SRV"}
 }
 
+// SetZone DNSゾーン名 設定
 func (d *DNS) SetZone(zone string) {
 	d.Name = zone
 	d.Status.Zone = zone
 }
 
-// HasDNSRecord return has record
+// HasDNSRecord DNSレコード設定を保持しているか判定
 func (d *DNS) HasDNSRecord() bool {
 	return len(d.Settings.DNS.ResourceRecordSets) > 0
 }
 
+// CreateNewRecord DNSレコード作成(汎用)
 func (d *DNS) CreateNewRecord(name string, rtype string, rdata string, ttl int) *DNSRecordSet {
 	return &DNSRecordSet{
-		Name:  name,
-		Type:  rtype,
+		// Name
+		Name: name,
+		// Type
+		Type: rtype,
+		// RData
 		RData: rdata,
-		TTL:   ttl,
+		// TTL
+		TTL: ttl,
 	}
 }
 
+// CreateNewMXRecord DNSレコード作成(MXレコード)
 func (d *DNS) CreateNewMXRecord(name string, rdata string, ttl int, priority int) *DNSRecordSet {
 	return &DNSRecordSet{
-		Name:  name,
-		Type:  "MX",
+		// Name
+		Name: name,
+		// Type
+		Type: "MX",
+		// RData
 		RData: fmt.Sprintf("%d %s", priority, rdata),
-		TTL:   ttl,
+		// TTL
+		TTL: ttl,
 	}
 }
 
+// CreateNewSRVRecord DNSレコード作成(SRVレコード)
 func (d *DNS) CreateNewSRVRecord(name string, rdata string, ttl int, priority int, weight int, port int) *DNSRecordSet {
 	return &DNSRecordSet{
-		Name:  name,
-		Type:  "SRV",
+		// Name
+		Name: name,
+		// Type
+		Type: "SRV",
+		// RData
 		RData: fmt.Sprintf("%d %d %d %s", priority, weight, port, rdata),
-		TTL:   ttl,
+		// TTL
+		TTL: ttl,
 	}
 }
 
+// AddRecord レコードの追加
 func (d *DNS) AddRecord(record *DNSRecordSet) {
 	var recordSet = d.Settings.DNS.ResourceRecordSets
 	var isExist = false
@@ -110,16 +142,18 @@ func (d *DNS) AddRecord(record *DNSRecordSet) {
 
 }
 
+// ClearRecords レコード クリア
 func (d *DNS) ClearRecords() {
 	d.Settings.DNS = DNSRecordSets{}
 }
 
-// DNSRecordSets type of dns records
+// DNSRecordSets DNSレコード設定リスト
 type DNSRecordSets struct {
+	// ResourceRecordSets DNSレコード設定リスト
 	ResourceRecordSets []DNSRecordSet
 }
 
-// AddDNSRecordSet Add dns record
+// AddDNSRecordSet ホスト名とIPアドレスにてAレコードを登録
 func (d *DNSRecordSets) AddDNSRecordSet(name string, ip string) {
 	var record DNSRecordSet
 	var isExist = false
@@ -132,15 +166,18 @@ func (d *DNSRecordSets) AddDNSRecordSet(name string, ip string) {
 
 	if !isExist {
 		record = DNSRecordSet{
-			Name:  name,
-			Type:  "A",
+			// Name
+			Name: name,
+			// Type
+			Type: "A",
+			// RData
 			RData: ip,
 		}
 		d.ResourceRecordSets = append(d.ResourceRecordSets, record)
 	}
 }
 
-// DeleteDNSRecordSet Delete dns record
+// DeleteDNSRecordSet ホスト名とIPアドレスにてAレコードを削除する
 func (d *DNSRecordSets) DeleteDNSRecordSet(name string, ip string) {
 	res := []DNSRecordSet{}
 	for i := range d.ResourceRecordSets {
@@ -152,10 +189,14 @@ func (d *DNSRecordSets) DeleteDNSRecordSet(name string, ip string) {
 	d.ResourceRecordSets = res
 }
 
-// DNSRecordSet type of dns records
+// DNSRecordSet DNSレコード設定
 type DNSRecordSet struct {
-	Name  string `json:",omitempty"`
-	Type  string `json:",omitempty"`
+	// Name ホスト名
+	Name string `json:",omitempty"`
+	// Type レコードタイプ
+	Type string `json:",omitempty"`
+	// RData レコードデータ
 	RData string `json:",omitempty"`
-	TTL   int    `json:",omitempty"`
+	// TTL TTL
+	TTL int `json:",omitempty"`
 }

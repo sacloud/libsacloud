@@ -1,6 +1,6 @@
 language: go
 sudo: false
-go: 1.6
+go: 1.7
 
 install:
   - go get -u github.com/golang/lint/golint
@@ -8,8 +8,9 @@ install:
 
 script:
   - test -z "$(gofmt -s -l -w . | tee /dev/stderr)"
-  - test -z "$(golint ./... |  grep -v 'should have comment' | tee /dev/stderr)"
+  - test -z "$(golint ./... | tee /dev/stderr)"
   - go vet ./...
   - go build -v ./...
   - go test -v ./sacloud
   - go test -v ./api -timeout 30m
+  - go test -v ./builder -timeout 30m

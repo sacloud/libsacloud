@@ -8,7 +8,7 @@ import (
 
 var testServerJSON = `
 {
-    "ID": "999999999999",
+    "ID": 999999999999,
     "Name": "lisacloud-test-server-name",
     "HostName": "libsacloud-test-server-name.com",
     "Description": "Description",
@@ -72,7 +72,7 @@ func TestMarshalServerJSON(t *testing.T) {
 	assert.NotEmpty(t, server.Disks)
 	assert.NotEmpty(t, server.Interfaces)
 	assert.NotEmpty(t, server.Instance)
-	assert.NotEmpty(t, server.Tags)
+	assert.NotEmpty(t, server.TagsType)
 
 }
 

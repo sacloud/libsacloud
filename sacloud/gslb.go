@@ -2,40 +2,52 @@ package sacloud
 
 import "time"
 
-// GSLB type of GSLB(CommonServiceItem)
+// GSLB GSLB(CommonServiceItem)
 type GSLB struct {
 	*Resource
-	Name         string
-	Description  string       `json:",omitempty"`
-	Status       GSLBStatus   `json:",omitempty"`
-	Provider     GSLBProvider `json:",omitempty"`
-	Settings     GSLBSettings `json:",omitempty"`
-	ServiceClass string       `json:",omitempty"`
-	CreatedAt    *time.Time   `json:",omitempty"`
-	ModifiedAt   *time.Time   `json:",omitempty"`
-	Icon         *Icon        `json:",omitempty"`
-	Tags         []string     //`json:",omitempty"`
+	// Name 名称
+	Name string
+	// Description 説明
+	Description string `json:",omitempty"`
+	// Status ステータス
+	Status GSLBStatus `json:",omitempty"`
+	// Provider プロバイダ
+	Provider GSLBProvider `json:",omitempty"`
+	// Settings GSLB設定
+	Settings GSLBSettings `json:",omitempty"`
+	// ServiceClass サービスクラス
+	ServiceClass string `json:",omitempty"`
+	// CreatedAt 作成日時
+	CreatedAt *time.Time `json:",omitempty"`
+	// ModifiedAt 変更日時
+	ModifiedAt *time.Time `json:",omitempty"`
+	// Icon アイコン
+	Icon *Icon `json:",omitempty"`
+	*TagsType
 }
 
-// GSLBSettings type of GSLBSettings
+// GSLBSettings GSLB設定
 type GSLBSettings struct {
+	// GSLB GSLBエントリー
 	GSLB GSLBRecordSets `json:",omitempty"`
 }
 
-// GSLBStatus type of GSLBStatus
+// GSLBStatus GSLBステータス
 type GSLBStatus struct {
+	// FQDN GSLBのFQDN
 	FQDN string `json:",omitempty"`
 }
 
-// GSLBProvider type of GSLBProvider
+// GSLBProvider プロバイダ
 type GSLBProvider struct {
+	// Class クラス
 	Class string `json:",omitempty"`
 }
 
-// CreateNewGSLB Create new GLSB(CommonServiceItem)
+// CreateNewGSLB GSLB作成
 func CreateNewGSLB(gslbName string) *GSLB {
 	return &GSLB{
-		Resource: &Resource{ID: ""},
+		Resource: &Resource{},
 		Name:     gslbName,
 		Provider: GSLBProvider{
 			Class: "gslb",
@@ -48,19 +60,22 @@ func CreateNewGSLB(gslbName string) *GSLB {
 				Servers:     []GSLBServer{},
 			},
 		},
+		TagsType: &TagsType{},
 	}
 
 }
 
+// AllowGSLBHealthCheckProtocol GSLB監視プロトコルリスト
 func AllowGSLBHealthCheckProtocol() []string {
 	return []string{"http", "https", "ping", "tcp"}
 }
 
-// HasGSLBServer return has server
+// HasGSLBServer GSLB配下にサーバーを保持しているか判定
 func (d *GSLB) HasGSLBServer() bool {
 	return len(d.Settings.GSLB.Servers) > 0
 }
 
+// CreateGSLBServer GSLB配下のサーバーを作成
 func (d *GSLB) CreateGSLBServer(ip string) *GSLBServer {
 	return &GSLBServer{
 		IPAddress: ip,
@@ -69,6 +84,7 @@ func (d *GSLB) CreateGSLBServer(ip string) *GSLBServer {
 	}
 }
 
+// AddGSLBServer GSLB配下にサーバーを追加
 func (d *GSLB) AddGSLBServer(server *GSLBServer) {
 	var isExist = false
 	for i := range d.Settings.GSLB.Servers {
@@ -84,20 +100,26 @@ func (d *GSLB) AddGSLBServer(server *GSLBServer) {
 	}
 }
 
+// ClearGSLBServer GSLB配下のサーバーをクリア
 func (d *GSLB) ClearGSLBServer() {
 	d.Settings.GSLB.Servers = []GSLBServer{}
 }
 
-// GSLBRecordSets type of GSLBRecordSets
+// GSLBRecordSets GSLBエントリー
 type GSLBRecordSets struct {
-	DelayLoop   int             `json:",omitempty"`
+	// DelayLoop 監視間隔
+	DelayLoop int `json:",omitempty"`
+	// HealthCheck ヘルスチェック
 	HealthCheck GSLBHealthCheck `json:",omitempty"`
-	Weighted    string          `json:",omitempty"`
-	Servers     []GSLBServer    `json:",omitempty"`
-	SorryServer string          `json:",omitempty"`
+	// Weighted ウェイト
+	Weighted string `json:",omitempty"`
+	// Servers サーバー
+	Servers []GSLBServer `json:",omitempty"`
+	// SorryServer ソーリーサーバー
+	SorryServer string `json:",omitempty"`
 }
 
-// AddServer Add server to GSLB
+// AddServer GSLB配下のサーバーを追加
 func (g *GSLBRecordSets) AddServer(ip string) {
 	var record GSLBServer
 	var isExist = false
@@ -117,7 +139,7 @@ func (g *GSLBRecordSets) AddServer(ip string) {
 	}
 }
 
-//DeleteServer Delete server from GSLB
+// DeleteServer GSLB配下のサーバーを削除
 func (g *GSLBRecordSets) DeleteServer(ip string) {
 	res := []GSLBServer{}
 	for i := range g.Servers {
@@ -129,20 +151,28 @@ func (g *GSLBRecordSets) DeleteServer(ip string) {
 	g.Servers = res
 }
 
-// GSLBServer type of GSLBServer
+// GSLBServer GSLB配下のサーバー
 type GSLBServer struct {
+	// IPAddress IPアドレス
 	IPAddress string `json:",omitempty"`
-	Enabled   string `json:",omitempty"`
-	Weight    string `json:",omitempty"`
+	// Enabled 有効/無効
+	Enabled string `json:",omitempty"`
+	// Weight ウェイト
+	Weight string `json:",omitempty"`
 }
 
-// GSLBHealthCheck type of GSLBHealthCheck
+// GSLBHealthCheck ヘルスチェック
 type GSLBHealthCheck struct {
+	// Protocol プロトコル
 	Protocol string `json:",omitempty"`
-	Host     string `json:",omitempty"`
-	Path     string `json:",omitempty"`
-	Status   string `json:",omitempty"`
-	Port     string `json:",omitempty"`
+	// Host 対象ホスト
+	Host string `json:",omitempty"`
+	// Path HTTP/HTTPSの場合のリクエストパス
+	Path string `json:",omitempty"`
+	// Status 期待するステータスコード
+	Status string `json:",omitempty"`
+	// Port ポート番号
+	Port string `json:",omitempty"`
 }
 
 var defaultGSLBHealthCheck = GSLBHealthCheck{

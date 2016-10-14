@@ -1,6 +1,7 @@
 package api
 
 import (
+	"fmt"
 	"github.com/stretchr/testify/assert"
 	"testing"
 	"time"
@@ -23,11 +24,13 @@ func TestVPCRouterCRUD(t *testing.T) {
 	newItem.Settings.Router.AddInterface("", []string{"192.168.11.1"}, 24)
 	newItem.Settings.Router.EnableL2TPIPsecServer("preshared", "192.168.11.100", "192.168.11.200")
 	newItem.Settings.Router.AddRemoteAccessUser("hogehoge", "hogehogeo")
+	newItem.Settings.Router.SyslogHost = "192.168.11.250"
 
 	item, err := api.Create(newItem)
 
 	assert.NoError(t, err)
 	assert.NotEmpty(t, item)
+	assert.Equal(t, item.Settings.Router.SyslogHost, "192.168.11.250")
 
 	id := item.ID
 
@@ -101,7 +104,7 @@ func TestVPCRouterPremiumCRUD(t *testing.T) {
 	}
 
 	if err != nil || current > timeout {
-		assert.Fail(t, "Timeout: Can't read /internet/"+inetID)
+		assert.Fail(t, fmt.Sprintf("Timeout: Can't read /internet/%d", inetID))
 	}
 
 	assert.NotNil(t, internet)
@@ -117,7 +120,7 @@ func TestVPCRouterPremiumCRUD(t *testing.T) {
 
 	//CREATE
 	newItem := api.New()
-	newItem.SetPremiumPlan(sw.ID, vip, ip1, ip2, 1, nil)
+	newItem.SetPremiumPlan(fmt.Sprintf("%d", sw.ID), vip, ip1, ip2, 1, nil)
 	newItem.Name = testVPCRouterName
 	newItem.Description = "before"
 	item, err := api.Create(newItem)

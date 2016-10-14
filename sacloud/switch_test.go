@@ -9,7 +9,7 @@ import (
 
 var testPublicNetSwitchJSON = `
 {
-	"ID": "123456789012",
+	"ID": 123456789012,
 	"Name": "\u30b9\u30a4\u30c3\u30c1",
 	"Scope": "shared",
 	"Subnet": {
@@ -30,7 +30,7 @@ var testPublicNetSwitchJSON = `
 
 var testPrivateNetSwitchJSON = `
 {
-	"ID": "123456789012",
+	"ID": 123456789012,
 	"Name": "\u3059\u3046\u3043\u3063\u3061",
 	"Scope": "user",
 	"Subnet": null,
@@ -44,7 +44,7 @@ var testPrivateNetSwitchJSON = `
 var testSwitchWithBridgeJSON = `
 {
             "Index": 1,
-            "ID": "123456789012",
+            "ID": 123456789012,
             "Name": "\u3059\u3046\u3043\u3063\u3061",
             "Description": "\u3059\u3046\u3043\u3063\u3061\u306e\u8aac\u660e\u306a\u306e",
             "ServerCount": 1,
@@ -58,7 +58,7 @@ var testSwitchWithBridgeJSON = `
             "ServiceClass": "cloud\/switch\/default",
             "CreatedAt": "2016-04-29T18:26:16+09:00",
             "Icon": {
-                "ID": "112300512546",
+                "ID": 112300512546,
                 "URL": "https:\/\/secure.sakura.ad.jp\/cloud\/zone\/is1b\/api\/cloud\/1.1\/icon\/112300512546.png",
                 "Name": "Scientific Linux",
                 "Scope": "shared"
@@ -70,12 +70,12 @@ var testSwitchWithBridgeJSON = `
             ],
             "Internet": null,
             "Bridge": {
-                "ID": "123456789012",
+                "ID": 123456789012,
                 "Name": "sakura_hyb",
                 "Info": {
                     "Switches": [
                         {
-                            "ID": "123456789012",
+                            "ID": 123456789012,
                             "Name": "\u3059\u3046\u3043\u3063\u3061",
                             "Zone": {
                                 "ID": 31002,
@@ -96,7 +96,7 @@ var testSwitchWithBridgeJSON = `
 var testRouterJSON = `
 {
             "Index": 0,
-            "ID": "123456789012",
+            "ID": 123456789012,
             "Name": "\u308b\u30fc\u305f",
             "Description": "\u30eb\u30fc\u30bf\u306e\u8aac\u660e",
             "ServerCount": 0,
@@ -107,7 +107,7 @@ var testRouterJSON = `
             "ServiceClass": "cloud\/switch\/default",
             "CreatedAt": "2016-05-02T10:51:33+09:00",
             "Icon": {
-                "ID": "112300511380",
+                "ID": 112300511380,
                 "URL": "https:\/\/secure.sakura.ad.jp\/cloud\/zone\/is1b\/api\/cloud\/1.1\/icon\/112300511380.png",
                 "Name": "CGI",
                 "Scope": "shared"
@@ -127,7 +127,7 @@ var testRouterJSON = `
                         "Max": "133.242.253.110"
                     },
                     "Internet": {
-                        "ID": "123456789012",
+                        "ID": 123456789012,
                         "Name": "\u308b\u30fc\u305f",
                         "BandWidthMbps": 100,
                         "ServiceClass": "cloud\/internet\/router\/100m"
@@ -142,7 +142,7 @@ var testRouterJSON = `
                 }
             ],
             "Internet": {
-                "ID": "123456789012",
+                "ID": 123456789012,
                 "Name": "\u308b\u30fc\u305f",
                 "BandWidthMbps": 100,
                 "Scope": "user",
