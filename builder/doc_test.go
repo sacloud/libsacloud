@@ -25,7 +25,7 @@ func Example() {
 	diskSize := 100                 // ディスクサイズ(GB)
 
 	// SSH公開鍵
-	sshKey := "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDVbJLAQHDVpgsjLhauPl1dY5o5MeC1f+sPQW1W5D9Iug+qCdUI3VpWSq5oPSe4sx4n+l3eFbEsjA6Z2pDwboBwZ142P5Ry5npiIX1Bi8xbx3Cp8KylgILf+pJtFqkRMdpFEDPxN2cmqsSR4yPyMJ8R5sBPMFRtBOkBLiRrdfLBOoh4RwpS3tiNwqkLCc2YVirLL+NTz6/1shQu8++hO0xWDjzvrl/plIAHpVG8nuPuMr9zE+MPW3m+1O0jV9iFFh8/8vTnfP1kPY/CQCht05Lh+q53XKXp0a7tdKRzJ6TKV6l5VfySKIIcuKSVJ16ysbnbYMacc2mEsH5DAXxlPESl"
+	sshKey := "ssh-rsa AAAA..."
 	// スタートアップスクリプト
 	script := `#!/bin/bash
 yum -y update || exit 1

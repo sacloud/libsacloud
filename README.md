@@ -27,25 +27,26 @@ import (
 	"github.com/yamamoto-febc/libsacloud/sacloud/ostype"
 )
 
-func main() {
+var (
+	token      = "PUT-YOUR-TOKEN"    // API token
+	secret     = "PUT-YOUR-SECRET"   // API secret
+	zone       = "tk1a"              // target zone [tk1a or is1b]
+	serverName = "example-server"    // server name
+	password   = "PUT-YOUR-PASSWORD" // password
+	core       = 2                   // cpu core
+	memory     = 4                   // memory size(GB)
+	diskSize   = 100                 // disk size(GB)
 
-	token := "PUT-YOUR-TOKEN"       // API token
-	secret := "PUT-YOUR-SECRET"     // API secret
-	zone := "tk1a"                  // target zone[ tk1a or is1b ]
-	serverName := "example-server"  // server name
-	password := "PUT-YOUR-PASSWORD" // password
-	core := 2                       // cpu core
-	memory := 4                     // memory size(GB)
-	diskSize := 100                 // disk size(GB)
+	// public key
+	sshKey = "ssh-rsa AAAA..."
 
-	// SSH public key
-	sshKey := "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDVbJLAQHDVpgsjLhauPl1dY5o5MeC1f+sPQW1W5D9Iug+qCdUI3VpWSq5oPSe4sx4n+l3eFbEsjA6Z2pDwboBwZ142P5Ry5npiIX1Bi8xbx3Cp8KylgILf+pJtFqkRMdpFEDPxN2cmqsSR4yPyMJ8R5sBPMFRtBOkBLiRrdfLBOoh4RwpS3tiNwqkLCc2YVirLL+NTz6/1shQu8++hO0xWDjzvrl/plIAHpVG8nuPuMr9zE+MPW3m+1O0jV9iFFh8/8vTnfP1kPY/CQCht05Lh+q53XKXp0a7tdKRzJ6TKV6l5VfySKIIcuKSVJ16ysbnbYMacc2mEsH5DAXxlPESl"
-	// Startup script(yum update)
-	script := `#!/bin/bash
+	// startup script
+	script = `#!/bin/bash
 yum -y update || exit 1
 exit 0`
+)
 
-	//---------------------------------------------------------------------
+func main() {
 
 	// create SakuraCloud API client
 	client := api.NewClient(token, secret, zone)
