@@ -9,34 +9,40 @@ import (
 )
 
 /************************************************
-   To support influent interface for Find()
+   To support fluent interface for Find()
 ************************************************/
 
+// Reset 検索条件のリセット
 func (api *VPCRouterAPI) Reset() *VPCRouterAPI {
 	api.reset()
 	return api
 }
 
+// Offset オフセット
 func (api *VPCRouterAPI) Offset(offset int) *VPCRouterAPI {
 	api.offset(offset)
 	return api
 }
 
+// Limit リミット
 func (api *VPCRouterAPI) Limit(limit int) *VPCRouterAPI {
 	api.limit(limit)
 	return api
 }
 
+// Include 取得する項目
 func (api *VPCRouterAPI) Include(key string) *VPCRouterAPI {
 	api.include(key)
 	return api
 }
 
+// Exclude 除外する項目
 func (api *VPCRouterAPI) Exclude(key string) *VPCRouterAPI {
 	api.exclude(key)
 	return api
 }
 
+// FilterBy 指定キーでのフィルター
 func (api *VPCRouterAPI) FilterBy(key string, value interface{}) *VPCRouterAPI {
 	api.filterBy(key, value, false)
 	return api
@@ -47,13 +53,17 @@ func (api *VPCRouterAPI) FilterBy(key string, value interface{}) *VPCRouterAPI {
 // 	return api
 // }
 
+// WithNameLike 名称条件
 func (api *VPCRouterAPI) WithNameLike(name string) *VPCRouterAPI {
 	return api.FilterBy("Name", name)
 }
 
+// WithTag タグ条件
 func (api *VPCRouterAPI) WithTag(tag string) *VPCRouterAPI {
 	return api.FilterBy("Tags.Name", tag)
 }
+
+// WithTags タグ(複数)条件
 func (api *VPCRouterAPI) WithTags(tags []string) *VPCRouterAPI {
 	return api.FilterBy("Tags.Name", []interface{}{tags})
 }
@@ -73,11 +83,13 @@ func (api *VPCRouterAPI) WithTags(tags []string) *VPCRouterAPI {
 // 	return api
 // }
 
+// SortBy 指定キーでのソート
 func (api *VPCRouterAPI) SortBy(key string, reverse bool) *VPCRouterAPI {
 	api.sortBy(key, reverse)
 	return api
 }
 
+// SortByName 名称でのソート
 func (api *VPCRouterAPI) SortByName(reverse bool) *VPCRouterAPI {
 	api.sortByName(reverse)
 	return api

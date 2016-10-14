@@ -9,34 +9,40 @@ import (
 )
 
 /************************************************
-   To support influent interface for Find()
+   To support fluent interface for Find()
 ************************************************/
 
+// Reset 検索条件のリセット
 func (api *SSHKeyAPI) Reset() *SSHKeyAPI {
 	api.reset()
 	return api
 }
 
+// Offset オフセット
 func (api *SSHKeyAPI) Offset(offset int) *SSHKeyAPI {
 	api.offset(offset)
 	return api
 }
 
+// Limit リミット
 func (api *SSHKeyAPI) Limit(limit int) *SSHKeyAPI {
 	api.limit(limit)
 	return api
 }
 
+// Include 取得する項目
 func (api *SSHKeyAPI) Include(key string) *SSHKeyAPI {
 	api.include(key)
 	return api
 }
 
+// Exclude 除外する項目
 func (api *SSHKeyAPI) Exclude(key string) *SSHKeyAPI {
 	api.exclude(key)
 	return api
 }
 
+// FilterBy 指定キーでのフィルター
 func (api *SSHKeyAPI) FilterBy(key string, value interface{}) *SSHKeyAPI {
 	api.filterBy(key, value, false)
 	return api
@@ -47,13 +53,17 @@ func (api *SSHKeyAPI) FilterBy(key string, value interface{}) *SSHKeyAPI {
 // 	return api
 // }
 
+// WithNameLike 名称条件
 func (api *SSHKeyAPI) WithNameLike(name string) *SSHKeyAPI {
 	return api.FilterBy("Name", name)
 }
 
+// WithTag タグ条件
 func (api *SSHKeyAPI) WithTag(tag string) *SSHKeyAPI {
 	return api.FilterBy("Tags.Name", tag)
 }
+
+// WithTags タグ(複数)条件
 func (api *SSHKeyAPI) WithTags(tags []string) *SSHKeyAPI {
 	return api.FilterBy("Tags.Name", []interface{}{tags})
 }
@@ -73,11 +83,13 @@ func (api *SSHKeyAPI) WithTags(tags []string) *SSHKeyAPI {
 // 	return api
 // }
 
+// SortBy 指定キーでのソート
 func (api *SSHKeyAPI) SortBy(key string, reverse bool) *SSHKeyAPI {
 	api.sortBy(key, reverse)
 	return api
 }
 
+// SortByName 名称でのソート
 func (api *SSHKeyAPI) SortByName(reverse bool) *SSHKeyAPI {
 	api.sortByName(reverse)
 	return api
@@ -92,28 +104,33 @@ func (api *SSHKeyAPI) SortByName(reverse bool) *SSHKeyAPI {
   To support CRUD(Create/Read/Update/Delete)
 ************************************************/
 
+// New 新規作成用パラメーター作成
 func (api *SSHKeyAPI) New() *sacloud.SSHKey {
 	return &sacloud.SSHKey{}
 }
 
+// Create 新規作成
 func (api *SSHKeyAPI) Create(value *sacloud.SSHKey) (*sacloud.SSHKey, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.create(api.createRequest(value), res)
 	})
 }
 
+// Read 読み取り
 func (api *SSHKeyAPI) Read(id int64) (*sacloud.SSHKey, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.read(id, nil, res)
 	})
 }
 
+// Update 更新
 func (api *SSHKeyAPI) Update(id int64, value *sacloud.SSHKey) (*sacloud.SSHKey, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.update(id, api.createRequest(value), res)
 	})
 }
 
+// Delete 削除
 func (api *SSHKeyAPI) Delete(id int64) (*sacloud.SSHKey, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.delete(id, nil, res)

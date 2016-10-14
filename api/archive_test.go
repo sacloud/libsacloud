@@ -18,6 +18,17 @@ func TestGetCentOSArvhiveByName(t *testing.T) {
 	assert.Equal(t, len(res.Archives), 1)
 }
 
+func TestGetArchiveWithLimitOffset(t *testing.T) {
+	archiveAPI := client.Archive
+	res, err := archiveAPI.Reset().Limit(2).Offset(1).Include("Name").Include("CreatedAt").Find()
+	assert.NoError(t, err)
+	assert.NotEmpty(t, res)
+	assert.Equal(t, len(res.Archives), 2)
+	assert.Equal(t, res.From, 1)
+	assert.Equal(t, res.Count, 2)
+	assert.True(t, res.Total > 2)
+}
+
 func TestFindState(t *testing.T) {
 	api := client.Archive
 

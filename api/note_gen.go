@@ -9,34 +9,40 @@ import (
 )
 
 /************************************************
-   To support influent interface for Find()
+   To support fluent interface for Find()
 ************************************************/
 
+// Reset 検索条件のリセット
 func (api *NoteAPI) Reset() *NoteAPI {
 	api.reset()
 	return api
 }
 
+// Offset オフセット
 func (api *NoteAPI) Offset(offset int) *NoteAPI {
 	api.offset(offset)
 	return api
 }
 
+// Limit リミット
 func (api *NoteAPI) Limit(limit int) *NoteAPI {
 	api.limit(limit)
 	return api
 }
 
+// Include 取得する項目
 func (api *NoteAPI) Include(key string) *NoteAPI {
 	api.include(key)
 	return api
 }
 
+// Exclude 除外する項目
 func (api *NoteAPI) Exclude(key string) *NoteAPI {
 	api.exclude(key)
 	return api
 }
 
+// FilterBy 指定キーでのフィルター
 func (api *NoteAPI) FilterBy(key string, value interface{}) *NoteAPI {
 	api.filterBy(key, value, false)
 	return api
@@ -47,13 +53,17 @@ func (api *NoteAPI) FilterBy(key string, value interface{}) *NoteAPI {
 // 	return api
 // }
 
+// WithNameLike 名称条件
 func (api *NoteAPI) WithNameLike(name string) *NoteAPI {
 	return api.FilterBy("Name", name)
 }
 
+// WithTag タグ条件
 func (api *NoteAPI) WithTag(tag string) *NoteAPI {
 	return api.FilterBy("Tags.Name", tag)
 }
+
+// WithTags タグ(複数)条件
 func (api *NoteAPI) WithTags(tags []string) *NoteAPI {
 	return api.FilterBy("Tags.Name", []interface{}{tags})
 }
@@ -63,21 +73,25 @@ func (api *NoteAPI) WithTags(tags []string) *NoteAPI {
 // 	return api
 // }
 
+// WithSharedScope 公開スコープ条件
 func (api *NoteAPI) WithSharedScope() *NoteAPI {
 	api.FilterBy("Scope", "shared")
 	return api
 }
 
+// WithUserScope ユーザースコープ条件
 func (api *NoteAPI) WithUserScope() *NoteAPI {
 	api.FilterBy("Scope", "user")
 	return api
 }
 
+// SortBy 指定キーでのソート
 func (api *NoteAPI) SortBy(key string, reverse bool) *NoteAPI {
 	api.sortBy(key, reverse)
 	return api
 }
 
+// SortByName 名称でのソート
 func (api *NoteAPI) SortByName(reverse bool) *NoteAPI {
 	api.sortByName(reverse)
 	return api
@@ -92,30 +106,36 @@ func (api *NoteAPI) SortByName(reverse bool) *NoteAPI {
   To support CRUD(Create/Read/Update/Delete)
 ************************************************/
 
+// New 新規作成用パラメーター作成
 func (api *NoteAPI) New() *sacloud.Note {
 	return &sacloud.Note{
+		// TagsType
 		TagsType: &sacloud.TagsType{},
 	}
 }
 
+// Create 新規作成
 func (api *NoteAPI) Create(value *sacloud.Note) (*sacloud.Note, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.create(api.createRequest(value), res)
 	})
 }
 
+// Read 読み取り
 func (api *NoteAPI) Read(id int64) (*sacloud.Note, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.read(id, nil, res)
 	})
 }
 
+// Update 更新
 func (api *NoteAPI) Update(id int64, value *sacloud.Note) (*sacloud.Note, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.update(id, api.createRequest(value), res)
 	})
 }
 
+// Delete 削除
 func (api *NoteAPI) Delete(id int64) (*sacloud.Note, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.delete(id, nil, res)

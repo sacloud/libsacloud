@@ -1,8 +1,12 @@
 package sacloud
 
+// Region リージョン
 type Region struct {
 	*Resource
-	Name        string   `json:",omitempty"`
-	Description string   `json:",omitempty"`
+	// Name 名称
+	Name string `json:",omitempty"`
+	// Description 説明
+	Description string `json:",omitempty"`
+	// NameServers ネームサーバー
 	NameServers []string `json:",omitempty"`
 }

@@ -2,10 +2,12 @@ package api
 
 import "github.com/yamamoto-febc/libsacloud/sacloud"
 
+// IconAPI アイコンAPI
 type IconAPI struct {
 	*baseAPI
 }
 
+// NewIconAPI アイコンAPI作成
 func NewIconAPI(client *Client) *IconAPI {
 	return &IconAPI{
 		&baseAPI{
@@ -17,6 +19,7 @@ func NewIconAPI(client *Client) *IconAPI {
 	}
 }
 
+// GetImage アイコン画像データ(BASE64文字列)取得
 func (api *IconAPI) GetImage(id int64, size string) (*sacloud.Image, error) {
 
 	res := &sacloud.Response{}

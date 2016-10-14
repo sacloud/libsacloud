@@ -9,34 +9,40 @@ import (
 )
 
 /************************************************
-   To support influent interface for Find()
+   To support fluent interface for Find()
 ************************************************/
 
+// Reset 検索条件のリセット
 func (api *InterfaceAPI) Reset() *InterfaceAPI {
 	api.reset()
 	return api
 }
 
+// Offset オフセット
 func (api *InterfaceAPI) Offset(offset int) *InterfaceAPI {
 	api.offset(offset)
 	return api
 }
 
+// Limit リミット
 func (api *InterfaceAPI) Limit(limit int) *InterfaceAPI {
 	api.limit(limit)
 	return api
 }
 
+// Include 取得する項目
 func (api *InterfaceAPI) Include(key string) *InterfaceAPI {
 	api.include(key)
 	return api
 }
 
+// Exclude 除外する項目
 func (api *InterfaceAPI) Exclude(key string) *InterfaceAPI {
 	api.exclude(key)
 	return api
 }
 
+// FilterBy 指定キーでのフィルター
 func (api *InterfaceAPI) FilterBy(key string, value interface{}) *InterfaceAPI {
 	api.filterBy(key, value, false)
 	return api
@@ -47,13 +53,17 @@ func (api *InterfaceAPI) FilterBy(key string, value interface{}) *InterfaceAPI {
 // 	return api
 // }
 
+// WithNameLike 名称条件
 func (api *InterfaceAPI) WithNameLike(name string) *InterfaceAPI {
 	return api.FilterBy("Name", name)
 }
 
+// WithTag タグ条件
 func (api *InterfaceAPI) WithTag(tag string) *InterfaceAPI {
 	return api.FilterBy("Tags.Name", tag)
 }
+
+// WithTags タグ(複数)条件
 func (api *InterfaceAPI) WithTags(tags []string) *InterfaceAPI {
 	return api.FilterBy("Tags.Name", []interface{}{tags})
 }
@@ -73,11 +83,13 @@ func (api *InterfaceAPI) WithTags(tags []string) *InterfaceAPI {
 // 	return api
 // }
 
+// SortBy 指定キーでのソート
 func (api *InterfaceAPI) SortBy(key string, reverse bool) *InterfaceAPI {
 	api.sortBy(key, reverse)
 	return api
 }
 
+// SortByName 名称でのソート
 func (api *InterfaceAPI) SortByName(reverse bool) *InterfaceAPI {
 	api.sortByName(reverse)
 	return api
@@ -92,28 +104,33 @@ func (api *InterfaceAPI) SortByName(reverse bool) *InterfaceAPI {
   To support CRUD(Create/Read/Update/Delete)
 ************************************************/
 
+// New 新規作成用パラメーター作成
 func (api *InterfaceAPI) New() *sacloud.Interface {
 	return &sacloud.Interface{}
 }
 
+// Create 新規作成
 func (api *InterfaceAPI) Create(value *sacloud.Interface) (*sacloud.Interface, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.create(api.createRequest(value), res)
 	})
 }
 
+// Read 読み取り
 func (api *InterfaceAPI) Read(id int64) (*sacloud.Interface, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.read(id, nil, res)
 	})
 }
 
+// Update 更新
 func (api *InterfaceAPI) Update(id int64, value *sacloud.Interface) (*sacloud.Interface, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.update(id, api.createRequest(value), res)
 	})
 }
 
+// Delete 削除
 func (api *InterfaceAPI) Delete(id int64) (*sacloud.Interface, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.delete(id, nil, res)

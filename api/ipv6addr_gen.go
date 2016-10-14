@@ -9,34 +9,40 @@ import (
 )
 
 /************************************************
-   To support influent interface for Find()
+   To support fluent interface for Find()
 ************************************************/
 
+// Reset 検索条件のリセット
 func (api *IPv6AddrAPI) Reset() *IPv6AddrAPI {
 	api.reset()
 	return api
 }
 
+// Offset オフセット
 func (api *IPv6AddrAPI) Offset(offset int) *IPv6AddrAPI {
 	api.offset(offset)
 	return api
 }
 
+// Limit リミット
 func (api *IPv6AddrAPI) Limit(limit int) *IPv6AddrAPI {
 	api.limit(limit)
 	return api
 }
 
+// Include 取得する項目
 func (api *IPv6AddrAPI) Include(key string) *IPv6AddrAPI {
 	api.include(key)
 	return api
 }
 
+// Exclude 除外する項目
 func (api *IPv6AddrAPI) Exclude(key string) *IPv6AddrAPI {
 	api.exclude(key)
 	return api
 }
 
+// FilterBy 指定キーでのフィルター
 func (api *IPv6AddrAPI) FilterBy(key string, value interface{}) *IPv6AddrAPI {
 	api.filterBy(key, value, false)
 	return api
@@ -73,15 +79,17 @@ func (api *IPv6AddrAPI) FilterBy(key string, value interface{}) *IPv6AddrAPI {
 //	return api
 //}
 
+// SortBy 指定キーでのソート
 func (api *IPv6AddrAPI) SortBy(key string, reverse bool) *IPv6AddrAPI {
 	api.sortBy(key, reverse)
 	return api
 }
 
-func (api *IPv6AddrAPI) SortByName(reverse bool) *IPv6AddrAPI {
-	api.sortByName(reverse)
-	return api
-}
+//// SortByName
+//func (api *IPv6AddrAPI) SortByName(reverse bool) *IPv6AddrAPI {
+//	api.sortByName(reverse)
+//	return api
+//}
 
 //func (api *IPv6AddrAPI) SortBySize(reverse bool) *IPv6AddrAPI {
 //	api.sortBy("SizeMB", reverse)
@@ -89,6 +97,7 @@ func (api *IPv6AddrAPI) SortByName(reverse bool) *IPv6AddrAPI {
 //}
 
 /************************************************
+  // To
   To support CRUD(Create/Read/Update/Delete)
 ************************************************/
 
@@ -117,6 +126,7 @@ func (api *IPv6AddrAPI) SortByName(reverse bool) *IPv6AddrAPI {
 //}
 //
 
+// New 新規作成用パラメーター作成
 func (api *IPv6AddrAPI) New() *sacloud.IPv6Addr {
 	return sacloud.CreateNewIPv6Addr()
 }

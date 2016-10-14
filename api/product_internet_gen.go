@@ -9,34 +9,40 @@ import (
 )
 
 /************************************************
-   To support influent interface for Find()
+   To support fluent interface for Find()
 ************************************************/
 
+// Reset 検索条件のリセット
 func (api *ProductInternetAPI) Reset() *ProductInternetAPI {
 	api.reset()
 	return api
 }
 
+// Offset オフセット
 func (api *ProductInternetAPI) Offset(offset int) *ProductInternetAPI {
 	api.offset(offset)
 	return api
 }
 
+// Limit リミット
 func (api *ProductInternetAPI) Limit(limit int) *ProductInternetAPI {
 	api.limit(limit)
 	return api
 }
 
+// Include 取得する項目
 func (api *ProductInternetAPI) Include(key string) *ProductInternetAPI {
 	api.include(key)
 	return api
 }
 
+// Exclude 除外する項目
 func (api *ProductInternetAPI) Exclude(key string) *ProductInternetAPI {
 	api.exclude(key)
 	return api
 }
 
+// FilterBy 指定キーでのフィルター
 func (api *ProductInternetAPI) FilterBy(key string, value interface{}) *ProductInternetAPI {
 	api.filterBy(key, value, false)
 	return api
@@ -47,13 +53,17 @@ func (api *ProductInternetAPI) FilterBy(key string, value interface{}) *ProductI
 // 	return api
 // }
 
+// WithNameLike 名称条件
 func (api *ProductInternetAPI) WithNameLike(name string) *ProductInternetAPI {
 	return api.FilterBy("Name", name)
 }
 
+// WithTag タグ条件
 func (api *ProductInternetAPI) WithTag(tag string) *ProductInternetAPI {
 	return api.FilterBy("Tags.Name", tag)
 }
+
+// WithTags タグ(複数)条件
 func (api *ProductInternetAPI) WithTags(tags []string) *ProductInternetAPI {
 	return api.FilterBy("Tags.Name", []interface{}{tags})
 }
@@ -73,11 +83,13 @@ func (api *ProductInternetAPI) WithTags(tags []string) *ProductInternetAPI {
 // 	return api
 // }
 
+// SortBy 指定キーでのソート
 func (api *ProductInternetAPI) SortBy(key string, reverse bool) *ProductInternetAPI {
 	api.sortBy(key, reverse)
 	return api
 }
 
+// SortByName 名称でのソート
 func (api *ProductInternetAPI) SortByName(reverse bool) *ProductInternetAPI {
 	api.sortByName(reverse)
 	return api
@@ -102,6 +114,7 @@ func (api *ProductInternetAPI) SortByName(reverse bool) *ProductInternetAPI {
 // 	})
 // }
 
+// Read 読み取り
 func (api *ProductInternetAPI) Read(id int64) (*sacloud.ProductInternet, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.read(id, nil, res)

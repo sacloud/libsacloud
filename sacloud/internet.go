@@ -4,18 +4,26 @@ import (
 	"time"
 )
 
+// Internet ルーター
 type Internet struct {
 	*Resource
-	Index          int        `json:",omitempty"`
-	Name           string     `json:",omitempty"`
-	Description    string     `json:",omitempty"`
-	BandWidthMbps  int        `json:",omitempty"`
-	NetworkMaskLen int        `json:",omitempty"`
-	Scope          EScope     `json:",omitempty"`
-	ServiceClass   string     `json:",omitempty"`
-	CreatedAt      *time.Time `json:",omitempty"`
-	Icon           *Icon      `json:",omitempty"`
-
+	// Name 名称
+	Name string `json:",omitempty"`
+	// Description 説明
+	Description string `json:",omitempty"`
+	// BandWidthMbps 帯域
+	BandWidthMbps int `json:",omitempty"`
+	// NetworkMaskLen ネットワークマスク長
+	NetworkMaskLen int `json:",omitempty"`
+	// Scope スコープ
+	Scope EScope `json:",omitempty"`
+	// ServiceClass サービスクラス
+	ServiceClass string `json:",omitempty"`
+	// CreatedAt 作成日時
+	CreatedAt *time.Time `json:",omitempty"`
+	// Icon アイコン
+	Icon *Icon `json:",omitempty"`
+	// Switch スイッチ
 	Switch *Switch `json:",omitempty"`
 	*TagsType
 

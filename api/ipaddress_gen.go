@@ -9,34 +9,40 @@ import (
 )
 
 /************************************************
-   To support influent interface for Find()
+   To support fluent interface for Find()
 ************************************************/
 
+// Reset 検索条件のリセット
 func (api *IPAddressAPI) Reset() *IPAddressAPI {
 	api.reset()
 	return api
 }
 
+// Offset オフセット
 func (api *IPAddressAPI) Offset(offset int) *IPAddressAPI {
 	api.offset(offset)
 	return api
 }
 
+// Limit リミット
 func (api *IPAddressAPI) Limit(limit int) *IPAddressAPI {
 	api.limit(limit)
 	return api
 }
 
+// Include 取得する項目
 func (api *IPAddressAPI) Include(key string) *IPAddressAPI {
 	api.include(key)
 	return api
 }
 
+// Exclude 除外する項目
 func (api *IPAddressAPI) Exclude(key string) *IPAddressAPI {
 	api.exclude(key)
 	return api
 }
 
+// FilterBy 指定キーでのフィルタ
 func (api *IPAddressAPI) FilterBy(key string, value interface{}) *IPAddressAPI {
 	api.filterBy(key, value, false)
 	return api
@@ -73,15 +79,17 @@ func (api *IPAddressAPI) FilterBy(key string, value interface{}) *IPAddressAPI {
 //	return api
 //}
 
+// SortBy 指定キーでのソート
 func (api *IPAddressAPI) SortBy(key string, reverse bool) *IPAddressAPI {
 	api.sortBy(key, reverse)
 	return api
 }
 
-func (api *IPAddressAPI) SortByName(reverse bool) *IPAddressAPI {
-	api.sortByName(reverse)
-	return api
-}
+//// SortByName 名称でのソート
+//func (api *IPAddressAPI) SortByName(reverse bool) *IPAddressAPI {
+//	api.sortByName(reverse)
+//	return api
+//}
 
 //func (api *IPAddressAPI) SortBySize(reverse bool) *IPAddressAPI {
 //	api.sortBy("SizeMB", reverse)

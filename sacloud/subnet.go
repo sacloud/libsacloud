@@ -2,17 +2,27 @@ package sacloud
 
 import "time"
 
-// Subnet type of SakuraCloud Subnet
+// Subnet IPv4サブネット
 type Subnet struct {
 	*Resource
-	DefaultRoute   string       `json:",omitempty"`
-	CreatedAt      *time.Time   `json:",omitempty"`
-	IPAddresses    []*IPAddress `json:",omitempty"`
-	NetworkAddress string       `json:",omitempty"`
-	NetworkMaskLen int          `json:",omitempty"`
-	ServiceClass   string       `json:",omitempty"`
-	ServiceID      int64        `json:",omitempty"`
-	StaticRoute    string       `json:",omitempty"`
-	Switch         *Switch      `json:",omitempty"`
-	Internet       *Internet    `json:",omitempty"`
+	// DefaultRoute デフォルトルート
+	DefaultRoute string `json:",omitempty"`
+	// CreatedAt 作成日時
+	CreatedAt *time.Time `json:",omitempty"`
+	// IPAddresses IPv4アドレス範囲
+	IPAddresses []*IPAddress `json:",omitempty"`
+	// NetworkAddress ネットワークアドレス
+	NetworkAddress string `json:",omitempty"`
+	// NetworkMaskLen ネットワークマスク長
+	NetworkMaskLen int `json:",omitempty"`
+	// ServiceClass サービスクラス
+	ServiceClass string `json:",omitempty"`
+	// ServiceID サービスID
+	ServiceID int64 `json:",omitempty"`
+	// StaticRoute スタティックルート
+	StaticRoute string `json:",omitempty"`
+	// Switch スイッチ
+	Switch *Switch `json:",omitempty"`
+	// Internet ルーター
+	Internet *Internet `json:",omitempty"`
 }

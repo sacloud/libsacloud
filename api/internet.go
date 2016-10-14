@@ -6,10 +6,12 @@ import (
 	"time"
 )
 
+// InternetAPI ルーターAPI
 type InternetAPI struct {
 	*baseAPI
 }
 
+// NewInternetAPI ルーターAPI作成
 func NewInternetAPI(client *Client) *InternetAPI {
 	return &InternetAPI{
 		&baseAPI{
@@ -21,6 +23,7 @@ func NewInternetAPI(client *Client) *InternetAPI {
 	}
 }
 
+// UpdateBandWidth 帯域幅更新
 func (api *InternetAPI) UpdateBandWidth(id int64, bandWidth int) (*sacloud.Internet, error) {
 	var (
 		method = "PUT"
@@ -34,6 +37,7 @@ func (api *InternetAPI) UpdateBandWidth(id int64, bandWidth int) (*sacloud.Inter
 	})
 }
 
+// EnableIPv6 IPv6有効化
 func (api *InternetAPI) EnableIPv6(id int64) (*sacloud.IPv6Net, error) {
 	var (
 		method = "POST"
@@ -48,6 +52,7 @@ func (api *InternetAPI) EnableIPv6(id int64) (*sacloud.IPv6Net, error) {
 	return res.IPv6Net, nil
 }
 
+// DisableIPv6 IPv6無効化
 func (api *InternetAPI) DisableIPv6(id int64, ipv6NetID int64) (bool, error) {
 	var (
 		method = "DELETE"
@@ -62,6 +67,7 @@ func (api *InternetAPI) DisableIPv6(id int64, ipv6NetID int64) (bool, error) {
 	return true, nil
 }
 
+// SleepWhileCreating 作成完了まで待機
 func (api *InternetAPI) SleepWhileCreating(internetID int64, timeout time.Duration) error {
 	current := 0 * time.Second
 	interval := 5 * time.Second
@@ -90,6 +96,7 @@ func (api *InternetAPI) SleepWhileCreating(internetID int64, timeout time.Durati
 
 }
 
+// Monitor アクティビティーモニター取得
 func (api *InternetAPI) Monitor(id int64, body *sacloud.ResourceMonitorRequest) (*sacloud.MonitorValues, error) {
 	return api.baseAPI.monitor(id, body)
 }

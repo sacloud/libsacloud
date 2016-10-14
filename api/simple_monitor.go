@@ -9,10 +9,15 @@ import (
 //HACK: さくらのAPI側仕様: CommonServiceItemsの内容によってJSONフォーマットが異なるため
 //      DNS/GSLB/シンプル監視それぞれでリクエスト/レスポンスデータ型を定義する。
 
+// SearchSimpleMonitorResponse シンプル監視検索レスポンス
 type SearchSimpleMonitorResponse struct {
-	Total          int                     `json:",omitempty"`
-	From           int                     `json:",omitempty"`
-	Count          int                     `json:",omitempty"`
+	// Total 総件数
+	Total int `json:",omitempty"`
+	// From ページング開始位置
+	From int `json:",omitempty"`
+	// Count 件数
+	Count int `json:",omitempty"`
+	// SimpleMonitors シンプル監視 リスト
 	SimpleMonitors []sacloud.SimpleMonitor `json:"CommonServiceItems,omitempty"`
 }
 
@@ -31,10 +36,12 @@ type simpleMonitorResponse struct {
 	*sacloud.SimpleMonitor `json:"CommonServiceItem,omitempty"`
 }
 
+// SimpleMonitorAPI シンプル監視API
 type SimpleMonitorAPI struct {
 	*baseAPI
 }
 
+// NewSimpleMonitorAPI シンプル監視API作成
 func NewSimpleMonitorAPI(client *Client) *SimpleMonitorAPI {
 	return &SimpleMonitorAPI{
 		&baseAPI{
@@ -51,6 +58,7 @@ func NewSimpleMonitorAPI(client *Client) *SimpleMonitorAPI {
 	}
 }
 
+// Find 検索
 func (api *SimpleMonitorAPI) Find() (*SearchSimpleMonitorResponse, error) {
 	data, err := api.client.newRequest("GET", api.getResourceURL(), api.getSearchState())
 	if err != nil {
@@ -76,28 +84,33 @@ func (api *SimpleMonitorAPI) createRequest(value *sacloud.SimpleMonitor) *simple
 	return &simpleMonitorResponse{SimpleMonitor: value}
 }
 
+// New 新規作成用パラメーター作成
 func (api *SimpleMonitorAPI) New(target string) *sacloud.SimpleMonitor {
 	return sacloud.CreateNewSimpleMonitor(target)
 }
 
+// Create 新規作成
 func (api *SimpleMonitorAPI) Create(value *sacloud.SimpleMonitor) (*sacloud.SimpleMonitor, error) {
 	return api.request(func(res *simpleMonitorResponse) error {
 		return api.create(api.createRequest(value), res)
 	})
 }
 
+// Read 読み取り
 func (api *SimpleMonitorAPI) Read(id int64) (*sacloud.SimpleMonitor, error) {
 	return api.request(func(res *simpleMonitorResponse) error {
 		return api.read(id, nil, res)
 	})
 }
 
+// Update 更新
 func (api *SimpleMonitorAPI) Update(id int64, value *sacloud.SimpleMonitor) (*sacloud.SimpleMonitor, error) {
 	return api.request(func(res *simpleMonitorResponse) error {
 		return api.update(id, api.createRequest(value), res)
 	})
 }
 
+// Delete 削除
 func (api *SimpleMonitorAPI) Delete(id int64) (*sacloud.SimpleMonitor, error) {
 	return api.request(func(res *simpleMonitorResponse) error {
 		return api.delete(id, nil, res)

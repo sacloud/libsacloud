@@ -9,34 +9,40 @@ import (
 )
 
 /************************************************
-   To support influent interface for Find()
+   To support fluent interface for Find()
 ************************************************/
 
+// Reset 検索条件のクリア
 func (api *IPv6NetAPI) Reset() *IPv6NetAPI {
 	api.reset()
 	return api
 }
 
+// Offset オフセット
 func (api *IPv6NetAPI) Offset(offset int) *IPv6NetAPI {
 	api.offset(offset)
 	return api
 }
 
+// Limit リミット
 func (api *IPv6NetAPI) Limit(limit int) *IPv6NetAPI {
 	api.limit(limit)
 	return api
 }
 
+// Include 取得する項目
 func (api *IPv6NetAPI) Include(key string) *IPv6NetAPI {
 	api.include(key)
 	return api
 }
 
+// Exclude 除外する項目
 func (api *IPv6NetAPI) Exclude(key string) *IPv6NetAPI {
 	api.exclude(key)
 	return api
 }
 
+// FilterBy 指定キーでのフィルター
 func (api *IPv6NetAPI) FilterBy(key string, value interface{}) *IPv6NetAPI {
 	api.filterBy(key, value, false)
 	return api
@@ -73,6 +79,7 @@ func (api *IPv6NetAPI) FilterBy(key string, value interface{}) *IPv6NetAPI {
 // 	return api
 // }
 
+// SortBy 指定キーでのソート
 func (api *IPv6NetAPI) SortBy(key string, reverse bool) *IPv6NetAPI {
 	api.sortBy(key, reverse)
 	return api
@@ -102,6 +109,7 @@ func (api *IPv6NetAPI) SortBy(key string, reverse bool) *IPv6NetAPI {
 //	})
 //}
 
+// Read 読み取り
 func (api *IPv6NetAPI) Read(id int64) (*sacloud.IPv6Net, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.read(id, nil, res)

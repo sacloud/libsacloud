@@ -5,7 +5,7 @@ on [`SAKURA CLOUD APIs`](http://developer.sakura.ad.jp/cloud/api/1.1/).
 
 [![GoDoc](https://godoc.org/github.com/yamamoto-febc/libsacloud?status.svg)](https://godoc.org/github.com/yamamoto-febc/libsacloud)
 [![Build Status](https://travis-ci.org/yamamoto-febc/libsacloud.svg?branch=master)](https://travis-ci.org/yamamoto-febc/libsacloud)
-
+[![Go Report Card](https://goreportcard.com/badge/github.com/yamamoto-febc/libsacloud)](https://goreportcard.com/report/github.com/yamamoto-febc/libsacloud)
 See list of implemented API clients [here](https://godoc.org/github.com/yamamoto-febc/libsacloud).
 
 # Installation
@@ -23,7 +23,7 @@ import (
 	"fmt"
 	"github.com/yamamoto-febc/libsacloud/api"
 	"github.com/yamamoto-febc/libsacloud/builder"
-	"github.com/yamamoto-febc/libsacloud/sacloud"
+	"github.com/yamamoto-febc/libsacloud/sacloud/ostype"
 )
 
 func main() {
@@ -50,7 +50,7 @@ exit 0`
 	client := api.NewClient(token, secret, zone)
 
 	// Create server using CentOS public archive
-	result, err := builder.FromPublicArchiveUnix(client, sacloud.CentOS, serverName, password).
+	result, err := builder.FromPublicArchiveUnix(client, ostype.CentOS, serverName, password).
 		AddPublicNWConnectedNIC(). // connect shared segment
 		SetCore(core).             // set cpu core
 		SetMemory(memory).         // set memory size
@@ -84,7 +84,7 @@ package main
 
 import (
 	"fmt"
-	API "github.com/yamamoto-febc/libsacloud/api"
+	"github.com/yamamoto-febc/libsacloud/api"
 	"os"
 	"time"
 )
@@ -107,21 +107,15 @@ func main() {
 	)
 
 	// authorize
-	api := API.NewClient(token, secret, zone)
+	client := api.NewClient(token, secret, zone)
 
 	//search archives
 	fmt.Println("searching archives")
-	res, _ := api.Archive.
-		WithNameLike("CentOS 6.7 64bit").
-		WithSharedScope().
-		Limit(1).
-		Find()
-
-	archive := res.Archives[0]
+	archive, _ := client.Archive.FindLatestStableCentOS()
 
 	// search scripts
 	fmt.Println("searching scripts")
-	res, _ = api.Note.
+	res, _ := client.Note.
 		WithNameLike("WordPress").
 		WithSharedScope().
 		Limit(1).
@@ -130,60 +124,60 @@ func main() {
 
 	// create a disk
 	fmt.Println("creating a disk")
-	disk := api.Disk.New()
-	disk.Name = name
+	disk := client.Disk.New()
 	disk.Name = name
 	disk.Description = description
 	disk.Tags = []string{tag}
 	disk.SetDiskPlanToSSD()
 	disk.SetSourceArchive(archive.ID)
 
-	disk, _ = api.Disk.Create(disk)
+	disk, _ = client.Disk.Create(disk)
 
 	// create a server
 	fmt.Println("creating a server")
-	server := api.Server.New()
+	server := client.Server.New()
 	server.Name = name
 	server.Description = description
 	server.Tags = []string{tag}
 
 	// (set ServerPlan)
-	plan, _ := api.Product.Server.GetBySpec(cpu, mem)
-	server.SetServerPlanByID(plan.ID.String())
+	plan, _ := client.Product.Server.GetBySpec(cpu, mem)
+	server.SetServerPlanByID(plan.GetStrID())
 
-	server, _ = api.Server.Create(server)
+	server, _ = client.Server.Create(server)
 
 	// connect to shared segment
 
 	fmt.Println("connecting the server to shared segment")
-	iface, _ := api.Interface.CreateAndConnectToServer(server.ID)
-	api.Interface.ConnectToSharedSegment(iface.ID)
+	iface, _ := client.Interface.CreateAndConnectToServer(server.ID)
+	client.Interface.ConnectToSharedSegment(iface.ID)
 
 	// wait disk copy
-	err := api.Disk.SleepWhileCopying(disk.ID, 120*time.Second)
+	err := client.Disk.SleepWhileCopying(disk.ID, 120*time.Second)
 	if err != nil {
 		fmt.Println("failed")
 		os.Exit(1)
 	}
 
 	// config the disk
-	diskconf := api.Disk.NewCondig()
-	diskconf.HostName = hostName
-	diskconf.Password = password
-	diskconf.SSHKey.PublicKey = sshPublicKey
-	diskconf.AddNote(script.ID)
-	api.Disk.Config(disk.ID, diskconf)
+	diskConf := client.Disk.NewCondig()
+	diskConf.HostName = hostName
+	diskConf.Password = password
+	diskConf.SSHKey.PublicKey = sshPublicKey
+	diskConf.AddNote(script.ID)
+	client.Disk.Config(disk.ID, diskConf)
 
 	// boot
 	fmt.Println("booting the server")
-	api.Server.Boot(server.ID)
+	client.Server.Boot(server.ID)
 
 	// stop
 	time.Sleep(3 * time.Second)
 	fmt.Println("stopping the server")
-	api.Server.Stop(server.ID)
+	client.Server.Stop(server.ID)
 
-	err = api.Server.SleepUntilDown(server.ID, 120*time.Second)
+	// wait for server to down
+	err = client.Server.SleepUntilDown(server.ID, 120*time.Second)
 	if err != nil {
 		fmt.Println("failed")
 		os.Exit(1)
@@ -191,16 +185,15 @@ func main() {
 
 	// disconnect the disk from the server
 	fmt.Println("disconnecting the disk")
-	api.Disk.DisconnectFromServer(disk.ID)
+	client.Disk.DisconnectFromServer(disk.ID)
 
 	// delete the server
 	fmt.Println("deleting the server")
-	api.Server.Delete(server.ID)
+	client.Server.Delete(server.ID)
 
 	// delete the disk
 	fmt.Println("deleting the disk")
-	api.Disk.Delete(disk.ID)
-
+	client.Disk.Delete(disk.ID)
 }
 
 ```

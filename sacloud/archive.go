@@ -2,51 +2,54 @@ package sacloud
 
 import "time"
 
-// Archive type of Public Archive
+// Archive アーカイブ
 type Archive struct {
 	*Resource
-	Index        int   `json:",omitempty"`
-	DisplayOrder int64 `json:",omitempty"`
-	Name         string
-	Description  string `json:",omitempty"`
-	Scope        string `json:",omitempty"`
+
+	// Name 名称
+	Name string
+	// Description 説明
+	Description string `json:",omitempty"`
+	// Scope スコープ
+	Scope string `json:",omitempty"`
 	*EAvailability
-	SizeMB          int                 `json:",omitempty"`
-	MigratedMB      int                 `json:",omitempty"`
-	WaitingJobCount int                 `json:",omitempty"`
-	JobStatus       *MigrationJobStatus `json:",omitempty"`
-	OriginalArchive *Resource           `json:",omitempty"`
-	ServiceClass    string              `json:",omitempty"`
-	CreatedAt       *time.Time          `json:",omitempty"`
-	Icon            *Icon               `json:",omitempty"`
-	Plan            *Resource           `json:",omitempty"`
-	SourceDisk      *Disk               `json:",omitempty"`
-	SourceArchive   *Archive            `json:",omitempty"`
-	Storage         *Storage            `json:",omitempty"`
-	BundleInfo      interface{}         `json:",omitempty"`
+	// SizeMB サイズ(MB単位)
+	SizeMB int `json:",omitempty"`
+	// MigratedMB コピー済みデータサイズ(MB単位)
+	MigratedMB int `json:",omitempty"`
+	// JobStatus マイグレーションジョブステータス
+	JobStatus *MigrationJobStatus `json:",omitempty"`
+	// OriginalArchive オリジナルアーカイブ
+	OriginalArchive *Resource `json:",omitempty"`
+	// ServiceClass サービスクラス
+	ServiceClass string `json:",omitempty"`
+	// CreatedAt 作成に一時
+	CreatedAt *time.Time `json:",omitempty"`
+	// Icon アイコン
+	Icon *Icon `json:",omitempty"`
+	// Plan プラン
+	Plan *Resource `json:",omitempty"`
+	// SourceDisk コピー元ディスク
+	SourceDisk *Disk `json:",omitempty"`
+	// SourceArchive コピー元アーカイブ
+	SourceArchive *Archive `json:",omitempty"`
+	// Storage ストレージ
+	Storage *Storage `json:",omitempty"`
+	// BundleInfo バンドル情報
+	BundleInfo interface{} `json:",omitempty"`
 	*TagsType
 }
 
+// SetSourceArchive ソースアーカイブ設定
 func (d *Archive) SetSourceArchive(sourceID int64) {
 	d.SourceArchive = &Archive{
 		Resource: &Resource{ID: sourceID},
 	}
 }
 
+// SetSourceDisk ソースディスク設定
 func (d *Archive) SetSourceDisk(sourceID int64) {
 	d.SourceDisk = &Disk{
 		Resource: &Resource{ID: sourceID},
 	}
 }
-
-type ArchiveOSTypes int
-
-const (
-	CentOS ArchiveOSTypes = iota
-	Ubuntu
-	Debian
-	VyOS
-	CoreOS
-	Kusanagi
-	Custom
-)

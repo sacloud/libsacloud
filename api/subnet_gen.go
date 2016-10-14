@@ -9,34 +9,40 @@ import (
 )
 
 /************************************************
-   To support influent interface for Find()
+   To support fluent interface for Find()
 ************************************************/
 
+// Reset 検索条件のリセット
 func (api *SubnetAPI) Reset() *SubnetAPI {
 	api.reset()
 	return api
 }
 
+// Offset オフセット
 func (api *SubnetAPI) Offset(offset int) *SubnetAPI {
 	api.offset(offset)
 	return api
 }
 
+// Limit リミット
 func (api *SubnetAPI) Limit(limit int) *SubnetAPI {
 	api.limit(limit)
 	return api
 }
 
+// Include 取得する項目
 func (api *SubnetAPI) Include(key string) *SubnetAPI {
 	api.include(key)
 	return api
 }
 
+// Exclude 除外する項目
 func (api *SubnetAPI) Exclude(key string) *SubnetAPI {
 	api.exclude(key)
 	return api
 }
 
+// FilterBy 指定キーでのフィルター
 func (api *SubnetAPI) FilterBy(key string, value interface{}) *SubnetAPI {
 	api.filterBy(key, value, false)
 	return api
@@ -73,6 +79,7 @@ func (api *SubnetAPI) FilterBy(key string, value interface{}) *SubnetAPI {
 // 	return api
 // }
 
+// SortBy 指定キーでのソート
 func (api *SubnetAPI) SortBy(key string, reverse bool) *SubnetAPI {
 	api.sortBy(key, reverse)
 	return api
@@ -102,6 +109,7 @@ func (api *SubnetAPI) SortBy(key string, reverse bool) *SubnetAPI {
 //	})
 //}
 
+// Read 読み取り
 func (api *SubnetAPI) Read(id int64) (*sacloud.Subnet, error) {
 	return api.request(func(res *sacloud.Response) error {
 		return api.read(id, nil, res)

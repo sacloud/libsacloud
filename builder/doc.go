@@ -9,7 +9,7 @@
 //	import (
 //		"github.com/yamamoto-febc/libsacloud/api"
 //		"github.com/yamamoto-febc/libsacloud/builder"
-//		"github.com/yamamoto-febc/libsacloud/sacloud"
+//		"github.com/yamamoto-febc/libsacloud/sacloud/ostype"
 //	)
 //
 //	func main() {
@@ -18,7 +18,7 @@
 //		client := api.NewClient("PUT-YOUR-TOKEN", "PUT-YOUR-SECRET", "tk1a")
 //
 //		// パブリックアーカイブ(CentOS)から作成するビルダー、共有セグメントに接続、以外はデフォルト値で作成
-//		res , err := builder.FromPublicArchiveUnix(client, sacloud.CentOS, "ServerName", "Password").AddPublicNWConnectedNIC().Build()
+//		res , err := builder.FromPublicArchiveUnix(client, ostype.CentOS, "ServerName", "Password").AddPublicNWConnectedNIC().Build()
 //
 //		if err != nil {
 //			panic(err)
@@ -37,7 +37,7 @@
 // ビルダーはディスク構成やソースアーカイブ/ディスクにより以下のような種類に分かれています。
 //
 // Linux(Unix)系パブリックアーカイブ
-//	func FromPublicArchiveUnix(client *api.Client, os sacloud.ArchiveOSTypes, name string, password string) *PublicArchiveUnixServerBuilder
+//	func FromPublicArchiveUnix(client *api.Client, os ostype.ArchiveOSTypes, name string, password string) *PublicArchiveUnixServerBuilder
 //
 // Windows系パブリックアーカイブ
 //	func FromPublicArchiveWindows(client *api.Client, name string, archiveID int64) *PublicArchiveWindowsServerBuilder
@@ -63,12 +63,12 @@
 // 以下の例は同じ内容の処理を通常の書き方/Fluent APIでの書き方両方で記載しています。
 //
 //	// 通常
-//	b := builder.FromPublicArchiveUnix(client, sacloud.CentOS, "ServerName", "Password")
+//	b := builder.FromPublicArchiveUnix(client, ostype.CentOS, "ServerName", "Password")
 //	b.AddPublicNWConnectedNIC()
 //	res , err := b.Build()
 //
 //	// Fluent APIの場合
-//	res , err := builder.FromPublicArchiveUnix(client, sacloud.CentOS, "ServerName", "Password").AddPublicNWConnectedNIC().Build()
+//	res , err := builder.FromPublicArchiveUnix(client, ostype.CentOS, "ServerName", "Password").AddPublicNWConnectedNIC().Build()
 //
 //
 // Event handling
