@@ -1,8 +1,10 @@
-FROM golang:alpine
-MAINTAINER "Kazumichi Yamamoto <yamamoto.febc@gmail.com>"
+FROM golang:1.7.1-alpine
+LABEL maintainer="Kazumichi Yamamoto <yamamoto.febc@gmail.com>"
 
-RUN apk add --update ca-certificates git && \
-    go get github.com/stretchr/testify/assert
+RUN apk add --no-cache --update ca-certificates git && \
+    go get github.com/stretchr/testify/assert && \
+    go get golang.org/x/tools/cmd/godoc && \
+    go get -u github.com/golang/lint/golint
 
 ENV SRC=$GOPATH/src/github.com/yamamoto-febc/libsacloud/
 ADD . $SRC
