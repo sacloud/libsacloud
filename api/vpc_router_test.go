@@ -24,11 +24,13 @@ func TestVPCRouterCRUD(t *testing.T) {
 	newItem.Settings.Router.AddInterface("", []string{"192.168.11.1"}, 24)
 	newItem.Settings.Router.EnableL2TPIPsecServer("preshared", "192.168.11.100", "192.168.11.200")
 	newItem.Settings.Router.AddRemoteAccessUser("hogehoge", "hogehogeo")
+	newItem.Settings.Router.SyslogHost = "192.168.11.250"
 
 	item, err := api.Create(newItem)
 
 	assert.NoError(t, err)
 	assert.NotEmpty(t, item)
+	assert.Equal(t, item.Settings.Router.SyslogHost, "192.168.11.250")
 
 	id := item.ID
 

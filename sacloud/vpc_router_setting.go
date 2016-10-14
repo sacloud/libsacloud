@@ -31,6 +31,8 @@ type VPCRouterSetting struct {
 	StaticRoutes *VPCRouterStaticRoutes `json:",omitempty"`
 	// VRID VRID
 	VRID *int `json:",omitempty"`
+	// SyslogHost syslog転送先ホスト
+	SyslogHost string `json:",omitempty"`
 }
 
 // VPCRouterInterface NIC設定
