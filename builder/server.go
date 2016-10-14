@@ -87,13 +87,19 @@ type serverBuilder struct {
 	currentBuildResult *ServerBuildResult
 }
 
-var (
-	defaultCore            = 1
-	defaultMemory          = 1
-	defaultUseVirtIONetCPI = true
-	defaultDescription     = ""
-	defaultIconID          = int64(0)
-	defaultBootAfterCreate = true
+const (
+	// DefaultCore コア数(デフォルト値)
+	DefaultCore = 1
+	// DefaultMemory メモリサイズ(デフォルト値)
+	DefaultMemory = 1
+	// DefaultUseVirtIONetCPI NIC準仮装化モード(virtio)利用フラグ(デフォルト値)
+	DefaultUseVirtIONetCPI = true
+	// DefaultDescription 説明 (デフォルト値)
+	DefaultDescription = ""
+	// DefaultIconID アイコンID(デフォルト値)
+	DefaultIconID = int64(0)
+	// DefaultBootAfterCreate サーバー作成後すぐに起動フラグ(デフォルト値)
+	DefaultBootAfterCreate = true
 )
 
 func newServerBuilder(client *api.Client, serverName string) *serverBuilder {
@@ -104,13 +110,13 @@ func newServerBuilder(client *api.Client, serverName string) *serverBuilder {
 		},
 		buildEventHandlers: map[ServerBuildEvents]ServerBuildEventHandler{},
 		serverName:         serverName,
-		core:               defaultCore,
-		memory:             defaultMemory,
-		useVirtIONetPCI:    defaultUseVirtIONetCPI,
+		core:               DefaultCore,
+		memory:             DefaultMemory,
+		useVirtIONetPCI:    DefaultUseVirtIONetCPI,
 		TagsType:           &sacloud.TagsType{},
-		description:        defaultDescription,
-		iconID:             defaultIconID,
-		bootAfterCreate:    defaultBootAfterCreate,
+		description:        DefaultDescription,
+		iconID:             DefaultIconID,
+		bootAfterCreate:    DefaultBootAfterCreate,
 	}
 
 }

@@ -36,22 +36,44 @@
 //
 // ビルダーはディスク構成やソースアーカイブ/ディスクにより以下のような種類に分かれています。
 //
-// Linux(Unix)系パブリックアーカイブ
+// それぞれに対応するビルダー作成用関数を用意しています。
+//
+// - Linux(Unix)系パブリックアーカイブ
+//	// ビルダー
+//	type PublicArchiveUnixServerBuilder struct { ... }
+//
+//	// ビルダー作成用関数
 //	func FromPublicArchiveUnix(client *api.Client, os ostype.ArchiveOSTypes, name string, password string) *PublicArchiveUnixServerBuilder
 //
-// Windows系パブリックアーカイブ
+// - Windows系パブリックアーカイブ
+//	// ビルダー
+//	type PublicArchiveWindowsServerBuilder struct { ... }
+//
+//	// ビルダー作成用関数
 //	func FromPublicArchiveWindows(client *api.Client, name string, archiveID int64) *PublicArchiveWindowsServerBuilder
 //
-// 汎用(アーカイブから)
+// - 汎用
+//	// ビルダー
+//	type CommonServerBuilder struct { ... }
+//
+//	// ビルダー作成用関数(アーカイブから作成)
 //	func FromArchive(client *api.Client, name string, sourceArchiveID int64) *CommonServerBuilder
 //
-// 汎用(ディスクから)
+//	// ビルダー作成用関数(ディスクから作成)
 //	func FromDisk(client *api.Client, name string, sourceDiskID int64) *CommonServerBuilder
 //
-// ディスクレス
+// - ディスクレス
+//	// ビルダー
+//	type DisklessServerBuilder struct { ... }
+//
+//	// ビルダー作成用関数
 //	func FromDiskless(client *api.Client, name string) *DisklessServerBuilder
 //
-// 空のディスク
+// - 空のディスク
+//	// ビルダー
+//	type BlankDiskServerBuilder struct { ... }
+//
+//	// ビルダー作成用関数
 //	func FromBlankDisk(client *api.Client, name string) *BlankDiskServerBuilder
 //
 //

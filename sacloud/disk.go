@@ -54,19 +54,22 @@ type Disk struct {
 // DiskPlanID ディスクプランID
 type DiskPlanID int64
 
-var (
+const (
 	// DiskPlanHDDID HDDプランID
 	DiskPlanHDDID = DiskPlanID(2)
 	// DiskPlanSSDID SSDプランID
 	DiskPlanSSDID = DiskPlanID(4)
-	// DiskPlanHDD HDDプラン
-	DiskPlanHDD = &Resource{ID: int64(DiskPlanHDDID)}
-	// DiskPlanSSD SSDプラン
-	DiskPlanSSD = &Resource{ID: int64(DiskPlanSSDID)}
 	// DiskConnectionVirtio 準仮想化モード(virtio)
 	DiskConnectionVirtio EDiskConnection = "virtio"
 	// DiskConnectionIDE IDE
 	DiskConnectionIDE EDiskConnection = "ide"
+)
+
+var (
+	// DiskPlanHDD HDDプラン
+	DiskPlanHDD = &Resource{ID: int64(DiskPlanHDDID)}
+	// DiskPlanSSD SSDプラン
+	DiskPlanSSD = &Resource{ID: int64(DiskPlanSSDID)}
 )
 
 // ToResource ディスクプランIDからリソースへの変換
