@@ -181,7 +181,9 @@ func Example_power() {
 
 	// ダウンまで待機
 	err = client.Server.SleepUntilDown(server.ID, client.DefaultTimeoutDuration)
-
+	if err != nil {
+		panic(err)
+	}
 }
 
 func Example() {
