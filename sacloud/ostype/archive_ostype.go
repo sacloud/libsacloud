@@ -1,4 +1,4 @@
-// Package ostype is defined OS type of SakuraCloud public archive
+// Package ostype is define OS type of SakuraCloud public archive
 package ostype
 
 // ArchiveOSTypes パブリックアーカイブOS種別

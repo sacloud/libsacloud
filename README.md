@@ -7,13 +7,22 @@ on [`SAKURA CLOUD APIs`](http://developer.sakura.ad.jp/cloud/api/1.1/).
 [![Build Status](https://travis-ci.org/yamamoto-febc/libsacloud.svg?branch=master)](https://travis-ci.org/yamamoto-febc/libsacloud)
 [![Go Report Card](https://goreportcard.com/badge/github.com/yamamoto-febc/libsacloud)](https://goreportcard.com/report/github.com/yamamoto-febc/libsacloud)
 
-See list of implemented API clients [here](https://godoc.org/github.com/yamamoto-febc/libsacloud).
+See list of implemented API clients under this.
+
+  - [High-level API(builder package)](https://godoc.org/github.com/yamamoto-febc/libsacloud/builder)
+  - [Low-level API(api package)](https://godoc.org/github.com/yamamoto-febc/libsacloud/api)
+  - [Model defines(sacloud package)](https://godoc.org/github.com/yamamoto-febc/libsacloud/sacloud)
+
 
 # Installation
 
     go get -d github.com/yamamoto-febc/libsacloud
 
 # Sample (High-level API)
+
+This sample will create a server by using a High-level API.
+
+High-level API's document is [here](https://godoc.org/github.com/yamamoto-febc/libsacloud/builder).
 
 ##  Create a server
 
@@ -76,7 +85,7 @@ This sample is a translation of the examples of [saklient](http://sakura-interne
 
 Original(saklient) sample codes is [here](http://sakura-internet.github.io/saklient.doc/).
 
-This sample's repository is [here](https://github.com/yamamoto-febc/libsacloud-sample).
+Low-level API's document is [here](https://godoc.org/github.com/yamamoto-febc/libsacloud/api).
 
 ##  Create a server
 
@@ -142,14 +151,13 @@ func main() {
 	server.Description = description
 	server.Tags = []string{tag}
 
-	// (set ServerPlan)
+	// set ServerPlan
 	plan, _ := client.Product.Server.GetBySpec(cpu, mem)
 	server.SetServerPlanByID(plan.GetStrID())
 
 	server, _ = client.Server.Create(server)
 
 	// connect to shared segment
-
 	fmt.Println("connecting the server to shared segment")
 	iface, _ := client.Interface.CreateAndConnectToServer(server.ID)
 	client.Interface.ConnectToSharedSegment(iface.ID)
@@ -283,7 +291,9 @@ func main() {
 
 # License
 
-This project is published under [Apache 2.0 License](LICENSE).
+  `libsacloud` Copyright (C) 2016 Kazumichi Yamamoto.
+
+  This project is published under [Apache 2.0 License](LICENSE).
 
 # Author
 
