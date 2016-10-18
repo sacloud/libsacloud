@@ -125,38 +125,38 @@ func newServerBuilder(client *api.Client, serverName string) *serverBuilder {
   for connect disk functions
 ---------------------------------------------------------*/
 
-// FromDiskless ディスクレスサーバービルダー
-func FromDiskless(client *api.Client, name string) *DisklessServerBuilder {
+// ServerDiskless ディスクレスサーバービルダー
+func ServerDiskless(client *api.Client, name string) *DisklessServerBuilder {
 	b := newServerBuilder(client, name)
 	return &DisklessServerBuilder{
 		serverBuilder: b,
 	}
 }
 
-// FromPublicArchiveUnix ディスクの編集が可能なLinux(Unix)系パブリックアーカイブを利用するビルダー
-func FromPublicArchiveUnix(client *api.Client, os ostype.ArchiveOSTypes, name string, password string) *PublicArchiveUnixServerBuilder {
+// ServerPublicArchiveUnix ディスクの編集が可能なLinux(Unix)系パブリックアーカイブを利用するビルダー
+func ServerPublicArchiveUnix(client *api.Client, os ostype.ArchiveOSTypes, name string, password string) *PublicArchiveUnixServerBuilder {
 
 	b := newServerBuilder(client, name)
-	b.fromPublicArchiveUnix(os, password)
+	b.ServerPublicArchiveUnix(os, password)
 	return &PublicArchiveUnixServerBuilder{
 		serverBuilder: b,
 	}
 
 }
 
-// FromPublicArchiveWindows Windows系パブリックアーカイブを利用するビルダー
-func FromPublicArchiveWindows(client *api.Client, name string, archiveID int64) *PublicArchiveWindowsServerBuilder {
+// ServerPublicArchiveWindows Windows系パブリックアーカイブを利用するビルダー
+func ServerPublicArchiveWindows(client *api.Client, name string, archiveID int64) *PublicArchiveWindowsServerBuilder {
 
 	b := newServerBuilder(client, name)
-	b.fromPublicArchiveWindows(archiveID)
+	b.ServerPublicArchiveWindows(archiveID)
 	return &PublicArchiveWindowsServerBuilder{
 		serverBuilder: b,
 	}
 
 }
 
-//FromBlankDisk 空のディスクを利用するビルダー
-func FromBlankDisk(client *api.Client, name string) *BlankDiskServerBuilder {
+//ServerBlankDisk 空のディスクを利用するビルダー
+func ServerBlankDisk(client *api.Client, name string) *BlankDiskServerBuilder {
 
 	b := newServerBuilder(client, name)
 	return &BlankDiskServerBuilder{
@@ -165,22 +165,22 @@ func FromBlankDisk(client *api.Client, name string) *BlankDiskServerBuilder {
 
 }
 
-// FromDisk 既存ディスクを利用するビルダー
-func FromDisk(client *api.Client, name string, sourceDiskID int64) *CommonServerBuilder {
+// ServerFromDisk 既存ディスクを利用するビルダー
+func ServerFromDisk(client *api.Client, name string, sourceDiskID int64) *CommonServerBuilder {
 	b := newServerBuilder(client, name)
 
-	b.fromDisk(sourceDiskID)
+	b.ServerFromDisk(sourceDiskID)
 	return &CommonServerBuilder{
 		serverBuilder: b,
 	}
 
 }
 
-// FromArchive 既存アーカイブを利用するビルダー
-func FromArchive(client *api.Client, name string, sourceArchiveID int64) *CommonServerBuilder {
+// ServerFromArchive 既存アーカイブを利用するビルダー
+func ServerFromArchive(client *api.Client, name string, sourceArchiveID int64) *CommonServerBuilder {
 	b := newServerBuilder(client, name)
 
-	b.fromArchive(sourceArchiveID)
+	b.ServerFromArchive(sourceArchiveID)
 	return &CommonServerBuilder{
 		serverBuilder: b,
 	}
@@ -191,33 +191,33 @@ func FromArchive(client *api.Client, name string, sourceArchiveID int64) *Common
   Inner functions
 ---------------------------------------------------------*/
 
-func (b *serverBuilder) fromPublicArchiveUnix(os ostype.ArchiveOSTypes, password string) {
+func (b *serverBuilder) ServerPublicArchiveUnix(os ostype.ArchiveOSTypes, password string) {
 	archive, err := b.client.Archive.FindByOSType(os)
 	if err != nil {
 		b.errors = append(b.errors, err)
 	}
 
-	b.disk = NewDiskBuilder(b.client, b.serverName)
+	b.disk = Disk(b.client, b.serverName)
 	b.disk.sourceArchiveID = archive.ID
 	b.disk.password = password
 
 }
 
-func (b *serverBuilder) fromPublicArchiveWindows(archiveID int64) {
-	b.disk = NewDiskBuilder(b.client, b.serverName)
+func (b *serverBuilder) ServerPublicArchiveWindows(archiveID int64) {
+	b.disk = Disk(b.client, b.serverName)
 	b.disk.sourceArchiveID = archiveID
 	b.disk.sourceDiskID = 0
 }
 
-func (b *serverBuilder) fromDisk(sourceDiskID int64) {
-	b.disk = NewDiskBuilder(b.client, b.serverName)
+func (b *serverBuilder) ServerFromDisk(sourceDiskID int64) {
+	b.disk = Disk(b.client, b.serverName)
 	b.disk.sourceArchiveID = 0
 	b.disk.sourceDiskID = sourceDiskID
 }
 
-func (b *serverBuilder) fromArchive(sourceArchiveID int64) {
+func (b *serverBuilder) ServerFromArchive(sourceArchiveID int64) {
 
-	b.disk = NewDiskBuilder(b.client, b.serverName)
+	b.disk = Disk(b.client, b.serverName)
 	b.disk.sourceArchiveID = sourceArchiveID
 	b.disk.sourceDiskID = 0
 }

@@ -19,7 +19,7 @@ exit 0
 
 func TestServerBuilder_buildParams(t *testing.T) {
 
-	builder := FromDiskless(client, serverBuilderTestServerName)
+	builder := ServerDiskless(client, serverBuilderTestServerName)
 
 	// この段階では ディスクレス/ISOイメージレス/NICレス、全ての設定がデフォルト値のサーバーになる
 	builder.currentBuildValue = &ServerBuildValue{}
@@ -34,7 +34,7 @@ func TestServerBuilder_buildParams(t *testing.T) {
 	//builder.GetPassword()
 
 	// Unix系アーカイブからのインストールの場合、パスワードの設定などのディスクの編集ができるようになる。
-	tempBuilder := FromPublicArchiveUnix(client, ostype.CentOS, serverBuilderTestServerName, serverBuilderTestPassword)
+	tempBuilder := ServerPublicArchiveUnix(client, ostype.CentOS, serverBuilderTestServerName, serverBuilderTestPassword)
 
 	assert.NotNil(t, tempBuilder)
 	assert.Equal(t, tempBuilder.GetPassword(), serverBuilderTestPassword)
@@ -42,7 +42,7 @@ func TestServerBuilder_buildParams(t *testing.T) {
 }
 
 func TestServerBuilder_DisklessDefaults(t *testing.T) {
-	builder := FromDiskless(client, serverBuilderTestServerName)
+	builder := ServerDiskless(client, serverBuilderTestServerName)
 
 	assert.Equal(t, builder.GetServerName(), serverBuilderTestServerName) // サーバー名
 	assert.Equal(t, builder.GetCore(), 1)                                 // コア数 : デフォルト1
@@ -51,9 +51,9 @@ func TestServerBuilder_DisklessDefaults(t *testing.T) {
 
 }
 
-func TestDisklessServerBuilder_FromPublicArchiveUnixDefaults(t *testing.T) {
+func TestDisklessServerBuilder_ServerPublicArchiveUnixDefaults(t *testing.T) {
 
-	b := FromPublicArchiveUnix(client, ostype.CentOS, serverBuilderTestServerName, serverBuilderTestPassword)
+	b := ServerPublicArchiveUnix(client, ostype.CentOS, serverBuilderTestServerName, serverBuilderTestPassword)
 
 	assert.Equal(t, b.GetServerName(), serverBuilderTestServerName) // サーバー名
 	assert.Equal(t, b.GetCore(), 1)                                 // コア数 : デフォルト1
@@ -68,7 +68,7 @@ func TestDisklessServerBuilder_FromPublicArchiveUnixDefaults(t *testing.T) {
 
 func TestServerBuilder_Build_WithMinimum(t *testing.T) {
 
-	result, err := FromPublicArchiveUnix(client, ostype.CentOS, serverBuilderTestServerName, serverBuilderTestPassword).AddPublicNWConnectedNIC().Build()
+	result, err := ServerPublicArchiveUnix(client, ostype.CentOS, serverBuilderTestServerName, serverBuilderTestPassword).AddPublicNWConnectedNIC().Build()
 
 	assert.NoError(t, err)
 	assert.NotNil(t, result)
@@ -81,7 +81,7 @@ func TestServerBuilder_Build_WithMinimum(t *testing.T) {
 
 func TestServerBuilder_Build_WithSSHKeyAndNoteEphemeral(t *testing.T) {
 
-	builder := FromPublicArchiveUnix(client, ostype.CentOS, serverBuilderTestServerName, serverBuilderTestPassword)
+	builder := ServerPublicArchiveUnix(client, ostype.CentOS, serverBuilderTestServerName, serverBuilderTestPassword)
 
 	res, err := builder.
 		AddPublicNWConnectedNIC().
@@ -111,13 +111,13 @@ func TestServerBuilder_Build_WithSSHKeyAndNoteEphemeral(t *testing.T) {
 //	zone := client.Zone
 //	defer func() { client.Zone = zone }()
 //	client.Zone = "tk1a"
-//	builder := FromPublicArchiveUnix(client, sacloud.CentOS, serverBuilderTestServerName, serverBuilderTestPassword)
+//	builder := ServerPublicArchiveUnix(client, sacloud.CentOS, serverBuilderTestServerName, serverBuilderTestPassword)
 //	builder.AddExistsSwitchConnectedNIC("112800821771", "192.168.150.21", 24, "192.168.150.1").Build()
 //}
 
 func TestServerBuilder_Build_WithSSHKeyAndNote(t *testing.T) {
 
-	builder := FromPublicArchiveUnix(client, ostype.CentOS, serverBuilderTestServerName, serverBuilderTestPassword)
+	builder := ServerPublicArchiveUnix(client, ostype.CentOS, serverBuilderTestServerName, serverBuilderTestPassword)
 
 	res, err := builder.
 		AddPublicNWConnectedNIC().
@@ -150,7 +150,7 @@ func TestServerBuilder_Build_WithSSHKeyAndNote(t *testing.T) {
 
 func TestServerBuilder_Build_WithEventHandler(t *testing.T) {
 
-	builder := FromPublicArchiveUnix(client, ostype.CentOS, serverBuilderTestServerName, serverBuilderTestPassword)
+	builder := ServerPublicArchiveUnix(client, ostype.CentOS, serverBuilderTestServerName, serverBuilderTestPassword)
 
 	serverEvents := []ServerBuildEvents{
 		ServerBuildOnStart,
