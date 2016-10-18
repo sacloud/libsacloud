@@ -111,8 +111,8 @@ const (
 	DefaultDiskIsNotesEphemeral = true
 )
 
-// NewDiskBuilder ディスクビルダーの作成
-func NewDiskBuilder(client *api.Client, name string) *DiskBuilder {
+// Disk ディスクビルダーの作成
+func Disk(client *api.Client, name string) *DiskBuilder {
 	return &DiskBuilder{
 		baseBuilder: &baseBuilder{
 			client: client,

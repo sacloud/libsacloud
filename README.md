@@ -61,7 +61,7 @@ func main() {
 	client := api.NewClient(token, secret, zone)
 
 	// Create server using CentOS public archive
-	result, err := builder.FromPublicArchiveUnix(client, ostype.CentOS, serverName, password).
+	result, err := builder.ServerPublicArchiveUnix(client, ostype.CentOS, serverName, password).
 		AddPublicNWConnectedNIC(). // connect shared segment
 		SetCore(core).             // set cpu core
 		SetMemory(memory).         // set memory size

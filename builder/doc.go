@@ -18,7 +18,7 @@
 //		client := api.NewClient("PUT-YOUR-TOKEN", "PUT-YOUR-SECRET", "tk1a")
 //
 //		// パブリックアーカイブ(CentOS)から作成するビルダー、共有セグメントに接続、以外はデフォルト値で作成
-//		res , err := builder.FromPublicArchiveUnix(client, ostype.CentOS, "ServerName", "Password").AddPublicNWConnectedNIC().Build()
+//		res , err := builder.ServerPublicArchiveUnix(client, ostype.CentOS, "ServerName", "Password").AddPublicNWConnectedNIC().Build()
 //
 //		if err != nil {
 //			panic(err)
@@ -43,38 +43,38 @@
 //	type PublicArchiveUnixServerBuilder struct { ... }
 //
 //	// ビルダー作成用関数
-//	func FromPublicArchiveUnix(client *api.Client, os ostype.ArchiveOSTypes, name string, password string) *PublicArchiveUnixServerBuilder
+//	func ServerPublicArchiveUnix(client *api.Client, os ostype.ArchiveOSTypes, name string, password string) *PublicArchiveUnixServerBuilder
 //
 // - Windows系パブリックアーカイブ
 //	// ビルダー
 //	type PublicArchiveWindowsServerBuilder struct { ... }
 //
 //	// ビルダー作成用関数
-//	func FromPublicArchiveWindows(client *api.Client, name string, archiveID int64) *PublicArchiveWindowsServerBuilder
+//	func ServerPublicArchiveWindows(client *api.Client, name string, archiveID int64) *PublicArchiveWindowsServerBuilder
 //
 // - 汎用
 //	// ビルダー
 //	type CommonServerBuilder struct { ... }
 //
 //	// ビルダー作成用関数(アーカイブから作成)
-//	func FromArchive(client *api.Client, name string, sourceArchiveID int64) *CommonServerBuilder
+//	func ServerFromArchive(client *api.Client, name string, sourceArchiveID int64) *CommonServerBuilder
 //
 //	// ビルダー作成用関数(ディスクから作成)
-//	func FromDisk(client *api.Client, name string, sourceDiskID int64) *CommonServerBuilder
+//	func ServerFromDisk(client *api.Client, name string, sourceDiskID int64) *CommonServerBuilder
 //
 // - ディスクレス
 //	// ビルダー
 //	type DisklessServerBuilder struct { ... }
 //
 //	// ビルダー作成用関数
-//	func FromDiskless(client *api.Client, name string) *DisklessServerBuilder
+//	func ServerDiskless(client *api.Client, name string) *DisklessServerBuilder
 //
 // - 空のディスク
 //	// ビルダー
 //	type BlankDiskServerBuilder struct { ... }
 //
 //	// ビルダー作成用関数
-//	func FromBlankDisk(client *api.Client, name string) *BlankDiskServerBuilder
+//	func ServerBlankDisk(client *api.Client, name string) *BlankDiskServerBuilder
 //
 //
 //
@@ -85,12 +85,12 @@
 // 以下の例は同じ内容の処理を通常の書き方/Fluent APIでの書き方両方で記載しています。
 //
 //	// 通常
-//	b := builder.FromPublicArchiveUnix(client, ostype.CentOS, "ServerName", "Password")
+//	b := builder.ServerPublicArchiveUnix(client, ostype.CentOS, "ServerName", "Password")
 //	b.AddPublicNWConnectedNIC()
 //	res , err := b.Build()
 //
 //	// Fluent APIの場合
-//	res , err := builder.FromPublicArchiveUnix(client, ostype.CentOS, "ServerName", "Password").AddPublicNWConnectedNIC().Build()
+//	res , err := builder.ServerPublicArchiveUnix(client, ostype.CentOS, "ServerName", "Password").AddPublicNWConnectedNIC().Build()
 //
 //
 // Event handling
@@ -101,7 +101,7 @@
 //		client := api.NewClient("PUT-YOUR-TOKEN", "PUT-YOUR-SECRET", "tk1a")
 //
 //		// ディスクレスビルダー、イベントハンドラ(ServerBuildOnComplete)を登録
-//		builder.FromDiskless(client, "example").
+//		builder.ServerDiskless(client, "example").
 //			SetEventHandler(builder.ServerBuildOnComplete, callbackFunc).
 //			Build()
 //	}

@@ -37,7 +37,7 @@ exit 0`
 	client := api.NewClient(token, secret, zone)
 
 	// CentOSパブリックアーカイブからサーバー作成
-	result, err := builder.FromPublicArchiveUnix(client, ostype.CentOS, serverName, password).
+	result, err := builder.ServerPublicArchiveUnix(client, ostype.CentOS, serverName, password).
 		AddPublicNWConnectedNIC(). // NIC:共有セグメントに接続
 		SetCore(core).             // スペック指定(コア数)
 		SetMemory(memory).         // スペック指定(メモリ)
