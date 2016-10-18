@@ -2,7 +2,7 @@ package api_test
 
 import (
 	"fmt"
-	"github.com/yamamoto-febc/libsacloud/api"
+	"github.com/sacloud/libsacloud/api"
 	"os"
 	"time"
 )

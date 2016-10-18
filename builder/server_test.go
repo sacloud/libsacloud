@@ -1,9 +1,9 @@
 package builder
 
 import (
+	"github.com/sacloud/libsacloud/sacloud"
+	"github.com/sacloud/libsacloud/sacloud/ostype"
 	"github.com/stretchr/testify/assert"
-	"github.com/yamamoto-febc/libsacloud/sacloud"
-	"github.com/yamamoto-febc/libsacloud/sacloud/ostype"
 	"testing"
 )
 

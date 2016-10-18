@@ -1,8 +1,8 @@
 package api
 
 import (
+	"github.com/sacloud/libsacloud/sacloud"
 	"github.com/stretchr/testify/assert"
-	"github.com/yamamoto-febc/libsacloud/sacloud"
 	"log"
 	"testing"
 )

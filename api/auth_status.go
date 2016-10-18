@@ -2,7 +2,7 @@ package api
 
 import (
 	"encoding/json"
-	"github.com/yamamoto-febc/libsacloud/sacloud"
+	"github.com/sacloud/libsacloud/sacloud"
 )
 
 // AuthStatusAPI 認証状態API

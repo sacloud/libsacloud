@@ -3,7 +3,7 @@ package api
 import (
 	"encoding/json"
 	//	"strings"
-	"github.com/yamamoto-febc/libsacloud/sacloud"
+	"github.com/sacloud/libsacloud/sacloud"
 )
 
 // SearchAutoBackupResponse 自動バックアップ 検索レスポンス

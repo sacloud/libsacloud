@@ -2,9 +2,9 @@ package builder
 
 import (
 	"fmt"
-	"github.com/yamamoto-febc/libsacloud/api"
-	"github.com/yamamoto-febc/libsacloud/sacloud"
-	"github.com/yamamoto-febc/libsacloud/sacloud/ostype"
+	"github.com/sacloud/libsacloud/api"
+	"github.com/sacloud/libsacloud/sacloud"
+	"github.com/sacloud/libsacloud/sacloud/ostype"
 )
 
 /**********************************************************

@@ -3,7 +3,7 @@ package api
 import (
 	"encoding/json"
 	//	"strings"
-	"github.com/yamamoto-febc/libsacloud/sacloud"
+	"github.com/sacloud/libsacloud/sacloud"
 )
 
 //HACK: さくらのAPI側仕様: CommonServiceItemsの内容によってJSONフォーマットが異なるため

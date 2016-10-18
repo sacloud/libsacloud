@@ -1,6 +1,6 @@
 package api
 
-import "github.com/yamamoto-febc/libsacloud/sacloud"
+import "github.com/sacloud/libsacloud/sacloud"
 
 // IconAPI アイコンAPI
 type IconAPI struct {

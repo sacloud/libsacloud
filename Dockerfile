@@ -6,7 +6,7 @@ RUN apk add --no-cache --update ca-certificates git && \
     go get golang.org/x/tools/cmd/godoc && \
     go get -u github.com/golang/lint/golint
 
-ENV SRC=$GOPATH/src/github.com/yamamoto-febc/libsacloud/
+ENV SRC=$GOPATH/src/github.com/sacloud/libsacloud/
 ADD . $SRC
 WORKDIR $SRC
 
