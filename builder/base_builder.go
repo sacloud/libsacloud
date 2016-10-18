@@ -2,7 +2,7 @@ package builder
 
 import (
 	"fmt"
-	"github.com/yamamoto-febc/libsacloud/api"
+	"github.com/sacloud/libsacloud/api"
 )
 
 type baseBuilder struct {

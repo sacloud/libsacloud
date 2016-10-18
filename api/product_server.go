@@ -2,7 +2,7 @@ package api
 
 import (
 	"fmt"
-	"github.com/yamamoto-febc/libsacloud/sacloud"
+	"github.com/sacloud/libsacloud/sacloud"
 	"strconv"
 )
 

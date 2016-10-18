@@ -5,7 +5,7 @@ package api
 ************************************************/
 
 import (
-	"github.com/yamamoto-febc/libsacloud/sacloud"
+	"github.com/sacloud/libsacloud/sacloud"
 )
 
 /************************************************

@@ -1,6 +1,6 @@
 package builder
 
-import "github.com/yamamoto-febc/libsacloud/sacloud"
+import "github.com/sacloud/libsacloud/sacloud"
 
 // CommonServerBuilder 既存のアーカイブ or ディスクを利用して構築を行うサーバービルダー
 //

@@ -2,7 +2,7 @@ package api
 
 import (
 	"fmt"
-	"github.com/yamamoto-febc/libsacloud/sacloud"
+	"github.com/sacloud/libsacloud/sacloud"
 )
 
 // IPv6AddrAPI IPv6アドレスAPI

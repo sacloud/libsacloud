@@ -1,28 +1,36 @@
-# libsacloud
+libsacloud
+===
+
+[![GoDoc](https://godoc.org/github.com/sacloud/libsacloud?status.svg)](https://godoc.org/github.com/sacloud/libsacloud)
+[![Build Status](https://travis-ci.org/sacloud/libsacloud.svg?branch=master)](https://travis-ci.org/sacloud/libsacloud)
+[![Go Report Card](https://goreportcard.com/badge/github.com/sacloud/libsacloud)](https://goreportcard.com/report/github.com/sacloud/libsacloud)
 
 This project provides various Go packages to perform operations
 on [`SAKURA CLOUD APIs`](http://developer.sakura.ad.jp/cloud/api/1.1/).
 
-[![GoDoc](https://godoc.org/github.com/yamamoto-febc/libsacloud?status.svg)](https://godoc.org/github.com/yamamoto-febc/libsacloud)
-[![Build Status](https://travis-ci.org/yamamoto-febc/libsacloud.svg?branch=master)](https://travis-ci.org/yamamoto-febc/libsacloud)
-[![Go Report Card](https://goreportcard.com/badge/github.com/yamamoto-febc/libsacloud)](https://goreportcard.com/report/github.com/yamamoto-febc/libsacloud)
-
 See list of implemented API clients under this.
 
-  - [High-level API(builder package)](https://godoc.org/github.com/yamamoto-febc/libsacloud/builder)
-  - [Low-level API(api package)](https://godoc.org/github.com/yamamoto-febc/libsacloud/api)
-  - [Model defines(sacloud package)](https://godoc.org/github.com/yamamoto-febc/libsacloud/sacloud)
+  - [High-level API(builder package)](https://godoc.org/github.com/sacloud/libsacloud/builder)
+  - [Low-level API(api package)](https://godoc.org/github.com/sacloud/libsacloud/api)
+  - [Model defines(sacloud package)](https://godoc.org/github.com/sacloud/libsacloud/sacloud)
+
+
+
+**Notice:** This is the library formerly known as
+`github.com/sacloud/libsacloud` -- Github will automatically redirect requests
+to this repository, but we recommend updating your references for clarity.
+
 
 
 # Installation
 
-    go get -d github.com/yamamoto-febc/libsacloud
+    go get -d github.com/sacloud/libsacloud
 
 # Sample (High-level API)
 
 This sample will create a server by using a High-level API.
 
-High-level API's document is [here](https://godoc.org/github.com/yamamoto-febc/libsacloud/builder).
+High-level API's document is [here](https://godoc.org/github.com/sacloud/libsacloud/builder).
 
 ##  Create a server
 
@@ -31,9 +39,9 @@ package main
 
 import (
 	"fmt"
-	"github.com/yamamoto-febc/libsacloud/api"
-	"github.com/yamamoto-febc/libsacloud/builder"
-	"github.com/yamamoto-febc/libsacloud/sacloud/ostype"
+	"github.com/sacloud/libsacloud/api"
+	"github.com/sacloud/libsacloud/builder"
+	"github.com/sacloud/libsacloud/sacloud/ostype"
 )
 
 var (
@@ -85,7 +93,7 @@ This sample is a translation of the examples of [saklient](http://sakura-interne
 
 Original(saklient) sample codes is [here](http://sakura-internet.github.io/saklient.doc/).
 
-Low-level API's document is [here](https://godoc.org/github.com/yamamoto-febc/libsacloud/api).
+Low-level API's document is [here](https://godoc.org/github.com/sacloud/libsacloud/api).
 
 ##  Create a server
 
@@ -95,7 +103,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/yamamoto-febc/libsacloud/api"
+	"github.com/sacloud/libsacloud/api"
 	"os"
 	"time"
 )
@@ -224,7 +232,7 @@ package main
 import (
 	"fmt"
 	"github.com/webguerilla/ftps"
-	API "github.com/yamamoto-febc/libsacloud/api"
+	API "github.com/sacloud/libsacloud/api"
 	"os"
 	"time"
 )

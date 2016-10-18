@@ -1,7 +1,7 @@
 package builder
 
 import (
-	"github.com/yamamoto-febc/libsacloud/api"
+	"github.com/sacloud/libsacloud/api"
 	"log"
 	"os"
 	"testing"

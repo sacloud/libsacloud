@@ -2,8 +2,8 @@ package api
 
 import (
 	"fmt"
-	"github.com/yamamoto-febc/libsacloud/sacloud"
-	"github.com/yamamoto-febc/libsacloud/sacloud/ostype"
+	"github.com/sacloud/libsacloud/sacloud"
+	"github.com/sacloud/libsacloud/sacloud/ostype"
 	"strings"
 	"time"
 )

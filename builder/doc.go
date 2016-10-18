@@ -7,9 +7,9 @@
 //
 // リソースの作成は以下のように行います。
 //	import (
-//		"github.com/yamamoto-febc/libsacloud/api"
-//		"github.com/yamamoto-febc/libsacloud/builder"
-//		"github.com/yamamoto-febc/libsacloud/sacloud/ostype"
+//		"github.com/sacloud/libsacloud/api"
+//		"github.com/sacloud/libsacloud/builder"
+//		"github.com/sacloud/libsacloud/sacloud/ostype"
 //	)
 //
 //	func main() {

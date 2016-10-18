@@ -1,6 +1,6 @@
 package builder
 
-import "github.com/yamamoto-febc/libsacloud/sacloud"
+import "github.com/sacloud/libsacloud/sacloud"
 
 // BlankDiskServerBuilder ブランクディスクを利用して構築を行うサーバービルダー
 //
