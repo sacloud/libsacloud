@@ -17,7 +17,7 @@ See list of implemented API clients under this.
 
 
 **Notice:** This is the library formerly known as
-`github.com/sacloud/libsacloud` -- Github will automatically redirect requests
+`github.com/yamamoto-febc/libsacloud` -- Github will automatically redirect requests
 to this repository, but we recommend updating your references for clarity.
 
 
