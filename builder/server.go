@@ -159,6 +159,7 @@ func ServerPublicArchiveWindows(client *api.Client, name string, archiveID int64
 func ServerBlankDisk(client *api.Client, name string) *BlankDiskServerBuilder {
 
 	b := newServerBuilder(client, name)
+	b.ServerFromBlank()
 	return &BlankDiskServerBuilder{
 		serverBuilder: b,
 	}
@@ -219,6 +220,12 @@ func (b *serverBuilder) ServerFromArchive(sourceArchiveID int64) {
 
 	b.disk = Disk(b.client, b.serverName)
 	b.disk.sourceArchiveID = sourceArchiveID
+	b.disk.sourceDiskID = 0
+}
+
+func (b *serverBuilder) ServerFromBlank() {
+	b.disk = Disk(b.client, b.serverName)
+	b.disk.sourceArchiveID = 0
 	b.disk.sourceDiskID = 0
 }
 
