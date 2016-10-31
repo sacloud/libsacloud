@@ -30,12 +30,6 @@ const (
 	// ServerBuildOnCreateServerAfter サーバー作成 終了時
 	ServerBuildOnCreateServerAfter
 
-	// ServerBuildOnConnectDiskBefore ディスク接続 開始時
-	ServerBuildOnConnectDiskBefore
-
-	// ServerBuildOnConnectDiskAfter ディスク接続 終了時
-	ServerBuildOnConnectDiskAfter
-
 	// ServerBuildOnInsertCDROMBefore ISOイメージ挿入 開始時
 	ServerBuildOnInsertCDROMBefore
 
@@ -242,11 +236,6 @@ func (b *serverBuilder) Build() (*ServerBuildResult, error) {
 		return b.currentBuildResult, err
 	}
 
-	// create disks
-	if err := b.createDisks(); err != nil {
-		return b.currentBuildResult, err
-	}
-
 	// create server
 	b.callEventHandlerIfExists(ServerBuildOnCreateServerBefore)
 	if err := b.createServer(); err != nil {
@@ -254,12 +243,10 @@ func (b *serverBuilder) Build() (*ServerBuildResult, error) {
 	}
 	b.callEventHandlerIfExists(ServerBuildOnCreateServerAfter)
 
-	// connect disks
-	b.callEventHandlerIfExists(ServerBuildOnConnectDiskBefore)
-	if err := b.connectDisks(); err != nil {
+	// create disks
+	if err := b.createDisks(); err != nil {
 		return b.currentBuildResult, err
 	}
-	b.callEventHandlerIfExists(ServerBuildOnConnectDiskAfter)
 
 	// insert cdrom
 	if b.isoImageID > 0 {
@@ -344,6 +331,9 @@ func (b *serverBuilder) buildServerParams() error {
 
 func (b *serverBuilder) createDisks() error {
 	// build disk
+	if b.currentBuildResult.Server.ID > 0 {
+		b.disk.SetServerID(b.currentBuildResult.Server.ID)
+	}
 	diskBuildResult, err := b.disk.Build()
 	if err != nil {
 		return err
@@ -352,6 +342,9 @@ func (b *serverBuilder) createDisks() error {
 	// build additional disks
 	if len(b.additionalDisks) > 0 {
 		for _, diskBuilder := range b.additionalDisks {
+			if b.currentBuildResult.Server.ID > 0 {
+				diskBuilder.SetServerID(b.currentBuildResult.Server.ID)
+			}
 			res, err := diskBuilder.Build()
 			if err != nil {
 				return err

@@ -158,8 +158,6 @@ func TestServerBuilder_Build_WithEventHandler(t *testing.T) {
 		ServerBuildOnSetPlanAfter,
 		ServerBuildOnCreateServerBefore,
 		ServerBuildOnCreateServerAfter,
-		ServerBuildOnConnectDiskBefore,
-		ServerBuildOnConnectDiskAfter,
 		ServerBuildOnInsertCDROMBefore,
 		ServerBuildOnInsertCDROMAfter,
 		ServerBuildOnBootBefore,
