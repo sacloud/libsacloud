@@ -56,6 +56,9 @@ func TestDatabaseCRUD(t *testing.T) {
 
 	api.SleepUntilUp(id, 20*time.Minute)
 
+	err = api.SleepUntilDatabaseRunning(id, 20*time.Minute, 10)
+	assert.NoError(t, err)
+
 	//READ
 	item, err = api.Read(id)
 
@@ -140,6 +143,9 @@ func TestDatabaseMariaDBCRUD(t *testing.T) {
 	}
 
 	api.SleepUntilUp(id, 20*time.Minute)
+
+	err = api.SleepUntilDatabaseRunning(id, 20*time.Minute, 10)
+	assert.NoError(t, err)
 
 	//READ
 	item, err = api.Read(id)
