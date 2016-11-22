@@ -94,9 +94,9 @@ func TestCreateDiskFromSource(t *testing.T) {
 
 //func TestCanEditDisk(t *testing.T) {
 //	api := client.Disk
-//	client.Zone = "is1a"
+//	client.Zone = "is1b"
 //
-//	// CentOS
+//	//// CentOS
 //	res, err := api.CanEditDisk(123456789012)
 //	assert.NoError(t, err)
 //	assert.True(t, res)
