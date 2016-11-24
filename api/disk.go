@@ -207,12 +207,12 @@ func (api *DiskAPI) CanEditDisk(id int64) (bool, error) {
 
 	// ここまできても判定できないならソースに投げる
 	if disk.SourceDisk != nil && disk.SourceDisk.Availability != "discontinued" {
-
-		return api.CanEditDisk(disk.SourceDisk.ID)
+		return api.client.Disk.CanEditDisk(disk.SourceDisk.ID)
 	}
 	if disk.SourceArchive != nil && disk.SourceArchive.Availability != "discontinued" {
 		return api.client.Archive.CanEditDisk(disk.SourceArchive.ID)
 	}
+
 	return false, nil
 
 }
