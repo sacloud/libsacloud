@@ -12,7 +12,7 @@ type Bridge struct {
 	// Info インフォ
 	Info *struct {
 		// Switches 接続スイッチリスト
-		Switches []Switch
+		Switches []*Switch
 	}
 	// ServiceClass サービスクラス
 	ServiceClass string `json:",omitempty"`

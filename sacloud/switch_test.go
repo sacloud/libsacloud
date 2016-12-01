@@ -75,7 +75,7 @@ var testSwitchWithBridgeJSON = `
                 "Info": {
                     "Switches": [
                         {
-                            "ID": 123456789012,
+                            "ID": "123456789012",
                             "Name": "\u3059\u3046\u3043\u3063\u3061",
                             "Zone": {
                                 "ID": 31002,
