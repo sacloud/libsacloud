@@ -71,6 +71,28 @@ func TestGSLBCreate(t *testing.T) {
 	client.GSLB.Delete(item.ID)
 }
 
+func TestGSLBWithEmptyServer(t *testing.T) {
+	currentRegion := client.Zone
+	defer func() { client.Zone = currentRegion }()
+	client.Zone = "is1a"
+
+	item := client.GSLB.New(testGslbName)
+	assert.Equal(t, item.Name, testGslbName)
+
+	item.Settings.GSLB.SorryServer = "8.8.8.8"
+	item.Settings.GSLB.HealthCheck.Host = "libsacloud.com"
+
+	item, err := client.GSLB.Create(item)
+
+	assert.NoError(t, err)
+	assert.Equal(t, item.Settings.GSLB.HealthCheck.Host, "libsacloud.com")
+	assert.Equal(t, item.Settings.GSLB.SorryServer, "8.8.8.8")
+
+	assert.Len(t, item.Settings.GSLB.Servers, 0)
+
+	client.GSLB.Delete(item.ID)
+}
+
 func init() {
 	testSetupHandlers = append(testSetupHandlers, cleanupGslbCommonServiceItem)
 	testTearDownHandlers = append(testTearDownHandlers, cleanupGslbCommonServiceItem)
