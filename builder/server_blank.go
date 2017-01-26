@@ -19,8 +19,13 @@ func (b *BlankDiskServerBuilder) GetServerName() string {
 }
 
 // SetServerName サーバー名 設定
-func (b *BlankDiskServerBuilder) SetServerName(serverName string) *BlankDiskServerBuilder {
+func (b *BlankDiskServerBuilder) SetServerName(serverName string) {
 	b.serverName = serverName
+}
+
+// WithServerName サーバー名 設定
+func (b *BlankDiskServerBuilder) WithServerName(serverName string) *BlankDiskServerBuilder {
+	b.SetServerName(serverName)
 	return b
 }
 
@@ -30,8 +35,13 @@ func (b *BlankDiskServerBuilder) GetCore() int {
 }
 
 // SetCore CPUコア数 設定
-func (b *BlankDiskServerBuilder) SetCore(core int) *BlankDiskServerBuilder {
+func (b *BlankDiskServerBuilder) SetCore(core int) {
 	b.core = core
+}
+
+// WithCore CPUコア数 設定
+func (b *BlankDiskServerBuilder) WithCore(core int) *BlankDiskServerBuilder {
+	b.SetCore(core)
 	return b
 }
 
@@ -41,8 +51,13 @@ func (b *BlankDiskServerBuilder) GetMemory() int {
 }
 
 // SetMemory メモリサイズ(GB単位) 設定
-func (b *BlankDiskServerBuilder) SetMemory(memory int) *BlankDiskServerBuilder {
+func (b *BlankDiskServerBuilder) SetMemory(memory int) {
 	b.memory = memory
+}
+
+// WithMemory メモリサイズ(GB単位) 設定
+func (b *BlankDiskServerBuilder) WithMemory(memory int) *BlankDiskServerBuilder {
+	b.SetMemory(memory)
 	return b
 }
 
@@ -52,8 +67,13 @@ func (b *BlankDiskServerBuilder) IsUseVirtIONetPCI() bool {
 }
 
 // SetUseVirtIONetPCI NIC準仮装化モード(virtio)利用フラグ 設定
-func (b *BlankDiskServerBuilder) SetUseVirtIONetPCI(useVirtIONetPCI bool) *BlankDiskServerBuilder {
+func (b *BlankDiskServerBuilder) SetUseVirtIONetPCI(useVirtIONetPCI bool) {
 	b.useVirtIONetPCI = useVirtIONetPCI
+}
+
+// WithUseVirtIONetPCI NIC準仮装化モード(virtio)利用フラグ 設定
+func (b *BlankDiskServerBuilder) WithUseVirtIONetPCI(useVirtIONetPCI bool) *BlankDiskServerBuilder {
+	b.SetUseVirtIONetPCI(useVirtIONetPCI)
 	return b
 }
 
@@ -63,8 +83,13 @@ func (b *BlankDiskServerBuilder) GetDescription() string {
 }
 
 // SetDescription 説明 設定
-func (b *BlankDiskServerBuilder) SetDescription(description string) *BlankDiskServerBuilder {
+func (b *BlankDiskServerBuilder) SetDescription(description string) {
 	b.description = description
+}
+
+// WithDescription 説明 設定
+func (b *BlankDiskServerBuilder) WithDescription(description string) *BlankDiskServerBuilder {
+	b.SetDescription(description)
 	return b
 }
 
@@ -74,7 +99,12 @@ func (b *BlankDiskServerBuilder) GetIconID() int64 {
 }
 
 // SetIconID アイコンID 設定
-func (b *BlankDiskServerBuilder) SetIconID(iconID int64) *BlankDiskServerBuilder {
+func (b *BlankDiskServerBuilder) SetIconID(iconID int64) {
+	b.iconID = iconID
+}
+
+// WithIconID アイコンID 設定
+func (b *BlankDiskServerBuilder) WithIconID(iconID int64) *BlankDiskServerBuilder {
 	b.iconID = iconID
 	return b
 }
@@ -85,8 +115,13 @@ func (b *BlankDiskServerBuilder) IsBootAfterCreate() bool {
 }
 
 // SetBootAfterCreate サーバー作成後すぐに起動フラグ 設定
-func (b *BlankDiskServerBuilder) SetBootAfterCreate(bootAfterCreate bool) *BlankDiskServerBuilder {
+func (b *BlankDiskServerBuilder) SetBootAfterCreate(bootAfterCreate bool) {
 	b.bootAfterCreate = bootAfterCreate
+}
+
+// WithBootAfterCreate サーバー作成後すぐに起動フラグ 設定
+func (b *BlankDiskServerBuilder) WithBootAfterCreate(bootAfterCreate bool) *BlankDiskServerBuilder {
+	b.SetBootAfterCreate(bootAfterCreate)
 	return b
 }
 
@@ -96,8 +131,13 @@ func (b *BlankDiskServerBuilder) GetTags() []string {
 }
 
 // SetTags タグ 設定
-func (b *BlankDiskServerBuilder) SetTags(tags []string) *BlankDiskServerBuilder {
+func (b *BlankDiskServerBuilder) SetTags(tags []string) {
 	b.Tags = tags
+}
+
+// WithTags タグ 設定
+func (b *BlankDiskServerBuilder) WithTags(tags []string) *BlankDiskServerBuilder {
+	b.SetTags(tags)
 	return b
 }
 
@@ -112,20 +152,35 @@ func (b *BlankDiskServerBuilder) ClearNICConnections() *BlankDiskServerBuilder {
 }
 
 // AddPublicNWConnectedNIC 共有セグメントへの接続追加(注:共有セグメントはeth0のみ接続可能)
-func (b *BlankDiskServerBuilder) AddPublicNWConnectedNIC() *BlankDiskServerBuilder {
+func (b *BlankDiskServerBuilder) AddPublicNWConnectedNIC() {
 	b.nicConnections = append(b.nicConnections, "shared")
+}
+
+// WithAddPublicNWConnectedNIC 共有セグメントへの接続追加(注:共有セグメントはeth0のみ接続可能)
+func (b *BlankDiskServerBuilder) WithAddPublicNWConnectedNIC() *BlankDiskServerBuilder {
+	b.AddPublicNWConnectedNIC()
 	return b
 }
 
 // AddExistsSwitchConnectedNIC スイッチ or ルーター+スイッチへの接続追加(注:ルーター+スイッチはeth0のみ接続可能)
-func (b *BlankDiskServerBuilder) AddExistsSwitchConnectedNIC(switchID string) *BlankDiskServerBuilder {
+func (b *BlankDiskServerBuilder) AddExistsSwitchConnectedNIC(switchID string) {
 	b.nicConnections = append(b.nicConnections, switchID)
+}
+
+// WithAddExistsSwitchConnectedNIC スイッチ or ルーター+スイッチへの接続追加(注:ルーター+スイッチはeth0のみ接続可能)
+func (b *BlankDiskServerBuilder) WithAddExistsSwitchConnectedNIC(switchID string) *BlankDiskServerBuilder {
+	b.AddExistsSwitchConnectedNIC(switchID)
 	return b
 }
 
 // AddDisconnectedNIC 切断されたNIC追加
-func (b *BlankDiskServerBuilder) AddDisconnectedNIC() *BlankDiskServerBuilder {
+func (b *BlankDiskServerBuilder) AddDisconnectedNIC() {
 	b.nicConnections = append(b.nicConnections, "")
+}
+
+// WithAddDisconnectedNIC 切断されたNIC追加
+func (b *BlankDiskServerBuilder) WithAddDisconnectedNIC() *BlankDiskServerBuilder {
+	b.AddDisconnectedNIC()
 	return b
 }
 
@@ -135,8 +190,13 @@ func (b *BlankDiskServerBuilder) GetISOImageID() int64 {
 }
 
 // SetISOImageID ISOイメージ(CDROM)ID 設定
-func (b *BlankDiskServerBuilder) SetISOImageID(id int64) *BlankDiskServerBuilder {
+func (b *BlankDiskServerBuilder) SetISOImageID(id int64) {
 	b.isoImageID = id
+}
+
+// WithISOImageID ISOイメージ(CDROM)ID 設定
+func (b *BlankDiskServerBuilder) WithISOImageID(id int64) *BlankDiskServerBuilder {
+	b.SetISOImageID(id)
 	return b
 }
 
@@ -150,8 +210,13 @@ func (b *BlankDiskServerBuilder) GetDiskSize() int {
 }
 
 // SetDiskSize ディスクサイズ(GB単位) 設定
-func (b *BlankDiskServerBuilder) SetDiskSize(diskSize int) *BlankDiskServerBuilder {
+func (b *BlankDiskServerBuilder) SetDiskSize(diskSize int) {
 	b.disk.SetSize(diskSize)
+}
+
+// WithDiskSize ディスクサイズ(GB単位) 設定
+func (b *BlankDiskServerBuilder) WithDiskSize(diskSize int) *BlankDiskServerBuilder {
+	b.SetDiskSize(diskSize)
 	return b
 }
 
@@ -161,20 +226,35 @@ func (b *BlankDiskServerBuilder) GetDistantFrom() []int64 {
 }
 
 // SetDistantFrom ストレージ隔離対象ディスク 設定
-func (b *BlankDiskServerBuilder) SetDistantFrom(distantFrom []int64) *BlankDiskServerBuilder {
+func (b *BlankDiskServerBuilder) SetDistantFrom(distantFrom []int64) {
 	b.disk.SetDistantFrom(distantFrom)
+}
+
+// WithDistantFrom ストレージ隔離対象ディスク 設定
+func (b *BlankDiskServerBuilder) WithDistantFrom(distantFrom []int64) *BlankDiskServerBuilder {
+	b.SetDistantFrom(distantFrom)
 	return b
 }
 
 // AddDistantFrom ストレージ隔離対象ディスク 追加
-func (b *BlankDiskServerBuilder) AddDistantFrom(diskID int64) *BlankDiskServerBuilder {
+func (b *BlankDiskServerBuilder) AddDistantFrom(diskID int64) {
 	b.disk.AddDistantFrom(diskID)
+}
+
+// WithAddDistantFrom ストレージ隔離対象ディスク 追加
+func (b *BlankDiskServerBuilder) WithAddDistantFrom(diskID int64) *BlankDiskServerBuilder {
+	b.AddDistantFrom(diskID)
 	return b
 }
 
 // ClearDistantFrom ストレージ隔離対象ディスク クリア
-func (b *BlankDiskServerBuilder) ClearDistantFrom() *BlankDiskServerBuilder {
+func (b *BlankDiskServerBuilder) ClearDistantFrom() {
 	b.disk.ClearDistantFrom()
+}
+
+// WithEmptyDistantFrom ストレージ隔離対象ディスク クリア
+func (b *BlankDiskServerBuilder) WithEmptyDistantFrom() *BlankDiskServerBuilder {
+	b.ClearDistantFrom()
 	return b
 }
 
@@ -184,8 +264,13 @@ func (b *BlankDiskServerBuilder) GetDiskPlanID() sacloud.DiskPlanID {
 }
 
 // SetDiskPlanID ディスクプラン(SSD/HDD) 設定
-func (b *BlankDiskServerBuilder) SetDiskPlanID(diskPlanID sacloud.DiskPlanID) *BlankDiskServerBuilder {
+func (b *BlankDiskServerBuilder) SetDiskPlanID(diskPlanID sacloud.DiskPlanID) {
 	b.disk.SetPlanID(diskPlanID)
+}
+
+// WithDiskPlanID ディスクプラン(SSD/HDD) 設定
+func (b *BlankDiskServerBuilder) WithDiskPlanID(diskPlanID sacloud.DiskPlanID) *BlankDiskServerBuilder {
+	b.SetDiskPlanID(diskPlanID)
 	return b
 }
 
@@ -195,8 +280,13 @@ func (b *BlankDiskServerBuilder) GetDiskConnection() sacloud.EDiskConnection {
 }
 
 // SetDiskConnection ディスク接続方法(VirtIO/IDE) 設定
-func (b *BlankDiskServerBuilder) SetDiskConnection(diskConnection sacloud.EDiskConnection) *BlankDiskServerBuilder {
+func (b *BlankDiskServerBuilder) SetDiskConnection(diskConnection sacloud.EDiskConnection) {
 	b.disk.SetConnection(diskConnection)
+}
+
+// WithDiskConnection ディスク接続方法(VirtIO/IDE) 設定
+func (b *BlankDiskServerBuilder) WithDiskConnection(diskConnection sacloud.EDiskConnection) *BlankDiskServerBuilder {
+	b.SetDiskConnection(diskConnection)
 	return b
 }
 
@@ -205,13 +295,23 @@ func (b *BlankDiskServerBuilder) SetDiskConnection(diskConnection sacloud.EDiskC
 ---------------------------------------------------------*/
 
 // SetEventHandler イベントハンドラ 設定
-func (b *BlankDiskServerBuilder) SetEventHandler(event ServerBuildEvents, handler ServerBuildEventHandler) *BlankDiskServerBuilder {
+func (b *BlankDiskServerBuilder) SetEventHandler(event ServerBuildEvents, handler ServerBuildEventHandler) {
 	b.buildEventHandlers[event] = handler
+}
+
+// WithEventHandler イベントハンドラ 設定
+func (b *BlankDiskServerBuilder) WithEventHandler(event ServerBuildEvents, handler ServerBuildEventHandler) *BlankDiskServerBuilder {
+	b.SetEventHandler(event, handler)
 	return b
 }
 
 // ClearEventHandler イベントハンドラ クリア
-func (b *BlankDiskServerBuilder) ClearEventHandler(event ServerBuildEvents) *BlankDiskServerBuilder {
+func (b *BlankDiskServerBuilder) ClearEventHandler(event ServerBuildEvents) {
+	delete(b.buildEventHandlers, event)
+}
+
+// WithEmptyEventHandler イベントハンドラ クリア
+func (b *BlankDiskServerBuilder) WithEmptyEventHandler(event ServerBuildEvents) *BlankDiskServerBuilder {
 	delete(b.buildEventHandlers, event)
 	return b
 }
@@ -225,14 +325,24 @@ func (b *BlankDiskServerBuilder) GetEventHandler(event ServerBuildEvents) *Serve
 }
 
 // SetDiskEventHandler ディスクイベントハンドラ 設定
-func (b *BlankDiskServerBuilder) SetDiskEventHandler(event DiskBuildEvents, handler DiskBuildEventHandler) *BlankDiskServerBuilder {
+func (b *BlankDiskServerBuilder) SetDiskEventHandler(event DiskBuildEvents, handler DiskBuildEventHandler) {
 	b.disk.SetEventHandler(event, handler)
+}
+
+// WithDiskEventHandler ディスクイベントハンドラ 設定
+func (b *BlankDiskServerBuilder) WithDiskEventHandler(event DiskBuildEvents, handler DiskBuildEventHandler) *BlankDiskServerBuilder {
+	b.SetDiskEventHandler(event, handler)
 	return b
 }
 
 // ClearDiskEventHandler ディスクイベントハンドラ クリア
-func (b *BlankDiskServerBuilder) ClearDiskEventHandler(event DiskBuildEvents) *BlankDiskServerBuilder {
+func (b *BlankDiskServerBuilder) ClearDiskEventHandler(event DiskBuildEvents) {
 	b.disk.ClearEventHandler(event)
+}
+
+// WithEmptyDiskEventHandler ディスクイベントハンドラ クリア
+func (b *BlankDiskServerBuilder) WithEmptyDiskEventHandler(event DiskBuildEvents) *BlankDiskServerBuilder {
+	b.ClearDiskEventHandler(event)
 	return b
 }
 
@@ -246,14 +356,24 @@ func (b *BlankDiskServerBuilder) GetDiskEventHandler(event DiskBuildEvents) *Dis
 ---------------------------------------------------------*/
 
 // AddAdditionalDisk 追加ディスク 追加
-func (b *BlankDiskServerBuilder) AddAdditionalDisk(diskBuilder *DiskBuilder) *BlankDiskServerBuilder {
+func (b *BlankDiskServerBuilder) AddAdditionalDisk(diskBuilder *DiskBuilder) {
 	b.additionalDisks = append(b.additionalDisks, diskBuilder)
+}
+
+// WithAddAdditionalDisk 追加ディスク 追加
+func (b *BlankDiskServerBuilder) WithAddAdditionalDisk(diskBuilder *DiskBuilder) *BlankDiskServerBuilder {
+	b.AddAdditionalDisk(diskBuilder)
 	return b
 }
 
 // ClearAdditionalDisks 追加ディスク クリア
-func (b *BlankDiskServerBuilder) ClearAdditionalDisks() *BlankDiskServerBuilder {
+func (b *BlankDiskServerBuilder) ClearAdditionalDisks() {
 	b.additionalDisks = []*DiskBuilder{}
+}
+
+// WithEmptyAdditionalDisks 追加ディスク クリア
+func (b *BlankDiskServerBuilder) WithEmptyAdditionalDisks() *BlankDiskServerBuilder {
+	b.ClearAdditionalDisks()
 	return b
 }
 
