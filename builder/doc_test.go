@@ -38,14 +38,14 @@ exit 0`
 
 	// CentOSパブリックアーカイブからサーバー作成
 	result, err := builder.ServerPublicArchiveUnix(client, ostype.CentOS, serverName, password).
-		AddPublicNWConnectedNIC(). // NIC:共有セグメントに接続
-		SetCore(core).             // スペック指定(コア数)
-		SetMemory(memory).         // スペック指定(メモリ)
-		SetDiskSize(diskSize).     // スペック指定(ディスクサイズ)
-		AddSSHKey(sshKey).         // SSH公開鍵を登録
-		SetDisablePWAuth(true).    // パスワード認証を無効化
-		AddNote(script).           // スタートアップスクリプトを登録
-		Build()                    // 構築実施
+		WithAddPublicNWConnectedNIC(). // NIC:共有セグメントに接続
+		WithCore(core).                // スペック指定(コア数)
+		WithMemory(memory).            // スペック指定(メモリ)
+		WithDiskSize(diskSize).        // スペック指定(ディスクサイズ)
+		WithAddSSHKey(sshKey).         // SSH公開鍵を登録
+		WithDisablePWAuth(true).       // パスワード認証を無効化
+		WithAddNote(script).           // スタートアップスクリプトを登録
+		Build()                        // 構築実施
 
 	if err != nil {
 		panic(err)
