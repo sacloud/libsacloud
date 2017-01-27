@@ -86,28 +86,23 @@ func (api *DiskAPI) install(id int64, body *sacloud.Disk) (bool, error) {
 
 // ReinstallFromBlank ブランクディスクから再インストール
 func (api *DiskAPI) ReinstallFromBlank(id int64, sizeMB int) (bool, error) {
-	var body = &sacloud.Disk{
-		SizeMB: sizeMB,
-	}
+	var body = &sacloud.Disk{}
+	body.SetSizeMB(sizeMB)
+
 	return api.install(id, body)
 }
 
 // ReinstallFromArchive アーカイブからの再インストール
 func (api *DiskAPI) ReinstallFromArchive(id int64, archiveID int64) (bool, error) {
-	var body = &sacloud.Disk{
-		SourceArchive: &sacloud.Archive{},
-	}
-	body.SourceArchive.ID = id
+	var body = &sacloud.Disk{}
+	body.SetSourceArchive(archiveID)
 	return api.install(id, body)
 }
 
 // ReinstallFromDisk ディスクからの再インストール
 func (api *DiskAPI) ReinstallFromDisk(id int64, diskID int64) (bool, error) {
-	var body = &sacloud.Disk{
-		SourceDisk: &sacloud.Disk{
-			Resource: &sacloud.Resource{ID: diskID},
-		},
-	}
+	var body = &sacloud.Disk{}
+	body.SetSourceDisk(diskID)
 	return api.install(id, body)
 }
 

@@ -78,9 +78,9 @@ type DiskBuilder struct {
 	sourceArchiveID int64
 	sourceDiskID    int64
 	description     string
-	*sacloud.TagsType
-	iconID   int64
-	serverID int64
+	tags            []string
+	iconID          int64
+	serverID        int64
 
 	ipAddress          string
 	networkMaskLen     int
@@ -123,7 +123,6 @@ func Disk(client *api.Client, name string) *DiskBuilder {
 		size:               DefaultDiskSize,
 		planID:             DefaultDiskPlanID,
 		connection:         DefaultDiskConnection,
-		TagsType:           &sacloud.TagsType{},
 		isSSHKeysEphemeral: DefaultDiskIsSSHKeysEphemeral,
 		isNotesEphemeral:   DefaultDiskIsNotesEphemeral,
 	}
@@ -278,12 +277,12 @@ func (b *DiskBuilder) WithDescription(desc string) *DiskBuilder {
 
 // GetTags タグ 取得
 func (b *DiskBuilder) GetTags() []string {
-	return b.Tags
+	return b.tags
 }
 
 // SetTags タグ 設定
 func (b *DiskBuilder) SetTags(tags []string) {
-	b.Tags = tags
+	b.tags = tags
 }
 
 // WithTags タグ 設定

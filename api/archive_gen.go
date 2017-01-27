@@ -138,9 +138,7 @@ func (api *ArchiveAPI) Delete(id int64) (*sacloud.Archive, error) {
 
 // New 作成用パラメータ作成
 func (api *ArchiveAPI) New() *sacloud.Archive {
-	return &sacloud.Archive{
-		TagsType: &sacloud.TagsType{},
-	}
+	return &sacloud.Archive{}
 }
 
 /************************************************

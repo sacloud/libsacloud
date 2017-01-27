@@ -106,10 +106,7 @@ func (api *SwitchAPI) SortByName(reverse bool) *SwitchAPI {
 
 // New 新規作成用パラメーター作成
 func (api *SwitchAPI) New() *sacloud.Switch {
-	return &sacloud.Switch{
-		// TagsType
-		TagsType: &sacloud.TagsType{},
-	}
+	return &sacloud.Switch{}
 }
 
 // Create 新規作成

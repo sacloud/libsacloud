@@ -127,12 +127,12 @@ func (b *PublicArchiveUnixServerBuilder) WithBootAfterCreate(bootAfterCreate boo
 
 // GetTags タグ 取得
 func (b *PublicArchiveUnixServerBuilder) GetTags() []string {
-	return b.Tags
+	return b.tags
 }
 
 // SetTags タグ 設定
 func (b *PublicArchiveUnixServerBuilder) SetTags(tags []string) {
-	b.Tags = tags
+	b.tags = tags
 }
 
 // WithTags タグ 設定

@@ -125,12 +125,12 @@ func (b *DisklessServerBuilder) WithBootAfterCreate(bootAfterCreate bool) *Diskl
 
 // GetTags タグ 取得
 func (b *DisklessServerBuilder) GetTags() []string {
-	return b.Tags
+	return b.tags
 }
 
 // SetTags タグ 設定
 func (b *DisklessServerBuilder) SetTags(tags []string) {
-	b.Tags = tags
+	b.tags = tags
 }
 
 // WithTags タグ 設定

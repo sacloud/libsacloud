@@ -106,9 +106,7 @@ func (api *InternetAPI) SortByName(reverse bool) *InternetAPI {
 
 // New 新規作成用パラメーター作成
 func (api *InternetAPI) New() *sacloud.Internet {
-	return &sacloud.Internet{
-		TagsType: &sacloud.TagsType{},
-	}
+	return &sacloud.Internet{}
 }
 
 // Create 新規作成

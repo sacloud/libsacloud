@@ -127,12 +127,12 @@ func (b *BlankDiskServerBuilder) WithBootAfterCreate(bootAfterCreate bool) *Blan
 
 // GetTags タグ 取得
 func (b *BlankDiskServerBuilder) GetTags() []string {
-	return b.Tags
+	return b.tags
 }
 
 // SetTags タグ 設定
 func (b *BlankDiskServerBuilder) SetTags(tags []string) {
-	b.Tags = tags
+	b.tags = tags
 }
 
 // WithTags タグ 設定

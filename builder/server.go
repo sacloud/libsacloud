@@ -64,7 +64,7 @@ type serverBuilder struct {
 	useVirtIONetPCI bool
 	description     string
 	iconID          int64
-	*sacloud.TagsType
+	tags            []string
 	bootAfterCreate bool
 
 	// CDROM
@@ -107,7 +107,6 @@ func newServerBuilder(client *api.Client, serverName string) *serverBuilder {
 		core:               DefaultCore,
 		memory:             DefaultMemory,
 		useVirtIONetPCI:    DefaultUseVirtIONetCPI,
-		TagsType:           &sacloud.TagsType{},
 		description:        DefaultDescription,
 		iconID:             DefaultIconID,
 		bootAfterCreate:    DefaultBootAfterCreate,
@@ -303,13 +302,13 @@ func (b *serverBuilder) buildServerParams() error {
 	if b.useVirtIONetPCI {
 		s.AppendTag(sacloud.TagVirtIONetPCI)
 	}
-	for _, tag := range b.Tags {
+	for _, tag := range b.tags {
 		if !s.HasTag(tag) {
 			s.AppendTag(tag)
 		}
 	}
 	if b.iconID > 0 {
-		s.Icon = sacloud.NewResource(b.iconID)
+		s.SetIconByID(b.iconID)
 	}
 
 	// NIC
