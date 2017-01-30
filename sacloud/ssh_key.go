@@ -10,3 +10,9 @@ type SSHKey struct {
 	PublicKey   string `json:",omitempty"` // 公開鍵
 	Fingerprint string `json:",omitempty"` // フィンガープリント
 }
+
+// SSHKeyGenerated 公開鍵生成戻り値(秘密鍵のダウンロード用)
+type SSHKeyGenerated struct {
+	SSHKey
+	PrivateKey string `json:",omitempty"` // 秘密鍵
+}

@@ -44,6 +44,25 @@ func TestSSHKeyCRUD(t *testing.T) {
 	assert.NoError(t, err)
 }
 
+func TestSSHKeyGenerate(t *testing.T) {
+	api := client.SSHKey
+
+	// generate
+	item, err := api.Generate(testSSHKeyName, "", "description")
+	assert.NoError(t, err)
+	assert.NotNil(t, item)
+
+	// should have SSHKey properties + PrivateKey
+	assert.NotEmpty(t, item.Name)
+	assert.NotEmpty(t, item.PublicKey)
+	assert.NotEmpty(t, item.Description)
+	assert.NotEmpty(t, item.PrivateKey)
+
+	//Delete
+	_, err = api.Delete(item.ID)
+	assert.NoError(t, err)
+}
+
 func init() {
 	testSetupHandlers = append(testSetupHandlers, cleanupSSHKey)
 	testTearDownHandlers = append(testTearDownHandlers, cleanupSSHKey)
