@@ -108,10 +108,7 @@ func (api *NoteAPI) SortByName(reverse bool) *NoteAPI {
 
 // New 新規作成用パラメーター作成
 func (api *NoteAPI) New() *sacloud.Note {
-	return &sacloud.Note{
-		// TagsType
-		TagsType: &sacloud.TagsType{},
-	}
+	return &sacloud.Note{}
 }
 
 // Create 新規作成

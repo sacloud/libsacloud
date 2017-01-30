@@ -126,7 +126,6 @@ func (api *IPAddressAPI) SortBy(key string, reverse bool) *IPAddressAPI {
 //
 //func (api *IPAddressAPI) New() *sacloud.IPAddress {
 //	return &sacloud.IPAddress{
-//		TagsType: &sacloud.TagsType{},
 //	}
 //}
 

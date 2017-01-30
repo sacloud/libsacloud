@@ -7,20 +7,18 @@ import (
 
 // PacketFilter パケットフィルタ
 type PacketFilter struct {
-	*Resource
-	// Name 名称
-	Name string
-	// Description 説明
-	Description string `json:",omitempty"`
+	*Resource       // ID
+	propName        // 名称
+	propDescription // 説明
+
+	Expression []*PacketFilterExpression // Expression ルール
+
+	Notice string `json:",omitempty"` // Notice
 
 	//HACK API呼び出しルートにより数字/文字列が混在する
 	// PackerFilterのCREATE時は文字列、以外は数値となる。現状利用しないためコメントとしておく
 	// RequiredHostVersion int    `json:",omitempty"`
 
-	// Notice Notice
-	Notice string `json:",omitempty"`
-	// Expression ルール
-	Expression []*PacketFilterExpression `json:",omitempty"`
 }
 
 // AllowPacketFilterProtocol パケットフィルタが対応するプロトコルリスト
@@ -30,18 +28,14 @@ func AllowPacketFilterProtocol() []string {
 
 // PacketFilterExpression フィルタリングルール
 type PacketFilterExpression struct {
-	// Protocol プロトコル
-	Protocol string `json:",omitempty"`
-	// SourceNetwork 送信元ネットワーク
-	SourceNetwork string `json:",omitempty"`
-	// SourcePort 送信元ポート
-	SourcePort string `json:",omitempty"`
-	// DestinationPort 宛先ポート
-	DestinationPort string `json:",omitempty"`
-	// Action 許可/拒否
-	Action string `json:",omitempty"`
-	// Description 説明
-	Description string `json:",omitempty"`
+	Protocol string `json:",omitempty"` // Protocol プロトコル
+	Action   string `json:",omitempty"` // Action 許可/拒否
+
+	SourceNetwork   string // SourceNetwork 送信元ネットワーク
+	SourcePort      string // SourcePort 送信元ポート
+	DestinationPort string // DestinationPort 宛先ポート
+
+	propDescription // 説明
 }
 
 // CreateNewPacketFilter パケットフィルタ作成
@@ -75,7 +69,7 @@ func (p *PacketFilter) AddTCPRule(sourceNetwork string, sourcePort string, destP
 		SourcePort:      sourcePort,
 		DestinationPort: destPort,
 		Action:          p.getActionString(isAllow),
-		Description:     description,
+		propDescription: propDescription{Description: description},
 	}
 
 	p.Expression = append(p.Expression, exp)
@@ -100,7 +94,7 @@ func (p *PacketFilter) AddUDPRule(sourceNetwork string, sourcePort string, destP
 		SourcePort:      sourcePort,
 		DestinationPort: destPort,
 		Action:          p.getActionString(isAllow),
-		Description:     description,
+		propDescription: propDescription{Description: description},
 	}
 
 	p.Expression = append(p.Expression, exp)
@@ -111,10 +105,10 @@ func (p *PacketFilter) AddUDPRule(sourceNetwork string, sourcePort string, destP
 func (p *PacketFilter) AddICMPRule(sourceNetwork string, description string, isAllow bool) error {
 
 	exp := &PacketFilterExpression{
-		Protocol:      "icmp",
-		SourceNetwork: sourceNetwork,
-		Action:        p.getActionString(isAllow),
-		Description:   description,
+		Protocol:        "icmp",
+		SourceNetwork:   sourceNetwork,
+		Action:          p.getActionString(isAllow),
+		propDescription: propDescription{Description: description},
 	}
 
 	p.Expression = append(p.Expression, exp)
@@ -125,10 +119,10 @@ func (p *PacketFilter) AddICMPRule(sourceNetwork string, description string, isA
 func (p *PacketFilter) AddFragmentRule(sourceNetwork string, description string, isAllow bool) error {
 
 	exp := &PacketFilterExpression{
-		Protocol:      "fragment",
-		SourceNetwork: sourceNetwork,
-		Action:        p.getActionString(isAllow),
-		Description:   description,
+		Protocol:        "fragment",
+		SourceNetwork:   sourceNetwork,
+		Action:          p.getActionString(isAllow),
+		propDescription: propDescription{Description: description},
 	}
 
 	p.Expression = append(p.Expression, exp)
@@ -139,10 +133,10 @@ func (p *PacketFilter) AddFragmentRule(sourceNetwork string, description string,
 func (p *PacketFilter) AddIPRule(sourceNetwork string, description string, isAllow bool) error {
 
 	exp := &PacketFilterExpression{
-		Protocol:      "ip",
-		SourceNetwork: sourceNetwork,
-		Action:        p.getActionString(isAllow),
-		Description:   description,
+		Protocol:        "ip",
+		SourceNetwork:   sourceNetwork,
+		Action:          p.getActionString(isAllow),
+		propDescription: propDescription{Description: description},
 	}
 
 	p.Expression = append(p.Expression, exp)

@@ -106,10 +106,7 @@ func (api *ServerAPI) SortByName(reverse bool) *ServerAPI {
 
 // New 新規作成用パラメーター作成
 func (api *ServerAPI) New() *sacloud.Server {
-	return &sacloud.Server{
-		// TagsType
-		TagsType: &sacloud.TagsType{},
-	}
+	return &sacloud.Server{}
 }
 
 // Create 新規作成

@@ -108,10 +108,7 @@ func (api *IconAPI) SortByName(reverse bool) *IconAPI {
 
 // New 新規作成用パラメーター作成
 func (api *IconAPI) New() *sacloud.Icon {
-	return &sacloud.Icon{
-		// TagsType
-		TagsType: &sacloud.TagsType{},
-	}
+	return &sacloud.Icon{}
 }
 
 // Create 新規作成

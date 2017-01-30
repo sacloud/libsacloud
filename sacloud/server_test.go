@@ -72,7 +72,7 @@ func TestMarshalServerJSON(t *testing.T) {
 	assert.NotEmpty(t, server.Disks)
 	assert.NotEmpty(t, server.Interfaces)
 	assert.NotEmpty(t, server.Instance)
-	assert.NotEmpty(t, server.TagsType)
+	assert.NotEmpty(t, server.propTags)
 
 }
 

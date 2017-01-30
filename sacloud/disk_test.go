@@ -93,6 +93,6 @@ func TestMarshalMigratingDiskJSON(t *testing.T) {
 
 	assert.Nil(t, disk.SourceArchive)
 	assert.NotEmpty(t, disk.SourceDisk)
-	assert.Equal(t, disk.Availability, "migrating")
+	assert.Equal(t, disk.Availability, EAMigrating)
 
 }

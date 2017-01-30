@@ -12,12 +12,8 @@ const testDiskName = "libsacloud_test_disk_name"
 func TestCRUDByDiskAPI(t *testing.T) {
 	diskAPI := client.Disk
 	//CREATE : empty disk
-	disk := &sacloud.Disk{
-		Name:       testDiskName,
-		Plan:       sacloud.DiskPlanSSD,
-		Connection: sacloud.DiskConnectionVirtio,
-		SizeMB:     20480,
-	}
+	disk := diskAPI.New()
+	disk.Name = testDiskName
 
 	res, err := diskAPI.Create(disk)
 	assert.NoError(t, err)
@@ -39,11 +35,9 @@ func TestCRUDByDiskAPI(t *testing.T) {
 	assert.Equal(t, disk.Connection, sacloud.DiskConnectionVirtio)
 
 	//UPDATE
-	diskUpdateValue := &sacloud.Disk{
-		Connection: sacloud.DiskConnectionIDE,
-	}
+	disk.SetDiskConnection(sacloud.DiskConnectionIDE)
 
-	disk, err = diskAPI.Update(diskID, diskUpdateValue)
+	disk, err = diskAPI.Update(diskID, disk)
 	assert.NoError(t, err)
 	assert.NotEmpty(t, disk)
 	assert.Equal(t, disk.Connection, sacloud.DiskConnectionIDE)
@@ -62,12 +56,8 @@ func TestCreateDiskFromSource(t *testing.T) {
 	archiveID := archive.ID
 
 	//CREATE : empty disk
-	disk := &sacloud.Disk{
-		Name:       testDiskName,
-		Plan:       sacloud.DiskPlanSSD,
-		Connection: sacloud.DiskConnectionVirtio,
-		SizeMB:     20480,
-	}
+	disk := diskAPI.New()
+	disk.Name = testDiskName
 	disk.SetSourceArchive(archiveID) //ソースアーカイブはIDだけ指定する
 
 	res, err := diskAPI.Create(disk)

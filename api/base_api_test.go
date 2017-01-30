@@ -20,11 +20,16 @@ func TestCRUDByBaseAPI(t *testing.T) {
 	}
 
 	//CREATE
-	var res = &sacloud.Response{}
-	var note = &sacloud.Request{}
-	note.Note = &sacloud.Note{Name: testTargetNoteName, Content: testTargetNoteContentBefore}
+	res := &sacloud.Response{}
+	req := &sacloud.Request{}
 
-	err := baseAPI.create(note, res)
+	note := &sacloud.Note{}
+	note.Name = testTargetNoteName
+	note.Content = testTargetNoteContentBefore
+
+	req.Note = note
+
+	err := baseAPI.create(req, res)
 	assert.NoError(t, err)
 	assert.NotEmpty(t, res)
 	assert.NotEmpty(t, res.Note)
@@ -34,7 +39,7 @@ func TestCRUDByBaseAPI(t *testing.T) {
 
 	//READ
 	res = &sacloud.Response{}
-	note = &sacloud.Request{}
+	req = &sacloud.Request{}
 
 	err = baseAPI.read(id, nil, res)
 	assert.NoError(t, err)
@@ -42,13 +47,13 @@ func TestCRUDByBaseAPI(t *testing.T) {
 	assert.NotEmpty(t, res.Note.Content)
 
 	//for UPDATE
-	note.Note = res.Note
+	req.Note = res.Note
 
 	//UPDATE
 	res = &sacloud.Response{}
-	note.Note.Content = testTargetNoteContentAfter
+	req.Note.Content = testTargetNoteContentAfter
 
-	err = baseAPI.update(id, note, res)
+	err = baseAPI.update(id, req, res)
 	assert.NoError(t, err)
 	assert.NotEmpty(t, res)
 	assert.NotEmpty(t, res.Note.Content)

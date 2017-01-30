@@ -129,12 +129,12 @@ func (b *CommonServerBuilder) WithBootAfterCreate(bootAfterCreate bool) *CommonS
 
 // GetTags タグ 取得
 func (b *CommonServerBuilder) GetTags() []string {
-	return b.Tags
+	return b.tags
 }
 
 // SetTags タグ 設定
 func (b *CommonServerBuilder) SetTags(tags []string) {
-	b.Tags = tags
+	b.tags = tags
 }
 
 // WithTags タグ 設定

@@ -61,19 +61,34 @@ func TestFindState(t *testing.T) {
 	assert.Contains(t, res.Archives[0].Name, "CentOS")
 }
 
-func TestCRUDAndFTP(t *testing.T) {
+func TestArchiveCRUDAndFTP(t *testing.T) {
 	api := client.Archive
+
+	// get icon ID
+	icons, err := client.Icon.Reset().WithSharedScope().Include("ID").Find()
+
+	if !assert.NoError(t, err) || !assert.True(t, len(icons.Icons) > 0) {
+		return
+	}
+	icon := icons.Icons[0]
 
 	//CREATE
 	newArchive := api.New()
 	newArchive.Name = testArchiveName
-	newArchive.Description = "hoge"
-	newArchive.SizeMB = 20480
+	newArchive.SetDescription("hoge")
+	newArchive.AppendTag("hoge")
+	newArchive.SetIcon(&icon)
+	newArchive.SetSizeGB(20)
 
 	archive, err := api.Create(newArchive)
 
 	assert.NoError(t, err)
 	assert.NotEmpty(t, archive)
+
+	assert.Equal(t, archive.Description, "hoge")
+	assert.Len(t, archive.Tags, 1)
+	assert.Equal(t, archive.Tags[0], "hoge")
+	assert.Equal(t, archive.Icon.ID, icon.ID)
 
 	archiveID := archive.ID
 
@@ -81,6 +96,17 @@ func TestCRUDAndFTP(t *testing.T) {
 	archive, err = api.Read(archiveID)
 	assert.NoError(t, err)
 	assert.NotEmpty(t, archive)
+
+	// Update
+	archive.SetDescription("")
+	archive.ClearTags()
+	archive.ClearIcon()
+
+	archive, err = api.Update(archive.ID, archive)
+
+	assert.Equal(t, archive.Description, "")
+	assert.Len(t, archive.Tags, 0)
+	assert.Nil(t, archive.Icon)
 
 	//Open
 	ftpServer, err := api.OpenFTP(archive.ID)
