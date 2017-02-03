@@ -9,10 +9,10 @@ import (
 
 const testArchiveName = "libsacloud_test_archive"
 
-func TestGetCentOSArvhiveByName(t *testing.T) {
+func TestGetCentOSArchiveByName(t *testing.T) {
 	archiveAPI := client.Archive
 
-	res, err := archiveAPI.WithNameLike("CentOS 7.2 64bit").Find()
+	res, err := archiveAPI.Reset().WithNameLike("CentOS 7.2 64bit").Find()
 	assert.NoError(t, err)
 	assert.NotEmpty(t, res)
 	assert.Equal(t, len(res.Archives), 1)
@@ -141,7 +141,7 @@ func TestArchiveCRUDAndFTP(t *testing.T) {
 func TestCreateAndWait(t *testing.T) {
 
 	archiveAPI := client.Archive
-	archives, err := archiveAPI.WithNameLike("CentOS 7.2 64bit").Find()
+	archives, err := archiveAPI.Reset().WithNameLike("CentOS 7.2 64bit").Find()
 
 	assert.NoError(t, err)
 	id := archives.Archives[0].ID

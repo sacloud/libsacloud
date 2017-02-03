@@ -48,10 +48,11 @@ func (api *CDROMAPI) FilterBy(key string, value interface{}) *CDROMAPI {
 	return api
 }
 
-// func (api *CDROMAPI) FilterMultiBy(key string, value interface{}) *CDROMAPI {
-// 	api.filterBy(key, value, true)
-// 	return api
-// }
+// FilterMultiBy 任意項目でのフィルタ(完全一致 OR条件)
+func (api *CDROMAPI) FilterMultiBy(key string, value interface{}) *CDROMAPI {
+	api.filterBy(key, value, true)
+	return api
+}
 
 // WithNameLike 名称条件
 func (api *CDROMAPI) WithNameLike(name string) *CDROMAPI {

@@ -48,10 +48,11 @@ func (api *ZoneAPI) FilterBy(key string, value interface{}) *ZoneAPI {
 	return api
 }
 
-// func (api *ZoneAPI) FilterMultiBy(key string, value interface{}) *ZoneAPI {
-// 	api.filterBy(key, value, true)
-// 	return api
-// }
+// FilterMultiBy 任意項目でのフィルタ(完全一致 OR条件)
+func (api *ZoneAPI) FilterMultiBy(key string, value interface{}) *ZoneAPI {
+	api.filterBy(key, value, true)
+	return api
+}
 
 // WithNameLike 名称条件
 func (api *ZoneAPI) WithNameLike(name string) *ZoneAPI {

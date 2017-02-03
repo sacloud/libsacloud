@@ -48,10 +48,11 @@ func (api *BridgeAPI) FilterBy(key string, value interface{}) *BridgeAPI {
 	return api
 }
 
-// func (api *BridgeAPI) FilterMultiBy(key string, value interface{}) *BridgeAPI {
-// 	api.filterBy(key, value, true)
-// 	return api
-// }
+// FilterMultiBy 任意項目でのフィルタ(完全一致 OR条件)
+func (api *BridgeAPI) FilterMultiBy(key string, value interface{}) *BridgeAPI {
+	api.filterBy(key, value, true)
+	return api
+}
 
 // WithNameLike 名称条件
 func (api *BridgeAPI) WithNameLike(name string) *BridgeAPI {

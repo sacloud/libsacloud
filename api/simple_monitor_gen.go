@@ -48,10 +48,11 @@ func (api *SimpleMonitorAPI) FilterBy(key string, value interface{}) *SimpleMoni
 	return api
 }
 
-// func (api *SimpleMonitorAPI) FilterMultiBy(key string, value interface{}) *SimpleMonitorAPI {
-// 	api.filterBy(key, value, true)
-// 	return api
-// }
+// FilterMultiBy 任意項目でのフィルタ(完全一致 OR条件)
+func (api *SimpleMonitorAPI) FilterMultiBy(key string, value interface{}) *SimpleMonitorAPI {
+	api.filterBy(key, value, true)
+	return api
+}
 
 // WithNameLike 名称条件
 func (api *SimpleMonitorAPI) WithNameLike(name string) *SimpleMonitorAPI {

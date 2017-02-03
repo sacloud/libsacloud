@@ -48,10 +48,11 @@ func (api *LicenseAPI) FilterBy(key string, value interface{}) *LicenseAPI {
 	return api
 }
 
-// func (api *LicenseAPI) FilterMultiBy(key string, value interface{}) *LicenseAPI {
-// 	api.filterBy(key, value, true)
-// 	return api
-// }
+// FilterMultiBy 任意項目でのフィルタ(完全一致 OR条件)
+func (api *LicenseAPI) FilterMultiBy(key string, value interface{}) *LicenseAPI {
+	api.filterBy(key, value, true)
+	return api
+}
 
 // WithNameLike 名称条件
 func (api *LicenseAPI) WithNameLike(name string) *LicenseAPI {

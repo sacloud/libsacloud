@@ -48,10 +48,11 @@ func (api *SSHKeyAPI) FilterBy(key string, value interface{}) *SSHKeyAPI {
 	return api
 }
 
-// func (api *SSHKeyAPI) FilterMultiBy(key string, value interface{}) *SSHKeyAPI {
-// 	api.filterBy(key, value, true)
-// 	return api
-// }
+// FilterMultiBy 任意項目でのフィルタ(完全一致 OR条件)
+func (api *SSHKeyAPI) FilterMultiBy(key string, value interface{}) *SSHKeyAPI {
+	api.filterBy(key, value, true)
+	return api
+}
 
 // WithNameLike 名称条件
 func (api *SSHKeyAPI) WithNameLike(name string) *SSHKeyAPI {
