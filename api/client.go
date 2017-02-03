@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/sacloud/libsacloud"
 	"github.com/sacloud/libsacloud/sacloud"
+	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -31,6 +32,10 @@ type Client struct {
 	DefaultTimeoutDuration time.Duration
 	// ユーザーエージェント
 	UserAgent string
+	// リクエストパラメーター トレーサー
+	RequestTracer io.Writer
+	// レスポンス トレーサー
+	ResponseTracer io.Writer
 }
 
 // NewClient APIクライアント作成
@@ -202,11 +207,13 @@ func (c *Client) newRequest(method, uri string, body interface{}) ([]byte, error
 		} else {
 			req, err = http.NewRequest(method, url, bytes.NewBuffer(bodyJSON))
 		}
+		b, _ := json.MarshalIndent(body, "", "\t")
 		if c.TraceMode {
-			b, _ := json.MarshalIndent(body, "", "\t")
 			log.Printf("[libsacloud:Client#request] method : %#v , url : %s , \nbody : %s", method, url, b)
 		}
-
+		if c.RequestTracer != nil {
+			c.RequestTracer.Write(b)
+		}
 	} else {
 		req, err = http.NewRequest(method, url, nil)
 		if c.TraceMode {
@@ -233,10 +240,15 @@ func (c *Client) newRequest(method, uri string, body interface{}) ([]byte, error
 	defer resp.Body.Close()
 
 	data, err := ioutil.ReadAll(resp.Body)
+
+	v := &map[string]interface{}{}
+	json.Unmarshal(data, v)
+	b, _ := json.MarshalIndent(v, "", "\t")
+	if c.ResponseTracer != nil {
+		c.ResponseTracer.Write(b)
+	}
+
 	if c.TraceMode {
-		v := &map[string]interface{}{}
-		json.Unmarshal(data, v)
-		b, _ := json.MarshalIndent(v, "", "\t")
 		log.Printf("[libsacloud:Client#response] : %s", b)
 	}
 	if !c.isOkStatus(resp.StatusCode) {
