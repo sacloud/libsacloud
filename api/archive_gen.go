@@ -42,16 +42,17 @@ func (api *ArchiveAPI) Exclude(key string) *ArchiveAPI {
 	return api
 }
 
-// FilterBy 任意項目でのフィルタ
+// FilterBy 任意項目でのフィルタ(部分一致)
 func (api *ArchiveAPI) FilterBy(key string, value interface{}) *ArchiveAPI {
 	api.filterBy(key, value, false)
 	return api
 }
 
-// func (api *ArchiveAPI) FilterMultiBy(key string, value interface{}) *ArchiveAPI {
-// 	api.filterBy(key, value, true)
-// 	return api
-// }
+// FilterMultiBy 任意項目でのフィルタ(完全一致 OR条件)
+func (api *ArchiveAPI) FilterMultiBy(key string, value interface{}) *ArchiveAPI {
+	api.filterBy(key, value, true)
+	return api
+}
 
 // WithNameLike 名称条件
 func (api *ArchiveAPI) WithNameLike(name string) *ArchiveAPI {

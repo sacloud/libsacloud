@@ -48,10 +48,11 @@ func (api *SubnetAPI) FilterBy(key string, value interface{}) *SubnetAPI {
 	return api
 }
 
-// func (api *SubnetAPI) FilterMultiBy(key string, value interface{}) *SubnetAPI {
-// 	api.filterBy(key, value, true)
-// 	return api
-// }
+// FilterMultiBy 任意項目でのフィルタ(完全一致 OR条件)
+func (api *SubnetAPI) FilterMultiBy(key string, value interface{}) *SubnetAPI {
+	api.filterBy(key, value, true)
+	return api
+}
 
 //func (api *SubnetAPI) WithNameLike(name string) *SubnetAPI {
 //	return api.FilterBy("Name", name)

@@ -48,10 +48,11 @@ func (api *IconAPI) FilterBy(key string, value interface{}) *IconAPI {
 	return api
 }
 
-// func (api *IconAPI) FilterMultiBy(key string, value interface{}) *IconAPI {
-// 	api.filterBy(key, value, true)
-// 	return api
-// }
+// FilterMultiBy 任意項目でのフィルタ(完全一致 OR条件)
+func (api *IconAPI) FilterMultiBy(key string, value interface{}) *IconAPI {
+	api.filterBy(key, value, true)
+	return api
+}
 
 // WithNameLike 名称条件
 func (api *IconAPI) WithNameLike(name string) *IconAPI {

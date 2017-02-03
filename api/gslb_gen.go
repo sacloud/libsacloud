@@ -48,10 +48,11 @@ func (api *GSLBAPI) FilterBy(key string, value interface{}) *GSLBAPI {
 	return api
 }
 
-// func (api *GSLBAPI) FilterMultiBy(key string, value interface{}) *GSLBAPI {
-// 	api.filterBy(key, value, true)
-// 	return api
-// }
+// FilterMultiBy 任意項目でのフィルタ(完全一致 OR条件)
+func (api *GSLBAPI) FilterMultiBy(key string, value interface{}) *GSLBAPI {
+	api.filterBy(key, value, true)
+	return api
+}
 
 // WithNameLike 名称条件
 func (api *GSLBAPI) WithNameLike(name string) *GSLBAPI {

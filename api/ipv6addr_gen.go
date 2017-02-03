@@ -48,10 +48,11 @@ func (api *IPv6AddrAPI) FilterBy(key string, value interface{}) *IPv6AddrAPI {
 	return api
 }
 
-// func (api *IPv6AddrAPI) FilterMultiBy(key string, value interface{}) *IPv6AddrAPI {
-// 	api.filterBy(key, value, true)
-// 	return api
-// }
+// FilterMultiBy 任意項目でのフィルタ(完全一致 OR条件)
+func (api *IPv6AddrAPI) FilterMultiBy(key string, value interface{}) *IPv6AddrAPI {
+	api.filterBy(key, value, true)
+	return api
+}
 
 //func (api *IPv6AddrAPI) WithNameLike(name string) *IPv6AddrAPI {
 //	return api.FilterBy("Name", name)

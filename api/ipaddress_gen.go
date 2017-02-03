@@ -48,10 +48,11 @@ func (api *IPAddressAPI) FilterBy(key string, value interface{}) *IPAddressAPI {
 	return api
 }
 
-// func (api *IPAddressAPI) FilterMultiBy(key string, value interface{}) *IPAddressAPI {
-// 	api.filterBy(key, value, true)
-// 	return api
-// }
+// FilterMultiBy 任意項目でのフィルタ(完全一致 OR条件)
+func (api *IPAddressAPI) FilterMultiBy(key string, value interface{}) *IPAddressAPI {
+	api.filterBy(key, value, true)
+	return api
+}
 
 //func (api *IPAddressAPI) WithNameLike(name string) *IPAddressAPI {
 //	return api.FilterBy("Name", name)

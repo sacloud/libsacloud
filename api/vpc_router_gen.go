@@ -48,10 +48,11 @@ func (api *VPCRouterAPI) FilterBy(key string, value interface{}) *VPCRouterAPI {
 	return api
 }
 
-// func (api *VPCRouterAPI) FilterMultiBy(key string, value interface{}) *VPCRouterAPI {
-// 	api.filterBy(key, value, true)
-// 	return api
-// }
+// FilterMultiBy 任意項目でのフィルタ(完全一致 OR条件)
+func (api *VPCRouterAPI) FilterMultiBy(key string, value interface{}) *VPCRouterAPI {
+	api.filterBy(key, value, true)
+	return api
+}
 
 // WithNameLike 名称条件
 func (api *VPCRouterAPI) WithNameLike(name string) *VPCRouterAPI {

@@ -48,10 +48,11 @@ func (api *PublicPriceAPI) FilterBy(key string, value interface{}) *PublicPriceA
 	return api
 }
 
-// func (api *PublicPriceAPI) FilterMultiBy(key string, value interface{}) *PublicPriceAPI {
-// 	api.filterBy(key, value, true)
-// 	return api
-// }
+// FilterMultiBy 任意項目でのフィルタ(完全一致 OR条件)
+func (api *PublicPriceAPI) FilterMultiBy(key string, value interface{}) *PublicPriceAPI {
+	api.filterBy(key, value, true)
+	return api
+}
 
 // WithNameLike 名称条件(DisplayName)
 func (api *PublicPriceAPI) WithNameLike(name string) *PublicPriceAPI {

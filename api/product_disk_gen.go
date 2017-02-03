@@ -48,10 +48,11 @@ func (api *ProductDiskAPI) FilterBy(key string, value interface{}) *ProductDiskA
 	return api
 }
 
-// func (api *ProductDiskAPI) FilterMultiBy(key string, value interface{}) *ProductDiskAPI {
-// 	api.filterBy(key, value, true)
-// 	return api
-// }
+// FilterMultiBy 任意項目でのフィルタ(完全一致 OR条件)
+func (api *ProductDiskAPI) FilterMultiBy(key string, value interface{}) *ProductDiskAPI {
+	api.filterBy(key, value, true)
+	return api
+}
 
 // WithNameLike 名称条件
 func (api *ProductDiskAPI) WithNameLike(name string) *ProductDiskAPI {

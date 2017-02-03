@@ -48,10 +48,11 @@ func (api *AutoBackupAPI) FilterBy(key string, value interface{}) *AutoBackupAPI
 	return api
 }
 
-// func (api *AutoBackupAPI) FilterMultiBy(key string, value interface{}) *AutoBackupAPI {
-// 	api.filterBy(key, value, true)
-// 	return api
-// }
+// FilterMultiBy 任意項目でのフィルタ(完全一致 OR条件)
+func (api *AutoBackupAPI) FilterMultiBy(key string, value interface{}) *AutoBackupAPI {
+	api.filterBy(key, value, true)
+	return api
+}
 
 // WithNameLike 名称条件
 func (api *AutoBackupAPI) WithNameLike(name string) *AutoBackupAPI {

@@ -48,10 +48,11 @@ func (api *PacketFilterAPI) FilterBy(key string, value interface{}) *PacketFilte
 	return api
 }
 
-// func (api *PacketFilterAPI) FilterMultiBy(key string, value interface{}) *PacketFilterAPI {
-// 	api.filterBy(key, value, true)
-// 	return api
-// }
+// FilterMultiBy 任意項目でのフィルタ(完全一致 OR条件)
+func (api *PacketFilterAPI) FilterMultiBy(key string, value interface{}) *PacketFilterAPI {
+	api.filterBy(key, value, true)
+	return api
+}
 
 // WithNameLike 名称条件
 func (api *PacketFilterAPI) WithNameLike(name string) *PacketFilterAPI {

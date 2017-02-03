@@ -48,10 +48,11 @@ func (api *InternetAPI) FilterBy(key string, value interface{}) *InternetAPI {
 	return api
 }
 
-// func (api *InternetAPI) FilterMultiBy(key string, value interface{}) *InternetAPI {
-// 	api.filterBy(key, value, true)
-// 	return api
-// }
+// FilterMultiBy 任意項目でのフィルタ(完全一致 OR条件)
+func (api *InternetAPI) FilterMultiBy(key string, value interface{}) *InternetAPI {
+	api.filterBy(key, value, true)
+	return api
+}
 
 // WithNameLike 名称条件
 func (api *InternetAPI) WithNameLike(name string) *InternetAPI {

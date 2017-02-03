@@ -1,6 +1,7 @@
 package api
 
 import (
+	"fmt"
 	"github.com/sacloud/libsacloud/sacloud"
 	"github.com/stretchr/testify/assert"
 	"testing"
@@ -112,6 +113,38 @@ func TestCreateDiskFromSource(t *testing.T) {
 //
 //}
 
+func TestDiskAPI_FindByFilters(t *testing.T) {
+
+	api := client.Disk
+
+	name1 := fmt.Sprintf("libsacloud_test_disk_name%d", 1)
+	name2 := fmt.Sprintf("libsacloud_test_disk_name%d", 2)
+	name3 := fmt.Sprintf("libsacloud_test_disk_name%d", 3)
+
+	names := []string{name1, name2, name3}
+	for _, name := range names {
+		disk := api.New()
+		disk.Name = name
+		_, err := api.Create(disk)
+		if !assert.NoError(t, err) {
+			return
+		}
+	}
+
+	res, err := api.Reset().Include("ID").Include("Name").
+		FilterBy("Name", "libsacloud_test_disk_name").FilterBy("Name", "ssssss").Find()
+	assert.NoError(t, err)
+	assert.NotNil(t, res)
+	assert.True(t, len(res.Disks) >= 3)
+
+	res, err = api.Reset().Include("ID").Include("Name").
+		FilterMultiBy("Name", name1).FilterMultiBy("Name", name2).Find()
+	assert.NoError(t, err)
+	assert.NotNil(t, res)
+	assert.Equal(t, len(res.Disks), 2)
+
+}
+
 func init() {
 	testSetupHandlers = append(testSetupHandlers, cleanupTestDisk)
 	testTearDownHandlers = append(testTearDownHandlers, cleanupTestDisk)
@@ -121,6 +154,8 @@ func cleanupTestDisk() {
 	diskAPI := client.Disk
 	res, err := diskAPI.withNameLike(testDiskName).Find()
 	if err == nil && res.Count > 0 {
-		diskAPI.Delete(res.Disks[0].ID)
+		for _, disk := range res.Disks {
+			diskAPI.Delete(disk.ID)
+		}
 	}
 }

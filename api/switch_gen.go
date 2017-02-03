@@ -48,10 +48,11 @@ func (api *SwitchAPI) FilterBy(key string, value interface{}) *SwitchAPI {
 	return api
 }
 
-// func (api *SwitchAPI) FilterMultiBy(key string, value interface{}) *SwitchAPI {
-// 	api.filterBy(key, value, true)
-// 	return api
-// }
+// FilterMultiBy 任意項目でのフィルタ(完全一致 OR条件)
+func (api *SwitchAPI) FilterMultiBy(key string, value interface{}) *SwitchAPI {
+	api.filterBy(key, value, true)
+	return api
+}
 
 // WithNameLike 名称条件
 func (api *SwitchAPI) WithNameLike(name string) *SwitchAPI {

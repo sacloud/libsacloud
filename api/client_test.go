@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 	"testing"
+	"time"
 )
 
 var (
@@ -26,6 +27,7 @@ func TestMain(m *testing.M) {
 		region = "tk1v"
 	}
 	client = NewClient(accessToken, accessTokenSecret, region)
+	client.DefaultTimeoutDuration = 1 * time.Hour
 
 	for _, f := range testSetupHandlers {
 		f()
