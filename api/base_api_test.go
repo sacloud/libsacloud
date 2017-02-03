@@ -1,6 +1,7 @@
 package api
 
 import (
+	"bytes"
 	"github.com/sacloud/libsacloud/sacloud"
 	"github.com/stretchr/testify/assert"
 	"log"
@@ -10,6 +11,22 @@ import (
 const testTargetNoteName string = "libsacloud_base_api_test_note"
 const testTargetNoteContentBefore string = `echo "sacloud_base_api_test before...`
 const testTargetNoteContentAfter string = `echo "sacloud_base_api_test done!`
+
+func TestTracer(t *testing.T) {
+	requestBuf := bytes.NewBufferString("")
+	responseBuf := bytes.NewBufferString("")
+
+	client.RequestTracer = requestBuf
+	client.ResponseTracer = responseBuf
+
+	client.Archive.Reset().WithTags([]string{"os-linux", "os-windows"}).Include("ID").Include("Name").Find()
+
+	assert.True(t, requestBuf.Len() > 0)
+	assert.True(t, responseBuf.Len() > 0)
+
+	//t.Logf("Request:%s", requestBuf.String())
+	//t.Logf("Response:%s", responseBuf.String())
+}
 
 func TestCRUDByBaseAPI(t *testing.T) {
 	baseAPI := &baseAPI{
