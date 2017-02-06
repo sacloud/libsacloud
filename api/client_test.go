@@ -1,6 +1,8 @@
 package api
 
 import (
+	"fmt"
+	"github.com/sacloud/libsacloud"
 	"log"
 	"os"
 	"testing"
@@ -27,7 +29,8 @@ func TestMain(m *testing.M) {
 		region = "tk1v"
 	}
 	client = NewClient(accessToken, accessTokenSecret, region)
-	client.DefaultTimeoutDuration = 1 * time.Hour
+	client.DefaultTimeoutDuration = 30 * time.Minute
+	client.UserAgent = fmt.Sprintf("test-libsacloud/%s", libsacloud.Version)
 
 	for _, f := range testSetupHandlers {
 		f()

@@ -117,6 +117,7 @@ func TestDiskAPI_FindByFilters(t *testing.T) {
 
 	api := client.Disk
 
+	ids := []int64{}
 	name1 := fmt.Sprintf("libsacloud_test_disk_name%d", 1)
 	name2 := fmt.Sprintf("libsacloud_test_disk_name%d", 2)
 	name3 := fmt.Sprintf("libsacloud_test_disk_name%d", 3)
@@ -125,10 +126,12 @@ func TestDiskAPI_FindByFilters(t *testing.T) {
 	for _, name := range names {
 		disk := api.New()
 		disk.Name = name
-		_, err := api.Create(disk)
+		d, err := api.Create(disk)
 		if !assert.NoError(t, err) {
 			return
 		}
+		ids = append(ids, d.ID)
+
 	}
 
 	res, err := api.Reset().Include("ID").Include("Name").
@@ -142,6 +145,10 @@ func TestDiskAPI_FindByFilters(t *testing.T) {
 	assert.NoError(t, err)
 	assert.NotNil(t, res)
 	assert.Equal(t, len(res.Disks), 2)
+
+	for _, id := range ids {
+		api.Delete(id)
+	}
 
 }
 
