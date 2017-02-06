@@ -49,14 +49,14 @@ func TestDatabaseCRUD(t *testing.T) {
 
 	id := item.ID
 
-	err = api.SleepWhileCopying(id, 20*time.Minute, 3)
+	err = api.SleepWhileCopying(id, client.DefaultTimeoutDuration, 30)
 	if !assert.NoError(t, err) {
 		return
 	}
 
-	api.SleepUntilUp(id, 20*time.Minute)
+	api.SleepUntilUp(id, client.DefaultTimeoutDuration)
 
-	err = api.SleepUntilDatabaseRunning(id, 20*time.Minute, 10)
+	err = api.SleepUntilDatabaseRunning(id, client.DefaultTimeoutDuration, 30)
 	assert.NoError(t, err)
 
 	//READ
@@ -78,7 +78,7 @@ func TestDatabaseCRUD(t *testing.T) {
 	assert.NotEqual(t, item.Description, "before")
 
 	//power off
-	for i := 0; i < 10; i++ {
+	for i := 0; i < 30; i++ {
 		_, err = api.Stop(id)
 		assert.NoError(t, err)
 
@@ -137,14 +137,14 @@ func TestDatabaseMariaDBCRUD(t *testing.T) {
 
 	id := item.ID
 
-	err = api.SleepWhileCopying(id, 20*time.Minute, 3)
+	err = api.SleepWhileCopying(id, client.DefaultTimeoutDuration, 30)
 	if !assert.NoError(t, err) {
 		return
 	}
 
-	api.SleepUntilUp(id, 20*time.Minute)
+	api.SleepUntilUp(id, client.DefaultTimeoutDuration)
 
-	err = api.SleepUntilDatabaseRunning(id, 20*time.Minute, 10)
+	err = api.SleepUntilDatabaseRunning(id, client.DefaultTimeoutDuration, 30)
 	assert.NoError(t, err)
 
 	//READ
@@ -166,7 +166,7 @@ func TestDatabaseMariaDBCRUD(t *testing.T) {
 	assert.NotEqual(t, item.Description, "before")
 
 	//power off
-	for i := 0; i < 10; i++ {
+	for i := 0; i < 30; i++ {
 		_, err = api.Stop(id)
 		assert.NoError(t, err)
 

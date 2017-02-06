@@ -9,14 +9,14 @@ import (
 
 const testArchiveName = "libsacloud_test_archive"
 
-func TestGetCentOSArchiveByName(t *testing.T) {
-	archiveAPI := client.Archive
-
-	res, err := archiveAPI.Reset().WithNameLike("CentOS 7.2 64bit").Find()
-	assert.NoError(t, err)
-	assert.NotEmpty(t, res)
-	assert.Equal(t, len(res.Archives), 1)
-}
+//func TestGetCentOSArchiveByName(t *testing.T) {
+//	archiveAPI := client.Archive
+//
+//	res, err := archiveAPI.Reset().WithNameLike("CentOS 7.2 64bit").Find()
+//	assert.NoError(t, err)
+//	assert.NotEmpty(t, res)
+//	assert.Equal(t, len(res.Archives), 1)
+//}
 
 func TestGetArchiveWithLimitOffset(t *testing.T) {
 	archiveAPI := client.Archive
@@ -54,6 +54,48 @@ func TestFindState(t *testing.T) {
 	assert.Empty(t, state.Exclude)
 
 	res, err := api.withNameLike("CentOS").limit(1).Find()
+
+	assert.NoError(t, err)
+	assert.NotEmpty(t, res)
+	assert.Equal(t, res.Count, 1)
+	assert.Contains(t, res.Archives[0].Name, "CentOS")
+}
+
+func TestFindStateWithSetter(t *testing.T) {
+	api := client.Archive
+
+	// set parameters by setter method
+	api.SetEmpty()
+	api.SetNameLike("hoge")
+	api.SetFilterBy("Fuga", "fuga")
+	api.SetLimit(10)
+	api.SetOffset(1)
+	api.SetInclude("inc")
+	api.SetExclude("enc")
+
+	state := api.state
+
+	assert.NotEmpty(t, state)
+	assert.Equal(t, state.Filter["Name"], "hoge")
+	assert.Equal(t, state.Filter["Fuga"], "fuga")
+	assert.Equal(t, state.Count, 10)
+	assert.Equal(t, state.From, 1)
+	assert.Equal(t, state.Include[0], "inc")
+	assert.Equal(t, state.Exclude[0], "enc")
+
+	//clear state
+	api.SetEmpty()
+	state = api.state
+	assert.Empty(t, state.Filter)
+	assert.Empty(t, state.Count)
+	assert.Empty(t, state.From)
+	assert.Empty(t, state.Include)
+	assert.Empty(t, state.Exclude)
+
+	api.SetNameLike("CentOS")
+	api.SetLimit(1)
+
+	res, err := api.Find()
 
 	assert.NoError(t, err)
 	assert.NotEmpty(t, res)
@@ -136,15 +178,16 @@ func TestArchiveCRUDAndFTP(t *testing.T) {
 	//Delete
 	_, err = api.Delete(archiveID)
 	assert.NoError(t, err)
+
 }
 
 func TestCreateAndWait(t *testing.T) {
 
 	archiveAPI := client.Archive
-	archives, err := archiveAPI.Reset().WithNameLike("CentOS 7.2 64bit").Find()
+	src, err := archiveAPI.FindLatestStableCentOS()
 
 	assert.NoError(t, err)
-	id := archives.Archives[0].ID
+	id := src.ID
 	assert.NotEmpty(t, id)
 
 	//CREATE

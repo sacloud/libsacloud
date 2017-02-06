@@ -5,7 +5,6 @@ import (
 	"github.com/sacloud/libsacloud/sacloud"
 	"github.com/stretchr/testify/assert"
 	"testing"
-	"time"
 )
 
 const testLoadBalancerName = "libsacloud_test_LoadBalancer"
@@ -74,12 +73,12 @@ func TestLoadBalancerCRUD(t *testing.T) {
 
 	id := item.ID
 
-	err = api.SleepWhileCopying(id, 20*time.Minute, 3)
+	err = api.SleepWhileCopying(id, client.DefaultTimeoutDuration, 30)
 	if !assert.NoError(t, err) {
 		return
 	}
 
-	err = api.SleepUntilUp(id, 10*time.Minute)
+	err = api.SleepUntilUp(id, client.DefaultTimeoutDuration)
 	if !assert.NoError(t, err) {
 		return
 	}
@@ -99,7 +98,7 @@ func TestLoadBalancerCRUD(t *testing.T) {
 	_, err = api.Stop(id)
 	assert.NoError(t, err)
 
-	err = api.SleepUntilDown(id, 120*time.Second)
+	err = api.SleepUntilDown(id, client.DefaultTimeoutDuration)
 	if !assert.NoError(t, err) {
 		return
 	}
@@ -135,19 +134,19 @@ func TestLoadBalancerCRUDWithoutVIP(t *testing.T) {
 
 	id := item.ID
 
-	err = api.SleepWhileCopying(id, 20*time.Minute, 3)
+	err = api.SleepWhileCopying(id, client.DefaultTimeoutDuration, 30)
 	if !assert.NoError(t, err) {
 		return
 	}
 
-	err = api.SleepUntilUp(id, 10*time.Minute)
+	err = api.SleepUntilUp(id, client.DefaultTimeoutDuration)
 	if !assert.NoError(t, err) {
 		return
 	}
 	//power off
 	_, err = api.Stop(id)
 	assert.NoError(t, err)
-	err = api.SleepUntilDown(id, 120*time.Second)
+	err = api.SleepUntilDown(id, client.DefaultTimeoutDuration)
 	if !assert.NoError(t, err) {
 		return
 	}
