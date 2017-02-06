@@ -35,7 +35,7 @@ func TestVPCRouterCRUD(t *testing.T) {
 	id := item.ID
 
 	//wait
-	api.SleepWhileCopying(id, 300*time.Second, 3)
+	api.SleepWhileCopying(id, client.DefaultTimeoutDuration, 30)
 
 	//READ
 	item, err = api.Read(id)
@@ -86,7 +86,7 @@ func TestVPCRouterPremiumCRUD(t *testing.T) {
 	inet.NetworkMaskLen = 28
 	internet, err := client.Internet.Create(inet)
 	inetID := internet.ID
-	timeout := 180 * time.Second
+	timeout := 300 * time.Second
 	current := 0 * time.Second
 	interval := 5 * time.Second
 
@@ -131,7 +131,7 @@ func TestVPCRouterPremiumCRUD(t *testing.T) {
 	id := item.ID
 
 	//wait
-	api.SleepWhileCopying(id, 300*time.Second, 3)
+	api.SleepWhileCopying(id, client.DefaultTimeoutDuration, 30)
 
 	//READ
 	item, err = api.Read(id)
@@ -167,7 +167,7 @@ func TestVPCRouterCRUDWithL2TP(t *testing.T) {
 	id := item.ID
 
 	//wait
-	api.SleepWhileCopying(id, 300*time.Second, 3)
+	api.SleepWhileCopying(id, client.DefaultTimeoutDuration, 30)
 
 	////connect to switch
 	sw := client.Switch.New()
