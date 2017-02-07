@@ -97,6 +97,42 @@ func (api *ArchiveAPI) SleepWhileCopying(id int64, timeout time.Duration) error 
 	}
 }
 
+// AsyncSleepWhileCopying コピー終了まで待機(非同期)
+func (api *ArchiveAPI) AsyncSleepWhileCopying(id int64, timeout time.Duration) (chan (*sacloud.Archive), chan (*sacloud.Archive), chan (error)) {
+	complete := make(chan *sacloud.Archive)
+	progress := make(chan *sacloud.Archive)
+	err := make(chan error)
+
+	go func() {
+		for {
+			select {
+			case <-time.After(5 * time.Second):
+				archive, e := api.Read(id)
+				if e != nil {
+					err <- e
+					return
+				}
+
+				progress <- archive
+
+				if archive.IsAvailable() {
+					complete <- archive
+					return
+				}
+				if archive.IsFailed() {
+					err <- fmt.Errorf("Failed: Create archive is failed: %#v", archive)
+					return
+				}
+
+			case <-time.After(timeout):
+				err <- fmt.Errorf("Timeout: AsyncSleepWhileCopying[ID:%d]", id)
+				return
+			}
+		}
+	}()
+	return complete, progress, err
+}
+
 // CanEditDisk ディスクの修正が可能か判定
 func (api *ArchiveAPI) CanEditDisk(id int64) (bool, error) {
 
