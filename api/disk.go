@@ -164,6 +164,42 @@ func (api *DiskAPI) SleepWhileCopying(diskID int64, timeout time.Duration) error
 	}
 }
 
+// AsyncSleepWhileCopying コピー終了まで待機(非同期)
+func (api *DiskAPI) AsyncSleepWhileCopying(id int64, timeout time.Duration) (chan (*sacloud.Disk), chan (*sacloud.Disk), chan (error)) {
+	complete := make(chan *sacloud.Disk)
+	progress := make(chan *sacloud.Disk)
+	err := make(chan error)
+
+	go func() {
+		for {
+			select {
+			case <-time.After(5 * time.Second):
+				disk, e := api.Read(id)
+				if e != nil {
+					err <- e
+					return
+				}
+
+				progress <- disk
+
+				if disk.IsAvailable() {
+					complete <- disk
+					return
+				}
+				if disk.IsFailed() {
+					err <- fmt.Errorf("Failed: Create disk is failed: %#v", disk)
+					return
+				}
+
+			case <-time.After(timeout):
+				err <- fmt.Errorf("Timeout: AsyncSleepWhileCopying[ID:%d]", id)
+				return
+			}
+		}
+	}()
+	return complete, progress, err
+}
+
 // Monitor アクティビティーモニター取得
 func (api *DiskAPI) Monitor(id int64, body *sacloud.ResourceMonitorRequest) (*sacloud.MonitorValues, error) {
 	return api.baseAPI.monitor(id, body)

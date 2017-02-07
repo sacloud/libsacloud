@@ -208,6 +208,49 @@ func TestCreateAndWait(t *testing.T) {
 
 }
 
+func TestCreateAndAsyncWait(t *testing.T) {
+
+	archiveAPI := client.Archive
+	src, err := archiveAPI.FindLatestStableCentOS()
+
+	assert.NoError(t, err)
+	id := src.ID
+	assert.NotEmpty(t, id)
+
+	//CREATE
+	newArchive := archiveAPI.New()
+	newArchive.Name = testArchiveName
+	newArchive.Description = "hoge"
+	newArchive.SetSourceArchive(id)
+
+	archive, err := archiveAPI.Create(newArchive)
+
+	assert.NoError(t, err)
+	assert.NotEmpty(t, archive)
+	defer func() {
+		archiveAPI.Delete(archive.ID)
+	}()
+
+	complete, progress, errChan := archiveAPI.AsyncSleepWhileCopying(archive.ID, client.DefaultTimeoutDuration)
+
+	for {
+		select {
+		case a := <-progress:
+			t.Logf("Copying...\t %d MB / %d MB", a.GetMigratedMB(), a.GetSizeMB())
+		case a := <-complete:
+			t.Logf("Done...\t %d MB / %d MB", a.GetMigratedMB(), a.GetSizeMB())
+			//t.Logf("Trace:%#v", a)
+			return
+		case e := <-errChan:
+			assert.Fail(t, e.Error(), nil)
+			return
+		case <-time.After(20 * time.Minute):
+			assert.Fail(t, "Timeout: AsyncSleepWhileCopying: Disk -> %d", archive.ID)
+			return
+		}
+	}
+}
+
 func TestArchiveAPI_FindStableOSs(t *testing.T) {
 
 	api := client.Archive
