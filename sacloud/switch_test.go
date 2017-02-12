@@ -219,3 +219,24 @@ func TestIPHandling(t *testing.T) {
 	assert.Equal(t, byte(2), ip[3]+1)
 
 }
+
+func TestSwitchProp(t *testing.T) {
+
+	type PropID interface {
+		GetID() int64
+	}
+	type PropName interface {
+		GetName() string
+	}
+
+	sw := &Switch{}
+	var i interface{} = sw
+
+	prop, ok := i.(PropID)
+	assert.True(t, ok)
+	assert.NotNil(t, prop)
+
+	prop2, ok := i.(PropName)
+	assert.True(t, ok)
+	assert.NotNil(t, prop2)
+}

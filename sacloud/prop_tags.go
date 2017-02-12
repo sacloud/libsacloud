@@ -45,3 +45,13 @@ func (p *propTags) RemoveTag(target string) {
 func (p *propTags) ClearTags() {
 	p.Tags = []string{}
 }
+
+// GetTags タグ取得
+func (p *propTags) GetTags() []string {
+	return p.Tags
+}
+
+// SetTags タグを設定
+func (p *propTags) SetTags(tags []string) {
+	p.Tags = tags
+}
