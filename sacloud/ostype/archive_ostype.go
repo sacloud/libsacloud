@@ -1,6 +1,8 @@
 // Package ostype is define OS type of SakuraCloud public archive
 package ostype
 
+//go:generate stringer -type=ArchiveOSTypes
+
 // ArchiveOSTypes パブリックアーカイブOS種別
 type ArchiveOSTypes int
 
