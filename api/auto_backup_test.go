@@ -11,7 +11,7 @@ func TestAutoBackupCRUD(t *testing.T) {
 
 	currentRegion := client.Zone
 	defer func() { client.Zone = currentRegion }()
-	client.Zone = "is1b"
+	client.Zone = "tk1a"
 	api := client.AutoBackup
 
 	disk := client.Disk.New()
@@ -73,7 +73,7 @@ func init() {
 func cleanupAutoBackupCommonServiceItem() {
 	currentRegion := client.Zone
 	defer func() { client.Zone = currentRegion }()
-	client.Zone = "is1b"
+	client.Zone = "tk1a"
 
 	items, _ := client.AutoBackup.Reset().WithNameLike(testAutoBackupName).Find()
 	if items.CommonServiceAutoBackupItems != nil {
