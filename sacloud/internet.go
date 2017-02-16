@@ -25,7 +25,7 @@ func (i *Internet) GetBandWidthMbps() int {
 }
 
 // SetBandWidthMbps 帯域幅 設定
-func (i *Internet) SetBandWidthMbpx(v int) {
+func (i *Internet) SetBandWidthMbps(v int) {
 	i.BandWidthMbps = v
 }
 
