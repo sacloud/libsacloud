@@ -115,6 +115,15 @@ func (api *DiskAPI) ToBlank(diskID int64) (bool, error) {
 	return api.modify(method, uri, nil)
 }
 
+// ResizePartition パーティションのリサイズ
+func (api *DiskAPI) ResizePartition(diskID int64) (bool, error) {
+	var (
+		method = "PUT"
+		uri    = fmt.Sprintf("%s/%d/resize-partition", api.getResourceURL(), diskID)
+	)
+	return api.modify(method, uri, nil)
+}
+
 // DisconnectFromServer サーバーとの接続解除
 func (api *DiskAPI) DisconnectFromServer(diskID int64) (bool, error) {
 	var (
