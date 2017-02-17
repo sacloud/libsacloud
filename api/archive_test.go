@@ -201,7 +201,7 @@ func TestCreateAndWait(t *testing.T) {
 	assert.NoError(t, err)
 	assert.NotEmpty(t, archive)
 
-	err = archiveAPI.SleepWhileCopying(archive.ID, 180*time.Second)
+	err = archiveAPI.SleepWhileCopying(archive.ID, client.DefaultTimeoutDuration)
 	assert.NoError(t, err)
 
 	archiveAPI.Delete(archive.ID)
