@@ -93,16 +93,22 @@ func (api *DiskAPI) ReinstallFromBlank(id int64, sizeMB int) (bool, error) {
 }
 
 // ReinstallFromArchive アーカイブからの再インストール
-func (api *DiskAPI) ReinstallFromArchive(id int64, archiveID int64) (bool, error) {
+func (api *DiskAPI) ReinstallFromArchive(id int64, archiveID int64, distantFrom ...int64) (bool, error) {
 	var body = &sacloud.Disk{}
 	body.SetSourceArchive(archiveID)
+	if len(distantFrom) > 0 {
+		body.SetDistantFrom(distantFrom)
+	}
 	return api.install(id, body)
 }
 
 // ReinstallFromDisk ディスクからの再インストール
-func (api *DiskAPI) ReinstallFromDisk(id int64, diskID int64) (bool, error) {
+func (api *DiskAPI) ReinstallFromDisk(id int64, diskID int64, distantFrom ...int64) (bool, error) {
 	var body = &sacloud.Disk{}
 	body.SetSourceDisk(diskID)
+	if len(distantFrom) > 0 {
+		body.SetDistantFrom(distantFrom)
+	}
 	return api.install(id, body)
 }
 
