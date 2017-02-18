@@ -80,8 +80,18 @@ func (api *DiskAPI) install(id int64, body *sacloud.Disk) (bool, error) {
 		method = "PUT"
 		uri    = fmt.Sprintf("%s/%d/install", api.getResourceURL(), id)
 	)
-
-	return api.modify(method, uri, body)
+	//HACK: さくらのAPI側仕様: 戻り値:Successがbool値へ変換できないため文字列で受ける
+	type diskResponse struct {
+		*sacloud.ResultFlagValue
+		// Success
+		Success string `json:",omitempty"`
+	}
+	res := &diskResponse{}
+	err := api.baseAPI.request(method, uri, body, res)
+	if err != nil {
+		return false, err
+	}
+	return res.IsOk, nil
 }
 
 // ReinstallFromBlank ブランクディスクから再インストール
