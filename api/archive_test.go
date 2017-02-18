@@ -253,6 +253,7 @@ func TestCreateAndAsyncWait(t *testing.T) {
 
 func TestArchiveAPI_FindStableOSs(t *testing.T) {
 
+	client.Zone = "is1b"
 	api := client.Archive
 	type target struct {
 		label string
@@ -266,6 +267,15 @@ func TestArchiveAPI_FindStableOSs(t *testing.T) {
 		{label: "VyOS", f: api.FindLatestStableVyOS},
 		{label: "CoreOS", f: api.FindLatestStableCoreOS},
 		{label: "Kusanagi", f: api.FindLatestStableKusanagi},
+		{label: "SiteGuard", f: api.FindLatestStableSiteGuard},
+		{label: "FreeBSD", f: api.FindLatestStableFreeBSD},
+		{label: "Windows2008", f: api.FindLatestStableWindows2008},
+		{label: "Windows2008-RDS", f: api.FindLatestStableWindows2008RDS},
+		{label: "Windows2008-RDS-Office", f: api.FindLatestStableWindows2008RDSOffice},
+		{label: "Windows2012", f: api.FindLatestStableWindows2012},
+		{label: "Windows2012-RDS", f: api.FindLatestStableWindows2012RDS},
+		{label: "Windows2012-RDS-Office", f: api.FindLatestStableWindows2012RDSOffice},
+		{label: "Windows2016", f: api.FindLatestStableWindows2016},
 	}
 
 	for _, ts := range targets {
