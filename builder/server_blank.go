@@ -1,6 +1,8 @@
 package builder
 
-import "github.com/sacloud/libsacloud/sacloud"
+import (
+	"github.com/sacloud/libsacloud/sacloud"
+)
 
 // BlankDiskServerBuilder ブランクディスクを利用して構築を行うサーバービルダー
 //
@@ -271,6 +273,17 @@ func (b *BlankDiskServerBuilder) SetDiskPlanID(diskPlanID sacloud.DiskPlanID) {
 // WithDiskPlanID ディスクプラン(SSD/HDD) 設定
 func (b *BlankDiskServerBuilder) WithDiskPlanID(diskPlanID sacloud.DiskPlanID) *BlankDiskServerBuilder {
 	b.SetDiskPlanID(diskPlanID)
+	return b
+}
+
+// SetDiskPlan ディスクプラン(ssd/hdd) 設定(文字列から)
+func (b *BlankDiskServerBuilder) SetDiskPlan(plan string) {
+	b.disk.SetPlan(plan)
+}
+
+// WithDiskPlan ディスクプラン(ssd/hdd) 設定(文字列から)
+func (b *BlankDiskServerBuilder) WithDiskPlan(plan string) *BlankDiskServerBuilder {
+	b.SetDiskPlan(plan)
 	return b
 }
 

@@ -287,6 +287,17 @@ func (b *CommonServerBuilder) WithDiskPlanID(diskPlanID sacloud.DiskPlanID) *Com
 	return b
 }
 
+// SetDiskPlan ディスクプラン(ssd/hdd) 設定(文字列から)
+func (b *CommonServerBuilder) SetDiskPlan(plan string) {
+	b.disk.SetPlan(plan)
+}
+
+// WithDiskPlan ディスクプラン(ssd/hdd) 設定(文字列から)
+func (b *CommonServerBuilder) WithDiskPlan(plan string) *CommonServerBuilder {
+	b.SetDiskPlan(plan)
+	return b
+}
+
 // GetDiskConnection ディスク接続方法(VirtIO/IDE) 取得
 func (b *CommonServerBuilder) GetDiskConnection() sacloud.EDiskConnection {
 	return b.disk.GetConnection()

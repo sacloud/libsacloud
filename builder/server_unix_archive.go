@@ -285,6 +285,17 @@ func (b *PublicArchiveUnixServerBuilder) WithDiskPlanID(diskPlanID sacloud.DiskP
 	return b
 }
 
+// SetDiskPlan ディスクプラン(ssd/hdd) 設定(文字列から)
+func (b *PublicArchiveUnixServerBuilder) SetDiskPlan(plan string) {
+	b.disk.SetPlan(plan)
+}
+
+// WithDiskPlan ディスクプラン(ssd/hdd) 設定(文字列から)
+func (b *PublicArchiveUnixServerBuilder) WithDiskPlan(plan string) *PublicArchiveUnixServerBuilder {
+	b.SetDiskPlan(plan)
+	return b
+}
+
 // GetDiskConnection ディスク接続方法(VirtIO/IDE) 取得
 func (b *PublicArchiveUnixServerBuilder) GetDiskConnection() sacloud.EDiskConnection {
 	return b.disk.GetConnection()

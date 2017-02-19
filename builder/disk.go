@@ -209,6 +209,24 @@ func (b *DiskBuilder) WithPlanID(planID sacloud.DiskPlanID) *DiskBuilder {
 	return b
 }
 
+// SetPlan ディスクプラン(ssd/hdd) 設定(文字列から)
+func (b *DiskBuilder) SetPlan(plan string) {
+	switch plan {
+	case "ssd":
+		b.SetPlanID(sacloud.DiskPlanSSDID)
+	case "hdd":
+		b.SetPlanID(sacloud.DiskPlanHDDID)
+	default:
+		panic(fmt.Errorf("Invalid plan:%s", plan))
+	}
+}
+
+// WithPlan ディスクプラン(ssd/hdd) 設定(文字列から)
+func (b *DiskBuilder) WithPlan(plan string) *DiskBuilder {
+	b.SetPlan(plan)
+	return b
+}
+
 // GetConnection ディスク接続方法(VirtIO/IDE) 取得
 func (b *DiskBuilder) GetConnection() sacloud.EDiskConnection {
 	return b.connection

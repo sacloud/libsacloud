@@ -77,6 +77,8 @@ type serverBuilder struct {
 	disk            *DiskBuilder
 	additionalDisks []*DiskBuilder
 
+	connectDiskIDs []int64
+
 	currentBuildValue  *ServerBuildValue
 	currentBuildResult *ServerBuildResult
 }
@@ -138,10 +140,10 @@ func ServerPublicArchiveUnix(client *api.Client, os ostype.ArchiveOSTypes, name 
 }
 
 // ServerPublicArchiveWindows Windows系パブリックアーカイブを利用するビルダー
-func ServerPublicArchiveWindows(client *api.Client, name string, archiveID int64) *PublicArchiveWindowsServerBuilder {
+func ServerPublicArchiveWindows(client *api.Client, os ostype.ArchiveOSTypes, name string) *PublicArchiveWindowsServerBuilder {
 
 	b := newServerBuilder(client, name)
-	b.ServerPublicArchiveWindows(archiveID)
+	b.ServerPublicArchiveWindows(os)
 	return &PublicArchiveWindowsServerBuilder{
 		serverBuilder: b,
 	}
@@ -159,7 +161,16 @@ func ServerBlankDisk(client *api.Client, name string) *BlankDiskServerBuilder {
 
 }
 
-// ServerFromDisk 既存ディスクを利用するビルダー
+// ServerFromExistsDisk 既存ディスクを接続するビルダー
+func ServerFromExistsDisk(client *api.Client, name string, sourceDiskID int64) *CommonServerBuilder {
+	b := newServerBuilder(client, name)
+	b.connectDiskIDs = []int64{sourceDiskID}
+	return &CommonServerBuilder{
+		serverBuilder: b,
+	}
+}
+
+// ServerFromDisk 既存ディスクをコピーして新たなディスクを作成するビルダー
 func ServerFromDisk(client *api.Client, name string, sourceDiskID int64) *CommonServerBuilder {
 	b := newServerBuilder(client, name)
 
@@ -170,7 +181,7 @@ func ServerFromDisk(client *api.Client, name string, sourceDiskID int64) *Common
 
 }
 
-// ServerFromArchive 既存アーカイブを利用するビルダー
+// ServerFromArchive 既存アーカイブをコピーして新たなディスクを作成するビルダー
 func ServerFromArchive(client *api.Client, name string, sourceArchiveID int64) *CommonServerBuilder {
 	b := newServerBuilder(client, name)
 
@@ -197,9 +208,14 @@ func (b *serverBuilder) ServerPublicArchiveUnix(os ostype.ArchiveOSTypes, passwo
 
 }
 
-func (b *serverBuilder) ServerPublicArchiveWindows(archiveID int64) {
+func (b *serverBuilder) ServerPublicArchiveWindows(os ostype.ArchiveOSTypes) {
+	archive, err := b.client.Archive.FindByOSType(os)
+	if err != nil {
+		b.errors = append(b.errors, err)
+	}
+
 	b.disk = Disk(b.client, b.serverName)
-	b.disk.sourceArchiveID = archiveID
+	b.disk.sourceArchiveID = archive.ID
 	b.disk.sourceDiskID = 0
 }
 
@@ -244,6 +260,11 @@ func (b *serverBuilder) Build() (*ServerBuildResult, error) {
 
 	// create disks
 	if err := b.createDisks(); err != nil {
+		return b.currentBuildResult, err
+	}
+
+	// connect exists disks
+	if err := b.connectDisks(); err != nil {
 		return b.currentBuildResult, err
 	}
 
@@ -365,8 +386,8 @@ func (b *serverBuilder) createServer() error {
 
 func (b *serverBuilder) connectDisks() error {
 	server := b.currentBuildResult.Server
-	for _, disk := range b.currentBuildResult.Disks {
-		_, err := b.client.Disk.ConnectToServer(disk.Disk.ID, server.ID)
+	for _, diskID := range b.connectDiskIDs {
+		_, err := b.client.Disk.ConnectToServer(diskID, server.ID)
 		if err != nil {
 			return err
 		}

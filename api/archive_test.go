@@ -253,7 +253,6 @@ func TestCreateAndAsyncWait(t *testing.T) {
 
 func TestArchiveAPI_FindStableOSs(t *testing.T) {
 
-	client.Zone = "is1b"
 	api := client.Archive
 	type target struct {
 		label string
