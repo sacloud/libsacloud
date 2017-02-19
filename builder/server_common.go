@@ -197,6 +197,22 @@ func (b *CommonServerBuilder) WithAddDisconnectedNIC() *CommonServerBuilder {
 	return b
 }
 
+// GetPacketFilterIDs パケットフィルタID 取得
+func (b *CommonServerBuilder) GetPacketFilterIDs() []int64 {
+	return b.packetFilterIDs
+}
+
+// SetPacketFilterIDs パケットフィルタID 設定
+func (b *CommonServerBuilder) SetPacketFilterIDs(ids []int64) {
+	b.packetFilterIDs = ids
+}
+
+// WithPacketFilterIDs パケットフィルタID 設定
+func (b *CommonServerBuilder) WithPacketFilterIDs(ids []int64) *CommonServerBuilder {
+	b.packetFilterIDs = ids
+	return b
+}
+
 // GetISOImageID ISOイメージ(CDROM)ID 取得
 func (b *CommonServerBuilder) GetISOImageID() int64 {
 	return b.isoImageID

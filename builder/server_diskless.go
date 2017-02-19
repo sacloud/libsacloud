@@ -187,6 +187,22 @@ func (b *DisklessServerBuilder) WithAddDisconnectedNIC() *DisklessServerBuilder 
 	return b
 }
 
+// GetPacketFilterIDs パケットフィルタID 取得
+func (b *DisklessServerBuilder) GetPacketFilterIDs() []int64 {
+	return b.packetFilterIDs
+}
+
+// SetPacketFilterIDs パケットフィルタID 設定
+func (b *DisklessServerBuilder) SetPacketFilterIDs(ids []int64) {
+	b.packetFilterIDs = ids
+}
+
+// WithPacketFilterIDs パケットフィルタID 設定
+func (b *DisklessServerBuilder) WithPacketFilterIDs(ids []int64) *DisklessServerBuilder {
+	b.packetFilterIDs = ids
+	return b
+}
+
 // GetISOImageID ISOイメージ(CDROM)ID 取得
 func (b *DisklessServerBuilder) GetISOImageID() int64 {
 	return b.isoImageID

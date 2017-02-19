@@ -195,6 +195,22 @@ func (b *PublicArchiveUnixServerBuilder) WithAddDisconnectedNIC() *PublicArchive
 	return b
 }
 
+// GetPacketFilterIDs パケットフィルタID 取得
+func (b *PublicArchiveUnixServerBuilder) GetPacketFilterIDs() []int64 {
+	return b.packetFilterIDs
+}
+
+// SetPacketFilterIDs パケットフィルタID 設定
+func (b *PublicArchiveUnixServerBuilder) SetPacketFilterIDs(ids []int64) {
+	b.packetFilterIDs = ids
+}
+
+// WithPacketFilterIDs パケットフィルタID 設定
+func (b *PublicArchiveUnixServerBuilder) WithPacketFilterIDs(ids []int64) *PublicArchiveUnixServerBuilder {
+	b.packetFilterIDs = ids
+	return b
+}
+
 // GetISOImageID ISOイメージ(CDROM)ID 取得
 func (b *PublicArchiveUnixServerBuilder) GetISOImageID() int64 {
 	return b.isoImageID

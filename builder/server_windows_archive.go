@@ -192,6 +192,22 @@ func (b *PublicArchiveWindowsServerBuilder) WithAddDisconnectedNIC() *PublicArch
 	return b
 }
 
+// GetPacketFilterIDs パケットフィルタID 取得
+func (b *PublicArchiveWindowsServerBuilder) GetPacketFilterIDs() []int64 {
+	return b.packetFilterIDs
+}
+
+// SetPacketFilterIDs パケットフィルタID 設定
+func (b *PublicArchiveWindowsServerBuilder) SetPacketFilterIDs(ids []int64) {
+	b.packetFilterIDs = ids
+}
+
+// WithPacketFilterIDs パケットフィルタID 設定
+func (b *PublicArchiveWindowsServerBuilder) WithPacketFilterIDs(ids []int64) *PublicArchiveWindowsServerBuilder {
+	b.packetFilterIDs = ids
+	return b
+}
+
 // GetISOImageID ISOイメージ(CDROM)ID 取得
 func (b *PublicArchiveWindowsServerBuilder) GetISOImageID() int64 {
 	return b.isoImageID

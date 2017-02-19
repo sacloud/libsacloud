@@ -73,6 +73,9 @@ type serverBuilder struct {
 	// for nic
 	nicConnections []string
 
+	// for PacketFilter
+	packetFilterIDs []int64
+
 	// for disks
 	disk            *DiskBuilder
 	additionalDisks []*DiskBuilder
@@ -277,6 +280,11 @@ func (b *serverBuilder) Build() (*ServerBuildResult, error) {
 		b.callEventHandlerIfExists(ServerBuildOnInsertCDROMAfter)
 	}
 
+	// connect packet filters
+	if err := b.connectPacketFilters(); err != nil {
+		return b.currentBuildResult, err
+	}
+
 	// boot server
 	if b.bootAfterCreate {
 		b.callEventHandlerIfExists(ServerBuildOnBootBefore)
@@ -350,15 +358,17 @@ func (b *serverBuilder) buildServerParams() error {
 }
 
 func (b *serverBuilder) createDisks() error {
-	// build disk
-	if b.currentBuildResult.Server.ID > 0 {
-		b.disk.SetServerID(b.currentBuildResult.Server.ID)
+	if b.disk != nil {
+		// build disk
+		if b.currentBuildResult.Server.ID > 0 {
+			b.disk.SetServerID(b.currentBuildResult.Server.ID)
+		}
+		diskBuildResult, err := b.disk.Build()
+		if err != nil {
+			return err
+		}
+		b.currentBuildResult.addDisk(diskBuildResult)
 	}
-	diskBuildResult, err := b.disk.Build()
-	if err != nil {
-		return err
-	}
-	b.currentBuildResult.addDisk(diskBuildResult)
 	// build additional disks
 	if len(b.additionalDisks) > 0 {
 		for _, diskBuilder := range b.additionalDisks {
@@ -390,6 +400,22 @@ func (b *serverBuilder) connectDisks() error {
 		_, err := b.client.Disk.ConnectToServer(diskID, server.ID)
 		if err != nil {
 			return err
+		}
+	}
+	return nil
+}
+
+func (b *serverBuilder) connectPacketFilters() error {
+	server := b.currentBuildResult.Server
+	for i, pfID := range b.packetFilterIDs {
+		if len(server.Interfaces) <= i {
+			return fmt.Errorf("Number of packet filter and NIC are different")
+		}
+		if pfID > 0 {
+			_, err := b.client.Interface.ConnectToPacketFilter(server.Interfaces[i].ID, pfID)
+			if err != nil {
+				return err
+			}
 		}
 	}
 	return nil

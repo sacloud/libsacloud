@@ -79,6 +79,28 @@ func TestServerBuilder_Build_WithMinimum(t *testing.T) {
 
 }
 
+func TestServerBuilder_Build_WithPacketFilter(t *testing.T) {
+
+	builder := ServerDiskless(client, serverBuilderTestServerName)
+
+	pfReq := client.PacketFilter.New()
+	pfReq.Name = "Test"
+	pf, err := client.PacketFilter.Create(pfReq)
+
+	assert.NoError(t, err)
+
+	res, err := builder.
+		WithAddPublicNWConnectedNIC().
+		WithPacketFilterIDs([]int64{pf.ID}).
+		Build()
+
+	assert.NoError(t, err)
+	assert.NotNil(t, res.Server)
+	assert.NotNil(t, res.Server.Interfaces[0])
+	assert.Equal(t, res.Server.Interfaces[0].PacketFilter.ID, pf.ID)
+
+}
+
 func TestServerBuilder_Build_WithSSHKeyAndNoteEphemeral(t *testing.T) {
 
 	builder := ServerPublicArchiveUnix(client, ostype.CentOS, serverBuilderTestServerName, serverBuilderTestPassword)
