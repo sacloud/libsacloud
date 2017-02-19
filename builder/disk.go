@@ -804,7 +804,7 @@ func (b *DiskBuilder) buildDiskEditParam() error {
 		sshKeyIDs = append(sshKeyIDs, createdIDs...)
 	}
 	if b.generateSSHKeyName != "" {
-		key, err := b.generateSSHKey(b.generateSSHKeyDescription, b.generateSSHKeyPassPhrase, b.generateSSHKeyDescription)
+		key, err := b.generateSSHKey(b.generateSSHKeyName, b.generateSSHKeyPassPhrase, b.generateSSHKeyDescription)
 		if err != nil {
 			return err
 		}
