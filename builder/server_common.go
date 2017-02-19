@@ -532,6 +532,54 @@ func (b *CommonServerBuilder) WithNotesEphemeral(isEphemeral bool) *CommonServer
 	return b
 }
 
+// GetGenerateSSHKeyName SSHキー生成 名称 取得
+func (b *CommonServerBuilder) GetGenerateSSHKeyName() string {
+	return b.disk.GetGenerateSSHKeyName()
+}
+
+// SetGenerateSSHKeyName SSHキー生成 名称 設定
+func (b *CommonServerBuilder) SetGenerateSSHKeyName(name string) {
+	b.disk.SetGenerateSSHKeyName(name)
+}
+
+// WithGenerateSSHKeyName SSHキー生成 名称 設定
+func (b *CommonServerBuilder) WithGenerateSSHKeyName(name string) *CommonServerBuilder {
+	b.disk.SetGenerateSSHKeyName(name)
+	return b
+}
+
+// GetGenerateSSHKeyPassPhrase SSHキー生成 パスフレーズ 取得
+func (b *CommonServerBuilder) GetGenerateSSHKeyPassPhrase() string {
+	return b.disk.GetGenerateSSHKeyPassPhrase()
+}
+
+// SetGenerateSSHKeyPassPhrase SSHキー生成 パスフレーズ 設定
+func (b *CommonServerBuilder) SetGenerateSSHKeyPassPhrase(pass string) {
+	b.disk.SetGenerateSSHKeyPassPhrase(pass)
+}
+
+// WithGenerateSSHKeyPassPhrase SSHキー生成 パスフレーズ 設定
+func (b *CommonServerBuilder) WithGenerateSSHKeyPassPhrase(pass string) *CommonServerBuilder {
+	b.disk.SetGenerateSSHKeyPassPhrase(pass)
+	return b
+}
+
+// GetGenerateSSHKeyDescription SSHキー生成 説明 取得
+func (b *CommonServerBuilder) GetGenerateSSHKeyDescription() string {
+	return b.disk.GetGenerateSSHKeyDescription()
+}
+
+// SetGenerateSSHKeyDescription SSHキー生成 説明 設定
+func (b *CommonServerBuilder) SetGenerateSSHKeyDescription(desc string) {
+	b.disk.SetGenerateSSHKeyDescription(desc)
+}
+
+// WithGenerateSSHKeyDescription SSHキー生成 説明 設定
+func (b *CommonServerBuilder) WithGenerateSSHKeyDescription(desc string) *CommonServerBuilder {
+	b.disk.SetGenerateSSHKeyDescription(desc)
+	return b
+}
+
 /*---------------------------------------------------------
   for event handler
 ---------------------------------------------------------*/

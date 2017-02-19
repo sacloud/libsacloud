@@ -200,6 +200,10 @@ func ServerFromArchive(client *api.Client, name string, sourceArchiveID int64) *
 ---------------------------------------------------------*/
 
 func (b *serverBuilder) ServerPublicArchiveUnix(os ostype.ArchiveOSTypes, password string) {
+	if !os.IsSupportDiskEdit() {
+		b.errors = append(b.errors, fmt.Errorf("%q is not support EditDisk", os))
+	}
+
 	archive, err := b.client.Archive.FindByOSType(os)
 	if err != nil {
 		b.errors = append(b.errors, err)
@@ -212,6 +216,10 @@ func (b *serverBuilder) ServerPublicArchiveUnix(os ostype.ArchiveOSTypes, passwo
 }
 
 func (b *serverBuilder) ServerPublicArchiveWindows(os ostype.ArchiveOSTypes) {
+	if !os.IsWindows() {
+		b.errors = append(b.errors, fmt.Errorf("%q is not windows", os))
+	}
+
 	archive, err := b.client.Archive.FindByOSType(os)
 	if err != nil {
 		b.errors = append(b.errors, err)
@@ -220,6 +228,7 @@ func (b *serverBuilder) ServerPublicArchiveWindows(os ostype.ArchiveOSTypes) {
 	b.disk = Disk(b.client, b.serverName)
 	b.disk.sourceArchiveID = archive.ID
 	b.disk.sourceDiskID = 0
+	b.disk.forceEditDisk = true
 }
 
 func (b *serverBuilder) ServerFromDisk(sourceDiskID int64) {
@@ -248,6 +257,10 @@ func (b *serverBuilder) Build() (*ServerBuildResult, error) {
 	b.callEventHandlerIfExists(ServerBuildOnStart)
 	b.currentBuildValue = &ServerBuildValue{}
 	b.currentBuildResult = &ServerBuildResult{}
+
+	if len(b.errors) > 0 {
+		return b.currentBuildResult, b.getFlattenErrors()
+	}
 
 	// build parameter
 	if err := b.buildParams(); err != nil {

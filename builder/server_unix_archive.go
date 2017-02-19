@@ -530,6 +530,54 @@ func (b *PublicArchiveUnixServerBuilder) WithNotesEphemeral(isEphemeral bool) *P
 	return b
 }
 
+// GetGenerateSSHKeyName SSHキー生成 名称 取得
+func (b *PublicArchiveUnixServerBuilder) GetGenerateSSHKeyName() string {
+	return b.disk.GetGenerateSSHKeyName()
+}
+
+// SetGenerateSSHKeyName SSHキー生成 名称 設定
+func (b *PublicArchiveUnixServerBuilder) SetGenerateSSHKeyName(name string) {
+	b.disk.SetGenerateSSHKeyName(name)
+}
+
+// WithGenerateSSHKeyName SSHキー生成 名称 設定
+func (b *PublicArchiveUnixServerBuilder) WithGenerateSSHKeyName(name string) *PublicArchiveUnixServerBuilder {
+	b.disk.SetGenerateSSHKeyName(name)
+	return b
+}
+
+// GetGenerateSSHKeyPassPhrase SSHキー生成 パスフレーズ 取得
+func (b *PublicArchiveUnixServerBuilder) GetGenerateSSHKeyPassPhrase() string {
+	return b.disk.GetGenerateSSHKeyPassPhrase()
+}
+
+// SetGenerateSSHKeyPassPhrase SSHキー生成 パスフレーズ 設定
+func (b *PublicArchiveUnixServerBuilder) SetGenerateSSHKeyPassPhrase(pass string) {
+	b.disk.SetGenerateSSHKeyPassPhrase(pass)
+}
+
+// WithGenerateSSHKeyPassPhrase SSHキー生成 パスフレーズ 設定
+func (b *PublicArchiveUnixServerBuilder) WithGenerateSSHKeyPassPhrase(pass string) *PublicArchiveUnixServerBuilder {
+	b.disk.SetGenerateSSHKeyPassPhrase(pass)
+	return b
+}
+
+// GetGenerateSSHKeyDescription SSHキー生成 説明 取得
+func (b *PublicArchiveUnixServerBuilder) GetGenerateSSHKeyDescription() string {
+	return b.disk.GetGenerateSSHKeyDescription()
+}
+
+// SetGenerateSSHKeyDescription SSHキー生成 説明 設定
+func (b *PublicArchiveUnixServerBuilder) SetGenerateSSHKeyDescription(desc string) {
+	b.disk.SetGenerateSSHKeyDescription(desc)
+}
+
+// WithGenerateSSHKeyDescription SSHキー生成 説明 設定
+func (b *PublicArchiveUnixServerBuilder) WithGenerateSSHKeyDescription(desc string) *PublicArchiveUnixServerBuilder {
+	b.disk.SetGenerateSSHKeyDescription(desc)
+	return b
+}
+
 /*---------------------------------------------------------
   for event handler
 ---------------------------------------------------------*/

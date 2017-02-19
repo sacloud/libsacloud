@@ -79,6 +79,22 @@ func TestServerBuilder_Build_WithMinimum(t *testing.T) {
 
 }
 
+func _TestServerBuilder_Build_WithWindows(t *testing.T) {
+
+	result, err := ServerPublicArchiveWindows(client, ostype.Windows2016, serverBuilderTestServerName).
+		WithAddPublicNWConnectedNIC(). // WithAddExistsSwitchConnectedNIC("112900225115", "192.168.11.2", 24, "192.168.11.1").
+		WithDiskSize(100).
+		Build()
+
+	assert.NoError(t, err)
+	assert.NotNil(t, result)
+	assert.NotNil(t, result.Server)
+	assert.NotNil(t, result.Disks[0])
+
+	assert.True(t, result.Server.Instance.IsUp())
+
+}
+
 func TestServerBuilder_Build_WithPacketFilter(t *testing.T) {
 
 	builder := ServerDiskless(client, serverBuilderTestServerName)
@@ -148,6 +164,9 @@ func TestServerBuilder_Build_WithSSHKeyAndNote(t *testing.T) {
 		WithDisablePWAuth(true).
 		WithNotesEphemeral(false).
 		WithSSHKeysEphemeral(false).
+		WithGenerateSSHKeyName("Test").
+		WithGenerateSSHKeyPassPhrase("12345678"). // min:8,max:64
+		WithGenerateSSHKeyDescription("Test").
 		Build()
 
 	assert.NoError(t, err)
@@ -155,8 +174,10 @@ func TestServerBuilder_Build_WithSSHKeyAndNote(t *testing.T) {
 	assert.NotNil(t, res.Disks[0].Disk)
 	assert.NotNil(t, res.Disks[0].SSHKeys[0])
 	assert.NotNil(t, res.Disks[0].Notes[0])
+	assert.NotNil(t, res.Disks[0].GeneratedSSHKey)
+	assert.NotEmpty(t, res.Disks[0].GeneratedSSHKey.PrivateKey)
 
-	// Ephemeralに設定していると、SSH/Noteは消えているはず
+	// Ephemeral=falseに設定していると、SSH/Noteは消えていないはず
 	key, err := client.SSHKey.Read(res.Disks[0].SSHKeys[0].ID)
 	assert.NoError(t, err)
 	assert.NotNil(t, key)
@@ -164,6 +185,10 @@ func TestServerBuilder_Build_WithSSHKeyAndNote(t *testing.T) {
 	note, err := client.Note.Read(res.Disks[0].Notes[0].ID)
 	assert.NoError(t, err)
 	assert.NotNil(t, note)
+
+	generated, err := client.SSHKey.Read(res.Disks[0].GeneratedSSHKey.ID)
+	assert.NoError(t, err)
+	assert.NotNil(t, generated)
 
 	client.SSHKey.Delete(res.Disks[0].SSHKeys[0].ID)
 	client.Note.Delete((res.Disks[0].Notes[0].ID))
@@ -254,7 +279,7 @@ func init() {
 }
 
 func cleanupServers() {
-	res, _ := client.Server.WithNameLike(serverBuilderTestServerName).Find()
+	res, _ := client.Server.Reset().WithNameLike(serverBuilderTestServerName).Find()
 	for _, server := range res.Servers {
 		deleteServer(&server)
 	}

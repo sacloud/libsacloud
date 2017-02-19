@@ -40,3 +40,23 @@ const (
 	// Custom OS種別:カスタム
 	Custom
 )
+
+// IsWindows Windowsか
+func (o ArchiveOSTypes) IsWindows() bool {
+	switch o {
+	case Windows2008, Windows2008RDS, Windows2008RDSOffice, Windows2012, Windows2012RDS, Windows2012RDSOffice, Windows2016:
+		return true
+	default:
+		return false
+	}
+}
+
+// IsSupportDiskEdit ディスクの修正機能をフルサポートしているか(Windowsは一部サポートのためfalseを返す)
+func (o ArchiveOSTypes) IsSupportDiskEdit() bool {
+	switch o {
+	case CentOS, Ubuntu, Debian, VyOS, CoreOS, Kusanagi, SiteGuard, FreeBSD:
+		return true
+	default:
+		return false
+	}
+}

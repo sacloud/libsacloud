@@ -95,6 +95,13 @@ type DiskBuilder struct {
 	isNotesEphemeral   bool
 	noteIDs            []int64
 
+	// for sshkey generate
+	generateSSHKeyName        string
+	generateSSHKeyPassPhrase  string
+	generateSSHKeyDescription string
+
+	forceEditDisk bool // windowsなどの場合にディスクの修正を強制するためのフラグ
+
 	currentDiskBuildValue  *DiskBuildValue
 	currentDiskBuildResult *DiskBuildResult
 }
@@ -577,6 +584,54 @@ func (b *DiskBuilder) WithNotesEphemeral(isEphemeral bool) *DiskBuilder {
 	return b
 }
 
+// GetGenerateSSHKeyName SSHキー生成 名称 取得
+func (b *DiskBuilder) GetGenerateSSHKeyName() string {
+	return b.generateSSHKeyName
+}
+
+// SetGenerateSSHKeyName SSHキー生成 名称 設定
+func (b *DiskBuilder) SetGenerateSSHKeyName(name string) {
+	b.generateSSHKeyName = name
+}
+
+// WithGenerateSSHKeyName SSHキー生成 名称 設定
+func (b *DiskBuilder) WithGenerateSSHKeyName(name string) *DiskBuilder {
+	b.SetGenerateSSHKeyName(name)
+	return b
+}
+
+// GetGenerateSSHKeyPassPhrase SSHキー生成 パスフレーズ 取得
+func (b *DiskBuilder) GetGenerateSSHKeyPassPhrase() string {
+	return b.generateSSHKeyPassPhrase
+}
+
+// SetGenerateSSHKeyPassPhrase SSHキー生成 パスフレーズ 設定
+func (b *DiskBuilder) SetGenerateSSHKeyPassPhrase(pass string) {
+	b.generateSSHKeyPassPhrase = pass
+}
+
+// WithGenerateSSHKeyPassPhrase SSHキー生成 パスフレーズ 設定
+func (b *DiskBuilder) WithGenerateSSHKeyPassPhrase(pass string) *DiskBuilder {
+	b.SetGenerateSSHKeyPassPhrase(pass)
+	return b
+}
+
+// GetGenerateSSHKeyDescription SSHキー生成 説明 取得
+func (b *DiskBuilder) GetGenerateSSHKeyDescription() string {
+	return b.generateSSHKeyDescription
+}
+
+// SetGenerateSSHKeyDescription SSHキー生成 説明 設定
+func (b *DiskBuilder) SetGenerateSSHKeyDescription(desc string) {
+	b.generateSSHKeyDescription = desc
+}
+
+// WithGenerateSSHKeyDescription SSHキー生成 説明 設定
+func (b *DiskBuilder) WithGenerateSSHKeyDescription(desc string) *DiskBuilder {
+	b.SetGenerateSSHKeyDescription(desc)
+	return b
+}
+
 // SetEventHandler イベントハンドラ 登録
 func (b *DiskBuilder) SetEventHandler(event DiskBuildEvents, handler DiskBuildEventHandler) {
 	b.buildEventHandlers[event] = handler
@@ -748,6 +803,13 @@ func (b *DiskBuilder) buildDiskEditParam() error {
 		}
 		sshKeyIDs = append(sshKeyIDs, createdIDs...)
 	}
+	if b.generateSSHKeyName != "" {
+		key, err := b.generateSSHKey(b.generateSSHKeyDescription, b.generateSSHKeyPassPhrase, b.generateSSHKeyDescription)
+		if err != nil {
+			return err
+		}
+		sshKeyIDs = append(sshKeyIDs, fmt.Sprintf("%d", key.ID))
+	}
 	if len(sshKeyIDs) > 0 {
 		e.SetSSHKeys(sshKeyIDs)
 	}
@@ -799,6 +861,17 @@ func (b *DiskBuilder) createSSHKey(strKey string) (*sacloud.SSHKey, error) {
 	// raise events
 	b.callEventHandlerIfExists(DiskBuildOnCreateSSHKeyAfter)
 
+	return key, nil
+
+}
+
+func (b *DiskBuilder) generateSSHKey(name string, passPhrase string, desc string) (*sacloud.SSHKeyGenerated, error) {
+
+	key, err := b.client.SSHKey.Generate(name, passPhrase, desc)
+	if err != nil {
+		return nil, err
+	}
+	b.currentDiskBuildResult.GeneratedSSHKey = key
 	return key, nil
 
 }
@@ -867,7 +940,8 @@ func (b *DiskBuilder) isNeedDiskEdit() bool {
 		return false
 	}
 
-	return b.ipAddress != "" ||
+	return b.forceEditDisk ||
+		b.ipAddress != "" ||
 		b.networkMaskLen > 0 ||
 		b.defaultRoute != "" ||
 		b.password != "" ||
@@ -916,6 +990,8 @@ type DiskBuildResult struct {
 	Notes []*sacloud.Note
 	// SSHKeys 公開鍵
 	SSHKeys []*sacloud.SSHKey
+	// GeneratedSSHKey 生成されたSSHキー
+	GeneratedSSHKey *sacloud.SSHKeyGenerated
 }
 
 func (d *DiskBuildResult) addNote(note *sacloud.Note) {
