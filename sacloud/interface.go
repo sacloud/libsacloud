@@ -41,13 +41,3 @@ func (i *Interface) GetHostName() string {
 func (i *Interface) GetPacketFilter() *PacketFilter {
 	return i.PacketFilter
 }
-
-// SetPacketFilter 適用パケットフィルタ 設定
-func (i *Interface) SetPacketFilter(pf *PacketFilter) {
-	i.PacketFilter = pf
-}
-
-// SetPacketFilterID 適用パケットフィルタID 設定
-func (i *Interface) SetPacketFilterID(id int64) {
-	i.PacketFilter = &PacketFilter{Resource: NewResource(id)}
-}
