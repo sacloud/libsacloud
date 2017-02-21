@@ -82,3 +82,22 @@ func TestMarshalPacketFilterJSON(t *testing.T) {
 
 	assert.NotEmpty(t, packetFilter.ID)
 }
+
+func TestPacketFilterRuleFuncs(t *testing.T) {
+	pf := CreateNewPacketFilter()
+
+	pf.AddTCPRuleAt("", "", "", "", true, 0)
+	assert.Len(t, pf.Expression, 1)
+	assert.Equal(t, pf.Expression[0].Protocol, "tcp")
+
+	pf.AddUDPRule("", "", "", "", true)
+	assert.Len(t, pf.Expression, 2)
+	assert.Equal(t, pf.Expression[1].Protocol, "udp")
+
+	pf.AddTCPRuleAt("", "", "", "", true, 1)
+	assert.Len(t, pf.Expression, 3)
+	assert.Equal(t, pf.Expression[0].Protocol, "tcp")
+	assert.Equal(t, pf.Expression[1].Protocol, "tcp")
+	assert.Equal(t, pf.Expression[2].Protocol, "udp")
+
+}

@@ -186,8 +186,12 @@ func (p *PacketFilter) RemoveRuleAt(index int) {
 }
 
 func (p *PacketFilter) addRuleAt(rule *PacketFilterExpression, index int) {
+	if len(p.Expression) == 0 && index == 0 {
+		p.Expression = []*PacketFilterExpression{rule}
+		return
+	}
 	// Grow the slice by one element.
-	p.Expression = p.Expression[0 : len(p.Expression)+1]
+	p.Expression = append(p.Expression, nil)
 	// Use copy to move the upper part of the slice out of the way and open a hole.
 	copy(p.Expression[index+1:], p.Expression[index:])
 	// Store the new value.
