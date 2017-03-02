@@ -289,7 +289,7 @@ func (api *ArchiveAPI) FindLatestStableWindows2016RDS() (*sacloud.Archive, error
 // FindLatestStableWindows2016RDSOffice 安定版最新のWindows2016RDS(Office)パブリックアーカイブを取得
 func (api *ArchiveAPI) FindLatestStableWindows2016RDSOffice() (*sacloud.Archive, error) {
 	return api.findByOSTags(archiveLatestStableWindows2016RDSOfficeTags, map[string]interface{}{
-		"Name": " Windows Server 2016 for RDS(MS Office付)",
+		"Name": "Windows Server 2016 for RDS(MS Office付)",
 	})
 }
 
