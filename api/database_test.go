@@ -31,7 +31,6 @@ func TestDatabaseCRUD(t *testing.T) {
 	v.UserPassword = "defuserPassword01"
 	v.SourceNetwork = []string{"192.168.0.1", "192.168.1.1"}
 	v.ServicePort = "54321"
-	v.BackupRotate = 8
 	v.BackupTime = "00:30"
 	v.SwitchID = fmt.Sprintf("%d", sw.ID)
 	v.IPAddress1 = "192.168.11.100"
@@ -119,7 +118,6 @@ func TestDatabaseMariaDBCRUD(t *testing.T) {
 	v.UserPassword = "defuserPassword01"
 	v.SourceNetwork = []string{"192.168.0.1", "192.168.1.1"}
 	v.ServicePort = "33061"
-	v.BackupRotate = 8
 	v.BackupTime = "13:30"
 	v.SwitchID = fmt.Sprintf("%d", sw.ID)
 	v.IPAddress1 = "192.168.11.100"
@@ -207,7 +205,6 @@ func TestDatabaseWaitForCopy(t *testing.T) {
 	v.UserPassword = "defuserPassword01"
 	v.SourceNetwork = []string{"192.168.0.1", "192.168.1.1"}
 	v.ServicePort = "33061"
-	v.BackupRotate = 8
 	v.BackupTime = "13:30"
 	v.SwitchID = fmt.Sprintf("%d", sw.ID)
 	v.IPAddress1 = "192.168.11.100"
