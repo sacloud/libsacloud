@@ -218,13 +218,13 @@ func TestMarshalVPCRouterSettingJSON(t *testing.T) {
 func TestVPCRouterStaticNatFunc(t *testing.T) {
 	setting := &VPCRouterSetting{}
 
-	setting.AddStaticNAT("1.2.3.4", "192.168.0.1")
+	setting.AddStaticNAT("1.2.3.4", "192.168.0.1", "")
 	assert.NotNil(t, setting.StaticNAT)
 	assert.NotNil(t, setting.StaticNAT.Config)
 	assert.Equal(t, setting.StaticNAT.Enabled, "True")
 	assert.Len(t, setting.StaticNAT.Config, 1)
 
-	setting.AddStaticNAT("5.6.7.8", "192.168.0.2")
+	setting.AddStaticNAT("5.6.7.8", "192.168.0.2", "")
 	assert.NotNil(t, setting.StaticNAT)
 	assert.NotNil(t, setting.StaticNAT.Config)
 	assert.Equal(t, setting.StaticNAT.Enabled, "True")
