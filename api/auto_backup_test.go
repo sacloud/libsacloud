@@ -48,7 +48,7 @@ func TestAutoBackupCRUD(t *testing.T) {
 
 	//UPDATE
 	item.Description = "after"
-	item.SetBackupHour(18)
+	item.SetBackupHour(12)
 	item.SetBackupMaximumNumberOfArchives(3)
 	item.SetBackupSpanWeekdays([]string{"mon", "tue", "sat", "sun"})
 
@@ -56,7 +56,7 @@ func TestAutoBackupCRUD(t *testing.T) {
 
 	assert.NoError(t, err)
 	assert.NotEqual(t, item.Description, "before")
-	assert.Equal(t, item.Settings.Autobackup.BackupHour, 18)
+	assert.Equal(t, item.Settings.Autobackup.BackupHour, 12)
 	assert.Equal(t, item.Settings.Autobackup.MaximumNumberOfArchives, 3)
 	assert.Equal(t, item.Settings.Autobackup.BackupSpanWeekdays, []string{"mon", "tue", "sat", "sun"})
 

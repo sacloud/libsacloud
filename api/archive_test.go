@@ -277,6 +277,8 @@ func TestArchiveAPI_FindStableOSs(t *testing.T) {
 		{label: "Windows2016", f: api.FindLatestStableWindows2016},
 		{label: "Windows2016-RDS", f: api.FindLatestStableWindows2016RDS},
 		{label: "Windows2016-RDS-Office", f: api.FindLatestStableWindows2016RDSOffice},
+		{label: "Windows2016-SQLServer-Web", f: api.FindLatestStableWindows2016SQLServerWeb},
+		{label: "Windows2016-SQLServer-Standard", f: api.FindLatestStableWindows2016SQLServerStandard},
 	}
 
 	for _, ts := range targets {
