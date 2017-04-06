@@ -24,7 +24,6 @@ var testAutoBackupJSON = `
         "Settings": {
             "AccountId": "999999999999",
             "Autobackup": {
-                "BackupHour": 0,
                 "BackupSpanType": "weekdays",
                 "BackupSpanWeekdays": [
                     "sun",
