@@ -25,7 +25,7 @@ func TestDatabaseCRUD(t *testing.T) {
 	//CREATE
 	v := sacloud.NewCreatePostgreSQLDatabaseValue()
 
-	v.Plan = sacloud.DatabasePlanMini
+	v.Plan = sacloud.DatabasePlan30G
 	v.AdminPassword = "adminPassword01"
 	v.DefaultUser = "defuser"
 	v.UserPassword = "defuserPassword01"
