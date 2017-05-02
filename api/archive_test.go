@@ -265,6 +265,7 @@ func TestArchiveAPI_FindStableOSs(t *testing.T) {
 		{label: "Ubuntu", f: api.FindLatestStableUbuntu},
 		{label: "VyOS", f: api.FindLatestStableVyOS},
 		{label: "CoreOS", f: api.FindLatestStableCoreOS},
+		{label: "RancherOS", f: api.FindLatestStableRancherOS},
 		{label: "Kusanagi", f: api.FindLatestStableKusanagi},
 		{label: "SiteGuard", f: api.FindLatestStableSiteGuard},
 		{label: "FreeBSD", f: api.FindLatestStableFreeBSD},
