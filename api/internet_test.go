@@ -43,6 +43,25 @@ func TestInternetCRUD(t *testing.T) {
 	assert.NoError(t, err)
 	assert.NotEqual(t, item.Description, "before")
 
+	// Add Subnet
+	sw, err := client.Switch.Read(item.Switch.ID)
+	assert.NoError(t, err)
+
+	subnet, err := api.AddSubnet(id, 28, sw.Subnets[0].IPAddresses.Min)
+	assert.NoError(t, err)
+	assert.NotNil(t, subnet)
+	assert.Equal(t, subnet.NextHop, sw.Subnets[0].IPAddresses.Min)
+
+	// update subnet
+	subnetUpd, err := api.UpdateSubnet(id, subnet.ID, sw.Subnets[0].IPAddresses.Max)
+	assert.NoError(t, err)
+	assert.NotNil(t, subnetUpd)
+	assert.Equal(t, subnetUpd.NextHop, sw.Subnets[0].IPAddresses.Max)
+
+	// del subnet
+	_, err = api.DeleteSubnet(id, subnetUpd.ID)
+	assert.NoError(t, err)
+
 	// UPDATE BandWidth
 	item, err = api.UpdateBandWidth(id, 500) //IDが変わる
 	assert.NoError(t, err)
