@@ -127,7 +127,7 @@ func TestMarshalDatabaseJSON(t *testing.T) {
 	assert.NotEmpty(t, db.Settings.DBConf)
 	assert.NotEmpty(t, db.Settings.DBConf.Backup)
 	assert.NotEmpty(t, db.Settings.DBConf.Common)
-
+	assert.Equal(t, db.Settings.DBConf.Common.WebUI, "8.8.8.8")
 }
 
 func TestMarshalDatabaseJSONWithSourceNetwork(t *testing.T) {
