@@ -268,6 +268,7 @@ func TestArchiveAPI_FindStableOSs(t *testing.T) {
 		{label: "RancherOS", f: api.FindLatestStableRancherOS},
 		{label: "Kusanagi", f: api.FindLatestStableKusanagi},
 		{label: "SiteGuard", f: api.FindLatestStableSiteGuard},
+		{label: "Plesk", f: api.FindLatestStablePlesk},
 		{label: "FreeBSD", f: api.FindLatestStableFreeBSD},
 		{label: "Windows2012", f: api.FindLatestStableWindows2012},
 		{label: "Windows2012-RDS", f: api.FindLatestStableWindows2012RDS},
