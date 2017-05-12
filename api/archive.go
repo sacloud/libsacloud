@@ -169,7 +169,7 @@ func (api *ArchiveAPI) CanEditDisk(id int64) (bool, error) {
 	}
 
 	// BundleInfoがあれば編集不可
-	if archive.BundleInfo != nil {
+	if archive.BundleInfo != nil && archive.BundleInfo.HostClass == bundleInfoWindowsHostClass {
 		// Windows
 		return false, nil
 	}

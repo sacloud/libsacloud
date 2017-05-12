@@ -290,6 +290,50 @@ func TestArchiveAPI_FindStableOSs(t *testing.T) {
 
 }
 
+func TestArchiveAPI_CanDiskEdit(t *testing.T) {
+
+	api := client.Archive
+	type target struct {
+		label  string
+		expect bool
+		f      func() (*sacloud.Archive, error)
+	}
+
+	targets := []target{
+		{label: "CentOS", expect: true, f: api.FindLatestStableCentOS},
+		{label: "Debian", expect: true, f: api.FindLatestStableDebian},
+		{label: "Ubuntu", expect: true, f: api.FindLatestStableUbuntu},
+		{label: "VyOS", expect: true, f: api.FindLatestStableVyOS},
+		{label: "CoreOS", expect: true, f: api.FindLatestStableCoreOS},
+		{label: "RancherOS", expect: true, f: api.FindLatestStableRancherOS},
+		{label: "Kusanagi", expect: true, f: api.FindLatestStableKusanagi},
+		{label: "SiteGuard", expect: true, f: api.FindLatestStableSiteGuard},
+		{label: "Plesk", expect: true, f: api.FindLatestStablePlesk},
+		{label: "FreeBSD", expect: true, f: api.FindLatestStableFreeBSD},
+		{label: "Windows2012", expect: false, f: api.FindLatestStableWindows2012},
+		{label: "Windows2012-RDS", expect: false, f: api.FindLatestStableWindows2012RDS},
+		{label: "Windows2012-RDS-Office", expect: false, f: api.FindLatestStableWindows2012RDSOffice},
+		{label: "Windows2016", expect: false, f: api.FindLatestStableWindows2016},
+		{label: "Windows2016-RDS", expect: false, f: api.FindLatestStableWindows2016RDS},
+		{label: "Windows2016-RDS-Office", expect: false, f: api.FindLatestStableWindows2016RDSOffice},
+		{label: "Windows2016-SQLServer-Web", expect: false, f: api.FindLatestStableWindows2016SQLServerWeb},
+		{label: "Windows2016-SQLServer-Standard", expect: false, f: api.FindLatestStableWindows2016SQLServerStandard},
+	}
+
+	for _, ts := range targets {
+		archive, err := ts.f()
+		assert.NoError(t, err)
+		assert.NotNil(t, archive)
+
+		res, err := client.Archive.CanEditDisk(archive.ID)
+		assert.NoError(t, err)
+		assert.Equal(t, res, ts.expect)
+
+		t.Logf("Zone:%s / %s: CanDiskEdit: %t", client.Zone, ts.label, res)
+	}
+
+}
+
 func init() {
 	testSetupHandlers = append(testSetupHandlers, cleanupArchive)
 	testTearDownHandlers = append(testTearDownHandlers, cleanupArchive)
