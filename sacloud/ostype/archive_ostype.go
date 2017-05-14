@@ -47,6 +47,15 @@ const (
 	Custom
 )
 
+// OSTypeShortNames OSTypeとして利用できる文字列のリスト
+var OSTypeShortNames = []string{
+	"centos", "ubuntu", "debian", "vyos", "coreos", "rancheros",
+	"kusanagi", "site-guard", "plesk", "freebsd",
+	"windows2012", "windows2012-rds", "windows2012-rds-office",
+	"windows2016", "windows2016-rds", "windows2016-rds-office",
+	"windows2016-sql-web", "windows2016-sql-standard",
+}
+
 // IsWindows Windowsか
 func (o ArchiveOSTypes) IsWindows() bool {
 	switch o {
