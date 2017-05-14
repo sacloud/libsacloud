@@ -68,3 +68,46 @@ func (o ArchiveOSTypes) IsSupportDiskEdit() bool {
 		return false
 	}
 }
+
+func StrToOSType(osType string) ArchiveOSTypes {
+	switch osType {
+	case "centos":
+		return CentOS
+	case "ubuntu":
+		return Ubuntu
+	case "debian":
+		return Debian
+	case "vyos":
+		return VyOS
+	case "coreos":
+		return CoreOS
+	case "rancheros":
+		return RancherOS
+	case "kusanagi":
+		return Kusanagi
+	case "site-guard":
+		return SiteGuard
+	case "plesk":
+		return Plesk
+	case "freebsd":
+		return FreeBSD
+	case "windows2012":
+		return Windows2012
+	case "windows2012-rds":
+		return Windows2012RDS
+	case "windows2012-rds-office":
+		return Windows2012RDSOffice
+	case "windows2016":
+		return Windows2016
+	case "windows2016-rds":
+		return Windows2016RDS
+	case "windows2016-rds-office":
+		return Windows2016RDSOffice
+	case "windows2016-sql-web":
+		return Windows2016SQLServerWeb
+	case "windows2016-sql-standard":
+		return Windows2016SQLServerStandard
+	default:
+		return Custom
+	}
+}
