@@ -26,7 +26,6 @@ func TestDatabaseCRUD(t *testing.T) {
 	v := sacloud.NewCreatePostgreSQLDatabaseValue()
 
 	v.Plan = sacloud.DatabasePlan30G
-	v.AdminPassword = "adminPassword01"
 	v.DefaultUser = "defuser"
 	v.UserPassword = "defuserPassword01"
 	v.SourceNetwork = []string{"192.168.0.1", "192.168.1.1"}
@@ -88,9 +87,50 @@ func TestDatabaseCRUD(t *testing.T) {
 	}
 	assert.NoError(t, err)
 
-	//Delete
-	_, err = api.Delete(id)
+	sourceID := id
+
+	// clone
+	clone := sacloud.NewCloneDatabaseValue(item)
+	clone.Plan = sacloud.DatabasePlan10G
+	clone.SourceNetwork = []string{"192.168.0.1", "192.168.1.1"}
+	clone.ServicePort = "33061"
+	clone.BackupTime = "13:30"
+	clone.SwitchID = fmt.Sprintf("%d", sw.ID)
+	clone.IPAddress1 = "192.168.11.100"
+	clone.MaskLen = 24
+	clone.DefaultRoute = "192.168.11.1"
+	clone.Name = testDatabaseName + "_clone"
+
+	newItem = api.New(v)
+	item, err = api.Create(newItem)
+
 	assert.NoError(t, err)
+	assert.NotEmpty(t, item)
+	id = item.ID
+	err = api.SleepWhileCopying(id, client.DefaultTimeoutDuration, 30)
+	if !assert.NoError(t, err) {
+		return
+	}
+	api.SleepUntilUp(id, client.DefaultTimeoutDuration)
+	err = api.SleepUntilDatabaseRunning(id, client.DefaultTimeoutDuration, 30)
+	assert.NoError(t, err)
+	//power off
+	for i := 0; i < 30; i++ {
+		_, err = api.Stop(id)
+		assert.NoError(t, err)
+
+		err = api.SleepUntilDown(id, 10*time.Second)
+		if err == nil {
+			break
+		}
+	}
+	assert.NoError(t, err)
+
+	//Delete
+	_, err = api.Delete(sourceID)
+	assert.NoError(t, err)
+
+	_, err = api.Delete(item.ID)
 
 	_, err = client.Switch.Delete(sw.ID)
 	assert.NoError(t, err)
@@ -113,7 +153,6 @@ func TestDatabaseMariaDBCRUD(t *testing.T) {
 	v := sacloud.NewCreateMariaDBDatabaseValue()
 
 	v.Plan = sacloud.DatabasePlanMini
-	v.AdminPassword = "adminPassword01"
 	v.DefaultUser = "defuser"
 	v.UserPassword = "defuserPassword01"
 	v.SourceNetwork = []string{"192.168.0.1", "192.168.1.1"}
@@ -200,7 +239,6 @@ func TestDatabaseWaitForCopy(t *testing.T) {
 	v := sacloud.NewCreateMariaDBDatabaseValue()
 
 	v.Plan = sacloud.DatabasePlanMini
-	v.AdminPassword = "adminPassword01"
 	v.DefaultUser = "defuser"
 	v.UserPassword = "defuserPassword01"
 	v.SourceNetwork = []string{"192.168.0.1", "192.168.1.1"}
