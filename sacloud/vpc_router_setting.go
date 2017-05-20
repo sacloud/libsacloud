@@ -207,14 +207,14 @@ func (s *VPCRouterSetting) HasFirewall() bool {
 
 // VPCRouterFirewall ファイアウォール設定
 type VPCRouterFirewall struct {
-	Config  []*VPCRouterFirewallSetting `json:",omitempty"` // ファイアウォール設定
+	Config  []*VPCRouterFirewallSetting // ファイアウォール設定
 	Enabled string                      `json:",omitempty"` // 有効/無効
 }
 
 // VPCRouterFirewallSetting ファイアウォール設定
 type VPCRouterFirewallSetting struct {
-	Receive []*VPCRouterFirewallRule `json:",omitempty"` // 受信ルール
-	Send    []*VPCRouterFirewallRule `json:",omitempty"` // 送信ルール
+	Receive []*VPCRouterFirewallRule // 受信ルール
+	Send    []*VPCRouterFirewallRule // 送信ルール
 }
 
 // VPCRouterFirewallRule ファイアウォール ルール
@@ -258,11 +258,6 @@ func (s *VPCRouterSetting) removeFirewallRule(direction string, rule *VPCRouterF
 		return
 	}
 
-	if s.Firewall.Config == nil {
-		s.Firewall.Enabled = "False"
-		return
-	}
-
 	switch direction {
 	case "send":
 		dest := []*VPCRouterFirewallRule{}
@@ -284,13 +279,49 @@ func (s *VPCRouterSetting) removeFirewallRule(direction string, rule *VPCRouterF
 
 	if len(s.Firewall.Config) == 0 {
 		s.Firewall.Enabled = "False"
-		s.Firewall.Config = nil
 		return
 	}
 
 	if len(s.Firewall.Config[0].Send) == 0 && len(s.Firewall.Config[0].Send) == 0 {
 		s.Firewall.Enabled = "False"
-		s.Firewall.Config = nil
+		return
+	}
+
+	s.PortForwarding.Enabled = "True"
+
+}
+
+func (s *VPCRouterSetting) removeFirewallRuleAt(direction string, index int) {
+	if s.Firewall == nil {
+		return
+	}
+
+	switch direction {
+	case "send":
+		dest := []*VPCRouterFirewallRule{}
+		for i, c := range s.Firewall.Config[0].Send {
+			if i != index {
+				dest = append(dest, c)
+			}
+		}
+		s.Firewall.Config[0].Send = dest
+	case "receive":
+		dest := []*VPCRouterFirewallRule{}
+		for i, c := range s.Firewall.Config[0].Receive {
+			if i != index {
+				dest = append(dest, c)
+			}
+		}
+		s.Firewall.Config[0].Receive = dest
+	}
+
+	if len(s.Firewall.Config) == 0 {
+		s.Firewall.Enabled = "False"
+		return
+	}
+
+	if len(s.Firewall.Config[0].Send) == 0 && len(s.Firewall.Config[0].Send) == 0 {
+		s.Firewall.Enabled = "False"
 		return
 	}
 
@@ -371,6 +402,11 @@ func (s *VPCRouterSetting) RemoveFirewallRuleSend(isAllow bool, protocol string,
 	s.removeFirewallRule("send", rule)
 }
 
+// RemoveFirewallRuleSendAt 指定位置の送信ルールを削除
+func (s *VPCRouterSetting) RemoveFirewallRuleSendAt(index int) {
+	s.removeFirewallRuleAt("send", index)
+}
+
 // FindFirewallRuleSend 送信ルール 検索
 func (s *VPCRouterSetting) FindFirewallRuleSend(isAllow bool, protocol string, sourceNetwork string, sourcePort string, destNetwork string, destPort string) *VPCRouterFirewallRule {
 	action := "deny"
@@ -411,6 +447,11 @@ func (s *VPCRouterSetting) AddFirewallRuleReceive(isAllow bool, protocol string,
 	}
 
 	s.addFirewallRule("receive", rule)
+}
+
+// RemoveFirewallRuleReceiveAt 指定位置の受信ルールを削除
+func (s *VPCRouterSetting) RemoveFirewallRuleReceiveAt(index int) {
+	s.removeFirewallRuleAt("receive", index)
 }
 
 // RemoveFirewallRuleReceive 受信ルール 削除
