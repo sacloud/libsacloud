@@ -907,7 +907,10 @@ func (s *VPCRouterSetting) AddSiteToSiteIPsecVPN(localPrefix []string, peer stri
 		s.SiteToSiteIPsecVPN = &VPCRouterSiteToSiteIPsecVPN{
 			Enabled: "True",
 		}
+	} else {
+		s.SiteToSiteIPsecVPN.Enabled = "True"
 	}
+
 	if s.SiteToSiteIPsecVPN.Config == nil {
 		s.SiteToSiteIPsecVPN.Config = []*VPCRouterSiteToSiteIPsecVPNConfig{}
 	}
