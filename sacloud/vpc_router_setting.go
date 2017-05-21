@@ -556,6 +556,34 @@ func (s *VPCRouterSetting) RemoveDHCPServer(nicIndex int, rangeStart string, ran
 
 }
 
+// RemoveDHCPServerAt DHCPサーバー設定削除
+func (s *VPCRouterSetting) RemoveDHCPServerAt(nicIndex int) {
+	if s.DHCPServer == nil {
+		return
+	}
+
+	if s.DHCPServer.Config == nil {
+		s.DHCPServer.Enabled = "False"
+		return
+	}
+
+	dest := []*VPCRouterDHCPServerConfig{}
+	for i, c := range s.DHCPServer.Config {
+		if i != nicIndex-1 {
+			dest = append(dest, c)
+		}
+	}
+	s.DHCPServer.Config = dest
+
+	if len(s.DHCPServer.Config) == 0 {
+		s.DHCPServer.Enabled = "False"
+		s.DHCPServer.Config = nil
+		return
+	}
+	s.DHCPServer.Enabled = "True"
+
+}
+
 // FindDHCPServer DHCPサーバー設定 検索
 func (s *VPCRouterSetting) FindDHCPServer(nicIndex int, rangeStart string, rangeStop string) *VPCRouterDHCPServerConfig {
 	for _, c := range s.DHCPServer.Config {
@@ -614,6 +642,34 @@ func (s *VPCRouterSetting) RemoveDHCPStaticMapping(ipAddress string, macAddress 
 	dest := []*VPCRouterDHCPStaticMappingConfig{}
 	for _, c := range s.DHCPStaticMapping.Config {
 		if c.IPAddress != ipAddress || c.MACAddress != macAddress {
+			dest = append(dest, c)
+		}
+	}
+	s.DHCPStaticMapping.Config = dest
+
+	if len(s.DHCPStaticMapping.Config) == 0 {
+		s.DHCPStaticMapping.Enabled = "False"
+		s.DHCPStaticMapping.Config = nil
+		return
+	}
+	s.DHCPStaticMapping.Enabled = "True"
+
+}
+
+// RemoveDHCPStaticMappingAt DHCPスタティックマッピング設定 削除
+func (s *VPCRouterSetting) RemoveDHCPStaticMappingAt(index int) {
+	if s.DHCPStaticMapping == nil {
+		return
+	}
+
+	if s.DHCPStaticMapping.Config == nil {
+		s.DHCPStaticMapping.Enabled = "False"
+		return
+	}
+
+	dest := []*VPCRouterDHCPStaticMappingConfig{}
+	for i, c := range s.DHCPStaticMapping.Config {
+		if i != index {
 			dest = append(dest, c)
 		}
 	}
@@ -778,6 +834,33 @@ func (s *VPCRouterSetting) RemoveRemoteAccessUser(userName string, password stri
 	s.RemoteAccessUsers.Enabled = "True"
 }
 
+// RemoveRemoteAccessUserAt リモートアクセスユーザー設定 削除
+func (s *VPCRouterSetting) RemoveRemoteAccessUserAt(index int) {
+	if s.RemoteAccessUsers == nil {
+		return
+	}
+
+	if s.RemoteAccessUsers.Config == nil {
+		s.RemoteAccessUsers.Enabled = "False"
+		return
+	}
+
+	dest := []*VPCRouterRemoteAccessUsersConfig{}
+	for i, c := range s.RemoteAccessUsers.Config {
+		if i != index {
+			dest = append(dest, c)
+		}
+	}
+	s.RemoteAccessUsers.Config = dest
+
+	if len(s.RemoteAccessUsers.Config) == 0 {
+		s.RemoteAccessUsers.Enabled = "False"
+		s.RemoteAccessUsers.Config = nil
+		return
+	}
+	s.RemoteAccessUsers.Enabled = "True"
+}
+
 // FindRemoteAccessUser リモートアクセスユーザー設定 検索
 func (s *VPCRouterSetting) FindRemoteAccessUser(userName string, password string) *VPCRouterRemoteAccessUsersConfig {
 	for _, c := range s.RemoteAccessUsers.Config {
@@ -850,6 +933,33 @@ func (s *VPCRouterSetting) RemoveSiteToSiteIPsecVPN(localPrefix []string, peer s
 	dest := []*VPCRouterSiteToSiteIPsecVPNConfig{}
 	for _, c := range s.SiteToSiteIPsecVPN.Config {
 		if !s.isSameSiteToSiteIPsecVPNConfig(c, config) {
+			dest = append(dest, c)
+		}
+	}
+	s.SiteToSiteIPsecVPN.Config = dest
+
+	if len(s.SiteToSiteIPsecVPN.Config) == 0 {
+		s.SiteToSiteIPsecVPN.Enabled = "False"
+		s.SiteToSiteIPsecVPN.Config = nil
+		return
+	}
+	s.SiteToSiteIPsecVPN.Enabled = "True"
+}
+
+// RemoveSiteToSiteIPsecVPNAt サイト間VPN設定 削除
+func (s *VPCRouterSetting) RemoveSiteToSiteIPsecVPNAt(index int) {
+	if s.SiteToSiteIPsecVPN == nil {
+		return
+	}
+
+	if s.SiteToSiteIPsecVPN.Config == nil {
+		s.SiteToSiteIPsecVPN.Enabled = "False"
+		return
+	}
+
+	dest := []*VPCRouterSiteToSiteIPsecVPNConfig{}
+	for i, c := range s.SiteToSiteIPsecVPN.Config {
+		if i != index {
 			dest = append(dest, c)
 		}
 	}
@@ -936,6 +1046,33 @@ func (s *VPCRouterSetting) RemoveStaticRoute(prefix string, nextHop string) {
 	dest := []*VPCRouterStaticRoutesConfig{}
 	for _, c := range s.StaticRoutes.Config {
 		if c.Prefix != prefix || c.NextHop != nextHop {
+			dest = append(dest, c)
+		}
+	}
+	s.StaticRoutes.Config = dest
+
+	if len(s.StaticRoutes.Config) == 0 {
+		s.StaticRoutes.Enabled = "False"
+		s.StaticRoutes.Config = nil
+		return
+	}
+	s.StaticRoutes.Enabled = "True"
+}
+
+// RemoveStaticRouteAt スタティックルート設定 削除
+func (s *VPCRouterSetting) RemoveStaticRouteAt(index int) {
+	if s.StaticRoutes == nil {
+		return
+	}
+
+	if s.StaticRoutes.Config == nil {
+		s.StaticRoutes.Enabled = "False"
+		return
+	}
+
+	dest := []*VPCRouterStaticRoutesConfig{}
+	for i, c := range s.StaticRoutes.Config {
+		if i != index {
 			dest = append(dest, c)
 		}
 	}
