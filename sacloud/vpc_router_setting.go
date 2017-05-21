@@ -594,6 +594,16 @@ func (s *VPCRouterSetting) FindDHCPServer(nicIndex int, rangeStart string, range
 	return nil
 }
 
+// FindDHCPServerAt DHCPサーバー設定 検索
+func (s *VPCRouterSetting) FindDHCPServerAt(nicIndex int) *VPCRouterDHCPServerConfig {
+	for _, c := range s.DHCPServer.Config {
+		if c.Interface == fmt.Sprintf("eth%d", nicIndex) {
+			return c
+		}
+	}
+	return nil
+}
+
 // HasDHCPStaticMapping DHCPスタティックマッピング設定を保持しているか
 func (s *VPCRouterSetting) HasDHCPStaticMapping() bool {
 	return s.DHCPStaticMapping != nil && len(s.DHCPStaticMapping.Config) > 0
