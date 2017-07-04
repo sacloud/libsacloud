@@ -74,6 +74,7 @@ func TestMarshalServerJSON(t *testing.T) {
 	assert.NotEmpty(t, server.Instance)
 	assert.NotEmpty(t, server.propTags)
 
+	assert.True(t, server.MaintenanceScheduled())
 }
 
 func TestMarshalVNCProxyJSON(t *testing.T) {

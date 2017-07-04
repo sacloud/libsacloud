@@ -21,7 +21,7 @@ var testInstanceJSON = `
 	"ModifiedAt": "2016-04-29T18:33:40+09:00",
 	"Host": {
 		"Name": "sac-is1b-sv053",
-		"InfoURL": null,
+		"InfoURL": "http://support.sakura.ad.jp/mainte/mainteentry.php?id=22178",
 		"Class": "dynamic",
 		"Version": 200,
 		"SystemVersion": "SAKURA Internet [CLOUD SERVICE 2.0]"
@@ -47,17 +47,23 @@ var testStorageJSON = `
 }
 `
 
-func TestMarshalInstanceJSON(t *testing.T) {
+func TestInstance(t *testing.T) {
 	var instance Instance
 	err := json.Unmarshal([]byte(testInstanceJSON), &instance)
 
-	assert.NoError(t, err)
-	assert.NotEmpty(t, instance)
+	t.Run("MarshalJSON", func(t *testing.T) {
+		assert.NoError(t, err)
+		assert.NotEmpty(t, instance)
 
-	assert.NotEmpty(t, instance.Server.ID)
-	assert.NotEmpty(t, instance.Host.Name)
-	assert.NotEmpty(t, instance.CDROM.ID)
-	assert.NotEmpty(t, instance.CDROMStorage.ID)
+		assert.NotEmpty(t, instance.Server.ID)
+		assert.NotEmpty(t, instance.Host.Name)
+		assert.NotEmpty(t, instance.CDROM.ID)
+		assert.NotEmpty(t, instance.CDROMStorage.ID)
+	})
+	t.Run("MaintenanceInfo", func(t *testing.T) {
+		assert.True(t, instance.HasInfoURL())
+		assert.Equal(t, instance.HasInfoURL(), instance.MaintenanceScheduled())
+	})
 }
 
 func TestMarshalStorageJSON(t *testing.T) {
