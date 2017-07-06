@@ -78,7 +78,7 @@ func TestVPCRouterCRUD(t *testing.T) {
 	assert.NoError(t, err)
 }
 
-func TestVPCRouterPremiumCRUD(t *testing.T) {
+func _TestVPCRouterPremiumCRUD(t *testing.T) {
 	defer initVPCRouter()()
 
 	api := client.VPCRouter
@@ -154,7 +154,7 @@ func TestVPCRouterPremiumCRUD(t *testing.T) {
 	assert.NoError(t, err)
 }
 
-func TestVPCRouterCRUDWithL2TP(t *testing.T) {
+func _TestVPCRouterCRUDWithL2TP(t *testing.T) {
 	defer initVPCRouter()()
 
 	api := client.VPCRouter
