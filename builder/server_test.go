@@ -42,6 +42,8 @@ func TestServerBuilder_buildParams(t *testing.T) {
 }
 
 func TestServerBuilder_DisklessDefaults(t *testing.T) {
+	defer initServers()()
+
 	builder := ServerDiskless(client, serverBuilderTestServerName)
 
 	assert.Equal(t, builder.GetServerName(), serverBuilderTestServerName) // サーバー名
@@ -52,6 +54,7 @@ func TestServerBuilder_DisklessDefaults(t *testing.T) {
 }
 
 func TestDisklessServerBuilder_ServerPublicArchiveUnixDefaults(t *testing.T) {
+	defer initServers()()
 
 	b := ServerPublicArchiveUnix(client, ostype.CentOS, serverBuilderTestServerName, serverBuilderTestPassword)
 
@@ -67,6 +70,7 @@ func TestDisklessServerBuilder_ServerPublicArchiveUnixDefaults(t *testing.T) {
 }
 
 func TestServerBuilder_Build_WithMinimum(t *testing.T) {
+	defer initServers()()
 
 	result, err := ServerPublicArchiveUnix(client, ostype.CentOS, serverBuilderTestServerName, serverBuilderTestPassword).WithAddPublicNWConnectedNIC().Build()
 
@@ -96,6 +100,7 @@ func _TestServerBuilder_Build_WithWindows(t *testing.T) {
 }
 
 func TestServerBuilder_Build_WithPacketFilter(t *testing.T) {
+	defer initServers()()
 
 	builder := ServerDiskless(client, serverBuilderTestServerName)
 
@@ -118,6 +123,7 @@ func TestServerBuilder_Build_WithPacketFilter(t *testing.T) {
 }
 
 func TestServerBuilder_Build_WithSSHKeyAndNoteEphemeral(t *testing.T) {
+	defer initServers()()
 
 	builder := ServerPublicArchiveUnix(client, ostype.CentOS, serverBuilderTestServerName, serverBuilderTestPassword)
 
@@ -154,6 +160,7 @@ func TestServerBuilder_Build_WithSSHKeyAndNoteEphemeral(t *testing.T) {
 //}
 
 func TestServerBuilder_Build_WithSSHKeyAndNote(t *testing.T) {
+	defer initServers()()
 
 	builder := ServerPublicArchiveUnix(client, ostype.CentOS, serverBuilderTestServerName, serverBuilderTestPassword)
 
@@ -196,6 +203,7 @@ func TestServerBuilder_Build_WithSSHKeyAndNote(t *testing.T) {
 }
 
 func TestServerBuilder_Build_WithEventHandler(t *testing.T) {
+	defer initServers()()
 
 	builder := ServerPublicArchiveUnix(client, ostype.CentOS, serverBuilderTestServerName, serverBuilderTestPassword)
 
@@ -273,9 +281,9 @@ func TestServerBuilder_Build_WithEventHandler(t *testing.T) {
 
 }
 
-func init() {
-	testSetupHandlers = append(testSetupHandlers, cleanupServers)
-	testTearDownHandlers = append(testTearDownHandlers, cleanupServers)
+func initServers() func() {
+	cleanupServers()
+	return cleanupServers
 }
 
 func cleanupServers() {

@@ -8,6 +8,8 @@ import (
 const testSwitchName = "libsacloud_test_Switch"
 
 func TestSwitchCRUD(t *testing.T) {
+	defer initSwitch()()
+
 	api := client.Switch
 
 	//CREATE
@@ -39,9 +41,9 @@ func TestSwitchCRUD(t *testing.T) {
 	assert.NoError(t, err)
 }
 
-func init() {
-	testSetupHandlers = append(testSetupHandlers, cleanupSwitch)
-	testTearDownHandlers = append(testTearDownHandlers, cleanupSwitch)
+func initSwitch() func() {
+	cleanupSwitch()
+	return cleanupSwitch
 }
 
 func cleanupSwitch() {

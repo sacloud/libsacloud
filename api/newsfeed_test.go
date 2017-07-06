@@ -6,8 +6,8 @@ import (
 )
 
 func TestNewsFeedAPI(t *testing.T) {
+	defer initNewsFeedAPI()()
 
-	defer cleanupNewsFeedAPI()()
 	feedAPI := client.NewsFeed
 
 	res, err := feedAPI.GetFeed()
@@ -29,10 +29,10 @@ func TestNewsFeedAPI(t *testing.T) {
 	assert.EqualValues(t, &feed, single)
 }
 
-func initNewsFeedAPI() {
-
+func initNewsFeedAPI() func() {
+	cleanupNewsFeedAPI()
+	return cleanupNewsFeedAPI
 }
 
-func cleanupNewsFeedAPI() func() {
-	return initNewsFeedAPI
+func cleanupNewsFeedAPI() {
 }

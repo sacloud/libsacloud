@@ -11,6 +11,8 @@ import (
 const testDiskName = "libsacloud_test_disk_name"
 
 func TestCRUDByDiskAPI(t *testing.T) {
+	defer initDisk()()
+
 	diskAPI := client.Disk
 	//CREATE : empty disk
 	disk := diskAPI.New()
@@ -50,6 +52,8 @@ func TestCRUDByDiskAPI(t *testing.T) {
 }
 
 func TestCreateDiskFromSource(t *testing.T) {
+	defer initDisk()()
+
 	diskAPI := client.Disk
 
 	archive, err := client.Archive.FindLatestStableCentOS()
@@ -114,6 +118,7 @@ func TestCreateDiskFromSource(t *testing.T) {
 //}
 
 func TestDiskAPI_FindByFilters(t *testing.T) {
+	defer initDisk()()
 
 	api := client.Disk
 
@@ -152,12 +157,12 @@ func TestDiskAPI_FindByFilters(t *testing.T) {
 
 }
 
-func init() {
-	testSetupHandlers = append(testSetupHandlers, cleanupTestDisk)
-	testTearDownHandlers = append(testTearDownHandlers, cleanupTestDisk)
+func initDisk() func() {
+	cleanupDisk()
+	return cleanupDisk
 }
 
-func cleanupTestDisk() {
+func cleanupDisk() {
 	diskAPI := client.Disk
 	res, err := diskAPI.withNameLike(testDiskName).Find()
 	if err == nil && res.Count > 0 {

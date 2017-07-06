@@ -9,6 +9,8 @@ import (
 const testDNSDomain = "test.domain.libsacloud.com"
 
 func TestUpdateDnsCommonServiceItem(t *testing.T) {
+	defer initDNS()()
+
 	currentRegion := client.Zone
 	defer func() { client.Zone = currentRegion }()
 	client.Zone = "is1a"
@@ -43,6 +45,8 @@ func TestUpdateDnsCommonServiceItem(t *testing.T) {
 }
 
 func TestCreateDNSRecords(t *testing.T) {
+	defer initDNS()()
+
 	currentRegion := client.Zone
 	defer func() { client.Zone = currentRegion }()
 	client.Zone = "is1a"
@@ -80,12 +84,12 @@ func TestCreateDNSRecords(t *testing.T) {
 	client.DNS.Delete(item.ID)
 }
 
-func init() {
-	testSetupHandlers = append(testSetupHandlers, cleanupDNSCommonServiceItem)
-	testTearDownHandlers = append(testTearDownHandlers, cleanupDNSCommonServiceItem)
+func initDNS() func() {
+	cleanupDNS()
+	return cleanupDNS
 }
 
-func cleanupDNSCommonServiceItem() {
+func cleanupDNS() {
 	item, _ := client.DNS.findOrCreateBy(testDNSDomain)
 
 	if item.ID > 0 {

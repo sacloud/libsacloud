@@ -11,6 +11,8 @@ const testVPCRouterName = "libsacloud_test_VPCRouter"
 const testVPCRouterSwitchName = "libsacloud_test_vpc_and_internet"
 
 func TestVPCRouterCRUD(t *testing.T) {
+	defer initVPCRouter()()
+
 	api := client.VPCRouter
 
 	//CREATE
@@ -77,6 +79,8 @@ func TestVPCRouterCRUD(t *testing.T) {
 }
 
 func TestVPCRouterPremiumCRUD(t *testing.T) {
+	defer initVPCRouter()()
+
 	api := client.VPCRouter
 
 	//create internet(switch + router)
@@ -151,6 +155,8 @@ func TestVPCRouterPremiumCRUD(t *testing.T) {
 }
 
 func TestVPCRouterCRUDWithL2TP(t *testing.T) {
+	defer initVPCRouter()()
+
 	api := client.VPCRouter
 
 	//CREATE
@@ -224,12 +230,9 @@ func TestVPCRouterCRUDWithL2TP(t *testing.T) {
 
 }
 
-func init() {
-	testSetupHandlers = append(testSetupHandlers, cleanupVPCRouter)
-	testTearDownHandlers = append(testTearDownHandlers, cleanupVPCRouter)
-
-	testSetupHandlers = append(testSetupHandlers, cleanupInternetForVPCRouter)
-	testTearDownHandlers = append(testTearDownHandlers, cleanupInternetForVPCRouter)
+func initVPCRouter() func() {
+	cleanupVPCRouter()
+	return cleanupVPCRouter
 }
 
 func cleanupVPCRouter() {
@@ -241,11 +244,8 @@ func cleanupVPCRouter() {
 	for _, item := range sw.Switches {
 		client.Switch.Delete(item.ID)
 	}
-}
-
-func cleanupInternetForVPCRouter() {
-	items, _ := client.Internet.Reset().WithNameLike(testVPCRouterSwitchName).Find()
-	for _, item := range items.Internet {
+	rt, _ := client.Internet.Reset().WithNameLike(testVPCRouterSwitchName).Find()
+	for _, item := range rt.Internet {
 		client.Internet.Delete(item.ID)
 	}
 }

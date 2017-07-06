@@ -7,11 +7,7 @@ import (
 	"testing"
 )
 
-var (
-	client               *api.Client
-	testSetupHandlers    []func()
-	testTearDownHandlers []func()
-)
+var client *api.Client
 
 func TestMain(m *testing.M) {
 	//環境変数にトークン/シークレットがある場合のみテスト実施
@@ -28,15 +24,6 @@ func TestMain(m *testing.M) {
 	}
 	client = api.NewClient(accessToken, accessTokenSecret, region)
 
-	for _, f := range testSetupHandlers {
-		f()
-	}
-
 	ret := m.Run()
-
-	for _, f := range testTearDownHandlers {
-		f()
-	}
-
 	os.Exit(ret)
 }

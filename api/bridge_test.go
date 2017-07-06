@@ -8,6 +8,8 @@ import (
 const testBridgeName = "libsacloud_test_archive"
 
 func TestBridgeCRUD(t *testing.T) {
+	defer initBridge()()
+
 	currentRegion := client.Zone
 	defer func() { client.Zone = currentRegion }()
 	client.Zone = "is1a"
@@ -43,9 +45,9 @@ func TestBridgeCRUD(t *testing.T) {
 	assert.NoError(t, err)
 }
 
-func init() {
-	testSetupHandlers = append(testSetupHandlers, cleanupBridge)
-	testTearDownHandlers = append(testTearDownHandlers, cleanupBridge)
+func initBridge() func() {
+	cleanupBridge()
+	return cleanupBridge
 }
 
 func cleanupBridge() {

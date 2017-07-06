@@ -9,6 +9,8 @@ import (
 const testServerName = "libsacloud_test_Server"
 
 func TestServerCRUD(t *testing.T) {
+	defer initServer()()
+
 	api := client.Server
 
 	//CREATE
@@ -50,6 +52,7 @@ func TestServerCRUD(t *testing.T) {
 }
 
 func TestServerOperations(t *testing.T) {
+	defer initServer()()
 
 	currentRegion := client.Zone
 	defer func() { client.Zone = currentRegion }()
@@ -159,9 +162,9 @@ func TestSearchServer(t *testing.T) {
 
 }
 
-func init() {
-	testSetupHandlers = append(testSetupHandlers, cleanupServer)
-	testTearDownHandlers = append(testTearDownHandlers, cleanupServer)
+func initServer() func() {
+	cleanupServer()
+	return cleanupServer
 }
 
 func cleanupServer() {

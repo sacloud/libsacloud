@@ -11,6 +11,8 @@ const (
 )
 
 func TestCRUDByNoteAPI(t *testing.T) {
+	defer initNote()()
+
 	noteAPI := client.Note
 
 	//CREATE
@@ -46,15 +48,12 @@ func TestCRUDByNoteAPI(t *testing.T) {
 	assert.NotEmpty(t, res)
 }
 
-func init() {
-	testSetupHandlers = append(testSetupHandlers, cleanupTestNote)
-	testSetupHandlers = append(testSetupHandlers, cleanupFindOrCreateByNote)
-
-	testTearDownHandlers = append(testTearDownHandlers, cleanupTestNote)
-	testTearDownHandlers = append(testTearDownHandlers, cleanupFindOrCreateByNote)
+func initNote() func() {
+	cleanupNote()
+	return cleanupNote
 }
 
-func cleanupFindOrCreateByNote() {
+func cleanupNote() {
 	noteAPI := client.Note
 	res, _ := noteAPI.withNameLike(testFindOrCreateByName).Find()
 	if res.Count > 0 {
