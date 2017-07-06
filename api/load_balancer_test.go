@@ -51,6 +51,8 @@ var (
 )
 
 func TestLoadBalancerCRUD(t *testing.T) {
+	defer initLoadBalancer()()
+
 	api := client.LoadBalancer
 
 	//prerequired
@@ -112,7 +114,9 @@ func TestLoadBalancerCRUD(t *testing.T) {
 
 }
 
-func TestLoadBalancerCRUDWithoutVIP(t *testing.T) {
+func _TestLoadBalancerCRUDWithoutVIP(t *testing.T) {
+	defer initLoadBalancer()()
+
 	api := client.LoadBalancer
 
 	//prerequired
@@ -160,9 +164,9 @@ func TestLoadBalancerCRUDWithoutVIP(t *testing.T) {
 
 }
 
-func init() {
-	testSetupHandlers = append(testSetupHandlers, cleanupLoadBalancer)
-	testTearDownHandlers = append(testTearDownHandlers, cleanupLoadBalancer)
+func initLoadBalancer() func() {
+	cleanupLoadBalancer()
+	return cleanupLoadBalancer
 }
 
 func cleanupLoadBalancer() {

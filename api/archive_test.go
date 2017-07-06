@@ -19,6 +19,9 @@ const testArchiveName = "libsacloud_test_archive"
 //}
 
 func TestGetArchiveWithLimitOffset(t *testing.T) {
+
+	defer initArchive()()
+
 	archiveAPI := client.Archive
 	res, err := archiveAPI.Reset().Limit(2).Offset(1).Include("Name").Include("CreatedAt").Find()
 	assert.NoError(t, err)
@@ -30,6 +33,8 @@ func TestGetArchiveWithLimitOffset(t *testing.T) {
 }
 
 func TestFindState(t *testing.T) {
+	defer initArchive()()
+
 	api := client.Archive
 
 	api.Reset().WithNameLike("hoge").FilterBy("Fuga", "fuga").Limit(10).Offset(1).Include("inc").Exclude("enc")
@@ -62,6 +67,8 @@ func TestFindState(t *testing.T) {
 }
 
 func TestFindStateWithSetter(t *testing.T) {
+	defer initArchive()()
+
 	api := client.Archive
 
 	// set parameters by setter method
@@ -104,6 +111,8 @@ func TestFindStateWithSetter(t *testing.T) {
 }
 
 func TestArchiveCRUDAndFTP(t *testing.T) {
+	defer initArchive()()
+
 	api := client.Archive
 
 	// get icon ID
@@ -182,6 +191,7 @@ func TestArchiveCRUDAndFTP(t *testing.T) {
 }
 
 func TestCreateAndWait(t *testing.T) {
+	defer initArchive()()
 
 	archiveAPI := client.Archive
 	src, err := archiveAPI.FindLatestStableCentOS()
@@ -209,6 +219,7 @@ func TestCreateAndWait(t *testing.T) {
 }
 
 func TestCreateAndAsyncWait(t *testing.T) {
+	defer initArchive()()
 
 	archiveAPI := client.Archive
 	src, err := archiveAPI.FindLatestStableCentOS()
@@ -252,6 +263,7 @@ func TestCreateAndAsyncWait(t *testing.T) {
 }
 
 func TestArchiveAPI_FindStableOSs(t *testing.T) {
+	defer initArchive()()
 
 	api := client.Archive
 	type target struct {
@@ -291,6 +303,7 @@ func TestArchiveAPI_FindStableOSs(t *testing.T) {
 }
 
 func TestArchiveAPI_CanDiskEdit(t *testing.T) {
+	defer initArchive()()
 
 	api := client.Archive
 	type target struct {
@@ -334,9 +347,9 @@ func TestArchiveAPI_CanDiskEdit(t *testing.T) {
 
 }
 
-func init() {
-	testSetupHandlers = append(testSetupHandlers, cleanupArchive)
-	testTearDownHandlers = append(testTearDownHandlers, cleanupArchive)
+func initArchive() func() {
+	cleanupArchive()
+	return cleanupArchive
 }
 
 func cleanupArchive() {

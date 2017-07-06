@@ -29,6 +29,9 @@ func TestTracer(t *testing.T) {
 }
 
 func TestCRUDByBaseAPI(t *testing.T) {
+
+	defer initBaseAPI()()
+
 	baseAPI := &baseAPI{
 		client: client,
 		FuncGetResourceURL: func() string {
@@ -84,12 +87,12 @@ func TestCRUDByBaseAPI(t *testing.T) {
 	assert.NotEmpty(t, res)
 }
 
-func init() {
-	testSetupHandlers = append(testSetupHandlers, cleanupTestNote)
-	testTearDownHandlers = append(testTearDownHandlers, cleanupTestNote)
+func initBaseAPI() func() {
+	cleanupBaseAPI()
+	return cleanupBaseAPI
 }
 
-func cleanupTestNote() {
+func cleanupBaseAPI() {
 	baseAPI := &baseAPI{
 		client: client,
 		FuncGetResourceURL: func() string {

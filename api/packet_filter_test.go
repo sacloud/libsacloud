@@ -11,6 +11,8 @@ const (
 )
 
 func TestCRUDByPacketFilterAPI(t *testing.T) {
+	defer initPacketFilter()()
+
 	api := client.PacketFilter
 
 	//CREATE
@@ -50,13 +52,12 @@ func TestCRUDByPacketFilterAPI(t *testing.T) {
 	assert.NotEmpty(t, res)
 }
 
-func init() {
-	testSetupHandlers = append(testSetupHandlers, cleanupTestPacketFilter)
-
-	testTearDownHandlers = append(testTearDownHandlers, cleanupTestPacketFilter)
+func initPacketFilter() func() {
+	cleanupPacketFilter()
+	return cleanupPacketFilter
 }
 
-func cleanupTestPacketFilter() {
+func cleanupPacketFilter() {
 	api := client.PacketFilter
 	res, _ := api.withNameLike(testPacketFilterName).Find()
 	if res.Count > 0 {

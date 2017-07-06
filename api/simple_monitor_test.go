@@ -8,6 +8,7 @@ import (
 const testSimpleMonitorName = "8.8.8.8"
 
 func TestSimpleMonitorCRUD(t *testing.T) {
+	defer initSimpleMonitor()()
 
 	currentRegion := client.Zone
 	defer func() { client.Zone = currentRegion }()
@@ -46,9 +47,9 @@ func TestSimpleMonitorCRUD(t *testing.T) {
 	assert.NoError(t, err)
 }
 
-func init() {
-	testSetupHandlers = append(testSetupHandlers, cleanupSimpleMonitor)
-	testTearDownHandlers = append(testTearDownHandlers, cleanupSimpleMonitor)
+func initSimpleMonitor() func() {
+	cleanupSimpleMonitor()
+	return cleanupSimpleMonitor
 }
 
 func cleanupSimpleMonitor() {

@@ -9,11 +9,7 @@ import (
 	"time"
 )
 
-var (
-	client               *Client
-	testSetupHandlers    []func()
-	testTearDownHandlers []func()
-)
+var client *Client
 
 func TestMain(m *testing.M) {
 	//環境変数にトークン/シークレットがある場合のみテスト実施
@@ -32,15 +28,6 @@ func TestMain(m *testing.M) {
 	client.DefaultTimeoutDuration = 30 * time.Minute
 	client.UserAgent = fmt.Sprintf("test-libsacloud/%s", libsacloud.Version)
 
-	for _, f := range testSetupHandlers {
-		f()
-	}
-
 	ret := m.Run()
-
-	for _, f := range testTearDownHandlers {
-		f()
-	}
-
 	os.Exit(ret)
 }

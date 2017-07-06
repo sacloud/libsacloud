@@ -8,6 +8,9 @@ import (
 const testCDROMName = "libsacloud_test_iso_image"
 
 func TestCRUDCDROM(t *testing.T) {
+
+	defer initCDROM()()
+
 	api := client.CDROM
 
 	//CREATE
@@ -32,9 +35,9 @@ func TestCRUDCDROM(t *testing.T) {
 	assert.NoError(t, err)
 }
 
-func init() {
-	testSetupHandlers = append(testSetupHandlers, cleanupCDROM)
-	testTearDownHandlers = append(testTearDownHandlers, cleanupCDROM)
+func initCDROM() func() {
+	cleanupCDROM()
+	return cleanupCDROM
 }
 
 func cleanupCDROM() {

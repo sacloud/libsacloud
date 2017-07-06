@@ -8,6 +8,8 @@ import (
 const testLicenseName = "libsacloud_test_License"
 
 func TestLicenseCRUD(t *testing.T) {
+	defer initLicense()()
+
 	currentRegion := client.Zone
 	defer func() { client.Zone = currentRegion }()
 	client.Zone = "is1a"
@@ -46,9 +48,9 @@ func TestLicenseCRUD(t *testing.T) {
 	assert.NoError(t, err)
 }
 
-func init() {
-	testSetupHandlers = append(testSetupHandlers, cleanupLicense)
-	testTearDownHandlers = append(testTearDownHandlers, cleanupLicense)
+func initLicense() func() {
+	cleanupLicense()
+	return cleanupLicense
 }
 
 func cleanupLicense() {

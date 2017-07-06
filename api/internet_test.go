@@ -10,6 +10,8 @@ import (
 const testInternetName = "libsacloud_test_internet"
 
 func TestInternetCRUD(t *testing.T) {
+	defer initInternet()()
+
 	api := client.Internet
 
 	//CREATE
@@ -93,9 +95,9 @@ func TestInternetCRUD(t *testing.T) {
 	assert.NoError(t, err)
 }
 
-func init() {
-	testSetupHandlers = append(testSetupHandlers, cleanupInternet)
-	testTearDownHandlers = append(testTearDownHandlers, cleanupInternet)
+func initInternet() func() {
+	cleanupInternet()
+	return cleanupInternet
 }
 
 func cleanupInternet() {

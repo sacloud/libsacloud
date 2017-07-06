@@ -9,6 +9,8 @@ const testSSHKeyName = "libsacloud_test_SSHKey"
 const testPublicKey = `sh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDFgFvUj3DrQyktz434X76N9IuOqYmWp3ffxcEb7Jzyg1GvfbzpcQDV9H0rIfGMXUhKkTYygLWeDOTGk1fd935lBdMUMv1lhtX9gPMZcyu945c313rpgnD/PrLVSoBGlpRVx29tA6t1x4b+LaVek4mQL2AojeRQdz8W3gF4dKdGi+Ci2ogV/dZkVsQuZRjLy09iixGB+vjF1tgnZQJqIz8CvFx8ULvcCUAzhRF8osALdSPPEBsAfaD3y5xXWHYnb+OFL3EZ1jb4rM6KB/LfaARFFrBk6rhqEjUYZgmAecMu79cY9Gc+6MhjONbdxT0gOhmZQK7kg/kwBU8prpJGLFGp ubuntu@sakura-dev`
 
 func TestSSHKeyCRUD(t *testing.T) {
+	defer initSSHKey()()
+
 	api := client.SSHKey
 
 	//CREATE
@@ -63,9 +65,9 @@ func TestSSHKeyGenerate(t *testing.T) {
 	assert.NoError(t, err)
 }
 
-func init() {
-	testSetupHandlers = append(testSetupHandlers, cleanupSSHKey)
-	testTearDownHandlers = append(testTearDownHandlers, cleanupSSHKey)
+func initSSHKey() func() {
+	cleanupSSHKey()
+	return cleanupSSHKey
 }
 
 func cleanupSSHKey() {

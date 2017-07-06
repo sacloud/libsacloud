@@ -8,6 +8,7 @@ import (
 const testGslbName = "test_libsakuracloud_gslb"
 
 func TestGslbGet(t *testing.T) {
+	defer initGSLB()()
 
 	currentRegion := client.Zone
 	defer func() { client.Zone = currentRegion }()
@@ -41,6 +42,8 @@ func TestGslbGet(t *testing.T) {
 }
 
 func TestGSLBCreate(t *testing.T) {
+	defer initGSLB()()
+
 	currentRegion := client.Zone
 	defer func() { client.Zone = currentRegion }()
 	client.Zone = "is1a"
@@ -72,6 +75,8 @@ func TestGSLBCreate(t *testing.T) {
 }
 
 func TestGSLBWithEmptyServer(t *testing.T) {
+	defer initGSLB()()
+
 	currentRegion := client.Zone
 	defer func() { client.Zone = currentRegion }()
 	client.Zone = "is1a"
@@ -93,12 +98,12 @@ func TestGSLBWithEmptyServer(t *testing.T) {
 	client.GSLB.Delete(item.ID)
 }
 
-func init() {
-	testSetupHandlers = append(testSetupHandlers, cleanupGslbCommonServiceItem)
-	testTearDownHandlers = append(testTearDownHandlers, cleanupGslbCommonServiceItem)
+func initGSLB() func() {
+	cleanupGSLB()
+	return cleanupGSLB
 }
 
-func cleanupGslbCommonServiceItem() {
+func cleanupGSLB() {
 	item, _ := client.GSLB.findOrCreateBy(testGslbName)
 
 	if item.ID > 0 {

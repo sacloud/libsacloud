@@ -11,6 +11,8 @@ import (
 const testDatabaseName = "libsacloud_test_Database"
 
 func TestDatabaseCRUD(t *testing.T) {
+	defer initDatabase()()
+
 	api := client.Database
 	client.Zone = "tk1a"
 
@@ -138,6 +140,8 @@ func TestDatabaseCRUD(t *testing.T) {
 }
 
 func TestDatabaseMariaDBCRUD(t *testing.T) {
+	defer initDatabase()()
+
 	api := client.Database
 	client.Zone = "tk1a"
 
@@ -224,6 +228,8 @@ func TestDatabaseMariaDBCRUD(t *testing.T) {
 }
 
 func TestDatabaseWaitForCopy(t *testing.T) {
+	defer initDatabase()()
+
 	api := client.Database
 	client.Zone = "tk1a"
 
@@ -295,9 +301,9 @@ func TestDatabaseWaitForCopy(t *testing.T) {
 	}
 }
 
-func init() {
-	testSetupHandlers = append(testSetupHandlers, cleanupDatabase)
-	testTearDownHandlers = append(testTearDownHandlers, cleanupDatabase)
+func initDatabase() func() {
+	cleanupDatabase()
+	return cleanupDatabase
 }
 
 func cleanupDatabase() {
@@ -312,5 +318,4 @@ func cleanupDatabase() {
 	for _, item := range items.Databases {
 		client.Database.Delete(item.ID)
 	}
-
 }

@@ -9,6 +9,8 @@ const testAutoBackupName = "test_libsakuracloud_ab"
 
 func TestAutoBackupCRUD(t *testing.T) {
 
+	defer initAutoBackup()()
+
 	currentRegion := client.Zone
 	defer func() { client.Zone = currentRegion }()
 	client.Zone = "is1b"
@@ -61,12 +63,12 @@ func TestAutoBackupCRUD(t *testing.T) {
 	assert.NoError(t, err)
 }
 
-func init() {
-	testSetupHandlers = append(testSetupHandlers, cleanupAutoBackupCommonServiceItem)
-	testTearDownHandlers = append(testTearDownHandlers, cleanupAutoBackupCommonServiceItem)
+func initAutoBackup() func() {
+	cleanupAutoBackup()
+	return cleanupArchive
 }
 
-func cleanupAutoBackupCommonServiceItem() {
+func cleanupAutoBackup() {
 	currentRegion := client.Zone
 	defer func() { client.Zone = currentRegion }()
 	client.Zone = "is1b"
