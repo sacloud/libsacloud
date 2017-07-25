@@ -27,7 +27,7 @@ func TestDatabaseCRUD(t *testing.T) {
 	//CREATE
 	v := sacloud.NewCreatePostgreSQLDatabaseValue()
 
-	v.Plan = sacloud.DatabasePlan30G
+	v.Plan = sacloud.DatabasePlan10G
 	v.DefaultUser = "defuser"
 	v.UserPassword = "defuserPassword01"
 	v.SourceNetwork = []string{"192.168.0.1", "192.168.1.1"}
@@ -76,6 +76,57 @@ func TestDatabaseCRUD(t *testing.T) {
 
 	assert.NoError(t, err)
 	assert.NotEqual(t, item.Description, "before")
+
+	// status API
+	var status *sacloud.DatabaseStatus
+	err = nil
+loop:
+	for {
+		select {
+		case <-time.After(3 * time.Minute):
+			assert.FailNow(t, "Database status isnot avaiable")
+			break loop
+		default:
+			status, err = api.Status(id)
+			if status != nil && status.IsUp() {
+				break loop
+			}
+			status = nil
+			err = nil
+			time.Sleep(10 * time.Second)
+		}
+	}
+	assert.NoError(t, err)
+	assert.NotNil(t, status)
+	assert.True(t, status.IsUp())
+
+	// backup
+	res, err := api.Backup(id)
+	assert.NoError(t, err)
+	status, err = api.Status(id)
+
+	assert.Len(t, status.DBConf.Backup.History, 1)
+
+	//backup lock
+	backupID := status.DBConf.Backup.History[0].Id()
+	res, err = api.HistoryLock(id, backupID)
+	assert.NoError(t, err)
+	assert.NotEmpty(t, res)
+
+	// unlock
+	res, err = api.HistoryUnlock(id, backupID)
+	assert.NoError(t, err)
+	assert.NotEmpty(t, res)
+
+	// restore
+	res, err = api.Restore(id, backupID)
+	assert.NoError(t, err)
+	assert.NotEmpty(t, res)
+
+	// delete backup
+	res, err = api.DeleteBackup(id, backupID)
+	assert.NoError(t, err)
+	assert.NotEmpty(t, res)
 
 	//power off
 	for i := 0; i < 30; i++ {

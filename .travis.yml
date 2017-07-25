@@ -11,5 +11,5 @@ script:
   - go vet ./...
   - go build -v ./...
   - go test -v ./sacloud
-  - go test -v ./api -timeout 30m
-  - go test -v ./builder -timeout 30m
+  - go test -v ./api -timeout 120m
+  - go test -v ./builder -timeout 120m

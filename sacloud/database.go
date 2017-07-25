@@ -9,10 +9,8 @@ import (
 type Database struct {
 	*Appliance // アプライアンス共通属性
 
-	Remark           *DatabaseRemark           `json:",omitempty"` // リマーク
-	Settings         *DatabaseSettings         `json:",omitempty"` // データベース設定
-	SettingsResponse *DatabaseSettingsResponse `json:",omitempty"` // データベース固有設定
-
+	Remark   *DatabaseRemark   `json:",omitempty"` // リマーク
+	Settings *DatabaseSettings `json:",omitempty"` // データベース設定
 }
 
 // DatabaseRemark データベースリマーク
@@ -161,13 +159,6 @@ func (s *SourceNetwork) MarshalJSON() ([]byte, error) {
 	}
 
 	return json.Marshal(list)
-}
-
-// DatabaseSettingsResponse データベース固有設定
-type DatabaseSettingsResponse struct {
-	DBConf interface{} `json:",omitempty"` // DBConf データベース設定
-
-	*EServerInstanceStatus // インスタンス
 }
 
 // CreateDatabaseValue データベース作成用パラメータ
