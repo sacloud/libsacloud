@@ -2,6 +2,7 @@ package api
 
 import (
 	"fmt"
+	"github.com/sacloud/libsacloud/sacloud"
 	"github.com/stretchr/testify/assert"
 	"testing"
 	"time"
@@ -44,17 +45,16 @@ func TestVPCRouterCRUD(t *testing.T) {
 	assert.NoError(t, err)
 	assert.NotEmpty(t, item)
 
-	//UPDATE
+	////UPDATE
 	//item.Description = "after"
-	//item.Settings.Router.Interfaces = nil
 	//item, err = api.Update(id, item)
 	//
 	//assert.NoError(t, err)
 	//assert.NotEqual(t, item.Description, "before")
 	//
-	//////connect to switch
-	////sw := client.Switch.New()
-	////sw.Name = testSwitchName
+	////connect to switch
+	//sw := client.Switch.New()
+	//sw.Name = testSwitchName
 	////
 	////sw, err = client.Switch.Create(sw)
 	////assert.NoError(t, err)
@@ -63,15 +63,49 @@ func TestVPCRouterCRUD(t *testing.T) {
 	//
 	//_, err = client.VPCRouter.Config(item.ID)
 	//assert.NoError(t, err)
-
-	item, err = api.Read(id)
-	assert.NoError(t, err)
-	assert.NotEmpty(t, item)
+	//
+	//item, err = api.Read(id)
+	//assert.NoError(t, err)
+	//assert.NotEmpty(t, item)
 
 	//check connected switch
 	assert.Equal(t, item.Settings.Router.Interfaces[1].IPAddress[0], "192.168.11.1")
 	assert.Equal(t, item.Settings.Router.Interfaces[1].NetworkMaskLen, 24)
 	assert.Equal(t, item.Settings.Router.Interfaces[1].VirtualIPAddress, "")
+
+	// boot
+	_, err = api.Boot(id)
+	assert.NoError(t, err)
+
+	err = api.SleepUntilUp(id, client.DefaultTimeoutDuration)
+	assert.NoError(t, err)
+
+	// status API
+	var status *sacloud.VPCRouterStatus
+	err = nil
+loop:
+	for {
+		select {
+		case <-time.After(3 * time.Minute):
+			assert.FailNow(t, "VPCRouter status isnot avaiable")
+			break loop
+		default:
+			status, err = api.Status(id)
+			if status != nil {
+				break loop
+			}
+			time.Sleep(10 * time.Second)
+		}
+	}
+	assert.NoError(t, err)
+	assert.NotNil(t, status)
+
+	// shutdown
+	_, err = api.Stop(id)
+	assert.NoError(t, err)
+
+	err = api.SleepUntilDown(id, client.DefaultTimeoutDuration)
+	assert.NoError(t, err)
 
 	//Delete
 	_, err = api.Delete(id)
