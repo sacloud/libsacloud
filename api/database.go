@@ -161,6 +161,21 @@ func (api *DatabaseAPI) Backup(id int64) (string, error) {
 	return res.Log, nil
 }
 
+// DownloadLog ログ取得
+func (api *DatabaseAPI) DownloadLog(id int64, logID string) (string, error) {
+	var (
+		method = "GET"
+		uri    = fmt.Sprintf("%s/%d/download/log/%s", api.getResourceURL(), id, logID)
+	)
+
+	res := &databaseBackupResponse{}
+	err := api.baseAPI.request(method, uri, nil, res)
+	if err != nil {
+		return "", err
+	}
+	return res.Log, nil
+}
+
 // Restore バックアップからの復元
 func (api *DatabaseAPI) Restore(id int64, backupID string) (string, error) {
 	var (

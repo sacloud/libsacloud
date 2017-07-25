@@ -29,23 +29,33 @@ type DatabaseStatusVersion struct {
 	Expire       string `json:"expire,omitempty"`
 }
 
+// DatabaseLog データベースログ
 type DatabaseLog struct {
 	Name string `json:"name,omitempty"`
 	Data string `json:"data,omitempty"`
 }
 
+// IsSystemdLog systemcltのログか判定
 func (l *DatabaseLog) IsSystemdLog() bool {
 	return l.Name == "systemctl"
 }
 
+// Logs ログボディ取得
 func (l *DatabaseLog) Logs() []string {
 	return strings.Split(l.Data, "\n")
 }
 
+// Id ログのID取得
+func (l *DatabaseLog) Id() string {
+	return l.Name
+}
+
+// DatabaseBackupInfo データベースバックアップ情報
 type DatabaseBackupInfo struct {
 	History []*DatabaseBackupHistory `json:"history,omitempty"`
 }
 
+// DatabaseBackupHistory データベースバックアップ履歴情報
 type DatabaseBackupHistory struct {
 	CreatedAt    time.Time  `json:"createdat,omitempty"`
 	Availability string     `json:"availability,omitempty"`
@@ -53,13 +63,19 @@ type DatabaseBackupHistory struct {
 	Size         int64      `json:"size,omitempty"`
 }
 
+// Id バックアップ履歴のID取得
 func (h *DatabaseBackupHistory) Id() string {
 	return h.CreatedAt.Format(time.RFC3339)
 }
 
+// FormatCreatedAt 指定のレイアウトで作成日時を文字列化
 func (h *DatabaseBackupHistory) FormatCreatedAt(layout string) string {
 	return h.CreatedAt.Format(layout)
 }
+
+// FormatRecoveredAt 指定のレイアウトで復元日時を文字列化
+//
+// 復元日時がnilの場合は空の文字列を返す
 func (h *DatabaseBackupHistory) FormatRecoveredAt(layout string) string {
 	if h.RecoveredAt == nil {
 		return ""
@@ -67,6 +83,7 @@ func (h *DatabaseBackupHistory) FormatRecoveredAt(layout string) string {
 	return h.RecoveredAt.Format(layout)
 }
 
+// UnmarshalJSON JSON復号処理
 func (h *DatabaseBackupHistory) UnmarshalJSON(data []byte) error {
 
 	var tmpMap = map[string]interface{}{}
