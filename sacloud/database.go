@@ -94,16 +94,17 @@ type DatabasePlan int
 var (
 	// DatabasePlanMini ミニプラン(後方互換用)
 	DatabasePlanMini = DatabasePlan(10)
-	// DatabasePlan10G
+	// DatabasePlan10G 10Gプラン
 	DatabasePlan10G = DatabasePlan(10)
-	// DatabasePlan30G
+	// DatabasePlan30G 30Gプラン
 	DatabasePlan30G = DatabasePlan(30)
-	// DatabasePlan90G
+	// DatabasePlan90G 90Gプラン
 	DatabasePlan90G = DatabasePlan(90)
-	// DatabasePlan240G
+	// DatabasePlan240G 240Gプラン
 	DatabasePlan240G = DatabasePlan(240)
 )
 
+// AllowDatabasePlans 指定可能なデータベースプラン
 func AllowDatabasePlans() []int {
 	return []int{
 		int(DatabasePlan10G),
@@ -211,7 +212,7 @@ func NewCreateMariaDBDatabaseValue() *CreateDatabaseValue {
 	}
 }
 
-//
+// NewCloneDatabaseValue クローンDB作成用パラメータ
 func NewCloneDatabaseValue(db *Database) *CreateDatabaseValue {
 	return &CreateDatabaseValue{
 		DatabaseName:    db.Remark.DBConf.Common.DatabaseName,

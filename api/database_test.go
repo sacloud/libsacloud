@@ -84,7 +84,7 @@ loop:
 	for {
 		select {
 		case <-time.After(3 * time.Minute):
-			assert.FailNow(t, "Database status isnot avaiable")
+			assert.FailNow(t, "Database status isnot available")
 			break loop
 		default:
 			status, err = api.Status(id)
