@@ -28,7 +28,7 @@ func (k *SSHKey) SetPublicKey(pKey string) {
 }
 
 // GetFingerprint フィンガープリント取得
-func (k *SSHKey) GetFingerpinrt() string {
+func (k *SSHKey) GetFingerprint() string {
 	return k.Fingerprint
 }
 
