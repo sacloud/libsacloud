@@ -46,10 +46,10 @@ func TestServerBuilder_DisklessDefaults(t *testing.T) {
 
 	builder := ServerDiskless(client, serverBuilderTestServerName)
 
-	assert.Equal(t, builder.GetServerName(), serverBuilderTestServerName) // サーバー名
-	assert.Equal(t, builder.GetCore(), 1)                                 // コア数 : デフォルト1
-	assert.Equal(t, builder.GetMemory(), 1)                               // メモリ : デフォルト1GB
-	assert.True(t, builder.IsUseVirtIONetPCI())                           // 準仮想化モード(@virtio-net-pci) : デフォルト有効
+	assert.Equal(t, builder.GetServerName(), serverBuilderTestServerName)        // サーバー名
+	assert.Equal(t, builder.GetCore(), 1)                                        // コア数 : デフォルト1
+	assert.Equal(t, builder.GetMemory(), 1)                                      // メモリ : デフォルト1GB
+	assert.Equal(t, builder.GetInterfaceDriver(), sacloud.InterfaceDriverVirtIO) // 準仮想化モード(@virtio-net-pci) : デフォルト有効
 
 }
 
@@ -58,10 +58,10 @@ func TestDisklessServerBuilder_ServerPublicArchiveUnixDefaults(t *testing.T) {
 
 	b := ServerPublicArchiveUnix(client, ostype.CentOS, serverBuilderTestServerName, serverBuilderTestPassword)
 
-	assert.Equal(t, b.GetServerName(), serverBuilderTestServerName) // サーバー名
-	assert.Equal(t, b.GetCore(), 1)                                 // コア数 : デフォルト1
-	assert.Equal(t, b.GetMemory(), 1)                               // メモリ : デフォルト1GB
-	assert.True(t, b.IsUseVirtIONetPCI())                           // 準仮想化モード(@virtio-net-pci) : デフォルト有効
+	assert.Equal(t, b.GetServerName(), serverBuilderTestServerName)        // サーバー名
+	assert.Equal(t, b.GetCore(), 1)                                        // コア数 : デフォルト1
+	assert.Equal(t, b.GetMemory(), 1)                                      // メモリ : デフォルト1GB
+	assert.Equal(t, b.GetInterfaceDriver(), sacloud.InterfaceDriverVirtIO) // 準仮想化モード(@virtio-net-pci) : デフォルト有効
 
 	assert.Equal(t, b.GetDiskSize(), 20)                                 // デフォルト 20GB
 	assert.Equal(t, b.GetDiskPlanID(), sacloud.DiskPlanSSDID)            // デフォルトSSD

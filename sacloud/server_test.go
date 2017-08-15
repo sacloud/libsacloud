@@ -11,6 +11,7 @@ var testServerJSON = `
     "ID": 999999999999,
     "Name": "lisacloud-test-server-name",
     "HostName": "libsacloud-test-server-name.com",
+    "InterfaceDriver": "e1000",
     "Description": "Description",
     "Availability": "available",
     "ServiceClass": "cloud\/plan\/1core-1gb",
@@ -73,6 +74,8 @@ func TestMarshalServerJSON(t *testing.T) {
 	assert.NotEmpty(t, server.Interfaces)
 	assert.NotEmpty(t, server.Instance)
 	assert.NotEmpty(t, server.propTags)
+
+	assert.Equal(t, server.InterfaceDriver, InterfaceDriverE1000)
 
 	assert.True(t, server.MaintenanceScheduled())
 }
