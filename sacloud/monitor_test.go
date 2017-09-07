@@ -122,6 +122,23 @@ var testDatabaseMonitorJSON = `
     }
 `
 
+var testNFSMonitorJSON = `
+	{
+	"2017-09-07T12:20:00+09:00": {
+      "Free-Disk-Size": null
+    },
+    "2017-09-07T12:25:00+09:00": {
+      "Free-Disk-Size": 97776352
+    },
+    "2017-09-07T12:30:00+09:00": {
+      "Free-Disk-Size": 97776352
+    },
+    "2017-09-07T12:35:00+09:00": {
+      "Free-Disk-Size": 97776352
+    }
+    }
+`
+
 var testResourceMonitorResponseJSON = `
 {
     "Data": ` + testCPUResourceMonitorJSON + `,
