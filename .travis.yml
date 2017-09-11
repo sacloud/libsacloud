@@ -1,6 +1,6 @@
 language: go
 sudo: false
-go: 1.7
+go: 1.9
 
 install:
   - go get -u github.com/golang/lint/golint
@@ -11,5 +11,5 @@ script:
   - go vet ./...
   - go build -v ./...
   - go test -v ./sacloud
-  - go test -v ./api -timeout 120m
-  - go test -v ./builder -timeout 120m
+  - travis_wait 120 go test -v ./api -timeout 120m
+  - travis_wait 120 go test -v ./builder -timeout 120m
