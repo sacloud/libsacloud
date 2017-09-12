@@ -108,7 +108,7 @@ loop:
 	assert.Len(t, status.DBConf.Backup.History, 1)
 
 	//backup lock
-	backupID := status.DBConf.Backup.History[0].Id()
+	backupID := status.DBConf.Backup.History[0].ID()
 	res, err = api.HistoryLock(id, backupID)
 	assert.NoError(t, err)
 	assert.NotEmpty(t, res)

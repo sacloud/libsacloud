@@ -48,7 +48,7 @@ func TestMarshalNewsFeedJSON(t *testing.T) {
 	assert.EqualValues(t, rawFeed["event_start"], feed.StrEventStart)
 	assert.EqualValues(t, rawFeed["event_end"], feed.StrEventEnd)
 	assert.EqualValues(t, rawFeed["title"], feed.Title)
-	assert.EqualValues(t, rawFeed["url"], feed.Url)
+	assert.EqualValues(t, rawFeed["url"], feed.URL)
 
 	parsedDateSec, _ := strconv.ParseInt(feed.StrDate, 10, 64)
 	assert.EqualValues(t, time.Unix(parsedDateSec, 0), feed.Date())

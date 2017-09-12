@@ -1,5 +1,4 @@
 language: go
-sudo: false
 go: 1.9
 
 install:
@@ -8,6 +7,7 @@ install:
 
 script:
   - test -z "$(gofmt -s -l -w . | tee /dev/stderr)"
+  - test -z "$(golint ./... | tee /dev/stderr | grep -v '_string.go')"
   - go vet ./...
   - go build -v ./...
   - go test -v ./sacloud

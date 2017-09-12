@@ -83,22 +83,6 @@ func TestServerBuilder_Build_WithMinimum(t *testing.T) {
 
 }
 
-func _TestServerBuilder_Build_WithWindows(t *testing.T) {
-
-	result, err := ServerPublicArchiveWindows(client, ostype.Windows2016, serverBuilderTestServerName).
-		WithAddPublicNWConnectedNIC(). // WithAddExistsSwitchConnectedNIC("112900225115", "192.168.11.2", 24, "192.168.11.1").
-		WithDiskSize(100).
-		Build()
-
-	assert.NoError(t, err)
-	assert.NotNil(t, result)
-	assert.NotNil(t, result.Server)
-	assert.NotNil(t, result.Disks[0])
-
-	assert.True(t, result.Server.Instance.IsUp())
-
-}
-
 func TestServerBuilder_Build_WithPacketFilter(t *testing.T) {
 	defer initServers()()
 

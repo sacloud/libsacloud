@@ -20,10 +20,10 @@ func TestNewsFeedAPI(t *testing.T) {
 	assert.NotEmpty(t, feed.StrEventStart)
 	assert.NotEmpty(t, feed.StrEventEnd)
 	assert.NotEmpty(t, feed.Title)
-	assert.NotEmpty(t, feed.Url)
+	assert.NotEmpty(t, feed.URL)
 
 	// by URL
-	single, err := feedAPI.GetFeedByURL(feed.Url)
+	single, err := feedAPI.GetFeedByURL(feed.URL)
 	assert.NoError(t, err)
 	assert.NotNil(t, single)
 	assert.EqualValues(t, &feed, single)
