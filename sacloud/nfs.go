@@ -14,7 +14,7 @@ type NFSRemark struct {
 	propPlanID
 	// TODO Zone
 	//Zone *Resource
-	SourceAppliance *Resource // クローン元DB
+	//SourceAppliance *Resource // クローン元DB
 }
 
 // NFSSettings NFS設定リスト
@@ -102,8 +102,8 @@ func NewNFS(values *CreateNFSValue) *NFS {
 					map[string]string{"IPAddress": values.IPAddress},
 				},
 			},
-			propPlanID:      propPlanID{Plan: &Resource{ID: int64(values.Plan)}},
-			SourceAppliance: values.SourceAppliance,
+			propPlanID: propPlanID{Plan: &Resource{ID: int64(values.Plan)}},
+			//SourceAppliance: values.SourceAppliance,
 		},
 	}
 
