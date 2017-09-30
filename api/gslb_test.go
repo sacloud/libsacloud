@@ -104,9 +104,9 @@ func initGSLB() func() {
 }
 
 func cleanupGSLB() {
-	item, _ := client.GSLB.findOrCreateBy(testGslbName)
+	items, _ := client.GSLB.Reset().WithNameLike(testGslbName).Find()
 
-	if item.ID > 0 {
+	for _, item := range items.CommonServiceGSLBItems {
 		client.GSLB.Delete(item.ID)
 	}
 }
