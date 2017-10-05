@@ -100,6 +100,12 @@ loop:
 	assert.NoError(t, err)
 	assert.NotNil(t, status)
 
+	// s2s
+	connInfo, err := api.SiteToSiteConnectionDetails(id)
+	assert.NoError(t, err)
+	assert.NotNil(t, connInfo)
+	assert.Len(t, connInfo.Details.Config, 0)
+
 	// shutdown
 	_, err = api.Stop(id)
 	assert.NoError(t, err)
