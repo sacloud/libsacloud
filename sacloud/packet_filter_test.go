@@ -101,26 +101,20 @@ func TestPacketFilterRuleFuncs(t *testing.T) {
 	assert.Equal(t, pf.Expression[2].Protocol, "udp")
 
 	pf.AddTCPRuleAt("", "", "", "", true, 5)
-	assert.Len(t, pf.Expression, 6)
-	assert.Equal(t, pf.Expression[0].Protocol, "tcp")
-	assert.Equal(t, pf.Expression[1].Protocol, "tcp")
-	assert.Equal(t, pf.Expression[2].Protocol, "udp")
-	assert.Nil(t, pf.Expression[3])
-	assert.Nil(t, pf.Expression[4])
-	assert.Equal(t, pf.Expression[5].Protocol, "tcp")
-
-	pf.RemoveRuleAt(4)
-	assert.Len(t, pf.Expression, 5)
-	assert.Equal(t, pf.Expression[0].Protocol, "tcp")
-	assert.Equal(t, pf.Expression[1].Protocol, "tcp")
-	assert.Equal(t, pf.Expression[2].Protocol, "udp")
-	assert.Nil(t, pf.Expression[3])
-	assert.Equal(t, pf.Expression[4].Protocol, "tcp")
-
-	pf.RemoveRuleAt(5)
 	assert.Len(t, pf.Expression, 4)
 	assert.Equal(t, pf.Expression[0].Protocol, "tcp")
 	assert.Equal(t, pf.Expression[1].Protocol, "tcp")
 	assert.Equal(t, pf.Expression[2].Protocol, "udp")
-	assert.Nil(t, pf.Expression[3])
+	assert.Equal(t, pf.Expression[3].Protocol, "tcp")
+
+	pf.RemoveRuleAt(2)
+	assert.Len(t, pf.Expression, 3)
+	assert.Equal(t, pf.Expression[0].Protocol, "tcp")
+	assert.Equal(t, pf.Expression[1].Protocol, "tcp")
+	assert.Equal(t, pf.Expression[2].Protocol, "tcp")
+
+	pf.RemoveRuleAt(5)
+	assert.Len(t, pf.Expression, 2)
+	assert.Equal(t, pf.Expression[0].Protocol, "tcp")
+	assert.Equal(t, pf.Expression[1].Protocol, "tcp")
 }

@@ -193,17 +193,14 @@ func (p *PacketFilter) addRuleAt(rule *PacketFilterExpression, index int) {
 		return
 	}
 
-	if index < len(p.Expression) {
-		// Grow the slice by one element.
-		p.Expression = append(p.Expression, nil)
-		// Use copy to move the upper part of the slice out of the way and open a hole.
-		copy(p.Expression[index+1:], p.Expression[index:])
-	} else {
-		for len(p.Expression) < index+1 {
-			p.Expression = append(p.Expression, nil)
-		}
+	if !(index < len(p.Expression)) {
+		index = len(p.Expression)
 	}
 
+	// Grow the slice by one element.
+	p.Expression = append(p.Expression, nil)
+	// Use copy to move the upper part of the slice out of the way and open a hole.
+	copy(p.Expression[index+1:], p.Expression[index:])
 	// Store the new value.
 	p.Expression[index] = rule
 }
