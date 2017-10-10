@@ -179,7 +179,10 @@ func (p *PacketFilter) createIPRule(sourceNetwork string, description string, is
 
 // RemoveRuleAt 指定インデックス(0開始)位置のルールを除去
 func (p *PacketFilter) RemoveRuleAt(index int) {
-	if index < len(p.Expression) {
+	if len(p.Expression) > 0 {
+		if !(index < len(p.Expression)) {
+			index = len(p.Expression) - 1
+		}
 		p.Expression = append(p.Expression[:index], p.Expression[index+1:]...)
 	}
 }
@@ -189,10 +192,18 @@ func (p *PacketFilter) addRuleAt(rule *PacketFilterExpression, index int) {
 		p.Expression = []*PacketFilterExpression{rule}
 		return
 	}
-	// Grow the slice by one element.
-	p.Expression = append(p.Expression, nil)
-	// Use copy to move the upper part of the slice out of the way and open a hole.
-	copy(p.Expression[index+1:], p.Expression[index:])
+
+	if index < len(p.Expression) {
+		// Grow the slice by one element.
+		p.Expression = append(p.Expression, nil)
+		// Use copy to move the upper part of the slice out of the way and open a hole.
+		copy(p.Expression[index+1:], p.Expression[index:])
+	} else {
+		for len(p.Expression) < index+1 {
+			p.Expression = append(p.Expression, nil)
+		}
+	}
+
 	// Store the new value.
 	p.Expression[index] = rule
 }
