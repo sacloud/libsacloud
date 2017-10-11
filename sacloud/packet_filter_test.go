@@ -101,45 +101,57 @@ func TestPacketFilterRuleFuncs(t *testing.T) {
 	assert.Equal(t, pf.Expression[2].Protocol, "udp")
 
 	pf.AddTCPRuleAt("", "", "", "", true, 5)
-	assert.Len(t, pf.Expression, 6)
+	assert.Len(t, pf.Expression, 4)
 	assert.Equal(t, pf.Expression[0].Protocol, "tcp")
 	assert.Equal(t, pf.Expression[1].Protocol, "tcp")
 	assert.Equal(t, pf.Expression[2].Protocol, "udp")
 	assert.Equal(t, pf.Expression[3].Protocol, "tcp")
-	// ダミーレコードが追加されているはず
-	assert.Equal(t, pf.Expression[4].Protocol, "tcp")
-	assert.Equal(t, pf.Expression[4].SourceNetwork, "255.255.255.255")
-	assert.Equal(t, pf.Expression[5].Protocol, "tcp")
-
-	// 末尾への追加
-	pf.AddTCPRuleAt("", "", "", "", true, 6)
-	assert.Len(t, pf.Expression, 7)
-	assert.Equal(t, pf.Expression[0].Protocol, "tcp")
-	assert.Equal(t, pf.Expression[1].Protocol, "tcp")
-	assert.Equal(t, pf.Expression[2].Protocol, "udp")
-	assert.Equal(t, pf.Expression[3].Protocol, "tcp")
-	// ダミーレコードが追加されているはず
-	assert.Equal(t, pf.Expression[4].Protocol, "tcp")
-	assert.Equal(t, pf.Expression[4].SourceNetwork, "255.255.255.255")
-	assert.Equal(t, pf.Expression[5].Protocol, "tcp")
-	assert.Equal(t, pf.Expression[6].Protocol, "tcp")
 
 	pf.RemoveRuleAt(2)
-	assert.Len(t, pf.Expression, 6)
+	assert.Len(t, pf.Expression, 3)
 	assert.Equal(t, pf.Expression[0].Protocol, "tcp")
 	assert.Equal(t, pf.Expression[1].Protocol, "tcp")
 	assert.Equal(t, pf.Expression[2].Protocol, "tcp")
-	assert.Equal(t, pf.Expression[3].Protocol, "tcp")
-	assert.Equal(t, pf.Expression[4].Protocol, "tcp")
-	assert.Equal(t, pf.Expression[5].Protocol, "tcp")
 
 	// インデックス外だと何も行わない
 	pf.RemoveRuleAt(6)
-	assert.Len(t, pf.Expression, 6)
+	assert.Len(t, pf.Expression, 3)
 	assert.Equal(t, pf.Expression[0].Protocol, "tcp")
 	assert.Equal(t, pf.Expression[1].Protocol, "tcp")
 	assert.Equal(t, pf.Expression[2].Protocol, "tcp")
-	assert.Equal(t, pf.Expression[3].Protocol, "tcp")
-	assert.Equal(t, pf.Expression[4].Protocol, "tcp")
-	assert.Equal(t, pf.Expression[5].Protocol, "tcp")
+}
+
+func TestPacketFilterRuleHandlingByHash(t *testing.T) {
+
+	pf := CreateNewPacketFilter()
+
+	pf.AddTCPRule("192.168.2.1", "", "", "", true)
+	assert.Len(t, pf.Expression, 1)
+	assert.Equal(t, pf.Expression[0].SourceNetwork, "192.168.2.1")
+
+	pf.AddTCPRule("192.168.2.2", "", "", "", true)
+	assert.Len(t, pf.Expression, 2)
+	assert.Equal(t, pf.Expression[1].SourceNetwork, "192.168.2.2")
+
+	// don't remove element by invalid hash
+	pf.RemoveRuleByHash("invalid hash")
+	assert.Len(t, pf.Expression, 2)
+
+	// remove first element by hash
+	hash := pf.Expression[0].Hash()
+	pf.RemoveRuleByHash(hash)
+	assert.Len(t, pf.Expression, 1)
+	assert.Equal(t, pf.Expression[0].SourceNetwork, "192.168.2.2")
+
+	// add same value element
+	pf.AddTCPRule("192.168.2.2", "", "", "", true)
+	assert.Len(t, pf.Expression, 2)
+	assert.Equal(t, pf.Expression[0].SourceNetwork, "192.168.2.2")
+	assert.Equal(t, pf.Expression[1].SourceNetwork, "192.168.2.2")
+
+	// remove multiple by hash
+	hash = pf.Expression[0].Hash()
+	pf.RemoveRuleByHash(hash)
+	assert.Len(t, pf.Expression, 0)
+
 }

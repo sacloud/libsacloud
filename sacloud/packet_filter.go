@@ -1,5 +1,11 @@
 package sacloud
 
+import (
+	"crypto/md5"
+	"encoding/hex"
+	"fmt"
+)
+
 // PacketFilter パケットフィルタ
 type PacketFilter struct {
 	*Resource       // ID
@@ -32,6 +38,14 @@ type PacketFilterExpression struct {
 	propDescription // 説明
 }
 
+// Hash 値からハッシュ値を生成
+func (e *PacketFilterExpression) Hash() string {
+	str := fmt.Sprintf("%v", e)
+	h := md5.New()
+	h.Write([]byte(str))
+	return hex.EncodeToString(h.Sum(nil))
+}
+
 // CreateNewPacketFilter パケットフィルタ作成
 func CreateNewPacketFilter() *PacketFilter {
 	return &PacketFilter{
@@ -43,6 +57,18 @@ func CreateNewPacketFilter() *PacketFilter {
 // ClearRules ルールのクリア
 func (p *PacketFilter) ClearRules() {
 	p.Expression = []*PacketFilterExpression{}
+}
+
+// FindByHash 指定のハッシュ値を持つPacketFilterExpressionを検索する
+func (p *PacketFilter) FindByHash(hash string) *PacketFilterExpression {
+
+	for _, e := range p.Expression {
+		h := e.Hash()
+		if h == hash {
+			return e
+		}
+	}
+	return nil
 }
 
 // AddTCPRule TCPルール追加
@@ -184,22 +210,29 @@ func (p *PacketFilter) RemoveRuleAt(index int) {
 	}
 }
 
-func (p *PacketFilter) addRuleAt(rule *PacketFilterExpression, index int) {
-	if index < 0 {
-		index = 0
+// RemoveRuleByHash 指定のハッシュ値を持つルールを削除する
+func (p *PacketFilter) RemoveRuleByHash(hash string) {
+	dest := []*PacketFilterExpression{}
+	for _, e := range p.Expression {
+		if hash != e.Hash() {
+			dest = append(dest, e)
+		}
 	}
+	p.Expression = dest
+}
 
+func (p *PacketFilter) addRuleAt(rule *PacketFilterExpression, index int) {
 	if len(p.Expression) == 0 && index == 0 {
 		p.Expression = []*PacketFilterExpression{rule}
 		return
 	}
 
-	for !(index-1 < len(p.Expression)) {
-		p.AddTCPRule("255.255.255.255", "", "", "dummy", true)
+	if !(index < len(p.Expression)) {
+		index = len(p.Expression)
 	}
 
 	// Grow the slice by one element.
-	p.AddTCPRule("255.255.255.255", "", "", "dummy", true)
+	p.Expression = append(p.Expression, nil)
 	// Use copy to move the upper part of the slice out of the way and open a hole.
 	copy(p.Expression[index+1:], p.Expression[index:])
 	// Store the new value.
