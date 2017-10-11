@@ -72,18 +72,18 @@ func (p *PacketFilter) FindByHash(hash string) *PacketFilterExpression {
 }
 
 // AddTCPRule TCPルール追加
-func (p *PacketFilter) AddTCPRule(sourceNetwork string, sourcePort string, destPort string, description string, isAllow bool) error {
+func (p *PacketFilter) AddTCPRule(sourceNetwork string, sourcePort string, destPort string, description string, isAllow bool) (*PacketFilterExpression, error) {
 	exp := p.createTCPRule(sourceNetwork, sourcePort, destPort, description, isAllow)
 	p.Expression = append(p.Expression, exp)
-	return nil
+	return exp, nil
 }
 
 // AddTCPRuleAt TCPルール追加
-func (p *PacketFilter) AddTCPRuleAt(sourceNetwork string, sourcePort string, destPort string, description string, isAllow bool, index int) error {
+func (p *PacketFilter) AddTCPRuleAt(sourceNetwork string, sourcePort string, destPort string, description string, isAllow bool, index int) (*PacketFilterExpression, error) {
 
 	exp := p.createTCPRule(sourceNetwork, sourcePort, destPort, description, isAllow)
 	p.addRuleAt(exp, index)
-	return nil
+	return exp, nil
 }
 
 func (p *PacketFilter) createTCPRule(sourceNetwork string, sourcePort string, destPort string, description string, isAllow bool) *PacketFilterExpression {
@@ -99,17 +99,17 @@ func (p *PacketFilter) createTCPRule(sourceNetwork string, sourcePort string, de
 }
 
 // AddUDPRule UDPルール追加
-func (p *PacketFilter) AddUDPRule(sourceNetwork string, sourcePort string, destPort string, description string, isAllow bool) error {
+func (p *PacketFilter) AddUDPRule(sourceNetwork string, sourcePort string, destPort string, description string, isAllow bool) (*PacketFilterExpression, error) {
 	exp := p.createUDPRule(sourceNetwork, sourcePort, destPort, description, isAllow)
 	p.Expression = append(p.Expression, exp)
-	return nil
+	return exp, nil
 }
 
 // AddUDPRuleAt UDPルール追加
-func (p *PacketFilter) AddUDPRuleAt(sourceNetwork string, sourcePort string, destPort string, description string, isAllow bool, index int) error {
+func (p *PacketFilter) AddUDPRuleAt(sourceNetwork string, sourcePort string, destPort string, description string, isAllow bool, index int) (*PacketFilterExpression, error) {
 	exp := p.createUDPRule(sourceNetwork, sourcePort, destPort, description, isAllow)
 	p.addRuleAt(exp, index)
-	return nil
+	return exp, nil
 }
 
 func (p *PacketFilter) createUDPRule(sourceNetwork string, sourcePort string, destPort string, description string, isAllow bool) *PacketFilterExpression {
@@ -125,19 +125,19 @@ func (p *PacketFilter) createUDPRule(sourceNetwork string, sourcePort string, de
 }
 
 // AddICMPRule ICMPルール追加
-func (p *PacketFilter) AddICMPRule(sourceNetwork string, description string, isAllow bool) error {
+func (p *PacketFilter) AddICMPRule(sourceNetwork string, description string, isAllow bool) (*PacketFilterExpression, error) {
 
 	exp := p.createICMPRule(sourceNetwork, description, isAllow)
 	p.Expression = append(p.Expression, exp)
-	return nil
+	return exp, nil
 }
 
 // AddICMPRuleAt ICMPルール追加
-func (p *PacketFilter) AddICMPRuleAt(sourceNetwork string, description string, isAllow bool, index int) error {
+func (p *PacketFilter) AddICMPRuleAt(sourceNetwork string, description string, isAllow bool, index int) (*PacketFilterExpression, error) {
 
 	exp := p.createICMPRule(sourceNetwork, description, isAllow)
 	p.addRuleAt(exp, index)
-	return nil
+	return exp, nil
 }
 
 func (p *PacketFilter) createICMPRule(sourceNetwork string, description string, isAllow bool) *PacketFilterExpression {
@@ -151,19 +151,19 @@ func (p *PacketFilter) createICMPRule(sourceNetwork string, description string, 
 }
 
 // AddFragmentRule フラグメントルール追加
-func (p *PacketFilter) AddFragmentRule(sourceNetwork string, description string, isAllow bool) error {
+func (p *PacketFilter) AddFragmentRule(sourceNetwork string, description string, isAllow bool) (*PacketFilterExpression, error) {
 
 	exp := p.createFragmentRule(sourceNetwork, description, isAllow)
 	p.Expression = append(p.Expression, exp)
-	return nil
+	return exp, nil
 }
 
 // AddFragmentRuleAt フラグメントルール追加
-func (p *PacketFilter) AddFragmentRuleAt(sourceNetwork string, description string, isAllow bool, index int) error {
+func (p *PacketFilter) AddFragmentRuleAt(sourceNetwork string, description string, isAllow bool, index int) (*PacketFilterExpression, error) {
 
 	exp := p.createFragmentRule(sourceNetwork, description, isAllow)
 	p.addRuleAt(exp, index)
-	return nil
+	return exp, nil
 }
 
 func (p *PacketFilter) createFragmentRule(sourceNetwork string, description string, isAllow bool) *PacketFilterExpression {
@@ -177,19 +177,19 @@ func (p *PacketFilter) createFragmentRule(sourceNetwork string, description stri
 }
 
 // AddIPRule IPルール追加
-func (p *PacketFilter) AddIPRule(sourceNetwork string, description string, isAllow bool) error {
+func (p *PacketFilter) AddIPRule(sourceNetwork string, description string, isAllow bool) (*PacketFilterExpression, error) {
 
 	exp := p.createIPRule(sourceNetwork, description, isAllow)
 	p.Expression = append(p.Expression, exp)
-	return nil
+	return exp, nil
 }
 
 // AddIPRuleAt IPルール追加
-func (p *PacketFilter) AddIPRuleAt(sourceNetwork string, description string, isAllow bool, index int) error {
+func (p *PacketFilter) AddIPRuleAt(sourceNetwork string, description string, isAllow bool, index int) (*PacketFilterExpression, error) {
 
 	exp := p.createIPRule(sourceNetwork, description, isAllow)
 	p.addRuleAt(exp, index)
-	return nil
+	return exp, nil
 }
 
 func (p *PacketFilter) createIPRule(sourceNetwork string, description string, isAllow bool) *PacketFilterExpression {
