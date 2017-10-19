@@ -273,6 +273,7 @@ func TestArchiveAPI_FindStableOSs(t *testing.T) {
 
 	targets := []target{
 		{label: "CentOS", f: api.FindLatestStableCentOS},
+		{label: "CentOS6", f: api.FindLatestStableCentOS6},
 		{label: "Debian", f: api.FindLatestStableDebian},
 		{label: "Ubuntu", f: api.FindLatestStableUbuntu},
 		{label: "VyOS", f: api.FindLatestStableVyOS},
@@ -313,6 +314,7 @@ func TestArchiveAPI_CanDiskEdit(t *testing.T) {
 
 	targets := []target{
 		{label: "CentOS", expect: true, f: api.FindLatestStableCentOS},
+		{label: "CentOS6", expect: true, f: api.FindLatestStableCentOS6},
 		{label: "Debian", expect: true, f: api.FindLatestStableDebian},
 		{label: "Ubuntu", expect: true, f: api.FindLatestStableUbuntu},
 		{label: "VyOS", expect: true, f: api.FindLatestStableVyOS},
