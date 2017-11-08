@@ -72,12 +72,18 @@ func TestDisklessServerBuilder_ServerPublicArchiveUnixDefaults(t *testing.T) {
 func TestServerBuilder_Build_WithMinimum(t *testing.T) {
 	defer initServers()()
 
-	result, err := ServerPublicArchiveUnix(client, ostype.CentOS, serverBuilderTestServerName, serverBuilderTestPassword).WithAddPublicNWConnectedNIC().Build()
+	// client.Zone = "tk1a"
+	builder := ServerPublicArchiveUnix(client, ostype.CentOS, serverBuilderTestServerName, serverBuilderTestPassword).WithAddPublicNWConnectedNIC()
+	// builder.SetPrivateHostID(112900645574)
+	result, err := builder.Build()
 
 	assert.NoError(t, err)
 	assert.NotNil(t, result)
 	assert.NotNil(t, result.Server)
 	assert.NotNil(t, result.Disks[0])
+
+	//assert.NotNil(t, result.Server.PrivateHost)
+	// assert.EqualValues(t , result.Server.PrivateHost.ID,112900645574)
 
 	assert.True(t, result.Server.Instance.IsUp())
 
