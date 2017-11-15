@@ -10,8 +10,6 @@ const testPrivateHostName = "libsacloud_test_privatehost"
 func TestPrivateHostCRUD(t *testing.T) {
 	defer initPrivateHost()
 
-	client.TraceMode = true
-
 	currentZone := client.Zone
 	defer func() { client.Zone = currentZone }()
 	client.Zone = "tk1a"
