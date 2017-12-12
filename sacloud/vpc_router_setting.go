@@ -956,7 +956,7 @@ func (s *VPCRouterSetting) AddSiteToSiteIPsecVPN(localPrefix []string, peer stri
 		RemoteID:        remoteID,
 		Routes:          routes,
 	}
-	s.SiteToSiteIPsecVPN.Config = append(s.SiteToSiteIPsecVPN.Config)
+	s.SiteToSiteIPsecVPN.Config = append(s.SiteToSiteIPsecVPN.Config, c)
 	return len(s.SiteToSiteIPsecVPN.Config) - 1, c
 }
 
