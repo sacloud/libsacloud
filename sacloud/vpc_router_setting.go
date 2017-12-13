@@ -1,7 +1,9 @@
 package sacloud
 
 import (
+	"bytes"
 	"fmt"
+	"net"
 	"reflect"
 )
 
@@ -651,6 +653,20 @@ func (s *VPCRouterSetting) FindDHCPServer(nicIndex int) (int, *VPCRouterDHCPServ
 // FindDHCPServerAt DHCPサーバー設定 検索
 func (s *VPCRouterSetting) FindDHCPServerAt(nicIndex int) (int, *VPCRouterDHCPServerConfig) {
 	return s.FindDHCPServer(nicIndex)
+}
+
+// FindBelongsDHCPServer 指定のIPアドレスが所属するIPレンジを持つをDHCPサーバを検索
+func (s *VPCRouterSetting) FindBelongsDHCPServer(ip net.IP) (int, *VPCRouterDHCPServerConfig) {
+	target := ip.To4()
+	for i, c := range s.DHCPServer.Config {
+		start := net.ParseIP(c.RangeStart).To4()
+		end := net.ParseIP(c.RangeStop).To4()
+
+		if bytes.Compare(target, start) >= 0 && bytes.Compare(target, end) <= 0 {
+			return i, c
+		}
+	}
+	return -1, nil
 }
 
 // HasDHCPStaticMapping DHCPスタティックマッピング設定を保持しているか

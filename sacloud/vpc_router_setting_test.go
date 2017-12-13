@@ -3,6 +3,7 @@ package sacloud
 import (
 	"encoding/json"
 	"github.com/stretchr/testify/assert"
+	"net"
 	"testing"
 )
 
@@ -254,5 +255,72 @@ func TestVPCRouterStaticNatFunc(t *testing.T) {
 	assert.NotNil(t, setting.StaticNAT)
 	assert.Nil(t, setting.StaticNAT.Config)
 	assert.Equal(t, setting.StaticNAT.Enabled, "False")
+
+}
+
+func TestVPCRouterSetting_FindBelongsDHCPServer(t *testing.T) {
+
+	expects := []struct {
+		target string
+		start  string
+		end    string
+		expect bool
+	}{
+		{
+			target: "192.168.0.1",
+			start:  "192.168.0.1",
+			end:    "192.168.0.3",
+			expect: true,
+		},
+		{
+			target: "192.168.0.2",
+			start:  "192.168.0.1",
+			end:    "192.168.0.3",
+			expect: true,
+		},
+		{
+			target: "192.168.0.3",
+			start:  "192.168.0.1",
+			end:    "192.168.0.3",
+			expect: true,
+		},
+		{
+			target: "192.168.0.4",
+			start:  "192.168.0.1",
+			end:    "192.168.0.3",
+			expect: false,
+		},
+		{
+			target: "10.0.1.1",
+			start:  "10.0.0.1",
+			end:    "10.0.2.254",
+			expect: true,
+		},
+		{
+			target: "10.1.0.1",
+			start:  "10.0.0.1",
+			end:    "10.0.2.254",
+			expect: false,
+		},
+	}
+
+	for _, e := range expects {
+
+		s := VPCRouterSetting{
+			DHCPServer: &VPCRouterDHCPServer{
+				Config: []*VPCRouterDHCPServerConfig{
+					{
+						RangeStart: e.start,
+						RangeStop:  e.end,
+					},
+				},
+			},
+		}
+
+		i, c := s.FindBelongsDHCPServer(net.ParseIP(e.target))
+
+		assert.Equal(t, e.expect, i >= 0)
+		assert.Equal(t, e.expect, c != nil)
+	}
 
 }
