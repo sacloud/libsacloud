@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"net"
 	"reflect"
+	"strconv"
+	"strings"
 )
 
 // VPCRouterSetting VPCルーター設定
@@ -582,6 +584,16 @@ type VPCRouterDHCPServerConfig struct {
 	RangeStart string   `json:",omitempty"` // 割り当て範囲 開始アドレス
 	RangeStop  string   `json:",omitempty"` // 割り当て範囲 終了アドレス
 	DNSServers []string // 配布するDNSサーバIPアドレスのリスト
+}
+
+// InterfaceIndex 対象NICのインデックス
+func (c *VPCRouterDHCPServerConfig) InterfaceIndex() int {
+	strIndex := strings.Replace(c.Interface, "eth", "", -1)
+	index, err := strconv.Atoi(strIndex)
+	if err != nil {
+		return -1
+	}
+	return index
 }
 
 // AddDHCPServer DHCPサーバー設定追加

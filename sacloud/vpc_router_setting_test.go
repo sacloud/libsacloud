@@ -324,3 +324,31 @@ func TestVPCRouterSetting_FindBelongsDHCPServer(t *testing.T) {
 	}
 
 }
+
+func TestVPCRouterDHCPServerConfig_InterfaceIndex(t *testing.T) {
+
+	expects := []struct {
+		nic    string
+		expect int
+	}{
+		{
+			nic:    "eth1",
+			expect: 1,
+		},
+		{
+			nic:    "eth11",
+			expect: 11,
+		},
+		{
+			nic:    "",
+			expect: -1,
+		},
+	}
+
+	c := &VPCRouterDHCPServerConfig{}
+
+	for _, e := range expects {
+		c.Interface = e.nic
+		assert.Equal(t, e.expect, c.InterfaceIndex())
+	}
+}
