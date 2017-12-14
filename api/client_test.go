@@ -3,7 +3,10 @@ package api
 import (
 	"fmt"
 	"github.com/sacloud/libsacloud"
+	"github.com/stretchr/testify/assert"
 	"log"
+	"net/http"
+	"net/http/httptest"
 	"os"
 	"testing"
 	"time"
@@ -30,4 +33,61 @@ func TestMain(m *testing.M) {
 
 	ret := m.Run()
 	os.Exit(ret)
+}
+
+func TestRetryableClient(t *testing.T) {
+
+	t.Run("Retryable http client", func(t *testing.T) {
+		called := 0
+		s := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			called++
+			if called < 3 {
+				w.WriteHeader(503)
+				return
+			}
+			w.Write([]byte(`ok`))
+		}))
+		defer s.Close()
+
+		c := retryableHTTPClient{
+			retryInterval: 3 * time.Second,
+			retryMax:      2,
+		}
+
+		req, err := newRequest("GET", s.URL, nil)
+		assert.NoError(t, err)
+
+		res, err := c.Do(req)
+		defer res.Body.Close()
+
+		assert.NoError(t, err)
+		assert.Equal(t, res.StatusCode, 200)
+		assert.Equal(t, called, 3)
+	})
+
+	t.Run("Retryable http client should fail", func(t *testing.T) {
+		called := 0
+		s := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			called++
+			if called < 2 {
+				w.WriteHeader(503)
+				return
+			}
+			w.Write([]byte(`ok`))
+		}))
+		defer s.Close()
+
+		c := retryableHTTPClient{
+			retryInterval: 3 * time.Second,
+			retryMax:      1,
+		}
+
+		req, err := newRequest("GET", s.URL, nil)
+		assert.NoError(t, err)
+
+		res, err := c.Do(req)
+		assert.Nil(t, res)
+		assert.Error(t, err)
+		assert.Equal(t, 2, called)
+	})
 }
