@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/stretchr/testify/assert"
+	"net"
 	"testing"
 )
 
@@ -253,6 +254,46 @@ func TestVPCRouter_RealIPAddress(t *testing.T) {
 		actual, _ := vpcRouter.RealIPAddress(e.index)
 		assert.Equal(t, e.expect, actual)
 
+	}
+
+}
+
+func TestVPCRouter_FindBelongsInterface(t *testing.T) {
+	expects := []struct {
+		ip     string
+		expect int
+	}{
+		{
+			ip:     "192.168.0.2",
+			expect: 0,
+		},
+		{
+			ip:     "192.168.1.2",
+			expect: 1,
+		},
+		{
+			ip:     "192.168.7.2",
+			expect: -1,
+		},
+	}
+
+	vpcRouter := CreateNewVPCRouter()
+	vpcRouter.InitVPCRouterSetting()
+	vpcRouter.Plan.SetID(int64(1))
+	vpcRouter.Settings.Router.Interfaces = []*VPCRouterInterface{
+		{IPAddress: []string{"192.168.0.1"}, NetworkMaskLen: 24},
+		{IPAddress: []string{"192.168.1.1"}, NetworkMaskLen: 24},
+		{IPAddress: []string{"192.168.2.1"}, NetworkMaskLen: 24},
+		{IPAddress: []string{"192.168.3.1"}, NetworkMaskLen: 24},
+		{IPAddress: []string{"192.168.4.1"}, NetworkMaskLen: 24},
+		{IPAddress: []string{"192.168.5.1"}, NetworkMaskLen: 24},
+		{IPAddress: []string{"192.168.6.1"}, NetworkMaskLen: 24},
+	}
+
+	for _, e := range expects {
+		index, nic := vpcRouter.FindBelongsInterface(net.ParseIP(e.ip))
+		assert.Equal(t, e.expect, index)
+		assert.Equal(t, nic == nil, e.expect < 0)
 	}
 
 }

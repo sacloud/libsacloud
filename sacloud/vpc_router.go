@@ -1,5 +1,10 @@
 package sacloud
 
+import (
+	"fmt"
+	"net"
+)
+
 // VPCRouter VPCルーター
 type VPCRouter struct {
 	*Appliance // アプライアンス共通属性
@@ -196,4 +201,25 @@ func (v *VPCRouter) RealIPAddress(index int) (string, int) {
 		}
 	}
 	return "", -1
+}
+
+// FindBelongsInterface 指定のIPアドレスが所属するIPレンジを持つインターフェースを取得
+func (v *VPCRouter) FindBelongsInterface(ip net.IP) (int, *VPCRouterInterface) {
+	if !v.HasInterfaces() {
+		return -1, nil
+	}
+
+	for i, nic := range v.Settings.Router.Interfaces {
+		nicIP, maskLen := v.RealIPAddress(i)
+		if nicIP != "" {
+			_, ipv4Net, err := net.ParseCIDR(fmt.Sprintf("%s/%d", nicIP, maskLen))
+			if err != nil {
+				return -1, nil
+			}
+			if ipv4Net.Contains(ip) {
+				return i, nic
+			}
+		}
+	}
+	return -1, nil
 }
