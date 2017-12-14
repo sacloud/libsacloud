@@ -202,10 +202,15 @@ func (v *VPCRouter) RealIPAddress(index int) (string, int) {
 				return v.Interfaces[0].IPAddress, v.Interfaces[0].Switch.Subnet.NetworkMaskLen
 			}
 
-			if v.IsStandardPlan() {
-				return nic.IPAddress[0], nic.NetworkMaskLen
+			nwMask := nic.NetworkMaskLen
+			if index == 0 {
+				nwMask = v.Interfaces[0].Switch.Subnet.NetworkMaskLen
 			}
-			return nic.VirtualIPAddress, nic.NetworkMaskLen
+
+			if v.IsStandardPlan() {
+				return nic.IPAddress[0], nwMask
+			}
+			return nic.VirtualIPAddress, nwMask
 		}
 	}
 	return "", -1
