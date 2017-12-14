@@ -193,7 +193,15 @@ func (v *VPCRouter) RealIPAddress(index int) (string, int) {
 		return "", -1
 	}
 	for i, nic := range v.Settings.Router.Interfaces {
-		if i == index && nic != nil && len(nic.IPAddress) > 0 {
+		if i == index {
+			if index > 0 && nic == nil {
+				return "", -1
+			}
+
+			if index == 0 && v.IsStandardPlan() {
+				return v.Interfaces[0].IPAddress, v.Interfaces[0].Switch.Subnet.NetworkMaskLen
+			}
+
 			if v.IsStandardPlan() {
 				return nic.IPAddress[0], nic.NetworkMaskLen
 			}

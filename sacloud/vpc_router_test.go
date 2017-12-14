@@ -192,8 +192,9 @@ func TestVPCRouter_RealIPAddress(t *testing.T) {
 	}{
 		{
 			plan:  standard,
-			index: 0,
+			index: 1,
 			interfaces: []*VPCRouterInterface{
+				{},
 				{
 					IPAddress:      []string{"192.168.0.1"},
 					NetworkMaskLen: 24,
@@ -203,8 +204,9 @@ func TestVPCRouter_RealIPAddress(t *testing.T) {
 		},
 		{
 			plan:  standard,
-			index: 0,
+			index: 1,
 			interfaces: []*VPCRouterInterface{
+				{},
 				{
 					IPAddress:        []string{"192.168.0.1", "192.168.0.2"},
 					VirtualIPAddress: "192.168.0.3",
@@ -288,6 +290,16 @@ func TestVPCRouter_FindBelongsInterface(t *testing.T) {
 		{IPAddress: []string{"192.168.4.1"}, NetworkMaskLen: 24},
 		{IPAddress: []string{"192.168.5.1"}, NetworkMaskLen: 24},
 		{IPAddress: []string{"192.168.6.1"}, NetworkMaskLen: 24},
+	}
+	vpcRouter.Interfaces = []Interface{
+		{
+			IPAddress: "192.168.0.1",
+		},
+	}
+	vpcRouter.Interfaces[0].Switch = &Switch{
+		Subnet: &Subnet{
+			NetworkMaskLen: 24,
+		},
 	}
 
 	for _, e := range expects {
