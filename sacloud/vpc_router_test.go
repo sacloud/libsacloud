@@ -177,3 +177,82 @@ func TestMarshalVPCRouterJSON(t *testing.T) {
 	assert.NotEmpty(t, router.Settings.Router.Interfaces[0].VirtualIPAddress)
 
 }
+
+func TestVPCRouter_RealIPAddress(t *testing.T) {
+	const (
+		standard = 1
+		other    = 2
+	)
+	expects := []struct {
+		plan       int
+		index      int
+		interfaces []*VPCRouterInterface
+		expect     string
+	}{
+		{
+			plan:  standard,
+			index: 0,
+			interfaces: []*VPCRouterInterface{
+				{
+					IPAddress:      []string{"192.168.0.1"},
+					NetworkMaskLen: 24,
+				},
+			},
+			expect: "192.168.0.1",
+		},
+		{
+			plan:  standard,
+			index: 0,
+			interfaces: []*VPCRouterInterface{
+				{
+					IPAddress:        []string{"192.168.0.1", "192.168.0.2"},
+					VirtualIPAddress: "192.168.0.3",
+					NetworkMaskLen:   24,
+				},
+			},
+			expect: "192.168.0.1",
+		},
+		{
+			plan:  standard,
+			index: 5,
+			interfaces: []*VPCRouterInterface{
+				{IPAddress: []string{"192.168.0.1"}, NetworkMaskLen: 24},
+				{IPAddress: []string{"192.168.1.1"}, NetworkMaskLen: 24},
+				{IPAddress: []string{"192.168.2.1"}, NetworkMaskLen: 24},
+				{IPAddress: []string{"192.168.3.1"}, NetworkMaskLen: 24},
+				{IPAddress: []string{"192.168.4.1"}, NetworkMaskLen: 24},
+				{IPAddress: []string{"192.168.5.1"}, NetworkMaskLen: 24},
+				{IPAddress: []string{"192.168.6.1"}, NetworkMaskLen: 24},
+			},
+			expect: "192.168.5.1",
+		},
+		{
+			plan:  standard,
+			index: 5,
+			interfaces: []*VPCRouterInterface{
+				{IPAddress: []string{"192.168.0.1"}, NetworkMaskLen: 24},
+				{},
+				{},
+				{},
+				{},
+				{IPAddress: []string{"192.168.5.1"}, NetworkMaskLen: 24},
+				{},
+			},
+			expect: "192.168.5.1",
+		},
+	}
+
+	vpcRouter := CreateNewVPCRouter()
+
+	for _, e := range expects {
+
+		vpcRouter.InitVPCRouterSetting()
+		vpcRouter.Plan.SetID(int64(e.plan))
+		vpcRouter.Settings.Router.Interfaces = e.interfaces
+
+		actual, _ := vpcRouter.RealIPAddress(e.index)
+		assert.Equal(t, e.expect, actual)
+
+	}
+
+}

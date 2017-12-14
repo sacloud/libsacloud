@@ -178,3 +178,22 @@ func (v *VPCRouter) HasSiteToSiteIPsecVPN() bool {
 func (v *VPCRouter) HasStaticRoutes() bool {
 	return v.HasSetting() && v.Settings.Router.HasStaticRoutes()
 }
+
+// RealIPAddress プランに応じて外部向けIPアドレスを返す
+//
+// Standard: IPAddress1
+// Other: VirtualIPAddress
+func (v *VPCRouter) RealIPAddress(index int) (string, int) {
+	if !v.HasInterfaces() {
+		return "", -1
+	}
+	for i, nic := range v.Settings.Router.Interfaces {
+		if i == index && nic != nil && len(nic.IPAddress) > 0 {
+			if v.IsStandardPlan() {
+				return nic.IPAddress[0], nic.NetworkMaskLen
+			}
+			return nic.VirtualIPAddress, nic.NetworkMaskLen
+		}
+	}
+	return "", -1
+}

@@ -655,7 +655,7 @@ func (s *VPCRouterSetting) RemoveDHCPServerAt(nicIndex int) {
 // FindDHCPServer DHCPサーバー設定 検索
 func (s *VPCRouterSetting) FindDHCPServer(nicIndex int) (int, *VPCRouterDHCPServerConfig) {
 	for i, c := range s.DHCPServer.Config {
-		if c.Interface == fmt.Sprintf("eth%d", nicIndex) {
+		if c.InterfaceIndex() == nicIndex {
 			return i, c
 		}
 	}
