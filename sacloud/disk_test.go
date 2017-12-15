@@ -19,10 +19,23 @@ var testDiskJSON = `
 		"ID": 4
 	},
 	"Storage": {
-		"ID": 1234567890,
-		"MountIndex": 1234567890,
-		"Class": "iscsi1204"
-	},
+        "Class": "iscsi1204",
+        "DiskPlan": {
+            "ID": 4,
+            "Name": "SSD",
+            "StorageClass": "iscsi1204"
+        },
+        "ID": 1234567890,
+        "Name": "sac-isxx-iscsi4-st999",
+        "Zone": {
+            "ID": 31002,
+            "Name": "is1b",
+            "Region": {
+                "ID": 310,
+                "Name": "\u77f3\u72e9"
+            }
+         }
+    },
 	"BundleInfo": null
 }
 `
