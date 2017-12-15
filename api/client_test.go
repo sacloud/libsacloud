@@ -57,12 +57,19 @@ func TestRetryableClient(t *testing.T) {
 		req, err := newRequest("GET", s.URL, nil)
 		assert.NoError(t, err)
 
+		start := time.Now()
+
 		res, err := c.Do(req)
 		defer res.Body.Close()
+
+		end := time.Now()
+		diff := end.Sub(start)
 
 		assert.NoError(t, err)
 		assert.Equal(t, res.StatusCode, 200)
 		assert.Equal(t, called, 3)
+		assert.True(t, diff > (c.retryInterval*time.Duration(c.retryMax)))
+		t.Logf("Waited %f sec.\n", diff.Seconds())
 	})
 
 	t.Run("Retryable http client should fail", func(t *testing.T) {
