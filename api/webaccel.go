@@ -77,6 +77,9 @@ func (api *WebAccelAPI) ReadCertificate(id string) (*sacloud.WebAccelCert, error
 	if err := json.Unmarshal(data, &res); err != nil {
 		return nil, err
 	}
+	if res.Certificate == nil {
+		return nil, nil
+	}
 	return res.Certificate.Current, nil
 }
 
@@ -84,7 +87,7 @@ func (api *WebAccelAPI) ReadCertificate(id string) (*sacloud.WebAccelCert, error
 func (api *WebAccelAPI) UpdateCertificate(id string, request *sacloud.WebAccelCertRequest) (*sacloud.WebAccelCertResponse, error) {
 	uri := fmt.Sprintf("%s/site/%s/certificate", api.getResourceURL(), id)
 
-	data, err := api.client.newRequest("POST", uri, map[string]interface{}{
+	data, err := api.client.newRequest("PUT", uri, map[string]interface{}{
 		"Certificate": request,
 	})
 	if err != nil {
