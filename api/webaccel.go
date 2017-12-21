@@ -125,3 +125,8 @@ func (api *WebAccelAPI) DeleteCache(urls ...string) (*WebAccelDeleteCacheRespons
 	}
 	return &res, nil
 }
+
+// SetEmpty 検索条件のリセット
+func (api *WebAccelAPI) SetEmpty() {
+	api.reset()
+}
