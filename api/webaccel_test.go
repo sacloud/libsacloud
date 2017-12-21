@@ -37,8 +37,8 @@ func TestWebAccelAPI(t *testing.T) {
 
 	// certificate
 	certRes, err := api.UpdateCertificate(site.ID, &sacloud.WebAccelCertRequest{
-		Certificate: strCert,
-		Key:         strPKey,
+		CertificateChain: strCert,
+		Key:              strPKey,
 	})
 
 	assert.NoError(t, err)

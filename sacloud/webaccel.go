@@ -79,8 +79,8 @@ type WebAccelCert struct {
 
 // WebAccelCertRequest ウェブアクセラレータ証明書API リクエスト
 type WebAccelCertRequest struct {
-	Certificate string
-	Key         string
+	CertificateChain string
+	Key              string
 }
 
 // WebAccelCertResponse ウェブアクセラレータ証明書API レスポンス
