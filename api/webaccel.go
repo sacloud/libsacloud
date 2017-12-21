@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/sacloud/libsacloud/sacloud"
-	"strings"
 )
 
 // WebAccelAPI ウェブアクセラレータAPI
@@ -90,11 +89,6 @@ func (api *WebAccelAPI) UpdateCertificate(id string, request *sacloud.WebAccelCe
 	})
 	if err != nil {
 		return nil, err
-	}
-
-	targetData := strings.Replace(strings.Replace(string(data), " ", "", -1), "\n", "", -1)
-	if targetData == `[]` {
-		return nil, nil
 	}
 
 	var res sacloud.WebAccelCertResponse

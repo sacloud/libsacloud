@@ -26,6 +26,39 @@ var testWebAccelSiteJSON = `
 }
 `
 
+var testWebAccelCertResponseValid = `
+{
+  "Certificate": {
+    "Current":{
+      "ID": "1",
+      "SiteID": "000000000001",
+      "CertificateChain": "-----BEGIN CERTIFICATE-----・・・・・",
+      "Key": "-----BEGIN RSA PRIVATE KEY-----・・・・・",
+      "CreatedAt": "2015-11-13T02:57:01+09:00",
+      "UpdatedAt": "2015-11-14T02:57:01+09:00"
+    },
+    "Old": [
+      {
+        "ID": "1",
+        "SiteID": "000000000001",
+        "CertificateChain": "-----BEGIN CERTIFICATE-----・・・・・",
+        "CreatedAt": "2015-11-13T02:57:01+09:00",
+        "UpdatedAt": "2015-11-14T02:57:01+09:00"
+      }
+    ]
+  },
+  "Success": true,
+  "is_ok": true
+}
+`
+var testWebAccelCertResponseNotExists = `
+{
+  "Certificate": [],
+  "Success": true,
+  "is_ok": true
+}
+`
+
 func TestMarshalWebAccelSiteJSON(t *testing.T) {
 	var site WebAccelSite
 
@@ -47,4 +80,23 @@ func TestMarshalWebAccelSiteJSON(t *testing.T) {
 	assert.NotEmpty(t, site.CertValidNotBefore)
 	assert.NotEmpty(t, site.CertValidNotAfter)
 
+}
+
+func TestMarshalWebAccelCertResponseJSON(t *testing.T) {
+	t.Run("Has cert response", func(t *testing.T) {
+		var res WebAccelCertResponse
+		err := json.Unmarshal([]byte(testWebAccelCertResponseValid), &res)
+
+		assert.NoError(t, err)
+		assert.NotNil(t, res.Certificate)
+		assert.NotNil(t, res.Certificate.Current)
+		assert.True(t, len(res.Certificate.Old) > 0)
+	})
+	t.Run("Not exists response", func(t *testing.T) {
+		var res WebAccelCertResponse
+		err := json.Unmarshal([]byte(testWebAccelCertResponseNotExists), &res)
+
+		assert.NoError(t, err)
+		assert.Nil(t, res.Certificate)
+	})
 }

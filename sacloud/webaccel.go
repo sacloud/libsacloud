@@ -1,5 +1,10 @@
 package sacloud
 
+import (
+	"encoding/json"
+	"strings"
+)
+
 // EWebAccelDomainType ウェブアクセラレータ ドメイン種別
 type EWebAccelDomainType string
 
@@ -80,12 +85,49 @@ type WebAccelCertRequest struct {
 
 // WebAccelCertResponse ウェブアクセラレータ証明書API レスポンス
 type WebAccelCertResponse struct {
-	Certificate WebAccelCertResponseBody
+	Certificate *WebAccelCertResponseBody `json:",omitempty"`
 	ResultFlagValue
 }
 
 // WebAccelCertResponseBody ウェブアクセラレータ証明書API レスポンスボディ
 type WebAccelCertResponseBody struct {
-	Current *WebAccelCert `json:",omitempty"`
-	Old     *WebAccelCert `json:",omitempty"`
+	Current *WebAccelCert   `json:",omitempty"`
+	Old     []*WebAccelCert `json:",omitempty"`
+}
+
+// UnmarshalJSON JSONアンマーシャル(配列、オブジェクトが混在するためここで対応)
+func (s *WebAccelCertResponse) UnmarshalJSON(data []byte) error {
+	tmp := &struct {
+		Certificate *WebAccelCertResponseBody `json:",omitempty"`
+		ResultFlagValue
+	}{}
+	if err := json.Unmarshal(data, &tmp); err != nil {
+		return err
+	}
+
+	if tmp.Certificate.Current != nil || len(tmp.Certificate.Old) > 0 {
+		s.Certificate = tmp.Certificate
+	}
+	s.ResultFlagValue = tmp.ResultFlagValue
+	return nil
+}
+
+// UnmarshalJSON JSONアンマーシャル(配列、オブジェクトが混在するためここで対応)
+func (s *WebAccelCertResponseBody) UnmarshalJSON(data []byte) error {
+	targetData := strings.Replace(strings.Replace(string(data), " ", "", -1), "\n", "", -1)
+	if targetData == `[]` {
+		return nil
+	}
+
+	tmp := &struct {
+		Current *WebAccelCert   `json:",omitempty"`
+		Old     []*WebAccelCert `json:",omitempty"`
+	}{}
+	if err := json.Unmarshal(data, &tmp); err != nil {
+		return err
+	}
+
+	s.Current = tmp.Current
+	s.Old = tmp.Old
+	return nil
 }

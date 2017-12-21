@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-func TestWebAccelAPI_Find(t *testing.T) {
+func TestWebAccelAPI(t *testing.T) {
 
 	api := client.WebAccel
 
