@@ -2,6 +2,8 @@ package sacloud
 
 import (
 	"encoding/json"
+	"fmt"
+	"strconv"
 	"strings"
 )
 
@@ -44,6 +46,31 @@ type WebAccelSite struct {
 	*propCreatedAt
 }
 
+// SetID ID 設定
+func (n *WebAccelSite) SetID(id int64) {
+	n.ID = fmt.Sprintf("%d", id)
+}
+
+// GetID ID 取得
+func (n *WebAccelSite) GetID() int64 {
+	if n == nil {
+		return -1
+	}
+	i, err := strconv.ParseInt(n.ID, 10, 64)
+	if err != nil {
+		return -1
+	}
+	return i
+}
+
+// GetStrID 文字列でID取得
+func (n *WebAccelSite) GetStrID() string {
+	if n == nil {
+		return ""
+	}
+	return n.ID
+}
+
 // WebAccelCert ウェブアクセラレータ証明書
 type WebAccelCert struct {
 	ID               string `json:",omitempty"`
@@ -75,6 +102,31 @@ type WebAccelCert struct {
 	} `json:",omitempty"`
 	DNSNames          []string `json:",omitempty"`
 	SHA256Fingerprint string   `json:",omitempty"`
+}
+
+// SetID ID 設定
+func (n *WebAccelCert) SetID(id int64) {
+	n.ID = fmt.Sprintf("%d", id)
+}
+
+// GetID ID 取得
+func (n *WebAccelCert) GetID() int64 {
+	if n == nil {
+		return -1
+	}
+	i, err := strconv.ParseInt(n.ID, 10, 64)
+	if err != nil {
+		return -1
+	}
+	return i
+}
+
+// GetStrID 文字列でID取得
+func (n *WebAccelCert) GetStrID() string {
+	if n == nil {
+		return ""
+	}
+	return n.ID
 }
 
 // WebAccelCertRequest ウェブアクセラレータ証明書API リクエスト

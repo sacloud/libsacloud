@@ -10,7 +10,6 @@ import (
 func TestWebAccelAPI(t *testing.T) {
 
 	api := client.WebAccel
-
 	// find
 	res, err := api.Find()
 	assert.NoError(t, err)
@@ -26,12 +25,19 @@ func TestWebAccelAPI(t *testing.T) {
 	site, err := api.Read(siteID)
 	assert.NoError(t, err)
 	assert.NotNil(t, site)
+	assert.Equal(t, siteID, site.ID)
 
 	strCert := os.Getenv("SAKURACLOUD_WEBACCEL_CERT")
 	strPKey := os.Getenv("SAKURACLOUD_WEBACCEL_KEY")
 
 	if strCert == "" || strPKey == "" {
 		t.Skip("SAKURACLOUD_WEBACCEL_CERT and SAKURACLOUD_WEBACCEL_KEY is not set. skip")
+		return
+	}
+
+	// check has current cert(cert API support update only)
+	if !site.HasCertificate {
+		t.Skip("Current certificate is empty(certificate API is supporting only update). skip")
 		return
 	}
 
@@ -47,6 +53,6 @@ func TestWebAccelAPI(t *testing.T) {
 	cert, err := api.ReadCertificate(site.ID)
 	assert.NoError(t, err)
 	assert.NotNil(t, cert)
-	assert.Equal(t, certRes.Certificate.Current.CertificateChain, cert.CertificateChain)
+	assert.Equal(t, certRes.Certificate.Current.CertificateChain, cert.Current.CertificateChain)
 
 }
