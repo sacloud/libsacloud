@@ -148,7 +148,7 @@ func (n *WebAccelCert) GetStrID() string {
 // WebAccelCertRequest ウェブアクセラレータ証明書API リクエスト
 type WebAccelCertRequest struct {
 	CertificateChain string
-	Key              string
+	Key              string `json:",omitempty"`
 }
 
 // WebAccelCertResponse ウェブアクセラレータ証明書API レスポンス
