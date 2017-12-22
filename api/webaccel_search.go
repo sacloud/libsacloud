@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/sacloud/libsacloud/sacloud"
+	"net/url"
 	"strings"
 )
 
@@ -68,7 +69,10 @@ func (api *WebAccelAPI) Find() (*sacloud.SearchResponse, error) {
 		filtered := []sacloud.WebAccelSite{}
 		for _, site := range res.WebAccelSites {
 			for _, name := range names {
-				if strings.Contains(site.Name, name) {
+
+				u, _ := url.Parse(name)
+
+				if strings.Contains(site.Name, u.Path) {
 					filtered = append(filtered, site)
 					break
 				}
