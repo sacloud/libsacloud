@@ -71,6 +71,22 @@ func (n *WebAccelSite) GetStrID() string {
 	return n.ID
 }
 
+// GetName 名称取得
+func (n *WebAccelSite) GetName() string {
+	if n == nil {
+		return ""
+	}
+	return n.Name
+}
+
+// SetName 名称取得
+func (n *WebAccelSite) SetName(name string) {
+	if n == nil {
+		return
+	}
+	n.Name = name
+}
+
 // WebAccelCert ウェブアクセラレータ証明書
 type WebAccelCert struct {
 	ID               string `json:",omitempty"`
