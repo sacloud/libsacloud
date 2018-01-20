@@ -53,13 +53,13 @@ func TestSiteToSiteInfoMarshalJSON(t *testing.T) {
 	err := json.Unmarshal([]byte(testSiteToSiteInfoJSON), &info)
 
 	assert.NoError(t, err)
-	assert.NotEmpty(t, info)
-	assert.NotEmpty(t, info.Details.Config)
+	assert.NotNil(t, info)
+	assert.NotNil(t, info.Details.Config)
 	assert.Len(t, info.Details.Config, 1)
 
 	err = json.Unmarshal([]byte(testSiteToSiteInfoNullJSON), &info)
 	assert.NoError(t, err)
-	assert.NotEmpty(t, info)
+	assert.NotNil(t, info)
 	assert.Len(t, info.Details.Config, 0)
 }
 
