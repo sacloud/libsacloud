@@ -251,6 +251,11 @@ func (api *DiskAPI) CanEditDisk(id int64) (bool, error) {
 		return false, nil
 	}
 
+	// SophosUTMであれば編集不可
+	if disk.HasTag("pkg-sophosutm") || disk.IsSophosUTM() {
+		return false, nil
+	}
+
 	// ソースアーカイブ/ソースディスクともに持っていない場合
 	if disk.SourceArchive == nil && disk.SourceDisk == nil {
 		//ブランクディスクがソース
@@ -293,6 +298,11 @@ func (api *DiskAPI) GetPublicArchiveIDFromAncestors(id int64) (int64, bool) {
 	// BundleInfoがあれば編集不可
 	if disk.BundleInfo != nil && disk.BundleInfo.HostClass == bundleInfoWindowsHostClass {
 		// Windows
+		return emptyID, false
+	}
+
+	// SophosUTMであれば編集不可
+	if disk.HasTag("pkg-sophosutm") || disk.IsSophosUTM() {
 		return emptyID, false
 	}
 
