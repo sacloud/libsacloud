@@ -77,7 +77,7 @@ func TestRetryableClient(t *testing.T) {
 		called := 0
 		s := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			called++
-			if called < 2 {
+			if called < 3 {
 				w.WriteHeader(503)
 				return
 			}
