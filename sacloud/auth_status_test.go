@@ -11,7 +11,7 @@ var testAuthStatusJSON = `
     "Account": {
         "Class": "account",
         "Code": "your_account_code",
-        "ID": "999999999999",
+        "ID": 999999999999,
         "Name": "your_account_name"
     },
     "AuthClass": "account",
