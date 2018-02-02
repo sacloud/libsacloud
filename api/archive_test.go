@@ -321,6 +321,7 @@ func TestArchiveAPI_CanDiskEdit(t *testing.T) {
 		{label: "CoreOS", expect: true, f: api.FindLatestStableCoreOS},
 		{label: "RancherOS", expect: true, f: api.FindLatestStableRancherOS},
 		{label: "Kusanagi", expect: true, f: api.FindLatestStableKusanagi},
+		{label: "SophosUTM", expect: false, f: api.FindLatestStableSophosUTM}, // Sophos UTMはディスクの修正不可
 		{label: "FreeBSD", expect: true, f: api.FindLatestStableFreeBSD},
 		{label: "Windows2012", expect: false, f: api.FindLatestStableWindows2012},
 		{label: "Windows2012-RDS", expect: false, f: api.FindLatestStableWindows2012RDS},
