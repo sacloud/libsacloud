@@ -247,9 +247,10 @@ func TestCreateAndAsyncWait(t *testing.T) {
 	for {
 		select {
 		case a := <-progress:
-			t.Logf("Copying...\t %d MB / %d MB", a.GetMigratedMB(), a.GetSizeMB())
+
+			t.Logf("Copying...\t %d MB / %d MB", a.(*sacloud.Archive).GetMigratedMB(), a.(*sacloud.Archive).GetSizeMB())
 		case a := <-complete:
-			t.Logf("Done...\t %d MB / %d MB", a.GetMigratedMB(), a.GetSizeMB())
+			t.Logf("Done...\t %d MB / %d MB", a.(*sacloud.Archive).GetMigratedMB(), a.(*sacloud.Archive).GetSizeMB())
 			//t.Logf("Trace:%#v", a)
 			return
 		case e := <-errChan:

@@ -340,7 +340,7 @@ func TestDatabaseWaitForCopy(t *testing.T) {
 	for {
 		select {
 		case d := <-progress:
-			t.Logf("Database %s... ", d.Availability)
+			t.Logf("Database %s... ", d.(*sacloud.Database).Availability)
 		case <-complete:
 			t.Logf("Done. Now waiting for up.")
 			api.SleepUntilUp(id, client.DefaultTimeoutDuration)

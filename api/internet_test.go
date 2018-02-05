@@ -28,7 +28,7 @@ func TestInternetCRUD(t *testing.T) {
 
 	id := item.ID
 
-	err = api.SleepWhileCreating(id, 120*time.Second)
+	err = api.SleepWhileCreating(id, 5*time.Minute)
 	if err != nil {
 		assert.Fail(t, fmt.Sprintf("Timeout: Can't read /internet/%d", id))
 	}
