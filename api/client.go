@@ -4,19 +4,15 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/sacloud/libsacloud"
-	"github.com/sacloud/libsacloud/sacloud"
 	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"strings"
 	"time"
-)
 
-var (
-	// SakuraCloudAPIRoot APIリクエスト送信先ルートURL(末尾にスラッシュを含まない)
-	SakuraCloudAPIRoot = "https://secure.sakura.ad.jp/cloud/zone"
+	"github.com/sacloud/libsacloud"
+	"github.com/sacloud/libsacloud/sacloud"
 )
 
 // Client APIクライアント
@@ -44,6 +40,8 @@ type Client struct {
 	RetryMax int
 	// 503エラー時のリトライ待ち時間
 	RetryInterval time.Duration
+	// APIリクエスト送信先ルートURL(末尾にスラッシュを含まない)
+	SakuraCloudAPIRoot string
 }
 
 // NewClient APIクライアント作成
@@ -58,6 +56,7 @@ func NewClient(token, tokenSecret, zone string) *Client {
 		AcceptLanguage:         "",
 		RetryMax:               0,
 		RetryInterval:          5 * time.Second,
+		SakuraCloudAPIRoot:     "https://secure.sakura.ad.jp/cloud/zone",
 	}
 	c.API = newAPI(c)
 	return c
@@ -81,7 +80,7 @@ func (c *Client) Clone() *Client {
 }
 
 func (c *Client) getEndpoint() string {
-	return fmt.Sprintf("%s/%s", SakuraCloudAPIRoot, c.Zone)
+	return fmt.Sprintf("%s/%s", c.SakuraCloudAPIRoot, c.Zone)
 }
 
 func (c *Client) isOkStatus(code int) bool {
