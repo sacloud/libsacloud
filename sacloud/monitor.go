@@ -22,6 +22,8 @@ type MonitorValue struct {
 	UsedDisk2Size   *float64 `json:"Used-Disk2-Size,omitempty"`   // 使用済みディスクサイズ
 	FreeDiskSize    *float64 `json:"Free-Disk-Size,omitempty"`    // 空きディスクサイズ(NFS)
 	ResponseTimeSec *float64 `json:"responsetimesec,omitempty"`   // レスポンスタイム(シンプル監視)
+	UplinkBPS       *float64 `json:"UplinkBps,omitempty"`         // 上り方向トラフィック
+	DownlinkBPS     *float64 `json:"DownlinkBps"`                 // 下り方向トラフィック
 }
 
 // ResourceMonitorRequest アクティビティモニター取得リクエスト
@@ -197,6 +199,16 @@ func (m *MonitorValues) FlattenResponseTimeSecValue() ([]FlatMonitorValue, error
 	return m.flattenValue(func(v *MonitorValue) *float64 { return v.ResponseTimeSec })
 }
 
+// FlattenUplinkBPSValue フラット化 上り方向トラフィック(セキュアモバイルSIM)
+func (m *MonitorValues) FlattenUplinkBPSValue() ([]FlatMonitorValue, error) {
+	return m.flattenValue(func(v *MonitorValue) *float64 { return v.UplinkBPS })
+}
+
+// FlattenDownlinkBPSValue フラット化 下り方向トライフィック(セキュアモバイルSIM)
+func (m *MonitorValues) FlattenDownlinkBPSValue() ([]FlatMonitorValue, error) {
+	return m.flattenValue(func(v *MonitorValue) *float64 { return v.DownlinkBPS })
+}
+
 func (m *MonitorValues) flattenValue(f func(*MonitorValue) *float64) ([]FlatMonitorValue, error) {
 	var res []FlatMonitorValue
 
@@ -229,6 +241,7 @@ func (m *MonitorValue) HasValue() bool {
 		m.TotalDisk1Size, m.UsedDisk1Size,
 		m.TotalDisk2Size, m.UsedDisk2Size,
 		m.FreeDiskSize, m.ResponseTimeSec,
+		m.UplinkBPS, m.DownlinkBPS,
 	}
 	for _, v := range values {
 		if v != nil {
