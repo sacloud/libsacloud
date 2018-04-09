@@ -225,6 +225,24 @@ func (api *MobileGatewayAPI) AsyncSleepWhileCopying(id int64, timeout time.Durat
 	return poll(handler, timeout)
 }
 
+// ConnectToSwitch 指定のインデックス位置のNICをスイッチへ接続
+func (api *MobileGatewayAPI) ConnectToSwitch(id int64, switchID int64) (bool, error) {
+	var (
+		method = "PUT"
+		uri    = fmt.Sprintf("%s/%d/interface/%d/to/switch/%d", api.getResourceURL(), id, 1, switchID)
+	)
+	return api.modify(method, uri, nil)
+}
+
+// DisconnectFromSwitch 指定のインデックス位置のNICをスイッチから切断
+func (api *MobileGatewayAPI) DisconnectFromSwitch(id int64) (bool, error) {
+	var (
+		method = "DELETE"
+		uri    = fmt.Sprintf("%s/%d/interface/%d/to/switch", api.getResourceURL(), id, 1)
+	)
+	return api.modify(method, uri, nil)
+}
+
 // SetDNS DNSサーバ設定
 func (api *MobileGatewayAPI) SetDNS(id int64, dns *sacloud.MobileGatewayResolver) (bool, error) {
 	var (

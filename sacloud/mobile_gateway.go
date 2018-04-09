@@ -96,6 +96,35 @@ func CreateNewMobileGateway(values *CreateMobileGatewayValue, setting *MobileGat
 	return lb, nil
 }
 
+// SetPrivateInterface プライベート側NICの接続
+func (m *MobileGateway) SetPrivateInterface(ip string, nwMaskLen int) {
+	if len(m.Settings.MobileGateway.Interfaces) > 1 {
+		m.Settings.MobileGateway.Interfaces[1].IPAddress = []string{ip}
+		m.Settings.MobileGateway.Interfaces[1].NetworkMaskLen = nwMaskLen
+	} else {
+		nic := &MGWInterface{
+			IPAddress:      []string{ip},
+			NetworkMaskLen: nwMaskLen,
+		}
+		m.Settings.MobileGateway.Interfaces = append(m.Settings.MobileGateway.Interfaces, nic)
+	}
+}
+
+// ClearPrivateInterface プライベート側NICの切断
+func (m *MobileGateway) ClearPrivateInterface() {
+	m.Settings.MobileGateway.Interfaces = []*MGWInterface{nil}
+}
+
+// NewMobileGatewayResolver DNS登録用パラメータ作成
+func NewMobileGatewayResolver(dns1, dns2 string) *MobileGatewayResolver {
+	return &MobileGatewayResolver{
+		SimGroup: &MobileGatewaySIMGroup{
+			DNS1: dns1,
+			DNS2: dns2,
+		},
+	}
+}
+
 // MobileGatewayResolver DNS登録用パラメータ
 type MobileGatewayResolver struct {
 	SimGroup *MobileGatewaySIMGroup `json:"sim_group,omitempty"`
