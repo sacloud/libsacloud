@@ -139,6 +139,17 @@ var testNFSMonitorJSON = `
     }
 `
 
+var testEmptyMonitorJSON = `
+{
+	"Data": {	
+		"2017-09-07T12:20:00+09:00": [],
+    	"2017-09-07T12:25:00+09:00": []
+    },
+    "is_ok": true
+
+}
+`
+
 var testResourceMonitorResponseJSON = `
 {
     "Data": ` + testCPUResourceMonitorJSON + `,
@@ -155,6 +166,16 @@ func TestMarshalResourceMonitorJSON(t *testing.T) {
 }
 
 func TestMarshalCPUResourceMonitorJSON(t *testing.T) {
+	var m ResourceMonitorResponse
+	err := json.Unmarshal([]byte(testEmptyMonitorJSON), &m)
+
+	assert.NoError(t, err)
+	assert.NotEmpty(t, m)
+	assert.NotEmpty(t, m.Data)
+
+}
+
+func TestMarshalEmptyMonitorJSON(t *testing.T) {
 	var m ResourceMonitorResponse
 	err := json.Unmarshal([]byte(testResourceMonitorResponseJSON), &m)
 
