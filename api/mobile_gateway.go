@@ -293,3 +293,18 @@ func (api *MobileGatewayAPI) DeleteSIM(id int64, simID int64) (bool, error) {
 	)
 	return api.modify(method, uri, nil)
 }
+
+// Logs セッションログ取得(複数SIM)
+func (api *MobileGatewayAPI) Logs(id int64, body interface{}) ([]sacloud.SIMLog, error) {
+	var (
+		method = "GET"
+		uri    = fmt.Sprintf("%s/%d/mobilegateway/sessionlog", api.getResourceURL(), id)
+	)
+
+	res := &simLogResponse{}
+	err := api.baseAPI.request(method, uri, body, res)
+	if err != nil {
+		return nil, err
+	}
+	return res.Logs, nil
+}
