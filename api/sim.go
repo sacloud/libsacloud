@@ -206,7 +206,7 @@ func (api *SIMAPI) Logs(id int64, body interface{}) ([]sacloud.SIMLog, error) {
 func (api *SIMAPI) Monitor(id int64, body *sacloud.ResourceMonitorRequest) (*sacloud.MonitorValues, error) {
 	var (
 		method = "GET"
-		uri    = fmt.Sprintf("%s/%d/metrics", api.getResourceURL(), id)
+		uri    = fmt.Sprintf("%s/%d/sim/metrics", api.getResourceURL(), id)
 	)
 	res := &sacloud.ResourceMonitorResponse{}
 	err := api.baseAPI.request(method, uri, body, res)
