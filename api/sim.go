@@ -182,7 +182,7 @@ func (api *SIMAPI) IMEILock(id int64, imei string) (bool, error) {
 func (api *SIMAPI) IMEIUnlock(id int64) (bool, error) {
 	var (
 		method = "DELETE"
-		uri    = fmt.Sprintf("%s/%d/sim/imei", api.getResourceURL(), id)
+		uri    = fmt.Sprintf("%s/%d/sim/imeilock", api.getResourceURL(), id)
 	)
 	return api.modify(method, uri, nil)
 }
