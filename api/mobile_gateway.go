@@ -243,6 +243,24 @@ func (api *MobileGatewayAPI) DisconnectFromSwitch(id int64) (bool, error) {
 	return api.modify(method, uri, nil)
 }
 
+// GetDNS DNSサーバ設定 取得
+func (api *MobileGatewayAPI) GetDNS(id int64) (*sacloud.MobileGatewayResolver, error) {
+	var (
+		method = "GET"
+		uri    = fmt.Sprintf("%s/%d/mobilegateway/dnsresolver", api.getResourceURL(), id)
+	)
+
+	data, err := api.client.newRequest(method, uri, nil)
+	if err != nil {
+		return nil, err
+	}
+	var res sacloud.MobileGatewayResolver
+	if err := json.Unmarshal(data, &res); err != nil {
+		return nil, err
+	}
+	return &res, err
+}
+
 // SetDNS DNSサーバ設定
 func (api *MobileGatewayAPI) SetDNS(id int64, dns *sacloud.MobileGatewayResolver) (bool, error) {
 	var (
