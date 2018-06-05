@@ -101,7 +101,7 @@ loop:
 	assert.True(t, status.IsUp())
 
 	// [HACK] DB起動直後のバックアップ取得を行うと正常終了したのにHistoryが0件になることがあるため、念のため少し待つ
-	time.Sleep(1 * time.Minute)
+	time.Sleep(3 * time.Minute)
 
 	// backup
 	res, err := api.Backup(id)
