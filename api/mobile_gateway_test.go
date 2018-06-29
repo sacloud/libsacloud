@@ -143,6 +143,47 @@ func TestMobileGatewayWithSIM(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Len(t, sims, 1)
 
+	// Set SIM Route
+	simRoutes := &sacloud.MobileGatewaySIMRoutes{
+		SIMRoutes: []*sacloud.MobileGatewaySIMRoute{
+			{
+				ResourceID: sim.GetStrID(),
+				Prefix:     "192.168.10.0/24",
+			},
+		},
+	}
+	_, err = api.SetSIMRoutes(id, simRoutes)
+	assert.NoError(t, err)
+
+	// List SIMRoute
+	routes, err := api.GetSIMRoutes(id)
+	assert.NotNil(t, simRoutes)
+	assert.NoError(t, err)
+	assert.Len(t, routes, 1)
+	assert.Equal(t, sim.GetStrID(), routes[0].ResourceID)
+	assert.Equal(t, "192.168.10.0/24", routes[0].Prefix)
+
+	// Delete(all) SIMRoute
+	_, err = api.DeleteSIMRoutes(id)
+	assert.NoError(t, err)
+
+	// add SIM Route
+	added, err := api.AddSIMRoute(id, sim.ID, "192.168.10.0/24")
+	assert.True(t, added)
+	assert.NoError(t, err)
+	// List SIMRoute
+	routes, err = api.GetSIMRoutes(id)
+	assert.NotNil(t, simRoutes)
+	assert.NoError(t, err)
+	assert.Len(t, routes, 1)
+	assert.Equal(t, sim.GetStrID(), routes[0].ResourceID)
+	assert.Equal(t, "192.168.10.0/24", routes[0].Prefix)
+
+	// Delete(by value) SIMRoute
+	deleted, err := api.DeleteSIMRoute(id, sim.ID, "192.168.10.0/24")
+	assert.True(t, deleted)
+	assert.NoError(t, err)
+
 	// Delete SIM
 	_, err = api.DeleteSIM(id, sim.ID)
 	assert.NoError(t, err)

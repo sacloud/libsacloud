@@ -2,6 +2,7 @@ package sacloud
 
 import (
 	"encoding/json"
+	"fmt"
 	"strings"
 )
 
@@ -159,4 +160,50 @@ func (m *MobileGatewaySIMGroup) UnmarshalJSON(data []byte) error {
 type MobileGatewaySIMGroup struct {
 	DNS1 string `json:"dns_1,omitempty"`
 	DNS2 string `json:"dns_2,omitempty"`
+}
+
+// MobileGatewaySIMRoute SIルート
+type MobileGatewaySIMRoute struct {
+	ICCID      string `json:"iccid,omitempty"`
+	Prefix     string `json:"prefix,omitempty"`
+	ResourceID string `json:"resource_id,omitempty"`
+}
+
+// MobileGatewaySIMRoutes SIMルート一覧
+type MobileGatewaySIMRoutes struct {
+	SIMRoutes []*MobileGatewaySIMRoute `json:"sim_routes"`
+}
+
+// AddSIMRoute SIMルート追加
+func (m *MobileGatewaySIMRoutes) AddSIMRoute(simID int64, prefix string) bool {
+	var exists bool
+	for _, route := range m.SIMRoutes {
+		if route.ResourceID == fmt.Sprintf("%d", simID) && route.Prefix == prefix {
+			exists = true
+			break
+		}
+	}
+	if !exists {
+		m.SIMRoutes = append(m.SIMRoutes, &MobileGatewaySIMRoute{
+			ResourceID: fmt.Sprintf("%d", simID),
+			Prefix:     prefix,
+		})
+	}
+	return !exists
+}
+
+// DeleteSIMRoute SIMルート削除
+func (m *MobileGatewaySIMRoutes) DeleteSIMRoute(simID int64, prefix string) bool {
+	routes := []*MobileGatewaySIMRoute{} // nolint (JSONヘのMarshal時に要素が0の場合にNULLではなく[]とするため)
+	var exists bool
+
+	for _, route := range m.SIMRoutes {
+		if route.ResourceID == fmt.Sprintf("%d", simID) && route.Prefix == prefix {
+			exists = true
+		} else {
+			routes = append(routes, route)
+		}
+	}
+	m.SIMRoutes = routes
+	return exists
 }
