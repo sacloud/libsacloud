@@ -184,7 +184,7 @@ func (m *MobileGateway) HasSetting() bool {
 }
 
 // HasStaticRoutes スタティックルートを保持しているか
-func (m *MobileGateway) asStaticRoutes() bool {
+func (m *MobileGateway) HasStaticRoutes() bool {
 	return m.HasSetting() && m.Settings.MobileGateway.HasStaticRoutes()
 }
 
