@@ -285,8 +285,8 @@ func (m *MobileGatewaySIMRoutes) DeleteSIMRouteAt(index int) bool {
 
 	if index < len(m.SIMRoutes) {
 		s := m.SIMRoutes[index]
-		if simID, err := strconv.ParseInt(s.ResourceID, 10, 64); err != nil {
-			m.DeleteSIMRoute(simID, s.Prefix)
+		if simID, err := strconv.ParseInt(s.ResourceID, 10, 64); err == nil {
+			return m.DeleteSIMRoute(simID, s.Prefix)
 		}
 	}
 	return false
