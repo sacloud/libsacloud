@@ -322,8 +322,8 @@ func (api *MobileGatewayAPI) AddSIMRoute(id int64, simID int64, prefix string) (
 	param := &sacloud.MobileGatewaySIMRoutes{
 		SIMRoutes: routes,
 	}
-	added := param.AddSIMRoute(simID, prefix)
-	if !added {
+	index, added := param.AddSIMRoute(simID, prefix)
+	if index < 0 || added == nil {
 		return false, nil
 	}
 
