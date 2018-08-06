@@ -163,10 +163,10 @@ loop:
 			// FailedになったばかりだとDelete APIが失敗する(コピー進行中など)場合があるため、
 			// 任意の回数リトライ&待機を行う
 			for i := 0; i < r.DeleteRetryCount; i++ {
+				time.Sleep(r.DeleteRetryInterval)
 				if err = r.Delete(resourceID); err == nil {
 					break
 				}
-				time.Sleep(r.DeleteRetryInterval)
 			}
 
 			return nil, nil
