@@ -69,85 +69,43 @@ type hasFailed interface {
 
 // Setup リソースのビルドを行う。必要に応じてリトライ(リソースの削除&再作成)を行う。
 func (r *RetryableSetup) Setup() (interface{}, error) {
-
-	max := r.RetryCount
-	if max == 0 {
-		max = DefaultMaxRetryCount
-	}
-	if r.DeleteRetryCount == 0 {
-		r.DeleteRetryCount = DefaultDeleteRetryCount
-	}
-	if r.DeleteRetryInterval == 0 {
-		r.DeleteRetryInterval = DefaultDeleteWaitInterval
-	}
+	r.init()
 
 	var created interface{}
-	for cur := 0; cur < max; cur++ {
+	for cur := 0; cur < r.RetryCount; cur++ {
 
-		target, err := r.Create()
+		// リソース作成
+		target, err := r.createResource()
 		if err != nil {
 			return nil, err
 		}
-
 		id := target.GetID()
 
 		// コピー待ち
 		if r.AsyncWaitForCopy != nil {
-			//wait
-			compChan, progChan, errChan := r.AsyncWaitForCopy(id)
-			var state interface{}
-			var err error
-
-		loop:
-			for {
-				select {
-				case v := <-compChan:
-					state = v
-					break loop
-				case v := <-progChan:
-					state = v
-				case e := <-errChan:
-					err = e
-					break loop
-				}
-			}
-
-			if state != nil {
-				// Availabilityを持ち、Failedになっていた場合はリソースを削除してリトライ
-				if f, ok := state.(hasFailed); ok && f.IsFailed() {
-
-					// FailedになったばかりだとDelete APIが失敗する(コピー進行中など)場合があるため、
-					// 任意の回数リトライ&待機を行う
-					for i := 0; i < r.DeleteRetryCount; i++ {
-						if err = r.Delete(id); err == nil {
-							break
-						}
-						time.Sleep(r.DeleteRetryInterval)
-					}
-
-					continue
-				}
-
-				created = state
-			}
+			// コピー待ち、Failedになった場合はリソース削除
+			state, err := r.waitForCopyWithCleanup(id)
 			if err != nil {
 				return nil, err
+			}
+			if state != nil {
+				created = state
 			}
 		} else {
 			created = target
 		}
 
+		// 起動前の設定など
+		if err := r.provisionBeforeUp(created); err != nil {
+			return nil, err
+		}
+
+		// 起動待ち
+		if err := r.waitForUp(created); err != nil {
+			return nil, err
+		}
+
 		if created != nil {
-			if r.ProvisionBeforeUp != nil {
-				if err = r.ProvisionBeforeUp(created); err != nil {
-					return nil, err
-				}
-			}
-			if r.WaitForUp != nil {
-				if err = r.WaitForUp(id); err != nil {
-					return nil, err
-				}
-			}
 			break
 		}
 	}
@@ -156,4 +114,88 @@ func (r *RetryableSetup) Setup() (interface{}, error) {
 		return nil, MaxRetryCountExceededError(fmt.Errorf("max retry count exceeded"))
 	}
 	return created, nil
+}
+
+func (r *RetryableSetup) init() {
+	if r.RetryCount <= 0 {
+		r.RetryCount = DefaultMaxRetryCount
+	}
+	if r.DeleteRetryCount <= 0 {
+		r.DeleteRetryCount = DefaultDeleteRetryCount
+	}
+	if r.DeleteRetryInterval <= 0 {
+		r.DeleteRetryInterval = DefaultDeleteWaitInterval
+	}
+}
+
+func (r *RetryableSetup) createResource() (sacloud.ResourceIDHolder, error) {
+	if r.Create == nil {
+		return nil, fmt.Errorf("create func is required")
+	}
+	return r.Create()
+}
+
+func (r *RetryableSetup) waitForCopyWithCleanup(resourceID int64) (interface{}, error) {
+
+	//wait
+	compChan, progChan, errChan := r.AsyncWaitForCopy(resourceID)
+	var state interface{}
+	var err error
+
+loop:
+	for {
+		select {
+		case v := <-compChan:
+			state = v
+			break loop
+		case v := <-progChan:
+			state = v
+		case e := <-errChan:
+			err = e
+			break loop
+		}
+	}
+
+	if state != nil {
+		// Availabilityを持ち、Failedになっていた場合はリソースを削除してリトライ
+		if f, ok := state.(hasFailed); ok && f.IsFailed() {
+
+			// FailedになったばかりだとDelete APIが失敗する(コピー進行中など)場合があるため、
+			// 任意の回数リトライ&待機を行う
+			for i := 0; i < r.DeleteRetryCount; i++ {
+				if err = r.Delete(resourceID); err == nil {
+					break
+				}
+				time.Sleep(r.DeleteRetryInterval)
+			}
+
+			return nil, nil
+		}
+
+		return state, nil
+	}
+	if err != nil {
+		return nil, err
+	}
+
+	return nil, nil
+}
+
+func (r *RetryableSetup) provisionBeforeUp(created interface{}) error {
+	if r.ProvisionBeforeUp != nil && created != nil {
+		if err := r.ProvisionBeforeUp(created); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func (r *RetryableSetup) waitForUp(created interface{}) error {
+	if r.WaitForUp != nil && created != nil {
+		resource := created.(sacloud.ResourceIDHolder)
+		if err := r.WaitForUp(resource.GetID()); err != nil {
+			return err
+		}
+	}
+	return nil
 }
