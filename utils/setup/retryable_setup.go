@@ -13,6 +13,12 @@ type MaxRetryCountExceededError error
 // DefaultMaxRetryCount デフォルトリトライ最大数
 const DefaultMaxRetryCount = 3
 
+// DefaultProvisioningRetryCount リソースごとのプロビジョニングAPI呼び出しのリトライ最大数
+const DefaultProvisioningRetryCount = 10
+
+// DefaultProvisioningWaitInterval リソースごとのプロビジョニングAPI呼び出しのリトライ間隔
+const DefaultProvisioningWaitInterval = 5 * time.Second
+
 // DefaultDeleteRetryCount リソースごとの削除API呼び出しのリトライ最大数
 const DefaultDeleteRetryCount = 10
 
@@ -57,6 +63,10 @@ type RetryableSetup struct {
 	WaitForUp WaitForUpFunc
 	// RetryCount リトライ回数
 	RetryCount int
+	// ProvisioningRetryCount プロビジョニングリトライ回数
+	ProvisioningRetryCount int
+	// ProvisioningRetryInterval プロビジョニングリトライ間隔
+	ProvisioningRetryInterval time.Duration
 	// DeleteRetryCount 削除リトライ回数
 	DeleteRetryCount int
 	// DeleteRetryInterval 削除リトライ間隔
@@ -126,6 +136,12 @@ func (r *RetryableSetup) init() {
 	if r.DeleteRetryInterval <= 0 {
 		r.DeleteRetryInterval = DefaultDeleteWaitInterval
 	}
+	if r.ProvisioningRetryCount <= 0 {
+		r.ProvisioningRetryCount = DefaultProvisioningRetryCount
+	}
+	if r.ProvisioningRetryInterval <= 0 {
+		r.ProvisioningRetryInterval = DefaultProvisioningWaitInterval
+	}
 }
 
 func (r *RetryableSetup) createResource() (sacloud.ResourceIDHolder, error) {
@@ -183,9 +199,14 @@ loop:
 
 func (r *RetryableSetup) provisionBeforeUp(id int64, created interface{}) error {
 	if r.ProvisionBeforeUp != nil && created != nil {
-		if err := r.ProvisionBeforeUp(id, created); err != nil {
-			return err
+		var err error
+		for i := 0; i < r.ProvisioningRetryCount; i++ {
+			time.Sleep(r.ProvisioningRetryInterval)
+			if err = r.ProvisionBeforeUp(id, created); err == nil {
+				break
+			}
 		}
+		return err
 	}
 	return nil
 }
