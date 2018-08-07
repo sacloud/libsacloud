@@ -31,7 +31,7 @@ type AsyncWaitForCopyFunc func(id int64) (
 //
 // リソース作成後に起動が行われないリソース(VPCルータなど)向け。
 // 必要であればこの中でリソース起動処理を行う。
-type ProvisionBeforeUpFunc func(target interface{}) error
+type ProvisionBeforeUpFunc func(id int64, target interface{}) error
 
 // DeleteFunc リソース削除関数。
 //
@@ -96,12 +96,12 @@ func (r *RetryableSetup) Setup() (interface{}, error) {
 		}
 
 		// 起動前の設定など
-		if err := r.provisionBeforeUp(created); err != nil {
+		if err := r.provisionBeforeUp(id, created); err != nil {
 			return nil, err
 		}
 
 		// 起動待ち
-		if err := r.waitForUp(created); err != nil {
+		if err := r.waitForUp(id, created); err != nil {
 			return nil, err
 		}
 
@@ -181,19 +181,18 @@ loop:
 	return nil, nil
 }
 
-func (r *RetryableSetup) provisionBeforeUp(created interface{}) error {
+func (r *RetryableSetup) provisionBeforeUp(id int64, created interface{}) error {
 	if r.ProvisionBeforeUp != nil && created != nil {
-		if err := r.ProvisionBeforeUp(created); err != nil {
+		if err := r.ProvisionBeforeUp(id, created); err != nil {
 			return err
 		}
 	}
 	return nil
 }
 
-func (r *RetryableSetup) waitForUp(created interface{}) error {
+func (r *RetryableSetup) waitForUp(id int64, created interface{}) error {
 	if r.WaitForUp != nil && created != nil {
-		resource := created.(sacloud.ResourceIDHolder)
-		if err := r.WaitForUp(resource.GetID()); err != nil {
+		if err := r.WaitForUp(id); err != nil {
 			return err
 		}
 	}
