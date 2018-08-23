@@ -23,6 +23,7 @@ var (
                     "Port": "80",
                     "DelayLoop": "1000",
                     "SorryServer": "",
+                    "Description": "description",
                     "Servers": [
                        {
                             "IPAddress": "192.168.200.51",
@@ -191,6 +192,7 @@ func TestMarshalLoadBalancerJSON(t *testing.T) {
 
 	assert.NotEmpty(t, lb.Settings.LoadBalancer)
 	assert.NotEmpty(t, lb.Settings.LoadBalancer[0].VirtualIPAddress)
+	assert.NotEmpty(t, lb.Settings.LoadBalancer[0].Description)
 
 	assert.NotEmpty(t, lb.Settings.LoadBalancer[0].Servers)
 	assert.NotEmpty(t, lb.Settings.LoadBalancer[0].Servers[0])
