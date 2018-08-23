@@ -21,7 +21,7 @@ func TestSimpleMonitorCRUD(t *testing.T) {
 	newItem.Description = "before"
 	newItem.SetDelayLoop(60)
 	newItem.EnableNotifyEmail(true)
-	newItem.SetHealthCheckHTTP("80", "/index.html", "200", "www.libsacloud.com")
+	newItem.SetHealthCheckHTTP("80", "/index.html", "200", "www.libsacloud.com", "", "")
 
 	item, err := api.Create(newItem)
 
