@@ -282,6 +282,8 @@ func TestArchiveAPI_FindStableOSs(t *testing.T) {
 		{label: "RancherOS", f: api.FindLatestStableRancherOS},
 		{label: "Kusanagi", f: api.FindLatestStableKusanagi},
 		{label: "FreeBSD", f: api.FindLatestStableFreeBSD},
+		{label: "Netwiser", f: api.FindLatestStableNetwiser},
+		{label: "OPNsense", f: api.FindLatestStableOPNsense},
 		{label: "Windows2012", f: api.FindLatestStableWindows2012},
 		{label: "Windows2012-RDS", f: api.FindLatestStableWindows2012RDS},
 		{label: "Windows2012-RDS-Office", f: api.FindLatestStableWindows2012RDSOffice},
@@ -326,6 +328,8 @@ func TestArchiveAPI_CanDiskEdit(t *testing.T) {
 		{label: "Kusanagi", expect: true, f: api.FindLatestStableKusanagi},
 		{label: "SophosUTM", expect: false, f: api.FindLatestStableSophosUTM}, // Sophos UTMはディスクの修正不可
 		{label: "FreeBSD", expect: true, f: api.FindLatestStableFreeBSD},
+		{label: "Netwiser", expect: false, f: api.FindLatestStableNetwiser},
+		{label: "OPNsense", expect: true, f: api.FindLatestStableOPNsense},
 		{label: "Windows2012", expect: false, f: api.FindLatestStableWindows2012},
 		{label: "Windows2012-RDS", expect: false, f: api.FindLatestStableWindows2012RDS},
 		{label: "Windows2012-RDS-Office", expect: false, f: api.FindLatestStableWindows2012RDSOffice},
