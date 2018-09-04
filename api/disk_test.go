@@ -18,6 +18,10 @@ func TestCRUDByDiskAPI(t *testing.T) {
 	disk := diskAPI.New()
 	disk.Name = testDiskName
 
+	// HACK 現状ではディスクの存在チェックが行われていないため、ここでテスト可能。
+	// 今後仕様変更などの際は切り出してテストする
+	disk.DistantFrom = []int64{111111111111}
+
 	res, err := diskAPI.Create(disk)
 	assert.NoError(t, err)
 	assert.NotEmpty(t, res)
@@ -26,7 +30,7 @@ func TestCRUDByDiskAPI(t *testing.T) {
 	diskID := res.ID
 
 	//wait
-	err = diskAPI.SleepWhileCopying(diskID, 5+time.Minute) //日によって時間がかかることもあるため5分待つ
+	err = diskAPI.SleepWhileCopying(diskID, 5*time.Minute) //日によって時間がかかることもあるため5分待つ
 	assert.NoError(t, err)                                 //timeoutしたらerrに値が格納されている
 
 	//READ
