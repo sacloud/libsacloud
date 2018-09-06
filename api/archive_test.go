@@ -3,6 +3,8 @@ package api
 import (
 	"github.com/sacloud/libsacloud/sacloud"
 	"github.com/stretchr/testify/assert"
+	"os"
+	"strconv"
 	"testing"
 	"time"
 )
@@ -355,6 +357,38 @@ func TestArchiveAPI_CanDiskEdit(t *testing.T) {
 		t.Logf("Zone:%s / %s: CanDiskEdit: %t", client.Zone, ts.label, res)
 	}
 
+}
+
+func TestCreateFromArchive(t *testing.T) {
+	defer initArchive()()
+
+	strZoneID := os.Getenv("LIBSACLOUD_SOURCE_ARCHIVE_ZONE_ID")
+	strSourceArchiveID := os.Getenv("LIBSACLOUD_SOURCE_ARCHIVE_ID")
+	zoneID, _ := strconv.ParseInt(strZoneID, 10, 64)
+	sourceArchiveID, _ := strconv.ParseInt(strSourceArchiveID, 10, 64)
+
+	if strZoneID == "" || strSourceArchiveID == "" ||
+		zoneID == 0 || sourceArchiveID == 0 {
+		t.Skipf("environment variable %s is not set. skip",
+			[]string{"LIBSACLOUD_SOURCE_ARCHIVE_ZONE_ID", "LIBSACLOUD_SOURCE_ARCHIVE_ID"})
+	}
+
+	archiveAPI := client.Archive
+
+	//CREATE
+	newArchive := archiveAPI.New()
+	newArchive.Name = testArchiveName
+	newArchive.Description = "hoge"
+
+	archive, err := archiveAPI.CreateFromArchive(zoneID, sourceArchiveID, newArchive)
+
+	assert.NoError(t, err)
+	assert.NotEmpty(t, archive)
+
+	err = archiveAPI.SleepWhileCopying(archive.ID, client.DefaultTimeoutDuration)
+	assert.NoError(t, err)
+
+	archiveAPI.Delete(archive.ID)
 }
 
 func initArchive() func() {

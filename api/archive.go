@@ -390,3 +390,27 @@ func (api *ArchiveAPI) findByOSTags(tags []string, filterMap ...map[string]inter
 	return &res.Archives[0], nil
 
 }
+
+// CreateFromArchive 既存のアーカイブをソースとしてアーカイブを作成
+//
+// NOTE: 現在は "POST /:zone/archive/:archiveid/to/zone/:zoneid" APIはAPIキー経由での呼び出しに非対応
+//       このため、この処理は利用不能、今後利用可能になった場合に備え実装を残しておく
+func (api *ArchiveAPI) CreateFromArchive(zoneID, sourceArchiveID int64, value *sacloud.Archive) (*sacloud.Archive, error) {
+
+	return api.request(func(res *sacloud.Response) error {
+		var (
+			method = "POST"
+			uri    = fmt.Sprintf("%s/%d/to/zone/%d", api.getResourceURL(), sourceArchiveID, zoneID)
+		)
+
+		filtered := api.New()
+		filtered.Name = value.Name
+		filtered.Description = value.Description
+		filtered.Tags = value.Tags
+		if value.HasIcon() {
+			filtered.SetIconByID(value.GetIconID())
+		}
+
+		return api.baseAPI.request(method, uri, api.createRequest(filtered), res)
+	})
+}
