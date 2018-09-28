@@ -1,6 +1,7 @@
 package api
 
 import (
+	"github.com/sacloud/libsacloud/sacloud"
 	"github.com/stretchr/testify/assert"
 	"testing"
 	"time"
@@ -17,8 +18,8 @@ func TestServerCRUD(t *testing.T) {
 	newItem := api.New()
 	newItem.Name = testServerName
 	newItem.Description = "before"
-	newItem.SetServerPlanByID("100001001")   // 1core 1GBメモリ
-	newItem.AddPublicNWConnectedParam() //公開セグメントに接続
+	newItem.SetServerPlanByID("100001001") // 1core 1GBメモリ
+	newItem.AddPublicNWConnectedParam()    //公開セグメントに接続
 
 	item, err := api.Create(newItem)
 
@@ -64,8 +65,8 @@ func TestServerOperations(t *testing.T) {
 	newItem := api.New()
 	newItem.Name = testServerName
 	newItem.Description = "before"
-	newItem.SetServerPlanByID("100001001")   // 1core 1GBメモリ
-	newItem.AddPublicNWConnectedParam() //公開セグメントに接続
+	newItem.SetServerPlanByID("100001001") // 1core 1GBメモリ
+	newItem.AddPublicNWConnectedParam()    //公開セグメントに接続
 
 	item, err := api.Create(newItem)
 
@@ -73,6 +74,20 @@ func TestServerOperations(t *testing.T) {
 	assert.NotEmpty(t, item)
 
 	id := item.ID
+
+	// change plan
+	newPlan, err := client.GetProductServerAPI().GetBySpec(1, 2, sacloud.PlanDefault)
+	assert.NoError(t, err)
+	assert.NotEmpty(t, newPlan)
+
+	item, err = api.ChangePlan(id, newPlan)
+	assert.NoError(t, err)
+	assert.True(t, id != item.ID)
+	assert.Equal(t, 1, item.ServerPlan.CPU)
+	assert.Equal(t, 2, item.ServerPlan.GetMemoryGB())
+	assert.Equal(t, sacloud.PlanG2, item.ServerPlan.Generation)
+
+	id = item.ID
 
 	// boot
 	res, err := api.Boot(id)

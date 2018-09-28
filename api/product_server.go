@@ -37,7 +37,7 @@ func (api *ProductServerAPI) GetBySpec(core int, memGB int, gen sacloud.PlanGene
 			if gen == sacloud.PlanDefault || gen == plan.Generation {
 				// PlanDefaultの場合は複数ヒットしうる。
 				// この場合より新しい世代を優先する。
-				if found && res.Generation <= plan.Generation {
+				if found && plan.Generation <= res.Generation {
 					continue
 				}
 				res = plan
