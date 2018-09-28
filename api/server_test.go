@@ -17,7 +17,7 @@ func TestServerCRUD(t *testing.T) {
 	newItem := api.New()
 	newItem.Name = testServerName
 	newItem.Description = "before"
-	newItem.SetServerPlanByID("1001")   // 1core 1GBメモリ
+	newItem.SetServerPlanByID("100001001")   // 1core 1GBメモリ
 	newItem.AddPublicNWConnectedParam() //公開セグメントに接続
 
 	item, err := api.Create(newItem)
@@ -64,7 +64,7 @@ func TestServerOperations(t *testing.T) {
 	newItem := api.New()
 	newItem.Name = testServerName
 	newItem.Description = "before"
-	newItem.SetServerPlanByID("1001")   // 1core 1GBメモリ
+	newItem.SetServerPlanByID("100001001")   // 1core 1GBメモリ
 	newItem.AddPublicNWConnectedParam() //公開セグメントに接続
 
 	item, err := api.Create(newItem)

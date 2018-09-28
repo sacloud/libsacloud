@@ -3,6 +3,8 @@ package api_test
 import (
 	"fmt"
 	"github.com/sacloud/libsacloud/api"
+	"github.com/sacloud/libsacloud/sacloud"
+
 	"os"
 	"time"
 )
@@ -238,7 +240,7 @@ func Example() {
 	server.Tags = []string{tag}
 
 	// (set ServerPlan)
-	plan, _ := client.Product.Server.GetBySpec(cpu, mem)
+	plan, _ := client.Product.Server.GetBySpec(cpu, mem, sacloud.PlanDefault)
 	server.SetServerPlanByID(plan.GetStrID())
 
 	server, _ = client.Server.Create(server)
