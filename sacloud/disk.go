@@ -105,6 +105,7 @@ type DiskEditValue struct {
 		DefaultRoute   string `json:",omitempty"` // デフォルトルート
 		NetworkMaskLen string `json:",omitempty"` // ネットワークマスク長
 	} `json:",omitempty"`
+	Strict bool `json:",omitempty"` // Strictモード有効/無効
 }
 
 // SetHostName ホスト名 設定
@@ -200,4 +201,9 @@ func (d *DiskEditValue) SetNetworkMaskLen(length string) {
 		}{}
 	}
 	d.UserSubnet.NetworkMaskLen = length
+}
+
+// SetStrict Strictモード有効/無効 設定
+func (d *DiskEditValue) SetStrict(strict bool) {
+	d.Strict = strict
 }
