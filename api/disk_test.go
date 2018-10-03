@@ -120,7 +120,6 @@ func TestCreateDiskWithConfig(t *testing.T) {
 	config := diskAPI.NewCondig()
 	config.SetPassword("p@ssw0rd")
 	config.SetHostName(testDiskName)
-	config.Strict = true
 
 	res, err := diskAPI.CreateWithConfig(disk, config, true)
 	assert.NoError(t, err)
