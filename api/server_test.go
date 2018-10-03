@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-const testServerName = "libsacloud_test_Server"
+const testServerName = "libsacloud-test-Server"
 
 func TestServerCRUD(t *testing.T) {
 	defer initServer()()
@@ -18,8 +18,8 @@ func TestServerCRUD(t *testing.T) {
 	newItem := api.New()
 	newItem.Name = testServerName
 	newItem.Description = "before"
-	newItem.SetServerPlanByID("100001001") // 1core 1GBメモリ
-	newItem.AddPublicNWConnectedParam()    //公開セグメントに接続
+	newItem.SetServerPlanByValue(1, 1, sacloud.PlanDefault) // 1Core/1GBメモリ
+	newItem.AddPublicNWConnectedParam()                     //公開セグメントに接続
 
 	item, err := api.Create(newItem)
 

@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-const testDiskName = "libsacloud_test_disk_name"
+const testDiskName = "libsacloud-test-disk-name"
 
 func TestCRUDByDiskAPI(t *testing.T) {
 	defer initDisk()()
@@ -89,6 +89,72 @@ func TestCreateDiskFromSource(t *testing.T) {
 	disk, err = diskAPI.Delete(diskID)
 	assert.NoError(t, err)
 	assert.NotEmpty(t, disk)
+}
+
+func TestCreateDiskWithConfig(t *testing.T) {
+	defer initDisk()()
+
+	diskAPI := client.Disk
+
+	// server
+	newServer := client.Server.New()
+	newServer.Name = testDiskName
+	newServer.SetServerPlanByValue(1, 1, sacloud.PlanDefault)
+	newServer.AddPublicNWConnectedParam() //公開セグメントに接続
+	newServer.WaitDiskMigration = true
+
+	server, err := client.Server.Create(newServer)
+	assert.NoError(t, err)
+	serverID := server.ID
+
+	archive, err := client.Archive.FindLatestStableCentOS()
+	assert.NoError(t, err)
+	archiveID := archive.ID
+
+	//CREATE : empty disk
+	disk := diskAPI.New()
+	disk.Name = testDiskName
+	disk.SetServerID(serverID)       // Server.IDをディスクに指定しておくことでディスク作成完了後にサーバを起動してくれる
+	disk.SetSourceArchive(archiveID) //ソースアーカイブはIDだけ指定する
+
+	config := diskAPI.NewCondig()
+	config.SetPassword("p@ssw0rd")
+	config.SetHostName(testDiskName)
+
+	res, err := diskAPI.CreateWithConfig(disk, config, true)
+	assert.NoError(t, err)
+	assert.NotEmpty(t, res)
+	assert.NotEmpty(t, res.ID)
+
+	diskID := res.ID
+
+	//wait
+	err = diskAPI.SleepWhileCopying(diskID, 5*time.Minute) //日によって時間がかかることもあるため5分待つ
+	assert.NoError(t, err)                                 //timeoutしたらerrに値が格納されている
+
+	createdDisk, err := diskAPI.Read(diskID)
+	assert.NoError(t, err)
+	assert.NotEmpty(t, createdDisk)
+	assert.Equal(t, createdDisk.SourceArchive.ID, archiveID)
+
+	err = client.Server.SleepUntilUp(serverID, 5*time.Minute)
+	assert.NoError(t, err)
+
+	createdServer, err := client.Server.Read(serverID)
+	assert.NoError(t, err)
+	assert.NotEmpty(t, createdServer)
+	assert.True(t, createdServer.IsAvailable())
+	assert.True(t, createdServer.IsUp())
+
+	//DELETE
+	_, err = client.Server.Stop(serverID)
+	assert.NoError(t, err)
+
+	err = client.Server.SleepUntilDown(serverID, client.DefaultTimeoutDuration)
+	assert.NoError(t, err)
+
+	_, err = client.Server.DeleteWithDisk(serverID, []int64{diskID})
+	assert.NoError(t, err)
 }
 
 //func TestCanEditDisk(t *testing.T) {
@@ -173,5 +239,10 @@ func cleanupDisk() {
 		for _, disk := range res.Disks {
 			diskAPI.Delete(disk.ID)
 		}
+	}
+
+	items, _ := client.Server.Reset().WithNameLike(testDiskName).Find()
+	for _, item := range items.Servers {
+		client.Server.Delete(item.ID)
 	}
 }
