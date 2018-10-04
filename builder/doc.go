@@ -18,7 +18,7 @@
 //		client := api.NewClient("PUT-YOUR-TOKEN", "PUT-YOUR-SECRET", "tk1a")
 //
 //		// パブリックアーカイブ(CentOS)から作成するビルダー、共有セグメントに接続、以外はデフォルト値で作成
-//		res , err := builder.ServerPublicArchiveUnix(client, ostype.CentOS, "ServerName", "Password").WithAddPublicNWConnectedNIC().Build()
+//		res , err := builder.serverPublicArchiveUnix(client, ostype.CentOS, "ServerName", "Password").WithAddPublicNWConnectedNIC().Build()
 //
 //		if err != nil {
 //			panic(err)
@@ -43,24 +43,24 @@
 //	type PublicArchiveUnixServerBuilder struct { ... }
 //
 //	// ビルダー作成用関数
-//	func ServerPublicArchiveUnix(client *api.Client, os ostype.ArchiveOSTypes, name string, password string) *PublicArchiveUnixServerBuilder
+//	func serverPublicArchiveUnix(client *api.Client, os ostype.ArchiveOSTypes, name string, password string) *PublicArchiveUnixServerBuilder
 //
 // - Windows系パブリックアーカイブ
 //	// ビルダー
 //	type PublicArchiveWindowsServerBuilder struct { ... }
 //
 //	// ビルダー作成用関数
-//	func ServerPublicArchiveWindows(client *api.Client, name string, archiveID int64) *PublicArchiveWindowsServerBuilder
+//	func serverPublicArchiveWindows(client *api.Client, name string, archiveID int64) *PublicArchiveWindowsServerBuilder
 //
 // - 汎用
 //	// ビルダー
 //	type CommonServerBuilder struct { ... }
 //
 //	// ビルダー作成用関数(アーカイブから作成)
-//	func ServerFromArchive(client *api.Client, name string, sourceArchiveID int64) *CommonServerBuilder
+//	func serverFromArchive(client *api.Client, name string, sourceArchiveID int64) *CommonServerBuilder
 //
 //	// ビルダー作成用関数(ディスクから作成)
-//	func ServerFromDisk(client *api.Client, name string, sourceDiskID int64) *CommonServerBuilder
+//	func serverFromDisk(client *api.Client, name string, sourceDiskID int64) *CommonServerBuilder
 //
 // - ディスクレス
 //	// ビルダー
@@ -85,12 +85,12 @@
 // 以下の例は同じ内容の処理を通常の書き方/Fluent APIでの書き方両方で記載しています。
 //
 //	// 通常
-//	b := builder.ServerPublicArchiveUnix(client, ostype.CentOS, "ServerName", "Password")
+//	b := builder.serverPublicArchiveUnix(client, ostype.CentOS, "ServerName", "Password")
 //	b.AddPublicNWConnectedNIC()
 //	res , err := b.Build()
 //
 //	// Fluent APIの場合
-//	res , err := builder.ServerPublicArchiveUnix(client, ostype.CentOS, "ServerName", "Password").WithAddPublicNWConnectedNIC().Build()
+//	res , err := builder.serverPublicArchiveUnix(client, ostype.CentOS, "ServerName", "Password").WithAddPublicNWConnectedNIC().Build()
 //
 //
 // Event handling

@@ -3,10 +3,70 @@ package builder
 import (
 	"fmt"
 
+	"github.com/sacloud/libsacloud/api"
 	"github.com/sacloud/libsacloud/sacloud/ostype"
 )
 
-func (b *serverBuilder) ServerPublicArchiveUnix(os ostype.ArchiveOSTypes, password string) {
+/*---------------------------------------------------------
+  for connect disk functions
+---------------------------------------------------------*/
+
+// ServerDiskless ディスクレスサーバービルダー
+func ServerDiskless(client *api.Client, name string) DisklessServerBuilder {
+	return newServerBuilder(client, name)
+}
+
+// ServerPublicArchiveUnix ディスクの編集が可能なLinux(Unix)系パブリックアーカイブを利用するビルダー
+func ServerPublicArchiveUnix(client *api.Client, os ostype.ArchiveOSTypes, name string, password string) PublicArchiveUnixServerBuilder {
+	b := newServerBuilder(client, name)
+	b.serverPublicArchiveUnix(os, password)
+	return b
+}
+
+// ServerPublicArchiveFixedUnix ディスクの編集が不可なLinux(Unix)系パブリックアーカイブを利用するビルダー
+func ServerPublicArchiveFixedUnix(client *api.Client, os ostype.ArchiveOSTypes, name string) FixedUnixArchiveServerBuilder {
+	b := newServerBuilder(client, name)
+	b.serverPublicArchiveFixedUnix(os)
+	return b
+}
+
+// ServerPublicArchiveWindows Windows系パブリックアーカイブを利用するビルダー
+func ServerPublicArchiveWindows(client *api.Client, os ostype.ArchiveOSTypes, name string) PublicArchiveWindowsServerBuilder {
+	b := newServerBuilder(client, name)
+	b.serverPublicArchiveWindows(os)
+	return b
+}
+
+//ServerBlankDisk 空のディスクを利用するビルダー
+func ServerBlankDisk(client *api.Client, name string) BlankDiskServerBuilder {
+
+	b := newServerBuilder(client, name)
+	b.serverFromBlank()
+	return b
+}
+
+// ServerFromExistsDisk 既存ディスクを接続するビルダー
+func ServerFromExistsDisk(client *api.Client, name string, sourceDiskID int64) ConnectDiskServerBuilder {
+	b := newServerBuilder(client, name)
+	b.connectDiskIDs = []int64{sourceDiskID}
+	return b
+}
+
+// ServerFromDisk 既存ディスクをコピーして新たなディスクを作成するビルダー
+func ServerFromDisk(client *api.Client, name string, sourceDiskID int64) CommonServerBuilder {
+	b := newServerBuilder(client, name)
+	b.serverFromDisk(sourceDiskID)
+	return b
+}
+
+// ServerFromArchive 既存アーカイブをコピーして新たなディスクを作成するビルダー
+func ServerFromArchive(client *api.Client, name string, sourceArchiveID int64) CommonServerBuilder {
+	b := newServerBuilder(client, name)
+	b.serverFromArchive(sourceArchiveID)
+	return b
+}
+
+func (b *serverBuilder) serverPublicArchiveUnix(os ostype.ArchiveOSTypes, password string) {
 	if !os.IsSupportDiskEdit() {
 		b.errors = append(b.errors, fmt.Errorf("%q is not support EditDisk", os))
 	}
@@ -22,7 +82,7 @@ func (b *serverBuilder) ServerPublicArchiveUnix(os ostype.ArchiveOSTypes, passwo
 
 }
 
-func (b *serverBuilder) ServerPublicArchiveFixedUnix(os ostype.ArchiveOSTypes) {
+func (b *serverBuilder) serverPublicArchiveFixedUnix(os ostype.ArchiveOSTypes) {
 	archive, err := b.client.Archive.FindByOSType(os)
 	if err != nil {
 		b.errors = append(b.errors, err)
@@ -32,7 +92,7 @@ func (b *serverBuilder) ServerPublicArchiveFixedUnix(os ostype.ArchiveOSTypes) {
 	b.disk.sourceArchiveID = archive.ID
 }
 
-func (b *serverBuilder) ServerPublicArchiveWindows(os ostype.ArchiveOSTypes) {
+func (b *serverBuilder) serverPublicArchiveWindows(os ostype.ArchiveOSTypes) {
 	if !os.IsWindows() {
 		b.errors = append(b.errors, fmt.Errorf("%q is not windows", os))
 	}
@@ -48,20 +108,20 @@ func (b *serverBuilder) ServerPublicArchiveWindows(os ostype.ArchiveOSTypes) {
 	b.disk.forceEditDisk = true
 }
 
-func (b *serverBuilder) ServerFromDisk(sourceDiskID int64) {
+func (b *serverBuilder) serverFromDisk(sourceDiskID int64) {
 	b.disk = Disk(b.client, b.serverName)
 	b.disk.sourceArchiveID = 0
 	b.disk.sourceDiskID = sourceDiskID
 }
 
-func (b *serverBuilder) ServerFromArchive(sourceArchiveID int64) {
+func (b *serverBuilder) serverFromArchive(sourceArchiveID int64) {
 
 	b.disk = Disk(b.client, b.serverName)
 	b.disk.sourceArchiveID = sourceArchiveID
 	b.disk.sourceDiskID = 0
 }
 
-func (b *serverBuilder) ServerFromBlank() {
+func (b *serverBuilder) serverFromBlank() {
 	b.disk = Disk(b.client, b.serverName)
 	b.disk.sourceArchiveID = 0
 	b.disk.sourceDiskID = 0

@@ -2,9 +2,9 @@ package builder
 
 import (
 	"fmt"
+
 	"github.com/sacloud/libsacloud/api"
 	"github.com/sacloud/libsacloud/sacloud"
-	"github.com/sacloud/libsacloud/sacloud/ostype"
 )
 
 /**********************************************************
@@ -71,66 +71,6 @@ func newServerBuilder(client *api.Client, serverName string) *serverBuilder {
 }
 
 /*---------------------------------------------------------
-  for connect disk functions
----------------------------------------------------------*/
-
-// ServerDiskless ディスクレスサーバービルダー
-func ServerDiskless(client *api.Client, name string) DisklessServerBuilder {
-	return newServerBuilder(client, name)
-}
-
-// ServerPublicArchiveUnix ディスクの編集が可能なLinux(Unix)系パブリックアーカイブを利用するビルダー
-func ServerPublicArchiveUnix(client *api.Client, os ostype.ArchiveOSTypes, name string, password string) PublicArchiveUnixServerBuilder {
-	b := newServerBuilder(client, name)
-	b.ServerPublicArchiveUnix(os, password)
-	return b
-}
-
-// ServerPublicArchiveFixedUnix ディスクの編集が不可なLinux(Unix)系パブリックアーカイブを利用するビルダー
-func ServerPublicArchiveFixedUnix(client *api.Client, os ostype.ArchiveOSTypes, name string) FixedUnixArchiveServerBuilder {
-	b := newServerBuilder(client, name)
-	b.ServerPublicArchiveFixedUnix(os)
-	return b
-}
-
-// ServerPublicArchiveWindows Windows系パブリックアーカイブを利用するビルダー
-func ServerPublicArchiveWindows(client *api.Client, os ostype.ArchiveOSTypes, name string) PublicArchiveWindowsServerBuilder {
-	b := newServerBuilder(client, name)
-	b.ServerPublicArchiveWindows(os)
-	return b
-}
-
-//ServerBlankDisk 空のディスクを利用するビルダー
-func ServerBlankDisk(client *api.Client, name string) BlankDiskServerBuilder {
-
-	b := newServerBuilder(client, name)
-	b.ServerFromBlank()
-	return b
-}
-
-// ServerFromExistsDisk 既存ディスクを接続するビルダー
-func ServerFromExistsDisk(client *api.Client, name string, sourceDiskID int64) ConnectDiskServerBuilder {
-	b := newServerBuilder(client, name)
-	b.connectDiskIDs = []int64{sourceDiskID}
-	return b
-}
-
-// ServerFromDisk 既存ディスクをコピーして新たなディスクを作成するビルダー
-func ServerFromDisk(client *api.Client, name string, sourceDiskID int64) CommonServerBuilder {
-	b := newServerBuilder(client, name)
-	b.ServerFromDisk(sourceDiskID)
-	return b
-}
-
-// ServerFromArchive 既存アーカイブをコピーして新たなディスクを作成するビルダー
-func ServerFromArchive(client *api.Client, name string, sourceArchiveID int64) CommonServerBuilder {
-	b := newServerBuilder(client, name)
-
-	b.ServerFromArchive(sourceArchiveID)
-	return b
-}
-
-/*---------------------------------------------------------
   Inner functions
 ---------------------------------------------------------*/
 
@@ -163,32 +103,34 @@ func (b *serverBuilder) Build() (*ServerBuildResult, error) {
 		return b.currentBuildResult, err
 	}
 
-	// connect exists disks
-	if err := b.connectDisks(); err != nil {
-		return b.currentBuildResult, err
-	}
-
-	// insert cdrom
-	if b.isoImageID > 0 {
-		b.callEventHandlerIfExists(ServerBuildOnInsertCDROMBefore)
-		if err := b.insertCDROM(); err != nil {
+	if !b.canAutoBoot() {
+		// connect exists disks
+		if err := b.connectDisks(); err != nil {
 			return b.currentBuildResult, err
 		}
-		b.callEventHandlerIfExists(ServerBuildOnInsertCDROMAfter)
-	}
 
-	// connect packet filters
-	if err := b.connectPacketFilters(); err != nil {
-		return b.currentBuildResult, err
-	}
+		// insert cdrom
+		if b.isoImageID > 0 {
+			b.callEventHandlerIfExists(ServerBuildOnInsertCDROMBefore)
+			if err := b.insertCDROM(); err != nil {
+				return b.currentBuildResult, err
+			}
+			b.callEventHandlerIfExists(ServerBuildOnInsertCDROMAfter)
+		}
 
-	// boot server
-	if b.bootAfterCreate {
-		b.callEventHandlerIfExists(ServerBuildOnBootBefore)
-		if err := b.bootServer(); err != nil {
+		// connect packet filters
+		if err := b.connectPacketFilters(); err != nil {
 			return b.currentBuildResult, err
 		}
-		b.callEventHandlerIfExists(ServerBuildOnBootAfter)
+
+		// boot server
+		if b.bootAfterCreate {
+			b.callEventHandlerIfExists(ServerBuildOnBootBefore)
+			if err := b.bootServer(); err != nil {
+				return b.currentBuildResult, err
+			}
+			b.callEventHandlerIfExists(ServerBuildOnBootAfter)
+		}
 	}
 
 	// complete
@@ -250,6 +192,11 @@ func (b *serverBuilder) buildServerParams() error {
 		}
 	}
 
+	if b.bootAfterCreate && b.canAutoBoot() {
+		s.SetWaitDiskMigration(true)
+		b.disk.SetAutoBoot(true)
+	}
+
 	return nil
 }
 
@@ -265,17 +212,29 @@ func (b *serverBuilder) createDisks() error {
 		}
 		b.currentBuildResult.addDisk(diskBuildResult)
 	}
-	// build additional disks
-	if len(b.additionalDisks) > 0 {
-		for _, diskBuilder := range b.additionalDisks {
-			if b.currentBuildResult.Server.ID > 0 {
-				diskBuilder.SetServerID(b.currentBuildResult.Server.ID)
+	if b.bootAfterCreate && b.canAutoBoot() {
+		if err := b.client.Server.SleepUntilUp(b.currentBuildResult.Server.ID, b.client.DefaultTimeoutDuration); err != nil {
+			return err
+		}
+		// refresh CurrentBildResult.Server
+		s, err := b.client.Server.Read(b.currentBuildResult.Server.ID)
+		if err != nil {
+			return err
+		}
+		b.currentBuildResult.Server = s
+	} else {
+		// build additional disks
+		if len(b.additionalDisks) > 0 {
+			for _, diskBuilder := range b.additionalDisks {
+				if b.currentBuildResult.Server.ID > 0 {
+					diskBuilder.SetServerID(b.currentBuildResult.Server.ID)
+				}
+				res, err := diskBuilder.Build()
+				if err != nil {
+					return err
+				}
+				b.currentBuildResult.addDisk(res)
 			}
-			res, err := diskBuilder.Build()
-			if err != nil {
-				return err
-			}
-			b.currentBuildResult.addDisk(res)
 		}
 	}
 	return nil
@@ -351,6 +310,18 @@ func (b *serverBuilder) callEventHandlerIfExists(event ServerBuildEvents) {
 	if handler, ok := b.buildEventHandlers[event]; ok {
 		handler(b.currentBuildValue, b.currentBuildResult)
 	}
+}
+
+func (b *serverBuilder) canAutoBoot() bool {
+	if b.disk == nil ||
+		len(b.additionalDisks) > 0 ||
+		b.isoImageID > 0 ||
+		len(b.packetFilterIDs) > 0 {
+
+		return false
+	}
+
+	return true
 }
 
 /*---------------------------------------------------------

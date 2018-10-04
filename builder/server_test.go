@@ -138,7 +138,7 @@ func TestServerBuilder_Build_WithSSHKeyAndNoteEphemeral(t *testing.T) {
 //	zone := client.Zone
 //	defer func() { client.Zone = zone }()
 //	client.Zone = "tk1a"
-//	builder := ServerPublicArchiveUnix(client, sacloud.CentOS, serverBuilderTestServerName, serverBuilderTestPassword)
+//	builder := serverPublicArchiveUnix(client, sacloud.CentOS, serverBuilderTestServerName, serverBuilderTestPassword)
 //	builder.AddExistsSwitchConnectedNIC("112800821771", "192.168.150.21", 24, "192.168.150.1").Build()
 //}
 
@@ -219,8 +219,6 @@ func TestServerBuilder_Build_WithEventHandler(t *testing.T) {
 		DiskBuildOnCreateNoteAfter,
 		DiskBuildOnCreateDiskBefore,
 		DiskBuildOnCreateDiskAfter,
-		DiskBuildOnEditDiskBefore,
-		DiskBuildOnEditDiskAfter,
 		DiskBuildOnCleanupSSHKeyBefore,
 		DiskBuildOnCleanupSSHKeyAfter,
 		DiskBuildOnCleanupNoteBefore,
