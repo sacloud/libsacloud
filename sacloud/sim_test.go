@@ -50,8 +50,8 @@ const testSIMStatusBody = `
     "activated_date": "2018-04-04T07:48:48+00:00",
     "deactivated_date": "2018-04-04T07:46:02+00:00",
     "traffic_bytes_of_current_month": {
-      "uplink_bytes": 169734354,
-      "downlink_bytes": 509606410
+      "uplink_bytes": "169734354",
+      "downlink_bytes": "509606410"
     },
     "connected_imei": "xxxxxxxxxxxxxxx"
   },
