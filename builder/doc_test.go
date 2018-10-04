@@ -37,15 +37,15 @@ exit 0`
 	client := api.NewClient(token, secret, zone)
 
 	// CentOSパブリックアーカイブからサーバー作成
-	result, err := builder.ServerPublicArchiveUnix(client, ostype.CentOS, serverName, password).
-		WithAddPublicNWConnectedNIC(). // NIC:共有セグメントに接続
-		WithCore(core).                // スペック指定(コア数)
-		WithMemory(memory).            // スペック指定(メモリ)
-		WithDiskSize(diskSize).        // スペック指定(ディスクサイズ)
-		WithAddSSHKey(sshKey).         // SSH公開鍵を登録
-		WithDisablePWAuth(true).       // パスワード認証を無効化
-		WithAddNote(script).           // スタートアップスクリプトを登録
-		Build()                        // 構築実施
+	builder := builder.ServerPublicArchiveUnix(client, ostype.CentOS, serverName, password)
+	builder.AddPublicNWConnectedNIC() // NIC:共有セグメントに接続
+	builder.SetCore(core)             // スペック指定(コア数)
+	builder.SetMemory(memory)         // スペック指定(メモリ)
+	builder.SetDiskSize(diskSize)     // スペック指定(ディスクサイズ)
+	builder.AddSSHKey(sshKey)         // SSH公開鍵を登録
+	builder.SetDisablePWAuth(true)    // パスワード認証を無効化
+	builder.AddNote(script)           // スタートアップスクリプトを登録
+	result, err := builder.Build()
 
 	if err != nil {
 		panic(err)

@@ -19,7 +19,7 @@ exit 0
 
 func TestServerBuilder_buildParams(t *testing.T) {
 
-	builder := ServerDiskless(client, serverBuilderTestServerName)
+	builder := ServerDiskless(client, serverBuilderTestServerName).(*serverBuilder)
 
 	// この段階では ディスクレス/ISOイメージレス/NICレス、全ての設定がデフォルト値のサーバーになる
 	builder.currentBuildValue = &ServerBuildValue{}
@@ -72,7 +72,8 @@ func TestDisklessServerBuilder_ServerPublicArchiveUnixDefaults(t *testing.T) {
 func TestServerBuilder_Build_WithMinimum(t *testing.T) {
 	defer initServers()()
 
-	builder := ServerPublicArchiveUnix(client, ostype.CentOS, serverBuilderTestServerName, serverBuilderTestPassword).WithAddPublicNWConnectedNIC()
+	builder := ServerPublicArchiveUnix(client, ostype.CentOS, serverBuilderTestServerName, serverBuilderTestPassword)
+	builder.AddPublicNWConnectedNIC()
 	result, err := builder.Build()
 
 	assert.NoError(t, err)
@@ -94,10 +95,9 @@ func TestServerBuilder_Build_WithPacketFilter(t *testing.T) {
 
 	assert.NoError(t, err)
 
-	res, err := builder.
-		WithAddPublicNWConnectedNIC().
-		WithPacketFilterIDs([]int64{pf.ID}).
-		Build()
+	builder.AddPublicNWConnectedNIC()
+	builder.SetPacketFilterIDs([]int64{pf.ID})
+	res, err := builder.Build()
 
 	assert.NoError(t, err)
 	assert.NotNil(t, res.Server)
@@ -111,12 +111,11 @@ func TestServerBuilder_Build_WithSSHKeyAndNoteEphemeral(t *testing.T) {
 
 	builder := ServerPublicArchiveUnix(client, ostype.CentOS, serverBuilderTestServerName, serverBuilderTestPassword)
 
-	res, err := builder.
-		WithAddPublicNWConnectedNIC().
-		WithAddNote(serverBuilderTestNote).
-		WithAddSSHKey(serverBuilderTestSSHKey).
-		WithDisablePWAuth(true).
-		Build()
+	builder.AddPublicNWConnectedNIC()
+	builder.AddNote(serverBuilderTestNote)
+	builder.AddSSHKey(serverBuilderTestSSHKey)
+	builder.SetDisablePWAuth(true)
+	res, err := builder.Build()
 
 	assert.NoError(t, err)
 	assert.NotNil(t, res.Server)
@@ -139,7 +138,7 @@ func TestServerBuilder_Build_WithSSHKeyAndNoteEphemeral(t *testing.T) {
 //	zone := client.Zone
 //	defer func() { client.Zone = zone }()
 //	client.Zone = "tk1a"
-//	builder := ServerPublicArchiveUnix(client, sacloud.CentOS, serverBuilderTestServerName, serverBuilderTestPassword)
+//	builder := serverPublicArchiveUnix(client, sacloud.CentOS, serverBuilderTestServerName, serverBuilderTestPassword)
 //	builder.AddExistsSwitchConnectedNIC("112800821771", "192.168.150.21", 24, "192.168.150.1").Build()
 //}
 
@@ -148,17 +147,16 @@ func TestServerBuilder_Build_WithSSHKeyAndNote(t *testing.T) {
 
 	builder := ServerPublicArchiveUnix(client, ostype.CentOS, serverBuilderTestServerName, serverBuilderTestPassword)
 
-	res, err := builder.
-		WithAddPublicNWConnectedNIC().
-		WithAddNote(serverBuilderTestNote).
-		WithAddSSHKey(serverBuilderTestSSHKey).
-		WithDisablePWAuth(true).
-		WithNotesEphemeral(false).
-		WithSSHKeysEphemeral(false).
-		WithGenerateSSHKeyName("Test").
-		WithGenerateSSHKeyPassPhrase("12345678"). // min:8,max:64
-		WithGenerateSSHKeyDescription("Test").
-		Build()
+	builder.AddPublicNWConnectedNIC()
+	builder.AddNote(serverBuilderTestNote)
+	builder.AddSSHKey(serverBuilderTestSSHKey)
+	builder.SetDisablePWAuth(true)
+	builder.SetNotesEphemeral(false)
+	builder.SetSSHKeysEphemeral(false)
+	builder.SetGenerateSSHKeyName("Test")
+	builder.SetGenerateSSHKeyPassPhrase("12345678") // min:8,max:64
+	builder.SetGenerateSSHKeyDescription("Test")
+	res, err := builder.Build()
 
 	assert.NoError(t, err)
 	assert.NotNil(t, res.Server)
@@ -221,8 +219,6 @@ func TestServerBuilder_Build_WithEventHandler(t *testing.T) {
 		DiskBuildOnCreateNoteAfter,
 		DiskBuildOnCreateDiskBefore,
 		DiskBuildOnCreateDiskAfter,
-		DiskBuildOnEditDiskBefore,
-		DiskBuildOnEditDiskAfter,
 		DiskBuildOnCleanupSSHKeyBefore,
 		DiskBuildOnCleanupSSHKeyAfter,
 		DiskBuildOnCleanupNoteBefore,
@@ -244,13 +240,12 @@ func TestServerBuilder_Build_WithEventHandler(t *testing.T) {
 	}
 	isoImageID := searchISO.CDROMs[0].ID
 
-	res, err := builder.
-		WithAddPublicNWConnectedNIC().
-		WithAddNote(serverBuilderTestNote).
-		WithAddSSHKey(serverBuilderTestSSHKey).
-		WithDisablePWAuth(true).
-		WithISOImageID(isoImageID).
-		Build()
+	builder.AddPublicNWConnectedNIC()
+	builder.AddNote(serverBuilderTestNote)
+	builder.AddSSHKey(serverBuilderTestSSHKey)
+	builder.SetDisablePWAuth(true)
+	builder.SetISOImageID(isoImageID)
+	res, err := builder.Build()
 
 	assert.NoError(t, err)
 	assert.NotNil(t, res)
