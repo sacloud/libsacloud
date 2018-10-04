@@ -2,6 +2,7 @@ package sacloud
 
 import (
 	"encoding/json"
+	"math"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -92,11 +93,61 @@ const testMobileGatewayJSON = `
 }
 `
 
-func TestUnmarshalMGWJSON(t *testing.T) {
+const testTrafficMonitoringJSON = `
+{
+  "traffic_quota_in_mb": 512,
+  "bandwidth_limit_in_kbps": 64,
+  "email_config": {
+    "enabled": true
+  },
+  "slack_config": {
+    "enabled": true,
+    "slack_url": "https://hooks.slack.com/services/xxxxxxx/xxxxx/xxxx"
+  },
+  "auto_traffic_shaping": true
+}
+`
 
+const testTrafficStatusJSON = `
+{
+  "uplink_bytes": "9223372036854775808",
+  "downlink_bytes": "21989271821",
+  "traffic_shaping": true 
+}
+`
+
+func TestUnmarshalMGWJSON(t *testing.T) {
 	var mgw MobileGateway
 	err := json.Unmarshal([]byte(testMobileGatewayJSON), &mgw)
 	assert.NoError(t, err)
 	assert.NotEmpty(t, mgw)
+}
+
+func TestUnmarshalTrafficMonitoring(t *testing.T) {
+	var tm TrafficMonitoringConfig
+	err := json.Unmarshal([]byte(testTrafficMonitoringJSON), &tm)
+	assert.NoError(t, err)
+	assert.NotEmpty(t, tm)
+	assert.Equal(t, 512, tm.TrafficQuotaInMB)
+	assert.Equal(t, 64, tm.BandWidthLimitInKbps)
+	assert.NotNil(t, tm.EMailConfig)
+	assert.Equal(t, tm.EMailConfig.Enabled, true)
+	assert.NotNil(t, tm.SlackConfig)
+	assert.Equal(t, tm.SlackConfig.Enabled, true)
+	assert.Equal(t, tm.SlackConfig.IncomingWebhooksURL, "https://hooks.slack.com/services/xxxxxxx/xxxxx/xxxx")
+	assert.Equal(t, true, tm.AutoTrafficShaping)
+}
+
+func TestUnmarshalTrafficStatus(t *testing.T) {
+	var ts TrafficStatus
+	err := json.Unmarshal([]byte(testTrafficStatusJSON), &ts)
+
+	assert.NoError(t, err)
+	assert.NotEmpty(t, ts)
+
+	uplink := uint64(math.MaxInt64) + uint64(1)
+	assert.Equal(t, uplink, ts.UplinkBytes)
+	assert.Equal(t, uint64(21989271821), ts.DownlinkBytes)
+	assert.Equal(t, true, ts.TrafficShaping)
 
 }

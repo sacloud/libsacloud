@@ -184,11 +184,46 @@ func TestMobileGatewayWithSIM(t *testing.T) {
 	assert.True(t, deleted)
 	assert.NoError(t, err)
 
+	// enable traffic-monitoring
+	webhookURL := "https://hooks.slack.com/services/xxx/xxx/xxx"
+	tcc := &sacloud.TrafficMonitoringConfig{
+		TrafficQuotaInMB:     512,
+		BandWidthLimitInKbps: 64,
+		EMailConfig: &sacloud.TrafficMonitoringNotifyEmail{
+			Enabled: true,
+		},
+		SlackConfig: &sacloud.TrafficMonitoringNotifySlack{
+			Enabled:             true,
+			IncomingWebhooksURL: webhookURL,
+		},
+		AutoTrafficShaping: true,
+	}
+	_, err = api.SetTrafficMonitoringConfig(id, tcc)
+	assert.NoError(t, err)
+
+	// get traffic-monitoring config
+	tcc, err = api.GetTrafficMonitoringConfig(id)
+	assert.NoError(t, err)
+	assert.NotNil(t, tcc)
+	assert.Equal(t, 512, tcc.TrafficQuotaInMB)
+	assert.Equal(t, 64, tcc.BandWidthLimitInKbps)
+	assert.NotNil(t, tcc.EMailConfig)
+	assert.True(t, tcc.EMailConfig.Enabled)
+	assert.NotNil(t, tcc.SlackConfig)
+	assert.True(t, tcc.SlackConfig.Enabled)
+	assert.Equal(t, webhookURL, tcc.SlackConfig.IncomingWebhooksURL)
+	assert.True(t, tcc.AutoTrafficShaping)
+
+	// get traffic status
+	ts, err := api.GetTrafficStatus(id)
+	assert.NoError(t, err)
+	assert.NotNil(t, ts)
+
 	// Delete SIM
 	_, err = api.DeleteSIM(id, sim.ID)
 	assert.NoError(t, err)
 
-	// List SIM(after delete)
+	// List SIM
 	sims, err = api.ListSIM(id, nil)
 	assert.NoError(t, err)
 	assert.Len(t, sims, 0)
