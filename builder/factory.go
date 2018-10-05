@@ -7,18 +7,27 @@ import (
 	"github.com/sacloud/libsacloud/sacloud/ostype"
 )
 
-/*---------------------------------------------------------
-  for connect disk functions
----------------------------------------------------------*/
-
 // ServerDiskless ディスクレスサーバービルダー
 func ServerDiskless(client *api.Client, name string) DisklessServerBuilder {
-	return newServerBuilder(client, name)
+	b := newServerBuilder(client, name)
+	b.hasCommonProperty = true
+	b.hasNetworkInterfaceProperty = true
+	b.hasServerEventProperty = true
+	return b
 }
 
 // ServerPublicArchiveUnix ディスクの編集が可能なLinux(Unix)系パブリックアーカイブを利用するビルダー
 func ServerPublicArchiveUnix(client *api.Client, os ostype.ArchiveOSTypes, name string, password string) PublicArchiveUnixServerBuilder {
 	b := newServerBuilder(client, name)
+	b.hasCommonProperty = true
+	b.hasNetworkInterfaceProperty = true
+	b.hasDiskProperty = true
+	b.hasDiskSourceProperty = true
+	b.hasDiskEditProperty = true
+	b.hasServerEventProperty = true
+	b.hasDiskEventProperty = true
+	b.hasAdditionalDiskProperty = true
+
 	b.serverPublicArchiveUnix(os, password)
 	return b
 }
@@ -26,6 +35,14 @@ func ServerPublicArchiveUnix(client *api.Client, os ostype.ArchiveOSTypes, name 
 // ServerPublicArchiveFixedUnix ディスクの編集が不可なLinux(Unix)系パブリックアーカイブを利用するビルダー
 func ServerPublicArchiveFixedUnix(client *api.Client, os ostype.ArchiveOSTypes, name string) FixedUnixArchiveServerBuilder {
 	b := newServerBuilder(client, name)
+	b.hasCommonProperty = true
+	b.hasNetworkInterfaceProperty = true
+	b.hasDiskProperty = true
+	b.hasDiskSourceProperty = true
+	b.hasServerEventProperty = true
+	b.hasDiskEventProperty = true
+	b.hasAdditionalDiskProperty = true
+
 	b.serverPublicArchiveFixedUnix(os)
 	return b
 }
@@ -33,14 +50,28 @@ func ServerPublicArchiveFixedUnix(client *api.Client, os ostype.ArchiveOSTypes, 
 // ServerPublicArchiveWindows Windows系パブリックアーカイブを利用するビルダー
 func ServerPublicArchiveWindows(client *api.Client, os ostype.ArchiveOSTypes, name string) PublicArchiveWindowsServerBuilder {
 	b := newServerBuilder(client, name)
+	b.hasCommonProperty = true
+	b.hasNetworkInterfaceProperty = true
+	b.hasDiskProperty = true
+	b.hasDiskSourceProperty = true
+	b.hasServerEventProperty = true
+	b.hasDiskEventProperty = true
+	b.hasAdditionalDiskProperty = true
+
 	b.serverPublicArchiveWindows(os)
 	return b
 }
 
 //ServerBlankDisk 空のディスクを利用するビルダー
 func ServerBlankDisk(client *api.Client, name string) BlankDiskServerBuilder {
-
 	b := newServerBuilder(client, name)
+	b.hasCommonProperty = true
+	b.hasNetworkInterfaceProperty = true
+	b.hasDiskProperty = true
+	b.hasServerEventProperty = true
+	b.hasDiskEventProperty = true
+	b.hasAdditionalDiskProperty = true
+
 	b.serverFromBlank()
 	return b
 }
@@ -48,6 +79,10 @@ func ServerBlankDisk(client *api.Client, name string) BlankDiskServerBuilder {
 // ServerFromExistsDisk 既存ディスクを接続するビルダー
 func ServerFromExistsDisk(client *api.Client, name string, sourceDiskID int64) ConnectDiskServerBuilder {
 	b := newServerBuilder(client, name)
+	b.hasCommonProperty = true
+	b.hasNetworkInterfaceProperty = true
+	b.hasAdditionalDiskProperty = true
+
 	b.connectDiskIDs = []int64{sourceDiskID}
 	return b
 }
@@ -55,6 +90,15 @@ func ServerFromExistsDisk(client *api.Client, name string, sourceDiskID int64) C
 // ServerFromDisk 既存ディスクをコピーして新たなディスクを作成するビルダー
 func ServerFromDisk(client *api.Client, name string, sourceDiskID int64) CommonServerBuilder {
 	b := newServerBuilder(client, name)
+	b.hasCommonProperty = true
+	b.hasNetworkInterfaceProperty = true
+	b.hasDiskProperty = true
+	b.hasDiskSourceProperty = true
+	b.hasDiskEditProperty = true
+	b.hasServerEventProperty = true
+	b.hasDiskEventProperty = true
+	b.hasAdditionalDiskProperty = true
+
 	b.serverFromDisk(sourceDiskID)
 	return b
 }
@@ -62,6 +106,15 @@ func ServerFromDisk(client *api.Client, name string, sourceDiskID int64) CommonS
 // ServerFromArchive 既存アーカイブをコピーして新たなディスクを作成するビルダー
 func ServerFromArchive(client *api.Client, name string, sourceArchiveID int64) CommonServerBuilder {
 	b := newServerBuilder(client, name)
+	b.hasCommonProperty = true
+	b.hasNetworkInterfaceProperty = true
+	b.hasDiskProperty = true
+	b.hasDiskSourceProperty = true
+	b.hasDiskEditProperty = true
+	b.hasServerEventProperty = true
+	b.hasDiskEventProperty = true
+	b.hasAdditionalDiskProperty = true
+
 	b.serverFromArchive(sourceArchiveID)
 	return b
 }

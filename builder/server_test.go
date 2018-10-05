@@ -1,10 +1,11 @@
 package builder
 
 import (
+	"testing"
+
 	"github.com/sacloud/libsacloud/sacloud"
 	"github.com/sacloud/libsacloud/sacloud/ostype"
 	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 var (

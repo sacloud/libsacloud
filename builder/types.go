@@ -159,8 +159,8 @@ type DiskProperty interface {
 	SetDiskConnection(diskConnection sacloud.EDiskConnection)
 }
 
-// AdditioanlDiskProperty 追加ディスクプロパティ
-type AdditioanlDiskProperty interface {
+// AdditionalDiskProperty 追加ディスクプロパティ
+type AdditionalDiskProperty interface {
 	// AddAdditionalDisk 追加ディスク 追加
 	AddAdditionalDisk(diskBuilder *DiskBuilder)
 	// ClearAdditionalDisks 追加ディスク クリア
@@ -290,6 +290,14 @@ type DiskEditProperty interface {
 // Builder ビルダー基本インターフェース
 type Builder interface {
 	Build() (*ServerBuildResult, error)
+	HasCommonProperty() bool
+	HasNetworkInterfaceProperty() bool
+	HasDiskProperty() bool
+	HasAdditionalDiskProperty() bool
+	HasServerEventProperty() bool
+	HasDiskEventProperty() bool
+	HasDiskSourceProperty() bool
+	HasDiskEditProperty() bool
 }
 
 // BlankDiskServerBuilder ブランクディスクを利用して構築を行うサーバービルダー
@@ -302,7 +310,7 @@ type BlankDiskServerBuilder interface {
 	DiskProperty
 	ServerEventProperty
 	DiskEventProperty
-	AdditioanlDiskProperty
+	AdditionalDiskProperty
 }
 
 // CommonServerBuilder 既存のアーカイブ or ディスクを利用して構築を行うサーバービルダー
@@ -319,7 +327,7 @@ type CommonServerBuilder interface {
 	DiskSourceProperty
 	ServerEventProperty
 	DiskEventProperty
-	AdditioanlDiskProperty
+	AdditionalDiskProperty
 }
 
 // ConnectDiskServerBuilder ブランクディスクを利用して構築を行うサーバービルダー
@@ -329,7 +337,7 @@ type ConnectDiskServerBuilder interface {
 	Builder
 	CommonProperty
 	NetworkInterfaceProperty
-	AdditioanlDiskProperty
+	AdditionalDiskProperty
 }
 
 // DisklessServerBuilder ディスクレス サーバービルダー
@@ -353,7 +361,7 @@ type FixedUnixArchiveServerBuilder interface {
 	DiskSourceProperty
 	ServerEventProperty
 	DiskEventProperty
-	AdditioanlDiskProperty
+	AdditionalDiskProperty
 }
 
 // PublicArchiveUnixServerBuilder Linux(Unix)系パブリックアーカイブを利用して構築を行うサーバービルダー
@@ -368,7 +376,7 @@ type PublicArchiveUnixServerBuilder interface {
 	DiskEditProperty
 	ServerEventProperty
 	DiskEventProperty
-	AdditioanlDiskProperty
+	AdditionalDiskProperty
 }
 
 // PublicArchiveWindowsServerBuilder Windows系パブリックアーカイブを利用して構築を行うサーバービルダー
@@ -382,5 +390,5 @@ type PublicArchiveWindowsServerBuilder interface {
 	DiskSourceProperty
 	ServerEventProperty
 	DiskEventProperty
-	AdditioanlDiskProperty
+	AdditionalDiskProperty
 }

@@ -45,6 +45,16 @@ type serverBuilder struct {
 
 	currentBuildValue  *ServerBuildValue
 	currentBuildResult *ServerBuildResult
+
+	// type info
+	hasCommonProperty           bool
+	hasNetworkInterfaceProperty bool
+	hasDiskProperty             bool
+	hasAdditionalDiskProperty   bool
+	hasServerEventProperty      bool
+	hasDiskEventProperty        bool
+	hasDiskSourceProperty       bool
+	hasDiskEditProperty         bool
 }
 
 var (
@@ -762,6 +772,50 @@ func (b *serverBuilder) ClearAdditionalDisks() {
 // GetAdditionalDisks 追加ディスク 取得
 func (b *serverBuilder) GetAdditionalDisks() []*DiskBuilder {
 	return b.additionalDisks
+}
+
+/*---------------------------------------------------------
+  type info
+---------------------------------------------------------*/
+
+// HasCommonProperty 汎用プロパティを保持しているか
+func (b *serverBuilder) HasCommonProperty() bool {
+	return b.hasCommonProperty
+}
+
+// HasNetworkInterfaceProperty NIC関連プロパティを保持しているか
+func (b *serverBuilder) HasNetworkInterfaceProperty() bool {
+	return b.hasNetworkInterfaceProperty
+}
+
+// HasDiskProperty ディスク関連プロパティを保持しているか
+func (b *serverBuilder) HasDiskProperty() bool {
+	return b.hasDiskProperty
+}
+
+// HasAdditionalDiskProperty 追加ディスク関連プロパティを保持しているか
+func (b *serverBuilder) HasAdditionalDiskProperty() bool {
+	return b.hasAdditionalDiskProperty
+}
+
+// HasServerEventProperty サーバ構築イベント関連プロパティを保持しているか
+func (b *serverBuilder) HasServerEventProperty() bool {
+	return b.hasServerEventProperty
+}
+
+// HasDiskEventProperty ディスク構築イベント関連プロパティを保持しているか
+func (b *serverBuilder) HasDiskEventProperty() bool {
+	return b.hasDiskEditProperty
+}
+
+// HasDiskSourceProperty ディスクコピー元関連プロパティを保持しているか
+func (b *serverBuilder) HasDiskSourceProperty() bool {
+	return b.hasDiskSourceProperty
+}
+
+// HasDiskEditProperty ディスク修正関連プロパティを保持しているか
+func (b *serverBuilder) HasDiskEditProperty() bool {
+	return b.hasDiskEditProperty
 }
 
 /**********************************************************
