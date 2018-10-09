@@ -219,6 +219,10 @@ func TestMobileGatewayWithSIM(t *testing.T) {
 	assert.NoError(t, err)
 	assert.NotNil(t, ts)
 
+	// disable traffic control
+	_, err = api.DisableTrafficMonitoringConfig(id)
+	assert.NoError(t, err)
+
 	// Delete SIM
 	_, err = api.DeleteSIM(id, sim.ID)
 	assert.NoError(t, err)
