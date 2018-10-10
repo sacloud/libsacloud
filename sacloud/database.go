@@ -5,6 +5,11 @@ import (
 	"strings"
 )
 
+// AllowDatabaseBackupWeekdays データベースバックアップ実行曜日リスト
+func AllowDatabaseBackupWeekdays() []string {
+	return []string{"mon", "tue", "wed", "thu", "fri", "sat", "sun"}
+}
+
 // Database データベース(appliance)
 type Database struct {
 	*Appliance // アプライアンス共通属性
@@ -64,8 +69,6 @@ type DatabaseCommonRemark struct {
 	DatabaseRevision string `json:",omitempty"` // リビジョン
 	DatabaseTitle    string `json:",omitempty"` // タイトル
 	DatabaseVersion  string `json:",omitempty"` // バージョン
-	ReplicaPassword  string `json:",omitempty"` // レプリケーションパスワード
-	ReplicaUser      string `json:",omitempty"` // レプリケーションユーザー
 }
 
 // DatabaseSettings データベース設定リスト
@@ -75,8 +78,9 @@ type DatabaseSettings struct {
 
 // DatabaseSetting データベース設定
 type DatabaseSetting struct {
-	Backup *DatabaseBackupSetting `json:",omitempty"` // バックアップ設定
-	Common *DatabaseCommonSetting `json:",oitempty"`  // 共通設定
+	Backup      *DatabaseBackupSetting      `json:",omitempty"` // バックアップ設定
+	Common      *DatabaseCommonSetting      `json:",oitempty"`  // 共通設定
+	Replication *DatabaseReplicationSetting `json:",omitempty"` // レプリケーション設定
 }
 
 // DatabaseServer データベースサーバー情報
@@ -122,17 +126,20 @@ func AllowDatabasePlans() []int {
 
 // DatabaseBackupSetting バックアップ設定
 type DatabaseBackupSetting struct {
-	Rotate int    `json:",omitempty"` // ローテーション世代数
-	Time   string `json:",omitempty"` // 開始時刻
+	Rotate    int      `json:",omitempty"` // ローテーション世代数
+	Time      string   `json:",omitempty"` // 開始時刻
+	DayOfWeek []string `json:",omitempty"` // 取得曜日
 }
 
 // DatabaseCommonSetting 共通設定
 type DatabaseCommonSetting struct {
-	DefaultUser   string        `json:",omitempty"` // ユーザー名
-	UserPassword  string        `json:",omitempty"` // ユーザーパスワード
-	WebUI         interface{}   `json:",omitempty"` // WebUIのIPアドレス or FQDN
-	ServicePort   string        // ポート番号
-	SourceNetwork SourceNetwork // 接続許可ネットワーク
+	DefaultUser     string        `json:",omitempty"` // ユーザー名
+	UserPassword    string        `json:",omitempty"` // ユーザーパスワード
+	WebUI           interface{}   `json:",omitempty"` // WebUIのIPアドレス or FQDN
+	ReplicaPassword string        `json:",omitempty"` // レプリケーションパスワード
+	ReplicaUser     string        `json:",omitempty"` // レプリケーションユーザー
+	ServicePort     string        // ポート番号
+	SourceNetwork   SourceNetwork // 接続許可ネットワーク
 }
 
 // SourceNetwork 接続許可ネットワーク
@@ -168,32 +175,81 @@ func (s *SourceNetwork) MarshalJSON() ([]byte, error) {
 	return json.Marshal(list)
 }
 
+// DatabaseReplicationSetting レプリケーション設定
+type DatabaseReplicationSetting struct {
+	// Model レプリケーションモデル
+	Model DatabaseReplicationModels `json:",omitempty"`
+	// Appliance マスター側アプライアンス
+	Appliance *Resource `json:",omitempty"`
+	// IPAddress IPアドレス
+	IPAddress string `json:",omitempty"`
+	// Port ポート
+	Port int `json:",omitempty"`
+	// User ユーザー
+	User string `json:",omitempty"`
+	// Password パスワード
+	Password string `json:",omitempty"`
+}
+
+// DatabaseReplicationModels データベースのレプリケーションモデル
+type DatabaseReplicationModels string
+
+const (
+	// DatabaseReplicationModelMasterSlave レプリケーションモデル: Master-Slave(マスター側)
+	DatabaseReplicationModelMasterSlave = "Master-Slave"
+	// DatabaseReplicationModelAsyncReplica レプリケーションモデル: Async-Replica(スレーブ側)
+	DatabaseReplicationModelAsyncReplica = "Async-Replica"
+)
+
 // CreateDatabaseValue データベース作成用パラメータ
 type CreateDatabaseValue struct {
-	Plan          DatabasePlan // プラン
-	AdminPassword string       // 管理者パスワード
-	DefaultUser   string       // ユーザー名
-	UserPassword  string       // パスワード
-	SourceNetwork []string     // 接続許可ネットワーク
-	ServicePort   string       // ポート
-	// BackupRotate     int          // バックアップ世代数
-	BackupTime       string    // バックアップ開始時間
-	SwitchID         string    // 接続先スイッチ
-	IPAddress1       string    // IPアドレス1
-	MaskLen          int       // ネットワークマスク長
-	DefaultRoute     string    // デフォルトルート
-	Name             string    // 名称
-	Description      string    // 説明
-	Tags             []string  // タグ
-	Icon             *Resource // アイコン
-	WebUI            bool      // WebUI有効
-	DatabaseName     string    // データベース名
-	DatabaseRevision string    // リビジョン
-	DatabaseTitle    string    // データベースタイトル
-	DatabaseVersion  string    // データベースバージョン
-	ReplicaUser      string    // ReplicaUser レプリケーションユーザー
-	SourceAppliance  *Resource // クローン元DB
-	//ReplicaPassword  string // in current API version , setted admin password
+	Plan             DatabasePlan // プラン
+	AdminPassword    string       // 管理者パスワード
+	DefaultUser      string       // ユーザー名
+	UserPassword     string       // パスワード
+	SourceNetwork    []string     // 接続許可ネットワーク
+	ServicePort      string       // ポート
+	BackupRotate     int          // バックアップ世代数
+	BackupTime       string       // バックアップ開始時間
+	BackupDayOfWeek  []string     // バックアップ取得曜日
+	SwitchID         string       // 接続先スイッチ
+	IPAddress1       string       // IPアドレス1
+	MaskLen          int          // ネットワークマスク長
+	DefaultRoute     string       // デフォルトルート
+	Name             string       // 名称
+	Description      string       // 説明
+	Tags             []string     // タグ
+	Icon             *Resource    // アイコン
+	WebUI            bool         // WebUI有効
+	DatabaseName     string       // データベース名
+	DatabaseRevision string       // リビジョン
+	DatabaseTitle    string       // データベースタイトル
+	DatabaseVersion  string       // データベースバージョン
+	// ReplicaUser      string    // レプリケーションユーザー 現在はreplica固定
+	ReplicaPassword string    // レプリケーションパスワード
+	SourceAppliance *Resource // クローン元DB
+}
+
+// SlaveDatabaseValue スレーブデータベース作成用パラメータ
+type SlaveDatabaseValue struct {
+	Plan            DatabasePlan // プラン
+	DefaultUser     string       // ユーザー名
+	UserPassword    string       // パスワード
+	SwitchID        string       // 接続先スイッチ
+	IPAddress1      string       // IPアドレス1
+	MaskLen         int          // ネットワークマスク長
+	DefaultRoute    string       // デフォルトルート
+	Name            string       // 名称
+	Description     string       // 説明
+	Tags            []string     // タグ
+	Icon            *Resource    // アイコン
+	DatabaseName    string       // データベース名
+	DatabaseVersion string       // データベースバージョン
+	// ReplicaUser      string    // レプリケーションユーザー 現在はreplica固定
+	ReplicaPassword   string // レプリケーションパスワード
+	MasterApplianceID int64  // クローン元DB
+	MasterIPAddress   string // マスターIPアドレス
+	MasterPort        int    // マスターポート
 }
 
 // NewCreatePostgreSQLDatabaseValue PostgreSQL作成用パラメーター
@@ -267,10 +323,6 @@ func CreateNewDatabase(values *CreateDatabaseValue) *Database {
 					DatabaseTitle: values.DatabaseTitle,
 					// DatabaseVersion
 					DatabaseVersion: values.DatabaseVersion,
-					// ReplicaUser
-					// ReplicaUser: values.ReplicaUser,
-					// ReplicaPassword
-					// ReplicaPassword: values.AdminPassword,
 				},
 			},
 			// Plan
@@ -288,6 +340,8 @@ func CreateNewDatabase(values *CreateDatabaseValue) *Database {
 					Rotate: 8,
 					// Time
 					Time: values.BackupTime,
+					// DayOfWeek
+					DayOfWeek: values.BackupDayOfWeek,
 				},
 				// Common
 				Common: &DatabaseCommonSetting{
@@ -321,6 +375,14 @@ func CreateNewDatabase(values *CreateDatabaseValue) *Database {
 
 	if values.WebUI {
 		db.Settings.DBConf.Common.WebUI = values.WebUI
+	}
+
+	if values.ReplicaPassword != "" {
+		db.Settings.DBConf.Common.ReplicaUser = "replica"
+		db.Settings.DBConf.Common.ReplicaPassword = values.ReplicaPassword
+		db.Settings.DBConf.Replication = &DatabaseReplicationSetting{
+			Model: DatabaseReplicationModelMasterSlave,
+		}
 	}
 
 	return db
@@ -411,6 +473,94 @@ func CloneNewDatabase(values *CreateDatabaseValue) *Database {
 
 	if values.WebUI {
 		db.Settings.DBConf.Common.WebUI = values.WebUI
+	}
+
+	return db
+}
+
+// NewSlaveDatabaseValue スレーブ向けパラメータ作成
+func NewSlaveDatabaseValue(values *SlaveDatabaseValue) *Database {
+	db := &Database{
+		// Appliance
+		Appliance: &Appliance{
+			// Class
+			Class: "database",
+			// Name
+			propName: propName{Name: values.Name},
+			// Description
+			propDescription: propDescription{Description: values.Description},
+			// TagsType
+			propTags: propTags{
+				// Tags
+				Tags: values.Tags,
+			},
+			// Icon
+			propIcon: propIcon{
+				&Icon{
+					// Resource
+					Resource: values.Icon,
+				},
+			},
+			// Plan
+			//propPlanID: propPlanID{Plan: &Resource{ID: int64(values.Plan)}},
+		},
+		// Remark
+		Remark: &DatabaseRemark{
+			// ApplianceRemarkBase
+			ApplianceRemarkBase: &ApplianceRemarkBase{
+				// Servers
+				Servers: []interface{}{""},
+			},
+			// DBConf
+			DBConf: &DatabaseCommonRemarks{
+				// Common
+				Common: &DatabaseCommonRemark{
+					// DatabaseName
+					DatabaseName: values.DatabaseName,
+					// DatabaseVersion
+					DatabaseVersion: values.DatabaseVersion,
+				},
+			},
+			// Plan
+			propPlanID: propPlanID{Plan: &Resource{ID: int64(values.Plan)}},
+		},
+		// Settings
+		Settings: &DatabaseSettings{
+			// DBConf
+			DBConf: &DatabaseSetting{
+				// Common
+				Common: &DatabaseCommonSetting{
+					// DefaultUser
+					DefaultUser: values.DefaultUser,
+					// UserPassword
+					UserPassword: values.UserPassword,
+				},
+				// Replication
+				Replication: &DatabaseReplicationSetting{
+					Model:     DatabaseReplicationModelAsyncReplica,
+					Appliance: NewResource(values.MasterApplianceID),
+					IPAddress: values.MasterIPAddress,
+					Port:      values.MasterPort,
+					User:      "replica",
+					Password:  values.ReplicaPassword,
+				},
+			},
+		},
+	}
+
+	db.Remark.Switch = &ApplianceRemarkSwitch{
+		// ID
+		ID: values.SwitchID,
+	}
+	db.Remark.Network = &DatabaseRemarkNetwork{
+		// NetworkMaskLen
+		NetworkMaskLen: values.MaskLen,
+		// DefaultRoute
+		DefaultRoute: values.DefaultRoute,
+	}
+
+	db.Remark.Servers = []interface{}{
+		map[string]interface{}{"IPAddress": values.IPAddress1},
 	}
 
 	return db

@@ -356,6 +356,85 @@ func TestDatabaseWaitForCopy(t *testing.T) {
 	}
 }
 
+func TestDatabaseReplication(t *testing.T) {
+	defer initDatabase()()
+
+	api := client.Database
+	client.Zone = "is1b"
+
+	//prerequired
+	sw := client.Switch.New()
+	sw.Name = testDatabaseName
+	sw, err := client.Switch.Create(sw)
+
+	assert.NoError(t, err)
+	assert.NotEmpty(t, sw)
+
+	//CREATE
+	v := sacloud.NewCreatePostgreSQLDatabaseValue()
+
+	v.Plan = sacloud.DatabasePlan10G
+	v.DefaultUser = "defuser"
+	v.UserPassword = "defuserPassword01"
+	v.SourceNetwork = []string{"192.168.0.1", "192.168.1.1"}
+	v.ServicePort = "54321"
+	v.BackupTime = "00:30"
+	v.SwitchID = fmt.Sprintf("%d", sw.ID)
+	v.IPAddress1 = "192.168.11.100"
+	v.MaskLen = 24
+	v.DefaultRoute = "192.168.11.1"
+	v.Name = testDatabaseName
+	v.ReplicaPassword = "replicaUserPassword01"
+
+	newItem := api.New(v)
+	//newItem.Remark.Zone = &sacloud.Resource{ID: 21001}
+
+	master, err := api.Create(newItem)
+
+	assert.NoError(t, err)
+	assert.NotEmpty(t, master)
+
+	id := master.ID
+
+	// create slave
+	slaveValues := &sacloud.SlaveDatabaseValue{
+		Plan:              v.Plan,
+		DefaultUser:       v.DefaultUser,
+		UserPassword:      v.UserPassword,
+		SwitchID:          v.SwitchID,
+		IPAddress1:        "192.168.11.101",
+		MaskLen:           24,
+		DefaultRoute:      "192.168.11.1",
+		Name:              testDatabaseName,
+		DatabaseName:      master.Remark.DBConf.Common.DatabaseName,
+		DatabaseVersion:   master.Remark.DBConf.Common.DatabaseVersion,
+		ReplicaPassword:   v.ReplicaPassword,
+		MasterApplianceID: id,
+		MasterIPAddress:   v.IPAddress1,
+		MasterPort:        54321,
+	}
+	newSlave := sacloud.NewSlaveDatabaseValue(slaveValues)
+	slave, err := api.Create(newSlave)
+
+	assert.NoError(t, err)
+	assert.NotEmpty(t, slave)
+
+	err = api.SleepUntilDatabaseRunning(master.ID, client.DefaultTimeoutDuration, 30)
+	assert.NoError(t, err)
+
+	err = api.SleepUntilDatabaseRunning(slave.ID, client.DefaultTimeoutDuration, 30)
+	assert.NoError(t, err)
+
+	// Delete
+
+	api.Shutdown(master.ID)
+	api.Shutdown(slave.ID)
+	api.SleepUntilDown(master.ID, client.DefaultTimeoutDuration)
+	api.SleepUntilDown(slave.ID, client.DefaultTimeoutDuration)
+	api.Delete(master.ID)
+	api.Delete(slave.ID)
+}
+
 func initDatabase() func() {
 	cleanupDatabase()
 	return cleanupDatabase
