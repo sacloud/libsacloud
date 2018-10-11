@@ -138,7 +138,7 @@ type DatabaseCommonSetting struct {
 	WebUI           interface{}   `json:",omitempty"` // WebUIのIPアドレス or FQDN
 	ReplicaPassword string        `json:",omitempty"` // レプリケーションパスワード
 	ReplicaUser     string        `json:",omitempty"` // レプリケーションユーザー
-	ServicePort     string        // ポート番号
+	ServicePort     json.Number   // ポート番号
 	SourceNetwork   SourceNetwork // 接続許可ネットワーク
 }
 
@@ -208,7 +208,7 @@ type CreateDatabaseValue struct {
 	DefaultUser      string       // ユーザー名
 	UserPassword     string       // パスワード
 	SourceNetwork    []string     // 接続許可ネットワーク
-	ServicePort      string       // ポート
+	ServicePort      int          // ポート
 	BackupRotate     int          // バックアップ世代数
 	BackupTime       string       // バックアップ開始時間
 	BackupDayOfWeek  []string     // バックアップ取得曜日
@@ -352,7 +352,7 @@ func CreateNewDatabase(values *CreateDatabaseValue) *Database {
 					// SourceNetwork
 					SourceNetwork: SourceNetwork(values.SourceNetwork),
 					// ServicePort
-					ServicePort: values.ServicePort,
+					ServicePort: json.Number(values.ServicePort),
 				},
 			},
 		},
@@ -450,7 +450,7 @@ func CloneNewDatabase(values *CreateDatabaseValue) *Database {
 					// SourceNetwork
 					SourceNetwork: SourceNetwork(values.SourceNetwork),
 					// ServicePort
-					ServicePort: values.ServicePort,
+					ServicePort: json.Number(values.ServicePort),
 				},
 			},
 		},

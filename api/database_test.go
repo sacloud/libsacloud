@@ -31,7 +31,7 @@ func TestDatabaseCRUD(t *testing.T) {
 	v.DefaultUser = "defuser"
 	v.UserPassword = "defuserPassword01"
 	v.SourceNetwork = []string{"192.168.0.1", "192.168.1.1"}
-	v.ServicePort = "54321"
+	v.ServicePort = 54321
 	v.BackupTime = "00:30"
 	v.SwitchID = fmt.Sprintf("%d", sw.ID)
 	v.IPAddress1 = "192.168.11.100"
@@ -150,7 +150,7 @@ loop:
 	clone := sacloud.NewCloneDatabaseValue(item)
 	clone.Plan = sacloud.DatabasePlan10G
 	clone.SourceNetwork = []string{"192.168.0.1", "192.168.1.1"}
-	clone.ServicePort = "33061"
+	clone.ServicePort = 33061
 	clone.BackupTime = "13:30"
 	clone.SwitchID = fmt.Sprintf("%d", sw.ID)
 	clone.IPAddress1 = "192.168.11.100"
@@ -215,7 +215,7 @@ func TestDatabaseMariaDBCRUD(t *testing.T) {
 	v.DefaultUser = "defuser"
 	v.UserPassword = "defuserPassword01"
 	v.SourceNetwork = []string{"192.168.0.1", "192.168.1.1"}
-	v.ServicePort = "33061"
+	v.ServicePort = 33061
 	v.BackupTime = "13:30"
 	v.SwitchID = fmt.Sprintf("%d", sw.ID)
 	v.IPAddress1 = "192.168.11.100"
@@ -303,7 +303,7 @@ func TestDatabaseWaitForCopy(t *testing.T) {
 	v.DefaultUser = "defuser"
 	v.UserPassword = "defuserPassword01"
 	v.SourceNetwork = []string{"192.168.0.1", "192.168.1.1"}
-	v.ServicePort = "33061"
+	v.ServicePort = 33061
 	v.BackupTime = "13:30"
 	v.SwitchID = fmt.Sprintf("%d", sw.ID)
 	v.IPAddress1 = "192.168.11.100"
@@ -377,7 +377,7 @@ func TestDatabaseReplication(t *testing.T) {
 	v.DefaultUser = "defuser"
 	v.UserPassword = "defuserPassword01"
 	v.SourceNetwork = []string{"192.168.0.1", "192.168.1.1"}
-	v.ServicePort = "54321"
+	v.ServicePort = 54321
 	v.BackupTime = "00:30"
 	v.SwitchID = fmt.Sprintf("%d", sw.ID)
 	v.IPAddress1 = "192.168.11.100"

@@ -23,7 +23,7 @@ var (
                     "AdminPassword": "HogeHogeooo",
                     "DefaultUser": "HogeHogeooo",
                     "UserPassword": "HogeHogeooo",
-                    "ServicePort": "",
+                    "ServicePort": "5432",
                     "SourceNetwork": %s,
                     "WebUI": "8.8.8.8"
                 },
