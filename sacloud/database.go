@@ -583,3 +583,8 @@ func (s *Database) DeleteSourceNetwork(nw string) {
 	}
 	s.Settings.DBConf.Common.SourceNetwork = SourceNetwork(res)
 }
+
+// IsReplicationMaster レプリケーションが有効かつマスターとして構成されているか
+func (s *Database) IsReplicationMaster() bool {
+	return s.Settings.DBConf.Replication != nil && s.Settings.DBConf.Replication.Model == DatabaseReplicationModelMasterSlave
+}
