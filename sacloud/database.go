@@ -2,6 +2,7 @@ package sacloud
 
 import (
 	"encoding/json"
+	"fmt"
 	"strings"
 )
 
@@ -352,7 +353,7 @@ func CreateNewDatabase(values *CreateDatabaseValue) *Database {
 					// SourceNetwork
 					SourceNetwork: SourceNetwork(values.SourceNetwork),
 					// ServicePort
-					ServicePort: json.Number(values.ServicePort),
+					ServicePort: json.Number(fmt.Sprintf("%d", values.ServicePort)),
 				},
 			},
 		},
@@ -450,7 +451,7 @@ func CloneNewDatabase(values *CreateDatabaseValue) *Database {
 					// SourceNetwork
 					SourceNetwork: SourceNetwork(values.SourceNetwork),
 					// ServicePort
-					ServicePort: json.Number(values.ServicePort),
+					ServicePort: json.Number(fmt.Sprintf("%d", values.ServicePort)),
 				},
 			},
 		},
