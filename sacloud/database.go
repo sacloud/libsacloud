@@ -210,6 +210,7 @@ type CreateDatabaseValue struct {
 	UserPassword     string       // パスワード
 	SourceNetwork    []string     // 接続許可ネットワーク
 	ServicePort      int          // ポート
+	EnableBackup     bool         // バックアップ有効化
 	BackupRotate     int          // バックアップ世代数
 	BackupTime       string       // バックアップ開始時間
 	BackupDayOfWeek  []string     // バックアップ取得曜日
@@ -357,6 +358,10 @@ func CreateNewDatabase(values *CreateDatabaseValue) *Database {
 				},
 			},
 		},
+	}
+
+	if !values.EnableBackup {
+		db.Settings.DBConf.Backup = nil
 	}
 
 	db.Remark.Switch = &ApplianceRemarkSwitch{
