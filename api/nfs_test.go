@@ -2,9 +2,10 @@ package api
 
 import (
 	"fmt"
+	"testing"
+
 	"github.com/sacloud/libsacloud/sacloud"
 	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 const testNFSName = "libsacloud_test_NFS"

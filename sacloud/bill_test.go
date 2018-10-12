@@ -2,9 +2,10 @@ package sacloud
 
 import (
 	"encoding/json"
-	"github.com/stretchr/testify/assert"
 	"testing"
 	"time"
+
+	"github.com/stretchr/testify/assert"
 )
 
 var testBillDetailJSON = map[string]string{

@@ -2,8 +2,9 @@ package api
 
 import (
 	"fmt"
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 const testDNSDomain = "test.domain.libsacloud.com"

@@ -2,9 +2,10 @@ package api
 
 import (
 	"fmt"
-	"github.com/stretchr/testify/assert"
 	"testing"
 	"time"
+
+	"github.com/stretchr/testify/assert"
 )
 
 const testInternetName = "libsacloud_test_internet"

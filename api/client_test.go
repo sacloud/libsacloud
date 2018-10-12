@@ -2,14 +2,15 @@ package api
 
 import (
 	"fmt"
-	"github.com/sacloud/libsacloud"
-	"github.com/stretchr/testify/assert"
 	"log"
 	"net/http"
 	"net/http/httptest"
 	"os"
 	"testing"
 	"time"
+
+	"github.com/sacloud/libsacloud"
+	"github.com/stretchr/testify/assert"
 )
 
 var client *Client

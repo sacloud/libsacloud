@@ -1,10 +1,11 @@
 package builder
 
 import (
-	"github.com/sacloud/libsacloud/api"
 	"log"
 	"os"
 	"testing"
+
+	"github.com/sacloud/libsacloud/api"
 )
 
 var client *api.Client
