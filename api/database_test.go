@@ -2,10 +2,11 @@ package api
 
 import (
 	"fmt"
-	"github.com/sacloud/libsacloud/sacloud"
-	"github.com/stretchr/testify/assert"
 	"testing"
 	"time"
+
+	"github.com/sacloud/libsacloud/sacloud"
+	"github.com/stretchr/testify/assert"
 )
 
 const testDatabaseName = "libsacloud_test_Database"
@@ -148,17 +149,23 @@ loop:
 	sourceID := id
 
 	// clone
-	clone := sacloud.NewCloneDatabaseValue(item)
-	clone.Plan = sacloud.DatabasePlan10G
-	clone.SourceNetwork = []string{"192.168.0.1", "192.168.1.1"}
-	clone.ServicePort = 33061
-	clone.SwitchID = fmt.Sprintf("%d", sw.ID)
-	clone.IPAddress1 = "192.168.11.100"
-	clone.MaskLen = 24
-	clone.DefaultRoute = "192.168.11.1"
-	clone.Name = testDatabaseName + "_clone"
+	clone := &sacloud.CreateDatabaseValue{
+		Plan:            sacloud.DatabasePlan10G,
+		DefaultUser:     item.Settings.DBConf.Common.DefaultUser,
+		UserPassword:    item.Settings.DBConf.Common.UserPassword,
+		SourceNetwork:   []string{"192.168.0.1", "192.168.1.1"},
+		ServicePort:     33061,
+		SwitchID:        item.Remark.Switch.ID,
+		IPAddress1:      "192.168.11.100",
+		MaskLen:         24,
+		DefaultRoute:    "192.168.11.1",
+		Name:            testDatabaseName + "_clone",
+		DatabaseName:    item.Remark.DBConf.Common.DatabaseName,
+		DatabaseVersion: item.Remark.DBConf.Common.DatabaseVersion,
+		SourceAppliance: item.Resource,
+	}
 
-	newItem = api.New(v)
+	newItem = api.New(clone)
 	item, err = api.Create(newItem)
 
 	assert.NoError(t, err)

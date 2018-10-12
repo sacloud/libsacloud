@@ -139,7 +139,7 @@ type DatabaseCommonSetting struct {
 	WebUI           interface{}   `json:",omitempty"` // WebUIのIPアドレス or FQDN
 	ReplicaPassword string        `json:",omitempty"` // レプリケーションパスワード
 	ReplicaUser     string        `json:",omitempty"` // レプリケーションユーザー
-	ServicePort     json.Number   // ポート番号
+	ServicePort     json.Number   `json:",omitempty"` // ポート番号
 	SourceNetwork   SourceNetwork // 接続許可ネットワーク
 }
 
@@ -353,11 +353,13 @@ func CreateNewDatabase(values *CreateDatabaseValue) *Database {
 					UserPassword: values.UserPassword,
 					// SourceNetwork
 					SourceNetwork: SourceNetwork(values.SourceNetwork),
-					// ServicePort
-					ServicePort: json.Number(fmt.Sprintf("%d", values.ServicePort)),
 				},
 			},
 		},
+	}
+
+	if values.ServicePort > 0 {
+		db.Settings.DBConf.Common.ServicePort = json.Number(fmt.Sprintf("%d", values.ServicePort))
 	}
 
 	if !values.EnableBackup {
@@ -389,96 +391,6 @@ func CreateNewDatabase(values *CreateDatabaseValue) *Database {
 		db.Settings.DBConf.Replication = &DatabaseReplicationSetting{
 			Model: DatabaseReplicationModelMasterSlave,
 		}
-	}
-
-	return db
-}
-
-// CloneNewDatabase データベース作成
-func CloneNewDatabase(values *CreateDatabaseValue) *Database {
-	db := &Database{
-		// Appliance
-		Appliance: &Appliance{
-			// Class
-			Class: "database",
-			// Name
-			propName: propName{Name: values.Name},
-			// Description
-			propDescription: propDescription{Description: values.Description},
-			// TagsType
-			propTags: propTags{
-				// Tags
-				Tags: values.Tags,
-			},
-			// Icon
-			propIcon: propIcon{
-				&Icon{
-					// Resource
-					Resource: values.Icon,
-				},
-			},
-			// Plan
-			//propPlanID: propPlanID{Plan: &Resource{ID: int64(values.Plan)}},
-		},
-		// Remark
-		Remark: &DatabaseRemark{
-			// ApplianceRemarkBase
-			ApplianceRemarkBase: &ApplianceRemarkBase{
-				// Servers
-				Servers: []interface{}{""},
-			},
-			// DBConf
-			DBConf: &DatabaseCommonRemarks{
-				// Common
-				Common: &DatabaseCommonRemark{
-					DatabaseName:    values.DatabaseName,
-					DatabaseVersion: values.DatabaseVersion,
-				},
-			},
-			// Plan
-			propPlanID:      propPlanID{Plan: &Resource{ID: int64(values.Plan)}},
-			SourceAppliance: values.SourceAppliance,
-		},
-		// Settings
-		Settings: &DatabaseSettings{
-			// DBConf
-			DBConf: &DatabaseSetting{
-				// Backup
-				Backup: &DatabaseBackupSetting{
-					// Rotate
-					// Rotate: values.BackupRotate,
-					Rotate: 8,
-					// Time
-					Time: values.BackupTime,
-				},
-				// Common
-				Common: &DatabaseCommonSetting{
-					// SourceNetwork
-					SourceNetwork: SourceNetwork(values.SourceNetwork),
-					// ServicePort
-					ServicePort: json.Number(fmt.Sprintf("%d", values.ServicePort)),
-				},
-			},
-		},
-	}
-
-	db.Remark.Switch = &ApplianceRemarkSwitch{
-		// ID
-		ID: values.SwitchID,
-	}
-	db.Remark.Network = &DatabaseRemarkNetwork{
-		// NetworkMaskLen
-		NetworkMaskLen: values.MaskLen,
-		// DefaultRoute
-		DefaultRoute: values.DefaultRoute,
-	}
-
-	db.Remark.Servers = []interface{}{
-		map[string]interface{}{"IPAddress": values.IPAddress1},
-	}
-
-	if values.WebUI {
-		db.Settings.DBConf.Common.WebUI = values.WebUI
 	}
 
 	return db
