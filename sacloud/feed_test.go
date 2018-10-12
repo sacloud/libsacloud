@@ -2,10 +2,11 @@ package sacloud
 
 import (
 	"encoding/json"
-	"github.com/stretchr/testify/assert"
 	"strconv"
 	"testing"
 	"time"
+
+	"github.com/stretchr/testify/assert"
 )
 
 var testNewsFeedJSON = `

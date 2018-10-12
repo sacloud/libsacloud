@@ -3,9 +3,10 @@ package sacloud
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/stretchr/testify/assert"
 	"net"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 var (

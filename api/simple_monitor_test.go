@@ -1,8 +1,9 @@
 package api
 
 import (
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 const testSimpleMonitorName = "8.8.8.8"

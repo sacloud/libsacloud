@@ -1,10 +1,11 @@
 package api
 
 import (
-	"github.com/sacloud/libsacloud/sacloud"
-	"github.com/stretchr/testify/assert"
 	"testing"
 	"time"
+
+	"github.com/sacloud/libsacloud/sacloud"
+	"github.com/stretchr/testify/assert"
 )
 
 const testArchiveName = "libsacloud_test_archive"

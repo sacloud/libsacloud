@@ -2,10 +2,11 @@ package api
 
 import (
 	"bytes"
-	"github.com/sacloud/libsacloud/sacloud"
-	"github.com/stretchr/testify/assert"
 	"log"
 	"testing"
+
+	"github.com/sacloud/libsacloud/sacloud"
+	"github.com/stretchr/testify/assert"
 )
 
 const testTargetNoteName string = "libsacloud_base_api_test_note"

@@ -1,10 +1,11 @@
 package api
 
 import (
-	"github.com/sacloud/libsacloud/sacloud"
-	"github.com/stretchr/testify/assert"
 	"os"
 	"testing"
+
+	"github.com/sacloud/libsacloud/sacloud"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestWebAccelAPI(t *testing.T) {

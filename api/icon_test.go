@@ -1,8 +1,9 @@
 package api
 
 import (
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 const testIconName = "libsacloud_test_icon"

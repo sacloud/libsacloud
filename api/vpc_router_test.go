@@ -2,10 +2,11 @@ package api
 
 import (
 	"fmt"
-	"github.com/sacloud/libsacloud/sacloud"
-	"github.com/stretchr/testify/assert"
 	"testing"
 	"time"
+
+	"github.com/sacloud/libsacloud/sacloud"
+	"github.com/stretchr/testify/assert"
 )
 
 const testVPCRouterName = "libsacloud_test_VPCRouter"

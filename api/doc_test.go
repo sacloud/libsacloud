@@ -2,6 +2,7 @@ package api_test
 
 import (
 	"fmt"
+
 	"github.com/sacloud/libsacloud/api"
 	"github.com/sacloud/libsacloud/sacloud"
 

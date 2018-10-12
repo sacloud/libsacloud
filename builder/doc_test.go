@@ -2,6 +2,7 @@ package builder_test
 
 import (
 	"fmt"
+
 	"github.com/sacloud/libsacloud/api"
 	"github.com/sacloud/libsacloud/builder"
 	"github.com/sacloud/libsacloud/sacloud/ostype"
