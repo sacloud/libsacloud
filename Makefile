@@ -39,3 +39,22 @@ godoc:
 	docker-compose up godoc
 
 .PHONY: default test vet fmt golint test-api test-builder test-all run goimports
+
+.PHONY: tools
+tools:
+	go get golang.org/x/tools/cmd/goimports
+	go get golang.org/x/lint/golint
+	go get github.com/motemen/gobump
+
+.PHONY: bump-patch bump-minor bump-major version
+bump-patch:
+	gobump patch -w
+
+bump-minor:
+	gobump minor -w
+
+bump-major:
+	gobump major -w
+
+version:
+	gobump show
