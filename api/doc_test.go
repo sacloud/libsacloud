@@ -2,12 +2,11 @@ package api_test
 
 import (
 	"fmt"
+	"os"
+	"time"
 
 	"github.com/sacloud/libsacloud/api"
 	"github.com/sacloud/libsacloud/sacloud"
-
-	"os"
-	"time"
 )
 
 func Example_basic() {
