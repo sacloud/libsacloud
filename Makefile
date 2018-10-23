@@ -60,4 +60,4 @@ version:
 	gobump show
 
 git-tag:
-	git tag `gobump show -r`
+	git tag v`gobump show -r`
