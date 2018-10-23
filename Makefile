@@ -58,3 +58,6 @@ bump-major:
 
 version:
 	gobump show
+
+git-tag:
+	git tag `gobump show -r`
