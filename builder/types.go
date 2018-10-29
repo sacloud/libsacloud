@@ -121,6 +121,9 @@ type NetworkInterfaceProperty interface {
 	// AddExistsSwitchConnectedNIC スイッチ or ルーター+スイッチへの接続追加(注:ルーター+スイッチはeth0のみ接続可能)
 	AddExistsSwitchConnectedNIC(switchID string)
 
+	// AddExistsSwitchConnectedNICWithDisplayIP スイッチ or ルーター+スイッチへの接続追加(注:ルーター+スイッチはeth0のみ接続可能)
+	AddExistsSwitchConnectedNICWithDisplayIP(switchID, displayIP string)
+
 	// AddDisconnectedNIC 切断されたNIC追加
 	AddDisconnectedNIC()
 

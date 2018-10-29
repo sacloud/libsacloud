@@ -32,7 +32,8 @@ type serverBuilder struct {
 	privateHostID int64
 
 	// for nic
-	nicConnections []string
+	nicConnections     []string
+	displayIPAddresses []string
 
 	// for PacketFilter
 	packetFilterIDs []int64
@@ -140,6 +141,24 @@ func (b *serverBuilder) Build() (*ServerBuildResult, error) {
 				return b.currentBuildResult, err
 			}
 			b.callEventHandlerIfExists(ServerBuildOnBootAfter)
+		}
+	}
+
+	if len(b.displayIPAddresses) > 0 {
+		for i, nic := range b.currentBuildResult.Server.Interfaces {
+			ifID := nic.ID
+			displayIP := b.displayIPAddresses[i]
+			if displayIP != "" {
+				if _, err := b.client.Interface.SetDisplayIPAddress(ifID, displayIP); err != nil {
+					return b.currentBuildResult, err
+				}
+				// reload server
+				server, err := b.client.Server.Read(b.currentBuildResult.Server.ID)
+				if err != nil {
+					return b.currentBuildResult, err
+				}
+				b.currentBuildResult.Server = server
+			}
 		}
 	}
 
@@ -453,16 +472,25 @@ func (b *serverBuilder) ClearNICConnections() {
 // AddPublicNWConnectedNIC 共有セグメントへの接続追加(注:共有セグメントはeth0のみ接続可能)
 func (b *serverBuilder) AddPublicNWConnectedNIC() {
 	b.nicConnections = append(b.nicConnections, "shared")
+	b.displayIPAddresses = append(b.displayIPAddresses, "")
 }
 
 // AddExistsSwitchConnectedNIC スイッチ or ルーター+スイッチへの接続追加(注:ルーター+スイッチはeth0のみ接続可能)
 func (b *serverBuilder) AddExistsSwitchConnectedNIC(switchID string) {
 	b.nicConnections = append(b.nicConnections, switchID)
+	b.displayIPAddresses = append(b.displayIPAddresses, "")
+}
+
+// AddExistsSwitchConnectedNICWithDisplayIP スイッチ or ルーター+スイッチへの接続追加(注:ルーター+スイッチはeth0のみ接続可能)
+func (b *serverBuilder) AddExistsSwitchConnectedNICWithDisplayIP(switchID, displayIP string) {
+	b.nicConnections = append(b.nicConnections, switchID)
+	b.displayIPAddresses = append(b.displayIPAddresses, displayIP)
 }
 
 // AddDisconnectedNIC 切断されたNIC追加
 func (b *serverBuilder) AddDisconnectedNIC() {
 	b.nicConnections = append(b.nicConnections, "")
+	b.displayIPAddresses = append(b.displayIPAddresses, "")
 }
 
 // GetPacketFilterIDs パケットフィルタID 取得

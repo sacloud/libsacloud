@@ -135,13 +135,22 @@ func TestServerBuilder_Build_WithSSHKeyAndNoteEphemeral(t *testing.T) {
 
 }
 
-//func TestServerBuilder_Build_WithExistsSwitch(t *testing.T) {
-//	zone := client.Zone
-//	defer func() { client.Zone = zone }()
-//	client.Zone = "tk1a"
-//	builder := serverPublicArchiveUnix(client, sacloud.CentOS, serverBuilderTestServerName, serverBuilderTestPassword)
-//	builder.AddExistsSwitchConnectedNIC("112800821771", "192.168.150.21", 24, "192.168.150.1").Build()
-//}
+func TestServerBuilder_Build_WithExistsSwitch(t *testing.T) {
+	defer initServers()()
+
+	newSw := client.Switch.New()
+	newSw.Name = serverBuilderTestServerName
+	sw, err := client.Switch.Create(newSw)
+	assert.NoError(t, err)
+
+	expectAddr := "19.2.0.1"
+	builder := ServerDiskless(client, serverBuilderTestServerName)
+	builder.AddExistsSwitchConnectedNICWithDisplayIP(sw.GetStrID(), expectAddr)
+	res, err := builder.Build()
+	assert.NoError(t, err)
+
+	assert.Equal(t, expectAddr, res.Server.Interfaces[0].GetUserIPAddress())
+}
 
 func TestServerBuilder_Build_WithSSHKeyAndNote(t *testing.T) {
 	defer initServers()()
@@ -270,6 +279,10 @@ func cleanupServers() {
 	res, _ := client.Server.Reset().WithNameLike(serverBuilderTestServerName).Find()
 	for _, server := range res.Servers {
 		deleteServer(&server)
+	}
+	res, _ = client.Switch.Reset().WithNameLike(serverBuilderTestServerName).Find()
+	for _, sw := range res.Switches {
+		client.Switch.Delete(sw.ID)
 	}
 }
 
