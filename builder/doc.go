@@ -18,7 +18,7 @@
 //		client := api.NewClient("PUT-YOUR-TOKEN", "PUT-YOUR-SECRET", "tk1a")
 //
 //		// パブリックアーカイブ(CentOS)から作成するビルダー、共有セグメントに接続、以外はデフォルト値で作成
-//      b := builder.serverPublicArchiveUnix(client, ostype.CentOS, "ServerName", "Password")
+//      b := builder.serverPublicArchiveUnix(builder.NewAPIClient(client), ostype.CentOS, "ServerName", "Password")
 //      b.AddPublicNWConnectedNIC()
 //		res , err := b.WithAddPublicNWConnectedNIC().Build()
 //
@@ -45,38 +45,38 @@
 //	type PublicArchiveUnixServerBuilder interface { ... }
 //
 //	// ビルダー作成用関数
-//	func serverPublicArchiveUnix(client *api.Client, os ostype.ArchiveOSTypes, name string, password string) PublicArchiveUnixServerBuilder
+//	func serverPublicArchiveUnix(client APIClient, os ostype.ArchiveOSTypes, name string, password string) PublicArchiveUnixServerBuilder
 //
 // - Windows系パブリックアーカイブ
 //	// ビルダー
 //	type PublicArchiveWindowsServerBuilder interface { ... }
 //
 //	// ビルダー作成用関数
-//	func serverPublicArchiveWindows(client *api.Client, name string, archiveID int64) PublicArchiveWindowsServerBuilder
+//	func serverPublicArchiveWindows(client APIClient, name string, archiveID int64) PublicArchiveWindowsServerBuilder
 //
 // - 汎用
 //	// ビルダー
 //	type CommonServerBuilder interface { ... }
 //
 //	// ビルダー作成用関数(アーカイブから作成)
-//	func serverFromArchive(client *api.Client, name string, sourceArchiveID int64) CommonServerBuilder
+//	func serverFromArchive(client APIClient, name string, sourceArchiveID int64) CommonServerBuilder
 //
 //	// ビルダー作成用関数(ディスクから作成)
-//	func serverFromDisk(client *api.Client, name string, sourceDiskID int64) CommonServerBuilder
+//	func serverFromDisk(client APIClient, name string, sourceDiskID int64) CommonServerBuilder
 //
 // - ディスクレス
 //	// ビルダー
 //	type DisklessServerBuilder interface { ... }
 //
 //	// ビルダー作成用関数
-//	func ServerDiskless(client *api.Client, name string) DisklessServerBuilder
+//	func ServerDiskless(client APIClient, name string) DisklessServerBuilder
 //
 // - 空のディスク
 //	// ビルダー
 //	type BlankDiskServerBuilder interface { ... }
 //
 //	// ビルダー作成用関数
-//	func ServerBlankDisk(client *api.Client, name string) BlankDiskServerBuilder
+//	func ServerBlankDisk(client APIClient, name string) BlankDiskServerBuilder
 //
 //
 //
@@ -88,7 +88,7 @@
 //		client := api.NewClient("PUT-YOUR-TOKEN", "PUT-YOUR-SECRET", "tk1a")
 //
 //		// ディスクレスビルダー、イベントハンドラ(ServerBuildOnComplete)を登録
-//		b := builder.ServerDiskless(client, "example")
+//		b := builder.ServerDiskless(builder.NewAPIClient(client), "example")
 //		b.SetEventHandler(builder.ServerBuildOnComplete, callbackFunc).
 //		b.Build()
 //	}

@@ -1,6 +1,8 @@
 package builder
 
-import "github.com/sacloud/libsacloud/sacloud"
+import (
+	"github.com/sacloud/libsacloud/sacloud"
+)
 
 const (
 	// DefaultCore コア数(デフォルト値)

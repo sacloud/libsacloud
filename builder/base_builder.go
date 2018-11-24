@@ -3,12 +3,10 @@ package builder
 import (
 	"fmt"
 	"strings"
-
-	"github.com/sacloud/libsacloud/api"
 )
 
 type baseBuilder struct {
-	client *api.Client
+	client APIClient
 	errors []error
 }
 
