@@ -3,12 +3,11 @@ package builder
 import (
 	"fmt"
 
-	"github.com/sacloud/libsacloud/api"
 	"github.com/sacloud/libsacloud/sacloud/ostype"
 )
 
 // ServerDiskless ディスクレスサーバービルダー
-func ServerDiskless(client *api.Client, name string) DisklessServerBuilder {
+func ServerDiskless(client APIClient, name string) DisklessServerBuilder {
 	b := newServerBuilder(client, name)
 	b.hasCommonProperty = true
 	b.hasNetworkInterfaceProperty = true
@@ -17,7 +16,7 @@ func ServerDiskless(client *api.Client, name string) DisklessServerBuilder {
 }
 
 // ServerPublicArchiveUnix ディスクの編集が可能なLinux(Unix)系パブリックアーカイブを利用するビルダー
-func ServerPublicArchiveUnix(client *api.Client, os ostype.ArchiveOSTypes, name string, password string) PublicArchiveUnixServerBuilder {
+func ServerPublicArchiveUnix(client APIClient, os ostype.ArchiveOSTypes, name string, password string) PublicArchiveUnixServerBuilder {
 	b := newServerBuilder(client, name)
 	b.hasCommonProperty = true
 	b.hasNetworkInterfaceProperty = true
@@ -33,7 +32,7 @@ func ServerPublicArchiveUnix(client *api.Client, os ostype.ArchiveOSTypes, name 
 }
 
 // ServerPublicArchiveFixedUnix ディスクの編集が不可なLinux(Unix)系パブリックアーカイブを利用するビルダー
-func ServerPublicArchiveFixedUnix(client *api.Client, os ostype.ArchiveOSTypes, name string) FixedUnixArchiveServerBuilder {
+func ServerPublicArchiveFixedUnix(client APIClient, os ostype.ArchiveOSTypes, name string) FixedUnixArchiveServerBuilder {
 	b := newServerBuilder(client, name)
 	b.hasCommonProperty = true
 	b.hasNetworkInterfaceProperty = true
@@ -48,7 +47,7 @@ func ServerPublicArchiveFixedUnix(client *api.Client, os ostype.ArchiveOSTypes, 
 }
 
 // ServerPublicArchiveWindows Windows系パブリックアーカイブを利用するビルダー
-func ServerPublicArchiveWindows(client *api.Client, os ostype.ArchiveOSTypes, name string) PublicArchiveWindowsServerBuilder {
+func ServerPublicArchiveWindows(client APIClient, os ostype.ArchiveOSTypes, name string) PublicArchiveWindowsServerBuilder {
 	b := newServerBuilder(client, name)
 	b.hasCommonProperty = true
 	b.hasNetworkInterfaceProperty = true
@@ -63,7 +62,7 @@ func ServerPublicArchiveWindows(client *api.Client, os ostype.ArchiveOSTypes, na
 }
 
 //ServerBlankDisk 空のディスクを利用するビルダー
-func ServerBlankDisk(client *api.Client, name string) BlankDiskServerBuilder {
+func ServerBlankDisk(client APIClient, name string) BlankDiskServerBuilder {
 	b := newServerBuilder(client, name)
 	b.hasCommonProperty = true
 	b.hasNetworkInterfaceProperty = true
@@ -77,7 +76,7 @@ func ServerBlankDisk(client *api.Client, name string) BlankDiskServerBuilder {
 }
 
 // ServerFromExistsDisk 既存ディスクを接続するビルダー
-func ServerFromExistsDisk(client *api.Client, name string, sourceDiskID int64) ConnectDiskServerBuilder {
+func ServerFromExistsDisk(client APIClient, name string, sourceDiskID int64) ConnectDiskServerBuilder {
 	b := newServerBuilder(client, name)
 	b.hasCommonProperty = true
 	b.hasNetworkInterfaceProperty = true
@@ -88,7 +87,7 @@ func ServerFromExistsDisk(client *api.Client, name string, sourceDiskID int64) C
 }
 
 // ServerFromDisk 既存ディスクをコピーして新たなディスクを作成するビルダー
-func ServerFromDisk(client *api.Client, name string, sourceDiskID int64) CommonServerBuilder {
+func ServerFromDisk(client APIClient, name string, sourceDiskID int64) CommonServerBuilder {
 	b := newServerBuilder(client, name)
 	b.hasCommonProperty = true
 	b.hasNetworkInterfaceProperty = true
@@ -104,7 +103,7 @@ func ServerFromDisk(client *api.Client, name string, sourceDiskID int64) CommonS
 }
 
 // ServerFromArchive 既存アーカイブをコピーして新たなディスクを作成するビルダー
-func ServerFromArchive(client *api.Client, name string, sourceArchiveID int64) CommonServerBuilder {
+func ServerFromArchive(client APIClient, name string, sourceArchiveID int64) CommonServerBuilder {
 	b := newServerBuilder(client, name)
 	b.hasCommonProperty = true
 	b.hasNetworkInterfaceProperty = true
@@ -124,7 +123,7 @@ func (b *serverBuilder) serverPublicArchiveUnix(os ostype.ArchiveOSTypes, passwo
 		b.errors = append(b.errors, fmt.Errorf("%q is not support EditDisk", os))
 	}
 
-	archive, err := b.client.Archive.FindByOSType(os)
+	archive, err := b.client.ArchiveFindByOSType(os)
 	if err != nil {
 		b.errors = append(b.errors, err)
 	}
@@ -136,7 +135,7 @@ func (b *serverBuilder) serverPublicArchiveUnix(os ostype.ArchiveOSTypes, passwo
 }
 
 func (b *serverBuilder) serverPublicArchiveFixedUnix(os ostype.ArchiveOSTypes) {
-	archive, err := b.client.Archive.FindByOSType(os)
+	archive, err := b.client.ArchiveFindByOSType(os)
 	if err != nil {
 		b.errors = append(b.errors, err)
 	}
@@ -150,7 +149,7 @@ func (b *serverBuilder) serverPublicArchiveWindows(os ostype.ArchiveOSTypes) {
 		b.errors = append(b.errors, fmt.Errorf("%q is not windows", os))
 	}
 
-	archive, err := b.client.Archive.FindByOSType(os)
+	archive, err := b.client.ArchiveFindByOSType(os)
 	if err != nil {
 		b.errors = append(b.errors, err)
 	}

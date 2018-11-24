@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/sacloud/libsacloud/api"
 	"github.com/sacloud/libsacloud/sacloud"
 )
 
@@ -117,7 +116,7 @@ const (
 )
 
 // Disk ディスクビルダーの作成
-func Disk(client *api.Client, name string) *DiskBuilder {
+func Disk(client APIClient, name string) *DiskBuilder {
 	return &DiskBuilder{
 		baseBuilder: &baseBuilder{
 			client: client,
@@ -492,7 +491,7 @@ func (b *DiskBuilder) Build() (*DiskBuildResult, error) {
 
 		// created keys
 		for _, key := range b.currentDiskBuildResult.SSHKeys {
-			_, err := b.client.SSHKey.Delete(key.ID)
+			_, err := b.client.SSHKeyDelete(key.ID)
 			if err != nil {
 				return b.currentDiskBuildResult, err
 			}
@@ -500,7 +499,7 @@ func (b *DiskBuilder) Build() (*DiskBuildResult, error) {
 
 		// generated key
 		if b.currentDiskBuildResult.GeneratedSSHKey != nil {
-			_, err := b.client.SSHKey.Delete(b.currentDiskBuildResult.GeneratedSSHKey.ID)
+			_, err := b.client.SSHKeyDelete(b.currentDiskBuildResult.GeneratedSSHKey.ID)
 			if err != nil {
 				return b.currentDiskBuildResult, err
 			}
@@ -512,7 +511,7 @@ func (b *DiskBuilder) Build() (*DiskBuildResult, error) {
 		b.callEventHandlerIfExists(DiskBuildOnCleanupNoteBefore)
 
 		for _, note := range b.currentDiskBuildResult.Notes {
-			_, err := b.client.Note.Delete(note.ID)
+			_, err := b.client.NoteDelete(note.ID)
 			if err != nil {
 				return b.currentDiskBuildResult, err
 			}
@@ -541,7 +540,7 @@ func (b *DiskBuilder) buildDiskParams() error {
 func (b *DiskBuilder) buildDiskParam() error {
 	v := b.currentDiskBuildValue
 
-	v.Disk = b.client.Disk.New()
+	v.Disk = b.client.DiskNew()
 	d := v.Disk
 	d.Name = b.name
 	d.SizeMB = b.size * 1024
@@ -573,7 +572,7 @@ func (b *DiskBuilder) buildDiskEditParam() error {
 	v := b.currentDiskBuildValue
 
 	// for DiskEditValue( POST /disk/config )
-	v.Edit = b.client.Disk.NewCondig()
+	v.Edit = b.client.DiskNewCondig()
 	e := v.Edit
 	if b.ipAddress != "" {
 		e.SetUserIPAddress(b.ipAddress)
@@ -649,11 +648,11 @@ func (b *DiskBuilder) createSSHKey(strKey string) (*sacloud.SSHKey, error) {
 	// raise events
 	b.callEventHandlerIfExists(DiskBuildOnCreateSSHKeyBefore)
 
-	keyReq := b.client.SSHKey.New()
+	keyReq := b.client.SSHKeyNew()
 	keyReq.Name = fmt.Sprintf("publickey-%s", time.Now().Format(time.RFC3339))
 	keyReq.PublicKey = strKey
 
-	key, err := b.client.SSHKey.Create(keyReq)
+	key, err := b.client.SSHKeyCreate(keyReq)
 	if err != nil {
 		return nil, err
 	}
@@ -668,7 +667,7 @@ func (b *DiskBuilder) createSSHKey(strKey string) (*sacloud.SSHKey, error) {
 
 func (b *DiskBuilder) generateSSHKey(name string, passPhrase string, desc string) (*sacloud.SSHKeyGenerated, error) {
 
-	key, err := b.client.SSHKey.Generate(name, passPhrase, desc)
+	key, err := b.client.SSHKeyGenerate(name, passPhrase, desc)
 	if err != nil {
 		return nil, err
 	}
@@ -695,11 +694,11 @@ func (b *DiskBuilder) createNote(strNote string) (*sacloud.Note, error) {
 	// raise events
 	b.callEventHandlerIfExists(DiskBuildOnCreateNoteBefore)
 
-	noteReq := b.client.Note.New()
+	noteReq := b.client.NoteNew()
 	noteReq.Name = fmt.Sprintf("note-%s", time.Now().Format(time.RFC3339))
 	noteReq.Content = strNote
 
-	note, err := b.client.Note.Create(noteReq)
+	note, err := b.client.NoteCreate(noteReq)
 	if err != nil {
 		return nil, err
 	}
@@ -716,9 +715,9 @@ func (b *DiskBuilder) createDisk(diskReq *sacloud.Disk, editReq *sacloud.DiskEdi
 	var disk *sacloud.Disk
 	var err error
 	if editReq == nil {
-		disk, err = b.client.Disk.Create(diskReq)
+		disk, err = b.client.DiskCreate(diskReq)
 	} else {
-		disk, err = b.client.Disk.CreateWithConfig(diskReq, editReq, b.autoBoot)
+		disk, err = b.client.DiskCreateWithConfig(diskReq, editReq, b.autoBoot)
 	}
 
 	if err != nil {
@@ -727,7 +726,7 @@ func (b *DiskBuilder) createDisk(diskReq *sacloud.Disk, editReq *sacloud.DiskEdi
 
 	b.currentDiskBuildResult.Disk = disk
 	//wait
-	return b.client.Disk.SleepWhileCopying(disk.ID, b.client.DefaultTimeoutDuration)
+	return b.client.DiskSleepWhileCopying(disk.ID, b.client.GetTimeoutDuration())
 }
 
 func (b *DiskBuilder) isNeedDiskEdit() bool {

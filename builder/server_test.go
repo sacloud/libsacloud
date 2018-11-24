@@ -20,7 +20,7 @@ exit 0
 
 func TestServerBuilder_buildParams(t *testing.T) {
 
-	builder := ServerDiskless(client, serverBuilderTestServerName).(*serverBuilder)
+	builder := ServerDiskless(NewAPIClient(client), serverBuilderTestServerName).(*serverBuilder)
 
 	// この段階では ディスクレス/ISOイメージレス/NICレス、全ての設定がデフォルト値のサーバーになる
 	builder.currentBuildValue = &ServerBuildValue{}
@@ -35,7 +35,7 @@ func TestServerBuilder_buildParams(t *testing.T) {
 	//builder.GetPassword()
 
 	// Unix系アーカイブからのインストールの場合、パスワードの設定などのディスクの編集ができるようになる。
-	tempBuilder := ServerPublicArchiveUnix(client, ostype.CentOS, serverBuilderTestServerName, serverBuilderTestPassword)
+	tempBuilder := ServerPublicArchiveUnix(NewAPIClient(client), ostype.CentOS, serverBuilderTestServerName, serverBuilderTestPassword)
 
 	assert.NotNil(t, tempBuilder)
 	assert.Equal(t, tempBuilder.GetPassword(), serverBuilderTestPassword)
@@ -45,7 +45,7 @@ func TestServerBuilder_buildParams(t *testing.T) {
 func TestServerBuilder_DisklessDefaults(t *testing.T) {
 	defer initServers()()
 
-	builder := ServerDiskless(client, serverBuilderTestServerName)
+	builder := ServerDiskless(NewAPIClient(client), serverBuilderTestServerName)
 
 	assert.Equal(t, builder.GetServerName(), serverBuilderTestServerName)        // サーバー名
 	assert.Equal(t, builder.GetCore(), 1)                                        // コア数 : デフォルト1
@@ -57,7 +57,7 @@ func TestServerBuilder_DisklessDefaults(t *testing.T) {
 func TestDisklessServerBuilder_ServerPublicArchiveUnixDefaults(t *testing.T) {
 	defer initServers()()
 
-	b := ServerPublicArchiveUnix(client, ostype.CentOS, serverBuilderTestServerName, serverBuilderTestPassword)
+	b := ServerPublicArchiveUnix(NewAPIClient(client), ostype.CentOS, serverBuilderTestServerName, serverBuilderTestPassword)
 
 	assert.Equal(t, b.GetServerName(), serverBuilderTestServerName)        // サーバー名
 	assert.Equal(t, b.GetCore(), 1)                                        // コア数 : デフォルト1
@@ -73,7 +73,7 @@ func TestDisklessServerBuilder_ServerPublicArchiveUnixDefaults(t *testing.T) {
 func TestServerBuilder_Build_WithMinimum(t *testing.T) {
 	defer initServers()()
 
-	builder := ServerPublicArchiveUnix(client, ostype.CentOS, serverBuilderTestServerName, serverBuilderTestPassword)
+	builder := ServerPublicArchiveUnix(NewAPIClient(client), ostype.CentOS, serverBuilderTestServerName, serverBuilderTestPassword)
 	builder.AddPublicNWConnectedNIC()
 	result, err := builder.Build()
 
@@ -88,7 +88,7 @@ func TestServerBuilder_Build_WithMinimum(t *testing.T) {
 func TestServerBuilder_Build_WithPacketFilter(t *testing.T) {
 	defer initServers()()
 
-	builder := ServerDiskless(client, serverBuilderTestServerName)
+	builder := ServerDiskless(NewAPIClient(client), serverBuilderTestServerName)
 
 	pfReq := client.PacketFilter.New()
 	pfReq.Name = "Test"
@@ -110,7 +110,7 @@ func TestServerBuilder_Build_WithPacketFilter(t *testing.T) {
 func TestServerBuilder_Build_WithSSHKeyAndNoteEphemeral(t *testing.T) {
 	defer initServers()()
 
-	builder := ServerPublicArchiveUnix(client, ostype.CentOS, serverBuilderTestServerName, serverBuilderTestPassword)
+	builder := ServerPublicArchiveUnix(NewAPIClient(client), ostype.CentOS, serverBuilderTestServerName, serverBuilderTestPassword)
 
 	builder.AddPublicNWConnectedNIC()
 	builder.AddNote(serverBuilderTestNote)
@@ -144,7 +144,7 @@ func TestServerBuilder_Build_WithExistsSwitch(t *testing.T) {
 	assert.NoError(t, err)
 
 	expectAddr := "19.2.0.1"
-	builder := ServerDiskless(client, serverBuilderTestServerName)
+	builder := ServerDiskless(NewAPIClient(client), serverBuilderTestServerName)
 	builder.AddExistsSwitchConnectedNICWithDisplayIP(sw.GetStrID(), expectAddr)
 	res, err := builder.Build()
 	assert.NoError(t, err)
@@ -155,7 +155,7 @@ func TestServerBuilder_Build_WithExistsSwitch(t *testing.T) {
 func TestServerBuilder_Build_WithSSHKeyAndNote(t *testing.T) {
 	defer initServers()()
 
-	builder := ServerPublicArchiveUnix(client, ostype.CentOS, serverBuilderTestServerName, serverBuilderTestPassword)
+	builder := ServerPublicArchiveUnix(NewAPIClient(client), ostype.CentOS, serverBuilderTestServerName, serverBuilderTestPassword)
 
 	builder.AddPublicNWConnectedNIC()
 	builder.AddNote(serverBuilderTestNote)
@@ -197,7 +197,7 @@ func TestServerBuilder_Build_WithSSHKeyAndNote(t *testing.T) {
 func TestServerBuilder_Build_WithEventHandler(t *testing.T) {
 	defer initServers()()
 
-	builder := ServerPublicArchiveUnix(client, ostype.CentOS, serverBuilderTestServerName, serverBuilderTestPassword)
+	builder := ServerPublicArchiveUnix(NewAPIClient(client), ostype.CentOS, serverBuilderTestServerName, serverBuilderTestPassword)
 
 	serverEvents := []ServerBuildEvents{
 		ServerBuildOnStart,

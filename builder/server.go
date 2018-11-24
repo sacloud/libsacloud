@@ -3,7 +3,6 @@ package builder
 import (
 	"fmt"
 
-	"github.com/sacloud/libsacloud/api"
 	"github.com/sacloud/libsacloud/sacloud"
 )
 
@@ -63,7 +62,7 @@ var (
 	DefaultInterfaceDriver = sacloud.InterfaceDriverVirtIO
 )
 
-func newServerBuilder(client *api.Client, serverName string) *serverBuilder {
+func newServerBuilder(client APIClient, serverName string) *serverBuilder {
 	return &serverBuilder{
 		baseBuilder: &baseBuilder{
 			client: client,
@@ -149,11 +148,11 @@ func (b *serverBuilder) Build() (*ServerBuildResult, error) {
 			ifID := nic.ID
 			displayIP := b.displayIPAddresses[i]
 			if displayIP != "" {
-				if _, err := b.client.Interface.SetDisplayIPAddress(ifID, displayIP); err != nil {
+				if _, err := b.client.InterfaceSetDisplayIPAddress(ifID, displayIP); err != nil {
 					return b.currentBuildResult, err
 				}
 				// reload server
-				server, err := b.client.Server.Read(b.currentBuildResult.Server.ID)
+				server, err := b.client.ServerRead(b.currentBuildResult.Server.ID)
 				if err != nil {
 					return b.currentBuildResult, err
 				}
@@ -170,7 +169,7 @@ func (b *serverBuilder) Build() (*ServerBuildResult, error) {
 func (b *serverBuilder) buildParams() error {
 
 	v := b.currentBuildValue
-	v.Server = b.client.Server.New()
+	v.Server = b.client.ServerNew()
 	return b.buildServerParams()
 }
 
@@ -180,7 +179,7 @@ func (b *serverBuilder) buildServerParams() error {
 	b.callEventHandlerIfExists(ServerBuildOnSetPlanBefore)
 
 	// plan
-	plan, err := b.client.Product.Server.GetBySpec(b.core, b.memory, sacloud.PlanDefault)
+	plan, err := b.client.ServerPlanGetBySpec(b.core, b.memory, sacloud.PlanDefault)
 	if err != nil {
 		err = fmt.Errorf("Error building server parameters : setting plan / [%s]", err)
 		return err
@@ -242,11 +241,11 @@ func (b *serverBuilder) createDisks() error {
 		b.currentBuildResult.addDisk(diskBuildResult)
 	}
 	if b.bootAfterCreate && b.canAutoBoot() {
-		if err := b.client.Server.SleepUntilUp(b.currentBuildResult.Server.ID, b.client.DefaultTimeoutDuration); err != nil {
+		if err := b.client.ServerSleepUntilUp(b.currentBuildResult.Server.ID, b.client.GetTimeoutDuration()); err != nil {
 			return err
 		}
 		// refresh CurrentBildResult.Server
-		s, err := b.client.Server.Read(b.currentBuildResult.Server.ID)
+		s, err := b.client.ServerRead(b.currentBuildResult.Server.ID)
 		if err != nil {
 			return err
 		}
@@ -270,7 +269,7 @@ func (b *serverBuilder) createDisks() error {
 }
 
 func (b *serverBuilder) createServer() error {
-	server, err := b.client.Server.Create(b.currentBuildValue.Server)
+	server, err := b.client.ServerCreate(b.currentBuildValue.Server)
 	if err != nil {
 		return err
 	}
@@ -281,7 +280,7 @@ func (b *serverBuilder) createServer() error {
 func (b *serverBuilder) connectDisks() error {
 	server := b.currentBuildResult.Server
 	for _, diskID := range b.connectDiskIDs {
-		_, err := b.client.Disk.ConnectToServer(diskID, server.ID)
+		_, err := b.client.DiskConnectToServer(diskID, server.ID)
 		if err != nil {
 			return err
 		}
@@ -296,7 +295,7 @@ func (b *serverBuilder) connectPacketFilters() error {
 			return fmt.Errorf("Number of packet filter and NIC are different")
 		}
 		if pfID > 0 {
-			_, err := b.client.Interface.ConnectToPacketFilter(server.Interfaces[i].ID, pfID)
+			_, err := b.client.InterfaceConnectToPacketFilter(server.Interfaces[i].ID, pfID)
 			if err != nil {
 				return err
 			}
@@ -307,7 +306,7 @@ func (b *serverBuilder) connectPacketFilters() error {
 
 func (b *serverBuilder) insertCDROM() error {
 	server := b.currentBuildResult.Server
-	_, err := b.client.Server.InsertCDROM(server.ID, b.isoImageID)
+	_, err := b.client.ServerInsertCDROM(server.ID, b.isoImageID)
 	if err != nil {
 		return err
 	}
@@ -316,17 +315,17 @@ func (b *serverBuilder) insertCDROM() error {
 
 func (b *serverBuilder) bootServer() error {
 	server := b.currentBuildResult.Server
-	_, err := b.client.Server.Boot(server.ID)
+	_, err := b.client.ServerBoot(server.ID)
 	if err != nil {
 		return err
 	}
 
-	if err := b.client.Server.SleepUntilUp(server.ID, b.client.DefaultTimeoutDuration); err != nil {
+	if err := b.client.ServerSleepUntilUp(server.ID, b.client.GetTimeoutDuration()); err != nil {
 		return err
 	}
 
 	// refresh CurrentBildResult.Server
-	s, err := b.client.Server.Read(server.ID)
+	s, err := b.client.ServerRead(server.ID)
 	if err != nil {
 		return err
 	}
