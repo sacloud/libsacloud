@@ -35,7 +35,7 @@ exit 0`
 	//---------------------------------------------------------------------
 
 	// APIクライアントの作成
-	client :=  api.NewClient(token, secret, zone)
+	client := api.NewClient(token, secret, zone)
 
 	// CentOSパブリックアーカイブからサーバー作成
 	builder := builder.ServerPublicArchiveUnix(builder.NewAPIClient(client), ostype.CentOS, serverName, password)

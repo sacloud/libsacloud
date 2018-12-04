@@ -214,7 +214,7 @@ func TestDiskAPI_FindByFilters(t *testing.T) {
 		FilterBy("Name", "libsacloud_test_disk_name").FilterBy("Name", "ssssss").Find()
 	assert.NoError(t, err)
 	assert.NotNil(t, res)
-	assert.True(t, len(res.Disks) >= 3)
+	assert.True(t, len(res.Disks) == 0)
 
 	res, err = api.Reset().Include("ID").Include("Name").
 		FilterMultiBy("Name", name1).FilterMultiBy("Name", name2).Find()
