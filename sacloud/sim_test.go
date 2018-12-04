@@ -90,6 +90,25 @@ const testSIMLogJSON = `
 }
 `
 
+const testSIMNetworkOperatorConfigsJSON = `
+{
+  "network_operator_config": [
+    {
+      "name": "SoftBank",
+      "allow": true
+    },
+    {
+      "name": "NTT DOCOMO",
+      "allow": true
+    },
+    {
+      "name": "KDDI",
+      "allow": true
+    }
+  ]
+}
+`
+
 func TestMarshalSIMJSON(t *testing.T) {
 
 	t.Run("SIM no status", func(t *testing.T) {
@@ -147,6 +166,16 @@ func TestMarshalSIMJSON(t *testing.T) {
 		assert.NotEmpty(t, logs.ResourceID)
 		assert.NotEmpty(t, logs.IMEI)
 		assert.NotEmpty(t, logs.IMSI)
+	})
+
+	t.Run("SIM NetworkOperatorConfig", func(t *testing.T) {
+		var configs SIMNetworkOperatorConfigs
+		err := json.Unmarshal([]byte(testSIMNetworkOperatorConfigsJSON), &configs)
+
+		assert.NoError(t, err)
+		assert.NotEmpty(t, configs)
+		assert.Len(t, configs.NetworkOperatorConfigs, 3)
+
 	})
 }
 

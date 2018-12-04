@@ -4,6 +4,7 @@ import (
 	"os"
 	"testing"
 
+	"github.com/sacloud/libsacloud/sacloud"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -44,6 +45,21 @@ func TestSIMBasicCRUD(t *testing.T) {
 	assert.NoError(t, err)
 	assert.NotNil(t, readSIM)
 	assert.Equal(t, "description_updated", readSIM.Description)
+
+	// NetworkOperator
+	_, err = api.SetNetworkOperator(sim.ID, &sacloud.SIMNetworkOperatorConfig{
+		Name:  sacloud.SIMOperatorsKDDI,
+		Allow: true,
+	})
+	assert.NoError(t, err)
+
+	operators, err := api.GetNetworkOperator(sim.ID)
+	assert.NoError(t, err)
+	assert.True(t, len(operators.NetworkOperatorConfigs) > 1) // response should have all career's setting
+	for _, career := range operators.NetworkOperatorConfigs {
+		expect := career.Name == sacloud.SIMOperatorsKDDI
+		assert.Equal(t, expect, career.Allow, "career:%s has unexpected value: %v", career.Name, career.Allow)
+	}
 
 	// delete
 	_, err = api.Delete(sim.ID)
