@@ -296,6 +296,7 @@ func TestArchiveAPI_FindStableOSs(t *testing.T) {
 		{label: "Windows2016-SQLServer2017-Standard", f: api.FindLatestStableWindows2016SQLServer2017Standard},
 		{label: "Windows2016-SQLServer-Standard-All", f: api.FindLatestStableWindows2016SQLServerStandardAll},
 		{label: "Windows2016-SQLServer2017-Standard-All", f: api.FindLatestStableWindows2016SQLServer2017StandardAll},
+		{label: "Windows2019", f: api.FindLatestStableWindows2019},
 	}
 
 	for _, ts := range targets {
@@ -342,6 +343,7 @@ func TestArchiveAPI_CanDiskEdit(t *testing.T) {
 		{label: "Windows2016-SQLServer2017-Standard", expect: false, f: api.FindLatestStableWindows2016SQLServer2017Standard},
 		{label: "Windows2016-SQLServer-Standard-All", expect: false, f: api.FindLatestStableWindows2016SQLServerStandardAll},
 		{label: "Windows2016-SQLServer2017-Standard-All", expect: false, f: api.FindLatestStableWindows2016SQLServer2017StandardAll},
+		{label: "Windows2019", expect: false, f: api.FindLatestStableWindows2019},
 	}
 
 	for _, ts := range targets {
