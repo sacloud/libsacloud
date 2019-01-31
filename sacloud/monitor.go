@@ -104,6 +104,23 @@ type ResourceMonitorResponse struct {
 	Data *MonitorValues `json:",omitempty"` // メトリクス
 }
 
+// UnmarshalJSON JSONアンマーシャル(配列、オブジェクトが混在するためここで対応)
+func (m *MonitorValues) UnmarshalJSON(data []byte) error {
+	targetData := strings.Replace(strings.Replace(string(data), " ", "", -1), "\n", "", -1)
+	if targetData == `[]` {
+		return nil
+	}
+
+	tmp := map[string]*MonitorValue{}
+	if err := json.Unmarshal(data, &tmp); err != nil {
+		return err
+	}
+
+	value := MonitorValues(tmp)
+	*m = value
+	return nil
+}
+
 // MonitorSummaryData メトリクスサマリー
 type MonitorSummaryData struct {
 	Max   float64 // 最大値
