@@ -21,6 +21,7 @@ var vpcRouterStatusJSON = `
     	"vlog1",
     	"vlog2"
    ],
+    "SessionCount": 7,
     "DHCPServerLeases": [
       {
         "IPAddress": "192.168.1.210",
@@ -35,24 +36,24 @@ var vpcRouterStatusJSON = `
       {
         "User": "micho",
         "IPAddress": "192.168.2.200",
-        "TimeSec": "300"
+        "TimeSec": 300
       },
       {
         "User": "micho2",
         "IPAddress": "192.168.2.201",
-        "TimeSec": "6000"
+        "TimeSec": 6000
       }
     ],
     "PPTPServerSessions": [
       {
         "User": "micho3",
         "IPAddress": "192.168.2.202",
-        "TimeSec": "500"
+        "TimeSec": 500
       },
       {
         "User": "micho4",
         "IPAddress": "192.168.2.203",
-        "TimeSec": "7000"
+        "TimeSec": 7000
       }
     ],
     "SiteToSiteIPsecVPNPeers": [
@@ -90,11 +91,11 @@ func TestMarshalVPCRouterStatusJSON(t *testing.T) {
 
 	assert.EqualValues(t, "micho", vpcRouterStatus.L2TPIPsecServerSessions[0].User)
 	assert.EqualValues(t, "192.168.2.200", vpcRouterStatus.L2TPIPsecServerSessions[0].IPAddress)
-	assert.EqualValues(t, "300", vpcRouterStatus.L2TPIPsecServerSessions[0].TimeSec)
+	assert.EqualValues(t, 300, vpcRouterStatus.L2TPIPsecServerSessions[0].TimeSec)
 
 	assert.EqualValues(t, "micho3", vpcRouterStatus.PPTPServerSessions[0].User)
 	assert.EqualValues(t, "192.168.2.202", vpcRouterStatus.PPTPServerSessions[0].IPAddress)
-	assert.EqualValues(t, "500", vpcRouterStatus.PPTPServerSessions[0].TimeSec)
+	assert.EqualValues(t, 500, vpcRouterStatus.PPTPServerSessions[0].TimeSec)
 
 	assert.EqualValues(t, "DOWN", vpcRouterStatus.SiteToSiteIPsecVPNPeers[0].Status)
 	assert.EqualValues(t, "1.1.1.1", vpcRouterStatus.SiteToSiteIPsecVPNPeers[0].Peer)
