@@ -151,6 +151,12 @@ var testEmptyMonitorJSON = `
 }
 `
 
+var testEmptyMonitorDataJSON = `
+{
+	"Data": [],
+    "is_ok": true
+}
+`
 var testResourceMonitorResponseJSON = `
 {
     "Data": ` + testCPUResourceMonitorJSON + `,
@@ -183,7 +189,15 @@ func TestMarshalEmptyMonitorJSON(t *testing.T) {
 	assert.NoError(t, err)
 	assert.NotEmpty(t, m)
 	assert.NotEmpty(t, m.Data)
+}
 
+func TestMarshalEmptyMonitorDataJSON(t *testing.T) {
+	var m ResourceMonitorResponse
+	err := json.Unmarshal([]byte(testEmptyMonitorDataJSON), &m)
+
+	assert.NoError(t, err)
+	assert.NotEmpty(t, m)
+	assert.Empty(t, m.Data)
 }
 
 func TestFlattenMonitorValues(t *testing.T) {
