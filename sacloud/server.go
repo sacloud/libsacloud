@@ -93,7 +93,7 @@ func (s *Server) UpstreamType() EUpstreamNetworkType {
 
 // UpstreamTypeAt 指定インデックスのNICの上流ネットワーク種別
 func (s *Server) UpstreamTypeAt(index int) EUpstreamNetworkType {
-	if len(s.Interfaces) < index {
+	if len(s.Interfaces) <= index {
 		return EUpstreamNetworkUnknown
 	}
 	return s.Interfaces[index].UpstreamType()
@@ -110,7 +110,7 @@ func (s *Server) SwitchID() int64 {
 //
 // NICがない、上流スイッチが見つからない、上流が共有セグメントの場合は-1を返す
 func (s *Server) SwitchIDAt(index int) int64 {
-	if len(s.Interfaces) < index {
+	if len(s.Interfaces) <= index {
 		return -1
 	}
 
@@ -132,7 +132,7 @@ func (s *Server) SwitchName() string {
 //
 // NICがない、上流スイッチが見つからない、上流が共有セグメントの場合は空文字を返す
 func (s *Server) SwitchNameAt(index int) string {
-	if len(s.Interfaces) < index {
+	if len(s.Interfaces) <= index {
 		return ""
 	}
 
@@ -158,7 +158,7 @@ func (s *Server) Bandwidth() int {
 // 0 : 制限なしの場合
 // 以外: 帯域幅(Mbps)
 func (s *Server) BandwidthAt(index int) int {
-	if len(s.Interfaces) < index {
+	if len(s.Interfaces) <= index {
 		return -1
 	}
 

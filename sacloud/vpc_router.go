@@ -244,7 +244,7 @@ func (v *VPCRouter) IPAddress1() string {
 
 // IPAddress1At 指定インデックスのNICのIPアドレス1
 func (v *VPCRouter) IPAddress1At(index int) string {
-	if len(v.Interfaces) < index {
+	if len(v.Interfaces) <= index {
 		return ""
 	}
 
@@ -279,7 +279,7 @@ func (v *VPCRouter) IPAddress2At(index int) string {
 	if v.IsStandardPlan() {
 		return ""
 	}
-	if len(v.Interfaces) < index {
+	if len(v.Interfaces) <= index {
 		return ""
 	}
 
@@ -310,7 +310,7 @@ func (v *VPCRouter) VirtualIPAddressAt(index int) string {
 	if v.IsStandardPlan() {
 		return ""
 	}
-	if len(v.Interfaces) < index {
+	if len(v.Interfaces) <= index {
 		return ""
 	}
 
@@ -327,7 +327,7 @@ func (v *VPCRouter) NetworkMaskLenAt(index int) int {
 	if !v.HasInterfaces() {
 		return -1
 	}
-	if len(v.Interfaces) < index {
+	if len(v.Interfaces) <= index {
 		return -1
 	}
 
