@@ -35,6 +35,10 @@ var (
 	NFSPlan2T = NFSPlan(1024 * 2)
 	// NFSPlan4T 4T(4096GB)プラン
 	NFSPlan4T = NFSPlan(1024 * 4)
+	// NFSPlan8T 8TBプラン
+	NFSPlan8T = NFSPlan(1024 * 8)
+	// NFSPlan12T 12TBプラン
+	NFSPlan12T = NFSPlan(1024 * 12)
 )
 
 // AllowNFSPlans 指定可能なNFSプラン
@@ -45,6 +49,8 @@ func AllowNFSPlans() []int {
 		int(NFSPlan1T),
 		int(NFSPlan2T),
 		int(NFSPlan4T),
+		int(NFSPlan8T),
+		int(NFSPlan12T),
 	}
 }
 
