@@ -58,7 +58,7 @@ func CreateNewProxyLB(name string) *ProxyLB {
 }
 
 // SetHTTPHealthCheck HTTPヘルスチェック 設定
-func (p *ProxyLB) SetHTTPHealthCheck(hostHeader string, path string, delayLoop int) {
+func (p *ProxyLB) SetHTTPHealthCheck(hostHeader, path string, delayLoop int) {
 	if delayLoop <= 0 {
 		delayLoop = 10
 	}
