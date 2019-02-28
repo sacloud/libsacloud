@@ -297,6 +297,7 @@ type API struct {
 	NFS           *NFSAPI           // NFS API
 	Note          *NoteAPI          // スタートアップスクリプトAPI
 	PacketFilter  *PacketFilterAPI  // パケットフィルタAPI
+	ProxyLB       *ProxyLBAPI       // プロキシLBAPI
 	PrivateHost   *PrivateHostAPI   // 専有ホストAPI
 	Product       *ProductAPI       // 製品情報API
 	Server        *ServerAPI        // サーバーAPI
@@ -437,6 +438,11 @@ func (api *API) GetNoteAPI() *NoteAPI {
 // GetPacketFilterAPI パケットフィルタAPI取得
 func (api *API) GetPacketFilterAPI() *PacketFilterAPI {
 	return api.PacketFilter
+}
+
+// GetProxyLBAPI プロキシLBAPI取得
+func (api *API) GetProxyLBAPI() *ProxyLBAPI {
+	return api.ProxyLB
 }
 
 // GetPrivateHostAPI 専有ホストAPI取得
@@ -595,6 +601,7 @@ func newAPI(client *Client) *API {
 		NFS:           NewNFSAPI(client),
 		Note:          NewNoteAPI(client),
 		PacketFilter:  NewPacketFilterAPI(client),
+		ProxyLB:       NewProxyLBAPI(client),
 		PrivateHost:   NewPrivateHostAPI(client),
 		Product: &ProductAPI{
 			Server:      NewProductServerAPI(client),
