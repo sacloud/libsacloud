@@ -382,7 +382,7 @@ func TestDatabaseReplication(t *testing.T) {
 	v.Plan = sacloud.DatabasePlan10G
 	v.DefaultUser = "defuser"
 	v.UserPassword = "defuserPassword01"
-	v.SourceNetwork = []string{"192.168.0.1", "192.168.1.1"}
+	v.SourceNetwork = []string{"192.168.11.1", "192.168.11.101"}
 	v.ServicePort = 54321
 	v.SwitchID = fmt.Sprintf("%d", sw.ID)
 	v.IPAddress1 = "192.168.11.100"
