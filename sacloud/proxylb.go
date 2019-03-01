@@ -85,10 +85,19 @@ func (p *ProxyLB) SetTCPHealthCheck(port, delayLoop int) {
 
 // SetSorryServer ソーリーサーバ 設定
 func (p *ProxyLB) SetSorryServer(ipaddress string, port int) {
+	var pt *int
+	if port > 0 {
+		pt = &port
+	}
 	p.Settings.ProxyLB.SorryServer = ProxyLBSorryServer{
 		IPAddress: ipaddress,
-		Port:      port,
+		Port:      pt,
 	}
+}
+
+// ClearSorryServer ソーリーサーバ クリア
+func (p *ProxyLB) ClearSorryServer() {
+	p.SetSorryServer("", 0)
 }
 
 // HasProxyLBServer ProxyLB配下にサーバーを保持しているか判定
@@ -111,9 +120,14 @@ func (p *ProxyLB) DeleteBindPort(mode string, port int) {
 	p.Settings.ProxyLB.DeleteBindPort(mode, port)
 }
 
+// ClearBindPorts バインドポート クリア
+func (p *ProxyLB) ClearBindPorts() {
+	p.Settings.ProxyLB.BindPorts = []*ProxyLBBindPorts{}
+}
+
 // AddServer ProxyLB配下のサーバーを追加
-func (p *ProxyLB) AddServer(ip string, port int) {
-	p.Settings.ProxyLB.AddServer(ip, port)
+func (p *ProxyLB) AddServer(ip string, port int, enabled bool) {
+	p.Settings.ProxyLB.AddServer(ip, port, enabled)
 }
 
 // DeleteServer ProxyLB配下のサーバーを削除
@@ -132,7 +146,7 @@ type ProxyLBSetting struct {
 // ProxyLBSorryServer ソーリーサーバ
 type ProxyLBSorryServer struct {
 	IPAddress string // IPアドレス
-	Port      int    // ポート
+	Port      *int   // ポート
 }
 
 // AddBindPort バインドポート追加
@@ -164,12 +178,13 @@ func (s *ProxyLBSetting) DeleteBindPort(mode string, port int) {
 }
 
 // AddServer ProxyLB配下のサーバーを追加
-func (s *ProxyLBSetting) AddServer(ip string, port int) {
+func (s *ProxyLBSetting) AddServer(ip string, port int, enabled bool) {
 	var record ProxyLBServer
 	var isExist = false
 	for i := range s.Servers {
 		if s.Servers[i].IPAddress == ip && s.Servers[i].Port == port {
 			isExist = true
+			s.Servers[i].Enabled = enabled
 		}
 	}
 
@@ -177,7 +192,7 @@ func (s *ProxyLBSetting) AddServer(ip string, port int) {
 		record = ProxyLBServer{
 			IPAddress: ip,
 			Port:      port,
-			Enabled:   true,
+			Enabled:   enabled,
 		}
 		s.Servers = append(s.Servers, record)
 	}

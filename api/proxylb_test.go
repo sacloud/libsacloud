@@ -21,14 +21,14 @@ func TestProxyLBCreate(t *testing.T) {
 	item.SetSorryServer("133.242.0.3", 80)
 	item.SetHTTPHealthCheck("libsacloud.com", "/", 0)
 	item.AddBindPort("http", 80)
-	item.AddServer("133.242.0.4", 80)
+	item.AddServer("133.242.0.4", 80, true)
 
 	item, err := client.ProxyLB.Create(item)
 
 	assert.NoError(t, err)
 
 	assert.Equal(t, item.Settings.ProxyLB.SorryServer.IPAddress, "133.242.0.3")
-	assert.Equal(t, item.Settings.ProxyLB.SorryServer.Port, 80)
+	assert.Equal(t, *item.Settings.ProxyLB.SorryServer.Port, 80)
 
 	assert.Equal(t, item.Settings.ProxyLB.HealthCheck.Protocol, "http")
 	assert.Equal(t, item.Settings.ProxyLB.HealthCheck.Host, "libsacloud.com")
