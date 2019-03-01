@@ -16,7 +16,7 @@ type ProxyLB struct {
 	propCreatedAt    // 作成日時
 	propModifiedAt   // 変更日時
 
-	Status   ProxyLBStatus   `json:",omitempty"` // ステータス
+	Status   *ProxyLBStatus  `json:",omitempty"` // ステータス
 	Provider ProxyLBProvider `json:",omitempty"` // プロバイダ
 	Settings ProxyLBSettings `json:",omitempty"` // ProxyLB設定
 
@@ -49,7 +49,7 @@ func CreateNewProxyLB(name string) *ProxyLB {
 		Settings: ProxyLBSettings{
 			ProxyLB: ProxyLBSetting{
 				HealthCheck: defaultProxyLBHealthCheck,
-				SorryServer: &ProxyLBSorryServer{},
+				SorryServer: ProxyLBSorryServer{},
 				Servers:     []ProxyLBServer{},
 			},
 		},
@@ -85,7 +85,7 @@ func (p *ProxyLB) SetTCPHealthCheck(port, delayLoop int) {
 
 // SetSorryServer ソーリーサーバ 設定
 func (p *ProxyLB) SetSorryServer(ipaddress string, port int) {
-	p.Settings.ProxyLB.SorryServer = &ProxyLBSorryServer{
+	p.Settings.ProxyLB.SorryServer = ProxyLBSorryServer{
 		IPAddress: ipaddress,
 		Port:      port,
 	}
@@ -124,15 +124,15 @@ func (p *ProxyLB) DeleteServer(ip string, port int) {
 // ProxyLBSetting ProxyLBセッティング
 type ProxyLBSetting struct {
 	HealthCheck ProxyLBHealthCheck  `json:",omitempty"` // ヘルスチェック
-	SorryServer *ProxyLBSorryServer `json:",omitempty"` // ソーリーサーバー
+	SorryServer ProxyLBSorryServer  `json:",omitempty"` // ソーリーサーバー
 	BindPorts   []*ProxyLBBindPorts // プロキシ方式(プロトコル&ポート)
 	Servers     []ProxyLBServer     // サーバー
 }
 
 // ProxyLBSorryServer ソーリーサーバ
 type ProxyLBSorryServer struct {
-	IPAddress string `json:",omitempty"` // IPアドレス
-	Port      int    `json:",omitempty"` // ポート
+	IPAddress string // IPアドレス
+	Port      int    // ポート
 }
 
 // AddBindPort バインドポート追加
