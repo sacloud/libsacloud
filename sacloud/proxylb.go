@@ -220,8 +220,8 @@ func NewProxyLBServer(ipaddress string, port int) *ProxyLBServer {
 	}
 }
 
-// AllowProlyLBHealthCheckProtocols プロキシLBで利用できるヘルスチェックプロトコル
-var AllowProlyLBHealthCheckProtocols = []string{"http", "tcp"}
+// AllowProxyLBHealthCheckProtocols プロキシLBで利用できるヘルスチェックプロトコル
+var AllowProxyLBHealthCheckProtocols = []string{"http", "tcp"}
 
 // ProxyLBHealthCheck ヘルスチェック
 type ProxyLBHealthCheck struct {
