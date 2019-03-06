@@ -171,7 +171,7 @@ func (api *ProxyLBAPI) SetCertificates(id int64, certs *sacloud.ProxyLBCertifica
 // DeleteCertificates 証明書削除
 func (api *ProxyLBAPI) DeleteCertificates(id int64) (bool, error) {
 	var (
-		method = "GET"
+		method = "DELETE"
 		uri    = fmt.Sprintf("%s/%d/proxylb/sslcertificate", api.getResourceURL(), id)
 	)
 	return api.baseAPI.modify(method, uri, nil)
