@@ -2,6 +2,9 @@ package sacloud
 
 import (
 	"encoding/json"
+	"fmt"
+	"strconv"
+	"strings"
 	"time"
 )
 
@@ -54,7 +57,37 @@ func CreateNewProxyLB(name string) *ProxyLB {
 			},
 		},
 	}
+}
 
+// ProxyLBPlan ProxyLBプラン
+type ProxyLBPlan int
+
+var (
+	// ProxyLBPlan1000 1,000cpsプラン
+	ProxyLBPlan1000 = ProxyLBPlan(1000)
+	// ProxyLBPlan5000 5,000cpsプラン
+	ProxyLBPlan5000 = ProxyLBPlan(5000)
+	// ProxyLBPlan10000 10,000cpsプラン
+	ProxyLBPlan10000 = ProxyLBPlan(10000)
+	// ProxyLBPlan50000 50,000cpsプラン
+	ProxyLBPlan50000 = ProxyLBPlan(50000)
+	// ProxyLBPlan100000 100,000cpsプラン
+	ProxyLBPlan100000 = ProxyLBPlan(100000)
+)
+
+// GetPlan プラン取得(デフォルト: 1000cps)
+func (p *ProxyLB) GetPlan() ProxyLBPlan {
+	classes := strings.Split(p.ServiceClass, "/")
+	class, err := strconv.Atoi(classes[len(classes)-1])
+	if err != nil {
+		return ProxyLBPlan1000
+	}
+	return ProxyLBPlan(class)
+}
+
+// SetPlan プラン指定
+func (p *ProxyLB) SetPlan(plan ProxyLBPlan) {
+	p.ServiceClass = fmt.Sprintf("cloud/proxylb/plain/%d", plan)
 }
 
 // SetHTTPHealthCheck HTTPヘルスチェック 設定
@@ -67,11 +100,10 @@ func (p *ProxyLB) SetHTTPHealthCheck(hostHeader, path string, delayLoop int) {
 	p.Settings.ProxyLB.HealthCheck.Host = hostHeader
 	p.Settings.ProxyLB.HealthCheck.Path = path
 	p.Settings.ProxyLB.HealthCheck.DelayLoop = delayLoop
-	p.Settings.ProxyLB.HealthCheck.Port = 0
 }
 
 // SetTCPHealthCheck TCPヘルスチェック 設定
-func (p *ProxyLB) SetTCPHealthCheck(port, delayLoop int) {
+func (p *ProxyLB) SetTCPHealthCheck(delayLoop int) {
 	if delayLoop <= 0 {
 		delayLoop = 10
 	}
@@ -80,7 +112,6 @@ func (p *ProxyLB) SetTCPHealthCheck(port, delayLoop int) {
 	p.Settings.ProxyLB.HealthCheck.Host = ""
 	p.Settings.ProxyLB.HealthCheck.Path = ""
 	p.Settings.ProxyLB.HealthCheck.DelayLoop = delayLoop
-	p.Settings.ProxyLB.HealthCheck.Port = port
 }
 
 // SetSorryServer ソーリーサーバ 設定
@@ -243,7 +274,6 @@ type ProxyLBHealthCheck struct {
 	Protocol  string `json:",omitempty"` // プロトコル
 	Host      string `json:",omitempty"` // 対象ホスト
 	Path      string `json:",omitempty"` // HTTPの場合のリクエストパス
-	Port      int    `json:",omitempty"` // ポート番号
 	DelayLoop int    `json:",omitempty"` // 監視間隔
 
 }
