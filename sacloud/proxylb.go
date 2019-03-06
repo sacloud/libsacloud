@@ -75,6 +75,15 @@ var (
 	ProxyLBPlan100000 = ProxyLBPlan(100000)
 )
 
+// AllowProxyLBPlans 有効なプランIDリスト
+var AllowProxyLBPlans = []int{
+	int(ProxyLBPlan1000),
+	int(ProxyLBPlan5000),
+	int(ProxyLBPlan10000),
+	int(ProxyLBPlan50000),
+	int(ProxyLBPlan100000),
+}
+
 // GetPlan プラン取得(デフォルト: 1000cps)
 func (p *ProxyLB) GetPlan() ProxyLBPlan {
 	classes := strings.Split(p.ServiceClass, "/")
@@ -170,8 +179,8 @@ func (p *ProxyLB) DeleteServer(ip string, port int) {
 type ProxyLBSetting struct {
 	HealthCheck ProxyLBHealthCheck  `json:",omitempty"` // ヘルスチェック
 	SorryServer ProxyLBSorryServer  `json:",omitempty"` // ソーリーサーバー
-	BindPorts   []*ProxyLBBindPorts // プロキシ方式(プロトコル&ポート)
-	Servers     []ProxyLBServer     // サーバー
+	BindPorts   []*ProxyLBBindPorts `json:",omitempty"` // プロキシ方式(プロトコル&ポート)
+	Servers     []ProxyLBServer     `json:",omitempty"` // サーバー
 }
 
 // ProxyLBSorryServer ソーリーサーバ
