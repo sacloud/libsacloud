@@ -18,6 +18,7 @@ type ProxyLB struct {
 	propTags         // タグ
 	propCreatedAt    // 作成日時
 	propModifiedAt   // 変更日時
+	propAvailability // 有効状態
 
 	Status   *ProxyLBStatus  `json:",omitempty"` // ステータス
 	Provider ProxyLBProvider `json:",omitempty"` // プロバイダ
