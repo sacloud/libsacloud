@@ -130,6 +130,20 @@ func (api *ProxyLBAPI) Delete(id int64) (*sacloud.ProxyLB, error) {
 	})
 }
 
+// ChangePlan プラン変更
+func (api *ProxyLBAPI) ChangePlan(id int64, newPlan sacloud.ProxyLBPlan) (*sacloud.ProxyLB, error) {
+	var (
+		method = "PUT"
+		uri    = fmt.Sprintf("%s/%d/plan", api.getResourceURL(), id)
+		body   = &sacloud.ProxyLB{}
+	)
+	body.SetPlan(newPlan)
+
+	return api.request(func(res *proxyLBResponse) error {
+		return api.baseAPI.request(method, uri, body, res)
+	})
+}
+
 type proxyLBCertificateResponse struct {
 	*sacloud.ResultFlagValue
 	ProxyLB *sacloud.ProxyLBCertificates `json:",omitempty"`
