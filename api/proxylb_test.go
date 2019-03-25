@@ -19,7 +19,7 @@ func TestProxyLBCreate(t *testing.T) {
 	item := client.ProxyLB.New(testProxyLBName)
 	assert.Equal(t, item.Name, testProxyLBName)
 
-	item.SetPlan(sacloud.ProxyLBPlan5000)
+	item.SetPlan(sacloud.ProxyLBPlan1000)
 	item.SetSorryServer("133.242.0.3", 80)
 	item.SetHTTPHealthCheck("libsacloud.com", "/", 0)
 	item.AddBindPort("http", 80)
@@ -29,7 +29,7 @@ func TestProxyLBCreate(t *testing.T) {
 
 	assert.NoError(t, err)
 
-	assert.Equal(t, item.GetPlan(), sacloud.ProxyLBPlan5000)
+	assert.Equal(t, item.GetPlan(), sacloud.ProxyLBPlan1000)
 
 	assert.Equal(t, item.Settings.ProxyLB.SorryServer.IPAddress, "133.242.0.3")
 	assert.Equal(t, *item.Settings.ProxyLB.SorryServer.Port, 80)
@@ -49,7 +49,12 @@ func TestProxyLBCreate(t *testing.T) {
 	assert.Equal(t, item.Settings.ProxyLB.Servers[0].Port, 80)
 	assert.Equal(t, item.Settings.ProxyLB.Servers[0].Enabled, true)
 
-	client.ProxyLB.Delete(item.ID)
+	newPlan, err := client.ProxyLB.ChangePlan(item.ID, sacloud.ProxyLBPlan5000)
+
+	assert.NoError(t, err)
+	assert.NotEqual(t, newPlan.ID, item.ID)
+
+	client.ProxyLB.Delete(newPlan.ID)
 }
 
 func initProxyLB() func() {
