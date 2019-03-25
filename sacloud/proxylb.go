@@ -305,10 +305,10 @@ type ProxyLBCertificates struct {
 	PrivateKey              string    // 秘密鍵
 	CertificateEndDate      time.Time `json:",omitempty"` // 有効期限
 
-	parsedServerCert *x509.Certificate
+	parsedServerCert              *x509.Certificate
 	parsedIntermediateCertificate *x509.Certificate
 
-	serverCertOnce sync.Once
+	serverCertOnce       sync.Once
 	intermediateCertOnce sync.Once
 }
 
@@ -341,8 +341,8 @@ func (p *ProxyLBCertificates) UnmarshalJSON(data []byte) error {
 // ParseServerCertificate サーバ証明書のパース
 func (p *ProxyLBCertificates) ParseServerCertificate() (*x509.Certificate, error) {
 	var err error
-	p.serverCertOnce.Do(func(){
-		cert , e := p.parseCertificate(p.ServerCertificate)
+	p.serverCertOnce.Do(func() {
+		cert, e := p.parseCertificate(p.ServerCertificate)
 		if e != nil {
 			err = e
 		}
@@ -356,13 +356,13 @@ func (p *ProxyLBCertificates) ParseServerCertificate() (*x509.Certificate, error
 // ParseIntermediateCertificate　中間証明書のパース
 func (p *ProxyLBCertificates) ParseIntermediateCertificate() (*x509.Certificate, error) {
 	var err error
-	p.intermediateCertOnce.Do(func(){
-		cert , e := p.parseCertificate(p.IntermediateCertificate)
+	p.intermediateCertOnce.Do(func() {
+		cert, e := p.parseCertificate(p.IntermediateCertificate)
 		if e != nil {
 			err = e
 		}
 		if cert != nil {
-			p.parsedIntermediateCertificate= cert
+			p.parsedIntermediateCertificate = cert
 		}
 	})
 	return p.parsedIntermediateCertificate, err
