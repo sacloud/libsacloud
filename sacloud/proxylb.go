@@ -1,10 +1,13 @@
 package sacloud
 
 import (
+	"crypto/x509"
 	"encoding/json"
+	"encoding/pem"
 	"fmt"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 )
 
@@ -301,6 +304,12 @@ type ProxyLBCertificates struct {
 	IntermediateCertificate string    // 中間証明書
 	PrivateKey              string    // 秘密鍵
 	CertificateEndDate      time.Time `json:",omitempty"` // 有効期限
+
+	parsedServerCert *x509.Certificate
+	parsedIntermediateCertificate *x509.Certificate
+
+	serverCertOnce sync.Once
+	intermediateCertOnce sync.Once
 }
 
 // UnmarshalJSON UnmarshalJSON(CertificateEndDateのtime.TimeへのUnmarshal対応)
@@ -327,6 +336,44 @@ func (p *ProxyLBCertificates) UnmarshalJSON(data []byte) error {
 	}
 
 	return nil
+}
+
+// ParseServerCertificate サーバ証明書のパース
+func (p *ProxyLBCertificates) ParseServerCertificate() (*x509.Certificate, error) {
+	var err error
+	p.serverCertOnce.Do(func(){
+		cert , e := p.parseCertificate(p.ServerCertificate)
+		if e != nil {
+			err = e
+		}
+		if cert != nil {
+			p.parsedServerCert = cert
+		}
+	})
+	return p.parsedServerCert, err
+}
+
+// ParseIntermediateCertificate　中間証明書のパース
+func (p *ProxyLBCertificates) ParseIntermediateCertificate() (*x509.Certificate, error) {
+	var err error
+	p.intermediateCertOnce.Do(func(){
+		cert , e := p.parseCertificate(p.IntermediateCertificate)
+		if e != nil {
+			err = e
+		}
+		if cert != nil {
+			p.parsedIntermediateCertificate= cert
+		}
+	})
+	return p.parsedIntermediateCertificate, err
+}
+
+func (p *ProxyLBCertificates) parseCertificate(certPEM string) (*x509.Certificate, error) {
+	block, _ := pem.Decode([]byte(certPEM))
+	if block != nil {
+		return x509.ParseCertificate(block.Bytes)
+	}
+	return nil, fmt.Errorf("can't decode certificate")
 }
 
 // ProxyLBHealth ProxyLBのヘルスチェック戻り値
