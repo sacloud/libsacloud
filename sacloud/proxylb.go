@@ -1,7 +1,9 @@
 package sacloud
 
 import (
+	"crypto/x509"
 	"encoding/json"
+	"encoding/pem"
 	"fmt"
 	"strconv"
 	"strings"
@@ -327,6 +329,32 @@ func (p *ProxyLBCertificates) UnmarshalJSON(data []byte) error {
 	}
 
 	return nil
+}
+
+// ParseServerCertificate サーバ証明書のパース
+func (p *ProxyLBCertificates) ParseServerCertificate() (*x509.Certificate, error) {
+	cert, e := p.parseCertificate(p.ServerCertificate)
+	if e != nil {
+		return nil, e
+	}
+	return cert, nil
+}
+
+// ParseIntermediateCertificate 中間証明書のパース
+func (p *ProxyLBCertificates) ParseIntermediateCertificate() (*x509.Certificate, error) {
+	cert, e := p.parseCertificate(p.IntermediateCertificate)
+	if e != nil {
+		return nil, e
+	}
+	return cert, nil
+}
+
+func (p *ProxyLBCertificates) parseCertificate(certPEM string) (*x509.Certificate, error) {
+	block, _ := pem.Decode([]byte(certPEM))
+	if block != nil {
+		return x509.ParseCertificate(block.Bytes)
+	}
+	return nil, fmt.Errorf("can't decode certificate")
 }
 
 // ProxyLBHealth ProxyLBのヘルスチェック戻り値
