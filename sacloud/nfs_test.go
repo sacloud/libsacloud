@@ -51,7 +51,7 @@ var testNFSJSON = `
                 "NetworkMaskLen": 24
             },
             "Plan": {
-                "ID": 100
+                "ID": "100"
             },
             "Servers": [
                 {
@@ -92,7 +92,7 @@ var testNFSJSON = `
 
 func TestMarshalNFSJSON(t *testing.T) {
 	var nfs NFS
-	err := json.Unmarshal([]byte(testLoadBalancerJSON), &nfs)
+	err := json.Unmarshal([]byte(testNFSJSON), &nfs)
 
 	assert.NoError(t, err)
 	assert.NotEmpty(t, nfs)

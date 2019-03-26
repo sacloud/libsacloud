@@ -15,10 +15,22 @@ type NFS struct {
 // NFSRemark リマーク
 type NFSRemark struct {
 	*ApplianceRemarkBase
-	propPlanID
+	Plan *struct {
+		ID json.Number `json:",omitempty"`
+	} `json:",omitempty"` // プラン
 	// TODO Zone
 	//Zone *Resource
 	//SourceAppliance *Resource // クローン元DB
+}
+
+// SetRemarkPlanID プランID設定
+func (n NFSRemark) SetRemarkPlanID(planID int64) {
+	if n.Plan == nil {
+		n.Plan = &struct {
+			ID json.Number `json:",omitempty"`
+		}{}
+	}
+	n.Plan.ID = json.Number(planID)
 }
 
 // NFSSettings NFS設定リスト
