@@ -189,6 +189,25 @@ func (p NFSPlans) FindPlanID(plan NFSPlan, size NFSSize) int64 {
 	return -1
 }
 
+// FindByPlanID プランIDから該当プランを取得
+func (p NFSPlans) FindByPlanID(planID int64) *NFSPlanValue {
+
+	var plans []NFSPlanValue
+	plans = append(plans, p.SSD...)
+	plans = append(plans, p.HDD...)
+
+	for _, plan := range plans {
+		id, err := plan.PlanID.Int64()
+		if err != nil {
+			continue
+		}
+		if id == planID {
+			return &plan
+		}
+	}
+	return nil
+}
+
 // NFSPlanValue NFSプラン
 type NFSPlanValue struct {
 	Size         int         `json:"size"`
