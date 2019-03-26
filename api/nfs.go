@@ -115,7 +115,7 @@ func (api *NFSAPI) CreateWithPlan(value *sacloud.CreateNFSValue, plan sacloud.NF
 	}
 
 	nfs.Plan = sacloud.NewResource(planID)
-	nfs.Remark.Plan = sacloud.NewResource(planID)
+	nfs.Remark.SetRemarkPlanID(planID)
 
 	return api.request(func(res *nfsResponse) error {
 		return api.create(api.createRequest(nfs), res)
