@@ -1,6 +1,8 @@
 package sacloud
 
-import "encoding/json"
+import (
+	"encoding/json"
+)
 
 // NFS NFS
 type NFS struct {
@@ -32,6 +34,18 @@ var (
 	// NFSPlanSSD SSHプラン
 	NFSPlanSSD = NFSPlan(2)
 )
+
+// String NFSプランの文字列表現
+func (p NFSPlan) String() string {
+	switch p {
+	case NFSPlanHDD:
+		return "HDD"
+	case NFSPlanSSD:
+		return "SSD"
+	default:
+		return ""
+	}
+}
 
 // NFSSize NFSサイズ
 type NFSSize int
@@ -190,22 +204,28 @@ func (p NFSPlans) FindPlanID(plan NFSPlan, size NFSSize) int64 {
 }
 
 // FindByPlanID プランIDから該当プランを取得
-func (p NFSPlans) FindByPlanID(planID int64) *NFSPlanValue {
+func (p NFSPlans) FindByPlanID(planID int64) (NFSPlan, *NFSPlanValue) {
 
-	var plans []NFSPlanValue
-	plans = append(plans, p.SSD...)
-	plans = append(plans, p.HDD...)
-
-	for _, plan := range plans {
+	for _, plan := range p.SSD {
 		id, err := plan.PlanID.Int64()
 		if err != nil {
 			continue
 		}
 		if id == planID {
-			return &plan
+			return NFSPlanSSD, &plan
 		}
 	}
-	return nil
+
+	for _, plan := range p.HDD {
+		id, err := plan.PlanID.Int64()
+		if err != nil {
+			continue
+		}
+		if id == planID {
+			return NFSPlanHDD, &plan
+		}
+	}
+	return NFSPlan(-1), nil
 }
 
 // NFSPlanValue NFSプラン
