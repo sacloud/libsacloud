@@ -11,7 +11,6 @@ import (
 const testNFSName = "libsacloud_test_NFS"
 
 var createNFSValues = &sacloud.CreateNFSValue{
-	Plan:         sacloud.NFSPlan100G,
 	IPAddress:    "192.168.11.11",
 	MaskLen:      24,
 	DefaultRoute: "192.168.11.1",
@@ -35,9 +34,7 @@ func TestNFSCRUD(t *testing.T) {
 
 	//CREATE
 	createNFSValues.SwitchID = fmt.Sprintf("%d", sw.ID)
-	newItem := sacloud.NewNFS(createNFSValues)
-
-	item, err := api.Create(newItem)
+	item, err := api.CreateWithPlan(createNFSValues, sacloud.NFSPlanHDD, sacloud.NFSSize100G)
 
 	assert.NoError(t, err)
 	assert.NotEmpty(t, item)
