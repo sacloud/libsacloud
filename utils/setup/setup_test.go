@@ -49,17 +49,16 @@ func TestAccRetryAbleSetUp(t *testing.T) {
 	assert.NoError(t, err)
 	assert.NotNil(t, sw)
 
-	param := sacloud.NewNFS(&sacloud.CreateNFSValue{
+	param := &sacloud.CreateNFSValue{
 		SwitchID:  sw.GetStrID(),
-		Plan:      sacloud.NFSPlan100G,
 		IPAddress: "192.2.0.1",
 		MaskLen:   24,
 		Name:      testResourceName,
-	})
+	}
 
 	nfsBuilder := &RetryableSetup{
 		Create: func() (sacloud.ResourceIDHolder, error) {
-			return client.NFS.Create(param)
+			return client.NFS.CreateWithPlan(param, sacloud.NFSPlanSSD, sacloud.NFSSize100G)
 		},
 		AsyncWaitForCopy: func(id int64) (chan interface{}, chan interface{}, chan error) {
 			c, p, e := client.NFS.AsyncSleepWhileCopying(id, client.DefaultTimeoutDuration, 5)
