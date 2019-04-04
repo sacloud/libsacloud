@@ -35,8 +35,9 @@ type ProxyLBSettings struct {
 
 // ProxyLBStatus ProxyLBステータス
 type ProxyLBStatus struct {
-	VirtualIPAddress string   `json:",omitempty"` // 割り当てられたVIP
-	ProxyNetworks    []string `json:",omitempty"` // プロキシ元ネットワークアドレス(CIDR)
+	FQDN           string   `json:",omitempty"` // 割り当てられたFQDN(site-*******.proxylb?.sakura.ne.jp)
+	ProxyNetworks  []string `json:",omitempty"` // プロキシ元ネットワークアドレス(CIDR)
+	UseVIPFailover bool     // VIPフェイルオーバ
 }
 
 // ProxyLBProvider プロバイダ
@@ -299,19 +300,77 @@ var defaultProxyLBHealthCheck = ProxyLBHealthCheck{
 
 // ProxyLBCertificates ProxyLBのSSL証明書
 type ProxyLBCertificates struct {
+	*ProxyLBCertificate
+	AdditionalCerts []*ProxyLBCertificate
+}
+
+// SetPrimaryCert PrimaryCertを設定
+func (p *ProxyLBCertificates) SetPrimaryCert(cert *ProxyLBCertificate) {
+	p.ProxyLBCertificate = cert
+}
+
+// SetPrimaryCertValue PrimaryCertを設定
+func (p *ProxyLBCertificates) SetPrimaryCertValue(serverCert, intermediateCert, privateKey string) {
+	p.ProxyLBCertificate = &ProxyLBCertificate{
+		ServerCertificate:       serverCert,
+		IntermediateCertificate: intermediateCert,
+		PrivateKey:              privateKey,
+	}
+}
+
+// AddAdditionalCert AdditionalCertを追加
+func (p *ProxyLBCertificates) AddAdditionalCert(serverCert, intermediateCert, privateKey string) {
+	p.AdditionalCerts = append(p.AdditionalCerts, &ProxyLBCertificate{
+		ServerCertificate:       serverCert,
+		IntermediateCertificate: intermediateCert,
+		PrivateKey:              privateKey,
+	})
+}
+
+// RemoveAdditionalCertAt 指定のインデックスを持つAdditionalCertを削除
+func (p *ProxyLBCertificates) RemoveAdditionalCertAt(index int) {
+	var certs []*ProxyLBCertificate
+	for i, cert := range p.AdditionalCerts {
+		if i != index {
+			certs = append(certs, cert)
+		}
+	}
+	p.AdditionalCerts = certs
+}
+
+// RemoveAdditionalCert 指定の内容を持つAdditionalCertを削除
+func (p *ProxyLBCertificates) RemoveAdditionalCert(serverCert, intermediateCert, privateKey string) {
+	var certs []*ProxyLBCertificate
+	for _, cert := range p.AdditionalCerts {
+		if !(cert.ServerCertificate == serverCert && cert.IntermediateCertificate == intermediateCert && cert.PrivateKey == privateKey) {
+			certs = append(certs, cert)
+		}
+	}
+	p.AdditionalCerts = certs
+}
+
+// RemoveAdditionalCerts AdditionalCertsを全て削除
+func (p *ProxyLBCertificates) RemoveAdditionalCerts() {
+	p.AdditionalCerts = []*ProxyLBCertificate{}
+}
+
+// ProxyLBCertificate ProxyLBのSSL証明書詳細
+type ProxyLBCertificate struct {
 	ServerCertificate       string    // サーバ証明書
 	IntermediateCertificate string    // 中間証明書
 	PrivateKey              string    // 秘密鍵
 	CertificateEndDate      time.Time `json:",omitempty"` // 有効期限
+	CertificateCommonName   string    `json:",omitempty"` // CommonName
 }
 
 // UnmarshalJSON UnmarshalJSON(CertificateEndDateのtime.TimeへのUnmarshal対応)
-func (p *ProxyLBCertificates) UnmarshalJSON(data []byte) error {
+func (p *ProxyLBCertificate) UnmarshalJSON(data []byte) error {
 	tmp := &struct {
 		ServerCertificate       string // サーバ証明書
 		IntermediateCertificate string // 中間証明書
 		PrivateKey              string // 秘密鍵
 		CertificateEndDate      string `json:",omitempty"` // 有効期限
+		CertificateCommonName   string `json:",omitempty"` // CommonName
 	}{}
 	if err := json.Unmarshal(data, &tmp); err != nil {
 		return err
@@ -320,6 +379,7 @@ func (p *ProxyLBCertificates) UnmarshalJSON(data []byte) error {
 	p.ServerCertificate = tmp.ServerCertificate
 	p.IntermediateCertificate = tmp.IntermediateCertificate
 	p.PrivateKey = tmp.PrivateKey
+	p.CertificateCommonName = tmp.CertificateCommonName
 	if tmp.CertificateEndDate != "" {
 		date, err := time.Parse("Jan _2 15:04:05 2006 MST", tmp.CertificateEndDate)
 		if err != nil {
@@ -332,7 +392,7 @@ func (p *ProxyLBCertificates) UnmarshalJSON(data []byte) error {
 }
 
 // ParseServerCertificate サーバ証明書のパース
-func (p *ProxyLBCertificates) ParseServerCertificate() (*x509.Certificate, error) {
+func (p *ProxyLBCertificate) ParseServerCertificate() (*x509.Certificate, error) {
 	cert, e := p.parseCertificate(p.ServerCertificate)
 	if e != nil {
 		return nil, e
@@ -341,7 +401,7 @@ func (p *ProxyLBCertificates) ParseServerCertificate() (*x509.Certificate, error
 }
 
 // ParseIntermediateCertificate 中間証明書のパース
-func (p *ProxyLBCertificates) ParseIntermediateCertificate() (*x509.Certificate, error) {
+func (p *ProxyLBCertificate) ParseIntermediateCertificate() (*x509.Certificate, error) {
 	cert, e := p.parseCertificate(p.IntermediateCertificate)
 	if e != nil {
 		return nil, e
@@ -349,7 +409,7 @@ func (p *ProxyLBCertificates) ParseIntermediateCertificate() (*x509.Certificate,
 	return cert, nil
 }
 
-func (p *ProxyLBCertificates) parseCertificate(certPEM string) (*x509.Certificate, error) {
+func (p *ProxyLBCertificate) parseCertificate(certPEM string) (*x509.Certificate, error) {
 	block, _ := pem.Decode([]byte(certPEM))
 	if block != nil {
 		return x509.ParseCertificate(block.Bytes)

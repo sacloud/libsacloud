@@ -47,10 +47,11 @@ var testProxyLBJSON = `
       }
     },
     "Status": {
-      "VirtualIPAddress": "192.51.0.1",
+      "FQDN": "site-xxxxxxx.proxylbN.sakura.ne.jp",
       "ProxyNetworks": [
         "192.51.0.0/28"
-      ]
+      ],
+      "UseVIPFailover": true
     },
     "ServiceClass": "cloud/proxylb/plain/1000",
     "Availability": "available",
@@ -86,13 +87,14 @@ func TestMarshalProxyLBJSON(t *testing.T) {
 	assert.NotEmpty(t, proxyLB)
 
 	assert.NotEmpty(t, proxyLB.ID)
-	assert.NotEmpty(t, proxyLB.Status.VirtualIPAddress)
+	assert.NotEmpty(t, proxyLB.Status.FQDN)
 	assert.NotEmpty(t, proxyLB.Status.ProxyNetworks)
+	assert.True(t, proxyLB.Status.UseVIPFailover)
 	assert.NotEmpty(t, proxyLB.Provider.Class)
 }
 
 func TestMarshalProxyLBCertificates(t *testing.T) {
-	var certs ProxyLBCertificates
+	var certs ProxyLBCertificate
 	err := json.Unmarshal([]byte(testProxyLBCertificatesJSON), &certs)
 
 	assert.NoError(t, err)
