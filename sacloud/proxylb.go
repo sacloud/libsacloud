@@ -298,10 +298,29 @@ var defaultProxyLBHealthCheck = ProxyLBHealthCheck{
 	DelayLoop: 10,
 }
 
+// ProxyLBAdditionalCerts additional certificates
+type ProxyLBAdditionalCerts []*ProxyLBCertificate
+
 // ProxyLBCertificates ProxyLBのSSL証明書
 type ProxyLBCertificates struct {
 	*ProxyLBCertificate
-	AdditionalCerts []*ProxyLBCertificate
+	AdditionalCerts ProxyLBAdditionalCerts
+}
+
+// UnmarshalJSON UnmarshalJSON(AdditionalCertsが空の場合に空文字を返す問題への対応)
+func (p *ProxyLBAdditionalCerts) UnmarshalJSON(data []byte) error {
+	targetData := strings.Replace(strings.Replace(string(data), " ", "", -1), "\n", "", -1)
+	if targetData == `` {
+		return nil
+	}
+
+	var certs []*ProxyLBCertificate
+	if err := json.Unmarshal(data, &certs); err != nil {
+		return err
+	}
+
+	*p = certs
+	return nil
 }
 
 // SetPrimaryCert PrimaryCertを設定
@@ -365,23 +384,18 @@ type ProxyLBCertificate struct {
 
 // UnmarshalJSON UnmarshalJSON(CertificateEndDateのtime.TimeへのUnmarshal対応)
 func (p *ProxyLBCertificate) UnmarshalJSON(data []byte) error {
-	tmp := &struct {
-		ServerCertificate       string // サーバ証明書
-		IntermediateCertificate string // 中間証明書
-		PrivateKey              string // 秘密鍵
-		CertificateEndDate      string `json:",omitempty"` // 有効期限
-		CertificateCommonName   string `json:",omitempty"` // CommonName
-	}{}
+	var tmp map[string]interface{}
 	if err := json.Unmarshal(data, &tmp); err != nil {
 		return err
 	}
 
-	p.ServerCertificate = tmp.ServerCertificate
-	p.IntermediateCertificate = tmp.IntermediateCertificate
-	p.PrivateKey = tmp.PrivateKey
-	p.CertificateCommonName = tmp.CertificateCommonName
-	if tmp.CertificateEndDate != "" {
-		date, err := time.Parse("Jan _2 15:04:05 2006 MST", tmp.CertificateEndDate)
+	p.ServerCertificate = tmp["ServerCertificate"].(string)
+	p.IntermediateCertificate = tmp["IntermediateCertificate"].(string)
+	p.PrivateKey = tmp["PrivateKey"].(string)
+	p.CertificateCommonName = tmp["CertificateCommonName"].(string)
+	endDate := tmp["CertificateEndDate"].(string)
+	if endDate != "" {
+		date, err := time.Parse("Jan _2 15:04:05 2006 MST", endDate)
 		if err != nil {
 			return err
 		}

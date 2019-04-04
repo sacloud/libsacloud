@@ -93,7 +93,7 @@ func TestMarshalProxyLBJSON(t *testing.T) {
 	assert.NotEmpty(t, proxyLB.Provider.Class)
 }
 
-func TestMarshalProxyLBCertificates(t *testing.T) {
+func TestMarshalProxyLBCertificate(t *testing.T) {
 	var certs ProxyLBCertificate
 	err := json.Unmarshal([]byte(testProxyLBCertificatesJSON), &certs)
 
@@ -105,4 +105,56 @@ func TestMarshalProxyLBCertificates(t *testing.T) {
 	assert.Equal(t, "dummy3", certs.PrivateKey)
 	loc, _ := time.LoadLocation("GMT")
 	assert.Equal(t, time.Date(2019, 5, 4, 1, 37, 47, 0, loc), certs.CertificateEndDate)
+}
+
+func TestMarshalProxyLBCertificates(t *testing.T) {
+
+	t.Run("AdditionalCerts is empty", func(t *testing.T) {
+		data := `{	
+			"AdditionalCerts": "",
+			"CertificateCommonName": "",
+			"CertificateEndDate": "",
+			"IntermediateCertificate": "",
+			"PrivateKey": "",
+			"ServerCertificate": ""
+		}`
+
+		res := &ProxyLBCertificates{
+			ProxyLBCertificate: &ProxyLBCertificate{},
+		}
+		err := json.Unmarshal([]byte(data), res)
+		assert.NoError(t, err)
+	})
+
+	t.Run("AdditionalCerts is array", func(t *testing.T) {
+		data := `{	
+			"AdditionalCerts": [
+				{
+					"CertificateCommonName": "",
+					"CertificateEndDate": "",
+					"IntermediateCertificate": "",
+					"PrivateKey": "",
+					"ServerCertificate": ""
+				},
+				{
+					"CertificateCommonName": "",
+					"CertificateEndDate": "",
+					"IntermediateCertificate": "",
+					"PrivateKey": "",
+					"ServerCertificate": ""
+				}
+			],
+			"CertificateCommonName": "",
+			"CertificateEndDate": "",
+			"IntermediateCertificate": "",
+			"PrivateKey": "",
+			"ServerCertificate": ""
+		}`
+
+		res := &ProxyLBCertificates{
+			ProxyLBCertificate: &ProxyLBCertificate{},
+		}
+		err := json.Unmarshal([]byte(data), res)
+		assert.NoError(t, err)
+	})
 }
