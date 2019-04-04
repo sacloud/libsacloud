@@ -47,10 +47,11 @@ var testProxyLBJSON = `
       }
     },
     "Status": {
-      "VirtualIPAddress": "192.51.0.1",
+      "FQDN": "site-xxxxxxx.proxylbN.sakura.ne.jp",
       "ProxyNetworks": [
         "192.51.0.0/28"
-      ]
+      ],
+      "UseVIPFailover": true
     },
     "ServiceClass": "cloud/proxylb/plain/1000",
     "Availability": "available",
@@ -74,7 +75,8 @@ var testProxyLBCertificatesJSON = `
 		"ServerCertificate": "dummy1",
 		"IntermediateCertificate": "dummy2",
     	"PrivateKey": "dummy3",
-    	"CertificateEndDate": "May  4 01:37:47 2019 GMT"
+    	"CertificateEndDate": "May  4 01:37:47 2019 GMT",
+		"CertificateCommonName": ""
 	}
 `
 
@@ -86,13 +88,14 @@ func TestMarshalProxyLBJSON(t *testing.T) {
 	assert.NotEmpty(t, proxyLB)
 
 	assert.NotEmpty(t, proxyLB.ID)
-	assert.NotEmpty(t, proxyLB.Status.VirtualIPAddress)
+	assert.NotEmpty(t, proxyLB.Status.FQDN)
 	assert.NotEmpty(t, proxyLB.Status.ProxyNetworks)
+	assert.True(t, proxyLB.Status.UseVIPFailover)
 	assert.NotEmpty(t, proxyLB.Provider.Class)
 }
 
-func TestMarshalProxyLBCertificates(t *testing.T) {
-	var certs ProxyLBCertificates
+func TestMarshalProxyLBCertificate(t *testing.T) {
+	var certs ProxyLBCertificate
 	err := json.Unmarshal([]byte(testProxyLBCertificatesJSON), &certs)
 
 	assert.NoError(t, err)
@@ -103,4 +106,56 @@ func TestMarshalProxyLBCertificates(t *testing.T) {
 	assert.Equal(t, "dummy3", certs.PrivateKey)
 	loc, _ := time.LoadLocation("GMT")
 	assert.Equal(t, time.Date(2019, 5, 4, 1, 37, 47, 0, loc), certs.CertificateEndDate)
+}
+
+func TestMarshalProxyLBCertificates(t *testing.T) {
+
+	t.Run("AdditionalCerts is empty", func(t *testing.T) {
+		data := `{	
+			"AdditionalCerts": "",
+			"CertificateCommonName": "",
+			"CertificateEndDate": "",
+			"IntermediateCertificate": "",
+			"PrivateKey": "",
+			"ServerCertificate": ""
+		}`
+
+		res := &ProxyLBCertificates{
+			ProxyLBCertificate: &ProxyLBCertificate{},
+		}
+		err := json.Unmarshal([]byte(data), res)
+		assert.NoError(t, err)
+	})
+
+	t.Run("AdditionalCerts is array", func(t *testing.T) {
+		data := `{	
+			"AdditionalCerts": [
+				{
+					"CertificateCommonName": "",
+					"CertificateEndDate": "",
+					"IntermediateCertificate": "",
+					"PrivateKey": "",
+					"ServerCertificate": ""
+				},
+				{
+					"CertificateCommonName": "",
+					"CertificateEndDate": "",
+					"IntermediateCertificate": "",
+					"PrivateKey": "",
+					"ServerCertificate": ""
+				}
+			],
+			"CertificateCommonName": "",
+			"CertificateEndDate": "",
+			"IntermediateCertificate": "",
+			"PrivateKey": "",
+			"ServerCertificate": ""
+		}`
+
+		res := &ProxyLBCertificates{
+			ProxyLBCertificate: &ProxyLBCertificate{},
+		}
+		err := json.Unmarshal([]byte(data), res)
+		assert.NoError(t, err)
+	})
 }
