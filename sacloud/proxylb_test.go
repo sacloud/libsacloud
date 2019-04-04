@@ -75,7 +75,8 @@ var testProxyLBCertificatesJSON = `
 		"ServerCertificate": "dummy1",
 		"IntermediateCertificate": "dummy2",
     	"PrivateKey": "dummy3",
-    	"CertificateEndDate": "May  4 01:37:47 2019 GMT"
+    	"CertificateEndDate": "May  4 01:37:47 2019 GMT",
+		"CertificateCommonName": ""
 	}
 `
 
