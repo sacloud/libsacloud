@@ -120,9 +120,7 @@ func TestMarshalProxyLBCertificates(t *testing.T) {
 			"ServerCertificate": ""
 		}`
 
-		res := &ProxyLBCertificates{
-			ProxyLBCertificate: &ProxyLBCertificate{},
-		}
+		res := &ProxyLBCertificates{}
 		err := json.Unmarshal([]byte(data), res)
 		assert.NoError(t, err)
 	})
@@ -131,31 +129,33 @@ func TestMarshalProxyLBCertificates(t *testing.T) {
 		data := `{	
 			"AdditionalCerts": [
 				{
-					"CertificateCommonName": "",
+					"CertificateCommonName": "bbb",
 					"CertificateEndDate": "",
 					"IntermediateCertificate": "",
 					"PrivateKey": "",
 					"ServerCertificate": ""
 				},
 				{
-					"CertificateCommonName": "",
+					"CertificateCommonName": "ccc",
 					"CertificateEndDate": "",
 					"IntermediateCertificate": "",
 					"PrivateKey": "",
 					"ServerCertificate": ""
 				}
 			],
-			"CertificateCommonName": "",
+			"CertificateCommonName": "aaa",
 			"CertificateEndDate": "",
 			"IntermediateCertificate": "",
 			"PrivateKey": "",
 			"ServerCertificate": ""
 		}`
 
-		res := &ProxyLBCertificates{
-			ProxyLBCertificate: &ProxyLBCertificate{},
-		}
-		err := json.Unmarshal([]byte(data), res)
+		var res ProxyLBCertificates
+		err := json.Unmarshal([]byte(data), &res)
 		assert.NoError(t, err)
+		assert.NotNil(t, res)
+		assert.Equal(t, "aaa", res.CertificateCommonName)
+		assert.NotNil(t, res.AdditionalCerts)
+		assert.Len(t, res.AdditionalCerts, 2)
 	})
 }

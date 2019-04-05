@@ -159,11 +159,7 @@ func (api *ProxyLBAPI) GetCertificates(id int64) (*sacloud.ProxyLBCertificates, 
 	var (
 		method = "GET"
 		uri    = fmt.Sprintf("%s/%d/proxylb/sslcertificate", api.getResourceURL(), id)
-		res    = &proxyLBCertificateResponse{
-			ProxyLB: &sacloud.ProxyLBCertificates{
-				ProxyLBCertificate: &sacloud.ProxyLBCertificate{},
-			},
-		}
+		res    = &proxyLBCertificateResponse{}
 	)
 	err := api.baseAPI.request(method, uri, nil, res)
 	if err != nil {
