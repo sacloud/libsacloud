@@ -504,6 +504,7 @@ type ProxyLBHealth struct {
 	ActiveConn int                    // アクティブなコネクション数
 	CPS        int                    // 秒あたりコネクション数
 	Servers    []*ProxyLBHealthServer // 実サーバのステータス
+	CurrentVIP string                 // 現在のVIP
 }
 
 // ProxyLBHealthServer ProxyLBの実サーバのステータス
