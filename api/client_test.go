@@ -1,6 +1,7 @@
 package api
 
 import (
+	"crypto/tls"
 	"fmt"
 	"log"
 	"net/http"
@@ -11,6 +12,7 @@ import (
 
 	"github.com/sacloud/libsacloud"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 var client *Client
@@ -98,5 +100,54 @@ func TestRetryableClient(t *testing.T) {
 		assert.Nil(t, res)
 		assert.Error(t, err)
 		assert.Equal(t, 2, called)
+	})
+}
+
+func TestCustomHTTPClient(t *testing.T) {
+	timeout := 10 * time.Millisecond
+	response := `{"data":"ok"}`
+	testServer := httptest.NewTLSServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		time.Sleep(timeout)
+		fmt.Fprintf(w, response)
+	}))
+	defer testServer.Close()
+
+	tr := &http.Transport{
+		TLSClientConfig: &tls.Config{
+			InsecureSkipVerify: true,
+		},
+	}
+	http.DefaultClient.Transport = tr
+
+	t.Run("Use http.DefaultClient: should success", func(t *testing.T) {
+		http.DefaultClient.Timeout = 15 * time.Millisecond
+
+		client := NewClient("token", "secret", "is1a")
+		data, err := client.newRequest(http.MethodGet, testServer.URL, nil)
+		require.Equal(t, response, string(data))
+		require.NoError(t, err)
+	})
+
+	t.Run("Use http.DefaultClient: should timeout", func(t *testing.T) {
+		http.DefaultClient.Timeout = 5 * time.Millisecond
+		client := NewClient("token", "secret", "is1a")
+		_, err := client.newRequest(http.MethodGet, testServer.URL, nil)
+		require.Error(t, err)
+		require.EqualError(t, err, "net/http: request canceled (Client.Timeout exceeded while awaiting headers)")
+	})
+
+	t.Run("Use custom http.Client", func(t *testing.T) {
+		http.DefaultClient.Timeout = 5 * time.Millisecond
+		customClient := &http.Client{
+			Timeout:   15 * time.Millisecond,
+			Transport: tr,
+		}
+
+		client := NewClient("token", "secret", "is1a")
+		client.HTTPClient = customClient
+
+		data, err := client.newRequest(http.MethodGet, testServer.URL, nil)
+		require.Equal(t, response, string(data))
+		require.NoError(t, err)
 	})
 }
