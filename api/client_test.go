@@ -73,7 +73,6 @@ func TestRetryableClient(t *testing.T) {
 		assert.Equal(t, res.StatusCode, 200)
 		assert.Equal(t, called, 3)
 		assert.True(t, diff > (c.retryInterval*time.Duration(c.retryMax)))
-		t.Logf("Waited %f sec.\n", diff.Seconds())
 	})
 
 	t.Run("Retryable http client should fail", func(t *testing.T) {
@@ -104,7 +103,7 @@ func TestRetryableClient(t *testing.T) {
 }
 
 func TestCustomHTTPClient(t *testing.T) {
-	timeout := 10 * time.Millisecond
+	timeout := 100 * time.Millisecond
 	response := `{"data":"ok"}`
 	testServer := httptest.NewTLSServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		time.Sleep(timeout)
@@ -120,7 +119,7 @@ func TestCustomHTTPClient(t *testing.T) {
 	http.DefaultClient.Transport = tr
 
 	t.Run("Use http.DefaultClient: should success", func(t *testing.T) {
-		http.DefaultClient.Timeout = 15 * time.Millisecond
+		http.DefaultClient.Timeout = 150 * time.Millisecond
 
 		client := NewClient("token", "secret", "is1a")
 		data, err := client.newRequest(http.MethodGet, testServer.URL, nil)
@@ -129,22 +128,38 @@ func TestCustomHTTPClient(t *testing.T) {
 	})
 
 	t.Run("Use http.DefaultClient: should timeout", func(t *testing.T) {
-		http.DefaultClient.Timeout = 5 * time.Millisecond
+		http.DefaultClient.Timeout = 50 * time.Millisecond
 		client := NewClient("token", "secret", "is1a")
 		_, err := client.newRequest(http.MethodGet, testServer.URL, nil)
 		require.Error(t, err)
-		require.EqualError(t, err, "net/http: request canceled (Client.Timeout exceeded while awaiting headers)")
 	})
 
 	t.Run("Use custom http.Client", func(t *testing.T) {
-		http.DefaultClient.Timeout = 5 * time.Millisecond
+		http.DefaultClient.Timeout = 50 * time.Millisecond
 		customClient := &http.Client{
-			Timeout:   15 * time.Millisecond,
+			Timeout:   150 * time.Millisecond,
 			Transport: tr,
 		}
 
 		client := NewClient("token", "secret", "is1a")
 		client.HTTPClient = customClient
+
+		data, err := client.newRequest(http.MethodGet, testServer.URL, nil)
+		require.Equal(t, response, string(data))
+		require.NoError(t, err)
+	})
+
+	t.Run("Use custom http.Client with cloned api.Client", func(t *testing.T) {
+		http.DefaultClient.Timeout = 50 * time.Millisecond
+		customClient := &http.Client{
+			Timeout:   150 * time.Millisecond,
+			Transport: tr,
+		}
+
+		client := NewClient("token", "secret", "is1a")
+		client.HTTPClient = customClient
+
+		client = client.Clone()
 
 		data, err := client.newRequest(http.MethodGet, testServer.URL, nil)
 		require.Equal(t, response, string(data))
