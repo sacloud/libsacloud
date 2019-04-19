@@ -185,6 +185,9 @@ func TestWaitingForAvailableFunc(t *testing.T) {
 		maxRetry := 2
 		readFunc := func() (hasAvailable, error) {
 			counter++
+			if counter == 1 {
+				return &mockHasAvailableAndFailed{available: false}, nil
+			}
 			return nil, fmt.Errorf("dummy readFunc error")
 		}
 
@@ -192,7 +195,7 @@ func TestWaitingForAvailableFunc(t *testing.T) {
 		err := blockingPoll(f, 1*time.Minute)
 
 		assert.Error(t, err)
-		assert.Equal(t, maxRetry, counter)
+		assert.Equal(t, maxRetry, counter-1) // 一回正常値を返した分を引く
 	})
 
 	t.Run("Raise error when instance is failed", func(t *testing.T) {
