@@ -6,8 +6,6 @@ import (
 	"os"
 	"testing"
 	"time"
-
-	"github.com/sacloud/libsacloud"
 )
 
 var apiCaller APICaller
@@ -27,7 +25,7 @@ func TestMain(m *testing.M) {
 	}
 	client := NewClient(accessToken, accessTokenSecret, region)
 	client.DefaultTimeoutDuration = 30 * time.Minute
-	client.UserAgent = fmt.Sprintf("test-libsacloud/%s", libsacloud.Version)
+	client.UserAgent = fmt.Sprintf("test-libsacloud/%s", Version)
 	client.AcceptLanguage = "en-US,en;q=0.9"
 
 	apiCaller = client

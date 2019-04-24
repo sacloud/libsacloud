@@ -6,7 +6,10 @@ export GO111MODULE=on
 default: fmt goimports golint vet test
 
 test:
-	go test ./sacloud $(TESTARGS) -v -timeout=120m -parallel=4 ;
+	TESTACC= go test ./... $(TESTARGS) -v -timeout=120m -parallel=4 ;
+
+testacc:
+	TESTACC=1 go test ./... $(TESTARGS) -v -timeout=120m -parallel=4 ;
 
 vet: golint
 	go vet ./...
