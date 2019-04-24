@@ -150,10 +150,14 @@ func (c *Client) Do(ctx context.Context, method, uri string, body interface{}) (
 		}
 		b, _ := json.MarshalIndent(body, "", "\t")
 		strBody = string(b)
-		log.Printf("[TRACE] method : %#v , url : %s , \nbody : %s", method, url, strBody)
+		if c.LogLevel == LogLevelTrace {
+			log.Printf("[TRACE] method : %#v , url : %s , \nbody : %s", method, url, strBody)
+		}
 	} else {
 		req, err = newRequest(ctx, method, url, nil)
-		log.Printf("[TRACE] method : %#v , url : %s ", method, url)
+		if c.LogLevel == LogLevelTrace {
+			log.Printf("[TRACE] method : %#v , url : %s ", method, url)
+		}
 	}
 
 	if err != nil {
@@ -179,7 +183,9 @@ func (c *Client) Do(ctx context.Context, method, uri string, body interface{}) (
 	v := &map[string]interface{}{}
 	json.Unmarshal(data, v)
 	b, _ := json.MarshalIndent(v, "", "\t")
-	log.Printf("[TRACE] response: %s", b)
+	if c.LogLevel == LogLevelTrace {
+		log.Printf("[TRACE] response: %s", b)
+	}
 	if !c.isOkStatus(resp.StatusCode) {
 
 		errResponse := &APIErrorResponse{}
