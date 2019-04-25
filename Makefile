@@ -11,11 +11,19 @@ test:
 testacc:
 	TESTACC=1 go test ./... $(TESTARGS) -v -timeout=120m -parallel=4 ;
 
+.PHONY: clean
+clean:
+	rm -f sacloud/zz_*.go
+
+.PHONY: gen
+gen: clean
+	go generate ./...; gofmt -s -l -w $(GOFMT_FILES); goimports -l -w $(GOFMT_FILES)
+
 vet: golint
 	go vet ./...
 
 golint: 
-	test -z "$$(golint ./... | grep -v 'vendor/' | grep -v '_string.go' | tee /dev/stderr )"
+	test -z "$$(golint ./... | grep -v 'tools/' | grep -v 'vendor/' | grep -v '_string.go' | tee /dev/stderr )"
 
 goimports: fmt
 	goimports -l -w $(GOFMT_FILES)

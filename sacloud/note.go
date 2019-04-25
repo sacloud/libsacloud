@@ -1,19 +1,8 @@
 package sacloud
 
 import (
-	"context"
-
 	"github.com/sacloud/libsacloud-v2/mapconv"
-	"github.com/sacloud/libsacloud-v2/sacloud/naked"
 )
-
-// NoteAPI hhh
-type NoteAPI interface {
-	Read(ctx context.Context, id int64) (*NoteCommonResponse, error)
-	Create(ctx context.Context, request *NoteCreateRequest) (*NoteCommonResponse, error)
-	Update(ctx context.Context, request *NoteUpdateRequest) (*NoteCommonResponse, error)
-	Delete(ctx context.Context, id int64) (*NoteCommonResponse, error)
-}
 
 // NoteCreateRequest ccc
 type NoteCreateRequest struct {
@@ -24,9 +13,20 @@ type NoteCreateRequest struct {
 	Content string
 }
 
+// ToNaked returns naked Note *コード生成対象*
+func (n *NoteCreateRequest) ToNaked() (*NakedNote, error) {
+	dest := &NakedNote{}
+	err := mapconv.ToNaked(n, dest)
+	return dest, err
+}
+
+// ParseNaked parse values from naked Note *コード生成対象*
+func (n *NoteCreateRequest) ParseNaked(naked *NakedNote) error {
+	return mapconv.FromNaked(naked, n)
+}
+
 // NoteUpdateRequest bbb
 type NoteUpdateRequest struct {
-	ID      int64
 	Name    string
 	Tags    []string
 	IconID  int64 `mapconv:"Icon.ID"`
@@ -35,14 +35,14 @@ type NoteUpdateRequest struct {
 }
 
 // ToNaked returns naked Note *コード生成対象*
-func (n *NoteUpdateRequest) ToNaked() (*naked.Note, error) {
-	dest := &naked.Note{}
+func (n *NoteUpdateRequest) ToNaked() (*NakedNote, error) {
+	dest := &NakedNote{}
 	err := mapconv.ToNaked(n, dest)
 	return dest, err
 }
 
 // ParseNaked parse values from naked Note *コード生成対象*
-func (n *NoteUpdateRequest) ParseNaked(naked *naked.Note) error {
+func (n *NoteUpdateRequest) ParseNaked(naked *NakedNote) error {
 	return mapconv.FromNaked(naked, n)
 }
 
@@ -55,4 +55,21 @@ type NoteCommonResponse struct {
 	Class        string
 	Content      string
 	Availability EAvailability
+}
+
+// ToNaked returns naked Note *コード生成対象*
+func (n *NoteCommonResponse) ToNaked() (*NakedNote, error) {
+	dest := &NakedNote{}
+	err := mapconv.ToNaked(n, dest)
+	return dest, err
+}
+
+// ParseNaked parse values from naked Note *コード生成対象*
+func (n *NoteCommonResponse) ParseNaked(naked *NakedNote) error {
+	return mapconv.FromNaked(naked, n)
+}
+
+// IntID idを返す
+func (n *NoteCommonResponse) IntID() int64 {
+	return n.ID
 }
