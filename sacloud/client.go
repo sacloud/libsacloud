@@ -18,6 +18,9 @@ var (
 	SakuraCloudAPIRoot = "https://secure.sakura.ad.jp/cloud/zone"
 )
 
+// DefaultZone デフォルトゾーン、グローバルリソースなどで利用される
+const DefaultZone = "is1a"
+
 const (
 	// LogLevelInfo INFOレベル
 	LogLevelInfo = "INFO"

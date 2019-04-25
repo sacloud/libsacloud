@@ -1,0 +1,85 @@
+package sacloud
+
+import (
+	"context"
+	"testing"
+)
+
+func TestNoteOpCRUD(t *testing.T) {
+	Test(t, &CRUDTestCase{
+		SetupAPICaller: singletonAPICaller,
+		Create: &CRUDTestFunc{
+			Func: testNoteCreate,
+			Expect: &CRUDTestExpect{
+				ExpectValue:  createNoteExpected,
+				IgnoreFields: []string{"ID"},
+			},
+		},
+		Read: &CRUDTestFunc{
+			Func: testNoteRead,
+			Expect: &CRUDTestExpect{
+				ExpectValue:  createNoteExpected,
+				IgnoreFields: []string{"ID"},
+			},
+		},
+		Update: &CRUDTestFunc{
+			Func: testNoteUpdate,
+			Expect: &CRUDTestExpect{
+				ExpectValue:  updateNoteExpected,
+				IgnoreFields: []string{"ID"},
+			},
+		},
+		Delete: &CRUDTestDeleteFunc{
+			Func: testNoteDelete,
+		},
+	})
+}
+
+var (
+	createNoteParam = &NoteCreateRequest{
+		Name:    "libsacloud-v2-note",
+		Tags:    []string{"tag1", "tag2"},
+		Class:   "shell",
+		Content: "test-content",
+	}
+	createNoteExpected = &NoteCommonResponse{
+		Name:         createNoteParam.Name,
+		Tags:         createNoteParam.Tags,
+		Class:        createNoteParam.Class,
+		Content:      createNoteParam.Content,
+		Availability: Availabilities.Available,
+	}
+	updateNoteParam = &NoteUpdateRequest{
+		Name:    "libsacloud-v2-note-upd",
+		Tags:    []string{"tag1-upd", "tag2-upd"},
+		Class:   "shell",
+		Content: "test-content-upd",
+	}
+	updateNoteExpected = &NoteCommonResponse{
+		Name:         updateNoteParam.Name,
+		Tags:         updateNoteParam.Tags,
+		Class:        updateNoteParam.Class,
+		Content:      updateNoteParam.Content,
+		Availability: Availabilities.Available,
+	}
+)
+
+func testNoteCreate(testContext *CRUDTestContext, caller APICaller) (interface{}, error) {
+	client := NewNoteOp(caller)
+	return client.Create(context.Background(), DefaultZone, createNoteParam)
+}
+
+func testNoteRead(testContext *CRUDTestContext, caller APICaller) (interface{}, error) {
+	client := NewNoteOp(caller)
+	return client.Read(context.Background(), DefaultZone, testContext.ID)
+}
+
+func testNoteUpdate(testContext *CRUDTestContext, caller APICaller) (interface{}, error) {
+	client := NewNoteOp(caller)
+	return client.Update(context.Background(), DefaultZone, testContext.ID, updateNoteParam)
+}
+
+func testNoteDelete(testContext *CRUDTestContext, caller APICaller) error {
+	client := NewNoteOp(caller)
+	return client.Delete(context.Background(), DefaultZone, testContext.ID)
+}
