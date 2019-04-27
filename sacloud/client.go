@@ -9,8 +9,9 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
-	"strings"
 	"time"
+
+	"github.com/sacloud/libsacloud-v2"
 )
 
 var (
@@ -43,8 +44,6 @@ type Client struct {
 	AccessToken string `validate:"required"`
 	// AccessTokenSecret アクセストークンシークレット
 	AccessTokenSecret string `validate:"required"`
-	// Zone 対象ゾーン
-	Zone string // TODO ゾーンは各リソースに持たせた方がよくないか？
 	// LogLevel ログレベル [TRACE / DEBUG / WARN / INFO(default)]
 	LogLevel string
 	// DefaultTimeoutDuration デフォルトタイムアウト間隔
@@ -62,14 +61,13 @@ type Client struct {
 }
 
 // NewClient APIクライアント作成
-func NewClient(token, tokenSecret, zone string) *Client {
+func NewClient(token, tokenSecret string) *Client {
 	c := &Client{
 		AccessToken:            token,
 		AccessTokenSecret:      tokenSecret,
-		Zone:                   zone,
 		LogLevel:               LogLevelInfo,
 		DefaultTimeoutDuration: 20 * time.Minute,
-		UserAgent:              fmt.Sprintf("libsacloud/%s", Version),
+		UserAgent:              fmt.Sprintf("libsacloud/%s", libsacloud.Version),
 		AcceptLanguage:         "",
 		RetryMax:               0,
 		RetryInterval:          5 * time.Second,
@@ -82,7 +80,6 @@ func (c *Client) Clone() *Client {
 	n := &Client{
 		AccessToken:            c.AccessToken,
 		AccessTokenSecret:      c.AccessTokenSecret,
-		Zone:                   c.Zone,
 		DefaultTimeoutDuration: c.DefaultTimeoutDuration,
 		UserAgent:              c.UserAgent,
 		AcceptLanguage:         c.AcceptLanguage,
@@ -91,10 +88,6 @@ func (c *Client) Clone() *Client {
 		HTTPClient:             c.HTTPClient,
 	}
 	return n
-}
-
-func (c *Client) getEndpoint() string {
-	return fmt.Sprintf("%s/%s", SakuraCloudAPIRoot, c.Zone)
 }
 
 func (c *Client) isOkStatus(code int) bool {
@@ -135,9 +128,6 @@ func (c *Client) Do(ctx context.Context, method, uri string, body interface{}) (
 		strBody string
 	)
 	var url = uri
-	if !strings.HasPrefix(url, "https://") {
-		url = fmt.Sprintf("%s/%s", c.getEndpoint(), uri)
-	}
 
 	if body != nil {
 		var bodyJSON []byte

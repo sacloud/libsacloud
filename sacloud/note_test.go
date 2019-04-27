@@ -3,6 +3,7 @@ package sacloud
 import (
 	"testing"
 
+	"github.com/sacloud/libsacloud-v2/sacloud/naked"
 	"github.com/stretchr/testify/require"
 )
 
@@ -10,7 +11,7 @@ func TestNoteUpdateRequest_ToNaked(t *testing.T) {
 
 	expects := []struct {
 		model *NoteUpdateRequest
-		naked *NakedNote
+		naked *naked.Note
 	}{
 		{
 			model: &NoteUpdateRequest{
@@ -20,10 +21,10 @@ func TestNoteUpdateRequest_ToNaked(t *testing.T) {
 				Class:   "shell",
 				Content: "content",
 			},
-			naked: &NakedNote{
+			naked: &naked.Note{
 				Name: "test",
 				Tags: []string{"tag1", "tag2"},
-				Icon: &NakedIcon{
+				Icon: &naked.Icon{
 					ID: 2,
 				},
 				Class:   "shell",
@@ -44,7 +45,7 @@ func TestNoteUpdateRequest_ParseNaked(t *testing.T) {
 
 	expects := []struct {
 		model *NoteUpdateRequest
-		naked *NakedNote
+		naked *naked.Note
 	}{
 		{
 			model: &NoteUpdateRequest{
@@ -54,10 +55,10 @@ func TestNoteUpdateRequest_ParseNaked(t *testing.T) {
 				Class:   "shell",
 				Content: "content",
 			},
-			naked: &NakedNote{
+			naked: &naked.Note{
 				Name: "test",
 				Tags: []string{"tag1", "tag2"},
-				Icon: &NakedIcon{
+				Icon: &naked.Icon{
 					ID: 2,
 				},
 				Class:   "shell",

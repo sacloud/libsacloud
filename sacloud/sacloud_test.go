@@ -6,6 +6,8 @@ import (
 	"os"
 	"sync"
 	"time"
+
+	"github.com/sacloud/libsacloud-v2"
 )
 
 var apiCaller APICaller
@@ -24,13 +26,9 @@ func singletonAPICaller() APICaller {
 			log.Println("Please Set ENV 'SAKURACLOUD_ACCESS_TOKEN' and 'SAKURACLOUD_ACCESS_TOKEN_SECRET'")
 			os.Exit(0) // exit normal
 		}
-		region := os.Getenv("SAKURACLOUD_ZONE")
-		if region == "" {
-			region = "tk1v"
-		}
-		client := NewClient(accessToken, accessTokenSecret, region)
+		client := NewClient(accessToken, accessTokenSecret)
 		client.DefaultTimeoutDuration = 30 * time.Minute
-		client.UserAgent = fmt.Sprintf("test-libsacloud/%s", Version)
+		client.UserAgent = fmt.Sprintf("test-libsacloud/%s", libsacloud.Version)
 		client.AcceptLanguage = "en-US,en;q=0.9"
 
 		apiCaller = client

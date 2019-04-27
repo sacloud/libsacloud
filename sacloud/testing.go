@@ -61,7 +61,7 @@ type CRUDTestContext struct {
 
 // CRUDTestIDHolder IDを保持するためのインターフェース
 type CRUDTestIDHolder interface {
-	IntID() int64
+	GetID() int64
 }
 
 // CRUDTestFunc CRUD操作(DELETE以外)テストでのテスト用Func
@@ -145,7 +145,7 @@ func Test(t TestT, testCase *CRUDTestCase) {
 			return err
 		}
 		if idHolder, ok := actual.(CRUDTestIDHolder); ok {
-			testContext.ID = idHolder.IntID()
+			testContext.ID = idHolder.GetID()
 		}
 		actual, expected := f.Expect.Prepare(actual)
 		require.Equal(t, expected, actual)

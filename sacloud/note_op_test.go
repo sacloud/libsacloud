@@ -3,6 +3,8 @@ package sacloud
 import (
 	"context"
 	"testing"
+
+	"github.com/sacloud/libsacloud-v2/sacloud/enums"
 )
 
 func TestNoteOpCRUD(t *testing.T) {
@@ -12,21 +14,21 @@ func TestNoteOpCRUD(t *testing.T) {
 			Func: testNoteCreate,
 			Expect: &CRUDTestExpect{
 				ExpectValue:  createNoteExpected,
-				IgnoreFields: []string{"ID"},
+				IgnoreFields: []string{"ID", "CreatedAt", "ModifiedAt"},
 			},
 		},
 		Read: &CRUDTestFunc{
 			Func: testNoteRead,
 			Expect: &CRUDTestExpect{
 				ExpectValue:  createNoteExpected,
-				IgnoreFields: []string{"ID"},
+				IgnoreFields: []string{"ID", "CreatedAt", "ModifiedAt"},
 			},
 		},
 		Update: &CRUDTestFunc{
 			Func: testNoteUpdate,
 			Expect: &CRUDTestExpect{
 				ExpectValue:  updateNoteExpected,
-				IgnoreFields: []string{"ID"},
+				IgnoreFields: []string{"ID", "CreatedAt", "ModifiedAt"},
 			},
 		},
 		Delete: &CRUDTestDeleteFunc{
@@ -42,12 +44,13 @@ var (
 		Class:   "shell",
 		Content: "test-content",
 	}
-	createNoteExpected = &NoteCommonResponse{
+	createNoteExpected = &Note{
 		Name:         createNoteParam.Name,
 		Tags:         createNoteParam.Tags,
 		Class:        createNoteParam.Class,
 		Content:      createNoteParam.Content,
-		Availability: Availabilities.Available,
+		Scope:        enums.Scopes.User,
+		Availability: enums.Availabilities.Available,
 	}
 	updateNoteParam = &NoteUpdateRequest{
 		Name:    "libsacloud-v2-note-upd",
@@ -55,12 +58,13 @@ var (
 		Class:   "shell",
 		Content: "test-content-upd",
 	}
-	updateNoteExpected = &NoteCommonResponse{
+	updateNoteExpected = &Note{
 		Name:         updateNoteParam.Name,
 		Tags:         updateNoteParam.Tags,
 		Class:        updateNoteParam.Class,
 		Content:      updateNoteParam.Content,
-		Availability: Availabilities.Available,
+		Scope:        enums.Scopes.User,
+		Availability: enums.Availabilities.Available,
 	}
 )
 
