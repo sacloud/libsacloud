@@ -3,7 +3,7 @@ VETARGS?=-all
 GOFMT_FILES?=$$(find . -name '*.go' | grep -v vendor)
 export GO111MODULE=on
 
-default: fmt goimports golint vet test
+default: clean gen fmt goimports golint vet test
 
 test:
 	TESTACC= go test ./... $(TESTARGS) -v -timeout=120m -parallel=4 ;
@@ -13,7 +13,8 @@ testacc:
 
 .PHONY: clean
 clean:
-	rm -f sacloud/zz_*.go
+	rm -f sacloud/zz_*.go; \
+	rm -f sacloud/naked/zz_*.go
 
 .PHONY: gen
 gen: clean
@@ -43,16 +44,16 @@ tools:
 
 .PHONY: bump-patch bump-minor bump-major version
 bump-patch:
-	gobump patch -w
+	@gobump patch -w ; echo "next version is v`gobump show -r`"
 
 bump-minor:
-	gobump minor -w
+	@gobump minor -w ; echo "next version is v`gobump show -r`"
 
 bump-major:
-	gobump major -w
+	@gobump major -w ; echo "next version is v`gobump show -r`"
 
 version:
-	gobump show
+	@gobump show -r
 
 git-tag:
 	git tag v`gobump show -r`
