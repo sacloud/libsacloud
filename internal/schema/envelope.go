@@ -4,9 +4,8 @@ import "github.com/sacloud/libsacloud-v2/internal/schema/meta"
 
 // EnvelopeType Modelを用いてAPIとやりとりする際のリクエスト/レスポンスのエンベロープ
 type EnvelopeType struct {
-	Form               PayloadForm // ペイロードの形体(単数/複数)
-	Payload            *EnvelopePayloadDesc
-	AdditionalPayloads []*EnvelopePayloadDesc // エンベロープに追加のフィールドを持つ場合の定義
+	Form     PayloadForm // ペイロードの形体(単数/複数)
+	Payloads []*EnvelopePayloadDesc
 }
 
 // IsSingular 単数系か判定
@@ -21,16 +20,16 @@ func (f *EnvelopeType) IsPlural() bool {
 
 // PayloadName ペイロード名を取得
 func (f *EnvelopeType) PayloadName() string {
-	if f.Payload != nil {
-		return f.Payload.PayloadName
+	if len(f.Payloads) > 0 {
+		return f.Payloads[0].PayloadName
 	}
 	return ""
 }
 
 // PayloadType ペイロードの型情報を取得
 func (f *EnvelopeType) PayloadType() meta.Type {
-	if f.Payload != nil {
-		return f.Payload.PayloadType
+	if len(f.Payloads) > 0 {
+		return f.Payloads[0].PayloadType
 	}
 	return nil
 }

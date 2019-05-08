@@ -76,15 +76,31 @@ func (o *{{ $.TypeName }}Op) {{ .MethodName }}(ctx context.Context{{ range .AllA
 
 	var body interface{}
 	{{- $structName := .RequestEnvelopeStructName -}}
-	{{ range .MapDestinationDeciders }}
+	{{ range .MapDestinationDeciders }} 
 	{
+		if body == nil {
+			body = &{{$structName}}{}
+		}
+		v := body.(*{{$structName}})
 		n, err := {{.ArgName}}.ToNaked()
 		if err != nil {
 			return {{ $returnErrStatement }}
 		}
-		body = &{{$structName}} {
-			{{.DestinationFieldName}}: n, 
+		v.{{.DestinationFieldName}} = n 
+		body = v
+	}
+	{{ end }}
+	{{ range .PassthroughFieldDeciders}} 
+	{{- $argName := .ArgName -}}
+	{
+		if body == nil {
+			body = &{{$structName}}{}
 		}
+		v := body.(*{{$structName}})
+		{{- range .PassthroughFieldNames }}
+		v.{{.}} = {{$argName}}.{{.}}
+		{{- end }}
+		body = v
 	}
 	{{ end }}
 
@@ -103,15 +119,28 @@ func (o *{{ $.TypeName }}Op) {{ .MethodName }}(ctx context.Context{{ range .AllA
 		return {{ $returnErrStatement }}
 	}
 
+	{{ if .IsResponseSingular -}}
 	{{ range $i,$v := .AllResults -}}
 	payload{{$i}} := {{$v.ZeroInitializeSourceCode}}
 	if err := payload{{$i}}.ParseNaked(nakedResponse.{{.SourceField}}); err != nil {
 		return {{ $returnErrStatement }}
 	}
 	{{ end -}}
+	{{- else if .IsResponsePlural -}}
+	{{ range $i,$v := .AllResults -}}
+	var payload{{$i}} []{{$v.GoTypeSourceCode}}
+	for _ , v := range nakedResponse.{{.SourceField}} {
+		payload := {{$v.ZeroInitializeSourceCode}}
+		if err := payload.ParseNaked(v); err != nil {
+			return {{ $returnErrStatement }}
+		}
+		payload{{$i}} = append(payload{{$i}}, payload)
+	}
+	{{ end -}}
+	{{ end -}}
 	{{ end -}}
 
 	return {{range $i,$v := .AllResults}}payload{{$i}},{{ end }} nil
 }
-{{- end -}}
+{{ end -}}
 `

@@ -28,8 +28,8 @@ func TestOperation(t *testing.T) {
 			operation: resource.DefineOperation("Create").
 				Method(http.MethodPost).
 				PathFormat(DefaultPathFormat).
-				RequestEnvelope(meta.Static(struct{}{})).
-				ResponseEnvelope(meta.Static(struct{}{})).
+				RequestEnvelope(&EnvelopePayloadDesc{PayloadType: meta.Static(struct{}{})}).
+				ResponseEnvelope(&EnvelopePayloadDesc{PayloadType: meta.Static(struct{}{})}).
 				Argument(ArgumentZone).
 				Argument(&MappableArgument{
 					Name:        "arg1",
@@ -76,7 +76,7 @@ func TestOperation(t *testing.T) {
 		require.Equal(t, tc.expect.methodName, tc.operation.MethodName())
 		require.Equal(t, tc.expect.requestEnvelopeStructName, tc.operation.RequestEnvelopeStructName())
 		require.Equal(t, tc.expect.responseEnvelopeStructName, tc.operation.ResponseEnvelopeStructName())
-		require.Equal(t, tc.expect.requestPayloadName, tc.operation.RequestEnvelopePayloadName())
-		require.Equal(t, tc.expect.responsePayloadName, tc.operation.ResponseEnvelopePayloadName())
+		require.Equal(t, tc.expect.requestPayloadName, tc.operation.RequestPayloads()[0].PayloadName)
+		require.Equal(t, tc.expect.responsePayloadName, tc.operation.ResponsePayloads()[0].PayloadName)
 	}
 }

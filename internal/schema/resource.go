@@ -127,7 +127,18 @@ func (r *Resource) DefineOperation(name string) *Operation {
 }
 
 // OperationCRUD リソースに対する基本的なCRUDを定義
-func (r *Resource) OperationCRUD(nakedType meta.Type, createParam, updateParam, result *Model) *Resource {
+func (r *Resource) OperationCRUD(nakedType meta.Type, findParam, createParam, updateParam, result *Model) *Resource {
+	var findEnvelope []*EnvelopePayloadDesc
+	for _, f := range findParam.Fields {
+		findEnvelope = append(findEnvelope, &EnvelopePayloadDesc{
+			PayloadName: f.Name,
+			PayloadType: f.Type,
+		})
+	}
+
+	if findParam.Name == "" {
+		findParam.Name = r.name + "FindRequest"
+	}
 	if createParam.Name == "" {
 		createParam.Name = r.name + "CreateRequest"
 	}
@@ -149,12 +160,21 @@ func (r *Resource) OperationCRUD(nakedType meta.Type, createParam, updateParam, 
 	}
 
 	r.Operations(
+		// find
+		r.DefineOperation("Find").
+			Method(http.MethodGet).
+			PathFormat(DefaultPathFormat).
+			RequestEnvelope(findEnvelope...).
+			ResponseEnvelopePlural(&EnvelopePayloadDesc{PayloadType: nakedType}).
+			Argument(ArgumentZone).
+			PassthroughArgument("conditions", findParam).
+			Result(result),
 		// create
 		r.DefineOperation("Create").
 			Method(http.MethodPost).
 			PathFormat(DefaultPathFormat).
-			RequestEnvelope(nakedType).
-			ResponseEnvelope(nakedType).
+			RequestEnvelope(&EnvelopePayloadDesc{PayloadType: nakedType}).
+			ResponseEnvelope(&EnvelopePayloadDesc{PayloadType: nakedType}).
 			Argument(ArgumentZone).
 			MappableArgument("param", createParam).
 			Result(result),
@@ -163,7 +183,7 @@ func (r *Resource) OperationCRUD(nakedType meta.Type, createParam, updateParam, 
 		r.DefineOperation("Read").
 			Method(http.MethodGet).
 			PathFormat(DefaultPathFormatWithID).
-			ResponseEnvelope(nakedType).
+			ResponseEnvelope(&EnvelopePayloadDesc{PayloadType: nakedType}).
 			Argument(ArgumentZone).
 			Argument(ArgumentID).
 			Result(result),
@@ -172,8 +192,8 @@ func (r *Resource) OperationCRUD(nakedType meta.Type, createParam, updateParam, 
 		r.DefineOperation("Update").
 			Method(http.MethodPut).
 			PathFormat(DefaultPathFormatWithID).
-			RequestEnvelope(nakedType).
-			ResponseEnvelope(nakedType).
+			RequestEnvelope(&EnvelopePayloadDesc{PayloadType: nakedType}).
+			ResponseEnvelope(&EnvelopePayloadDesc{PayloadType: nakedType}).
 			Argument(ArgumentZone).
 			Argument(ArgumentID).
 			MappableArgument("param", updateParam).

@@ -3,8 +3,6 @@ package schema
 import (
 	"fmt"
 	"strings"
-
-	"github.com/sacloud/libsacloud-v2/internal/schema/meta"
 )
 
 // Operation リソースへの操作
@@ -64,6 +62,14 @@ func (o *Operation) MappableArgument(name string, model *Model) *Operation {
 	})
 }
 
+// PassthroughArgument 引数定義の追加
+func (o *Operation) PassthroughArgument(name string, model *Model) *Operation {
+	return o.Argument(&PassthroughArgument{
+		Name:  name,
+		Model: model,
+	})
+}
+
 // Arguments 引数定義の追加(複数)
 func (o *Operation) Arguments(args []Argument) *Operation {
 	o.arguments = append(o.arguments, args...)
@@ -88,58 +94,67 @@ func (o *Operation) ResultWithSourceField(sourceField string, m *Model) *Operati
 	return o
 }
 
-// RequestEnvelope リクエストのエンベロープを指定する
-func (o *Operation) RequestEnvelope(t meta.Type) *Operation {
-	o.requestEnvelope = &EnvelopeType{
-		Form: PayloadForms.Singular,
-		Payload: &EnvelopePayloadDesc{
-			PayloadType: t,
-		},
+// RequestEnvelope リクエストのエンベロープを追加する
+func (o *Operation) RequestEnvelope(descs ...*EnvelopePayloadDesc) *Operation {
+	if o.requestEnvelope == nil {
+		o.requestEnvelope = &EnvelopeType{
+			Form: PayloadForms.Singular,
+		}
+	}
+	for _, desc := range descs {
+		if desc.PayloadName == "" {
+			desc.PayloadName = o.resource.FieldName(o.requestEnvelope.Form)
+		}
+		o.requestEnvelope.Payloads = append(o.requestEnvelope.Payloads, desc)
+	}
+
+	return o
+}
+
+// RequestEnvelopePlural リクエストのエンベロープを複数形として追加する
+func (o *Operation) RequestEnvelopePlural(descs ...*EnvelopePayloadDesc) *Operation {
+	if o.requestEnvelope == nil {
+		o.requestEnvelope = &EnvelopeType{
+			Form: PayloadForms.Plural,
+		}
+	}
+	for _, desc := range descs {
+		if desc.PayloadName == "" {
+			desc.PayloadName = o.resource.FieldName(o.requestEnvelope.Form)
+		}
+		o.requestEnvelope.Payloads = append(o.requestEnvelope.Payloads, desc)
 	}
 	return o
 }
 
-// RequestEnvelopePlural リクエストのエンベロープを複数形として指定する
-func (o *Operation) RequestEnvelopePlural(t meta.Type) *Operation {
-	o.requestEnvelope = &EnvelopeType{
-		Form: PayloadForms.Plural,
-		Payload: &EnvelopePayloadDesc{
-			PayloadType: t,
-		},
+// ResponseEnvelope レスポンスのエンベロープを追加する
+func (o *Operation) ResponseEnvelope(descs ...*EnvelopePayloadDesc) *Operation {
+	if o.responseEnvelope == nil {
+		o.responseEnvelope = &EnvelopeType{
+			Form: PayloadForms.Singular,
+		}
+	}
+	for _, desc := range descs {
+		if desc.PayloadName == "" {
+			desc.PayloadName = o.resource.FieldName(o.responseEnvelope.Form)
+		}
+		o.responseEnvelope.Payloads = append(o.responseEnvelope.Payloads, desc)
 	}
 	return o
 }
 
-// ResponseEnvelope レスポンスのエンベロープを指定する
-func (o *Operation) ResponseEnvelope(t meta.Type) *Operation {
-	o.responseEnvelope = &EnvelopeType{
-		Form: PayloadForms.Singular,
-		Payload: &EnvelopePayloadDesc{
-			PayloadType: t,
-		},
+// ResponseEnvelopePlural レスポンスのエンベロープを複数形として追加する
+func (o *Operation) ResponseEnvelopePlural(descs ...*EnvelopePayloadDesc) *Operation {
+	if o.responseEnvelope == nil {
+		o.responseEnvelope = &EnvelopeType{
+			Form: PayloadForms.Plural,
+		}
 	}
-	return o
-}
-
-// ResponseEnvelopePlural レスポンスのエンベロープを複数形として指定する
-func (o *Operation) ResponseEnvelopePlural(t meta.Type) *Operation {
-	o.responseEnvelope = &EnvelopeType{
-		Form: PayloadForms.Plural,
-		Payload: &EnvelopePayloadDesc{
-			PayloadType: t,
-		},
-	}
-	return o
-}
-
-// ResponseEnvelopeManual レスポンスのエンベロープを詳細指定する
-func (o *Operation) ResponseEnvelopeManual(form PayloadForm, payloadType meta.Type, additionalPayloads []*EnvelopePayloadDesc) *Operation {
-	o.responseEnvelope = &EnvelopeType{
-		Form: form,
-		Payload: &EnvelopePayloadDesc{
-			PayloadType: payloadType,
-		},
-		AdditionalPayloads: additionalPayloads,
+	for _, desc := range descs {
+		if desc.PayloadName == "" {
+			desc.PayloadName = o.resource.FieldName(o.responseEnvelope.Form)
+		}
+		o.responseEnvelope.Payloads = append(o.responseEnvelope.Payloads, desc)
 	}
 	return o
 }
@@ -198,6 +213,16 @@ func (o *Operation) MapDestinationDeciders() []MapDestinationDecider {
 	return o.arguments.MapDestinationDeciders()
 }
 
+// HasPassthroughFieldDecider エンベロープへのパラメータマッピングを行う必要のなる引数を持つか
+func (o *Operation) HasPassthroughFieldDecider() bool {
+	return len(o.arguments.PassthroughFieldDeciders()) > 0
+}
+
+// PassthroughFieldDeciders Argumentsのうち、PassthroughFieldDeciderであるもののリストを返す
+func (o *Operation) PassthroughFieldDeciders() []PassthroughFieldDecider {
+	return o.arguments.PassthroughFieldDeciders()
+}
+
 // RequestEnvelopeStructName エンベロープのstruct名
 func (o *Operation) RequestEnvelopeStructName() string {
 	return fmt.Sprintf("%s%sRequestEnvelope", o.resource.name, o.name)
@@ -231,7 +256,11 @@ func (o *Operation) ResultsStatement() string {
 	rs := "(%s)"
 	var strResults []string
 	for _, res := range o.results {
-		strResults = append(strResults, res.Type().GoTypeSourceCode())
+		prefix := ""
+		if o.IsResponsePlural() {
+			prefix = "[]"
+		}
+		strResults = append(strResults, prefix+res.Type().GoTypeSourceCode())
 	}
 	strResults = append(strResults, "error")
 	return fmt.Sprintf(rs, strings.Join(strResults, ","))
@@ -243,7 +272,9 @@ func (o *Operation) Models() Models {
 	for _, arg := range o.MapDestinationDeciders() {
 		ms = append(ms, arg.DestinationModel())
 	}
-
+	for _, arg := range o.PassthroughFieldDeciders() {
+		ms = append(ms, arg.DestinationModel())
+	}
 	return Models(ms).UniqByName()
 }
 
@@ -252,20 +283,12 @@ func (o *Operation) HasRequestEnvelope() bool {
 	return o.requestEnvelope != nil
 }
 
-// RequestEnvelopePayloadName リクエストエンベロープでのペイロードのフィールド名を取得
-func (o *Operation) RequestEnvelopePayloadName() string {
-	if !o.HasRequestEnvelope() {
-		return ""
+// RequestPayloads リクエストペイロードを取得
+func (o *Operation) RequestPayloads() []*EnvelopePayloadDesc {
+	if o.HasRequestEnvelope() {
+		return o.requestEnvelope.Payloads
 	}
-	return o.envelopePayloadName(o.requestEnvelope)
-}
-
-// RequestPayloadTypeName リクエストペイロードの型名
-func (o *Operation) RequestPayloadTypeName() string {
-	if !o.HasRequestEnvelope() {
-		return ""
-	}
-	return o.requestEnvelope.PayloadType().GoTypeSourceCode()
+	return nil
 }
 
 // HasResponseEnvelope レスポンスエンベロープが設定されているか
@@ -273,28 +296,28 @@ func (o *Operation) HasResponseEnvelope() bool {
 	return o.responseEnvelope != nil
 }
 
-// ResponseEnvelopePayloadName レスポンスエンベロープでのペイロードフィールド名を取得
-func (o *Operation) ResponseEnvelopePayloadName() string {
-	if !o.HasResponseEnvelope() {
-		return ""
+// ResponsePayloads レスポンスペイロードを取得
+func (o *Operation) ResponsePayloads() []*EnvelopePayloadDesc {
+	if o.HasResponseEnvelope() {
+		return o.responseEnvelope.Payloads
 	}
-	return o.envelopePayloadName(o.responseEnvelope)
+	return nil
 }
 
-// ResponsePayloadTypeName レスポンスペイロードの型名
-func (o *Operation) ResponsePayloadTypeName() string {
-	if !o.HasResponseEnvelope() {
-		return ""
+// IsRequestSingular リクエストが単数系か
+func (o *Operation) IsRequestSingular() bool {
+	if o.HasRequestEnvelope() {
+		return o.requestEnvelope.IsSingular()
 	}
-	return o.responseEnvelope.PayloadType().GoTypeSourceCode()
+	return false
 }
 
-// ResponseAdditionalPayloads レスポンスペイロードの追加フィールド
-func (o *Operation) ResponseAdditionalPayloads() []*EnvelopePayloadDesc {
-	if !o.HasResponseEnvelope() {
-		return nil
+// IsRequestPlural リクエストが複数形か
+func (o *Operation) IsRequestPlural() bool {
+	if o.HasRequestEnvelope() {
+		return o.requestEnvelope.IsPlural()
 	}
-	return o.responseEnvelope.AdditionalPayloads
+	return false
 }
 
 // IsResponseSingular レスポンスが単数系か
@@ -311,15 +334,4 @@ func (o *Operation) IsResponsePlural() bool {
 		return o.responseEnvelope.IsPlural()
 	}
 	return false
-}
-
-func (o *Operation) envelopePayloadName(evl *EnvelopeType) string {
-	if evl == nil {
-		return ""
-	}
-
-	if evl.PayloadName() == "" {
-		return o.resource.FieldName(evl.Form)
-	}
-	return evl.PayloadName()
 }

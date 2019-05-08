@@ -26,6 +26,55 @@ func NewNoteOp(client APICaller) *NoteOp {
 	}
 }
 
+// Find is API call
+func (o *NoteOp) Find(ctx context.Context, zone string, conditions *NoteFindRequest) ([]*Note, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"conditions": conditions,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+	{
+		if body == nil {
+			body = &NoteFindRequestEnvelope{}
+		}
+		v := body.(*NoteFindRequestEnvelope)
+		v.Count = conditions.Count
+		v.From = conditions.From
+		v.Sort = conditions.Sort
+		v.Filter = conditions.Filter
+		v.Include = conditions.Include
+		v.Exclude = conditions.Exclude
+		body = v
+	}
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &NoteFindResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	var payload0 []*Note
+	for _, v := range nakedResponse.Notes {
+		payload := &Note{}
+		if err := payload.ParseNaked(v); err != nil {
+			return nil, err
+		}
+		payload0 = append(payload0, payload)
+	}
+	return payload0, nil
+}
+
 // Create is API call
 func (o *NoteOp) Create(ctx context.Context, zone string, param *NoteCreateRequest) (*Note, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
@@ -41,13 +90,16 @@ func (o *NoteOp) Create(ctx context.Context, zone string, param *NoteCreateReque
 
 	var body interface{}
 	{
+		if body == nil {
+			body = &NoteCreateRequestEnvelope{}
+		}
+		v := body.(*NoteCreateRequestEnvelope)
 		n, err := param.ToNaked()
 		if err != nil {
 			return nil, err
 		}
-		body = &NoteCreateRequestEnvelope{
-			Note: n,
-		}
+		v.Note = n
+		body = v
 	}
 
 	data, err := o.Client.Do(ctx, "POST", url, body)
@@ -115,13 +167,16 @@ func (o *NoteOp) Update(ctx context.Context, zone string, id int64, param *NoteU
 
 	var body interface{}
 	{
+		if body == nil {
+			body = &NoteUpdateRequestEnvelope{}
+		}
+		v := body.(*NoteUpdateRequestEnvelope)
 		n, err := param.ToNaked()
 		if err != nil {
 			return nil, err
 		}
-		body = &NoteUpdateRequestEnvelope{
-			Note: n,
-		}
+		v.Note = n
+		body = v
 	}
 
 	data, err := o.Client.Do(ctx, "PUT", url, body)
