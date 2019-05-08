@@ -9,8 +9,10 @@ import (
 )
 
 type fieldsDef struct{}
+type findCondtionsDef struct{}
 
 var fields = &fieldsDef{}
+var conditions = &findCondtionsDef{}
 
 func (f *fieldsDef) ID() *schema.FieldDesc {
 	return &schema.FieldDesc{
@@ -96,5 +98,51 @@ func (f *fieldsDef) ModifiedAt() *schema.FieldDesc {
 	return &schema.FieldDesc{
 		Name: "ModifiedAt",
 		Type: meta.Static(time.Time{}),
+	}
+}
+
+/************************************************
+ Find Conditions
+************************************************/
+
+func (f *findCondtionsDef) From() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "From",
+		Type: meta.Static(int(0)),
+	}
+}
+
+func (f *findCondtionsDef) Count() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "Count",
+		Type: meta.Static(int(0)),
+	}
+}
+
+func (f *findCondtionsDef) Sort() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "Sort",
+		Type: meta.Static([]string{}),
+	}
+}
+
+func (f *findCondtionsDef) Filter() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "Filter",
+		Type: meta.Static(map[string]interface{}{}),
+	}
+}
+
+func (f *findCondtionsDef) Include() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "Include",
+		Type: meta.Static([]string{}),
+	}
+}
+
+func (f *findCondtionsDef) Exclude() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "Exclude",
+		Type: meta.Static([]string{}),
 	}
 }

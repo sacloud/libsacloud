@@ -42,7 +42,15 @@ import (
 {{ if .HasRequestEnvelope }}
 // {{ .RequestEnvelopeStructName }} is envelop of API request
 type {{ .RequestEnvelopeStructName }} struct {
-	{{.RequestEnvelopePayloadName}} {{.RequestPayloadTypeName}} ` + "`" + `json:",omitempty"` + "`" + ` 
+{{ if .IsRequestSingular }}
+	{{- range .RequestPayloads}}
+	{{.PayloadName}} {{.TypeName}} ` + "`" + `json:",omitempty"` + "`" + ` 
+	{{- end }}
+{{- else if .IsRequestPlural -}}
+	{{- range .RequestPayloads}}
+	{{.PayloadName}} []{{.TypeName}} ` + "`" + `json:",omitempty"` + "`" + ` 
+	{{- end }}
+{{ end }}
 }
 {{ end }}
 
@@ -57,10 +65,15 @@ type {{ .ResponseEnvelopeStructName }} struct {
 	From        int        ` + "`" + `json:",omitempty"` + "`" + ` // ページング開始ページ
 	Count       int        ` + "`" + `json:",omitempty"` + "`" + ` // 件数
 {{ end }}
-	{{.ResponseEnvelopePayloadName}} {{.ResponsePayloadTypeName}} ` + "`" + `json:",omitempty"` + "`" + ` 
-	{{- range .ResponseAdditionalPayloads}}
+{{ if .IsResponseSingular }}
+	{{- range .ResponsePayloads}}
 	{{.PayloadName}} {{.TypeName}} ` + "`" + `json:",omitempty"` + "`" + ` 
 	{{- end }}
+{{- else if .IsResponsePlural -}}
+	{{- range .ResponsePayloads}}
+	{{.PayloadName}} []{{.TypeName}} ` + "`" + `json:",omitempty"` + "`" + ` 
+	{{- end }}
+{{ end }}
 }
 {{ end }}
 

@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/sacloud/libsacloud-v2/sacloud/enums"
+	"github.com/stretchr/testify/require"
 )
 
 func TestNoteOpCRUD(t *testing.T) {
@@ -86,4 +87,12 @@ func testNoteUpdate(testContext *CRUDTestContext, caller APICaller) (interface{}
 func testNoteDelete(testContext *CRUDTestContext, caller APICaller) error {
 	client := NewNoteOp(caller)
 	return client.Delete(context.Background(), DefaultZone, testContext.ID)
+}
+
+func TestFindNote(t *testing.T) {
+	client := NewNoteOp(singletonAPICaller())
+
+	notes, err := client.Find(context.Background(), DefaultZone, &NoteFindRequest{Count: 1})
+	require.NoError(t, err)
+	require.Len(t, notes, 1)
 }

@@ -8,6 +8,7 @@ import (
 
 // NoteAPI is interface for operate Note resource
 type NoteAPI interface {
+	Find(ctx context.Context, zone string, conditions *NoteFindRequest) ([]*Note, error)
 	Create(ctx context.Context, zone string, param *NoteCreateRequest) (*Note, error)
 	Read(ctx context.Context, zone string, id int64) (*Note, error)
 	Update(ctx context.Context, zone string, id int64, param *NoteUpdateRequest) (*Note, error)

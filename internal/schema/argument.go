@@ -18,6 +18,17 @@ func (a Arguments) MapDestinationDeciders() []MapDestinationDecider {
 	return deciders
 }
 
+// PassthroughFieldDeciders Argumentsのうち、PassthroughFieldDeciderであるもののリストを返す
+func (a Arguments) PassthroughFieldDeciders() []PassthroughFieldDecider {
+	var deciders = make([]PassthroughFieldDecider, 0)
+	for _, arg := range a {
+		if v, ok := arg.(PassthroughFieldDecider); ok {
+			deciders = append(deciders, v)
+		}
+	}
+	return deciders
+}
+
 // Argument Operationへの引数を表す
 type Argument interface {
 	// ImportStatements コード生成時に利用するimport文を生成する
@@ -39,6 +50,13 @@ type MapDestinationDecider interface {
 	Argument
 	// DestinationFieldName マッピング先となるフィールド名を取得
 	DestinationFieldName() string
+	DestinationModel() *Model
+}
+
+// PassthroughFieldDecider パススルーするフィールド名を決定する
+type PassthroughFieldDecider interface {
+	Argument
+	PassthroughFieldNames() []string
 	DestinationModel() *Model
 }
 
@@ -143,5 +161,61 @@ func (a *MappableArgument) DestinationFieldName() string {
 
 // DestinationModel マッピング先のModelを取得
 func (a *MappableArgument) DestinationModel() *Model {
+	return a.Model
+}
+
+// PassthroughArgument 引数の型情報、APIパラメータへのマッピングが行われる。
+//
+// マッピングはModel内の全フィールドが対象となり、リクエストボディに対し同一フィールド名でパススルーされる
+type PassthroughArgument struct {
+	Name  string // パラメータ名、引数名に利用される
+	Model *Model // パラメータの型情報
+}
+
+// ImportStatements コード生成時に利用するimport文を生成する
+func (a *PassthroughArgument) ImportStatements() []string {
+	p := a.Model.GoImportPath()
+	if p == "" {
+		return nil
+	}
+	return []string{p}
+}
+
+// PackageName インポートパスからパッケージ名を取得する
+func (a *PassthroughArgument) PackageName() string {
+	return a.Model.GoPkg()
+}
+
+// ArgName 引数の変数名、コード生成で利用される
+func (a *PassthroughArgument) ArgName() string {
+	return a.Name
+}
+
+// TypeName 型名の文字列表現、コード生成で利用される
+func (a *PassthroughArgument) TypeName() string {
+	return a.Model.GoTypeSourceCode()
+}
+
+// ZeroInitializer 値を0初期化する文のコードの文字列表現、コード生成で利用される
+func (a *PassthroughArgument) ZeroInitializer() string {
+	return a.Model.ZeroInitializeSourceCode()
+}
+
+// ZeroValueOnSource コード上でのゼロ値の文字列表現。コード生成時に利用する
+func (a *PassthroughArgument) ZeroValueOnSource() string {
+	return a.Model.ZeroValueSourceCode()
+}
+
+// PassthroughFieldNames パススルーするフィールドの名前
+func (a *PassthroughArgument) PassthroughFieldNames() []string {
+	var ns []string
+	for _, f := range a.Model.Fields {
+		ns = append(ns, f.Name)
+	}
+	return ns
+}
+
+// DestinationModel マッピング先のModelを取得
+func (a *PassthroughArgument) DestinationModel() *Model {
 	return a.Model
 }

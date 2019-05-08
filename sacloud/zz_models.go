@@ -152,6 +152,80 @@ func (o *Note) ParseNaked(naked *naked.Note) error {
 }
 
 /*************************************************
+* NoteFindRequest
+*************************************************/
+
+// NoteFindRequest represents API parameter/response structure
+type NoteFindRequest struct {
+	Count   int
+	From    int
+	Sort    []string
+	Filter  map[string]interface{}
+	Include []string
+	Exclude []string
+}
+
+// GetCount returns value of Count
+func (o *NoteFindRequest) GetCount() int {
+	return o.Count
+}
+
+// SetCount sets value to Count
+func (o *NoteFindRequest) SetCount(v int) {
+	o.Count = v
+}
+
+// GetFrom returns value of From
+func (o *NoteFindRequest) GetFrom() int {
+	return o.From
+}
+
+// SetFrom sets value to From
+func (o *NoteFindRequest) SetFrom(v int) {
+	o.From = v
+}
+
+// GetSort returns value of Sort
+func (o *NoteFindRequest) GetSort() []string {
+	return o.Sort
+}
+
+// SetSort sets value to Sort
+func (o *NoteFindRequest) SetSort(v []string) {
+	o.Sort = v
+}
+
+// GetFilter returns value of Filter
+func (o *NoteFindRequest) GetFilter() map[string]interface{} {
+	return o.Filter
+}
+
+// SetFilter sets value to Filter
+func (o *NoteFindRequest) SetFilter(v map[string]interface{}) {
+	o.Filter = v
+}
+
+// GetInclude returns value of Include
+func (o *NoteFindRequest) GetInclude() []string {
+	return o.Include
+}
+
+// SetInclude sets value to Include
+func (o *NoteFindRequest) SetInclude(v []string) {
+	o.Include = v
+}
+
+// GetExclude returns value of Exclude
+func (o *NoteFindRequest) GetExclude() []string {
+	return o.Exclude
+}
+
+// SetExclude sets value to Exclude
+func (o *NoteFindRequest) SetExclude(v []string) {
+	o.Exclude = v
+}
+
+/*************************************************
 * NoteCreateRequest
 *************************************************/
 
