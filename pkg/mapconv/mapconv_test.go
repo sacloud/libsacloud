@@ -2,6 +2,7 @@ package mapconv
 
 import (
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/require"
 )
@@ -10,6 +11,8 @@ type dummyTagged struct {
 	A          string `mapconv:"ValueA.A"`
 	B          string `mapconv:"ValueA.ValueB.B"`
 	C          string `mapconv:"ValueA.ValueB.ValueC.C"`
+	Pointer    *time.Time
+	Slice      []string
 	NoTag      string
 	unexported string
 }
@@ -24,12 +27,14 @@ type dummyNaked struct {
 			}
 		}
 	}
+	Pointer    *time.Time
+	Slice      []string
 	NoTag      string
 	unexported string
 }
 
 func TestToNaked(t *testing.T) {
-
+	zeroTime := time.Unix(0, 0)
 	expects := []struct {
 		tagged *dummyTagged
 		naked  *dummyNaked
@@ -40,6 +45,8 @@ func TestToNaked(t *testing.T) {
 				A:          "A",
 				B:          "B",
 				C:          "C",
+				Pointer:    &zeroTime,
+				Slice:      []string{"a", "b", "c"},
 				NoTag:      "NoTag",
 				unexported: "unexported",
 			},
@@ -68,7 +75,9 @@ func TestToNaked(t *testing.T) {
 						},
 					},
 				},
-				NoTag: "NoTag",
+				Pointer: &zeroTime,
+				Slice:   []string{"a", "b", "c"},
+				NoTag:   "NoTag",
 			},
 		},
 	}
