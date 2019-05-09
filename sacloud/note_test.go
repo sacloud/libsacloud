@@ -7,6 +7,33 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func TestNoteUpdateRequest_Validate(t *testing.T) {
+	expects := []struct {
+		model    *NoteUpdateRequest
+		hasError bool
+	}{
+		{
+			model:    &NoteUpdateRequest{},
+			hasError: true,
+		},
+		{
+			model: &NoteUpdateRequest{
+				Name: "foo",
+			},
+			hasError: false,
+		},
+	}
+
+	for _, tc := range expects {
+		err := tc.model.Validate()
+		if tc.hasError {
+			require.Error(t, err)
+		} else {
+			require.NoError(t, err)
+		}
+	}
+}
+
 func TestNoteUpdateRequest_ToNaked(t *testing.T) {
 
 	expects := []struct {
