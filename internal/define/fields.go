@@ -25,6 +25,9 @@ func (f *fieldsDef) Name() *schema.FieldDesc {
 	return &schema.FieldDesc{
 		Name: "Name",
 		Type: meta.TypeString,
+		Tags: &schema.FieldTags{
+			Validate: "required",
+		},
 	}
 }
 

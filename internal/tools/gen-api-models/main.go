@@ -48,6 +48,11 @@ type {{ .Name }} struct {
 	{{- end }}
 }
 
+// Validate validates by field tags
+func (o *{{ .Name}}) Validate() error {
+	return validator.New().Struct(o)
+}
+
 {{- $struct := .Name -}}
 {{- range .Fields }}
 {{- if not .SuppressAccessorGen }}

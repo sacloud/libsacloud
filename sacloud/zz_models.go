@@ -8,6 +8,7 @@ import (
 	"github.com/sacloud/libsacloud-v2/pkg/mapconv"
 	"github.com/sacloud/libsacloud-v2/sacloud/enums"
 	"github.com/sacloud/libsacloud-v2/sacloud/naked"
+	"gopkg.in/go-playground/validator.v9"
 )
 
 /*************************************************
@@ -17,7 +18,7 @@ import (
 // Note represents API parameter/response structure
 type Note struct {
 	ID           int64
-	Name         string
+	Name         string `validate:"required"`
 	Description  string
 	Tags         []string
 	Availability enums.EAvailability
@@ -27,6 +28,11 @@ type Note struct {
 	Icon         *naked.Icon
 	CreatedAt    *time.Time
 	ModifiedAt   *time.Time
+}
+
+// Validate validates by field tags
+func (o *Note) Validate() error {
+	return validator.New().Struct(o)
 }
 
 // GetID returns value of ID
@@ -165,6 +171,11 @@ type NoteFindRequest struct {
 	Exclude []string
 }
 
+// Validate validates by field tags
+func (o *NoteFindRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
 // GetCount returns value of Count
 func (o *NoteFindRequest) GetCount() int {
 	return o.Count
@@ -231,11 +242,16 @@ func (o *NoteFindRequest) SetExclude(v []string) {
 
 // NoteCreateRequest represents API parameter/response structure
 type NoteCreateRequest struct {
-	Name    string
+	Name    string `validate:"required"`
 	Tags    []string
 	IconID  int64 `mapconv:"Icon.ID"`
 	Class   string
 	Content string
+}
+
+// Validate validates by field tags
+func (o *NoteCreateRequest) Validate() error {
+	return validator.New().Struct(o)
 }
 
 // GetName returns value of Name
@@ -306,11 +322,16 @@ func (o *NoteCreateRequest) ParseNaked(naked *naked.Note) error {
 
 // NoteUpdateRequest represents API parameter/response structure
 type NoteUpdateRequest struct {
-	Name    string
+	Name    string `validate:"required"`
 	Tags    []string
 	IconID  int64 `mapconv:"Icon.ID"`
 	Class   string
 	Content string
+}
+
+// Validate validates by field tags
+func (o *NoteUpdateRequest) Validate() error {
+	return validator.New().Struct(o)
 }
 
 // GetName returns value of Name
