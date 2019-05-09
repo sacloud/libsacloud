@@ -25,7 +25,7 @@ type Note struct {
 	Scope        enums.EScope
 	Class        string
 	Content      string
-	Icon         *naked.Icon
+	Icon         *naked.Icon `json:",omitempty"`
 	CreatedAt    *time.Time
 	ModifiedAt   *time.Time
 }
@@ -145,24 +145,24 @@ func (o *Note) SetModifiedAt(v *time.Time) {
 	o.ModifiedAt = v
 }
 
-// ToNaked returns naked Note
-func (o *Note) ToNaked() (*naked.Note, error) {
+// toNaked returns naked Note
+func (o *Note) toNaked() (*naked.Note, error) {
 	dest := &naked.Note{}
 	err := mapconv.ToNaked(o, dest)
 	return dest, err
 }
 
-// ParseNaked parse values from naked Note
-func (o *Note) ParseNaked(naked *naked.Note) error {
+// parseNaked parse values from naked Note
+func (o *Note) parseNaked(naked *naked.Note) error {
 	return mapconv.FromNaked(naked, o)
 }
 
 /*************************************************
-* NoteFindRequest
+* FindCondition
 *************************************************/
 
-// NoteFindRequest represents API parameter/response structure
-type NoteFindRequest struct {
+// FindCondition represents API parameter/response structure
+type FindCondition struct {
 	Count   int
 	From    int
 	Sort    []string
@@ -172,67 +172,67 @@ type NoteFindRequest struct {
 }
 
 // Validate validates by field tags
-func (o *NoteFindRequest) Validate() error {
+func (o *FindCondition) Validate() error {
 	return validator.New().Struct(o)
 }
 
 // GetCount returns value of Count
-func (o *NoteFindRequest) GetCount() int {
+func (o *FindCondition) GetCount() int {
 	return o.Count
 }
 
 // SetCount sets value to Count
-func (o *NoteFindRequest) SetCount(v int) {
+func (o *FindCondition) SetCount(v int) {
 	o.Count = v
 }
 
 // GetFrom returns value of From
-func (o *NoteFindRequest) GetFrom() int {
+func (o *FindCondition) GetFrom() int {
 	return o.From
 }
 
 // SetFrom sets value to From
-func (o *NoteFindRequest) SetFrom(v int) {
+func (o *FindCondition) SetFrom(v int) {
 	o.From = v
 }
 
 // GetSort returns value of Sort
-func (o *NoteFindRequest) GetSort() []string {
+func (o *FindCondition) GetSort() []string {
 	return o.Sort
 }
 
 // SetSort sets value to Sort
-func (o *NoteFindRequest) SetSort(v []string) {
+func (o *FindCondition) SetSort(v []string) {
 	o.Sort = v
 }
 
 // GetFilter returns value of Filter
-func (o *NoteFindRequest) GetFilter() map[string]interface{} {
+func (o *FindCondition) GetFilter() map[string]interface{} {
 	return o.Filter
 }
 
 // SetFilter sets value to Filter
-func (o *NoteFindRequest) SetFilter(v map[string]interface{}) {
+func (o *FindCondition) SetFilter(v map[string]interface{}) {
 	o.Filter = v
 }
 
 // GetInclude returns value of Include
-func (o *NoteFindRequest) GetInclude() []string {
+func (o *FindCondition) GetInclude() []string {
 	return o.Include
 }
 
 // SetInclude sets value to Include
-func (o *NoteFindRequest) SetInclude(v []string) {
+func (o *FindCondition) SetInclude(v []string) {
 	o.Include = v
 }
 
 // GetExclude returns value of Exclude
-func (o *NoteFindRequest) GetExclude() []string {
+func (o *FindCondition) GetExclude() []string {
 	return o.Exclude
 }
 
 // SetExclude sets value to Exclude
-func (o *NoteFindRequest) SetExclude(v []string) {
+func (o *FindCondition) SetExclude(v []string) {
 	o.Exclude = v
 }
 
@@ -304,15 +304,15 @@ func (o *NoteCreateRequest) SetContent(v string) {
 	o.Content = v
 }
 
-// ToNaked returns naked NoteCreateRequest
-func (o *NoteCreateRequest) ToNaked() (*naked.Note, error) {
+// toNaked returns naked NoteCreateRequest
+func (o *NoteCreateRequest) toNaked() (*naked.Note, error) {
 	dest := &naked.Note{}
 	err := mapconv.ToNaked(o, dest)
 	return dest, err
 }
 
-// ParseNaked parse values from naked NoteCreateRequest
-func (o *NoteCreateRequest) ParseNaked(naked *naked.Note) error {
+// parseNaked parse values from naked NoteCreateRequest
+func (o *NoteCreateRequest) parseNaked(naked *naked.Note) error {
 	return mapconv.FromNaked(naked, o)
 }
 
@@ -384,14 +384,127 @@ func (o *NoteUpdateRequest) SetContent(v string) {
 	o.Content = v
 }
 
-// ToNaked returns naked NoteUpdateRequest
-func (o *NoteUpdateRequest) ToNaked() (*naked.Note, error) {
+// toNaked returns naked NoteUpdateRequest
+func (o *NoteUpdateRequest) toNaked() (*naked.Note, error) {
 	dest := &naked.Note{}
 	err := mapconv.ToNaked(o, dest)
 	return dest, err
 }
 
-// ParseNaked parse values from naked NoteUpdateRequest
-func (o *NoteUpdateRequest) ParseNaked(naked *naked.Note) error {
+// parseNaked parse values from naked NoteUpdateRequest
+func (o *NoteUpdateRequest) parseNaked(naked *naked.Note) error {
+	return mapconv.FromNaked(naked, o)
+}
+
+/*************************************************
+* Zone
+*************************************************/
+
+// Zone represents API parameter/response structure
+type Zone struct {
+	ID           int64
+	Name         string `validate:"required"`
+	Description  string
+	DisplayOrder int
+	IsDummy      bool
+	VNCProxy     *naked.VNCProxy  `json:",omitempty"`
+	FTPServer    *naked.FTPServer `json:",omitempty"`
+	Region       *naked.Region    `json:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *Zone) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetID returns value of ID
+func (o *Zone) GetID() int64 {
+	return o.ID
+}
+
+// SetID sets value to ID
+func (o *Zone) SetID(v int64) {
+	o.ID = v
+}
+
+// GetName returns value of Name
+func (o *Zone) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *Zone) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *Zone) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *Zone) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetDisplayOrder returns value of DisplayOrder
+func (o *Zone) GetDisplayOrder() int {
+	return o.DisplayOrder
+}
+
+// SetDisplayOrder sets value to DisplayOrder
+func (o *Zone) SetDisplayOrder(v int) {
+	o.DisplayOrder = v
+}
+
+// GetIsDummy returns value of IsDummy
+func (o *Zone) GetIsDummy() bool {
+	return o.IsDummy
+}
+
+// SetIsDummy sets value to IsDummy
+func (o *Zone) SetIsDummy(v bool) {
+	o.IsDummy = v
+}
+
+// GetVNCProxy returns value of VNCProxy
+func (o *Zone) GetVNCProxy() *naked.VNCProxy {
+	return o.VNCProxy
+}
+
+// SetVNCProxy sets value to VNCProxy
+func (o *Zone) SetVNCProxy(v *naked.VNCProxy) {
+	o.VNCProxy = v
+}
+
+// GetFTPServer returns value of FTPServer
+func (o *Zone) GetFTPServer() *naked.FTPServer {
+	return o.FTPServer
+}
+
+// SetFTPServer sets value to FTPServer
+func (o *Zone) SetFTPServer(v *naked.FTPServer) {
+	o.FTPServer = v
+}
+
+// GetRegion returns value of Region
+func (o *Zone) GetRegion() *naked.Region {
+	return o.Region
+}
+
+// SetRegion sets value to Region
+func (o *Zone) SetRegion(v *naked.Region) {
+	o.Region = v
+}
+
+// toNaked returns naked Zone
+func (o *Zone) toNaked() (*naked.Zone, error) {
+	dest := &naked.Zone{}
+	err := mapconv.ToNaked(o, dest)
+	return dest, err
+}
+
+// parseNaked parse values from naked Zone
+func (o *Zone) parseNaked(naked *naked.Zone) error {
 	return mapconv.FromNaked(naked, o)
 }

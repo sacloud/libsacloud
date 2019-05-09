@@ -34,7 +34,7 @@ func TestNoteUpdateRequest_Validate(t *testing.T) {
 	}
 }
 
-func TestNoteUpdateRequest_ToNaked(t *testing.T) {
+func TestNoteUpdateRequest_toNaked(t *testing.T) {
 
 	expects := []struct {
 		model *NoteUpdateRequest
@@ -61,14 +61,14 @@ func TestNoteUpdateRequest_ToNaked(t *testing.T) {
 	}
 
 	for _, expect := range expects {
-		naked, err := expect.model.ToNaked()
+		naked, err := expect.model.toNaked()
 		require.NoError(t, err)
 		require.Equal(t, expect.naked, naked)
 	}
 
 }
 
-func TestNoteUpdateRequest_ParseNaked(t *testing.T) {
+func TestNoteUpdateRequest_parseNaked(t *testing.T) {
 
 	expects := []struct {
 		model *NoteUpdateRequest
@@ -96,7 +96,7 @@ func TestNoteUpdateRequest_ParseNaked(t *testing.T) {
 
 	for _, expect := range expects {
 		model := &NoteUpdateRequest{}
-		err := model.ParseNaked(expect.naked)
+		err := model.parseNaked(expect.naked)
 		require.NoError(t, err)
 		require.Equal(t, expect.model, model)
 	}
