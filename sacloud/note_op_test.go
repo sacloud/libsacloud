@@ -90,9 +90,13 @@ func testNoteDelete(testContext *CRUDTestContext, caller APICaller) error {
 }
 
 func TestFindNote(t *testing.T) {
+	if !isAccTest() {
+		t.Skip("TESTACC is not set. skip")
+	}
+
 	client := NewNoteOp(singletonAPICaller())
 
-	notes, err := client.Find(context.Background(), DefaultZone, &NoteFindRequest{Count: 1})
+	notes, err := client.Find(context.Background(), DefaultZone, &FindCondition{Count: 1})
 	require.NoError(t, err)
 	require.Len(t, notes, 1)
 }

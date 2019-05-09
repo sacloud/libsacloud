@@ -27,7 +27,7 @@ func NewNoteOp(client APICaller) *NoteOp {
 }
 
 // Find is API call
-func (o *NoteOp) Find(ctx context.Context, zone string, conditions *NoteFindRequest) ([]*Note, error) {
+func (o *NoteOp) Find(ctx context.Context, zone string, conditions *FindCondition) ([]*Note, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -67,7 +67,7 @@ func (o *NoteOp) Find(ctx context.Context, zone string, conditions *NoteFindRequ
 	var payload0 []*Note
 	for _, v := range nakedResponse.Notes {
 		payload := &Note{}
-		if err := payload.ParseNaked(v); err != nil {
+		if err := payload.parseNaked(v); err != nil {
 			return nil, err
 		}
 		payload0 = append(payload0, payload)
@@ -94,7 +94,7 @@ func (o *NoteOp) Create(ctx context.Context, zone string, param *NoteCreateReque
 			body = &NoteCreateRequestEnvelope{}
 		}
 		v := body.(*NoteCreateRequestEnvelope)
-		n, err := param.ToNaked()
+		n, err := param.toNaked()
 		if err != nil {
 			return nil, err
 		}
@@ -113,7 +113,7 @@ func (o *NoteOp) Create(ctx context.Context, zone string, param *NoteCreateReque
 	}
 
 	payload0 := &Note{}
-	if err := payload0.ParseNaked(nakedResponse.Note); err != nil {
+	if err := payload0.parseNaked(nakedResponse.Note); err != nil {
 		return nil, err
 	}
 	return payload0, nil
@@ -145,7 +145,7 @@ func (o *NoteOp) Read(ctx context.Context, zone string, id int64) (*Note, error)
 	}
 
 	payload0 := &Note{}
-	if err := payload0.ParseNaked(nakedResponse.Note); err != nil {
+	if err := payload0.parseNaked(nakedResponse.Note); err != nil {
 		return nil, err
 	}
 	return payload0, nil
@@ -171,7 +171,7 @@ func (o *NoteOp) Update(ctx context.Context, zone string, id int64, param *NoteU
 			body = &NoteUpdateRequestEnvelope{}
 		}
 		v := body.(*NoteUpdateRequestEnvelope)
-		n, err := param.ToNaked()
+		n, err := param.toNaked()
 		if err != nil {
 			return nil, err
 		}
@@ -190,7 +190,7 @@ func (o *NoteOp) Update(ctx context.Context, zone string, id int64, param *NoteU
 	}
 
 	payload0 := &Note{}
-	if err := payload0.ParseNaked(nakedResponse.Note); err != nil {
+	if err := payload0.parseNaked(nakedResponse.Note); err != nil {
 		return nil, err
 	}
 	return payload0, nil

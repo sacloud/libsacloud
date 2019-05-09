@@ -126,8 +126,8 @@ func (r *Resource) DefineOperation(name string) *Operation {
 	}
 }
 
-// OperationCRUD リソースに対する基本的なCRUDを定義
-func (r *Resource) OperationCRUD(nakedType meta.Type, findParam, createParam, updateParam, result *Model) *Resource {
+// DefineOperationFind Find操作を定義
+func (r *Resource) DefineOperationFind(nakedType meta.Type, findParam, result *Model) *Operation {
 	var findEnvelope []*EnvelopePayloadDesc
 	for _, f := range findParam.Fields {
 		findEnvelope = append(findEnvelope, &EnvelopePayloadDesc{
@@ -137,13 +137,36 @@ func (r *Resource) OperationCRUD(nakedType meta.Type, findParam, createParam, up
 	}
 
 	if findParam.Name == "" {
-		findParam.Name = r.name + "FindRequest"
+		findParam.Name = "FindCondition"
 	}
+
+	if result.Name == "" {
+		result.Name = r.name
+	}
+
+	if result.NakedType == nil {
+		result.NakedType = nakedType
+	}
+
+	return r.DefineOperation("Find").
+		Method(http.MethodGet).
+		PathFormat(DefaultPathFormat).
+		RequestEnvelope(findEnvelope...).
+		ResponseEnvelopePlural(&EnvelopePayloadDesc{PayloadType: nakedType}).
+		Argument(ArgumentZone).
+		PassthroughArgument("conditions", findParam).
+		Result(result)
+}
+
+// OperationFind Find操作を追加
+func (r *Resource) OperationFind(nakedType meta.Type, findParam, result *Model) *Resource {
+	return r.Operation(r.DefineOperationFind(nakedType, findParam, result))
+}
+
+// DefineOperationCreate Create操作を定義
+func (r *Resource) DefineOperationCreate(nakedType meta.Type, createParam, result *Model) *Operation {
 	if createParam.Name == "" {
 		createParam.Name = r.name + "CreateRequest"
-	}
-	if updateParam.Name == "" {
-		updateParam.Name = r.name + "UpdateRequest"
 	}
 	if result.Name == "" {
 		result.Name = r.name
@@ -152,6 +175,58 @@ func (r *Resource) OperationCRUD(nakedType meta.Type, findParam, createParam, up
 	if createParam.NakedType == nil {
 		createParam.NakedType = nakedType
 	}
+	if result.NakedType == nil {
+		result.NakedType = nakedType
+	}
+
+	return r.DefineOperation("Create").
+		Method(http.MethodPost).
+		PathFormat(DefaultPathFormat).
+		RequestEnvelope(&EnvelopePayloadDesc{PayloadType: nakedType}).
+		ResponseEnvelope(&EnvelopePayloadDesc{PayloadType: nakedType}).
+		Argument(ArgumentZone).
+		MappableArgument("param", createParam).
+		Result(result)
+}
+
+// OperationCreate Create操作を追加
+func (r *Resource) OperationCreate(nakedType meta.Type, createParam, result *Model) *Resource {
+	return r.Operation(r.DefineOperationCreate(nakedType, createParam, result))
+}
+
+// DefineOperationRead Read操作を定義
+func (r *Resource) DefineOperationRead(nakedType meta.Type, result *Model) *Operation {
+	if result.Name == "" {
+		result.Name = r.name
+	}
+
+	if result.NakedType == nil {
+		result.NakedType = nakedType
+	}
+
+	return r.DefineOperation("Read").
+		Method(http.MethodGet).
+		PathFormat(DefaultPathFormatWithID).
+		ResponseEnvelope(&EnvelopePayloadDesc{PayloadType: nakedType}).
+		Argument(ArgumentZone).
+		Argument(ArgumentID).
+		Result(result)
+}
+
+// OperationRead Read操作を追加
+func (r *Resource) OperationRead(nakedType meta.Type, result *Model) *Resource {
+	return r.Operation(r.DefineOperationRead(nakedType, result))
+}
+
+// DefineOperationUpdate Update操作を定義
+func (r *Resource) DefineOperationUpdate(nakedType meta.Type, updateParam, result *Model) *Operation {
+	if updateParam.Name == "" {
+		updateParam.Name = r.name + "UpdateRequest"
+	}
+	if result.Name == "" {
+		result.Name = r.name
+	}
+
 	if updateParam.NakedType == nil {
 		updateParam.NakedType = nakedType
 	}
@@ -159,54 +234,45 @@ func (r *Resource) OperationCRUD(nakedType meta.Type, findParam, createParam, up
 		result.NakedType = nakedType
 	}
 
+	return r.DefineOperation("Update").
+		Method(http.MethodPut).
+		PathFormat(DefaultPathFormatWithID).
+		RequestEnvelope(&EnvelopePayloadDesc{PayloadType: nakedType}).
+		ResponseEnvelope(&EnvelopePayloadDesc{PayloadType: nakedType}).
+		Argument(ArgumentZone).
+		Argument(ArgumentID).
+		MappableArgument("param", updateParam).
+		Result(result)
+}
+
+// OperationUpdate Update操作を追加
+func (r *Resource) OperationUpdate(nakedType meta.Type, updateParam, result *Model) *Resource {
+	return r.Operation(r.DefineOperationUpdate(nakedType, updateParam, result))
+}
+
+// DefineOperationDelete Delete操作を定義
+func (r *Resource) DefineOperationDelete() *Operation {
+	return r.DefineOperation("Delete").
+		Method(http.MethodDelete).
+		PathFormat(DefaultPathFormatWithID).
+		Argument(ArgumentZone).
+		Argument(ArgumentID)
+}
+
+// OperationDelete Delete操作を追加
+func (r *Resource) OperationDelete() *Resource {
+	return r.Operation(r.DefineOperationDelete())
+}
+
+// OperationCRUD リソースに対する基本的なCRUDを定義
+func (r *Resource) OperationCRUD(nakedType meta.Type, findParam, createParam, updateParam, result *Model) *Resource {
 	r.Operations(
-		// find
-		r.DefineOperation("Find").
-			Method(http.MethodGet).
-			PathFormat(DefaultPathFormat).
-			RequestEnvelope(findEnvelope...).
-			ResponseEnvelopePlural(&EnvelopePayloadDesc{PayloadType: nakedType}).
-			Argument(ArgumentZone).
-			PassthroughArgument("conditions", findParam).
-			Result(result),
-		// create
-		r.DefineOperation("Create").
-			Method(http.MethodPost).
-			PathFormat(DefaultPathFormat).
-			RequestEnvelope(&EnvelopePayloadDesc{PayloadType: nakedType}).
-			ResponseEnvelope(&EnvelopePayloadDesc{PayloadType: nakedType}).
-			Argument(ArgumentZone).
-			MappableArgument("param", createParam).
-			Result(result),
-
-		// read
-		r.DefineOperation("Read").
-			Method(http.MethodGet).
-			PathFormat(DefaultPathFormatWithID).
-			ResponseEnvelope(&EnvelopePayloadDesc{PayloadType: nakedType}).
-			Argument(ArgumentZone).
-			Argument(ArgumentID).
-			Result(result),
-
-		// update
-		r.DefineOperation("Update").
-			Method(http.MethodPut).
-			PathFormat(DefaultPathFormatWithID).
-			RequestEnvelope(&EnvelopePayloadDesc{PayloadType: nakedType}).
-			ResponseEnvelope(&EnvelopePayloadDesc{PayloadType: nakedType}).
-			Argument(ArgumentZone).
-			Argument(ArgumentID).
-			MappableArgument("param", updateParam).
-			Result(result),
-
-		// delete
-		r.DefineOperation("Delete").
-			Method(http.MethodDelete).
-			PathFormat(DefaultPathFormatWithID).
-			Argument(ArgumentZone).
-			Argument(ArgumentID),
+		r.DefineOperationFind(nakedType, findParam, result),
+		r.DefineOperationCreate(nakedType, createParam, result),
+		r.DefineOperationRead(nakedType, result),
+		r.DefineOperationUpdate(nakedType, updateParam, result),
+		r.DefineOperationDelete(),
 	)
-
 	return r
 }
 

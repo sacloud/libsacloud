@@ -83,10 +83,56 @@ func (f *fieldsDef) Scope() *schema.FieldDesc {
 	}
 }
 
+func (f *fieldsDef) DisplayOrder() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "DisplayOrder",
+		Type: meta.TypeInt,
+	}
+}
+
+func (f *fieldsDef) IsDummy() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "IsDummy",
+		Type: meta.TypeFlag,
+	}
+}
+
+func (f *fieldsDef) VNCProxy() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "VNCProxy",
+		Type: meta.Static(naked.VNCProxy{}),
+		Tags: &schema.FieldTags{
+			JSON: ",omitempty",
+		},
+	}
+}
+
+func (f *fieldsDef) FTPServer() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "FTPServer",
+		Type: meta.Static(naked.FTPServer{}),
+		Tags: &schema.FieldTags{
+			JSON: ",omitempty",
+		},
+	}
+}
+func (f *fieldsDef) Region() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "Region",
+		Type: meta.Static(naked.Region{}),
+		Tags: &schema.FieldTags{
+			JSON: ",omitempty",
+		},
+	}
+}
+
 func (f *fieldsDef) Icon() *schema.FieldDesc {
 	return &schema.FieldDesc{
 		Name: "Icon",
 		Type: meta.Static(naked.Icon{}),
+		Tags: &schema.FieldTags{
+			JSON: ",omitempty",
+		},
 	}
 }
 

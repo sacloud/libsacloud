@@ -36,6 +36,7 @@ func ToNaked(source interface{}, dest interface{}) error {
 // FromNaked converts naked models naked struct by using mapconv tag
 func FromNaked(source interface{}, dest interface{}) error {
 	sourceMap := Map(structs.New(source).Map())
+	destMap := Map(make(map[string]interface{}))
 
 	s := structs.New(dest)
 	fields := s.Fields()
@@ -57,10 +58,12 @@ func FromNaked(source interface{}, dest interface{}) error {
 		if value == nil {
 			continue
 		}
-		if err := f.Set(value); err != nil {
-			return err
-		}
+		destMap.Set(f.Name(), value)
 	}
 
-	return nil
+	data, err := json.Marshal(destMap)
+	if err != nil {
+		return err
+	}
+	return json.Unmarshal(data, dest)
 }

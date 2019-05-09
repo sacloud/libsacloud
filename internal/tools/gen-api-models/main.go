@@ -69,15 +69,15 @@ func (o *{{ $struct }}) Set{{.Name}}(v {{.TypeName}}) {
 {{- end }}
 
 {{- if .HasNakedType }}
-// ToNaked returns naked {{.Name}} 
-func (o *{{ .Name }}) ToNaked() ({{.NakedType.GoTypeSourceCode}}, error) {
+// toNaked returns naked {{.Name}} 
+func (o *{{ .Name }}) toNaked() ({{.NakedType.GoTypeSourceCode}}, error) {
 	dest := {{.NakedType.ZeroInitializeSourceCode}}
 	err := mapconv.ToNaked(o, dest)
 	return dest, err
 }
 
-// ParseNaked parse values from naked {{.Name}}
-func (o *{{ .Name }}) ParseNaked(naked {{.NakedType.GoTypeSourceCode}}) error {
+// parseNaked parse values from naked {{.Name}}
+func (o *{{ .Name }}) parseNaked(naked {{.NakedType.GoTypeSourceCode}}) error {
 	return mapconv.FromNaked(naked, o)
 }
 

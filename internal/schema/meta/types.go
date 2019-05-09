@@ -7,10 +7,16 @@ import (
 var (
 	// TypeID ID型
 	TypeID = Static(int64(0))
+	// TypeFlag フラグ型(boolean)
+	TypeFlag = Static(false)
 	// TypeString 文字列
 	TypeString = Static("")
 	// TypeStringSlice 文字列スライス
 	TypeStringSlice = Static([]string{})
+	// TypeInt int型
+	TypeInt = Static(int(0))
+	// TypeIntSlice intスライス
+	TypeIntSlice = Static([]int{})
 	// TypeAvailability 有効状態
 	TypeAvailability = Static(enums.EAvailability(""))
 	// TypeInstanceStatus インスタンスステータス

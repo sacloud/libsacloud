@@ -82,7 +82,7 @@ func (o *{{ $.TypeName }}Op) {{ .MethodName }}(ctx context.Context{{ range .AllA
 			body = &{{$structName}}{}
 		}
 		v := body.(*{{$structName}})
-		n, err := {{.ArgName}}.ToNaked()
+		n, err := {{.ArgName}}.toNaked()
 		if err != nil {
 			return {{ $returnErrStatement }}
 		}
@@ -122,7 +122,7 @@ func (o *{{ $.TypeName }}Op) {{ .MethodName }}(ctx context.Context{{ range .AllA
 	{{ if .IsResponseSingular -}}
 	{{ range $i,$v := .AllResults -}}
 	payload{{$i}} := {{$v.ZeroInitializeSourceCode}}
-	if err := payload{{$i}}.ParseNaked(nakedResponse.{{.SourceField}}); err != nil {
+	if err := payload{{$i}}.parseNaked(nakedResponse.{{.SourceField}}); err != nil {
 		return {{ $returnErrStatement }}
 	}
 	{{ end -}}
@@ -131,7 +131,7 @@ func (o *{{ $.TypeName }}Op) {{ .MethodName }}(ctx context.Context{{ range .AllA
 	var payload{{$i}} []{{$v.GoTypeSourceCode}}
 	for _ , v := range nakedResponse.{{.SourceField}} {
 		payload := {{$v.ZeroInitializeSourceCode}}
-		if err := payload.ParseNaked(v); err != nil {
+		if err := payload.parseNaked(v); err != nil {
 			return {{ $returnErrStatement }}
 		}
 		payload{{$i}} = append(payload{{$i}}, payload)

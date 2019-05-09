@@ -7,14 +7,19 @@ import (
 )
 
 func init() {
-	findParam := &schema.Model{
+	note := &schema.Model{
 		Fields: []*schema.FieldDesc{
-			conditions.Count(),
-			conditions.From(),
-			conditions.Sort(),
-			conditions.Filter(),
-			conditions.Include(),
-			conditions.Exclude(),
+			fields.ID(),
+			fields.Name(),
+			fields.Description(),
+			fields.Tags(),
+			fields.Availability(),
+			fields.Scope(),
+			fields.NoteClass(),
+			fields.NoteContent(),
+			fields.Icon(),
+			fields.CreatedAt(),
+			fields.ModifiedAt(),
 		},
 	}
 
@@ -38,22 +43,6 @@ func init() {
 		},
 	}
 
-	result := &schema.Model{
-		Fields: []*schema.FieldDesc{
-			fields.ID(),
-			fields.Name(),
-			fields.Description(),
-			fields.Tags(),
-			fields.Availability(),
-			fields.Scope(),
-			fields.NoteClass(),
-			fields.NoteContent(),
-			fields.Icon(),
-			fields.CreatedAt(),
-			fields.ModifiedAt(),
-		},
-	}
-
 	Resources.Define("Note").
-		OperationCRUD(meta.Static(naked.Note{}), findParam, createParam, updateParam, result)
+		OperationCRUD(meta.Static(naked.Note{}), findParameter, createParam, updateParam, note)
 }
