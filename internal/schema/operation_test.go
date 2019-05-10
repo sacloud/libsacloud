@@ -29,7 +29,6 @@ func TestOperation(t *testing.T) {
 				Method(http.MethodPost).
 				PathFormat(DefaultPathFormat).
 				RequestEnvelope(&EnvelopePayloadDesc{PayloadType: meta.Static(struct{}{})}).
-				ResponseEnvelope(&EnvelopePayloadDesc{PayloadType: meta.Static(struct{}{})}).
 				Argument(ArgumentZone).
 				Argument(&MappableArgument{
 					Name:        "arg1",
@@ -48,8 +47,8 @@ func TestOperation(t *testing.T) {
 						},
 					},
 				}).
-				Result(&Model{
-					Name: "Result",
+				ResultFromEnvelope(&Model{
+					Name: "ResultFromEnvelope",
 					Fields: []*FieldDesc{
 						{
 							Name: "Field3",
@@ -60,6 +59,9 @@ func TestOperation(t *testing.T) {
 							Type: meta.Static(""),
 						},
 					},
+				}, &EnvelopePayloadDesc{
+					PayloadName: "Test",
+					PayloadType: meta.Static(struct{}{}),
 				}),
 			expect: &expectOperationValues{
 				methodName:                 "Create",

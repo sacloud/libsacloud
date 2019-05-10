@@ -70,6 +70,22 @@ func (o *Operation) PassthroughArgument(name string, model *Model) *Operation {
 	})
 }
 
+// PassthroughArgumentToPayload 引数定義の追加、ペイロードの定義も同時に行われる
+func (o *Operation) PassthroughArgumentToPayload(name string, model *Model) *Operation {
+	var descs []*EnvelopePayloadDesc
+	for _, field := range model.Fields {
+		descs = append(descs, &EnvelopePayloadDesc{
+			PayloadName: field.Name,
+			PayloadType: field.Type,
+		})
+	}
+	o.RequestEnvelope(descs...)
+	return o.Argument(&PassthroughArgument{
+		Name:  name,
+		Model: model,
+	})
+}
+
 // Arguments 引数定義の追加(複数)
 func (o *Operation) Arguments(args []Argument) *Operation {
 	o.arguments = append(o.arguments, args...)
@@ -88,8 +104,39 @@ func (o *Operation) Result(m *Model) *Operation {
 	return o.ResultWithSourceField(sourceField, m)
 }
 
+// ResultFromEnvelope エンベロープから抽出するレスポンス定義の追加
+func (o *Operation) ResultFromEnvelope(m *Model, sourceField *EnvelopePayloadDesc) *Operation {
+	if o.responseEnvelope == nil {
+		o.responseEnvelope = &EnvelopeType{
+			Form: PayloadForms.Singular,
+		}
+	}
+	if sourceField.PayloadName == "" {
+		sourceField.PayloadName = o.resource.FieldName(o.responseEnvelope.Form)
+	}
+	o.responseEnvelope.Payloads = append(o.responseEnvelope.Payloads, sourceField)
+	return o.ResultWithSourceField(sourceField.PayloadName, m)
+}
+
+// ResultPluralFromEnvelope エンベロープから抽出するレスポンス定義の追加(複数形)
+func (o *Operation) ResultPluralFromEnvelope(m *Model, sourceField *EnvelopePayloadDesc) *Operation {
+	if o.responseEnvelope == nil {
+		o.responseEnvelope = &EnvelopeType{
+			Form: PayloadForms.Plural,
+		}
+	}
+	if sourceField.PayloadName == "" {
+		sourceField.PayloadName = o.resource.FieldName(o.responseEnvelope.Form)
+	}
+	o.responseEnvelope.Payloads = append(o.responseEnvelope.Payloads, sourceField)
+	return o.ResultWithSourceField(sourceField.PayloadName, m)
+}
+
 // ResultWithSourceField レスポンス定義の追加
 func (o *Operation) ResultWithSourceField(sourceField string, m *Model) *Operation {
+	if sourceField == "" {
+		sourceField = m.Name
+	}
 	o.results = append(o.results, &Result{Model: m, SourceField: sourceField})
 	return o
 }
@@ -123,38 +170,6 @@ func (o *Operation) RequestEnvelopePlural(descs ...*EnvelopePayloadDesc) *Operat
 			desc.PayloadName = o.resource.FieldName(o.requestEnvelope.Form)
 		}
 		o.requestEnvelope.Payloads = append(o.requestEnvelope.Payloads, desc)
-	}
-	return o
-}
-
-// ResponseEnvelope レスポンスのエンベロープを追加する
-func (o *Operation) ResponseEnvelope(descs ...*EnvelopePayloadDesc) *Operation {
-	if o.responseEnvelope == nil {
-		o.responseEnvelope = &EnvelopeType{
-			Form: PayloadForms.Singular,
-		}
-	}
-	for _, desc := range descs {
-		if desc.PayloadName == "" {
-			desc.PayloadName = o.resource.FieldName(o.responseEnvelope.Form)
-		}
-		o.responseEnvelope.Payloads = append(o.responseEnvelope.Payloads, desc)
-	}
-	return o
-}
-
-// ResponseEnvelopePlural レスポンスのエンベロープを複数形として追加する
-func (o *Operation) ResponseEnvelopePlural(descs ...*EnvelopePayloadDesc) *Operation {
-	if o.responseEnvelope == nil {
-		o.responseEnvelope = &EnvelopeType{
-			Form: PayloadForms.Plural,
-		}
-	}
-	for _, desc := range descs {
-		if desc.PayloadName == "" {
-			desc.PayloadName = o.resource.FieldName(o.responseEnvelope.Form)
-		}
-		o.responseEnvelope.Payloads = append(o.responseEnvelope.Payloads, desc)
 	}
 	return o
 }
@@ -274,6 +289,9 @@ func (o *Operation) Models() Models {
 	}
 	for _, arg := range o.PassthroughFieldDeciders() {
 		ms = append(ms, arg.DestinationModel())
+	}
+	for _, res := range o.results {
+		ms = append(ms, res.Model)
 	}
 	return Models(ms).UniqByName()
 }

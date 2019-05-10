@@ -42,6 +42,13 @@ func (r *Resources) Define(name string) *Resource {
 	return rs
 }
 
+// DefineWith リソースの定義 & 定義したリソースを利用するfuncの実施
+func (r *Resources) DefineWith(name string, f func(*Resource)) *Resource {
+	rs := r.Define(name)
+	f(rs)
+	return rs
+}
+
 // Models モデル一覧を取得
 func (r Resources) Models() Models {
 	ms := Models{}
@@ -128,14 +135,6 @@ func (r *Resource) DefineOperation(name string) *Operation {
 
 // DefineOperationFind Find操作を定義
 func (r *Resource) DefineOperationFind(nakedType meta.Type, findParam, result *Model) *Operation {
-	var findEnvelope []*EnvelopePayloadDesc
-	for _, f := range findParam.Fields {
-		findEnvelope = append(findEnvelope, &EnvelopePayloadDesc{
-			PayloadName: f.Name,
-			PayloadType: f.Type,
-		})
-	}
-
 	if findParam.Name == "" {
 		findParam.Name = "FindCondition"
 	}
@@ -151,11 +150,9 @@ func (r *Resource) DefineOperationFind(nakedType meta.Type, findParam, result *M
 	return r.DefineOperation("Find").
 		Method(http.MethodGet).
 		PathFormat(DefaultPathFormat).
-		RequestEnvelope(findEnvelope...).
-		ResponseEnvelopePlural(&EnvelopePayloadDesc{PayloadType: nakedType}).
 		Argument(ArgumentZone).
-		PassthroughArgument("conditions", findParam).
-		Result(result)
+		PassthroughArgumentToPayload("conditions", findParam).
+		ResultPluralFromEnvelope(result, &EnvelopePayloadDesc{PayloadType: nakedType})
 }
 
 // OperationFind Find操作を追加
@@ -183,10 +180,9 @@ func (r *Resource) DefineOperationCreate(nakedType meta.Type, createParam, resul
 		Method(http.MethodPost).
 		PathFormat(DefaultPathFormat).
 		RequestEnvelope(&EnvelopePayloadDesc{PayloadType: nakedType}).
-		ResponseEnvelope(&EnvelopePayloadDesc{PayloadType: nakedType}).
 		Argument(ArgumentZone).
 		MappableArgument("param", createParam).
-		Result(result)
+		ResultFromEnvelope(result, &EnvelopePayloadDesc{PayloadType: nakedType})
 }
 
 // OperationCreate Create操作を追加
@@ -207,10 +203,9 @@ func (r *Resource) DefineOperationRead(nakedType meta.Type, result *Model) *Oper
 	return r.DefineOperation("Read").
 		Method(http.MethodGet).
 		PathFormat(DefaultPathFormatWithID).
-		ResponseEnvelope(&EnvelopePayloadDesc{PayloadType: nakedType}).
 		Argument(ArgumentZone).
 		Argument(ArgumentID).
-		Result(result)
+		ResultFromEnvelope(result, &EnvelopePayloadDesc{PayloadType: nakedType})
 }
 
 // OperationRead Read操作を追加
@@ -238,11 +233,10 @@ func (r *Resource) DefineOperationUpdate(nakedType meta.Type, updateParam, resul
 		Method(http.MethodPut).
 		PathFormat(DefaultPathFormatWithID).
 		RequestEnvelope(&EnvelopePayloadDesc{PayloadType: nakedType}).
-		ResponseEnvelope(&EnvelopePayloadDesc{PayloadType: nakedType}).
 		Argument(ArgumentZone).
 		Argument(ArgumentID).
 		MappableArgument("param", updateParam).
-		Result(result)
+		ResultFromEnvelope(result, &EnvelopePayloadDesc{PayloadType: nakedType})
 }
 
 // OperationUpdate Update操作を追加
@@ -264,14 +258,21 @@ func (r *Resource) OperationDelete() *Resource {
 	return r.Operation(r.DefineOperationDelete())
 }
 
-// OperationCRUD リソースに対する基本的なCRUDを定義
+// DefineOperationCRUD リソースに対する基本的なCRUDを定義
+func (r *Resource) DefineOperationCRUD(nakedType meta.Type, findParam, createParam, updateParam, result *Model) []*Operation {
+	var ops []*Operation
+	ops = append(ops, r.DefineOperationFind(nakedType, findParam, result))
+	ops = append(ops, r.DefineOperationCreate(nakedType, createParam, result))
+	ops = append(ops, r.DefineOperationRead(nakedType, result))
+	ops = append(ops, r.DefineOperationUpdate(nakedType, updateParam, result))
+	ops = append(ops, r.DefineOperationDelete())
+	return ops
+}
+
+// OperationCRUD リソースに対する基本的なCRUDを追加
 func (r *Resource) OperationCRUD(nakedType meta.Type, findParam, createParam, updateParam, result *Model) *Resource {
 	r.Operations(
-		r.DefineOperationFind(nakedType, findParam, result),
-		r.DefineOperationCreate(nakedType, createParam, result),
-		r.DefineOperationRead(nakedType, result),
-		r.DefineOperationUpdate(nakedType, updateParam, result),
-		r.DefineOperationDelete(),
+		r.DefineOperationCRUD(nakedType, findParam, createParam, updateParam, result)...,
 	)
 	return r
 }

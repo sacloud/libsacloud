@@ -12,7 +12,8 @@ type FieldDesc struct {
 	Name                string
 	Tags                *FieldTags
 	Type                meta.Type
-	SuppressAccessorGen bool // Getter/Setterの生成の抑制フラグ
+	SuppressAccessorGen bool              // Getter/Setterの生成の抑制フラグ
+	ExtendAccessors     []*ExtendAccessor // 拡張アクセッサ、Get+指定の名前、Set+指定の名前で拡張アクセッサコードが生成される
 }
 
 // HasTag タグの定義がなされているか
@@ -66,4 +67,29 @@ func (f *FieldTags) String() string {
 		tags = append(tags, fmt.Sprintf(`validate:"%s"`, f.Validate))
 	}
 	return strings.Join(tags, " ")
+}
+
+// ExtendAccessor 拡張アクセッサ
+type ExtendAccessor struct {
+	// Name 拡張アクセッサ名、Get+Name,Set+Nameなfuncが生成される
+	Name string
+	// AvoidGetter trueの場合Getの生成を抑制
+	AvoidGetter bool
+	// AvoidSetter trueの場合Setの生成を抑制
+	AvoidSetter bool
+	// Type 引数の型(省略可能)
+	Type meta.Type
+}
+
+// HasType Typeが指定されているか
+func (a *ExtendAccessor) HasType() bool {
+	return a.Type != nil
+}
+
+// TypeName フィールドの型を返す、コード生成で利用される
+func (a *ExtendAccessor) TypeName() string {
+	if a.HasType() {
+		return a.Type.GoTypeSourceCode()
+	}
+	return ""
 }

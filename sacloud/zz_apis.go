@@ -6,6 +6,25 @@ import (
 	"context"
 )
 
+/*************************************************
+* CDROMAPI
+*************************************************/
+
+// CDROMAPI is interface for operate CDROM resource
+type CDROMAPI interface {
+	Find(ctx context.Context, zone string, conditions *FindCondition) ([]*CDROM, error)
+	Create(ctx context.Context, zone string, param *CDROMCreateRequest) (*CDROM, *FTPServer, error)
+	Read(ctx context.Context, zone string, id int64) (*CDROM, error)
+	Update(ctx context.Context, zone string, id int64, param *CDROMUpdateRequest) (*CDROM, error)
+	Delete(ctx context.Context, zone string, id int64) error
+	OpenFTP(ctx context.Context, zone string, id int64, openOption *OpenFTPParam) (*FTPServer, error)
+	CloseFTP(ctx context.Context, zone string, id int64) error
+}
+
+/*************************************************
+* NoteAPI
+*************************************************/
+
 // NoteAPI is interface for operate Note resource
 type NoteAPI interface {
 	Find(ctx context.Context, zone string, conditions *FindCondition) ([]*Note, error)
@@ -14,6 +33,10 @@ type NoteAPI interface {
 	Update(ctx context.Context, zone string, id int64, param *NoteUpdateRequest) (*Note, error)
 	Delete(ctx context.Context, zone string, id int64) error
 }
+
+/*************************************************
+* ZoneAPI
+*************************************************/
 
 // ZoneAPI is interface for operate Zone resource
 type ZoneAPI interface {

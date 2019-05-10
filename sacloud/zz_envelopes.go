@@ -6,6 +6,73 @@ import (
 	"github.com/sacloud/libsacloud-v2/sacloud/naked"
 )
 
+// CDROMFindRequestEnvelope is envelop of API request
+type CDROMFindRequestEnvelope struct {
+	Count   int                    `json:",omitempty"`
+	From    int                    `json:",omitempty"`
+	Sort    []string               `json:",omitempty"`
+	Filter  map[string]interface{} `json:",omitempty"`
+	Include []string               `json:",omitempty"`
+	Exclude []string               `json:",omitempty"`
+}
+
+// CDROMFindResponseEnvelope is envelop of API response
+type CDROMFindResponseEnvelope struct {
+	Total int `json:",omitempty"` // トータル件数
+	From  int `json:",omitempty"` // ページング開始ページ
+	Count int `json:",omitempty"` // 件数
+
+	CDROMs []*naked.CDROM `json:",omitempty"`
+}
+
+// CDROMCreateRequestEnvelope is envelop of API request
+type CDROMCreateRequestEnvelope struct {
+	CDROM *naked.CDROM `json:",omitempty"`
+}
+
+// CDROMCreateResponseEnvelope is envelop of API response
+type CDROMCreateResponseEnvelope struct {
+	IsOk    bool `json:"is_ok,omitempty"` // is_ok項目
+	Success bool `json:",omitempty"`      // success項目
+
+	CDROM     *naked.CDROM            `json:",omitempty"`
+	FTPServer *naked.OpeningFTPServer `json:",omitempty"`
+}
+
+// CDROMReadResponseEnvelope is envelop of API response
+type CDROMReadResponseEnvelope struct {
+	IsOk    bool `json:"is_ok,omitempty"` // is_ok項目
+	Success bool `json:",omitempty"`      // success項目
+
+	CDROM *naked.CDROM `json:",omitempty"`
+}
+
+// CDROMUpdateRequestEnvelope is envelop of API request
+type CDROMUpdateRequestEnvelope struct {
+	CDROM *naked.CDROM `json:",omitempty"`
+}
+
+// CDROMUpdateResponseEnvelope is envelop of API response
+type CDROMUpdateResponseEnvelope struct {
+	IsOk    bool `json:"is_ok,omitempty"` // is_ok項目
+	Success bool `json:",omitempty"`      // success項目
+
+	CDROM *naked.CDROM `json:",omitempty"`
+}
+
+// CDROMOpenFTPRequestEnvelope is envelop of API request
+type CDROMOpenFTPRequestEnvelope struct {
+	ChangePassword bool `json:",omitempty"`
+}
+
+// CDROMOpenFTPResponseEnvelope is envelop of API response
+type CDROMOpenFTPResponseEnvelope struct {
+	IsOk    bool `json:"is_ok,omitempty"` // is_ok項目
+	Success bool `json:",omitempty"`      // success項目
+
+	FTPServer *naked.OpeningFTPServer `json:",omitempty"`
+}
+
 // NoteFindRequestEnvelope is envelop of API request
 type NoteFindRequestEnvelope struct {
 	Count   int                    `json:",omitempty"`
