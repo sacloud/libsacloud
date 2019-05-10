@@ -55,16 +55,17 @@ func (o *{{ .Name}}) Validate() error {
 
 {{- $struct := .Name -}}
 {{- range .Fields }} {{ $name := .Name }}{{ $typeName := .TypeName }}
-{{- if not .SuppressAccessorGen }}
 // Get{{$name}} returns value of {{$name}} 
 func (o *{{ $struct }}) Get{{$name}}() {{$typeName}} {
 	return o.{{$name}}
 }
 
+{{- if not .ReadOnly}}
 // Set{{$name}} sets value to {{$name}} 
 func (o *{{ $struct }}) Set{{$name}}(v {{$typeName}}) {
 	o.{{$name}} = v
 }
+{{- end }}
 
 {{ range .ExtendAccessors }}
 {{ if not .AvoidGetter }}
@@ -81,7 +82,6 @@ func (o *{{ $struct }}) Set{{.Name}}(v {{ if .HasType }}{{ .TypeName }}{{ else }
 }
 {{- end }} {{/* end of if not .AvoidSetter */}}
 {{- end }} {{/* end of range .ExtendAccessors */}}
-{{- end }} {{/* end of if not .SuppressAccessorGen */}}
 {{- end }} {{/* end of range .Fields */}}
 
 {{- if .HasNakedType }}

@@ -20,5 +20,5 @@ var (
 
 // IDAndSuffixPathFormat デフォルトのパス+ID+指定のサフィックスのパスフォーマット
 func IDAndSuffixPathFormat(suffix string) string {
-	return fmt.Sprintf(DefaultPathFormat+"/%s", suffix)
+	return fmt.Sprintf(DefaultPathFormatWithID+"/%s", suffix)
 }

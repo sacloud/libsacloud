@@ -35,6 +35,21 @@ type NoteAPI interface {
 }
 
 /*************************************************
+* SwitchAPI
+*************************************************/
+
+// SwitchAPI is interface for operate Switch resource
+type SwitchAPI interface {
+	Find(ctx context.Context, zone string, conditions *FindCondition) ([]*Switch, error)
+	Create(ctx context.Context, zone string, param *SwitchCreateRequest) (*Switch, error)
+	Read(ctx context.Context, zone string, id int64) (*Switch, error)
+	Update(ctx context.Context, zone string, id int64, param *SwitchUpdateRequest) (*Switch, error)
+	Delete(ctx context.Context, zone string, id int64) error
+	ConnectToBridge(ctx context.Context, zone string, id int64, bridgeID int64) error
+	DisconnectFromBridge(ctx context.Context, zone string, id int64) error
+}
+
+/*************************************************
 * ZoneAPI
 *************************************************/
 

@@ -2,6 +2,7 @@ package schema
 
 import (
 	"net/http"
+	"strings"
 
 	"github.com/sacloud/libsacloud-v2/internal/schema/meta"
 )
@@ -303,7 +304,13 @@ func (r *Resource) FieldName(form PayloadForm) string {
 	case form.IsSingular():
 		return r.name
 	case form.IsPlural():
-		return r.name + "s"
+		// TODO とりあえずワードで例外指定
+		switch {
+		case strings.HasSuffix(r.name, "ch"):
+			return r.name + "es"
+		default:
+			return r.name + "s"
+		}
 	default:
 		return ""
 	}

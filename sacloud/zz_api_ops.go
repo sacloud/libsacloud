@@ -238,7 +238,7 @@ func (o *CDROMOp) Delete(ctx context.Context, zone string, id int64) error {
 
 // OpenFTP is API call
 func (o *CDROMOp) OpenFTP(ctx context.Context, zone string, id int64, openOption *OpenFTPParam) (*FTPServer, error) {
-	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/ftp", map[string]interface{}{
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/ftp", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
@@ -282,7 +282,7 @@ func (o *CDROMOp) OpenFTP(ctx context.Context, zone string, id int64, openOption
 
 // CloseFTP is API call
 func (o *CDROMOp) CloseFTP(ctx context.Context, zone string, id int64) error {
-	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/ftp", map[string]interface{}{
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/ftp", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
@@ -508,6 +508,278 @@ func (o *NoteOp) Update(ctx context.Context, zone string, id int64, param *NoteU
 // Delete is API call
 func (o *NoteOp) Delete(ctx context.Context, zone string, id int64) error {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+	})
+	if err != nil {
+		return err
+	}
+
+	var body interface{}
+
+	_, err = o.Client.Do(ctx, "DELETE", url, body)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+/*************************************************
+* SwitchOp
+*************************************************/
+
+// SwitchOp implements SwitchAPI interface
+type SwitchOp struct {
+	// Client APICaller
+	Client APICaller
+	// PathSuffix is used when building URL
+	PathSuffix string
+	// PathName is used when building URL
+	PathName string
+}
+
+// NewSwitchOp creates new SwitchOp instance
+func NewSwitchOp(client APICaller) *SwitchOp {
+	return &SwitchOp{
+		Client:     client,
+		PathSuffix: "api/cloud/1.1",
+		PathName:   "switch",
+	}
+}
+
+// Find is API call
+func (o *SwitchOp) Find(ctx context.Context, zone string, conditions *FindCondition) ([]*Switch, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"conditions": conditions,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+	{
+		if conditions == nil {
+			conditions = &FindCondition{}
+		}
+		if body == nil {
+			body = &SwitchFindRequestEnvelope{}
+		}
+		v := body.(*SwitchFindRequestEnvelope)
+		v.Count = conditions.Count
+		v.From = conditions.From
+		v.Sort = conditions.Sort
+		v.Filter = conditions.Filter
+		v.Include = conditions.Include
+		v.Exclude = conditions.Exclude
+		body = v
+	}
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &SwitchFindResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	var payload0 []*Switch
+	for _, v := range nakedResponse.Switches {
+		payload := &Switch{}
+		if err := payload.parseNaked(v); err != nil {
+			return nil, err
+		}
+		payload0 = append(payload0, payload)
+	}
+	return payload0, nil
+}
+
+// Create is API call
+func (o *SwitchOp) Create(ctx context.Context, zone string, param *SwitchCreateRequest) (*Switch, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"param":      param,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+	{
+		if param == nil {
+			param = &SwitchCreateRequest{}
+		}
+		if body == nil {
+			body = &SwitchCreateRequestEnvelope{}
+		}
+		v := body.(*SwitchCreateRequestEnvelope)
+		n, err := param.toNaked()
+		if err != nil {
+			return nil, err
+		}
+		v.Switch = n
+		body = v
+	}
+
+	data, err := o.Client.Do(ctx, "POST", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &SwitchCreateResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	payload0 := &Switch{}
+	if err := payload0.parseNaked(nakedResponse.Switch); err != nil {
+		return nil, err
+	}
+	return payload0, nil
+}
+
+// Read is API call
+func (o *SwitchOp) Read(ctx context.Context, zone string, id int64) (*Switch, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &SwitchReadResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	payload0 := &Switch{}
+	if err := payload0.parseNaked(nakedResponse.Switch); err != nil {
+		return nil, err
+	}
+	return payload0, nil
+}
+
+// Update is API call
+func (o *SwitchOp) Update(ctx context.Context, zone string, id int64, param *SwitchUpdateRequest) (*Switch, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+		"param":      param,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+	{
+		if param == nil {
+			param = &SwitchUpdateRequest{}
+		}
+		if body == nil {
+			body = &SwitchUpdateRequestEnvelope{}
+		}
+		v := body.(*SwitchUpdateRequestEnvelope)
+		n, err := param.toNaked()
+		if err != nil {
+			return nil, err
+		}
+		v.Switch = n
+		body = v
+	}
+
+	data, err := o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &SwitchUpdateResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	payload0 := &Switch{}
+	if err := payload0.parseNaked(nakedResponse.Switch); err != nil {
+		return nil, err
+	}
+	return payload0, nil
+}
+
+// Delete is API call
+func (o *SwitchOp) Delete(ctx context.Context, zone string, id int64) error {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+	})
+	if err != nil {
+		return err
+	}
+
+	var body interface{}
+
+	_, err = o.Client.Do(ctx, "DELETE", url, body)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// ConnectToBridge is API call
+func (o *SwitchOp) ConnectToBridge(ctx context.Context, zone string, id int64, bridgeID int64) error {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/to/bridge/{{.bridgeID}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+		"bridgeID":   bridgeID,
+	})
+	if err != nil {
+		return err
+	}
+
+	var body interface{}
+
+	_, err = o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// DisconnectFromBridge is API call
+func (o *SwitchOp) DisconnectFromBridge(ctx context.Context, zone string, id int64) error {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/to/bridge", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,

@@ -97,6 +97,28 @@ func (f *fieldsDef) SizeMB() *schema.FieldDesc {
 	}
 }
 
+func (f *fieldsDef) UserSubnetNetworkMaskLen() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "NetworkMaskLen",
+		Type: meta.TypeInt,
+		Tags: &schema.FieldTags{
+			Validate: "min=1,max=32", // TODO
+			MapConv:  "UserSubnet.NetworkMaskLen",
+		},
+	}
+}
+
+func (f *fieldsDef) UserSubnetDefaultRoute() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "DefaultRoute",
+		Type: meta.TypeString,
+		Tags: &schema.FieldTags{
+			Validate: "ipv4", // TODO
+			MapConv:  "UserSubnet.DefaultRoute",
+		},
+	}
+}
+
 func (f *fieldsDef) StorageClass() *schema.FieldDesc {
 	return &schema.FieldDesc{
 		Name: "StorageClass",
@@ -167,6 +189,26 @@ func (f *fieldsDef) Region() *schema.FieldDesc {
 	return &schema.FieldDesc{
 		Name: "Region",
 		Type: meta.Static(naked.Region{}),
+		Tags: &schema.FieldTags{
+			JSON: ",omitempty",
+		},
+	}
+}
+
+func (f *fieldsDef) Zone() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "Zone",
+		Type: meta.Static(naked.Zone{}),
+		Tags: &schema.FieldTags{
+			JSON: ",omitempty",
+		},
+	}
+}
+
+func (f *fieldsDef) UserSubnet() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "UserSubnet",
+		Type: meta.Static(naked.UserSubnet{}),
 		Tags: &schema.FieldTags{
 			JSON: ",omitempty",
 		},

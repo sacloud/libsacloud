@@ -5,6 +5,10 @@ import (
 	"strconv"
 )
 
+/************************************************
+ SizeMB - SizeGB
+************************************************/
+
 type sizeMBAccessor interface {
 	GetSizeMB() int
 	SetSizeMB(size int)
@@ -21,6 +25,10 @@ func getSizeGB(target sizeMBAccessor) int {
 func setSizeGB(target sizeMBAccessor, size int) {
 	target.SetSizeMB(size * 1024)
 }
+
+/************************************************
+ ID - StringID
+************************************************/
 
 type idAccessor interface {
 	GetID() int64

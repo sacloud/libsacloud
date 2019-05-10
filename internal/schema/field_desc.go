@@ -9,11 +9,11 @@ import (
 
 // FieldDesc フィールド記述
 type FieldDesc struct {
-	Name                string
-	Tags                *FieldTags
-	Type                meta.Type
-	SuppressAccessorGen bool              // Getter/Setterの生成の抑制フラグ
-	ExtendAccessors     []*ExtendAccessor // 拡張アクセッサ、Get+指定の名前、Set+指定の名前で拡張アクセッサコードが生成される
+	Name            string
+	Tags            *FieldTags
+	Type            meta.Type
+	ReadOnly        bool              // Setter生成の抑制フラグ
+	ExtendAccessors []*ExtendAccessor // 拡張アクセッサ、Get+指定の名前、Set+指定の名前で拡張アクセッサコードが生成される
 }
 
 // HasTag タグの定義がなされているか
