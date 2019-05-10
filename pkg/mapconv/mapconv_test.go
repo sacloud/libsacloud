@@ -147,3 +147,91 @@ func TestFromNaked(t *testing.T) {
 	}
 
 }
+
+type dummySlice struct {
+	Slice []*dummySliceInner `json:",omitempty"`
+}
+
+type dummySliceInner struct {
+	Value string             `json:",omitempty"`
+	Slice []*dummySliceInner `json:",omitempty"`
+}
+
+type dummyExtractInnerSlice struct {
+	Values       []string `json:",omitempty" mapconv:"[]Slice.Value"`
+	NestedValues []string `json:",omitempty" mapconv:"[]Slice.[]Slice.Value"`
+}
+
+func TestExtractInnerSlice(t *testing.T) {
+	expects := []struct {
+		input  *dummySlice
+		expect *dummyExtractInnerSlice
+	}{
+		{
+			input: &dummySlice{
+				Slice: []*dummySliceInner{
+					{Value: "value1"},
+					{Value: "value2"},
+					{
+						Value: "value3",
+						Slice: []*dummySliceInner{
+							{Value: "value4"},
+							{Value: "value5"},
+						},
+					},
+				},
+			},
+			expect: &dummyExtractInnerSlice{
+				Values:       []string{"value1", "value2", "value3"},
+				NestedValues: []string{"value4", "value5"},
+			},
+		},
+	}
+
+	for _, tc := range expects {
+		dest := &dummyExtractInnerSlice{}
+		err := FromNaked(tc.input, dest)
+
+		require.NoError(t, err)
+		require.Equal(t, tc.expect, dest)
+	}
+}
+
+func TestInsertInnerSlice(t *testing.T) {
+	expects := []struct {
+		input  *dummyExtractInnerSlice
+		expect *dummySlice
+	}{
+		{
+			input: &dummyExtractInnerSlice{
+				Values:       []string{"value1", "value2", "value3"},
+				NestedValues: []string{"value4", "value5"},
+			},
+			expect: &dummySlice{
+				Slice: []*dummySliceInner{
+					{Value: "value1"},
+					{Value: "value2"},
+					{Value: "value3"},
+					{
+						Slice: []*dummySliceInner{
+							{Value: "value4"},
+						},
+					},
+					{
+						Slice: []*dummySliceInner{
+							{Value: "value5"},
+						},
+					},
+				},
+			},
+		},
+	}
+
+	for _, tc := range expects {
+		dest := &dummySlice{}
+		err := ToNaked(tc.input, dest)
+
+		require.NoError(t, err)
+		require.Equal(t, tc.expect, dest)
+	}
+}
