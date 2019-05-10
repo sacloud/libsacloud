@@ -12,6 +12,504 @@ import (
 )
 
 /*************************************************
+* CDROM
+*************************************************/
+
+// CDROM represents API parameter/response structure
+type CDROM struct {
+	ID           int64
+	Name         string `validate:"required"`
+	Description  string
+	DisplayOrder int
+	Tags         []string
+	Availability enums.EAvailability
+	Scope        enums.EScope
+	StorageClass string
+	Storage      *naked.Storage `json:",omitempty"`
+	Icon         *naked.Icon    `json:",omitempty"`
+	CreatedAt    *time.Time
+	ModifiedAt   *time.Time
+}
+
+// Validate validates by field tags
+func (o *CDROM) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetID returns value of ID
+func (o *CDROM) GetID() int64 {
+	return o.ID
+}
+
+// SetID sets value to ID
+func (o *CDROM) SetID(v int64) {
+	o.ID = v
+}
+
+// GetStringID gets value to StringID
+func (o *CDROM) GetStringID() string {
+	return getStringID(o)
+}
+
+// SetStringID sets value to StringID
+func (o *CDROM) SetStringID(v string) {
+	setStringID(o, v)
+}
+
+// GetName returns value of Name
+func (o *CDROM) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *CDROM) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *CDROM) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *CDROM) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetDisplayOrder returns value of DisplayOrder
+func (o *CDROM) GetDisplayOrder() int {
+	return o.DisplayOrder
+}
+
+// SetDisplayOrder sets value to DisplayOrder
+func (o *CDROM) SetDisplayOrder(v int) {
+	o.DisplayOrder = v
+}
+
+// GetTags returns value of Tags
+func (o *CDROM) GetTags() []string {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *CDROM) SetTags(v []string) {
+	o.Tags = v
+}
+
+// GetAvailability returns value of Availability
+func (o *CDROM) GetAvailability() enums.EAvailability {
+	return o.Availability
+}
+
+// SetAvailability sets value to Availability
+func (o *CDROM) SetAvailability(v enums.EAvailability) {
+	o.Availability = v
+}
+
+// GetScope returns value of Scope
+func (o *CDROM) GetScope() enums.EScope {
+	return o.Scope
+}
+
+// SetScope sets value to Scope
+func (o *CDROM) SetScope(v enums.EScope) {
+	o.Scope = v
+}
+
+// GetStorageClass returns value of StorageClass
+func (o *CDROM) GetStorageClass() string {
+	return o.StorageClass
+}
+
+// SetStorageClass sets value to StorageClass
+func (o *CDROM) SetStorageClass(v string) {
+	o.StorageClass = v
+}
+
+// GetStorage returns value of Storage
+func (o *CDROM) GetStorage() *naked.Storage {
+	return o.Storage
+}
+
+// SetStorage sets value to Storage
+func (o *CDROM) SetStorage(v *naked.Storage) {
+	o.Storage = v
+}
+
+// GetIcon returns value of Icon
+func (o *CDROM) GetIcon() *naked.Icon {
+	return o.Icon
+}
+
+// SetIcon sets value to Icon
+func (o *CDROM) SetIcon(v *naked.Icon) {
+	o.Icon = v
+}
+
+// GetCreatedAt returns value of CreatedAt
+func (o *CDROM) GetCreatedAt() *time.Time {
+	return o.CreatedAt
+}
+
+// SetCreatedAt sets value to CreatedAt
+func (o *CDROM) SetCreatedAt(v *time.Time) {
+	o.CreatedAt = v
+}
+
+// GetModifiedAt returns value of ModifiedAt
+func (o *CDROM) GetModifiedAt() *time.Time {
+	return o.ModifiedAt
+}
+
+// SetModifiedAt sets value to ModifiedAt
+func (o *CDROM) SetModifiedAt(v *time.Time) {
+	o.ModifiedAt = v
+}
+
+// toNaked returns naked CDROM
+func (o *CDROM) toNaked() (*naked.CDROM, error) {
+	dest := &naked.CDROM{}
+	err := mapconv.ToNaked(o, dest)
+	return dest, err
+}
+
+// parseNaked parse values from naked CDROM
+func (o *CDROM) parseNaked(naked *naked.CDROM) error {
+	return mapconv.FromNaked(naked, o)
+}
+
+/*************************************************
+* FindCondition
+*************************************************/
+
+// FindCondition represents API parameter/response structure
+type FindCondition struct {
+	Count   int
+	From    int
+	Sort    []string
+	Filter  map[string]interface{}
+	Include []string
+	Exclude []string
+}
+
+// Validate validates by field tags
+func (o *FindCondition) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetCount returns value of Count
+func (o *FindCondition) GetCount() int {
+	return o.Count
+}
+
+// SetCount sets value to Count
+func (o *FindCondition) SetCount(v int) {
+	o.Count = v
+}
+
+// GetFrom returns value of From
+func (o *FindCondition) GetFrom() int {
+	return o.From
+}
+
+// SetFrom sets value to From
+func (o *FindCondition) SetFrom(v int) {
+	o.From = v
+}
+
+// GetSort returns value of Sort
+func (o *FindCondition) GetSort() []string {
+	return o.Sort
+}
+
+// SetSort sets value to Sort
+func (o *FindCondition) SetSort(v []string) {
+	o.Sort = v
+}
+
+// GetFilter returns value of Filter
+func (o *FindCondition) GetFilter() map[string]interface{} {
+	return o.Filter
+}
+
+// SetFilter sets value to Filter
+func (o *FindCondition) SetFilter(v map[string]interface{}) {
+	o.Filter = v
+}
+
+// GetInclude returns value of Include
+func (o *FindCondition) GetInclude() []string {
+	return o.Include
+}
+
+// SetInclude sets value to Include
+func (o *FindCondition) SetInclude(v []string) {
+	o.Include = v
+}
+
+// GetExclude returns value of Exclude
+func (o *FindCondition) GetExclude() []string {
+	return o.Exclude
+}
+
+// SetExclude sets value to Exclude
+func (o *FindCondition) SetExclude(v []string) {
+	o.Exclude = v
+}
+
+/*************************************************
+* FTPServer
+*************************************************/
+
+// FTPServer represents API parameter/response structure
+type FTPServer struct {
+	HostName  string
+	IPAddress string
+	User      string
+	Password  string
+}
+
+// Validate validates by field tags
+func (o *FTPServer) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetHostName returns value of HostName
+func (o *FTPServer) GetHostName() string {
+	return o.HostName
+}
+
+// SetHostName sets value to HostName
+func (o *FTPServer) SetHostName(v string) {
+	o.HostName = v
+}
+
+// GetIPAddress returns value of IPAddress
+func (o *FTPServer) GetIPAddress() string {
+	return o.IPAddress
+}
+
+// SetIPAddress sets value to IPAddress
+func (o *FTPServer) SetIPAddress(v string) {
+	o.IPAddress = v
+}
+
+// GetUser returns value of User
+func (o *FTPServer) GetUser() string {
+	return o.User
+}
+
+// SetUser sets value to User
+func (o *FTPServer) SetUser(v string) {
+	o.User = v
+}
+
+// GetPassword returns value of Password
+func (o *FTPServer) GetPassword() string {
+	return o.Password
+}
+
+// SetPassword sets value to Password
+func (o *FTPServer) SetPassword(v string) {
+	o.Password = v
+}
+
+// toNaked returns naked FTPServer
+func (o *FTPServer) toNaked() (*naked.OpeningFTPServer, error) {
+	dest := &naked.OpeningFTPServer{}
+	err := mapconv.ToNaked(o, dest)
+	return dest, err
+}
+
+// parseNaked parse values from naked FTPServer
+func (o *FTPServer) parseNaked(naked *naked.OpeningFTPServer) error {
+	return mapconv.FromNaked(naked, o)
+}
+
+/*************************************************
+* CDROMCreateRequest
+*************************************************/
+
+// CDROMCreateRequest represents API parameter/response structure
+type CDROMCreateRequest struct {
+	SizeMB      int
+	Name        string `validate:"required"`
+	Description string
+	Tags        []string
+	IconID      int64 `mapconv:"Icon.ID"`
+}
+
+// Validate validates by field tags
+func (o *CDROMCreateRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetSizeMB returns value of SizeMB
+func (o *CDROMCreateRequest) GetSizeMB() int {
+	return o.SizeMB
+}
+
+// SetSizeMB sets value to SizeMB
+func (o *CDROMCreateRequest) SetSizeMB(v int) {
+	o.SizeMB = v
+}
+
+// GetSizeGB gets value to SizeGB
+func (o *CDROMCreateRequest) GetSizeGB() int {
+	return getSizeGB(o)
+}
+
+// SetSizeGB sets value to SizeGB
+func (o *CDROMCreateRequest) SetSizeGB(v int) {
+	setSizeGB(o, v)
+}
+
+// GetName returns value of Name
+func (o *CDROMCreateRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *CDROMCreateRequest) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *CDROMCreateRequest) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *CDROMCreateRequest) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetTags returns value of Tags
+func (o *CDROMCreateRequest) GetTags() []string {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *CDROMCreateRequest) SetTags(v []string) {
+	o.Tags = v
+}
+
+// GetIconID returns value of IconID
+func (o *CDROMCreateRequest) GetIconID() int64 {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *CDROMCreateRequest) SetIconID(v int64) {
+	o.IconID = v
+}
+
+// toNaked returns naked CDROMCreateRequest
+func (o *CDROMCreateRequest) toNaked() (*naked.CDROM, error) {
+	dest := &naked.CDROM{}
+	err := mapconv.ToNaked(o, dest)
+	return dest, err
+}
+
+// parseNaked parse values from naked CDROMCreateRequest
+func (o *CDROMCreateRequest) parseNaked(naked *naked.CDROM) error {
+	return mapconv.FromNaked(naked, o)
+}
+
+/*************************************************
+* CDROMUpdateRequest
+*************************************************/
+
+// CDROMUpdateRequest represents API parameter/response structure
+type CDROMUpdateRequest struct {
+	Name        string `validate:"required"`
+	Description string
+	Tags        []string
+	IconID      int64 `mapconv:"Icon.ID"`
+}
+
+// Validate validates by field tags
+func (o *CDROMUpdateRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetName returns value of Name
+func (o *CDROMUpdateRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *CDROMUpdateRequest) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *CDROMUpdateRequest) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *CDROMUpdateRequest) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetTags returns value of Tags
+func (o *CDROMUpdateRequest) GetTags() []string {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *CDROMUpdateRequest) SetTags(v []string) {
+	o.Tags = v
+}
+
+// GetIconID returns value of IconID
+func (o *CDROMUpdateRequest) GetIconID() int64 {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *CDROMUpdateRequest) SetIconID(v int64) {
+	o.IconID = v
+}
+
+// toNaked returns naked CDROMUpdateRequest
+func (o *CDROMUpdateRequest) toNaked() (*naked.CDROM, error) {
+	dest := &naked.CDROM{}
+	err := mapconv.ToNaked(o, dest)
+	return dest, err
+}
+
+// parseNaked parse values from naked CDROMUpdateRequest
+func (o *CDROMUpdateRequest) parseNaked(naked *naked.CDROM) error {
+	return mapconv.FromNaked(naked, o)
+}
+
+/*************************************************
+* OpenFTPParam
+*************************************************/
+
+// OpenFTPParam represents API parameter/response structure
+type OpenFTPParam struct {
+	ChangePassword bool
+}
+
+// Validate validates by field tags
+func (o *OpenFTPParam) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetChangePassword returns value of ChangePassword
+func (o *OpenFTPParam) GetChangePassword() bool {
+	return o.ChangePassword
+}
+
+// SetChangePassword sets value to ChangePassword
+func (o *OpenFTPParam) SetChangePassword(v bool) {
+	o.ChangePassword = v
+}
+
+/*************************************************
 * Note
 *************************************************/
 
@@ -43,6 +541,16 @@ func (o *Note) GetID() int64 {
 // SetID sets value to ID
 func (o *Note) SetID(v int64) {
 	o.ID = v
+}
+
+// GetStringID gets value to StringID
+func (o *Note) GetStringID() string {
+	return getStringID(o)
+}
+
+// SetStringID sets value to StringID
+func (o *Note) SetStringID(v string) {
+	setStringID(o, v)
 }
 
 // GetName returns value of Name
@@ -155,85 +663,6 @@ func (o *Note) toNaked() (*naked.Note, error) {
 // parseNaked parse values from naked Note
 func (o *Note) parseNaked(naked *naked.Note) error {
 	return mapconv.FromNaked(naked, o)
-}
-
-/*************************************************
-* FindCondition
-*************************************************/
-
-// FindCondition represents API parameter/response structure
-type FindCondition struct {
-	Count   int
-	From    int
-	Sort    []string
-	Filter  map[string]interface{}
-	Include []string
-	Exclude []string
-}
-
-// Validate validates by field tags
-func (o *FindCondition) Validate() error {
-	return validator.New().Struct(o)
-}
-
-// GetCount returns value of Count
-func (o *FindCondition) GetCount() int {
-	return o.Count
-}
-
-// SetCount sets value to Count
-func (o *FindCondition) SetCount(v int) {
-	o.Count = v
-}
-
-// GetFrom returns value of From
-func (o *FindCondition) GetFrom() int {
-	return o.From
-}
-
-// SetFrom sets value to From
-func (o *FindCondition) SetFrom(v int) {
-	o.From = v
-}
-
-// GetSort returns value of Sort
-func (o *FindCondition) GetSort() []string {
-	return o.Sort
-}
-
-// SetSort sets value to Sort
-func (o *FindCondition) SetSort(v []string) {
-	o.Sort = v
-}
-
-// GetFilter returns value of Filter
-func (o *FindCondition) GetFilter() map[string]interface{} {
-	return o.Filter
-}
-
-// SetFilter sets value to Filter
-func (o *FindCondition) SetFilter(v map[string]interface{}) {
-	o.Filter = v
-}
-
-// GetInclude returns value of Include
-func (o *FindCondition) GetInclude() []string {
-	return o.Include
-}
-
-// SetInclude sets value to Include
-func (o *FindCondition) SetInclude(v []string) {
-	o.Include = v
-}
-
-// GetExclude returns value of Exclude
-func (o *FindCondition) GetExclude() []string {
-	return o.Exclude
-}
-
-// SetExclude sets value to Exclude
-func (o *FindCondition) SetExclude(v []string) {
-	o.Exclude = v
 }
 
 /*************************************************
@@ -425,6 +854,16 @@ func (o *Zone) GetID() int64 {
 // SetID sets value to ID
 func (o *Zone) SetID(v int64) {
 	o.ID = v
+}
+
+// GetStringID gets value to StringID
+func (o *Zone) GetStringID() string {
+	return getStringID(o)
+}
+
+// SetStringID sets value to StringID
+func (o *Zone) SetStringID(v string) {
+	setStringID(o, v)
 }
 
 // GetName returns value of Name

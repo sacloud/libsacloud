@@ -17,3 +17,8 @@ var (
 	// DefaultPathFormatWithID デフォルトのパス+IDのパスフォーマット
 	DefaultPathFormatWithID = fmt.Sprintf("%s/{{.%s}}", DefaultPathFormat, ArgumentID.ArgName())
 )
+
+// IDAndSuffixPathFormat デフォルトのパス+ID+指定のサフィックスのパスフォーマット
+func IDAndSuffixPathFormat(suffix string) string {
+	return fmt.Sprintf(DefaultPathFormat+"/%s", suffix)
+}

@@ -35,6 +35,11 @@ import (
 )
 
 {{ range . }}
+
+/************************************************* 
+* {{.TypeName}}API
+*************************************************/
+
 // {{ .TypeName }}API is interface for operate {{ .TypeName }} resource
 type {{ .TypeName }}API interface {
 {{ range .AllOperations }}
