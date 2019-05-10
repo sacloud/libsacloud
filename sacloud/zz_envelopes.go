@@ -126,6 +126,59 @@ type NoteUpdateResponseEnvelope struct {
 	Note *naked.Note `json:",omitempty"`
 }
 
+// SwitchFindRequestEnvelope is envelop of API request
+type SwitchFindRequestEnvelope struct {
+	Count   int                    `json:",omitempty"`
+	From    int                    `json:",omitempty"`
+	Sort    []string               `json:",omitempty"`
+	Filter  map[string]interface{} `json:",omitempty"`
+	Include []string               `json:",omitempty"`
+	Exclude []string               `json:",omitempty"`
+}
+
+// SwitchFindResponseEnvelope is envelop of API response
+type SwitchFindResponseEnvelope struct {
+	Total int `json:",omitempty"` // トータル件数
+	From  int `json:",omitempty"` // ページング開始ページ
+	Count int `json:",omitempty"` // 件数
+
+	Switches []*naked.Switch `json:",omitempty"`
+}
+
+// SwitchCreateRequestEnvelope is envelop of API request
+type SwitchCreateRequestEnvelope struct {
+	Switch *naked.Switch `json:",omitempty"`
+}
+
+// SwitchCreateResponseEnvelope is envelop of API response
+type SwitchCreateResponseEnvelope struct {
+	IsOk    bool `json:"is_ok,omitempty"` // is_ok項目
+	Success bool `json:",omitempty"`      // success項目
+
+	Switch *naked.Switch `json:",omitempty"`
+}
+
+// SwitchReadResponseEnvelope is envelop of API response
+type SwitchReadResponseEnvelope struct {
+	IsOk    bool `json:"is_ok,omitempty"` // is_ok項目
+	Success bool `json:",omitempty"`      // success項目
+
+	Switch *naked.Switch `json:",omitempty"`
+}
+
+// SwitchUpdateRequestEnvelope is envelop of API request
+type SwitchUpdateRequestEnvelope struct {
+	Switch *naked.Switch `json:",omitempty"`
+}
+
+// SwitchUpdateResponseEnvelope is envelop of API response
+type SwitchUpdateResponseEnvelope struct {
+	IsOk    bool `json:"is_ok,omitempty"` // is_ok項目
+	Success bool `json:",omitempty"`      // success項目
+
+	Switch *naked.Switch `json:",omitempty"`
+}
+
 // ZoneFindRequestEnvelope is envelop of API request
 type ZoneFindRequestEnvelope struct {
 	Count   int                    `json:",omitempty"`

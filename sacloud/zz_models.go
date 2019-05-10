@@ -826,6 +826,300 @@ func (o *NoteUpdateRequest) parseNaked(naked *naked.Note) error {
 }
 
 /*************************************************
+* Switch
+*************************************************/
+
+// Switch represents API parameter/response structure
+type Switch struct {
+	ID          int64
+	Name        string `validate:"required"`
+	Description string
+	Tags        []string
+	Icon        *naked.Icon `json:",omitempty"`
+	CreatedAt   *time.Time
+	ModifiedAt  *time.Time
+	Zone        *naked.Zone       `json:",omitempty"`
+	UserSubnet  *naked.UserSubnet `json:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *Switch) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetID returns value of ID
+func (o *Switch) GetID() int64 {
+	return o.ID
+}
+
+// SetID sets value to ID
+func (o *Switch) SetID(v int64) {
+	o.ID = v
+}
+
+// GetStringID gets value to StringID
+func (o *Switch) GetStringID() string {
+	return getStringID(o)
+}
+
+// SetStringID sets value to StringID
+func (o *Switch) SetStringID(v string) {
+	setStringID(o, v)
+}
+
+// GetName returns value of Name
+func (o *Switch) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *Switch) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *Switch) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *Switch) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetTags returns value of Tags
+func (o *Switch) GetTags() []string {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *Switch) SetTags(v []string) {
+	o.Tags = v
+}
+
+// GetIcon returns value of Icon
+func (o *Switch) GetIcon() *naked.Icon {
+	return o.Icon
+}
+
+// SetIcon sets value to Icon
+func (o *Switch) SetIcon(v *naked.Icon) {
+	o.Icon = v
+}
+
+// GetCreatedAt returns value of CreatedAt
+func (o *Switch) GetCreatedAt() *time.Time {
+	return o.CreatedAt
+}
+
+// SetCreatedAt sets value to CreatedAt
+func (o *Switch) SetCreatedAt(v *time.Time) {
+	o.CreatedAt = v
+}
+
+// GetModifiedAt returns value of ModifiedAt
+func (o *Switch) GetModifiedAt() *time.Time {
+	return o.ModifiedAt
+}
+
+// SetModifiedAt sets value to ModifiedAt
+func (o *Switch) SetModifiedAt(v *time.Time) {
+	o.ModifiedAt = v
+}
+
+// GetZone returns value of Zone
+func (o *Switch) GetZone() *naked.Zone {
+	return o.Zone
+}
+
+// SetZone sets value to Zone
+func (o *Switch) SetZone(v *naked.Zone) {
+	o.Zone = v
+}
+
+// GetUserSubnet returns value of UserSubnet
+func (o *Switch) GetUserSubnet() *naked.UserSubnet {
+	return o.UserSubnet
+}
+
+// SetUserSubnet sets value to UserSubnet
+func (o *Switch) SetUserSubnet(v *naked.UserSubnet) {
+	o.UserSubnet = v
+}
+
+// toNaked returns naked Switch
+func (o *Switch) toNaked() (*naked.Switch, error) {
+	dest := &naked.Switch{}
+	err := mapconv.ToNaked(o, dest)
+	return dest, err
+}
+
+// parseNaked parse values from naked Switch
+func (o *Switch) parseNaked(naked *naked.Switch) error {
+	return mapconv.FromNaked(naked, o)
+}
+
+/*************************************************
+* SwitchCreateRequest
+*************************************************/
+
+// SwitchCreateRequest represents API parameter/response structure
+type SwitchCreateRequest struct {
+	Name        string `validate:"required"`
+	Description string
+	Tags        []string
+	IconID      int64 `mapconv:"Icon.ID"`
+}
+
+// Validate validates by field tags
+func (o *SwitchCreateRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetName returns value of Name
+func (o *SwitchCreateRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *SwitchCreateRequest) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *SwitchCreateRequest) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *SwitchCreateRequest) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetTags returns value of Tags
+func (o *SwitchCreateRequest) GetTags() []string {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *SwitchCreateRequest) SetTags(v []string) {
+	o.Tags = v
+}
+
+// GetIconID returns value of IconID
+func (o *SwitchCreateRequest) GetIconID() int64 {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *SwitchCreateRequest) SetIconID(v int64) {
+	o.IconID = v
+}
+
+// toNaked returns naked SwitchCreateRequest
+func (o *SwitchCreateRequest) toNaked() (*naked.Switch, error) {
+	dest := &naked.Switch{}
+	err := mapconv.ToNaked(o, dest)
+	return dest, err
+}
+
+// parseNaked parse values from naked SwitchCreateRequest
+func (o *SwitchCreateRequest) parseNaked(naked *naked.Switch) error {
+	return mapconv.FromNaked(naked, o)
+}
+
+/*************************************************
+* SwitchUpdateRequest
+*************************************************/
+
+// SwitchUpdateRequest represents API parameter/response structure
+type SwitchUpdateRequest struct {
+	Name           string `validate:"required"`
+	NetworkMaskLen int    `mapconv:"UserSubnet.NetworkMaskLen" validate:"min=1,max=32"`
+	DefaultRoute   string `mapconv:"UserSubnet.DefaultRoute" validate:"ipv4"`
+	Description    string
+	Tags           []string
+	IconID         int64 `mapconv:"Icon.ID"`
+}
+
+// Validate validates by field tags
+func (o *SwitchUpdateRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetName returns value of Name
+func (o *SwitchUpdateRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *SwitchUpdateRequest) SetName(v string) {
+	o.Name = v
+}
+
+// GetNetworkMaskLen returns value of NetworkMaskLen
+func (o *SwitchUpdateRequest) GetNetworkMaskLen() int {
+	return o.NetworkMaskLen
+}
+
+// SetNetworkMaskLen sets value to NetworkMaskLen
+func (o *SwitchUpdateRequest) SetNetworkMaskLen(v int) {
+	o.NetworkMaskLen = v
+}
+
+// GetDefaultRoute returns value of DefaultRoute
+func (o *SwitchUpdateRequest) GetDefaultRoute() string {
+	return o.DefaultRoute
+}
+
+// SetDefaultRoute sets value to DefaultRoute
+func (o *SwitchUpdateRequest) SetDefaultRoute(v string) {
+	o.DefaultRoute = v
+}
+
+// GetDescription returns value of Description
+func (o *SwitchUpdateRequest) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *SwitchUpdateRequest) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetTags returns value of Tags
+func (o *SwitchUpdateRequest) GetTags() []string {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *SwitchUpdateRequest) SetTags(v []string) {
+	o.Tags = v
+}
+
+// GetIconID returns value of IconID
+func (o *SwitchUpdateRequest) GetIconID() int64 {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *SwitchUpdateRequest) SetIconID(v int64) {
+	o.IconID = v
+}
+
+// toNaked returns naked SwitchUpdateRequest
+func (o *SwitchUpdateRequest) toNaked() (*naked.Switch, error) {
+	dest := &naked.Switch{}
+	err := mapconv.ToNaked(o, dest)
+	return dest, err
+}
+
+// parseNaked parse values from naked SwitchUpdateRequest
+func (o *SwitchUpdateRequest) parseNaked(naked *naked.Switch) error {
+	return mapconv.FromNaked(naked, o)
+}
+
+/*************************************************
 * Zone
 *************************************************/
 
