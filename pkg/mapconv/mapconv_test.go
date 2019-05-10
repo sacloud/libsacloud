@@ -235,3 +235,65 @@ func TestInsertInnerSlice(t *testing.T) {
 		require.Equal(t, tc.expect, dest)
 	}
 }
+
+type hasDefaultSource struct {
+	Field string `mapconv:"Field:default-value"`
+}
+
+type hasDefaultDest struct {
+	Field string
+}
+
+func TestDefaultValue(t *testing.T) {
+	expects := []struct {
+		input  *hasDefaultSource
+		expect *hasDefaultDest
+	}{
+		{
+			input: &hasDefaultSource{},
+			expect: &hasDefaultDest{
+				Field: "default-value",
+			},
+		},
+	}
+
+	for _, tc := range expects {
+		dest := &hasDefaultDest{}
+		err := ToNaked(tc.input, dest)
+		require.NoError(t, err)
+		require.Equal(t, tc.expect, dest)
+	}
+}
+
+type multipleSource struct {
+	Field string `mapconv:"Field1,Field2"`
+}
+
+type multipleDest struct {
+	Field1 string
+	Field2 string
+}
+
+func TestMultipleDestination(t *testing.T) {
+	expects := []struct {
+		input  *multipleSource
+		expect *multipleDest
+	}{
+		{
+			input: &multipleSource{
+				Field: "value",
+			},
+			expect: &multipleDest{
+				Field1: "value",
+				Field2: "value",
+			},
+		},
+	}
+
+	for _, tc := range expects {
+		dest := &multipleDest{}
+		err := ToNaked(tc.input, dest)
+		require.NoError(t, err)
+		require.Equal(t, tc.expect, dest)
+	}
+}

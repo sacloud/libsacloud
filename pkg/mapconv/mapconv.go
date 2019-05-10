@@ -2,6 +2,7 @@ package mapconv
 
 import (
 	"encoding/json"
+	"strings"
 
 	"github.com/fatih/structs"
 )
@@ -13,17 +14,24 @@ func ToNaked(source interface{}, dest interface{}) error {
 
 	fields := s.Fields()
 	for _, f := range fields {
-		if !f.IsExported() || f.IsZero() {
+		//if !f.IsExported() || f.IsZero() {
+		if !f.IsExported() {
 			continue
 		}
-		value := f.Value()
 
-		destKey := f.Name()
-		tag := f.Tag("mapconv")
-		if tag != "" {
-			destKey = tag
+		tags := mapConv(f.Tag("mapconv")).values()
+		for _, tag := range tags {
+			destKey := f.Name()
+			value := f.Value()
+
+			if tag.key != "" {
+				destKey = tag.key
+			}
+			if f.IsZero() && tag.defaultValue != nil {
+				value = tag.defaultValue
+			}
+			destMap.Set(destKey, value)
 		}
-		destMap.Set(destKey, value)
 	}
 
 	data, err := json.Marshal(destMap)
@@ -45,20 +53,24 @@ func FromNaked(source interface{}, dest interface{}) error {
 			continue
 		}
 
-		key := f.Name()
-		tag := f.Tag("mapconv")
-		if tag != "" {
-			key = tag
+		tags := mapConv(f.Tag("mapconv")).values()
+		for _, tag := range tags {
+			key := f.Name()
+			if tag.key != "" {
+				key = tag.key
+			}
+			value := f.Value()
+
+			value, err := sourceMap.Get(key)
+			if err != nil {
+				return err
+			}
+			if value == nil {
+				continue
+			}
+			destMap.Set(f.Name(), value)
 		}
 
-		value, err := sourceMap.Get(key)
-		if err != nil {
-			return err
-		}
-		if value == nil {
-			continue
-		}
-		destMap.Set(f.Name(), value)
 	}
 
 	data, err := json.Marshal(destMap)
@@ -66,4 +78,29 @@ func FromNaked(source interface{}, dest interface{}) error {
 		return err
 	}
 	return json.Unmarshal(data, dest)
+}
+
+type mapConv string
+
+type mapConvValue struct {
+	key          string
+	defaultValue interface{}
+}
+
+func (m mapConv) values() []*mapConvValue {
+	var values []*mapConvValue
+	tokens := strings.Split(string(m), ",")
+	for _, token := range tokens {
+		keyValues := strings.Split(token, ":")
+		key := keyValues[0]
+		var def interface{}
+		if len(keyValues) > 1 {
+			def = strings.Join(keyValues[1:], "")
+		}
+		values = append(values, &mapConvValue{
+			key:          key,
+			defaultValue: def,
+		})
+	}
+	return values
 }
