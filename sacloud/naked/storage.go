@@ -1,8 +1,10 @@
 package naked
 
+import "github.com/sacloud/libsacloud-v2/sacloud/types"
+
 // Storage ストレージ
 type Storage struct {
-	ID          int64     `json:",omitempty" yaml:"id,omitempty" structs:",omitempty"`
+	ID          types.ID  `json:",omitempty" yaml:"id,omitempty" structs:",omitempty"`
 	Name        string    `json:",omitempty" yaml:"name,omitempty" structs:",omitempty"`
 	Description string    `json:",omitempty" yaml:"description,omitempty" structs:",omitempty"`
 	Class       string    `json:",omitempty" yaml:"class,omitempty" structs:",omitempty"`

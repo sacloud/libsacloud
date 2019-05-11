@@ -66,12 +66,12 @@ func TestSimpleArgument(t *testing.T) {
 	}{
 		{
 			expect: &dummyArgument{
-				importStatements:  []string{},
-				packageName:       "",
+				importStatements:  wrapByDoubleQuote("github.com/sacloud/libsacloud-v2/sacloud/types"),
+				packageName:       "types",
 				argName:           "id",
-				typeName:          "int64",
-				zeroInitializer:   "int64(0)",
-				zeroValueOnSource: "int64(0)",
+				typeName:          "types.ID",
+				zeroInitializer:   "types.ID(int64(0))",
+				zeroValueOnSource: "types.ID(int64(0))",
 			},
 			input: ArgumentID.(*SimpleArgument),
 		},

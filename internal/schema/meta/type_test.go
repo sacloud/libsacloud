@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/sacloud/libsacloud-v2/sacloud"
-	"github.com/sacloud/libsacloud-v2/sacloud/enums"
+	"github.com/sacloud/libsacloud-v2/sacloud/types"
 	"github.com/stretchr/testify/require"
 )
 
@@ -88,13 +88,13 @@ func TestStaticType_TypeImplements(t *testing.T) {
 		},
 		{
 			caseName:                 "enum",
-			instance:                 enums.EAvailability(""),
-			goType:                   "enums.EAvailability",
-			goPkg:                    "enums",
-			goImportPath:             "github.com/sacloud/libsacloud-v2/sacloud/enums",
-			goTypeSourceCode:         "enums.EAvailability",
-			zeroInitializeSourceCode: `enums.EAvailability("")`,
-			zeroValueSourceCode:      `enums.EAvailability("")`,
+			instance:                 types.EAvailability(""),
+			goType:                   "types.EAvailability",
+			goPkg:                    "types",
+			goImportPath:             "github.com/sacloud/libsacloud-v2/sacloud/types",
+			goTypeSourceCode:         "types.EAvailability",
+			zeroInitializeSourceCode: `types.EAvailability("")`,
+			zeroValueSourceCode:      `types.EAvailability("")`,
 		},
 		{
 			caseName:                 "another package struct",

@@ -1,4 +1,4 @@
-package enums
+package types
 
 // EScope スコープ
 type EScope string

@@ -1,4 +1,4 @@
-package enums
+package types
 
 // SpecialTag 特殊タグ
 type SpecialTag string

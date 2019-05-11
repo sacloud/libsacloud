@@ -5,6 +5,8 @@ package sacloud
 import (
 	"context"
 	"encoding/json"
+
+	"github.com/sacloud/libsacloud-v2/sacloud/types"
 )
 
 /*************************************************
@@ -134,7 +136,7 @@ func (o *CDROMOp) Create(ctx context.Context, zone string, param *CDROMCreateReq
 }
 
 // Read is API call
-func (o *CDROMOp) Read(ctx context.Context, zone string, id int64) (*CDROM, error) {
+func (o *CDROMOp) Read(ctx context.Context, zone string, id types.ID) (*CDROM, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -166,7 +168,7 @@ func (o *CDROMOp) Read(ctx context.Context, zone string, id int64) (*CDROM, erro
 }
 
 // Update is API call
-func (o *CDROMOp) Update(ctx context.Context, zone string, id int64, param *CDROMUpdateRequest) (*CDROM, error) {
+func (o *CDROMOp) Update(ctx context.Context, zone string, id types.ID, param *CDROMUpdateRequest) (*CDROM, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -214,7 +216,7 @@ func (o *CDROMOp) Update(ctx context.Context, zone string, id int64, param *CDRO
 }
 
 // Delete is API call
-func (o *CDROMOp) Delete(ctx context.Context, zone string, id int64) error {
+func (o *CDROMOp) Delete(ctx context.Context, zone string, id types.ID) error {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -237,7 +239,7 @@ func (o *CDROMOp) Delete(ctx context.Context, zone string, id int64) error {
 }
 
 // OpenFTP is API call
-func (o *CDROMOp) OpenFTP(ctx context.Context, zone string, id int64, openOption *OpenFTPParam) (*FTPServer, error) {
+func (o *CDROMOp) OpenFTP(ctx context.Context, zone string, id types.ID, openOption *OpenFTPParam) (*FTPServer, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/ftp", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -281,7 +283,7 @@ func (o *CDROMOp) OpenFTP(ctx context.Context, zone string, id int64, openOption
 }
 
 // CloseFTP is API call
-func (o *CDROMOp) CloseFTP(ctx context.Context, zone string, id int64) error {
+func (o *CDROMOp) CloseFTP(ctx context.Context, zone string, id types.ID) error {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/ftp", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -426,7 +428,7 @@ func (o *NFSOp) Create(ctx context.Context, zone string, param *NFSCreateRequest
 }
 
 // Read is API call
-func (o *NFSOp) Read(ctx context.Context, zone string, id int64) (*NFS, error) {
+func (o *NFSOp) Read(ctx context.Context, zone string, id types.ID) (*NFS, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -458,7 +460,7 @@ func (o *NFSOp) Read(ctx context.Context, zone string, id int64) (*NFS, error) {
 }
 
 // Update is API call
-func (o *NFSOp) Update(ctx context.Context, zone string, id int64, param *NFSUpdateRequest) (*NFS, error) {
+func (o *NFSOp) Update(ctx context.Context, zone string, id types.ID, param *NFSUpdateRequest) (*NFS, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -506,7 +508,7 @@ func (o *NFSOp) Update(ctx context.Context, zone string, id int64, param *NFSUpd
 }
 
 // Delete is API call
-func (o *NFSOp) Delete(ctx context.Context, zone string, id int64) error {
+func (o *NFSOp) Delete(ctx context.Context, zone string, id types.ID) error {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -651,7 +653,7 @@ func (o *NoteOp) Create(ctx context.Context, zone string, param *NoteCreateReque
 }
 
 // Read is API call
-func (o *NoteOp) Read(ctx context.Context, zone string, id int64) (*Note, error) {
+func (o *NoteOp) Read(ctx context.Context, zone string, id types.ID) (*Note, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -683,7 +685,7 @@ func (o *NoteOp) Read(ctx context.Context, zone string, id int64) (*Note, error)
 }
 
 // Update is API call
-func (o *NoteOp) Update(ctx context.Context, zone string, id int64, param *NoteUpdateRequest) (*Note, error) {
+func (o *NoteOp) Update(ctx context.Context, zone string, id types.ID, param *NoteUpdateRequest) (*Note, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -731,7 +733,7 @@ func (o *NoteOp) Update(ctx context.Context, zone string, id int64, param *NoteU
 }
 
 // Delete is API call
-func (o *NoteOp) Delete(ctx context.Context, zone string, id int64) error {
+func (o *NoteOp) Delete(ctx context.Context, zone string, id types.ID) error {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -876,7 +878,7 @@ func (o *SwitchOp) Create(ctx context.Context, zone string, param *SwitchCreateR
 }
 
 // Read is API call
-func (o *SwitchOp) Read(ctx context.Context, zone string, id int64) (*Switch, error) {
+func (o *SwitchOp) Read(ctx context.Context, zone string, id types.ID) (*Switch, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -908,7 +910,7 @@ func (o *SwitchOp) Read(ctx context.Context, zone string, id int64) (*Switch, er
 }
 
 // Update is API call
-func (o *SwitchOp) Update(ctx context.Context, zone string, id int64, param *SwitchUpdateRequest) (*Switch, error) {
+func (o *SwitchOp) Update(ctx context.Context, zone string, id types.ID, param *SwitchUpdateRequest) (*Switch, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -956,7 +958,7 @@ func (o *SwitchOp) Update(ctx context.Context, zone string, id int64, param *Swi
 }
 
 // Delete is API call
-func (o *SwitchOp) Delete(ctx context.Context, zone string, id int64) error {
+func (o *SwitchOp) Delete(ctx context.Context, zone string, id types.ID) error {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -979,7 +981,7 @@ func (o *SwitchOp) Delete(ctx context.Context, zone string, id int64) error {
 }
 
 // ConnectToBridge is API call
-func (o *SwitchOp) ConnectToBridge(ctx context.Context, zone string, id int64, bridgeID int64) error {
+func (o *SwitchOp) ConnectToBridge(ctx context.Context, zone string, id types.ID, bridgeID types.ID) error {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/to/bridge/{{.bridgeID}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -1003,7 +1005,7 @@ func (o *SwitchOp) ConnectToBridge(ctx context.Context, zone string, id int64, b
 }
 
 // DisconnectFromBridge is API call
-func (o *SwitchOp) DisconnectFromBridge(ctx context.Context, zone string, id int64) error {
+func (o *SwitchOp) DisconnectFromBridge(ctx context.Context, zone string, id types.ID) error {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/to/bridge", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -1101,7 +1103,7 @@ func (o *ZoneOp) Find(ctx context.Context, zone string, conditions *FindConditio
 }
 
 // Read is API call
-func (o *ZoneOp) Read(ctx context.Context, zone string, id int64) (*Zone, error) {
+func (o *ZoneOp) Read(ctx context.Context, zone string, id types.ID) (*Zone, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,

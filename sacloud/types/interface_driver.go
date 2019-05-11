@@ -1,4 +1,4 @@
-package enums
+package types
 
 // EInterfaceDriver インターフェースドライバ
 type EInterfaceDriver string

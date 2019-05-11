@@ -1,4 +1,4 @@
-package enums
+package types
 
 // EAvailability 有効状態
 type EAvailability string

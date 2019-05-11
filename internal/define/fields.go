@@ -19,6 +19,10 @@ func (f *fieldsDef) ID() *schema.FieldDesc {
 				Name: "StringID",
 				Type: meta.TypeString,
 			},
+			{
+				Name: "Int64ID",
+				Type: meta.TypeInt64,
+			},
 		},
 	}
 }
@@ -59,7 +63,7 @@ func (f *fieldsDef) AppliancePlanID() *schema.FieldDesc {
 		Tags: &schema.FieldTags{
 			MapConv: "Remark.Plan.ID,Plan.ID",
 		},
-		Type: meta.TypeString,
+		Type: meta.TypeID,
 	}
 }
 
@@ -69,7 +73,7 @@ func (f *fieldsDef) ApplianceSwitchID() *schema.FieldDesc {
 		Tags: &schema.FieldTags{
 			MapConv: "Remark.Switch.ID",
 		},
-		Type: meta.TypeString,
+		Type: meta.TypeID,
 	}
 }
 

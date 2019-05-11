@@ -4,6 +4,8 @@ package sacloud
 
 import (
 	"context"
+
+	"github.com/sacloud/libsacloud-v2/sacloud/types"
 )
 
 /*************************************************
@@ -14,11 +16,11 @@ import (
 type CDROMAPI interface {
 	Find(ctx context.Context, zone string, conditions *FindCondition) ([]*CDROM, error)
 	Create(ctx context.Context, zone string, param *CDROMCreateRequest) (*CDROM, *FTPServer, error)
-	Read(ctx context.Context, zone string, id int64) (*CDROM, error)
-	Update(ctx context.Context, zone string, id int64, param *CDROMUpdateRequest) (*CDROM, error)
-	Delete(ctx context.Context, zone string, id int64) error
-	OpenFTP(ctx context.Context, zone string, id int64, openOption *OpenFTPParam) (*FTPServer, error)
-	CloseFTP(ctx context.Context, zone string, id int64) error
+	Read(ctx context.Context, zone string, id types.ID) (*CDROM, error)
+	Update(ctx context.Context, zone string, id types.ID, param *CDROMUpdateRequest) (*CDROM, error)
+	Delete(ctx context.Context, zone string, id types.ID) error
+	OpenFTP(ctx context.Context, zone string, id types.ID, openOption *OpenFTPParam) (*FTPServer, error)
+	CloseFTP(ctx context.Context, zone string, id types.ID) error
 }
 
 /*************************************************
@@ -29,9 +31,9 @@ type CDROMAPI interface {
 type NFSAPI interface {
 	Find(ctx context.Context, zone string, conditions *FindCondition) ([]*NFS, error)
 	Create(ctx context.Context, zone string, param *NFSCreateRequest) (*NFS, error)
-	Read(ctx context.Context, zone string, id int64) (*NFS, error)
-	Update(ctx context.Context, zone string, id int64, param *NFSUpdateRequest) (*NFS, error)
-	Delete(ctx context.Context, zone string, id int64) error
+	Read(ctx context.Context, zone string, id types.ID) (*NFS, error)
+	Update(ctx context.Context, zone string, id types.ID, param *NFSUpdateRequest) (*NFS, error)
+	Delete(ctx context.Context, zone string, id types.ID) error
 }
 
 /*************************************************
@@ -42,9 +44,9 @@ type NFSAPI interface {
 type NoteAPI interface {
 	Find(ctx context.Context, zone string, conditions *FindCondition) ([]*Note, error)
 	Create(ctx context.Context, zone string, param *NoteCreateRequest) (*Note, error)
-	Read(ctx context.Context, zone string, id int64) (*Note, error)
-	Update(ctx context.Context, zone string, id int64, param *NoteUpdateRequest) (*Note, error)
-	Delete(ctx context.Context, zone string, id int64) error
+	Read(ctx context.Context, zone string, id types.ID) (*Note, error)
+	Update(ctx context.Context, zone string, id types.ID, param *NoteUpdateRequest) (*Note, error)
+	Delete(ctx context.Context, zone string, id types.ID) error
 }
 
 /*************************************************
@@ -55,11 +57,11 @@ type NoteAPI interface {
 type SwitchAPI interface {
 	Find(ctx context.Context, zone string, conditions *FindCondition) ([]*Switch, error)
 	Create(ctx context.Context, zone string, param *SwitchCreateRequest) (*Switch, error)
-	Read(ctx context.Context, zone string, id int64) (*Switch, error)
-	Update(ctx context.Context, zone string, id int64, param *SwitchUpdateRequest) (*Switch, error)
-	Delete(ctx context.Context, zone string, id int64) error
-	ConnectToBridge(ctx context.Context, zone string, id int64, bridgeID int64) error
-	DisconnectFromBridge(ctx context.Context, zone string, id int64) error
+	Read(ctx context.Context, zone string, id types.ID) (*Switch, error)
+	Update(ctx context.Context, zone string, id types.ID, param *SwitchUpdateRequest) (*Switch, error)
+	Delete(ctx context.Context, zone string, id types.ID) error
+	ConnectToBridge(ctx context.Context, zone string, id types.ID, bridgeID types.ID) error
+	DisconnectFromBridge(ctx context.Context, zone string, id types.ID) error
 }
 
 /*************************************************
@@ -69,5 +71,5 @@ type SwitchAPI interface {
 // ZoneAPI is interface for operate Zone resource
 type ZoneAPI interface {
 	Find(ctx context.Context, zone string, conditions *FindCondition) ([]*Zone, error)
-	Read(ctx context.Context, zone string, id int64) (*Zone, error)
+	Read(ctx context.Context, zone string, id types.ID) (*Zone, error)
 }

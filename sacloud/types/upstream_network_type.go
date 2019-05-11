@@ -1,4 +1,4 @@
-package enums
+package types
 
 // EUpstreamNetworkType 上流ネットワーク種別
 type EUpstreamNetworkType string

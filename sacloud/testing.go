@@ -7,6 +7,7 @@ import (
 	"os"
 	"testing"
 
+	"github.com/sacloud/libsacloud-v2/sacloud/types"
 	"github.com/stretchr/testify/require"
 )
 
@@ -56,12 +57,12 @@ type CRUDTestCase struct {
 
 // CRUDTestContext CRUD操作テストでのコンテキスト、一連のテスト中に共有される
 type CRUDTestContext struct {
-	ID int64
+	ID types.ID
 }
 
 // CRUDTestIDHolder IDを保持するためのインターフェース
 type CRUDTestIDHolder interface {
-	GetID() int64
+	GetID() types.ID
 }
 
 // CRUDTestFunc CRUD操作(DELETE以外)テストでのテスト用Func

@@ -1,4 +1,4 @@
-package enums
+package types
 
 // EDiskConnection ディスク接続方法
 type EDiskConnection string
