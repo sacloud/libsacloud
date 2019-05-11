@@ -22,6 +22,19 @@ type CDROMAPI interface {
 }
 
 /*************************************************
+* NFSAPI
+*************************************************/
+
+// NFSAPI is interface for operate NFS resource
+type NFSAPI interface {
+	Find(ctx context.Context, zone string, conditions *FindCondition) ([]*NFS, error)
+	Create(ctx context.Context, zone string, param *NFSCreateRequest) (*NFS, error)
+	Read(ctx context.Context, zone string, id int64) (*NFS, error)
+	Update(ctx context.Context, zone string, id int64, param *NFSUpdateRequest) (*NFS, error)
+	Delete(ctx context.Context, zone string, id int64) error
+}
+
+/*************************************************
 * NoteAPI
 *************************************************/
 

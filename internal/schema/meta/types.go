@@ -1,6 +1,8 @@
 package meta
 
 import (
+	"time"
+
 	"github.com/sacloud/libsacloud-v2/sacloud/enums"
 )
 
@@ -17,6 +19,8 @@ var (
 	TypeInt = Static(int(0))
 	// TypeIntSlice intスライス
 	TypeIntSlice = Static([]int{})
+	// TypeTime Time型
+	TypeTime = Static(time.Time{})
 	// TypeAvailability 有効状態
 	TypeAvailability = Static(enums.EAvailability(""))
 	// TypeInstanceStatus インスタンスステータス
