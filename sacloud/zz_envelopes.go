@@ -4,6 +4,7 @@ package sacloud
 
 import (
 	"github.com/sacloud/libsacloud-v2/sacloud/naked"
+	"github.com/sacloud/libsacloud-v2/sacloud/types"
 )
 
 // CDROMFindRequestEnvelope is envelop of API request
@@ -32,8 +33,8 @@ type CDROMCreateRequestEnvelope struct {
 
 // CDROMCreateResponseEnvelope is envelop of API response
 type CDROMCreateResponseEnvelope struct {
-	IsOk    bool `json:"is_ok,omitempty"` // is_ok項目
-	Success bool `json:",omitempty"`      // success項目
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
 
 	CDROM     *naked.CDROM            `json:",omitempty"`
 	FTPServer *naked.OpeningFTPServer `json:",omitempty"`
@@ -41,8 +42,8 @@ type CDROMCreateResponseEnvelope struct {
 
 // CDROMReadResponseEnvelope is envelop of API response
 type CDROMReadResponseEnvelope struct {
-	IsOk    bool `json:"is_ok,omitempty"` // is_ok項目
-	Success bool `json:",omitempty"`      // success項目
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
 
 	CDROM *naked.CDROM `json:",omitempty"`
 }
@@ -54,8 +55,8 @@ type CDROMUpdateRequestEnvelope struct {
 
 // CDROMUpdateResponseEnvelope is envelop of API response
 type CDROMUpdateResponseEnvelope struct {
-	IsOk    bool `json:"is_ok,omitempty"` // is_ok項目
-	Success bool `json:",omitempty"`      // success項目
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
 
 	CDROM *naked.CDROM `json:",omitempty"`
 }
@@ -67,8 +68,8 @@ type CDROMOpenFTPRequestEnvelope struct {
 
 // CDROMOpenFTPResponseEnvelope is envelop of API response
 type CDROMOpenFTPResponseEnvelope struct {
-	IsOk    bool `json:"is_ok,omitempty"` // is_ok項目
-	Success bool `json:",omitempty"`      // success項目
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
 
 	FTPServer *naked.OpeningFTPServer `json:",omitempty"`
 }
@@ -99,16 +100,16 @@ type NFSCreateRequestEnvelope struct {
 
 // NFSCreateResponseEnvelope is envelop of API response
 type NFSCreateResponseEnvelope struct {
-	IsOk    bool `json:"is_ok,omitempty"` // is_ok項目
-	Success bool `json:",omitempty"`      // success項目
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
 
 	Appliance *naked.NFS `json:",omitempty"`
 }
 
 // NFSReadResponseEnvelope is envelop of API response
 type NFSReadResponseEnvelope struct {
-	IsOk    bool `json:"is_ok,omitempty"` // is_ok項目
-	Success bool `json:",omitempty"`      // success項目
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
 
 	Appliance *naked.NFS `json:",omitempty"`
 }
@@ -120,8 +121,8 @@ type NFSUpdateRequestEnvelope struct {
 
 // NFSUpdateResponseEnvelope is envelop of API response
 type NFSUpdateResponseEnvelope struct {
-	IsOk    bool `json:"is_ok,omitempty"` // is_ok項目
-	Success bool `json:",omitempty"`      // success項目
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
 
 	Appliance *naked.NFS `json:",omitempty"`
 }
@@ -152,16 +153,16 @@ type NoteCreateRequestEnvelope struct {
 
 // NoteCreateResponseEnvelope is envelop of API response
 type NoteCreateResponseEnvelope struct {
-	IsOk    bool `json:"is_ok,omitempty"` // is_ok項目
-	Success bool `json:",omitempty"`      // success項目
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
 
 	Note *naked.Note `json:",omitempty"`
 }
 
 // NoteReadResponseEnvelope is envelop of API response
 type NoteReadResponseEnvelope struct {
-	IsOk    bool `json:"is_ok,omitempty"` // is_ok項目
-	Success bool `json:",omitempty"`      // success項目
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
 
 	Note *naked.Note `json:",omitempty"`
 }
@@ -173,8 +174,8 @@ type NoteUpdateRequestEnvelope struct {
 
 // NoteUpdateResponseEnvelope is envelop of API response
 type NoteUpdateResponseEnvelope struct {
-	IsOk    bool `json:"is_ok,omitempty"` // is_ok項目
-	Success bool `json:",omitempty"`      // success項目
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
 
 	Note *naked.Note `json:",omitempty"`
 }
@@ -205,16 +206,16 @@ type SwitchCreateRequestEnvelope struct {
 
 // SwitchCreateResponseEnvelope is envelop of API response
 type SwitchCreateResponseEnvelope struct {
-	IsOk    bool `json:"is_ok,omitempty"` // is_ok項目
-	Success bool `json:",omitempty"`      // success項目
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
 
 	Switch *naked.Switch `json:",omitempty"`
 }
 
 // SwitchReadResponseEnvelope is envelop of API response
 type SwitchReadResponseEnvelope struct {
-	IsOk    bool `json:"is_ok,omitempty"` // is_ok項目
-	Success bool `json:",omitempty"`      // success項目
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
 
 	Switch *naked.Switch `json:",omitempty"`
 }
@@ -226,8 +227,8 @@ type SwitchUpdateRequestEnvelope struct {
 
 // SwitchUpdateResponseEnvelope is envelop of API response
 type SwitchUpdateResponseEnvelope struct {
-	IsOk    bool `json:"is_ok,omitempty"` // is_ok項目
-	Success bool `json:",omitempty"`      // success項目
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
 
 	Switch *naked.Switch `json:",omitempty"`
 }
@@ -253,8 +254,8 @@ type ZoneFindResponseEnvelope struct {
 
 // ZoneReadResponseEnvelope is envelop of API response
 type ZoneReadResponseEnvelope struct {
-	IsOk    bool `json:"is_ok,omitempty"` // is_ok項目
-	Success bool `json:",omitempty"`      // success項目
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
 
 	Zone *naked.Zone `json:",omitempty"`
 }

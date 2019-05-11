@@ -1,4 +1,4 @@
-package enums
+package types
 
 // EPlanGeneration サーバプラン世代
 type EPlanGeneration int

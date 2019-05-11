@@ -1,8 +1,10 @@
 package naked
 
+import "github.com/sacloud/libsacloud-v2/sacloud/types"
+
 // Zone ゾーン情報
 type Zone struct {
-	ID           int64      `json:",omitemmpty" yaml:"id,ommitempty" structs:",omitempty"`
+	ID           types.ID   `json:",omitemmpty" yaml:"id,ommitempty" structs:",omitempty"`
 	DisplayOrder int        `json:",omitemmpty" yaml:"display_order,ommitempty" structs:",omitempty"`
 	Name         string     `json:",omitemmpty" yaml:"name,ommitempty" structs:",omitempty"`
 	Description  string     `json:",omitemmpty" yaml:"description,ommitempty" structs:",omitempty"`

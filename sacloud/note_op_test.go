@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/sacloud/libsacloud-v2/sacloud/enums"
+	"github.com/sacloud/libsacloud-v2/sacloud/types"
 	"github.com/stretchr/testify/require"
 )
 
@@ -50,8 +50,8 @@ var (
 		Tags:         createNoteParam.Tags,
 		Class:        createNoteParam.Class,
 		Content:      createNoteParam.Content,
-		Scope:        enums.Scopes.User,
-		Availability: enums.Availabilities.Available,
+		Scope:        types.Scopes.User,
+		Availability: types.Availabilities.Available,
 	}
 	updateNoteParam = &NoteUpdateRequest{
 		Name:    "libsacloud-v2-note-upd",
@@ -64,8 +64,8 @@ var (
 		Tags:         updateNoteParam.Tags,
 		Class:        updateNoteParam.Class,
 		Content:      updateNoteParam.Content,
-		Scope:        enums.Scopes.User,
-		Availability: enums.Availabilities.Available,
+		Scope:        types.Scopes.User,
+		Availability: types.Availabilities.Available,
 	}
 )
 

@@ -6,8 +6,8 @@ import (
 	"time"
 
 	"github.com/sacloud/libsacloud-v2/pkg/mapconv"
-	"github.com/sacloud/libsacloud-v2/sacloud/enums"
 	"github.com/sacloud/libsacloud-v2/sacloud/naked"
+	"github.com/sacloud/libsacloud-v2/sacloud/types"
 	"gopkg.in/go-playground/validator.v9"
 )
 
@@ -17,13 +17,13 @@ import (
 
 // CDROM represents API parameter/response structure
 type CDROM struct {
-	ID           int64
+	ID           types.ID
 	Name         string `validate:"required"`
 	Description  string
 	DisplayOrder int
 	Tags         []string
-	Availability enums.EAvailability
-	Scope        enums.EScope
+	Availability types.EAvailability
+	Scope        types.EScope
 	StorageClass string
 	Storage      *naked.Storage `json:",omitempty"`
 	Icon         *naked.Icon    `json:",omitempty"`
@@ -37,12 +37,12 @@ func (o *CDROM) Validate() error {
 }
 
 // GetID returns value of ID
-func (o *CDROM) GetID() int64 {
+func (o *CDROM) GetID() types.ID {
 	return o.ID
 }
 
 // SetID sets value to ID
-func (o *CDROM) SetID(v int64) {
+func (o *CDROM) SetID(v types.ID) {
 	o.ID = v
 }
 
@@ -54,6 +54,16 @@ func (o *CDROM) GetStringID() string {
 // SetStringID sets value to StringID
 func (o *CDROM) SetStringID(v string) {
 	setStringID(o, v)
+}
+
+// GetInt64ID gets value to Int64ID
+func (o *CDROM) GetInt64ID() int64 {
+	return getInt64ID(o)
+}
+
+// SetInt64ID sets value to Int64ID
+func (o *CDROM) SetInt64ID(v int64) {
+	setInt64ID(o, v)
 }
 
 // GetName returns value of Name
@@ -97,22 +107,22 @@ func (o *CDROM) SetTags(v []string) {
 }
 
 // GetAvailability returns value of Availability
-func (o *CDROM) GetAvailability() enums.EAvailability {
+func (o *CDROM) GetAvailability() types.EAvailability {
 	return o.Availability
 }
 
 // SetAvailability sets value to Availability
-func (o *CDROM) SetAvailability(v enums.EAvailability) {
+func (o *CDROM) SetAvailability(v types.EAvailability) {
 	o.Availability = v
 }
 
 // GetScope returns value of Scope
-func (o *CDROM) GetScope() enums.EScope {
+func (o *CDROM) GetScope() types.EScope {
 	return o.Scope
 }
 
 // SetScope sets value to Scope
-func (o *CDROM) SetScope(v enums.EScope) {
+func (o *CDROM) SetScope(v types.EScope) {
 	o.Scope = v
 }
 
@@ -336,7 +346,7 @@ type CDROMCreateRequest struct {
 	Name        string `validate:"required"`
 	Description string
 	Tags        []string
-	IconID      int64 `mapconv:"Icon.ID"`
+	IconID      types.ID `mapconv:"Icon.ID"`
 }
 
 // Validate validates by field tags
@@ -395,12 +405,12 @@ func (o *CDROMCreateRequest) SetTags(v []string) {
 }
 
 // GetIconID returns value of IconID
-func (o *CDROMCreateRequest) GetIconID() int64 {
+func (o *CDROMCreateRequest) GetIconID() types.ID {
 	return o.IconID
 }
 
 // SetIconID sets value to IconID
-func (o *CDROMCreateRequest) SetIconID(v int64) {
+func (o *CDROMCreateRequest) SetIconID(v types.ID) {
 	o.IconID = v
 }
 
@@ -425,7 +435,7 @@ type CDROMUpdateRequest struct {
 	Name        string `validate:"required"`
 	Description string
 	Tags        []string
-	IconID      int64 `mapconv:"Icon.ID"`
+	IconID      types.ID `mapconv:"Icon.ID"`
 }
 
 // Validate validates by field tags
@@ -464,12 +474,12 @@ func (o *CDROMUpdateRequest) SetTags(v []string) {
 }
 
 // GetIconID returns value of IconID
-func (o *CDROMUpdateRequest) GetIconID() int64 {
+func (o *CDROMUpdateRequest) GetIconID() types.ID {
 	return o.IconID
 }
 
 // SetIconID sets value to IconID
-func (o *CDROMUpdateRequest) SetIconID(v int64) {
+func (o *CDROMUpdateRequest) SetIconID(v types.ID) {
 	o.IconID = v
 }
 
@@ -515,23 +525,23 @@ func (o *OpenFTPParam) SetChangePassword(v bool) {
 
 // NFS represents API parameter/response structure
 type NFS struct {
-	ID                      int64
+	ID                      types.ID
 	Name                    string `validate:"required"`
 	Description             string
 	Tags                    []string
-	Availability            enums.EAvailability
+	Availability            types.EAvailability
 	Class                   string
 	InstanceHostName        string                      `mapconv:"Instance.Host.Name"`
 	InstanceHostInfoURL     string                      `mapconv:"Instance.Host.InfoURL"`
-	InstanceStatus          enums.EServerInstanceStatus `mapconv:"Instance.Status"`
+	InstanceStatus          types.EServerInstanceStatus `mapconv:"Instance.Status"`
 	InstanceStatusChangedAt *time.Time                  `mapconv:"Instance.StatusChangedAt"`
 	Interfaces              []naked.Interface
-	PlanID                  string        `mapconv:"Remark.Plan.ID,Plan.ID"`
+	PlanID                  types.ID      `mapconv:"Remark.Plan.ID,Plan.ID"`
 	Switch                  *naked.Switch `json:",omitempty"`
 	DefaultRoute            string        `mapconv:"Remark.Network.DefaultRoute" validate:"ipv4"`
 	NetworkMaskLen          int           `mapconv:"Remark.Network.NetworkMaskLen" validate:"min=1,max=32"`
 	IPAddresses             []string      `mapconv:"Remark.[]Servers.IPAddress"`
-	ZoneID                  int64         `mapconv:"Remark.Zone.ID"`
+	ZoneID                  types.ID      `mapconv:"Remark.Zone.ID"`
 	Icon                    *naked.Icon   `json:",omitempty"`
 	CreatedAt               *time.Time
 	ModifiedAt              *time.Time
@@ -543,12 +553,12 @@ func (o *NFS) Validate() error {
 }
 
 // GetID returns value of ID
-func (o *NFS) GetID() int64 {
+func (o *NFS) GetID() types.ID {
 	return o.ID
 }
 
 // SetID sets value to ID
-func (o *NFS) SetID(v int64) {
+func (o *NFS) SetID(v types.ID) {
 	o.ID = v
 }
 
@@ -560,6 +570,16 @@ func (o *NFS) GetStringID() string {
 // SetStringID sets value to StringID
 func (o *NFS) SetStringID(v string) {
 	setStringID(o, v)
+}
+
+// GetInt64ID gets value to Int64ID
+func (o *NFS) GetInt64ID() int64 {
+	return getInt64ID(o)
+}
+
+// SetInt64ID sets value to Int64ID
+func (o *NFS) SetInt64ID(v int64) {
+	setInt64ID(o, v)
 }
 
 // GetName returns value of Name
@@ -593,12 +613,12 @@ func (o *NFS) SetTags(v []string) {
 }
 
 // GetAvailability returns value of Availability
-func (o *NFS) GetAvailability() enums.EAvailability {
+func (o *NFS) GetAvailability() types.EAvailability {
 	return o.Availability
 }
 
 // SetAvailability sets value to Availability
-func (o *NFS) SetAvailability(v enums.EAvailability) {
+func (o *NFS) SetAvailability(v types.EAvailability) {
 	o.Availability = v
 }
 
@@ -623,7 +643,7 @@ func (o *NFS) GetInstanceHostInfoURL() string {
 }
 
 // GetInstanceStatus returns value of InstanceStatus
-func (o *NFS) GetInstanceStatus() enums.EServerInstanceStatus {
+func (o *NFS) GetInstanceStatus() types.EServerInstanceStatus {
 	return o.InstanceStatus
 }
 
@@ -638,12 +658,12 @@ func (o *NFS) GetInterfaces() []naked.Interface {
 }
 
 // GetPlanID returns value of PlanID
-func (o *NFS) GetPlanID() string {
+func (o *NFS) GetPlanID() types.ID {
 	return o.PlanID
 }
 
 // SetPlanID sets value to PlanID
-func (o *NFS) SetPlanID(v string) {
+func (o *NFS) SetPlanID(v types.ID) {
 	o.PlanID = v
 }
 
@@ -688,7 +708,7 @@ func (o *NFS) SetIPAddresses(v []string) {
 }
 
 // GetZoneID returns value of ZoneID
-func (o *NFS) GetZoneID() int64 {
+func (o *NFS) GetZoneID() types.ID {
 	return o.ZoneID
 }
 
@@ -740,16 +760,16 @@ func (o *NFS) convertFrom(naked *naked.NFS) error {
 
 // NFSCreateRequest represents API parameter/response structure
 type NFSCreateRequest struct {
-	Class          string `mapconv:":nfs"`
-	SwitchID       string `mapconv:"Remark.Switch.ID"`
-	PlanID         string `mapconv:"Remark.Plan.ID,Plan.ID"`
-	IPAddress      string `mapconv:"Remark.[]Servers.IPAddress"`
-	NetworkMaskLen int    `mapconv:"Remark.Network.NetworkMaskLen" validate:"min=1,max=32"`
-	DefaultRoute   string `mapconv:"Remark.Network.DefaultRoute" validate:"ipv4"`
-	Name           string `validate:"required"`
+	Class          string   `mapconv:":nfs"`
+	SwitchID       types.ID `mapconv:"Remark.Switch.ID"`
+	PlanID         types.ID `mapconv:"Remark.Plan.ID,Plan.ID"`
+	IPAddress      string   `mapconv:"Remark.[]Servers.IPAddress"`
+	NetworkMaskLen int      `mapconv:"Remark.Network.NetworkMaskLen" validate:"min=1,max=32"`
+	DefaultRoute   string   `mapconv:"Remark.Network.DefaultRoute" validate:"ipv4"`
+	Name           string   `validate:"required"`
 	Description    string
 	Tags           []string
-	IconID         int64 `mapconv:"Icon.ID"`
+	IconID         types.ID `mapconv:"Icon.ID"`
 }
 
 // Validate validates by field tags
@@ -763,22 +783,22 @@ func (o *NFSCreateRequest) GetClass() string {
 }
 
 // GetSwitchID returns value of SwitchID
-func (o *NFSCreateRequest) GetSwitchID() string {
+func (o *NFSCreateRequest) GetSwitchID() types.ID {
 	return o.SwitchID
 }
 
 // SetSwitchID sets value to SwitchID
-func (o *NFSCreateRequest) SetSwitchID(v string) {
+func (o *NFSCreateRequest) SetSwitchID(v types.ID) {
 	o.SwitchID = v
 }
 
 // GetPlanID returns value of PlanID
-func (o *NFSCreateRequest) GetPlanID() string {
+func (o *NFSCreateRequest) GetPlanID() types.ID {
 	return o.PlanID
 }
 
 // SetPlanID sets value to PlanID
-func (o *NFSCreateRequest) SetPlanID(v string) {
+func (o *NFSCreateRequest) SetPlanID(v types.ID) {
 	o.PlanID = v
 }
 
@@ -843,12 +863,12 @@ func (o *NFSCreateRequest) SetTags(v []string) {
 }
 
 // GetIconID returns value of IconID
-func (o *NFSCreateRequest) GetIconID() int64 {
+func (o *NFSCreateRequest) GetIconID() types.ID {
 	return o.IconID
 }
 
 // SetIconID sets value to IconID
-func (o *NFSCreateRequest) SetIconID(v int64) {
+func (o *NFSCreateRequest) SetIconID(v types.ID) {
 	o.IconID = v
 }
 
@@ -873,7 +893,7 @@ type NFSUpdateRequest struct {
 	Name        string `validate:"required"`
 	Description string
 	Tags        []string
-	IconID      int64 `mapconv:"Icon.ID"`
+	IconID      types.ID `mapconv:"Icon.ID"`
 }
 
 // Validate validates by field tags
@@ -912,12 +932,12 @@ func (o *NFSUpdateRequest) SetTags(v []string) {
 }
 
 // GetIconID returns value of IconID
-func (o *NFSUpdateRequest) GetIconID() int64 {
+func (o *NFSUpdateRequest) GetIconID() types.ID {
 	return o.IconID
 }
 
 // SetIconID sets value to IconID
-func (o *NFSUpdateRequest) SetIconID(v int64) {
+func (o *NFSUpdateRequest) SetIconID(v types.ID) {
 	o.IconID = v
 }
 
@@ -939,12 +959,12 @@ func (o *NFSUpdateRequest) convertFrom(naked *naked.NFS) error {
 
 // Note represents API parameter/response structure
 type Note struct {
-	ID           int64
+	ID           types.ID
 	Name         string `validate:"required"`
 	Description  string
 	Tags         []string
-	Availability enums.EAvailability
-	Scope        enums.EScope
+	Availability types.EAvailability
+	Scope        types.EScope
 	Class        string
 	Content      string
 	Icon         *naked.Icon `json:",omitempty"`
@@ -958,12 +978,12 @@ func (o *Note) Validate() error {
 }
 
 // GetID returns value of ID
-func (o *Note) GetID() int64 {
+func (o *Note) GetID() types.ID {
 	return o.ID
 }
 
 // SetID sets value to ID
-func (o *Note) SetID(v int64) {
+func (o *Note) SetID(v types.ID) {
 	o.ID = v
 }
 
@@ -975,6 +995,16 @@ func (o *Note) GetStringID() string {
 // SetStringID sets value to StringID
 func (o *Note) SetStringID(v string) {
 	setStringID(o, v)
+}
+
+// GetInt64ID gets value to Int64ID
+func (o *Note) GetInt64ID() int64 {
+	return getInt64ID(o)
+}
+
+// SetInt64ID sets value to Int64ID
+func (o *Note) SetInt64ID(v int64) {
+	setInt64ID(o, v)
 }
 
 // GetName returns value of Name
@@ -1008,22 +1038,22 @@ func (o *Note) SetTags(v []string) {
 }
 
 // GetAvailability returns value of Availability
-func (o *Note) GetAvailability() enums.EAvailability {
+func (o *Note) GetAvailability() types.EAvailability {
 	return o.Availability
 }
 
 // SetAvailability sets value to Availability
-func (o *Note) SetAvailability(v enums.EAvailability) {
+func (o *Note) SetAvailability(v types.EAvailability) {
 	o.Availability = v
 }
 
 // GetScope returns value of Scope
-func (o *Note) GetScope() enums.EScope {
+func (o *Note) GetScope() types.EScope {
 	return o.Scope
 }
 
 // SetScope sets value to Scope
-func (o *Note) SetScope(v enums.EScope) {
+func (o *Note) SetScope(v types.EScope) {
 	o.Scope = v
 }
 
@@ -1097,7 +1127,7 @@ func (o *Note) convertFrom(naked *naked.Note) error {
 type NoteCreateRequest struct {
 	Name    string `validate:"required"`
 	Tags    []string
-	IconID  int64 `mapconv:"Icon.ID"`
+	IconID  types.ID `mapconv:"Icon.ID"`
 	Class   string
 	Content string
 }
@@ -1128,12 +1158,12 @@ func (o *NoteCreateRequest) SetTags(v []string) {
 }
 
 // GetIconID returns value of IconID
-func (o *NoteCreateRequest) GetIconID() int64 {
+func (o *NoteCreateRequest) GetIconID() types.ID {
 	return o.IconID
 }
 
 // SetIconID sets value to IconID
-func (o *NoteCreateRequest) SetIconID(v int64) {
+func (o *NoteCreateRequest) SetIconID(v types.ID) {
 	o.IconID = v
 }
 
@@ -1177,7 +1207,7 @@ func (o *NoteCreateRequest) convertFrom(naked *naked.Note) error {
 type NoteUpdateRequest struct {
 	Name    string `validate:"required"`
 	Tags    []string
-	IconID  int64 `mapconv:"Icon.ID"`
+	IconID  types.ID `mapconv:"Icon.ID"`
 	Class   string
 	Content string
 }
@@ -1208,12 +1238,12 @@ func (o *NoteUpdateRequest) SetTags(v []string) {
 }
 
 // GetIconID returns value of IconID
-func (o *NoteUpdateRequest) GetIconID() int64 {
+func (o *NoteUpdateRequest) GetIconID() types.ID {
 	return o.IconID
 }
 
 // SetIconID sets value to IconID
-func (o *NoteUpdateRequest) SetIconID(v int64) {
+func (o *NoteUpdateRequest) SetIconID(v types.ID) {
 	o.IconID = v
 }
 
@@ -1255,7 +1285,7 @@ func (o *NoteUpdateRequest) convertFrom(naked *naked.Note) error {
 
 // Switch represents API parameter/response structure
 type Switch struct {
-	ID          int64
+	ID          types.ID
 	Name        string `validate:"required"`
 	Description string
 	Tags        []string
@@ -1272,12 +1302,12 @@ func (o *Switch) Validate() error {
 }
 
 // GetID returns value of ID
-func (o *Switch) GetID() int64 {
+func (o *Switch) GetID() types.ID {
 	return o.ID
 }
 
 // SetID sets value to ID
-func (o *Switch) SetID(v int64) {
+func (o *Switch) SetID(v types.ID) {
 	o.ID = v
 }
 
@@ -1289,6 +1319,16 @@ func (o *Switch) GetStringID() string {
 // SetStringID sets value to StringID
 func (o *Switch) SetStringID(v string) {
 	setStringID(o, v)
+}
+
+// GetInt64ID gets value to Int64ID
+func (o *Switch) GetInt64ID() int64 {
+	return getInt64ID(o)
+}
+
+// SetInt64ID sets value to Int64ID
+func (o *Switch) SetInt64ID(v int64) {
+	setInt64ID(o, v)
 }
 
 // GetName returns value of Name
@@ -1392,7 +1432,7 @@ type SwitchCreateRequest struct {
 	Name        string `validate:"required"`
 	Description string
 	Tags        []string
-	IconID      int64 `mapconv:"Icon.ID"`
+	IconID      types.ID `mapconv:"Icon.ID"`
 }
 
 // Validate validates by field tags
@@ -1431,12 +1471,12 @@ func (o *SwitchCreateRequest) SetTags(v []string) {
 }
 
 // GetIconID returns value of IconID
-func (o *SwitchCreateRequest) GetIconID() int64 {
+func (o *SwitchCreateRequest) GetIconID() types.ID {
 	return o.IconID
 }
 
 // SetIconID sets value to IconID
-func (o *SwitchCreateRequest) SetIconID(v int64) {
+func (o *SwitchCreateRequest) SetIconID(v types.ID) {
 	o.IconID = v
 }
 
@@ -1463,7 +1503,7 @@ type SwitchUpdateRequest struct {
 	DefaultRoute   string `mapconv:"UserSubnet.DefaultRoute" validate:"ipv4"`
 	Description    string
 	Tags           []string
-	IconID         int64 `mapconv:"Icon.ID"`
+	IconID         types.ID `mapconv:"Icon.ID"`
 }
 
 // Validate validates by field tags
@@ -1522,12 +1562,12 @@ func (o *SwitchUpdateRequest) SetTags(v []string) {
 }
 
 // GetIconID returns value of IconID
-func (o *SwitchUpdateRequest) GetIconID() int64 {
+func (o *SwitchUpdateRequest) GetIconID() types.ID {
 	return o.IconID
 }
 
 // SetIconID sets value to IconID
-func (o *SwitchUpdateRequest) SetIconID(v int64) {
+func (o *SwitchUpdateRequest) SetIconID(v types.ID) {
 	o.IconID = v
 }
 
@@ -1549,7 +1589,7 @@ func (o *SwitchUpdateRequest) convertFrom(naked *naked.Switch) error {
 
 // Zone represents API parameter/response structure
 type Zone struct {
-	ID           int64
+	ID           types.ID
 	Name         string `validate:"required"`
 	Description  string
 	DisplayOrder int
@@ -1565,12 +1605,12 @@ func (o *Zone) Validate() error {
 }
 
 // GetID returns value of ID
-func (o *Zone) GetID() int64 {
+func (o *Zone) GetID() types.ID {
 	return o.ID
 }
 
 // SetID sets value to ID
-func (o *Zone) SetID(v int64) {
+func (o *Zone) SetID(v types.ID) {
 	o.ID = v
 }
 
@@ -1582,6 +1622,16 @@ func (o *Zone) GetStringID() string {
 // SetStringID sets value to StringID
 func (o *Zone) SetStringID(v string) {
 	setStringID(o, v)
+}
+
+// GetInt64ID gets value to Int64ID
+func (o *Zone) GetInt64ID() int64 {
+	return getInt64ID(o)
+}
+
+// SetInt64ID sets value to Int64ID
+func (o *Zone) SetInt64ID(v int64) {
+	setInt64ID(o, v)
 }
 
 // GetName returns value of Name

@@ -3,12 +3,12 @@ package naked
 import (
 	"time"
 
-	"github.com/sacloud/libsacloud-v2/sacloud/enums"
+	"github.com/sacloud/libsacloud-v2/sacloud/types"
 )
 
 // NFSPlan NFSプラン
 type NFSPlan struct {
-	ID string `json:",omitempty" yaml:"id,omitempty" structs:",omitempty"`
+	ID types.ID `json:",omitempty" yaml:"id,omitempty" structs:",omitempty"`
 }
 
 // NFSRemarkNetwork NFS ネットワーク設定
@@ -19,7 +19,7 @@ type NFSRemarkNetwork struct {
 
 // NFSRemarkPlan NFSプラン
 type NFSRemarkPlan struct {
-	ID string `json:",omitempty" yaml:"id,omitempty" structs:",omitempty"`
+	ID types.ID `json:",omitempty" yaml:"id,omitempty" structs:",omitempty"`
 }
 
 // NFSRemarkServer NFSの稼働している仮想サーバのIPアドレス
@@ -29,12 +29,12 @@ type NFSRemarkServer struct {
 
 // NFSRemarkSwitch NFSに接続されているスイッチのID
 type NFSRemarkSwitch struct {
-	ID string `json:",omitempty" yaml:"id,omitempty" structs:",omitempty"`
+	ID types.ID `json:",omitempty" yaml:"id,omitempty" structs:",omitempty"`
 }
 
 // NFSRemarkZone NFSの属するゾーンのID
 type NFSRemarkZone struct {
-	ID string `json:",omitempty" yaml:"id,omitempty" structs:",omitempty"`
+	ID types.ID `json:",omitempty" yaml:"id,omitempty" structs:",omitempty"`
 }
 
 // NFSRemark NFSの設定/ステータス
@@ -48,14 +48,14 @@ type NFSRemark struct {
 
 // NFS NFS
 type NFS struct {
-	ID           int64               `json:",omitempty" yaml:"id,omitempty" structs:",omitempty"`
+	ID           types.ID            `json:",omitempty" yaml:"id,omitempty" structs:",omitempty"`
 	Name         string              `json:",omitempty" yaml:"name,omitempty" structs:",omitempty"`
 	Description  string              `json:",omitempty" yaml:"description,omitempty" structs:",omitempty"`
 	Tags         []string            `json:"" yaml:"tags"`
 	Icon         *Icon               `json:",omitempty" yaml:"icon,omitempty" structs:",omitempty"`
 	CreatedAt    *time.Time          `json:",omitempty" yaml:"created_at,omitempty" structs:",omitempty"`
 	ModifiedAt   *time.Time          `json:",omitempty" yaml:"modified_at,omitempty" structs:",omitempty"`
-	Availability enums.EAvailability `json:",omitempty" yaml:"availability,omitempty" structs:",omitempty"`
+	Availability types.EAvailability `json:",omitempty" yaml:"availability,omitempty" structs:",omitempty"`
 	Class        string              `json:",omitempty" yaml:"class,omitempty" structs:",omitempty"`
 	Instance     *Instance           `json:",omitempty" yaml:"instance,omitempty" structs:",omitempty"`
 	Interfaces   []*Interface        `json:",omitempty" yaml:"interfaces,omitempty" structs:",omitempty"`

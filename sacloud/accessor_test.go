@@ -3,6 +3,7 @@ package sacloud
 import (
 	"testing"
 
+	"github.com/sacloud/libsacloud-v2/sacloud/types"
 	"github.com/stretchr/testify/require"
 )
 
@@ -47,41 +48,45 @@ func TestSizeMBAccessor(t *testing.T) {
 }
 
 type dummyIDAccessor struct {
-	id int64
+	id types.ID
 }
 
-func (d *dummyIDAccessor) GetID() int64 {
+func (d *dummyIDAccessor) GetID() types.ID {
 	return d.id
 }
 
-func (d *dummyIDAccessor) SetID(id int64) {
+func (d *dummyIDAccessor) SetID(id types.ID) {
 	d.id = id
 }
 
 func TestIDAccessor(t *testing.T) {
 	expects := []struct {
-		input  string
-		expect int64
+		input  interface{}
+		expect types.ID
 	}{
 		{
 			input:  "0",
-			expect: 0,
+			expect: types.Int64ID(0),
 		},
 		{
 			input:  "1",
-			expect: 1,
+			expect: types.Int64ID(1),
 		},
 		{
 			input:  "2",
-			expect: 2,
+			expect: types.Int64ID(2),
 		},
 	}
 
 	for _, tc := range expects {
 		var target idAccessor = &dummyIDAccessor{}
 
-		setStringID(target, tc.input)
-		require.Equal(t, tc.input, getStringID(target))
+		if _, ok := tc.input.(string); ok {
+			setStringID(target, tc.input.(string))
+		} else {
+			setInt64ID(target, tc.input.(int64))
+		}
+
 		require.Equal(t, tc.expect, target.GetID())
 	}
 
