@@ -1,8 +1,6 @@
 package define
 
 import (
-	"time"
-
 	"github.com/sacloud/libsacloud-v2/internal/schema"
 	"github.com/sacloud/libsacloud-v2/internal/schema/meta"
 	"github.com/sacloud/libsacloud-v2/sacloud/naked"
@@ -35,6 +33,16 @@ func (f *fieldsDef) Name() *schema.FieldDesc {
 	}
 }
 
+func (f *fieldsDef) PlanID() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "PlanID",
+		Tags: &schema.FieldTags{
+			MapConv: "Plan.ID",
+		},
+		Type: meta.TypeID,
+	}
+}
+
 func (f *fieldsDef) IconID() *schema.FieldDesc {
 	return &schema.FieldDesc{
 		Name: "IconID",
@@ -45,10 +53,110 @@ func (f *fieldsDef) IconID() *schema.FieldDesc {
 	}
 }
 
+func (f *fieldsDef) AppliancePlanID() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "PlanID",
+		Tags: &schema.FieldTags{
+			MapConv: "Remark.Plan.ID,Plan.ID",
+		},
+		Type: meta.TypeString,
+	}
+}
+
+func (f *fieldsDef) ApplianceSwitchID() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "SwitchID",
+		Tags: &schema.FieldTags{
+			MapConv: "Remark.Switch.ID",
+		},
+		Type: meta.TypeString,
+	}
+}
+
+func (f *fieldsDef) ApplianceIPAddress() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "IPAddress",
+		Tags: &schema.FieldTags{
+			MapConv: "Remark.[]Servers.IPAddress",
+		},
+		Type: meta.TypeString,
+	}
+}
+
 func (f *fieldsDef) Tags() *schema.FieldDesc {
 	return &schema.FieldDesc{
 		Name: "Tags",
 		Type: meta.TypeStringSlice,
+	}
+}
+
+func (f *fieldsDef) Class() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "Class",
+		Type: meta.TypeString,
+	}
+}
+
+func (f *fieldsDef) NFSClass() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name:     "Class",
+		ReadOnly: true,
+		Type:     meta.TypeString,
+		Tags: &schema.FieldTags{
+			MapConv: ":nfs",
+		},
+	}
+}
+
+func (f *fieldsDef) InstanceHostName() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name:     "InstanceHostName",
+		Type:     meta.TypeString,
+		ReadOnly: true,
+		Tags: &schema.FieldTags{
+			MapConv: "Instance.Host.Name",
+		},
+	}
+}
+
+func (f *fieldsDef) InstanceHostInfoURL() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name:     "InstanceHostInfoURL",
+		Type:     meta.TypeString,
+		ReadOnly: true,
+		Tags: &schema.FieldTags{
+			MapConv: "Instance.Host.InfoURL",
+		},
+	}
+}
+
+func (f *fieldsDef) InstanceStatus() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name:     "InstanceStatus",
+		Type:     meta.TypeInstanceStatus,
+		ReadOnly: true,
+		Tags: &schema.FieldTags{
+			MapConv: "Instance.Status",
+		},
+	}
+}
+
+func (f *fieldsDef) InstanceStatusChangedAt() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name:     "InstanceStatusChangedAt",
+		Type:     meta.TypeTime,
+		ReadOnly: true,
+		Tags: &schema.FieldTags{
+			MapConv: "Instance.StatusChangedAt",
+		},
+	}
+}
+
+func (f *fieldsDef) Interfaces() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name:     "Interfaces",
+		Type:     meta.Static([]naked.Interface{}),
+		ReadOnly: true,
 	}
 }
 
@@ -115,6 +223,49 @@ func (f *fieldsDef) UserSubnetDefaultRoute() *schema.FieldDesc {
 		Tags: &schema.FieldTags{
 			Validate: "ipv4", // TODO
 			MapConv:  "UserSubnet.DefaultRoute",
+		},
+	}
+}
+
+func (f *fieldsDef) RemarkNetworkMaskLen() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "NetworkMaskLen",
+		Type: meta.TypeInt,
+		Tags: &schema.FieldTags{
+			Validate: "min=1,max=32", // TODO
+			MapConv:  "Remark.Network.NetworkMaskLen",
+		},
+	}
+}
+
+func (f *fieldsDef) RemarkZoneID() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name:     "ZoneID",
+		Type:     meta.TypeID,
+		ReadOnly: true,
+		Tags: &schema.FieldTags{
+			MapConv: "Remark.Zone.ID",
+		},
+	}
+}
+
+func (f *fieldsDef) RemarkDefaultRoute() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "DefaultRoute",
+		Type: meta.TypeString,
+		Tags: &schema.FieldTags{
+			Validate: "ipv4", // TODO
+			MapConv:  "Remark.Network.DefaultRoute",
+		},
+	}
+}
+
+func (f *fieldsDef) RemarkServerIPAddress() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "IPAddresses",
+		Type: meta.TypeStringSlice,
+		Tags: &schema.FieldTags{
+			MapConv: "Remark.[]Servers.IPAddress",
 		},
 	}
 }
@@ -235,16 +386,26 @@ func (f *fieldsDef) Icon() *schema.FieldDesc {
 	}
 }
 
+func (f *fieldsDef) Switch() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "Switch",
+		Type: meta.Static(naked.Switch{}),
+		Tags: &schema.FieldTags{
+			JSON: ",omitempty",
+		},
+	}
+}
+
 func (f *fieldsDef) CreatedAt() *schema.FieldDesc {
 	return &schema.FieldDesc{
 		Name: "CreatedAt",
-		Type: meta.Static(time.Time{}),
+		Type: meta.TypeTime,
 	}
 }
 
 func (f *fieldsDef) ModifiedAt() *schema.FieldDesc {
 	return &schema.FieldDesc{
 		Name: "ModifiedAt",
-		Type: meta.Static(time.Time{}),
+		Type: meta.TypeTime,
 	}
 }

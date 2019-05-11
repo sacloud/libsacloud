@@ -166,16 +166,16 @@ func (o *CDROM) SetModifiedAt(v *time.Time) {
 	o.ModifiedAt = v
 }
 
-// toNaked returns naked CDROM
-func (o *CDROM) toNaked() (*naked.CDROM, error) {
+// convertTo returns naked CDROM
+func (o *CDROM) convertTo() (*naked.CDROM, error) {
 	dest := &naked.CDROM{}
-	err := mapconv.ToNaked(o, dest)
+	err := mapconv.ConvertTo(o, dest)
 	return dest, err
 }
 
-// parseNaked parse values from naked CDROM
-func (o *CDROM) parseNaked(naked *naked.CDROM) error {
-	return mapconv.FromNaked(naked, o)
+// convertFrom parse values from naked CDROM
+func (o *CDROM) convertFrom(naked *naked.CDROM) error {
+	return mapconv.ConvertFrom(naked, o)
 }
 
 /*************************************************
@@ -314,16 +314,16 @@ func (o *FTPServer) SetPassword(v string) {
 	o.Password = v
 }
 
-// toNaked returns naked FTPServer
-func (o *FTPServer) toNaked() (*naked.OpeningFTPServer, error) {
+// convertTo returns naked FTPServer
+func (o *FTPServer) convertTo() (*naked.OpeningFTPServer, error) {
 	dest := &naked.OpeningFTPServer{}
-	err := mapconv.ToNaked(o, dest)
+	err := mapconv.ConvertTo(o, dest)
 	return dest, err
 }
 
-// parseNaked parse values from naked FTPServer
-func (o *FTPServer) parseNaked(naked *naked.OpeningFTPServer) error {
-	return mapconv.FromNaked(naked, o)
+// convertFrom parse values from naked FTPServer
+func (o *FTPServer) convertFrom(naked *naked.OpeningFTPServer) error {
+	return mapconv.ConvertFrom(naked, o)
 }
 
 /*************************************************
@@ -404,16 +404,16 @@ func (o *CDROMCreateRequest) SetIconID(v int64) {
 	o.IconID = v
 }
 
-// toNaked returns naked CDROMCreateRequest
-func (o *CDROMCreateRequest) toNaked() (*naked.CDROM, error) {
+// convertTo returns naked CDROMCreateRequest
+func (o *CDROMCreateRequest) convertTo() (*naked.CDROM, error) {
 	dest := &naked.CDROM{}
-	err := mapconv.ToNaked(o, dest)
+	err := mapconv.ConvertTo(o, dest)
 	return dest, err
 }
 
-// parseNaked parse values from naked CDROMCreateRequest
-func (o *CDROMCreateRequest) parseNaked(naked *naked.CDROM) error {
-	return mapconv.FromNaked(naked, o)
+// convertFrom parse values from naked CDROMCreateRequest
+func (o *CDROMCreateRequest) convertFrom(naked *naked.CDROM) error {
+	return mapconv.ConvertFrom(naked, o)
 }
 
 /*************************************************
@@ -473,16 +473,16 @@ func (o *CDROMUpdateRequest) SetIconID(v int64) {
 	o.IconID = v
 }
 
-// toNaked returns naked CDROMUpdateRequest
-func (o *CDROMUpdateRequest) toNaked() (*naked.CDROM, error) {
+// convertTo returns naked CDROMUpdateRequest
+func (o *CDROMUpdateRequest) convertTo() (*naked.CDROM, error) {
 	dest := &naked.CDROM{}
-	err := mapconv.ToNaked(o, dest)
+	err := mapconv.ConvertTo(o, dest)
 	return dest, err
 }
 
-// parseNaked parse values from naked CDROMUpdateRequest
-func (o *CDROMUpdateRequest) parseNaked(naked *naked.CDROM) error {
-	return mapconv.FromNaked(naked, o)
+// convertFrom parse values from naked CDROMUpdateRequest
+func (o *CDROMUpdateRequest) convertFrom(naked *naked.CDROM) error {
+	return mapconv.ConvertFrom(naked, o)
 }
 
 /*************************************************
@@ -507,6 +507,430 @@ func (o *OpenFTPParam) GetChangePassword() bool {
 // SetChangePassword sets value to ChangePassword
 func (o *OpenFTPParam) SetChangePassword(v bool) {
 	o.ChangePassword = v
+}
+
+/*************************************************
+* NFS
+*************************************************/
+
+// NFS represents API parameter/response structure
+type NFS struct {
+	ID                      int64
+	Name                    string `validate:"required"`
+	Description             string
+	Tags                    []string
+	Availability            enums.EAvailability
+	Class                   string
+	InstanceHostName        string                      `mapconv:"Instance.Host.Name"`
+	InstanceHostInfoURL     string                      `mapconv:"Instance.Host.InfoURL"`
+	InstanceStatus          enums.EServerInstanceStatus `mapconv:"Instance.Status"`
+	InstanceStatusChangedAt *time.Time                  `mapconv:"Instance.StatusChangedAt"`
+	Interfaces              []naked.Interface
+	PlanID                  string        `mapconv:"Remark.Plan.ID,Plan.ID"`
+	Switch                  *naked.Switch `json:",omitempty"`
+	DefaultRoute            string        `mapconv:"Remark.Network.DefaultRoute" validate:"ipv4"`
+	NetworkMaskLen          int           `mapconv:"Remark.Network.NetworkMaskLen" validate:"min=1,max=32"`
+	IPAddresses             []string      `mapconv:"Remark.[]Servers.IPAddress"`
+	ZoneID                  int64         `mapconv:"Remark.Zone.ID"`
+	Icon                    *naked.Icon   `json:",omitempty"`
+	CreatedAt               *time.Time
+	ModifiedAt              *time.Time
+}
+
+// Validate validates by field tags
+func (o *NFS) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetID returns value of ID
+func (o *NFS) GetID() int64 {
+	return o.ID
+}
+
+// SetID sets value to ID
+func (o *NFS) SetID(v int64) {
+	o.ID = v
+}
+
+// GetStringID gets value to StringID
+func (o *NFS) GetStringID() string {
+	return getStringID(o)
+}
+
+// SetStringID sets value to StringID
+func (o *NFS) SetStringID(v string) {
+	setStringID(o, v)
+}
+
+// GetName returns value of Name
+func (o *NFS) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *NFS) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *NFS) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *NFS) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetTags returns value of Tags
+func (o *NFS) GetTags() []string {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *NFS) SetTags(v []string) {
+	o.Tags = v
+}
+
+// GetAvailability returns value of Availability
+func (o *NFS) GetAvailability() enums.EAvailability {
+	return o.Availability
+}
+
+// SetAvailability sets value to Availability
+func (o *NFS) SetAvailability(v enums.EAvailability) {
+	o.Availability = v
+}
+
+// GetClass returns value of Class
+func (o *NFS) GetClass() string {
+	return o.Class
+}
+
+// SetClass sets value to Class
+func (o *NFS) SetClass(v string) {
+	o.Class = v
+}
+
+// GetInstanceHostName returns value of InstanceHostName
+func (o *NFS) GetInstanceHostName() string {
+	return o.InstanceHostName
+}
+
+// GetInstanceHostInfoURL returns value of InstanceHostInfoURL
+func (o *NFS) GetInstanceHostInfoURL() string {
+	return o.InstanceHostInfoURL
+}
+
+// GetInstanceStatus returns value of InstanceStatus
+func (o *NFS) GetInstanceStatus() enums.EServerInstanceStatus {
+	return o.InstanceStatus
+}
+
+// GetInstanceStatusChangedAt returns value of InstanceStatusChangedAt
+func (o *NFS) GetInstanceStatusChangedAt() *time.Time {
+	return o.InstanceStatusChangedAt
+}
+
+// GetInterfaces returns value of Interfaces
+func (o *NFS) GetInterfaces() []naked.Interface {
+	return o.Interfaces
+}
+
+// GetPlanID returns value of PlanID
+func (o *NFS) GetPlanID() string {
+	return o.PlanID
+}
+
+// SetPlanID sets value to PlanID
+func (o *NFS) SetPlanID(v string) {
+	o.PlanID = v
+}
+
+// GetSwitch returns value of Switch
+func (o *NFS) GetSwitch() *naked.Switch {
+	return o.Switch
+}
+
+// SetSwitch sets value to Switch
+func (o *NFS) SetSwitch(v *naked.Switch) {
+	o.Switch = v
+}
+
+// GetDefaultRoute returns value of DefaultRoute
+func (o *NFS) GetDefaultRoute() string {
+	return o.DefaultRoute
+}
+
+// SetDefaultRoute sets value to DefaultRoute
+func (o *NFS) SetDefaultRoute(v string) {
+	o.DefaultRoute = v
+}
+
+// GetNetworkMaskLen returns value of NetworkMaskLen
+func (o *NFS) GetNetworkMaskLen() int {
+	return o.NetworkMaskLen
+}
+
+// SetNetworkMaskLen sets value to NetworkMaskLen
+func (o *NFS) SetNetworkMaskLen(v int) {
+	o.NetworkMaskLen = v
+}
+
+// GetIPAddresses returns value of IPAddresses
+func (o *NFS) GetIPAddresses() []string {
+	return o.IPAddresses
+}
+
+// SetIPAddresses sets value to IPAddresses
+func (o *NFS) SetIPAddresses(v []string) {
+	o.IPAddresses = v
+}
+
+// GetZoneID returns value of ZoneID
+func (o *NFS) GetZoneID() int64 {
+	return o.ZoneID
+}
+
+// GetIcon returns value of Icon
+func (o *NFS) GetIcon() *naked.Icon {
+	return o.Icon
+}
+
+// SetIcon sets value to Icon
+func (o *NFS) SetIcon(v *naked.Icon) {
+	o.Icon = v
+}
+
+// GetCreatedAt returns value of CreatedAt
+func (o *NFS) GetCreatedAt() *time.Time {
+	return o.CreatedAt
+}
+
+// SetCreatedAt sets value to CreatedAt
+func (o *NFS) SetCreatedAt(v *time.Time) {
+	o.CreatedAt = v
+}
+
+// GetModifiedAt returns value of ModifiedAt
+func (o *NFS) GetModifiedAt() *time.Time {
+	return o.ModifiedAt
+}
+
+// SetModifiedAt sets value to ModifiedAt
+func (o *NFS) SetModifiedAt(v *time.Time) {
+	o.ModifiedAt = v
+}
+
+// convertTo returns naked NFS
+func (o *NFS) convertTo() (*naked.NFS, error) {
+	dest := &naked.NFS{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked NFS
+func (o *NFS) convertFrom(naked *naked.NFS) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* NFSCreateRequest
+*************************************************/
+
+// NFSCreateRequest represents API parameter/response structure
+type NFSCreateRequest struct {
+	Class          string `mapconv:":nfs"`
+	SwitchID       string `mapconv:"Remark.Switch.ID"`
+	PlanID         string `mapconv:"Remark.Plan.ID,Plan.ID"`
+	IPAddress      string `mapconv:"Remark.[]Servers.IPAddress"`
+	NetworkMaskLen int    `mapconv:"Remark.Network.NetworkMaskLen" validate:"min=1,max=32"`
+	DefaultRoute   string `mapconv:"Remark.Network.DefaultRoute" validate:"ipv4"`
+	Name           string `validate:"required"`
+	Description    string
+	Tags           []string
+	IconID         int64 `mapconv:"Icon.ID"`
+}
+
+// Validate validates by field tags
+func (o *NFSCreateRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetClass returns value of Class
+func (o *NFSCreateRequest) GetClass() string {
+	return o.Class
+}
+
+// GetSwitchID returns value of SwitchID
+func (o *NFSCreateRequest) GetSwitchID() string {
+	return o.SwitchID
+}
+
+// SetSwitchID sets value to SwitchID
+func (o *NFSCreateRequest) SetSwitchID(v string) {
+	o.SwitchID = v
+}
+
+// GetPlanID returns value of PlanID
+func (o *NFSCreateRequest) GetPlanID() string {
+	return o.PlanID
+}
+
+// SetPlanID sets value to PlanID
+func (o *NFSCreateRequest) SetPlanID(v string) {
+	o.PlanID = v
+}
+
+// GetIPAddress returns value of IPAddress
+func (o *NFSCreateRequest) GetIPAddress() string {
+	return o.IPAddress
+}
+
+// SetIPAddress sets value to IPAddress
+func (o *NFSCreateRequest) SetIPAddress(v string) {
+	o.IPAddress = v
+}
+
+// GetNetworkMaskLen returns value of NetworkMaskLen
+func (o *NFSCreateRequest) GetNetworkMaskLen() int {
+	return o.NetworkMaskLen
+}
+
+// SetNetworkMaskLen sets value to NetworkMaskLen
+func (o *NFSCreateRequest) SetNetworkMaskLen(v int) {
+	o.NetworkMaskLen = v
+}
+
+// GetDefaultRoute returns value of DefaultRoute
+func (o *NFSCreateRequest) GetDefaultRoute() string {
+	return o.DefaultRoute
+}
+
+// SetDefaultRoute sets value to DefaultRoute
+func (o *NFSCreateRequest) SetDefaultRoute(v string) {
+	o.DefaultRoute = v
+}
+
+// GetName returns value of Name
+func (o *NFSCreateRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *NFSCreateRequest) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *NFSCreateRequest) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *NFSCreateRequest) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetTags returns value of Tags
+func (o *NFSCreateRequest) GetTags() []string {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *NFSCreateRequest) SetTags(v []string) {
+	o.Tags = v
+}
+
+// GetIconID returns value of IconID
+func (o *NFSCreateRequest) GetIconID() int64 {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *NFSCreateRequest) SetIconID(v int64) {
+	o.IconID = v
+}
+
+// convertTo returns naked NFSCreateRequest
+func (o *NFSCreateRequest) convertTo() (*naked.NFS, error) {
+	dest := &naked.NFS{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked NFSCreateRequest
+func (o *NFSCreateRequest) convertFrom(naked *naked.NFS) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* NFSUpdateRequest
+*************************************************/
+
+// NFSUpdateRequest represents API parameter/response structure
+type NFSUpdateRequest struct {
+	Name        string `validate:"required"`
+	Description string
+	Tags        []string
+	IconID      int64 `mapconv:"Icon.ID"`
+}
+
+// Validate validates by field tags
+func (o *NFSUpdateRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetName returns value of Name
+func (o *NFSUpdateRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *NFSUpdateRequest) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *NFSUpdateRequest) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *NFSUpdateRequest) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetTags returns value of Tags
+func (o *NFSUpdateRequest) GetTags() []string {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *NFSUpdateRequest) SetTags(v []string) {
+	o.Tags = v
+}
+
+// GetIconID returns value of IconID
+func (o *NFSUpdateRequest) GetIconID() int64 {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *NFSUpdateRequest) SetIconID(v int64) {
+	o.IconID = v
+}
+
+// convertTo returns naked NFSUpdateRequest
+func (o *NFSUpdateRequest) convertTo() (*naked.NFS, error) {
+	dest := &naked.NFS{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked NFSUpdateRequest
+func (o *NFSUpdateRequest) convertFrom(naked *naked.NFS) error {
+	return mapconv.ConvertFrom(naked, o)
 }
 
 /*************************************************
@@ -653,16 +1077,16 @@ func (o *Note) SetModifiedAt(v *time.Time) {
 	o.ModifiedAt = v
 }
 
-// toNaked returns naked Note
-func (o *Note) toNaked() (*naked.Note, error) {
+// convertTo returns naked Note
+func (o *Note) convertTo() (*naked.Note, error) {
 	dest := &naked.Note{}
-	err := mapconv.ToNaked(o, dest)
+	err := mapconv.ConvertTo(o, dest)
 	return dest, err
 }
 
-// parseNaked parse values from naked Note
-func (o *Note) parseNaked(naked *naked.Note) error {
-	return mapconv.FromNaked(naked, o)
+// convertFrom parse values from naked Note
+func (o *Note) convertFrom(naked *naked.Note) error {
+	return mapconv.ConvertFrom(naked, o)
 }
 
 /*************************************************
@@ -733,16 +1157,16 @@ func (o *NoteCreateRequest) SetContent(v string) {
 	o.Content = v
 }
 
-// toNaked returns naked NoteCreateRequest
-func (o *NoteCreateRequest) toNaked() (*naked.Note, error) {
+// convertTo returns naked NoteCreateRequest
+func (o *NoteCreateRequest) convertTo() (*naked.Note, error) {
 	dest := &naked.Note{}
-	err := mapconv.ToNaked(o, dest)
+	err := mapconv.ConvertTo(o, dest)
 	return dest, err
 }
 
-// parseNaked parse values from naked NoteCreateRequest
-func (o *NoteCreateRequest) parseNaked(naked *naked.Note) error {
-	return mapconv.FromNaked(naked, o)
+// convertFrom parse values from naked NoteCreateRequest
+func (o *NoteCreateRequest) convertFrom(naked *naked.Note) error {
+	return mapconv.ConvertFrom(naked, o)
 }
 
 /*************************************************
@@ -813,16 +1237,16 @@ func (o *NoteUpdateRequest) SetContent(v string) {
 	o.Content = v
 }
 
-// toNaked returns naked NoteUpdateRequest
-func (o *NoteUpdateRequest) toNaked() (*naked.Note, error) {
+// convertTo returns naked NoteUpdateRequest
+func (o *NoteUpdateRequest) convertTo() (*naked.Note, error) {
 	dest := &naked.Note{}
-	err := mapconv.ToNaked(o, dest)
+	err := mapconv.ConvertTo(o, dest)
 	return dest, err
 }
 
-// parseNaked parse values from naked NoteUpdateRequest
-func (o *NoteUpdateRequest) parseNaked(naked *naked.Note) error {
-	return mapconv.FromNaked(naked, o)
+// convertFrom parse values from naked NoteUpdateRequest
+func (o *NoteUpdateRequest) convertFrom(naked *naked.Note) error {
+	return mapconv.ConvertFrom(naked, o)
 }
 
 /*************************************************
@@ -947,16 +1371,16 @@ func (o *Switch) SetUserSubnet(v *naked.UserSubnet) {
 	o.UserSubnet = v
 }
 
-// toNaked returns naked Switch
-func (o *Switch) toNaked() (*naked.Switch, error) {
+// convertTo returns naked Switch
+func (o *Switch) convertTo() (*naked.Switch, error) {
 	dest := &naked.Switch{}
-	err := mapconv.ToNaked(o, dest)
+	err := mapconv.ConvertTo(o, dest)
 	return dest, err
 }
 
-// parseNaked parse values from naked Switch
-func (o *Switch) parseNaked(naked *naked.Switch) error {
-	return mapconv.FromNaked(naked, o)
+// convertFrom parse values from naked Switch
+func (o *Switch) convertFrom(naked *naked.Switch) error {
+	return mapconv.ConvertFrom(naked, o)
 }
 
 /*************************************************
@@ -1016,16 +1440,16 @@ func (o *SwitchCreateRequest) SetIconID(v int64) {
 	o.IconID = v
 }
 
-// toNaked returns naked SwitchCreateRequest
-func (o *SwitchCreateRequest) toNaked() (*naked.Switch, error) {
+// convertTo returns naked SwitchCreateRequest
+func (o *SwitchCreateRequest) convertTo() (*naked.Switch, error) {
 	dest := &naked.Switch{}
-	err := mapconv.ToNaked(o, dest)
+	err := mapconv.ConvertTo(o, dest)
 	return dest, err
 }
 
-// parseNaked parse values from naked SwitchCreateRequest
-func (o *SwitchCreateRequest) parseNaked(naked *naked.Switch) error {
-	return mapconv.FromNaked(naked, o)
+// convertFrom parse values from naked SwitchCreateRequest
+func (o *SwitchCreateRequest) convertFrom(naked *naked.Switch) error {
+	return mapconv.ConvertFrom(naked, o)
 }
 
 /*************************************************
@@ -1107,16 +1531,16 @@ func (o *SwitchUpdateRequest) SetIconID(v int64) {
 	o.IconID = v
 }
 
-// toNaked returns naked SwitchUpdateRequest
-func (o *SwitchUpdateRequest) toNaked() (*naked.Switch, error) {
+// convertTo returns naked SwitchUpdateRequest
+func (o *SwitchUpdateRequest) convertTo() (*naked.Switch, error) {
 	dest := &naked.Switch{}
-	err := mapconv.ToNaked(o, dest)
+	err := mapconv.ConvertTo(o, dest)
 	return dest, err
 }
 
-// parseNaked parse values from naked SwitchUpdateRequest
-func (o *SwitchUpdateRequest) parseNaked(naked *naked.Switch) error {
-	return mapconv.FromNaked(naked, o)
+// convertFrom parse values from naked SwitchUpdateRequest
+func (o *SwitchUpdateRequest) convertFrom(naked *naked.Switch) error {
+	return mapconv.ConvertFrom(naked, o)
 }
 
 /*************************************************
@@ -1230,14 +1654,14 @@ func (o *Zone) SetRegion(v *naked.Region) {
 	o.Region = v
 }
 
-// toNaked returns naked Zone
-func (o *Zone) toNaked() (*naked.Zone, error) {
+// convertTo returns naked Zone
+func (o *Zone) convertTo() (*naked.Zone, error) {
 	dest := &naked.Zone{}
-	err := mapconv.ToNaked(o, dest)
+	err := mapconv.ConvertTo(o, dest)
 	return dest, err
 }
 
-// parseNaked parse values from naked Zone
-func (o *Zone) parseNaked(naked *naked.Zone) error {
-	return mapconv.FromNaked(naked, o)
+// convertFrom parse values from naked Zone
+func (o *Zone) convertFrom(naked *naked.Zone) error {
+	return mapconv.ConvertFrom(naked, o)
 }

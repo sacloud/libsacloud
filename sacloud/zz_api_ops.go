@@ -74,7 +74,7 @@ func (o *CDROMOp) Find(ctx context.Context, zone string, conditions *FindConditi
 	var payload0 []*CDROM
 	for _, v := range nakedResponse.CDROMs {
 		payload := &CDROM{}
-		if err := payload.parseNaked(v); err != nil {
+		if err := payload.convertFrom(v); err != nil {
 			return nil, err
 		}
 		payload0 = append(payload0, payload)
@@ -104,7 +104,7 @@ func (o *CDROMOp) Create(ctx context.Context, zone string, param *CDROMCreateReq
 			body = &CDROMCreateRequestEnvelope{}
 		}
 		v := body.(*CDROMCreateRequestEnvelope)
-		n, err := param.toNaked()
+		n, err := param.convertTo()
 		if err != nil {
 			return nil, nil, err
 		}
@@ -123,11 +123,11 @@ func (o *CDROMOp) Create(ctx context.Context, zone string, param *CDROMCreateReq
 	}
 
 	payload0 := &CDROM{}
-	if err := payload0.parseNaked(nakedResponse.CDROM); err != nil {
+	if err := payload0.convertFrom(nakedResponse.CDROM); err != nil {
 		return nil, nil, err
 	}
 	payload1 := &FTPServer{}
-	if err := payload1.parseNaked(nakedResponse.FTPServer); err != nil {
+	if err := payload1.convertFrom(nakedResponse.FTPServer); err != nil {
 		return nil, nil, err
 	}
 	return payload0, payload1, nil
@@ -159,7 +159,7 @@ func (o *CDROMOp) Read(ctx context.Context, zone string, id int64) (*CDROM, erro
 	}
 
 	payload0 := &CDROM{}
-	if err := payload0.parseNaked(nakedResponse.CDROM); err != nil {
+	if err := payload0.convertFrom(nakedResponse.CDROM); err != nil {
 		return nil, err
 	}
 	return payload0, nil
@@ -188,7 +188,7 @@ func (o *CDROMOp) Update(ctx context.Context, zone string, id int64, param *CDRO
 			body = &CDROMUpdateRequestEnvelope{}
 		}
 		v := body.(*CDROMUpdateRequestEnvelope)
-		n, err := param.toNaked()
+		n, err := param.convertTo()
 		if err != nil {
 			return nil, err
 		}
@@ -207,7 +207,7 @@ func (o *CDROMOp) Update(ctx context.Context, zone string, id int64, param *CDRO
 	}
 
 	payload0 := &CDROM{}
-	if err := payload0.parseNaked(nakedResponse.CDROM); err != nil {
+	if err := payload0.convertFrom(nakedResponse.CDROM); err != nil {
 		return nil, err
 	}
 	return payload0, nil
@@ -274,7 +274,7 @@ func (o *CDROMOp) OpenFTP(ctx context.Context, zone string, id int64, openOption
 	}
 
 	payload0 := &FTPServer{}
-	if err := payload0.parseNaked(nakedResponse.FTPServer); err != nil {
+	if err := payload0.convertFrom(nakedResponse.FTPServer); err != nil {
 		return nil, err
 	}
 	return payload0, nil
@@ -283,6 +283,231 @@ func (o *CDROMOp) OpenFTP(ctx context.Context, zone string, id int64, openOption
 // CloseFTP is API call
 func (o *CDROMOp) CloseFTP(ctx context.Context, zone string, id int64) error {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/ftp", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+	})
+	if err != nil {
+		return err
+	}
+
+	var body interface{}
+
+	_, err = o.Client.Do(ctx, "DELETE", url, body)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+/*************************************************
+* NFSOp
+*************************************************/
+
+// NFSOp implements NFSAPI interface
+type NFSOp struct {
+	// Client APICaller
+	Client APICaller
+	// PathSuffix is used when building URL
+	PathSuffix string
+	// PathName is used when building URL
+	PathName string
+}
+
+// NewNFSOp creates new NFSOp instance
+func NewNFSOp(client APICaller) *NFSOp {
+	return &NFSOp{
+		Client:     client,
+		PathSuffix: "api/cloud/1.1",
+		PathName:   "appliance",
+	}
+}
+
+// Find is API call
+func (o *NFSOp) Find(ctx context.Context, zone string, conditions *FindCondition) ([]*NFS, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"conditions": conditions,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+	{
+		if conditions == nil {
+			conditions = &FindCondition{}
+		}
+		if body == nil {
+			body = &NFSFindRequestEnvelope{}
+		}
+		v := body.(*NFSFindRequestEnvelope)
+		v.Count = conditions.Count
+		v.From = conditions.From
+		v.Sort = conditions.Sort
+		v.Filter = conditions.Filter
+		v.Include = conditions.Include
+		v.Exclude = conditions.Exclude
+		body = v
+	}
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &NFSFindResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	var payload0 []*NFS
+	for _, v := range nakedResponse.Appliances {
+		payload := &NFS{}
+		if err := payload.convertFrom(v); err != nil {
+			return nil, err
+		}
+		payload0 = append(payload0, payload)
+	}
+	return payload0, nil
+}
+
+// Create is API call
+func (o *NFSOp) Create(ctx context.Context, zone string, param *NFSCreateRequest) (*NFS, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"param":      param,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+	{
+		if param == nil {
+			param = &NFSCreateRequest{}
+		}
+		if body == nil {
+			body = &NFSCreateRequestEnvelope{}
+		}
+		v := body.(*NFSCreateRequestEnvelope)
+		n, err := param.convertTo()
+		if err != nil {
+			return nil, err
+		}
+		v.Appliance = n
+		body = v
+	}
+
+	data, err := o.Client.Do(ctx, "POST", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &NFSCreateResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	payload0 := &NFS{}
+	if err := payload0.convertFrom(nakedResponse.Appliance); err != nil {
+		return nil, err
+	}
+	return payload0, nil
+}
+
+// Read is API call
+func (o *NFSOp) Read(ctx context.Context, zone string, id int64) (*NFS, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &NFSReadResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	payload0 := &NFS{}
+	if err := payload0.convertFrom(nakedResponse.Appliance); err != nil {
+		return nil, err
+	}
+	return payload0, nil
+}
+
+// Update is API call
+func (o *NFSOp) Update(ctx context.Context, zone string, id int64, param *NFSUpdateRequest) (*NFS, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+		"param":      param,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+	{
+		if param == nil {
+			param = &NFSUpdateRequest{}
+		}
+		if body == nil {
+			body = &NFSUpdateRequestEnvelope{}
+		}
+		v := body.(*NFSUpdateRequestEnvelope)
+		n, err := param.convertTo()
+		if err != nil {
+			return nil, err
+		}
+		v.Appliance = n
+		body = v
+	}
+
+	data, err := o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &NFSUpdateResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	payload0 := &NFS{}
+	if err := payload0.convertFrom(nakedResponse.Appliance); err != nil {
+		return nil, err
+	}
+	return payload0, nil
+}
+
+// Delete is API call
+func (o *NFSOp) Delete(ctx context.Context, zone string, id int64) error {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
@@ -370,7 +595,7 @@ func (o *NoteOp) Find(ctx context.Context, zone string, conditions *FindConditio
 	var payload0 []*Note
 	for _, v := range nakedResponse.Notes {
 		payload := &Note{}
-		if err := payload.parseNaked(v); err != nil {
+		if err := payload.convertFrom(v); err != nil {
 			return nil, err
 		}
 		payload0 = append(payload0, payload)
@@ -400,7 +625,7 @@ func (o *NoteOp) Create(ctx context.Context, zone string, param *NoteCreateReque
 			body = &NoteCreateRequestEnvelope{}
 		}
 		v := body.(*NoteCreateRequestEnvelope)
-		n, err := param.toNaked()
+		n, err := param.convertTo()
 		if err != nil {
 			return nil, err
 		}
@@ -419,7 +644,7 @@ func (o *NoteOp) Create(ctx context.Context, zone string, param *NoteCreateReque
 	}
 
 	payload0 := &Note{}
-	if err := payload0.parseNaked(nakedResponse.Note); err != nil {
+	if err := payload0.convertFrom(nakedResponse.Note); err != nil {
 		return nil, err
 	}
 	return payload0, nil
@@ -451,7 +676,7 @@ func (o *NoteOp) Read(ctx context.Context, zone string, id int64) (*Note, error)
 	}
 
 	payload0 := &Note{}
-	if err := payload0.parseNaked(nakedResponse.Note); err != nil {
+	if err := payload0.convertFrom(nakedResponse.Note); err != nil {
 		return nil, err
 	}
 	return payload0, nil
@@ -480,7 +705,7 @@ func (o *NoteOp) Update(ctx context.Context, zone string, id int64, param *NoteU
 			body = &NoteUpdateRequestEnvelope{}
 		}
 		v := body.(*NoteUpdateRequestEnvelope)
-		n, err := param.toNaked()
+		n, err := param.convertTo()
 		if err != nil {
 			return nil, err
 		}
@@ -499,7 +724,7 @@ func (o *NoteOp) Update(ctx context.Context, zone string, id int64, param *NoteU
 	}
 
 	payload0 := &Note{}
-	if err := payload0.parseNaked(nakedResponse.Note); err != nil {
+	if err := payload0.convertFrom(nakedResponse.Note); err != nil {
 		return nil, err
 	}
 	return payload0, nil
@@ -595,7 +820,7 @@ func (o *SwitchOp) Find(ctx context.Context, zone string, conditions *FindCondit
 	var payload0 []*Switch
 	for _, v := range nakedResponse.Switches {
 		payload := &Switch{}
-		if err := payload.parseNaked(v); err != nil {
+		if err := payload.convertFrom(v); err != nil {
 			return nil, err
 		}
 		payload0 = append(payload0, payload)
@@ -625,7 +850,7 @@ func (o *SwitchOp) Create(ctx context.Context, zone string, param *SwitchCreateR
 			body = &SwitchCreateRequestEnvelope{}
 		}
 		v := body.(*SwitchCreateRequestEnvelope)
-		n, err := param.toNaked()
+		n, err := param.convertTo()
 		if err != nil {
 			return nil, err
 		}
@@ -644,7 +869,7 @@ func (o *SwitchOp) Create(ctx context.Context, zone string, param *SwitchCreateR
 	}
 
 	payload0 := &Switch{}
-	if err := payload0.parseNaked(nakedResponse.Switch); err != nil {
+	if err := payload0.convertFrom(nakedResponse.Switch); err != nil {
 		return nil, err
 	}
 	return payload0, nil
@@ -676,7 +901,7 @@ func (o *SwitchOp) Read(ctx context.Context, zone string, id int64) (*Switch, er
 	}
 
 	payload0 := &Switch{}
-	if err := payload0.parseNaked(nakedResponse.Switch); err != nil {
+	if err := payload0.convertFrom(nakedResponse.Switch); err != nil {
 		return nil, err
 	}
 	return payload0, nil
@@ -705,7 +930,7 @@ func (o *SwitchOp) Update(ctx context.Context, zone string, id int64, param *Swi
 			body = &SwitchUpdateRequestEnvelope{}
 		}
 		v := body.(*SwitchUpdateRequestEnvelope)
-		n, err := param.toNaked()
+		n, err := param.convertTo()
 		if err != nil {
 			return nil, err
 		}
@@ -724,7 +949,7 @@ func (o *SwitchOp) Update(ctx context.Context, zone string, id int64, param *Swi
 	}
 
 	payload0 := &Switch{}
-	if err := payload0.parseNaked(nakedResponse.Switch); err != nil {
+	if err := payload0.convertFrom(nakedResponse.Switch); err != nil {
 		return nil, err
 	}
 	return payload0, nil
@@ -867,7 +1092,7 @@ func (o *ZoneOp) Find(ctx context.Context, zone string, conditions *FindConditio
 	var payload0 []*Zone
 	for _, v := range nakedResponse.Zones {
 		payload := &Zone{}
-		if err := payload.parseNaked(v); err != nil {
+		if err := payload.convertFrom(v); err != nil {
 			return nil, err
 		}
 		payload0 = append(payload0, payload)
@@ -901,7 +1126,7 @@ func (o *ZoneOp) Read(ctx context.Context, zone string, id int64) (*Zone, error)
 	}
 
 	payload0 := &Zone{}
-	if err := payload0.parseNaked(nakedResponse.Zone); err != nil {
+	if err := payload0.convertFrom(nakedResponse.Zone); err != nil {
 		return nil, err
 	}
 	return payload0, nil

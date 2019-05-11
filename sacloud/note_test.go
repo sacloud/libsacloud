@@ -34,7 +34,7 @@ func TestNoteUpdateRequest_Validate(t *testing.T) {
 	}
 }
 
-func TestNoteUpdateRequest_toNaked(t *testing.T) {
+func TestNoteUpdateRequest_convertTo(t *testing.T) {
 
 	expects := []struct {
 		model *NoteUpdateRequest
@@ -61,14 +61,14 @@ func TestNoteUpdateRequest_toNaked(t *testing.T) {
 	}
 
 	for _, expect := range expects {
-		naked, err := expect.model.toNaked()
+		naked, err := expect.model.convertTo()
 		require.NoError(t, err)
 		require.Equal(t, expect.naked, naked)
 	}
 
 }
 
-func TestNoteUpdateRequest_parseNaked(t *testing.T) {
+func TestNoteUpdateRequest_convertFrom(t *testing.T) {
 
 	expects := []struct {
 		model *NoteUpdateRequest
@@ -96,7 +96,7 @@ func TestNoteUpdateRequest_parseNaked(t *testing.T) {
 
 	for _, expect := range expects {
 		model := &NoteUpdateRequest{}
-		err := model.parseNaked(expect.naked)
+		err := model.convertFrom(expect.naked)
 		require.NoError(t, err)
 		require.Equal(t, expect.model, model)
 	}

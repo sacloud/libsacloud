@@ -7,8 +7,8 @@ import (
 	"github.com/fatih/structs"
 )
 
-// ToNaked converts struct naked naked models by using mapconv tag
-func ToNaked(source interface{}, dest interface{}) error {
+// ConvertTo converts struct which tagged by mapconv to plain models
+func ConvertTo(source interface{}, dest interface{}) error {
 	s := structs.New(source)
 	destMap := Map(make(map[string]interface{}))
 
@@ -41,8 +41,8 @@ func ToNaked(source interface{}, dest interface{}) error {
 	return json.Unmarshal(data, dest)
 }
 
-// FromNaked converts naked models naked struct by using mapconv tag
-func FromNaked(source interface{}, dest interface{}) error {
+// ConvertFrom converts struct which tagged by mapconv from plain models
+func ConvertFrom(source interface{}, dest interface{}) error {
 	sourceMap := Map(structs.New(source).Map())
 	destMap := Map(make(map[string]interface{}))
 

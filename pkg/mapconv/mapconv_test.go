@@ -84,7 +84,7 @@ func TestToNaked(t *testing.T) {
 
 	for _, expect := range expects {
 		naked := &dummyNaked{}
-		err := ToNaked(expect.tagged, naked)
+		err := ConvertTo(expect.tagged, naked)
 		require.Equal(t, expect.err, err)
 		if err == nil {
 			require.Equal(t, expect.naked, naked)
@@ -139,7 +139,7 @@ func TestFromNaked(t *testing.T) {
 
 	for _, expect := range expects {
 		tagged := &dummyTagged{}
-		err := FromNaked(expect.naked, tagged)
+		err := ConvertFrom(expect.naked, tagged)
 		require.Equal(t, expect.err, err)
 		if err == nil {
 			require.Equal(t, expect.tagged, tagged)
@@ -190,7 +190,7 @@ func TestExtractInnerSlice(t *testing.T) {
 
 	for _, tc := range expects {
 		dest := &dummyExtractInnerSlice{}
-		err := FromNaked(tc.input, dest)
+		err := ConvertFrom(tc.input, dest)
 
 		require.NoError(t, err)
 		require.Equal(t, tc.expect, dest)
@@ -229,7 +229,7 @@ func TestInsertInnerSlice(t *testing.T) {
 
 	for _, tc := range expects {
 		dest := &dummySlice{}
-		err := ToNaked(tc.input, dest)
+		err := ConvertTo(tc.input, dest)
 
 		require.NoError(t, err)
 		require.Equal(t, tc.expect, dest)
@@ -259,7 +259,7 @@ func TestDefaultValue(t *testing.T) {
 
 	for _, tc := range expects {
 		dest := &hasDefaultDest{}
-		err := ToNaked(tc.input, dest)
+		err := ConvertTo(tc.input, dest)
 		require.NoError(t, err)
 		require.Equal(t, tc.expect, dest)
 	}
@@ -292,7 +292,7 @@ func TestMultipleDestination(t *testing.T) {
 
 	for _, tc := range expects {
 		dest := &multipleDest{}
-		err := ToNaked(tc.input, dest)
+		err := ConvertTo(tc.input, dest)
 		require.NoError(t, err)
 		require.Equal(t, tc.expect, dest)
 	}

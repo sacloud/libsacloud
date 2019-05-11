@@ -88,7 +88,7 @@ func (r *Resource) PathName(pathName string) *Resource {
 // 省略した場合はNameをスネークケース(小文字+アンダーバー)に変換したものが利用される
 func (r *Resource) GetPathName() string {
 	if r.pathName != "" {
-		return r.pathSuffix
+		return r.pathName
 	}
 	return toSnakeCaseName(r.name)
 }
@@ -134,8 +134,7 @@ func (r *Resource) DefineOperation(name string) *Operation {
 	}
 }
 
-// DefineOperationFind Find操作を定義
-func (r *Resource) DefineOperationFind(nakedType meta.Type, findParam, result *Model) *Operation {
+func (r *Resource) defineOperationFind(nakedType meta.Type, findParam, result *Model, payloadName string) *Operation {
 	if findParam.Name == "" {
 		findParam.Name = "FindCondition"
 	}
@@ -153,7 +152,25 @@ func (r *Resource) DefineOperationFind(nakedType meta.Type, findParam, result *M
 		PathFormat(DefaultPathFormat).
 		Argument(ArgumentZone).
 		PassthroughArgumentToPayload("conditions", findParam).
-		ResultPluralFromEnvelope(result, &EnvelopePayloadDesc{PayloadType: nakedType})
+		ResultPluralFromEnvelope(result, &EnvelopePayloadDesc{
+			PayloadType: nakedType,
+			PayloadName: payloadName,
+		})
+}
+
+// DefineOperationFind Find操作を定義
+func (r *Resource) DefineOperationFind(nakedType meta.Type, findParam, result *Model) *Operation {
+	return r.defineOperationFind(nakedType, findParam, result, "")
+}
+
+// DefineOperationApplianceFind Find操作を定義
+func (r *Resource) DefineOperationApplianceFind(nakedType meta.Type, findParam, result *Model) *Operation {
+	return r.defineOperationFind(nakedType, findParam, result, "Appliances")
+}
+
+// DefineOperationCommonServiceItemFind Find操作を定義
+func (r *Resource) DefineOperationCommonServiceItemFind(nakedType meta.Type, findParam, result *Model) *Operation {
+	return r.defineOperationFind(nakedType, findParam, result, "CommonServiceItems")
 }
 
 // OperationFind Find操作を追加
@@ -161,8 +178,7 @@ func (r *Resource) OperationFind(nakedType meta.Type, findParam, result *Model) 
 	return r.Operation(r.DefineOperationFind(nakedType, findParam, result))
 }
 
-// DefineOperationCreate Create操作を定義
-func (r *Resource) DefineOperationCreate(nakedType meta.Type, createParam, result *Model) *Operation {
+func (r *Resource) defineOperationCreate(nakedType meta.Type, createParam, result *Model, payloadName string) *Operation {
 	if createParam.Name == "" {
 		createParam.Name = r.name + "CreateRequest"
 	}
@@ -180,10 +196,31 @@ func (r *Resource) DefineOperationCreate(nakedType meta.Type, createParam, resul
 	return r.DefineOperation("Create").
 		Method(http.MethodPost).
 		PathFormat(DefaultPathFormat).
-		RequestEnvelope(&EnvelopePayloadDesc{PayloadType: nakedType}).
+		RequestEnvelope(&EnvelopePayloadDesc{
+			PayloadType: nakedType,
+			PayloadName: payloadName,
+		}).
 		Argument(ArgumentZone).
 		MappableArgument("param", createParam).
-		ResultFromEnvelope(result, &EnvelopePayloadDesc{PayloadType: nakedType})
+		ResultFromEnvelope(result, &EnvelopePayloadDesc{
+			PayloadType: nakedType,
+			PayloadName: payloadName,
+		})
+}
+
+// DefineOperationCreate Create操作を定義
+func (r *Resource) DefineOperationCreate(nakedType meta.Type, createParam, result *Model) *Operation {
+	return r.defineOperationCreate(nakedType, createParam, result, "")
+}
+
+// DefineOperationApplianceCreate Create操作を定義
+func (r *Resource) DefineOperationApplianceCreate(nakedType meta.Type, createParam, result *Model) *Operation {
+	return r.defineOperationCreate(nakedType, createParam, result, "Appliance")
+}
+
+// DefineOperationCommonServiceItemmCreate Create操作を定義
+func (r *Resource) DefineOperationCommonServiceItemmCreate(nakedType meta.Type, createParam, result *Model) *Operation {
+	return r.defineOperationCreate(nakedType, createParam, result, "CommonServiceItem")
 }
 
 // OperationCreate Create操作を追加
@@ -191,8 +228,7 @@ func (r *Resource) OperationCreate(nakedType meta.Type, createParam, result *Mod
 	return r.Operation(r.DefineOperationCreate(nakedType, createParam, result))
 }
 
-// DefineOperationRead Read操作を定義
-func (r *Resource) DefineOperationRead(nakedType meta.Type, result *Model) *Operation {
+func (r *Resource) defineOperationRead(nakedType meta.Type, result *Model, payloadName string) *Operation {
 	if result.Name == "" {
 		result.Name = r.name
 	}
@@ -206,7 +242,25 @@ func (r *Resource) DefineOperationRead(nakedType meta.Type, result *Model) *Oper
 		PathFormat(DefaultPathFormatWithID).
 		Argument(ArgumentZone).
 		Argument(ArgumentID).
-		ResultFromEnvelope(result, &EnvelopePayloadDesc{PayloadType: nakedType})
+		ResultFromEnvelope(result, &EnvelopePayloadDesc{
+			PayloadType: nakedType,
+			PayloadName: payloadName,
+		})
+}
+
+// DefineOperationRead Read操作を定義
+func (r *Resource) DefineOperationRead(nakedType meta.Type, result *Model) *Operation {
+	return r.defineOperationRead(nakedType, result, "")
+}
+
+// DefineOperationApplianceRead Read操作を定義
+func (r *Resource) DefineOperationApplianceRead(nakedType meta.Type, result *Model) *Operation {
+	return r.defineOperationRead(nakedType, result, "Appliance")
+}
+
+// DefineOperationCommonServiceItemRead Read操作を定義
+func (r *Resource) DefineOperationCommonServiceItemRead(nakedType meta.Type, result *Model) *Operation {
+	return r.defineOperationRead(nakedType, result, "CommonServiceItem")
 }
 
 // OperationRead Read操作を追加
@@ -214,8 +268,7 @@ func (r *Resource) OperationRead(nakedType meta.Type, result *Model) *Resource {
 	return r.Operation(r.DefineOperationRead(nakedType, result))
 }
 
-// DefineOperationUpdate Update操作を定義
-func (r *Resource) DefineOperationUpdate(nakedType meta.Type, updateParam, result *Model) *Operation {
+func (r *Resource) defineOperationUpdate(nakedType meta.Type, updateParam, result *Model, payloadName string) *Operation {
 	if updateParam.Name == "" {
 		updateParam.Name = r.name + "UpdateRequest"
 	}
@@ -233,11 +286,32 @@ func (r *Resource) DefineOperationUpdate(nakedType meta.Type, updateParam, resul
 	return r.DefineOperation("Update").
 		Method(http.MethodPut).
 		PathFormat(DefaultPathFormatWithID).
-		RequestEnvelope(&EnvelopePayloadDesc{PayloadType: nakedType}).
+		RequestEnvelope(&EnvelopePayloadDesc{
+			PayloadType: nakedType,
+			PayloadName: payloadName,
+		}).
 		Argument(ArgumentZone).
 		Argument(ArgumentID).
 		MappableArgument("param", updateParam).
-		ResultFromEnvelope(result, &EnvelopePayloadDesc{PayloadType: nakedType})
+		ResultFromEnvelope(result, &EnvelopePayloadDesc{
+			PayloadType: nakedType,
+			PayloadName: payloadName,
+		})
+}
+
+// DefineOperationUpdate Update操作を定義
+func (r *Resource) DefineOperationUpdate(nakedType meta.Type, updateParam, result *Model) *Operation {
+	return r.defineOperationUpdate(nakedType, updateParam, result, "")
+}
+
+// DefineOperationApplianceUpdate Update操作を定義
+func (r *Resource) DefineOperationApplianceUpdate(nakedType meta.Type, updateParam, result *Model) *Operation {
+	return r.defineOperationUpdate(nakedType, updateParam, result, "Appliance")
+}
+
+// DefineOperationCommonServiceItemUpdate Update操作を定義
+func (r *Resource) DefineOperationCommonServiceItemUpdate(nakedType meta.Type, updateParam, result *Model) *Operation {
+	return r.defineOperationUpdate(nakedType, updateParam, result, "CommonServiceItem")
 }
 
 // OperationUpdate Update操作を追加
@@ -306,6 +380,8 @@ func (r *Resource) FieldName(form PayloadForm) string {
 	case form.IsPlural():
 		// TODO とりあえずワードで例外指定
 		switch {
+		case r.name == "NFS":
+			return r.name
 		case strings.HasSuffix(r.name, "ch"):
 			return r.name + "es"
 		default:

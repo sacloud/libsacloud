@@ -73,6 +73,59 @@ type CDROMOpenFTPResponseEnvelope struct {
 	FTPServer *naked.OpeningFTPServer `json:",omitempty"`
 }
 
+// NFSFindRequestEnvelope is envelop of API request
+type NFSFindRequestEnvelope struct {
+	Count   int                    `json:",omitempty"`
+	From    int                    `json:",omitempty"`
+	Sort    []string               `json:",omitempty"`
+	Filter  map[string]interface{} `json:",omitempty"`
+	Include []string               `json:",omitempty"`
+	Exclude []string               `json:",omitempty"`
+}
+
+// NFSFindResponseEnvelope is envelop of API response
+type NFSFindResponseEnvelope struct {
+	Total int `json:",omitempty"` // トータル件数
+	From  int `json:",omitempty"` // ページング開始ページ
+	Count int `json:",omitempty"` // 件数
+
+	Appliances []*naked.NFS `json:",omitempty"`
+}
+
+// NFSCreateRequestEnvelope is envelop of API request
+type NFSCreateRequestEnvelope struct {
+	Appliance *naked.NFS `json:",omitempty"`
+}
+
+// NFSCreateResponseEnvelope is envelop of API response
+type NFSCreateResponseEnvelope struct {
+	IsOk    bool `json:"is_ok,omitempty"` // is_ok項目
+	Success bool `json:",omitempty"`      // success項目
+
+	Appliance *naked.NFS `json:",omitempty"`
+}
+
+// NFSReadResponseEnvelope is envelop of API response
+type NFSReadResponseEnvelope struct {
+	IsOk    bool `json:"is_ok,omitempty"` // is_ok項目
+	Success bool `json:",omitempty"`      // success項目
+
+	Appliance *naked.NFS `json:",omitempty"`
+}
+
+// NFSUpdateRequestEnvelope is envelop of API request
+type NFSUpdateRequestEnvelope struct {
+	Appliance *naked.NFS `json:",omitempty"`
+}
+
+// NFSUpdateResponseEnvelope is envelop of API response
+type NFSUpdateResponseEnvelope struct {
+	IsOk    bool `json:"is_ok,omitempty"` // is_ok項目
+	Success bool `json:",omitempty"`      // success項目
+
+	Appliance *naked.NFS `json:",omitempty"`
+}
+
 // NoteFindRequestEnvelope is envelop of API request
 type NoteFindRequestEnvelope struct {
 	Count   int                    `json:",omitempty"`

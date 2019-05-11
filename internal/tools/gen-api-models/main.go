@@ -85,16 +85,16 @@ func (o *{{ $struct }}) Set{{.Name}}(v {{ if .HasType }}{{ .TypeName }}{{ else }
 {{- end }} {{/* end of range .Fields */}}
 
 {{- if .HasNakedType }}
-// toNaked returns naked {{.Name}} 
-func (o *{{ .Name }}) toNaked() ({{.NakedType.GoTypeSourceCode}}, error) {
+// convertTo returns naked {{.Name}} 
+func (o *{{ .Name }}) convertTo() ({{.NakedType.GoTypeSourceCode}}, error) {
 	dest := {{.NakedType.ZeroInitializeSourceCode}}
-	err := mapconv.ToNaked(o, dest)
+	err := mapconv.ConvertTo(o, dest)
 	return dest, err
 }
 
-// parseNaked parse values from naked {{.Name}}
-func (o *{{ .Name }}) parseNaked(naked {{.NakedType.GoTypeSourceCode}}) error {
-	return mapconv.FromNaked(naked, o)
+// convertFrom parse values from naked {{.Name}}
+func (o *{{ .Name }}) convertFrom(naked {{.NakedType.GoTypeSourceCode}}) error {
+	return mapconv.ConvertFrom(naked, o)
 }
 
 {{- end }} {{/* end of if .HasNakedType  */}}
