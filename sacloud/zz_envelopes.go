@@ -3,6 +3,8 @@
 package sacloud
 
 import (
+	"time"
+
 	"github.com/sacloud/libsacloud-v2/sacloud/naked"
 	"github.com/sacloud/libsacloud-v2/sacloud/types"
 )
@@ -130,6 +132,34 @@ type NFSUpdateResponseEnvelope struct {
 // NFSShutdownRequestEnvelope is envelop of API request
 type NFSShutdownRequestEnvelope struct {
 	Force bool `json:",omitempty"`
+}
+
+// NFSMonitorFreeDiskSizeRequestEnvelope is envelop of API request
+type NFSMonitorFreeDiskSizeRequestEnvelope struct {
+	Start *time.Time `json:",omitempty"`
+	End   *time.Time `json:",omitempty"`
+}
+
+// NFSMonitorFreeDiskSizeResponseEnvelope is envelop of API response
+type NFSMonitorFreeDiskSizeResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Data *naked.MonitorValues `json:",omitempty"`
+}
+
+// NFSMonitorInterfaceRequestEnvelope is envelop of API request
+type NFSMonitorInterfaceRequestEnvelope struct {
+	Start *time.Time `json:",omitempty"`
+	End   *time.Time `json:",omitempty"`
+}
+
+// NFSMonitorInterfaceResponseEnvelope is envelop of API response
+type NFSMonitorInterfaceResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Data *naked.MonitorValues `json:",omitempty"`
 }
 
 // NoteFindRequestEnvelope is envelop of API request

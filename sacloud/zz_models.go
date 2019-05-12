@@ -989,6 +989,103 @@ func (o *ShutdownOption) SetForce(v bool) {
 }
 
 /*************************************************
+* FreeDiskSizeActivity
+*************************************************/
+
+// FreeDiskSizeActivity represents API parameter/response structure
+type FreeDiskSizeActivity struct {
+	Values []naked.MonitorFreeDiskSizeValue `mapconv:"FreeDiskSize"`
+}
+
+// Validate validates by field tags
+func (o *FreeDiskSizeActivity) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetValues returns value of Values
+func (o *FreeDiskSizeActivity) GetValues() []naked.MonitorFreeDiskSizeValue {
+	return o.Values
+}
+
+// convertTo returns naked FreeDiskSizeActivity
+func (o *FreeDiskSizeActivity) convertTo() (*naked.MonitorValues, error) {
+	dest := &naked.MonitorValues{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked FreeDiskSizeActivity
+func (o *FreeDiskSizeActivity) convertFrom(naked *naked.MonitorValues) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* MonitorCondition
+*************************************************/
+
+// MonitorCondition represents API parameter/response structure
+type MonitorCondition struct {
+	Start *time.Time `json:",omitempty"`
+	End   *time.Time `json:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *MonitorCondition) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetStart returns value of Start
+func (o *MonitorCondition) GetStart() *time.Time {
+	return o.Start
+}
+
+// SetStart sets value to Start
+func (o *MonitorCondition) SetStart(v *time.Time) {
+	o.Start = v
+}
+
+// GetEnd returns value of End
+func (o *MonitorCondition) GetEnd() *time.Time {
+	return o.End
+}
+
+// SetEnd sets value to End
+func (o *MonitorCondition) SetEnd(v *time.Time) {
+	o.End = v
+}
+
+/*************************************************
+* InterfaceActivity
+*************************************************/
+
+// InterfaceActivity represents API parameter/response structure
+type InterfaceActivity struct {
+	Values []naked.MonitorInterfaceValue `mapconv:"Interface"`
+}
+
+// Validate validates by field tags
+func (o *InterfaceActivity) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetValues returns value of Values
+func (o *InterfaceActivity) GetValues() []naked.MonitorInterfaceValue {
+	return o.Values
+}
+
+// convertTo returns naked InterfaceActivity
+func (o *InterfaceActivity) convertTo() (*naked.MonitorValues, error) {
+	dest := &naked.MonitorValues{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked InterfaceActivity
+func (o *InterfaceActivity) convertFrom(naked *naked.MonitorValues) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
 * Note
 *************************************************/
 
