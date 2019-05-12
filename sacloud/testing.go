@@ -1,6 +1,7 @@
 package sacloud
 
 import (
+	"context"
 	"encoding/json"
 	"log"
 	"net/http"
@@ -8,7 +9,6 @@ import (
 	"testing"
 
 	"github.com/sacloud/libsacloud-v2/sacloud/types"
-	"github.com/stretchr/testify/require"
 )
 
 func isAccTest() bool {
@@ -19,6 +19,8 @@ func isAccTest() bool {
 //
 // 通常は*testing.Tを実装として利用する
 type TestT interface {
+	Log(args ...interface{})
+	Logf(format string, args ...interface{})
 	Error(args ...interface{})
 	Errorf(format string, args ...interface{})
 	FailNow()
@@ -33,8 +35,8 @@ type CRUDTestCase struct {
 	// APICallerのセットアップ用Func、テストケースごとに1回呼ばれる
 	SetupAPICaller func() APICaller
 
-	// PreCheck テスト前の前提条件チェック用Func, テストケースごとに1回呼ばれる
-	PreCheck func(t *testing.T)
+	// Setup テスト前の準備(依存リソースの作成など)を行うためのFunc(省略可)
+	Setup func(*CRUDTestContext, APICaller) error
 
 	// Create Create操作のテスト用Func(省略可)
 	Create *CRUDTestFunc
@@ -45,11 +47,14 @@ type CRUDTestCase struct {
 	// Update Update操作のテスト用Func(省略可)
 	Update *CRUDTestFunc
 
+	// Shutdown Delete操作の前のシャットダウン(省略可)
+	Shutdown func(*CRUDTestContext, APICaller) error
+
 	// Delete Delete操作のテスト用Func(省略可)
 	Delete *CRUDTestDeleteFunc
 
 	// Cleanup APIで作成/変更したリソースなどのクリーンアップ用Func(省略化)
-	Cleanup func(APICaller)
+	Cleanup func(*CRUDTestContext, APICaller) error
 
 	// Parallel t.Parallelを呼ぶかのフラグ
 	Parallel bool
@@ -57,12 +62,15 @@ type CRUDTestCase struct {
 
 // CRUDTestContext CRUD操作テストでのコンテキスト、一連のテスト中に共有される
 type CRUDTestContext struct {
+	// ID CRUDテスト対象リソースのID
+	//
+	// Create/Read/Updateの戻り値がidAccessorの場合に各操作の後で設定される
 	ID types.ID
-}
 
-// CRUDTestIDHolder IDを保持するためのインターフェース
-type CRUDTestIDHolder interface {
-	GetID() types.ID
+	// Values 一連のテスト中に共有したい値
+	//
+	// 依存リソースのIDの保持などで利用する
+	Values map[string]interface{}
 }
 
 // CRUDTestFunc CRUD操作(DELETE以外)テストでのテスト用Func
@@ -139,17 +147,32 @@ func Test(t TestT, testCase *CRUDTestCase) {
 		t.Parallel()
 	}
 
-	testContext := &CRUDTestContext{}
+	testContext := &CRUDTestContext{
+		Values: make(map[string]interface{}),
+	}
+	defer func() {
+		// Cleanup
+		if testCase.Cleanup != nil {
+			if err := testCase.Cleanup(testContext, testCase.SetupAPICaller()); err != nil {
+				t.Logf("Cleanup is failed: ", err)
+			}
+		}
+	}()
+
+	if testCase.Setup != nil {
+		if err := testCase.Setup(testContext, testCase.SetupAPICaller()); err != nil {
+			t.Fatal("Setup is failed: ", err)
+		}
+	}
+
 	testFunc := func(f *CRUDTestFunc) error {
 		actual, err := f.Func(testContext, testCase.SetupAPICaller())
 		if err != nil {
 			return err
 		}
-		if idHolder, ok := actual.(CRUDTestIDHolder); ok {
+		if idHolder, ok := actual.(idAccessor); ok {
 			testContext.ID = idHolder.GetID()
 		}
-		actual, expected := f.Expect.Prepare(actual)
-		require.Equal(t, expected, actual)
 		return nil
 	}
 
@@ -157,6 +180,21 @@ func Test(t TestT, testCase *CRUDTestCase) {
 	if testCase.Create != nil {
 		if err := testFunc(testCase.Create); err != nil {
 			t.Fatal("Create is failed: ", err)
+		}
+
+		if testCase.Create.Expect != nil {
+
+			_, ok1 := testCase.Create.Expect.ExpectValue.(AvailabilityHolder)
+			_, ok2 := testCase.Create.Expect.ExpectValue.(InstanceStateHolder)
+			if ok1 || ok2 {
+				waiter := WaiterForUp(func() (interface{}, error) {
+					return testCase.Read.Func(testContext, testCase.SetupAPICaller())
+				})
+				if _, err := waiter.WaitForState(context.TODO()); err != nil {
+					t.Fatal("WaitForUp is failed: ", err)
+				}
+			}
+
 		}
 	}
 
@@ -169,6 +207,20 @@ func Test(t TestT, testCase *CRUDTestCase) {
 	if testCase.Update != nil {
 		if err := testFunc(testCase.Update); err != nil {
 			t.Fatal("Update is failed: ", err)
+		}
+	}
+
+	// Shutdown
+	if testCase.Shutdown != nil {
+		if err := testCase.Shutdown(testContext, testCase.SetupAPICaller()); err != nil {
+			t.Fatal("Shutdown is failed: ", err)
+		}
+
+		waiter := WaiterForDown(func() (interface{}, error) {
+			return testCase.Read.Func(testContext, testCase.SetupAPICaller())
+		})
+		if _, err := waiter.WaitForState(context.TODO()); err != nil {
+			t.Fatal("WaitForDown is failed: ", err)
 		}
 	}
 
@@ -189,8 +241,4 @@ func Test(t TestT, testCase *CRUDTestCase) {
 		}
 	}
 
-	// Cleanup
-	if testCase.Cleanup != nil {
-		testCase.Cleanup(testCase.SetupAPICaller())
-	}
 }

@@ -127,6 +127,11 @@ type NFSUpdateResponseEnvelope struct {
 	Appliance *naked.NFS `json:",omitempty"`
 }
 
+// NFSShutdownRequestEnvelope is envelop of API request
+type NFSShutdownRequestEnvelope struct {
+	Force bool `json:",omitempty"`
+}
+
 // NoteFindRequestEnvelope is envelop of API request
 type NoteFindRequestEnvelope struct {
 	Count   int                    `json:",omitempty"`

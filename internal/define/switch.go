@@ -21,13 +21,16 @@ func init() {
 			fields.CreatedAt(),
 			fields.ModifiedAt(),
 			fields.Zone(),
-			fields.UserSubnet(),
+			fields.UserSubnetNetworkMaskLen(),
+			fields.UserSubnetDefaultRoute(),
 		},
 	}
 
 	createParam := &schema.Model{
 		Fields: []*schema.FieldDesc{
 			fields.Name(),
+			fields.UserSubnetNetworkMaskLen(),
+			fields.UserSubnetDefaultRoute(),
 			fields.Description(),
 			fields.Tags(),
 			fields.IconID(),

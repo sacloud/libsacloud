@@ -352,6 +352,74 @@ func (r *Resource) OperationCRUD(nakedType meta.Type, findParam, createParam, up
 	return r
 }
 
+// OperationBoot リソースに対するBoot操作を追加
+func (r *Resource) OperationBoot() *Resource {
+	return r.Operation(r.DefineOperationBoot())
+}
+
+// DefineOperationBoot リソースに対するBoot操作を定義
+func (r *Resource) DefineOperationBoot() *Operation {
+	return r.DefineOperation("Boot").
+		Method(http.MethodPut).
+		PathFormat(IDAndSuffixPathFormat("power")).
+		Argument(ArgumentZone).
+		Argument(ArgumentID)
+}
+
+// OperationShutdown リソースに対するシャットダウン操作を追加
+func (r *Resource) OperationShutdown() *Resource {
+	return r.Operation(r.DefineOperationShutdown())
+}
+
+// DefineOperationShutdown リソースに対するシャットダウン操作を定義
+func (r *Resource) DefineOperationShutdown() *Operation {
+	return r.DefineOperation("Shutdown").
+		Method(http.MethodDelete).
+		PathFormat(IDAndSuffixPathFormat("power")).
+		Argument(ArgumentZone).
+		Argument(ArgumentID).
+		PassthroughArgumentToPayload("shutdownOption", &Model{
+			Name: "ShutdownOption",
+			Fields: []*FieldDesc{
+				{
+					Name: "Force",
+					Type: meta.TypeFlag,
+				},
+			},
+		})
+}
+
+// OperationReset リソースに対するリセット操作を追加
+func (r *Resource) OperationReset() *Resource {
+	return r.Operation(r.DefineOperationReset())
+}
+
+// DefineOperationReset リソースに対するリセット操作を定義
+func (r *Resource) DefineOperationReset() *Operation {
+	return r.DefineOperation("Reset").
+		Method(http.MethodPut).
+		PathFormat(IDAndSuffixPathFormat("reset")).
+		Argument(ArgumentZone).
+		Argument(ArgumentID)
+}
+
+// DefineOperationPowerManagement リソースに対する電源管理操作を定義
+func (r *Resource) DefineOperationPowerManagement() []*Operation {
+	return []*Operation{
+		r.DefineOperationBoot(),
+		r.DefineOperationShutdown(),
+		r.DefineOperationReset(),
+	}
+}
+
+// OperationPowerManagement リソースに対する基本的なCRUDを追加
+func (r *Resource) OperationPowerManagement() *Resource {
+	r.Operations(
+		r.DefineOperationPowerManagement()...,
+	)
+	return r
+}
+
 // FileSafeName スネークケースにしたResourceの名前、コード生成時の保存先ファイル名に利用される
 func (r *Resource) FileSafeName() string {
 	return toSnakeCaseName(r.name)

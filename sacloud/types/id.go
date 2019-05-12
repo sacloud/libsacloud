@@ -25,6 +25,11 @@ func (i *ID) UnmarshalJSON(b []byte) error {
 	return nil
 }
 
+// IsEmpty return true if ID is empty or zero value
+func (i ID) IsEmpty() bool {
+	return i.Int64() == 0
+}
+
 // String returns the literal text of the number.
 func (i ID) String() string {
 	return fmt.Sprintf("%d", i)

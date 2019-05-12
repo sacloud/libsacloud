@@ -537,6 +537,7 @@ type NFS struct {
 	InstanceStatusChangedAt *time.Time                  `mapconv:"Instance.StatusChangedAt"`
 	Interfaces              []naked.Interface
 	PlanID                  types.ID      `mapconv:"Remark.Plan.ID,Plan.ID"`
+	SwitchID                types.ID      `mapconv:"Remark.Switch.ID"`
 	Switch                  *naked.Switch `json:",omitempty"`
 	DefaultRoute            string        `mapconv:"Remark.Network.DefaultRoute" validate:"ipv4"`
 	NetworkMaskLen          int           `mapconv:"Remark.Network.NetworkMaskLen" validate:"min=1,max=32"`
@@ -665,6 +666,16 @@ func (o *NFS) GetPlanID() types.ID {
 // SetPlanID sets value to PlanID
 func (o *NFS) SetPlanID(v types.ID) {
 	o.PlanID = v
+}
+
+// GetSwitchID returns value of SwitchID
+func (o *NFS) GetSwitchID() types.ID {
+	return o.SwitchID
+}
+
+// SetSwitchID sets value to SwitchID
+func (o *NFS) SetSwitchID(v types.ID) {
+	o.SwitchID = v
 }
 
 // GetSwitch returns value of Switch
@@ -951,6 +962,30 @@ func (o *NFSUpdateRequest) convertTo() (*naked.NFS, error) {
 // convertFrom parse values from naked NFSUpdateRequest
 func (o *NFSUpdateRequest) convertFrom(naked *naked.NFS) error {
 	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* ShutdownOption
+*************************************************/
+
+// ShutdownOption represents API parameter/response structure
+type ShutdownOption struct {
+	Force bool
+}
+
+// Validate validates by field tags
+func (o *ShutdownOption) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetForce returns value of Force
+func (o *ShutdownOption) GetForce() bool {
+	return o.Force
+}
+
+// SetForce sets value to Force
+func (o *ShutdownOption) SetForce(v bool) {
+	o.Force = v
 }
 
 /*************************************************
@@ -1285,15 +1320,16 @@ func (o *NoteUpdateRequest) convertFrom(naked *naked.Note) error {
 
 // Switch represents API parameter/response structure
 type Switch struct {
-	ID          types.ID
-	Name        string `validate:"required"`
-	Description string
-	Tags        []string
-	Icon        *naked.Icon `json:",omitempty"`
-	CreatedAt   *time.Time
-	ModifiedAt  *time.Time
-	Zone        *naked.Zone       `json:",omitempty"`
-	UserSubnet  *naked.UserSubnet `json:",omitempty"`
+	ID             types.ID
+	Name           string `validate:"required"`
+	Description    string
+	Tags           []string
+	Icon           *naked.Icon `json:",omitempty"`
+	CreatedAt      *time.Time
+	ModifiedAt     *time.Time
+	Zone           *naked.Zone `json:",omitempty"`
+	NetworkMaskLen int         `mapconv:"UserSubnet.NetworkMaskLen" validate:"min=1,max=32"`
+	DefaultRoute   string      `mapconv:"UserSubnet.DefaultRoute" validate:"ipv4"`
 }
 
 // Validate validates by field tags
@@ -1401,14 +1437,24 @@ func (o *Switch) SetZone(v *naked.Zone) {
 	o.Zone = v
 }
 
-// GetUserSubnet returns value of UserSubnet
-func (o *Switch) GetUserSubnet() *naked.UserSubnet {
-	return o.UserSubnet
+// GetNetworkMaskLen returns value of NetworkMaskLen
+func (o *Switch) GetNetworkMaskLen() int {
+	return o.NetworkMaskLen
 }
 
-// SetUserSubnet sets value to UserSubnet
-func (o *Switch) SetUserSubnet(v *naked.UserSubnet) {
-	o.UserSubnet = v
+// SetNetworkMaskLen sets value to NetworkMaskLen
+func (o *Switch) SetNetworkMaskLen(v int) {
+	o.NetworkMaskLen = v
+}
+
+// GetDefaultRoute returns value of DefaultRoute
+func (o *Switch) GetDefaultRoute() string {
+	return o.DefaultRoute
+}
+
+// SetDefaultRoute sets value to DefaultRoute
+func (o *Switch) SetDefaultRoute(v string) {
+	o.DefaultRoute = v
 }
 
 // convertTo returns naked Switch
@@ -1429,10 +1475,12 @@ func (o *Switch) convertFrom(naked *naked.Switch) error {
 
 // SwitchCreateRequest represents API parameter/response structure
 type SwitchCreateRequest struct {
-	Name        string `validate:"required"`
-	Description string
-	Tags        []string
-	IconID      types.ID `mapconv:"Icon.ID"`
+	Name           string `validate:"required"`
+	NetworkMaskLen int    `mapconv:"UserSubnet.NetworkMaskLen" validate:"min=1,max=32"`
+	DefaultRoute   string `mapconv:"UserSubnet.DefaultRoute" validate:"ipv4"`
+	Description    string
+	Tags           []string
+	IconID         types.ID `mapconv:"Icon.ID"`
 }
 
 // Validate validates by field tags
@@ -1448,6 +1496,26 @@ func (o *SwitchCreateRequest) GetName() string {
 // SetName sets value to Name
 func (o *SwitchCreateRequest) SetName(v string) {
 	o.Name = v
+}
+
+// GetNetworkMaskLen returns value of NetworkMaskLen
+func (o *SwitchCreateRequest) GetNetworkMaskLen() int {
+	return o.NetworkMaskLen
+}
+
+// SetNetworkMaskLen sets value to NetworkMaskLen
+func (o *SwitchCreateRequest) SetNetworkMaskLen(v int) {
+	o.NetworkMaskLen = v
+}
+
+// GetDefaultRoute returns value of DefaultRoute
+func (o *SwitchCreateRequest) GetDefaultRoute() string {
+	return o.DefaultRoute
+}
+
+// SetDefaultRoute sets value to DefaultRoute
+func (o *SwitchCreateRequest) SetDefaultRoute(v string) {
+	o.DefaultRoute = v
 }
 
 // GetDescription returns value of Description

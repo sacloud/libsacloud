@@ -530,6 +530,87 @@ func (o *NFSOp) Delete(ctx context.Context, zone string, id types.ID) error {
 	return nil
 }
 
+// Boot is API call
+func (o *NFSOp) Boot(ctx context.Context, zone string, id types.ID) error {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/power", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+	})
+	if err != nil {
+		return err
+	}
+
+	var body interface{}
+
+	_, err = o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// Shutdown is API call
+func (o *NFSOp) Shutdown(ctx context.Context, zone string, id types.ID, shutdownOption *ShutdownOption) error {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/power", map[string]interface{}{
+		"rootURL":        SakuraCloudAPIRoot,
+		"pathSuffix":     o.PathSuffix,
+		"pathName":       o.PathName,
+		"zone":           zone,
+		"id":             id,
+		"shutdownOption": shutdownOption,
+	})
+	if err != nil {
+		return err
+	}
+
+	var body interface{}
+	{
+		if shutdownOption == nil {
+			shutdownOption = &ShutdownOption{}
+		}
+		if body == nil {
+			body = &NFSShutdownRequestEnvelope{}
+		}
+		v := body.(*NFSShutdownRequestEnvelope)
+		v.Force = shutdownOption.Force
+		body = v
+	}
+
+	_, err = o.Client.Do(ctx, "DELETE", url, body)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// Reset is API call
+func (o *NFSOp) Reset(ctx context.Context, zone string, id types.ID) error {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/reset", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+	})
+	if err != nil {
+		return err
+	}
+
+	var body interface{}
+
+	_, err = o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 /*************************************************
 * NoteOp
 *************************************************/

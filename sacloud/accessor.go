@@ -1,29 +1,6 @@
 package sacloud
 
-import (
-	"github.com/sacloud/libsacloud-v2/sacloud/types"
-)
-
-/************************************************
- SizeMB - SizeGB
-************************************************/
-
-type sizeMBAccessor interface {
-	GetSizeMB() int
-	SetSizeMB(size int)
-}
-
-func getSizeGB(target sizeMBAccessor) int {
-	sizeMB := target.GetSizeMB()
-	if sizeMB == 0 {
-		return 0
-	}
-	return sizeMB / 1024
-}
-
-func setSizeGB(target sizeMBAccessor, size int) {
-	target.SetSizeMB(size * 1024)
-}
+import "github.com/sacloud/libsacloud-v2/sacloud/types"
 
 /************************************************
  ID - StringID
@@ -48,4 +25,25 @@ func getInt64ID(target idAccessor) int64 {
 
 func setInt64ID(target idAccessor, id int64) {
 	target.SetID(types.ID(id))
+}
+
+/************************************************
+ SizeMB - SizeGB
+************************************************/
+
+type sizeMBAccessor interface {
+	GetSizeMB() int
+	SetSizeMB(size int)
+}
+
+func getSizeGB(target sizeMBAccessor) int {
+	sizeMB := target.GetSizeMB()
+	if sizeMB == 0 {
+		return 0
+	}
+	return sizeMB / 1024
+}
+
+func setSizeGB(target sizeMBAccessor, size int) {
+	target.SetSizeMB(size * 1024)
 }
