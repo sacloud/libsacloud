@@ -5,12 +5,15 @@ import (
 	"log"
 	"os"
 	"sync"
+	"testing"
 	"time"
 
 	"github.com/sacloud/libsacloud-v2"
 )
 
+var testZone string
 var apiCaller APICaller
+
 var accTestOnce sync.Once
 var accTestMu sync.Mutex
 
@@ -28,10 +31,19 @@ func singletonAPICaller() APICaller {
 		}
 		client := NewClient(accessToken, accessTokenSecret)
 		client.DefaultTimeoutDuration = 30 * time.Minute
-		client.UserAgent = fmt.Sprintf("test-libsacloud/%s", libsacloud.Version)
+		client.UserAgent = fmt.Sprintf("test-libsacloud-v2/%s", libsacloud.Version)
 		client.AcceptLanguage = "en-US,en;q=0.9"
 
 		apiCaller = client
 	})
 	return apiCaller
+}
+
+func TestMain(m *testing.M) {
+	testZone = os.Getenv("SAKURACLOUD_ZONE")
+	if testZone == "" {
+		testZone = "tk1v"
+	}
+	ret := m.Run()
+	os.Exit(ret)
 }

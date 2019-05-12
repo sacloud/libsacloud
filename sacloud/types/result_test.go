@@ -50,7 +50,6 @@ func TestResult_UnmarshalJSON(t *testing.T) {
 		} else {
 			require.NoError(t, err)
 		}
-
 		require.Equal(t, tc.expect, res)
 	}
 

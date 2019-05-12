@@ -5,11 +5,15 @@ type EServerInstanceStatus string
 
 // ServerInstanceStatuses サーバーインスタンスステータス
 var ServerInstanceStatuses = &struct {
-	Up   EServerInstanceStatus
-	Down EServerInstanceStatus
+	Unknown  EServerInstanceStatus
+	Up       EServerInstanceStatus
+	Cleaning EServerInstanceStatus
+	Down     EServerInstanceStatus
 }{
-	Up:   EServerInstanceStatus("up"),
-	Down: EServerInstanceStatus("down"),
+	Unknown:  EServerInstanceStatus(""),
+	Up:       EServerInstanceStatus("up"),
+	Cleaning: EServerInstanceStatus("cleaning"),
+	Down:     EServerInstanceStatus("down"),
 }
 
 // IsUp インスタンスが起動しているか判定

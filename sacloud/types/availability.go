@@ -5,6 +5,8 @@ type EAvailability string
 
 // Availabilities 有効状態
 var Availabilities = struct {
+	// Unknown 不明
+	Unknown EAvailability
 	// Available 有効
 	Available EAvailability // 有効
 	// Uploading アップロード中
@@ -14,6 +16,7 @@ var Availabilities = struct {
 	// Migrating マイグレーション中
 	Migrating EAvailability
 }{
+	Unknown:   EAvailability(""),
 	Available: EAvailability("available"),
 	Uploading: EAvailability("uploading"),
 	Failed:    EAvailability("failed"),

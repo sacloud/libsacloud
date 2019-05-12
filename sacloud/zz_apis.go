@@ -34,6 +34,9 @@ type NFSAPI interface {
 	Read(ctx context.Context, zone string, id types.ID) (*NFS, error)
 	Update(ctx context.Context, zone string, id types.ID, param *NFSUpdateRequest) (*NFS, error)
 	Delete(ctx context.Context, zone string, id types.ID) error
+	Boot(ctx context.Context, zone string, id types.ID) error
+	Shutdown(ctx context.Context, zone string, id types.ID, shutdownOption *ShutdownOption) error
+	Reset(ctx context.Context, zone string, id types.ID) error
 }
 
 /*************************************************

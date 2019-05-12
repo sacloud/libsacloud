@@ -27,6 +27,7 @@ func init() {
 			// plan
 			fields.AppliancePlanID(),
 			// switch
+			fields.ApplianceSwitchID(),
 			fields.Switch(),
 			// remark
 			fields.RemarkDefaultRoute(),
@@ -80,6 +81,11 @@ func init() {
 
 			// delete
 			r.DefineOperationDelete(),
+
+			// power management(boot/shutdown/reset)
+			r.DefineOperationBoot(),
+			r.DefineOperationShutdown(),
+			r.DefineOperationReset(),
 		)
 	}).PathName("appliance")
 }
