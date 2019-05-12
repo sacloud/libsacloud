@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/sacloud/libsacloud-v2/internal/schema/meta"
+	"github.com/sacloud/libsacloud-v2/sacloud/naked"
 )
 
 // Resources []*Resourceのエイリアス
@@ -418,6 +419,76 @@ func (r *Resource) OperationPowerManagement() *Resource {
 		r.DefineOperationPowerManagement()...,
 	)
 	return r
+}
+
+// DefineOperationMonitor アクティビティモニタ取得操作を定義
+func (r *Resource) DefineOperationMonitor(monitorParam, result *Model) *Operation {
+	return r.DefineOperation("Monitor").
+		Method(http.MethodGet).
+		PathFormat(IDAndSuffixPathFormat("monitor")).
+		Argument(ArgumentZone).
+		Argument(ArgumentID).
+		PassthroughArgumentToPayload("condition", monitorParam).
+		ResultFromEnvelope(result, &EnvelopePayloadDesc{
+			PayloadType: meta.Static(naked.MonitorValues{}),
+			PayloadName: "Data",
+		})
+}
+
+// OperationMonitor アクティビティモニタ取得操作を追加
+func (r *Resource) OperationMonitor(monitorParam, result *Model) *Resource {
+	return r.Operation(
+		r.DefineOperationMonitor(monitorParam, result),
+	)
+}
+
+// DefineOperationMonitorChild アクティビティモニタ取得操作を定義
+func (r *Resource) DefineOperationMonitorChild(funcNameSuffix, childResourceName string, monitorParam, result *Model) *Operation {
+	return r.DefineOperation("Monitor"+funcNameSuffix).
+		Method(http.MethodGet).
+		PathFormat(IDAndSuffixPathFormat(childResourceName+"/monitor")).
+		Argument(ArgumentZone).
+		Argument(ArgumentID).
+		PassthroughArgumentToPayload("condition", monitorParam).
+		ResultFromEnvelope(result, &EnvelopePayloadDesc{
+			PayloadType: meta.Static(naked.MonitorValues{}),
+			PayloadName: "Data",
+		})
+}
+
+// OperationMonitorChild アクティビティモニタ取得操作を追加
+func (r *Resource) OperationMonitorChild(funcNameSuffix, childResourceName string, monitorParam, result *Model) *Resource {
+	return r.Operation(
+		r.DefineOperationMonitorChild(funcNameSuffix, childResourceName, monitorParam, result),
+	)
+}
+
+// DefineOperationMonitorChildBy アプライアンスなどでの内部リソースインデックスを持つアクティビティモニタ取得操作を定義
+func (r *Resource) DefineOperationMonitorChildBy(funcNameSuffix, childResourceName string, monitorParam, result *Model) *Operation {
+
+	pathSuffix := childResourceName + "/{{if eq .index 0}}{{.index}}{{end}}/monitor"
+
+	return r.DefineOperation("Monitor"+funcNameSuffix).
+		Method(http.MethodGet).
+		PathFormat(IDAndSuffixPathFormat(pathSuffix)).
+		Argument(ArgumentZone).
+		Argument(ArgumentID).
+		Argument(&SimpleArgument{
+			Name: "index",
+			Type: meta.TypeInt,
+		}).
+		PassthroughArgumentToPayload("condition", monitorParam).
+		ResultFromEnvelope(result, &EnvelopePayloadDesc{
+			PayloadType: meta.Static(naked.MonitorValues{}),
+			PayloadName: "Data",
+		})
+}
+
+// OperationMonitorChildBy アプライアンスなどでの内部リソースインデックスを持つアクティビティモニタ取得操作を追加
+func (r *Resource) OperationMonitorChildBy(funcNameSuffix, childResourceName string, monitorParam, result *Model) *Resource {
+	return r.Operation(
+		r.DefineOperationMonitorChildBy(funcNameSuffix, childResourceName, monitorParam, result),
+	)
 }
 
 // FileSafeName スネークケースにしたResourceの名前、コード生成時の保存先ファイル名に利用される

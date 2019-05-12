@@ -86,6 +86,12 @@ func init() {
 			r.DefineOperationBoot(),
 			r.DefineOperationShutdown(),
 			r.DefineOperationReset(),
+
+			// monitor
+			r.DefineOperationMonitorChild("FreeDiskSize", "database",
+				monitorParameter, monitors.freeDiskSizeModel()),
+			r.DefineOperationMonitorChild("Interface", "interface",
+				monitorParameter, monitors.interfaceModel()),
 		)
 	}).PathName("appliance")
 }
