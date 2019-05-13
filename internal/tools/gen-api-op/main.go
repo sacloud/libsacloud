@@ -52,7 +52,7 @@ type {{ .TypeName }}Op struct{
 }
 
 // New{{ $typeName}}Op creates new {{ $typeName}}Op instance
-func New{{ $typeName}}Op(client APICaller) *{{ $typeName}}Op {
+func New{{ $typeName}}Op(client APICaller) {{ $typeName}}API {
 	return &{{ $typeName}}Op {
     	Client: client,
 		PathSuffix: "{{.GetPathSuffix}}",
