@@ -47,6 +47,7 @@ type Model struct {
 	Name      string       // 型名
 	Fields    []*FieldDesc // フィールド定義
 	NakedType meta.Type    // 対応するnaked型の情報
+	IsArray   bool
 	// TODO パッケージ名を設定できるようにすべきか?
 }
 
@@ -62,7 +63,11 @@ func (m *Model) Type() meta.Type {
 
 // GoType 型名
 func (m *Model) GoType() string {
-	return m.Name
+	prefix := ""
+	if m.IsArray {
+		prefix = "[]"
+	}
+	return prefix + m.Name
 }
 
 // GoPkg パッケージ名
@@ -77,11 +82,17 @@ func (m *Model) GoImportPath() string {
 
 // GoTypeSourceCode ソースコードでの型表現
 func (m *Model) GoTypeSourceCode() string {
+	if m.IsArray {
+		return fmt.Sprintf("[]*%s", m.Name)
+	}
 	return fmt.Sprintf("*%s", m.Name)
 }
 
 // ZeroInitializeSourceCode 型に応じたzero値での初期化コード
 func (m *Model) ZeroInitializeSourceCode() string {
+	if m.IsArray {
+		return fmt.Sprintf("[]*%s{}", m.Name)
+	}
 	return fmt.Sprintf("&%s{}", m.Name)
 }
 
@@ -106,4 +117,18 @@ func (m *Model) ImportStatementsForModelDef(additionalImports ...string) []strin
 		}
 	}
 	return uniqStrings(ss)
+}
+
+// FieldModels フィールド定義に含まれる*Model(FieldDesc.Type)を取得
+func (m *Model) FieldModels() []*Model {
+	var ms []*Model
+	for _, f := range m.Fields {
+		if f.Type == nil {
+			continue
+		}
+		if m, ok := f.Type.(*Model); ok {
+			ms = append(ms, m)
+		}
+	}
+	return ms
 }
