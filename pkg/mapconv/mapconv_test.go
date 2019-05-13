@@ -316,6 +316,14 @@ type recursiveDestChild struct {
 	Dest2 string
 }
 
+type recursiveSourceSlice struct {
+	Fields []*recursiveSourceChild `mapconv:"[]Slice,recursive"`
+}
+
+type recursiveDestSlice struct {
+	Slice []*recursiveDestChild
+}
+
 func TestRecursive(t *testing.T) {
 	expects := []struct {
 		input  *recursiveSource
@@ -345,6 +353,53 @@ func TestRecursive(t *testing.T) {
 
 		// reverse
 		source := &recursiveSource{}
+		err = ConvertFrom(tc.expect, source)
+		require.NoError(t, err)
+		require.Equal(t, tc.input, source)
+	}
+}
+
+func TestRecursiveSlice(t *testing.T) {
+	expects := []struct {
+		input  *recursiveSourceSlice
+		expect *recursiveDestSlice
+	}{
+		{
+			input: &recursiveSourceSlice{
+				Fields: []*recursiveSourceChild{
+					{
+						Field1: "value1",
+						Field2: "value2",
+					},
+					{
+						Field1: "value3",
+						Field2: "value4",
+					},
+				},
+			},
+			expect: &recursiveDestSlice{
+				Slice: []*recursiveDestChild{
+					{
+						Dest1: "value1",
+						Dest2: "value2",
+					},
+					{
+						Dest1: "value3",
+						Dest2: "value4",
+					},
+				},
+			},
+		},
+	}
+
+	for _, tc := range expects {
+		dest := &recursiveDestSlice{}
+		err := ConvertTo(tc.input, dest)
+		require.NoError(t, err)
+		require.Equal(t, tc.expect, dest)
+
+		// reverse
+		source := &recursiveSourceSlice{}
 		err = ConvertFrom(tc.expect, source)
 		require.NoError(t, err)
 		require.Equal(t, tc.input, source)
