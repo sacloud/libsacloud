@@ -219,8 +219,8 @@ func (r *Resource) DefineOperationApplianceCreate(nakedType meta.Type, createPar
 	return r.defineOperationCreate(nakedType, createParam, result, "Appliance")
 }
 
-// DefineOperationCommonServiceItemmCreate Create操作を定義
-func (r *Resource) DefineOperationCommonServiceItemmCreate(nakedType meta.Type, createParam, result *Model) *Operation {
+// DefineOperationCommonServiceItemCreate Create操作を定義
+func (r *Resource) DefineOperationCommonServiceItemCreate(nakedType meta.Type, createParam, result *Model) *Operation {
 	return r.defineOperationCreate(nakedType, createParam, result, "CommonServiceItem")
 }
 

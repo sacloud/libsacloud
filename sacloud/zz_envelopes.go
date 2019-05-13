@@ -76,6 +76,59 @@ type CDROMOpenFTPResponseEnvelope struct {
 	FTPServer *naked.OpeningFTPServer `json:",omitempty"`
 }
 
+// GSLBFindRequestEnvelope is envelop of API request
+type GSLBFindRequestEnvelope struct {
+	Count   int                    `json:",omitempty"`
+	From    int                    `json:",omitempty"`
+	Sort    []string               `json:",omitempty"`
+	Filter  map[string]interface{} `json:",omitempty"`
+	Include []string               `json:",omitempty"`
+	Exclude []string               `json:",omitempty"`
+}
+
+// GSLBFindResponseEnvelope is envelop of API response
+type GSLBFindResponseEnvelope struct {
+	Total int `json:",omitempty"` // トータル件数
+	From  int `json:",omitempty"` // ページング開始ページ
+	Count int `json:",omitempty"` // 件数
+
+	CommonServiceItems []*naked.GSLB `json:",omitempty"`
+}
+
+// GSLBCreateRequestEnvelope is envelop of API request
+type GSLBCreateRequestEnvelope struct {
+	CommonServiceItem *naked.GSLB `json:",omitempty"`
+}
+
+// GSLBCreateResponseEnvelope is envelop of API response
+type GSLBCreateResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	CommonServiceItem *naked.GSLB `json:",omitempty"`
+}
+
+// GSLBReadResponseEnvelope is envelop of API response
+type GSLBReadResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	CommonServiceItem *naked.GSLB `json:",omitempty"`
+}
+
+// GSLBUpdateRequestEnvelope is envelop of API request
+type GSLBUpdateRequestEnvelope struct {
+	CommonServiceItem *naked.GSLB `json:",omitempty"`
+}
+
+// GSLBUpdateResponseEnvelope is envelop of API response
+type GSLBUpdateResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	CommonServiceItem *naked.GSLB `json:",omitempty"`
+}
+
 // NFSFindRequestEnvelope is envelop of API request
 type NFSFindRequestEnvelope struct {
 	Count   int                    `json:",omitempty"`

@@ -112,6 +112,129 @@ func (f *fieldsDef) NFSClass() *schema.FieldDesc {
 	}
 }
 
+func (f *fieldsDef) GSLBProviderClass() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name:     "Class",
+		ReadOnly: true,
+		Type:     meta.TypeString,
+		Tags: &schema.FieldTags{
+			MapConv: "Provider.Class:gslb",
+		},
+	}
+}
+
+func (f *fieldsDef) GSLBFQDN() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name:     "FQDN",
+		ReadOnly: true,
+		Type:     meta.TypeString,
+		Tags: &schema.FieldTags{
+			MapConv: "Status.FQDN",
+		},
+	}
+}
+
+func (f *fieldsDef) GSLBHealthCheckProtocol() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "HealthCheckProtocol",
+		Type: meta.TypeString,
+		Tags: &schema.FieldTags{
+			MapConv:  "Settings.GSLB.HealthCheck.Protocol",
+			Validate: "oneof=http https ping tcp",
+		},
+	}
+}
+
+func (f *fieldsDef) GSLBHealthCheckHostHeader() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "HealthCheckHostHeader",
+		Type: meta.TypeString,
+		Tags: &schema.FieldTags{
+			MapConv: "Settings.GSLB.HealthCheck.Host",
+		},
+	}
+}
+
+func (f *fieldsDef) GSLBHealthCheckPath() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "HealthCheckPath",
+		Type: meta.TypeString,
+		Tags: &schema.FieldTags{
+			MapConv: "Settings.GSLB.HealthCheck.Path",
+		},
+	}
+}
+
+func (f *fieldsDef) GSLBHealthCheckResponseCode() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "HealthCheckResponseCode",
+		Type: meta.TypeStringNumber,
+		Tags: &schema.FieldTags{
+			MapConv: "Settings.GSLB.HealthCheck.Status",
+		},
+	}
+}
+
+func (f *fieldsDef) GSLBHealthCheckPort() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "HealthCheckPort",
+		Type: meta.TypeStringNumber,
+		Tags: &schema.FieldTags{
+			MapConv: "Settings.GSLB.HealthCheck.Port",
+		},
+	}
+}
+
+func (f *fieldsDef) GSLBDelayLoop() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "DelayLoop",
+		Type: meta.TypeInt,
+		Tags: &schema.FieldTags{
+			Validate: "min=10,max=60",
+			MapConv:  "Settings.GSLB.DelayLoop:10",
+		},
+	}
+}
+
+func (f *fieldsDef) GSLBWeighted() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "Weighted",
+		Type: meta.TypeStringFlag,
+		Tags: &schema.FieldTags{
+			MapConv: "Settings.GSLB.Weighted",
+		},
+	}
+}
+
+func (f *fieldsDef) GSLBDestinationServers() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "DestinationServers",
+		Type: meta.Static([]*naked.GSLBServer{}),
+		Tags: &schema.FieldTags{
+			MapConv:  "Settings.GSLB.Servers",
+			Validate: "min=0,max=6",
+		},
+	}
+}
+
+func (f *fieldsDef) GSLBSorryServer() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "SorryServer",
+		Type: meta.TypeString,
+		Tags: &schema.FieldTags{
+			MapConv: "Settings.GSLB.SorryServer",
+		},
+	}
+}
+
+func (f *fieldsDef) SettingsHash() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name:     "SettingsHash",
+		ReadOnly: true,
+		Type:     meta.TypeString,
+	}
+}
+
 func (f *fieldsDef) InstanceHostName() *schema.FieldDesc {
 	return &schema.FieldDesc{
 		Name:     "InstanceHostName",

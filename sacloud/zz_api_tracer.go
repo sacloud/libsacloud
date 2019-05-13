@@ -96,6 +96,72 @@ func (t *CDROMTracer) CloseFTP(ctx context.Context, zone string, id types.ID) er
 }
 
 /*************************************************
+* GSLBTracer
+*************************************************/
+
+// GSLBTracer is for trace GSLBOp operations
+type GSLBTracer struct {
+	Internal GSLBAPI
+}
+
+// NewGSLBTracer creates new GSLBTracer instance
+func NewGSLBTracer(in GSLBAPI) *GSLBTracer {
+	return &GSLBTracer{
+		Internal: in,
+	}
+}
+
+// Find is API call with trace log
+func (t *GSLBTracer) Find(ctx context.Context, zone string, conditions *FindCondition) ([]*GSLB, error) {
+	log.Println("[TRACE] GSLBTracer.Find start:	args => [", "zone=", zone, "conditions=", conditions, "]")
+	defer func() {
+		log.Println("[TRACE] GSLBTracer.Find: end")
+	}()
+
+	return t.Internal.Find(ctx, zone, conditions)
+}
+
+// Create is API call with trace log
+func (t *GSLBTracer) Create(ctx context.Context, zone string, param *GSLBCreateRequest) (*GSLB, error) {
+	log.Println("[TRACE] GSLBTracer.Create start:	args => [", "zone=", zone, "param=", param, "]")
+	defer func() {
+		log.Println("[TRACE] GSLBTracer.Create: end")
+	}()
+
+	return t.Internal.Create(ctx, zone, param)
+}
+
+// Read is API call with trace log
+func (t *GSLBTracer) Read(ctx context.Context, zone string, id types.ID) (*GSLB, error) {
+	log.Println("[TRACE] GSLBTracer.Read start:	args => [", "zone=", zone, "id=", id, "]")
+	defer func() {
+		log.Println("[TRACE] GSLBTracer.Read: end")
+	}()
+
+	return t.Internal.Read(ctx, zone, id)
+}
+
+// Update is API call with trace log
+func (t *GSLBTracer) Update(ctx context.Context, zone string, id types.ID, param *GSLBUpdateRequest) (*GSLB, error) {
+	log.Println("[TRACE] GSLBTracer.Update start:	args => [", "zone=", zone, "id=", id, "param=", param, "]")
+	defer func() {
+		log.Println("[TRACE] GSLBTracer.Update: end")
+	}()
+
+	return t.Internal.Update(ctx, zone, id, param)
+}
+
+// Delete is API call with trace log
+func (t *GSLBTracer) Delete(ctx context.Context, zone string, id types.ID) error {
+	log.Println("[TRACE] GSLBTracer.Delete start:	args => [", "zone=", zone, "id=", id, "]")
+	defer func() {
+		log.Println("[TRACE] GSLBTracer.Delete: end")
+	}()
+
+	return t.Internal.Delete(ctx, zone, id)
+}
+
+/*************************************************
 * NFSTracer
 *************************************************/
 

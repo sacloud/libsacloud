@@ -11,6 +11,10 @@ var (
 	TypeID = Static(types.ID(0))
 	// TypeFlag フラグ型(boolean)
 	TypeFlag = Static(false)
+	// TypeStringFlag 文字列フラグ型
+	TypeStringFlag = Static(types.StringFalse)
+	// TypeStringNumber 文字列数値型
+	TypeStringNumber = Static(types.StringNumber(0))
 	// TypeString 文字列
 	TypeString = Static("")
 	// TypeStringSlice 文字列スライス
