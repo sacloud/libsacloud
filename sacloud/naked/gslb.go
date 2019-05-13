@@ -32,7 +32,7 @@ type GSLBSettings struct {
 type GSLBSetting struct {
 	DelayLoop   int              `json:",omitemmpty" yaml:"delay_loop,omitempty" structs:",omitempty"`
 	HealthCheck *GSLBHealthCheck `json:",omitemmpty" yaml:"health_check,omitempty" structs:",omitempty"`
-	Weighted    types.StringFlag `json:",omitemmpty" yaml:"weighted,omitempty" structs:",omitempty"`
+	Weighted    types.StringFlag `yaml:"weighted"`
 	Servers     []*GSLBServer    `yaml:"servers"`
 	SorryServer string           `json:",omitempty" yaml:",omitempty" structs:",omitempty"` // ソーリーサーバー
 }
@@ -49,7 +49,7 @@ type GSLBHealthCheck struct {
 // GSLBServer GSLB配下のサーバー
 type GSLBServer struct {
 	IPAddress string             `json:",omitempty" yaml:"ip_address,omitempty" structs:",omitempty"` // IPアドレス
-	Enabled   types.StringFlag   `json:",omitempty" yaml:"enabled,omitempty" structs:",omitempty"`    // 有効/無効
+	Enabled   types.StringFlag   `yaml:"enabled" `                                                    // 有効/無効
 	Weight    types.StringNumber `json:",omitempty" yaml:"weight,omitempty" structs:",omitempty"`     // ウェイト
 }
 
