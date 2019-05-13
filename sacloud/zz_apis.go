@@ -24,6 +24,19 @@ type CDROMAPI interface {
 }
 
 /*************************************************
+* GSLBAPI
+*************************************************/
+
+// GSLBAPI is interface for operate GSLB resource
+type GSLBAPI interface {
+	Find(ctx context.Context, zone string, conditions *FindCondition) ([]*GSLB, error)
+	Create(ctx context.Context, zone string, param *GSLBCreateRequest) (*GSLB, error)
+	Read(ctx context.Context, zone string, id types.ID) (*GSLB, error)
+	Update(ctx context.Context, zone string, id types.ID, param *GSLBUpdateRequest) (*GSLB, error)
+	Delete(ctx context.Context, zone string, id types.ID) error
+}
+
+/*************************************************
 * NFSAPI
 *************************************************/
 

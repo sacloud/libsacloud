@@ -520,6 +520,598 @@ func (o *OpenFTPParam) SetChangePassword(v bool) {
 }
 
 /*************************************************
+* GSLB
+*************************************************/
+
+// GSLB represents API parameter/response structure
+type GSLB struct {
+	ID                      types.ID
+	Name                    string `validate:"required"`
+	Description             string
+	Tags                    []string
+	Availability            types.EAvailability
+	Icon                    *naked.Icon `json:",omitempty"`
+	CreatedAt               *time.Time
+	ModifiedAt              *time.Time
+	Class                   string `mapconv:"Provider.Class:gslb"`
+	SettingsHash            string
+	FQDN                    string              `mapconv:"Status.FQDN"`
+	DelayLoop               int                 `mapconv:"Settings.GSLB.DelayLoop:10" validate:"min=10,max=60"`
+	Weighted                types.StringFlag    `mapconv:"Settings.GSLB.Weighted"`
+	HealthCheckProtocol     string              `mapconv:"Settings.GSLB.HealthCheck.Protocol" validate:"oneof=http https ping tcp"`
+	HealthCheckHostHeader   string              `mapconv:"Settings.GSLB.HealthCheck.Host"`
+	HealthCheckPath         string              `mapconv:"Settings.GSLB.HealthCheck.Path"`
+	HealthCheckResponseCode types.StringNumber  `mapconv:"Settings.GSLB.HealthCheck.Status"`
+	HealthCheckPort         types.StringNumber  `mapconv:"Settings.GSLB.HealthCheck.Port"`
+	SorryServer             string              `mapconv:"Settings.GSLB.SorryServer"`
+	DestinationServers      []*naked.GSLBServer `mapconv:"Settings.GSLB.Servers" validate:"min=0,max=6"`
+}
+
+// Validate validates by field tags
+func (o *GSLB) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetID returns value of ID
+func (o *GSLB) GetID() types.ID {
+	return o.ID
+}
+
+// SetID sets value to ID
+func (o *GSLB) SetID(v types.ID) {
+	o.ID = v
+}
+
+// GetStringID gets value to StringID
+func (o *GSLB) GetStringID() string {
+	return getStringID(o)
+}
+
+// SetStringID sets value to StringID
+func (o *GSLB) SetStringID(v string) {
+	setStringID(o, v)
+}
+
+// GetInt64ID gets value to Int64ID
+func (o *GSLB) GetInt64ID() int64 {
+	return getInt64ID(o)
+}
+
+// SetInt64ID sets value to Int64ID
+func (o *GSLB) SetInt64ID(v int64) {
+	setInt64ID(o, v)
+}
+
+// GetName returns value of Name
+func (o *GSLB) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *GSLB) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *GSLB) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *GSLB) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetTags returns value of Tags
+func (o *GSLB) GetTags() []string {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *GSLB) SetTags(v []string) {
+	o.Tags = v
+}
+
+// GetAvailability returns value of Availability
+func (o *GSLB) GetAvailability() types.EAvailability {
+	return o.Availability
+}
+
+// SetAvailability sets value to Availability
+func (o *GSLB) SetAvailability(v types.EAvailability) {
+	o.Availability = v
+}
+
+// GetIcon returns value of Icon
+func (o *GSLB) GetIcon() *naked.Icon {
+	return o.Icon
+}
+
+// SetIcon sets value to Icon
+func (o *GSLB) SetIcon(v *naked.Icon) {
+	o.Icon = v
+}
+
+// GetCreatedAt returns value of CreatedAt
+func (o *GSLB) GetCreatedAt() *time.Time {
+	return o.CreatedAt
+}
+
+// SetCreatedAt sets value to CreatedAt
+func (o *GSLB) SetCreatedAt(v *time.Time) {
+	o.CreatedAt = v
+}
+
+// GetModifiedAt returns value of ModifiedAt
+func (o *GSLB) GetModifiedAt() *time.Time {
+	return o.ModifiedAt
+}
+
+// SetModifiedAt sets value to ModifiedAt
+func (o *GSLB) SetModifiedAt(v *time.Time) {
+	o.ModifiedAt = v
+}
+
+// GetClass returns value of Class
+func (o *GSLB) GetClass() string {
+	return o.Class
+}
+
+// GetSettingsHash returns value of SettingsHash
+func (o *GSLB) GetSettingsHash() string {
+	return o.SettingsHash
+}
+
+// GetFQDN returns value of FQDN
+func (o *GSLB) GetFQDN() string {
+	return o.FQDN
+}
+
+// GetDelayLoop returns value of DelayLoop
+func (o *GSLB) GetDelayLoop() int {
+	return o.DelayLoop
+}
+
+// SetDelayLoop sets value to DelayLoop
+func (o *GSLB) SetDelayLoop(v int) {
+	o.DelayLoop = v
+}
+
+// GetWeighted returns value of Weighted
+func (o *GSLB) GetWeighted() types.StringFlag {
+	return o.Weighted
+}
+
+// SetWeighted sets value to Weighted
+func (o *GSLB) SetWeighted(v types.StringFlag) {
+	o.Weighted = v
+}
+
+// GetHealthCheckProtocol returns value of HealthCheckProtocol
+func (o *GSLB) GetHealthCheckProtocol() string {
+	return o.HealthCheckProtocol
+}
+
+// SetHealthCheckProtocol sets value to HealthCheckProtocol
+func (o *GSLB) SetHealthCheckProtocol(v string) {
+	o.HealthCheckProtocol = v
+}
+
+// GetHealthCheckHostHeader returns value of HealthCheckHostHeader
+func (o *GSLB) GetHealthCheckHostHeader() string {
+	return o.HealthCheckHostHeader
+}
+
+// SetHealthCheckHostHeader sets value to HealthCheckHostHeader
+func (o *GSLB) SetHealthCheckHostHeader(v string) {
+	o.HealthCheckHostHeader = v
+}
+
+// GetHealthCheckPath returns value of HealthCheckPath
+func (o *GSLB) GetHealthCheckPath() string {
+	return o.HealthCheckPath
+}
+
+// SetHealthCheckPath sets value to HealthCheckPath
+func (o *GSLB) SetHealthCheckPath(v string) {
+	o.HealthCheckPath = v
+}
+
+// GetHealthCheckResponseCode returns value of HealthCheckResponseCode
+func (o *GSLB) GetHealthCheckResponseCode() types.StringNumber {
+	return o.HealthCheckResponseCode
+}
+
+// SetHealthCheckResponseCode sets value to HealthCheckResponseCode
+func (o *GSLB) SetHealthCheckResponseCode(v types.StringNumber) {
+	o.HealthCheckResponseCode = v
+}
+
+// GetHealthCheckPort returns value of HealthCheckPort
+func (o *GSLB) GetHealthCheckPort() types.StringNumber {
+	return o.HealthCheckPort
+}
+
+// SetHealthCheckPort sets value to HealthCheckPort
+func (o *GSLB) SetHealthCheckPort(v types.StringNumber) {
+	o.HealthCheckPort = v
+}
+
+// GetSorryServer returns value of SorryServer
+func (o *GSLB) GetSorryServer() string {
+	return o.SorryServer
+}
+
+// SetSorryServer sets value to SorryServer
+func (o *GSLB) SetSorryServer(v string) {
+	o.SorryServer = v
+}
+
+// GetDestinationServers returns value of DestinationServers
+func (o *GSLB) GetDestinationServers() []*naked.GSLBServer {
+	return o.DestinationServers
+}
+
+// SetDestinationServers sets value to DestinationServers
+func (o *GSLB) SetDestinationServers(v []*naked.GSLBServer) {
+	o.DestinationServers = v
+}
+
+// convertTo returns naked GSLB
+func (o *GSLB) convertTo() (*naked.GSLB, error) {
+	dest := &naked.GSLB{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked GSLB
+func (o *GSLB) convertFrom(naked *naked.GSLB) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* GSLBCreateRequest
+*************************************************/
+
+// GSLBCreateRequest represents API parameter/response structure
+type GSLBCreateRequest struct {
+	Class                   string              `mapconv:"Provider.Class:gslb"`
+	HealthCheckProtocol     string              `mapconv:"Settings.GSLB.HealthCheck.Protocol" validate:"oneof=http https ping tcp"`
+	HealthCheckHostHeader   string              `mapconv:"Settings.GSLB.HealthCheck.Host"`
+	HealthCheckPath         string              `mapconv:"Settings.GSLB.HealthCheck.Path"`
+	HealthCheckResponseCode types.StringNumber  `mapconv:"Settings.GSLB.HealthCheck.Status"`
+	HealthCheckPort         types.StringNumber  `mapconv:"Settings.GSLB.HealthCheck.Port"`
+	DelayLoop               int                 `mapconv:"Settings.GSLB.DelayLoop:10" validate:"min=10,max=60"`
+	Weighted                types.StringFlag    `mapconv:"Settings.GSLB.Weighted"`
+	SorryServer             string              `mapconv:"Settings.GSLB.SorryServer"`
+	DestinationServers      []*naked.GSLBServer `mapconv:"Settings.GSLB.Servers" validate:"min=0,max=6"`
+	Name                    string              `validate:"required"`
+	Description             string
+	Tags                    []string
+	IconID                  types.ID `mapconv:"Icon.ID"`
+}
+
+// Validate validates by field tags
+func (o *GSLBCreateRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetClass returns value of Class
+func (o *GSLBCreateRequest) GetClass() string {
+	return o.Class
+}
+
+// GetHealthCheckProtocol returns value of HealthCheckProtocol
+func (o *GSLBCreateRequest) GetHealthCheckProtocol() string {
+	return o.HealthCheckProtocol
+}
+
+// SetHealthCheckProtocol sets value to HealthCheckProtocol
+func (o *GSLBCreateRequest) SetHealthCheckProtocol(v string) {
+	o.HealthCheckProtocol = v
+}
+
+// GetHealthCheckHostHeader returns value of HealthCheckHostHeader
+func (o *GSLBCreateRequest) GetHealthCheckHostHeader() string {
+	return o.HealthCheckHostHeader
+}
+
+// SetHealthCheckHostHeader sets value to HealthCheckHostHeader
+func (o *GSLBCreateRequest) SetHealthCheckHostHeader(v string) {
+	o.HealthCheckHostHeader = v
+}
+
+// GetHealthCheckPath returns value of HealthCheckPath
+func (o *GSLBCreateRequest) GetHealthCheckPath() string {
+	return o.HealthCheckPath
+}
+
+// SetHealthCheckPath sets value to HealthCheckPath
+func (o *GSLBCreateRequest) SetHealthCheckPath(v string) {
+	o.HealthCheckPath = v
+}
+
+// GetHealthCheckResponseCode returns value of HealthCheckResponseCode
+func (o *GSLBCreateRequest) GetHealthCheckResponseCode() types.StringNumber {
+	return o.HealthCheckResponseCode
+}
+
+// SetHealthCheckResponseCode sets value to HealthCheckResponseCode
+func (o *GSLBCreateRequest) SetHealthCheckResponseCode(v types.StringNumber) {
+	o.HealthCheckResponseCode = v
+}
+
+// GetHealthCheckPort returns value of HealthCheckPort
+func (o *GSLBCreateRequest) GetHealthCheckPort() types.StringNumber {
+	return o.HealthCheckPort
+}
+
+// SetHealthCheckPort sets value to HealthCheckPort
+func (o *GSLBCreateRequest) SetHealthCheckPort(v types.StringNumber) {
+	o.HealthCheckPort = v
+}
+
+// GetDelayLoop returns value of DelayLoop
+func (o *GSLBCreateRequest) GetDelayLoop() int {
+	return o.DelayLoop
+}
+
+// SetDelayLoop sets value to DelayLoop
+func (o *GSLBCreateRequest) SetDelayLoop(v int) {
+	o.DelayLoop = v
+}
+
+// GetWeighted returns value of Weighted
+func (o *GSLBCreateRequest) GetWeighted() types.StringFlag {
+	return o.Weighted
+}
+
+// SetWeighted sets value to Weighted
+func (o *GSLBCreateRequest) SetWeighted(v types.StringFlag) {
+	o.Weighted = v
+}
+
+// GetSorryServer returns value of SorryServer
+func (o *GSLBCreateRequest) GetSorryServer() string {
+	return o.SorryServer
+}
+
+// SetSorryServer sets value to SorryServer
+func (o *GSLBCreateRequest) SetSorryServer(v string) {
+	o.SorryServer = v
+}
+
+// GetDestinationServers returns value of DestinationServers
+func (o *GSLBCreateRequest) GetDestinationServers() []*naked.GSLBServer {
+	return o.DestinationServers
+}
+
+// SetDestinationServers sets value to DestinationServers
+func (o *GSLBCreateRequest) SetDestinationServers(v []*naked.GSLBServer) {
+	o.DestinationServers = v
+}
+
+// GetName returns value of Name
+func (o *GSLBCreateRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *GSLBCreateRequest) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *GSLBCreateRequest) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *GSLBCreateRequest) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetTags returns value of Tags
+func (o *GSLBCreateRequest) GetTags() []string {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *GSLBCreateRequest) SetTags(v []string) {
+	o.Tags = v
+}
+
+// GetIconID returns value of IconID
+func (o *GSLBCreateRequest) GetIconID() types.ID {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *GSLBCreateRequest) SetIconID(v types.ID) {
+	o.IconID = v
+}
+
+// convertTo returns naked GSLBCreateRequest
+func (o *GSLBCreateRequest) convertTo() (*naked.GSLB, error) {
+	dest := &naked.GSLB{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked GSLBCreateRequest
+func (o *GSLBCreateRequest) convertFrom(naked *naked.GSLB) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* GSLBUpdateRequest
+*************************************************/
+
+// GSLBUpdateRequest represents API parameter/response structure
+type GSLBUpdateRequest struct {
+	HealthCheckProtocol     string              `mapconv:"Settings.GSLB.HealthCheck.Protocol" validate:"oneof=http https ping tcp"`
+	HealthCheckHostHeader   string              `mapconv:"Settings.GSLB.HealthCheck.Host"`
+	HealthCheckPath         string              `mapconv:"Settings.GSLB.HealthCheck.Path"`
+	HealthCheckResponseCode types.StringNumber  `mapconv:"Settings.GSLB.HealthCheck.Status"`
+	HealthCheckPort         types.StringNumber  `mapconv:"Settings.GSLB.HealthCheck.Port"`
+	DelayLoop               int                 `mapconv:"Settings.GSLB.DelayLoop:10" validate:"min=10,max=60"`
+	Weighted                types.StringFlag    `mapconv:"Settings.GSLB.Weighted"`
+	SorryServer             string              `mapconv:"Settings.GSLB.SorryServer"`
+	DestinationServers      []*naked.GSLBServer `mapconv:"Settings.GSLB.Servers" validate:"min=0,max=6"`
+	Name                    string              `validate:"required"`
+	Description             string
+	Tags                    []string
+	IconID                  types.ID `mapconv:"Icon.ID"`
+}
+
+// Validate validates by field tags
+func (o *GSLBUpdateRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetHealthCheckProtocol returns value of HealthCheckProtocol
+func (o *GSLBUpdateRequest) GetHealthCheckProtocol() string {
+	return o.HealthCheckProtocol
+}
+
+// SetHealthCheckProtocol sets value to HealthCheckProtocol
+func (o *GSLBUpdateRequest) SetHealthCheckProtocol(v string) {
+	o.HealthCheckProtocol = v
+}
+
+// GetHealthCheckHostHeader returns value of HealthCheckHostHeader
+func (o *GSLBUpdateRequest) GetHealthCheckHostHeader() string {
+	return o.HealthCheckHostHeader
+}
+
+// SetHealthCheckHostHeader sets value to HealthCheckHostHeader
+func (o *GSLBUpdateRequest) SetHealthCheckHostHeader(v string) {
+	o.HealthCheckHostHeader = v
+}
+
+// GetHealthCheckPath returns value of HealthCheckPath
+func (o *GSLBUpdateRequest) GetHealthCheckPath() string {
+	return o.HealthCheckPath
+}
+
+// SetHealthCheckPath sets value to HealthCheckPath
+func (o *GSLBUpdateRequest) SetHealthCheckPath(v string) {
+	o.HealthCheckPath = v
+}
+
+// GetHealthCheckResponseCode returns value of HealthCheckResponseCode
+func (o *GSLBUpdateRequest) GetHealthCheckResponseCode() types.StringNumber {
+	return o.HealthCheckResponseCode
+}
+
+// SetHealthCheckResponseCode sets value to HealthCheckResponseCode
+func (o *GSLBUpdateRequest) SetHealthCheckResponseCode(v types.StringNumber) {
+	o.HealthCheckResponseCode = v
+}
+
+// GetHealthCheckPort returns value of HealthCheckPort
+func (o *GSLBUpdateRequest) GetHealthCheckPort() types.StringNumber {
+	return o.HealthCheckPort
+}
+
+// SetHealthCheckPort sets value to HealthCheckPort
+func (o *GSLBUpdateRequest) SetHealthCheckPort(v types.StringNumber) {
+	o.HealthCheckPort = v
+}
+
+// GetDelayLoop returns value of DelayLoop
+func (o *GSLBUpdateRequest) GetDelayLoop() int {
+	return o.DelayLoop
+}
+
+// SetDelayLoop sets value to DelayLoop
+func (o *GSLBUpdateRequest) SetDelayLoop(v int) {
+	o.DelayLoop = v
+}
+
+// GetWeighted returns value of Weighted
+func (o *GSLBUpdateRequest) GetWeighted() types.StringFlag {
+	return o.Weighted
+}
+
+// SetWeighted sets value to Weighted
+func (o *GSLBUpdateRequest) SetWeighted(v types.StringFlag) {
+	o.Weighted = v
+}
+
+// GetSorryServer returns value of SorryServer
+func (o *GSLBUpdateRequest) GetSorryServer() string {
+	return o.SorryServer
+}
+
+// SetSorryServer sets value to SorryServer
+func (o *GSLBUpdateRequest) SetSorryServer(v string) {
+	o.SorryServer = v
+}
+
+// GetDestinationServers returns value of DestinationServers
+func (o *GSLBUpdateRequest) GetDestinationServers() []*naked.GSLBServer {
+	return o.DestinationServers
+}
+
+// SetDestinationServers sets value to DestinationServers
+func (o *GSLBUpdateRequest) SetDestinationServers(v []*naked.GSLBServer) {
+	o.DestinationServers = v
+}
+
+// GetName returns value of Name
+func (o *GSLBUpdateRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *GSLBUpdateRequest) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *GSLBUpdateRequest) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *GSLBUpdateRequest) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetTags returns value of Tags
+func (o *GSLBUpdateRequest) GetTags() []string {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *GSLBUpdateRequest) SetTags(v []string) {
+	o.Tags = v
+}
+
+// GetIconID returns value of IconID
+func (o *GSLBUpdateRequest) GetIconID() types.ID {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *GSLBUpdateRequest) SetIconID(v types.ID) {
+	o.IconID = v
+}
+
+// convertTo returns naked GSLBUpdateRequest
+func (o *GSLBUpdateRequest) convertTo() (*naked.GSLB, error) {
+	dest := &naked.GSLB{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked GSLBUpdateRequest
+func (o *GSLBUpdateRequest) convertFrom(naked *naked.GSLB) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
 * NFS
 *************************************************/
 
