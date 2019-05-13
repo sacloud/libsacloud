@@ -285,13 +285,16 @@ func (o *Operation) ResultsStatement() string {
 func (o *Operation) Models() Models {
 	ms := o.results.Models()
 	for _, arg := range o.MapDestinationDeciders() {
-		ms = append(ms, arg.DestinationModel())
+		m := arg.DestinationModel()
+		ms = append(ms, m)
+		ms = append(ms, m.FieldModels()...)
+
 	}
+
 	for _, arg := range o.PassthroughFieldDeciders() {
-		ms = append(ms, arg.DestinationModel())
-	}
-	for _, res := range o.results {
-		ms = append(ms, res.Model)
+		m := arg.DestinationModel()
+		ms = append(ms, m)
+		ms = append(ms, m.FieldModels()...)
 	}
 	return Models(ms).UniqByName()
 }

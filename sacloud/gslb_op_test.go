@@ -4,7 +4,6 @@ import (
 	"context"
 	"testing"
 
-	"github.com/sacloud/libsacloud-v2/sacloud/naked"
 	"github.com/sacloud/libsacloud-v2/sacloud/types"
 )
 
@@ -63,15 +62,9 @@ var (
 		DelayLoop:               20,
 		Weighted:                types.StringTrue,
 		SorryServer:             "8.8.8.8",
-		DestinationServers: []*naked.GSLBServer{
-			{
-				IPAddress: "192.2.0.1",
-				Enabled:   types.StringTrue,
-			},
-			{
-				IPAddress: "192.2.0.2",
-				Enabled:   types.StringTrue,
-			},
+		DestinationServers: []*GSLBServer{
+			{IPAddress: "192.2.0.1"},
+			{IPAddress: "192.2.0.2"},
 		},
 	}
 	createGSLBExpected = &GSLB{
@@ -87,16 +80,7 @@ var (
 		HealthCheckResponseCode: createGSLBParam.HealthCheckResponseCode,
 		HealthCheckPort:         createGSLBParam.HealthCheckPort,
 		SorryServer:             createGSLBParam.SorryServer,
-		DestinationServers: []*naked.GSLBServer{
-			{
-				IPAddress: "192.2.0.1",
-				Enabled:   types.StringTrue,
-			},
-			{
-				IPAddress: "192.2.0.2",
-				Enabled:   types.StringTrue,
-			},
-		},
+		DestinationServers:      createGSLBParam.DestinationServers,
 	}
 	updateGSLBParam = &GSLBUpdateRequest{
 		Name:                    "libsacloud-v2-gslb-upd",
@@ -109,16 +93,16 @@ var (
 		DelayLoop:               21,
 		Weighted:                types.StringTrue,
 		SorryServer:             "8.8.4.4",
-		DestinationServers: []*naked.GSLBServer{
+		DestinationServers: []*GSLBServer{
 			{
-				IPAddress: "192.2.1.1",
-				Enabled:   types.StringTrue,
-				Weight:    types.StringNumber(1000),
+				IPAddress: "192.2.0.11",
+				Enabled:   types.StringFalse,
+				Weight:    types.StringNumber(100),
 			},
 			{
-				IPAddress: "192.2.1.2",
-				Enabled:   types.StringTrue,
-				Weight:    types.StringNumber(1000),
+				IPAddress: "192.2.0.21",
+				Enabled:   types.StringFalse,
+				Weight:    types.StringNumber(200),
 			},
 		},
 	}
@@ -135,18 +119,7 @@ var (
 		HealthCheckResponseCode: updateGSLBParam.HealthCheckResponseCode,
 		HealthCheckPort:         updateGSLBParam.HealthCheckPort,
 		SorryServer:             updateGSLBParam.SorryServer,
-		DestinationServers: []*naked.GSLBServer{
-			{
-				IPAddress: "192.2.1.1",
-				Enabled:   types.StringTrue,
-				Weight:    types.StringNumber(1000),
-			},
-			{
-				IPAddress: "192.2.1.2",
-				Enabled:   types.StringTrue,
-				Weight:    types.StringNumber(1000),
-			},
-		},
+		DestinationServers:      updateGSLBParam.DestinationServers,
 	}
 )
 

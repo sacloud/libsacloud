@@ -535,16 +535,16 @@ type GSLB struct {
 	ModifiedAt              *time.Time
 	Class                   string `mapconv:"Provider.Class,default=gslb"`
 	SettingsHash            string
-	FQDN                    string              `mapconv:"Status.FQDN"`
-	DelayLoop               int                 `mapconv:"Settings.GSLB.DelayLoop,default=10" validate:"min=10,max=60"`
-	Weighted                types.StringFlag    `mapconv:"Settings.GSLB.Weighted"`
-	HealthCheckProtocol     string              `mapconv:"Settings.GSLB.HealthCheck.Protocol" validate:"oneof=http https ping tcp"`
-	HealthCheckHostHeader   string              `mapconv:"Settings.GSLB.HealthCheck.Host"`
-	HealthCheckPath         string              `mapconv:"Settings.GSLB.HealthCheck.Path"`
-	HealthCheckResponseCode types.StringNumber  `mapconv:"Settings.GSLB.HealthCheck.Status"`
-	HealthCheckPort         types.StringNumber  `mapconv:"Settings.GSLB.HealthCheck.Port"`
-	SorryServer             string              `mapconv:"Settings.GSLB.SorryServer"`
-	DestinationServers      []*naked.GSLBServer `mapconv:"Settings.GSLB.Servers" validate:"min=0,max=6"`
+	FQDN                    string             `mapconv:"Status.FQDN"`
+	DelayLoop               int                `mapconv:"Settings.GSLB.DelayLoop,default=10" validate:"min=10,max=60"`
+	Weighted                types.StringFlag   `mapconv:"Settings.GSLB.Weighted"`
+	HealthCheckProtocol     string             `mapconv:"Settings.GSLB.HealthCheck.Protocol" validate:"oneof=http https ping tcp"`
+	HealthCheckHostHeader   string             `mapconv:"Settings.GSLB.HealthCheck.Host"`
+	HealthCheckPath         string             `mapconv:"Settings.GSLB.HealthCheck.Path"`
+	HealthCheckResponseCode types.StringNumber `mapconv:"Settings.GSLB.HealthCheck.Status"`
+	HealthCheckPort         types.StringNumber `mapconv:"Settings.GSLB.HealthCheck.Port"`
+	SorryServer             string             `mapconv:"Settings.GSLB.SorryServer"`
+	DestinationServers      []*GSLBServer      `mapconv:"Settings.GSLB.[]Servers,recursive" validate:"min=0,max=6"`
 }
 
 // Validate validates by field tags
@@ -748,12 +748,12 @@ func (o *GSLB) SetSorryServer(v string) {
 }
 
 // GetDestinationServers returns value of DestinationServers
-func (o *GSLB) GetDestinationServers() []*naked.GSLBServer {
+func (o *GSLB) GetDestinationServers() []*GSLBServer {
 	return o.DestinationServers
 }
 
 // SetDestinationServers sets value to DestinationServers
-func (o *GSLB) SetDestinationServers(v []*naked.GSLBServer) {
+func (o *GSLB) SetDestinationServers(v []*GSLBServer) {
 	o.DestinationServers = v
 }
 
@@ -775,17 +775,17 @@ func (o *GSLB) convertFrom(naked *naked.GSLB) error {
 
 // GSLBCreateRequest represents API parameter/response structure
 type GSLBCreateRequest struct {
-	Class                   string              `mapconv:"Provider.Class,default=gslb"`
-	HealthCheckProtocol     string              `mapconv:"Settings.GSLB.HealthCheck.Protocol" validate:"oneof=http https ping tcp"`
-	HealthCheckHostHeader   string              `mapconv:"Settings.GSLB.HealthCheck.Host"`
-	HealthCheckPath         string              `mapconv:"Settings.GSLB.HealthCheck.Path"`
-	HealthCheckResponseCode types.StringNumber  `mapconv:"Settings.GSLB.HealthCheck.Status"`
-	HealthCheckPort         types.StringNumber  `mapconv:"Settings.GSLB.HealthCheck.Port"`
-	DelayLoop               int                 `mapconv:"Settings.GSLB.DelayLoop,default=10" validate:"min=10,max=60"`
-	Weighted                types.StringFlag    `mapconv:"Settings.GSLB.Weighted"`
-	SorryServer             string              `mapconv:"Settings.GSLB.SorryServer"`
-	DestinationServers      []*naked.GSLBServer `mapconv:"Settings.GSLB.Servers" validate:"min=0,max=6"`
-	Name                    string              `validate:"required"`
+	Class                   string             `mapconv:"Provider.Class,default=gslb"`
+	HealthCheckProtocol     string             `mapconv:"Settings.GSLB.HealthCheck.Protocol" validate:"oneof=http https ping tcp"`
+	HealthCheckHostHeader   string             `mapconv:"Settings.GSLB.HealthCheck.Host"`
+	HealthCheckPath         string             `mapconv:"Settings.GSLB.HealthCheck.Path"`
+	HealthCheckResponseCode types.StringNumber `mapconv:"Settings.GSLB.HealthCheck.Status"`
+	HealthCheckPort         types.StringNumber `mapconv:"Settings.GSLB.HealthCheck.Port"`
+	DelayLoop               int                `mapconv:"Settings.GSLB.DelayLoop,default=10" validate:"min=10,max=60"`
+	Weighted                types.StringFlag   `mapconv:"Settings.GSLB.Weighted"`
+	SorryServer             string             `mapconv:"Settings.GSLB.SorryServer"`
+	DestinationServers      []*GSLBServer      `mapconv:"Settings.GSLB.[]Servers,recursive" validate:"min=0,max=6"`
+	Name                    string             `validate:"required"`
 	Description             string
 	Tags                    []string
 	IconID                  types.ID `mapconv:"Icon.ID"`
@@ -882,12 +882,12 @@ func (o *GSLBCreateRequest) SetSorryServer(v string) {
 }
 
 // GetDestinationServers returns value of DestinationServers
-func (o *GSLBCreateRequest) GetDestinationServers() []*naked.GSLBServer {
+func (o *GSLBCreateRequest) GetDestinationServers() []*GSLBServer {
 	return o.DestinationServers
 }
 
 // SetDestinationServers sets value to DestinationServers
-func (o *GSLBCreateRequest) SetDestinationServers(v []*naked.GSLBServer) {
+func (o *GSLBCreateRequest) SetDestinationServers(v []*GSLBServer) {
 	o.DestinationServers = v
 }
 
@@ -944,21 +944,67 @@ func (o *GSLBCreateRequest) convertFrom(naked *naked.GSLB) error {
 }
 
 /*************************************************
+* GSLBServer
+*************************************************/
+
+// GSLBServer represents API parameter/response structure
+type GSLBServer struct {
+	IPAddress string             `validate:"ipv4"`
+	Enabled   types.StringFlag   `mapconv:",default=true"`
+	Weight    types.StringNumber `mapconv:",default=1"`
+}
+
+// Validate validates by field tags
+func (o *GSLBServer) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetIPAddress returns value of IPAddress
+func (o *GSLBServer) GetIPAddress() string {
+	return o.IPAddress
+}
+
+// SetIPAddress sets value to IPAddress
+func (o *GSLBServer) SetIPAddress(v string) {
+	o.IPAddress = v
+}
+
+// GetEnabled returns value of Enabled
+func (o *GSLBServer) GetEnabled() types.StringFlag {
+	return o.Enabled
+}
+
+// SetEnabled sets value to Enabled
+func (o *GSLBServer) SetEnabled(v types.StringFlag) {
+	o.Enabled = v
+}
+
+// GetWeight returns value of Weight
+func (o *GSLBServer) GetWeight() types.StringNumber {
+	return o.Weight
+}
+
+// SetWeight sets value to Weight
+func (o *GSLBServer) SetWeight(v types.StringNumber) {
+	o.Weight = v
+}
+
+/*************************************************
 * GSLBUpdateRequest
 *************************************************/
 
 // GSLBUpdateRequest represents API parameter/response structure
 type GSLBUpdateRequest struct {
-	HealthCheckProtocol     string              `mapconv:"Settings.GSLB.HealthCheck.Protocol" validate:"oneof=http https ping tcp"`
-	HealthCheckHostHeader   string              `mapconv:"Settings.GSLB.HealthCheck.Host"`
-	HealthCheckPath         string              `mapconv:"Settings.GSLB.HealthCheck.Path"`
-	HealthCheckResponseCode types.StringNumber  `mapconv:"Settings.GSLB.HealthCheck.Status"`
-	HealthCheckPort         types.StringNumber  `mapconv:"Settings.GSLB.HealthCheck.Port"`
-	DelayLoop               int                 `mapconv:"Settings.GSLB.DelayLoop,default=10" validate:"min=10,max=60"`
-	Weighted                types.StringFlag    `mapconv:"Settings.GSLB.Weighted"`
-	SorryServer             string              `mapconv:"Settings.GSLB.SorryServer"`
-	DestinationServers      []*naked.GSLBServer `mapconv:"Settings.GSLB.Servers" validate:"min=0,max=6"`
-	Name                    string              `validate:"required"`
+	HealthCheckProtocol     string             `mapconv:"Settings.GSLB.HealthCheck.Protocol" validate:"oneof=http https ping tcp"`
+	HealthCheckHostHeader   string             `mapconv:"Settings.GSLB.HealthCheck.Host"`
+	HealthCheckPath         string             `mapconv:"Settings.GSLB.HealthCheck.Path"`
+	HealthCheckResponseCode types.StringNumber `mapconv:"Settings.GSLB.HealthCheck.Status"`
+	HealthCheckPort         types.StringNumber `mapconv:"Settings.GSLB.HealthCheck.Port"`
+	DelayLoop               int                `mapconv:"Settings.GSLB.DelayLoop,default=10" validate:"min=10,max=60"`
+	Weighted                types.StringFlag   `mapconv:"Settings.GSLB.Weighted"`
+	SorryServer             string             `mapconv:"Settings.GSLB.SorryServer"`
+	DestinationServers      []*GSLBServer      `mapconv:"Settings.GSLB.[]Servers,recursive" validate:"min=0,max=6"`
+	Name                    string             `validate:"required"`
 	Description             string
 	Tags                    []string
 	IconID                  types.ID `mapconv:"Icon.ID"`
@@ -1050,12 +1096,12 @@ func (o *GSLBUpdateRequest) SetSorryServer(v string) {
 }
 
 // GetDestinationServers returns value of DestinationServers
-func (o *GSLBUpdateRequest) GetDestinationServers() []*naked.GSLBServer {
+func (o *GSLBUpdateRequest) GetDestinationServers() []*GSLBServer {
 	return o.DestinationServers
 }
 
 // SetDestinationServers sets value to DestinationServers
-func (o *GSLBUpdateRequest) SetDestinationServers(v []*naked.GSLBServer) {
+func (o *GSLBUpdateRequest) SetDestinationServers(v []*GSLBServer) {
 	o.DestinationServers = v
 }
 

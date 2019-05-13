@@ -209,9 +209,35 @@ func (f *fieldsDef) GSLBWeighted() *schema.FieldDesc {
 func (f *fieldsDef) GSLBDestinationServers() *schema.FieldDesc {
 	return &schema.FieldDesc{
 		Name: "DestinationServers",
-		Type: meta.Static([]*naked.GSLBServer{}),
+		Type: &schema.Model{
+			Name:    "GSLBServer",
+			IsArray: true,
+			Fields: []*schema.FieldDesc{
+				{
+					Name: "IPAddress",
+					Type: meta.TypeString,
+					Tags: &schema.FieldTags{
+						Validate: "ipv4",
+					},
+				},
+				{
+					Name: "Enabled",
+					Type: meta.TypeStringFlag,
+					Tags: &schema.FieldTags{
+						MapConv: ",default=true",
+					},
+				},
+				{
+					Name: "Weight",
+					Type: meta.TypeStringNumber,
+					Tags: &schema.FieldTags{
+						MapConv: ",default=1",
+					},
+				},
+			},
+		},
 		Tags: &schema.FieldTags{
-			MapConv:  "Settings.GSLB.Servers",
+			MapConv:  "Settings.GSLB.[]Servers,recursive",
 			Validate: "min=0,max=6",
 		},
 	}
