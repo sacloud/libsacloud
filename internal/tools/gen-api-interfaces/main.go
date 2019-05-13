@@ -34,14 +34,14 @@ import (
 {{- end }}
 )
 
-{{ range . }}
+{{ range . }} {{ $typeName := .TypeName }}
 
 /************************************************* 
-* {{.TypeName}}API
+* {{ $typeName }}API
 *************************************************/
 
-// {{ .TypeName }}API is interface for operate {{ .TypeName }} resource
-type {{ .TypeName }}API interface {
+// {{ $typeName }}API is interface for operate {{ $typeName }} resource
+type {{ $typeName }}API interface {
 {{ range .AllOperations }}
 	{{ .MethodName }}(ctx context.Context{{ range .AllArguments }}, {{ .ArgName }} {{ .TypeName }}{{ end }}) {{.ResultsStatement}} 
 {{- end -}}

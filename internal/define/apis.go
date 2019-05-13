@@ -3,6 +3,7 @@
 //go:generate go run ../tools/gen-api-interfaces/main.go
 //go:generate go run ../tools/gen-api-envelope/main.go
 //go:generate go run ../tools/gen-api-op/main.go
+//go:generate go run ../tools/gen-api-tracer/main.go
 package define
 
 import "github.com/sacloud/libsacloud-v2/internal/schema"
