@@ -24,7 +24,7 @@ type CDROMOp struct {
 }
 
 // NewCDROMOp creates new CDROMOp instance
-func NewCDROMOp(client APICaller) *CDROMOp {
+func NewCDROMOp(client APICaller) CDROMAPI {
 	return &CDROMOp{
 		Client:     client,
 		PathSuffix: "api/cloud/1.1",
@@ -320,7 +320,7 @@ type NFSOp struct {
 }
 
 // NewNFSOp creates new NFSOp instance
-func NewNFSOp(client APICaller) *NFSOp {
+func NewNFSOp(client APICaller) NFSAPI {
 	return &NFSOp{
 		Client:     client,
 		PathSuffix: "api/cloud/1.1",
@@ -716,7 +716,7 @@ type NoteOp struct {
 }
 
 // NewNoteOp creates new NoteOp instance
-func NewNoteOp(client APICaller) *NoteOp {
+func NewNoteOp(client APICaller) NoteAPI {
 	return &NoteOp{
 		Client:     client,
 		PathSuffix: "api/cloud/1.1",
@@ -941,7 +941,7 @@ type SwitchOp struct {
 }
 
 // NewSwitchOp creates new SwitchOp instance
-func NewSwitchOp(client APICaller) *SwitchOp {
+func NewSwitchOp(client APICaller) SwitchAPI {
 	return &SwitchOp{
 		Client:     client,
 		PathSuffix: "api/cloud/1.1",
@@ -1213,7 +1213,7 @@ type ZoneOp struct {
 }
 
 // NewZoneOp creates new ZoneOp instance
-func NewZoneOp(client APICaller) *ZoneOp {
+func NewZoneOp(client APICaller) ZoneAPI {
 	return &ZoneOp{
 		Client:     client,
 		PathSuffix: "api/cloud/1.1",
