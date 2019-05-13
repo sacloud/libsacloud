@@ -37,12 +37,21 @@ func ConvertTo(source interface{}, dest interface{}) error {
 				}
 			}
 
-			if structs.IsStruct(value) && tags.recursive {
-				dest := Map(make(map[string]interface{}))
-				if err := ConvertTo(value, &dest); err != nil {
-					return err
+			if tags.recursive {
+				var dest []interface{}
+				values := valueToSlice(value)
+				for _, v := range values {
+					destMap := Map(make(map[string]interface{}))
+					if err := ConvertTo(v, &destMap); err != nil {
+						return err
+					}
+					dest = append(dest, destMap)
 				}
-				value = dest
+				if len(dest) == 1 {
+					value = dest[0]
+				} else {
+					value = dest
+				}
 			}
 
 			destMap.Set(destKey, value)
@@ -89,12 +98,29 @@ func ConvertFrom(source interface{}, dest interface{}) error {
 			}
 
 			if tags.recursive {
-				t := reflect.TypeOf(f.Value()).Elem()
-				v := reflect.New(t).Interface()
-				if err := ConvertFrom(value, v); err != nil {
-					return err
+				t := reflect.TypeOf(f.Value())
+				if t.Kind() == reflect.Slice {
+					t = t.Elem().Elem()
+				} else {
+					t = t.Elem()
 				}
-				value = v
+
+				var dest []interface{}
+				values := valueToSlice(value)
+				for _, v := range values {
+
+					d := reflect.New(t).Interface()
+					if err := ConvertFrom(v, d); err != nil {
+						return err
+					}
+					dest = append(dest, d)
+				}
+
+				if len(dest) > 1 {
+					value = dest
+				} else {
+					value = dest[0]
+				}
 			}
 
 			destMap.Set(f.Name(), value)
