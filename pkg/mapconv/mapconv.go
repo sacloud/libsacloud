@@ -19,17 +19,31 @@ func ConvertTo(source interface{}, dest interface{}) error {
 			continue
 		}
 
-		tags := mapConv(f.Tag("mapconv")).values()
-		for _, tag := range tags {
+		tags := mapConv(f.Tag("mapconv")).value()
+		for _, key := range tags.keys {
 			destKey := f.Name()
 			value := f.Value()
 
-			if tag.key != "" {
-				destKey = tag.key
+			if key != "" {
+				destKey = key
 			}
-			if f.IsZero() && tag.defaultValue != nil {
-				value = tag.defaultValue
+			if f.IsZero() {
+				if tags.omitEmpty {
+					continue
+				}
+				if tags.defaultValue != nil {
+					value = tags.defaultValue
+				}
 			}
+
+			if structs.IsStruct(value) && tags.recursive {
+				dest := Map(make(map[string]interface{}))
+				if err := ConvertTo(value, &dest); err != nil {
+					return err
+				}
+				value = dest
+			}
+
 			destMap.Set(destKey, value)
 		}
 	}
@@ -53,15 +67,14 @@ func ConvertFrom(source interface{}, dest interface{}) error {
 			continue
 		}
 
-		tags := mapConv(f.Tag("mapconv")).values()
-		for _, tag := range tags {
-			key := f.Name()
-			if tag.key != "" {
-				key = tag.key
+		tags := mapConv(f.Tag("mapconv")).value()
+		for _, key := range tags.keys {
+			sourceKey := f.Name()
+			if key != "" {
+				sourceKey = key
 			}
-			value := f.Value()
 
-			value, err := sourceMap.Get(key)
+			value, err := sourceMap.Get(sourceKey)
 			if err != nil {
 				return err
 			}
@@ -83,24 +96,42 @@ func ConvertFrom(source interface{}, dest interface{}) error {
 type mapConv string
 
 type mapConvValue struct {
-	key          string
+	keys         []string
 	defaultValue interface{}
+	omitEmpty    bool
+	recursive    bool
 }
 
-func (m mapConv) values() []*mapConvValue {
-	var values []*mapConvValue
+func (m mapConv) value() mapConvValue {
 	tokens := strings.Split(string(m), ",")
-	for _, token := range tokens {
-		keyValues := strings.Split(token, ":")
-		key := keyValues[0]
-		var def interface{}
-		if len(keyValues) > 1 {
-			def = strings.Join(keyValues[1:], "")
+	key := tokens[0]
+
+	keys := strings.Split(key, "/")
+	var defaultValue interface{}
+	var omitEmpty, reqursive bool
+
+	for i, token := range tokens {
+		if i == 0 {
+			continue
 		}
-		values = append(values, &mapConvValue{
-			key:          key,
-			defaultValue: def,
-		})
+
+		switch {
+		case strings.HasPrefix(token, "omitempty"):
+			omitEmpty = true
+		case strings.HasPrefix(token, "recursive"):
+			reqursive = true
+		case strings.HasPrefix(token, "default"):
+			keyValue := strings.Split(token, "=")
+			if len(keyValue) > 1 {
+				defaultValue = strings.Join(keyValue[1:], "")
+			}
+		}
+
 	}
-	return values
+	return mapConvValue{
+		keys:         keys,
+		defaultValue: defaultValue,
+		omitEmpty:    omitEmpty,
+		recursive:    reqursive,
+	}
 }

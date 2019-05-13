@@ -237,7 +237,7 @@ func TestInsertInnerSlice(t *testing.T) {
 }
 
 type hasDefaultSource struct {
-	Field string `mapconv:"Field:default-value"`
+	Field string `mapconv:"Field,default=default-value"`
 }
 
 type hasDefaultDest struct {
@@ -266,7 +266,7 @@ func TestDefaultValue(t *testing.T) {
 }
 
 type multipleSource struct {
-	Field string `mapconv:"Field1,Field2"`
+	Field string `mapconv:"Field1/Field2"`
 }
 
 type multipleDest struct {
@@ -292,6 +292,53 @@ func TestMultipleDestination(t *testing.T) {
 
 	for _, tc := range expects {
 		dest := &multipleDest{}
+		err := ConvertTo(tc.input, dest)
+		require.NoError(t, err)
+		require.Equal(t, tc.expect, dest)
+	}
+}
+
+type recursiveSource struct {
+	Field *recursiveSourceChild `mapconv:",recursive"`
+}
+
+type recursiveSourceChild struct {
+	Field1 string `mapconv:"Dest1"`
+	Field2 string `mapconv:"Dest2"`
+}
+
+type recursiveDest struct {
+	Field *recursiveDestChild
+}
+
+type recursiveDestChild struct {
+	Dest1 string
+	Dest2 string
+}
+
+func TestRecursive(t *testing.T) {
+	expects := []struct {
+		input  *recursiveSource
+		expect *recursiveDest
+	}{
+		{
+			input: &recursiveSource{
+				Field: &recursiveSourceChild{
+					Field1: "value1",
+					Field2: "value2",
+				},
+			},
+			expect: &recursiveDest{
+				Field: &recursiveDestChild{
+					Dest1: "value1",
+					Dest2: "value2",
+				},
+			},
+		},
+	}
+
+	for _, tc := range expects {
+		dest := &recursiveDest{}
 		err := ConvertTo(tc.input, dest)
 		require.NoError(t, err)
 		require.Equal(t, tc.expect, dest)
