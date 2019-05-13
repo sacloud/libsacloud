@@ -107,7 +107,7 @@ func (f *fieldsDef) NFSClass() *schema.FieldDesc {
 		ReadOnly: true,
 		Type:     meta.TypeString,
 		Tags: &schema.FieldTags{
-			MapConv: ":nfs",
+			MapConv: ",default=nfs",
 		},
 	}
 }
@@ -118,7 +118,7 @@ func (f *fieldsDef) GSLBProviderClass() *schema.FieldDesc {
 		ReadOnly: true,
 		Type:     meta.TypeString,
 		Tags: &schema.FieldTags{
-			MapConv: "Provider.Class:gslb",
+			MapConv: "Provider.Class,default=gslb",
 		},
 	}
 }
@@ -191,7 +191,7 @@ func (f *fieldsDef) GSLBDelayLoop() *schema.FieldDesc {
 		Type: meta.TypeInt,
 		Tags: &schema.FieldTags{
 			Validate: "min=10,max=60",
-			MapConv:  "Settings.GSLB.DelayLoop:10",
+			MapConv:  "Settings.GSLB.DelayLoop,default=10",
 		},
 	}
 }

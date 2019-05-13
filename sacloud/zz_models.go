@@ -533,10 +533,10 @@ type GSLB struct {
 	Icon                    *naked.Icon `json:",omitempty"`
 	CreatedAt               *time.Time
 	ModifiedAt              *time.Time
-	Class                   string `mapconv:"Provider.Class:gslb"`
+	Class                   string `mapconv:"Provider.Class,default=gslb"`
 	SettingsHash            string
 	FQDN                    string              `mapconv:"Status.FQDN"`
-	DelayLoop               int                 `mapconv:"Settings.GSLB.DelayLoop:10" validate:"min=10,max=60"`
+	DelayLoop               int                 `mapconv:"Settings.GSLB.DelayLoop,default=10" validate:"min=10,max=60"`
 	Weighted                types.StringFlag    `mapconv:"Settings.GSLB.Weighted"`
 	HealthCheckProtocol     string              `mapconv:"Settings.GSLB.HealthCheck.Protocol" validate:"oneof=http https ping tcp"`
 	HealthCheckHostHeader   string              `mapconv:"Settings.GSLB.HealthCheck.Host"`
@@ -775,13 +775,13 @@ func (o *GSLB) convertFrom(naked *naked.GSLB) error {
 
 // GSLBCreateRequest represents API parameter/response structure
 type GSLBCreateRequest struct {
-	Class                   string              `mapconv:"Provider.Class:gslb"`
+	Class                   string              `mapconv:"Provider.Class,default=gslb"`
 	HealthCheckProtocol     string              `mapconv:"Settings.GSLB.HealthCheck.Protocol" validate:"oneof=http https ping tcp"`
 	HealthCheckHostHeader   string              `mapconv:"Settings.GSLB.HealthCheck.Host"`
 	HealthCheckPath         string              `mapconv:"Settings.GSLB.HealthCheck.Path"`
 	HealthCheckResponseCode types.StringNumber  `mapconv:"Settings.GSLB.HealthCheck.Status"`
 	HealthCheckPort         types.StringNumber  `mapconv:"Settings.GSLB.HealthCheck.Port"`
-	DelayLoop               int                 `mapconv:"Settings.GSLB.DelayLoop:10" validate:"min=10,max=60"`
+	DelayLoop               int                 `mapconv:"Settings.GSLB.DelayLoop,default=10" validate:"min=10,max=60"`
 	Weighted                types.StringFlag    `mapconv:"Settings.GSLB.Weighted"`
 	SorryServer             string              `mapconv:"Settings.GSLB.SorryServer"`
 	DestinationServers      []*naked.GSLBServer `mapconv:"Settings.GSLB.Servers" validate:"min=0,max=6"`
@@ -954,7 +954,7 @@ type GSLBUpdateRequest struct {
 	HealthCheckPath         string              `mapconv:"Settings.GSLB.HealthCheck.Path"`
 	HealthCheckResponseCode types.StringNumber  `mapconv:"Settings.GSLB.HealthCheck.Status"`
 	HealthCheckPort         types.StringNumber  `mapconv:"Settings.GSLB.HealthCheck.Port"`
-	DelayLoop               int                 `mapconv:"Settings.GSLB.DelayLoop:10" validate:"min=10,max=60"`
+	DelayLoop               int                 `mapconv:"Settings.GSLB.DelayLoop,default=10" validate:"min=10,max=60"`
 	Weighted                types.StringFlag    `mapconv:"Settings.GSLB.Weighted"`
 	SorryServer             string              `mapconv:"Settings.GSLB.SorryServer"`
 	DestinationServers      []*naked.GSLBServer `mapconv:"Settings.GSLB.Servers" validate:"min=0,max=6"`
@@ -1363,7 +1363,7 @@ func (o *NFS) convertFrom(naked *naked.NFS) error {
 
 // NFSCreateRequest represents API parameter/response structure
 type NFSCreateRequest struct {
-	Class          string   `mapconv:":nfs"`
+	Class          string   `mapconv:",default=nfs"`
 	SwitchID       types.ID `mapconv:"Remark.Switch.ID"`
 	PlanID         types.ID `mapconv:"Remark.Plan.ID,Plan.ID"`
 	IPAddress      string   `mapconv:"Remark.[]Servers.IPAddress"`
