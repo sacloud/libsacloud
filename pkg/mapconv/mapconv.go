@@ -2,6 +2,7 @@ package mapconv
 
 import (
 	"encoding/json"
+	"reflect"
 	"strings"
 
 	"github.com/fatih/structs"
@@ -57,7 +58,12 @@ func ConvertTo(source interface{}, dest interface{}) error {
 
 // ConvertFrom converts struct which tagged by mapconv from plain models
 func ConvertFrom(source interface{}, dest interface{}) error {
-	sourceMap := Map(structs.New(source).Map())
+	var sourceMap Map
+	if m, ok := source.(map[string]interface{}); ok {
+		sourceMap = Map(m)
+	} else {
+		sourceMap = Map(structs.New(source).Map())
+	}
 	destMap := Map(make(map[string]interface{}))
 
 	s := structs.New(dest)
@@ -81,6 +87,16 @@ func ConvertFrom(source interface{}, dest interface{}) error {
 			if value == nil {
 				continue
 			}
+
+			if tags.recursive {
+				t := reflect.TypeOf(f.Value()).Elem()
+				v := reflect.New(t).Interface()
+				if err := ConvertFrom(value, v); err != nil {
+					return err
+				}
+				value = v
+			}
+
 			destMap.Set(f.Name(), value)
 		}
 

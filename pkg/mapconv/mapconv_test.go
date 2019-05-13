@@ -342,5 +342,11 @@ func TestRecursive(t *testing.T) {
 		err := ConvertTo(tc.input, dest)
 		require.NoError(t, err)
 		require.Equal(t, tc.expect, dest)
+
+		// reverse
+		source := &recursiveSource{}
+		err = ConvertFrom(tc.expect, source)
+		require.NoError(t, err)
+		require.Equal(t, tc.input, source)
 	}
 }
