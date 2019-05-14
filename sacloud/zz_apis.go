@@ -40,6 +40,20 @@ type CDROMAPI interface {
 }
 
 /*************************************************
+* DiskAPI
+*************************************************/
+
+// DiskAPI is interface for operate Disk resource
+type DiskAPI interface {
+	Find(ctx context.Context, zone string, conditions *FindCondition) ([]*Disk, error)
+	Create(ctx context.Context, zone string, param *DiskCreateRequest) (*Disk, error)
+	Read(ctx context.Context, zone string, id types.ID) (*Disk, error)
+	Update(ctx context.Context, zone string, id types.ID, param *DiskUpdateRequest) (*Disk, error)
+	Delete(ctx context.Context, zone string, id types.ID) error
+	Monitor(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*DiskActivity, error)
+}
+
+/*************************************************
 * GSLBAPI
 *************************************************/
 

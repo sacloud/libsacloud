@@ -649,6 +649,276 @@ func (o *CDROMOp) CloseFTP(ctx context.Context, zone string, id types.ID) error 
 }
 
 /*************************************************
+* DiskOp
+*************************************************/
+
+// DiskOp implements DiskAPI interface
+type DiskOp struct {
+	// Client APICaller
+	Client APICaller
+	// PathSuffix is used when building URL
+	PathSuffix string
+	// PathName is used when building URL
+	PathName string
+}
+
+// NewDiskOp creates new DiskOp instance
+func NewDiskOp(client APICaller) DiskAPI {
+	return &DiskOp{
+		Client:     client,
+		PathSuffix: "api/cloud/1.1",
+		PathName:   "disk",
+	}
+}
+
+// Find is API call
+func (o *DiskOp) Find(ctx context.Context, zone string, conditions *FindCondition) ([]*Disk, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"conditions": conditions,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+	{
+		if conditions == nil {
+			conditions = &FindCondition{}
+		}
+		if body == nil {
+			body = &DiskFindRequestEnvelope{}
+		}
+		v := body.(*DiskFindRequestEnvelope)
+		v.Count = conditions.Count
+		v.From = conditions.From
+		v.Sort = conditions.Sort
+		v.Filter = conditions.Filter
+		v.Include = conditions.Include
+		v.Exclude = conditions.Exclude
+		body = v
+	}
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &DiskFindResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	var payload0 []*Disk
+	for _, v := range nakedResponse.Disks {
+		payload := &Disk{}
+		if err := payload.convertFrom(v); err != nil {
+			return nil, err
+		}
+		payload0 = append(payload0, payload)
+	}
+	return payload0, nil
+}
+
+// Create is API call
+func (o *DiskOp) Create(ctx context.Context, zone string, param *DiskCreateRequest) (*Disk, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"param":      param,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+	{
+		if param == nil {
+			param = &DiskCreateRequest{}
+		}
+		if body == nil {
+			body = &DiskCreateRequestEnvelope{}
+		}
+		v := body.(*DiskCreateRequestEnvelope)
+		n, err := param.convertTo()
+		if err != nil {
+			return nil, err
+		}
+		v.Disk = n
+		body = v
+	}
+
+	data, err := o.Client.Do(ctx, "POST", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &DiskCreateResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	payload0 := &Disk{}
+	if err := payload0.convertFrom(nakedResponse.Disk); err != nil {
+		return nil, err
+	}
+	return payload0, nil
+}
+
+// Read is API call
+func (o *DiskOp) Read(ctx context.Context, zone string, id types.ID) (*Disk, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &DiskReadResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	payload0 := &Disk{}
+	if err := payload0.convertFrom(nakedResponse.Disk); err != nil {
+		return nil, err
+	}
+	return payload0, nil
+}
+
+// Update is API call
+func (o *DiskOp) Update(ctx context.Context, zone string, id types.ID, param *DiskUpdateRequest) (*Disk, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+		"param":      param,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+	{
+		if param == nil {
+			param = &DiskUpdateRequest{}
+		}
+		if body == nil {
+			body = &DiskUpdateRequestEnvelope{}
+		}
+		v := body.(*DiskUpdateRequestEnvelope)
+		n, err := param.convertTo()
+		if err != nil {
+			return nil, err
+		}
+		v.Disk = n
+		body = v
+	}
+
+	data, err := o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &DiskUpdateResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	payload0 := &Disk{}
+	if err := payload0.convertFrom(nakedResponse.Disk); err != nil {
+		return nil, err
+	}
+	return payload0, nil
+}
+
+// Delete is API call
+func (o *DiskOp) Delete(ctx context.Context, zone string, id types.ID) error {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+	})
+	if err != nil {
+		return err
+	}
+
+	var body interface{}
+
+	_, err = o.Client.Do(ctx, "DELETE", url, body)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// Monitor is API call
+func (o *DiskOp) Monitor(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*DiskActivity, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/monitor", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+		"condition":  condition,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+	{
+		if condition == nil {
+			condition = &MonitorCondition{}
+		}
+		if body == nil {
+			body = &DiskMonitorRequestEnvelope{}
+		}
+		v := body.(*DiskMonitorRequestEnvelope)
+		v.Start = condition.Start
+		v.End = condition.End
+		body = v
+	}
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &DiskMonitorResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	payload0 := &DiskActivity{}
+	if err := payload0.convertFrom(nakedResponse.Data); err != nil {
+		return nil, err
+	}
+	return payload0, nil
+}
+
+/*************************************************
 * GSLBOp
 *************************************************/
 

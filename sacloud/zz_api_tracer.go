@@ -192,6 +192,82 @@ func (t *CDROMTracer) CloseFTP(ctx context.Context, zone string, id types.ID) er
 }
 
 /*************************************************
+* DiskTracer
+*************************************************/
+
+// DiskTracer is for trace DiskOp operations
+type DiskTracer struct {
+	Internal DiskAPI
+}
+
+// NewDiskTracer creates new DiskTracer instance
+func NewDiskTracer(in DiskAPI) *DiskTracer {
+	return &DiskTracer{
+		Internal: in,
+	}
+}
+
+// Find is API call with trace log
+func (t *DiskTracer) Find(ctx context.Context, zone string, conditions *FindCondition) ([]*Disk, error) {
+	log.Println("[TRACE] DiskTracer.Find start:	args => [", "zone=", zone, "conditions=", conditions, "]")
+	defer func() {
+		log.Println("[TRACE] DiskTracer.Find: end")
+	}()
+
+	return t.Internal.Find(ctx, zone, conditions)
+}
+
+// Create is API call with trace log
+func (t *DiskTracer) Create(ctx context.Context, zone string, param *DiskCreateRequest) (*Disk, error) {
+	log.Println("[TRACE] DiskTracer.Create start:	args => [", "zone=", zone, "param=", param, "]")
+	defer func() {
+		log.Println("[TRACE] DiskTracer.Create: end")
+	}()
+
+	return t.Internal.Create(ctx, zone, param)
+}
+
+// Read is API call with trace log
+func (t *DiskTracer) Read(ctx context.Context, zone string, id types.ID) (*Disk, error) {
+	log.Println("[TRACE] DiskTracer.Read start:	args => [", "zone=", zone, "id=", id, "]")
+	defer func() {
+		log.Println("[TRACE] DiskTracer.Read: end")
+	}()
+
+	return t.Internal.Read(ctx, zone, id)
+}
+
+// Update is API call with trace log
+func (t *DiskTracer) Update(ctx context.Context, zone string, id types.ID, param *DiskUpdateRequest) (*Disk, error) {
+	log.Println("[TRACE] DiskTracer.Update start:	args => [", "zone=", zone, "id=", id, "param=", param, "]")
+	defer func() {
+		log.Println("[TRACE] DiskTracer.Update: end")
+	}()
+
+	return t.Internal.Update(ctx, zone, id, param)
+}
+
+// Delete is API call with trace log
+func (t *DiskTracer) Delete(ctx context.Context, zone string, id types.ID) error {
+	log.Println("[TRACE] DiskTracer.Delete start:	args => [", "zone=", zone, "id=", id, "]")
+	defer func() {
+		log.Println("[TRACE] DiskTracer.Delete: end")
+	}()
+
+	return t.Internal.Delete(ctx, zone, id)
+}
+
+// Monitor is API call with trace log
+func (t *DiskTracer) Monitor(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*DiskActivity, error) {
+	log.Println("[TRACE] DiskTracer.Monitor start:	args => [", "zone=", zone, "id=", id, "condition=", condition, "]")
+	defer func() {
+		log.Println("[TRACE] DiskTracer.Monitor: end")
+	}()
+
+	return t.Internal.Monitor(ctx, zone, id, condition)
+}
+
+/*************************************************
 * GSLBTracer
 *************************************************/
 
