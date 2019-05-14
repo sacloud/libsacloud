@@ -43,7 +43,7 @@ var (
 		"Icon",
 		"CreatedAt",
 		"ModifiedAt",
-		"UserSubnet",
+		"Zone",
 	}
 	createSwitchParam = &SwitchCreateRequest{
 		Name:           "libsacloud-v2-switch",

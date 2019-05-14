@@ -7,26 +7,49 @@ import (
 )
 
 func init() {
-	nakedType := meta.Static(naked.CDROM{})
+	nakedType := meta.Static(naked.Archive{})
 
-	cdrom := &schema.Model{
+	archive := &schema.Model{
 		Fields: []*schema.FieldDesc{
 			fields.ID(),
 			fields.Name(),
 			fields.Description(),
-			fields.DisplayOrder(),
 			fields.Tags(),
+			fields.DisplayOrder(),
 			fields.Availability(),
 			fields.Scope(),
-			fields.StorageClass(),
+			fields.SizeMB(),
+			fields.MigratedMB(),
+			fields.DiskPlanID(),
+			fields.DiskPlanName(),
+			fields.DiskPlanStorageClass(),
+			fields.SourceDiskID(),
+			fields.SourceDiskAvailability(),
+			fields.SourceArchiveID(),
+			fields.SourceArchiveAvailability(),
+			fields.BundleInfo(),
 			fields.Storage(),
 			fields.Icon(),
 			fields.CreatedAt(),
 			fields.ModifiedAt(),
+			fields.OriginalArchiveID(),
+			fields.SourceInfo(),
 		},
 	}
 
 	createParam := &schema.Model{
+		Fields: []*schema.FieldDesc{
+			fields.SourceDiskID(),
+			fields.SourceArchiveID(),
+			fields.Name(),
+			fields.Description(),
+			fields.Tags(),
+			fields.IconID(),
+		},
+	}
+
+	createBlankParam := &schema.Model{
+		Name: "ArchiveCreateBlankRequest",
 		Fields: []*schema.FieldDesc{
 			fields.SizeMB(),
 			fields.Name(),
@@ -45,23 +68,27 @@ func init() {
 		},
 	}
 
-	Resources.DefineWith("CDROM", func(r *schema.Resource) {
+	Resources.DefineWith("Archive", func(r *schema.Resource) {
 		r.Operations(
 			// find
-			r.DefineOperationFind(nakedType, findParameter, cdrom),
+			r.DefineOperationFind(nakedType, findParameter, archive),
 
 			// create
-			r.DefineOperationCreate(nakedType, createParam, cdrom).
+			r.DefineOperationCreate(nakedType, createParam, archive),
+
+			// CreateBlank
+			r.DefineOperationCreate(nakedType, createBlankParam, archive).
 				ResultFromEnvelope(models.ftpServer(), &schema.EnvelopePayloadDesc{
 					PayloadName: models.ftpServer().Name,
 					PayloadType: meta.Static(naked.OpeningFTPServer{}),
-				}),
+				}).Name("CreateBlank"),
+			// TODO 他ゾーンからの転送コピー作成
 
 			// read
-			r.DefineOperationRead(nakedType, cdrom),
+			r.DefineOperationRead(nakedType, archive),
 
 			// update
-			r.DefineOperationUpdate(nakedType, updateParam, cdrom),
+			r.DefineOperationUpdate(nakedType, updateParam, archive),
 
 			// delete
 			r.DefineOperationDelete(),

@@ -9,6 +9,86 @@ import (
 	"github.com/sacloud/libsacloud-v2/sacloud/types"
 )
 
+// ArchiveFindRequestEnvelope is envelop of API request
+type ArchiveFindRequestEnvelope struct {
+	Count   int                    `json:",omitempty"`
+	From    int                    `json:",omitempty"`
+	Sort    []string               `json:",omitempty"`
+	Filter  map[string]interface{} `json:",omitempty"`
+	Include []string               `json:",omitempty"`
+	Exclude []string               `json:",omitempty"`
+}
+
+// ArchiveFindResponseEnvelope is envelop of API response
+type ArchiveFindResponseEnvelope struct {
+	Total int `json:",omitempty"` // トータル件数
+	From  int `json:",omitempty"` // ページング開始ページ
+	Count int `json:",omitempty"` // 件数
+
+	Archives []*naked.Archive `json:",omitempty"`
+}
+
+// ArchiveCreateRequestEnvelope is envelop of API request
+type ArchiveCreateRequestEnvelope struct {
+	Archive *naked.Archive `json:",omitempty"`
+}
+
+// ArchiveCreateResponseEnvelope is envelop of API response
+type ArchiveCreateResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Archive *naked.Archive `json:",omitempty"`
+}
+
+// ArchiveCreateBlankRequestEnvelope is envelop of API request
+type ArchiveCreateBlankRequestEnvelope struct {
+	Archive *naked.Archive `json:",omitempty"`
+}
+
+// ArchiveCreateBlankResponseEnvelope is envelop of API response
+type ArchiveCreateBlankResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Archive   *naked.Archive          `json:",omitempty"`
+	FTPServer *naked.OpeningFTPServer `json:",omitempty"`
+}
+
+// ArchiveReadResponseEnvelope is envelop of API response
+type ArchiveReadResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Archive *naked.Archive `json:",omitempty"`
+}
+
+// ArchiveUpdateRequestEnvelope is envelop of API request
+type ArchiveUpdateRequestEnvelope struct {
+	Archive *naked.Archive `json:",omitempty"`
+}
+
+// ArchiveUpdateResponseEnvelope is envelop of API response
+type ArchiveUpdateResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Archive *naked.Archive `json:",omitempty"`
+}
+
+// ArchiveOpenFTPRequestEnvelope is envelop of API request
+type ArchiveOpenFTPRequestEnvelope struct {
+	ChangePassword bool `json:",omitempty"`
+}
+
+// ArchiveOpenFTPResponseEnvelope is envelop of API response
+type ArchiveOpenFTPResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	FTPServer *naked.OpeningFTPServer `json:",omitempty"`
+}
+
 // CDROMFindRequestEnvelope is envelop of API request
 type CDROMFindRequestEnvelope struct {
 	Count   int                    `json:",omitempty"`

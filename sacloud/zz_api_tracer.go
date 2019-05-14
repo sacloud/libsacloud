@@ -10,6 +10,102 @@ import (
 )
 
 /*************************************************
+* ArchiveTracer
+*************************************************/
+
+// ArchiveTracer is for trace ArchiveOp operations
+type ArchiveTracer struct {
+	Internal ArchiveAPI
+}
+
+// NewArchiveTracer creates new ArchiveTracer instance
+func NewArchiveTracer(in ArchiveAPI) *ArchiveTracer {
+	return &ArchiveTracer{
+		Internal: in,
+	}
+}
+
+// Find is API call with trace log
+func (t *ArchiveTracer) Find(ctx context.Context, zone string, conditions *FindCondition) ([]*Archive, error) {
+	log.Println("[TRACE] ArchiveTracer.Find start:	args => [", "zone=", zone, "conditions=", conditions, "]")
+	defer func() {
+		log.Println("[TRACE] ArchiveTracer.Find: end")
+	}()
+
+	return t.Internal.Find(ctx, zone, conditions)
+}
+
+// Create is API call with trace log
+func (t *ArchiveTracer) Create(ctx context.Context, zone string, param *ArchiveCreateRequest) (*Archive, error) {
+	log.Println("[TRACE] ArchiveTracer.Create start:	args => [", "zone=", zone, "param=", param, "]")
+	defer func() {
+		log.Println("[TRACE] ArchiveTracer.Create: end")
+	}()
+
+	return t.Internal.Create(ctx, zone, param)
+}
+
+// CreateBlank is API call with trace log
+func (t *ArchiveTracer) CreateBlank(ctx context.Context, zone string, param *ArchiveCreateBlankRequest) (*Archive, *FTPServer, error) {
+	log.Println("[TRACE] ArchiveTracer.CreateBlank start:	args => [", "zone=", zone, "param=", param, "]")
+	defer func() {
+		log.Println("[TRACE] ArchiveTracer.CreateBlank: end")
+	}()
+
+	return t.Internal.CreateBlank(ctx, zone, param)
+}
+
+// Read is API call with trace log
+func (t *ArchiveTracer) Read(ctx context.Context, zone string, id types.ID) (*Archive, error) {
+	log.Println("[TRACE] ArchiveTracer.Read start:	args => [", "zone=", zone, "id=", id, "]")
+	defer func() {
+		log.Println("[TRACE] ArchiveTracer.Read: end")
+	}()
+
+	return t.Internal.Read(ctx, zone, id)
+}
+
+// Update is API call with trace log
+func (t *ArchiveTracer) Update(ctx context.Context, zone string, id types.ID, param *ArchiveUpdateRequest) (*Archive, error) {
+	log.Println("[TRACE] ArchiveTracer.Update start:	args => [", "zone=", zone, "id=", id, "param=", param, "]")
+	defer func() {
+		log.Println("[TRACE] ArchiveTracer.Update: end")
+	}()
+
+	return t.Internal.Update(ctx, zone, id, param)
+}
+
+// Delete is API call with trace log
+func (t *ArchiveTracer) Delete(ctx context.Context, zone string, id types.ID) error {
+	log.Println("[TRACE] ArchiveTracer.Delete start:	args => [", "zone=", zone, "id=", id, "]")
+	defer func() {
+		log.Println("[TRACE] ArchiveTracer.Delete: end")
+	}()
+
+	return t.Internal.Delete(ctx, zone, id)
+}
+
+// OpenFTP is API call with trace log
+func (t *ArchiveTracer) OpenFTP(ctx context.Context, zone string, id types.ID, openOption *OpenFTPParam) (*FTPServer, error) {
+	log.Println("[TRACE] ArchiveTracer.OpenFTP start:	args => [", "zone=", zone, "id=", id, "openOption=", openOption, "]")
+	defer func() {
+		log.Println("[TRACE] ArchiveTracer.OpenFTP: end")
+	}()
+
+	return t.Internal.OpenFTP(ctx, zone, id, openOption)
+}
+
+// CloseFTP is API call with trace log
+func (t *ArchiveTracer) CloseFTP(ctx context.Context, zone string, id types.ID) error {
+	log.Println("[TRACE] ArchiveTracer.CloseFTP start:	args => [", "zone=", zone, "id=", id, "]")
+	defer func() {
+		log.Println("[TRACE] ArchiveTracer.CloseFTP: end")
+	}()
+
+	return t.Internal.CloseFTP(ctx, zone, id)
+}
+
+/*************************************************
 * CDROMTracer
 *************************************************/
 

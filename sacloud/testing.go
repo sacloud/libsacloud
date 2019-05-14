@@ -9,6 +9,7 @@ import (
 	"testing"
 
 	"github.com/sacloud/libsacloud-v2/sacloud/types"
+	"github.com/stretchr/testify/require"
 )
 
 func isAccTest() bool {
@@ -173,6 +174,10 @@ func Test(t TestT, testCase *CRUDTestCase) {
 		if idHolder, ok := actual.(idAccessor); ok {
 			testContext.ID = idHolder.GetID()
 		}
+		if f.Expect != nil {
+			actual, expect := f.Expect.Prepare(actual)
+			require.Equal(t, expect, actual)
+		}
 		return nil
 	}
 
@@ -187,9 +192,9 @@ func Test(t TestT, testCase *CRUDTestCase) {
 			_, ok1 := testCase.Create.Expect.ExpectValue.(AvailabilityHolder)
 			_, ok2 := testCase.Create.Expect.ExpectValue.(InstanceStateHolder)
 			if ok1 || ok2 {
-				waiter := WaiterForUp(func() (interface{}, error) {
+				waiter := WaiterForApplianceUp(func() (interface{}, error) {
 					return testCase.Read.Func(testContext, testCase.SetupAPICaller())
-				})
+				}, 10)
 				if _, err := waiter.WaitForState(context.TODO()); err != nil {
 					t.Fatal("WaitForUp is failed: ", err)
 				}
@@ -230,7 +235,7 @@ func Test(t TestT, testCase *CRUDTestCase) {
 			t.Fatal("Delete is failed: ", err)
 		}
 		// check not exists
-		err := testFunc(testCase.Read)
+		_, err := testCase.Read.Func(testContext, testCase.SetupAPICaller())
 		if err == nil {
 			t.Fatal("Resource still exists: ", testContext.ID)
 		}

@@ -65,8 +65,14 @@ var (
 		Weighted:                types.StringTrue,
 		SorryServer:             "8.8.8.8",
 		DestinationServers: []*GSLBServer{
-			{IPAddress: "192.2.0.1"},
-			{IPAddress: "192.2.0.2"},
+			{
+				IPAddress: "192.2.0.1",
+				Enabled:   types.StringTrue,
+			},
+			{
+				IPAddress: "192.2.0.2",
+				Enabled:   types.StringTrue,
+			},
 		},
 	}
 	createGSLBExpected = &GSLB{
@@ -82,7 +88,18 @@ var (
 		HealthCheckResponseCode: createGSLBParam.HealthCheckResponseCode,
 		HealthCheckPort:         createGSLBParam.HealthCheckPort,
 		SorryServer:             createGSLBParam.SorryServer,
-		DestinationServers:      createGSLBParam.DestinationServers,
+		DestinationServers: []*GSLBServer{
+			{
+				IPAddress: "192.2.0.1",
+				Weight:    types.StringNumber(1),
+				Enabled:   types.StringTrue,
+			},
+			{
+				IPAddress: "192.2.0.2",
+				Weight:    types.StringNumber(1),
+				Enabled:   types.StringTrue,
+			},
+		},
 	}
 	updateGSLBParam = &GSLBUpdateRequest{
 		Name:                    "libsacloud-v2-gslb-upd",
