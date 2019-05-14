@@ -164,16 +164,16 @@ func (a *MappableArgument) DestinationModel() *Model {
 	return a.Model
 }
 
-// PassthroughArgument 引数の型情報、APIパラメータへのマッピングが行われる。
+// PassthroughModelArgument 引数の型情報、APIパラメータへのマッピングが行われる。
 //
 // マッピングはModel内の全フィールドが対象となり、リクエストボディに対し同一フィールド名でパススルーされる
-type PassthroughArgument struct {
+type PassthroughModelArgument struct {
 	Name  string // パラメータ名、引数名に利用される
 	Model *Model // パラメータの型情報
 }
 
 // ImportStatements コード生成時に利用するimport文を生成する
-func (a *PassthroughArgument) ImportStatements() []string {
+func (a *PassthroughModelArgument) ImportStatements() []string {
 	p := a.Model.GoImportPath()
 	if p == "" {
 		return nil
@@ -182,32 +182,32 @@ func (a *PassthroughArgument) ImportStatements() []string {
 }
 
 // PackageName インポートパスからパッケージ名を取得する
-func (a *PassthroughArgument) PackageName() string {
+func (a *PassthroughModelArgument) PackageName() string {
 	return a.Model.GoPkg()
 }
 
 // ArgName 引数の変数名、コード生成で利用される
-func (a *PassthroughArgument) ArgName() string {
+func (a *PassthroughModelArgument) ArgName() string {
 	return a.Name
 }
 
 // TypeName 型名の文字列表現、コード生成で利用される
-func (a *PassthroughArgument) TypeName() string {
+func (a *PassthroughModelArgument) TypeName() string {
 	return a.Model.GoTypeSourceCode()
 }
 
 // ZeroInitializer 値を0初期化する文のコードの文字列表現、コード生成で利用される
-func (a *PassthroughArgument) ZeroInitializer() string {
+func (a *PassthroughModelArgument) ZeroInitializer() string {
 	return a.Model.ZeroInitializeSourceCode()
 }
 
 // ZeroValueOnSource コード上でのゼロ値の文字列表現。コード生成時に利用する
-func (a *PassthroughArgument) ZeroValueOnSource() string {
+func (a *PassthroughModelArgument) ZeroValueOnSource() string {
 	return a.Model.ZeroValueSourceCode()
 }
 
 // PassthroughFieldNames パススルーするフィールドの名前
-func (a *PassthroughArgument) PassthroughFieldNames() []string {
+func (a *PassthroughModelArgument) PassthroughFieldNames() []string {
 	var ns []string
 	for _, f := range a.Model.Fields {
 		ns = append(ns, f.Name)
@@ -216,6 +216,48 @@ func (a *PassthroughArgument) PassthroughFieldNames() []string {
 }
 
 // DestinationModel マッピング先のModelを取得
-func (a *PassthroughArgument) DestinationModel() *Model {
+func (a *PassthroughModelArgument) DestinationModel() *Model {
 	return a.Model
+}
+
+// PassthroughSimpleArgument 引数の型情報 APIパラメータへのマッピングが行われる。
+//
+// リクエストボディ(エンベロープ)のDestinationで指定したフィールドに対しマッピングされる
+type PassthroughSimpleArgument struct {
+	Name        string // パラメータ名、引数名に利用される
+	Destination string
+	Type        meta.Type
+}
+
+// ImportStatements コード生成時に利用するimport文を生成する
+func (a *PassthroughSimpleArgument) ImportStatements() []string {
+	if a.Type.GoPkg() == "" {
+		return []string{}
+	}
+	return wrapByDoubleQuote(a.Type.GoImportPath())
+}
+
+// PackageName インポートパスからパッケージ名を取得する
+func (a *PassthroughSimpleArgument) PackageName() string {
+	return a.Type.GoPkg()
+}
+
+// ArgName 引数の変数名、コード生成で利用される
+func (a *PassthroughSimpleArgument) ArgName() string {
+	return a.Name
+}
+
+// TypeName 型名の文字列表現、コード生成で利用される
+func (a *PassthroughSimpleArgument) TypeName() string {
+	return a.Type.GoTypeSourceCode()
+}
+
+// ZeroInitializer 値を0初期化する文のコードの文字列表現、コード生成で利用される
+func (a *PassthroughSimpleArgument) ZeroInitializer() string {
+	return a.Type.ZeroInitializeSourceCode()
+}
+
+// ZeroValueOnSource コード上でのゼロ値の文字列表現。コード生成時に利用する
+func (a *PassthroughSimpleArgument) ZeroValueOnSource() string {
+	return a.Type.ZeroValueSourceCode()
 }
