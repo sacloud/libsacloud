@@ -9,6 +9,8 @@ import (
 
 func TestNFSOpCRUD(t *testing.T) {
 	Test(t, &CRUDTestCase{
+		Parallel: true,
+
 		SetupAPICaller: singletonAPICaller,
 		Setup: func(testContext *CRUDTestContext, caller APICaller) error {
 			swClient := NewSwitchOp(caller)
