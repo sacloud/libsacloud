@@ -133,7 +133,6 @@ func (f *fieldsDef) LoadBalancerVIP() *schema.FieldDesc {
 				},
 				f.Description(),
 				{
-					// TODO Modelに再帰的にモデル取得処理を書き足すよ
 					Name: "Servers",
 					Type: &schema.Model{
 						Name:    "LoadBalancerServer",

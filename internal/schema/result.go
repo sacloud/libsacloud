@@ -12,6 +12,7 @@ func (r *Results) Models() Models {
 	ms := Models{}
 	for _, res := range *r {
 		ms = append(ms, res.Model)
+		ms = append(ms, res.Model.FieldModels()...)
 	}
 	return ms
 }

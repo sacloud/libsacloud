@@ -52,6 +52,7 @@ type LoadBalancerAPI interface {
 	Shutdown(ctx context.Context, zone string, id types.ID, shutdownOption *ShutdownOption) error
 	Reset(ctx context.Context, zone string, id types.ID) error
 	MonitorInterface(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*InterfaceActivity, error)
+	Status(ctx context.Context, zone string, id types.ID) ([]*LoadBalancerStatus, error)
 }
 
 /*************************************************
