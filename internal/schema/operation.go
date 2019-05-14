@@ -3,6 +3,8 @@ package schema
 import (
 	"fmt"
 	"strings"
+
+	"github.com/sacloud/libsacloud-v2/internal/schema/meta"
 )
 
 // Operation リソースへの操作
@@ -62,16 +64,16 @@ func (o *Operation) MappableArgument(name string, model *Model) *Operation {
 	})
 }
 
-// PassthroughArgument 引数定義の追加
-func (o *Operation) PassthroughArgument(name string, model *Model) *Operation {
-	return o.Argument(&PassthroughArgument{
+// PassthroughModelArgument 引数定義の追加
+func (o *Operation) PassthroughModelArgument(name string, model *Model) *Operation {
+	return o.Argument(&PassthroughModelArgument{
 		Name:  name,
 		Model: model,
 	})
 }
 
-// PassthroughArgumentToPayload 引数定義の追加、ペイロードの定義も同時に行われる
-func (o *Operation) PassthroughArgumentToPayload(name string, model *Model) *Operation {
+// PassthroughModelArgumentToPayload 引数定義の追加、ペイロードの定義も同時に行われる
+func (o *Operation) PassthroughModelArgumentToPayload(name string, model *Model) *Operation {
 	var descs []*EnvelopePayloadDesc
 	for _, field := range model.Fields {
 		descs = append(descs, &EnvelopePayloadDesc{
@@ -80,9 +82,33 @@ func (o *Operation) PassthroughArgumentToPayload(name string, model *Model) *Ope
 		})
 	}
 	o.RequestEnvelope(descs...)
-	return o.Argument(&PassthroughArgument{
+	return o.Argument(&PassthroughModelArgument{
 		Name:  name,
 		Model: model,
+	})
+}
+
+// PassthroughSimpleArgument 引数定義の追加
+func (o *Operation) PassthroughSimpleArgument(name, destination string, tp meta.Type) *Operation {
+	return o.Argument(&PassthroughSimpleArgument{
+		Name:        name,
+		Destination: destination,
+		Type:        tp,
+	})
+}
+
+// PassthroughSimpleArgumentToPayload 引数定義の追加、ペイロードの定義も同時に行われる
+func (o *Operation) PassthroughSimpleArgumentToPayload(name, destination string, tp meta.Type) *Operation {
+	desc := &EnvelopePayloadDesc{
+		PayloadName: destination,
+		PayloadType: tp,
+	}
+	o.RequestEnvelope(desc)
+
+	return o.Argument(&PassthroughSimpleArgument{
+		Name:        name,
+		Destination: destination,
+		Type:        tp,
 	})
 }
 

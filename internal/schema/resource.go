@@ -152,7 +152,7 @@ func (r *Resource) defineOperationFind(nakedType meta.Type, findParam, result *M
 		Method(http.MethodGet).
 		PathFormat(DefaultPathFormat).
 		Argument(ArgumentZone).
-		PassthroughArgumentToPayload("conditions", findParam).
+		PassthroughModelArgumentToPayload("conditions", findParam).
 		ResultPluralFromEnvelope(result, &EnvelopePayloadDesc{
 			PayloadType: nakedType,
 			PayloadName: payloadName,
@@ -393,7 +393,7 @@ func (r *Resource) DefineOperationShutdown() *Operation {
 		PathFormat(IDAndSuffixPathFormat("power")).
 		Argument(ArgumentZone).
 		Argument(ArgumentID).
-		PassthroughArgumentToPayload("shutdownOption", &Model{
+		PassthroughModelArgumentToPayload("shutdownOption", &Model{
 			Name: "ShutdownOption",
 			Fields: []*FieldDesc{
 				{
@@ -467,7 +467,7 @@ func (r *Resource) DefineOperationOpenFTP(openParam, result *Model) *Operation {
 			PayloadType: meta.Static(naked.OpeningFTPServer{}),
 		})
 	if openParam != nil {
-		o.PassthroughArgumentToPayload("openOption", openParam)
+		o.PassthroughModelArgumentToPayload("openOption", openParam)
 	}
 	return o
 }
@@ -502,7 +502,7 @@ func (r *Resource) DefineOperationMonitor(monitorParam, result *Model) *Operatio
 		PathFormat(IDAndSuffixPathFormat("monitor")).
 		Argument(ArgumentZone).
 		Argument(ArgumentID).
-		PassthroughArgumentToPayload("condition", monitorParam).
+		PassthroughModelArgumentToPayload("condition", monitorParam).
 		ResultFromEnvelope(result, &EnvelopePayloadDesc{
 			PayloadType: meta.Static(naked.MonitorValues{}),
 			PayloadName: "Data",
@@ -523,7 +523,7 @@ func (r *Resource) DefineOperationMonitorChild(funcNameSuffix, childResourceName
 		PathFormat(IDAndSuffixPathFormat(childResourceName+"/monitor")).
 		Argument(ArgumentZone).
 		Argument(ArgumentID).
-		PassthroughArgumentToPayload("condition", monitorParam).
+		PassthroughModelArgumentToPayload("condition", monitorParam).
 		ResultFromEnvelope(result, &EnvelopePayloadDesc{
 			PayloadType: meta.Static(naked.MonitorValues{}),
 			PayloadName: "Data",
@@ -551,7 +551,7 @@ func (r *Resource) DefineOperationMonitorChildBy(funcNameSuffix, childResourceNa
 			Name: "index",
 			Type: meta.TypeInt,
 		}).
-		PassthroughArgumentToPayload("condition", monitorParam).
+		PassthroughModelArgumentToPayload("condition", monitorParam).
 		ResultFromEnvelope(result, &EnvelopePayloadDesc{
 			PayloadType: meta.Static(naked.MonitorValues{}),
 			PayloadName: "Data",
