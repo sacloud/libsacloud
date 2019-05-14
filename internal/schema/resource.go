@@ -435,6 +435,26 @@ func (r *Resource) OperationPowerManagement() *Resource {
 	return r
 }
 
+// DefineOperationStatus ステータス取得操作を定義
+func (r *Resource) DefineOperationStatus(nakedType meta.Type, result *Model) *Operation {
+	return r.DefineOperation("Status").
+		Method(http.MethodGet).
+		PathFormat(IDAndSuffixPathFormat("status")).
+		Argument(ArgumentZone).
+		Argument(ArgumentID).
+		ResultPluralFromEnvelope(result, &EnvelopePayloadDesc{
+			PayloadType: meta.Static(naked.LoadBalancerStatus{}),
+			PayloadName: r.FieldName(PayloadForms.Singular),
+		})
+}
+
+// OperationStatus ステータス取得操作を追加
+func (r *Resource) OperationStatus(nakedType meta.Type, result *Model) *Resource {
+	return r.Operation(
+		r.DefineOperationStatus(nakedType, result),
+	)
+}
+
 // DefineOperationMonitor アクティビティモニタ取得操作を定義
 func (r *Resource) DefineOperationMonitor(monitorParam, result *Model) *Operation {
 	return r.DefineOperation("Monitor").

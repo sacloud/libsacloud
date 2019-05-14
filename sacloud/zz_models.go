@@ -770,6 +770,52 @@ func (o *GSLB) convertFrom(naked *naked.GSLB) error {
 }
 
 /*************************************************
+* GSLBServer
+*************************************************/
+
+// GSLBServer represents API parameter/response structure
+type GSLBServer struct {
+	IPAddress string             `validate:"ipv4"`
+	Enabled   types.StringFlag   `mapconv:",default=true"`
+	Weight    types.StringNumber `mapconv:",default=1"`
+}
+
+// Validate validates by field tags
+func (o *GSLBServer) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetIPAddress returns value of IPAddress
+func (o *GSLBServer) GetIPAddress() string {
+	return o.IPAddress
+}
+
+// SetIPAddress sets value to IPAddress
+func (o *GSLBServer) SetIPAddress(v string) {
+	o.IPAddress = v
+}
+
+// GetEnabled returns value of Enabled
+func (o *GSLBServer) GetEnabled() types.StringFlag {
+	return o.Enabled
+}
+
+// SetEnabled sets value to Enabled
+func (o *GSLBServer) SetEnabled(v types.StringFlag) {
+	o.Enabled = v
+}
+
+// GetWeight returns value of Weight
+func (o *GSLBServer) GetWeight() types.StringNumber {
+	return o.Weight
+}
+
+// SetWeight sets value to Weight
+func (o *GSLBServer) SetWeight(v types.StringNumber) {
+	o.Weight = v
+}
+
+/*************************************************
 * GSLBCreateRequest
 *************************************************/
 
@@ -941,52 +987,6 @@ func (o *GSLBCreateRequest) convertTo() (*naked.GSLB, error) {
 // convertFrom parse values from naked GSLBCreateRequest
 func (o *GSLBCreateRequest) convertFrom(naked *naked.GSLB) error {
 	return mapconv.ConvertFrom(naked, o)
-}
-
-/*************************************************
-* GSLBServer
-*************************************************/
-
-// GSLBServer represents API parameter/response structure
-type GSLBServer struct {
-	IPAddress string             `validate:"ipv4"`
-	Enabled   types.StringFlag   `mapconv:",default=true"`
-	Weight    types.StringNumber `mapconv:",default=1"`
-}
-
-// Validate validates by field tags
-func (o *GSLBServer) Validate() error {
-	return validator.New().Struct(o)
-}
-
-// GetIPAddress returns value of IPAddress
-func (o *GSLBServer) GetIPAddress() string {
-	return o.IPAddress
-}
-
-// SetIPAddress sets value to IPAddress
-func (o *GSLBServer) SetIPAddress(v string) {
-	o.IPAddress = v
-}
-
-// GetEnabled returns value of Enabled
-func (o *GSLBServer) GetEnabled() types.StringFlag {
-	return o.Enabled
-}
-
-// SetEnabled sets value to Enabled
-func (o *GSLBServer) SetEnabled(v types.StringFlag) {
-	o.Enabled = v
-}
-
-// GetWeight returns value of Weight
-func (o *GSLBServer) GetWeight() types.StringNumber {
-	return o.Weight
-}
-
-// SetWeight sets value to Weight
-func (o *GSLBServer) SetWeight(v types.StringNumber) {
-	o.Weight = v
 }
 
 /*************************************************
@@ -1432,158 +1432,6 @@ func (o *LoadBalancer) convertFrom(naked *naked.LoadBalancer) error {
 }
 
 /*************************************************
-* LoadBalancerCreateRequest
-*************************************************/
-
-// LoadBalancerCreateRequest represents API parameter/response structure
-type LoadBalancerCreateRequest struct {
-	Class              string   `mapconv:",default=loadbalancer"`
-	SwitchID           types.ID `mapconv:"Remark.Switch.ID"`
-	PlanID             types.ID `mapconv:"Remark.Plan.ID,Plan.ID"`
-	VRID               int      `mapconv:"Remark.VRRP.VRID"`
-	IPAddresses        []string `mapconv:"Remark.[]Servers.IPAddress" validate:"min=1,max=2,dive,ipv4"`
-	NetworkMaskLen     int      `mapconv:"Remark.Network.NetworkMaskLen" validate:"min=1,max=32"`
-	DefaultRoute       string   `mapconv:"Remark.Network.DefaultRoute" validate:"ipv4"`
-	Name               string   `validate:"required"`
-	Description        string   `validate:"min=0,max=512"`
-	Tags               []string
-	IconID             types.ID                        `mapconv:"Icon.ID"`
-	VirtualIPAddresses []*LoadBalancerVirtualIPAddress `mapconv:"Settings.[]LoadBalancer,recursive" validate:"min=0,max=10"`
-}
-
-// Validate validates by field tags
-func (o *LoadBalancerCreateRequest) Validate() error {
-	return validator.New().Struct(o)
-}
-
-// GetClass returns value of Class
-func (o *LoadBalancerCreateRequest) GetClass() string {
-	return o.Class
-}
-
-// GetSwitchID returns value of SwitchID
-func (o *LoadBalancerCreateRequest) GetSwitchID() types.ID {
-	return o.SwitchID
-}
-
-// SetSwitchID sets value to SwitchID
-func (o *LoadBalancerCreateRequest) SetSwitchID(v types.ID) {
-	o.SwitchID = v
-}
-
-// GetPlanID returns value of PlanID
-func (o *LoadBalancerCreateRequest) GetPlanID() types.ID {
-	return o.PlanID
-}
-
-// SetPlanID sets value to PlanID
-func (o *LoadBalancerCreateRequest) SetPlanID(v types.ID) {
-	o.PlanID = v
-}
-
-// GetVRID returns value of VRID
-func (o *LoadBalancerCreateRequest) GetVRID() int {
-	return o.VRID
-}
-
-// SetVRID sets value to VRID
-func (o *LoadBalancerCreateRequest) SetVRID(v int) {
-	o.VRID = v
-}
-
-// GetIPAddresses returns value of IPAddresses
-func (o *LoadBalancerCreateRequest) GetIPAddresses() []string {
-	return o.IPAddresses
-}
-
-// SetIPAddresses sets value to IPAddresses
-func (o *LoadBalancerCreateRequest) SetIPAddresses(v []string) {
-	o.IPAddresses = v
-}
-
-// GetNetworkMaskLen returns value of NetworkMaskLen
-func (o *LoadBalancerCreateRequest) GetNetworkMaskLen() int {
-	return o.NetworkMaskLen
-}
-
-// SetNetworkMaskLen sets value to NetworkMaskLen
-func (o *LoadBalancerCreateRequest) SetNetworkMaskLen(v int) {
-	o.NetworkMaskLen = v
-}
-
-// GetDefaultRoute returns value of DefaultRoute
-func (o *LoadBalancerCreateRequest) GetDefaultRoute() string {
-	return o.DefaultRoute
-}
-
-// SetDefaultRoute sets value to DefaultRoute
-func (o *LoadBalancerCreateRequest) SetDefaultRoute(v string) {
-	o.DefaultRoute = v
-}
-
-// GetName returns value of Name
-func (o *LoadBalancerCreateRequest) GetName() string {
-	return o.Name
-}
-
-// SetName sets value to Name
-func (o *LoadBalancerCreateRequest) SetName(v string) {
-	o.Name = v
-}
-
-// GetDescription returns value of Description
-func (o *LoadBalancerCreateRequest) GetDescription() string {
-	return o.Description
-}
-
-// SetDescription sets value to Description
-func (o *LoadBalancerCreateRequest) SetDescription(v string) {
-	o.Description = v
-}
-
-// GetTags returns value of Tags
-func (o *LoadBalancerCreateRequest) GetTags() []string {
-	return o.Tags
-}
-
-// SetTags sets value to Tags
-func (o *LoadBalancerCreateRequest) SetTags(v []string) {
-	o.Tags = v
-}
-
-// GetIconID returns value of IconID
-func (o *LoadBalancerCreateRequest) GetIconID() types.ID {
-	return o.IconID
-}
-
-// SetIconID sets value to IconID
-func (o *LoadBalancerCreateRequest) SetIconID(v types.ID) {
-	o.IconID = v
-}
-
-// GetVirtualIPAddresses returns value of VirtualIPAddresses
-func (o *LoadBalancerCreateRequest) GetVirtualIPAddresses() []*LoadBalancerVirtualIPAddress {
-	return o.VirtualIPAddresses
-}
-
-// SetVirtualIPAddresses sets value to VirtualIPAddresses
-func (o *LoadBalancerCreateRequest) SetVirtualIPAddresses(v []*LoadBalancerVirtualIPAddress) {
-	o.VirtualIPAddresses = v
-}
-
-// convertTo returns naked LoadBalancerCreateRequest
-func (o *LoadBalancerCreateRequest) convertTo() (*naked.LoadBalancer, error) {
-	dest := &naked.LoadBalancer{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked LoadBalancerCreateRequest
-func (o *LoadBalancerCreateRequest) convertFrom(naked *naked.LoadBalancer) error {
-	return mapconv.ConvertFrom(naked, o)
-}
-
-/*************************************************
 * LoadBalancerVirtualIPAddress
 *************************************************/
 
@@ -1739,6 +1587,158 @@ func (o *LoadBalancerServer) GetHealthCheckResponseCode() types.StringNumber {
 // SetHealthCheckResponseCode sets value to HealthCheckResponseCode
 func (o *LoadBalancerServer) SetHealthCheckResponseCode(v types.StringNumber) {
 	o.HealthCheckResponseCode = v
+}
+
+/*************************************************
+* LoadBalancerCreateRequest
+*************************************************/
+
+// LoadBalancerCreateRequest represents API parameter/response structure
+type LoadBalancerCreateRequest struct {
+	Class              string   `mapconv:",default=loadbalancer"`
+	SwitchID           types.ID `mapconv:"Remark.Switch.ID"`
+	PlanID             types.ID `mapconv:"Remark.Plan.ID,Plan.ID"`
+	VRID               int      `mapconv:"Remark.VRRP.VRID"`
+	IPAddresses        []string `mapconv:"Remark.[]Servers.IPAddress" validate:"min=1,max=2,dive,ipv4"`
+	NetworkMaskLen     int      `mapconv:"Remark.Network.NetworkMaskLen" validate:"min=1,max=32"`
+	DefaultRoute       string   `mapconv:"Remark.Network.DefaultRoute" validate:"ipv4"`
+	Name               string   `validate:"required"`
+	Description        string   `validate:"min=0,max=512"`
+	Tags               []string
+	IconID             types.ID                        `mapconv:"Icon.ID"`
+	VirtualIPAddresses []*LoadBalancerVirtualIPAddress `mapconv:"Settings.[]LoadBalancer,recursive" validate:"min=0,max=10"`
+}
+
+// Validate validates by field tags
+func (o *LoadBalancerCreateRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetClass returns value of Class
+func (o *LoadBalancerCreateRequest) GetClass() string {
+	return o.Class
+}
+
+// GetSwitchID returns value of SwitchID
+func (o *LoadBalancerCreateRequest) GetSwitchID() types.ID {
+	return o.SwitchID
+}
+
+// SetSwitchID sets value to SwitchID
+func (o *LoadBalancerCreateRequest) SetSwitchID(v types.ID) {
+	o.SwitchID = v
+}
+
+// GetPlanID returns value of PlanID
+func (o *LoadBalancerCreateRequest) GetPlanID() types.ID {
+	return o.PlanID
+}
+
+// SetPlanID sets value to PlanID
+func (o *LoadBalancerCreateRequest) SetPlanID(v types.ID) {
+	o.PlanID = v
+}
+
+// GetVRID returns value of VRID
+func (o *LoadBalancerCreateRequest) GetVRID() int {
+	return o.VRID
+}
+
+// SetVRID sets value to VRID
+func (o *LoadBalancerCreateRequest) SetVRID(v int) {
+	o.VRID = v
+}
+
+// GetIPAddresses returns value of IPAddresses
+func (o *LoadBalancerCreateRequest) GetIPAddresses() []string {
+	return o.IPAddresses
+}
+
+// SetIPAddresses sets value to IPAddresses
+func (o *LoadBalancerCreateRequest) SetIPAddresses(v []string) {
+	o.IPAddresses = v
+}
+
+// GetNetworkMaskLen returns value of NetworkMaskLen
+func (o *LoadBalancerCreateRequest) GetNetworkMaskLen() int {
+	return o.NetworkMaskLen
+}
+
+// SetNetworkMaskLen sets value to NetworkMaskLen
+func (o *LoadBalancerCreateRequest) SetNetworkMaskLen(v int) {
+	o.NetworkMaskLen = v
+}
+
+// GetDefaultRoute returns value of DefaultRoute
+func (o *LoadBalancerCreateRequest) GetDefaultRoute() string {
+	return o.DefaultRoute
+}
+
+// SetDefaultRoute sets value to DefaultRoute
+func (o *LoadBalancerCreateRequest) SetDefaultRoute(v string) {
+	o.DefaultRoute = v
+}
+
+// GetName returns value of Name
+func (o *LoadBalancerCreateRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *LoadBalancerCreateRequest) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *LoadBalancerCreateRequest) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *LoadBalancerCreateRequest) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetTags returns value of Tags
+func (o *LoadBalancerCreateRequest) GetTags() []string {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *LoadBalancerCreateRequest) SetTags(v []string) {
+	o.Tags = v
+}
+
+// GetIconID returns value of IconID
+func (o *LoadBalancerCreateRequest) GetIconID() types.ID {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *LoadBalancerCreateRequest) SetIconID(v types.ID) {
+	o.IconID = v
+}
+
+// GetVirtualIPAddresses returns value of VirtualIPAddresses
+func (o *LoadBalancerCreateRequest) GetVirtualIPAddresses() []*LoadBalancerVirtualIPAddress {
+	return o.VirtualIPAddresses
+}
+
+// SetVirtualIPAddresses sets value to VirtualIPAddresses
+func (o *LoadBalancerCreateRequest) SetVirtualIPAddresses(v []*LoadBalancerVirtualIPAddress) {
+	o.VirtualIPAddresses = v
+}
+
+// convertTo returns naked LoadBalancerCreateRequest
+func (o *LoadBalancerCreateRequest) convertTo() (*naked.LoadBalancer, error) {
+	dest := &naked.LoadBalancer{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked LoadBalancerCreateRequest
+func (o *LoadBalancerCreateRequest) convertFrom(naked *naked.LoadBalancer) error {
+	return mapconv.ConvertFrom(naked, o)
 }
 
 /*************************************************
@@ -1909,6 +1909,98 @@ func (o *MonitorCondition) GetEnd() *time.Time {
 // SetEnd sets value to End
 func (o *MonitorCondition) SetEnd(v *time.Time) {
 	o.End = v
+}
+
+/*************************************************
+* LoadBalancerStatus
+*************************************************/
+
+// LoadBalancerStatus represents API parameter/response structure
+type LoadBalancerStatus struct {
+	VirtualIPAddress string
+	Port             types.StringNumber
+	CPS              types.StringNumber
+	Servers          []*LoadBalancerServerStatus `mapconv:",recursive"`
+}
+
+// Validate validates by field tags
+func (o *LoadBalancerStatus) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetVirtualIPAddress returns value of VirtualIPAddress
+func (o *LoadBalancerStatus) GetVirtualIPAddress() string {
+	return o.VirtualIPAddress
+}
+
+// GetPort returns value of Port
+func (o *LoadBalancerStatus) GetPort() types.StringNumber {
+	return o.Port
+}
+
+// GetCPS returns value of CPS
+func (o *LoadBalancerStatus) GetCPS() types.StringNumber {
+	return o.CPS
+}
+
+// GetServers returns value of Servers
+func (o *LoadBalancerStatus) GetServers() []*LoadBalancerServerStatus {
+	return o.Servers
+}
+
+// convertTo returns naked LoadBalancerStatus
+func (o *LoadBalancerStatus) convertTo() (*naked.LoadBalancerStatus, error) {
+	dest := &naked.LoadBalancerStatus{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked LoadBalancerStatus
+func (o *LoadBalancerStatus) convertFrom(naked *naked.LoadBalancerStatus) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* LoadBalancerServerStatus
+*************************************************/
+
+// LoadBalancerServerStatus represents API parameter/response structure
+type LoadBalancerServerStatus struct {
+	ActiveConn types.StringNumber
+	Status     types.EServerInstanceStatus
+	IPAddress  string
+	Port       types.StringNumber
+	CPS        types.StringNumber
+}
+
+// Validate validates by field tags
+func (o *LoadBalancerServerStatus) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetActiveConn returns value of ActiveConn
+func (o *LoadBalancerServerStatus) GetActiveConn() types.StringNumber {
+	return o.ActiveConn
+}
+
+// GetStatus returns value of Status
+func (o *LoadBalancerServerStatus) GetStatus() types.EServerInstanceStatus {
+	return o.Status
+}
+
+// GetIPAddress returns value of IPAddress
+func (o *LoadBalancerServerStatus) GetIPAddress() string {
+	return o.IPAddress
+}
+
+// GetPort returns value of Port
+func (o *LoadBalancerServerStatus) GetPort() types.StringNumber {
+	return o.Port
+}
+
+// GetCPS returns value of CPS
+func (o *LoadBalancerServerStatus) GetCPS() types.StringNumber {
+	return o.CPS
 }
 
 /*************************************************

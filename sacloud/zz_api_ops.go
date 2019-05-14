@@ -904,6 +904,42 @@ func (o *LoadBalancerOp) MonitorInterface(ctx context.Context, zone string, id t
 	return payload0, nil
 }
 
+// Status is API call
+func (o *LoadBalancerOp) Status(ctx context.Context, zone string, id types.ID) ([]*LoadBalancerStatus, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/status", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &LoadBalancerStatusResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	var payload0 []*LoadBalancerStatus
+	for _, v := range nakedResponse.LoadBalancer {
+		payload := &LoadBalancerStatus{}
+		if err := payload.convertFrom(v); err != nil {
+			return nil, err
+		}
+		payload0 = append(payload0, payload)
+	}
+	return payload0, nil
+}
+
 /*************************************************
 * NFSOp
 *************************************************/

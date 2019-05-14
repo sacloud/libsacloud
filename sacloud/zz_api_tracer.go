@@ -277,6 +277,16 @@ func (t *LoadBalancerTracer) MonitorInterface(ctx context.Context, zone string, 
 	return t.Internal.MonitorInterface(ctx, zone, id, condition)
 }
 
+// Status is API call with trace log
+func (t *LoadBalancerTracer) Status(ctx context.Context, zone string, id types.ID) ([]*LoadBalancerStatus, error) {
+	log.Println("[TRACE] LoadBalancerTracer.Status start:	args => [", "zone=", zone, "id=", id, "]")
+	defer func() {
+		log.Println("[TRACE] LoadBalancerTracer.Status: end")
+	}()
+
+	return t.Internal.Status(ctx, zone, id)
+}
+
 /*************************************************
 * NFSTracer
 *************************************************/

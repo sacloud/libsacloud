@@ -71,6 +71,66 @@ func init() {
 		},
 	}
 
+	statusResult := &schema.Model{
+		Name: "LoadBalancerStatus",
+		Fields: []*schema.FieldDesc{
+			{
+				Name:     "VirtualIPAddress",
+				Type:     meta.TypeString,
+				ReadOnly: true,
+			},
+			{
+				Name:     "Port",
+				Type:     meta.TypeStringNumber,
+				ReadOnly: true,
+			},
+			{
+				Name:     "CPS",
+				Type:     meta.TypeStringNumber,
+				ReadOnly: true,
+			},
+			{
+				Name: "Servers",
+				Type: &schema.Model{
+					Name:    "LoadBalancerServerStatus",
+					IsArray: true,
+					Fields: []*schema.FieldDesc{
+						{
+							Name:     "ActiveConn",
+							Type:     meta.TypeStringNumber,
+							ReadOnly: true,
+						},
+						{
+							Name:     "Status",
+							Type:     meta.TypeInstanceStatus,
+							ReadOnly: true,
+						},
+						{
+							Name:     "IPAddress",
+							Type:     meta.TypeString,
+							ReadOnly: true,
+						},
+						{
+							Name:     "Port",
+							Type:     meta.TypeStringNumber,
+							ReadOnly: true,
+						},
+						{
+							Name:     "CPS",
+							Type:     meta.TypeStringNumber,
+							ReadOnly: true,
+						},
+					},
+				},
+				ReadOnly: true,
+				Tags: &schema.FieldTags{
+					MapConv: ",recursive",
+				},
+			},
+		},
+		NakedType: meta.Static(naked.LoadBalancerStatus{}),
+	}
+
 	Resources.DefineWith("LoadBalancer", func(r *schema.Resource) {
 		r.Operations(
 			// find
@@ -99,6 +159,9 @@ func init() {
 			// monitor
 			r.DefineOperationMonitorChild("Interface", "interface",
 				monitorParameter, monitors.interfaceModel()),
+
+			// status
+			r.DefineOperationStatus(meta.Static(naked.LoadBalancerStatus{}), statusResult),
 		)
 	}).PathName("appliance")
 }

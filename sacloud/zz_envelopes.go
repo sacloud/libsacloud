@@ -201,6 +201,15 @@ type LoadBalancerMonitorInterfaceResponseEnvelope struct {
 	Data *naked.MonitorValues `json:",omitempty"`
 }
 
+// LoadBalancerStatusResponseEnvelope is envelop of API response
+type LoadBalancerStatusResponseEnvelope struct {
+	Total int `json:",omitempty"` // トータル件数
+	From  int `json:",omitempty"` // ページング開始ページ
+	Count int `json:",omitempty"` // 件数
+
+	LoadBalancer []*naked.LoadBalancerStatus `json:",omitempty"`
+}
+
 // NFSFindRequestEnvelope is envelop of API request
 type NFSFindRequestEnvelope struct {
 	Count   int                    `json:",omitempty"`
