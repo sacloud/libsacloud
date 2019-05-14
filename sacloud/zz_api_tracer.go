@@ -162,6 +162,122 @@ func (t *GSLBTracer) Delete(ctx context.Context, zone string, id types.ID) error
 }
 
 /*************************************************
+* LoadBalancerTracer
+*************************************************/
+
+// LoadBalancerTracer is for trace LoadBalancerOp operations
+type LoadBalancerTracer struct {
+	Internal LoadBalancerAPI
+}
+
+// NewLoadBalancerTracer creates new LoadBalancerTracer instance
+func NewLoadBalancerTracer(in LoadBalancerAPI) *LoadBalancerTracer {
+	return &LoadBalancerTracer{
+		Internal: in,
+	}
+}
+
+// Find is API call with trace log
+func (t *LoadBalancerTracer) Find(ctx context.Context, zone string, conditions *FindCondition) ([]*LoadBalancer, error) {
+	log.Println("[TRACE] LoadBalancerTracer.Find start:	args => [", "zone=", zone, "conditions=", conditions, "]")
+	defer func() {
+		log.Println("[TRACE] LoadBalancerTracer.Find: end")
+	}()
+
+	return t.Internal.Find(ctx, zone, conditions)
+}
+
+// Create is API call with trace log
+func (t *LoadBalancerTracer) Create(ctx context.Context, zone string, param *LoadBalancerCreateRequest) (*LoadBalancer, error) {
+	log.Println("[TRACE] LoadBalancerTracer.Create start:	args => [", "zone=", zone, "param=", param, "]")
+	defer func() {
+		log.Println("[TRACE] LoadBalancerTracer.Create: end")
+	}()
+
+	return t.Internal.Create(ctx, zone, param)
+}
+
+// Read is API call with trace log
+func (t *LoadBalancerTracer) Read(ctx context.Context, zone string, id types.ID) (*LoadBalancer, error) {
+	log.Println("[TRACE] LoadBalancerTracer.Read start:	args => [", "zone=", zone, "id=", id, "]")
+	defer func() {
+		log.Println("[TRACE] LoadBalancerTracer.Read: end")
+	}()
+
+	return t.Internal.Read(ctx, zone, id)
+}
+
+// Update is API call with trace log
+func (t *LoadBalancerTracer) Update(ctx context.Context, zone string, id types.ID, param *LoadBalancerUpdateRequest) (*LoadBalancer, error) {
+	log.Println("[TRACE] LoadBalancerTracer.Update start:	args => [", "zone=", zone, "id=", id, "param=", param, "]")
+	defer func() {
+		log.Println("[TRACE] LoadBalancerTracer.Update: end")
+	}()
+
+	return t.Internal.Update(ctx, zone, id, param)
+}
+
+// Delete is API call with trace log
+func (t *LoadBalancerTracer) Delete(ctx context.Context, zone string, id types.ID) error {
+	log.Println("[TRACE] LoadBalancerTracer.Delete start:	args => [", "zone=", zone, "id=", id, "]")
+	defer func() {
+		log.Println("[TRACE] LoadBalancerTracer.Delete: end")
+	}()
+
+	return t.Internal.Delete(ctx, zone, id)
+}
+
+// Config is API call with trace log
+func (t *LoadBalancerTracer) Config(ctx context.Context, zone string, id types.ID) error {
+	log.Println("[TRACE] LoadBalancerTracer.Config start:	args => [", "zone=", zone, "id=", id, "]")
+	defer func() {
+		log.Println("[TRACE] LoadBalancerTracer.Config: end")
+	}()
+
+	return t.Internal.Config(ctx, zone, id)
+}
+
+// Boot is API call with trace log
+func (t *LoadBalancerTracer) Boot(ctx context.Context, zone string, id types.ID) error {
+	log.Println("[TRACE] LoadBalancerTracer.Boot start:	args => [", "zone=", zone, "id=", id, "]")
+	defer func() {
+		log.Println("[TRACE] LoadBalancerTracer.Boot: end")
+	}()
+
+	return t.Internal.Boot(ctx, zone, id)
+}
+
+// Shutdown is API call with trace log
+func (t *LoadBalancerTracer) Shutdown(ctx context.Context, zone string, id types.ID, shutdownOption *ShutdownOption) error {
+	log.Println("[TRACE] LoadBalancerTracer.Shutdown start:	args => [", "zone=", zone, "id=", id, "shutdownOption=", shutdownOption, "]")
+	defer func() {
+		log.Println("[TRACE] LoadBalancerTracer.Shutdown: end")
+	}()
+
+	return t.Internal.Shutdown(ctx, zone, id, shutdownOption)
+}
+
+// Reset is API call with trace log
+func (t *LoadBalancerTracer) Reset(ctx context.Context, zone string, id types.ID) error {
+	log.Println("[TRACE] LoadBalancerTracer.Reset start:	args => [", "zone=", zone, "id=", id, "]")
+	defer func() {
+		log.Println("[TRACE] LoadBalancerTracer.Reset: end")
+	}()
+
+	return t.Internal.Reset(ctx, zone, id)
+}
+
+// MonitorInterface is API call with trace log
+func (t *LoadBalancerTracer) MonitorInterface(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*InterfaceActivity, error) {
+	log.Println("[TRACE] LoadBalancerTracer.MonitorInterface start:	args => [", "zone=", zone, "id=", id, "condition=", condition, "]")
+	defer func() {
+		log.Println("[TRACE] LoadBalancerTracer.MonitorInterface: end")
+	}()
+
+	return t.Internal.MonitorInterface(ctx, zone, id, condition)
+}
+
+/*************************************************
 * NFSTracer
 *************************************************/
 

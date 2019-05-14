@@ -353,6 +353,20 @@ func (r *Resource) OperationCRUD(nakedType meta.Type, findParam, createParam, up
 	return r
 }
 
+// DefineOperationConfig Config操作を定義
+func (r *Resource) DefineOperationConfig() *Operation {
+	return r.DefineOperation("Config").
+		Method(http.MethodPut).
+		PathFormat(IDAndSuffixPathFormat("config")).
+		Argument(ArgumentZone).
+		Argument(ArgumentID)
+}
+
+// OperationConfig Config操作を追加
+func (r *Resource) OperationConfig() *Resource {
+	return r.Operation(r.DefineOperationConfig())
+}
+
 // OperationBoot リソースに対するBoot操作を追加
 func (r *Resource) OperationBoot() *Resource {
 	return r.Operation(r.DefineOperationBoot())

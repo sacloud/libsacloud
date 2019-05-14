@@ -37,6 +37,24 @@ type GSLBAPI interface {
 }
 
 /*************************************************
+* LoadBalancerAPI
+*************************************************/
+
+// LoadBalancerAPI is interface for operate LoadBalancer resource
+type LoadBalancerAPI interface {
+	Find(ctx context.Context, zone string, conditions *FindCondition) ([]*LoadBalancer, error)
+	Create(ctx context.Context, zone string, param *LoadBalancerCreateRequest) (*LoadBalancer, error)
+	Read(ctx context.Context, zone string, id types.ID) (*LoadBalancer, error)
+	Update(ctx context.Context, zone string, id types.ID, param *LoadBalancerUpdateRequest) (*LoadBalancer, error)
+	Delete(ctx context.Context, zone string, id types.ID) error
+	Config(ctx context.Context, zone string, id types.ID) error
+	Boot(ctx context.Context, zone string, id types.ID) error
+	Shutdown(ctx context.Context, zone string, id types.ID, shutdownOption *ShutdownOption) error
+	Reset(ctx context.Context, zone string, id types.ID) error
+	MonitorInterface(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*InterfaceActivity, error)
+}
+
+/*************************************************
 * NFSAPI
 *************************************************/
 

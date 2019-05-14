@@ -1,6 +1,7 @@
 package sacloud
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"os"
@@ -9,6 +10,7 @@ import (
 	"time"
 
 	"github.com/sacloud/libsacloud-v2"
+	"github.com/sacloud/libsacloud-v2/sacloud/types"
 )
 
 var testZone string
@@ -46,4 +48,45 @@ func TestMain(m *testing.M) {
 	}
 	ret := m.Run()
 	os.Exit(ret)
+}
+
+func compositeAPIFunc(funcs ...func(*CRUDTestContext, APICaller) error) func(*CRUDTestContext, APICaller) error {
+	return func(testContext *CRUDTestContext, caller APICaller) error {
+		for _, f := range funcs {
+			if err := f(testContext, caller); err != nil {
+				return err
+			}
+		}
+		return nil
+	}
+}
+
+func setupSwitchFunc(targetResource string, dests ...switchIDAccessor) func(*CRUDTestContext, APICaller) error {
+	return func(testContext *CRUDTestContext, caller APICaller) error {
+		swClient := NewSwitchOp(caller)
+		sw, err := swClient.Create(context.Background(), testZone, &SwitchCreateRequest{
+			Name: "libsacloud-v2-switch-for-" + targetResource,
+		})
+		if err != nil {
+			return err
+		}
+
+		testContext.Values[targetResource+"/switch"] = sw.ID
+		for _, dest := range dests {
+			dest.SetSwitchID(sw.ID)
+		}
+		return nil
+	}
+}
+
+func cleanupSwitchFunc(targetResource string) func(*CRUDTestContext, APICaller) error {
+	return func(testContext *CRUDTestContext, caller APICaller) error {
+		switchID, ok := testContext.Values[targetResource+"/switch"]
+		if !ok {
+			return nil
+		}
+
+		swClient := NewSwitchOp(caller)
+		return swClient.Delete(context.Background(), testZone, switchID.(types.ID))
+	}
 }
