@@ -87,6 +87,117 @@ func (f *fieldsDef) ApplianceIPAddress() *schema.FieldDesc {
 	}
 }
 
+func (f *fieldsDef) ApplianceIPAddresses() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "IPAddresses",
+		Type: meta.TypeStringSlice,
+		Tags: &schema.FieldTags{
+			MapConv:  "Remark.[]Servers.IPAddress",
+			Validate: "min=1,max=2,dive,ipv4",
+		},
+	}
+}
+
+func (f *fieldsDef) LoadBalancerVIP() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "VirtualIPAddresses",
+		Type: &schema.Model{
+			Name:    "LoadBalancerVirtualIPAddress",
+			IsArray: true,
+			Fields: []*schema.FieldDesc{
+				{
+					Name: "VirtualIPAddress",
+					Type: meta.TypeString,
+					Tags: &schema.FieldTags{
+						Validate: "ipv4",
+					},
+				},
+				{
+					Name: "Port",
+					Type: meta.TypeStringNumber,
+				},
+				{
+					Name: "DelayLoop",
+					Type: meta.TypeStringNumber,
+					Tags: &schema.FieldTags{
+						MapConv:  ",default=10",
+						Validate: "min=0,max=60", // TODO 最大値確認
+					},
+				},
+				{
+					Name: "SorryServer",
+					Type: meta.TypeString,
+					Tags: &schema.FieldTags{
+						Validate: "ipv4",
+					},
+				},
+				f.Description(),
+				{
+					// TODO Modelに再帰的にモデル取得処理を書き足すよ
+					Name: "Servers",
+					Type: &schema.Model{
+						Name:    "LoadBalancerServer",
+						IsArray: true,
+						Fields: []*schema.FieldDesc{
+							{
+								Name: "IPAddress",
+								Type: meta.TypeString,
+								Tags: &schema.FieldTags{
+									Validate: "ipv4",
+								},
+							},
+							{
+								Name: "Port",
+								Type: meta.TypeStringNumber,
+								Tags: &schema.FieldTags{
+									Validate: "min=1,max=65535",
+								},
+							},
+							{
+								Name: "Enabled",
+								Type: meta.TypeStringFlag,
+								Tags: &schema.FieldTags{
+									MapConv: ",default=true",
+								},
+							},
+							{
+								Name: "HealthCheckProtocol",
+								Type: meta.TypeString,
+								Tags: &schema.FieldTags{
+									MapConv:  "HealthCheck.Protocol",
+									Validate: "oneof=http https ping tcp",
+								},
+							},
+							{
+								Name: "HealthCheckPath",
+								Type: meta.TypeString,
+								Tags: &schema.FieldTags{
+									MapConv: "HealthCheck.Path",
+								},
+							},
+							{
+								Name: "HealthCheckResponseCode",
+								Type: meta.TypeStringNumber,
+								Tags: &schema.FieldTags{
+									MapConv: "HealthCheck.Status",
+								},
+							},
+						},
+					},
+					Tags: &schema.FieldTags{
+						MapConv:  ",recursive",
+						Validate: "min=0,max=40",
+					},
+				},
+			},
+		},
+		Tags: &schema.FieldTags{
+			MapConv:  "Settings.[]LoadBalancer,recursive",
+			Validate: "min=0,max=10",
+		},
+	}
+}
+
 func (f *fieldsDef) Tags() *schema.FieldDesc {
 	return &schema.FieldDesc{
 		Name: "Tags",
@@ -108,6 +219,17 @@ func (f *fieldsDef) NFSClass() *schema.FieldDesc {
 		Type:     meta.TypeString,
 		Tags: &schema.FieldTags{
 			MapConv: ",default=nfs",
+		},
+	}
+}
+
+func (f *fieldsDef) LoadBalancerClass() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name:     "Class",
+		ReadOnly: true,
+		Type:     meta.TypeString,
+		Tags: &schema.FieldTags{
+			MapConv: ",default=loadbalancer",
 		},
 	}
 }
@@ -331,6 +453,9 @@ func (f *fieldsDef) Description() *schema.FieldDesc {
 	return &schema.FieldDesc{
 		Name: "Description",
 		Type: meta.TypeString,
+		Tags: &schema.FieldTags{
+			Validate: "min=0,max=512",
+		},
 	}
 }
 
@@ -419,6 +544,16 @@ func (f *fieldsDef) RemarkServerIPAddress() *schema.FieldDesc {
 		Type: meta.TypeStringSlice,
 		Tags: &schema.FieldTags{
 			MapConv: "Remark.[]Servers.IPAddress",
+		},
+	}
+}
+
+func (f *fieldsDef) RemarkVRID() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "VRID",
+		Type: meta.TypeInt,
+		Tags: &schema.FieldTags{
+			MapConv: "Remark.VRRP.VRID",
 		},
 	}
 }

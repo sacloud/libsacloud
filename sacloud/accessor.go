@@ -47,3 +47,12 @@ func getSizeGB(target sizeMBAccessor) int {
 func setSizeGB(target sizeMBAccessor, size int) {
 	target.SetSizeMB(size * 1024)
 }
+
+/************************************************
+ switchID
+************************************************/
+
+type switchIDAccessor interface {
+	GetSwitchID() types.ID
+	SetSwitchID(id types.ID)
+}

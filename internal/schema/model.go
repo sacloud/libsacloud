@@ -128,6 +128,7 @@ func (m *Model) FieldModels() []*Model {
 		}
 		if m, ok := f.Type.(*Model); ok {
 			ms = append(ms, m)
+			ms = append(ms, m.FieldModels()...)
 		}
 	}
 	return ms

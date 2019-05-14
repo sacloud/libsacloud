@@ -129,6 +129,78 @@ type GSLBUpdateResponseEnvelope struct {
 	CommonServiceItem *naked.GSLB `json:",omitempty"`
 }
 
+// LoadBalancerFindRequestEnvelope is envelop of API request
+type LoadBalancerFindRequestEnvelope struct {
+	Count   int                    `json:",omitempty"`
+	From    int                    `json:",omitempty"`
+	Sort    []string               `json:",omitempty"`
+	Filter  map[string]interface{} `json:",omitempty"`
+	Include []string               `json:",omitempty"`
+	Exclude []string               `json:",omitempty"`
+}
+
+// LoadBalancerFindResponseEnvelope is envelop of API response
+type LoadBalancerFindResponseEnvelope struct {
+	Total int `json:",omitempty"` // トータル件数
+	From  int `json:",omitempty"` // ページング開始ページ
+	Count int `json:",omitempty"` // 件数
+
+	Appliances []*naked.LoadBalancer `json:",omitempty"`
+}
+
+// LoadBalancerCreateRequestEnvelope is envelop of API request
+type LoadBalancerCreateRequestEnvelope struct {
+	Appliance *naked.LoadBalancer `json:",omitempty"`
+}
+
+// LoadBalancerCreateResponseEnvelope is envelop of API response
+type LoadBalancerCreateResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Appliance *naked.LoadBalancer `json:",omitempty"`
+}
+
+// LoadBalancerReadResponseEnvelope is envelop of API response
+type LoadBalancerReadResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Appliance *naked.LoadBalancer `json:",omitempty"`
+}
+
+// LoadBalancerUpdateRequestEnvelope is envelop of API request
+type LoadBalancerUpdateRequestEnvelope struct {
+	Appliance *naked.LoadBalancer `json:",omitempty"`
+}
+
+// LoadBalancerUpdateResponseEnvelope is envelop of API response
+type LoadBalancerUpdateResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Appliance *naked.LoadBalancer `json:",omitempty"`
+}
+
+// LoadBalancerShutdownRequestEnvelope is envelop of API request
+type LoadBalancerShutdownRequestEnvelope struct {
+	Force bool `json:",omitempty"`
+}
+
+// LoadBalancerMonitorInterfaceRequestEnvelope is envelop of API request
+type LoadBalancerMonitorInterfaceRequestEnvelope struct {
+	Start *time.Time `json:",omitempty"`
+	End   *time.Time `json:",omitempty"`
+}
+
+// LoadBalancerMonitorInterfaceResponseEnvelope is envelop of API response
+type LoadBalancerMonitorInterfaceResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Data *naked.MonitorValues `json:",omitempty"`
+}
+
 // NFSFindRequestEnvelope is envelop of API request
 type NFSFindRequestEnvelope struct {
 	Count   int                    `json:",omitempty"`
