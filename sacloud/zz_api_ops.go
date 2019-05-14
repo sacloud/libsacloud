@@ -10,6 +10,349 @@ import (
 )
 
 /*************************************************
+* ArchiveOp
+*************************************************/
+
+// ArchiveOp implements ArchiveAPI interface
+type ArchiveOp struct {
+	// Client APICaller
+	Client APICaller
+	// PathSuffix is used when building URL
+	PathSuffix string
+	// PathName is used when building URL
+	PathName string
+}
+
+// NewArchiveOp creates new ArchiveOp instance
+func NewArchiveOp(client APICaller) ArchiveAPI {
+	return &ArchiveOp{
+		Client:     client,
+		PathSuffix: "api/cloud/1.1",
+		PathName:   "archive",
+	}
+}
+
+// Find is API call
+func (o *ArchiveOp) Find(ctx context.Context, zone string, conditions *FindCondition) ([]*Archive, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"conditions": conditions,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+	{
+		if conditions == nil {
+			conditions = &FindCondition{}
+		}
+		if body == nil {
+			body = &ArchiveFindRequestEnvelope{}
+		}
+		v := body.(*ArchiveFindRequestEnvelope)
+		v.Count = conditions.Count
+		v.From = conditions.From
+		v.Sort = conditions.Sort
+		v.Filter = conditions.Filter
+		v.Include = conditions.Include
+		v.Exclude = conditions.Exclude
+		body = v
+	}
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &ArchiveFindResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	var payload0 []*Archive
+	for _, v := range nakedResponse.Archives {
+		payload := &Archive{}
+		if err := payload.convertFrom(v); err != nil {
+			return nil, err
+		}
+		payload0 = append(payload0, payload)
+	}
+	return payload0, nil
+}
+
+// Create is API call
+func (o *ArchiveOp) Create(ctx context.Context, zone string, param *ArchiveCreateRequest) (*Archive, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"param":      param,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+	{
+		if param == nil {
+			param = &ArchiveCreateRequest{}
+		}
+		if body == nil {
+			body = &ArchiveCreateRequestEnvelope{}
+		}
+		v := body.(*ArchiveCreateRequestEnvelope)
+		n, err := param.convertTo()
+		if err != nil {
+			return nil, err
+		}
+		v.Archive = n
+		body = v
+	}
+
+	data, err := o.Client.Do(ctx, "POST", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &ArchiveCreateResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	payload0 := &Archive{}
+	if err := payload0.convertFrom(nakedResponse.Archive); err != nil {
+		return nil, err
+	}
+	return payload0, nil
+}
+
+// CreateBlank is API call
+func (o *ArchiveOp) CreateBlank(ctx context.Context, zone string, param *ArchiveCreateBlankRequest) (*Archive, *FTPServer, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"param":      param,
+	})
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var body interface{}
+	{
+		if param == nil {
+			param = &ArchiveCreateBlankRequest{}
+		}
+		if body == nil {
+			body = &ArchiveCreateBlankRequestEnvelope{}
+		}
+		v := body.(*ArchiveCreateBlankRequestEnvelope)
+		n, err := param.convertTo()
+		if err != nil {
+			return nil, nil, err
+		}
+		v.Archive = n
+		body = v
+	}
+
+	data, err := o.Client.Do(ctx, "POST", url, body)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	nakedResponse := &ArchiveCreateBlankResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, nil, err
+	}
+
+	payload0 := &Archive{}
+	if err := payload0.convertFrom(nakedResponse.Archive); err != nil {
+		return nil, nil, err
+	}
+	payload1 := &FTPServer{}
+	if err := payload1.convertFrom(nakedResponse.FTPServer); err != nil {
+		return nil, nil, err
+	}
+	return payload0, payload1, nil
+}
+
+// Read is API call
+func (o *ArchiveOp) Read(ctx context.Context, zone string, id types.ID) (*Archive, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &ArchiveReadResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	payload0 := &Archive{}
+	if err := payload0.convertFrom(nakedResponse.Archive); err != nil {
+		return nil, err
+	}
+	return payload0, nil
+}
+
+// Update is API call
+func (o *ArchiveOp) Update(ctx context.Context, zone string, id types.ID, param *ArchiveUpdateRequest) (*Archive, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+		"param":      param,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+	{
+		if param == nil {
+			param = &ArchiveUpdateRequest{}
+		}
+		if body == nil {
+			body = &ArchiveUpdateRequestEnvelope{}
+		}
+		v := body.(*ArchiveUpdateRequestEnvelope)
+		n, err := param.convertTo()
+		if err != nil {
+			return nil, err
+		}
+		v.Archive = n
+		body = v
+	}
+
+	data, err := o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &ArchiveUpdateResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	payload0 := &Archive{}
+	if err := payload0.convertFrom(nakedResponse.Archive); err != nil {
+		return nil, err
+	}
+	return payload0, nil
+}
+
+// Delete is API call
+func (o *ArchiveOp) Delete(ctx context.Context, zone string, id types.ID) error {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+	})
+	if err != nil {
+		return err
+	}
+
+	var body interface{}
+
+	_, err = o.Client.Do(ctx, "DELETE", url, body)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// OpenFTP is API call
+func (o *ArchiveOp) OpenFTP(ctx context.Context, zone string, id types.ID, openOption *OpenFTPParam) (*FTPServer, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/ftp", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+		"openOption": openOption,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+	{
+		if openOption == nil {
+			openOption = &OpenFTPParam{}
+		}
+		if body == nil {
+			body = &ArchiveOpenFTPRequestEnvelope{}
+		}
+		v := body.(*ArchiveOpenFTPRequestEnvelope)
+		v.ChangePassword = openOption.ChangePassword
+		body = v
+	}
+
+	data, err := o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &ArchiveOpenFTPResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	payload0 := &FTPServer{}
+	if err := payload0.convertFrom(nakedResponse.FTPServer); err != nil {
+		return nil, err
+	}
+	return payload0, nil
+}
+
+// CloseFTP is API call
+func (o *ArchiveOp) CloseFTP(ctx context.Context, zone string, id types.ID) error {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/ftp", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+	})
+	if err != nil {
+		return err
+	}
+
+	var body interface{}
+
+	_, err = o.Client.Do(ctx, "DELETE", url, body)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+/*************************************************
 * CDROMOp
 *************************************************/
 

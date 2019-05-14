@@ -37,11 +37,91 @@ func (f *fieldsDef) Name() *schema.FieldDesc {
 	}
 }
 
+func (f *fieldsDef) DiskPlanID() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "DiskPlanID",
+		Tags: &schema.FieldTags{
+			MapConv: "Plan.ID",
+		},
+		Type: meta.TypeID,
+	}
+}
+
+func (f *fieldsDef) DiskPlanName() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "DiskPlanName",
+		Tags: &schema.FieldTags{
+			MapConv: "Plan.Name",
+		},
+		Type: meta.TypeString,
+	}
+}
+
+func (f *fieldsDef) DiskPlanStorageClass() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "DiskPlanStorageClass",
+		Tags: &schema.FieldTags{
+			MapConv: "Plan.StorageClass",
+		},
+		Type: meta.TypeStringFlag,
+	}
+}
+
 func (f *fieldsDef) PlanID() *schema.FieldDesc {
 	return &schema.FieldDesc{
 		Name: "PlanID",
 		Tags: &schema.FieldTags{
 			MapConv: "Plan.ID",
+		},
+		Type: meta.TypeID,
+	}
+}
+
+func (f *fieldsDef) SourceDiskID() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "SourceDiskID",
+		Tags: &schema.FieldTags{
+			MapConv: "SourceDisk.ID",
+		},
+		Type: meta.TypeID,
+	}
+}
+
+func (f *fieldsDef) SourceDiskAvailability() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "SourceDiskAvailability",
+		Tags: &schema.FieldTags{
+			MapConv: "SourceDisk.Availability",
+		},
+		Type: meta.TypeAvailability,
+	}
+}
+
+func (f *fieldsDef) SourceArchiveID() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "SourceArchiveID",
+		Tags: &schema.FieldTags{
+			MapConv: "SourceArchive.ID",
+		},
+		Type: meta.TypeID,
+	}
+}
+
+func (f *fieldsDef) SourceArchiveAvailability() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "SourceArchiveAvailability",
+		Tags: &schema.FieldTags{
+			MapConv: "SourceArchive.Availability",
+		},
+		Type: meta.TypeAvailability,
+	}
+}
+
+func (f *fieldsDef) OriginalArchiveID() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "OriginalArchiveID",
+		Tags: &schema.FieldTags{
+			MapConv: "OriginalArchive.ID",
 		},
 		Type: meta.TypeID,
 	}
@@ -155,9 +235,6 @@ func (f *fieldsDef) LoadBalancerVIP() *schema.FieldDesc {
 							{
 								Name: "Enabled",
 								Type: meta.TypeStringFlag,
-								Tags: &schema.FieldTags{
-									MapConv: ",default=true",
-								},
 							},
 							{
 								Name: "HealthCheckProtocol",
@@ -344,9 +421,6 @@ func (f *fieldsDef) GSLBDestinationServers() *schema.FieldDesc {
 				{
 					Name: "Enabled",
 					Type: meta.TypeStringFlag,
-					Tags: &schema.FieldTags{
-						MapConv: ",default=true",
-					},
 				},
 				{
 					Name: "Weight",
@@ -482,6 +556,16 @@ func (f *fieldsDef) SizeMB() *schema.FieldDesc {
 	}
 }
 
+func (f *fieldsDef) MigratedMB() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "MigratedMB",
+		Type: meta.TypeInt,
+		ExtendAccessors: []*schema.ExtendAccessor{
+			{Name: "MigratedGB"},
+		},
+	}
+}
+
 func (f *fieldsDef) UserSubnetNetworkMaskLen() *schema.FieldDesc {
 	return &schema.FieldDesc{
 		Name: "NetworkMaskLen",
@@ -603,6 +687,52 @@ func (f *fieldsDef) Password() *schema.FieldDesc {
 	}
 }
 
+func (f *fieldsDef) SourceInfo() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "SourceInfo",
+		Tags: &schema.FieldTags{
+			MapConv: "SourceInfo,recursive",
+		},
+		Type: &schema.Model{
+			Name: "SourceArchiveInfo",
+			Fields: []*schema.FieldDesc{
+				{
+					Name:     "ID",
+					Type:     meta.TypeID,
+					ReadOnly: true,
+					Tags: &schema.FieldTags{
+						MapConv: "ArchiveUnderZone.ID",
+					},
+				},
+				{
+					Name:     "AccountID",
+					Type:     meta.TypeID,
+					ReadOnly: true,
+					Tags: &schema.FieldTags{
+						MapConv: "ArchiveUnderZone.Account.ID",
+					},
+				},
+				{
+					Name:     "ZoneID",
+					Type:     meta.TypeID,
+					ReadOnly: true,
+					Tags: &schema.FieldTags{
+						MapConv: "ArchiveUnderZone.Zone.ID",
+					},
+				},
+				{
+					Name:     "ZoneName",
+					Type:     meta.TypeString,
+					ReadOnly: true,
+					Tags: &schema.FieldTags{
+						MapConv: "ArchiveUnderZone.Zone.Name",
+					},
+				},
+			},
+		},
+	}
+}
+
 func (f *fieldsDef) VNCProxy() *schema.FieldDesc {
 	return &schema.FieldDesc{
 		Name: "VNCProxy",
@@ -657,6 +787,16 @@ func (f *fieldsDef) Storage() *schema.FieldDesc {
 	return &schema.FieldDesc{
 		Name: "Storage",
 		Type: meta.Static(naked.Storage{}),
+		Tags: &schema.FieldTags{
+			JSON: ",omitempty",
+		},
+	}
+}
+
+func (f *fieldsDef) BundleInfo() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "BundleInfo",
+		Type: meta.Static(naked.BundleInfo{}),
 		Tags: &schema.FieldTags{
 			JSON: ",omitempty",
 		},

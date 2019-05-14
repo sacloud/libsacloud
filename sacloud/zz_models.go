@@ -12,6 +12,783 @@ import (
 )
 
 /*************************************************
+* Archive
+*************************************************/
+
+// Archive represents API parameter/response structure
+type Archive struct {
+	ID                        types.ID
+	Name                      string `validate:"required"`
+	Description               string `validate:"min=0,max=512"`
+	Tags                      []string
+	DisplayOrder              int
+	Availability              types.EAvailability
+	Scope                     types.EScope
+	SizeMB                    int
+	MigratedMB                int
+	DiskPlanID                types.ID            `mapconv:"Plan.ID"`
+	DiskPlanName              string              `mapconv:"Plan.Name"`
+	DiskPlanStorageClass      types.StringFlag    `mapconv:"Plan.StorageClass"`
+	SourceDiskID              types.ID            `mapconv:"SourceDisk.ID"`
+	SourceDiskAvailability    types.EAvailability `mapconv:"SourceDisk.Availability"`
+	SourceArchiveID           types.ID            `mapconv:"SourceArchive.ID"`
+	SourceArchiveAvailability types.EAvailability `mapconv:"SourceArchive.Availability"`
+	BundleInfo                *naked.BundleInfo   `json:",omitempty"`
+	Storage                   *naked.Storage      `json:",omitempty"`
+	Icon                      *naked.Icon         `json:",omitempty"`
+	CreatedAt                 *time.Time
+	ModifiedAt                *time.Time
+	OriginalArchiveID         types.ID           `mapconv:"OriginalArchive.ID"`
+	SourceInfo                *SourceArchiveInfo `mapconv:"SourceInfo,recursive"`
+}
+
+// Validate validates by field tags
+func (o *Archive) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetID returns value of ID
+func (o *Archive) GetID() types.ID {
+	return o.ID
+}
+
+// SetID sets value to ID
+func (o *Archive) SetID(v types.ID) {
+	o.ID = v
+}
+
+// GetStringID gets value to StringID
+func (o *Archive) GetStringID() string {
+	return getStringID(o)
+}
+
+// SetStringID sets value to StringID
+func (o *Archive) SetStringID(v string) {
+	setStringID(o, v)
+}
+
+// GetInt64ID gets value to Int64ID
+func (o *Archive) GetInt64ID() int64 {
+	return getInt64ID(o)
+}
+
+// SetInt64ID sets value to Int64ID
+func (o *Archive) SetInt64ID(v int64) {
+	setInt64ID(o, v)
+}
+
+// GetName returns value of Name
+func (o *Archive) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *Archive) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *Archive) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *Archive) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetTags returns value of Tags
+func (o *Archive) GetTags() []string {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *Archive) SetTags(v []string) {
+	o.Tags = v
+}
+
+// GetDisplayOrder returns value of DisplayOrder
+func (o *Archive) GetDisplayOrder() int {
+	return o.DisplayOrder
+}
+
+// SetDisplayOrder sets value to DisplayOrder
+func (o *Archive) SetDisplayOrder(v int) {
+	o.DisplayOrder = v
+}
+
+// GetAvailability returns value of Availability
+func (o *Archive) GetAvailability() types.EAvailability {
+	return o.Availability
+}
+
+// SetAvailability sets value to Availability
+func (o *Archive) SetAvailability(v types.EAvailability) {
+	o.Availability = v
+}
+
+// GetScope returns value of Scope
+func (o *Archive) GetScope() types.EScope {
+	return o.Scope
+}
+
+// SetScope sets value to Scope
+func (o *Archive) SetScope(v types.EScope) {
+	o.Scope = v
+}
+
+// GetSizeMB returns value of SizeMB
+func (o *Archive) GetSizeMB() int {
+	return o.SizeMB
+}
+
+// SetSizeMB sets value to SizeMB
+func (o *Archive) SetSizeMB(v int) {
+	o.SizeMB = v
+}
+
+// GetSizeGB gets value to SizeGB
+func (o *Archive) GetSizeGB() int {
+	return getSizeGB(o)
+}
+
+// SetSizeGB sets value to SizeGB
+func (o *Archive) SetSizeGB(v int) {
+	setSizeGB(o, v)
+}
+
+// GetMigratedMB returns value of MigratedMB
+func (o *Archive) GetMigratedMB() int {
+	return o.MigratedMB
+}
+
+// SetMigratedMB sets value to MigratedMB
+func (o *Archive) SetMigratedMB(v int) {
+	o.MigratedMB = v
+}
+
+// GetMigratedGB gets value to MigratedGB
+func (o *Archive) GetMigratedGB() int {
+	return getMigratedGB(o)
+}
+
+// SetMigratedGB sets value to MigratedGB
+func (o *Archive) SetMigratedGB(v int) {
+	setMigratedGB(o, v)
+}
+
+// GetDiskPlanID returns value of DiskPlanID
+func (o *Archive) GetDiskPlanID() types.ID {
+	return o.DiskPlanID
+}
+
+// SetDiskPlanID sets value to DiskPlanID
+func (o *Archive) SetDiskPlanID(v types.ID) {
+	o.DiskPlanID = v
+}
+
+// GetDiskPlanName returns value of DiskPlanName
+func (o *Archive) GetDiskPlanName() string {
+	return o.DiskPlanName
+}
+
+// SetDiskPlanName sets value to DiskPlanName
+func (o *Archive) SetDiskPlanName(v string) {
+	o.DiskPlanName = v
+}
+
+// GetDiskPlanStorageClass returns value of DiskPlanStorageClass
+func (o *Archive) GetDiskPlanStorageClass() types.StringFlag {
+	return o.DiskPlanStorageClass
+}
+
+// SetDiskPlanStorageClass sets value to DiskPlanStorageClass
+func (o *Archive) SetDiskPlanStorageClass(v types.StringFlag) {
+	o.DiskPlanStorageClass = v
+}
+
+// GetSourceDiskID returns value of SourceDiskID
+func (o *Archive) GetSourceDiskID() types.ID {
+	return o.SourceDiskID
+}
+
+// SetSourceDiskID sets value to SourceDiskID
+func (o *Archive) SetSourceDiskID(v types.ID) {
+	o.SourceDiskID = v
+}
+
+// GetSourceDiskAvailability returns value of SourceDiskAvailability
+func (o *Archive) GetSourceDiskAvailability() types.EAvailability {
+	return o.SourceDiskAvailability
+}
+
+// SetSourceDiskAvailability sets value to SourceDiskAvailability
+func (o *Archive) SetSourceDiskAvailability(v types.EAvailability) {
+	o.SourceDiskAvailability = v
+}
+
+// GetSourceArchiveID returns value of SourceArchiveID
+func (o *Archive) GetSourceArchiveID() types.ID {
+	return o.SourceArchiveID
+}
+
+// SetSourceArchiveID sets value to SourceArchiveID
+func (o *Archive) SetSourceArchiveID(v types.ID) {
+	o.SourceArchiveID = v
+}
+
+// GetSourceArchiveAvailability returns value of SourceArchiveAvailability
+func (o *Archive) GetSourceArchiveAvailability() types.EAvailability {
+	return o.SourceArchiveAvailability
+}
+
+// SetSourceArchiveAvailability sets value to SourceArchiveAvailability
+func (o *Archive) SetSourceArchiveAvailability(v types.EAvailability) {
+	o.SourceArchiveAvailability = v
+}
+
+// GetBundleInfo returns value of BundleInfo
+func (o *Archive) GetBundleInfo() *naked.BundleInfo {
+	return o.BundleInfo
+}
+
+// SetBundleInfo sets value to BundleInfo
+func (o *Archive) SetBundleInfo(v *naked.BundleInfo) {
+	o.BundleInfo = v
+}
+
+// GetStorage returns value of Storage
+func (o *Archive) GetStorage() *naked.Storage {
+	return o.Storage
+}
+
+// SetStorage sets value to Storage
+func (o *Archive) SetStorage(v *naked.Storage) {
+	o.Storage = v
+}
+
+// GetIcon returns value of Icon
+func (o *Archive) GetIcon() *naked.Icon {
+	return o.Icon
+}
+
+// SetIcon sets value to Icon
+func (o *Archive) SetIcon(v *naked.Icon) {
+	o.Icon = v
+}
+
+// GetCreatedAt returns value of CreatedAt
+func (o *Archive) GetCreatedAt() *time.Time {
+	return o.CreatedAt
+}
+
+// SetCreatedAt sets value to CreatedAt
+func (o *Archive) SetCreatedAt(v *time.Time) {
+	o.CreatedAt = v
+}
+
+// GetModifiedAt returns value of ModifiedAt
+func (o *Archive) GetModifiedAt() *time.Time {
+	return o.ModifiedAt
+}
+
+// SetModifiedAt sets value to ModifiedAt
+func (o *Archive) SetModifiedAt(v *time.Time) {
+	o.ModifiedAt = v
+}
+
+// GetOriginalArchiveID returns value of OriginalArchiveID
+func (o *Archive) GetOriginalArchiveID() types.ID {
+	return o.OriginalArchiveID
+}
+
+// SetOriginalArchiveID sets value to OriginalArchiveID
+func (o *Archive) SetOriginalArchiveID(v types.ID) {
+	o.OriginalArchiveID = v
+}
+
+// GetSourceInfo returns value of SourceInfo
+func (o *Archive) GetSourceInfo() *SourceArchiveInfo {
+	return o.SourceInfo
+}
+
+// SetSourceInfo sets value to SourceInfo
+func (o *Archive) SetSourceInfo(v *SourceArchiveInfo) {
+	o.SourceInfo = v
+}
+
+// convertTo returns naked Archive
+func (o *Archive) convertTo() (*naked.Archive, error) {
+	dest := &naked.Archive{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked Archive
+func (o *Archive) convertFrom(naked *naked.Archive) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* SourceArchiveInfo
+*************************************************/
+
+// SourceArchiveInfo represents API parameter/response structure
+type SourceArchiveInfo struct {
+	ID        types.ID `mapconv:"ArchiveUnderZone.ID"`
+	AccountID types.ID `mapconv:"ArchiveUnderZone.Account.ID"`
+	ZoneID    types.ID `mapconv:"ArchiveUnderZone.Zone.ID"`
+	ZoneName  string   `mapconv:"ArchiveUnderZone.Zone.Name"`
+}
+
+// Validate validates by field tags
+func (o *SourceArchiveInfo) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetID returns value of ID
+func (o *SourceArchiveInfo) GetID() types.ID {
+	return o.ID
+}
+
+// GetAccountID returns value of AccountID
+func (o *SourceArchiveInfo) GetAccountID() types.ID {
+	return o.AccountID
+}
+
+// GetZoneID returns value of ZoneID
+func (o *SourceArchiveInfo) GetZoneID() types.ID {
+	return o.ZoneID
+}
+
+// GetZoneName returns value of ZoneName
+func (o *SourceArchiveInfo) GetZoneName() string {
+	return o.ZoneName
+}
+
+/*************************************************
+* FindCondition
+*************************************************/
+
+// FindCondition represents API parameter/response structure
+type FindCondition struct {
+	Count   int
+	From    int
+	Sort    []string
+	Filter  map[string]interface{}
+	Include []string
+	Exclude []string
+}
+
+// Validate validates by field tags
+func (o *FindCondition) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetCount returns value of Count
+func (o *FindCondition) GetCount() int {
+	return o.Count
+}
+
+// SetCount sets value to Count
+func (o *FindCondition) SetCount(v int) {
+	o.Count = v
+}
+
+// GetFrom returns value of From
+func (o *FindCondition) GetFrom() int {
+	return o.From
+}
+
+// SetFrom sets value to From
+func (o *FindCondition) SetFrom(v int) {
+	o.From = v
+}
+
+// GetSort returns value of Sort
+func (o *FindCondition) GetSort() []string {
+	return o.Sort
+}
+
+// SetSort sets value to Sort
+func (o *FindCondition) SetSort(v []string) {
+	o.Sort = v
+}
+
+// GetFilter returns value of Filter
+func (o *FindCondition) GetFilter() map[string]interface{} {
+	return o.Filter
+}
+
+// SetFilter sets value to Filter
+func (o *FindCondition) SetFilter(v map[string]interface{}) {
+	o.Filter = v
+}
+
+// GetInclude returns value of Include
+func (o *FindCondition) GetInclude() []string {
+	return o.Include
+}
+
+// SetInclude sets value to Include
+func (o *FindCondition) SetInclude(v []string) {
+	o.Include = v
+}
+
+// GetExclude returns value of Exclude
+func (o *FindCondition) GetExclude() []string {
+	return o.Exclude
+}
+
+// SetExclude sets value to Exclude
+func (o *FindCondition) SetExclude(v []string) {
+	o.Exclude = v
+}
+
+/*************************************************
+* ArchiveCreateRequest
+*************************************************/
+
+// ArchiveCreateRequest represents API parameter/response structure
+type ArchiveCreateRequest struct {
+	SourceDiskID    types.ID `mapconv:"SourceDisk.ID"`
+	SourceArchiveID types.ID `mapconv:"SourceArchive.ID"`
+	Name            string   `validate:"required"`
+	Description     string   `validate:"min=0,max=512"`
+	Tags            []string
+	IconID          types.ID `mapconv:"Icon.ID"`
+}
+
+// Validate validates by field tags
+func (o *ArchiveCreateRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetSourceDiskID returns value of SourceDiskID
+func (o *ArchiveCreateRequest) GetSourceDiskID() types.ID {
+	return o.SourceDiskID
+}
+
+// SetSourceDiskID sets value to SourceDiskID
+func (o *ArchiveCreateRequest) SetSourceDiskID(v types.ID) {
+	o.SourceDiskID = v
+}
+
+// GetSourceArchiveID returns value of SourceArchiveID
+func (o *ArchiveCreateRequest) GetSourceArchiveID() types.ID {
+	return o.SourceArchiveID
+}
+
+// SetSourceArchiveID sets value to SourceArchiveID
+func (o *ArchiveCreateRequest) SetSourceArchiveID(v types.ID) {
+	o.SourceArchiveID = v
+}
+
+// GetName returns value of Name
+func (o *ArchiveCreateRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *ArchiveCreateRequest) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *ArchiveCreateRequest) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *ArchiveCreateRequest) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetTags returns value of Tags
+func (o *ArchiveCreateRequest) GetTags() []string {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *ArchiveCreateRequest) SetTags(v []string) {
+	o.Tags = v
+}
+
+// GetIconID returns value of IconID
+func (o *ArchiveCreateRequest) GetIconID() types.ID {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *ArchiveCreateRequest) SetIconID(v types.ID) {
+	o.IconID = v
+}
+
+// convertTo returns naked ArchiveCreateRequest
+func (o *ArchiveCreateRequest) convertTo() (*naked.Archive, error) {
+	dest := &naked.Archive{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked ArchiveCreateRequest
+func (o *ArchiveCreateRequest) convertFrom(naked *naked.Archive) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* FTPServer
+*************************************************/
+
+// FTPServer represents API parameter/response structure
+type FTPServer struct {
+	HostName  string
+	IPAddress string
+	User      string
+	Password  string
+}
+
+// Validate validates by field tags
+func (o *FTPServer) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetHostName returns value of HostName
+func (o *FTPServer) GetHostName() string {
+	return o.HostName
+}
+
+// SetHostName sets value to HostName
+func (o *FTPServer) SetHostName(v string) {
+	o.HostName = v
+}
+
+// GetIPAddress returns value of IPAddress
+func (o *FTPServer) GetIPAddress() string {
+	return o.IPAddress
+}
+
+// SetIPAddress sets value to IPAddress
+func (o *FTPServer) SetIPAddress(v string) {
+	o.IPAddress = v
+}
+
+// GetUser returns value of User
+func (o *FTPServer) GetUser() string {
+	return o.User
+}
+
+// SetUser sets value to User
+func (o *FTPServer) SetUser(v string) {
+	o.User = v
+}
+
+// GetPassword returns value of Password
+func (o *FTPServer) GetPassword() string {
+	return o.Password
+}
+
+// SetPassword sets value to Password
+func (o *FTPServer) SetPassword(v string) {
+	o.Password = v
+}
+
+// convertTo returns naked FTPServer
+func (o *FTPServer) convertTo() (*naked.OpeningFTPServer, error) {
+	dest := &naked.OpeningFTPServer{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked FTPServer
+func (o *FTPServer) convertFrom(naked *naked.OpeningFTPServer) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* ArchiveCreateBlankRequest
+*************************************************/
+
+// ArchiveCreateBlankRequest represents API parameter/response structure
+type ArchiveCreateBlankRequest struct {
+	SizeMB      int
+	Name        string `validate:"required"`
+	Description string `validate:"min=0,max=512"`
+	Tags        []string
+	IconID      types.ID `mapconv:"Icon.ID"`
+}
+
+// Validate validates by field tags
+func (o *ArchiveCreateBlankRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetSizeMB returns value of SizeMB
+func (o *ArchiveCreateBlankRequest) GetSizeMB() int {
+	return o.SizeMB
+}
+
+// SetSizeMB sets value to SizeMB
+func (o *ArchiveCreateBlankRequest) SetSizeMB(v int) {
+	o.SizeMB = v
+}
+
+// GetSizeGB gets value to SizeGB
+func (o *ArchiveCreateBlankRequest) GetSizeGB() int {
+	return getSizeGB(o)
+}
+
+// SetSizeGB sets value to SizeGB
+func (o *ArchiveCreateBlankRequest) SetSizeGB(v int) {
+	setSizeGB(o, v)
+}
+
+// GetName returns value of Name
+func (o *ArchiveCreateBlankRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *ArchiveCreateBlankRequest) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *ArchiveCreateBlankRequest) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *ArchiveCreateBlankRequest) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetTags returns value of Tags
+func (o *ArchiveCreateBlankRequest) GetTags() []string {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *ArchiveCreateBlankRequest) SetTags(v []string) {
+	o.Tags = v
+}
+
+// GetIconID returns value of IconID
+func (o *ArchiveCreateBlankRequest) GetIconID() types.ID {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *ArchiveCreateBlankRequest) SetIconID(v types.ID) {
+	o.IconID = v
+}
+
+// convertTo returns naked ArchiveCreateBlankRequest
+func (o *ArchiveCreateBlankRequest) convertTo() (*naked.Archive, error) {
+	dest := &naked.Archive{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked ArchiveCreateBlankRequest
+func (o *ArchiveCreateBlankRequest) convertFrom(naked *naked.Archive) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* ArchiveUpdateRequest
+*************************************************/
+
+// ArchiveUpdateRequest represents API parameter/response structure
+type ArchiveUpdateRequest struct {
+	Name        string `validate:"required"`
+	Description string `validate:"min=0,max=512"`
+	Tags        []string
+	IconID      types.ID `mapconv:"Icon.ID"`
+}
+
+// Validate validates by field tags
+func (o *ArchiveUpdateRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetName returns value of Name
+func (o *ArchiveUpdateRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *ArchiveUpdateRequest) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *ArchiveUpdateRequest) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *ArchiveUpdateRequest) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetTags returns value of Tags
+func (o *ArchiveUpdateRequest) GetTags() []string {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *ArchiveUpdateRequest) SetTags(v []string) {
+	o.Tags = v
+}
+
+// GetIconID returns value of IconID
+func (o *ArchiveUpdateRequest) GetIconID() types.ID {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *ArchiveUpdateRequest) SetIconID(v types.ID) {
+	o.IconID = v
+}
+
+// convertTo returns naked ArchiveUpdateRequest
+func (o *ArchiveUpdateRequest) convertTo() (*naked.Archive, error) {
+	dest := &naked.Archive{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked ArchiveUpdateRequest
+func (o *ArchiveUpdateRequest) convertFrom(naked *naked.Archive) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* OpenFTPParam
+*************************************************/
+
+// OpenFTPParam represents API parameter/response structure
+type OpenFTPParam struct {
+	ChangePassword bool
+}
+
+// Validate validates by field tags
+func (o *OpenFTPParam) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetChangePassword returns value of ChangePassword
+func (o *OpenFTPParam) GetChangePassword() bool {
+	return o.ChangePassword
+}
+
+// SetChangePassword sets value to ChangePassword
+func (o *OpenFTPParam) SetChangePassword(v bool) {
+	o.ChangePassword = v
+}
+
+/*************************************************
 * CDROM
 *************************************************/
 
@@ -189,154 +966,6 @@ func (o *CDROM) convertFrom(naked *naked.CDROM) error {
 }
 
 /*************************************************
-* FindCondition
-*************************************************/
-
-// FindCondition represents API parameter/response structure
-type FindCondition struct {
-	Count   int
-	From    int
-	Sort    []string
-	Filter  map[string]interface{}
-	Include []string
-	Exclude []string
-}
-
-// Validate validates by field tags
-func (o *FindCondition) Validate() error {
-	return validator.New().Struct(o)
-}
-
-// GetCount returns value of Count
-func (o *FindCondition) GetCount() int {
-	return o.Count
-}
-
-// SetCount sets value to Count
-func (o *FindCondition) SetCount(v int) {
-	o.Count = v
-}
-
-// GetFrom returns value of From
-func (o *FindCondition) GetFrom() int {
-	return o.From
-}
-
-// SetFrom sets value to From
-func (o *FindCondition) SetFrom(v int) {
-	o.From = v
-}
-
-// GetSort returns value of Sort
-func (o *FindCondition) GetSort() []string {
-	return o.Sort
-}
-
-// SetSort sets value to Sort
-func (o *FindCondition) SetSort(v []string) {
-	o.Sort = v
-}
-
-// GetFilter returns value of Filter
-func (o *FindCondition) GetFilter() map[string]interface{} {
-	return o.Filter
-}
-
-// SetFilter sets value to Filter
-func (o *FindCondition) SetFilter(v map[string]interface{}) {
-	o.Filter = v
-}
-
-// GetInclude returns value of Include
-func (o *FindCondition) GetInclude() []string {
-	return o.Include
-}
-
-// SetInclude sets value to Include
-func (o *FindCondition) SetInclude(v []string) {
-	o.Include = v
-}
-
-// GetExclude returns value of Exclude
-func (o *FindCondition) GetExclude() []string {
-	return o.Exclude
-}
-
-// SetExclude sets value to Exclude
-func (o *FindCondition) SetExclude(v []string) {
-	o.Exclude = v
-}
-
-/*************************************************
-* FTPServer
-*************************************************/
-
-// FTPServer represents API parameter/response structure
-type FTPServer struct {
-	HostName  string
-	IPAddress string
-	User      string
-	Password  string
-}
-
-// Validate validates by field tags
-func (o *FTPServer) Validate() error {
-	return validator.New().Struct(o)
-}
-
-// GetHostName returns value of HostName
-func (o *FTPServer) GetHostName() string {
-	return o.HostName
-}
-
-// SetHostName sets value to HostName
-func (o *FTPServer) SetHostName(v string) {
-	o.HostName = v
-}
-
-// GetIPAddress returns value of IPAddress
-func (o *FTPServer) GetIPAddress() string {
-	return o.IPAddress
-}
-
-// SetIPAddress sets value to IPAddress
-func (o *FTPServer) SetIPAddress(v string) {
-	o.IPAddress = v
-}
-
-// GetUser returns value of User
-func (o *FTPServer) GetUser() string {
-	return o.User
-}
-
-// SetUser sets value to User
-func (o *FTPServer) SetUser(v string) {
-	o.User = v
-}
-
-// GetPassword returns value of Password
-func (o *FTPServer) GetPassword() string {
-	return o.Password
-}
-
-// SetPassword sets value to Password
-func (o *FTPServer) SetPassword(v string) {
-	o.Password = v
-}
-
-// convertTo returns naked FTPServer
-func (o *FTPServer) convertTo() (*naked.OpeningFTPServer, error) {
-	dest := &naked.OpeningFTPServer{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked FTPServer
-func (o *FTPServer) convertFrom(naked *naked.OpeningFTPServer) error {
-	return mapconv.ConvertFrom(naked, o)
-}
-
-/*************************************************
 * CDROMCreateRequest
 *************************************************/
 
@@ -493,30 +1122,6 @@ func (o *CDROMUpdateRequest) convertTo() (*naked.CDROM, error) {
 // convertFrom parse values from naked CDROMUpdateRequest
 func (o *CDROMUpdateRequest) convertFrom(naked *naked.CDROM) error {
 	return mapconv.ConvertFrom(naked, o)
-}
-
-/*************************************************
-* OpenFTPParam
-*************************************************/
-
-// OpenFTPParam represents API parameter/response structure
-type OpenFTPParam struct {
-	ChangePassword bool
-}
-
-// Validate validates by field tags
-func (o *OpenFTPParam) Validate() error {
-	return validator.New().Struct(o)
-}
-
-// GetChangePassword returns value of ChangePassword
-func (o *OpenFTPParam) GetChangePassword() bool {
-	return o.ChangePassword
-}
-
-// SetChangePassword sets value to ChangePassword
-func (o *OpenFTPParam) SetChangePassword(v bool) {
-	o.ChangePassword = v
 }
 
 /*************************************************
@@ -775,8 +1380,8 @@ func (o *GSLB) convertFrom(naked *naked.GSLB) error {
 
 // GSLBServer represents API parameter/response structure
 type GSLBServer struct {
-	IPAddress string             `validate:"ipv4"`
-	Enabled   types.StringFlag   `mapconv:",default=true"`
+	IPAddress string `validate:"ipv4"`
+	Enabled   types.StringFlag
 	Weight    types.StringNumber `mapconv:",default=1"`
 }
 
@@ -1518,7 +2123,7 @@ func (o *LoadBalancerVirtualIPAddress) SetServers(v []*LoadBalancerServer) {
 type LoadBalancerServer struct {
 	IPAddress               string             `validate:"ipv4"`
 	Port                    types.StringNumber `validate:"min=1,max=65535"`
-	Enabled                 types.StringFlag   `mapconv:",default=true"`
+	Enabled                 types.StringFlag
 	HealthCheckProtocol     string             `mapconv:"HealthCheck.Protocol" validate:"oneof=http https ping tcp"`
 	HealthCheckPath         string             `mapconv:"HealthCheck.Path"`
 	HealthCheckResponseCode types.StringNumber `mapconv:"HealthCheck.Status"`

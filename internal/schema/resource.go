@@ -455,6 +455,46 @@ func (r *Resource) OperationStatus(nakedType meta.Type, result *Model) *Resource
 	)
 }
 
+// DefineOperationOpenFTP FTPオープン操作を定義
+func (r *Resource) DefineOperationOpenFTP(openParam, result *Model) *Operation {
+	o := r.DefineOperation("OpenFTP").
+		Method(http.MethodPut).
+		PathFormat(IDAndSuffixPathFormat("ftp")).
+		Argument(ArgumentZone).
+		Argument(ArgumentID).
+		ResultFromEnvelope(result, &EnvelopePayloadDesc{
+			PayloadName: result.Name,
+			PayloadType: meta.Static(naked.OpeningFTPServer{}),
+		})
+	if openParam != nil {
+		o.PassthroughArgumentToPayload("openOption", openParam)
+	}
+	return o
+}
+
+// OperationOpenFTP FTPオープン操作を追加
+func (r *Resource) OperationOpenFTP(openParam, result *Model) *Resource {
+	return r.Operation(
+		r.DefineOperationOpenFTP(openParam, result),
+	)
+}
+
+// DefineOperationCloseFTP FTPクローズ操作を定義
+func (r *Resource) DefineOperationCloseFTP() *Operation {
+	return r.DefineOperation("CloseFTP").
+		Method(http.MethodDelete).
+		PathFormat(IDAndSuffixPathFormat("ftp")).
+		Argument(ArgumentZone).
+		Argument(ArgumentID)
+}
+
+// OperationCloseFTP FTPクローズ操作を追加
+func (r *Resource) OperationCloseFTP() *Resource {
+	return r.Operation(
+		r.DefineOperationCloseFTP(),
+	)
+}
+
 // DefineOperationMonitor アクティビティモニタ取得操作を定義
 func (r *Resource) DefineOperationMonitor(monitorParam, result *Model) *Operation {
 	return r.DefineOperation("Monitor").

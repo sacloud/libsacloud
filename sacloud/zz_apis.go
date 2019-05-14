@@ -9,6 +9,22 @@ import (
 )
 
 /*************************************************
+* ArchiveAPI
+*************************************************/
+
+// ArchiveAPI is interface for operate Archive resource
+type ArchiveAPI interface {
+	Find(ctx context.Context, zone string, conditions *FindCondition) ([]*Archive, error)
+	Create(ctx context.Context, zone string, param *ArchiveCreateRequest) (*Archive, error)
+	CreateBlank(ctx context.Context, zone string, param *ArchiveCreateBlankRequest) (*Archive, *FTPServer, error)
+	Read(ctx context.Context, zone string, id types.ID) (*Archive, error)
+	Update(ctx context.Context, zone string, id types.ID, param *ArchiveUpdateRequest) (*Archive, error)
+	Delete(ctx context.Context, zone string, id types.ID) error
+	OpenFTP(ctx context.Context, zone string, id types.ID, openOption *OpenFTPParam) (*FTPServer, error)
+	CloseFTP(ctx context.Context, zone string, id types.ID) error
+}
+
+/*************************************************
 * CDROMAPI
 *************************************************/
 

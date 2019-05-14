@@ -12,7 +12,7 @@ func TestLoadBalancerOpCRUD(t *testing.T) {
 		Parallel: true,
 
 		SetupAPICaller: singletonAPICaller,
-		Setup:          setupSwitchFunc("lb", createLoadBalancerParam, createLoadBalancerExpected, updateNFSExpected),
+		Setup:          setupSwitchFunc("lb", createLoadBalancerParam, createLoadBalancerExpected, updateLoadBalancerExpected),
 		Create: &CRUDTestFunc{
 			Func: testLoadBalancerCreate,
 			Expect: &CRUDTestExpect{
@@ -54,6 +54,8 @@ var (
 	ignoreLoadBalancerFields = []string{
 		"ID",
 		"Class",
+		"Availability",
+		"InstanceStatus",
 		"InstanceHostName",
 		"InstanceHostInfoURL",
 		"InstanceStatusChangedAt",
@@ -203,7 +205,12 @@ var (
 		Description:        updateLoadBalancerParam.Description,
 		Tags:               updateLoadBalancerParam.Tags,
 		Availability:       types.Availabilities.Available,
+		PlanID:             createLoadBalancerParam.PlanID,
 		InstanceStatus:     types.ServerInstanceStatuses.Up,
+		DefaultRoute:       createLoadBalancerParam.DefaultRoute,
+		NetworkMaskLen:     createLoadBalancerParam.NetworkMaskLen,
+		IPAddresses:        createLoadBalancerParam.IPAddresses,
+		VRID:               createLoadBalancerParam.VRID,
 		VirtualIPAddresses: updateLoadBalancerParam.VirtualIPAddresses,
 	}
 )
