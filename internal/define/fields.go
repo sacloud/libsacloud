@@ -81,7 +81,7 @@ func (f *fieldsDef) SourceDiskID() *schema.FieldDesc {
 	return &schema.FieldDesc{
 		Name: "SourceDiskID",
 		Tags: &schema.FieldTags{
-			MapConv: "SourceDisk.ID",
+			MapConv: "SourceDisk.ID,omitempty",
 		},
 		Type: meta.TypeID,
 	}
@@ -91,7 +91,7 @@ func (f *fieldsDef) SourceDiskAvailability() *schema.FieldDesc {
 	return &schema.FieldDesc{
 		Name: "SourceDiskAvailability",
 		Tags: &schema.FieldTags{
-			MapConv: "SourceDisk.Availability",
+			MapConv: "SourceDisk.Availability,omitempty",
 		},
 		Type: meta.TypeAvailability,
 	}
@@ -101,7 +101,7 @@ func (f *fieldsDef) SourceArchiveID() *schema.FieldDesc {
 	return &schema.FieldDesc{
 		Name: "SourceArchiveID",
 		Tags: &schema.FieldTags{
-			MapConv: "SourceArchive.ID",
+			MapConv: "SourceArchive.ID,omitempty",
 		},
 		Type: meta.TypeID,
 	}
@@ -111,7 +111,7 @@ func (f *fieldsDef) SourceArchiveAvailability() *schema.FieldDesc {
 	return &schema.FieldDesc{
 		Name: "SourceArchiveAvailability",
 		Tags: &schema.FieldTags{
-			MapConv: "SourceArchive.Availability",
+			MapConv: "SourceArchive.Availability,omitempty",
 		},
 		Type: meta.TypeAvailability,
 	}
@@ -121,7 +121,17 @@ func (f *fieldsDef) OriginalArchiveID() *schema.FieldDesc {
 	return &schema.FieldDesc{
 		Name: "OriginalArchiveID",
 		Tags: &schema.FieldTags{
-			MapConv: "OriginalArchive.ID",
+			MapConv: "OriginalArchive.ID,omitempty",
+		},
+		Type: meta.TypeID,
+	}
+}
+
+func (f *fieldsDef) ServerID() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "ServerID",
+		Tags: &schema.FieldTags{
+			MapConv: "Server.ID,omitempty",
 		},
 		Type: meta.TypeID,
 	}
@@ -543,6 +553,27 @@ func (f *fieldsDef) Scope() *schema.FieldDesc {
 	return &schema.FieldDesc{
 		Name: "Scope",
 		Type: meta.TypeScope,
+	}
+}
+
+func (f *fieldsDef) DiskConnection() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "Connection",
+		Type: meta.TypeDiskConnection,
+	}
+}
+
+func (f *fieldsDef) DiskConnectionOrder() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "ConnectionOrder",
+		Type: meta.TypeInt,
+	}
+}
+
+func (f *fieldsDef) DiskReinstallCount() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "ReinstallCount",
+		Type: meta.TypeInt,
 	}
 }
 

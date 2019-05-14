@@ -36,6 +36,9 @@ func singletonAPICaller() APICaller {
 		client.UserAgent = fmt.Sprintf("test-libsacloud-v2/%s", libsacloud.Version)
 		client.AcceptLanguage = "en-US,en;q=0.9"
 
+		client.RetryMax = 20
+		client.RetryInterval = 3 * time.Second
+
 		apiCaller = client
 	})
 	return apiCaller

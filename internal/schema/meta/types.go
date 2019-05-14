@@ -35,4 +35,6 @@ var (
 	TypeInstanceStatus = Static(types.EServerInstanceStatus(""))
 	// TypeScope スコープ
 	TypeScope = Static(types.EScope(""))
+	// TypeDiskConnection ディスク接続方法
+	TypeDiskConnection = Static(types.EDiskConnection(""))
 )
