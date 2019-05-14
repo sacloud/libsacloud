@@ -9,6 +9,8 @@ import (
 
 func TestGSLBOpCRUD(t *testing.T) {
 	Test(t, &CRUDTestCase{
+		Parallel: true,
+
 		SetupAPICaller: singletonAPICaller,
 
 		Create: &CRUDTestFunc{

@@ -10,6 +10,8 @@ import (
 
 func TestNoteOpCRUD(t *testing.T) {
 	Test(t, &CRUDTestCase{
+		Parallel: true,
+
 		SetupAPICaller: singletonAPICaller,
 		Create: &CRUDTestFunc{
 			Func: testNoteCreate,
