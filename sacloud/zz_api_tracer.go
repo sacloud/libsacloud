@@ -227,6 +227,16 @@ func (t *DiskTracer) Create(ctx context.Context, zone string, param *DiskCreateR
 	return t.Internal.Create(ctx, zone, param)
 }
 
+// CreateDistantly is API call with trace log
+func (t *DiskTracer) CreateDistantly(ctx context.Context, zone string, createParam *DiskCreateRequest, distantFrom []types.ID) (*Disk, error) {
+	log.Println("[TRACE] DiskTracer.CreateDistantly start:	args => [", "zone=", zone, "createParam=", createParam, "distantFrom=", distantFrom, "]")
+	defer func() {
+		log.Println("[TRACE] DiskTracer.CreateDistantly: end")
+	}()
+
+	return t.Internal.CreateDistantly(ctx, zone, createParam, distantFrom)
+}
+
 // Config is API call with trace log
 func (t *DiskTracer) Config(ctx context.Context, zone string, id types.ID, edit *DiskEditRequest) error {
 	log.Println("[TRACE] DiskTracer.Config start:	args => [", "zone=", zone, "id=", id, "edit=", edit, "]")
@@ -245,6 +255,76 @@ func (t *DiskTracer) CreateWithConfig(ctx context.Context, zone string, createPa
 	}()
 
 	return t.Internal.CreateWithConfig(ctx, zone, createParam, editParam, bootAtAvailable)
+}
+
+// CreateWithConfigDistantly is API call with trace log
+func (t *DiskTracer) CreateWithConfigDistantly(ctx context.Context, zone string, createParam *DiskCreateRequest, editParam *DiskEditRequest, bootAtAvailable bool, distantFrom []types.ID) (*Disk, error) {
+	log.Println("[TRACE] DiskTracer.CreateWithConfigDistantly start:	args => [", "zone=", zone, "createParam=", createParam, "editParam=", editParam, "bootAtAvailable=", bootAtAvailable, "distantFrom=", distantFrom, "]")
+	defer func() {
+		log.Println("[TRACE] DiskTracer.CreateWithConfigDistantly: end")
+	}()
+
+	return t.Internal.CreateWithConfigDistantly(ctx, zone, createParam, editParam, bootAtAvailable, distantFrom)
+}
+
+// ToBlank is API call with trace log
+func (t *DiskTracer) ToBlank(ctx context.Context, zone string, id types.ID) error {
+	log.Println("[TRACE] DiskTracer.ToBlank start:	args => [", "zone=", zone, "id=", id, "]")
+	defer func() {
+		log.Println("[TRACE] DiskTracer.ToBlank: end")
+	}()
+
+	return t.Internal.ToBlank(ctx, zone, id)
+}
+
+// ResizePartition is API call with trace log
+func (t *DiskTracer) ResizePartition(ctx context.Context, zone string, id types.ID) error {
+	log.Println("[TRACE] DiskTracer.ResizePartition start:	args => [", "zone=", zone, "id=", id, "]")
+	defer func() {
+		log.Println("[TRACE] DiskTracer.ResizePartition: end")
+	}()
+
+	return t.Internal.ResizePartition(ctx, zone, id)
+}
+
+// ConnectToServer is API call with trace log
+func (t *DiskTracer) ConnectToServer(ctx context.Context, zone string, id types.ID, serverID types.ID) error {
+	log.Println("[TRACE] DiskTracer.ConnectToServer start:	args => [", "zone=", zone, "id=", id, "serverID=", serverID, "]")
+	defer func() {
+		log.Println("[TRACE] DiskTracer.ConnectToServer: end")
+	}()
+
+	return t.Internal.ConnectToServer(ctx, zone, id, serverID)
+}
+
+// DisconnectFromServer is API call with trace log
+func (t *DiskTracer) DisconnectFromServer(ctx context.Context, zone string, id types.ID) error {
+	log.Println("[TRACE] DiskTracer.DisconnectFromServer start:	args => [", "zone=", zone, "id=", id, "]")
+	defer func() {
+		log.Println("[TRACE] DiskTracer.DisconnectFromServer: end")
+	}()
+
+	return t.Internal.DisconnectFromServer(ctx, zone, id)
+}
+
+// Install is API call with trace log
+func (t *DiskTracer) Install(ctx context.Context, zone string, id types.ID, installParam *DiskInstallRequest, distantFrom []types.ID) (*Disk, error) {
+	log.Println("[TRACE] DiskTracer.Install start:	args => [", "zone=", zone, "id=", id, "installParam=", installParam, "distantFrom=", distantFrom, "]")
+	defer func() {
+		log.Println("[TRACE] DiskTracer.Install: end")
+	}()
+
+	return t.Internal.Install(ctx, zone, id, installParam, distantFrom)
+}
+
+// InstallDistantFrom is API call with trace log
+func (t *DiskTracer) InstallDistantFrom(ctx context.Context, zone string, id types.ID, installParam *DiskInstallRequest) (*Disk, error) {
+	log.Println("[TRACE] DiskTracer.InstallDistantFrom start:	args => [", "zone=", zone, "id=", id, "installParam=", installParam, "]")
+	defer func() {
+		log.Println("[TRACE] DiskTracer.InstallDistantFrom: end")
+	}()
+
+	return t.Internal.InstallDistantFrom(ctx, zone, id, installParam)
 }
 
 // Read is API call with trace log
