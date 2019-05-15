@@ -29,6 +29,17 @@ func (a Arguments) PassthroughFieldDeciders() []PassthroughFieldDecider {
 	return deciders
 }
 
+// PassthroughSimpleFieldDeciders Argumentsのうち、PassthroughSimpleFieldDeciderであるもののリストを返す
+func (a Arguments) PassthroughSimpleFieldDeciders() []PassthroughSimpleFieldDecider {
+	var deciders = make([]PassthroughSimpleFieldDecider, 0)
+	for _, arg := range a {
+		if v, ok := arg.(PassthroughSimpleFieldDecider); ok {
+			deciders = append(deciders, v)
+		}
+	}
+	return deciders
+}
+
 // Argument Operationへの引数を表す
 type Argument interface {
 	// ImportStatements コード生成時に利用するimport文を生成する
@@ -58,6 +69,12 @@ type PassthroughFieldDecider interface {
 	Argument
 	PassthroughFieldNames() []string
 	DestinationModel() *Model
+}
+
+// PassthroughSimpleFieldDecider パススルーするフィールド名を決定する
+type PassthroughSimpleFieldDecider interface {
+	Argument
+	PassthroughFieldName() string
 }
 
 var (
@@ -260,4 +277,9 @@ func (a *PassthroughSimpleArgument) ZeroInitializer() string {
 // ZeroValueOnSource コード上でのゼロ値の文字列表現。コード生成時に利用する
 func (a *PassthroughSimpleArgument) ZeroValueOnSource() string {
 	return a.Type.ZeroValueSourceCode()
+}
+
+// PassthroughFieldName パススルーする宛先のフィールド名
+func (a *PassthroughSimpleArgument) PassthroughFieldName() string {
+	return a.Destination
 }

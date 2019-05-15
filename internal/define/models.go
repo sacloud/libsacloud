@@ -12,7 +12,7 @@ var models = &modelsDef{}
 
 func (m *modelsDef) ftpServerOpenParameter() *schema.Model {
 	return &schema.Model{
-		Name: "OpenFTPParam",
+		Name: "OpenFTPRequest",
 		Fields: []*schema.FieldDesc{
 			{
 				Name: "ChangePassword",
@@ -96,7 +96,7 @@ func (m *modelsDef) diskEdit() *schema.Model {
 	}
 
 	return &schema.Model{
-		Name:      "DiskEditParam",
+		Name:      "DiskEditRequest",
 		NakedType: meta.Static(naked.DiskEdit{}),
 		Fields: []*schema.FieldDesc{
 			{

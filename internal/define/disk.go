@@ -9,7 +9,8 @@ import (
 )
 
 func init() {
-	nakedType := meta.Static(naked.Disk{})
+	nakedDisk := meta.Static(naked.Disk{})
+	nakedDiskEdit := meta.Static(naked.DiskEdit{})
 
 	disk := &schema.Model{
 		Fields: []*schema.FieldDesc{
@@ -61,25 +62,15 @@ func init() {
 		},
 	}
 
+	diskEditParam := models.diskEdit()
+
 	Resources.DefineWith("Disk", func(r *schema.Resource) {
 		r.Operations(
 			// find
-			r.DefineOperationFind(nakedType, findParameter, disk),
+			r.DefineOperationFind(nakedDisk, findParameter, disk),
 
 			// create
-			r.DefineOperationCreate(nakedType, createParam, disk),
-
-			// read
-			r.DefineOperationRead(nakedType, disk),
-
-			// update
-			r.DefineOperationUpdate(nakedType, updateParam, disk),
-
-			// delete
-			r.DefineOperationDelete(),
-
-			// monitor
-			r.DefineOperationMonitor(monitorParameter, monitors.diskModel()),
+			r.DefineOperationCreate(nakedDisk, createParam, disk),
 
 			// config(DiskEdit)
 			r.DefineOperation("Config").
@@ -87,7 +78,56 @@ func init() {
 				PathFormat(schema.IDAndSuffixPathFormat("config")).
 				Argument(schema.ArgumentZone).
 				Argument(schema.ArgumentID).
-				PassthroughModelArgumentWithEnvelope("edit", models.diskEdit()),
+				PassthroughModelArgumentWithEnvelope("edit", diskEditParam),
+
+			// create with config(DiskEdit)
+			r.DefineOperation("CreateWithConfig").
+				Method(http.MethodPost).
+				PathFormat(schema.DefaultPathFormat).
+				RequestEnvelope(&schema.EnvelopePayloadDesc{
+					PayloadType: nakedDisk,
+					PayloadName: "Disk",
+				}).
+				RequestEnvelope(&schema.EnvelopePayloadDesc{
+					PayloadType: nakedDiskEdit,
+					PayloadName: "Config",
+				}).
+				RequestEnvelope(&schema.EnvelopePayloadDesc{
+					PayloadType: meta.TypeFlag,
+					PayloadName: "BootAtAvailable",
+				}).
+				Argument(schema.ArgumentZone).
+				Argument(&schema.MappableArgument{
+					Name:        "createParam",
+					Destination: "Disk",
+					Model:       createParam,
+				}).
+				Argument(&schema.MappableArgument{
+					Name:        "editParam",
+					Destination: "Config",
+					Model:       diskEditParam,
+				}).
+				Argument(&schema.PassthroughSimpleArgument{
+					Name:        "bootAtAvailable",
+					Type:        meta.TypeFlag,
+					Destination: "BootAtAvailable",
+				}).
+				ResultFromEnvelope(disk, &schema.EnvelopePayloadDesc{
+					PayloadType: nakedDisk,
+					PayloadName: "Disk",
+				}),
+
+			// read
+			r.DefineOperationRead(nakedDisk, disk),
+
+			// update
+			r.DefineOperationUpdate(nakedDisk, updateParam, disk),
+
+			// delete
+			r.DefineOperationDelete(),
+
+			// monitor
+			r.DefineOperationMonitor(monitorParameter, monitors.diskModel()),
 		)
 	})
 }

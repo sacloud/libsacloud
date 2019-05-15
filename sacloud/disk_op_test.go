@@ -160,7 +160,7 @@ func TestDiskEdit(t *testing.T) {
 	}()
 
 	// edit disk
-	err = client.Config(context.Background(), testZone, disk.ID, &DiskEditParam{
+	err = client.Config(context.Background(), testZone, disk.ID, &DiskEditRequest{
 		Password: "password",
 		SSHKeys: []*DiskEditSSHKey{
 			{

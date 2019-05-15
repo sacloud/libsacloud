@@ -188,6 +188,35 @@ type DiskCreateResponseEnvelope struct {
 	Disk *naked.Disk `json:",omitempty"`
 }
 
+// DiskConfigRequestEnvelope is envelop of API request
+type DiskConfigRequestEnvelope struct {
+	Password            string              `json:",omitempty"`
+	SSHKey              *DiskEditSSHKey     `json:",omitempty"`
+	SSHKeys             []*DiskEditSSHKey   `json:",omitempty"`
+	DisablePWAuth       bool                `json:",omitempty"`
+	EnableDHCP          bool                `json:",omitempty"`
+	ChangePartitionUUID bool                `json:",omitempty"`
+	HostName            string              `json:",omitempty"`
+	Notes               []*DiskEditNote     `json:",omitempty"`
+	UserIPAddress       string              `json:",omitempty"`
+	UserSubnet          *DiskEditUserSubnet `json:",omitempty"`
+}
+
+// DiskCreateWithConfigRequestEnvelope is envelop of API request
+type DiskCreateWithConfigRequestEnvelope struct {
+	Disk            *naked.Disk     `json:",omitempty"`
+	Config          *naked.DiskEdit `json:",omitempty"`
+	BootAtAvailable bool            `json:",omitempty"`
+}
+
+// DiskCreateWithConfigResponseEnvelope is envelop of API response
+type DiskCreateWithConfigResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Disk *naked.Disk `json:",omitempty"`
+}
+
 // DiskReadResponseEnvelope is envelop of API response
 type DiskReadResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
@@ -221,20 +250,6 @@ type DiskMonitorResponseEnvelope struct {
 	Success types.APIResult `json:",omitempty"`      // success項目
 
 	Data *naked.MonitorValues `json:",omitempty"`
-}
-
-// DiskConfigRequestEnvelope is envelop of API request
-type DiskConfigRequestEnvelope struct {
-	Password            string              `json:",omitempty"`
-	SSHKey              *DiskEditSSHKey     `json:",omitempty"`
-	SSHKeys             []*DiskEditSSHKey   `json:",omitempty"`
-	DisablePWAuth       bool                `json:",omitempty"`
-	EnableDHCP          bool                `json:",omitempty"`
-	ChangePartitionUUID bool                `json:",omitempty"`
-	HostName            string              `json:",omitempty"`
-	Notes               []*DiskEditNote     `json:",omitempty"`
-	UserIPAddress       string              `json:",omitempty"`
-	UserSubnet          *DiskEditUserSubnet `json:",omitempty"`
 }
 
 // GSLBFindRequestEnvelope is envelop of API request
