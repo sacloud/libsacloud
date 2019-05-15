@@ -2,9 +2,11 @@ package sacloud
 
 import (
 	"context"
+	"strings"
 	"testing"
 
 	"github.com/sacloud/libsacloud-v2/sacloud/types"
+	"github.com/stretchr/testify/require"
 )
 
 func TestDiskOpBlankDiskCRUD(t *testing.T) {
@@ -111,4 +113,74 @@ func testDiskUpdate(testContext *CRUDTestContext, caller APICaller) (interface{}
 func testDiskDelete(testContext *CRUDTestContext, caller APICaller) error {
 	client := NewDiskOp(caller)
 	return client.Delete(context.Background(), testZone, testContext.ID)
+}
+
+func TestDiskEdit(t *testing.T) {
+	if !isAccTest() {
+		t.Skip("TESTACC is not set. skip")
+	}
+
+	archiveClient := NewArchiveOp(singletonAPICaller())
+	client := NewDiskOp(singletonAPICaller())
+	ctx := context.Background()
+
+	// find source public archive
+	var archiveID types.ID
+	archives, err := archiveClient.Find(ctx, testZone, nil)
+	require.NoError(t, err)
+	for _, a := range archives {
+		if strings.HasPrefix(a.Name, "CentOS 7") {
+			archiveID = a.ID
+			break
+		}
+	}
+	if archiveID.IsEmpty() {
+		t.Fatal("archive is not found")
+	}
+
+	// create
+	disk, err := client.Create(ctx, testZone, &DiskCreateRequest{
+		Name:            "libsacloud-v2-disk-edit",
+		DiskPlanID:      types.ID(4),
+		SizeMB:          20 * 1024,
+		SourceArchiveID: archiveID,
+	})
+	require.NoError(t, err)
+
+	// wait for ready
+	waiter := WaiterForReady(func() (interface{}, error) { return client.Read(ctx, testZone, disk.ID) })
+	_, err = waiter.WaitForState(ctx)
+	require.NoError(t, err)
+
+	defer func() {
+		// cleanup
+		if err := client.Delete(ctx, testZone, disk.ID); err != nil {
+			t.Fatal(err)
+		}
+	}()
+
+	// edit disk
+	err = client.Config(context.Background(), testZone, disk.ID, &DiskEditParam{
+		Password: "password",
+		SSHKeys: []*DiskEditSSHKey{
+			{
+				PublicKey: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC4LDQuDiKecOJDPY9InS7EswZ2fPnoRZXc48T1EqyRLyJhgEYGSDWaBiMDs2R/lWgA81Hp37qhrNqZPjFHUkBr93FOXxt9W0m1TNlkNepK0Uyi+14B2n0pdoeqsKEkb3sTevWF0ztxxWrwUd7Mems2hf+wFODITHYye9RlDAKLKPCFRvlQ9xQj4bBWOogQwoaXMSK1znMPjudcm1tRry4KIifLdXmwVKU4qDPGxoXfqs44Dgsikk43UVBStQ7IFoqPgAqcJFSGHLoMS7tPKdTvY9+GME5QidWK84gl69piAkgIdwd+JTMUOc/J+9DXAt220HqZ6l3yhWG5nIgi0x8n",
+			},
+		},
+		DisablePWAuth: true,
+		EnableDHCP:    true,
+		HostName:      "hostname",
+		//Notes: []*DiskEditNote{
+		//	{
+		//		ID: types.ID(123456789012),
+		//	},
+		//},
+		UserIPAddress: "192.2.0.11",
+		UserSubnet: &DiskEditUserSubnet{
+			DefaultRoute:   "192.2.0.1",
+			NetworkMaskLen: 24,
+		},
+	})
+	require.NoError(t, err)
+
 }

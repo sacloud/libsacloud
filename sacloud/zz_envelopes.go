@@ -223,6 +223,20 @@ type DiskMonitorResponseEnvelope struct {
 	Data *naked.MonitorValues `json:",omitempty"`
 }
 
+// DiskConfigRequestEnvelope is envelop of API request
+type DiskConfigRequestEnvelope struct {
+	Password            string              `json:",omitempty"`
+	SSHKey              *DiskEditSSHKey     `json:",omitempty"`
+	SSHKeys             []*DiskEditSSHKey   `json:",omitempty"`
+	DisablePWAuth       bool                `json:",omitempty"`
+	EnableDHCP          bool                `json:",omitempty"`
+	ChangePartitionUUID bool                `json:",omitempty"`
+	HostName            string              `json:",omitempty"`
+	Notes               []*DiskEditNote     `json:",omitempty"`
+	UserIPAddress       string              `json:",omitempty"`
+	UserSubnet          *DiskEditUserSubnet `json:",omitempty"`
+}
+
 // GSLBFindRequestEnvelope is envelop of API request
 type GSLBFindRequestEnvelope struct {
 	Count   int                    `json:",omitempty"`

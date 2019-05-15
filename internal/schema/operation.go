@@ -72,8 +72,8 @@ func (o *Operation) PassthroughModelArgument(name string, model *Model) *Operati
 	})
 }
 
-// PassthroughModelArgumentToPayload 引数定義の追加、ペイロードの定義も同時に行われる
-func (o *Operation) PassthroughModelArgumentToPayload(name string, model *Model) *Operation {
+// PassthroughModelArgumentWithEnvelope 引数定義の追加、ペイロードの定義も同時に行われる
+func (o *Operation) PassthroughModelArgumentWithEnvelope(name string, model *Model) *Operation {
 	var descs []*EnvelopePayloadDesc
 	for _, field := range model.Fields {
 		descs = append(descs, &EnvelopePayloadDesc{
@@ -97,8 +97,8 @@ func (o *Operation) PassthroughSimpleArgument(name, destination string, tp meta.
 	})
 }
 
-// PassthroughSimpleArgumentToPayload 引数定義の追加、ペイロードの定義も同時に行われる
-func (o *Operation) PassthroughSimpleArgumentToPayload(name, destination string, tp meta.Type) *Operation {
+// PassthroughSimpleArgumentWithEnvelope 引数定義の追加、ペイロードの定義も同時に行われる
+func (o *Operation) PassthroughSimpleArgumentWithEnvelope(name, destination string, tp meta.Type) *Operation {
 	desc := &EnvelopePayloadDesc{
 		PayloadName: destination,
 		PayloadType: tp,

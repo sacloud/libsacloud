@@ -267,6 +267,16 @@ func (t *DiskTracer) Monitor(ctx context.Context, zone string, id types.ID, cond
 	return t.Internal.Monitor(ctx, zone, id, condition)
 }
 
+// Config is API call with trace log
+func (t *DiskTracer) Config(ctx context.Context, zone string, id types.ID, edit *DiskEditParam) error {
+	log.Println("[TRACE] DiskTracer.Config start:	args => [", "zone=", zone, "id=", id, "edit=", edit, "]")
+	defer func() {
+		log.Println("[TRACE] DiskTracer.Config: end")
+	}()
+
+	return t.Internal.Config(ctx, zone, id, edit)
+}
+
 /*************************************************
 * GSLBTracer
 *************************************************/

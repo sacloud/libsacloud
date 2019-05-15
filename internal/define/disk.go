@@ -1,6 +1,8 @@
 package define
 
 import (
+	"net/http"
+
 	"github.com/sacloud/libsacloud-v2/internal/schema"
 	"github.com/sacloud/libsacloud-v2/internal/schema/meta"
 	"github.com/sacloud/libsacloud-v2/sacloud/naked"
@@ -78,6 +80,14 @@ func init() {
 
 			// monitor
 			r.DefineOperationMonitor(monitorParameter, monitors.diskModel()),
+
+			// config(DiskEdit)
+			r.DefineOperation("Config").
+				Method(http.MethodPut).
+				PathFormat(schema.IDAndSuffixPathFormat("config")).
+				Argument(schema.ArgumentZone).
+				Argument(schema.ArgumentID).
+				PassthroughModelArgumentWithEnvelope("edit", models.diskEdit()),
 		)
 	})
 }
