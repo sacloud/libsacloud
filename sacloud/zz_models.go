@@ -1712,6 +1712,246 @@ func (o *MonitorCondition) SetEnd(v *time.Time) {
 }
 
 /*************************************************
+* DiskEditParam
+*************************************************/
+
+// DiskEditParam represents API parameter/response structure
+type DiskEditParam struct {
+	Password            string              `json:",omitempty" mapconv:",omitempty"`
+	SSHKey              *DiskEditSSHKey     `json:",omitempty" mapconv:",omitempty,recursive"`
+	SSHKeys             []*DiskEditSSHKey   `json:",omitempty" mapconv:"[]SSHKeys,omitempty,recursive"`
+	DisablePWAuth       bool                `json:",omitempty" mapconv:",omitempty"`
+	EnableDHCP          bool                `json:",omitempty" mapconv:",omitempty"`
+	ChangePartitionUUID bool                `json:",omitempty" mapconv:",omitempty"`
+	HostName            string              `json:",omitempty" mapconv:",omitempty"`
+	Notes               []*DiskEditNote     `json:",omitempty" mapconv:",omitempty,recursive"`
+	UserIPAddress       string              `json:",omitempty" mapconv:",omitempty"`
+	UserSubnet          *DiskEditUserSubnet `json:",omitempty" mapconv:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *DiskEditParam) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetPassword returns value of Password
+func (o *DiskEditParam) GetPassword() string {
+	return o.Password
+}
+
+// SetPassword sets value to Password
+func (o *DiskEditParam) SetPassword(v string) {
+	o.Password = v
+}
+
+// GetSSHKey returns value of SSHKey
+func (o *DiskEditParam) GetSSHKey() *DiskEditSSHKey {
+	return o.SSHKey
+}
+
+// SetSSHKey sets value to SSHKey
+func (o *DiskEditParam) SetSSHKey(v *DiskEditSSHKey) {
+	o.SSHKey = v
+}
+
+// GetSSHKeys returns value of SSHKeys
+func (o *DiskEditParam) GetSSHKeys() []*DiskEditSSHKey {
+	return o.SSHKeys
+}
+
+// SetSSHKeys sets value to SSHKeys
+func (o *DiskEditParam) SetSSHKeys(v []*DiskEditSSHKey) {
+	o.SSHKeys = v
+}
+
+// GetDisablePWAuth returns value of DisablePWAuth
+func (o *DiskEditParam) GetDisablePWAuth() bool {
+	return o.DisablePWAuth
+}
+
+// SetDisablePWAuth sets value to DisablePWAuth
+func (o *DiskEditParam) SetDisablePWAuth(v bool) {
+	o.DisablePWAuth = v
+}
+
+// GetEnableDHCP returns value of EnableDHCP
+func (o *DiskEditParam) GetEnableDHCP() bool {
+	return o.EnableDHCP
+}
+
+// SetEnableDHCP sets value to EnableDHCP
+func (o *DiskEditParam) SetEnableDHCP(v bool) {
+	o.EnableDHCP = v
+}
+
+// GetChangePartitionUUID returns value of ChangePartitionUUID
+func (o *DiskEditParam) GetChangePartitionUUID() bool {
+	return o.ChangePartitionUUID
+}
+
+// SetChangePartitionUUID sets value to ChangePartitionUUID
+func (o *DiskEditParam) SetChangePartitionUUID(v bool) {
+	o.ChangePartitionUUID = v
+}
+
+// GetHostName returns value of HostName
+func (o *DiskEditParam) GetHostName() string {
+	return o.HostName
+}
+
+// SetHostName sets value to HostName
+func (o *DiskEditParam) SetHostName(v string) {
+	o.HostName = v
+}
+
+// GetNotes returns value of Notes
+func (o *DiskEditParam) GetNotes() []*DiskEditNote {
+	return o.Notes
+}
+
+// SetNotes sets value to Notes
+func (o *DiskEditParam) SetNotes(v []*DiskEditNote) {
+	o.Notes = v
+}
+
+// GetUserIPAddress returns value of UserIPAddress
+func (o *DiskEditParam) GetUserIPAddress() string {
+	return o.UserIPAddress
+}
+
+// SetUserIPAddress sets value to UserIPAddress
+func (o *DiskEditParam) SetUserIPAddress(v string) {
+	o.UserIPAddress = v
+}
+
+// GetUserSubnet returns value of UserSubnet
+func (o *DiskEditParam) GetUserSubnet() *DiskEditUserSubnet {
+	return o.UserSubnet
+}
+
+// SetUserSubnet sets value to UserSubnet
+func (o *DiskEditParam) SetUserSubnet(v *DiskEditUserSubnet) {
+	o.UserSubnet = v
+}
+
+// convertTo returns naked DiskEditParam
+func (o *DiskEditParam) convertTo() (*naked.DiskEdit, error) {
+	dest := &naked.DiskEdit{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked DiskEditParam
+func (o *DiskEditParam) convertFrom(naked *naked.DiskEdit) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* DiskEditSSHKey
+*************************************************/
+
+// DiskEditSSHKey represents API parameter/response structure
+type DiskEditSSHKey struct {
+	ID        types.ID `json:",omitempty" mapconv:",omitempty"`
+	PublicKey string   `json:",omitempty" mapconv:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *DiskEditSSHKey) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetID returns value of ID
+func (o *DiskEditSSHKey) GetID() types.ID {
+	return o.ID
+}
+
+// SetID sets value to ID
+func (o *DiskEditSSHKey) SetID(v types.ID) {
+	o.ID = v
+}
+
+// GetPublicKey returns value of PublicKey
+func (o *DiskEditSSHKey) GetPublicKey() string {
+	return o.PublicKey
+}
+
+// SetPublicKey sets value to PublicKey
+func (o *DiskEditSSHKey) SetPublicKey(v string) {
+	o.PublicKey = v
+}
+
+/*************************************************
+* DiskEditNote
+*************************************************/
+
+// DiskEditNote represents API parameter/response structure
+type DiskEditNote struct {
+	ID        types.ID               `json:",omitempty" mapconv:",omitempty"`
+	Variables map[string]interface{} `json:",omitempty" mapconv:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *DiskEditNote) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetID returns value of ID
+func (o *DiskEditNote) GetID() types.ID {
+	return o.ID
+}
+
+// SetID sets value to ID
+func (o *DiskEditNote) SetID(v types.ID) {
+	o.ID = v
+}
+
+// GetVariables returns value of Variables
+func (o *DiskEditNote) GetVariables() map[string]interface{} {
+	return o.Variables
+}
+
+// SetVariables sets value to Variables
+func (o *DiskEditNote) SetVariables(v map[string]interface{}) {
+	o.Variables = v
+}
+
+/*************************************************
+* DiskEditUserSubnet
+*************************************************/
+
+// DiskEditUserSubnet represents API parameter/response structure
+type DiskEditUserSubnet struct {
+	DefaultRoute   string `json:",omitempty" mapconv:",omitempty"`
+	NetworkMaskLen int    `json:",omitempty" mapconv:",omitempty" validate:"min=0,max=32"`
+}
+
+// Validate validates by field tags
+func (o *DiskEditUserSubnet) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetDefaultRoute returns value of DefaultRoute
+func (o *DiskEditUserSubnet) GetDefaultRoute() string {
+	return o.DefaultRoute
+}
+
+// SetDefaultRoute sets value to DefaultRoute
+func (o *DiskEditUserSubnet) SetDefaultRoute(v string) {
+	o.DefaultRoute = v
+}
+
+// GetNetworkMaskLen returns value of NetworkMaskLen
+func (o *DiskEditUserSubnet) GetNetworkMaskLen() int {
+	return o.NetworkMaskLen
+}
+
+// SetNetworkMaskLen sets value to NetworkMaskLen
+func (o *DiskEditUserSubnet) SetNetworkMaskLen(v int) {
+	o.NetworkMaskLen = v
+}
+
+/*************************************************
 * GSLB
 *************************************************/
 

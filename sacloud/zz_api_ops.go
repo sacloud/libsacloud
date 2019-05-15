@@ -6,6 +6,7 @@ import (
 	"context"
 	"encoding/json"
 
+	"github.com/sacloud/libsacloud-v2/pkg/mapconv"
 	"github.com/sacloud/libsacloud-v2/sacloud/types"
 )
 
@@ -54,12 +55,9 @@ func (o *ArchiveOp) Find(ctx context.Context, zone string, conditions *FindCondi
 			body = &ArchiveFindRequestEnvelope{}
 		}
 		v := body.(*ArchiveFindRequestEnvelope)
-		v.Count = conditions.Count
-		v.From = conditions.From
-		v.Sort = conditions.Sort
-		v.Filter = conditions.Filter
-		v.Include = conditions.Include
-		v.Exclude = conditions.Exclude
+		if err := mapconv.ConvertTo(conditions, v); err != nil {
+			return nil, err
+		}
 		body = v
 	}
 
@@ -98,6 +96,7 @@ func (o *ArchiveOp) Create(ctx context.Context, zone string, param *ArchiveCreat
 	}
 
 	var body interface{}
+
 	{
 		if param == nil {
 			param = &ArchiveCreateRequest{}
@@ -145,6 +144,7 @@ func (o *ArchiveOp) CreateBlank(ctx context.Context, zone string, param *Archive
 	}
 
 	var body interface{}
+
 	{
 		if param == nil {
 			param = &ArchiveCreateBlankRequest{}
@@ -229,6 +229,7 @@ func (o *ArchiveOp) Update(ctx context.Context, zone string, id types.ID, param 
 	}
 
 	var body interface{}
+
 	{
 		if param == nil {
 			param = &ArchiveUpdateRequest{}
@@ -308,7 +309,9 @@ func (o *ArchiveOp) OpenFTP(ctx context.Context, zone string, id types.ID, openO
 			body = &ArchiveOpenFTPRequestEnvelope{}
 		}
 		v := body.(*ArchiveOpenFTPRequestEnvelope)
-		v.ChangePassword = openOption.ChangePassword
+		if err := mapconv.ConvertTo(openOption, v); err != nil {
+			return nil, err
+		}
 		body = v
 	}
 
@@ -397,12 +400,9 @@ func (o *CDROMOp) Find(ctx context.Context, zone string, conditions *FindConditi
 			body = &CDROMFindRequestEnvelope{}
 		}
 		v := body.(*CDROMFindRequestEnvelope)
-		v.Count = conditions.Count
-		v.From = conditions.From
-		v.Sort = conditions.Sort
-		v.Filter = conditions.Filter
-		v.Include = conditions.Include
-		v.Exclude = conditions.Exclude
+		if err := mapconv.ConvertTo(conditions, v); err != nil {
+			return nil, err
+		}
 		body = v
 	}
 
@@ -441,6 +441,7 @@ func (o *CDROMOp) Create(ctx context.Context, zone string, param *CDROMCreateReq
 	}
 
 	var body interface{}
+
 	{
 		if param == nil {
 			param = &CDROMCreateRequest{}
@@ -525,6 +526,7 @@ func (o *CDROMOp) Update(ctx context.Context, zone string, id types.ID, param *C
 	}
 
 	var body interface{}
+
 	{
 		if param == nil {
 			param = &CDROMUpdateRequest{}
@@ -604,7 +606,9 @@ func (o *CDROMOp) OpenFTP(ctx context.Context, zone string, id types.ID, openOpt
 			body = &CDROMOpenFTPRequestEnvelope{}
 		}
 		v := body.(*CDROMOpenFTPRequestEnvelope)
-		v.ChangePassword = openOption.ChangePassword
+		if err := mapconv.ConvertTo(openOption, v); err != nil {
+			return nil, err
+		}
 		body = v
 	}
 
@@ -693,12 +697,9 @@ func (o *DiskOp) Find(ctx context.Context, zone string, conditions *FindConditio
 			body = &DiskFindRequestEnvelope{}
 		}
 		v := body.(*DiskFindRequestEnvelope)
-		v.Count = conditions.Count
-		v.From = conditions.From
-		v.Sort = conditions.Sort
-		v.Filter = conditions.Filter
-		v.Include = conditions.Include
-		v.Exclude = conditions.Exclude
+		if err := mapconv.ConvertTo(conditions, v); err != nil {
+			return nil, err
+		}
 		body = v
 	}
 
@@ -737,6 +738,7 @@ func (o *DiskOp) Create(ctx context.Context, zone string, param *DiskCreateReque
 	}
 
 	var body interface{}
+
 	{
 		if param == nil {
 			param = &DiskCreateRequest{}
@@ -817,6 +819,7 @@ func (o *DiskOp) Update(ctx context.Context, zone string, id types.ID, param *Di
 	}
 
 	var body interface{}
+
 	{
 		if param == nil {
 			param = &DiskUpdateRequest{}
@@ -896,8 +899,9 @@ func (o *DiskOp) Monitor(ctx context.Context, zone string, id types.ID, conditio
 			body = &DiskMonitorRequestEnvelope{}
 		}
 		v := body.(*DiskMonitorRequestEnvelope)
-		v.Start = condition.Start
-		v.End = condition.End
+		if err := mapconv.ConvertTo(condition, v); err != nil {
+			return nil, err
+		}
 		body = v
 	}
 
@@ -916,6 +920,43 @@ func (o *DiskOp) Monitor(ctx context.Context, zone string, id types.ID, conditio
 		return nil, err
 	}
 	return payload0, nil
+}
+
+// Config is API call
+func (o *DiskOp) Config(ctx context.Context, zone string, id types.ID, edit *DiskEditParam) error {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/config", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+		"edit":       edit,
+	})
+	if err != nil {
+		return err
+	}
+
+	var body interface{}
+	{
+		if edit == nil {
+			edit = &DiskEditParam{}
+		}
+		if body == nil {
+			body = &DiskConfigRequestEnvelope{}
+		}
+		v := body.(*DiskConfigRequestEnvelope)
+		if err := mapconv.ConvertTo(edit, v); err != nil {
+			return err
+		}
+		body = v
+	}
+
+	_, err = o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 /*************************************************
@@ -963,12 +1004,9 @@ func (o *GSLBOp) Find(ctx context.Context, zone string, conditions *FindConditio
 			body = &GSLBFindRequestEnvelope{}
 		}
 		v := body.(*GSLBFindRequestEnvelope)
-		v.Count = conditions.Count
-		v.From = conditions.From
-		v.Sort = conditions.Sort
-		v.Filter = conditions.Filter
-		v.Include = conditions.Include
-		v.Exclude = conditions.Exclude
+		if err := mapconv.ConvertTo(conditions, v); err != nil {
+			return nil, err
+		}
 		body = v
 	}
 
@@ -1007,6 +1045,7 @@ func (o *GSLBOp) Create(ctx context.Context, zone string, param *GSLBCreateReque
 	}
 
 	var body interface{}
+
 	{
 		if param == nil {
 			param = &GSLBCreateRequest{}
@@ -1087,6 +1126,7 @@ func (o *GSLBOp) Update(ctx context.Context, zone string, id types.ID, param *GS
 	}
 
 	var body interface{}
+
 	{
 		if param == nil {
 			param = &GSLBUpdateRequest{}
@@ -1188,12 +1228,9 @@ func (o *LoadBalancerOp) Find(ctx context.Context, zone string, conditions *Find
 			body = &LoadBalancerFindRequestEnvelope{}
 		}
 		v := body.(*LoadBalancerFindRequestEnvelope)
-		v.Count = conditions.Count
-		v.From = conditions.From
-		v.Sort = conditions.Sort
-		v.Filter = conditions.Filter
-		v.Include = conditions.Include
-		v.Exclude = conditions.Exclude
+		if err := mapconv.ConvertTo(conditions, v); err != nil {
+			return nil, err
+		}
 		body = v
 	}
 
@@ -1232,6 +1269,7 @@ func (o *LoadBalancerOp) Create(ctx context.Context, zone string, param *LoadBal
 	}
 
 	var body interface{}
+
 	{
 		if param == nil {
 			param = &LoadBalancerCreateRequest{}
@@ -1312,6 +1350,7 @@ func (o *LoadBalancerOp) Update(ctx context.Context, zone string, id types.ID, p
 	}
 
 	var body interface{}
+
 	{
 		if param == nil {
 			param = &LoadBalancerUpdateRequest{}
@@ -1437,7 +1476,9 @@ func (o *LoadBalancerOp) Shutdown(ctx context.Context, zone string, id types.ID,
 			body = &LoadBalancerShutdownRequestEnvelope{}
 		}
 		v := body.(*LoadBalancerShutdownRequestEnvelope)
-		v.Force = shutdownOption.Force
+		if err := mapconv.ConvertTo(shutdownOption, v); err != nil {
+			return err
+		}
 		body = v
 	}
 
@@ -1495,8 +1536,9 @@ func (o *LoadBalancerOp) MonitorInterface(ctx context.Context, zone string, id t
 			body = &LoadBalancerMonitorInterfaceRequestEnvelope{}
 		}
 		v := body.(*LoadBalancerMonitorInterfaceRequestEnvelope)
-		v.Start = condition.Start
-		v.End = condition.End
+		if err := mapconv.ConvertTo(condition, v); err != nil {
+			return nil, err
+		}
 		body = v
 	}
 
@@ -1598,12 +1640,9 @@ func (o *NFSOp) Find(ctx context.Context, zone string, conditions *FindCondition
 			body = &NFSFindRequestEnvelope{}
 		}
 		v := body.(*NFSFindRequestEnvelope)
-		v.Count = conditions.Count
-		v.From = conditions.From
-		v.Sort = conditions.Sort
-		v.Filter = conditions.Filter
-		v.Include = conditions.Include
-		v.Exclude = conditions.Exclude
+		if err := mapconv.ConvertTo(conditions, v); err != nil {
+			return nil, err
+		}
 		body = v
 	}
 
@@ -1642,6 +1681,7 @@ func (o *NFSOp) Create(ctx context.Context, zone string, param *NFSCreateRequest
 	}
 
 	var body interface{}
+
 	{
 		if param == nil {
 			param = &NFSCreateRequest{}
@@ -1722,6 +1762,7 @@ func (o *NFSOp) Update(ctx context.Context, zone string, id types.ID, param *NFS
 	}
 
 	var body interface{}
+
 	{
 		if param == nil {
 			param = &NFSUpdateRequest{}
@@ -1824,7 +1865,9 @@ func (o *NFSOp) Shutdown(ctx context.Context, zone string, id types.ID, shutdown
 			body = &NFSShutdownRequestEnvelope{}
 		}
 		v := body.(*NFSShutdownRequestEnvelope)
-		v.Force = shutdownOption.Force
+		if err := mapconv.ConvertTo(shutdownOption, v); err != nil {
+			return err
+		}
 		body = v
 	}
 
@@ -1882,8 +1925,9 @@ func (o *NFSOp) MonitorFreeDiskSize(ctx context.Context, zone string, id types.I
 			body = &NFSMonitorFreeDiskSizeRequestEnvelope{}
 		}
 		v := body.(*NFSMonitorFreeDiskSizeRequestEnvelope)
-		v.Start = condition.Start
-		v.End = condition.End
+		if err := mapconv.ConvertTo(condition, v); err != nil {
+			return nil, err
+		}
 		body = v
 	}
 
@@ -1927,8 +1971,9 @@ func (o *NFSOp) MonitorInterface(ctx context.Context, zone string, id types.ID, 
 			body = &NFSMonitorInterfaceRequestEnvelope{}
 		}
 		v := body.(*NFSMonitorInterfaceRequestEnvelope)
-		v.Start = condition.Start
-		v.End = condition.End
+		if err := mapconv.ConvertTo(condition, v); err != nil {
+			return nil, err
+		}
 		body = v
 	}
 
@@ -1994,12 +2039,9 @@ func (o *NoteOp) Find(ctx context.Context, zone string, conditions *FindConditio
 			body = &NoteFindRequestEnvelope{}
 		}
 		v := body.(*NoteFindRequestEnvelope)
-		v.Count = conditions.Count
-		v.From = conditions.From
-		v.Sort = conditions.Sort
-		v.Filter = conditions.Filter
-		v.Include = conditions.Include
-		v.Exclude = conditions.Exclude
+		if err := mapconv.ConvertTo(conditions, v); err != nil {
+			return nil, err
+		}
 		body = v
 	}
 
@@ -2038,6 +2080,7 @@ func (o *NoteOp) Create(ctx context.Context, zone string, param *NoteCreateReque
 	}
 
 	var body interface{}
+
 	{
 		if param == nil {
 			param = &NoteCreateRequest{}
@@ -2118,6 +2161,7 @@ func (o *NoteOp) Update(ctx context.Context, zone string, id types.ID, param *No
 	}
 
 	var body interface{}
+
 	{
 		if param == nil {
 			param = &NoteUpdateRequest{}
@@ -2219,12 +2263,9 @@ func (o *SwitchOp) Find(ctx context.Context, zone string, conditions *FindCondit
 			body = &SwitchFindRequestEnvelope{}
 		}
 		v := body.(*SwitchFindRequestEnvelope)
-		v.Count = conditions.Count
-		v.From = conditions.From
-		v.Sort = conditions.Sort
-		v.Filter = conditions.Filter
-		v.Include = conditions.Include
-		v.Exclude = conditions.Exclude
+		if err := mapconv.ConvertTo(conditions, v); err != nil {
+			return nil, err
+		}
 		body = v
 	}
 
@@ -2263,6 +2304,7 @@ func (o *SwitchOp) Create(ctx context.Context, zone string, param *SwitchCreateR
 	}
 
 	var body interface{}
+
 	{
 		if param == nil {
 			param = &SwitchCreateRequest{}
@@ -2343,6 +2385,7 @@ func (o *SwitchOp) Update(ctx context.Context, zone string, id types.ID, param *
 	}
 
 	var body interface{}
+
 	{
 		if param == nil {
 			param = &SwitchUpdateRequest{}
@@ -2491,12 +2534,9 @@ func (o *ZoneOp) Find(ctx context.Context, zone string, conditions *FindConditio
 			body = &ZoneFindRequestEnvelope{}
 		}
 		v := body.(*ZoneFindRequestEnvelope)
-		v.Count = conditions.Count
-		v.From = conditions.From
-		v.Sort = conditions.Sort
-		v.Filter = conditions.Filter
-		v.Include = conditions.Include
-		v.Exclude = conditions.Exclude
+		if err := mapconv.ConvertTo(conditions, v); err != nil {
+			return nil, err
+		}
 		body = v
 	}
 

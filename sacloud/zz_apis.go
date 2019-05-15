@@ -51,6 +51,7 @@ type DiskAPI interface {
 	Update(ctx context.Context, zone string, id types.ID, param *DiskUpdateRequest) (*Disk, error)
 	Delete(ctx context.Context, zone string, id types.ID) error
 	Monitor(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*DiskActivity, error)
+	Config(ctx context.Context, zone string, id types.ID, edit *DiskEditParam) error
 }
 
 /*************************************************

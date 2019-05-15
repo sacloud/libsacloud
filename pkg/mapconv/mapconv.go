@@ -47,10 +47,10 @@ func ConvertTo(source interface{}, dest interface{}) error {
 					}
 					dest = append(dest, destMap)
 				}
-				if len(dest) == 1 {
-					value = dest[0]
-				} else {
+				if tags.isSlice || len(dest) > 1 {
 					value = dest
+				} else {
+					value = dest[0]
 				}
 			}
 
@@ -116,7 +116,7 @@ func ConvertFrom(source interface{}, dest interface{}) error {
 					dest = append(dest, d)
 				}
 
-				if len(dest) > 1 {
+				if tags.isSlice || len(dest) > 1 {
 					value = dest
 				} else {
 					value = dest[0]
@@ -142,6 +142,7 @@ type mapConvValue struct {
 	defaultValue interface{}
 	omitEmpty    bool
 	recursive    bool
+	isSlice      bool
 }
 
 func (m mapConv) value() mapConvValue {
@@ -150,7 +151,13 @@ func (m mapConv) value() mapConvValue {
 
 	keys := strings.Split(key, "/")
 	var defaultValue interface{}
-	var omitEmpty, reqursive bool
+	var omitEmpty, recursive, isSlice bool
+
+	if len(keys) > 0 {
+		if strings.HasPrefix(keys[0], "[]") {
+			isSlice = true
+		}
+	}
 
 	for i, token := range tokens {
 		if i == 0 {
@@ -161,7 +168,7 @@ func (m mapConv) value() mapConvValue {
 		case strings.HasPrefix(token, "omitempty"):
 			omitEmpty = true
 		case strings.HasPrefix(token, "recursive"):
-			reqursive = true
+			recursive = true
 		case strings.HasPrefix(token, "default"):
 			keyValue := strings.Split(token, "=")
 			if len(keyValue) > 1 {
@@ -174,6 +181,7 @@ func (m mapConv) value() mapConvValue {
 		keys:         keys,
 		defaultValue: defaultValue,
 		omitEmpty:    omitEmpty,
-		recursive:    reqursive,
+		recursive:    recursive,
+		isSlice:      isSlice,
 	}
 }
