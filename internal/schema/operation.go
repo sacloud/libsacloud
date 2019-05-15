@@ -3,8 +3,6 @@ package schema
 import (
 	"fmt"
 	"strings"
-
-	"github.com/sacloud/libsacloud-v2/internal/schema/meta"
 )
 
 // Operation リソースへの操作
@@ -88,28 +86,15 @@ func (o *Operation) PassthroughModelArgumentWithEnvelope(name string, model *Mod
 	})
 }
 
-// PassthroughSimpleArgument 引数定義の追加
-func (o *Operation) PassthroughSimpleArgument(name, destination string, tp meta.Type) *Operation {
-	return o.Argument(&PassthroughSimpleArgument{
-		Name:        name,
-		Destination: destination,
-		Type:        tp,
-	})
-}
-
 // PassthroughSimpleArgumentWithEnvelope 引数定義の追加、ペイロードの定義も同時に行われる
-func (o *Operation) PassthroughSimpleArgumentWithEnvelope(name, destination string, tp meta.Type) *Operation {
+func (o *Operation) PassthroughSimpleArgumentWithEnvelope(arg *PassthroughSimpleArgument) *Operation {
 	desc := &EnvelopePayloadDesc{
-		PayloadName: destination,
-		PayloadType: tp,
+		PayloadName: arg.Destination,
+		PayloadType: arg.Type,
 	}
 	o.RequestEnvelope(desc)
 
-	return o.Argument(&PassthroughSimpleArgument{
-		Name:        name,
-		Destination: destination,
-		Type:        tp,
-	})
+	return o.Argument(arg)
 }
 
 // Arguments 引数定義の追加(複数)
@@ -262,6 +247,16 @@ func (o *Operation) HasPassthroughFieldDecider() bool {
 // PassthroughFieldDeciders Argumentsのうち、PassthroughFieldDeciderであるもののリストを返す
 func (o *Operation) PassthroughFieldDeciders() []PassthroughFieldDecider {
 	return o.arguments.PassthroughFieldDeciders()
+}
+
+// HasPassthroughSimpleFieldDecider エンベロープへのパラメータマッピングを行う必要のなる引数を持つか
+func (o *Operation) HasPassthroughSimpleFieldDecider() bool {
+	return len(o.arguments.PassthroughSimpleFieldDeciders()) > 0
+}
+
+// PassthroughSimpleFieldDeciders Argumentsのうち、PassthroughSimpleFieldDeciderであるもののリストを返す
+func (o *Operation) PassthroughSimpleFieldDeciders() []PassthroughSimpleFieldDecider {
+	return o.arguments.PassthroughSimpleFieldDeciders()
 }
 
 // RequestEnvelopeStructName エンベロープのstruct名

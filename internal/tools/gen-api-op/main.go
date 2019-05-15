@@ -110,6 +110,16 @@ func (o *{{ $typeName }}Op) {{ .MethodName }}(ctx context.Context{{ range .AllAr
 		body = v
 	}
 	{{ end }}
+	{{ range .PassthroughSimpleFieldDeciders}} 
+	{
+		if body == nil {
+			body = &{{$structName}}{}
+		}
+		v := body.(*{{$structName}})
+		v.{{.Destination}} = {{.ArgName}} 
+		body = v
+	}
+	{{ end }}
 
 
 	{{ if .HasResponseEnvelope -}}

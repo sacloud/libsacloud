@@ -86,7 +86,7 @@ func (t *ArchiveTracer) Delete(ctx context.Context, zone string, id types.ID) er
 }
 
 // OpenFTP is API call with trace log
-func (t *ArchiveTracer) OpenFTP(ctx context.Context, zone string, id types.ID, openOption *OpenFTPParam) (*FTPServer, error) {
+func (t *ArchiveTracer) OpenFTP(ctx context.Context, zone string, id types.ID, openOption *OpenFTPRequest) (*FTPServer, error) {
 	log.Println("[TRACE] ArchiveTracer.OpenFTP start:	args => [", "zone=", zone, "id=", id, "openOption=", openOption, "]")
 	defer func() {
 		log.Println("[TRACE] ArchiveTracer.OpenFTP: end")
@@ -172,7 +172,7 @@ func (t *CDROMTracer) Delete(ctx context.Context, zone string, id types.ID) erro
 }
 
 // OpenFTP is API call with trace log
-func (t *CDROMTracer) OpenFTP(ctx context.Context, zone string, id types.ID, openOption *OpenFTPParam) (*FTPServer, error) {
+func (t *CDROMTracer) OpenFTP(ctx context.Context, zone string, id types.ID, openOption *OpenFTPRequest) (*FTPServer, error) {
 	log.Println("[TRACE] CDROMTracer.OpenFTP start:	args => [", "zone=", zone, "id=", id, "openOption=", openOption, "]")
 	defer func() {
 		log.Println("[TRACE] CDROMTracer.OpenFTP: end")
@@ -227,6 +227,26 @@ func (t *DiskTracer) Create(ctx context.Context, zone string, param *DiskCreateR
 	return t.Internal.Create(ctx, zone, param)
 }
 
+// Config is API call with trace log
+func (t *DiskTracer) Config(ctx context.Context, zone string, id types.ID, edit *DiskEditRequest) error {
+	log.Println("[TRACE] DiskTracer.Config start:	args => [", "zone=", zone, "id=", id, "edit=", edit, "]")
+	defer func() {
+		log.Println("[TRACE] DiskTracer.Config: end")
+	}()
+
+	return t.Internal.Config(ctx, zone, id, edit)
+}
+
+// CreateWithConfig is API call with trace log
+func (t *DiskTracer) CreateWithConfig(ctx context.Context, zone string, createParam *DiskCreateRequest, editParam *DiskEditRequest, bootAtAvailable bool) (*Disk, error) {
+	log.Println("[TRACE] DiskTracer.CreateWithConfig start:	args => [", "zone=", zone, "createParam=", createParam, "editParam=", editParam, "bootAtAvailable=", bootAtAvailable, "]")
+	defer func() {
+		log.Println("[TRACE] DiskTracer.CreateWithConfig: end")
+	}()
+
+	return t.Internal.CreateWithConfig(ctx, zone, createParam, editParam, bootAtAvailable)
+}
+
 // Read is API call with trace log
 func (t *DiskTracer) Read(ctx context.Context, zone string, id types.ID) (*Disk, error) {
 	log.Println("[TRACE] DiskTracer.Read start:	args => [", "zone=", zone, "id=", id, "]")
@@ -265,16 +285,6 @@ func (t *DiskTracer) Monitor(ctx context.Context, zone string, id types.ID, cond
 	}()
 
 	return t.Internal.Monitor(ctx, zone, id, condition)
-}
-
-// Config is API call with trace log
-func (t *DiskTracer) Config(ctx context.Context, zone string, id types.ID, edit *DiskEditParam) error {
-	log.Println("[TRACE] DiskTracer.Config start:	args => [", "zone=", zone, "id=", id, "edit=", edit, "]")
-	defer func() {
-		log.Println("[TRACE] DiskTracer.Config: end")
-	}()
-
-	return t.Internal.Config(ctx, zone, id, edit)
 }
 
 /*************************************************

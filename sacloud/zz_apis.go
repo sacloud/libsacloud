@@ -20,7 +20,7 @@ type ArchiveAPI interface {
 	Read(ctx context.Context, zone string, id types.ID) (*Archive, error)
 	Update(ctx context.Context, zone string, id types.ID, param *ArchiveUpdateRequest) (*Archive, error)
 	Delete(ctx context.Context, zone string, id types.ID) error
-	OpenFTP(ctx context.Context, zone string, id types.ID, openOption *OpenFTPParam) (*FTPServer, error)
+	OpenFTP(ctx context.Context, zone string, id types.ID, openOption *OpenFTPRequest) (*FTPServer, error)
 	CloseFTP(ctx context.Context, zone string, id types.ID) error
 }
 
@@ -35,7 +35,7 @@ type CDROMAPI interface {
 	Read(ctx context.Context, zone string, id types.ID) (*CDROM, error)
 	Update(ctx context.Context, zone string, id types.ID, param *CDROMUpdateRequest) (*CDROM, error)
 	Delete(ctx context.Context, zone string, id types.ID) error
-	OpenFTP(ctx context.Context, zone string, id types.ID, openOption *OpenFTPParam) (*FTPServer, error)
+	OpenFTP(ctx context.Context, zone string, id types.ID, openOption *OpenFTPRequest) (*FTPServer, error)
 	CloseFTP(ctx context.Context, zone string, id types.ID) error
 }
 
@@ -47,11 +47,12 @@ type CDROMAPI interface {
 type DiskAPI interface {
 	Find(ctx context.Context, zone string, conditions *FindCondition) ([]*Disk, error)
 	Create(ctx context.Context, zone string, param *DiskCreateRequest) (*Disk, error)
+	Config(ctx context.Context, zone string, id types.ID, edit *DiskEditRequest) error
+	CreateWithConfig(ctx context.Context, zone string, createParam *DiskCreateRequest, editParam *DiskEditRequest, bootAtAvailable bool) (*Disk, error)
 	Read(ctx context.Context, zone string, id types.ID) (*Disk, error)
 	Update(ctx context.Context, zone string, id types.ID, param *DiskUpdateRequest) (*Disk, error)
 	Delete(ctx context.Context, zone string, id types.ID) error
 	Monitor(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*DiskActivity, error)
-	Config(ctx context.Context, zone string, id types.ID, edit *DiskEditParam) error
 }
 
 /*************************************************
