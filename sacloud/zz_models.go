@@ -1817,6 +1817,74 @@ func (o *DiskEditUserSubnet) SetNetworkMaskLen(v int) {
 }
 
 /*************************************************
+* DiskInstallRequest
+*************************************************/
+
+// DiskInstallRequest represents API parameter/response structure
+type DiskInstallRequest struct {
+	SourceDiskID    types.ID `mapconv:"SourceDisk.ID,omitempty"`
+	SourceArchiveID types.ID `mapconv:"SourceArchive.ID,omitempty"`
+	SizeMB          int
+}
+
+// Validate validates by field tags
+func (o *DiskInstallRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetSourceDiskID returns value of SourceDiskID
+func (o *DiskInstallRequest) GetSourceDiskID() types.ID {
+	return o.SourceDiskID
+}
+
+// SetSourceDiskID sets value to SourceDiskID
+func (o *DiskInstallRequest) SetSourceDiskID(v types.ID) {
+	o.SourceDiskID = v
+}
+
+// GetSourceArchiveID returns value of SourceArchiveID
+func (o *DiskInstallRequest) GetSourceArchiveID() types.ID {
+	return o.SourceArchiveID
+}
+
+// SetSourceArchiveID sets value to SourceArchiveID
+func (o *DiskInstallRequest) SetSourceArchiveID(v types.ID) {
+	o.SourceArchiveID = v
+}
+
+// GetSizeMB returns value of SizeMB
+func (o *DiskInstallRequest) GetSizeMB() int {
+	return o.SizeMB
+}
+
+// SetSizeMB sets value to SizeMB
+func (o *DiskInstallRequest) SetSizeMB(v int) {
+	o.SizeMB = v
+}
+
+// GetSizeGB gets value to SizeGB
+func (o *DiskInstallRequest) GetSizeGB() int {
+	return getSizeGB(o)
+}
+
+// SetSizeGB sets value to SizeGB
+func (o *DiskInstallRequest) SetSizeGB(v int) {
+	setSizeGB(o, v)
+}
+
+// convertTo returns naked DiskInstallRequest
+func (o *DiskInstallRequest) convertTo() (*naked.Disk, error) {
+	dest := &naked.Disk{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked DiskInstallRequest
+func (o *DiskInstallRequest) convertFrom(naked *naked.Disk) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
 * DiskUpdateRequest
 *************************************************/
 
@@ -1826,6 +1894,7 @@ type DiskUpdateRequest struct {
 	Description string `validate:"min=0,max=512"`
 	Tags        []string
 	IconID      types.ID `mapconv:"Icon.ID"`
+	Connection  types.EDiskConnection
 }
 
 // Validate validates by field tags
@@ -1871,6 +1940,16 @@ func (o *DiskUpdateRequest) GetIconID() types.ID {
 // SetIconID sets value to IconID
 func (o *DiskUpdateRequest) SetIconID(v types.ID) {
 	o.IconID = v
+}
+
+// GetConnection returns value of Connection
+func (o *DiskUpdateRequest) GetConnection() types.EDiskConnection {
+	return o.Connection
+}
+
+// SetConnection sets value to Connection
+func (o *DiskUpdateRequest) SetConnection(v types.EDiskConnection) {
+	o.Connection = v
 }
 
 // convertTo returns naked DiskUpdateRequest

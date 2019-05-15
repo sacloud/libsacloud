@@ -188,6 +188,20 @@ type DiskCreateResponseEnvelope struct {
 	Disk *naked.Disk `json:",omitempty"`
 }
 
+// DiskCreateDistantlyRequestEnvelope is envelop of API request
+type DiskCreateDistantlyRequestEnvelope struct {
+	Disk        *naked.Disk `json:",omitempty"`
+	DistantFrom []types.ID  `json:",omitempty"`
+}
+
+// DiskCreateDistantlyResponseEnvelope is envelop of API response
+type DiskCreateDistantlyResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Disk *naked.Disk `json:",omitempty"`
+}
+
 // DiskConfigRequestEnvelope is envelop of API request
 type DiskConfigRequestEnvelope struct {
 	Password            string              `json:",omitempty"`
@@ -211,6 +225,49 @@ type DiskCreateWithConfigRequestEnvelope struct {
 
 // DiskCreateWithConfigResponseEnvelope is envelop of API response
 type DiskCreateWithConfigResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Disk *naked.Disk `json:",omitempty"`
+}
+
+// DiskCreateWithConfigDistantlyRequestEnvelope is envelop of API request
+type DiskCreateWithConfigDistantlyRequestEnvelope struct {
+	Disk            *naked.Disk     `json:",omitempty"`
+	Config          *naked.DiskEdit `json:",omitempty"`
+	BootAtAvailable bool            `json:",omitempty"`
+	DistantFrom     []types.ID      `json:",omitempty"`
+}
+
+// DiskCreateWithConfigDistantlyResponseEnvelope is envelop of API response
+type DiskCreateWithConfigDistantlyResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Disk *naked.Disk `json:",omitempty"`
+}
+
+// DiskInstallRequestEnvelope is envelop of API request
+type DiskInstallRequestEnvelope struct {
+	Disk        *naked.Disk `json:",omitempty"`
+	DistantFrom []types.ID  `json:",omitempty"`
+}
+
+// DiskInstallResponseEnvelope is envelop of API response
+type DiskInstallResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Disk *naked.Disk `json:",omitempty"`
+}
+
+// DiskInstallDistantFromRequestEnvelope is envelop of API request
+type DiskInstallDistantFromRequestEnvelope struct {
+	Disk *naked.Disk `json:",omitempty"`
+}
+
+// DiskInstallDistantFromResponseEnvelope is envelop of API response
+type DiskInstallDistantFromResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
