@@ -116,10 +116,12 @@ func ConvertFrom(source interface{}, dest interface{}) error {
 					dest = append(dest, d)
 				}
 
-				if tags.isSlice || len(dest) > 1 {
-					value = dest
-				} else {
-					value = dest[0]
+				if dest != nil {
+					if tags.isSlice || len(dest) > 1 {
+						value = dest
+					} else {
+						value = dest[0]
+					}
 				}
 			}
 

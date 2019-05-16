@@ -16,6 +16,7 @@ type Switch struct {
 	CreatedAt   *time.Time   `json:",omitempty" yaml:"created_at,omitempty" structs:",omitempty"`
 	ModifiedAt  *time.Time   `json:",omitempty" yaml:"modified_at,omitempty" structs:",omitempty"`
 	Scope       types.EScope `json:",omitempty" yaml:"scope,omitempty" structs:",omitempty"`
+	Subnet      *Subnet      `json:",omitempty" yaml:"subnet,omitempty" structs:",omitempty"`
 	UserSubnet  *UserSubnet  `json:",omitempty" yaml:"user_subnet,omitempty" structs:",omitempty"`
 	Zone        *Zone        `json:",omitempty" yaml:"zone,omitempty" structs:",omitempty"`
 }

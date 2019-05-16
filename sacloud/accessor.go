@@ -72,6 +72,27 @@ func setMigratedGB(target migratedMBAccessor, size int) {
 }
 
 /************************************************
+ MemoryMB - MemoryGB
+************************************************/
+
+type memoryMBAccessor interface {
+	GetMemoryMB() int
+	SetMemoryMB(size int)
+}
+
+func getMemoryGB(target memoryMBAccessor) int {
+	sizeMB := target.GetMemoryMB()
+	if sizeMB == 0 {
+		return 0
+	}
+	return sizeMB / 1024
+}
+
+func setMemoryGB(target memoryMBAccessor, size int) {
+	target.SetMemoryMB(size * 1024)
+}
+
+/************************************************
  switchID
 ************************************************/
 

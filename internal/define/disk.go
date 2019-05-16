@@ -9,36 +9,38 @@ import (
 	"github.com/sacloud/libsacloud-v2/sacloud/types"
 )
 
+var diskModel = &schema.Model{
+	Name: "Disk",
+	Fields: []*schema.FieldDesc{
+		fields.ID(),
+		fields.Name(),
+		fields.Description(),
+		fields.Tags(),
+		fields.Availability(),
+		fields.DiskConnection(),
+		fields.DiskConnectionOrder(),
+		fields.DiskReinstallCount(),
+		fields.SizeMB(),
+		fields.MigratedMB(),
+		fields.DiskPlanID(),
+		fields.DiskPlanName(),
+		fields.DiskPlanStorageClass(),
+		fields.SourceDiskID(),
+		fields.SourceDiskAvailability(),
+		fields.SourceArchiveID(),
+		fields.SourceArchiveAvailability(),
+		fields.BundleInfo(),
+		fields.Storage(),
+		fields.Icon(),
+		fields.CreatedAt(),
+		fields.ModifiedAt(),
+	},
+}
+
 func init() {
 	nakedDisk := meta.Static(naked.Disk{})
 	nakedDiskEdit := meta.Static(naked.DiskEdit{})
 
-	disk := &schema.Model{
-		Fields: []*schema.FieldDesc{
-			fields.ID(),
-			fields.Name(),
-			fields.Description(),
-			fields.Tags(),
-			fields.Availability(),
-			fields.DiskConnection(),
-			fields.DiskConnectionOrder(),
-			fields.DiskReinstallCount(),
-			fields.SizeMB(),
-			fields.MigratedMB(),
-			fields.DiskPlanID(),
-			fields.DiskPlanName(),
-			fields.DiskPlanStorageClass(),
-			fields.SourceDiskID(),
-			fields.SourceDiskAvailability(),
-			fields.SourceArchiveID(),
-			fields.SourceArchiveAvailability(),
-			fields.BundleInfo(),
-			fields.Storage(),
-			fields.Icon(),
-			fields.CreatedAt(),
-			fields.ModifiedAt(),
-		},
-	}
 	createParam := &schema.Model{
 		Fields: []*schema.FieldDesc{
 			fields.DiskPlanID(),
@@ -81,10 +83,10 @@ func init() {
 	Resources.DefineWith("Disk", func(r *schema.Resource) {
 		r.Operations(
 			// find
-			r.DefineOperationFind(nakedDisk, findParameter, disk),
+			r.DefineOperationFind(nakedDisk, findParameter, diskModel),
 
 			// create
-			r.DefineOperationCreate(nakedDisk, createParam, disk),
+			r.DefineOperationCreate(nakedDisk, createParam, diskModel),
 
 			// create distantly
 			r.DefineOperation("CreateDistantly").
@@ -109,7 +111,7 @@ func init() {
 					Destination: "DistantFrom",
 					Type:        distantFromType,
 				}).
-				ResultFromEnvelope(disk, &schema.EnvelopePayloadDesc{
+				ResultFromEnvelope(diskModel, &schema.EnvelopePayloadDesc{
 					PayloadType: nakedDisk,
 					PayloadName: "Disk",
 				}),
@@ -154,7 +156,7 @@ func init() {
 					Type:        meta.TypeFlag,
 					Destination: "BootAtAvailable",
 				}).
-				ResultFromEnvelope(disk, &schema.EnvelopePayloadDesc{
+				ResultFromEnvelope(diskModel, &schema.EnvelopePayloadDesc{
 					PayloadType: nakedDisk,
 					PayloadName: "Disk",
 				}),
@@ -199,7 +201,7 @@ func init() {
 					Destination: "DistantFrom",
 					Type:        distantFromType,
 				}).
-				ResultFromEnvelope(disk, &schema.EnvelopePayloadDesc{
+				ResultFromEnvelope(diskModel, &schema.EnvelopePayloadDesc{
 					PayloadType: nakedDisk,
 					PayloadName: "Disk",
 				}),
@@ -260,7 +262,7 @@ func init() {
 					Destination: "DistantFrom",
 					Type:        distantFromType,
 				}).
-				ResultFromEnvelope(disk, &schema.EnvelopePayloadDesc{
+				ResultFromEnvelope(diskModel, &schema.EnvelopePayloadDesc{
 					PayloadType: nakedDisk,
 					PayloadName: "Disk",
 				}),
@@ -279,16 +281,16 @@ func init() {
 					Destination: "Disk",
 					Model:       installParam,
 				}).
-				ResultFromEnvelope(disk, &schema.EnvelopePayloadDesc{
+				ResultFromEnvelope(diskModel, &schema.EnvelopePayloadDesc{
 					PayloadType: nakedDisk,
 					PayloadName: "Disk",
 				}),
 
 			// read
-			r.DefineOperationRead(nakedDisk, disk),
+			r.DefineOperationRead(nakedDisk, diskModel),
 
 			// update
-			r.DefineOperationUpdate(nakedDisk, updateParam, disk),
+			r.DefineOperationUpdate(nakedDisk, updateParam, diskModel),
 
 			// delete
 			r.DefineOperationDelete(),

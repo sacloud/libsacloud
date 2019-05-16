@@ -127,6 +127,22 @@ type NoteAPI interface {
 }
 
 /*************************************************
+* ServerAPI
+*************************************************/
+
+// ServerAPI is interface for operate Server resource
+type ServerAPI interface {
+	Find(ctx context.Context, zone string, conditions *FindCondition) ([]*Server, error)
+	Create(ctx context.Context, zone string, param *ServerCreateRequest) (*Server, error)
+	Read(ctx context.Context, zone string, id types.ID) (*Server, error)
+	Update(ctx context.Context, zone string, id types.ID, param *ServerUpdateRequest) (*Server, error)
+	Delete(ctx context.Context, zone string, id types.ID) error
+	Boot(ctx context.Context, zone string, id types.ID) error
+	Shutdown(ctx context.Context, zone string, id types.ID, shutdownOption *ShutdownOption) error
+	Reset(ctx context.Context, zone string, id types.ID) error
+}
+
+/*************************************************
 * SwitchAPI
 *************************************************/
 

@@ -37,6 +37,13 @@ func (f *fieldsDef) Name() *schema.FieldDesc {
 	}
 }
 
+func (f *fieldsDef) InterfaceDriver() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "InterfaceDriver",
+		Type: meta.TypeInterfaceDriver,
+	}
+}
+
 func (f *fieldsDef) DiskPlanID() *schema.FieldDesc {
 	return &schema.FieldDesc{
 		Name: "DiskPlanID",
@@ -64,6 +71,72 @@ func (f *fieldsDef) DiskPlanStorageClass() *schema.FieldDesc {
 			MapConv: "Plan.StorageClass",
 		},
 		Type: meta.TypeStringFlag,
+	}
+}
+
+func (f *fieldsDef) ServerPlanID() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "ServerPlanID",
+		Tags: &schema.FieldTags{
+			MapConv: "ServerPlan.ID",
+		},
+		Type: meta.TypeID,
+	}
+}
+
+func (f *fieldsDef) ServerPlanName() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "ServerPlanName",
+		Tags: &schema.FieldTags{
+			MapConv: "ServerPlan.Name",
+		},
+		Type: meta.TypeString,
+	}
+}
+
+func (f *fieldsDef) ServerPlanCPU() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "CPU",
+		Tags: &schema.FieldTags{
+			MapConv: "ServerPlan.CPU",
+		},
+		Type: meta.TypeInt,
+	}
+}
+
+func (f *fieldsDef) ServerPlanMemoryMB() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "MemoryMB",
+		Tags: &schema.FieldTags{
+			MapConv: "ServerPlan.MemoryMB",
+		},
+		Type: meta.TypeInt,
+		ExtendAccessors: []*schema.ExtendAccessor{
+			{
+				Name: "MemoryGB",
+				Type: meta.TypeInt,
+			},
+		},
+	}
+}
+
+func (f *fieldsDef) ServerPlanGeneration() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "ServerPlanGeneration",
+		Type: meta.TypeInt,
+		Tags: &schema.FieldTags{
+			MapConv: "ServerPlan.Generation",
+		},
+	}
+}
+
+func (f *fieldsDef) ServerPlanCommitment() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "ServerPlanCommitment",
+		Tags: &schema.FieldTags{
+			MapConv: "ServerPlan.Commitment",
+		},
+		Type: meta.TypeString,
 	}
 }
 
@@ -144,6 +217,26 @@ func (f *fieldsDef) IconID() *schema.FieldDesc {
 			MapConv: "Icon.ID",
 		},
 		Type: meta.TypeID,
+	}
+}
+
+func (f *fieldsDef) PrivateHostID() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "PrivateHostID",
+		Type: meta.TypeID,
+		Tags: &schema.FieldTags{
+			MapConv: "PrivateHost.ID",
+		},
+	}
+}
+
+func (f *fieldsDef) PrivateHostName() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "PrivateHostName",
+		Type: meta.TypeString,
+		Tags: &schema.FieldTags{
+			MapConv: "PrivateHost.Name",
+		},
 	}
 }
 
@@ -499,6 +592,17 @@ func (f *fieldsDef) InstanceStatus() *schema.FieldDesc {
 	}
 }
 
+func (f *fieldsDef) InstanceBeforeStatus() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name:     "InstanceBeforeStatus",
+		Type:     meta.TypeInstanceStatus,
+		ReadOnly: true,
+		Tags: &schema.FieldTags{
+			MapConv: "Instance.BeforeStatus",
+		},
+	}
+}
+
 func (f *fieldsDef) InstanceStatusChangedAt() *schema.FieldDesc {
 	return &schema.FieldDesc{
 		Name:     "InstanceStatusChangedAt",
@@ -506,6 +610,28 @@ func (f *fieldsDef) InstanceStatusChangedAt() *schema.FieldDesc {
 		ReadOnly: true,
 		Tags: &schema.FieldTags{
 			MapConv: "Instance.StatusChangedAt",
+		},
+	}
+}
+
+func (f *fieldsDef) InstanceWarnings() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name:     "InstanceWarnings",
+		Type:     meta.TypeString,
+		ReadOnly: true,
+		Tags: &schema.FieldTags{
+			MapConv: "Instance.Warnings",
+		},
+	}
+}
+
+func (f *fieldsDef) InstanceWarningsValue() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name:     "InstanceWarningsValue",
+		Type:     meta.TypeInt,
+		ReadOnly: true,
+		Tags: &schema.FieldTags{
+			MapConv: "Instance.WarningsValue",
 		},
 	}
 }
@@ -699,12 +825,28 @@ func (f *fieldsDef) HostName() *schema.FieldDesc {
 		Type: meta.TypeString,
 	}
 }
+
 func (f *fieldsDef) IPAddress() *schema.FieldDesc {
 	return &schema.FieldDesc{
 		Name: "IPAddress",
 		Type: meta.TypeString,
 	}
 }
+
+func (f *fieldsDef) UserIPAddress() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "UserIPAddress",
+		Type: meta.TypeString,
+	}
+}
+
+func (f *fieldsDef) MACAddress() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "MACAddress",
+		Type: meta.TypeString,
+	}
+}
+
 func (f *fieldsDef) User() *schema.FieldDesc {
 	return &schema.FieldDesc{
 		Name: "User",
