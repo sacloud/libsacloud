@@ -191,7 +191,8 @@ func (b *serverBuilder) buildServerParams() error {
 
 	s := v.Server
 	s.Name = b.serverName
-	s.SetServerPlanByID(plan.GetStrID())
+	s.SetServerPlanByValue(plan.CPU, plan.GetMemoryGB(), plan.Generation)
+	s.ServerPlan.Commitment = plan.Commitment
 	s.Description = b.description
 	s.InterfaceDriver = b.interfaceDriver
 	// tags
