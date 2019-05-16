@@ -38,7 +38,7 @@ func (api *ProductServerAPI) GetBySpecCommitment(core, memGB int, gen sacloud.Pl
 	var res sacloud.ProductServer
 	var found bool
 	for _, plan := range plans.ServerPlans {
-		if plan.CPU == core && plan.GetMemoryGB() == memGB || plan.Commitment == commitment {
+		if plan.CPU == core && plan.GetMemoryGB() == memGB && plan.Commitment == commitment {
 			if gen == sacloud.PlanDefault || gen == plan.Generation {
 				// PlanDefaultの場合は複数ヒットしうる。
 				// この場合より新しい世代を優先する。
