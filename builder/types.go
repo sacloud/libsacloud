@@ -76,6 +76,11 @@ type CommonProperty interface {
 	// SetMemory メモリサイズ(GB単位) 設定
 	SetMemory(memory int)
 
+	// GetCommitment サーバプランCPUコミットメント 取得
+	GetCommitment() sacloud.ECommitment
+	// SetCommitment サーバプランCPUコミットメント 設定
+	SetCommitment(commitment sacloud.ECommitment)
+
 	// GetInterfaceDriver インターフェースドライバ 取得
 	GetInterfaceDriver() sacloud.EInterfaceDriver
 	// SetInterfaceDriver インターフェースドライバ 設定
