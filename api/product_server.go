@@ -25,12 +25,12 @@ func NewProductServerAPI(client *Client) *ProductServerAPI {
 }
 
 // GetBySpec 指定のコア数/メモリサイズ/世代のプランを取得
-func (api *ProductServerAPI) GetBySpec(core int, memGB int, gen sacloud.PlanGenerations) (*sacloud.ProductServer, error) {
+func (api *ProductServerAPI) GetBySpec(core, memGB int, gen sacloud.PlanGenerations) (*sacloud.ProductServer, error) {
 	return api.GetBySpecCommitment(core, memGB, gen, sacloud.ECommitmentStandard)
 }
 
 // GetBySpecCommitment 指定のコア数/メモリサイズ/世代のプランを取得
-func (api *ProductServerAPI) GetBySpecCommitment(core int, memGB int, gen sacloud.PlanGenerations, commitment sacloud.ECommitment) (*sacloud.ProductServer, error) {
+func (api *ProductServerAPI) GetBySpecCommitment(core, memGB int, gen sacloud.PlanGenerations, commitment sacloud.ECommitment) (*sacloud.ProductServer, error) {
 	plans, err := api.Reset().Find()
 	if err != nil {
 		return nil, err
