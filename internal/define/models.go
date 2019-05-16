@@ -196,3 +196,102 @@ func (m *modelsDef) diskEdit() *schema.Model {
 		},
 	}
 }
+
+func (m *modelsDef) interfaceModel() *schema.Model {
+	return &schema.Model{
+		Name: "Interface",
+		Fields: []*schema.FieldDesc{
+			fields.ID(),
+			fields.MACAddress(),
+			fields.IPAddress(),
+			fields.UserIPAddress(),
+			fields.HostName(),
+			// switch
+			{
+				Name: "SwitchID",
+				Type: meta.TypeID,
+				Tags: &schema.FieldTags{
+					MapConv: "Switch.ID",
+				},
+			},
+			{
+				Name: "SwitchName",
+				Type: meta.TypeString,
+				Tags: &schema.FieldTags{
+					MapConv: "Switch.Name",
+				},
+			},
+			{
+				Name: "SwitchScope",
+				Type: meta.TypeScope,
+				Tags: &schema.FieldTags{
+					MapConv: "Switch.Scope",
+				},
+			},
+			{
+				Name: "UserSubnetDefaultRoute",
+				Type: meta.TypeString,
+				Tags: &schema.FieldTags{
+					MapConv: "Switch.UserSubnet.DefaultRoute",
+				},
+			},
+			{
+				Name: "UserSubnetNetworkMaskLen",
+				Type: meta.TypeInt,
+				Tags: &schema.FieldTags{
+					MapConv: "Switch.UserSubnet.NetworkMaskLen",
+				},
+			},
+			{
+				Name: "SubnetDefaultRoute",
+				Type: meta.TypeString,
+				Tags: &schema.FieldTags{
+					MapConv: "Switch.Subnet.DefaultRoute",
+				},
+			},
+			{
+				Name: "SubnetNetworkMaskLen",
+				Type: meta.TypeInt,
+				Tags: &schema.FieldTags{
+					MapConv: "Switch.Subnet.NetworkMaskLen",
+				},
+			},
+			{
+				Name: "SubnetNetworkAddress",
+				Type: meta.TypeString,
+				Tags: &schema.FieldTags{
+					MapConv: "Switch.Subnet.NetworkAddress",
+				},
+			},
+			{
+				Name: "SubnetBandWidthMbps",
+				Type: meta.TypeInt,
+				Tags: &schema.FieldTags{
+					MapConv: "Switch.Subnet.Internet.BandWidthMbps",
+				},
+			},
+			// packet filter
+			{
+				Name: "PacketFilterID",
+				Type: meta.TypeString,
+				Tags: &schema.FieldTags{
+					MapConv: "PacketFilter.ID",
+				},
+			},
+			{
+				Name: "PacketFilterName",
+				Type: meta.TypeString,
+				Tags: &schema.FieldTags{
+					MapConv: "PacketFilter.Name",
+				},
+			},
+			{
+				Name: "PacketFilterRequiredHostVersion",
+				Type: meta.TypeInt,
+				Tags: &schema.FieldTags{
+					MapConv: "PacketFilter.RequiredHostVersionn",
+				},
+			},
+		},
+	}
+}

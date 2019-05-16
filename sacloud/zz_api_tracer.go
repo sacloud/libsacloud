@@ -742,6 +742,102 @@ func (t *NoteTracer) Delete(ctx context.Context, zone string, id types.ID) error
 }
 
 /*************************************************
+* ServerTracer
+*************************************************/
+
+// ServerTracer is for trace ServerOp operations
+type ServerTracer struct {
+	Internal ServerAPI
+}
+
+// NewServerTracer creates new ServerTracer instance
+func NewServerTracer(in ServerAPI) *ServerTracer {
+	return &ServerTracer{
+		Internal: in,
+	}
+}
+
+// Find is API call with trace log
+func (t *ServerTracer) Find(ctx context.Context, zone string, conditions *FindCondition) ([]*Server, error) {
+	log.Println("[TRACE] ServerTracer.Find start:	args => [", "zone=", zone, "conditions=", conditions, "]")
+	defer func() {
+		log.Println("[TRACE] ServerTracer.Find: end")
+	}()
+
+	return t.Internal.Find(ctx, zone, conditions)
+}
+
+// Create is API call with trace log
+func (t *ServerTracer) Create(ctx context.Context, zone string, param *ServerCreateRequest) (*Server, error) {
+	log.Println("[TRACE] ServerTracer.Create start:	args => [", "zone=", zone, "param=", param, "]")
+	defer func() {
+		log.Println("[TRACE] ServerTracer.Create: end")
+	}()
+
+	return t.Internal.Create(ctx, zone, param)
+}
+
+// Read is API call with trace log
+func (t *ServerTracer) Read(ctx context.Context, zone string, id types.ID) (*Server, error) {
+	log.Println("[TRACE] ServerTracer.Read start:	args => [", "zone=", zone, "id=", id, "]")
+	defer func() {
+		log.Println("[TRACE] ServerTracer.Read: end")
+	}()
+
+	return t.Internal.Read(ctx, zone, id)
+}
+
+// Update is API call with trace log
+func (t *ServerTracer) Update(ctx context.Context, zone string, id types.ID, param *ServerUpdateRequest) (*Server, error) {
+	log.Println("[TRACE] ServerTracer.Update start:	args => [", "zone=", zone, "id=", id, "param=", param, "]")
+	defer func() {
+		log.Println("[TRACE] ServerTracer.Update: end")
+	}()
+
+	return t.Internal.Update(ctx, zone, id, param)
+}
+
+// Delete is API call with trace log
+func (t *ServerTracer) Delete(ctx context.Context, zone string, id types.ID) error {
+	log.Println("[TRACE] ServerTracer.Delete start:	args => [", "zone=", zone, "id=", id, "]")
+	defer func() {
+		log.Println("[TRACE] ServerTracer.Delete: end")
+	}()
+
+	return t.Internal.Delete(ctx, zone, id)
+}
+
+// Boot is API call with trace log
+func (t *ServerTracer) Boot(ctx context.Context, zone string, id types.ID) error {
+	log.Println("[TRACE] ServerTracer.Boot start:	args => [", "zone=", zone, "id=", id, "]")
+	defer func() {
+		log.Println("[TRACE] ServerTracer.Boot: end")
+	}()
+
+	return t.Internal.Boot(ctx, zone, id)
+}
+
+// Shutdown is API call with trace log
+func (t *ServerTracer) Shutdown(ctx context.Context, zone string, id types.ID, shutdownOption *ShutdownOption) error {
+	log.Println("[TRACE] ServerTracer.Shutdown start:	args => [", "zone=", zone, "id=", id, "shutdownOption=", shutdownOption, "]")
+	defer func() {
+		log.Println("[TRACE] ServerTracer.Shutdown: end")
+	}()
+
+	return t.Internal.Shutdown(ctx, zone, id, shutdownOption)
+}
+
+// Reset is API call with trace log
+func (t *ServerTracer) Reset(ctx context.Context, zone string, id types.ID) error {
+	log.Println("[TRACE] ServerTracer.Reset start:	args => [", "zone=", zone, "id=", id, "]")
+	defer func() {
+		log.Println("[TRACE] ServerTracer.Reset: end")
+	}()
+
+	return t.Internal.Reset(ctx, zone, id)
+}
+
+/*************************************************
 * SwitchTracer
 *************************************************/
 

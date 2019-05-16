@@ -582,6 +582,64 @@ type NoteUpdateResponseEnvelope struct {
 	Note *naked.Note `json:",omitempty"`
 }
 
+// ServerFindRequestEnvelope is envelop of API request
+type ServerFindRequestEnvelope struct {
+	Count   int                    `json:",omitempty"`
+	From    int                    `json:",omitempty"`
+	Sort    []string               `json:",omitempty"`
+	Filter  map[string]interface{} `json:",omitempty"`
+	Include []string               `json:",omitempty"`
+	Exclude []string               `json:",omitempty"`
+}
+
+// ServerFindResponseEnvelope is envelop of API response
+type ServerFindResponseEnvelope struct {
+	Total int `json:",omitempty"` // トータル件数
+	From  int `json:",omitempty"` // ページング開始ページ
+	Count int `json:",omitempty"` // 件数
+
+	Servers []*naked.Server `json:",omitempty"`
+}
+
+// ServerCreateRequestEnvelope is envelop of API request
+type ServerCreateRequestEnvelope struct {
+	Server *naked.Server `json:",omitempty"`
+}
+
+// ServerCreateResponseEnvelope is envelop of API response
+type ServerCreateResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Server *naked.Server `json:",omitempty"`
+}
+
+// ServerReadResponseEnvelope is envelop of API response
+type ServerReadResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Server *naked.Server `json:",omitempty"`
+}
+
+// ServerUpdateRequestEnvelope is envelop of API request
+type ServerUpdateRequestEnvelope struct {
+	Server *naked.Server `json:",omitempty"`
+}
+
+// ServerUpdateResponseEnvelope is envelop of API response
+type ServerUpdateResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Server *naked.Server `json:",omitempty"`
+}
+
+// ServerShutdownRequestEnvelope is envelop of API request
+type ServerShutdownRequestEnvelope struct {
+	Force bool `json:",omitempty"`
+}
+
 // SwitchFindRequestEnvelope is envelop of API request
 type SwitchFindRequestEnvelope struct {
 	Count   int                    `json:",omitempty"`

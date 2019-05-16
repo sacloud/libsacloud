@@ -4282,6 +4282,880 @@ func (o *NoteUpdateRequest) convertFrom(naked *naked.Note) error {
 }
 
 /*************************************************
+* Server
+*************************************************/
+
+// Server represents API parameter/response structure
+type Server struct {
+	ID                      types.ID
+	Name                    string `validate:"required"`
+	Description             string `validate:"min=0,max=512"`
+	Tags                    []string
+	Availability            types.EAvailability
+	HostName                string
+	InterfaceDriver         types.EInterfaceDriver
+	ServerPlanID            types.ID                    `mapconv:"ServerPlan.ID"`
+	ServerPlanName          string                      `mapconv:"ServerPlan.Name"`
+	CPU                     int                         `mapconv:"ServerPlan.CPU"`
+	MemoryMB                int                         `mapconv:"ServerPlan.MemoryMB"`
+	ServerPlanCommitment    string                      `mapconv:"ServerPlan.Commitment"`
+	ServerPlanGeneration    int                         `mapconv:"ServerPlan.Generation"`
+	Zone                    *naked.Zone                 `json:",omitempty"`
+	InstanceHostName        string                      `mapconv:"Instance.Host.Name"`
+	InstanceHostInfoURL     string                      `mapconv:"Instance.Host.InfoURL"`
+	InstanceStatus          types.EServerInstanceStatus `mapconv:"Instance.Status"`
+	InstanceBeforeStatus    types.EServerInstanceStatus `mapconv:"Instance.BeforeStatus"`
+	InstanceStatusChangedAt *time.Time                  `mapconv:"Instance.StatusChangedAt"`
+	InstanceWarnings        string                      `mapconv:"Instance.Warnings"`
+	InstanceWarningsValue   int                         `mapconv:"Instance.WarningsValue"`
+	Disks                   []*Disk                     `json:",omitempty" mapconv:",recursive"`
+	Interfaces              []*Interface                `json:",omitempty" mapconv:",recursive"`
+	PrivateHostID           types.ID                    `mapconv:"PrivateHost.ID"`
+	PrivateHostName         string                      `mapconv:"PrivateHost.Name"`
+	BundleInfo              *naked.BundleInfo           `json:",omitempty"`
+	Storage                 *naked.Storage              `json:",omitempty"`
+	Icon                    *naked.Icon                 `json:",omitempty"`
+	CreatedAt               *time.Time
+	ModifiedAt              *time.Time
+}
+
+// Validate validates by field tags
+func (o *Server) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetID returns value of ID
+func (o *Server) GetID() types.ID {
+	return o.ID
+}
+
+// SetID sets value to ID
+func (o *Server) SetID(v types.ID) {
+	o.ID = v
+}
+
+// GetStringID gets value to StringID
+func (o *Server) GetStringID() string {
+	return getStringID(o)
+}
+
+// SetStringID sets value to StringID
+func (o *Server) SetStringID(v string) {
+	setStringID(o, v)
+}
+
+// GetInt64ID gets value to Int64ID
+func (o *Server) GetInt64ID() int64 {
+	return getInt64ID(o)
+}
+
+// SetInt64ID sets value to Int64ID
+func (o *Server) SetInt64ID(v int64) {
+	setInt64ID(o, v)
+}
+
+// GetName returns value of Name
+func (o *Server) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *Server) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *Server) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *Server) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetTags returns value of Tags
+func (o *Server) GetTags() []string {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *Server) SetTags(v []string) {
+	o.Tags = v
+}
+
+// GetAvailability returns value of Availability
+func (o *Server) GetAvailability() types.EAvailability {
+	return o.Availability
+}
+
+// SetAvailability sets value to Availability
+func (o *Server) SetAvailability(v types.EAvailability) {
+	o.Availability = v
+}
+
+// GetHostName returns value of HostName
+func (o *Server) GetHostName() string {
+	return o.HostName
+}
+
+// SetHostName sets value to HostName
+func (o *Server) SetHostName(v string) {
+	o.HostName = v
+}
+
+// GetInterfaceDriver returns value of InterfaceDriver
+func (o *Server) GetInterfaceDriver() types.EInterfaceDriver {
+	return o.InterfaceDriver
+}
+
+// SetInterfaceDriver sets value to InterfaceDriver
+func (o *Server) SetInterfaceDriver(v types.EInterfaceDriver) {
+	o.InterfaceDriver = v
+}
+
+// GetServerPlanID returns value of ServerPlanID
+func (o *Server) GetServerPlanID() types.ID {
+	return o.ServerPlanID
+}
+
+// SetServerPlanID sets value to ServerPlanID
+func (o *Server) SetServerPlanID(v types.ID) {
+	o.ServerPlanID = v
+}
+
+// GetServerPlanName returns value of ServerPlanName
+func (o *Server) GetServerPlanName() string {
+	return o.ServerPlanName
+}
+
+// SetServerPlanName sets value to ServerPlanName
+func (o *Server) SetServerPlanName(v string) {
+	o.ServerPlanName = v
+}
+
+// GetCPU returns value of CPU
+func (o *Server) GetCPU() int {
+	return o.CPU
+}
+
+// SetCPU sets value to CPU
+func (o *Server) SetCPU(v int) {
+	o.CPU = v
+}
+
+// GetMemoryMB returns value of MemoryMB
+func (o *Server) GetMemoryMB() int {
+	return o.MemoryMB
+}
+
+// SetMemoryMB sets value to MemoryMB
+func (o *Server) SetMemoryMB(v int) {
+	o.MemoryMB = v
+}
+
+// GetMemoryGB gets value to MemoryGB
+func (o *Server) GetMemoryGB() int {
+	return getMemoryGB(o)
+}
+
+// SetMemoryGB sets value to MemoryGB
+func (o *Server) SetMemoryGB(v int) {
+	setMemoryGB(o, v)
+}
+
+// GetServerPlanCommitment returns value of ServerPlanCommitment
+func (o *Server) GetServerPlanCommitment() string {
+	return o.ServerPlanCommitment
+}
+
+// SetServerPlanCommitment sets value to ServerPlanCommitment
+func (o *Server) SetServerPlanCommitment(v string) {
+	o.ServerPlanCommitment = v
+}
+
+// GetServerPlanGeneration returns value of ServerPlanGeneration
+func (o *Server) GetServerPlanGeneration() int {
+	return o.ServerPlanGeneration
+}
+
+// SetServerPlanGeneration sets value to ServerPlanGeneration
+func (o *Server) SetServerPlanGeneration(v int) {
+	o.ServerPlanGeneration = v
+}
+
+// GetZone returns value of Zone
+func (o *Server) GetZone() *naked.Zone {
+	return o.Zone
+}
+
+// SetZone sets value to Zone
+func (o *Server) SetZone(v *naked.Zone) {
+	o.Zone = v
+}
+
+// GetInstanceHostName returns value of InstanceHostName
+func (o *Server) GetInstanceHostName() string {
+	return o.InstanceHostName
+}
+
+// GetInstanceHostInfoURL returns value of InstanceHostInfoURL
+func (o *Server) GetInstanceHostInfoURL() string {
+	return o.InstanceHostInfoURL
+}
+
+// GetInstanceStatus returns value of InstanceStatus
+func (o *Server) GetInstanceStatus() types.EServerInstanceStatus {
+	return o.InstanceStatus
+}
+
+// GetInstanceBeforeStatus returns value of InstanceBeforeStatus
+func (o *Server) GetInstanceBeforeStatus() types.EServerInstanceStatus {
+	return o.InstanceBeforeStatus
+}
+
+// GetInstanceStatusChangedAt returns value of InstanceStatusChangedAt
+func (o *Server) GetInstanceStatusChangedAt() *time.Time {
+	return o.InstanceStatusChangedAt
+}
+
+// GetInstanceWarnings returns value of InstanceWarnings
+func (o *Server) GetInstanceWarnings() string {
+	return o.InstanceWarnings
+}
+
+// GetInstanceWarningsValue returns value of InstanceWarningsValue
+func (o *Server) GetInstanceWarningsValue() int {
+	return o.InstanceWarningsValue
+}
+
+// GetDisks returns value of Disks
+func (o *Server) GetDisks() []*Disk {
+	return o.Disks
+}
+
+// SetDisks sets value to Disks
+func (o *Server) SetDisks(v []*Disk) {
+	o.Disks = v
+}
+
+// GetInterfaces returns value of Interfaces
+func (o *Server) GetInterfaces() []*Interface {
+	return o.Interfaces
+}
+
+// SetInterfaces sets value to Interfaces
+func (o *Server) SetInterfaces(v []*Interface) {
+	o.Interfaces = v
+}
+
+// GetPrivateHostID returns value of PrivateHostID
+func (o *Server) GetPrivateHostID() types.ID {
+	return o.PrivateHostID
+}
+
+// SetPrivateHostID sets value to PrivateHostID
+func (o *Server) SetPrivateHostID(v types.ID) {
+	o.PrivateHostID = v
+}
+
+// GetPrivateHostName returns value of PrivateHostName
+func (o *Server) GetPrivateHostName() string {
+	return o.PrivateHostName
+}
+
+// SetPrivateHostName sets value to PrivateHostName
+func (o *Server) SetPrivateHostName(v string) {
+	o.PrivateHostName = v
+}
+
+// GetBundleInfo returns value of BundleInfo
+func (o *Server) GetBundleInfo() *naked.BundleInfo {
+	return o.BundleInfo
+}
+
+// SetBundleInfo sets value to BundleInfo
+func (o *Server) SetBundleInfo(v *naked.BundleInfo) {
+	o.BundleInfo = v
+}
+
+// GetStorage returns value of Storage
+func (o *Server) GetStorage() *naked.Storage {
+	return o.Storage
+}
+
+// SetStorage sets value to Storage
+func (o *Server) SetStorage(v *naked.Storage) {
+	o.Storage = v
+}
+
+// GetIcon returns value of Icon
+func (o *Server) GetIcon() *naked.Icon {
+	return o.Icon
+}
+
+// SetIcon sets value to Icon
+func (o *Server) SetIcon(v *naked.Icon) {
+	o.Icon = v
+}
+
+// GetCreatedAt returns value of CreatedAt
+func (o *Server) GetCreatedAt() *time.Time {
+	return o.CreatedAt
+}
+
+// SetCreatedAt sets value to CreatedAt
+func (o *Server) SetCreatedAt(v *time.Time) {
+	o.CreatedAt = v
+}
+
+// GetModifiedAt returns value of ModifiedAt
+func (o *Server) GetModifiedAt() *time.Time {
+	return o.ModifiedAt
+}
+
+// SetModifiedAt sets value to ModifiedAt
+func (o *Server) SetModifiedAt(v *time.Time) {
+	o.ModifiedAt = v
+}
+
+// convertTo returns naked Server
+func (o *Server) convertTo() (*naked.Server, error) {
+	dest := &naked.Server{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked Server
+func (o *Server) convertFrom(naked *naked.Server) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* Interface
+*************************************************/
+
+// Interface represents API parameter/response structure
+type Interface struct {
+	ID                              types.ID
+	MACAddress                      string
+	IPAddress                       string
+	UserIPAddress                   string
+	HostName                        string
+	SwitchID                        types.ID     `mapconv:"Switch.ID"`
+	SwitchName                      string       `mapconv:"Switch.Name"`
+	SwitchScope                     types.EScope `mapconv:"Switch.Scope"`
+	UserSubnetDefaultRoute          string       `mapconv:"Switch.UserSubnet.DefaultRoute"`
+	UserSubnetNetworkMaskLen        int          `mapconv:"Switch.UserSubnet.NetworkMaskLen"`
+	SubnetDefaultRoute              string       `mapconv:"Switch.Subnet.DefaultRoute"`
+	SubnetNetworkMaskLen            int          `mapconv:"Switch.Subnet.NetworkMaskLen"`
+	SubnetNetworkAddress            string       `mapconv:"Switch.Subnet.NetworkAddress"`
+	SubnetBandWidthMbps             int          `mapconv:"Switch.Subnet.Internet.BandWidthMbps"`
+	PacketFilterID                  string       `mapconv:"PacketFilter.ID"`
+	PacketFilterName                string       `mapconv:"PacketFilter.Name"`
+	PacketFilterRequiredHostVersion int          `mapconv:"PacketFilter.RequiredHostVersionn"`
+}
+
+// Validate validates by field tags
+func (o *Interface) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetID returns value of ID
+func (o *Interface) GetID() types.ID {
+	return o.ID
+}
+
+// SetID sets value to ID
+func (o *Interface) SetID(v types.ID) {
+	o.ID = v
+}
+
+// GetStringID gets value to StringID
+func (o *Interface) GetStringID() string {
+	return getStringID(o)
+}
+
+// SetStringID sets value to StringID
+func (o *Interface) SetStringID(v string) {
+	setStringID(o, v)
+}
+
+// GetInt64ID gets value to Int64ID
+func (o *Interface) GetInt64ID() int64 {
+	return getInt64ID(o)
+}
+
+// SetInt64ID sets value to Int64ID
+func (o *Interface) SetInt64ID(v int64) {
+	setInt64ID(o, v)
+}
+
+// GetMACAddress returns value of MACAddress
+func (o *Interface) GetMACAddress() string {
+	return o.MACAddress
+}
+
+// SetMACAddress sets value to MACAddress
+func (o *Interface) SetMACAddress(v string) {
+	o.MACAddress = v
+}
+
+// GetIPAddress returns value of IPAddress
+func (o *Interface) GetIPAddress() string {
+	return o.IPAddress
+}
+
+// SetIPAddress sets value to IPAddress
+func (o *Interface) SetIPAddress(v string) {
+	o.IPAddress = v
+}
+
+// GetUserIPAddress returns value of UserIPAddress
+func (o *Interface) GetUserIPAddress() string {
+	return o.UserIPAddress
+}
+
+// SetUserIPAddress sets value to UserIPAddress
+func (o *Interface) SetUserIPAddress(v string) {
+	o.UserIPAddress = v
+}
+
+// GetHostName returns value of HostName
+func (o *Interface) GetHostName() string {
+	return o.HostName
+}
+
+// SetHostName sets value to HostName
+func (o *Interface) SetHostName(v string) {
+	o.HostName = v
+}
+
+// GetSwitchID returns value of SwitchID
+func (o *Interface) GetSwitchID() types.ID {
+	return o.SwitchID
+}
+
+// SetSwitchID sets value to SwitchID
+func (o *Interface) SetSwitchID(v types.ID) {
+	o.SwitchID = v
+}
+
+// GetSwitchName returns value of SwitchName
+func (o *Interface) GetSwitchName() string {
+	return o.SwitchName
+}
+
+// SetSwitchName sets value to SwitchName
+func (o *Interface) SetSwitchName(v string) {
+	o.SwitchName = v
+}
+
+// GetSwitchScope returns value of SwitchScope
+func (o *Interface) GetSwitchScope() types.EScope {
+	return o.SwitchScope
+}
+
+// SetSwitchScope sets value to SwitchScope
+func (o *Interface) SetSwitchScope(v types.EScope) {
+	o.SwitchScope = v
+}
+
+// GetUserSubnetDefaultRoute returns value of UserSubnetDefaultRoute
+func (o *Interface) GetUserSubnetDefaultRoute() string {
+	return o.UserSubnetDefaultRoute
+}
+
+// SetUserSubnetDefaultRoute sets value to UserSubnetDefaultRoute
+func (o *Interface) SetUserSubnetDefaultRoute(v string) {
+	o.UserSubnetDefaultRoute = v
+}
+
+// GetUserSubnetNetworkMaskLen returns value of UserSubnetNetworkMaskLen
+func (o *Interface) GetUserSubnetNetworkMaskLen() int {
+	return o.UserSubnetNetworkMaskLen
+}
+
+// SetUserSubnetNetworkMaskLen sets value to UserSubnetNetworkMaskLen
+func (o *Interface) SetUserSubnetNetworkMaskLen(v int) {
+	o.UserSubnetNetworkMaskLen = v
+}
+
+// GetSubnetDefaultRoute returns value of SubnetDefaultRoute
+func (o *Interface) GetSubnetDefaultRoute() string {
+	return o.SubnetDefaultRoute
+}
+
+// SetSubnetDefaultRoute sets value to SubnetDefaultRoute
+func (o *Interface) SetSubnetDefaultRoute(v string) {
+	o.SubnetDefaultRoute = v
+}
+
+// GetSubnetNetworkMaskLen returns value of SubnetNetworkMaskLen
+func (o *Interface) GetSubnetNetworkMaskLen() int {
+	return o.SubnetNetworkMaskLen
+}
+
+// SetSubnetNetworkMaskLen sets value to SubnetNetworkMaskLen
+func (o *Interface) SetSubnetNetworkMaskLen(v int) {
+	o.SubnetNetworkMaskLen = v
+}
+
+// GetSubnetNetworkAddress returns value of SubnetNetworkAddress
+func (o *Interface) GetSubnetNetworkAddress() string {
+	return o.SubnetNetworkAddress
+}
+
+// SetSubnetNetworkAddress sets value to SubnetNetworkAddress
+func (o *Interface) SetSubnetNetworkAddress(v string) {
+	o.SubnetNetworkAddress = v
+}
+
+// GetSubnetBandWidthMbps returns value of SubnetBandWidthMbps
+func (o *Interface) GetSubnetBandWidthMbps() int {
+	return o.SubnetBandWidthMbps
+}
+
+// SetSubnetBandWidthMbps sets value to SubnetBandWidthMbps
+func (o *Interface) SetSubnetBandWidthMbps(v int) {
+	o.SubnetBandWidthMbps = v
+}
+
+// GetPacketFilterID returns value of PacketFilterID
+func (o *Interface) GetPacketFilterID() string {
+	return o.PacketFilterID
+}
+
+// SetPacketFilterID sets value to PacketFilterID
+func (o *Interface) SetPacketFilterID(v string) {
+	o.PacketFilterID = v
+}
+
+// GetPacketFilterName returns value of PacketFilterName
+func (o *Interface) GetPacketFilterName() string {
+	return o.PacketFilterName
+}
+
+// SetPacketFilterName sets value to PacketFilterName
+func (o *Interface) SetPacketFilterName(v string) {
+	o.PacketFilterName = v
+}
+
+// GetPacketFilterRequiredHostVersion returns value of PacketFilterRequiredHostVersion
+func (o *Interface) GetPacketFilterRequiredHostVersion() int {
+	return o.PacketFilterRequiredHostVersion
+}
+
+// SetPacketFilterRequiredHostVersion sets value to PacketFilterRequiredHostVersion
+func (o *Interface) SetPacketFilterRequiredHostVersion(v int) {
+	o.PacketFilterRequiredHostVersion = v
+}
+
+// convertTo returns naked Interface
+func (o *Interface) convertTo() (*naked.Interface, error) {
+	dest := &naked.Interface{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked Interface
+func (o *Interface) convertFrom(naked *naked.Interface) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* ServerCreateRequest
+*************************************************/
+
+// ServerCreateRequest represents API parameter/response structure
+type ServerCreateRequest struct {
+	CPU                  int                `mapconv:"ServerPlan.CPU"`
+	MemoryMB             int                `mapconv:"ServerPlan.MemoryMB"`
+	ServerPlanGeneration int                `mapconv:"ServerPlan.Generation"`
+	ConnectedSwitches    []*ConnectedSwitch `json:",omitempty" mapconv:",recursive"`
+	InterfaceDriver      types.EInterfaceDriver
+	HostName             string
+	Name                 string `validate:"required"`
+	Description          string `validate:"min=0,max=512"`
+	Tags                 []string
+	IconID               types.ID `mapconv:"Icon.ID"`
+	WaitDiskMigration    bool     `json:",omitempty" mapconv:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *ServerCreateRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetCPU returns value of CPU
+func (o *ServerCreateRequest) GetCPU() int {
+	return o.CPU
+}
+
+// SetCPU sets value to CPU
+func (o *ServerCreateRequest) SetCPU(v int) {
+	o.CPU = v
+}
+
+// GetMemoryMB returns value of MemoryMB
+func (o *ServerCreateRequest) GetMemoryMB() int {
+	return o.MemoryMB
+}
+
+// SetMemoryMB sets value to MemoryMB
+func (o *ServerCreateRequest) SetMemoryMB(v int) {
+	o.MemoryMB = v
+}
+
+// GetMemoryGB gets value to MemoryGB
+func (o *ServerCreateRequest) GetMemoryGB() int {
+	return getMemoryGB(o)
+}
+
+// SetMemoryGB sets value to MemoryGB
+func (o *ServerCreateRequest) SetMemoryGB(v int) {
+	setMemoryGB(o, v)
+}
+
+// GetServerPlanGeneration returns value of ServerPlanGeneration
+func (o *ServerCreateRequest) GetServerPlanGeneration() int {
+	return o.ServerPlanGeneration
+}
+
+// SetServerPlanGeneration sets value to ServerPlanGeneration
+func (o *ServerCreateRequest) SetServerPlanGeneration(v int) {
+	o.ServerPlanGeneration = v
+}
+
+// GetConnectedSwitches returns value of ConnectedSwitches
+func (o *ServerCreateRequest) GetConnectedSwitches() []*ConnectedSwitch {
+	return o.ConnectedSwitches
+}
+
+// SetConnectedSwitches sets value to ConnectedSwitches
+func (o *ServerCreateRequest) SetConnectedSwitches(v []*ConnectedSwitch) {
+	o.ConnectedSwitches = v
+}
+
+// GetInterfaceDriver returns value of InterfaceDriver
+func (o *ServerCreateRequest) GetInterfaceDriver() types.EInterfaceDriver {
+	return o.InterfaceDriver
+}
+
+// SetInterfaceDriver sets value to InterfaceDriver
+func (o *ServerCreateRequest) SetInterfaceDriver(v types.EInterfaceDriver) {
+	o.InterfaceDriver = v
+}
+
+// GetHostName returns value of HostName
+func (o *ServerCreateRequest) GetHostName() string {
+	return o.HostName
+}
+
+// SetHostName sets value to HostName
+func (o *ServerCreateRequest) SetHostName(v string) {
+	o.HostName = v
+}
+
+// GetName returns value of Name
+func (o *ServerCreateRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *ServerCreateRequest) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *ServerCreateRequest) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *ServerCreateRequest) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetTags returns value of Tags
+func (o *ServerCreateRequest) GetTags() []string {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *ServerCreateRequest) SetTags(v []string) {
+	o.Tags = v
+}
+
+// GetIconID returns value of IconID
+func (o *ServerCreateRequest) GetIconID() types.ID {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *ServerCreateRequest) SetIconID(v types.ID) {
+	o.IconID = v
+}
+
+// GetWaitDiskMigration returns value of WaitDiskMigration
+func (o *ServerCreateRequest) GetWaitDiskMigration() bool {
+	return o.WaitDiskMigration
+}
+
+// SetWaitDiskMigration sets value to WaitDiskMigration
+func (o *ServerCreateRequest) SetWaitDiskMigration(v bool) {
+	o.WaitDiskMigration = v
+}
+
+// convertTo returns naked ServerCreateRequest
+func (o *ServerCreateRequest) convertTo() (*naked.Server, error) {
+	dest := &naked.Server{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked ServerCreateRequest
+func (o *ServerCreateRequest) convertFrom(naked *naked.Server) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* ConnectedSwitch
+*************************************************/
+
+// ConnectedSwitch represents API parameter/response structure
+type ConnectedSwitch struct {
+	ID    types.ID
+	Scope types.EScope
+}
+
+// Validate validates by field tags
+func (o *ConnectedSwitch) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetID returns value of ID
+func (o *ConnectedSwitch) GetID() types.ID {
+	return o.ID
+}
+
+// SetID sets value to ID
+func (o *ConnectedSwitch) SetID(v types.ID) {
+	o.ID = v
+}
+
+// GetStringID gets value to StringID
+func (o *ConnectedSwitch) GetStringID() string {
+	return getStringID(o)
+}
+
+// SetStringID sets value to StringID
+func (o *ConnectedSwitch) SetStringID(v string) {
+	setStringID(o, v)
+}
+
+// GetInt64ID gets value to Int64ID
+func (o *ConnectedSwitch) GetInt64ID() int64 {
+	return getInt64ID(o)
+}
+
+// SetInt64ID sets value to Int64ID
+func (o *ConnectedSwitch) SetInt64ID(v int64) {
+	setInt64ID(o, v)
+}
+
+// GetScope returns value of Scope
+func (o *ConnectedSwitch) GetScope() types.EScope {
+	return o.Scope
+}
+
+// SetScope sets value to Scope
+func (o *ConnectedSwitch) SetScope(v types.EScope) {
+	o.Scope = v
+}
+
+// convertTo returns naked ConnectedSwitch
+func (o *ConnectedSwitch) convertTo() (*naked.ConnectedSwitch, error) {
+	dest := &naked.ConnectedSwitch{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked ConnectedSwitch
+func (o *ConnectedSwitch) convertFrom(naked *naked.ConnectedSwitch) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* ServerUpdateRequest
+*************************************************/
+
+// ServerUpdateRequest represents API parameter/response structure
+type ServerUpdateRequest struct {
+	Name        string `validate:"required"`
+	Description string `validate:"min=0,max=512"`
+	Tags        []string
+	IconID      types.ID `mapconv:"Icon.ID"`
+}
+
+// Validate validates by field tags
+func (o *ServerUpdateRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetName returns value of Name
+func (o *ServerUpdateRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *ServerUpdateRequest) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *ServerUpdateRequest) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *ServerUpdateRequest) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetTags returns value of Tags
+func (o *ServerUpdateRequest) GetTags() []string {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *ServerUpdateRequest) SetTags(v []string) {
+	o.Tags = v
+}
+
+// GetIconID returns value of IconID
+func (o *ServerUpdateRequest) GetIconID() types.ID {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *ServerUpdateRequest) SetIconID(v types.ID) {
+	o.IconID = v
+}
+
+// convertTo returns naked ServerUpdateRequest
+func (o *ServerUpdateRequest) convertTo() (*naked.Server, error) {
+	dest := &naked.Server{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked ServerUpdateRequest
+func (o *ServerUpdateRequest) convertFrom(naked *naked.Server) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
 * Switch
 *************************************************/
 

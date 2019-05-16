@@ -33,6 +33,8 @@ var (
 	TypeAvailability = Static(types.EAvailability(""))
 	// TypeInstanceStatus インスタンスステータス
 	TypeInstanceStatus = Static(types.EServerInstanceStatus(""))
+	// TypeInterfaceDriver インターフェースドライバ
+	TypeInterfaceDriver = Static(types.EInterfaceDriver(""))
 	// TypeScope スコープ
 	TypeScope = Static(types.EScope(""))
 	// TypeDiskConnection ディスク接続方法
