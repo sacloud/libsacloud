@@ -50,6 +50,24 @@ func TestServerBuilder_DisklessDefaults(t *testing.T) {
 	assert.Equal(t, builder.GetServerName(), serverBuilderTestServerName)        // サーバー名
 	assert.Equal(t, builder.GetCore(), 1)                                        // コア数 : デフォルト1
 	assert.Equal(t, builder.GetMemory(), 1)                                      // メモリ : デフォルト1GB
+	assert.Equal(t, builder.GetCommitment(), sacloud.ECommitmentStandard)        // コミットメント: デフォルト standard
+	assert.Equal(t, builder.GetInterfaceDriver(), sacloud.InterfaceDriverVirtIO) // 準仮想化モード(@virtio-net-pci) : デフォルト有効
+
+}
+
+func TestServerBuilder_DisklessDedicatedCPU(t *testing.T) {
+	defer initServers()()
+
+	builder := ServerDiskless(NewAPIClient(client), serverBuilderTestServerName)
+
+	builder.SetCore(2)
+	builder.SetMemory(4)
+	builder.SetCommitment("dedicatedcpu")
+
+	assert.Equal(t, builder.GetServerName(), serverBuilderTestServerName)        // サーバー名
+	assert.Equal(t, builder.GetCore(), 2)                                        // コア数 : デフォルト1
+	assert.Equal(t, builder.GetMemory(), 4)                                      // メモリ : デフォルト1GB
+	assert.Equal(t, builder.GetCommitment(), sacloud.ECommitmentDedicatedCPU)    // コミットメント: デフォルト standard
 	assert.Equal(t, builder.GetInterfaceDriver(), sacloud.InterfaceDriverVirtIO) // 準仮想化モード(@virtio-net-pci) : デフォルト有効
 
 }

@@ -18,6 +18,7 @@ type serverBuilder struct {
 	serverName      string
 	core            int
 	memory          int
+	commitment      sacloud.ECommitment
 	interfaceDriver sacloud.EInterfaceDriver
 	description     string
 	iconID          int64
@@ -72,6 +73,7 @@ func newServerBuilder(client APIClient, serverName string) *serverBuilder {
 		serverName:         serverName,
 		core:               DefaultCore,
 		memory:             DefaultMemory,
+		commitment:         sacloud.ECommitmentStandard,
 		interfaceDriver:    DefaultInterfaceDriver,
 		description:        DefaultDescription,
 		iconID:             DefaultIconID,
@@ -179,7 +181,7 @@ func (b *serverBuilder) buildServerParams() error {
 	b.callEventHandlerIfExists(ServerBuildOnSetPlanBefore)
 
 	// plan
-	plan, err := b.client.ServerPlanGetBySpec(b.core, b.memory, sacloud.PlanDefault)
+	plan, err := b.client.ServerPlanGetBySpec(b.core, b.memory, sacloud.PlanDefault, b.commitment)
 	if err != nil {
 		err = fmt.Errorf("Error building server parameters : setting plan / [%s]", err)
 		return err
@@ -384,6 +386,16 @@ func (b *serverBuilder) GetMemory() int {
 // SetMemory メモリサイズ(GB単位) 設定
 func (b *serverBuilder) SetMemory(memory int) {
 	b.memory = memory
+}
+
+// GetCommitment サーバプランCPUコミットメント 取得
+func (b *serverBuilder) GetCommitment() sacloud.ECommitment {
+	return b.commitment
+}
+
+// SetCommitment サーバプランCPUコミットメント 設定
+func (b *serverBuilder) SetCommitment(commitment sacloud.ECommitment) {
+	b.commitment = commitment
 }
 
 // GetInterfaceDriver インターフェースドライバ 取得
