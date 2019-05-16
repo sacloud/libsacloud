@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/sacloud/libsacloud-v2/sacloud/types"
+	"github.com/stretchr/testify/require"
 )
 
 func TestServerOpCRUD(t *testing.T) {
@@ -150,4 +151,47 @@ func testServerUpdate(testContext *CRUDTestContext, caller APICaller) (interface
 func testServerDelete(testContext *CRUDTestContext, caller APICaller) error {
 	client := NewServerOp(caller)
 	return client.Delete(context.Background(), testZone, testContext.ID)
+}
+
+func TestServerOP_ChangePlan(t *testing.T) {
+	if !isAccTest() {
+		t.Skip("TESTACC is not set. skip")
+	}
+
+	client := NewServerOp(singletonAPICaller())
+	ctx := context.Background()
+	server, err := client.Create(ctx, testZone, &ServerCreateRequest{
+		CPU:      1,
+		MemoryMB: 1 * 1024,
+		ConnectedSwitches: []*ConnectedSwitch{
+			{
+				Scope: types.Scopes.Shared,
+			},
+		},
+		InterfaceDriver:   types.InterfaceDrivers.VirtIO,
+		HostName:          "libsacloud-v2-server",
+		Name:              "libsacloud-v2-server",
+		Description:       "desc",
+		Tags:              []string{"tag1", "tag2"},
+		WaitDiskMigration: false,
+	})
+	require.NoError(t, err)
+
+	require.Equal(t, server.CPU, 1)
+	require.Equal(t, server.GetMemoryGB(), 1)
+
+	// change
+	newServer, err := client.ChangePlan(ctx, testZone, server.ID, &ServerChangePlanRequest{
+		CPU:      2,
+		MemoryMB: 4 * 1024,
+	})
+
+	require.NoError(t, err)
+	require.Equal(t, 2, newServer.CPU)
+	require.Equal(t, 4, newServer.GetMemoryGB())
+	require.NotEqual(t, server.ID, newServer.ID)
+
+	// cleanup
+	err = client.Delete(ctx, testZone, newServer.ID)
+	require.NoError(t, err)
 }

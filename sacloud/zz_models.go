@@ -4299,7 +4299,7 @@ type Server struct {
 	CPU                     int                         `mapconv:"ServerPlan.CPU"`
 	MemoryMB                int                         `mapconv:"ServerPlan.MemoryMB"`
 	ServerPlanCommitment    string                      `mapconv:"ServerPlan.Commitment"`
-	ServerPlanGeneration    int                         `mapconv:"ServerPlan.Generation"`
+	ServerPlanGeneration    types.EPlanGeneration       `mapconv:"ServerPlan.Generation"`
 	Zone                    *naked.Zone                 `json:",omitempty"`
 	InstanceHostName        string                      `mapconv:"Instance.Host.Name"`
 	InstanceHostInfoURL     string                      `mapconv:"Instance.Host.InfoURL"`
@@ -4475,12 +4475,12 @@ func (o *Server) SetServerPlanCommitment(v string) {
 }
 
 // GetServerPlanGeneration returns value of ServerPlanGeneration
-func (o *Server) GetServerPlanGeneration() int {
+func (o *Server) GetServerPlanGeneration() types.EPlanGeneration {
 	return o.ServerPlanGeneration
 }
 
 // SetServerPlanGeneration sets value to ServerPlanGeneration
-func (o *Server) SetServerPlanGeneration(v int) {
+func (o *Server) SetServerPlanGeneration(v types.EPlanGeneration) {
 	o.ServerPlanGeneration = v
 }
 
@@ -4869,10 +4869,10 @@ func (o *Interface) convertFrom(naked *naked.Interface) error {
 
 // ServerCreateRequest represents API parameter/response structure
 type ServerCreateRequest struct {
-	CPU                  int                `mapconv:"ServerPlan.CPU"`
-	MemoryMB             int                `mapconv:"ServerPlan.MemoryMB"`
-	ServerPlanGeneration int                `mapconv:"ServerPlan.Generation"`
-	ConnectedSwitches    []*ConnectedSwitch `json:",omitempty" mapconv:",recursive"`
+	CPU                  int                   `mapconv:"ServerPlan.CPU"`
+	MemoryMB             int                   `mapconv:"ServerPlan.MemoryMB"`
+	ServerPlanGeneration types.EPlanGeneration `mapconv:"ServerPlan.Generation"`
+	ConnectedSwitches    []*ConnectedSwitch    `json:",omitempty" mapconv:",recursive"`
 	InterfaceDriver      types.EInterfaceDriver
 	HostName             string
 	Name                 string `validate:"required"`
@@ -4918,12 +4918,12 @@ func (o *ServerCreateRequest) SetMemoryGB(v int) {
 }
 
 // GetServerPlanGeneration returns value of ServerPlanGeneration
-func (o *ServerCreateRequest) GetServerPlanGeneration() int {
+func (o *ServerCreateRequest) GetServerPlanGeneration() types.EPlanGeneration {
 	return o.ServerPlanGeneration
 }
 
 // SetServerPlanGeneration sets value to ServerPlanGeneration
-func (o *ServerCreateRequest) SetServerPlanGeneration(v int) {
+func (o *ServerCreateRequest) SetServerPlanGeneration(v types.EPlanGeneration) {
 	o.ServerPlanGeneration = v
 }
 
@@ -5152,6 +5152,74 @@ func (o *ServerUpdateRequest) convertTo() (*naked.Server, error) {
 
 // convertFrom parse values from naked ServerUpdateRequest
 func (o *ServerUpdateRequest) convertFrom(naked *naked.Server) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* ServerChangePlanRequest
+*************************************************/
+
+// ServerChangePlanRequest represents API parameter/response structure
+type ServerChangePlanRequest struct {
+	CPU                  int
+	MemoryMB             int
+	ServerPlanGeneration types.EPlanGeneration
+}
+
+// Validate validates by field tags
+func (o *ServerChangePlanRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetCPU returns value of CPU
+func (o *ServerChangePlanRequest) GetCPU() int {
+	return o.CPU
+}
+
+// SetCPU sets value to CPU
+func (o *ServerChangePlanRequest) SetCPU(v int) {
+	o.CPU = v
+}
+
+// GetMemoryMB returns value of MemoryMB
+func (o *ServerChangePlanRequest) GetMemoryMB() int {
+	return o.MemoryMB
+}
+
+// SetMemoryMB sets value to MemoryMB
+func (o *ServerChangePlanRequest) SetMemoryMB(v int) {
+	o.MemoryMB = v
+}
+
+// GetMemoryGB gets value to MemoryGB
+func (o *ServerChangePlanRequest) GetMemoryGB() int {
+	return getMemoryGB(o)
+}
+
+// SetMemoryGB sets value to MemoryGB
+func (o *ServerChangePlanRequest) SetMemoryGB(v int) {
+	setMemoryGB(o, v)
+}
+
+// GetServerPlanGeneration returns value of ServerPlanGeneration
+func (o *ServerChangePlanRequest) GetServerPlanGeneration() types.EPlanGeneration {
+	return o.ServerPlanGeneration
+}
+
+// SetServerPlanGeneration sets value to ServerPlanGeneration
+func (o *ServerChangePlanRequest) SetServerPlanGeneration(v types.EPlanGeneration) {
+	o.ServerPlanGeneration = v
+}
+
+// convertTo returns naked ServerChangePlanRequest
+func (o *ServerChangePlanRequest) convertTo() (*naked.ServerPlan, error) {
+	dest := &naked.ServerPlan{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked ServerChangePlanRequest
+func (o *ServerChangePlanRequest) convertFrom(naked *naked.ServerPlan) error {
 	return mapconv.ConvertFrom(naked, o)
 }
 

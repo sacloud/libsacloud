@@ -807,6 +807,16 @@ func (t *ServerTracer) Delete(ctx context.Context, zone string, id types.ID) err
 	return t.Internal.Delete(ctx, zone, id)
 }
 
+// ChangePlan is API call with trace log
+func (t *ServerTracer) ChangePlan(ctx context.Context, zone string, id types.ID, plan *ServerChangePlanRequest) (*Server, error) {
+	log.Println("[TRACE] ServerTracer.ChangePlan start:	args => [", "zone=", zone, "id=", id, "plan=", plan, "]")
+	defer func() {
+		log.Println("[TRACE] ServerTracer.ChangePlan: end")
+	}()
+
+	return t.Internal.ChangePlan(ctx, zone, id, plan)
+}
+
 // Boot is API call with trace log
 func (t *ServerTracer) Boot(ctx context.Context, zone string, id types.ID) error {
 	log.Println("[TRACE] ServerTracer.Boot start:	args => [", "zone=", zone, "id=", id, "]")
