@@ -9,7 +9,7 @@ import (
 )
 
 func TestNoteOpCRUD(t *testing.T) {
-	Test(t, &CRUDTestCase{
+	Run(t, &CRUDTestCase{
 		Parallel: true,
 
 		SetupAPICaller: singletonAPICaller,
