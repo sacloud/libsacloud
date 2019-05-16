@@ -1,6 +1,8 @@
 package define
 
 import (
+	"net/http"
+
 	"github.com/sacloud/libsacloud-v2/internal/schema"
 	"github.com/sacloud/libsacloud-v2/internal/schema/meta"
 	"github.com/sacloud/libsacloud-v2/sacloud/naked"
@@ -10,6 +12,7 @@ func init() {
 	nakedServer := meta.Static(naked.Server{})
 
 	server := &schema.Model{
+		Name: "Server",
 		Fields: []*schema.FieldDesc{
 			fields.ID(),
 			fields.Name(),
@@ -125,6 +128,16 @@ func init() {
 		},
 	}
 
+	changePlanParam := &schema.Model{
+		Name: "ServerChangePlanRequest",
+		Fields: []*schema.FieldDesc{
+			fields.CPU(),
+			fields.MemoryMB(),
+			fields.Generation(),
+		},
+		NakedType: meta.Static(naked.ServerPlan{}),
+	}
+
 	Resources.DefineWith("Server", func(r *schema.Resource) {
 		r.Operations(
 			// find
@@ -141,6 +154,18 @@ func init() {
 
 			// delete
 			r.DefineOperationDelete(),
+
+			// change plan
+			r.DefineOperation("ChangePlan").
+				Method(http.MethodPut).
+				PathFormat(schema.IDAndSuffixPathFormat("plan")).
+				Argument(schema.ArgumentZone).
+				Argument(schema.ArgumentID).
+				PassthroughModelArgumentWithEnvelope("plan", changePlanParam).
+				ResultFromEnvelope(server, &schema.EnvelopePayloadDesc{
+					PayloadName: server.Name,
+					PayloadType: meta.Static(naked.Server{}),
+				}),
 
 			// power management(boot/shutdown/reset)
 			r.DefineOperationBoot(),

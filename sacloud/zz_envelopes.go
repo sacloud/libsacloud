@@ -635,6 +635,21 @@ type ServerUpdateResponseEnvelope struct {
 	Server *naked.Server `json:",omitempty"`
 }
 
+// ServerChangePlanRequestEnvelope is envelop of API request
+type ServerChangePlanRequestEnvelope struct {
+	CPU                  int                   `json:",omitempty"`
+	MemoryMB             int                   `json:",omitempty"`
+	ServerPlanGeneration types.EPlanGeneration `json:",omitempty"`
+}
+
+// ServerChangePlanResponseEnvelope is envelop of API response
+type ServerChangePlanResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Server *naked.Server `json:",omitempty"`
+}
+
 // ServerShutdownRequestEnvelope is envelop of API request
 type ServerShutdownRequestEnvelope struct {
 	Force bool `json:",omitempty"`

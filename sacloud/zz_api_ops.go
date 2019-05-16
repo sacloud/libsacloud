@@ -2861,6 +2861,52 @@ func (o *ServerOp) Delete(ctx context.Context, zone string, id types.ID) error {
 	return nil
 }
 
+// ChangePlan is API call
+func (o *ServerOp) ChangePlan(ctx context.Context, zone string, id types.ID, plan *ServerChangePlanRequest) (*Server, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/plan", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+		"plan":       plan,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+	{
+		if plan == nil {
+			plan = &ServerChangePlanRequest{}
+		}
+		if body == nil {
+			body = &ServerChangePlanRequestEnvelope{}
+		}
+		v := body.(*ServerChangePlanRequestEnvelope)
+		if err := mapconv.ConvertTo(plan, v); err != nil {
+			return nil, err
+		}
+		body = v
+	}
+
+	data, err := o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &ServerChangePlanResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	payload0 := &Server{}
+	if err := payload0.convertFrom(nakedResponse.Server); err != nil {
+		return nil, err
+	}
+	return payload0, nil
+}
+
 // Boot is API call
 func (o *ServerOp) Boot(ctx context.Context, zone string, id types.ID) error {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/power", map[string]interface{}{

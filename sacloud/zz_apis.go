@@ -137,6 +137,7 @@ type ServerAPI interface {
 	Read(ctx context.Context, zone string, id types.ID) (*Server, error)
 	Update(ctx context.Context, zone string, id types.ID, param *ServerUpdateRequest) (*Server, error)
 	Delete(ctx context.Context, zone string, id types.ID) error
+	ChangePlan(ctx context.Context, zone string, id types.ID, plan *ServerChangePlanRequest) (*Server, error)
 	Boot(ctx context.Context, zone string, id types.ID) error
 	Shutdown(ctx context.Context, zone string, id types.ID, shutdownOption *ShutdownOption) error
 	Reset(ctx context.Context, zone string, id types.ID) error

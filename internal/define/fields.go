@@ -74,6 +74,35 @@ func (f *fieldsDef) DiskPlanStorageClass() *schema.FieldDesc {
 	}
 }
 
+// TODO CPUとServerPlanCPUのようにmapconvのタグだけ違う値をどう扱うか
+
+func (f *fieldsDef) CPU() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "CPU",
+		Type: meta.TypeInt,
+	}
+}
+
+func (f *fieldsDef) MemoryMB() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "MemoryMB",
+		Type: meta.TypeInt,
+		ExtendAccessors: []*schema.ExtendAccessor{
+			{
+				Name: "MemoryGB",
+				Type: meta.TypeInt,
+			},
+		},
+	}
+}
+
+func (f *fieldsDef) Generation() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "ServerPlanGeneration",
+		Type: meta.TypePlanGeneration,
+	}
+}
+
 func (f *fieldsDef) ServerPlanID() *schema.FieldDesc {
 	return &schema.FieldDesc{
 		Name: "ServerPlanID",
@@ -123,7 +152,7 @@ func (f *fieldsDef) ServerPlanMemoryMB() *schema.FieldDesc {
 func (f *fieldsDef) ServerPlanGeneration() *schema.FieldDesc {
 	return &schema.FieldDesc{
 		Name: "ServerPlanGeneration",
-		Type: meta.TypeInt,
+		Type: meta.TypePlanGeneration,
 		Tags: &schema.FieldTags{
 			MapConv: "ServerPlan.Generation",
 		},
