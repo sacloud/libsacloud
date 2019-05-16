@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestFindZone(t *testing.T) {
+func TestZoneOp_Find(t *testing.T) {
 	if !isAccTest() {
 		t.Skip("TESTACC is not set. skip")
 	}

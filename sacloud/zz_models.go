@@ -5224,6 +5224,149 @@ func (o *ServerChangePlanRequest) convertFrom(naked *naked.ServerPlan) error {
 }
 
 /*************************************************
+* InsertCDROMRequest
+*************************************************/
+
+// InsertCDROMRequest represents API parameter/response structure
+type InsertCDROMRequest struct {
+	ID types.ID
+}
+
+// Validate validates by field tags
+func (o *InsertCDROMRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetID returns value of ID
+func (o *InsertCDROMRequest) GetID() types.ID {
+	return o.ID
+}
+
+// SetID sets value to ID
+func (o *InsertCDROMRequest) SetID(v types.ID) {
+	o.ID = v
+}
+
+// GetStringID gets value to StringID
+func (o *InsertCDROMRequest) GetStringID() string {
+	return getStringID(o)
+}
+
+// SetStringID sets value to StringID
+func (o *InsertCDROMRequest) SetStringID(v string) {
+	setStringID(o, v)
+}
+
+// GetInt64ID gets value to Int64ID
+func (o *InsertCDROMRequest) GetInt64ID() int64 {
+	return getInt64ID(o)
+}
+
+// SetInt64ID sets value to Int64ID
+func (o *InsertCDROMRequest) SetInt64ID(v int64) {
+	setInt64ID(o, v)
+}
+
+// convertTo returns naked InsertCDROMRequest
+func (o *InsertCDROMRequest) convertTo() (*naked.CDROM, error) {
+	dest := &naked.CDROM{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked InsertCDROMRequest
+func (o *InsertCDROMRequest) convertFrom(naked *naked.CDROM) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* EjectCDROMRequest
+*************************************************/
+
+// EjectCDROMRequest represents API parameter/response structure
+type EjectCDROMRequest struct {
+	ID types.ID
+}
+
+// Validate validates by field tags
+func (o *EjectCDROMRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetID returns value of ID
+func (o *EjectCDROMRequest) GetID() types.ID {
+	return o.ID
+}
+
+// SetID sets value to ID
+func (o *EjectCDROMRequest) SetID(v types.ID) {
+	o.ID = v
+}
+
+// GetStringID gets value to StringID
+func (o *EjectCDROMRequest) GetStringID() string {
+	return getStringID(o)
+}
+
+// SetStringID sets value to StringID
+func (o *EjectCDROMRequest) SetStringID(v string) {
+	setStringID(o, v)
+}
+
+// GetInt64ID gets value to Int64ID
+func (o *EjectCDROMRequest) GetInt64ID() int64 {
+	return getInt64ID(o)
+}
+
+// SetInt64ID sets value to Int64ID
+func (o *EjectCDROMRequest) SetInt64ID(v int64) {
+	setInt64ID(o, v)
+}
+
+// convertTo returns naked EjectCDROMRequest
+func (o *EjectCDROMRequest) convertTo() (*naked.CDROM, error) {
+	dest := &naked.CDROM{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked EjectCDROMRequest
+func (o *EjectCDROMRequest) convertFrom(naked *naked.CDROM) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* CPUTimeActivity
+*************************************************/
+
+// CPUTimeActivity represents API parameter/response structure
+type CPUTimeActivity struct {
+	Values []naked.MonitorCPUTimeValue `mapconv:"CPU"`
+}
+
+// Validate validates by field tags
+func (o *CPUTimeActivity) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetValues returns value of Values
+func (o *CPUTimeActivity) GetValues() []naked.MonitorCPUTimeValue {
+	return o.Values
+}
+
+// convertTo returns naked CPUTimeActivity
+func (o *CPUTimeActivity) convertTo() (*naked.MonitorValues, error) {
+	dest := &naked.MonitorValues{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked CPUTimeActivity
+func (o *CPUTimeActivity) convertFrom(naked *naked.MonitorValues) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
 * Switch
 *************************************************/
 

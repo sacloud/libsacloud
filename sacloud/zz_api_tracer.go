@@ -817,6 +817,26 @@ func (t *ServerTracer) ChangePlan(ctx context.Context, zone string, id types.ID,
 	return t.Internal.ChangePlan(ctx, zone, id, plan)
 }
 
+// InsertCDROM is API call with trace log
+func (t *ServerTracer) InsertCDROM(ctx context.Context, zone string, id types.ID, insertParam *InsertCDROMRequest) error {
+	log.Println("[TRACE] ServerTracer.InsertCDROM start:	args => [", "zone=", zone, "id=", id, "insertParam=", insertParam, "]")
+	defer func() {
+		log.Println("[TRACE] ServerTracer.InsertCDROM: end")
+	}()
+
+	return t.Internal.InsertCDROM(ctx, zone, id, insertParam)
+}
+
+// EjectCDROM is API call with trace log
+func (t *ServerTracer) EjectCDROM(ctx context.Context, zone string, id types.ID, insertParam *EjectCDROMRequest) error {
+	log.Println("[TRACE] ServerTracer.EjectCDROM start:	args => [", "zone=", zone, "id=", id, "insertParam=", insertParam, "]")
+	defer func() {
+		log.Println("[TRACE] ServerTracer.EjectCDROM: end")
+	}()
+
+	return t.Internal.EjectCDROM(ctx, zone, id, insertParam)
+}
+
 // Boot is API call with trace log
 func (t *ServerTracer) Boot(ctx context.Context, zone string, id types.ID) error {
 	log.Println("[TRACE] ServerTracer.Boot start:	args => [", "zone=", zone, "id=", id, "]")
@@ -845,6 +865,16 @@ func (t *ServerTracer) Reset(ctx context.Context, zone string, id types.ID) erro
 	}()
 
 	return t.Internal.Reset(ctx, zone, id)
+}
+
+// Monitor is API call with trace log
+func (t *ServerTracer) Monitor(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*CPUTimeActivity, error) {
+	log.Println("[TRACE] ServerTracer.Monitor start:	args => [", "zone=", zone, "id=", id, "condition=", condition, "]")
+	defer func() {
+		log.Println("[TRACE] ServerTracer.Monitor: end")
+	}()
+
+	return t.Internal.Monitor(ctx, zone, id, condition)
 }
 
 /*************************************************
