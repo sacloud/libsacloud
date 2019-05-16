@@ -103,6 +103,16 @@ func (f *fieldsDef) Generation() *schema.FieldDesc {
 	}
 }
 
+func (f *fieldsDef) Commitment() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "ServerPlanCommitment",
+		Tags: &schema.FieldTags{
+			MapConv: "Commitment,default=standard",
+		},
+		Type: meta.TypeCommitment,
+	}
+}
+
 func (f *fieldsDef) ServerPlanID() *schema.FieldDesc {
 	return &schema.FieldDesc{
 		Name: "ServerPlanID",
@@ -163,9 +173,9 @@ func (f *fieldsDef) ServerPlanCommitment() *schema.FieldDesc {
 	return &schema.FieldDesc{
 		Name: "ServerPlanCommitment",
 		Tags: &schema.FieldTags{
-			MapConv: "ServerPlan.Commitment",
+			MapConv: "ServerPlan.Commitment,default=standard",
 		},
-		Type: meta.TypeString,
+		Type: meta.TypeCommitment,
 	}
 }
 

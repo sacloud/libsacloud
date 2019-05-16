@@ -640,6 +640,7 @@ type ServerChangePlanRequestEnvelope struct {
 	CPU                  int                   `json:",omitempty"`
 	MemoryMB             int                   `json:",omitempty"`
 	ServerPlanGeneration types.EPlanGeneration `json:",omitempty"`
+	ServerPlanCommitment types.ECommitment     `json:",omitempty"`
 }
 
 // ServerChangePlanResponseEnvelope is envelop of API response
