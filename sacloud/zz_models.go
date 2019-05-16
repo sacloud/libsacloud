@@ -4298,7 +4298,7 @@ type Server struct {
 	ServerPlanName          string                      `mapconv:"ServerPlan.Name"`
 	CPU                     int                         `mapconv:"ServerPlan.CPU"`
 	MemoryMB                int                         `mapconv:"ServerPlan.MemoryMB"`
-	ServerPlanCommitment    string                      `mapconv:"ServerPlan.Commitment"`
+	ServerPlanCommitment    types.ECommitment           `mapconv:"ServerPlan.Commitment,default=standard"`
 	ServerPlanGeneration    types.EPlanGeneration       `mapconv:"ServerPlan.Generation"`
 	Zone                    *naked.Zone                 `json:",omitempty"`
 	InstanceHostName        string                      `mapconv:"Instance.Host.Name"`
@@ -4465,12 +4465,12 @@ func (o *Server) SetMemoryGB(v int) {
 }
 
 // GetServerPlanCommitment returns value of ServerPlanCommitment
-func (o *Server) GetServerPlanCommitment() string {
+func (o *Server) GetServerPlanCommitment() types.ECommitment {
 	return o.ServerPlanCommitment
 }
 
 // SetServerPlanCommitment sets value to ServerPlanCommitment
-func (o *Server) SetServerPlanCommitment(v string) {
+func (o *Server) SetServerPlanCommitment(v types.ECommitment) {
 	o.ServerPlanCommitment = v
 }
 
@@ -4871,6 +4871,7 @@ func (o *Interface) convertFrom(naked *naked.Interface) error {
 type ServerCreateRequest struct {
 	CPU                  int                   `mapconv:"ServerPlan.CPU"`
 	MemoryMB             int                   `mapconv:"ServerPlan.MemoryMB"`
+	ServerPlanCommitment types.ECommitment     `mapconv:"ServerPlan.Commitment,default=standard"`
 	ServerPlanGeneration types.EPlanGeneration `mapconv:"ServerPlan.Generation"`
 	ConnectedSwitches    []*ConnectedSwitch    `json:",omitempty" mapconv:",recursive"`
 	InterfaceDriver      types.EInterfaceDriver
@@ -4915,6 +4916,16 @@ func (o *ServerCreateRequest) GetMemoryGB() int {
 // SetMemoryGB sets value to MemoryGB
 func (o *ServerCreateRequest) SetMemoryGB(v int) {
 	setMemoryGB(o, v)
+}
+
+// GetServerPlanCommitment returns value of ServerPlanCommitment
+func (o *ServerCreateRequest) GetServerPlanCommitment() types.ECommitment {
+	return o.ServerPlanCommitment
+}
+
+// SetServerPlanCommitment sets value to ServerPlanCommitment
+func (o *ServerCreateRequest) SetServerPlanCommitment(v types.ECommitment) {
+	o.ServerPlanCommitment = v
 }
 
 // GetServerPlanGeneration returns value of ServerPlanGeneration
@@ -5164,6 +5175,7 @@ type ServerChangePlanRequest struct {
 	CPU                  int
 	MemoryMB             int
 	ServerPlanGeneration types.EPlanGeneration
+	ServerPlanCommitment types.ECommitment `mapconv:"ServerPlan.Commitment,default=standard"`
 }
 
 // Validate validates by field tags
@@ -5209,6 +5221,16 @@ func (o *ServerChangePlanRequest) GetServerPlanGeneration() types.EPlanGeneratio
 // SetServerPlanGeneration sets value to ServerPlanGeneration
 func (o *ServerChangePlanRequest) SetServerPlanGeneration(v types.EPlanGeneration) {
 	o.ServerPlanGeneration = v
+}
+
+// GetServerPlanCommitment returns value of ServerPlanCommitment
+func (o *ServerChangePlanRequest) GetServerPlanCommitment() types.ECommitment {
+	return o.ServerPlanCommitment
+}
+
+// SetServerPlanCommitment sets value to ServerPlanCommitment
+func (o *ServerChangePlanRequest) SetServerPlanCommitment(v types.ECommitment) {
+	o.ServerPlanCommitment = v
 }
 
 // convertTo returns naked ServerChangePlanRequest

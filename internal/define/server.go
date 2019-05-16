@@ -85,6 +85,7 @@ func init() {
 			// server plan
 			fields.ServerPlanCPU(),
 			fields.ServerPlanMemoryMB(),
+			fields.ServerPlanCommitment(),
 			fields.ServerPlanGeneration(),
 			{
 				Name: "ConnectedSwitches",
@@ -134,6 +135,7 @@ func init() {
 			fields.CPU(),
 			fields.MemoryMB(),
 			fields.Generation(),
+			fields.ServerPlanCommitment(),
 		},
 		NakedType: meta.Static(naked.ServerPlan{}),
 	}

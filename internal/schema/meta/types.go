@@ -32,6 +32,8 @@ var (
 
 	// TypeAvailability 有効状態
 	TypeAvailability = Static(types.EAvailability(""))
+	// TypeCommitment サーバプランCPUコミットメント
+	TypeCommitment = Static(types.ECommitment(""))
 	// TypePlanGeneration プラン世代
 	TypePlanGeneration = Static(types.EPlanGeneration(0))
 	// TypeInstanceStatus インスタンスステータス
