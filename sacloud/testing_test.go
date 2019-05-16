@@ -119,8 +119,8 @@ func (c *CRUDTestExpect) Prepare(actual interface{}) (interface{}, interface{}) 
 	return toMap(actual), toMap(c.ExpectValue)
 }
 
-// TestPreCheckEnvs 指定の環境変数が指定されていなかった場合にテストをスキップするためのFuncを返す
-func TestPreCheckEnvs(envs ...string) func(*testing.T) {
+// PreCheckEnvs 指定の環境変数が指定されていなかった場合にテストをスキップするためのFuncを返す
+func PreCheckEnvs(envs ...string) func(*testing.T) {
 	return func(t *testing.T) {
 		for _, env := range envs {
 			v := os.Getenv(env)
@@ -131,8 +131,8 @@ func TestPreCheckEnvs(envs ...string) func(*testing.T) {
 	}
 }
 
-// Test 任意の条件でCRUD操作をテストする
-func Test(t TestT, testCase *CRUDTestCase) {
+// Run 任意の条件でCRUD操作をテストする
+func Run(t TestT, testCase *CRUDTestCase) {
 	if !isAccTest() {
 		t.Skip("TESTACC is not set. skip")
 	}

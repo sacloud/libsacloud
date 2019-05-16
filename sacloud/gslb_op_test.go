@@ -8,7 +8,7 @@ import (
 )
 
 func TestGSLBOpCRUD(t *testing.T) {
-	Test(t, &CRUDTestCase{
+	Run(t, &CRUDTestCase{
 		Parallel: true,
 
 		SetupAPICaller: singletonAPICaller,

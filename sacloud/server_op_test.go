@@ -8,7 +8,7 @@ import (
 )
 
 func TestServerOpCRUD(t *testing.T) {
-	Test(t, &CRUDTestCase{
+	Run(t, &CRUDTestCase{
 		Parallel: true,
 
 		SetupAPICaller: singletonAPICaller,
