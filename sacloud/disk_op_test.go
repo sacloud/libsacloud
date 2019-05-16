@@ -115,7 +115,7 @@ func testDiskDelete(testContext *CRUDTestContext, caller APICaller) error {
 	return client.Delete(context.Background(), testZone, testContext.ID)
 }
 
-func TestDiskEdit(t *testing.T) {
+func TestDiskOp_Config(t *testing.T) {
 	if !isAccTest() {
 		t.Skip("TESTACC is not set. skip")
 	}

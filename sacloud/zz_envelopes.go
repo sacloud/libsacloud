@@ -650,9 +650,33 @@ type ServerChangePlanResponseEnvelope struct {
 	Server *naked.Server `json:",omitempty"`
 }
 
+// ServerInsertCDROMRequestEnvelope is envelop of API request
+type ServerInsertCDROMRequestEnvelope struct {
+	CDROM *naked.CDROM `json:",omitempty"`
+}
+
+// ServerEjectCDROMRequestEnvelope is envelop of API request
+type ServerEjectCDROMRequestEnvelope struct {
+	CDROM *naked.CDROM `json:",omitempty"`
+}
+
 // ServerShutdownRequestEnvelope is envelop of API request
 type ServerShutdownRequestEnvelope struct {
 	Force bool `json:",omitempty"`
+}
+
+// ServerMonitorRequestEnvelope is envelop of API request
+type ServerMonitorRequestEnvelope struct {
+	Start *time.Time `json:",omitempty"`
+	End   *time.Time `json:",omitempty"`
+}
+
+// ServerMonitorResponseEnvelope is envelop of API response
+type ServerMonitorResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Data *naked.MonitorValues `json:",omitempty"`
 }
 
 // SwitchFindRequestEnvelope is envelop of API request

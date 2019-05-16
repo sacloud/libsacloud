@@ -2907,6 +2907,86 @@ func (o *ServerOp) ChangePlan(ctx context.Context, zone string, id types.ID, pla
 	return payload0, nil
 }
 
+// InsertCDROM is API call
+func (o *ServerOp) InsertCDROM(ctx context.Context, zone string, id types.ID, insertParam *InsertCDROMRequest) error {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/cdrom", map[string]interface{}{
+		"rootURL":     SakuraCloudAPIRoot,
+		"pathSuffix":  o.PathSuffix,
+		"pathName":    o.PathName,
+		"zone":        zone,
+		"id":          id,
+		"insertParam": insertParam,
+	})
+	if err != nil {
+		return err
+	}
+
+	var body interface{}
+
+	{
+		if insertParam == nil {
+			insertParam = &InsertCDROMRequest{}
+		}
+		if body == nil {
+			body = &ServerInsertCDROMRequestEnvelope{}
+		}
+		v := body.(*ServerInsertCDROMRequestEnvelope)
+		n, err := insertParam.convertTo()
+		if err != nil {
+			return err
+		}
+		v.CDROM = n
+		body = v
+	}
+
+	_, err = o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// EjectCDROM is API call
+func (o *ServerOp) EjectCDROM(ctx context.Context, zone string, id types.ID, insertParam *EjectCDROMRequest) error {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/cdrom", map[string]interface{}{
+		"rootURL":     SakuraCloudAPIRoot,
+		"pathSuffix":  o.PathSuffix,
+		"pathName":    o.PathName,
+		"zone":        zone,
+		"id":          id,
+		"insertParam": insertParam,
+	})
+	if err != nil {
+		return err
+	}
+
+	var body interface{}
+
+	{
+		if insertParam == nil {
+			insertParam = &EjectCDROMRequest{}
+		}
+		if body == nil {
+			body = &ServerEjectCDROMRequestEnvelope{}
+		}
+		v := body.(*ServerEjectCDROMRequestEnvelope)
+		n, err := insertParam.convertTo()
+		if err != nil {
+			return err
+		}
+		v.CDROM = n
+		body = v
+	}
+
+	_, err = o.Client.Do(ctx, "DELETE", url, body)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 // Boot is API call
 func (o *ServerOp) Boot(ctx context.Context, zone string, id types.ID) error {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/power", map[string]interface{}{
@@ -2988,6 +3068,52 @@ func (o *ServerOp) Reset(ctx context.Context, zone string, id types.ID) error {
 	}
 
 	return nil
+}
+
+// Monitor is API call
+func (o *ServerOp) Monitor(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*CPUTimeActivity, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/monitor", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+		"condition":  condition,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+	{
+		if condition == nil {
+			condition = &MonitorCondition{}
+		}
+		if body == nil {
+			body = &ServerMonitorRequestEnvelope{}
+		}
+		v := body.(*ServerMonitorRequestEnvelope)
+		if err := mapconv.ConvertTo(condition, v); err != nil {
+			return nil, err
+		}
+		body = v
+	}
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &ServerMonitorResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	payload0 := &CPUTimeActivity{}
+	if err := payload0.convertFrom(nakedResponse.Data); err != nil {
+		return nil, err
+	}
+	return payload0, nil
 }
 
 /*************************************************

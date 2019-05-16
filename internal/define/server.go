@@ -167,10 +167,57 @@ func init() {
 					PayloadType: meta.Static(naked.Server{}),
 				}),
 
+			// insert cdrom
+			r.DefineOperation("InsertCDROM").
+				Method(http.MethodPut).
+				PathFormat(schema.IDAndSuffixPathFormat("cdrom")).
+				RequestEnvelope(&schema.EnvelopePayloadDesc{
+					PayloadType: meta.Static(naked.CDROM{}),
+					PayloadName: "CDROM",
+				}).
+				Argument(schema.ArgumentZone).
+				Argument(schema.ArgumentID).
+				Argument(&schema.MappableArgument{
+					Name: "insertParam",
+					Model: &schema.Model{
+						Name: "InsertCDROMRequest",
+						Fields: []*schema.FieldDesc{
+							fields.ID(),
+						},
+						NakedType: meta.Static(naked.CDROM{}),
+					},
+					Destination: "CDROM",
+				}),
+
+			// eject cdrom
+			r.DefineOperation("EjectCDROM").
+				Method(http.MethodDelete).
+				PathFormat(schema.IDAndSuffixPathFormat("cdrom")).
+				RequestEnvelope(&schema.EnvelopePayloadDesc{
+					PayloadType: meta.Static(naked.CDROM{}),
+					PayloadName: "CDROM",
+				}).
+				Argument(schema.ArgumentZone).
+				Argument(schema.ArgumentID).
+				Argument(&schema.MappableArgument{
+					Name: "insertParam",
+					Model: &schema.Model{
+						Name: "EjectCDROMRequest",
+						Fields: []*schema.FieldDesc{
+							fields.ID(),
+						},
+						NakedType: meta.Static(naked.CDROM{}),
+					},
+					Destination: "CDROM",
+				}),
+
 			// power management(boot/shutdown/reset)
 			r.DefineOperationBoot(),
 			r.DefineOperationShutdown(),
 			r.DefineOperationReset(),
+
+			// monitor
+			r.DefineOperationMonitor(monitorParameter, monitors.cpuTimeModel()),
 		)
 	})
 }

@@ -132,7 +132,7 @@ func testArchiveDelete(testContext *CRUDTestContext, caller APICaller) error {
 	return client.Delete(context.Background(), testZone, testContext.ID)
 }
 
-func TestArchiveCreateBlank(t *testing.T) {
+func TestArchiveOp_CreateBlank(t *testing.T) {
 	if !isAccTest() {
 		t.Skip("TESTACC is not set. skip")
 	}

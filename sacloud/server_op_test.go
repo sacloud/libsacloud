@@ -153,7 +153,7 @@ func testServerDelete(testContext *CRUDTestContext, caller APICaller) error {
 	return client.Delete(context.Background(), testZone, testContext.ID)
 }
 
-func TestServerOP_ChangePlan(t *testing.T) {
+func TestServerOp_ChangePlan(t *testing.T) {
 	if !isAccTest() {
 		t.Skip("TESTACC is not set. skip")
 	}
@@ -194,4 +194,5 @@ func TestServerOP_ChangePlan(t *testing.T) {
 	// cleanup
 	err = client.Delete(ctx, testZone, newServer.ID)
 	require.NoError(t, err)
+
 }
