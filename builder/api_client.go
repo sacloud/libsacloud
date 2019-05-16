@@ -36,7 +36,7 @@ type APIClient interface {
 	InterfaceConnectToPacketFilter(interfaceID int64, packetFilterID int64) (bool, error)
 	InterfaceSetDisplayIPAddress(interfaceID int64, ip string) (bool, error) // Interface
 
-	ServerPlanGetBySpec(core int, memGB int, gen sacloud.PlanGenerations, commitment sacloud.ECommitment) (*sacloud.ProductServer, error)
+	ServerPlanGetBySpec(core, memGB int, gen sacloud.PlanGenerations, commitment sacloud.ECommitment) (*sacloud.ProductServer, error)
 
 	ArchiveFindByOSType(os ostype.ArchiveOSTypes) (*sacloud.Archive, error)
 
@@ -139,7 +139,7 @@ func (a *apiClient) InterfaceSetDisplayIPAddress(interfaceID int64, ip string) (
 	return a.client.Interface.SetDisplayIPAddress(interfaceID, ip)
 }
 
-func (a *apiClient) ServerPlanGetBySpec(core int, memGB int, gen sacloud.PlanGenerations, commitment sacloud.ECommitment) (*sacloud.ProductServer, error) {
+func (a *apiClient) ServerPlanGetBySpec(core, memGB int, gen sacloud.PlanGenerations, commitment sacloud.ECommitment) (*sacloud.ProductServer, error) {
 	if string(commitment) == "" {
 		commitment = sacloud.ECommitmentStandard
 	}
