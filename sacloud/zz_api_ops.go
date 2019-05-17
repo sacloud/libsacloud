@@ -1603,6 +1603,393 @@ func (o *GSLBOp) Delete(ctx context.Context, zone string, id types.ID) error {
 }
 
 /*************************************************
+* InterfaceOp
+*************************************************/
+
+// InterfaceOp implements InterfaceAPI interface
+type InterfaceOp struct {
+	// Client APICaller
+	Client APICaller
+	// PathSuffix is used when building URL
+	PathSuffix string
+	// PathName is used when building URL
+	PathName string
+}
+
+// NewInterfaceOp creates new InterfaceOp instance
+func NewInterfaceOp(client APICaller) InterfaceAPI {
+	return &InterfaceOp{
+		Client:     client,
+		PathSuffix: "api/cloud/1.1",
+		PathName:   "interface",
+	}
+}
+
+// Find is API call
+func (o *InterfaceOp) Find(ctx context.Context, zone string, conditions *FindCondition) ([]*Interface, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"conditions": conditions,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+	{
+		if conditions == nil {
+			conditions = &FindCondition{}
+		}
+		if body == nil {
+			body = &InterfaceFindRequestEnvelope{}
+		}
+		v := body.(*InterfaceFindRequestEnvelope)
+		if err := mapconv.ConvertTo(conditions, v); err != nil {
+			return nil, err
+		}
+		body = v
+	}
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &InterfaceFindResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	var payload0 []*Interface
+	for _, v := range nakedResponse.Interfaces {
+		payload := &Interface{}
+		if err := payload.convertFrom(v); err != nil {
+			return nil, err
+		}
+		payload0 = append(payload0, payload)
+	}
+	return payload0, nil
+}
+
+// Create is API call
+func (o *InterfaceOp) Create(ctx context.Context, zone string, param *InterfaceCreateRequest) (*Interface, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"param":      param,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	{
+		if param == nil {
+			param = &InterfaceCreateRequest{}
+		}
+		if body == nil {
+			body = &InterfaceCreateRequestEnvelope{}
+		}
+		v := body.(*InterfaceCreateRequestEnvelope)
+		n, err := param.convertTo()
+		if err != nil {
+			return nil, err
+		}
+		v.Interface = n
+		body = v
+	}
+
+	data, err := o.Client.Do(ctx, "POST", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &InterfaceCreateResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	payload0 := &Interface{}
+	if err := payload0.convertFrom(nakedResponse.Interface); err != nil {
+		return nil, err
+	}
+	return payload0, nil
+}
+
+// Read is API call
+func (o *InterfaceOp) Read(ctx context.Context, zone string, id types.ID) (*Interface, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &InterfaceReadResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	payload0 := &Interface{}
+	if err := payload0.convertFrom(nakedResponse.Interface); err != nil {
+		return nil, err
+	}
+	return payload0, nil
+}
+
+// Update is API call
+func (o *InterfaceOp) Update(ctx context.Context, zone string, id types.ID, param *InterfaceUpdateRequest) (*Interface, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+		"param":      param,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	{
+		if param == nil {
+			param = &InterfaceUpdateRequest{}
+		}
+		if body == nil {
+			body = &InterfaceUpdateRequestEnvelope{}
+		}
+		v := body.(*InterfaceUpdateRequestEnvelope)
+		n, err := param.convertTo()
+		if err != nil {
+			return nil, err
+		}
+		v.Interface = n
+		body = v
+	}
+
+	data, err := o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &InterfaceUpdateResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	payload0 := &Interface{}
+	if err := payload0.convertFrom(nakedResponse.Interface); err != nil {
+		return nil, err
+	}
+	return payload0, nil
+}
+
+// Delete is API call
+func (o *InterfaceOp) Delete(ctx context.Context, zone string, id types.ID) error {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+	})
+	if err != nil {
+		return err
+	}
+
+	var body interface{}
+
+	_, err = o.Client.Do(ctx, "DELETE", url, body)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// Monitor is API call
+func (o *InterfaceOp) Monitor(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*InterfaceActivity, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/monitor", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+		"condition":  condition,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+	{
+		if condition == nil {
+			condition = &MonitorCondition{}
+		}
+		if body == nil {
+			body = &InterfaceMonitorRequestEnvelope{}
+		}
+		v := body.(*InterfaceMonitorRequestEnvelope)
+		if err := mapconv.ConvertTo(condition, v); err != nil {
+			return nil, err
+		}
+		body = v
+	}
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &InterfaceMonitorResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	payload0 := &InterfaceActivity{}
+	if err := payload0.convertFrom(nakedResponse.Data); err != nil {
+		return nil, err
+	}
+	return payload0, nil
+}
+
+// ConnectToSharedSegment is API call
+func (o *InterfaceOp) ConnectToSharedSegment(ctx context.Context, zone string, id types.ID) error {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/to/switch/shared", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+	})
+	if err != nil {
+		return err
+	}
+
+	var body interface{}
+
+	_, err = o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// ConnectToSwitch is API call
+func (o *InterfaceOp) ConnectToSwitch(ctx context.Context, zone string, id types.ID, switchID types.ID) error {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/to/switch/{{.switchID}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+		"switchID":   switchID,
+	})
+	if err != nil {
+		return err
+	}
+
+	var body interface{}
+
+	_, err = o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// DisconnectFromSwitch is API call
+func (o *InterfaceOp) DisconnectFromSwitch(ctx context.Context, zone string, id types.ID) error {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/to/switch", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+	})
+	if err != nil {
+		return err
+	}
+
+	var body interface{}
+
+	_, err = o.Client.Do(ctx, "DELETE", url, body)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// ConnectToPacketFilter is API call
+func (o *InterfaceOp) ConnectToPacketFilter(ctx context.Context, zone string, id types.ID, packetFilterID types.ID) error {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/to/packetfilter/{{.packetFilterID}}", map[string]interface{}{
+		"rootURL":        SakuraCloudAPIRoot,
+		"pathSuffix":     o.PathSuffix,
+		"pathName":       o.PathName,
+		"zone":           zone,
+		"id":             id,
+		"packetFilterID": packetFilterID,
+	})
+	if err != nil {
+		return err
+	}
+
+	var body interface{}
+
+	_, err = o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// DisconnectFromPacketFilter is API call
+func (o *InterfaceOp) DisconnectFromPacketFilter(ctx context.Context, zone string, id types.ID) error {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/to/packetfilter", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+	})
+	if err != nil {
+		return err
+	}
+
+	var body interface{}
+
+	_, err = o.Client.Do(ctx, "DELETE", url, body)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+/*************************************************
 * LoadBalancerOp
 *************************************************/
 

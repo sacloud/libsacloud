@@ -64,7 +64,7 @@ func init() {
 				},
 				Tags: &schema.FieldTags{
 					JSON:    ",omitempty",
-					MapConv: ",recursive",
+					MapConv: "[]Interfaces,recursive",
 				},
 			},
 
@@ -100,7 +100,7 @@ func init() {
 				},
 				Tags: &schema.FieldTags{
 					JSON:    ",omitempty",
-					MapConv: ",recursive",
+					MapConv: "[]ConnectedSwitches,recursive",
 				},
 			},
 			fields.InterfaceDriver(),

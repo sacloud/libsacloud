@@ -77,6 +77,25 @@ type GSLBAPI interface {
 }
 
 /*************************************************
+* InterfaceAPI
+*************************************************/
+
+// InterfaceAPI is interface for operate Interface resource
+type InterfaceAPI interface {
+	Find(ctx context.Context, zone string, conditions *FindCondition) ([]*Interface, error)
+	Create(ctx context.Context, zone string, param *InterfaceCreateRequest) (*Interface, error)
+	Read(ctx context.Context, zone string, id types.ID) (*Interface, error)
+	Update(ctx context.Context, zone string, id types.ID, param *InterfaceUpdateRequest) (*Interface, error)
+	Delete(ctx context.Context, zone string, id types.ID) error
+	Monitor(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*InterfaceActivity, error)
+	ConnectToSharedSegment(ctx context.Context, zone string, id types.ID) error
+	ConnectToSwitch(ctx context.Context, zone string, id types.ID, switchID types.ID) error
+	DisconnectFromSwitch(ctx context.Context, zone string, id types.ID) error
+	ConnectToPacketFilter(ctx context.Context, zone string, id types.ID, packetFilterID types.ID) error
+	DisconnectFromPacketFilter(ctx context.Context, zone string, id types.ID) error
+}
+
+/*************************************************
 * LoadBalancerAPI
 *************************************************/
 

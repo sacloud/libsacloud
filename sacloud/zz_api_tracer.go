@@ -434,6 +434,132 @@ func (t *GSLBTracer) Delete(ctx context.Context, zone string, id types.ID) error
 }
 
 /*************************************************
+* InterfaceTracer
+*************************************************/
+
+// InterfaceTracer is for trace InterfaceOp operations
+type InterfaceTracer struct {
+	Internal InterfaceAPI
+}
+
+// NewInterfaceTracer creates new InterfaceTracer instance
+func NewInterfaceTracer(in InterfaceAPI) *InterfaceTracer {
+	return &InterfaceTracer{
+		Internal: in,
+	}
+}
+
+// Find is API call with trace log
+func (t *InterfaceTracer) Find(ctx context.Context, zone string, conditions *FindCondition) ([]*Interface, error) {
+	log.Println("[TRACE] InterfaceTracer.Find start:	args => [", "zone=", zone, "conditions=", conditions, "]")
+	defer func() {
+		log.Println("[TRACE] InterfaceTracer.Find: end")
+	}()
+
+	return t.Internal.Find(ctx, zone, conditions)
+}
+
+// Create is API call with trace log
+func (t *InterfaceTracer) Create(ctx context.Context, zone string, param *InterfaceCreateRequest) (*Interface, error) {
+	log.Println("[TRACE] InterfaceTracer.Create start:	args => [", "zone=", zone, "param=", param, "]")
+	defer func() {
+		log.Println("[TRACE] InterfaceTracer.Create: end")
+	}()
+
+	return t.Internal.Create(ctx, zone, param)
+}
+
+// Read is API call with trace log
+func (t *InterfaceTracer) Read(ctx context.Context, zone string, id types.ID) (*Interface, error) {
+	log.Println("[TRACE] InterfaceTracer.Read start:	args => [", "zone=", zone, "id=", id, "]")
+	defer func() {
+		log.Println("[TRACE] InterfaceTracer.Read: end")
+	}()
+
+	return t.Internal.Read(ctx, zone, id)
+}
+
+// Update is API call with trace log
+func (t *InterfaceTracer) Update(ctx context.Context, zone string, id types.ID, param *InterfaceUpdateRequest) (*Interface, error) {
+	log.Println("[TRACE] InterfaceTracer.Update start:	args => [", "zone=", zone, "id=", id, "param=", param, "]")
+	defer func() {
+		log.Println("[TRACE] InterfaceTracer.Update: end")
+	}()
+
+	return t.Internal.Update(ctx, zone, id, param)
+}
+
+// Delete is API call with trace log
+func (t *InterfaceTracer) Delete(ctx context.Context, zone string, id types.ID) error {
+	log.Println("[TRACE] InterfaceTracer.Delete start:	args => [", "zone=", zone, "id=", id, "]")
+	defer func() {
+		log.Println("[TRACE] InterfaceTracer.Delete: end")
+	}()
+
+	return t.Internal.Delete(ctx, zone, id)
+}
+
+// Monitor is API call with trace log
+func (t *InterfaceTracer) Monitor(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*InterfaceActivity, error) {
+	log.Println("[TRACE] InterfaceTracer.Monitor start:	args => [", "zone=", zone, "id=", id, "condition=", condition, "]")
+	defer func() {
+		log.Println("[TRACE] InterfaceTracer.Monitor: end")
+	}()
+
+	return t.Internal.Monitor(ctx, zone, id, condition)
+}
+
+// ConnectToSharedSegment is API call with trace log
+func (t *InterfaceTracer) ConnectToSharedSegment(ctx context.Context, zone string, id types.ID) error {
+	log.Println("[TRACE] InterfaceTracer.ConnectToSharedSegment start:	args => [", "zone=", zone, "id=", id, "]")
+	defer func() {
+		log.Println("[TRACE] InterfaceTracer.ConnectToSharedSegment: end")
+	}()
+
+	return t.Internal.ConnectToSharedSegment(ctx, zone, id)
+}
+
+// ConnectToSwitch is API call with trace log
+func (t *InterfaceTracer) ConnectToSwitch(ctx context.Context, zone string, id types.ID, switchID types.ID) error {
+	log.Println("[TRACE] InterfaceTracer.ConnectToSwitch start:	args => [", "zone=", zone, "id=", id, "switchID=", switchID, "]")
+	defer func() {
+		log.Println("[TRACE] InterfaceTracer.ConnectToSwitch: end")
+	}()
+
+	return t.Internal.ConnectToSwitch(ctx, zone, id, switchID)
+}
+
+// DisconnectFromSwitch is API call with trace log
+func (t *InterfaceTracer) DisconnectFromSwitch(ctx context.Context, zone string, id types.ID) error {
+	log.Println("[TRACE] InterfaceTracer.DisconnectFromSwitch start:	args => [", "zone=", zone, "id=", id, "]")
+	defer func() {
+		log.Println("[TRACE] InterfaceTracer.DisconnectFromSwitch: end")
+	}()
+
+	return t.Internal.DisconnectFromSwitch(ctx, zone, id)
+}
+
+// ConnectToPacketFilter is API call with trace log
+func (t *InterfaceTracer) ConnectToPacketFilter(ctx context.Context, zone string, id types.ID, packetFilterID types.ID) error {
+	log.Println("[TRACE] InterfaceTracer.ConnectToPacketFilter start:	args => [", "zone=", zone, "id=", id, "packetFilterID=", packetFilterID, "]")
+	defer func() {
+		log.Println("[TRACE] InterfaceTracer.ConnectToPacketFilter: end")
+	}()
+
+	return t.Internal.ConnectToPacketFilter(ctx, zone, id, packetFilterID)
+}
+
+// DisconnectFromPacketFilter is API call with trace log
+func (t *InterfaceTracer) DisconnectFromPacketFilter(ctx context.Context, zone string, id types.ID) error {
+	log.Println("[TRACE] InterfaceTracer.DisconnectFromPacketFilter start:	args => [", "zone=", zone, "id=", id, "]")
+	defer func() {
+		log.Println("[TRACE] InterfaceTracer.DisconnectFromPacketFilter: end")
+	}()
+
+	return t.Internal.DisconnectFromPacketFilter(ctx, zone, id)
+}
+
+/*************************************************
 * LoadBalancerTracer
 *************************************************/
 

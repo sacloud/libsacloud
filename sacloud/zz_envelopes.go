@@ -362,6 +362,73 @@ type GSLBUpdateResponseEnvelope struct {
 	CommonServiceItem *naked.GSLB `json:",omitempty"`
 }
 
+// InterfaceFindRequestEnvelope is envelop of API request
+type InterfaceFindRequestEnvelope struct {
+	Count   int                    `json:",omitempty"`
+	From    int                    `json:",omitempty"`
+	Sort    []string               `json:",omitempty"`
+	Filter  map[string]interface{} `json:",omitempty"`
+	Include []string               `json:",omitempty"`
+	Exclude []string               `json:",omitempty"`
+}
+
+// InterfaceFindResponseEnvelope is envelop of API response
+type InterfaceFindResponseEnvelope struct {
+	Total int `json:",omitempty"` // トータル件数
+	From  int `json:",omitempty"` // ページング開始ページ
+	Count int `json:",omitempty"` // 件数
+
+	Interfaces []*naked.Interface `json:",omitempty"`
+}
+
+// InterfaceCreateRequestEnvelope is envelop of API request
+type InterfaceCreateRequestEnvelope struct {
+	Interface *naked.Interface `json:",omitempty"`
+}
+
+// InterfaceCreateResponseEnvelope is envelop of API response
+type InterfaceCreateResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Interface *naked.Interface `json:",omitempty"`
+}
+
+// InterfaceReadResponseEnvelope is envelop of API response
+type InterfaceReadResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Interface *naked.Interface `json:",omitempty"`
+}
+
+// InterfaceUpdateRequestEnvelope is envelop of API request
+type InterfaceUpdateRequestEnvelope struct {
+	Interface *naked.Interface `json:",omitempty"`
+}
+
+// InterfaceUpdateResponseEnvelope is envelop of API response
+type InterfaceUpdateResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Interface *naked.Interface `json:",omitempty"`
+}
+
+// InterfaceMonitorRequestEnvelope is envelop of API request
+type InterfaceMonitorRequestEnvelope struct {
+	Start *time.Time `json:",omitempty"`
+	End   *time.Time `json:",omitempty"`
+}
+
+// InterfaceMonitorResponseEnvelope is envelop of API response
+type InterfaceMonitorResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Data *naked.MonitorValues `json:",omitempty"`
+}
+
 // LoadBalancerFindRequestEnvelope is envelop of API request
 type LoadBalancerFindRequestEnvelope struct {
 	Count   int                    `json:",omitempty"`
