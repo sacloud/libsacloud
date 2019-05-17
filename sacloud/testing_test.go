@@ -59,6 +59,9 @@ type CRUDTestCase struct {
 
 	// Parallel t.Parallelを呼ぶかのフラグ
 	Parallel bool
+
+	// IgnoreStartupWait リソース作成後の起動待ちを行わない
+	IgnoreStartupWait bool
 }
 
 // CRUDTestContext CRUD操作テストでのコンテキスト、一連のテスト中に共有される
@@ -187,7 +190,7 @@ func Run(t TestT, testCase *CRUDTestCase) {
 			t.Fatal("Create is failed: ", err)
 		}
 
-		if testCase.Create.Expect != nil {
+		if testCase.Create.Expect != nil && !testCase.IgnoreStartupWait {
 
 			_, ok1 := testCase.Create.Expect.ExpectValue.(AvailabilityHolder)
 			_, ok2 := testCase.Create.Expect.ExpectValue.(InstanceStateHolder)

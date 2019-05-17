@@ -47,7 +47,7 @@ func ConvertTo(source interface{}, dest interface{}) error {
 					}
 					dest = append(dest, destMap)
 				}
-				if tags.isSlice || len(dest) > 1 {
+				if tags.isSlice || dest == nil || len(dest) > 1 {
 					value = dest
 				} else {
 					value = dest[0]

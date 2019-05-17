@@ -11,4 +11,5 @@ type Interface struct {
 	HostName      string        `json:",omitempty" yaml:"host_name,omitempty" structs:",omitempty"`
 	Switch        *Switch       `json:",omitempty" yaml:"switch,omitempty" structs:",omitempty"`
 	PacketFilter  *PacketFilter `json:",omitempty" yaml:"packet_filter,omitempty" structs:",omitempty"`
+	Server        *Server       `json:",omitempty" yaml:"server,omitempty" structs:",omitempty"`
 }

@@ -2669,6 +2669,264 @@ func (o *GSLBUpdateRequest) convertFrom(naked *naked.GSLB) error {
 }
 
 /*************************************************
+* Interface
+*************************************************/
+
+// Interface represents API parameter/response structure
+type Interface struct {
+	ID             types.ID
+	MACAddress     string
+	IPAddress      string
+	UserIPAddress  string
+	HostName       string
+	SwitchID       types.ID `mapconv:"Switch.ID,omitempty"`
+	PacketFilterID types.ID `mapconv:"PacketFilter.ID,omitempty"`
+	ServerID       types.ID `mapconv:"Server.ID,omitempty"`
+	CreatedAt      *time.Time
+	ModifiedAt     *time.Time
+}
+
+// Validate validates by field tags
+func (o *Interface) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetID returns value of ID
+func (o *Interface) GetID() types.ID {
+	return o.ID
+}
+
+// SetID sets value to ID
+func (o *Interface) SetID(v types.ID) {
+	o.ID = v
+}
+
+// GetStringID gets value to StringID
+func (o *Interface) GetStringID() string {
+	return getStringID(o)
+}
+
+// SetStringID sets value to StringID
+func (o *Interface) SetStringID(v string) {
+	setStringID(o, v)
+}
+
+// GetInt64ID gets value to Int64ID
+func (o *Interface) GetInt64ID() int64 {
+	return getInt64ID(o)
+}
+
+// SetInt64ID sets value to Int64ID
+func (o *Interface) SetInt64ID(v int64) {
+	setInt64ID(o, v)
+}
+
+// GetMACAddress returns value of MACAddress
+func (o *Interface) GetMACAddress() string {
+	return o.MACAddress
+}
+
+// SetMACAddress sets value to MACAddress
+func (o *Interface) SetMACAddress(v string) {
+	o.MACAddress = v
+}
+
+// GetIPAddress returns value of IPAddress
+func (o *Interface) GetIPAddress() string {
+	return o.IPAddress
+}
+
+// SetIPAddress sets value to IPAddress
+func (o *Interface) SetIPAddress(v string) {
+	o.IPAddress = v
+}
+
+// GetUserIPAddress returns value of UserIPAddress
+func (o *Interface) GetUserIPAddress() string {
+	return o.UserIPAddress
+}
+
+// SetUserIPAddress sets value to UserIPAddress
+func (o *Interface) SetUserIPAddress(v string) {
+	o.UserIPAddress = v
+}
+
+// GetHostName returns value of HostName
+func (o *Interface) GetHostName() string {
+	return o.HostName
+}
+
+// SetHostName sets value to HostName
+func (o *Interface) SetHostName(v string) {
+	o.HostName = v
+}
+
+// GetSwitchID returns value of SwitchID
+func (o *Interface) GetSwitchID() types.ID {
+	return o.SwitchID
+}
+
+// SetSwitchID sets value to SwitchID
+func (o *Interface) SetSwitchID(v types.ID) {
+	o.SwitchID = v
+}
+
+// GetPacketFilterID returns value of PacketFilterID
+func (o *Interface) GetPacketFilterID() types.ID {
+	return o.PacketFilterID
+}
+
+// SetPacketFilterID sets value to PacketFilterID
+func (o *Interface) SetPacketFilterID(v types.ID) {
+	o.PacketFilterID = v
+}
+
+// GetServerID returns value of ServerID
+func (o *Interface) GetServerID() types.ID {
+	return o.ServerID
+}
+
+// SetServerID sets value to ServerID
+func (o *Interface) SetServerID(v types.ID) {
+	o.ServerID = v
+}
+
+// GetCreatedAt returns value of CreatedAt
+func (o *Interface) GetCreatedAt() *time.Time {
+	return o.CreatedAt
+}
+
+// SetCreatedAt sets value to CreatedAt
+func (o *Interface) SetCreatedAt(v *time.Time) {
+	o.CreatedAt = v
+}
+
+// GetModifiedAt returns value of ModifiedAt
+func (o *Interface) GetModifiedAt() *time.Time {
+	return o.ModifiedAt
+}
+
+// SetModifiedAt sets value to ModifiedAt
+func (o *Interface) SetModifiedAt(v *time.Time) {
+	o.ModifiedAt = v
+}
+
+// convertTo returns naked Interface
+func (o *Interface) convertTo() (*naked.Interface, error) {
+	dest := &naked.Interface{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked Interface
+func (o *Interface) convertFrom(naked *naked.Interface) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* InterfaceCreateRequest
+*************************************************/
+
+// InterfaceCreateRequest represents API parameter/response structure
+type InterfaceCreateRequest struct {
+	ServerID types.ID `mapconv:"Server.ID,omitempty"`
+}
+
+// Validate validates by field tags
+func (o *InterfaceCreateRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetServerID returns value of ServerID
+func (o *InterfaceCreateRequest) GetServerID() types.ID {
+	return o.ServerID
+}
+
+// SetServerID sets value to ServerID
+func (o *InterfaceCreateRequest) SetServerID(v types.ID) {
+	o.ServerID = v
+}
+
+// convertTo returns naked InterfaceCreateRequest
+func (o *InterfaceCreateRequest) convertTo() (*naked.Interface, error) {
+	dest := &naked.Interface{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked InterfaceCreateRequest
+func (o *InterfaceCreateRequest) convertFrom(naked *naked.Interface) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* InterfaceUpdateRequest
+*************************************************/
+
+// InterfaceUpdateRequest represents API parameter/response structure
+type InterfaceUpdateRequest struct {
+	UserIPAddress string
+}
+
+// Validate validates by field tags
+func (o *InterfaceUpdateRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetUserIPAddress returns value of UserIPAddress
+func (o *InterfaceUpdateRequest) GetUserIPAddress() string {
+	return o.UserIPAddress
+}
+
+// SetUserIPAddress sets value to UserIPAddress
+func (o *InterfaceUpdateRequest) SetUserIPAddress(v string) {
+	o.UserIPAddress = v
+}
+
+// convertTo returns naked InterfaceUpdateRequest
+func (o *InterfaceUpdateRequest) convertTo() (*naked.Interface, error) {
+	dest := &naked.Interface{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked InterfaceUpdateRequest
+func (o *InterfaceUpdateRequest) convertFrom(naked *naked.Interface) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* InterfaceActivity
+*************************************************/
+
+// InterfaceActivity represents API parameter/response structure
+type InterfaceActivity struct {
+	Values []naked.MonitorInterfaceValue `mapconv:"Interface"`
+}
+
+// Validate validates by field tags
+func (o *InterfaceActivity) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetValues returns value of Values
+func (o *InterfaceActivity) GetValues() []naked.MonitorInterfaceValue {
+	return o.Values
+}
+
+// convertTo returns naked InterfaceActivity
+func (o *InterfaceActivity) convertTo() (*naked.MonitorValues, error) {
+	dest := &naked.MonitorValues{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked InterfaceActivity
+func (o *InterfaceActivity) convertFrom(naked *naked.MonitorValues) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
 * LoadBalancer
 *************************************************/
 
@@ -3354,37 +3612,6 @@ func (o *ShutdownOption) GetForce() bool {
 // SetForce sets value to Force
 func (o *ShutdownOption) SetForce(v bool) {
 	o.Force = v
-}
-
-/*************************************************
-* InterfaceActivity
-*************************************************/
-
-// InterfaceActivity represents API parameter/response structure
-type InterfaceActivity struct {
-	Values []naked.MonitorInterfaceValue `mapconv:"Interface"`
-}
-
-// Validate validates by field tags
-func (o *InterfaceActivity) Validate() error {
-	return validator.New().Struct(o)
-}
-
-// GetValues returns value of Values
-func (o *InterfaceActivity) GetValues() []naked.MonitorInterfaceValue {
-	return o.Values
-}
-
-// convertTo returns naked InterfaceActivity
-func (o *InterfaceActivity) convertTo() (*naked.MonitorValues, error) {
-	dest := &naked.MonitorValues{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked InterfaceActivity
-func (o *InterfaceActivity) convertFrom(naked *naked.MonitorValues) error {
-	return mapconv.ConvertFrom(naked, o)
 }
 
 /*************************************************
@@ -4293,7 +4520,7 @@ type Server struct {
 	Tags                    []string
 	Availability            types.EAvailability
 	HostName                string
-	InterfaceDriver         types.EInterfaceDriver
+	InterfaceDriver         types.EInterfaceDriver      `mapconv:",default=virtio"`
 	ServerPlanID            types.ID                    `mapconv:"ServerPlan.ID"`
 	ServerPlanName          string                      `mapconv:"ServerPlan.Name"`
 	CPU                     int                         `mapconv:"ServerPlan.CPU"`
@@ -4309,7 +4536,7 @@ type Server struct {
 	InstanceWarnings        string                      `mapconv:"Instance.Warnings"`
 	InstanceWarningsValue   int                         `mapconv:"Instance.WarningsValue"`
 	Disks                   []*Disk                     `json:",omitempty" mapconv:",recursive"`
-	Interfaces              []*Interface                `json:",omitempty" mapconv:",recursive"`
+	Interfaces              []*Interface                `json:",omitempty" mapconv:"[]Interfaces,recursive"`
 	PrivateHostID           types.ID                    `mapconv:"PrivateHost.ID"`
 	PrivateHostName         string                      `mapconv:"PrivateHost.Name"`
 	BundleInfo              *naked.BundleInfo           `json:",omitempty"`
@@ -4632,249 +4859,17 @@ func (o *Server) convertFrom(naked *naked.Server) error {
 }
 
 /*************************************************
-* Interface
-*************************************************/
-
-// Interface represents API parameter/response structure
-type Interface struct {
-	ID                              types.ID
-	MACAddress                      string
-	IPAddress                       string
-	UserIPAddress                   string
-	HostName                        string
-	SwitchID                        types.ID     `mapconv:"Switch.ID"`
-	SwitchName                      string       `mapconv:"Switch.Name"`
-	SwitchScope                     types.EScope `mapconv:"Switch.Scope"`
-	UserSubnetDefaultRoute          string       `mapconv:"Switch.UserSubnet.DefaultRoute"`
-	UserSubnetNetworkMaskLen        int          `mapconv:"Switch.UserSubnet.NetworkMaskLen"`
-	SubnetDefaultRoute              string       `mapconv:"Switch.Subnet.DefaultRoute"`
-	SubnetNetworkMaskLen            int          `mapconv:"Switch.Subnet.NetworkMaskLen"`
-	SubnetNetworkAddress            string       `mapconv:"Switch.Subnet.NetworkAddress"`
-	SubnetBandWidthMbps             int          `mapconv:"Switch.Subnet.Internet.BandWidthMbps"`
-	PacketFilterID                  string       `mapconv:"PacketFilter.ID"`
-	PacketFilterName                string       `mapconv:"PacketFilter.Name"`
-	PacketFilterRequiredHostVersion int          `mapconv:"PacketFilter.RequiredHostVersionn"`
-}
-
-// Validate validates by field tags
-func (o *Interface) Validate() error {
-	return validator.New().Struct(o)
-}
-
-// GetID returns value of ID
-func (o *Interface) GetID() types.ID {
-	return o.ID
-}
-
-// SetID sets value to ID
-func (o *Interface) SetID(v types.ID) {
-	o.ID = v
-}
-
-// GetStringID gets value to StringID
-func (o *Interface) GetStringID() string {
-	return getStringID(o)
-}
-
-// SetStringID sets value to StringID
-func (o *Interface) SetStringID(v string) {
-	setStringID(o, v)
-}
-
-// GetInt64ID gets value to Int64ID
-func (o *Interface) GetInt64ID() int64 {
-	return getInt64ID(o)
-}
-
-// SetInt64ID sets value to Int64ID
-func (o *Interface) SetInt64ID(v int64) {
-	setInt64ID(o, v)
-}
-
-// GetMACAddress returns value of MACAddress
-func (o *Interface) GetMACAddress() string {
-	return o.MACAddress
-}
-
-// SetMACAddress sets value to MACAddress
-func (o *Interface) SetMACAddress(v string) {
-	o.MACAddress = v
-}
-
-// GetIPAddress returns value of IPAddress
-func (o *Interface) GetIPAddress() string {
-	return o.IPAddress
-}
-
-// SetIPAddress sets value to IPAddress
-func (o *Interface) SetIPAddress(v string) {
-	o.IPAddress = v
-}
-
-// GetUserIPAddress returns value of UserIPAddress
-func (o *Interface) GetUserIPAddress() string {
-	return o.UserIPAddress
-}
-
-// SetUserIPAddress sets value to UserIPAddress
-func (o *Interface) SetUserIPAddress(v string) {
-	o.UserIPAddress = v
-}
-
-// GetHostName returns value of HostName
-func (o *Interface) GetHostName() string {
-	return o.HostName
-}
-
-// SetHostName sets value to HostName
-func (o *Interface) SetHostName(v string) {
-	o.HostName = v
-}
-
-// GetSwitchID returns value of SwitchID
-func (o *Interface) GetSwitchID() types.ID {
-	return o.SwitchID
-}
-
-// SetSwitchID sets value to SwitchID
-func (o *Interface) SetSwitchID(v types.ID) {
-	o.SwitchID = v
-}
-
-// GetSwitchName returns value of SwitchName
-func (o *Interface) GetSwitchName() string {
-	return o.SwitchName
-}
-
-// SetSwitchName sets value to SwitchName
-func (o *Interface) SetSwitchName(v string) {
-	o.SwitchName = v
-}
-
-// GetSwitchScope returns value of SwitchScope
-func (o *Interface) GetSwitchScope() types.EScope {
-	return o.SwitchScope
-}
-
-// SetSwitchScope sets value to SwitchScope
-func (o *Interface) SetSwitchScope(v types.EScope) {
-	o.SwitchScope = v
-}
-
-// GetUserSubnetDefaultRoute returns value of UserSubnetDefaultRoute
-func (o *Interface) GetUserSubnetDefaultRoute() string {
-	return o.UserSubnetDefaultRoute
-}
-
-// SetUserSubnetDefaultRoute sets value to UserSubnetDefaultRoute
-func (o *Interface) SetUserSubnetDefaultRoute(v string) {
-	o.UserSubnetDefaultRoute = v
-}
-
-// GetUserSubnetNetworkMaskLen returns value of UserSubnetNetworkMaskLen
-func (o *Interface) GetUserSubnetNetworkMaskLen() int {
-	return o.UserSubnetNetworkMaskLen
-}
-
-// SetUserSubnetNetworkMaskLen sets value to UserSubnetNetworkMaskLen
-func (o *Interface) SetUserSubnetNetworkMaskLen(v int) {
-	o.UserSubnetNetworkMaskLen = v
-}
-
-// GetSubnetDefaultRoute returns value of SubnetDefaultRoute
-func (o *Interface) GetSubnetDefaultRoute() string {
-	return o.SubnetDefaultRoute
-}
-
-// SetSubnetDefaultRoute sets value to SubnetDefaultRoute
-func (o *Interface) SetSubnetDefaultRoute(v string) {
-	o.SubnetDefaultRoute = v
-}
-
-// GetSubnetNetworkMaskLen returns value of SubnetNetworkMaskLen
-func (o *Interface) GetSubnetNetworkMaskLen() int {
-	return o.SubnetNetworkMaskLen
-}
-
-// SetSubnetNetworkMaskLen sets value to SubnetNetworkMaskLen
-func (o *Interface) SetSubnetNetworkMaskLen(v int) {
-	o.SubnetNetworkMaskLen = v
-}
-
-// GetSubnetNetworkAddress returns value of SubnetNetworkAddress
-func (o *Interface) GetSubnetNetworkAddress() string {
-	return o.SubnetNetworkAddress
-}
-
-// SetSubnetNetworkAddress sets value to SubnetNetworkAddress
-func (o *Interface) SetSubnetNetworkAddress(v string) {
-	o.SubnetNetworkAddress = v
-}
-
-// GetSubnetBandWidthMbps returns value of SubnetBandWidthMbps
-func (o *Interface) GetSubnetBandWidthMbps() int {
-	return o.SubnetBandWidthMbps
-}
-
-// SetSubnetBandWidthMbps sets value to SubnetBandWidthMbps
-func (o *Interface) SetSubnetBandWidthMbps(v int) {
-	o.SubnetBandWidthMbps = v
-}
-
-// GetPacketFilterID returns value of PacketFilterID
-func (o *Interface) GetPacketFilterID() string {
-	return o.PacketFilterID
-}
-
-// SetPacketFilterID sets value to PacketFilterID
-func (o *Interface) SetPacketFilterID(v string) {
-	o.PacketFilterID = v
-}
-
-// GetPacketFilterName returns value of PacketFilterName
-func (o *Interface) GetPacketFilterName() string {
-	return o.PacketFilterName
-}
-
-// SetPacketFilterName sets value to PacketFilterName
-func (o *Interface) SetPacketFilterName(v string) {
-	o.PacketFilterName = v
-}
-
-// GetPacketFilterRequiredHostVersion returns value of PacketFilterRequiredHostVersion
-func (o *Interface) GetPacketFilterRequiredHostVersion() int {
-	return o.PacketFilterRequiredHostVersion
-}
-
-// SetPacketFilterRequiredHostVersion sets value to PacketFilterRequiredHostVersion
-func (o *Interface) SetPacketFilterRequiredHostVersion(v int) {
-	o.PacketFilterRequiredHostVersion = v
-}
-
-// convertTo returns naked Interface
-func (o *Interface) convertTo() (*naked.Interface, error) {
-	dest := &naked.Interface{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked Interface
-func (o *Interface) convertFrom(naked *naked.Interface) error {
-	return mapconv.ConvertFrom(naked, o)
-}
-
-/*************************************************
 * ServerCreateRequest
 *************************************************/
 
 // ServerCreateRequest represents API parameter/response structure
 type ServerCreateRequest struct {
-	CPU                  int                   `mapconv:"ServerPlan.CPU"`
-	MemoryMB             int                   `mapconv:"ServerPlan.MemoryMB"`
-	ServerPlanCommitment types.ECommitment     `mapconv:"ServerPlan.Commitment,default=standard"`
-	ServerPlanGeneration types.EPlanGeneration `mapconv:"ServerPlan.Generation"`
-	ConnectedSwitches    []*ConnectedSwitch    `json:",omitempty" mapconv:",recursive"`
-	InterfaceDriver      types.EInterfaceDriver
+	CPU                  int                    `mapconv:"ServerPlan.CPU"`
+	MemoryMB             int                    `mapconv:"ServerPlan.MemoryMB"`
+	ServerPlanCommitment types.ECommitment      `mapconv:"ServerPlan.Commitment,default=standard"`
+	ServerPlanGeneration types.EPlanGeneration  `mapconv:"ServerPlan.Generation"`
+	ConnectedSwitches    []*ConnectedSwitch     `json:",omitempty" mapconv:"[]ConnectedSwitches,recursive"`
+	InterfaceDriver      types.EInterfaceDriver `mapconv:",default=virtio"`
 	HostName             string
 	Name                 string `validate:"required"`
 	Description          string `validate:"min=0,max=512"`

@@ -41,6 +41,9 @@ func (f *fieldsDef) InterfaceDriver() *schema.FieldDesc {
 	return &schema.FieldDesc{
 		Name: "InterfaceDriver",
 		Type: meta.TypeInterfaceDriver,
+		Tags: &schema.FieldTags{
+			MapConv: ",default=virtio",
+		},
 	}
 }
 
@@ -236,6 +239,26 @@ func (f *fieldsDef) OriginalArchiveID() *schema.FieldDesc {
 			MapConv: "OriginalArchive.ID,omitempty",
 		},
 		Type: meta.TypeID,
+	}
+}
+
+func (f *fieldsDef) SwitchID() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "SwitchID",
+		Type: meta.TypeID,
+		Tags: &schema.FieldTags{
+			MapConv: "Switch.ID,omitempty",
+		},
+	}
+}
+
+func (f *fieldsDef) PacketFilterID() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "PacketFilterID",
+		Type: meta.TypeID,
+		Tags: &schema.FieldTags{
+			MapConv: "PacketFilter.ID,omitempty",
+		},
 	}
 }
 

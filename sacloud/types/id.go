@@ -13,6 +13,10 @@ type ID int64
 
 // UnmarshalJSON implememts unmarshal from both of JSON number and JSON string
 func (i *ID) UnmarshalJSON(b []byte) error {
+	s := string(b)
+	if s == "" || s == "null" {
+		return nil
+	}
 	var n json.Number
 	if err := json.Unmarshal(b, &n); err != nil {
 		return err

@@ -26,6 +26,7 @@ type Server struct {
 	Interfaces        []*Interface           `json:",omitempty" yaml:"interfaces,omitempty" structs:",omitempty"`
 	PrivateHost       *PrivateHost           `json:",omitempty" yaml:"private_host,omitempty" structs:",omitempty"`
 	WaitDiskMigration bool                   `json:",omitempty" yaml:"wait_disk_migration,omitempty" structs:",omitempty"`
+	ConnectedSwitches []*ConnectedSwitch     `json:",omitempty" yaml:"connected_switches,omitempty" structs:",omitempty"`
 }
 
 // ConnectedSwitch サーバ作成時に指定する接続先スイッチ
