@@ -1,18 +1,19 @@
-package sacloud
+package test
 
 import (
 	"context"
 	"testing"
 
+	"github.com/sacloud/libsacloud-v2/sacloud"
 	"github.com/sacloud/libsacloud-v2/sacloud/types"
 	"github.com/stretchr/testify/require"
 )
 
 func TestNoteOpCRUD(t *testing.T) {
 	Run(t, &CRUDTestCase{
-		Parallel: true,
-
-		SetupAPICaller: singletonAPICaller,
+		Parallel:          true,
+		IgnoreStartupWait: true,
+		SetupAPICaller:    singletonAPICaller,
 		Create: &CRUDTestFunc{
 			Func: testNoteCreate,
 			Expect: &CRUDTestExpect{
@@ -41,13 +42,13 @@ func TestNoteOpCRUD(t *testing.T) {
 }
 
 var (
-	createNoteParam = &NoteCreateRequest{
+	createNoteParam = &sacloud.NoteCreateRequest{
 		Name:    "libsacloud-v2-note",
 		Tags:    []string{"tag1", "tag2"},
 		Class:   "shell",
 		Content: "test-content",
 	}
-	createNoteExpected = &Note{
+	createNoteExpected = &sacloud.Note{
 		Name:         createNoteParam.Name,
 		Tags:         createNoteParam.Tags,
 		Class:        createNoteParam.Class,
@@ -55,13 +56,13 @@ var (
 		Scope:        types.Scopes.User,
 		Availability: types.Availabilities.Available,
 	}
-	updateNoteParam = &NoteUpdateRequest{
+	updateNoteParam = &sacloud.NoteUpdateRequest{
 		Name:    "libsacloud-v2-note-upd",
 		Tags:    []string{"tag1-upd", "tag2-upd"},
 		Class:   "shell",
 		Content: "test-content-upd",
 	}
-	updateNoteExpected = &Note{
+	updateNoteExpected = &sacloud.Note{
 		Name:         updateNoteParam.Name,
 		Tags:         updateNoteParam.Tags,
 		Class:        updateNoteParam.Class,
@@ -71,34 +72,30 @@ var (
 	}
 )
 
-func testNoteCreate(testContext *CRUDTestContext, caller APICaller) (interface{}, error) {
-	client := NewNoteOp(caller)
-	return client.Create(context.Background(), DefaultZone, createNoteParam)
+func testNoteCreate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+	client := sacloud.NewNoteOp(caller)
+	return client.Create(context.Background(), sacloud.DefaultZone, createNoteParam)
 }
 
-func testNoteRead(testContext *CRUDTestContext, caller APICaller) (interface{}, error) {
-	client := NewNoteOp(caller)
-	return client.Read(context.Background(), DefaultZone, testContext.ID)
+func testNoteRead(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+	client := sacloud.NewNoteOp(caller)
+	return client.Read(context.Background(), sacloud.DefaultZone, testContext.ID)
 }
 
-func testNoteUpdate(testContext *CRUDTestContext, caller APICaller) (interface{}, error) {
-	client := NewNoteOp(caller)
-	return client.Update(context.Background(), DefaultZone, testContext.ID, updateNoteParam)
+func testNoteUpdate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+	client := sacloud.NewNoteOp(caller)
+	return client.Update(context.Background(), sacloud.DefaultZone, testContext.ID, updateNoteParam)
 }
 
-func testNoteDelete(testContext *CRUDTestContext, caller APICaller) error {
-	client := NewNoteOp(caller)
-	return client.Delete(context.Background(), DefaultZone, testContext.ID)
+func testNoteDelete(testContext *CRUDTestContext, caller sacloud.APICaller) error {
+	client := sacloud.NewNoteOp(caller)
+	return client.Delete(context.Background(), sacloud.DefaultZone, testContext.ID)
 }
 
 func TestNoteOp_Find(t *testing.T) {
-	if !isAccTest() {
-		t.Skip("TESTACC is not set. skip")
-	}
+	client := sacloud.NewNoteOp(singletonAPICaller())
 
-	client := NewNoteOp(singletonAPICaller())
-
-	notes, err := client.Find(context.Background(), DefaultZone, &FindCondition{Count: 1})
+	notes, err := client.Find(context.Background(), sacloud.DefaultZone, &sacloud.FindCondition{Count: 1})
 	require.NoError(t, err)
 	require.Len(t, notes, 1)
 }

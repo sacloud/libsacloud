@@ -1,9 +1,10 @@
-package sacloud
+package test
 
 import (
 	"context"
 	"testing"
 
+	"github.com/sacloud/libsacloud-v2/sacloud"
 	"github.com/sacloud/libsacloud-v2/sacloud/types"
 )
 
@@ -37,9 +38,9 @@ func TestLoadBalancerOpCRUD(t *testing.T) {
 			},
 		},
 
-		Shutdown: func(testContext *CRUDTestContext, caller APICaller) error {
-			client := NewLoadBalancerOp(caller)
-			return client.Shutdown(context.Background(), testZone, testContext.ID, &ShutdownOption{Force: true})
+		Shutdown: func(testContext *CRUDTestContext, caller sacloud.APICaller) error {
+			client := sacloud.NewLoadBalancerOp(caller)
+			return client.Shutdown(context.Background(), testZone, testContext.ID, &sacloud.ShutdownOption{Force: true})
 		},
 
 		Delete: &CRUDTestDeleteFunc{
@@ -68,7 +69,7 @@ var (
 		"SettingsHash",
 	}
 
-	createLoadBalancerParam = &LoadBalancerCreateRequest{
+	createLoadBalancerParam = &sacloud.LoadBalancerCreateRequest{
 		PlanID:         types.ID(2),
 		VRID:           100,
 		IPAddresses:    []string{"192.168.0.11", "192.168.0.12"},
@@ -77,14 +78,14 @@ var (
 		Name:           "libsacloud-v2-lb",
 		Description:    "desc",
 		Tags:           []string{"tag1", "tag2"},
-		VirtualIPAddresses: []*LoadBalancerVirtualIPAddress{
+		VirtualIPAddresses: []*sacloud.LoadBalancerVirtualIPAddress{
 			{
 				VirtualIPAddress: "192.168.0.101",
 				Port:             types.StringNumber(80),
 				DelayLoop:        types.StringNumber(10),
 				SorryServer:      "192.168.0.2",
 				Description:      "vip1 desc",
-				Servers: []*LoadBalancerServer{
+				Servers: []*sacloud.LoadBalancerServer{
 					{
 						IPAddress:               "192.168.0.201",
 						Port:                    types.StringNumber(80),
@@ -109,7 +110,7 @@ var (
 				DelayLoop:        types.StringNumber(10),
 				SorryServer:      "192.168.0.2",
 				Description:      "vip2 desc",
-				Servers: []*LoadBalancerServer{
+				Servers: []*sacloud.LoadBalancerServer{
 					{
 						IPAddress:               "192.168.0.203",
 						Port:                    types.StringNumber(80),
@@ -130,7 +131,7 @@ var (
 			},
 		},
 	}
-	createLoadBalancerExpected = &LoadBalancer{
+	createLoadBalancerExpected = &sacloud.LoadBalancer{
 		Name:               createLoadBalancerParam.Name,
 		Description:        createLoadBalancerParam.Description,
 		Tags:               createLoadBalancerParam.Tags,
@@ -143,18 +144,18 @@ var (
 		VRID:               createLoadBalancerParam.VRID,
 		VirtualIPAddresses: createLoadBalancerParam.VirtualIPAddresses,
 	}
-	updateLoadBalancerParam = &LoadBalancerUpdateRequest{
+	updateLoadBalancerParam = &sacloud.LoadBalancerUpdateRequest{
 		Name:        "libsacloud-v2-lb-upd",
 		Tags:        []string{"tag1-upd", "tag2-upd"},
 		Description: "desc-upd",
-		VirtualIPAddresses: []*LoadBalancerVirtualIPAddress{
+		VirtualIPAddresses: []*sacloud.LoadBalancerVirtualIPAddress{
 			{
 				VirtualIPAddress: "192.168.0.111",
 				Port:             types.StringNumber(81),
 				DelayLoop:        types.StringNumber(11),
 				SorryServer:      "192.168.0.3",
 				Description:      "vip1 desc-upd",
-				Servers: []*LoadBalancerServer{
+				Servers: []*sacloud.LoadBalancerServer{
 					{
 						IPAddress:               "192.168.0.211",
 						Port:                    types.StringNumber(81),
@@ -179,7 +180,7 @@ var (
 				DelayLoop:        types.StringNumber(11),
 				SorryServer:      "192.168.0.3",
 				Description:      "vip2 desc-upd",
-				Servers: []*LoadBalancerServer{
+				Servers: []*sacloud.LoadBalancerServer{
 					{
 						IPAddress:               "192.168.0.213",
 						Port:                    types.StringNumber(81),
@@ -200,7 +201,7 @@ var (
 			},
 		},
 	}
-	updateLoadBalancerExpected = &LoadBalancer{
+	updateLoadBalancerExpected = &sacloud.LoadBalancer{
 		Name:               updateLoadBalancerParam.Name,
 		Description:        updateLoadBalancerParam.Description,
 		Tags:               updateLoadBalancerParam.Tags,
@@ -215,22 +216,22 @@ var (
 	}
 )
 
-func testLoadBalancerCreate(testContext *CRUDTestContext, caller APICaller) (interface{}, error) {
-	client := NewLoadBalancerOp(caller)
+func testLoadBalancerCreate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+	client := sacloud.NewLoadBalancerOp(caller)
 	return client.Create(context.Background(), testZone, createLoadBalancerParam)
 }
 
-func testLoadBalancerRead(testContext *CRUDTestContext, caller APICaller) (interface{}, error) {
-	client := NewLoadBalancerOp(caller)
+func testLoadBalancerRead(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+	client := sacloud.NewLoadBalancerOp(caller)
 	return client.Read(context.Background(), testZone, testContext.ID)
 }
 
-func testLoadBalancerUpdate(testContext *CRUDTestContext, caller APICaller) (interface{}, error) {
-	client := NewLoadBalancerOp(caller)
+func testLoadBalancerUpdate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+	client := sacloud.NewLoadBalancerOp(caller)
 	return client.Update(context.Background(), testZone, testContext.ID, updateLoadBalancerParam)
 }
 
-func testLoadBalancerDelete(testContext *CRUDTestContext, caller APICaller) error {
-	client := NewLoadBalancerOp(caller)
+func testLoadBalancerDelete(testContext *CRUDTestContext, caller sacloud.APICaller) error {
+	client := sacloud.NewLoadBalancerOp(caller)
 	return client.Delete(context.Background(), testZone, testContext.ID)
 }

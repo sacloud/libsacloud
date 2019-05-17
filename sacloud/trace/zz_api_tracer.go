@@ -308,24 +308,24 @@ func (t *DiskTracer) DisconnectFromServer(ctx context.Context, zone string, id t
 	return t.Internal.DisconnectFromServer(ctx, zone, id)
 }
 
-// Install is API call with trace log
-func (t *DiskTracer) Install(ctx context.Context, zone string, id types.ID, installParam *sacloud.DiskInstallRequest, distantFrom []types.ID) (*sacloud.Disk, error) {
-	log.Println("[TRACE] DiskTracer.Install start:	args => [", "zone=", zone, "id=", id, "installParam=", installParam, "distantFrom=", distantFrom, "]")
-	defer func() {
-		log.Println("[TRACE] DiskTracer.Install: end")
-	}()
-
-	return t.Internal.Install(ctx, zone, id, installParam, distantFrom)
-}
-
 // InstallDistantFrom is API call with trace log
-func (t *DiskTracer) InstallDistantFrom(ctx context.Context, zone string, id types.ID, installParam *sacloud.DiskInstallRequest) (*sacloud.Disk, error) {
-	log.Println("[TRACE] DiskTracer.InstallDistantFrom start:	args => [", "zone=", zone, "id=", id, "installParam=", installParam, "]")
+func (t *DiskTracer) InstallDistantFrom(ctx context.Context, zone string, id types.ID, installParam *sacloud.DiskInstallRequest, distantFrom []types.ID) (*sacloud.Disk, error) {
+	log.Println("[TRACE] DiskTracer.InstallDistantFrom start:	args => [", "zone=", zone, "id=", id, "installParam=", installParam, "distantFrom=", distantFrom, "]")
 	defer func() {
 		log.Println("[TRACE] DiskTracer.InstallDistantFrom: end")
 	}()
 
-	return t.Internal.InstallDistantFrom(ctx, zone, id, installParam)
+	return t.Internal.InstallDistantFrom(ctx, zone, id, installParam, distantFrom)
+}
+
+// Install is API call with trace log
+func (t *DiskTracer) Install(ctx context.Context, zone string, id types.ID, installParam *sacloud.DiskInstallRequest) (*sacloud.Disk, error) {
+	log.Println("[TRACE] DiskTracer.Install start:	args => [", "zone=", zone, "id=", id, "installParam=", installParam, "]")
+	defer func() {
+		log.Println("[TRACE] DiskTracer.Install: end")
+	}()
+
+	return t.Internal.Install(ctx, zone, id, installParam)
 }
 
 // Read is API call with trace log

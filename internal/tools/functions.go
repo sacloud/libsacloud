@@ -7,6 +7,7 @@ import (
 	"go/format"
 	"io/ioutil"
 	"log"
+	"os"
 	"path/filepath"
 	"strings"
 	"text/template"
@@ -15,12 +16,13 @@ import (
 )
 
 type TemplateConfig struct {
-	OutputPath string
-	Template   string
-	Parameter  interface{}
+	OutputPath         string
+	Template           string
+	Parameter          interface{}
+	PreventOverwriting bool
 }
 
-func WriteFileWithTemplate(config *TemplateConfig) {
+func WriteFileWithTemplate(config *TemplateConfig) bool {
 	buf := bytes.NewBufferString("")
 	t := template.New("t")
 	template.Must(t.Parse(config.Template))
@@ -28,10 +30,17 @@ func WriteFileWithTemplate(config *TemplateConfig) {
 		log.Fatalf("writing output: %s", err)
 	}
 
+	if config.PreventOverwriting {
+		if _, err := os.Stat(config.OutputPath); err == nil {
+			return false
+		}
+	}
+
 	// write to file
 	if err := ioutil.WriteFile(config.OutputPath, Sformat(buf.Bytes()), 0644); err != nil {
 		log.Fatalf("writing output: %s", err)
 	}
+	return true
 }
 
 // Gopath returns GOPATH

@@ -407,3 +407,18 @@ func (o *Operation) IsResponsePlural() bool {
 	}
 	return false
 }
+
+// FileSafeName スネークケースにしたResourceの名前、コード生成時の保存先ファイル名に利用される
+func (o *Operation) FileSafeName() string {
+	return toSnakeCaseName(o.name)
+}
+
+// ResourceTypeName リソースの名称を取得
+func (o *Operation) ResourceTypeName() string {
+	return o.resource.TypeName()
+}
+
+// ResourceIsGlobal リソースがグローバルリソースか
+func (o *Operation) ResourceIsGlobal() bool {
+	return o.resource.isGlobal
+}

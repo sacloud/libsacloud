@@ -92,5 +92,7 @@ func init() {
 			// delete
 			r.DefineOperationDelete(),
 		)
-	}).PathName("commonserviceitem")
+	}).
+		PathName("commonserviceitem").
+		SetIsGlobal(true)
 }

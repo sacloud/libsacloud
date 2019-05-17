@@ -1,9 +1,10 @@
-package sacloud
+package test
 
 import (
 	"context"
 	"testing"
 
+	"github.com/sacloud/libsacloud-v2/sacloud"
 	"github.com/sacloud/libsacloud-v2/sacloud/types"
 	"github.com/stretchr/testify/require"
 )
@@ -38,23 +39,23 @@ func TestServerOpCRUD(t *testing.T) {
 			},
 		},
 
-		Shutdown: func(testContext *CRUDTestContext, caller APICaller) error {
-			client := NewServerOp(caller)
-			return client.Shutdown(context.Background(), testZone, testContext.ID, &ShutdownOption{Force: true})
+		Shutdown: func(testContext *CRUDTestContext, caller sacloud.APICaller) error {
+			client := sacloud.NewServerOp(caller)
+			return client.Shutdown(context.Background(), testZone, testContext.ID, &sacloud.ShutdownOption{Force: true})
 		},
 
 		Delete: &CRUDTestDeleteFunc{
 			Func: testServerDelete,
 		},
 
-		Cleanup: func(testContext *CRUDTestContext, caller APICaller) error {
+		Cleanup: func(testContext *CRUDTestContext, caller sacloud.APICaller) error {
 
 			switchID, ok := testContext.Values["nfs/switch"]
 			if !ok {
 				return nil
 			}
 
-			swClient := NewSwitchOp(caller)
+			swClient := sacloud.NewSwitchOp(caller)
 			return swClient.Delete(context.Background(), testZone, switchID.(types.ID))
 		},
 	})
@@ -68,7 +69,7 @@ var (
 		"ServerPlanName",
 		"ServerPlanGeneration",
 		"ServerPlanCommitment",
-		"Zone",
+		"ZoneID",
 		"InstanceHostName",
 		"InstanceHostInfoURL",
 		"InstanceStatus",
@@ -82,14 +83,14 @@ var (
 		"PrivateHostName",
 		"BundleInfo",
 		"Storage",
-		"Icon",
+		"IconID",
 		"CreatedAt",
 		"ModifiedAt",
 	}
-	createServerParam = &ServerCreateRequest{
+	createServerParam = &sacloud.ServerCreateRequest{
 		CPU:      1,
 		MemoryMB: 1 * 1024,
-		ConnectedSwitches: []*ConnectedSwitch{
+		ConnectedSwitches: []*sacloud.ConnectedSwitch{
 			{
 				Scope: types.Scopes.Shared,
 			},
@@ -101,7 +102,7 @@ var (
 		Tags:              []string{"tag1", "tag2"},
 		WaitDiskMigration: false,
 	}
-	createServerExpected = &Server{
+	createServerExpected = &sacloud.Server{
 		Name:            createServerParam.Name,
 		Description:     createServerParam.Description,
 		Tags:            createServerParam.Tags,
@@ -110,12 +111,12 @@ var (
 		CPU:             createServerParam.CPU,
 		MemoryMB:        createServerParam.MemoryMB,
 	}
-	updateServerParam = &ServerUpdateRequest{
+	updateServerParam = &sacloud.ServerUpdateRequest{
 		Name:        "libsacloud-v2-nfs-upd",
 		Tags:        []string{"tag1-upd", "tag2-upd"},
 		Description: "desc-upd",
 	}
-	updateServerExpected = &Server{
+	updateServerExpected = &sacloud.Server{
 		Name:            updateServerParam.Name,
 		Description:     updateServerParam.Description,
 		Tags:            updateServerParam.Tags,
@@ -126,8 +127,8 @@ var (
 	}
 )
 
-func testServerCreate(_ *CRUDTestContext, caller APICaller) (interface{}, error) {
-	client := NewServerOp(caller)
+func testServerCreate(_ *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+	client := sacloud.NewServerOp(caller)
 	server, err := client.Create(context.Background(), testZone, createServerParam)
 	if err != nil {
 		return nil, err
@@ -138,32 +139,28 @@ func testServerCreate(_ *CRUDTestContext, caller APICaller) (interface{}, error)
 	return server, nil
 }
 
-func testServerRead(testContext *CRUDTestContext, caller APICaller) (interface{}, error) {
-	client := NewServerOp(caller)
+func testServerRead(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+	client := sacloud.NewServerOp(caller)
 	return client.Read(context.Background(), testZone, testContext.ID)
 }
 
-func testServerUpdate(testContext *CRUDTestContext, caller APICaller) (interface{}, error) {
-	client := NewServerOp(caller)
+func testServerUpdate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+	client := sacloud.NewServerOp(caller)
 	return client.Update(context.Background(), testZone, testContext.ID, updateServerParam)
 }
 
-func testServerDelete(testContext *CRUDTestContext, caller APICaller) error {
-	client := NewServerOp(caller)
+func testServerDelete(testContext *CRUDTestContext, caller sacloud.APICaller) error {
+	client := sacloud.NewServerOp(caller)
 	return client.Delete(context.Background(), testZone, testContext.ID)
 }
 
 func TestServerOp_ChangePlan(t *testing.T) {
-	if !isAccTest() {
-		t.Skip("TESTACC is not set. skip")
-	}
-
-	client := NewServerOp(singletonAPICaller())
+	client := sacloud.NewServerOp(singletonAPICaller())
 	ctx := context.Background()
-	server, err := client.Create(ctx, testZone, &ServerCreateRequest{
+	server, err := client.Create(ctx, testZone, &sacloud.ServerCreateRequest{
 		CPU:      1,
 		MemoryMB: 1 * 1024,
-		ConnectedSwitches: []*ConnectedSwitch{
+		ConnectedSwitches: []*sacloud.ConnectedSwitch{
 			{
 				Scope: types.Scopes.Shared,
 			},
@@ -181,7 +178,7 @@ func TestServerOp_ChangePlan(t *testing.T) {
 	require.Equal(t, server.GetMemoryGB(), 1)
 
 	// change
-	newServer, err := client.ChangePlan(ctx, testZone, server.ID, &ServerChangePlanRequest{
+	newServer, err := client.ChangePlan(ctx, testZone, server.ID, &sacloud.ServerChangePlanRequest{
 		CPU:      2,
 		MemoryMB: 4 * 1024,
 	})

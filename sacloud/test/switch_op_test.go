@@ -1,8 +1,11 @@
-package sacloud
+package test
 
 import (
 	"context"
 	"testing"
+
+	"github.com/sacloud/libsacloud-v2/sacloud"
+	"github.com/sacloud/libsacloud-v2/sacloud/types"
 )
 
 func TestSwitchOpCRUD(t *testing.T) {
@@ -43,54 +46,56 @@ var (
 		"Icon",
 		"CreatedAt",
 		"ModifiedAt",
-		"Zone",
+		"ZoneID",
 	}
-	createSwitchParam = &SwitchCreateRequest{
+	createSwitchParam = &sacloud.SwitchCreateRequest{
 		Name:           "libsacloud-v2-switch",
 		Description:    "desc",
 		Tags:           []string{"tag1", "tag2"},
 		DefaultRoute:   "192.168.0.1",
 		NetworkMaskLen: 24,
 	}
-	createSwitchExpected = &Switch{
+	createSwitchExpected = &sacloud.Switch{
 		Name:           createSwitchParam.Name,
 		Description:    createSwitchParam.Description,
 		Tags:           createSwitchParam.Tags,
 		DefaultRoute:   createSwitchParam.DefaultRoute,
 		NetworkMaskLen: createSwitchParam.NetworkMaskLen,
+		Scope:          types.Scopes.User,
 	}
-	updateSwitchParam = &SwitchUpdateRequest{
+	updateSwitchParam = &sacloud.SwitchUpdateRequest{
 		Name:           "libsacloud-v2-switch-upd",
 		Tags:           []string{"tag1-upd", "tag2-upd"},
 		Description:    "desc-upd",
 		DefaultRoute:   "192.168.0.2",
 		NetworkMaskLen: 28,
 	}
-	updateSwitchExpected = &Switch{
+	updateSwitchExpected = &sacloud.Switch{
 		Name:           updateSwitchParam.Name,
 		Description:    updateSwitchParam.Description,
 		Tags:           updateSwitchParam.Tags,
 		DefaultRoute:   updateSwitchParam.DefaultRoute,
 		NetworkMaskLen: updateSwitchParam.NetworkMaskLen,
+		Scope:          createSwitchExpected.Scope,
 	}
 )
 
-func testSwitchCreate(testContext *CRUDTestContext, caller APICaller) (interface{}, error) {
-	client := NewSwitchOp(caller)
+func testSwitchCreate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+	client := sacloud.NewSwitchOp(caller)
 	return client.Create(context.Background(), testZone, createSwitchParam)
 }
 
-func testSwitchRead(testContext *CRUDTestContext, caller APICaller) (interface{}, error) {
-	client := NewSwitchOp(caller)
+func testSwitchRead(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+	client := sacloud.NewSwitchOp(caller)
 	return client.Read(context.Background(), testZone, testContext.ID)
 }
 
-func testSwitchUpdate(testContext *CRUDTestContext, caller APICaller) (interface{}, error) {
-	client := NewSwitchOp(caller)
+func testSwitchUpdate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+	client := sacloud.NewSwitchOp(caller)
 	return client.Update(context.Background(), testZone, testContext.ID, updateSwitchParam)
 }
 
-func testSwitchDelete(testContext *CRUDTestContext, caller APICaller) error {
-	client := NewSwitchOp(caller)
+func testSwitchDelete(testContext *CRUDTestContext, caller sacloud.APICaller) error {
+	client := sacloud.NewSwitchOp(caller)
 	return client.Delete(context.Background(), testZone, testContext.ID)
 }

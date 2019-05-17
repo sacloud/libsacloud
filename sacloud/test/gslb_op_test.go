@@ -1,9 +1,10 @@
-package sacloud
+package test
 
 import (
 	"context"
 	"testing"
 
+	"github.com/sacloud/libsacloud-v2/sacloud"
 	"github.com/sacloud/libsacloud-v2/sacloud/types"
 )
 
@@ -53,7 +54,7 @@ var (
 		"CreatedAt",
 		"ModifiedAt",
 	}
-	createGSLBParam = &GSLBCreateRequest{
+	createGSLBParam = &sacloud.GSLBCreateRequest{
 		Name:                    "libsacloud-v2-gslb",
 		Description:             "desc",
 		Tags:                    []string{"tag1", "tag2"},
@@ -64,7 +65,7 @@ var (
 		DelayLoop:               20,
 		Weighted:                types.StringTrue,
 		SorryServer:             "8.8.8.8",
-		DestinationServers: []*GSLBServer{
+		DestinationServers: []*sacloud.GSLBServer{
 			{
 				IPAddress: "192.2.0.1",
 				Enabled:   types.StringTrue,
@@ -75,7 +76,7 @@ var (
 			},
 		},
 	}
-	createGSLBExpected = &GSLB{
+	createGSLBExpected = &sacloud.GSLB{
 		Name:                    createGSLBParam.Name,
 		Description:             createGSLBParam.Description,
 		Tags:                    createGSLBParam.Tags,
@@ -88,7 +89,7 @@ var (
 		HealthCheckResponseCode: createGSLBParam.HealthCheckResponseCode,
 		HealthCheckPort:         createGSLBParam.HealthCheckPort,
 		SorryServer:             createGSLBParam.SorryServer,
-		DestinationServers: []*GSLBServer{
+		DestinationServers: []*sacloud.GSLBServer{
 			{
 				IPAddress: "192.2.0.1",
 				Weight:    types.StringNumber(1),
@@ -101,7 +102,7 @@ var (
 			},
 		},
 	}
-	updateGSLBParam = &GSLBUpdateRequest{
+	updateGSLBParam = &sacloud.GSLBUpdateRequest{
 		Name:                    "libsacloud-v2-gslb-upd",
 		Description:             "desc-upd",
 		Tags:                    []string{"tag1-upd", "tag2-upd"},
@@ -112,7 +113,7 @@ var (
 		DelayLoop:               21,
 		Weighted:                types.StringTrue,
 		SorryServer:             "8.8.4.4",
-		DestinationServers: []*GSLBServer{
+		DestinationServers: []*sacloud.GSLBServer{
 			{
 				IPAddress: "192.2.0.11",
 				Enabled:   types.StringFalse,
@@ -125,7 +126,7 @@ var (
 			},
 		},
 	}
-	updateGSLBExpected = &GSLB{
+	updateGSLBExpected = &sacloud.GSLB{
 		Name:                    updateGSLBParam.Name,
 		Description:             updateGSLBParam.Description,
 		Tags:                    updateGSLBParam.Tags,
@@ -142,22 +143,22 @@ var (
 	}
 )
 
-func testGSLBCreate(testContext *CRUDTestContext, caller APICaller) (interface{}, error) {
-	client := NewGSLBOp(caller)
-	return client.Create(context.Background(), DefaultZone, createGSLBParam)
+func testGSLBCreate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+	client := sacloud.NewGSLBOp(caller)
+	return client.Create(context.Background(), sacloud.DefaultZone, createGSLBParam)
 }
 
-func testGSLBRead(testContext *CRUDTestContext, caller APICaller) (interface{}, error) {
-	client := NewGSLBOp(caller)
-	return client.Read(context.Background(), DefaultZone, testContext.ID)
+func testGSLBRead(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+	client := sacloud.NewGSLBOp(caller)
+	return client.Read(context.Background(), sacloud.DefaultZone, testContext.ID)
 }
 
-func testGSLBUpdate(testContext *CRUDTestContext, caller APICaller) (interface{}, error) {
-	client := NewGSLBOp(caller)
-	return client.Update(context.Background(), DefaultZone, testContext.ID, updateGSLBParam)
+func testGSLBUpdate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+	client := sacloud.NewGSLBOp(caller)
+	return client.Update(context.Background(), sacloud.DefaultZone, testContext.ID, updateGSLBParam)
 }
 
-func testGSLBDelete(testContext *CRUDTestContext, caller APICaller) error {
-	client := NewGSLBOp(caller)
-	return client.Delete(context.Background(), DefaultZone, testContext.ID)
+func testGSLBDelete(testContext *CRUDTestContext, caller sacloud.APICaller) error {
+	client := sacloud.NewGSLBOp(caller)
+	return client.Delete(context.Background(), sacloud.DefaultZone, testContext.ID)
 }

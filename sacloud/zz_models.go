@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/sacloud/libsacloud-v2/pkg/mapconv"
+	"github.com/sacloud/libsacloud-v2/sacloud/accessor"
 	"github.com/sacloud/libsacloud-v2/sacloud/naked"
 	"github.com/sacloud/libsacloud-v2/sacloud/types"
 	"gopkg.in/go-playground/validator.v9"
@@ -28,7 +29,7 @@ type Archive struct {
 	MigratedMB                int
 	DiskPlanID                types.ID            `mapconv:"Plan.ID"`
 	DiskPlanName              string              `mapconv:"Plan.Name"`
-	DiskPlanStorageClass      types.StringFlag    `mapconv:"Plan.StorageClass"`
+	DiskPlanStorageClass      string              `mapconv:"Plan.StorageClass"`
 	SourceDiskID              types.ID            `mapconv:"SourceDisk.ID,omitempty"`
 	SourceDiskAvailability    types.EAvailability `mapconv:"SourceDisk.Availability,omitempty"`
 	SourceArchiveID           types.ID            `mapconv:"SourceArchive.ID,omitempty"`
@@ -59,22 +60,22 @@ func (o *Archive) SetID(v types.ID) {
 
 // GetStringID gets value to StringID
 func (o *Archive) GetStringID() string {
-	return getStringID(o)
+	return accessor.GetStringID(o)
 }
 
 // SetStringID sets value to StringID
 func (o *Archive) SetStringID(v string) {
-	setStringID(o, v)
+	accessor.SetStringID(o, v)
 }
 
 // GetInt64ID gets value to Int64ID
 func (o *Archive) GetInt64ID() int64 {
-	return getInt64ID(o)
+	return accessor.GetInt64ID(o)
 }
 
 // SetInt64ID sets value to Int64ID
 func (o *Archive) SetInt64ID(v int64) {
-	setInt64ID(o, v)
+	accessor.SetInt64ID(o, v)
 }
 
 // GetName returns value of Name
@@ -149,12 +150,12 @@ func (o *Archive) SetSizeMB(v int) {
 
 // GetSizeGB gets value to SizeGB
 func (o *Archive) GetSizeGB() int {
-	return getSizeGB(o)
+	return accessor.GetSizeGB(o)
 }
 
 // SetSizeGB sets value to SizeGB
 func (o *Archive) SetSizeGB(v int) {
-	setSizeGB(o, v)
+	accessor.SetSizeGB(o, v)
 }
 
 // GetMigratedMB returns value of MigratedMB
@@ -169,12 +170,12 @@ func (o *Archive) SetMigratedMB(v int) {
 
 // GetMigratedGB gets value to MigratedGB
 func (o *Archive) GetMigratedGB() int {
-	return getMigratedGB(o)
+	return accessor.GetMigratedGB(o)
 }
 
 // SetMigratedGB sets value to MigratedGB
 func (o *Archive) SetMigratedGB(v int) {
-	setMigratedGB(o, v)
+	accessor.SetMigratedGB(o, v)
 }
 
 // GetDiskPlanID returns value of DiskPlanID
@@ -198,12 +199,12 @@ func (o *Archive) SetDiskPlanName(v string) {
 }
 
 // GetDiskPlanStorageClass returns value of DiskPlanStorageClass
-func (o *Archive) GetDiskPlanStorageClass() types.StringFlag {
+func (o *Archive) GetDiskPlanStorageClass() string {
 	return o.DiskPlanStorageClass
 }
 
 // SetDiskPlanStorageClass sets value to DiskPlanStorageClass
-func (o *Archive) SetDiskPlanStorageClass(v types.StringFlag) {
+func (o *Archive) SetDiskPlanStorageClass(v string) {
 	o.DiskPlanStorageClass = v
 }
 
@@ -351,9 +352,19 @@ func (o *SourceArchiveInfo) GetID() types.ID {
 	return o.ID
 }
 
+// SetID sets value to ID
+func (o *SourceArchiveInfo) SetID(v types.ID) {
+	o.ID = v
+}
+
 // GetAccountID returns value of AccountID
 func (o *SourceArchiveInfo) GetAccountID() types.ID {
 	return o.AccountID
+}
+
+// SetAccountID sets value to AccountID
+func (o *SourceArchiveInfo) SetAccountID(v types.ID) {
+	o.AccountID = v
 }
 
 // GetZoneID returns value of ZoneID
@@ -361,9 +372,19 @@ func (o *SourceArchiveInfo) GetZoneID() types.ID {
 	return o.ZoneID
 }
 
+// SetZoneID sets value to ZoneID
+func (o *SourceArchiveInfo) SetZoneID(v types.ID) {
+	o.ZoneID = v
+}
+
 // GetZoneName returns value of ZoneName
 func (o *SourceArchiveInfo) GetZoneName() string {
 	return o.ZoneName
+}
+
+// SetZoneName sets value to ZoneName
+func (o *SourceArchiveInfo) SetZoneName(v string) {
+	o.ZoneName = v
 }
 
 /*************************************************
@@ -635,12 +656,12 @@ func (o *ArchiveCreateBlankRequest) SetSizeMB(v int) {
 
 // GetSizeGB gets value to SizeGB
 func (o *ArchiveCreateBlankRequest) GetSizeGB() int {
-	return getSizeGB(o)
+	return accessor.GetSizeGB(o)
 }
 
 // SetSizeGB sets value to SizeGB
 func (o *ArchiveCreateBlankRequest) SetSizeGB(v int) {
-	setSizeGB(o, v)
+	accessor.SetSizeGB(o, v)
 }
 
 // GetName returns value of Name
@@ -825,22 +846,22 @@ func (o *CDROM) SetID(v types.ID) {
 
 // GetStringID gets value to StringID
 func (o *CDROM) GetStringID() string {
-	return getStringID(o)
+	return accessor.GetStringID(o)
 }
 
 // SetStringID sets value to StringID
 func (o *CDROM) SetStringID(v string) {
-	setStringID(o, v)
+	accessor.SetStringID(o, v)
 }
 
 // GetInt64ID gets value to Int64ID
 func (o *CDROM) GetInt64ID() int64 {
-	return getInt64ID(o)
+	return accessor.GetInt64ID(o)
 }
 
 // SetInt64ID sets value to Int64ID
 func (o *CDROM) SetInt64ID(v int64) {
-	setInt64ID(o, v)
+	accessor.SetInt64ID(o, v)
 }
 
 // GetName returns value of Name
@@ -995,12 +1016,12 @@ func (o *CDROMCreateRequest) SetSizeMB(v int) {
 
 // GetSizeGB gets value to SizeGB
 func (o *CDROMCreateRequest) GetSizeGB() int {
-	return getSizeGB(o)
+	return accessor.GetSizeGB(o)
 }
 
 // SetSizeGB sets value to SizeGB
 func (o *CDROMCreateRequest) SetSizeGB(v int) {
-	setSizeGB(o, v)
+	accessor.SetSizeGB(o, v)
 }
 
 // GetName returns value of Name
@@ -1135,20 +1156,21 @@ type Disk struct {
 	Description               string `validate:"min=0,max=512"`
 	Tags                      []string
 	Availability              types.EAvailability
-	Connection                types.EDiskConnection
+	Connection                types.EDiskConnection `json:",omitempty" mapconv:",omitempty"`
 	ConnectionOrder           int
 	ReinstallCount            int
 	SizeMB                    int
 	MigratedMB                int
 	DiskPlanID                types.ID            `mapconv:"Plan.ID"`
 	DiskPlanName              string              `mapconv:"Plan.Name"`
-	DiskPlanStorageClass      types.StringFlag    `mapconv:"Plan.StorageClass"`
+	DiskPlanStorageClass      string              `mapconv:"Plan.StorageClass"`
 	SourceDiskID              types.ID            `mapconv:"SourceDisk.ID,omitempty"`
 	SourceDiskAvailability    types.EAvailability `mapconv:"SourceDisk.Availability,omitempty"`
 	SourceArchiveID           types.ID            `mapconv:"SourceArchive.ID,omitempty"`
 	SourceArchiveAvailability types.EAvailability `mapconv:"SourceArchive.Availability,omitempty"`
 	BundleInfo                *naked.BundleInfo   `json:",omitempty"`
 	Storage                   *naked.Storage      `json:",omitempty"`
+	ServerID                  types.ID            `mapconv:"Server.ID,omitempty"`
 	Icon                      *naked.Icon         `json:",omitempty"`
 	CreatedAt                 *time.Time
 	ModifiedAt                *time.Time
@@ -1171,22 +1193,22 @@ func (o *Disk) SetID(v types.ID) {
 
 // GetStringID gets value to StringID
 func (o *Disk) GetStringID() string {
-	return getStringID(o)
+	return accessor.GetStringID(o)
 }
 
 // SetStringID sets value to StringID
 func (o *Disk) SetStringID(v string) {
-	setStringID(o, v)
+	accessor.SetStringID(o, v)
 }
 
 // GetInt64ID gets value to Int64ID
 func (o *Disk) GetInt64ID() int64 {
-	return getInt64ID(o)
+	return accessor.GetInt64ID(o)
 }
 
 // SetInt64ID sets value to Int64ID
 func (o *Disk) SetInt64ID(v int64) {
-	setInt64ID(o, v)
+	accessor.SetInt64ID(o, v)
 }
 
 // GetName returns value of Name
@@ -1271,12 +1293,12 @@ func (o *Disk) SetSizeMB(v int) {
 
 // GetSizeGB gets value to SizeGB
 func (o *Disk) GetSizeGB() int {
-	return getSizeGB(o)
+	return accessor.GetSizeGB(o)
 }
 
 // SetSizeGB sets value to SizeGB
 func (o *Disk) SetSizeGB(v int) {
-	setSizeGB(o, v)
+	accessor.SetSizeGB(o, v)
 }
 
 // GetMigratedMB returns value of MigratedMB
@@ -1291,12 +1313,12 @@ func (o *Disk) SetMigratedMB(v int) {
 
 // GetMigratedGB gets value to MigratedGB
 func (o *Disk) GetMigratedGB() int {
-	return getMigratedGB(o)
+	return accessor.GetMigratedGB(o)
 }
 
 // SetMigratedGB sets value to MigratedGB
 func (o *Disk) SetMigratedGB(v int) {
-	setMigratedGB(o, v)
+	accessor.SetMigratedGB(o, v)
 }
 
 // GetDiskPlanID returns value of DiskPlanID
@@ -1320,12 +1342,12 @@ func (o *Disk) SetDiskPlanName(v string) {
 }
 
 // GetDiskPlanStorageClass returns value of DiskPlanStorageClass
-func (o *Disk) GetDiskPlanStorageClass() types.StringFlag {
+func (o *Disk) GetDiskPlanStorageClass() string {
 	return o.DiskPlanStorageClass
 }
 
 // SetDiskPlanStorageClass sets value to DiskPlanStorageClass
-func (o *Disk) SetDiskPlanStorageClass(v types.StringFlag) {
+func (o *Disk) SetDiskPlanStorageClass(v string) {
 	o.DiskPlanStorageClass = v
 }
 
@@ -1389,6 +1411,16 @@ func (o *Disk) SetStorage(v *naked.Storage) {
 	o.Storage = v
 }
 
+// GetServerID returns value of ServerID
+func (o *Disk) GetServerID() types.ID {
+	return o.ServerID
+}
+
+// SetServerID sets value to ServerID
+func (o *Disk) SetServerID(v types.ID) {
+	o.ServerID = v
+}
+
 // GetIcon returns value of Icon
 func (o *Disk) GetIcon() *naked.Icon {
 	return o.Icon
@@ -1437,11 +1469,11 @@ func (o *Disk) convertFrom(naked *naked.Disk) error {
 
 // DiskCreateRequest represents API parameter/response structure
 type DiskCreateRequest struct {
-	DiskPlanID      types.ID `mapconv:"Plan.ID"`
-	Connection      types.EDiskConnection
-	SourceDiskID    types.ID `mapconv:"SourceDisk.ID,omitempty"`
-	SourceArchiveID types.ID `mapconv:"SourceArchive.ID,omitempty"`
-	ServerID        types.ID `mapconv:"Server.ID,omitempty"`
+	DiskPlanID      types.ID              `mapconv:"Plan.ID"`
+	Connection      types.EDiskConnection `json:",omitempty" mapconv:",omitempty"`
+	SourceDiskID    types.ID              `mapconv:"SourceDisk.ID,omitempty"`
+	SourceArchiveID types.ID              `mapconv:"SourceArchive.ID,omitempty"`
+	ServerID        types.ID              `mapconv:"Server.ID,omitempty"`
 	SizeMB          int
 	Name            string `validate:"required"`
 	Description     string `validate:"min=0,max=512"`
@@ -1516,12 +1548,12 @@ func (o *DiskCreateRequest) SetSizeMB(v int) {
 
 // GetSizeGB gets value to SizeGB
 func (o *DiskCreateRequest) GetSizeGB() int {
-	return getSizeGB(o)
+	return accessor.GetSizeGB(o)
 }
 
 // SetSizeGB sets value to SizeGB
 func (o *DiskCreateRequest) SetSizeGB(v int) {
-	setSizeGB(o, v)
+	accessor.SetSizeGB(o, v)
 }
 
 // GetName returns value of Name
@@ -1864,12 +1896,12 @@ func (o *DiskInstallRequest) SetSizeMB(v int) {
 
 // GetSizeGB gets value to SizeGB
 func (o *DiskInstallRequest) GetSizeGB() int {
-	return getSizeGB(o)
+	return accessor.GetSizeGB(o)
 }
 
 // SetSizeGB sets value to SizeGB
 func (o *DiskInstallRequest) SetSizeGB(v int) {
-	setSizeGB(o, v)
+	accessor.SetSizeGB(o, v)
 }
 
 // convertTo returns naked DiskInstallRequest
@@ -1893,8 +1925,8 @@ type DiskUpdateRequest struct {
 	Name        string `validate:"required"`
 	Description string `validate:"min=0,max=512"`
 	Tags        []string
-	IconID      types.ID `mapconv:"Icon.ID"`
-	Connection  types.EDiskConnection
+	IconID      types.ID              `mapconv:"Icon.ID"`
+	Connection  types.EDiskConnection `json:",omitempty" mapconv:",omitempty"`
 }
 
 // Validate validates by field tags
@@ -1981,6 +2013,11 @@ func (o *DiskActivity) Validate() error {
 // GetValues returns value of Values
 func (o *DiskActivity) GetValues() []naked.MonitorDiskValue {
 	return o.Values
+}
+
+// SetValues sets value to Values
+func (o *DiskActivity) SetValues(v []naked.MonitorDiskValue) {
+	o.Values = v
 }
 
 // convertTo returns naked DiskActivity
@@ -2075,22 +2112,22 @@ func (o *GSLB) SetID(v types.ID) {
 
 // GetStringID gets value to StringID
 func (o *GSLB) GetStringID() string {
-	return getStringID(o)
+	return accessor.GetStringID(o)
 }
 
 // SetStringID sets value to StringID
 func (o *GSLB) SetStringID(v string) {
-	setStringID(o, v)
+	accessor.SetStringID(o, v)
 }
 
 // GetInt64ID gets value to Int64ID
 func (o *GSLB) GetInt64ID() int64 {
-	return getInt64ID(o)
+	return accessor.GetInt64ID(o)
 }
 
 // SetInt64ID sets value to Int64ID
 func (o *GSLB) SetInt64ID(v int64) {
-	setInt64ID(o, v)
+	accessor.SetInt64ID(o, v)
 }
 
 // GetName returns value of Name
@@ -2168,14 +2205,29 @@ func (o *GSLB) GetClass() string {
 	return o.Class
 }
 
+// SetClass sets value to Class
+func (o *GSLB) SetClass(v string) {
+	o.Class = v
+}
+
 // GetSettingsHash returns value of SettingsHash
 func (o *GSLB) GetSettingsHash() string {
 	return o.SettingsHash
 }
 
+// SetSettingsHash sets value to SettingsHash
+func (o *GSLB) SetSettingsHash(v string) {
+	o.SettingsHash = v
+}
+
 // GetFQDN returns value of FQDN
 func (o *GSLB) GetFQDN() string {
 	return o.FQDN
+}
+
+// SetFQDN sets value to FQDN
+func (o *GSLB) SetFQDN(v string) {
+	o.FQDN = v
 }
 
 // GetDelayLoop returns value of DelayLoop
@@ -2356,6 +2408,11 @@ func (o *GSLBCreateRequest) Validate() error {
 // GetClass returns value of Class
 func (o *GSLBCreateRequest) GetClass() string {
 	return o.Class
+}
+
+// SetClass sets value to Class
+func (o *GSLBCreateRequest) SetClass(v string) {
+	o.Class = v
 }
 
 // GetHealthCheckProtocol returns value of HealthCheckProtocol
@@ -2703,22 +2760,22 @@ func (o *Interface) SetID(v types.ID) {
 
 // GetStringID gets value to StringID
 func (o *Interface) GetStringID() string {
-	return getStringID(o)
+	return accessor.GetStringID(o)
 }
 
 // SetStringID sets value to StringID
 func (o *Interface) SetStringID(v string) {
-	setStringID(o, v)
+	accessor.SetStringID(o, v)
 }
 
 // GetInt64ID gets value to Int64ID
 func (o *Interface) GetInt64ID() int64 {
-	return getInt64ID(o)
+	return accessor.GetInt64ID(o)
 }
 
 // SetInt64ID sets value to Int64ID
 func (o *Interface) SetInt64ID(v int64) {
-	setInt64ID(o, v)
+	accessor.SetInt64ID(o, v)
 }
 
 // GetMACAddress returns value of MACAddress
@@ -2914,6 +2971,11 @@ func (o *InterfaceActivity) GetValues() []naked.MonitorInterfaceValue {
 	return o.Values
 }
 
+// SetValues sets value to Values
+func (o *InterfaceActivity) SetValues(v []naked.MonitorInterfaceValue) {
+	o.Values = v
+}
+
 // convertTo returns naked InterfaceActivity
 func (o *InterfaceActivity) convertTo() (*naked.MonitorValues, error) {
 	dest := &naked.MonitorValues{}
@@ -2938,17 +3000,15 @@ type LoadBalancer struct {
 	Tags                    []string
 	Availability            types.EAvailability
 	Class                   string
-	Icon                    *naked.Icon `json:",omitempty"`
+	IconID                  types.ID `mapconv:"Icon.ID"`
 	CreatedAt               *time.Time
 	ModifiedAt              *time.Time
-	InstanceHostName        string                      `mapconv:"Instance.Host.Name"`
-	InstanceHostInfoURL     string                      `mapconv:"Instance.Host.InfoURL"`
-	InstanceStatus          types.EServerInstanceStatus `mapconv:"Instance.Status"`
-	InstanceStatusChangedAt *time.Time                  `mapconv:"Instance.StatusChangedAt"`
-	Interfaces              []naked.Interface
+	InstanceHostName        string                          `mapconv:"Instance.Host.Name"`
+	InstanceHostInfoURL     string                          `mapconv:"Instance.Host.InfoURL"`
+	InstanceStatus          types.EServerInstanceStatus     `mapconv:"Instance.Status"`
+	InstanceStatusChangedAt *time.Time                      `mapconv:"Instance.StatusChangedAt"`
 	PlanID                  types.ID                        `mapconv:"Remark.Plan.ID,Plan.ID"`
 	SwitchID                types.ID                        `mapconv:"Remark.Switch.ID"`
-	Switch                  *naked.Switch                   `json:",omitempty"`
 	DefaultRoute            string                          `mapconv:"Remark.Network.DefaultRoute" validate:"ipv4"`
 	NetworkMaskLen          int                             `mapconv:"Remark.Network.NetworkMaskLen" validate:"min=1,max=32"`
 	IPAddresses             []string                        `mapconv:"Remark.[]Servers.IPAddress"`
@@ -2975,22 +3035,22 @@ func (o *LoadBalancer) SetID(v types.ID) {
 
 // GetStringID gets value to StringID
 func (o *LoadBalancer) GetStringID() string {
-	return getStringID(o)
+	return accessor.GetStringID(o)
 }
 
 // SetStringID sets value to StringID
 func (o *LoadBalancer) SetStringID(v string) {
-	setStringID(o, v)
+	accessor.SetStringID(o, v)
 }
 
 // GetInt64ID gets value to Int64ID
 func (o *LoadBalancer) GetInt64ID() int64 {
-	return getInt64ID(o)
+	return accessor.GetInt64ID(o)
 }
 
 // SetInt64ID sets value to Int64ID
 func (o *LoadBalancer) SetInt64ID(v int64) {
-	setInt64ID(o, v)
+	accessor.SetInt64ID(o, v)
 }
 
 // GetName returns value of Name
@@ -3043,14 +3103,14 @@ func (o *LoadBalancer) SetClass(v string) {
 	o.Class = v
 }
 
-// GetIcon returns value of Icon
-func (o *LoadBalancer) GetIcon() *naked.Icon {
-	return o.Icon
+// GetIconID returns value of IconID
+func (o *LoadBalancer) GetIconID() types.ID {
+	return o.IconID
 }
 
-// SetIcon sets value to Icon
-func (o *LoadBalancer) SetIcon(v *naked.Icon) {
-	o.Icon = v
+// SetIconID sets value to IconID
+func (o *LoadBalancer) SetIconID(v types.ID) {
+	o.IconID = v
 }
 
 // GetCreatedAt returns value of CreatedAt
@@ -3078,9 +3138,19 @@ func (o *LoadBalancer) GetInstanceHostName() string {
 	return o.InstanceHostName
 }
 
+// SetInstanceHostName sets value to InstanceHostName
+func (o *LoadBalancer) SetInstanceHostName(v string) {
+	o.InstanceHostName = v
+}
+
 // GetInstanceHostInfoURL returns value of InstanceHostInfoURL
 func (o *LoadBalancer) GetInstanceHostInfoURL() string {
 	return o.InstanceHostInfoURL
+}
+
+// SetInstanceHostInfoURL sets value to InstanceHostInfoURL
+func (o *LoadBalancer) SetInstanceHostInfoURL(v string) {
+	o.InstanceHostInfoURL = v
 }
 
 // GetInstanceStatus returns value of InstanceStatus
@@ -3088,14 +3158,19 @@ func (o *LoadBalancer) GetInstanceStatus() types.EServerInstanceStatus {
 	return o.InstanceStatus
 }
 
+// SetInstanceStatus sets value to InstanceStatus
+func (o *LoadBalancer) SetInstanceStatus(v types.EServerInstanceStatus) {
+	o.InstanceStatus = v
+}
+
 // GetInstanceStatusChangedAt returns value of InstanceStatusChangedAt
 func (o *LoadBalancer) GetInstanceStatusChangedAt() *time.Time {
 	return o.InstanceStatusChangedAt
 }
 
-// GetInterfaces returns value of Interfaces
-func (o *LoadBalancer) GetInterfaces() []naked.Interface {
-	return o.Interfaces
+// SetInstanceStatusChangedAt sets value to InstanceStatusChangedAt
+func (o *LoadBalancer) SetInstanceStatusChangedAt(v *time.Time) {
+	o.InstanceStatusChangedAt = v
 }
 
 // GetPlanID returns value of PlanID
@@ -3116,16 +3191,6 @@ func (o *LoadBalancer) GetSwitchID() types.ID {
 // SetSwitchID sets value to SwitchID
 func (o *LoadBalancer) SetSwitchID(v types.ID) {
 	o.SwitchID = v
-}
-
-// GetSwitch returns value of Switch
-func (o *LoadBalancer) GetSwitch() *naked.Switch {
-	return o.Switch
-}
-
-// SetSwitch sets value to Switch
-func (o *LoadBalancer) SetSwitch(v *naked.Switch) {
-	o.Switch = v
 }
 
 // GetDefaultRoute returns value of DefaultRoute
@@ -3163,6 +3228,11 @@ func (o *LoadBalancer) GetZoneID() types.ID {
 	return o.ZoneID
 }
 
+// SetZoneID sets value to ZoneID
+func (o *LoadBalancer) SetZoneID(v types.ID) {
+	o.ZoneID = v
+}
+
 // GetVRID returns value of VRID
 func (o *LoadBalancer) GetVRID() int {
 	return o.VRID
@@ -3186,6 +3256,11 @@ func (o *LoadBalancer) SetVirtualIPAddresses(v []*LoadBalancerVirtualIPAddress) 
 // GetSettingsHash returns value of SettingsHash
 func (o *LoadBalancer) GetSettingsHash() string {
 	return o.SettingsHash
+}
+
+// SetSettingsHash sets value to SettingsHash
+func (o *LoadBalancer) SetSettingsHash(v string) {
+	o.SettingsHash = v
 }
 
 // convertTo returns naked LoadBalancer
@@ -3386,6 +3461,11 @@ func (o *LoadBalancerCreateRequest) Validate() error {
 // GetClass returns value of Class
 func (o *LoadBalancerCreateRequest) GetClass() string {
 	return o.Class
+}
+
+// SetClass sets value to Class
+func (o *LoadBalancerCreateRequest) SetClass(v string) {
+	o.Class = v
 }
 
 // GetSwitchID returns value of SwitchID
@@ -3636,9 +3716,19 @@ func (o *LoadBalancerStatus) GetVirtualIPAddress() string {
 	return o.VirtualIPAddress
 }
 
+// SetVirtualIPAddress sets value to VirtualIPAddress
+func (o *LoadBalancerStatus) SetVirtualIPAddress(v string) {
+	o.VirtualIPAddress = v
+}
+
 // GetPort returns value of Port
 func (o *LoadBalancerStatus) GetPort() types.StringNumber {
 	return o.Port
+}
+
+// SetPort sets value to Port
+func (o *LoadBalancerStatus) SetPort(v types.StringNumber) {
+	o.Port = v
 }
 
 // GetCPS returns value of CPS
@@ -3646,9 +3736,19 @@ func (o *LoadBalancerStatus) GetCPS() types.StringNumber {
 	return o.CPS
 }
 
+// SetCPS sets value to CPS
+func (o *LoadBalancerStatus) SetCPS(v types.StringNumber) {
+	o.CPS = v
+}
+
 // GetServers returns value of Servers
 func (o *LoadBalancerStatus) GetServers() []*LoadBalancerServerStatus {
 	return o.Servers
+}
+
+// SetServers sets value to Servers
+func (o *LoadBalancerStatus) SetServers(v []*LoadBalancerServerStatus) {
+	o.Servers = v
 }
 
 // convertTo returns naked LoadBalancerStatus
@@ -3686,9 +3786,19 @@ func (o *LoadBalancerServerStatus) GetActiveConn() types.StringNumber {
 	return o.ActiveConn
 }
 
+// SetActiveConn sets value to ActiveConn
+func (o *LoadBalancerServerStatus) SetActiveConn(v types.StringNumber) {
+	o.ActiveConn = v
+}
+
 // GetStatus returns value of Status
 func (o *LoadBalancerServerStatus) GetStatus() types.EServerInstanceStatus {
 	return o.Status
+}
+
+// SetStatus sets value to Status
+func (o *LoadBalancerServerStatus) SetStatus(v types.EServerInstanceStatus) {
+	o.Status = v
 }
 
 // GetIPAddress returns value of IPAddress
@@ -3696,14 +3806,29 @@ func (o *LoadBalancerServerStatus) GetIPAddress() string {
 	return o.IPAddress
 }
 
+// SetIPAddress sets value to IPAddress
+func (o *LoadBalancerServerStatus) SetIPAddress(v string) {
+	o.IPAddress = v
+}
+
 // GetPort returns value of Port
 func (o *LoadBalancerServerStatus) GetPort() types.StringNumber {
 	return o.Port
 }
 
+// SetPort sets value to Port
+func (o *LoadBalancerServerStatus) SetPort(v types.StringNumber) {
+	o.Port = v
+}
+
 // GetCPS returns value of CPS
 func (o *LoadBalancerServerStatus) GetCPS() types.StringNumber {
 	return o.CPS
+}
+
+// SetCPS sets value to CPS
+func (o *LoadBalancerServerStatus) SetCPS(v types.StringNumber) {
+	o.CPS = v
 }
 
 /*************************************************
@@ -3722,15 +3847,13 @@ type NFS struct {
 	InstanceHostInfoURL     string                      `mapconv:"Instance.Host.InfoURL"`
 	InstanceStatus          types.EServerInstanceStatus `mapconv:"Instance.Status"`
 	InstanceStatusChangedAt *time.Time                  `mapconv:"Instance.StatusChangedAt"`
-	Interfaces              []naked.Interface
-	PlanID                  types.ID      `mapconv:"Remark.Plan.ID,Plan.ID"`
-	SwitchID                types.ID      `mapconv:"Remark.Switch.ID"`
-	Switch                  *naked.Switch `json:",omitempty"`
-	DefaultRoute            string        `mapconv:"Remark.Network.DefaultRoute" validate:"ipv4"`
-	NetworkMaskLen          int           `mapconv:"Remark.Network.NetworkMaskLen" validate:"min=1,max=32"`
-	IPAddresses             []string      `mapconv:"Remark.[]Servers.IPAddress"`
-	ZoneID                  types.ID      `mapconv:"Remark.Zone.ID"`
-	Icon                    *naked.Icon   `json:",omitempty"`
+	PlanID                  types.ID                    `mapconv:"Remark.Plan.ID,Plan.ID"`
+	SwitchID                types.ID                    `mapconv:"Remark.Switch.ID"`
+	DefaultRoute            string                      `mapconv:"Remark.Network.DefaultRoute" validate:"ipv4"`
+	NetworkMaskLen          int                         `mapconv:"Remark.Network.NetworkMaskLen" validate:"min=1,max=32"`
+	IPAddresses             []string                    `mapconv:"Remark.[]Servers.IPAddress"`
+	ZoneID                  types.ID                    `mapconv:"Remark.Zone.ID"`
+	IconID                  types.ID                    `mapconv:"Icon.ID"`
 	CreatedAt               *time.Time
 	ModifiedAt              *time.Time
 }
@@ -3752,22 +3875,22 @@ func (o *NFS) SetID(v types.ID) {
 
 // GetStringID gets value to StringID
 func (o *NFS) GetStringID() string {
-	return getStringID(o)
+	return accessor.GetStringID(o)
 }
 
 // SetStringID sets value to StringID
 func (o *NFS) SetStringID(v string) {
-	setStringID(o, v)
+	accessor.SetStringID(o, v)
 }
 
 // GetInt64ID gets value to Int64ID
 func (o *NFS) GetInt64ID() int64 {
-	return getInt64ID(o)
+	return accessor.GetInt64ID(o)
 }
 
 // SetInt64ID sets value to Int64ID
 func (o *NFS) SetInt64ID(v int64) {
-	setInt64ID(o, v)
+	accessor.SetInt64ID(o, v)
 }
 
 // GetName returns value of Name
@@ -3825,9 +3948,19 @@ func (o *NFS) GetInstanceHostName() string {
 	return o.InstanceHostName
 }
 
+// SetInstanceHostName sets value to InstanceHostName
+func (o *NFS) SetInstanceHostName(v string) {
+	o.InstanceHostName = v
+}
+
 // GetInstanceHostInfoURL returns value of InstanceHostInfoURL
 func (o *NFS) GetInstanceHostInfoURL() string {
 	return o.InstanceHostInfoURL
+}
+
+// SetInstanceHostInfoURL sets value to InstanceHostInfoURL
+func (o *NFS) SetInstanceHostInfoURL(v string) {
+	o.InstanceHostInfoURL = v
 }
 
 // GetInstanceStatus returns value of InstanceStatus
@@ -3835,14 +3968,19 @@ func (o *NFS) GetInstanceStatus() types.EServerInstanceStatus {
 	return o.InstanceStatus
 }
 
+// SetInstanceStatus sets value to InstanceStatus
+func (o *NFS) SetInstanceStatus(v types.EServerInstanceStatus) {
+	o.InstanceStatus = v
+}
+
 // GetInstanceStatusChangedAt returns value of InstanceStatusChangedAt
 func (o *NFS) GetInstanceStatusChangedAt() *time.Time {
 	return o.InstanceStatusChangedAt
 }
 
-// GetInterfaces returns value of Interfaces
-func (o *NFS) GetInterfaces() []naked.Interface {
-	return o.Interfaces
+// SetInstanceStatusChangedAt sets value to InstanceStatusChangedAt
+func (o *NFS) SetInstanceStatusChangedAt(v *time.Time) {
+	o.InstanceStatusChangedAt = v
 }
 
 // GetPlanID returns value of PlanID
@@ -3863,16 +4001,6 @@ func (o *NFS) GetSwitchID() types.ID {
 // SetSwitchID sets value to SwitchID
 func (o *NFS) SetSwitchID(v types.ID) {
 	o.SwitchID = v
-}
-
-// GetSwitch returns value of Switch
-func (o *NFS) GetSwitch() *naked.Switch {
-	return o.Switch
-}
-
-// SetSwitch sets value to Switch
-func (o *NFS) SetSwitch(v *naked.Switch) {
-	o.Switch = v
 }
 
 // GetDefaultRoute returns value of DefaultRoute
@@ -3910,14 +4038,19 @@ func (o *NFS) GetZoneID() types.ID {
 	return o.ZoneID
 }
 
-// GetIcon returns value of Icon
-func (o *NFS) GetIcon() *naked.Icon {
-	return o.Icon
+// SetZoneID sets value to ZoneID
+func (o *NFS) SetZoneID(v types.ID) {
+	o.ZoneID = v
 }
 
-// SetIcon sets value to Icon
-func (o *NFS) SetIcon(v *naked.Icon) {
-	o.Icon = v
+// GetIconID returns value of IconID
+func (o *NFS) GetIconID() types.ID {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *NFS) SetIconID(v types.ID) {
+	o.IconID = v
 }
 
 // GetCreatedAt returns value of CreatedAt
@@ -3961,7 +4094,7 @@ type NFSCreateRequest struct {
 	Class          string   `mapconv:",default=nfs"`
 	SwitchID       types.ID `mapconv:"Remark.Switch.ID"`
 	PlanID         types.ID `mapconv:"Remark.Plan.ID,Plan.ID"`
-	IPAddress      string   `mapconv:"Remark.[]Servers.IPAddress"`
+	IPAddresses    []string `mapconv:"Remark.[]Servers.IPAddress" validate:"min=1,max=2,dive,ipv4"`
 	NetworkMaskLen int      `mapconv:"Remark.Network.NetworkMaskLen" validate:"min=1,max=32"`
 	DefaultRoute   string   `mapconv:"Remark.Network.DefaultRoute" validate:"ipv4"`
 	Name           string   `validate:"required"`
@@ -3978,6 +4111,11 @@ func (o *NFSCreateRequest) Validate() error {
 // GetClass returns value of Class
 func (o *NFSCreateRequest) GetClass() string {
 	return o.Class
+}
+
+// SetClass sets value to Class
+func (o *NFSCreateRequest) SetClass(v string) {
+	o.Class = v
 }
 
 // GetSwitchID returns value of SwitchID
@@ -4000,14 +4138,14 @@ func (o *NFSCreateRequest) SetPlanID(v types.ID) {
 	o.PlanID = v
 }
 
-// GetIPAddress returns value of IPAddress
-func (o *NFSCreateRequest) GetIPAddress() string {
-	return o.IPAddress
+// GetIPAddresses returns value of IPAddresses
+func (o *NFSCreateRequest) GetIPAddresses() []string {
+	return o.IPAddresses
 }
 
-// SetIPAddress sets value to IPAddress
-func (o *NFSCreateRequest) SetIPAddress(v string) {
-	o.IPAddress = v
+// SetIPAddresses sets value to IPAddresses
+func (o *NFSCreateRequest) SetIPAddresses(v []string) {
+	o.IPAddresses = v
 }
 
 // GetNetworkMaskLen returns value of NetworkMaskLen
@@ -4170,6 +4308,11 @@ func (o *FreeDiskSizeActivity) GetValues() []naked.MonitorFreeDiskSizeValue {
 	return o.Values
 }
 
+// SetValues sets value to Values
+func (o *FreeDiskSizeActivity) SetValues(v []naked.MonitorFreeDiskSizeValue) {
+	o.Values = v
+}
+
 // convertTo returns naked FreeDiskSizeActivity
 func (o *FreeDiskSizeActivity) convertTo() (*naked.MonitorValues, error) {
 	dest := &naked.MonitorValues{}
@@ -4196,7 +4339,7 @@ type Note struct {
 	Scope        types.EScope
 	Class        string
 	Content      string
-	Icon         *naked.Icon `json:",omitempty"`
+	IconID       types.ID `mapconv:"Icon.ID"`
 	CreatedAt    *time.Time
 	ModifiedAt   *time.Time
 }
@@ -4218,22 +4361,22 @@ func (o *Note) SetID(v types.ID) {
 
 // GetStringID gets value to StringID
 func (o *Note) GetStringID() string {
-	return getStringID(o)
+	return accessor.GetStringID(o)
 }
 
 // SetStringID sets value to StringID
 func (o *Note) SetStringID(v string) {
-	setStringID(o, v)
+	accessor.SetStringID(o, v)
 }
 
 // GetInt64ID gets value to Int64ID
 func (o *Note) GetInt64ID() int64 {
-	return getInt64ID(o)
+	return accessor.GetInt64ID(o)
 }
 
 // SetInt64ID sets value to Int64ID
 func (o *Note) SetInt64ID(v int64) {
-	setInt64ID(o, v)
+	accessor.SetInt64ID(o, v)
 }
 
 // GetName returns value of Name
@@ -4306,14 +4449,14 @@ func (o *Note) SetContent(v string) {
 	o.Content = v
 }
 
-// GetIcon returns value of Icon
-func (o *Note) GetIcon() *naked.Icon {
-	return o.Icon
+// GetIconID returns value of IconID
+func (o *Note) GetIconID() types.ID {
+	return o.IconID
 }
 
-// SetIcon sets value to Icon
-func (o *Note) SetIcon(v *naked.Icon) {
-	o.Icon = v
+// SetIconID sets value to IconID
+func (o *Note) SetIconID(v types.ID) {
+	o.IconID = v
 }
 
 // GetCreatedAt returns value of CreatedAt
@@ -4527,7 +4670,7 @@ type Server struct {
 	MemoryMB                int                         `mapconv:"ServerPlan.MemoryMB"`
 	ServerPlanCommitment    types.ECommitment           `mapconv:"ServerPlan.Commitment,default=standard"`
 	ServerPlanGeneration    types.EPlanGeneration       `mapconv:"ServerPlan.Generation"`
-	Zone                    *naked.Zone                 `json:",omitempty"`
+	ZoneID                  types.ID                    `mapconv:"Zone.ID"`
 	InstanceHostName        string                      `mapconv:"Instance.Host.Name"`
 	InstanceHostInfoURL     string                      `mapconv:"Instance.Host.InfoURL"`
 	InstanceStatus          types.EServerInstanceStatus `mapconv:"Instance.Status"`
@@ -4537,11 +4680,12 @@ type Server struct {
 	InstanceWarningsValue   int                         `mapconv:"Instance.WarningsValue"`
 	Disks                   []*Disk                     `json:",omitempty" mapconv:",recursive"`
 	Interfaces              []*Interface                `json:",omitempty" mapconv:"[]Interfaces,recursive"`
+	CDROMID                 types.ID                    `mapconv:"CDROM.ID"`
 	PrivateHostID           types.ID                    `mapconv:"PrivateHost.ID"`
 	PrivateHostName         string                      `mapconv:"PrivateHost.Name"`
 	BundleInfo              *naked.BundleInfo           `json:",omitempty"`
 	Storage                 *naked.Storage              `json:",omitempty"`
-	Icon                    *naked.Icon                 `json:",omitempty"`
+	IconID                  types.ID                    `mapconv:"Icon.ID"`
 	CreatedAt               *time.Time
 	ModifiedAt              *time.Time
 }
@@ -4563,22 +4707,22 @@ func (o *Server) SetID(v types.ID) {
 
 // GetStringID gets value to StringID
 func (o *Server) GetStringID() string {
-	return getStringID(o)
+	return accessor.GetStringID(o)
 }
 
 // SetStringID sets value to StringID
 func (o *Server) SetStringID(v string) {
-	setStringID(o, v)
+	accessor.SetStringID(o, v)
 }
 
 // GetInt64ID gets value to Int64ID
 func (o *Server) GetInt64ID() int64 {
-	return getInt64ID(o)
+	return accessor.GetInt64ID(o)
 }
 
 // SetInt64ID sets value to Int64ID
 func (o *Server) SetInt64ID(v int64) {
-	setInt64ID(o, v)
+	accessor.SetInt64ID(o, v)
 }
 
 // GetName returns value of Name
@@ -4683,12 +4827,12 @@ func (o *Server) SetMemoryMB(v int) {
 
 // GetMemoryGB gets value to MemoryGB
 func (o *Server) GetMemoryGB() int {
-	return getMemoryGB(o)
+	return accessor.GetMemoryGB(o)
 }
 
 // SetMemoryGB sets value to MemoryGB
 func (o *Server) SetMemoryGB(v int) {
-	setMemoryGB(o, v)
+	accessor.SetMemoryGB(o, v)
 }
 
 // GetServerPlanCommitment returns value of ServerPlanCommitment
@@ -4711,14 +4855,14 @@ func (o *Server) SetServerPlanGeneration(v types.EPlanGeneration) {
 	o.ServerPlanGeneration = v
 }
 
-// GetZone returns value of Zone
-func (o *Server) GetZone() *naked.Zone {
-	return o.Zone
+// GetZoneID returns value of ZoneID
+func (o *Server) GetZoneID() types.ID {
+	return o.ZoneID
 }
 
-// SetZone sets value to Zone
-func (o *Server) SetZone(v *naked.Zone) {
-	o.Zone = v
+// SetZoneID sets value to ZoneID
+func (o *Server) SetZoneID(v types.ID) {
+	o.ZoneID = v
 }
 
 // GetInstanceHostName returns value of InstanceHostName
@@ -4726,9 +4870,19 @@ func (o *Server) GetInstanceHostName() string {
 	return o.InstanceHostName
 }
 
+// SetInstanceHostName sets value to InstanceHostName
+func (o *Server) SetInstanceHostName(v string) {
+	o.InstanceHostName = v
+}
+
 // GetInstanceHostInfoURL returns value of InstanceHostInfoURL
 func (o *Server) GetInstanceHostInfoURL() string {
 	return o.InstanceHostInfoURL
+}
+
+// SetInstanceHostInfoURL sets value to InstanceHostInfoURL
+func (o *Server) SetInstanceHostInfoURL(v string) {
+	o.InstanceHostInfoURL = v
 }
 
 // GetInstanceStatus returns value of InstanceStatus
@@ -4736,9 +4890,19 @@ func (o *Server) GetInstanceStatus() types.EServerInstanceStatus {
 	return o.InstanceStatus
 }
 
+// SetInstanceStatus sets value to InstanceStatus
+func (o *Server) SetInstanceStatus(v types.EServerInstanceStatus) {
+	o.InstanceStatus = v
+}
+
 // GetInstanceBeforeStatus returns value of InstanceBeforeStatus
 func (o *Server) GetInstanceBeforeStatus() types.EServerInstanceStatus {
 	return o.InstanceBeforeStatus
+}
+
+// SetInstanceBeforeStatus sets value to InstanceBeforeStatus
+func (o *Server) SetInstanceBeforeStatus(v types.EServerInstanceStatus) {
+	o.InstanceBeforeStatus = v
 }
 
 // GetInstanceStatusChangedAt returns value of InstanceStatusChangedAt
@@ -4746,14 +4910,29 @@ func (o *Server) GetInstanceStatusChangedAt() *time.Time {
 	return o.InstanceStatusChangedAt
 }
 
+// SetInstanceStatusChangedAt sets value to InstanceStatusChangedAt
+func (o *Server) SetInstanceStatusChangedAt(v *time.Time) {
+	o.InstanceStatusChangedAt = v
+}
+
 // GetInstanceWarnings returns value of InstanceWarnings
 func (o *Server) GetInstanceWarnings() string {
 	return o.InstanceWarnings
 }
 
+// SetInstanceWarnings sets value to InstanceWarnings
+func (o *Server) SetInstanceWarnings(v string) {
+	o.InstanceWarnings = v
+}
+
 // GetInstanceWarningsValue returns value of InstanceWarningsValue
 func (o *Server) GetInstanceWarningsValue() int {
 	return o.InstanceWarningsValue
+}
+
+// SetInstanceWarningsValue sets value to InstanceWarningsValue
+func (o *Server) SetInstanceWarningsValue(v int) {
+	o.InstanceWarningsValue = v
 }
 
 // GetDisks returns value of Disks
@@ -4774,6 +4953,16 @@ func (o *Server) GetInterfaces() []*Interface {
 // SetInterfaces sets value to Interfaces
 func (o *Server) SetInterfaces(v []*Interface) {
 	o.Interfaces = v
+}
+
+// GetCDROMID returns value of CDROMID
+func (o *Server) GetCDROMID() types.ID {
+	return o.CDROMID
+}
+
+// SetCDROMID sets value to CDROMID
+func (o *Server) SetCDROMID(v types.ID) {
+	o.CDROMID = v
 }
 
 // GetPrivateHostID returns value of PrivateHostID
@@ -4816,14 +5005,14 @@ func (o *Server) SetStorage(v *naked.Storage) {
 	o.Storage = v
 }
 
-// GetIcon returns value of Icon
-func (o *Server) GetIcon() *naked.Icon {
-	return o.Icon
+// GetIconID returns value of IconID
+func (o *Server) GetIconID() types.ID {
+	return o.IconID
 }
 
-// SetIcon sets value to Icon
-func (o *Server) SetIcon(v *naked.Icon) {
-	o.Icon = v
+// SetIconID sets value to IconID
+func (o *Server) SetIconID(v types.ID) {
+	o.IconID = v
 }
 
 // GetCreatedAt returns value of CreatedAt
@@ -4905,12 +5094,12 @@ func (o *ServerCreateRequest) SetMemoryMB(v int) {
 
 // GetMemoryGB gets value to MemoryGB
 func (o *ServerCreateRequest) GetMemoryGB() int {
-	return getMemoryGB(o)
+	return accessor.GetMemoryGB(o)
 }
 
 // SetMemoryGB sets value to MemoryGB
 func (o *ServerCreateRequest) SetMemoryGB(v int) {
-	setMemoryGB(o, v)
+	accessor.SetMemoryGB(o, v)
 }
 
 // GetServerPlanCommitment returns value of ServerPlanCommitment
@@ -5052,22 +5241,22 @@ func (o *ConnectedSwitch) SetID(v types.ID) {
 
 // GetStringID gets value to StringID
 func (o *ConnectedSwitch) GetStringID() string {
-	return getStringID(o)
+	return accessor.GetStringID(o)
 }
 
 // SetStringID sets value to StringID
 func (o *ConnectedSwitch) SetStringID(v string) {
-	setStringID(o, v)
+	accessor.SetStringID(o, v)
 }
 
 // GetInt64ID gets value to Int64ID
 func (o *ConnectedSwitch) GetInt64ID() int64 {
-	return getInt64ID(o)
+	return accessor.GetInt64ID(o)
 }
 
 // SetInt64ID sets value to Int64ID
 func (o *ConnectedSwitch) SetInt64ID(v int64) {
-	setInt64ID(o, v)
+	accessor.SetInt64ID(o, v)
 }
 
 // GetScope returns value of Scope
@@ -5200,12 +5389,12 @@ func (o *ServerChangePlanRequest) SetMemoryMB(v int) {
 
 // GetMemoryGB gets value to MemoryGB
 func (o *ServerChangePlanRequest) GetMemoryGB() int {
-	return getMemoryGB(o)
+	return accessor.GetMemoryGB(o)
 }
 
 // SetMemoryGB sets value to MemoryGB
 func (o *ServerChangePlanRequest) SetMemoryGB(v int) {
-	setMemoryGB(o, v)
+	accessor.SetMemoryGB(o, v)
 }
 
 // GetServerPlanGeneration returns value of ServerPlanGeneration
@@ -5266,22 +5455,22 @@ func (o *InsertCDROMRequest) SetID(v types.ID) {
 
 // GetStringID gets value to StringID
 func (o *InsertCDROMRequest) GetStringID() string {
-	return getStringID(o)
+	return accessor.GetStringID(o)
 }
 
 // SetStringID sets value to StringID
 func (o *InsertCDROMRequest) SetStringID(v string) {
-	setStringID(o, v)
+	accessor.SetStringID(o, v)
 }
 
 // GetInt64ID gets value to Int64ID
 func (o *InsertCDROMRequest) GetInt64ID() int64 {
-	return getInt64ID(o)
+	return accessor.GetInt64ID(o)
 }
 
 // SetInt64ID sets value to Int64ID
 func (o *InsertCDROMRequest) SetInt64ID(v int64) {
-	setInt64ID(o, v)
+	accessor.SetInt64ID(o, v)
 }
 
 // convertTo returns naked InsertCDROMRequest
@@ -5322,22 +5511,22 @@ func (o *EjectCDROMRequest) SetID(v types.ID) {
 
 // GetStringID gets value to StringID
 func (o *EjectCDROMRequest) GetStringID() string {
-	return getStringID(o)
+	return accessor.GetStringID(o)
 }
 
 // SetStringID sets value to StringID
 func (o *EjectCDROMRequest) SetStringID(v string) {
-	setStringID(o, v)
+	accessor.SetStringID(o, v)
 }
 
 // GetInt64ID gets value to Int64ID
 func (o *EjectCDROMRequest) GetInt64ID() int64 {
-	return getInt64ID(o)
+	return accessor.GetInt64ID(o)
 }
 
 // SetInt64ID sets value to Int64ID
 func (o *EjectCDROMRequest) SetInt64ID(v int64) {
-	setInt64ID(o, v)
+	accessor.SetInt64ID(o, v)
 }
 
 // convertTo returns naked EjectCDROMRequest
@@ -5371,6 +5560,11 @@ func (o *CPUTimeActivity) GetValues() []naked.MonitorCPUTimeValue {
 	return o.Values
 }
 
+// SetValues sets value to Values
+func (o *CPUTimeActivity) SetValues(v []naked.MonitorCPUTimeValue) {
+	o.Values = v
+}
+
 // convertTo returns naked CPUTimeActivity
 func (o *CPUTimeActivity) convertTo() (*naked.MonitorValues, error) {
 	dest := &naked.MonitorValues{}
@@ -5393,12 +5587,13 @@ type Switch struct {
 	Name           string `validate:"required"`
 	Description    string `validate:"min=0,max=512"`
 	Tags           []string
-	Icon           *naked.Icon `json:",omitempty"`
+	IconID         types.ID `mapconv:"Icon.ID"`
 	CreatedAt      *time.Time
 	ModifiedAt     *time.Time
-	Zone           *naked.Zone `json:",omitempty"`
-	NetworkMaskLen int         `mapconv:"UserSubnet.NetworkMaskLen" validate:"min=1,max=32"`
-	DefaultRoute   string      `mapconv:"UserSubnet.DefaultRoute" validate:"ipv4"`
+	Scope          types.EScope
+	ZoneID         types.ID `mapconv:"Zone.ID"`
+	NetworkMaskLen int      `mapconv:"UserSubnet.NetworkMaskLen" validate:"min=1,max=32"`
+	DefaultRoute   string   `mapconv:"UserSubnet.DefaultRoute" validate:"ipv4"`
 }
 
 // Validate validates by field tags
@@ -5418,22 +5613,22 @@ func (o *Switch) SetID(v types.ID) {
 
 // GetStringID gets value to StringID
 func (o *Switch) GetStringID() string {
-	return getStringID(o)
+	return accessor.GetStringID(o)
 }
 
 // SetStringID sets value to StringID
 func (o *Switch) SetStringID(v string) {
-	setStringID(o, v)
+	accessor.SetStringID(o, v)
 }
 
 // GetInt64ID gets value to Int64ID
 func (o *Switch) GetInt64ID() int64 {
-	return getInt64ID(o)
+	return accessor.GetInt64ID(o)
 }
 
 // SetInt64ID sets value to Int64ID
 func (o *Switch) SetInt64ID(v int64) {
-	setInt64ID(o, v)
+	accessor.SetInt64ID(o, v)
 }
 
 // GetName returns value of Name
@@ -5466,14 +5661,14 @@ func (o *Switch) SetTags(v []string) {
 	o.Tags = v
 }
 
-// GetIcon returns value of Icon
-func (o *Switch) GetIcon() *naked.Icon {
-	return o.Icon
+// GetIconID returns value of IconID
+func (o *Switch) GetIconID() types.ID {
+	return o.IconID
 }
 
-// SetIcon sets value to Icon
-func (o *Switch) SetIcon(v *naked.Icon) {
-	o.Icon = v
+// SetIconID sets value to IconID
+func (o *Switch) SetIconID(v types.ID) {
+	o.IconID = v
 }
 
 // GetCreatedAt returns value of CreatedAt
@@ -5496,14 +5691,24 @@ func (o *Switch) SetModifiedAt(v *time.Time) {
 	o.ModifiedAt = v
 }
 
-// GetZone returns value of Zone
-func (o *Switch) GetZone() *naked.Zone {
-	return o.Zone
+// GetScope returns value of Scope
+func (o *Switch) GetScope() types.EScope {
+	return o.Scope
 }
 
-// SetZone sets value to Zone
-func (o *Switch) SetZone(v *naked.Zone) {
-	o.Zone = v
+// SetScope sets value to Scope
+func (o *Switch) SetScope(v types.EScope) {
+	o.Scope = v
+}
+
+// GetZoneID returns value of ZoneID
+func (o *Switch) GetZoneID() types.ID {
+	return o.ZoneID
+}
+
+// SetZoneID sets value to ZoneID
+func (o *Switch) SetZoneID(v types.ID) {
+	o.ZoneID = v
 }
 
 // GetNetworkMaskLen returns value of NetworkMaskLen
@@ -5753,22 +5958,22 @@ func (o *Zone) SetID(v types.ID) {
 
 // GetStringID gets value to StringID
 func (o *Zone) GetStringID() string {
-	return getStringID(o)
+	return accessor.GetStringID(o)
 }
 
 // SetStringID sets value to StringID
 func (o *Zone) SetStringID(v string) {
-	setStringID(o, v)
+	accessor.SetStringID(o, v)
 }
 
 // GetInt64ID gets value to Int64ID
 func (o *Zone) GetInt64ID() int64 {
-	return getInt64ID(o)
+	return accessor.GetInt64ID(o)
 }
 
 // SetInt64ID sets value to Int64ID
 func (o *Zone) SetInt64ID(v int64) {
-	setInt64ID(o, v)
+	accessor.SetInt64ID(o, v)
 }
 
 // GetName returns value of Name

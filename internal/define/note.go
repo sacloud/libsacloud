@@ -17,7 +17,7 @@ func init() {
 			fields.Scope(),
 			fields.NoteClass(),
 			fields.NoteContent(),
-			fields.Icon(),
+			fields.IconID(),
 			fields.CreatedAt(),
 			fields.ModifiedAt(),
 		},
@@ -43,6 +43,6 @@ func init() {
 		},
 	}
 
-	Resources.Define("Note").
+	Resources.Define("Note").SetIsGlobal(true).
 		OperationCRUD(meta.Static(naked.Note{}), findParameter, createParam, updateParam, note)
 }
