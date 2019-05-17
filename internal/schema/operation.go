@@ -302,6 +302,36 @@ func (o *Operation) ResultsStatement() string {
 	return fmt.Sprintf(rs, strings.Join(strResults, ","))
 }
 
+// StubFieldDefines スタブ生成時のフィールド定義文を全フィールド分出力
+func (o *Operation) StubFieldDefines() []string {
+	if len(o.results) == 0 {
+		return nil
+	}
+	var strResults []string
+	for _, res := range o.results {
+		prefix := ""
+		if o.IsResponsePlural() {
+			prefix = "[]"
+		}
+
+		strResults = append(strResults, fmt.Sprintf("%s %s", res.SourceField, prefix+res.Type().GoTypeSourceCode()))
+	}
+	return strResults
+}
+
+// StubReturnStatement スタブ生成時のreturn文
+func (o *Operation) StubReturnStatement(receiverName string) string {
+	if len(o.results) == 0 {
+		return fmt.Sprintf("return %s.%sResult.Err", receiverName, o.MethodName())
+	}
+	var strResults []string
+	for _, res := range o.results {
+		strResults = append(strResults, fmt.Sprintf("%s.%sResult.%s", receiverName, o.MethodName(), res.SourceField))
+	}
+	strResults = append(strResults, fmt.Sprintf("%s.%sResult.Err", receiverName, o.MethodName()))
+	return fmt.Sprintf("return %s", strings.Join(strResults, ","))
+}
+
 // Models オペレーション配下の(Nameで)ユニークなモデル一覧を取得
 func (o *Operation) Models() Models {
 	ms := o.results.Models()
