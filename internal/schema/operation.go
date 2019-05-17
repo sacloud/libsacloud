@@ -261,12 +261,12 @@ func (o *Operation) PassthroughSimpleFieldDeciders() []PassthroughSimpleFieldDec
 
 // RequestEnvelopeStructName エンベロープのstruct名
 func (o *Operation) RequestEnvelopeStructName() string {
-	return fmt.Sprintf("%s%sRequestEnvelope", o.resource.name, o.name)
+	return fmt.Sprintf("%s%sRequestEnvelope", toCamelWithFirstLower(o.resource.name), o.name)
 }
 
 // ResponseEnvelopeStructName エンベロープのstruct名
 func (o *Operation) ResponseEnvelopeStructName() string {
-	return fmt.Sprintf("%s%sResponseEnvelope", o.resource.name, o.name)
+	return fmt.Sprintf("%s%sResponseEnvelope", toCamelWithFirstLower(o.resource.name), o.name)
 }
 
 // AllArguments 設定されている全てのArgumentを取得

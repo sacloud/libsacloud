@@ -47,3 +47,7 @@ func normalizeResourceName(name string) string {
 	}
 	return n
 }
+
+func toCamelWithFirstLower(name string) string {
+	return xstrings.FirstRuneToLower(xstrings.ToCamelCase(strings.Replace(normalizeResourceName(name), "-", "_", -1)))
+}

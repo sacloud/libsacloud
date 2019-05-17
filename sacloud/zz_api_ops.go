@@ -52,9 +52,9 @@ func (o *ArchiveOp) Find(ctx context.Context, zone string, conditions *FindCondi
 			conditions = &FindCondition{}
 		}
 		if body == nil {
-			body = &ArchiveFindRequestEnvelope{}
+			body = &archiveFindRequestEnvelope{}
 		}
-		v := body.(*ArchiveFindRequestEnvelope)
+		v := body.(*archiveFindRequestEnvelope)
 		if err := mapconv.ConvertTo(conditions, v); err != nil {
 			return nil, err
 		}
@@ -66,7 +66,7 @@ func (o *ArchiveOp) Find(ctx context.Context, zone string, conditions *FindCondi
 		return nil, err
 	}
 
-	nakedResponse := &ArchiveFindResponseEnvelope{}
+	nakedResponse := &archiveFindResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
@@ -102,9 +102,9 @@ func (o *ArchiveOp) Create(ctx context.Context, zone string, param *ArchiveCreat
 			param = &ArchiveCreateRequest{}
 		}
 		if body == nil {
-			body = &ArchiveCreateRequestEnvelope{}
+			body = &archiveCreateRequestEnvelope{}
 		}
-		v := body.(*ArchiveCreateRequestEnvelope)
+		v := body.(*archiveCreateRequestEnvelope)
 		n, err := param.convertTo()
 		if err != nil {
 			return nil, err
@@ -118,7 +118,7 @@ func (o *ArchiveOp) Create(ctx context.Context, zone string, param *ArchiveCreat
 		return nil, err
 	}
 
-	nakedResponse := &ArchiveCreateResponseEnvelope{}
+	nakedResponse := &archiveCreateResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
@@ -150,9 +150,9 @@ func (o *ArchiveOp) CreateBlank(ctx context.Context, zone string, param *Archive
 			param = &ArchiveCreateBlankRequest{}
 		}
 		if body == nil {
-			body = &ArchiveCreateBlankRequestEnvelope{}
+			body = &archiveCreateBlankRequestEnvelope{}
 		}
-		v := body.(*ArchiveCreateBlankRequestEnvelope)
+		v := body.(*archiveCreateBlankRequestEnvelope)
 		n, err := param.convertTo()
 		if err != nil {
 			return nil, nil, err
@@ -166,7 +166,7 @@ func (o *ArchiveOp) CreateBlank(ctx context.Context, zone string, param *Archive
 		return nil, nil, err
 	}
 
-	nakedResponse := &ArchiveCreateBlankResponseEnvelope{}
+	nakedResponse := &archiveCreateBlankResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, nil, err
 	}
@@ -202,7 +202,7 @@ func (o *ArchiveOp) Read(ctx context.Context, zone string, id types.ID) (*Archiv
 		return nil, err
 	}
 
-	nakedResponse := &ArchiveReadResponseEnvelope{}
+	nakedResponse := &archiveReadResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
@@ -235,9 +235,9 @@ func (o *ArchiveOp) Update(ctx context.Context, zone string, id types.ID, param 
 			param = &ArchiveUpdateRequest{}
 		}
 		if body == nil {
-			body = &ArchiveUpdateRequestEnvelope{}
+			body = &archiveUpdateRequestEnvelope{}
 		}
-		v := body.(*ArchiveUpdateRequestEnvelope)
+		v := body.(*archiveUpdateRequestEnvelope)
 		n, err := param.convertTo()
 		if err != nil {
 			return nil, err
@@ -251,7 +251,7 @@ func (o *ArchiveOp) Update(ctx context.Context, zone string, id types.ID, param 
 		return nil, err
 	}
 
-	nakedResponse := &ArchiveUpdateResponseEnvelope{}
+	nakedResponse := &archiveUpdateResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
@@ -306,9 +306,9 @@ func (o *ArchiveOp) OpenFTP(ctx context.Context, zone string, id types.ID, openO
 			openOption = &OpenFTPRequest{}
 		}
 		if body == nil {
-			body = &ArchiveOpenFTPRequestEnvelope{}
+			body = &archiveOpenFTPRequestEnvelope{}
 		}
-		v := body.(*ArchiveOpenFTPRequestEnvelope)
+		v := body.(*archiveOpenFTPRequestEnvelope)
 		if err := mapconv.ConvertTo(openOption, v); err != nil {
 			return nil, err
 		}
@@ -320,7 +320,7 @@ func (o *ArchiveOp) OpenFTP(ctx context.Context, zone string, id types.ID, openO
 		return nil, err
 	}
 
-	nakedResponse := &ArchiveOpenFTPResponseEnvelope{}
+	nakedResponse := &archiveOpenFTPResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
@@ -397,9 +397,9 @@ func (o *CDROMOp) Find(ctx context.Context, zone string, conditions *FindConditi
 			conditions = &FindCondition{}
 		}
 		if body == nil {
-			body = &CDROMFindRequestEnvelope{}
+			body = &cdromFindRequestEnvelope{}
 		}
-		v := body.(*CDROMFindRequestEnvelope)
+		v := body.(*cdromFindRequestEnvelope)
 		if err := mapconv.ConvertTo(conditions, v); err != nil {
 			return nil, err
 		}
@@ -411,7 +411,7 @@ func (o *CDROMOp) Find(ctx context.Context, zone string, conditions *FindConditi
 		return nil, err
 	}
 
-	nakedResponse := &CDROMFindResponseEnvelope{}
+	nakedResponse := &cdromFindResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
@@ -447,9 +447,9 @@ func (o *CDROMOp) Create(ctx context.Context, zone string, param *CDROMCreateReq
 			param = &CDROMCreateRequest{}
 		}
 		if body == nil {
-			body = &CDROMCreateRequestEnvelope{}
+			body = &cdromCreateRequestEnvelope{}
 		}
-		v := body.(*CDROMCreateRequestEnvelope)
+		v := body.(*cdromCreateRequestEnvelope)
 		n, err := param.convertTo()
 		if err != nil {
 			return nil, nil, err
@@ -463,7 +463,7 @@ func (o *CDROMOp) Create(ctx context.Context, zone string, param *CDROMCreateReq
 		return nil, nil, err
 	}
 
-	nakedResponse := &CDROMCreateResponseEnvelope{}
+	nakedResponse := &cdromCreateResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, nil, err
 	}
@@ -499,7 +499,7 @@ func (o *CDROMOp) Read(ctx context.Context, zone string, id types.ID) (*CDROM, e
 		return nil, err
 	}
 
-	nakedResponse := &CDROMReadResponseEnvelope{}
+	nakedResponse := &cdromReadResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
@@ -532,9 +532,9 @@ func (o *CDROMOp) Update(ctx context.Context, zone string, id types.ID, param *C
 			param = &CDROMUpdateRequest{}
 		}
 		if body == nil {
-			body = &CDROMUpdateRequestEnvelope{}
+			body = &cdromUpdateRequestEnvelope{}
 		}
-		v := body.(*CDROMUpdateRequestEnvelope)
+		v := body.(*cdromUpdateRequestEnvelope)
 		n, err := param.convertTo()
 		if err != nil {
 			return nil, err
@@ -548,7 +548,7 @@ func (o *CDROMOp) Update(ctx context.Context, zone string, id types.ID, param *C
 		return nil, err
 	}
 
-	nakedResponse := &CDROMUpdateResponseEnvelope{}
+	nakedResponse := &cdromUpdateResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
@@ -603,9 +603,9 @@ func (o *CDROMOp) OpenFTP(ctx context.Context, zone string, id types.ID, openOpt
 			openOption = &OpenFTPRequest{}
 		}
 		if body == nil {
-			body = &CDROMOpenFTPRequestEnvelope{}
+			body = &cdromOpenFTPRequestEnvelope{}
 		}
-		v := body.(*CDROMOpenFTPRequestEnvelope)
+		v := body.(*cdromOpenFTPRequestEnvelope)
 		if err := mapconv.ConvertTo(openOption, v); err != nil {
 			return nil, err
 		}
@@ -617,7 +617,7 @@ func (o *CDROMOp) OpenFTP(ctx context.Context, zone string, id types.ID, openOpt
 		return nil, err
 	}
 
-	nakedResponse := &CDROMOpenFTPResponseEnvelope{}
+	nakedResponse := &cdromOpenFTPResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
@@ -694,9 +694,9 @@ func (o *DiskOp) Find(ctx context.Context, zone string, conditions *FindConditio
 			conditions = &FindCondition{}
 		}
 		if body == nil {
-			body = &DiskFindRequestEnvelope{}
+			body = &diskFindRequestEnvelope{}
 		}
-		v := body.(*DiskFindRequestEnvelope)
+		v := body.(*diskFindRequestEnvelope)
 		if err := mapconv.ConvertTo(conditions, v); err != nil {
 			return nil, err
 		}
@@ -708,7 +708,7 @@ func (o *DiskOp) Find(ctx context.Context, zone string, conditions *FindConditio
 		return nil, err
 	}
 
-	nakedResponse := &DiskFindResponseEnvelope{}
+	nakedResponse := &diskFindResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
@@ -744,9 +744,9 @@ func (o *DiskOp) Create(ctx context.Context, zone string, param *DiskCreateReque
 			param = &DiskCreateRequest{}
 		}
 		if body == nil {
-			body = &DiskCreateRequestEnvelope{}
+			body = &diskCreateRequestEnvelope{}
 		}
-		v := body.(*DiskCreateRequestEnvelope)
+		v := body.(*diskCreateRequestEnvelope)
 		n, err := param.convertTo()
 		if err != nil {
 			return nil, err
@@ -760,7 +760,7 @@ func (o *DiskOp) Create(ctx context.Context, zone string, param *DiskCreateReque
 		return nil, err
 	}
 
-	nakedResponse := &DiskCreateResponseEnvelope{}
+	nakedResponse := &diskCreateResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
@@ -793,9 +793,9 @@ func (o *DiskOp) CreateDistantly(ctx context.Context, zone string, createParam *
 			createParam = &DiskCreateRequest{}
 		}
 		if body == nil {
-			body = &DiskCreateDistantlyRequestEnvelope{}
+			body = &diskCreateDistantlyRequestEnvelope{}
 		}
-		v := body.(*DiskCreateDistantlyRequestEnvelope)
+		v := body.(*diskCreateDistantlyRequestEnvelope)
 		n, err := createParam.convertTo()
 		if err != nil {
 			return nil, err
@@ -806,9 +806,9 @@ func (o *DiskOp) CreateDistantly(ctx context.Context, zone string, createParam *
 
 	{
 		if body == nil {
-			body = &DiskCreateDistantlyRequestEnvelope{}
+			body = &diskCreateDistantlyRequestEnvelope{}
 		}
-		v := body.(*DiskCreateDistantlyRequestEnvelope)
+		v := body.(*diskCreateDistantlyRequestEnvelope)
 		v.DistantFrom = distantFrom
 		body = v
 	}
@@ -818,7 +818,7 @@ func (o *DiskOp) CreateDistantly(ctx context.Context, zone string, createParam *
 		return nil, err
 	}
 
-	nakedResponse := &DiskCreateDistantlyResponseEnvelope{}
+	nakedResponse := &diskCreateDistantlyResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
@@ -850,9 +850,9 @@ func (o *DiskOp) Config(ctx context.Context, zone string, id types.ID, edit *Dis
 			edit = &DiskEditRequest{}
 		}
 		if body == nil {
-			body = &DiskConfigRequestEnvelope{}
+			body = &diskConfigRequestEnvelope{}
 		}
-		v := body.(*DiskConfigRequestEnvelope)
+		v := body.(*diskConfigRequestEnvelope)
 		if err := mapconv.ConvertTo(edit, v); err != nil {
 			return err
 		}
@@ -889,9 +889,9 @@ func (o *DiskOp) CreateWithConfig(ctx context.Context, zone string, createParam 
 			createParam = &DiskCreateRequest{}
 		}
 		if body == nil {
-			body = &DiskCreateWithConfigRequestEnvelope{}
+			body = &diskCreateWithConfigRequestEnvelope{}
 		}
-		v := body.(*DiskCreateWithConfigRequestEnvelope)
+		v := body.(*diskCreateWithConfigRequestEnvelope)
 		n, err := createParam.convertTo()
 		if err != nil {
 			return nil, err
@@ -905,9 +905,9 @@ func (o *DiskOp) CreateWithConfig(ctx context.Context, zone string, createParam 
 			editParam = &DiskEditRequest{}
 		}
 		if body == nil {
-			body = &DiskCreateWithConfigRequestEnvelope{}
+			body = &diskCreateWithConfigRequestEnvelope{}
 		}
-		v := body.(*DiskCreateWithConfigRequestEnvelope)
+		v := body.(*diskCreateWithConfigRequestEnvelope)
 		n, err := editParam.convertTo()
 		if err != nil {
 			return nil, err
@@ -918,9 +918,9 @@ func (o *DiskOp) CreateWithConfig(ctx context.Context, zone string, createParam 
 
 	{
 		if body == nil {
-			body = &DiskCreateWithConfigRequestEnvelope{}
+			body = &diskCreateWithConfigRequestEnvelope{}
 		}
-		v := body.(*DiskCreateWithConfigRequestEnvelope)
+		v := body.(*diskCreateWithConfigRequestEnvelope)
 		v.BootAtAvailable = bootAtAvailable
 		body = v
 	}
@@ -930,7 +930,7 @@ func (o *DiskOp) CreateWithConfig(ctx context.Context, zone string, createParam 
 		return nil, err
 	}
 
-	nakedResponse := &DiskCreateWithConfigResponseEnvelope{}
+	nakedResponse := &diskCreateWithConfigResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
@@ -965,9 +965,9 @@ func (o *DiskOp) CreateWithConfigDistantly(ctx context.Context, zone string, cre
 			createParam = &DiskCreateRequest{}
 		}
 		if body == nil {
-			body = &DiskCreateWithConfigDistantlyRequestEnvelope{}
+			body = &diskCreateWithConfigDistantlyRequestEnvelope{}
 		}
-		v := body.(*DiskCreateWithConfigDistantlyRequestEnvelope)
+		v := body.(*diskCreateWithConfigDistantlyRequestEnvelope)
 		n, err := createParam.convertTo()
 		if err != nil {
 			return nil, err
@@ -981,9 +981,9 @@ func (o *DiskOp) CreateWithConfigDistantly(ctx context.Context, zone string, cre
 			editParam = &DiskEditRequest{}
 		}
 		if body == nil {
-			body = &DiskCreateWithConfigDistantlyRequestEnvelope{}
+			body = &diskCreateWithConfigDistantlyRequestEnvelope{}
 		}
-		v := body.(*DiskCreateWithConfigDistantlyRequestEnvelope)
+		v := body.(*diskCreateWithConfigDistantlyRequestEnvelope)
 		n, err := editParam.convertTo()
 		if err != nil {
 			return nil, err
@@ -994,18 +994,18 @@ func (o *DiskOp) CreateWithConfigDistantly(ctx context.Context, zone string, cre
 
 	{
 		if body == nil {
-			body = &DiskCreateWithConfigDistantlyRequestEnvelope{}
+			body = &diskCreateWithConfigDistantlyRequestEnvelope{}
 		}
-		v := body.(*DiskCreateWithConfigDistantlyRequestEnvelope)
+		v := body.(*diskCreateWithConfigDistantlyRequestEnvelope)
 		v.BootAtAvailable = bootAtAvailable
 		body = v
 	}
 
 	{
 		if body == nil {
-			body = &DiskCreateWithConfigDistantlyRequestEnvelope{}
+			body = &diskCreateWithConfigDistantlyRequestEnvelope{}
 		}
-		v := body.(*DiskCreateWithConfigDistantlyRequestEnvelope)
+		v := body.(*diskCreateWithConfigDistantlyRequestEnvelope)
 		v.DistantFrom = distantFrom
 		body = v
 	}
@@ -1015,7 +1015,7 @@ func (o *DiskOp) CreateWithConfigDistantly(ctx context.Context, zone string, cre
 		return nil, err
 	}
 
-	nakedResponse := &DiskCreateWithConfigDistantlyResponseEnvelope{}
+	nakedResponse := &diskCreateWithConfigDistantlyResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
@@ -1142,9 +1142,9 @@ func (o *DiskOp) Install(ctx context.Context, zone string, id types.ID, installP
 			installParam = &DiskInstallRequest{}
 		}
 		if body == nil {
-			body = &DiskInstallRequestEnvelope{}
+			body = &diskInstallRequestEnvelope{}
 		}
-		v := body.(*DiskInstallRequestEnvelope)
+		v := body.(*diskInstallRequestEnvelope)
 		n, err := installParam.convertTo()
 		if err != nil {
 			return nil, err
@@ -1155,9 +1155,9 @@ func (o *DiskOp) Install(ctx context.Context, zone string, id types.ID, installP
 
 	{
 		if body == nil {
-			body = &DiskInstallRequestEnvelope{}
+			body = &diskInstallRequestEnvelope{}
 		}
-		v := body.(*DiskInstallRequestEnvelope)
+		v := body.(*diskInstallRequestEnvelope)
 		v.DistantFrom = distantFrom
 		body = v
 	}
@@ -1167,7 +1167,7 @@ func (o *DiskOp) Install(ctx context.Context, zone string, id types.ID, installP
 		return nil, err
 	}
 
-	nakedResponse := &DiskInstallResponseEnvelope{}
+	nakedResponse := &diskInstallResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
@@ -1200,9 +1200,9 @@ func (o *DiskOp) InstallDistantFrom(ctx context.Context, zone string, id types.I
 			installParam = &DiskInstallRequest{}
 		}
 		if body == nil {
-			body = &DiskInstallDistantFromRequestEnvelope{}
+			body = &diskInstallDistantFromRequestEnvelope{}
 		}
-		v := body.(*DiskInstallDistantFromRequestEnvelope)
+		v := body.(*diskInstallDistantFromRequestEnvelope)
 		n, err := installParam.convertTo()
 		if err != nil {
 			return nil, err
@@ -1216,7 +1216,7 @@ func (o *DiskOp) InstallDistantFrom(ctx context.Context, zone string, id types.I
 		return nil, err
 	}
 
-	nakedResponse := &DiskInstallDistantFromResponseEnvelope{}
+	nakedResponse := &diskInstallDistantFromResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
@@ -1248,7 +1248,7 @@ func (o *DiskOp) Read(ctx context.Context, zone string, id types.ID) (*Disk, err
 		return nil, err
 	}
 
-	nakedResponse := &DiskReadResponseEnvelope{}
+	nakedResponse := &diskReadResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
@@ -1281,9 +1281,9 @@ func (o *DiskOp) Update(ctx context.Context, zone string, id types.ID, param *Di
 			param = &DiskUpdateRequest{}
 		}
 		if body == nil {
-			body = &DiskUpdateRequestEnvelope{}
+			body = &diskUpdateRequestEnvelope{}
 		}
-		v := body.(*DiskUpdateRequestEnvelope)
+		v := body.(*diskUpdateRequestEnvelope)
 		n, err := param.convertTo()
 		if err != nil {
 			return nil, err
@@ -1297,7 +1297,7 @@ func (o *DiskOp) Update(ctx context.Context, zone string, id types.ID, param *Di
 		return nil, err
 	}
 
-	nakedResponse := &DiskUpdateResponseEnvelope{}
+	nakedResponse := &diskUpdateResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
@@ -1352,9 +1352,9 @@ func (o *DiskOp) Monitor(ctx context.Context, zone string, id types.ID, conditio
 			condition = &MonitorCondition{}
 		}
 		if body == nil {
-			body = &DiskMonitorRequestEnvelope{}
+			body = &diskMonitorRequestEnvelope{}
 		}
-		v := body.(*DiskMonitorRequestEnvelope)
+		v := body.(*diskMonitorRequestEnvelope)
 		if err := mapconv.ConvertTo(condition, v); err != nil {
 			return nil, err
 		}
@@ -1366,7 +1366,7 @@ func (o *DiskOp) Monitor(ctx context.Context, zone string, id types.ID, conditio
 		return nil, err
 	}
 
-	nakedResponse := &DiskMonitorResponseEnvelope{}
+	nakedResponse := &diskMonitorResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
@@ -1420,9 +1420,9 @@ func (o *GSLBOp) Find(ctx context.Context, zone string, conditions *FindConditio
 			conditions = &FindCondition{}
 		}
 		if body == nil {
-			body = &GSLBFindRequestEnvelope{}
+			body = &gslbFindRequestEnvelope{}
 		}
-		v := body.(*GSLBFindRequestEnvelope)
+		v := body.(*gslbFindRequestEnvelope)
 		if err := mapconv.ConvertTo(conditions, v); err != nil {
 			return nil, err
 		}
@@ -1434,7 +1434,7 @@ func (o *GSLBOp) Find(ctx context.Context, zone string, conditions *FindConditio
 		return nil, err
 	}
 
-	nakedResponse := &GSLBFindResponseEnvelope{}
+	nakedResponse := &gslbFindResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
@@ -1470,9 +1470,9 @@ func (o *GSLBOp) Create(ctx context.Context, zone string, param *GSLBCreateReque
 			param = &GSLBCreateRequest{}
 		}
 		if body == nil {
-			body = &GSLBCreateRequestEnvelope{}
+			body = &gslbCreateRequestEnvelope{}
 		}
-		v := body.(*GSLBCreateRequestEnvelope)
+		v := body.(*gslbCreateRequestEnvelope)
 		n, err := param.convertTo()
 		if err != nil {
 			return nil, err
@@ -1486,7 +1486,7 @@ func (o *GSLBOp) Create(ctx context.Context, zone string, param *GSLBCreateReque
 		return nil, err
 	}
 
-	nakedResponse := &GSLBCreateResponseEnvelope{}
+	nakedResponse := &gslbCreateResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
@@ -1518,7 +1518,7 @@ func (o *GSLBOp) Read(ctx context.Context, zone string, id types.ID) (*GSLB, err
 		return nil, err
 	}
 
-	nakedResponse := &GSLBReadResponseEnvelope{}
+	nakedResponse := &gslbReadResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
@@ -1551,9 +1551,9 @@ func (o *GSLBOp) Update(ctx context.Context, zone string, id types.ID, param *GS
 			param = &GSLBUpdateRequest{}
 		}
 		if body == nil {
-			body = &GSLBUpdateRequestEnvelope{}
+			body = &gslbUpdateRequestEnvelope{}
 		}
-		v := body.(*GSLBUpdateRequestEnvelope)
+		v := body.(*gslbUpdateRequestEnvelope)
 		n, err := param.convertTo()
 		if err != nil {
 			return nil, err
@@ -1567,7 +1567,7 @@ func (o *GSLBOp) Update(ctx context.Context, zone string, id types.ID, param *GS
 		return nil, err
 	}
 
-	nakedResponse := &GSLBUpdateResponseEnvelope{}
+	nakedResponse := &gslbUpdateResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
@@ -1644,9 +1644,9 @@ func (o *InterfaceOp) Find(ctx context.Context, zone string, conditions *FindCon
 			conditions = &FindCondition{}
 		}
 		if body == nil {
-			body = &InterfaceFindRequestEnvelope{}
+			body = &interfaceFindRequestEnvelope{}
 		}
-		v := body.(*InterfaceFindRequestEnvelope)
+		v := body.(*interfaceFindRequestEnvelope)
 		if err := mapconv.ConvertTo(conditions, v); err != nil {
 			return nil, err
 		}
@@ -1658,7 +1658,7 @@ func (o *InterfaceOp) Find(ctx context.Context, zone string, conditions *FindCon
 		return nil, err
 	}
 
-	nakedResponse := &InterfaceFindResponseEnvelope{}
+	nakedResponse := &interfaceFindResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
@@ -1694,9 +1694,9 @@ func (o *InterfaceOp) Create(ctx context.Context, zone string, param *InterfaceC
 			param = &InterfaceCreateRequest{}
 		}
 		if body == nil {
-			body = &InterfaceCreateRequestEnvelope{}
+			body = &interfaceCreateRequestEnvelope{}
 		}
-		v := body.(*InterfaceCreateRequestEnvelope)
+		v := body.(*interfaceCreateRequestEnvelope)
 		n, err := param.convertTo()
 		if err != nil {
 			return nil, err
@@ -1710,7 +1710,7 @@ func (o *InterfaceOp) Create(ctx context.Context, zone string, param *InterfaceC
 		return nil, err
 	}
 
-	nakedResponse := &InterfaceCreateResponseEnvelope{}
+	nakedResponse := &interfaceCreateResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
@@ -1742,7 +1742,7 @@ func (o *InterfaceOp) Read(ctx context.Context, zone string, id types.ID) (*Inte
 		return nil, err
 	}
 
-	nakedResponse := &InterfaceReadResponseEnvelope{}
+	nakedResponse := &interfaceReadResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
@@ -1775,9 +1775,9 @@ func (o *InterfaceOp) Update(ctx context.Context, zone string, id types.ID, para
 			param = &InterfaceUpdateRequest{}
 		}
 		if body == nil {
-			body = &InterfaceUpdateRequestEnvelope{}
+			body = &interfaceUpdateRequestEnvelope{}
 		}
-		v := body.(*InterfaceUpdateRequestEnvelope)
+		v := body.(*interfaceUpdateRequestEnvelope)
 		n, err := param.convertTo()
 		if err != nil {
 			return nil, err
@@ -1791,7 +1791,7 @@ func (o *InterfaceOp) Update(ctx context.Context, zone string, id types.ID, para
 		return nil, err
 	}
 
-	nakedResponse := &InterfaceUpdateResponseEnvelope{}
+	nakedResponse := &interfaceUpdateResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
@@ -1846,9 +1846,9 @@ func (o *InterfaceOp) Monitor(ctx context.Context, zone string, id types.ID, con
 			condition = &MonitorCondition{}
 		}
 		if body == nil {
-			body = &InterfaceMonitorRequestEnvelope{}
+			body = &interfaceMonitorRequestEnvelope{}
 		}
-		v := body.(*InterfaceMonitorRequestEnvelope)
+		v := body.(*interfaceMonitorRequestEnvelope)
 		if err := mapconv.ConvertTo(condition, v); err != nil {
 			return nil, err
 		}
@@ -1860,7 +1860,7 @@ func (o *InterfaceOp) Monitor(ctx context.Context, zone string, id types.ID, con
 		return nil, err
 	}
 
-	nakedResponse := &InterfaceMonitorResponseEnvelope{}
+	nakedResponse := &interfaceMonitorResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
@@ -2031,9 +2031,9 @@ func (o *LoadBalancerOp) Find(ctx context.Context, zone string, conditions *Find
 			conditions = &FindCondition{}
 		}
 		if body == nil {
-			body = &LoadBalancerFindRequestEnvelope{}
+			body = &loadbalancerFindRequestEnvelope{}
 		}
-		v := body.(*LoadBalancerFindRequestEnvelope)
+		v := body.(*loadbalancerFindRequestEnvelope)
 		if err := mapconv.ConvertTo(conditions, v); err != nil {
 			return nil, err
 		}
@@ -2045,7 +2045,7 @@ func (o *LoadBalancerOp) Find(ctx context.Context, zone string, conditions *Find
 		return nil, err
 	}
 
-	nakedResponse := &LoadBalancerFindResponseEnvelope{}
+	nakedResponse := &loadbalancerFindResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
@@ -2081,9 +2081,9 @@ func (o *LoadBalancerOp) Create(ctx context.Context, zone string, param *LoadBal
 			param = &LoadBalancerCreateRequest{}
 		}
 		if body == nil {
-			body = &LoadBalancerCreateRequestEnvelope{}
+			body = &loadbalancerCreateRequestEnvelope{}
 		}
-		v := body.(*LoadBalancerCreateRequestEnvelope)
+		v := body.(*loadbalancerCreateRequestEnvelope)
 		n, err := param.convertTo()
 		if err != nil {
 			return nil, err
@@ -2097,7 +2097,7 @@ func (o *LoadBalancerOp) Create(ctx context.Context, zone string, param *LoadBal
 		return nil, err
 	}
 
-	nakedResponse := &LoadBalancerCreateResponseEnvelope{}
+	nakedResponse := &loadbalancerCreateResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
@@ -2129,7 +2129,7 @@ func (o *LoadBalancerOp) Read(ctx context.Context, zone string, id types.ID) (*L
 		return nil, err
 	}
 
-	nakedResponse := &LoadBalancerReadResponseEnvelope{}
+	nakedResponse := &loadbalancerReadResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
@@ -2162,9 +2162,9 @@ func (o *LoadBalancerOp) Update(ctx context.Context, zone string, id types.ID, p
 			param = &LoadBalancerUpdateRequest{}
 		}
 		if body == nil {
-			body = &LoadBalancerUpdateRequestEnvelope{}
+			body = &loadbalancerUpdateRequestEnvelope{}
 		}
-		v := body.(*LoadBalancerUpdateRequestEnvelope)
+		v := body.(*loadbalancerUpdateRequestEnvelope)
 		n, err := param.convertTo()
 		if err != nil {
 			return nil, err
@@ -2178,7 +2178,7 @@ func (o *LoadBalancerOp) Update(ctx context.Context, zone string, id types.ID, p
 		return nil, err
 	}
 
-	nakedResponse := &LoadBalancerUpdateResponseEnvelope{}
+	nakedResponse := &loadbalancerUpdateResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
@@ -2279,9 +2279,9 @@ func (o *LoadBalancerOp) Shutdown(ctx context.Context, zone string, id types.ID,
 			shutdownOption = &ShutdownOption{}
 		}
 		if body == nil {
-			body = &LoadBalancerShutdownRequestEnvelope{}
+			body = &loadbalancerShutdownRequestEnvelope{}
 		}
-		v := body.(*LoadBalancerShutdownRequestEnvelope)
+		v := body.(*loadbalancerShutdownRequestEnvelope)
 		if err := mapconv.ConvertTo(shutdownOption, v); err != nil {
 			return err
 		}
@@ -2339,9 +2339,9 @@ func (o *LoadBalancerOp) MonitorInterface(ctx context.Context, zone string, id t
 			condition = &MonitorCondition{}
 		}
 		if body == nil {
-			body = &LoadBalancerMonitorInterfaceRequestEnvelope{}
+			body = &loadbalancerMonitorInterfaceRequestEnvelope{}
 		}
-		v := body.(*LoadBalancerMonitorInterfaceRequestEnvelope)
+		v := body.(*loadbalancerMonitorInterfaceRequestEnvelope)
 		if err := mapconv.ConvertTo(condition, v); err != nil {
 			return nil, err
 		}
@@ -2353,7 +2353,7 @@ func (o *LoadBalancerOp) MonitorInterface(ctx context.Context, zone string, id t
 		return nil, err
 	}
 
-	nakedResponse := &LoadBalancerMonitorInterfaceResponseEnvelope{}
+	nakedResponse := &loadbalancerMonitorInterfaceResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
@@ -2385,7 +2385,7 @@ func (o *LoadBalancerOp) Status(ctx context.Context, zone string, id types.ID) (
 		return nil, err
 	}
 
-	nakedResponse := &LoadBalancerStatusResponseEnvelope{}
+	nakedResponse := &loadbalancerStatusResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
@@ -2443,9 +2443,9 @@ func (o *NFSOp) Find(ctx context.Context, zone string, conditions *FindCondition
 			conditions = &FindCondition{}
 		}
 		if body == nil {
-			body = &NFSFindRequestEnvelope{}
+			body = &nfsFindRequestEnvelope{}
 		}
-		v := body.(*NFSFindRequestEnvelope)
+		v := body.(*nfsFindRequestEnvelope)
 		if err := mapconv.ConvertTo(conditions, v); err != nil {
 			return nil, err
 		}
@@ -2457,7 +2457,7 @@ func (o *NFSOp) Find(ctx context.Context, zone string, conditions *FindCondition
 		return nil, err
 	}
 
-	nakedResponse := &NFSFindResponseEnvelope{}
+	nakedResponse := &nfsFindResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
@@ -2493,9 +2493,9 @@ func (o *NFSOp) Create(ctx context.Context, zone string, param *NFSCreateRequest
 			param = &NFSCreateRequest{}
 		}
 		if body == nil {
-			body = &NFSCreateRequestEnvelope{}
+			body = &nfsCreateRequestEnvelope{}
 		}
-		v := body.(*NFSCreateRequestEnvelope)
+		v := body.(*nfsCreateRequestEnvelope)
 		n, err := param.convertTo()
 		if err != nil {
 			return nil, err
@@ -2509,7 +2509,7 @@ func (o *NFSOp) Create(ctx context.Context, zone string, param *NFSCreateRequest
 		return nil, err
 	}
 
-	nakedResponse := &NFSCreateResponseEnvelope{}
+	nakedResponse := &nfsCreateResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
@@ -2541,7 +2541,7 @@ func (o *NFSOp) Read(ctx context.Context, zone string, id types.ID) (*NFS, error
 		return nil, err
 	}
 
-	nakedResponse := &NFSReadResponseEnvelope{}
+	nakedResponse := &nfsReadResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
@@ -2574,9 +2574,9 @@ func (o *NFSOp) Update(ctx context.Context, zone string, id types.ID, param *NFS
 			param = &NFSUpdateRequest{}
 		}
 		if body == nil {
-			body = &NFSUpdateRequestEnvelope{}
+			body = &nfsUpdateRequestEnvelope{}
 		}
-		v := body.(*NFSUpdateRequestEnvelope)
+		v := body.(*nfsUpdateRequestEnvelope)
 		n, err := param.convertTo()
 		if err != nil {
 			return nil, err
@@ -2590,7 +2590,7 @@ func (o *NFSOp) Update(ctx context.Context, zone string, id types.ID, param *NFS
 		return nil, err
 	}
 
-	nakedResponse := &NFSUpdateResponseEnvelope{}
+	nakedResponse := &nfsUpdateResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
@@ -2668,9 +2668,9 @@ func (o *NFSOp) Shutdown(ctx context.Context, zone string, id types.ID, shutdown
 			shutdownOption = &ShutdownOption{}
 		}
 		if body == nil {
-			body = &NFSShutdownRequestEnvelope{}
+			body = &nfsShutdownRequestEnvelope{}
 		}
-		v := body.(*NFSShutdownRequestEnvelope)
+		v := body.(*nfsShutdownRequestEnvelope)
 		if err := mapconv.ConvertTo(shutdownOption, v); err != nil {
 			return err
 		}
@@ -2728,9 +2728,9 @@ func (o *NFSOp) MonitorFreeDiskSize(ctx context.Context, zone string, id types.I
 			condition = &MonitorCondition{}
 		}
 		if body == nil {
-			body = &NFSMonitorFreeDiskSizeRequestEnvelope{}
+			body = &nfsMonitorFreeDiskSizeRequestEnvelope{}
 		}
-		v := body.(*NFSMonitorFreeDiskSizeRequestEnvelope)
+		v := body.(*nfsMonitorFreeDiskSizeRequestEnvelope)
 		if err := mapconv.ConvertTo(condition, v); err != nil {
 			return nil, err
 		}
@@ -2742,7 +2742,7 @@ func (o *NFSOp) MonitorFreeDiskSize(ctx context.Context, zone string, id types.I
 		return nil, err
 	}
 
-	nakedResponse := &NFSMonitorFreeDiskSizeResponseEnvelope{}
+	nakedResponse := &nfsMonitorFreeDiskSizeResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
@@ -2774,9 +2774,9 @@ func (o *NFSOp) MonitorInterface(ctx context.Context, zone string, id types.ID, 
 			condition = &MonitorCondition{}
 		}
 		if body == nil {
-			body = &NFSMonitorInterfaceRequestEnvelope{}
+			body = &nfsMonitorInterfaceRequestEnvelope{}
 		}
-		v := body.(*NFSMonitorInterfaceRequestEnvelope)
+		v := body.(*nfsMonitorInterfaceRequestEnvelope)
 		if err := mapconv.ConvertTo(condition, v); err != nil {
 			return nil, err
 		}
@@ -2788,7 +2788,7 @@ func (o *NFSOp) MonitorInterface(ctx context.Context, zone string, id types.ID, 
 		return nil, err
 	}
 
-	nakedResponse := &NFSMonitorInterfaceResponseEnvelope{}
+	nakedResponse := &nfsMonitorInterfaceResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
@@ -2842,9 +2842,9 @@ func (o *NoteOp) Find(ctx context.Context, zone string, conditions *FindConditio
 			conditions = &FindCondition{}
 		}
 		if body == nil {
-			body = &NoteFindRequestEnvelope{}
+			body = &noteFindRequestEnvelope{}
 		}
-		v := body.(*NoteFindRequestEnvelope)
+		v := body.(*noteFindRequestEnvelope)
 		if err := mapconv.ConvertTo(conditions, v); err != nil {
 			return nil, err
 		}
@@ -2856,7 +2856,7 @@ func (o *NoteOp) Find(ctx context.Context, zone string, conditions *FindConditio
 		return nil, err
 	}
 
-	nakedResponse := &NoteFindResponseEnvelope{}
+	nakedResponse := &noteFindResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
@@ -2892,9 +2892,9 @@ func (o *NoteOp) Create(ctx context.Context, zone string, param *NoteCreateReque
 			param = &NoteCreateRequest{}
 		}
 		if body == nil {
-			body = &NoteCreateRequestEnvelope{}
+			body = &noteCreateRequestEnvelope{}
 		}
-		v := body.(*NoteCreateRequestEnvelope)
+		v := body.(*noteCreateRequestEnvelope)
 		n, err := param.convertTo()
 		if err != nil {
 			return nil, err
@@ -2908,7 +2908,7 @@ func (o *NoteOp) Create(ctx context.Context, zone string, param *NoteCreateReque
 		return nil, err
 	}
 
-	nakedResponse := &NoteCreateResponseEnvelope{}
+	nakedResponse := &noteCreateResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
@@ -2940,7 +2940,7 @@ func (o *NoteOp) Read(ctx context.Context, zone string, id types.ID) (*Note, err
 		return nil, err
 	}
 
-	nakedResponse := &NoteReadResponseEnvelope{}
+	nakedResponse := &noteReadResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
@@ -2973,9 +2973,9 @@ func (o *NoteOp) Update(ctx context.Context, zone string, id types.ID, param *No
 			param = &NoteUpdateRequest{}
 		}
 		if body == nil {
-			body = &NoteUpdateRequestEnvelope{}
+			body = &noteUpdateRequestEnvelope{}
 		}
-		v := body.(*NoteUpdateRequestEnvelope)
+		v := body.(*noteUpdateRequestEnvelope)
 		n, err := param.convertTo()
 		if err != nil {
 			return nil, err
@@ -2989,7 +2989,7 @@ func (o *NoteOp) Update(ctx context.Context, zone string, id types.ID, param *No
 		return nil, err
 	}
 
-	nakedResponse := &NoteUpdateResponseEnvelope{}
+	nakedResponse := &noteUpdateResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
@@ -3066,9 +3066,9 @@ func (o *ServerOp) Find(ctx context.Context, zone string, conditions *FindCondit
 			conditions = &FindCondition{}
 		}
 		if body == nil {
-			body = &ServerFindRequestEnvelope{}
+			body = &serverFindRequestEnvelope{}
 		}
-		v := body.(*ServerFindRequestEnvelope)
+		v := body.(*serverFindRequestEnvelope)
 		if err := mapconv.ConvertTo(conditions, v); err != nil {
 			return nil, err
 		}
@@ -3080,7 +3080,7 @@ func (o *ServerOp) Find(ctx context.Context, zone string, conditions *FindCondit
 		return nil, err
 	}
 
-	nakedResponse := &ServerFindResponseEnvelope{}
+	nakedResponse := &serverFindResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
@@ -3116,9 +3116,9 @@ func (o *ServerOp) Create(ctx context.Context, zone string, param *ServerCreateR
 			param = &ServerCreateRequest{}
 		}
 		if body == nil {
-			body = &ServerCreateRequestEnvelope{}
+			body = &serverCreateRequestEnvelope{}
 		}
-		v := body.(*ServerCreateRequestEnvelope)
+		v := body.(*serverCreateRequestEnvelope)
 		n, err := param.convertTo()
 		if err != nil {
 			return nil, err
@@ -3132,7 +3132,7 @@ func (o *ServerOp) Create(ctx context.Context, zone string, param *ServerCreateR
 		return nil, err
 	}
 
-	nakedResponse := &ServerCreateResponseEnvelope{}
+	nakedResponse := &serverCreateResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
@@ -3164,7 +3164,7 @@ func (o *ServerOp) Read(ctx context.Context, zone string, id types.ID) (*Server,
 		return nil, err
 	}
 
-	nakedResponse := &ServerReadResponseEnvelope{}
+	nakedResponse := &serverReadResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
@@ -3197,9 +3197,9 @@ func (o *ServerOp) Update(ctx context.Context, zone string, id types.ID, param *
 			param = &ServerUpdateRequest{}
 		}
 		if body == nil {
-			body = &ServerUpdateRequestEnvelope{}
+			body = &serverUpdateRequestEnvelope{}
 		}
-		v := body.(*ServerUpdateRequestEnvelope)
+		v := body.(*serverUpdateRequestEnvelope)
 		n, err := param.convertTo()
 		if err != nil {
 			return nil, err
@@ -3213,7 +3213,7 @@ func (o *ServerOp) Update(ctx context.Context, zone string, id types.ID, param *
 		return nil, err
 	}
 
-	nakedResponse := &ServerUpdateResponseEnvelope{}
+	nakedResponse := &serverUpdateResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
@@ -3268,9 +3268,9 @@ func (o *ServerOp) ChangePlan(ctx context.Context, zone string, id types.ID, pla
 			plan = &ServerChangePlanRequest{}
 		}
 		if body == nil {
-			body = &ServerChangePlanRequestEnvelope{}
+			body = &serverChangePlanRequestEnvelope{}
 		}
-		v := body.(*ServerChangePlanRequestEnvelope)
+		v := body.(*serverChangePlanRequestEnvelope)
 		if err := mapconv.ConvertTo(plan, v); err != nil {
 			return nil, err
 		}
@@ -3282,7 +3282,7 @@ func (o *ServerOp) ChangePlan(ctx context.Context, zone string, id types.ID, pla
 		return nil, err
 	}
 
-	nakedResponse := &ServerChangePlanResponseEnvelope{}
+	nakedResponse := &serverChangePlanResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
@@ -3315,9 +3315,9 @@ func (o *ServerOp) InsertCDROM(ctx context.Context, zone string, id types.ID, in
 			insertParam = &InsertCDROMRequest{}
 		}
 		if body == nil {
-			body = &ServerInsertCDROMRequestEnvelope{}
+			body = &serverInsertCDROMRequestEnvelope{}
 		}
-		v := body.(*ServerInsertCDROMRequestEnvelope)
+		v := body.(*serverInsertCDROMRequestEnvelope)
 		n, err := insertParam.convertTo()
 		if err != nil {
 			return err
@@ -3355,9 +3355,9 @@ func (o *ServerOp) EjectCDROM(ctx context.Context, zone string, id types.ID, ins
 			insertParam = &EjectCDROMRequest{}
 		}
 		if body == nil {
-			body = &ServerEjectCDROMRequestEnvelope{}
+			body = &serverEjectCDROMRequestEnvelope{}
 		}
-		v := body.(*ServerEjectCDROMRequestEnvelope)
+		v := body.(*serverEjectCDROMRequestEnvelope)
 		n, err := insertParam.convertTo()
 		if err != nil {
 			return err
@@ -3417,9 +3417,9 @@ func (o *ServerOp) Shutdown(ctx context.Context, zone string, id types.ID, shutd
 			shutdownOption = &ShutdownOption{}
 		}
 		if body == nil {
-			body = &ServerShutdownRequestEnvelope{}
+			body = &serverShutdownRequestEnvelope{}
 		}
-		v := body.(*ServerShutdownRequestEnvelope)
+		v := body.(*serverShutdownRequestEnvelope)
 		if err := mapconv.ConvertTo(shutdownOption, v); err != nil {
 			return err
 		}
@@ -3477,9 +3477,9 @@ func (o *ServerOp) Monitor(ctx context.Context, zone string, id types.ID, condit
 			condition = &MonitorCondition{}
 		}
 		if body == nil {
-			body = &ServerMonitorRequestEnvelope{}
+			body = &serverMonitorRequestEnvelope{}
 		}
-		v := body.(*ServerMonitorRequestEnvelope)
+		v := body.(*serverMonitorRequestEnvelope)
 		if err := mapconv.ConvertTo(condition, v); err != nil {
 			return nil, err
 		}
@@ -3491,7 +3491,7 @@ func (o *ServerOp) Monitor(ctx context.Context, zone string, id types.ID, condit
 		return nil, err
 	}
 
-	nakedResponse := &ServerMonitorResponseEnvelope{}
+	nakedResponse := &serverMonitorResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
@@ -3545,9 +3545,9 @@ func (o *SwitchOp) Find(ctx context.Context, zone string, conditions *FindCondit
 			conditions = &FindCondition{}
 		}
 		if body == nil {
-			body = &SwitchFindRequestEnvelope{}
+			body = &switchFindRequestEnvelope{}
 		}
-		v := body.(*SwitchFindRequestEnvelope)
+		v := body.(*switchFindRequestEnvelope)
 		if err := mapconv.ConvertTo(conditions, v); err != nil {
 			return nil, err
 		}
@@ -3559,7 +3559,7 @@ func (o *SwitchOp) Find(ctx context.Context, zone string, conditions *FindCondit
 		return nil, err
 	}
 
-	nakedResponse := &SwitchFindResponseEnvelope{}
+	nakedResponse := &switchFindResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
@@ -3595,9 +3595,9 @@ func (o *SwitchOp) Create(ctx context.Context, zone string, param *SwitchCreateR
 			param = &SwitchCreateRequest{}
 		}
 		if body == nil {
-			body = &SwitchCreateRequestEnvelope{}
+			body = &switchCreateRequestEnvelope{}
 		}
-		v := body.(*SwitchCreateRequestEnvelope)
+		v := body.(*switchCreateRequestEnvelope)
 		n, err := param.convertTo()
 		if err != nil {
 			return nil, err
@@ -3611,7 +3611,7 @@ func (o *SwitchOp) Create(ctx context.Context, zone string, param *SwitchCreateR
 		return nil, err
 	}
 
-	nakedResponse := &SwitchCreateResponseEnvelope{}
+	nakedResponse := &switchCreateResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
@@ -3643,7 +3643,7 @@ func (o *SwitchOp) Read(ctx context.Context, zone string, id types.ID) (*Switch,
 		return nil, err
 	}
 
-	nakedResponse := &SwitchReadResponseEnvelope{}
+	nakedResponse := &switchReadResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
@@ -3676,9 +3676,9 @@ func (o *SwitchOp) Update(ctx context.Context, zone string, id types.ID, param *
 			param = &SwitchUpdateRequest{}
 		}
 		if body == nil {
-			body = &SwitchUpdateRequestEnvelope{}
+			body = &switchUpdateRequestEnvelope{}
 		}
-		v := body.(*SwitchUpdateRequestEnvelope)
+		v := body.(*switchUpdateRequestEnvelope)
 		n, err := param.convertTo()
 		if err != nil {
 			return nil, err
@@ -3692,7 +3692,7 @@ func (o *SwitchOp) Update(ctx context.Context, zone string, id types.ID, param *
 		return nil, err
 	}
 
-	nakedResponse := &SwitchUpdateResponseEnvelope{}
+	nakedResponse := &switchUpdateResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
@@ -3816,9 +3816,9 @@ func (o *ZoneOp) Find(ctx context.Context, zone string, conditions *FindConditio
 			conditions = &FindCondition{}
 		}
 		if body == nil {
-			body = &ZoneFindRequestEnvelope{}
+			body = &zoneFindRequestEnvelope{}
 		}
-		v := body.(*ZoneFindRequestEnvelope)
+		v := body.(*zoneFindRequestEnvelope)
 		if err := mapconv.ConvertTo(conditions, v); err != nil {
 			return nil, err
 		}
@@ -3830,7 +3830,7 @@ func (o *ZoneOp) Find(ctx context.Context, zone string, conditions *FindConditio
 		return nil, err
 	}
 
-	nakedResponse := &ZoneFindResponseEnvelope{}
+	nakedResponse := &zoneFindResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
@@ -3866,7 +3866,7 @@ func (o *ZoneOp) Read(ctx context.Context, zone string, id types.ID) (*Zone, err
 		return nil, err
 	}
 
-	nakedResponse := &ZoneReadResponseEnvelope{}
+	nakedResponse := &zoneReadResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
