@@ -1,4 +1,4 @@
-package sacloud
+package test
 
 import (
 	"context"
@@ -8,6 +8,8 @@ import (
 	"os"
 	"testing"
 
+	"github.com/sacloud/libsacloud-v2/sacloud"
+	"github.com/sacloud/libsacloud-v2/sacloud/accessor"
 	"github.com/sacloud/libsacloud-v2/sacloud/types"
 	"github.com/stretchr/testify/require"
 )
@@ -34,10 +36,10 @@ type TestT interface {
 // CRUDTestCase CRUD操作テストケース
 type CRUDTestCase struct {
 	// APICallerのセットアップ用Func、テストケースごとに1回呼ばれる
-	SetupAPICaller func() APICaller
+	SetupAPICaller func() sacloud.APICaller
 
 	// Setup テスト前の準備(依存リソースの作成など)を行うためのFunc(省略可)
-	Setup func(*CRUDTestContext, APICaller) error
+	Setup func(*CRUDTestContext, sacloud.APICaller) error
 
 	// Create Create操作のテスト用Func(省略可)
 	Create *CRUDTestFunc
@@ -49,13 +51,13 @@ type CRUDTestCase struct {
 	Update *CRUDTestFunc
 
 	// Shutdown Delete操作の前のシャットダウン(省略可)
-	Shutdown func(*CRUDTestContext, APICaller) error
+	Shutdown func(*CRUDTestContext, sacloud.APICaller) error
 
 	// Delete Delete操作のテスト用Func(省略可)
 	Delete *CRUDTestDeleteFunc
 
 	// Cleanup APIで作成/変更したリソースなどのクリーンアップ用Func(省略化)
-	Cleanup func(*CRUDTestContext, APICaller) error
+	Cleanup func(*CRUDTestContext, sacloud.APICaller) error
 
 	// Parallel t.Parallelを呼ぶかのフラグ
 	Parallel bool
@@ -80,7 +82,7 @@ type CRUDTestContext struct {
 // CRUDTestFunc CRUD操作(DELETE以外)テストでのテスト用Func
 type CRUDTestFunc struct {
 	// Func API操作を行うFunc
-	Func func(*CRUDTestContext, APICaller) (interface{}, error)
+	Func func(*CRUDTestContext, sacloud.APICaller) (interface{}, error)
 	// Expect 期待値
 	Expect *CRUDTestExpect
 }
@@ -88,7 +90,7 @@ type CRUDTestFunc struct {
 // CRUDTestDeleteFunc CRUD操作テストのDeleteテスト用Func
 type CRUDTestDeleteFunc struct {
 	// Func API操作を行うFunc
-	Func func(*CRUDTestContext, APICaller) error
+	Func func(*CRUDTestContext, sacloud.APICaller) error
 }
 
 // CRUDTestExpect CRUD操作(DELETE以外)テストでの期待値
@@ -136,10 +138,6 @@ func PreCheckEnvs(envs ...string) func(*testing.T) {
 
 // Run 任意の条件でCRUD操作をテストする
 func Run(t TestT, testCase *CRUDTestCase) {
-	if !isAccTest() {
-		t.Skip("TESTACC is not set. skip")
-	}
-
 	if testCase.Read == nil {
 		t.Fatal("CRUDTestCase.Read is required")
 	}
@@ -174,7 +172,7 @@ func Run(t TestT, testCase *CRUDTestCase) {
 		if err != nil {
 			return err
 		}
-		if idHolder, ok := actual.(idAccessor); ok {
+		if idHolder, ok := actual.(accessor.ID); ok {
 			testContext.ID = idHolder.GetID()
 		}
 		if f.Expect != nil {
@@ -192,10 +190,10 @@ func Run(t TestT, testCase *CRUDTestCase) {
 
 		if testCase.Create.Expect != nil && !testCase.IgnoreStartupWait {
 
-			_, ok1 := testCase.Create.Expect.ExpectValue.(AvailabilityHolder)
-			_, ok2 := testCase.Create.Expect.ExpectValue.(InstanceStateHolder)
+			_, ok1 := testCase.Create.Expect.ExpectValue.(accessor.Availability)
+			_, ok2 := testCase.Create.Expect.ExpectValue.(accessor.InstanceStatus)
 			if ok1 || ok2 {
-				waiter := WaiterForApplianceUp(func() (interface{}, error) {
+				waiter := sacloud.WaiterForApplianceUp(func() (interface{}, error) {
 					return testCase.Read.Func(testContext, testCase.SetupAPICaller())
 				}, 10)
 				if _, err := waiter.WaitForState(context.TODO()); err != nil {
@@ -224,7 +222,7 @@ func Run(t TestT, testCase *CRUDTestCase) {
 			t.Fatal("Shutdown is failed: ", err)
 		}
 
-		waiter := WaiterForDown(func() (interface{}, error) {
+		waiter := sacloud.WaiterForDown(func() (interface{}, error) {
 			return testCase.Read.Func(testContext, testCase.SetupAPICaller())
 		})
 		if _, err := waiter.WaitForState(context.TODO()); err != nil {
@@ -242,7 +240,7 @@ func Run(t TestT, testCase *CRUDTestCase) {
 		if err == nil {
 			t.Fatal("Resource still exists: ", testContext.ID)
 		}
-		if e, ok := err.(APIError); ok {
+		if e, ok := err.(sacloud.APIError); ok {
 			if e.ResponseCode() != http.StatusNotFound {
 				t.Fatal("Reading after delete is failed: ", e)
 			}

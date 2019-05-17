@@ -22,7 +22,7 @@ func init() {
 		},
 	}
 
-	Resources.Define("Zone").
+	Resources.Define("Zone").SetIsGlobal(true).
 		OperationFind(nakedType, findParameter, zone).
 		OperationRead(nakedType, zone)
 }

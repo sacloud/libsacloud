@@ -1199,8 +1199,8 @@ func (o *DiskOp) DisconnectFromServer(ctx context.Context, zone string, id types
 	return nil
 }
 
-// Install is API call
-func (o *DiskOp) Install(ctx context.Context, zone string, id types.ID, installParam *DiskInstallRequest, distantFrom []types.ID) (*Disk, error) {
+// InstallDistantFrom is API call
+func (o *DiskOp) InstallDistantFrom(ctx context.Context, zone string, id types.ID, installParam *DiskInstallRequest, distantFrom []types.ID) (*Disk, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/install", map[string]interface{}{
 		"rootURL":      SakuraCloudAPIRoot,
 		"pathSuffix":   o.PathSuffix,
@@ -1209,64 +1209,6 @@ func (o *DiskOp) Install(ctx context.Context, zone string, id types.ID, installP
 		"id":           id,
 		"installParam": installParam,
 		"distantFrom":  distantFrom,
-	})
-	if err != nil {
-		return nil, err
-	}
-
-	var body interface{}
-
-	{
-		if installParam == nil {
-			installParam = &DiskInstallRequest{}
-		}
-		if body == nil {
-			body = &diskInstallRequestEnvelope{}
-		}
-		v := body.(*diskInstallRequestEnvelope)
-		n, err := installParam.convertTo()
-		if err != nil {
-			return nil, err
-		}
-		v.Disk = n
-		body = v
-	}
-
-	{
-		if body == nil {
-			body = &diskInstallRequestEnvelope{}
-		}
-		v := body.(*diskInstallRequestEnvelope)
-		v.DistantFrom = distantFrom
-		body = v
-	}
-
-	data, err := o.Client.Do(ctx, "PUT", url, body)
-	if err != nil {
-		return nil, err
-	}
-
-	nakedResponse := &diskInstallResponseEnvelope{}
-	if err := json.Unmarshal(data, nakedResponse); err != nil {
-		return nil, err
-	}
-
-	payload0 := &Disk{}
-	if err := payload0.convertFrom(nakedResponse.Disk); err != nil {
-		return nil, err
-	}
-	return payload0, nil
-}
-
-// InstallDistantFrom is API call
-func (o *DiskOp) InstallDistantFrom(ctx context.Context, zone string, id types.ID, installParam *DiskInstallRequest) (*Disk, error) {
-	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/install", map[string]interface{}{
-		"rootURL":      SakuraCloudAPIRoot,
-		"pathSuffix":   o.PathSuffix,
-		"pathName":     o.PathName,
-		"zone":         zone,
-		"id":           id,
-		"installParam": installParam,
 	})
 	if err != nil {
 		return nil, err
@@ -1290,12 +1232,70 @@ func (o *DiskOp) InstallDistantFrom(ctx context.Context, zone string, id types.I
 		body = v
 	}
 
+	{
+		if body == nil {
+			body = &diskInstallDistantFromRequestEnvelope{}
+		}
+		v := body.(*diskInstallDistantFromRequestEnvelope)
+		v.DistantFrom = distantFrom
+		body = v
+	}
+
 	data, err := o.Client.Do(ctx, "PUT", url, body)
 	if err != nil {
 		return nil, err
 	}
 
 	nakedResponse := &diskInstallDistantFromResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	payload0 := &Disk{}
+	if err := payload0.convertFrom(nakedResponse.Disk); err != nil {
+		return nil, err
+	}
+	return payload0, nil
+}
+
+// Install is API call
+func (o *DiskOp) Install(ctx context.Context, zone string, id types.ID, installParam *DiskInstallRequest) (*Disk, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/install", map[string]interface{}{
+		"rootURL":      SakuraCloudAPIRoot,
+		"pathSuffix":   o.PathSuffix,
+		"pathName":     o.PathName,
+		"zone":         zone,
+		"id":           id,
+		"installParam": installParam,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	{
+		if installParam == nil {
+			installParam = &DiskInstallRequest{}
+		}
+		if body == nil {
+			body = &diskInstallRequestEnvelope{}
+		}
+		v := body.(*diskInstallRequestEnvelope)
+		n, err := installParam.convertTo()
+		if err != nil {
+			return nil, err
+		}
+		v.Disk = n
+		body = v
+	}
+
+	data, err := o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &diskInstallResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}

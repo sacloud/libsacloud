@@ -55,8 +55,8 @@ type DiskAPI interface {
 	ResizePartition(ctx context.Context, zone string, id types.ID) error
 	ConnectToServer(ctx context.Context, zone string, id types.ID, serverID types.ID) error
 	DisconnectFromServer(ctx context.Context, zone string, id types.ID) error
-	Install(ctx context.Context, zone string, id types.ID, installParam *DiskInstallRequest, distantFrom []types.ID) (*Disk, error)
-	InstallDistantFrom(ctx context.Context, zone string, id types.ID, installParam *DiskInstallRequest) (*Disk, error)
+	InstallDistantFrom(ctx context.Context, zone string, id types.ID, installParam *DiskInstallRequest, distantFrom []types.ID) (*Disk, error)
+	Install(ctx context.Context, zone string, id types.ID, installParam *DiskInstallRequest) (*Disk, error)
 	Read(ctx context.Context, zone string, id types.ID) (*Disk, error)
 	Update(ctx context.Context, zone string, id types.ID, param *DiskUpdateRequest) (*Disk, error)
 	Delete(ctx context.Context, zone string, id types.ID) error

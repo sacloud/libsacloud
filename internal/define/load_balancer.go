@@ -17,7 +17,7 @@ func init() {
 			fields.Tags(),
 			fields.Availability(),
 			fields.Class(),
-			fields.Icon(),
+			fields.IconID(),
 			fields.CreatedAt(),
 			fields.ModifiedAt(),
 			// instance
@@ -26,12 +26,11 @@ func init() {
 			fields.InstanceStatus(),
 			fields.InstanceStatusChangedAt(),
 			// interfaces
-			fields.Interfaces(),
+			//fields.Interfaces(),
 			// plan
 			fields.AppliancePlanID(),
 			// switch
 			fields.ApplianceSwitchID(),
-			fields.Switch(),
 			// remark
 			fields.RemarkDefaultRoute(),
 			fields.RemarkNetworkMaskLen(),
@@ -75,19 +74,16 @@ func init() {
 		Name: "LoadBalancerStatus",
 		Fields: []*schema.FieldDesc{
 			{
-				Name:     "VirtualIPAddress",
-				Type:     meta.TypeString,
-				ReadOnly: true,
+				Name: "VirtualIPAddress",
+				Type: meta.TypeString,
 			},
 			{
-				Name:     "Port",
-				Type:     meta.TypeStringNumber,
-				ReadOnly: true,
+				Name: "Port",
+				Type: meta.TypeStringNumber,
 			},
 			{
-				Name:     "CPS",
-				Type:     meta.TypeStringNumber,
-				ReadOnly: true,
+				Name: "CPS",
+				Type: meta.TypeStringNumber,
 			},
 			{
 				Name: "Servers",
@@ -96,33 +92,27 @@ func init() {
 					IsArray: true,
 					Fields: []*schema.FieldDesc{
 						{
-							Name:     "ActiveConn",
-							Type:     meta.TypeStringNumber,
-							ReadOnly: true,
+							Name: "ActiveConn",
+							Type: meta.TypeStringNumber,
 						},
 						{
-							Name:     "Status",
-							Type:     meta.TypeInstanceStatus,
-							ReadOnly: true,
+							Name: "Status",
+							Type: meta.TypeInstanceStatus,
 						},
 						{
-							Name:     "IPAddress",
-							Type:     meta.TypeString,
-							ReadOnly: true,
+							Name: "IPAddress",
+							Type: meta.TypeString,
 						},
 						{
-							Name:     "Port",
-							Type:     meta.TypeStringNumber,
-							ReadOnly: true,
+							Name: "Port",
+							Type: meta.TypeStringNumber,
 						},
 						{
-							Name:     "CPS",
-							Type:     meta.TypeStringNumber,
-							ReadOnly: true,
+							Name: "CPS",
+							Type: meta.TypeStringNumber,
 						},
 					},
 				},
-				ReadOnly: true,
 				Tags: &schema.FieldTags{
 					MapConv: ",recursive",
 				},

@@ -67,6 +67,7 @@ type Resource struct {
 	name       string       // リソース名 e.g.: Server
 	pathName   string       // リソースのパス名 APIのURLで利用される e.g.: server 省略した場合はNameを小文字にしたものとなる
 	pathSuffix string       // APIのURLで利用されるプレフィックス e.g.: api/cloud/1.1
+	isGlobal   bool         // 全ゾーンで共通リソース(グローバルリソース)
 	operations []*Operation // このリソースに対する操作
 }
 
@@ -603,4 +604,15 @@ func (r *Resource) FieldName(form PayloadForm) string {
 	default:
 		return ""
 	}
+}
+
+// SetIsGlobal グローバルリソースかのフラグを設定
+func (r *Resource) SetIsGlobal(is bool) *Resource {
+	r.isGlobal = is
+	return r
+}
+
+// IsGlobal グローバルリソースか判定
+func (r *Resource) IsGlobal() bool {
+	return r.isGlobal
 }

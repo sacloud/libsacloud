@@ -15,9 +15,8 @@ func (m *monitorsDef) cpuTimeModel() *schema.Model {
 		Name: "CPUTimeActivity",
 		Fields: []*schema.FieldDesc{
 			{
-				Name:     "Values",
-				Type:     meta.Static([]naked.MonitorCPUTimeValue{}),
-				ReadOnly: true,
+				Name: "Values",
+				Type: meta.Static([]naked.MonitorCPUTimeValue{}),
 				Tags: &schema.FieldTags{
 					MapConv: "CPU",
 				},
@@ -32,9 +31,8 @@ func (m *monitorsDef) diskModel() *schema.Model {
 		Name: "DiskActivity",
 		Fields: []*schema.FieldDesc{
 			{
-				Name:     "Values",
-				Type:     meta.Static([]naked.MonitorDiskValue{}),
-				ReadOnly: true,
+				Name: "Values",
+				Type: meta.Static([]naked.MonitorDiskValue{}),
 				Tags: &schema.FieldTags{
 					MapConv: "Disk",
 				},
@@ -49,9 +47,8 @@ func (m *monitorsDef) interfaceModel() *schema.Model {
 		Name: "InterfaceActivity",
 		Fields: []*schema.FieldDesc{
 			{
-				Name:     "Values",
-				Type:     meta.Static([]naked.MonitorInterfaceValue{}),
-				ReadOnly: true,
+				Name: "Values",
+				Type: meta.Static([]naked.MonitorInterfaceValue{}),
 				Tags: &schema.FieldTags{
 					MapConv: "Interface",
 				},
@@ -66,9 +63,8 @@ func (m *monitorsDef) routerModel() *schema.Model {
 		Name: "RouterActivity",
 		Fields: []*schema.FieldDesc{
 			{
-				Name:     "Values",
-				Type:     meta.Static([]naked.MonitorRouterValue{}),
-				ReadOnly: true,
+				Name: "Values",
+				Type: meta.Static([]naked.MonitorRouterValue{}),
 				Tags: &schema.FieldTags{
 					MapConv: "Router",
 				},
@@ -83,9 +79,8 @@ func (m *monitorsDef) databaseModel() *schema.Model {
 		Name: "DatabaseActivity",
 		Fields: []*schema.FieldDesc{
 			{
-				Name:     "Values",
-				Type:     meta.Static([]naked.MonitorDatabaseValue{}),
-				ReadOnly: true,
+				Name: "Values",
+				Type: meta.Static([]naked.MonitorDatabaseValue{}),
 				Tags: &schema.FieldTags{
 					MapConv: "Database",
 				},
@@ -100,9 +95,8 @@ func (m *monitorsDef) freeDiskSizeModel() *schema.Model {
 		Name: "FreeDiskSizeActivity",
 		Fields: []*schema.FieldDesc{
 			{
-				Name:     "Values",
-				Type:     meta.Static([]naked.MonitorFreeDiskSizeValue{}),
-				ReadOnly: true,
+				Name: "Values",
+				Type: meta.Static([]naked.MonitorFreeDiskSizeValue{}),
 				Tags: &schema.FieldTags{
 					MapConv: "FreeDiskSize",
 				},
@@ -117,9 +111,8 @@ func (m *monitorsDef) responseTimeSecModel() *schema.Model {
 		Name: "ResponseTimeSecActivity",
 		Fields: []*schema.FieldDesc{
 			{
-				Name:     "Values",
-				Type:     meta.Static([]naked.MonitorResponseTimeSecValue{}),
-				ReadOnly: true,
+				Name: "Values",
+				Type: meta.Static([]naked.MonitorResponseTimeSecValue{}),
 				Tags: &schema.FieldTags{
 					MapConv: "ResponseTimeSec",
 				},
@@ -134,9 +127,8 @@ func (m *monitorsDef) linkModel() *schema.Model {
 		Name: "LinkActivity",
 		Fields: []*schema.FieldDesc{
 			{
-				Name:     "Values",
-				Type:     meta.Static([]naked.MonitorLinkValue{}),
-				ReadOnly: true,
+				Name: "Values",
+				Type: meta.Static([]naked.MonitorLinkValue{}),
 				Tags: &schema.FieldTags{
 					MapConv: "Link",
 				},
@@ -151,9 +143,8 @@ func (m *monitorsDef) connectionModel() *schema.Model {
 		Name: "ConnectionActivity",
 		Fields: []*schema.FieldDesc{
 			{
-				Name:     "Values",
-				Type:     meta.Static([]naked.MonitorConnectionValue{}),
-				ReadOnly: true,
+				Name: "Values",
+				Type: meta.Static([]naked.MonitorConnectionValue{}),
 				Tags: &schema.FieldTags{
 					MapConv: "Connection",
 				},

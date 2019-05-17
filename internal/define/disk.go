@@ -31,6 +31,7 @@ var diskModel = &schema.Model{
 		fields.SourceArchiveAvailability(),
 		fields.BundleInfo(),
 		fields.Storage(),
+		fields.ServerID(),
 		fields.Icon(),
 		fields.CreatedAt(),
 		fields.ModifiedAt(),
@@ -239,7 +240,7 @@ func init() {
 				Argument(schema.ArgumentID),
 
 			// install
-			r.DefineOperation("Install").
+			r.DefineOperation("InstallDistantFrom").
 				Method(http.MethodPut).
 				PathFormat(schema.IDAndSuffixPathFormat("install")).
 				RequestEnvelope(&schema.EnvelopePayloadDesc{
@@ -267,7 +268,7 @@ func init() {
 					PayloadName: "Disk",
 				}),
 
-			r.DefineOperation("InstallDistantFrom").
+			r.DefineOperation("Install").
 				Method(http.MethodPut).
 				PathFormat(schema.IDAndSuffixPathFormat("install")).
 				RequestEnvelope(&schema.EnvelopePayloadDesc{

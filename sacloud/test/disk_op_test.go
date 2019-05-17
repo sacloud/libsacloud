@@ -1,10 +1,11 @@
-package sacloud
+package test
 
 import (
 	"context"
 	"strings"
 	"testing"
 
+	"github.com/sacloud/libsacloud-v2/sacloud"
 	"github.com/sacloud/libsacloud-v2/sacloud/types"
 	"github.com/stretchr/testify/require"
 )
@@ -66,7 +67,7 @@ var (
 		"ModifiedAt",
 	}
 
-	createDiskParam = &DiskCreateRequest{
+	createDiskParam = &sacloud.DiskCreateRequest{
 		DiskPlanID:  types.ID(4), //SSD
 		Connection:  types.DiskConnections.VirtIO,
 		Name:        "libsacloud-v2-disk",
@@ -74,19 +75,19 @@ var (
 		Tags:        []string{"tag1", "tag2"},
 		SizeMB:      20 * 1024,
 	}
-	createDiskExpected = &Disk{
+	createDiskExpected = &sacloud.Disk{
 		Name:        createDiskParam.Name,
 		Description: createDiskParam.Description,
 		Tags:        createDiskParam.Tags,
 		DiskPlanID:  createDiskParam.DiskPlanID,
 		Connection:  createDiskParam.Connection,
 	}
-	updateDiskParam = &DiskUpdateRequest{
+	updateDiskParam = &sacloud.DiskUpdateRequest{
 		Name:        "libsacloud-v2-disk-upd",
 		Description: "desc-upd",
 		Tags:        []string{"tag1-upd", "tag2-upd"},
 	}
-	updateDiskExpected = &Disk{
+	updateDiskExpected = &sacloud.Disk{
 		Name:        updateDiskParam.Name,
 		Description: updateDiskParam.Description,
 		Tags:        updateDiskParam.Tags,
@@ -95,33 +96,29 @@ var (
 	}
 )
 
-func testDiskCreate(_ *CRUDTestContext, caller APICaller) (interface{}, error) {
-	client := NewDiskOp(caller)
+func testDiskCreate(_ *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+	client := sacloud.NewDiskOp(caller)
 	return client.Create(context.Background(), testZone, createDiskParam)
 }
 
-func testDiskRead(testContext *CRUDTestContext, caller APICaller) (interface{}, error) {
-	client := NewDiskOp(caller)
+func testDiskRead(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+	client := sacloud.NewDiskOp(caller)
 	return client.Read(context.Background(), testZone, testContext.ID)
 }
 
-func testDiskUpdate(testContext *CRUDTestContext, caller APICaller) (interface{}, error) {
-	client := NewDiskOp(caller)
+func testDiskUpdate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+	client := sacloud.NewDiskOp(caller)
 	return client.Update(context.Background(), testZone, testContext.ID, updateDiskParam)
 }
 
-func testDiskDelete(testContext *CRUDTestContext, caller APICaller) error {
-	client := NewDiskOp(caller)
+func testDiskDelete(testContext *CRUDTestContext, caller sacloud.APICaller) error {
+	client := sacloud.NewDiskOp(caller)
 	return client.Delete(context.Background(), testZone, testContext.ID)
 }
 
 func TestDiskOp_Config(t *testing.T) {
-	if !isAccTest() {
-		t.Skip("TESTACC is not set. skip")
-	}
-
-	archiveClient := NewArchiveOp(singletonAPICaller())
-	client := NewDiskOp(singletonAPICaller())
+	archiveClient := sacloud.NewArchiveOp(singletonAPICaller())
+	client := sacloud.NewDiskOp(singletonAPICaller())
 	ctx := context.Background()
 
 	// find source public archive
@@ -139,7 +136,7 @@ func TestDiskOp_Config(t *testing.T) {
 	}
 
 	// create
-	disk, err := client.Create(ctx, testZone, &DiskCreateRequest{
+	disk, err := client.Create(ctx, testZone, &sacloud.DiskCreateRequest{
 		Name:            "libsacloud-v2-disk-edit",
 		DiskPlanID:      types.ID(4),
 		SizeMB:          20 * 1024,
@@ -148,7 +145,7 @@ func TestDiskOp_Config(t *testing.T) {
 	require.NoError(t, err)
 
 	// wait for ready
-	waiter := WaiterForReady(func() (interface{}, error) { return client.Read(ctx, testZone, disk.ID) })
+	waiter := sacloud.WaiterForReady(func() (interface{}, error) { return client.Read(ctx, testZone, disk.ID) })
 	_, err = waiter.WaitForState(ctx)
 	require.NoError(t, err)
 
@@ -160,9 +157,9 @@ func TestDiskOp_Config(t *testing.T) {
 	}()
 
 	// edit disk
-	err = client.Config(context.Background(), testZone, disk.ID, &DiskEditRequest{
+	err = client.Config(context.Background(), testZone, disk.ID, &sacloud.DiskEditRequest{
 		Password: "password",
-		SSHKeys: []*DiskEditSSHKey{
+		SSHKeys: []*sacloud.DiskEditSSHKey{
 			{
 				PublicKey: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC4LDQuDiKecOJDPY9InS7EswZ2fPnoRZXc48T1EqyRLyJhgEYGSDWaBiMDs2R/lWgA81Hp37qhrNqZPjFHUkBr93FOXxt9W0m1TNlkNepK0Uyi+14B2n0pdoeqsKEkb3sTevWF0ztxxWrwUd7Mems2hf+wFODITHYye9RlDAKLKPCFRvlQ9xQj4bBWOogQwoaXMSK1znMPjudcm1tRry4KIifLdXmwVKU4qDPGxoXfqs44Dgsikk43UVBStQ7IFoqPgAqcJFSGHLoMS7tPKdTvY9+GME5QidWK84gl69piAkgIdwd+JTMUOc/J+9DXAt220HqZ6l3yhWG5nIgi0x8n",
 			},
@@ -176,7 +173,7 @@ func TestDiskOp_Config(t *testing.T) {
 		//	},
 		//},
 		UserIPAddress: "192.2.0.11",
-		UserSubnet: &DiskEditUserSubnet{
+		UserSubnet: &sacloud.DiskEditUserSubnet{
 			DefaultRoute:   "192.2.0.1",
 			NetworkMaskLen: 24,
 		},

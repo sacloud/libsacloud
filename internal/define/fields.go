@@ -73,7 +73,7 @@ func (f *fieldsDef) DiskPlanStorageClass() *schema.FieldDesc {
 		Tags: &schema.FieldTags{
 			MapConv: "Plan.StorageClass",
 		},
-		Type: meta.TypeStringFlag,
+		Type: meta.TypeString,
 	}
 }
 
@@ -282,6 +282,26 @@ func (f *fieldsDef) IconID() *schema.FieldDesc {
 	}
 }
 
+func (f *fieldsDef) ZoneID() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "ZoneID",
+		Type: meta.TypeID,
+		Tags: &schema.FieldTags{
+			MapConv: "Zone.ID",
+		},
+	}
+}
+
+func (f *fieldsDef) CDROMID() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "CDROMID",
+		Type: meta.TypeID,
+		Tags: &schema.FieldTags{
+			MapConv: "CDROM.ID",
+		},
+	}
+}
+
 func (f *fieldsDef) PrivateHostID() *schema.FieldDesc {
 	return &schema.FieldDesc{
 		Name: "PrivateHostID",
@@ -455,9 +475,8 @@ func (f *fieldsDef) Class() *schema.FieldDesc {
 
 func (f *fieldsDef) NFSClass() *schema.FieldDesc {
 	return &schema.FieldDesc{
-		Name:     "Class",
-		ReadOnly: true,
-		Type:     meta.TypeString,
+		Name: "Class",
+		Type: meta.TypeString,
 		Tags: &schema.FieldTags{
 			MapConv: ",default=nfs",
 		},
@@ -466,9 +485,8 @@ func (f *fieldsDef) NFSClass() *schema.FieldDesc {
 
 func (f *fieldsDef) LoadBalancerClass() *schema.FieldDesc {
 	return &schema.FieldDesc{
-		Name:     "Class",
-		ReadOnly: true,
-		Type:     meta.TypeString,
+		Name: "Class",
+		Type: meta.TypeString,
 		Tags: &schema.FieldTags{
 			MapConv: ",default=loadbalancer",
 		},
@@ -477,9 +495,8 @@ func (f *fieldsDef) LoadBalancerClass() *schema.FieldDesc {
 
 func (f *fieldsDef) GSLBProviderClass() *schema.FieldDesc {
 	return &schema.FieldDesc{
-		Name:     "Class",
-		ReadOnly: true,
-		Type:     meta.TypeString,
+		Name: "Class",
+		Type: meta.TypeString,
 		Tags: &schema.FieldTags{
 			MapConv: "Provider.Class,default=gslb",
 		},
@@ -488,9 +505,8 @@ func (f *fieldsDef) GSLBProviderClass() *schema.FieldDesc {
 
 func (f *fieldsDef) GSLBFQDN() *schema.FieldDesc {
 	return &schema.FieldDesc{
-		Name:     "FQDN",
-		ReadOnly: true,
-		Type:     meta.TypeString,
+		Name: "FQDN",
+		Type: meta.TypeString,
 		Tags: &schema.FieldTags{
 			MapConv: "Status.FQDN",
 		},
@@ -615,17 +631,15 @@ func (f *fieldsDef) GSLBSorryServer() *schema.FieldDesc {
 
 func (f *fieldsDef) SettingsHash() *schema.FieldDesc {
 	return &schema.FieldDesc{
-		Name:     "SettingsHash",
-		ReadOnly: true,
-		Type:     meta.TypeString,
+		Name: "SettingsHash",
+		Type: meta.TypeString,
 	}
 }
 
 func (f *fieldsDef) InstanceHostName() *schema.FieldDesc {
 	return &schema.FieldDesc{
-		Name:     "InstanceHostName",
-		Type:     meta.TypeString,
-		ReadOnly: true,
+		Name: "InstanceHostName",
+		Type: meta.TypeString,
 		Tags: &schema.FieldTags{
 			MapConv: "Instance.Host.Name",
 		},
@@ -634,9 +648,8 @@ func (f *fieldsDef) InstanceHostName() *schema.FieldDesc {
 
 func (f *fieldsDef) InstanceHostInfoURL() *schema.FieldDesc {
 	return &schema.FieldDesc{
-		Name:     "InstanceHostInfoURL",
-		Type:     meta.TypeString,
-		ReadOnly: true,
+		Name: "InstanceHostInfoURL",
+		Type: meta.TypeString,
 		Tags: &schema.FieldTags{
 			MapConv: "Instance.Host.InfoURL",
 		},
@@ -645,9 +658,8 @@ func (f *fieldsDef) InstanceHostInfoURL() *schema.FieldDesc {
 
 func (f *fieldsDef) InstanceStatus() *schema.FieldDesc {
 	return &schema.FieldDesc{
-		Name:     "InstanceStatus",
-		Type:     meta.TypeInstanceStatus,
-		ReadOnly: true,
+		Name: "InstanceStatus",
+		Type: meta.TypeInstanceStatus,
 		Tags: &schema.FieldTags{
 			MapConv: "Instance.Status",
 		},
@@ -656,9 +668,8 @@ func (f *fieldsDef) InstanceStatus() *schema.FieldDesc {
 
 func (f *fieldsDef) InstanceBeforeStatus() *schema.FieldDesc {
 	return &schema.FieldDesc{
-		Name:     "InstanceBeforeStatus",
-		Type:     meta.TypeInstanceStatus,
-		ReadOnly: true,
+		Name: "InstanceBeforeStatus",
+		Type: meta.TypeInstanceStatus,
 		Tags: &schema.FieldTags{
 			MapConv: "Instance.BeforeStatus",
 		},
@@ -667,9 +678,8 @@ func (f *fieldsDef) InstanceBeforeStatus() *schema.FieldDesc {
 
 func (f *fieldsDef) InstanceStatusChangedAt() *schema.FieldDesc {
 	return &schema.FieldDesc{
-		Name:     "InstanceStatusChangedAt",
-		Type:     meta.TypeTime,
-		ReadOnly: true,
+		Name: "InstanceStatusChangedAt",
+		Type: meta.TypeTime,
 		Tags: &schema.FieldTags{
 			MapConv: "Instance.StatusChangedAt",
 		},
@@ -678,9 +688,8 @@ func (f *fieldsDef) InstanceStatusChangedAt() *schema.FieldDesc {
 
 func (f *fieldsDef) InstanceWarnings() *schema.FieldDesc {
 	return &schema.FieldDesc{
-		Name:     "InstanceWarnings",
-		Type:     meta.TypeString,
-		ReadOnly: true,
+		Name: "InstanceWarnings",
+		Type: meta.TypeString,
 		Tags: &schema.FieldTags{
 			MapConv: "Instance.Warnings",
 		},
@@ -689,9 +698,8 @@ func (f *fieldsDef) InstanceWarnings() *schema.FieldDesc {
 
 func (f *fieldsDef) InstanceWarningsValue() *schema.FieldDesc {
 	return &schema.FieldDesc{
-		Name:     "InstanceWarningsValue",
-		Type:     meta.TypeInt,
-		ReadOnly: true,
+		Name: "InstanceWarningsValue",
+		Type: meta.TypeInt,
 		Tags: &schema.FieldTags{
 			MapConv: "Instance.WarningsValue",
 		},
@@ -700,9 +708,8 @@ func (f *fieldsDef) InstanceWarningsValue() *schema.FieldDesc {
 
 func (f *fieldsDef) Interfaces() *schema.FieldDesc {
 	return &schema.FieldDesc{
-		Name:     "Interfaces",
-		Type:     meta.Static([]naked.Interface{}),
-		ReadOnly: true,
+		Name: "Interfaces",
+		Type: meta.Static([]naked.Interface{}),
 	}
 }
 
@@ -748,6 +755,10 @@ func (f *fieldsDef) DiskConnection() *schema.FieldDesc {
 	return &schema.FieldDesc{
 		Name: "Connection",
 		Type: meta.TypeDiskConnection,
+		Tags: &schema.FieldTags{
+			JSON:    ",omitempty",
+			MapConv: ",omitempty",
+		},
 	}
 }
 
@@ -820,9 +831,8 @@ func (f *fieldsDef) RemarkNetworkMaskLen() *schema.FieldDesc {
 
 func (f *fieldsDef) RemarkZoneID() *schema.FieldDesc {
 	return &schema.FieldDesc{
-		Name:     "ZoneID",
-		Type:     meta.TypeID,
-		ReadOnly: true,
+		Name: "ZoneID",
+		Type: meta.TypeID,
 		Tags: &schema.FieldTags{
 			MapConv: "Remark.Zone.ID",
 		},
@@ -932,33 +942,29 @@ func (f *fieldsDef) SourceInfo() *schema.FieldDesc {
 			Name: "SourceArchiveInfo",
 			Fields: []*schema.FieldDesc{
 				{
-					Name:     "ID",
-					Type:     meta.TypeID,
-					ReadOnly: true,
+					Name: "ID",
+					Type: meta.TypeID,
 					Tags: &schema.FieldTags{
 						MapConv: "ArchiveUnderZone.ID",
 					},
 				},
 				{
-					Name:     "AccountID",
-					Type:     meta.TypeID,
-					ReadOnly: true,
+					Name: "AccountID",
+					Type: meta.TypeID,
 					Tags: &schema.FieldTags{
 						MapConv: "ArchiveUnderZone.Account.ID",
 					},
 				},
 				{
-					Name:     "ZoneID",
-					Type:     meta.TypeID,
-					ReadOnly: true,
+					Name: "ZoneID",
+					Type: meta.TypeID,
 					Tags: &schema.FieldTags{
 						MapConv: "ArchiveUnderZone.Zone.ID",
 					},
 				},
 				{
-					Name:     "ZoneName",
-					Type:     meta.TypeString,
-					ReadOnly: true,
+					Name: "ZoneName",
+					Type: meta.TypeString,
 					Tags: &schema.FieldTags{
 						MapConv: "ArchiveUnderZone.Zone.Name",
 					},

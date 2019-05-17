@@ -23,19 +23,19 @@ func init() {
 			fields.InstanceStatus(),
 			fields.InstanceStatusChangedAt(),
 			// interfaces
-			fields.Interfaces(),
+			//fields.Interfaces(),
 			// plan
 			fields.AppliancePlanID(),
 			// switch
 			fields.ApplianceSwitchID(),
-			fields.Switch(),
+			//fields.Switch(),
 			// remark
 			fields.RemarkDefaultRoute(),
 			fields.RemarkNetworkMaskLen(),
 			fields.RemarkServerIPAddress(),
 			fields.RemarkZoneID(),
 			// other
-			fields.Icon(),
+			fields.IconID(),
 			fields.CreatedAt(),
 			fields.ModifiedAt(),
 		},
@@ -46,7 +46,7 @@ func init() {
 			fields.NFSClass(),
 			fields.ApplianceSwitchID(),
 			fields.AppliancePlanID(),
-			fields.ApplianceIPAddress(),
+			fields.ApplianceIPAddresses(),
 			fields.RemarkNetworkMaskLen(),
 			fields.RemarkDefaultRoute(),
 			fields.Name(),

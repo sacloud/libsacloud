@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/sacloud/libsacloud-v2/sacloud/accessor"
 	"github.com/sacloud/libsacloud-v2/sacloud/types"
 )
 
@@ -31,18 +32,6 @@ type StateReadFunc func() (state interface{}, err error)
 //
 // StatePollWaiterのフィールドとして設定する
 type StateCheckFunc func(target interface{}) (exit bool, err error)
-
-// AvailabilityHolder Availabilityを持つリソース向けのインターフェース
-type AvailabilityHolder interface {
-	// GetAvailability 対象リソースのtypes.EAvailabilityを返す
-	GetAvailability() types.EAvailability
-}
-
-// InstanceStateHolder InstanceStateを持つリソース向けのインターフェース
-type InstanceStateHolder interface {
-	// GetInstanceStatus 対象リソースのtypes.EServerInstanceStateを返す
-	GetInstanceStatus() types.EServerInstanceStatus
-}
 
 // UnexpectedAvailabilityError 予期しないAvailabilityとなった場合のerror
 type UnexpectedAvailabilityError struct {
@@ -223,8 +212,8 @@ func (w *StatePollWaiter) handleState(state interface{}) (bool, error) {
 		return w.StateCheckFunc(state)
 	}
 
-	availabilityHolder, hasAvailability := state.(AvailabilityHolder)
-	instanceStateHolder, hasInstanceState := state.(InstanceStateHolder)
+	availabilityHolder, hasAvailability := state.(accessor.Availability)
+	instanceStateHolder, hasInstanceState := state.(accessor.InstanceStatus)
 
 	switch {
 	case hasAvailability && hasInstanceState:
@@ -248,7 +237,7 @@ func (w *StatePollWaiter) handleState(state interface{}) (bool, error) {
 	}
 }
 
-func (w *StatePollWaiter) handleAvailability(state AvailabilityHolder) (bool, error) {
+func (w *StatePollWaiter) handleAvailability(state accessor.Availability) (bool, error) {
 	if len(w.TargetAvailability) == 0 {
 		return true, nil
 	}
@@ -263,7 +252,7 @@ func (w *StatePollWaiter) handleAvailability(state AvailabilityHolder) (bool, er
 	}
 }
 
-func (w *StatePollWaiter) handleInstanceState(state InstanceStateHolder) (bool, error) {
+func (w *StatePollWaiter) handleInstanceState(state accessor.InstanceStatus) (bool, error) {
 	if len(w.TargetInstanceStatus) == 0 {
 		return true, nil
 	}

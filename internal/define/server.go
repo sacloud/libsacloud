@@ -29,7 +29,7 @@ func init() {
 			fields.ServerPlanCommitment(),
 			fields.ServerPlanGeneration(),
 			// zone
-			fields.Zone(),
+			fields.ZoneID(),
 			// instance
 			fields.InstanceHostName(),
 			fields.InstanceHostInfoURL(),
@@ -68,13 +68,15 @@ func init() {
 				},
 			},
 
+			fields.CDROMID(),
+
 			fields.PrivateHostID(),
 			fields.PrivateHostName(),
 
 			fields.BundleInfo(),
 			fields.Storage(),
 
-			fields.Icon(),
+			fields.IconID(),
 			fields.CreatedAt(),
 			fields.ModifiedAt(),
 		},

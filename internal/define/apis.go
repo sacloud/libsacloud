@@ -5,6 +5,9 @@
 //go:generate go run ../tools/gen-api-op/main.go
 //go:generate go run ../tools/gen-api-tracer/main.go
 //go:generate go run ../tools/gen-api-stub/main.go
+//go:generate go run ../tools/gen-api-meta/main.go
+//go:generate go run ../tools/gen-api-fake-store/main.go
+//go:generate go run ../tools/gen-api-fake-op/main.go
 package define
 
 import "github.com/sacloud/libsacloud-v2/internal/schema"
