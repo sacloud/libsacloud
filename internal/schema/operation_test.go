@@ -65,8 +65,8 @@ func TestOperation(t *testing.T) {
 				}),
 			expect: &expectOperationValues{
 				methodName:                 "Create",
-				requestEnvelopeStructName:  "TestCreateRequestEnvelope",
-				responseEnvelopeStructName: "TestCreateResponseEnvelope",
+				requestEnvelopeStructName:  "testCreateRequestEnvelope",
+				responseEnvelopeStructName: "testCreateResponseEnvelope",
 				requestPayloadName:         "Test",
 				responsePayloadName:        "Test",
 			},

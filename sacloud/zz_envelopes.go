@@ -9,8 +9,8 @@ import (
 	"github.com/sacloud/libsacloud-v2/sacloud/types"
 )
 
-// ArchiveFindRequestEnvelope is envelop of API request
-type ArchiveFindRequestEnvelope struct {
+// archiveFindRequestEnvelope is envelop of API request
+type archiveFindRequestEnvelope struct {
 	Count   int                    `json:",omitempty"`
 	From    int                    `json:",omitempty"`
 	Sort    []string               `json:",omitempty"`
@@ -19,8 +19,8 @@ type ArchiveFindRequestEnvelope struct {
 	Exclude []string               `json:",omitempty"`
 }
 
-// ArchiveFindResponseEnvelope is envelop of API response
-type ArchiveFindResponseEnvelope struct {
+// archiveFindResponseEnvelope is envelop of API response
+type archiveFindResponseEnvelope struct {
 	Total int `json:",omitempty"` // トータル件数
 	From  int `json:",omitempty"` // ページング開始ページ
 	Count int `json:",omitempty"` // 件数
@@ -28,26 +28,26 @@ type ArchiveFindResponseEnvelope struct {
 	Archives []*naked.Archive `json:",omitempty"`
 }
 
-// ArchiveCreateRequestEnvelope is envelop of API request
-type ArchiveCreateRequestEnvelope struct {
+// archiveCreateRequestEnvelope is envelop of API request
+type archiveCreateRequestEnvelope struct {
 	Archive *naked.Archive `json:",omitempty"`
 }
 
-// ArchiveCreateResponseEnvelope is envelop of API response
-type ArchiveCreateResponseEnvelope struct {
+// archiveCreateResponseEnvelope is envelop of API response
+type archiveCreateResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
 	Archive *naked.Archive `json:",omitempty"`
 }
 
-// ArchiveCreateBlankRequestEnvelope is envelop of API request
-type ArchiveCreateBlankRequestEnvelope struct {
+// archiveCreateBlankRequestEnvelope is envelop of API request
+type archiveCreateBlankRequestEnvelope struct {
 	Archive *naked.Archive `json:",omitempty"`
 }
 
-// ArchiveCreateBlankResponseEnvelope is envelop of API response
-type ArchiveCreateBlankResponseEnvelope struct {
+// archiveCreateBlankResponseEnvelope is envelop of API response
+type archiveCreateBlankResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
@@ -55,42 +55,42 @@ type ArchiveCreateBlankResponseEnvelope struct {
 	FTPServer *naked.OpeningFTPServer `json:",omitempty"`
 }
 
-// ArchiveReadResponseEnvelope is envelop of API response
-type ArchiveReadResponseEnvelope struct {
+// archiveReadResponseEnvelope is envelop of API response
+type archiveReadResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
 	Archive *naked.Archive `json:",omitempty"`
 }
 
-// ArchiveUpdateRequestEnvelope is envelop of API request
-type ArchiveUpdateRequestEnvelope struct {
+// archiveUpdateRequestEnvelope is envelop of API request
+type archiveUpdateRequestEnvelope struct {
 	Archive *naked.Archive `json:",omitempty"`
 }
 
-// ArchiveUpdateResponseEnvelope is envelop of API response
-type ArchiveUpdateResponseEnvelope struct {
+// archiveUpdateResponseEnvelope is envelop of API response
+type archiveUpdateResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
 	Archive *naked.Archive `json:",omitempty"`
 }
 
-// ArchiveOpenFTPRequestEnvelope is envelop of API request
-type ArchiveOpenFTPRequestEnvelope struct {
+// archiveOpenFTPRequestEnvelope is envelop of API request
+type archiveOpenFTPRequestEnvelope struct {
 	ChangePassword bool `json:",omitempty"`
 }
 
-// ArchiveOpenFTPResponseEnvelope is envelop of API response
-type ArchiveOpenFTPResponseEnvelope struct {
+// archiveOpenFTPResponseEnvelope is envelop of API response
+type archiveOpenFTPResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
 	FTPServer *naked.OpeningFTPServer `json:",omitempty"`
 }
 
-// CDROMFindRequestEnvelope is envelop of API request
-type CDROMFindRequestEnvelope struct {
+// cdromFindRequestEnvelope is envelop of API request
+type cdromFindRequestEnvelope struct {
 	Count   int                    `json:",omitempty"`
 	From    int                    `json:",omitempty"`
 	Sort    []string               `json:",omitempty"`
@@ -99,8 +99,8 @@ type CDROMFindRequestEnvelope struct {
 	Exclude []string               `json:",omitempty"`
 }
 
-// CDROMFindResponseEnvelope is envelop of API response
-type CDROMFindResponseEnvelope struct {
+// cdromFindResponseEnvelope is envelop of API response
+type cdromFindResponseEnvelope struct {
 	Total int `json:",omitempty"` // トータル件数
 	From  int `json:",omitempty"` // ページング開始ページ
 	Count int `json:",omitempty"` // 件数
@@ -108,13 +108,13 @@ type CDROMFindResponseEnvelope struct {
 	CDROMs []*naked.CDROM `json:",omitempty"`
 }
 
-// CDROMCreateRequestEnvelope is envelop of API request
-type CDROMCreateRequestEnvelope struct {
+// cdromCreateRequestEnvelope is envelop of API request
+type cdromCreateRequestEnvelope struct {
 	CDROM *naked.CDROM `json:",omitempty"`
 }
 
-// CDROMCreateResponseEnvelope is envelop of API response
-type CDROMCreateResponseEnvelope struct {
+// cdromCreateResponseEnvelope is envelop of API response
+type cdromCreateResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
@@ -122,42 +122,42 @@ type CDROMCreateResponseEnvelope struct {
 	FTPServer *naked.OpeningFTPServer `json:",omitempty"`
 }
 
-// CDROMReadResponseEnvelope is envelop of API response
-type CDROMReadResponseEnvelope struct {
+// cdromReadResponseEnvelope is envelop of API response
+type cdromReadResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
 	CDROM *naked.CDROM `json:",omitempty"`
 }
 
-// CDROMUpdateRequestEnvelope is envelop of API request
-type CDROMUpdateRequestEnvelope struct {
+// cdromUpdateRequestEnvelope is envelop of API request
+type cdromUpdateRequestEnvelope struct {
 	CDROM *naked.CDROM `json:",omitempty"`
 }
 
-// CDROMUpdateResponseEnvelope is envelop of API response
-type CDROMUpdateResponseEnvelope struct {
+// cdromUpdateResponseEnvelope is envelop of API response
+type cdromUpdateResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
 	CDROM *naked.CDROM `json:",omitempty"`
 }
 
-// CDROMOpenFTPRequestEnvelope is envelop of API request
-type CDROMOpenFTPRequestEnvelope struct {
+// cdromOpenFTPRequestEnvelope is envelop of API request
+type cdromOpenFTPRequestEnvelope struct {
 	ChangePassword bool `json:",omitempty"`
 }
 
-// CDROMOpenFTPResponseEnvelope is envelop of API response
-type CDROMOpenFTPResponseEnvelope struct {
+// cdromOpenFTPResponseEnvelope is envelop of API response
+type cdromOpenFTPResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
 	FTPServer *naked.OpeningFTPServer `json:",omitempty"`
 }
 
-// DiskFindRequestEnvelope is envelop of API request
-type DiskFindRequestEnvelope struct {
+// diskFindRequestEnvelope is envelop of API request
+type diskFindRequestEnvelope struct {
 	Count   int                    `json:",omitempty"`
 	From    int                    `json:",omitempty"`
 	Sort    []string               `json:",omitempty"`
@@ -166,8 +166,8 @@ type DiskFindRequestEnvelope struct {
 	Exclude []string               `json:",omitempty"`
 }
 
-// DiskFindResponseEnvelope is envelop of API response
-type DiskFindResponseEnvelope struct {
+// diskFindResponseEnvelope is envelop of API response
+type diskFindResponseEnvelope struct {
 	Total int `json:",omitempty"` // トータル件数
 	From  int `json:",omitempty"` // ページング開始ページ
 	Count int `json:",omitempty"` // 件数
@@ -175,35 +175,35 @@ type DiskFindResponseEnvelope struct {
 	Disks []*naked.Disk `json:",omitempty"`
 }
 
-// DiskCreateRequestEnvelope is envelop of API request
-type DiskCreateRequestEnvelope struct {
+// diskCreateRequestEnvelope is envelop of API request
+type diskCreateRequestEnvelope struct {
 	Disk *naked.Disk `json:",omitempty"`
 }
 
-// DiskCreateResponseEnvelope is envelop of API response
-type DiskCreateResponseEnvelope struct {
+// diskCreateResponseEnvelope is envelop of API response
+type diskCreateResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
 	Disk *naked.Disk `json:",omitempty"`
 }
 
-// DiskCreateDistantlyRequestEnvelope is envelop of API request
-type DiskCreateDistantlyRequestEnvelope struct {
+// diskCreateDistantlyRequestEnvelope is envelop of API request
+type diskCreateDistantlyRequestEnvelope struct {
 	Disk        *naked.Disk `json:",omitempty"`
 	DistantFrom []types.ID  `json:",omitempty"`
 }
 
-// DiskCreateDistantlyResponseEnvelope is envelop of API response
-type DiskCreateDistantlyResponseEnvelope struct {
+// diskCreateDistantlyResponseEnvelope is envelop of API response
+type diskCreateDistantlyResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
 	Disk *naked.Disk `json:",omitempty"`
 }
 
-// DiskConfigRequestEnvelope is envelop of API request
-type DiskConfigRequestEnvelope struct {
+// diskConfigRequestEnvelope is envelop of API request
+type diskConfigRequestEnvelope struct {
 	Password            string              `json:",omitempty"`
 	SSHKey              *DiskEditSSHKey     `json:",omitempty"`
 	SSHKeys             []*DiskEditSSHKey   `json:",omitempty"`
@@ -216,101 +216,101 @@ type DiskConfigRequestEnvelope struct {
 	UserSubnet          *DiskEditUserSubnet `json:",omitempty"`
 }
 
-// DiskCreateWithConfigRequestEnvelope is envelop of API request
-type DiskCreateWithConfigRequestEnvelope struct {
+// diskCreateWithConfigRequestEnvelope is envelop of API request
+type diskCreateWithConfigRequestEnvelope struct {
 	Disk            *naked.Disk     `json:",omitempty"`
 	Config          *naked.DiskEdit `json:",omitempty"`
 	BootAtAvailable bool            `json:",omitempty"`
 }
 
-// DiskCreateWithConfigResponseEnvelope is envelop of API response
-type DiskCreateWithConfigResponseEnvelope struct {
+// diskCreateWithConfigResponseEnvelope is envelop of API response
+type diskCreateWithConfigResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
 	Disk *naked.Disk `json:",omitempty"`
 }
 
-// DiskCreateWithConfigDistantlyRequestEnvelope is envelop of API request
-type DiskCreateWithConfigDistantlyRequestEnvelope struct {
+// diskCreateWithConfigDistantlyRequestEnvelope is envelop of API request
+type diskCreateWithConfigDistantlyRequestEnvelope struct {
 	Disk            *naked.Disk     `json:",omitempty"`
 	Config          *naked.DiskEdit `json:",omitempty"`
 	BootAtAvailable bool            `json:",omitempty"`
 	DistantFrom     []types.ID      `json:",omitempty"`
 }
 
-// DiskCreateWithConfigDistantlyResponseEnvelope is envelop of API response
-type DiskCreateWithConfigDistantlyResponseEnvelope struct {
+// diskCreateWithConfigDistantlyResponseEnvelope is envelop of API response
+type diskCreateWithConfigDistantlyResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
 	Disk *naked.Disk `json:",omitempty"`
 }
 
-// DiskInstallRequestEnvelope is envelop of API request
-type DiskInstallRequestEnvelope struct {
+// diskInstallRequestEnvelope is envelop of API request
+type diskInstallRequestEnvelope struct {
 	Disk        *naked.Disk `json:",omitempty"`
 	DistantFrom []types.ID  `json:",omitempty"`
 }
 
-// DiskInstallResponseEnvelope is envelop of API response
-type DiskInstallResponseEnvelope struct {
+// diskInstallResponseEnvelope is envelop of API response
+type diskInstallResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
 	Disk *naked.Disk `json:",omitempty"`
 }
 
-// DiskInstallDistantFromRequestEnvelope is envelop of API request
-type DiskInstallDistantFromRequestEnvelope struct {
+// diskInstallDistantFromRequestEnvelope is envelop of API request
+type diskInstallDistantFromRequestEnvelope struct {
 	Disk *naked.Disk `json:",omitempty"`
 }
 
-// DiskInstallDistantFromResponseEnvelope is envelop of API response
-type DiskInstallDistantFromResponseEnvelope struct {
+// diskInstallDistantFromResponseEnvelope is envelop of API response
+type diskInstallDistantFromResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
 	Disk *naked.Disk `json:",omitempty"`
 }
 
-// DiskReadResponseEnvelope is envelop of API response
-type DiskReadResponseEnvelope struct {
+// diskReadResponseEnvelope is envelop of API response
+type diskReadResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
 	Disk *naked.Disk `json:",omitempty"`
 }
 
-// DiskUpdateRequestEnvelope is envelop of API request
-type DiskUpdateRequestEnvelope struct {
+// diskUpdateRequestEnvelope is envelop of API request
+type diskUpdateRequestEnvelope struct {
 	Disk *naked.Disk `json:",omitempty"`
 }
 
-// DiskUpdateResponseEnvelope is envelop of API response
-type DiskUpdateResponseEnvelope struct {
+// diskUpdateResponseEnvelope is envelop of API response
+type diskUpdateResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
 	Disk *naked.Disk `json:",omitempty"`
 }
 
-// DiskMonitorRequestEnvelope is envelop of API request
-type DiskMonitorRequestEnvelope struct {
+// diskMonitorRequestEnvelope is envelop of API request
+type diskMonitorRequestEnvelope struct {
 	Start *time.Time `json:",omitempty"`
 	End   *time.Time `json:",omitempty"`
 }
 
-// DiskMonitorResponseEnvelope is envelop of API response
-type DiskMonitorResponseEnvelope struct {
+// diskMonitorResponseEnvelope is envelop of API response
+type diskMonitorResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
 	Data *naked.MonitorValues `json:",omitempty"`
 }
 
-// GSLBFindRequestEnvelope is envelop of API request
-type GSLBFindRequestEnvelope struct {
+// gslbFindRequestEnvelope is envelop of API request
+type gslbFindRequestEnvelope struct {
 	Count   int                    `json:",omitempty"`
 	From    int                    `json:",omitempty"`
 	Sort    []string               `json:",omitempty"`
@@ -319,8 +319,8 @@ type GSLBFindRequestEnvelope struct {
 	Exclude []string               `json:",omitempty"`
 }
 
-// GSLBFindResponseEnvelope is envelop of API response
-type GSLBFindResponseEnvelope struct {
+// gslbFindResponseEnvelope is envelop of API response
+type gslbFindResponseEnvelope struct {
 	Total int `json:",omitempty"` // トータル件数
 	From  int `json:",omitempty"` // ページング開始ページ
 	Count int `json:",omitempty"` // 件数
@@ -328,42 +328,42 @@ type GSLBFindResponseEnvelope struct {
 	CommonServiceItems []*naked.GSLB `json:",omitempty"`
 }
 
-// GSLBCreateRequestEnvelope is envelop of API request
-type GSLBCreateRequestEnvelope struct {
+// gslbCreateRequestEnvelope is envelop of API request
+type gslbCreateRequestEnvelope struct {
 	CommonServiceItem *naked.GSLB `json:",omitempty"`
 }
 
-// GSLBCreateResponseEnvelope is envelop of API response
-type GSLBCreateResponseEnvelope struct {
+// gslbCreateResponseEnvelope is envelop of API response
+type gslbCreateResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
 	CommonServiceItem *naked.GSLB `json:",omitempty"`
 }
 
-// GSLBReadResponseEnvelope is envelop of API response
-type GSLBReadResponseEnvelope struct {
+// gslbReadResponseEnvelope is envelop of API response
+type gslbReadResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
 	CommonServiceItem *naked.GSLB `json:",omitempty"`
 }
 
-// GSLBUpdateRequestEnvelope is envelop of API request
-type GSLBUpdateRequestEnvelope struct {
+// gslbUpdateRequestEnvelope is envelop of API request
+type gslbUpdateRequestEnvelope struct {
 	CommonServiceItem *naked.GSLB `json:",omitempty"`
 }
 
-// GSLBUpdateResponseEnvelope is envelop of API response
-type GSLBUpdateResponseEnvelope struct {
+// gslbUpdateResponseEnvelope is envelop of API response
+type gslbUpdateResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
 	CommonServiceItem *naked.GSLB `json:",omitempty"`
 }
 
-// InterfaceFindRequestEnvelope is envelop of API request
-type InterfaceFindRequestEnvelope struct {
+// interfaceFindRequestEnvelope is envelop of API request
+type interfaceFindRequestEnvelope struct {
 	Count   int                    `json:",omitempty"`
 	From    int                    `json:",omitempty"`
 	Sort    []string               `json:",omitempty"`
@@ -372,8 +372,8 @@ type InterfaceFindRequestEnvelope struct {
 	Exclude []string               `json:",omitempty"`
 }
 
-// InterfaceFindResponseEnvelope is envelop of API response
-type InterfaceFindResponseEnvelope struct {
+// interfaceFindResponseEnvelope is envelop of API response
+type interfaceFindResponseEnvelope struct {
 	Total int `json:",omitempty"` // トータル件数
 	From  int `json:",omitempty"` // ページング開始ページ
 	Count int `json:",omitempty"` // 件数
@@ -381,56 +381,56 @@ type InterfaceFindResponseEnvelope struct {
 	Interfaces []*naked.Interface `json:",omitempty"`
 }
 
-// InterfaceCreateRequestEnvelope is envelop of API request
-type InterfaceCreateRequestEnvelope struct {
+// interfaceCreateRequestEnvelope is envelop of API request
+type interfaceCreateRequestEnvelope struct {
 	Interface *naked.Interface `json:",omitempty"`
 }
 
-// InterfaceCreateResponseEnvelope is envelop of API response
-type InterfaceCreateResponseEnvelope struct {
+// interfaceCreateResponseEnvelope is envelop of API response
+type interfaceCreateResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
 	Interface *naked.Interface `json:",omitempty"`
 }
 
-// InterfaceReadResponseEnvelope is envelop of API response
-type InterfaceReadResponseEnvelope struct {
+// interfaceReadResponseEnvelope is envelop of API response
+type interfaceReadResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
 	Interface *naked.Interface `json:",omitempty"`
 }
 
-// InterfaceUpdateRequestEnvelope is envelop of API request
-type InterfaceUpdateRequestEnvelope struct {
+// interfaceUpdateRequestEnvelope is envelop of API request
+type interfaceUpdateRequestEnvelope struct {
 	Interface *naked.Interface `json:",omitempty"`
 }
 
-// InterfaceUpdateResponseEnvelope is envelop of API response
-type InterfaceUpdateResponseEnvelope struct {
+// interfaceUpdateResponseEnvelope is envelop of API response
+type interfaceUpdateResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
 	Interface *naked.Interface `json:",omitempty"`
 }
 
-// InterfaceMonitorRequestEnvelope is envelop of API request
-type InterfaceMonitorRequestEnvelope struct {
+// interfaceMonitorRequestEnvelope is envelop of API request
+type interfaceMonitorRequestEnvelope struct {
 	Start *time.Time `json:",omitempty"`
 	End   *time.Time `json:",omitempty"`
 }
 
-// InterfaceMonitorResponseEnvelope is envelop of API response
-type InterfaceMonitorResponseEnvelope struct {
+// interfaceMonitorResponseEnvelope is envelop of API response
+type interfaceMonitorResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
 	Data *naked.MonitorValues `json:",omitempty"`
 }
 
-// LoadBalancerFindRequestEnvelope is envelop of API request
-type LoadBalancerFindRequestEnvelope struct {
+// loadbalancerFindRequestEnvelope is envelop of API request
+type loadbalancerFindRequestEnvelope struct {
 	Count   int                    `json:",omitempty"`
 	From    int                    `json:",omitempty"`
 	Sort    []string               `json:",omitempty"`
@@ -439,8 +439,8 @@ type LoadBalancerFindRequestEnvelope struct {
 	Exclude []string               `json:",omitempty"`
 }
 
-// LoadBalancerFindResponseEnvelope is envelop of API response
-type LoadBalancerFindResponseEnvelope struct {
+// loadbalancerFindResponseEnvelope is envelop of API response
+type loadbalancerFindResponseEnvelope struct {
 	Total int `json:",omitempty"` // トータル件数
 	From  int `json:",omitempty"` // ページング開始ページ
 	Count int `json:",omitempty"` // 件数
@@ -448,61 +448,61 @@ type LoadBalancerFindResponseEnvelope struct {
 	Appliances []*naked.LoadBalancer `json:",omitempty"`
 }
 
-// LoadBalancerCreateRequestEnvelope is envelop of API request
-type LoadBalancerCreateRequestEnvelope struct {
+// loadbalancerCreateRequestEnvelope is envelop of API request
+type loadbalancerCreateRequestEnvelope struct {
 	Appliance *naked.LoadBalancer `json:",omitempty"`
 }
 
-// LoadBalancerCreateResponseEnvelope is envelop of API response
-type LoadBalancerCreateResponseEnvelope struct {
+// loadbalancerCreateResponseEnvelope is envelop of API response
+type loadbalancerCreateResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
 	Appliance *naked.LoadBalancer `json:",omitempty"`
 }
 
-// LoadBalancerReadResponseEnvelope is envelop of API response
-type LoadBalancerReadResponseEnvelope struct {
+// loadbalancerReadResponseEnvelope is envelop of API response
+type loadbalancerReadResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
 	Appliance *naked.LoadBalancer `json:",omitempty"`
 }
 
-// LoadBalancerUpdateRequestEnvelope is envelop of API request
-type LoadBalancerUpdateRequestEnvelope struct {
+// loadbalancerUpdateRequestEnvelope is envelop of API request
+type loadbalancerUpdateRequestEnvelope struct {
 	Appliance *naked.LoadBalancer `json:",omitempty"`
 }
 
-// LoadBalancerUpdateResponseEnvelope is envelop of API response
-type LoadBalancerUpdateResponseEnvelope struct {
+// loadbalancerUpdateResponseEnvelope is envelop of API response
+type loadbalancerUpdateResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
 	Appliance *naked.LoadBalancer `json:",omitempty"`
 }
 
-// LoadBalancerShutdownRequestEnvelope is envelop of API request
-type LoadBalancerShutdownRequestEnvelope struct {
+// loadbalancerShutdownRequestEnvelope is envelop of API request
+type loadbalancerShutdownRequestEnvelope struct {
 	Force bool `json:",omitempty"`
 }
 
-// LoadBalancerMonitorInterfaceRequestEnvelope is envelop of API request
-type LoadBalancerMonitorInterfaceRequestEnvelope struct {
+// loadbalancerMonitorInterfaceRequestEnvelope is envelop of API request
+type loadbalancerMonitorInterfaceRequestEnvelope struct {
 	Start *time.Time `json:",omitempty"`
 	End   *time.Time `json:",omitempty"`
 }
 
-// LoadBalancerMonitorInterfaceResponseEnvelope is envelop of API response
-type LoadBalancerMonitorInterfaceResponseEnvelope struct {
+// loadbalancerMonitorInterfaceResponseEnvelope is envelop of API response
+type loadbalancerMonitorInterfaceResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
 	Data *naked.MonitorValues `json:",omitempty"`
 }
 
-// LoadBalancerStatusResponseEnvelope is envelop of API response
-type LoadBalancerStatusResponseEnvelope struct {
+// loadbalancerStatusResponseEnvelope is envelop of API response
+type loadbalancerStatusResponseEnvelope struct {
 	Total int `json:",omitempty"` // トータル件数
 	From  int `json:",omitempty"` // ページング開始ページ
 	Count int `json:",omitempty"` // 件数
@@ -510,8 +510,8 @@ type LoadBalancerStatusResponseEnvelope struct {
 	LoadBalancer []*naked.LoadBalancerStatus `json:",omitempty"`
 }
 
-// NFSFindRequestEnvelope is envelop of API request
-type NFSFindRequestEnvelope struct {
+// nfsFindRequestEnvelope is envelop of API request
+type nfsFindRequestEnvelope struct {
 	Count   int                    `json:",omitempty"`
 	From    int                    `json:",omitempty"`
 	Sort    []string               `json:",omitempty"`
@@ -520,8 +520,8 @@ type NFSFindRequestEnvelope struct {
 	Exclude []string               `json:",omitempty"`
 }
 
-// NFSFindResponseEnvelope is envelop of API response
-type NFSFindResponseEnvelope struct {
+// nfsFindResponseEnvelope is envelop of API response
+type nfsFindResponseEnvelope struct {
 	Total int `json:",omitempty"` // トータル件数
 	From  int `json:",omitempty"` // ページング開始ページ
 	Count int `json:",omitempty"` // 件数
@@ -529,75 +529,75 @@ type NFSFindResponseEnvelope struct {
 	Appliances []*naked.NFS `json:",omitempty"`
 }
 
-// NFSCreateRequestEnvelope is envelop of API request
-type NFSCreateRequestEnvelope struct {
+// nfsCreateRequestEnvelope is envelop of API request
+type nfsCreateRequestEnvelope struct {
 	Appliance *naked.NFS `json:",omitempty"`
 }
 
-// NFSCreateResponseEnvelope is envelop of API response
-type NFSCreateResponseEnvelope struct {
+// nfsCreateResponseEnvelope is envelop of API response
+type nfsCreateResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
 	Appliance *naked.NFS `json:",omitempty"`
 }
 
-// NFSReadResponseEnvelope is envelop of API response
-type NFSReadResponseEnvelope struct {
+// nfsReadResponseEnvelope is envelop of API response
+type nfsReadResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
 	Appliance *naked.NFS `json:",omitempty"`
 }
 
-// NFSUpdateRequestEnvelope is envelop of API request
-type NFSUpdateRequestEnvelope struct {
+// nfsUpdateRequestEnvelope is envelop of API request
+type nfsUpdateRequestEnvelope struct {
 	Appliance *naked.NFS `json:",omitempty"`
 }
 
-// NFSUpdateResponseEnvelope is envelop of API response
-type NFSUpdateResponseEnvelope struct {
+// nfsUpdateResponseEnvelope is envelop of API response
+type nfsUpdateResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
 	Appliance *naked.NFS `json:",omitempty"`
 }
 
-// NFSShutdownRequestEnvelope is envelop of API request
-type NFSShutdownRequestEnvelope struct {
+// nfsShutdownRequestEnvelope is envelop of API request
+type nfsShutdownRequestEnvelope struct {
 	Force bool `json:",omitempty"`
 }
 
-// NFSMonitorFreeDiskSizeRequestEnvelope is envelop of API request
-type NFSMonitorFreeDiskSizeRequestEnvelope struct {
+// nfsMonitorFreeDiskSizeRequestEnvelope is envelop of API request
+type nfsMonitorFreeDiskSizeRequestEnvelope struct {
 	Start *time.Time `json:",omitempty"`
 	End   *time.Time `json:",omitempty"`
 }
 
-// NFSMonitorFreeDiskSizeResponseEnvelope is envelop of API response
-type NFSMonitorFreeDiskSizeResponseEnvelope struct {
+// nfsMonitorFreeDiskSizeResponseEnvelope is envelop of API response
+type nfsMonitorFreeDiskSizeResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
 	Data *naked.MonitorValues `json:",omitempty"`
 }
 
-// NFSMonitorInterfaceRequestEnvelope is envelop of API request
-type NFSMonitorInterfaceRequestEnvelope struct {
+// nfsMonitorInterfaceRequestEnvelope is envelop of API request
+type nfsMonitorInterfaceRequestEnvelope struct {
 	Start *time.Time `json:",omitempty"`
 	End   *time.Time `json:",omitempty"`
 }
 
-// NFSMonitorInterfaceResponseEnvelope is envelop of API response
-type NFSMonitorInterfaceResponseEnvelope struct {
+// nfsMonitorInterfaceResponseEnvelope is envelop of API response
+type nfsMonitorInterfaceResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
 	Data *naked.MonitorValues `json:",omitempty"`
 }
 
-// NoteFindRequestEnvelope is envelop of API request
-type NoteFindRequestEnvelope struct {
+// noteFindRequestEnvelope is envelop of API request
+type noteFindRequestEnvelope struct {
 	Count   int                    `json:",omitempty"`
 	From    int                    `json:",omitempty"`
 	Sort    []string               `json:",omitempty"`
@@ -606,8 +606,8 @@ type NoteFindRequestEnvelope struct {
 	Exclude []string               `json:",omitempty"`
 }
 
-// NoteFindResponseEnvelope is envelop of API response
-type NoteFindResponseEnvelope struct {
+// noteFindResponseEnvelope is envelop of API response
+type noteFindResponseEnvelope struct {
 	Total int `json:",omitempty"` // トータル件数
 	From  int `json:",omitempty"` // ページング開始ページ
 	Count int `json:",omitempty"` // 件数
@@ -615,42 +615,42 @@ type NoteFindResponseEnvelope struct {
 	Notes []*naked.Note `json:",omitempty"`
 }
 
-// NoteCreateRequestEnvelope is envelop of API request
-type NoteCreateRequestEnvelope struct {
+// noteCreateRequestEnvelope is envelop of API request
+type noteCreateRequestEnvelope struct {
 	Note *naked.Note `json:",omitempty"`
 }
 
-// NoteCreateResponseEnvelope is envelop of API response
-type NoteCreateResponseEnvelope struct {
+// noteCreateResponseEnvelope is envelop of API response
+type noteCreateResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
 	Note *naked.Note `json:",omitempty"`
 }
 
-// NoteReadResponseEnvelope is envelop of API response
-type NoteReadResponseEnvelope struct {
+// noteReadResponseEnvelope is envelop of API response
+type noteReadResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
 	Note *naked.Note `json:",omitempty"`
 }
 
-// NoteUpdateRequestEnvelope is envelop of API request
-type NoteUpdateRequestEnvelope struct {
+// noteUpdateRequestEnvelope is envelop of API request
+type noteUpdateRequestEnvelope struct {
 	Note *naked.Note `json:",omitempty"`
 }
 
-// NoteUpdateResponseEnvelope is envelop of API response
-type NoteUpdateResponseEnvelope struct {
+// noteUpdateResponseEnvelope is envelop of API response
+type noteUpdateResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
 	Note *naked.Note `json:",omitempty"`
 }
 
-// ServerFindRequestEnvelope is envelop of API request
-type ServerFindRequestEnvelope struct {
+// serverFindRequestEnvelope is envelop of API request
+type serverFindRequestEnvelope struct {
 	Count   int                    `json:",omitempty"`
 	From    int                    `json:",omitempty"`
 	Sort    []string               `json:",omitempty"`
@@ -659,8 +659,8 @@ type ServerFindRequestEnvelope struct {
 	Exclude []string               `json:",omitempty"`
 }
 
-// ServerFindResponseEnvelope is envelop of API response
-type ServerFindResponseEnvelope struct {
+// serverFindResponseEnvelope is envelop of API response
+type serverFindResponseEnvelope struct {
 	Total int `json:",omitempty"` // トータル件数
 	From  int `json:",omitempty"` // ページング開始ページ
 	Count int `json:",omitempty"` // 件数
@@ -668,87 +668,87 @@ type ServerFindResponseEnvelope struct {
 	Servers []*naked.Server `json:",omitempty"`
 }
 
-// ServerCreateRequestEnvelope is envelop of API request
-type ServerCreateRequestEnvelope struct {
+// serverCreateRequestEnvelope is envelop of API request
+type serverCreateRequestEnvelope struct {
 	Server *naked.Server `json:",omitempty"`
 }
 
-// ServerCreateResponseEnvelope is envelop of API response
-type ServerCreateResponseEnvelope struct {
+// serverCreateResponseEnvelope is envelop of API response
+type serverCreateResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
 	Server *naked.Server `json:",omitempty"`
 }
 
-// ServerReadResponseEnvelope is envelop of API response
-type ServerReadResponseEnvelope struct {
+// serverReadResponseEnvelope is envelop of API response
+type serverReadResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
 	Server *naked.Server `json:",omitempty"`
 }
 
-// ServerUpdateRequestEnvelope is envelop of API request
-type ServerUpdateRequestEnvelope struct {
+// serverUpdateRequestEnvelope is envelop of API request
+type serverUpdateRequestEnvelope struct {
 	Server *naked.Server `json:",omitempty"`
 }
 
-// ServerUpdateResponseEnvelope is envelop of API response
-type ServerUpdateResponseEnvelope struct {
+// serverUpdateResponseEnvelope is envelop of API response
+type serverUpdateResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
 	Server *naked.Server `json:",omitempty"`
 }
 
-// ServerChangePlanRequestEnvelope is envelop of API request
-type ServerChangePlanRequestEnvelope struct {
+// serverChangePlanRequestEnvelope is envelop of API request
+type serverChangePlanRequestEnvelope struct {
 	CPU                  int                   `json:",omitempty"`
 	MemoryMB             int                   `json:",omitempty"`
 	ServerPlanGeneration types.EPlanGeneration `json:",omitempty"`
 	ServerPlanCommitment types.ECommitment     `json:",omitempty"`
 }
 
-// ServerChangePlanResponseEnvelope is envelop of API response
-type ServerChangePlanResponseEnvelope struct {
+// serverChangePlanResponseEnvelope is envelop of API response
+type serverChangePlanResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
 	Server *naked.Server `json:",omitempty"`
 }
 
-// ServerInsertCDROMRequestEnvelope is envelop of API request
-type ServerInsertCDROMRequestEnvelope struct {
+// serverInsertCDROMRequestEnvelope is envelop of API request
+type serverInsertCDROMRequestEnvelope struct {
 	CDROM *naked.CDROM `json:",omitempty"`
 }
 
-// ServerEjectCDROMRequestEnvelope is envelop of API request
-type ServerEjectCDROMRequestEnvelope struct {
+// serverEjectCDROMRequestEnvelope is envelop of API request
+type serverEjectCDROMRequestEnvelope struct {
 	CDROM *naked.CDROM `json:",omitempty"`
 }
 
-// ServerShutdownRequestEnvelope is envelop of API request
-type ServerShutdownRequestEnvelope struct {
+// serverShutdownRequestEnvelope is envelop of API request
+type serverShutdownRequestEnvelope struct {
 	Force bool `json:",omitempty"`
 }
 
-// ServerMonitorRequestEnvelope is envelop of API request
-type ServerMonitorRequestEnvelope struct {
+// serverMonitorRequestEnvelope is envelop of API request
+type serverMonitorRequestEnvelope struct {
 	Start *time.Time `json:",omitempty"`
 	End   *time.Time `json:",omitempty"`
 }
 
-// ServerMonitorResponseEnvelope is envelop of API response
-type ServerMonitorResponseEnvelope struct {
+// serverMonitorResponseEnvelope is envelop of API response
+type serverMonitorResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
 	Data *naked.MonitorValues `json:",omitempty"`
 }
 
-// SwitchFindRequestEnvelope is envelop of API request
-type SwitchFindRequestEnvelope struct {
+// switchFindRequestEnvelope is envelop of API request
+type switchFindRequestEnvelope struct {
 	Count   int                    `json:",omitempty"`
 	From    int                    `json:",omitempty"`
 	Sort    []string               `json:",omitempty"`
@@ -757,8 +757,8 @@ type SwitchFindRequestEnvelope struct {
 	Exclude []string               `json:",omitempty"`
 }
 
-// SwitchFindResponseEnvelope is envelop of API response
-type SwitchFindResponseEnvelope struct {
+// switchFindResponseEnvelope is envelop of API response
+type switchFindResponseEnvelope struct {
 	Total int `json:",omitempty"` // トータル件数
 	From  int `json:",omitempty"` // ページング開始ページ
 	Count int `json:",omitempty"` // 件数
@@ -766,42 +766,42 @@ type SwitchFindResponseEnvelope struct {
 	Switches []*naked.Switch `json:",omitempty"`
 }
 
-// SwitchCreateRequestEnvelope is envelop of API request
-type SwitchCreateRequestEnvelope struct {
+// switchCreateRequestEnvelope is envelop of API request
+type switchCreateRequestEnvelope struct {
 	Switch *naked.Switch `json:",omitempty"`
 }
 
-// SwitchCreateResponseEnvelope is envelop of API response
-type SwitchCreateResponseEnvelope struct {
+// switchCreateResponseEnvelope is envelop of API response
+type switchCreateResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
 	Switch *naked.Switch `json:",omitempty"`
 }
 
-// SwitchReadResponseEnvelope is envelop of API response
-type SwitchReadResponseEnvelope struct {
+// switchReadResponseEnvelope is envelop of API response
+type switchReadResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
 	Switch *naked.Switch `json:",omitempty"`
 }
 
-// SwitchUpdateRequestEnvelope is envelop of API request
-type SwitchUpdateRequestEnvelope struct {
+// switchUpdateRequestEnvelope is envelop of API request
+type switchUpdateRequestEnvelope struct {
 	Switch *naked.Switch `json:",omitempty"`
 }
 
-// SwitchUpdateResponseEnvelope is envelop of API response
-type SwitchUpdateResponseEnvelope struct {
+// switchUpdateResponseEnvelope is envelop of API response
+type switchUpdateResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
 	Switch *naked.Switch `json:",omitempty"`
 }
 
-// ZoneFindRequestEnvelope is envelop of API request
-type ZoneFindRequestEnvelope struct {
+// zoneFindRequestEnvelope is envelop of API request
+type zoneFindRequestEnvelope struct {
 	Count   int                    `json:",omitempty"`
 	From    int                    `json:",omitempty"`
 	Sort    []string               `json:",omitempty"`
@@ -810,8 +810,8 @@ type ZoneFindRequestEnvelope struct {
 	Exclude []string               `json:",omitempty"`
 }
 
-// ZoneFindResponseEnvelope is envelop of API response
-type ZoneFindResponseEnvelope struct {
+// zoneFindResponseEnvelope is envelop of API response
+type zoneFindResponseEnvelope struct {
 	Total int `json:",omitempty"` // トータル件数
 	From  int `json:",omitempty"` // ページング開始ページ
 	Count int `json:",omitempty"` // 件数
@@ -819,8 +819,8 @@ type ZoneFindResponseEnvelope struct {
 	Zones []*naked.Zone `json:",omitempty"`
 }
 
-// ZoneReadResponseEnvelope is envelop of API response
-type ZoneReadResponseEnvelope struct {
+// zoneReadResponseEnvelope is envelop of API response
+type zoneReadResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
