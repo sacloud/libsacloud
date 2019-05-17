@@ -10,6 +10,97 @@ import (
 	"github.com/sacloud/libsacloud-v2/sacloud/types"
 )
 
+func init() {
+
+	SetClientFactoryFunc("Archive", func(caller APICaller) interface{} {
+		return &ArchiveOp{
+			Client:     caller,
+			PathSuffix: "api/cloud/1.1",
+			PathName:   "archive",
+		}
+	})
+
+	SetClientFactoryFunc("CDROM", func(caller APICaller) interface{} {
+		return &CDROMOp{
+			Client:     caller,
+			PathSuffix: "api/cloud/1.1",
+			PathName:   "cdrom",
+		}
+	})
+
+	SetClientFactoryFunc("Disk", func(caller APICaller) interface{} {
+		return &DiskOp{
+			Client:     caller,
+			PathSuffix: "api/cloud/1.1",
+			PathName:   "disk",
+		}
+	})
+
+	SetClientFactoryFunc("GSLB", func(caller APICaller) interface{} {
+		return &GSLBOp{
+			Client:     caller,
+			PathSuffix: "api/cloud/1.1",
+			PathName:   "commonserviceitem",
+		}
+	})
+
+	SetClientFactoryFunc("Interface", func(caller APICaller) interface{} {
+		return &InterfaceOp{
+			Client:     caller,
+			PathSuffix: "api/cloud/1.1",
+			PathName:   "interface",
+		}
+	})
+
+	SetClientFactoryFunc("LoadBalancer", func(caller APICaller) interface{} {
+		return &LoadBalancerOp{
+			Client:     caller,
+			PathSuffix: "api/cloud/1.1",
+			PathName:   "appliance",
+		}
+	})
+
+	SetClientFactoryFunc("NFS", func(caller APICaller) interface{} {
+		return &NFSOp{
+			Client:     caller,
+			PathSuffix: "api/cloud/1.1",
+			PathName:   "appliance",
+		}
+	})
+
+	SetClientFactoryFunc("Note", func(caller APICaller) interface{} {
+		return &NoteOp{
+			Client:     caller,
+			PathSuffix: "api/cloud/1.1",
+			PathName:   "note",
+		}
+	})
+
+	SetClientFactoryFunc("Server", func(caller APICaller) interface{} {
+		return &ServerOp{
+			Client:     caller,
+			PathSuffix: "api/cloud/1.1",
+			PathName:   "server",
+		}
+	})
+
+	SetClientFactoryFunc("Switch", func(caller APICaller) interface{} {
+		return &SwitchOp{
+			Client:     caller,
+			PathSuffix: "api/cloud/1.1",
+			PathName:   "switch",
+		}
+	})
+
+	SetClientFactoryFunc("Zone", func(caller APICaller) interface{} {
+		return &ZoneOp{
+			Client:     caller,
+			PathSuffix: "api/cloud/1.1",
+			PathName:   "zone",
+		}
+	})
+}
+
 /*************************************************
 * ArchiveOp
 *************************************************/
@@ -25,12 +116,8 @@ type ArchiveOp struct {
 }
 
 // NewArchiveOp creates new ArchiveOp instance
-func NewArchiveOp(client APICaller) ArchiveAPI {
-	return &ArchiveOp{
-		Client:     client,
-		PathSuffix: "api/cloud/1.1",
-		PathName:   "archive",
-	}
+func NewArchiveOp(caller APICaller) ArchiveAPI {
+	return GetClientFactoryFunc("Archive")(caller).(ArchiveAPI)
 }
 
 // Find is API call
@@ -370,12 +457,8 @@ type CDROMOp struct {
 }
 
 // NewCDROMOp creates new CDROMOp instance
-func NewCDROMOp(client APICaller) CDROMAPI {
-	return &CDROMOp{
-		Client:     client,
-		PathSuffix: "api/cloud/1.1",
-		PathName:   "cdrom",
-	}
+func NewCDROMOp(caller APICaller) CDROMAPI {
+	return GetClientFactoryFunc("CDROM")(caller).(CDROMAPI)
 }
 
 // Find is API call
@@ -667,12 +750,8 @@ type DiskOp struct {
 }
 
 // NewDiskOp creates new DiskOp instance
-func NewDiskOp(client APICaller) DiskAPI {
-	return &DiskOp{
-		Client:     client,
-		PathSuffix: "api/cloud/1.1",
-		PathName:   "disk",
-	}
+func NewDiskOp(caller APICaller) DiskAPI {
+	return GetClientFactoryFunc("Disk")(caller).(DiskAPI)
 }
 
 // Find is API call
@@ -1393,12 +1472,8 @@ type GSLBOp struct {
 }
 
 // NewGSLBOp creates new GSLBOp instance
-func NewGSLBOp(client APICaller) GSLBAPI {
-	return &GSLBOp{
-		Client:     client,
-		PathSuffix: "api/cloud/1.1",
-		PathName:   "commonserviceitem",
-	}
+func NewGSLBOp(caller APICaller) GSLBAPI {
+	return GetClientFactoryFunc("GSLB")(caller).(GSLBAPI)
 }
 
 // Find is API call
@@ -1617,12 +1692,8 @@ type InterfaceOp struct {
 }
 
 // NewInterfaceOp creates new InterfaceOp instance
-func NewInterfaceOp(client APICaller) InterfaceAPI {
-	return &InterfaceOp{
-		Client:     client,
-		PathSuffix: "api/cloud/1.1",
-		PathName:   "interface",
-	}
+func NewInterfaceOp(caller APICaller) InterfaceAPI {
+	return GetClientFactoryFunc("Interface")(caller).(InterfaceAPI)
 }
 
 // Find is API call
@@ -2004,12 +2075,8 @@ type LoadBalancerOp struct {
 }
 
 // NewLoadBalancerOp creates new LoadBalancerOp instance
-func NewLoadBalancerOp(client APICaller) LoadBalancerAPI {
-	return &LoadBalancerOp{
-		Client:     client,
-		PathSuffix: "api/cloud/1.1",
-		PathName:   "appliance",
-	}
+func NewLoadBalancerOp(caller APICaller) LoadBalancerAPI {
+	return GetClientFactoryFunc("LoadBalancer")(caller).(LoadBalancerAPI)
 }
 
 // Find is API call
@@ -2416,12 +2483,8 @@ type NFSOp struct {
 }
 
 // NewNFSOp creates new NFSOp instance
-func NewNFSOp(client APICaller) NFSAPI {
-	return &NFSOp{
-		Client:     client,
-		PathSuffix: "api/cloud/1.1",
-		PathName:   "appliance",
-	}
+func NewNFSOp(caller APICaller) NFSAPI {
+	return GetClientFactoryFunc("NFS")(caller).(NFSAPI)
 }
 
 // Find is API call
@@ -2815,12 +2878,8 @@ type NoteOp struct {
 }
 
 // NewNoteOp creates new NoteOp instance
-func NewNoteOp(client APICaller) NoteAPI {
-	return &NoteOp{
-		Client:     client,
-		PathSuffix: "api/cloud/1.1",
-		PathName:   "note",
-	}
+func NewNoteOp(caller APICaller) NoteAPI {
+	return GetClientFactoryFunc("Note")(caller).(NoteAPI)
 }
 
 // Find is API call
@@ -3039,12 +3098,8 @@ type ServerOp struct {
 }
 
 // NewServerOp creates new ServerOp instance
-func NewServerOp(client APICaller) ServerAPI {
-	return &ServerOp{
-		Client:     client,
-		PathSuffix: "api/cloud/1.1",
-		PathName:   "server",
-	}
+func NewServerOp(caller APICaller) ServerAPI {
+	return GetClientFactoryFunc("Server")(caller).(ServerAPI)
 }
 
 // Find is API call
@@ -3518,12 +3573,8 @@ type SwitchOp struct {
 }
 
 // NewSwitchOp creates new SwitchOp instance
-func NewSwitchOp(client APICaller) SwitchAPI {
-	return &SwitchOp{
-		Client:     client,
-		PathSuffix: "api/cloud/1.1",
-		PathName:   "switch",
-	}
+func NewSwitchOp(caller APICaller) SwitchAPI {
+	return GetClientFactoryFunc("Switch")(caller).(SwitchAPI)
 }
 
 // Find is API call
@@ -3789,12 +3840,8 @@ type ZoneOp struct {
 }
 
 // NewZoneOp creates new ZoneOp instance
-func NewZoneOp(client APICaller) ZoneAPI {
-	return &ZoneOp{
-		Client:     client,
-		PathSuffix: "api/cloud/1.1",
-		PathName:   "zone",
-	}
+func NewZoneOp(caller APICaller) ZoneAPI {
+	return GetClientFactoryFunc("Zone")(caller).(ZoneAPI)
 }
 
 // Find is API call
