@@ -6,6 +6,7 @@ import (
 	"context"
 	"log"
 
+	"github.com/sacloud/libsacloud-v2/sacloud"
 	"github.com/sacloud/libsacloud-v2/sacloud/types"
 )
 
@@ -15,18 +16,18 @@ import (
 
 // ArchiveTracer is for trace ArchiveOp operations
 type ArchiveTracer struct {
-	Internal ArchiveAPI
+	Internal sacloud.ArchiveAPI
 }
 
 // NewArchiveTracer creates new ArchiveTracer instance
-func NewArchiveTracer(in ArchiveAPI) *ArchiveTracer {
+func NewArchiveTracer(in sacloud.ArchiveAPI) sacloud.ArchiveAPI {
 	return &ArchiveTracer{
 		Internal: in,
 	}
 }
 
 // Find is API call with trace log
-func (t *ArchiveTracer) Find(ctx context.Context, zone string, conditions *FindCondition) ([]*Archive, error) {
+func (t *ArchiveTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) ([]*sacloud.Archive, error) {
 	log.Println("[TRACE] ArchiveTracer.Find start:	args => [", "zone=", zone, "conditions=", conditions, "]")
 	defer func() {
 		log.Println("[TRACE] ArchiveTracer.Find: end")
@@ -36,7 +37,7 @@ func (t *ArchiveTracer) Find(ctx context.Context, zone string, conditions *FindC
 }
 
 // Create is API call with trace log
-func (t *ArchiveTracer) Create(ctx context.Context, zone string, param *ArchiveCreateRequest) (*Archive, error) {
+func (t *ArchiveTracer) Create(ctx context.Context, zone string, param *sacloud.ArchiveCreateRequest) (*sacloud.Archive, error) {
 	log.Println("[TRACE] ArchiveTracer.Create start:	args => [", "zone=", zone, "param=", param, "]")
 	defer func() {
 		log.Println("[TRACE] ArchiveTracer.Create: end")
@@ -46,7 +47,7 @@ func (t *ArchiveTracer) Create(ctx context.Context, zone string, param *ArchiveC
 }
 
 // CreateBlank is API call with trace log
-func (t *ArchiveTracer) CreateBlank(ctx context.Context, zone string, param *ArchiveCreateBlankRequest) (*Archive, *FTPServer, error) {
+func (t *ArchiveTracer) CreateBlank(ctx context.Context, zone string, param *sacloud.ArchiveCreateBlankRequest) (*sacloud.Archive, *sacloud.FTPServer, error) {
 	log.Println("[TRACE] ArchiveTracer.CreateBlank start:	args => [", "zone=", zone, "param=", param, "]")
 	defer func() {
 		log.Println("[TRACE] ArchiveTracer.CreateBlank: end")
@@ -56,7 +57,7 @@ func (t *ArchiveTracer) CreateBlank(ctx context.Context, zone string, param *Arc
 }
 
 // Read is API call with trace log
-func (t *ArchiveTracer) Read(ctx context.Context, zone string, id types.ID) (*Archive, error) {
+func (t *ArchiveTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Archive, error) {
 	log.Println("[TRACE] ArchiveTracer.Read start:	args => [", "zone=", zone, "id=", id, "]")
 	defer func() {
 		log.Println("[TRACE] ArchiveTracer.Read: end")
@@ -66,7 +67,7 @@ func (t *ArchiveTracer) Read(ctx context.Context, zone string, id types.ID) (*Ar
 }
 
 // Update is API call with trace log
-func (t *ArchiveTracer) Update(ctx context.Context, zone string, id types.ID, param *ArchiveUpdateRequest) (*Archive, error) {
+func (t *ArchiveTracer) Update(ctx context.Context, zone string, id types.ID, param *sacloud.ArchiveUpdateRequest) (*sacloud.Archive, error) {
 	log.Println("[TRACE] ArchiveTracer.Update start:	args => [", "zone=", zone, "id=", id, "param=", param, "]")
 	defer func() {
 		log.Println("[TRACE] ArchiveTracer.Update: end")
@@ -86,7 +87,7 @@ func (t *ArchiveTracer) Delete(ctx context.Context, zone string, id types.ID) er
 }
 
 // OpenFTP is API call with trace log
-func (t *ArchiveTracer) OpenFTP(ctx context.Context, zone string, id types.ID, openOption *OpenFTPRequest) (*FTPServer, error) {
+func (t *ArchiveTracer) OpenFTP(ctx context.Context, zone string, id types.ID, openOption *sacloud.OpenFTPRequest) (*sacloud.FTPServer, error) {
 	log.Println("[TRACE] ArchiveTracer.OpenFTP start:	args => [", "zone=", zone, "id=", id, "openOption=", openOption, "]")
 	defer func() {
 		log.Println("[TRACE] ArchiveTracer.OpenFTP: end")
@@ -111,18 +112,18 @@ func (t *ArchiveTracer) CloseFTP(ctx context.Context, zone string, id types.ID) 
 
 // CDROMTracer is for trace CDROMOp operations
 type CDROMTracer struct {
-	Internal CDROMAPI
+	Internal sacloud.CDROMAPI
 }
 
 // NewCDROMTracer creates new CDROMTracer instance
-func NewCDROMTracer(in CDROMAPI) *CDROMTracer {
+func NewCDROMTracer(in sacloud.CDROMAPI) sacloud.CDROMAPI {
 	return &CDROMTracer{
 		Internal: in,
 	}
 }
 
 // Find is API call with trace log
-func (t *CDROMTracer) Find(ctx context.Context, zone string, conditions *FindCondition) ([]*CDROM, error) {
+func (t *CDROMTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) ([]*sacloud.CDROM, error) {
 	log.Println("[TRACE] CDROMTracer.Find start:	args => [", "zone=", zone, "conditions=", conditions, "]")
 	defer func() {
 		log.Println("[TRACE] CDROMTracer.Find: end")
@@ -132,7 +133,7 @@ func (t *CDROMTracer) Find(ctx context.Context, zone string, conditions *FindCon
 }
 
 // Create is API call with trace log
-func (t *CDROMTracer) Create(ctx context.Context, zone string, param *CDROMCreateRequest) (*CDROM, *FTPServer, error) {
+func (t *CDROMTracer) Create(ctx context.Context, zone string, param *sacloud.CDROMCreateRequest) (*sacloud.CDROM, *sacloud.FTPServer, error) {
 	log.Println("[TRACE] CDROMTracer.Create start:	args => [", "zone=", zone, "param=", param, "]")
 	defer func() {
 		log.Println("[TRACE] CDROMTracer.Create: end")
@@ -142,7 +143,7 @@ func (t *CDROMTracer) Create(ctx context.Context, zone string, param *CDROMCreat
 }
 
 // Read is API call with trace log
-func (t *CDROMTracer) Read(ctx context.Context, zone string, id types.ID) (*CDROM, error) {
+func (t *CDROMTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.CDROM, error) {
 	log.Println("[TRACE] CDROMTracer.Read start:	args => [", "zone=", zone, "id=", id, "]")
 	defer func() {
 		log.Println("[TRACE] CDROMTracer.Read: end")
@@ -152,7 +153,7 @@ func (t *CDROMTracer) Read(ctx context.Context, zone string, id types.ID) (*CDRO
 }
 
 // Update is API call with trace log
-func (t *CDROMTracer) Update(ctx context.Context, zone string, id types.ID, param *CDROMUpdateRequest) (*CDROM, error) {
+func (t *CDROMTracer) Update(ctx context.Context, zone string, id types.ID, param *sacloud.CDROMUpdateRequest) (*sacloud.CDROM, error) {
 	log.Println("[TRACE] CDROMTracer.Update start:	args => [", "zone=", zone, "id=", id, "param=", param, "]")
 	defer func() {
 		log.Println("[TRACE] CDROMTracer.Update: end")
@@ -172,7 +173,7 @@ func (t *CDROMTracer) Delete(ctx context.Context, zone string, id types.ID) erro
 }
 
 // OpenFTP is API call with trace log
-func (t *CDROMTracer) OpenFTP(ctx context.Context, zone string, id types.ID, openOption *OpenFTPRequest) (*FTPServer, error) {
+func (t *CDROMTracer) OpenFTP(ctx context.Context, zone string, id types.ID, openOption *sacloud.OpenFTPRequest) (*sacloud.FTPServer, error) {
 	log.Println("[TRACE] CDROMTracer.OpenFTP start:	args => [", "zone=", zone, "id=", id, "openOption=", openOption, "]")
 	defer func() {
 		log.Println("[TRACE] CDROMTracer.OpenFTP: end")
@@ -197,18 +198,18 @@ func (t *CDROMTracer) CloseFTP(ctx context.Context, zone string, id types.ID) er
 
 // DiskTracer is for trace DiskOp operations
 type DiskTracer struct {
-	Internal DiskAPI
+	Internal sacloud.DiskAPI
 }
 
 // NewDiskTracer creates new DiskTracer instance
-func NewDiskTracer(in DiskAPI) *DiskTracer {
+func NewDiskTracer(in sacloud.DiskAPI) sacloud.DiskAPI {
 	return &DiskTracer{
 		Internal: in,
 	}
 }
 
 // Find is API call with trace log
-func (t *DiskTracer) Find(ctx context.Context, zone string, conditions *FindCondition) ([]*Disk, error) {
+func (t *DiskTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) ([]*sacloud.Disk, error) {
 	log.Println("[TRACE] DiskTracer.Find start:	args => [", "zone=", zone, "conditions=", conditions, "]")
 	defer func() {
 		log.Println("[TRACE] DiskTracer.Find: end")
@@ -218,7 +219,7 @@ func (t *DiskTracer) Find(ctx context.Context, zone string, conditions *FindCond
 }
 
 // Create is API call with trace log
-func (t *DiskTracer) Create(ctx context.Context, zone string, param *DiskCreateRequest) (*Disk, error) {
+func (t *DiskTracer) Create(ctx context.Context, zone string, param *sacloud.DiskCreateRequest) (*sacloud.Disk, error) {
 	log.Println("[TRACE] DiskTracer.Create start:	args => [", "zone=", zone, "param=", param, "]")
 	defer func() {
 		log.Println("[TRACE] DiskTracer.Create: end")
@@ -228,7 +229,7 @@ func (t *DiskTracer) Create(ctx context.Context, zone string, param *DiskCreateR
 }
 
 // CreateDistantly is API call with trace log
-func (t *DiskTracer) CreateDistantly(ctx context.Context, zone string, createParam *DiskCreateRequest, distantFrom []types.ID) (*Disk, error) {
+func (t *DiskTracer) CreateDistantly(ctx context.Context, zone string, createParam *sacloud.DiskCreateRequest, distantFrom []types.ID) (*sacloud.Disk, error) {
 	log.Println("[TRACE] DiskTracer.CreateDistantly start:	args => [", "zone=", zone, "createParam=", createParam, "distantFrom=", distantFrom, "]")
 	defer func() {
 		log.Println("[TRACE] DiskTracer.CreateDistantly: end")
@@ -238,7 +239,7 @@ func (t *DiskTracer) CreateDistantly(ctx context.Context, zone string, createPar
 }
 
 // Config is API call with trace log
-func (t *DiskTracer) Config(ctx context.Context, zone string, id types.ID, edit *DiskEditRequest) error {
+func (t *DiskTracer) Config(ctx context.Context, zone string, id types.ID, edit *sacloud.DiskEditRequest) error {
 	log.Println("[TRACE] DiskTracer.Config start:	args => [", "zone=", zone, "id=", id, "edit=", edit, "]")
 	defer func() {
 		log.Println("[TRACE] DiskTracer.Config: end")
@@ -248,7 +249,7 @@ func (t *DiskTracer) Config(ctx context.Context, zone string, id types.ID, edit 
 }
 
 // CreateWithConfig is API call with trace log
-func (t *DiskTracer) CreateWithConfig(ctx context.Context, zone string, createParam *DiskCreateRequest, editParam *DiskEditRequest, bootAtAvailable bool) (*Disk, error) {
+func (t *DiskTracer) CreateWithConfig(ctx context.Context, zone string, createParam *sacloud.DiskCreateRequest, editParam *sacloud.DiskEditRequest, bootAtAvailable bool) (*sacloud.Disk, error) {
 	log.Println("[TRACE] DiskTracer.CreateWithConfig start:	args => [", "zone=", zone, "createParam=", createParam, "editParam=", editParam, "bootAtAvailable=", bootAtAvailable, "]")
 	defer func() {
 		log.Println("[TRACE] DiskTracer.CreateWithConfig: end")
@@ -258,7 +259,7 @@ func (t *DiskTracer) CreateWithConfig(ctx context.Context, zone string, createPa
 }
 
 // CreateWithConfigDistantly is API call with trace log
-func (t *DiskTracer) CreateWithConfigDistantly(ctx context.Context, zone string, createParam *DiskCreateRequest, editParam *DiskEditRequest, bootAtAvailable bool, distantFrom []types.ID) (*Disk, error) {
+func (t *DiskTracer) CreateWithConfigDistantly(ctx context.Context, zone string, createParam *sacloud.DiskCreateRequest, editParam *sacloud.DiskEditRequest, bootAtAvailable bool, distantFrom []types.ID) (*sacloud.Disk, error) {
 	log.Println("[TRACE] DiskTracer.CreateWithConfigDistantly start:	args => [", "zone=", zone, "createParam=", createParam, "editParam=", editParam, "bootAtAvailable=", bootAtAvailable, "distantFrom=", distantFrom, "]")
 	defer func() {
 		log.Println("[TRACE] DiskTracer.CreateWithConfigDistantly: end")
@@ -308,7 +309,7 @@ func (t *DiskTracer) DisconnectFromServer(ctx context.Context, zone string, id t
 }
 
 // Install is API call with trace log
-func (t *DiskTracer) Install(ctx context.Context, zone string, id types.ID, installParam *DiskInstallRequest, distantFrom []types.ID) (*Disk, error) {
+func (t *DiskTracer) Install(ctx context.Context, zone string, id types.ID, installParam *sacloud.DiskInstallRequest, distantFrom []types.ID) (*sacloud.Disk, error) {
 	log.Println("[TRACE] DiskTracer.Install start:	args => [", "zone=", zone, "id=", id, "installParam=", installParam, "distantFrom=", distantFrom, "]")
 	defer func() {
 		log.Println("[TRACE] DiskTracer.Install: end")
@@ -318,7 +319,7 @@ func (t *DiskTracer) Install(ctx context.Context, zone string, id types.ID, inst
 }
 
 // InstallDistantFrom is API call with trace log
-func (t *DiskTracer) InstallDistantFrom(ctx context.Context, zone string, id types.ID, installParam *DiskInstallRequest) (*Disk, error) {
+func (t *DiskTracer) InstallDistantFrom(ctx context.Context, zone string, id types.ID, installParam *sacloud.DiskInstallRequest) (*sacloud.Disk, error) {
 	log.Println("[TRACE] DiskTracer.InstallDistantFrom start:	args => [", "zone=", zone, "id=", id, "installParam=", installParam, "]")
 	defer func() {
 		log.Println("[TRACE] DiskTracer.InstallDistantFrom: end")
@@ -328,7 +329,7 @@ func (t *DiskTracer) InstallDistantFrom(ctx context.Context, zone string, id typ
 }
 
 // Read is API call with trace log
-func (t *DiskTracer) Read(ctx context.Context, zone string, id types.ID) (*Disk, error) {
+func (t *DiskTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Disk, error) {
 	log.Println("[TRACE] DiskTracer.Read start:	args => [", "zone=", zone, "id=", id, "]")
 	defer func() {
 		log.Println("[TRACE] DiskTracer.Read: end")
@@ -338,7 +339,7 @@ func (t *DiskTracer) Read(ctx context.Context, zone string, id types.ID) (*Disk,
 }
 
 // Update is API call with trace log
-func (t *DiskTracer) Update(ctx context.Context, zone string, id types.ID, param *DiskUpdateRequest) (*Disk, error) {
+func (t *DiskTracer) Update(ctx context.Context, zone string, id types.ID, param *sacloud.DiskUpdateRequest) (*sacloud.Disk, error) {
 	log.Println("[TRACE] DiskTracer.Update start:	args => [", "zone=", zone, "id=", id, "param=", param, "]")
 	defer func() {
 		log.Println("[TRACE] DiskTracer.Update: end")
@@ -358,7 +359,7 @@ func (t *DiskTracer) Delete(ctx context.Context, zone string, id types.ID) error
 }
 
 // Monitor is API call with trace log
-func (t *DiskTracer) Monitor(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*DiskActivity, error) {
+func (t *DiskTracer) Monitor(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.DiskActivity, error) {
 	log.Println("[TRACE] DiskTracer.Monitor start:	args => [", "zone=", zone, "id=", id, "condition=", condition, "]")
 	defer func() {
 		log.Println("[TRACE] DiskTracer.Monitor: end")
@@ -373,18 +374,18 @@ func (t *DiskTracer) Monitor(ctx context.Context, zone string, id types.ID, cond
 
 // GSLBTracer is for trace GSLBOp operations
 type GSLBTracer struct {
-	Internal GSLBAPI
+	Internal sacloud.GSLBAPI
 }
 
 // NewGSLBTracer creates new GSLBTracer instance
-func NewGSLBTracer(in GSLBAPI) *GSLBTracer {
+func NewGSLBTracer(in sacloud.GSLBAPI) sacloud.GSLBAPI {
 	return &GSLBTracer{
 		Internal: in,
 	}
 }
 
 // Find is API call with trace log
-func (t *GSLBTracer) Find(ctx context.Context, zone string, conditions *FindCondition) ([]*GSLB, error) {
+func (t *GSLBTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) ([]*sacloud.GSLB, error) {
 	log.Println("[TRACE] GSLBTracer.Find start:	args => [", "zone=", zone, "conditions=", conditions, "]")
 	defer func() {
 		log.Println("[TRACE] GSLBTracer.Find: end")
@@ -394,7 +395,7 @@ func (t *GSLBTracer) Find(ctx context.Context, zone string, conditions *FindCond
 }
 
 // Create is API call with trace log
-func (t *GSLBTracer) Create(ctx context.Context, zone string, param *GSLBCreateRequest) (*GSLB, error) {
+func (t *GSLBTracer) Create(ctx context.Context, zone string, param *sacloud.GSLBCreateRequest) (*sacloud.GSLB, error) {
 	log.Println("[TRACE] GSLBTracer.Create start:	args => [", "zone=", zone, "param=", param, "]")
 	defer func() {
 		log.Println("[TRACE] GSLBTracer.Create: end")
@@ -404,7 +405,7 @@ func (t *GSLBTracer) Create(ctx context.Context, zone string, param *GSLBCreateR
 }
 
 // Read is API call with trace log
-func (t *GSLBTracer) Read(ctx context.Context, zone string, id types.ID) (*GSLB, error) {
+func (t *GSLBTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.GSLB, error) {
 	log.Println("[TRACE] GSLBTracer.Read start:	args => [", "zone=", zone, "id=", id, "]")
 	defer func() {
 		log.Println("[TRACE] GSLBTracer.Read: end")
@@ -414,7 +415,7 @@ func (t *GSLBTracer) Read(ctx context.Context, zone string, id types.ID) (*GSLB,
 }
 
 // Update is API call with trace log
-func (t *GSLBTracer) Update(ctx context.Context, zone string, id types.ID, param *GSLBUpdateRequest) (*GSLB, error) {
+func (t *GSLBTracer) Update(ctx context.Context, zone string, id types.ID, param *sacloud.GSLBUpdateRequest) (*sacloud.GSLB, error) {
 	log.Println("[TRACE] GSLBTracer.Update start:	args => [", "zone=", zone, "id=", id, "param=", param, "]")
 	defer func() {
 		log.Println("[TRACE] GSLBTracer.Update: end")
@@ -439,18 +440,18 @@ func (t *GSLBTracer) Delete(ctx context.Context, zone string, id types.ID) error
 
 // InterfaceTracer is for trace InterfaceOp operations
 type InterfaceTracer struct {
-	Internal InterfaceAPI
+	Internal sacloud.InterfaceAPI
 }
 
 // NewInterfaceTracer creates new InterfaceTracer instance
-func NewInterfaceTracer(in InterfaceAPI) *InterfaceTracer {
+func NewInterfaceTracer(in sacloud.InterfaceAPI) sacloud.InterfaceAPI {
 	return &InterfaceTracer{
 		Internal: in,
 	}
 }
 
 // Find is API call with trace log
-func (t *InterfaceTracer) Find(ctx context.Context, zone string, conditions *FindCondition) ([]*Interface, error) {
+func (t *InterfaceTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) ([]*sacloud.Interface, error) {
 	log.Println("[TRACE] InterfaceTracer.Find start:	args => [", "zone=", zone, "conditions=", conditions, "]")
 	defer func() {
 		log.Println("[TRACE] InterfaceTracer.Find: end")
@@ -460,7 +461,7 @@ func (t *InterfaceTracer) Find(ctx context.Context, zone string, conditions *Fin
 }
 
 // Create is API call with trace log
-func (t *InterfaceTracer) Create(ctx context.Context, zone string, param *InterfaceCreateRequest) (*Interface, error) {
+func (t *InterfaceTracer) Create(ctx context.Context, zone string, param *sacloud.InterfaceCreateRequest) (*sacloud.Interface, error) {
 	log.Println("[TRACE] InterfaceTracer.Create start:	args => [", "zone=", zone, "param=", param, "]")
 	defer func() {
 		log.Println("[TRACE] InterfaceTracer.Create: end")
@@ -470,7 +471,7 @@ func (t *InterfaceTracer) Create(ctx context.Context, zone string, param *Interf
 }
 
 // Read is API call with trace log
-func (t *InterfaceTracer) Read(ctx context.Context, zone string, id types.ID) (*Interface, error) {
+func (t *InterfaceTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Interface, error) {
 	log.Println("[TRACE] InterfaceTracer.Read start:	args => [", "zone=", zone, "id=", id, "]")
 	defer func() {
 		log.Println("[TRACE] InterfaceTracer.Read: end")
@@ -480,7 +481,7 @@ func (t *InterfaceTracer) Read(ctx context.Context, zone string, id types.ID) (*
 }
 
 // Update is API call with trace log
-func (t *InterfaceTracer) Update(ctx context.Context, zone string, id types.ID, param *InterfaceUpdateRequest) (*Interface, error) {
+func (t *InterfaceTracer) Update(ctx context.Context, zone string, id types.ID, param *sacloud.InterfaceUpdateRequest) (*sacloud.Interface, error) {
 	log.Println("[TRACE] InterfaceTracer.Update start:	args => [", "zone=", zone, "id=", id, "param=", param, "]")
 	defer func() {
 		log.Println("[TRACE] InterfaceTracer.Update: end")
@@ -500,7 +501,7 @@ func (t *InterfaceTracer) Delete(ctx context.Context, zone string, id types.ID) 
 }
 
 // Monitor is API call with trace log
-func (t *InterfaceTracer) Monitor(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*InterfaceActivity, error) {
+func (t *InterfaceTracer) Monitor(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.InterfaceActivity, error) {
 	log.Println("[TRACE] InterfaceTracer.Monitor start:	args => [", "zone=", zone, "id=", id, "condition=", condition, "]")
 	defer func() {
 		log.Println("[TRACE] InterfaceTracer.Monitor: end")
@@ -565,18 +566,18 @@ func (t *InterfaceTracer) DisconnectFromPacketFilter(ctx context.Context, zone s
 
 // LoadBalancerTracer is for trace LoadBalancerOp operations
 type LoadBalancerTracer struct {
-	Internal LoadBalancerAPI
+	Internal sacloud.LoadBalancerAPI
 }
 
 // NewLoadBalancerTracer creates new LoadBalancerTracer instance
-func NewLoadBalancerTracer(in LoadBalancerAPI) *LoadBalancerTracer {
+func NewLoadBalancerTracer(in sacloud.LoadBalancerAPI) sacloud.LoadBalancerAPI {
 	return &LoadBalancerTracer{
 		Internal: in,
 	}
 }
 
 // Find is API call with trace log
-func (t *LoadBalancerTracer) Find(ctx context.Context, zone string, conditions *FindCondition) ([]*LoadBalancer, error) {
+func (t *LoadBalancerTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) ([]*sacloud.LoadBalancer, error) {
 	log.Println("[TRACE] LoadBalancerTracer.Find start:	args => [", "zone=", zone, "conditions=", conditions, "]")
 	defer func() {
 		log.Println("[TRACE] LoadBalancerTracer.Find: end")
@@ -586,7 +587,7 @@ func (t *LoadBalancerTracer) Find(ctx context.Context, zone string, conditions *
 }
 
 // Create is API call with trace log
-func (t *LoadBalancerTracer) Create(ctx context.Context, zone string, param *LoadBalancerCreateRequest) (*LoadBalancer, error) {
+func (t *LoadBalancerTracer) Create(ctx context.Context, zone string, param *sacloud.LoadBalancerCreateRequest) (*sacloud.LoadBalancer, error) {
 	log.Println("[TRACE] LoadBalancerTracer.Create start:	args => [", "zone=", zone, "param=", param, "]")
 	defer func() {
 		log.Println("[TRACE] LoadBalancerTracer.Create: end")
@@ -596,7 +597,7 @@ func (t *LoadBalancerTracer) Create(ctx context.Context, zone string, param *Loa
 }
 
 // Read is API call with trace log
-func (t *LoadBalancerTracer) Read(ctx context.Context, zone string, id types.ID) (*LoadBalancer, error) {
+func (t *LoadBalancerTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.LoadBalancer, error) {
 	log.Println("[TRACE] LoadBalancerTracer.Read start:	args => [", "zone=", zone, "id=", id, "]")
 	defer func() {
 		log.Println("[TRACE] LoadBalancerTracer.Read: end")
@@ -606,7 +607,7 @@ func (t *LoadBalancerTracer) Read(ctx context.Context, zone string, id types.ID)
 }
 
 // Update is API call with trace log
-func (t *LoadBalancerTracer) Update(ctx context.Context, zone string, id types.ID, param *LoadBalancerUpdateRequest) (*LoadBalancer, error) {
+func (t *LoadBalancerTracer) Update(ctx context.Context, zone string, id types.ID, param *sacloud.LoadBalancerUpdateRequest) (*sacloud.LoadBalancer, error) {
 	log.Println("[TRACE] LoadBalancerTracer.Update start:	args => [", "zone=", zone, "id=", id, "param=", param, "]")
 	defer func() {
 		log.Println("[TRACE] LoadBalancerTracer.Update: end")
@@ -646,7 +647,7 @@ func (t *LoadBalancerTracer) Boot(ctx context.Context, zone string, id types.ID)
 }
 
 // Shutdown is API call with trace log
-func (t *LoadBalancerTracer) Shutdown(ctx context.Context, zone string, id types.ID, shutdownOption *ShutdownOption) error {
+func (t *LoadBalancerTracer) Shutdown(ctx context.Context, zone string, id types.ID, shutdownOption *sacloud.ShutdownOption) error {
 	log.Println("[TRACE] LoadBalancerTracer.Shutdown start:	args => [", "zone=", zone, "id=", id, "shutdownOption=", shutdownOption, "]")
 	defer func() {
 		log.Println("[TRACE] LoadBalancerTracer.Shutdown: end")
@@ -666,7 +667,7 @@ func (t *LoadBalancerTracer) Reset(ctx context.Context, zone string, id types.ID
 }
 
 // MonitorInterface is API call with trace log
-func (t *LoadBalancerTracer) MonitorInterface(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*InterfaceActivity, error) {
+func (t *LoadBalancerTracer) MonitorInterface(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.InterfaceActivity, error) {
 	log.Println("[TRACE] LoadBalancerTracer.MonitorInterface start:	args => [", "zone=", zone, "id=", id, "condition=", condition, "]")
 	defer func() {
 		log.Println("[TRACE] LoadBalancerTracer.MonitorInterface: end")
@@ -676,7 +677,7 @@ func (t *LoadBalancerTracer) MonitorInterface(ctx context.Context, zone string, 
 }
 
 // Status is API call with trace log
-func (t *LoadBalancerTracer) Status(ctx context.Context, zone string, id types.ID) ([]*LoadBalancerStatus, error) {
+func (t *LoadBalancerTracer) Status(ctx context.Context, zone string, id types.ID) ([]*sacloud.LoadBalancerStatus, error) {
 	log.Println("[TRACE] LoadBalancerTracer.Status start:	args => [", "zone=", zone, "id=", id, "]")
 	defer func() {
 		log.Println("[TRACE] LoadBalancerTracer.Status: end")
@@ -691,18 +692,18 @@ func (t *LoadBalancerTracer) Status(ctx context.Context, zone string, id types.I
 
 // NFSTracer is for trace NFSOp operations
 type NFSTracer struct {
-	Internal NFSAPI
+	Internal sacloud.NFSAPI
 }
 
 // NewNFSTracer creates new NFSTracer instance
-func NewNFSTracer(in NFSAPI) *NFSTracer {
+func NewNFSTracer(in sacloud.NFSAPI) sacloud.NFSAPI {
 	return &NFSTracer{
 		Internal: in,
 	}
 }
 
 // Find is API call with trace log
-func (t *NFSTracer) Find(ctx context.Context, zone string, conditions *FindCondition) ([]*NFS, error) {
+func (t *NFSTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) ([]*sacloud.NFS, error) {
 	log.Println("[TRACE] NFSTracer.Find start:	args => [", "zone=", zone, "conditions=", conditions, "]")
 	defer func() {
 		log.Println("[TRACE] NFSTracer.Find: end")
@@ -712,7 +713,7 @@ func (t *NFSTracer) Find(ctx context.Context, zone string, conditions *FindCondi
 }
 
 // Create is API call with trace log
-func (t *NFSTracer) Create(ctx context.Context, zone string, param *NFSCreateRequest) (*NFS, error) {
+func (t *NFSTracer) Create(ctx context.Context, zone string, param *sacloud.NFSCreateRequest) (*sacloud.NFS, error) {
 	log.Println("[TRACE] NFSTracer.Create start:	args => [", "zone=", zone, "param=", param, "]")
 	defer func() {
 		log.Println("[TRACE] NFSTracer.Create: end")
@@ -722,7 +723,7 @@ func (t *NFSTracer) Create(ctx context.Context, zone string, param *NFSCreateReq
 }
 
 // Read is API call with trace log
-func (t *NFSTracer) Read(ctx context.Context, zone string, id types.ID) (*NFS, error) {
+func (t *NFSTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.NFS, error) {
 	log.Println("[TRACE] NFSTracer.Read start:	args => [", "zone=", zone, "id=", id, "]")
 	defer func() {
 		log.Println("[TRACE] NFSTracer.Read: end")
@@ -732,7 +733,7 @@ func (t *NFSTracer) Read(ctx context.Context, zone string, id types.ID) (*NFS, e
 }
 
 // Update is API call with trace log
-func (t *NFSTracer) Update(ctx context.Context, zone string, id types.ID, param *NFSUpdateRequest) (*NFS, error) {
+func (t *NFSTracer) Update(ctx context.Context, zone string, id types.ID, param *sacloud.NFSUpdateRequest) (*sacloud.NFS, error) {
 	log.Println("[TRACE] NFSTracer.Update start:	args => [", "zone=", zone, "id=", id, "param=", param, "]")
 	defer func() {
 		log.Println("[TRACE] NFSTracer.Update: end")
@@ -762,7 +763,7 @@ func (t *NFSTracer) Boot(ctx context.Context, zone string, id types.ID) error {
 }
 
 // Shutdown is API call with trace log
-func (t *NFSTracer) Shutdown(ctx context.Context, zone string, id types.ID, shutdownOption *ShutdownOption) error {
+func (t *NFSTracer) Shutdown(ctx context.Context, zone string, id types.ID, shutdownOption *sacloud.ShutdownOption) error {
 	log.Println("[TRACE] NFSTracer.Shutdown start:	args => [", "zone=", zone, "id=", id, "shutdownOption=", shutdownOption, "]")
 	defer func() {
 		log.Println("[TRACE] NFSTracer.Shutdown: end")
@@ -782,7 +783,7 @@ func (t *NFSTracer) Reset(ctx context.Context, zone string, id types.ID) error {
 }
 
 // MonitorFreeDiskSize is API call with trace log
-func (t *NFSTracer) MonitorFreeDiskSize(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*FreeDiskSizeActivity, error) {
+func (t *NFSTracer) MonitorFreeDiskSize(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.FreeDiskSizeActivity, error) {
 	log.Println("[TRACE] NFSTracer.MonitorFreeDiskSize start:	args => [", "zone=", zone, "id=", id, "condition=", condition, "]")
 	defer func() {
 		log.Println("[TRACE] NFSTracer.MonitorFreeDiskSize: end")
@@ -792,7 +793,7 @@ func (t *NFSTracer) MonitorFreeDiskSize(ctx context.Context, zone string, id typ
 }
 
 // MonitorInterface is API call with trace log
-func (t *NFSTracer) MonitorInterface(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*InterfaceActivity, error) {
+func (t *NFSTracer) MonitorInterface(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.InterfaceActivity, error) {
 	log.Println("[TRACE] NFSTracer.MonitorInterface start:	args => [", "zone=", zone, "id=", id, "condition=", condition, "]")
 	defer func() {
 		log.Println("[TRACE] NFSTracer.MonitorInterface: end")
@@ -807,18 +808,18 @@ func (t *NFSTracer) MonitorInterface(ctx context.Context, zone string, id types.
 
 // NoteTracer is for trace NoteOp operations
 type NoteTracer struct {
-	Internal NoteAPI
+	Internal sacloud.NoteAPI
 }
 
 // NewNoteTracer creates new NoteTracer instance
-func NewNoteTracer(in NoteAPI) *NoteTracer {
+func NewNoteTracer(in sacloud.NoteAPI) sacloud.NoteAPI {
 	return &NoteTracer{
 		Internal: in,
 	}
 }
 
 // Find is API call with trace log
-func (t *NoteTracer) Find(ctx context.Context, zone string, conditions *FindCondition) ([]*Note, error) {
+func (t *NoteTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) ([]*sacloud.Note, error) {
 	log.Println("[TRACE] NoteTracer.Find start:	args => [", "zone=", zone, "conditions=", conditions, "]")
 	defer func() {
 		log.Println("[TRACE] NoteTracer.Find: end")
@@ -828,7 +829,7 @@ func (t *NoteTracer) Find(ctx context.Context, zone string, conditions *FindCond
 }
 
 // Create is API call with trace log
-func (t *NoteTracer) Create(ctx context.Context, zone string, param *NoteCreateRequest) (*Note, error) {
+func (t *NoteTracer) Create(ctx context.Context, zone string, param *sacloud.NoteCreateRequest) (*sacloud.Note, error) {
 	log.Println("[TRACE] NoteTracer.Create start:	args => [", "zone=", zone, "param=", param, "]")
 	defer func() {
 		log.Println("[TRACE] NoteTracer.Create: end")
@@ -838,7 +839,7 @@ func (t *NoteTracer) Create(ctx context.Context, zone string, param *NoteCreateR
 }
 
 // Read is API call with trace log
-func (t *NoteTracer) Read(ctx context.Context, zone string, id types.ID) (*Note, error) {
+func (t *NoteTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Note, error) {
 	log.Println("[TRACE] NoteTracer.Read start:	args => [", "zone=", zone, "id=", id, "]")
 	defer func() {
 		log.Println("[TRACE] NoteTracer.Read: end")
@@ -848,7 +849,7 @@ func (t *NoteTracer) Read(ctx context.Context, zone string, id types.ID) (*Note,
 }
 
 // Update is API call with trace log
-func (t *NoteTracer) Update(ctx context.Context, zone string, id types.ID, param *NoteUpdateRequest) (*Note, error) {
+func (t *NoteTracer) Update(ctx context.Context, zone string, id types.ID, param *sacloud.NoteUpdateRequest) (*sacloud.Note, error) {
 	log.Println("[TRACE] NoteTracer.Update start:	args => [", "zone=", zone, "id=", id, "param=", param, "]")
 	defer func() {
 		log.Println("[TRACE] NoteTracer.Update: end")
@@ -873,18 +874,18 @@ func (t *NoteTracer) Delete(ctx context.Context, zone string, id types.ID) error
 
 // ServerTracer is for trace ServerOp operations
 type ServerTracer struct {
-	Internal ServerAPI
+	Internal sacloud.ServerAPI
 }
 
 // NewServerTracer creates new ServerTracer instance
-func NewServerTracer(in ServerAPI) *ServerTracer {
+func NewServerTracer(in sacloud.ServerAPI) sacloud.ServerAPI {
 	return &ServerTracer{
 		Internal: in,
 	}
 }
 
 // Find is API call with trace log
-func (t *ServerTracer) Find(ctx context.Context, zone string, conditions *FindCondition) ([]*Server, error) {
+func (t *ServerTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) ([]*sacloud.Server, error) {
 	log.Println("[TRACE] ServerTracer.Find start:	args => [", "zone=", zone, "conditions=", conditions, "]")
 	defer func() {
 		log.Println("[TRACE] ServerTracer.Find: end")
@@ -894,7 +895,7 @@ func (t *ServerTracer) Find(ctx context.Context, zone string, conditions *FindCo
 }
 
 // Create is API call with trace log
-func (t *ServerTracer) Create(ctx context.Context, zone string, param *ServerCreateRequest) (*Server, error) {
+func (t *ServerTracer) Create(ctx context.Context, zone string, param *sacloud.ServerCreateRequest) (*sacloud.Server, error) {
 	log.Println("[TRACE] ServerTracer.Create start:	args => [", "zone=", zone, "param=", param, "]")
 	defer func() {
 		log.Println("[TRACE] ServerTracer.Create: end")
@@ -904,7 +905,7 @@ func (t *ServerTracer) Create(ctx context.Context, zone string, param *ServerCre
 }
 
 // Read is API call with trace log
-func (t *ServerTracer) Read(ctx context.Context, zone string, id types.ID) (*Server, error) {
+func (t *ServerTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Server, error) {
 	log.Println("[TRACE] ServerTracer.Read start:	args => [", "zone=", zone, "id=", id, "]")
 	defer func() {
 		log.Println("[TRACE] ServerTracer.Read: end")
@@ -914,7 +915,7 @@ func (t *ServerTracer) Read(ctx context.Context, zone string, id types.ID) (*Ser
 }
 
 // Update is API call with trace log
-func (t *ServerTracer) Update(ctx context.Context, zone string, id types.ID, param *ServerUpdateRequest) (*Server, error) {
+func (t *ServerTracer) Update(ctx context.Context, zone string, id types.ID, param *sacloud.ServerUpdateRequest) (*sacloud.Server, error) {
 	log.Println("[TRACE] ServerTracer.Update start:	args => [", "zone=", zone, "id=", id, "param=", param, "]")
 	defer func() {
 		log.Println("[TRACE] ServerTracer.Update: end")
@@ -934,7 +935,7 @@ func (t *ServerTracer) Delete(ctx context.Context, zone string, id types.ID) err
 }
 
 // ChangePlan is API call with trace log
-func (t *ServerTracer) ChangePlan(ctx context.Context, zone string, id types.ID, plan *ServerChangePlanRequest) (*Server, error) {
+func (t *ServerTracer) ChangePlan(ctx context.Context, zone string, id types.ID, plan *sacloud.ServerChangePlanRequest) (*sacloud.Server, error) {
 	log.Println("[TRACE] ServerTracer.ChangePlan start:	args => [", "zone=", zone, "id=", id, "plan=", plan, "]")
 	defer func() {
 		log.Println("[TRACE] ServerTracer.ChangePlan: end")
@@ -944,7 +945,7 @@ func (t *ServerTracer) ChangePlan(ctx context.Context, zone string, id types.ID,
 }
 
 // InsertCDROM is API call with trace log
-func (t *ServerTracer) InsertCDROM(ctx context.Context, zone string, id types.ID, insertParam *InsertCDROMRequest) error {
+func (t *ServerTracer) InsertCDROM(ctx context.Context, zone string, id types.ID, insertParam *sacloud.InsertCDROMRequest) error {
 	log.Println("[TRACE] ServerTracer.InsertCDROM start:	args => [", "zone=", zone, "id=", id, "insertParam=", insertParam, "]")
 	defer func() {
 		log.Println("[TRACE] ServerTracer.InsertCDROM: end")
@@ -954,7 +955,7 @@ func (t *ServerTracer) InsertCDROM(ctx context.Context, zone string, id types.ID
 }
 
 // EjectCDROM is API call with trace log
-func (t *ServerTracer) EjectCDROM(ctx context.Context, zone string, id types.ID, insertParam *EjectCDROMRequest) error {
+func (t *ServerTracer) EjectCDROM(ctx context.Context, zone string, id types.ID, insertParam *sacloud.EjectCDROMRequest) error {
 	log.Println("[TRACE] ServerTracer.EjectCDROM start:	args => [", "zone=", zone, "id=", id, "insertParam=", insertParam, "]")
 	defer func() {
 		log.Println("[TRACE] ServerTracer.EjectCDROM: end")
@@ -974,7 +975,7 @@ func (t *ServerTracer) Boot(ctx context.Context, zone string, id types.ID) error
 }
 
 // Shutdown is API call with trace log
-func (t *ServerTracer) Shutdown(ctx context.Context, zone string, id types.ID, shutdownOption *ShutdownOption) error {
+func (t *ServerTracer) Shutdown(ctx context.Context, zone string, id types.ID, shutdownOption *sacloud.ShutdownOption) error {
 	log.Println("[TRACE] ServerTracer.Shutdown start:	args => [", "zone=", zone, "id=", id, "shutdownOption=", shutdownOption, "]")
 	defer func() {
 		log.Println("[TRACE] ServerTracer.Shutdown: end")
@@ -994,7 +995,7 @@ func (t *ServerTracer) Reset(ctx context.Context, zone string, id types.ID) erro
 }
 
 // Monitor is API call with trace log
-func (t *ServerTracer) Monitor(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*CPUTimeActivity, error) {
+func (t *ServerTracer) Monitor(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.CPUTimeActivity, error) {
 	log.Println("[TRACE] ServerTracer.Monitor start:	args => [", "zone=", zone, "id=", id, "condition=", condition, "]")
 	defer func() {
 		log.Println("[TRACE] ServerTracer.Monitor: end")
@@ -1009,18 +1010,18 @@ func (t *ServerTracer) Monitor(ctx context.Context, zone string, id types.ID, co
 
 // SwitchTracer is for trace SwitchOp operations
 type SwitchTracer struct {
-	Internal SwitchAPI
+	Internal sacloud.SwitchAPI
 }
 
 // NewSwitchTracer creates new SwitchTracer instance
-func NewSwitchTracer(in SwitchAPI) *SwitchTracer {
+func NewSwitchTracer(in sacloud.SwitchAPI) sacloud.SwitchAPI {
 	return &SwitchTracer{
 		Internal: in,
 	}
 }
 
 // Find is API call with trace log
-func (t *SwitchTracer) Find(ctx context.Context, zone string, conditions *FindCondition) ([]*Switch, error) {
+func (t *SwitchTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) ([]*sacloud.Switch, error) {
 	log.Println("[TRACE] SwitchTracer.Find start:	args => [", "zone=", zone, "conditions=", conditions, "]")
 	defer func() {
 		log.Println("[TRACE] SwitchTracer.Find: end")
@@ -1030,7 +1031,7 @@ func (t *SwitchTracer) Find(ctx context.Context, zone string, conditions *FindCo
 }
 
 // Create is API call with trace log
-func (t *SwitchTracer) Create(ctx context.Context, zone string, param *SwitchCreateRequest) (*Switch, error) {
+func (t *SwitchTracer) Create(ctx context.Context, zone string, param *sacloud.SwitchCreateRequest) (*sacloud.Switch, error) {
 	log.Println("[TRACE] SwitchTracer.Create start:	args => [", "zone=", zone, "param=", param, "]")
 	defer func() {
 		log.Println("[TRACE] SwitchTracer.Create: end")
@@ -1040,7 +1041,7 @@ func (t *SwitchTracer) Create(ctx context.Context, zone string, param *SwitchCre
 }
 
 // Read is API call with trace log
-func (t *SwitchTracer) Read(ctx context.Context, zone string, id types.ID) (*Switch, error) {
+func (t *SwitchTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Switch, error) {
 	log.Println("[TRACE] SwitchTracer.Read start:	args => [", "zone=", zone, "id=", id, "]")
 	defer func() {
 		log.Println("[TRACE] SwitchTracer.Read: end")
@@ -1050,7 +1051,7 @@ func (t *SwitchTracer) Read(ctx context.Context, zone string, id types.ID) (*Swi
 }
 
 // Update is API call with trace log
-func (t *SwitchTracer) Update(ctx context.Context, zone string, id types.ID, param *SwitchUpdateRequest) (*Switch, error) {
+func (t *SwitchTracer) Update(ctx context.Context, zone string, id types.ID, param *sacloud.SwitchUpdateRequest) (*sacloud.Switch, error) {
 	log.Println("[TRACE] SwitchTracer.Update start:	args => [", "zone=", zone, "id=", id, "param=", param, "]")
 	defer func() {
 		log.Println("[TRACE] SwitchTracer.Update: end")
@@ -1095,18 +1096,18 @@ func (t *SwitchTracer) DisconnectFromBridge(ctx context.Context, zone string, id
 
 // ZoneTracer is for trace ZoneOp operations
 type ZoneTracer struct {
-	Internal ZoneAPI
+	Internal sacloud.ZoneAPI
 }
 
 // NewZoneTracer creates new ZoneTracer instance
-func NewZoneTracer(in ZoneAPI) *ZoneTracer {
+func NewZoneTracer(in sacloud.ZoneAPI) sacloud.ZoneAPI {
 	return &ZoneTracer{
 		Internal: in,
 	}
 }
 
 // Find is API call with trace log
-func (t *ZoneTracer) Find(ctx context.Context, zone string, conditions *FindCondition) ([]*Zone, error) {
+func (t *ZoneTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) ([]*sacloud.Zone, error) {
 	log.Println("[TRACE] ZoneTracer.Find start:	args => [", "zone=", zone, "conditions=", conditions, "]")
 	defer func() {
 		log.Println("[TRACE] ZoneTracer.Find: end")
@@ -1116,7 +1117,7 @@ func (t *ZoneTracer) Find(ctx context.Context, zone string, conditions *FindCond
 }
 
 // Read is API call with trace log
-func (t *ZoneTracer) Read(ctx context.Context, zone string, id types.ID) (*Zone, error) {
+func (t *ZoneTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Zone, error) {
 	log.Println("[TRACE] ZoneTracer.Read start:	args => [", "zone=", zone, "id=", id, "]")
 	defer func() {
 		log.Println("[TRACE] ZoneTracer.Read: end")

@@ -5,10 +5,11 @@ import (
 	"path/filepath"
 
 	"github.com/sacloud/libsacloud-v2/internal/define"
+	"github.com/sacloud/libsacloud-v2/internal/schema"
 	"github.com/sacloud/libsacloud-v2/internal/tools"
 )
 
-const destination = "sacloud/zz_api_tracer.go"
+const destination = "sacloud/trace/zz_api_tracer.go"
 
 func init() {
 	log.SetFlags(0)
@@ -16,6 +17,8 @@ func init() {
 }
 
 func main() {
+	schema.IsOutOfSacloudPackage = true
+
 	tools.WriteFileWithTemplate(&tools.TemplateConfig{
 		OutputPath: filepath.Join(tools.ProjectRootPath(), destination),
 		Template:   tmpl,
@@ -42,11 +45,11 @@ import (
 
 // {{ $typeName }}Tracer is for trace {{ $typeName }}Op operations
 type {{ $typeName }}Tracer struct {
-	Internal {{$typeName}}API
+	Internal sacloud.{{$typeName}}API
 }
 
 // New{{ $typeName}}Tracer creates new {{ $typeName}}Tracer instance
-func New{{ $typeName}}Tracer(in {{$typeName}}API) *{{ $typeName}}Tracer {
+func New{{ $typeName}}Tracer(in sacloud.{{$typeName}}API) sacloud.{{$typeName}}API {
 	return &{{ $typeName}}Tracer {
 		Internal: in,
 	}
