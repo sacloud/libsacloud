@@ -35,6 +35,18 @@ import (
 {{- end }}
 )
 
+func init() {
+{{ range . }}
+	SetClientFactoryFunc("{{.TypeName}}", func(caller APICaller) interface{} {
+		return &{{ .TypeName }}Op {
+			Client: caller,
+			PathSuffix: "{{.GetPathSuffix}}",
+			PathName: "{{.GetPathName}}",
+		}
+	})
+{{ end -}}
+}
+
 {{ range . }}{{ $typeName := .TypeName}}
 
 /************************************************* 
@@ -52,12 +64,8 @@ type {{ .TypeName }}Op struct{
 }
 
 // New{{ $typeName}}Op creates new {{ $typeName}}Op instance
-func New{{ $typeName}}Op(client APICaller) {{ $typeName}}API {
-	return &{{ $typeName}}Op {
-    	Client: client,
-		PathSuffix: "{{.GetPathSuffix}}",
-		PathName: "{{.GetPathName}}",
-	}
+func New{{ $typeName}}Op(caller APICaller) {{ $typeName}}API {
+	return GetClientFactoryFunc("{{$typeName}}")(caller).({{$typeName}}API)
 }
 
 {{ range .AllOperations }}{{$returnErrStatement := .ReturnErrorStatement}}{{ $operationName := .MethodName }}
