@@ -48,7 +48,6 @@ type Model struct {
 	Fields    []*FieldDesc // フィールド定義
 	NakedType meta.Type    // 対応するnaked型の情報
 	IsArray   bool
-	// TODO パッケージ名を設定できるようにすべきか?
 }
 
 // HasNakedType 対応するnaked型の情報が登録されているか
@@ -67,33 +66,53 @@ func (m *Model) GoType() string {
 	if m.IsArray {
 		prefix = "[]"
 	}
-	return prefix + m.Name
+
+	name := m.Name
+	if IsOutOfSacloudPackage {
+		name = "sacloud." + name
+	}
+
+	return prefix + name
 }
 
 // GoPkg パッケージ名
 func (m *Model) GoPkg() string {
+	if IsOutOfSacloudPackage {
+		return "sacloud"
+	}
 	return ""
 }
 
 // GoImportPath インポートパス
 func (m *Model) GoImportPath() string {
+	if IsOutOfSacloudPackage {
+		return "github.com/sacloud/libsacloud-v2/sacloud"
+	}
 	return ""
 }
 
 // GoTypeSourceCode ソースコードでの型表現
 func (m *Model) GoTypeSourceCode() string {
-	if m.IsArray {
-		return fmt.Sprintf("[]*%s", m.Name)
+	name := m.Name
+	if IsOutOfSacloudPackage {
+		name = "sacloud." + name
 	}
-	return fmt.Sprintf("*%s", m.Name)
+	if m.IsArray {
+		return fmt.Sprintf("[]*%s", name)
+	}
+	return fmt.Sprintf("*%s", name)
 }
 
 // ZeroInitializeSourceCode 型に応じたzero値での初期化コード
 func (m *Model) ZeroInitializeSourceCode() string {
-	if m.IsArray {
-		return fmt.Sprintf("[]*%s{}", m.Name)
+	name := m.Name
+	if IsOutOfSacloudPackage {
+		name = "sacloud." + name
 	}
-	return fmt.Sprintf("&%s{}", m.Name)
+	if m.IsArray {
+		return fmt.Sprintf("[]*%s{}", name)
+	}
+	return fmt.Sprintf("&%s{}", name)
 }
 
 // ZeroValueSourceCode 型に応じたzero値コード

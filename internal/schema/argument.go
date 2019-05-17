@@ -143,7 +143,7 @@ func (a *MappableArgument) ImportStatements() []string {
 	if p == "" {
 		return nil
 	}
-	return []string{p}
+	return wrapByDoubleQuote(p)
 }
 
 // PackageName インポートパスからパッケージ名を取得する
@@ -195,7 +195,7 @@ func (a *PassthroughModelArgument) ImportStatements() []string {
 	if p == "" {
 		return nil
 	}
-	return []string{p}
+	return wrapByDoubleQuote(p)
 }
 
 // PackageName インポートパスからパッケージ名を取得する
