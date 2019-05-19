@@ -2300,7 +2300,7 @@ type GSLB struct {
 	FQDN                    string             `mapconv:"Status.FQDN"`
 	DelayLoop               int                `mapconv:"Settings.GSLB.DelayLoop,default=10" validate:"min=10,max=60"`
 	Weighted                types.StringFlag   `mapconv:"Settings.GSLB.Weighted"`
-	HealthCheckProtocol     string             `mapconv:"Settings.GSLB.HealthCheck.Protocol" validate:"oneof=http https ping tcp"`
+	HealthCheckProtocol     types.Protocol     `mapconv:"Settings.GSLB.HealthCheck.Protocol" validate:"oneof=http https ping tcp"`
 	HealthCheckHostHeader   string             `mapconv:"Settings.GSLB.HealthCheck.Host"`
 	HealthCheckPath         string             `mapconv:"Settings.GSLB.HealthCheck.Path"`
 	HealthCheckResponseCode types.StringNumber `mapconv:"Settings.GSLB.HealthCheck.Status"`
@@ -2465,12 +2465,12 @@ func (o *GSLB) SetWeighted(v types.StringFlag) {
 }
 
 // GetHealthCheckProtocol returns value of HealthCheckProtocol
-func (o *GSLB) GetHealthCheckProtocol() string {
+func (o *GSLB) GetHealthCheckProtocol() types.Protocol {
 	return o.HealthCheckProtocol
 }
 
 // SetHealthCheckProtocol sets value to HealthCheckProtocol
-func (o *GSLB) SetHealthCheckProtocol(v string) {
+func (o *GSLB) SetHealthCheckProtocol(v types.Protocol) {
 	o.HealthCheckProtocol = v
 }
 
@@ -2599,7 +2599,7 @@ func (o *GSLBServer) SetWeight(v types.StringNumber) {
 // GSLBCreateRequest represents API parameter/response structure
 type GSLBCreateRequest struct {
 	Class                   string             `mapconv:"Provider.Class,default=gslb"`
-	HealthCheckProtocol     string             `mapconv:"Settings.GSLB.HealthCheck.Protocol" validate:"oneof=http https ping tcp"`
+	HealthCheckProtocol     types.Protocol     `mapconv:"Settings.GSLB.HealthCheck.Protocol" validate:"oneof=http https ping tcp"`
 	HealthCheckHostHeader   string             `mapconv:"Settings.GSLB.HealthCheck.Host"`
 	HealthCheckPath         string             `mapconv:"Settings.GSLB.HealthCheck.Path"`
 	HealthCheckResponseCode types.StringNumber `mapconv:"Settings.GSLB.HealthCheck.Status"`
@@ -2630,12 +2630,12 @@ func (o *GSLBCreateRequest) SetClass(v string) {
 }
 
 // GetHealthCheckProtocol returns value of HealthCheckProtocol
-func (o *GSLBCreateRequest) GetHealthCheckProtocol() string {
+func (o *GSLBCreateRequest) GetHealthCheckProtocol() types.Protocol {
 	return o.HealthCheckProtocol
 }
 
 // SetHealthCheckProtocol sets value to HealthCheckProtocol
-func (o *GSLBCreateRequest) SetHealthCheckProtocol(v string) {
+func (o *GSLBCreateRequest) SetHealthCheckProtocol(v types.Protocol) {
 	o.HealthCheckProtocol = v
 }
 
@@ -2777,7 +2777,7 @@ func (o *GSLBCreateRequest) convertFrom(naked *naked.GSLB) error {
 
 // GSLBUpdateRequest represents API parameter/response structure
 type GSLBUpdateRequest struct {
-	HealthCheckProtocol     string             `mapconv:"Settings.GSLB.HealthCheck.Protocol" validate:"oneof=http https ping tcp"`
+	HealthCheckProtocol     types.Protocol     `mapconv:"Settings.GSLB.HealthCheck.Protocol" validate:"oneof=http https ping tcp"`
 	HealthCheckHostHeader   string             `mapconv:"Settings.GSLB.HealthCheck.Host"`
 	HealthCheckPath         string             `mapconv:"Settings.GSLB.HealthCheck.Path"`
 	HealthCheckResponseCode types.StringNumber `mapconv:"Settings.GSLB.HealthCheck.Status"`
@@ -2798,12 +2798,12 @@ func (o *GSLBUpdateRequest) Validate() error {
 }
 
 // GetHealthCheckProtocol returns value of HealthCheckProtocol
-func (o *GSLBUpdateRequest) GetHealthCheckProtocol() string {
+func (o *GSLBUpdateRequest) GetHealthCheckProtocol() types.Protocol {
 	return o.HealthCheckProtocol
 }
 
 // SetHealthCheckProtocol sets value to HealthCheckProtocol
-func (o *GSLBUpdateRequest) SetHealthCheckProtocol(v string) {
+func (o *GSLBUpdateRequest) SetHealthCheckProtocol(v types.Protocol) {
 	o.HealthCheckProtocol = v
 }
 
@@ -3646,7 +3646,7 @@ type LoadBalancerServer struct {
 	IPAddress               string             `validate:"ipv4"`
 	Port                    types.StringNumber `validate:"min=1,max=65535"`
 	Enabled                 types.StringFlag
-	HealthCheckProtocol     string             `mapconv:"HealthCheck.Protocol" validate:"oneof=http https ping tcp"`
+	HealthCheckProtocol     types.Protocol     `mapconv:"HealthCheck.Protocol" validate:"oneof=http https ping tcp"`
 	HealthCheckPath         string             `mapconv:"HealthCheck.Path"`
 	HealthCheckResponseCode types.StringNumber `mapconv:"HealthCheck.Status"`
 }
@@ -3687,12 +3687,12 @@ func (o *LoadBalancerServer) SetEnabled(v types.StringFlag) {
 }
 
 // GetHealthCheckProtocol returns value of HealthCheckProtocol
-func (o *LoadBalancerServer) GetHealthCheckProtocol() string {
+func (o *LoadBalancerServer) GetHealthCheckProtocol() types.Protocol {
 	return o.HealthCheckProtocol
 }
 
 // SetHealthCheckProtocol sets value to HealthCheckProtocol
-func (o *LoadBalancerServer) SetHealthCheckProtocol(v string) {
+func (o *LoadBalancerServer) SetHealthCheckProtocol(v types.Protocol) {
 	o.HealthCheckProtocol = v
 }
 
@@ -4989,6 +4989,324 @@ func (o *NoteUpdateRequest) convertTo() (*naked.Note, error) {
 
 // convertFrom parse values from naked NoteUpdateRequest
 func (o *NoteUpdateRequest) convertFrom(naked *naked.Note) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* PacketFilter
+*************************************************/
+
+// PacketFilter represents API parameter/response structure
+type PacketFilter struct {
+	ID                  types.ID
+	Name                string `validate:"required"`
+	Description         string `validate:"min=0,max=512"`
+	RequiredHostVersion types.StringNumber
+	Expression          []*PacketFilterExpression `mapconv:"[]Expression,recursive"`
+	ExpressionHash      string
+	CreatedAt           time.Time
+}
+
+// Validate validates by field tags
+func (o *PacketFilter) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetID returns value of ID
+func (o *PacketFilter) GetID() types.ID {
+	return o.ID
+}
+
+// SetID sets value to ID
+func (o *PacketFilter) SetID(v types.ID) {
+	o.ID = v
+}
+
+// GetStringID gets value to StringID
+func (o *PacketFilter) GetStringID() string {
+	return accessor.GetStringID(o)
+}
+
+// SetStringID sets value to StringID
+func (o *PacketFilter) SetStringID(v string) {
+	accessor.SetStringID(o, v)
+}
+
+// GetInt64ID gets value to Int64ID
+func (o *PacketFilter) GetInt64ID() int64 {
+	return accessor.GetInt64ID(o)
+}
+
+// SetInt64ID sets value to Int64ID
+func (o *PacketFilter) SetInt64ID(v int64) {
+	accessor.SetInt64ID(o, v)
+}
+
+// GetName returns value of Name
+func (o *PacketFilter) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *PacketFilter) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *PacketFilter) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *PacketFilter) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetRequiredHostVersion returns value of RequiredHostVersion
+func (o *PacketFilter) GetRequiredHostVersion() types.StringNumber {
+	return o.RequiredHostVersion
+}
+
+// SetRequiredHostVersion sets value to RequiredHostVersion
+func (o *PacketFilter) SetRequiredHostVersion(v types.StringNumber) {
+	o.RequiredHostVersion = v
+}
+
+// GetExpression returns value of Expression
+func (o *PacketFilter) GetExpression() []*PacketFilterExpression {
+	return o.Expression
+}
+
+// SetExpression sets value to Expression
+func (o *PacketFilter) SetExpression(v []*PacketFilterExpression) {
+	o.Expression = v
+}
+
+// GetExpressionHash returns value of ExpressionHash
+func (o *PacketFilter) GetExpressionHash() string {
+	return o.ExpressionHash
+}
+
+// SetExpressionHash sets value to ExpressionHash
+func (o *PacketFilter) SetExpressionHash(v string) {
+	o.ExpressionHash = v
+}
+
+// GetCreatedAt returns value of CreatedAt
+func (o *PacketFilter) GetCreatedAt() time.Time {
+	return o.CreatedAt
+}
+
+// SetCreatedAt sets value to CreatedAt
+func (o *PacketFilter) SetCreatedAt(v time.Time) {
+	o.CreatedAt = v
+}
+
+// convertTo returns naked PacketFilter
+func (o *PacketFilter) convertTo() (*naked.PacketFilter, error) {
+	dest := &naked.PacketFilter{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked PacketFilter
+func (o *PacketFilter) convertFrom(naked *naked.PacketFilter) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* PacketFilterExpression
+*************************************************/
+
+// PacketFilterExpression represents API parameter/response structure
+type PacketFilterExpression struct {
+	Protocol        types.Protocol
+	SourceNetwork   types.PacketFilterNetwork
+	SourcePort      types.PacketFilterPort
+	DestinationPort types.PacketFilterPort
+	Action          types.PacketFilterAction
+}
+
+// Validate validates by field tags
+func (o *PacketFilterExpression) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetProtocol returns value of Protocol
+func (o *PacketFilterExpression) GetProtocol() types.Protocol {
+	return o.Protocol
+}
+
+// SetProtocol sets value to Protocol
+func (o *PacketFilterExpression) SetProtocol(v types.Protocol) {
+	o.Protocol = v
+}
+
+// GetSourceNetwork returns value of SourceNetwork
+func (o *PacketFilterExpression) GetSourceNetwork() types.PacketFilterNetwork {
+	return o.SourceNetwork
+}
+
+// SetSourceNetwork sets value to SourceNetwork
+func (o *PacketFilterExpression) SetSourceNetwork(v types.PacketFilterNetwork) {
+	o.SourceNetwork = v
+}
+
+// GetSourcePort returns value of SourcePort
+func (o *PacketFilterExpression) GetSourcePort() types.PacketFilterPort {
+	return o.SourcePort
+}
+
+// SetSourcePort sets value to SourcePort
+func (o *PacketFilterExpression) SetSourcePort(v types.PacketFilterPort) {
+	o.SourcePort = v
+}
+
+// GetDestinationPort returns value of DestinationPort
+func (o *PacketFilterExpression) GetDestinationPort() types.PacketFilterPort {
+	return o.DestinationPort
+}
+
+// SetDestinationPort sets value to DestinationPort
+func (o *PacketFilterExpression) SetDestinationPort(v types.PacketFilterPort) {
+	o.DestinationPort = v
+}
+
+// GetAction returns value of Action
+func (o *PacketFilterExpression) GetAction() types.PacketFilterAction {
+	return o.Action
+}
+
+// SetAction sets value to Action
+func (o *PacketFilterExpression) SetAction(v types.PacketFilterAction) {
+	o.Action = v
+}
+
+// convertTo returns naked PacketFilterExpression
+func (o *PacketFilterExpression) convertTo() (*naked.PacketFilterExpression, error) {
+	dest := &naked.PacketFilterExpression{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked PacketFilterExpression
+func (o *PacketFilterExpression) convertFrom(naked *naked.PacketFilterExpression) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* PacketFilterCreateRequest
+*************************************************/
+
+// PacketFilterCreateRequest represents API parameter/response structure
+type PacketFilterCreateRequest struct {
+	Name        string                    `validate:"required"`
+	Description string                    `validate:"min=0,max=512"`
+	Expression  []*PacketFilterExpression `mapconv:"[]Expression,recursive"`
+}
+
+// Validate validates by field tags
+func (o *PacketFilterCreateRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetName returns value of Name
+func (o *PacketFilterCreateRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *PacketFilterCreateRequest) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *PacketFilterCreateRequest) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *PacketFilterCreateRequest) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetExpression returns value of Expression
+func (o *PacketFilterCreateRequest) GetExpression() []*PacketFilterExpression {
+	return o.Expression
+}
+
+// SetExpression sets value to Expression
+func (o *PacketFilterCreateRequest) SetExpression(v []*PacketFilterExpression) {
+	o.Expression = v
+}
+
+// convertTo returns naked PacketFilterCreateRequest
+func (o *PacketFilterCreateRequest) convertTo() (*naked.PacketFilter, error) {
+	dest := &naked.PacketFilter{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked PacketFilterCreateRequest
+func (o *PacketFilterCreateRequest) convertFrom(naked *naked.PacketFilter) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* PacketFilterUpdateRequest
+*************************************************/
+
+// PacketFilterUpdateRequest represents API parameter/response structure
+type PacketFilterUpdateRequest struct {
+	Name        string                    `validate:"required"`
+	Description string                    `validate:"min=0,max=512"`
+	Expression  []*PacketFilterExpression `mapconv:"[]Expression,recursive"`
+}
+
+// Validate validates by field tags
+func (o *PacketFilterUpdateRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetName returns value of Name
+func (o *PacketFilterUpdateRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *PacketFilterUpdateRequest) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *PacketFilterUpdateRequest) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *PacketFilterUpdateRequest) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetExpression returns value of Expression
+func (o *PacketFilterUpdateRequest) GetExpression() []*PacketFilterExpression {
+	return o.Expression
+}
+
+// SetExpression sets value to Expression
+func (o *PacketFilterUpdateRequest) SetExpression(v []*PacketFilterExpression) {
+	o.Expression = v
+}
+
+// convertTo returns naked PacketFilterUpdateRequest
+func (o *PacketFilterUpdateRequest) convertTo() (*naked.PacketFilter, error) {
+	dest := &naked.PacketFilter{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked PacketFilterUpdateRequest
+func (o *PacketFilterUpdateRequest) convertFrom(naked *naked.PacketFilter) error {
 	return mapconv.ConvertFrom(naked, o)
 }
 

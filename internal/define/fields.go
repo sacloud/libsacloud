@@ -434,7 +434,7 @@ func (f *fieldsDef) LoadBalancerVIP() *schema.FieldDesc {
 							},
 							{
 								Name: "HealthCheckProtocol",
-								Type: meta.TypeString,
+								Type: meta.TypeProtocol,
 								Tags: &schema.FieldTags{
 									MapConv:  "HealthCheck.Protocol",
 									Validate: "oneof=http https ping tcp",
@@ -527,7 +527,7 @@ func (f *fieldsDef) GSLBFQDN() *schema.FieldDesc {
 func (f *fieldsDef) GSLBHealthCheckProtocol() *schema.FieldDesc {
 	return &schema.FieldDesc{
 		Name: "HealthCheckProtocol",
-		Type: meta.TypeString,
+		Type: meta.TypeProtocol,
 		Tags: &schema.FieldTags{
 			MapConv:  "Settings.GSLB.HealthCheck.Protocol",
 			Validate: "oneof=http https ping tcp",
@@ -882,6 +882,30 @@ func (f *fieldsDef) RemarkVRID() *schema.FieldDesc {
 		Tags: &schema.FieldTags{
 			MapConv: "Remark.VRRP.VRID",
 		},
+	}
+}
+
+func (f *fieldsDef) RequiredHostVersion() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "RequiredHostVersion",
+		Type: meta.TypeStringNumber,
+	}
+}
+
+func (f *fieldsDef) PacketFilterExpressions() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "Expression",
+		Type: models.packetFilterExpressions(),
+		Tags: &schema.FieldTags{
+			MapConv: "[]Expression,recursive",
+		},
+	}
+}
+
+func (f *fieldsDef) ExpressionHash() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "ExpressionHash",
+		Type: meta.TypeString,
 	}
 }
 

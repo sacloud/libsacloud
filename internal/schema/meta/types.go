@@ -36,14 +36,23 @@ var (
 	TypeAvailability = Static(types.EAvailability(""))
 	// TypeCommitment サーバプランCPUコミットメント
 	TypeCommitment = Static(types.ECommitment(""))
-	// TypePlanGeneration プラン世代
-	TypePlanGeneration = Static(types.EPlanGeneration(0))
+	// TypeDiskConnection ディスク接続方法
+	TypeDiskConnection = Static(types.EDiskConnection(""))
 	// TypeInstanceStatus インスタンスステータス
 	TypeInstanceStatus = Static(types.EServerInstanceStatus(""))
 	// TypeInterfaceDriver インターフェースドライバ
 	TypeInterfaceDriver = Static(types.EInterfaceDriver(""))
+	// TypePlanGeneration プラン世代
+	TypePlanGeneration = Static(types.EPlanGeneration(0))
+	// TypeProtocol プロトコル
+	TypeProtocol = Static(types.Protocol(""))
 	// TypeScope スコープ
 	TypeScope = Static(types.EScope(""))
-	// TypeDiskConnection ディスク接続方法
-	TypeDiskConnection = Static(types.EDiskConnection(""))
+
+	// TypePacketFilterNetwork パケットフィルタルールでの送信元アドレス/範囲
+	TypePacketFilterNetwork = Static(types.PacketFilterNetwork(""))
+	// TypePacketFilterPort パケットフィルタルールでのポート
+	TypePacketFilterPort = Static(types.PacketFilterPort(""))
+	// TypePacketFilterAction パケットフィルタルールでのallow/deny動作
+	TypePacketFilterAction = Static(types.PacketFilterAction(""))
 )

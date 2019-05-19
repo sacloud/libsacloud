@@ -42,6 +42,10 @@ func TestResourceOps(t *testing.T) {
 		t.Fatalf("%s is not sacloud.Note", op)
 	}
 
+	if op, ok := NewPacketFilterOp().(sacloud.PacketFilterAPI); !ok {
+		t.Fatalf("%s is not sacloud.PacketFilter", op)
+	}
+
 	if op, ok := NewServerOp().(sacloud.ServerAPI); !ok {
 		t.Fatalf("%s is not sacloud.Server", op)
 	}
