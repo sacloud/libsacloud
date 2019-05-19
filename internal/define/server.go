@@ -29,7 +29,7 @@ func init() {
 			fields.ServerPlanCommitment(),
 			fields.ServerPlanGeneration(),
 			// zone
-			fields.ZoneID(),
+			fields.Zone(),
 			// instance
 			fields.InstanceHostName(),
 			fields.InstanceHostInfoURL(),
@@ -53,20 +53,7 @@ func init() {
 					MapConv: ",recursive",
 				},
 			},
-
-			{
-				Name: "Interfaces",
-				Type: &schema.Model{
-					Name:      models.interfaceModel().Name,
-					Fields:    models.interfaceModel().Fields,
-					IsArray:   true,
-					NakedType: meta.Static(naked.Interface{}),
-				},
-				Tags: &schema.FieldTags{
-					JSON:    ",omitempty",
-					MapConv: "[]Interfaces,recursive",
-				},
-			},
+			fields.Interfaces(),
 
 			fields.CDROMID(),
 
@@ -74,7 +61,6 @@ func init() {
 			fields.PrivateHostName(),
 
 			fields.BundleInfo(),
-			fields.Storage(),
 
 			fields.IconID(),
 			fields.CreatedAt(),

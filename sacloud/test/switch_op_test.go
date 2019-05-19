@@ -43,10 +43,9 @@ func TestSwitchOpCRUD(t *testing.T) {
 var (
 	ignoreSwitchFields = []string{
 		"ID",
-		"Icon",
+		"IconID",
 		"CreatedAt",
 		"ModifiedAt",
-		"ZoneID",
 	}
 	createSwitchParam = &sacloud.SwitchCreateRequest{
 		Name:           "libsacloud-v2-switch",

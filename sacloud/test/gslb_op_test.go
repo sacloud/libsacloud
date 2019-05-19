@@ -50,7 +50,7 @@ var (
 		"Class",
 		"SettingsHash",
 		"FQDN",
-		"Icon",
+		"IconID",
 		"CreatedAt",
 		"ModifiedAt",
 	}

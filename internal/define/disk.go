@@ -32,7 +32,7 @@ var diskModel = &schema.Model{
 		fields.BundleInfo(),
 		fields.Storage(),
 		fields.ServerID(),
-		fields.Icon(),
+		fields.IconID(),
 		fields.CreatedAt(),
 		fields.ModifiedAt(),
 	},

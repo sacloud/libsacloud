@@ -27,6 +27,8 @@ var (
 	TypeInt64 = Static(int64(0))
 	// TypeInt64Slice int64スライス
 	TypeInt64Slice = Static([]int64{})
+	// TypeFloat64 flat64型
+	TypeFloat64 = Static(float64(0))
 	// TypeTime Time型
 	TypeTime = Static(time.Time{})
 

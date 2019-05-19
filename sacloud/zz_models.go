@@ -34,13 +34,13 @@ type Archive struct {
 	SourceDiskAvailability    types.EAvailability `mapconv:"SourceDisk.Availability,omitempty"`
 	SourceArchiveID           types.ID            `mapconv:"SourceArchive.ID,omitempty"`
 	SourceArchiveAvailability types.EAvailability `mapconv:"SourceArchive.Availability,omitempty"`
-	BundleInfo                *naked.BundleInfo   `json:",omitempty"`
-	Storage                   *naked.Storage      `json:",omitempty"`
-	Icon                      *naked.Icon         `json:",omitempty"`
+	BundleInfo                *BundleInfo         `json:",omitempty" mapconv:",omitempty,recursive"`
+	Storage                   *Storage            `json:",omitempty" mapconv:",omitempty,recursive"`
+	IconID                    types.ID            `mapconv:"Icon.ID"`
 	CreatedAt                 *time.Time
 	ModifiedAt                *time.Time
 	OriginalArchiveID         types.ID           `mapconv:"OriginalArchive.ID,omitempty"`
-	SourceInfo                *SourceArchiveInfo `mapconv:"SourceInfo,recursive"`
+	SourceInfo                *SourceArchiveInfo `mapconv:",omitempty,recursive"`
 }
 
 // Validate validates by field tags
@@ -249,33 +249,33 @@ func (o *Archive) SetSourceArchiveAvailability(v types.EAvailability) {
 }
 
 // GetBundleInfo returns value of BundleInfo
-func (o *Archive) GetBundleInfo() *naked.BundleInfo {
+func (o *Archive) GetBundleInfo() *BundleInfo {
 	return o.BundleInfo
 }
 
 // SetBundleInfo sets value to BundleInfo
-func (o *Archive) SetBundleInfo(v *naked.BundleInfo) {
+func (o *Archive) SetBundleInfo(v *BundleInfo) {
 	o.BundleInfo = v
 }
 
 // GetStorage returns value of Storage
-func (o *Archive) GetStorage() *naked.Storage {
+func (o *Archive) GetStorage() *Storage {
 	return o.Storage
 }
 
 // SetStorage sets value to Storage
-func (o *Archive) SetStorage(v *naked.Storage) {
+func (o *Archive) SetStorage(v *Storage) {
 	o.Storage = v
 }
 
-// GetIcon returns value of Icon
-func (o *Archive) GetIcon() *naked.Icon {
-	return o.Icon
+// GetIconID returns value of IconID
+func (o *Archive) GetIconID() types.ID {
+	return o.IconID
 }
 
-// SetIcon sets value to Icon
-func (o *Archive) SetIcon(v *naked.Icon) {
-	o.Icon = v
+// SetIconID sets value to IconID
+func (o *Archive) SetIconID(v types.ID) {
+	o.IconID = v
 }
 
 // GetCreatedAt returns value of CreatedAt
@@ -327,6 +327,173 @@ func (o *Archive) convertTo() (*naked.Archive, error) {
 
 // convertFrom parse values from naked Archive
 func (o *Archive) convertFrom(naked *naked.Archive) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* BundleInfo
+*************************************************/
+
+// BundleInfo represents API parameter/response structure
+type BundleInfo struct {
+	ID           types.ID
+	HostClass    string `json:",omitempty" mapconv:",omitempty"`
+	ServiceClass string `json:",omitempty" mapconv:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *BundleInfo) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetID returns value of ID
+func (o *BundleInfo) GetID() types.ID {
+	return o.ID
+}
+
+// SetID sets value to ID
+func (o *BundleInfo) SetID(v types.ID) {
+	o.ID = v
+}
+
+// GetStringID gets value to StringID
+func (o *BundleInfo) GetStringID() string {
+	return accessor.GetStringID(o)
+}
+
+// SetStringID sets value to StringID
+func (o *BundleInfo) SetStringID(v string) {
+	accessor.SetStringID(o, v)
+}
+
+// GetInt64ID gets value to Int64ID
+func (o *BundleInfo) GetInt64ID() int64 {
+	return accessor.GetInt64ID(o)
+}
+
+// SetInt64ID sets value to Int64ID
+func (o *BundleInfo) SetInt64ID(v int64) {
+	accessor.SetInt64ID(o, v)
+}
+
+// GetHostClass returns value of HostClass
+func (o *BundleInfo) GetHostClass() string {
+	return o.HostClass
+}
+
+// SetHostClass sets value to HostClass
+func (o *BundleInfo) SetHostClass(v string) {
+	o.HostClass = v
+}
+
+// GetServiceClass returns value of ServiceClass
+func (o *BundleInfo) GetServiceClass() string {
+	return o.ServiceClass
+}
+
+// SetServiceClass sets value to ServiceClass
+func (o *BundleInfo) SetServiceClass(v string) {
+	o.ServiceClass = v
+}
+
+// convertTo returns naked BundleInfo
+func (o *BundleInfo) convertTo() (*naked.BundleInfo, error) {
+	dest := &naked.BundleInfo{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked BundleInfo
+func (o *BundleInfo) convertFrom(naked *naked.BundleInfo) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* Storage
+*************************************************/
+
+// Storage represents API parameter/response structure
+type Storage struct {
+	ID         types.ID
+	Name       string `validate:"required"`
+	Class      string `json:",omitempty" mapconv:",omitempty"`
+	Generation int    `json:",omitempty" mapconv:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *Storage) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetID returns value of ID
+func (o *Storage) GetID() types.ID {
+	return o.ID
+}
+
+// SetID sets value to ID
+func (o *Storage) SetID(v types.ID) {
+	o.ID = v
+}
+
+// GetStringID gets value to StringID
+func (o *Storage) GetStringID() string {
+	return accessor.GetStringID(o)
+}
+
+// SetStringID sets value to StringID
+func (o *Storage) SetStringID(v string) {
+	accessor.SetStringID(o, v)
+}
+
+// GetInt64ID gets value to Int64ID
+func (o *Storage) GetInt64ID() int64 {
+	return accessor.GetInt64ID(o)
+}
+
+// SetInt64ID sets value to Int64ID
+func (o *Storage) SetInt64ID(v int64) {
+	accessor.SetInt64ID(o, v)
+}
+
+// GetName returns value of Name
+func (o *Storage) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *Storage) SetName(v string) {
+	o.Name = v
+}
+
+// GetClass returns value of Class
+func (o *Storage) GetClass() string {
+	return o.Class
+}
+
+// SetClass sets value to Class
+func (o *Storage) SetClass(v string) {
+	o.Class = v
+}
+
+// GetGeneration returns value of Generation
+func (o *Storage) GetGeneration() int {
+	return o.Generation
+}
+
+// SetGeneration sets value to Generation
+func (o *Storage) SetGeneration(v int) {
+	o.Generation = v
+}
+
+// convertTo returns naked Storage
+func (o *Storage) convertTo() (*naked.Storage, error) {
+	dest := &naked.Storage{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked Storage
+func (o *Storage) convertFrom(naked *naked.Storage) error {
 	return mapconv.ConvertFrom(naked, o)
 }
 
@@ -822,9 +989,8 @@ type CDROM struct {
 	Tags         []string
 	Availability types.EAvailability
 	Scope        types.EScope
-	StorageClass string
-	Storage      *naked.Storage `json:",omitempty"`
-	Icon         *naked.Icon    `json:",omitempty"`
+	Storage      *Storage `json:",omitempty" mapconv:",omitempty,recursive"`
+	IconID       types.ID `mapconv:"Icon.ID"`
 	CreatedAt    *time.Time
 	ModifiedAt   *time.Time
 }
@@ -924,34 +1090,24 @@ func (o *CDROM) SetScope(v types.EScope) {
 	o.Scope = v
 }
 
-// GetStorageClass returns value of StorageClass
-func (o *CDROM) GetStorageClass() string {
-	return o.StorageClass
-}
-
-// SetStorageClass sets value to StorageClass
-func (o *CDROM) SetStorageClass(v string) {
-	o.StorageClass = v
-}
-
 // GetStorage returns value of Storage
-func (o *CDROM) GetStorage() *naked.Storage {
+func (o *CDROM) GetStorage() *Storage {
 	return o.Storage
 }
 
 // SetStorage sets value to Storage
-func (o *CDROM) SetStorage(v *naked.Storage) {
+func (o *CDROM) SetStorage(v *Storage) {
 	o.Storage = v
 }
 
-// GetIcon returns value of Icon
-func (o *CDROM) GetIcon() *naked.Icon {
-	return o.Icon
+// GetIconID returns value of IconID
+func (o *CDROM) GetIconID() types.ID {
+	return o.IconID
 }
 
-// SetIcon sets value to Icon
-func (o *CDROM) SetIcon(v *naked.Icon) {
-	o.Icon = v
+// SetIconID sets value to IconID
+func (o *CDROM) SetIconID(v types.ID) {
+	o.IconID = v
 }
 
 // GetCreatedAt returns value of CreatedAt
@@ -1168,10 +1324,10 @@ type Disk struct {
 	SourceDiskAvailability    types.EAvailability `mapconv:"SourceDisk.Availability,omitempty"`
 	SourceArchiveID           types.ID            `mapconv:"SourceArchive.ID,omitempty"`
 	SourceArchiveAvailability types.EAvailability `mapconv:"SourceArchive.Availability,omitempty"`
-	BundleInfo                *naked.BundleInfo   `json:",omitempty"`
-	Storage                   *naked.Storage      `json:",omitempty"`
+	BundleInfo                *BundleInfo         `json:",omitempty" mapconv:",omitempty,recursive"`
+	Storage                   *Storage            `json:",omitempty" mapconv:",omitempty,recursive"`
 	ServerID                  types.ID            `mapconv:"Server.ID,omitempty"`
-	Icon                      *naked.Icon         `json:",omitempty"`
+	IconID                    types.ID            `mapconv:"Icon.ID"`
 	CreatedAt                 *time.Time
 	ModifiedAt                *time.Time
 }
@@ -1392,22 +1548,22 @@ func (o *Disk) SetSourceArchiveAvailability(v types.EAvailability) {
 }
 
 // GetBundleInfo returns value of BundleInfo
-func (o *Disk) GetBundleInfo() *naked.BundleInfo {
+func (o *Disk) GetBundleInfo() *BundleInfo {
 	return o.BundleInfo
 }
 
 // SetBundleInfo sets value to BundleInfo
-func (o *Disk) SetBundleInfo(v *naked.BundleInfo) {
+func (o *Disk) SetBundleInfo(v *BundleInfo) {
 	o.BundleInfo = v
 }
 
 // GetStorage returns value of Storage
-func (o *Disk) GetStorage() *naked.Storage {
+func (o *Disk) GetStorage() *Storage {
 	return o.Storage
 }
 
 // SetStorage sets value to Storage
-func (o *Disk) SetStorage(v *naked.Storage) {
+func (o *Disk) SetStorage(v *Storage) {
 	o.Storage = v
 }
 
@@ -1421,14 +1577,14 @@ func (o *Disk) SetServerID(v types.ID) {
 	o.ServerID = v
 }
 
-// GetIcon returns value of Icon
-func (o *Disk) GetIcon() *naked.Icon {
-	return o.Icon
+// GetIconID returns value of IconID
+func (o *Disk) GetIconID() types.ID {
+	return o.IconID
 }
 
-// SetIcon sets value to Icon
-func (o *Disk) SetIcon(v *naked.Icon) {
-	o.Icon = v
+// SetIconID sets value to IconID
+func (o *Disk) SetIconID(v types.ID) {
+	o.IconID = v
 }
 
 // GetCreatedAt returns value of CreatedAt
@@ -2078,7 +2234,7 @@ type GSLB struct {
 	Description             string `validate:"min=0,max=512"`
 	Tags                    []string
 	Availability            types.EAvailability
-	Icon                    *naked.Icon `json:",omitempty"`
+	IconID                  types.ID `mapconv:"Icon.ID"`
 	CreatedAt               *time.Time
 	ModifiedAt              *time.Time
 	Class                   string `mapconv:"Provider.Class,default=gslb"`
@@ -2170,14 +2326,14 @@ func (o *GSLB) SetAvailability(v types.EAvailability) {
 	o.Availability = v
 }
 
-// GetIcon returns value of Icon
-func (o *GSLB) GetIcon() *naked.Icon {
-	return o.Icon
+// GetIconID returns value of IconID
+func (o *GSLB) GetIconID() types.ID {
+	return o.IconID
 }
 
-// SetIcon sets value to Icon
-func (o *GSLB) SetIcon(v *naked.Icon) {
-	o.Icon = v
+// SetIconID sets value to IconID
+func (o *GSLB) SetIconID(v types.ID) {
+	o.IconID = v
 }
 
 // GetCreatedAt returns value of CreatedAt
@@ -3016,6 +3172,7 @@ type LoadBalancer struct {
 	VRID                    int                             `mapconv:"Remark.VRRP.VRID"`
 	VirtualIPAddresses      []*LoadBalancerVirtualIPAddress `mapconv:"Settings.[]LoadBalancer,recursive" validate:"min=0,max=10"`
 	SettingsHash            string
+	Interfaces              []*Interface `json:",omitempty" mapconv:"[]Interfaces,recursive"`
 }
 
 // Validate validates by field tags
@@ -3261,6 +3418,16 @@ func (o *LoadBalancer) GetSettingsHash() string {
 // SetSettingsHash sets value to SettingsHash
 func (o *LoadBalancer) SetSettingsHash(v string) {
 	o.SettingsHash = v
+}
+
+// GetInterfaces returns value of Interfaces
+func (o *LoadBalancer) GetInterfaces() []*Interface {
+	return o.Interfaces
+}
+
+// SetInterfaces sets value to Interfaces
+func (o *LoadBalancer) SetInterfaces(v []*Interface) {
+	o.Interfaces = v
 }
 
 // convertTo returns naked LoadBalancer
@@ -3847,6 +4014,7 @@ type NFS struct {
 	InstanceHostInfoURL     string                      `mapconv:"Instance.Host.InfoURL"`
 	InstanceStatus          types.EServerInstanceStatus `mapconv:"Instance.Status"`
 	InstanceStatusChangedAt *time.Time                  `mapconv:"Instance.StatusChangedAt"`
+	Interfaces              []*Interface                `json:",omitempty" mapconv:"[]Interfaces,recursive"`
 	PlanID                  types.ID                    `mapconv:"Remark.Plan.ID,Plan.ID"`
 	SwitchID                types.ID                    `mapconv:"Remark.Switch.ID"`
 	DefaultRoute            string                      `mapconv:"Remark.Network.DefaultRoute" validate:"ipv4"`
@@ -3981,6 +4149,16 @@ func (o *NFS) GetInstanceStatusChangedAt() *time.Time {
 // SetInstanceStatusChangedAt sets value to InstanceStatusChangedAt
 func (o *NFS) SetInstanceStatusChangedAt(v *time.Time) {
 	o.InstanceStatusChangedAt = v
+}
+
+// GetInterfaces returns value of Interfaces
+func (o *NFS) GetInterfaces() []*Interface {
+	return o.Interfaces
+}
+
+// SetInterfaces sets value to Interfaces
+func (o *NFS) SetInterfaces(v []*Interface) {
+	o.Interfaces = v
 }
 
 // GetPlanID returns value of PlanID
@@ -4670,7 +4848,7 @@ type Server struct {
 	MemoryMB                int                         `mapconv:"ServerPlan.MemoryMB"`
 	ServerPlanCommitment    types.ECommitment           `mapconv:"ServerPlan.Commitment,default=standard"`
 	ServerPlanGeneration    types.EPlanGeneration       `mapconv:"ServerPlan.Generation"`
-	ZoneID                  types.ID                    `mapconv:"Zone.ID"`
+	Zone                    *ZoneInfo                   `json:",omitempty" mapconv:",omitempty,recursive"`
 	InstanceHostName        string                      `mapconv:"Instance.Host.Name"`
 	InstanceHostInfoURL     string                      `mapconv:"Instance.Host.InfoURL"`
 	InstanceStatus          types.EServerInstanceStatus `mapconv:"Instance.Status"`
@@ -4683,8 +4861,7 @@ type Server struct {
 	CDROMID                 types.ID                    `mapconv:"CDROM.ID"`
 	PrivateHostID           types.ID                    `mapconv:"PrivateHost.ID"`
 	PrivateHostName         string                      `mapconv:"PrivateHost.Name"`
-	BundleInfo              *naked.BundleInfo           `json:",omitempty"`
-	Storage                 *naked.Storage              `json:",omitempty"`
+	BundleInfo              *BundleInfo                 `json:",omitempty" mapconv:",omitempty,recursive"`
 	IconID                  types.ID                    `mapconv:"Icon.ID"`
 	CreatedAt               *time.Time
 	ModifiedAt              *time.Time
@@ -4855,14 +5032,14 @@ func (o *Server) SetServerPlanGeneration(v types.EPlanGeneration) {
 	o.ServerPlanGeneration = v
 }
 
-// GetZoneID returns value of ZoneID
-func (o *Server) GetZoneID() types.ID {
-	return o.ZoneID
+// GetZone returns value of Zone
+func (o *Server) GetZone() *ZoneInfo {
+	return o.Zone
 }
 
-// SetZoneID sets value to ZoneID
-func (o *Server) SetZoneID(v types.ID) {
-	o.ZoneID = v
+// SetZone sets value to Zone
+func (o *Server) SetZone(v *ZoneInfo) {
+	o.Zone = v
 }
 
 // GetInstanceHostName returns value of InstanceHostName
@@ -4986,23 +5163,13 @@ func (o *Server) SetPrivateHostName(v string) {
 }
 
 // GetBundleInfo returns value of BundleInfo
-func (o *Server) GetBundleInfo() *naked.BundleInfo {
+func (o *Server) GetBundleInfo() *BundleInfo {
 	return o.BundleInfo
 }
 
 // SetBundleInfo sets value to BundleInfo
-func (o *Server) SetBundleInfo(v *naked.BundleInfo) {
+func (o *Server) SetBundleInfo(v *BundleInfo) {
 	o.BundleInfo = v
-}
-
-// GetStorage returns value of Storage
-func (o *Server) GetStorage() *naked.Storage {
-	return o.Storage
-}
-
-// SetStorage sets value to Storage
-func (o *Server) SetStorage(v *naked.Storage) {
-	o.Storage = v
 }
 
 // GetIconID returns value of IconID
@@ -5044,6 +5211,311 @@ func (o *Server) convertTo() (*naked.Server, error) {
 
 // convertFrom parse values from naked Server
 func (o *Server) convertFrom(naked *naked.Server) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* ZoneInfo
+*************************************************/
+
+// ZoneInfo represents API parameter/response structure
+type ZoneInfo struct {
+	ID          types.ID
+	Name        string         `validate:"required"`
+	DisplayName string         `json:",omitempty" mapconv:"Description,omitempty"`
+	IsDummy     bool           `json:",omitempty" mapconv:",omitempty"`
+	VNCProxy    *VNCProxy      `json:",omitempty" mapconv:",omitempty,recursive"`
+	FTPServer   *FTPServerInfo `json:",omitempty" mapconv:",omitempty,recursive"`
+	Region      *Region        `json:",omitempty" mapconv:",omitempty,recursive"`
+}
+
+// Validate validates by field tags
+func (o *ZoneInfo) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetID returns value of ID
+func (o *ZoneInfo) GetID() types.ID {
+	return o.ID
+}
+
+// SetID sets value to ID
+func (o *ZoneInfo) SetID(v types.ID) {
+	o.ID = v
+}
+
+// GetStringID gets value to StringID
+func (o *ZoneInfo) GetStringID() string {
+	return accessor.GetStringID(o)
+}
+
+// SetStringID sets value to StringID
+func (o *ZoneInfo) SetStringID(v string) {
+	accessor.SetStringID(o, v)
+}
+
+// GetInt64ID gets value to Int64ID
+func (o *ZoneInfo) GetInt64ID() int64 {
+	return accessor.GetInt64ID(o)
+}
+
+// SetInt64ID sets value to Int64ID
+func (o *ZoneInfo) SetInt64ID(v int64) {
+	accessor.SetInt64ID(o, v)
+}
+
+// GetName returns value of Name
+func (o *ZoneInfo) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *ZoneInfo) SetName(v string) {
+	o.Name = v
+}
+
+// GetDisplayName returns value of DisplayName
+func (o *ZoneInfo) GetDisplayName() string {
+	return o.DisplayName
+}
+
+// SetDisplayName sets value to DisplayName
+func (o *ZoneInfo) SetDisplayName(v string) {
+	o.DisplayName = v
+}
+
+// GetIsDummy returns value of IsDummy
+func (o *ZoneInfo) GetIsDummy() bool {
+	return o.IsDummy
+}
+
+// SetIsDummy sets value to IsDummy
+func (o *ZoneInfo) SetIsDummy(v bool) {
+	o.IsDummy = v
+}
+
+// GetVNCProxy returns value of VNCProxy
+func (o *ZoneInfo) GetVNCProxy() *VNCProxy {
+	return o.VNCProxy
+}
+
+// SetVNCProxy sets value to VNCProxy
+func (o *ZoneInfo) SetVNCProxy(v *VNCProxy) {
+	o.VNCProxy = v
+}
+
+// GetFTPServer returns value of FTPServer
+func (o *ZoneInfo) GetFTPServer() *FTPServerInfo {
+	return o.FTPServer
+}
+
+// SetFTPServer sets value to FTPServer
+func (o *ZoneInfo) SetFTPServer(v *FTPServerInfo) {
+	o.FTPServer = v
+}
+
+// GetRegion returns value of Region
+func (o *ZoneInfo) GetRegion() *Region {
+	return o.Region
+}
+
+// SetRegion sets value to Region
+func (o *ZoneInfo) SetRegion(v *Region) {
+	o.Region = v
+}
+
+// convertTo returns naked ZoneInfo
+func (o *ZoneInfo) convertTo() (*naked.Zone, error) {
+	dest := &naked.Zone{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked ZoneInfo
+func (o *ZoneInfo) convertFrom(naked *naked.Zone) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* VNCProxy
+*************************************************/
+
+// VNCProxy represents API parameter/response structure
+type VNCProxy struct {
+	HostName  string `json:",omitempty" mapconv:",omitempty"`
+	IPAddress string `json:",omitempty" mapconv:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *VNCProxy) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetHostName returns value of HostName
+func (o *VNCProxy) GetHostName() string {
+	return o.HostName
+}
+
+// SetHostName sets value to HostName
+func (o *VNCProxy) SetHostName(v string) {
+	o.HostName = v
+}
+
+// GetIPAddress returns value of IPAddress
+func (o *VNCProxy) GetIPAddress() string {
+	return o.IPAddress
+}
+
+// SetIPAddress sets value to IPAddress
+func (o *VNCProxy) SetIPAddress(v string) {
+	o.IPAddress = v
+}
+
+// convertTo returns naked VNCProxy
+func (o *VNCProxy) convertTo() (*naked.VNCProxy, error) {
+	dest := &naked.VNCProxy{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked VNCProxy
+func (o *VNCProxy) convertFrom(naked *naked.VNCProxy) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* FTPServerInfo
+*************************************************/
+
+// FTPServerInfo represents API parameter/response structure
+type FTPServerInfo struct {
+	HostName  string
+	IPAddress string
+}
+
+// Validate validates by field tags
+func (o *FTPServerInfo) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetHostName returns value of HostName
+func (o *FTPServerInfo) GetHostName() string {
+	return o.HostName
+}
+
+// SetHostName sets value to HostName
+func (o *FTPServerInfo) SetHostName(v string) {
+	o.HostName = v
+}
+
+// GetIPAddress returns value of IPAddress
+func (o *FTPServerInfo) GetIPAddress() string {
+	return o.IPAddress
+}
+
+// SetIPAddress sets value to IPAddress
+func (o *FTPServerInfo) SetIPAddress(v string) {
+	o.IPAddress = v
+}
+
+// convertTo returns naked FTPServerInfo
+func (o *FTPServerInfo) convertTo() (*naked.FTPServer, error) {
+	dest := &naked.FTPServer{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked FTPServerInfo
+func (o *FTPServerInfo) convertFrom(naked *naked.FTPServer) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* Region
+*************************************************/
+
+// Region represents API parameter/response structure
+type Region struct {
+	ID          types.ID
+	Name        string   `validate:"required"`
+	Description string   `validate:"min=0,max=512"`
+	NameServers []string `json:",omitempty" mapconv:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *Region) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetID returns value of ID
+func (o *Region) GetID() types.ID {
+	return o.ID
+}
+
+// SetID sets value to ID
+func (o *Region) SetID(v types.ID) {
+	o.ID = v
+}
+
+// GetStringID gets value to StringID
+func (o *Region) GetStringID() string {
+	return accessor.GetStringID(o)
+}
+
+// SetStringID sets value to StringID
+func (o *Region) SetStringID(v string) {
+	accessor.SetStringID(o, v)
+}
+
+// GetInt64ID gets value to Int64ID
+func (o *Region) GetInt64ID() int64 {
+	return accessor.GetInt64ID(o)
+}
+
+// SetInt64ID sets value to Int64ID
+func (o *Region) SetInt64ID(v int64) {
+	accessor.SetInt64ID(o, v)
+}
+
+// GetName returns value of Name
+func (o *Region) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *Region) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *Region) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *Region) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetNameServers returns value of NameServers
+func (o *Region) GetNameServers() []string {
+	return o.NameServers
+}
+
+// SetNameServers sets value to NameServers
+func (o *Region) SetNameServers(v []string) {
+	o.NameServers = v
+}
+
+// convertTo returns naked Region
+func (o *Region) convertTo() (*naked.Region, error) {
+	dest := &naked.Region{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked Region
+func (o *Region) convertFrom(naked *naked.Region) error {
 	return mapconv.ConvertFrom(naked, o)
 }
 
@@ -5591,9 +6063,8 @@ type Switch struct {
 	CreatedAt      *time.Time
 	ModifiedAt     *time.Time
 	Scope          types.EScope
-	ZoneID         types.ID `mapconv:"Zone.ID"`
-	NetworkMaskLen int      `mapconv:"UserSubnet.NetworkMaskLen" validate:"min=1,max=32"`
-	DefaultRoute   string   `mapconv:"UserSubnet.DefaultRoute" validate:"ipv4"`
+	NetworkMaskLen int    `mapconv:"UserSubnet.NetworkMaskLen" validate:"min=1,max=32"`
+	DefaultRoute   string `mapconv:"UserSubnet.DefaultRoute" validate:"ipv4"`
 }
 
 // Validate validates by field tags
@@ -5699,16 +6170,6 @@ func (o *Switch) GetScope() types.EScope {
 // SetScope sets value to Scope
 func (o *Switch) SetScope(v types.EScope) {
 	o.Scope = v
-}
-
-// GetZoneID returns value of ZoneID
-func (o *Switch) GetZoneID() types.ID {
-	return o.ZoneID
-}
-
-// SetZoneID sets value to ZoneID
-func (o *Switch) SetZoneID(v types.ID) {
-	o.ZoneID = v
 }
 
 // GetNetworkMaskLen returns value of NetworkMaskLen
@@ -5936,9 +6397,9 @@ type Zone struct {
 	Description  string `validate:"min=0,max=512"`
 	DisplayOrder int
 	IsDummy      bool
-	VNCProxy     *naked.VNCProxy  `json:",omitempty"`
-	FTPServer    *naked.FTPServer `json:",omitempty"`
-	Region       *naked.Region    `json:",omitempty"`
+	VNCProxy     *VNCProxy      `json:",omitempty"`
+	FTPServer    *FTPServerInfo `json:",omitempty"`
+	Region       *Region        `json:",omitempty"`
 }
 
 // Validate validates by field tags
@@ -6017,32 +6478,32 @@ func (o *Zone) SetIsDummy(v bool) {
 }
 
 // GetVNCProxy returns value of VNCProxy
-func (o *Zone) GetVNCProxy() *naked.VNCProxy {
+func (o *Zone) GetVNCProxy() *VNCProxy {
 	return o.VNCProxy
 }
 
 // SetVNCProxy sets value to VNCProxy
-func (o *Zone) SetVNCProxy(v *naked.VNCProxy) {
+func (o *Zone) SetVNCProxy(v *VNCProxy) {
 	o.VNCProxy = v
 }
 
 // GetFTPServer returns value of FTPServer
-func (o *Zone) GetFTPServer() *naked.FTPServer {
+func (o *Zone) GetFTPServer() *FTPServerInfo {
 	return o.FTPServer
 }
 
 // SetFTPServer sets value to FTPServer
-func (o *Zone) SetFTPServer(v *naked.FTPServer) {
+func (o *Zone) SetFTPServer(v *FTPServerInfo) {
 	o.FTPServer = v
 }
 
 // GetRegion returns value of Region
-func (o *Zone) GetRegion() *naked.Region {
+func (o *Zone) GetRegion() *Region {
 	return o.Region
 }
 
 // SetRegion sets value to Region
-func (o *Zone) SetRegion(v *naked.Region) {
+func (o *Zone) SetRegion(v *Region) {
 	o.Region = v
 }
 

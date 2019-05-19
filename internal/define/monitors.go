@@ -16,6 +16,14 @@ func (m *monitorsDef) cpuTimeModel() *schema.Model {
 		Fields: []*schema.FieldDesc{
 			{
 				Name: "Values",
+				//Type: &schema.Model{
+				//	Name:      "MonitorCPUTimeValue",
+				//	NakedType: meta.Static(naked.MonitorCPUTimeValue{}),
+				//	Fields: []*schema.FieldDesc{
+				//		fields.MonitorTime(),
+				//		fields.MonitorCPUTime(),
+				//	},
+				//},
 				Type: meta.Static([]naked.MonitorCPUTimeValue{}),
 				Tags: &schema.FieldTags{
 					MapConv: "CPU",

@@ -8,37 +8,37 @@ import (
 
 // SwitchFactoryFuncToFake switches sacloud.xxxAPI's factory methods to use fake client
 func SwitchFactoryFuncToFake() {
-	sacloud.SetClientFactoryFunc("Archive", func(caller sacloud.APICaller) interface{} {
+	sacloud.SetClientFactoryFunc(ResourceArchive, func(caller sacloud.APICaller) interface{} {
 		return NewArchiveOp()
 	})
-	sacloud.SetClientFactoryFunc("CDROM", func(caller sacloud.APICaller) interface{} {
+	sacloud.SetClientFactoryFunc(ResourceCDROM, func(caller sacloud.APICaller) interface{} {
 		return NewCDROMOp()
 	})
-	sacloud.SetClientFactoryFunc("Disk", func(caller sacloud.APICaller) interface{} {
+	sacloud.SetClientFactoryFunc(ResourceDisk, func(caller sacloud.APICaller) interface{} {
 		return NewDiskOp()
 	})
-	sacloud.SetClientFactoryFunc("GSLB", func(caller sacloud.APICaller) interface{} {
+	sacloud.SetClientFactoryFunc(ResourceGSLB, func(caller sacloud.APICaller) interface{} {
 		return NewGSLBOp()
 	})
-	sacloud.SetClientFactoryFunc("Interface", func(caller sacloud.APICaller) interface{} {
+	sacloud.SetClientFactoryFunc(ResourceInterface, func(caller sacloud.APICaller) interface{} {
 		return NewInterfaceOp()
 	})
-	sacloud.SetClientFactoryFunc("LoadBalancer", func(caller sacloud.APICaller) interface{} {
+	sacloud.SetClientFactoryFunc(ResourceLoadBalancer, func(caller sacloud.APICaller) interface{} {
 		return NewLoadBalancerOp()
 	})
-	sacloud.SetClientFactoryFunc("NFS", func(caller sacloud.APICaller) interface{} {
+	sacloud.SetClientFactoryFunc(ResourceNFS, func(caller sacloud.APICaller) interface{} {
 		return NewNFSOp()
 	})
-	sacloud.SetClientFactoryFunc("Note", func(caller sacloud.APICaller) interface{} {
+	sacloud.SetClientFactoryFunc(ResourceNote, func(caller sacloud.APICaller) interface{} {
 		return NewNoteOp()
 	})
-	sacloud.SetClientFactoryFunc("Server", func(caller sacloud.APICaller) interface{} {
+	sacloud.SetClientFactoryFunc(ResourceServer, func(caller sacloud.APICaller) interface{} {
 		return NewServerOp()
 	})
-	sacloud.SetClientFactoryFunc("Switch", func(caller sacloud.APICaller) interface{} {
+	sacloud.SetClientFactoryFunc(ResourceSwitch, func(caller sacloud.APICaller) interface{} {
 		return NewSwitchOp()
 	})
-	sacloud.SetClientFactoryFunc("Zone", func(caller sacloud.APICaller) interface{} {
+	sacloud.SetClientFactoryFunc(ResourceZone, func(caller sacloud.APICaller) interface{} {
 		return NewZoneOp()
 	})
 }

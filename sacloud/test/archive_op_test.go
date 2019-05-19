@@ -80,7 +80,7 @@ var (
 		"SourceDiskAvailability",
 		"BundleInfo",
 		"Storage",
-		"Icon",
+		"IconID",
 		"CreatedAt",
 		"ModifiedAt",
 		"OriginalArchiveID",

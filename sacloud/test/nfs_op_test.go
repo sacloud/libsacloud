@@ -87,7 +87,7 @@ var (
 		"Interfaces",
 		"Switch",
 		"ZoneID",
-		"Icon",
+		"IconID",
 		"CreatedAt",
 		"ModifiedAt",
 	}

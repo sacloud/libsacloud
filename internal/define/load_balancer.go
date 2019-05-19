@@ -40,6 +40,8 @@ func init() {
 			// settings
 			fields.LoadBalancerVIP(),
 			fields.SettingsHash(),
+			// interfaces
+			fields.Interfaces(),
 		},
 	}
 
