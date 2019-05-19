@@ -32,6 +32,9 @@ func SwitchFactoryFuncToFake() {
 	sacloud.SetClientFactoryFunc(ResourceNote, func(caller sacloud.APICaller) interface{} {
 		return NewNoteOp()
 	})
+	sacloud.SetClientFactoryFunc(ResourcePacketFilter, func(caller sacloud.APICaller) interface{} {
+		return NewPacketFilterOp()
+	})
 	sacloud.SetClientFactoryFunc(ResourceServer, func(caller sacloud.APICaller) interface{} {
 		return NewServerOp()
 	})
@@ -168,6 +171,22 @@ type NoteOp struct {
 func NewNoteOp() sacloud.NoteAPI {
 	return &NoteOp{
 		key: ResourceNote,
+	}
+}
+
+/*************************************************
+* PacketFilterOp
+*************************************************/
+
+// PacketFilterOp is fake implementation of PacketFilterAPI interface
+type PacketFilterOp struct {
+	key string
+}
+
+// NewPacketFilterOp creates new PacketFilterOp instance
+func NewPacketFilterOp() sacloud.PacketFilterAPI {
+	return &PacketFilterOp{
+		key: ResourcePacketFilter,
 	}
 }
 

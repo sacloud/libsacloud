@@ -191,6 +191,29 @@ func (s *store) setNote(zone string, value *sacloud.Note) {
 	s.set(ResourceNote, zone, value)
 }
 
+func (s *store) getPacketFilter(zone string) []*sacloud.PacketFilter {
+	values := s.get(ResourcePacketFilter, zone)
+	var ret []*sacloud.PacketFilter
+	for _, v := range values {
+		if v, ok := v.(*sacloud.PacketFilter); ok {
+			ret = append(ret, v)
+		}
+	}
+	return ret
+}
+
+func (s *store) getPacketFilterByID(zone string, id types.ID) *sacloud.PacketFilter {
+	v := s.getByID(ResourcePacketFilter, zone, id)
+	if v, ok := v.(*sacloud.PacketFilter); ok {
+		return v
+	}
+	return nil
+}
+
+func (s *store) setPacketFilter(zone string, value *sacloud.PacketFilter) {
+	s.set(ResourcePacketFilter, zone, value)
+}
+
 func (s *store) getServer(zone string) []*sacloud.Server {
 	values := s.get(ResourceServer, zone)
 	var ret []*sacloud.Server

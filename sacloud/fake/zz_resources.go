@@ -19,6 +19,8 @@ const (
 	ResourceNFS = "NFS"
 	// ResourceNote is resource key of fake store
 	ResourceNote = "Note"
+	// ResourcePacketFilter is resource key of fake store
+	ResourcePacketFilter = "PacketFilter"
 	// ResourceServer is resource key of fake store
 	ResourceServer = "Server"
 	// ResourceSwitch is resource key of fake store

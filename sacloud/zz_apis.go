@@ -146,6 +146,19 @@ type NoteAPI interface {
 }
 
 /*************************************************
+* PacketFilterAPI
+*************************************************/
+
+// PacketFilterAPI is interface for operate PacketFilter resource
+type PacketFilterAPI interface {
+	Find(ctx context.Context, zone string, conditions *FindCondition) ([]*PacketFilter, error)
+	Create(ctx context.Context, zone string, param *PacketFilterCreateRequest) (*PacketFilter, error)
+	Read(ctx context.Context, zone string, id types.ID) (*PacketFilter, error)
+	Update(ctx context.Context, zone string, id types.ID, param *PacketFilterUpdateRequest) (*PacketFilter, error)
+	Delete(ctx context.Context, zone string, id types.ID) error
+}
+
+/*************************************************
 * ServerAPI
 *************************************************/
 

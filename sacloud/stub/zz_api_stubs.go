@@ -1185,6 +1185,93 @@ func (s *NoteStub) Delete(ctx context.Context, zone string, id types.ID) error {
 }
 
 /*************************************************
+* PacketFilterStub
+*************************************************/
+
+// PacketFilterFindResult is expected values of the Find operation
+type PacketFilterFindResult struct {
+	PacketFilters []*sacloud.PacketFilter
+	Err           error
+}
+
+// PacketFilterCreateResult is expected values of the Create operation
+type PacketFilterCreateResult struct {
+	PacketFilter *sacloud.PacketFilter
+	Err          error
+}
+
+// PacketFilterReadResult is expected values of the Read operation
+type PacketFilterReadResult struct {
+	PacketFilter *sacloud.PacketFilter
+	Err          error
+}
+
+// PacketFilterUpdateResult is expected values of the Update operation
+type PacketFilterUpdateResult struct {
+	PacketFilter *sacloud.PacketFilter
+	Err          error
+}
+
+// PacketFilterDeleteResult is expected values of the Delete operation
+type PacketFilterDeleteResult struct {
+	Err error
+}
+
+// PacketFilterStub is for trace PacketFilterOp operations
+type PacketFilterStub struct {
+	FindResult   *PacketFilterFindResult
+	CreateResult *PacketFilterCreateResult
+	ReadResult   *PacketFilterReadResult
+	UpdateResult *PacketFilterUpdateResult
+	DeleteResult *PacketFilterDeleteResult
+}
+
+// NewPacketFilterStub creates new PacketFilterStub instance
+func NewPacketFilterStub(caller sacloud.APICaller) sacloud.PacketFilterAPI {
+	return &PacketFilterStub{}
+}
+
+// Find is API call with trace log
+func (s *PacketFilterStub) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) ([]*sacloud.PacketFilter, error) {
+	if s.FindResult == nil {
+		log.Fatal("PacketFilterStub.FindResult is not set")
+	}
+	return s.FindResult.PacketFilters, s.FindResult.Err
+}
+
+// Create is API call with trace log
+func (s *PacketFilterStub) Create(ctx context.Context, zone string, param *sacloud.PacketFilterCreateRequest) (*sacloud.PacketFilter, error) {
+	if s.CreateResult == nil {
+		log.Fatal("PacketFilterStub.CreateResult is not set")
+	}
+	return s.CreateResult.PacketFilter, s.CreateResult.Err
+}
+
+// Read is API call with trace log
+func (s *PacketFilterStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.PacketFilter, error) {
+	if s.ReadResult == nil {
+		log.Fatal("PacketFilterStub.ReadResult is not set")
+	}
+	return s.ReadResult.PacketFilter, s.ReadResult.Err
+}
+
+// Update is API call with trace log
+func (s *PacketFilterStub) Update(ctx context.Context, zone string, id types.ID, param *sacloud.PacketFilterUpdateRequest) (*sacloud.PacketFilter, error) {
+	if s.UpdateResult == nil {
+		log.Fatal("PacketFilterStub.UpdateResult is not set")
+	}
+	return s.UpdateResult.PacketFilter, s.UpdateResult.Err
+}
+
+// Delete is API call with trace log
+func (s *PacketFilterStub) Delete(ctx context.Context, zone string, id types.ID) error {
+	if s.DeleteResult == nil {
+		log.Fatal("PacketFilterStub.DeleteResult is not set")
+	}
+	return s.DeleteResult.Err
+}
+
+/*************************************************
 * ServerStub
 *************************************************/
 

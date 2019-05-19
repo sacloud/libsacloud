@@ -869,6 +869,72 @@ func (t *NoteTracer) Delete(ctx context.Context, zone string, id types.ID) error
 }
 
 /*************************************************
+* PacketFilterTracer
+*************************************************/
+
+// PacketFilterTracer is for trace PacketFilterOp operations
+type PacketFilterTracer struct {
+	Internal sacloud.PacketFilterAPI
+}
+
+// NewPacketFilterTracer creates new PacketFilterTracer instance
+func NewPacketFilterTracer(in sacloud.PacketFilterAPI) sacloud.PacketFilterAPI {
+	return &PacketFilterTracer{
+		Internal: in,
+	}
+}
+
+// Find is API call with trace log
+func (t *PacketFilterTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) ([]*sacloud.PacketFilter, error) {
+	log.Println("[TRACE] PacketFilterTracer.Find start:	args => [", "zone=", zone, "conditions=", conditions, "]")
+	defer func() {
+		log.Println("[TRACE] PacketFilterTracer.Find: end")
+	}()
+
+	return t.Internal.Find(ctx, zone, conditions)
+}
+
+// Create is API call with trace log
+func (t *PacketFilterTracer) Create(ctx context.Context, zone string, param *sacloud.PacketFilterCreateRequest) (*sacloud.PacketFilter, error) {
+	log.Println("[TRACE] PacketFilterTracer.Create start:	args => [", "zone=", zone, "param=", param, "]")
+	defer func() {
+		log.Println("[TRACE] PacketFilterTracer.Create: end")
+	}()
+
+	return t.Internal.Create(ctx, zone, param)
+}
+
+// Read is API call with trace log
+func (t *PacketFilterTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.PacketFilter, error) {
+	log.Println("[TRACE] PacketFilterTracer.Read start:	args => [", "zone=", zone, "id=", id, "]")
+	defer func() {
+		log.Println("[TRACE] PacketFilterTracer.Read: end")
+	}()
+
+	return t.Internal.Read(ctx, zone, id)
+}
+
+// Update is API call with trace log
+func (t *PacketFilterTracer) Update(ctx context.Context, zone string, id types.ID, param *sacloud.PacketFilterUpdateRequest) (*sacloud.PacketFilter, error) {
+	log.Println("[TRACE] PacketFilterTracer.Update start:	args => [", "zone=", zone, "id=", id, "param=", param, "]")
+	defer func() {
+		log.Println("[TRACE] PacketFilterTracer.Update: end")
+	}()
+
+	return t.Internal.Update(ctx, zone, id, param)
+}
+
+// Delete is API call with trace log
+func (t *PacketFilterTracer) Delete(ctx context.Context, zone string, id types.ID) error {
+	log.Println("[TRACE] PacketFilterTracer.Delete start:	args => [", "zone=", zone, "id=", id, "]")
+	defer func() {
+		log.Println("[TRACE] PacketFilterTracer.Delete: end")
+	}()
+
+	return t.Internal.Delete(ctx, zone, id)
+}
+
+/*************************************************
 * ServerTracer
 *************************************************/
 

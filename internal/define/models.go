@@ -300,7 +300,7 @@ func (m *modelsDef) interfaceModel() *schema.Model {
 			},
 			{
 				Name: "PacketFilterRequiredHostVersion",
-				Type: meta.TypeInt,
+				Type: meta.TypeStringNumber,
 				Tags: &schema.FieldTags{
 					MapConv: "PacketFilter.RequiredHostVersionn",
 				},
@@ -489,6 +489,36 @@ func (m *modelsDef) sourceArchiveInfo() *schema.Model {
 				Tags: &schema.FieldTags{
 					MapConv: "ArchiveUnderZone.Zone.Name",
 				},
+			},
+		},
+	}
+}
+
+func (m *modelsDef) packetFilterExpressions() *schema.Model {
+	return &schema.Model{
+		Name:      "PacketFilterExpression",
+		NakedType: meta.Static(naked.PacketFilterExpression{}),
+		IsArray:   true,
+		Fields: []*schema.FieldDesc{
+			{
+				Name: "Protocol",
+				Type: meta.TypeProtocol,
+			},
+			{
+				Name: "SourceNetwork",
+				Type: meta.TypePacketFilterNetwork,
+			},
+			{
+				Name: "SourcePort",
+				Type: meta.TypePacketFilterPort,
+			},
+			{
+				Name: "DestinationPort",
+				Type: meta.TypePacketFilterPort,
+			},
+			{
+				Name: "Action",
+				Type: meta.TypePacketFilterAction,
 			},
 		},
 	}

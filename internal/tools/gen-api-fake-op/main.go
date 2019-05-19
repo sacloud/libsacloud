@@ -131,7 +131,7 @@ func (o *{{ .ResourceTypeName }}Op) {{ .MethodName }}(ctx context.Context{{ rang
 	if value == nil {
 		return nil, newErrorNotFound(o.key, id)
 	}
-	dest := &sacloud.{{.ResourceTypeName}}
+	dest := &sacloud.{{.ResourceTypeName}}{}
 	copySameNameField(value, dest)
 	return dest, nil
 {{ else if eq .MethodName "Update" -}}
