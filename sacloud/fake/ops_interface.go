@@ -12,10 +12,12 @@ import (
 
 // Find is fake implementation
 func (o *InterfaceOp) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) ([]*sacloud.Interface, error) {
-	results, _ := find(ResourceInterface, zone, conditions)
+	results, _ := find(o.key, zone, conditions)
 	var values []*sacloud.Interface
 	for _, res := range results {
-		values = append(values, res.(*sacloud.Interface))
+		dest := &sacloud.Interface{}
+		copySameNameField(res, dest)
+		values = append(values, dest)
 	}
 	return values, nil
 }
@@ -26,7 +28,7 @@ func (o *InterfaceOp) Create(ctx context.Context, zone string, param *sacloud.In
 	copySameNameField(param, result)
 	fill(result, fillID, fillCreatedAt)
 
-	result.MACAddress = addrPool.nextMACAddress().String()
+	result.MACAddress = pool.nextMACAddress().String()
 
 	s.setInterface(zone, result)
 	return result, nil
@@ -36,9 +38,12 @@ func (o *InterfaceOp) Create(ctx context.Context, zone string, param *sacloud.In
 func (o *InterfaceOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Interface, error) {
 	value := s.getInterfaceByID(zone, id)
 	if value == nil {
-		return nil, newErrorNotFound(ResourceInterface, id)
+		return nil, newErrorNotFound(o.key, id)
 	}
-	return value, nil
+
+	dest := &sacloud.Interface{}
+	copySameNameField(value, dest)
+	return dest, nil
 }
 
 // Update is fake implementation
@@ -58,7 +63,7 @@ func (o *InterfaceOp) Delete(ctx context.Context, zone string, id types.ID) erro
 	if err != nil {
 		return err
 	}
-	s.delete(ResourceInterface, zone, id)
+	s.delete(o.key, zone, id)
 	return nil
 }
 
@@ -95,7 +100,7 @@ func (o *InterfaceOp) ConnectToSharedSegment(ctx context.Context, zone string, i
 		return err
 	}
 	if !value.SwitchID.IsEmpty() {
-		return newErrorConflict(ResourceInterface, id,
+		return newErrorConflict(o.key, id,
 			fmt.Sprintf("Interface[%d] is already connected to switch[%d]", value.ID, value.SwitchID))
 	}
 
@@ -111,7 +116,7 @@ func (o *InterfaceOp) ConnectToSwitch(ctx context.Context, zone string, id types
 		return err
 	}
 	if !value.SwitchID.IsEmpty() {
-		return newErrorConflict(ResourceInterface, id,
+		return newErrorConflict(o.key, id,
 			fmt.Sprintf("Interface[%d] is already connected to switch[%d]", value.ID, value.SwitchID))
 	}
 
@@ -127,7 +132,7 @@ func (o *InterfaceOp) DisconnectFromSwitch(ctx context.Context, zone string, id 
 		return err
 	}
 	if value.SwitchID.IsEmpty() {
-		return newErrorConflict(ResourceInterface, id,
+		return newErrorConflict(o.key, id,
 			fmt.Sprintf("Interface[%d] is already disconnected", value.ID))
 	}
 
@@ -143,7 +148,7 @@ func (o *InterfaceOp) ConnectToPacketFilter(ctx context.Context, zone string, id
 		return err
 	}
 	if !value.PacketFilterID.IsEmpty() {
-		return newErrorConflict(ResourceInterface, id,
+		return newErrorConflict(o.key, id,
 			fmt.Sprintf("Interface[%d] is already connected to packetfilter[%s]", value.ID, value.PacketFilterID))
 	}
 
@@ -159,7 +164,7 @@ func (o *InterfaceOp) DisconnectFromPacketFilter(ctx context.Context, zone strin
 		return err
 	}
 	if value.PacketFilterID.IsEmpty() {
-		return newErrorConflict(ResourceInterface, id,
+		return newErrorConflict(o.key, id,
 			fmt.Sprintf("Interface[%d] is already disconnected", value.ID))
 	}
 

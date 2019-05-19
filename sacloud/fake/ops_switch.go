@@ -9,10 +9,12 @@ import (
 
 // Find is fake implementation
 func (o *SwitchOp) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) ([]*sacloud.Switch, error) {
-	results, _ := find(ResourceSwitch, zone, conditions)
+	results, _ := find(o.key, zone, conditions)
 	var values []*sacloud.Switch
 	for _, res := range results {
-		values = append(values, res.(*sacloud.Switch))
+		dest := &sacloud.Switch{}
+		copySameNameField(res, dest)
+		values = append(values, dest)
 	}
 	return values, nil
 }
@@ -31,9 +33,11 @@ func (o *SwitchOp) Create(ctx context.Context, zone string, param *sacloud.Switc
 func (o *SwitchOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Switch, error) {
 	value := s.getSwitchByID(zone, id)
 	if value == nil {
-		return nil, newErrorNotFound(ResourceSwitch, id)
+		return nil, newErrorNotFound(o.key, id)
 	}
-	return value, nil
+	dest := &sacloud.Switch{}
+	copySameNameField(value, dest)
+	return dest, nil
 }
 
 // Update is fake implementation
@@ -53,7 +57,7 @@ func (o *SwitchOp) Delete(ctx context.Context, zone string, id types.ID) error {
 	if err != nil {
 		return err
 	}
-	s.delete(ResourceSwitch, zone, id)
+	s.delete(o.key, zone, id)
 	return nil
 }
 

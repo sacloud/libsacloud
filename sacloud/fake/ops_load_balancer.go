@@ -11,10 +11,12 @@ import (
 
 // Find is fake implementation
 func (o *LoadBalancerOp) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) ([]*sacloud.LoadBalancer, error) {
-	results, _ := find(ResourceLoadBalancer, zone, conditions)
+	results, _ := find(o.key, zone, conditions)
 	var values []*sacloud.LoadBalancer
 	for _, res := range results {
-		values = append(values, res.(*sacloud.LoadBalancer))
+		dest := &sacloud.LoadBalancer{}
+		copySameNameField(res, dest)
+		values = append(values, dest)
 	}
 	return values, nil
 }
@@ -32,7 +34,10 @@ func (o *LoadBalancerOp) Create(ctx context.Context, zone string, param *sacloud
 
 	s.setLoadBalancer(zone, result)
 
-	startPowerOn(ResourceLoadBalancer, zone, result.ID)
+	id := result.ID
+	startPowerOn(o.key, zone, func() (interface{}, error) {
+		return o.Read(context.Background(), zone, id)
+	})
 	return result, nil
 }
 
@@ -40,9 +45,12 @@ func (o *LoadBalancerOp) Create(ctx context.Context, zone string, param *sacloud
 func (o *LoadBalancerOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.LoadBalancer, error) {
 	value := s.getLoadBalancerByID(zone, id)
 	if value == nil {
-		return nil, newErrorNotFound(ResourceLoadBalancer, id)
+		return nil, newErrorNotFound(o.key, id)
 	}
-	return value, nil
+
+	dest := &sacloud.LoadBalancer{}
+	copySameNameField(value, dest)
+	return dest, nil
 }
 
 // Update is fake implementation
@@ -62,7 +70,7 @@ func (o *LoadBalancerOp) Delete(ctx context.Context, zone string, id types.ID) e
 	if err != nil {
 		return err
 	}
-	s.delete(ResourceLoadBalancer, zone, id)
+	s.delete(o.key, zone, id)
 	return nil
 }
 
@@ -79,10 +87,12 @@ func (o *LoadBalancerOp) Boot(ctx context.Context, zone string, id types.ID) err
 		return err
 	}
 	if value.InstanceStatus.IsUp() {
-		return newErrorConflict(ResourceLoadBalancer, id, "Boot is failed")
+		return newErrorConflict(o.key, id, "Boot is failed")
 	}
 
-	startPowerOn(ResourceLoadBalancer, zone, id)
+	startPowerOn(o.key, zone, func() (interface{}, error) {
+		return o.Read(context.Background(), zone, id)
+	})
 
 	return err
 }
@@ -94,10 +104,12 @@ func (o *LoadBalancerOp) Shutdown(ctx context.Context, zone string, id types.ID,
 		return err
 	}
 	if !value.InstanceStatus.IsUp() {
-		return newErrorConflict(ResourceLoadBalancer, id, "Shutdown is failed")
+		return newErrorConflict(o.key, id, "Shutdown is failed")
 	}
 
-	startPowerOff(ResourceLoadBalancer, zone, id)
+	startPowerOff(o.key, zone, func() (interface{}, error) {
+		return o.Read(context.Background(), zone, id)
+	})
 
 	return err
 }
@@ -109,10 +121,12 @@ func (o *LoadBalancerOp) Reset(ctx context.Context, zone string, id types.ID) er
 		return err
 	}
 	if !value.InstanceStatus.IsUp() {
-		return newErrorConflict(ResourceLoadBalancer, id, "Reset is failed")
+		return newErrorConflict(o.key, id, "Reset is failed")
 	}
 
-	startPowerOn(ResourceLoadBalancer, zone, id)
+	startPowerOn(o.key, zone, func() (interface{}, error) {
+		return o.Read(context.Background(), zone, id)
+	})
 
 	return nil
 }

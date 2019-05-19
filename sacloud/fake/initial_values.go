@@ -15,12 +15,12 @@ var zoneIDs = map[string]types.ID{
 }
 
 var sharedSegmentSwitch = &sacloud.Switch{
-	ID:             generateID(),
+	ID:             pool.generateID(),
 	Name:           "スイッチ",
 	Scope:          types.Scopes.Shared,
 	Description:    "共有セグメント用スイッチ",
-	NetworkMaskLen: addrPool.sharedNetMaskLen,
-	DefaultRoute:   addrPool.sharedDefaultGateway.String(),
+	NetworkMaskLen: pool.sharedNetMaskLen,
+	DefaultRoute:   pool.sharedDefaultGateway.String(),
 }
 
 func init() {
@@ -33,7 +33,7 @@ func init() {
 func initArchives() {
 	archives := []*sacloud.Archive{
 		{
-			ID:                   generateID(),
+			ID:                   pool.generateID(),
 			Name:                 "CentOS 7.6 (1810) 64bit",
 			Tags:                 []string{"@size-extendable", "arch-64bit", "current-stable", "distro-centos", "distro-ver-7.6", "os-linux"},
 			DisplayOrder:         1,
@@ -45,7 +45,7 @@ func initArchives() {
 			DiskPlanStorageClass: "iscsi9999",
 		},
 		{
-			ID:                   generateID(),
+			ID:                   pool.generateID(),
 			Name:                 "Ubuntu Server 18.04.2 LTS 64bit",
 			Tags:                 []string{"@size-extendable", "arch-64bit", "current-stable", "distro-ubuntu", "distro-ver-18.04.2", "os-linux"},
 			DisplayOrder:         2,

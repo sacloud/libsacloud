@@ -17,13 +17,6 @@ func init() {
 	rand.Seed(time.Now().UnixNano())
 }
 
-var currentID = int64(100000000000)
-
-func generateID() types.ID {
-	currentID++
-	return types.ID(currentID)
-}
-
 func random(max int) int {
 	return rand.Intn(max)
 }
@@ -108,7 +101,7 @@ func fillID(target interface{}) {
 	if v, ok := target.(accessor.ID); ok {
 		id := v.GetID()
 		if id.IsEmpty() {
-			v.SetID(generateID())
+			v.SetID(pool.generateID())
 		}
 	}
 }

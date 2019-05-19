@@ -10,10 +10,12 @@ import (
 
 // Find is fake implementation
 func (o *CDROMOp) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) ([]*sacloud.CDROM, error) {
-	results, _ := find(ResourceCDROM, zone, conditions)
+	results, _ := find(o.key, zone, conditions)
 	var values []*sacloud.CDROM
 	for _, res := range results {
-		values = append(values, res.(*sacloud.CDROM))
+		dest := &sacloud.CDROM{}
+		copySameNameField(res, dest)
+		values = append(values, dest)
 	}
 	return values, nil
 }
@@ -38,9 +40,11 @@ func (o *CDROMOp) Create(ctx context.Context, zone string, param *sacloud.CDROMC
 func (o *CDROMOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.CDROM, error) {
 	value := s.getCDROMByID(zone, id)
 	if value == nil {
-		return nil, newErrorNotFound(ResourceCDROM, id)
+		return nil, newErrorNotFound(o.key, id)
 	}
-	return value, nil
+	dest := &sacloud.CDROM{}
+	copySameNameField(value, dest)
+	return dest, nil
 }
 
 // Update is fake implementation
@@ -60,15 +64,15 @@ func (o *CDROMOp) Delete(ctx context.Context, zone string, id types.ID) error {
 	if err != nil {
 		return err
 	}
-	s.delete(ResourceCDROM, zone, id)
+	s.delete(o.key, zone, id)
 	return nil
 }
 
 // OpenFTP is fake implementation
 func (o *CDROMOp) OpenFTP(ctx context.Context, zone string, id types.ID, openOption *sacloud.OpenFTPRequest) (*sacloud.FTPServer, error) {
-	value := s.getCDROMByID(zone, id)
-	if value == nil {
-		return nil, newErrorNotFound(ResourceCDROM, id)
+	value, err := o.Read(ctx, zone, id)
+	if err != nil {
+		return nil, err
 	}
 
 	value.SetAvailability(types.Availabilities.Uploading)
@@ -84,9 +88,9 @@ func (o *CDROMOp) OpenFTP(ctx context.Context, zone string, id types.ID, openOpt
 
 // CloseFTP is fake implementation
 func (o *CDROMOp) CloseFTP(ctx context.Context, zone string, id types.ID) error {
-	value := s.getCDROMByID(zone, id)
-	if value == nil {
-		return newErrorNotFound(ResourceCDROM, id)
+	value, err := o.Read(ctx, zone, id)
+	if err != nil {
+		return err
 	}
 	if !value.Availability.IsUploading() {
 		value.SetAvailability(types.Availabilities.Available)

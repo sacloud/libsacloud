@@ -9,10 +9,12 @@ import (
 
 // Find is fake implementation
 func (o *NoteOp) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) ([]*sacloud.Note, error) {
-	results, _ := find(ResourceNote, sacloud.DefaultZone, conditions)
+	results, _ := find(o.key, sacloud.DefaultZone, conditions)
 	var values []*sacloud.Note
 	for _, res := range results {
-		values = append(values, res.(*sacloud.Note))
+		dest := &sacloud.Note{}
+		copySameNameField(res, dest)
+		values = append(values, dest)
 	}
 	return values, nil
 }
@@ -30,9 +32,12 @@ func (o *NoteOp) Create(ctx context.Context, zone string, param *sacloud.NoteCre
 func (o *NoteOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Note, error) {
 	value := s.getNoteByID(sacloud.DefaultZone, id)
 	if value == nil {
-		return nil, newErrorNotFound(ResourceNote, id)
+		return nil, newErrorNotFound(o.key, id)
 	}
-	return value, nil
+
+	dest := &sacloud.Note{}
+	copySameNameField(value, dest)
+	return dest, nil
 }
 
 // Update is fake implementation
@@ -52,6 +57,6 @@ func (o *NoteOp) Delete(ctx context.Context, zone string, id types.ID) error {
 	if err != nil {
 		return err
 	}
-	s.delete(ResourceNote, sacloud.DefaultZone, id)
+	s.delete(o.key, sacloud.DefaultZone, id)
 	return nil
 }
