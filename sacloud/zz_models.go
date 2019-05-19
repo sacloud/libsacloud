@@ -37,8 +37,8 @@ type Archive struct {
 	BundleInfo                *BundleInfo         `json:",omitempty" mapconv:",omitempty,recursive"`
 	Storage                   *Storage            `json:",omitempty" mapconv:",omitempty,recursive"`
 	IconID                    types.ID            `mapconv:"Icon.ID"`
-	CreatedAt                 *time.Time
-	ModifiedAt                *time.Time
+	CreatedAt                 time.Time
+	ModifiedAt                time.Time
 	OriginalArchiveID         types.ID           `mapconv:"OriginalArchive.ID,omitempty"`
 	SourceInfo                *SourceArchiveInfo `mapconv:",omitempty,recursive"`
 }
@@ -279,22 +279,22 @@ func (o *Archive) SetIconID(v types.ID) {
 }
 
 // GetCreatedAt returns value of CreatedAt
-func (o *Archive) GetCreatedAt() *time.Time {
+func (o *Archive) GetCreatedAt() time.Time {
 	return o.CreatedAt
 }
 
 // SetCreatedAt sets value to CreatedAt
-func (o *Archive) SetCreatedAt(v *time.Time) {
+func (o *Archive) SetCreatedAt(v time.Time) {
 	o.CreatedAt = v
 }
 
 // GetModifiedAt returns value of ModifiedAt
-func (o *Archive) GetModifiedAt() *time.Time {
+func (o *Archive) GetModifiedAt() time.Time {
 	return o.ModifiedAt
 }
 
 // SetModifiedAt sets value to ModifiedAt
-func (o *Archive) SetModifiedAt(v *time.Time) {
+func (o *Archive) SetModifiedAt(v time.Time) {
 	o.ModifiedAt = v
 }
 
@@ -991,8 +991,8 @@ type CDROM struct {
 	Scope        types.EScope
 	Storage      *Storage `json:",omitempty" mapconv:",omitempty,recursive"`
 	IconID       types.ID `mapconv:"Icon.ID"`
-	CreatedAt    *time.Time
-	ModifiedAt   *time.Time
+	CreatedAt    time.Time
+	ModifiedAt   time.Time
 }
 
 // Validate validates by field tags
@@ -1111,22 +1111,22 @@ func (o *CDROM) SetIconID(v types.ID) {
 }
 
 // GetCreatedAt returns value of CreatedAt
-func (o *CDROM) GetCreatedAt() *time.Time {
+func (o *CDROM) GetCreatedAt() time.Time {
 	return o.CreatedAt
 }
 
 // SetCreatedAt sets value to CreatedAt
-func (o *CDROM) SetCreatedAt(v *time.Time) {
+func (o *CDROM) SetCreatedAt(v time.Time) {
 	o.CreatedAt = v
 }
 
 // GetModifiedAt returns value of ModifiedAt
-func (o *CDROM) GetModifiedAt() *time.Time {
+func (o *CDROM) GetModifiedAt() time.Time {
 	return o.ModifiedAt
 }
 
 // SetModifiedAt sets value to ModifiedAt
-func (o *CDROM) SetModifiedAt(v *time.Time) {
+func (o *CDROM) SetModifiedAt(v time.Time) {
 	o.ModifiedAt = v
 }
 
@@ -1328,8 +1328,8 @@ type Disk struct {
 	Storage                   *Storage            `json:",omitempty" mapconv:",omitempty,recursive"`
 	ServerID                  types.ID            `mapconv:"Server.ID,omitempty"`
 	IconID                    types.ID            `mapconv:"Icon.ID"`
-	CreatedAt                 *time.Time
-	ModifiedAt                *time.Time
+	CreatedAt                 time.Time
+	ModifiedAt                time.Time
 }
 
 // Validate validates by field tags
@@ -1588,22 +1588,22 @@ func (o *Disk) SetIconID(v types.ID) {
 }
 
 // GetCreatedAt returns value of CreatedAt
-func (o *Disk) GetCreatedAt() *time.Time {
+func (o *Disk) GetCreatedAt() time.Time {
 	return o.CreatedAt
 }
 
 // SetCreatedAt sets value to CreatedAt
-func (o *Disk) SetCreatedAt(v *time.Time) {
+func (o *Disk) SetCreatedAt(v time.Time) {
 	o.CreatedAt = v
 }
 
 // GetModifiedAt returns value of ModifiedAt
-func (o *Disk) GetModifiedAt() *time.Time {
+func (o *Disk) GetModifiedAt() time.Time {
 	return o.ModifiedAt
 }
 
 // SetModifiedAt sets value to ModifiedAt
-func (o *Disk) SetModifiedAt(v *time.Time) {
+func (o *Disk) SetModifiedAt(v time.Time) {
 	o.ModifiedAt = v
 }
 
@@ -2194,8 +2194,8 @@ func (o *DiskActivity) convertFrom(naked *naked.MonitorValues) error {
 
 // MonitorCondition represents API parameter/response structure
 type MonitorCondition struct {
-	Start *time.Time `json:",omitempty"`
-	End   *time.Time `json:",omitempty"`
+	Start time.Time `json:",omitempty"`
+	End   time.Time `json:",omitempty"`
 }
 
 // Validate validates by field tags
@@ -2204,22 +2204,22 @@ func (o *MonitorCondition) Validate() error {
 }
 
 // GetStart returns value of Start
-func (o *MonitorCondition) GetStart() *time.Time {
+func (o *MonitorCondition) GetStart() time.Time {
 	return o.Start
 }
 
 // SetStart sets value to Start
-func (o *MonitorCondition) SetStart(v *time.Time) {
+func (o *MonitorCondition) SetStart(v time.Time) {
 	o.Start = v
 }
 
 // GetEnd returns value of End
-func (o *MonitorCondition) GetEnd() *time.Time {
+func (o *MonitorCondition) GetEnd() time.Time {
 	return o.End
 }
 
 // SetEnd sets value to End
-func (o *MonitorCondition) SetEnd(v *time.Time) {
+func (o *MonitorCondition) SetEnd(v time.Time) {
 	o.End = v
 }
 
@@ -2235,8 +2235,8 @@ type GSLB struct {
 	Tags                    []string
 	Availability            types.EAvailability
 	IconID                  types.ID `mapconv:"Icon.ID"`
-	CreatedAt               *time.Time
-	ModifiedAt              *time.Time
+	CreatedAt               time.Time
+	ModifiedAt              time.Time
 	Class                   string `mapconv:"Provider.Class,default=gslb"`
 	SettingsHash            string
 	FQDN                    string             `mapconv:"Status.FQDN"`
@@ -2337,22 +2337,22 @@ func (o *GSLB) SetIconID(v types.ID) {
 }
 
 // GetCreatedAt returns value of CreatedAt
-func (o *GSLB) GetCreatedAt() *time.Time {
+func (o *GSLB) GetCreatedAt() time.Time {
 	return o.CreatedAt
 }
 
 // SetCreatedAt sets value to CreatedAt
-func (o *GSLB) SetCreatedAt(v *time.Time) {
+func (o *GSLB) SetCreatedAt(v time.Time) {
 	o.CreatedAt = v
 }
 
 // GetModifiedAt returns value of ModifiedAt
-func (o *GSLB) GetModifiedAt() *time.Time {
+func (o *GSLB) GetModifiedAt() time.Time {
 	return o.ModifiedAt
 }
 
 // SetModifiedAt sets value to ModifiedAt
-func (o *GSLB) SetModifiedAt(v *time.Time) {
+func (o *GSLB) SetModifiedAt(v time.Time) {
 	o.ModifiedAt = v
 }
 
@@ -2895,8 +2895,8 @@ type Interface struct {
 	SwitchID       types.ID `mapconv:"Switch.ID,omitempty"`
 	PacketFilterID types.ID `mapconv:"PacketFilter.ID,omitempty"`
 	ServerID       types.ID `mapconv:"Server.ID,omitempty"`
-	CreatedAt      *time.Time
-	ModifiedAt     *time.Time
+	CreatedAt      time.Time
+	ModifiedAt     time.Time
 }
 
 // Validate validates by field tags
@@ -3005,22 +3005,22 @@ func (o *Interface) SetServerID(v types.ID) {
 }
 
 // GetCreatedAt returns value of CreatedAt
-func (o *Interface) GetCreatedAt() *time.Time {
+func (o *Interface) GetCreatedAt() time.Time {
 	return o.CreatedAt
 }
 
 // SetCreatedAt sets value to CreatedAt
-func (o *Interface) SetCreatedAt(v *time.Time) {
+func (o *Interface) SetCreatedAt(v time.Time) {
 	o.CreatedAt = v
 }
 
 // GetModifiedAt returns value of ModifiedAt
-func (o *Interface) GetModifiedAt() *time.Time {
+func (o *Interface) GetModifiedAt() time.Time {
 	return o.ModifiedAt
 }
 
 // SetModifiedAt sets value to ModifiedAt
-func (o *Interface) SetModifiedAt(v *time.Time) {
+func (o *Interface) SetModifiedAt(v time.Time) {
 	o.ModifiedAt = v
 }
 
@@ -3157,12 +3157,12 @@ type LoadBalancer struct {
 	Availability            types.EAvailability
 	Class                   string
 	IconID                  types.ID `mapconv:"Icon.ID"`
-	CreatedAt               *time.Time
-	ModifiedAt              *time.Time
+	CreatedAt               time.Time
+	ModifiedAt              time.Time
 	InstanceHostName        string                          `mapconv:"Instance.Host.Name"`
 	InstanceHostInfoURL     string                          `mapconv:"Instance.Host.InfoURL"`
 	InstanceStatus          types.EServerInstanceStatus     `mapconv:"Instance.Status"`
-	InstanceStatusChangedAt *time.Time                      `mapconv:"Instance.StatusChangedAt"`
+	InstanceStatusChangedAt time.Time                       `mapconv:"Instance.StatusChangedAt"`
 	PlanID                  types.ID                        `mapconv:"Remark.Plan.ID,Plan.ID"`
 	SwitchID                types.ID                        `mapconv:"Remark.Switch.ID"`
 	DefaultRoute            string                          `mapconv:"Remark.Network.DefaultRoute" validate:"ipv4"`
@@ -3271,22 +3271,22 @@ func (o *LoadBalancer) SetIconID(v types.ID) {
 }
 
 // GetCreatedAt returns value of CreatedAt
-func (o *LoadBalancer) GetCreatedAt() *time.Time {
+func (o *LoadBalancer) GetCreatedAt() time.Time {
 	return o.CreatedAt
 }
 
 // SetCreatedAt sets value to CreatedAt
-func (o *LoadBalancer) SetCreatedAt(v *time.Time) {
+func (o *LoadBalancer) SetCreatedAt(v time.Time) {
 	o.CreatedAt = v
 }
 
 // GetModifiedAt returns value of ModifiedAt
-func (o *LoadBalancer) GetModifiedAt() *time.Time {
+func (o *LoadBalancer) GetModifiedAt() time.Time {
 	return o.ModifiedAt
 }
 
 // SetModifiedAt sets value to ModifiedAt
-func (o *LoadBalancer) SetModifiedAt(v *time.Time) {
+func (o *LoadBalancer) SetModifiedAt(v time.Time) {
 	o.ModifiedAt = v
 }
 
@@ -3321,12 +3321,12 @@ func (o *LoadBalancer) SetInstanceStatus(v types.EServerInstanceStatus) {
 }
 
 // GetInstanceStatusChangedAt returns value of InstanceStatusChangedAt
-func (o *LoadBalancer) GetInstanceStatusChangedAt() *time.Time {
+func (o *LoadBalancer) GetInstanceStatusChangedAt() time.Time {
 	return o.InstanceStatusChangedAt
 }
 
 // SetInstanceStatusChangedAt sets value to InstanceStatusChangedAt
-func (o *LoadBalancer) SetInstanceStatusChangedAt(v *time.Time) {
+func (o *LoadBalancer) SetInstanceStatusChangedAt(v time.Time) {
 	o.InstanceStatusChangedAt = v
 }
 
@@ -4013,7 +4013,7 @@ type NFS struct {
 	InstanceHostName        string                      `mapconv:"Instance.Host.Name"`
 	InstanceHostInfoURL     string                      `mapconv:"Instance.Host.InfoURL"`
 	InstanceStatus          types.EServerInstanceStatus `mapconv:"Instance.Status"`
-	InstanceStatusChangedAt *time.Time                  `mapconv:"Instance.StatusChangedAt"`
+	InstanceStatusChangedAt time.Time                   `mapconv:"Instance.StatusChangedAt"`
 	Interfaces              []*Interface                `json:",omitempty" mapconv:"[]Interfaces,recursive"`
 	PlanID                  types.ID                    `mapconv:"Remark.Plan.ID,Plan.ID"`
 	SwitchID                types.ID                    `mapconv:"Remark.Switch.ID"`
@@ -4022,8 +4022,8 @@ type NFS struct {
 	IPAddresses             []string                    `mapconv:"Remark.[]Servers.IPAddress"`
 	ZoneID                  types.ID                    `mapconv:"Remark.Zone.ID"`
 	IconID                  types.ID                    `mapconv:"Icon.ID"`
-	CreatedAt               *time.Time
-	ModifiedAt              *time.Time
+	CreatedAt               time.Time
+	ModifiedAt              time.Time
 }
 
 // Validate validates by field tags
@@ -4142,12 +4142,12 @@ func (o *NFS) SetInstanceStatus(v types.EServerInstanceStatus) {
 }
 
 // GetInstanceStatusChangedAt returns value of InstanceStatusChangedAt
-func (o *NFS) GetInstanceStatusChangedAt() *time.Time {
+func (o *NFS) GetInstanceStatusChangedAt() time.Time {
 	return o.InstanceStatusChangedAt
 }
 
 // SetInstanceStatusChangedAt sets value to InstanceStatusChangedAt
-func (o *NFS) SetInstanceStatusChangedAt(v *time.Time) {
+func (o *NFS) SetInstanceStatusChangedAt(v time.Time) {
 	o.InstanceStatusChangedAt = v
 }
 
@@ -4232,22 +4232,22 @@ func (o *NFS) SetIconID(v types.ID) {
 }
 
 // GetCreatedAt returns value of CreatedAt
-func (o *NFS) GetCreatedAt() *time.Time {
+func (o *NFS) GetCreatedAt() time.Time {
 	return o.CreatedAt
 }
 
 // SetCreatedAt sets value to CreatedAt
-func (o *NFS) SetCreatedAt(v *time.Time) {
+func (o *NFS) SetCreatedAt(v time.Time) {
 	o.CreatedAt = v
 }
 
 // GetModifiedAt returns value of ModifiedAt
-func (o *NFS) GetModifiedAt() *time.Time {
+func (o *NFS) GetModifiedAt() time.Time {
 	return o.ModifiedAt
 }
 
 // SetModifiedAt sets value to ModifiedAt
-func (o *NFS) SetModifiedAt(v *time.Time) {
+func (o *NFS) SetModifiedAt(v time.Time) {
 	o.ModifiedAt = v
 }
 
@@ -4518,8 +4518,8 @@ type Note struct {
 	Class        string
 	Content      string
 	IconID       types.ID `mapconv:"Icon.ID"`
-	CreatedAt    *time.Time
-	ModifiedAt   *time.Time
+	CreatedAt    time.Time
+	ModifiedAt   time.Time
 }
 
 // Validate validates by field tags
@@ -4638,22 +4638,22 @@ func (o *Note) SetIconID(v types.ID) {
 }
 
 // GetCreatedAt returns value of CreatedAt
-func (o *Note) GetCreatedAt() *time.Time {
+func (o *Note) GetCreatedAt() time.Time {
 	return o.CreatedAt
 }
 
 // SetCreatedAt sets value to CreatedAt
-func (o *Note) SetCreatedAt(v *time.Time) {
+func (o *Note) SetCreatedAt(v time.Time) {
 	o.CreatedAt = v
 }
 
 // GetModifiedAt returns value of ModifiedAt
-func (o *Note) GetModifiedAt() *time.Time {
+func (o *Note) GetModifiedAt() time.Time {
 	return o.ModifiedAt
 }
 
 // SetModifiedAt sets value to ModifiedAt
-func (o *Note) SetModifiedAt(v *time.Time) {
+func (o *Note) SetModifiedAt(v time.Time) {
 	o.ModifiedAt = v
 }
 
@@ -4853,7 +4853,7 @@ type Server struct {
 	InstanceHostInfoURL     string                      `mapconv:"Instance.Host.InfoURL"`
 	InstanceStatus          types.EServerInstanceStatus `mapconv:"Instance.Status"`
 	InstanceBeforeStatus    types.EServerInstanceStatus `mapconv:"Instance.BeforeStatus"`
-	InstanceStatusChangedAt *time.Time                  `mapconv:"Instance.StatusChangedAt"`
+	InstanceStatusChangedAt time.Time                   `mapconv:"Instance.StatusChangedAt"`
 	InstanceWarnings        string                      `mapconv:"Instance.Warnings"`
 	InstanceWarningsValue   int                         `mapconv:"Instance.WarningsValue"`
 	Disks                   []*Disk                     `json:",omitempty" mapconv:",recursive"`
@@ -4863,8 +4863,8 @@ type Server struct {
 	PrivateHostName         string                      `mapconv:"PrivateHost.Name"`
 	BundleInfo              *BundleInfo                 `json:",omitempty" mapconv:",omitempty,recursive"`
 	IconID                  types.ID                    `mapconv:"Icon.ID"`
-	CreatedAt               *time.Time
-	ModifiedAt              *time.Time
+	CreatedAt               time.Time
+	ModifiedAt              time.Time
 }
 
 // Validate validates by field tags
@@ -5083,12 +5083,12 @@ func (o *Server) SetInstanceBeforeStatus(v types.EServerInstanceStatus) {
 }
 
 // GetInstanceStatusChangedAt returns value of InstanceStatusChangedAt
-func (o *Server) GetInstanceStatusChangedAt() *time.Time {
+func (o *Server) GetInstanceStatusChangedAt() time.Time {
 	return o.InstanceStatusChangedAt
 }
 
 // SetInstanceStatusChangedAt sets value to InstanceStatusChangedAt
-func (o *Server) SetInstanceStatusChangedAt(v *time.Time) {
+func (o *Server) SetInstanceStatusChangedAt(v time.Time) {
 	o.InstanceStatusChangedAt = v
 }
 
@@ -5183,22 +5183,22 @@ func (o *Server) SetIconID(v types.ID) {
 }
 
 // GetCreatedAt returns value of CreatedAt
-func (o *Server) GetCreatedAt() *time.Time {
+func (o *Server) GetCreatedAt() time.Time {
 	return o.CreatedAt
 }
 
 // SetCreatedAt sets value to CreatedAt
-func (o *Server) SetCreatedAt(v *time.Time) {
+func (o *Server) SetCreatedAt(v time.Time) {
 	o.CreatedAt = v
 }
 
 // GetModifiedAt returns value of ModifiedAt
-func (o *Server) GetModifiedAt() *time.Time {
+func (o *Server) GetModifiedAt() time.Time {
 	return o.ModifiedAt
 }
 
 // SetModifiedAt sets value to ModifiedAt
-func (o *Server) SetModifiedAt(v *time.Time) {
+func (o *Server) SetModifiedAt(v time.Time) {
 	o.ModifiedAt = v
 }
 
@@ -6019,7 +6019,7 @@ func (o *EjectCDROMRequest) convertFrom(naked *naked.CDROM) error {
 
 // CPUTimeActivity represents API parameter/response structure
 type CPUTimeActivity struct {
-	Values []naked.MonitorCPUTimeValue `mapconv:"CPU"`
+	Values []*MonitorCPUTimeValue `mapconv:"CPU"`
 }
 
 // Validate validates by field tags
@@ -6028,12 +6028,12 @@ func (o *CPUTimeActivity) Validate() error {
 }
 
 // GetValues returns value of Values
-func (o *CPUTimeActivity) GetValues() []naked.MonitorCPUTimeValue {
+func (o *CPUTimeActivity) GetValues() []*MonitorCPUTimeValue {
 	return o.Values
 }
 
 // SetValues sets value to Values
-func (o *CPUTimeActivity) SetValues(v []naked.MonitorCPUTimeValue) {
+func (o *CPUTimeActivity) SetValues(v []*MonitorCPUTimeValue) {
 	o.Values = v
 }
 
@@ -6050,6 +6050,53 @@ func (o *CPUTimeActivity) convertFrom(naked *naked.MonitorValues) error {
 }
 
 /*************************************************
+* MonitorCPUTimeValue
+*************************************************/
+
+// MonitorCPUTimeValue represents API parameter/response structure
+type MonitorCPUTimeValue struct {
+	Time    time.Time
+	CPUTime float64
+}
+
+// Validate validates by field tags
+func (o *MonitorCPUTimeValue) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetTime returns value of Time
+func (o *MonitorCPUTimeValue) GetTime() time.Time {
+	return o.Time
+}
+
+// SetTime sets value to Time
+func (o *MonitorCPUTimeValue) SetTime(v time.Time) {
+	o.Time = v
+}
+
+// GetCPUTime returns value of CPUTime
+func (o *MonitorCPUTimeValue) GetCPUTime() float64 {
+	return o.CPUTime
+}
+
+// SetCPUTime sets value to CPUTime
+func (o *MonitorCPUTimeValue) SetCPUTime(v float64) {
+	o.CPUTime = v
+}
+
+// convertTo returns naked MonitorCPUTimeValue
+func (o *MonitorCPUTimeValue) convertTo() (*naked.MonitorCPUTimeValue, error) {
+	dest := &naked.MonitorCPUTimeValue{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked MonitorCPUTimeValue
+func (o *MonitorCPUTimeValue) convertFrom(naked *naked.MonitorCPUTimeValue) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
 * Switch
 *************************************************/
 
@@ -6060,8 +6107,8 @@ type Switch struct {
 	Description    string `validate:"min=0,max=512"`
 	Tags           []string
 	IconID         types.ID `mapconv:"Icon.ID"`
-	CreatedAt      *time.Time
-	ModifiedAt     *time.Time
+	CreatedAt      time.Time
+	ModifiedAt     time.Time
 	Scope          types.EScope
 	NetworkMaskLen int    `mapconv:"UserSubnet.NetworkMaskLen" validate:"min=1,max=32"`
 	DefaultRoute   string `mapconv:"UserSubnet.DefaultRoute" validate:"ipv4"`
@@ -6143,22 +6190,22 @@ func (o *Switch) SetIconID(v types.ID) {
 }
 
 // GetCreatedAt returns value of CreatedAt
-func (o *Switch) GetCreatedAt() *time.Time {
+func (o *Switch) GetCreatedAt() time.Time {
 	return o.CreatedAt
 }
 
 // SetCreatedAt sets value to CreatedAt
-func (o *Switch) SetCreatedAt(v *time.Time) {
+func (o *Switch) SetCreatedAt(v time.Time) {
 	o.CreatedAt = v
 }
 
 // GetModifiedAt returns value of ModifiedAt
-func (o *Switch) GetModifiedAt() *time.Time {
+func (o *Switch) GetModifiedAt() time.Time {
 	return o.ModifiedAt
 }
 
 // SetModifiedAt sets value to ModifiedAt
-func (o *Switch) SetModifiedAt(v *time.Time) {
+func (o *Switch) SetModifiedAt(v time.Time) {
 	o.ModifiedAt = v
 }
 
