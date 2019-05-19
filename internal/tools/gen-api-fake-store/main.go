@@ -38,7 +38,7 @@ import (
 
 {{ range . }} 
 func (s *store) get{{.TypeName}}(zone string) []*sacloud.{{.TypeName}} {
-	values := s.get("{{.TypeName}}", zone)
+	values := s.get(Resource{{.TypeName}}, zone)
 	var ret []*sacloud.{{.TypeName}}
 	for _ , v := range values {
 		if v, ok := v.(*sacloud.{{.TypeName}}); ok {
@@ -49,7 +49,7 @@ func (s *store) get{{.TypeName}}(zone string) []*sacloud.{{.TypeName}} {
 }
 
 func (s *store) get{{.TypeName}}ByID(zone string, id types.ID) *sacloud.{{.TypeName}} {
-	v := s.getByID("{{.TypeName}}", zone, id)
+	v := s.getByID(Resource{{.TypeName}}, zone, id)
 	if v, ok := v.(*sacloud.{{.TypeName}}); ok {
 		return v
 	}
@@ -57,7 +57,7 @@ func (s *store) get{{.TypeName}}ByID(zone string, id types.ID) *sacloud.{{.TypeN
 }
 
 func (s *store) set{{.TypeName}}(zone string, value *sacloud.{{.TypeName}}) {
-	s.set("{{.TypeName}}", zone, value)
+	s.set(Resource{{.TypeName}}, zone, value)
 }
 {{ end }}
 `

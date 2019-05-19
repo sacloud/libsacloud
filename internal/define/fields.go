@@ -3,7 +3,6 @@ package define
 import (
 	"github.com/sacloud/libsacloud-v2/internal/schema"
 	"github.com/sacloud/libsacloud-v2/internal/schema/meta"
-	"github.com/sacloud/libsacloud-v2/sacloud/naked"
 )
 
 type fieldsDef struct{}
@@ -85,6 +84,18 @@ func (f *fieldsDef) CPU() *schema.FieldDesc {
 		Type: meta.TypeInt,
 	}
 }
+
+/*
+func (f *fieldsDef) ServerPlanCPU() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "CPU",
+		Tags: &schema.FieldTags{
+			MapConv: "ServerPlan.CPU",
+		},
+		Type: meta.TypeInt,
+	}
+}
+*/
 
 func (f *fieldsDef) MemoryMB() *schema.FieldDesc {
 	return &schema.FieldDesc{
@@ -709,7 +720,11 @@ func (f *fieldsDef) InstanceWarningsValue() *schema.FieldDesc {
 func (f *fieldsDef) Interfaces() *schema.FieldDesc {
 	return &schema.FieldDesc{
 		Name: "Interfaces",
-		Type: meta.Static([]naked.Interface{}),
+		Type: models.interfaceModel(),
+		Tags: &schema.FieldTags{
+			JSON:    ",omitempty",
+			MapConv: "[]Interfaces,recursive",
+		},
 	}
 }
 
@@ -870,13 +885,6 @@ func (f *fieldsDef) RemarkVRID() *schema.FieldDesc {
 	}
 }
 
-func (f *fieldsDef) StorageClass() *schema.FieldDesc {
-	return &schema.FieldDesc{
-		Name: "StorageClass",
-		Type: meta.TypeString,
-	}
-}
-
 func (f *fieldsDef) DisplayOrder() *schema.FieldDesc {
 	return &schema.FieldDesc{
 		Name: "DisplayOrder",
@@ -935,41 +943,9 @@ func (f *fieldsDef) Password() *schema.FieldDesc {
 func (f *fieldsDef) SourceInfo() *schema.FieldDesc {
 	return &schema.FieldDesc{
 		Name: "SourceInfo",
+		Type: models.sourceArchiveInfo(),
 		Tags: &schema.FieldTags{
-			MapConv: "SourceInfo,recursive",
-		},
-		Type: &schema.Model{
-			Name: "SourceArchiveInfo",
-			Fields: []*schema.FieldDesc{
-				{
-					Name: "ID",
-					Type: meta.TypeID,
-					Tags: &schema.FieldTags{
-						MapConv: "ArchiveUnderZone.ID",
-					},
-				},
-				{
-					Name: "AccountID",
-					Type: meta.TypeID,
-					Tags: &schema.FieldTags{
-						MapConv: "ArchiveUnderZone.Account.ID",
-					},
-				},
-				{
-					Name: "ZoneID",
-					Type: meta.TypeID,
-					Tags: &schema.FieldTags{
-						MapConv: "ArchiveUnderZone.Zone.ID",
-					},
-				},
-				{
-					Name: "ZoneName",
-					Type: meta.TypeString,
-					Tags: &schema.FieldTags{
-						MapConv: "ArchiveUnderZone.Zone.Name",
-					},
-				},
-			},
+			MapConv: ",omitempty,recursive",
 		},
 	}
 }
@@ -977,7 +953,7 @@ func (f *fieldsDef) SourceInfo() *schema.FieldDesc {
 func (f *fieldsDef) VNCProxy() *schema.FieldDesc {
 	return &schema.FieldDesc{
 		Name: "VNCProxy",
-		Type: meta.Static(naked.VNCProxy{}),
+		Type: models.vncProxyModel(),
 		Tags: &schema.FieldTags{
 			JSON: ",omitempty",
 		},
@@ -987,7 +963,7 @@ func (f *fieldsDef) VNCProxy() *schema.FieldDesc {
 func (f *fieldsDef) FTPServer() *schema.FieldDesc {
 	return &schema.FieldDesc{
 		Name: "FTPServer",
-		Type: meta.Static(naked.FTPServer{}),
+		Type: models.ftpServerInfo(),
 		Tags: &schema.FieldTags{
 			JSON: ",omitempty",
 		},
@@ -997,7 +973,7 @@ func (f *fieldsDef) FTPServer() *schema.FieldDesc {
 func (f *fieldsDef) Region() *schema.FieldDesc {
 	return &schema.FieldDesc{
 		Name: "Region",
-		Type: meta.Static(naked.Region{}),
+		Type: models.region(),
 		Tags: &schema.FieldTags{
 			JSON: ",omitempty",
 		},
@@ -1007,19 +983,10 @@ func (f *fieldsDef) Region() *schema.FieldDesc {
 func (f *fieldsDef) Zone() *schema.FieldDesc {
 	return &schema.FieldDesc{
 		Name: "Zone",
-		Type: meta.Static(naked.Zone{}),
+		Type: models.zoneInfoModel(),
 		Tags: &schema.FieldTags{
-			JSON: ",omitempty",
-		},
-	}
-}
-
-func (f *fieldsDef) UserSubnet() *schema.FieldDesc {
-	return &schema.FieldDesc{
-		Name: "UserSubnet",
-		Type: meta.Static(naked.UserSubnet{}),
-		Tags: &schema.FieldTags{
-			JSON: ",omitempty",
+			MapConv: ",omitempty,recursive",
+			JSON:    ",omitempty",
 		},
 	}
 }
@@ -1027,9 +994,10 @@ func (f *fieldsDef) UserSubnet() *schema.FieldDesc {
 func (f *fieldsDef) Storage() *schema.FieldDesc {
 	return &schema.FieldDesc{
 		Name: "Storage",
-		Type: meta.Static(naked.Storage{}),
+		Type: models.storageModel(),
 		Tags: &schema.FieldTags{
-			JSON: ",omitempty",
+			MapConv: ",omitempty,recursive",
+			JSON:    ",omitempty",
 		},
 	}
 }
@@ -1037,29 +1005,10 @@ func (f *fieldsDef) Storage() *schema.FieldDesc {
 func (f *fieldsDef) BundleInfo() *schema.FieldDesc {
 	return &schema.FieldDesc{
 		Name: "BundleInfo",
-		Type: meta.Static(naked.BundleInfo{}),
+		Type: models.bundleInfoModel(),
 		Tags: &schema.FieldTags{
-			JSON: ",omitempty",
-		},
-	}
-}
-
-func (f *fieldsDef) Icon() *schema.FieldDesc {
-	return &schema.FieldDesc{
-		Name: "Icon",
-		Type: meta.Static(naked.Icon{}),
-		Tags: &schema.FieldTags{
-			JSON: ",omitempty",
-		},
-	}
-}
-
-func (f *fieldsDef) Switch() *schema.FieldDesc {
-	return &schema.FieldDesc{
-		Name: "Switch",
-		Type: meta.Static(naked.Switch{}),
-		Tags: &schema.FieldTags{
-			JSON: ",omitempty",
+			MapConv: ",omitempty,recursive",
+			JSON:    ",omitempty",
 		},
 	}
 }
@@ -1075,5 +1024,22 @@ func (f *fieldsDef) ModifiedAt() *schema.FieldDesc {
 	return &schema.FieldDesc{
 		Name: "ModifiedAt",
 		Type: meta.TypeTime,
+	}
+}
+
+/*
+ for monitor
+*/
+func (f *fieldsDef) MonitorTime() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "Time",
+		Type: meta.TypeTime,
+	}
+}
+
+func (f *fieldsDef) MonitorCPUTime() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "CPUTime",
+		Type: meta.TypeFloat64,
 	}
 }

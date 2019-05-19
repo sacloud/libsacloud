@@ -70,7 +70,7 @@ import (
 // SwitchFactoryFuncToFake switches sacloud.xxxAPI's factory methods to use fake client
 func SwitchFactoryFuncToFake() {
 {{ range . -}}
-	sacloud.SetClientFactoryFunc("{{.TypeName}}", func(caller sacloud.APICaller) interface{} {
+	sacloud.SetClientFactoryFunc(Resource{{.TypeName}}, func(caller sacloud.APICaller) interface{} {
 		return New{{ .TypeName }}Op()
 	})
 {{ end -}}

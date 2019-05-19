@@ -29,7 +29,7 @@ func init() {
 			fields.SourceArchiveAvailability(),
 			fields.BundleInfo(),
 			fields.Storage(),
-			fields.Icon(),
+			fields.IconID(),
 			fields.CreatedAt(),
 			fields.ModifiedAt(),
 			fields.OriginalArchiveID(),

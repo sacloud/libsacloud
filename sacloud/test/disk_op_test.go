@@ -62,7 +62,7 @@ var (
 		"BundleInfo",
 		"Server",
 		"Storage",
-		"Icon",
+		"IconID",
 		"CreatedAt",
 		"ModifiedAt",
 	}

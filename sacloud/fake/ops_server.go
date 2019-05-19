@@ -40,7 +40,6 @@ func (o *ServerOp) Create(ctx context.Context, zone string, param *sacloud.Serve
 	// TODO プランAPIを実装したら修正する
 	result.ServerPlanID = types.StringID(fmt.Sprintf("%03d%03d%03d", result.ServerPlanGeneration, result.GetMemoryGB(), result.CPU))
 	result.ServerPlanName = fmt.Sprintf("世代:%03d メモリ:%03d CPU:%03d", result.ServerPlanGeneration, result.GetMemoryGB(), result.CPU)
-	result.ZoneID = zoneIDs[zone]
 
 	for _, cs := range param.ConnectedSwitches {
 		ifOp := NewInterfaceOp()

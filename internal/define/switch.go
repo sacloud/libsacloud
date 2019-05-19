@@ -21,7 +21,6 @@ func init() {
 			fields.CreatedAt(),
 			fields.ModifiedAt(),
 			fields.Scope(),
-			fields.ZoneID(),
 			fields.UserSubnetNetworkMaskLen(),
 			fields.UserSubnetDefaultRoute(),
 		},

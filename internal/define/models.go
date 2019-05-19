@@ -35,6 +35,17 @@ func (m *modelsDef) ftpServer() *schema.Model {
 	}
 }
 
+func (m *modelsDef) ftpServerInfo() *schema.Model {
+	return &schema.Model{
+		Name:      "FTPServerInfo",
+		NakedType: meta.Static(naked.FTPServer{}),
+		Fields: []*schema.FieldDesc{
+			fields.HostName(),
+			fields.IPAddress(),
+		},
+	}
+}
+
 func (m *modelsDef) diskEdit() *schema.Model {
 
 	sshKeyFields := []*schema.FieldDesc{
@@ -199,7 +210,9 @@ func (m *modelsDef) diskEdit() *schema.Model {
 
 func (m *modelsDef) interfaceModel() *schema.Model {
 	return &schema.Model{
-		Name: "Interface",
+		Name:      "Interface",
+		NakedType: meta.Static(naked.Interface{}),
+		IsArray:   true,
 		Fields: []*schema.FieldDesc{
 			fields.ID(),
 			fields.MACAddress(),
@@ -290,6 +303,191 @@ func (m *modelsDef) interfaceModel() *schema.Model {
 				Type: meta.TypeInt,
 				Tags: &schema.FieldTags{
 					MapConv: "PacketFilter.RequiredHostVersionn",
+				},
+			},
+		},
+	}
+}
+
+func (m *modelsDef) bundleInfoModel() *schema.Model {
+	return &schema.Model{
+		Name:      "BundleInfo",
+		NakedType: meta.Static(naked.BundleInfo{}),
+		Fields: []*schema.FieldDesc{
+			fields.ID(),
+			{
+				Name: "HostClass",
+				Type: meta.TypeString,
+				Tags: &schema.FieldTags{
+					MapConv: ",omitempty",
+					JSON:    ",omitempty",
+				},
+			},
+			{
+				Name: "ServiceClass",
+				Type: meta.TypeString,
+				Tags: &schema.FieldTags{
+					MapConv: ",omitempty",
+					JSON:    ",omitempty",
+				},
+			},
+		},
+	}
+}
+
+func (m *modelsDef) storageModel() *schema.Model {
+	return &schema.Model{
+		Name:      "Storage",
+		NakedType: meta.Static(naked.Storage{}),
+		Fields: []*schema.FieldDesc{
+			fields.ID(),
+			fields.Name(),
+			{
+				Name: "Class",
+				Type: meta.TypeString,
+				Tags: &schema.FieldTags{
+					MapConv: ",omitempty",
+					JSON:    ",omitempty",
+				},
+			},
+			{
+				Name: "Generation",
+				Type: meta.TypeInt,
+				Tags: &schema.FieldTags{
+					MapConv: ",omitempty",
+					JSON:    ",omitempty",
+				},
+			},
+		},
+	}
+}
+
+func (m *modelsDef) region() *schema.Model {
+	return &schema.Model{
+		Name:      "Region",
+		NakedType: meta.Static(naked.Region{}),
+		Fields: []*schema.FieldDesc{
+			fields.ID(),
+			fields.Name(),
+			fields.Description(),
+			{
+				Name: "NameServers",
+				Type: meta.TypeStringSlice,
+				Tags: &schema.FieldTags{
+					MapConv: ",omitempty",
+					JSON:    ",omitempty",
+				},
+			},
+		},
+	}
+}
+
+func (m *modelsDef) zoneInfoModel() *schema.Model {
+	return &schema.Model{
+		Name:      "ZoneInfo",
+		NakedType: meta.Static(naked.Zone{}),
+		Fields: []*schema.FieldDesc{
+			fields.ID(),
+			fields.Name(),
+			{
+				Name: "DisplayName",
+				Type: meta.TypeString,
+				Tags: &schema.FieldTags{
+					MapConv: "Description,omitempty",
+					JSON:    ",omitempty",
+				},
+			},
+			{
+				Name: "IsDummy",
+				Type: meta.TypeFlag,
+				Tags: &schema.FieldTags{
+					MapConv: ",omitempty",
+					JSON:    ",omitempty",
+				},
+			},
+			{
+				Name: "VNCProxy",
+				Type: m.vncProxyModel(),
+				Tags: &schema.FieldTags{
+					MapConv: ",omitempty,recursive",
+					JSON:    ",omitempty",
+				},
+			},
+			{
+				Name: "FTPServer",
+				Type: m.ftpServerInfo(),
+				Tags: &schema.FieldTags{
+					MapConv: ",omitempty,recursive",
+					JSON:    ",omitempty",
+				},
+			},
+			{
+				Name: "Region",
+				Type: m.region(),
+				Tags: &schema.FieldTags{
+					MapConv: ",omitempty,recursive",
+					JSON:    ",omitempty",
+				},
+			},
+		},
+	}
+}
+
+func (m *modelsDef) vncProxyModel() *schema.Model {
+	return &schema.Model{
+		Name:      "VNCProxy",
+		NakedType: meta.Static(naked.VNCProxy{}),
+		Fields: []*schema.FieldDesc{
+			{
+				Name: "HostName",
+				Type: meta.TypeString,
+				Tags: &schema.FieldTags{
+					MapConv: ",omitempty",
+					JSON:    ",omitempty",
+				},
+			},
+			{
+				Name: "IPAddress",
+				Type: meta.TypeString,
+				Tags: &schema.FieldTags{
+					MapConv: ",omitempty",
+					JSON:    ",omitempty",
+				},
+			},
+		},
+	}
+}
+
+func (m *modelsDef) sourceArchiveInfo() *schema.Model {
+	return &schema.Model{
+		Name: "SourceArchiveInfo",
+		Fields: []*schema.FieldDesc{
+			{
+				Name: "ID",
+				Type: meta.TypeID,
+				Tags: &schema.FieldTags{
+					MapConv: "ArchiveUnderZone.ID",
+				},
+			},
+			{
+				Name: "AccountID",
+				Type: meta.TypeID,
+				Tags: &schema.FieldTags{
+					MapConv: "ArchiveUnderZone.Account.ID",
+				},
+			},
+			{
+				Name: "ZoneID",
+				Type: meta.TypeID,
+				Tags: &schema.FieldTags{
+					MapConv: "ArchiveUnderZone.Zone.ID",
+				},
+			},
+			{
+				Name: "ZoneName",
+				Type: meta.TypeString,
+				Tags: &schema.FieldTags{
+					MapConv: "ArchiveUnderZone.Zone.Name",
 				},
 			},
 		},

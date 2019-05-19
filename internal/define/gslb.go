@@ -16,7 +16,7 @@ func init() {
 			fields.Description(),
 			fields.Tags(),
 			fields.Availability(),
-			fields.Icon(),
+			fields.IconID(),
 			fields.CreatedAt(),
 			fields.ModifiedAt(),
 			fields.GSLBProviderClass(),

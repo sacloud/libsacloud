@@ -8,7 +8,7 @@ import (
 )
 
 func (s *store) getArchive(zone string) []*sacloud.Archive {
-	values := s.get("Archive", zone)
+	values := s.get(ResourceArchive, zone)
 	var ret []*sacloud.Archive
 	for _, v := range values {
 		if v, ok := v.(*sacloud.Archive); ok {
@@ -19,7 +19,7 @@ func (s *store) getArchive(zone string) []*sacloud.Archive {
 }
 
 func (s *store) getArchiveByID(zone string, id types.ID) *sacloud.Archive {
-	v := s.getByID("Archive", zone, id)
+	v := s.getByID(ResourceArchive, zone, id)
 	if v, ok := v.(*sacloud.Archive); ok {
 		return v
 	}
@@ -27,11 +27,11 @@ func (s *store) getArchiveByID(zone string, id types.ID) *sacloud.Archive {
 }
 
 func (s *store) setArchive(zone string, value *sacloud.Archive) {
-	s.set("Archive", zone, value)
+	s.set(ResourceArchive, zone, value)
 }
 
 func (s *store) getCDROM(zone string) []*sacloud.CDROM {
-	values := s.get("CDROM", zone)
+	values := s.get(ResourceCDROM, zone)
 	var ret []*sacloud.CDROM
 	for _, v := range values {
 		if v, ok := v.(*sacloud.CDROM); ok {
@@ -42,7 +42,7 @@ func (s *store) getCDROM(zone string) []*sacloud.CDROM {
 }
 
 func (s *store) getCDROMByID(zone string, id types.ID) *sacloud.CDROM {
-	v := s.getByID("CDROM", zone, id)
+	v := s.getByID(ResourceCDROM, zone, id)
 	if v, ok := v.(*sacloud.CDROM); ok {
 		return v
 	}
@@ -50,11 +50,11 @@ func (s *store) getCDROMByID(zone string, id types.ID) *sacloud.CDROM {
 }
 
 func (s *store) setCDROM(zone string, value *sacloud.CDROM) {
-	s.set("CDROM", zone, value)
+	s.set(ResourceCDROM, zone, value)
 }
 
 func (s *store) getDisk(zone string) []*sacloud.Disk {
-	values := s.get("Disk", zone)
+	values := s.get(ResourceDisk, zone)
 	var ret []*sacloud.Disk
 	for _, v := range values {
 		if v, ok := v.(*sacloud.Disk); ok {
@@ -65,7 +65,7 @@ func (s *store) getDisk(zone string) []*sacloud.Disk {
 }
 
 func (s *store) getDiskByID(zone string, id types.ID) *sacloud.Disk {
-	v := s.getByID("Disk", zone, id)
+	v := s.getByID(ResourceDisk, zone, id)
 	if v, ok := v.(*sacloud.Disk); ok {
 		return v
 	}
@@ -73,11 +73,11 @@ func (s *store) getDiskByID(zone string, id types.ID) *sacloud.Disk {
 }
 
 func (s *store) setDisk(zone string, value *sacloud.Disk) {
-	s.set("Disk", zone, value)
+	s.set(ResourceDisk, zone, value)
 }
 
 func (s *store) getGSLB(zone string) []*sacloud.GSLB {
-	values := s.get("GSLB", zone)
+	values := s.get(ResourceGSLB, zone)
 	var ret []*sacloud.GSLB
 	for _, v := range values {
 		if v, ok := v.(*sacloud.GSLB); ok {
@@ -88,7 +88,7 @@ func (s *store) getGSLB(zone string) []*sacloud.GSLB {
 }
 
 func (s *store) getGSLBByID(zone string, id types.ID) *sacloud.GSLB {
-	v := s.getByID("GSLB", zone, id)
+	v := s.getByID(ResourceGSLB, zone, id)
 	if v, ok := v.(*sacloud.GSLB); ok {
 		return v
 	}
@@ -96,11 +96,11 @@ func (s *store) getGSLBByID(zone string, id types.ID) *sacloud.GSLB {
 }
 
 func (s *store) setGSLB(zone string, value *sacloud.GSLB) {
-	s.set("GSLB", zone, value)
+	s.set(ResourceGSLB, zone, value)
 }
 
 func (s *store) getInterface(zone string) []*sacloud.Interface {
-	values := s.get("Interface", zone)
+	values := s.get(ResourceInterface, zone)
 	var ret []*sacloud.Interface
 	for _, v := range values {
 		if v, ok := v.(*sacloud.Interface); ok {
@@ -111,7 +111,7 @@ func (s *store) getInterface(zone string) []*sacloud.Interface {
 }
 
 func (s *store) getInterfaceByID(zone string, id types.ID) *sacloud.Interface {
-	v := s.getByID("Interface", zone, id)
+	v := s.getByID(ResourceInterface, zone, id)
 	if v, ok := v.(*sacloud.Interface); ok {
 		return v
 	}
@@ -119,11 +119,11 @@ func (s *store) getInterfaceByID(zone string, id types.ID) *sacloud.Interface {
 }
 
 func (s *store) setInterface(zone string, value *sacloud.Interface) {
-	s.set("Interface", zone, value)
+	s.set(ResourceInterface, zone, value)
 }
 
 func (s *store) getLoadBalancer(zone string) []*sacloud.LoadBalancer {
-	values := s.get("LoadBalancer", zone)
+	values := s.get(ResourceLoadBalancer, zone)
 	var ret []*sacloud.LoadBalancer
 	for _, v := range values {
 		if v, ok := v.(*sacloud.LoadBalancer); ok {
@@ -134,7 +134,7 @@ func (s *store) getLoadBalancer(zone string) []*sacloud.LoadBalancer {
 }
 
 func (s *store) getLoadBalancerByID(zone string, id types.ID) *sacloud.LoadBalancer {
-	v := s.getByID("LoadBalancer", zone, id)
+	v := s.getByID(ResourceLoadBalancer, zone, id)
 	if v, ok := v.(*sacloud.LoadBalancer); ok {
 		return v
 	}
@@ -142,11 +142,11 @@ func (s *store) getLoadBalancerByID(zone string, id types.ID) *sacloud.LoadBalan
 }
 
 func (s *store) setLoadBalancer(zone string, value *sacloud.LoadBalancer) {
-	s.set("LoadBalancer", zone, value)
+	s.set(ResourceLoadBalancer, zone, value)
 }
 
 func (s *store) getNFS(zone string) []*sacloud.NFS {
-	values := s.get("NFS", zone)
+	values := s.get(ResourceNFS, zone)
 	var ret []*sacloud.NFS
 	for _, v := range values {
 		if v, ok := v.(*sacloud.NFS); ok {
@@ -157,7 +157,7 @@ func (s *store) getNFS(zone string) []*sacloud.NFS {
 }
 
 func (s *store) getNFSByID(zone string, id types.ID) *sacloud.NFS {
-	v := s.getByID("NFS", zone, id)
+	v := s.getByID(ResourceNFS, zone, id)
 	if v, ok := v.(*sacloud.NFS); ok {
 		return v
 	}
@@ -165,11 +165,11 @@ func (s *store) getNFSByID(zone string, id types.ID) *sacloud.NFS {
 }
 
 func (s *store) setNFS(zone string, value *sacloud.NFS) {
-	s.set("NFS", zone, value)
+	s.set(ResourceNFS, zone, value)
 }
 
 func (s *store) getNote(zone string) []*sacloud.Note {
-	values := s.get("Note", zone)
+	values := s.get(ResourceNote, zone)
 	var ret []*sacloud.Note
 	for _, v := range values {
 		if v, ok := v.(*sacloud.Note); ok {
@@ -180,7 +180,7 @@ func (s *store) getNote(zone string) []*sacloud.Note {
 }
 
 func (s *store) getNoteByID(zone string, id types.ID) *sacloud.Note {
-	v := s.getByID("Note", zone, id)
+	v := s.getByID(ResourceNote, zone, id)
 	if v, ok := v.(*sacloud.Note); ok {
 		return v
 	}
@@ -188,11 +188,11 @@ func (s *store) getNoteByID(zone string, id types.ID) *sacloud.Note {
 }
 
 func (s *store) setNote(zone string, value *sacloud.Note) {
-	s.set("Note", zone, value)
+	s.set(ResourceNote, zone, value)
 }
 
 func (s *store) getServer(zone string) []*sacloud.Server {
-	values := s.get("Server", zone)
+	values := s.get(ResourceServer, zone)
 	var ret []*sacloud.Server
 	for _, v := range values {
 		if v, ok := v.(*sacloud.Server); ok {
@@ -203,7 +203,7 @@ func (s *store) getServer(zone string) []*sacloud.Server {
 }
 
 func (s *store) getServerByID(zone string, id types.ID) *sacloud.Server {
-	v := s.getByID("Server", zone, id)
+	v := s.getByID(ResourceServer, zone, id)
 	if v, ok := v.(*sacloud.Server); ok {
 		return v
 	}
@@ -211,11 +211,11 @@ func (s *store) getServerByID(zone string, id types.ID) *sacloud.Server {
 }
 
 func (s *store) setServer(zone string, value *sacloud.Server) {
-	s.set("Server", zone, value)
+	s.set(ResourceServer, zone, value)
 }
 
 func (s *store) getSwitch(zone string) []*sacloud.Switch {
-	values := s.get("Switch", zone)
+	values := s.get(ResourceSwitch, zone)
 	var ret []*sacloud.Switch
 	for _, v := range values {
 		if v, ok := v.(*sacloud.Switch); ok {
@@ -226,7 +226,7 @@ func (s *store) getSwitch(zone string) []*sacloud.Switch {
 }
 
 func (s *store) getSwitchByID(zone string, id types.ID) *sacloud.Switch {
-	v := s.getByID("Switch", zone, id)
+	v := s.getByID(ResourceSwitch, zone, id)
 	if v, ok := v.(*sacloud.Switch); ok {
 		return v
 	}
@@ -234,11 +234,11 @@ func (s *store) getSwitchByID(zone string, id types.ID) *sacloud.Switch {
 }
 
 func (s *store) setSwitch(zone string, value *sacloud.Switch) {
-	s.set("Switch", zone, value)
+	s.set(ResourceSwitch, zone, value)
 }
 
 func (s *store) getZone(zone string) []*sacloud.Zone {
-	values := s.get("Zone", zone)
+	values := s.get(ResourceZone, zone)
 	var ret []*sacloud.Zone
 	for _, v := range values {
 		if v, ok := v.(*sacloud.Zone); ok {
@@ -249,7 +249,7 @@ func (s *store) getZone(zone string) []*sacloud.Zone {
 }
 
 func (s *store) getZoneByID(zone string, id types.ID) *sacloud.Zone {
-	v := s.getByID("Zone", zone, id)
+	v := s.getByID(ResourceZone, zone, id)
 	if v, ok := v.(*sacloud.Zone); ok {
 		return v
 	}
@@ -257,5 +257,5 @@ func (s *store) getZoneByID(zone string, id types.ID) *sacloud.Zone {
 }
 
 func (s *store) setZone(zone string, value *sacloud.Zone) {
-	s.set("Zone", zone, value)
+	s.set(ResourceZone, zone, value)
 }
