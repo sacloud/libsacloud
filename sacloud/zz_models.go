@@ -2158,7 +2158,7 @@ func (o *DiskUpdateRequest) convertFrom(naked *naked.Disk) error {
 
 // DiskActivity represents API parameter/response structure
 type DiskActivity struct {
-	Values []naked.MonitorDiskValue `mapconv:"Disk"`
+	Values []*MonitorDiskValue `mapconv:"[]Disk"`
 }
 
 // Validate validates by field tags
@@ -2167,12 +2167,12 @@ func (o *DiskActivity) Validate() error {
 }
 
 // GetValues returns value of Values
-func (o *DiskActivity) GetValues() []naked.MonitorDiskValue {
+func (o *DiskActivity) GetValues() []*MonitorDiskValue {
 	return o.Values
 }
 
 // SetValues sets value to Values
-func (o *DiskActivity) SetValues(v []naked.MonitorDiskValue) {
+func (o *DiskActivity) SetValues(v []*MonitorDiskValue) {
 	o.Values = v
 }
 
@@ -2185,6 +2185,64 @@ func (o *DiskActivity) convertTo() (*naked.MonitorValues, error) {
 
 // convertFrom parse values from naked DiskActivity
 func (o *DiskActivity) convertFrom(naked *naked.MonitorValues) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* MonitorDiskValue
+*************************************************/
+
+// MonitorDiskValue represents API parameter/response structure
+type MonitorDiskValue struct {
+	Time  time.Time `json:",omitempty" mapconv:",omitempty"`
+	Read  float64   `json:",omitempty" mapconv:",omitempty"`
+	Write float64   `json:",omitempty" mapconv:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *MonitorDiskValue) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetTime returns value of Time
+func (o *MonitorDiskValue) GetTime() time.Time {
+	return o.Time
+}
+
+// SetTime sets value to Time
+func (o *MonitorDiskValue) SetTime(v time.Time) {
+	o.Time = v
+}
+
+// GetRead returns value of Read
+func (o *MonitorDiskValue) GetRead() float64 {
+	return o.Read
+}
+
+// SetRead sets value to Read
+func (o *MonitorDiskValue) SetRead(v float64) {
+	o.Read = v
+}
+
+// GetWrite returns value of Write
+func (o *MonitorDiskValue) GetWrite() float64 {
+	return o.Write
+}
+
+// SetWrite sets value to Write
+func (o *MonitorDiskValue) SetWrite(v float64) {
+	o.Write = v
+}
+
+// convertTo returns naked MonitorDiskValue
+func (o *MonitorDiskValue) convertTo() (*naked.MonitorDiskValue, error) {
+	dest := &naked.MonitorDiskValue{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked MonitorDiskValue
+func (o *MonitorDiskValue) convertFrom(naked *naked.MonitorDiskValue) error {
 	return mapconv.ConvertFrom(naked, o)
 }
 
@@ -3114,7 +3172,7 @@ func (o *InterfaceUpdateRequest) convertFrom(naked *naked.Interface) error {
 
 // InterfaceActivity represents API parameter/response structure
 type InterfaceActivity struct {
-	Values []naked.MonitorInterfaceValue `mapconv:"Interface"`
+	Values []*MonitorInterfaceValue `mapconv:"[]Interface"`
 }
 
 // Validate validates by field tags
@@ -3123,12 +3181,12 @@ func (o *InterfaceActivity) Validate() error {
 }
 
 // GetValues returns value of Values
-func (o *InterfaceActivity) GetValues() []naked.MonitorInterfaceValue {
+func (o *InterfaceActivity) GetValues() []*MonitorInterfaceValue {
 	return o.Values
 }
 
 // SetValues sets value to Values
-func (o *InterfaceActivity) SetValues(v []naked.MonitorInterfaceValue) {
+func (o *InterfaceActivity) SetValues(v []*MonitorInterfaceValue) {
 	o.Values = v
 }
 
@@ -3141,6 +3199,64 @@ func (o *InterfaceActivity) convertTo() (*naked.MonitorValues, error) {
 
 // convertFrom parse values from naked InterfaceActivity
 func (o *InterfaceActivity) convertFrom(naked *naked.MonitorValues) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* MonitorInterfaceValue
+*************************************************/
+
+// MonitorInterfaceValue represents API parameter/response structure
+type MonitorInterfaceValue struct {
+	Time    time.Time `json:",omitempty" mapconv:",omitempty"`
+	Receive float64   `json:",omitempty" mapconv:",omitempty"`
+	Send    float64   `json:",omitempty" mapconv:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *MonitorInterfaceValue) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetTime returns value of Time
+func (o *MonitorInterfaceValue) GetTime() time.Time {
+	return o.Time
+}
+
+// SetTime sets value to Time
+func (o *MonitorInterfaceValue) SetTime(v time.Time) {
+	o.Time = v
+}
+
+// GetReceive returns value of Receive
+func (o *MonitorInterfaceValue) GetReceive() float64 {
+	return o.Receive
+}
+
+// SetReceive sets value to Receive
+func (o *MonitorInterfaceValue) SetReceive(v float64) {
+	o.Receive = v
+}
+
+// GetSend returns value of Send
+func (o *MonitorInterfaceValue) GetSend() float64 {
+	return o.Send
+}
+
+// SetSend sets value to Send
+func (o *MonitorInterfaceValue) SetSend(v float64) {
+	o.Send = v
+}
+
+// convertTo returns naked MonitorInterfaceValue
+func (o *MonitorInterfaceValue) convertTo() (*naked.MonitorInterfaceValue, error) {
+	dest := &naked.MonitorInterfaceValue{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked MonitorInterfaceValue
+func (o *MonitorInterfaceValue) convertFrom(naked *naked.MonitorInterfaceValue) error {
 	return mapconv.ConvertFrom(naked, o)
 }
 
@@ -4473,7 +4589,7 @@ func (o *NFSUpdateRequest) convertFrom(naked *naked.NFS) error {
 
 // FreeDiskSizeActivity represents API parameter/response structure
 type FreeDiskSizeActivity struct {
-	Values []naked.MonitorFreeDiskSizeValue `mapconv:"FreeDiskSize"`
+	Values []*MonitorFreeDiskSizeValue `mapconv:"[]FreeDiskSize"`
 }
 
 // Validate validates by field tags
@@ -4482,12 +4598,12 @@ func (o *FreeDiskSizeActivity) Validate() error {
 }
 
 // GetValues returns value of Values
-func (o *FreeDiskSizeActivity) GetValues() []naked.MonitorFreeDiskSizeValue {
+func (o *FreeDiskSizeActivity) GetValues() []*MonitorFreeDiskSizeValue {
 	return o.Values
 }
 
 // SetValues sets value to Values
-func (o *FreeDiskSizeActivity) SetValues(v []naked.MonitorFreeDiskSizeValue) {
+func (o *FreeDiskSizeActivity) SetValues(v []*MonitorFreeDiskSizeValue) {
 	o.Values = v
 }
 
@@ -4500,6 +4616,53 @@ func (o *FreeDiskSizeActivity) convertTo() (*naked.MonitorValues, error) {
 
 // convertFrom parse values from naked FreeDiskSizeActivity
 func (o *FreeDiskSizeActivity) convertFrom(naked *naked.MonitorValues) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* MonitorFreeDiskSizeValue
+*************************************************/
+
+// MonitorFreeDiskSizeValue represents API parameter/response structure
+type MonitorFreeDiskSizeValue struct {
+	Time         time.Time `json:",omitempty" mapconv:",omitempty"`
+	FreeDiskSize float64   `json:",omitempty" mapconv:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *MonitorFreeDiskSizeValue) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetTime returns value of Time
+func (o *MonitorFreeDiskSizeValue) GetTime() time.Time {
+	return o.Time
+}
+
+// SetTime sets value to Time
+func (o *MonitorFreeDiskSizeValue) SetTime(v time.Time) {
+	o.Time = v
+}
+
+// GetFreeDiskSize returns value of FreeDiskSize
+func (o *MonitorFreeDiskSizeValue) GetFreeDiskSize() float64 {
+	return o.FreeDiskSize
+}
+
+// SetFreeDiskSize sets value to FreeDiskSize
+func (o *MonitorFreeDiskSizeValue) SetFreeDiskSize(v float64) {
+	o.FreeDiskSize = v
+}
+
+// convertTo returns naked MonitorFreeDiskSizeValue
+func (o *MonitorFreeDiskSizeValue) convertTo() (*naked.MonitorFreeDiskSizeValue, error) {
+	dest := &naked.MonitorFreeDiskSizeValue{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked MonitorFreeDiskSizeValue
+func (o *MonitorFreeDiskSizeValue) convertFrom(naked *naked.MonitorFreeDiskSizeValue) error {
 	return mapconv.ConvertFrom(naked, o)
 }
 
@@ -6019,7 +6182,7 @@ func (o *EjectCDROMRequest) convertFrom(naked *naked.CDROM) error {
 
 // CPUTimeActivity represents API parameter/response structure
 type CPUTimeActivity struct {
-	Values []*MonitorCPUTimeValue `mapconv:"CPU"`
+	Values []*MonitorCPUTimeValue `mapconv:"[]CPU"`
 }
 
 // Validate validates by field tags
@@ -6055,8 +6218,8 @@ func (o *CPUTimeActivity) convertFrom(naked *naked.MonitorValues) error {
 
 // MonitorCPUTimeValue represents API parameter/response structure
 type MonitorCPUTimeValue struct {
-	Time    time.Time
-	CPUTime float64
+	Time    time.Time `json:",omitempty" mapconv:",omitempty"`
+	CPUTime float64   `json:",omitempty" mapconv:",omitempty"`
 }
 
 // Validate validates by field tags

@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"github.com/sacloud/libsacloud-v2/sacloud"
-	"github.com/sacloud/libsacloud-v2/sacloud/naked"
 	"github.com/sacloud/libsacloud-v2/sacloud/types"
 )
 
@@ -260,9 +259,8 @@ func (o *DiskOp) Monitor(ctx context.Context, zone string, id types.ID, conditio
 
 	res := &sacloud.DiskActivity{}
 	for i := 0; i < 5; i++ {
-		t := now.Add(time.Duration(i*-5) * time.Minute)
-		res.Values = append(res.Values, naked.MonitorDiskValue{
-			Time:  t,
+		res.Values = append(res.Values, &sacloud.MonitorDiskValue{
+			Time:  now.Add(time.Duration(i*-5) * time.Minute),
 			Read:  float64(random(1000)),
 			Write: float64(random(1000)),
 		})
