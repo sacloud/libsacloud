@@ -5,7 +5,6 @@ import (
 	"time"
 
 	"github.com/sacloud/libsacloud-v2/sacloud"
-	"github.com/sacloud/libsacloud-v2/sacloud/naked"
 	"github.com/sacloud/libsacloud-v2/sacloud/types"
 )
 
@@ -146,9 +145,8 @@ func (o *LoadBalancerOp) MonitorInterface(ctx context.Context, zone string, id t
 
 	res := &sacloud.InterfaceActivity{}
 	for i := 0; i < 5; i++ {
-		t := now.Add(time.Duration(i*-5) * time.Minute)
-		res.Values = append(res.Values, naked.MonitorInterfaceValue{
-			Time:    t,
+		res.Values = append(res.Values, &sacloud.MonitorInterfaceValue{
+			Time:    now.Add(time.Duration(i*-5) * time.Minute),
 			Send:    float64(random(1000)),
 			Receive: float64(random(1000)),
 		})

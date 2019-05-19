@@ -1034,6 +1034,10 @@ func (f *fieldsDef) MonitorTime() *schema.FieldDesc {
 	return &schema.FieldDesc{
 		Name: "Time",
 		Type: meta.TypeTime,
+		Tags: &schema.FieldTags{
+			MapConv: ",omitempty",
+			JSON:    ",omitempty",
+		},
 	}
 }
 
@@ -1041,5 +1045,229 @@ func (f *fieldsDef) MonitorCPUTime() *schema.FieldDesc {
 	return &schema.FieldDesc{
 		Name: "CPUTime",
 		Type: meta.TypeFloat64,
+		Tags: &schema.FieldTags{
+			MapConv: ",omitempty",
+			JSON:    ",omitempty",
+		},
+	}
+}
+
+func (f *fieldsDef) MonitorDiskRead() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "Read",
+		Type: meta.TypeFloat64,
+		Tags: &schema.FieldTags{
+			MapConv: ",omitempty",
+			JSON:    ",omitempty",
+		},
+	}
+}
+
+func (f *fieldsDef) MonitorDiskWrite() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "Write",
+		Type: meta.TypeFloat64,
+		Tags: &schema.FieldTags{
+			MapConv: ",omitempty",
+			JSON:    ",omitempty",
+		},
+	}
+}
+
+func (f *fieldsDef) MonitorRouterIn() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "In",
+		Type: meta.TypeFloat64,
+		Tags: &schema.FieldTags{
+			MapConv: ",omitempty",
+			JSON:    ",omitempty",
+		},
+	}
+}
+
+func (f *fieldsDef) MonitorRouterOut() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "Out",
+		Type: meta.TypeFloat64,
+		Tags: &schema.FieldTags{
+			MapConv: ",omitempty",
+			JSON:    ",omitempty",
+		},
+	}
+}
+
+func (f *fieldsDef) MonitorInterfaceSend() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "Send",
+		Type: meta.TypeFloat64,
+		Tags: &schema.FieldTags{
+			MapConv: ",omitempty",
+			JSON:    ",omitempty",
+		},
+	}
+}
+
+func (f *fieldsDef) MonitorInterfaceReceive() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "Receive",
+		Type: meta.TypeFloat64,
+		Tags: &schema.FieldTags{
+			MapConv: ",omitempty",
+			JSON:    ",omitempty",
+		},
+	}
+}
+
+func (f *fieldsDef) MonitorFreeDiskSize() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "FreeDiskSize",
+		Type: meta.TypeFloat64,
+		Tags: &schema.FieldTags{
+			MapConv: ",omitempty",
+			JSON:    ",omitempty",
+		},
+	}
+}
+
+func (f *fieldsDef) MonitorDatabaseTotalMemorySize() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "TotalMemorySize ",
+		Type: meta.TypeFloat64,
+		Tags: &schema.FieldTags{
+			MapConv: ",omitempty",
+			JSON:    ",omitempty",
+		},
+	}
+}
+
+func (f *fieldsDef) MonitorDatabaseUsedMemorySize() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "UsedMemorySize",
+		Type: meta.TypeFloat64,
+		Tags: &schema.FieldTags{
+			MapConv: ",omitempty",
+			JSON:    ",omitempty",
+		},
+	}
+}
+
+func (f *fieldsDef) MonitorDatabaseTotalDisk1Size() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "TotalDisk1Size",
+		Type: meta.TypeFloat64,
+		Tags: &schema.FieldTags{
+			MapConv: ",omitempty",
+			JSON:    ",omitempty",
+		},
+	}
+}
+
+func (f *fieldsDef) MonitorDatabaseUsedDisk1Size() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "UsedDisk1Size",
+		Type: meta.TypeFloat64,
+		Tags: &schema.FieldTags{
+			MapConv: ",omitempty",
+			JSON:    ",omitempty",
+		},
+	}
+}
+
+func (f *fieldsDef) MonitorDatabaseTotalDisk2Size() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "TotalDisk2Size",
+		Type: meta.TypeFloat64,
+		Tags: &schema.FieldTags{
+			MapConv: ",omitempty",
+			JSON:    ",omitempty",
+		},
+	}
+}
+
+func (f *fieldsDef) MonitorDatabaseUsedDisk2Size() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "UsedDisk2Size",
+		Type: meta.TypeFloat64,
+		Tags: &schema.FieldTags{
+			MapConv: ",omitempty",
+			JSON:    ",omitempty",
+		},
+	}
+}
+
+func (f *fieldsDef) MonitorDatabaseBinlogUsedSizeKiB() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "BinlogUsedSizeKiB",
+		Type: meta.TypeFloat64,
+		Tags: &schema.FieldTags{
+			MapConv: ",omitempty",
+			JSON:    ",omitempty",
+		},
+	}
+}
+
+func (f *fieldsDef) MonitorDatabaseDelayTimeSec() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "DelayTimeSec",
+		Type: meta.TypeFloat64,
+		Tags: &schema.FieldTags{
+			MapConv: ",omitempty",
+			JSON:    ",omitempty",
+		},
+	}
+}
+
+func (f *fieldsDef) MonitorResponseTimeSec() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "ResponseTimeSec",
+		Type: meta.TypeFloat64,
+		Tags: &schema.FieldTags{
+			MapConv: ",omitempty",
+			JSON:    ",omitempty",
+		},
+	}
+}
+
+func (f *fieldsDef) MonitorUplinkBPS() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "UplinkBPS",
+		Type: meta.TypeFloat64,
+		Tags: &schema.FieldTags{
+			MapConv: ",omitempty",
+			JSON:    ",omitempty",
+		},
+	}
+}
+
+func (f *fieldsDef) MonitorDownlinkBPS() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "DownlinkBPS",
+		Type: meta.TypeFloat64,
+		Tags: &schema.FieldTags{
+			MapConv: ",omitempty",
+			JSON:    ",omitempty",
+		},
+	}
+}
+
+func (f *fieldsDef) MonitorActiveConnections() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "ActiveConnections",
+		Type: meta.TypeFloat64,
+		Tags: &schema.FieldTags{
+			MapConv: ",omitempty",
+			JSON:    ",omitempty",
+		},
+	}
+}
+
+func (f *fieldsDef) MonitorConnectionsPerSec() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "ConnectionsPerSec",
+		Type: meta.TypeFloat64,
+		Tags: &schema.FieldTags{
+			MapConv: ",omitempty",
+			JSON:    ",omitempty",
+		},
 	}
 }

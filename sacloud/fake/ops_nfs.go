@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"github.com/sacloud/libsacloud-v2/sacloud"
-	"github.com/sacloud/libsacloud-v2/sacloud/naked"
 	"github.com/sacloud/libsacloud-v2/sacloud/types"
 )
 
@@ -143,9 +142,8 @@ func (o *NFSOp) MonitorFreeDiskSize(ctx context.Context, zone string, id types.I
 
 	res := &sacloud.FreeDiskSizeActivity{}
 	for i := 0; i < 5; i++ {
-		t := now.Add(time.Duration(i*-5) * time.Minute)
-		res.Values = append(res.Values, naked.MonitorFreeDiskSizeValue{
-			Time:         t,
+		res.Values = append(res.Values, &sacloud.MonitorFreeDiskSizeValue{
+			Time:         now.Add(time.Duration(i*-5) * time.Minute),
 			FreeDiskSize: float64(random(1000)),
 		})
 	}
@@ -168,9 +166,8 @@ func (o *NFSOp) MonitorInterface(ctx context.Context, zone string, id types.ID, 
 
 	res := &sacloud.InterfaceActivity{}
 	for i := 0; i < 5; i++ {
-		t := now.Add(time.Duration(i*-5) * time.Minute)
-		res.Values = append(res.Values, naked.MonitorInterfaceValue{
-			Time:    t,
+		res.Values = append(res.Values, &sacloud.MonitorInterfaceValue{
+			Time:    now.Add(time.Duration(i*-5) * time.Minute),
 			Send:    float64(random(1000)),
 			Receive: float64(random(1000)),
 		})

@@ -26,7 +26,7 @@ func (m *monitorsDef) cpuTimeModel() *schema.Model {
 					},
 				},
 				Tags: &schema.FieldTags{
-					MapConv: "CPU",
+					MapConv: "[]CPU",
 				},
 			},
 		},
@@ -40,9 +40,18 @@ func (m *monitorsDef) diskModel() *schema.Model {
 		Fields: []*schema.FieldDesc{
 			{
 				Name: "Values",
-				Type: meta.Static([]naked.MonitorDiskValue{}),
+				Type: &schema.Model{
+					Name:      "MonitorDiskValue",
+					NakedType: meta.Static(naked.MonitorDiskValue{}),
+					IsArray:   true,
+					Fields: []*schema.FieldDesc{
+						fields.MonitorTime(),
+						fields.MonitorDiskRead(),
+						fields.MonitorDiskWrite(),
+					},
+				},
 				Tags: &schema.FieldTags{
-					MapConv: "Disk",
+					MapConv: "[]Disk",
 				},
 			},
 		},
@@ -56,9 +65,18 @@ func (m *monitorsDef) interfaceModel() *schema.Model {
 		Fields: []*schema.FieldDesc{
 			{
 				Name: "Values",
-				Type: meta.Static([]naked.MonitorInterfaceValue{}),
+				Type: &schema.Model{
+					Name:      "MonitorInterfaceValue",
+					NakedType: meta.Static(naked.MonitorInterfaceValue{}),
+					IsArray:   true,
+					Fields: []*schema.FieldDesc{
+						fields.MonitorTime(),
+						fields.MonitorInterfaceReceive(),
+						fields.MonitorInterfaceSend(),
+					},
+				},
 				Tags: &schema.FieldTags{
-					MapConv: "Interface",
+					MapConv: "[]Interface",
 				},
 			},
 		},
@@ -72,9 +90,18 @@ func (m *monitorsDef) routerModel() *schema.Model {
 		Fields: []*schema.FieldDesc{
 			{
 				Name: "Values",
-				Type: meta.Static([]naked.MonitorRouterValue{}),
+				Type: &schema.Model{
+					Name:      "MonitorRouterValue",
+					NakedType: meta.Static(naked.MonitorRouterValue{}),
+					IsArray:   true,
+					Fields: []*schema.FieldDesc{
+						fields.MonitorTime(),
+						fields.MonitorRouterIn(),
+						fields.MonitorRouterOut(),
+					},
+				},
 				Tags: &schema.FieldTags{
-					MapConv: "Router",
+					MapConv: "[]Router",
 				},
 			},
 		},
@@ -88,9 +115,25 @@ func (m *monitorsDef) databaseModel() *schema.Model {
 		Fields: []*schema.FieldDesc{
 			{
 				Name: "Values",
-				Type: meta.Static([]naked.MonitorDatabaseValue{}),
+				//Type: meta.Static([]naked.MonitorDatabaseValue{}),
+				Type: &schema.Model{
+					Name:      "MonitorDatabaseValue",
+					NakedType: meta.Static(naked.MonitorDatabaseValue{}),
+					IsArray:   true,
+					Fields: []*schema.FieldDesc{
+						fields.MonitorTime(),
+						fields.MonitorDatabaseTotalMemorySize(),
+						fields.MonitorDatabaseUsedMemorySize(),
+						fields.MonitorDatabaseTotalDisk1Size(),
+						fields.MonitorDatabaseUsedDisk1Size(),
+						fields.MonitorDatabaseTotalDisk2Size(),
+						fields.MonitorDatabaseUsedDisk2Size(),
+						fields.MonitorDatabaseBinlogUsedSizeKiB(),
+						fields.MonitorDatabaseDelayTimeSec(),
+					},
+				},
 				Tags: &schema.FieldTags{
-					MapConv: "Database",
+					MapConv: "[]Database",
 				},
 			},
 		},
@@ -104,9 +147,17 @@ func (m *monitorsDef) freeDiskSizeModel() *schema.Model {
 		Fields: []*schema.FieldDesc{
 			{
 				Name: "Values",
-				Type: meta.Static([]naked.MonitorFreeDiskSizeValue{}),
+				Type: &schema.Model{
+					Name:      "MonitorFreeDiskSizeValue",
+					NakedType: meta.Static(naked.MonitorFreeDiskSizeValue{}),
+					IsArray:   true,
+					Fields: []*schema.FieldDesc{
+						fields.MonitorTime(),
+						fields.MonitorFreeDiskSize(),
+					},
+				},
 				Tags: &schema.FieldTags{
-					MapConv: "FreeDiskSize",
+					MapConv: "[]FreeDiskSize",
 				},
 			},
 		},
@@ -120,9 +171,17 @@ func (m *monitorsDef) responseTimeSecModel() *schema.Model {
 		Fields: []*schema.FieldDesc{
 			{
 				Name: "Values",
-				Type: meta.Static([]naked.MonitorResponseTimeSecValue{}),
+				Type: &schema.Model{
+					Name:      "MonitorResponseTimeSecValue",
+					NakedType: meta.Static(naked.MonitorResponseTimeSecValue{}),
+					IsArray:   true,
+					Fields: []*schema.FieldDesc{
+						fields.MonitorTime(),
+						fields.MonitorResponseTimeSec(),
+					},
+				},
 				Tags: &schema.FieldTags{
-					MapConv: "ResponseTimeSec",
+					MapConv: "[]ResponseTimeSec",
 				},
 			},
 		},
@@ -136,9 +195,18 @@ func (m *monitorsDef) linkModel() *schema.Model {
 		Fields: []*schema.FieldDesc{
 			{
 				Name: "Values",
-				Type: meta.Static([]naked.MonitorLinkValue{}),
+				Type: &schema.Model{
+					Name:      "MonitorLinkValue",
+					NakedType: meta.Static(naked.MonitorLinkValue{}),
+					IsArray:   true,
+					Fields: []*schema.FieldDesc{
+						fields.MonitorTime(),
+						fields.MonitorUplinkBPS(),
+						fields.MonitorDownlinkBPS(),
+					},
+				},
 				Tags: &schema.FieldTags{
-					MapConv: "Link",
+					MapConv: "[]Link",
 				},
 			},
 		},
@@ -152,9 +220,19 @@ func (m *monitorsDef) connectionModel() *schema.Model {
 		Fields: []*schema.FieldDesc{
 			{
 				Name: "Values",
-				Type: meta.Static([]naked.MonitorConnectionValue{}),
+				//Type: meta.Static([]naked.MonitorConnectionValue{}),
+				Type: &schema.Model{
+					Name:      "MonitorConnectionValue",
+					NakedType: meta.Static(naked.MonitorConnectionValue{}),
+					IsArray:   true,
+					Fields: []*schema.FieldDesc{
+						fields.MonitorTime(),
+						fields.MonitorActiveConnections(),
+						fields.MonitorConnectionsPerSec(),
+					},
+				},
 				Tags: &schema.FieldTags{
-					MapConv: "Connection",
+					MapConv: "[]Connection",
 				},
 			},
 		},
