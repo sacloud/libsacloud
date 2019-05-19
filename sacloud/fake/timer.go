@@ -75,10 +75,9 @@ func startPowerOn(resourceKey, zone string, readFunc func() (interface{}, error)
 			} else {
 				target.SetInstanceStatus(types.ServerInstanceStatuses.Up)
 				if status, ok := target.(accessor.Instance); ok {
-					now := time.Now()
 					status.SetInstanceHostName(fmt.Sprintf("sac-%s-svXXX", zone))
 					status.SetInstanceHostInfoURL("")
-					status.SetInstanceStatusChangedAt(&now)
+					status.SetInstanceStatusChangedAt(time.Now())
 				}
 				if available, ok := target.(accessor.Availability); ok {
 					available.SetAvailability(types.Availabilities.Available)
@@ -110,10 +109,9 @@ func startPowerOff(resourceKey, zone string, readFunc func() (interface{}, error
 			}
 
 			if status, ok := target.(accessor.Instance); ok {
-				now := time.Now()
 				status.SetInstanceHostName(fmt.Sprintf("sac-%s-svXXX", zone))
 				status.SetInstanceHostInfoURL("")
-				status.SetInstanceStatusChangedAt(&now)
+				status.SetInstanceStatusChangedAt(time.Now())
 			}
 
 			if counter < 3 {

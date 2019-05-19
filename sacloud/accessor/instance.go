@@ -11,6 +11,6 @@ type Instance interface {
 	SetInstanceHostName(v string)
 	GetInstanceHostInfoURL() string
 	SetInstanceHostInfoURL(v string)
-	GetInstanceStatusChangedAt() *time.Time
-	SetInstanceStatusChangedAt(v *time.Time)
+	GetInstanceStatusChangedAt() time.Time
+	SetInstanceStatusChangedAt(v time.Time)
 }

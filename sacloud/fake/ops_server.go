@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"github.com/sacloud/libsacloud-v2/sacloud"
-	"github.com/sacloud/libsacloud-v2/sacloud/naked"
 	"github.com/sacloud/libsacloud-v2/sacloud/types"
 )
 
@@ -257,9 +256,8 @@ func (o *ServerOp) Monitor(ctx context.Context, zone string, id types.ID, condit
 
 	res := &sacloud.CPUTimeActivity{}
 	for i := 0; i < 5; i++ {
-		t := now.Add(time.Duration(i*-5) * time.Minute)
-		res.Values = append(res.Values, naked.MonitorCPUTimeValue{
-			Time:    t,
+		res.Values = append(res.Values, &sacloud.MonitorCPUTimeValue{
+			Time:    now.Add(time.Duration(i*-5) * time.Minute),
 			CPUTime: float64(random(server.CPU * 1000)),
 		})
 	}

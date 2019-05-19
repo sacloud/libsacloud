@@ -297,8 +297,8 @@ type diskUpdateResponseEnvelope struct {
 
 // diskMonitorRequestEnvelope is envelop of API request
 type diskMonitorRequestEnvelope struct {
-	Start *time.Time `json:",omitempty"`
-	End   *time.Time `json:",omitempty"`
+	Start time.Time `json:",omitempty"`
+	End   time.Time `json:",omitempty"`
 }
 
 // diskMonitorResponseEnvelope is envelop of API response
@@ -417,8 +417,8 @@ type interfaceUpdateResponseEnvelope struct {
 
 // interfaceMonitorRequestEnvelope is envelop of API request
 type interfaceMonitorRequestEnvelope struct {
-	Start *time.Time `json:",omitempty"`
-	End   *time.Time `json:",omitempty"`
+	Start time.Time `json:",omitempty"`
+	End   time.Time `json:",omitempty"`
 }
 
 // interfaceMonitorResponseEnvelope is envelop of API response
@@ -489,8 +489,8 @@ type loadbalancerShutdownRequestEnvelope struct {
 
 // loadbalancerMonitorInterfaceRequestEnvelope is envelop of API request
 type loadbalancerMonitorInterfaceRequestEnvelope struct {
-	Start *time.Time `json:",omitempty"`
-	End   *time.Time `json:",omitempty"`
+	Start time.Time `json:",omitempty"`
+	End   time.Time `json:",omitempty"`
 }
 
 // loadbalancerMonitorInterfaceResponseEnvelope is envelop of API response
@@ -570,8 +570,8 @@ type nfsShutdownRequestEnvelope struct {
 
 // nfsMonitorFreeDiskSizeRequestEnvelope is envelop of API request
 type nfsMonitorFreeDiskSizeRequestEnvelope struct {
-	Start *time.Time `json:",omitempty"`
-	End   *time.Time `json:",omitempty"`
+	Start time.Time `json:",omitempty"`
+	End   time.Time `json:",omitempty"`
 }
 
 // nfsMonitorFreeDiskSizeResponseEnvelope is envelop of API response
@@ -584,8 +584,8 @@ type nfsMonitorFreeDiskSizeResponseEnvelope struct {
 
 // nfsMonitorInterfaceRequestEnvelope is envelop of API request
 type nfsMonitorInterfaceRequestEnvelope struct {
-	Start *time.Time `json:",omitempty"`
-	End   *time.Time `json:",omitempty"`
+	Start time.Time `json:",omitempty"`
+	End   time.Time `json:",omitempty"`
 }
 
 // nfsMonitorInterfaceResponseEnvelope is envelop of API response
@@ -735,8 +735,8 @@ type serverShutdownRequestEnvelope struct {
 
 // serverMonitorRequestEnvelope is envelop of API request
 type serverMonitorRequestEnvelope struct {
-	Start *time.Time `json:",omitempty"`
-	End   *time.Time `json:",omitempty"`
+	Start time.Time `json:",omitempty"`
+	End   time.Time `json:",omitempty"`
 }
 
 // serverMonitorResponseEnvelope is envelop of API response

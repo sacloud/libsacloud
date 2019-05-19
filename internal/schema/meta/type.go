@@ -42,7 +42,7 @@ func (t *StaticType) GoImportPath() string { return t.goImportPath }
 
 // GoTypeSourceCode ソースコードでの型表現
 func (t *StaticType) GoTypeSourceCode() string {
-	if t.goPkg != "" && t.reflectKind == reflect.Struct {
+	if t.goPkg != "" && t.reflectKind == reflect.Struct && t.goType != "time.Time" {
 		return fmt.Sprintf("*%s", t.goType)
 	}
 	return t.goType
@@ -72,6 +72,9 @@ func (t *StaticType) ZeroInitializeSourceCode() string {
 	case reflect.Interface, reflect.Map, reflect.Slice:
 		return fmt.Sprintf(format, t.goType+"{}")
 	case reflect.Struct:
+		if t.goType == "time.Time" {
+			return fmt.Sprintf(format, t.goType+"{}")
+		}
 		return fmt.Sprintf(format, "&"+t.goType+"{}")
 	case reflect.String:
 		return fmt.Sprintf(format, `""`)
@@ -103,6 +106,9 @@ func (t *StaticType) ZeroValueSourceCode() string {
 	case reflect.Float64:
 		return fmt.Sprintf(format, "float64(0)")
 	case reflect.Interface, reflect.Map, reflect.Slice, reflect.Struct:
+		if t.goType == "time.Time" {
+			return fmt.Sprintf(format, t.goType+"{}")
+		}
 		return fmt.Sprintf(format, "nil")
 	case reflect.String:
 		return fmt.Sprintf(format, `""`)

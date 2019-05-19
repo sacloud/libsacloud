@@ -140,9 +140,8 @@ func fillDiskPlan(target interface{}) {
 func fillCreatedAt(target interface{}) {
 	if v, ok := target.(accessor.CreatedAt); ok {
 		value := v.GetCreatedAt()
-		if value == nil {
-			now := time.Now()
-			v.SetCreatedAt(&now)
+		if value.IsZero() {
+			v.SetCreatedAt(time.Now())
 		}
 	}
 }
@@ -150,9 +149,8 @@ func fillCreatedAt(target interface{}) {
 func fillModifiedAt(target interface{}) {
 	if v, ok := target.(accessor.ModifiedAt); ok {
 		value := v.GetModifiedAt()
-		if value == nil {
-			now := time.Now()
-			v.SetModifiedAt(&now)
+		if value.IsZero() {
+			v.SetModifiedAt(time.Now())
 		}
 	}
 }
