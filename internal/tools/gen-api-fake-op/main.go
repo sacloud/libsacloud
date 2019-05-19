@@ -84,11 +84,15 @@ func SwitchFactoryFuncToFake() {
 *************************************************/
 
 // {{ .TypeName }}Op is fake implementation of {{ .TypeName }}API interface
-type {{ .TypeName }}Op struct{}
+type {{ .TypeName }}Op struct{
+	key string
+}
 
 // New{{ $typeName}}Op creates new {{ $typeName}}Op instance
 func New{{ $typeName}}Op() sacloud.{{ $typeName}}API {
-	return &{{$typeName}}Op {}
+	return &{{$typeName}}Op {
+		key: Resource{{$typeName}},
+	}
 }
 {{ end -}}
 `
@@ -105,10 +109,12 @@ import (
 // {{ .MethodName }} is fake implementation
 func (o *{{ .ResourceTypeName }}Op) {{ .MethodName }}(ctx context.Context{{ range .AllArguments }}, {{ .ArgName }} {{ .TypeName }}{{ end }}) {{.ResultsStatement}} {
 {{ if eq .MethodName "Find" -}}
-	results, _ := find(Resource{{.ResourceTypeName}}, {{if .ResourceIsGlobal}}sacloud.DefaultZone{{else}}zone{{end}}, conditions)
+	results, _ := find(o.key, {{if .ResourceIsGlobal}}sacloud.DefaultZone{{else}}zone{{end}}, conditions)
 	var values []*sacloud.{{.ResourceTypeName}}
 	for _, res := range results {
-		values = append(values, res.(*sacloud.{{.ResourceTypeName}}))
+		dest := &sacloud.{{.ResourceTypeName}}{}
+		copySameNameField(res, dest)
+		values = append(values, dest)
 	}
 	return values, nil
 {{ else if eq .MethodName "Create" -}}
@@ -123,9 +129,11 @@ func (o *{{ .ResourceTypeName }}Op) {{ .MethodName }}(ctx context.Context{{ rang
 {{ else if eq .MethodName "Read" -}}
 	value := s.get{{.ResourceTypeName}}ByID({{if .ResourceIsGlobal}}sacloud.DefaultZone{{else}}zone{{end}}, id)
 	if value == nil {
-		return nil, newErrorNotFound(Resource{{.ResourceTypeName}}, id)
+		return nil, newErrorNotFound(o.key, id)
 	}
-	return value, nil
+	dest := &sacloud.{{.ResourceTypeName}}
+	copySameNameField(value, dest)
+	return dest, nil
 {{ else if eq .MethodName "Update" -}}
 	value, err := o.Read(ctx, {{if .ResourceIsGlobal}}sacloud.DefaultZone{{else}}zone{{end}}, id)
 	if err != nil {
@@ -145,7 +153,7 @@ func (o *{{ .ResourceTypeName }}Op) {{ .MethodName }}(ctx context.Context{{ rang
 
 	// TODO core logic is not implemented
 
-	s.delete(Resource{{.ResourceTypeName}}, {{if .ResourceIsGlobal}}sacloud.DefaultZone{{else}}zone{{end}}, id)
+	s.delete(o.key, {{if .ResourceIsGlobal}}sacloud.DefaultZone{{else}}zone{{end}}, id)
 	return nil
 {{ else -}}
 	// TODO not implemented

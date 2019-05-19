@@ -48,11 +48,15 @@ func SwitchFactoryFuncToFake() {
 *************************************************/
 
 // ArchiveOp is fake implementation of ArchiveAPI interface
-type ArchiveOp struct{}
+type ArchiveOp struct {
+	key string
+}
 
 // NewArchiveOp creates new ArchiveOp instance
 func NewArchiveOp() sacloud.ArchiveAPI {
-	return &ArchiveOp{}
+	return &ArchiveOp{
+		key: ResourceArchive,
+	}
 }
 
 /*************************************************
@@ -60,11 +64,15 @@ func NewArchiveOp() sacloud.ArchiveAPI {
 *************************************************/
 
 // CDROMOp is fake implementation of CDROMAPI interface
-type CDROMOp struct{}
+type CDROMOp struct {
+	key string
+}
 
 // NewCDROMOp creates new CDROMOp instance
 func NewCDROMOp() sacloud.CDROMAPI {
-	return &CDROMOp{}
+	return &CDROMOp{
+		key: ResourceCDROM,
+	}
 }
 
 /*************************************************
@@ -72,11 +80,15 @@ func NewCDROMOp() sacloud.CDROMAPI {
 *************************************************/
 
 // DiskOp is fake implementation of DiskAPI interface
-type DiskOp struct{}
+type DiskOp struct {
+	key string
+}
 
 // NewDiskOp creates new DiskOp instance
 func NewDiskOp() sacloud.DiskAPI {
-	return &DiskOp{}
+	return &DiskOp{
+		key: ResourceDisk,
+	}
 }
 
 /*************************************************
@@ -84,11 +96,15 @@ func NewDiskOp() sacloud.DiskAPI {
 *************************************************/
 
 // GSLBOp is fake implementation of GSLBAPI interface
-type GSLBOp struct{}
+type GSLBOp struct {
+	key string
+}
 
 // NewGSLBOp creates new GSLBOp instance
 func NewGSLBOp() sacloud.GSLBAPI {
-	return &GSLBOp{}
+	return &GSLBOp{
+		key: ResourceGSLB,
+	}
 }
 
 /*************************************************
@@ -96,11 +112,15 @@ func NewGSLBOp() sacloud.GSLBAPI {
 *************************************************/
 
 // InterfaceOp is fake implementation of InterfaceAPI interface
-type InterfaceOp struct{}
+type InterfaceOp struct {
+	key string
+}
 
 // NewInterfaceOp creates new InterfaceOp instance
 func NewInterfaceOp() sacloud.InterfaceAPI {
-	return &InterfaceOp{}
+	return &InterfaceOp{
+		key: ResourceInterface,
+	}
 }
 
 /*************************************************
@@ -108,11 +128,15 @@ func NewInterfaceOp() sacloud.InterfaceAPI {
 *************************************************/
 
 // LoadBalancerOp is fake implementation of LoadBalancerAPI interface
-type LoadBalancerOp struct{}
+type LoadBalancerOp struct {
+	key string
+}
 
 // NewLoadBalancerOp creates new LoadBalancerOp instance
 func NewLoadBalancerOp() sacloud.LoadBalancerAPI {
-	return &LoadBalancerOp{}
+	return &LoadBalancerOp{
+		key: ResourceLoadBalancer,
+	}
 }
 
 /*************************************************
@@ -120,11 +144,15 @@ func NewLoadBalancerOp() sacloud.LoadBalancerAPI {
 *************************************************/
 
 // NFSOp is fake implementation of NFSAPI interface
-type NFSOp struct{}
+type NFSOp struct {
+	key string
+}
 
 // NewNFSOp creates new NFSOp instance
 func NewNFSOp() sacloud.NFSAPI {
-	return &NFSOp{}
+	return &NFSOp{
+		key: ResourceNFS,
+	}
 }
 
 /*************************************************
@@ -132,11 +160,15 @@ func NewNFSOp() sacloud.NFSAPI {
 *************************************************/
 
 // NoteOp is fake implementation of NoteAPI interface
-type NoteOp struct{}
+type NoteOp struct {
+	key string
+}
 
 // NewNoteOp creates new NoteOp instance
 func NewNoteOp() sacloud.NoteAPI {
-	return &NoteOp{}
+	return &NoteOp{
+		key: ResourceNote,
+	}
 }
 
 /*************************************************
@@ -144,11 +176,15 @@ func NewNoteOp() sacloud.NoteAPI {
 *************************************************/
 
 // ServerOp is fake implementation of ServerAPI interface
-type ServerOp struct{}
+type ServerOp struct {
+	key string
+}
 
 // NewServerOp creates new ServerOp instance
 func NewServerOp() sacloud.ServerAPI {
-	return &ServerOp{}
+	return &ServerOp{
+		key: ResourceServer,
+	}
 }
 
 /*************************************************
@@ -156,11 +192,15 @@ func NewServerOp() sacloud.ServerAPI {
 *************************************************/
 
 // SwitchOp is fake implementation of SwitchAPI interface
-type SwitchOp struct{}
+type SwitchOp struct {
+	key string
+}
 
 // NewSwitchOp creates new SwitchOp instance
 func NewSwitchOp() sacloud.SwitchAPI {
-	return &SwitchOp{}
+	return &SwitchOp{
+		key: ResourceSwitch,
+	}
 }
 
 /*************************************************
@@ -168,9 +208,13 @@ func NewSwitchOp() sacloud.SwitchAPI {
 *************************************************/
 
 // ZoneOp is fake implementation of ZoneAPI interface
-type ZoneOp struct{}
+type ZoneOp struct {
+	key string
+}
 
 // NewZoneOp creates new ZoneOp instance
 func NewZoneOp() sacloud.ZoneAPI {
-	return &ZoneOp{}
+	return &ZoneOp{
+		key: ResourceZone,
+	}
 }

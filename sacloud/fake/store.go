@@ -22,13 +22,13 @@ func (s *store) key(resourceKey, zone string) string {
 }
 
 func (s *store) values(resourceKey, zone string) map[types.ID]interface{} {
-	s.mu.Lock()
-	defer s.mu.Unlock()
-
 	return s.data[s.key(resourceKey, zone)]
 }
 
 func (s *store) get(resourceKey, zone string) []interface{} {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+
 	values := s.values(resourceKey, zone)
 	var ret []interface{}
 	for _, v := range values {
@@ -38,6 +38,9 @@ func (s *store) get(resourceKey, zone string) []interface{} {
 }
 
 func (s *store) getByID(resourceKey, zone string, id types.ID) interface{} {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+
 	values := s.values(resourceKey, zone)
 	if values == nil {
 		return nil
@@ -46,10 +49,10 @@ func (s *store) getByID(resourceKey, zone string, id types.ID) interface{} {
 }
 
 func (s *store) set(resourceKey, zone string, value interface{}) {
-	values := s.values(resourceKey, zone)
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
+	values := s.values(resourceKey, zone)
 	if values == nil {
 		values = map[types.ID]interface{}{}
 	}
@@ -63,10 +66,10 @@ func (s *store) set(resourceKey, zone string, value interface{}) {
 }
 
 func (s *store) delete(resourceKey, zone string, id types.ID) {
-	values := s.values(resourceKey, zone)
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
+	values := s.values(resourceKey, zone)
 	if values != nil {
 		delete(values, id)
 	}

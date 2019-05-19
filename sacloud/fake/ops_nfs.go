@@ -2,6 +2,7 @@ package fake
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"github.com/sacloud/libsacloud-v2/sacloud"
@@ -11,10 +12,12 @@ import (
 
 // Find is fake implementation
 func (o *NFSOp) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) ([]*sacloud.NFS, error) {
-	results, _ := find(ResourceNFS, zone, conditions)
+	results, _ := find(o.key, zone, conditions)
 	var values []*sacloud.NFS
 	for _, res := range results {
-		values = append(values, res.(*sacloud.NFS))
+		dest := &sacloud.NFS{}
+		copySameNameField(res, dest)
+		values = append(values, dest)
 	}
 	return values, nil
 }
@@ -31,7 +34,10 @@ func (o *NFSOp) Create(ctx context.Context, zone string, param *sacloud.NFSCreat
 
 	s.setNFS(zone, result)
 
-	startPowerOn(ResourceNFS, zone, result.ID)
+	id := result.ID
+	startPowerOn(o.key, zone, func() (interface{}, error) {
+		return o.Read(context.Background(), zone, id)
+	})
 	return result, nil
 }
 
@@ -39,9 +45,11 @@ func (o *NFSOp) Create(ctx context.Context, zone string, param *sacloud.NFSCreat
 func (o *NFSOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.NFS, error) {
 	value := s.getNFSByID(zone, id)
 	if value == nil {
-		return nil, newErrorNotFound(ResourceNFS, id)
+		return nil, newErrorNotFound(o.key, id)
 	}
-	return value, nil
+	dest := &sacloud.NFS{}
+	copySameNameField(value, dest)
+	return dest, nil
 }
 
 // Update is fake implementation
@@ -57,11 +65,15 @@ func (o *NFSOp) Update(ctx context.Context, zone string, id types.ID, param *sac
 
 // Delete is fake implementation
 func (o *NFSOp) Delete(ctx context.Context, zone string, id types.ID) error {
-	_, err := o.Read(ctx, zone, id)
+	value, err := o.Read(ctx, zone, id)
 	if err != nil {
 		return err
 	}
-	s.delete(ResourceNFS, zone, id)
+	if value.InstanceStatus.IsUp() {
+		return newErrorConflict(o.key, id, fmt.Sprintf("NFS[%s] is still running", id))
+	}
+
+	s.delete(o.key, zone, id)
 	return nil
 }
 
@@ -72,10 +84,12 @@ func (o *NFSOp) Boot(ctx context.Context, zone string, id types.ID) error {
 		return err
 	}
 	if value.InstanceStatus.IsUp() {
-		return newErrorConflict(ResourceNFS, id, "Boot is failed")
+		return newErrorConflict(o.key, id, "Boot is failed")
 	}
 
-	startPowerOn(ResourceNFS, zone, id)
+	startPowerOn(o.key, zone, func() (interface{}, error) {
+		return o.Read(context.Background(), zone, id)
+	})
 
 	return err
 }
@@ -87,10 +101,12 @@ func (o *NFSOp) Shutdown(ctx context.Context, zone string, id types.ID, shutdown
 		return err
 	}
 	if !value.InstanceStatus.IsUp() {
-		return newErrorConflict(ResourceNFS, id, "Shutdown is failed")
+		return newErrorConflict(o.key, id, "Shutdown is failed")
 	}
 
-	startPowerOff(ResourceNFS, zone, id)
+	startPowerOff(o.key, zone, func() (interface{}, error) {
+		return o.Read(context.Background(), zone, id)
+	})
 
 	return err
 }
@@ -102,10 +118,12 @@ func (o *NFSOp) Reset(ctx context.Context, zone string, id types.ID) error {
 		return err
 	}
 	if !value.InstanceStatus.IsUp() {
-		return newErrorConflict(ResourceNFS, id, "Reset is failed")
+		return newErrorConflict(o.key, id, "Reset is failed")
 	}
 
-	startPowerOn(ResourceNFS, zone, id)
+	startPowerOn(o.key, zone, func() (interface{}, error) {
+		return o.Read(context.Background(), zone, id)
+	})
 
 	return nil
 }

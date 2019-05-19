@@ -12,10 +12,12 @@ import (
 
 // Find is fake implementation
 func (o *DiskOp) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) ([]*sacloud.Disk, error) {
-	results, _ := find(ResourceDisk, zone, conditions)
+	results, _ := find(o.key, zone, conditions)
 	var values []*sacloud.Disk
 	for _, res := range results {
-		values = append(values, res.(*sacloud.Disk))
+		dest := &sacloud.Disk{}
+		copySameNameField(res, dest)
+		values = append(values, dest)
 	}
 	return values, nil
 }
@@ -33,20 +35,25 @@ func (o *DiskOp) Create(ctx context.Context, zone string, param *sacloud.DiskCre
 		archiveOp := NewArchiveOp()
 		source, err := archiveOp.Read(ctx, zone, param.SourceArchiveID)
 		if err != nil {
-			return nil, newErrorBadRequest(ResourceDisk, types.ID(0), "SourceArchive is not found")
+			return nil, newErrorBadRequest(o.key, types.ID(0), "SourceArchive is not found")
 		}
 		result.SourceArchiveAvailability = source.Availability
 	}
 	if !param.SourceDiskID.IsEmpty() {
 		source, err := o.Read(ctx, zone, param.SourceDiskID)
 		if err != nil {
-			return nil, newErrorBadRequest(ResourceDisk, types.ID(0), "SourceDisk is not found")
+			return nil, newErrorBadRequest(o.key, types.ID(0), "SourceDisk is not found")
 		}
 		result.SourceDiskAvailability = source.Availability
 	}
 
 	s.setDisk(zone, result)
-	startDiskCopy(ResourceDisk, zone, result.ID)
+
+	id := result.ID
+	startDiskCopy(o.key, zone, func() (interface{}, error) {
+		return o.Read(context.Background(), zone, id)
+	})
+
 	return result, nil
 }
 
@@ -68,7 +75,7 @@ func (o *DiskOp) CreateWithConfig(ctx context.Context, zone string, createParam 
 		serverOp := NewServerOp()
 		_, err := serverOp.Read(ctx, zone, createParam.ServerID)
 		if err != nil {
-			return nil, newErrorBadRequest(ResourceDisk, types.ID(0), fmt.Sprintf("Server %s is not found", createParam.ServerID))
+			return nil, newErrorBadRequest(o.key, types.ID(0), fmt.Sprintf("Server %s is not found", createParam.ServerID))
 		}
 	}
 
@@ -103,9 +110,9 @@ func (o *DiskOp) CreateWithConfigDistantly(ctx context.Context, zone string, cre
 
 // ToBlank is fake implementation
 func (o *DiskOp) ToBlank(ctx context.Context, zone string, id types.ID) error {
-	value := s.getDiskByID(zone, id)
-	if value == nil {
-		return newErrorNotFound(ResourceDisk, id)
+	value, err := o.Read(ctx, zone, id)
+	if err != nil {
+		return err
 	}
 
 	value.SourceArchiveID = types.ID(0)
@@ -119,29 +126,29 @@ func (o *DiskOp) ToBlank(ctx context.Context, zone string, id types.ID) error {
 
 // ResizePartition is fake implementation
 func (o *DiskOp) ResizePartition(ctx context.Context, zone string, id types.ID) error {
-	value := s.getDiskByID(zone, id)
-	if value == nil {
-		return newErrorNotFound(ResourceDisk, id)
+	_, err := o.Read(ctx, zone, id)
+	if err != nil {
+		return err
 	}
 	return nil
 }
 
 // ConnectToServer is fake implementation
 func (o *DiskOp) ConnectToServer(ctx context.Context, zone string, id types.ID, serverID types.ID) error {
-	value := s.getDiskByID(zone, id)
-	if value == nil {
-		return newErrorNotFound(ResourceDisk, id)
+	value, err := o.Read(ctx, zone, id)
+	if err != nil {
+		return err
 	}
 
 	serverOp := NewServerOp()
 	server, err := serverOp.Read(ctx, zone, serverID)
 	if err != nil {
-		return newErrorBadRequest(ResourceDisk, id, fmt.Sprintf("Server[%d] is not exists", serverID))
+		return newErrorBadRequest(o.key, id, fmt.Sprintf("Server[%d] is not exists", serverID))
 	}
 
 	for _, connected := range server.Disks {
 		if connected.ID == value.ID {
-			return newErrorBadRequest(ResourceDisk, id, fmt.Sprintf("Disk[%d] is already connected to Server[%d]", id, serverID))
+			return newErrorBadRequest(o.key, id, fmt.Sprintf("Disk[%d] is already connected to Server[%d]", id, serverID))
 		}
 	}
 
@@ -157,18 +164,18 @@ func (o *DiskOp) ConnectToServer(ctx context.Context, zone string, id types.ID, 
 
 // DisconnectFromServer is fake implementation
 func (o *DiskOp) DisconnectFromServer(ctx context.Context, zone string, id types.ID) error {
-	value := s.getDiskByID(zone, id)
-	if value == nil {
-		return newErrorNotFound(ResourceDisk, id)
+	value, err := o.Read(ctx, zone, id)
+	if err != nil {
+		return err
 	}
 	if value.ServerID.IsEmpty() {
-		return newErrorBadRequest(ResourceDisk, id, fmt.Sprintf("Disk[%d] is not connected to Server", id))
+		return newErrorBadRequest(o.key, id, fmt.Sprintf("Disk[%d] is not connected to Server", id))
 	}
 
 	serverOp := NewServerOp()
 	server, err := serverOp.Read(ctx, zone, value.ServerID)
 	if err != nil {
-		return newErrorBadRequest(ResourceDisk, id, fmt.Sprintf("Server[%d] is not exists", value.ServerID))
+		return newErrorBadRequest(o.key, id, fmt.Sprintf("Server[%d] is not exists", value.ServerID))
 	}
 
 	var disks []*sacloud.Disk
@@ -178,7 +185,7 @@ func (o *DiskOp) DisconnectFromServer(ctx context.Context, zone string, id types
 		}
 	}
 	if len(disks) == len(server.Disks) {
-		return newInternalServerError(ResourceDisk, id, fmt.Sprintf("Disk[%d] is not found on server's connected disks", id))
+		return newInternalServerError(o.key, id, fmt.Sprintf("Disk[%d] is not found on server's connected disks", id))
 	}
 
 	server.Disks = disks
@@ -196,10 +203,11 @@ func (o *DiskOp) InstallDistantFrom(ctx context.Context, zone string, id types.I
 
 // Install is fake implementation
 func (o *DiskOp) Install(ctx context.Context, zone string, id types.ID, installParam *sacloud.DiskInstallRequest) (*sacloud.Disk, error) {
-	value := s.getDiskByID(zone, id)
-	if value == nil {
-		return nil, newErrorNotFound(ResourceDisk, id)
+	value, err := o.Read(ctx, zone, id)
+	if err != nil {
+		return nil, err
 	}
+
 	fill(value, fillDiskPlan)
 	s.setDisk(zone, value)
 	return value, nil
@@ -209,9 +217,12 @@ func (o *DiskOp) Install(ctx context.Context, zone string, id types.ID, installP
 func (o *DiskOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Disk, error) {
 	value := s.getDiskByID(zone, id)
 	if value == nil {
-		return nil, newErrorNotFound(ResourceDisk, id)
+		return nil, newErrorNotFound(o.key, id)
 	}
-	return value, nil
+
+	dest := &sacloud.Disk{}
+	copySameNameField(value, dest)
+	return dest, nil
 }
 
 // Update is fake implementation
@@ -231,7 +242,7 @@ func (o *DiskOp) Delete(ctx context.Context, zone string, id types.ID) error {
 	if err != nil {
 		return err
 	}
-	s.delete(ResourceDisk, zone, id)
+	s.delete(o.key, zone, id)
 	return nil
 }
 

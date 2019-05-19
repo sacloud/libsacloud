@@ -12,10 +12,12 @@ import (
 
 // Find is fake implementation
 func (o *ServerOp) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) ([]*sacloud.Server, error) {
-	results, _ := find(ResourceServer, zone, conditions)
+	results, _ := find(o.key, zone, conditions)
 	var values []*sacloud.Server
 	for _, res := range results {
-		values = append(values, res.(*sacloud.Server))
+		dest := &sacloud.Server{}
+		copySameNameField(res, dest)
+		values = append(values, dest)
 	}
 	return values, nil
 }
@@ -50,28 +52,28 @@ func (o *ServerOp) Create(ctx context.Context, zone string, param *sacloud.Serve
 		} else {
 			_, err := swOp.Read(ctx, zone, cs.ID)
 			if err != nil {
-				return nil, newErrorConflict(ResourceServer, types.ID(0), err.Error())
+				return nil, newErrorConflict(o.key, types.ID(0), err.Error())
 			}
 		}
 
 		iface, err := ifOp.Create(ctx, zone, ifCreateParam)
 		if err != nil {
-			return nil, newErrorConflict(ResourceServer, types.ID(0), err.Error())
+			return nil, newErrorConflict(o.key, types.ID(0), err.Error())
 		}
 
 		if cs.Scope == types.Scopes.Shared {
 			if err := ifOp.ConnectToSharedSegment(ctx, zone, iface.ID); err != nil {
-				return nil, newErrorConflict(ResourceServer, types.ID(0), err.Error())
+				return nil, newErrorConflict(o.key, types.ID(0), err.Error())
 			}
 		} else {
 			if err := ifOp.ConnectToSwitch(ctx, zone, iface.ID, cs.ID); err != nil {
-				return nil, newErrorConflict(ResourceServer, types.ID(0), err.Error())
+				return nil, newErrorConflict(o.key, types.ID(0), err.Error())
 			}
 		}
 
 		iface, err = ifOp.Read(ctx, zone, iface.ID)
 		if err != nil {
-			return nil, newErrorConflict(ResourceServer, types.ID(0), err.Error())
+			return nil, newErrorConflict(o.key, types.ID(0), err.Error())
 		}
 		result.Interfaces = append(result.Interfaces, iface)
 	}
@@ -84,9 +86,12 @@ func (o *ServerOp) Create(ctx context.Context, zone string, param *sacloud.Serve
 func (o *ServerOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Server, error) {
 	value := s.getServerByID(zone, id)
 	if value == nil {
-		return nil, newErrorNotFound(ResourceServer, id)
+		return nil, newErrorNotFound(o.key, id)
 	}
-	return value, nil
+
+	dest := &sacloud.Server{}
+	copySameNameField(value, dest)
+	return dest, nil
 }
 
 // Update is fake implementation
@@ -107,6 +112,10 @@ func (o *ServerOp) Delete(ctx context.Context, zone string, id types.ID) error {
 		return err
 	}
 
+	if value.InstanceStatus.IsUp() {
+		return newErrorConflict(o.key, id, fmt.Sprintf("Server[%s] is still running", id))
+	}
+
 	ifOp := NewInterfaceOp()
 	for _, iface := range value.Interfaces {
 		if err := ifOp.Delete(ctx, zone, iface.ID); err != nil {
@@ -121,7 +130,7 @@ func (o *ServerOp) Delete(ctx context.Context, zone string, id types.ID) error {
 		}
 	}
 
-	s.delete(ResourceServer, zone, id)
+	s.delete(o.key, zone, id)
 	return nil
 }
 
@@ -132,7 +141,7 @@ func (o *ServerOp) ChangePlan(ctx context.Context, zone string, id types.ID, pla
 		return nil, err
 	}
 	if value.InstanceStatus.IsUp() {
-		return nil, newErrorConflict(ResourceServer, id, fmt.Sprintf("Server[%d] is running", value.ID))
+		return nil, newErrorConflict(o.key, id, fmt.Sprintf("Server[%d] is running", value.ID))
 	}
 
 	copySameNameField(plan, value)
@@ -140,10 +149,10 @@ func (o *ServerOp) ChangePlan(ctx context.Context, zone string, id types.ID, pla
 	value.ServerPlanName = fmt.Sprintf("世代:%03d メモリ:%03d CPU:%03d", value.ServerPlanGeneration, value.GetMemoryGB(), value.CPU)
 
 	// ID変更
-	s.delete(ResourceServer, zone, value.ID)
+	s.delete(o.key, zone, value.ID)
 	newServer := &sacloud.Server{}
 	copySameNameField(value, newServer)
-	newServer.ID = generateID()
+	newServer.ID = pool.generateID()
 	s.setServer(zone, newServer)
 
 	return newServer, nil
@@ -158,7 +167,7 @@ func (o *ServerOp) InsertCDROM(ctx context.Context, zone string, id types.ID, in
 
 	cdromOp := NewCDROMOp()
 	if _, err = cdromOp.Read(ctx, zone, insertParam.ID); err != nil {
-		return newErrorBadRequest(ResourceServer, id, fmt.Sprintf("CDROM[%d] is not exists", insertParam.ID))
+		return newErrorBadRequest(o.key, id, fmt.Sprintf("CDROM[%d] is not exists", insertParam.ID))
 	}
 
 	value.CDROMID = insertParam.ID
@@ -175,7 +184,7 @@ func (o *ServerOp) EjectCDROM(ctx context.Context, zone string, id types.ID, ins
 
 	cdromOp := NewCDROMOp()
 	if _, err = cdromOp.Read(ctx, zone, insertParam.ID); err != nil {
-		return newErrorBadRequest(ResourceServer, id, fmt.Sprintf("CDROM[%d] is not exists", insertParam.ID))
+		return newErrorBadRequest(o.key, id, fmt.Sprintf("CDROM[%d] is not exists", insertParam.ID))
 	}
 
 	value.CDROMID = types.ID(0)
@@ -190,10 +199,12 @@ func (o *ServerOp) Boot(ctx context.Context, zone string, id types.ID) error {
 		return err
 	}
 	if value.InstanceStatus.IsUp() {
-		return newErrorConflict(ResourceServer, id, "Boot is failed")
+		return newErrorConflict(o.key, id, "Boot is failed")
 	}
 
-	startPowerOn(ResourceServer, zone, id)
+	startPowerOn(o.key, zone, func() (interface{}, error) {
+		return o.Read(context.Background(), zone, id)
+	})
 
 	return err
 }
@@ -205,10 +216,12 @@ func (o *ServerOp) Shutdown(ctx context.Context, zone string, id types.ID, shutd
 		return err
 	}
 	if !value.InstanceStatus.IsUp() {
-		return newErrorConflict(ResourceServer, id, "Shutdown is failed")
+		return newErrorConflict(o.key, id, "Shutdown is failed")
 	}
 
-	startPowerOff(ResourceServer, zone, id)
+	startPowerOff(o.key, zone, func() (interface{}, error) {
+		return o.Read(context.Background(), zone, id)
+	})
 
 	return err
 }
@@ -220,10 +233,12 @@ func (o *ServerOp) Reset(ctx context.Context, zone string, id types.ID) error {
 		return err
 	}
 	if !value.InstanceStatus.IsUp() {
-		return newErrorConflict(ResourceServer, id, "Reset is failed")
+		return newErrorConflict(o.key, id, "Reset is failed")
 	}
 
-	startPowerOn(ResourceServer, zone, id)
+	startPowerOn(o.key, zone, func() (interface{}, error) {
+		return o.Read(context.Background(), zone, id)
+	})
 
 	return nil
 }

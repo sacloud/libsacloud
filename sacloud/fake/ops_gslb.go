@@ -10,10 +10,12 @@ import (
 
 // Find is fake implementation
 func (o *GSLBOp) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) ([]*sacloud.GSLB, error) {
-	results, _ := find(ResourceGSLB, sacloud.DefaultZone, conditions)
+	results, _ := find(o.key, sacloud.DefaultZone, conditions)
 	var values []*sacloud.GSLB
 	for _, res := range results {
-		values = append(values, res.(*sacloud.GSLB))
+		dest := &sacloud.GSLB{}
+		copySameNameField(res, dest)
+		values = append(values, dest)
 	}
 	return values, nil
 }
@@ -41,9 +43,12 @@ func (o *GSLBOp) Create(ctx context.Context, zone string, param *sacloud.GSLBCre
 func (o *GSLBOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.GSLB, error) {
 	value := s.getGSLBByID(sacloud.DefaultZone, id)
 	if value == nil {
-		return nil, newErrorNotFound(ResourceGSLB, id)
+		return nil, newErrorNotFound(o.key, id)
 	}
-	return value, nil
+
+	dest := &sacloud.GSLB{}
+	copySameNameField(value, dest)
+	return dest, nil
 }
 
 // Update is fake implementation
@@ -63,6 +68,6 @@ func (o *GSLBOp) Delete(ctx context.Context, zone string, id types.ID) error {
 	if err != nil {
 		return err
 	}
-	s.delete(ResourceGSLB, sacloud.DefaultZone, id)
+	s.delete(o.key, sacloud.DefaultZone, id)
 	return nil
 }

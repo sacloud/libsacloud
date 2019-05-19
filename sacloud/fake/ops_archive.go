@@ -10,10 +10,12 @@ import (
 
 // Find is fake implementation
 func (o *ArchiveOp) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) ([]*sacloud.Archive, error) {
-	results, _ := find(ResourceArchive, zone, conditions)
+	results, _ := find(o.key, zone, conditions)
 	var values []*sacloud.Archive
 	for _, res := range results {
-		values = append(values, res.(*sacloud.Archive))
+		dest := &sacloud.Archive{}
+		copySameNameField(res, dest)
+		values = append(values, dest)
 	}
 	return values, nil
 }
@@ -28,7 +30,7 @@ func (o *ArchiveOp) Create(ctx context.Context, zone string, param *sacloud.Arch
 	if !param.SourceArchiveID.IsEmpty() {
 		source, err := o.Read(ctx, zone, param.SourceArchiveID)
 		if err != nil {
-			return nil, newErrorBadRequest(ResourceArchive, types.ID(0), "SourceArchive is not found")
+			return nil, newErrorBadRequest(o.key, types.ID(0), "SourceArchive is not found")
 		}
 		result.SourceArchiveAvailability = source.Availability
 	}
@@ -36,7 +38,7 @@ func (o *ArchiveOp) Create(ctx context.Context, zone string, param *sacloud.Arch
 		diskOp := NewDiskOp()
 		source, err := diskOp.Read(ctx, zone, param.SourceDiskID)
 		if err != nil {
-			return nil, newErrorBadRequest(ResourceArchive, types.ID(0), "SourceDisk is not found")
+			return nil, newErrorBadRequest(o.key, types.ID(0), "SourceDisk is not found")
 		}
 		result.SourceDiskAvailability = source.Availability
 	}
@@ -48,7 +50,11 @@ func (o *ArchiveOp) Create(ctx context.Context, zone string, param *sacloud.Arch
 	result.DiskPlanStorageClass = "iscsi9999"
 
 	s.setArchive(zone, result)
-	go startDiskCopy(ResourceArchive, zone, result.ID)
+
+	id := result.ID
+	startDiskCopy(o.key, zone, func() (interface{}, error) {
+		return o.Read(context.Background(), zone, id)
+	})
 
 	return result, nil
 }
@@ -75,9 +81,11 @@ func (o *ArchiveOp) CreateBlank(ctx context.Context, zone string, param *sacloud
 func (o *ArchiveOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Archive, error) {
 	value := s.getArchiveByID(zone, id)
 	if value == nil {
-		return nil, newErrorNotFound(ResourceArchive, id)
+		return nil, newErrorNotFound(o.key, id)
 	}
-	return value, nil
+	dest := &sacloud.Archive{}
+	copySameNameField(value, dest)
+	return dest, nil
 }
 
 // Update is fake implementation
@@ -97,15 +105,15 @@ func (o *ArchiveOp) Delete(ctx context.Context, zone string, id types.ID) error 
 	if err != nil {
 		return err
 	}
-	s.delete(ResourceArchive, zone, id)
+	s.delete(o.key, zone, id)
 	return nil
 }
 
 // OpenFTP is fake implementation
 func (o *ArchiveOp) OpenFTP(ctx context.Context, zone string, id types.ID, openOption *sacloud.OpenFTPRequest) (*sacloud.FTPServer, error) {
-	value := s.getArchiveByID(zone, id)
-	if value == nil {
-		return nil, newErrorNotFound(ResourceArchive, id)
+	value, err := o.Read(ctx, zone, id)
+	if err != nil {
+		return nil, err
 	}
 
 	value.SetAvailability(types.Availabilities.Uploading)
@@ -121,10 +129,11 @@ func (o *ArchiveOp) OpenFTP(ctx context.Context, zone string, id types.ID, openO
 
 // CloseFTP is fake implementation
 func (o *ArchiveOp) CloseFTP(ctx context.Context, zone string, id types.ID) error {
-	value := s.getArchiveByID(zone, id)
-	if value == nil {
-		return newErrorNotFound(ResourceArchive, id)
+	value, err := o.Read(ctx, zone, id)
+	if err != nil {
+		return err
 	}
+
 	if !value.Availability.IsUploading() {
 		value.SetAvailability(types.Availabilities.Available)
 	}
