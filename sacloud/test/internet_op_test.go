@@ -76,6 +76,7 @@ var (
 		NetworkMaskLen: createInternetParam.NetworkMaskLen,
 		BandWidthMbps:  createInternetParam.BandWidthMbps,
 	}
+	vpcRouterDeleted = false
 )
 
 func testInternetCreate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
@@ -94,11 +95,18 @@ func testInternetUpdate(testContext *CRUDTestContext, caller sacloud.APICaller) 
 
 func testInternetDelete(testContext *CRUDTestContext, caller sacloud.APICaller) error {
 	client := sacloud.NewInternetOp(caller)
-	return client.Delete(context.Background(), testZone, testContext.ID)
+	err := client.Delete(context.Background(), testZone, testContext.ID)
+	if err == nil {
+		vpcRouterDeleted = true
+	}
+	return err
 }
 
 func readInternet(id types.ID, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewInternetOp(caller)
+	if vpcRouterDeleted {
+		return client.Read(context.Background(), testZone, id)
+	}
 	// TODO スイッチ+ルータ作成後しばらくは404が返ってくる問題にどう対応するか?
 	max := 30
 	for {
