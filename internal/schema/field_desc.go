@@ -12,6 +12,7 @@ type FieldDesc struct {
 	Name            string
 	Tags            *FieldTags
 	Type            meta.Type
+	Description     string            // TODO 現在は未使用
 	ExtendAccessors []*ExtendAccessor // 拡張アクセッサ、Get+指定の名前、Set+指定の名前で拡張アクセッサコードが生成される
 }
 

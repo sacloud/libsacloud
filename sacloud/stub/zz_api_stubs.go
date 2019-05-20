@@ -766,6 +766,167 @@ func (s *InterfaceStub) DisconnectFromPacketFilter(ctx context.Context, zone str
 }
 
 /*************************************************
+* InternetStub
+*************************************************/
+
+// InternetFindResult is expected values of the Find operation
+type InternetFindResult struct {
+	Internets []*sacloud.Internet
+	Err       error
+}
+
+// InternetCreateResult is expected values of the Create operation
+type InternetCreateResult struct {
+	Internet *sacloud.Internet
+	Err      error
+}
+
+// InternetReadResult is expected values of the Read operation
+type InternetReadResult struct {
+	Internet *sacloud.Internet
+	Err      error
+}
+
+// InternetUpdateResult is expected values of the Update operation
+type InternetUpdateResult struct {
+	Internet *sacloud.Internet
+	Err      error
+}
+
+// InternetDeleteResult is expected values of the Delete operation
+type InternetDeleteResult struct {
+	Err error
+}
+
+// InternetUpdateBandWidthResult is expected values of the UpdateBandWidth operation
+type InternetUpdateBandWidthResult struct {
+	Internet *sacloud.Internet
+	Err      error
+}
+
+// InternetAddSubnetResult is expected values of the AddSubnet operation
+type InternetAddSubnetResult struct {
+	Subnet *sacloud.InternetSubnetOperationResult
+	Err    error
+}
+
+// InternetUpdateSubnetResult is expected values of the UpdateSubnet operation
+type InternetUpdateSubnetResult struct {
+	Subnet *sacloud.InternetSubnetOperationResult
+	Err    error
+}
+
+// InternetDeleteSubnetResult is expected values of the DeleteSubnet operation
+type InternetDeleteSubnetResult struct {
+	Err error
+}
+
+// InternetMonitorResult is expected values of the Monitor operation
+type InternetMonitorResult struct {
+	Data *sacloud.RouterActivity
+	Err  error
+}
+
+// InternetStub is for trace InternetOp operations
+type InternetStub struct {
+	FindResult            *InternetFindResult
+	CreateResult          *InternetCreateResult
+	ReadResult            *InternetReadResult
+	UpdateResult          *InternetUpdateResult
+	DeleteResult          *InternetDeleteResult
+	UpdateBandWidthResult *InternetUpdateBandWidthResult
+	AddSubnetResult       *InternetAddSubnetResult
+	UpdateSubnetResult    *InternetUpdateSubnetResult
+	DeleteSubnetResult    *InternetDeleteSubnetResult
+	MonitorResult         *InternetMonitorResult
+}
+
+// NewInternetStub creates new InternetStub instance
+func NewInternetStub(caller sacloud.APICaller) sacloud.InternetAPI {
+	return &InternetStub{}
+}
+
+// Find is API call with trace log
+func (s *InternetStub) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) ([]*sacloud.Internet, error) {
+	if s.FindResult == nil {
+		log.Fatal("InternetStub.FindResult is not set")
+	}
+	return s.FindResult.Internets, s.FindResult.Err
+}
+
+// Create is API call with trace log
+func (s *InternetStub) Create(ctx context.Context, zone string, param *sacloud.InternetCreateRequest) (*sacloud.Internet, error) {
+	if s.CreateResult == nil {
+		log.Fatal("InternetStub.CreateResult is not set")
+	}
+	return s.CreateResult.Internet, s.CreateResult.Err
+}
+
+// Read is API call with trace log
+func (s *InternetStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Internet, error) {
+	if s.ReadResult == nil {
+		log.Fatal("InternetStub.ReadResult is not set")
+	}
+	return s.ReadResult.Internet, s.ReadResult.Err
+}
+
+// Update is API call with trace log
+func (s *InternetStub) Update(ctx context.Context, zone string, id types.ID, param *sacloud.InternetUpdateRequest) (*sacloud.Internet, error) {
+	if s.UpdateResult == nil {
+		log.Fatal("InternetStub.UpdateResult is not set")
+	}
+	return s.UpdateResult.Internet, s.UpdateResult.Err
+}
+
+// Delete is API call with trace log
+func (s *InternetStub) Delete(ctx context.Context, zone string, id types.ID) error {
+	if s.DeleteResult == nil {
+		log.Fatal("InternetStub.DeleteResult is not set")
+	}
+	return s.DeleteResult.Err
+}
+
+// UpdateBandWidth is API call with trace log
+func (s *InternetStub) UpdateBandWidth(ctx context.Context, zone string, id types.ID, param *sacloud.InternetUpdateBandWidthRequest) (*sacloud.Internet, error) {
+	if s.UpdateBandWidthResult == nil {
+		log.Fatal("InternetStub.UpdateBandWidthResult is not set")
+	}
+	return s.UpdateBandWidthResult.Internet, s.UpdateBandWidthResult.Err
+}
+
+// AddSubnet is API call with trace log
+func (s *InternetStub) AddSubnet(ctx context.Context, zone string, id types.ID, param *sacloud.InternetAddSubnetRequest) (*sacloud.InternetSubnetOperationResult, error) {
+	if s.AddSubnetResult == nil {
+		log.Fatal("InternetStub.AddSubnetResult is not set")
+	}
+	return s.AddSubnetResult.Subnet, s.AddSubnetResult.Err
+}
+
+// UpdateSubnet is API call with trace log
+func (s *InternetStub) UpdateSubnet(ctx context.Context, zone string, id types.ID, subnetID types.ID, param *sacloud.InternetUpdateSubnetRequest) (*sacloud.InternetSubnetOperationResult, error) {
+	if s.UpdateSubnetResult == nil {
+		log.Fatal("InternetStub.UpdateSubnetResult is not set")
+	}
+	return s.UpdateSubnetResult.Subnet, s.UpdateSubnetResult.Err
+}
+
+// DeleteSubnet is API call with trace log
+func (s *InternetStub) DeleteSubnet(ctx context.Context, zone string, id types.ID, subnetID types.ID) error {
+	if s.DeleteSubnetResult == nil {
+		log.Fatal("InternetStub.DeleteSubnetResult is not set")
+	}
+	return s.DeleteSubnetResult.Err
+}
+
+// Monitor is API call with trace log
+func (s *InternetStub) Monitor(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.RouterActivity, error) {
+	if s.MonitorResult == nil {
+		log.Fatal("InternetStub.MonitorResult is not set")
+	}
+	return s.MonitorResult.Data, s.MonitorResult.Err
+}
+
+/*************************************************
 * LoadBalancerStub
 *************************************************/
 

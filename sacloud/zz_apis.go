@@ -96,6 +96,24 @@ type InterfaceAPI interface {
 }
 
 /*************************************************
+* InternetAPI
+*************************************************/
+
+// InternetAPI is interface for operate Internet resource
+type InternetAPI interface {
+	Find(ctx context.Context, zone string, conditions *FindCondition) ([]*Internet, error)
+	Create(ctx context.Context, zone string, param *InternetCreateRequest) (*Internet, error)
+	Read(ctx context.Context, zone string, id types.ID) (*Internet, error)
+	Update(ctx context.Context, zone string, id types.ID, param *InternetUpdateRequest) (*Internet, error)
+	Delete(ctx context.Context, zone string, id types.ID) error
+	UpdateBandWidth(ctx context.Context, zone string, id types.ID, param *InternetUpdateBandWidthRequest) (*Internet, error)
+	AddSubnet(ctx context.Context, zone string, id types.ID, param *InternetAddSubnetRequest) (*InternetSubnetOperationResult, error)
+	UpdateSubnet(ctx context.Context, zone string, id types.ID, subnetID types.ID, param *InternetUpdateSubnetRequest) (*InternetSubnetOperationResult, error)
+	DeleteSubnet(ctx context.Context, zone string, id types.ID, subnetID types.ID) error
+	Monitor(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*RouterActivity, error)
+}
+
+/*************************************************
 * LoadBalancerAPI
 *************************************************/
 

@@ -523,3 +523,120 @@ func (m *modelsDef) packetFilterExpressions() *schema.Model {
 		},
 	}
 }
+
+func (m *modelsDef) internetModel() *schema.Model {
+	return &schema.Model{
+		Name:      "Internet",
+		NakedType: meta.Static(naked.Internet{}),
+		Fields: []*schema.FieldDesc{
+			fields.ID(),
+			fields.Name(),
+			fields.Description(),
+			fields.Tags(),
+			fields.IconID(),
+			fields.CreatedAt(),
+			fields.BandWidthMbps(),
+			fields.NetworkMaskLen(),
+			{
+				Name: "Switch",
+				Type: m.switchInfoModel(),
+				Tags: &schema.FieldTags{
+					MapConv: ",recursive",
+				},
+			},
+		},
+	}
+}
+
+// switchInfoModel Internetリソースのフィールドとしてのswitch
+//
+// Subnetの情報は限定的にしか返ってこない(IPAddresses.Max/Minなどがない)ため注意
+// 必要であればSwitchリソース配下のSubnetsを参照すればOK
+func (m *modelsDef) switchInfoModel() *schema.Model {
+	return &schema.Model{
+		Name:      "SwitchInfo",
+		NakedType: meta.Static(naked.Switch{}),
+		Fields: []*schema.FieldDesc{
+			fields.ID(),
+			fields.Name(),
+			fields.Description(),
+			fields.Tags(),
+			fields.Scope(),
+			{
+				Name: "Subnets",
+				Type: m.internetSubnet(),
+				Tags: &schema.FieldTags{
+					MapConv: "[]Subnets,recursive",
+				},
+			},
+		},
+	}
+}
+
+func (m *modelsDef) internetSubnet() *schema.Model {
+	return &schema.Model{
+		Name:      "InternetSubnet",
+		NakedType: meta.Static(naked.Subnet{}),
+		IsArray:   true,
+		Fields: []*schema.FieldDesc{
+			fields.ID(),
+			fields.DefaultRoute(),
+			fields.NextHop(),
+			fields.StaticRoute(),
+			fields.NetworkAddress(),
+			fields.NetworkMaskLen(),
+		},
+	}
+}
+
+// internetSubnetOperationResult Internetリソースへのサブネット追加/更新時の戻り値
+//
+// internetSubnetに対しIPAddresses(文字列配列)を追加したもの
+func (m *modelsDef) internetSubnetOperationResult() *schema.Model {
+	return &schema.Model{
+		Name:      "InternetSubnetOperationResult",
+		NakedType: meta.Static(naked.Subnet{}),
+		Fields: []*schema.FieldDesc{
+			fields.ID(),
+			fields.DefaultRoute(),
+			fields.NextHop(),
+			fields.StaticRoute(),
+			fields.NetworkAddress(),
+			fields.NetworkMaskLen(),
+			{
+				Name: "IPAddresses",
+				Type: meta.TypeStringSlice,
+				Tags: &schema.FieldTags{
+					MapConv: "[]IPAddresses.IPAddress",
+				},
+			},
+		},
+	}
+}
+
+func (m *modelsDef) switchSubnet() *schema.Model {
+	// switchSubnetはinternetSubnetにInternetとIPAddressesを追加したもの
+	subnet := m.internetSubnet()
+	subnet.Name = "SwitchSubnet"
+	subnet.Fields = append(subnet.Fields,
+		&schema.FieldDesc{
+			Name: "Internet",
+			Type: m.internetModel(),
+		},
+		&schema.FieldDesc{
+			Name: "AssignedIPAddressMax",
+			Type: meta.TypeString,
+			Tags: &schema.FieldTags{
+				MapConv: "IPAddresses.Max",
+			},
+		},
+		&schema.FieldDesc{
+			Name: "AssignedIPAddressMin",
+			Type: meta.TypeString,
+			Tags: &schema.FieldTags{
+				MapConv: "IPAddresses.Min",
+			},
+		},
+	)
+	return subnet
+}

@@ -23,6 +23,14 @@ func init() {
 			fields.Scope(),
 			fields.UserSubnetNetworkMaskLen(),
 			fields.UserSubnetDefaultRoute(),
+			{
+				Name: "Subnets",
+				Type: models.switchSubnet(),
+				Tags: &schema.FieldTags{
+					MapConv: "[]Subnets,omitempty,recursive",
+					JSON:    ",omitempty",
+				},
+			},
 		},
 	}
 

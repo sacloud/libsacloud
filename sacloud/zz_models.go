@@ -3261,6 +3261,867 @@ func (o *MonitorInterfaceValue) convertFrom(naked *naked.MonitorInterfaceValue) 
 }
 
 /*************************************************
+* Internet
+*************************************************/
+
+// Internet represents API parameter/response structure
+type Internet struct {
+	ID             types.ID
+	Name           string `validate:"required"`
+	Description    string `validate:"min=0,max=512"`
+	Tags           []string
+	IconID         types.ID `mapconv:"Icon.ID"`
+	CreatedAt      time.Time
+	BandWidthMbps  int
+	NetworkMaskLen int         `validate:"min=24,max=28"`
+	Switch         *SwitchInfo `mapconv:",recursive"`
+}
+
+// Validate validates by field tags
+func (o *Internet) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetID returns value of ID
+func (o *Internet) GetID() types.ID {
+	return o.ID
+}
+
+// SetID sets value to ID
+func (o *Internet) SetID(v types.ID) {
+	o.ID = v
+}
+
+// GetStringID gets value to StringID
+func (o *Internet) GetStringID() string {
+	return accessor.GetStringID(o)
+}
+
+// SetStringID sets value to StringID
+func (o *Internet) SetStringID(v string) {
+	accessor.SetStringID(o, v)
+}
+
+// GetInt64ID gets value to Int64ID
+func (o *Internet) GetInt64ID() int64 {
+	return accessor.GetInt64ID(o)
+}
+
+// SetInt64ID sets value to Int64ID
+func (o *Internet) SetInt64ID(v int64) {
+	accessor.SetInt64ID(o, v)
+}
+
+// GetName returns value of Name
+func (o *Internet) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *Internet) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *Internet) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *Internet) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetTags returns value of Tags
+func (o *Internet) GetTags() []string {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *Internet) SetTags(v []string) {
+	o.Tags = v
+}
+
+// GetIconID returns value of IconID
+func (o *Internet) GetIconID() types.ID {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *Internet) SetIconID(v types.ID) {
+	o.IconID = v
+}
+
+// GetCreatedAt returns value of CreatedAt
+func (o *Internet) GetCreatedAt() time.Time {
+	return o.CreatedAt
+}
+
+// SetCreatedAt sets value to CreatedAt
+func (o *Internet) SetCreatedAt(v time.Time) {
+	o.CreatedAt = v
+}
+
+// GetBandWidthMbps returns value of BandWidthMbps
+func (o *Internet) GetBandWidthMbps() int {
+	return o.BandWidthMbps
+}
+
+// SetBandWidthMbps sets value to BandWidthMbps
+func (o *Internet) SetBandWidthMbps(v int) {
+	o.BandWidthMbps = v
+}
+
+// GetNetworkMaskLen returns value of NetworkMaskLen
+func (o *Internet) GetNetworkMaskLen() int {
+	return o.NetworkMaskLen
+}
+
+// SetNetworkMaskLen sets value to NetworkMaskLen
+func (o *Internet) SetNetworkMaskLen(v int) {
+	o.NetworkMaskLen = v
+}
+
+// GetSwitch returns value of Switch
+func (o *Internet) GetSwitch() *SwitchInfo {
+	return o.Switch
+}
+
+// SetSwitch sets value to Switch
+func (o *Internet) SetSwitch(v *SwitchInfo) {
+	o.Switch = v
+}
+
+// convertTo returns naked Internet
+func (o *Internet) convertTo() (*naked.Internet, error) {
+	dest := &naked.Internet{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked Internet
+func (o *Internet) convertFrom(naked *naked.Internet) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* SwitchInfo
+*************************************************/
+
+// SwitchInfo represents API parameter/response structure
+type SwitchInfo struct {
+	ID          types.ID
+	Name        string `validate:"required"`
+	Description string `validate:"min=0,max=512"`
+	Tags        []string
+	Scope       types.EScope
+	Subnets     []*InternetSubnet `mapconv:"[]Subnets,recursive"`
+}
+
+// Validate validates by field tags
+func (o *SwitchInfo) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetID returns value of ID
+func (o *SwitchInfo) GetID() types.ID {
+	return o.ID
+}
+
+// SetID sets value to ID
+func (o *SwitchInfo) SetID(v types.ID) {
+	o.ID = v
+}
+
+// GetStringID gets value to StringID
+func (o *SwitchInfo) GetStringID() string {
+	return accessor.GetStringID(o)
+}
+
+// SetStringID sets value to StringID
+func (o *SwitchInfo) SetStringID(v string) {
+	accessor.SetStringID(o, v)
+}
+
+// GetInt64ID gets value to Int64ID
+func (o *SwitchInfo) GetInt64ID() int64 {
+	return accessor.GetInt64ID(o)
+}
+
+// SetInt64ID sets value to Int64ID
+func (o *SwitchInfo) SetInt64ID(v int64) {
+	accessor.SetInt64ID(o, v)
+}
+
+// GetName returns value of Name
+func (o *SwitchInfo) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *SwitchInfo) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *SwitchInfo) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *SwitchInfo) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetTags returns value of Tags
+func (o *SwitchInfo) GetTags() []string {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *SwitchInfo) SetTags(v []string) {
+	o.Tags = v
+}
+
+// GetScope returns value of Scope
+func (o *SwitchInfo) GetScope() types.EScope {
+	return o.Scope
+}
+
+// SetScope sets value to Scope
+func (o *SwitchInfo) SetScope(v types.EScope) {
+	o.Scope = v
+}
+
+// GetSubnets returns value of Subnets
+func (o *SwitchInfo) GetSubnets() []*InternetSubnet {
+	return o.Subnets
+}
+
+// SetSubnets sets value to Subnets
+func (o *SwitchInfo) SetSubnets(v []*InternetSubnet) {
+	o.Subnets = v
+}
+
+// convertTo returns naked SwitchInfo
+func (o *SwitchInfo) convertTo() (*naked.Switch, error) {
+	dest := &naked.Switch{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked SwitchInfo
+func (o *SwitchInfo) convertFrom(naked *naked.Switch) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* InternetSubnet
+*************************************************/
+
+// InternetSubnet represents API parameter/response structure
+type InternetSubnet struct {
+	ID             types.ID
+	DefaultRoute   string `validate:"ipv4"`
+	NextHop        string `validate:"ipv4"`
+	StaticRoute    string `validate:"ipv4"`
+	NetworkAddress string `validate:"ipv4"`
+	NetworkMaskLen int    `validate:"min=24,max=28"`
+}
+
+// Validate validates by field tags
+func (o *InternetSubnet) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetID returns value of ID
+func (o *InternetSubnet) GetID() types.ID {
+	return o.ID
+}
+
+// SetID sets value to ID
+func (o *InternetSubnet) SetID(v types.ID) {
+	o.ID = v
+}
+
+// GetStringID gets value to StringID
+func (o *InternetSubnet) GetStringID() string {
+	return accessor.GetStringID(o)
+}
+
+// SetStringID sets value to StringID
+func (o *InternetSubnet) SetStringID(v string) {
+	accessor.SetStringID(o, v)
+}
+
+// GetInt64ID gets value to Int64ID
+func (o *InternetSubnet) GetInt64ID() int64 {
+	return accessor.GetInt64ID(o)
+}
+
+// SetInt64ID sets value to Int64ID
+func (o *InternetSubnet) SetInt64ID(v int64) {
+	accessor.SetInt64ID(o, v)
+}
+
+// GetDefaultRoute returns value of DefaultRoute
+func (o *InternetSubnet) GetDefaultRoute() string {
+	return o.DefaultRoute
+}
+
+// SetDefaultRoute sets value to DefaultRoute
+func (o *InternetSubnet) SetDefaultRoute(v string) {
+	o.DefaultRoute = v
+}
+
+// GetNextHop returns value of NextHop
+func (o *InternetSubnet) GetNextHop() string {
+	return o.NextHop
+}
+
+// SetNextHop sets value to NextHop
+func (o *InternetSubnet) SetNextHop(v string) {
+	o.NextHop = v
+}
+
+// GetStaticRoute returns value of StaticRoute
+func (o *InternetSubnet) GetStaticRoute() string {
+	return o.StaticRoute
+}
+
+// SetStaticRoute sets value to StaticRoute
+func (o *InternetSubnet) SetStaticRoute(v string) {
+	o.StaticRoute = v
+}
+
+// GetNetworkAddress returns value of NetworkAddress
+func (o *InternetSubnet) GetNetworkAddress() string {
+	return o.NetworkAddress
+}
+
+// SetNetworkAddress sets value to NetworkAddress
+func (o *InternetSubnet) SetNetworkAddress(v string) {
+	o.NetworkAddress = v
+}
+
+// GetNetworkMaskLen returns value of NetworkMaskLen
+func (o *InternetSubnet) GetNetworkMaskLen() int {
+	return o.NetworkMaskLen
+}
+
+// SetNetworkMaskLen sets value to NetworkMaskLen
+func (o *InternetSubnet) SetNetworkMaskLen(v int) {
+	o.NetworkMaskLen = v
+}
+
+// convertTo returns naked InternetSubnet
+func (o *InternetSubnet) convertTo() (*naked.Subnet, error) {
+	dest := &naked.Subnet{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked InternetSubnet
+func (o *InternetSubnet) convertFrom(naked *naked.Subnet) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* InternetCreateRequest
+*************************************************/
+
+// InternetCreateRequest represents API parameter/response structure
+type InternetCreateRequest struct {
+	Name           string `validate:"required"`
+	Description    string `validate:"min=0,max=512"`
+	Tags           []string
+	IconID         types.ID `mapconv:"Icon.ID"`
+	NetworkMaskLen int      `validate:"min=24,max=28"`
+	BandWidthMbps  int
+}
+
+// Validate validates by field tags
+func (o *InternetCreateRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetName returns value of Name
+func (o *InternetCreateRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *InternetCreateRequest) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *InternetCreateRequest) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *InternetCreateRequest) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetTags returns value of Tags
+func (o *InternetCreateRequest) GetTags() []string {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *InternetCreateRequest) SetTags(v []string) {
+	o.Tags = v
+}
+
+// GetIconID returns value of IconID
+func (o *InternetCreateRequest) GetIconID() types.ID {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *InternetCreateRequest) SetIconID(v types.ID) {
+	o.IconID = v
+}
+
+// GetNetworkMaskLen returns value of NetworkMaskLen
+func (o *InternetCreateRequest) GetNetworkMaskLen() int {
+	return o.NetworkMaskLen
+}
+
+// SetNetworkMaskLen sets value to NetworkMaskLen
+func (o *InternetCreateRequest) SetNetworkMaskLen(v int) {
+	o.NetworkMaskLen = v
+}
+
+// GetBandWidthMbps returns value of BandWidthMbps
+func (o *InternetCreateRequest) GetBandWidthMbps() int {
+	return o.BandWidthMbps
+}
+
+// SetBandWidthMbps sets value to BandWidthMbps
+func (o *InternetCreateRequest) SetBandWidthMbps(v int) {
+	o.BandWidthMbps = v
+}
+
+// convertTo returns naked InternetCreateRequest
+func (o *InternetCreateRequest) convertTo() (*naked.Internet, error) {
+	dest := &naked.Internet{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked InternetCreateRequest
+func (o *InternetCreateRequest) convertFrom(naked *naked.Internet) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* InternetUpdateRequest
+*************************************************/
+
+// InternetUpdateRequest represents API parameter/response structure
+type InternetUpdateRequest struct {
+	Name        string `validate:"required"`
+	Description string `validate:"min=0,max=512"`
+	Tags        []string
+	IconID      types.ID `mapconv:"Icon.ID"`
+}
+
+// Validate validates by field tags
+func (o *InternetUpdateRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetName returns value of Name
+func (o *InternetUpdateRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *InternetUpdateRequest) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *InternetUpdateRequest) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *InternetUpdateRequest) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetTags returns value of Tags
+func (o *InternetUpdateRequest) GetTags() []string {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *InternetUpdateRequest) SetTags(v []string) {
+	o.Tags = v
+}
+
+// GetIconID returns value of IconID
+func (o *InternetUpdateRequest) GetIconID() types.ID {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *InternetUpdateRequest) SetIconID(v types.ID) {
+	o.IconID = v
+}
+
+// convertTo returns naked InternetUpdateRequest
+func (o *InternetUpdateRequest) convertTo() (*naked.Internet, error) {
+	dest := &naked.Internet{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked InternetUpdateRequest
+func (o *InternetUpdateRequest) convertFrom(naked *naked.Internet) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* InternetUpdateBandWidthRequest
+*************************************************/
+
+// InternetUpdateBandWidthRequest represents API parameter/response structure
+type InternetUpdateBandWidthRequest struct {
+	BandWidthMbps int
+}
+
+// Validate validates by field tags
+func (o *InternetUpdateBandWidthRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetBandWidthMbps returns value of BandWidthMbps
+func (o *InternetUpdateBandWidthRequest) GetBandWidthMbps() int {
+	return o.BandWidthMbps
+}
+
+// SetBandWidthMbps sets value to BandWidthMbps
+func (o *InternetUpdateBandWidthRequest) SetBandWidthMbps(v int) {
+	o.BandWidthMbps = v
+}
+
+// convertTo returns naked InternetUpdateBandWidthRequest
+func (o *InternetUpdateBandWidthRequest) convertTo() (*naked.Internet, error) {
+	dest := &naked.Internet{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked InternetUpdateBandWidthRequest
+func (o *InternetUpdateBandWidthRequest) convertFrom(naked *naked.Internet) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* InternetSubnetOperationResult
+*************************************************/
+
+// InternetSubnetOperationResult represents API parameter/response structure
+type InternetSubnetOperationResult struct {
+	ID             types.ID
+	DefaultRoute   string   `validate:"ipv4"`
+	NextHop        string   `validate:"ipv4"`
+	StaticRoute    string   `validate:"ipv4"`
+	NetworkAddress string   `validate:"ipv4"`
+	NetworkMaskLen int      `validate:"min=24,max=28"`
+	IPAddresses    []string `mapconv:"[]IPAddresses.IPAddress"`
+}
+
+// Validate validates by field tags
+func (o *InternetSubnetOperationResult) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetID returns value of ID
+func (o *InternetSubnetOperationResult) GetID() types.ID {
+	return o.ID
+}
+
+// SetID sets value to ID
+func (o *InternetSubnetOperationResult) SetID(v types.ID) {
+	o.ID = v
+}
+
+// GetStringID gets value to StringID
+func (o *InternetSubnetOperationResult) GetStringID() string {
+	return accessor.GetStringID(o)
+}
+
+// SetStringID sets value to StringID
+func (o *InternetSubnetOperationResult) SetStringID(v string) {
+	accessor.SetStringID(o, v)
+}
+
+// GetInt64ID gets value to Int64ID
+func (o *InternetSubnetOperationResult) GetInt64ID() int64 {
+	return accessor.GetInt64ID(o)
+}
+
+// SetInt64ID sets value to Int64ID
+func (o *InternetSubnetOperationResult) SetInt64ID(v int64) {
+	accessor.SetInt64ID(o, v)
+}
+
+// GetDefaultRoute returns value of DefaultRoute
+func (o *InternetSubnetOperationResult) GetDefaultRoute() string {
+	return o.DefaultRoute
+}
+
+// SetDefaultRoute sets value to DefaultRoute
+func (o *InternetSubnetOperationResult) SetDefaultRoute(v string) {
+	o.DefaultRoute = v
+}
+
+// GetNextHop returns value of NextHop
+func (o *InternetSubnetOperationResult) GetNextHop() string {
+	return o.NextHop
+}
+
+// SetNextHop sets value to NextHop
+func (o *InternetSubnetOperationResult) SetNextHop(v string) {
+	o.NextHop = v
+}
+
+// GetStaticRoute returns value of StaticRoute
+func (o *InternetSubnetOperationResult) GetStaticRoute() string {
+	return o.StaticRoute
+}
+
+// SetStaticRoute sets value to StaticRoute
+func (o *InternetSubnetOperationResult) SetStaticRoute(v string) {
+	o.StaticRoute = v
+}
+
+// GetNetworkAddress returns value of NetworkAddress
+func (o *InternetSubnetOperationResult) GetNetworkAddress() string {
+	return o.NetworkAddress
+}
+
+// SetNetworkAddress sets value to NetworkAddress
+func (o *InternetSubnetOperationResult) SetNetworkAddress(v string) {
+	o.NetworkAddress = v
+}
+
+// GetNetworkMaskLen returns value of NetworkMaskLen
+func (o *InternetSubnetOperationResult) GetNetworkMaskLen() int {
+	return o.NetworkMaskLen
+}
+
+// SetNetworkMaskLen sets value to NetworkMaskLen
+func (o *InternetSubnetOperationResult) SetNetworkMaskLen(v int) {
+	o.NetworkMaskLen = v
+}
+
+// GetIPAddresses returns value of IPAddresses
+func (o *InternetSubnetOperationResult) GetIPAddresses() []string {
+	return o.IPAddresses
+}
+
+// SetIPAddresses sets value to IPAddresses
+func (o *InternetSubnetOperationResult) SetIPAddresses(v []string) {
+	o.IPAddresses = v
+}
+
+// convertTo returns naked InternetSubnetOperationResult
+func (o *InternetSubnetOperationResult) convertTo() (*naked.Subnet, error) {
+	dest := &naked.Subnet{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked InternetSubnetOperationResult
+func (o *InternetSubnetOperationResult) convertFrom(naked *naked.Subnet) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* InternetAddSubnetRequest
+*************************************************/
+
+// InternetAddSubnetRequest represents API parameter/response structure
+type InternetAddSubnetRequest struct {
+	NetworkMaskLen int    `validate:"min=24,max=28"`
+	NextHop        string `validate:"ipv4"`
+}
+
+// Validate validates by field tags
+func (o *InternetAddSubnetRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetNetworkMaskLen returns value of NetworkMaskLen
+func (o *InternetAddSubnetRequest) GetNetworkMaskLen() int {
+	return o.NetworkMaskLen
+}
+
+// SetNetworkMaskLen sets value to NetworkMaskLen
+func (o *InternetAddSubnetRequest) SetNetworkMaskLen(v int) {
+	o.NetworkMaskLen = v
+}
+
+// GetNextHop returns value of NextHop
+func (o *InternetAddSubnetRequest) GetNextHop() string {
+	return o.NextHop
+}
+
+// SetNextHop sets value to NextHop
+func (o *InternetAddSubnetRequest) SetNextHop(v string) {
+	o.NextHop = v
+}
+
+// convertTo returns naked InternetAddSubnetRequest
+func (o *InternetAddSubnetRequest) convertTo() (*naked.SubnetOperationRequest, error) {
+	dest := &naked.SubnetOperationRequest{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked InternetAddSubnetRequest
+func (o *InternetAddSubnetRequest) convertFrom(naked *naked.SubnetOperationRequest) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* InternetUpdateSubnetRequest
+*************************************************/
+
+// InternetUpdateSubnetRequest represents API parameter/response structure
+type InternetUpdateSubnetRequest struct {
+	NextHop string `validate:"ipv4"`
+}
+
+// Validate validates by field tags
+func (o *InternetUpdateSubnetRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetNextHop returns value of NextHop
+func (o *InternetUpdateSubnetRequest) GetNextHop() string {
+	return o.NextHop
+}
+
+// SetNextHop sets value to NextHop
+func (o *InternetUpdateSubnetRequest) SetNextHop(v string) {
+	o.NextHop = v
+}
+
+// convertTo returns naked InternetUpdateSubnetRequest
+func (o *InternetUpdateSubnetRequest) convertTo() (*naked.SubnetOperationRequest, error) {
+	dest := &naked.SubnetOperationRequest{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked InternetUpdateSubnetRequest
+func (o *InternetUpdateSubnetRequest) convertFrom(naked *naked.SubnetOperationRequest) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* RouterActivity
+*************************************************/
+
+// RouterActivity represents API parameter/response structure
+type RouterActivity struct {
+	Values []*MonitorRouterValue `mapconv:"[]Router"`
+}
+
+// Validate validates by field tags
+func (o *RouterActivity) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetValues returns value of Values
+func (o *RouterActivity) GetValues() []*MonitorRouterValue {
+	return o.Values
+}
+
+// SetValues sets value to Values
+func (o *RouterActivity) SetValues(v []*MonitorRouterValue) {
+	o.Values = v
+}
+
+// convertTo returns naked RouterActivity
+func (o *RouterActivity) convertTo() (*naked.MonitorValues, error) {
+	dest := &naked.MonitorValues{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked RouterActivity
+func (o *RouterActivity) convertFrom(naked *naked.MonitorValues) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* MonitorRouterValue
+*************************************************/
+
+// MonitorRouterValue represents API parameter/response structure
+type MonitorRouterValue struct {
+	Time time.Time `json:",omitempty" mapconv:",omitempty"`
+	In   float64   `json:",omitempty" mapconv:",omitempty"`
+	Out  float64   `json:",omitempty" mapconv:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *MonitorRouterValue) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetTime returns value of Time
+func (o *MonitorRouterValue) GetTime() time.Time {
+	return o.Time
+}
+
+// SetTime sets value to Time
+func (o *MonitorRouterValue) SetTime(v time.Time) {
+	o.Time = v
+}
+
+// GetIn returns value of In
+func (o *MonitorRouterValue) GetIn() float64 {
+	return o.In
+}
+
+// SetIn sets value to In
+func (o *MonitorRouterValue) SetIn(v float64) {
+	o.In = v
+}
+
+// GetOut returns value of Out
+func (o *MonitorRouterValue) GetOut() float64 {
+	return o.Out
+}
+
+// SetOut sets value to Out
+func (o *MonitorRouterValue) SetOut(v float64) {
+	o.Out = v
+}
+
+// convertTo returns naked MonitorRouterValue
+func (o *MonitorRouterValue) convertTo() (*naked.MonitorRouterValue, error) {
+	dest := &naked.MonitorRouterValue{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked MonitorRouterValue
+func (o *MonitorRouterValue) convertFrom(naked *naked.MonitorRouterValue) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
 * LoadBalancer
 *************************************************/
 
@@ -6591,8 +7452,9 @@ type Switch struct {
 	CreatedAt      time.Time
 	ModifiedAt     time.Time
 	Scope          types.EScope
-	NetworkMaskLen int    `mapconv:"UserSubnet.NetworkMaskLen" validate:"min=1,max=32"`
-	DefaultRoute   string `mapconv:"UserSubnet.DefaultRoute" validate:"ipv4"`
+	NetworkMaskLen int             `mapconv:"UserSubnet.NetworkMaskLen" validate:"min=1,max=32"`
+	DefaultRoute   string          `mapconv:"UserSubnet.DefaultRoute" validate:"ipv4"`
+	Subnets        []*SwitchSubnet `json:",omitempty" mapconv:"[]Subnets,omitempty,recursive"`
 }
 
 // Validate validates by field tags
@@ -6720,6 +7582,16 @@ func (o *Switch) SetDefaultRoute(v string) {
 	o.DefaultRoute = v
 }
 
+// GetSubnets returns value of Subnets
+func (o *Switch) GetSubnets() []*SwitchSubnet {
+	return o.Subnets
+}
+
+// SetSubnets sets value to Subnets
+func (o *Switch) SetSubnets(v []*SwitchSubnet) {
+	o.Subnets = v
+}
+
 // convertTo returns naked Switch
 func (o *Switch) convertTo() (*naked.Switch, error) {
 	dest := &naked.Switch{}
@@ -6729,6 +7601,150 @@ func (o *Switch) convertTo() (*naked.Switch, error) {
 
 // convertFrom parse values from naked Switch
 func (o *Switch) convertFrom(naked *naked.Switch) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* SwitchSubnet
+*************************************************/
+
+// SwitchSubnet represents API parameter/response structure
+type SwitchSubnet struct {
+	ID                   types.ID
+	DefaultRoute         string `validate:"ipv4"`
+	NextHop              string `validate:"ipv4"`
+	StaticRoute          string `validate:"ipv4"`
+	NetworkAddress       string `validate:"ipv4"`
+	NetworkMaskLen       int    `validate:"min=24,max=28"`
+	Internet             *Internet
+	AssignedIPAddressMax string `mapconv:"IPAddresses.Max"`
+	AssignedIPAddressMin string `mapconv:"IPAddresses.Min"`
+}
+
+// Validate validates by field tags
+func (o *SwitchSubnet) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetID returns value of ID
+func (o *SwitchSubnet) GetID() types.ID {
+	return o.ID
+}
+
+// SetID sets value to ID
+func (o *SwitchSubnet) SetID(v types.ID) {
+	o.ID = v
+}
+
+// GetStringID gets value to StringID
+func (o *SwitchSubnet) GetStringID() string {
+	return accessor.GetStringID(o)
+}
+
+// SetStringID sets value to StringID
+func (o *SwitchSubnet) SetStringID(v string) {
+	accessor.SetStringID(o, v)
+}
+
+// GetInt64ID gets value to Int64ID
+func (o *SwitchSubnet) GetInt64ID() int64 {
+	return accessor.GetInt64ID(o)
+}
+
+// SetInt64ID sets value to Int64ID
+func (o *SwitchSubnet) SetInt64ID(v int64) {
+	accessor.SetInt64ID(o, v)
+}
+
+// GetDefaultRoute returns value of DefaultRoute
+func (o *SwitchSubnet) GetDefaultRoute() string {
+	return o.DefaultRoute
+}
+
+// SetDefaultRoute sets value to DefaultRoute
+func (o *SwitchSubnet) SetDefaultRoute(v string) {
+	o.DefaultRoute = v
+}
+
+// GetNextHop returns value of NextHop
+func (o *SwitchSubnet) GetNextHop() string {
+	return o.NextHop
+}
+
+// SetNextHop sets value to NextHop
+func (o *SwitchSubnet) SetNextHop(v string) {
+	o.NextHop = v
+}
+
+// GetStaticRoute returns value of StaticRoute
+func (o *SwitchSubnet) GetStaticRoute() string {
+	return o.StaticRoute
+}
+
+// SetStaticRoute sets value to StaticRoute
+func (o *SwitchSubnet) SetStaticRoute(v string) {
+	o.StaticRoute = v
+}
+
+// GetNetworkAddress returns value of NetworkAddress
+func (o *SwitchSubnet) GetNetworkAddress() string {
+	return o.NetworkAddress
+}
+
+// SetNetworkAddress sets value to NetworkAddress
+func (o *SwitchSubnet) SetNetworkAddress(v string) {
+	o.NetworkAddress = v
+}
+
+// GetNetworkMaskLen returns value of NetworkMaskLen
+func (o *SwitchSubnet) GetNetworkMaskLen() int {
+	return o.NetworkMaskLen
+}
+
+// SetNetworkMaskLen sets value to NetworkMaskLen
+func (o *SwitchSubnet) SetNetworkMaskLen(v int) {
+	o.NetworkMaskLen = v
+}
+
+// GetInternet returns value of Internet
+func (o *SwitchSubnet) GetInternet() *Internet {
+	return o.Internet
+}
+
+// SetInternet sets value to Internet
+func (o *SwitchSubnet) SetInternet(v *Internet) {
+	o.Internet = v
+}
+
+// GetAssignedIPAddressMax returns value of AssignedIPAddressMax
+func (o *SwitchSubnet) GetAssignedIPAddressMax() string {
+	return o.AssignedIPAddressMax
+}
+
+// SetAssignedIPAddressMax sets value to AssignedIPAddressMax
+func (o *SwitchSubnet) SetAssignedIPAddressMax(v string) {
+	o.AssignedIPAddressMax = v
+}
+
+// GetAssignedIPAddressMin returns value of AssignedIPAddressMin
+func (o *SwitchSubnet) GetAssignedIPAddressMin() string {
+	return o.AssignedIPAddressMin
+}
+
+// SetAssignedIPAddressMin sets value to AssignedIPAddressMin
+func (o *SwitchSubnet) SetAssignedIPAddressMin(v string) {
+	o.AssignedIPAddressMin = v
+}
+
+// convertTo returns naked SwitchSubnet
+func (o *SwitchSubnet) convertTo() (*naked.Subnet, error) {
+	dest := &naked.Subnet{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked SwitchSubnet
+func (o *SwitchSubnet) convertFrom(naked *naked.Subnet) error {
 	return mapconv.ConvertFrom(naked, o)
 }
 

@@ -17,10 +17,10 @@ type GSLB struct {
 	ModifiedAt   *time.Time          `json:",omitempty" yaml:"modified_at,omitempty" structs:",omitempty"`
 	Availability types.EAvailability `json:",omitempty" yaml:"availability,omitempty" structs:",omitempty"`
 	ServiceClass string              `json:",omitempty" yaml:"service_class,omitempty" structs:",omitempty"`
-	Provider     *Provider           `json:",ommitempty" yaml:"provider,ommitempty" structs:",omitempty"`
-	Settings     *GSLBSettings       `json:",ommitempty" yaml:"settings,ommitempty" structs:",omitempty"`
-	SettingsHash string              `json:",ommitempty" yaml:"settings_hash,ommitempty" structs:",omitempty"`
-	Status       *GSLBStatus         `json:",ommitempty" yaml:"status,ommitempty" structs:",omitempty"`
+	Provider     *Provider           `json:",omitempty" yaml:"provider,omitempty" structs:",omitempty"`
+	Settings     *GSLBSettings       `json:",omitempty" yaml:"settings,omitempty" structs:",omitempty"`
+	SettingsHash string              `json:",omitempty" yaml:"settings_hash,omitempty" structs:",omitempty"`
+	Status       *GSLBStatus         `json:",omitempty" yaml:"status,omitempty" structs:",omitempty"`
 }
 
 // GSLBSettings GSLBの設定

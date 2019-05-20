@@ -13,6 +13,8 @@ const (
 	ResourceGSLB = "GSLB"
 	// ResourceInterface is resource key of fake store
 	ResourceInterface = "Interface"
+	// ResourceInternet is resource key of fake store
+	ResourceInternet = "Internet"
 	// ResourceLoadBalancer is resource key of fake store
 	ResourceLoadBalancer = "LoadBalancer"
 	// ResourceNFS is resource key of fake store
