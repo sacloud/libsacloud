@@ -23,6 +23,9 @@ func SwitchFactoryFuncToFake() {
 	sacloud.SetClientFactoryFunc(ResourceInterface, func(caller sacloud.APICaller) interface{} {
 		return NewInterfaceOp()
 	})
+	sacloud.SetClientFactoryFunc(ResourceInternet, func(caller sacloud.APICaller) interface{} {
+		return NewInternetOp()
+	})
 	sacloud.SetClientFactoryFunc(ResourceLoadBalancer, func(caller sacloud.APICaller) interface{} {
 		return NewLoadBalancerOp()
 	})
@@ -123,6 +126,22 @@ type InterfaceOp struct {
 func NewInterfaceOp() sacloud.InterfaceAPI {
 	return &InterfaceOp{
 		key: ResourceInterface,
+	}
+}
+
+/*************************************************
+* InternetOp
+*************************************************/
+
+// InternetOp is fake implementation of InternetAPI interface
+type InternetOp struct {
+	key string
+}
+
+// NewInternetOp creates new InternetOp instance
+func NewInternetOp() sacloud.InternetAPI {
+	return &InternetOp{
+		key: ResourceInternet,
 	}
 }
 

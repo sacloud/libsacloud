@@ -561,6 +561,122 @@ func (t *InterfaceTracer) DisconnectFromPacketFilter(ctx context.Context, zone s
 }
 
 /*************************************************
+* InternetTracer
+*************************************************/
+
+// InternetTracer is for trace InternetOp operations
+type InternetTracer struct {
+	Internal sacloud.InternetAPI
+}
+
+// NewInternetTracer creates new InternetTracer instance
+func NewInternetTracer(in sacloud.InternetAPI) sacloud.InternetAPI {
+	return &InternetTracer{
+		Internal: in,
+	}
+}
+
+// Find is API call with trace log
+func (t *InternetTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) ([]*sacloud.Internet, error) {
+	log.Println("[TRACE] InternetTracer.Find start:	args => [", "zone=", zone, "conditions=", conditions, "]")
+	defer func() {
+		log.Println("[TRACE] InternetTracer.Find: end")
+	}()
+
+	return t.Internal.Find(ctx, zone, conditions)
+}
+
+// Create is API call with trace log
+func (t *InternetTracer) Create(ctx context.Context, zone string, param *sacloud.InternetCreateRequest) (*sacloud.Internet, error) {
+	log.Println("[TRACE] InternetTracer.Create start:	args => [", "zone=", zone, "param=", param, "]")
+	defer func() {
+		log.Println("[TRACE] InternetTracer.Create: end")
+	}()
+
+	return t.Internal.Create(ctx, zone, param)
+}
+
+// Read is API call with trace log
+func (t *InternetTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Internet, error) {
+	log.Println("[TRACE] InternetTracer.Read start:	args => [", "zone=", zone, "id=", id, "]")
+	defer func() {
+		log.Println("[TRACE] InternetTracer.Read: end")
+	}()
+
+	return t.Internal.Read(ctx, zone, id)
+}
+
+// Update is API call with trace log
+func (t *InternetTracer) Update(ctx context.Context, zone string, id types.ID, param *sacloud.InternetUpdateRequest) (*sacloud.Internet, error) {
+	log.Println("[TRACE] InternetTracer.Update start:	args => [", "zone=", zone, "id=", id, "param=", param, "]")
+	defer func() {
+		log.Println("[TRACE] InternetTracer.Update: end")
+	}()
+
+	return t.Internal.Update(ctx, zone, id, param)
+}
+
+// Delete is API call with trace log
+func (t *InternetTracer) Delete(ctx context.Context, zone string, id types.ID) error {
+	log.Println("[TRACE] InternetTracer.Delete start:	args => [", "zone=", zone, "id=", id, "]")
+	defer func() {
+		log.Println("[TRACE] InternetTracer.Delete: end")
+	}()
+
+	return t.Internal.Delete(ctx, zone, id)
+}
+
+// UpdateBandWidth is API call with trace log
+func (t *InternetTracer) UpdateBandWidth(ctx context.Context, zone string, id types.ID, param *sacloud.InternetUpdateBandWidthRequest) (*sacloud.Internet, error) {
+	log.Println("[TRACE] InternetTracer.UpdateBandWidth start:	args => [", "zone=", zone, "id=", id, "param=", param, "]")
+	defer func() {
+		log.Println("[TRACE] InternetTracer.UpdateBandWidth: end")
+	}()
+
+	return t.Internal.UpdateBandWidth(ctx, zone, id, param)
+}
+
+// AddSubnet is API call with trace log
+func (t *InternetTracer) AddSubnet(ctx context.Context, zone string, id types.ID, param *sacloud.InternetAddSubnetRequest) (*sacloud.InternetSubnetOperationResult, error) {
+	log.Println("[TRACE] InternetTracer.AddSubnet start:	args => [", "zone=", zone, "id=", id, "param=", param, "]")
+	defer func() {
+		log.Println("[TRACE] InternetTracer.AddSubnet: end")
+	}()
+
+	return t.Internal.AddSubnet(ctx, zone, id, param)
+}
+
+// UpdateSubnet is API call with trace log
+func (t *InternetTracer) UpdateSubnet(ctx context.Context, zone string, id types.ID, subnetID types.ID, param *sacloud.InternetUpdateSubnetRequest) (*sacloud.InternetSubnetOperationResult, error) {
+	log.Println("[TRACE] InternetTracer.UpdateSubnet start:	args => [", "zone=", zone, "id=", id, "subnetID=", subnetID, "param=", param, "]")
+	defer func() {
+		log.Println("[TRACE] InternetTracer.UpdateSubnet: end")
+	}()
+
+	return t.Internal.UpdateSubnet(ctx, zone, id, subnetID, param)
+}
+
+// DeleteSubnet is API call with trace log
+func (t *InternetTracer) DeleteSubnet(ctx context.Context, zone string, id types.ID, subnetID types.ID) error {
+	log.Println("[TRACE] InternetTracer.DeleteSubnet start:	args => [", "zone=", zone, "id=", id, "subnetID=", subnetID, "]")
+	defer func() {
+		log.Println("[TRACE] InternetTracer.DeleteSubnet: end")
+	}()
+
+	return t.Internal.DeleteSubnet(ctx, zone, id, subnetID)
+}
+
+// Monitor is API call with trace log
+func (t *InternetTracer) Monitor(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.RouterActivity, error) {
+	log.Println("[TRACE] InternetTracer.Monitor start:	args => [", "zone=", zone, "id=", id, "condition=", condition, "]")
+	defer func() {
+		log.Println("[TRACE] InternetTracer.Monitor: end")
+	}()
+
+	return t.Internal.Monitor(ctx, zone, id, condition)
+}
+
+/*************************************************
 * LoadBalancerTracer
 *************************************************/
 

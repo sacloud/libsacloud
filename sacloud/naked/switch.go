@@ -19,4 +19,7 @@ type Switch struct {
 	Subnet      *Subnet      `json:",omitempty" yaml:"subnet,omitempty" structs:",omitempty"`
 	UserSubnet  *UserSubnet  `json:",omitempty" yaml:"user_subnet,omitempty" structs:",omitempty"`
 	Zone        *Zone        `json:",omitempty" yaml:"zone,omitempty" structs:",omitempty"`
+	Internet    *Internet    `json:",omitempty" yaml:"internet,omitempty" structs:",omitempty"`
+	Subnets     []*Subnet    `json:",omitempty" yaml:"subnets,omitempty" structs:",omitempty"`
+	IPv6Nets    []*IPv6Net   `json:",omitempty" yaml:"ipv6nets,omitempty" structs:",omitempty"`
 }

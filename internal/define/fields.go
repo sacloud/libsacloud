@@ -766,6 +766,13 @@ func (f *fieldsDef) Scope() *schema.FieldDesc {
 	}
 }
 
+func (f *fieldsDef) BandWidthMbps() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "BandWidthMbps",
+		Type: meta.TypeInt,
+	}
+}
+
 func (f *fieldsDef) DiskConnection() *schema.FieldDesc {
 	return &schema.FieldDesc{
 		Name: "Connection",
@@ -807,6 +814,64 @@ func (f *fieldsDef) MigratedMB() *schema.FieldDesc {
 		Type: meta.TypeInt,
 		ExtendAccessors: []*schema.ExtendAccessor{
 			{Name: "MigratedGB"},
+		},
+	}
+}
+
+func (f *fieldsDef) DefaultRoute() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "DefaultRoute",
+		Type: meta.TypeString,
+		Tags: &schema.FieldTags{
+			Validate: "ipv4",
+		},
+	}
+}
+
+func (f *fieldsDef) NextHop() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "NextHop",
+		Type: meta.TypeString,
+		Description: `
+			スイッチ+ルータでの追加IPアドレスブロックを示すSubnetの中でのみ設定される項目。
+			この場合DefaultRouteの値は設定されないためNextHopを代用する。
+			StaticRouteと同じ値が設定される。`,
+		Tags: &schema.FieldTags{
+			Validate: "ipv4",
+		},
+	}
+}
+
+func (f *fieldsDef) StaticRoute() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "StaticRoute",
+		Type: meta.TypeString,
+		Description: `
+			スイッチ+ルータでの追加IPアドレスブロックを示すSubnetの中でのみ設定される項目。
+			この場合DefaultRouteの値は設定されないためNextHopを代用する。
+			NextHopと同じ値が設定される。`,
+		Tags: &schema.FieldTags{
+			Validate: "ipv4",
+		},
+	}
+}
+
+func (f *fieldsDef) NetworkMaskLen() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "NetworkMaskLen",
+		Type: meta.TypeInt,
+		Tags: &schema.FieldTags{
+			Validate: "min=24,max=28",
+		},
+	}
+}
+
+func (f *fieldsDef) NetworkAddress() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "NetworkAddress",
+		Type: meta.TypeString,
+		Tags: &schema.FieldTags{
+			Validate: "ipv4",
 		},
 	}
 }

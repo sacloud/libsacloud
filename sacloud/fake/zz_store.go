@@ -122,6 +122,29 @@ func (s *store) setInterface(zone string, value *sacloud.Interface) {
 	s.set(ResourceInterface, zone, value)
 }
 
+func (s *store) getInternet(zone string) []*sacloud.Internet {
+	values := s.get(ResourceInternet, zone)
+	var ret []*sacloud.Internet
+	for _, v := range values {
+		if v, ok := v.(*sacloud.Internet); ok {
+			ret = append(ret, v)
+		}
+	}
+	return ret
+}
+
+func (s *store) getInternetByID(zone string, id types.ID) *sacloud.Internet {
+	v := s.getByID(ResourceInternet, zone, id)
+	if v, ok := v.(*sacloud.Internet); ok {
+		return v
+	}
+	return nil
+}
+
+func (s *store) setInternet(zone string, value *sacloud.Internet) {
+	s.set(ResourceInternet, zone, value)
+}
+
 func (s *store) getLoadBalancer(zone string) []*sacloud.LoadBalancer {
 	values := s.get(ResourceLoadBalancer, zone)
 	var ret []*sacloud.LoadBalancer

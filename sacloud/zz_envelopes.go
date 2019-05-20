@@ -429,6 +429,113 @@ type interfaceMonitorResponseEnvelope struct {
 	Data *naked.MonitorValues `json:",omitempty"`
 }
 
+// internetFindRequestEnvelope is envelop of API request
+type internetFindRequestEnvelope struct {
+	Count   int                    `json:",omitempty"`
+	From    int                    `json:",omitempty"`
+	Sort    []string               `json:",omitempty"`
+	Filter  map[string]interface{} `json:",omitempty"`
+	Include []string               `json:",omitempty"`
+	Exclude []string               `json:",omitempty"`
+}
+
+// internetFindResponseEnvelope is envelop of API response
+type internetFindResponseEnvelope struct {
+	Total int `json:",omitempty"` // トータル件数
+	From  int `json:",omitempty"` // ページング開始ページ
+	Count int `json:",omitempty"` // 件数
+
+	Internets []*naked.Internet `json:",omitempty"`
+}
+
+// internetCreateRequestEnvelope is envelop of API request
+type internetCreateRequestEnvelope struct {
+	Internet *naked.Internet `json:",omitempty"`
+}
+
+// internetCreateResponseEnvelope is envelop of API response
+type internetCreateResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Internet *naked.Internet `json:",omitempty"`
+}
+
+// internetReadResponseEnvelope is envelop of API response
+type internetReadResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Internet *naked.Internet `json:",omitempty"`
+}
+
+// internetUpdateRequestEnvelope is envelop of API request
+type internetUpdateRequestEnvelope struct {
+	Internet *naked.Internet `json:",omitempty"`
+}
+
+// internetUpdateResponseEnvelope is envelop of API response
+type internetUpdateResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Internet *naked.Internet `json:",omitempty"`
+}
+
+// internetUpdateBandWidthRequestEnvelope is envelop of API request
+type internetUpdateBandWidthRequestEnvelope struct {
+	Internet *naked.Internet `json:",omitempty"`
+}
+
+// internetUpdateBandWidthResponseEnvelope is envelop of API response
+type internetUpdateBandWidthResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Internet *naked.Internet `json:",omitempty"`
+}
+
+// internetAddSubnetRequestEnvelope is envelop of API request
+type internetAddSubnetRequestEnvelope struct {
+	NetworkMaskLen int    `json:",omitempty"`
+	NextHop        string `json:",omitempty"`
+}
+
+// internetAddSubnetResponseEnvelope is envelop of API response
+type internetAddSubnetResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Subnet *naked.Subnet `json:",omitempty"`
+}
+
+// internetUpdateSubnetRequestEnvelope is envelop of API request
+type internetUpdateSubnetRequestEnvelope struct {
+	NextHop string `json:",omitempty"`
+}
+
+// internetUpdateSubnetResponseEnvelope is envelop of API response
+type internetUpdateSubnetResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Subnet *naked.Subnet `json:",omitempty"`
+}
+
+// internetMonitorRequestEnvelope is envelop of API request
+type internetMonitorRequestEnvelope struct {
+	Start time.Time `json:",omitempty"`
+	End   time.Time `json:",omitempty"`
+}
+
+// internetMonitorResponseEnvelope is envelop of API response
+type internetMonitorResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Data *naked.MonitorValues `json:",omitempty"`
+}
+
 // loadbalancerFindRequestEnvelope is envelop of API request
 type loadbalancerFindRequestEnvelope struct {
 	Count   int                    `json:",omitempty"`

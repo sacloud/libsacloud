@@ -16,7 +16,7 @@ type Archive struct {
 	CreatedAt       *time.Time          `json:",omitempty" yaml:"created_at,omitempty" structs:",omitempty"`
 	ModifiedAt      *time.Time          `json:",omitempty" yaml:"modified_at,omitempty" structs:",omitempty"`
 	Availability    types.EAvailability `json:",omitempty" yaml:"availability,omitempty" structs:",omitempty"`
-	DisplayOrder    int                 `json:",omitempty" yaml:"display_order,ommitempty" structs:",omitempty"`
+	DisplayOrder    int                 `json:",omitempty" yaml:"display_order,omitempty" structs:",omitempty"`
 	ServiceClass    string              `json:",omitempty" yaml:"service_class,omitempty" structs:",omitempty"`
 	SizeMB          int                 `json:",omitempty" yaml:"size_mb,omitempty" structs:",omitempty"`
 	MigratedMB      int                 `json:",omitempty" yaml:"migrated_mb,omitempty" structs:",omitempty"`

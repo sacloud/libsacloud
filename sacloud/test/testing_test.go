@@ -195,7 +195,7 @@ func Run(t TestT, testCase *CRUDTestCase) {
 			if ok1 || ok2 {
 				waiter := sacloud.WaiterForApplianceUp(func() (interface{}, error) {
 					return testCase.Read.Func(testContext, testCase.SetupAPICaller())
-				}, 10)
+				}, 30)
 				if _, err := waiter.WaitForState(context.TODO()); err != nil {
 					t.Fatal("WaitForUp is failed: ", err)
 				}
