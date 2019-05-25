@@ -8,7 +8,7 @@ import (
 	"github.com/fatih/structs"
 )
 
-// ConvertTo converts struct which tagged by mapconv to plain models
+// ConvertTo converts struct which input by mapconv to plain models
 func ConvertTo(source interface{}, dest interface{}) error {
 	s := structs.New(source)
 	destMap := Map(make(map[string]interface{}))
@@ -41,11 +41,15 @@ func ConvertTo(source interface{}, dest interface{}) error {
 				var dest []interface{}
 				values := valueToSlice(value)
 				for _, v := range values {
-					destMap := Map(make(map[string]interface{}))
-					if err := ConvertTo(v, &destMap); err != nil {
-						return err
+					if structs.IsStruct(v) {
+						destMap := Map(make(map[string]interface{}))
+						if err := ConvertTo(v, &destMap); err != nil {
+							return err
+						}
+						dest = append(dest, destMap)
+					} else {
+						dest = append(dest, v)
 					}
-					dest = append(dest, destMap)
 				}
 				if tags.isSlice || dest == nil || len(dest) > 1 {
 					value = dest
@@ -65,7 +69,7 @@ func ConvertTo(source interface{}, dest interface{}) error {
 	return json.Unmarshal(data, dest)
 }
 
-// ConvertFrom converts struct which tagged by mapconv from plain models
+// ConvertFrom converts struct which input by mapconv from plain models
 func ConvertFrom(source interface{}, dest interface{}) error {
 	var sourceMap Map
 	if m, ok := source.(map[string]interface{}); ok {
@@ -108,7 +112,10 @@ func ConvertFrom(source interface{}, dest interface{}) error {
 				var dest []interface{}
 				values := valueToSlice(value)
 				for _, v := range values {
-
+					if v == nil {
+						dest = append(dest, v)
+						continue
+					}
 					d := reflect.New(t).Interface()
 					if err := ConvertFrom(v, d); err != nil {
 						return err
@@ -155,8 +162,8 @@ func (m mapConv) value() mapConvValue {
 	var defaultValue interface{}
 	var omitEmpty, recursive, isSlice bool
 
-	if len(keys) > 0 {
-		if strings.HasPrefix(keys[0], "[]") {
+	for _, k := range keys {
+		if strings.Contains(k, "[]") {
 			isSlice = true
 		}
 	}

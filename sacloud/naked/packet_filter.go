@@ -23,7 +23,7 @@ type PacketFilterExpression struct {
 	Protocol        types.Protocol            `yaml:"protocol"`
 	SourceNetwork   types.PacketFilterNetwork `yaml:"source_network"`
 	DestinationPort types.PacketFilterPort    `yaml:"destination_port"`
-	Action          types.PacketFilterAction  `yaml:"action"`
+	Action          types.Action              `yaml:"action"`
 	SourcePort      types.PacketFilterPort    `yaml:"source_port"`
 }
 

@@ -4,7 +4,7 @@ import (
 	"net"
 	"sync"
 
-	"github.com/sacloud/libsacloud-v2/sacloud/fake/cidr"
+	"github.com/sacloud/libsacloud-v2/pkg/cidr"
 	"github.com/sacloud/libsacloud-v2/sacloud/types"
 )
 

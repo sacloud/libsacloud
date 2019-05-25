@@ -35,13 +35,13 @@ type dummyNaked struct {
 
 func TestToNaked(t *testing.T) {
 	zeroTime := time.Unix(0, 0)
-	expects := []struct {
-		tagged *dummyTagged
-		naked  *dummyNaked
+	tests := []struct {
+		input  *dummyTagged
+		output *dummyNaked
 		err    error
 	}{
 		{
-			tagged: &dummyTagged{
+			input: &dummyTagged{
 				A:          "A",
 				B:          "B",
 				C:          "C",
@@ -50,7 +50,7 @@ func TestToNaked(t *testing.T) {
 				NoTag:      "NoTag",
 				unexported: "unexported",
 			},
-			naked: &dummyNaked{
+			output: &dummyNaked{
 				ValueA: &struct {
 					A      string
 					ValueB *struct {
@@ -82,12 +82,12 @@ func TestToNaked(t *testing.T) {
 		},
 	}
 
-	for _, expect := range expects {
-		naked := &dummyNaked{}
-		err := ConvertTo(expect.tagged, naked)
-		require.Equal(t, expect.err, err)
+	for _, tt := range tests {
+		output := &dummyNaked{}
+		err := ConvertTo(tt.input, output)
+		require.Equal(t, tt.err, err)
 		if err == nil {
-			require.Equal(t, expect.naked, naked)
+			require.Equal(t, tt.output, output)
 		}
 	}
 
@@ -95,19 +95,19 @@ func TestToNaked(t *testing.T) {
 
 func TestFromNaked(t *testing.T) {
 
-	expects := []struct {
-		tagged *dummyTagged
-		naked  *dummyNaked
+	tests := []struct {
+		output *dummyTagged
+		input  *dummyNaked
 		err    error
 	}{
 		{
-			tagged: &dummyTagged{
+			output: &dummyTagged{
 				A:     "A",
 				B:     "B",
 				C:     "C",
 				NoTag: "NoTag",
 			},
-			naked: &dummyNaked{
+			input: &dummyNaked{
 				ValueA: &struct {
 					A      string
 					ValueB *struct {
@@ -137,12 +137,12 @@ func TestFromNaked(t *testing.T) {
 		},
 	}
 
-	for _, expect := range expects {
-		tagged := &dummyTagged{}
-		err := ConvertFrom(expect.naked, tagged)
-		require.Equal(t, expect.err, err)
+	for _, tt := range tests {
+		output := &dummyTagged{}
+		err := ConvertFrom(tt.input, output)
+		require.Equal(t, tt.err, err)
 		if err == nil {
-			require.Equal(t, expect.tagged, tagged)
+			require.Equal(t, tt.output, output)
 		}
 	}
 
@@ -163,7 +163,7 @@ type dummyExtractInnerSlice struct {
 }
 
 func TestExtractInnerSlice(t *testing.T) {
-	expects := []struct {
+	tests := []struct {
 		input  *dummySlice
 		expect *dummyExtractInnerSlice
 	}{
@@ -188,26 +188,26 @@ func TestExtractInnerSlice(t *testing.T) {
 		},
 	}
 
-	for _, tc := range expects {
-		dest := &dummyExtractInnerSlice{}
-		err := ConvertFrom(tc.input, dest)
+	for _, tt := range tests {
+		output := &dummyExtractInnerSlice{}
+		err := ConvertFrom(tt.input, output)
 
 		require.NoError(t, err)
-		require.Equal(t, tc.expect, dest)
+		require.Equal(t, tt.expect, output)
 	}
 }
 
 func TestInsertInnerSlice(t *testing.T) {
-	expects := []struct {
+	tests := []struct {
 		input  *dummyExtractInnerSlice
-		expect *dummySlice
+		output *dummySlice
 	}{
 		{
 			input: &dummyExtractInnerSlice{
 				Values:       []string{"value1", "value2", "value3"},
 				NestedValues: []string{"value4", "value5"},
 			},
-			expect: &dummySlice{
+			output: &dummySlice{
 				Slice: []*dummySliceInner{
 					{Value: "value1"},
 					{Value: "value2"},
@@ -227,12 +227,12 @@ func TestInsertInnerSlice(t *testing.T) {
 		},
 	}
 
-	for _, tc := range expects {
-		dest := &dummySlice{}
-		err := ConvertTo(tc.input, dest)
+	for _, tt := range tests {
+		output := &dummySlice{}
+		err := ConvertTo(tt.input, output)
 
 		require.NoError(t, err)
-		require.Equal(t, tc.expect, dest)
+		require.Equal(t, tt.output, output)
 	}
 }
 
@@ -245,23 +245,23 @@ type hasDefaultDest struct {
 }
 
 func TestDefaultValue(t *testing.T) {
-	expects := []struct {
+	tests := []struct {
 		input  *hasDefaultSource
-		expect *hasDefaultDest
+		output *hasDefaultDest
 	}{
 		{
 			input: &hasDefaultSource{},
-			expect: &hasDefaultDest{
+			output: &hasDefaultDest{
 				Field: "default-value",
 			},
 		},
 	}
 
-	for _, tc := range expects {
-		dest := &hasDefaultDest{}
-		err := ConvertTo(tc.input, dest)
+	for _, tt := range tests {
+		output := &hasDefaultDest{}
+		err := ConvertTo(tt.input, output)
 		require.NoError(t, err)
-		require.Equal(t, tc.expect, dest)
+		require.Equal(t, tt.output, output)
 	}
 }
 
@@ -275,26 +275,26 @@ type multipleDest struct {
 }
 
 func TestMultipleDestination(t *testing.T) {
-	expects := []struct {
+	tests := []struct {
 		input  *multipleSource
-		expect *multipleDest
+		output *multipleDest
 	}{
 		{
 			input: &multipleSource{
 				Field: "value",
 			},
-			expect: &multipleDest{
+			output: &multipleDest{
 				Field1: "value",
 				Field2: "value",
 			},
 		},
 	}
 
-	for _, tc := range expects {
-		dest := &multipleDest{}
-		err := ConvertTo(tc.input, dest)
+	for _, tt := range tests {
+		output := &multipleDest{}
+		err := ConvertTo(tt.input, output)
 		require.NoError(t, err)
-		require.Equal(t, tc.expect, dest)
+		require.Equal(t, tt.output, output)
 	}
 }
 
@@ -325,7 +325,7 @@ type recursiveDestSlice struct {
 }
 
 func TestRecursive(t *testing.T) {
-	expects := []struct {
+	tests := []struct {
 		input  *recursiveSource
 		expect *recursiveDest
 	}{
@@ -345,24 +345,24 @@ func TestRecursive(t *testing.T) {
 		},
 	}
 
-	for _, tc := range expects {
+	for _, tt := range tests {
 		dest := &recursiveDest{}
-		err := ConvertTo(tc.input, dest)
+		err := ConvertTo(tt.input, dest)
 		require.NoError(t, err)
-		require.Equal(t, tc.expect, dest)
+		require.Equal(t, tt.expect, dest)
 
 		// reverse
 		source := &recursiveSource{}
-		err = ConvertFrom(tc.expect, source)
+		err = ConvertFrom(tt.expect, source)
 		require.NoError(t, err)
-		require.Equal(t, tc.input, source)
+		require.Equal(t, tt.input, source)
 	}
 }
 
 func TestRecursiveSlice(t *testing.T) {
-	expects := []struct {
+	tests := []struct {
 		input  *recursiveSourceSlice
-		expect *recursiveDestSlice
+		output *recursiveDestSlice
 	}{
 		{
 			input: &recursiveSourceSlice{
@@ -377,7 +377,7 @@ func TestRecursiveSlice(t *testing.T) {
 					},
 				},
 			},
-			expect: &recursiveDestSlice{
+			output: &recursiveDestSlice{
 				Slice: []*recursiveDestChild{
 					{
 						Dest1: "value1",
@@ -392,16 +392,16 @@ func TestRecursiveSlice(t *testing.T) {
 		},
 	}
 
-	for _, tc := range expects {
-		dest := &recursiveDestSlice{}
-		err := ConvertTo(tc.input, dest)
+	for _, tt := range tests {
+		output := &recursiveDestSlice{}
+		err := ConvertTo(tt.input, output)
 		require.NoError(t, err)
-		require.Equal(t, tc.expect, dest)
+		require.Equal(t, tt.output, output)
 
 		// reverse
 		source := &recursiveSourceSlice{}
-		err = ConvertFrom(tc.expect, source)
+		err = ConvertFrom(tt.output, source)
 		require.NoError(t, err)
-		require.Equal(t, tc.input, source)
+		require.Equal(t, tt.input, source)
 	}
 }

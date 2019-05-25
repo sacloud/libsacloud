@@ -23,6 +23,13 @@ func (o *InternetOp) Find(ctx context.Context, zone string, conditions *sacloud.
 
 // Create is fake implementation
 func (o *InternetOp) Create(ctx context.Context, zone string, param *sacloud.InternetCreateRequest) (*sacloud.Internet, error) {
+	if param.NetworkMaskLen == 0 {
+		param.NetworkMaskLen = 28
+	}
+	if param.BandWidthMbps == 0 {
+		param.BandWidthMbps = 100
+	}
+
 	result := &sacloud.Internet{}
 	copySameNameField(param, result)
 	fill(result, fillID, fillCreatedAt)

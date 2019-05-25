@@ -56,11 +56,11 @@ var (
 				Protocol:      types.Protocols.TCP,
 				SourceNetwork: types.PacketFilterNetwork("192.168.0.1"),
 				SourcePort:    types.PacketFilterPort("3000-3100"),
-				Action:        types.PacketFilterActions.Allow,
+				Action:        types.Actions.Allow,
 			},
 			{
 				Protocol: types.Protocols.IP,
-				Action:   types.PacketFilterActions.Deny,
+				Action:   types.Actions.Deny,
 			},
 		},
 	}
@@ -77,17 +77,17 @@ var (
 				Protocol:        types.Protocols.TCP,
 				SourceNetwork:   types.PacketFilterNetwork("192.168.0.2"),
 				DestinationPort: types.PacketFilterPort("4000-41000"),
-				Action:          types.PacketFilterActions.Allow,
+				Action:          types.Actions.Allow,
 			},
 			{
 				Protocol:        types.Protocols.UDP,
 				SourceNetwork:   types.PacketFilterNetwork("192.168.0.3"),
 				DestinationPort: types.PacketFilterPort("5000-5100"),
-				Action:          types.PacketFilterActions.Allow,
+				Action:          types.Actions.Allow,
 			},
 			{
 				Protocol: types.Protocols.IP,
-				Action:   types.PacketFilterActions.Deny,
+				Action:   types.Actions.Deny,
 			},
 		},
 	}

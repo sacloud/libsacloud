@@ -54,6 +54,13 @@ func (o *{{ .Name}}) Validate() error {
 }
 
 {{- $struct := .Name -}}
+{{- range .Accessors }}
+// {{.Name}} {{.Description}} 
+func (o *{{ $struct }}) {{ .Name }}() {{.ResultType.GoTypeSourceCode}} {
+	return accessor.{{.Name}}(o)
+}
+{{- end }}
+
 {{- range .Fields }} {{ $name := .Name }}{{ $typeName := .TypeName }}
 // Get{{$name}} returns value of {{$name}} 
 func (o *{{ $struct }}) Get{{$name}}() {{$typeName}} {

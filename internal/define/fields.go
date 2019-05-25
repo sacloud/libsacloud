@@ -203,6 +203,16 @@ func (f *fieldsDef) PlanID() *schema.FieldDesc {
 	}
 }
 
+func (f *fieldsDef) stringEnabled() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "Enabled",
+		Tags: &schema.FieldTags{
+			MapConv: ",omitempty",
+		},
+		Type: meta.TypeStringFlag,
+	}
+}
+
 func (f *fieldsDef) SourceDiskID() *schema.FieldDesc {
 	return &schema.FieldDesc{
 		Name: "SourceDiskID",
@@ -337,7 +347,7 @@ func (f *fieldsDef) AppliancePlanID() *schema.FieldDesc {
 	return &schema.FieldDesc{
 		Name: "PlanID",
 		Tags: &schema.FieldTags{
-			MapConv: "Remark.Plan.ID,Plan.ID",
+			MapConv: "Remark.Plan.ID/Plan.ID",
 		},
 		Type: meta.TypeID,
 	}
@@ -500,6 +510,16 @@ func (f *fieldsDef) LoadBalancerClass() *schema.FieldDesc {
 		Type: meta.TypeString,
 		Tags: &schema.FieldTags{
 			MapConv: ",default=loadbalancer",
+		},
+	}
+}
+
+func (f *fieldsDef) VPCRouterClass() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "Class",
+		Type: meta.TypeString,
+		Tags: &schema.FieldTags{
+			MapConv: ",default=vpcrouter",
 		},
 	}
 }
@@ -723,7 +743,18 @@ func (f *fieldsDef) Interfaces() *schema.FieldDesc {
 		Type: models.interfaceModel(),
 		Tags: &schema.FieldTags{
 			JSON:    ",omitempty",
-			MapConv: "[]Interfaces,recursive",
+			MapConv: "[]Interfaces,recursive,omitempty",
+		},
+	}
+}
+
+func (f *fieldsDef) VPCRouterInterfaces() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "Interfaces",
+		Type: models.vpcRouterInterfaceModel(),
+		Tags: &schema.FieldTags{
+			JSON:    ",omitempty",
+			MapConv: "[]Interfaces,recursive,omitempty",
 		},
 	}
 }

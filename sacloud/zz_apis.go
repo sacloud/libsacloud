@@ -212,6 +212,26 @@ type SwitchAPI interface {
 }
 
 /*************************************************
+* VPCRouterAPI
+*************************************************/
+
+// VPCRouterAPI is interface for operate VPCRouter resource
+type VPCRouterAPI interface {
+	Find(ctx context.Context, zone string, conditions *FindCondition) ([]*VPCRouter, error)
+	Create(ctx context.Context, zone string, param *VPCRouterCreateRequest) (*VPCRouter, error)
+	Read(ctx context.Context, zone string, id types.ID) (*VPCRouter, error)
+	Update(ctx context.Context, zone string, id types.ID, param *VPCRouterUpdateRequest) (*VPCRouter, error)
+	Delete(ctx context.Context, zone string, id types.ID) error
+	Config(ctx context.Context, zone string, id types.ID) error
+	Boot(ctx context.Context, zone string, id types.ID) error
+	Shutdown(ctx context.Context, zone string, id types.ID, shutdownOption *ShutdownOption) error
+	Reset(ctx context.Context, zone string, id types.ID) error
+	ConnectToSwitch(ctx context.Context, zone string, id types.ID, nicIndex int, switchID types.ID) error
+	DisconnectFromSwitch(ctx context.Context, zone string, id types.ID, nicIndex int) error
+	MonitorInterface(ctx context.Context, zone string, id types.ID, index int, condition *MonitorCondition) (*InterfaceActivity, error)
+}
+
+/*************************************************
 * ZoneAPI
 *************************************************/
 

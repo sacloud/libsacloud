@@ -58,6 +58,10 @@ func TestResourceOps(t *testing.T) {
 		t.Fatalf("%s is not sacloud.Switch", op)
 	}
 
+	if op, ok := NewVPCRouterOp().(sacloud.VPCRouterAPI); !ok {
+		t.Fatalf("%s is not sacloud.VPCRouter", op)
+	}
+
 	if op, ok := NewZoneOp().(sacloud.ZoneAPI); !ok {
 		t.Fatalf("%s is not sacloud.Zone", op)
 	}

@@ -46,6 +46,7 @@ func (m Models) UniqByName() Models {
 type Model struct {
 	Name      string       // 型名
 	Fields    []*FieldDesc // フィールド定義
+	Accessors []*Accessor  // アクセサ
 	NakedType meta.Type    // 対応するnaked型の情報
 	IsArray   bool
 }

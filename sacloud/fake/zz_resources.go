@@ -27,6 +27,8 @@ const (
 	ResourceServer = "Server"
 	// ResourceSwitch is resource key of fake store
 	ResourceSwitch = "Switch"
+	// ResourceVPCRouter is resource key of fake store
+	ResourceVPCRouter = "VPCRouter"
 	// ResourceZone is resource key of fake store
 	ResourceZone = "Zone"
 )

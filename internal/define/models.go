@@ -309,6 +309,19 @@ func (m *modelsDef) interfaceModel() *schema.Model {
 	}
 }
 
+func (m *modelsDef) vpcRouterInterfaceModel() *schema.Model {
+	ifModel := m.interfaceModel()
+	ifModel.Name = "VPCRouterInterface"
+	ifModel.Fields = append(ifModel.Fields, &schema.FieldDesc{
+		Name: "Index",
+		Type: meta.TypeInt,
+		Tags: &schema.FieldTags{
+			MapConv: ",omitempty",
+		},
+	})
+	return ifModel
+}
+
 func (m *modelsDef) bundleInfoModel() *schema.Model {
 	return &schema.Model{
 		Name:      "BundleInfo",
@@ -518,7 +531,7 @@ func (m *modelsDef) packetFilterExpressions() *schema.Model {
 			},
 			{
 				Name: "Action",
-				Type: meta.TypePacketFilterAction,
+				Type: meta.TypeAction,
 			},
 		},
 	}
@@ -638,5 +651,426 @@ func (m *modelsDef) switchSubnet() *schema.Model {
 			},
 		},
 	)
+	subnet.Accessors = []*schema.Accessor{
+		{
+			Name:             "GetAssignedIPAddresses",
+			Description:      "割り当てられたIPアドレスのリスト",
+			AccessorTypeName: "AssignedIPAddress",
+			ResultType:       meta.TypeStringSlice,
+		},
+	}
 	return subnet
+}
+
+func (m *modelsDef) vpcRouterSetting() *schema.Model {
+	return &schema.Model{
+		Name:      "VPCRouterSetting",
+		NakedType: meta.Static(naked.VPCRouterSettings{}),
+		Fields: []*schema.FieldDesc{
+			{
+				Name: "VRID",
+				Type: meta.TypeInt,
+				Tags: &schema.FieldTags{
+					JSON:    ",omitempty",
+					MapConv: "Router.VRID",
+				},
+			},
+			{
+				Name: "InternetConnectionEnabled",
+				Type: meta.TypeStringFlag,
+				Tags: &schema.FieldTags{
+					JSON:    ",omitempty",
+					MapConv: "Router.InternetConnection.Enabled,omitempty",
+				},
+			},
+			{
+				Name: "Interfaces",
+				Type: m.vpcRouterInterface(),
+				Tags: &schema.FieldTags{
+					JSON:    ",omitempty",
+					MapConv: "Router.[]Interface,omitempty,recursive",
+				},
+			},
+			{
+				Name: "StaticNAT",
+				Type: m.vpcRouterStaticNAT(),
+				Tags: &schema.FieldTags{
+					JSON:    ",omitempty",
+					MapConv: "Router.StaticNAT.[]Config,omitempty,recursive",
+				},
+			},
+			{
+				Name: "Firewall",
+				Type: m.vpcRouterFirewall(),
+				Tags: &schema.FieldTags{
+					JSON:    ",omitempty",
+					MapConv: "Router.Firewall.[]Config,omitempty,recursive",
+				},
+			},
+			{
+				Name: "DHCPServer",
+				Type: m.vpcRouterDHCPServer(),
+				Tags: &schema.FieldTags{
+					JSON:    ",omitempty",
+					MapConv: "Router.DHCPServer.[]Config,omitempty,recursive",
+				},
+			},
+			{
+				Name: "DHCPStaticMapping",
+				Type: m.vpcRouterDHCPStaticMapping(),
+				Tags: &schema.FieldTags{
+					JSON:    ",omitempty",
+					MapConv: "Router.DHCPStaticMapping.[]Config,omitempty,recursive",
+				},
+			},
+			{
+				Name: "PPTPServer",
+				Type: m.vpcRouterPPTPServer(),
+				Tags: &schema.FieldTags{
+					JSON:    ",omitempty",
+					MapConv: "Router.PPTPServer.Config,omitempty,recursive",
+				},
+			},
+			{
+				Name: "PPTPServerEnabled",
+				Type: meta.TypeStringFlag,
+				Tags: &schema.FieldTags{
+					JSON:    ",omitempty",
+					MapConv: "Router.PPTPServer.Enabled,omitempty",
+				},
+			},
+			{
+				Name: "L2TPIPsecServer",
+				Type: m.vpcRouterL2TPIPsecServer(),
+				Tags: &schema.FieldTags{
+					JSON:    ",omitempty",
+					MapConv: "Router.L2TPIPsecServer.Config,omitempty,recursive",
+				},
+			},
+			{
+				Name: "L2TPIPsecServerEnabled",
+				Type: meta.TypeStringFlag,
+				Tags: &schema.FieldTags{
+					JSON:    ",omitempty",
+					MapConv: "Router.L2TPIPsecServer.Enabled,omitempty",
+				},
+			},
+			{
+				Name: "RemoteAccessUsers",
+				Type: m.vpcRouterRemoteAccessUser(),
+				Tags: &schema.FieldTags{
+					JSON:    ",omitempty",
+					MapConv: "Router.RemoteAccessUsers.[]Config,omitempty,recursive",
+				},
+			},
+			{
+				Name: "SiteToSiteIPsecVPN",
+				Type: m.vpcRouterSiteToSiteIPsecVPN(),
+				Tags: &schema.FieldTags{
+					JSON:    ",omitempty",
+					MapConv: "Router.SiteToSiteIPsecVPN.[]Config,omitempty,recursive",
+				},
+			},
+			{
+				Name: "StaticRoute",
+				Type: m.vpcRouterStaticRoute(),
+				Tags: &schema.FieldTags{
+					JSON:    ",omitempty",
+					MapConv: "Router.StaticRoutes.[]Config,omitempty,recursive",
+				},
+			},
+		},
+	}
+}
+
+func (m *modelsDef) vpcRouterInterface() *schema.Model {
+	return &schema.Model{
+		Name:      "VPCRouterInterfaceSetting",
+		NakedType: meta.Static(naked.VPCRouterInterface{}),
+		IsArray:   true,
+		Fields: []*schema.FieldDesc{
+			fields.stringEnabled(),
+			{
+				Name: "IPAddress",
+				Type: meta.TypeStringSlice,
+			},
+			{
+				Name: "VirtualIPAddress",
+				Type: meta.TypeString,
+			},
+			{
+				Name: "IPAliases",
+				Type: meta.TypeStringSlice,
+			},
+			{
+				Name: "NetworkMaskLen",
+				Type: meta.TypeInt,
+			},
+			{
+				Name: "Index",
+				Type: meta.TypeInt,
+			},
+		},
+	}
+}
+
+func (m *modelsDef) vpcRouterStaticNAT() *schema.Model {
+	return &schema.Model{
+		Name:      "VPCRouterStaticNAT",
+		NakedType: meta.Static(naked.VPCRouterStaticNATConfig{}),
+		IsArray:   true,
+		Fields: []*schema.FieldDesc{
+			{
+				Name: "GlobalAddress",
+				Type: meta.TypeString,
+				Tags: &schema.FieldTags{
+					MapConv:  "GlobalAddress",
+					Validate: "ipv4",
+				},
+			},
+			{
+				Name: "PrivateAddress",
+				Type: meta.TypeString,
+				Tags: &schema.FieldTags{
+					MapConv:  "PrivateAddress",
+					Validate: "ipv4",
+				},
+			},
+			{
+				Name: "Description",
+				Type: meta.TypeString,
+			},
+		},
+	}
+}
+
+func (m *modelsDef) vpcRouterFirewall() *schema.Model {
+	return &schema.Model{
+		Name:      "VPCRouterFirewall",
+		NakedType: meta.Static(naked.VPCRouterFirewallConfig{}),
+		IsArray:   true,
+		Fields: []*schema.FieldDesc{
+			{
+				Name: "Send",
+				Type: m.vpcRouterFirewallRule(),
+			},
+			{
+				Name: "Receive",
+				Type: m.vpcRouterFirewallRule(),
+			},
+		},
+	}
+}
+func (m *modelsDef) vpcRouterFirewallRule() *schema.Model {
+	return &schema.Model{
+		Name:      "VPCRouterFirewallRule",
+		NakedType: meta.Static(naked.VPCRouterFirewallRule{}),
+		IsArray:   true,
+		Fields: []*schema.FieldDesc{
+			{
+				Name: "Protocol",
+				Type: meta.TypeProtocol,
+			},
+			{
+				Name: "SourceNetwork",
+				Type: meta.TypeVPCFirewallNetwork,
+			},
+			{
+				Name: "SourcePort",
+				Type: meta.TypeVPCFirewallPort,
+			},
+			{
+				Name: "DestinationNetwork",
+				Type: meta.TypeVPCFirewallNetwork,
+			},
+			{
+				Name: "DestinationPort",
+				Type: meta.TypeVPCFirewallPort,
+			},
+			{
+				Name: "Action",
+				Type: meta.TypeAction,
+			},
+			{
+				Name: "Logging",
+				Type: meta.TypeStringFlag,
+			},
+			{
+				Name: "Description",
+				Type: meta.TypeString,
+			},
+		},
+	}
+}
+
+func (m *modelsDef) vpcRouterDHCPServer() *schema.Model {
+	return &schema.Model{
+		Name:      "VPCRouterDHCPServer",
+		NakedType: meta.Static(naked.VPCRouterDHCPServerConfig{}),
+		IsArray:   true,
+		Fields: []*schema.FieldDesc{
+			{
+				Name: "Interface",
+				Type: meta.TypeString,
+			},
+			{
+				Name: "RangeStart",
+				Type: meta.TypeString,
+				Tags: &schema.FieldTags{
+					Validate: "ipv4",
+				},
+			},
+			{
+				Name: "RangeStop",
+				Type: meta.TypeString,
+				Tags: &schema.FieldTags{
+					Validate: "ipv4",
+				},
+			},
+			{
+				Name: "DNSServers",
+				Type: meta.TypeStringSlice,
+				Tags: &schema.FieldTags{
+					Validate: "dive,ipv4",
+				},
+			},
+		},
+	}
+}
+
+func (m *modelsDef) vpcRouterDHCPStaticMapping() *schema.Model {
+	return &schema.Model{
+		Name:      "VPCRouterDHCPStaticMapping",
+		NakedType: meta.Static(naked.VPCRouterDHCPStaticMappingConfig{}),
+		IsArray:   true,
+		Fields: []*schema.FieldDesc{
+			{
+				Name: "MACAddress", // TODO typesに独自型作っておくべきか?
+				Type: meta.TypeString,
+			},
+			{
+				Name: "IPAddress",
+				Type: meta.TypeString,
+				Tags: &schema.FieldTags{
+					Validate: "ipv4",
+				},
+			},
+		},
+	}
+}
+
+func (m *modelsDef) vpcRouterPPTPServer() *schema.Model {
+	return &schema.Model{
+		Name:      "VPCRouterPPTPServer",
+		NakedType: meta.Static(naked.VPCRouterPPTPServerConfig{}),
+		Fields: []*schema.FieldDesc{
+			{
+				Name: "RangeStart",
+				Type: meta.TypeString,
+				Tags: &schema.FieldTags{
+					Validate: "ipv4",
+				},
+			},
+			{
+				Name: "RangeStop",
+				Type: meta.TypeString,
+				Tags: &schema.FieldTags{
+					Validate: "ipv4",
+				},
+			},
+		},
+	}
+}
+
+func (m *modelsDef) vpcRouterL2TPIPsecServer() *schema.Model {
+	return &schema.Model{
+		Name:      "VPCRouterL2TPIPsecServer",
+		NakedType: meta.Static(naked.VPCRouterL2TPIPsecServerConfig{}),
+		Fields: []*schema.FieldDesc{
+			{
+				Name: "RangeStart",
+				Type: meta.TypeString,
+				Tags: &schema.FieldTags{
+					Validate: "ipv4",
+				},
+			},
+			{
+				Name: "RangeStop",
+				Type: meta.TypeString,
+				Tags: &schema.FieldTags{
+					Validate: "ipv4",
+				},
+			},
+			{
+				Name: "PreSharedSecret",
+				Type: meta.TypeString,
+			},
+		},
+	}
+}
+
+func (m *modelsDef) vpcRouterRemoteAccessUser() *schema.Model {
+	return &schema.Model{
+		Name:      "VPCRouterRemoteAccessUser",
+		NakedType: meta.Static(naked.VPCRouterRemoteAccessUserConfig{}),
+		IsArray:   true,
+		Fields: []*schema.FieldDesc{
+			{
+				Name: "UserName",
+				Type: meta.TypeString,
+			},
+			{
+				Name: "Password",
+				Type: meta.TypeString,
+			},
+		},
+	}
+}
+
+func (m *modelsDef) vpcRouterSiteToSiteIPsecVPN() *schema.Model {
+	return &schema.Model{
+		Name:      "VPCRouterSiteToSiteIPsecVPN",
+		NakedType: meta.Static(naked.VPCRouterSiteToSiteIPsecVPNConfig{}),
+		IsArray:   true,
+		Fields: []*schema.FieldDesc{
+			{
+				Name: "Peer",
+				Type: meta.TypeString,
+			},
+			{
+				Name: "PreSharedSecret",
+				Type: meta.TypeString,
+			},
+			{
+				Name: "RemoteID",
+				Type: meta.TypeString,
+			},
+			{
+				Name: "Routes",
+				Type: meta.TypeStringSlice,
+			},
+			{
+				Name: "LocalPrefix",
+				Type: meta.TypeStringSlice,
+			},
+		},
+	}
+}
+
+func (m *modelsDef) vpcRouterStaticRoute() *schema.Model {
+	return &schema.Model{
+		Name:      "VPCRouterStaticRoute",
+		NakedType: meta.Static(naked.VPCRouterStaticRouteConfig{}),
+		IsArray:   true,
+		Fields: []*schema.FieldDesc{
+			{
+				Name: "Prefix",
+				Type: meta.TypeString,
+			},
+			{
+				Name: "NextHop",
+				Type: meta.TypeString,
+			},
+		},
+	}
 }

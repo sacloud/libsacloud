@@ -4140,7 +4140,7 @@ type LoadBalancer struct {
 	InstanceHostInfoURL     string                          `mapconv:"Instance.Host.InfoURL"`
 	InstanceStatus          types.EServerInstanceStatus     `mapconv:"Instance.Status"`
 	InstanceStatusChangedAt time.Time                       `mapconv:"Instance.StatusChangedAt"`
-	PlanID                  types.ID                        `mapconv:"Remark.Plan.ID,Plan.ID"`
+	PlanID                  types.ID                        `mapconv:"Remark.Plan.ID/Plan.ID"`
 	SwitchID                types.ID                        `mapconv:"Remark.Switch.ID"`
 	DefaultRoute            string                          `mapconv:"Remark.Network.DefaultRoute" validate:"ipv4"`
 	NetworkMaskLen          int                             `mapconv:"Remark.Network.NetworkMaskLen" validate:"min=1,max=32"`
@@ -4149,7 +4149,7 @@ type LoadBalancer struct {
 	VRID                    int                             `mapconv:"Remark.VRRP.VRID"`
 	VirtualIPAddresses      []*LoadBalancerVirtualIPAddress `mapconv:"Settings.[]LoadBalancer,recursive" validate:"min=0,max=10"`
 	SettingsHash            string
-	Interfaces              []*Interface `json:",omitempty" mapconv:"[]Interfaces,recursive"`
+	Interfaces              []*Interface `json:",omitempty" mapconv:"[]Interfaces,recursive,omitempty"`
 }
 
 // Validate validates by field tags
@@ -4585,7 +4585,7 @@ func (o *LoadBalancerServer) SetHealthCheckResponseCode(v types.StringNumber) {
 type LoadBalancerCreateRequest struct {
 	Class              string   `mapconv:",default=loadbalancer"`
 	SwitchID           types.ID `mapconv:"Remark.Switch.ID"`
-	PlanID             types.ID `mapconv:"Remark.Plan.ID,Plan.ID"`
+	PlanID             types.ID `mapconv:"Remark.Plan.ID/Plan.ID"`
 	VRID               int      `mapconv:"Remark.VRRP.VRID"`
 	IPAddresses        []string `mapconv:"Remark.[]Servers.IPAddress" validate:"min=1,max=2,dive,ipv4"`
 	NetworkMaskLen     int      `mapconv:"Remark.Network.NetworkMaskLen" validate:"min=1,max=32"`
@@ -4991,8 +4991,8 @@ type NFS struct {
 	InstanceHostInfoURL     string                      `mapconv:"Instance.Host.InfoURL"`
 	InstanceStatus          types.EServerInstanceStatus `mapconv:"Instance.Status"`
 	InstanceStatusChangedAt time.Time                   `mapconv:"Instance.StatusChangedAt"`
-	Interfaces              []*Interface                `json:",omitempty" mapconv:"[]Interfaces,recursive"`
-	PlanID                  types.ID                    `mapconv:"Remark.Plan.ID,Plan.ID"`
+	Interfaces              []*Interface                `json:",omitempty" mapconv:"[]Interfaces,recursive,omitempty"`
+	PlanID                  types.ID                    `mapconv:"Remark.Plan.ID/Plan.ID"`
 	SwitchID                types.ID                    `mapconv:"Remark.Switch.ID"`
 	DefaultRoute            string                      `mapconv:"Remark.Network.DefaultRoute" validate:"ipv4"`
 	NetworkMaskLen          int                         `mapconv:"Remark.Network.NetworkMaskLen" validate:"min=1,max=32"`
@@ -5248,7 +5248,7 @@ func (o *NFS) convertFrom(naked *naked.NFS) error {
 type NFSCreateRequest struct {
 	Class          string   `mapconv:",default=nfs"`
 	SwitchID       types.ID `mapconv:"Remark.Switch.ID"`
-	PlanID         types.ID `mapconv:"Remark.Plan.ID,Plan.ID"`
+	PlanID         types.ID `mapconv:"Remark.Plan.ID/Plan.ID"`
 	IPAddresses    []string `mapconv:"Remark.[]Servers.IPAddress" validate:"min=1,max=2,dive,ipv4"`
 	NetworkMaskLen int      `mapconv:"Remark.Network.NetworkMaskLen" validate:"min=1,max=32"`
 	DefaultRoute   string   `mapconv:"Remark.Network.DefaultRoute" validate:"ipv4"`
@@ -5985,7 +5985,7 @@ type PacketFilterExpression struct {
 	SourceNetwork   types.PacketFilterNetwork
 	SourcePort      types.PacketFilterPort
 	DestinationPort types.PacketFilterPort
-	Action          types.PacketFilterAction
+	Action          types.Action
 }
 
 // Validate validates by field tags
@@ -6034,12 +6034,12 @@ func (o *PacketFilterExpression) SetDestinationPort(v types.PacketFilterPort) {
 }
 
 // GetAction returns value of Action
-func (o *PacketFilterExpression) GetAction() types.PacketFilterAction {
+func (o *PacketFilterExpression) GetAction() types.Action {
 	return o.Action
 }
 
 // SetAction sets value to Action
-func (o *PacketFilterExpression) SetAction(v types.PacketFilterAction) {
+func (o *PacketFilterExpression) SetAction(v types.Action) {
 	o.Action = v
 }
 
@@ -6199,7 +6199,7 @@ type Server struct {
 	InstanceWarnings        string                      `mapconv:"Instance.Warnings"`
 	InstanceWarningsValue   int                         `mapconv:"Instance.WarningsValue"`
 	Disks                   []*Disk                     `json:",omitempty" mapconv:",recursive"`
-	Interfaces              []*Interface                `json:",omitempty" mapconv:"[]Interfaces,recursive"`
+	Interfaces              []*Interface                `json:",omitempty" mapconv:"[]Interfaces,recursive,omitempty"`
 	CDROMID                 types.ID                    `mapconv:"CDROM.ID"`
 	PrivateHostID           types.ID                    `mapconv:"PrivateHost.ID"`
 	PrivateHostName         string                      `mapconv:"PrivateHost.Name"`
@@ -7626,6 +7626,11 @@ func (o *SwitchSubnet) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// GetAssignedIPAddresses 割り当てられたIPアドレスのリスト
+func (o *SwitchSubnet) GetAssignedIPAddresses() []string {
+	return accessor.GetAssignedIPAddresses(o)
+}
+
 // GetID returns value of ID
 func (o *SwitchSubnet) GetID() types.ID {
 	return o.ID
@@ -7927,6 +7932,1657 @@ func (o *SwitchUpdateRequest) convertTo() (*naked.Switch, error) {
 
 // convertFrom parse values from naked SwitchUpdateRequest
 func (o *SwitchUpdateRequest) convertFrom(naked *naked.Switch) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* VPCRouter
+*************************************************/
+
+// VPCRouter represents API parameter/response structure
+type VPCRouter struct {
+	ID                      types.ID
+	Name                    string `validate:"required"`
+	Description             string `validate:"min=0,max=512"`
+	Tags                    []string
+	Availability            types.EAvailability
+	Class                   string
+	IconID                  types.ID `mapconv:"Icon.ID"`
+	CreatedAt               time.Time
+	PlanID                  types.ID `mapconv:"Remark.Plan.ID/Plan.ID"`
+	SettingsHash            string
+	Settings                *VPCRouterSetting           `mapconv:",omitempty,recursive"`
+	InstanceHostName        string                      `mapconv:"Instance.Host.Name"`
+	InstanceHostInfoURL     string                      `mapconv:"Instance.Host.InfoURL"`
+	InstanceStatus          types.EServerInstanceStatus `mapconv:"Instance.Status"`
+	InstanceStatusChangedAt time.Time                   `mapconv:"Instance.StatusChangedAt"`
+	Interfaces              []*VPCRouterInterface       `json:",omitempty" mapconv:"[]Interfaces,recursive,omitempty"`
+	SwitchID                types.ID                    `mapconv:"Remark.Switch.ID"`
+	IPAddresses             []string                    `mapconv:"Remark.[]Servers.IPAddress"`
+	ZoneID                  types.ID                    `mapconv:"Remark.Zone.ID"`
+}
+
+// Validate validates by field tags
+func (o *VPCRouter) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetID returns value of ID
+func (o *VPCRouter) GetID() types.ID {
+	return o.ID
+}
+
+// SetID sets value to ID
+func (o *VPCRouter) SetID(v types.ID) {
+	o.ID = v
+}
+
+// GetStringID gets value to StringID
+func (o *VPCRouter) GetStringID() string {
+	return accessor.GetStringID(o)
+}
+
+// SetStringID sets value to StringID
+func (o *VPCRouter) SetStringID(v string) {
+	accessor.SetStringID(o, v)
+}
+
+// GetInt64ID gets value to Int64ID
+func (o *VPCRouter) GetInt64ID() int64 {
+	return accessor.GetInt64ID(o)
+}
+
+// SetInt64ID sets value to Int64ID
+func (o *VPCRouter) SetInt64ID(v int64) {
+	accessor.SetInt64ID(o, v)
+}
+
+// GetName returns value of Name
+func (o *VPCRouter) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *VPCRouter) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *VPCRouter) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *VPCRouter) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetTags returns value of Tags
+func (o *VPCRouter) GetTags() []string {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *VPCRouter) SetTags(v []string) {
+	o.Tags = v
+}
+
+// GetAvailability returns value of Availability
+func (o *VPCRouter) GetAvailability() types.EAvailability {
+	return o.Availability
+}
+
+// SetAvailability sets value to Availability
+func (o *VPCRouter) SetAvailability(v types.EAvailability) {
+	o.Availability = v
+}
+
+// GetClass returns value of Class
+func (o *VPCRouter) GetClass() string {
+	return o.Class
+}
+
+// SetClass sets value to Class
+func (o *VPCRouter) SetClass(v string) {
+	o.Class = v
+}
+
+// GetIconID returns value of IconID
+func (o *VPCRouter) GetIconID() types.ID {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *VPCRouter) SetIconID(v types.ID) {
+	o.IconID = v
+}
+
+// GetCreatedAt returns value of CreatedAt
+func (o *VPCRouter) GetCreatedAt() time.Time {
+	return o.CreatedAt
+}
+
+// SetCreatedAt sets value to CreatedAt
+func (o *VPCRouter) SetCreatedAt(v time.Time) {
+	o.CreatedAt = v
+}
+
+// GetPlanID returns value of PlanID
+func (o *VPCRouter) GetPlanID() types.ID {
+	return o.PlanID
+}
+
+// SetPlanID sets value to PlanID
+func (o *VPCRouter) SetPlanID(v types.ID) {
+	o.PlanID = v
+}
+
+// GetSettingsHash returns value of SettingsHash
+func (o *VPCRouter) GetSettingsHash() string {
+	return o.SettingsHash
+}
+
+// SetSettingsHash sets value to SettingsHash
+func (o *VPCRouter) SetSettingsHash(v string) {
+	o.SettingsHash = v
+}
+
+// GetSettings returns value of Settings
+func (o *VPCRouter) GetSettings() *VPCRouterSetting {
+	return o.Settings
+}
+
+// SetSettings sets value to Settings
+func (o *VPCRouter) SetSettings(v *VPCRouterSetting) {
+	o.Settings = v
+}
+
+// GetInstanceHostName returns value of InstanceHostName
+func (o *VPCRouter) GetInstanceHostName() string {
+	return o.InstanceHostName
+}
+
+// SetInstanceHostName sets value to InstanceHostName
+func (o *VPCRouter) SetInstanceHostName(v string) {
+	o.InstanceHostName = v
+}
+
+// GetInstanceHostInfoURL returns value of InstanceHostInfoURL
+func (o *VPCRouter) GetInstanceHostInfoURL() string {
+	return o.InstanceHostInfoURL
+}
+
+// SetInstanceHostInfoURL sets value to InstanceHostInfoURL
+func (o *VPCRouter) SetInstanceHostInfoURL(v string) {
+	o.InstanceHostInfoURL = v
+}
+
+// GetInstanceStatus returns value of InstanceStatus
+func (o *VPCRouter) GetInstanceStatus() types.EServerInstanceStatus {
+	return o.InstanceStatus
+}
+
+// SetInstanceStatus sets value to InstanceStatus
+func (o *VPCRouter) SetInstanceStatus(v types.EServerInstanceStatus) {
+	o.InstanceStatus = v
+}
+
+// GetInstanceStatusChangedAt returns value of InstanceStatusChangedAt
+func (o *VPCRouter) GetInstanceStatusChangedAt() time.Time {
+	return o.InstanceStatusChangedAt
+}
+
+// SetInstanceStatusChangedAt sets value to InstanceStatusChangedAt
+func (o *VPCRouter) SetInstanceStatusChangedAt(v time.Time) {
+	o.InstanceStatusChangedAt = v
+}
+
+// GetInterfaces returns value of Interfaces
+func (o *VPCRouter) GetInterfaces() []*VPCRouterInterface {
+	return o.Interfaces
+}
+
+// SetInterfaces sets value to Interfaces
+func (o *VPCRouter) SetInterfaces(v []*VPCRouterInterface) {
+	o.Interfaces = v
+}
+
+// GetSwitchID returns value of SwitchID
+func (o *VPCRouter) GetSwitchID() types.ID {
+	return o.SwitchID
+}
+
+// SetSwitchID sets value to SwitchID
+func (o *VPCRouter) SetSwitchID(v types.ID) {
+	o.SwitchID = v
+}
+
+// GetIPAddresses returns value of IPAddresses
+func (o *VPCRouter) GetIPAddresses() []string {
+	return o.IPAddresses
+}
+
+// SetIPAddresses sets value to IPAddresses
+func (o *VPCRouter) SetIPAddresses(v []string) {
+	o.IPAddresses = v
+}
+
+// GetZoneID returns value of ZoneID
+func (o *VPCRouter) GetZoneID() types.ID {
+	return o.ZoneID
+}
+
+// SetZoneID sets value to ZoneID
+func (o *VPCRouter) SetZoneID(v types.ID) {
+	o.ZoneID = v
+}
+
+// convertTo returns naked VPCRouter
+func (o *VPCRouter) convertTo() (*naked.VPCRouter, error) {
+	dest := &naked.VPCRouter{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked VPCRouter
+func (o *VPCRouter) convertFrom(naked *naked.VPCRouter) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* VPCRouterSetting
+*************************************************/
+
+// VPCRouterSetting represents API parameter/response structure
+type VPCRouterSetting struct {
+	VRID                      int                            `json:",omitempty" mapconv:"Router.VRID"`
+	InternetConnectionEnabled types.StringFlag               `json:",omitempty" mapconv:"Router.InternetConnection.Enabled,omitempty"`
+	Interfaces                []*VPCRouterInterfaceSetting   `json:",omitempty" mapconv:"Router.[]Interface,omitempty,recursive"`
+	StaticNAT                 []*VPCRouterStaticNAT          `json:",omitempty" mapconv:"Router.StaticNAT.[]Config,omitempty,recursive"`
+	Firewall                  []*VPCRouterFirewall           `json:",omitempty" mapconv:"Router.Firewall.[]Config,omitempty,recursive"`
+	DHCPServer                []*VPCRouterDHCPServer         `json:",omitempty" mapconv:"Router.DHCPServer.[]Config,omitempty,recursive"`
+	DHCPStaticMapping         []*VPCRouterDHCPStaticMapping  `json:",omitempty" mapconv:"Router.DHCPStaticMapping.[]Config,omitempty,recursive"`
+	PPTPServer                *VPCRouterPPTPServer           `json:",omitempty" mapconv:"Router.PPTPServer.Config,omitempty,recursive"`
+	PPTPServerEnabled         types.StringFlag               `json:",omitempty" mapconv:"Router.PPTPServer.Enabled,omitempty"`
+	L2TPIPsecServer           *VPCRouterL2TPIPsecServer      `json:",omitempty" mapconv:"Router.L2TPIPsecServer.Config,omitempty,recursive"`
+	L2TPIPsecServerEnabled    types.StringFlag               `json:",omitempty" mapconv:"Router.L2TPIPsecServer.Enabled,omitempty"`
+	RemoteAccessUsers         []*VPCRouterRemoteAccessUser   `json:",omitempty" mapconv:"Router.RemoteAccessUsers.[]Config,omitempty,recursive"`
+	SiteToSiteIPsecVPN        []*VPCRouterSiteToSiteIPsecVPN `json:",omitempty" mapconv:"Router.SiteToSiteIPsecVPN.[]Config,omitempty,recursive"`
+	StaticRoute               []*VPCRouterStaticRoute        `json:",omitempty" mapconv:"Router.StaticRoutes.[]Config,omitempty,recursive"`
+}
+
+// Validate validates by field tags
+func (o *VPCRouterSetting) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetVRID returns value of VRID
+func (o *VPCRouterSetting) GetVRID() int {
+	return o.VRID
+}
+
+// SetVRID sets value to VRID
+func (o *VPCRouterSetting) SetVRID(v int) {
+	o.VRID = v
+}
+
+// GetInternetConnectionEnabled returns value of InternetConnectionEnabled
+func (o *VPCRouterSetting) GetInternetConnectionEnabled() types.StringFlag {
+	return o.InternetConnectionEnabled
+}
+
+// SetInternetConnectionEnabled sets value to InternetConnectionEnabled
+func (o *VPCRouterSetting) SetInternetConnectionEnabled(v types.StringFlag) {
+	o.InternetConnectionEnabled = v
+}
+
+// GetInterfaces returns value of Interfaces
+func (o *VPCRouterSetting) GetInterfaces() []*VPCRouterInterfaceSetting {
+	return o.Interfaces
+}
+
+// SetInterfaces sets value to Interfaces
+func (o *VPCRouterSetting) SetInterfaces(v []*VPCRouterInterfaceSetting) {
+	o.Interfaces = v
+}
+
+// GetStaticNAT returns value of StaticNAT
+func (o *VPCRouterSetting) GetStaticNAT() []*VPCRouterStaticNAT {
+	return o.StaticNAT
+}
+
+// SetStaticNAT sets value to StaticNAT
+func (o *VPCRouterSetting) SetStaticNAT(v []*VPCRouterStaticNAT) {
+	o.StaticNAT = v
+}
+
+// GetFirewall returns value of Firewall
+func (o *VPCRouterSetting) GetFirewall() []*VPCRouterFirewall {
+	return o.Firewall
+}
+
+// SetFirewall sets value to Firewall
+func (o *VPCRouterSetting) SetFirewall(v []*VPCRouterFirewall) {
+	o.Firewall = v
+}
+
+// GetDHCPServer returns value of DHCPServer
+func (o *VPCRouterSetting) GetDHCPServer() []*VPCRouterDHCPServer {
+	return o.DHCPServer
+}
+
+// SetDHCPServer sets value to DHCPServer
+func (o *VPCRouterSetting) SetDHCPServer(v []*VPCRouterDHCPServer) {
+	o.DHCPServer = v
+}
+
+// GetDHCPStaticMapping returns value of DHCPStaticMapping
+func (o *VPCRouterSetting) GetDHCPStaticMapping() []*VPCRouterDHCPStaticMapping {
+	return o.DHCPStaticMapping
+}
+
+// SetDHCPStaticMapping sets value to DHCPStaticMapping
+func (o *VPCRouterSetting) SetDHCPStaticMapping(v []*VPCRouterDHCPStaticMapping) {
+	o.DHCPStaticMapping = v
+}
+
+// GetPPTPServer returns value of PPTPServer
+func (o *VPCRouterSetting) GetPPTPServer() *VPCRouterPPTPServer {
+	return o.PPTPServer
+}
+
+// SetPPTPServer sets value to PPTPServer
+func (o *VPCRouterSetting) SetPPTPServer(v *VPCRouterPPTPServer) {
+	o.PPTPServer = v
+}
+
+// GetPPTPServerEnabled returns value of PPTPServerEnabled
+func (o *VPCRouterSetting) GetPPTPServerEnabled() types.StringFlag {
+	return o.PPTPServerEnabled
+}
+
+// SetPPTPServerEnabled sets value to PPTPServerEnabled
+func (o *VPCRouterSetting) SetPPTPServerEnabled(v types.StringFlag) {
+	o.PPTPServerEnabled = v
+}
+
+// GetL2TPIPsecServer returns value of L2TPIPsecServer
+func (o *VPCRouterSetting) GetL2TPIPsecServer() *VPCRouterL2TPIPsecServer {
+	return o.L2TPIPsecServer
+}
+
+// SetL2TPIPsecServer sets value to L2TPIPsecServer
+func (o *VPCRouterSetting) SetL2TPIPsecServer(v *VPCRouterL2TPIPsecServer) {
+	o.L2TPIPsecServer = v
+}
+
+// GetL2TPIPsecServerEnabled returns value of L2TPIPsecServerEnabled
+func (o *VPCRouterSetting) GetL2TPIPsecServerEnabled() types.StringFlag {
+	return o.L2TPIPsecServerEnabled
+}
+
+// SetL2TPIPsecServerEnabled sets value to L2TPIPsecServerEnabled
+func (o *VPCRouterSetting) SetL2TPIPsecServerEnabled(v types.StringFlag) {
+	o.L2TPIPsecServerEnabled = v
+}
+
+// GetRemoteAccessUsers returns value of RemoteAccessUsers
+func (o *VPCRouterSetting) GetRemoteAccessUsers() []*VPCRouterRemoteAccessUser {
+	return o.RemoteAccessUsers
+}
+
+// SetRemoteAccessUsers sets value to RemoteAccessUsers
+func (o *VPCRouterSetting) SetRemoteAccessUsers(v []*VPCRouterRemoteAccessUser) {
+	o.RemoteAccessUsers = v
+}
+
+// GetSiteToSiteIPsecVPN returns value of SiteToSiteIPsecVPN
+func (o *VPCRouterSetting) GetSiteToSiteIPsecVPN() []*VPCRouterSiteToSiteIPsecVPN {
+	return o.SiteToSiteIPsecVPN
+}
+
+// SetSiteToSiteIPsecVPN sets value to SiteToSiteIPsecVPN
+func (o *VPCRouterSetting) SetSiteToSiteIPsecVPN(v []*VPCRouterSiteToSiteIPsecVPN) {
+	o.SiteToSiteIPsecVPN = v
+}
+
+// GetStaticRoute returns value of StaticRoute
+func (o *VPCRouterSetting) GetStaticRoute() []*VPCRouterStaticRoute {
+	return o.StaticRoute
+}
+
+// SetStaticRoute sets value to StaticRoute
+func (o *VPCRouterSetting) SetStaticRoute(v []*VPCRouterStaticRoute) {
+	o.StaticRoute = v
+}
+
+// convertTo returns naked VPCRouterSetting
+func (o *VPCRouterSetting) convertTo() (*naked.VPCRouterSettings, error) {
+	dest := &naked.VPCRouterSettings{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked VPCRouterSetting
+func (o *VPCRouterSetting) convertFrom(naked *naked.VPCRouterSettings) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* VPCRouterInterfaceSetting
+*************************************************/
+
+// VPCRouterInterfaceSetting represents API parameter/response structure
+type VPCRouterInterfaceSetting struct {
+	Enabled          types.StringFlag `mapconv:",omitempty"`
+	IPAddress        []string
+	VirtualIPAddress string
+	IPAliases        []string
+	NetworkMaskLen   int
+	Index            int
+}
+
+// Validate validates by field tags
+func (o *VPCRouterInterfaceSetting) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetEnabled returns value of Enabled
+func (o *VPCRouterInterfaceSetting) GetEnabled() types.StringFlag {
+	return o.Enabled
+}
+
+// SetEnabled sets value to Enabled
+func (o *VPCRouterInterfaceSetting) SetEnabled(v types.StringFlag) {
+	o.Enabled = v
+}
+
+// GetIPAddress returns value of IPAddress
+func (o *VPCRouterInterfaceSetting) GetIPAddress() []string {
+	return o.IPAddress
+}
+
+// SetIPAddress sets value to IPAddress
+func (o *VPCRouterInterfaceSetting) SetIPAddress(v []string) {
+	o.IPAddress = v
+}
+
+// GetVirtualIPAddress returns value of VirtualIPAddress
+func (o *VPCRouterInterfaceSetting) GetVirtualIPAddress() string {
+	return o.VirtualIPAddress
+}
+
+// SetVirtualIPAddress sets value to VirtualIPAddress
+func (o *VPCRouterInterfaceSetting) SetVirtualIPAddress(v string) {
+	o.VirtualIPAddress = v
+}
+
+// GetIPAliases returns value of IPAliases
+func (o *VPCRouterInterfaceSetting) GetIPAliases() []string {
+	return o.IPAliases
+}
+
+// SetIPAliases sets value to IPAliases
+func (o *VPCRouterInterfaceSetting) SetIPAliases(v []string) {
+	o.IPAliases = v
+}
+
+// GetNetworkMaskLen returns value of NetworkMaskLen
+func (o *VPCRouterInterfaceSetting) GetNetworkMaskLen() int {
+	return o.NetworkMaskLen
+}
+
+// SetNetworkMaskLen sets value to NetworkMaskLen
+func (o *VPCRouterInterfaceSetting) SetNetworkMaskLen(v int) {
+	o.NetworkMaskLen = v
+}
+
+// GetIndex returns value of Index
+func (o *VPCRouterInterfaceSetting) GetIndex() int {
+	return o.Index
+}
+
+// SetIndex sets value to Index
+func (o *VPCRouterInterfaceSetting) SetIndex(v int) {
+	o.Index = v
+}
+
+// convertTo returns naked VPCRouterInterfaceSetting
+func (o *VPCRouterInterfaceSetting) convertTo() (*naked.VPCRouterInterface, error) {
+	dest := &naked.VPCRouterInterface{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked VPCRouterInterfaceSetting
+func (o *VPCRouterInterfaceSetting) convertFrom(naked *naked.VPCRouterInterface) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* VPCRouterStaticNAT
+*************************************************/
+
+// VPCRouterStaticNAT represents API parameter/response structure
+type VPCRouterStaticNAT struct {
+	GlobalAddress  string `mapconv:"GlobalAddress" validate:"ipv4"`
+	PrivateAddress string `mapconv:"PrivateAddress" validate:"ipv4"`
+	Description    string
+}
+
+// Validate validates by field tags
+func (o *VPCRouterStaticNAT) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetGlobalAddress returns value of GlobalAddress
+func (o *VPCRouterStaticNAT) GetGlobalAddress() string {
+	return o.GlobalAddress
+}
+
+// SetGlobalAddress sets value to GlobalAddress
+func (o *VPCRouterStaticNAT) SetGlobalAddress(v string) {
+	o.GlobalAddress = v
+}
+
+// GetPrivateAddress returns value of PrivateAddress
+func (o *VPCRouterStaticNAT) GetPrivateAddress() string {
+	return o.PrivateAddress
+}
+
+// SetPrivateAddress sets value to PrivateAddress
+func (o *VPCRouterStaticNAT) SetPrivateAddress(v string) {
+	o.PrivateAddress = v
+}
+
+// GetDescription returns value of Description
+func (o *VPCRouterStaticNAT) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *VPCRouterStaticNAT) SetDescription(v string) {
+	o.Description = v
+}
+
+// convertTo returns naked VPCRouterStaticNAT
+func (o *VPCRouterStaticNAT) convertTo() (*naked.VPCRouterStaticNATConfig, error) {
+	dest := &naked.VPCRouterStaticNATConfig{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked VPCRouterStaticNAT
+func (o *VPCRouterStaticNAT) convertFrom(naked *naked.VPCRouterStaticNATConfig) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* VPCRouterFirewall
+*************************************************/
+
+// VPCRouterFirewall represents API parameter/response structure
+type VPCRouterFirewall struct {
+	Send    []*VPCRouterFirewallRule
+	Receive []*VPCRouterFirewallRule
+}
+
+// Validate validates by field tags
+func (o *VPCRouterFirewall) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetSend returns value of Send
+func (o *VPCRouterFirewall) GetSend() []*VPCRouterFirewallRule {
+	return o.Send
+}
+
+// SetSend sets value to Send
+func (o *VPCRouterFirewall) SetSend(v []*VPCRouterFirewallRule) {
+	o.Send = v
+}
+
+// GetReceive returns value of Receive
+func (o *VPCRouterFirewall) GetReceive() []*VPCRouterFirewallRule {
+	return o.Receive
+}
+
+// SetReceive sets value to Receive
+func (o *VPCRouterFirewall) SetReceive(v []*VPCRouterFirewallRule) {
+	o.Receive = v
+}
+
+// convertTo returns naked VPCRouterFirewall
+func (o *VPCRouterFirewall) convertTo() (*naked.VPCRouterFirewallConfig, error) {
+	dest := &naked.VPCRouterFirewallConfig{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked VPCRouterFirewall
+func (o *VPCRouterFirewall) convertFrom(naked *naked.VPCRouterFirewallConfig) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* VPCRouterFirewallRule
+*************************************************/
+
+// VPCRouterFirewallRule represents API parameter/response structure
+type VPCRouterFirewallRule struct {
+	Protocol           types.Protocol
+	SourceNetwork      types.VPCFirewallNetwork
+	SourcePort         types.VPCFirewallPort
+	DestinationNetwork types.VPCFirewallNetwork
+	DestinationPort    types.VPCFirewallPort
+	Action             types.Action
+	Logging            types.StringFlag
+	Description        string
+}
+
+// Validate validates by field tags
+func (o *VPCRouterFirewallRule) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetProtocol returns value of Protocol
+func (o *VPCRouterFirewallRule) GetProtocol() types.Protocol {
+	return o.Protocol
+}
+
+// SetProtocol sets value to Protocol
+func (o *VPCRouterFirewallRule) SetProtocol(v types.Protocol) {
+	o.Protocol = v
+}
+
+// GetSourceNetwork returns value of SourceNetwork
+func (o *VPCRouterFirewallRule) GetSourceNetwork() types.VPCFirewallNetwork {
+	return o.SourceNetwork
+}
+
+// SetSourceNetwork sets value to SourceNetwork
+func (o *VPCRouterFirewallRule) SetSourceNetwork(v types.VPCFirewallNetwork) {
+	o.SourceNetwork = v
+}
+
+// GetSourcePort returns value of SourcePort
+func (o *VPCRouterFirewallRule) GetSourcePort() types.VPCFirewallPort {
+	return o.SourcePort
+}
+
+// SetSourcePort sets value to SourcePort
+func (o *VPCRouterFirewallRule) SetSourcePort(v types.VPCFirewallPort) {
+	o.SourcePort = v
+}
+
+// GetDestinationNetwork returns value of DestinationNetwork
+func (o *VPCRouterFirewallRule) GetDestinationNetwork() types.VPCFirewallNetwork {
+	return o.DestinationNetwork
+}
+
+// SetDestinationNetwork sets value to DestinationNetwork
+func (o *VPCRouterFirewallRule) SetDestinationNetwork(v types.VPCFirewallNetwork) {
+	o.DestinationNetwork = v
+}
+
+// GetDestinationPort returns value of DestinationPort
+func (o *VPCRouterFirewallRule) GetDestinationPort() types.VPCFirewallPort {
+	return o.DestinationPort
+}
+
+// SetDestinationPort sets value to DestinationPort
+func (o *VPCRouterFirewallRule) SetDestinationPort(v types.VPCFirewallPort) {
+	o.DestinationPort = v
+}
+
+// GetAction returns value of Action
+func (o *VPCRouterFirewallRule) GetAction() types.Action {
+	return o.Action
+}
+
+// SetAction sets value to Action
+func (o *VPCRouterFirewallRule) SetAction(v types.Action) {
+	o.Action = v
+}
+
+// GetLogging returns value of Logging
+func (o *VPCRouterFirewallRule) GetLogging() types.StringFlag {
+	return o.Logging
+}
+
+// SetLogging sets value to Logging
+func (o *VPCRouterFirewallRule) SetLogging(v types.StringFlag) {
+	o.Logging = v
+}
+
+// GetDescription returns value of Description
+func (o *VPCRouterFirewallRule) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *VPCRouterFirewallRule) SetDescription(v string) {
+	o.Description = v
+}
+
+// convertTo returns naked VPCRouterFirewallRule
+func (o *VPCRouterFirewallRule) convertTo() (*naked.VPCRouterFirewallRule, error) {
+	dest := &naked.VPCRouterFirewallRule{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked VPCRouterFirewallRule
+func (o *VPCRouterFirewallRule) convertFrom(naked *naked.VPCRouterFirewallRule) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* VPCRouterDHCPServer
+*************************************************/
+
+// VPCRouterDHCPServer represents API parameter/response structure
+type VPCRouterDHCPServer struct {
+	Interface  string
+	RangeStart string   `validate:"ipv4"`
+	RangeStop  string   `validate:"ipv4"`
+	DNSServers []string `validate:"dive,ipv4"`
+}
+
+// Validate validates by field tags
+func (o *VPCRouterDHCPServer) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetInterface returns value of Interface
+func (o *VPCRouterDHCPServer) GetInterface() string {
+	return o.Interface
+}
+
+// SetInterface sets value to Interface
+func (o *VPCRouterDHCPServer) SetInterface(v string) {
+	o.Interface = v
+}
+
+// GetRangeStart returns value of RangeStart
+func (o *VPCRouterDHCPServer) GetRangeStart() string {
+	return o.RangeStart
+}
+
+// SetRangeStart sets value to RangeStart
+func (o *VPCRouterDHCPServer) SetRangeStart(v string) {
+	o.RangeStart = v
+}
+
+// GetRangeStop returns value of RangeStop
+func (o *VPCRouterDHCPServer) GetRangeStop() string {
+	return o.RangeStop
+}
+
+// SetRangeStop sets value to RangeStop
+func (o *VPCRouterDHCPServer) SetRangeStop(v string) {
+	o.RangeStop = v
+}
+
+// GetDNSServers returns value of DNSServers
+func (o *VPCRouterDHCPServer) GetDNSServers() []string {
+	return o.DNSServers
+}
+
+// SetDNSServers sets value to DNSServers
+func (o *VPCRouterDHCPServer) SetDNSServers(v []string) {
+	o.DNSServers = v
+}
+
+// convertTo returns naked VPCRouterDHCPServer
+func (o *VPCRouterDHCPServer) convertTo() (*naked.VPCRouterDHCPServerConfig, error) {
+	dest := &naked.VPCRouterDHCPServerConfig{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked VPCRouterDHCPServer
+func (o *VPCRouterDHCPServer) convertFrom(naked *naked.VPCRouterDHCPServerConfig) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* VPCRouterDHCPStaticMapping
+*************************************************/
+
+// VPCRouterDHCPStaticMapping represents API parameter/response structure
+type VPCRouterDHCPStaticMapping struct {
+	MACAddress string
+	IPAddress  string `validate:"ipv4"`
+}
+
+// Validate validates by field tags
+func (o *VPCRouterDHCPStaticMapping) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetMACAddress returns value of MACAddress
+func (o *VPCRouterDHCPStaticMapping) GetMACAddress() string {
+	return o.MACAddress
+}
+
+// SetMACAddress sets value to MACAddress
+func (o *VPCRouterDHCPStaticMapping) SetMACAddress(v string) {
+	o.MACAddress = v
+}
+
+// GetIPAddress returns value of IPAddress
+func (o *VPCRouterDHCPStaticMapping) GetIPAddress() string {
+	return o.IPAddress
+}
+
+// SetIPAddress sets value to IPAddress
+func (o *VPCRouterDHCPStaticMapping) SetIPAddress(v string) {
+	o.IPAddress = v
+}
+
+// convertTo returns naked VPCRouterDHCPStaticMapping
+func (o *VPCRouterDHCPStaticMapping) convertTo() (*naked.VPCRouterDHCPStaticMappingConfig, error) {
+	dest := &naked.VPCRouterDHCPStaticMappingConfig{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked VPCRouterDHCPStaticMapping
+func (o *VPCRouterDHCPStaticMapping) convertFrom(naked *naked.VPCRouterDHCPStaticMappingConfig) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* VPCRouterPPTPServer
+*************************************************/
+
+// VPCRouterPPTPServer represents API parameter/response structure
+type VPCRouterPPTPServer struct {
+	RangeStart string `validate:"ipv4"`
+	RangeStop  string `validate:"ipv4"`
+}
+
+// Validate validates by field tags
+func (o *VPCRouterPPTPServer) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetRangeStart returns value of RangeStart
+func (o *VPCRouterPPTPServer) GetRangeStart() string {
+	return o.RangeStart
+}
+
+// SetRangeStart sets value to RangeStart
+func (o *VPCRouterPPTPServer) SetRangeStart(v string) {
+	o.RangeStart = v
+}
+
+// GetRangeStop returns value of RangeStop
+func (o *VPCRouterPPTPServer) GetRangeStop() string {
+	return o.RangeStop
+}
+
+// SetRangeStop sets value to RangeStop
+func (o *VPCRouterPPTPServer) SetRangeStop(v string) {
+	o.RangeStop = v
+}
+
+// convertTo returns naked VPCRouterPPTPServer
+func (o *VPCRouterPPTPServer) convertTo() (*naked.VPCRouterPPTPServerConfig, error) {
+	dest := &naked.VPCRouterPPTPServerConfig{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked VPCRouterPPTPServer
+func (o *VPCRouterPPTPServer) convertFrom(naked *naked.VPCRouterPPTPServerConfig) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* VPCRouterL2TPIPsecServer
+*************************************************/
+
+// VPCRouterL2TPIPsecServer represents API parameter/response structure
+type VPCRouterL2TPIPsecServer struct {
+	RangeStart      string `validate:"ipv4"`
+	RangeStop       string `validate:"ipv4"`
+	PreSharedSecret string
+}
+
+// Validate validates by field tags
+func (o *VPCRouterL2TPIPsecServer) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetRangeStart returns value of RangeStart
+func (o *VPCRouterL2TPIPsecServer) GetRangeStart() string {
+	return o.RangeStart
+}
+
+// SetRangeStart sets value to RangeStart
+func (o *VPCRouterL2TPIPsecServer) SetRangeStart(v string) {
+	o.RangeStart = v
+}
+
+// GetRangeStop returns value of RangeStop
+func (o *VPCRouterL2TPIPsecServer) GetRangeStop() string {
+	return o.RangeStop
+}
+
+// SetRangeStop sets value to RangeStop
+func (o *VPCRouterL2TPIPsecServer) SetRangeStop(v string) {
+	o.RangeStop = v
+}
+
+// GetPreSharedSecret returns value of PreSharedSecret
+func (o *VPCRouterL2TPIPsecServer) GetPreSharedSecret() string {
+	return o.PreSharedSecret
+}
+
+// SetPreSharedSecret sets value to PreSharedSecret
+func (o *VPCRouterL2TPIPsecServer) SetPreSharedSecret(v string) {
+	o.PreSharedSecret = v
+}
+
+// convertTo returns naked VPCRouterL2TPIPsecServer
+func (o *VPCRouterL2TPIPsecServer) convertTo() (*naked.VPCRouterL2TPIPsecServerConfig, error) {
+	dest := &naked.VPCRouterL2TPIPsecServerConfig{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked VPCRouterL2TPIPsecServer
+func (o *VPCRouterL2TPIPsecServer) convertFrom(naked *naked.VPCRouterL2TPIPsecServerConfig) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* VPCRouterRemoteAccessUser
+*************************************************/
+
+// VPCRouterRemoteAccessUser represents API parameter/response structure
+type VPCRouterRemoteAccessUser struct {
+	UserName string
+	Password string
+}
+
+// Validate validates by field tags
+func (o *VPCRouterRemoteAccessUser) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetUserName returns value of UserName
+func (o *VPCRouterRemoteAccessUser) GetUserName() string {
+	return o.UserName
+}
+
+// SetUserName sets value to UserName
+func (o *VPCRouterRemoteAccessUser) SetUserName(v string) {
+	o.UserName = v
+}
+
+// GetPassword returns value of Password
+func (o *VPCRouterRemoteAccessUser) GetPassword() string {
+	return o.Password
+}
+
+// SetPassword sets value to Password
+func (o *VPCRouterRemoteAccessUser) SetPassword(v string) {
+	o.Password = v
+}
+
+// convertTo returns naked VPCRouterRemoteAccessUser
+func (o *VPCRouterRemoteAccessUser) convertTo() (*naked.VPCRouterRemoteAccessUserConfig, error) {
+	dest := &naked.VPCRouterRemoteAccessUserConfig{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked VPCRouterRemoteAccessUser
+func (o *VPCRouterRemoteAccessUser) convertFrom(naked *naked.VPCRouterRemoteAccessUserConfig) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* VPCRouterSiteToSiteIPsecVPN
+*************************************************/
+
+// VPCRouterSiteToSiteIPsecVPN represents API parameter/response structure
+type VPCRouterSiteToSiteIPsecVPN struct {
+	Peer            string
+	PreSharedSecret string
+	RemoteID        string
+	Routes          []string
+	LocalPrefix     []string
+}
+
+// Validate validates by field tags
+func (o *VPCRouterSiteToSiteIPsecVPN) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetPeer returns value of Peer
+func (o *VPCRouterSiteToSiteIPsecVPN) GetPeer() string {
+	return o.Peer
+}
+
+// SetPeer sets value to Peer
+func (o *VPCRouterSiteToSiteIPsecVPN) SetPeer(v string) {
+	o.Peer = v
+}
+
+// GetPreSharedSecret returns value of PreSharedSecret
+func (o *VPCRouterSiteToSiteIPsecVPN) GetPreSharedSecret() string {
+	return o.PreSharedSecret
+}
+
+// SetPreSharedSecret sets value to PreSharedSecret
+func (o *VPCRouterSiteToSiteIPsecVPN) SetPreSharedSecret(v string) {
+	o.PreSharedSecret = v
+}
+
+// GetRemoteID returns value of RemoteID
+func (o *VPCRouterSiteToSiteIPsecVPN) GetRemoteID() string {
+	return o.RemoteID
+}
+
+// SetRemoteID sets value to RemoteID
+func (o *VPCRouterSiteToSiteIPsecVPN) SetRemoteID(v string) {
+	o.RemoteID = v
+}
+
+// GetRoutes returns value of Routes
+func (o *VPCRouterSiteToSiteIPsecVPN) GetRoutes() []string {
+	return o.Routes
+}
+
+// SetRoutes sets value to Routes
+func (o *VPCRouterSiteToSiteIPsecVPN) SetRoutes(v []string) {
+	o.Routes = v
+}
+
+// GetLocalPrefix returns value of LocalPrefix
+func (o *VPCRouterSiteToSiteIPsecVPN) GetLocalPrefix() []string {
+	return o.LocalPrefix
+}
+
+// SetLocalPrefix sets value to LocalPrefix
+func (o *VPCRouterSiteToSiteIPsecVPN) SetLocalPrefix(v []string) {
+	o.LocalPrefix = v
+}
+
+// convertTo returns naked VPCRouterSiteToSiteIPsecVPN
+func (o *VPCRouterSiteToSiteIPsecVPN) convertTo() (*naked.VPCRouterSiteToSiteIPsecVPNConfig, error) {
+	dest := &naked.VPCRouterSiteToSiteIPsecVPNConfig{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked VPCRouterSiteToSiteIPsecVPN
+func (o *VPCRouterSiteToSiteIPsecVPN) convertFrom(naked *naked.VPCRouterSiteToSiteIPsecVPNConfig) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* VPCRouterStaticRoute
+*************************************************/
+
+// VPCRouterStaticRoute represents API parameter/response structure
+type VPCRouterStaticRoute struct {
+	Prefix  string
+	NextHop string
+}
+
+// Validate validates by field tags
+func (o *VPCRouterStaticRoute) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetPrefix returns value of Prefix
+func (o *VPCRouterStaticRoute) GetPrefix() string {
+	return o.Prefix
+}
+
+// SetPrefix sets value to Prefix
+func (o *VPCRouterStaticRoute) SetPrefix(v string) {
+	o.Prefix = v
+}
+
+// GetNextHop returns value of NextHop
+func (o *VPCRouterStaticRoute) GetNextHop() string {
+	return o.NextHop
+}
+
+// SetNextHop sets value to NextHop
+func (o *VPCRouterStaticRoute) SetNextHop(v string) {
+	o.NextHop = v
+}
+
+// convertTo returns naked VPCRouterStaticRoute
+func (o *VPCRouterStaticRoute) convertTo() (*naked.VPCRouterStaticRouteConfig, error) {
+	dest := &naked.VPCRouterStaticRouteConfig{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked VPCRouterStaticRoute
+func (o *VPCRouterStaticRoute) convertFrom(naked *naked.VPCRouterStaticRouteConfig) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* VPCRouterInterface
+*************************************************/
+
+// VPCRouterInterface represents API parameter/response structure
+type VPCRouterInterface struct {
+	ID                              types.ID
+	MACAddress                      string
+	IPAddress                       string
+	UserIPAddress                   string
+	HostName                        string
+	SwitchID                        types.ID           `mapconv:"Switch.ID"`
+	SwitchName                      string             `mapconv:"Switch.Name"`
+	SwitchScope                     types.EScope       `mapconv:"Switch.Scope"`
+	UserSubnetDefaultRoute          string             `mapconv:"Switch.UserSubnet.DefaultRoute"`
+	UserSubnetNetworkMaskLen        int                `mapconv:"Switch.UserSubnet.NetworkMaskLen"`
+	SubnetDefaultRoute              string             `mapconv:"Switch.Subnet.DefaultRoute"`
+	SubnetNetworkMaskLen            int                `mapconv:"Switch.Subnet.NetworkMaskLen"`
+	SubnetNetworkAddress            string             `mapconv:"Switch.Subnet.NetworkAddress"`
+	SubnetBandWidthMbps             int                `mapconv:"Switch.Subnet.Internet.BandWidthMbps"`
+	PacketFilterID                  string             `mapconv:"PacketFilter.ID"`
+	PacketFilterName                string             `mapconv:"PacketFilter.Name"`
+	PacketFilterRequiredHostVersion types.StringNumber `mapconv:"PacketFilter.RequiredHostVersionn"`
+	Index                           int                `mapconv:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *VPCRouterInterface) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetID returns value of ID
+func (o *VPCRouterInterface) GetID() types.ID {
+	return o.ID
+}
+
+// SetID sets value to ID
+func (o *VPCRouterInterface) SetID(v types.ID) {
+	o.ID = v
+}
+
+// GetStringID gets value to StringID
+func (o *VPCRouterInterface) GetStringID() string {
+	return accessor.GetStringID(o)
+}
+
+// SetStringID sets value to StringID
+func (o *VPCRouterInterface) SetStringID(v string) {
+	accessor.SetStringID(o, v)
+}
+
+// GetInt64ID gets value to Int64ID
+func (o *VPCRouterInterface) GetInt64ID() int64 {
+	return accessor.GetInt64ID(o)
+}
+
+// SetInt64ID sets value to Int64ID
+func (o *VPCRouterInterface) SetInt64ID(v int64) {
+	accessor.SetInt64ID(o, v)
+}
+
+// GetMACAddress returns value of MACAddress
+func (o *VPCRouterInterface) GetMACAddress() string {
+	return o.MACAddress
+}
+
+// SetMACAddress sets value to MACAddress
+func (o *VPCRouterInterface) SetMACAddress(v string) {
+	o.MACAddress = v
+}
+
+// GetIPAddress returns value of IPAddress
+func (o *VPCRouterInterface) GetIPAddress() string {
+	return o.IPAddress
+}
+
+// SetIPAddress sets value to IPAddress
+func (o *VPCRouterInterface) SetIPAddress(v string) {
+	o.IPAddress = v
+}
+
+// GetUserIPAddress returns value of UserIPAddress
+func (o *VPCRouterInterface) GetUserIPAddress() string {
+	return o.UserIPAddress
+}
+
+// SetUserIPAddress sets value to UserIPAddress
+func (o *VPCRouterInterface) SetUserIPAddress(v string) {
+	o.UserIPAddress = v
+}
+
+// GetHostName returns value of HostName
+func (o *VPCRouterInterface) GetHostName() string {
+	return o.HostName
+}
+
+// SetHostName sets value to HostName
+func (o *VPCRouterInterface) SetHostName(v string) {
+	o.HostName = v
+}
+
+// GetSwitchID returns value of SwitchID
+func (o *VPCRouterInterface) GetSwitchID() types.ID {
+	return o.SwitchID
+}
+
+// SetSwitchID sets value to SwitchID
+func (o *VPCRouterInterface) SetSwitchID(v types.ID) {
+	o.SwitchID = v
+}
+
+// GetSwitchName returns value of SwitchName
+func (o *VPCRouterInterface) GetSwitchName() string {
+	return o.SwitchName
+}
+
+// SetSwitchName sets value to SwitchName
+func (o *VPCRouterInterface) SetSwitchName(v string) {
+	o.SwitchName = v
+}
+
+// GetSwitchScope returns value of SwitchScope
+func (o *VPCRouterInterface) GetSwitchScope() types.EScope {
+	return o.SwitchScope
+}
+
+// SetSwitchScope sets value to SwitchScope
+func (o *VPCRouterInterface) SetSwitchScope(v types.EScope) {
+	o.SwitchScope = v
+}
+
+// GetUserSubnetDefaultRoute returns value of UserSubnetDefaultRoute
+func (o *VPCRouterInterface) GetUserSubnetDefaultRoute() string {
+	return o.UserSubnetDefaultRoute
+}
+
+// SetUserSubnetDefaultRoute sets value to UserSubnetDefaultRoute
+func (o *VPCRouterInterface) SetUserSubnetDefaultRoute(v string) {
+	o.UserSubnetDefaultRoute = v
+}
+
+// GetUserSubnetNetworkMaskLen returns value of UserSubnetNetworkMaskLen
+func (o *VPCRouterInterface) GetUserSubnetNetworkMaskLen() int {
+	return o.UserSubnetNetworkMaskLen
+}
+
+// SetUserSubnetNetworkMaskLen sets value to UserSubnetNetworkMaskLen
+func (o *VPCRouterInterface) SetUserSubnetNetworkMaskLen(v int) {
+	o.UserSubnetNetworkMaskLen = v
+}
+
+// GetSubnetDefaultRoute returns value of SubnetDefaultRoute
+func (o *VPCRouterInterface) GetSubnetDefaultRoute() string {
+	return o.SubnetDefaultRoute
+}
+
+// SetSubnetDefaultRoute sets value to SubnetDefaultRoute
+func (o *VPCRouterInterface) SetSubnetDefaultRoute(v string) {
+	o.SubnetDefaultRoute = v
+}
+
+// GetSubnetNetworkMaskLen returns value of SubnetNetworkMaskLen
+func (o *VPCRouterInterface) GetSubnetNetworkMaskLen() int {
+	return o.SubnetNetworkMaskLen
+}
+
+// SetSubnetNetworkMaskLen sets value to SubnetNetworkMaskLen
+func (o *VPCRouterInterface) SetSubnetNetworkMaskLen(v int) {
+	o.SubnetNetworkMaskLen = v
+}
+
+// GetSubnetNetworkAddress returns value of SubnetNetworkAddress
+func (o *VPCRouterInterface) GetSubnetNetworkAddress() string {
+	return o.SubnetNetworkAddress
+}
+
+// SetSubnetNetworkAddress sets value to SubnetNetworkAddress
+func (o *VPCRouterInterface) SetSubnetNetworkAddress(v string) {
+	o.SubnetNetworkAddress = v
+}
+
+// GetSubnetBandWidthMbps returns value of SubnetBandWidthMbps
+func (o *VPCRouterInterface) GetSubnetBandWidthMbps() int {
+	return o.SubnetBandWidthMbps
+}
+
+// SetSubnetBandWidthMbps sets value to SubnetBandWidthMbps
+func (o *VPCRouterInterface) SetSubnetBandWidthMbps(v int) {
+	o.SubnetBandWidthMbps = v
+}
+
+// GetPacketFilterID returns value of PacketFilterID
+func (o *VPCRouterInterface) GetPacketFilterID() string {
+	return o.PacketFilterID
+}
+
+// SetPacketFilterID sets value to PacketFilterID
+func (o *VPCRouterInterface) SetPacketFilterID(v string) {
+	o.PacketFilterID = v
+}
+
+// GetPacketFilterName returns value of PacketFilterName
+func (o *VPCRouterInterface) GetPacketFilterName() string {
+	return o.PacketFilterName
+}
+
+// SetPacketFilterName sets value to PacketFilterName
+func (o *VPCRouterInterface) SetPacketFilterName(v string) {
+	o.PacketFilterName = v
+}
+
+// GetPacketFilterRequiredHostVersion returns value of PacketFilterRequiredHostVersion
+func (o *VPCRouterInterface) GetPacketFilterRequiredHostVersion() types.StringNumber {
+	return o.PacketFilterRequiredHostVersion
+}
+
+// SetPacketFilterRequiredHostVersion sets value to PacketFilterRequiredHostVersion
+func (o *VPCRouterInterface) SetPacketFilterRequiredHostVersion(v types.StringNumber) {
+	o.PacketFilterRequiredHostVersion = v
+}
+
+// GetIndex returns value of Index
+func (o *VPCRouterInterface) GetIndex() int {
+	return o.Index
+}
+
+// SetIndex sets value to Index
+func (o *VPCRouterInterface) SetIndex(v int) {
+	o.Index = v
+}
+
+// convertTo returns naked VPCRouterInterface
+func (o *VPCRouterInterface) convertTo() (*naked.Interface, error) {
+	dest := &naked.Interface{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked VPCRouterInterface
+func (o *VPCRouterInterface) convertFrom(naked *naked.Interface) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* VPCRouterCreateRequest
+*************************************************/
+
+// VPCRouterCreateRequest represents API parameter/response structure
+type VPCRouterCreateRequest struct {
+	Class       string `mapconv:",default=vpcrouter"`
+	Name        string `validate:"required"`
+	Description string `validate:"min=0,max=512"`
+	Tags        []string
+	IconID      types.ID                  `mapconv:"Icon.ID"`
+	PlanID      types.ID                  `mapconv:"Plan.ID"`
+	Switch      *ApplianceConnectedSwitch `json:",omitempty" mapconv:"Remark.Switch,recursive"`
+	IPAddresses []string                  `mapconv:"Remark.[]Servers.IPAddress" validate:"min=1,max=2,dive,ipv4"`
+	Settings    *VPCRouterSetting         `mapconv:",omitempty,recursive"`
+}
+
+// Validate validates by field tags
+func (o *VPCRouterCreateRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetClass returns value of Class
+func (o *VPCRouterCreateRequest) GetClass() string {
+	return o.Class
+}
+
+// SetClass sets value to Class
+func (o *VPCRouterCreateRequest) SetClass(v string) {
+	o.Class = v
+}
+
+// GetName returns value of Name
+func (o *VPCRouterCreateRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *VPCRouterCreateRequest) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *VPCRouterCreateRequest) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *VPCRouterCreateRequest) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetTags returns value of Tags
+func (o *VPCRouterCreateRequest) GetTags() []string {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *VPCRouterCreateRequest) SetTags(v []string) {
+	o.Tags = v
+}
+
+// GetIconID returns value of IconID
+func (o *VPCRouterCreateRequest) GetIconID() types.ID {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *VPCRouterCreateRequest) SetIconID(v types.ID) {
+	o.IconID = v
+}
+
+// GetPlanID returns value of PlanID
+func (o *VPCRouterCreateRequest) GetPlanID() types.ID {
+	return o.PlanID
+}
+
+// SetPlanID sets value to PlanID
+func (o *VPCRouterCreateRequest) SetPlanID(v types.ID) {
+	o.PlanID = v
+}
+
+// GetSwitch returns value of Switch
+func (o *VPCRouterCreateRequest) GetSwitch() *ApplianceConnectedSwitch {
+	return o.Switch
+}
+
+// SetSwitch sets value to Switch
+func (o *VPCRouterCreateRequest) SetSwitch(v *ApplianceConnectedSwitch) {
+	o.Switch = v
+}
+
+// GetIPAddresses returns value of IPAddresses
+func (o *VPCRouterCreateRequest) GetIPAddresses() []string {
+	return o.IPAddresses
+}
+
+// SetIPAddresses sets value to IPAddresses
+func (o *VPCRouterCreateRequest) SetIPAddresses(v []string) {
+	o.IPAddresses = v
+}
+
+// GetSettings returns value of Settings
+func (o *VPCRouterCreateRequest) GetSettings() *VPCRouterSetting {
+	return o.Settings
+}
+
+// SetSettings sets value to Settings
+func (o *VPCRouterCreateRequest) SetSettings(v *VPCRouterSetting) {
+	o.Settings = v
+}
+
+// convertTo returns naked VPCRouterCreateRequest
+func (o *VPCRouterCreateRequest) convertTo() (*naked.VPCRouter, error) {
+	dest := &naked.VPCRouter{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked VPCRouterCreateRequest
+func (o *VPCRouterCreateRequest) convertFrom(naked *naked.VPCRouter) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* ApplianceConnectedSwitch
+*************************************************/
+
+// ApplianceConnectedSwitch represents API parameter/response structure
+type ApplianceConnectedSwitch struct {
+	ID    types.ID
+	Scope types.EScope
+}
+
+// Validate validates by field tags
+func (o *ApplianceConnectedSwitch) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetID returns value of ID
+func (o *ApplianceConnectedSwitch) GetID() types.ID {
+	return o.ID
+}
+
+// SetID sets value to ID
+func (o *ApplianceConnectedSwitch) SetID(v types.ID) {
+	o.ID = v
+}
+
+// GetStringID gets value to StringID
+func (o *ApplianceConnectedSwitch) GetStringID() string {
+	return accessor.GetStringID(o)
+}
+
+// SetStringID sets value to StringID
+func (o *ApplianceConnectedSwitch) SetStringID(v string) {
+	accessor.SetStringID(o, v)
+}
+
+// GetInt64ID gets value to Int64ID
+func (o *ApplianceConnectedSwitch) GetInt64ID() int64 {
+	return accessor.GetInt64ID(o)
+}
+
+// SetInt64ID sets value to Int64ID
+func (o *ApplianceConnectedSwitch) SetInt64ID(v int64) {
+	accessor.SetInt64ID(o, v)
+}
+
+// GetScope returns value of Scope
+func (o *ApplianceConnectedSwitch) GetScope() types.EScope {
+	return o.Scope
+}
+
+// SetScope sets value to Scope
+func (o *ApplianceConnectedSwitch) SetScope(v types.EScope) {
+	o.Scope = v
+}
+
+// convertTo returns naked ApplianceConnectedSwitch
+func (o *ApplianceConnectedSwitch) convertTo() (*naked.ConnectedSwitch, error) {
+	dest := &naked.ConnectedSwitch{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked ApplianceConnectedSwitch
+func (o *ApplianceConnectedSwitch) convertFrom(naked *naked.ConnectedSwitch) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* VPCRouterUpdateRequest
+*************************************************/
+
+// VPCRouterUpdateRequest represents API parameter/response structure
+type VPCRouterUpdateRequest struct {
+	Name        string `validate:"required"`
+	Description string `validate:"min=0,max=512"`
+	Tags        []string
+	IconID      types.ID          `mapconv:"Icon.ID"`
+	Settings    *VPCRouterSetting `mapconv:",omitempty,recursive"`
+}
+
+// Validate validates by field tags
+func (o *VPCRouterUpdateRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetName returns value of Name
+func (o *VPCRouterUpdateRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *VPCRouterUpdateRequest) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *VPCRouterUpdateRequest) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *VPCRouterUpdateRequest) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetTags returns value of Tags
+func (o *VPCRouterUpdateRequest) GetTags() []string {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *VPCRouterUpdateRequest) SetTags(v []string) {
+	o.Tags = v
+}
+
+// GetIconID returns value of IconID
+func (o *VPCRouterUpdateRequest) GetIconID() types.ID {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *VPCRouterUpdateRequest) SetIconID(v types.ID) {
+	o.IconID = v
+}
+
+// GetSettings returns value of Settings
+func (o *VPCRouterUpdateRequest) GetSettings() *VPCRouterSetting {
+	return o.Settings
+}
+
+// SetSettings sets value to Settings
+func (o *VPCRouterUpdateRequest) SetSettings(v *VPCRouterSetting) {
+	o.Settings = v
+}
+
+// convertTo returns naked VPCRouterUpdateRequest
+func (o *VPCRouterUpdateRequest) convertTo() (*naked.VPCRouter, error) {
+	dest := &naked.VPCRouter{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked VPCRouterUpdateRequest
+func (o *VPCRouterUpdateRequest) convertFrom(naked *naked.VPCRouter) error {
 	return mapconv.ConvertFrom(naked, o)
 }
 
