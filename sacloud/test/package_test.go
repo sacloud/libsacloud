@@ -59,6 +59,12 @@ func TestMain(m *testing.M) {
 	}
 
 	ret := m.Run()
+
+	skipCleanup := os.Getenv("SKIP_CLEANUP")
+	if skipCleanup != "" {
+		// TODO クリーンアップ処理
+	}
+
 	os.Exit(ret)
 }
 

@@ -1273,6 +1273,142 @@ func (t *SwitchTracer) DisconnectFromBridge(ctx context.Context, zone string, id
 }
 
 /*************************************************
+* VPCRouterTracer
+*************************************************/
+
+// VPCRouterTracer is for trace VPCRouterOp operations
+type VPCRouterTracer struct {
+	Internal sacloud.VPCRouterAPI
+}
+
+// NewVPCRouterTracer creates new VPCRouterTracer instance
+func NewVPCRouterTracer(in sacloud.VPCRouterAPI) sacloud.VPCRouterAPI {
+	return &VPCRouterTracer{
+		Internal: in,
+	}
+}
+
+// Find is API call with trace log
+func (t *VPCRouterTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) ([]*sacloud.VPCRouter, error) {
+	log.Println("[TRACE] VPCRouterTracer.Find start:	args => [", "zone=", zone, "conditions=", conditions, "]")
+	defer func() {
+		log.Println("[TRACE] VPCRouterTracer.Find: end")
+	}()
+
+	return t.Internal.Find(ctx, zone, conditions)
+}
+
+// Create is API call with trace log
+func (t *VPCRouterTracer) Create(ctx context.Context, zone string, param *sacloud.VPCRouterCreateRequest) (*sacloud.VPCRouter, error) {
+	log.Println("[TRACE] VPCRouterTracer.Create start:	args => [", "zone=", zone, "param=", param, "]")
+	defer func() {
+		log.Println("[TRACE] VPCRouterTracer.Create: end")
+	}()
+
+	return t.Internal.Create(ctx, zone, param)
+}
+
+// Read is API call with trace log
+func (t *VPCRouterTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.VPCRouter, error) {
+	log.Println("[TRACE] VPCRouterTracer.Read start:	args => [", "zone=", zone, "id=", id, "]")
+	defer func() {
+		log.Println("[TRACE] VPCRouterTracer.Read: end")
+	}()
+
+	return t.Internal.Read(ctx, zone, id)
+}
+
+// Update is API call with trace log
+func (t *VPCRouterTracer) Update(ctx context.Context, zone string, id types.ID, param *sacloud.VPCRouterUpdateRequest) (*sacloud.VPCRouter, error) {
+	log.Println("[TRACE] VPCRouterTracer.Update start:	args => [", "zone=", zone, "id=", id, "param=", param, "]")
+	defer func() {
+		log.Println("[TRACE] VPCRouterTracer.Update: end")
+	}()
+
+	return t.Internal.Update(ctx, zone, id, param)
+}
+
+// Delete is API call with trace log
+func (t *VPCRouterTracer) Delete(ctx context.Context, zone string, id types.ID) error {
+	log.Println("[TRACE] VPCRouterTracer.Delete start:	args => [", "zone=", zone, "id=", id, "]")
+	defer func() {
+		log.Println("[TRACE] VPCRouterTracer.Delete: end")
+	}()
+
+	return t.Internal.Delete(ctx, zone, id)
+}
+
+// Config is API call with trace log
+func (t *VPCRouterTracer) Config(ctx context.Context, zone string, id types.ID) error {
+	log.Println("[TRACE] VPCRouterTracer.Config start:	args => [", "zone=", zone, "id=", id, "]")
+	defer func() {
+		log.Println("[TRACE] VPCRouterTracer.Config: end")
+	}()
+
+	return t.Internal.Config(ctx, zone, id)
+}
+
+// Boot is API call with trace log
+func (t *VPCRouterTracer) Boot(ctx context.Context, zone string, id types.ID) error {
+	log.Println("[TRACE] VPCRouterTracer.Boot start:	args => [", "zone=", zone, "id=", id, "]")
+	defer func() {
+		log.Println("[TRACE] VPCRouterTracer.Boot: end")
+	}()
+
+	return t.Internal.Boot(ctx, zone, id)
+}
+
+// Shutdown is API call with trace log
+func (t *VPCRouterTracer) Shutdown(ctx context.Context, zone string, id types.ID, shutdownOption *sacloud.ShutdownOption) error {
+	log.Println("[TRACE] VPCRouterTracer.Shutdown start:	args => [", "zone=", zone, "id=", id, "shutdownOption=", shutdownOption, "]")
+	defer func() {
+		log.Println("[TRACE] VPCRouterTracer.Shutdown: end")
+	}()
+
+	return t.Internal.Shutdown(ctx, zone, id, shutdownOption)
+}
+
+// Reset is API call with trace log
+func (t *VPCRouterTracer) Reset(ctx context.Context, zone string, id types.ID) error {
+	log.Println("[TRACE] VPCRouterTracer.Reset start:	args => [", "zone=", zone, "id=", id, "]")
+	defer func() {
+		log.Println("[TRACE] VPCRouterTracer.Reset: end")
+	}()
+
+	return t.Internal.Reset(ctx, zone, id)
+}
+
+// ConnectToSwitch is API call with trace log
+func (t *VPCRouterTracer) ConnectToSwitch(ctx context.Context, zone string, id types.ID, nicIndex int, switchID types.ID) error {
+	log.Println("[TRACE] VPCRouterTracer.ConnectToSwitch start:	args => [", "zone=", zone, "id=", id, "nicIndex=", nicIndex, "switchID=", switchID, "]")
+	defer func() {
+		log.Println("[TRACE] VPCRouterTracer.ConnectToSwitch: end")
+	}()
+
+	return t.Internal.ConnectToSwitch(ctx, zone, id, nicIndex, switchID)
+}
+
+// DisconnectFromSwitch is API call with trace log
+func (t *VPCRouterTracer) DisconnectFromSwitch(ctx context.Context, zone string, id types.ID, nicIndex int) error {
+	log.Println("[TRACE] VPCRouterTracer.DisconnectFromSwitch start:	args => [", "zone=", zone, "id=", id, "nicIndex=", nicIndex, "]")
+	defer func() {
+		log.Println("[TRACE] VPCRouterTracer.DisconnectFromSwitch: end")
+	}()
+
+	return t.Internal.DisconnectFromSwitch(ctx, zone, id, nicIndex)
+}
+
+// MonitorInterface is API call with trace log
+func (t *VPCRouterTracer) MonitorInterface(ctx context.Context, zone string, id types.ID, index int, condition *sacloud.MonitorCondition) (*sacloud.InterfaceActivity, error) {
+	log.Println("[TRACE] VPCRouterTracer.MonitorInterface start:	args => [", "zone=", zone, "id=", id, "index=", index, "condition=", condition, "]")
+	defer func() {
+		log.Println("[TRACE] VPCRouterTracer.MonitorInterface: end")
+	}()
+
+	return t.Internal.MonitorInterface(ctx, zone, id, index, condition)
+}
+
+/*************************************************
 * ZoneTracer
 *************************************************/
 

@@ -960,6 +960,78 @@ type switchUpdateResponseEnvelope struct {
 	Switch *naked.Switch `json:",omitempty"`
 }
 
+// vpcrouterFindRequestEnvelope is envelop of API request
+type vpcrouterFindRequestEnvelope struct {
+	Count   int                    `json:",omitempty"`
+	From    int                    `json:",omitempty"`
+	Sort    []string               `json:",omitempty"`
+	Filter  map[string]interface{} `json:",omitempty"`
+	Include []string               `json:",omitempty"`
+	Exclude []string               `json:",omitempty"`
+}
+
+// vpcrouterFindResponseEnvelope is envelop of API response
+type vpcrouterFindResponseEnvelope struct {
+	Total int `json:",omitempty"` // トータル件数
+	From  int `json:",omitempty"` // ページング開始ページ
+	Count int `json:",omitempty"` // 件数
+
+	Appliances []*naked.VPCRouter `json:",omitempty"`
+}
+
+// vpcrouterCreateRequestEnvelope is envelop of API request
+type vpcrouterCreateRequestEnvelope struct {
+	Appliance *naked.VPCRouter `json:",omitempty"`
+}
+
+// vpcrouterCreateResponseEnvelope is envelop of API response
+type vpcrouterCreateResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Appliance *naked.VPCRouter `json:",omitempty"`
+}
+
+// vpcrouterReadResponseEnvelope is envelop of API response
+type vpcrouterReadResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Appliance *naked.VPCRouter `json:",omitempty"`
+}
+
+// vpcrouterUpdateRequestEnvelope is envelop of API request
+type vpcrouterUpdateRequestEnvelope struct {
+	Appliance *naked.VPCRouter `json:",omitempty"`
+}
+
+// vpcrouterUpdateResponseEnvelope is envelop of API response
+type vpcrouterUpdateResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Appliance *naked.VPCRouter `json:",omitempty"`
+}
+
+// vpcrouterShutdownRequestEnvelope is envelop of API request
+type vpcrouterShutdownRequestEnvelope struct {
+	Force bool `json:",omitempty"`
+}
+
+// vpcrouterMonitorInterfaceRequestEnvelope is envelop of API request
+type vpcrouterMonitorInterfaceRequestEnvelope struct {
+	Start time.Time `json:",omitempty"`
+	End   time.Time `json:",omitempty"`
+}
+
+// vpcrouterMonitorInterfaceResponseEnvelope is envelop of API response
+type vpcrouterMonitorInterfaceResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Data *naked.MonitorValues `json:",omitempty"`
+}
+
 // zoneFindRequestEnvelope is envelop of API request
 type zoneFindRequestEnvelope struct {
 	Count   int                    `json:",omitempty"`

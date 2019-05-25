@@ -53,6 +53,10 @@ var (
 	TypePacketFilterNetwork = Static(types.PacketFilterNetwork(""))
 	// TypePacketFilterPort パケットフィルタルールでのポート
 	TypePacketFilterPort = Static(types.PacketFilterPort(""))
-	// TypePacketFilterAction パケットフィルタルールでのallow/deny動作
-	TypePacketFilterAction = Static(types.PacketFilterAction(""))
+	// TypeVPCFirewallNetwork VPCルータのファイアウォールルールでの送信元アドレス/範囲
+	TypeVPCFirewallNetwork = Static(types.VPCFirewallNetwork(""))
+	// TypeVPCFirewallPort VPCルータのファイアウォールルールでのポート
+	TypeVPCFirewallPort = Static(types.VPCFirewallPort(""))
+	// TypeAction パケットフィルタルールでのallow/deny動作
+	TypeAction = Static(types.Action(""))
 )

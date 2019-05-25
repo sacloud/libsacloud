@@ -53,6 +53,36 @@ func startDiskCopy(resourceKey, zone string, readFunc func() (interface{}, error
 	}()
 }
 
+func startMigration(resourceKey, zone string, readFunc func() (interface{}, error)) {
+	counter := 0
+	ticker := time.NewTicker(DiskCopyDuration)
+	go func() {
+		defer ticker.Stop()
+		for {
+			<-ticker.C
+
+			raw, err := readFunc()
+			if raw == nil || err != nil {
+				return
+			}
+			target, ok := raw.(accessor.Availability)
+			if !ok {
+				return
+			}
+
+			if counter < 3 {
+				target.SetAvailability(types.Availabilities.Migrating)
+			} else {
+				target.SetAvailability(types.Availabilities.Available)
+				s.set(resourceKey, zone, target)
+				return
+			}
+			s.set(resourceKey, zone, target)
+			counter++
+		}
+	}()
+}
+
 func startPowerOn(resourceKey, zone string, readFunc func() (interface{}, error)) {
 	counter := 0
 	ticker := time.NewTicker(PowerOnDuration)

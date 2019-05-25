@@ -1735,6 +1735,192 @@ func (s *SwitchStub) DisconnectFromBridge(ctx context.Context, zone string, id t
 }
 
 /*************************************************
+* VPCRouterStub
+*************************************************/
+
+// VPCRouterFindResult is expected values of the Find operation
+type VPCRouterFindResult struct {
+	Appliances []*sacloud.VPCRouter
+	Err        error
+}
+
+// VPCRouterCreateResult is expected values of the Create operation
+type VPCRouterCreateResult struct {
+	Appliance *sacloud.VPCRouter
+	Err       error
+}
+
+// VPCRouterReadResult is expected values of the Read operation
+type VPCRouterReadResult struct {
+	Appliance *sacloud.VPCRouter
+	Err       error
+}
+
+// VPCRouterUpdateResult is expected values of the Update operation
+type VPCRouterUpdateResult struct {
+	Appliance *sacloud.VPCRouter
+	Err       error
+}
+
+// VPCRouterDeleteResult is expected values of the Delete operation
+type VPCRouterDeleteResult struct {
+	Err error
+}
+
+// VPCRouterConfigResult is expected values of the Config operation
+type VPCRouterConfigResult struct {
+	Err error
+}
+
+// VPCRouterBootResult is expected values of the Boot operation
+type VPCRouterBootResult struct {
+	Err error
+}
+
+// VPCRouterShutdownResult is expected values of the Shutdown operation
+type VPCRouterShutdownResult struct {
+	Err error
+}
+
+// VPCRouterResetResult is expected values of the Reset operation
+type VPCRouterResetResult struct {
+	Err error
+}
+
+// VPCRouterConnectToSwitchResult is expected values of the ConnectToSwitch operation
+type VPCRouterConnectToSwitchResult struct {
+	Err error
+}
+
+// VPCRouterDisconnectFromSwitchResult is expected values of the DisconnectFromSwitch operation
+type VPCRouterDisconnectFromSwitchResult struct {
+	Err error
+}
+
+// VPCRouterMonitorInterfaceResult is expected values of the MonitorInterface operation
+type VPCRouterMonitorInterfaceResult struct {
+	Data *sacloud.InterfaceActivity
+	Err  error
+}
+
+// VPCRouterStub is for trace VPCRouterOp operations
+type VPCRouterStub struct {
+	FindResult                 *VPCRouterFindResult
+	CreateResult               *VPCRouterCreateResult
+	ReadResult                 *VPCRouterReadResult
+	UpdateResult               *VPCRouterUpdateResult
+	DeleteResult               *VPCRouterDeleteResult
+	ConfigResult               *VPCRouterConfigResult
+	BootResult                 *VPCRouterBootResult
+	ShutdownResult             *VPCRouterShutdownResult
+	ResetResult                *VPCRouterResetResult
+	ConnectToSwitchResult      *VPCRouterConnectToSwitchResult
+	DisconnectFromSwitchResult *VPCRouterDisconnectFromSwitchResult
+	MonitorInterfaceResult     *VPCRouterMonitorInterfaceResult
+}
+
+// NewVPCRouterStub creates new VPCRouterStub instance
+func NewVPCRouterStub(caller sacloud.APICaller) sacloud.VPCRouterAPI {
+	return &VPCRouterStub{}
+}
+
+// Find is API call with trace log
+func (s *VPCRouterStub) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) ([]*sacloud.VPCRouter, error) {
+	if s.FindResult == nil {
+		log.Fatal("VPCRouterStub.FindResult is not set")
+	}
+	return s.FindResult.Appliances, s.FindResult.Err
+}
+
+// Create is API call with trace log
+func (s *VPCRouterStub) Create(ctx context.Context, zone string, param *sacloud.VPCRouterCreateRequest) (*sacloud.VPCRouter, error) {
+	if s.CreateResult == nil {
+		log.Fatal("VPCRouterStub.CreateResult is not set")
+	}
+	return s.CreateResult.Appliance, s.CreateResult.Err
+}
+
+// Read is API call with trace log
+func (s *VPCRouterStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.VPCRouter, error) {
+	if s.ReadResult == nil {
+		log.Fatal("VPCRouterStub.ReadResult is not set")
+	}
+	return s.ReadResult.Appliance, s.ReadResult.Err
+}
+
+// Update is API call with trace log
+func (s *VPCRouterStub) Update(ctx context.Context, zone string, id types.ID, param *sacloud.VPCRouterUpdateRequest) (*sacloud.VPCRouter, error) {
+	if s.UpdateResult == nil {
+		log.Fatal("VPCRouterStub.UpdateResult is not set")
+	}
+	return s.UpdateResult.Appliance, s.UpdateResult.Err
+}
+
+// Delete is API call with trace log
+func (s *VPCRouterStub) Delete(ctx context.Context, zone string, id types.ID) error {
+	if s.DeleteResult == nil {
+		log.Fatal("VPCRouterStub.DeleteResult is not set")
+	}
+	return s.DeleteResult.Err
+}
+
+// Config is API call with trace log
+func (s *VPCRouterStub) Config(ctx context.Context, zone string, id types.ID) error {
+	if s.ConfigResult == nil {
+		log.Fatal("VPCRouterStub.ConfigResult is not set")
+	}
+	return s.ConfigResult.Err
+}
+
+// Boot is API call with trace log
+func (s *VPCRouterStub) Boot(ctx context.Context, zone string, id types.ID) error {
+	if s.BootResult == nil {
+		log.Fatal("VPCRouterStub.BootResult is not set")
+	}
+	return s.BootResult.Err
+}
+
+// Shutdown is API call with trace log
+func (s *VPCRouterStub) Shutdown(ctx context.Context, zone string, id types.ID, shutdownOption *sacloud.ShutdownOption) error {
+	if s.ShutdownResult == nil {
+		log.Fatal("VPCRouterStub.ShutdownResult is not set")
+	}
+	return s.ShutdownResult.Err
+}
+
+// Reset is API call with trace log
+func (s *VPCRouterStub) Reset(ctx context.Context, zone string, id types.ID) error {
+	if s.ResetResult == nil {
+		log.Fatal("VPCRouterStub.ResetResult is not set")
+	}
+	return s.ResetResult.Err
+}
+
+// ConnectToSwitch is API call with trace log
+func (s *VPCRouterStub) ConnectToSwitch(ctx context.Context, zone string, id types.ID, nicIndex int, switchID types.ID) error {
+	if s.ConnectToSwitchResult == nil {
+		log.Fatal("VPCRouterStub.ConnectToSwitchResult is not set")
+	}
+	return s.ConnectToSwitchResult.Err
+}
+
+// DisconnectFromSwitch is API call with trace log
+func (s *VPCRouterStub) DisconnectFromSwitch(ctx context.Context, zone string, id types.ID, nicIndex int) error {
+	if s.DisconnectFromSwitchResult == nil {
+		log.Fatal("VPCRouterStub.DisconnectFromSwitchResult is not set")
+	}
+	return s.DisconnectFromSwitchResult.Err
+}
+
+// MonitorInterface is API call with trace log
+func (s *VPCRouterStub) MonitorInterface(ctx context.Context, zone string, id types.ID, index int, condition *sacloud.MonitorCondition) (*sacloud.InterfaceActivity, error) {
+	if s.MonitorInterfaceResult == nil {
+		log.Fatal("VPCRouterStub.MonitorInterfaceResult is not set")
+	}
+	return s.MonitorInterfaceResult.Data, s.MonitorInterfaceResult.Err
+}
+
+/*************************************************
 * ZoneStub
 *************************************************/
 

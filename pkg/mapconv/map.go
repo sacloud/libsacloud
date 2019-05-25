@@ -9,7 +9,7 @@ import (
 // Map is wrapper of map[string]interface{}
 type Map map[string]interface{}
 
-// Map returns naked map
+// Map returns output map
 func (m *Map) Map() map[string]interface{} {
 	return *m
 }
@@ -142,5 +142,5 @@ func (m *Map) Get(key string) (interface{}, error) {
 		}
 	}
 
-	return nil, fmt.Errorf("failed naked get tagged map: invalid state - key:%s values:%v", key, *m)
+	return nil, fmt.Errorf("failed output get input map: invalid state - key:%s values:%v", key, *m)
 }

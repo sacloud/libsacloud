@@ -283,6 +283,29 @@ func (s *store) setSwitch(zone string, value *sacloud.Switch) {
 	s.set(ResourceSwitch, zone, value)
 }
 
+func (s *store) getVPCRouter(zone string) []*sacloud.VPCRouter {
+	values := s.get(ResourceVPCRouter, zone)
+	var ret []*sacloud.VPCRouter
+	for _, v := range values {
+		if v, ok := v.(*sacloud.VPCRouter); ok {
+			ret = append(ret, v)
+		}
+	}
+	return ret
+}
+
+func (s *store) getVPCRouterByID(zone string, id types.ID) *sacloud.VPCRouter {
+	v := s.getByID(ResourceVPCRouter, zone, id)
+	if v, ok := v.(*sacloud.VPCRouter); ok {
+		return v
+	}
+	return nil
+}
+
+func (s *store) setVPCRouter(zone string, value *sacloud.VPCRouter) {
+	s.set(ResourceVPCRouter, zone, value)
+}
+
 func (s *store) getZone(zone string) []*sacloud.Zone {
 	values := s.get(ResourceZone, zone)
 	var ret []*sacloud.Zone

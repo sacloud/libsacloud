@@ -218,15 +218,21 @@ func Run(t TestT, testCase *CRUDTestCase) {
 
 	// Shutdown
 	if testCase.Shutdown != nil {
-		if err := testCase.Shutdown(testContext, testCase.SetupAPICaller()); err != nil {
+		v, err := testCase.Read.Func(testContext, testCase.SetupAPICaller())
+		if err != nil {
 			t.Fatal("Shutdown is failed: ", err)
 		}
+		if v, ok := v.(accessor.InstanceStatus); ok && v.GetInstanceStatus().IsUp() {
+			if err := testCase.Shutdown(testContext, testCase.SetupAPICaller()); err != nil {
+				t.Fatal("Shutdown is failed: ", err)
+			}
 
-		waiter := sacloud.WaiterForDown(func() (interface{}, error) {
-			return testCase.Read.Func(testContext, testCase.SetupAPICaller())
-		})
-		if _, err := waiter.WaitForState(context.TODO()); err != nil {
-			t.Fatal("WaitForDown is failed: ", err)
+			waiter := sacloud.WaiterForDown(func() (interface{}, error) {
+				return testCase.Read.Func(testContext, testCase.SetupAPICaller())
+			})
+			if _, err := waiter.WaitForState(context.TODO()); err != nil {
+				t.Fatal("WaitForDown is failed: ", err)
+			}
 		}
 	}
 

@@ -44,6 +44,9 @@ func SwitchFactoryFuncToFake() {
 	sacloud.SetClientFactoryFunc(ResourceSwitch, func(caller sacloud.APICaller) interface{} {
 		return NewSwitchOp()
 	})
+	sacloud.SetClientFactoryFunc(ResourceVPCRouter, func(caller sacloud.APICaller) interface{} {
+		return NewVPCRouterOp()
+	})
 	sacloud.SetClientFactoryFunc(ResourceZone, func(caller sacloud.APICaller) interface{} {
 		return NewZoneOp()
 	})
@@ -238,6 +241,22 @@ type SwitchOp struct {
 func NewSwitchOp() sacloud.SwitchAPI {
 	return &SwitchOp{
 		key: ResourceSwitch,
+	}
+}
+
+/*************************************************
+* VPCRouterOp
+*************************************************/
+
+// VPCRouterOp is fake implementation of VPCRouterAPI interface
+type VPCRouterOp struct {
+	key string
+}
+
+// NewVPCRouterOp creates new VPCRouterOp instance
+func NewVPCRouterOp() sacloud.VPCRouterAPI {
+	return &VPCRouterOp{
+		key: ResourceVPCRouter,
 	}
 }
 
