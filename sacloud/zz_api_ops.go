@@ -20,6 +20,14 @@ func init() {
 		}
 	})
 
+	SetClientFactoryFunc("Bridge", func(caller APICaller) interface{} {
+		return &BridgeOp{
+			Client:     caller,
+			PathSuffix: "api/cloud/1.1",
+			PathName:   "bridge",
+		}
+	})
+
 	SetClientFactoryFunc("CDROM", func(caller APICaller) interface{} {
 		return &CDROMOp{
 			Client:     caller,
@@ -446,6 +454,226 @@ func (o *ArchiveOp) OpenFTP(ctx context.Context, zone string, id types.ID, openO
 // CloseFTP is API call
 func (o *ArchiveOp) CloseFTP(ctx context.Context, zone string, id types.ID) error {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/ftp", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+	})
+	if err != nil {
+		return err
+	}
+
+	var body interface{}
+
+	_, err = o.Client.Do(ctx, "DELETE", url, body)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+/*************************************************
+* BridgeOp
+*************************************************/
+
+// BridgeOp implements BridgeAPI interface
+type BridgeOp struct {
+	// Client APICaller
+	Client APICaller
+	// PathSuffix is used when building URL
+	PathSuffix string
+	// PathName is used when building URL
+	PathName string
+}
+
+// NewBridgeOp creates new BridgeOp instance
+func NewBridgeOp(caller APICaller) BridgeAPI {
+	return GetClientFactoryFunc("Bridge")(caller).(BridgeAPI)
+}
+
+// Find is API call
+func (o *BridgeOp) Find(ctx context.Context, zone string, conditions *FindCondition) ([]*Bridge, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"conditions": conditions,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+	{
+		if conditions == nil {
+			conditions = &FindCondition{}
+		}
+		if body == nil {
+			body = &bridgeFindRequestEnvelope{}
+		}
+		v := body.(*bridgeFindRequestEnvelope)
+		if err := mapconv.ConvertTo(conditions, v); err != nil {
+			return nil, err
+		}
+		body = v
+	}
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &bridgeFindResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	var payload0 []*Bridge
+	for _, v := range nakedResponse.Bridges {
+		payload := &Bridge{}
+		if err := payload.convertFrom(v); err != nil {
+			return nil, err
+		}
+		payload0 = append(payload0, payload)
+	}
+	return payload0, nil
+}
+
+// Create is API call
+func (o *BridgeOp) Create(ctx context.Context, zone string, param *BridgeCreateRequest) (*Bridge, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"param":      param,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	{
+		if param == nil {
+			param = &BridgeCreateRequest{}
+		}
+		if body == nil {
+			body = &bridgeCreateRequestEnvelope{}
+		}
+		v := body.(*bridgeCreateRequestEnvelope)
+		n, err := param.convertTo()
+		if err != nil {
+			return nil, err
+		}
+		v.Bridge = n
+		body = v
+	}
+
+	data, err := o.Client.Do(ctx, "POST", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &bridgeCreateResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	payload0 := &Bridge{}
+	if err := payload0.convertFrom(nakedResponse.Bridge); err != nil {
+		return nil, err
+	}
+	return payload0, nil
+}
+
+// Read is API call
+func (o *BridgeOp) Read(ctx context.Context, zone string, id types.ID) (*Bridge, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &bridgeReadResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	payload0 := &Bridge{}
+	if err := payload0.convertFrom(nakedResponse.Bridge); err != nil {
+		return nil, err
+	}
+	return payload0, nil
+}
+
+// Update is API call
+func (o *BridgeOp) Update(ctx context.Context, zone string, id types.ID, param *BridgeUpdateRequest) (*Bridge, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+		"param":      param,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	{
+		if param == nil {
+			param = &BridgeUpdateRequest{}
+		}
+		if body == nil {
+			body = &bridgeUpdateRequestEnvelope{}
+		}
+		v := body.(*bridgeUpdateRequestEnvelope)
+		n, err := param.convertTo()
+		if err != nil {
+			return nil, err
+		}
+		v.Bridge = n
+		body = v
+	}
+
+	data, err := o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &bridgeUpdateResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	payload0 := &Bridge{}
+	if err := payload0.convertFrom(nakedResponse.Bridge); err != nil {
+		return nil, err
+	}
+	return payload0, nil
+}
+
+// Delete is API call
+func (o *BridgeOp) Delete(ctx context.Context, zone string, id types.ID) error {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,

@@ -46,6 +46,23 @@ func (f *fieldsDef) InterfaceDriver() *schema.FieldDesc {
 	}
 }
 
+func (f *fieldsDef) BridgeInfo() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "BridgeInfo",
+		Type: models.bridgeInfoModel(),
+		Tags: &schema.FieldTags{
+			MapConv: "[]Switches,recursive",
+		},
+	}
+}
+
+func (f *fieldsDef) SwitchInZone() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "SwitchInZone",
+		Type: models.switchInZoneModel(),
+	}
+}
+
 func (f *fieldsDef) DiskPlanID() *schema.FieldDesc {
 	return &schema.FieldDesc{
 		Name: "DiskPlanID",
@@ -260,6 +277,16 @@ func (f *fieldsDef) OriginalArchiveID() *schema.FieldDesc {
 			MapConv: "OriginalArchive.ID,omitempty",
 		},
 		Type: meta.TypeID,
+	}
+}
+
+func (f *fieldsDef) BridgeID() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "BridgeID",
+		Type: meta.TypeID,
+		Tags: &schema.FieldTags{
+			MapConv: "Bridge.ID,omitempty",
+		},
 	}
 }
 

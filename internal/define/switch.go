@@ -31,6 +31,7 @@ func init() {
 					JSON:    ",omitempty",
 				},
 			},
+			fields.BridgeID(),
 		},
 	}
 

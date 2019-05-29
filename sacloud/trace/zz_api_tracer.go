@@ -107,6 +107,72 @@ func (t *ArchiveTracer) CloseFTP(ctx context.Context, zone string, id types.ID) 
 }
 
 /*************************************************
+* BridgeTracer
+*************************************************/
+
+// BridgeTracer is for trace BridgeOp operations
+type BridgeTracer struct {
+	Internal sacloud.BridgeAPI
+}
+
+// NewBridgeTracer creates new BridgeTracer instance
+func NewBridgeTracer(in sacloud.BridgeAPI) sacloud.BridgeAPI {
+	return &BridgeTracer{
+		Internal: in,
+	}
+}
+
+// Find is API call with trace log
+func (t *BridgeTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) ([]*sacloud.Bridge, error) {
+	log.Println("[TRACE] BridgeTracer.Find start:	args => [", "zone=", zone, "conditions=", conditions, "]")
+	defer func() {
+		log.Println("[TRACE] BridgeTracer.Find: end")
+	}()
+
+	return t.Internal.Find(ctx, zone, conditions)
+}
+
+// Create is API call with trace log
+func (t *BridgeTracer) Create(ctx context.Context, zone string, param *sacloud.BridgeCreateRequest) (*sacloud.Bridge, error) {
+	log.Println("[TRACE] BridgeTracer.Create start:	args => [", "zone=", zone, "param=", param, "]")
+	defer func() {
+		log.Println("[TRACE] BridgeTracer.Create: end")
+	}()
+
+	return t.Internal.Create(ctx, zone, param)
+}
+
+// Read is API call with trace log
+func (t *BridgeTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Bridge, error) {
+	log.Println("[TRACE] BridgeTracer.Read start:	args => [", "zone=", zone, "id=", id, "]")
+	defer func() {
+		log.Println("[TRACE] BridgeTracer.Read: end")
+	}()
+
+	return t.Internal.Read(ctx, zone, id)
+}
+
+// Update is API call with trace log
+func (t *BridgeTracer) Update(ctx context.Context, zone string, id types.ID, param *sacloud.BridgeUpdateRequest) (*sacloud.Bridge, error) {
+	log.Println("[TRACE] BridgeTracer.Update start:	args => [", "zone=", zone, "id=", id, "param=", param, "]")
+	defer func() {
+		log.Println("[TRACE] BridgeTracer.Update: end")
+	}()
+
+	return t.Internal.Update(ctx, zone, id, param)
+}
+
+// Delete is API call with trace log
+func (t *BridgeTracer) Delete(ctx context.Context, zone string, id types.ID) error {
+	log.Println("[TRACE] BridgeTracer.Delete start:	args => [", "zone=", zone, "id=", id, "]")
+	defer func() {
+		log.Println("[TRACE] BridgeTracer.Delete: end")
+	}()
+
+	return t.Internal.Delete(ctx, zone, id)
+}
+
+/*************************************************
 * CDROMTracer
 *************************************************/
 

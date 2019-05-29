@@ -2,6 +2,7 @@ package fake
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/sacloud/libsacloud-v2/sacloud"
 	"github.com/sacloud/libsacloud-v2/sacloud/types"
@@ -63,24 +64,68 @@ func (o *SwitchOp) Delete(ctx context.Context, zone string, id types.ID) error {
 
 // ConnectToBridge is fake implementation
 func (o *SwitchOp) ConnectToBridge(ctx context.Context, zone string, id types.ID, bridgeID types.ID) error {
-	_, err := o.Read(ctx, zone, id)
+	value, err := o.Read(ctx, zone, id)
 	if err != nil {
 		return err
 	}
 
-	// TODO ブリッジの実装をしてから実装する
+	bridgeOp := NewBridgeOp()
+	bridge, err := bridgeOp.Read(ctx, zone, bridgeID)
+	if err != nil {
+		return fmt.Errorf("ConnectToBridge is failed: %s", err)
+	}
 
+	if bridge.SwitchInZone != nil {
+		return newErrorConflict(o.key, id, fmt.Sprintf("Bridge[%d] already connected to switch", bridgeID))
+	}
+
+	value.BridgeID = bridgeID
+
+	switchInZone := &sacloud.BridgeSwitchInfo{}
+	copySameNameField(value, switchInZone)
+	bridge.SwitchInZone = switchInZone
+
+	//bridge.BridgeInfo = append(bridge.BridgeInfo, &sacloud.BridgeInfo{
+	//	ID:     value.ID,
+	//	Name:   value.Name,
+	//	ZoneID: zoneIDs[zone],
+	//})
+
+	s.setBridge(zone, bridge)
+	s.setSwitch(zone, value)
 	return nil
 }
 
 // DisconnectFromBridge is fake implementation
 func (o *SwitchOp) DisconnectFromBridge(ctx context.Context, zone string, id types.ID) error {
-	_, err := o.Read(ctx, zone, id)
+	value, err := o.Read(ctx, zone, id)
 	if err != nil {
 		return err
 	}
 
-	// TODO ブリッジの実装をしてから実装する
+	if value.BridgeID.IsEmpty() {
+		return newErrorConflict(o.key, id, fmt.Sprintf("Switch[%d] already disconnected from switch", id))
+	}
 
+	bridgeOp := NewBridgeOp()
+	bridge, err := bridgeOp.Read(ctx, zone, value.BridgeID)
+	if err != nil {
+		return fmt.Errorf("DisconnectFromBridge is failed: %s", err)
+	}
+
+	//var bridgeInfo []*sacloud.BridgeInfo
+	//for _, i := range bridge.BridgeInfo {
+	//	if i.ID != value.ID {
+	//		bridgeInfo = append(bridgeInfo, i)
+	//	}
+	//}
+
+	value.BridgeID = types.ID(0)
+	bridge.SwitchInZone = nil
+	// fakeドライバーではBridgeInfoに非対応
+	//bridge.BridgeInfo = bridgeInfo
+
+	s.setBridge(zone, bridge)
+	s.setSwitch(zone, value)
 	return nil
 }

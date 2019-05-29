@@ -25,6 +25,19 @@ type ArchiveAPI interface {
 }
 
 /*************************************************
+* BridgeAPI
+*************************************************/
+
+// BridgeAPI is interface for operate Bridge resource
+type BridgeAPI interface {
+	Find(ctx context.Context, zone string, conditions *FindCondition) ([]*Bridge, error)
+	Create(ctx context.Context, zone string, param *BridgeCreateRequest) (*Bridge, error)
+	Read(ctx context.Context, zone string, id types.ID) (*Bridge, error)
+	Update(ctx context.Context, zone string, id types.ID, param *BridgeUpdateRequest) (*Bridge, error)
+	Delete(ctx context.Context, zone string, id types.ID) error
+}
+
+/*************************************************
 * CDROMAPI
 *************************************************/
 

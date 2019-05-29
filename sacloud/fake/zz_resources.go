@@ -5,6 +5,8 @@ package fake
 const (
 	// ResourceArchive is resource key of fake store
 	ResourceArchive = "Archive"
+	// ResourceBridge is resource key of fake store
+	ResourceBridge = "Bridge"
 	// ResourceCDROM is resource key of fake store
 	ResourceCDROM = "CDROM"
 	// ResourceDisk is resource key of fake store

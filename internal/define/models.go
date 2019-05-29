@@ -536,6 +536,38 @@ func (m *modelsDef) packetFilterExpressions() *schema.Model {
 		},
 	}
 }
+func (m *modelsDef) bridgeInfoModel() *schema.Model {
+	return &schema.Model{
+		Name:      "BridgeInfo",
+		IsArray:   true,
+		NakedType: meta.Static(naked.Switch{}),
+		Fields: []*schema.FieldDesc{
+			fields.ID(),
+			fields.Name(),
+			fields.ZoneID(),
+		},
+	}
+}
+
+func (m *modelsDef) switchInZoneModel() *schema.Model {
+	return &schema.Model{
+		Name:      "BridgeSwitchInfo",
+		NakedType: meta.Static(naked.BridgeSwitchInfo{}),
+		Fields: []*schema.FieldDesc{
+			fields.ID(),
+			fields.Name(),
+			fields.Scope(),
+			{
+				Name: "ServerCount",
+				Type: meta.TypeInt,
+			},
+			{
+				Name: "ApplianceCount",
+				Type: meta.TypeInt,
+			},
+		},
+	}
+}
 
 func (m *modelsDef) internetModel() *schema.Model {
 	return &schema.Model{

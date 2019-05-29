@@ -143,6 +143,93 @@ func (s *ArchiveStub) CloseFTP(ctx context.Context, zone string, id types.ID) er
 }
 
 /*************************************************
+* BridgeStub
+*************************************************/
+
+// BridgeFindResult is expected values of the Find operation
+type BridgeFindResult struct {
+	Bridges []*sacloud.Bridge
+	Err     error
+}
+
+// BridgeCreateResult is expected values of the Create operation
+type BridgeCreateResult struct {
+	Bridge *sacloud.Bridge
+	Err    error
+}
+
+// BridgeReadResult is expected values of the Read operation
+type BridgeReadResult struct {
+	Bridge *sacloud.Bridge
+	Err    error
+}
+
+// BridgeUpdateResult is expected values of the Update operation
+type BridgeUpdateResult struct {
+	Bridge *sacloud.Bridge
+	Err    error
+}
+
+// BridgeDeleteResult is expected values of the Delete operation
+type BridgeDeleteResult struct {
+	Err error
+}
+
+// BridgeStub is for trace BridgeOp operations
+type BridgeStub struct {
+	FindResult   *BridgeFindResult
+	CreateResult *BridgeCreateResult
+	ReadResult   *BridgeReadResult
+	UpdateResult *BridgeUpdateResult
+	DeleteResult *BridgeDeleteResult
+}
+
+// NewBridgeStub creates new BridgeStub instance
+func NewBridgeStub(caller sacloud.APICaller) sacloud.BridgeAPI {
+	return &BridgeStub{}
+}
+
+// Find is API call with trace log
+func (s *BridgeStub) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) ([]*sacloud.Bridge, error) {
+	if s.FindResult == nil {
+		log.Fatal("BridgeStub.FindResult is not set")
+	}
+	return s.FindResult.Bridges, s.FindResult.Err
+}
+
+// Create is API call with trace log
+func (s *BridgeStub) Create(ctx context.Context, zone string, param *sacloud.BridgeCreateRequest) (*sacloud.Bridge, error) {
+	if s.CreateResult == nil {
+		log.Fatal("BridgeStub.CreateResult is not set")
+	}
+	return s.CreateResult.Bridge, s.CreateResult.Err
+}
+
+// Read is API call with trace log
+func (s *BridgeStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Bridge, error) {
+	if s.ReadResult == nil {
+		log.Fatal("BridgeStub.ReadResult is not set")
+	}
+	return s.ReadResult.Bridge, s.ReadResult.Err
+}
+
+// Update is API call with trace log
+func (s *BridgeStub) Update(ctx context.Context, zone string, id types.ID, param *sacloud.BridgeUpdateRequest) (*sacloud.Bridge, error) {
+	if s.UpdateResult == nil {
+		log.Fatal("BridgeStub.UpdateResult is not set")
+	}
+	return s.UpdateResult.Bridge, s.UpdateResult.Err
+}
+
+// Delete is API call with trace log
+func (s *BridgeStub) Delete(ctx context.Context, zone string, id types.ID) error {
+	if s.DeleteResult == nil {
+		log.Fatal("BridgeStub.DeleteResult is not set")
+	}
+	return s.DeleteResult.Err
+}
+
+/*************************************************
 * CDROMStub
 *************************************************/
 
