@@ -30,6 +30,29 @@ func (s *store) setArchive(zone string, value *sacloud.Archive) {
 	s.set(ResourceArchive, zone, value)
 }
 
+func (s *store) getBridge(zone string) []*sacloud.Bridge {
+	values := s.get(ResourceBridge, zone)
+	var ret []*sacloud.Bridge
+	for _, v := range values {
+		if v, ok := v.(*sacloud.Bridge); ok {
+			ret = append(ret, v)
+		}
+	}
+	return ret
+}
+
+func (s *store) getBridgeByID(zone string, id types.ID) *sacloud.Bridge {
+	v := s.getByID(ResourceBridge, zone, id)
+	if v, ok := v.(*sacloud.Bridge); ok {
+		return v
+	}
+	return nil
+}
+
+func (s *store) setBridge(zone string, value *sacloud.Bridge) {
+	s.set(ResourceBridge, zone, value)
+}
+
 func (s *store) getCDROM(zone string) []*sacloud.CDROM {
 	values := s.get(ResourceCDROM, zone)
 	var ret []*sacloud.CDROM

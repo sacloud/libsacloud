@@ -22,4 +22,5 @@ type Switch struct {
 	Internet    *Internet    `json:",omitempty" yaml:"internet,omitempty" structs:",omitempty"`
 	Subnets     []*Subnet    `json:",omitempty" yaml:"subnets,omitempty" structs:",omitempty"`
 	IPv6Nets    []*IPv6Net   `json:",omitempty" yaml:"ipv6nets,omitempty" structs:",omitempty"`
+	Bridge      *Bridge      `json:",omitempty" yaml:"bridge,omitempty" structs:",omitempty"`
 }

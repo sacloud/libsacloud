@@ -11,6 +11,9 @@ func SwitchFactoryFuncToFake() {
 	sacloud.SetClientFactoryFunc(ResourceArchive, func(caller sacloud.APICaller) interface{} {
 		return NewArchiveOp()
 	})
+	sacloud.SetClientFactoryFunc(ResourceBridge, func(caller sacloud.APICaller) interface{} {
+		return NewBridgeOp()
+	})
 	sacloud.SetClientFactoryFunc(ResourceCDROM, func(caller sacloud.APICaller) interface{} {
 		return NewCDROMOp()
 	})
@@ -65,6 +68,22 @@ type ArchiveOp struct {
 func NewArchiveOp() sacloud.ArchiveAPI {
 	return &ArchiveOp{
 		key: ResourceArchive,
+	}
+}
+
+/*************************************************
+* BridgeOp
+*************************************************/
+
+// BridgeOp is fake implementation of BridgeAPI interface
+type BridgeOp struct {
+	key string
+}
+
+// NewBridgeOp creates new BridgeOp instance
+func NewBridgeOp() sacloud.BridgeAPI {
+	return &BridgeOp{
+		key: ResourceBridge,
 	}
 }
 

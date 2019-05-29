@@ -977,6 +977,489 @@ func (o *OpenFTPRequest) SetChangePassword(v bool) {
 }
 
 /*************************************************
+* Bridge
+*************************************************/
+
+// Bridge represents API parameter/response structure
+type Bridge struct {
+	ID           types.ID
+	Name         string `validate:"required"`
+	Description  string `validate:"min=0,max=512"`
+	CreatedAt    time.Time
+	Region       *Region       `json:",omitempty"`
+	BridgeInfo   []*BridgeInfo `mapconv:"[]Switches,recursive"`
+	SwitchInZone *BridgeSwitchInfo
+}
+
+// Validate validates by field tags
+func (o *Bridge) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetID returns value of ID
+func (o *Bridge) GetID() types.ID {
+	return o.ID
+}
+
+// SetID sets value to ID
+func (o *Bridge) SetID(v types.ID) {
+	o.ID = v
+}
+
+// GetStringID gets value to StringID
+func (o *Bridge) GetStringID() string {
+	return accessor.GetStringID(o)
+}
+
+// SetStringID sets value to StringID
+func (o *Bridge) SetStringID(v string) {
+	accessor.SetStringID(o, v)
+}
+
+// GetInt64ID gets value to Int64ID
+func (o *Bridge) GetInt64ID() int64 {
+	return accessor.GetInt64ID(o)
+}
+
+// SetInt64ID sets value to Int64ID
+func (o *Bridge) SetInt64ID(v int64) {
+	accessor.SetInt64ID(o, v)
+}
+
+// GetName returns value of Name
+func (o *Bridge) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *Bridge) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *Bridge) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *Bridge) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetCreatedAt returns value of CreatedAt
+func (o *Bridge) GetCreatedAt() time.Time {
+	return o.CreatedAt
+}
+
+// SetCreatedAt sets value to CreatedAt
+func (o *Bridge) SetCreatedAt(v time.Time) {
+	o.CreatedAt = v
+}
+
+// GetRegion returns value of Region
+func (o *Bridge) GetRegion() *Region {
+	return o.Region
+}
+
+// SetRegion sets value to Region
+func (o *Bridge) SetRegion(v *Region) {
+	o.Region = v
+}
+
+// GetBridgeInfo returns value of BridgeInfo
+func (o *Bridge) GetBridgeInfo() []*BridgeInfo {
+	return o.BridgeInfo
+}
+
+// SetBridgeInfo sets value to BridgeInfo
+func (o *Bridge) SetBridgeInfo(v []*BridgeInfo) {
+	o.BridgeInfo = v
+}
+
+// GetSwitchInZone returns value of SwitchInZone
+func (o *Bridge) GetSwitchInZone() *BridgeSwitchInfo {
+	return o.SwitchInZone
+}
+
+// SetSwitchInZone sets value to SwitchInZone
+func (o *Bridge) SetSwitchInZone(v *BridgeSwitchInfo) {
+	o.SwitchInZone = v
+}
+
+// convertTo returns naked Bridge
+func (o *Bridge) convertTo() (*naked.Bridge, error) {
+	dest := &naked.Bridge{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked Bridge
+func (o *Bridge) convertFrom(naked *naked.Bridge) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* Region
+*************************************************/
+
+// Region represents API parameter/response structure
+type Region struct {
+	ID          types.ID
+	Name        string   `validate:"required"`
+	Description string   `validate:"min=0,max=512"`
+	NameServers []string `json:",omitempty" mapconv:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *Region) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetID returns value of ID
+func (o *Region) GetID() types.ID {
+	return o.ID
+}
+
+// SetID sets value to ID
+func (o *Region) SetID(v types.ID) {
+	o.ID = v
+}
+
+// GetStringID gets value to StringID
+func (o *Region) GetStringID() string {
+	return accessor.GetStringID(o)
+}
+
+// SetStringID sets value to StringID
+func (o *Region) SetStringID(v string) {
+	accessor.SetStringID(o, v)
+}
+
+// GetInt64ID gets value to Int64ID
+func (o *Region) GetInt64ID() int64 {
+	return accessor.GetInt64ID(o)
+}
+
+// SetInt64ID sets value to Int64ID
+func (o *Region) SetInt64ID(v int64) {
+	accessor.SetInt64ID(o, v)
+}
+
+// GetName returns value of Name
+func (o *Region) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *Region) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *Region) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *Region) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetNameServers returns value of NameServers
+func (o *Region) GetNameServers() []string {
+	return o.NameServers
+}
+
+// SetNameServers sets value to NameServers
+func (o *Region) SetNameServers(v []string) {
+	o.NameServers = v
+}
+
+// convertTo returns naked Region
+func (o *Region) convertTo() (*naked.Region, error) {
+	dest := &naked.Region{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked Region
+func (o *Region) convertFrom(naked *naked.Region) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* BridgeInfo
+*************************************************/
+
+// BridgeInfo represents API parameter/response structure
+type BridgeInfo struct {
+	ID     types.ID
+	Name   string   `validate:"required"`
+	ZoneID types.ID `mapconv:"Zone.ID"`
+}
+
+// Validate validates by field tags
+func (o *BridgeInfo) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetID returns value of ID
+func (o *BridgeInfo) GetID() types.ID {
+	return o.ID
+}
+
+// SetID sets value to ID
+func (o *BridgeInfo) SetID(v types.ID) {
+	o.ID = v
+}
+
+// GetStringID gets value to StringID
+func (o *BridgeInfo) GetStringID() string {
+	return accessor.GetStringID(o)
+}
+
+// SetStringID sets value to StringID
+func (o *BridgeInfo) SetStringID(v string) {
+	accessor.SetStringID(o, v)
+}
+
+// GetInt64ID gets value to Int64ID
+func (o *BridgeInfo) GetInt64ID() int64 {
+	return accessor.GetInt64ID(o)
+}
+
+// SetInt64ID sets value to Int64ID
+func (o *BridgeInfo) SetInt64ID(v int64) {
+	accessor.SetInt64ID(o, v)
+}
+
+// GetName returns value of Name
+func (o *BridgeInfo) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *BridgeInfo) SetName(v string) {
+	o.Name = v
+}
+
+// GetZoneID returns value of ZoneID
+func (o *BridgeInfo) GetZoneID() types.ID {
+	return o.ZoneID
+}
+
+// SetZoneID sets value to ZoneID
+func (o *BridgeInfo) SetZoneID(v types.ID) {
+	o.ZoneID = v
+}
+
+// convertTo returns naked BridgeInfo
+func (o *BridgeInfo) convertTo() (*naked.Switch, error) {
+	dest := &naked.Switch{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked BridgeInfo
+func (o *BridgeInfo) convertFrom(naked *naked.Switch) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* BridgeSwitchInfo
+*************************************************/
+
+// BridgeSwitchInfo represents API parameter/response structure
+type BridgeSwitchInfo struct {
+	ID             types.ID
+	Name           string `validate:"required"`
+	Scope          types.EScope
+	ServerCount    int
+	ApplianceCount int
+}
+
+// Validate validates by field tags
+func (o *BridgeSwitchInfo) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetID returns value of ID
+func (o *BridgeSwitchInfo) GetID() types.ID {
+	return o.ID
+}
+
+// SetID sets value to ID
+func (o *BridgeSwitchInfo) SetID(v types.ID) {
+	o.ID = v
+}
+
+// GetStringID gets value to StringID
+func (o *BridgeSwitchInfo) GetStringID() string {
+	return accessor.GetStringID(o)
+}
+
+// SetStringID sets value to StringID
+func (o *BridgeSwitchInfo) SetStringID(v string) {
+	accessor.SetStringID(o, v)
+}
+
+// GetInt64ID gets value to Int64ID
+func (o *BridgeSwitchInfo) GetInt64ID() int64 {
+	return accessor.GetInt64ID(o)
+}
+
+// SetInt64ID sets value to Int64ID
+func (o *BridgeSwitchInfo) SetInt64ID(v int64) {
+	accessor.SetInt64ID(o, v)
+}
+
+// GetName returns value of Name
+func (o *BridgeSwitchInfo) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *BridgeSwitchInfo) SetName(v string) {
+	o.Name = v
+}
+
+// GetScope returns value of Scope
+func (o *BridgeSwitchInfo) GetScope() types.EScope {
+	return o.Scope
+}
+
+// SetScope sets value to Scope
+func (o *BridgeSwitchInfo) SetScope(v types.EScope) {
+	o.Scope = v
+}
+
+// GetServerCount returns value of ServerCount
+func (o *BridgeSwitchInfo) GetServerCount() int {
+	return o.ServerCount
+}
+
+// SetServerCount sets value to ServerCount
+func (o *BridgeSwitchInfo) SetServerCount(v int) {
+	o.ServerCount = v
+}
+
+// GetApplianceCount returns value of ApplianceCount
+func (o *BridgeSwitchInfo) GetApplianceCount() int {
+	return o.ApplianceCount
+}
+
+// SetApplianceCount sets value to ApplianceCount
+func (o *BridgeSwitchInfo) SetApplianceCount(v int) {
+	o.ApplianceCount = v
+}
+
+// convertTo returns naked BridgeSwitchInfo
+func (o *BridgeSwitchInfo) convertTo() (*naked.BridgeSwitchInfo, error) {
+	dest := &naked.BridgeSwitchInfo{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked BridgeSwitchInfo
+func (o *BridgeSwitchInfo) convertFrom(naked *naked.BridgeSwitchInfo) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* BridgeCreateRequest
+*************************************************/
+
+// BridgeCreateRequest represents API parameter/response structure
+type BridgeCreateRequest struct {
+	Name        string `validate:"required"`
+	Description string `validate:"min=0,max=512"`
+}
+
+// Validate validates by field tags
+func (o *BridgeCreateRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetName returns value of Name
+func (o *BridgeCreateRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *BridgeCreateRequest) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *BridgeCreateRequest) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *BridgeCreateRequest) SetDescription(v string) {
+	o.Description = v
+}
+
+// convertTo returns naked BridgeCreateRequest
+func (o *BridgeCreateRequest) convertTo() (*naked.Bridge, error) {
+	dest := &naked.Bridge{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked BridgeCreateRequest
+func (o *BridgeCreateRequest) convertFrom(naked *naked.Bridge) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* BridgeUpdateRequest
+*************************************************/
+
+// BridgeUpdateRequest represents API parameter/response structure
+type BridgeUpdateRequest struct {
+	Name        string `validate:"required"`
+	Description string `validate:"min=0,max=512"`
+}
+
+// Validate validates by field tags
+func (o *BridgeUpdateRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetName returns value of Name
+func (o *BridgeUpdateRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *BridgeUpdateRequest) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *BridgeUpdateRequest) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *BridgeUpdateRequest) SetDescription(v string) {
+	o.Description = v
+}
+
+// convertTo returns naked BridgeUpdateRequest
+func (o *BridgeUpdateRequest) convertTo() (*naked.Bridge, error) {
+	dest := &naked.Bridge{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked BridgeUpdateRequest
+func (o *BridgeUpdateRequest) convertFrom(naked *naked.Bridge) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
 * CDROM
 *************************************************/
 
@@ -6773,95 +7256,6 @@ func (o *FTPServerInfo) convertFrom(naked *naked.FTPServer) error {
 }
 
 /*************************************************
-* Region
-*************************************************/
-
-// Region represents API parameter/response structure
-type Region struct {
-	ID          types.ID
-	Name        string   `validate:"required"`
-	Description string   `validate:"min=0,max=512"`
-	NameServers []string `json:",omitempty" mapconv:",omitempty"`
-}
-
-// Validate validates by field tags
-func (o *Region) Validate() error {
-	return validator.New().Struct(o)
-}
-
-// GetID returns value of ID
-func (o *Region) GetID() types.ID {
-	return o.ID
-}
-
-// SetID sets value to ID
-func (o *Region) SetID(v types.ID) {
-	o.ID = v
-}
-
-// GetStringID gets value to StringID
-func (o *Region) GetStringID() string {
-	return accessor.GetStringID(o)
-}
-
-// SetStringID sets value to StringID
-func (o *Region) SetStringID(v string) {
-	accessor.SetStringID(o, v)
-}
-
-// GetInt64ID gets value to Int64ID
-func (o *Region) GetInt64ID() int64 {
-	return accessor.GetInt64ID(o)
-}
-
-// SetInt64ID sets value to Int64ID
-func (o *Region) SetInt64ID(v int64) {
-	accessor.SetInt64ID(o, v)
-}
-
-// GetName returns value of Name
-func (o *Region) GetName() string {
-	return o.Name
-}
-
-// SetName sets value to Name
-func (o *Region) SetName(v string) {
-	o.Name = v
-}
-
-// GetDescription returns value of Description
-func (o *Region) GetDescription() string {
-	return o.Description
-}
-
-// SetDescription sets value to Description
-func (o *Region) SetDescription(v string) {
-	o.Description = v
-}
-
-// GetNameServers returns value of NameServers
-func (o *Region) GetNameServers() []string {
-	return o.NameServers
-}
-
-// SetNameServers sets value to NameServers
-func (o *Region) SetNameServers(v []string) {
-	o.NameServers = v
-}
-
-// convertTo returns naked Region
-func (o *Region) convertTo() (*naked.Region, error) {
-	dest := &naked.Region{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked Region
-func (o *Region) convertFrom(naked *naked.Region) error {
-	return mapconv.ConvertFrom(naked, o)
-}
-
-/*************************************************
 * ServerCreateRequest
 *************************************************/
 
@@ -7455,6 +7849,7 @@ type Switch struct {
 	NetworkMaskLen int             `mapconv:"UserSubnet.NetworkMaskLen" validate:"min=1,max=32"`
 	DefaultRoute   string          `mapconv:"UserSubnet.DefaultRoute" validate:"ipv4"`
 	Subnets        []*SwitchSubnet `json:",omitempty" mapconv:"[]Subnets,omitempty,recursive"`
+	BridgeID       types.ID        `mapconv:"Bridge.ID,omitempty"`
 }
 
 // Validate validates by field tags
@@ -7590,6 +7985,16 @@ func (o *Switch) GetSubnets() []*SwitchSubnet {
 // SetSubnets sets value to Subnets
 func (o *Switch) SetSubnets(v []*SwitchSubnet) {
 	o.Subnets = v
+}
+
+// GetBridgeID returns value of BridgeID
+func (o *Switch) GetBridgeID() types.ID {
+	return o.BridgeID
+}
+
+// SetBridgeID sets value to BridgeID
+func (o *Switch) SetBridgeID(v types.ID) {
+	o.BridgeID = v
 }
 
 // convertTo returns naked Switch

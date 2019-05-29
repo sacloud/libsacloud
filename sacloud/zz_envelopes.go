@@ -89,6 +89,59 @@ type archiveOpenFTPResponseEnvelope struct {
 	FTPServer *naked.OpeningFTPServer `json:",omitempty"`
 }
 
+// bridgeFindRequestEnvelope is envelop of API request
+type bridgeFindRequestEnvelope struct {
+	Count   int                    `json:",omitempty"`
+	From    int                    `json:",omitempty"`
+	Sort    []string               `json:",omitempty"`
+	Filter  map[string]interface{} `json:",omitempty"`
+	Include []string               `json:",omitempty"`
+	Exclude []string               `json:",omitempty"`
+}
+
+// bridgeFindResponseEnvelope is envelop of API response
+type bridgeFindResponseEnvelope struct {
+	Total int `json:",omitempty"` // トータル件数
+	From  int `json:",omitempty"` // ページング開始ページ
+	Count int `json:",omitempty"` // 件数
+
+	Bridges []*naked.Bridge `json:",omitempty"`
+}
+
+// bridgeCreateRequestEnvelope is envelop of API request
+type bridgeCreateRequestEnvelope struct {
+	Bridge *naked.Bridge `json:",omitempty"`
+}
+
+// bridgeCreateResponseEnvelope is envelop of API response
+type bridgeCreateResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Bridge *naked.Bridge `json:",omitempty"`
+}
+
+// bridgeReadResponseEnvelope is envelop of API response
+type bridgeReadResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Bridge *naked.Bridge `json:",omitempty"`
+}
+
+// bridgeUpdateRequestEnvelope is envelop of API request
+type bridgeUpdateRequestEnvelope struct {
+	Bridge *naked.Bridge `json:",omitempty"`
+}
+
+// bridgeUpdateResponseEnvelope is envelop of API response
+type bridgeUpdateResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Bridge *naked.Bridge `json:",omitempty"`
+}
+
 // cdromFindRequestEnvelope is envelop of API request
 type cdromFindRequestEnvelope struct {
 	Count   int                    `json:",omitempty"`
