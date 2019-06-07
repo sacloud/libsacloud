@@ -7833,6 +7833,672 @@ func (o *MonitorCPUTimeValue) convertFrom(naked *naked.MonitorCPUTimeValue) erro
 }
 
 /*************************************************
+* SIM
+*************************************************/
+
+// SIM represents API parameter/response structure
+type SIM struct {
+	ID           types.ID
+	Name         string `validate:"required"`
+	Description  string `validate:"min=0,max=512"`
+	Tags         []string
+	Availability types.EAvailability
+	Class        string
+	ICCID        types.StringNumber `mapconv:"Status.ICCID" validate:"numeric"`
+	IconID       types.ID           `mapconv:"Icon.ID"`
+	CreatedAt    time.Time
+	ModifiedAt   time.Time
+}
+
+// Validate validates by field tags
+func (o *SIM) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetID returns value of ID
+func (o *SIM) GetID() types.ID {
+	return o.ID
+}
+
+// SetID sets value to ID
+func (o *SIM) SetID(v types.ID) {
+	o.ID = v
+}
+
+// GetStringID gets value to StringID
+func (o *SIM) GetStringID() string {
+	return accessor.GetStringID(o)
+}
+
+// SetStringID sets value to StringID
+func (o *SIM) SetStringID(v string) {
+	accessor.SetStringID(o, v)
+}
+
+// GetInt64ID gets value to Int64ID
+func (o *SIM) GetInt64ID() int64 {
+	return accessor.GetInt64ID(o)
+}
+
+// SetInt64ID sets value to Int64ID
+func (o *SIM) SetInt64ID(v int64) {
+	accessor.SetInt64ID(o, v)
+}
+
+// GetName returns value of Name
+func (o *SIM) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *SIM) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *SIM) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *SIM) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetTags returns value of Tags
+func (o *SIM) GetTags() []string {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *SIM) SetTags(v []string) {
+	o.Tags = v
+}
+
+// GetAvailability returns value of Availability
+func (o *SIM) GetAvailability() types.EAvailability {
+	return o.Availability
+}
+
+// SetAvailability sets value to Availability
+func (o *SIM) SetAvailability(v types.EAvailability) {
+	o.Availability = v
+}
+
+// GetClass returns value of Class
+func (o *SIM) GetClass() string {
+	return o.Class
+}
+
+// SetClass sets value to Class
+func (o *SIM) SetClass(v string) {
+	o.Class = v
+}
+
+// GetICCID returns value of ICCID
+func (o *SIM) GetICCID() types.StringNumber {
+	return o.ICCID
+}
+
+// SetICCID sets value to ICCID
+func (o *SIM) SetICCID(v types.StringNumber) {
+	o.ICCID = v
+}
+
+// GetIconID returns value of IconID
+func (o *SIM) GetIconID() types.ID {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *SIM) SetIconID(v types.ID) {
+	o.IconID = v
+}
+
+// GetCreatedAt returns value of CreatedAt
+func (o *SIM) GetCreatedAt() time.Time {
+	return o.CreatedAt
+}
+
+// SetCreatedAt sets value to CreatedAt
+func (o *SIM) SetCreatedAt(v time.Time) {
+	o.CreatedAt = v
+}
+
+// GetModifiedAt returns value of ModifiedAt
+func (o *SIM) GetModifiedAt() time.Time {
+	return o.ModifiedAt
+}
+
+// SetModifiedAt sets value to ModifiedAt
+func (o *SIM) SetModifiedAt(v time.Time) {
+	o.ModifiedAt = v
+}
+
+// convertTo returns naked SIM
+func (o *SIM) convertTo() (*naked.SIM, error) {
+	dest := &naked.SIM{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked SIM
+func (o *SIM) convertFrom(naked *naked.SIM) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* SIMCreateRequest
+*************************************************/
+
+// SIMCreateRequest represents API parameter/response structure
+type SIMCreateRequest struct {
+	Name        string `validate:"required"`
+	Description string `validate:"min=0,max=512"`
+	Tags        []string
+	IconID      types.ID           `mapconv:"Icon.ID"`
+	Class       string             `mapconv:"Provider.Class,default=sim"`
+	ICCID       types.StringNumber `mapconv:"Status.ICCID" validate:"numeric"`
+	PassCode    string             `mapconv:"Remark.PassCode"`
+}
+
+// Validate validates by field tags
+func (o *SIMCreateRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetName returns value of Name
+func (o *SIMCreateRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *SIMCreateRequest) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *SIMCreateRequest) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *SIMCreateRequest) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetTags returns value of Tags
+func (o *SIMCreateRequest) GetTags() []string {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *SIMCreateRequest) SetTags(v []string) {
+	o.Tags = v
+}
+
+// GetIconID returns value of IconID
+func (o *SIMCreateRequest) GetIconID() types.ID {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *SIMCreateRequest) SetIconID(v types.ID) {
+	o.IconID = v
+}
+
+// GetClass returns value of Class
+func (o *SIMCreateRequest) GetClass() string {
+	return o.Class
+}
+
+// SetClass sets value to Class
+func (o *SIMCreateRequest) SetClass(v string) {
+	o.Class = v
+}
+
+// GetICCID returns value of ICCID
+func (o *SIMCreateRequest) GetICCID() types.StringNumber {
+	return o.ICCID
+}
+
+// SetICCID sets value to ICCID
+func (o *SIMCreateRequest) SetICCID(v types.StringNumber) {
+	o.ICCID = v
+}
+
+// GetPassCode returns value of PassCode
+func (o *SIMCreateRequest) GetPassCode() string {
+	return o.PassCode
+}
+
+// SetPassCode sets value to PassCode
+func (o *SIMCreateRequest) SetPassCode(v string) {
+	o.PassCode = v
+}
+
+// convertTo returns naked SIMCreateRequest
+func (o *SIMCreateRequest) convertTo() (*naked.SIM, error) {
+	dest := &naked.SIM{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked SIMCreateRequest
+func (o *SIMCreateRequest) convertFrom(naked *naked.SIM) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* SIMUpdateRequest
+*************************************************/
+
+// SIMUpdateRequest represents API parameter/response structure
+type SIMUpdateRequest struct {
+	Name        string `validate:"required"`
+	Description string `validate:"min=0,max=512"`
+	Tags        []string
+	IconID      types.ID `mapconv:"Icon.ID"`
+}
+
+// Validate validates by field tags
+func (o *SIMUpdateRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetName returns value of Name
+func (o *SIMUpdateRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *SIMUpdateRequest) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *SIMUpdateRequest) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *SIMUpdateRequest) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetTags returns value of Tags
+func (o *SIMUpdateRequest) GetTags() []string {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *SIMUpdateRequest) SetTags(v []string) {
+	o.Tags = v
+}
+
+// GetIconID returns value of IconID
+func (o *SIMUpdateRequest) GetIconID() types.ID {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *SIMUpdateRequest) SetIconID(v types.ID) {
+	o.IconID = v
+}
+
+// convertTo returns naked SIMUpdateRequest
+func (o *SIMUpdateRequest) convertTo() (*naked.SIM, error) {
+	dest := &naked.SIM{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked SIMUpdateRequest
+func (o *SIMUpdateRequest) convertFrom(naked *naked.SIM) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* SIMAssignIPRequest
+*************************************************/
+
+// SIMAssignIPRequest represents API parameter/response structure
+type SIMAssignIPRequest struct {
+	IP string
+}
+
+// Validate validates by field tags
+func (o *SIMAssignIPRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetIP returns value of IP
+func (o *SIMAssignIPRequest) GetIP() string {
+	return o.IP
+}
+
+// SetIP sets value to IP
+func (o *SIMAssignIPRequest) SetIP(v string) {
+	o.IP = v
+}
+
+// convertTo returns naked SIMAssignIPRequest
+func (o *SIMAssignIPRequest) convertTo() (*naked.SIMAssignIPRequest, error) {
+	dest := &naked.SIMAssignIPRequest{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked SIMAssignIPRequest
+func (o *SIMAssignIPRequest) convertFrom(naked *naked.SIMAssignIPRequest) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* SIMIMEILockRequest
+*************************************************/
+
+// SIMIMEILockRequest represents API parameter/response structure
+type SIMIMEILockRequest struct {
+	IMEI string
+}
+
+// Validate validates by field tags
+func (o *SIMIMEILockRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetIMEI returns value of IMEI
+func (o *SIMIMEILockRequest) GetIMEI() string {
+	return o.IMEI
+}
+
+// SetIMEI sets value to IMEI
+func (o *SIMIMEILockRequest) SetIMEI(v string) {
+	o.IMEI = v
+}
+
+// convertTo returns naked SIMIMEILockRequest
+func (o *SIMIMEILockRequest) convertTo() (*naked.SIMIMEILockRequest, error) {
+	dest := &naked.SIMIMEILockRequest{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked SIMIMEILockRequest
+func (o *SIMIMEILockRequest) convertFrom(naked *naked.SIMIMEILockRequest) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* SIMLog
+*************************************************/
+
+// SIMLog represents API parameter/response structure
+type SIMLog struct {
+	Date          time.Time
+	SessionStatus string
+	ResourceID    string
+	IMEI          string
+	IMSI          string
+}
+
+// Validate validates by field tags
+func (o *SIMLog) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetDate returns value of Date
+func (o *SIMLog) GetDate() time.Time {
+	return o.Date
+}
+
+// SetDate sets value to Date
+func (o *SIMLog) SetDate(v time.Time) {
+	o.Date = v
+}
+
+// GetSessionStatus returns value of SessionStatus
+func (o *SIMLog) GetSessionStatus() string {
+	return o.SessionStatus
+}
+
+// SetSessionStatus sets value to SessionStatus
+func (o *SIMLog) SetSessionStatus(v string) {
+	o.SessionStatus = v
+}
+
+// GetResourceID returns value of ResourceID
+func (o *SIMLog) GetResourceID() string {
+	return o.ResourceID
+}
+
+// SetResourceID sets value to ResourceID
+func (o *SIMLog) SetResourceID(v string) {
+	o.ResourceID = v
+}
+
+// GetIMEI returns value of IMEI
+func (o *SIMLog) GetIMEI() string {
+	return o.IMEI
+}
+
+// SetIMEI sets value to IMEI
+func (o *SIMLog) SetIMEI(v string) {
+	o.IMEI = v
+}
+
+// GetIMSI returns value of IMSI
+func (o *SIMLog) GetIMSI() string {
+	return o.IMSI
+}
+
+// SetIMSI sets value to IMSI
+func (o *SIMLog) SetIMSI(v string) {
+	o.IMSI = v
+}
+
+// convertTo returns naked SIMLog
+func (o *SIMLog) convertTo() (*naked.SIMLog, error) {
+	dest := &naked.SIMLog{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked SIMLog
+func (o *SIMLog) convertFrom(naked *naked.SIMLog) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* SIMNetworkOperatorConfig
+*************************************************/
+
+// SIMNetworkOperatorConfig represents API parameter/response structure
+type SIMNetworkOperatorConfig struct {
+	Allow       bool
+	CountryCode string
+	Name        string
+}
+
+// Validate validates by field tags
+func (o *SIMNetworkOperatorConfig) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetAllow returns value of Allow
+func (o *SIMNetworkOperatorConfig) GetAllow() bool {
+	return o.Allow
+}
+
+// SetAllow sets value to Allow
+func (o *SIMNetworkOperatorConfig) SetAllow(v bool) {
+	o.Allow = v
+}
+
+// GetCountryCode returns value of CountryCode
+func (o *SIMNetworkOperatorConfig) GetCountryCode() string {
+	return o.CountryCode
+}
+
+// SetCountryCode sets value to CountryCode
+func (o *SIMNetworkOperatorConfig) SetCountryCode(v string) {
+	o.CountryCode = v
+}
+
+// GetName returns value of Name
+func (o *SIMNetworkOperatorConfig) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *SIMNetworkOperatorConfig) SetName(v string) {
+	o.Name = v
+}
+
+// convertTo returns naked SIMNetworkOperatorConfig
+func (o *SIMNetworkOperatorConfig) convertTo() (*naked.SIMNetworkOperatorConfig, error) {
+	dest := &naked.SIMNetworkOperatorConfig{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked SIMNetworkOperatorConfig
+func (o *SIMNetworkOperatorConfig) convertFrom(naked *naked.SIMNetworkOperatorConfig) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* SIMNetworkOperatorConfigs
+*************************************************/
+
+// SIMNetworkOperatorConfigs represents API parameter/response structure
+type SIMNetworkOperatorConfigs struct {
+	NetworkOperatorConfigs []*SIMNetworkOperatorConfig
+}
+
+// Validate validates by field tags
+func (o *SIMNetworkOperatorConfigs) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetNetworkOperatorConfigs returns value of NetworkOperatorConfigs
+func (o *SIMNetworkOperatorConfigs) GetNetworkOperatorConfigs() []*SIMNetworkOperatorConfig {
+	return o.NetworkOperatorConfigs
+}
+
+// SetNetworkOperatorConfigs sets value to NetworkOperatorConfigs
+func (o *SIMNetworkOperatorConfigs) SetNetworkOperatorConfigs(v []*SIMNetworkOperatorConfig) {
+	o.NetworkOperatorConfigs = v
+}
+
+// convertTo returns naked SIMNetworkOperatorConfigs
+func (o *SIMNetworkOperatorConfigs) convertTo() (*naked.SIMNetworkOperatorConfigs, error) {
+	dest := &naked.SIMNetworkOperatorConfigs{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked SIMNetworkOperatorConfigs
+func (o *SIMNetworkOperatorConfigs) convertFrom(naked *naked.SIMNetworkOperatorConfigs) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* LinkActivity
+*************************************************/
+
+// LinkActivity represents API parameter/response structure
+type LinkActivity struct {
+	Values []*MonitorLinkValue `mapconv:"[]Link"`
+}
+
+// Validate validates by field tags
+func (o *LinkActivity) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetValues returns value of Values
+func (o *LinkActivity) GetValues() []*MonitorLinkValue {
+	return o.Values
+}
+
+// SetValues sets value to Values
+func (o *LinkActivity) SetValues(v []*MonitorLinkValue) {
+	o.Values = v
+}
+
+// convertTo returns naked LinkActivity
+func (o *LinkActivity) convertTo() (*naked.MonitorValues, error) {
+	dest := &naked.MonitorValues{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked LinkActivity
+func (o *LinkActivity) convertFrom(naked *naked.MonitorValues) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
+* MonitorLinkValue
+*************************************************/
+
+// MonitorLinkValue represents API parameter/response structure
+type MonitorLinkValue struct {
+	Time        time.Time `json:",omitempty" mapconv:",omitempty"`
+	UplinkBPS   float64   `json:",omitempty" mapconv:",omitempty"`
+	DownlinkBPS float64   `json:",omitempty" mapconv:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *MonitorLinkValue) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetTime returns value of Time
+func (o *MonitorLinkValue) GetTime() time.Time {
+	return o.Time
+}
+
+// SetTime sets value to Time
+func (o *MonitorLinkValue) SetTime(v time.Time) {
+	o.Time = v
+}
+
+// GetUplinkBPS returns value of UplinkBPS
+func (o *MonitorLinkValue) GetUplinkBPS() float64 {
+	return o.UplinkBPS
+}
+
+// SetUplinkBPS sets value to UplinkBPS
+func (o *MonitorLinkValue) SetUplinkBPS(v float64) {
+	o.UplinkBPS = v
+}
+
+// GetDownlinkBPS returns value of DownlinkBPS
+func (o *MonitorLinkValue) GetDownlinkBPS() float64 {
+	return o.DownlinkBPS
+}
+
+// SetDownlinkBPS sets value to DownlinkBPS
+func (o *MonitorLinkValue) SetDownlinkBPS(v float64) {
+	o.DownlinkBPS = v
+}
+
+// convertTo returns naked MonitorLinkValue
+func (o *MonitorLinkValue) convertTo() (*naked.MonitorLinkValue, error) {
+	dest := &naked.MonitorLinkValue{}
+	err := mapconv.ConvertTo(o, dest)
+	return dest, err
+}
+
+// convertFrom parse values from naked MonitorLinkValue
+func (o *MonitorLinkValue) convertFrom(naked *naked.MonitorLinkValue) error {
+	return mapconv.ConvertFrom(naked, o)
+}
+
+/*************************************************
 * Switch
 *************************************************/
 

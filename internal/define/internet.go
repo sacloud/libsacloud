@@ -119,15 +119,12 @@ func init() {
 				}),
 
 			// DeleteSubnet
-			r.DefineOperation("DeleteSubnet").
-				Method(http.MethodDelete).
-				PathFormat(schema.IDAndSuffixPathFormat("subnet/{{.subnetID}}")).
-				Argument(schema.ArgumentZone).
-				Argument(schema.ArgumentID).
-				Argument(&schema.SimpleArgument{
+			r.DefineSimpleOperation("DeleteSubnet", http.MethodDelete, "subnet/{{.subnetID}}",
+				&schema.SimpleArgument{
 					Name: "subnetID",
 					Type: meta.TypeID,
-				}),
+				},
+			),
 
 			// monitor
 			r.DefineOperationMonitor(monitorParameter, monitors.routerModel()),

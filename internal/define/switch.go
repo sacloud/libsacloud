@@ -75,22 +75,15 @@ func init() {
 			r.DefineOperationDelete(),
 
 			// connect from bridge
-			r.DefineOperation("ConnectToBridge").
-				Method(http.MethodPut).
-				PathFormat(schema.IDAndSuffixPathFormat("to/bridge/{{.bridgeID}}")).
-				Argument(schema.ArgumentZone).
-				Argument(schema.ArgumentID).
-				Argument(&schema.SimpleArgument{
+			r.DefineSimpleOperation("ConnectToBridge", http.MethodPut, "to/bridge/{{.bridgeID}}",
+				&schema.SimpleArgument{
 					Name: "bridgeID",
 					Type: meta.TypeID,
-				}),
+				},
+			),
 
 			// disconnect from bridge
-			r.DefineOperation("DisconnectFromBridge").
-				Method(http.MethodDelete).
-				PathFormat(schema.IDAndSuffixPathFormat("to/bridge")).
-				Argument(schema.ArgumentZone).
-				Argument(schema.ArgumentID),
+			r.DefineSimpleOperation("DisconnectFromBridge", http.MethodDelete, "to/bridge/"),
 		)
 	})
 }

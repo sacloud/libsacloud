@@ -496,6 +496,19 @@ func (r *Resource) OperationCloseFTP() *Resource {
 	)
 }
 
+// DefineSimpleOperation ID+αのみを引数にとるシンプルなオペレーションを定義
+func (r *Resource) DefineSimpleOperation(opName, method, pathSuffix string, arguments ...Argument) *Operation {
+	o := r.DefineOperation(opName).
+		Method(method).
+		PathFormat(IDAndSuffixPathFormat(pathSuffix)).
+		Argument(ArgumentZone).
+		Argument(ArgumentID)
+	if len(arguments) > 0 {
+		o.Arguments(arguments)
+	}
+	return o
+}
+
 // DefineOperationMonitor アクティビティモニタ取得操作を定義
 func (r *Resource) DefineOperationMonitor(monitorParam, result *Model) *Operation {
 	return r.DefineOperation("Monitor").

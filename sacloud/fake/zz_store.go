@@ -283,6 +283,29 @@ func (s *store) setServer(zone string, value *sacloud.Server) {
 	s.set(ResourceServer, zone, value)
 }
 
+func (s *store) getSIM(zone string) []*sacloud.SIM {
+	values := s.get(ResourceSIM, zone)
+	var ret []*sacloud.SIM
+	for _, v := range values {
+		if v, ok := v.(*sacloud.SIM); ok {
+			ret = append(ret, v)
+		}
+	}
+	return ret
+}
+
+func (s *store) getSIMByID(zone string, id types.ID) *sacloud.SIM {
+	v := s.getByID(ResourceSIM, zone, id)
+	if v, ok := v.(*sacloud.SIM); ok {
+		return v
+	}
+	return nil
+}
+
+func (s *store) setSIM(zone string, value *sacloud.SIM) {
+	s.set(ResourceSIM, zone, value)
+}
+
 func (s *store) getSwitch(zone string) []*sacloud.Switch {
 	values := s.get(ResourceSwitch, zone)
 	var ret []*sacloud.Switch

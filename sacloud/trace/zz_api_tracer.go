@@ -1253,6 +1253,172 @@ func (t *ServerTracer) Monitor(ctx context.Context, zone string, id types.ID, co
 }
 
 /*************************************************
+* SIMTracer
+*************************************************/
+
+// SIMTracer is for trace SIMOp operations
+type SIMTracer struct {
+	Internal sacloud.SIMAPI
+}
+
+// NewSIMTracer creates new SIMTracer instance
+func NewSIMTracer(in sacloud.SIMAPI) sacloud.SIMAPI {
+	return &SIMTracer{
+		Internal: in,
+	}
+}
+
+// Find is API call with trace log
+func (t *SIMTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) ([]*sacloud.SIM, error) {
+	log.Println("[TRACE] SIMTracer.Find start:	args => [", "zone=", zone, "conditions=", conditions, "]")
+	defer func() {
+		log.Println("[TRACE] SIMTracer.Find: end")
+	}()
+
+	return t.Internal.Find(ctx, zone, conditions)
+}
+
+// Create is API call with trace log
+func (t *SIMTracer) Create(ctx context.Context, zone string, param *sacloud.SIMCreateRequest) (*sacloud.SIM, error) {
+	log.Println("[TRACE] SIMTracer.Create start:	args => [", "zone=", zone, "param=", param, "]")
+	defer func() {
+		log.Println("[TRACE] SIMTracer.Create: end")
+	}()
+
+	return t.Internal.Create(ctx, zone, param)
+}
+
+// Read is API call with trace log
+func (t *SIMTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.SIM, error) {
+	log.Println("[TRACE] SIMTracer.Read start:	args => [", "zone=", zone, "id=", id, "]")
+	defer func() {
+		log.Println("[TRACE] SIMTracer.Read: end")
+	}()
+
+	return t.Internal.Read(ctx, zone, id)
+}
+
+// Update is API call with trace log
+func (t *SIMTracer) Update(ctx context.Context, zone string, id types.ID, param *sacloud.SIMUpdateRequest) (*sacloud.SIM, error) {
+	log.Println("[TRACE] SIMTracer.Update start:	args => [", "zone=", zone, "id=", id, "param=", param, "]")
+	defer func() {
+		log.Println("[TRACE] SIMTracer.Update: end")
+	}()
+
+	return t.Internal.Update(ctx, zone, id, param)
+}
+
+// Delete is API call with trace log
+func (t *SIMTracer) Delete(ctx context.Context, zone string, id types.ID) error {
+	log.Println("[TRACE] SIMTracer.Delete start:	args => [", "zone=", zone, "id=", id, "]")
+	defer func() {
+		log.Println("[TRACE] SIMTracer.Delete: end")
+	}()
+
+	return t.Internal.Delete(ctx, zone, id)
+}
+
+// Activate is API call with trace log
+func (t *SIMTracer) Activate(ctx context.Context, zone string, id types.ID) error {
+	log.Println("[TRACE] SIMTracer.Activate start:	args => [", "zone=", zone, "id=", id, "]")
+	defer func() {
+		log.Println("[TRACE] SIMTracer.Activate: end")
+	}()
+
+	return t.Internal.Activate(ctx, zone, id)
+}
+
+// Deactivate is API call with trace log
+func (t *SIMTracer) Deactivate(ctx context.Context, zone string, id types.ID) error {
+	log.Println("[TRACE] SIMTracer.Deactivate start:	args => [", "zone=", zone, "id=", id, "]")
+	defer func() {
+		log.Println("[TRACE] SIMTracer.Deactivate: end")
+	}()
+
+	return t.Internal.Deactivate(ctx, zone, id)
+}
+
+// AssignIP is API call with trace log
+func (t *SIMTracer) AssignIP(ctx context.Context, zone string, id types.ID, param *sacloud.SIMAssignIPRequest) error {
+	log.Println("[TRACE] SIMTracer.AssignIP start:	args => [", "zone=", zone, "id=", id, "param=", param, "]")
+	defer func() {
+		log.Println("[TRACE] SIMTracer.AssignIP: end")
+	}()
+
+	return t.Internal.AssignIP(ctx, zone, id, param)
+}
+
+// ClearIP is API call with trace log
+func (t *SIMTracer) ClearIP(ctx context.Context, zone string, id types.ID) error {
+	log.Println("[TRACE] SIMTracer.ClearIP start:	args => [", "zone=", zone, "id=", id, "]")
+	defer func() {
+		log.Println("[TRACE] SIMTracer.ClearIP: end")
+	}()
+
+	return t.Internal.ClearIP(ctx, zone, id)
+}
+
+// IMEILock is API call with trace log
+func (t *SIMTracer) IMEILock(ctx context.Context, zone string, id types.ID, param *sacloud.SIMIMEILockRequest) error {
+	log.Println("[TRACE] SIMTracer.IMEILock start:	args => [", "zone=", zone, "id=", id, "param=", param, "]")
+	defer func() {
+		log.Println("[TRACE] SIMTracer.IMEILock: end")
+	}()
+
+	return t.Internal.IMEILock(ctx, zone, id, param)
+}
+
+// IMEIUnlock is API call with trace log
+func (t *SIMTracer) IMEIUnlock(ctx context.Context, zone string, id types.ID) error {
+	log.Println("[TRACE] SIMTracer.IMEIUnlock start:	args => [", "zone=", zone, "id=", id, "]")
+	defer func() {
+		log.Println("[TRACE] SIMTracer.IMEIUnlock: end")
+	}()
+
+	return t.Internal.IMEIUnlock(ctx, zone, id)
+}
+
+// Logs is API call with trace log
+func (t *SIMTracer) Logs(ctx context.Context, zone string, id types.ID) ([]*sacloud.SIMLog, error) {
+	log.Println("[TRACE] SIMTracer.Logs start:	args => [", "zone=", zone, "id=", id, "]")
+	defer func() {
+		log.Println("[TRACE] SIMTracer.Logs: end")
+	}()
+
+	return t.Internal.Logs(ctx, zone, id)
+}
+
+// GetNetworkOperator is API call with trace log
+func (t *SIMTracer) GetNetworkOperator(ctx context.Context, zone string, id types.ID) ([]*sacloud.SIMNetworkOperatorConfig, error) {
+	log.Println("[TRACE] SIMTracer.GetNetworkOperator start:	args => [", "zone=", zone, "id=", id, "]")
+	defer func() {
+		log.Println("[TRACE] SIMTracer.GetNetworkOperator: end")
+	}()
+
+	return t.Internal.GetNetworkOperator(ctx, zone, id)
+}
+
+// SetNetworkOperator is API call with trace log
+func (t *SIMTracer) SetNetworkOperator(ctx context.Context, zone string, id types.ID, configs *sacloud.SIMNetworkOperatorConfigs) error {
+	log.Println("[TRACE] SIMTracer.SetNetworkOperator start:	args => [", "zone=", zone, "id=", id, "configs=", configs, "]")
+	defer func() {
+		log.Println("[TRACE] SIMTracer.SetNetworkOperator: end")
+	}()
+
+	return t.Internal.SetNetworkOperator(ctx, zone, id, configs)
+}
+
+// MonitorSIM is API call with trace log
+func (t *SIMTracer) MonitorSIM(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.LinkActivity, error) {
+	log.Println("[TRACE] SIMTracer.MonitorSIM start:	args => [", "zone=", zone, "id=", id, "condition=", condition, "]")
+	defer func() {
+		log.Println("[TRACE] SIMTracer.MonitorSIM: end")
+	}()
+
+	return t.Internal.MonitorSIM(ctx, zone, id, condition)
+}
+
+/*************************************************
 * SwitchTracer
 *************************************************/
 

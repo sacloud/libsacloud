@@ -58,43 +58,25 @@ func init() {
 			// monitor
 			r.DefineOperationMonitor(monitorParameter, monitors.interfaceModel()),
 
-			r.DefineOperation("ConnectToSharedSegment").
-				Method(http.MethodPut).
-				PathFormat(schema.IDAndSuffixPathFormat("to/switch/shared")).
-				Argument(schema.ArgumentZone).
-				Argument(schema.ArgumentID),
+			r.DefineSimpleOperation("ConnectToSharedSegment", http.MethodPut, "to/switch/shared"),
 
-			r.DefineOperation("ConnectToSwitch").
-				Method(http.MethodPut).
-				PathFormat(schema.IDAndSuffixPathFormat("to/switch/{{.switchID}}")).
-				Argument(schema.ArgumentZone).
-				Argument(schema.ArgumentID).
-				Argument(&schema.SimpleArgument{
+			r.DefineSimpleOperation("ConnectToSwitch", http.MethodPut, "to/switch/{{.switchID}}",
+				&schema.SimpleArgument{
 					Name: "switchID",
 					Type: meta.TypeID,
-				}),
+				},
+			),
 
-			r.DefineOperation("DisconnectFromSwitch").
-				Method(http.MethodDelete).
-				PathFormat(schema.IDAndSuffixPathFormat("to/switch")).
-				Argument(schema.ArgumentZone).
-				Argument(schema.ArgumentID),
+			r.DefineSimpleOperation("DisconnectFromSwitch", http.MethodDelete, "to/switch"),
 
-			r.DefineOperation("ConnectToPacketFilter").
-				Method(http.MethodPut).
-				PathFormat(schema.IDAndSuffixPathFormat("to/packetfilter/{{.packetFilterID}}")).
-				Argument(schema.ArgumentZone).
-				Argument(schema.ArgumentID).
-				Argument(&schema.SimpleArgument{
+			r.DefineSimpleOperation("ConnectToPacketFilter", http.MethodPut, "to/packetfilter/{{.packetFilterID}}",
+				&schema.SimpleArgument{
 					Name: "packetFilterID",
 					Type: meta.TypeID,
-				}),
+				},
+			),
 
-			r.DefineOperation("DisconnectFromPacketFilter").
-				Method(http.MethodDelete).
-				PathFormat(schema.IDAndSuffixPathFormat("to/packetfilter")).
-				Argument(schema.ArgumentZone).
-				Argument(schema.ArgumentID),
+			r.DefineSimpleOperation("DisconnectFromPacketFilter", http.MethodDelete, "to/packetfilter"),
 		)
 	})
 }

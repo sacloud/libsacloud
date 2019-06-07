@@ -960,6 +960,106 @@ type serverMonitorResponseEnvelope struct {
 	Data *naked.MonitorValues `json:",omitempty"`
 }
 
+// simFindRequestEnvelope is envelop of API request
+type simFindRequestEnvelope struct {
+	Count   int                    `json:",omitempty"`
+	From    int                    `json:",omitempty"`
+	Sort    []string               `json:",omitempty"`
+	Filter  map[string]interface{} `json:",omitempty"`
+	Include []string               `json:",omitempty"`
+	Exclude []string               `json:",omitempty"`
+}
+
+// simFindResponseEnvelope is envelop of API response
+type simFindResponseEnvelope struct {
+	Total int `json:",omitempty"` // トータル件数
+	From  int `json:",omitempty"` // ページング開始ページ
+	Count int `json:",omitempty"` // 件数
+
+	CommonServiceItems []*naked.SIM `json:",omitempty"`
+}
+
+// simCreateRequestEnvelope is envelop of API request
+type simCreateRequestEnvelope struct {
+	CommonServiceItem *naked.SIM `json:",omitempty"`
+}
+
+// simCreateResponseEnvelope is envelop of API response
+type simCreateResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	CommonServiceItem *naked.SIM `json:",omitempty"`
+}
+
+// simReadResponseEnvelope is envelop of API response
+type simReadResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	CommonServiceItem *naked.SIM `json:",omitempty"`
+}
+
+// simUpdateRequestEnvelope is envelop of API request
+type simUpdateRequestEnvelope struct {
+	CommonServiceItem *naked.SIM `json:",omitempty"`
+}
+
+// simUpdateResponseEnvelope is envelop of API response
+type simUpdateResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	CommonServiceItem *naked.SIM `json:",omitempty"`
+}
+
+// simAssignIPRequestEnvelope is envelop of API request
+type simAssignIPRequestEnvelope struct {
+	SIM *naked.SIMAssignIPRequest `json:"sim"`
+}
+
+// simIMEILockRequestEnvelope is envelop of API request
+type simIMEILockRequestEnvelope struct {
+	SIM *naked.SIMIMEILockRequest `json:"sim"`
+}
+
+// simLogsResponseEnvelope is envelop of API response
+type simLogsResponseEnvelope struct {
+	Total int `json:",omitempty"` // トータル件数
+	From  int `json:",omitempty"` // ページング開始ページ
+	Count int `json:",omitempty"` // 件数
+
+	Logs []*naked.SIMLog `json:",omitempty"`
+}
+
+// simGetNetworkOperatorResponseEnvelope is envelop of API response
+type simGetNetworkOperatorResponseEnvelope struct {
+	Total int `json:",omitempty"` // トータル件数
+	From  int `json:",omitempty"` // ページング開始ページ
+	Count int `json:",omitempty"` // 件数
+
+	NetworkOperationConfigs []*naked.SIMNetworkOperatorConfig `json:",omitempty"`
+}
+
+// simSetNetworkOperatorRequestEnvelope is envelop of API request
+type simSetNetworkOperatorRequestEnvelope struct {
+	NetworkOperatorConfigs []*SIMNetworkOperatorConfig `json:",omitempty"`
+}
+
+// simMonitorSIMRequestEnvelope is envelop of API request
+type simMonitorSIMRequestEnvelope struct {
+	Start time.Time `json:",omitempty"`
+	End   time.Time `json:",omitempty"`
+}
+
+// simMonitorSIMResponseEnvelope is envelop of API response
+type simMonitorSIMResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Data *naked.MonitorValues `json:",omitempty"`
+}
+
 // switchFindRequestEnvelope is envelop of API request
 type switchFindRequestEnvelope struct {
 	Count   int                    `json:",omitempty"`

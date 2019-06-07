@@ -1,6 +1,10 @@
 package schema
 
-import "github.com/sacloud/libsacloud-v2/internal/schema/meta"
+import (
+	"fmt"
+
+	"github.com/sacloud/libsacloud-v2/internal/schema/meta"
+)
 
 // EnvelopeType Modelを用いてAPIとやりとりする際のリクエスト/レスポンスのエンベロープ
 type EnvelopeType struct {
@@ -38,11 +42,22 @@ func (f *EnvelopeType) PayloadType() meta.Type {
 type EnvelopePayloadDesc struct {
 	PayloadName string    // ペイロードのフィールド名
 	PayloadType meta.Type // ペイロードの型情報
+	Tags        *FieldTags
 }
 
 // TypeName ペイロードの型定義
 func (d *EnvelopePayloadDesc) TypeName() string {
 	return d.PayloadType.GoTypeSourceCode()
+}
+
+// TagString タグの文字列表現
+func (d *EnvelopePayloadDesc) TagString() string {
+	if d.Tags == nil {
+		d.Tags = &FieldTags{
+			JSON: ",omitempty",
+		}
+	}
+	return fmt.Sprintf("`%s`", d.Tags.String())
 }
 
 // PayloadForm ペイロードの形体

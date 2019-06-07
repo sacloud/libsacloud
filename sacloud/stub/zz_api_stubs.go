@@ -1707,6 +1707,236 @@ func (s *ServerStub) Monitor(ctx context.Context, zone string, id types.ID, cond
 }
 
 /*************************************************
+* SIMStub
+*************************************************/
+
+// SIMFindResult is expected values of the Find operation
+type SIMFindResult struct {
+	CommonServiceItems []*sacloud.SIM
+	Err                error
+}
+
+// SIMCreateResult is expected values of the Create operation
+type SIMCreateResult struct {
+	CommonServiceItem *sacloud.SIM
+	Err               error
+}
+
+// SIMReadResult is expected values of the Read operation
+type SIMReadResult struct {
+	CommonServiceItem *sacloud.SIM
+	Err               error
+}
+
+// SIMUpdateResult is expected values of the Update operation
+type SIMUpdateResult struct {
+	CommonServiceItem *sacloud.SIM
+	Err               error
+}
+
+// SIMDeleteResult is expected values of the Delete operation
+type SIMDeleteResult struct {
+	Err error
+}
+
+// SIMActivateResult is expected values of the Activate operation
+type SIMActivateResult struct {
+	Err error
+}
+
+// SIMDeactivateResult is expected values of the Deactivate operation
+type SIMDeactivateResult struct {
+	Err error
+}
+
+// SIMAssignIPResult is expected values of the AssignIP operation
+type SIMAssignIPResult struct {
+	Err error
+}
+
+// SIMClearIPResult is expected values of the ClearIP operation
+type SIMClearIPResult struct {
+	Err error
+}
+
+// SIMIMEILockResult is expected values of the IMEILock operation
+type SIMIMEILockResult struct {
+	Err error
+}
+
+// SIMIMEIUnlockResult is expected values of the IMEIUnlock operation
+type SIMIMEIUnlockResult struct {
+	Err error
+}
+
+// SIMLogsResult is expected values of the Logs operation
+type SIMLogsResult struct {
+	Logs []*sacloud.SIMLog
+	Err  error
+}
+
+// SIMGetNetworkOperatorResult is expected values of the GetNetworkOperator operation
+type SIMGetNetworkOperatorResult struct {
+	NetworkOperationConfigs []*sacloud.SIMNetworkOperatorConfig
+	Err                     error
+}
+
+// SIMSetNetworkOperatorResult is expected values of the SetNetworkOperator operation
+type SIMSetNetworkOperatorResult struct {
+	Err error
+}
+
+// SIMMonitorSIMResult is expected values of the MonitorSIM operation
+type SIMMonitorSIMResult struct {
+	Data *sacloud.LinkActivity
+	Err  error
+}
+
+// SIMStub is for trace SIMOp operations
+type SIMStub struct {
+	FindResult               *SIMFindResult
+	CreateResult             *SIMCreateResult
+	ReadResult               *SIMReadResult
+	UpdateResult             *SIMUpdateResult
+	DeleteResult             *SIMDeleteResult
+	ActivateResult           *SIMActivateResult
+	DeactivateResult         *SIMDeactivateResult
+	AssignIPResult           *SIMAssignIPResult
+	ClearIPResult            *SIMClearIPResult
+	IMEILockResult           *SIMIMEILockResult
+	IMEIUnlockResult         *SIMIMEIUnlockResult
+	LogsResult               *SIMLogsResult
+	GetNetworkOperatorResult *SIMGetNetworkOperatorResult
+	SetNetworkOperatorResult *SIMSetNetworkOperatorResult
+	MonitorSIMResult         *SIMMonitorSIMResult
+}
+
+// NewSIMStub creates new SIMStub instance
+func NewSIMStub(caller sacloud.APICaller) sacloud.SIMAPI {
+	return &SIMStub{}
+}
+
+// Find is API call with trace log
+func (s *SIMStub) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) ([]*sacloud.SIM, error) {
+	if s.FindResult == nil {
+		log.Fatal("SIMStub.FindResult is not set")
+	}
+	return s.FindResult.CommonServiceItems, s.FindResult.Err
+}
+
+// Create is API call with trace log
+func (s *SIMStub) Create(ctx context.Context, zone string, param *sacloud.SIMCreateRequest) (*sacloud.SIM, error) {
+	if s.CreateResult == nil {
+		log.Fatal("SIMStub.CreateResult is not set")
+	}
+	return s.CreateResult.CommonServiceItem, s.CreateResult.Err
+}
+
+// Read is API call with trace log
+func (s *SIMStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.SIM, error) {
+	if s.ReadResult == nil {
+		log.Fatal("SIMStub.ReadResult is not set")
+	}
+	return s.ReadResult.CommonServiceItem, s.ReadResult.Err
+}
+
+// Update is API call with trace log
+func (s *SIMStub) Update(ctx context.Context, zone string, id types.ID, param *sacloud.SIMUpdateRequest) (*sacloud.SIM, error) {
+	if s.UpdateResult == nil {
+		log.Fatal("SIMStub.UpdateResult is not set")
+	}
+	return s.UpdateResult.CommonServiceItem, s.UpdateResult.Err
+}
+
+// Delete is API call with trace log
+func (s *SIMStub) Delete(ctx context.Context, zone string, id types.ID) error {
+	if s.DeleteResult == nil {
+		log.Fatal("SIMStub.DeleteResult is not set")
+	}
+	return s.DeleteResult.Err
+}
+
+// Activate is API call with trace log
+func (s *SIMStub) Activate(ctx context.Context, zone string, id types.ID) error {
+	if s.ActivateResult == nil {
+		log.Fatal("SIMStub.ActivateResult is not set")
+	}
+	return s.ActivateResult.Err
+}
+
+// Deactivate is API call with trace log
+func (s *SIMStub) Deactivate(ctx context.Context, zone string, id types.ID) error {
+	if s.DeactivateResult == nil {
+		log.Fatal("SIMStub.DeactivateResult is not set")
+	}
+	return s.DeactivateResult.Err
+}
+
+// AssignIP is API call with trace log
+func (s *SIMStub) AssignIP(ctx context.Context, zone string, id types.ID, param *sacloud.SIMAssignIPRequest) error {
+	if s.AssignIPResult == nil {
+		log.Fatal("SIMStub.AssignIPResult is not set")
+	}
+	return s.AssignIPResult.Err
+}
+
+// ClearIP is API call with trace log
+func (s *SIMStub) ClearIP(ctx context.Context, zone string, id types.ID) error {
+	if s.ClearIPResult == nil {
+		log.Fatal("SIMStub.ClearIPResult is not set")
+	}
+	return s.ClearIPResult.Err
+}
+
+// IMEILock is API call with trace log
+func (s *SIMStub) IMEILock(ctx context.Context, zone string, id types.ID, param *sacloud.SIMIMEILockRequest) error {
+	if s.IMEILockResult == nil {
+		log.Fatal("SIMStub.IMEILockResult is not set")
+	}
+	return s.IMEILockResult.Err
+}
+
+// IMEIUnlock is API call with trace log
+func (s *SIMStub) IMEIUnlock(ctx context.Context, zone string, id types.ID) error {
+	if s.IMEIUnlockResult == nil {
+		log.Fatal("SIMStub.IMEIUnlockResult is not set")
+	}
+	return s.IMEIUnlockResult.Err
+}
+
+// Logs is API call with trace log
+func (s *SIMStub) Logs(ctx context.Context, zone string, id types.ID) ([]*sacloud.SIMLog, error) {
+	if s.LogsResult == nil {
+		log.Fatal("SIMStub.LogsResult is not set")
+	}
+	return s.LogsResult.Logs, s.LogsResult.Err
+}
+
+// GetNetworkOperator is API call with trace log
+func (s *SIMStub) GetNetworkOperator(ctx context.Context, zone string, id types.ID) ([]*sacloud.SIMNetworkOperatorConfig, error) {
+	if s.GetNetworkOperatorResult == nil {
+		log.Fatal("SIMStub.GetNetworkOperatorResult is not set")
+	}
+	return s.GetNetworkOperatorResult.NetworkOperationConfigs, s.GetNetworkOperatorResult.Err
+}
+
+// SetNetworkOperator is API call with trace log
+func (s *SIMStub) SetNetworkOperator(ctx context.Context, zone string, id types.ID, configs *sacloud.SIMNetworkOperatorConfigs) error {
+	if s.SetNetworkOperatorResult == nil {
+		log.Fatal("SIMStub.SetNetworkOperatorResult is not set")
+	}
+	return s.SetNetworkOperatorResult.Err
+}
+
+// MonitorSIM is API call with trace log
+func (s *SIMStub) MonitorSIM(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.LinkActivity, error) {
+	if s.MonitorSIMResult == nil {
+		log.Fatal("SIMStub.MonitorSIMResult is not set")
+	}
+	return s.MonitorSIMResult.Data, s.MonitorSIMResult.Err
+}
+
+/*************************************************
 * SwitchStub
 *************************************************/
 
