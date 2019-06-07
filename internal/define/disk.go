@@ -208,36 +208,21 @@ func init() {
 				}),
 
 			// to blank
-			r.DefineOperation("ToBlank").
-				Method(http.MethodPut).
-				PathFormat(schema.IDAndSuffixPathFormat("to/blank")).
-				Argument(schema.ArgumentZone).
-				Argument(schema.ArgumentID),
+			r.DefineSimpleOperation("ToBlank", http.MethodPut, "to/blank"),
 
 			// resize partition
-			r.DefineOperation("ResizePartition").
-				Method(http.MethodPut).
-				PathFormat(schema.IDAndSuffixPathFormat("resize-partition")).
-				Argument(schema.ArgumentZone).
-				Argument(schema.ArgumentID),
+			r.DefineSimpleOperation("ResizePartition", http.MethodPut, "resize-partition"),
 
 			// connect to server
-			r.DefineOperation("ConnectToServer").
-				Method(http.MethodPut).
-				PathFormat(schema.IDAndSuffixPathFormat("to/server/{{.serverID}}")).
-				Argument(schema.ArgumentZone).
-				Argument(schema.ArgumentID).
-				Argument(&schema.SimpleArgument{
+			r.DefineSimpleOperation("ConnectToServer", http.MethodPut, "to/server/{{.serverID}}",
+				&schema.SimpleArgument{
 					Name: "serverID",
 					Type: meta.TypeID,
-				}),
+				},
+			),
 
 			// disconnect from server
-			r.DefineOperation("DisconnectFromServer").
-				Method(http.MethodDelete).
-				PathFormat(schema.IDAndSuffixPathFormat("to/server")).
-				Argument(schema.ArgumentZone).
-				Argument(schema.ArgumentID),
+			r.DefineSimpleOperation("DisconnectFromServer", http.MethodDelete, "to/server"),
 
 			// install
 			r.DefineOperation("InstallDistantFrom").

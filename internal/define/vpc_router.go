@@ -128,30 +128,24 @@ func init() {
 			r.DefineOperationReset(),
 
 			// connect to switch
-			r.DefineOperation("ConnectToSwitch").
-				Method(http.MethodPut).
-				PathFormat(schema.IDAndSuffixPathFormat("interface/{{.nicIndex}}/to/switch/{{.switchID}}")).
-				Argument(schema.ArgumentZone).
-				Argument(schema.ArgumentID).
-				Argument(&schema.SimpleArgument{
+			r.DefineSimpleOperation("ConnectToSwitch", http.MethodPut, "interface/{{.nicIndex}}/to/switch/{{.switchID}}",
+				&schema.SimpleArgument{
 					Name: "nicIndex",
 					Type: meta.TypeInt,
-				}).
-				Argument(&schema.SimpleArgument{
+				},
+				&schema.SimpleArgument{
 					Name: "switchID",
 					Type: meta.TypeID,
-				}),
+				},
+			),
 
 			// disconnect from switch
-			r.DefineOperation("DisconnectFromSwitch").
-				Method(http.MethodDelete).
-				PathFormat(schema.IDAndSuffixPathFormat("interface/{{.nicIndex}}/to/switch")).
-				Argument(schema.ArgumentZone).
-				Argument(schema.ArgumentID).
-				Argument(&schema.SimpleArgument{
+			r.DefineSimpleOperation("DisconnectFromSwitch", http.MethodDelete, "interface/{{.nicIndex}}/to/switch",
+				&schema.SimpleArgument{
 					Name: "nicIndex",
 					Type: meta.TypeInt,
-				}),
+				},
+			),
 
 			// monitor
 			r.DefineOperationMonitorChildBy("Interface", "interface",

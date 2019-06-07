@@ -27,6 +27,8 @@ const (
 	ResourcePacketFilter = "PacketFilter"
 	// ResourceServer is resource key of fake store
 	ResourceServer = "Server"
+	// ResourceSIM is resource key of fake store
+	ResourceSIM = "SIM"
 	// ResourceSwitch is resource key of fake store
 	ResourceSwitch = "Switch"
 	// ResourceVPCRouter is resource key of fake store

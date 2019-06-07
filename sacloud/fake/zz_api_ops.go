@@ -44,6 +44,9 @@ func SwitchFactoryFuncToFake() {
 	sacloud.SetClientFactoryFunc(ResourceServer, func(caller sacloud.APICaller) interface{} {
 		return NewServerOp()
 	})
+	sacloud.SetClientFactoryFunc(ResourceSIM, func(caller sacloud.APICaller) interface{} {
+		return NewSIMOp()
+	})
 	sacloud.SetClientFactoryFunc(ResourceSwitch, func(caller sacloud.APICaller) interface{} {
 		return NewSwitchOp()
 	})
@@ -244,6 +247,22 @@ type ServerOp struct {
 func NewServerOp() sacloud.ServerAPI {
 	return &ServerOp{
 		key: ResourceServer,
+	}
+}
+
+/*************************************************
+* SIMOp
+*************************************************/
+
+// SIMOp is fake implementation of SIMAPI interface
+type SIMOp struct {
+	key string
+}
+
+// NewSIMOp creates new SIMOp instance
+func NewSIMOp() sacloud.SIMAPI {
+	return &SIMOp{
+		key: ResourceSIM,
 	}
 }
 

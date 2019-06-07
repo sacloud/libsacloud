@@ -9,6 +9,13 @@ type fieldsDef struct{}
 
 var fields = &fieldsDef{}
 
+func (f *fieldsDef) New(name string, t meta.Type) *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: name,
+		Type: t,
+	}
+}
+
 func (f *fieldsDef) ID() *schema.FieldDesc {
 	return &schema.FieldDesc{
 		Name: "ID",
@@ -547,6 +554,37 @@ func (f *fieldsDef) VPCRouterClass() *schema.FieldDesc {
 		Type: meta.TypeString,
 		Tags: &schema.FieldTags{
 			MapConv: ",default=vpcrouter",
+		},
+	}
+}
+
+func (f *fieldsDef) SIMProviderClass() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "Class",
+		Type: meta.TypeString,
+		Tags: &schema.FieldTags{
+			MapConv: "Provider.Class,default=sim",
+		},
+	}
+}
+
+func (f *fieldsDef) SIMICCID() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "ICCID",
+		Type: meta.TypeStringNumber,
+		Tags: &schema.FieldTags{
+			MapConv:  "Status.ICCID",
+			Validate: "numeric", // TODO 数値のみ15桁固定
+		},
+	}
+}
+
+func (f *fieldsDef) SIMPassCode() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "PassCode",
+		Type: meta.TypeString,
+		Tags: &schema.FieldTags{
+			MapConv: "Remark.PassCode",
 		},
 	}
 }

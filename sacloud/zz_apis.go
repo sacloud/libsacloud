@@ -210,6 +210,29 @@ type ServerAPI interface {
 }
 
 /*************************************************
+* SIMAPI
+*************************************************/
+
+// SIMAPI is interface for operate SIM resource
+type SIMAPI interface {
+	Find(ctx context.Context, zone string, conditions *FindCondition) ([]*SIM, error)
+	Create(ctx context.Context, zone string, param *SIMCreateRequest) (*SIM, error)
+	Read(ctx context.Context, zone string, id types.ID) (*SIM, error)
+	Update(ctx context.Context, zone string, id types.ID, param *SIMUpdateRequest) (*SIM, error)
+	Delete(ctx context.Context, zone string, id types.ID) error
+	Activate(ctx context.Context, zone string, id types.ID) error
+	Deactivate(ctx context.Context, zone string, id types.ID) error
+	AssignIP(ctx context.Context, zone string, id types.ID, param *SIMAssignIPRequest) error
+	ClearIP(ctx context.Context, zone string, id types.ID) error
+	IMEILock(ctx context.Context, zone string, id types.ID, param *SIMIMEILockRequest) error
+	IMEIUnlock(ctx context.Context, zone string, id types.ID) error
+	Logs(ctx context.Context, zone string, id types.ID) ([]*SIMLog, error)
+	GetNetworkOperator(ctx context.Context, zone string, id types.ID) ([]*SIMNetworkOperatorConfig, error)
+	SetNetworkOperator(ctx context.Context, zone string, id types.ID, configs *SIMNetworkOperatorConfigs) error
+	MonitorSIM(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*LinkActivity, error)
+}
+
+/*************************************************
 * SwitchAPI
 *************************************************/
 

@@ -58,6 +58,10 @@ func TestResourceOps(t *testing.T) {
 		t.Fatalf("%s is not sacloud.Server", op)
 	}
 
+	if op, ok := NewSIMOp().(sacloud.SIMAPI); !ok {
+		t.Fatalf("%s is not sacloud.SIM", op)
+	}
+
 	if op, ok := NewSwitchOp().(sacloud.SwitchAPI); !ok {
 		t.Fatalf("%s is not sacloud.Switch", op)
 	}
