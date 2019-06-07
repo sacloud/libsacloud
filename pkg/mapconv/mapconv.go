@@ -2,6 +2,7 @@ package mapconv
 
 import (
 	"encoding/json"
+	"errors"
 	"reflect"
 	"strings"
 
@@ -35,6 +36,15 @@ func ConvertTo(source interface{}, dest interface{}) error {
 				if tags.defaultValue != nil {
 					value = tags.defaultValue
 				}
+			}
+
+			if tags.squash {
+				d := Map(make(map[string]interface{}))
+				ConvertTo(value, &d)
+				for k, v := range d {
+					destMap.Set(k, v)
+				}
+				continue
 			}
 
 			if tags.recursive {
@@ -87,6 +97,9 @@ func ConvertFrom(source interface{}, dest interface{}) error {
 		}
 
 		tags := mapConv(f.Tag("mapconv")).value()
+		if tags.squash {
+			return errors.New("ConvertFrom is not allowed squash")
+		}
 		for _, key := range tags.keys {
 			sourceKey := f.Name()
 			if key != "" {
@@ -151,6 +164,7 @@ type mapConvValue struct {
 	defaultValue interface{}
 	omitEmpty    bool
 	recursive    bool
+	squash       bool
 	isSlice      bool
 }
 
@@ -160,7 +174,7 @@ func (m mapConv) value() mapConvValue {
 
 	keys := strings.Split(key, "/")
 	var defaultValue interface{}
-	var omitEmpty, recursive, isSlice bool
+	var omitEmpty, recursive, squash, isSlice bool
 
 	for _, k := range keys {
 		if strings.Contains(k, "[]") {
@@ -178,6 +192,8 @@ func (m mapConv) value() mapConvValue {
 			omitEmpty = true
 		case strings.HasPrefix(token, "recursive"):
 			recursive = true
+		case strings.HasPrefix(token, "squash"):
+			squash = true
 		case strings.HasPrefix(token, "default"):
 			keyValue := strings.Split(token, "=")
 			if len(keyValue) > 1 {
@@ -191,6 +207,7 @@ func (m mapConv) value() mapConvValue {
 		defaultValue: defaultValue,
 		omitEmpty:    omitEmpty,
 		recursive:    recursive,
+		squash:       squash,
 		isSlice:      isSlice,
 	}
 }
