@@ -30,10 +30,10 @@ func TestOperation(t *testing.T) {
 				PathFormat(DefaultPathFormat).
 				RequestEnvelope(&EnvelopePayloadDesc{PayloadType: meta.Static(struct{}{})}).
 				Argument(ArgumentZone).
-				Argument(&MappableArgument{
-					Name:        "arg1",
-					Destination: "Destination",
-					Model: &Model{
+				Argument(&Argument{
+					Name:       "arg1",
+					MapConvTag: "Destination",
+					Type: &Model{
 						Name: "Model",
 						Fields: []*FieldDesc{
 							{
@@ -74,7 +74,7 @@ func TestOperation(t *testing.T) {
 	}
 
 	for _, tc := range expects {
-		resource.Operations(tc.operation)
+		resource.Operations = []*Operation{tc.operation}
 		require.Equal(t, tc.expect.methodName, tc.operation.MethodName())
 		require.Equal(t, tc.expect.requestEnvelopeStructName, tc.operation.RequestEnvelopeStructName())
 		require.Equal(t, tc.expect.responseEnvelopeStructName, tc.operation.ResponseEnvelopeStructName())

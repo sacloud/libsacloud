@@ -41,7 +41,7 @@ func (o *Operation) PathFormat(pathFormat string) *Operation {
 }
 
 // Argument 引数定義の追加(単数)
-func (o *Operation) Argument(arg Argument) *Operation {
+func (o *Operation) Argument(arg *Argument) *Operation {
 	o.arguments = append(o.arguments, arg)
 	return o
 }
@@ -55,18 +55,19 @@ func (o *Operation) MappableArgument(name string, model *Model) *Operation {
 			destField = o.resource.FieldName(o.requestEnvelope.Form)
 		}
 	}
-	return o.Argument(&MappableArgument{
-		Name:        name,
-		Model:       model,
-		Destination: destField,
+	return o.Argument(&Argument{
+		Name:       name,
+		Type:       model,
+		MapConvTag: fmt.Sprintf("%s,recursive", destField),
 	})
 }
 
 // PassthroughModelArgument 引数定義の追加
 func (o *Operation) PassthroughModelArgument(name string, model *Model) *Operation {
-	return o.Argument(&PassthroughModelArgument{
-		Name:  name,
-		Model: model,
+	return o.Argument(&Argument{
+		Name:       name,
+		Type:       model,
+		MapConvTag: ",squash",
 	})
 }
 
@@ -80,25 +81,15 @@ func (o *Operation) PassthroughModelArgumentWithEnvelope(name string, model *Mod
 		})
 	}
 	o.RequestEnvelope(descs...)
-	return o.Argument(&PassthroughModelArgument{
-		Name:  name,
-		Model: model,
+	return o.Argument(&Argument{
+		Name:       name,
+		Type:       model,
+		MapConvTag: ",squash",
 	})
 }
 
-// PassthroughSimpleArgumentWithEnvelope 引数定義の追加、ペイロードの定義も同時に行われる
-func (o *Operation) PassthroughSimpleArgumentWithEnvelope(arg *PassthroughSimpleArgument) *Operation {
-	desc := &EnvelopePayloadDesc{
-		PayloadName: arg.Destination,
-		PayloadType: arg.Type,
-	}
-	o.RequestEnvelope(desc)
-
-	return o.Argument(arg)
-}
-
 // Arguments 引数定義の追加(複数)
-func (o *Operation) Arguments(args []Argument) *Operation {
+func (o *Operation) Arguments(args []*Argument) *Operation {
 	o.arguments = append(o.arguments, args...)
 	return o
 }
@@ -229,44 +220,14 @@ func (o *Operation) ReturnErrorStatement() string {
 	return strings.Join(ss, ",")
 }
 
-// HasMapDestinationDeciders エンベロープへのパラメータマッピングを行う必要のなる引数を持つか
-func (o *Operation) HasMapDestinationDeciders() bool {
-	return len(o.arguments.MapDestinationDeciders()) > 0
-}
-
-// MapDestinationDeciders Argumentsのうち、MapDestDeciderであるもののリストを返す
-func (o *Operation) MapDestinationDeciders() []MapDestinationDecider {
-	return o.arguments.MapDestinationDeciders()
-}
-
-// HasPassthroughFieldDecider エンベロープへのパラメータマッピングを行う必要のなる引数を持つか
-func (o *Operation) HasPassthroughFieldDecider() bool {
-	return len(o.arguments.PassthroughFieldDeciders()) > 0
-}
-
-// PassthroughFieldDeciders Argumentsのうち、PassthroughFieldDeciderであるもののリストを返す
-func (o *Operation) PassthroughFieldDeciders() []PassthroughFieldDecider {
-	return o.arguments.PassthroughFieldDeciders()
-}
-
-// HasPassthroughSimpleFieldDecider エンベロープへのパラメータマッピングを行う必要のなる引数を持つか
-func (o *Operation) HasPassthroughSimpleFieldDecider() bool {
-	return len(o.arguments.PassthroughSimpleFieldDeciders()) > 0
-}
-
-// PassthroughSimpleFieldDeciders Argumentsのうち、PassthroughSimpleFieldDeciderであるもののリストを返す
-func (o *Operation) PassthroughSimpleFieldDeciders() []PassthroughSimpleFieldDecider {
-	return o.arguments.PassthroughSimpleFieldDeciders()
-}
-
 // RequestEnvelopeStructName エンベロープのstruct名
 func (o *Operation) RequestEnvelopeStructName() string {
-	return fmt.Sprintf("%s%sRequestEnvelope", toCamelWithFirstLower(o.resource.name), o.name)
+	return fmt.Sprintf("%s%sRequestEnvelope", toCamelWithFirstLower(o.resource.Name), o.name)
 }
 
 // ResponseEnvelopeStructName エンベロープのstruct名
 func (o *Operation) ResponseEnvelopeStructName() string {
-	return fmt.Sprintf("%s%sResponseEnvelope", toCamelWithFirstLower(o.resource.name), o.name)
+	return fmt.Sprintf("%s%sResponseEnvelope", toCamelWithFirstLower(o.resource.Name), o.name)
 }
 
 // AllArguments 設定されている全てのArgumentを取得
@@ -335,17 +296,13 @@ func (o *Operation) StubReturnStatement(receiverName string) string {
 // Models オペレーション配下の(Nameで)ユニークなモデル一覧を取得
 func (o *Operation) Models() Models {
 	ms := o.results.Models()
-	for _, arg := range o.MapDestinationDeciders() {
-		m := arg.DestinationModel()
-		ms = append(ms, m)
-		ms = append(ms, m.FieldModels()...)
+	for _, arg := range o.arguments {
+		m, ok := arg.Type.(*Model)
+		if ok {
+			ms = append(ms, m)
+			ms = append(ms, m.FieldModels()...)
+		}
 
-	}
-
-	for _, arg := range o.PassthroughFieldDeciders() {
-		m := arg.DestinationModel()
-		ms = append(ms, m)
-		ms = append(ms, m.FieldModels()...)
 	}
 	return Models(ms).UniqByName()
 }
@@ -420,5 +377,5 @@ func (o *Operation) ResourceTypeName() string {
 
 // ResourceIsGlobal リソースがグローバルリソースか
 func (o *Operation) ResourceIsGlobal() bool {
-	return o.resource.isGlobal
+	return o.resource.IsGlobal
 }

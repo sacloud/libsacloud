@@ -37,7 +37,7 @@ import (
 )
 
 {{- range . }}
-{{- range .AllOperations -}}
+{{- range .Operations -}}
 
 {{ if .HasRequestEnvelope }}
 // {{ .RequestEnvelopeStructName }} is envelop of API request

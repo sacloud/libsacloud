@@ -38,45 +38,49 @@ func init() {
 		},
 	}
 
-	Resources.DefineWith("Interface", func(r *schema.Resource) {
-		r.Operations(
-			// find
-			r.DefineOperationFind(nakedType, findParameter, iface),
+	ifAPI := &schema.Resource{
+		Name:       "Interface",
+		PathName:   "interface",
+		PathSuffix: schema.CloudAPISuffix,
+	}
+	ifAPI.Operations = []*schema.Operation{
+		// find
+		ifAPI.DefineOperationFind(nakedType, findParameter, iface),
 
-			// create
-			r.DefineOperationCreate(nakedType, createParam, iface),
+		// create
+		ifAPI.DefineOperationCreate(nakedType, createParam, iface),
 
-			// read
-			r.DefineOperationRead(nakedType, iface),
+		// read
+		ifAPI.DefineOperationRead(nakedType, iface),
 
-			// update
-			r.DefineOperationUpdate(nakedType, updateParam, iface),
+		// update
+		ifAPI.DefineOperationUpdate(nakedType, updateParam, iface),
 
-			// delete
-			r.DefineOperationDelete(),
+		// delete
+		ifAPI.DefineOperationDelete(),
 
-			// monitor
-			r.DefineOperationMonitor(monitorParameter, monitors.interfaceModel()),
+		// monitor
+		ifAPI.DefineOperationMonitor(monitorParameter, monitors.interfaceModel()),
 
-			r.DefineSimpleOperation("ConnectToSharedSegment", http.MethodPut, "to/switch/shared"),
+		ifAPI.DefineSimpleOperation("ConnectToSharedSegment", http.MethodPut, "to/switch/shared"),
 
-			r.DefineSimpleOperation("ConnectToSwitch", http.MethodPut, "to/switch/{{.switchID}}",
-				&schema.SimpleArgument{
-					Name: "switchID",
-					Type: meta.TypeID,
-				},
-			),
+		ifAPI.DefineSimpleOperation("ConnectToSwitch", http.MethodPut, "to/switch/{{.switchID}}",
+			&schema.Argument{
+				Name: "switchID",
+				Type: meta.TypeID,
+			},
+		),
 
-			r.DefineSimpleOperation("DisconnectFromSwitch", http.MethodDelete, "to/switch"),
+		ifAPI.DefineSimpleOperation("DisconnectFromSwitch", http.MethodDelete, "to/switch"),
 
-			r.DefineSimpleOperation("ConnectToPacketFilter", http.MethodPut, "to/packetfilter/{{.packetFilterID}}",
-				&schema.SimpleArgument{
-					Name: "packetFilterID",
-					Type: meta.TypeID,
-				},
-			),
+		ifAPI.DefineSimpleOperation("ConnectToPacketFilter", http.MethodPut, "to/packetfilter/{{.packetFilterID}}",
+			&schema.Argument{
+				Name: "packetFilterID",
+				Type: meta.TypeID,
+			},
+		),
 
-			r.DefineSimpleOperation("DisconnectFromPacketFilter", http.MethodDelete, "to/packetfilter"),
-		)
-	})
+		ifAPI.DefineSimpleOperation("DisconnectFromPacketFilter", http.MethodDelete, "to/packetfilter"),
+	}
+	Resources.Def(ifAPI)
 }

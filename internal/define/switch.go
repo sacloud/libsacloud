@@ -56,34 +56,37 @@ func init() {
 			fields.IconID(),
 		},
 	}
+	swAPI := &schema.Resource{
+		Name:       "Switch",
+		PathName:   "switch",
+		PathSuffix: schema.CloudAPISuffix,
+	}
+	swAPI.Operations = []*schema.Operation{
+		// find
+		swAPI.DefineOperationFind(nakedType, findParameter, sw),
 
-	Resources.DefineWith("Switch", func(r *schema.Resource) {
-		r.Operations(
-			// find
-			r.DefineOperationFind(nakedType, findParameter, sw),
+		// create
+		swAPI.DefineOperationCreate(nakedType, createParam, sw),
 
-			// create
-			r.DefineOperationCreate(nakedType, createParam, sw),
+		// read
+		swAPI.DefineOperationRead(nakedType, sw),
 
-			// read
-			r.DefineOperationRead(nakedType, sw),
+		// update
+		swAPI.DefineOperationUpdate(nakedType, updateParam, sw),
 
-			// update
-			r.DefineOperationUpdate(nakedType, updateParam, sw),
+		// delete
+		swAPI.DefineOperationDelete(),
 
-			// delete
-			r.DefineOperationDelete(),
+		// connect from bridge
+		swAPI.DefineSimpleOperation("ConnectToBridge", http.MethodPut, "to/bridge/{{.bridgeID}}",
+			&schema.Argument{
+				Name: "bridgeID",
+				Type: meta.TypeID,
+			},
+		),
 
-			// connect from bridge
-			r.DefineSimpleOperation("ConnectToBridge", http.MethodPut, "to/bridge/{{.bridgeID}}",
-				&schema.SimpleArgument{
-					Name: "bridgeID",
-					Type: meta.TypeID,
-				},
-			),
-
-			// disconnect from bridge
-			r.DefineSimpleOperation("DisconnectFromBridge", http.MethodDelete, "to/bridge/"),
-		)
-	})
+		// disconnect from bridge
+		swAPI.DefineSimpleOperation("DisconnectFromBridge", http.MethodDelete, "to/bridge/"),
+	}
+	Resources.Def(swAPI)
 }

@@ -560,12 +560,12 @@ func (o *SourceArchiveInfo) SetZoneName(v string) {
 
 // FindCondition represents API parameter/response structure
 type FindCondition struct {
-	Count   int
-	From    int
-	Sort    []string
-	Filter  map[string]interface{}
-	Include []string
-	Exclude []string
+	Count   int                    `mapconv:",omitempty"`
+	From    int                    `mapconv:",omitempty"`
+	Sort    []string               `mapconv:",omitempty"`
+	Filter  map[string]interface{} `mapconv:",omitempty"`
+	Include []string               `mapconv:",omitempty"`
+	Exclude []string               `mapconv:",omitempty"`
 }
 
 // Validate validates by field tags

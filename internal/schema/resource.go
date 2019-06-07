@@ -31,6 +31,15 @@ func (r Resources) ImportStatementsForModelDef(additionalImports ...string) []st
 	return uniqStrings(ss)
 }
 
+// Def リソースの定義
+func (r *Resources) Def(rs *Resource) {
+	if *r == nil {
+		rr := Resources{}
+		*r = rr
+	}
+	*r = append(*r, rs)
+}
+
 // Define リソースの定義(for fluent API)
 func (r *Resources) Define(name string) *Resource {
 	if *r == nil {
@@ -38,7 +47,7 @@ func (r *Resources) Define(name string) *Resource {
 		*r = rr
 	}
 	rs := &Resource{
-		name: name,
+		Name: name,
 	}
 	*r = append(*r, rs)
 	return rs
@@ -55,7 +64,7 @@ func (r *Resources) DefineWith(name string, f func(*Resource)) *Resource {
 func (r Resources) Models() Models {
 	ms := Models{}
 	for _, res := range r {
-		for _, o := range res.operations {
+		for _, o := range res.Operations {
 			ms = append(ms, o.Models()...)
 		}
 	}
@@ -64,68 +73,41 @@ func (r Resources) Models() Models {
 
 // Resource APIで操作する対象のリソース
 type Resource struct {
-	name       string       // リソース名 e.g.: Server
-	pathName   string       // リソースのパス名 APIのURLで利用される e.g.: server 省略した場合はNameを小文字にしたものとなる
-	pathSuffix string       // APIのURLで利用されるプレフィックス e.g.: api/cloud/1.1
-	isGlobal   bool         // 全ゾーンで共通リソース(グローバルリソース)
-	operations []*Operation // このリソースに対する操作
-}
-
-// Name リソース名 例: Server
-func (r *Resource) Name(name string) *Resource {
-	r.name = name
-	return r
-}
-
-// PathName リソースのパス名 APIのエンドポイントURLの算出で利用される 例: server
-//
-// 省略した場合はNameをスネークケース(小文字+アンダーバー)に変換したものが利用される
-func (r *Resource) PathName(pathName string) *Resource {
-	r.pathName = pathName
-	return r
+	Name       string       // リソース名 e.g.: Server
+	PathName   string       // リソースのパス名 APIのURLで利用される e.g.: server 省略した場合はNameを小文字にしたものとなる
+	PathSuffix string       // APIのURLで利用されるプレフィックス e.g.: api/cloud/1.1
+	IsGlobal   bool         // 全ゾーンで共通リソース(グローバルリソース)
+	Operations []*Operation // このリソースに対する操作
 }
 
 // GetPathName リソースのパス名 APIのエンドポイントURLの算出で利用される 例: server
 //
 // 省略した場合はNameをスネークケース(小文字+アンダーバー)に変換したものが利用される
 func (r *Resource) GetPathName() string {
-	if r.pathName != "" {
-		return r.pathName
+	if r.PathName != "" {
+		return r.PathName
 	}
-	return toSnakeCaseName(r.name)
-}
-
-// PathSuffix URLでのパス部分のサフィックス APIのエンドポイントURLの算出で利用される 例: api/cloud/1.1
-func (r *Resource) PathSuffix(pathSuffix string) *Resource {
-	r.pathSuffix = pathSuffix
-	return r
+	return toSnakeCaseName(r.Name)
 }
 
 // GetPathSuffix PathSuffixの取得
 func (r *Resource) GetPathSuffix() string {
-	if r.pathSuffix != "" {
-		return r.pathSuffix
+	if r.PathSuffix != "" {
+		return r.PathSuffix
 	}
 	return CloudAPISuffix
 }
 
-// Operation リソースに対する操作の定義を追加
-func (r *Resource) Operation(op *Operation) *Resource {
-	r.operations = append(r.operations, op)
-	return r
+// AddOperation リソースに対する操作の定義を追加
+func (r *Resource) AddOperation(op *Operation) {
+	r.Operations = append(r.Operations, op)
 }
 
-// Operations リソースに対する操作の定義を追加
-func (r *Resource) Operations(ops ...*Operation) *Resource {
+// AddOperations リソースに対する操作の定義を追加
+func (r *Resource) AddOperations(ops ...*Operation) {
 	for _, op := range ops {
-		r.Operation(op)
+		r.AddOperation(op)
 	}
-	return r
-}
-
-// AllOperations 定義されている操作を取得
-func (r *Resource) AllOperations() []*Operation {
-	return r.operations
 }
 
 // DefineOperation リソースに対する操作の定義
@@ -142,7 +124,7 @@ func (r *Resource) defineOperationFind(nakedType meta.Type, findParam, result *M
 	}
 
 	if result.Name == "" {
-		result.Name = r.name
+		result.Name = r.Name
 	}
 
 	if result.NakedType == nil {
@@ -175,17 +157,12 @@ func (r *Resource) DefineOperationCommonServiceItemFind(nakedType meta.Type, fin
 	return r.defineOperationFind(nakedType, findParam, result, "CommonServiceItems")
 }
 
-// OperationFind Find操作を追加
-func (r *Resource) OperationFind(nakedType meta.Type, findParam, result *Model) *Resource {
-	return r.Operation(r.DefineOperationFind(nakedType, findParam, result))
-}
-
 func (r *Resource) defineOperationCreate(nakedType meta.Type, createParam, result *Model, payloadName string) *Operation {
 	if createParam.Name == "" {
-		createParam.Name = r.name + "CreateRequest"
+		createParam.Name = r.Name + "CreateRequest"
 	}
 	if result.Name == "" {
-		result.Name = r.name
+		result.Name = r.Name
 	}
 
 	if createParam.NakedType == nil {
@@ -225,14 +202,9 @@ func (r *Resource) DefineOperationCommonServiceItemCreate(nakedType meta.Type, c
 	return r.defineOperationCreate(nakedType, createParam, result, "CommonServiceItem")
 }
 
-// OperationCreate Create操作を追加
-func (r *Resource) OperationCreate(nakedType meta.Type, createParam, result *Model) *Resource {
-	return r.Operation(r.DefineOperationCreate(nakedType, createParam, result))
-}
-
 func (r *Resource) defineOperationRead(nakedType meta.Type, result *Model, payloadName string) *Operation {
 	if result.Name == "" {
-		result.Name = r.name
+		result.Name = r.Name
 	}
 
 	if result.NakedType == nil {
@@ -265,17 +237,12 @@ func (r *Resource) DefineOperationCommonServiceItemRead(nakedType meta.Type, res
 	return r.defineOperationRead(nakedType, result, "CommonServiceItem")
 }
 
-// OperationRead Read操作を追加
-func (r *Resource) OperationRead(nakedType meta.Type, result *Model) *Resource {
-	return r.Operation(r.DefineOperationRead(nakedType, result))
-}
-
 func (r *Resource) defineOperationUpdate(nakedType meta.Type, updateParam, result *Model, payloadName string) *Operation {
 	if updateParam.Name == "" {
-		updateParam.Name = r.name + "UpdateRequest"
+		updateParam.Name = r.Name + "UpdateRequest"
 	}
 	if result.Name == "" {
-		result.Name = r.name
+		result.Name = r.Name
 	}
 
 	if updateParam.NakedType == nil {
@@ -316,11 +283,6 @@ func (r *Resource) DefineOperationCommonServiceItemUpdate(nakedType meta.Type, u
 	return r.defineOperationUpdate(nakedType, updateParam, result, "CommonServiceItem")
 }
 
-// OperationUpdate Update操作を追加
-func (r *Resource) OperationUpdate(nakedType meta.Type, updateParam, result *Model) *Resource {
-	return r.Operation(r.DefineOperationUpdate(nakedType, updateParam, result))
-}
-
 // DefineOperationDelete Delete操作を定義
 func (r *Resource) DefineOperationDelete() *Operation {
 	return r.DefineOperation("Delete").
@@ -328,11 +290,6 @@ func (r *Resource) DefineOperationDelete() *Operation {
 		PathFormat(DefaultPathFormatWithID).
 		Argument(ArgumentZone).
 		Argument(ArgumentID)
-}
-
-// OperationDelete Delete操作を追加
-func (r *Resource) OperationDelete() *Resource {
-	return r.Operation(r.DefineOperationDelete())
 }
 
 // DefineOperationCRUD リソースに対する基本的なCRUDを定義
@@ -346,14 +303,6 @@ func (r *Resource) DefineOperationCRUD(nakedType meta.Type, findParam, createPar
 	return ops
 }
 
-// OperationCRUD リソースに対する基本的なCRUDを追加
-func (r *Resource) OperationCRUD(nakedType meta.Type, findParam, createParam, updateParam, result *Model) *Resource {
-	r.Operations(
-		r.DefineOperationCRUD(nakedType, findParam, createParam, updateParam, result)...,
-	)
-	return r
-}
-
 // DefineOperationConfig Config操作を定義
 func (r *Resource) DefineOperationConfig() *Operation {
 	return r.DefineOperation("Config").
@@ -363,16 +312,6 @@ func (r *Resource) DefineOperationConfig() *Operation {
 		Argument(ArgumentID)
 }
 
-// OperationConfig Config操作を追加
-func (r *Resource) OperationConfig() *Resource {
-	return r.Operation(r.DefineOperationConfig())
-}
-
-// OperationBoot リソースに対するBoot操作を追加
-func (r *Resource) OperationBoot() *Resource {
-	return r.Operation(r.DefineOperationBoot())
-}
-
 // DefineOperationBoot リソースに対するBoot操作を定義
 func (r *Resource) DefineOperationBoot() *Operation {
 	return r.DefineOperation("Boot").
@@ -380,11 +319,6 @@ func (r *Resource) DefineOperationBoot() *Operation {
 		PathFormat(IDAndSuffixPathFormat("power")).
 		Argument(ArgumentZone).
 		Argument(ArgumentID)
-}
-
-// OperationShutdown リソースに対するシャットダウン操作を追加
-func (r *Resource) OperationShutdown() *Resource {
-	return r.Operation(r.DefineOperationShutdown())
 }
 
 // DefineOperationShutdown リソースに対するシャットダウン操作を定義
@@ -405,11 +339,6 @@ func (r *Resource) DefineOperationShutdown() *Operation {
 		})
 }
 
-// OperationReset リソースに対するリセット操作を追加
-func (r *Resource) OperationReset() *Resource {
-	return r.Operation(r.DefineOperationReset())
-}
-
 // DefineOperationReset リソースに対するリセット操作を定義
 func (r *Resource) DefineOperationReset() *Operation {
 	return r.DefineOperation("Reset").
@@ -428,14 +357,6 @@ func (r *Resource) DefineOperationPowerManagement() []*Operation {
 	}
 }
 
-// OperationPowerManagement リソースに対する基本的なCRUDを追加
-func (r *Resource) OperationPowerManagement() *Resource {
-	r.Operations(
-		r.DefineOperationPowerManagement()...,
-	)
-	return r
-}
-
 // DefineOperationStatus ステータス取得操作を定義
 func (r *Resource) DefineOperationStatus(nakedType meta.Type, result *Model) *Operation {
 	return r.DefineOperation("Status").
@@ -447,13 +368,6 @@ func (r *Resource) DefineOperationStatus(nakedType meta.Type, result *Model) *Op
 			PayloadType: meta.Static(naked.LoadBalancerStatus{}),
 			PayloadName: r.FieldName(PayloadForms.Singular),
 		})
-}
-
-// OperationStatus ステータス取得操作を追加
-func (r *Resource) OperationStatus(nakedType meta.Type, result *Model) *Resource {
-	return r.Operation(
-		r.DefineOperationStatus(nakedType, result),
-	)
 }
 
 // DefineOperationOpenFTP FTPオープン操作を定義
@@ -473,13 +387,6 @@ func (r *Resource) DefineOperationOpenFTP(openParam, result *Model) *Operation {
 	return o
 }
 
-// OperationOpenFTP FTPオープン操作を追加
-func (r *Resource) OperationOpenFTP(openParam, result *Model) *Resource {
-	return r.Operation(
-		r.DefineOperationOpenFTP(openParam, result),
-	)
-}
-
 // DefineOperationCloseFTP FTPクローズ操作を定義
 func (r *Resource) DefineOperationCloseFTP() *Operation {
 	return r.DefineOperation("CloseFTP").
@@ -489,15 +396,8 @@ func (r *Resource) DefineOperationCloseFTP() *Operation {
 		Argument(ArgumentID)
 }
 
-// OperationCloseFTP FTPクローズ操作を追加
-func (r *Resource) OperationCloseFTP() *Resource {
-	return r.Operation(
-		r.DefineOperationCloseFTP(),
-	)
-}
-
 // DefineSimpleOperation ID+αのみを引数にとるシンプルなオペレーションを定義
-func (r *Resource) DefineSimpleOperation(opName, method, pathSuffix string, arguments ...Argument) *Operation {
+func (r *Resource) DefineSimpleOperation(opName, method, pathSuffix string, arguments ...*Argument) *Operation {
 	o := r.DefineOperation(opName).
 		Method(method).
 		PathFormat(IDAndSuffixPathFormat(pathSuffix)).
@@ -523,13 +423,6 @@ func (r *Resource) DefineOperationMonitor(monitorParam, result *Model) *Operatio
 		})
 }
 
-// OperationMonitor アクティビティモニタ取得操作を追加
-func (r *Resource) OperationMonitor(monitorParam, result *Model) *Resource {
-	return r.Operation(
-		r.DefineOperationMonitor(monitorParam, result),
-	)
-}
-
 // DefineOperationMonitorChild アクティビティモニタ取得操作を定義
 func (r *Resource) DefineOperationMonitorChild(funcNameSuffix, childResourceName string, monitorParam, result *Model) *Operation {
 	return r.DefineOperation("Monitor"+funcNameSuffix).
@@ -544,13 +437,6 @@ func (r *Resource) DefineOperationMonitorChild(funcNameSuffix, childResourceName
 		})
 }
 
-// OperationMonitorChild アクティビティモニタ取得操作を追加
-func (r *Resource) OperationMonitorChild(funcNameSuffix, childResourceName string, monitorParam, result *Model) *Resource {
-	return r.Operation(
-		r.DefineOperationMonitorChild(funcNameSuffix, childResourceName, monitorParam, result),
-	)
-}
-
 // DefineOperationMonitorChildBy アプライアンスなどでの内部リソースインデックスを持つアクティビティモニタ取得操作を定義
 func (r *Resource) DefineOperationMonitorChildBy(funcNameSuffix, childResourceName string, monitorParam, result *Model) *Operation {
 
@@ -561,7 +447,7 @@ func (r *Resource) DefineOperationMonitorChildBy(funcNameSuffix, childResourceNa
 		PathFormat(IDAndSuffixPathFormat(pathSuffix)).
 		Argument(ArgumentZone).
 		Argument(ArgumentID).
-		Argument(&SimpleArgument{
+		Argument(&Argument{
 			Name: "index",
 			Type: meta.TypeInt,
 		}).
@@ -572,27 +458,20 @@ func (r *Resource) DefineOperationMonitorChildBy(funcNameSuffix, childResourceNa
 		})
 }
 
-// OperationMonitorChildBy アプライアンスなどでの内部リソースインデックスを持つアクティビティモニタ取得操作を追加
-func (r *Resource) OperationMonitorChildBy(funcNameSuffix, childResourceName string, monitorParam, result *Model) *Resource {
-	return r.Operation(
-		r.DefineOperationMonitorChildBy(funcNameSuffix, childResourceName, monitorParam, result),
-	)
-}
-
 // FileSafeName スネークケースにしたResourceの名前、コード生成時の保存先ファイル名に利用される
 func (r *Resource) FileSafeName() string {
-	return toSnakeCaseName(r.name)
+	return toSnakeCaseName(r.Name)
 }
 
 // TypeName 型名を返す、コード生成時の型定義などで利用される
 func (r *Resource) TypeName() string {
-	return r.name
+	return r.Name
 }
 
 // ImportStatements コード生成時に利用するimport文を生成する
 func (r *Resource) ImportStatements(additionalImports ...string) []string {
 	ss := wrapByDoubleQuote(additionalImports...)
-	for _, o := range r.operations {
+	for _, o := range r.Operations {
 		ss = append(ss, o.ImportStatements()...)
 	}
 
@@ -603,29 +482,18 @@ func (r *Resource) ImportStatements(additionalImports ...string) []string {
 func (r *Resource) FieldName(form PayloadForm) string {
 	switch {
 	case form.IsSingular():
-		return r.name
+		return r.Name
 	case form.IsPlural():
 		// TODO とりあえずワードで例外指定
 		switch {
-		case r.name == "NFS":
-			return r.name
-		case strings.HasSuffix(r.name, "ch"):
-			return r.name + "es"
+		case r.Name == "NFS":
+			return r.Name
+		case strings.HasSuffix(r.Name, "ch"):
+			return r.Name + "es"
 		default:
-			return r.name + "s"
+			return r.Name + "s"
 		}
 	default:
 		return ""
 	}
-}
-
-// SetIsGlobal グローバルリソースかのフラグを設定
-func (r *Resource) SetIsGlobal(is bool) *Resource {
-	r.isGlobal = is
-	return r
-}
-
-// IsGlobal グローバルリソースか判定
-func (r *Resource) IsGlobal() bool {
-	return r.isGlobal
 }

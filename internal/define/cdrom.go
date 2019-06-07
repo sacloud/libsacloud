@@ -44,32 +44,36 @@ func init() {
 		},
 	}
 
-	Resources.DefineWith("CDROM", func(r *schema.Resource) {
-		r.Operations(
-			// find
-			r.DefineOperationFind(nakedType, findParameter, cdrom),
+	cdromAPI := &schema.Resource{
+		Name:       "CDROM",
+		PathName:   "cdrom",
+		PathSuffix: schema.CloudAPISuffix,
+	}
+	cdromAPI.Operations = []*schema.Operation{
+		// find
+		cdromAPI.DefineOperationFind(nakedType, findParameter, cdrom),
 
-			// create
-			r.DefineOperationCreate(nakedType, createParam, cdrom).
-				ResultFromEnvelope(models.ftpServer(), &schema.EnvelopePayloadDesc{
-					PayloadName: models.ftpServer().Name,
-					PayloadType: meta.Static(naked.OpeningFTPServer{}),
-				}),
+		// create
+		cdromAPI.DefineOperationCreate(nakedType, createParam, cdrom).
+			ResultFromEnvelope(models.ftpServer(), &schema.EnvelopePayloadDesc{
+				PayloadName: models.ftpServer().Name,
+				PayloadType: meta.Static(naked.OpeningFTPServer{}),
+			}),
 
-			// read
-			r.DefineOperationRead(nakedType, cdrom),
+		// read
+		cdromAPI.DefineOperationRead(nakedType, cdrom),
 
-			// update
-			r.DefineOperationUpdate(nakedType, updateParam, cdrom),
+		// update
+		cdromAPI.DefineOperationUpdate(nakedType, updateParam, cdrom),
 
-			// delete
-			r.DefineOperationDelete(),
+		// delete
+		cdromAPI.DefineOperationDelete(),
 
-			// openFTP
-			r.DefineOperationOpenFTP(models.ftpServerOpenParameter(), models.ftpServer()),
+		// openFTP
+		cdromAPI.DefineOperationOpenFTP(models.ftpServerOpenParameter(), models.ftpServer()),
 
-			// closeFTP
-			r.DefineOperationCloseFTP(),
-		)
-	})
+		// closeFTP
+		cdromAPI.DefineOperationCloseFTP(),
+	}
+	Resources.Def(cdromAPI)
 }

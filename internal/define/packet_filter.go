@@ -37,22 +37,27 @@ func init() {
 		},
 	}
 
-	Resources.DefineWith("PacketFilter", func(r *schema.Resource) {
-		r.Operations(
-			// find
-			r.DefineOperationFind(nakedType, findParameter, pf),
+	pfAPI := &schema.Resource{
+		Name:       "PacketFilter",
+		PathName:   "packetfilter",
+		PathSuffix: schema.CloudAPISuffix,
+	}
 
-			// create
-			r.DefineOperationCreate(nakedType, createParam, pf),
+	pfAPI.Operations = []*schema.Operation{
+		// find
+		pfAPI.DefineOperationFind(nakedType, findParameter, pf),
 
-			// read
-			r.DefineOperationRead(nakedType, pf),
+		// create
+		pfAPI.DefineOperationCreate(nakedType, createParam, pf),
 
-			// update
-			r.DefineOperationUpdate(nakedType, updateParam, pf),
+		// read
+		pfAPI.DefineOperationRead(nakedType, pf),
 
-			// delete
-			r.DefineOperationDelete(),
-		)
-	}).PathName("packetfilter")
+		// update
+		pfAPI.DefineOperationUpdate(nakedType, updateParam, pf),
+
+		// delete
+		pfAPI.DefineOperationDelete(),
+	}
+	Resources.Def(pfAPI)
 }

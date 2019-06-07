@@ -43,7 +43,7 @@ import (
 * {{ $typeName }}Stub
 *************************************************/
 
-{{ range .AllOperations }}
+{{ range .Operations }}
 // {{ $typeName }}{{.MethodName}}Result is expected values of the {{ .MethodName }} operation
 type {{ $typeName }}{{.MethodName}}Result struct {
 	{{ range .StubFieldDefines -}}
@@ -55,7 +55,7 @@ type {{ $typeName }}{{.MethodName}}Result struct {
 
 // {{ $typeName }}Stub is for trace {{ $typeName }}Op operations
 type {{ $typeName }}Stub struct {
-{{ range .AllOperations -}}
+{{ range .Operations -}}
 	{{.MethodName}}Result *{{ $typeName }}{{.MethodName}}Result 
 {{ end -}}
 }
@@ -65,7 +65,7 @@ func New{{ $typeName}}Stub(caller sacloud.APICaller) sacloud.{{$typeName}}API {
 	return &{{ $typeName}}Stub{}
 }
 
-{{ range .AllOperations }}{{$returnErrStatement := .ReturnErrorStatement}}{{ $operationName := .MethodName }}
+{{ range .Operations }}{{$returnErrStatement := .ReturnErrorStatement}}{{ $operationName := .MethodName }}
 // {{ .MethodName }} is API call with trace log
 func (s *{{ $typeName }}Stub) {{ .MethodName }}(ctx context.Context{{ range .AllArguments }}, {{ .ArgName }} {{ .TypeName }}{{ end }}) {{.ResultsStatement}} {
 	if s.{{$operationName}}Result == nil {

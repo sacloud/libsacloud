@@ -7,6 +7,8 @@ import (
 )
 
 func init() {
+	nakedType := meta.Static(naked.Note{})
+
 	note := &schema.Model{
 		Fields: []*schema.FieldDesc{
 			fields.ID(),
@@ -43,6 +45,27 @@ func init() {
 		},
 	}
 
-	Resources.Define("Note").SetIsGlobal(true).
-		OperationCRUD(meta.Static(naked.Note{}), findParameter, createParam, updateParam, note)
+	noteAPI := &schema.Resource{
+		Name:       "Note",
+		PathName:   "note",
+		PathSuffix: schema.CloudAPISuffix,
+		IsGlobal:   true,
+	}
+	noteAPI.Operations = []*schema.Operation{
+		// find
+		noteAPI.DefineOperationFind(nakedType, findParameter, note),
+
+		// create
+		noteAPI.DefineOperationCreate(nakedType, createParam, note),
+
+		// read
+		noteAPI.DefineOperationRead(nakedType, note),
+
+		// update
+		noteAPI.DefineOperationUpdate(nakedType, updateParam, note),
+
+		// delete
+		noteAPI.DefineOperationDelete(),
+	}
+	Resources.Def(noteAPI)
 }
