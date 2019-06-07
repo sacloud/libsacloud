@@ -74,25 +74,27 @@ func init() {
 			fields.IconID(),
 		},
 	}
+	gslbAPI := &schema.Resource{
+		Name:       "GSLB",
+		PathName:   "commonserviceitem",
+		PathSuffix: schema.CloudAPISuffix,
+		IsGlobal:   true,
+	}
+	gslbAPI.Operations = []*schema.Operation{
+		// find
+		gslbAPI.DefineOperationCommonServiceItemFind(nakedType, findParameter, gslb),
 
-	Resources.DefineWith("GSLB", func(r *schema.Resource) {
-		r.Operations(
-			// find
-			r.DefineOperationCommonServiceItemFind(nakedType, findParameter, gslb),
+		// create
+		gslbAPI.DefineOperationCommonServiceItemCreate(nakedType, createParam, gslb),
 
-			// create
-			r.DefineOperationCommonServiceItemCreate(nakedType, createParam, gslb),
+		// read
+		gslbAPI.DefineOperationCommonServiceItemRead(nakedType, gslb),
 
-			// read
-			r.DefineOperationCommonServiceItemRead(nakedType, gslb),
+		// update
+		gslbAPI.DefineOperationCommonServiceItemUpdate(nakedType, updateParam, gslb),
 
-			// update
-			r.DefineOperationCommonServiceItemUpdate(nakedType, updateParam, gslb),
-
-			// delete
-			r.DefineOperationDelete(),
-		)
-	}).
-		PathName("commonserviceitem").
-		SetIsGlobal(true)
+		// delete
+		gslbAPI.DefineOperationDelete(),
+	}
+	Resources.Def(gslbAPI)
 }

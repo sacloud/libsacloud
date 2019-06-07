@@ -68,7 +68,7 @@ func New{{ $typeName}}Op(caller APICaller) {{ $typeName}}API {
 	return GetClientFactoryFunc("{{$typeName}}")(caller).({{$typeName}}API)
 }
 
-{{ range .AllOperations }}{{$returnErrStatement := .ReturnErrorStatement}}{{ $operationName := .MethodName }}
+{{ range .Operations }}{{$returnErrStatement := .ReturnErrorStatement}}{{ $operationName := .MethodName }}
 // {{ .MethodName }} is API call
 func (o *{{ $typeName }}Op) {{ .MethodName }}(ctx context.Context{{ range .AllArguments }}, {{ .ArgName }} {{ .TypeName }}{{ end }}) {{.ResultsStatement}} {
 	url, err := buildURL("{{.GetPathFormat}}", map[string]interface{}{
@@ -84,51 +84,28 @@ func (o *{{ $typeName }}Op) {{ .MethodName }}(ctx context.Context{{ range .AllAr
 	}
 
 	var body interface{}
-	{{- $structName := .RequestEnvelopeStructName }}
-	{{- range .PassthroughFieldDeciders}} 
-	{{- $argName := .ArgName }}
-	{
-		if {{.ArgName}} == nil {
-			{{.ArgName}} = {{.ZeroInitializer}}
-		}
-		if body == nil {
-			body = &{{$structName}}{}
-		}
-		v := body.(*{{$structName}})
-		if err := mapconv.ConvertTo({{.ArgName}}, v); err != nil {
-			return {{ $returnErrStatement }}
-		}
-		body = v
+{{ if .HasRequestEnvelope }}
+	{{- range .AllArguments }}
+	if {{.ArgName}} == {{.ZeroValueOnSource}} {
+		{{.ArgName}} = {{.ZeroInitializer}}	
 	}
-	{{ end }}
-	{{ range .MapDestinationDeciders }} 
-	{
-		if {{.ArgName}} == nil {
-			{{.ArgName}} = {{.ZeroInitializer}}
-		}
-		if body == nil {
-			body = &{{$structName}}{}
-		}
-		v := body.(*{{$structName}})
-		n, err := {{.ArgName}}.convertTo()
-		if err != nil {
-			return {{ $returnErrStatement }}
-		}
-		v.{{.DestinationFieldName}} = n 
-		body = v
+	{{- end }}
+	args := &struct {
+		{{- range .AllArguments }}
+		Arg{{ .ArgName }} {{ .TypeName }} {{.MapConvTagSrc}}
+		{{- end }}
+	}{
+		{{- range .AllArguments }}
+		Arg{{ .ArgName }}:{{ .ArgName}},
+		{{- end }}
 	}
-	{{ end }}
-	{{ range .PassthroughSimpleFieldDeciders}} 
-	{
-		if body == nil {
-			body = &{{$structName}}{}
-		}
-		v := body.(*{{$structName}})
-		v.{{.Destination}} = {{.ArgName}} 
-		body = v
-	}
-	{{ end }}
 
+	v := &{{.RequestEnvelopeStructName}}{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return {{ $returnErrStatement }}
+	}
+	body = v
+{{ end }}
 
 	{{ if .HasResponseEnvelope -}}
 	data, err := o.Client.Do(ctx, "{{.GetMethod}}", url, body)

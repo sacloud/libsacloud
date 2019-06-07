@@ -35,22 +35,26 @@ func init() {
 		},
 	}
 
-	Resources.DefineWith("Bridge", func(r *schema.Resource) {
-		r.Operations(
-			// find
-			r.DefineOperationFind(nakedType, findParameter, bridge),
+	bridgeAPI := &schema.Resource{
+		Name:       "Bridge",
+		PathName:   "bridge",
+		PathSuffix: schema.CloudAPISuffix,
+	}
+	bridgeAPI.Operations = []*schema.Operation{
+		// find
+		bridgeAPI.DefineOperationFind(nakedType, findParameter, bridge),
 
-			// create
-			r.DefineOperationCreate(nakedType, createParam, bridge),
+		// create
+		bridgeAPI.DefineOperationCreate(nakedType, createParam, bridge),
 
-			// read
-			r.DefineOperationRead(nakedType, bridge),
+		// read
+		bridgeAPI.DefineOperationRead(nakedType, bridge),
 
-			// update
-			r.DefineOperationUpdate(nakedType, updateParam, bridge),
+		// update
+		bridgeAPI.DefineOperationUpdate(nakedType, updateParam, bridge),
 
-			// delete
-			r.DefineOperationDelete(),
-		)
-	})
+		// delete
+		bridgeAPI.DefineOperationDelete(),
+	}
+	Resources.Def(bridgeAPI)
 }

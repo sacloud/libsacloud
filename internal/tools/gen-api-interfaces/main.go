@@ -42,7 +42,7 @@ import (
 
 // {{ $typeName }}API is interface for operate {{ $typeName }} resource
 type {{ $typeName }}API interface {
-{{ range .AllOperations }}
+{{ range .Operations }}
 	{{ .MethodName }}(ctx context.Context{{ range .AllArguments }}, {{ .ArgName }} {{ .TypeName }}{{ end }}) {{.ResultsStatement}} 
 {{- end -}}
 }

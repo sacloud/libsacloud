@@ -102,54 +102,59 @@ func init() {
 		},
 	}
 
-	Resources.DefineWith("VPCRouter", func(r *schema.Resource) {
-		r.Operations(
-			// find
-			r.DefineOperationApplianceFind(nakedType, findParameter, vpcRouter),
+	api := &schema.Resource{
+		Name:       "VPCRouter",
+		PathName:   "appliance",
+		PathSuffix: schema.CloudAPISuffix,
+	}
 
-			// create
-			r.DefineOperationApplianceCreate(nakedType, createParam, vpcRouter),
+	api.Operations = []*schema.Operation{
+		// find
+		api.DefineOperationApplianceFind(nakedType, findParameter, vpcRouter),
 
-			// read
-			r.DefineOperationApplianceRead(nakedType, vpcRouter),
+		// create
+		api.DefineOperationApplianceCreate(nakedType, createParam, vpcRouter),
 
-			// update
-			r.DefineOperationApplianceUpdate(nakedType, updateParam, vpcRouter),
+		// read
+		api.DefineOperationApplianceRead(nakedType, vpcRouter),
 
-			// delete
-			r.DefineOperationDelete(),
+		// update
+		api.DefineOperationApplianceUpdate(nakedType, updateParam, vpcRouter),
 
-			// config
-			r.DefineOperationConfig(),
+		// delete
+		api.DefineOperationDelete(),
 
-			// power management(boot/shutdown/reset)
-			r.DefineOperationBoot(),
-			r.DefineOperationShutdown(),
-			r.DefineOperationReset(),
+		// config
+		api.DefineOperationConfig(),
 
-			// connect to switch
-			r.DefineSimpleOperation("ConnectToSwitch", http.MethodPut, "interface/{{.nicIndex}}/to/switch/{{.switchID}}",
-				&schema.SimpleArgument{
-					Name: "nicIndex",
-					Type: meta.TypeInt,
-				},
-				&schema.SimpleArgument{
-					Name: "switchID",
-					Type: meta.TypeID,
-				},
-			),
+		// power management(boot/shutdown/reset)
+		api.DefineOperationBoot(),
+		api.DefineOperationShutdown(),
+		api.DefineOperationReset(),
 
-			// disconnect from switch
-			r.DefineSimpleOperation("DisconnectFromSwitch", http.MethodDelete, "interface/{{.nicIndex}}/to/switch",
-				&schema.SimpleArgument{
-					Name: "nicIndex",
-					Type: meta.TypeInt,
-				},
-			),
+		// connect to switch
+		api.DefineSimpleOperation("ConnectToSwitch", http.MethodPut, "interface/{{.nicIndex}}/to/switch/{{.switchID}}",
+			&schema.Argument{
+				Name: "nicIndex",
+				Type: meta.TypeInt,
+			},
+			&schema.Argument{
+				Name: "switchID",
+				Type: meta.TypeID,
+			},
+		),
 
-			// monitor
-			r.DefineOperationMonitorChildBy("Interface", "interface",
-				monitorParameter, monitors.interfaceModel()),
-		)
-	}).PathName("appliance")
+		// disconnect from switch
+		api.DefineSimpleOperation("DisconnectFromSwitch", http.MethodDelete, "interface/{{.nicIndex}}/to/switch",
+			&schema.Argument{
+				Name: "nicIndex",
+				Type: meta.TypeInt,
+			},
+		),
+
+		// monitor
+		api.DefineOperationMonitorChildBy("Interface", "interface",
+			monitorParameter, monitors.interfaceModel()),
+	}
+	Resources.Def(api)
 }

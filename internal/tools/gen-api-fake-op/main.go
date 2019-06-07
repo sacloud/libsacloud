@@ -105,7 +105,7 @@ import (
 {{- end }}
 )
 
-{{ range .AllOperations }}
+{{ range .Operations }}
 // {{ .MethodName }} is fake implementation
 func (o *{{ .ResourceTypeName }}Op) {{ .MethodName }}(ctx context.Context{{ range .AllArguments }}, {{ .ArgName }} {{ .TypeName }}{{ end }}) {{.ResultsStatement}} {
 {{ if eq .MethodName "Find" -}}

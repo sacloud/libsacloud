@@ -68,36 +68,40 @@ func init() {
 		},
 	}
 
-	Resources.DefineWith("Archive", func(r *schema.Resource) {
-		r.Operations(
-			// find
-			r.DefineOperationFind(nakedType, findParameter, archive),
+	archiveAPI := &schema.Resource{
+		Name:       "Archive",
+		PathName:   "archive",
+		PathSuffix: schema.CloudAPISuffix,
+	}
+	archiveAPI.Operations = []*schema.Operation{
+		// find
+		archiveAPI.DefineOperationFind(nakedType, findParameter, archive),
 
-			// create
-			r.DefineOperationCreate(nakedType, createParam, archive),
+		// create
+		archiveAPI.DefineOperationCreate(nakedType, createParam, archive),
 
-			// CreateBlank
-			r.DefineOperationCreate(nakedType, createBlankParam, archive).
-				ResultFromEnvelope(models.ftpServer(), &schema.EnvelopePayloadDesc{
-					PayloadName: models.ftpServer().Name,
-					PayloadType: meta.Static(naked.OpeningFTPServer{}),
-				}).Name("CreateBlank"),
-			// TODO 他ゾーンからの転送コピー作成
+		// CreateBlank
+		archiveAPI.DefineOperationCreate(nakedType, createBlankParam, archive).
+			ResultFromEnvelope(models.ftpServer(), &schema.EnvelopePayloadDesc{
+				PayloadName: models.ftpServer().Name,
+				PayloadType: meta.Static(naked.OpeningFTPServer{}),
+			}).Name("CreateBlank"),
+		// TODO 他ゾーンからの転送コピー作成
 
-			// read
-			r.DefineOperationRead(nakedType, archive),
+		// read
+		archiveAPI.DefineOperationRead(nakedType, archive),
 
-			// update
-			r.DefineOperationUpdate(nakedType, updateParam, archive),
+		// update
+		archiveAPI.DefineOperationUpdate(nakedType, updateParam, archive),
 
-			// delete
-			r.DefineOperationDelete(),
+		// delete
+		archiveAPI.DefineOperationDelete(),
 
-			// openFTP
-			r.DefineOperationOpenFTP(models.ftpServerOpenParameter(), models.ftpServer()),
+		// openFTP
+		archiveAPI.DefineOperationOpenFTP(models.ftpServerOpenParameter(), models.ftpServer()),
 
-			// closeFTP
-			r.DefineOperationCloseFTP(),
-		)
-	})
+		// closeFTP
+		archiveAPI.DefineOperationCloseFTP(),
+	}
+	Resources.Def(archiveAPI)
 }

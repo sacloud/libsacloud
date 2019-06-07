@@ -112,7 +112,7 @@ func init() {
 		return &SIMOp{
 			Client:     caller,
 			PathSuffix: "api/cloud/1.1",
-			PathName:   "commonserviceitemm",
+			PathName:   "commonserviceitem",
 		}
 	})
 
@@ -174,19 +174,26 @@ func (o *ArchiveOp) Find(ctx context.Context, zone string, conditions *FindCondi
 	}
 
 	var body interface{}
-	{
-		if conditions == nil {
-			conditions = &FindCondition{}
-		}
-		if body == nil {
-			body = &archiveFindRequestEnvelope{}
-		}
-		v := body.(*archiveFindRequestEnvelope)
-		if err := mapconv.ConvertTo(conditions, v); err != nil {
-			return nil, err
-		}
-		body = v
+
+	if zone == "" {
+		zone = ""
 	}
+	if conditions == nil {
+		conditions = &FindCondition{}
+	}
+	args := &struct {
+		Argzone       string
+		Argconditions *FindCondition `mapconv:",squash"`
+	}{
+		Argzone:       zone,
+		Argconditions: conditions,
+	}
+
+	v := &archiveFindRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
 
 	data, err := o.Client.Do(ctx, "GET", url, body)
 	if err != nil {
@@ -224,21 +231,25 @@ func (o *ArchiveOp) Create(ctx context.Context, zone string, param *ArchiveCreat
 
 	var body interface{}
 
-	{
-		if param == nil {
-			param = &ArchiveCreateRequest{}
-		}
-		if body == nil {
-			body = &archiveCreateRequestEnvelope{}
-		}
-		v := body.(*archiveCreateRequestEnvelope)
-		n, err := param.convertTo()
-		if err != nil {
-			return nil, err
-		}
-		v.Archive = n
-		body = v
+	if zone == "" {
+		zone = ""
 	}
+	if param == nil {
+		param = &ArchiveCreateRequest{}
+	}
+	args := &struct {
+		Argzone  string
+		Argparam *ArchiveCreateRequest `mapconv:"Archive,recursive"`
+	}{
+		Argzone:  zone,
+		Argparam: param,
+	}
+
+	v := &archiveCreateRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
 
 	data, err := o.Client.Do(ctx, "POST", url, body)
 	if err != nil {
@@ -272,21 +283,25 @@ func (o *ArchiveOp) CreateBlank(ctx context.Context, zone string, param *Archive
 
 	var body interface{}
 
-	{
-		if param == nil {
-			param = &ArchiveCreateBlankRequest{}
-		}
-		if body == nil {
-			body = &archiveCreateBlankRequestEnvelope{}
-		}
-		v := body.(*archiveCreateBlankRequestEnvelope)
-		n, err := param.convertTo()
-		if err != nil {
-			return nil, nil, err
-		}
-		v.Archive = n
-		body = v
+	if zone == "" {
+		zone = ""
 	}
+	if param == nil {
+		param = &ArchiveCreateBlankRequest{}
+	}
+	args := &struct {
+		Argzone  string
+		Argparam *ArchiveCreateBlankRequest `mapconv:"Archive,recursive"`
+	}{
+		Argzone:  zone,
+		Argparam: param,
+	}
+
+	v := &archiveCreateBlankRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, nil, err
+	}
+	body = v
 
 	data, err := o.Client.Do(ctx, "POST", url, body)
 	if err != nil {
@@ -357,21 +372,30 @@ func (o *ArchiveOp) Update(ctx context.Context, zone string, id types.ID, param 
 
 	var body interface{}
 
-	{
-		if param == nil {
-			param = &ArchiveUpdateRequest{}
-		}
-		if body == nil {
-			body = &archiveUpdateRequestEnvelope{}
-		}
-		v := body.(*archiveUpdateRequestEnvelope)
-		n, err := param.convertTo()
-		if err != nil {
-			return nil, err
-		}
-		v.Archive = n
-		body = v
+	if zone == "" {
+		zone = ""
 	}
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	if param == nil {
+		param = &ArchiveUpdateRequest{}
+	}
+	args := &struct {
+		Argzone  string
+		Argid    types.ID
+		Argparam *ArchiveUpdateRequest `mapconv:"Archive,recursive"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+
+	v := &archiveUpdateRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
 
 	data, err := o.Client.Do(ctx, "PUT", url, body)
 	if err != nil {
@@ -428,19 +452,31 @@ func (o *ArchiveOp) OpenFTP(ctx context.Context, zone string, id types.ID, openO
 	}
 
 	var body interface{}
-	{
-		if openOption == nil {
-			openOption = &OpenFTPRequest{}
-		}
-		if body == nil {
-			body = &archiveOpenFTPRequestEnvelope{}
-		}
-		v := body.(*archiveOpenFTPRequestEnvelope)
-		if err := mapconv.ConvertTo(openOption, v); err != nil {
-			return nil, err
-		}
-		body = v
+
+	if zone == "" {
+		zone = ""
 	}
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	if openOption == nil {
+		openOption = &OpenFTPRequest{}
+	}
+	args := &struct {
+		Argzone       string
+		Argid         types.ID
+		ArgopenOption *OpenFTPRequest `mapconv:",squash"`
+	}{
+		Argzone:       zone,
+		Argid:         id,
+		ArgopenOption: openOption,
+	}
+
+	v := &archiveOpenFTPRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
 
 	data, err := o.Client.Do(ctx, "PUT", url, body)
 	if err != nil {
@@ -515,19 +551,26 @@ func (o *BridgeOp) Find(ctx context.Context, zone string, conditions *FindCondit
 	}
 
 	var body interface{}
-	{
-		if conditions == nil {
-			conditions = &FindCondition{}
-		}
-		if body == nil {
-			body = &bridgeFindRequestEnvelope{}
-		}
-		v := body.(*bridgeFindRequestEnvelope)
-		if err := mapconv.ConvertTo(conditions, v); err != nil {
-			return nil, err
-		}
-		body = v
+
+	if zone == "" {
+		zone = ""
 	}
+	if conditions == nil {
+		conditions = &FindCondition{}
+	}
+	args := &struct {
+		Argzone       string
+		Argconditions *FindCondition `mapconv:",squash"`
+	}{
+		Argzone:       zone,
+		Argconditions: conditions,
+	}
+
+	v := &bridgeFindRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
 
 	data, err := o.Client.Do(ctx, "GET", url, body)
 	if err != nil {
@@ -565,21 +608,25 @@ func (o *BridgeOp) Create(ctx context.Context, zone string, param *BridgeCreateR
 
 	var body interface{}
 
-	{
-		if param == nil {
-			param = &BridgeCreateRequest{}
-		}
-		if body == nil {
-			body = &bridgeCreateRequestEnvelope{}
-		}
-		v := body.(*bridgeCreateRequestEnvelope)
-		n, err := param.convertTo()
-		if err != nil {
-			return nil, err
-		}
-		v.Bridge = n
-		body = v
+	if zone == "" {
+		zone = ""
 	}
+	if param == nil {
+		param = &BridgeCreateRequest{}
+	}
+	args := &struct {
+		Argzone  string
+		Argparam *BridgeCreateRequest `mapconv:"Bridge,recursive"`
+	}{
+		Argzone:  zone,
+		Argparam: param,
+	}
+
+	v := &bridgeCreateRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
 
 	data, err := o.Client.Do(ctx, "POST", url, body)
 	if err != nil {
@@ -646,21 +693,30 @@ func (o *BridgeOp) Update(ctx context.Context, zone string, id types.ID, param *
 
 	var body interface{}
 
-	{
-		if param == nil {
-			param = &BridgeUpdateRequest{}
-		}
-		if body == nil {
-			body = &bridgeUpdateRequestEnvelope{}
-		}
-		v := body.(*bridgeUpdateRequestEnvelope)
-		n, err := param.convertTo()
-		if err != nil {
-			return nil, err
-		}
-		v.Bridge = n
-		body = v
+	if zone == "" {
+		zone = ""
 	}
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	if param == nil {
+		param = &BridgeUpdateRequest{}
+	}
+	args := &struct {
+		Argzone  string
+		Argid    types.ID
+		Argparam *BridgeUpdateRequest `mapconv:"Bridge,recursive"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+
+	v := &bridgeUpdateRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
 
 	data, err := o.Client.Do(ctx, "PUT", url, body)
 	if err != nil {
@@ -735,19 +791,26 @@ func (o *CDROMOp) Find(ctx context.Context, zone string, conditions *FindConditi
 	}
 
 	var body interface{}
-	{
-		if conditions == nil {
-			conditions = &FindCondition{}
-		}
-		if body == nil {
-			body = &cdromFindRequestEnvelope{}
-		}
-		v := body.(*cdromFindRequestEnvelope)
-		if err := mapconv.ConvertTo(conditions, v); err != nil {
-			return nil, err
-		}
-		body = v
+
+	if zone == "" {
+		zone = ""
 	}
+	if conditions == nil {
+		conditions = &FindCondition{}
+	}
+	args := &struct {
+		Argzone       string
+		Argconditions *FindCondition `mapconv:",squash"`
+	}{
+		Argzone:       zone,
+		Argconditions: conditions,
+	}
+
+	v := &cdromFindRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
 
 	data, err := o.Client.Do(ctx, "GET", url, body)
 	if err != nil {
@@ -785,21 +848,25 @@ func (o *CDROMOp) Create(ctx context.Context, zone string, param *CDROMCreateReq
 
 	var body interface{}
 
-	{
-		if param == nil {
-			param = &CDROMCreateRequest{}
-		}
-		if body == nil {
-			body = &cdromCreateRequestEnvelope{}
-		}
-		v := body.(*cdromCreateRequestEnvelope)
-		n, err := param.convertTo()
-		if err != nil {
-			return nil, nil, err
-		}
-		v.CDROM = n
-		body = v
+	if zone == "" {
+		zone = ""
 	}
+	if param == nil {
+		param = &CDROMCreateRequest{}
+	}
+	args := &struct {
+		Argzone  string
+		Argparam *CDROMCreateRequest `mapconv:"CDROM,recursive"`
+	}{
+		Argzone:  zone,
+		Argparam: param,
+	}
+
+	v := &cdromCreateRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, nil, err
+	}
+	body = v
 
 	data, err := o.Client.Do(ctx, "POST", url, body)
 	if err != nil {
@@ -870,21 +937,30 @@ func (o *CDROMOp) Update(ctx context.Context, zone string, id types.ID, param *C
 
 	var body interface{}
 
-	{
-		if param == nil {
-			param = &CDROMUpdateRequest{}
-		}
-		if body == nil {
-			body = &cdromUpdateRequestEnvelope{}
-		}
-		v := body.(*cdromUpdateRequestEnvelope)
-		n, err := param.convertTo()
-		if err != nil {
-			return nil, err
-		}
-		v.CDROM = n
-		body = v
+	if zone == "" {
+		zone = ""
 	}
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	if param == nil {
+		param = &CDROMUpdateRequest{}
+	}
+	args := &struct {
+		Argzone  string
+		Argid    types.ID
+		Argparam *CDROMUpdateRequest `mapconv:"CDROM,recursive"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+
+	v := &cdromUpdateRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
 
 	data, err := o.Client.Do(ctx, "PUT", url, body)
 	if err != nil {
@@ -941,19 +1017,31 @@ func (o *CDROMOp) OpenFTP(ctx context.Context, zone string, id types.ID, openOpt
 	}
 
 	var body interface{}
-	{
-		if openOption == nil {
-			openOption = &OpenFTPRequest{}
-		}
-		if body == nil {
-			body = &cdromOpenFTPRequestEnvelope{}
-		}
-		v := body.(*cdromOpenFTPRequestEnvelope)
-		if err := mapconv.ConvertTo(openOption, v); err != nil {
-			return nil, err
-		}
-		body = v
+
+	if zone == "" {
+		zone = ""
 	}
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	if openOption == nil {
+		openOption = &OpenFTPRequest{}
+	}
+	args := &struct {
+		Argzone       string
+		Argid         types.ID
+		ArgopenOption *OpenFTPRequest `mapconv:",squash"`
+	}{
+		Argzone:       zone,
+		Argid:         id,
+		ArgopenOption: openOption,
+	}
+
+	v := &cdromOpenFTPRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
 
 	data, err := o.Client.Do(ctx, "PUT", url, body)
 	if err != nil {
@@ -1028,19 +1116,26 @@ func (o *DiskOp) Find(ctx context.Context, zone string, conditions *FindConditio
 	}
 
 	var body interface{}
-	{
-		if conditions == nil {
-			conditions = &FindCondition{}
-		}
-		if body == nil {
-			body = &diskFindRequestEnvelope{}
-		}
-		v := body.(*diskFindRequestEnvelope)
-		if err := mapconv.ConvertTo(conditions, v); err != nil {
-			return nil, err
-		}
-		body = v
+
+	if zone == "" {
+		zone = ""
 	}
+	if conditions == nil {
+		conditions = &FindCondition{}
+	}
+	args := &struct {
+		Argzone       string
+		Argconditions *FindCondition `mapconv:",squash"`
+	}{
+		Argzone:       zone,
+		Argconditions: conditions,
+	}
+
+	v := &diskFindRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
 
 	data, err := o.Client.Do(ctx, "GET", url, body)
 	if err != nil {
@@ -1078,21 +1173,25 @@ func (o *DiskOp) Create(ctx context.Context, zone string, param *DiskCreateReque
 
 	var body interface{}
 
-	{
-		if param == nil {
-			param = &DiskCreateRequest{}
-		}
-		if body == nil {
-			body = &diskCreateRequestEnvelope{}
-		}
-		v := body.(*diskCreateRequestEnvelope)
-		n, err := param.convertTo()
-		if err != nil {
-			return nil, err
-		}
-		v.Disk = n
-		body = v
+	if zone == "" {
+		zone = ""
 	}
+	if param == nil {
+		param = &DiskCreateRequest{}
+	}
+	args := &struct {
+		Argzone  string
+		Argparam *DiskCreateRequest `mapconv:"Disk,recursive"`
+	}{
+		Argzone:  zone,
+		Argparam: param,
+	}
+
+	v := &diskCreateRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
 
 	data, err := o.Client.Do(ctx, "POST", url, body)
 	if err != nil {
@@ -1127,30 +1226,30 @@ func (o *DiskOp) CreateDistantly(ctx context.Context, zone string, createParam *
 
 	var body interface{}
 
-	{
-		if createParam == nil {
-			createParam = &DiskCreateRequest{}
-		}
-		if body == nil {
-			body = &diskCreateDistantlyRequestEnvelope{}
-		}
-		v := body.(*diskCreateDistantlyRequestEnvelope)
-		n, err := createParam.convertTo()
-		if err != nil {
-			return nil, err
-		}
-		v.Disk = n
-		body = v
+	if zone == "" {
+		zone = ""
+	}
+	if createParam == nil {
+		createParam = &DiskCreateRequest{}
+	}
+	if distantFrom == nil {
+		distantFrom = []types.ID{}
+	}
+	args := &struct {
+		Argzone        string
+		ArgcreateParam *DiskCreateRequest `mapconv:"Disk"`
+		ArgdistantFrom []types.ID         `mapconv:"DistantFrom"`
+	}{
+		Argzone:        zone,
+		ArgcreateParam: createParam,
+		ArgdistantFrom: distantFrom,
 	}
 
-	{
-		if body == nil {
-			body = &diskCreateDistantlyRequestEnvelope{}
-		}
-		v := body.(*diskCreateDistantlyRequestEnvelope)
-		v.DistantFrom = distantFrom
-		body = v
+	v := &diskCreateDistantlyRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
 	}
+	body = v
 
 	data, err := o.Client.Do(ctx, "POST", url, body)
 	if err != nil {
@@ -1184,19 +1283,31 @@ func (o *DiskOp) Config(ctx context.Context, zone string, id types.ID, edit *Dis
 	}
 
 	var body interface{}
-	{
-		if edit == nil {
-			edit = &DiskEditRequest{}
-		}
-		if body == nil {
-			body = &diskConfigRequestEnvelope{}
-		}
-		v := body.(*diskConfigRequestEnvelope)
-		if err := mapconv.ConvertTo(edit, v); err != nil {
-			return err
-		}
-		body = v
+
+	if zone == "" {
+		zone = ""
 	}
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	if edit == nil {
+		edit = &DiskEditRequest{}
+	}
+	args := &struct {
+		Argzone string
+		Argid   types.ID
+		Argedit *DiskEditRequest `mapconv:",squash"`
+	}{
+		Argzone: zone,
+		Argid:   id,
+		Argedit: edit,
+	}
+
+	v := &diskConfigRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return err
+	}
+	body = v
 
 	_, err = o.Client.Do(ctx, "PUT", url, body)
 	if err != nil {
@@ -1223,46 +1334,35 @@ func (o *DiskOp) CreateWithConfig(ctx context.Context, zone string, createParam 
 
 	var body interface{}
 
-	{
-		if createParam == nil {
-			createParam = &DiskCreateRequest{}
-		}
-		if body == nil {
-			body = &diskCreateWithConfigRequestEnvelope{}
-		}
-		v := body.(*diskCreateWithConfigRequestEnvelope)
-		n, err := createParam.convertTo()
-		if err != nil {
-			return nil, err
-		}
-		v.Disk = n
-		body = v
+	if zone == "" {
+		zone = ""
+	}
+	if createParam == nil {
+		createParam = &DiskCreateRequest{}
+	}
+	if editParam == nil {
+		editParam = &DiskEditRequest{}
+	}
+	if bootAtAvailable == false {
+		bootAtAvailable = false
+	}
+	args := &struct {
+		Argzone            string
+		ArgcreateParam     *DiskCreateRequest `mapconv:"Disk"`
+		ArgeditParam       *DiskEditRequest   `mapconv:"Config"`
+		ArgbootAtAvailable bool               `mapconv:"BootAtAvailable"`
+	}{
+		Argzone:            zone,
+		ArgcreateParam:     createParam,
+		ArgeditParam:       editParam,
+		ArgbootAtAvailable: bootAtAvailable,
 	}
 
-	{
-		if editParam == nil {
-			editParam = &DiskEditRequest{}
-		}
-		if body == nil {
-			body = &diskCreateWithConfigRequestEnvelope{}
-		}
-		v := body.(*diskCreateWithConfigRequestEnvelope)
-		n, err := editParam.convertTo()
-		if err != nil {
-			return nil, err
-		}
-		v.Config = n
-		body = v
+	v := &diskCreateWithConfigRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
 	}
-
-	{
-		if body == nil {
-			body = &diskCreateWithConfigRequestEnvelope{}
-		}
-		v := body.(*diskCreateWithConfigRequestEnvelope)
-		v.BootAtAvailable = bootAtAvailable
-		body = v
-	}
+	body = v
 
 	data, err := o.Client.Do(ctx, "POST", url, body)
 	if err != nil {
@@ -1299,55 +1399,40 @@ func (o *DiskOp) CreateWithConfigDistantly(ctx context.Context, zone string, cre
 
 	var body interface{}
 
-	{
-		if createParam == nil {
-			createParam = &DiskCreateRequest{}
-		}
-		if body == nil {
-			body = &diskCreateWithConfigDistantlyRequestEnvelope{}
-		}
-		v := body.(*diskCreateWithConfigDistantlyRequestEnvelope)
-		n, err := createParam.convertTo()
-		if err != nil {
-			return nil, err
-		}
-		v.Disk = n
-		body = v
+	if zone == "" {
+		zone = ""
+	}
+	if createParam == nil {
+		createParam = &DiskCreateRequest{}
+	}
+	if editParam == nil {
+		editParam = &DiskEditRequest{}
+	}
+	if bootAtAvailable == false {
+		bootAtAvailable = false
+	}
+	if distantFrom == nil {
+		distantFrom = []types.ID{}
+	}
+	args := &struct {
+		Argzone            string
+		ArgcreateParam     *DiskCreateRequest `mapconv:"Disk"`
+		ArgeditParam       *DiskEditRequest   `mapconv:"Config"`
+		ArgbootAtAvailable bool               `mapconv:"BootAtAvailable"`
+		ArgdistantFrom     []types.ID         `mapconv:"DistantFrom"`
+	}{
+		Argzone:            zone,
+		ArgcreateParam:     createParam,
+		ArgeditParam:       editParam,
+		ArgbootAtAvailable: bootAtAvailable,
+		ArgdistantFrom:     distantFrom,
 	}
 
-	{
-		if editParam == nil {
-			editParam = &DiskEditRequest{}
-		}
-		if body == nil {
-			body = &diskCreateWithConfigDistantlyRequestEnvelope{}
-		}
-		v := body.(*diskCreateWithConfigDistantlyRequestEnvelope)
-		n, err := editParam.convertTo()
-		if err != nil {
-			return nil, err
-		}
-		v.Config = n
-		body = v
+	v := &diskCreateWithConfigDistantlyRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
 	}
-
-	{
-		if body == nil {
-			body = &diskCreateWithConfigDistantlyRequestEnvelope{}
-		}
-		v := body.(*diskCreateWithConfigDistantlyRequestEnvelope)
-		v.BootAtAvailable = bootAtAvailable
-		body = v
-	}
-
-	{
-		if body == nil {
-			body = &diskCreateWithConfigDistantlyRequestEnvelope{}
-		}
-		v := body.(*diskCreateWithConfigDistantlyRequestEnvelope)
-		v.DistantFrom = distantFrom
-		body = v
-	}
+	body = v
 
 	data, err := o.Client.Do(ctx, "POST", url, body)
 	if err != nil {
@@ -1476,30 +1561,35 @@ func (o *DiskOp) InstallDistantFrom(ctx context.Context, zone string, id types.I
 
 	var body interface{}
 
-	{
-		if installParam == nil {
-			installParam = &DiskInstallRequest{}
-		}
-		if body == nil {
-			body = &diskInstallDistantFromRequestEnvelope{}
-		}
-		v := body.(*diskInstallDistantFromRequestEnvelope)
-		n, err := installParam.convertTo()
-		if err != nil {
-			return nil, err
-		}
-		v.Disk = n
-		body = v
+	if zone == "" {
+		zone = ""
+	}
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	if installParam == nil {
+		installParam = &DiskInstallRequest{}
+	}
+	if distantFrom == nil {
+		distantFrom = []types.ID{}
+	}
+	args := &struct {
+		Argzone         string
+		Argid           types.ID
+		ArginstallParam *DiskInstallRequest `mapconv:"Disk"`
+		ArgdistantFrom  []types.ID          `mapconv:"DistantFrom"`
+	}{
+		Argzone:         zone,
+		Argid:           id,
+		ArginstallParam: installParam,
+		ArgdistantFrom:  distantFrom,
 	}
 
-	{
-		if body == nil {
-			body = &diskInstallDistantFromRequestEnvelope{}
-		}
-		v := body.(*diskInstallDistantFromRequestEnvelope)
-		v.DistantFrom = distantFrom
-		body = v
+	v := &diskInstallDistantFromRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
 	}
+	body = v
 
 	data, err := o.Client.Do(ctx, "PUT", url, body)
 	if err != nil {
@@ -1534,21 +1624,30 @@ func (o *DiskOp) Install(ctx context.Context, zone string, id types.ID, installP
 
 	var body interface{}
 
-	{
-		if installParam == nil {
-			installParam = &DiskInstallRequest{}
-		}
-		if body == nil {
-			body = &diskInstallRequestEnvelope{}
-		}
-		v := body.(*diskInstallRequestEnvelope)
-		n, err := installParam.convertTo()
-		if err != nil {
-			return nil, err
-		}
-		v.Disk = n
-		body = v
+	if zone == "" {
+		zone = ""
 	}
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	if installParam == nil {
+		installParam = &DiskInstallRequest{}
+	}
+	args := &struct {
+		Argzone         string
+		Argid           types.ID
+		ArginstallParam *DiskInstallRequest `mapconv:"Disk"`
+	}{
+		Argzone:         zone,
+		Argid:           id,
+		ArginstallParam: installParam,
+	}
+
+	v := &diskInstallRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
 
 	data, err := o.Client.Do(ctx, "PUT", url, body)
 	if err != nil {
@@ -1615,21 +1714,30 @@ func (o *DiskOp) Update(ctx context.Context, zone string, id types.ID, param *Di
 
 	var body interface{}
 
-	{
-		if param == nil {
-			param = &DiskUpdateRequest{}
-		}
-		if body == nil {
-			body = &diskUpdateRequestEnvelope{}
-		}
-		v := body.(*diskUpdateRequestEnvelope)
-		n, err := param.convertTo()
-		if err != nil {
-			return nil, err
-		}
-		v.Disk = n
-		body = v
+	if zone == "" {
+		zone = ""
 	}
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	if param == nil {
+		param = &DiskUpdateRequest{}
+	}
+	args := &struct {
+		Argzone  string
+		Argid    types.ID
+		Argparam *DiskUpdateRequest `mapconv:"Disk,recursive"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+
+	v := &diskUpdateRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
 
 	data, err := o.Client.Do(ctx, "PUT", url, body)
 	if err != nil {
@@ -1686,19 +1794,31 @@ func (o *DiskOp) Monitor(ctx context.Context, zone string, id types.ID, conditio
 	}
 
 	var body interface{}
-	{
-		if condition == nil {
-			condition = &MonitorCondition{}
-		}
-		if body == nil {
-			body = &diskMonitorRequestEnvelope{}
-		}
-		v := body.(*diskMonitorRequestEnvelope)
-		if err := mapconv.ConvertTo(condition, v); err != nil {
-			return nil, err
-		}
-		body = v
+
+	if zone == "" {
+		zone = ""
 	}
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	if condition == nil {
+		condition = &MonitorCondition{}
+	}
+	args := &struct {
+		Argzone      string
+		Argid        types.ID
+		Argcondition *MonitorCondition `mapconv:",squash"`
+	}{
+		Argzone:      zone,
+		Argid:        id,
+		Argcondition: condition,
+	}
+
+	v := &diskMonitorRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
 
 	data, err := o.Client.Do(ctx, "GET", url, body)
 	if err != nil {
@@ -1750,19 +1870,26 @@ func (o *GSLBOp) Find(ctx context.Context, zone string, conditions *FindConditio
 	}
 
 	var body interface{}
-	{
-		if conditions == nil {
-			conditions = &FindCondition{}
-		}
-		if body == nil {
-			body = &gslbFindRequestEnvelope{}
-		}
-		v := body.(*gslbFindRequestEnvelope)
-		if err := mapconv.ConvertTo(conditions, v); err != nil {
-			return nil, err
-		}
-		body = v
+
+	if zone == "" {
+		zone = ""
 	}
+	if conditions == nil {
+		conditions = &FindCondition{}
+	}
+	args := &struct {
+		Argzone       string
+		Argconditions *FindCondition `mapconv:",squash"`
+	}{
+		Argzone:       zone,
+		Argconditions: conditions,
+	}
+
+	v := &gslbFindRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
 
 	data, err := o.Client.Do(ctx, "GET", url, body)
 	if err != nil {
@@ -1800,21 +1927,25 @@ func (o *GSLBOp) Create(ctx context.Context, zone string, param *GSLBCreateReque
 
 	var body interface{}
 
-	{
-		if param == nil {
-			param = &GSLBCreateRequest{}
-		}
-		if body == nil {
-			body = &gslbCreateRequestEnvelope{}
-		}
-		v := body.(*gslbCreateRequestEnvelope)
-		n, err := param.convertTo()
-		if err != nil {
-			return nil, err
-		}
-		v.CommonServiceItem = n
-		body = v
+	if zone == "" {
+		zone = ""
 	}
+	if param == nil {
+		param = &GSLBCreateRequest{}
+	}
+	args := &struct {
+		Argzone  string
+		Argparam *GSLBCreateRequest `mapconv:"CommonServiceItem,recursive"`
+	}{
+		Argzone:  zone,
+		Argparam: param,
+	}
+
+	v := &gslbCreateRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
 
 	data, err := o.Client.Do(ctx, "POST", url, body)
 	if err != nil {
@@ -1881,21 +2012,30 @@ func (o *GSLBOp) Update(ctx context.Context, zone string, id types.ID, param *GS
 
 	var body interface{}
 
-	{
-		if param == nil {
-			param = &GSLBUpdateRequest{}
-		}
-		if body == nil {
-			body = &gslbUpdateRequestEnvelope{}
-		}
-		v := body.(*gslbUpdateRequestEnvelope)
-		n, err := param.convertTo()
-		if err != nil {
-			return nil, err
-		}
-		v.CommonServiceItem = n
-		body = v
+	if zone == "" {
+		zone = ""
 	}
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	if param == nil {
+		param = &GSLBUpdateRequest{}
+	}
+	args := &struct {
+		Argzone  string
+		Argid    types.ID
+		Argparam *GSLBUpdateRequest `mapconv:"CommonServiceItem,recursive"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+
+	v := &gslbUpdateRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
 
 	data, err := o.Client.Do(ctx, "PUT", url, body)
 	if err != nil {
@@ -1970,19 +2110,26 @@ func (o *InterfaceOp) Find(ctx context.Context, zone string, conditions *FindCon
 	}
 
 	var body interface{}
-	{
-		if conditions == nil {
-			conditions = &FindCondition{}
-		}
-		if body == nil {
-			body = &interfaceFindRequestEnvelope{}
-		}
-		v := body.(*interfaceFindRequestEnvelope)
-		if err := mapconv.ConvertTo(conditions, v); err != nil {
-			return nil, err
-		}
-		body = v
+
+	if zone == "" {
+		zone = ""
 	}
+	if conditions == nil {
+		conditions = &FindCondition{}
+	}
+	args := &struct {
+		Argzone       string
+		Argconditions *FindCondition `mapconv:",squash"`
+	}{
+		Argzone:       zone,
+		Argconditions: conditions,
+	}
+
+	v := &interfaceFindRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
 
 	data, err := o.Client.Do(ctx, "GET", url, body)
 	if err != nil {
@@ -2020,21 +2167,25 @@ func (o *InterfaceOp) Create(ctx context.Context, zone string, param *InterfaceC
 
 	var body interface{}
 
-	{
-		if param == nil {
-			param = &InterfaceCreateRequest{}
-		}
-		if body == nil {
-			body = &interfaceCreateRequestEnvelope{}
-		}
-		v := body.(*interfaceCreateRequestEnvelope)
-		n, err := param.convertTo()
-		if err != nil {
-			return nil, err
-		}
-		v.Interface = n
-		body = v
+	if zone == "" {
+		zone = ""
 	}
+	if param == nil {
+		param = &InterfaceCreateRequest{}
+	}
+	args := &struct {
+		Argzone  string
+		Argparam *InterfaceCreateRequest `mapconv:"Interface,recursive"`
+	}{
+		Argzone:  zone,
+		Argparam: param,
+	}
+
+	v := &interfaceCreateRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
 
 	data, err := o.Client.Do(ctx, "POST", url, body)
 	if err != nil {
@@ -2101,21 +2252,30 @@ func (o *InterfaceOp) Update(ctx context.Context, zone string, id types.ID, para
 
 	var body interface{}
 
-	{
-		if param == nil {
-			param = &InterfaceUpdateRequest{}
-		}
-		if body == nil {
-			body = &interfaceUpdateRequestEnvelope{}
-		}
-		v := body.(*interfaceUpdateRequestEnvelope)
-		n, err := param.convertTo()
-		if err != nil {
-			return nil, err
-		}
-		v.Interface = n
-		body = v
+	if zone == "" {
+		zone = ""
 	}
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	if param == nil {
+		param = &InterfaceUpdateRequest{}
+	}
+	args := &struct {
+		Argzone  string
+		Argid    types.ID
+		Argparam *InterfaceUpdateRequest `mapconv:"Interface,recursive"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+
+	v := &interfaceUpdateRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
 
 	data, err := o.Client.Do(ctx, "PUT", url, body)
 	if err != nil {
@@ -2172,19 +2332,31 @@ func (o *InterfaceOp) Monitor(ctx context.Context, zone string, id types.ID, con
 	}
 
 	var body interface{}
-	{
-		if condition == nil {
-			condition = &MonitorCondition{}
-		}
-		if body == nil {
-			body = &interfaceMonitorRequestEnvelope{}
-		}
-		v := body.(*interfaceMonitorRequestEnvelope)
-		if err := mapconv.ConvertTo(condition, v); err != nil {
-			return nil, err
-		}
-		body = v
+
+	if zone == "" {
+		zone = ""
 	}
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	if condition == nil {
+		condition = &MonitorCondition{}
+	}
+	args := &struct {
+		Argzone      string
+		Argid        types.ID
+		Argcondition *MonitorCondition `mapconv:",squash"`
+	}{
+		Argzone:      zone,
+		Argid:        id,
+		Argcondition: condition,
+	}
+
+	v := &interfaceMonitorRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
 
 	data, err := o.Client.Do(ctx, "GET", url, body)
 	if err != nil {
@@ -2353,19 +2525,26 @@ func (o *InternetOp) Find(ctx context.Context, zone string, conditions *FindCond
 	}
 
 	var body interface{}
-	{
-		if conditions == nil {
-			conditions = &FindCondition{}
-		}
-		if body == nil {
-			body = &internetFindRequestEnvelope{}
-		}
-		v := body.(*internetFindRequestEnvelope)
-		if err := mapconv.ConvertTo(conditions, v); err != nil {
-			return nil, err
-		}
-		body = v
+
+	if zone == "" {
+		zone = ""
 	}
+	if conditions == nil {
+		conditions = &FindCondition{}
+	}
+	args := &struct {
+		Argzone       string
+		Argconditions *FindCondition `mapconv:",squash"`
+	}{
+		Argzone:       zone,
+		Argconditions: conditions,
+	}
+
+	v := &internetFindRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
 
 	data, err := o.Client.Do(ctx, "GET", url, body)
 	if err != nil {
@@ -2403,21 +2582,25 @@ func (o *InternetOp) Create(ctx context.Context, zone string, param *InternetCre
 
 	var body interface{}
 
-	{
-		if param == nil {
-			param = &InternetCreateRequest{}
-		}
-		if body == nil {
-			body = &internetCreateRequestEnvelope{}
-		}
-		v := body.(*internetCreateRequestEnvelope)
-		n, err := param.convertTo()
-		if err != nil {
-			return nil, err
-		}
-		v.Internet = n
-		body = v
+	if zone == "" {
+		zone = ""
 	}
+	if param == nil {
+		param = &InternetCreateRequest{}
+	}
+	args := &struct {
+		Argzone  string
+		Argparam *InternetCreateRequest `mapconv:"Internet,recursive"`
+	}{
+		Argzone:  zone,
+		Argparam: param,
+	}
+
+	v := &internetCreateRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
 
 	data, err := o.Client.Do(ctx, "POST", url, body)
 	if err != nil {
@@ -2484,21 +2667,30 @@ func (o *InternetOp) Update(ctx context.Context, zone string, id types.ID, param
 
 	var body interface{}
 
-	{
-		if param == nil {
-			param = &InternetUpdateRequest{}
-		}
-		if body == nil {
-			body = &internetUpdateRequestEnvelope{}
-		}
-		v := body.(*internetUpdateRequestEnvelope)
-		n, err := param.convertTo()
-		if err != nil {
-			return nil, err
-		}
-		v.Internet = n
-		body = v
+	if zone == "" {
+		zone = ""
 	}
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	if param == nil {
+		param = &InternetUpdateRequest{}
+	}
+	args := &struct {
+		Argzone  string
+		Argid    types.ID
+		Argparam *InternetUpdateRequest `mapconv:"Internet,recursive"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+
+	v := &internetUpdateRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
 
 	data, err := o.Client.Do(ctx, "PUT", url, body)
 	if err != nil {
@@ -2556,21 +2748,30 @@ func (o *InternetOp) UpdateBandWidth(ctx context.Context, zone string, id types.
 
 	var body interface{}
 
-	{
-		if param == nil {
-			param = &InternetUpdateBandWidthRequest{}
-		}
-		if body == nil {
-			body = &internetUpdateBandWidthRequestEnvelope{}
-		}
-		v := body.(*internetUpdateBandWidthRequestEnvelope)
-		n, err := param.convertTo()
-		if err != nil {
-			return nil, err
-		}
-		v.Internet = n
-		body = v
+	if zone == "" {
+		zone = ""
 	}
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	if param == nil {
+		param = &InternetUpdateBandWidthRequest{}
+	}
+	args := &struct {
+		Argzone  string
+		Argid    types.ID
+		Argparam *InternetUpdateBandWidthRequest `mapconv:"Internet,recursive"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+
+	v := &internetUpdateBandWidthRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
 
 	data, err := o.Client.Do(ctx, "PUT", url, body)
 	if err != nil {
@@ -2604,19 +2805,31 @@ func (o *InternetOp) AddSubnet(ctx context.Context, zone string, id types.ID, pa
 	}
 
 	var body interface{}
-	{
-		if param == nil {
-			param = &InternetAddSubnetRequest{}
-		}
-		if body == nil {
-			body = &internetAddSubnetRequestEnvelope{}
-		}
-		v := body.(*internetAddSubnetRequestEnvelope)
-		if err := mapconv.ConvertTo(param, v); err != nil {
-			return nil, err
-		}
-		body = v
+
+	if zone == "" {
+		zone = ""
 	}
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	if param == nil {
+		param = &InternetAddSubnetRequest{}
+	}
+	args := &struct {
+		Argzone  string
+		Argid    types.ID
+		Argparam *InternetAddSubnetRequest `mapconv:",squash"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+
+	v := &internetAddSubnetRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
 
 	data, err := o.Client.Do(ctx, "POST", url, body)
 	if err != nil {
@@ -2651,19 +2864,36 @@ func (o *InternetOp) UpdateSubnet(ctx context.Context, zone string, id types.ID,
 	}
 
 	var body interface{}
-	{
-		if param == nil {
-			param = &InternetUpdateSubnetRequest{}
-		}
-		if body == nil {
-			body = &internetUpdateSubnetRequestEnvelope{}
-		}
-		v := body.(*internetUpdateSubnetRequestEnvelope)
-		if err := mapconv.ConvertTo(param, v); err != nil {
-			return nil, err
-		}
-		body = v
+
+	if zone == "" {
+		zone = ""
 	}
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	if subnetID == types.ID(int64(0)) {
+		subnetID = types.ID(int64(0))
+	}
+	if param == nil {
+		param = &InternetUpdateSubnetRequest{}
+	}
+	args := &struct {
+		Argzone     string
+		Argid       types.ID
+		ArgsubnetID types.ID
+		Argparam    *InternetUpdateSubnetRequest `mapconv:",squash"`
+	}{
+		Argzone:     zone,
+		Argid:       id,
+		ArgsubnetID: subnetID,
+		Argparam:    param,
+	}
+
+	v := &internetUpdateSubnetRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
 
 	data, err := o.Client.Do(ctx, "PUT", url, body)
 	if err != nil {
@@ -2721,19 +2951,31 @@ func (o *InternetOp) Monitor(ctx context.Context, zone string, id types.ID, cond
 	}
 
 	var body interface{}
-	{
-		if condition == nil {
-			condition = &MonitorCondition{}
-		}
-		if body == nil {
-			body = &internetMonitorRequestEnvelope{}
-		}
-		v := body.(*internetMonitorRequestEnvelope)
-		if err := mapconv.ConvertTo(condition, v); err != nil {
-			return nil, err
-		}
-		body = v
+
+	if zone == "" {
+		zone = ""
 	}
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	if condition == nil {
+		condition = &MonitorCondition{}
+	}
+	args := &struct {
+		Argzone      string
+		Argid        types.ID
+		Argcondition *MonitorCondition `mapconv:",squash"`
+	}{
+		Argzone:      zone,
+		Argid:        id,
+		Argcondition: condition,
+	}
+
+	v := &internetMonitorRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
 
 	data, err := o.Client.Do(ctx, "GET", url, body)
 	if err != nil {
@@ -2785,19 +3027,26 @@ func (o *LoadBalancerOp) Find(ctx context.Context, zone string, conditions *Find
 	}
 
 	var body interface{}
-	{
-		if conditions == nil {
-			conditions = &FindCondition{}
-		}
-		if body == nil {
-			body = &loadbalancerFindRequestEnvelope{}
-		}
-		v := body.(*loadbalancerFindRequestEnvelope)
-		if err := mapconv.ConvertTo(conditions, v); err != nil {
-			return nil, err
-		}
-		body = v
+
+	if zone == "" {
+		zone = ""
 	}
+	if conditions == nil {
+		conditions = &FindCondition{}
+	}
+	args := &struct {
+		Argzone       string
+		Argconditions *FindCondition `mapconv:",squash"`
+	}{
+		Argzone:       zone,
+		Argconditions: conditions,
+	}
+
+	v := &loadbalancerFindRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
 
 	data, err := o.Client.Do(ctx, "GET", url, body)
 	if err != nil {
@@ -2835,21 +3084,25 @@ func (o *LoadBalancerOp) Create(ctx context.Context, zone string, param *LoadBal
 
 	var body interface{}
 
-	{
-		if param == nil {
-			param = &LoadBalancerCreateRequest{}
-		}
-		if body == nil {
-			body = &loadbalancerCreateRequestEnvelope{}
-		}
-		v := body.(*loadbalancerCreateRequestEnvelope)
-		n, err := param.convertTo()
-		if err != nil {
-			return nil, err
-		}
-		v.Appliance = n
-		body = v
+	if zone == "" {
+		zone = ""
 	}
+	if param == nil {
+		param = &LoadBalancerCreateRequest{}
+	}
+	args := &struct {
+		Argzone  string
+		Argparam *LoadBalancerCreateRequest `mapconv:"Appliance,recursive"`
+	}{
+		Argzone:  zone,
+		Argparam: param,
+	}
+
+	v := &loadbalancerCreateRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
 
 	data, err := o.Client.Do(ctx, "POST", url, body)
 	if err != nil {
@@ -2916,21 +3169,30 @@ func (o *LoadBalancerOp) Update(ctx context.Context, zone string, id types.ID, p
 
 	var body interface{}
 
-	{
-		if param == nil {
-			param = &LoadBalancerUpdateRequest{}
-		}
-		if body == nil {
-			body = &loadbalancerUpdateRequestEnvelope{}
-		}
-		v := body.(*loadbalancerUpdateRequestEnvelope)
-		n, err := param.convertTo()
-		if err != nil {
-			return nil, err
-		}
-		v.Appliance = n
-		body = v
+	if zone == "" {
+		zone = ""
 	}
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	if param == nil {
+		param = &LoadBalancerUpdateRequest{}
+	}
+	args := &struct {
+		Argzone  string
+		Argid    types.ID
+		Argparam *LoadBalancerUpdateRequest `mapconv:"Appliance,recursive"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+
+	v := &loadbalancerUpdateRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
 
 	data, err := o.Client.Do(ctx, "PUT", url, body)
 	if err != nil {
@@ -3033,19 +3295,31 @@ func (o *LoadBalancerOp) Shutdown(ctx context.Context, zone string, id types.ID,
 	}
 
 	var body interface{}
-	{
-		if shutdownOption == nil {
-			shutdownOption = &ShutdownOption{}
-		}
-		if body == nil {
-			body = &loadbalancerShutdownRequestEnvelope{}
-		}
-		v := body.(*loadbalancerShutdownRequestEnvelope)
-		if err := mapconv.ConvertTo(shutdownOption, v); err != nil {
-			return err
-		}
-		body = v
+
+	if zone == "" {
+		zone = ""
 	}
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	if shutdownOption == nil {
+		shutdownOption = &ShutdownOption{}
+	}
+	args := &struct {
+		Argzone           string
+		Argid             types.ID
+		ArgshutdownOption *ShutdownOption `mapconv:",squash"`
+	}{
+		Argzone:           zone,
+		Argid:             id,
+		ArgshutdownOption: shutdownOption,
+	}
+
+	v := &loadbalancerShutdownRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return err
+	}
+	body = v
 
 	_, err = o.Client.Do(ctx, "DELETE", url, body)
 	if err != nil {
@@ -3093,19 +3367,31 @@ func (o *LoadBalancerOp) MonitorInterface(ctx context.Context, zone string, id t
 	}
 
 	var body interface{}
-	{
-		if condition == nil {
-			condition = &MonitorCondition{}
-		}
-		if body == nil {
-			body = &loadbalancerMonitorInterfaceRequestEnvelope{}
-		}
-		v := body.(*loadbalancerMonitorInterfaceRequestEnvelope)
-		if err := mapconv.ConvertTo(condition, v); err != nil {
-			return nil, err
-		}
-		body = v
+
+	if zone == "" {
+		zone = ""
 	}
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	if condition == nil {
+		condition = &MonitorCondition{}
+	}
+	args := &struct {
+		Argzone      string
+		Argid        types.ID
+		Argcondition *MonitorCondition `mapconv:",squash"`
+	}{
+		Argzone:      zone,
+		Argid:        id,
+		Argcondition: condition,
+	}
+
+	v := &loadbalancerMonitorInterfaceRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
 
 	data, err := o.Client.Do(ctx, "GET", url, body)
 	if err != nil {
@@ -3193,19 +3479,26 @@ func (o *NFSOp) Find(ctx context.Context, zone string, conditions *FindCondition
 	}
 
 	var body interface{}
-	{
-		if conditions == nil {
-			conditions = &FindCondition{}
-		}
-		if body == nil {
-			body = &nfsFindRequestEnvelope{}
-		}
-		v := body.(*nfsFindRequestEnvelope)
-		if err := mapconv.ConvertTo(conditions, v); err != nil {
-			return nil, err
-		}
-		body = v
+
+	if zone == "" {
+		zone = ""
 	}
+	if conditions == nil {
+		conditions = &FindCondition{}
+	}
+	args := &struct {
+		Argzone       string
+		Argconditions *FindCondition `mapconv:",squash"`
+	}{
+		Argzone:       zone,
+		Argconditions: conditions,
+	}
+
+	v := &nfsFindRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
 
 	data, err := o.Client.Do(ctx, "GET", url, body)
 	if err != nil {
@@ -3243,21 +3536,25 @@ func (o *NFSOp) Create(ctx context.Context, zone string, param *NFSCreateRequest
 
 	var body interface{}
 
-	{
-		if param == nil {
-			param = &NFSCreateRequest{}
-		}
-		if body == nil {
-			body = &nfsCreateRequestEnvelope{}
-		}
-		v := body.(*nfsCreateRequestEnvelope)
-		n, err := param.convertTo()
-		if err != nil {
-			return nil, err
-		}
-		v.Appliance = n
-		body = v
+	if zone == "" {
+		zone = ""
 	}
+	if param == nil {
+		param = &NFSCreateRequest{}
+	}
+	args := &struct {
+		Argzone  string
+		Argparam *NFSCreateRequest `mapconv:"Appliance,recursive"`
+	}{
+		Argzone:  zone,
+		Argparam: param,
+	}
+
+	v := &nfsCreateRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
 
 	data, err := o.Client.Do(ctx, "POST", url, body)
 	if err != nil {
@@ -3324,21 +3621,30 @@ func (o *NFSOp) Update(ctx context.Context, zone string, id types.ID, param *NFS
 
 	var body interface{}
 
-	{
-		if param == nil {
-			param = &NFSUpdateRequest{}
-		}
-		if body == nil {
-			body = &nfsUpdateRequestEnvelope{}
-		}
-		v := body.(*nfsUpdateRequestEnvelope)
-		n, err := param.convertTo()
-		if err != nil {
-			return nil, err
-		}
-		v.Appliance = n
-		body = v
+	if zone == "" {
+		zone = ""
 	}
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	if param == nil {
+		param = &NFSUpdateRequest{}
+	}
+	args := &struct {
+		Argzone  string
+		Argid    types.ID
+		Argparam *NFSUpdateRequest `mapconv:"Appliance,recursive"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+
+	v := &nfsUpdateRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
 
 	data, err := o.Client.Do(ctx, "PUT", url, body)
 	if err != nil {
@@ -3418,19 +3724,31 @@ func (o *NFSOp) Shutdown(ctx context.Context, zone string, id types.ID, shutdown
 	}
 
 	var body interface{}
-	{
-		if shutdownOption == nil {
-			shutdownOption = &ShutdownOption{}
-		}
-		if body == nil {
-			body = &nfsShutdownRequestEnvelope{}
-		}
-		v := body.(*nfsShutdownRequestEnvelope)
-		if err := mapconv.ConvertTo(shutdownOption, v); err != nil {
-			return err
-		}
-		body = v
+
+	if zone == "" {
+		zone = ""
 	}
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	if shutdownOption == nil {
+		shutdownOption = &ShutdownOption{}
+	}
+	args := &struct {
+		Argzone           string
+		Argid             types.ID
+		ArgshutdownOption *ShutdownOption `mapconv:",squash"`
+	}{
+		Argzone:           zone,
+		Argid:             id,
+		ArgshutdownOption: shutdownOption,
+	}
+
+	v := &nfsShutdownRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return err
+	}
+	body = v
 
 	_, err = o.Client.Do(ctx, "DELETE", url, body)
 	if err != nil {
@@ -3478,19 +3796,31 @@ func (o *NFSOp) MonitorFreeDiskSize(ctx context.Context, zone string, id types.I
 	}
 
 	var body interface{}
-	{
-		if condition == nil {
-			condition = &MonitorCondition{}
-		}
-		if body == nil {
-			body = &nfsMonitorFreeDiskSizeRequestEnvelope{}
-		}
-		v := body.(*nfsMonitorFreeDiskSizeRequestEnvelope)
-		if err := mapconv.ConvertTo(condition, v); err != nil {
-			return nil, err
-		}
-		body = v
+
+	if zone == "" {
+		zone = ""
 	}
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	if condition == nil {
+		condition = &MonitorCondition{}
+	}
+	args := &struct {
+		Argzone      string
+		Argid        types.ID
+		Argcondition *MonitorCondition `mapconv:",squash"`
+	}{
+		Argzone:      zone,
+		Argid:        id,
+		Argcondition: condition,
+	}
+
+	v := &nfsMonitorFreeDiskSizeRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
 
 	data, err := o.Client.Do(ctx, "GET", url, body)
 	if err != nil {
@@ -3524,19 +3854,31 @@ func (o *NFSOp) MonitorInterface(ctx context.Context, zone string, id types.ID, 
 	}
 
 	var body interface{}
-	{
-		if condition == nil {
-			condition = &MonitorCondition{}
-		}
-		if body == nil {
-			body = &nfsMonitorInterfaceRequestEnvelope{}
-		}
-		v := body.(*nfsMonitorInterfaceRequestEnvelope)
-		if err := mapconv.ConvertTo(condition, v); err != nil {
-			return nil, err
-		}
-		body = v
+
+	if zone == "" {
+		zone = ""
 	}
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	if condition == nil {
+		condition = &MonitorCondition{}
+	}
+	args := &struct {
+		Argzone      string
+		Argid        types.ID
+		Argcondition *MonitorCondition `mapconv:",squash"`
+	}{
+		Argzone:      zone,
+		Argid:        id,
+		Argcondition: condition,
+	}
+
+	v := &nfsMonitorInterfaceRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
 
 	data, err := o.Client.Do(ctx, "GET", url, body)
 	if err != nil {
@@ -3588,19 +3930,26 @@ func (o *NoteOp) Find(ctx context.Context, zone string, conditions *FindConditio
 	}
 
 	var body interface{}
-	{
-		if conditions == nil {
-			conditions = &FindCondition{}
-		}
-		if body == nil {
-			body = &noteFindRequestEnvelope{}
-		}
-		v := body.(*noteFindRequestEnvelope)
-		if err := mapconv.ConvertTo(conditions, v); err != nil {
-			return nil, err
-		}
-		body = v
+
+	if zone == "" {
+		zone = ""
 	}
+	if conditions == nil {
+		conditions = &FindCondition{}
+	}
+	args := &struct {
+		Argzone       string
+		Argconditions *FindCondition `mapconv:",squash"`
+	}{
+		Argzone:       zone,
+		Argconditions: conditions,
+	}
+
+	v := &noteFindRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
 
 	data, err := o.Client.Do(ctx, "GET", url, body)
 	if err != nil {
@@ -3638,21 +3987,25 @@ func (o *NoteOp) Create(ctx context.Context, zone string, param *NoteCreateReque
 
 	var body interface{}
 
-	{
-		if param == nil {
-			param = &NoteCreateRequest{}
-		}
-		if body == nil {
-			body = &noteCreateRequestEnvelope{}
-		}
-		v := body.(*noteCreateRequestEnvelope)
-		n, err := param.convertTo()
-		if err != nil {
-			return nil, err
-		}
-		v.Note = n
-		body = v
+	if zone == "" {
+		zone = ""
 	}
+	if param == nil {
+		param = &NoteCreateRequest{}
+	}
+	args := &struct {
+		Argzone  string
+		Argparam *NoteCreateRequest `mapconv:"Note,recursive"`
+	}{
+		Argzone:  zone,
+		Argparam: param,
+	}
+
+	v := &noteCreateRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
 
 	data, err := o.Client.Do(ctx, "POST", url, body)
 	if err != nil {
@@ -3719,21 +4072,30 @@ func (o *NoteOp) Update(ctx context.Context, zone string, id types.ID, param *No
 
 	var body interface{}
 
-	{
-		if param == nil {
-			param = &NoteUpdateRequest{}
-		}
-		if body == nil {
-			body = &noteUpdateRequestEnvelope{}
-		}
-		v := body.(*noteUpdateRequestEnvelope)
-		n, err := param.convertTo()
-		if err != nil {
-			return nil, err
-		}
-		v.Note = n
-		body = v
+	if zone == "" {
+		zone = ""
 	}
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	if param == nil {
+		param = &NoteUpdateRequest{}
+	}
+	args := &struct {
+		Argzone  string
+		Argid    types.ID
+		Argparam *NoteUpdateRequest `mapconv:"Note,recursive"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+
+	v := &noteUpdateRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
 
 	data, err := o.Client.Do(ctx, "PUT", url, body)
 	if err != nil {
@@ -3808,19 +4170,26 @@ func (o *PacketFilterOp) Find(ctx context.Context, zone string, conditions *Find
 	}
 
 	var body interface{}
-	{
-		if conditions == nil {
-			conditions = &FindCondition{}
-		}
-		if body == nil {
-			body = &packetfilterFindRequestEnvelope{}
-		}
-		v := body.(*packetfilterFindRequestEnvelope)
-		if err := mapconv.ConvertTo(conditions, v); err != nil {
-			return nil, err
-		}
-		body = v
+
+	if zone == "" {
+		zone = ""
 	}
+	if conditions == nil {
+		conditions = &FindCondition{}
+	}
+	args := &struct {
+		Argzone       string
+		Argconditions *FindCondition `mapconv:",squash"`
+	}{
+		Argzone:       zone,
+		Argconditions: conditions,
+	}
+
+	v := &packetfilterFindRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
 
 	data, err := o.Client.Do(ctx, "GET", url, body)
 	if err != nil {
@@ -3858,21 +4227,25 @@ func (o *PacketFilterOp) Create(ctx context.Context, zone string, param *PacketF
 
 	var body interface{}
 
-	{
-		if param == nil {
-			param = &PacketFilterCreateRequest{}
-		}
-		if body == nil {
-			body = &packetfilterCreateRequestEnvelope{}
-		}
-		v := body.(*packetfilterCreateRequestEnvelope)
-		n, err := param.convertTo()
-		if err != nil {
-			return nil, err
-		}
-		v.PacketFilter = n
-		body = v
+	if zone == "" {
+		zone = ""
 	}
+	if param == nil {
+		param = &PacketFilterCreateRequest{}
+	}
+	args := &struct {
+		Argzone  string
+		Argparam *PacketFilterCreateRequest `mapconv:"PacketFilter,recursive"`
+	}{
+		Argzone:  zone,
+		Argparam: param,
+	}
+
+	v := &packetfilterCreateRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
 
 	data, err := o.Client.Do(ctx, "POST", url, body)
 	if err != nil {
@@ -3939,21 +4312,30 @@ func (o *PacketFilterOp) Update(ctx context.Context, zone string, id types.ID, p
 
 	var body interface{}
 
-	{
-		if param == nil {
-			param = &PacketFilterUpdateRequest{}
-		}
-		if body == nil {
-			body = &packetfilterUpdateRequestEnvelope{}
-		}
-		v := body.(*packetfilterUpdateRequestEnvelope)
-		n, err := param.convertTo()
-		if err != nil {
-			return nil, err
-		}
-		v.PacketFilter = n
-		body = v
+	if zone == "" {
+		zone = ""
 	}
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	if param == nil {
+		param = &PacketFilterUpdateRequest{}
+	}
+	args := &struct {
+		Argzone  string
+		Argid    types.ID
+		Argparam *PacketFilterUpdateRequest `mapconv:"PacketFilter,recursive"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+
+	v := &packetfilterUpdateRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
 
 	data, err := o.Client.Do(ctx, "PUT", url, body)
 	if err != nil {
@@ -4028,19 +4410,26 @@ func (o *ServerOp) Find(ctx context.Context, zone string, conditions *FindCondit
 	}
 
 	var body interface{}
-	{
-		if conditions == nil {
-			conditions = &FindCondition{}
-		}
-		if body == nil {
-			body = &serverFindRequestEnvelope{}
-		}
-		v := body.(*serverFindRequestEnvelope)
-		if err := mapconv.ConvertTo(conditions, v); err != nil {
-			return nil, err
-		}
-		body = v
+
+	if zone == "" {
+		zone = ""
 	}
+	if conditions == nil {
+		conditions = &FindCondition{}
+	}
+	args := &struct {
+		Argzone       string
+		Argconditions *FindCondition `mapconv:",squash"`
+	}{
+		Argzone:       zone,
+		Argconditions: conditions,
+	}
+
+	v := &serverFindRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
 
 	data, err := o.Client.Do(ctx, "GET", url, body)
 	if err != nil {
@@ -4078,21 +4467,25 @@ func (o *ServerOp) Create(ctx context.Context, zone string, param *ServerCreateR
 
 	var body interface{}
 
-	{
-		if param == nil {
-			param = &ServerCreateRequest{}
-		}
-		if body == nil {
-			body = &serverCreateRequestEnvelope{}
-		}
-		v := body.(*serverCreateRequestEnvelope)
-		n, err := param.convertTo()
-		if err != nil {
-			return nil, err
-		}
-		v.Server = n
-		body = v
+	if zone == "" {
+		zone = ""
 	}
+	if param == nil {
+		param = &ServerCreateRequest{}
+	}
+	args := &struct {
+		Argzone  string
+		Argparam *ServerCreateRequest `mapconv:"Server,recursive"`
+	}{
+		Argzone:  zone,
+		Argparam: param,
+	}
+
+	v := &serverCreateRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
 
 	data, err := o.Client.Do(ctx, "POST", url, body)
 	if err != nil {
@@ -4159,21 +4552,30 @@ func (o *ServerOp) Update(ctx context.Context, zone string, id types.ID, param *
 
 	var body interface{}
 
-	{
-		if param == nil {
-			param = &ServerUpdateRequest{}
-		}
-		if body == nil {
-			body = &serverUpdateRequestEnvelope{}
-		}
-		v := body.(*serverUpdateRequestEnvelope)
-		n, err := param.convertTo()
-		if err != nil {
-			return nil, err
-		}
-		v.Server = n
-		body = v
+	if zone == "" {
+		zone = ""
 	}
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	if param == nil {
+		param = &ServerUpdateRequest{}
+	}
+	args := &struct {
+		Argzone  string
+		Argid    types.ID
+		Argparam *ServerUpdateRequest `mapconv:"Server,recursive"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+
+	v := &serverUpdateRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
 
 	data, err := o.Client.Do(ctx, "PUT", url, body)
 	if err != nil {
@@ -4230,19 +4632,31 @@ func (o *ServerOp) ChangePlan(ctx context.Context, zone string, id types.ID, pla
 	}
 
 	var body interface{}
-	{
-		if plan == nil {
-			plan = &ServerChangePlanRequest{}
-		}
-		if body == nil {
-			body = &serverChangePlanRequestEnvelope{}
-		}
-		v := body.(*serverChangePlanRequestEnvelope)
-		if err := mapconv.ConvertTo(plan, v); err != nil {
-			return nil, err
-		}
-		body = v
+
+	if zone == "" {
+		zone = ""
 	}
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	if plan == nil {
+		plan = &ServerChangePlanRequest{}
+	}
+	args := &struct {
+		Argzone string
+		Argid   types.ID
+		Argplan *ServerChangePlanRequest `mapconv:",squash"`
+	}{
+		Argzone: zone,
+		Argid:   id,
+		Argplan: plan,
+	}
+
+	v := &serverChangePlanRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
 
 	data, err := o.Client.Do(ctx, "PUT", url, body)
 	if err != nil {
@@ -4277,21 +4691,30 @@ func (o *ServerOp) InsertCDROM(ctx context.Context, zone string, id types.ID, in
 
 	var body interface{}
 
-	{
-		if insertParam == nil {
-			insertParam = &InsertCDROMRequest{}
-		}
-		if body == nil {
-			body = &serverInsertCDROMRequestEnvelope{}
-		}
-		v := body.(*serverInsertCDROMRequestEnvelope)
-		n, err := insertParam.convertTo()
-		if err != nil {
-			return err
-		}
-		v.CDROM = n
-		body = v
+	if zone == "" {
+		zone = ""
 	}
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	if insertParam == nil {
+		insertParam = &InsertCDROMRequest{}
+	}
+	args := &struct {
+		Argzone        string
+		Argid          types.ID
+		ArginsertParam *InsertCDROMRequest `mapconv:"CDROM"`
+	}{
+		Argzone:        zone,
+		Argid:          id,
+		ArginsertParam: insertParam,
+	}
+
+	v := &serverInsertCDROMRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return err
+	}
+	body = v
 
 	_, err = o.Client.Do(ctx, "PUT", url, body)
 	if err != nil {
@@ -4317,21 +4740,30 @@ func (o *ServerOp) EjectCDROM(ctx context.Context, zone string, id types.ID, ins
 
 	var body interface{}
 
-	{
-		if insertParam == nil {
-			insertParam = &EjectCDROMRequest{}
-		}
-		if body == nil {
-			body = &serverEjectCDROMRequestEnvelope{}
-		}
-		v := body.(*serverEjectCDROMRequestEnvelope)
-		n, err := insertParam.convertTo()
-		if err != nil {
-			return err
-		}
-		v.CDROM = n
-		body = v
+	if zone == "" {
+		zone = ""
 	}
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	if insertParam == nil {
+		insertParam = &EjectCDROMRequest{}
+	}
+	args := &struct {
+		Argzone        string
+		Argid          types.ID
+		ArginsertParam *EjectCDROMRequest `mapconv:"CDROM"`
+	}{
+		Argzone:        zone,
+		Argid:          id,
+		ArginsertParam: insertParam,
+	}
+
+	v := &serverEjectCDROMRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return err
+	}
+	body = v
 
 	_, err = o.Client.Do(ctx, "DELETE", url, body)
 	if err != nil {
@@ -4379,19 +4811,31 @@ func (o *ServerOp) Shutdown(ctx context.Context, zone string, id types.ID, shutd
 	}
 
 	var body interface{}
-	{
-		if shutdownOption == nil {
-			shutdownOption = &ShutdownOption{}
-		}
-		if body == nil {
-			body = &serverShutdownRequestEnvelope{}
-		}
-		v := body.(*serverShutdownRequestEnvelope)
-		if err := mapconv.ConvertTo(shutdownOption, v); err != nil {
-			return err
-		}
-		body = v
+
+	if zone == "" {
+		zone = ""
 	}
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	if shutdownOption == nil {
+		shutdownOption = &ShutdownOption{}
+	}
+	args := &struct {
+		Argzone           string
+		Argid             types.ID
+		ArgshutdownOption *ShutdownOption `mapconv:",squash"`
+	}{
+		Argzone:           zone,
+		Argid:             id,
+		ArgshutdownOption: shutdownOption,
+	}
+
+	v := &serverShutdownRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return err
+	}
+	body = v
 
 	_, err = o.Client.Do(ctx, "DELETE", url, body)
 	if err != nil {
@@ -4439,19 +4883,31 @@ func (o *ServerOp) Monitor(ctx context.Context, zone string, id types.ID, condit
 	}
 
 	var body interface{}
-	{
-		if condition == nil {
-			condition = &MonitorCondition{}
-		}
-		if body == nil {
-			body = &serverMonitorRequestEnvelope{}
-		}
-		v := body.(*serverMonitorRequestEnvelope)
-		if err := mapconv.ConvertTo(condition, v); err != nil {
-			return nil, err
-		}
-		body = v
+
+	if zone == "" {
+		zone = ""
 	}
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	if condition == nil {
+		condition = &MonitorCondition{}
+	}
+	args := &struct {
+		Argzone      string
+		Argid        types.ID
+		Argcondition *MonitorCondition `mapconv:",squash"`
+	}{
+		Argzone:      zone,
+		Argid:        id,
+		Argcondition: condition,
+	}
+
+	v := &serverMonitorRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
 
 	data, err := o.Client.Do(ctx, "GET", url, body)
 	if err != nil {
@@ -4503,19 +4959,26 @@ func (o *SIMOp) Find(ctx context.Context, zone string, conditions *FindCondition
 	}
 
 	var body interface{}
-	{
-		if conditions == nil {
-			conditions = &FindCondition{}
-		}
-		if body == nil {
-			body = &simFindRequestEnvelope{}
-		}
-		v := body.(*simFindRequestEnvelope)
-		if err := mapconv.ConvertTo(conditions, v); err != nil {
-			return nil, err
-		}
-		body = v
+
+	if zone == "" {
+		zone = ""
 	}
+	if conditions == nil {
+		conditions = &FindCondition{}
+	}
+	args := &struct {
+		Argzone       string
+		Argconditions *FindCondition `mapconv:",squash"`
+	}{
+		Argzone:       zone,
+		Argconditions: conditions,
+	}
+
+	v := &simFindRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
 
 	data, err := o.Client.Do(ctx, "GET", url, body)
 	if err != nil {
@@ -4553,21 +5016,25 @@ func (o *SIMOp) Create(ctx context.Context, zone string, param *SIMCreateRequest
 
 	var body interface{}
 
-	{
-		if param == nil {
-			param = &SIMCreateRequest{}
-		}
-		if body == nil {
-			body = &simCreateRequestEnvelope{}
-		}
-		v := body.(*simCreateRequestEnvelope)
-		n, err := param.convertTo()
-		if err != nil {
-			return nil, err
-		}
-		v.CommonServiceItem = n
-		body = v
+	if zone == "" {
+		zone = ""
 	}
+	if param == nil {
+		param = &SIMCreateRequest{}
+	}
+	args := &struct {
+		Argzone  string
+		Argparam *SIMCreateRequest `mapconv:"CommonServiceItem,recursive"`
+	}{
+		Argzone:  zone,
+		Argparam: param,
+	}
+
+	v := &simCreateRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
 
 	data, err := o.Client.Do(ctx, "POST", url, body)
 	if err != nil {
@@ -4634,21 +5101,30 @@ func (o *SIMOp) Update(ctx context.Context, zone string, id types.ID, param *SIM
 
 	var body interface{}
 
-	{
-		if param == nil {
-			param = &SIMUpdateRequest{}
-		}
-		if body == nil {
-			body = &simUpdateRequestEnvelope{}
-		}
-		v := body.(*simUpdateRequestEnvelope)
-		n, err := param.convertTo()
-		if err != nil {
-			return nil, err
-		}
-		v.CommonServiceItem = n
-		body = v
+	if zone == "" {
+		zone = ""
 	}
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	if param == nil {
+		param = &SIMUpdateRequest{}
+	}
+	args := &struct {
+		Argzone  string
+		Argid    types.ID
+		Argparam *SIMUpdateRequest `mapconv:"CommonServiceItem,recursive"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+
+	v := &simUpdateRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
 
 	data, err := o.Client.Do(ctx, "PUT", url, body)
 	if err != nil {
@@ -4752,21 +5228,30 @@ func (o *SIMOp) AssignIP(ctx context.Context, zone string, id types.ID, param *S
 
 	var body interface{}
 
-	{
-		if param == nil {
-			param = &SIMAssignIPRequest{}
-		}
-		if body == nil {
-			body = &simAssignIPRequestEnvelope{}
-		}
-		v := body.(*simAssignIPRequestEnvelope)
-		n, err := param.convertTo()
-		if err != nil {
-			return err
-		}
-		v.SIM = n
-		body = v
+	if zone == "" {
+		zone = ""
 	}
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	if param == nil {
+		param = &SIMAssignIPRequest{}
+	}
+	args := &struct {
+		Argzone  string
+		Argid    types.ID
+		Argparam *SIMAssignIPRequest `mapconv:"SIM,recursive"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+
+	v := &simAssignIPRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return err
+	}
+	body = v
 
 	_, err = o.Client.Do(ctx, "PUT", url, body)
 	if err != nil {
@@ -4815,21 +5300,30 @@ func (o *SIMOp) IMEILock(ctx context.Context, zone string, id types.ID, param *S
 
 	var body interface{}
 
-	{
-		if param == nil {
-			param = &SIMIMEILockRequest{}
-		}
-		if body == nil {
-			body = &simIMEILockRequestEnvelope{}
-		}
-		v := body.(*simIMEILockRequestEnvelope)
-		n, err := param.convertTo()
-		if err != nil {
-			return err
-		}
-		v.SIM = n
-		body = v
+	if zone == "" {
+		zone = ""
 	}
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	if param == nil {
+		param = &SIMIMEILockRequest{}
+	}
+	args := &struct {
+		Argzone  string
+		Argid    types.ID
+		Argparam *SIMIMEILockRequest `mapconv:"SIM,recursive"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+
+	v := &simIMEILockRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return err
+	}
+	body = v
 
 	_, err = o.Client.Do(ctx, "PUT", url, body)
 	if err != nil {
@@ -4949,19 +5443,31 @@ func (o *SIMOp) SetNetworkOperator(ctx context.Context, zone string, id types.ID
 	}
 
 	var body interface{}
-	{
-		if configs == nil {
-			configs = &SIMNetworkOperatorConfigs{}
-		}
-		if body == nil {
-			body = &simSetNetworkOperatorRequestEnvelope{}
-		}
-		v := body.(*simSetNetworkOperatorRequestEnvelope)
-		if err := mapconv.ConvertTo(configs, v); err != nil {
-			return err
-		}
-		body = v
+
+	if zone == "" {
+		zone = ""
 	}
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	if configs == nil {
+		configs = &SIMNetworkOperatorConfigs{}
+	}
+	args := &struct {
+		Argzone    string
+		Argid      types.ID
+		Argconfigs *SIMNetworkOperatorConfigs `mapconv:",squash"`
+	}{
+		Argzone:    zone,
+		Argid:      id,
+		Argconfigs: configs,
+	}
+
+	v := &simSetNetworkOperatorRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return err
+	}
+	body = v
 
 	_, err = o.Client.Do(ctx, "PUT", url, body)
 	if err != nil {
@@ -4986,19 +5492,31 @@ func (o *SIMOp) MonitorSIM(ctx context.Context, zone string, id types.ID, condit
 	}
 
 	var body interface{}
-	{
-		if condition == nil {
-			condition = &MonitorCondition{}
-		}
-		if body == nil {
-			body = &simMonitorSIMRequestEnvelope{}
-		}
-		v := body.(*simMonitorSIMRequestEnvelope)
-		if err := mapconv.ConvertTo(condition, v); err != nil {
-			return nil, err
-		}
-		body = v
+
+	if zone == "" {
+		zone = ""
 	}
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	if condition == nil {
+		condition = &MonitorCondition{}
+	}
+	args := &struct {
+		Argzone      string
+		Argid        types.ID
+		Argcondition *MonitorCondition `mapconv:",squash"`
+	}{
+		Argzone:      zone,
+		Argid:        id,
+		Argcondition: condition,
+	}
+
+	v := &simMonitorSIMRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
 
 	data, err := o.Client.Do(ctx, "GET", url, body)
 	if err != nil {
@@ -5050,19 +5568,26 @@ func (o *SwitchOp) Find(ctx context.Context, zone string, conditions *FindCondit
 	}
 
 	var body interface{}
-	{
-		if conditions == nil {
-			conditions = &FindCondition{}
-		}
-		if body == nil {
-			body = &switchFindRequestEnvelope{}
-		}
-		v := body.(*switchFindRequestEnvelope)
-		if err := mapconv.ConvertTo(conditions, v); err != nil {
-			return nil, err
-		}
-		body = v
+
+	if zone == "" {
+		zone = ""
 	}
+	if conditions == nil {
+		conditions = &FindCondition{}
+	}
+	args := &struct {
+		Argzone       string
+		Argconditions *FindCondition `mapconv:",squash"`
+	}{
+		Argzone:       zone,
+		Argconditions: conditions,
+	}
+
+	v := &switchFindRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
 
 	data, err := o.Client.Do(ctx, "GET", url, body)
 	if err != nil {
@@ -5100,21 +5625,25 @@ func (o *SwitchOp) Create(ctx context.Context, zone string, param *SwitchCreateR
 
 	var body interface{}
 
-	{
-		if param == nil {
-			param = &SwitchCreateRequest{}
-		}
-		if body == nil {
-			body = &switchCreateRequestEnvelope{}
-		}
-		v := body.(*switchCreateRequestEnvelope)
-		n, err := param.convertTo()
-		if err != nil {
-			return nil, err
-		}
-		v.Switch = n
-		body = v
+	if zone == "" {
+		zone = ""
 	}
+	if param == nil {
+		param = &SwitchCreateRequest{}
+	}
+	args := &struct {
+		Argzone  string
+		Argparam *SwitchCreateRequest `mapconv:"Switch,recursive"`
+	}{
+		Argzone:  zone,
+		Argparam: param,
+	}
+
+	v := &switchCreateRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
 
 	data, err := o.Client.Do(ctx, "POST", url, body)
 	if err != nil {
@@ -5181,21 +5710,30 @@ func (o *SwitchOp) Update(ctx context.Context, zone string, id types.ID, param *
 
 	var body interface{}
 
-	{
-		if param == nil {
-			param = &SwitchUpdateRequest{}
-		}
-		if body == nil {
-			body = &switchUpdateRequestEnvelope{}
-		}
-		v := body.(*switchUpdateRequestEnvelope)
-		n, err := param.convertTo()
-		if err != nil {
-			return nil, err
-		}
-		v.Switch = n
-		body = v
+	if zone == "" {
+		zone = ""
 	}
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	if param == nil {
+		param = &SwitchUpdateRequest{}
+	}
+	args := &struct {
+		Argzone  string
+		Argid    types.ID
+		Argparam *SwitchUpdateRequest `mapconv:"Switch,recursive"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+
+	v := &switchUpdateRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
 
 	data, err := o.Client.Do(ctx, "PUT", url, body)
 	if err != nil {
@@ -5317,19 +5855,26 @@ func (o *VPCRouterOp) Find(ctx context.Context, zone string, conditions *FindCon
 	}
 
 	var body interface{}
-	{
-		if conditions == nil {
-			conditions = &FindCondition{}
-		}
-		if body == nil {
-			body = &vpcrouterFindRequestEnvelope{}
-		}
-		v := body.(*vpcrouterFindRequestEnvelope)
-		if err := mapconv.ConvertTo(conditions, v); err != nil {
-			return nil, err
-		}
-		body = v
+
+	if zone == "" {
+		zone = ""
 	}
+	if conditions == nil {
+		conditions = &FindCondition{}
+	}
+	args := &struct {
+		Argzone       string
+		Argconditions *FindCondition `mapconv:",squash"`
+	}{
+		Argzone:       zone,
+		Argconditions: conditions,
+	}
+
+	v := &vpcrouterFindRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
 
 	data, err := o.Client.Do(ctx, "GET", url, body)
 	if err != nil {
@@ -5367,21 +5912,25 @@ func (o *VPCRouterOp) Create(ctx context.Context, zone string, param *VPCRouterC
 
 	var body interface{}
 
-	{
-		if param == nil {
-			param = &VPCRouterCreateRequest{}
-		}
-		if body == nil {
-			body = &vpcrouterCreateRequestEnvelope{}
-		}
-		v := body.(*vpcrouterCreateRequestEnvelope)
-		n, err := param.convertTo()
-		if err != nil {
-			return nil, err
-		}
-		v.Appliance = n
-		body = v
+	if zone == "" {
+		zone = ""
 	}
+	if param == nil {
+		param = &VPCRouterCreateRequest{}
+	}
+	args := &struct {
+		Argzone  string
+		Argparam *VPCRouterCreateRequest `mapconv:"Appliance,recursive"`
+	}{
+		Argzone:  zone,
+		Argparam: param,
+	}
+
+	v := &vpcrouterCreateRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
 
 	data, err := o.Client.Do(ctx, "POST", url, body)
 	if err != nil {
@@ -5448,21 +5997,30 @@ func (o *VPCRouterOp) Update(ctx context.Context, zone string, id types.ID, para
 
 	var body interface{}
 
-	{
-		if param == nil {
-			param = &VPCRouterUpdateRequest{}
-		}
-		if body == nil {
-			body = &vpcrouterUpdateRequestEnvelope{}
-		}
-		v := body.(*vpcrouterUpdateRequestEnvelope)
-		n, err := param.convertTo()
-		if err != nil {
-			return nil, err
-		}
-		v.Appliance = n
-		body = v
+	if zone == "" {
+		zone = ""
 	}
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	if param == nil {
+		param = &VPCRouterUpdateRequest{}
+	}
+	args := &struct {
+		Argzone  string
+		Argid    types.ID
+		Argparam *VPCRouterUpdateRequest `mapconv:"Appliance,recursive"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+
+	v := &vpcrouterUpdateRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
 
 	data, err := o.Client.Do(ctx, "PUT", url, body)
 	if err != nil {
@@ -5565,19 +6123,31 @@ func (o *VPCRouterOp) Shutdown(ctx context.Context, zone string, id types.ID, sh
 	}
 
 	var body interface{}
-	{
-		if shutdownOption == nil {
-			shutdownOption = &ShutdownOption{}
-		}
-		if body == nil {
-			body = &vpcrouterShutdownRequestEnvelope{}
-		}
-		v := body.(*vpcrouterShutdownRequestEnvelope)
-		if err := mapconv.ConvertTo(shutdownOption, v); err != nil {
-			return err
-		}
-		body = v
+
+	if zone == "" {
+		zone = ""
 	}
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	if shutdownOption == nil {
+		shutdownOption = &ShutdownOption{}
+	}
+	args := &struct {
+		Argzone           string
+		Argid             types.ID
+		ArgshutdownOption *ShutdownOption `mapconv:",squash"`
+	}{
+		Argzone:           zone,
+		Argid:             id,
+		ArgshutdownOption: shutdownOption,
+	}
+
+	v := &vpcrouterShutdownRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return err
+	}
+	body = v
 
 	_, err = o.Client.Do(ctx, "DELETE", url, body)
 	if err != nil {
@@ -5675,19 +6245,36 @@ func (o *VPCRouterOp) MonitorInterface(ctx context.Context, zone string, id type
 	}
 
 	var body interface{}
-	{
-		if condition == nil {
-			condition = &MonitorCondition{}
-		}
-		if body == nil {
-			body = &vpcrouterMonitorInterfaceRequestEnvelope{}
-		}
-		v := body.(*vpcrouterMonitorInterfaceRequestEnvelope)
-		if err := mapconv.ConvertTo(condition, v); err != nil {
-			return nil, err
-		}
-		body = v
+
+	if zone == "" {
+		zone = ""
 	}
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	if index == 0 {
+		index = 0
+	}
+	if condition == nil {
+		condition = &MonitorCondition{}
+	}
+	args := &struct {
+		Argzone      string
+		Argid        types.ID
+		Argindex     int
+		Argcondition *MonitorCondition `mapconv:",squash"`
+	}{
+		Argzone:      zone,
+		Argid:        id,
+		Argindex:     index,
+		Argcondition: condition,
+	}
+
+	v := &vpcrouterMonitorInterfaceRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
 
 	data, err := o.Client.Do(ctx, "GET", url, body)
 	if err != nil {
@@ -5739,19 +6326,26 @@ func (o *ZoneOp) Find(ctx context.Context, zone string, conditions *FindConditio
 	}
 
 	var body interface{}
-	{
-		if conditions == nil {
-			conditions = &FindCondition{}
-		}
-		if body == nil {
-			body = &zoneFindRequestEnvelope{}
-		}
-		v := body.(*zoneFindRequestEnvelope)
-		if err := mapconv.ConvertTo(conditions, v); err != nil {
-			return nil, err
-		}
-		body = v
+
+	if zone == "" {
+		zone = ""
 	}
+	if conditions == nil {
+		conditions = &FindCondition{}
+	}
+	args := &struct {
+		Argzone       string
+		Argconditions *FindCondition `mapconv:",squash"`
+	}{
+		Argzone:       zone,
+		Argconditions: conditions,
+	}
+
+	v := &zoneFindRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
 
 	data, err := o.Client.Do(ctx, "GET", url, body)
 	if err != nil {

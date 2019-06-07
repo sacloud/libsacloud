@@ -123,37 +123,41 @@ func init() {
 		NakedType: meta.Static(naked.LoadBalancerStatus{}),
 	}
 
-	Resources.DefineWith("LoadBalancer", func(r *schema.Resource) {
-		r.Operations(
-			// find
-			r.DefineOperationApplianceFind(nakedType, findParameter, loadBalancer),
+	lbAPI := &schema.Resource{
+		Name:       "LoadBalancer",
+		PathName:   "appliance",
+		PathSuffix: schema.CloudAPISuffix,
+	}
+	lbAPI.Operations = []*schema.Operation{
+		// find
+		lbAPI.DefineOperationApplianceFind(nakedType, findParameter, loadBalancer),
 
-			// create
-			r.DefineOperationApplianceCreate(nakedType, createParam, loadBalancer),
+		// create
+		lbAPI.DefineOperationApplianceCreate(nakedType, createParam, loadBalancer),
 
-			// read
-			r.DefineOperationApplianceRead(nakedType, loadBalancer),
+		// read
+		lbAPI.DefineOperationApplianceRead(nakedType, loadBalancer),
 
-			// update
-			r.DefineOperationApplianceUpdate(nakedType, updateParam, loadBalancer),
+		// update
+		lbAPI.DefineOperationApplianceUpdate(nakedType, updateParam, loadBalancer),
 
-			// delete
-			r.DefineOperationDelete(),
+		// delete
+		lbAPI.DefineOperationDelete(),
 
-			// config
-			r.DefineOperationConfig(),
+		// config
+		lbAPI.DefineOperationConfig(),
 
-			// power management(boot/shutdown/reset)
-			r.DefineOperationBoot(),
-			r.DefineOperationShutdown(),
-			r.DefineOperationReset(),
+		// power management(boot/shutdown/reset)
+		lbAPI.DefineOperationBoot(),
+		lbAPI.DefineOperationShutdown(),
+		lbAPI.DefineOperationReset(),
 
-			// monitor
-			r.DefineOperationMonitorChild("Interface", "interface",
-				monitorParameter, monitors.interfaceModel()),
+		// monitor
+		lbAPI.DefineOperationMonitorChild("Interface", "interface",
+			monitorParameter, monitors.interfaceModel()),
 
-			// status
-			r.DefineOperationStatus(meta.Static(naked.LoadBalancerStatus{}), statusResult),
-		)
-	}).PathName("appliance")
+		// status
+		lbAPI.DefineOperationStatus(meta.Static(naked.LoadBalancerStatus{}), statusResult),
+	}
+	Resources.Def(lbAPI)
 }

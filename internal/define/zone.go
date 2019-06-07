@@ -22,7 +22,15 @@ func init() {
 		},
 	}
 
-	Resources.Define("Zone").SetIsGlobal(true).
-		OperationFind(nakedType, findParameter, zone).
-		OperationRead(nakedType, zone)
+	zoneAPI := &schema.Resource{
+		Name:       "Zone",
+		PathName:   "zone",
+		PathSuffix: schema.CloudAPISuffix,
+		IsGlobal:   true,
+	}
+	zoneAPI.Operations = []*schema.Operation{
+		zoneAPI.DefineOperationFind(nakedType, findParameter, zone),
+		zoneAPI.DefineOperationRead(nakedType, zone),
+	}
+	Resources.Def(zoneAPI)
 }

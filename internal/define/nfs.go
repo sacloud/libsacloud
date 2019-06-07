@@ -64,34 +64,37 @@ func init() {
 			fields.IconID(),
 		},
 	}
+	nfsAPI := &schema.Resource{
+		Name:       "NFS",
+		PathName:   "appliance",
+		PathSuffix: schema.CloudAPISuffix,
+	}
+	nfsAPI.Operations = []*schema.Operation{
+		// find
+		nfsAPI.DefineOperationApplianceFind(nakedType, findParameter, nfs),
 
-	Resources.DefineWith("NFS", func(r *schema.Resource) {
-		r.Operations(
-			// find
-			r.DefineOperationApplianceFind(nakedType, findParameter, nfs),
+		// create
+		nfsAPI.DefineOperationApplianceCreate(nakedType, createParam, nfs),
 
-			// create
-			r.DefineOperationApplianceCreate(nakedType, createParam, nfs),
+		// read
+		nfsAPI.DefineOperationApplianceRead(nakedType, nfs),
 
-			// read
-			r.DefineOperationApplianceRead(nakedType, nfs),
+		// update
+		nfsAPI.DefineOperationApplianceUpdate(nakedType, updateParam, nfs),
 
-			// update
-			r.DefineOperationApplianceUpdate(nakedType, updateParam, nfs),
+		// delete
+		nfsAPI.DefineOperationDelete(),
 
-			// delete
-			r.DefineOperationDelete(),
+		// power management(boot/shutdown/reset)
+		nfsAPI.DefineOperationBoot(),
+		nfsAPI.DefineOperationShutdown(),
+		nfsAPI.DefineOperationReset(),
 
-			// power management(boot/shutdown/reset)
-			r.DefineOperationBoot(),
-			r.DefineOperationShutdown(),
-			r.DefineOperationReset(),
-
-			// monitor
-			r.DefineOperationMonitorChild("FreeDiskSize", "database",
-				monitorParameter, monitors.freeDiskSizeModel()),
-			r.DefineOperationMonitorChild("Interface", "interface",
-				monitorParameter, monitors.interfaceModel()),
-		)
-	}).PathName("appliance")
+		// monitor
+		nfsAPI.DefineOperationMonitorChild("FreeDiskSize", "database",
+			monitorParameter, monitors.freeDiskSizeModel()),
+		nfsAPI.DefineOperationMonitorChild("Interface", "interface",
+			monitorParameter, monitors.interfaceModel()),
+	}
+	Resources.Def(nfsAPI)
 }
