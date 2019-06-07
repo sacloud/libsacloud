@@ -405,3 +405,49 @@ func TestRecursiveSlice(t *testing.T) {
 		require.Equal(t, tt.input, source)
 	}
 }
+
+type sourceSquash struct {
+	Field *sourceSquashChild `mapconv:",squash"`
+}
+
+type sourceSquashChild struct {
+	Field1 string
+	Field2 string
+}
+
+type destSquash struct {
+	Field1 string
+	Field2 string
+}
+
+func TestSquash(t *testing.T) {
+	tests := []struct {
+		input  *sourceSquash
+		output *destSquash
+	}{
+		{
+			input: &sourceSquash{
+				Field: &sourceSquashChild{
+					Field1: "f1",
+					Field2: "f2",
+				},
+			},
+			output: &destSquash{
+				Field1: "f1",
+				Field2: "f2",
+			},
+		},
+	}
+
+	for _, tt := range tests {
+		output := &destSquash{}
+		err := ConvertTo(tt.input, output)
+		require.NoError(t, err)
+		require.Equal(t, tt.output, output)
+
+		// reverse
+		source := &sourceSquash{}
+		err = ConvertFrom(tt.output, source)
+		require.Error(t, err)
+	}
+}
