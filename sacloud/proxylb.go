@@ -156,8 +156,8 @@ func (p *ProxyLB) ClearProxyLBServer() {
 }
 
 // AddBindPort バインドポート追加
-func (p *ProxyLB) AddBindPort(mode string, port int) {
-	p.Settings.ProxyLB.AddBindPort(mode, port)
+func (p *ProxyLB) AddBindPort(mode string, port int, redirectToHTTPS, supportHTTP2 bool) {
+	p.Settings.ProxyLB.AddBindPort(mode, port, redirectToHTTPS, supportHTTP2)
 }
 
 // DeleteBindPort バインドポート削除
@@ -186,6 +186,7 @@ type ProxyLBSetting struct {
 	SorryServer ProxyLBSorryServer  `json:",omitempty"` // ソーリーサーバー
 	BindPorts   []*ProxyLBBindPorts `json:",omitempty"` // プロキシ方式(プロトコル&ポート)
 	Servers     []ProxyLBServer     `json:",omitempty"` // サーバー
+	LetsEncrypt ProxyLBACMESetting  `json:",omitempty"` // Let's encryptでの証明書取得設定
 }
 
 // ProxyLBSorryServer ソーリーサーバ
@@ -195,7 +196,7 @@ type ProxyLBSorryServer struct {
 }
 
 // AddBindPort バインドポート追加
-func (s *ProxyLBSetting) AddBindPort(mode string, port int) {
+func (s *ProxyLBSetting) AddBindPort(mode string, port int, redirectToHTTPS, supportHTTP2 bool) {
 	var isExist bool
 	for i := range s.BindPorts {
 		if s.BindPorts[i].ProxyMode == mode && s.BindPorts[i].Port == port {
@@ -205,8 +206,10 @@ func (s *ProxyLBSetting) AddBindPort(mode string, port int) {
 
 	if !isExist {
 		s.BindPorts = append(s.BindPorts, &ProxyLBBindPorts{
-			ProxyMode: mode,
-			Port:      port,
+			ProxyMode:       mode,
+			Port:            port,
+			RedirectToHTTPS: redirectToHTTPS,
+			SupportHTTP2:    supportHTTP2,
 		})
 	}
 }
@@ -260,15 +263,17 @@ var AllowProxyLBBindModes = []string{"http", "https"}
 
 // ProxyLBBindPorts プロキシ方式
 type ProxyLBBindPorts struct {
-	ProxyMode string `json:",omitempty"` // モード(プロトコル)
-	Port      int    `json:",omitempty"` // ポート
+	ProxyMode       string `json:",omitempty"`      // モード(プロトコル)
+	Port            int    `json:",omitempty"`      // ポート
+	RedirectToHTTPS bool   `json:"RedirectToHttps"` // HTTPSへのリダイレクト(モードがhttpの場合のみ)
+	SupportHTTP2    bool   `json:"SupportHttp2"`    // HTTP/2のサポート(モードがhttpsの場合のみ)
 }
 
 // ProxyLBServer ProxyLB配下のサーバー
 type ProxyLBServer struct {
 	IPAddress string `json:",omitempty"` // IPアドレス
 	Port      int    `json:",omitempty"` // ポート
-	Enabled   bool   `json:",omitempty"` // 有効/無効
+	Enabled   bool   // 有効/無効
 }
 
 // NewProxyLBServer ProxyLB配下のサーバ作成
@@ -278,6 +283,12 @@ func NewProxyLBServer(ipaddress string, port int) *ProxyLBServer {
 		Port:      port,
 		Enabled:   true,
 	}
+}
+
+// ProxyLBACMESetting Let's Encryptでの証明書取得設定
+type ProxyLBACMESetting struct {
+	Enabled    bool
+	CommonName string
 }
 
 // AllowProxyLBHealthCheckProtocols プロキシLBで利用できるヘルスチェックプロトコル

@@ -32,7 +32,7 @@ func TestProxyLBCreate(t *testing.T) {
 	item.SetPlan(sacloud.ProxyLBPlan1000)
 	item.SetSorryServer(sorryIP, 80)
 	item.SetHTTPHealthCheck("libsacloud.com", "/", 0)
-	item.AddBindPort("http", 80)
+	item.AddBindPort("http", 80, false, false)
 	item.AddServer(serverIP, 80, true)
 
 	item, err := client.ProxyLB.Create(item)
