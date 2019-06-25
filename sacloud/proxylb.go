@@ -68,6 +68,10 @@ func CreateNewProxyLB(name string) *ProxyLB {
 type ProxyLBPlan int
 
 var (
+	// ProxyLBPlan100 100cpsプラン
+	ProxyLBPlan100 = ProxyLBPlan(100)
+	// ProxyLBPlan500 500cpsプラン
+	ProxyLBPlan500 = ProxyLBPlan(500)
 	// ProxyLBPlan1000 1,000cpsプラン
 	ProxyLBPlan1000 = ProxyLBPlan(1000)
 	// ProxyLBPlan5000 5,000cpsプラン
