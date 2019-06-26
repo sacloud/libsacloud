@@ -86,6 +86,8 @@ var (
 
 // AllowProxyLBPlans 有効なプランIDリスト
 var AllowProxyLBPlans = []int{
+	int(ProxyLBPlan100),
+	int(ProxyLBPlan500),
 	int(ProxyLBPlan1000),
 	int(ProxyLBPlan5000),
 	int(ProxyLBPlan10000),
