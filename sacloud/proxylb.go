@@ -56,9 +56,11 @@ func CreateNewProxyLB(name string) *ProxyLB {
 		},
 		Settings: ProxyLBSettings{
 			ProxyLB: ProxyLBSetting{
-				HealthCheck: defaultProxyLBHealthCheck,
-				SorryServer: ProxyLBSorryServer{},
-				Servers:     []ProxyLBServer{},
+				HealthCheck:   defaultProxyLBHealthCheck,
+				SorryServer:   ProxyLBSorryServer{},
+				Servers:       []ProxyLBServer{},
+				LetsEncrypt:   ProxyLBACMESetting{},
+				StickySession: ProxyLBSessionSetting{},
 			},
 		},
 	}
@@ -188,11 +190,12 @@ func (p *ProxyLB) DeleteServer(ip string, port int) {
 
 // ProxyLBSetting ProxyLBセッティング
 type ProxyLBSetting struct {
-	HealthCheck ProxyLBHealthCheck  `json:",omitempty"` // ヘルスチェック
-	SorryServer ProxyLBSorryServer  `json:",omitempty"` // ソーリーサーバー
-	BindPorts   []*ProxyLBBindPorts `json:",omitempty"` // プロキシ方式(プロトコル&ポート)
-	Servers     []ProxyLBServer     `json:",omitempty"` // サーバー
-	LetsEncrypt ProxyLBACMESetting  `json:",omitempty"` // Let's encryptでの証明書取得設定
+	HealthCheck   ProxyLBHealthCheck    `json:",omitempty"` // ヘルスチェック
+	SorryServer   ProxyLBSorryServer    `json:",omitempty"` // ソーリーサーバー
+	BindPorts     []*ProxyLBBindPorts   `json:",omitempty"` // プロキシ方式(プロトコル&ポート)
+	Servers       []ProxyLBServer       `json:",omitempty"` // サーバー
+	LetsEncrypt   ProxyLBACMESetting    `json:",omitempty"` // Let's encryptでの証明書取得設定
+	StickySession ProxyLBSessionSetting `json:",omitempty"`
 }
 
 // ProxyLBSorryServer ソーリーサーバ
@@ -294,8 +297,17 @@ func NewProxyLBServer(ipaddress string, port int) *ProxyLBServer {
 // ProxyLBACMESetting Let's Encryptでの証明書取得設定
 type ProxyLBACMESetting struct {
 	Enabled    bool
-	CommonName string
+	CommonName string `json:",omitempty"`
 }
+
+// ProxyLBSessionSetting セッション維持機能設定
+type ProxyLBSessionSetting struct {
+	Enabled bool
+	Method  string `json:",omitempty"`
+}
+
+// ProxyLBStickySessionDefaultMethod セッション維持のデフォルトメソッド(クッキー)
+const ProxyLBStickySessionDefaultMethod = "cookie"
 
 // AllowProxyLBHealthCheckProtocols プロキシLBで利用できるヘルスチェックプロトコル
 var AllowProxyLBHealthCheckProtocols = []string{"http", "tcp"}
