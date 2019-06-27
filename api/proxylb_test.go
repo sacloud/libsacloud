@@ -36,7 +36,6 @@ func TestProxyLBCreate(t *testing.T) {
 	item.AddServer(serverIP, 80, true)
 
 	item, err := client.ProxyLB.Create(item)
-
 	assert.NoError(t, err)
 
 	assert.Equal(t, item.GetPlan(), sacloud.ProxyLBPlan1000)
