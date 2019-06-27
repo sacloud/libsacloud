@@ -54,15 +54,15 @@ func getSSHDefaultUserNameArchiveRec(client *api.Client, archiveID int64) (strin
 			return "ubuntu", nil
 		}
 
-		if archive.HasTag("distro-vyos") {
-			return "vyos", nil
-		}
-
 		if archive.HasTag("distro-coreos") {
 			return "core", nil
 		}
 
 		if archive.HasTag("distro-rancheros") {
+			return "rancher", nil
+		}
+
+		if archive.HasTag("distro-k3os") {
 			return "rancher", nil
 		}
 	}
