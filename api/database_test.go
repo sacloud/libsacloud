@@ -399,6 +399,9 @@ func TestDatabaseReplication(t *testing.T) {
 	assert.NoError(t, err)
 	assert.NotEmpty(t, master)
 
+	err = api.SleepUntilDatabaseRunning(master.ID, client.DefaultTimeoutDuration, 30)
+	assert.NoError(t, err)
+
 	id := master.ID
 
 	// create slave
@@ -423,17 +426,15 @@ func TestDatabaseReplication(t *testing.T) {
 
 	assert.NoError(t, err)
 	assert.NotEmpty(t, slave)
-
-	err = api.SleepUntilDatabaseRunning(master.ID, client.DefaultTimeoutDuration, 30)
-	assert.NoError(t, err)
+	assert.Equal(t, int64(v.Plan)+1, int64(slave.Plan.ID))
 
 	err = api.SleepUntilDatabaseRunning(slave.ID, client.DefaultTimeoutDuration, 30)
 	assert.NoError(t, err)
 
 	// Delete
 
-	api.Shutdown(master.ID)
-	api.Shutdown(slave.ID)
+	api.Stop(master.ID)
+	api.Stop(slave.ID)
 	api.SleepUntilDown(master.ID, client.DefaultTimeoutDuration)
 	api.SleepUntilDown(slave.ID, client.DefaultTimeoutDuration)
 	api.Delete(master.ID)
