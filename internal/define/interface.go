@@ -8,10 +8,56 @@ import (
 	"github.com/sacloud/libsacloud-v2/sacloud/naked"
 )
 
-func init() {
-	nakedType := meta.Static(naked.Interface{})
+var interfaceAPI = &schema.Resource{
+	Name:       "Interface",
+	PathName:   "interface",
+	PathSuffix: schema.CloudAPISuffix,
+	OperationsDefineFunc: func(r *schema.Resource) []*schema.Operation {
+		return []*schema.Operation{
+			// find
+			r.DefineOperationFind(interfaceNakedType, findParameter, interfaceView),
 
-	iface := &schema.Model{
+			// create
+			r.DefineOperationCreate(interfaceNakedType, interfaceCreateParam, interfaceView),
+
+			// read
+			r.DefineOperationRead(interfaceNakedType, interfaceView),
+
+			// update
+			r.DefineOperationUpdate(interfaceNakedType, interfaceUpdateParam, interfaceView),
+
+			// delete
+			r.DefineOperationDelete(),
+
+			// monitor
+			r.DefineOperationMonitor(monitorParameter, monitors.interfaceModel()),
+
+			r.DefineSimpleOperation("ConnectToSharedSegment", http.MethodPut, "to/switch/shared"),
+
+			r.DefineSimpleOperation("ConnectToSwitch", http.MethodPut, "to/switch/{{.switchID}}",
+				&schema.Argument{
+					Name: "switchID",
+					Type: meta.TypeID,
+				},
+			),
+
+			r.DefineSimpleOperation("DisconnectFromSwitch", http.MethodDelete, "to/switch"),
+
+			r.DefineSimpleOperation("ConnectToPacketFilter", http.MethodPut, "to/packetfilter/{{.packetFilterID}}",
+				&schema.Argument{
+					Name: "packetFilterID",
+					Type: meta.TypeID,
+				},
+			),
+
+			r.DefineSimpleOperation("DisconnectFromPacketFilter", http.MethodDelete, "to/packetfilter"),
+		}
+	},
+}
+var (
+	interfaceNakedType = meta.Static(naked.Interface{})
+
+	interfaceView = &schema.Model{
 		Fields: []*schema.FieldDesc{
 			fields.ID(),
 			fields.MACAddress(),
@@ -26,61 +72,15 @@ func init() {
 		},
 	}
 
-	createParam := &schema.Model{
+	interfaceCreateParam = &schema.Model{
 		Fields: []*schema.FieldDesc{
 			fields.ServerID(),
 		},
 	}
 
-	updateParam := &schema.Model{
+	interfaceUpdateParam = &schema.Model{
 		Fields: []*schema.FieldDesc{
 			fields.UserIPAddress(),
 		},
 	}
-
-	ifAPI := &schema.Resource{
-		Name:       "Interface",
-		PathName:   "interface",
-		PathSuffix: schema.CloudAPISuffix,
-	}
-	ifAPI.Operations = []*schema.Operation{
-		// find
-		ifAPI.DefineOperationFind(nakedType, findParameter, iface),
-
-		// create
-		ifAPI.DefineOperationCreate(nakedType, createParam, iface),
-
-		// read
-		ifAPI.DefineOperationRead(nakedType, iface),
-
-		// update
-		ifAPI.DefineOperationUpdate(nakedType, updateParam, iface),
-
-		// delete
-		ifAPI.DefineOperationDelete(),
-
-		// monitor
-		ifAPI.DefineOperationMonitor(monitorParameter, monitors.interfaceModel()),
-
-		ifAPI.DefineSimpleOperation("ConnectToSharedSegment", http.MethodPut, "to/switch/shared"),
-
-		ifAPI.DefineSimpleOperation("ConnectToSwitch", http.MethodPut, "to/switch/{{.switchID}}",
-			&schema.Argument{
-				Name: "switchID",
-				Type: meta.TypeID,
-			},
-		),
-
-		ifAPI.DefineSimpleOperation("DisconnectFromSwitch", http.MethodDelete, "to/switch"),
-
-		ifAPI.DefineSimpleOperation("ConnectToPacketFilter", http.MethodPut, "to/packetfilter/{{.packetFilterID}}",
-			&schema.Argument{
-				Name: "packetFilterID",
-				Type: meta.TypeID,
-			},
-		),
-
-		ifAPI.DefineSimpleOperation("DisconnectFromPacketFilter", http.MethodDelete, "to/packetfilter"),
-	}
-	Resources.Def(ifAPI)
-}
+)

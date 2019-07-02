@@ -8,10 +8,66 @@ import (
 	"github.com/sacloud/libsacloud-v2/sacloud/naked"
 )
 
-func init() {
-	nakedType := meta.Static(naked.VPCRouter{})
+var vpcRouterAPI = &schema.Resource{
+	Name:       "VPCRouter",
+	PathName:   "appliance",
+	PathSuffix: schema.CloudAPISuffix,
+	OperationsDefineFunc: func(r *schema.Resource) []*schema.Operation {
+		return []*schema.Operation{
+			// find
+			r.DefineOperationApplianceFind(vpcRouterNakedType, findParameter, vpcRouterView),
 
-	vpcRouter := &schema.Model{
+			// create
+			r.DefineOperationApplianceCreate(vpcRouterNakedType, vpcRouterCreateParam, vpcRouterView),
+
+			// read
+			r.DefineOperationApplianceRead(vpcRouterNakedType, vpcRouterView),
+
+			// update
+			r.DefineOperationApplianceUpdate(vpcRouterNakedType, vpcRouterUpdateParam, vpcRouterView),
+
+			// delete
+			r.DefineOperationDelete(),
+
+			// config
+			r.DefineOperationConfig(),
+
+			// power management(boot/shutdown/reset)
+			r.DefineOperationBoot(),
+			r.DefineOperationShutdown(),
+			r.DefineOperationReset(),
+
+			// connect to switch
+			r.DefineSimpleOperation("ConnectToSwitch", http.MethodPut, "interface/{{.nicIndex}}/to/switch/{{.switchID}}",
+				&schema.Argument{
+					Name: "nicIndex",
+					Type: meta.TypeInt,
+				},
+				&schema.Argument{
+					Name: "switchID",
+					Type: meta.TypeID,
+				},
+			),
+
+			// disconnect from switch
+			r.DefineSimpleOperation("DisconnectFromSwitch", http.MethodDelete, "interface/{{.nicIndex}}/to/switch",
+				&schema.Argument{
+					Name: "nicIndex",
+					Type: meta.TypeInt,
+				},
+			),
+
+			// monitor
+			r.DefineOperationMonitorChildBy("Interface", "interface",
+				monitorParameter, monitors.interfaceModel()),
+		}
+	},
+}
+
+var (
+	vpcRouterNakedType = meta.Static(naked.VPCRouter{})
+
+	vpcRouterView = &schema.Model{
 		Fields: []*schema.FieldDesc{
 			fields.ID(),
 			fields.Name(),
@@ -47,7 +103,7 @@ func init() {
 		},
 	}
 
-	createParam := &schema.Model{
+	vpcRouterCreateParam = &schema.Model{
 		Fields: []*schema.FieldDesc{
 			fields.VPCRouterClass(),
 			fields.Name(),
@@ -86,7 +142,7 @@ func init() {
 		},
 	}
 
-	updateParam := &schema.Model{
+	vpcRouterUpdateParam = &schema.Model{
 		Fields: []*schema.FieldDesc{
 			fields.Name(),
 			fields.Description(),
@@ -101,60 +157,4 @@ func init() {
 			},
 		},
 	}
-
-	api := &schema.Resource{
-		Name:       "VPCRouter",
-		PathName:   "appliance",
-		PathSuffix: schema.CloudAPISuffix,
-	}
-
-	api.Operations = []*schema.Operation{
-		// find
-		api.DefineOperationApplianceFind(nakedType, findParameter, vpcRouter),
-
-		// create
-		api.DefineOperationApplianceCreate(nakedType, createParam, vpcRouter),
-
-		// read
-		api.DefineOperationApplianceRead(nakedType, vpcRouter),
-
-		// update
-		api.DefineOperationApplianceUpdate(nakedType, updateParam, vpcRouter),
-
-		// delete
-		api.DefineOperationDelete(),
-
-		// config
-		api.DefineOperationConfig(),
-
-		// power management(boot/shutdown/reset)
-		api.DefineOperationBoot(),
-		api.DefineOperationShutdown(),
-		api.DefineOperationReset(),
-
-		// connect to switch
-		api.DefineSimpleOperation("ConnectToSwitch", http.MethodPut, "interface/{{.nicIndex}}/to/switch/{{.switchID}}",
-			&schema.Argument{
-				Name: "nicIndex",
-				Type: meta.TypeInt,
-			},
-			&schema.Argument{
-				Name: "switchID",
-				Type: meta.TypeID,
-			},
-		),
-
-		// disconnect from switch
-		api.DefineSimpleOperation("DisconnectFromSwitch", http.MethodDelete, "interface/{{.nicIndex}}/to/switch",
-			&schema.Argument{
-				Name: "nicIndex",
-				Type: meta.TypeInt,
-			},
-		),
-
-		// monitor
-		api.DefineOperationMonitorChildBy("Interface", "interface",
-			monitorParameter, monitors.interfaceModel()),
-	}
-	Resources.Def(api)
-}
+)

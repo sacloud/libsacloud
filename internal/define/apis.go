@@ -14,3 +14,22 @@ import "github.com/sacloud/libsacloud-v2/internal/schema"
 
 // Resources APIでの操作対象リソースの定義
 var Resources schema.Resources
+
+func init() {
+	Resources.Def(archiveAPI)
+	Resources.Def(bridgeAPI)
+	Resources.Def(cdromAPI)
+	Resources.Def(diskAPI)
+	Resources.Def(gslbAPI)
+	Resources.Def(interfaceAPI)
+	Resources.Def(internetAPI)
+	Resources.Def(loadBalancerAPI)
+	Resources.Def(nfsAPI)
+	Resources.Def(noteAPI)
+	Resources.Def(packetFilterAPI)
+	Resources.Def(serverAPI)
+	Resources.Def(simAPI)
+	Resources.Def(switchAPI)
+	Resources.Def(vpcRouterAPI)
+	Resources.Def(zoneAPI)
+}

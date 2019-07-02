@@ -8,12 +8,93 @@ import (
 	"github.com/sacloud/libsacloud-v2/sacloud/naked"
 )
 
-func init() {
-	nakedType := meta.Static(naked.Internet{})
+var internetAPI = &schema.Resource{
+	Name:       "Internet",
+	PathName:   "internet",
+	PathSuffix: schema.CloudAPISuffix,
+	OperationsDefineFunc: func(r *schema.Resource) []*schema.Operation {
+		return []*schema.Operation{
 
-	internet := models.internetModel()
+			// find
+			r.DefineOperationFind(internetNakedType, findParameter, internetView),
 
-	createParam := &schema.Model{
+			// create
+			r.DefineOperationCreate(internetNakedType, internetCreateParam, internetView),
+
+			// read
+			r.DefineOperationRead(internetNakedType, internetView),
+
+			// update
+			r.DefineOperationUpdate(internetNakedType, internetUpdateParam, internetView),
+
+			// delete
+			r.DefineOperationDelete(),
+
+			// UpdateBandWidth
+			r.DefineOperation("UpdateBandWidth").
+				Method(http.MethodPut).
+				PathFormat(schema.IDAndSuffixPathFormat("bandwidth")).
+				RequestEnvelope(&schema.EnvelopePayloadDesc{
+					PayloadType: internetNakedType,
+					PayloadName: "Internet",
+				}).
+				Argument(schema.ArgumentZone).
+				Argument(schema.ArgumentID).
+				MappableArgument("param", internetUpdateBandWidthParam).
+				ResultFromEnvelope(internetView, &schema.EnvelopePayloadDesc{
+					PayloadType: internetNakedType,
+					PayloadName: "Internet",
+				}),
+
+			// AddSubnet
+			r.DefineOperation("AddSubnet").
+				Method(http.MethodPost).
+				PathFormat(schema.IDAndSuffixPathFormat("subnet")).
+				Argument(schema.ArgumentZone).
+				Argument(schema.ArgumentID).
+				PassthroughModelArgumentWithEnvelope("param", internetAddSubnetParam).
+				ResultFromEnvelope(models.internetSubnetOperationResult(), &schema.EnvelopePayloadDesc{
+					PayloadType: meta.Static(naked.Subnet{}),
+					PayloadName: "Subnet",
+				}),
+
+			// UpdateSubnet
+			r.DefineOperation("UpdateSubnet").
+				Method(http.MethodPut).
+				PathFormat(schema.IDAndSuffixPathFormat("subnet/{{.subnetID}}")).
+				Argument(schema.ArgumentZone).
+				Argument(schema.ArgumentID).
+				Argument(&schema.Argument{
+					Name: "subnetID",
+					Type: meta.TypeID,
+				}).
+				PassthroughModelArgumentWithEnvelope("param", internetUpdateSubnetParam).
+				ResultFromEnvelope(models.internetSubnetOperationResult(), &schema.EnvelopePayloadDesc{
+					PayloadType: meta.Static(naked.Subnet{}),
+					PayloadName: "Subnet",
+				}),
+
+			// DeleteSubnet
+			r.DefineSimpleOperation("DeleteSubnet", http.MethodDelete, "subnet/{{.subnetID}}",
+				&schema.Argument{
+					Name: "subnetID",
+					Type: meta.TypeID,
+				},
+			),
+
+			// monitor
+			r.DefineOperationMonitor(monitorParameter, monitors.routerModel()),
+
+			// TODO IPv6関連は後回し
+		}
+	},
+}
+var (
+	internetNakedType = meta.Static(naked.Internet{})
+
+	internetView = models.internetModel()
+
+	internetCreateParam = &schema.Model{
 		Fields: []*schema.FieldDesc{
 			fields.Name(),
 			fields.Description(),
@@ -24,7 +105,7 @@ func init() {
 		},
 	}
 
-	updateParam := &schema.Model{
+	internetUpdateParam = &schema.Model{
 		Fields: []*schema.FieldDesc{
 			fields.Name(),
 			fields.Description(),
@@ -33,15 +114,15 @@ func init() {
 		},
 	}
 
-	updateBandWidthParam := &schema.Model{
+	internetUpdateBandWidthParam = &schema.Model{
 		Name:      "InternetUpdateBandWidthRequest",
-		NakedType: nakedType,
+		NakedType: internetNakedType,
 		Fields: []*schema.FieldDesc{
 			fields.BandWidthMbps(),
 		},
 	}
 
-	addSubnetParam := &schema.Model{
+	internetAddSubnetParam = &schema.Model{
 		Name:      "InternetAddSubnetRequest",
 		NakedType: meta.Static(naked.SubnetOperationRequest{}),
 		Fields: []*schema.FieldDesc{
@@ -49,92 +130,11 @@ func init() {
 			fields.NextHop(),
 		},
 	}
-	updateSubnetParam := &schema.Model{
+	internetUpdateSubnetParam = &schema.Model{
 		Name:      "InternetUpdateSubnetRequest",
 		NakedType: meta.Static(naked.SubnetOperationRequest{}),
 		Fields: []*schema.FieldDesc{
 			fields.NextHop(),
 		},
 	}
-
-	routerAPI := &schema.Resource{
-		Name:       "Internet",
-		PathName:   "internet",
-		PathSuffix: schema.CloudAPISuffix,
-	}
-	routerAPI.Operations = []*schema.Operation{
-		// find
-		routerAPI.DefineOperationFind(nakedType, findParameter, internet),
-
-		// create
-		routerAPI.DefineOperationCreate(nakedType, createParam, internet),
-
-		// read
-		routerAPI.DefineOperationRead(nakedType, internet),
-
-		// update
-		routerAPI.DefineOperationUpdate(nakedType, updateParam, internet),
-
-		// delete
-		routerAPI.DefineOperationDelete(),
-
-		// UpdateBandWidth
-		routerAPI.DefineOperation("UpdateBandWidth").
-			Method(http.MethodPut).
-			PathFormat(schema.IDAndSuffixPathFormat("bandwidth")).
-			RequestEnvelope(&schema.EnvelopePayloadDesc{
-				PayloadType: nakedType,
-				PayloadName: "Internet",
-			}).
-			Argument(schema.ArgumentZone).
-			Argument(schema.ArgumentID).
-			MappableArgument("param", updateBandWidthParam).
-			ResultFromEnvelope(internet, &schema.EnvelopePayloadDesc{
-				PayloadType: nakedType,
-				PayloadName: "Internet",
-			}),
-
-		// AddSubnet
-		routerAPI.DefineOperation("AddSubnet").
-			Method(http.MethodPost).
-			PathFormat(schema.IDAndSuffixPathFormat("subnet")).
-			Argument(schema.ArgumentZone).
-			Argument(schema.ArgumentID).
-			PassthroughModelArgumentWithEnvelope("param", addSubnetParam).
-			ResultFromEnvelope(models.internetSubnetOperationResult(), &schema.EnvelopePayloadDesc{
-				PayloadType: meta.Static(naked.Subnet{}),
-				PayloadName: "Subnet",
-			}),
-
-		// UpdateSubnet
-		routerAPI.DefineOperation("UpdateSubnet").
-			Method(http.MethodPut).
-			PathFormat(schema.IDAndSuffixPathFormat("subnet/{{.subnetID}}")).
-			Argument(schema.ArgumentZone).
-			Argument(schema.ArgumentID).
-			Argument(&schema.Argument{
-				Name: "subnetID",
-				Type: meta.TypeID,
-			}).
-			PassthroughModelArgumentWithEnvelope("param", updateSubnetParam).
-			ResultFromEnvelope(models.internetSubnetOperationResult(), &schema.EnvelopePayloadDesc{
-				PayloadType: meta.Static(naked.Subnet{}),
-				PayloadName: "Subnet",
-			}),
-
-		// DeleteSubnet
-		routerAPI.DefineSimpleOperation("DeleteSubnet", http.MethodDelete, "subnet/{{.subnetID}}",
-			&schema.Argument{
-				Name: "subnetID",
-				Type: meta.TypeID,
-			},
-		),
-
-		// monitor
-		routerAPI.DefineOperationMonitor(monitorParameter, monitors.routerModel()),
-
-		// TODO IPv6関連は後回し
-	}
-
-	Resources.Def(routerAPI)
-}
+)
