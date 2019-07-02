@@ -20,7 +20,7 @@ func (p *propIcon) GetIconID() int64 {
 
 // GetIconStrID アイコンID(文字列)を取得
 func (p *propIcon) GetIconStrID() string {
-	if p.HasIcon() {
+	if p.HasIcon() && p.GetIconID() != 0 {
 		return p.Icon.GetStrID()
 	}
 	return ""
