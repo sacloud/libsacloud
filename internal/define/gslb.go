@@ -6,10 +6,35 @@ import (
 	"github.com/sacloud/libsacloud-v2/sacloud/naked"
 )
 
-func init() {
-	nakedType := meta.Static(naked.GSLB{})
+var gslbAPI = &schema.Resource{
+	Name:       "GSLB",
+	PathName:   "commonserviceitem",
+	PathSuffix: schema.CloudAPISuffix,
+	IsGlobal:   true,
+	OperationsDefineFunc: func(r *schema.Resource) []*schema.Operation {
+		return []*schema.Operation{
+			// find
+			r.DefineOperationCommonServiceItemFind(gslbNakedType, findParameter, gslbView),
 
-	gslb := &schema.Model{
+			// create
+			r.DefineOperationCommonServiceItemCreate(gslbNakedType, gslbCreateParam, gslbView),
+
+			// read
+			r.DefineOperationCommonServiceItemRead(gslbNakedType, gslbView),
+
+			// update
+			r.DefineOperationCommonServiceItemUpdate(gslbNakedType, gslbUpdateParam, gslbView),
+
+			// delete
+			r.DefineOperationDelete(),
+		}
+	},
+}
+
+var (
+	gslbNakedType = meta.Static(naked.GSLB{})
+
+	gslbView = &schema.Model{
 		Fields: []*schema.FieldDesc{
 			fields.ID(),
 			fields.Name(),
@@ -35,7 +60,7 @@ func init() {
 		},
 	}
 
-	createParam := &schema.Model{
+	gslbCreateParam = &schema.Model{
 		Fields: []*schema.FieldDesc{
 			fields.GSLBProviderClass(),
 
@@ -56,7 +81,7 @@ func init() {
 		},
 	}
 
-	updateParam := &schema.Model{
+	gslbUpdateParam = &schema.Model{
 		Fields: []*schema.FieldDesc{
 			fields.GSLBHealthCheckProtocol(),
 			fields.GSLBHealthCheckHostHeader(),
@@ -74,27 +99,4 @@ func init() {
 			fields.IconID(),
 		},
 	}
-	gslbAPI := &schema.Resource{
-		Name:       "GSLB",
-		PathName:   "commonserviceitem",
-		PathSuffix: schema.CloudAPISuffix,
-		IsGlobal:   true,
-	}
-	gslbAPI.Operations = []*schema.Operation{
-		// find
-		gslbAPI.DefineOperationCommonServiceItemFind(nakedType, findParameter, gslb),
-
-		// create
-		gslbAPI.DefineOperationCommonServiceItemCreate(nakedType, createParam, gslb),
-
-		// read
-		gslbAPI.DefineOperationCommonServiceItemRead(nakedType, gslb),
-
-		// update
-		gslbAPI.DefineOperationCommonServiceItemUpdate(nakedType, updateParam, gslb),
-
-		// delete
-		gslbAPI.DefineOperationDelete(),
-	}
-	Resources.Def(gslbAPI)
-}
+)

@@ -6,10 +6,35 @@ import (
 	"github.com/sacloud/libsacloud-v2/sacloud/naked"
 )
 
-func init() {
-	nakedType := meta.Static(naked.Note{})
+var noteAPI = &schema.Resource{
+	Name:       "Note",
+	PathName:   "note",
+	PathSuffix: schema.CloudAPISuffix,
+	IsGlobal:   true,
+	OperationsDefineFunc: func(r *schema.Resource) []*schema.Operation {
+		return []*schema.Operation{
+			// find
+			r.DefineOperationFind(noteNakedType, findParameter, noteView),
 
-	note := &schema.Model{
+			// create
+			r.DefineOperationCreate(noteNakedType, noteCreateParam, noteView),
+
+			// read
+			r.DefineOperationRead(noteNakedType, noteView),
+
+			// update
+			r.DefineOperationUpdate(noteNakedType, noteUpdateParam, noteView),
+
+			// delete
+			r.DefineOperationDelete(),
+		}
+	},
+}
+
+var (
+	noteNakedType = meta.Static(naked.Note{})
+
+	noteView = &schema.Model{
 		Fields: []*schema.FieldDesc{
 			fields.ID(),
 			fields.Name(),
@@ -25,7 +50,7 @@ func init() {
 		},
 	}
 
-	createParam := &schema.Model{
+	noteCreateParam = &schema.Model{
 		Fields: []*schema.FieldDesc{
 			fields.Name(),
 			fields.Tags(),
@@ -35,7 +60,7 @@ func init() {
 		},
 	}
 
-	updateParam := &schema.Model{
+	noteUpdateParam = &schema.Model{
 		Fields: []*schema.FieldDesc{
 			fields.Name(),
 			fields.Tags(),
@@ -44,28 +69,4 @@ func init() {
 			fields.NoteContent(),
 		},
 	}
-
-	noteAPI := &schema.Resource{
-		Name:       "Note",
-		PathName:   "note",
-		PathSuffix: schema.CloudAPISuffix,
-		IsGlobal:   true,
-	}
-	noteAPI.Operations = []*schema.Operation{
-		// find
-		noteAPI.DefineOperationFind(nakedType, findParameter, note),
-
-		// create
-		noteAPI.DefineOperationCreate(nakedType, createParam, note),
-
-		// read
-		noteAPI.DefineOperationRead(nakedType, note),
-
-		// update
-		noteAPI.DefineOperationUpdate(nakedType, updateParam, note),
-
-		// delete
-		noteAPI.DefineOperationDelete(),
-	}
-	Resources.Def(noteAPI)
-}
+)

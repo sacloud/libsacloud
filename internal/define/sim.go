@@ -8,10 +8,109 @@ import (
 	"github.com/sacloud/libsacloud-v2/sacloud/naked"
 )
 
-func init() {
-	nakedType := meta.Static(naked.SIM{})
+var simAPI = &schema.Resource{
+	Name:       "SIM",
+	PathName:   "commonserviceitem",
+	PathSuffix: schema.CloudAPISuffix,
+	OperationsDefineFunc: func(r *schema.Resource) []*schema.Operation {
+		return []*schema.Operation{
+			// find
+			r.DefineOperationCommonServiceItemFind(simNakedType, findParameter, simView),
 
-	sim := &schema.Model{
+			// create
+			r.DefineOperationCommonServiceItemCreate(simNakedType, simCreateParam, simView),
+
+			// read
+			r.DefineOperationCommonServiceItemRead(simNakedType, simView),
+
+			// update
+			r.DefineOperationCommonServiceItemUpdate(simNakedType, simUpdateParam, simView),
+
+			// delete
+			r.DefineOperationDelete(),
+
+			// activate
+			r.DefineSimpleOperation("Activate", http.MethodPut, "sim/activate"),
+			// deactivate
+			r.DefineSimpleOperation("Deactivate", http.MethodPut, "sim/deactivate"),
+
+			// assignIP
+			r.DefineOperation("AssignIP").
+				Method(http.MethodPut).
+				PathFormat(schema.IDAndSuffixPathFormat("sim/ip")).
+				Argument(schema.ArgumentZone).
+				Argument(schema.ArgumentID).
+				RequestEnvelope(&schema.EnvelopePayloadDesc{
+					PayloadName: "SIM",
+					PayloadType: meta.Static(naked.SIMAssignIPRequest{}),
+					Tags: &schema.FieldTags{
+						JSON: "sim",
+					},
+				}).
+				MappableArgument("param", simAssignIPParam),
+
+			// clearIP
+			r.DefineSimpleOperation("ClearIP", http.MethodDelete, "sim/ip"),
+
+			// IMEILock
+			r.DefineOperation("IMEILock").
+				Method(http.MethodPut).
+				PathFormat(schema.IDAndSuffixPathFormat("sim/imeilock")).
+				Argument(schema.ArgumentZone).
+				Argument(schema.ArgumentID).
+				RequestEnvelope(&schema.EnvelopePayloadDesc{
+					PayloadName: "SIM",
+					PayloadType: meta.Static(naked.SIMIMEILockRequest{}),
+					Tags: &schema.FieldTags{
+						JSON: "sim",
+					},
+				}).
+				MappableArgument("param", simIMEILockParam),
+
+			// IMEIUnlock
+			r.DefineSimpleOperation("IMEIUnlock", http.MethodDelete, "sim/imeilock"),
+
+			// Logs
+			r.DefineOperation("Logs").
+				Method(http.MethodGet).
+				PathFormat(schema.IDAndSuffixPathFormat("sim/sessionlog")).
+				Argument(schema.ArgumentZone).
+				Argument(schema.ArgumentID).
+				ResultPluralFromEnvelope(simLogView, &schema.EnvelopePayloadDesc{
+					PayloadName: "Logs",
+					PayloadType: meta.Static(naked.SIMLog{}),
+				}),
+
+			// GetNetworkOperator
+			r.DefineOperation("GetNetworkOperator").
+				Method(http.MethodGet).
+				PathFormat(schema.IDAndSuffixPathFormat("sim/network_operator_config")).
+				Argument(schema.ArgumentZone).
+				Argument(schema.ArgumentID).
+				ResultPluralFromEnvelope(simNetworkOperatorConfigView, &schema.EnvelopePayloadDesc{
+					PayloadName: "NetworkOperationConfigs",
+					PayloadType: meta.Static(naked.SIMNetworkOperatorConfig{}),
+				}),
+
+			// SetNetworkOperator
+			r.DefineOperation("SetNetworkOperator").
+				Method(http.MethodPut).
+				PathFormat(schema.IDAndSuffixPathFormat("sim/network_operator_config")).
+				Argument(schema.ArgumentZone).
+				Argument(schema.ArgumentID).
+				PassthroughModelArgumentWithEnvelope("configs", simNetworkOperatorsConfigView),
+
+			// monitor
+			r.DefineOperationMonitorChild("SIM", "sim/metrics",
+				monitorParameter, monitors.linkModel()),
+		}
+	},
+}
+
+var (
+	simNakedType = meta.Static(naked.SIM{})
+
+	simView = &schema.Model{
 		Fields: []*schema.FieldDesc{
 			fields.ID(),
 			fields.Name(),
@@ -26,7 +125,7 @@ func init() {
 		},
 	}
 
-	createParam := &schema.Model{
+	simCreateParam = &schema.Model{
 		Fields: []*schema.FieldDesc{
 			fields.Name(),
 			fields.Description(),
@@ -38,7 +137,7 @@ func init() {
 		},
 	}
 
-	updateParam := &schema.Model{
+	simUpdateParam = &schema.Model{
 		Fields: []*schema.FieldDesc{
 			fields.Name(),
 			fields.Description(),
@@ -47,7 +146,7 @@ func init() {
 		},
 	}
 
-	assignIPParam := &schema.Model{
+	simAssignIPParam = &schema.Model{
 		Name: "SIMAssignIPRequest",
 		Fields: []*schema.FieldDesc{
 			{
@@ -57,7 +156,7 @@ func init() {
 		},
 		NakedType: meta.Static(naked.SIMAssignIPRequest{}),
 	}
-	imeiLockParam := &schema.Model{
+	simIMEILockParam = &schema.Model{
 		Name: "SIMIMEILockRequest",
 		Fields: []*schema.FieldDesc{
 			{
@@ -68,7 +167,7 @@ func init() {
 		NakedType: meta.Static(naked.SIMIMEILockRequest{}),
 	}
 
-	simLog := &schema.Model{
+	simLogView = &schema.Model{
 		Name: "SIMLog",
 		Fields: []*schema.FieldDesc{
 			fields.New("Date", meta.TypeTime),
@@ -79,7 +178,7 @@ func init() {
 		},
 		NakedType: meta.Static(naked.SIMLog{}),
 	}
-	nwOpConfig := &schema.Model{
+	simNetworkOperatorConfigView = &schema.Model{
 		Name: "SIMNetworkOperatorConfig",
 		Fields: []*schema.FieldDesc{
 			fields.New("Allow", meta.TypeFlag),
@@ -88,7 +187,7 @@ func init() {
 		},
 		NakedType: meta.Static(naked.SIMNetworkOperatorConfig{}),
 	}
-	nwOpConfigs := &schema.Model{
+	simNetworkOperatorsConfigView = &schema.Model{
 		Name: "SIMNetworkOperatorConfigs",
 		Fields: []*schema.FieldDesc{
 			{
@@ -107,102 +206,4 @@ func init() {
 		},
 		NakedType: meta.Static(naked.SIMNetworkOperatorConfigs{}),
 	}
-	simAPI := &schema.Resource{
-		Name:       "SIM",
-		PathName:   "commonserviceitem",
-		PathSuffix: schema.CloudAPISuffix,
-	}
-
-	simAPI.Operations = []*schema.Operation{
-		// find
-		simAPI.DefineOperationCommonServiceItemFind(nakedType, findParameter, sim),
-
-		// create
-		simAPI.DefineOperationCommonServiceItemCreate(nakedType, createParam, sim),
-
-		// read
-		simAPI.DefineOperationCommonServiceItemRead(nakedType, sim),
-
-		// update
-		simAPI.DefineOperationCommonServiceItemUpdate(nakedType, updateParam, sim),
-
-		// delete
-		simAPI.DefineOperationDelete(),
-
-		// activate
-		simAPI.DefineSimpleOperation("Activate", http.MethodPut, "sim/activate"),
-		// deactivate
-		simAPI.DefineSimpleOperation("Deactivate", http.MethodPut, "sim/deactivate"),
-
-		// assignIP
-		simAPI.DefineOperation("AssignIP").
-			Method(http.MethodPut).
-			PathFormat(schema.IDAndSuffixPathFormat("sim/ip")).
-			Argument(schema.ArgumentZone).
-			Argument(schema.ArgumentID).
-			RequestEnvelope(&schema.EnvelopePayloadDesc{
-				PayloadName: "SIM",
-				PayloadType: meta.Static(naked.SIMAssignIPRequest{}),
-				Tags: &schema.FieldTags{
-					JSON: "sim",
-				},
-			}).
-			MappableArgument("param", assignIPParam),
-
-		// clearIP
-		simAPI.DefineSimpleOperation("ClearIP", http.MethodDelete, "sim/ip"),
-
-		// IMEILock
-		simAPI.DefineOperation("IMEILock").
-			Method(http.MethodPut).
-			PathFormat(schema.IDAndSuffixPathFormat("sim/imeilock")).
-			Argument(schema.ArgumentZone).
-			Argument(schema.ArgumentID).
-			RequestEnvelope(&schema.EnvelopePayloadDesc{
-				PayloadName: "SIM",
-				PayloadType: meta.Static(naked.SIMIMEILockRequest{}),
-				Tags: &schema.FieldTags{
-					JSON: "sim",
-				},
-			}).
-			MappableArgument("param", imeiLockParam),
-
-		// IMEIUnlock
-		simAPI.DefineSimpleOperation("IMEIUnlock", http.MethodDelete, "sim/imeilock"),
-
-		// Logs
-		simAPI.DefineOperation("Logs").
-			Method(http.MethodGet).
-			PathFormat(schema.IDAndSuffixPathFormat("sim/sessionlog")).
-			Argument(schema.ArgumentZone).
-			Argument(schema.ArgumentID).
-			ResultPluralFromEnvelope(simLog, &schema.EnvelopePayloadDesc{
-				PayloadName: "Logs",
-				PayloadType: meta.Static(naked.SIMLog{}),
-			}),
-
-		// GetNetworkOperator
-		simAPI.DefineOperation("GetNetworkOperator").
-			Method(http.MethodGet).
-			PathFormat(schema.IDAndSuffixPathFormat("sim/network_operator_config")).
-			Argument(schema.ArgumentZone).
-			Argument(schema.ArgumentID).
-			ResultPluralFromEnvelope(nwOpConfig, &schema.EnvelopePayloadDesc{
-				PayloadName: "NetworkOperationConfigs",
-				PayloadType: meta.Static(naked.SIMNetworkOperatorConfig{}),
-			}),
-
-		// SetNetworkOperator
-		simAPI.DefineOperation("SetNetworkOperator").
-			Method(http.MethodPut).
-			PathFormat(schema.IDAndSuffixPathFormat("sim/network_operator_config")).
-			Argument(schema.ArgumentZone).
-			Argument(schema.ArgumentID).
-			PassthroughModelArgumentWithEnvelope("configs", nwOpConfigs),
-
-		// monitor
-		simAPI.DefineOperationMonitorChild("SIM", "sim/metrics",
-			monitorParameter, monitors.linkModel()),
-	}
-	Resources.Def(simAPI)
-}
+)

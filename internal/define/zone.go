@@ -6,10 +6,22 @@ import (
 	"github.com/sacloud/libsacloud-v2/sacloud/naked"
 )
 
-func init() {
+var zoneAPI = &schema.Resource{
+	Name:       "Zone",
+	PathName:   "zone",
+	PathSuffix: schema.CloudAPISuffix,
+	IsGlobal:   true,
+	OperationsDefineFunc: func(r *schema.Resource) []*schema.Operation {
+		return []*schema.Operation{
+			r.DefineOperationFind(zoneNakedType, findParameter, zoneView),
+			r.DefineOperationRead(zoneNakedType, zoneView),
+		}
+	},
+}
 
-	nakedType := meta.Static(naked.Zone{})
-	zone := &schema.Model{
+var (
+	zoneNakedType = meta.Static(naked.Zone{})
+	zoneView      = &schema.Model{
 		Fields: []*schema.FieldDesc{
 			fields.ID(),
 			fields.Name(),
@@ -21,16 +33,4 @@ func init() {
 			fields.Region(),
 		},
 	}
-
-	zoneAPI := &schema.Resource{
-		Name:       "Zone",
-		PathName:   "zone",
-		PathSuffix: schema.CloudAPISuffix,
-		IsGlobal:   true,
-	}
-	zoneAPI.Operations = []*schema.Operation{
-		zoneAPI.DefineOperationFind(nakedType, findParameter, zone),
-		zoneAPI.DefineOperationRead(nakedType, zone),
-	}
-	Resources.Def(zoneAPI)
-}
+)

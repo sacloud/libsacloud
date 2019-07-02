@@ -8,10 +8,45 @@ import (
 	"github.com/sacloud/libsacloud-v2/sacloud/naked"
 )
 
-func init() {
-	nakedType := meta.Static(naked.Switch{})
+var switchAPI = &schema.Resource{
+	Name:       "Switch",
+	PathName:   "switch",
+	PathSuffix: schema.CloudAPISuffix,
+	OperationsDefineFunc: func(r *schema.Resource) []*schema.Operation {
+		return []*schema.Operation{
+			// find
+			r.DefineOperationFind(switchNakedType, findParameter, switchView),
 
-	sw := &schema.Model{
+			// create
+			r.DefineOperationCreate(switchNakedType, switchCreateParam, switchView),
+
+			// read
+			r.DefineOperationRead(switchNakedType, switchView),
+
+			// update
+			r.DefineOperationUpdate(switchNakedType, switchUpdateParam, switchView),
+
+			// delete
+			r.DefineOperationDelete(),
+
+			// connect from bridge
+			r.DefineSimpleOperation("ConnectToBridge", http.MethodPut, "to/bridge/{{.bridgeID}}",
+				&schema.Argument{
+					Name: "bridgeID",
+					Type: meta.TypeID,
+				},
+			),
+
+			// disconnect from bridge
+			r.DefineSimpleOperation("DisconnectFromBridge", http.MethodDelete, "to/bridge/"),
+		}
+	},
+}
+
+var (
+	switchNakedType = meta.Static(naked.Switch{})
+
+	switchView = &schema.Model{
 		Fields: []*schema.FieldDesc{
 			fields.ID(),
 			fields.Name(),
@@ -35,7 +70,7 @@ func init() {
 		},
 	}
 
-	createParam := &schema.Model{
+	switchCreateParam = &schema.Model{
 		Fields: []*schema.FieldDesc{
 			fields.Name(),
 			fields.UserSubnetNetworkMaskLen(),
@@ -46,7 +81,7 @@ func init() {
 		},
 	}
 
-	updateParam := &schema.Model{
+	switchUpdateParam = &schema.Model{
 		Fields: []*schema.FieldDesc{
 			fields.Name(),
 			fields.UserSubnetNetworkMaskLen(),
@@ -56,37 +91,4 @@ func init() {
 			fields.IconID(),
 		},
 	}
-	swAPI := &schema.Resource{
-		Name:       "Switch",
-		PathName:   "switch",
-		PathSuffix: schema.CloudAPISuffix,
-	}
-	swAPI.Operations = []*schema.Operation{
-		// find
-		swAPI.DefineOperationFind(nakedType, findParameter, sw),
-
-		// create
-		swAPI.DefineOperationCreate(nakedType, createParam, sw),
-
-		// read
-		swAPI.DefineOperationRead(nakedType, sw),
-
-		// update
-		swAPI.DefineOperationUpdate(nakedType, updateParam, sw),
-
-		// delete
-		swAPI.DefineOperationDelete(),
-
-		// connect from bridge
-		swAPI.DefineSimpleOperation("ConnectToBridge", http.MethodPut, "to/bridge/{{.bridgeID}}",
-			&schema.Argument{
-				Name: "bridgeID",
-				Type: meta.TypeID,
-			},
-		),
-
-		// disconnect from bridge
-		swAPI.DefineSimpleOperation("DisconnectFromBridge", http.MethodDelete, "to/bridge/"),
-	}
-	Resources.Def(swAPI)
-}
+)

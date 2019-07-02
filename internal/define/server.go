@@ -8,10 +8,98 @@ import (
 	"github.com/sacloud/libsacloud-v2/sacloud/naked"
 )
 
-func init() {
-	nakedServer := meta.Static(naked.Server{})
+var serverAPI = &schema.Resource{
+	Name:       "Server",
+	PathName:   "server",
+	PathSuffix: schema.CloudAPISuffix,
+	OperationsDefineFunc: func(r *schema.Resource) []*schema.Operation {
+		return []*schema.Operation{
+			// find
+			r.DefineOperationFind(serverNakedType, findParameter, serverView),
 
-	server := &schema.Model{
+			// create
+			r.DefineOperationCreate(serverNakedType, serverCreateParam, serverView),
+
+			// read
+			r.DefineOperationRead(serverNakedType, serverView),
+
+			// update
+			r.DefineOperationUpdate(serverNakedType, serverUpdateParam, serverView),
+
+			// delete
+			r.DefineOperationDelete(),
+
+			// change plan
+			r.DefineOperation("ChangePlan").
+				Method(http.MethodPut).
+				PathFormat(schema.IDAndSuffixPathFormat("plan")).
+				Argument(schema.ArgumentZone).
+				Argument(schema.ArgumentID).
+				PassthroughModelArgumentWithEnvelope("plan", serverChangePlanParam).
+				ResultFromEnvelope(serverView, &schema.EnvelopePayloadDesc{
+					PayloadName: r.Name,
+					PayloadType: meta.Static(naked.Server{}),
+				}),
+
+			// insert cdrom
+			r.DefineOperation("InsertCDROM").
+				Method(http.MethodPut).
+				PathFormat(schema.IDAndSuffixPathFormat("cdrom")).
+				RequestEnvelope(&schema.EnvelopePayloadDesc{
+					PayloadType: meta.Static(naked.CDROM{}),
+					PayloadName: "CDROM",
+				}).
+				Argument(schema.ArgumentZone).
+				Argument(schema.ArgumentID).
+				Argument(&schema.Argument{
+					Name: "insertParam",
+					Type: &schema.Model{
+						Name: "InsertCDROMRequest",
+						Fields: []*schema.FieldDesc{
+							fields.ID(),
+						},
+						NakedType: meta.Static(naked.CDROM{}),
+					},
+					MapConvTag: "CDROM",
+				}),
+
+			// eject cdrom
+			r.DefineOperation("EjectCDROM").
+				Method(http.MethodDelete).
+				PathFormat(schema.IDAndSuffixPathFormat("cdrom")).
+				RequestEnvelope(&schema.EnvelopePayloadDesc{
+					PayloadType: meta.Static(naked.CDROM{}),
+					PayloadName: "CDROM",
+				}).
+				Argument(schema.ArgumentZone).
+				Argument(schema.ArgumentID).
+				Argument(&schema.Argument{
+					Name: "insertParam",
+					Type: &schema.Model{
+						Name: "EjectCDROMRequest",
+						Fields: []*schema.FieldDesc{
+							fields.ID(),
+						},
+						NakedType: meta.Static(naked.CDROM{}),
+					},
+					MapConvTag: "CDROM",
+				}),
+
+			// power management(boot/shutdown/reset)
+			r.DefineOperationBoot(),
+			r.DefineOperationShutdown(),
+			r.DefineOperationReset(),
+
+			// monitor
+			r.DefineOperationMonitor(monitorParameter, monitors.cpuTimeModel()),
+		}
+	},
+}
+
+var (
+	serverNakedType = meta.Static(naked.Server{})
+
+	serverView = &schema.Model{
 		Name: "Server",
 		Fields: []*schema.FieldDesc{
 			fields.ID(),
@@ -68,7 +156,7 @@ func init() {
 		},
 	}
 
-	createParam := &schema.Model{
+	serverCreateParam = &schema.Model{
 		Fields: []*schema.FieldDesc{
 			// server plan
 			fields.ServerPlanCPU(),
@@ -108,7 +196,7 @@ func init() {
 		},
 	}
 
-	updateParam := &schema.Model{
+	serverUpdateParam = &schema.Model{
 		Fields: []*schema.FieldDesc{
 			fields.Name(),
 			fields.Description(),
@@ -117,7 +205,7 @@ func init() {
 		},
 	}
 
-	changePlanParam := &schema.Model{
+	serverChangePlanParam = &schema.Model{
 		Name: "ServerChangePlanRequest",
 		Fields: []*schema.FieldDesc{
 			fields.CPU(),
@@ -127,91 +215,4 @@ func init() {
 		},
 		NakedType: meta.Static(naked.ServerPlan{}),
 	}
-
-	serverAPI := &schema.Resource{
-		Name:       "Server",
-		PathName:   "server",
-		PathSuffix: schema.CloudAPISuffix,
-	}
-	serverAPI.Operations = []*schema.Operation{
-		// find
-		serverAPI.DefineOperationFind(nakedServer, findParameter, server),
-
-		// create
-		serverAPI.DefineOperationCreate(nakedServer, createParam, server),
-
-		// read
-		serverAPI.DefineOperationRead(nakedServer, server),
-
-		// update
-		serverAPI.DefineOperationUpdate(nakedServer, updateParam, server),
-
-		// delete
-		serverAPI.DefineOperationDelete(),
-
-		// change plan
-		serverAPI.DefineOperation("ChangePlan").
-			Method(http.MethodPut).
-			PathFormat(schema.IDAndSuffixPathFormat("plan")).
-			Argument(schema.ArgumentZone).
-			Argument(schema.ArgumentID).
-			PassthroughModelArgumentWithEnvelope("plan", changePlanParam).
-			ResultFromEnvelope(server, &schema.EnvelopePayloadDesc{
-				PayloadName: serverAPI.Name,
-				PayloadType: meta.Static(naked.Server{}),
-			}),
-
-		// insert cdrom
-		serverAPI.DefineOperation("InsertCDROM").
-			Method(http.MethodPut).
-			PathFormat(schema.IDAndSuffixPathFormat("cdrom")).
-			RequestEnvelope(&schema.EnvelopePayloadDesc{
-				PayloadType: meta.Static(naked.CDROM{}),
-				PayloadName: "CDROM",
-			}).
-			Argument(schema.ArgumentZone).
-			Argument(schema.ArgumentID).
-			Argument(&schema.Argument{
-				Name: "insertParam",
-				Type: &schema.Model{
-					Name: "InsertCDROMRequest",
-					Fields: []*schema.FieldDesc{
-						fields.ID(),
-					},
-					NakedType: meta.Static(naked.CDROM{}),
-				},
-				MapConvTag: "CDROM",
-			}),
-
-		// eject cdrom
-		serverAPI.DefineOperation("EjectCDROM").
-			Method(http.MethodDelete).
-			PathFormat(schema.IDAndSuffixPathFormat("cdrom")).
-			RequestEnvelope(&schema.EnvelopePayloadDesc{
-				PayloadType: meta.Static(naked.CDROM{}),
-				PayloadName: "CDROM",
-			}).
-			Argument(schema.ArgumentZone).
-			Argument(schema.ArgumentID).
-			Argument(&schema.Argument{
-				Name: "insertParam",
-				Type: &schema.Model{
-					Name: "EjectCDROMRequest",
-					Fields: []*schema.FieldDesc{
-						fields.ID(),
-					},
-					NakedType: meta.Static(naked.CDROM{}),
-				},
-				MapConvTag: "CDROM",
-			}),
-
-		// power management(boot/shutdown/reset)
-		serverAPI.DefineOperationBoot(),
-		serverAPI.DefineOperationShutdown(),
-		serverAPI.DefineOperationReset(),
-
-		// monitor
-		serverAPI.DefineOperationMonitor(monitorParameter, monitors.cpuTimeModel()),
-	}
-	Resources.Def(serverAPI)
-}
+)

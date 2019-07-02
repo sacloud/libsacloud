@@ -6,10 +6,34 @@ import (
 	"github.com/sacloud/libsacloud-v2/sacloud/naked"
 )
 
-func init() {
-	nakedType := meta.Static(naked.Bridge{})
+var bridgeAPI = &schema.Resource{
+	Name:       "Bridge",
+	PathName:   "bridge",
+	PathSuffix: schema.CloudAPISuffix,
+	OperationsDefineFunc: func(r *schema.Resource) []*schema.Operation {
+		return []*schema.Operation{
+			// find
+			r.DefineOperationFind(bridgeNakedType, findParameter, bridgeView),
 
-	bridge := &schema.Model{
+			// create
+			r.DefineOperationCreate(bridgeNakedType, bridgeCreateParam, bridgeView),
+
+			// read
+			r.DefineOperationRead(bridgeNakedType, bridgeView),
+
+			// update
+			r.DefineOperationUpdate(bridgeNakedType, bridgeUpdateParam, bridgeView),
+
+			// delete
+			r.DefineOperationDelete(),
+		}
+	},
+}
+
+var (
+	bridgeNakedType = meta.Static(naked.Bridge{})
+
+	bridgeView = &schema.Model{
 		Fields: []*schema.FieldDesc{
 			fields.ID(),
 			fields.Name(),
@@ -21,40 +45,17 @@ func init() {
 		},
 	}
 
-	createParam := &schema.Model{
+	bridgeCreateParam = &schema.Model{
 		Fields: []*schema.FieldDesc{
 			fields.Name(),
 			fields.Description(),
 		},
 	}
 
-	updateParam := &schema.Model{
+	bridgeUpdateParam = &schema.Model{
 		Fields: []*schema.FieldDesc{
 			fields.Name(),
 			fields.Description(),
 		},
 	}
-
-	bridgeAPI := &schema.Resource{
-		Name:       "Bridge",
-		PathName:   "bridge",
-		PathSuffix: schema.CloudAPISuffix,
-	}
-	bridgeAPI.Operations = []*schema.Operation{
-		// find
-		bridgeAPI.DefineOperationFind(nakedType, findParameter, bridge),
-
-		// create
-		bridgeAPI.DefineOperationCreate(nakedType, createParam, bridge),
-
-		// read
-		bridgeAPI.DefineOperationRead(nakedType, bridge),
-
-		// update
-		bridgeAPI.DefineOperationUpdate(nakedType, updateParam, bridge),
-
-		// delete
-		bridgeAPI.DefineOperationDelete(),
-	}
-	Resources.Def(bridgeAPI)
-}
+)

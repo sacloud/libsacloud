@@ -6,10 +6,48 @@ import (
 	"github.com/sacloud/libsacloud-v2/sacloud/naked"
 )
 
-func init() {
-	nakedType := meta.Static(naked.Archive{})
+var archiveAPI = &schema.Resource{
+	Name:       "Archive",
+	PathName:   "archive",
+	PathSuffix: schema.CloudAPISuffix,
+	OperationsDefineFunc: func(r *schema.Resource) []*schema.Operation {
+		return []*schema.Operation{
+			// find
+			r.DefineOperationFind(archiveNakedType, findParameter, archiveView),
 
-	archive := &schema.Model{
+			// create
+			r.DefineOperationCreate(archiveNakedType, archiveCreateParam, archiveView),
+
+			// CreateBlank
+			r.DefineOperationCreate(archiveNakedType, archiveCreateBlankParam, archiveView).
+				ResultFromEnvelope(models.ftpServer(), &schema.EnvelopePayloadDesc{
+					PayloadName: models.ftpServer().Name,
+					PayloadType: meta.Static(naked.OpeningFTPServer{}),
+				}).Name("CreateBlank"),
+			// TODO 他ゾーンからの転送コピー作成
+
+			// read
+			r.DefineOperationRead(archiveNakedType, archiveView),
+
+			// update
+			r.DefineOperationUpdate(archiveNakedType, archiveUpdateParam, archiveView),
+
+			// delete
+			r.DefineOperationDelete(),
+
+			// openFTP
+			r.DefineOperationOpenFTP(models.ftpServerOpenParameter(), models.ftpServer()),
+
+			// closeFTP
+			r.DefineOperationCloseFTP(),
+		}
+	},
+}
+
+var (
+	archiveNakedType = meta.Static(naked.Archive{})
+
+	archiveView = &schema.Model{
 		Fields: []*schema.FieldDesc{
 			fields.ID(),
 			fields.Name(),
@@ -37,7 +75,7 @@ func init() {
 		},
 	}
 
-	createParam := &schema.Model{
+	archiveCreateParam = &schema.Model{
 		Fields: []*schema.FieldDesc{
 			fields.SourceDiskID(),
 			fields.SourceArchiveID(),
@@ -48,7 +86,7 @@ func init() {
 		},
 	}
 
-	createBlankParam := &schema.Model{
+	archiveCreateBlankParam = &schema.Model{
 		Name: "ArchiveCreateBlankRequest",
 		Fields: []*schema.FieldDesc{
 			fields.SizeMB(),
@@ -59,7 +97,7 @@ func init() {
 		},
 	}
 
-	updateParam := &schema.Model{
+	archiveUpdateParam = &schema.Model{
 		Fields: []*schema.FieldDesc{
 			fields.Name(),
 			fields.Description(),
@@ -67,41 +105,4 @@ func init() {
 			fields.IconID(),
 		},
 	}
-
-	archiveAPI := &schema.Resource{
-		Name:       "Archive",
-		PathName:   "archive",
-		PathSuffix: schema.CloudAPISuffix,
-	}
-	archiveAPI.Operations = []*schema.Operation{
-		// find
-		archiveAPI.DefineOperationFind(nakedType, findParameter, archive),
-
-		// create
-		archiveAPI.DefineOperationCreate(nakedType, createParam, archive),
-
-		// CreateBlank
-		archiveAPI.DefineOperationCreate(nakedType, createBlankParam, archive).
-			ResultFromEnvelope(models.ftpServer(), &schema.EnvelopePayloadDesc{
-				PayloadName: models.ftpServer().Name,
-				PayloadType: meta.Static(naked.OpeningFTPServer{}),
-			}).Name("CreateBlank"),
-		// TODO 他ゾーンからの転送コピー作成
-
-		// read
-		archiveAPI.DefineOperationRead(nakedType, archive),
-
-		// update
-		archiveAPI.DefineOperationUpdate(nakedType, updateParam, archive),
-
-		// delete
-		archiveAPI.DefineOperationDelete(),
-
-		// openFTP
-		archiveAPI.DefineOperationOpenFTP(models.ftpServerOpenParameter(), models.ftpServer()),
-
-		// closeFTP
-		archiveAPI.DefineOperationCloseFTP(),
-	}
-	Resources.Def(archiveAPI)
-}
+)
