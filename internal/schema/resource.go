@@ -38,7 +38,7 @@ func (r *Resources) Def(rs *Resource) {
 		*r = rr
 	}
 	if rs.OperationsDefineFunc != nil {
-		rs.Operations = rs.OperationsDefineFunc(rs)
+		rs.AddOperations(rs.OperationsDefineFunc(rs)...)
 	}
 	*r = append(*r, rs)
 }
@@ -67,7 +67,7 @@ func (r *Resources) DefineWith(name string, f func(*Resource)) *Resource {
 func (r Resources) Models() Models {
 	ms := Models{}
 	for _, res := range r {
-		for _, o := range res.Operations {
+		for _, o := range res.Operations() {
 			ms = append(ms, o.Models()...)
 		}
 	}
@@ -83,7 +83,7 @@ type Resource struct {
 	PathName             string               // リソースのパス名 APIのURLで利用される e.g.: server 省略した場合はNameを小文字にしたものとなる
 	PathSuffix           string               // APIのURLで利用されるプレフィックス e.g.: api/cloud/1.1
 	IsGlobal             bool                 // 全ゾーンで共通リソース(グローバルリソース)
-	Operations           []*Operation         // このリソースに対する操作、OperationsDefineFuncが設定されている場合はそちらを呼び出して設定される
+	operations           []*Operation         // このリソースに対する操作、OperationsDefineFuncが設定されている場合はそちらを呼び出して設定される
 	OperationsDefineFunc OperationsDefineFunc // このリソースに対する操作を定義するFunc
 }
 
@@ -105,9 +105,14 @@ func (r *Resource) GetPathSuffix() string {
 	return CloudAPISuffix
 }
 
+// Operations リソースに対する操作の定義を取得
+func (r *Resource) Operations() []*Operation {
+	return r.operations
+}
+
 // AddOperation リソースに対する操作の定義を追加
 func (r *Resource) AddOperation(op *Operation) {
-	r.Operations = append(r.Operations, op)
+	r.operations = append(r.operations, op)
 }
 
 // AddOperations リソースに対する操作の定義を追加
@@ -478,7 +483,7 @@ func (r *Resource) TypeName() string {
 // ImportStatements コード生成時に利用するimport文を生成する
 func (r *Resource) ImportStatements(additionalImports ...string) []string {
 	ss := wrapByDoubleQuote(additionalImports...)
-	for _, o := range r.Operations {
+	for _, o := range r.Operations() {
 		ss = append(ss, o.ImportStatements()...)
 	}
 

@@ -74,7 +74,7 @@ func TestOperation(t *testing.T) {
 	}
 
 	for _, tc := range expects {
-		resource.Operations = []*Operation{tc.operation}
+		resource.AddOperation(tc.operation)
 		require.Equal(t, tc.expect.methodName, tc.operation.MethodName())
 		require.Equal(t, tc.expect.requestEnvelopeStructName, tc.operation.RequestEnvelopeStructName())
 		require.Equal(t, tc.expect.responseEnvelopeStructName, tc.operation.ResponseEnvelopeStructName())
