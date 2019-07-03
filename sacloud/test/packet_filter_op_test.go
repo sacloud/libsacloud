@@ -10,9 +10,9 @@ import (
 
 func TestPacketFilterOpCRUD(t *testing.T) {
 	Run(t, &CRUDTestCase{
-		Parallel:          true,
-		IgnoreStartupWait: true,
-		SetupAPICaller:    singletonAPICaller,
+		Parallel:           true,
+		IgnoreStartupWait:  true,
+		SetupAPICallerFunc: singletonAPICaller,
 		Create: &CRUDTestFunc{
 			Func: testPacketFilterCreate,
 			Expect: &CRUDTestExpect{
