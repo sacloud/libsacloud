@@ -1,5 +1,5 @@
 language: go
-go: "1.12.1"
+go: "1.12.6"
 
 install:
   - make tools
