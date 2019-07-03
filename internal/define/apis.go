@@ -16,20 +16,20 @@ import "github.com/sacloud/libsacloud-v2/internal/schema"
 var Resources schema.Resources
 
 func init() {
-	Resources.Def(archiveAPI)
-	Resources.Def(bridgeAPI)
-	Resources.Def(cdromAPI)
-	Resources.Def(diskAPI)
-	Resources.Def(gslbAPI)
-	Resources.Def(interfaceAPI)
-	Resources.Def(internetAPI)
-	Resources.Def(loadBalancerAPI)
-	Resources.Def(nfsAPI)
-	Resources.Def(noteAPI)
-	Resources.Def(packetFilterAPI)
-	Resources.Def(serverAPI)
-	Resources.Def(simAPI)
-	Resources.Def(switchAPI)
-	Resources.Def(vpcRouterAPI)
-	Resources.Def(zoneAPI)
+	Resources.Def(archiveAPI)      // アーカイブ
+	Resources.Def(bridgeAPI)       // ブリッジ
+	Resources.Def(cdromAPI)        // ISOイメージ(CD-ROM)
+	Resources.Def(diskAPI)         // ディスク
+	Resources.Def(gslbAPI)         // GSLB
+	Resources.Def(interfaceAPI)    // インターフェース(NIC)
+	Resources.Def(internetAPI)     // スイッチ+ルータ
+	Resources.Def(loadBalancerAPI) // ロードバランサ
+	Resources.Def(nfsAPI)          // NFS
+	Resources.Def(noteAPI)         // スタートアップスクリプト
+	Resources.Def(packetFilterAPI) // パケットフィルタ
+	Resources.Def(serverAPI)       // サーバ
+	Resources.Def(simAPI)          // SIM
+	Resources.Def(switchAPI)       // スイッチ
+	Resources.Def(vpcRouterAPI)    // VPCルータ
+	Resources.Def(zoneAPI)         // ゾーン
 }
