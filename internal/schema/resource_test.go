@@ -61,7 +61,7 @@ func TestResource_ImportStatements(t *testing.T) {
 		},
 		{
 			resource: &Resource{
-				Operations: []*Operation{
+				operations: []*Operation{
 					{
 						arguments: []*Argument{
 							{
@@ -97,7 +97,7 @@ func TestResources_ImportStatements(t *testing.T) {
 		{
 			resources: Resources([]*Resource{
 				{
-					Operations: []*Operation{
+					operations: []*Operation{
 						{
 							arguments: []*Argument{
 								{
@@ -108,7 +108,7 @@ func TestResources_ImportStatements(t *testing.T) {
 					},
 				},
 				{
-					Operations: []*Operation{
+					operations: []*Operation{
 						{
 							arguments: []*Argument{
 								{
