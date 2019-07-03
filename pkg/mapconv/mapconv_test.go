@@ -87,7 +87,10 @@ func TestToNaked(t *testing.T) {
 		err := ConvertTo(tt.input, output)
 		require.Equal(t, tt.err, err)
 		if err == nil {
-			require.Equal(t, tt.output, output)
+			require.EqualValues(t, tt.output.ValueA, output.ValueA)
+			require.EqualValues(t, tt.output.Pointer.String(), output.Pointer.String())
+			require.EqualValues(t, tt.output.Slice, output.Slice)
+			require.EqualValues(t, tt.output.NoTag, output.NoTag)
 		}
 	}
 

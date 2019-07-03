@@ -1,14 +1,10 @@
-FROM golang:1.12-alpine
+FROM golang:1.12
 LABEL maintainer="Kazumichi Yamamoto <yamamoto.febc@gmail.com>"
-
-RUN apk add --no-cache --update ca-certificates git && \
-    go get github.com/stretchr/testify/assert && \
-    go get golang.org/x/tools/cmd/godoc && \
-    go get -u github.com/golang/lint/golint
 
 ENV SRC=$GOPATH/src/github.com/sacloud/libsacloud/
 ADD . $SRC
 WORKDIR $SRC
 
-ENTRYPOINT [ "go" ]
-CMD [ "test", "-v", "./..." ]
+RUN make tools
+
+ENTRYPOINT [ "make" ]
