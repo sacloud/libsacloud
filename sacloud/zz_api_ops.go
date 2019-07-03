@@ -6,8 +6,8 @@ import (
 	"context"
 	"encoding/json"
 
-	"github.com/sacloud/libsacloud/pkg/mapconv"
-	"github.com/sacloud/libsacloud/sacloud/types"
+	"github.com/sacloud/libsacloud/v2/pkg/mapconv"
+	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
 func init() {

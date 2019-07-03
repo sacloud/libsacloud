@@ -3,8 +3,8 @@
 package fake
 
 import (
-	"github.com/sacloud/libsacloud/sacloud"
-	"github.com/sacloud/libsacloud/sacloud/types"
+	"github.com/sacloud/libsacloud/v2/sacloud"
+	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
 func (s *store) getArchive(zone string) []*sacloud.Archive {

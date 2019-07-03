@@ -3,7 +3,7 @@ package accessor
 import (
 	"net"
 
-	"github.com/sacloud/libsacloud/pkg/cidr"
+	"github.com/sacloud/libsacloud/v2/pkg/cidr"
 )
 
 // AssignedIPAddress スイッチ+ルータの割り当てられたIPアドレスリスト
