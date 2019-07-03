@@ -5,7 +5,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/sacloud/libsacloud-v2/sacloud/types"
+	"github.com/sacloud/libsacloud/sacloud/types"
 )
 
 // SIM SIM

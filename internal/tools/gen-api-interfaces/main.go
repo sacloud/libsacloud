@@ -4,8 +4,8 @@ import (
 	"log"
 	"path/filepath"
 
-	"github.com/sacloud/libsacloud-v2/internal/define"
-	"github.com/sacloud/libsacloud-v2/internal/tools"
+	"github.com/sacloud/libsacloud/internal/define"
+	"github.com/sacloud/libsacloud/internal/tools"
 )
 
 const destination = "sacloud/zz_apis.go"

@@ -51,7 +51,7 @@ func Gopath() string {
 }
 
 func ProjectRootPath() string {
-	return filepath.Join(Gopath(), "src/github.com/sacloud/libsacloud-v2")
+	return filepath.Join(Gopath(), "src/github.com/sacloud/libsacloud")
 }
 
 // Sformat formats go source codes

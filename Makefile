@@ -36,8 +36,8 @@ fmt:
 	gofmt -s -l -w $(GOFMT_FILES)
 
 godoc:
-	@echo "URL: http://localhost:6060/pkg/github.com/sacloud/libsacloud-v2/"; \
-	docker run -it --rm -v $$PWD:/go/src/github.com/sacloud/libsacloud-v2 -p 6060:6060 golang:1.12 godoc -http=:6060
+	@echo "URL: http://localhost:6060/pkg/github.com/sacloud/libsacloud/"; \
+	docker run -it --rm -v $$PWD:/go/src/github.com/sacloud/libsacloud -p 6060:6060 golang:1.12 godoc -http=:6060
 
 .PHONY: tools
 tools:

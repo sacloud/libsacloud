@@ -5,8 +5,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/sacloud/libsacloud-v2/sacloud"
-	"github.com/sacloud/libsacloud-v2/sacloud/types"
+	"github.com/sacloud/libsacloud/sacloud"
+	"github.com/sacloud/libsacloud/sacloud/types"
 	"github.com/stretchr/testify/require"
 )
 
@@ -70,7 +70,7 @@ var (
 	createDiskParam = &sacloud.DiskCreateRequest{
 		DiskPlanID:  types.ID(4), //SSD
 		Connection:  types.DiskConnections.VirtIO,
-		Name:        "libsacloud-v2-disk",
+		Name:        "libsacloud-disk",
 		Description: "desc",
 		Tags:        []string{"tag1", "tag2"},
 		SizeMB:      20 * 1024,
@@ -83,7 +83,7 @@ var (
 		Connection:  createDiskParam.Connection,
 	}
 	updateDiskParam = &sacloud.DiskUpdateRequest{
-		Name:        "libsacloud-v2-disk-upd",
+		Name:        "libsacloud-disk-upd",
 		Description: "desc-upd",
 		Tags:        []string{"tag1-upd", "tag2-upd"},
 	}
@@ -137,7 +137,7 @@ func TestDiskOp_Config(t *testing.T) {
 
 	// create
 	disk, err := client.Create(ctx, testZone, &sacloud.DiskCreateRequest{
-		Name:            "libsacloud-v2-disk-edit",
+		Name:            "libsacloud-disk-edit",
 		DiskPlanID:      types.ID(4),
 		SizeMB:          20 * 1024,
 		SourceArchiveID: archiveID,

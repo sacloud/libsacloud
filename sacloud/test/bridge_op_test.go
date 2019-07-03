@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/sacloud/libsacloud-v2/sacloud"
+	"github.com/sacloud/libsacloud/sacloud"
 )
 
 func TestBridgeOpCRUD(t *testing.T) {
@@ -53,7 +53,7 @@ var (
 	}
 
 	createBridgeParam = &sacloud.BridgeCreateRequest{
-		Name:        "libsacloud-v2-bridge",
+		Name:        "libsacloud-bridge",
 		Description: "desc",
 	}
 	createBridgeExpected = &sacloud.Bridge{
@@ -61,7 +61,7 @@ var (
 		Description: createBridgeParam.Description,
 	}
 	updateBridgeParam = &sacloud.BridgeUpdateRequest{
-		Name:        "libsacloud-v2-bridge-upd",
+		Name:        "libsacloud-bridge-upd",
 		Description: "desc-upd",
 	}
 	updateBridgeExpected = &sacloud.Bridge{

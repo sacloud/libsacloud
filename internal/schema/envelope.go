@@ -3,7 +3,7 @@ package schema
 import (
 	"fmt"
 
-	"github.com/sacloud/libsacloud-v2/internal/schema/meta"
+	"github.com/sacloud/libsacloud/internal/schema/meta"
 )
 
 // EnvelopeType Modelを用いてAPIとやりとりする際のリクエスト/レスポンスのエンベロープ

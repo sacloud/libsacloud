@@ -11,7 +11,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/sacloud/libsacloud-v2"
+	"github.com/sacloud/libsacloud"
 )
 
 var (

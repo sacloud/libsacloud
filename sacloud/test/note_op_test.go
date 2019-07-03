@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
-	"github.com/sacloud/libsacloud-v2/sacloud"
-	"github.com/sacloud/libsacloud-v2/sacloud/types"
+	"github.com/sacloud/libsacloud/sacloud"
+	"github.com/sacloud/libsacloud/sacloud/types"
 	"github.com/stretchr/testify/require"
 )
 
@@ -43,7 +43,7 @@ func TestNoteOpCRUD(t *testing.T) {
 
 var (
 	createNoteParam = &sacloud.NoteCreateRequest{
-		Name:    "libsacloud-v2-note",
+		Name:    "libsacloud-note",
 		Tags:    []string{"tag1", "tag2"},
 		Class:   "shell",
 		Content: "test-content",
@@ -57,7 +57,7 @@ var (
 		Availability: types.Availabilities.Available,
 	}
 	updateNoteParam = &sacloud.NoteUpdateRequest{
-		Name:    "libsacloud-v2-note-upd",
+		Name:    "libsacloud-note-upd",
 		Tags:    []string{"tag1-upd", "tag2-upd"},
 		Class:   "shell",
 		Content: "test-content-upd",

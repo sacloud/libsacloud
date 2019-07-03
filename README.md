@@ -1,4 +1,4 @@
-# libsacloud-v2
+# libsacloud
 
 Library for SakuraCloud API
 

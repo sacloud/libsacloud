@@ -1,6 +1,6 @@
 package sacloud
 
-import "github.com/sacloud/libsacloud-v2/sacloud/types"
+import "github.com/sacloud/libsacloud/sacloud/types"
 
 // WaiterForUp 起動完了まで待つためのStateWaiterを返す
 func WaiterForUp(readFunc StateReadFunc) StateWaiter {

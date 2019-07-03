@@ -4,8 +4,8 @@ import (
 	"net"
 	"sync"
 
-	"github.com/sacloud/libsacloud-v2/pkg/cidr"
-	"github.com/sacloud/libsacloud-v2/sacloud/types"
+	"github.com/sacloud/libsacloud/pkg/cidr"
+	"github.com/sacloud/libsacloud/sacloud/types"
 )
 
 type valuePool struct {

@@ -1,6 +1,6 @@
 package naked
 
-import "github.com/sacloud/libsacloud-v2/sacloud/types"
+import "github.com/sacloud/libsacloud/sacloud/types"
 
 // DiskPlan ディスクプラン
 type DiskPlan struct {

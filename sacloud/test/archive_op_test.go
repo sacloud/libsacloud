@@ -5,8 +5,8 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/sacloud/libsacloud-v2/sacloud"
-	"github.com/sacloud/libsacloud-v2/sacloud/types"
+	"github.com/sacloud/libsacloud/sacloud"
+	"github.com/sacloud/libsacloud/sacloud/types"
 	"github.com/stretchr/testify/require"
 )
 
@@ -88,7 +88,7 @@ var (
 	}
 
 	createArchiveParam = &sacloud.ArchiveCreateRequest{
-		Name:        "libsacloud-v2-archive",
+		Name:        "libsacloud-archive",
 		Description: "desc",
 		Tags:        []string{"tag1", "tag2"},
 	}
@@ -100,7 +100,7 @@ var (
 		DiskPlanID:  types.ID(2),
 	}
 	updateArchiveParam = &sacloud.ArchiveUpdateRequest{
-		Name:        "libsacloud-v2-archive-upd",
+		Name:        "libsacloud-archive-upd",
 		Description: "desc-upd",
 		Tags:        []string{"tag1-upd", "tag2-upd"},
 	}
@@ -140,7 +140,7 @@ func TestArchiveOp_CreateBlank(t *testing.T) {
 
 	archive, ftpServer, err := client.CreateBlank(context.Background(), testZone, &sacloud.ArchiveCreateBlankRequest{
 		SizeMB: 20 * 1024,
-		Name:   "libsacloud-v2-archive-blank",
+		Name:   "libsacloud-archive-blank",
 	})
 	require.NoError(t, err)
 	require.NotNil(t, archive)

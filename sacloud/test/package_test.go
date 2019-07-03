@@ -9,11 +9,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/sacloud/libsacloud-v2"
-	"github.com/sacloud/libsacloud-v2/sacloud"
-	"github.com/sacloud/libsacloud-v2/sacloud/accessor"
-	"github.com/sacloud/libsacloud-v2/sacloud/fake"
-	"github.com/sacloud/libsacloud-v2/sacloud/types"
+	"github.com/sacloud/libsacloud"
+	"github.com/sacloud/libsacloud/sacloud"
+	"github.com/sacloud/libsacloud/sacloud/accessor"
+	"github.com/sacloud/libsacloud/sacloud/fake"
+	"github.com/sacloud/libsacloud/sacloud/types"
 )
 
 var testZone string
@@ -36,7 +36,7 @@ func singletonAPICaller() sacloud.APICaller {
 		}
 		client := sacloud.NewClient(accessToken, accessTokenSecret)
 		client.DefaultTimeoutDuration = 30 * time.Minute
-		client.UserAgent = fmt.Sprintf("test-libsacloud-v2/%s", libsacloud.Version)
+		client.UserAgent = fmt.Sprintf("test-libsacloud/%s", libsacloud.Version)
 		client.AcceptLanguage = "en-US,en;q=0.9"
 
 		client.RetryMax = 20
@@ -83,7 +83,7 @@ func setupSwitchFunc(targetResource string, dests ...accessor.SwitchID) func(*CR
 	return func(testContext *CRUDTestContext, caller sacloud.APICaller) error {
 		swClient := sacloud.NewSwitchOp(caller)
 		sw, err := swClient.Create(context.Background(), testZone, &sacloud.SwitchCreateRequest{
-			Name: "libsacloud-v2-switch-for-" + targetResource,
+			Name: "libsacloud-switch-for-" + targetResource,
 		})
 		if err != nil {
 			return err

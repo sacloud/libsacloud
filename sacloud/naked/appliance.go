@@ -3,7 +3,7 @@ package naked
 import (
 	"encoding/json"
 
-	"github.com/sacloud/libsacloud-v2/sacloud/types"
+	"github.com/sacloud/libsacloud/sacloud/types"
 )
 
 // ApplianceRemark アプライアンスの設定/ステータスなど

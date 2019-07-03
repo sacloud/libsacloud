@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
-	"github.com/sacloud/libsacloud-v2/sacloud"
-	"github.com/sacloud/libsacloud-v2/sacloud/types"
+	"github.com/sacloud/libsacloud/sacloud"
+	"github.com/sacloud/libsacloud/sacloud/types"
 	"github.com/stretchr/testify/require"
 )
 
@@ -95,8 +95,8 @@ var (
 			},
 		},
 		InterfaceDriver:   types.InterfaceDrivers.VirtIO,
-		HostName:          "libsacloud-v2-server",
-		Name:              "libsacloud-v2-server",
+		HostName:          "libsacloud-server",
+		Name:              "libsacloud-server",
 		Description:       "desc",
 		Tags:              []string{"tag1", "tag2"},
 		WaitDiskMigration: false,
@@ -111,7 +111,7 @@ var (
 		MemoryMB:        createServerParam.MemoryMB,
 	}
 	updateServerParam = &sacloud.ServerUpdateRequest{
-		Name:        "libsacloud-v2-nfs-upd",
+		Name:        "libsacloud-nfs-upd",
 		Tags:        []string{"tag1-upd", "tag2-upd"},
 		Description: "desc-upd",
 	}
@@ -165,8 +165,8 @@ func TestServerOp_ChangePlan(t *testing.T) {
 			},
 		},
 		InterfaceDriver:   types.InterfaceDrivers.VirtIO,
-		HostName:          "libsacloud-v2-server",
-		Name:              "libsacloud-v2-server",
+		HostName:          "libsacloud-server",
+		Name:              "libsacloud-server",
 		Description:       "desc",
 		Tags:              []string{"tag1", "tag2"},
 		WaitDiskMigration: false,

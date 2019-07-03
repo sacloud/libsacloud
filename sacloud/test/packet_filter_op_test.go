@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
-	"github.com/sacloud/libsacloud-v2/sacloud"
-	"github.com/sacloud/libsacloud-v2/sacloud/types"
+	"github.com/sacloud/libsacloud/sacloud"
+	"github.com/sacloud/libsacloud/sacloud/types"
 )
 
 func TestPacketFilterOpCRUD(t *testing.T) {
@@ -49,7 +49,7 @@ var (
 	}
 
 	createPacketFilterParam = &sacloud.PacketFilterCreateRequest{
-		Name:        "libsacloud-v2-packet-filter",
+		Name:        "libsacloud-packet-filter",
 		Description: "desc",
 		Expression: []*sacloud.PacketFilterExpression{
 			{
@@ -70,7 +70,7 @@ var (
 		Expression:  createPacketFilterParam.Expression,
 	}
 	updatePacketFilterParam = &sacloud.PacketFilterUpdateRequest{
-		Name:        "libsacloud-v2-packet-filter-upd",
+		Name:        "libsacloud-packet-filter-upd",
 		Description: "desc-upd",
 		Expression: []*sacloud.PacketFilterExpression{
 			{

@@ -3,7 +3,7 @@ package naked
 import (
 	"time"
 
-	"github.com/sacloud/libsacloud-v2/sacloud/types"
+	"github.com/sacloud/libsacloud/sacloud/types"
 )
 
 // Instance サーバなどの起動情報
