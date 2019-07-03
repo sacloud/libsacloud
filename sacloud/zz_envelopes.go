@@ -5,8 +5,8 @@ package sacloud
 import (
 	"time"
 
-	"github.com/sacloud/libsacloud/sacloud/naked"
-	"github.com/sacloud/libsacloud/sacloud/types"
+	"github.com/sacloud/libsacloud/v2/sacloud/naked"
+	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
 // archiveFindRequestEnvelope is envelop of API request

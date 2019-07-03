@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/sacloud/libsacloud/internal/schema/meta"
-	"github.com/sacloud/libsacloud/sacloud/naked"
+	"github.com/sacloud/libsacloud/v2/internal/schema/meta"
+	"github.com/sacloud/libsacloud/v2/sacloud/naked"
 )
 
 // Resources []*Resourceのエイリアス

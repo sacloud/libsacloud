@@ -3,7 +3,7 @@ package schema
 import (
 	"fmt"
 
-	"github.com/sacloud/libsacloud/internal/schema/meta"
+	"github.com/sacloud/libsacloud/v2/internal/schema/meta"
 )
 
 // Models APIのリクエスト/レスポンスなどのデータ型を示すモデル
@@ -87,7 +87,7 @@ func (m *Model) GoPkg() string {
 // GoImportPath インポートパス
 func (m *Model) GoImportPath() string {
 	if IsOutOfSacloudPackage {
-		return "github.com/sacloud/libsacloud/sacloud"
+		return "github.com/sacloud/libsacloud/v2/sacloud"
 	}
 	return ""
 }

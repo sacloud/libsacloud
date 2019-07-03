@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/sacloud/libsacloud/sacloud/accessor"
-	"github.com/sacloud/libsacloud/sacloud/types"
+	"github.com/sacloud/libsacloud/v2/sacloud/accessor"
+	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
 var s = &store{

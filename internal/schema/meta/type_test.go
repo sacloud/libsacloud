@@ -3,8 +3,8 @@ package meta
 import (
 	"testing"
 
-	"github.com/sacloud/libsacloud/sacloud"
-	"github.com/sacloud/libsacloud/sacloud/types"
+	"github.com/sacloud/libsacloud/v2/sacloud"
+	"github.com/sacloud/libsacloud/v2/sacloud/types"
 	"github.com/stretchr/testify/require"
 )
 
@@ -91,7 +91,7 @@ func TestStaticType_TypeImplements(t *testing.T) {
 			instance:                 types.EAvailability(""),
 			goType:                   "types.EAvailability",
 			goPkg:                    "types",
-			goImportPath:             "github.com/sacloud/libsacloud/sacloud/types",
+			goImportPath:             "github.com/sacloud/libsacloud/v2/sacloud/types",
 			goTypeSourceCode:         "types.EAvailability",
 			zeroInitializeSourceCode: `types.EAvailability("")`,
 			zeroValueSourceCode:      `types.EAvailability("")`,
@@ -101,7 +101,7 @@ func TestStaticType_TypeImplements(t *testing.T) {
 			instance:                 sacloud.Client{},
 			goType:                   "sacloud.Client",
 			goPkg:                    "sacloud",
-			goImportPath:             "github.com/sacloud/libsacloud/sacloud",
+			goImportPath:             "github.com/sacloud/libsacloud/v2/sacloud",
 			goTypeSourceCode:         "*sacloud.Client",
 			zeroInitializeSourceCode: "&sacloud.Client{}",
 			zeroValueSourceCode:      "nil",

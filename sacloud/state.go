@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/sacloud/libsacloud/sacloud/accessor"
-	"github.com/sacloud/libsacloud/sacloud/types"
+	"github.com/sacloud/libsacloud/v2/sacloud/accessor"
+	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
 // StateWaiter リソースの状態が変わるまで待機する
