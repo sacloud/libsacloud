@@ -14,7 +14,7 @@ func TestArchiveOpCRUD(t *testing.T) {
 	Run(t, &CRUDTestCase{
 		Parallel: true,
 
-		SetupAPICaller: singletonAPICaller,
+		SetupAPICallerFunc: singletonAPICaller,
 
 		Setup: func(testContext *CRUDTestContext, caller sacloud.APICaller) error {
 			client := sacloud.NewArchiveOp(caller)

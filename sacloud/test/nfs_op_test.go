@@ -12,7 +12,7 @@ func TestNFSOpCRUD(t *testing.T) {
 	Run(t, &CRUDTestCase{
 		Parallel: true,
 
-		SetupAPICaller: singletonAPICaller,
+		SetupAPICallerFunc: singletonAPICaller,
 		Setup: func(testContext *CRUDTestContext, caller sacloud.APICaller) error {
 			swClient := sacloud.NewSwitchOp(caller)
 			sw, err := swClient.Create(context.Background(), testZone, &sacloud.SwitchCreateRequest{

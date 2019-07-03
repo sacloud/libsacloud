@@ -13,7 +13,7 @@ func TestSwitchOpCRUD(t *testing.T) {
 	Run(t, &CRUDTestCase{
 		Parallel: true,
 
-		SetupAPICaller: singletonAPICaller,
+		SetupAPICallerFunc: singletonAPICaller,
 		Create: &CRUDTestFunc{
 			Func: testSwitchCreate,
 			Expect: &CRUDTestExpect{

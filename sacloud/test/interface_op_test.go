@@ -15,7 +15,7 @@ func TestInterface_Operations(t *testing.T) {
 		Parallel:          true,
 		IgnoreStartupWait: true,
 
-		SetupAPICaller: singletonAPICaller,
+		SetupAPICallerFunc: singletonAPICaller,
 
 		Setup: func(testContext *CRUDTestContext, caller sacloud.APICaller) error {
 			serverClient := sacloud.NewServerOp(caller)
