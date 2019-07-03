@@ -36,7 +36,7 @@ type TestT interface {
 // CRUDTestCase CRUD操作テストケース
 type CRUDTestCase struct {
 	// APICallerのセットアップ用Func、テストケースごとに1回呼ばれる
-	SetupAPICaller func() sacloud.APICaller
+	SetupAPICallerFunc func() sacloud.APICaller
 
 	// Setup テスト前の準備(依存リソースの作成など)を行うためのFunc(省略可)
 	Setup func(*CRUDTestContext, sacloud.APICaller) error
@@ -141,8 +141,8 @@ func Run(t TestT, testCase *CRUDTestCase) {
 	if testCase.Read == nil {
 		t.Fatal("CRUDTestCase.Read is required")
 	}
-	if testCase.SetupAPICaller == nil {
-		t.Fatal("CRUDTestCase.SetupAPICaller is required")
+	if testCase.SetupAPICallerFunc == nil {
+		t.Fatal("CRUDTestCase.SetupAPICallerFunc is required")
 	}
 
 	if testCase.Parallel {
@@ -155,20 +155,20 @@ func Run(t TestT, testCase *CRUDTestCase) {
 	defer func() {
 		// Cleanup
 		if testCase.Cleanup != nil {
-			if err := testCase.Cleanup(testContext, testCase.SetupAPICaller()); err != nil {
+			if err := testCase.Cleanup(testContext, testCase.SetupAPICallerFunc()); err != nil {
 				t.Logf("Cleanup is failed: ", err)
 			}
 		}
 	}()
 
 	if testCase.Setup != nil {
-		if err := testCase.Setup(testContext, testCase.SetupAPICaller()); err != nil {
+		if err := testCase.Setup(testContext, testCase.SetupAPICallerFunc()); err != nil {
 			t.Fatal("Setup is failed: ", err)
 		}
 	}
 
 	testFunc := func(f *CRUDTestFunc) error {
-		actual, err := f.Func(testContext, testCase.SetupAPICaller())
+		actual, err := f.Func(testContext, testCase.SetupAPICallerFunc())
 		if err != nil {
 			return err
 		}
@@ -194,7 +194,7 @@ func Run(t TestT, testCase *CRUDTestCase) {
 			_, ok2 := testCase.Create.Expect.ExpectValue.(accessor.InstanceStatus)
 			if ok1 || ok2 {
 				waiter := sacloud.WaiterForApplianceUp(func() (interface{}, error) {
-					return testCase.Read.Func(testContext, testCase.SetupAPICaller())
+					return testCase.Read.Func(testContext, testCase.SetupAPICallerFunc())
 				}, 30)
 				if _, err := waiter.WaitForState(context.TODO()); err != nil {
 					t.Fatal("WaitForUp is failed: ", err)
@@ -218,17 +218,17 @@ func Run(t TestT, testCase *CRUDTestCase) {
 
 	// Shutdown
 	if testCase.Shutdown != nil {
-		v, err := testCase.Read.Func(testContext, testCase.SetupAPICaller())
+		v, err := testCase.Read.Func(testContext, testCase.SetupAPICallerFunc())
 		if err != nil {
 			t.Fatal("Shutdown is failed: ", err)
 		}
 		if v, ok := v.(accessor.InstanceStatus); ok && v.GetInstanceStatus().IsUp() {
-			if err := testCase.Shutdown(testContext, testCase.SetupAPICaller()); err != nil {
+			if err := testCase.Shutdown(testContext, testCase.SetupAPICallerFunc()); err != nil {
 				t.Fatal("Shutdown is failed: ", err)
 			}
 
 			waiter := sacloud.WaiterForDown(func() (interface{}, error) {
-				return testCase.Read.Func(testContext, testCase.SetupAPICaller())
+				return testCase.Read.Func(testContext, testCase.SetupAPICallerFunc())
 			})
 			if _, err := waiter.WaitForState(context.TODO()); err != nil {
 				t.Fatal("WaitForDown is failed: ", err)
@@ -238,11 +238,11 @@ func Run(t TestT, testCase *CRUDTestCase) {
 
 	// Delete
 	if testCase.Delete != nil {
-		if err := testCase.Delete.Func(testContext, testCase.SetupAPICaller()); err != nil {
+		if err := testCase.Delete.Func(testContext, testCase.SetupAPICallerFunc()); err != nil {
 			t.Fatal("Delete is failed: ", err)
 		}
 		// check not exists
-		_, err := testCase.Read.Func(testContext, testCase.SetupAPICaller())
+		_, err := testCase.Read.Func(testContext, testCase.SetupAPICallerFunc())
 		if err == nil {
 			t.Fatal("Resource still exists: ", testContext.ID)
 		}

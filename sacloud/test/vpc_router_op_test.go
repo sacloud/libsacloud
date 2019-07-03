@@ -11,8 +11,8 @@ import (
 
 func TestVPCRouterOpCRUD(t *testing.T) {
 	Run(t, &CRUDTestCase{
-		Parallel:       true,
-		SetupAPICaller: singletonAPICaller,
+		Parallel:           true,
+		SetupAPICallerFunc: singletonAPICaller,
 		Create: &CRUDTestFunc{
 			Func: testVPCRouterCreate(createVPCRouterParam),
 			Expect: &CRUDTestExpect{
@@ -158,8 +158,8 @@ func testVPCRouterDelete(testContext *CRUDTestContext, caller sacloud.APICaller)
 
 func TestVPCRouterOpWithRouterCRUD(t *testing.T) {
 	Run(t, &CRUDTestCase{
-		Parallel:       true,
-		SetupAPICaller: singletonAPICaller,
+		Parallel:           true,
+		SetupAPICallerFunc: singletonAPICaller,
 
 		Setup: func(testContext *CRUDTestContext, caller sacloud.APICaller) error {
 			ctx := context.Background()
