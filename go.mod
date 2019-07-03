@@ -1,4 +1,4 @@
-module github.com/sacloud/libsacloud-v2
+module github.com/sacloud/libsacloud
 
 go 1.12
 

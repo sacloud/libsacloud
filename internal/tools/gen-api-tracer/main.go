@@ -4,9 +4,9 @@ import (
 	"log"
 	"path/filepath"
 
-	"github.com/sacloud/libsacloud-v2/internal/define"
-	"github.com/sacloud/libsacloud-v2/internal/schema"
-	"github.com/sacloud/libsacloud-v2/internal/tools"
+	"github.com/sacloud/libsacloud/internal/define"
+	"github.com/sacloud/libsacloud/internal/schema"
+	"github.com/sacloud/libsacloud/internal/tools"
 )
 
 const destination = "sacloud/trace/zz_api_tracer.go"

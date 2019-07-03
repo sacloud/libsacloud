@@ -6,8 +6,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/sacloud/libsacloud-v2/sacloud"
-	"github.com/sacloud/libsacloud-v2/sacloud/types"
+	"github.com/sacloud/libsacloud/sacloud"
+	"github.com/sacloud/libsacloud/sacloud/types"
 	"github.com/stretchr/testify/require"
 )
 
@@ -51,7 +51,7 @@ var (
 		"Switch",
 	}
 	createInternetParam = &sacloud.InternetCreateRequest{
-		Name:           "libsacloud-v2-internet",
+		Name:           "libsacloud-internet",
 		Description:    "desc",
 		Tags:           []string{"tag1", "tag2"},
 		NetworkMaskLen: 24,
@@ -65,7 +65,7 @@ var (
 		BandWidthMbps:  createInternetParam.BandWidthMbps,
 	}
 	updateInternetParam = &sacloud.InternetUpdateRequest{
-		Name:        "libsacloud-v2-internet-upd",
+		Name:        "libsacloud-internet-upd",
 		Tags:        []string{"tag1-upd", "tag2-upd"},
 		Description: "desc-upd",
 	}

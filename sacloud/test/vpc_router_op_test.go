@@ -5,8 +5,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/sacloud/libsacloud-v2/sacloud"
-	"github.com/sacloud/libsacloud-v2/sacloud/types"
+	"github.com/sacloud/libsacloud/sacloud"
+	"github.com/sacloud/libsacloud/sacloud/types"
 )
 
 func TestVPCRouterOpCRUD(t *testing.T) {
@@ -72,7 +72,7 @@ var (
 		Switch: &sacloud.ApplianceConnectedSwitch{
 			Scope: types.Scopes.Shared,
 		},
-		Name:        "libsacloud-v2-vpc-router",
+		Name:        "libsacloud-vpc-router",
 		Description: "desc",
 		Tags:        []string{"tag1", "tag2"},
 		Settings: &sacloud.VPCRouterSetting{
@@ -101,7 +101,7 @@ var (
 		Settings:       createVPCRouterParam.Settings,
 	}
 	updateVPCRouterParam = &sacloud.VPCRouterUpdateRequest{
-		Name:        "libsacloud-v2-vpc-router-upd",
+		Name:        "libsacloud-vpc-router-upd",
 		Tags:        []string{"tag1-upd", "tag2-upd"},
 		Description: "desc-upd",
 	}
@@ -165,7 +165,7 @@ func TestVPCRouterOpWithRouterCRUD(t *testing.T) {
 			ctx := context.Background()
 			routerOp := sacloud.NewInternetOp(caller)
 			created, err := routerOp.Create(ctx, testZone, &sacloud.InternetCreateRequest{
-				Name:           "libsacloud-v2-internet-for-vpc-router",
+				Name:           "libsacloud-internet-for-vpc-router",
 				BandWidthMbps:  100,
 				NetworkMaskLen: 28,
 			})
@@ -249,7 +249,7 @@ func TestVPCRouterOpWithRouterCRUD(t *testing.T) {
 
 				swOp := sacloud.NewSwitchOp(caller)
 				sw, err := swOp.Create(ctx, testZone, &sacloud.SwitchCreateRequest{
-					Name: "libsacloud-v2-switch-for-vpc-router",
+					Name: "libsacloud-switch-for-vpc-router",
 				})
 				if err != nil {
 					return nil, err
@@ -370,7 +370,7 @@ func TestVPCRouterOpWithRouterCRUD(t *testing.T) {
 var (
 	withRouterCreateVPCRouterParam = &sacloud.VPCRouterCreateRequest{
 		PlanID:      types.ID(1), // standard  TODO プランIDをどこかで定義する
-		Name:        "libsacloud-v2-vpc-router",
+		Name:        "libsacloud-vpc-router",
 		Description: "desc",
 		Tags:        []string{"tag1", "tag2"},
 	}
@@ -386,7 +386,7 @@ var (
 		Settings:       createVPCRouterParam.Settings,
 	}
 	withRouterUpdateVPCRouterParam = &sacloud.VPCRouterUpdateRequest{
-		Name:        "libsacloud-v2-vpc-router-upd",
+		Name:        "libsacloud-vpc-router-upd",
 		Tags:        []string{"tag1-upd", "tag2-upd"},
 		Description: "desc-upd",
 	}

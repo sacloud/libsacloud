@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
-	"github.com/sacloud/libsacloud-v2/sacloud"
-	"github.com/sacloud/libsacloud-v2/sacloud/types"
+	"github.com/sacloud/libsacloud/sacloud"
+	"github.com/sacloud/libsacloud/sacloud/types"
 )
 
 func TestLoadBalancerOpCRUD(t *testing.T) {
@@ -75,7 +75,7 @@ var (
 		IPAddresses:    []string{"192.168.0.11", "192.168.0.12"},
 		NetworkMaskLen: 24,
 		DefaultRoute:   "192.168.0.1",
-		Name:           "libsacloud-v2-lb",
+		Name:           "libsacloud-lb",
 		Description:    "desc",
 		Tags:           []string{"tag1", "tag2"},
 		VirtualIPAddresses: []*sacloud.LoadBalancerVirtualIPAddress{
@@ -145,7 +145,7 @@ var (
 		VirtualIPAddresses: createLoadBalancerParam.VirtualIPAddresses,
 	}
 	updateLoadBalancerParam = &sacloud.LoadBalancerUpdateRequest{
-		Name:        "libsacloud-v2-lb-upd",
+		Name:        "libsacloud-lb-upd",
 		Tags:        []string{"tag1-upd", "tag2-upd"},
 		Description: "desc-upd",
 		VirtualIPAddresses: []*sacloud.LoadBalancerVirtualIPAddress{

@@ -3,7 +3,7 @@ package sacloud
 import (
 	"testing"
 
-	"github.com/sacloud/libsacloud-v2/sacloud/accessor"
+	"github.com/sacloud/libsacloud/sacloud/accessor"
 )
 
 func TestAccessor(t *testing.T) {

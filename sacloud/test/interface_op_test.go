@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
-	"github.com/sacloud/libsacloud-v2/sacloud"
-	"github.com/sacloud/libsacloud-v2/sacloud/types"
+	"github.com/sacloud/libsacloud/sacloud"
+	"github.com/sacloud/libsacloud/sacloud/types"
 	"github.com/stretchr/testify/require"
 )
 
@@ -26,7 +26,7 @@ func TestInterface_Operations(t *testing.T) {
 				//	{Scope: types.Scopes.Shared},
 				//},
 				ServerPlanCommitment: types.Commitments.Standard,
-				Name:                 "libsacloud-v2-server-with-interface",
+				Name:                 "libsacloud-server-with-interface",
 			})
 			require.NoError(t, err)
 			testContext.Values["interface/server"] = server.ID

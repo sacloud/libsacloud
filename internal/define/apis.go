@@ -10,7 +10,7 @@
 //go:generate go run ../tools/gen-api-fake-op/main.go
 package define
 
-import "github.com/sacloud/libsacloud-v2/internal/schema"
+import "github.com/sacloud/libsacloud/internal/schema"
 
 // Resources APIでの操作対象リソースの定義
 var Resources schema.Resources

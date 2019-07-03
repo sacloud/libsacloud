@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
-	"github.com/sacloud/libsacloud-v2/sacloud"
-	"github.com/sacloud/libsacloud-v2/sacloud/types"
+	"github.com/sacloud/libsacloud/sacloud"
+	"github.com/sacloud/libsacloud/sacloud/types"
 )
 
 func TestGSLBOpCRUD(t *testing.T) {
@@ -55,7 +55,7 @@ var (
 		"ModifiedAt",
 	}
 	createGSLBParam = &sacloud.GSLBCreateRequest{
-		Name:                    "libsacloud-v2-gslb",
+		Name:                    "libsacloud-gslb",
 		Description:             "desc",
 		Tags:                    []string{"tag1", "tag2"},
 		HealthCheckProtocol:     "http",
@@ -103,7 +103,7 @@ var (
 		},
 	}
 	updateGSLBParam = &sacloud.GSLBUpdateRequest{
-		Name:                    "libsacloud-v2-gslb-upd",
+		Name:                    "libsacloud-gslb-upd",
 		Description:             "desc-upd",
 		Tags:                    []string{"tag1-upd", "tag2-upd"},
 		HealthCheckProtocol:     "https",

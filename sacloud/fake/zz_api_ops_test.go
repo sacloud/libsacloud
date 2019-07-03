@@ -5,7 +5,7 @@ package fake
 import (
 	"testing"
 
-	"github.com/sacloud/libsacloud-v2/sacloud"
+	"github.com/sacloud/libsacloud/sacloud"
 )
 
 func TestResourceOps(t *testing.T) {

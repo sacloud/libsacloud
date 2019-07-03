@@ -1,7 +1,7 @@
 package schema
 
 import (
-	"github.com/sacloud/libsacloud-v2/internal/schema/meta"
+	"github.com/sacloud/libsacloud/internal/schema/meta"
 )
 
 // Results Resultの配列

@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
-	"github.com/sacloud/libsacloud-v2/sacloud"
-	"github.com/sacloud/libsacloud-v2/sacloud/types"
+	"github.com/sacloud/libsacloud/sacloud"
+	"github.com/sacloud/libsacloud/sacloud/types"
 )
 
 func TestNFSOpCRUD(t *testing.T) {
@@ -16,7 +16,7 @@ func TestNFSOpCRUD(t *testing.T) {
 		Setup: func(testContext *CRUDTestContext, caller sacloud.APICaller) error {
 			swClient := sacloud.NewSwitchOp(caller)
 			sw, err := swClient.Create(context.Background(), testZone, &sacloud.SwitchCreateRequest{
-				Name: "libsacloud-v2-switch-for-nfs",
+				Name: "libsacloud-switch-for-nfs",
 			})
 			if err != nil {
 				return err
@@ -96,7 +96,7 @@ var (
 		IPAddresses:    []string{"192.168.0.11"},
 		NetworkMaskLen: 24,
 		DefaultRoute:   "192.168.0.1",
-		Name:           "libsacloud-v2-nfs",
+		Name:           "libsacloud-nfs",
 		Description:    "desc",
 		Tags:           []string{"tag1", "tag2"},
 	}
@@ -110,7 +110,7 @@ var (
 		IPAddresses:    createNFSParam.IPAddresses,
 	}
 	updateNFSParam = &sacloud.NFSUpdateRequest{
-		Name:        "libsacloud-v2-nfs-upd",
+		Name:        "libsacloud-nfs-upd",
 		Tags:        []string{"tag1-upd", "tag2-upd"},
 		Description: "desc-upd",
 	}

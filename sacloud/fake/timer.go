@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/sacloud/libsacloud-v2/sacloud/accessor"
-	"github.com/sacloud/libsacloud-v2/sacloud/types"
+	"github.com/sacloud/libsacloud/sacloud/accessor"
+	"github.com/sacloud/libsacloud/sacloud/types"
 )
 
 var (

@@ -3,7 +3,7 @@
 package fake
 
 import (
-	"github.com/sacloud/libsacloud-v2/sacloud"
+	"github.com/sacloud/libsacloud/sacloud"
 )
 
 // SwitchFactoryFuncToFake switches sacloud.xxxAPI's factory methods to use fake client

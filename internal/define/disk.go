@@ -3,10 +3,10 @@ package define
 import (
 	"net/http"
 
-	"github.com/sacloud/libsacloud-v2/internal/schema"
-	"github.com/sacloud/libsacloud-v2/internal/schema/meta"
-	"github.com/sacloud/libsacloud-v2/sacloud/naked"
-	"github.com/sacloud/libsacloud-v2/sacloud/types"
+	"github.com/sacloud/libsacloud/internal/schema"
+	"github.com/sacloud/libsacloud/internal/schema/meta"
+	"github.com/sacloud/libsacloud/sacloud/naked"
+	"github.com/sacloud/libsacloud/sacloud/types"
 )
 
 var diskAPI = &schema.Resource{

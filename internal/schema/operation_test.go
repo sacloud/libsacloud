@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/sacloud/libsacloud-v2/internal/schema/meta"
+	"github.com/sacloud/libsacloud/internal/schema/meta"
 	"github.com/stretchr/testify/require"
 )
 

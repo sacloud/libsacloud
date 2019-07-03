@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
-	"github.com/sacloud/libsacloud-v2/sacloud"
-	"github.com/sacloud/libsacloud-v2/sacloud/types"
+	"github.com/sacloud/libsacloud/sacloud"
+	"github.com/sacloud/libsacloud/sacloud/types"
 	"github.com/stretchr/testify/require"
 )
 
@@ -49,7 +49,7 @@ var (
 		"ModifiedAt",
 	}
 	createSwitchParam = &sacloud.SwitchCreateRequest{
-		Name:           "libsacloud-v2-switch",
+		Name:           "libsacloud-switch",
 		Description:    "desc",
 		Tags:           []string{"tag1", "tag2"},
 		DefaultRoute:   "192.168.0.1",
@@ -64,7 +64,7 @@ var (
 		Scope:          types.Scopes.User,
 	}
 	updateSwitchParam = &sacloud.SwitchUpdateRequest{
-		Name:           "libsacloud-v2-switch-upd",
+		Name:           "libsacloud-switch-upd",
 		Tags:           []string{"tag1-upd", "tag2-upd"},
 		Description:    "desc-upd",
 		DefaultRoute:   "192.168.0.2",
@@ -109,12 +109,12 @@ func TestSwitchOp_BridgeConnection(t *testing.T) {
 
 	// create switch
 	sw, err := swOp.Create(ctx, testZone, &sacloud.SwitchCreateRequest{
-		Name: "libsacloud-v2-switch-for-bridge",
+		Name: "libsacloud-switch-for-bridge",
 	})
 	require.NoError(t, err)
 
 	bridge, err := bridgeOp.Create(ctx, testZone, &sacloud.BridgeCreateRequest{
-		Name: "libsacloud-v2-bridge",
+		Name: "libsacloud-bridge",
 	})
 	require.NoError(t, err)
 
