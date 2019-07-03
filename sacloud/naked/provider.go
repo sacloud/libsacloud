@@ -1,6 +1,6 @@
 package naked
 
-import "github.com/sacloud/libsacloud/sacloud/types"
+import "github.com/sacloud/libsacloud/v2/sacloud/types"
 
 // Provider CommonServiceItemなどで利用されるProvider
 type Provider struct {

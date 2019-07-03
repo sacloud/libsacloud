@@ -5,10 +5,10 @@ package sacloud
 import (
 	"time"
 
-	"github.com/sacloud/libsacloud/pkg/mapconv"
-	"github.com/sacloud/libsacloud/sacloud/accessor"
-	"github.com/sacloud/libsacloud/sacloud/naked"
-	"github.com/sacloud/libsacloud/sacloud/types"
+	"github.com/sacloud/libsacloud/v2/pkg/mapconv"
+	"github.com/sacloud/libsacloud/v2/sacloud/accessor"
+	"github.com/sacloud/libsacloud/v2/sacloud/naked"
+	"github.com/sacloud/libsacloud/v2/sacloud/types"
 	"gopkg.in/go-playground/validator.v9"
 )
 

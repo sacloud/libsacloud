@@ -5,7 +5,7 @@ package sacloud
 import (
 	"context"
 
-	"github.com/sacloud/libsacloud/sacloud/types"
+	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
 /*************************************************

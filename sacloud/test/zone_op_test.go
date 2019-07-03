@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/sacloud/libsacloud/sacloud"
+	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/stretchr/testify/require"
 )
 

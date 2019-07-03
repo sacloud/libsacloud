@@ -1,8 +1,8 @@
 package fake
 
 import (
-	"github.com/sacloud/libsacloud/sacloud"
-	"github.com/sacloud/libsacloud/sacloud/types"
+	"github.com/sacloud/libsacloud/v2/sacloud"
+	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
 var zones = []string{"tk1a", "is1a", "is1b", "tk1v"}

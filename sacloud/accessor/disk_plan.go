@@ -1,6 +1,6 @@
 package accessor
 
-import "github.com/sacloud/libsacloud/sacloud/types"
+import "github.com/sacloud/libsacloud/v2/sacloud/types"
 
 // DiskPlan ディスクプランのアクセッサ
 type DiskPlan interface {

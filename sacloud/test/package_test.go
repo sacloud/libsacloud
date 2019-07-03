@@ -9,11 +9,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/sacloud/libsacloud"
-	"github.com/sacloud/libsacloud/sacloud"
-	"github.com/sacloud/libsacloud/sacloud/accessor"
-	"github.com/sacloud/libsacloud/sacloud/fake"
-	"github.com/sacloud/libsacloud/sacloud/types"
+	"github.com/sacloud/libsacloud/v2"
+	"github.com/sacloud/libsacloud/v2/sacloud"
+	"github.com/sacloud/libsacloud/v2/sacloud/accessor"
+	"github.com/sacloud/libsacloud/v2/sacloud/fake"
+	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
 var testZone string

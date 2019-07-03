@@ -1,8 +1,8 @@
 package define
 
 import (
-	"github.com/sacloud/libsacloud/internal/schema"
-	"github.com/sacloud/libsacloud/internal/schema/meta"
+	"github.com/sacloud/libsacloud/v2/internal/schema"
+	"github.com/sacloud/libsacloud/v2/internal/schema/meta"
 )
 
 var monitorParameter = &schema.Model{

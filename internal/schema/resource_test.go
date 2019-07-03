@@ -3,8 +3,8 @@ package schema
 import (
 	"testing"
 
-	"github.com/sacloud/libsacloud/internal/schema/meta"
-	"github.com/sacloud/libsacloud/sacloud"
+	"github.com/sacloud/libsacloud/v2/internal/schema/meta"
+	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/stretchr/testify/require"
 )
 
@@ -72,7 +72,7 @@ func TestResource_ImportStatements(t *testing.T) {
 				},
 			},
 			additionalImports: []string{"context"},
-			imports:           wrapByDoubleQuote("context", "github.com/sacloud/libsacloud/sacloud"),
+			imports:           wrapByDoubleQuote("context", "github.com/sacloud/libsacloud/v2/sacloud"),
 		},
 	}
 
@@ -127,7 +127,7 @@ func TestResources_ImportStatements(t *testing.T) {
 				},
 			}),
 			additionalImports: []string{"context"},
-			imports:           wrapByDoubleQuote("context", "github.com/sacloud/libsacloud/sacloud"),
+			imports:           wrapByDoubleQuote("context", "github.com/sacloud/libsacloud/v2/sacloud"),
 		},
 	}
 
