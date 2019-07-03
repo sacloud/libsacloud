@@ -11,7 +11,7 @@ func TestBridgeOpCRUD(t *testing.T) {
 	Run(t, &CRUDTestCase{
 		Parallel: true,
 
-		SetupAPICaller: singletonAPICaller,
+		SetupAPICallerFunc: singletonAPICaller,
 
 		Create: &CRUDTestFunc{
 			Func: testBridgeCreate,

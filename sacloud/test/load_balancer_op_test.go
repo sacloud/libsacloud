@@ -12,8 +12,8 @@ func TestLoadBalancerOpCRUD(t *testing.T) {
 	Run(t, &CRUDTestCase{
 		Parallel: true,
 
-		SetupAPICaller: singletonAPICaller,
-		Setup:          setupSwitchFunc("lb", createLoadBalancerParam, createLoadBalancerExpected, updateLoadBalancerExpected),
+		SetupAPICallerFunc: singletonAPICaller,
+		Setup:              setupSwitchFunc("lb", createLoadBalancerParam, createLoadBalancerExpected, updateLoadBalancerExpected),
 		Create: &CRUDTestFunc{
 			Func: testLoadBalancerCreate,
 			Expect: &CRUDTestExpect{
