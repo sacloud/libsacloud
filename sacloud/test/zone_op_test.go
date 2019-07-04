@@ -11,7 +11,7 @@ import (
 func TestZoneOp_Find(t *testing.T) {
 	client := sacloud.NewZoneOp(singletonAPICaller())
 
-	zones, err := client.Find(context.Background(), sacloud.DefaultZone, &sacloud.FindCondition{Count: 1})
+	zones, err := client.Find(context.Background(), sacloud.APIDefaultZone, &sacloud.FindCondition{Count: 1})
 	require.NoError(t, err)
 	require.Len(t, zones, 1)
 }

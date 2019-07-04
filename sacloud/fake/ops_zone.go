@@ -9,7 +9,7 @@ import (
 
 // Find is fake implementation
 func (o *ZoneOp) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) ([]*sacloud.Zone, error) {
-	results, _ := find(o.key, sacloud.DefaultZone, conditions)
+	results, _ := find(o.key, sacloud.APIDefaultZone, conditions)
 	var values []*sacloud.Zone
 	for _, res := range results {
 		dest := &sacloud.Zone{}
@@ -21,7 +21,7 @@ func (o *ZoneOp) Find(ctx context.Context, zone string, conditions *sacloud.Find
 
 // Read is fake implementation
 func (o *ZoneOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Zone, error) {
-	value := s.getZoneByID(sacloud.DefaultZone, id)
+	value := s.getZoneByID(sacloud.APIDefaultZone, id)
 	if value == nil {
 		return nil, newErrorNotFound(o.key, id)
 	}

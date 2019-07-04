@@ -145,20 +145,20 @@ var (
 
 func testGSLBCreate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewGSLBOp(caller)
-	return client.Create(context.Background(), sacloud.DefaultZone, createGSLBParam)
+	return client.Create(context.Background(), sacloud.APIDefaultZone, createGSLBParam)
 }
 
 func testGSLBRead(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewGSLBOp(caller)
-	return client.Read(context.Background(), sacloud.DefaultZone, testContext.ID)
+	return client.Read(context.Background(), sacloud.APIDefaultZone, testContext.ID)
 }
 
 func testGSLBUpdate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewGSLBOp(caller)
-	return client.Update(context.Background(), sacloud.DefaultZone, testContext.ID, updateGSLBParam)
+	return client.Update(context.Background(), sacloud.APIDefaultZone, testContext.ID, updateGSLBParam)
 }
 
 func testGSLBDelete(testContext *CRUDTestContext, caller sacloud.APICaller) error {
 	client := sacloud.NewGSLBOp(caller)
-	return client.Delete(context.Background(), sacloud.DefaultZone, testContext.ID)
+	return client.Delete(context.Background(), sacloud.APIDefaultZone, testContext.ID)
 }
