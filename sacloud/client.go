@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"time"
 
@@ -22,8 +21,6 @@ var (
 var (
 	// APIDefaultZone デフォルトゾーン、グローバルリソースなどで利用される
 	APIDefaultZone = "is1a"
-	// APIDefaultLogLevel デフォルトのログレベル
-	APIDefaultLogLevel = LogLevelInfo
 	// APIDefaultTimeoutDuration デフォルトのタイムアウト
 	APIDefaultTimeoutDuration = 20 * time.Minute
 	//APIDefaultUserAgent デフォルトのユーザーエージェント
@@ -34,17 +31,6 @@ var (
 	APIDefaultRetryMax = 0
 	// APIDefaultRetryInterval デフォルトのリトライ間隔
 	APIDefaultRetryInterval = 5 * time.Second
-)
-
-const (
-	// LogLevelInfo INFOレベル
-	LogLevelInfo = "INFO"
-	// LogLevelWarn WARNレベル
-	LogLevelWarn = "WARN"
-	// LogLevelDebug DEBUGレベル
-	LogLevelDebug = "DEBUG"
-	// LogLevelTrace TRACEレベル
-	LogLevelTrace = "TRACE"
 )
 
 // APICaller API呼び出し時に利用するトランスポートのインターフェース
@@ -60,8 +46,6 @@ type Client struct {
 	AccessToken string `validate:"required"`
 	// AccessTokenSecret アクセストークンシークレット
 	AccessTokenSecret string `validate:"required"`
-	// LogLevel ログレベル [TRACE / DEBUG / WARN / INFO(default)]
-	LogLevel string
 	// DefaultTimeoutDuration デフォルトタイムアウト間隔
 	DefaultTimeoutDuration time.Duration
 	// ユーザーエージェント
@@ -81,7 +65,6 @@ func NewClient(token, tokenSecret string) *Client {
 	c := &Client{
 		AccessToken:            token,
 		AccessTokenSecret:      tokenSecret,
-		LogLevel:               APIDefaultLogLevel,
 		DefaultTimeoutDuration: APIDefaultTimeoutDuration,
 		UserAgent:              APIDefaultUserAgent,
 		AcceptLanguage:         APIDefaultAcceptLanguage,
@@ -143,8 +126,10 @@ func (c *Client) Do(ctx context.Context, method, uri string, body interface{}) (
 		req     *request
 		strBody string
 	)
-	var url = uri
 
+	// setup url and body
+	var url = uri
+	var bodyReader io.ReadSeeker
 	if body != nil {
 		var bodyJSON []byte
 		bodyJSON, err = json.Marshal(body)
@@ -153,26 +138,16 @@ func (c *Client) Do(ctx context.Context, method, uri string, body interface{}) (
 		}
 		if method == "GET" {
 			url = fmt.Sprintf("%s?%s", url, bytes.NewBuffer(bodyJSON))
-			req, err = newRequest(ctx, method, url, nil)
 		} else {
-			req, err = newRequest(ctx, method, url, bytes.NewReader(bodyJSON))
-		}
-		b, _ := json.MarshalIndent(body, "", "\t")
-		strBody = string(b)
-		if c.LogLevel == LogLevelTrace {
-			log.Printf("[TRACE] method : %#v , url : %s , \nbody : %s", method, url, strBody)
-		}
-	} else {
-		req, err = newRequest(ctx, method, url, nil)
-		if c.LogLevel == LogLevelTrace {
-			log.Printf("[TRACE] method : %#v , url : %s ", method, url)
+			bodyReader = bytes.NewReader(bodyJSON)
 		}
 	}
-
+	req, err = newRequest(ctx, method, url, bodyReader)
 	if err != nil {
-		return nil, fmt.Errorf("Error with request: %v - %q", url, err)
+		return nil, fmt.Errorf("error with request: %v - %q", url, err)
 	}
 
+	// set headers
 	req.SetBasicAuth(c.AccessToken, c.AccessTokenSecret)
 	req.Header.Add("X-Sakura-Bigint-As-Int", "1") //Use BigInt on resource ids.
 	req.Header.Add("User-Agent", c.UserAgent)
@@ -181,33 +156,26 @@ func (c *Client) Do(ctx context.Context, method, uri string, body interface{}) (
 	}
 	req.Method = method
 
+	// API call
 	resp, err := client.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	defer resp.Body.Close()
+	defer resp.Body.Close() // nolint - ignore error
 
 	data, err := ioutil.ReadAll(resp.Body)
-
-	v := &map[string]interface{}{}
-	json.Unmarshal(data, v)
-	b, _ := json.MarshalIndent(v, "", "\t")
-	if c.LogLevel == LogLevelTrace {
-		log.Printf("[TRACE] response: %s", b)
+	if err != nil {
+		return nil, err
 	}
-	if !c.isOkStatus(resp.StatusCode) {
 
+	if !c.isOkStatus(resp.StatusCode) {
 		errResponse := &APIErrorResponse{}
 		err := json.Unmarshal(data, errResponse)
-
 		if err != nil {
-			return nil, fmt.Errorf("Error in response: %s", string(data))
+			return nil, fmt.Errorf("error in response: %s", string(data))
 		}
 		return nil, NewAPIError(req.Method, req.URL, strBody, resp.StatusCode, errResponse)
 
-	}
-	if err != nil {
-		return nil, err
 	}
 
 	return data, nil
