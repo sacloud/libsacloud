@@ -164,8 +164,8 @@ func (p *ProxyLB) ClearProxyLBServer() {
 }
 
 // AddBindPort バインドポート追加
-func (p *ProxyLB) AddBindPort(mode string, port int, redirectToHTTPS, supportHTTP2 bool) {
-	p.Settings.ProxyLB.AddBindPort(mode, port, redirectToHTTPS, supportHTTP2)
+func (p *ProxyLB) AddBindPort(mode string, port int, redirectToHTTPS, supportHTTP2 bool, addResponseHeader []*ProxyLBResponseHeader) {
+	p.Settings.ProxyLB.AddBindPort(mode, port, redirectToHTTPS, supportHTTP2, addResponseHeader)
 }
 
 // DeleteBindPort バインドポート削除
@@ -205,7 +205,7 @@ type ProxyLBSorryServer struct {
 }
 
 // AddBindPort バインドポート追加
-func (s *ProxyLBSetting) AddBindPort(mode string, port int, redirectToHTTPS, supportHTTP2 bool) {
+func (s *ProxyLBSetting) AddBindPort(mode string, port int, redirectToHTTPS, supportHTTP2 bool, addResponseHeader []*ProxyLBResponseHeader) {
 	var isExist bool
 	for i := range s.BindPorts {
 		if s.BindPorts[i].ProxyMode == mode && s.BindPorts[i].Port == port {
@@ -215,10 +215,11 @@ func (s *ProxyLBSetting) AddBindPort(mode string, port int, redirectToHTTPS, sup
 
 	if !isExist {
 		s.BindPorts = append(s.BindPorts, &ProxyLBBindPorts{
-			ProxyMode:       mode,
-			Port:            port,
-			RedirectToHTTPS: redirectToHTTPS,
-			SupportHTTP2:    supportHTTP2,
+			ProxyMode:         mode,
+			Port:              port,
+			RedirectToHTTPS:   redirectToHTTPS,
+			SupportHTTP2:      supportHTTP2,
+			AddResponseHeader: addResponseHeader,
 		})
 	}
 }
@@ -272,10 +273,17 @@ var AllowProxyLBBindModes = []string{"http", "https"}
 
 // ProxyLBBindPorts プロキシ方式
 type ProxyLBBindPorts struct {
-	ProxyMode       string `json:",omitempty"`      // モード(プロトコル)
-	Port            int    `json:",omitempty"`      // ポート
-	RedirectToHTTPS bool   `json:"RedirectToHttps"` // HTTPSへのリダイレクト(モードがhttpの場合のみ)
-	SupportHTTP2    bool   `json:"SupportHttp2"`    // HTTP/2のサポート(モードがhttpsの場合のみ)
+	ProxyMode         string                   `json:",omitempty"`      // モード(プロトコル)
+	Port              int                      `json:",omitempty"`      // ポート
+	RedirectToHTTPS   bool                     `json:"RedirectToHttps"` // HTTPSへのリダイレクト(モードがhttpの場合のみ)
+	SupportHTTP2      bool                     `json:"SupportHttp2"`    // HTTP/2のサポート(モードがhttpsの場合のみ)
+	AddResponseHeader []*ProxyLBResponseHeader // レスポンスヘッダ
+}
+
+// ProxyLBResponseHeader ポートごとの追加レスポンスヘッダ
+type ProxyLBResponseHeader struct {
+	Header string // ヘッダ名称(英字, 数字, ハイフン)
+	Value  string // 値(英字, 数字, 半角スペース, 一部記号（!#$%&'()*+,-./:;<=>?@[]^_`{|}~）)
 }
 
 // ProxyLBServer ProxyLB配下のサーバー
