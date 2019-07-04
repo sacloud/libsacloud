@@ -30,6 +30,29 @@ func (s *store) setArchive(zone string, value *sacloud.Archive) {
 	s.set(ResourceArchive, zone, value)
 }
 
+func (s *store) getAuthStatus(zone string) []*sacloud.AuthStatus {
+	values := s.get(ResourceAuthStatus, zone)
+	var ret []*sacloud.AuthStatus
+	for _, v := range values {
+		if v, ok := v.(*sacloud.AuthStatus); ok {
+			ret = append(ret, v)
+		}
+	}
+	return ret
+}
+
+func (s *store) getAuthStatusByID(zone string, id types.ID) *sacloud.AuthStatus {
+	v := s.getByID(ResourceAuthStatus, zone, id)
+	if v, ok := v.(*sacloud.AuthStatus); ok {
+		return v
+	}
+	return nil
+}
+
+func (s *store) setAuthStatus(zone string, value *sacloud.AuthStatus) {
+	s.set(ResourceAuthStatus, zone, value)
+}
+
 func (s *store) getBridge(zone string) []*sacloud.Bridge {
 	values := s.get(ResourceBridge, zone)
 	var ret []*sacloud.Bridge

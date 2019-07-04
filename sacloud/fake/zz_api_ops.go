@@ -11,6 +11,9 @@ func SwitchFactoryFuncToFake() {
 	sacloud.SetClientFactoryFunc(ResourceArchive, func(caller sacloud.APICaller) interface{} {
 		return NewArchiveOp()
 	})
+	sacloud.SetClientFactoryFunc(ResourceAuthStatus, func(caller sacloud.APICaller) interface{} {
+		return NewAuthStatusOp()
+	})
 	sacloud.SetClientFactoryFunc(ResourceBridge, func(caller sacloud.APICaller) interface{} {
 		return NewBridgeOp()
 	})
@@ -71,6 +74,22 @@ type ArchiveOp struct {
 func NewArchiveOp() sacloud.ArchiveAPI {
 	return &ArchiveOp{
 		key: ResourceArchive,
+	}
+}
+
+/*************************************************
+* AuthStatusOp
+*************************************************/
+
+// AuthStatusOp is fake implementation of AuthStatusAPI interface
+type AuthStatusOp struct {
+	key string
+}
+
+// NewAuthStatusOp creates new AuthStatusOp instance
+func NewAuthStatusOp() sacloud.AuthStatusAPI {
+	return &AuthStatusOp{
+		key: ResourceAuthStatus,
 	}
 }
 

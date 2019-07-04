@@ -891,6 +891,151 @@ func (o *OpenFTPRequest) SetChangePassword(v bool) {
 }
 
 /*************************************************
+* AuthStatus
+*************************************************/
+
+// AuthStatus represents API parameter/response structure
+type AuthStatus struct {
+	AccountID          types.ID `mapconv:"Account.ID"`
+	AccountName        string   `mapconv:"Account.Name"`
+	AccountCode        string   `mapconv:"Account.Code"`
+	AccountClass       string   `mapconv:"Account.Class"`
+	MemberCode         string   `mapconv:"Member.Code"`
+	MemberClass        string   `mapconv:"Member.Class"`
+	AuthClass          types.EAuthClass
+	AuthMethod         types.EAuthMethod
+	IsAPIKey           bool
+	ExternalPermission types.ExternalPermission
+	OperationPenalty   types.EOperationPenalty
+	Permission         types.EPermission
+}
+
+// Validate validates by field tags
+func (o *AuthStatus) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetAccountID returns value of AccountID
+func (o *AuthStatus) GetAccountID() types.ID {
+	return o.AccountID
+}
+
+// SetAccountID sets value to AccountID
+func (o *AuthStatus) SetAccountID(v types.ID) {
+	o.AccountID = v
+}
+
+// GetAccountName returns value of AccountName
+func (o *AuthStatus) GetAccountName() string {
+	return o.AccountName
+}
+
+// SetAccountName sets value to AccountName
+func (o *AuthStatus) SetAccountName(v string) {
+	o.AccountName = v
+}
+
+// GetAccountCode returns value of AccountCode
+func (o *AuthStatus) GetAccountCode() string {
+	return o.AccountCode
+}
+
+// SetAccountCode sets value to AccountCode
+func (o *AuthStatus) SetAccountCode(v string) {
+	o.AccountCode = v
+}
+
+// GetAccountClass returns value of AccountClass
+func (o *AuthStatus) GetAccountClass() string {
+	return o.AccountClass
+}
+
+// SetAccountClass sets value to AccountClass
+func (o *AuthStatus) SetAccountClass(v string) {
+	o.AccountClass = v
+}
+
+// GetMemberCode returns value of MemberCode
+func (o *AuthStatus) GetMemberCode() string {
+	return o.MemberCode
+}
+
+// SetMemberCode sets value to MemberCode
+func (o *AuthStatus) SetMemberCode(v string) {
+	o.MemberCode = v
+}
+
+// GetMemberClass returns value of MemberClass
+func (o *AuthStatus) GetMemberClass() string {
+	return o.MemberClass
+}
+
+// SetMemberClass sets value to MemberClass
+func (o *AuthStatus) SetMemberClass(v string) {
+	o.MemberClass = v
+}
+
+// GetAuthClass returns value of AuthClass
+func (o *AuthStatus) GetAuthClass() types.EAuthClass {
+	return o.AuthClass
+}
+
+// SetAuthClass sets value to AuthClass
+func (o *AuthStatus) SetAuthClass(v types.EAuthClass) {
+	o.AuthClass = v
+}
+
+// GetAuthMethod returns value of AuthMethod
+func (o *AuthStatus) GetAuthMethod() types.EAuthMethod {
+	return o.AuthMethod
+}
+
+// SetAuthMethod sets value to AuthMethod
+func (o *AuthStatus) SetAuthMethod(v types.EAuthMethod) {
+	o.AuthMethod = v
+}
+
+// GetIsAPIKey returns value of IsAPIKey
+func (o *AuthStatus) GetIsAPIKey() bool {
+	return o.IsAPIKey
+}
+
+// SetIsAPIKey sets value to IsAPIKey
+func (o *AuthStatus) SetIsAPIKey(v bool) {
+	o.IsAPIKey = v
+}
+
+// GetExternalPermission returns value of ExternalPermission
+func (o *AuthStatus) GetExternalPermission() types.ExternalPermission {
+	return o.ExternalPermission
+}
+
+// SetExternalPermission sets value to ExternalPermission
+func (o *AuthStatus) SetExternalPermission(v types.ExternalPermission) {
+	o.ExternalPermission = v
+}
+
+// GetOperationPenalty returns value of OperationPenalty
+func (o *AuthStatus) GetOperationPenalty() types.EOperationPenalty {
+	return o.OperationPenalty
+}
+
+// SetOperationPenalty sets value to OperationPenalty
+func (o *AuthStatus) SetOperationPenalty(v types.EOperationPenalty) {
+	o.OperationPenalty = v
+}
+
+// GetPermission returns value of Permission
+func (o *AuthStatus) GetPermission() types.EPermission {
+	return o.Permission
+}
+
+// SetPermission sets value to Permission
+func (o *AuthStatus) SetPermission(v types.EPermission) {
+	o.Permission = v
+}
+
+/*************************************************
 * Bridge
 *************************************************/
 

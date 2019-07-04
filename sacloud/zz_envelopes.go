@@ -89,6 +89,14 @@ type archiveOpenFTPResponseEnvelope struct {
 	FTPServer *naked.OpeningFTPServer `json:",omitempty"`
 }
 
+// authstatusReadResponseEnvelope is envelop of API response
+type authstatusReadResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	AuthStatus *naked.Archive `json:",omitempty"`
+}
+
 // bridgeFindRequestEnvelope is envelop of API request
 type bridgeFindRequestEnvelope struct {
 	Count   int                    `json:",omitempty"`

@@ -107,6 +107,32 @@ func (t *ArchiveTracer) CloseFTP(ctx context.Context, zone string, id types.ID) 
 }
 
 /*************************************************
+* AuthStatusTracer
+*************************************************/
+
+// AuthStatusTracer is for trace AuthStatusOp operations
+type AuthStatusTracer struct {
+	Internal sacloud.AuthStatusAPI
+}
+
+// NewAuthStatusTracer creates new AuthStatusTracer instance
+func NewAuthStatusTracer(in sacloud.AuthStatusAPI) sacloud.AuthStatusAPI {
+	return &AuthStatusTracer{
+		Internal: in,
+	}
+}
+
+// Read is API call with trace log
+func (t *AuthStatusTracer) Read(ctx context.Context, zone string) (*sacloud.AuthStatusReadResult, error) {
+	log.Println("[TRACE] AuthStatusTracer.Read start:	args => [", "zone=", zone, "]")
+	defer func() {
+		log.Println("[TRACE] AuthStatusTracer.Read: end")
+	}()
+
+	return t.Internal.Read(ctx, zone)
+}
+
+/*************************************************
 * BridgeTracer
 *************************************************/
 
