@@ -9,7 +9,7 @@ import (
 
 // Find is fake implementation
 func (o *NoteOp) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) ([]*sacloud.Note, error) {
-	results, _ := find(o.key, sacloud.DefaultZone, conditions)
+	results, _ := find(o.key, sacloud.APIDefaultZone, conditions)
 	var values []*sacloud.Note
 	for _, res := range results {
 		dest := &sacloud.Note{}
@@ -24,13 +24,13 @@ func (o *NoteOp) Create(ctx context.Context, zone string, param *sacloud.NoteCre
 	result := &sacloud.Note{}
 	copySameNameField(param, result)
 	fill(result, fillID, fillCreatedAt, fillAvailability, fillScope)
-	s.setNote(sacloud.DefaultZone, result)
+	s.setNote(sacloud.APIDefaultZone, result)
 	return result, nil
 }
 
 // Read is fake implementation
 func (o *NoteOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Note, error) {
-	value := s.getNoteByID(sacloud.DefaultZone, id)
+	value := s.getNoteByID(sacloud.APIDefaultZone, id)
 	if value == nil {
 		return nil, newErrorNotFound(o.key, id)
 	}
@@ -42,7 +42,7 @@ func (o *NoteOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.N
 
 // Update is fake implementation
 func (o *NoteOp) Update(ctx context.Context, zone string, id types.ID, param *sacloud.NoteUpdateRequest) (*sacloud.Note, error) {
-	value, err := o.Read(ctx, sacloud.DefaultZone, id)
+	value, err := o.Read(ctx, sacloud.APIDefaultZone, id)
 	if err != nil {
 		return nil, err
 	}
@@ -53,10 +53,10 @@ func (o *NoteOp) Update(ctx context.Context, zone string, id types.ID, param *sa
 
 // Delete is fake implementation
 func (o *NoteOp) Delete(ctx context.Context, zone string, id types.ID) error {
-	_, err := o.Read(ctx, sacloud.DefaultZone, id)
+	_, err := o.Read(ctx, sacloud.APIDefaultZone, id)
 	if err != nil {
 		return err
 	}
-	s.delete(o.key, sacloud.DefaultZone, id)
+	s.delete(o.key, sacloud.APIDefaultZone, id)
 	return nil
 }

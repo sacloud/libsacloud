@@ -19,8 +19,22 @@ var (
 	SakuraCloudAPIRoot = "https://secure.sakura.ad.jp/cloud/zone"
 )
 
-// DefaultZone デフォルトゾーン、グローバルリソースなどで利用される
-const DefaultZone = "is1a"
+var (
+	// APIDefaultZone デフォルトゾーン、グローバルリソースなどで利用される
+	APIDefaultZone = "is1a"
+	// APIDefaultLogLevel デフォルトのログレベル
+	APIDefaultLogLevel = LogLevelInfo
+	// APIDefaultTimeoutDuration デフォルトのタイムアウト
+	APIDefaultTimeoutDuration = 20 * time.Minute
+	//APIDefaultUserAgent デフォルトのユーザーエージェント
+	APIDefaultUserAgent = fmt.Sprintf("libsacloud/%s", libsacloud.Version)
+	// APIDefaultAcceptLanguage デフォルトのAcceptLanguage
+	APIDefaultAcceptLanguage = ""
+	// APIDefaultRetryMax デフォルトのリトライ回数
+	APIDefaultRetryMax = 0
+	// APIDefaultRetryInterval デフォルトのリトライ間隔
+	APIDefaultRetryInterval = 5 * time.Second
+)
 
 const (
 	// LogLevelInfo INFOレベル
@@ -39,6 +53,8 @@ type APICaller interface {
 }
 
 // Client APIクライアント、APICallerインターフェースを実装する
+//
+// スレッドセーフではないため複数スレッドから利用する場合は複数のインスタンス生成を推奨
 type Client struct {
 	// AccessToken アクセストークン
 	AccessToken string `validate:"required"`
@@ -65,12 +81,12 @@ func NewClient(token, tokenSecret string) *Client {
 	c := &Client{
 		AccessToken:            token,
 		AccessTokenSecret:      tokenSecret,
-		LogLevel:               LogLevelInfo,
-		DefaultTimeoutDuration: 20 * time.Minute,
-		UserAgent:              fmt.Sprintf("libsacloud/%s", libsacloud.Version),
-		AcceptLanguage:         "",
-		RetryMax:               0,
-		RetryInterval:          5 * time.Second,
+		LogLevel:               APIDefaultLogLevel,
+		DefaultTimeoutDuration: APIDefaultTimeoutDuration,
+		UserAgent:              APIDefaultUserAgent,
+		AcceptLanguage:         APIDefaultAcceptLanguage,
+		RetryMax:               APIDefaultRetryMax,
+		RetryInterval:          APIDefaultRetryInterval,
 	}
 	return c
 }

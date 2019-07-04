@@ -75,7 +75,7 @@ func initNotes() {
 		},
 	}
 	for _, note := range notes {
-		s.setNote(sacloud.DefaultZone, note)
+		s.setNote(sacloud.APIDefaultZone, note)
 	}
 }
 
@@ -87,25 +87,25 @@ func initSwitch() {
 
 func initZones() {
 	// zones
-	s.setZone(sacloud.DefaultZone, &sacloud.Zone{
+	s.setZone(sacloud.APIDefaultZone, &sacloud.Zone{
 		ID:           21001,
 		Name:         "tk1a",
 		Description:  "東京第1ゾーン",
 		DisplayOrder: 1,
 	})
-	s.setZone(sacloud.DefaultZone, &sacloud.Zone{
+	s.setZone(sacloud.APIDefaultZone, &sacloud.Zone{
 		ID:           31001,
 		Name:         "is1a",
 		Description:  "石狩第1ゾーン",
 		DisplayOrder: 2,
 	})
-	s.setZone(sacloud.DefaultZone, &sacloud.Zone{
+	s.setZone(sacloud.APIDefaultZone, &sacloud.Zone{
 		ID:           31002,
 		Name:         "is1b",
 		Description:  "石狩第2ゾーン",
 		DisplayOrder: 3,
 	})
-	s.setZone(sacloud.DefaultZone, &sacloud.Zone{
+	s.setZone(sacloud.APIDefaultZone, &sacloud.Zone{
 		ID:           29001,
 		Name:         "tk1v",
 		Description:  "Sandbox",
