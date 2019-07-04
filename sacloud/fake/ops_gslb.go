@@ -10,7 +10,7 @@ import (
 
 // Find is fake implementation
 func (o *GSLBOp) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) ([]*sacloud.GSLB, error) {
-	results, _ := find(o.key, sacloud.DefaultZone, conditions)
+	results, _ := find(o.key, sacloud.APIDefaultZone, conditions)
 	var values []*sacloud.GSLB
 	for _, res := range results {
 		dest := &sacloud.GSLB{}
@@ -35,13 +35,13 @@ func (o *GSLBOp) Create(ctx context.Context, zone string, param *sacloud.GSLBCre
 		}
 	}
 
-	s.setGSLB(sacloud.DefaultZone, result)
+	s.setGSLB(sacloud.APIDefaultZone, result)
 	return result, nil
 }
 
 // Read is fake implementation
 func (o *GSLBOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.GSLB, error) {
-	value := s.getGSLBByID(sacloud.DefaultZone, id)
+	value := s.getGSLBByID(sacloud.APIDefaultZone, id)
 	if value == nil {
 		return nil, newErrorNotFound(o.key, id)
 	}
@@ -53,7 +53,7 @@ func (o *GSLBOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.G
 
 // Update is fake implementation
 func (o *GSLBOp) Update(ctx context.Context, zone string, id types.ID, param *sacloud.GSLBUpdateRequest) (*sacloud.GSLB, error) {
-	value, err := o.Read(ctx, sacloud.DefaultZone, id)
+	value, err := o.Read(ctx, sacloud.APIDefaultZone, id)
 	if err != nil {
 		return nil, err
 	}
@@ -64,10 +64,10 @@ func (o *GSLBOp) Update(ctx context.Context, zone string, id types.ID, param *sa
 
 // Delete is fake implementation
 func (o *GSLBOp) Delete(ctx context.Context, zone string, id types.ID) error {
-	_, err := o.Read(ctx, sacloud.DefaultZone, id)
+	_, err := o.Read(ctx, sacloud.APIDefaultZone, id)
 	if err != nil {
 		return err
 	}
-	s.delete(o.key, sacloud.DefaultZone, id)
+	s.delete(o.key, sacloud.APIDefaultZone, id)
 	return nil
 }
