@@ -47,6 +47,13 @@ type ArchiveOpenFTPResult struct {
 	FTPServer *FTPServer `json:",omitempty" mapconv:"FTPServer,omitempty,recursive"`
 }
 
+// AuthStatusReadResult represents the Result of API
+type AuthStatusReadResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	AuthStatus *AuthStatus `json:",omitempty" mapconv:"AuthStatus,omitempty,recursive"`
+}
+
 // BridgeFindResult represents the Result of API
 type BridgeFindResult struct {
 	Total int `json:",omitempty"` // Total count of target resources

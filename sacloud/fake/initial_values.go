@@ -5,6 +5,21 @@ import (
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
+var authStatus = &sacloud.AuthStatus{
+	AccountID:          types.ID(123456789012),
+	AccountName:        "fakeアカウント",
+	AccountCode:        "fake",
+	AccountClass:       "member",
+	MemberCode:         "fake-member",
+	MemberClass:        "member",
+	AuthClass:          types.AuthClasses.Account,
+	AuthMethod:         types.AuthMethods.APIKey,
+	IsAPIKey:           true,
+	ExternalPermission: types.ExternalPermission("bill+eventlog+cdn"),
+	OperationPenalty:   types.OperationPenalties.None,
+	Permission:         types.Permissions.Create,
+}
+
 var zones = []string{"tk1a", "is1a", "is1b", "tk1v"}
 
 var zoneIDs = map[string]types.ID{

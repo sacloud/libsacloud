@@ -25,6 +25,15 @@ type ArchiveAPI interface {
 }
 
 /*************************************************
+* AuthStatusAPI
+*************************************************/
+
+// AuthStatusAPI is interface for operate AuthStatus resource
+type AuthStatusAPI interface {
+	Read(ctx context.Context, zone string) (*AuthStatusReadResult, error)
+}
+
+/*************************************************
 * BridgeAPI
 *************************************************/
 

@@ -142,6 +142,34 @@ func (s *ArchiveStub) CloseFTP(ctx context.Context, zone string, id types.ID) er
 }
 
 /*************************************************
+* AuthStatusStub
+*************************************************/
+
+// AuthStatusReadStubResult is expected values of the Read operation
+type AuthStatusReadStubResult struct {
+	Values *sacloud.AuthStatusReadResult
+	Err    error
+}
+
+// AuthStatusStub is for trace AuthStatusOp operations
+type AuthStatusStub struct {
+	ReadStubResult *AuthStatusReadStubResult
+}
+
+// NewAuthStatusStub creates new AuthStatusStub instance
+func NewAuthStatusStub(caller sacloud.APICaller) sacloud.AuthStatusAPI {
+	return &AuthStatusStub{}
+}
+
+// Read is API call with trace log
+func (s *AuthStatusStub) Read(ctx context.Context, zone string) (*sacloud.AuthStatusReadResult, error) {
+	if s.ReadStubResult == nil {
+		log.Fatal("AuthStatusStub.ReadStubResult is not set")
+	}
+	return s.ReadStubResult.Values, s.ReadStubResult.Err
+}
+
+/*************************************************
 * BridgeStub
 *************************************************/
 
