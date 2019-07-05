@@ -57,7 +57,7 @@ func New{{ $typeName}}Tracer(in sacloud.{{$typeName}}API) sacloud.{{$typeName}}A
 
 {{ range .Operations }}{{$returnErrStatement := .ReturnErrorStatement}}{{ $operationName := .MethodName }}
 // {{ .MethodName }} is API call with trace log
-func (t *{{ $typeName }}Tracer) {{ .MethodName }}(ctx context.Context{{ range .AllArguments }}, {{ .ArgName }} {{ .TypeName }}{{ end }}) {{.ResultsStatement}} {
+func (t *{{ $typeName }}Tracer) {{ .MethodName }}(ctx context.Context{{ range .AllArguments }}, {{ .ArgName }} {{ .TypeName }}{{ end }}) {{.ResultsStatementWithNameSpace}} {
 	log.Println("[TRACE] {{ $typeName }}Tracer.{{ .MethodName }} start:	args => ["{{ range .AllArguments }},"{{.ArgName}}=", {{ .ArgName }}{{ end }} ,"]")
 	defer func() {
 		log.Println("[TRACE] {{ $typeName }}Tracer.{{ .MethodName }}: end")

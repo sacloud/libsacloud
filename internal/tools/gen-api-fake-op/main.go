@@ -116,7 +116,12 @@ func (o *{{ .ResourceTypeName }}Op) {{ .MethodName }}(ctx context.Context{{ rang
 		copySameNameField(res, dest)
 		values = append(values, dest)
 	}
-	return values, nil
+	return &sacloud.{{.ResultTypeName}}{
+		Total:    len(results),
+		Count:    len(results),
+		From:     0,
+		{{.ResourceTypeName}}: values,
+	}, nil
 {{ else if eq .MethodName "Create" -}}
 	result := &sacloud.{{.ResourceTypeName}}{}
 	copySameNameField(param, result)
@@ -125,7 +130,10 @@ func (o *{{ .ResourceTypeName }}Op) {{ .MethodName }}(ctx context.Context{{ rang
 	// TODO core logic is not implemented
 
 	s.set{{.ResourceTypeName}}({{if .ResourceIsGlobal}}sacloud.DefaultZone{{else}}zone{{end}}, result)
-	return result, nil
+	return &sacloud.{{.ResultTypeName}}{
+		IsOk: true,
+		{{.ResourceTypeName}}: result,
+	}, nil
 {{ else if eq .MethodName "Read" -}}
 	value := s.get{{.ResourceTypeName}}ByID({{if .ResourceIsGlobal}}sacloud.DefaultZone{{else}}zone{{end}}, id)
 	if value == nil {
@@ -133,18 +141,25 @@ func (o *{{ .ResourceTypeName }}Op) {{ .MethodName }}(ctx context.Context{{ rang
 	}
 	dest := &sacloud.{{.ResourceTypeName}}{}
 	copySameNameField(value, dest)
-	return dest, nil
+	return &sacloud.{{.ResultTypeName}}{
+		IsOk: true,
+		{{.ResourceTypeName}}: dest,
+	}, nil
 {{ else if eq .MethodName "Update" -}}
-	value, err := o.Read(ctx, {{if .ResourceIsGlobal}}sacloud.DefaultZone{{else}}zone{{end}}, id)
+	readResult, err := o.Read(ctx, {{if .ResourceIsGlobal}}sacloud.DefaultZone{{else}}zone{{end}}, id)
 	if err != nil {
 		return nil, err
 	}
+	value := readResult.{{.ResourceTypeName}}
 	copySameNameField(param, value)
 	fill(value, fillModifiedAt)
 
 	// TODO core logic is not implemented
 
-	return value, nil
+	return &sacloud.{{.ResultTypeName}}{
+		IsOk: true,
+		{{.ResourceTypeName}}: dest,
+	}, nil
 {{ else if eq .MethodName "Delete" -}}
 	_, err := o.Read(ctx, {{if .ResourceIsGlobal}}sacloud.DefaultZone{{else}}zone{{end}}, id)
 	if err != nil {

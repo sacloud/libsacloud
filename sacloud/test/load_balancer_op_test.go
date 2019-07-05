@@ -218,17 +218,29 @@ var (
 
 func testLoadBalancerCreate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewLoadBalancerOp(caller)
-	return client.Create(context.Background(), testZone, createLoadBalancerParam)
+	res, err := client.Create(context.Background(), testZone, createLoadBalancerParam)
+	if err != nil {
+		return nil, err
+	}
+	return res.Appliance, nil
 }
 
 func testLoadBalancerRead(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewLoadBalancerOp(caller)
-	return client.Read(context.Background(), testZone, testContext.ID)
+	res, err := client.Read(context.Background(), testZone, testContext.ID)
+	if err != nil {
+		return nil, err
+	}
+	return res.Appliance, nil
 }
 
 func testLoadBalancerUpdate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewLoadBalancerOp(caller)
-	return client.Update(context.Background(), testZone, testContext.ID, updateLoadBalancerParam)
+	res, err := client.Update(context.Background(), testZone, testContext.ID, updateLoadBalancerParam)
+	if err != nil {
+		return nil, err
+	}
+	return res.Appliance, nil
 }
 
 func testLoadBalancerDelete(testContext *CRUDTestContext, caller sacloud.APICaller) error {

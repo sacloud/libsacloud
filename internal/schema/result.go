@@ -1,6 +1,8 @@
 package schema
 
 import (
+	"fmt"
+
 	"github.com/sacloud/libsacloud/v2/internal/schema/meta"
 )
 
@@ -21,6 +23,15 @@ func (r *Results) Models() Models {
 type Result struct {
 	DestField string // エンベロープでの宛先ペイロード名
 	Model     *Model // パラメータの型情報
+	Tags      *FieldTags
+}
+
+// TagString タグの文字列表現
+func (r *Result) TagString() string {
+	if r.Tags == nil {
+		return ""
+	}
+	return fmt.Sprintf("`%s`", r.Tags.String())
 }
 
 // ImportStatements コード生成時に利用するimport文を生成する
