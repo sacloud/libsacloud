@@ -125,14 +125,14 @@ func (o *{{ $typeName }}Op) {{ .MethodName }}(ctx context.Context{{ range .AllAr
 	{{ if .IsResponseSingular -}}
 	{{ range $i,$v := .AllResults -}}
 	payload{{$i}} := {{$v.ZeroInitializeSourceCode}}
-	if err := payload{{$i}}.convertFrom(nakedResponse.{{.SourceField}}); err != nil {
+	if err := payload{{$i}}.convertFrom(nakedResponse.{{.DestField}}); err != nil {
 		return {{ $returnErrStatement }}
 	}
 	{{ end -}}
 	{{- else if .IsResponsePlural -}}
 	{{ range $i,$v := .AllResults -}}
 	var payload{{$i}} []{{$v.GoTypeSourceCode}}
-	for _ , v := range nakedResponse.{{.SourceField}} {
+	for _ , v := range nakedResponse.{{.DestField}} {
 		payload := {{$v.ZeroInitializeSourceCode}}
 		if err := payload.convertFrom(v); err != nil {
 			return {{ $returnErrStatement }}

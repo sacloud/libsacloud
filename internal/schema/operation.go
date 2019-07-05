@@ -103,7 +103,7 @@ func (o *Operation) Result(m *Model) *Operation {
 			sourceField = o.resource.FieldName(o.responseEnvelope.Form)
 		}
 	}
-	return o.ResultWithSourceField(sourceField, m)
+	return o.ResultWithDestField(sourceField, m)
 }
 
 // ResultFromEnvelope エンベロープから抽出するレスポンス定義の追加
@@ -117,7 +117,7 @@ func (o *Operation) ResultFromEnvelope(m *Model, sourceField *EnvelopePayloadDes
 		sourceField.PayloadName = o.resource.FieldName(o.responseEnvelope.Form)
 	}
 	o.responseEnvelope.Payloads = append(o.responseEnvelope.Payloads, sourceField)
-	return o.ResultWithSourceField(sourceField.PayloadName, m)
+	return o.ResultWithDestField(sourceField.PayloadName, m)
 }
 
 // ResultPluralFromEnvelope エンベロープから抽出するレスポンス定義の追加(複数形)
@@ -131,15 +131,15 @@ func (o *Operation) ResultPluralFromEnvelope(m *Model, sourceField *EnvelopePayl
 		sourceField.PayloadName = o.resource.FieldName(o.responseEnvelope.Form)
 	}
 	o.responseEnvelope.Payloads = append(o.responseEnvelope.Payloads, sourceField)
-	return o.ResultWithSourceField(sourceField.PayloadName, m)
+	return o.ResultWithDestField(sourceField.PayloadName, m)
 }
 
-// ResultWithSourceField レスポンス定義の追加
-func (o *Operation) ResultWithSourceField(sourceField string, m *Model) *Operation {
-	if sourceField == "" {
-		sourceField = m.Name
+// ResultWithDestField レスポンス定義の追加
+func (o *Operation) ResultWithDestField(destField string, m *Model) *Operation {
+	if destField == "" {
+		destField = m.Name
 	}
-	o.results = append(o.results, &Result{Model: m, SourceField: sourceField})
+	o.results = append(o.results, &Result{Model: m, DestField: destField})
 	return o
 }
 
@@ -285,7 +285,7 @@ func (o *Operation) StubFieldDefines() []string {
 			prefix = "[]"
 		}
 
-		strResults = append(strResults, fmt.Sprintf("%s %s", res.SourceField, prefix+res.Type().GoTypeSourceCode()))
+		strResults = append(strResults, fmt.Sprintf("%s %s", res.DestField, prefix+res.Type().GoTypeSourceCode()))
 	}
 	return strResults
 }
@@ -297,7 +297,7 @@ func (o *Operation) StubReturnStatement(receiverName string) string {
 	}
 	var strResults []string
 	for _, res := range o.results {
-		strResults = append(strResults, fmt.Sprintf("%s.%sResult.%s", receiverName, o.MethodName(), res.SourceField))
+		strResults = append(strResults, fmt.Sprintf("%s.%sResult.%s", receiverName, o.MethodName(), res.DestField))
 	}
 	strResults = append(strResults, fmt.Sprintf("%s.%sResult.Err", receiverName, o.MethodName()))
 	return fmt.Sprintf("return %s", strings.Join(strResults, ","))
