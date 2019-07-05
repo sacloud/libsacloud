@@ -39,14 +39,15 @@ import (
 {{- range . }}
 {{- range .Operations -}}
 
+{{ if .HasResponseEnvelope }}
 // {{ .ResultTypeName }} represents the Result of API 
 type {{ .ResultTypeName }} struct {
-{{ if .IsResponseSingular }}
-	IsOk    bool  ` + "`" + `json:"is_ok,omitempty"` + "`" + ` // is_ok
-{{- else if .IsResponsePlural -}}
+{{- if .IsResponsePlural -}}
 	Total       int        ` + "`" + `json:",omitempty"` + "`" + ` // Total count of target resources
 	From        int        ` + "`" + `json:",omitempty"` + "`" + ` // Current page number
 	Count       int        ` + "`" + `json:",omitempty"` + "`" + ` // Count of current page
+{{ else }}
+	IsOk    bool  ` + "`" + `json:"is_ok,omitempty"` + "`" + ` // is_ok
 {{ end }}
 {{ if .IsResponseSingular }}
 	{{- range .ResponsePayloads}}
@@ -60,5 +61,6 @@ type {{ .ResultTypeName }} struct {
 }
 {{ end }}
 
+{{- end -}}
 {{- end -}}
 `
