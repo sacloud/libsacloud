@@ -47,15 +47,15 @@ type {{ .ResultTypeName }} struct {
 	From        int        ` + "`" + `json:",omitempty"` + "`" + ` // Current page number
 	Count       int        ` + "`" + `json:",omitempty"` + "`" + ` // Count of current page
 {{ else }}
-	IsOk    bool  ` + "`" + `json:"is_ok,omitempty"` + "`" + ` // is_ok
+	IsOk    bool  ` + "`" + `json:",omitempty"` + "`" + ` // is_ok
 {{ end }}
 {{ if .IsResponseSingular }}
 	{{- range .AllResults}}
-	{{.DestField}} {{.GoTypeSourceCode}}
+	{{.DestField}} {{.GoTypeSourceCode}} {{.TagString}}
 	{{- end }}
 {{- else if .IsResponsePlural -}}
 	{{- range .AllResults}}
-	{{.DestField}} []{{.GoTypeSourceCode}}
+	{{.DestField}} []{{.GoTypeSourceCode}} {{.TagString}}
 	{{- end }}
 {{ end }}
 }

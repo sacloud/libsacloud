@@ -19,7 +19,7 @@ func TestInterface_Operations(t *testing.T) {
 
 		Setup: func(testContext *CRUDTestContext, caller sacloud.APICaller) error {
 			serverClient := sacloud.NewServerOp(caller)
-			server, err := serverClient.Create(context.Background(), testZone, &sacloud.ServerCreateRequest{
+			serverCreateResult, err := serverClient.Create(context.Background(), testZone, &sacloud.ServerCreateRequest{
 				CPU:      1,
 				MemoryMB: 1 * 1024,
 				//ConnectedSwitches: []*ConnectedSwitch{
@@ -29,6 +29,8 @@ func TestInterface_Operations(t *testing.T) {
 				Name:                 "libsacloud-server-with-interface",
 			})
 			require.NoError(t, err)
+			server := serverCreateResult.Server
+
 			testContext.Values["interface/server"] = server.ID
 			createInterfaceParam.ServerID = server.ID
 			createInterfaceExpected.ServerID = server.ID
@@ -103,17 +105,29 @@ var (
 
 func testInterfaceCreate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewInterfaceOp(caller)
-	return client.Create(context.Background(), testZone, createInterfaceParam)
+	res, err := client.Create(context.Background(), testZone, createInterfaceParam)
+	if err != nil {
+		return nil, err
+	}
+	return res.Interface, nil
 }
 
 func testInterfaceRead(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewInterfaceOp(caller)
-	return client.Read(context.Background(), testZone, testContext.ID)
+	res, err := client.Read(context.Background(), testZone, testContext.ID)
+	if err != nil {
+		return nil, err
+	}
+	return res.Interface, nil
 }
 
 func testInterfaceUpdate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewInterfaceOp(caller)
-	return client.Update(context.Background(), testZone, testContext.ID, updateInterfaceParam)
+	res, err := client.Update(context.Background(), testZone, testContext.ID, updateInterfaceParam)
+	if err != nil {
+		return nil, err
+	}
+	return res.Interface, nil
 }
 
 func testInterfaceDelete(testContext *CRUDTestContext, caller sacloud.APICaller) error {

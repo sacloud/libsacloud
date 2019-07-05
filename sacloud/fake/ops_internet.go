@@ -10,7 +10,7 @@ import (
 )
 
 // Find is fake implementation
-func (o *InternetOp) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) ([]*sacloud.Internet, error) {
+func (o *InternetOp) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.InternetFindResult, error) {
 	results, _ := find(o.key, zone, conditions)
 	var values []*sacloud.Internet
 	for _, res := range results {
@@ -18,11 +18,16 @@ func (o *InternetOp) Find(ctx context.Context, zone string, conditions *sacloud.
 		copySameNameField(res, dest)
 		values = append(values, dest)
 	}
-	return values, nil
+	return &sacloud.InternetFindResult{
+		Total:     len(results),
+		Count:     len(results),
+		From:      0,
+		Internets: values,
+	}, nil
 }
 
 // Create is fake implementation
-func (o *InternetOp) Create(ctx context.Context, zone string, param *sacloud.InternetCreateRequest) (*sacloud.Internet, error) {
+func (o *InternetOp) Create(ctx context.Context, zone string, param *sacloud.InternetCreateRequest) (*sacloud.InternetCreateResult, error) {
 	if param.NetworkMaskLen == 0 {
 		param.NetworkMaskLen = 28
 	}
@@ -39,7 +44,7 @@ func (o *InternetOp) Create(ctx context.Context, zone string, param *sacloud.Int
 
 	// create switch
 	swOp := NewSwitchOp()
-	sw, err := swOp.Create(ctx, zone, &sacloud.SwitchCreateRequest{
+	swCreateResult, err := swOp.Create(ctx, zone, &sacloud.SwitchCreateRequest{
 		Name:           result.Name,
 		NetworkMaskLen: subnet.networkMaskLen,
 		DefaultRoute:   subnet.defaultRoute,
@@ -47,6 +52,7 @@ func (o *InternetOp) Create(ctx context.Context, zone string, param *sacloud.Int
 	if err != nil {
 		return nil, err
 	}
+	sw := swCreateResult.Switch
 
 	sSubnet := &sacloud.SwitchSubnet{
 		ID:                   pool.generateID(),
@@ -74,37 +80,48 @@ func (o *InternetOp) Create(ctx context.Context, zone string, param *sacloud.Int
 
 	s.setSwitch(zone, sw)
 	s.setInternet(zone, result)
-	return result, nil
+	return &sacloud.InternetCreateResult{
+		IsOk:     true,
+		Internet: result,
+	}, nil
 }
 
 // Read is fake implementation
-func (o *InternetOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Internet, error) {
+func (o *InternetOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.InternetReadResult, error) {
 	value := s.getInternetByID(zone, id)
 	if value == nil {
 		return nil, newErrorNotFound(o.key, id)
 	}
 	dest := &sacloud.Internet{}
 	copySameNameField(value, dest)
-	return dest, nil
+	return &sacloud.InternetReadResult{
+		IsOk:     true,
+		Internet: dest,
+	}, nil
 }
 
 // Update is fake implementation
-func (o *InternetOp) Update(ctx context.Context, zone string, id types.ID, param *sacloud.InternetUpdateRequest) (*sacloud.Internet, error) {
-	value, err := o.Read(ctx, zone, id)
+func (o *InternetOp) Update(ctx context.Context, zone string, id types.ID, param *sacloud.InternetUpdateRequest) (*sacloud.InternetUpdateResult, error) {
+	readResult, err := o.Read(ctx, zone, id)
 	if err != nil {
 		return nil, err
 	}
+	value := readResult.Internet
 	copySameNameField(param, value)
 
-	return value, nil
+	return &sacloud.InternetUpdateResult{
+		IsOk:     true,
+		Internet: value,
+	}, nil
 }
 
 // Delete is fake implementation
 func (o *InternetOp) Delete(ctx context.Context, zone string, id types.ID) error {
-	value, err := o.Read(ctx, zone, id)
+	readResult, err := o.Read(ctx, zone, id)
 	if err != nil {
 		return err
 	}
+	value := readResult.Internet
 
 	swOp := NewSwitchOp()
 	if err := swOp.Delete(ctx, zone, value.Switch.ID); err != nil {
@@ -116,33 +133,39 @@ func (o *InternetOp) Delete(ctx context.Context, zone string, id types.ID) error
 }
 
 // UpdateBandWidth is fake implementation
-func (o *InternetOp) UpdateBandWidth(ctx context.Context, zone string, id types.ID, param *sacloud.InternetUpdateBandWidthRequest) (*sacloud.Internet, error) {
-	value, err := o.Read(ctx, zone, id)
+func (o *InternetOp) UpdateBandWidth(ctx context.Context, zone string, id types.ID, param *sacloud.InternetUpdateBandWidthRequest) (*sacloud.InternetUpdateBandWidthResult, error) {
+	readResult, err := o.Read(ctx, zone, id)
 	if err != nil {
 		return nil, err
 	}
+	value := readResult.Internet
 
 	value.BandWidthMbps = param.BandWidthMbps
 	s.setInternet(zone, value)
-	return value, nil
+	return &sacloud.InternetUpdateBandWidthResult{
+		IsOk:     true,
+		Internet: value,
+	}, nil
 }
 
 // AddSubnet is fake implementation
-func (o *InternetOp) AddSubnet(ctx context.Context, zone string, id types.ID, param *sacloud.InternetAddSubnetRequest) (*sacloud.InternetSubnetOperationResult, error) {
-	value, err := o.Read(ctx, zone, id)
+func (o *InternetOp) AddSubnet(ctx context.Context, zone string, id types.ID, param *sacloud.InternetAddSubnetRequest) (*sacloud.InternetAddSubnetResult, error) {
+	readResult, err := o.Read(ctx, zone, id)
 	if err != nil {
 		return nil, err
 	}
+	value := readResult.Internet
 
 	// assign global address
 	subnet := pool.nextSubnetFull(param.NetworkMaskLen, param.NextHop)
 
 	// create switch
 	swOp := NewSwitchOp()
-	sw, err := swOp.Read(ctx, zone, value.Switch.ID)
+	swReadResult, err := swOp.Read(ctx, zone, value.Switch.ID)
 	if err != nil {
 		return nil, err
 	}
+	sw := swReadResult.Switch
 
 	sSubnet := &sacloud.SwitchSubnet{
 		ID:                   pool.generateID(),
@@ -168,28 +191,33 @@ func (o *InternetOp) AddSubnet(ctx context.Context, zone string, id types.ID, pa
 	s.setSwitch(zone, sw)
 	s.setInternet(zone, value)
 
-	return &sacloud.InternetSubnetOperationResult{
-		ID:             sSubnet.ID,
-		NextHop:        param.NextHop,
-		StaticRoute:    param.NextHop,
-		NetworkMaskLen: sSubnet.NetworkMaskLen,
-		NetworkAddress: sSubnet.NetworkAddress,
-		IPAddresses:    subnet.addresses,
+	return &sacloud.InternetAddSubnetResult{
+		IsOk: true,
+		Subnet: &sacloud.InternetSubnetOperationResult{
+			ID:             sSubnet.ID,
+			NextHop:        param.NextHop,
+			StaticRoute:    param.NextHop,
+			NetworkMaskLen: sSubnet.NetworkMaskLen,
+			NetworkAddress: sSubnet.NetworkAddress,
+			IPAddresses:    subnet.addresses,
+		},
 	}, nil
 }
 
 // UpdateSubnet is fake implementation
-func (o *InternetOp) UpdateSubnet(ctx context.Context, zone string, id types.ID, subnetID types.ID, param *sacloud.InternetUpdateSubnetRequest) (*sacloud.InternetSubnetOperationResult, error) {
-	value, err := o.Read(ctx, zone, id)
+func (o *InternetOp) UpdateSubnet(ctx context.Context, zone string, id types.ID, subnetID types.ID, param *sacloud.InternetUpdateSubnetRequest) (*sacloud.InternetUpdateSubnetResult, error) {
+	readResult, err := o.Read(ctx, zone, id)
 	if err != nil {
 		return nil, err
 	}
+	value := readResult.Internet
 	// create switch
 	swOp := NewSwitchOp()
-	sw, err := swOp.Read(ctx, zone, value.Switch.ID)
+	swReadResult, err := swOp.Read(ctx, zone, value.Switch.ID)
 	if err != nil {
 		return nil, err
 	}
+	sw := swReadResult.Switch
 
 	var nwMaskLen int
 	var nwAddress, minAddr, maxAddr string
@@ -227,28 +255,34 @@ func (o *InternetOp) UpdateSubnet(ctx context.Context, zone string, id types.ID,
 
 	s.setSwitch(zone, sw)
 	s.setInternet(zone, value)
-	return &sacloud.InternetSubnetOperationResult{
-		ID:             subnetID,
-		NextHop:        param.NextHop,
-		StaticRoute:    param.NextHop,
-		NetworkMaskLen: nwMaskLen,
-		NetworkAddress: nwAddress,
-		IPAddresses:    addresses,
+	return &sacloud.InternetUpdateSubnetResult{
+		IsOk: true,
+		Subnet: &sacloud.InternetSubnetOperationResult{
+			ID:             subnetID,
+			NextHop:        param.NextHop,
+			StaticRoute:    param.NextHop,
+			NetworkMaskLen: nwMaskLen,
+			NetworkAddress: nwAddress,
+			IPAddresses:    addresses,
+		},
 	}, nil
 }
 
 // DeleteSubnet is fake implementation
 func (o *InternetOp) DeleteSubnet(ctx context.Context, zone string, id types.ID, subnetID types.ID) error {
-	value, err := o.Read(ctx, zone, id)
+	readResult, err := o.Read(ctx, zone, id)
 	if err != nil {
 		return err
 	}
+	value := readResult.Internet
+
 	// create switch
 	swOp := NewSwitchOp()
-	sw, err := swOp.Read(ctx, zone, value.Switch.ID)
+	swReadResult, err := swOp.Read(ctx, zone, value.Switch.ID)
 	if err != nil {
 		return err
 	}
+	sw := swReadResult.Switch
 
 	var sSubnets []*sacloud.SwitchSubnet
 	for _, subnet := range sw.Subnets {
@@ -272,7 +306,7 @@ func (o *InternetOp) DeleteSubnet(ctx context.Context, zone string, id types.ID,
 }
 
 // Monitor is fake implementation
-func (o *InternetOp) Monitor(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.RouterActivity, error) {
+func (o *InternetOp) Monitor(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.InternetMonitorResult, error) {
 	_, err := o.Read(ctx, zone, id)
 	if err != nil {
 		return nil, err
@@ -293,5 +327,8 @@ func (o *InternetOp) Monitor(ctx context.Context, zone string, id types.ID, cond
 		})
 	}
 
-	return res, nil
+	return &sacloud.InternetMonitorResult{
+		IsOk: true,
+		Data: res,
+	}, nil
 }

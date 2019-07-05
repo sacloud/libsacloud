@@ -81,16 +81,28 @@ var (
 
 func testInternetCreate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewInternetOp(caller)
-	return client.Create(context.Background(), testZone, createInternetParam)
+	res, err := client.Create(context.Background(), testZone, createInternetParam)
+	if err != nil {
+		return nil, err
+	}
+	return res.Internet, nil
 }
 
 func testInternetRead(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
-	return readInternet(testContext.ID, caller)
+	res, err := readInternet(testContext.ID, caller)
+	if err != nil {
+		return nil, err
+	}
+	return res.Internet, nil
 }
 
 func testInternetUpdate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewInternetOp(caller)
-	return client.Update(context.Background(), testZone, testContext.ID, updateInternetParam)
+	res, err := client.Update(context.Background(), testZone, testContext.ID, updateInternetParam)
+	if err != nil {
+		return nil, err
+	}
+	return res.Internet, nil
 }
 
 func testInternetDelete(testContext *CRUDTestContext, caller sacloud.APICaller) error {
@@ -102,7 +114,7 @@ func testInternetDelete(testContext *CRUDTestContext, caller sacloud.APICaller) 
 	return err
 }
 
-func readInternet(id types.ID, caller sacloud.APICaller) (interface{}, error) {
+func readInternet(id types.ID, caller sacloud.APICaller) (*sacloud.InternetReadResult, error) {
 	client := sacloud.NewInternetOp(caller)
 	if vpcRouterDeleted {
 		return client.Read(context.Background(), testZone, id)
@@ -125,36 +137,44 @@ func readInternet(id types.ID, caller sacloud.APICaller) (interface{}, error) {
 }
 
 func TestInternetOp_Subnets(t *testing.T) {
+	t.Parallel()
 
 	client := sacloud.NewInternetOp(singletonAPICaller())
 	ctx := context.Background()
 
 	// prepare
-	internet, err := client.Create(ctx, testZone, createInternetParam)
+	var internet *sacloud.Internet
+	createResult, err := client.Create(ctx, testZone, createInternetParam)
 	require.NoError(t, err)
+	internet = createResult.Internet
 
-	v, err := readInternet(internet.ID, singletonAPICaller())
+	readResult, err := readInternet(internet.ID, singletonAPICaller())
 	require.NoError(t, err)
-	internet = v.(*sacloud.Internet)
+	internet = readResult.Internet
 
 	swOp := sacloud.NewSwitchOp(singletonAPICaller())
-	sw, err := swOp.Read(ctx, testZone, internet.Switch.ID)
+	swReadResult, err := swOp.Read(ctx, testZone, internet.Switch.ID)
 	require.NoError(t, err)
+	sw := swReadResult.Switch
 
 	// add subnet
-	subnet, err := client.AddSubnet(ctx, testZone, internet.ID, &sacloud.InternetAddSubnetRequest{
+	addSubnetResult, err := client.AddSubnet(ctx, testZone, internet.ID, &sacloud.InternetAddSubnetRequest{
 		NetworkMaskLen: 28,
 		NextHop:        sw.Subnets[0].AssignedIPAddressMin,
 	})
 	require.NoError(t, err)
+	subnet := addSubnetResult.Subnet
+
 	require.Len(t, subnet.IPAddresses, 16)
 	require.Equal(t, sw.Subnets[0].AssignedIPAddressMin, subnet.NextHop)
 
 	// update
-	updSubnet, err := client.UpdateSubnet(ctx, testZone, internet.ID, subnet.ID, &sacloud.InternetUpdateSubnetRequest{
+	updateSubnetResult, err := client.UpdateSubnet(ctx, testZone, internet.ID, subnet.ID, &sacloud.InternetUpdateSubnetRequest{
 		NextHop: sw.Subnets[0].AssignedIPAddressMax,
 	})
 	require.NoError(t, err)
+	updSubnet := updateSubnetResult.Subnet
+
 	require.Len(t, updSubnet.IPAddresses, 16)
 	require.Equal(t, sw.Subnets[0].AssignedIPAddressMax, updSubnet.NextHop)
 

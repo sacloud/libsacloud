@@ -15,12 +15,13 @@ func TestNFSOpCRUD(t *testing.T) {
 		SetupAPICallerFunc: singletonAPICaller,
 		Setup: func(testContext *CRUDTestContext, caller sacloud.APICaller) error {
 			swClient := sacloud.NewSwitchOp(caller)
-			sw, err := swClient.Create(context.Background(), testZone, &sacloud.SwitchCreateRequest{
+			swCreateResult, err := swClient.Create(context.Background(), testZone, &sacloud.SwitchCreateRequest{
 				Name: "libsacloud-switch-for-nfs",
 			})
 			if err != nil {
 				return err
 			}
+			sw := swCreateResult.Switch
 
 			testContext.Values["nfs/switch"] = sw.ID
 			createNFSParam.SwitchID = sw.ID
@@ -127,17 +128,29 @@ var (
 
 func testNFSCreate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewNFSOp(caller)
-	return client.Create(context.Background(), testZone, createNFSParam)
+	res, err := client.Create(context.Background(), testZone, createNFSParam)
+	if err != nil {
+		return nil, err
+	}
+	return res.Appliance, nil
 }
 
 func testNFSRead(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewNFSOp(caller)
-	return client.Read(context.Background(), testZone, testContext.ID)
+	res, err := client.Read(context.Background(), testZone, testContext.ID)
+	if err != nil {
+		return nil, err
+	}
+	return res.Appliance, nil
 }
 
 func testNFSUpdate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewNFSOp(caller)
-	return client.Update(context.Background(), testZone, testContext.ID, updateNFSParam)
+	res, err := client.Update(context.Background(), testZone, testContext.ID, updateNFSParam)
+	if err != nil {
+		return nil, err
+	}
+	return res.Appliance, nil
 }
 
 func testNFSDelete(testContext *CRUDTestContext, caller sacloud.APICaller) error {

@@ -10,7 +10,7 @@ import (
 )
 
 // Find is fake implementation
-func (o *InterfaceOp) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) ([]*sacloud.Interface, error) {
+func (o *InterfaceOp) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.InterfaceFindResult, error) {
 	results, _ := find(o.key, zone, conditions)
 	var values []*sacloud.Interface
 	for _, res := range results {
@@ -18,11 +18,16 @@ func (o *InterfaceOp) Find(ctx context.Context, zone string, conditions *sacloud
 		copySameNameField(res, dest)
 		values = append(values, dest)
 	}
-	return values, nil
+	return &sacloud.InterfaceFindResult{
+		Total:      len(results),
+		Count:      len(results),
+		From:       0,
+		Interfaces: values,
+	}, nil
 }
 
 // Create is fake implementation
-func (o *InterfaceOp) Create(ctx context.Context, zone string, param *sacloud.InterfaceCreateRequest) (*sacloud.Interface, error) {
+func (o *InterfaceOp) Create(ctx context.Context, zone string, param *sacloud.InterfaceCreateRequest) (*sacloud.InterfaceCreateResult, error) {
 	result := &sacloud.Interface{}
 	copySameNameField(param, result)
 	fill(result, fillID, fillCreatedAt)
@@ -30,11 +35,14 @@ func (o *InterfaceOp) Create(ctx context.Context, zone string, param *sacloud.In
 	result.MACAddress = pool.nextMACAddress().String()
 
 	s.setInterface(zone, result)
-	return result, nil
+	return &sacloud.InterfaceCreateResult{
+		IsOk:      true,
+		Interface: result,
+	}, nil
 }
 
 // Read is fake implementation
-func (o *InterfaceOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Interface, error) {
+func (o *InterfaceOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.InterfaceReadResult, error) {
 	value := s.getInterfaceByID(zone, id)
 	if value == nil {
 		return nil, newErrorNotFound(o.key, id)
@@ -42,18 +50,26 @@ func (o *InterfaceOp) Read(ctx context.Context, zone string, id types.ID) (*sacl
 
 	dest := &sacloud.Interface{}
 	copySameNameField(value, dest)
-	return dest, nil
+	return &sacloud.InterfaceReadResult{
+		IsOk:      true,
+		Interface: dest,
+	}, nil
 }
 
 // Update is fake implementation
-func (o *InterfaceOp) Update(ctx context.Context, zone string, id types.ID, param *sacloud.InterfaceUpdateRequest) (*sacloud.Interface, error) {
-	value, err := o.Read(ctx, zone, id)
+func (o *InterfaceOp) Update(ctx context.Context, zone string, id types.ID, param *sacloud.InterfaceUpdateRequest) (*sacloud.InterfaceUpdateResult, error) {
+	readResult, err := o.Read(ctx, zone, id)
 	if err != nil {
 		return nil, err
 	}
+	value := readResult.Interface
+
 	copySameNameField(param, value)
 	fill(value, fillModifiedAt)
-	return value, nil
+	return &sacloud.InterfaceUpdateResult{
+		IsOk:      true,
+		Interface: value,
+	}, nil
 }
 
 // Delete is fake implementation
@@ -67,7 +83,7 @@ func (o *InterfaceOp) Delete(ctx context.Context, zone string, id types.ID) erro
 }
 
 // Monitor is fake implementation
-func (o *InterfaceOp) Monitor(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.InterfaceActivity, error) {
+func (o *InterfaceOp) Monitor(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.InterfaceMonitorResult, error) {
 	_, err := o.Read(ctx, zone, id)
 	if err != nil {
 		return nil, err
@@ -88,15 +104,20 @@ func (o *InterfaceOp) Monitor(ctx context.Context, zone string, id types.ID, con
 		})
 	}
 
-	return res, nil
+	return &sacloud.InterfaceMonitorResult{
+		IsOk: true,
+		Data: res,
+	}, nil
 }
 
 // ConnectToSharedSegment is fake implementation
 func (o *InterfaceOp) ConnectToSharedSegment(ctx context.Context, zone string, id types.ID) error {
-	value, err := o.Read(ctx, zone, id)
+	readResult, err := o.Read(ctx, zone, id)
 	if err != nil {
 		return err
 	}
+	value := readResult.Interface
+
 	if !value.SwitchID.IsEmpty() {
 		return newErrorConflict(o.key, id,
 			fmt.Sprintf("Interface[%d] is already connected to switch[%d]", value.ID, value.SwitchID))
@@ -109,10 +130,11 @@ func (o *InterfaceOp) ConnectToSharedSegment(ctx context.Context, zone string, i
 
 // ConnectToSwitch is fake implementation
 func (o *InterfaceOp) ConnectToSwitch(ctx context.Context, zone string, id types.ID, switchID types.ID) error {
-	value, err := o.Read(ctx, zone, id)
+	readResult, err := o.Read(ctx, zone, id)
 	if err != nil {
 		return err
 	}
+	value := readResult.Interface
 	if !value.SwitchID.IsEmpty() {
 		return newErrorConflict(o.key, id,
 			fmt.Sprintf("Interface[%d] is already connected to switch[%d]", value.ID, value.SwitchID))
@@ -125,10 +147,11 @@ func (o *InterfaceOp) ConnectToSwitch(ctx context.Context, zone string, id types
 
 // DisconnectFromSwitch is fake implementation
 func (o *InterfaceOp) DisconnectFromSwitch(ctx context.Context, zone string, id types.ID) error {
-	value, err := o.Read(ctx, zone, id)
+	readResult, err := o.Read(ctx, zone, id)
 	if err != nil {
 		return err
 	}
+	value := readResult.Interface
 	if value.SwitchID.IsEmpty() {
 		return newErrorConflict(o.key, id,
 			fmt.Sprintf("Interface[%d] is already disconnected", value.ID))
@@ -141,10 +164,11 @@ func (o *InterfaceOp) DisconnectFromSwitch(ctx context.Context, zone string, id 
 
 // ConnectToPacketFilter is fake implementation
 func (o *InterfaceOp) ConnectToPacketFilter(ctx context.Context, zone string, id types.ID, packetFilterID types.ID) error {
-	value, err := o.Read(ctx, zone, id)
+	readResult, err := o.Read(ctx, zone, id)
 	if err != nil {
 		return err
 	}
+	value := readResult.Interface
 	if !value.PacketFilterID.IsEmpty() {
 		return newErrorConflict(o.key, id,
 			fmt.Sprintf("Interface[%d] is already connected to packetfilter[%s]", value.ID, value.PacketFilterID))
@@ -157,10 +181,11 @@ func (o *InterfaceOp) ConnectToPacketFilter(ctx context.Context, zone string, id
 
 // DisconnectFromPacketFilter is fake implementation
 func (o *InterfaceOp) DisconnectFromPacketFilter(ctx context.Context, zone string, id types.ID) error {
-	value, err := o.Read(ctx, zone, id)
+	readResult, err := o.Read(ctx, zone, id)
 	if err != nil {
 		return err
 	}
+	value := readResult.Interface
 	if value.PacketFilterID.IsEmpty() {
 		return newErrorConflict(o.key, id,
 			fmt.Sprintf("Interface[%d] is already disconnected", value.ID))

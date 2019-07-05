@@ -18,10 +18,11 @@ func TestArchiveOpCRUD(t *testing.T) {
 
 		Setup: func(testContext *CRUDTestContext, caller sacloud.APICaller) error {
 			client := sacloud.NewArchiveOp(caller)
-			archives, err := client.Find(context.Background(), testZone, nil)
+			findResult, err := client.Find(context.Background(), testZone, nil)
 			if err != nil {
 				return err
 			}
+			archives := findResult.Archives
 			for _, a := range archives {
 				if a.GetSizeGB() == 20 && a.Availability.IsAvailable() {
 					testContext.Values["archive"] = a.ID
@@ -115,17 +116,29 @@ var (
 
 func testArchiveCreate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewArchiveOp(caller)
-	return client.Create(context.Background(), testZone, createArchiveParam)
+	res, err := client.Create(context.Background(), testZone, createArchiveParam)
+	if err != nil {
+		return nil, err
+	}
+	return res.Archive, nil
 }
 
 func testArchiveRead(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewArchiveOp(caller)
-	return client.Read(context.Background(), testZone, testContext.ID)
+	res, err := client.Read(context.Background(), testZone, testContext.ID)
+	if err != nil {
+		return nil, err
+	}
+	return res.Archive, nil
 }
 
 func testArchiveUpdate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewArchiveOp(caller)
-	return client.Update(context.Background(), testZone, testContext.ID, updateArchiveParam)
+	res, err := client.Update(context.Background(), testZone, testContext.ID, updateArchiveParam)
+	if err != nil {
+		return nil, err
+	}
+	return res.Archive, nil
 }
 
 func testArchiveDelete(testContext *CRUDTestContext, caller sacloud.APICaller) error {
@@ -138,14 +151,14 @@ func TestArchiveOp_CreateBlank(t *testing.T) {
 
 	client := sacloud.NewArchiveOp(singletonAPICaller())
 
-	archive, ftpServer, err := client.CreateBlank(context.Background(), testZone, &sacloud.ArchiveCreateBlankRequest{
+	createResult, err := client.CreateBlank(context.Background(), testZone, &sacloud.ArchiveCreateBlankRequest{
 		SizeMB: 20 * 1024,
 		Name:   "libsacloud-archive-blank",
 	})
 	require.NoError(t, err)
-	require.NotNil(t, archive)
-	require.NotNil(t, ftpServer)
+	require.NotNil(t, createResult.Archive)
+	require.NotNil(t, createResult.FTPServer)
 	defer func() {
-		client.Delete(context.Background(), testZone, archive.ID) // nolint ignore error
+		client.Delete(context.Background(), testZone, createResult.Archive.ID) // nolint ignore error
 	}()
 }

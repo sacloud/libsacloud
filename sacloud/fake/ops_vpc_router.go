@@ -10,7 +10,7 @@ import (
 )
 
 // Find is fake implementation
-func (o *VPCRouterOp) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) ([]*sacloud.VPCRouter, error) {
+func (o *VPCRouterOp) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.VPCRouterFindResult, error) {
 	results, _ := find(o.key, zone, conditions)
 	var values []*sacloud.VPCRouter
 	for _, res := range results {
@@ -18,11 +18,16 @@ func (o *VPCRouterOp) Find(ctx context.Context, zone string, conditions *sacloud
 		copySameNameField(res, dest)
 		values = append(values, dest)
 	}
-	return values, nil
+	return &sacloud.VPCRouterFindResult{
+		Total:      len(results),
+		Count:      len(results),
+		From:       0,
+		Appliances: values,
+	}, nil
 }
 
 // Create is fake implementation
-func (o *VPCRouterOp) Create(ctx context.Context, zone string, param *sacloud.VPCRouterCreateRequest) (*sacloud.VPCRouter, error) {
+func (o *VPCRouterOp) Create(ctx context.Context, zone string, param *sacloud.VPCRouterCreateRequest) (*sacloud.VPCRouterCreateResult, error) {
 	result := &sacloud.VPCRouter{}
 	copySameNameField(param, result)
 	fill(result, fillID, fillCreatedAt)
@@ -45,10 +50,11 @@ func (o *VPCRouterOp) Create(ctx context.Context, zone string, param *sacloud.VP
 		}
 	}
 
-	iface, err := ifOp.Create(ctx, zone, ifCreateParam)
+	ifCreateResult, err := ifOp.Create(ctx, zone, ifCreateParam)
 	if err != nil {
 		return nil, newErrorConflict(o.key, types.ID(0), err.Error())
 	}
+	iface := ifCreateResult.Interface
 
 	if param.Switch.Scope == types.Scopes.Shared {
 		if err := ifOp.ConnectToSharedSegment(ctx, zone, iface.ID); err != nil {
@@ -60,10 +66,12 @@ func (o *VPCRouterOp) Create(ctx context.Context, zone string, param *sacloud.VP
 		}
 	}
 
-	iface, err = ifOp.Read(ctx, zone, iface.ID)
+	ifReadResult, err := ifOp.Read(ctx, zone, iface.ID)
 	if err != nil {
 		return nil, newErrorConflict(o.key, types.ID(0), err.Error())
 	}
+	iface = ifReadResult.Interface
+
 	vpcRouterInterface := &sacloud.VPCRouterInterface{}
 	copySameNameField(iface, vpcRouterInterface)
 	result.Interfaces = append(result.Interfaces, vpcRouterInterface)
@@ -72,31 +80,45 @@ func (o *VPCRouterOp) Create(ctx context.Context, zone string, param *sacloud.VP
 
 	id := result.ID
 	startMigration(o.key, zone, func() (interface{}, error) {
-		return o.Read(context.Background(), zone, id)
+		res, err := o.Read(context.Background(), zone, id)
+		if err != nil {
+			return nil, err
+		}
+		return res.Appliance, nil
 	})
-	return result, nil
+	return &sacloud.VPCRouterCreateResult{
+		IsOk:      true,
+		Appliance: result,
+	}, nil
 }
 
 // Read is fake implementation
-func (o *VPCRouterOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.VPCRouter, error) {
+func (o *VPCRouterOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.VPCRouterReadResult, error) {
 	value := s.getVPCRouterByID(zone, id)
 	if value == nil {
 		return nil, newErrorNotFound(o.key, id)
 	}
 	dest := &sacloud.VPCRouter{}
 	copySameNameField(value, dest)
-	return dest, nil
+	return &sacloud.VPCRouterReadResult{
+		IsOk:      true,
+		Appliance: dest,
+	}, nil
 }
 
 // Update is fake implementation
-func (o *VPCRouterOp) Update(ctx context.Context, zone string, id types.ID, param *sacloud.VPCRouterUpdateRequest) (*sacloud.VPCRouter, error) {
-	value, err := o.Read(ctx, zone, id)
+func (o *VPCRouterOp) Update(ctx context.Context, zone string, id types.ID, param *sacloud.VPCRouterUpdateRequest) (*sacloud.VPCRouterUpdateResult, error) {
+	readResult, err := o.Read(ctx, zone, id)
 	if err != nil {
 		return nil, err
 	}
+	value := readResult.Appliance
 	copySameNameField(param, value)
 	fill(value, fillModifiedAt)
-	return value, nil
+	return &sacloud.VPCRouterUpdateResult{
+		IsOk:      true,
+		Appliance: value,
+	}, nil
 }
 
 // Delete is fake implementation
@@ -116,16 +138,21 @@ func (o *VPCRouterOp) Config(ctx context.Context, zone string, id types.ID) erro
 
 // Boot is fake implementation
 func (o *VPCRouterOp) Boot(ctx context.Context, zone string, id types.ID) error {
-	value, err := o.Read(ctx, zone, id)
+	readResult, err := o.Read(ctx, zone, id)
 	if err != nil {
 		return err
 	}
+	value := readResult.Appliance
 	if value.InstanceStatus.IsUp() {
 		return newErrorConflict(o.key, id, "Boot is failed")
 	}
 
 	startPowerOn(o.key, zone, func() (interface{}, error) {
-		return o.Read(context.Background(), zone, id)
+		res, err := o.Read(context.Background(), zone, id)
+		if err != nil {
+			return nil, err
+		}
+		return res.Appliance, nil
 	})
 
 	return err
@@ -133,16 +160,21 @@ func (o *VPCRouterOp) Boot(ctx context.Context, zone string, id types.ID) error 
 
 // Shutdown is fake implementation
 func (o *VPCRouterOp) Shutdown(ctx context.Context, zone string, id types.ID, shutdownOption *sacloud.ShutdownOption) error {
-	value, err := o.Read(ctx, zone, id)
+	readResult, err := o.Read(ctx, zone, id)
 	if err != nil {
 		return err
 	}
+	value := readResult.Appliance
 	if !value.InstanceStatus.IsUp() {
 		return newErrorConflict(o.key, id, "Shutdown is failed")
 	}
 
 	startPowerOff(o.key, zone, func() (interface{}, error) {
-		return o.Read(context.Background(), zone, id)
+		res, err := o.Read(context.Background(), zone, id)
+		if err != nil {
+			return nil, err
+		}
+		return res.Appliance, nil
 	})
 
 	return err
@@ -150,16 +182,21 @@ func (o *VPCRouterOp) Shutdown(ctx context.Context, zone string, id types.ID, sh
 
 // Reset is fake implementation
 func (o *VPCRouterOp) Reset(ctx context.Context, zone string, id types.ID) error {
-	value, err := o.Read(ctx, zone, id)
+	readResult, err := o.Read(ctx, zone, id)
 	if err != nil {
 		return err
 	}
+	value := readResult.Appliance
 	if !value.InstanceStatus.IsUp() {
 		return newErrorConflict(o.key, id, "Reset is failed")
 	}
 
 	startPowerOn(o.key, zone, func() (interface{}, error) {
-		return o.Read(context.Background(), zone, id)
+		res, err := o.Read(context.Background(), zone, id)
+		if err != nil {
+			return nil, err
+		}
+		return res.Appliance, nil
 	})
 
 	return nil
@@ -167,10 +204,11 @@ func (o *VPCRouterOp) Reset(ctx context.Context, zone string, id types.ID) error
 
 // ConnectToSwitch is fake implementation
 func (o *VPCRouterOp) ConnectToSwitch(ctx context.Context, zone string, id types.ID, nicIndex int, switchID types.ID) error {
-	value, err := o.Read(ctx, zone, id)
+	readResult, err := o.Read(ctx, zone, id)
 	if err != nil {
 		return err
 	}
+	value := readResult.Appliance
 
 	for _, nic := range value.Interfaces {
 		if nic.Index == nicIndex {
@@ -187,19 +225,22 @@ func (o *VPCRouterOp) ConnectToSwitch(ctx context.Context, zone string, id types
 
 	// create interface
 	ifOp := NewInterfaceOp()
-	iface, err := ifOp.Create(ctx, zone, &sacloud.InterfaceCreateRequest{ServerID: id})
+	ifCreateResult, err := ifOp.Create(ctx, zone, &sacloud.InterfaceCreateRequest{ServerID: id})
 	if err != nil {
 		return newErrorConflict(o.key, types.ID(0), err.Error())
 	}
+	iface := ifCreateResult.Interface
 
 	if err := ifOp.ConnectToSwitch(ctx, zone, iface.ID, switchID); err != nil {
 		return newErrorConflict(o.key, types.ID(0), err.Error())
 	}
 
-	iface, err = ifOp.Read(ctx, zone, iface.ID)
+	ifReadResult, err := ifOp.Read(ctx, zone, iface.ID)
 	if err != nil {
 		return newErrorConflict(o.key, types.ID(0), err.Error())
 	}
+	iface = ifReadResult.Interface
+
 	vpcRouterInterface := &sacloud.VPCRouterInterface{}
 	copySameNameField(iface, vpcRouterInterface)
 	value.Interfaces = append(value.Interfaces, vpcRouterInterface)
@@ -210,10 +251,11 @@ func (o *VPCRouterOp) ConnectToSwitch(ctx context.Context, zone string, id types
 
 // DisconnectFromSwitch is fake implementation
 func (o *VPCRouterOp) DisconnectFromSwitch(ctx context.Context, zone string, id types.ID, nicIndex int) error {
-	value, err := o.Read(ctx, zone, id)
+	readResult, err := o.Read(ctx, zone, id)
 	if err != nil {
 		return err
 	}
+	value := readResult.Appliance
 
 	var exists bool
 	var nicID types.ID
@@ -242,7 +284,7 @@ func (o *VPCRouterOp) DisconnectFromSwitch(ctx context.Context, zone string, id 
 }
 
 // MonitorInterface is fake implementation
-func (o *VPCRouterOp) MonitorInterface(ctx context.Context, zone string, id types.ID, index int, condition *sacloud.MonitorCondition) (*sacloud.InterfaceActivity, error) {
+func (o *VPCRouterOp) MonitorInterface(ctx context.Context, zone string, id types.ID, index int, condition *sacloud.MonitorCondition) (*sacloud.VPCRouterMonitorInterfaceResult, error) {
 	_, err := o.Read(ctx, zone, id)
 	if err != nil {
 		return nil, err
@@ -263,5 +305,8 @@ func (o *VPCRouterOp) MonitorInterface(ctx context.Context, zone string, id type
 		})
 	}
 
-	return res, nil
+	return &sacloud.VPCRouterMonitorInterfaceResult{
+		IsOk: true,
+		Data: res,
+	}, nil
 }

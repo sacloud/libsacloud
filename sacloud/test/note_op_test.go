@@ -74,17 +74,29 @@ var (
 
 func testNoteCreate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewNoteOp(caller)
-	return client.Create(context.Background(), sacloud.APIDefaultZone, createNoteParam)
+	res, err := client.Create(context.Background(), sacloud.APIDefaultZone, createNoteParam)
+	if err != nil {
+		return nil, err
+	}
+	return res.Note, nil
 }
 
 func testNoteRead(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewNoteOp(caller)
-	return client.Read(context.Background(), sacloud.APIDefaultZone, testContext.ID)
+	res, err := client.Read(context.Background(), sacloud.APIDefaultZone, testContext.ID)
+	if err != nil {
+		return nil, err
+	}
+	return res.Note, nil
 }
 
 func testNoteUpdate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewNoteOp(caller)
-	return client.Update(context.Background(), sacloud.APIDefaultZone, testContext.ID, updateNoteParam)
+	res, err := client.Update(context.Background(), sacloud.APIDefaultZone, testContext.ID, updateNoteParam)
+	if err != nil {
+		return nil, err
+	}
+	return res.Note, nil
 }
 
 func testNoteDelete(testContext *CRUDTestContext, caller sacloud.APICaller) error {
@@ -93,9 +105,11 @@ func testNoteDelete(testContext *CRUDTestContext, caller sacloud.APICaller) erro
 }
 
 func TestNoteOp_Find(t *testing.T) {
+	t.Parallel()
+
 	client := sacloud.NewNoteOp(singletonAPICaller())
 
-	notes, err := client.Find(context.Background(), sacloud.APIDefaultZone, &sacloud.FindCondition{Count: 1})
+	noteFindResult, err := client.Find(context.Background(), sacloud.APIDefaultZone, &sacloud.FindCondition{Count: 1})
 	require.NoError(t, err)
-	require.Len(t, notes, 1)
+	require.Len(t, noteFindResult.Notes, 1)
 }

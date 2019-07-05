@@ -94,18 +94,6 @@ func (o *Operation) Arguments(args []*Argument) *Operation {
 	return o
 }
 
-// Result レスポンス定義の追加
-func (o *Operation) Result(m *Model) *Operation {
-	sourceField := ""
-	if o.responseEnvelope != nil {
-		sourceField = o.responseEnvelope.PayloadName()
-		if sourceField == "" {
-			sourceField = o.resource.FieldName(o.responseEnvelope.Form)
-		}
-	}
-	return o.ResultWithDestField(sourceField, m)
-}
-
 // ResultFromEnvelope エンベロープから抽出するレスポンス定義の追加
 func (o *Operation) ResultFromEnvelope(m *Model, sourceField *EnvelopePayloadDesc) *Operation {
 	if o.responseEnvelope == nil {
@@ -119,11 +107,10 @@ func (o *Operation) ResultFromEnvelope(m *Model, sourceField *EnvelopePayloadDes
 	o.responseEnvelope.Payloads = append(o.responseEnvelope.Payloads, sourceField)
 	if sourceField.Tags == nil {
 		sourceField.Tags = &FieldTags{
-			JSON:    ",omitempty",
-			MapConv: ",omitempty",
+			JSON: ",omitempty",
 		}
 	}
-	return o.ResultWithDestField(sourceField.PayloadName, m)
+	return o.ResultWithDestField(sourceField.PayloadName, false, m)
 }
 
 // ResultPluralFromEnvelope エンベロープから抽出するレスポンス定義の追加(複数形)
@@ -139,19 +126,29 @@ func (o *Operation) ResultPluralFromEnvelope(m *Model, sourceField *EnvelopePayl
 	o.responseEnvelope.Payloads = append(o.responseEnvelope.Payloads, sourceField)
 	if sourceField.Tags == nil {
 		sourceField.Tags = &FieldTags{
-			JSON:    ",omitempty",
-			MapConv: fmt.Sprintf("[]%s,omitempty", sourceField.PayloadName),
+			JSON: ",omitempty",
 		}
 	}
-	return o.ResultWithDestField(sourceField.PayloadName, m)
+	return o.ResultWithDestField(sourceField.PayloadName, true, m)
 }
 
 // ResultWithDestField レスポンス定義の追加
-func (o *Operation) ResultWithDestField(destField string, m *Model) *Operation {
+func (o *Operation) ResultWithDestField(destField string, isPlural bool, m *Model) *Operation {
 	if destField == "" {
 		destField = m.Name
 	}
-	o.results = append(o.results, &Result{Model: m, DestField: destField})
+	result := &Result{
+		Model:     m,
+		DestField: destField,
+		Tags: &FieldTags{
+			JSON:    ",omitempty",
+			MapConv: ",omitempty,recursive",
+		},
+	}
+	if isPlural {
+		result.Tags.MapConv = fmt.Sprintf("[]%s,omitempty,recursive", destField)
+	}
+	o.results = append(o.results, result)
 	return o
 }
 
@@ -223,13 +220,10 @@ func (o *Operation) MethodName() string {
 
 // ReturnErrorStatement コード生成時に利用する、エラーをreturnする文を生成する
 func (o *Operation) ReturnErrorStatement() string {
-	ss := make([]string, len(o.results))
-	for i, res := range o.results {
-		s := res.ZeroValueSourceCode()
-		ss[i] = s
+	if o.HasResults() {
+		return "nil, err"
 	}
-	ss = append(ss, "err")
-	return strings.Join(ss, ",")
+	return "err"
 }
 
 // RequestEnvelopeStructName エンベロープのstruct名(camel-case)
@@ -269,20 +263,18 @@ func (o *Operation) AllResults() Results {
 
 // ResultsStatement 戻り値定義部のソースを出力
 func (o *Operation) ResultsStatement() string {
-	if len(o.results) == 0 {
+	if !o.HasResults() {
 		return "error"
 	}
-	rs := "(%s)"
-	var strResults []string
-	for _, res := range o.results {
-		prefix := ""
-		if o.IsResponsePlural() {
-			prefix = "[]"
-		}
-		strResults = append(strResults, prefix+res.Type().GoTypeSourceCode())
+	return fmt.Sprintf("(*%s, error)", o.ResultTypeName())
+}
+
+// ResultsStatementWithNameSpace 戻り値定義部のソースを出力
+func (o *Operation) ResultsStatementWithNameSpace() string {
+	if !o.HasResults() {
+		return "error"
 	}
-	strResults = append(strResults, "error")
-	return fmt.Sprintf(rs, strings.Join(strResults, ","))
+	return fmt.Sprintf("(*sacloud.%s, error)", o.ResultTypeName())
 }
 
 // StubFieldDefines スタブ生成時のフィールド定義文を全フィールド分出力
@@ -290,28 +282,17 @@ func (o *Operation) StubFieldDefines() []string {
 	if len(o.results) == 0 {
 		return nil
 	}
-	var strResults []string
-	for _, res := range o.results {
-		prefix := ""
-		if o.IsResponsePlural() {
-			prefix = "[]"
-		}
-
-		strResults = append(strResults, fmt.Sprintf("%s %s", res.DestField, prefix+res.Type().GoTypeSourceCode()))
-	}
-	return strResults
+	return []string{fmt.Sprintf("Values *sacloud.%s", o.ResultTypeName())}
 }
 
 // StubReturnStatement スタブ生成時のreturn文
 func (o *Operation) StubReturnStatement(receiverName string) string {
 	if len(o.results) == 0 {
-		return fmt.Sprintf("return %s.%sResult.Err", receiverName, o.MethodName())
+		return fmt.Sprintf("return %s.%sStubResult.Err", receiverName, o.MethodName())
 	}
 	var strResults []string
-	for _, res := range o.results {
-		strResults = append(strResults, fmt.Sprintf("%s.%sResult.%s", receiverName, o.MethodName(), res.DestField))
-	}
-	strResults = append(strResults, fmt.Sprintf("%s.%sResult.Err", receiverName, o.MethodName()))
+	strResults = append(strResults, fmt.Sprintf("%s.%sStubResult.Values", receiverName, o.MethodName()))
+	strResults = append(strResults, fmt.Sprintf("%s.%sStubResult.Err", receiverName, o.MethodName()))
 	return fmt.Sprintf("return %s", strings.Join(strResults, ","))
 }
 

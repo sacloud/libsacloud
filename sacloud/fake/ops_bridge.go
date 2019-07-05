@@ -8,7 +8,7 @@ import (
 )
 
 // Find is fake implementation
-func (o *BridgeOp) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) ([]*sacloud.Bridge, error) {
+func (o *BridgeOp) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.BridgeFindResult, error) {
 	results, _ := find(o.key, zone, conditions)
 	var values []*sacloud.Bridge
 	for _, res := range results {
@@ -16,39 +16,54 @@ func (o *BridgeOp) Find(ctx context.Context, zone string, conditions *sacloud.Fi
 		copySameNameField(res, dest)
 		values = append(values, dest)
 	}
-	return values, nil
+	return &sacloud.BridgeFindResult{
+		Total:   len(results),
+		Count:   len(results),
+		From:    0,
+		Bridges: values,
+	}, nil
 }
 
 // Create is fake implementation
-func (o *BridgeOp) Create(ctx context.Context, zone string, param *sacloud.BridgeCreateRequest) (*sacloud.Bridge, error) {
+func (o *BridgeOp) Create(ctx context.Context, zone string, param *sacloud.BridgeCreateRequest) (*sacloud.BridgeCreateResult, error) {
 	result := &sacloud.Bridge{}
 	copySameNameField(param, result)
 	fill(result, fillID, fillCreatedAt)
 
 	s.setBridge(zone, result)
-	return result, nil
+	return &sacloud.BridgeCreateResult{
+		IsOk:   true,
+		Bridge: result,
+	}, nil
 }
 
 // Read is fake implementation
-func (o *BridgeOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Bridge, error) {
+func (o *BridgeOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.BridgeReadResult, error) {
 	value := s.getBridgeByID(zone, id)
 	if value == nil {
 		return nil, newErrorNotFound(o.key, id)
 	}
 	dest := &sacloud.Bridge{}
 	copySameNameField(value, dest)
-	return dest, nil
+	return &sacloud.BridgeReadResult{
+		IsOk:   true,
+		Bridge: dest,
+	}, nil
 }
 
 // Update is fake implementation
-func (o *BridgeOp) Update(ctx context.Context, zone string, id types.ID, param *sacloud.BridgeUpdateRequest) (*sacloud.Bridge, error) {
-	value, err := o.Read(ctx, zone, id)
+func (o *BridgeOp) Update(ctx context.Context, zone string, id types.ID, param *sacloud.BridgeUpdateRequest) (*sacloud.BridgeUpdateResult, error) {
+	readResult, err := o.Read(ctx, zone, id)
 	if err != nil {
 		return nil, err
 	}
+	value := readResult.Bridge
 	copySameNameField(param, value)
 
-	return value, nil
+	return &sacloud.BridgeUpdateResult{
+		IsOk:   true,
+		Bridge: value,
+	}, nil
 }
 
 // Delete is fake implementation

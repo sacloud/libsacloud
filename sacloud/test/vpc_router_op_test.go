@@ -119,19 +119,23 @@ var (
 func testVPCRouterCreate(createParam *sacloud.VPCRouterCreateRequest) func(*CRUDTestContext, sacloud.APICaller) (interface{}, error) {
 	return func(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 		client := sacloud.NewVPCRouterOp(caller)
-		v, err := client.Create(context.Background(), testZone, createParam)
+		createResult, err := client.Create(context.Background(), testZone, createParam)
 		if err != nil {
 			return nil, err
 		}
 
 		n, err := sacloud.WaiterForReady(func() (interface{}, error) {
-			return client.Read(context.Background(), testZone, v.ID)
+			res, err := client.Read(context.Background(), testZone, createResult.Appliance.ID)
+			if err != nil {
+				return nil, err
+			}
+			return res.Appliance, nil
 		}).WaitForState(context.Background())
 		if err != nil {
 			return nil, err
 		}
 
-		if err := client.Boot(context.Background(), testZone, v.ID); err != nil {
+		if err := client.Boot(context.Background(), testZone, createResult.Appliance.ID); err != nil {
 			return nil, err
 		}
 
@@ -141,13 +145,21 @@ func testVPCRouterCreate(createParam *sacloud.VPCRouterCreateRequest) func(*CRUD
 
 func testVPCRouterRead(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewVPCRouterOp(caller)
-	return client.Read(context.Background(), testZone, testContext.ID)
+	res, err := client.Read(context.Background(), testZone, testContext.ID)
+	if err != nil {
+		return nil, err
+	}
+	return res.Appliance, nil
 }
 
 func testVPCRouterUpdate(updateParam *sacloud.VPCRouterUpdateRequest) func(*CRUDTestContext, sacloud.APICaller) (interface{}, error) {
 	return func(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 		client := sacloud.NewVPCRouterOp(caller)
-		return client.Update(context.Background(), testZone, testContext.ID, updateParam)
+		res, err := client.Update(context.Background(), testZone, testContext.ID, updateParam)
+		if err != nil {
+			return nil, err
+		}
+		return res.Appliance, nil
 	}
 }
 
@@ -164,7 +176,7 @@ func TestVPCRouterOpWithRouterCRUD(t *testing.T) {
 		Setup: func(testContext *CRUDTestContext, caller sacloud.APICaller) error {
 			ctx := context.Background()
 			routerOp := sacloud.NewInternetOp(caller)
-			created, err := routerOp.Create(ctx, testZone, &sacloud.InternetCreateRequest{
+			createResult, err := routerOp.Create(ctx, testZone, &sacloud.InternetCreateRequest{
 				Name:           "libsacloud-internet-for-vpc-router",
 				BandWidthMbps:  100,
 				NetworkMaskLen: 28,
@@ -172,6 +184,8 @@ func TestVPCRouterOpWithRouterCRUD(t *testing.T) {
 			if err != nil {
 				return err
 			}
+			created := createResult.Internet
+
 			testContext.Values["vpcrouter/internet"] = created.ID
 			max := 30
 			for {
@@ -188,10 +202,11 @@ func TestVPCRouterOpWithRouterCRUD(t *testing.T) {
 			}
 
 			swOp := sacloud.NewSwitchOp(caller)
-			sw, err := swOp.Read(ctx, testZone, created.Switch.ID)
+			swReadResult, err := swOp.Read(ctx, testZone, created.Switch.ID)
 			if err != nil {
 				return err
 			}
+			sw := swReadResult.Switch
 
 			ipaddresses := sw.Subnets[0].GetAssignedIPAddresses()
 			p := withRouterCreateVPCRouterParam
@@ -241,19 +256,24 @@ func TestVPCRouterOpWithRouterCRUD(t *testing.T) {
 					return nil, err
 				}
 				_, err := sacloud.WaiterForDown(func() (interface{}, error) {
-					return vpcOp.Read(context.Background(), testZone, testContext.ID)
+					res, err := vpcOp.Read(context.Background(), testZone, testContext.ID)
+					if err != nil {
+						return nil, err
+					}
+					return res.Appliance, nil
 				}).WaitForState(context.Background())
 				if err != nil {
 					return nil, err
 				}
 
 				swOp := sacloud.NewSwitchOp(caller)
-				sw, err := swOp.Create(ctx, testZone, &sacloud.SwitchCreateRequest{
+				swCreateResult, err := swOp.Create(ctx, testZone, &sacloud.SwitchCreateRequest{
 					Name: "libsacloud-switch-for-vpc-router",
 				})
 				if err != nil {
 					return nil, err
 				}
+				sw := swCreateResult.Switch
 				testContext.Values["vpcrouter/switch"] = sw.ID
 
 				// connect to switch

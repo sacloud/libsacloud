@@ -98,17 +98,30 @@ var (
 
 func testDiskCreate(_ *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewDiskOp(caller)
-	return client.Create(context.Background(), testZone, createDiskParam)
+	res, err := client.Create(context.Background(), testZone, createDiskParam)
+	if err != nil {
+		return nil, err
+	}
+	return res.Disk, nil
 }
 
 func testDiskRead(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewDiskOp(caller)
-	return client.Read(context.Background(), testZone, testContext.ID)
+	res, err := client.Read(context.Background(), testZone, testContext.ID)
+	if err != nil {
+		return nil, err
+	}
+	return res.Disk, nil
 }
 
 func testDiskUpdate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewDiskOp(caller)
-	return client.Update(context.Background(), testZone, testContext.ID, updateDiskParam)
+	res, err := client.Update(context.Background(), testZone, testContext.ID, updateDiskParam)
+	if err != nil {
+		return nil, err
+	}
+	return res.Disk, nil
+
 }
 
 func testDiskDelete(testContext *CRUDTestContext, caller sacloud.APICaller) error {
@@ -117,15 +130,17 @@ func testDiskDelete(testContext *CRUDTestContext, caller sacloud.APICaller) erro
 }
 
 func TestDiskOp_Config(t *testing.T) {
+	t.Parallel()
+
 	archiveClient := sacloud.NewArchiveOp(singletonAPICaller())
 	client := sacloud.NewDiskOp(singletonAPICaller())
 	ctx := context.Background()
 
 	// find source public archive
 	var archiveID types.ID
-	archives, err := archiveClient.Find(ctx, testZone, nil)
+	archiveFindResult, err := archiveClient.Find(ctx, testZone, nil)
 	require.NoError(t, err)
-	for _, a := range archives {
+	for _, a := range archiveFindResult.Archives {
 		if strings.HasPrefix(a.Name, "CentOS 7") {
 			archiveID = a.ID
 			break
@@ -136,16 +151,23 @@ func TestDiskOp_Config(t *testing.T) {
 	}
 
 	// create
-	disk, err := client.Create(ctx, testZone, &sacloud.DiskCreateRequest{
+	diskCreateResult, err := client.Create(ctx, testZone, &sacloud.DiskCreateRequest{
 		Name:            "libsacloud-disk-edit",
 		DiskPlanID:      types.ID(4),
 		SizeMB:          20 * 1024,
 		SourceArchiveID: archiveID,
 	})
 	require.NoError(t, err)
+	disk := diskCreateResult.Disk
 
 	// wait for ready
-	waiter := sacloud.WaiterForReady(func() (interface{}, error) { return client.Read(ctx, testZone, disk.ID) })
+	waiter := sacloud.WaiterForReady(func() (interface{}, error) {
+		res, err := client.Read(ctx, testZone, disk.ID)
+		if err != nil {
+			return nil, err
+		}
+		return res.Disk, nil
+	})
 	_, err = waiter.WaitForState(ctx)
 	require.NoError(t, err)
 
