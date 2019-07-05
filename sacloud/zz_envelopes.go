@@ -25,7 +25,7 @@ type archiveFindResponseEnvelope struct {
 	From  int `json:",omitempty"` // ページング開始ページ
 	Count int `json:",omitempty"` // 件数
 
-	Archives []*naked.Archive `json:",omitempty"`
+	Archives []*naked.Archive `json:",omitempty" mapconv:"[]Archives,omitempty"`
 }
 
 // archiveCreateRequestEnvelope is envelop of API request
@@ -38,7 +38,7 @@ type archiveCreateResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	Archive *naked.Archive `json:",omitempty"`
+	Archive *naked.Archive `json:",omitempty" mapconv:",omitempty"`
 }
 
 // archiveCreateBlankRequestEnvelope is envelop of API request
@@ -51,8 +51,8 @@ type archiveCreateBlankResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	Archive   *naked.Archive          `json:",omitempty"`
-	FTPServer *naked.OpeningFTPServer `json:",omitempty"`
+	Archive   *naked.Archive          `json:",omitempty" mapconv:",omitempty"`
+	FTPServer *naked.OpeningFTPServer `json:",omitempty" mapconv:",omitempty"`
 }
 
 // archiveReadResponseEnvelope is envelop of API response
@@ -60,7 +60,7 @@ type archiveReadResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	Archive *naked.Archive `json:",omitempty"`
+	Archive *naked.Archive `json:",omitempty" mapconv:",omitempty"`
 }
 
 // archiveUpdateRequestEnvelope is envelop of API request
@@ -73,7 +73,7 @@ type archiveUpdateResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	Archive *naked.Archive `json:",omitempty"`
+	Archive *naked.Archive `json:",omitempty" mapconv:",omitempty"`
 }
 
 // archiveOpenFTPRequestEnvelope is envelop of API request
@@ -86,7 +86,7 @@ type archiveOpenFTPResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	FTPServer *naked.OpeningFTPServer `json:",omitempty"`
+	FTPServer *naked.OpeningFTPServer `json:",omitempty" mapconv:",omitempty"`
 }
 
 // bridgeFindRequestEnvelope is envelop of API request
@@ -105,7 +105,7 @@ type bridgeFindResponseEnvelope struct {
 	From  int `json:",omitempty"` // ページング開始ページ
 	Count int `json:",omitempty"` // 件数
 
-	Bridges []*naked.Bridge `json:",omitempty"`
+	Bridges []*naked.Bridge `json:",omitempty" mapconv:"[]Bridges,omitempty"`
 }
 
 // bridgeCreateRequestEnvelope is envelop of API request
@@ -118,7 +118,7 @@ type bridgeCreateResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	Bridge *naked.Bridge `json:",omitempty"`
+	Bridge *naked.Bridge `json:",omitempty" mapconv:",omitempty"`
 }
 
 // bridgeReadResponseEnvelope is envelop of API response
@@ -126,7 +126,7 @@ type bridgeReadResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	Bridge *naked.Bridge `json:",omitempty"`
+	Bridge *naked.Bridge `json:",omitempty" mapconv:",omitempty"`
 }
 
 // bridgeUpdateRequestEnvelope is envelop of API request
@@ -139,7 +139,7 @@ type bridgeUpdateResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	Bridge *naked.Bridge `json:",omitempty"`
+	Bridge *naked.Bridge `json:",omitempty" mapconv:",omitempty"`
 }
 
 // cdromFindRequestEnvelope is envelop of API request
@@ -158,7 +158,7 @@ type cdromFindResponseEnvelope struct {
 	From  int `json:",omitempty"` // ページング開始ページ
 	Count int `json:",omitempty"` // 件数
 
-	CDROMs []*naked.CDROM `json:",omitempty"`
+	CDROMs []*naked.CDROM `json:",omitempty" mapconv:"[]CDROMs,omitempty"`
 }
 
 // cdromCreateRequestEnvelope is envelop of API request
@@ -171,8 +171,8 @@ type cdromCreateResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	CDROM     *naked.CDROM            `json:",omitempty"`
-	FTPServer *naked.OpeningFTPServer `json:",omitempty"`
+	CDROM     *naked.CDROM            `json:",omitempty" mapconv:",omitempty"`
+	FTPServer *naked.OpeningFTPServer `json:",omitempty" mapconv:",omitempty"`
 }
 
 // cdromReadResponseEnvelope is envelop of API response
@@ -180,7 +180,7 @@ type cdromReadResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	CDROM *naked.CDROM `json:",omitempty"`
+	CDROM *naked.CDROM `json:",omitempty" mapconv:",omitempty"`
 }
 
 // cdromUpdateRequestEnvelope is envelop of API request
@@ -193,7 +193,7 @@ type cdromUpdateResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	CDROM *naked.CDROM `json:",omitempty"`
+	CDROM *naked.CDROM `json:",omitempty" mapconv:",omitempty"`
 }
 
 // cdromOpenFTPRequestEnvelope is envelop of API request
@@ -206,7 +206,7 @@ type cdromOpenFTPResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	FTPServer *naked.OpeningFTPServer `json:",omitempty"`
+	FTPServer *naked.OpeningFTPServer `json:",omitempty" mapconv:",omitempty"`
 }
 
 // diskFindRequestEnvelope is envelop of API request
@@ -225,7 +225,7 @@ type diskFindResponseEnvelope struct {
 	From  int `json:",omitempty"` // ページング開始ページ
 	Count int `json:",omitempty"` // 件数
 
-	Disks []*naked.Disk `json:",omitempty"`
+	Disks []*naked.Disk `json:",omitempty" mapconv:"[]Disks,omitempty"`
 }
 
 // diskCreateRequestEnvelope is envelop of API request
@@ -238,7 +238,7 @@ type diskCreateResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	Disk *naked.Disk `json:",omitempty"`
+	Disk *naked.Disk `json:",omitempty" mapconv:",omitempty"`
 }
 
 // diskCreateDistantlyRequestEnvelope is envelop of API request
@@ -252,7 +252,7 @@ type diskCreateDistantlyResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	Disk *naked.Disk `json:",omitempty"`
+	Disk *naked.Disk `json:",omitempty" mapconv:",omitempty"`
 }
 
 // diskConfigRequestEnvelope is envelop of API request
@@ -281,7 +281,7 @@ type diskCreateWithConfigResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	Disk *naked.Disk `json:",omitempty"`
+	Disk *naked.Disk `json:",omitempty" mapconv:",omitempty"`
 }
 
 // diskCreateWithConfigDistantlyRequestEnvelope is envelop of API request
@@ -297,7 +297,7 @@ type diskCreateWithConfigDistantlyResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	Disk *naked.Disk `json:",omitempty"`
+	Disk *naked.Disk `json:",omitempty" mapconv:",omitempty"`
 }
 
 // diskInstallDistantFromRequestEnvelope is envelop of API request
@@ -311,7 +311,7 @@ type diskInstallDistantFromResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	Disk *naked.Disk `json:",omitempty"`
+	Disk *naked.Disk `json:",omitempty" mapconv:",omitempty"`
 }
 
 // diskInstallRequestEnvelope is envelop of API request
@@ -324,7 +324,7 @@ type diskInstallResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	Disk *naked.Disk `json:",omitempty"`
+	Disk *naked.Disk `json:",omitempty" mapconv:",omitempty"`
 }
 
 // diskReadResponseEnvelope is envelop of API response
@@ -332,7 +332,7 @@ type diskReadResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	Disk *naked.Disk `json:",omitempty"`
+	Disk *naked.Disk `json:",omitempty" mapconv:",omitempty"`
 }
 
 // diskUpdateRequestEnvelope is envelop of API request
@@ -345,7 +345,7 @@ type diskUpdateResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	Disk *naked.Disk `json:",omitempty"`
+	Disk *naked.Disk `json:",omitempty" mapconv:",omitempty"`
 }
 
 // diskMonitorRequestEnvelope is envelop of API request
@@ -359,7 +359,7 @@ type diskMonitorResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	Data *naked.MonitorValues `json:",omitempty"`
+	Data *naked.MonitorValues `json:",omitempty" mapconv:",omitempty"`
 }
 
 // gslbFindRequestEnvelope is envelop of API request
@@ -378,7 +378,7 @@ type gslbFindResponseEnvelope struct {
 	From  int `json:",omitempty"` // ページング開始ページ
 	Count int `json:",omitempty"` // 件数
 
-	CommonServiceItems []*naked.GSLB `json:",omitempty"`
+	CommonServiceItems []*naked.GSLB `json:",omitempty" mapconv:"[]CommonServiceItems,omitempty"`
 }
 
 // gslbCreateRequestEnvelope is envelop of API request
@@ -391,7 +391,7 @@ type gslbCreateResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	CommonServiceItem *naked.GSLB `json:",omitempty"`
+	CommonServiceItem *naked.GSLB `json:",omitempty" mapconv:",omitempty"`
 }
 
 // gslbReadResponseEnvelope is envelop of API response
@@ -399,7 +399,7 @@ type gslbReadResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	CommonServiceItem *naked.GSLB `json:",omitempty"`
+	CommonServiceItem *naked.GSLB `json:",omitempty" mapconv:",omitempty"`
 }
 
 // gslbUpdateRequestEnvelope is envelop of API request
@@ -412,7 +412,7 @@ type gslbUpdateResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	CommonServiceItem *naked.GSLB `json:",omitempty"`
+	CommonServiceItem *naked.GSLB `json:",omitempty" mapconv:",omitempty"`
 }
 
 // interfaceFindRequestEnvelope is envelop of API request
@@ -431,7 +431,7 @@ type interfaceFindResponseEnvelope struct {
 	From  int `json:",omitempty"` // ページング開始ページ
 	Count int `json:",omitempty"` // 件数
 
-	Interfaces []*naked.Interface `json:",omitempty"`
+	Interfaces []*naked.Interface `json:",omitempty" mapconv:"[]Interfaces,omitempty"`
 }
 
 // interfaceCreateRequestEnvelope is envelop of API request
@@ -444,7 +444,7 @@ type interfaceCreateResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	Interface *naked.Interface `json:",omitempty"`
+	Interface *naked.Interface `json:",omitempty" mapconv:",omitempty"`
 }
 
 // interfaceReadResponseEnvelope is envelop of API response
@@ -452,7 +452,7 @@ type interfaceReadResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	Interface *naked.Interface `json:",omitempty"`
+	Interface *naked.Interface `json:",omitempty" mapconv:",omitempty"`
 }
 
 // interfaceUpdateRequestEnvelope is envelop of API request
@@ -465,7 +465,7 @@ type interfaceUpdateResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	Interface *naked.Interface `json:",omitempty"`
+	Interface *naked.Interface `json:",omitempty" mapconv:",omitempty"`
 }
 
 // interfaceMonitorRequestEnvelope is envelop of API request
@@ -479,7 +479,7 @@ type interfaceMonitorResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	Data *naked.MonitorValues `json:",omitempty"`
+	Data *naked.MonitorValues `json:",omitempty" mapconv:",omitempty"`
 }
 
 // internetFindRequestEnvelope is envelop of API request
@@ -498,7 +498,7 @@ type internetFindResponseEnvelope struct {
 	From  int `json:",omitempty"` // ページング開始ページ
 	Count int `json:",omitempty"` // 件数
 
-	Internets []*naked.Internet `json:",omitempty"`
+	Internets []*naked.Internet `json:",omitempty" mapconv:"[]Internets,omitempty"`
 }
 
 // internetCreateRequestEnvelope is envelop of API request
@@ -511,7 +511,7 @@ type internetCreateResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	Internet *naked.Internet `json:",omitempty"`
+	Internet *naked.Internet `json:",omitempty" mapconv:",omitempty"`
 }
 
 // internetReadResponseEnvelope is envelop of API response
@@ -519,7 +519,7 @@ type internetReadResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	Internet *naked.Internet `json:",omitempty"`
+	Internet *naked.Internet `json:",omitempty" mapconv:",omitempty"`
 }
 
 // internetUpdateRequestEnvelope is envelop of API request
@@ -532,7 +532,7 @@ type internetUpdateResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	Internet *naked.Internet `json:",omitempty"`
+	Internet *naked.Internet `json:",omitempty" mapconv:",omitempty"`
 }
 
 // internetUpdateBandWidthRequestEnvelope is envelop of API request
@@ -545,7 +545,7 @@ type internetUpdateBandWidthResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	Internet *naked.Internet `json:",omitempty"`
+	Internet *naked.Internet `json:",omitempty" mapconv:",omitempty"`
 }
 
 // internetAddSubnetRequestEnvelope is envelop of API request
@@ -559,7 +559,7 @@ type internetAddSubnetResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	Subnet *naked.Subnet `json:",omitempty"`
+	Subnet *naked.Subnet `json:",omitempty" mapconv:",omitempty"`
 }
 
 // internetUpdateSubnetRequestEnvelope is envelop of API request
@@ -572,7 +572,7 @@ type internetUpdateSubnetResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	Subnet *naked.Subnet `json:",omitempty"`
+	Subnet *naked.Subnet `json:",omitempty" mapconv:",omitempty"`
 }
 
 // internetMonitorRequestEnvelope is envelop of API request
@@ -586,7 +586,7 @@ type internetMonitorResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	Data *naked.MonitorValues `json:",omitempty"`
+	Data *naked.MonitorValues `json:",omitempty" mapconv:",omitempty"`
 }
 
 // loadbalancerFindRequestEnvelope is envelop of API request
@@ -605,7 +605,7 @@ type loadbalancerFindResponseEnvelope struct {
 	From  int `json:",omitempty"` // ページング開始ページ
 	Count int `json:",omitempty"` // 件数
 
-	Appliances []*naked.LoadBalancer `json:",omitempty"`
+	Appliances []*naked.LoadBalancer `json:",omitempty" mapconv:"[]Appliances,omitempty"`
 }
 
 // loadbalancerCreateRequestEnvelope is envelop of API request
@@ -618,7 +618,7 @@ type loadbalancerCreateResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	Appliance *naked.LoadBalancer `json:",omitempty"`
+	Appliance *naked.LoadBalancer `json:",omitempty" mapconv:",omitempty"`
 }
 
 // loadbalancerReadResponseEnvelope is envelop of API response
@@ -626,7 +626,7 @@ type loadbalancerReadResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	Appliance *naked.LoadBalancer `json:",omitempty"`
+	Appliance *naked.LoadBalancer `json:",omitempty" mapconv:",omitempty"`
 }
 
 // loadbalancerUpdateRequestEnvelope is envelop of API request
@@ -639,7 +639,7 @@ type loadbalancerUpdateResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	Appliance *naked.LoadBalancer `json:",omitempty"`
+	Appliance *naked.LoadBalancer `json:",omitempty" mapconv:",omitempty"`
 }
 
 // loadbalancerShutdownRequestEnvelope is envelop of API request
@@ -658,7 +658,7 @@ type loadbalancerMonitorInterfaceResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	Data *naked.MonitorValues `json:",omitempty"`
+	Data *naked.MonitorValues `json:",omitempty" mapconv:",omitempty"`
 }
 
 // loadbalancerStatusResponseEnvelope is envelop of API response
@@ -667,7 +667,7 @@ type loadbalancerStatusResponseEnvelope struct {
 	From  int `json:",omitempty"` // ページング開始ページ
 	Count int `json:",omitempty"` // 件数
 
-	LoadBalancer []*naked.LoadBalancerStatus `json:",omitempty"`
+	LoadBalancer []*naked.LoadBalancerStatus `json:",omitempty" mapconv:"[]LoadBalancer,omitempty"`
 }
 
 // nfsFindRequestEnvelope is envelop of API request
@@ -686,7 +686,7 @@ type nfsFindResponseEnvelope struct {
 	From  int `json:",omitempty"` // ページング開始ページ
 	Count int `json:",omitempty"` // 件数
 
-	Appliances []*naked.NFS `json:",omitempty"`
+	Appliances []*naked.NFS `json:",omitempty" mapconv:"[]Appliances,omitempty"`
 }
 
 // nfsCreateRequestEnvelope is envelop of API request
@@ -699,7 +699,7 @@ type nfsCreateResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	Appliance *naked.NFS `json:",omitempty"`
+	Appliance *naked.NFS `json:",omitempty" mapconv:",omitempty"`
 }
 
 // nfsReadResponseEnvelope is envelop of API response
@@ -707,7 +707,7 @@ type nfsReadResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	Appliance *naked.NFS `json:",omitempty"`
+	Appliance *naked.NFS `json:",omitempty" mapconv:",omitempty"`
 }
 
 // nfsUpdateRequestEnvelope is envelop of API request
@@ -720,7 +720,7 @@ type nfsUpdateResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	Appliance *naked.NFS `json:",omitempty"`
+	Appliance *naked.NFS `json:",omitempty" mapconv:",omitempty"`
 }
 
 // nfsShutdownRequestEnvelope is envelop of API request
@@ -739,7 +739,7 @@ type nfsMonitorFreeDiskSizeResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	Data *naked.MonitorValues `json:",omitempty"`
+	Data *naked.MonitorValues `json:",omitempty" mapconv:",omitempty"`
 }
 
 // nfsMonitorInterfaceRequestEnvelope is envelop of API request
@@ -753,7 +753,7 @@ type nfsMonitorInterfaceResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	Data *naked.MonitorValues `json:",omitempty"`
+	Data *naked.MonitorValues `json:",omitempty" mapconv:",omitempty"`
 }
 
 // noteFindRequestEnvelope is envelop of API request
@@ -772,7 +772,7 @@ type noteFindResponseEnvelope struct {
 	From  int `json:",omitempty"` // ページング開始ページ
 	Count int `json:",omitempty"` // 件数
 
-	Notes []*naked.Note `json:",omitempty"`
+	Notes []*naked.Note `json:",omitempty" mapconv:"[]Notes,omitempty"`
 }
 
 // noteCreateRequestEnvelope is envelop of API request
@@ -785,7 +785,7 @@ type noteCreateResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	Note *naked.Note `json:",omitempty"`
+	Note *naked.Note `json:",omitempty" mapconv:",omitempty"`
 }
 
 // noteReadResponseEnvelope is envelop of API response
@@ -793,7 +793,7 @@ type noteReadResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	Note *naked.Note `json:",omitempty"`
+	Note *naked.Note `json:",omitempty" mapconv:",omitempty"`
 }
 
 // noteUpdateRequestEnvelope is envelop of API request
@@ -806,7 +806,7 @@ type noteUpdateResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	Note *naked.Note `json:",omitempty"`
+	Note *naked.Note `json:",omitempty" mapconv:",omitempty"`
 }
 
 // packetfilterFindRequestEnvelope is envelop of API request
@@ -825,7 +825,7 @@ type packetfilterFindResponseEnvelope struct {
 	From  int `json:",omitempty"` // ページング開始ページ
 	Count int `json:",omitempty"` // 件数
 
-	PacketFilters []*naked.PacketFilter `json:",omitempty"`
+	PacketFilters []*naked.PacketFilter `json:",omitempty" mapconv:"[]PacketFilters,omitempty"`
 }
 
 // packetfilterCreateRequestEnvelope is envelop of API request
@@ -838,7 +838,7 @@ type packetfilterCreateResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	PacketFilter *naked.PacketFilter `json:",omitempty"`
+	PacketFilter *naked.PacketFilter `json:",omitempty" mapconv:",omitempty"`
 }
 
 // packetfilterReadResponseEnvelope is envelop of API response
@@ -846,7 +846,7 @@ type packetfilterReadResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	PacketFilter *naked.PacketFilter `json:",omitempty"`
+	PacketFilter *naked.PacketFilter `json:",omitempty" mapconv:",omitempty"`
 }
 
 // packetfilterUpdateRequestEnvelope is envelop of API request
@@ -859,7 +859,7 @@ type packetfilterUpdateResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	PacketFilter *naked.PacketFilter `json:",omitempty"`
+	PacketFilter *naked.PacketFilter `json:",omitempty" mapconv:",omitempty"`
 }
 
 // serverFindRequestEnvelope is envelop of API request
@@ -878,7 +878,7 @@ type serverFindResponseEnvelope struct {
 	From  int `json:",omitempty"` // ページング開始ページ
 	Count int `json:",omitempty"` // 件数
 
-	Servers []*naked.Server `json:",omitempty"`
+	Servers []*naked.Server `json:",omitempty" mapconv:"[]Servers,omitempty"`
 }
 
 // serverCreateRequestEnvelope is envelop of API request
@@ -891,7 +891,7 @@ type serverCreateResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	Server *naked.Server `json:",omitempty"`
+	Server *naked.Server `json:",omitempty" mapconv:",omitempty"`
 }
 
 // serverReadResponseEnvelope is envelop of API response
@@ -899,7 +899,7 @@ type serverReadResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	Server *naked.Server `json:",omitempty"`
+	Server *naked.Server `json:",omitempty" mapconv:",omitempty"`
 }
 
 // serverUpdateRequestEnvelope is envelop of API request
@@ -912,7 +912,7 @@ type serverUpdateResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	Server *naked.Server `json:",omitempty"`
+	Server *naked.Server `json:",omitempty" mapconv:",omitempty"`
 }
 
 // serverChangePlanRequestEnvelope is envelop of API request
@@ -928,7 +928,7 @@ type serverChangePlanResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	Server *naked.Server `json:",omitempty"`
+	Server *naked.Server `json:",omitempty" mapconv:",omitempty"`
 }
 
 // serverInsertCDROMRequestEnvelope is envelop of API request
@@ -957,7 +957,7 @@ type serverMonitorResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	Data *naked.MonitorValues `json:",omitempty"`
+	Data *naked.MonitorValues `json:",omitempty" mapconv:",omitempty"`
 }
 
 // simFindRequestEnvelope is envelop of API request
@@ -976,7 +976,7 @@ type simFindResponseEnvelope struct {
 	From  int `json:",omitempty"` // ページング開始ページ
 	Count int `json:",omitempty"` // 件数
 
-	CommonServiceItems []*naked.SIM `json:",omitempty"`
+	CommonServiceItems []*naked.SIM `json:",omitempty" mapconv:"[]CommonServiceItems,omitempty"`
 }
 
 // simCreateRequestEnvelope is envelop of API request
@@ -989,7 +989,7 @@ type simCreateResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	CommonServiceItem *naked.SIM `json:",omitempty"`
+	CommonServiceItem *naked.SIM `json:",omitempty" mapconv:",omitempty"`
 }
 
 // simReadResponseEnvelope is envelop of API response
@@ -997,7 +997,7 @@ type simReadResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	CommonServiceItem *naked.SIM `json:",omitempty"`
+	CommonServiceItem *naked.SIM `json:",omitempty" mapconv:",omitempty"`
 }
 
 // simUpdateRequestEnvelope is envelop of API request
@@ -1010,7 +1010,7 @@ type simUpdateResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	CommonServiceItem *naked.SIM `json:",omitempty"`
+	CommonServiceItem *naked.SIM `json:",omitempty" mapconv:",omitempty"`
 }
 
 // simAssignIPRequestEnvelope is envelop of API request
@@ -1029,7 +1029,7 @@ type simLogsResponseEnvelope struct {
 	From  int `json:",omitempty"` // ページング開始ページ
 	Count int `json:",omitempty"` // 件数
 
-	Logs []*naked.SIMLog `json:",omitempty"`
+	Logs []*naked.SIMLog `json:",omitempty" mapconv:"[]Logs,omitempty"`
 }
 
 // simGetNetworkOperatorResponseEnvelope is envelop of API response
@@ -1038,7 +1038,7 @@ type simGetNetworkOperatorResponseEnvelope struct {
 	From  int `json:",omitempty"` // ページング開始ページ
 	Count int `json:",omitempty"` // 件数
 
-	NetworkOperationConfigs []*naked.SIMNetworkOperatorConfig `json:",omitempty"`
+	NetworkOperationConfigs []*naked.SIMNetworkOperatorConfig `json:",omitempty" mapconv:"[]NetworkOperationConfigs,omitempty"`
 }
 
 // simSetNetworkOperatorRequestEnvelope is envelop of API request
@@ -1057,7 +1057,7 @@ type simMonitorSIMResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	Data *naked.MonitorValues `json:",omitempty"`
+	Data *naked.MonitorValues `json:",omitempty" mapconv:",omitempty"`
 }
 
 // switchFindRequestEnvelope is envelop of API request
@@ -1076,7 +1076,7 @@ type switchFindResponseEnvelope struct {
 	From  int `json:",omitempty"` // ページング開始ページ
 	Count int `json:",omitempty"` // 件数
 
-	Switches []*naked.Switch `json:",omitempty"`
+	Switches []*naked.Switch `json:",omitempty" mapconv:"[]Switches,omitempty"`
 }
 
 // switchCreateRequestEnvelope is envelop of API request
@@ -1089,7 +1089,7 @@ type switchCreateResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	Switch *naked.Switch `json:",omitempty"`
+	Switch *naked.Switch `json:",omitempty" mapconv:",omitempty"`
 }
 
 // switchReadResponseEnvelope is envelop of API response
@@ -1097,7 +1097,7 @@ type switchReadResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	Switch *naked.Switch `json:",omitempty"`
+	Switch *naked.Switch `json:",omitempty" mapconv:",omitempty"`
 }
 
 // switchUpdateRequestEnvelope is envelop of API request
@@ -1110,7 +1110,7 @@ type switchUpdateResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	Switch *naked.Switch `json:",omitempty"`
+	Switch *naked.Switch `json:",omitempty" mapconv:",omitempty"`
 }
 
 // vpcrouterFindRequestEnvelope is envelop of API request
@@ -1129,7 +1129,7 @@ type vpcrouterFindResponseEnvelope struct {
 	From  int `json:",omitempty"` // ページング開始ページ
 	Count int `json:",omitempty"` // 件数
 
-	Appliances []*naked.VPCRouter `json:",omitempty"`
+	Appliances []*naked.VPCRouter `json:",omitempty" mapconv:"[]Appliances,omitempty"`
 }
 
 // vpcrouterCreateRequestEnvelope is envelop of API request
@@ -1142,7 +1142,7 @@ type vpcrouterCreateResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	Appliance *naked.VPCRouter `json:",omitempty"`
+	Appliance *naked.VPCRouter `json:",omitempty" mapconv:",omitempty"`
 }
 
 // vpcrouterReadResponseEnvelope is envelop of API response
@@ -1150,7 +1150,7 @@ type vpcrouterReadResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	Appliance *naked.VPCRouter `json:",omitempty"`
+	Appliance *naked.VPCRouter `json:",omitempty" mapconv:",omitempty"`
 }
 
 // vpcrouterUpdateRequestEnvelope is envelop of API request
@@ -1163,7 +1163,7 @@ type vpcrouterUpdateResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	Appliance *naked.VPCRouter `json:",omitempty"`
+	Appliance *naked.VPCRouter `json:",omitempty" mapconv:",omitempty"`
 }
 
 // vpcrouterShutdownRequestEnvelope is envelop of API request
@@ -1182,7 +1182,7 @@ type vpcrouterMonitorInterfaceResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	Data *naked.MonitorValues `json:",omitempty"`
+	Data *naked.MonitorValues `json:",omitempty" mapconv:",omitempty"`
 }
 
 // zoneFindRequestEnvelope is envelop of API request
@@ -1201,7 +1201,7 @@ type zoneFindResponseEnvelope struct {
 	From  int `json:",omitempty"` // ページング開始ページ
 	Count int `json:",omitempty"` // 件数
 
-	Zones []*naked.Zone `json:",omitempty"`
+	Zones []*naked.Zone `json:",omitempty" mapconv:"[]Zones,omitempty"`
 }
 
 // zoneReadResponseEnvelope is envelop of API response
@@ -1209,5 +1209,5 @@ type zoneReadResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	Zone *naked.Zone `json:",omitempty"`
+	Zone *naked.Zone `json:",omitempty" mapconv:",omitempty"`
 }
