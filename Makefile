@@ -6,10 +6,10 @@ export GO111MODULE=on
 default: clean gen fmt goimports golint vet test
 
 test:
-	TESTACC= go test ./... $(TESTARGS) -v -timeout=120m -parallel=4 ;
+	TESTACC= go test ./... $(TESTARGS) -v -timeout=120m -parallel=8 ;
 
 testacc:
-	TESTACC=1 go test ./... $(TESTARGS) -v -timeout=120m -parallel=4 ;
+	TESTACC=1 go test ./... $(TESTARGS) -v -timeout=120m -parallel=8 ;
 
 .PHONY: clean
 clean:
