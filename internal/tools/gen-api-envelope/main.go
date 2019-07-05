@@ -57,13 +57,13 @@ type {{ .RequestEnvelopeStructName }} struct {
 {{ if .HasResponseEnvelope }}
 // {{ .ResponseEnvelopeStructName }} is envelop of API response
 type {{ .ResponseEnvelopeStructName }} struct {
-{{ if .IsResponseSingular }}
-	IsOk    bool  ` + "`" + `json:"is_ok,omitempty"` + "`" + ` // is_ok項目
-	Success types.APIResult  ` + "`" + `json:",omitempty"` + "`" + `      // success項目
-{{- else if .IsResponsePlural -}}
+{{- if .IsResponsePlural -}}
 	Total       int        ` + "`" + `json:",omitempty"` + "`" + ` // トータル件数
 	From        int        ` + "`" + `json:",omitempty"` + "`" + ` // ページング開始ページ
 	Count       int        ` + "`" + `json:",omitempty"` + "`" + ` // 件数
+{{ else }}
+	IsOk    bool  ` + "`" + `json:"is_ok,omitempty"` + "`" + ` // is_ok項目
+	Success types.APIResult  ` + "`" + `json:",omitempty"` + "`" + `      // success項目
 {{ end }}
 {{ if .IsResponseSingular }}
 	{{- range .ResponsePayloads}}

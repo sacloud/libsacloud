@@ -42,19 +42,11 @@ type ArchiveUpdateResult struct {
 	Archive *naked.Archive
 }
 
-// ArchiveDeleteResult represents the Result of API
-type ArchiveDeleteResult struct {
-}
-
 // ArchiveOpenFTPResult represents the Result of API
 type ArchiveOpenFTPResult struct {
 	IsOk bool `json:"is_ok,omitempty"` // is_ok
 
 	FTPServer *naked.OpeningFTPServer
-}
-
-// ArchiveCloseFTPResult represents the Result of API
-type ArchiveCloseFTPResult struct {
 }
 
 // BridgeFindResult represents the Result of API
@@ -85,10 +77,6 @@ type BridgeUpdateResult struct {
 	IsOk bool `json:"is_ok,omitempty"` // is_ok
 
 	Bridge *naked.Bridge
-}
-
-// BridgeDeleteResult represents the Result of API
-type BridgeDeleteResult struct {
 }
 
 // CDROMFindResult represents the Result of API
@@ -122,19 +110,11 @@ type CDROMUpdateResult struct {
 	CDROM *naked.CDROM
 }
 
-// CDROMDeleteResult represents the Result of API
-type CDROMDeleteResult struct {
-}
-
 // CDROMOpenFTPResult represents the Result of API
 type CDROMOpenFTPResult struct {
 	IsOk bool `json:"is_ok,omitempty"` // is_ok
 
 	FTPServer *naked.OpeningFTPServer
-}
-
-// CDROMCloseFTPResult represents the Result of API
-type CDROMCloseFTPResult struct {
 }
 
 // DiskFindResult represents the Result of API
@@ -160,10 +140,6 @@ type DiskCreateDistantlyResult struct {
 	Disk *naked.Disk
 }
 
-// DiskConfigResult represents the Result of API
-type DiskConfigResult struct {
-}
-
 // DiskCreateWithConfigResult represents the Result of API
 type DiskCreateWithConfigResult struct {
 	IsOk bool `json:"is_ok,omitempty"` // is_ok
@@ -176,22 +152,6 @@ type DiskCreateWithConfigDistantlyResult struct {
 	IsOk bool `json:"is_ok,omitempty"` // is_ok
 
 	Disk *naked.Disk
-}
-
-// DiskToBlankResult represents the Result of API
-type DiskToBlankResult struct {
-}
-
-// DiskResizePartitionResult represents the Result of API
-type DiskResizePartitionResult struct {
-}
-
-// DiskConnectToServerResult represents the Result of API
-type DiskConnectToServerResult struct {
-}
-
-// DiskDisconnectFromServerResult represents the Result of API
-type DiskDisconnectFromServerResult struct {
 }
 
 // DiskInstallDistantFromResult represents the Result of API
@@ -220,10 +180,6 @@ type DiskUpdateResult struct {
 	IsOk bool `json:"is_ok,omitempty"` // is_ok
 
 	Disk *naked.Disk
-}
-
-// DiskDeleteResult represents the Result of API
-type DiskDeleteResult struct {
 }
 
 // DiskMonitorResult represents the Result of API
@@ -263,10 +219,6 @@ type GSLBUpdateResult struct {
 	CommonServiceItem *naked.GSLB
 }
 
-// GSLBDeleteResult represents the Result of API
-type GSLBDeleteResult struct {
-}
-
 // InterfaceFindResult represents the Result of API
 type InterfaceFindResult struct {
 	Total int `json:",omitempty"` // Total count of target resources
@@ -297,35 +249,11 @@ type InterfaceUpdateResult struct {
 	Interface *naked.Interface
 }
 
-// InterfaceDeleteResult represents the Result of API
-type InterfaceDeleteResult struct {
-}
-
 // InterfaceMonitorResult represents the Result of API
 type InterfaceMonitorResult struct {
 	IsOk bool `json:"is_ok,omitempty"` // is_ok
 
 	Data *naked.MonitorValues
-}
-
-// InterfaceConnectToSharedSegmentResult represents the Result of API
-type InterfaceConnectToSharedSegmentResult struct {
-}
-
-// InterfaceConnectToSwitchResult represents the Result of API
-type InterfaceConnectToSwitchResult struct {
-}
-
-// InterfaceDisconnectFromSwitchResult represents the Result of API
-type InterfaceDisconnectFromSwitchResult struct {
-}
-
-// InterfaceConnectToPacketFilterResult represents the Result of API
-type InterfaceConnectToPacketFilterResult struct {
-}
-
-// InterfaceDisconnectFromPacketFilterResult represents the Result of API
-type InterfaceDisconnectFromPacketFilterResult struct {
 }
 
 // InternetFindResult represents the Result of API
@@ -358,10 +286,6 @@ type InternetUpdateResult struct {
 	Internet *naked.Internet
 }
 
-// InternetDeleteResult represents the Result of API
-type InternetDeleteResult struct {
-}
-
 // InternetUpdateBandWidthResult represents the Result of API
 type InternetUpdateBandWidthResult struct {
 	IsOk bool `json:"is_ok,omitempty"` // is_ok
@@ -381,10 +305,6 @@ type InternetUpdateSubnetResult struct {
 	IsOk bool `json:"is_ok,omitempty"` // is_ok
 
 	Subnet *naked.Subnet
-}
-
-// InternetDeleteSubnetResult represents the Result of API
-type InternetDeleteSubnetResult struct {
 }
 
 // InternetMonitorResult represents the Result of API
@@ -422,26 +342,6 @@ type LoadBalancerUpdateResult struct {
 	IsOk bool `json:"is_ok,omitempty"` // is_ok
 
 	Appliance *naked.LoadBalancer
-}
-
-// LoadBalancerDeleteResult represents the Result of API
-type LoadBalancerDeleteResult struct {
-}
-
-// LoadBalancerConfigResult represents the Result of API
-type LoadBalancerConfigResult struct {
-}
-
-// LoadBalancerBootResult represents the Result of API
-type LoadBalancerBootResult struct {
-}
-
-// LoadBalancerShutdownResult represents the Result of API
-type LoadBalancerShutdownResult struct {
-}
-
-// LoadBalancerResetResult represents the Result of API
-type LoadBalancerResetResult struct {
 }
 
 // LoadBalancerMonitorInterfaceResult represents the Result of API
@@ -490,22 +390,6 @@ type NFSUpdateResult struct {
 	Appliance *naked.NFS
 }
 
-// NFSDeleteResult represents the Result of API
-type NFSDeleteResult struct {
-}
-
-// NFSBootResult represents the Result of API
-type NFSBootResult struct {
-}
-
-// NFSShutdownResult represents the Result of API
-type NFSShutdownResult struct {
-}
-
-// NFSResetResult represents the Result of API
-type NFSResetResult struct {
-}
-
 // NFSMonitorFreeDiskSizeResult represents the Result of API
 type NFSMonitorFreeDiskSizeResult struct {
 	IsOk bool `json:"is_ok,omitempty"` // is_ok
@@ -550,10 +434,6 @@ type NoteUpdateResult struct {
 	Note *naked.Note
 }
 
-// NoteDeleteResult represents the Result of API
-type NoteDeleteResult struct {
-}
-
 // PacketFilterFindResult represents the Result of API
 type PacketFilterFindResult struct {
 	Total int `json:",omitempty"` // Total count of target resources
@@ -582,10 +462,6 @@ type PacketFilterUpdateResult struct {
 	IsOk bool `json:"is_ok,omitempty"` // is_ok
 
 	PacketFilter *naked.PacketFilter
-}
-
-// PacketFilterDeleteResult represents the Result of API
-type PacketFilterDeleteResult struct {
 }
 
 // ServerFindResult represents the Result of API
@@ -618,35 +494,11 @@ type ServerUpdateResult struct {
 	Server *naked.Server
 }
 
-// ServerDeleteResult represents the Result of API
-type ServerDeleteResult struct {
-}
-
 // ServerChangePlanResult represents the Result of API
 type ServerChangePlanResult struct {
 	IsOk bool `json:"is_ok,omitempty"` // is_ok
 
 	Server *naked.Server
-}
-
-// ServerInsertCDROMResult represents the Result of API
-type ServerInsertCDROMResult struct {
-}
-
-// ServerEjectCDROMResult represents the Result of API
-type ServerEjectCDROMResult struct {
-}
-
-// ServerBootResult represents the Result of API
-type ServerBootResult struct {
-}
-
-// ServerShutdownResult represents the Result of API
-type ServerShutdownResult struct {
-}
-
-// ServerResetResult represents the Result of API
-type ServerResetResult struct {
 }
 
 // ServerMonitorResult represents the Result of API
@@ -686,34 +538,6 @@ type SIMUpdateResult struct {
 	CommonServiceItem *naked.SIM
 }
 
-// SIMDeleteResult represents the Result of API
-type SIMDeleteResult struct {
-}
-
-// SIMActivateResult represents the Result of API
-type SIMActivateResult struct {
-}
-
-// SIMDeactivateResult represents the Result of API
-type SIMDeactivateResult struct {
-}
-
-// SIMAssignIPResult represents the Result of API
-type SIMAssignIPResult struct {
-}
-
-// SIMClearIPResult represents the Result of API
-type SIMClearIPResult struct {
-}
-
-// SIMIMEILockResult represents the Result of API
-type SIMIMEILockResult struct {
-}
-
-// SIMIMEIUnlockResult represents the Result of API
-type SIMIMEIUnlockResult struct {
-}
-
 // SIMLogsResult represents the Result of API
 type SIMLogsResult struct {
 	Total int `json:",omitempty"` // Total count of target resources
@@ -730,10 +554,6 @@ type SIMGetNetworkOperatorResult struct {
 	Count int `json:",omitempty"` // Count of current page
 
 	NetworkOperationConfigs []*naked.SIMNetworkOperatorConfig
-}
-
-// SIMSetNetworkOperatorResult represents the Result of API
-type SIMSetNetworkOperatorResult struct {
 }
 
 // SIMMonitorSIMResult represents the Result of API
@@ -773,18 +593,6 @@ type SwitchUpdateResult struct {
 	Switch *naked.Switch
 }
 
-// SwitchDeleteResult represents the Result of API
-type SwitchDeleteResult struct {
-}
-
-// SwitchConnectToBridgeResult represents the Result of API
-type SwitchConnectToBridgeResult struct {
-}
-
-// SwitchDisconnectFromBridgeResult represents the Result of API
-type SwitchDisconnectFromBridgeResult struct {
-}
-
 // VPCRouterFindResult represents the Result of API
 type VPCRouterFindResult struct {
 	Total int `json:",omitempty"` // Total count of target resources
@@ -813,34 +621,6 @@ type VPCRouterUpdateResult struct {
 	IsOk bool `json:"is_ok,omitempty"` // is_ok
 
 	Appliance *naked.VPCRouter
-}
-
-// VPCRouterDeleteResult represents the Result of API
-type VPCRouterDeleteResult struct {
-}
-
-// VPCRouterConfigResult represents the Result of API
-type VPCRouterConfigResult struct {
-}
-
-// VPCRouterBootResult represents the Result of API
-type VPCRouterBootResult struct {
-}
-
-// VPCRouterShutdownResult represents the Result of API
-type VPCRouterShutdownResult struct {
-}
-
-// VPCRouterResetResult represents the Result of API
-type VPCRouterResetResult struct {
-}
-
-// VPCRouterConnectToSwitchResult represents the Result of API
-type VPCRouterConnectToSwitchResult struct {
-}
-
-// VPCRouterDisconnectFromSwitchResult represents the Result of API
-type VPCRouterDisconnectFromSwitchResult struct {
 }
 
 // VPCRouterMonitorInterfaceResult represents the Result of API
