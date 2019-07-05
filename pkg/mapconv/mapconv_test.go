@@ -7,17 +7,18 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-type dummyTagged struct {
+type dummyFrom struct {
 	A          string `mapconv:"ValueA.A"`
 	B          string `mapconv:"ValueA.ValueB.B"`
 	C          string `mapconv:"ValueA.ValueB.ValueC.C"`
 	Pointer    *time.Time
 	Slice      []string
 	NoTag      string
+	Bool       bool
 	unexported string
 }
 
-type dummyNaked struct {
+type dummyTo struct {
 	ValueA *struct {
 		A      string
 		ValueB *struct {
@@ -30,27 +31,29 @@ type dummyNaked struct {
 	Pointer    *time.Time
 	Slice      []string
 	NoTag      string
+	Bool       bool
 	unexported string
 }
 
-func TestToNaked(t *testing.T) {
+func TestConvertTo(t *testing.T) {
 	zeroTime := time.Unix(0, 0)
 	tests := []struct {
-		input  *dummyTagged
-		output *dummyNaked
+		input  *dummyFrom
+		output *dummyTo
 		err    error
 	}{
 		{
-			input: &dummyTagged{
+			input: &dummyFrom{
 				A:          "A",
 				B:          "B",
 				C:          "C",
 				Pointer:    &zeroTime,
 				Slice:      []string{"a", "b", "c"},
 				NoTag:      "NoTag",
+				Bool:       true,
 				unexported: "unexported",
 			},
-			output: &dummyNaked{
+			output: &dummyTo{
 				ValueA: &struct {
 					A      string
 					ValueB *struct {
@@ -78,12 +81,13 @@ func TestToNaked(t *testing.T) {
 				Pointer: &zeroTime,
 				Slice:   []string{"a", "b", "c"},
 				NoTag:   "NoTag",
+				Bool:    true,
 			},
 		},
 	}
 
 	for _, tt := range tests {
-		output := &dummyNaked{}
+		output := &dummyTo{}
 		err := ConvertTo(tt.input, output)
 		require.Equal(t, tt.err, err)
 		if err == nil {
@@ -96,21 +100,22 @@ func TestToNaked(t *testing.T) {
 
 }
 
-func TestFromNaked(t *testing.T) {
+func TestConvertFrom(t *testing.T) {
 
 	tests := []struct {
-		output *dummyTagged
-		input  *dummyNaked
+		output *dummyFrom
+		input  *dummyTo
 		err    error
 	}{
 		{
-			output: &dummyTagged{
+			output: &dummyFrom{
 				A:     "A",
 				B:     "B",
 				C:     "C",
 				NoTag: "NoTag",
+				Bool:  true,
 			},
-			input: &dummyNaked{
+			input: &dummyTo{
 				ValueA: &struct {
 					A      string
 					ValueB *struct {
@@ -136,12 +141,13 @@ func TestFromNaked(t *testing.T) {
 					},
 				},
 				NoTag: "NoTag",
+				Bool:  true,
 			},
 		},
 	}
 
 	for _, tt := range tests {
-		output := &dummyTagged{}
+		output := &dummyFrom{}
 		err := ConvertFrom(tt.input, output)
 		require.Equal(t, tt.err, err)
 		if err == nil {
