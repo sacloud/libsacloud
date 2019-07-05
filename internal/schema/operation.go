@@ -117,6 +117,12 @@ func (o *Operation) ResultFromEnvelope(m *Model, sourceField *EnvelopePayloadDes
 		sourceField.PayloadName = o.resource.FieldName(o.responseEnvelope.Form)
 	}
 	o.responseEnvelope.Payloads = append(o.responseEnvelope.Payloads, sourceField)
+	if sourceField.Tags == nil {
+		sourceField.Tags = &FieldTags{
+			JSON:    ",omitempty",
+			MapConv: ",omitempty",
+		}
+	}
 	return o.ResultWithDestField(sourceField.PayloadName, m)
 }
 
@@ -131,6 +137,12 @@ func (o *Operation) ResultPluralFromEnvelope(m *Model, sourceField *EnvelopePayl
 		sourceField.PayloadName = o.resource.FieldName(o.responseEnvelope.Form)
 	}
 	o.responseEnvelope.Payloads = append(o.responseEnvelope.Payloads, sourceField)
+	if sourceField.Tags == nil {
+		sourceField.Tags = &FieldTags{
+			JSON:    ",omitempty",
+			MapConv: fmt.Sprintf("[]%s,omitempty", sourceField.PayloadName),
+		}
+	}
 	return o.ResultWithDestField(sourceField.PayloadName, m)
 }
 
