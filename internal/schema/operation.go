@@ -220,14 +220,24 @@ func (o *Operation) ReturnErrorStatement() string {
 	return strings.Join(ss, ",")
 }
 
-// RequestEnvelopeStructName エンベロープのstruct名
+// RequestEnvelopeStructName エンベロープのstruct名(camel-case)
 func (o *Operation) RequestEnvelopeStructName() string {
 	return fmt.Sprintf("%s%sRequestEnvelope", toCamelWithFirstLower(o.resource.Name), o.name)
 }
 
-// ResponseEnvelopeStructName エンベロープのstruct名
+// ResponseEnvelopeStructName エンベロープのstruct名(camel-case)
 func (o *Operation) ResponseEnvelopeStructName() string {
 	return fmt.Sprintf("%s%sResponseEnvelope", toCamelWithFirstLower(o.resource.Name), o.name)
+}
+
+// ResultTypeName API戻り値の型名
+func (o *Operation) ResultTypeName() string {
+	return fmt.Sprintf("%s%sResult", o.resource.Name, o.name)
+}
+
+// ResultStructName API戻り値のstruct名(camel-case)
+func (o *Operation) ResultStructName() string {
+	return fmt.Sprintf("%s%sResult", toCamelWithFirstLower(o.resource.Name), o.name)
 }
 
 // AllArguments 設定されている全てのArgumentを取得
