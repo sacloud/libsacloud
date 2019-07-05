@@ -9,7 +9,7 @@ import (
 )
 
 // Find is fake implementation
-func (o *GSLBOp) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) ([]*sacloud.GSLB, error) {
+func (o *GSLBOp) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.GSLBFindResult, error) {
 	results, _ := find(o.key, sacloud.APIDefaultZone, conditions)
 	var values []*sacloud.GSLB
 	for _, res := range results {
@@ -17,11 +17,16 @@ func (o *GSLBOp) Find(ctx context.Context, zone string, conditions *sacloud.Find
 		copySameNameField(res, dest)
 		values = append(values, dest)
 	}
-	return values, nil
+	return &sacloud.GSLBFindResult{
+		Total:              len(results),
+		Count:              len(results),
+		From:               0,
+		CommonServiceItems: values,
+	}, nil
 }
 
 // Create is fake implementation
-func (o *GSLBOp) Create(ctx context.Context, zone string, param *sacloud.GSLBCreateRequest) (*sacloud.GSLB, error) {
+func (o *GSLBOp) Create(ctx context.Context, zone string, param *sacloud.GSLBCreateRequest) (*sacloud.GSLBCreateResult, error) {
 	result := &sacloud.GSLB{}
 	copySameNameField(param, result)
 	fill(result, fillID, fillCreatedAt, fillAvailability)
@@ -36,11 +41,14 @@ func (o *GSLBOp) Create(ctx context.Context, zone string, param *sacloud.GSLBCre
 	}
 
 	s.setGSLB(sacloud.APIDefaultZone, result)
-	return result, nil
+	return &sacloud.GSLBCreateResult{
+		IsOk:              true,
+		CommonServiceItem: result,
+	}, nil
 }
 
 // Read is fake implementation
-func (o *GSLBOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.GSLB, error) {
+func (o *GSLBOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.GSLBReadResult, error) {
 	value := s.getGSLBByID(sacloud.APIDefaultZone, id)
 	if value == nil {
 		return nil, newErrorNotFound(o.key, id)
@@ -48,18 +56,25 @@ func (o *GSLBOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.G
 
 	dest := &sacloud.GSLB{}
 	copySameNameField(value, dest)
-	return dest, nil
+	return &sacloud.GSLBReadResult{
+		IsOk:              true,
+		CommonServiceItem: dest,
+	}, nil
 }
 
 // Update is fake implementation
-func (o *GSLBOp) Update(ctx context.Context, zone string, id types.ID, param *sacloud.GSLBUpdateRequest) (*sacloud.GSLB, error) {
-	value, err := o.Read(ctx, sacloud.APIDefaultZone, id)
+func (o *GSLBOp) Update(ctx context.Context, zone string, id types.ID, param *sacloud.GSLBUpdateRequest) (*sacloud.GSLBUpdateResult, error) {
+	readResult, err := o.Read(ctx, sacloud.APIDefaultZone, id)
 	if err != nil {
 		return nil, err
 	}
+	value := readResult.CommonServiceItem
 	copySameNameField(param, value)
 	fill(value, fillModifiedAt)
-	return value, nil
+	return &sacloud.GSLBUpdateResult{
+		IsOk:              true,
+		CommonServiceItem: value,
+	}, nil
 }
 
 // Delete is fake implementation

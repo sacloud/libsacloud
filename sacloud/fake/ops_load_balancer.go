@@ -9,7 +9,7 @@ import (
 )
 
 // Find is fake implementation
-func (o *LoadBalancerOp) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) ([]*sacloud.LoadBalancer, error) {
+func (o *LoadBalancerOp) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.LoadBalancerFindResult, error) {
 	results, _ := find(o.key, zone, conditions)
 	var values []*sacloud.LoadBalancer
 	for _, res := range results {
@@ -17,11 +17,16 @@ func (o *LoadBalancerOp) Find(ctx context.Context, zone string, conditions *sacl
 		copySameNameField(res, dest)
 		values = append(values, dest)
 	}
-	return values, nil
+	return &sacloud.LoadBalancerFindResult{
+		Total:      len(results),
+		Count:      len(results),
+		From:       0,
+		Appliances: values,
+	}, nil
 }
 
 // Create is fake implementation
-func (o *LoadBalancerOp) Create(ctx context.Context, zone string, param *sacloud.LoadBalancerCreateRequest) (*sacloud.LoadBalancer, error) {
+func (o *LoadBalancerOp) Create(ctx context.Context, zone string, param *sacloud.LoadBalancerCreateRequest) (*sacloud.LoadBalancerCreateResult, error) {
 	result := &sacloud.LoadBalancer{}
 	copySameNameField(param, result)
 	fill(result, fillID, fillCreatedAt)
@@ -35,13 +40,20 @@ func (o *LoadBalancerOp) Create(ctx context.Context, zone string, param *sacloud
 
 	id := result.ID
 	startPowerOn(o.key, zone, func() (interface{}, error) {
-		return o.Read(context.Background(), zone, id)
+		res, err := o.Read(context.Background(), zone, id)
+		if err != nil {
+			return nil, err
+		}
+		return res.Appliance, nil
 	})
-	return result, nil
+	return &sacloud.LoadBalancerCreateResult{
+		IsOk:      true,
+		Appliance: result,
+	}, nil
 }
 
 // Read is fake implementation
-func (o *LoadBalancerOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.LoadBalancer, error) {
+func (o *LoadBalancerOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.LoadBalancerReadResult, error) {
 	value := s.getLoadBalancerByID(zone, id)
 	if value == nil {
 		return nil, newErrorNotFound(o.key, id)
@@ -49,18 +61,26 @@ func (o *LoadBalancerOp) Read(ctx context.Context, zone string, id types.ID) (*s
 
 	dest := &sacloud.LoadBalancer{}
 	copySameNameField(value, dest)
-	return dest, nil
+	return &sacloud.LoadBalancerReadResult{
+		IsOk:      true,
+		Appliance: dest,
+	}, nil
 }
 
 // Update is fake implementation
-func (o *LoadBalancerOp) Update(ctx context.Context, zone string, id types.ID, param *sacloud.LoadBalancerUpdateRequest) (*sacloud.LoadBalancer, error) {
-	value, err := o.Read(ctx, zone, id)
+func (o *LoadBalancerOp) Update(ctx context.Context, zone string, id types.ID, param *sacloud.LoadBalancerUpdateRequest) (*sacloud.LoadBalancerUpdateResult, error) {
+	readResult, err := o.Read(ctx, zone, id)
 	if err != nil {
 		return nil, err
 	}
+	value := readResult.Appliance
+
 	copySameNameField(param, value)
 	fill(value, fillModifiedAt)
-	return value, nil
+	return &sacloud.LoadBalancerUpdateResult{
+		IsOk:      true,
+		Appliance: value,
+	}, nil
 }
 
 // Delete is fake implementation
@@ -81,16 +101,21 @@ func (o *LoadBalancerOp) Config(ctx context.Context, zone string, id types.ID) e
 
 // Boot is fake implementation
 func (o *LoadBalancerOp) Boot(ctx context.Context, zone string, id types.ID) error {
-	value, err := o.Read(ctx, zone, id)
+	readResult, err := o.Read(ctx, zone, id)
 	if err != nil {
 		return err
 	}
+	value := readResult.Appliance
 	if value.InstanceStatus.IsUp() {
 		return newErrorConflict(o.key, id, "Boot is failed")
 	}
 
 	startPowerOn(o.key, zone, func() (interface{}, error) {
-		return o.Read(context.Background(), zone, id)
+		res, err := o.Read(context.Background(), zone, id)
+		if err != nil {
+			return nil, err
+		}
+		return res.Appliance, nil
 	})
 
 	return err
@@ -98,16 +123,21 @@ func (o *LoadBalancerOp) Boot(ctx context.Context, zone string, id types.ID) err
 
 // Shutdown is fake implementation
 func (o *LoadBalancerOp) Shutdown(ctx context.Context, zone string, id types.ID, shutdownOption *sacloud.ShutdownOption) error {
-	value, err := o.Read(ctx, zone, id)
+	readResult, err := o.Read(ctx, zone, id)
 	if err != nil {
 		return err
 	}
+	value := readResult.Appliance
 	if !value.InstanceStatus.IsUp() {
 		return newErrorConflict(o.key, id, "Shutdown is failed")
 	}
 
 	startPowerOff(o.key, zone, func() (interface{}, error) {
-		return o.Read(context.Background(), zone, id)
+		res, err := o.Read(context.Background(), zone, id)
+		if err != nil {
+			return nil, err
+		}
+		return res.Appliance, nil
 	})
 
 	return err
@@ -115,23 +145,28 @@ func (o *LoadBalancerOp) Shutdown(ctx context.Context, zone string, id types.ID,
 
 // Reset is fake implementation
 func (o *LoadBalancerOp) Reset(ctx context.Context, zone string, id types.ID) error {
-	value, err := o.Read(ctx, zone, id)
+	readResult, err := o.Read(ctx, zone, id)
 	if err != nil {
 		return err
 	}
+	value := readResult.Appliance
 	if !value.InstanceStatus.IsUp() {
 		return newErrorConflict(o.key, id, "Reset is failed")
 	}
 
 	startPowerOn(o.key, zone, func() (interface{}, error) {
-		return o.Read(context.Background(), zone, id)
+		res, err := o.Read(context.Background(), zone, id)
+		if err != nil {
+			return nil, err
+		}
+		return res.Appliance, nil
 	})
 
 	return nil
 }
 
 // MonitorInterface is fake implementation
-func (o *LoadBalancerOp) MonitorInterface(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.InterfaceActivity, error) {
+func (o *LoadBalancerOp) MonitorInterface(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.LoadBalancerMonitorInterfaceResult, error) {
 	_, err := o.Read(ctx, zone, id)
 	if err != nil {
 		return nil, err
@@ -152,15 +187,19 @@ func (o *LoadBalancerOp) MonitorInterface(ctx context.Context, zone string, id t
 		})
 	}
 
-	return res, nil
+	return &sacloud.LoadBalancerMonitorInterfaceResult{
+		IsOk: true,
+		Data: res,
+	}, nil
 }
 
 // Status is fake implementation
-func (o *LoadBalancerOp) Status(ctx context.Context, zone string, id types.ID) ([]*sacloud.LoadBalancerStatus, error) {
-	value, err := o.Read(ctx, zone, id)
+func (o *LoadBalancerOp) Status(ctx context.Context, zone string, id types.ID) (*sacloud.LoadBalancerStatusResult, error) {
+	readResult, err := o.Read(ctx, zone, id)
 	if err != nil {
 		return nil, err
 	}
+	value := readResult.Appliance
 
 	var results []*sacloud.LoadBalancerStatus
 	for _, vip := range value.VirtualIPAddresses {
@@ -184,6 +223,8 @@ func (o *LoadBalancerOp) Status(ctx context.Context, zone string, id types.ID) (
 		results = append(results, status)
 	}
 
-	return results, nil
+	return &sacloud.LoadBalancerStatusResult{
+		LoadBalancer: results,
+	}, nil
 
 }

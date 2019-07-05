@@ -44,8 +44,8 @@ import (
 *************************************************/
 
 {{ range .Operations }}
-// {{ $typeName }}{{.MethodName}}Result is expected values of the {{ .MethodName }} operation
-type {{ $typeName }}{{.MethodName}}Result struct {
+// {{ $typeName }}{{.MethodName}}StubResult is expected values of the {{ .MethodName }} operation
+type {{ $typeName }}{{.MethodName}}StubResult struct {
 	{{ range .StubFieldDefines -}}
 	{{ . }}
 	{{ end -}}	
@@ -56,7 +56,7 @@ type {{ $typeName }}{{.MethodName}}Result struct {
 // {{ $typeName }}Stub is for trace {{ $typeName }}Op operations
 type {{ $typeName }}Stub struct {
 {{ range .Operations -}}
-	{{.MethodName}}Result *{{ $typeName }}{{.MethodName}}Result 
+	{{.MethodName}}StubResult *{{ $typeName }}{{.MethodName}}StubResult 
 {{ end -}}
 }
 
@@ -67,9 +67,9 @@ func New{{ $typeName}}Stub(caller sacloud.APICaller) sacloud.{{$typeName}}API {
 
 {{ range .Operations }}{{$returnErrStatement := .ReturnErrorStatement}}{{ $operationName := .MethodName }}
 // {{ .MethodName }} is API call with trace log
-func (s *{{ $typeName }}Stub) {{ .MethodName }}(ctx context.Context{{ range .AllArguments }}, {{ .ArgName }} {{ .TypeName }}{{ end }}) {{.ResultsStatement}} {
-	if s.{{$operationName}}Result == nil {
-		log.Fatal("{{$typeName}}Stub.{{$operationName}}Result is not set")
+func (s *{{ $typeName }}Stub) {{ .MethodName }}(ctx context.Context{{ range .AllArguments }}, {{ .ArgName }} {{ .TypeName }}{{ end }}) {{.ResultsStatementWithNameSpace}} {
+	if s.{{$operationName}}StubResult == nil {
+		log.Fatal("{{$typeName}}Stub.{{$operationName}}StubResult is not set")
 	}
 	{{.StubReturnStatement "s"}}
 }

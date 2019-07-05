@@ -14,63 +14,62 @@ import (
 * ArchiveStub
 *************************************************/
 
-// ArchiveFindResult is expected values of the Find operation
-type ArchiveFindResult struct {
-	Archives []*sacloud.Archive
-	Err      error
+// ArchiveFindStubResult is expected values of the Find operation
+type ArchiveFindStubResult struct {
+	Values *sacloud.ArchiveFindResult
+	Err    error
 }
 
-// ArchiveCreateResult is expected values of the Create operation
-type ArchiveCreateResult struct {
-	Archive *sacloud.Archive
-	Err     error
+// ArchiveCreateStubResult is expected values of the Create operation
+type ArchiveCreateStubResult struct {
+	Values *sacloud.ArchiveCreateResult
+	Err    error
 }
 
-// ArchiveCreateBlankResult is expected values of the CreateBlank operation
-type ArchiveCreateBlankResult struct {
-	Archive   *sacloud.Archive
-	FTPServer *sacloud.FTPServer
-	Err       error
+// ArchiveCreateBlankStubResult is expected values of the CreateBlank operation
+type ArchiveCreateBlankStubResult struct {
+	Values *sacloud.ArchiveCreateBlankResult
+	Err    error
 }
 
-// ArchiveReadResult is expected values of the Read operation
-type ArchiveReadResult struct {
-	Archive *sacloud.Archive
-	Err     error
+// ArchiveReadStubResult is expected values of the Read operation
+type ArchiveReadStubResult struct {
+	Values *sacloud.ArchiveReadResult
+	Err    error
 }
 
-// ArchiveUpdateResult is expected values of the Update operation
-type ArchiveUpdateResult struct {
-	Archive *sacloud.Archive
-	Err     error
+// ArchiveUpdateStubResult is expected values of the Update operation
+type ArchiveUpdateStubResult struct {
+	Values *sacloud.ArchiveUpdateResult
+	Err    error
 }
 
-// ArchiveDeleteResult is expected values of the Delete operation
-type ArchiveDeleteResult struct {
+// ArchiveDeleteStubResult is expected values of the Delete operation
+type ArchiveDeleteStubResult struct {
 	Err error
 }
 
-// ArchiveOpenFTPResult is expected values of the OpenFTP operation
-type ArchiveOpenFTPResult struct {
-	FTPServer *sacloud.FTPServer
-	Err       error
+// ArchiveOpenFTPStubResult is expected values of the OpenFTP operation
+type ArchiveOpenFTPStubResult struct {
+	Values *sacloud.ArchiveOpenFTPResult
+	Err    error
 }
 
-// ArchiveCloseFTPResult is expected values of the CloseFTP operation
-type ArchiveCloseFTPResult struct {
+// ArchiveCloseFTPStubResult is expected values of the CloseFTP operation
+type ArchiveCloseFTPStubResult struct {
 	Err error
 }
 
 // ArchiveStub is for trace ArchiveOp operations
 type ArchiveStub struct {
-	FindResult        *ArchiveFindResult
-	CreateResult      *ArchiveCreateResult
-	CreateBlankResult *ArchiveCreateBlankResult
-	ReadResult        *ArchiveReadResult
-	UpdateResult      *ArchiveUpdateResult
-	DeleteResult      *ArchiveDeleteResult
-	OpenFTPResult     *ArchiveOpenFTPResult
-	CloseFTPResult    *ArchiveCloseFTPResult
+	FindStubResult        *ArchiveFindStubResult
+	CreateStubResult      *ArchiveCreateStubResult
+	CreateBlankStubResult *ArchiveCreateBlankStubResult
+	ReadStubResult        *ArchiveReadStubResult
+	UpdateStubResult      *ArchiveUpdateStubResult
+	DeleteStubResult      *ArchiveDeleteStubResult
+	OpenFTPStubResult     *ArchiveOpenFTPStubResult
+	CloseFTPStubResult    *ArchiveCloseFTPStubResult
 }
 
 // NewArchiveStub creates new ArchiveStub instance
@@ -79,109 +78,109 @@ func NewArchiveStub(caller sacloud.APICaller) sacloud.ArchiveAPI {
 }
 
 // Find is API call with trace log
-func (s *ArchiveStub) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) ([]*sacloud.Archive, error) {
-	if s.FindResult == nil {
-		log.Fatal("ArchiveStub.FindResult is not set")
+func (s *ArchiveStub) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.ArchiveFindResult, error) {
+	if s.FindStubResult == nil {
+		log.Fatal("ArchiveStub.FindStubResult is not set")
 	}
-	return s.FindResult.Archives, s.FindResult.Err
+	return s.FindStubResult.Values, s.FindStubResult.Err
 }
 
 // Create is API call with trace log
-func (s *ArchiveStub) Create(ctx context.Context, zone string, param *sacloud.ArchiveCreateRequest) (*sacloud.Archive, error) {
-	if s.CreateResult == nil {
-		log.Fatal("ArchiveStub.CreateResult is not set")
+func (s *ArchiveStub) Create(ctx context.Context, zone string, param *sacloud.ArchiveCreateRequest) (*sacloud.ArchiveCreateResult, error) {
+	if s.CreateStubResult == nil {
+		log.Fatal("ArchiveStub.CreateStubResult is not set")
 	}
-	return s.CreateResult.Archive, s.CreateResult.Err
+	return s.CreateStubResult.Values, s.CreateStubResult.Err
 }
 
 // CreateBlank is API call with trace log
-func (s *ArchiveStub) CreateBlank(ctx context.Context, zone string, param *sacloud.ArchiveCreateBlankRequest) (*sacloud.Archive, *sacloud.FTPServer, error) {
-	if s.CreateBlankResult == nil {
-		log.Fatal("ArchiveStub.CreateBlankResult is not set")
+func (s *ArchiveStub) CreateBlank(ctx context.Context, zone string, param *sacloud.ArchiveCreateBlankRequest) (*sacloud.ArchiveCreateBlankResult, error) {
+	if s.CreateBlankStubResult == nil {
+		log.Fatal("ArchiveStub.CreateBlankStubResult is not set")
 	}
-	return s.CreateBlankResult.Archive, s.CreateBlankResult.FTPServer, s.CreateBlankResult.Err
+	return s.CreateBlankStubResult.Values, s.CreateBlankStubResult.Err
 }
 
 // Read is API call with trace log
-func (s *ArchiveStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Archive, error) {
-	if s.ReadResult == nil {
-		log.Fatal("ArchiveStub.ReadResult is not set")
+func (s *ArchiveStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.ArchiveReadResult, error) {
+	if s.ReadStubResult == nil {
+		log.Fatal("ArchiveStub.ReadStubResult is not set")
 	}
-	return s.ReadResult.Archive, s.ReadResult.Err
+	return s.ReadStubResult.Values, s.ReadStubResult.Err
 }
 
 // Update is API call with trace log
-func (s *ArchiveStub) Update(ctx context.Context, zone string, id types.ID, param *sacloud.ArchiveUpdateRequest) (*sacloud.Archive, error) {
-	if s.UpdateResult == nil {
-		log.Fatal("ArchiveStub.UpdateResult is not set")
+func (s *ArchiveStub) Update(ctx context.Context, zone string, id types.ID, param *sacloud.ArchiveUpdateRequest) (*sacloud.ArchiveUpdateResult, error) {
+	if s.UpdateStubResult == nil {
+		log.Fatal("ArchiveStub.UpdateStubResult is not set")
 	}
-	return s.UpdateResult.Archive, s.UpdateResult.Err
+	return s.UpdateStubResult.Values, s.UpdateStubResult.Err
 }
 
 // Delete is API call with trace log
 func (s *ArchiveStub) Delete(ctx context.Context, zone string, id types.ID) error {
-	if s.DeleteResult == nil {
-		log.Fatal("ArchiveStub.DeleteResult is not set")
+	if s.DeleteStubResult == nil {
+		log.Fatal("ArchiveStub.DeleteStubResult is not set")
 	}
-	return s.DeleteResult.Err
+	return s.DeleteStubResult.Err
 }
 
 // OpenFTP is API call with trace log
-func (s *ArchiveStub) OpenFTP(ctx context.Context, zone string, id types.ID, openOption *sacloud.OpenFTPRequest) (*sacloud.FTPServer, error) {
-	if s.OpenFTPResult == nil {
-		log.Fatal("ArchiveStub.OpenFTPResult is not set")
+func (s *ArchiveStub) OpenFTP(ctx context.Context, zone string, id types.ID, openOption *sacloud.OpenFTPRequest) (*sacloud.ArchiveOpenFTPResult, error) {
+	if s.OpenFTPStubResult == nil {
+		log.Fatal("ArchiveStub.OpenFTPStubResult is not set")
 	}
-	return s.OpenFTPResult.FTPServer, s.OpenFTPResult.Err
+	return s.OpenFTPStubResult.Values, s.OpenFTPStubResult.Err
 }
 
 // CloseFTP is API call with trace log
 func (s *ArchiveStub) CloseFTP(ctx context.Context, zone string, id types.ID) error {
-	if s.CloseFTPResult == nil {
-		log.Fatal("ArchiveStub.CloseFTPResult is not set")
+	if s.CloseFTPStubResult == nil {
+		log.Fatal("ArchiveStub.CloseFTPStubResult is not set")
 	}
-	return s.CloseFTPResult.Err
+	return s.CloseFTPStubResult.Err
 }
 
 /*************************************************
 * BridgeStub
 *************************************************/
 
-// BridgeFindResult is expected values of the Find operation
-type BridgeFindResult struct {
-	Bridges []*sacloud.Bridge
-	Err     error
-}
-
-// BridgeCreateResult is expected values of the Create operation
-type BridgeCreateResult struct {
-	Bridge *sacloud.Bridge
+// BridgeFindStubResult is expected values of the Find operation
+type BridgeFindStubResult struct {
+	Values *sacloud.BridgeFindResult
 	Err    error
 }
 
-// BridgeReadResult is expected values of the Read operation
-type BridgeReadResult struct {
-	Bridge *sacloud.Bridge
+// BridgeCreateStubResult is expected values of the Create operation
+type BridgeCreateStubResult struct {
+	Values *sacloud.BridgeCreateResult
 	Err    error
 }
 
-// BridgeUpdateResult is expected values of the Update operation
-type BridgeUpdateResult struct {
-	Bridge *sacloud.Bridge
+// BridgeReadStubResult is expected values of the Read operation
+type BridgeReadStubResult struct {
+	Values *sacloud.BridgeReadResult
 	Err    error
 }
 
-// BridgeDeleteResult is expected values of the Delete operation
-type BridgeDeleteResult struct {
+// BridgeUpdateStubResult is expected values of the Update operation
+type BridgeUpdateStubResult struct {
+	Values *sacloud.BridgeUpdateResult
+	Err    error
+}
+
+// BridgeDeleteStubResult is expected values of the Delete operation
+type BridgeDeleteStubResult struct {
 	Err error
 }
 
 // BridgeStub is for trace BridgeOp operations
 type BridgeStub struct {
-	FindResult   *BridgeFindResult
-	CreateResult *BridgeCreateResult
-	ReadResult   *BridgeReadResult
-	UpdateResult *BridgeUpdateResult
-	DeleteResult *BridgeDeleteResult
+	FindStubResult   *BridgeFindStubResult
+	CreateStubResult *BridgeCreateStubResult
+	ReadStubResult   *BridgeReadStubResult
+	UpdateStubResult *BridgeUpdateStubResult
+	DeleteStubResult *BridgeDeleteStubResult
 }
 
 // NewBridgeStub creates new BridgeStub instance
@@ -190,99 +189,98 @@ func NewBridgeStub(caller sacloud.APICaller) sacloud.BridgeAPI {
 }
 
 // Find is API call with trace log
-func (s *BridgeStub) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) ([]*sacloud.Bridge, error) {
-	if s.FindResult == nil {
-		log.Fatal("BridgeStub.FindResult is not set")
+func (s *BridgeStub) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.BridgeFindResult, error) {
+	if s.FindStubResult == nil {
+		log.Fatal("BridgeStub.FindStubResult is not set")
 	}
-	return s.FindResult.Bridges, s.FindResult.Err
+	return s.FindStubResult.Values, s.FindStubResult.Err
 }
 
 // Create is API call with trace log
-func (s *BridgeStub) Create(ctx context.Context, zone string, param *sacloud.BridgeCreateRequest) (*sacloud.Bridge, error) {
-	if s.CreateResult == nil {
-		log.Fatal("BridgeStub.CreateResult is not set")
+func (s *BridgeStub) Create(ctx context.Context, zone string, param *sacloud.BridgeCreateRequest) (*sacloud.BridgeCreateResult, error) {
+	if s.CreateStubResult == nil {
+		log.Fatal("BridgeStub.CreateStubResult is not set")
 	}
-	return s.CreateResult.Bridge, s.CreateResult.Err
+	return s.CreateStubResult.Values, s.CreateStubResult.Err
 }
 
 // Read is API call with trace log
-func (s *BridgeStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Bridge, error) {
-	if s.ReadResult == nil {
-		log.Fatal("BridgeStub.ReadResult is not set")
+func (s *BridgeStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.BridgeReadResult, error) {
+	if s.ReadStubResult == nil {
+		log.Fatal("BridgeStub.ReadStubResult is not set")
 	}
-	return s.ReadResult.Bridge, s.ReadResult.Err
+	return s.ReadStubResult.Values, s.ReadStubResult.Err
 }
 
 // Update is API call with trace log
-func (s *BridgeStub) Update(ctx context.Context, zone string, id types.ID, param *sacloud.BridgeUpdateRequest) (*sacloud.Bridge, error) {
-	if s.UpdateResult == nil {
-		log.Fatal("BridgeStub.UpdateResult is not set")
+func (s *BridgeStub) Update(ctx context.Context, zone string, id types.ID, param *sacloud.BridgeUpdateRequest) (*sacloud.BridgeUpdateResult, error) {
+	if s.UpdateStubResult == nil {
+		log.Fatal("BridgeStub.UpdateStubResult is not set")
 	}
-	return s.UpdateResult.Bridge, s.UpdateResult.Err
+	return s.UpdateStubResult.Values, s.UpdateStubResult.Err
 }
 
 // Delete is API call with trace log
 func (s *BridgeStub) Delete(ctx context.Context, zone string, id types.ID) error {
-	if s.DeleteResult == nil {
-		log.Fatal("BridgeStub.DeleteResult is not set")
+	if s.DeleteStubResult == nil {
+		log.Fatal("BridgeStub.DeleteStubResult is not set")
 	}
-	return s.DeleteResult.Err
+	return s.DeleteStubResult.Err
 }
 
 /*************************************************
 * CDROMStub
 *************************************************/
 
-// CDROMFindResult is expected values of the Find operation
-type CDROMFindResult struct {
-	CDROMs []*sacloud.CDROM
+// CDROMFindStubResult is expected values of the Find operation
+type CDROMFindStubResult struct {
+	Values *sacloud.CDROMFindResult
 	Err    error
 }
 
-// CDROMCreateResult is expected values of the Create operation
-type CDROMCreateResult struct {
-	CDROM     *sacloud.CDROM
-	FTPServer *sacloud.FTPServer
-	Err       error
+// CDROMCreateStubResult is expected values of the Create operation
+type CDROMCreateStubResult struct {
+	Values *sacloud.CDROMCreateResult
+	Err    error
 }
 
-// CDROMReadResult is expected values of the Read operation
-type CDROMReadResult struct {
-	CDROM *sacloud.CDROM
-	Err   error
+// CDROMReadStubResult is expected values of the Read operation
+type CDROMReadStubResult struct {
+	Values *sacloud.CDROMReadResult
+	Err    error
 }
 
-// CDROMUpdateResult is expected values of the Update operation
-type CDROMUpdateResult struct {
-	CDROM *sacloud.CDROM
-	Err   error
+// CDROMUpdateStubResult is expected values of the Update operation
+type CDROMUpdateStubResult struct {
+	Values *sacloud.CDROMUpdateResult
+	Err    error
 }
 
-// CDROMDeleteResult is expected values of the Delete operation
-type CDROMDeleteResult struct {
+// CDROMDeleteStubResult is expected values of the Delete operation
+type CDROMDeleteStubResult struct {
 	Err error
 }
 
-// CDROMOpenFTPResult is expected values of the OpenFTP operation
-type CDROMOpenFTPResult struct {
-	FTPServer *sacloud.FTPServer
-	Err       error
+// CDROMOpenFTPStubResult is expected values of the OpenFTP operation
+type CDROMOpenFTPStubResult struct {
+	Values *sacloud.CDROMOpenFTPResult
+	Err    error
 }
 
-// CDROMCloseFTPResult is expected values of the CloseFTP operation
-type CDROMCloseFTPResult struct {
+// CDROMCloseFTPStubResult is expected values of the CloseFTP operation
+type CDROMCloseFTPStubResult struct {
 	Err error
 }
 
 // CDROMStub is for trace CDROMOp operations
 type CDROMStub struct {
-	FindResult     *CDROMFindResult
-	CreateResult   *CDROMCreateResult
-	ReadResult     *CDROMReadResult
-	UpdateResult   *CDROMUpdateResult
-	DeleteResult   *CDROMDeleteResult
-	OpenFTPResult  *CDROMOpenFTPResult
-	CloseFTPResult *CDROMCloseFTPResult
+	FindStubResult     *CDROMFindStubResult
+	CreateStubResult   *CDROMCreateStubResult
+	ReadStubResult     *CDROMReadStubResult
+	UpdateStubResult   *CDROMUpdateStubResult
+	DeleteStubResult   *CDROMDeleteStubResult
+	OpenFTPStubResult  *CDROMOpenFTPStubResult
+	CloseFTPStubResult *CDROMCloseFTPStubResult
 }
 
 // NewCDROMStub creates new CDROMStub instance
@@ -291,173 +289,173 @@ func NewCDROMStub(caller sacloud.APICaller) sacloud.CDROMAPI {
 }
 
 // Find is API call with trace log
-func (s *CDROMStub) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) ([]*sacloud.CDROM, error) {
-	if s.FindResult == nil {
-		log.Fatal("CDROMStub.FindResult is not set")
+func (s *CDROMStub) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.CDROMFindResult, error) {
+	if s.FindStubResult == nil {
+		log.Fatal("CDROMStub.FindStubResult is not set")
 	}
-	return s.FindResult.CDROMs, s.FindResult.Err
+	return s.FindStubResult.Values, s.FindStubResult.Err
 }
 
 // Create is API call with trace log
-func (s *CDROMStub) Create(ctx context.Context, zone string, param *sacloud.CDROMCreateRequest) (*sacloud.CDROM, *sacloud.FTPServer, error) {
-	if s.CreateResult == nil {
-		log.Fatal("CDROMStub.CreateResult is not set")
+func (s *CDROMStub) Create(ctx context.Context, zone string, param *sacloud.CDROMCreateRequest) (*sacloud.CDROMCreateResult, error) {
+	if s.CreateStubResult == nil {
+		log.Fatal("CDROMStub.CreateStubResult is not set")
 	}
-	return s.CreateResult.CDROM, s.CreateResult.FTPServer, s.CreateResult.Err
+	return s.CreateStubResult.Values, s.CreateStubResult.Err
 }
 
 // Read is API call with trace log
-func (s *CDROMStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.CDROM, error) {
-	if s.ReadResult == nil {
-		log.Fatal("CDROMStub.ReadResult is not set")
+func (s *CDROMStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.CDROMReadResult, error) {
+	if s.ReadStubResult == nil {
+		log.Fatal("CDROMStub.ReadStubResult is not set")
 	}
-	return s.ReadResult.CDROM, s.ReadResult.Err
+	return s.ReadStubResult.Values, s.ReadStubResult.Err
 }
 
 // Update is API call with trace log
-func (s *CDROMStub) Update(ctx context.Context, zone string, id types.ID, param *sacloud.CDROMUpdateRequest) (*sacloud.CDROM, error) {
-	if s.UpdateResult == nil {
-		log.Fatal("CDROMStub.UpdateResult is not set")
+func (s *CDROMStub) Update(ctx context.Context, zone string, id types.ID, param *sacloud.CDROMUpdateRequest) (*sacloud.CDROMUpdateResult, error) {
+	if s.UpdateStubResult == nil {
+		log.Fatal("CDROMStub.UpdateStubResult is not set")
 	}
-	return s.UpdateResult.CDROM, s.UpdateResult.Err
+	return s.UpdateStubResult.Values, s.UpdateStubResult.Err
 }
 
 // Delete is API call with trace log
 func (s *CDROMStub) Delete(ctx context.Context, zone string, id types.ID) error {
-	if s.DeleteResult == nil {
-		log.Fatal("CDROMStub.DeleteResult is not set")
+	if s.DeleteStubResult == nil {
+		log.Fatal("CDROMStub.DeleteStubResult is not set")
 	}
-	return s.DeleteResult.Err
+	return s.DeleteStubResult.Err
 }
 
 // OpenFTP is API call with trace log
-func (s *CDROMStub) OpenFTP(ctx context.Context, zone string, id types.ID, openOption *sacloud.OpenFTPRequest) (*sacloud.FTPServer, error) {
-	if s.OpenFTPResult == nil {
-		log.Fatal("CDROMStub.OpenFTPResult is not set")
+func (s *CDROMStub) OpenFTP(ctx context.Context, zone string, id types.ID, openOption *sacloud.OpenFTPRequest) (*sacloud.CDROMOpenFTPResult, error) {
+	if s.OpenFTPStubResult == nil {
+		log.Fatal("CDROMStub.OpenFTPStubResult is not set")
 	}
-	return s.OpenFTPResult.FTPServer, s.OpenFTPResult.Err
+	return s.OpenFTPStubResult.Values, s.OpenFTPStubResult.Err
 }
 
 // CloseFTP is API call with trace log
 func (s *CDROMStub) CloseFTP(ctx context.Context, zone string, id types.ID) error {
-	if s.CloseFTPResult == nil {
-		log.Fatal("CDROMStub.CloseFTPResult is not set")
+	if s.CloseFTPStubResult == nil {
+		log.Fatal("CDROMStub.CloseFTPStubResult is not set")
 	}
-	return s.CloseFTPResult.Err
+	return s.CloseFTPStubResult.Err
 }
 
 /*************************************************
 * DiskStub
 *************************************************/
 
-// DiskFindResult is expected values of the Find operation
-type DiskFindResult struct {
-	Disks []*sacloud.Disk
-	Err   error
+// DiskFindStubResult is expected values of the Find operation
+type DiskFindStubResult struct {
+	Values *sacloud.DiskFindResult
+	Err    error
 }
 
-// DiskCreateResult is expected values of the Create operation
-type DiskCreateResult struct {
-	Disk *sacloud.Disk
-	Err  error
+// DiskCreateStubResult is expected values of the Create operation
+type DiskCreateStubResult struct {
+	Values *sacloud.DiskCreateResult
+	Err    error
 }
 
-// DiskCreateDistantlyResult is expected values of the CreateDistantly operation
-type DiskCreateDistantlyResult struct {
-	Disk *sacloud.Disk
-	Err  error
+// DiskCreateDistantlyStubResult is expected values of the CreateDistantly operation
+type DiskCreateDistantlyStubResult struct {
+	Values *sacloud.DiskCreateDistantlyResult
+	Err    error
 }
 
-// DiskConfigResult is expected values of the Config operation
-type DiskConfigResult struct {
+// DiskConfigStubResult is expected values of the Config operation
+type DiskConfigStubResult struct {
 	Err error
 }
 
-// DiskCreateWithConfigResult is expected values of the CreateWithConfig operation
-type DiskCreateWithConfigResult struct {
-	Disk *sacloud.Disk
-	Err  error
+// DiskCreateWithConfigStubResult is expected values of the CreateWithConfig operation
+type DiskCreateWithConfigStubResult struct {
+	Values *sacloud.DiskCreateWithConfigResult
+	Err    error
 }
 
-// DiskCreateWithConfigDistantlyResult is expected values of the CreateWithConfigDistantly operation
-type DiskCreateWithConfigDistantlyResult struct {
-	Disk *sacloud.Disk
-	Err  error
+// DiskCreateWithConfigDistantlyStubResult is expected values of the CreateWithConfigDistantly operation
+type DiskCreateWithConfigDistantlyStubResult struct {
+	Values *sacloud.DiskCreateWithConfigDistantlyResult
+	Err    error
 }
 
-// DiskToBlankResult is expected values of the ToBlank operation
-type DiskToBlankResult struct {
+// DiskToBlankStubResult is expected values of the ToBlank operation
+type DiskToBlankStubResult struct {
 	Err error
 }
 
-// DiskResizePartitionResult is expected values of the ResizePartition operation
-type DiskResizePartitionResult struct {
+// DiskResizePartitionStubResult is expected values of the ResizePartition operation
+type DiskResizePartitionStubResult struct {
 	Err error
 }
 
-// DiskConnectToServerResult is expected values of the ConnectToServer operation
-type DiskConnectToServerResult struct {
+// DiskConnectToServerStubResult is expected values of the ConnectToServer operation
+type DiskConnectToServerStubResult struct {
 	Err error
 }
 
-// DiskDisconnectFromServerResult is expected values of the DisconnectFromServer operation
-type DiskDisconnectFromServerResult struct {
+// DiskDisconnectFromServerStubResult is expected values of the DisconnectFromServer operation
+type DiskDisconnectFromServerStubResult struct {
 	Err error
 }
 
-// DiskInstallDistantFromResult is expected values of the InstallDistantFrom operation
-type DiskInstallDistantFromResult struct {
-	Disk *sacloud.Disk
-	Err  error
+// DiskInstallDistantFromStubResult is expected values of the InstallDistantFrom operation
+type DiskInstallDistantFromStubResult struct {
+	Values *sacloud.DiskInstallDistantFromResult
+	Err    error
 }
 
-// DiskInstallResult is expected values of the Install operation
-type DiskInstallResult struct {
-	Disk *sacloud.Disk
-	Err  error
+// DiskInstallStubResult is expected values of the Install operation
+type DiskInstallStubResult struct {
+	Values *sacloud.DiskInstallResult
+	Err    error
 }
 
-// DiskReadResult is expected values of the Read operation
-type DiskReadResult struct {
-	Disk *sacloud.Disk
-	Err  error
+// DiskReadStubResult is expected values of the Read operation
+type DiskReadStubResult struct {
+	Values *sacloud.DiskReadResult
+	Err    error
 }
 
-// DiskUpdateResult is expected values of the Update operation
-type DiskUpdateResult struct {
-	Disk *sacloud.Disk
-	Err  error
+// DiskUpdateStubResult is expected values of the Update operation
+type DiskUpdateStubResult struct {
+	Values *sacloud.DiskUpdateResult
+	Err    error
 }
 
-// DiskDeleteResult is expected values of the Delete operation
-type DiskDeleteResult struct {
+// DiskDeleteStubResult is expected values of the Delete operation
+type DiskDeleteStubResult struct {
 	Err error
 }
 
-// DiskMonitorResult is expected values of the Monitor operation
-type DiskMonitorResult struct {
-	Data *sacloud.DiskActivity
-	Err  error
+// DiskMonitorStubResult is expected values of the Monitor operation
+type DiskMonitorStubResult struct {
+	Values *sacloud.DiskMonitorResult
+	Err    error
 }
 
 // DiskStub is for trace DiskOp operations
 type DiskStub struct {
-	FindResult                      *DiskFindResult
-	CreateResult                    *DiskCreateResult
-	CreateDistantlyResult           *DiskCreateDistantlyResult
-	ConfigResult                    *DiskConfigResult
-	CreateWithConfigResult          *DiskCreateWithConfigResult
-	CreateWithConfigDistantlyResult *DiskCreateWithConfigDistantlyResult
-	ToBlankResult                   *DiskToBlankResult
-	ResizePartitionResult           *DiskResizePartitionResult
-	ConnectToServerResult           *DiskConnectToServerResult
-	DisconnectFromServerResult      *DiskDisconnectFromServerResult
-	InstallDistantFromResult        *DiskInstallDistantFromResult
-	InstallResult                   *DiskInstallResult
-	ReadResult                      *DiskReadResult
-	UpdateResult                    *DiskUpdateResult
-	DeleteResult                    *DiskDeleteResult
-	MonitorResult                   *DiskMonitorResult
+	FindStubResult                      *DiskFindStubResult
+	CreateStubResult                    *DiskCreateStubResult
+	CreateDistantlyStubResult           *DiskCreateDistantlyStubResult
+	ConfigStubResult                    *DiskConfigStubResult
+	CreateWithConfigStubResult          *DiskCreateWithConfigStubResult
+	CreateWithConfigDistantlyStubResult *DiskCreateWithConfigDistantlyStubResult
+	ToBlankStubResult                   *DiskToBlankStubResult
+	ResizePartitionStubResult           *DiskResizePartitionStubResult
+	ConnectToServerStubResult           *DiskConnectToServerStubResult
+	DisconnectFromServerStubResult      *DiskDisconnectFromServerStubResult
+	InstallDistantFromStubResult        *DiskInstallDistantFromStubResult
+	InstallStubResult                   *DiskInstallStubResult
+	ReadStubResult                      *DiskReadStubResult
+	UpdateStubResult                    *DiskUpdateStubResult
+	DeleteStubResult                    *DiskDeleteStubResult
+	MonitorStubResult                   *DiskMonitorStubResult
 }
 
 // NewDiskStub creates new DiskStub instance
@@ -466,173 +464,173 @@ func NewDiskStub(caller sacloud.APICaller) sacloud.DiskAPI {
 }
 
 // Find is API call with trace log
-func (s *DiskStub) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) ([]*sacloud.Disk, error) {
-	if s.FindResult == nil {
-		log.Fatal("DiskStub.FindResult is not set")
+func (s *DiskStub) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.DiskFindResult, error) {
+	if s.FindStubResult == nil {
+		log.Fatal("DiskStub.FindStubResult is not set")
 	}
-	return s.FindResult.Disks, s.FindResult.Err
+	return s.FindStubResult.Values, s.FindStubResult.Err
 }
 
 // Create is API call with trace log
-func (s *DiskStub) Create(ctx context.Context, zone string, param *sacloud.DiskCreateRequest) (*sacloud.Disk, error) {
-	if s.CreateResult == nil {
-		log.Fatal("DiskStub.CreateResult is not set")
+func (s *DiskStub) Create(ctx context.Context, zone string, param *sacloud.DiskCreateRequest) (*sacloud.DiskCreateResult, error) {
+	if s.CreateStubResult == nil {
+		log.Fatal("DiskStub.CreateStubResult is not set")
 	}
-	return s.CreateResult.Disk, s.CreateResult.Err
+	return s.CreateStubResult.Values, s.CreateStubResult.Err
 }
 
 // CreateDistantly is API call with trace log
-func (s *DiskStub) CreateDistantly(ctx context.Context, zone string, createParam *sacloud.DiskCreateRequest, distantFrom []types.ID) (*sacloud.Disk, error) {
-	if s.CreateDistantlyResult == nil {
-		log.Fatal("DiskStub.CreateDistantlyResult is not set")
+func (s *DiskStub) CreateDistantly(ctx context.Context, zone string, createParam *sacloud.DiskCreateRequest, distantFrom []types.ID) (*sacloud.DiskCreateDistantlyResult, error) {
+	if s.CreateDistantlyStubResult == nil {
+		log.Fatal("DiskStub.CreateDistantlyStubResult is not set")
 	}
-	return s.CreateDistantlyResult.Disk, s.CreateDistantlyResult.Err
+	return s.CreateDistantlyStubResult.Values, s.CreateDistantlyStubResult.Err
 }
 
 // Config is API call with trace log
 func (s *DiskStub) Config(ctx context.Context, zone string, id types.ID, edit *sacloud.DiskEditRequest) error {
-	if s.ConfigResult == nil {
-		log.Fatal("DiskStub.ConfigResult is not set")
+	if s.ConfigStubResult == nil {
+		log.Fatal("DiskStub.ConfigStubResult is not set")
 	}
-	return s.ConfigResult.Err
+	return s.ConfigStubResult.Err
 }
 
 // CreateWithConfig is API call with trace log
-func (s *DiskStub) CreateWithConfig(ctx context.Context, zone string, createParam *sacloud.DiskCreateRequest, editParam *sacloud.DiskEditRequest, bootAtAvailable bool) (*sacloud.Disk, error) {
-	if s.CreateWithConfigResult == nil {
-		log.Fatal("DiskStub.CreateWithConfigResult is not set")
+func (s *DiskStub) CreateWithConfig(ctx context.Context, zone string, createParam *sacloud.DiskCreateRequest, editParam *sacloud.DiskEditRequest, bootAtAvailable bool) (*sacloud.DiskCreateWithConfigResult, error) {
+	if s.CreateWithConfigStubResult == nil {
+		log.Fatal("DiskStub.CreateWithConfigStubResult is not set")
 	}
-	return s.CreateWithConfigResult.Disk, s.CreateWithConfigResult.Err
+	return s.CreateWithConfigStubResult.Values, s.CreateWithConfigStubResult.Err
 }
 
 // CreateWithConfigDistantly is API call with trace log
-func (s *DiskStub) CreateWithConfigDistantly(ctx context.Context, zone string, createParam *sacloud.DiskCreateRequest, editParam *sacloud.DiskEditRequest, bootAtAvailable bool, distantFrom []types.ID) (*sacloud.Disk, error) {
-	if s.CreateWithConfigDistantlyResult == nil {
-		log.Fatal("DiskStub.CreateWithConfigDistantlyResult is not set")
+func (s *DiskStub) CreateWithConfigDistantly(ctx context.Context, zone string, createParam *sacloud.DiskCreateRequest, editParam *sacloud.DiskEditRequest, bootAtAvailable bool, distantFrom []types.ID) (*sacloud.DiskCreateWithConfigDistantlyResult, error) {
+	if s.CreateWithConfigDistantlyStubResult == nil {
+		log.Fatal("DiskStub.CreateWithConfigDistantlyStubResult is not set")
 	}
-	return s.CreateWithConfigDistantlyResult.Disk, s.CreateWithConfigDistantlyResult.Err
+	return s.CreateWithConfigDistantlyStubResult.Values, s.CreateWithConfigDistantlyStubResult.Err
 }
 
 // ToBlank is API call with trace log
 func (s *DiskStub) ToBlank(ctx context.Context, zone string, id types.ID) error {
-	if s.ToBlankResult == nil {
-		log.Fatal("DiskStub.ToBlankResult is not set")
+	if s.ToBlankStubResult == nil {
+		log.Fatal("DiskStub.ToBlankStubResult is not set")
 	}
-	return s.ToBlankResult.Err
+	return s.ToBlankStubResult.Err
 }
 
 // ResizePartition is API call with trace log
 func (s *DiskStub) ResizePartition(ctx context.Context, zone string, id types.ID) error {
-	if s.ResizePartitionResult == nil {
-		log.Fatal("DiskStub.ResizePartitionResult is not set")
+	if s.ResizePartitionStubResult == nil {
+		log.Fatal("DiskStub.ResizePartitionStubResult is not set")
 	}
-	return s.ResizePartitionResult.Err
+	return s.ResizePartitionStubResult.Err
 }
 
 // ConnectToServer is API call with trace log
 func (s *DiskStub) ConnectToServer(ctx context.Context, zone string, id types.ID, serverID types.ID) error {
-	if s.ConnectToServerResult == nil {
-		log.Fatal("DiskStub.ConnectToServerResult is not set")
+	if s.ConnectToServerStubResult == nil {
+		log.Fatal("DiskStub.ConnectToServerStubResult is not set")
 	}
-	return s.ConnectToServerResult.Err
+	return s.ConnectToServerStubResult.Err
 }
 
 // DisconnectFromServer is API call with trace log
 func (s *DiskStub) DisconnectFromServer(ctx context.Context, zone string, id types.ID) error {
-	if s.DisconnectFromServerResult == nil {
-		log.Fatal("DiskStub.DisconnectFromServerResult is not set")
+	if s.DisconnectFromServerStubResult == nil {
+		log.Fatal("DiskStub.DisconnectFromServerStubResult is not set")
 	}
-	return s.DisconnectFromServerResult.Err
+	return s.DisconnectFromServerStubResult.Err
 }
 
 // InstallDistantFrom is API call with trace log
-func (s *DiskStub) InstallDistantFrom(ctx context.Context, zone string, id types.ID, installParam *sacloud.DiskInstallRequest, distantFrom []types.ID) (*sacloud.Disk, error) {
-	if s.InstallDistantFromResult == nil {
-		log.Fatal("DiskStub.InstallDistantFromResult is not set")
+func (s *DiskStub) InstallDistantFrom(ctx context.Context, zone string, id types.ID, installParam *sacloud.DiskInstallRequest, distantFrom []types.ID) (*sacloud.DiskInstallDistantFromResult, error) {
+	if s.InstallDistantFromStubResult == nil {
+		log.Fatal("DiskStub.InstallDistantFromStubResult is not set")
 	}
-	return s.InstallDistantFromResult.Disk, s.InstallDistantFromResult.Err
+	return s.InstallDistantFromStubResult.Values, s.InstallDistantFromStubResult.Err
 }
 
 // Install is API call with trace log
-func (s *DiskStub) Install(ctx context.Context, zone string, id types.ID, installParam *sacloud.DiskInstallRequest) (*sacloud.Disk, error) {
-	if s.InstallResult == nil {
-		log.Fatal("DiskStub.InstallResult is not set")
+func (s *DiskStub) Install(ctx context.Context, zone string, id types.ID, installParam *sacloud.DiskInstallRequest) (*sacloud.DiskInstallResult, error) {
+	if s.InstallStubResult == nil {
+		log.Fatal("DiskStub.InstallStubResult is not set")
 	}
-	return s.InstallResult.Disk, s.InstallResult.Err
+	return s.InstallStubResult.Values, s.InstallStubResult.Err
 }
 
 // Read is API call with trace log
-func (s *DiskStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Disk, error) {
-	if s.ReadResult == nil {
-		log.Fatal("DiskStub.ReadResult is not set")
+func (s *DiskStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.DiskReadResult, error) {
+	if s.ReadStubResult == nil {
+		log.Fatal("DiskStub.ReadStubResult is not set")
 	}
-	return s.ReadResult.Disk, s.ReadResult.Err
+	return s.ReadStubResult.Values, s.ReadStubResult.Err
 }
 
 // Update is API call with trace log
-func (s *DiskStub) Update(ctx context.Context, zone string, id types.ID, param *sacloud.DiskUpdateRequest) (*sacloud.Disk, error) {
-	if s.UpdateResult == nil {
-		log.Fatal("DiskStub.UpdateResult is not set")
+func (s *DiskStub) Update(ctx context.Context, zone string, id types.ID, param *sacloud.DiskUpdateRequest) (*sacloud.DiskUpdateResult, error) {
+	if s.UpdateStubResult == nil {
+		log.Fatal("DiskStub.UpdateStubResult is not set")
 	}
-	return s.UpdateResult.Disk, s.UpdateResult.Err
+	return s.UpdateStubResult.Values, s.UpdateStubResult.Err
 }
 
 // Delete is API call with trace log
 func (s *DiskStub) Delete(ctx context.Context, zone string, id types.ID) error {
-	if s.DeleteResult == nil {
-		log.Fatal("DiskStub.DeleteResult is not set")
+	if s.DeleteStubResult == nil {
+		log.Fatal("DiskStub.DeleteStubResult is not set")
 	}
-	return s.DeleteResult.Err
+	return s.DeleteStubResult.Err
 }
 
 // Monitor is API call with trace log
-func (s *DiskStub) Monitor(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.DiskActivity, error) {
-	if s.MonitorResult == nil {
-		log.Fatal("DiskStub.MonitorResult is not set")
+func (s *DiskStub) Monitor(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.DiskMonitorResult, error) {
+	if s.MonitorStubResult == nil {
+		log.Fatal("DiskStub.MonitorStubResult is not set")
 	}
-	return s.MonitorResult.Data, s.MonitorResult.Err
+	return s.MonitorStubResult.Values, s.MonitorStubResult.Err
 }
 
 /*************************************************
 * GSLBStub
 *************************************************/
 
-// GSLBFindResult is expected values of the Find operation
-type GSLBFindResult struct {
-	CommonServiceItems []*sacloud.GSLB
-	Err                error
+// GSLBFindStubResult is expected values of the Find operation
+type GSLBFindStubResult struct {
+	Values *sacloud.GSLBFindResult
+	Err    error
 }
 
-// GSLBCreateResult is expected values of the Create operation
-type GSLBCreateResult struct {
-	CommonServiceItem *sacloud.GSLB
-	Err               error
+// GSLBCreateStubResult is expected values of the Create operation
+type GSLBCreateStubResult struct {
+	Values *sacloud.GSLBCreateResult
+	Err    error
 }
 
-// GSLBReadResult is expected values of the Read operation
-type GSLBReadResult struct {
-	CommonServiceItem *sacloud.GSLB
-	Err               error
+// GSLBReadStubResult is expected values of the Read operation
+type GSLBReadStubResult struct {
+	Values *sacloud.GSLBReadResult
+	Err    error
 }
 
-// GSLBUpdateResult is expected values of the Update operation
-type GSLBUpdateResult struct {
-	CommonServiceItem *sacloud.GSLB
-	Err               error
+// GSLBUpdateStubResult is expected values of the Update operation
+type GSLBUpdateStubResult struct {
+	Values *sacloud.GSLBUpdateResult
+	Err    error
 }
 
-// GSLBDeleteResult is expected values of the Delete operation
-type GSLBDeleteResult struct {
+// GSLBDeleteStubResult is expected values of the Delete operation
+type GSLBDeleteStubResult struct {
 	Err error
 }
 
 // GSLBStub is for trace GSLBOp operations
 type GSLBStub struct {
-	FindResult   *GSLBFindResult
-	CreateResult *GSLBCreateResult
-	ReadResult   *GSLBReadResult
-	UpdateResult *GSLBUpdateResult
-	DeleteResult *GSLBDeleteResult
+	FindStubResult   *GSLBFindStubResult
+	CreateStubResult *GSLBCreateStubResult
+	ReadStubResult   *GSLBReadStubResult
+	UpdateStubResult *GSLBUpdateStubResult
+	DeleteStubResult *GSLBDeleteStubResult
 }
 
 // NewGSLBStub creates new GSLBStub instance
@@ -641,122 +639,122 @@ func NewGSLBStub(caller sacloud.APICaller) sacloud.GSLBAPI {
 }
 
 // Find is API call with trace log
-func (s *GSLBStub) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) ([]*sacloud.GSLB, error) {
-	if s.FindResult == nil {
-		log.Fatal("GSLBStub.FindResult is not set")
+func (s *GSLBStub) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.GSLBFindResult, error) {
+	if s.FindStubResult == nil {
+		log.Fatal("GSLBStub.FindStubResult is not set")
 	}
-	return s.FindResult.CommonServiceItems, s.FindResult.Err
+	return s.FindStubResult.Values, s.FindStubResult.Err
 }
 
 // Create is API call with trace log
-func (s *GSLBStub) Create(ctx context.Context, zone string, param *sacloud.GSLBCreateRequest) (*sacloud.GSLB, error) {
-	if s.CreateResult == nil {
-		log.Fatal("GSLBStub.CreateResult is not set")
+func (s *GSLBStub) Create(ctx context.Context, zone string, param *sacloud.GSLBCreateRequest) (*sacloud.GSLBCreateResult, error) {
+	if s.CreateStubResult == nil {
+		log.Fatal("GSLBStub.CreateStubResult is not set")
 	}
-	return s.CreateResult.CommonServiceItem, s.CreateResult.Err
+	return s.CreateStubResult.Values, s.CreateStubResult.Err
 }
 
 // Read is API call with trace log
-func (s *GSLBStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.GSLB, error) {
-	if s.ReadResult == nil {
-		log.Fatal("GSLBStub.ReadResult is not set")
+func (s *GSLBStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.GSLBReadResult, error) {
+	if s.ReadStubResult == nil {
+		log.Fatal("GSLBStub.ReadStubResult is not set")
 	}
-	return s.ReadResult.CommonServiceItem, s.ReadResult.Err
+	return s.ReadStubResult.Values, s.ReadStubResult.Err
 }
 
 // Update is API call with trace log
-func (s *GSLBStub) Update(ctx context.Context, zone string, id types.ID, param *sacloud.GSLBUpdateRequest) (*sacloud.GSLB, error) {
-	if s.UpdateResult == nil {
-		log.Fatal("GSLBStub.UpdateResult is not set")
+func (s *GSLBStub) Update(ctx context.Context, zone string, id types.ID, param *sacloud.GSLBUpdateRequest) (*sacloud.GSLBUpdateResult, error) {
+	if s.UpdateStubResult == nil {
+		log.Fatal("GSLBStub.UpdateStubResult is not set")
 	}
-	return s.UpdateResult.CommonServiceItem, s.UpdateResult.Err
+	return s.UpdateStubResult.Values, s.UpdateStubResult.Err
 }
 
 // Delete is API call with trace log
 func (s *GSLBStub) Delete(ctx context.Context, zone string, id types.ID) error {
-	if s.DeleteResult == nil {
-		log.Fatal("GSLBStub.DeleteResult is not set")
+	if s.DeleteStubResult == nil {
+		log.Fatal("GSLBStub.DeleteStubResult is not set")
 	}
-	return s.DeleteResult.Err
+	return s.DeleteStubResult.Err
 }
 
 /*************************************************
 * InterfaceStub
 *************************************************/
 
-// InterfaceFindResult is expected values of the Find operation
-type InterfaceFindResult struct {
-	Interfaces []*sacloud.Interface
-	Err        error
+// InterfaceFindStubResult is expected values of the Find operation
+type InterfaceFindStubResult struct {
+	Values *sacloud.InterfaceFindResult
+	Err    error
 }
 
-// InterfaceCreateResult is expected values of the Create operation
-type InterfaceCreateResult struct {
-	Interface *sacloud.Interface
-	Err       error
+// InterfaceCreateStubResult is expected values of the Create operation
+type InterfaceCreateStubResult struct {
+	Values *sacloud.InterfaceCreateResult
+	Err    error
 }
 
-// InterfaceReadResult is expected values of the Read operation
-type InterfaceReadResult struct {
-	Interface *sacloud.Interface
-	Err       error
+// InterfaceReadStubResult is expected values of the Read operation
+type InterfaceReadStubResult struct {
+	Values *sacloud.InterfaceReadResult
+	Err    error
 }
 
-// InterfaceUpdateResult is expected values of the Update operation
-type InterfaceUpdateResult struct {
-	Interface *sacloud.Interface
-	Err       error
+// InterfaceUpdateStubResult is expected values of the Update operation
+type InterfaceUpdateStubResult struct {
+	Values *sacloud.InterfaceUpdateResult
+	Err    error
 }
 
-// InterfaceDeleteResult is expected values of the Delete operation
-type InterfaceDeleteResult struct {
+// InterfaceDeleteStubResult is expected values of the Delete operation
+type InterfaceDeleteStubResult struct {
 	Err error
 }
 
-// InterfaceMonitorResult is expected values of the Monitor operation
-type InterfaceMonitorResult struct {
-	Data *sacloud.InterfaceActivity
-	Err  error
+// InterfaceMonitorStubResult is expected values of the Monitor operation
+type InterfaceMonitorStubResult struct {
+	Values *sacloud.InterfaceMonitorResult
+	Err    error
 }
 
-// InterfaceConnectToSharedSegmentResult is expected values of the ConnectToSharedSegment operation
-type InterfaceConnectToSharedSegmentResult struct {
+// InterfaceConnectToSharedSegmentStubResult is expected values of the ConnectToSharedSegment operation
+type InterfaceConnectToSharedSegmentStubResult struct {
 	Err error
 }
 
-// InterfaceConnectToSwitchResult is expected values of the ConnectToSwitch operation
-type InterfaceConnectToSwitchResult struct {
+// InterfaceConnectToSwitchStubResult is expected values of the ConnectToSwitch operation
+type InterfaceConnectToSwitchStubResult struct {
 	Err error
 }
 
-// InterfaceDisconnectFromSwitchResult is expected values of the DisconnectFromSwitch operation
-type InterfaceDisconnectFromSwitchResult struct {
+// InterfaceDisconnectFromSwitchStubResult is expected values of the DisconnectFromSwitch operation
+type InterfaceDisconnectFromSwitchStubResult struct {
 	Err error
 }
 
-// InterfaceConnectToPacketFilterResult is expected values of the ConnectToPacketFilter operation
-type InterfaceConnectToPacketFilterResult struct {
+// InterfaceConnectToPacketFilterStubResult is expected values of the ConnectToPacketFilter operation
+type InterfaceConnectToPacketFilterStubResult struct {
 	Err error
 }
 
-// InterfaceDisconnectFromPacketFilterResult is expected values of the DisconnectFromPacketFilter operation
-type InterfaceDisconnectFromPacketFilterResult struct {
+// InterfaceDisconnectFromPacketFilterStubResult is expected values of the DisconnectFromPacketFilter operation
+type InterfaceDisconnectFromPacketFilterStubResult struct {
 	Err error
 }
 
 // InterfaceStub is for trace InterfaceOp operations
 type InterfaceStub struct {
-	FindResult                       *InterfaceFindResult
-	CreateResult                     *InterfaceCreateResult
-	ReadResult                       *InterfaceReadResult
-	UpdateResult                     *InterfaceUpdateResult
-	DeleteResult                     *InterfaceDeleteResult
-	MonitorResult                    *InterfaceMonitorResult
-	ConnectToSharedSegmentResult     *InterfaceConnectToSharedSegmentResult
-	ConnectToSwitchResult            *InterfaceConnectToSwitchResult
-	DisconnectFromSwitchResult       *InterfaceDisconnectFromSwitchResult
-	ConnectToPacketFilterResult      *InterfaceConnectToPacketFilterResult
-	DisconnectFromPacketFilterResult *InterfaceDisconnectFromPacketFilterResult
+	FindStubResult                       *InterfaceFindStubResult
+	CreateStubResult                     *InterfaceCreateStubResult
+	ReadStubResult                       *InterfaceReadStubResult
+	UpdateStubResult                     *InterfaceUpdateStubResult
+	DeleteStubResult                     *InterfaceDeleteStubResult
+	MonitorStubResult                    *InterfaceMonitorStubResult
+	ConnectToSharedSegmentStubResult     *InterfaceConnectToSharedSegmentStubResult
+	ConnectToSwitchStubResult            *InterfaceConnectToSwitchStubResult
+	DisconnectFromSwitchStubResult       *InterfaceDisconnectFromSwitchStubResult
+	ConnectToPacketFilterStubResult      *InterfaceConnectToPacketFilterStubResult
+	DisconnectFromPacketFilterStubResult *InterfaceDisconnectFromPacketFilterStubResult
 }
 
 // NewInterfaceStub creates new InterfaceStub instance
@@ -765,167 +763,167 @@ func NewInterfaceStub(caller sacloud.APICaller) sacloud.InterfaceAPI {
 }
 
 // Find is API call with trace log
-func (s *InterfaceStub) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) ([]*sacloud.Interface, error) {
-	if s.FindResult == nil {
-		log.Fatal("InterfaceStub.FindResult is not set")
+func (s *InterfaceStub) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.InterfaceFindResult, error) {
+	if s.FindStubResult == nil {
+		log.Fatal("InterfaceStub.FindStubResult is not set")
 	}
-	return s.FindResult.Interfaces, s.FindResult.Err
+	return s.FindStubResult.Values, s.FindStubResult.Err
 }
 
 // Create is API call with trace log
-func (s *InterfaceStub) Create(ctx context.Context, zone string, param *sacloud.InterfaceCreateRequest) (*sacloud.Interface, error) {
-	if s.CreateResult == nil {
-		log.Fatal("InterfaceStub.CreateResult is not set")
+func (s *InterfaceStub) Create(ctx context.Context, zone string, param *sacloud.InterfaceCreateRequest) (*sacloud.InterfaceCreateResult, error) {
+	if s.CreateStubResult == nil {
+		log.Fatal("InterfaceStub.CreateStubResult is not set")
 	}
-	return s.CreateResult.Interface, s.CreateResult.Err
+	return s.CreateStubResult.Values, s.CreateStubResult.Err
 }
 
 // Read is API call with trace log
-func (s *InterfaceStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Interface, error) {
-	if s.ReadResult == nil {
-		log.Fatal("InterfaceStub.ReadResult is not set")
+func (s *InterfaceStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.InterfaceReadResult, error) {
+	if s.ReadStubResult == nil {
+		log.Fatal("InterfaceStub.ReadStubResult is not set")
 	}
-	return s.ReadResult.Interface, s.ReadResult.Err
+	return s.ReadStubResult.Values, s.ReadStubResult.Err
 }
 
 // Update is API call with trace log
-func (s *InterfaceStub) Update(ctx context.Context, zone string, id types.ID, param *sacloud.InterfaceUpdateRequest) (*sacloud.Interface, error) {
-	if s.UpdateResult == nil {
-		log.Fatal("InterfaceStub.UpdateResult is not set")
+func (s *InterfaceStub) Update(ctx context.Context, zone string, id types.ID, param *sacloud.InterfaceUpdateRequest) (*sacloud.InterfaceUpdateResult, error) {
+	if s.UpdateStubResult == nil {
+		log.Fatal("InterfaceStub.UpdateStubResult is not set")
 	}
-	return s.UpdateResult.Interface, s.UpdateResult.Err
+	return s.UpdateStubResult.Values, s.UpdateStubResult.Err
 }
 
 // Delete is API call with trace log
 func (s *InterfaceStub) Delete(ctx context.Context, zone string, id types.ID) error {
-	if s.DeleteResult == nil {
-		log.Fatal("InterfaceStub.DeleteResult is not set")
+	if s.DeleteStubResult == nil {
+		log.Fatal("InterfaceStub.DeleteStubResult is not set")
 	}
-	return s.DeleteResult.Err
+	return s.DeleteStubResult.Err
 }
 
 // Monitor is API call with trace log
-func (s *InterfaceStub) Monitor(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.InterfaceActivity, error) {
-	if s.MonitorResult == nil {
-		log.Fatal("InterfaceStub.MonitorResult is not set")
+func (s *InterfaceStub) Monitor(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.InterfaceMonitorResult, error) {
+	if s.MonitorStubResult == nil {
+		log.Fatal("InterfaceStub.MonitorStubResult is not set")
 	}
-	return s.MonitorResult.Data, s.MonitorResult.Err
+	return s.MonitorStubResult.Values, s.MonitorStubResult.Err
 }
 
 // ConnectToSharedSegment is API call with trace log
 func (s *InterfaceStub) ConnectToSharedSegment(ctx context.Context, zone string, id types.ID) error {
-	if s.ConnectToSharedSegmentResult == nil {
-		log.Fatal("InterfaceStub.ConnectToSharedSegmentResult is not set")
+	if s.ConnectToSharedSegmentStubResult == nil {
+		log.Fatal("InterfaceStub.ConnectToSharedSegmentStubResult is not set")
 	}
-	return s.ConnectToSharedSegmentResult.Err
+	return s.ConnectToSharedSegmentStubResult.Err
 }
 
 // ConnectToSwitch is API call with trace log
 func (s *InterfaceStub) ConnectToSwitch(ctx context.Context, zone string, id types.ID, switchID types.ID) error {
-	if s.ConnectToSwitchResult == nil {
-		log.Fatal("InterfaceStub.ConnectToSwitchResult is not set")
+	if s.ConnectToSwitchStubResult == nil {
+		log.Fatal("InterfaceStub.ConnectToSwitchStubResult is not set")
 	}
-	return s.ConnectToSwitchResult.Err
+	return s.ConnectToSwitchStubResult.Err
 }
 
 // DisconnectFromSwitch is API call with trace log
 func (s *InterfaceStub) DisconnectFromSwitch(ctx context.Context, zone string, id types.ID) error {
-	if s.DisconnectFromSwitchResult == nil {
-		log.Fatal("InterfaceStub.DisconnectFromSwitchResult is not set")
+	if s.DisconnectFromSwitchStubResult == nil {
+		log.Fatal("InterfaceStub.DisconnectFromSwitchStubResult is not set")
 	}
-	return s.DisconnectFromSwitchResult.Err
+	return s.DisconnectFromSwitchStubResult.Err
 }
 
 // ConnectToPacketFilter is API call with trace log
 func (s *InterfaceStub) ConnectToPacketFilter(ctx context.Context, zone string, id types.ID, packetFilterID types.ID) error {
-	if s.ConnectToPacketFilterResult == nil {
-		log.Fatal("InterfaceStub.ConnectToPacketFilterResult is not set")
+	if s.ConnectToPacketFilterStubResult == nil {
+		log.Fatal("InterfaceStub.ConnectToPacketFilterStubResult is not set")
 	}
-	return s.ConnectToPacketFilterResult.Err
+	return s.ConnectToPacketFilterStubResult.Err
 }
 
 // DisconnectFromPacketFilter is API call with trace log
 func (s *InterfaceStub) DisconnectFromPacketFilter(ctx context.Context, zone string, id types.ID) error {
-	if s.DisconnectFromPacketFilterResult == nil {
-		log.Fatal("InterfaceStub.DisconnectFromPacketFilterResult is not set")
+	if s.DisconnectFromPacketFilterStubResult == nil {
+		log.Fatal("InterfaceStub.DisconnectFromPacketFilterStubResult is not set")
 	}
-	return s.DisconnectFromPacketFilterResult.Err
+	return s.DisconnectFromPacketFilterStubResult.Err
 }
 
 /*************************************************
 * InternetStub
 *************************************************/
 
-// InternetFindResult is expected values of the Find operation
-type InternetFindResult struct {
-	Internets []*sacloud.Internet
-	Err       error
-}
-
-// InternetCreateResult is expected values of the Create operation
-type InternetCreateResult struct {
-	Internet *sacloud.Internet
-	Err      error
-}
-
-// InternetReadResult is expected values of the Read operation
-type InternetReadResult struct {
-	Internet *sacloud.Internet
-	Err      error
-}
-
-// InternetUpdateResult is expected values of the Update operation
-type InternetUpdateResult struct {
-	Internet *sacloud.Internet
-	Err      error
-}
-
-// InternetDeleteResult is expected values of the Delete operation
-type InternetDeleteResult struct {
-	Err error
-}
-
-// InternetUpdateBandWidthResult is expected values of the UpdateBandWidth operation
-type InternetUpdateBandWidthResult struct {
-	Internet *sacloud.Internet
-	Err      error
-}
-
-// InternetAddSubnetResult is expected values of the AddSubnet operation
-type InternetAddSubnetResult struct {
-	Subnet *sacloud.InternetSubnetOperationResult
+// InternetFindStubResult is expected values of the Find operation
+type InternetFindStubResult struct {
+	Values *sacloud.InternetFindResult
 	Err    error
 }
 
-// InternetUpdateSubnetResult is expected values of the UpdateSubnet operation
-type InternetUpdateSubnetResult struct {
-	Subnet *sacloud.InternetSubnetOperationResult
+// InternetCreateStubResult is expected values of the Create operation
+type InternetCreateStubResult struct {
+	Values *sacloud.InternetCreateResult
 	Err    error
 }
 
-// InternetDeleteSubnetResult is expected values of the DeleteSubnet operation
-type InternetDeleteSubnetResult struct {
+// InternetReadStubResult is expected values of the Read operation
+type InternetReadStubResult struct {
+	Values *sacloud.InternetReadResult
+	Err    error
+}
+
+// InternetUpdateStubResult is expected values of the Update operation
+type InternetUpdateStubResult struct {
+	Values *sacloud.InternetUpdateResult
+	Err    error
+}
+
+// InternetDeleteStubResult is expected values of the Delete operation
+type InternetDeleteStubResult struct {
 	Err error
 }
 
-// InternetMonitorResult is expected values of the Monitor operation
-type InternetMonitorResult struct {
-	Data *sacloud.RouterActivity
-	Err  error
+// InternetUpdateBandWidthStubResult is expected values of the UpdateBandWidth operation
+type InternetUpdateBandWidthStubResult struct {
+	Values *sacloud.InternetUpdateBandWidthResult
+	Err    error
+}
+
+// InternetAddSubnetStubResult is expected values of the AddSubnet operation
+type InternetAddSubnetStubResult struct {
+	Values *sacloud.InternetAddSubnetResult
+	Err    error
+}
+
+// InternetUpdateSubnetStubResult is expected values of the UpdateSubnet operation
+type InternetUpdateSubnetStubResult struct {
+	Values *sacloud.InternetUpdateSubnetResult
+	Err    error
+}
+
+// InternetDeleteSubnetStubResult is expected values of the DeleteSubnet operation
+type InternetDeleteSubnetStubResult struct {
+	Err error
+}
+
+// InternetMonitorStubResult is expected values of the Monitor operation
+type InternetMonitorStubResult struct {
+	Values *sacloud.InternetMonitorResult
+	Err    error
 }
 
 // InternetStub is for trace InternetOp operations
 type InternetStub struct {
-	FindResult            *InternetFindResult
-	CreateResult          *InternetCreateResult
-	ReadResult            *InternetReadResult
-	UpdateResult          *InternetUpdateResult
-	DeleteResult          *InternetDeleteResult
-	UpdateBandWidthResult *InternetUpdateBandWidthResult
-	AddSubnetResult       *InternetAddSubnetResult
-	UpdateSubnetResult    *InternetUpdateSubnetResult
-	DeleteSubnetResult    *InternetDeleteSubnetResult
-	MonitorResult         *InternetMonitorResult
+	FindStubResult            *InternetFindStubResult
+	CreateStubResult          *InternetCreateStubResult
+	ReadStubResult            *InternetReadStubResult
+	UpdateStubResult          *InternetUpdateStubResult
+	DeleteStubResult          *InternetDeleteStubResult
+	UpdateBandWidthStubResult *InternetUpdateBandWidthStubResult
+	AddSubnetStubResult       *InternetAddSubnetStubResult
+	UpdateSubnetStubResult    *InternetUpdateSubnetStubResult
+	DeleteSubnetStubResult    *InternetDeleteSubnetStubResult
+	MonitorStubResult         *InternetMonitorStubResult
 }
 
 // NewInternetStub creates new InternetStub instance
@@ -934,163 +932,163 @@ func NewInternetStub(caller sacloud.APICaller) sacloud.InternetAPI {
 }
 
 // Find is API call with trace log
-func (s *InternetStub) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) ([]*sacloud.Internet, error) {
-	if s.FindResult == nil {
-		log.Fatal("InternetStub.FindResult is not set")
+func (s *InternetStub) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.InternetFindResult, error) {
+	if s.FindStubResult == nil {
+		log.Fatal("InternetStub.FindStubResult is not set")
 	}
-	return s.FindResult.Internets, s.FindResult.Err
+	return s.FindStubResult.Values, s.FindStubResult.Err
 }
 
 // Create is API call with trace log
-func (s *InternetStub) Create(ctx context.Context, zone string, param *sacloud.InternetCreateRequest) (*sacloud.Internet, error) {
-	if s.CreateResult == nil {
-		log.Fatal("InternetStub.CreateResult is not set")
+func (s *InternetStub) Create(ctx context.Context, zone string, param *sacloud.InternetCreateRequest) (*sacloud.InternetCreateResult, error) {
+	if s.CreateStubResult == nil {
+		log.Fatal("InternetStub.CreateStubResult is not set")
 	}
-	return s.CreateResult.Internet, s.CreateResult.Err
+	return s.CreateStubResult.Values, s.CreateStubResult.Err
 }
 
 // Read is API call with trace log
-func (s *InternetStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Internet, error) {
-	if s.ReadResult == nil {
-		log.Fatal("InternetStub.ReadResult is not set")
+func (s *InternetStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.InternetReadResult, error) {
+	if s.ReadStubResult == nil {
+		log.Fatal("InternetStub.ReadStubResult is not set")
 	}
-	return s.ReadResult.Internet, s.ReadResult.Err
+	return s.ReadStubResult.Values, s.ReadStubResult.Err
 }
 
 // Update is API call with trace log
-func (s *InternetStub) Update(ctx context.Context, zone string, id types.ID, param *sacloud.InternetUpdateRequest) (*sacloud.Internet, error) {
-	if s.UpdateResult == nil {
-		log.Fatal("InternetStub.UpdateResult is not set")
+func (s *InternetStub) Update(ctx context.Context, zone string, id types.ID, param *sacloud.InternetUpdateRequest) (*sacloud.InternetUpdateResult, error) {
+	if s.UpdateStubResult == nil {
+		log.Fatal("InternetStub.UpdateStubResult is not set")
 	}
-	return s.UpdateResult.Internet, s.UpdateResult.Err
+	return s.UpdateStubResult.Values, s.UpdateStubResult.Err
 }
 
 // Delete is API call with trace log
 func (s *InternetStub) Delete(ctx context.Context, zone string, id types.ID) error {
-	if s.DeleteResult == nil {
-		log.Fatal("InternetStub.DeleteResult is not set")
+	if s.DeleteStubResult == nil {
+		log.Fatal("InternetStub.DeleteStubResult is not set")
 	}
-	return s.DeleteResult.Err
+	return s.DeleteStubResult.Err
 }
 
 // UpdateBandWidth is API call with trace log
-func (s *InternetStub) UpdateBandWidth(ctx context.Context, zone string, id types.ID, param *sacloud.InternetUpdateBandWidthRequest) (*sacloud.Internet, error) {
-	if s.UpdateBandWidthResult == nil {
-		log.Fatal("InternetStub.UpdateBandWidthResult is not set")
+func (s *InternetStub) UpdateBandWidth(ctx context.Context, zone string, id types.ID, param *sacloud.InternetUpdateBandWidthRequest) (*sacloud.InternetUpdateBandWidthResult, error) {
+	if s.UpdateBandWidthStubResult == nil {
+		log.Fatal("InternetStub.UpdateBandWidthStubResult is not set")
 	}
-	return s.UpdateBandWidthResult.Internet, s.UpdateBandWidthResult.Err
+	return s.UpdateBandWidthStubResult.Values, s.UpdateBandWidthStubResult.Err
 }
 
 // AddSubnet is API call with trace log
-func (s *InternetStub) AddSubnet(ctx context.Context, zone string, id types.ID, param *sacloud.InternetAddSubnetRequest) (*sacloud.InternetSubnetOperationResult, error) {
-	if s.AddSubnetResult == nil {
-		log.Fatal("InternetStub.AddSubnetResult is not set")
+func (s *InternetStub) AddSubnet(ctx context.Context, zone string, id types.ID, param *sacloud.InternetAddSubnetRequest) (*sacloud.InternetAddSubnetResult, error) {
+	if s.AddSubnetStubResult == nil {
+		log.Fatal("InternetStub.AddSubnetStubResult is not set")
 	}
-	return s.AddSubnetResult.Subnet, s.AddSubnetResult.Err
+	return s.AddSubnetStubResult.Values, s.AddSubnetStubResult.Err
 }
 
 // UpdateSubnet is API call with trace log
-func (s *InternetStub) UpdateSubnet(ctx context.Context, zone string, id types.ID, subnetID types.ID, param *sacloud.InternetUpdateSubnetRequest) (*sacloud.InternetSubnetOperationResult, error) {
-	if s.UpdateSubnetResult == nil {
-		log.Fatal("InternetStub.UpdateSubnetResult is not set")
+func (s *InternetStub) UpdateSubnet(ctx context.Context, zone string, id types.ID, subnetID types.ID, param *sacloud.InternetUpdateSubnetRequest) (*sacloud.InternetUpdateSubnetResult, error) {
+	if s.UpdateSubnetStubResult == nil {
+		log.Fatal("InternetStub.UpdateSubnetStubResult is not set")
 	}
-	return s.UpdateSubnetResult.Subnet, s.UpdateSubnetResult.Err
+	return s.UpdateSubnetStubResult.Values, s.UpdateSubnetStubResult.Err
 }
 
 // DeleteSubnet is API call with trace log
 func (s *InternetStub) DeleteSubnet(ctx context.Context, zone string, id types.ID, subnetID types.ID) error {
-	if s.DeleteSubnetResult == nil {
-		log.Fatal("InternetStub.DeleteSubnetResult is not set")
+	if s.DeleteSubnetStubResult == nil {
+		log.Fatal("InternetStub.DeleteSubnetStubResult is not set")
 	}
-	return s.DeleteSubnetResult.Err
+	return s.DeleteSubnetStubResult.Err
 }
 
 // Monitor is API call with trace log
-func (s *InternetStub) Monitor(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.RouterActivity, error) {
-	if s.MonitorResult == nil {
-		log.Fatal("InternetStub.MonitorResult is not set")
+func (s *InternetStub) Monitor(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.InternetMonitorResult, error) {
+	if s.MonitorStubResult == nil {
+		log.Fatal("InternetStub.MonitorStubResult is not set")
 	}
-	return s.MonitorResult.Data, s.MonitorResult.Err
+	return s.MonitorStubResult.Values, s.MonitorStubResult.Err
 }
 
 /*************************************************
 * LoadBalancerStub
 *************************************************/
 
-// LoadBalancerFindResult is expected values of the Find operation
-type LoadBalancerFindResult struct {
-	Appliances []*sacloud.LoadBalancer
-	Err        error
+// LoadBalancerFindStubResult is expected values of the Find operation
+type LoadBalancerFindStubResult struct {
+	Values *sacloud.LoadBalancerFindResult
+	Err    error
 }
 
-// LoadBalancerCreateResult is expected values of the Create operation
-type LoadBalancerCreateResult struct {
-	Appliance *sacloud.LoadBalancer
-	Err       error
+// LoadBalancerCreateStubResult is expected values of the Create operation
+type LoadBalancerCreateStubResult struct {
+	Values *sacloud.LoadBalancerCreateResult
+	Err    error
 }
 
-// LoadBalancerReadResult is expected values of the Read operation
-type LoadBalancerReadResult struct {
-	Appliance *sacloud.LoadBalancer
-	Err       error
+// LoadBalancerReadStubResult is expected values of the Read operation
+type LoadBalancerReadStubResult struct {
+	Values *sacloud.LoadBalancerReadResult
+	Err    error
 }
 
-// LoadBalancerUpdateResult is expected values of the Update operation
-type LoadBalancerUpdateResult struct {
-	Appliance *sacloud.LoadBalancer
-	Err       error
+// LoadBalancerUpdateStubResult is expected values of the Update operation
+type LoadBalancerUpdateStubResult struct {
+	Values *sacloud.LoadBalancerUpdateResult
+	Err    error
 }
 
-// LoadBalancerDeleteResult is expected values of the Delete operation
-type LoadBalancerDeleteResult struct {
+// LoadBalancerDeleteStubResult is expected values of the Delete operation
+type LoadBalancerDeleteStubResult struct {
 	Err error
 }
 
-// LoadBalancerConfigResult is expected values of the Config operation
-type LoadBalancerConfigResult struct {
+// LoadBalancerConfigStubResult is expected values of the Config operation
+type LoadBalancerConfigStubResult struct {
 	Err error
 }
 
-// LoadBalancerBootResult is expected values of the Boot operation
-type LoadBalancerBootResult struct {
+// LoadBalancerBootStubResult is expected values of the Boot operation
+type LoadBalancerBootStubResult struct {
 	Err error
 }
 
-// LoadBalancerShutdownResult is expected values of the Shutdown operation
-type LoadBalancerShutdownResult struct {
+// LoadBalancerShutdownStubResult is expected values of the Shutdown operation
+type LoadBalancerShutdownStubResult struct {
 	Err error
 }
 
-// LoadBalancerResetResult is expected values of the Reset operation
-type LoadBalancerResetResult struct {
+// LoadBalancerResetStubResult is expected values of the Reset operation
+type LoadBalancerResetStubResult struct {
 	Err error
 }
 
-// LoadBalancerMonitorInterfaceResult is expected values of the MonitorInterface operation
-type LoadBalancerMonitorInterfaceResult struct {
-	Data *sacloud.InterfaceActivity
-	Err  error
+// LoadBalancerMonitorInterfaceStubResult is expected values of the MonitorInterface operation
+type LoadBalancerMonitorInterfaceStubResult struct {
+	Values *sacloud.LoadBalancerMonitorInterfaceResult
+	Err    error
 }
 
-// LoadBalancerStatusResult is expected values of the Status operation
-type LoadBalancerStatusResult struct {
-	LoadBalancer []*sacloud.LoadBalancerStatus
-	Err          error
+// LoadBalancerStatusStubResult is expected values of the Status operation
+type LoadBalancerStatusStubResult struct {
+	Values *sacloud.LoadBalancerStatusResult
+	Err    error
 }
 
 // LoadBalancerStub is for trace LoadBalancerOp operations
 type LoadBalancerStub struct {
-	FindResult             *LoadBalancerFindResult
-	CreateResult           *LoadBalancerCreateResult
-	ReadResult             *LoadBalancerReadResult
-	UpdateResult           *LoadBalancerUpdateResult
-	DeleteResult           *LoadBalancerDeleteResult
-	ConfigResult           *LoadBalancerConfigResult
-	BootResult             *LoadBalancerBootResult
-	ShutdownResult         *LoadBalancerShutdownResult
-	ResetResult            *LoadBalancerResetResult
-	MonitorInterfaceResult *LoadBalancerMonitorInterfaceResult
-	StatusResult           *LoadBalancerStatusResult
+	FindStubResult             *LoadBalancerFindStubResult
+	CreateStubResult           *LoadBalancerCreateStubResult
+	ReadStubResult             *LoadBalancerReadStubResult
+	UpdateStubResult           *LoadBalancerUpdateStubResult
+	DeleteStubResult           *LoadBalancerDeleteStubResult
+	ConfigStubResult           *LoadBalancerConfigStubResult
+	BootStubResult             *LoadBalancerBootStubResult
+	ShutdownStubResult         *LoadBalancerShutdownStubResult
+	ResetStubResult            *LoadBalancerResetStubResult
+	MonitorInterfaceStubResult *LoadBalancerMonitorInterfaceStubResult
+	StatusStubResult           *LoadBalancerStatusStubResult
 }
 
 // NewLoadBalancerStub creates new LoadBalancerStub instance
@@ -1099,165 +1097,165 @@ func NewLoadBalancerStub(caller sacloud.APICaller) sacloud.LoadBalancerAPI {
 }
 
 // Find is API call with trace log
-func (s *LoadBalancerStub) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) ([]*sacloud.LoadBalancer, error) {
-	if s.FindResult == nil {
-		log.Fatal("LoadBalancerStub.FindResult is not set")
+func (s *LoadBalancerStub) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.LoadBalancerFindResult, error) {
+	if s.FindStubResult == nil {
+		log.Fatal("LoadBalancerStub.FindStubResult is not set")
 	}
-	return s.FindResult.Appliances, s.FindResult.Err
+	return s.FindStubResult.Values, s.FindStubResult.Err
 }
 
 // Create is API call with trace log
-func (s *LoadBalancerStub) Create(ctx context.Context, zone string, param *sacloud.LoadBalancerCreateRequest) (*sacloud.LoadBalancer, error) {
-	if s.CreateResult == nil {
-		log.Fatal("LoadBalancerStub.CreateResult is not set")
+func (s *LoadBalancerStub) Create(ctx context.Context, zone string, param *sacloud.LoadBalancerCreateRequest) (*sacloud.LoadBalancerCreateResult, error) {
+	if s.CreateStubResult == nil {
+		log.Fatal("LoadBalancerStub.CreateStubResult is not set")
 	}
-	return s.CreateResult.Appliance, s.CreateResult.Err
+	return s.CreateStubResult.Values, s.CreateStubResult.Err
 }
 
 // Read is API call with trace log
-func (s *LoadBalancerStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.LoadBalancer, error) {
-	if s.ReadResult == nil {
-		log.Fatal("LoadBalancerStub.ReadResult is not set")
+func (s *LoadBalancerStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.LoadBalancerReadResult, error) {
+	if s.ReadStubResult == nil {
+		log.Fatal("LoadBalancerStub.ReadStubResult is not set")
 	}
-	return s.ReadResult.Appliance, s.ReadResult.Err
+	return s.ReadStubResult.Values, s.ReadStubResult.Err
 }
 
 // Update is API call with trace log
-func (s *LoadBalancerStub) Update(ctx context.Context, zone string, id types.ID, param *sacloud.LoadBalancerUpdateRequest) (*sacloud.LoadBalancer, error) {
-	if s.UpdateResult == nil {
-		log.Fatal("LoadBalancerStub.UpdateResult is not set")
+func (s *LoadBalancerStub) Update(ctx context.Context, zone string, id types.ID, param *sacloud.LoadBalancerUpdateRequest) (*sacloud.LoadBalancerUpdateResult, error) {
+	if s.UpdateStubResult == nil {
+		log.Fatal("LoadBalancerStub.UpdateStubResult is not set")
 	}
-	return s.UpdateResult.Appliance, s.UpdateResult.Err
+	return s.UpdateStubResult.Values, s.UpdateStubResult.Err
 }
 
 // Delete is API call with trace log
 func (s *LoadBalancerStub) Delete(ctx context.Context, zone string, id types.ID) error {
-	if s.DeleteResult == nil {
-		log.Fatal("LoadBalancerStub.DeleteResult is not set")
+	if s.DeleteStubResult == nil {
+		log.Fatal("LoadBalancerStub.DeleteStubResult is not set")
 	}
-	return s.DeleteResult.Err
+	return s.DeleteStubResult.Err
 }
 
 // Config is API call with trace log
 func (s *LoadBalancerStub) Config(ctx context.Context, zone string, id types.ID) error {
-	if s.ConfigResult == nil {
-		log.Fatal("LoadBalancerStub.ConfigResult is not set")
+	if s.ConfigStubResult == nil {
+		log.Fatal("LoadBalancerStub.ConfigStubResult is not set")
 	}
-	return s.ConfigResult.Err
+	return s.ConfigStubResult.Err
 }
 
 // Boot is API call with trace log
 func (s *LoadBalancerStub) Boot(ctx context.Context, zone string, id types.ID) error {
-	if s.BootResult == nil {
-		log.Fatal("LoadBalancerStub.BootResult is not set")
+	if s.BootStubResult == nil {
+		log.Fatal("LoadBalancerStub.BootStubResult is not set")
 	}
-	return s.BootResult.Err
+	return s.BootStubResult.Err
 }
 
 // Shutdown is API call with trace log
 func (s *LoadBalancerStub) Shutdown(ctx context.Context, zone string, id types.ID, shutdownOption *sacloud.ShutdownOption) error {
-	if s.ShutdownResult == nil {
-		log.Fatal("LoadBalancerStub.ShutdownResult is not set")
+	if s.ShutdownStubResult == nil {
+		log.Fatal("LoadBalancerStub.ShutdownStubResult is not set")
 	}
-	return s.ShutdownResult.Err
+	return s.ShutdownStubResult.Err
 }
 
 // Reset is API call with trace log
 func (s *LoadBalancerStub) Reset(ctx context.Context, zone string, id types.ID) error {
-	if s.ResetResult == nil {
-		log.Fatal("LoadBalancerStub.ResetResult is not set")
+	if s.ResetStubResult == nil {
+		log.Fatal("LoadBalancerStub.ResetStubResult is not set")
 	}
-	return s.ResetResult.Err
+	return s.ResetStubResult.Err
 }
 
 // MonitorInterface is API call with trace log
-func (s *LoadBalancerStub) MonitorInterface(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.InterfaceActivity, error) {
-	if s.MonitorInterfaceResult == nil {
-		log.Fatal("LoadBalancerStub.MonitorInterfaceResult is not set")
+func (s *LoadBalancerStub) MonitorInterface(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.LoadBalancerMonitorInterfaceResult, error) {
+	if s.MonitorInterfaceStubResult == nil {
+		log.Fatal("LoadBalancerStub.MonitorInterfaceStubResult is not set")
 	}
-	return s.MonitorInterfaceResult.Data, s.MonitorInterfaceResult.Err
+	return s.MonitorInterfaceStubResult.Values, s.MonitorInterfaceStubResult.Err
 }
 
 // Status is API call with trace log
-func (s *LoadBalancerStub) Status(ctx context.Context, zone string, id types.ID) ([]*sacloud.LoadBalancerStatus, error) {
-	if s.StatusResult == nil {
-		log.Fatal("LoadBalancerStub.StatusResult is not set")
+func (s *LoadBalancerStub) Status(ctx context.Context, zone string, id types.ID) (*sacloud.LoadBalancerStatusResult, error) {
+	if s.StatusStubResult == nil {
+		log.Fatal("LoadBalancerStub.StatusStubResult is not set")
 	}
-	return s.StatusResult.LoadBalancer, s.StatusResult.Err
+	return s.StatusStubResult.Values, s.StatusStubResult.Err
 }
 
 /*************************************************
 * NFSStub
 *************************************************/
 
-// NFSFindResult is expected values of the Find operation
-type NFSFindResult struct {
-	Appliances []*sacloud.NFS
-	Err        error
+// NFSFindStubResult is expected values of the Find operation
+type NFSFindStubResult struct {
+	Values *sacloud.NFSFindResult
+	Err    error
 }
 
-// NFSCreateResult is expected values of the Create operation
-type NFSCreateResult struct {
-	Appliance *sacloud.NFS
-	Err       error
+// NFSCreateStubResult is expected values of the Create operation
+type NFSCreateStubResult struct {
+	Values *sacloud.NFSCreateResult
+	Err    error
 }
 
-// NFSReadResult is expected values of the Read operation
-type NFSReadResult struct {
-	Appliance *sacloud.NFS
-	Err       error
+// NFSReadStubResult is expected values of the Read operation
+type NFSReadStubResult struct {
+	Values *sacloud.NFSReadResult
+	Err    error
 }
 
-// NFSUpdateResult is expected values of the Update operation
-type NFSUpdateResult struct {
-	Appliance *sacloud.NFS
-	Err       error
+// NFSUpdateStubResult is expected values of the Update operation
+type NFSUpdateStubResult struct {
+	Values *sacloud.NFSUpdateResult
+	Err    error
 }
 
-// NFSDeleteResult is expected values of the Delete operation
-type NFSDeleteResult struct {
+// NFSDeleteStubResult is expected values of the Delete operation
+type NFSDeleteStubResult struct {
 	Err error
 }
 
-// NFSBootResult is expected values of the Boot operation
-type NFSBootResult struct {
+// NFSBootStubResult is expected values of the Boot operation
+type NFSBootStubResult struct {
 	Err error
 }
 
-// NFSShutdownResult is expected values of the Shutdown operation
-type NFSShutdownResult struct {
+// NFSShutdownStubResult is expected values of the Shutdown operation
+type NFSShutdownStubResult struct {
 	Err error
 }
 
-// NFSResetResult is expected values of the Reset operation
-type NFSResetResult struct {
+// NFSResetStubResult is expected values of the Reset operation
+type NFSResetStubResult struct {
 	Err error
 }
 
-// NFSMonitorFreeDiskSizeResult is expected values of the MonitorFreeDiskSize operation
-type NFSMonitorFreeDiskSizeResult struct {
-	Data *sacloud.FreeDiskSizeActivity
-	Err  error
+// NFSMonitorFreeDiskSizeStubResult is expected values of the MonitorFreeDiskSize operation
+type NFSMonitorFreeDiskSizeStubResult struct {
+	Values *sacloud.NFSMonitorFreeDiskSizeResult
+	Err    error
 }
 
-// NFSMonitorInterfaceResult is expected values of the MonitorInterface operation
-type NFSMonitorInterfaceResult struct {
-	Data *sacloud.InterfaceActivity
-	Err  error
+// NFSMonitorInterfaceStubResult is expected values of the MonitorInterface operation
+type NFSMonitorInterfaceStubResult struct {
+	Values *sacloud.NFSMonitorInterfaceResult
+	Err    error
 }
 
 // NFSStub is for trace NFSOp operations
 type NFSStub struct {
-	FindResult                *NFSFindResult
-	CreateResult              *NFSCreateResult
-	ReadResult                *NFSReadResult
-	UpdateResult              *NFSUpdateResult
-	DeleteResult              *NFSDeleteResult
-	BootResult                *NFSBootResult
-	ShutdownResult            *NFSShutdownResult
-	ResetResult               *NFSResetResult
-	MonitorFreeDiskSizeResult *NFSMonitorFreeDiskSizeResult
-	MonitorInterfaceResult    *NFSMonitorInterfaceResult
+	FindStubResult                *NFSFindStubResult
+	CreateStubResult              *NFSCreateStubResult
+	ReadStubResult                *NFSReadStubResult
+	UpdateStubResult              *NFSUpdateStubResult
+	DeleteStubResult              *NFSDeleteStubResult
+	BootStubResult                *NFSBootStubResult
+	ShutdownStubResult            *NFSShutdownStubResult
+	ResetStubResult               *NFSResetStubResult
+	MonitorFreeDiskSizeStubResult *NFSMonitorFreeDiskSizeStubResult
+	MonitorInterfaceStubResult    *NFSMonitorInterfaceStubResult
 }
 
 // NewNFSStub creates new NFSStub instance
@@ -1266,125 +1264,125 @@ func NewNFSStub(caller sacloud.APICaller) sacloud.NFSAPI {
 }
 
 // Find is API call with trace log
-func (s *NFSStub) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) ([]*sacloud.NFS, error) {
-	if s.FindResult == nil {
-		log.Fatal("NFSStub.FindResult is not set")
+func (s *NFSStub) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.NFSFindResult, error) {
+	if s.FindStubResult == nil {
+		log.Fatal("NFSStub.FindStubResult is not set")
 	}
-	return s.FindResult.Appliances, s.FindResult.Err
+	return s.FindStubResult.Values, s.FindStubResult.Err
 }
 
 // Create is API call with trace log
-func (s *NFSStub) Create(ctx context.Context, zone string, param *sacloud.NFSCreateRequest) (*sacloud.NFS, error) {
-	if s.CreateResult == nil {
-		log.Fatal("NFSStub.CreateResult is not set")
+func (s *NFSStub) Create(ctx context.Context, zone string, param *sacloud.NFSCreateRequest) (*sacloud.NFSCreateResult, error) {
+	if s.CreateStubResult == nil {
+		log.Fatal("NFSStub.CreateStubResult is not set")
 	}
-	return s.CreateResult.Appliance, s.CreateResult.Err
+	return s.CreateStubResult.Values, s.CreateStubResult.Err
 }
 
 // Read is API call with trace log
-func (s *NFSStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.NFS, error) {
-	if s.ReadResult == nil {
-		log.Fatal("NFSStub.ReadResult is not set")
+func (s *NFSStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.NFSReadResult, error) {
+	if s.ReadStubResult == nil {
+		log.Fatal("NFSStub.ReadStubResult is not set")
 	}
-	return s.ReadResult.Appliance, s.ReadResult.Err
+	return s.ReadStubResult.Values, s.ReadStubResult.Err
 }
 
 // Update is API call with trace log
-func (s *NFSStub) Update(ctx context.Context, zone string, id types.ID, param *sacloud.NFSUpdateRequest) (*sacloud.NFS, error) {
-	if s.UpdateResult == nil {
-		log.Fatal("NFSStub.UpdateResult is not set")
+func (s *NFSStub) Update(ctx context.Context, zone string, id types.ID, param *sacloud.NFSUpdateRequest) (*sacloud.NFSUpdateResult, error) {
+	if s.UpdateStubResult == nil {
+		log.Fatal("NFSStub.UpdateStubResult is not set")
 	}
-	return s.UpdateResult.Appliance, s.UpdateResult.Err
+	return s.UpdateStubResult.Values, s.UpdateStubResult.Err
 }
 
 // Delete is API call with trace log
 func (s *NFSStub) Delete(ctx context.Context, zone string, id types.ID) error {
-	if s.DeleteResult == nil {
-		log.Fatal("NFSStub.DeleteResult is not set")
+	if s.DeleteStubResult == nil {
+		log.Fatal("NFSStub.DeleteStubResult is not set")
 	}
-	return s.DeleteResult.Err
+	return s.DeleteStubResult.Err
 }
 
 // Boot is API call with trace log
 func (s *NFSStub) Boot(ctx context.Context, zone string, id types.ID) error {
-	if s.BootResult == nil {
-		log.Fatal("NFSStub.BootResult is not set")
+	if s.BootStubResult == nil {
+		log.Fatal("NFSStub.BootStubResult is not set")
 	}
-	return s.BootResult.Err
+	return s.BootStubResult.Err
 }
 
 // Shutdown is API call with trace log
 func (s *NFSStub) Shutdown(ctx context.Context, zone string, id types.ID, shutdownOption *sacloud.ShutdownOption) error {
-	if s.ShutdownResult == nil {
-		log.Fatal("NFSStub.ShutdownResult is not set")
+	if s.ShutdownStubResult == nil {
+		log.Fatal("NFSStub.ShutdownStubResult is not set")
 	}
-	return s.ShutdownResult.Err
+	return s.ShutdownStubResult.Err
 }
 
 // Reset is API call with trace log
 func (s *NFSStub) Reset(ctx context.Context, zone string, id types.ID) error {
-	if s.ResetResult == nil {
-		log.Fatal("NFSStub.ResetResult is not set")
+	if s.ResetStubResult == nil {
+		log.Fatal("NFSStub.ResetStubResult is not set")
 	}
-	return s.ResetResult.Err
+	return s.ResetStubResult.Err
 }
 
 // MonitorFreeDiskSize is API call with trace log
-func (s *NFSStub) MonitorFreeDiskSize(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.FreeDiskSizeActivity, error) {
-	if s.MonitorFreeDiskSizeResult == nil {
-		log.Fatal("NFSStub.MonitorFreeDiskSizeResult is not set")
+func (s *NFSStub) MonitorFreeDiskSize(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.NFSMonitorFreeDiskSizeResult, error) {
+	if s.MonitorFreeDiskSizeStubResult == nil {
+		log.Fatal("NFSStub.MonitorFreeDiskSizeStubResult is not set")
 	}
-	return s.MonitorFreeDiskSizeResult.Data, s.MonitorFreeDiskSizeResult.Err
+	return s.MonitorFreeDiskSizeStubResult.Values, s.MonitorFreeDiskSizeStubResult.Err
 }
 
 // MonitorInterface is API call with trace log
-func (s *NFSStub) MonitorInterface(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.InterfaceActivity, error) {
-	if s.MonitorInterfaceResult == nil {
-		log.Fatal("NFSStub.MonitorInterfaceResult is not set")
+func (s *NFSStub) MonitorInterface(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.NFSMonitorInterfaceResult, error) {
+	if s.MonitorInterfaceStubResult == nil {
+		log.Fatal("NFSStub.MonitorInterfaceStubResult is not set")
 	}
-	return s.MonitorInterfaceResult.Data, s.MonitorInterfaceResult.Err
+	return s.MonitorInterfaceStubResult.Values, s.MonitorInterfaceStubResult.Err
 }
 
 /*************************************************
 * NoteStub
 *************************************************/
 
-// NoteFindResult is expected values of the Find operation
-type NoteFindResult struct {
-	Notes []*sacloud.Note
-	Err   error
+// NoteFindStubResult is expected values of the Find operation
+type NoteFindStubResult struct {
+	Values *sacloud.NoteFindResult
+	Err    error
 }
 
-// NoteCreateResult is expected values of the Create operation
-type NoteCreateResult struct {
-	Note *sacloud.Note
-	Err  error
+// NoteCreateStubResult is expected values of the Create operation
+type NoteCreateStubResult struct {
+	Values *sacloud.NoteCreateResult
+	Err    error
 }
 
-// NoteReadResult is expected values of the Read operation
-type NoteReadResult struct {
-	Note *sacloud.Note
-	Err  error
+// NoteReadStubResult is expected values of the Read operation
+type NoteReadStubResult struct {
+	Values *sacloud.NoteReadResult
+	Err    error
 }
 
-// NoteUpdateResult is expected values of the Update operation
-type NoteUpdateResult struct {
-	Note *sacloud.Note
-	Err  error
+// NoteUpdateStubResult is expected values of the Update operation
+type NoteUpdateStubResult struct {
+	Values *sacloud.NoteUpdateResult
+	Err    error
 }
 
-// NoteDeleteResult is expected values of the Delete operation
-type NoteDeleteResult struct {
+// NoteDeleteStubResult is expected values of the Delete operation
+type NoteDeleteStubResult struct {
 	Err error
 }
 
 // NoteStub is for trace NoteOp operations
 type NoteStub struct {
-	FindResult   *NoteFindResult
-	CreateResult *NoteCreateResult
-	ReadResult   *NoteReadResult
-	UpdateResult *NoteUpdateResult
-	DeleteResult *NoteDeleteResult
+	FindStubResult   *NoteFindStubResult
+	CreateStubResult *NoteCreateStubResult
+	ReadStubResult   *NoteReadStubResult
+	UpdateStubResult *NoteUpdateStubResult
+	DeleteStubResult *NoteDeleteStubResult
 }
 
 // NewNoteStub creates new NoteStub instance
@@ -1393,85 +1391,85 @@ func NewNoteStub(caller sacloud.APICaller) sacloud.NoteAPI {
 }
 
 // Find is API call with trace log
-func (s *NoteStub) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) ([]*sacloud.Note, error) {
-	if s.FindResult == nil {
-		log.Fatal("NoteStub.FindResult is not set")
+func (s *NoteStub) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.NoteFindResult, error) {
+	if s.FindStubResult == nil {
+		log.Fatal("NoteStub.FindStubResult is not set")
 	}
-	return s.FindResult.Notes, s.FindResult.Err
+	return s.FindStubResult.Values, s.FindStubResult.Err
 }
 
 // Create is API call with trace log
-func (s *NoteStub) Create(ctx context.Context, zone string, param *sacloud.NoteCreateRequest) (*sacloud.Note, error) {
-	if s.CreateResult == nil {
-		log.Fatal("NoteStub.CreateResult is not set")
+func (s *NoteStub) Create(ctx context.Context, zone string, param *sacloud.NoteCreateRequest) (*sacloud.NoteCreateResult, error) {
+	if s.CreateStubResult == nil {
+		log.Fatal("NoteStub.CreateStubResult is not set")
 	}
-	return s.CreateResult.Note, s.CreateResult.Err
+	return s.CreateStubResult.Values, s.CreateStubResult.Err
 }
 
 // Read is API call with trace log
-func (s *NoteStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Note, error) {
-	if s.ReadResult == nil {
-		log.Fatal("NoteStub.ReadResult is not set")
+func (s *NoteStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.NoteReadResult, error) {
+	if s.ReadStubResult == nil {
+		log.Fatal("NoteStub.ReadStubResult is not set")
 	}
-	return s.ReadResult.Note, s.ReadResult.Err
+	return s.ReadStubResult.Values, s.ReadStubResult.Err
 }
 
 // Update is API call with trace log
-func (s *NoteStub) Update(ctx context.Context, zone string, id types.ID, param *sacloud.NoteUpdateRequest) (*sacloud.Note, error) {
-	if s.UpdateResult == nil {
-		log.Fatal("NoteStub.UpdateResult is not set")
+func (s *NoteStub) Update(ctx context.Context, zone string, id types.ID, param *sacloud.NoteUpdateRequest) (*sacloud.NoteUpdateResult, error) {
+	if s.UpdateStubResult == nil {
+		log.Fatal("NoteStub.UpdateStubResult is not set")
 	}
-	return s.UpdateResult.Note, s.UpdateResult.Err
+	return s.UpdateStubResult.Values, s.UpdateStubResult.Err
 }
 
 // Delete is API call with trace log
 func (s *NoteStub) Delete(ctx context.Context, zone string, id types.ID) error {
-	if s.DeleteResult == nil {
-		log.Fatal("NoteStub.DeleteResult is not set")
+	if s.DeleteStubResult == nil {
+		log.Fatal("NoteStub.DeleteStubResult is not set")
 	}
-	return s.DeleteResult.Err
+	return s.DeleteStubResult.Err
 }
 
 /*************************************************
 * PacketFilterStub
 *************************************************/
 
-// PacketFilterFindResult is expected values of the Find operation
-type PacketFilterFindResult struct {
-	PacketFilters []*sacloud.PacketFilter
-	Err           error
+// PacketFilterFindStubResult is expected values of the Find operation
+type PacketFilterFindStubResult struct {
+	Values *sacloud.PacketFilterFindResult
+	Err    error
 }
 
-// PacketFilterCreateResult is expected values of the Create operation
-type PacketFilterCreateResult struct {
-	PacketFilter *sacloud.PacketFilter
-	Err          error
+// PacketFilterCreateStubResult is expected values of the Create operation
+type PacketFilterCreateStubResult struct {
+	Values *sacloud.PacketFilterCreateResult
+	Err    error
 }
 
-// PacketFilterReadResult is expected values of the Read operation
-type PacketFilterReadResult struct {
-	PacketFilter *sacloud.PacketFilter
-	Err          error
+// PacketFilterReadStubResult is expected values of the Read operation
+type PacketFilterReadStubResult struct {
+	Values *sacloud.PacketFilterReadResult
+	Err    error
 }
 
-// PacketFilterUpdateResult is expected values of the Update operation
-type PacketFilterUpdateResult struct {
-	PacketFilter *sacloud.PacketFilter
-	Err          error
+// PacketFilterUpdateStubResult is expected values of the Update operation
+type PacketFilterUpdateStubResult struct {
+	Values *sacloud.PacketFilterUpdateResult
+	Err    error
 }
 
-// PacketFilterDeleteResult is expected values of the Delete operation
-type PacketFilterDeleteResult struct {
+// PacketFilterDeleteStubResult is expected values of the Delete operation
+type PacketFilterDeleteStubResult struct {
 	Err error
 }
 
 // PacketFilterStub is for trace PacketFilterOp operations
 type PacketFilterStub struct {
-	FindResult   *PacketFilterFindResult
-	CreateResult *PacketFilterCreateResult
-	ReadResult   *PacketFilterReadResult
-	UpdateResult *PacketFilterUpdateResult
-	DeleteResult *PacketFilterDeleteResult
+	FindStubResult   *PacketFilterFindStubResult
+	CreateStubResult *PacketFilterCreateStubResult
+	ReadStubResult   *PacketFilterReadStubResult
+	UpdateStubResult *PacketFilterUpdateStubResult
+	DeleteStubResult *PacketFilterDeleteStubResult
 }
 
 // NewPacketFilterStub creates new PacketFilterStub instance
@@ -1480,129 +1478,129 @@ func NewPacketFilterStub(caller sacloud.APICaller) sacloud.PacketFilterAPI {
 }
 
 // Find is API call with trace log
-func (s *PacketFilterStub) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) ([]*sacloud.PacketFilter, error) {
-	if s.FindResult == nil {
-		log.Fatal("PacketFilterStub.FindResult is not set")
+func (s *PacketFilterStub) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.PacketFilterFindResult, error) {
+	if s.FindStubResult == nil {
+		log.Fatal("PacketFilterStub.FindStubResult is not set")
 	}
-	return s.FindResult.PacketFilters, s.FindResult.Err
+	return s.FindStubResult.Values, s.FindStubResult.Err
 }
 
 // Create is API call with trace log
-func (s *PacketFilterStub) Create(ctx context.Context, zone string, param *sacloud.PacketFilterCreateRequest) (*sacloud.PacketFilter, error) {
-	if s.CreateResult == nil {
-		log.Fatal("PacketFilterStub.CreateResult is not set")
+func (s *PacketFilterStub) Create(ctx context.Context, zone string, param *sacloud.PacketFilterCreateRequest) (*sacloud.PacketFilterCreateResult, error) {
+	if s.CreateStubResult == nil {
+		log.Fatal("PacketFilterStub.CreateStubResult is not set")
 	}
-	return s.CreateResult.PacketFilter, s.CreateResult.Err
+	return s.CreateStubResult.Values, s.CreateStubResult.Err
 }
 
 // Read is API call with trace log
-func (s *PacketFilterStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.PacketFilter, error) {
-	if s.ReadResult == nil {
-		log.Fatal("PacketFilterStub.ReadResult is not set")
+func (s *PacketFilterStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.PacketFilterReadResult, error) {
+	if s.ReadStubResult == nil {
+		log.Fatal("PacketFilterStub.ReadStubResult is not set")
 	}
-	return s.ReadResult.PacketFilter, s.ReadResult.Err
+	return s.ReadStubResult.Values, s.ReadStubResult.Err
 }
 
 // Update is API call with trace log
-func (s *PacketFilterStub) Update(ctx context.Context, zone string, id types.ID, param *sacloud.PacketFilterUpdateRequest) (*sacloud.PacketFilter, error) {
-	if s.UpdateResult == nil {
-		log.Fatal("PacketFilterStub.UpdateResult is not set")
+func (s *PacketFilterStub) Update(ctx context.Context, zone string, id types.ID, param *sacloud.PacketFilterUpdateRequest) (*sacloud.PacketFilterUpdateResult, error) {
+	if s.UpdateStubResult == nil {
+		log.Fatal("PacketFilterStub.UpdateStubResult is not set")
 	}
-	return s.UpdateResult.PacketFilter, s.UpdateResult.Err
+	return s.UpdateStubResult.Values, s.UpdateStubResult.Err
 }
 
 // Delete is API call with trace log
 func (s *PacketFilterStub) Delete(ctx context.Context, zone string, id types.ID) error {
-	if s.DeleteResult == nil {
-		log.Fatal("PacketFilterStub.DeleteResult is not set")
+	if s.DeleteStubResult == nil {
+		log.Fatal("PacketFilterStub.DeleteStubResult is not set")
 	}
-	return s.DeleteResult.Err
+	return s.DeleteStubResult.Err
 }
 
 /*************************************************
 * ServerStub
 *************************************************/
 
-// ServerFindResult is expected values of the Find operation
-type ServerFindResult struct {
-	Servers []*sacloud.Server
-	Err     error
-}
-
-// ServerCreateResult is expected values of the Create operation
-type ServerCreateResult struct {
-	Server *sacloud.Server
+// ServerFindStubResult is expected values of the Find operation
+type ServerFindStubResult struct {
+	Values *sacloud.ServerFindResult
 	Err    error
 }
 
-// ServerReadResult is expected values of the Read operation
-type ServerReadResult struct {
-	Server *sacloud.Server
+// ServerCreateStubResult is expected values of the Create operation
+type ServerCreateStubResult struct {
+	Values *sacloud.ServerCreateResult
 	Err    error
 }
 
-// ServerUpdateResult is expected values of the Update operation
-type ServerUpdateResult struct {
-	Server *sacloud.Server
+// ServerReadStubResult is expected values of the Read operation
+type ServerReadStubResult struct {
+	Values *sacloud.ServerReadResult
 	Err    error
 }
 
-// ServerDeleteResult is expected values of the Delete operation
-type ServerDeleteResult struct {
-	Err error
-}
-
-// ServerChangePlanResult is expected values of the ChangePlan operation
-type ServerChangePlanResult struct {
-	Server *sacloud.Server
+// ServerUpdateStubResult is expected values of the Update operation
+type ServerUpdateStubResult struct {
+	Values *sacloud.ServerUpdateResult
 	Err    error
 }
 
-// ServerInsertCDROMResult is expected values of the InsertCDROM operation
-type ServerInsertCDROMResult struct {
+// ServerDeleteStubResult is expected values of the Delete operation
+type ServerDeleteStubResult struct {
 	Err error
 }
 
-// ServerEjectCDROMResult is expected values of the EjectCDROM operation
-type ServerEjectCDROMResult struct {
+// ServerChangePlanStubResult is expected values of the ChangePlan operation
+type ServerChangePlanStubResult struct {
+	Values *sacloud.ServerChangePlanResult
+	Err    error
+}
+
+// ServerInsertCDROMStubResult is expected values of the InsertCDROM operation
+type ServerInsertCDROMStubResult struct {
 	Err error
 }
 
-// ServerBootResult is expected values of the Boot operation
-type ServerBootResult struct {
+// ServerEjectCDROMStubResult is expected values of the EjectCDROM operation
+type ServerEjectCDROMStubResult struct {
 	Err error
 }
 
-// ServerShutdownResult is expected values of the Shutdown operation
-type ServerShutdownResult struct {
+// ServerBootStubResult is expected values of the Boot operation
+type ServerBootStubResult struct {
 	Err error
 }
 
-// ServerResetResult is expected values of the Reset operation
-type ServerResetResult struct {
+// ServerShutdownStubResult is expected values of the Shutdown operation
+type ServerShutdownStubResult struct {
 	Err error
 }
 
-// ServerMonitorResult is expected values of the Monitor operation
-type ServerMonitorResult struct {
-	Data *sacloud.CPUTimeActivity
-	Err  error
+// ServerResetStubResult is expected values of the Reset operation
+type ServerResetStubResult struct {
+	Err error
+}
+
+// ServerMonitorStubResult is expected values of the Monitor operation
+type ServerMonitorStubResult struct {
+	Values *sacloud.ServerMonitorResult
+	Err    error
 }
 
 // ServerStub is for trace ServerOp operations
 type ServerStub struct {
-	FindResult        *ServerFindResult
-	CreateResult      *ServerCreateResult
-	ReadResult        *ServerReadResult
-	UpdateResult      *ServerUpdateResult
-	DeleteResult      *ServerDeleteResult
-	ChangePlanResult  *ServerChangePlanResult
-	InsertCDROMResult *ServerInsertCDROMResult
-	EjectCDROMResult  *ServerEjectCDROMResult
-	BootResult        *ServerBootResult
-	ShutdownResult    *ServerShutdownResult
-	ResetResult       *ServerResetResult
-	MonitorResult     *ServerMonitorResult
+	FindStubResult        *ServerFindStubResult
+	CreateStubResult      *ServerCreateStubResult
+	ReadStubResult        *ServerReadStubResult
+	UpdateStubResult      *ServerUpdateStubResult
+	DeleteStubResult      *ServerDeleteStubResult
+	ChangePlanStubResult  *ServerChangePlanStubResult
+	InsertCDROMStubResult *ServerInsertCDROMStubResult
+	EjectCDROMStubResult  *ServerEjectCDROMStubResult
+	BootStubResult        *ServerBootStubResult
+	ShutdownStubResult    *ServerShutdownStubResult
+	ResetStubResult       *ServerResetStubResult
+	MonitorStubResult     *ServerMonitorStubResult
 }
 
 // NewServerStub creates new ServerStub instance
@@ -1611,204 +1609,204 @@ func NewServerStub(caller sacloud.APICaller) sacloud.ServerAPI {
 }
 
 // Find is API call with trace log
-func (s *ServerStub) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) ([]*sacloud.Server, error) {
-	if s.FindResult == nil {
-		log.Fatal("ServerStub.FindResult is not set")
+func (s *ServerStub) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.ServerFindResult, error) {
+	if s.FindStubResult == nil {
+		log.Fatal("ServerStub.FindStubResult is not set")
 	}
-	return s.FindResult.Servers, s.FindResult.Err
+	return s.FindStubResult.Values, s.FindStubResult.Err
 }
 
 // Create is API call with trace log
-func (s *ServerStub) Create(ctx context.Context, zone string, param *sacloud.ServerCreateRequest) (*sacloud.Server, error) {
-	if s.CreateResult == nil {
-		log.Fatal("ServerStub.CreateResult is not set")
+func (s *ServerStub) Create(ctx context.Context, zone string, param *sacloud.ServerCreateRequest) (*sacloud.ServerCreateResult, error) {
+	if s.CreateStubResult == nil {
+		log.Fatal("ServerStub.CreateStubResult is not set")
 	}
-	return s.CreateResult.Server, s.CreateResult.Err
+	return s.CreateStubResult.Values, s.CreateStubResult.Err
 }
 
 // Read is API call with trace log
-func (s *ServerStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Server, error) {
-	if s.ReadResult == nil {
-		log.Fatal("ServerStub.ReadResult is not set")
+func (s *ServerStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.ServerReadResult, error) {
+	if s.ReadStubResult == nil {
+		log.Fatal("ServerStub.ReadStubResult is not set")
 	}
-	return s.ReadResult.Server, s.ReadResult.Err
+	return s.ReadStubResult.Values, s.ReadStubResult.Err
 }
 
 // Update is API call with trace log
-func (s *ServerStub) Update(ctx context.Context, zone string, id types.ID, param *sacloud.ServerUpdateRequest) (*sacloud.Server, error) {
-	if s.UpdateResult == nil {
-		log.Fatal("ServerStub.UpdateResult is not set")
+func (s *ServerStub) Update(ctx context.Context, zone string, id types.ID, param *sacloud.ServerUpdateRequest) (*sacloud.ServerUpdateResult, error) {
+	if s.UpdateStubResult == nil {
+		log.Fatal("ServerStub.UpdateStubResult is not set")
 	}
-	return s.UpdateResult.Server, s.UpdateResult.Err
+	return s.UpdateStubResult.Values, s.UpdateStubResult.Err
 }
 
 // Delete is API call with trace log
 func (s *ServerStub) Delete(ctx context.Context, zone string, id types.ID) error {
-	if s.DeleteResult == nil {
-		log.Fatal("ServerStub.DeleteResult is not set")
+	if s.DeleteStubResult == nil {
+		log.Fatal("ServerStub.DeleteStubResult is not set")
 	}
-	return s.DeleteResult.Err
+	return s.DeleteStubResult.Err
 }
 
 // ChangePlan is API call with trace log
-func (s *ServerStub) ChangePlan(ctx context.Context, zone string, id types.ID, plan *sacloud.ServerChangePlanRequest) (*sacloud.Server, error) {
-	if s.ChangePlanResult == nil {
-		log.Fatal("ServerStub.ChangePlanResult is not set")
+func (s *ServerStub) ChangePlan(ctx context.Context, zone string, id types.ID, plan *sacloud.ServerChangePlanRequest) (*sacloud.ServerChangePlanResult, error) {
+	if s.ChangePlanStubResult == nil {
+		log.Fatal("ServerStub.ChangePlanStubResult is not set")
 	}
-	return s.ChangePlanResult.Server, s.ChangePlanResult.Err
+	return s.ChangePlanStubResult.Values, s.ChangePlanStubResult.Err
 }
 
 // InsertCDROM is API call with trace log
 func (s *ServerStub) InsertCDROM(ctx context.Context, zone string, id types.ID, insertParam *sacloud.InsertCDROMRequest) error {
-	if s.InsertCDROMResult == nil {
-		log.Fatal("ServerStub.InsertCDROMResult is not set")
+	if s.InsertCDROMStubResult == nil {
+		log.Fatal("ServerStub.InsertCDROMStubResult is not set")
 	}
-	return s.InsertCDROMResult.Err
+	return s.InsertCDROMStubResult.Err
 }
 
 // EjectCDROM is API call with trace log
 func (s *ServerStub) EjectCDROM(ctx context.Context, zone string, id types.ID, insertParam *sacloud.EjectCDROMRequest) error {
-	if s.EjectCDROMResult == nil {
-		log.Fatal("ServerStub.EjectCDROMResult is not set")
+	if s.EjectCDROMStubResult == nil {
+		log.Fatal("ServerStub.EjectCDROMStubResult is not set")
 	}
-	return s.EjectCDROMResult.Err
+	return s.EjectCDROMStubResult.Err
 }
 
 // Boot is API call with trace log
 func (s *ServerStub) Boot(ctx context.Context, zone string, id types.ID) error {
-	if s.BootResult == nil {
-		log.Fatal("ServerStub.BootResult is not set")
+	if s.BootStubResult == nil {
+		log.Fatal("ServerStub.BootStubResult is not set")
 	}
-	return s.BootResult.Err
+	return s.BootStubResult.Err
 }
 
 // Shutdown is API call with trace log
 func (s *ServerStub) Shutdown(ctx context.Context, zone string, id types.ID, shutdownOption *sacloud.ShutdownOption) error {
-	if s.ShutdownResult == nil {
-		log.Fatal("ServerStub.ShutdownResult is not set")
+	if s.ShutdownStubResult == nil {
+		log.Fatal("ServerStub.ShutdownStubResult is not set")
 	}
-	return s.ShutdownResult.Err
+	return s.ShutdownStubResult.Err
 }
 
 // Reset is API call with trace log
 func (s *ServerStub) Reset(ctx context.Context, zone string, id types.ID) error {
-	if s.ResetResult == nil {
-		log.Fatal("ServerStub.ResetResult is not set")
+	if s.ResetStubResult == nil {
+		log.Fatal("ServerStub.ResetStubResult is not set")
 	}
-	return s.ResetResult.Err
+	return s.ResetStubResult.Err
 }
 
 // Monitor is API call with trace log
-func (s *ServerStub) Monitor(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.CPUTimeActivity, error) {
-	if s.MonitorResult == nil {
-		log.Fatal("ServerStub.MonitorResult is not set")
+func (s *ServerStub) Monitor(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.ServerMonitorResult, error) {
+	if s.MonitorStubResult == nil {
+		log.Fatal("ServerStub.MonitorStubResult is not set")
 	}
-	return s.MonitorResult.Data, s.MonitorResult.Err
+	return s.MonitorStubResult.Values, s.MonitorStubResult.Err
 }
 
 /*************************************************
 * SIMStub
 *************************************************/
 
-// SIMFindResult is expected values of the Find operation
-type SIMFindResult struct {
-	CommonServiceItems []*sacloud.SIM
-	Err                error
+// SIMFindStubResult is expected values of the Find operation
+type SIMFindStubResult struct {
+	Values *sacloud.SIMFindResult
+	Err    error
 }
 
-// SIMCreateResult is expected values of the Create operation
-type SIMCreateResult struct {
-	CommonServiceItem *sacloud.SIM
-	Err               error
+// SIMCreateStubResult is expected values of the Create operation
+type SIMCreateStubResult struct {
+	Values *sacloud.SIMCreateResult
+	Err    error
 }
 
-// SIMReadResult is expected values of the Read operation
-type SIMReadResult struct {
-	CommonServiceItem *sacloud.SIM
-	Err               error
+// SIMReadStubResult is expected values of the Read operation
+type SIMReadStubResult struct {
+	Values *sacloud.SIMReadResult
+	Err    error
 }
 
-// SIMUpdateResult is expected values of the Update operation
-type SIMUpdateResult struct {
-	CommonServiceItem *sacloud.SIM
-	Err               error
+// SIMUpdateStubResult is expected values of the Update operation
+type SIMUpdateStubResult struct {
+	Values *sacloud.SIMUpdateResult
+	Err    error
 }
 
-// SIMDeleteResult is expected values of the Delete operation
-type SIMDeleteResult struct {
+// SIMDeleteStubResult is expected values of the Delete operation
+type SIMDeleteStubResult struct {
 	Err error
 }
 
-// SIMActivateResult is expected values of the Activate operation
-type SIMActivateResult struct {
+// SIMActivateStubResult is expected values of the Activate operation
+type SIMActivateStubResult struct {
 	Err error
 }
 
-// SIMDeactivateResult is expected values of the Deactivate operation
-type SIMDeactivateResult struct {
+// SIMDeactivateStubResult is expected values of the Deactivate operation
+type SIMDeactivateStubResult struct {
 	Err error
 }
 
-// SIMAssignIPResult is expected values of the AssignIP operation
-type SIMAssignIPResult struct {
+// SIMAssignIPStubResult is expected values of the AssignIP operation
+type SIMAssignIPStubResult struct {
 	Err error
 }
 
-// SIMClearIPResult is expected values of the ClearIP operation
-type SIMClearIPResult struct {
+// SIMClearIPStubResult is expected values of the ClearIP operation
+type SIMClearIPStubResult struct {
 	Err error
 }
 
-// SIMIMEILockResult is expected values of the IMEILock operation
-type SIMIMEILockResult struct {
+// SIMIMEILockStubResult is expected values of the IMEILock operation
+type SIMIMEILockStubResult struct {
 	Err error
 }
 
-// SIMIMEIUnlockResult is expected values of the IMEIUnlock operation
-type SIMIMEIUnlockResult struct {
+// SIMIMEIUnlockStubResult is expected values of the IMEIUnlock operation
+type SIMIMEIUnlockStubResult struct {
 	Err error
 }
 
-// SIMLogsResult is expected values of the Logs operation
-type SIMLogsResult struct {
-	Logs []*sacloud.SIMLog
-	Err  error
+// SIMLogsStubResult is expected values of the Logs operation
+type SIMLogsStubResult struct {
+	Values *sacloud.SIMLogsResult
+	Err    error
 }
 
-// SIMGetNetworkOperatorResult is expected values of the GetNetworkOperator operation
-type SIMGetNetworkOperatorResult struct {
-	NetworkOperationConfigs []*sacloud.SIMNetworkOperatorConfig
-	Err                     error
+// SIMGetNetworkOperatorStubResult is expected values of the GetNetworkOperator operation
+type SIMGetNetworkOperatorStubResult struct {
+	Values *sacloud.SIMGetNetworkOperatorResult
+	Err    error
 }
 
-// SIMSetNetworkOperatorResult is expected values of the SetNetworkOperator operation
-type SIMSetNetworkOperatorResult struct {
+// SIMSetNetworkOperatorStubResult is expected values of the SetNetworkOperator operation
+type SIMSetNetworkOperatorStubResult struct {
 	Err error
 }
 
-// SIMMonitorSIMResult is expected values of the MonitorSIM operation
-type SIMMonitorSIMResult struct {
-	Data *sacloud.LinkActivity
-	Err  error
+// SIMMonitorSIMStubResult is expected values of the MonitorSIM operation
+type SIMMonitorSIMStubResult struct {
+	Values *sacloud.SIMMonitorSIMResult
+	Err    error
 }
 
 // SIMStub is for trace SIMOp operations
 type SIMStub struct {
-	FindResult               *SIMFindResult
-	CreateResult             *SIMCreateResult
-	ReadResult               *SIMReadResult
-	UpdateResult             *SIMUpdateResult
-	DeleteResult             *SIMDeleteResult
-	ActivateResult           *SIMActivateResult
-	DeactivateResult         *SIMDeactivateResult
-	AssignIPResult           *SIMAssignIPResult
-	ClearIPResult            *SIMClearIPResult
-	IMEILockResult           *SIMIMEILockResult
-	IMEIUnlockResult         *SIMIMEIUnlockResult
-	LogsResult               *SIMLogsResult
-	GetNetworkOperatorResult *SIMGetNetworkOperatorResult
-	SetNetworkOperatorResult *SIMSetNetworkOperatorResult
-	MonitorSIMResult         *SIMMonitorSIMResult
+	FindStubResult               *SIMFindStubResult
+	CreateStubResult             *SIMCreateStubResult
+	ReadStubResult               *SIMReadStubResult
+	UpdateStubResult             *SIMUpdateStubResult
+	DeleteStubResult             *SIMDeleteStubResult
+	ActivateStubResult           *SIMActivateStubResult
+	DeactivateStubResult         *SIMDeactivateStubResult
+	AssignIPStubResult           *SIMAssignIPStubResult
+	ClearIPStubResult            *SIMClearIPStubResult
+	IMEILockStubResult           *SIMIMEILockStubResult
+	IMEIUnlockStubResult         *SIMIMEIUnlockStubResult
+	LogsStubResult               *SIMLogsStubResult
+	GetNetworkOperatorStubResult *SIMGetNetworkOperatorStubResult
+	SetNetworkOperatorStubResult *SIMSetNetworkOperatorStubResult
+	MonitorSIMStubResult         *SIMMonitorSIMStubResult
 }
 
 // NewSIMStub creates new SIMStub instance
@@ -1817,177 +1815,177 @@ func NewSIMStub(caller sacloud.APICaller) sacloud.SIMAPI {
 }
 
 // Find is API call with trace log
-func (s *SIMStub) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) ([]*sacloud.SIM, error) {
-	if s.FindResult == nil {
-		log.Fatal("SIMStub.FindResult is not set")
+func (s *SIMStub) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.SIMFindResult, error) {
+	if s.FindStubResult == nil {
+		log.Fatal("SIMStub.FindStubResult is not set")
 	}
-	return s.FindResult.CommonServiceItems, s.FindResult.Err
+	return s.FindStubResult.Values, s.FindStubResult.Err
 }
 
 // Create is API call with trace log
-func (s *SIMStub) Create(ctx context.Context, zone string, param *sacloud.SIMCreateRequest) (*sacloud.SIM, error) {
-	if s.CreateResult == nil {
-		log.Fatal("SIMStub.CreateResult is not set")
+func (s *SIMStub) Create(ctx context.Context, zone string, param *sacloud.SIMCreateRequest) (*sacloud.SIMCreateResult, error) {
+	if s.CreateStubResult == nil {
+		log.Fatal("SIMStub.CreateStubResult is not set")
 	}
-	return s.CreateResult.CommonServiceItem, s.CreateResult.Err
+	return s.CreateStubResult.Values, s.CreateStubResult.Err
 }
 
 // Read is API call with trace log
-func (s *SIMStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.SIM, error) {
-	if s.ReadResult == nil {
-		log.Fatal("SIMStub.ReadResult is not set")
+func (s *SIMStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.SIMReadResult, error) {
+	if s.ReadStubResult == nil {
+		log.Fatal("SIMStub.ReadStubResult is not set")
 	}
-	return s.ReadResult.CommonServiceItem, s.ReadResult.Err
+	return s.ReadStubResult.Values, s.ReadStubResult.Err
 }
 
 // Update is API call with trace log
-func (s *SIMStub) Update(ctx context.Context, zone string, id types.ID, param *sacloud.SIMUpdateRequest) (*sacloud.SIM, error) {
-	if s.UpdateResult == nil {
-		log.Fatal("SIMStub.UpdateResult is not set")
+func (s *SIMStub) Update(ctx context.Context, zone string, id types.ID, param *sacloud.SIMUpdateRequest) (*sacloud.SIMUpdateResult, error) {
+	if s.UpdateStubResult == nil {
+		log.Fatal("SIMStub.UpdateStubResult is not set")
 	}
-	return s.UpdateResult.CommonServiceItem, s.UpdateResult.Err
+	return s.UpdateStubResult.Values, s.UpdateStubResult.Err
 }
 
 // Delete is API call with trace log
 func (s *SIMStub) Delete(ctx context.Context, zone string, id types.ID) error {
-	if s.DeleteResult == nil {
-		log.Fatal("SIMStub.DeleteResult is not set")
+	if s.DeleteStubResult == nil {
+		log.Fatal("SIMStub.DeleteStubResult is not set")
 	}
-	return s.DeleteResult.Err
+	return s.DeleteStubResult.Err
 }
 
 // Activate is API call with trace log
 func (s *SIMStub) Activate(ctx context.Context, zone string, id types.ID) error {
-	if s.ActivateResult == nil {
-		log.Fatal("SIMStub.ActivateResult is not set")
+	if s.ActivateStubResult == nil {
+		log.Fatal("SIMStub.ActivateStubResult is not set")
 	}
-	return s.ActivateResult.Err
+	return s.ActivateStubResult.Err
 }
 
 // Deactivate is API call with trace log
 func (s *SIMStub) Deactivate(ctx context.Context, zone string, id types.ID) error {
-	if s.DeactivateResult == nil {
-		log.Fatal("SIMStub.DeactivateResult is not set")
+	if s.DeactivateStubResult == nil {
+		log.Fatal("SIMStub.DeactivateStubResult is not set")
 	}
-	return s.DeactivateResult.Err
+	return s.DeactivateStubResult.Err
 }
 
 // AssignIP is API call with trace log
 func (s *SIMStub) AssignIP(ctx context.Context, zone string, id types.ID, param *sacloud.SIMAssignIPRequest) error {
-	if s.AssignIPResult == nil {
-		log.Fatal("SIMStub.AssignIPResult is not set")
+	if s.AssignIPStubResult == nil {
+		log.Fatal("SIMStub.AssignIPStubResult is not set")
 	}
-	return s.AssignIPResult.Err
+	return s.AssignIPStubResult.Err
 }
 
 // ClearIP is API call with trace log
 func (s *SIMStub) ClearIP(ctx context.Context, zone string, id types.ID) error {
-	if s.ClearIPResult == nil {
-		log.Fatal("SIMStub.ClearIPResult is not set")
+	if s.ClearIPStubResult == nil {
+		log.Fatal("SIMStub.ClearIPStubResult is not set")
 	}
-	return s.ClearIPResult.Err
+	return s.ClearIPStubResult.Err
 }
 
 // IMEILock is API call with trace log
 func (s *SIMStub) IMEILock(ctx context.Context, zone string, id types.ID, param *sacloud.SIMIMEILockRequest) error {
-	if s.IMEILockResult == nil {
-		log.Fatal("SIMStub.IMEILockResult is not set")
+	if s.IMEILockStubResult == nil {
+		log.Fatal("SIMStub.IMEILockStubResult is not set")
 	}
-	return s.IMEILockResult.Err
+	return s.IMEILockStubResult.Err
 }
 
 // IMEIUnlock is API call with trace log
 func (s *SIMStub) IMEIUnlock(ctx context.Context, zone string, id types.ID) error {
-	if s.IMEIUnlockResult == nil {
-		log.Fatal("SIMStub.IMEIUnlockResult is not set")
+	if s.IMEIUnlockStubResult == nil {
+		log.Fatal("SIMStub.IMEIUnlockStubResult is not set")
 	}
-	return s.IMEIUnlockResult.Err
+	return s.IMEIUnlockStubResult.Err
 }
 
 // Logs is API call with trace log
-func (s *SIMStub) Logs(ctx context.Context, zone string, id types.ID) ([]*sacloud.SIMLog, error) {
-	if s.LogsResult == nil {
-		log.Fatal("SIMStub.LogsResult is not set")
+func (s *SIMStub) Logs(ctx context.Context, zone string, id types.ID) (*sacloud.SIMLogsResult, error) {
+	if s.LogsStubResult == nil {
+		log.Fatal("SIMStub.LogsStubResult is not set")
 	}
-	return s.LogsResult.Logs, s.LogsResult.Err
+	return s.LogsStubResult.Values, s.LogsStubResult.Err
 }
 
 // GetNetworkOperator is API call with trace log
-func (s *SIMStub) GetNetworkOperator(ctx context.Context, zone string, id types.ID) ([]*sacloud.SIMNetworkOperatorConfig, error) {
-	if s.GetNetworkOperatorResult == nil {
-		log.Fatal("SIMStub.GetNetworkOperatorResult is not set")
+func (s *SIMStub) GetNetworkOperator(ctx context.Context, zone string, id types.ID) (*sacloud.SIMGetNetworkOperatorResult, error) {
+	if s.GetNetworkOperatorStubResult == nil {
+		log.Fatal("SIMStub.GetNetworkOperatorStubResult is not set")
 	}
-	return s.GetNetworkOperatorResult.NetworkOperationConfigs, s.GetNetworkOperatorResult.Err
+	return s.GetNetworkOperatorStubResult.Values, s.GetNetworkOperatorStubResult.Err
 }
 
 // SetNetworkOperator is API call with trace log
 func (s *SIMStub) SetNetworkOperator(ctx context.Context, zone string, id types.ID, configs *sacloud.SIMNetworkOperatorConfigs) error {
-	if s.SetNetworkOperatorResult == nil {
-		log.Fatal("SIMStub.SetNetworkOperatorResult is not set")
+	if s.SetNetworkOperatorStubResult == nil {
+		log.Fatal("SIMStub.SetNetworkOperatorStubResult is not set")
 	}
-	return s.SetNetworkOperatorResult.Err
+	return s.SetNetworkOperatorStubResult.Err
 }
 
 // MonitorSIM is API call with trace log
-func (s *SIMStub) MonitorSIM(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.LinkActivity, error) {
-	if s.MonitorSIMResult == nil {
-		log.Fatal("SIMStub.MonitorSIMResult is not set")
+func (s *SIMStub) MonitorSIM(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.SIMMonitorSIMResult, error) {
+	if s.MonitorSIMStubResult == nil {
+		log.Fatal("SIMStub.MonitorSIMStubResult is not set")
 	}
-	return s.MonitorSIMResult.Data, s.MonitorSIMResult.Err
+	return s.MonitorSIMStubResult.Values, s.MonitorSIMStubResult.Err
 }
 
 /*************************************************
 * SwitchStub
 *************************************************/
 
-// SwitchFindResult is expected values of the Find operation
-type SwitchFindResult struct {
-	Switches []*sacloud.Switch
-	Err      error
-}
-
-// SwitchCreateResult is expected values of the Create operation
-type SwitchCreateResult struct {
-	Switch *sacloud.Switch
+// SwitchFindStubResult is expected values of the Find operation
+type SwitchFindStubResult struct {
+	Values *sacloud.SwitchFindResult
 	Err    error
 }
 
-// SwitchReadResult is expected values of the Read operation
-type SwitchReadResult struct {
-	Switch *sacloud.Switch
+// SwitchCreateStubResult is expected values of the Create operation
+type SwitchCreateStubResult struct {
+	Values *sacloud.SwitchCreateResult
 	Err    error
 }
 
-// SwitchUpdateResult is expected values of the Update operation
-type SwitchUpdateResult struct {
-	Switch *sacloud.Switch
+// SwitchReadStubResult is expected values of the Read operation
+type SwitchReadStubResult struct {
+	Values *sacloud.SwitchReadResult
 	Err    error
 }
 
-// SwitchDeleteResult is expected values of the Delete operation
-type SwitchDeleteResult struct {
+// SwitchUpdateStubResult is expected values of the Update operation
+type SwitchUpdateStubResult struct {
+	Values *sacloud.SwitchUpdateResult
+	Err    error
+}
+
+// SwitchDeleteStubResult is expected values of the Delete operation
+type SwitchDeleteStubResult struct {
 	Err error
 }
 
-// SwitchConnectToBridgeResult is expected values of the ConnectToBridge operation
-type SwitchConnectToBridgeResult struct {
+// SwitchConnectToBridgeStubResult is expected values of the ConnectToBridge operation
+type SwitchConnectToBridgeStubResult struct {
 	Err error
 }
 
-// SwitchDisconnectFromBridgeResult is expected values of the DisconnectFromBridge operation
-type SwitchDisconnectFromBridgeResult struct {
+// SwitchDisconnectFromBridgeStubResult is expected values of the DisconnectFromBridge operation
+type SwitchDisconnectFromBridgeStubResult struct {
 	Err error
 }
 
 // SwitchStub is for trace SwitchOp operations
 type SwitchStub struct {
-	FindResult                 *SwitchFindResult
-	CreateResult               *SwitchCreateResult
-	ReadResult                 *SwitchReadResult
-	UpdateResult               *SwitchUpdateResult
-	DeleteResult               *SwitchDeleteResult
-	ConnectToBridgeResult      *SwitchConnectToBridgeResult
-	DisconnectFromBridgeResult *SwitchDisconnectFromBridgeResult
+	FindStubResult                 *SwitchFindStubResult
+	CreateStubResult               *SwitchCreateStubResult
+	ReadStubResult                 *SwitchReadStubResult
+	UpdateStubResult               *SwitchUpdateStubResult
+	DeleteStubResult               *SwitchDeleteStubResult
+	ConnectToBridgeStubResult      *SwitchConnectToBridgeStubResult
+	DisconnectFromBridgeStubResult *SwitchDisconnectFromBridgeStubResult
 }
 
 // NewSwitchStub creates new SwitchStub instance
@@ -1996,144 +1994,144 @@ func NewSwitchStub(caller sacloud.APICaller) sacloud.SwitchAPI {
 }
 
 // Find is API call with trace log
-func (s *SwitchStub) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) ([]*sacloud.Switch, error) {
-	if s.FindResult == nil {
-		log.Fatal("SwitchStub.FindResult is not set")
+func (s *SwitchStub) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.SwitchFindResult, error) {
+	if s.FindStubResult == nil {
+		log.Fatal("SwitchStub.FindStubResult is not set")
 	}
-	return s.FindResult.Switches, s.FindResult.Err
+	return s.FindStubResult.Values, s.FindStubResult.Err
 }
 
 // Create is API call with trace log
-func (s *SwitchStub) Create(ctx context.Context, zone string, param *sacloud.SwitchCreateRequest) (*sacloud.Switch, error) {
-	if s.CreateResult == nil {
-		log.Fatal("SwitchStub.CreateResult is not set")
+func (s *SwitchStub) Create(ctx context.Context, zone string, param *sacloud.SwitchCreateRequest) (*sacloud.SwitchCreateResult, error) {
+	if s.CreateStubResult == nil {
+		log.Fatal("SwitchStub.CreateStubResult is not set")
 	}
-	return s.CreateResult.Switch, s.CreateResult.Err
+	return s.CreateStubResult.Values, s.CreateStubResult.Err
 }
 
 // Read is API call with trace log
-func (s *SwitchStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Switch, error) {
-	if s.ReadResult == nil {
-		log.Fatal("SwitchStub.ReadResult is not set")
+func (s *SwitchStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.SwitchReadResult, error) {
+	if s.ReadStubResult == nil {
+		log.Fatal("SwitchStub.ReadStubResult is not set")
 	}
-	return s.ReadResult.Switch, s.ReadResult.Err
+	return s.ReadStubResult.Values, s.ReadStubResult.Err
 }
 
 // Update is API call with trace log
-func (s *SwitchStub) Update(ctx context.Context, zone string, id types.ID, param *sacloud.SwitchUpdateRequest) (*sacloud.Switch, error) {
-	if s.UpdateResult == nil {
-		log.Fatal("SwitchStub.UpdateResult is not set")
+func (s *SwitchStub) Update(ctx context.Context, zone string, id types.ID, param *sacloud.SwitchUpdateRequest) (*sacloud.SwitchUpdateResult, error) {
+	if s.UpdateStubResult == nil {
+		log.Fatal("SwitchStub.UpdateStubResult is not set")
 	}
-	return s.UpdateResult.Switch, s.UpdateResult.Err
+	return s.UpdateStubResult.Values, s.UpdateStubResult.Err
 }
 
 // Delete is API call with trace log
 func (s *SwitchStub) Delete(ctx context.Context, zone string, id types.ID) error {
-	if s.DeleteResult == nil {
-		log.Fatal("SwitchStub.DeleteResult is not set")
+	if s.DeleteStubResult == nil {
+		log.Fatal("SwitchStub.DeleteStubResult is not set")
 	}
-	return s.DeleteResult.Err
+	return s.DeleteStubResult.Err
 }
 
 // ConnectToBridge is API call with trace log
 func (s *SwitchStub) ConnectToBridge(ctx context.Context, zone string, id types.ID, bridgeID types.ID) error {
-	if s.ConnectToBridgeResult == nil {
-		log.Fatal("SwitchStub.ConnectToBridgeResult is not set")
+	if s.ConnectToBridgeStubResult == nil {
+		log.Fatal("SwitchStub.ConnectToBridgeStubResult is not set")
 	}
-	return s.ConnectToBridgeResult.Err
+	return s.ConnectToBridgeStubResult.Err
 }
 
 // DisconnectFromBridge is API call with trace log
 func (s *SwitchStub) DisconnectFromBridge(ctx context.Context, zone string, id types.ID) error {
-	if s.DisconnectFromBridgeResult == nil {
-		log.Fatal("SwitchStub.DisconnectFromBridgeResult is not set")
+	if s.DisconnectFromBridgeStubResult == nil {
+		log.Fatal("SwitchStub.DisconnectFromBridgeStubResult is not set")
 	}
-	return s.DisconnectFromBridgeResult.Err
+	return s.DisconnectFromBridgeStubResult.Err
 }
 
 /*************************************************
 * VPCRouterStub
 *************************************************/
 
-// VPCRouterFindResult is expected values of the Find operation
-type VPCRouterFindResult struct {
-	Appliances []*sacloud.VPCRouter
-	Err        error
+// VPCRouterFindStubResult is expected values of the Find operation
+type VPCRouterFindStubResult struct {
+	Values *sacloud.VPCRouterFindResult
+	Err    error
 }
 
-// VPCRouterCreateResult is expected values of the Create operation
-type VPCRouterCreateResult struct {
-	Appliance *sacloud.VPCRouter
-	Err       error
+// VPCRouterCreateStubResult is expected values of the Create operation
+type VPCRouterCreateStubResult struct {
+	Values *sacloud.VPCRouterCreateResult
+	Err    error
 }
 
-// VPCRouterReadResult is expected values of the Read operation
-type VPCRouterReadResult struct {
-	Appliance *sacloud.VPCRouter
-	Err       error
+// VPCRouterReadStubResult is expected values of the Read operation
+type VPCRouterReadStubResult struct {
+	Values *sacloud.VPCRouterReadResult
+	Err    error
 }
 
-// VPCRouterUpdateResult is expected values of the Update operation
-type VPCRouterUpdateResult struct {
-	Appliance *sacloud.VPCRouter
-	Err       error
+// VPCRouterUpdateStubResult is expected values of the Update operation
+type VPCRouterUpdateStubResult struct {
+	Values *sacloud.VPCRouterUpdateResult
+	Err    error
 }
 
-// VPCRouterDeleteResult is expected values of the Delete operation
-type VPCRouterDeleteResult struct {
+// VPCRouterDeleteStubResult is expected values of the Delete operation
+type VPCRouterDeleteStubResult struct {
 	Err error
 }
 
-// VPCRouterConfigResult is expected values of the Config operation
-type VPCRouterConfigResult struct {
+// VPCRouterConfigStubResult is expected values of the Config operation
+type VPCRouterConfigStubResult struct {
 	Err error
 }
 
-// VPCRouterBootResult is expected values of the Boot operation
-type VPCRouterBootResult struct {
+// VPCRouterBootStubResult is expected values of the Boot operation
+type VPCRouterBootStubResult struct {
 	Err error
 }
 
-// VPCRouterShutdownResult is expected values of the Shutdown operation
-type VPCRouterShutdownResult struct {
+// VPCRouterShutdownStubResult is expected values of the Shutdown operation
+type VPCRouterShutdownStubResult struct {
 	Err error
 }
 
-// VPCRouterResetResult is expected values of the Reset operation
-type VPCRouterResetResult struct {
+// VPCRouterResetStubResult is expected values of the Reset operation
+type VPCRouterResetStubResult struct {
 	Err error
 }
 
-// VPCRouterConnectToSwitchResult is expected values of the ConnectToSwitch operation
-type VPCRouterConnectToSwitchResult struct {
+// VPCRouterConnectToSwitchStubResult is expected values of the ConnectToSwitch operation
+type VPCRouterConnectToSwitchStubResult struct {
 	Err error
 }
 
-// VPCRouterDisconnectFromSwitchResult is expected values of the DisconnectFromSwitch operation
-type VPCRouterDisconnectFromSwitchResult struct {
+// VPCRouterDisconnectFromSwitchStubResult is expected values of the DisconnectFromSwitch operation
+type VPCRouterDisconnectFromSwitchStubResult struct {
 	Err error
 }
 
-// VPCRouterMonitorInterfaceResult is expected values of the MonitorInterface operation
-type VPCRouterMonitorInterfaceResult struct {
-	Data *sacloud.InterfaceActivity
-	Err  error
+// VPCRouterMonitorInterfaceStubResult is expected values of the MonitorInterface operation
+type VPCRouterMonitorInterfaceStubResult struct {
+	Values *sacloud.VPCRouterMonitorInterfaceResult
+	Err    error
 }
 
 // VPCRouterStub is for trace VPCRouterOp operations
 type VPCRouterStub struct {
-	FindResult                 *VPCRouterFindResult
-	CreateResult               *VPCRouterCreateResult
-	ReadResult                 *VPCRouterReadResult
-	UpdateResult               *VPCRouterUpdateResult
-	DeleteResult               *VPCRouterDeleteResult
-	ConfigResult               *VPCRouterConfigResult
-	BootResult                 *VPCRouterBootResult
-	ShutdownResult             *VPCRouterShutdownResult
-	ResetResult                *VPCRouterResetResult
-	ConnectToSwitchResult      *VPCRouterConnectToSwitchResult
-	DisconnectFromSwitchResult *VPCRouterDisconnectFromSwitchResult
-	MonitorInterfaceResult     *VPCRouterMonitorInterfaceResult
+	FindStubResult                 *VPCRouterFindStubResult
+	CreateStubResult               *VPCRouterCreateStubResult
+	ReadStubResult                 *VPCRouterReadStubResult
+	UpdateStubResult               *VPCRouterUpdateStubResult
+	DeleteStubResult               *VPCRouterDeleteStubResult
+	ConfigStubResult               *VPCRouterConfigStubResult
+	BootStubResult                 *VPCRouterBootStubResult
+	ShutdownStubResult             *VPCRouterShutdownStubResult
+	ResetStubResult                *VPCRouterResetStubResult
+	ConnectToSwitchStubResult      *VPCRouterConnectToSwitchStubResult
+	DisconnectFromSwitchStubResult *VPCRouterDisconnectFromSwitchStubResult
+	MonitorInterfaceStubResult     *VPCRouterMonitorInterfaceStubResult
 }
 
 // NewVPCRouterStub creates new VPCRouterStub instance
@@ -2142,121 +2140,121 @@ func NewVPCRouterStub(caller sacloud.APICaller) sacloud.VPCRouterAPI {
 }
 
 // Find is API call with trace log
-func (s *VPCRouterStub) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) ([]*sacloud.VPCRouter, error) {
-	if s.FindResult == nil {
-		log.Fatal("VPCRouterStub.FindResult is not set")
+func (s *VPCRouterStub) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.VPCRouterFindResult, error) {
+	if s.FindStubResult == nil {
+		log.Fatal("VPCRouterStub.FindStubResult is not set")
 	}
-	return s.FindResult.Appliances, s.FindResult.Err
+	return s.FindStubResult.Values, s.FindStubResult.Err
 }
 
 // Create is API call with trace log
-func (s *VPCRouterStub) Create(ctx context.Context, zone string, param *sacloud.VPCRouterCreateRequest) (*sacloud.VPCRouter, error) {
-	if s.CreateResult == nil {
-		log.Fatal("VPCRouterStub.CreateResult is not set")
+func (s *VPCRouterStub) Create(ctx context.Context, zone string, param *sacloud.VPCRouterCreateRequest) (*sacloud.VPCRouterCreateResult, error) {
+	if s.CreateStubResult == nil {
+		log.Fatal("VPCRouterStub.CreateStubResult is not set")
 	}
-	return s.CreateResult.Appliance, s.CreateResult.Err
+	return s.CreateStubResult.Values, s.CreateStubResult.Err
 }
 
 // Read is API call with trace log
-func (s *VPCRouterStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.VPCRouter, error) {
-	if s.ReadResult == nil {
-		log.Fatal("VPCRouterStub.ReadResult is not set")
+func (s *VPCRouterStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.VPCRouterReadResult, error) {
+	if s.ReadStubResult == nil {
+		log.Fatal("VPCRouterStub.ReadStubResult is not set")
 	}
-	return s.ReadResult.Appliance, s.ReadResult.Err
+	return s.ReadStubResult.Values, s.ReadStubResult.Err
 }
 
 // Update is API call with trace log
-func (s *VPCRouterStub) Update(ctx context.Context, zone string, id types.ID, param *sacloud.VPCRouterUpdateRequest) (*sacloud.VPCRouter, error) {
-	if s.UpdateResult == nil {
-		log.Fatal("VPCRouterStub.UpdateResult is not set")
+func (s *VPCRouterStub) Update(ctx context.Context, zone string, id types.ID, param *sacloud.VPCRouterUpdateRequest) (*sacloud.VPCRouterUpdateResult, error) {
+	if s.UpdateStubResult == nil {
+		log.Fatal("VPCRouterStub.UpdateStubResult is not set")
 	}
-	return s.UpdateResult.Appliance, s.UpdateResult.Err
+	return s.UpdateStubResult.Values, s.UpdateStubResult.Err
 }
 
 // Delete is API call with trace log
 func (s *VPCRouterStub) Delete(ctx context.Context, zone string, id types.ID) error {
-	if s.DeleteResult == nil {
-		log.Fatal("VPCRouterStub.DeleteResult is not set")
+	if s.DeleteStubResult == nil {
+		log.Fatal("VPCRouterStub.DeleteStubResult is not set")
 	}
-	return s.DeleteResult.Err
+	return s.DeleteStubResult.Err
 }
 
 // Config is API call with trace log
 func (s *VPCRouterStub) Config(ctx context.Context, zone string, id types.ID) error {
-	if s.ConfigResult == nil {
-		log.Fatal("VPCRouterStub.ConfigResult is not set")
+	if s.ConfigStubResult == nil {
+		log.Fatal("VPCRouterStub.ConfigStubResult is not set")
 	}
-	return s.ConfigResult.Err
+	return s.ConfigStubResult.Err
 }
 
 // Boot is API call with trace log
 func (s *VPCRouterStub) Boot(ctx context.Context, zone string, id types.ID) error {
-	if s.BootResult == nil {
-		log.Fatal("VPCRouterStub.BootResult is not set")
+	if s.BootStubResult == nil {
+		log.Fatal("VPCRouterStub.BootStubResult is not set")
 	}
-	return s.BootResult.Err
+	return s.BootStubResult.Err
 }
 
 // Shutdown is API call with trace log
 func (s *VPCRouterStub) Shutdown(ctx context.Context, zone string, id types.ID, shutdownOption *sacloud.ShutdownOption) error {
-	if s.ShutdownResult == nil {
-		log.Fatal("VPCRouterStub.ShutdownResult is not set")
+	if s.ShutdownStubResult == nil {
+		log.Fatal("VPCRouterStub.ShutdownStubResult is not set")
 	}
-	return s.ShutdownResult.Err
+	return s.ShutdownStubResult.Err
 }
 
 // Reset is API call with trace log
 func (s *VPCRouterStub) Reset(ctx context.Context, zone string, id types.ID) error {
-	if s.ResetResult == nil {
-		log.Fatal("VPCRouterStub.ResetResult is not set")
+	if s.ResetStubResult == nil {
+		log.Fatal("VPCRouterStub.ResetStubResult is not set")
 	}
-	return s.ResetResult.Err
+	return s.ResetStubResult.Err
 }
 
 // ConnectToSwitch is API call with trace log
 func (s *VPCRouterStub) ConnectToSwitch(ctx context.Context, zone string, id types.ID, nicIndex int, switchID types.ID) error {
-	if s.ConnectToSwitchResult == nil {
-		log.Fatal("VPCRouterStub.ConnectToSwitchResult is not set")
+	if s.ConnectToSwitchStubResult == nil {
+		log.Fatal("VPCRouterStub.ConnectToSwitchStubResult is not set")
 	}
-	return s.ConnectToSwitchResult.Err
+	return s.ConnectToSwitchStubResult.Err
 }
 
 // DisconnectFromSwitch is API call with trace log
 func (s *VPCRouterStub) DisconnectFromSwitch(ctx context.Context, zone string, id types.ID, nicIndex int) error {
-	if s.DisconnectFromSwitchResult == nil {
-		log.Fatal("VPCRouterStub.DisconnectFromSwitchResult is not set")
+	if s.DisconnectFromSwitchStubResult == nil {
+		log.Fatal("VPCRouterStub.DisconnectFromSwitchStubResult is not set")
 	}
-	return s.DisconnectFromSwitchResult.Err
+	return s.DisconnectFromSwitchStubResult.Err
 }
 
 // MonitorInterface is API call with trace log
-func (s *VPCRouterStub) MonitorInterface(ctx context.Context, zone string, id types.ID, index int, condition *sacloud.MonitorCondition) (*sacloud.InterfaceActivity, error) {
-	if s.MonitorInterfaceResult == nil {
-		log.Fatal("VPCRouterStub.MonitorInterfaceResult is not set")
+func (s *VPCRouterStub) MonitorInterface(ctx context.Context, zone string, id types.ID, index int, condition *sacloud.MonitorCondition) (*sacloud.VPCRouterMonitorInterfaceResult, error) {
+	if s.MonitorInterfaceStubResult == nil {
+		log.Fatal("VPCRouterStub.MonitorInterfaceStubResult is not set")
 	}
-	return s.MonitorInterfaceResult.Data, s.MonitorInterfaceResult.Err
+	return s.MonitorInterfaceStubResult.Values, s.MonitorInterfaceStubResult.Err
 }
 
 /*************************************************
 * ZoneStub
 *************************************************/
 
-// ZoneFindResult is expected values of the Find operation
-type ZoneFindResult struct {
-	Zones []*sacloud.Zone
-	Err   error
+// ZoneFindStubResult is expected values of the Find operation
+type ZoneFindStubResult struct {
+	Values *sacloud.ZoneFindResult
+	Err    error
 }
 
-// ZoneReadResult is expected values of the Read operation
-type ZoneReadResult struct {
-	Zone *sacloud.Zone
-	Err  error
+// ZoneReadStubResult is expected values of the Read operation
+type ZoneReadStubResult struct {
+	Values *sacloud.ZoneReadResult
+	Err    error
 }
 
 // ZoneStub is for trace ZoneOp operations
 type ZoneStub struct {
-	FindResult *ZoneFindResult
-	ReadResult *ZoneReadResult
+	FindStubResult *ZoneFindStubResult
+	ReadStubResult *ZoneReadStubResult
 }
 
 // NewZoneStub creates new ZoneStub instance
@@ -2265,17 +2263,17 @@ func NewZoneStub(caller sacloud.APICaller) sacloud.ZoneAPI {
 }
 
 // Find is API call with trace log
-func (s *ZoneStub) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) ([]*sacloud.Zone, error) {
-	if s.FindResult == nil {
-		log.Fatal("ZoneStub.FindResult is not set")
+func (s *ZoneStub) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.ZoneFindResult, error) {
+	if s.FindStubResult == nil {
+		log.Fatal("ZoneStub.FindStubResult is not set")
 	}
-	return s.FindResult.Zones, s.FindResult.Err
+	return s.FindStubResult.Values, s.FindStubResult.Err
 }
 
 // Read is API call with trace log
-func (s *ZoneStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Zone, error) {
-	if s.ReadResult == nil {
-		log.Fatal("ZoneStub.ReadResult is not set")
+func (s *ZoneStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.ZoneReadResult, error) {
+	if s.ReadStubResult == nil {
+		log.Fatal("ZoneStub.ReadStubResult is not set")
 	}
-	return s.ReadResult.Zone, s.ReadResult.Err
+	return s.ReadStubResult.Values, s.ReadStubResult.Err
 }

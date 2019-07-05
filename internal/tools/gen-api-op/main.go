@@ -121,29 +121,15 @@ func (o *{{ $typeName }}Op) {{ .MethodName }}(ctx context.Context{{ range .AllAr
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return {{ $returnErrStatement }}
 	}
-
-	{{ if .IsResponseSingular -}}
-	{{ range $i,$v := .AllResults -}}
-	payload{{$i}} := {{$v.ZeroInitializeSourceCode}}
-	if err := payload{{$i}}.convertFrom(nakedResponse.{{.DestField}}); err != nil {
+	
+	results := &{{.ResultTypeName}}{}
+	if err :=  mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return {{ $returnErrStatement }}
-	}
+	}	
+	return results, nil
+	{{ else }}
+	return nil
 	{{ end -}}
-	{{- else if .IsResponsePlural -}}
-	{{ range $i,$v := .AllResults -}}
-	var payload{{$i}} []{{$v.GoTypeSourceCode}}
-	for _ , v := range nakedResponse.{{.DestField}} {
-		payload := {{$v.ZeroInitializeSourceCode}}
-		if err := payload.convertFrom(v); err != nil {
-			return {{ $returnErrStatement }}
-		}
-		payload{{$i}} = append(payload{{$i}}, payload)
-	}
-	{{ end -}}
-	{{ end -}}
-	{{ end -}}
-
-	return {{range $i,$v := .AllResults}}payload{{$i}},{{ end }} nil
 }
 {{ end -}}
 {{ end -}}

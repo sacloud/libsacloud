@@ -128,24 +128,32 @@ var (
 
 func testServerCreate(_ *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewServerOp(caller)
-	server, err := client.Create(context.Background(), testZone, createServerParam)
+	res, err := client.Create(context.Background(), testZone, createServerParam)
 	if err != nil {
 		return nil, err
 	}
-	if err := client.Boot(context.Background(), testZone, server.ID); err != nil {
+	if err := client.Boot(context.Background(), testZone, res.Server.ID); err != nil {
 		return nil, err
 	}
-	return server, nil
+	return res.Server, nil
 }
 
 func testServerRead(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewServerOp(caller)
-	return client.Read(context.Background(), testZone, testContext.ID)
+	res, err := client.Read(context.Background(), testZone, testContext.ID)
+	if err != nil {
+		return nil, err
+	}
+	return res.Server, nil
 }
 
 func testServerUpdate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewServerOp(caller)
-	return client.Update(context.Background(), testZone, testContext.ID, updateServerParam)
+	res, err := client.Update(context.Background(), testZone, testContext.ID, updateServerParam)
+	if err != nil {
+		return nil, err
+	}
+	return res.Server, nil
 }
 
 func testServerDelete(testContext *CRUDTestContext, caller sacloud.APICaller) error {
@@ -154,9 +162,11 @@ func testServerDelete(testContext *CRUDTestContext, caller sacloud.APICaller) er
 }
 
 func TestServerOp_ChangePlan(t *testing.T) {
+	t.Parallel()
+
 	client := sacloud.NewServerOp(singletonAPICaller())
 	ctx := context.Background()
-	server, err := client.Create(ctx, testZone, &sacloud.ServerCreateRequest{
+	createResult, err := client.Create(ctx, testZone, &sacloud.ServerCreateRequest{
 		CPU:      1,
 		MemoryMB: 1 * 1024,
 		ConnectedSwitches: []*sacloud.ConnectedSwitch{
@@ -172,17 +182,19 @@ func TestServerOp_ChangePlan(t *testing.T) {
 		WaitDiskMigration: false,
 	})
 	require.NoError(t, err)
+	server := createResult.Server
 
 	require.Equal(t, server.CPU, 1)
 	require.Equal(t, server.GetMemoryGB(), 1)
 
 	// change
-	newServer, err := client.ChangePlan(ctx, testZone, server.ID, &sacloud.ServerChangePlanRequest{
+	changePlanResult, err := client.ChangePlan(ctx, testZone, server.ID, &sacloud.ServerChangePlanRequest{
 		CPU:      2,
 		MemoryMB: 4 * 1024,
 	})
-
 	require.NoError(t, err)
+	newServer := changePlanResult.Server
+
 	require.Equal(t, 2, newServer.CPU)
 	require.Equal(t, 4, newServer.GetMemoryGB())
 	require.NotEqual(t, server.ID, newServer.ID)

@@ -8,43 +8,43 @@ type ArchiveFindResult struct {
 	From  int `json:",omitempty"` // Current page number
 	Count int `json:",omitempty"` // Count of current page
 
-	Archives []*Archive
+	Archives []*Archive `json:",omitempty" mapconv:"[]Archives,omitempty,recursive"`
 }
 
 // ArchiveCreateResult represents the Result of API
 type ArchiveCreateResult struct {
-	IsOk bool `json:"is_ok,omitempty"` // is_ok
+	IsOk bool `json:",omitempty"` // is_ok
 
-	Archive *Archive
+	Archive *Archive `json:",omitempty" mapconv:",omitempty,recursive"`
 }
 
 // ArchiveCreateBlankResult represents the Result of API
 type ArchiveCreateBlankResult struct {
-	IsOk bool `json:"is_ok,omitempty"` // is_ok
+	IsOk bool `json:",omitempty"` // is_ok
 
-	Archive   *Archive
-	FTPServer *FTPServer
+	Archive   *Archive   `json:",omitempty" mapconv:",omitempty,recursive"`
+	FTPServer *FTPServer `json:",omitempty" mapconv:",omitempty,recursive"`
 }
 
 // ArchiveReadResult represents the Result of API
 type ArchiveReadResult struct {
-	IsOk bool `json:"is_ok,omitempty"` // is_ok
+	IsOk bool `json:",omitempty"` // is_ok
 
-	Archive *Archive
+	Archive *Archive `json:",omitempty" mapconv:",omitempty,recursive"`
 }
 
 // ArchiveUpdateResult represents the Result of API
 type ArchiveUpdateResult struct {
-	IsOk bool `json:"is_ok,omitempty"` // is_ok
+	IsOk bool `json:",omitempty"` // is_ok
 
-	Archive *Archive
+	Archive *Archive `json:",omitempty" mapconv:",omitempty,recursive"`
 }
 
 // ArchiveOpenFTPResult represents the Result of API
 type ArchiveOpenFTPResult struct {
-	IsOk bool `json:"is_ok,omitempty"` // is_ok
+	IsOk bool `json:",omitempty"` // is_ok
 
-	FTPServer *FTPServer
+	FTPServer *FTPServer `json:",omitempty" mapconv:",omitempty,recursive"`
 }
 
 // BridgeFindResult represents the Result of API
@@ -53,28 +53,28 @@ type BridgeFindResult struct {
 	From  int `json:",omitempty"` // Current page number
 	Count int `json:",omitempty"` // Count of current page
 
-	Bridges []*Bridge
+	Bridges []*Bridge `json:",omitempty" mapconv:"[]Bridges,omitempty,recursive"`
 }
 
 // BridgeCreateResult represents the Result of API
 type BridgeCreateResult struct {
-	IsOk bool `json:"is_ok,omitempty"` // is_ok
+	IsOk bool `json:",omitempty"` // is_ok
 
-	Bridge *Bridge
+	Bridge *Bridge `json:",omitempty" mapconv:",omitempty,recursive"`
 }
 
 // BridgeReadResult represents the Result of API
 type BridgeReadResult struct {
-	IsOk bool `json:"is_ok,omitempty"` // is_ok
+	IsOk bool `json:",omitempty"` // is_ok
 
-	Bridge *Bridge
+	Bridge *Bridge `json:",omitempty" mapconv:",omitempty,recursive"`
 }
 
 // BridgeUpdateResult represents the Result of API
 type BridgeUpdateResult struct {
-	IsOk bool `json:"is_ok,omitempty"` // is_ok
+	IsOk bool `json:",omitempty"` // is_ok
 
-	Bridge *Bridge
+	Bridge *Bridge `json:",omitempty" mapconv:",omitempty,recursive"`
 }
 
 // CDROMFindResult represents the Result of API
@@ -83,36 +83,36 @@ type CDROMFindResult struct {
 	From  int `json:",omitempty"` // Current page number
 	Count int `json:",omitempty"` // Count of current page
 
-	CDROMs []*CDROM
+	CDROMs []*CDROM `json:",omitempty" mapconv:"[]CDROMs,omitempty,recursive"`
 }
 
 // CDROMCreateResult represents the Result of API
 type CDROMCreateResult struct {
-	IsOk bool `json:"is_ok,omitempty"` // is_ok
+	IsOk bool `json:",omitempty"` // is_ok
 
-	CDROM     *CDROM
-	FTPServer *FTPServer
+	CDROM     *CDROM     `json:",omitempty" mapconv:",omitempty,recursive"`
+	FTPServer *FTPServer `json:",omitempty" mapconv:",omitempty,recursive"`
 }
 
 // CDROMReadResult represents the Result of API
 type CDROMReadResult struct {
-	IsOk bool `json:"is_ok,omitempty"` // is_ok
+	IsOk bool `json:",omitempty"` // is_ok
 
-	CDROM *CDROM
+	CDROM *CDROM `json:",omitempty" mapconv:",omitempty,recursive"`
 }
 
 // CDROMUpdateResult represents the Result of API
 type CDROMUpdateResult struct {
-	IsOk bool `json:"is_ok,omitempty"` // is_ok
+	IsOk bool `json:",omitempty"` // is_ok
 
-	CDROM *CDROM
+	CDROM *CDROM `json:",omitempty" mapconv:",omitempty,recursive"`
 }
 
 // CDROMOpenFTPResult represents the Result of API
 type CDROMOpenFTPResult struct {
-	IsOk bool `json:"is_ok,omitempty"` // is_ok
+	IsOk bool `json:",omitempty"` // is_ok
 
-	FTPServer *FTPServer
+	FTPServer *FTPServer `json:",omitempty" mapconv:",omitempty,recursive"`
 }
 
 // DiskFindResult represents the Result of API
@@ -121,70 +121,70 @@ type DiskFindResult struct {
 	From  int `json:",omitempty"` // Current page number
 	Count int `json:",omitempty"` // Count of current page
 
-	Disks []*Disk
+	Disks []*Disk `json:",omitempty" mapconv:"[]Disks,omitempty,recursive"`
 }
 
 // DiskCreateResult represents the Result of API
 type DiskCreateResult struct {
-	IsOk bool `json:"is_ok,omitempty"` // is_ok
+	IsOk bool `json:",omitempty"` // is_ok
 
-	Disk *Disk
+	Disk *Disk `json:",omitempty" mapconv:",omitempty,recursive"`
 }
 
 // DiskCreateDistantlyResult represents the Result of API
 type DiskCreateDistantlyResult struct {
-	IsOk bool `json:"is_ok,omitempty"` // is_ok
+	IsOk bool `json:",omitempty"` // is_ok
 
-	Disk *Disk
+	Disk *Disk `json:",omitempty" mapconv:",omitempty,recursive"`
 }
 
 // DiskCreateWithConfigResult represents the Result of API
 type DiskCreateWithConfigResult struct {
-	IsOk bool `json:"is_ok,omitempty"` // is_ok
+	IsOk bool `json:",omitempty"` // is_ok
 
-	Disk *Disk
+	Disk *Disk `json:",omitempty" mapconv:",omitempty,recursive"`
 }
 
 // DiskCreateWithConfigDistantlyResult represents the Result of API
 type DiskCreateWithConfigDistantlyResult struct {
-	IsOk bool `json:"is_ok,omitempty"` // is_ok
+	IsOk bool `json:",omitempty"` // is_ok
 
-	Disk *Disk
+	Disk *Disk `json:",omitempty" mapconv:",omitempty,recursive"`
 }
 
 // DiskInstallDistantFromResult represents the Result of API
 type DiskInstallDistantFromResult struct {
-	IsOk bool `json:"is_ok,omitempty"` // is_ok
+	IsOk bool `json:",omitempty"` // is_ok
 
-	Disk *Disk
+	Disk *Disk `json:",omitempty" mapconv:",omitempty,recursive"`
 }
 
 // DiskInstallResult represents the Result of API
 type DiskInstallResult struct {
-	IsOk bool `json:"is_ok,omitempty"` // is_ok
+	IsOk bool `json:",omitempty"` // is_ok
 
-	Disk *Disk
+	Disk *Disk `json:",omitempty" mapconv:",omitempty,recursive"`
 }
 
 // DiskReadResult represents the Result of API
 type DiskReadResult struct {
-	IsOk bool `json:"is_ok,omitempty"` // is_ok
+	IsOk bool `json:",omitempty"` // is_ok
 
-	Disk *Disk
+	Disk *Disk `json:",omitempty" mapconv:",omitempty,recursive"`
 }
 
 // DiskUpdateResult represents the Result of API
 type DiskUpdateResult struct {
-	IsOk bool `json:"is_ok,omitempty"` // is_ok
+	IsOk bool `json:",omitempty"` // is_ok
 
-	Disk *Disk
+	Disk *Disk `json:",omitempty" mapconv:",omitempty,recursive"`
 }
 
 // DiskMonitorResult represents the Result of API
 type DiskMonitorResult struct {
-	IsOk bool `json:"is_ok,omitempty"` // is_ok
+	IsOk bool `json:",omitempty"` // is_ok
 
-	Data *DiskActivity
+	Data *DiskActivity `json:",omitempty" mapconv:",omitempty,recursive"`
 }
 
 // GSLBFindResult represents the Result of API
@@ -193,28 +193,28 @@ type GSLBFindResult struct {
 	From  int `json:",omitempty"` // Current page number
 	Count int `json:",omitempty"` // Count of current page
 
-	CommonServiceItems []*GSLB
+	CommonServiceItems []*GSLB `json:",omitempty" mapconv:"[]CommonServiceItems,omitempty,recursive"`
 }
 
 // GSLBCreateResult represents the Result of API
 type GSLBCreateResult struct {
-	IsOk bool `json:"is_ok,omitempty"` // is_ok
+	IsOk bool `json:",omitempty"` // is_ok
 
-	CommonServiceItem *GSLB
+	CommonServiceItem *GSLB `json:",omitempty" mapconv:",omitempty,recursive"`
 }
 
 // GSLBReadResult represents the Result of API
 type GSLBReadResult struct {
-	IsOk bool `json:"is_ok,omitempty"` // is_ok
+	IsOk bool `json:",omitempty"` // is_ok
 
-	CommonServiceItem *GSLB
+	CommonServiceItem *GSLB `json:",omitempty" mapconv:",omitempty,recursive"`
 }
 
 // GSLBUpdateResult represents the Result of API
 type GSLBUpdateResult struct {
-	IsOk bool `json:"is_ok,omitempty"` // is_ok
+	IsOk bool `json:",omitempty"` // is_ok
 
-	CommonServiceItem *GSLB
+	CommonServiceItem *GSLB `json:",omitempty" mapconv:",omitempty,recursive"`
 }
 
 // InterfaceFindResult represents the Result of API
@@ -223,35 +223,35 @@ type InterfaceFindResult struct {
 	From  int `json:",omitempty"` // Current page number
 	Count int `json:",omitempty"` // Count of current page
 
-	Interfaces []*Interface
+	Interfaces []*Interface `json:",omitempty" mapconv:"[]Interfaces,omitempty,recursive"`
 }
 
 // InterfaceCreateResult represents the Result of API
 type InterfaceCreateResult struct {
-	IsOk bool `json:"is_ok,omitempty"` // is_ok
+	IsOk bool `json:",omitempty"` // is_ok
 
-	Interface *Interface
+	Interface *Interface `json:",omitempty" mapconv:",omitempty,recursive"`
 }
 
 // InterfaceReadResult represents the Result of API
 type InterfaceReadResult struct {
-	IsOk bool `json:"is_ok,omitempty"` // is_ok
+	IsOk bool `json:",omitempty"` // is_ok
 
-	Interface *Interface
+	Interface *Interface `json:",omitempty" mapconv:",omitempty,recursive"`
 }
 
 // InterfaceUpdateResult represents the Result of API
 type InterfaceUpdateResult struct {
-	IsOk bool `json:"is_ok,omitempty"` // is_ok
+	IsOk bool `json:",omitempty"` // is_ok
 
-	Interface *Interface
+	Interface *Interface `json:",omitempty" mapconv:",omitempty,recursive"`
 }
 
 // InterfaceMonitorResult represents the Result of API
 type InterfaceMonitorResult struct {
-	IsOk bool `json:"is_ok,omitempty"` // is_ok
+	IsOk bool `json:",omitempty"` // is_ok
 
-	Data *InterfaceActivity
+	Data *InterfaceActivity `json:",omitempty" mapconv:",omitempty,recursive"`
 }
 
 // InternetFindResult represents the Result of API
@@ -260,56 +260,56 @@ type InternetFindResult struct {
 	From  int `json:",omitempty"` // Current page number
 	Count int `json:",omitempty"` // Count of current page
 
-	Internets []*Internet
+	Internets []*Internet `json:",omitempty" mapconv:"[]Internets,omitempty,recursive"`
 }
 
 // InternetCreateResult represents the Result of API
 type InternetCreateResult struct {
-	IsOk bool `json:"is_ok,omitempty"` // is_ok
+	IsOk bool `json:",omitempty"` // is_ok
 
-	Internet *Internet
+	Internet *Internet `json:",omitempty" mapconv:",omitempty,recursive"`
 }
 
 // InternetReadResult represents the Result of API
 type InternetReadResult struct {
-	IsOk bool `json:"is_ok,omitempty"` // is_ok
+	IsOk bool `json:",omitempty"` // is_ok
 
-	Internet *Internet
+	Internet *Internet `json:",omitempty" mapconv:",omitempty,recursive"`
 }
 
 // InternetUpdateResult represents the Result of API
 type InternetUpdateResult struct {
-	IsOk bool `json:"is_ok,omitempty"` // is_ok
+	IsOk bool `json:",omitempty"` // is_ok
 
-	Internet *Internet
+	Internet *Internet `json:",omitempty" mapconv:",omitempty,recursive"`
 }
 
 // InternetUpdateBandWidthResult represents the Result of API
 type InternetUpdateBandWidthResult struct {
-	IsOk bool `json:"is_ok,omitempty"` // is_ok
+	IsOk bool `json:",omitempty"` // is_ok
 
-	Internet *Internet
+	Internet *Internet `json:",omitempty" mapconv:",omitempty,recursive"`
 }
 
 // InternetAddSubnetResult represents the Result of API
 type InternetAddSubnetResult struct {
-	IsOk bool `json:"is_ok,omitempty"` // is_ok
+	IsOk bool `json:",omitempty"` // is_ok
 
-	Subnet *InternetSubnetOperationResult
+	Subnet *InternetSubnetOperationResult `json:",omitempty" mapconv:",omitempty,recursive"`
 }
 
 // InternetUpdateSubnetResult represents the Result of API
 type InternetUpdateSubnetResult struct {
-	IsOk bool `json:"is_ok,omitempty"` // is_ok
+	IsOk bool `json:",omitempty"` // is_ok
 
-	Subnet *InternetSubnetOperationResult
+	Subnet *InternetSubnetOperationResult `json:",omitempty" mapconv:",omitempty,recursive"`
 }
 
 // InternetMonitorResult represents the Result of API
 type InternetMonitorResult struct {
-	IsOk bool `json:"is_ok,omitempty"` // is_ok
+	IsOk bool `json:",omitempty"` // is_ok
 
-	Data *RouterActivity
+	Data *RouterActivity `json:",omitempty" mapconv:",omitempty,recursive"`
 }
 
 // LoadBalancerFindResult represents the Result of API
@@ -318,35 +318,35 @@ type LoadBalancerFindResult struct {
 	From  int `json:",omitempty"` // Current page number
 	Count int `json:",omitempty"` // Count of current page
 
-	Appliances []*LoadBalancer
+	Appliances []*LoadBalancer `json:",omitempty" mapconv:"[]Appliances,omitempty,recursive"`
 }
 
 // LoadBalancerCreateResult represents the Result of API
 type LoadBalancerCreateResult struct {
-	IsOk bool `json:"is_ok,omitempty"` // is_ok
+	IsOk bool `json:",omitempty"` // is_ok
 
-	Appliance *LoadBalancer
+	Appliance *LoadBalancer `json:",omitempty" mapconv:",omitempty,recursive"`
 }
 
 // LoadBalancerReadResult represents the Result of API
 type LoadBalancerReadResult struct {
-	IsOk bool `json:"is_ok,omitempty"` // is_ok
+	IsOk bool `json:",omitempty"` // is_ok
 
-	Appliance *LoadBalancer
+	Appliance *LoadBalancer `json:",omitempty" mapconv:",omitempty,recursive"`
 }
 
 // LoadBalancerUpdateResult represents the Result of API
 type LoadBalancerUpdateResult struct {
-	IsOk bool `json:"is_ok,omitempty"` // is_ok
+	IsOk bool `json:",omitempty"` // is_ok
 
-	Appliance *LoadBalancer
+	Appliance *LoadBalancer `json:",omitempty" mapconv:",omitempty,recursive"`
 }
 
 // LoadBalancerMonitorInterfaceResult represents the Result of API
 type LoadBalancerMonitorInterfaceResult struct {
-	IsOk bool `json:"is_ok,omitempty"` // is_ok
+	IsOk bool `json:",omitempty"` // is_ok
 
-	Data *InterfaceActivity
+	Data *InterfaceActivity `json:",omitempty" mapconv:",omitempty,recursive"`
 }
 
 // LoadBalancerStatusResult represents the Result of API
@@ -355,7 +355,7 @@ type LoadBalancerStatusResult struct {
 	From  int `json:",omitempty"` // Current page number
 	Count int `json:",omitempty"` // Count of current page
 
-	LoadBalancer []*LoadBalancerStatus
+	LoadBalancer []*LoadBalancerStatus `json:",omitempty" mapconv:"[]LoadBalancer,omitempty,recursive"`
 }
 
 // NFSFindResult represents the Result of API
@@ -364,42 +364,42 @@ type NFSFindResult struct {
 	From  int `json:",omitempty"` // Current page number
 	Count int `json:",omitempty"` // Count of current page
 
-	Appliances []*NFS
+	Appliances []*NFS `json:",omitempty" mapconv:"[]Appliances,omitempty,recursive"`
 }
 
 // NFSCreateResult represents the Result of API
 type NFSCreateResult struct {
-	IsOk bool `json:"is_ok,omitempty"` // is_ok
+	IsOk bool `json:",omitempty"` // is_ok
 
-	Appliance *NFS
+	Appliance *NFS `json:",omitempty" mapconv:",omitempty,recursive"`
 }
 
 // NFSReadResult represents the Result of API
 type NFSReadResult struct {
-	IsOk bool `json:"is_ok,omitempty"` // is_ok
+	IsOk bool `json:",omitempty"` // is_ok
 
-	Appliance *NFS
+	Appliance *NFS `json:",omitempty" mapconv:",omitempty,recursive"`
 }
 
 // NFSUpdateResult represents the Result of API
 type NFSUpdateResult struct {
-	IsOk bool `json:"is_ok,omitempty"` // is_ok
+	IsOk bool `json:",omitempty"` // is_ok
 
-	Appliance *NFS
+	Appliance *NFS `json:",omitempty" mapconv:",omitempty,recursive"`
 }
 
 // NFSMonitorFreeDiskSizeResult represents the Result of API
 type NFSMonitorFreeDiskSizeResult struct {
-	IsOk bool `json:"is_ok,omitempty"` // is_ok
+	IsOk bool `json:",omitempty"` // is_ok
 
-	Data *FreeDiskSizeActivity
+	Data *FreeDiskSizeActivity `json:",omitempty" mapconv:",omitempty,recursive"`
 }
 
 // NFSMonitorInterfaceResult represents the Result of API
 type NFSMonitorInterfaceResult struct {
-	IsOk bool `json:"is_ok,omitempty"` // is_ok
+	IsOk bool `json:",omitempty"` // is_ok
 
-	Data *InterfaceActivity
+	Data *InterfaceActivity `json:",omitempty" mapconv:",omitempty,recursive"`
 }
 
 // NoteFindResult represents the Result of API
@@ -408,28 +408,28 @@ type NoteFindResult struct {
 	From  int `json:",omitempty"` // Current page number
 	Count int `json:",omitempty"` // Count of current page
 
-	Notes []*Note
+	Notes []*Note `json:",omitempty" mapconv:"[]Notes,omitempty,recursive"`
 }
 
 // NoteCreateResult represents the Result of API
 type NoteCreateResult struct {
-	IsOk bool `json:"is_ok,omitempty"` // is_ok
+	IsOk bool `json:",omitempty"` // is_ok
 
-	Note *Note
+	Note *Note `json:",omitempty" mapconv:",omitempty,recursive"`
 }
 
 // NoteReadResult represents the Result of API
 type NoteReadResult struct {
-	IsOk bool `json:"is_ok,omitempty"` // is_ok
+	IsOk bool `json:",omitempty"` // is_ok
 
-	Note *Note
+	Note *Note `json:",omitempty" mapconv:",omitempty,recursive"`
 }
 
 // NoteUpdateResult represents the Result of API
 type NoteUpdateResult struct {
-	IsOk bool `json:"is_ok,omitempty"` // is_ok
+	IsOk bool `json:",omitempty"` // is_ok
 
-	Note *Note
+	Note *Note `json:",omitempty" mapconv:",omitempty,recursive"`
 }
 
 // PacketFilterFindResult represents the Result of API
@@ -438,28 +438,28 @@ type PacketFilterFindResult struct {
 	From  int `json:",omitempty"` // Current page number
 	Count int `json:",omitempty"` // Count of current page
 
-	PacketFilters []*PacketFilter
+	PacketFilters []*PacketFilter `json:",omitempty" mapconv:"[]PacketFilters,omitempty,recursive"`
 }
 
 // PacketFilterCreateResult represents the Result of API
 type PacketFilterCreateResult struct {
-	IsOk bool `json:"is_ok,omitempty"` // is_ok
+	IsOk bool `json:",omitempty"` // is_ok
 
-	PacketFilter *PacketFilter
+	PacketFilter *PacketFilter `json:",omitempty" mapconv:",omitempty,recursive"`
 }
 
 // PacketFilterReadResult represents the Result of API
 type PacketFilterReadResult struct {
-	IsOk bool `json:"is_ok,omitempty"` // is_ok
+	IsOk bool `json:",omitempty"` // is_ok
 
-	PacketFilter *PacketFilter
+	PacketFilter *PacketFilter `json:",omitempty" mapconv:",omitempty,recursive"`
 }
 
 // PacketFilterUpdateResult represents the Result of API
 type PacketFilterUpdateResult struct {
-	IsOk bool `json:"is_ok,omitempty"` // is_ok
+	IsOk bool `json:",omitempty"` // is_ok
 
-	PacketFilter *PacketFilter
+	PacketFilter *PacketFilter `json:",omitempty" mapconv:",omitempty,recursive"`
 }
 
 // ServerFindResult represents the Result of API
@@ -468,42 +468,42 @@ type ServerFindResult struct {
 	From  int `json:",omitempty"` // Current page number
 	Count int `json:",omitempty"` // Count of current page
 
-	Servers []*Server
+	Servers []*Server `json:",omitempty" mapconv:"[]Servers,omitempty,recursive"`
 }
 
 // ServerCreateResult represents the Result of API
 type ServerCreateResult struct {
-	IsOk bool `json:"is_ok,omitempty"` // is_ok
+	IsOk bool `json:",omitempty"` // is_ok
 
-	Server *Server
+	Server *Server `json:",omitempty" mapconv:",omitempty,recursive"`
 }
 
 // ServerReadResult represents the Result of API
 type ServerReadResult struct {
-	IsOk bool `json:"is_ok,omitempty"` // is_ok
+	IsOk bool `json:",omitempty"` // is_ok
 
-	Server *Server
+	Server *Server `json:",omitempty" mapconv:",omitempty,recursive"`
 }
 
 // ServerUpdateResult represents the Result of API
 type ServerUpdateResult struct {
-	IsOk bool `json:"is_ok,omitempty"` // is_ok
+	IsOk bool `json:",omitempty"` // is_ok
 
-	Server *Server
+	Server *Server `json:",omitempty" mapconv:",omitempty,recursive"`
 }
 
 // ServerChangePlanResult represents the Result of API
 type ServerChangePlanResult struct {
-	IsOk bool `json:"is_ok,omitempty"` // is_ok
+	IsOk bool `json:",omitempty"` // is_ok
 
-	Server *Server
+	Server *Server `json:",omitempty" mapconv:",omitempty,recursive"`
 }
 
 // ServerMonitorResult represents the Result of API
 type ServerMonitorResult struct {
-	IsOk bool `json:"is_ok,omitempty"` // is_ok
+	IsOk bool `json:",omitempty"` // is_ok
 
-	Data *CPUTimeActivity
+	Data *CPUTimeActivity `json:",omitempty" mapconv:",omitempty,recursive"`
 }
 
 // SIMFindResult represents the Result of API
@@ -512,28 +512,28 @@ type SIMFindResult struct {
 	From  int `json:",omitempty"` // Current page number
 	Count int `json:",omitempty"` // Count of current page
 
-	CommonServiceItems []*SIM
+	CommonServiceItems []*SIM `json:",omitempty" mapconv:"[]CommonServiceItems,omitempty,recursive"`
 }
 
 // SIMCreateResult represents the Result of API
 type SIMCreateResult struct {
-	IsOk bool `json:"is_ok,omitempty"` // is_ok
+	IsOk bool `json:",omitempty"` // is_ok
 
-	CommonServiceItem *SIM
+	CommonServiceItem *SIM `json:",omitempty" mapconv:",omitempty,recursive"`
 }
 
 // SIMReadResult represents the Result of API
 type SIMReadResult struct {
-	IsOk bool `json:"is_ok,omitempty"` // is_ok
+	IsOk bool `json:",omitempty"` // is_ok
 
-	CommonServiceItem *SIM
+	CommonServiceItem *SIM `json:",omitempty" mapconv:",omitempty,recursive"`
 }
 
 // SIMUpdateResult represents the Result of API
 type SIMUpdateResult struct {
-	IsOk bool `json:"is_ok,omitempty"` // is_ok
+	IsOk bool `json:",omitempty"` // is_ok
 
-	CommonServiceItem *SIM
+	CommonServiceItem *SIM `json:",omitempty" mapconv:",omitempty,recursive"`
 }
 
 // SIMLogsResult represents the Result of API
@@ -542,7 +542,7 @@ type SIMLogsResult struct {
 	From  int `json:",omitempty"` // Current page number
 	Count int `json:",omitempty"` // Count of current page
 
-	Logs []*SIMLog
+	Logs []*SIMLog `json:",omitempty" mapconv:"[]Logs,omitempty,recursive"`
 }
 
 // SIMGetNetworkOperatorResult represents the Result of API
@@ -551,14 +551,14 @@ type SIMGetNetworkOperatorResult struct {
 	From  int `json:",omitempty"` // Current page number
 	Count int `json:",omitempty"` // Count of current page
 
-	NetworkOperationConfigs []*SIMNetworkOperatorConfig
+	NetworkOperationConfigs []*SIMNetworkOperatorConfig `json:",omitempty" mapconv:"[]NetworkOperationConfigs,omitempty,recursive"`
 }
 
 // SIMMonitorSIMResult represents the Result of API
 type SIMMonitorSIMResult struct {
-	IsOk bool `json:"is_ok,omitempty"` // is_ok
+	IsOk bool `json:",omitempty"` // is_ok
 
-	Data *LinkActivity
+	Data *LinkActivity `json:",omitempty" mapconv:",omitempty,recursive"`
 }
 
 // SwitchFindResult represents the Result of API
@@ -567,28 +567,28 @@ type SwitchFindResult struct {
 	From  int `json:",omitempty"` // Current page number
 	Count int `json:",omitempty"` // Count of current page
 
-	Switches []*Switch
+	Switches []*Switch `json:",omitempty" mapconv:"[]Switches,omitempty,recursive"`
 }
 
 // SwitchCreateResult represents the Result of API
 type SwitchCreateResult struct {
-	IsOk bool `json:"is_ok,omitempty"` // is_ok
+	IsOk bool `json:",omitempty"` // is_ok
 
-	Switch *Switch
+	Switch *Switch `json:",omitempty" mapconv:",omitempty,recursive"`
 }
 
 // SwitchReadResult represents the Result of API
 type SwitchReadResult struct {
-	IsOk bool `json:"is_ok,omitempty"` // is_ok
+	IsOk bool `json:",omitempty"` // is_ok
 
-	Switch *Switch
+	Switch *Switch `json:",omitempty" mapconv:",omitempty,recursive"`
 }
 
 // SwitchUpdateResult represents the Result of API
 type SwitchUpdateResult struct {
-	IsOk bool `json:"is_ok,omitempty"` // is_ok
+	IsOk bool `json:",omitempty"` // is_ok
 
-	Switch *Switch
+	Switch *Switch `json:",omitempty" mapconv:",omitempty,recursive"`
 }
 
 // VPCRouterFindResult represents the Result of API
@@ -597,35 +597,35 @@ type VPCRouterFindResult struct {
 	From  int `json:",omitempty"` // Current page number
 	Count int `json:",omitempty"` // Count of current page
 
-	Appliances []*VPCRouter
+	Appliances []*VPCRouter `json:",omitempty" mapconv:"[]Appliances,omitempty,recursive"`
 }
 
 // VPCRouterCreateResult represents the Result of API
 type VPCRouterCreateResult struct {
-	IsOk bool `json:"is_ok,omitempty"` // is_ok
+	IsOk bool `json:",omitempty"` // is_ok
 
-	Appliance *VPCRouter
+	Appliance *VPCRouter `json:",omitempty" mapconv:",omitempty,recursive"`
 }
 
 // VPCRouterReadResult represents the Result of API
 type VPCRouterReadResult struct {
-	IsOk bool `json:"is_ok,omitempty"` // is_ok
+	IsOk bool `json:",omitempty"` // is_ok
 
-	Appliance *VPCRouter
+	Appliance *VPCRouter `json:",omitempty" mapconv:",omitempty,recursive"`
 }
 
 // VPCRouterUpdateResult represents the Result of API
 type VPCRouterUpdateResult struct {
-	IsOk bool `json:"is_ok,omitempty"` // is_ok
+	IsOk bool `json:",omitempty"` // is_ok
 
-	Appliance *VPCRouter
+	Appliance *VPCRouter `json:",omitempty" mapconv:",omitempty,recursive"`
 }
 
 // VPCRouterMonitorInterfaceResult represents the Result of API
 type VPCRouterMonitorInterfaceResult struct {
-	IsOk bool `json:"is_ok,omitempty"` // is_ok
+	IsOk bool `json:",omitempty"` // is_ok
 
-	Data *InterfaceActivity
+	Data *InterfaceActivity `json:",omitempty" mapconv:",omitempty,recursive"`
 }
 
 // ZoneFindResult represents the Result of API
@@ -634,12 +634,12 @@ type ZoneFindResult struct {
 	From  int `json:",omitempty"` // Current page number
 	Count int `json:",omitempty"` // Count of current page
 
-	Zones []*Zone
+	Zones []*Zone `json:",omitempty" mapconv:"[]Zones,omitempty,recursive"`
 }
 
 // ZoneReadResult represents the Result of API
 type ZoneReadResult struct {
-	IsOk bool `json:"is_ok,omitempty"` // is_ok
+	IsOk bool `json:",omitempty"` // is_ok
 
-	Zone *Zone
+	Zone *Zone `json:",omitempty" mapconv:",omitempty,recursive"`
 }
