@@ -39,7 +39,7 @@ import (
 {{- range . }}
 {{- range .Operations -}}
 
-{{ if .HasResponseEnvelope }}
+{{ if .HasResults }}
 // {{ .ResultTypeName }} represents the Result of API 
 type {{ .ResultTypeName }} struct {
 {{- if .IsResponsePlural -}}
@@ -50,12 +50,12 @@ type {{ .ResultTypeName }} struct {
 	IsOk    bool  ` + "`" + `json:"is_ok,omitempty"` + "`" + ` // is_ok
 {{ end }}
 {{ if .IsResponseSingular }}
-	{{- range .ResponsePayloads}}
-	{{.PayloadName}} {{.TypeName}}
+	{{- range .AllResults}}
+	{{.DestField}} {{.GoTypeSourceCode}}
 	{{- end }}
 {{- else if .IsResponsePlural -}}
-	{{- range .ResponsePayloads}}
-	{{.PayloadName}} []{{.TypeName}}
+	{{- range .AllResults}}
+	{{.DestField}} []{{.GoTypeSourceCode}}
 	{{- end }}
 {{ end }}
 }
