@@ -19,8 +19,8 @@ func (r *Results) Models() Models {
 
 // Result Operationでの戻り値定義
 type Result struct {
-	SourceField string // エンベロープでの宛先ペイロード名
-	Model       *Model // パラメータの型情報
+	DestField string // エンベロープでの宛先ペイロード名
+	Model     *Model // パラメータの型情報
 }
 
 // ImportStatements コード生成時に利用するimport文を生成する
