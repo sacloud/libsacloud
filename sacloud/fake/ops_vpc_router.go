@@ -22,7 +22,7 @@ func (o *VPCRouterOp) Find(ctx context.Context, zone string, conditions *sacloud
 		Total:      len(results),
 		Count:      len(results),
 		From:       0,
-		Appliances: values,
+		VPCRouters: values,
 	}, nil
 }
 
@@ -84,11 +84,11 @@ func (o *VPCRouterOp) Create(ctx context.Context, zone string, param *sacloud.VP
 		if err != nil {
 			return nil, err
 		}
-		return res.Appliance, nil
+		return res.VPCRouter, nil
 	})
 	return &sacloud.VPCRouterCreateResult{
 		IsOk:      true,
-		Appliance: result,
+		VPCRouter: result,
 	}, nil
 }
 
@@ -102,7 +102,7 @@ func (o *VPCRouterOp) Read(ctx context.Context, zone string, id types.ID) (*sacl
 	copySameNameField(value, dest)
 	return &sacloud.VPCRouterReadResult{
 		IsOk:      true,
-		Appliance: dest,
+		VPCRouter: dest,
 	}, nil
 }
 
@@ -112,12 +112,12 @@ func (o *VPCRouterOp) Update(ctx context.Context, zone string, id types.ID, para
 	if err != nil {
 		return nil, err
 	}
-	value := readResult.Appliance
+	value := readResult.VPCRouter
 	copySameNameField(param, value)
 	fill(value, fillModifiedAt)
 	return &sacloud.VPCRouterUpdateResult{
 		IsOk:      true,
-		Appliance: value,
+		VPCRouter: value,
 	}, nil
 }
 
@@ -142,7 +142,7 @@ func (o *VPCRouterOp) Boot(ctx context.Context, zone string, id types.ID) error 
 	if err != nil {
 		return err
 	}
-	value := readResult.Appliance
+	value := readResult.VPCRouter
 	if value.InstanceStatus.IsUp() {
 		return newErrorConflict(o.key, id, "Boot is failed")
 	}
@@ -152,7 +152,7 @@ func (o *VPCRouterOp) Boot(ctx context.Context, zone string, id types.ID) error 
 		if err != nil {
 			return nil, err
 		}
-		return res.Appliance, nil
+		return res.VPCRouter, nil
 	})
 
 	return err
@@ -164,7 +164,7 @@ func (o *VPCRouterOp) Shutdown(ctx context.Context, zone string, id types.ID, sh
 	if err != nil {
 		return err
 	}
-	value := readResult.Appliance
+	value := readResult.VPCRouter
 	if !value.InstanceStatus.IsUp() {
 		return newErrorConflict(o.key, id, "Shutdown is failed")
 	}
@@ -174,7 +174,7 @@ func (o *VPCRouterOp) Shutdown(ctx context.Context, zone string, id types.ID, sh
 		if err != nil {
 			return nil, err
 		}
-		return res.Appliance, nil
+		return res.VPCRouter, nil
 	})
 
 	return err
@@ -186,7 +186,7 @@ func (o *VPCRouterOp) Reset(ctx context.Context, zone string, id types.ID) error
 	if err != nil {
 		return err
 	}
-	value := readResult.Appliance
+	value := readResult.VPCRouter
 	if !value.InstanceStatus.IsUp() {
 		return newErrorConflict(o.key, id, "Reset is failed")
 	}
@@ -196,7 +196,7 @@ func (o *VPCRouterOp) Reset(ctx context.Context, zone string, id types.ID) error
 		if err != nil {
 			return nil, err
 		}
-		return res.Appliance, nil
+		return res.VPCRouter, nil
 	})
 
 	return nil
@@ -208,7 +208,7 @@ func (o *VPCRouterOp) ConnectToSwitch(ctx context.Context, zone string, id types
 	if err != nil {
 		return err
 	}
-	value := readResult.Appliance
+	value := readResult.VPCRouter
 
 	for _, nic := range value.Interfaces {
 		if nic.Index == nicIndex {
@@ -255,7 +255,7 @@ func (o *VPCRouterOp) DisconnectFromSwitch(ctx context.Context, zone string, id 
 	if err != nil {
 		return err
 	}
-	value := readResult.Appliance
+	value := readResult.VPCRouter
 
 	var exists bool
 	var nicID types.ID
@@ -306,7 +306,7 @@ func (o *VPCRouterOp) MonitorInterface(ctx context.Context, zone string, id type
 	}
 
 	return &sacloud.VPCRouterMonitorInterfaceResult{
-		IsOk: true,
-		Data: res,
+		IsOk:              true,
+		InterfaceActivity: res,
 	}, nil
 }

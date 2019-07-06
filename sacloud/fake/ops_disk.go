@@ -325,7 +325,7 @@ func (o *DiskOp) Monitor(ctx context.Context, zone string, id types.ID, conditio
 	}
 
 	return &sacloud.DiskMonitorResult{
-		IsOk: true,
-		Data: res,
+		IsOk:         true,
+		DiskActivity: res,
 	}, nil
 }

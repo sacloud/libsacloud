@@ -79,7 +79,7 @@ var simAPI = &schema.Resource{
 				ResultPluralFromEnvelope(simLogView, &schema.EnvelopePayloadDesc{
 					PayloadName: "Logs",
 					PayloadType: meta.Static(naked.SIMLog{}),
-				}),
+				}, "Logs"),
 
 			// GetNetworkOperator
 			r.DefineOperation("GetNetworkOperator").
@@ -90,7 +90,7 @@ var simAPI = &schema.Resource{
 				ResultPluralFromEnvelope(simNetworkOperatorConfigView, &schema.EnvelopePayloadDesc{
 					PayloadName: "NetworkOperationConfigs",
 					PayloadType: meta.Static(naked.SIMNetworkOperatorConfig{}),
-				}),
+				}, "Configs"),
 
 			// SetNetworkOperator
 			r.DefineOperation("SetNetworkOperator").

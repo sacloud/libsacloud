@@ -125,17 +125,17 @@ func testVPCRouterCreate(createParam *sacloud.VPCRouterCreateRequest) func(*CRUD
 		}
 
 		n, err := sacloud.WaiterForReady(func() (interface{}, error) {
-			res, err := client.Read(context.Background(), testZone, createResult.Appliance.ID)
+			res, err := client.Read(context.Background(), testZone, createResult.VPCRouter.ID)
 			if err != nil {
 				return nil, err
 			}
-			return res.Appliance, nil
+			return res.VPCRouter, nil
 		}).WaitForState(context.Background())
 		if err != nil {
 			return nil, err
 		}
 
-		if err := client.Boot(context.Background(), testZone, createResult.Appliance.ID); err != nil {
+		if err := client.Boot(context.Background(), testZone, createResult.VPCRouter.ID); err != nil {
 			return nil, err
 		}
 
@@ -149,7 +149,7 @@ func testVPCRouterRead(testContext *CRUDTestContext, caller sacloud.APICaller) (
 	if err != nil {
 		return nil, err
 	}
-	return res.Appliance, nil
+	return res.VPCRouter, nil
 }
 
 func testVPCRouterUpdate(updateParam *sacloud.VPCRouterUpdateRequest) func(*CRUDTestContext, sacloud.APICaller) (interface{}, error) {
@@ -159,7 +159,7 @@ func testVPCRouterUpdate(updateParam *sacloud.VPCRouterUpdateRequest) func(*CRUD
 		if err != nil {
 			return nil, err
 		}
-		return res.Appliance, nil
+		return res.VPCRouter, nil
 	}
 }
 
@@ -260,7 +260,7 @@ func TestVPCRouterOpWithRouterCRUD(t *testing.T) {
 					if err != nil {
 						return nil, err
 					}
-					return res.Appliance, nil
+					return res.VPCRouter, nil
 				}).WaitForState(context.Background())
 				if err != nil {
 					return nil, err

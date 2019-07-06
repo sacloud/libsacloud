@@ -95,7 +95,7 @@ func (o *Operation) Arguments(args []*Argument) *Operation {
 }
 
 // ResultFromEnvelope エンベロープから抽出するレスポンス定義の追加
-func (o *Operation) ResultFromEnvelope(m *Model, sourceField *EnvelopePayloadDesc) *Operation {
+func (o *Operation) ResultFromEnvelope(m *Model, sourceField *EnvelopePayloadDesc, destFieldName string) *Operation {
 	if o.responseEnvelope == nil {
 		o.responseEnvelope = &EnvelopeType{
 			Form: PayloadForms.Singular,
@@ -104,17 +104,20 @@ func (o *Operation) ResultFromEnvelope(m *Model, sourceField *EnvelopePayloadDes
 	if sourceField.PayloadName == "" {
 		sourceField.PayloadName = o.resource.FieldName(o.responseEnvelope.Form)
 	}
+	if destFieldName == "" {
+		destFieldName = o.resource.FieldName(o.responseEnvelope.Form)
+	}
 	o.responseEnvelope.Payloads = append(o.responseEnvelope.Payloads, sourceField)
 	if sourceField.Tags == nil {
 		sourceField.Tags = &FieldTags{
 			JSON: ",omitempty",
 		}
 	}
-	return o.ResultWithDestField(sourceField.PayloadName, false, m)
+	return o.resultFromEnvelope(sourceField.PayloadName, destFieldName, false, m)
 }
 
 // ResultPluralFromEnvelope エンベロープから抽出するレスポンス定義の追加(複数形)
-func (o *Operation) ResultPluralFromEnvelope(m *Model, sourceField *EnvelopePayloadDesc) *Operation {
+func (o *Operation) ResultPluralFromEnvelope(m *Model, sourceField *EnvelopePayloadDesc, destFieldName string) *Operation {
 	if o.responseEnvelope == nil {
 		o.responseEnvelope = &EnvelopeType{
 			Form: PayloadForms.Plural,
@@ -123,30 +126,29 @@ func (o *Operation) ResultPluralFromEnvelope(m *Model, sourceField *EnvelopePayl
 	if sourceField.PayloadName == "" {
 		sourceField.PayloadName = o.resource.FieldName(o.responseEnvelope.Form)
 	}
+	if destFieldName == "" {
+		destFieldName = o.resource.FieldName(o.responseEnvelope.Form)
+	}
+
 	o.responseEnvelope.Payloads = append(o.responseEnvelope.Payloads, sourceField)
 	if sourceField.Tags == nil {
 		sourceField.Tags = &FieldTags{
 			JSON: ",omitempty",
 		}
 	}
-	return o.ResultWithDestField(sourceField.PayloadName, true, m)
+	return o.resultFromEnvelope(sourceField.PayloadName, destFieldName, true, m)
 }
 
-// ResultWithDestField レスポンス定義の追加
-func (o *Operation) ResultWithDestField(destField string, isPlural bool, m *Model) *Operation {
+// resultWithDestField レスポンス定義の追加
+func (o *Operation) resultFromEnvelope(sourceField, destField string, isPlural bool, m *Model) *Operation {
 	if destField == "" {
 		destField = m.Name
 	}
 	result := &Result{
-		Model:     m,
-		DestField: destField,
-		Tags: &FieldTags{
-			JSON:    ",omitempty",
-			MapConv: ",omitempty,recursive",
-		},
-	}
-	if isPlural {
-		result.Tags.MapConv = fmt.Sprintf("[]%s,omitempty,recursive", destField)
+		Model:       m,
+		SourceField: sourceField,
+		DestField:   destField,
+		IsPlural:    isPlural,
 	}
 	o.results = append(o.results, result)
 	return o

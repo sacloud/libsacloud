@@ -105,8 +105,8 @@ func (o *InterfaceOp) Monitor(ctx context.Context, zone string, id types.ID, con
 	}
 
 	return &sacloud.InterfaceMonitorResult{
-		IsOk: true,
-		Data: res,
+		IsOk:              true,
+		InterfaceActivity: res,
 	}, nil
 }
 

@@ -23,7 +23,7 @@ var archiveAPI = &schema.Resource{
 				ResultFromEnvelope(models.ftpServer(), &schema.EnvelopePayloadDesc{
 					PayloadName: models.ftpServer().Name,
 					PayloadType: meta.Static(naked.OpeningFTPServer{}),
-				}).Name("CreateBlank"),
+				}, models.ftpServer().Name).Name("CreateBlank"),
 			// TODO 他ゾーンからの転送コピー作成
 
 			// read

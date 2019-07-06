@@ -149,7 +149,7 @@ func testGSLBCreate(testContext *CRUDTestContext, caller sacloud.APICaller) (int
 	if err != nil {
 		return nil, err
 	}
-	return res.CommonServiceItem, nil
+	return res.GSLB, nil
 }
 
 func testGSLBRead(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
@@ -158,7 +158,7 @@ func testGSLBRead(testContext *CRUDTestContext, caller sacloud.APICaller) (inter
 	if err != nil {
 		return nil, err
 	}
-	return res.CommonServiceItem, nil
+	return res.GSLB, nil
 }
 
 func testGSLBUpdate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
@@ -167,7 +167,7 @@ func testGSLBUpdate(testContext *CRUDTestContext, caller sacloud.APICaller) (int
 	if err != nil {
 		return nil, err
 	}
-	return res.CommonServiceItem, nil
+	return res.GSLB, nil
 }
 
 func testGSLBDelete(testContext *CRUDTestContext, caller sacloud.APICaller) error {

@@ -19,10 +19,10 @@ func (o *NFSOp) Find(ctx context.Context, zone string, conditions *sacloud.FindC
 		values = append(values, dest)
 	}
 	return &sacloud.NFSFindResult{
-		Total:      len(results),
-		Count:      len(results),
-		From:       0,
-		Appliances: values,
+		Total: len(results),
+		Count: len(results),
+		From:  0,
+		NFS:   values,
 	}, nil
 }
 
@@ -44,11 +44,11 @@ func (o *NFSOp) Create(ctx context.Context, zone string, param *sacloud.NFSCreat
 		if err != nil {
 			return nil, err
 		}
-		return res.Appliance, nil
+		return res.NFS, nil
 	})
 	return &sacloud.NFSCreateResult{
-		IsOk:      true,
-		Appliance: result,
+		IsOk: true,
+		NFS:  result,
 	}, nil
 }
 
@@ -61,8 +61,8 @@ func (o *NFSOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.NF
 	dest := &sacloud.NFS{}
 	copySameNameField(value, dest)
 	return &sacloud.NFSReadResult{
-		IsOk:      true,
-		Appliance: dest,
+		IsOk: true,
+		NFS:  dest,
 	}, nil
 }
 
@@ -72,13 +72,13 @@ func (o *NFSOp) Update(ctx context.Context, zone string, id types.ID, param *sac
 	if err != nil {
 		return nil, err
 	}
-	value := readResult.Appliance
+	value := readResult.NFS
 
 	copySameNameField(param, value)
 	fill(value, fillModifiedAt)
 	return &sacloud.NFSUpdateResult{
-		IsOk:      true,
-		Appliance: value,
+		IsOk: true,
+		NFS:  value,
 	}, nil
 }
 
@@ -88,7 +88,7 @@ func (o *NFSOp) Delete(ctx context.Context, zone string, id types.ID) error {
 	if err != nil {
 		return err
 	}
-	value := readResult.Appliance
+	value := readResult.NFS
 	if value.InstanceStatus.IsUp() {
 		return newErrorConflict(o.key, id, fmt.Sprintf("NFS[%s] is still running", id))
 	}
@@ -103,7 +103,7 @@ func (o *NFSOp) Boot(ctx context.Context, zone string, id types.ID) error {
 	if err != nil {
 		return err
 	}
-	value := readResult.Appliance
+	value := readResult.NFS
 	if value.InstanceStatus.IsUp() {
 		return newErrorConflict(o.key, id, "Boot is failed")
 	}
@@ -113,7 +113,7 @@ func (o *NFSOp) Boot(ctx context.Context, zone string, id types.ID) error {
 		if err != nil {
 			return nil, err
 		}
-		return res.Appliance, nil
+		return res.NFS, nil
 	})
 
 	return err
@@ -125,7 +125,7 @@ func (o *NFSOp) Shutdown(ctx context.Context, zone string, id types.ID, shutdown
 	if err != nil {
 		return err
 	}
-	value := readResult.Appliance
+	value := readResult.NFS
 	if !value.InstanceStatus.IsUp() {
 		return newErrorConflict(o.key, id, "Shutdown is failed")
 	}
@@ -135,7 +135,7 @@ func (o *NFSOp) Shutdown(ctx context.Context, zone string, id types.ID, shutdown
 		if err != nil {
 			return nil, err
 		}
-		return res.Appliance, nil
+		return res.NFS, nil
 	})
 
 	return err
@@ -147,7 +147,7 @@ func (o *NFSOp) Reset(ctx context.Context, zone string, id types.ID) error {
 	if err != nil {
 		return err
 	}
-	value := readResult.Appliance
+	value := readResult.NFS
 	if !value.InstanceStatus.IsUp() {
 		return newErrorConflict(o.key, id, "Reset is failed")
 	}
@@ -157,7 +157,7 @@ func (o *NFSOp) Reset(ctx context.Context, zone string, id types.ID) error {
 		if err != nil {
 			return nil, err
 		}
-		return res.Appliance, nil
+		return res.NFS, nil
 	})
 
 	return nil
@@ -185,8 +185,8 @@ func (o *NFSOp) MonitorFreeDiskSize(ctx context.Context, zone string, id types.I
 	}
 
 	return &sacloud.NFSMonitorFreeDiskSizeResult{
-		IsOk: true,
-		Data: res,
+		IsOk:                 true,
+		FreeDiskSizeActivity: res,
 	}, nil
 }
 
@@ -213,7 +213,7 @@ func (o *NFSOp) MonitorInterface(ctx context.Context, zone string, id types.ID, 
 	}
 
 	return &sacloud.NFSMonitorInterfaceResult{
-		IsOk: true,
-		Data: res,
+		IsOk:              true,
+		InterfaceActivity: res,
 	}, nil
 }

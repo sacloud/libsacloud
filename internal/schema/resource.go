@@ -151,7 +151,7 @@ func (r *Resource) defineOperationFind(nakedType meta.Type, findParam, result *M
 		ResultPluralFromEnvelope(result, &EnvelopePayloadDesc{
 			PayloadType: nakedType,
 			PayloadName: payloadName,
-		})
+		}, "")
 }
 
 // DefineOperationFind Find操作を定義
@@ -196,7 +196,7 @@ func (r *Resource) defineOperationCreate(nakedType meta.Type, createParam, resul
 		ResultFromEnvelope(result, &EnvelopePayloadDesc{
 			PayloadType: nakedType,
 			PayloadName: payloadName,
-		})
+		}, "")
 }
 
 // DefineOperationCreate Create操作を定義
@@ -231,7 +231,7 @@ func (r *Resource) defineOperationRead(nakedType meta.Type, result *Model, paylo
 		ResultFromEnvelope(result, &EnvelopePayloadDesc{
 			PayloadType: nakedType,
 			PayloadName: payloadName,
-		})
+		}, "")
 }
 
 // DefineOperationRead Read操作を定義
@@ -277,7 +277,7 @@ func (r *Resource) defineOperationUpdate(nakedType meta.Type, updateParam, resul
 		ResultFromEnvelope(result, &EnvelopePayloadDesc{
 			PayloadType: nakedType,
 			PayloadName: payloadName,
-		})
+		}, "")
 }
 
 // DefineOperationUpdate Update操作を定義
@@ -379,7 +379,7 @@ func (r *Resource) DefineOperationStatus(nakedType meta.Type, result *Model) *Op
 		ResultPluralFromEnvelope(result, &EnvelopePayloadDesc{
 			PayloadType: meta.Static(naked.LoadBalancerStatus{}),
 			PayloadName: r.FieldName(PayloadForms.Singular),
-		})
+		}, "Status")
 }
 
 // DefineOperationOpenFTP FTPオープン操作を定義
@@ -392,7 +392,7 @@ func (r *Resource) DefineOperationOpenFTP(openParam, result *Model) *Operation {
 		ResultFromEnvelope(result, &EnvelopePayloadDesc{
 			PayloadName: result.Name,
 			PayloadType: meta.Static(naked.OpeningFTPServer{}),
-		})
+		}, result.Name)
 	if openParam != nil {
 		o.PassthroughModelArgumentWithEnvelope("openOption", openParam)
 	}
@@ -432,7 +432,7 @@ func (r *Resource) DefineOperationMonitor(monitorParam, result *Model) *Operatio
 		ResultFromEnvelope(result, &EnvelopePayloadDesc{
 			PayloadType: meta.Static(naked.MonitorValues{}),
 			PayloadName: "Data",
-		})
+		}, result.Name)
 }
 
 // DefineOperationMonitorChild アクティビティモニタ取得操作を定義
@@ -446,7 +446,7 @@ func (r *Resource) DefineOperationMonitorChild(funcNameSuffix, childResourceName
 		ResultFromEnvelope(result, &EnvelopePayloadDesc{
 			PayloadType: meta.Static(naked.MonitorValues{}),
 			PayloadName: "Data",
-		})
+		}, result.Name)
 }
 
 // DefineOperationMonitorChildBy アプライアンスなどでの内部リソースインデックスを持つアクティビティモニタ取得操作を定義
@@ -467,7 +467,7 @@ func (r *Resource) DefineOperationMonitorChildBy(funcNameSuffix, childResourceNa
 		ResultFromEnvelope(result, &EnvelopePayloadDesc{
 			PayloadType: meta.Static(naked.MonitorValues{}),
 			PayloadName: "Data",
-		})
+		}, result.Name)
 }
 
 // FileSafeName スネークケースにしたResourceの名前、コード生成時の保存先ファイル名に利用される

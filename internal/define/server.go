@@ -39,7 +39,7 @@ var serverAPI = &schema.Resource{
 				ResultFromEnvelope(serverView, &schema.EnvelopePayloadDesc{
 					PayloadName: r.Name,
 					PayloadType: meta.Static(naked.Server{}),
-				}),
+				}, ""),
 
 			// insert cdrom
 			r.DefineOperation("InsertCDROM").

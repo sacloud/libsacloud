@@ -222,7 +222,7 @@ func testLoadBalancerCreate(testContext *CRUDTestContext, caller sacloud.APICall
 	if err != nil {
 		return nil, err
 	}
-	return res.Appliance, nil
+	return res.LoadBalancer, nil
 }
 
 func testLoadBalancerRead(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
@@ -231,7 +231,7 @@ func testLoadBalancerRead(testContext *CRUDTestContext, caller sacloud.APICaller
 	if err != nil {
 		return nil, err
 	}
-	return res.Appliance, nil
+	return res.LoadBalancer, nil
 }
 
 func testLoadBalancerUpdate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
@@ -240,7 +240,7 @@ func testLoadBalancerUpdate(testContext *CRUDTestContext, caller sacloud.APICall
 	if err != nil {
 		return nil, err
 	}
-	return res.Appliance, nil
+	return res.LoadBalancer, nil
 }
 
 func testLoadBalancerDelete(testContext *CRUDTestContext, caller sacloud.APICaller) error {
