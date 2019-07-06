@@ -5,9 +5,7 @@ package sacloud
 import (
 	"time"
 
-	"github.com/sacloud/libsacloud/v2/pkg/mapconv"
 	"github.com/sacloud/libsacloud/v2/sacloud/accessor"
-	"github.com/sacloud/libsacloud/v2/sacloud/naked"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 	"gopkg.in/go-playground/validator.v9"
 )
@@ -318,18 +316,6 @@ func (o *Archive) SetSourceInfo(v *SourceArchiveInfo) {
 	o.SourceInfo = v
 }
 
-// convertTo returns naked Archive
-func (o *Archive) convertTo() (*naked.Archive, error) {
-	dest := &naked.Archive{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked Archive
-func (o *Archive) convertFrom(naked *naked.Archive) error {
-	return mapconv.ConvertFrom(naked, o)
-}
-
 /*************************************************
 * BundleInfo
 *************************************************/
@@ -394,18 +380,6 @@ func (o *BundleInfo) GetServiceClass() string {
 // SetServiceClass sets value to ServiceClass
 func (o *BundleInfo) SetServiceClass(v string) {
 	o.ServiceClass = v
-}
-
-// convertTo returns naked BundleInfo
-func (o *BundleInfo) convertTo() (*naked.BundleInfo, error) {
-	dest := &naked.BundleInfo{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked BundleInfo
-func (o *BundleInfo) convertFrom(naked *naked.BundleInfo) error {
-	return mapconv.ConvertFrom(naked, o)
 }
 
 /*************************************************
@@ -483,18 +457,6 @@ func (o *Storage) GetGeneration() int {
 // SetGeneration sets value to Generation
 func (o *Storage) SetGeneration(v int) {
 	o.Generation = v
-}
-
-// convertTo returns naked Storage
-func (o *Storage) convertTo() (*naked.Storage, error) {
-	dest := &naked.Storage{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked Storage
-func (o *Storage) convertFrom(naked *naked.Storage) error {
-	return mapconv.ConvertFrom(naked, o)
 }
 
 /*************************************************
@@ -712,18 +674,6 @@ func (o *ArchiveCreateRequest) SetIconID(v types.ID) {
 	o.IconID = v
 }
 
-// convertTo returns naked ArchiveCreateRequest
-func (o *ArchiveCreateRequest) convertTo() (*naked.Archive, error) {
-	dest := &naked.Archive{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked ArchiveCreateRequest
-func (o *ArchiveCreateRequest) convertFrom(naked *naked.Archive) error {
-	return mapconv.ConvertFrom(naked, o)
-}
-
 /*************************************************
 * FTPServer
 *************************************************/
@@ -779,18 +729,6 @@ func (o *FTPServer) GetPassword() string {
 // SetPassword sets value to Password
 func (o *FTPServer) SetPassword(v string) {
 	o.Password = v
-}
-
-// convertTo returns naked FTPServer
-func (o *FTPServer) convertTo() (*naked.OpeningFTPServer, error) {
-	dest := &naked.OpeningFTPServer{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked FTPServer
-func (o *FTPServer) convertFrom(naked *naked.OpeningFTPServer) error {
-	return mapconv.ConvertFrom(naked, o)
 }
 
 /*************************************************
@@ -871,18 +809,6 @@ func (o *ArchiveCreateBlankRequest) SetIconID(v types.ID) {
 	o.IconID = v
 }
 
-// convertTo returns naked ArchiveCreateBlankRequest
-func (o *ArchiveCreateBlankRequest) convertTo() (*naked.Archive, error) {
-	dest := &naked.Archive{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked ArchiveCreateBlankRequest
-func (o *ArchiveCreateBlankRequest) convertFrom(naked *naked.Archive) error {
-	return mapconv.ConvertFrom(naked, o)
-}
-
 /*************************************************
 * ArchiveUpdateRequest
 *************************************************/
@@ -938,18 +864,6 @@ func (o *ArchiveUpdateRequest) GetIconID() types.ID {
 // SetIconID sets value to IconID
 func (o *ArchiveUpdateRequest) SetIconID(v types.ID) {
 	o.IconID = v
-}
-
-// convertTo returns naked ArchiveUpdateRequest
-func (o *ArchiveUpdateRequest) convertTo() (*naked.Archive, error) {
-	dest := &naked.Archive{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked ArchiveUpdateRequest
-func (o *ArchiveUpdateRequest) convertFrom(naked *naked.Archive) error {
-	return mapconv.ConvertFrom(naked, o)
 }
 
 /*************************************************
@@ -1086,18 +1000,6 @@ func (o *Bridge) SetSwitchInZone(v *BridgeSwitchInfo) {
 	o.SwitchInZone = v
 }
 
-// convertTo returns naked Bridge
-func (o *Bridge) convertTo() (*naked.Bridge, error) {
-	dest := &naked.Bridge{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked Bridge
-func (o *Bridge) convertFrom(naked *naked.Bridge) error {
-	return mapconv.ConvertFrom(naked, o)
-}
-
 /*************************************************
 * Region
 *************************************************/
@@ -1175,18 +1077,6 @@ func (o *Region) SetNameServers(v []string) {
 	o.NameServers = v
 }
 
-// convertTo returns naked Region
-func (o *Region) convertTo() (*naked.Region, error) {
-	dest := &naked.Region{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked Region
-func (o *Region) convertFrom(naked *naked.Region) error {
-	return mapconv.ConvertFrom(naked, o)
-}
-
 /*************************************************
 * BridgeInfo
 *************************************************/
@@ -1251,18 +1141,6 @@ func (o *BridgeInfo) GetZoneID() types.ID {
 // SetZoneID sets value to ZoneID
 func (o *BridgeInfo) SetZoneID(v types.ID) {
 	o.ZoneID = v
-}
-
-// convertTo returns naked BridgeInfo
-func (o *BridgeInfo) convertTo() (*naked.Switch, error) {
-	dest := &naked.Switch{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked BridgeInfo
-func (o *BridgeInfo) convertFrom(naked *naked.Switch) error {
-	return mapconv.ConvertFrom(naked, o)
 }
 
 /*************************************************
@@ -1353,18 +1231,6 @@ func (o *BridgeSwitchInfo) SetApplianceCount(v int) {
 	o.ApplianceCount = v
 }
 
-// convertTo returns naked BridgeSwitchInfo
-func (o *BridgeSwitchInfo) convertTo() (*naked.BridgeSwitchInfo, error) {
-	dest := &naked.BridgeSwitchInfo{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked BridgeSwitchInfo
-func (o *BridgeSwitchInfo) convertFrom(naked *naked.BridgeSwitchInfo) error {
-	return mapconv.ConvertFrom(naked, o)
-}
-
 /*************************************************
 * BridgeCreateRequest
 *************************************************/
@@ -1400,18 +1266,6 @@ func (o *BridgeCreateRequest) SetDescription(v string) {
 	o.Description = v
 }
 
-// convertTo returns naked BridgeCreateRequest
-func (o *BridgeCreateRequest) convertTo() (*naked.Bridge, error) {
-	dest := &naked.Bridge{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked BridgeCreateRequest
-func (o *BridgeCreateRequest) convertFrom(naked *naked.Bridge) error {
-	return mapconv.ConvertFrom(naked, o)
-}
-
 /*************************************************
 * BridgeUpdateRequest
 *************************************************/
@@ -1445,18 +1299,6 @@ func (o *BridgeUpdateRequest) GetDescription() string {
 // SetDescription sets value to Description
 func (o *BridgeUpdateRequest) SetDescription(v string) {
 	o.Description = v
-}
-
-// convertTo returns naked BridgeUpdateRequest
-func (o *BridgeUpdateRequest) convertTo() (*naked.Bridge, error) {
-	dest := &naked.Bridge{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked BridgeUpdateRequest
-func (o *BridgeUpdateRequest) convertFrom(naked *naked.Bridge) error {
-	return mapconv.ConvertFrom(naked, o)
 }
 
 /*************************************************
@@ -1613,18 +1455,6 @@ func (o *CDROM) SetModifiedAt(v time.Time) {
 	o.ModifiedAt = v
 }
 
-// convertTo returns naked CDROM
-func (o *CDROM) convertTo() (*naked.CDROM, error) {
-	dest := &naked.CDROM{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked CDROM
-func (o *CDROM) convertFrom(naked *naked.CDROM) error {
-	return mapconv.ConvertFrom(naked, o)
-}
-
 /*************************************************
 * CDROMCreateRequest
 *************************************************/
@@ -1703,18 +1533,6 @@ func (o *CDROMCreateRequest) SetIconID(v types.ID) {
 	o.IconID = v
 }
 
-// convertTo returns naked CDROMCreateRequest
-func (o *CDROMCreateRequest) convertTo() (*naked.CDROM, error) {
-	dest := &naked.CDROM{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked CDROMCreateRequest
-func (o *CDROMCreateRequest) convertFrom(naked *naked.CDROM) error {
-	return mapconv.ConvertFrom(naked, o)
-}
-
 /*************************************************
 * CDROMUpdateRequest
 *************************************************/
@@ -1770,18 +1588,6 @@ func (o *CDROMUpdateRequest) GetIconID() types.ID {
 // SetIconID sets value to IconID
 func (o *CDROMUpdateRequest) SetIconID(v types.ID) {
 	o.IconID = v
-}
-
-// convertTo returns naked CDROMUpdateRequest
-func (o *CDROMUpdateRequest) convertTo() (*naked.CDROM, error) {
-	dest := &naked.CDROM{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked CDROMUpdateRequest
-func (o *CDROMUpdateRequest) convertFrom(naked *naked.CDROM) error {
-	return mapconv.ConvertFrom(naked, o)
 }
 
 /*************************************************
@@ -2090,18 +1896,6 @@ func (o *Disk) SetModifiedAt(v time.Time) {
 	o.ModifiedAt = v
 }
 
-// convertTo returns naked Disk
-func (o *Disk) convertTo() (*naked.Disk, error) {
-	dest := &naked.Disk{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked Disk
-func (o *Disk) convertFrom(naked *naked.Disk) error {
-	return mapconv.ConvertFrom(naked, o)
-}
-
 /*************************************************
 * DiskCreateRequest
 *************************************************/
@@ -2235,18 +2029,6 @@ func (o *DiskCreateRequest) SetIconID(v types.ID) {
 	o.IconID = v
 }
 
-// convertTo returns naked DiskCreateRequest
-func (o *DiskCreateRequest) convertTo() (*naked.Disk, error) {
-	dest := &naked.Disk{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked DiskCreateRequest
-func (o *DiskCreateRequest) convertFrom(naked *naked.Disk) error {
-	return mapconv.ConvertFrom(naked, o)
-}
-
 /*************************************************
 * DiskEditRequest
 *************************************************/
@@ -2368,18 +2150,6 @@ func (o *DiskEditRequest) GetUserSubnet() *DiskEditUserSubnet {
 // SetUserSubnet sets value to UserSubnet
 func (o *DiskEditRequest) SetUserSubnet(v *DiskEditUserSubnet) {
 	o.UserSubnet = v
-}
-
-// convertTo returns naked DiskEditRequest
-func (o *DiskEditRequest) convertTo() (*naked.DiskEdit, error) {
-	dest := &naked.DiskEdit{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked DiskEditRequest
-func (o *DiskEditRequest) convertFrom(naked *naked.DiskEdit) error {
-	return mapconv.ConvertFrom(naked, o)
 }
 
 /*************************************************
@@ -2543,18 +2313,6 @@ func (o *DiskInstallRequest) SetSizeGB(v int) {
 	accessor.SetSizeGB(o, v)
 }
 
-// convertTo returns naked DiskInstallRequest
-func (o *DiskInstallRequest) convertTo() (*naked.Disk, error) {
-	dest := &naked.Disk{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked DiskInstallRequest
-func (o *DiskInstallRequest) convertFrom(naked *naked.Disk) error {
-	return mapconv.ConvertFrom(naked, o)
-}
-
 /*************************************************
 * DiskUpdateRequest
 *************************************************/
@@ -2623,18 +2381,6 @@ func (o *DiskUpdateRequest) SetConnection(v types.EDiskConnection) {
 	o.Connection = v
 }
 
-// convertTo returns naked DiskUpdateRequest
-func (o *DiskUpdateRequest) convertTo() (*naked.Disk, error) {
-	dest := &naked.Disk{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked DiskUpdateRequest
-func (o *DiskUpdateRequest) convertFrom(naked *naked.Disk) error {
-	return mapconv.ConvertFrom(naked, o)
-}
-
 /*************************************************
 * DiskActivity
 *************************************************/
@@ -2657,18 +2403,6 @@ func (o *DiskActivity) GetValues() []*MonitorDiskValue {
 // SetValues sets value to Values
 func (o *DiskActivity) SetValues(v []*MonitorDiskValue) {
 	o.Values = v
-}
-
-// convertTo returns naked DiskActivity
-func (o *DiskActivity) convertTo() (*naked.MonitorValues, error) {
-	dest := &naked.MonitorValues{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked DiskActivity
-func (o *DiskActivity) convertFrom(naked *naked.MonitorValues) error {
-	return mapconv.ConvertFrom(naked, o)
 }
 
 /*************************************************
@@ -2715,18 +2449,6 @@ func (o *MonitorDiskValue) GetWrite() float64 {
 // SetWrite sets value to Write
 func (o *MonitorDiskValue) SetWrite(v float64) {
 	o.Write = v
-}
-
-// convertTo returns naked MonitorDiskValue
-func (o *MonitorDiskValue) convertTo() (*naked.MonitorDiskValue, error) {
-	dest := &naked.MonitorDiskValue{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked MonitorDiskValue
-func (o *MonitorDiskValue) convertFrom(naked *naked.MonitorDiskValue) error {
-	return mapconv.ConvertFrom(naked, o)
 }
 
 /*************************************************
@@ -3017,18 +2739,6 @@ func (o *GSLB) SetDestinationServers(v []*GSLBServer) {
 	o.DestinationServers = v
 }
 
-// convertTo returns naked GSLB
-func (o *GSLB) convertTo() (*naked.GSLB, error) {
-	dest := &naked.GSLB{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked GSLB
-func (o *GSLB) convertFrom(naked *naked.GSLB) error {
-	return mapconv.ConvertFrom(naked, o)
-}
-
 /*************************************************
 * GSLBServer
 *************************************************/
@@ -3242,18 +2952,6 @@ func (o *GSLBCreateRequest) SetIconID(v types.ID) {
 	o.IconID = v
 }
 
-// convertTo returns naked GSLBCreateRequest
-func (o *GSLBCreateRequest) convertTo() (*naked.GSLB, error) {
-	dest := &naked.GSLB{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked GSLBCreateRequest
-func (o *GSLBCreateRequest) convertFrom(naked *naked.GSLB) error {
-	return mapconv.ConvertFrom(naked, o)
-}
-
 /*************************************************
 * GSLBUpdateRequest
 *************************************************/
@@ -3410,18 +3108,6 @@ func (o *GSLBUpdateRequest) SetIconID(v types.ID) {
 	o.IconID = v
 }
 
-// convertTo returns naked GSLBUpdateRequest
-func (o *GSLBUpdateRequest) convertTo() (*naked.GSLB, error) {
-	dest := &naked.GSLB{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked GSLBUpdateRequest
-func (o *GSLBUpdateRequest) convertFrom(naked *naked.GSLB) error {
-	return mapconv.ConvertFrom(naked, o)
-}
-
 /*************************************************
 * Interface
 *************************************************/
@@ -3565,18 +3251,6 @@ func (o *Interface) SetModifiedAt(v time.Time) {
 	o.ModifiedAt = v
 }
 
-// convertTo returns naked Interface
-func (o *Interface) convertTo() (*naked.Interface, error) {
-	dest := &naked.Interface{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked Interface
-func (o *Interface) convertFrom(naked *naked.Interface) error {
-	return mapconv.ConvertFrom(naked, o)
-}
-
 /*************************************************
 * InterfaceCreateRequest
 *************************************************/
@@ -3599,18 +3273,6 @@ func (o *InterfaceCreateRequest) GetServerID() types.ID {
 // SetServerID sets value to ServerID
 func (o *InterfaceCreateRequest) SetServerID(v types.ID) {
 	o.ServerID = v
-}
-
-// convertTo returns naked InterfaceCreateRequest
-func (o *InterfaceCreateRequest) convertTo() (*naked.Interface, error) {
-	dest := &naked.Interface{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked InterfaceCreateRequest
-func (o *InterfaceCreateRequest) convertFrom(naked *naked.Interface) error {
-	return mapconv.ConvertFrom(naked, o)
 }
 
 /*************************************************
@@ -3637,18 +3299,6 @@ func (o *InterfaceUpdateRequest) SetUserIPAddress(v string) {
 	o.UserIPAddress = v
 }
 
-// convertTo returns naked InterfaceUpdateRequest
-func (o *InterfaceUpdateRequest) convertTo() (*naked.Interface, error) {
-	dest := &naked.Interface{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked InterfaceUpdateRequest
-func (o *InterfaceUpdateRequest) convertFrom(naked *naked.Interface) error {
-	return mapconv.ConvertFrom(naked, o)
-}
-
 /*************************************************
 * InterfaceActivity
 *************************************************/
@@ -3671,18 +3321,6 @@ func (o *InterfaceActivity) GetValues() []*MonitorInterfaceValue {
 // SetValues sets value to Values
 func (o *InterfaceActivity) SetValues(v []*MonitorInterfaceValue) {
 	o.Values = v
-}
-
-// convertTo returns naked InterfaceActivity
-func (o *InterfaceActivity) convertTo() (*naked.MonitorValues, error) {
-	dest := &naked.MonitorValues{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked InterfaceActivity
-func (o *InterfaceActivity) convertFrom(naked *naked.MonitorValues) error {
-	return mapconv.ConvertFrom(naked, o)
 }
 
 /*************************************************
@@ -3729,18 +3367,6 @@ func (o *MonitorInterfaceValue) GetSend() float64 {
 // SetSend sets value to Send
 func (o *MonitorInterfaceValue) SetSend(v float64) {
 	o.Send = v
-}
-
-// convertTo returns naked MonitorInterfaceValue
-func (o *MonitorInterfaceValue) convertTo() (*naked.MonitorInterfaceValue, error) {
-	dest := &naked.MonitorInterfaceValue{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked MonitorInterfaceValue
-func (o *MonitorInterfaceValue) convertFrom(naked *naked.MonitorInterfaceValue) error {
-	return mapconv.ConvertFrom(naked, o)
 }
 
 /*************************************************
@@ -3875,18 +3501,6 @@ func (o *Internet) SetSwitch(v *SwitchInfo) {
 	o.Switch = v
 }
 
-// convertTo returns naked Internet
-func (o *Internet) convertTo() (*naked.Internet, error) {
-	dest := &naked.Internet{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked Internet
-func (o *Internet) convertFrom(naked *naked.Internet) error {
-	return mapconv.ConvertFrom(naked, o)
-}
-
 /*************************************************
 * SwitchInfo
 *************************************************/
@@ -3984,18 +3598,6 @@ func (o *SwitchInfo) GetSubnets() []*InternetSubnet {
 // SetSubnets sets value to Subnets
 func (o *SwitchInfo) SetSubnets(v []*InternetSubnet) {
 	o.Subnets = v
-}
-
-// convertTo returns naked SwitchInfo
-func (o *SwitchInfo) convertTo() (*naked.Switch, error) {
-	dest := &naked.Switch{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked SwitchInfo
-func (o *SwitchInfo) convertFrom(naked *naked.Switch) error {
-	return mapconv.ConvertFrom(naked, o)
 }
 
 /*************************************************
@@ -4097,18 +3699,6 @@ func (o *InternetSubnet) SetNetworkMaskLen(v int) {
 	o.NetworkMaskLen = v
 }
 
-// convertTo returns naked InternetSubnet
-func (o *InternetSubnet) convertTo() (*naked.Subnet, error) {
-	dest := &naked.Subnet{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked InternetSubnet
-func (o *InternetSubnet) convertFrom(naked *naked.Subnet) error {
-	return mapconv.ConvertFrom(naked, o)
-}
-
 /*************************************************
 * InternetCreateRequest
 *************************************************/
@@ -4188,18 +3778,6 @@ func (o *InternetCreateRequest) SetBandWidthMbps(v int) {
 	o.BandWidthMbps = v
 }
 
-// convertTo returns naked InternetCreateRequest
-func (o *InternetCreateRequest) convertTo() (*naked.Internet, error) {
-	dest := &naked.Internet{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked InternetCreateRequest
-func (o *InternetCreateRequest) convertFrom(naked *naked.Internet) error {
-	return mapconv.ConvertFrom(naked, o)
-}
-
 /*************************************************
 * InternetUpdateRequest
 *************************************************/
@@ -4257,18 +3835,6 @@ func (o *InternetUpdateRequest) SetIconID(v types.ID) {
 	o.IconID = v
 }
 
-// convertTo returns naked InternetUpdateRequest
-func (o *InternetUpdateRequest) convertTo() (*naked.Internet, error) {
-	dest := &naked.Internet{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked InternetUpdateRequest
-func (o *InternetUpdateRequest) convertFrom(naked *naked.Internet) error {
-	return mapconv.ConvertFrom(naked, o)
-}
-
 /*************************************************
 * InternetUpdateBandWidthRequest
 *************************************************/
@@ -4291,18 +3857,6 @@ func (o *InternetUpdateBandWidthRequest) GetBandWidthMbps() int {
 // SetBandWidthMbps sets value to BandWidthMbps
 func (o *InternetUpdateBandWidthRequest) SetBandWidthMbps(v int) {
 	o.BandWidthMbps = v
-}
-
-// convertTo returns naked InternetUpdateBandWidthRequest
-func (o *InternetUpdateBandWidthRequest) convertTo() (*naked.Internet, error) {
-	dest := &naked.Internet{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked InternetUpdateBandWidthRequest
-func (o *InternetUpdateBandWidthRequest) convertFrom(naked *naked.Internet) error {
-	return mapconv.ConvertFrom(naked, o)
 }
 
 /*************************************************
@@ -4415,18 +3969,6 @@ func (o *InternetSubnetOperationResult) SetIPAddresses(v []string) {
 	o.IPAddresses = v
 }
 
-// convertTo returns naked InternetSubnetOperationResult
-func (o *InternetSubnetOperationResult) convertTo() (*naked.Subnet, error) {
-	dest := &naked.Subnet{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked InternetSubnetOperationResult
-func (o *InternetSubnetOperationResult) convertFrom(naked *naked.Subnet) error {
-	return mapconv.ConvertFrom(naked, o)
-}
-
 /*************************************************
 * InternetAddSubnetRequest
 *************************************************/
@@ -4462,18 +4004,6 @@ func (o *InternetAddSubnetRequest) SetNextHop(v string) {
 	o.NextHop = v
 }
 
-// convertTo returns naked InternetAddSubnetRequest
-func (o *InternetAddSubnetRequest) convertTo() (*naked.SubnetOperationRequest, error) {
-	dest := &naked.SubnetOperationRequest{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked InternetAddSubnetRequest
-func (o *InternetAddSubnetRequest) convertFrom(naked *naked.SubnetOperationRequest) error {
-	return mapconv.ConvertFrom(naked, o)
-}
-
 /*************************************************
 * InternetUpdateSubnetRequest
 *************************************************/
@@ -4498,18 +4028,6 @@ func (o *InternetUpdateSubnetRequest) SetNextHop(v string) {
 	o.NextHop = v
 }
 
-// convertTo returns naked InternetUpdateSubnetRequest
-func (o *InternetUpdateSubnetRequest) convertTo() (*naked.SubnetOperationRequest, error) {
-	dest := &naked.SubnetOperationRequest{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked InternetUpdateSubnetRequest
-func (o *InternetUpdateSubnetRequest) convertFrom(naked *naked.SubnetOperationRequest) error {
-	return mapconv.ConvertFrom(naked, o)
-}
-
 /*************************************************
 * RouterActivity
 *************************************************/
@@ -4532,18 +4050,6 @@ func (o *RouterActivity) GetValues() []*MonitorRouterValue {
 // SetValues sets value to Values
 func (o *RouterActivity) SetValues(v []*MonitorRouterValue) {
 	o.Values = v
-}
-
-// convertTo returns naked RouterActivity
-func (o *RouterActivity) convertTo() (*naked.MonitorValues, error) {
-	dest := &naked.MonitorValues{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked RouterActivity
-func (o *RouterActivity) convertFrom(naked *naked.MonitorValues) error {
-	return mapconv.ConvertFrom(naked, o)
 }
 
 /*************************************************
@@ -4590,18 +4096,6 @@ func (o *MonitorRouterValue) GetOut() float64 {
 // SetOut sets value to Out
 func (o *MonitorRouterValue) SetOut(v float64) {
 	o.Out = v
-}
-
-// convertTo returns naked MonitorRouterValue
-func (o *MonitorRouterValue) convertTo() (*naked.MonitorRouterValue, error) {
-	dest := &naked.MonitorRouterValue{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked MonitorRouterValue
-func (o *MonitorRouterValue) convertFrom(naked *naked.MonitorRouterValue) error {
-	return mapconv.ConvertFrom(naked, o)
 }
 
 /*************************************************
@@ -4888,18 +4382,6 @@ func (o *LoadBalancer) GetInterfaces() []*Interface {
 // SetInterfaces sets value to Interfaces
 func (o *LoadBalancer) SetInterfaces(v []*Interface) {
 	o.Interfaces = v
-}
-
-// convertTo returns naked LoadBalancer
-func (o *LoadBalancer) convertTo() (*naked.LoadBalancer, error) {
-	dest := &naked.LoadBalancer{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked LoadBalancer
-func (o *LoadBalancer) convertFrom(naked *naked.LoadBalancer) error {
-	return mapconv.ConvertFrom(naked, o)
 }
 
 /*************************************************
@@ -5205,18 +4687,6 @@ func (o *LoadBalancerCreateRequest) SetVirtualIPAddresses(v []*LoadBalancerVirtu
 	o.VirtualIPAddresses = v
 }
 
-// convertTo returns naked LoadBalancerCreateRequest
-func (o *LoadBalancerCreateRequest) convertTo() (*naked.LoadBalancer, error) {
-	dest := &naked.LoadBalancer{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked LoadBalancerCreateRequest
-func (o *LoadBalancerCreateRequest) convertFrom(naked *naked.LoadBalancer) error {
-	return mapconv.ConvertFrom(naked, o)
-}
-
 /*************************************************
 * LoadBalancerUpdateRequest
 *************************************************/
@@ -5283,18 +4753,6 @@ func (o *LoadBalancerUpdateRequest) GetVirtualIPAddresses() []*LoadBalancerVirtu
 // SetVirtualIPAddresses sets value to VirtualIPAddresses
 func (o *LoadBalancerUpdateRequest) SetVirtualIPAddresses(v []*LoadBalancerVirtualIPAddress) {
 	o.VirtualIPAddresses = v
-}
-
-// convertTo returns naked LoadBalancerUpdateRequest
-func (o *LoadBalancerUpdateRequest) convertTo() (*naked.LoadBalancer, error) {
-	dest := &naked.LoadBalancer{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked LoadBalancerUpdateRequest
-func (o *LoadBalancerUpdateRequest) convertFrom(naked *naked.LoadBalancer) error {
-	return mapconv.ConvertFrom(naked, o)
 }
 
 /*************************************************
@@ -5376,18 +4834,6 @@ func (o *LoadBalancerStatus) GetServers() []*LoadBalancerServerStatus {
 // SetServers sets value to Servers
 func (o *LoadBalancerStatus) SetServers(v []*LoadBalancerServerStatus) {
 	o.Servers = v
-}
-
-// convertTo returns naked LoadBalancerStatus
-func (o *LoadBalancerStatus) convertTo() (*naked.LoadBalancerStatus, error) {
-	dest := &naked.LoadBalancerStatus{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked LoadBalancerStatus
-func (o *LoadBalancerStatus) convertFrom(naked *naked.LoadBalancerStatus) error {
-	return mapconv.ConvertFrom(naked, o)
 }
 
 /*************************************************
@@ -5711,18 +5157,6 @@ func (o *NFS) SetModifiedAt(v time.Time) {
 	o.ModifiedAt = v
 }
 
-// convertTo returns naked NFS
-func (o *NFS) convertTo() (*naked.NFS, error) {
-	dest := &naked.NFS{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked NFS
-func (o *NFS) convertFrom(naked *naked.NFS) error {
-	return mapconv.ConvertFrom(naked, o)
-}
-
 /*************************************************
 * NFSCreateRequest
 *************************************************/
@@ -5846,18 +5280,6 @@ func (o *NFSCreateRequest) SetIconID(v types.ID) {
 	o.IconID = v
 }
 
-// convertTo returns naked NFSCreateRequest
-func (o *NFSCreateRequest) convertTo() (*naked.NFS, error) {
-	dest := &naked.NFS{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked NFSCreateRequest
-func (o *NFSCreateRequest) convertFrom(naked *naked.NFS) error {
-	return mapconv.ConvertFrom(naked, o)
-}
-
 /*************************************************
 * NFSUpdateRequest
 *************************************************/
@@ -5915,18 +5337,6 @@ func (o *NFSUpdateRequest) SetIconID(v types.ID) {
 	o.IconID = v
 }
 
-// convertTo returns naked NFSUpdateRequest
-func (o *NFSUpdateRequest) convertTo() (*naked.NFS, error) {
-	dest := &naked.NFS{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked NFSUpdateRequest
-func (o *NFSUpdateRequest) convertFrom(naked *naked.NFS) error {
-	return mapconv.ConvertFrom(naked, o)
-}
-
 /*************************************************
 * FreeDiskSizeActivity
 *************************************************/
@@ -5949,18 +5359,6 @@ func (o *FreeDiskSizeActivity) GetValues() []*MonitorFreeDiskSizeValue {
 // SetValues sets value to Values
 func (o *FreeDiskSizeActivity) SetValues(v []*MonitorFreeDiskSizeValue) {
 	o.Values = v
-}
-
-// convertTo returns naked FreeDiskSizeActivity
-func (o *FreeDiskSizeActivity) convertTo() (*naked.MonitorValues, error) {
-	dest := &naked.MonitorValues{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked FreeDiskSizeActivity
-func (o *FreeDiskSizeActivity) convertFrom(naked *naked.MonitorValues) error {
-	return mapconv.ConvertFrom(naked, o)
 }
 
 /*************************************************
@@ -5996,18 +5394,6 @@ func (o *MonitorFreeDiskSizeValue) GetFreeDiskSize() float64 {
 // SetFreeDiskSize sets value to FreeDiskSize
 func (o *MonitorFreeDiskSizeValue) SetFreeDiskSize(v float64) {
 	o.FreeDiskSize = v
-}
-
-// convertTo returns naked MonitorFreeDiskSizeValue
-func (o *MonitorFreeDiskSizeValue) convertTo() (*naked.MonitorFreeDiskSizeValue, error) {
-	dest := &naked.MonitorFreeDiskSizeValue{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked MonitorFreeDiskSizeValue
-func (o *MonitorFreeDiskSizeValue) convertFrom(naked *naked.MonitorFreeDiskSizeValue) error {
-	return mapconv.ConvertFrom(naked, o)
 }
 
 /*************************************************
@@ -6164,18 +5550,6 @@ func (o *Note) SetModifiedAt(v time.Time) {
 	o.ModifiedAt = v
 }
 
-// convertTo returns naked Note
-func (o *Note) convertTo() (*naked.Note, error) {
-	dest := &naked.Note{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked Note
-func (o *Note) convertFrom(naked *naked.Note) error {
-	return mapconv.ConvertFrom(naked, o)
-}
-
 /*************************************************
 * NoteCreateRequest
 *************************************************/
@@ -6244,18 +5618,6 @@ func (o *NoteCreateRequest) SetContent(v string) {
 	o.Content = v
 }
 
-// convertTo returns naked NoteCreateRequest
-func (o *NoteCreateRequest) convertTo() (*naked.Note, error) {
-	dest := &naked.Note{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked NoteCreateRequest
-func (o *NoteCreateRequest) convertFrom(naked *naked.Note) error {
-	return mapconv.ConvertFrom(naked, o)
-}
-
 /*************************************************
 * NoteUpdateRequest
 *************************************************/
@@ -6322,18 +5684,6 @@ func (o *NoteUpdateRequest) GetContent() string {
 // SetContent sets value to Content
 func (o *NoteUpdateRequest) SetContent(v string) {
 	o.Content = v
-}
-
-// convertTo returns naked NoteUpdateRequest
-func (o *NoteUpdateRequest) convertTo() (*naked.Note, error) {
-	dest := &naked.Note{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked NoteUpdateRequest
-func (o *NoteUpdateRequest) convertFrom(naked *naked.Note) error {
-	return mapconv.ConvertFrom(naked, o)
 }
 
 /*************************************************
@@ -6446,18 +5796,6 @@ func (o *PacketFilter) SetCreatedAt(v time.Time) {
 	o.CreatedAt = v
 }
 
-// convertTo returns naked PacketFilter
-func (o *PacketFilter) convertTo() (*naked.PacketFilter, error) {
-	dest := &naked.PacketFilter{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked PacketFilter
-func (o *PacketFilter) convertFrom(naked *naked.PacketFilter) error {
-	return mapconv.ConvertFrom(naked, o)
-}
-
 /*************************************************
 * PacketFilterExpression
 *************************************************/
@@ -6526,18 +5864,6 @@ func (o *PacketFilterExpression) SetAction(v types.Action) {
 	o.Action = v
 }
 
-// convertTo returns naked PacketFilterExpression
-func (o *PacketFilterExpression) convertTo() (*naked.PacketFilterExpression, error) {
-	dest := &naked.PacketFilterExpression{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked PacketFilterExpression
-func (o *PacketFilterExpression) convertFrom(naked *naked.PacketFilterExpression) error {
-	return mapconv.ConvertFrom(naked, o)
-}
-
 /*************************************************
 * PacketFilterCreateRequest
 *************************************************/
@@ -6584,18 +5910,6 @@ func (o *PacketFilterCreateRequest) SetExpression(v []*PacketFilterExpression) {
 	o.Expression = v
 }
 
-// convertTo returns naked PacketFilterCreateRequest
-func (o *PacketFilterCreateRequest) convertTo() (*naked.PacketFilter, error) {
-	dest := &naked.PacketFilter{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked PacketFilterCreateRequest
-func (o *PacketFilterCreateRequest) convertFrom(naked *naked.PacketFilter) error {
-	return mapconv.ConvertFrom(naked, o)
-}
-
 /*************************************************
 * PacketFilterUpdateRequest
 *************************************************/
@@ -6640,18 +5954,6 @@ func (o *PacketFilterUpdateRequest) GetExpression() []*PacketFilterExpression {
 // SetExpression sets value to Expression
 func (o *PacketFilterUpdateRequest) SetExpression(v []*PacketFilterExpression) {
 	o.Expression = v
-}
-
-// convertTo returns naked PacketFilterUpdateRequest
-func (o *PacketFilterUpdateRequest) convertTo() (*naked.PacketFilter, error) {
-	dest := &naked.PacketFilter{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked PacketFilterUpdateRequest
-func (o *PacketFilterUpdateRequest) convertFrom(naked *naked.PacketFilter) error {
-	return mapconv.ConvertFrom(naked, o)
 }
 
 /*************************************************
@@ -7027,18 +6329,6 @@ func (o *Server) SetModifiedAt(v time.Time) {
 	o.ModifiedAt = v
 }
 
-// convertTo returns naked Server
-func (o *Server) convertTo() (*naked.Server, error) {
-	dest := &naked.Server{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked Server
-func (o *Server) convertFrom(naked *naked.Server) error {
-	return mapconv.ConvertFrom(naked, o)
-}
-
 /*************************************************
 * ZoneInfo
 *************************************************/
@@ -7149,18 +6439,6 @@ func (o *ZoneInfo) SetRegion(v *Region) {
 	o.Region = v
 }
 
-// convertTo returns naked ZoneInfo
-func (o *ZoneInfo) convertTo() (*naked.Zone, error) {
-	dest := &naked.Zone{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked ZoneInfo
-func (o *ZoneInfo) convertFrom(naked *naked.Zone) error {
-	return mapconv.ConvertFrom(naked, o)
-}
-
 /*************************************************
 * VNCProxy
 *************************************************/
@@ -7196,18 +6474,6 @@ func (o *VNCProxy) SetIPAddress(v string) {
 	o.IPAddress = v
 }
 
-// convertTo returns naked VNCProxy
-func (o *VNCProxy) convertTo() (*naked.VNCProxy, error) {
-	dest := &naked.VNCProxy{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked VNCProxy
-func (o *VNCProxy) convertFrom(naked *naked.VNCProxy) error {
-	return mapconv.ConvertFrom(naked, o)
-}
-
 /*************************************************
 * FTPServerInfo
 *************************************************/
@@ -7241,18 +6507,6 @@ func (o *FTPServerInfo) GetIPAddress() string {
 // SetIPAddress sets value to IPAddress
 func (o *FTPServerInfo) SetIPAddress(v string) {
 	o.IPAddress = v
-}
-
-// convertTo returns naked FTPServerInfo
-func (o *FTPServerInfo) convertTo() (*naked.FTPServer, error) {
-	dest := &naked.FTPServer{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked FTPServerInfo
-func (o *FTPServerInfo) convertFrom(naked *naked.FTPServer) error {
-	return mapconv.ConvertFrom(naked, o)
 }
 
 /*************************************************
@@ -7410,18 +6664,6 @@ func (o *ServerCreateRequest) SetWaitDiskMigration(v bool) {
 	o.WaitDiskMigration = v
 }
 
-// convertTo returns naked ServerCreateRequest
-func (o *ServerCreateRequest) convertTo() (*naked.Server, error) {
-	dest := &naked.Server{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked ServerCreateRequest
-func (o *ServerCreateRequest) convertFrom(naked *naked.Server) error {
-	return mapconv.ConvertFrom(naked, o)
-}
-
 /*************************************************
 * ConnectedSwitch
 *************************************************/
@@ -7475,18 +6717,6 @@ func (o *ConnectedSwitch) GetScope() types.EScope {
 // SetScope sets value to Scope
 func (o *ConnectedSwitch) SetScope(v types.EScope) {
 	o.Scope = v
-}
-
-// convertTo returns naked ConnectedSwitch
-func (o *ConnectedSwitch) convertTo() (*naked.ConnectedSwitch, error) {
-	dest := &naked.ConnectedSwitch{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked ConnectedSwitch
-func (o *ConnectedSwitch) convertFrom(naked *naked.ConnectedSwitch) error {
-	return mapconv.ConvertFrom(naked, o)
 }
 
 /*************************************************
@@ -7544,18 +6774,6 @@ func (o *ServerUpdateRequest) GetIconID() types.ID {
 // SetIconID sets value to IconID
 func (o *ServerUpdateRequest) SetIconID(v types.ID) {
 	o.IconID = v
-}
-
-// convertTo returns naked ServerUpdateRequest
-func (o *ServerUpdateRequest) convertTo() (*naked.Server, error) {
-	dest := &naked.Server{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked ServerUpdateRequest
-func (o *ServerUpdateRequest) convertFrom(naked *naked.Server) error {
-	return mapconv.ConvertFrom(naked, o)
 }
 
 /*************************************************
@@ -7625,18 +6843,6 @@ func (o *ServerChangePlanRequest) SetServerPlanCommitment(v types.ECommitment) {
 	o.ServerPlanCommitment = v
 }
 
-// convertTo returns naked ServerChangePlanRequest
-func (o *ServerChangePlanRequest) convertTo() (*naked.ServerPlan, error) {
-	dest := &naked.ServerPlan{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked ServerChangePlanRequest
-func (o *ServerChangePlanRequest) convertFrom(naked *naked.ServerPlan) error {
-	return mapconv.ConvertFrom(naked, o)
-}
-
 /*************************************************
 * InsertCDROMRequest
 *************************************************/
@@ -7679,18 +6885,6 @@ func (o *InsertCDROMRequest) GetInt64ID() int64 {
 // SetInt64ID sets value to Int64ID
 func (o *InsertCDROMRequest) SetInt64ID(v int64) {
 	accessor.SetInt64ID(o, v)
-}
-
-// convertTo returns naked InsertCDROMRequest
-func (o *InsertCDROMRequest) convertTo() (*naked.CDROM, error) {
-	dest := &naked.CDROM{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked InsertCDROMRequest
-func (o *InsertCDROMRequest) convertFrom(naked *naked.CDROM) error {
-	return mapconv.ConvertFrom(naked, o)
 }
 
 /*************************************************
@@ -7737,18 +6931,6 @@ func (o *EjectCDROMRequest) SetInt64ID(v int64) {
 	accessor.SetInt64ID(o, v)
 }
 
-// convertTo returns naked EjectCDROMRequest
-func (o *EjectCDROMRequest) convertTo() (*naked.CDROM, error) {
-	dest := &naked.CDROM{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked EjectCDROMRequest
-func (o *EjectCDROMRequest) convertFrom(naked *naked.CDROM) error {
-	return mapconv.ConvertFrom(naked, o)
-}
-
 /*************************************************
 * CPUTimeActivity
 *************************************************/
@@ -7771,18 +6953,6 @@ func (o *CPUTimeActivity) GetValues() []*MonitorCPUTimeValue {
 // SetValues sets value to Values
 func (o *CPUTimeActivity) SetValues(v []*MonitorCPUTimeValue) {
 	o.Values = v
-}
-
-// convertTo returns naked CPUTimeActivity
-func (o *CPUTimeActivity) convertTo() (*naked.MonitorValues, error) {
-	dest := &naked.MonitorValues{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked CPUTimeActivity
-func (o *CPUTimeActivity) convertFrom(naked *naked.MonitorValues) error {
-	return mapconv.ConvertFrom(naked, o)
 }
 
 /*************************************************
@@ -7818,18 +6988,6 @@ func (o *MonitorCPUTimeValue) GetCPUTime() float64 {
 // SetCPUTime sets value to CPUTime
 func (o *MonitorCPUTimeValue) SetCPUTime(v float64) {
 	o.CPUTime = v
-}
-
-// convertTo returns naked MonitorCPUTimeValue
-func (o *MonitorCPUTimeValue) convertTo() (*naked.MonitorCPUTimeValue, error) {
-	dest := &naked.MonitorCPUTimeValue{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked MonitorCPUTimeValue
-func (o *MonitorCPUTimeValue) convertFrom(naked *naked.MonitorCPUTimeValue) error {
-	return mapconv.ConvertFrom(naked, o)
 }
 
 /*************************************************
@@ -7975,18 +7133,6 @@ func (o *SIM) SetModifiedAt(v time.Time) {
 	o.ModifiedAt = v
 }
 
-// convertTo returns naked SIM
-func (o *SIM) convertTo() (*naked.SIM, error) {
-	dest := &naked.SIM{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked SIM
-func (o *SIM) convertFrom(naked *naked.SIM) error {
-	return mapconv.ConvertFrom(naked, o)
-}
-
 /*************************************************
 * SIMCreateRequest
 *************************************************/
@@ -8077,18 +7223,6 @@ func (o *SIMCreateRequest) SetPassCode(v string) {
 	o.PassCode = v
 }
 
-// convertTo returns naked SIMCreateRequest
-func (o *SIMCreateRequest) convertTo() (*naked.SIM, error) {
-	dest := &naked.SIM{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked SIMCreateRequest
-func (o *SIMCreateRequest) convertFrom(naked *naked.SIM) error {
-	return mapconv.ConvertFrom(naked, o)
-}
-
 /*************************************************
 * SIMUpdateRequest
 *************************************************/
@@ -8146,18 +7280,6 @@ func (o *SIMUpdateRequest) SetIconID(v types.ID) {
 	o.IconID = v
 }
 
-// convertTo returns naked SIMUpdateRequest
-func (o *SIMUpdateRequest) convertTo() (*naked.SIM, error) {
-	dest := &naked.SIM{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked SIMUpdateRequest
-func (o *SIMUpdateRequest) convertFrom(naked *naked.SIM) error {
-	return mapconv.ConvertFrom(naked, o)
-}
-
 /*************************************************
 * SIMAssignIPRequest
 *************************************************/
@@ -8182,18 +7304,6 @@ func (o *SIMAssignIPRequest) SetIP(v string) {
 	o.IP = v
 }
 
-// convertTo returns naked SIMAssignIPRequest
-func (o *SIMAssignIPRequest) convertTo() (*naked.SIMAssignIPRequest, error) {
-	dest := &naked.SIMAssignIPRequest{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked SIMAssignIPRequest
-func (o *SIMAssignIPRequest) convertFrom(naked *naked.SIMAssignIPRequest) error {
-	return mapconv.ConvertFrom(naked, o)
-}
-
 /*************************************************
 * SIMIMEILockRequest
 *************************************************/
@@ -8216,18 +7326,6 @@ func (o *SIMIMEILockRequest) GetIMEI() string {
 // SetIMEI sets value to IMEI
 func (o *SIMIMEILockRequest) SetIMEI(v string) {
 	o.IMEI = v
-}
-
-// convertTo returns naked SIMIMEILockRequest
-func (o *SIMIMEILockRequest) convertTo() (*naked.SIMIMEILockRequest, error) {
-	dest := &naked.SIMIMEILockRequest{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked SIMIMEILockRequest
-func (o *SIMIMEILockRequest) convertFrom(naked *naked.SIMIMEILockRequest) error {
-	return mapconv.ConvertFrom(naked, o)
 }
 
 /*************************************************
@@ -8298,18 +7396,6 @@ func (o *SIMLog) SetIMSI(v string) {
 	o.IMSI = v
 }
 
-// convertTo returns naked SIMLog
-func (o *SIMLog) convertTo() (*naked.SIMLog, error) {
-	dest := &naked.SIMLog{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked SIMLog
-func (o *SIMLog) convertFrom(naked *naked.SIMLog) error {
-	return mapconv.ConvertFrom(naked, o)
-}
-
 /*************************************************
 * SIMNetworkOperatorConfig
 *************************************************/
@@ -8356,18 +7442,6 @@ func (o *SIMNetworkOperatorConfig) SetName(v string) {
 	o.Name = v
 }
 
-// convertTo returns naked SIMNetworkOperatorConfig
-func (o *SIMNetworkOperatorConfig) convertTo() (*naked.SIMNetworkOperatorConfig, error) {
-	dest := &naked.SIMNetworkOperatorConfig{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked SIMNetworkOperatorConfig
-func (o *SIMNetworkOperatorConfig) convertFrom(naked *naked.SIMNetworkOperatorConfig) error {
-	return mapconv.ConvertFrom(naked, o)
-}
-
 /*************************************************
 * SIMNetworkOperatorConfigs
 *************************************************/
@@ -8392,18 +7466,6 @@ func (o *SIMNetworkOperatorConfigs) SetNetworkOperatorConfigs(v []*SIMNetworkOpe
 	o.NetworkOperatorConfigs = v
 }
 
-// convertTo returns naked SIMNetworkOperatorConfigs
-func (o *SIMNetworkOperatorConfigs) convertTo() (*naked.SIMNetworkOperatorConfigs, error) {
-	dest := &naked.SIMNetworkOperatorConfigs{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked SIMNetworkOperatorConfigs
-func (o *SIMNetworkOperatorConfigs) convertFrom(naked *naked.SIMNetworkOperatorConfigs) error {
-	return mapconv.ConvertFrom(naked, o)
-}
-
 /*************************************************
 * LinkActivity
 *************************************************/
@@ -8426,18 +7488,6 @@ func (o *LinkActivity) GetValues() []*MonitorLinkValue {
 // SetValues sets value to Values
 func (o *LinkActivity) SetValues(v []*MonitorLinkValue) {
 	o.Values = v
-}
-
-// convertTo returns naked LinkActivity
-func (o *LinkActivity) convertTo() (*naked.MonitorValues, error) {
-	dest := &naked.MonitorValues{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked LinkActivity
-func (o *LinkActivity) convertFrom(naked *naked.MonitorValues) error {
-	return mapconv.ConvertFrom(naked, o)
 }
 
 /*************************************************
@@ -8484,18 +7534,6 @@ func (o *MonitorLinkValue) GetDownlinkBPS() float64 {
 // SetDownlinkBPS sets value to DownlinkBPS
 func (o *MonitorLinkValue) SetDownlinkBPS(v float64) {
 	o.DownlinkBPS = v
-}
-
-// convertTo returns naked MonitorLinkValue
-func (o *MonitorLinkValue) convertTo() (*naked.MonitorLinkValue, error) {
-	dest := &naked.MonitorLinkValue{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked MonitorLinkValue
-func (o *MonitorLinkValue) convertFrom(naked *naked.MonitorLinkValue) error {
-	return mapconv.ConvertFrom(naked, o)
 }
 
 /*************************************************
@@ -8663,18 +7701,6 @@ func (o *Switch) SetBridgeID(v types.ID) {
 	o.BridgeID = v
 }
 
-// convertTo returns naked Switch
-func (o *Switch) convertTo() (*naked.Switch, error) {
-	dest := &naked.Switch{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked Switch
-func (o *Switch) convertFrom(naked *naked.Switch) error {
-	return mapconv.ConvertFrom(naked, o)
-}
-
 /*************************************************
 * SwitchSubnet
 *************************************************/
@@ -8812,18 +7838,6 @@ func (o *SwitchSubnet) SetAssignedIPAddressMin(v string) {
 	o.AssignedIPAddressMin = v
 }
 
-// convertTo returns naked SwitchSubnet
-func (o *SwitchSubnet) convertTo() (*naked.Subnet, error) {
-	dest := &naked.Subnet{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked SwitchSubnet
-func (o *SwitchSubnet) convertFrom(naked *naked.Subnet) error {
-	return mapconv.ConvertFrom(naked, o)
-}
-
 /*************************************************
 * SwitchCreateRequest
 *************************************************/
@@ -8903,18 +7917,6 @@ func (o *SwitchCreateRequest) SetIconID(v types.ID) {
 	o.IconID = v
 }
 
-// convertTo returns naked SwitchCreateRequest
-func (o *SwitchCreateRequest) convertTo() (*naked.Switch, error) {
-	dest := &naked.Switch{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked SwitchCreateRequest
-func (o *SwitchCreateRequest) convertFrom(naked *naked.Switch) error {
-	return mapconv.ConvertFrom(naked, o)
-}
-
 /*************************************************
 * SwitchUpdateRequest
 *************************************************/
@@ -8992,18 +7994,6 @@ func (o *SwitchUpdateRequest) GetIconID() types.ID {
 // SetIconID sets value to IconID
 func (o *SwitchUpdateRequest) SetIconID(v types.ID) {
 	o.IconID = v
-}
-
-// convertTo returns naked SwitchUpdateRequest
-func (o *SwitchUpdateRequest) convertTo() (*naked.Switch, error) {
-	dest := &naked.Switch{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked SwitchUpdateRequest
-func (o *SwitchUpdateRequest) convertFrom(naked *naked.Switch) error {
-	return mapconv.ConvertFrom(naked, o)
 }
 
 /*************************************************
@@ -9248,18 +8238,6 @@ func (o *VPCRouter) SetZoneID(v types.ID) {
 	o.ZoneID = v
 }
 
-// convertTo returns naked VPCRouter
-func (o *VPCRouter) convertTo() (*naked.VPCRouter, error) {
-	dest := &naked.VPCRouter{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked VPCRouter
-func (o *VPCRouter) convertFrom(naked *naked.VPCRouter) error {
-	return mapconv.ConvertFrom(naked, o)
-}
-
 /*************************************************
 * VPCRouterSetting
 *************************************************/
@@ -9427,18 +8405,6 @@ func (o *VPCRouterSetting) SetStaticRoute(v []*VPCRouterStaticRoute) {
 	o.StaticRoute = v
 }
 
-// convertTo returns naked VPCRouterSetting
-func (o *VPCRouterSetting) convertTo() (*naked.VPCRouterSettings, error) {
-	dest := &naked.VPCRouterSettings{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked VPCRouterSetting
-func (o *VPCRouterSetting) convertFrom(naked *naked.VPCRouterSettings) error {
-	return mapconv.ConvertFrom(naked, o)
-}
-
 /*************************************************
 * VPCRouterInterfaceSetting
 *************************************************/
@@ -9518,18 +8484,6 @@ func (o *VPCRouterInterfaceSetting) SetIndex(v int) {
 	o.Index = v
 }
 
-// convertTo returns naked VPCRouterInterfaceSetting
-func (o *VPCRouterInterfaceSetting) convertTo() (*naked.VPCRouterInterface, error) {
-	dest := &naked.VPCRouterInterface{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked VPCRouterInterfaceSetting
-func (o *VPCRouterInterfaceSetting) convertFrom(naked *naked.VPCRouterInterface) error {
-	return mapconv.ConvertFrom(naked, o)
-}
-
 /*************************************************
 * VPCRouterStaticNAT
 *************************************************/
@@ -9576,18 +8530,6 @@ func (o *VPCRouterStaticNAT) SetDescription(v string) {
 	o.Description = v
 }
 
-// convertTo returns naked VPCRouterStaticNAT
-func (o *VPCRouterStaticNAT) convertTo() (*naked.VPCRouterStaticNATConfig, error) {
-	dest := &naked.VPCRouterStaticNATConfig{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked VPCRouterStaticNAT
-func (o *VPCRouterStaticNAT) convertFrom(naked *naked.VPCRouterStaticNATConfig) error {
-	return mapconv.ConvertFrom(naked, o)
-}
-
 /*************************************************
 * VPCRouterFirewall
 *************************************************/
@@ -9621,18 +8563,6 @@ func (o *VPCRouterFirewall) GetReceive() []*VPCRouterFirewallRule {
 // SetReceive sets value to Receive
 func (o *VPCRouterFirewall) SetReceive(v []*VPCRouterFirewallRule) {
 	o.Receive = v
-}
-
-// convertTo returns naked VPCRouterFirewall
-func (o *VPCRouterFirewall) convertTo() (*naked.VPCRouterFirewallConfig, error) {
-	dest := &naked.VPCRouterFirewallConfig{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked VPCRouterFirewall
-func (o *VPCRouterFirewall) convertFrom(naked *naked.VPCRouterFirewallConfig) error {
-	return mapconv.ConvertFrom(naked, o)
 }
 
 /*************************************************
@@ -9736,18 +8666,6 @@ func (o *VPCRouterFirewallRule) SetDescription(v string) {
 	o.Description = v
 }
 
-// convertTo returns naked VPCRouterFirewallRule
-func (o *VPCRouterFirewallRule) convertTo() (*naked.VPCRouterFirewallRule, error) {
-	dest := &naked.VPCRouterFirewallRule{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked VPCRouterFirewallRule
-func (o *VPCRouterFirewallRule) convertFrom(naked *naked.VPCRouterFirewallRule) error {
-	return mapconv.ConvertFrom(naked, o)
-}
-
 /*************************************************
 * VPCRouterDHCPServer
 *************************************************/
@@ -9805,18 +8723,6 @@ func (o *VPCRouterDHCPServer) SetDNSServers(v []string) {
 	o.DNSServers = v
 }
 
-// convertTo returns naked VPCRouterDHCPServer
-func (o *VPCRouterDHCPServer) convertTo() (*naked.VPCRouterDHCPServerConfig, error) {
-	dest := &naked.VPCRouterDHCPServerConfig{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked VPCRouterDHCPServer
-func (o *VPCRouterDHCPServer) convertFrom(naked *naked.VPCRouterDHCPServerConfig) error {
-	return mapconv.ConvertFrom(naked, o)
-}
-
 /*************************************************
 * VPCRouterDHCPStaticMapping
 *************************************************/
@@ -9852,18 +8758,6 @@ func (o *VPCRouterDHCPStaticMapping) SetIPAddress(v string) {
 	o.IPAddress = v
 }
 
-// convertTo returns naked VPCRouterDHCPStaticMapping
-func (o *VPCRouterDHCPStaticMapping) convertTo() (*naked.VPCRouterDHCPStaticMappingConfig, error) {
-	dest := &naked.VPCRouterDHCPStaticMappingConfig{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked VPCRouterDHCPStaticMapping
-func (o *VPCRouterDHCPStaticMapping) convertFrom(naked *naked.VPCRouterDHCPStaticMappingConfig) error {
-	return mapconv.ConvertFrom(naked, o)
-}
-
 /*************************************************
 * VPCRouterPPTPServer
 *************************************************/
@@ -9897,18 +8791,6 @@ func (o *VPCRouterPPTPServer) GetRangeStop() string {
 // SetRangeStop sets value to RangeStop
 func (o *VPCRouterPPTPServer) SetRangeStop(v string) {
 	o.RangeStop = v
-}
-
-// convertTo returns naked VPCRouterPPTPServer
-func (o *VPCRouterPPTPServer) convertTo() (*naked.VPCRouterPPTPServerConfig, error) {
-	dest := &naked.VPCRouterPPTPServerConfig{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked VPCRouterPPTPServer
-func (o *VPCRouterPPTPServer) convertFrom(naked *naked.VPCRouterPPTPServerConfig) error {
-	return mapconv.ConvertFrom(naked, o)
 }
 
 /*************************************************
@@ -9957,18 +8839,6 @@ func (o *VPCRouterL2TPIPsecServer) SetPreSharedSecret(v string) {
 	o.PreSharedSecret = v
 }
 
-// convertTo returns naked VPCRouterL2TPIPsecServer
-func (o *VPCRouterL2TPIPsecServer) convertTo() (*naked.VPCRouterL2TPIPsecServerConfig, error) {
-	dest := &naked.VPCRouterL2TPIPsecServerConfig{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked VPCRouterL2TPIPsecServer
-func (o *VPCRouterL2TPIPsecServer) convertFrom(naked *naked.VPCRouterL2TPIPsecServerConfig) error {
-	return mapconv.ConvertFrom(naked, o)
-}
-
 /*************************************************
 * VPCRouterRemoteAccessUser
 *************************************************/
@@ -10002,18 +8872,6 @@ func (o *VPCRouterRemoteAccessUser) GetPassword() string {
 // SetPassword sets value to Password
 func (o *VPCRouterRemoteAccessUser) SetPassword(v string) {
 	o.Password = v
-}
-
-// convertTo returns naked VPCRouterRemoteAccessUser
-func (o *VPCRouterRemoteAccessUser) convertTo() (*naked.VPCRouterRemoteAccessUserConfig, error) {
-	dest := &naked.VPCRouterRemoteAccessUserConfig{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked VPCRouterRemoteAccessUser
-func (o *VPCRouterRemoteAccessUser) convertFrom(naked *naked.VPCRouterRemoteAccessUserConfig) error {
-	return mapconv.ConvertFrom(naked, o)
 }
 
 /*************************************************
@@ -10084,18 +8942,6 @@ func (o *VPCRouterSiteToSiteIPsecVPN) SetLocalPrefix(v []string) {
 	o.LocalPrefix = v
 }
 
-// convertTo returns naked VPCRouterSiteToSiteIPsecVPN
-func (o *VPCRouterSiteToSiteIPsecVPN) convertTo() (*naked.VPCRouterSiteToSiteIPsecVPNConfig, error) {
-	dest := &naked.VPCRouterSiteToSiteIPsecVPNConfig{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked VPCRouterSiteToSiteIPsecVPN
-func (o *VPCRouterSiteToSiteIPsecVPN) convertFrom(naked *naked.VPCRouterSiteToSiteIPsecVPNConfig) error {
-	return mapconv.ConvertFrom(naked, o)
-}
-
 /*************************************************
 * VPCRouterStaticRoute
 *************************************************/
@@ -10129,18 +8975,6 @@ func (o *VPCRouterStaticRoute) GetNextHop() string {
 // SetNextHop sets value to NextHop
 func (o *VPCRouterStaticRoute) SetNextHop(v string) {
 	o.NextHop = v
-}
-
-// convertTo returns naked VPCRouterStaticRoute
-func (o *VPCRouterStaticRoute) convertTo() (*naked.VPCRouterStaticRouteConfig, error) {
-	dest := &naked.VPCRouterStaticRouteConfig{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked VPCRouterStaticRoute
-func (o *VPCRouterStaticRoute) convertFrom(naked *naked.VPCRouterStaticRouteConfig) error {
-	return mapconv.ConvertFrom(naked, o)
 }
 
 /*************************************************
@@ -10374,18 +9208,6 @@ func (o *VPCRouterInterface) SetIndex(v int) {
 	o.Index = v
 }
 
-// convertTo returns naked VPCRouterInterface
-func (o *VPCRouterInterface) convertTo() (*naked.Interface, error) {
-	dest := &naked.Interface{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked VPCRouterInterface
-func (o *VPCRouterInterface) convertFrom(naked *naked.Interface) error {
-	return mapconv.ConvertFrom(naked, o)
-}
-
 /*************************************************
 * VPCRouterCreateRequest
 *************************************************/
@@ -10498,18 +9320,6 @@ func (o *VPCRouterCreateRequest) SetSettings(v *VPCRouterSetting) {
 	o.Settings = v
 }
 
-// convertTo returns naked VPCRouterCreateRequest
-func (o *VPCRouterCreateRequest) convertTo() (*naked.VPCRouter, error) {
-	dest := &naked.VPCRouter{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked VPCRouterCreateRequest
-func (o *VPCRouterCreateRequest) convertFrom(naked *naked.VPCRouter) error {
-	return mapconv.ConvertFrom(naked, o)
-}
-
 /*************************************************
 * ApplianceConnectedSwitch
 *************************************************/
@@ -10563,18 +9373,6 @@ func (o *ApplianceConnectedSwitch) GetScope() types.EScope {
 // SetScope sets value to Scope
 func (o *ApplianceConnectedSwitch) SetScope(v types.EScope) {
 	o.Scope = v
-}
-
-// convertTo returns naked ApplianceConnectedSwitch
-func (o *ApplianceConnectedSwitch) convertTo() (*naked.ConnectedSwitch, error) {
-	dest := &naked.ConnectedSwitch{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked ApplianceConnectedSwitch
-func (o *ApplianceConnectedSwitch) convertFrom(naked *naked.ConnectedSwitch) error {
-	return mapconv.ConvertFrom(naked, o)
 }
 
 /*************************************************
@@ -10643,18 +9441,6 @@ func (o *VPCRouterUpdateRequest) GetSettings() *VPCRouterSetting {
 // SetSettings sets value to Settings
 func (o *VPCRouterUpdateRequest) SetSettings(v *VPCRouterSetting) {
 	o.Settings = v
-}
-
-// convertTo returns naked VPCRouterUpdateRequest
-func (o *VPCRouterUpdateRequest) convertTo() (*naked.VPCRouter, error) {
-	dest := &naked.VPCRouter{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked VPCRouterUpdateRequest
-func (o *VPCRouterUpdateRequest) convertFrom(naked *naked.VPCRouter) error {
-	return mapconv.ConvertFrom(naked, o)
 }
 
 /*************************************************
@@ -10776,16 +9562,4 @@ func (o *Zone) GetRegion() *Region {
 // SetRegion sets value to Region
 func (o *Zone) SetRegion(v *Region) {
 	o.Region = v
-}
-
-// convertTo returns naked Zone
-func (o *Zone) convertTo() (*naked.Zone, error) {
-	dest := &naked.Zone{}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked Zone
-func (o *Zone) convertFrom(naked *naked.Zone) error {
-	return mapconv.ConvertFrom(naked, o)
 }
