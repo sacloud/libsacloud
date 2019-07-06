@@ -17,21 +17,6 @@ type Operation struct {
 	ResponseEnvelope *EnvelopeType // レスポンス時のエンベロープ
 }
 
-// resultWithDestField レスポンス定義の追加
-func (o *Operation) resultFromEnvelope(sourceField, destField string, isPlural bool, m *Model) *Operation {
-	if destField == "" {
-		destField = m.Name
-	}
-	result := &Result{
-		Model:       m,
-		SourceField: sourceField,
-		DestField:   destField,
-		IsPlural:    isPlural,
-	}
-	o.Results = append(o.Results, result)
-	return o
-}
-
 // GetPathFormat パスのフォーマット
 func (o *Operation) GetPathFormat() string {
 	if o.PathFormat != "" {

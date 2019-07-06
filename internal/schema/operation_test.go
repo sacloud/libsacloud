@@ -25,56 +25,60 @@ func TestOperation(t *testing.T) {
 		expect    *expectOperationValues
 	}{
 		{
-			// TODO あとで直す
-			operation: func() *Operation {
-				o := &Operation{
-					Resource:   resource,
-					Name:       "Create",
-					PathFormat: DefaultPathFormat,
-					Method:     http.MethodPost,
-					RequestEnvelope: RequestEnvelope(&EnvelopePayloadDesc{
-						PayloadType: meta.Static(struct{}{}),
-						PayloadName: resource.FieldName(PayloadForms.Singular),
-					}),
-					Arguments: []*Argument{
-						ArgumentZone,
-						{
-							Name:       "arg1",
-							MapConvTag: "Destination",
-							Type: &Model{
-								Name: "Model",
-								Fields: []*FieldDesc{
-									{
-										Name: "Field1",
-										Type: meta.Static(""),
-									},
-									{
-										Name: "Field2",
-										Type: meta.Static(""),
-									},
+			operation: &Operation{
+				Resource:   resource,
+				Name:       "Create",
+				PathFormat: DefaultPathFormat,
+				Method:     http.MethodPost,
+				RequestEnvelope: RequestEnvelope(&EnvelopePayloadDesc{
+					PayloadType: meta.Static(struct{}{}),
+					PayloadName: resource.FieldName(PayloadForms.Singular),
+				}),
+				Arguments: []*Argument{
+					ArgumentZone,
+					{
+						Name:       "arg1",
+						MapConvTag: "Destination",
+						Type: &Model{
+							Name: "Model",
+							Fields: []*FieldDesc{
+								{
+									Name: "Field1",
+									Type: meta.Static(""),
+								},
+								{
+									Name: "Field2",
+									Type: meta.Static(""),
 								},
 							},
 						},
 					},
-				}
-				o.ResponseEnvelope = ResultFromEnvelope(o, &Model{
-					Name: "ResultFromEnvelope",
-					Fields: []*FieldDesc{
-						{
-							Name: "Field3",
-							Type: meta.Static(""),
-						},
-						{
-							Name: "Field4",
-							Type: meta.Static(""),
-						},
-					},
-				}, &EnvelopePayloadDesc{
+				},
+				ResponseEnvelope: ResponseEnvelope(&EnvelopePayloadDesc{
 					PayloadName: "Test",
 					PayloadType: meta.Static(struct{}{}),
-				}, "Test")
-				return o
-			}(),
+				}),
+				Results: Results{
+					{
+						SourceField: "Test",
+						DestField:   "Test",
+						IsPlural:    false,
+						Model: &Model{
+							Name: "ResponseEnvelope",
+							Fields: []*FieldDesc{
+								{
+									Name: "Field3",
+									Type: meta.Static(""),
+								},
+								{
+									Name: "Field4",
+									Type: meta.Static(""),
+								},
+							},
+						},
+					},
+				},
+			},
 			expect: &expectOperationValues{
 				methodName:                 "Create",
 				requestEnvelopeStructName:  "testCreateRequestEnvelope",

@@ -81,3 +81,64 @@ func (f PayloadForm) IsSingular() bool {
 func (f PayloadForm) IsPlural() bool {
 	return int(f) == int(PayloadForms.Plural)
 }
+
+// RequestEnvelope リクエストのエンベロープを作成する
+func RequestEnvelope(descs ...*EnvelopePayloadDesc) *EnvelopeType {
+	ret := &EnvelopeType{
+		Form: PayloadForms.Singular,
+	}
+
+	for _, desc := range descs {
+		ret.Payloads = append(ret.Payloads, desc)
+	}
+
+	return ret
+}
+
+// RequestEnvelopeFromModel モデル定義からリクエストのエンベロープを作成する
+func RequestEnvelopeFromModel(model *Model) *EnvelopeType {
+	var descs []*EnvelopePayloadDesc
+	for _, field := range model.Fields {
+		descs = append(descs, &EnvelopePayloadDesc{
+			PayloadName: field.Name,
+			PayloadType: field.Type,
+		})
+	}
+	ret := &EnvelopeType{
+		Form: PayloadForms.Singular,
+	}
+
+	for _, desc := range descs {
+		ret.Payloads = append(ret.Payloads, desc)
+	}
+
+	return ret
+}
+
+// ResponseEnvelope エンベロープから抽出するレスポンス定義の追加
+func ResponseEnvelope(sourceField *EnvelopePayloadDesc) *EnvelopeType {
+	responseEnvelope := &EnvelopeType{
+		Form:     PayloadForms.Singular,
+		Payloads: []*EnvelopePayloadDesc{sourceField},
+	}
+	if sourceField.Tags == nil {
+		sourceField.Tags = &FieldTags{
+			JSON: ",omitempty",
+		}
+	}
+	return responseEnvelope
+}
+
+// ResponseEnvelopePlural エンベロープから抽出するレスポンス定義の追加(複数形)
+func ResponseEnvelopePlural(sourceField *EnvelopePayloadDesc) *EnvelopeType {
+	responseEnvelope := &EnvelopeType{
+		Form:     PayloadForms.Plural,
+		Payloads: []*EnvelopePayloadDesc{sourceField},
+	}
+	if sourceField.Tags == nil {
+		sourceField.Tags = &FieldTags{
+			JSON: ",omitempty",
+		}
+	}
+	return responseEnvelope
+}
