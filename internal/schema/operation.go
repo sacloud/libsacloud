@@ -65,8 +65,8 @@ func (o *Operation) PassthroughModelArgumentWithEnvelope(name string, model *Mod
 	})
 }
 
-// Arguments 引数定義の追加(複数)
-func (o *Operation) Arguments(args []*Argument) *Operation {
+// AddArguments 引数定義の追加(複数)
+func (o *Operation) AddArguments(args []*Argument) *Operation {
 	o.arguments = append(o.arguments, args...)
 	return o
 }
@@ -215,8 +215,8 @@ func (o *Operation) ResultTypeName() string {
 	return o.resultType().GoType()
 }
 
-// AllArguments 設定されている全てのArgumentを取得
-func (o *Operation) AllArguments() Arguments {
+// Arguments 設定されている全てのArgumentを取得
+func (o *Operation) Arguments() Arguments {
 	return o.arguments
 }
 

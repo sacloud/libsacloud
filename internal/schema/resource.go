@@ -441,7 +441,7 @@ func (r *Resource) DefineSimpleOperation(opName, method, pathSuffix string, argu
 	o.PathFormat = IDAndSuffixPathFormat(pathSuffix)
 	o.Method = method
 	if len(arguments) > 0 {
-		o.Arguments(arguments)
+		o.AddArguments(arguments)
 	}
 	return o
 }
