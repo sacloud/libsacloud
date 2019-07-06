@@ -33,15 +33,6 @@ func MappableArgument(o *Operation, name string, model *Model) *Argument {
 	}
 }
 
-// PassthroughModelArgument 引数定義の追加
-func PassthroughModelArgument(o *Operation, name string, model *Model) *Argument {
-	return &Argument{
-		Name:       name,
-		Type:       model,
-		MapConvTag: ",squash",
-	}
-}
-
 // PassthroughModelArgumentWithEnvelope 引数定義の追加、ペイロードの定義も同時に行われる
 func PassthroughModelArgumentWithEnvelope(o *Operation, name string, model *Model) *Argument {
 	var descs []*EnvelopePayloadDesc
@@ -73,26 +64,6 @@ func RequestEnvelope(o *Operation, descs ...*EnvelopePayloadDesc) *EnvelopeType 
 	}
 
 	return ret
-}
-
-// RequestEnvelopePlural リクエストのエンベロープを複数形として追加する
-func RequestEnvelopePlural(o *Operation, descs ...*EnvelopePayloadDesc) *EnvelopeType {
-	ret := &EnvelopeType{
-		Form: PayloadForms.Plural,
-	}
-	for _, desc := range descs {
-		if desc.PayloadName == "" {
-			desc.PayloadName = o.resource.FieldName(ret.Form)
-		}
-		ret.Payloads = append(ret.Payloads, desc)
-	}
-	return ret
-}
-
-// AddArguments 引数定義の追加(複数)
-func (o *Operation) AddArguments(args ...*Argument) *Operation {
-	o.Arguments = append(o.Arguments, args...)
-	return o
 }
 
 // ResultFromEnvelope エンベロープから抽出するレスポンス定義の追加
