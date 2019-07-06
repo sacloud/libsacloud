@@ -12,7 +12,7 @@ type Operation struct {
 	Method           string        // HTTPリクエストメソッド GET/POST/PUT/DELETE
 	PathFormat       string        // パスのフォーマット、省略した場合はDefaultPathFormatが設定される
 	Arguments        Arguments     // 引数の定義
-	results          Results       // レスポンス
+	Results          Results       // レスポンス
 	RequestEnvelope  *EnvelopeType // リクエスト時のエンベロープ
 	responseEnvelope *EnvelopeType // レスポンス時のエンベロープ
 }
@@ -122,7 +122,7 @@ func (o *Operation) resultFromEnvelope(sourceField, destField string, isPlural b
 		DestField:   destField,
 		IsPlural:    isPlural,
 	}
-	o.results = append(o.results, result)
+	o.Results = append(o.Results, result)
 	return o
 }
 
@@ -142,7 +142,7 @@ func (o *Operation) ImportStatements(additionalImports ...string) []string {
 		ss = append(ss, arg.ImportStatements()...)
 	}
 
-	for _, m := range o.results {
+	for _, m := range o.Results {
 		ss = append(ss, m.ImportStatements()...)
 	}
 
@@ -179,12 +179,7 @@ func (o *Operation) ResultTypeName() string {
 
 // HasResults 戻り値が定義されているかを取得
 func (o *Operation) HasResults() bool {
-	return len(o.results) > 0
-}
-
-// AllResults 戻り値
-func (o *Operation) AllResults() Results {
-	return o.results
+	return len(o.Results) > 0
 }
 
 // ResultsStatement 戻り値定義部のソースを出力
@@ -197,7 +192,7 @@ func (o *Operation) ResultsStatement() string {
 
 // StubFieldDefines スタブ生成時のフィールド定義文を全フィールド分出力
 func (o *Operation) StubFieldDefines() []string {
-	if len(o.results) == 0 {
+	if len(o.Results) == 0 {
 		return nil
 	}
 	return []string{fmt.Sprintf("Values %s", o.resultType().GoTypeSourceCode())}
@@ -205,7 +200,7 @@ func (o *Operation) StubFieldDefines() []string {
 
 // StubReturnStatement スタブ生成時のreturn文
 func (o *Operation) StubReturnStatement(receiverName string) string {
-	if len(o.results) == 0 {
+	if len(o.Results) == 0 {
 		return fmt.Sprintf("return %s.%sStubResult.Err", receiverName, o.MethodName())
 	}
 	var strResults []string
@@ -216,7 +211,7 @@ func (o *Operation) StubReturnStatement(receiverName string) string {
 
 // Models オペレーション配下の(Nameで)ユニークなモデル一覧を取得
 func (o *Operation) Models() Models {
-	ms := o.results.Models()
+	ms := o.Results.Models()
 	for _, arg := range o.Arguments {
 		m, ok := arg.Type.(*Model)
 		if ok {
@@ -305,6 +300,6 @@ func (o *Operation) resultType() *ResultType {
 	return &ResultType{
 		resource:  o.Resource,
 		operation: o,
-		results:   o.results,
+		results:   o.Results,
 	}
 }

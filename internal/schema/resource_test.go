@@ -115,7 +115,7 @@ func TestResources_ImportStatements(t *testing.T) {
 									Type: meta.Static(sacloud.Client{}),
 								},
 							},
-							results: Results([]*Result{
+							Results: Results([]*Result{
 								{
 									Model: &Model{
 										Name: "Note",
