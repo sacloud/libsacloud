@@ -10,17 +10,11 @@ type Operation struct {
 	resource         *Resource
 	Name             string        // 操作名、メソッド名となる
 	Method           string        // HTTPリクエストメソッド GET/POST/PUT/DELETE
-	pathFormat       string        // パスのフォーマット、省略した場合はDefaultPathFormatが設定される
+	PathFormat       string        // パスのフォーマット、省略した場合はDefaultPathFormatが設定される
 	arguments        Arguments     // 引数の定義
 	results          Results       // レスポンス
 	requestEnvelope  *EnvelopeType // リクエスト時のエンベロープ
 	responseEnvelope *EnvelopeType // レスポンス時のエンベロープ
-}
-
-// PathFormat パスのフォーマット、省略した場合はDefaultPathFormatが設定される
-func (o *Operation) PathFormat(pathFormat string) *Operation {
-	o.pathFormat = pathFormat
-	return o
 }
 
 // Argument 引数定義の追加(単数)
@@ -172,8 +166,8 @@ func (o *Operation) RequestEnvelopePlural(descs ...*EnvelopePayloadDesc) *Operat
 
 // GetPathFormat パスのフォーマット
 func (o *Operation) GetPathFormat() string {
-	if o.pathFormat != "" {
-		return o.pathFormat
+	if o.PathFormat != "" {
+		return o.PathFormat
 	}
 	return DefaultPathFormat
 }

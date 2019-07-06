@@ -25,7 +25,6 @@ var diskAPI = &schema.Resource{
 			// create distantly
 			func() *schema.Operation {
 				o := r.DefineOperation("CreateDistantly").
-					PathFormat(schema.DefaultPathFormat).
 					RequestEnvelope(&schema.EnvelopePayloadDesc{
 						PayloadType: diskNakedType,
 						PayloadName: "Disk",
@@ -49,6 +48,7 @@ var diskAPI = &schema.Resource{
 						PayloadType: diskNakedType,
 						PayloadName: "Disk",
 					}, diskModel.Name)
+				o.PathFormat = schema.DefaultPathFormat
 				o.Method = http.MethodPost
 				return o
 			}(),
@@ -57,10 +57,10 @@ var diskAPI = &schema.Resource{
 			// config(DiskEdit)
 			func() *schema.Operation {
 				o := r.DefineOperation("Config").
-					PathFormat(schema.IDAndSuffixPathFormat("config")).
 					Argument(schema.ArgumentZone).
 					Argument(schema.ArgumentID).
 					PassthroughModelArgumentWithEnvelope("edit", diskEditParam)
+				o.PathFormat = schema.IDAndSuffixPathFormat("config")
 				o.Method = http.MethodPut
 				return o
 			}(),
@@ -69,7 +69,6 @@ var diskAPI = &schema.Resource{
 			// create with config(DiskEdit)
 			func() *schema.Operation {
 				o := r.DefineOperation("CreateWithConfig").
-					PathFormat(schema.DefaultPathFormat).
 					RequestEnvelope(&schema.EnvelopePayloadDesc{
 						PayloadType: diskNakedType,
 						PayloadName: "Disk",
@@ -102,6 +101,7 @@ var diskAPI = &schema.Resource{
 						PayloadType: diskNakedType,
 						PayloadName: "Disk",
 					}, diskModel.Name)
+				o.PathFormat = schema.DefaultPathFormat
 				o.Method = http.MethodPost
 				return o
 			}(),
@@ -109,7 +109,6 @@ var diskAPI = &schema.Resource{
 			// TODO あとで直す
 			func() *schema.Operation {
 				o := r.DefineOperation("CreateWithConfigDistantly").
-					PathFormat(schema.DefaultPathFormat).
 					RequestEnvelope(&schema.EnvelopePayloadDesc{
 						PayloadType: diskNakedType,
 						PayloadName: "Disk",
@@ -151,6 +150,7 @@ var diskAPI = &schema.Resource{
 						PayloadType: diskNakedType,
 						PayloadName: "Disk",
 					}, diskModel.Name)
+				o.PathFormat = schema.DefaultPathFormat
 				o.Method = http.MethodPost
 				return o
 			}(),
@@ -176,7 +176,6 @@ var diskAPI = &schema.Resource{
 			// TODO あとで直す
 			func() *schema.Operation {
 				o := r.DefineOperation("InstallDistantFrom").
-					PathFormat(schema.IDAndSuffixPathFormat("install")).
 					RequestEnvelope(&schema.EnvelopePayloadDesc{
 						PayloadType: diskNakedType,
 						PayloadName: "Disk",
@@ -201,6 +200,7 @@ var diskAPI = &schema.Resource{
 						PayloadType: diskNakedType,
 						PayloadName: "Disk",
 					}, diskModel.Name)
+				o.PathFormat = schema.IDAndSuffixPathFormat("install")
 				o.Method = http.MethodPut
 				return o
 			}(),
@@ -208,7 +208,6 @@ var diskAPI = &schema.Resource{
 			// TODO あとで直す
 			func() *schema.Operation {
 				o := r.DefineOperation("Install").
-					PathFormat(schema.IDAndSuffixPathFormat("install")).
 					RequestEnvelope(&schema.EnvelopePayloadDesc{
 						PayloadType: diskNakedType,
 						PayloadName: "Disk",
@@ -224,6 +223,7 @@ var diskAPI = &schema.Resource{
 						PayloadType: diskNakedType,
 						PayloadName: "Disk",
 					}, diskModel.Name)
+				o.PathFormat = schema.IDAndSuffixPathFormat("install")
 				o.Method = http.MethodPut
 				return o
 			}(),

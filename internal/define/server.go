@@ -33,7 +33,6 @@ var serverAPI = &schema.Resource{
 			// TODO あとで直す
 			func() *schema.Operation {
 				o := r.DefineOperation("ChangePlan").
-					PathFormat(schema.IDAndSuffixPathFormat("plan")).
 					Argument(schema.ArgumentZone).
 					Argument(schema.ArgumentID).
 					PassthroughModelArgumentWithEnvelope("plan", serverChangePlanParam).
@@ -41,6 +40,7 @@ var serverAPI = &schema.Resource{
 						PayloadName: r.Name,
 						PayloadType: meta.Static(naked.Server{}),
 					}, "")
+				o.PathFormat = schema.IDAndSuffixPathFormat("plan")
 				o.Method = http.MethodPut
 				return o
 			}(),
@@ -49,7 +49,6 @@ var serverAPI = &schema.Resource{
 			// TODO あとで直す
 			func() *schema.Operation {
 				o := r.DefineOperation("InsertCDROM").
-					PathFormat(schema.IDAndSuffixPathFormat("cdrom")).
 					RequestEnvelope(&schema.EnvelopePayloadDesc{
 						PayloadType: meta.Static(naked.CDROM{}),
 						PayloadName: "CDROM",
@@ -67,6 +66,7 @@ var serverAPI = &schema.Resource{
 						},
 						MapConvTag: "CDROM",
 					})
+				o.PathFormat = schema.IDAndSuffixPathFormat("cdrom")
 				o.Method = http.MethodPut
 				return o
 			}(),
@@ -75,7 +75,6 @@ var serverAPI = &schema.Resource{
 			// TODO あとで直す
 			func() *schema.Operation {
 				o := r.DefineOperation("EjectCDROM").
-					PathFormat(schema.IDAndSuffixPathFormat("cdrom")).
 					RequestEnvelope(&schema.EnvelopePayloadDesc{
 						PayloadType: meta.Static(naked.CDROM{}),
 						PayloadName: "CDROM",
@@ -93,6 +92,7 @@ var serverAPI = &schema.Resource{
 						},
 						MapConvTag: "CDROM",
 					})
+				o.PathFormat = schema.IDAndSuffixPathFormat("cdrom")
 				o.Method = http.MethodDelete
 				return o
 			}(),

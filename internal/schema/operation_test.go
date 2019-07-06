@@ -28,7 +28,6 @@ func TestOperation(t *testing.T) {
 			// TODO あとで直す
 			operation: func() *Operation {
 				o := resource.DefineOperation("Create").
-					PathFormat(DefaultPathFormat).
 					RequestEnvelope(&EnvelopePayloadDesc{PayloadType: meta.Static(struct{}{})}).
 					Argument(ArgumentZone).
 					Argument(&Argument{
@@ -64,6 +63,7 @@ func TestOperation(t *testing.T) {
 						PayloadName: "Test",
 						PayloadType: meta.Static(struct{}{}),
 					}, "Test")
+				o.PathFormat = DefaultPathFormat
 				o.Method = http.MethodPost
 				return o
 			}(),

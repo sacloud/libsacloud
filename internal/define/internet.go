@@ -34,7 +34,6 @@ var internetAPI = &schema.Resource{
 			// TODO あとで直す
 			func() *schema.Operation {
 				o := r.DefineOperation("UpdateBandWidth").
-					PathFormat(schema.IDAndSuffixPathFormat("bandwidth")).
 					RequestEnvelope(&schema.EnvelopePayloadDesc{
 						PayloadType: internetNakedType,
 						PayloadName: "Internet",
@@ -46,6 +45,7 @@ var internetAPI = &schema.Resource{
 						PayloadType: internetNakedType,
 						PayloadName: "Internet",
 					}, "")
+				o.PathFormat = schema.IDAndSuffixPathFormat("bandwidth")
 				o.Method = http.MethodPut
 				return o
 			}(),
@@ -54,7 +54,6 @@ var internetAPI = &schema.Resource{
 			// TODO あとで直す
 			func() *schema.Operation {
 				o := r.DefineOperation("AddSubnet").
-					PathFormat(schema.IDAndSuffixPathFormat("subnet")).
 					Argument(schema.ArgumentZone).
 					Argument(schema.ArgumentID).
 					PassthroughModelArgumentWithEnvelope("param", internetAddSubnetParam).
@@ -62,6 +61,7 @@ var internetAPI = &schema.Resource{
 						PayloadType: meta.Static(naked.Subnet{}),
 						PayloadName: "Subnet",
 					}, "Subnet")
+				o.PathFormat = schema.IDAndSuffixPathFormat("subnet")
 				o.Method = http.MethodPost
 				return o
 			}(),
@@ -70,7 +70,6 @@ var internetAPI = &schema.Resource{
 			// TODO あとで直す
 			func() *schema.Operation {
 				o := r.DefineOperation("UpdateSubnet").
-					PathFormat(schema.IDAndSuffixPathFormat("subnet/{{.subnetID}}")).
 					Argument(schema.ArgumentZone).
 					Argument(schema.ArgumentID).
 					Argument(&schema.Argument{
@@ -82,6 +81,7 @@ var internetAPI = &schema.Resource{
 						PayloadType: meta.Static(naked.Subnet{}),
 						PayloadName: "Subnet",
 					}, "Subnet")
+				o.PathFormat = schema.IDAndSuffixPathFormat("subnet/{{.subnetID}}")
 				o.Method = http.MethodPut
 				return o
 			}(),
