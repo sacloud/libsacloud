@@ -183,12 +183,21 @@ func (r *Resource) defineOperationCreate(nakedType meta.Type, createParam, resul
 		result.NakedType = nakedType
 	}
 
+	destField := payloadName
+	if destField == "" {
+		destField = r.FieldName(PayloadForms.Singular)
+	}
+
 	// TODO あとで直す
 	o := &Operation{
 		Resource:   r,
 		Name:       "Create",
 		PathFormat: DefaultPathFormat,
 		Method:     http.MethodPost,
+		Arguments: Arguments{
+			ArgumentZone,
+			MappableArgument("param", createParam, destField),
+		},
 	}
 	o.ResponseEnvelope = ResultFromEnvelope(o, result, &EnvelopePayloadDesc{
 		PayloadType: nakedType,
@@ -198,10 +207,6 @@ func (r *Resource) defineOperationCreate(nakedType meta.Type, createParam, resul
 		PayloadType: nakedType,
 		PayloadName: payloadName,
 	})
-	o.Arguments = Arguments{
-		ArgumentZone,
-		MappableArgument(o, "param", createParam),
-	}
 	return o
 }
 
@@ -276,13 +281,21 @@ func (r *Resource) defineOperationUpdate(nakedType meta.Type, updateParam, resul
 	if result.NakedType == nil {
 		result.NakedType = nakedType
 	}
-
+	destField := payloadName
+	if destField == "" {
+		destField = r.FieldName(PayloadForms.Singular)
+	}
 	// TODO あとで直す
 	o := &Operation{
 		Resource:   r,
 		Name:       "Update",
 		PathFormat: DefaultPathFormatWithID,
 		Method:     http.MethodPut,
+		Arguments: Arguments{
+			ArgumentZone,
+			ArgumentID,
+			MappableArgument("param", updateParam, destField),
+		},
 	}
 	o.ResponseEnvelope = ResultFromEnvelope(o, result, &EnvelopePayloadDesc{
 		PayloadType: nakedType,
@@ -292,11 +305,6 @@ func (r *Resource) defineOperationUpdate(nakedType meta.Type, updateParam, resul
 		PayloadType: nakedType,
 		PayloadName: payloadName,
 	})
-	o.Arguments = Arguments{
-		ArgumentZone,
-		ArgumentID,
-		MappableArgument(o, "param", updateParam),
-	}
 	return o
 }
 

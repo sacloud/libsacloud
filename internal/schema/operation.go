@@ -18,14 +18,7 @@ type Operation struct {
 }
 
 // MappableArgument 引数定義の追加
-func MappableArgument(o *Operation, name string, model *Model) *Argument {
-	var destField string
-	if o.RequestEnvelope != nil {
-		destField = o.RequestEnvelope.PayloadName()
-		if destField == "" {
-			destField = o.Resource.FieldName(o.RequestEnvelope.Form)
-		}
-	}
+func MappableArgument(name string, model *Model, destField string) *Argument {
 	return &Argument{
 		Name:       name,
 		Type:       model,

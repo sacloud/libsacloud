@@ -42,6 +42,11 @@ var simAPI = &schema.Resource{
 					Name:       "AssignIP",
 					PathFormat: schema.IDAndSuffixPathFormat("sim/ip"),
 					Method:     http.MethodPut,
+					Arguments: schema.Arguments{
+						schema.ArgumentZone,
+						schema.ArgumentID,
+						schema.MappableArgument("param", simAssignIPParam, "SIM"),
+					},
 				}
 				o.RequestEnvelope = schema.RequestEnvelope(o,
 					&schema.EnvelopePayloadDesc{
@@ -52,11 +57,6 @@ var simAPI = &schema.Resource{
 						},
 					},
 				)
-				o.Arguments = schema.Arguments{
-					schema.ArgumentZone,
-					schema.ArgumentID,
-					schema.MappableArgument(o, "param", simAssignIPParam),
-				}
 				return o
 			}(),
 
@@ -71,6 +71,11 @@ var simAPI = &schema.Resource{
 					Name:       "IMEILock",
 					PathFormat: schema.IDAndSuffixPathFormat("sim/imeilock"),
 					Method:     http.MethodPut,
+					Arguments: schema.Arguments{
+						schema.ArgumentZone,
+						schema.ArgumentID,
+						schema.MappableArgument("param", simIMEILockParam, "SIM"),
+					},
 				}
 				o.RequestEnvelope = schema.RequestEnvelope(o,
 					&schema.EnvelopePayloadDesc{
@@ -81,11 +86,6 @@ var simAPI = &schema.Resource{
 						},
 					},
 				)
-				o.Arguments = schema.Arguments{
-					schema.ArgumentZone,
-					schema.ArgumentID,
-					schema.MappableArgument(o, "param", simIMEILockParam),
-				}
 				return o
 			}(),
 

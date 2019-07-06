@@ -38,6 +38,11 @@ var internetAPI = &schema.Resource{
 					Name:       "UpdateBandWidth",
 					PathFormat: schema.IDAndSuffixPathFormat("bandwidth"),
 					Method:     http.MethodPut,
+					Arguments: schema.Arguments{
+						schema.ArgumentZone,
+						schema.ArgumentID,
+						schema.MappableArgument("param", internetUpdateBandWidthParam, "Internet"),
+					},
 				}
 				o.ResponseEnvelope = schema.ResultFromEnvelope(o, internetView, &schema.EnvelopePayloadDesc{
 					PayloadType: internetNakedType,
@@ -49,11 +54,6 @@ var internetAPI = &schema.Resource{
 						PayloadName: "Internet",
 					},
 				)
-				o.Arguments = schema.Arguments{
-					schema.ArgumentZone,
-					schema.ArgumentID,
-					schema.MappableArgument(o, "param", internetUpdateBandWidthParam),
-				}
 				return o
 			}(),
 
