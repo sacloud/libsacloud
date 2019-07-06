@@ -89,19 +89,5 @@ func (o *{{ $struct }}) Set{{.Name}}(v {{ if .HasType }}{{ .TypeName }}{{ else }
 {{- end }} {{/* end of range .ExtendAccessors */}}
 {{- end }} {{/* end of range .Fields */}}
 
-{{- if .HasNakedType }}
-// convertTo returns naked {{.Name}} 
-func (o *{{ .Name }}) convertTo() ({{.NakedType.GoTypeSourceCode}}, error) {
-	dest := {{.NakedType.ZeroInitializeSourceCode}}
-	err := mapconv.ConvertTo(o, dest)
-	return dest, err
-}
-
-// convertFrom parse values from naked {{.Name}}
-func (o *{{ .Name }}) convertFrom(naked {{.NakedType.GoTypeSourceCode}}) error {
-	return mapconv.ConvertFrom(naked, o)
-}
-
-{{- end }} {{/* end of if .HasNakedType  */}}
 {{- end }} {{/* end of range .Models */}}
 `
