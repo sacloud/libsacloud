@@ -20,12 +20,18 @@ var archiveAPI = &schema.Resource{
 
 			// CreateBlank
 			func() *schema.Operation {
-				o := r.DefineOperationCreate(archiveNakedType, archiveCreateBlankParam, archiveView).
-					ResultFromEnvelope(models.ftpServer(), &schema.EnvelopePayloadDesc{
-						PayloadName: models.ftpServer().Name,
-						PayloadType: meta.Static(naked.OpeningFTPServer{}),
-					}, models.ftpServer().Name)
+				o := r.DefineOperationCreate(archiveNakedType, archiveCreateBlankParam, archiveView)
 				o.Name = "CreateBlank"
+				o.ResponseEnvelope.Payloads = append(o.ResponseEnvelope.Payloads, &schema.EnvelopePayloadDesc{
+					PayloadName: models.ftpServer().Name,
+					PayloadType: meta.Static(naked.OpeningFTPServer{}),
+				})
+				o.Results = append(o.Results, &schema.Result{
+					SourceField: models.ftpServer().Name,
+					DestField:   models.ftpServer().Name,
+					IsPlural:    false,
+					Model:       models.ftpServer(),
+				})
 				return o
 				// TODO あとで直す
 			}(),

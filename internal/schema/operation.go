@@ -14,7 +14,7 @@ type Operation struct {
 	Arguments        Arguments     // 引数の定義
 	Results          Results       // レスポンス
 	RequestEnvelope  *EnvelopeType // リクエスト時のエンベロープ
-	responseEnvelope *EnvelopeType // レスポンス時のエンベロープ
+	ResponseEnvelope *EnvelopeType // レスポンス時のエンベロープ
 }
 
 // MappableArgument 引数定義の追加
@@ -67,48 +67,48 @@ func RequestEnvelope(o *Operation, descs ...*EnvelopePayloadDesc) *EnvelopeType 
 }
 
 // ResultFromEnvelope エンベロープから抽出するレスポンス定義の追加
-func (o *Operation) ResultFromEnvelope(m *Model, sourceField *EnvelopePayloadDesc, destFieldName string) *Operation {
-	if o.responseEnvelope == nil {
-		o.responseEnvelope = &EnvelopeType{
-			Form: PayloadForms.Singular,
-		}
+func ResultFromEnvelope(o *Operation, m *Model, sourceField *EnvelopePayloadDesc, destFieldName string) *EnvelopeType {
+	responseEnvelope := &EnvelopeType{
+		Form: PayloadForms.Singular,
 	}
 	if sourceField.PayloadName == "" {
-		sourceField.PayloadName = o.Resource.FieldName(o.responseEnvelope.Form)
+		sourceField.PayloadName = o.Resource.FieldName(responseEnvelope.Form)
 	}
 	if destFieldName == "" {
-		destFieldName = o.Resource.FieldName(o.responseEnvelope.Form)
+		destFieldName = o.Resource.FieldName(responseEnvelope.Form)
 	}
-	o.responseEnvelope.Payloads = append(o.responseEnvelope.Payloads, sourceField)
+	responseEnvelope.Payloads = append(responseEnvelope.Payloads, sourceField)
 	if sourceField.Tags == nil {
 		sourceField.Tags = &FieldTags{
 			JSON: ",omitempty",
 		}
 	}
-	return o.resultFromEnvelope(sourceField.PayloadName, destFieldName, false, m)
+	// TODO あとで直す
+	o.resultFromEnvelope(sourceField.PayloadName, destFieldName, false, m)
+	return responseEnvelope
 }
 
 // ResultPluralFromEnvelope エンベロープから抽出するレスポンス定義の追加(複数形)
-func (o *Operation) ResultPluralFromEnvelope(m *Model, sourceField *EnvelopePayloadDesc, destFieldName string) *Operation {
-	if o.responseEnvelope == nil {
-		o.responseEnvelope = &EnvelopeType{
-			Form: PayloadForms.Plural,
-		}
+func ResultPluralFromEnvelope(o *Operation, m *Model, sourceField *EnvelopePayloadDesc, destFieldName string) *EnvelopeType {
+	responseEnvelope := &EnvelopeType{
+		Form: PayloadForms.Plural,
 	}
 	if sourceField.PayloadName == "" {
-		sourceField.PayloadName = o.Resource.FieldName(o.responseEnvelope.Form)
+		sourceField.PayloadName = o.Resource.FieldName(responseEnvelope.Form)
 	}
 	if destFieldName == "" {
-		destFieldName = o.Resource.FieldName(o.responseEnvelope.Form)
+		destFieldName = o.Resource.FieldName(responseEnvelope.Form)
 	}
 
-	o.responseEnvelope.Payloads = append(o.responseEnvelope.Payloads, sourceField)
+	responseEnvelope.Payloads = append(responseEnvelope.Payloads, sourceField)
 	if sourceField.Tags == nil {
 		sourceField.Tags = &FieldTags{
 			JSON: ",omitempty",
 		}
 	}
-	return o.resultFromEnvelope(sourceField.PayloadName, destFieldName, true, m)
+	// TODO あとで直す
+	o.resultFromEnvelope(sourceField.PayloadName, destFieldName, true, m)
+	return responseEnvelope
 }
 
 // resultWithDestField レスポンス定義の追加
@@ -238,13 +238,13 @@ func (o *Operation) RequestPayloads() []*EnvelopePayloadDesc {
 
 // HasResponseEnvelope レスポンスエンベロープが設定されているか
 func (o *Operation) HasResponseEnvelope() bool {
-	return o.responseEnvelope != nil
+	return o.ResponseEnvelope != nil
 }
 
 // ResponsePayloads レスポンスペイロードを取得
 func (o *Operation) ResponsePayloads() []*EnvelopePayloadDesc {
 	if o.HasResponseEnvelope() {
-		return o.responseEnvelope.Payloads
+		return o.ResponseEnvelope.Payloads
 	}
 	return nil
 }
@@ -268,7 +268,7 @@ func (o *Operation) IsRequestPlural() bool {
 // IsResponseSingular レスポンスが単数系か
 func (o *Operation) IsResponseSingular() bool {
 	if o.HasResponseEnvelope() {
-		return o.responseEnvelope.IsSingular()
+		return o.ResponseEnvelope.IsSingular()
 	}
 	return false
 }
@@ -276,7 +276,7 @@ func (o *Operation) IsResponseSingular() bool {
 // IsResponsePlural レスポンスが複数形か
 func (o *Operation) IsResponsePlural() bool {
 	if o.HasResponseEnvelope() {
-		return o.responseEnvelope.IsPlural()
+		return o.ResponseEnvelope.IsPlural()
 	}
 	return false
 }

@@ -142,7 +142,7 @@ func (r *Resource) defineOperationFind(nakedType meta.Type, findParam, result *M
 		PathFormat: DefaultPathFormat,
 		Method:     http.MethodGet,
 	}
-	o.ResultPluralFromEnvelope(result, &EnvelopePayloadDesc{
+	o.ResponseEnvelope = ResultPluralFromEnvelope(o, result, &EnvelopePayloadDesc{
 		PayloadType: nakedType,
 		PayloadName: payloadName,
 	}, "")
@@ -190,7 +190,7 @@ func (r *Resource) defineOperationCreate(nakedType meta.Type, createParam, resul
 		PathFormat: DefaultPathFormat,
 		Method:     http.MethodPost,
 	}
-	o.ResultFromEnvelope(result, &EnvelopePayloadDesc{
+	o.ResponseEnvelope = ResultFromEnvelope(o, result, &EnvelopePayloadDesc{
 		PayloadType: nakedType,
 		PayloadName: payloadName,
 	}, "")
@@ -240,7 +240,7 @@ func (r *Resource) defineOperationRead(nakedType meta.Type, result *Model, paylo
 			ArgumentID,
 		},
 	}
-	o.ResultFromEnvelope(result, &EnvelopePayloadDesc{
+	o.ResponseEnvelope = ResultFromEnvelope(o, result, &EnvelopePayloadDesc{
 		PayloadType: nakedType,
 		PayloadName: payloadName,
 	}, "")
@@ -284,7 +284,7 @@ func (r *Resource) defineOperationUpdate(nakedType meta.Type, updateParam, resul
 		PathFormat: DefaultPathFormatWithID,
 		Method:     http.MethodPut,
 	}
-	o.ResultFromEnvelope(result, &EnvelopePayloadDesc{
+	o.ResponseEnvelope = ResultFromEnvelope(o, result, &EnvelopePayloadDesc{
 		PayloadType: nakedType,
 		PayloadName: payloadName,
 	}, "")
@@ -429,7 +429,7 @@ func (r *Resource) DefineOperationStatus(nakedType meta.Type, result *Model) *Op
 		PathFormat: IDAndSuffixPathFormat("status"),
 		Method:     http.MethodGet,
 	}
-	o.ResultPluralFromEnvelope(result, &EnvelopePayloadDesc{
+	o.ResponseEnvelope = ResultPluralFromEnvelope(o, result, &EnvelopePayloadDesc{
 		PayloadType: meta.Static(naked.LoadBalancerStatus{}),
 		PayloadName: r.FieldName(PayloadForms.Singular),
 	}, "Status")
@@ -449,7 +449,7 @@ func (r *Resource) DefineOperationOpenFTP(openParam, result *Model) *Operation {
 		PathFormat: IDAndSuffixPathFormat("ftp"),
 		Method:     http.MethodPut,
 	}
-	o.ResultFromEnvelope(result, &EnvelopePayloadDesc{
+	o.ResponseEnvelope = ResultFromEnvelope(o, result, &EnvelopePayloadDesc{
 		PayloadName: result.Name,
 		PayloadType: meta.Static(naked.OpeningFTPServer{}),
 	}, result.Name)
@@ -505,7 +505,7 @@ func (r *Resource) DefineOperationMonitor(monitorParam, result *Model) *Operatio
 		ArgumentID,
 		PassthroughModelArgumentWithEnvelope(o, "condition", monitorParam),
 	}
-	o.ResultFromEnvelope(result, &EnvelopePayloadDesc{
+	o.ResponseEnvelope = ResultFromEnvelope(o, result, &EnvelopePayloadDesc{
 		PayloadType: meta.Static(naked.MonitorValues{}),
 		PayloadName: "Data",
 	}, result.Name)
@@ -526,7 +526,7 @@ func (r *Resource) DefineOperationMonitorChild(funcNameSuffix, childResourceName
 		ArgumentID,
 		PassthroughModelArgumentWithEnvelope(o, "condition", monitorParam),
 	}
-	o.ResultFromEnvelope(result, &EnvelopePayloadDesc{
+	o.ResponseEnvelope = ResultFromEnvelope(o, result, &EnvelopePayloadDesc{
 		PayloadType: meta.Static(naked.MonitorValues{}),
 		PayloadName: "Data",
 	}, result.Name)
@@ -553,7 +553,7 @@ func (r *Resource) DefineOperationMonitorChildBy(funcNameSuffix, childResourceNa
 		},
 		PassthroughModelArgumentWithEnvelope(o, "condition", monitorParam),
 	}
-	o.ResultFromEnvelope(result, &EnvelopePayloadDesc{
+	o.ResponseEnvelope = ResultFromEnvelope(o, result, &EnvelopePayloadDesc{
 		PayloadType: meta.Static(naked.MonitorValues{}),
 		PayloadName: "Data",
 	}, result.Name)

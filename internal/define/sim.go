@@ -105,7 +105,7 @@ var simAPI = &schema.Resource{
 					PathFormat: schema.IDAndSuffixPathFormat("sim/sessionlog"),
 					Method:     http.MethodGet,
 				}
-				o.ResultPluralFromEnvelope(simLogView, &schema.EnvelopePayloadDesc{
+				o.ResponseEnvelope = schema.ResultPluralFromEnvelope(o, simLogView, &schema.EnvelopePayloadDesc{
 					PayloadName: "Logs",
 					PayloadType: meta.Static(naked.SIMLog{}),
 				}, "Logs")
@@ -125,7 +125,7 @@ var simAPI = &schema.Resource{
 					PathFormat: schema.IDAndSuffixPathFormat("sim/network_operator_config"),
 					Method:     http.MethodGet,
 				}
-				o.ResultPluralFromEnvelope(simNetworkOperatorConfigView, &schema.EnvelopePayloadDesc{
+				o.ResponseEnvelope = schema.ResultPluralFromEnvelope(o, simNetworkOperatorConfigView, &schema.EnvelopePayloadDesc{
 					PayloadName: "NetworkOperationConfigs",
 					PayloadType: meta.Static(naked.SIMNetworkOperatorConfig{}),
 				}, "Configs")

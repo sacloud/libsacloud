@@ -54,7 +54,7 @@ func TestOperation(t *testing.T) {
 					Method:     http.MethodPost,
 				}
 				o.RequestEnvelope = RequestEnvelope(o, &EnvelopePayloadDesc{PayloadType: meta.Static(struct{}{})})
-				o.ResultFromEnvelope(&Model{
+				o.ResponseEnvelope = ResultFromEnvelope(o, &Model{
 					Name: "ResultFromEnvelope",
 					Fields: []*FieldDesc{
 						{

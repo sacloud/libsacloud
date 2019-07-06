@@ -16,11 +16,20 @@ var cdromAPI = &schema.Resource{
 			r.DefineOperationFind(cdromNakedType, findParameter, cdromView),
 
 			// create
-			r.DefineOperationCreate(cdromNakedType, cdromCreateParam, cdromView).
-				ResultFromEnvelope(models.ftpServer(), &schema.EnvelopePayloadDesc{
+			func() *schema.Operation {
+				o := r.DefineOperationCreate(cdromNakedType, cdromCreateParam, cdromView)
+				o.ResponseEnvelope.Payloads = append(o.ResponseEnvelope.Payloads, &schema.EnvelopePayloadDesc{
 					PayloadName: models.ftpServer().Name,
 					PayloadType: meta.Static(naked.OpeningFTPServer{}),
-				}, models.ftpServer().Name),
+				})
+				o.Results = append(o.Results, &schema.Result{
+					SourceField: models.ftpServer().Name,
+					DestField:   models.ftpServer().Name,
+					IsPlural:    false,
+					Model:       models.ftpServer(),
+				})
+				return o
+			}(),
 
 			// read
 			r.DefineOperationRead(cdromNakedType, cdromView),

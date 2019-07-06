@@ -43,7 +43,7 @@ var diskAPI = &schema.Resource{
 					PathFormat: schema.DefaultPathFormat,
 					Method:     http.MethodPost,
 				}
-				o.ResultFromEnvelope(diskModel, &schema.EnvelopePayloadDesc{
+				o.ResponseEnvelope = schema.ResultFromEnvelope(o, diskModel, &schema.EnvelopePayloadDesc{
 					PayloadType: diskNakedType,
 					PayloadName: "Disk",
 				}, diskModel.Name)
@@ -104,7 +104,7 @@ var diskAPI = &schema.Resource{
 					PathFormat: schema.DefaultPathFormat,
 					Method:     http.MethodPost,
 				}
-				o.ResultFromEnvelope(diskModel, &schema.EnvelopePayloadDesc{
+				o.ResponseEnvelope = schema.ResultFromEnvelope(o, diskModel, &schema.EnvelopePayloadDesc{
 					PayloadType: diskNakedType,
 					PayloadName: "Disk",
 				}, diskModel.Name)
@@ -156,7 +156,7 @@ var diskAPI = &schema.Resource{
 					PathFormat: schema.DefaultPathFormat,
 					Method:     http.MethodPost,
 				}
-				o.ResultFromEnvelope(diskModel, &schema.EnvelopePayloadDesc{
+				o.ResponseEnvelope = schema.ResultFromEnvelope(o, diskModel, &schema.EnvelopePayloadDesc{
 					PayloadType: diskNakedType,
 					PayloadName: "Disk",
 				}, diskModel.Name)
@@ -221,7 +221,7 @@ var diskAPI = &schema.Resource{
 					PathFormat: schema.IDAndSuffixPathFormat("install"),
 					Method:     http.MethodPut,
 				}
-				o.ResultFromEnvelope(diskModel, &schema.EnvelopePayloadDesc{
+				o.ResponseEnvelope = schema.ResultFromEnvelope(o, diskModel, &schema.EnvelopePayloadDesc{
 					PayloadType: diskNakedType,
 					PayloadName: "Disk",
 				}, diskModel.Name)
@@ -255,7 +255,7 @@ var diskAPI = &schema.Resource{
 					PathFormat: schema.IDAndSuffixPathFormat("install"),
 					Method:     http.MethodPut,
 				}
-				o.ResultFromEnvelope(diskModel, &schema.EnvelopePayloadDesc{
+				o.ResponseEnvelope = schema.ResultFromEnvelope(o, diskModel, &schema.EnvelopePayloadDesc{
 					PayloadType: diskNakedType,
 					PayloadName: "Disk",
 				}, diskModel.Name)

@@ -38,7 +38,7 @@ var serverAPI = &schema.Resource{
 					PathFormat: schema.IDAndSuffixPathFormat("plan"),
 					Method:     http.MethodPut,
 				}
-				o.ResultFromEnvelope(serverView, &schema.EnvelopePayloadDesc{
+				o.ResponseEnvelope = schema.ResultFromEnvelope(o, serverView, &schema.EnvelopePayloadDesc{
 					PayloadName: r.Name,
 					PayloadType: meta.Static(naked.Server{}),
 				}, "")

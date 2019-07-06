@@ -39,7 +39,7 @@ var internetAPI = &schema.Resource{
 					PathFormat: schema.IDAndSuffixPathFormat("bandwidth"),
 					Method:     http.MethodPut,
 				}
-				o.ResultFromEnvelope(internetView, &schema.EnvelopePayloadDesc{
+				o.ResponseEnvelope = schema.ResultFromEnvelope(o, internetView, &schema.EnvelopePayloadDesc{
 					PayloadType: internetNakedType,
 					PayloadName: "Internet",
 				}, "")
@@ -66,7 +66,7 @@ var internetAPI = &schema.Resource{
 					PathFormat: schema.IDAndSuffixPathFormat("subnet"),
 					Method:     http.MethodPost,
 				}
-				o.ResultFromEnvelope(models.internetSubnetOperationResult(), &schema.EnvelopePayloadDesc{
+				o.ResponseEnvelope = schema.ResultFromEnvelope(o, models.internetSubnetOperationResult(), &schema.EnvelopePayloadDesc{
 					PayloadType: meta.Static(naked.Subnet{}),
 					PayloadName: "Subnet",
 				}, "Subnet")
@@ -87,7 +87,7 @@ var internetAPI = &schema.Resource{
 					PathFormat: schema.IDAndSuffixPathFormat("subnet/{{.subnetID}}"),
 					Method:     http.MethodPut,
 				}
-				o.ResultFromEnvelope(models.internetSubnetOperationResult(), &schema.EnvelopePayloadDesc{
+				o.ResponseEnvelope = schema.ResultFromEnvelope(o, models.internetSubnetOperationResult(), &schema.EnvelopePayloadDesc{
 					PayloadType: meta.Static(naked.Subnet{}),
 					PayloadName: "Subnet",
 				}, "Subnet")
