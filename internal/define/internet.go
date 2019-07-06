@@ -61,20 +61,21 @@ var internetAPI = &schema.Resource{
 			// TODO あとで直す
 			func() *schema.Operation {
 				o := &schema.Operation{
-					Resource:   r,
-					Name:       "AddSubnet",
-					PathFormat: schema.IDAndSuffixPathFormat("subnet"),
-					Method:     http.MethodPost,
+					Resource:        r,
+					Name:            "AddSubnet",
+					PathFormat:      schema.IDAndSuffixPathFormat("subnet"),
+					Method:          http.MethodPost,
+					RequestEnvelope: schema.RequestEnvelopeFromModel(internetAddSubnetParam),
+					Arguments: schema.Arguments{
+						schema.ArgumentZone,
+						schema.ArgumentID,
+						schema.PassthroughModelArgument("param", internetAddSubnetParam),
+					},
 				}
 				o.ResponseEnvelope = schema.ResultFromEnvelope(o, models.internetSubnetOperationResult(), &schema.EnvelopePayloadDesc{
 					PayloadType: meta.Static(naked.Subnet{}),
 					PayloadName: "Subnet",
 				}, "Subnet")
-				o.Arguments = schema.Arguments{
-					schema.ArgumentZone,
-					schema.ArgumentID,
-					schema.PassthroughModelArgumentWithEnvelope(o, "param", internetAddSubnetParam),
-				}
 				return o
 			}(),
 
@@ -82,24 +83,25 @@ var internetAPI = &schema.Resource{
 			// TODO あとで直す
 			func() *schema.Operation {
 				o := &schema.Operation{
-					Resource:   r,
-					Name:       "UpdateSubnet",
-					PathFormat: schema.IDAndSuffixPathFormat("subnet/{{.subnetID}}"),
-					Method:     http.MethodPut,
+					Resource:        r,
+					Name:            "UpdateSubnet",
+					PathFormat:      schema.IDAndSuffixPathFormat("subnet/{{.subnetID}}"),
+					Method:          http.MethodPut,
+					RequestEnvelope: schema.RequestEnvelopeFromModel(internetUpdateSubnetParam),
+					Arguments: schema.Arguments{
+						schema.ArgumentZone,
+						schema.ArgumentID,
+						{
+							Name: "subnetID",
+							Type: meta.TypeID,
+						},
+						schema.PassthroughModelArgument("param", internetUpdateSubnetParam),
+					},
 				}
 				o.ResponseEnvelope = schema.ResultFromEnvelope(o, models.internetSubnetOperationResult(), &schema.EnvelopePayloadDesc{
 					PayloadType: meta.Static(naked.Subnet{}),
 					PayloadName: "Subnet",
 				}, "Subnet")
-				o.Arguments = schema.Arguments{
-					schema.ArgumentZone,
-					schema.ArgumentID,
-					{
-						Name: "subnetID",
-						Type: meta.TypeID,
-					},
-					schema.PassthroughModelArgumentWithEnvelope(o, "param", internetUpdateSubnetParam),
-				}
 				return o
 			}(),
 

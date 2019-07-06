@@ -26,16 +26,8 @@ func MappableArgument(name string, model *Model, destField string) *Argument {
 	}
 }
 
-// PassthroughModelArgumentWithEnvelope 引数定義の追加、ペイロードの定義も同時に行われる
-func PassthroughModelArgumentWithEnvelope(o *Operation, name string, model *Model) *Argument {
-	var descs []*EnvelopePayloadDesc
-	for _, field := range model.Fields {
-		descs = append(descs, &EnvelopePayloadDesc{
-			PayloadName: field.Name,
-			PayloadType: field.Type,
-		})
-	}
-	o.RequestEnvelope = RequestEnvelope(o, descs...)
+// PassthroughModelArgument 引数定義の追加、ペイロードの定義も同時に行われる
+func PassthroughModelArgument(name string, model *Model) *Argument {
 	return &Argument{
 		Name:       name,
 		Type:       model,
@@ -43,7 +35,7 @@ func PassthroughModelArgumentWithEnvelope(o *Operation, name string, model *Mode
 	}
 }
 
-// RequestEnvelope リクエストのエンベロープを追加する
+// RequestEnvelope リクエストのエンベロープを作成する
 func RequestEnvelope(o *Operation, descs ...*EnvelopePayloadDesc) *EnvelopeType {
 	ret := &EnvelopeType{
 		Form: PayloadForms.Singular,
@@ -53,6 +45,26 @@ func RequestEnvelope(o *Operation, descs ...*EnvelopePayloadDesc) *EnvelopeType 
 		if desc.PayloadName == "" {
 			desc.PayloadName = o.Resource.FieldName(ret.Form)
 		}
+		ret.Payloads = append(ret.Payloads, desc)
+	}
+
+	return ret
+}
+
+// RequestEnvelopeFromModel モデル定義からリクエストのエンベロープを作成する
+func RequestEnvelopeFromModel(model *Model) *EnvelopeType {
+	var descs []*EnvelopePayloadDesc
+	for _, field := range model.Fields {
+		descs = append(descs, &EnvelopePayloadDesc{
+			PayloadName: field.Name,
+			PayloadType: field.Type,
+		})
+	}
+	ret := &EnvelopeType{
+		Form: PayloadForms.Singular,
+	}
+
+	for _, desc := range descs {
 		ret.Payloads = append(ret.Payloads, desc)
 	}
 

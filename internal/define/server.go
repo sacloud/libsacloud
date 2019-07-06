@@ -33,20 +33,21 @@ var serverAPI = &schema.Resource{
 			// TODO あとで直す
 			func() *schema.Operation {
 				o := &schema.Operation{
-					Resource:   r,
-					Name:       "ChangePlan",
-					PathFormat: schema.IDAndSuffixPathFormat("plan"),
-					Method:     http.MethodPut,
+					Resource:        r,
+					Name:            "ChangePlan",
+					PathFormat:      schema.IDAndSuffixPathFormat("plan"),
+					Method:          http.MethodPut,
+					RequestEnvelope: schema.RequestEnvelopeFromModel(serverChangePlanParam),
+					Arguments: schema.Arguments{
+						schema.ArgumentZone,
+						schema.ArgumentID,
+						schema.PassthroughModelArgument("plan", serverChangePlanParam),
+					},
 				}
 				o.ResponseEnvelope = schema.ResultFromEnvelope(o, serverView, &schema.EnvelopePayloadDesc{
 					PayloadName: r.Name,
 					PayloadType: meta.Static(naked.Server{}),
 				}, "")
-				o.Arguments = schema.Arguments{
-					schema.ArgumentZone,
-					schema.ArgumentID,
-					schema.PassthroughModelArgumentWithEnvelope(o, "plan", serverChangePlanParam),
-				}
 				return o
 			}(),
 

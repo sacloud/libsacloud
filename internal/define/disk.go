@@ -64,15 +64,16 @@ var diskAPI = &schema.Resource{
 			// config(DiskEdit)
 			func() *schema.Operation {
 				o := &schema.Operation{
-					Resource:   r,
-					Name:       "Config",
-					PathFormat: schema.IDAndSuffixPathFormat("config"),
-					Method:     http.MethodPut,
-				}
-				o.Arguments = schema.Arguments{
-					schema.ArgumentZone,
-					schema.ArgumentID,
-					schema.PassthroughModelArgumentWithEnvelope(o, "edit", diskEditParam),
+					Resource:        r,
+					Name:            "Config",
+					PathFormat:      schema.IDAndSuffixPathFormat("config"),
+					Method:          http.MethodPut,
+					RequestEnvelope: schema.RequestEnvelopeFromModel(diskEditParam),
+					Arguments: schema.Arguments{
+						schema.ArgumentZone,
+						schema.ArgumentID,
+						schema.PassthroughModelArgument("edit", diskEditParam),
+					},
 				}
 				return o
 			}(),

@@ -137,19 +137,20 @@ func (r *Resource) defineOperationFind(nakedType meta.Type, findParam, result *M
 
 	// TODO あとで直す
 	o := &Operation{
-		Resource:   r,
-		Name:       "Find",
-		PathFormat: DefaultPathFormat,
-		Method:     http.MethodGet,
+		Resource:        r,
+		Name:            "Find",
+		PathFormat:      DefaultPathFormat,
+		Method:          http.MethodGet,
+		RequestEnvelope: RequestEnvelopeFromModel(findParam),
+		Arguments: Arguments{
+			ArgumentZone,
+			PassthroughModelArgument("conditions", findParam),
+		},
 	}
 	o.ResponseEnvelope = ResultPluralFromEnvelope(o, result, &EnvelopePayloadDesc{
 		PayloadType: nakedType,
 		PayloadName: payloadName,
 	}, "")
-	o.Arguments = Arguments{
-		ArgumentZone,
-		PassthroughModelArgumentWithEnvelope(o, "conditions", findParam),
-	}
 	return o
 }
 
@@ -378,26 +379,28 @@ func (r *Resource) DefineOperationBoot() *Operation {
 
 // DefineOperationShutdown リソースに対するシャットダウン操作を定義
 func (r *Resource) DefineOperationShutdown() *Operation {
-	// TODO あとで直す
-	o := &Operation{
-		Resource:   r,
-		Name:       "Shutdown",
-		PathFormat: IDAndSuffixPathFormat("power"),
-		Method:     http.MethodDelete,
-	}
-	o.Arguments = Arguments{
-		ArgumentZone,
-		ArgumentID,
-		PassthroughModelArgumentWithEnvelope(o, "shutdownOption", &Model{
-			Name: "ShutdownOption",
-			Fields: []*FieldDesc{
-				{
-					Name: "Force",
-					Type: meta.TypeFlag,
-				},
+	param := &Model{
+		Name: "ShutdownOption",
+		Fields: []*FieldDesc{
+			{
+				Name: "Force",
+				Type: meta.TypeFlag,
 			},
-		}),
+		},
 	}
+	o := &Operation{
+		Resource:        r,
+		Name:            "Shutdown",
+		PathFormat:      IDAndSuffixPathFormat("power"),
+		Method:          http.MethodDelete,
+		RequestEnvelope: RequestEnvelopeFromModel(param),
+		Arguments: Arguments{
+			ArgumentZone,
+			ArgumentID,
+			PassthroughModelArgument("shutdownOption", param),
+		},
+	}
+
 	return o
 }
 
@@ -463,7 +466,8 @@ func (r *Resource) DefineOperationOpenFTP(openParam, result *Model) *Operation {
 	}, result.Name)
 
 	if openParam != nil {
-		o.Arguments = append(o.Arguments, PassthroughModelArgumentWithEnvelope(o, "openOption", openParam))
+		o.Arguments = append(o.Arguments, PassthroughModelArgument("openOption", openParam))
+		o.RequestEnvelope = RequestEnvelopeFromModel(openParam)
 	}
 	return o
 }
@@ -503,15 +507,16 @@ func (r *Resource) DefineSimpleOperation(opName, method, pathSuffix string, argu
 func (r *Resource) DefineOperationMonitor(monitorParam, result *Model) *Operation {
 	// TODO あとで直す
 	o := &Operation{
-		Resource:   r,
-		Name:       "Monitor",
-		PathFormat: IDAndSuffixPathFormat("monitor"),
-		Method:     http.MethodGet,
-	}
-	o.Arguments = Arguments{
-		ArgumentZone,
-		ArgumentID,
-		PassthroughModelArgumentWithEnvelope(o, "condition", monitorParam),
+		Resource:        r,
+		Name:            "Monitor",
+		PathFormat:      IDAndSuffixPathFormat("monitor"),
+		Method:          http.MethodGet,
+		RequestEnvelope: RequestEnvelopeFromModel(monitorParam),
+		Arguments: Arguments{
+			ArgumentZone,
+			ArgumentID,
+			PassthroughModelArgument("condition", monitorParam),
+		},
 	}
 	o.ResponseEnvelope = ResultFromEnvelope(o, result, &EnvelopePayloadDesc{
 		PayloadType: meta.Static(naked.MonitorValues{}),
@@ -524,15 +529,16 @@ func (r *Resource) DefineOperationMonitor(monitorParam, result *Model) *Operatio
 func (r *Resource) DefineOperationMonitorChild(funcNameSuffix, childResourceName string, monitorParam, result *Model) *Operation {
 	// TODO あとで直す
 	o := &Operation{
-		Resource:   r,
-		Name:       "Monitor" + funcNameSuffix,
-		PathFormat: IDAndSuffixPathFormat(childResourceName + "/monitor"),
-		Method:     http.MethodGet,
-	}
-	o.Arguments = Arguments{
-		ArgumentZone,
-		ArgumentID,
-		PassthroughModelArgumentWithEnvelope(o, "condition", monitorParam),
+		Resource:        r,
+		Name:            "Monitor" + funcNameSuffix,
+		PathFormat:      IDAndSuffixPathFormat(childResourceName + "/monitor"),
+		Method:          http.MethodGet,
+		RequestEnvelope: RequestEnvelopeFromModel(monitorParam),
+		Arguments: Arguments{
+			ArgumentZone,
+			ArgumentID,
+			PassthroughModelArgument("condition", monitorParam),
+		},
 	}
 	o.ResponseEnvelope = ResultFromEnvelope(o, result, &EnvelopePayloadDesc{
 		PayloadType: meta.Static(naked.MonitorValues{}),
@@ -547,19 +553,20 @@ func (r *Resource) DefineOperationMonitorChildBy(funcNameSuffix, childResourceNa
 	pathSuffix := childResourceName + "/{{if eq .index 0}}{{.index}}{{end}}/monitor"
 
 	o := &Operation{
-		Resource:   r,
-		Name:       "Monitor" + funcNameSuffix,
-		PathFormat: IDAndSuffixPathFormat(pathSuffix),
-		Method:     http.MethodGet,
-	}
-	o.Arguments = Arguments{
-		ArgumentZone,
-		ArgumentID,
-		{
-			Name: "index",
-			Type: meta.TypeInt,
+		Resource:        r,
+		Name:            "Monitor" + funcNameSuffix,
+		PathFormat:      IDAndSuffixPathFormat(pathSuffix),
+		Method:          http.MethodGet,
+		RequestEnvelope: RequestEnvelopeFromModel(monitorParam),
+		Arguments: Arguments{
+			ArgumentZone,
+			ArgumentID,
+			{
+				Name: "index",
+				Type: meta.TypeInt,
+			},
+			PassthroughModelArgument("condition", monitorParam),
 		},
-		PassthroughModelArgumentWithEnvelope(o, "condition", monitorParam),
 	}
 	o.ResponseEnvelope = ResultFromEnvelope(o, result, &EnvelopePayloadDesc{
 		PayloadType: meta.Static(naked.MonitorValues{}),

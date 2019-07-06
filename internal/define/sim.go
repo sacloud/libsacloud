@@ -136,15 +136,16 @@ var simAPI = &schema.Resource{
 			// TODO あとで直す
 			func() *schema.Operation {
 				o := &schema.Operation{
-					Resource:   r,
-					Name:       "SetNetworkOperator",
-					PathFormat: schema.IDAndSuffixPathFormat("sim/network_operator_config"),
-					Method:     http.MethodPut,
-				}
-				o.Arguments = schema.Arguments{
-					schema.ArgumentZone,
-					schema.ArgumentID,
-					schema.PassthroughModelArgumentWithEnvelope(o, "configs", simNetworkOperatorsConfigView),
+					Resource:        r,
+					Name:            "SetNetworkOperator",
+					PathFormat:      schema.IDAndSuffixPathFormat("sim/network_operator_config"),
+					Method:          http.MethodPut,
+					RequestEnvelope: schema.RequestEnvelopeFromModel(simNetworkOperatorsConfigView),
+					Arguments: schema.Arguments{
+						schema.ArgumentZone,
+						schema.ArgumentID,
+						schema.PassthroughModelArgument("configs", simNetworkOperatorsConfigView),
+					},
 				}
 				return o
 			}(),
