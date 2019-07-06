@@ -36,15 +36,12 @@ func PassthroughModelArgument(name string, model *Model) *Argument {
 }
 
 // RequestEnvelope リクエストのエンベロープを作成する
-func RequestEnvelope(o *Operation, descs ...*EnvelopePayloadDesc) *EnvelopeType {
+func RequestEnvelope(descs ...*EnvelopePayloadDesc) *EnvelopeType {
 	ret := &EnvelopeType{
 		Form: PayloadForms.Singular,
 	}
 
 	for _, desc := range descs {
-		if desc.PayloadName == "" {
-			desc.PayloadName = o.Resource.FieldName(ret.Form)
-		}
 		ret.Payloads = append(ret.Payloads, desc)
 	}
 

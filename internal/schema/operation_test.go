@@ -28,8 +28,14 @@ func TestOperation(t *testing.T) {
 			// TODO あとで直す
 			operation: func() *Operation {
 				o := &Operation{
-					Resource: resource,
-					Name:     "Create",
+					Resource:   resource,
+					Name:       "Create",
+					PathFormat: DefaultPathFormat,
+					Method:     http.MethodPost,
+					RequestEnvelope: RequestEnvelope(&EnvelopePayloadDesc{
+						PayloadType: meta.Static(struct{}{}),
+						PayloadName: resource.FieldName(PayloadForms.Singular),
+					}),
 					Arguments: []*Argument{
 						ArgumentZone,
 						{
@@ -50,10 +56,7 @@ func TestOperation(t *testing.T) {
 							},
 						},
 					},
-					PathFormat: DefaultPathFormat,
-					Method:     http.MethodPost,
 				}
-				o.RequestEnvelope = RequestEnvelope(o, &EnvelopePayloadDesc{PayloadType: meta.Static(struct{}{})})
 				o.ResponseEnvelope = ResultFromEnvelope(o, &Model{
 					Name: "ResultFromEnvelope",
 					Fields: []*FieldDesc{

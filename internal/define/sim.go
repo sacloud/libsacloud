@@ -42,21 +42,21 @@ var simAPI = &schema.Resource{
 					Name:       "AssignIP",
 					PathFormat: schema.IDAndSuffixPathFormat("sim/ip"),
 					Method:     http.MethodPut,
+					RequestEnvelope: schema.RequestEnvelope(
+						&schema.EnvelopePayloadDesc{
+							PayloadName: "SIM",
+							PayloadType: meta.Static(naked.SIMAssignIPRequest{}),
+							Tags: &schema.FieldTags{
+								JSON: "sim",
+							},
+						},
+					),
 					Arguments: schema.Arguments{
 						schema.ArgumentZone,
 						schema.ArgumentID,
 						schema.MappableArgument("param", simAssignIPParam, "SIM"),
 					},
 				}
-				o.RequestEnvelope = schema.RequestEnvelope(o,
-					&schema.EnvelopePayloadDesc{
-						PayloadName: "SIM",
-						PayloadType: meta.Static(naked.SIMAssignIPRequest{}),
-						Tags: &schema.FieldTags{
-							JSON: "sim",
-						},
-					},
-				)
 				return o
 			}(),
 
@@ -71,21 +71,21 @@ var simAPI = &schema.Resource{
 					Name:       "IMEILock",
 					PathFormat: schema.IDAndSuffixPathFormat("sim/imeilock"),
 					Method:     http.MethodPut,
+					RequestEnvelope: schema.RequestEnvelope(
+						&schema.EnvelopePayloadDesc{
+							PayloadName: "SIM",
+							PayloadType: meta.Static(naked.SIMIMEILockRequest{}),
+							Tags: &schema.FieldTags{
+								JSON: "sim",
+							},
+						},
+					),
 					Arguments: schema.Arguments{
 						schema.ArgumentZone,
 						schema.ArgumentID,
 						schema.MappableArgument("param", simIMEILockParam, "SIM"),
 					},
 				}
-				o.RequestEnvelope = schema.RequestEnvelope(o,
-					&schema.EnvelopePayloadDesc{
-						PayloadName: "SIM",
-						PayloadType: meta.Static(naked.SIMIMEILockRequest{}),
-						Tags: &schema.FieldTags{
-							JSON: "sim",
-						},
-					},
-				)
 				return o
 			}(),
 

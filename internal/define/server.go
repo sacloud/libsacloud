@@ -55,8 +55,16 @@ var serverAPI = &schema.Resource{
 			// TODO あとで直す
 			func() *schema.Operation {
 				o := &schema.Operation{
-					Resource: r,
-					Name:     "InsertCDROM",
+					Resource:   r,
+					Name:       "InsertCDROM",
+					PathFormat: schema.IDAndSuffixPathFormat("cdrom"),
+					Method:     http.MethodPut,
+					RequestEnvelope: schema.RequestEnvelope(
+						&schema.EnvelopePayloadDesc{
+							PayloadType: meta.Static(naked.CDROM{}),
+							PayloadName: "CDROM",
+						},
+					),
 					Arguments: schema.Arguments{
 						schema.ArgumentZone,
 						schema.ArgumentID,
@@ -72,15 +80,7 @@ var serverAPI = &schema.Resource{
 							MapConvTag: "CDROM",
 						},
 					},
-					PathFormat: schema.IDAndSuffixPathFormat("cdrom"),
-					Method:     http.MethodPut,
 				}
-				o.RequestEnvelope = schema.RequestEnvelope(o,
-					&schema.EnvelopePayloadDesc{
-						PayloadType: meta.Static(naked.CDROM{}),
-						PayloadName: "CDROM",
-					},
-				)
 				return o
 			}(),
 
@@ -88,8 +88,16 @@ var serverAPI = &schema.Resource{
 			// TODO あとで直す
 			func() *schema.Operation {
 				o := &schema.Operation{
-					Resource: r,
-					Name:     "EjectCDROM",
+					Resource:   r,
+					Name:       "EjectCDROM",
+					PathFormat: schema.IDAndSuffixPathFormat("cdrom"),
+					Method:     http.MethodDelete,
+					RequestEnvelope: schema.RequestEnvelope(
+						&schema.EnvelopePayloadDesc{
+							PayloadType: meta.Static(naked.CDROM{}),
+							PayloadName: "CDROM",
+						},
+					),
 					Arguments: schema.Arguments{
 						schema.ArgumentZone,
 						schema.ArgumentID,
@@ -105,15 +113,7 @@ var serverAPI = &schema.Resource{
 							MapConvTag: "CDROM",
 						},
 					},
-					PathFormat: schema.IDAndSuffixPathFormat("cdrom"),
-					Method:     http.MethodDelete,
 				}
-				o.RequestEnvelope = schema.RequestEnvelope(o,
-					&schema.EnvelopePayloadDesc{
-						PayloadType: meta.Static(naked.CDROM{}),
-						PayloadName: "CDROM",
-					},
-				)
 				return o
 			}(),
 

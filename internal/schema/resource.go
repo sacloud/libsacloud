@@ -195,6 +195,10 @@ func (r *Resource) defineOperationCreate(nakedType meta.Type, createParam, resul
 		Name:       "Create",
 		PathFormat: DefaultPathFormat,
 		Method:     http.MethodPost,
+		RequestEnvelope: RequestEnvelope(&EnvelopePayloadDesc{
+			PayloadType: nakedType,
+			PayloadName: destField,
+		}),
 		Arguments: Arguments{
 			ArgumentZone,
 			MappableArgument("param", createParam, destField),
@@ -204,10 +208,6 @@ func (r *Resource) defineOperationCreate(nakedType meta.Type, createParam, resul
 		PayloadType: nakedType,
 		PayloadName: payloadName,
 	}, "")
-	o.RequestEnvelope = RequestEnvelope(o, &EnvelopePayloadDesc{
-		PayloadType: nakedType,
-		PayloadName: payloadName,
-	})
 	return o
 }
 
@@ -292,6 +292,10 @@ func (r *Resource) defineOperationUpdate(nakedType meta.Type, updateParam, resul
 		Name:       "Update",
 		PathFormat: DefaultPathFormatWithID,
 		Method:     http.MethodPut,
+		RequestEnvelope: RequestEnvelope(&EnvelopePayloadDesc{
+			PayloadType: nakedType,
+			PayloadName: destField,
+		}),
 		Arguments: Arguments{
 			ArgumentZone,
 			ArgumentID,
@@ -302,10 +306,6 @@ func (r *Resource) defineOperationUpdate(nakedType meta.Type, updateParam, resul
 		PayloadType: nakedType,
 		PayloadName: payloadName,
 	}, "")
-	o.RequestEnvelope = RequestEnvelope(o, &EnvelopePayloadDesc{
-		PayloadType: nakedType,
-		PayloadName: payloadName,
-	})
 	return o
 }
 
