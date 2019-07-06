@@ -328,7 +328,7 @@ func (o *InternetOp) Monitor(ctx context.Context, zone string, id types.ID, cond
 	}
 
 	return &sacloud.InternetMonitorResult{
-		IsOk: true,
-		Data: res,
+		IsOk:           true,
+		RouterActivity: res,
 	}, nil
 }

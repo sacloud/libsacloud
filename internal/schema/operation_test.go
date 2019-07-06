@@ -62,7 +62,7 @@ func TestOperation(t *testing.T) {
 				}, &EnvelopePayloadDesc{
 					PayloadName: "Test",
 					PayloadType: meta.Static(struct{}{}),
-				}),
+				}, "Test"),
 			expect: &expectOperationValues{
 				methodName:                 "Create",
 				requestEnvelopeStructName:  "testCreateRequestEnvelope",

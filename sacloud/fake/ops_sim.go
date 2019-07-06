@@ -18,10 +18,10 @@ func (o *SIMOp) Find(ctx context.Context, zone string, conditions *sacloud.FindC
 		values = append(values, dest)
 	}
 	return &sacloud.SIMFindResult{
-		Total:              len(results),
-		Count:              len(results),
-		From:               0,
-		CommonServiceItems: values,
+		Total: len(results),
+		Count: len(results),
+		From:  0,
+		SIMs:  values,
 	}, nil
 }
 
@@ -35,8 +35,8 @@ func (o *SIMOp) Create(ctx context.Context, zone string, param *sacloud.SIMCreat
 
 	s.setSIM(zone, result)
 	return &sacloud.SIMCreateResult{
-		IsOk:              true,
-		CommonServiceItem: result,
+		IsOk: true,
+		SIM:  result,
 	}, nil
 }
 
@@ -49,8 +49,8 @@ func (o *SIMOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.SI
 	dest := &sacloud.SIM{}
 	copySameNameField(value, dest)
 	return &sacloud.SIMReadResult{
-		IsOk:              true,
-		CommonServiceItem: dest,
+		IsOk: true,
+		SIM:  dest,
 	}, nil
 }
 
@@ -60,15 +60,15 @@ func (o *SIMOp) Update(ctx context.Context, zone string, id types.ID, param *sac
 	if err != nil {
 		return nil, err
 	}
-	value := readResult.CommonServiceItem
+	value := readResult.SIM
 	copySameNameField(param, value)
 	fill(value, fillModifiedAt)
 
 	// TODO core logic is not implemented
 
 	return &sacloud.SIMUpdateResult{
-		IsOk:              true,
-		CommonServiceItem: value,
+		IsOk: true,
+		SIM:  value,
 	}, nil
 }
 
