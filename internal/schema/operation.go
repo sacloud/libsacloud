@@ -185,11 +185,6 @@ func (o *Operation) RequestEnvelopePlural(descs ...*EnvelopePayloadDesc) *Operat
 	return o
 }
 
-// DefineResult 操作に対するレスポンスの定義
-func (o *Operation) DefineResult() *Model {
-	return &Model{}
-}
-
 // GetPathFormat パスのフォーマット
 func (o *Operation) GetPathFormat() string {
 	if o.pathFormat != "" {
