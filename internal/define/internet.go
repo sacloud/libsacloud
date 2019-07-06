@@ -38,13 +38,15 @@ var internetAPI = &schema.Resource{
 						PayloadType: internetNakedType,
 						PayloadName: "Internet",
 					}).
-					Argument(schema.ArgumentZone).
-					Argument(schema.ArgumentID).
-					MappableArgument("param", internetUpdateBandWidthParam).
 					ResultFromEnvelope(internetView, &schema.EnvelopePayloadDesc{
 						PayloadType: internetNakedType,
 						PayloadName: "Internet",
 					}, "")
+				o.Arguments = schema.Arguments{
+					schema.ArgumentZone,
+					schema.ArgumentID,
+					schema.MappableArgument(o, "param", internetUpdateBandWidthParam),
+				}
 				o.PathFormat = schema.IDAndSuffixPathFormat("bandwidth")
 				o.Method = http.MethodPut
 				return o
@@ -54,13 +56,15 @@ var internetAPI = &schema.Resource{
 			// TODO あとで直す
 			func() *schema.Operation {
 				o := r.DefineOperation("AddSubnet").
-					Argument(schema.ArgumentZone).
-					Argument(schema.ArgumentID).
-					PassthroughModelArgumentWithEnvelope("param", internetAddSubnetParam).
 					ResultFromEnvelope(models.internetSubnetOperationResult(), &schema.EnvelopePayloadDesc{
 						PayloadType: meta.Static(naked.Subnet{}),
 						PayloadName: "Subnet",
 					}, "Subnet")
+				o.Arguments = schema.Arguments{
+					schema.ArgumentZone,
+					schema.ArgumentID,
+					schema.PassthroughModelArgumentWithEnvelope(o, "param", internetAddSubnetParam),
+				}
 				o.PathFormat = schema.IDAndSuffixPathFormat("subnet")
 				o.Method = http.MethodPost
 				return o
@@ -70,17 +74,19 @@ var internetAPI = &schema.Resource{
 			// TODO あとで直す
 			func() *schema.Operation {
 				o := r.DefineOperation("UpdateSubnet").
-					Argument(schema.ArgumentZone).
-					Argument(schema.ArgumentID).
-					Argument(&schema.Argument{
-						Name: "subnetID",
-						Type: meta.TypeID,
-					}).
-					PassthroughModelArgumentWithEnvelope("param", internetUpdateSubnetParam).
 					ResultFromEnvelope(models.internetSubnetOperationResult(), &schema.EnvelopePayloadDesc{
 						PayloadType: meta.Static(naked.Subnet{}),
 						PayloadName: "Subnet",
 					}, "Subnet")
+				o.Arguments = schema.Arguments{
+					schema.ArgumentZone,
+					schema.ArgumentID,
+					{
+						Name: "subnetID",
+						Type: meta.TypeID,
+					},
+					schema.PassthroughModelArgumentWithEnvelope(o, "param", internetUpdateSubnetParam),
+				}
 				o.PathFormat = schema.IDAndSuffixPathFormat("subnet/{{.subnetID}}")
 				o.Method = http.MethodPut
 				return o

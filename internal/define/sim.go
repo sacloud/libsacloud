@@ -38,16 +38,18 @@ var simAPI = &schema.Resource{
 			// TODO あとで直す
 			func() *schema.Operation {
 				o := r.DefineOperation("AssignIP").
-					Argument(schema.ArgumentZone).
-					Argument(schema.ArgumentID).
 					RequestEnvelope(&schema.EnvelopePayloadDesc{
 						PayloadName: "SIM",
 						PayloadType: meta.Static(naked.SIMAssignIPRequest{}),
 						Tags: &schema.FieldTags{
 							JSON: "sim",
 						},
-					}).
-					MappableArgument("param", simAssignIPParam)
+					})
+				o.Arguments = schema.Arguments{
+					schema.ArgumentZone,
+					schema.ArgumentID,
+					schema.MappableArgument(o, "param", simAssignIPParam),
+				}
 				o.PathFormat = schema.IDAndSuffixPathFormat("sim/ip")
 				o.Method = http.MethodPut
 				return o
@@ -60,16 +62,18 @@ var simAPI = &schema.Resource{
 			// TODO あとで直す
 			func() *schema.Operation {
 				o := r.DefineOperation("IMEILock").
-					Argument(schema.ArgumentZone).
-					Argument(schema.ArgumentID).
 					RequestEnvelope(&schema.EnvelopePayloadDesc{
 						PayloadName: "SIM",
 						PayloadType: meta.Static(naked.SIMIMEILockRequest{}),
 						Tags: &schema.FieldTags{
 							JSON: "sim",
 						},
-					}).
-					MappableArgument("param", simIMEILockParam)
+					})
+				o.Arguments = schema.Arguments{
+					schema.ArgumentZone,
+					schema.ArgumentID,
+					schema.MappableArgument(o, "param", simIMEILockParam),
+				}
 				o.PathFormat = schema.IDAndSuffixPathFormat("sim/imeilock")
 				o.Method = http.MethodPut
 				return o
@@ -82,12 +86,14 @@ var simAPI = &schema.Resource{
 			// TODO あとで直す
 			func() *schema.Operation {
 				o := r.DefineOperation("Logs").
-					Argument(schema.ArgumentZone).
-					Argument(schema.ArgumentID).
 					ResultPluralFromEnvelope(simLogView, &schema.EnvelopePayloadDesc{
 						PayloadName: "Logs",
 						PayloadType: meta.Static(naked.SIMLog{}),
 					}, "Logs")
+				o.Arguments = schema.Arguments{
+					schema.ArgumentZone,
+					schema.ArgumentID,
+				}
 				o.PathFormat = schema.IDAndSuffixPathFormat("sim/sessionlog")
 				o.Method = http.MethodGet
 				return o
@@ -97,12 +103,14 @@ var simAPI = &schema.Resource{
 			// TODO あとで直す
 			func() *schema.Operation {
 				o := r.DefineOperation("GetNetworkOperator").
-					Argument(schema.ArgumentZone).
-					Argument(schema.ArgumentID).
 					ResultPluralFromEnvelope(simNetworkOperatorConfigView, &schema.EnvelopePayloadDesc{
 						PayloadName: "NetworkOperationConfigs",
 						PayloadType: meta.Static(naked.SIMNetworkOperatorConfig{}),
 					}, "Configs")
+				o.Arguments = schema.Arguments{
+					schema.ArgumentZone,
+					schema.ArgumentID,
+				}
 				o.PathFormat = schema.IDAndSuffixPathFormat("sim/network_operator_config")
 				o.Method = http.MethodGet
 				return o
@@ -111,10 +119,12 @@ var simAPI = &schema.Resource{
 			// SetNetworkOperator
 			// TODO あとで直す
 			func() *schema.Operation {
-				o := r.DefineOperation("SetNetworkOperator").
-					Argument(schema.ArgumentZone).
-					Argument(schema.ArgumentID).
-					PassthroughModelArgumentWithEnvelope("configs", simNetworkOperatorsConfigView)
+				o := r.DefineOperation("SetNetworkOperator")
+				o.Arguments = schema.Arguments{
+					schema.ArgumentZone,
+					schema.ArgumentID,
+					schema.PassthroughModelArgumentWithEnvelope(o, "configs", simNetworkOperatorsConfigView),
+				}
 				o.PathFormat = schema.IDAndSuffixPathFormat("sim/network_operator_config")
 				o.Method = http.MethodPut
 				return o

@@ -11,20 +11,14 @@ type Operation struct {
 	Name             string        // 操作名、メソッド名となる
 	Method           string        // HTTPリクエストメソッド GET/POST/PUT/DELETE
 	PathFormat       string        // パスのフォーマット、省略した場合はDefaultPathFormatが設定される
-	arguments        Arguments     // 引数の定義
+	Arguments        Arguments     // 引数の定義
 	results          Results       // レスポンス
 	requestEnvelope  *EnvelopeType // リクエスト時のエンベロープ
 	responseEnvelope *EnvelopeType // レスポンス時のエンベロープ
 }
 
-// Argument 引数定義の追加(単数)
-func (o *Operation) Argument(arg *Argument) *Operation {
-	o.arguments = append(o.arguments, arg)
-	return o
-}
-
 // MappableArgument 引数定義の追加
-func (o *Operation) MappableArgument(name string, model *Model) *Operation {
+func MappableArgument(o *Operation, name string, model *Model) *Argument {
 	var destField string
 	if o.requestEnvelope != nil {
 		destField = o.requestEnvelope.PayloadName()
@@ -32,24 +26,24 @@ func (o *Operation) MappableArgument(name string, model *Model) *Operation {
 			destField = o.resource.FieldName(o.requestEnvelope.Form)
 		}
 	}
-	return o.Argument(&Argument{
+	return &Argument{
 		Name:       name,
 		Type:       model,
 		MapConvTag: fmt.Sprintf("%s,recursive", destField),
-	})
+	}
 }
 
 // PassthroughModelArgument 引数定義の追加
-func (o *Operation) PassthroughModelArgument(name string, model *Model) *Operation {
-	return o.Argument(&Argument{
+func PassthroughModelArgument(o *Operation, name string, model *Model) *Argument {
+	return &Argument{
 		Name:       name,
 		Type:       model,
 		MapConvTag: ",squash",
-	})
+	}
 }
 
 // PassthroughModelArgumentWithEnvelope 引数定義の追加、ペイロードの定義も同時に行われる
-func (o *Operation) PassthroughModelArgumentWithEnvelope(name string, model *Model) *Operation {
+func PassthroughModelArgumentWithEnvelope(o *Operation, name string, model *Model) *Argument {
 	var descs []*EnvelopePayloadDesc
 	for _, field := range model.Fields {
 		descs = append(descs, &EnvelopePayloadDesc{
@@ -58,16 +52,16 @@ func (o *Operation) PassthroughModelArgumentWithEnvelope(name string, model *Mod
 		})
 	}
 	o.RequestEnvelope(descs...)
-	return o.Argument(&Argument{
+	return &Argument{
 		Name:       name,
 		Type:       model,
 		MapConvTag: ",squash",
-	})
+	}
 }
 
 // AddArguments 引数定義の追加(複数)
-func (o *Operation) AddArguments(args []*Argument) *Operation {
-	o.arguments = append(o.arguments, args...)
+func (o *Operation) AddArguments(args ...*Argument) *Operation {
+	o.Arguments = append(o.Arguments, args...)
 	return o
 }
 
@@ -176,7 +170,7 @@ func (o *Operation) GetPathFormat() string {
 func (o *Operation) ImportStatements(additionalImports ...string) []string {
 	ss := wrapByDoubleQuote(additionalImports...)
 
-	for _, arg := range o.arguments {
+	for _, arg := range o.Arguments {
 		ss = append(ss, arg.ImportStatements()...)
 	}
 
@@ -213,11 +207,6 @@ func (o *Operation) ResponseEnvelopeStructName() string {
 // ResultTypeName API戻り値の型名
 func (o *Operation) ResultTypeName() string {
 	return o.resultType().GoType()
-}
-
-// Arguments 設定されている全てのArgumentを取得
-func (o *Operation) Arguments() Arguments {
-	return o.arguments
 }
 
 // HasResults 戻り値が定義されているかを取得
@@ -260,7 +249,7 @@ func (o *Operation) StubReturnStatement(receiverName string) string {
 // Models オペレーション配下の(Nameで)ユニークなモデル一覧を取得
 func (o *Operation) Models() Models {
 	ms := o.results.Models()
-	for _, arg := range o.arguments {
+	for _, arg := range o.Arguments {
 		m, ok := arg.Type.(*Model)
 		if ok {
 			ms = append(ms, m)

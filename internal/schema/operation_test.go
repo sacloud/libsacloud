@@ -27,44 +27,49 @@ func TestOperation(t *testing.T) {
 		{
 			// TODO あとで直す
 			operation: func() *Operation {
-				o := resource.DefineOperation("Create").
-					RequestEnvelope(&EnvelopePayloadDesc{PayloadType: meta.Static(struct{}{})}).
-					Argument(ArgumentZone).
-					Argument(&Argument{
-						Name:       "arg1",
-						MapConvTag: "Destination",
-						Type: &Model{
-							Name: "Model",
-							Fields: []*FieldDesc{
-								{
-									Name: "Field1",
-									Type: meta.Static(""),
-								},
-								{
-									Name: "Field2",
-									Type: meta.Static(""),
+				o := &Operation{
+					resource: resource,
+					Name:     "Create",
+					Arguments: []*Argument{
+						ArgumentZone,
+						{
+							Name:       "arg1",
+							MapConvTag: "Destination",
+							Type: &Model{
+								Name: "Model",
+								Fields: []*FieldDesc{
+									{
+										Name: "Field1",
+										Type: meta.Static(""),
+									},
+									{
+										Name: "Field2",
+										Type: meta.Static(""),
+									},
 								},
 							},
 						},
-					}).
-					ResultFromEnvelope(&Model{
-						Name: "ResultFromEnvelope",
-						Fields: []*FieldDesc{
-							{
-								Name: "Field3",
-								Type: meta.Static(""),
-							},
-							{
-								Name: "Field4",
-								Type: meta.Static(""),
-							},
+					},
+					PathFormat: DefaultPathFormat,
+					Method:     http.MethodPost,
+				}
+				o.RequestEnvelope(&EnvelopePayloadDesc{PayloadType: meta.Static(struct{}{})})
+				o.ResultFromEnvelope(&Model{
+					Name: "ResultFromEnvelope",
+					Fields: []*FieldDesc{
+						{
+							Name: "Field3",
+							Type: meta.Static(""),
 						},
-					}, &EnvelopePayloadDesc{
-						PayloadName: "Test",
-						PayloadType: meta.Static(struct{}{}),
-					}, "Test")
-				o.PathFormat = DefaultPathFormat
-				o.Method = http.MethodPost
+						{
+							Name: "Field4",
+							Type: meta.Static(""),
+						},
+					},
+				}, &EnvelopePayloadDesc{
+					PayloadName: "Test",
+					PayloadType: meta.Static(struct{}{}),
+				}, "Test")
 				return o
 			}(),
 			expect: &expectOperationValues{

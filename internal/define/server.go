@@ -33,13 +33,15 @@ var serverAPI = &schema.Resource{
 			// TODO あとで直す
 			func() *schema.Operation {
 				o := r.DefineOperation("ChangePlan").
-					Argument(schema.ArgumentZone).
-					Argument(schema.ArgumentID).
-					PassthroughModelArgumentWithEnvelope("plan", serverChangePlanParam).
 					ResultFromEnvelope(serverView, &schema.EnvelopePayloadDesc{
 						PayloadName: r.Name,
 						PayloadType: meta.Static(naked.Server{}),
 					}, "")
+				o.Arguments = schema.Arguments{
+					schema.ArgumentZone,
+					schema.ArgumentID,
+					schema.PassthroughModelArgumentWithEnvelope(o, "plan", serverChangePlanParam),
+				}
 				o.PathFormat = schema.IDAndSuffixPathFormat("plan")
 				o.Method = http.MethodPut
 				return o
@@ -52,10 +54,11 @@ var serverAPI = &schema.Resource{
 					RequestEnvelope(&schema.EnvelopePayloadDesc{
 						PayloadType: meta.Static(naked.CDROM{}),
 						PayloadName: "CDROM",
-					}).
-					Argument(schema.ArgumentZone).
-					Argument(schema.ArgumentID).
-					Argument(&schema.Argument{
+					})
+				o.Arguments = schema.Arguments{
+					schema.ArgumentZone,
+					schema.ArgumentID,
+					{
 						Name: "insertParam",
 						Type: &schema.Model{
 							Name: "InsertCDROMRequest",
@@ -65,7 +68,8 @@ var serverAPI = &schema.Resource{
 							NakedType: meta.Static(naked.CDROM{}),
 						},
 						MapConvTag: "CDROM",
-					})
+					},
+				}
 				o.PathFormat = schema.IDAndSuffixPathFormat("cdrom")
 				o.Method = http.MethodPut
 				return o
@@ -78,10 +82,11 @@ var serverAPI = &schema.Resource{
 					RequestEnvelope(&schema.EnvelopePayloadDesc{
 						PayloadType: meta.Static(naked.CDROM{}),
 						PayloadName: "CDROM",
-					}).
-					Argument(schema.ArgumentZone).
-					Argument(schema.ArgumentID).
-					Argument(&schema.Argument{
+					})
+				o.Arguments = schema.Arguments{
+					schema.ArgumentZone,
+					schema.ArgumentID,
+					{
 						Name: "insertParam",
 						Type: &schema.Model{
 							Name: "EjectCDROMRequest",
@@ -91,7 +96,8 @@ var serverAPI = &schema.Resource{
 							NakedType: meta.Static(naked.CDROM{}),
 						},
 						MapConvTag: "CDROM",
-					})
+					},
+				}
 				o.PathFormat = schema.IDAndSuffixPathFormat("cdrom")
 				o.Method = http.MethodDelete
 				return o
