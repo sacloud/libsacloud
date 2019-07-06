@@ -28,7 +28,7 @@ func TestOperation(t *testing.T) {
 			// TODO あとで直す
 			operation: func() *Operation {
 				o := &Operation{
-					resource: resource,
+					Resource: resource,
 					Name:     "Create",
 					Arguments: []*Argument{
 						ArgumentZone,

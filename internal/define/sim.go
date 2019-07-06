@@ -37,7 +37,12 @@ var simAPI = &schema.Resource{
 			// assignIP
 			// TODO あとで直す
 			func() *schema.Operation {
-				o := r.DefineOperation("AssignIP")
+				o := &schema.Operation{
+					Resource:   r,
+					Name:       "AssignIP",
+					PathFormat: schema.IDAndSuffixPathFormat("sim/ip"),
+					Method:     http.MethodPut,
+				}
 				o.RequestEnvelope = schema.RequestEnvelope(o,
 					&schema.EnvelopePayloadDesc{
 						PayloadName: "SIM",
@@ -52,8 +57,6 @@ var simAPI = &schema.Resource{
 					schema.ArgumentID,
 					schema.MappableArgument(o, "param", simAssignIPParam),
 				}
-				o.PathFormat = schema.IDAndSuffixPathFormat("sim/ip")
-				o.Method = http.MethodPut
 				return o
 			}(),
 
@@ -63,7 +66,12 @@ var simAPI = &schema.Resource{
 			// IMEILock
 			// TODO あとで直す
 			func() *schema.Operation {
-				o := r.DefineOperation("IMEILock")
+				o := &schema.Operation{
+					Resource:   r,
+					Name:       "IMEILock",
+					PathFormat: schema.IDAndSuffixPathFormat("sim/imeilock"),
+					Method:     http.MethodPut,
+				}
 				o.RequestEnvelope = schema.RequestEnvelope(o,
 					&schema.EnvelopePayloadDesc{
 						PayloadName: "SIM",
@@ -78,8 +86,6 @@ var simAPI = &schema.Resource{
 					schema.ArgumentID,
 					schema.MappableArgument(o, "param", simIMEILockParam),
 				}
-				o.PathFormat = schema.IDAndSuffixPathFormat("sim/imeilock")
-				o.Method = http.MethodPut
 				return o
 			}(),
 
@@ -89,48 +95,57 @@ var simAPI = &schema.Resource{
 			// Logs
 			// TODO あとで直す
 			func() *schema.Operation {
-				o := r.DefineOperation("Logs").
-					ResultPluralFromEnvelope(simLogView, &schema.EnvelopePayloadDesc{
-						PayloadName: "Logs",
-						PayloadType: meta.Static(naked.SIMLog{}),
-					}, "Logs")
-				o.Arguments = schema.Arguments{
-					schema.ArgumentZone,
-					schema.ArgumentID,
+				o := &schema.Operation{
+					Resource: r,
+					Name:     "Logs",
+					Arguments: schema.Arguments{
+						schema.ArgumentZone,
+						schema.ArgumentID,
+					},
+					PathFormat: schema.IDAndSuffixPathFormat("sim/sessionlog"),
+					Method:     http.MethodGet,
 				}
-				o.PathFormat = schema.IDAndSuffixPathFormat("sim/sessionlog")
-				o.Method = http.MethodGet
+				o.ResultPluralFromEnvelope(simLogView, &schema.EnvelopePayloadDesc{
+					PayloadName: "Logs",
+					PayloadType: meta.Static(naked.SIMLog{}),
+				}, "Logs")
 				return o
 			}(),
 
 			// GetNetworkOperator
 			// TODO あとで直す
 			func() *schema.Operation {
-				o := r.DefineOperation("GetNetworkOperator").
-					ResultPluralFromEnvelope(simNetworkOperatorConfigView, &schema.EnvelopePayloadDesc{
-						PayloadName: "NetworkOperationConfigs",
-						PayloadType: meta.Static(naked.SIMNetworkOperatorConfig{}),
-					}, "Configs")
-				o.Arguments = schema.Arguments{
-					schema.ArgumentZone,
-					schema.ArgumentID,
+				o := &schema.Operation{
+					Resource: r,
+					Name:     "GetNetworkOperator",
+					Arguments: schema.Arguments{
+						schema.ArgumentZone,
+						schema.ArgumentID,
+					},
+					PathFormat: schema.IDAndSuffixPathFormat("sim/network_operator_config"),
+					Method:     http.MethodGet,
 				}
-				o.PathFormat = schema.IDAndSuffixPathFormat("sim/network_operator_config")
-				o.Method = http.MethodGet
+				o.ResultPluralFromEnvelope(simNetworkOperatorConfigView, &schema.EnvelopePayloadDesc{
+					PayloadName: "NetworkOperationConfigs",
+					PayloadType: meta.Static(naked.SIMNetworkOperatorConfig{}),
+				}, "Configs")
 				return o
 			}(),
 
 			// SetNetworkOperator
 			// TODO あとで直す
 			func() *schema.Operation {
-				o := r.DefineOperation("SetNetworkOperator")
+				o := &schema.Operation{
+					Resource:   r,
+					Name:       "SetNetworkOperator",
+					PathFormat: schema.IDAndSuffixPathFormat("sim/network_operator_config"),
+					Method:     http.MethodPut,
+				}
 				o.Arguments = schema.Arguments{
 					schema.ArgumentZone,
 					schema.ArgumentID,
 					schema.PassthroughModelArgumentWithEnvelope(o, "configs", simNetworkOperatorsConfigView),
 				}
-				o.PathFormat = schema.IDAndSuffixPathFormat("sim/network_operator_config")
-				o.Method = http.MethodPut
 				return o
 			}(),
 

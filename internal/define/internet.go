@@ -33,11 +33,16 @@ var internetAPI = &schema.Resource{
 			// UpdateBandWidth
 			// TODO あとで直す
 			func() *schema.Operation {
-				o := r.DefineOperation("UpdateBandWidth").
-					ResultFromEnvelope(internetView, &schema.EnvelopePayloadDesc{
-						PayloadType: internetNakedType,
-						PayloadName: "Internet",
-					}, "")
+				o := &schema.Operation{
+					Resource:   r,
+					Name:       "UpdateBandWidth",
+					PathFormat: schema.IDAndSuffixPathFormat("bandwidth"),
+					Method:     http.MethodPut,
+				}
+				o.ResultFromEnvelope(internetView, &schema.EnvelopePayloadDesc{
+					PayloadType: internetNakedType,
+					PayloadName: "Internet",
+				}, "")
 				o.RequestEnvelope = schema.RequestEnvelope(o,
 					&schema.EnvelopePayloadDesc{
 						PayloadType: internetNakedType,
@@ -49,37 +54,43 @@ var internetAPI = &schema.Resource{
 					schema.ArgumentID,
 					schema.MappableArgument(o, "param", internetUpdateBandWidthParam),
 				}
-				o.PathFormat = schema.IDAndSuffixPathFormat("bandwidth")
-				o.Method = http.MethodPut
 				return o
 			}(),
 
 			// AddSubnet
 			// TODO あとで直す
 			func() *schema.Operation {
-				o := r.DefineOperation("AddSubnet").
-					ResultFromEnvelope(models.internetSubnetOperationResult(), &schema.EnvelopePayloadDesc{
-						PayloadType: meta.Static(naked.Subnet{}),
-						PayloadName: "Subnet",
-					}, "Subnet")
+				o := &schema.Operation{
+					Resource:   r,
+					Name:       "AddSubnet",
+					PathFormat: schema.IDAndSuffixPathFormat("subnet"),
+					Method:     http.MethodPost,
+				}
+				o.ResultFromEnvelope(models.internetSubnetOperationResult(), &schema.EnvelopePayloadDesc{
+					PayloadType: meta.Static(naked.Subnet{}),
+					PayloadName: "Subnet",
+				}, "Subnet")
 				o.Arguments = schema.Arguments{
 					schema.ArgumentZone,
 					schema.ArgumentID,
 					schema.PassthroughModelArgumentWithEnvelope(o, "param", internetAddSubnetParam),
 				}
-				o.PathFormat = schema.IDAndSuffixPathFormat("subnet")
-				o.Method = http.MethodPost
 				return o
 			}(),
 
 			// UpdateSubnet
 			// TODO あとで直す
 			func() *schema.Operation {
-				o := r.DefineOperation("UpdateSubnet").
-					ResultFromEnvelope(models.internetSubnetOperationResult(), &schema.EnvelopePayloadDesc{
-						PayloadType: meta.Static(naked.Subnet{}),
-						PayloadName: "Subnet",
-					}, "Subnet")
+				o := &schema.Operation{
+					Resource:   r,
+					Name:       "UpdateSubnet",
+					PathFormat: schema.IDAndSuffixPathFormat("subnet/{{.subnetID}}"),
+					Method:     http.MethodPut,
+				}
+				o.ResultFromEnvelope(models.internetSubnetOperationResult(), &schema.EnvelopePayloadDesc{
+					PayloadType: meta.Static(naked.Subnet{}),
+					PayloadName: "Subnet",
+				}, "Subnet")
 				o.Arguments = schema.Arguments{
 					schema.ArgumentZone,
 					schema.ArgumentID,
@@ -89,8 +100,6 @@ var internetAPI = &schema.Resource{
 					},
 					schema.PassthroughModelArgumentWithEnvelope(o, "param", internetUpdateSubnetParam),
 				}
-				o.PathFormat = schema.IDAndSuffixPathFormat("subnet/{{.subnetID}}")
-				o.Method = http.MethodPut
 				return o
 			}(),
 

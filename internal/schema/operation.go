@@ -7,7 +7,7 @@ import (
 
 // Operation リソースへの操作
 type Operation struct {
-	resource         *Resource
+	Resource         *Resource
 	Name             string        // 操作名、メソッド名となる
 	Method           string        // HTTPリクエストメソッド GET/POST/PUT/DELETE
 	PathFormat       string        // パスのフォーマット、省略した場合はDefaultPathFormatが設定される
@@ -23,7 +23,7 @@ func MappableArgument(o *Operation, name string, model *Model) *Argument {
 	if o.RequestEnvelope != nil {
 		destField = o.RequestEnvelope.PayloadName()
 		if destField == "" {
-			destField = o.resource.FieldName(o.RequestEnvelope.Form)
+			destField = o.Resource.FieldName(o.RequestEnvelope.Form)
 		}
 	}
 	return &Argument{
@@ -58,7 +58,7 @@ func RequestEnvelope(o *Operation, descs ...*EnvelopePayloadDesc) *EnvelopeType 
 
 	for _, desc := range descs {
 		if desc.PayloadName == "" {
-			desc.PayloadName = o.resource.FieldName(ret.Form)
+			desc.PayloadName = o.Resource.FieldName(ret.Form)
 		}
 		ret.Payloads = append(ret.Payloads, desc)
 	}
@@ -74,10 +74,10 @@ func (o *Operation) ResultFromEnvelope(m *Model, sourceField *EnvelopePayloadDes
 		}
 	}
 	if sourceField.PayloadName == "" {
-		sourceField.PayloadName = o.resource.FieldName(o.responseEnvelope.Form)
+		sourceField.PayloadName = o.Resource.FieldName(o.responseEnvelope.Form)
 	}
 	if destFieldName == "" {
-		destFieldName = o.resource.FieldName(o.responseEnvelope.Form)
+		destFieldName = o.Resource.FieldName(o.responseEnvelope.Form)
 	}
 	o.responseEnvelope.Payloads = append(o.responseEnvelope.Payloads, sourceField)
 	if sourceField.Tags == nil {
@@ -96,10 +96,10 @@ func (o *Operation) ResultPluralFromEnvelope(m *Model, sourceField *EnvelopePayl
 		}
 	}
 	if sourceField.PayloadName == "" {
-		sourceField.PayloadName = o.resource.FieldName(o.responseEnvelope.Form)
+		sourceField.PayloadName = o.Resource.FieldName(o.responseEnvelope.Form)
 	}
 	if destFieldName == "" {
-		destFieldName = o.resource.FieldName(o.responseEnvelope.Form)
+		destFieldName = o.Resource.FieldName(o.responseEnvelope.Form)
 	}
 
 	o.responseEnvelope.Payloads = append(o.responseEnvelope.Payloads, sourceField)
@@ -164,12 +164,12 @@ func (o *Operation) ReturnErrorStatement() string {
 
 // RequestEnvelopeStructName エンベロープのstruct名(camel-case)
 func (o *Operation) RequestEnvelopeStructName() string {
-	return fmt.Sprintf("%s%sRequestEnvelope", toCamelWithFirstLower(o.resource.Name), o.Name)
+	return fmt.Sprintf("%s%sRequestEnvelope", toCamelWithFirstLower(o.Resource.Name), o.Name)
 }
 
 // ResponseEnvelopeStructName エンベロープのstruct名(camel-case)
 func (o *Operation) ResponseEnvelopeStructName() string {
-	return fmt.Sprintf("%s%sResponseEnvelope", toCamelWithFirstLower(o.resource.Name), o.Name)
+	return fmt.Sprintf("%s%sResponseEnvelope", toCamelWithFirstLower(o.Resource.Name), o.Name)
 }
 
 // ResultTypeName API戻り値の型名
@@ -293,17 +293,17 @@ func (o *Operation) FileSafeName() string {
 
 // ResourceTypeName リソースの名称を取得
 func (o *Operation) ResourceTypeName() string {
-	return o.resource.TypeName()
+	return o.Resource.TypeName()
 }
 
 // ResourceIsGlobal リソースがグローバルリソースか
 func (o *Operation) ResourceIsGlobal() bool {
-	return o.resource.IsGlobal
+	return o.Resource.IsGlobal
 }
 
 func (o *Operation) resultType() *ResultType {
 	return &ResultType{
-		resource:  o.resource,
+		resource:  o.Resource,
 		operation: o,
 		results:   o.results,
 	}
