@@ -67,7 +67,7 @@ func New{{ $typeName}}Stub(caller sacloud.APICaller) sacloud.{{$typeName}}API {
 
 {{ range .Operations }}{{$returnErrStatement := .ReturnErrorStatement}}{{ $operationName := .MethodName }}
 // {{ .MethodName }} is API call with trace log
-func (s *{{ $typeName }}Stub) {{ .MethodName }}(ctx context.Context{{ range .AllArguments }}, {{ .ArgName }} {{ .TypeName }}{{ end }}) {{.ResultsStatementWithNameSpace}} {
+func (s *{{ $typeName }}Stub) {{ .MethodName }}(ctx context.Context{{ range .AllArguments }}, {{ .ArgName }} {{ .TypeName }}{{ end }}) {{.ResultsStatement}} {
 	if s.{{$operationName}}StubResult == nil {
 		log.Fatal("{{$typeName}}Stub.{{$operationName}}StubResult is not set")
 	}

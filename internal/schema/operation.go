@@ -238,12 +238,7 @@ func (o *Operation) ResponseEnvelopeStructName() string {
 
 // ResultTypeName API戻り値の型名
 func (o *Operation) ResultTypeName() string {
-	return fmt.Sprintf("%s%sResult", o.resource.Name, o.name)
-}
-
-// ResultStructName API戻り値のstruct名(camel-case)
-func (o *Operation) ResultStructName() string {
-	return fmt.Sprintf("%s%sResult", toCamelWithFirstLower(o.resource.Name), o.name)
+	return o.resultType().GoType()
 }
 
 // AllArguments 設定されている全てのArgumentを取得
@@ -266,15 +261,7 @@ func (o *Operation) ResultsStatement() string {
 	if !o.HasResults() {
 		return "error"
 	}
-	return fmt.Sprintf("(*%s, error)", o.ResultTypeName())
-}
-
-// ResultsStatementWithNameSpace 戻り値定義部のソースを出力
-func (o *Operation) ResultsStatementWithNameSpace() string {
-	if !o.HasResults() {
-		return "error"
-	}
-	return fmt.Sprintf("(*sacloud.%s, error)", o.ResultTypeName())
+	return fmt.Sprintf("(%s, error)", o.resultType().GoTypeSourceCode())
 }
 
 // StubFieldDefines スタブ生成時のフィールド定義文を全フィールド分出力
@@ -282,7 +269,7 @@ func (o *Operation) StubFieldDefines() []string {
 	if len(o.results) == 0 {
 		return nil
 	}
-	return []string{fmt.Sprintf("Values *sacloud.%s", o.ResultTypeName())}
+	return []string{fmt.Sprintf("Values %s", o.resultType().GoTypeSourceCode())}
 }
 
 // StubReturnStatement スタブ生成時のreturn文
@@ -381,4 +368,12 @@ func (o *Operation) ResourceTypeName() string {
 // ResourceIsGlobal リソースがグローバルリソースか
 func (o *Operation) ResourceIsGlobal() bool {
 	return o.resource.IsGlobal
+}
+
+func (o *Operation) resultType() *ResultType {
+	return &ResultType{
+		resource:  o.resource,
+		operation: o,
+		results:   o.results,
+	}
 }
