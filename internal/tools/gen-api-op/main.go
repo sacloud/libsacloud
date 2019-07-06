@@ -108,9 +108,9 @@ func (o *{{ $typeName }}Op) {{ .MethodName }}(ctx context.Context{{ range .AllAr
 {{ end }}
 
 	{{ if .HasResponseEnvelope -}}
-	data, err := o.Client.Do(ctx, "{{.GetMethod}}", url, body)
+	data, err := o.Client.Do(ctx, "{{.Method}}", url, body)
 	{{ else -}}
-	_, err = o.Client.Do(ctx, "{{.GetMethod}}", url, body)
+	_, err = o.Client.Do(ctx, "{{.Method}}", url, body)
 	{{ end -}}
 	if err != nil {
 		return {{ $returnErrStatement }}

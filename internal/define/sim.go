@@ -35,70 +35,90 @@ var simAPI = &schema.Resource{
 			r.DefineSimpleOperation("Deactivate", http.MethodPut, "sim/deactivate"),
 
 			// assignIP
-			r.DefineOperation("AssignIP").
-				Method(http.MethodPut).
-				PathFormat(schema.IDAndSuffixPathFormat("sim/ip")).
-				Argument(schema.ArgumentZone).
-				Argument(schema.ArgumentID).
-				RequestEnvelope(&schema.EnvelopePayloadDesc{
-					PayloadName: "SIM",
-					PayloadType: meta.Static(naked.SIMAssignIPRequest{}),
-					Tags: &schema.FieldTags{
-						JSON: "sim",
-					},
-				}).
-				MappableArgument("param", simAssignIPParam),
+			// TODO あとで直す
+			func() *schema.Operation {
+				o := r.DefineOperation("AssignIP").
+					PathFormat(schema.IDAndSuffixPathFormat("sim/ip")).
+					Argument(schema.ArgumentZone).
+					Argument(schema.ArgumentID).
+					RequestEnvelope(&schema.EnvelopePayloadDesc{
+						PayloadName: "SIM",
+						PayloadType: meta.Static(naked.SIMAssignIPRequest{}),
+						Tags: &schema.FieldTags{
+							JSON: "sim",
+						},
+					}).
+					MappableArgument("param", simAssignIPParam)
+				o.Method = http.MethodPut
+				return o
+			}(),
 
 			// clearIP
 			r.DefineSimpleOperation("ClearIP", http.MethodDelete, "sim/ip"),
 
 			// IMEILock
-			r.DefineOperation("IMEILock").
-				Method(http.MethodPut).
-				PathFormat(schema.IDAndSuffixPathFormat("sim/imeilock")).
-				Argument(schema.ArgumentZone).
-				Argument(schema.ArgumentID).
-				RequestEnvelope(&schema.EnvelopePayloadDesc{
-					PayloadName: "SIM",
-					PayloadType: meta.Static(naked.SIMIMEILockRequest{}),
-					Tags: &schema.FieldTags{
-						JSON: "sim",
-					},
-				}).
-				MappableArgument("param", simIMEILockParam),
+			// TODO あとで直す
+			func() *schema.Operation {
+				o := r.DefineOperation("IMEILock").
+					PathFormat(schema.IDAndSuffixPathFormat("sim/imeilock")).
+					Argument(schema.ArgumentZone).
+					Argument(schema.ArgumentID).
+					RequestEnvelope(&schema.EnvelopePayloadDesc{
+						PayloadName: "SIM",
+						PayloadType: meta.Static(naked.SIMIMEILockRequest{}),
+						Tags: &schema.FieldTags{
+							JSON: "sim",
+						},
+					}).
+					MappableArgument("param", simIMEILockParam)
+				o.Method = http.MethodPut
+				return o
+			}(),
 
 			// IMEIUnlock
 			r.DefineSimpleOperation("IMEIUnlock", http.MethodDelete, "sim/imeilock"),
 
 			// Logs
-			r.DefineOperation("Logs").
-				Method(http.MethodGet).
-				PathFormat(schema.IDAndSuffixPathFormat("sim/sessionlog")).
-				Argument(schema.ArgumentZone).
-				Argument(schema.ArgumentID).
-				ResultPluralFromEnvelope(simLogView, &schema.EnvelopePayloadDesc{
-					PayloadName: "Logs",
-					PayloadType: meta.Static(naked.SIMLog{}),
-				}, "Logs"),
+			// TODO あとで直す
+			func() *schema.Operation {
+				o := r.DefineOperation("Logs").
+					PathFormat(schema.IDAndSuffixPathFormat("sim/sessionlog")).
+					Argument(schema.ArgumentZone).
+					Argument(schema.ArgumentID).
+					ResultPluralFromEnvelope(simLogView, &schema.EnvelopePayloadDesc{
+						PayloadName: "Logs",
+						PayloadType: meta.Static(naked.SIMLog{}),
+					}, "Logs")
+				o.Method = http.MethodGet
+				return o
+			}(),
 
 			// GetNetworkOperator
-			r.DefineOperation("GetNetworkOperator").
-				Method(http.MethodGet).
-				PathFormat(schema.IDAndSuffixPathFormat("sim/network_operator_config")).
-				Argument(schema.ArgumentZone).
-				Argument(schema.ArgumentID).
-				ResultPluralFromEnvelope(simNetworkOperatorConfigView, &schema.EnvelopePayloadDesc{
-					PayloadName: "NetworkOperationConfigs",
-					PayloadType: meta.Static(naked.SIMNetworkOperatorConfig{}),
-				}, "Configs"),
+			// TODO あとで直す
+			func() *schema.Operation {
+				o := r.DefineOperation("GetNetworkOperator").
+					PathFormat(schema.IDAndSuffixPathFormat("sim/network_operator_config")).
+					Argument(schema.ArgumentZone).
+					Argument(schema.ArgumentID).
+					ResultPluralFromEnvelope(simNetworkOperatorConfigView, &schema.EnvelopePayloadDesc{
+						PayloadName: "NetworkOperationConfigs",
+						PayloadType: meta.Static(naked.SIMNetworkOperatorConfig{}),
+					}, "Configs")
+				o.Method = http.MethodGet
+				return o
+			}(),
 
 			// SetNetworkOperator
-			r.DefineOperation("SetNetworkOperator").
-				Method(http.MethodPut).
-				PathFormat(schema.IDAndSuffixPathFormat("sim/network_operator_config")).
-				Argument(schema.ArgumentZone).
-				Argument(schema.ArgumentID).
-				PassthroughModelArgumentWithEnvelope("configs", simNetworkOperatorsConfigView),
+			// TODO あとで直す
+			func() *schema.Operation {
+				o := r.DefineOperation("SetNetworkOperator").
+					PathFormat(schema.IDAndSuffixPathFormat("sim/network_operator_config")).
+					Argument(schema.ArgumentZone).
+					Argument(schema.ArgumentID).
+					PassthroughModelArgumentWithEnvelope("configs", simNetworkOperatorsConfigView)
+				o.Method = http.MethodPut
+				return o
+			}(),
 
 			// monitor
 			r.DefineOperationMonitorChild("SIM", "sim/metrics",

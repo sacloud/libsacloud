@@ -8,30 +8,13 @@ import (
 // Operation リソースへの操作
 type Operation struct {
 	resource         *Resource
-	name             string        // 操作名、メソッド名となる
-	method           string        // HTTPリクエストメソッド GET/POST/PUT/DELETE
+	Name             string        // 操作名、メソッド名となる
+	Method           string        // HTTPリクエストメソッド GET/POST/PUT/DELETE
 	pathFormat       string        // パスのフォーマット、省略した場合はDefaultPathFormatが設定される
 	arguments        Arguments     // 引数の定義
 	results          Results       // レスポンス
 	requestEnvelope  *EnvelopeType // リクエスト時のエンベロープ
 	responseEnvelope *EnvelopeType // レスポンス時のエンベロープ
-}
-
-// Name 操作名、メソッド名となる
-func (o *Operation) Name(name string) *Operation {
-	o.name = name
-	return o
-}
-
-// Method HTTPリクエストメソッド GET/POST/PUT/DELETE
-func (o *Operation) Method(method string) *Operation {
-	o.method = method
-	return o
-}
-
-// GetMethod HTTPリクエストメソッドの取得
-func (o *Operation) GetMethod() string {
-	return o.method
 }
 
 // PathFormat パスのフォーマット、省略した場合はDefaultPathFormatが設定される
@@ -212,7 +195,7 @@ func (o *Operation) ImportStatements(additionalImports ...string) []string {
 
 // MethodName コード生成時に利用する、メソッド名を出力する
 func (o *Operation) MethodName() string {
-	return o.name
+	return o.Name
 }
 
 // ReturnErrorStatement コード生成時に利用する、エラーをreturnする文を生成する
@@ -225,12 +208,12 @@ func (o *Operation) ReturnErrorStatement() string {
 
 // RequestEnvelopeStructName エンベロープのstruct名(camel-case)
 func (o *Operation) RequestEnvelopeStructName() string {
-	return fmt.Sprintf("%s%sRequestEnvelope", toCamelWithFirstLower(o.resource.Name), o.name)
+	return fmt.Sprintf("%s%sRequestEnvelope", toCamelWithFirstLower(o.resource.Name), o.Name)
 }
 
 // ResponseEnvelopeStructName エンベロープのstruct名(camel-case)
 func (o *Operation) ResponseEnvelopeStructName() string {
-	return fmt.Sprintf("%s%sResponseEnvelope", toCamelWithFirstLower(o.resource.Name), o.name)
+	return fmt.Sprintf("%s%sResponseEnvelope", toCamelWithFirstLower(o.resource.Name), o.Name)
 }
 
 // ResultTypeName API戻り値の型名
@@ -354,7 +337,7 @@ func (o *Operation) IsResponsePlural() bool {
 
 // FileSafeName スネークケースにしたResourceの名前、コード生成時の保存先ファイル名に利用される
 func (o *Operation) FileSafeName() string {
-	return toSnakeCaseName(o.name)
+	return toSnakeCaseName(o.Name)
 }
 
 // ResourceTypeName リソースの名称を取得

@@ -25,44 +25,48 @@ func TestOperation(t *testing.T) {
 		expect    *expectOperationValues
 	}{
 		{
-			operation: resource.DefineOperation("Create").
-				Method(http.MethodPost).
-				PathFormat(DefaultPathFormat).
-				RequestEnvelope(&EnvelopePayloadDesc{PayloadType: meta.Static(struct{}{})}).
-				Argument(ArgumentZone).
-				Argument(&Argument{
-					Name:       "arg1",
-					MapConvTag: "Destination",
-					Type: &Model{
-						Name: "Model",
+			// TODO あとで直す
+			operation: func() *Operation {
+				o := resource.DefineOperation("Create").
+					PathFormat(DefaultPathFormat).
+					RequestEnvelope(&EnvelopePayloadDesc{PayloadType: meta.Static(struct{}{})}).
+					Argument(ArgumentZone).
+					Argument(&Argument{
+						Name:       "arg1",
+						MapConvTag: "Destination",
+						Type: &Model{
+							Name: "Model",
+							Fields: []*FieldDesc{
+								{
+									Name: "Field1",
+									Type: meta.Static(""),
+								},
+								{
+									Name: "Field2",
+									Type: meta.Static(""),
+								},
+							},
+						},
+					}).
+					ResultFromEnvelope(&Model{
+						Name: "ResultFromEnvelope",
 						Fields: []*FieldDesc{
 							{
-								Name: "Field1",
+								Name: "Field3",
 								Type: meta.Static(""),
 							},
 							{
-								Name: "Field2",
+								Name: "Field4",
 								Type: meta.Static(""),
 							},
 						},
-					},
-				}).
-				ResultFromEnvelope(&Model{
-					Name: "ResultFromEnvelope",
-					Fields: []*FieldDesc{
-						{
-							Name: "Field3",
-							Type: meta.Static(""),
-						},
-						{
-							Name: "Field4",
-							Type: meta.Static(""),
-						},
-					},
-				}, &EnvelopePayloadDesc{
-					PayloadName: "Test",
-					PayloadType: meta.Static(struct{}{}),
-				}, "Test"),
+					}, &EnvelopePayloadDesc{
+						PayloadName: "Test",
+						PayloadType: meta.Static(struct{}{}),
+					}, "Test")
+				o.Method = http.MethodPost
+				return o
+			}(),
 			expect: &expectOperationValues{
 				methodName:                 "Create",
 				requestEnvelopeStructName:  "testCreateRequestEnvelope",
