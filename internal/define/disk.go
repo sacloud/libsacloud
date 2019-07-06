@@ -47,7 +47,7 @@ var diskAPI = &schema.Resource{
 				ResultFromEnvelope(diskModel, &schema.EnvelopePayloadDesc{
 					PayloadType: diskNakedType,
 					PayloadName: "Disk",
-				}),
+				}, diskModel.Name),
 
 			// config(DiskEdit)
 			r.DefineOperation("Config").
@@ -92,7 +92,7 @@ var diskAPI = &schema.Resource{
 				ResultFromEnvelope(diskModel, &schema.EnvelopePayloadDesc{
 					PayloadType: diskNakedType,
 					PayloadName: "Disk",
-				}),
+				}, diskModel.Name),
 
 			r.DefineOperation("CreateWithConfigDistantly").
 				Method(http.MethodPost).
@@ -137,7 +137,7 @@ var diskAPI = &schema.Resource{
 				ResultFromEnvelope(diskModel, &schema.EnvelopePayloadDesc{
 					PayloadType: diskNakedType,
 					PayloadName: "Disk",
-				}),
+				}, diskModel.Name),
 
 			// to blank
 			r.DefineSimpleOperation("ToBlank", http.MethodPut, "to/blank"),
@@ -183,7 +183,7 @@ var diskAPI = &schema.Resource{
 				ResultFromEnvelope(diskModel, &schema.EnvelopePayloadDesc{
 					PayloadType: diskNakedType,
 					PayloadName: "Disk",
-				}),
+				}, diskModel.Name),
 
 			r.DefineOperation("Install").
 				Method(http.MethodPut).
@@ -202,7 +202,7 @@ var diskAPI = &schema.Resource{
 				ResultFromEnvelope(diskModel, &schema.EnvelopePayloadDesc{
 					PayloadType: diskNakedType,
 					PayloadName: "Disk",
-				}),
+				}, diskModel.Name),
 
 			// read
 			r.DefineOperationRead(diskNakedType, diskModel),

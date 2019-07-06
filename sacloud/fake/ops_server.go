@@ -305,7 +305,7 @@ func (o *ServerOp) Monitor(ctx context.Context, zone string, id types.ID, condit
 	}
 
 	return &sacloud.ServerMonitorResult{
-		IsOk: true,
-		Data: res,
+		IsOk:            true,
+		CPUTimeActivity: res,
 	}, nil
 }

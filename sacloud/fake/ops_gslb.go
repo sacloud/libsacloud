@@ -18,10 +18,10 @@ func (o *GSLBOp) Find(ctx context.Context, zone string, conditions *sacloud.Find
 		values = append(values, dest)
 	}
 	return &sacloud.GSLBFindResult{
-		Total:              len(results),
-		Count:              len(results),
-		From:               0,
-		CommonServiceItems: values,
+		Total: len(results),
+		Count: len(results),
+		From:  0,
+		GSLBs: values,
 	}, nil
 }
 
@@ -42,8 +42,8 @@ func (o *GSLBOp) Create(ctx context.Context, zone string, param *sacloud.GSLBCre
 
 	s.setGSLB(sacloud.APIDefaultZone, result)
 	return &sacloud.GSLBCreateResult{
-		IsOk:              true,
-		CommonServiceItem: result,
+		IsOk: true,
+		GSLB: result,
 	}, nil
 }
 
@@ -57,8 +57,8 @@ func (o *GSLBOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.G
 	dest := &sacloud.GSLB{}
 	copySameNameField(value, dest)
 	return &sacloud.GSLBReadResult{
-		IsOk:              true,
-		CommonServiceItem: dest,
+		IsOk: true,
+		GSLB: dest,
 	}, nil
 }
 
@@ -68,12 +68,12 @@ func (o *GSLBOp) Update(ctx context.Context, zone string, id types.ID, param *sa
 	if err != nil {
 		return nil, err
 	}
-	value := readResult.CommonServiceItem
+	value := readResult.GSLB
 	copySameNameField(param, value)
 	fill(value, fillModifiedAt)
 	return &sacloud.GSLBUpdateResult{
-		IsOk:              true,
-		CommonServiceItem: value,
+		IsOk: true,
+		GSLB: value,
 	}, nil
 }
 

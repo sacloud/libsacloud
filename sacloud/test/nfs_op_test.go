@@ -132,7 +132,7 @@ func testNFSCreate(testContext *CRUDTestContext, caller sacloud.APICaller) (inte
 	if err != nil {
 		return nil, err
 	}
-	return res.Appliance, nil
+	return res.NFS, nil
 }
 
 func testNFSRead(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
@@ -141,7 +141,7 @@ func testNFSRead(testContext *CRUDTestContext, caller sacloud.APICaller) (interf
 	if err != nil {
 		return nil, err
 	}
-	return res.Appliance, nil
+	return res.NFS, nil
 }
 
 func testNFSUpdate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
@@ -150,7 +150,7 @@ func testNFSUpdate(testContext *CRUDTestContext, caller sacloud.APICaller) (inte
 	if err != nil {
 		return nil, err
 	}
-	return res.Appliance, nil
+	return res.NFS, nil
 }
 
 func testNFSDelete(testContext *CRUDTestContext, caller sacloud.APICaller) error {

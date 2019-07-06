@@ -25,19 +25,28 @@ func (r *Results) Models() Models {
 
 /******************************************************************************
  * Result
- *****************************************************************************/
+ ***************,**************************************************************/
 
 // Result Operationでの戻り値定義
 type Result struct {
-	DestField string // エンベロープでの宛先ペイロード名
-	Model     *Model // パラメータの型情報
-	Tags      *FieldTags
+	SourceField string // エンベロープのフィールド名
+	DestField   string // xxxResultでのフィールド名
+	IsPlural    bool
+	Model       *Model // パラメータの型情報
+	Tags        *FieldTags
 }
 
 // TagString タグの文字列表現
 func (r *Result) TagString() string {
 	if r.Tags == nil {
-		return ""
+		prefix := ""
+		if r.IsPlural {
+			prefix = "[]"
+		}
+		r.Tags = &FieldTags{
+			JSON:    ",omitempty",
+			MapConv: fmt.Sprintf("%s%s,omitempty,recursive", prefix, r.SourceField),
+		}
 	}
 	return fmt.Sprintf("`%s`", r.Tags.String())
 }

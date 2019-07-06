@@ -44,7 +44,7 @@ var internetAPI = &schema.Resource{
 				ResultFromEnvelope(internetView, &schema.EnvelopePayloadDesc{
 					PayloadType: internetNakedType,
 					PayloadName: "Internet",
-				}),
+				}, ""),
 
 			// AddSubnet
 			r.DefineOperation("AddSubnet").
@@ -56,7 +56,7 @@ var internetAPI = &schema.Resource{
 				ResultFromEnvelope(models.internetSubnetOperationResult(), &schema.EnvelopePayloadDesc{
 					PayloadType: meta.Static(naked.Subnet{}),
 					PayloadName: "Subnet",
-				}),
+				}, "Subnet"),
 
 			// UpdateSubnet
 			r.DefineOperation("UpdateSubnet").
@@ -72,7 +72,7 @@ var internetAPI = &schema.Resource{
 				ResultFromEnvelope(models.internetSubnetOperationResult(), &schema.EnvelopePayloadDesc{
 					PayloadType: meta.Static(naked.Subnet{}),
 					PayloadName: "Subnet",
-				}),
+				}, "Subnet"),
 
 			// DeleteSubnet
 			r.DefineSimpleOperation("DeleteSubnet", http.MethodDelete, "subnet/{{.subnetID}}",

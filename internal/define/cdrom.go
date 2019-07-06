@@ -20,7 +20,7 @@ var cdromAPI = &schema.Resource{
 				ResultFromEnvelope(models.ftpServer(), &schema.EnvelopePayloadDesc{
 					PayloadName: models.ftpServer().Name,
 					PayloadType: meta.Static(naked.OpeningFTPServer{}),
-				}),
+				}, models.ftpServer().Name),
 
 			// read
 			r.DefineOperationRead(cdromNakedType, cdromView),
