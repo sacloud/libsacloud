@@ -50,11 +50,13 @@ var serverAPI = &schema.Resource{
 			// insert cdrom
 			// TODO あとで直す
 			func() *schema.Operation {
-				o := r.DefineOperation("InsertCDROM").
-					RequestEnvelope(&schema.EnvelopePayloadDesc{
+				o := r.DefineOperation("InsertCDROM")
+				o.RequestEnvelope = schema.RequestEnvelope(o,
+					&schema.EnvelopePayloadDesc{
 						PayloadType: meta.Static(naked.CDROM{}),
 						PayloadName: "CDROM",
-					})
+					},
+				)
 				o.Arguments = schema.Arguments{
 					schema.ArgumentZone,
 					schema.ArgumentID,
@@ -78,11 +80,13 @@ var serverAPI = &schema.Resource{
 			// eject cdrom
 			// TODO あとで直す
 			func() *schema.Operation {
-				o := r.DefineOperation("EjectCDROM").
-					RequestEnvelope(&schema.EnvelopePayloadDesc{
+				o := r.DefineOperation("EjectCDROM")
+				o.RequestEnvelope = schema.RequestEnvelope(o,
+					&schema.EnvelopePayloadDesc{
 						PayloadType: meta.Static(naked.CDROM{}),
 						PayloadName: "CDROM",
-					})
+					},
+				)
 				o.Arguments = schema.Arguments{
 					schema.ArgumentZone,
 					schema.ArgumentID,

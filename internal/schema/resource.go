@@ -190,14 +190,14 @@ func (r *Resource) defineOperationCreate(nakedType meta.Type, createParam, resul
 
 	// TODO あとで直す
 	o := r.DefineOperation("Create").
-		RequestEnvelope(&EnvelopePayloadDesc{
-			PayloadType: nakedType,
-			PayloadName: payloadName,
-		}).
 		ResultFromEnvelope(result, &EnvelopePayloadDesc{
 			PayloadType: nakedType,
 			PayloadName: payloadName,
 		}, "")
+	o.RequestEnvelope = RequestEnvelope(o, &EnvelopePayloadDesc{
+		PayloadType: nakedType,
+		PayloadName: payloadName,
+	})
 	o.Arguments = Arguments{
 		ArgumentZone,
 		MappableArgument(o, "param", createParam),
@@ -278,14 +278,14 @@ func (r *Resource) defineOperationUpdate(nakedType meta.Type, updateParam, resul
 
 	// TODO あとで直す
 	o := r.DefineOperation("Update").
-		RequestEnvelope(&EnvelopePayloadDesc{
-			PayloadType: nakedType,
-			PayloadName: payloadName,
-		}).
 		ResultFromEnvelope(result, &EnvelopePayloadDesc{
 			PayloadType: nakedType,
 			PayloadName: payloadName,
 		}, "")
+	o.RequestEnvelope = RequestEnvelope(o, &EnvelopePayloadDesc{
+		PayloadType: nakedType,
+		PayloadName: payloadName,
+	})
 	o.Arguments = Arguments{
 		ArgumentZone,
 		ArgumentID,

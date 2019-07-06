@@ -25,18 +25,20 @@ var diskAPI = &schema.Resource{
 			// create distantly
 			func() *schema.Operation {
 				o := r.DefineOperation("CreateDistantly").
-					RequestEnvelope(&schema.EnvelopePayloadDesc{
-						PayloadType: diskNakedType,
-						PayloadName: "Disk",
-					}).
-					RequestEnvelope(&schema.EnvelopePayloadDesc{
-						PayloadType: diskDistantFromType,
-						PayloadName: "DistantFrom",
-					}).
 					ResultFromEnvelope(diskModel, &schema.EnvelopePayloadDesc{
 						PayloadType: diskNakedType,
 						PayloadName: "Disk",
 					}, diskModel.Name)
+				o.RequestEnvelope = schema.RequestEnvelope(o,
+					&schema.EnvelopePayloadDesc{
+						PayloadType: diskNakedType,
+						PayloadName: "Disk",
+					},
+					&schema.EnvelopePayloadDesc{
+						PayloadType: diskDistantFromType,
+						PayloadName: "DistantFrom",
+					},
+				)
 				o.Arguments = schema.Arguments{
 					schema.ArgumentZone,
 					{
@@ -73,22 +75,24 @@ var diskAPI = &schema.Resource{
 			// create with config(DiskEdit)
 			func() *schema.Operation {
 				o := r.DefineOperation("CreateWithConfig").
-					RequestEnvelope(&schema.EnvelopePayloadDesc{
-						PayloadType: diskNakedType,
-						PayloadName: "Disk",
-					}).
-					RequestEnvelope(&schema.EnvelopePayloadDesc{
-						PayloadType: diskEditNakedType,
-						PayloadName: "Config",
-					}).
-					RequestEnvelope(&schema.EnvelopePayloadDesc{
-						PayloadType: meta.TypeFlag,
-						PayloadName: "BootAtAvailable",
-					}).
 					ResultFromEnvelope(diskModel, &schema.EnvelopePayloadDesc{
 						PayloadType: diskNakedType,
 						PayloadName: "Disk",
 					}, diskModel.Name)
+				o.RequestEnvelope = schema.RequestEnvelope(o,
+					&schema.EnvelopePayloadDesc{
+						PayloadType: diskNakedType,
+						PayloadName: "Disk",
+					},
+					&schema.EnvelopePayloadDesc{
+						PayloadType: diskEditNakedType,
+						PayloadName: "Config",
+					},
+					&schema.EnvelopePayloadDesc{
+						PayloadType: meta.TypeFlag,
+						PayloadName: "BootAtAvailable",
+					},
+				)
 				o.Arguments = schema.Arguments{
 					schema.ArgumentZone,
 					{
@@ -115,26 +119,28 @@ var diskAPI = &schema.Resource{
 			// TODO あとで直す
 			func() *schema.Operation {
 				o := r.DefineOperation("CreateWithConfigDistantly").
-					RequestEnvelope(&schema.EnvelopePayloadDesc{
-						PayloadType: diskNakedType,
-						PayloadName: "Disk",
-					}).
-					RequestEnvelope(&schema.EnvelopePayloadDesc{
-						PayloadType: diskEditNakedType,
-						PayloadName: "Config",
-					}).
-					RequestEnvelope(&schema.EnvelopePayloadDesc{
-						PayloadType: meta.TypeFlag,
-						PayloadName: "BootAtAvailable",
-					}).
-					RequestEnvelope(&schema.EnvelopePayloadDesc{
-						PayloadType: diskDistantFromType,
-						PayloadName: "DistantFrom",
-					}).
 					ResultFromEnvelope(diskModel, &schema.EnvelopePayloadDesc{
 						PayloadType: diskNakedType,
 						PayloadName: "Disk",
 					}, diskModel.Name)
+				o.RequestEnvelope = schema.RequestEnvelope(o,
+					&schema.EnvelopePayloadDesc{
+						PayloadType: diskNakedType,
+						PayloadName: "Disk",
+					},
+					&schema.EnvelopePayloadDesc{
+						PayloadType: diskEditNakedType,
+						PayloadName: "Config",
+					},
+					&schema.EnvelopePayloadDesc{
+						PayloadType: meta.TypeFlag,
+						PayloadName: "BootAtAvailable",
+					},
+					&schema.EnvelopePayloadDesc{
+						PayloadType: diskDistantFromType,
+						PayloadName: "DistantFrom",
+					},
+				)
 				o.Arguments = schema.Arguments{
 					schema.ArgumentZone,
 					{
@@ -184,18 +190,20 @@ var diskAPI = &schema.Resource{
 			// TODO あとで直す
 			func() *schema.Operation {
 				o := r.DefineOperation("InstallDistantFrom").
-					RequestEnvelope(&schema.EnvelopePayloadDesc{
-						PayloadType: diskNakedType,
-						PayloadName: "Disk",
-					}).
-					RequestEnvelope(&schema.EnvelopePayloadDesc{
-						PayloadType: diskDistantFromType,
-						PayloadName: "DistantFrom",
-					}).
 					ResultFromEnvelope(diskModel, &schema.EnvelopePayloadDesc{
 						PayloadType: diskNakedType,
 						PayloadName: "Disk",
 					}, diskModel.Name)
+				o.RequestEnvelope = schema.RequestEnvelope(o,
+					&schema.EnvelopePayloadDesc{
+						PayloadType: diskNakedType,
+						PayloadName: "Disk",
+					},
+					&schema.EnvelopePayloadDesc{
+						PayloadType: diskDistantFromType,
+						PayloadName: "DistantFrom",
+					},
+				)
 				o.Arguments = schema.Arguments{
 					schema.ArgumentZone,
 					schema.ArgumentID,
@@ -218,14 +226,16 @@ var diskAPI = &schema.Resource{
 			// TODO あとで直す
 			func() *schema.Operation {
 				o := r.DefineOperation("Install").
-					RequestEnvelope(&schema.EnvelopePayloadDesc{
-						PayloadType: diskNakedType,
-						PayloadName: "Disk",
-					}).
 					ResultFromEnvelope(diskModel, &schema.EnvelopePayloadDesc{
 						PayloadType: diskNakedType,
 						PayloadName: "Disk",
 					}, diskModel.Name)
+				o.RequestEnvelope = schema.RequestEnvelope(o,
+					&schema.EnvelopePayloadDesc{
+						PayloadType: diskNakedType,
+						PayloadName: "Disk",
+					},
+				)
 				o.Arguments = schema.Arguments{
 					schema.ArgumentZone,
 					schema.ArgumentID,

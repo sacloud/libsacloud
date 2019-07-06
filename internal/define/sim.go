@@ -37,14 +37,16 @@ var simAPI = &schema.Resource{
 			// assignIP
 			// TODO あとで直す
 			func() *schema.Operation {
-				o := r.DefineOperation("AssignIP").
-					RequestEnvelope(&schema.EnvelopePayloadDesc{
+				o := r.DefineOperation("AssignIP")
+				o.RequestEnvelope = schema.RequestEnvelope(o,
+					&schema.EnvelopePayloadDesc{
 						PayloadName: "SIM",
 						PayloadType: meta.Static(naked.SIMAssignIPRequest{}),
 						Tags: &schema.FieldTags{
 							JSON: "sim",
 						},
-					})
+					},
+				)
 				o.Arguments = schema.Arguments{
 					schema.ArgumentZone,
 					schema.ArgumentID,
@@ -61,14 +63,16 @@ var simAPI = &schema.Resource{
 			// IMEILock
 			// TODO あとで直す
 			func() *schema.Operation {
-				o := r.DefineOperation("IMEILock").
-					RequestEnvelope(&schema.EnvelopePayloadDesc{
+				o := r.DefineOperation("IMEILock")
+				o.RequestEnvelope = schema.RequestEnvelope(o,
+					&schema.EnvelopePayloadDesc{
 						PayloadName: "SIM",
 						PayloadType: meta.Static(naked.SIMIMEILockRequest{}),
 						Tags: &schema.FieldTags{
 							JSON: "sim",
 						},
-					})
+					},
+				)
 				o.Arguments = schema.Arguments{
 					schema.ArgumentZone,
 					schema.ArgumentID,

@@ -34,14 +34,16 @@ var internetAPI = &schema.Resource{
 			// TODO あとで直す
 			func() *schema.Operation {
 				o := r.DefineOperation("UpdateBandWidth").
-					RequestEnvelope(&schema.EnvelopePayloadDesc{
-						PayloadType: internetNakedType,
-						PayloadName: "Internet",
-					}).
 					ResultFromEnvelope(internetView, &schema.EnvelopePayloadDesc{
 						PayloadType: internetNakedType,
 						PayloadName: "Internet",
 					}, "")
+				o.RequestEnvelope = schema.RequestEnvelope(o,
+					&schema.EnvelopePayloadDesc{
+						PayloadType: internetNakedType,
+						PayloadName: "Internet",
+					},
+				)
 				o.Arguments = schema.Arguments{
 					schema.ArgumentZone,
 					schema.ArgumentID,

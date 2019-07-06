@@ -13,17 +13,17 @@ type Operation struct {
 	PathFormat       string        // パスのフォーマット、省略した場合はDefaultPathFormatが設定される
 	Arguments        Arguments     // 引数の定義
 	results          Results       // レスポンス
-	requestEnvelope  *EnvelopeType // リクエスト時のエンベロープ
+	RequestEnvelope  *EnvelopeType // リクエスト時のエンベロープ
 	responseEnvelope *EnvelopeType // レスポンス時のエンベロープ
 }
 
 // MappableArgument 引数定義の追加
 func MappableArgument(o *Operation, name string, model *Model) *Argument {
 	var destField string
-	if o.requestEnvelope != nil {
-		destField = o.requestEnvelope.PayloadName()
+	if o.RequestEnvelope != nil {
+		destField = o.RequestEnvelope.PayloadName()
 		if destField == "" {
-			destField = o.resource.FieldName(o.requestEnvelope.Form)
+			destField = o.resource.FieldName(o.RequestEnvelope.Form)
 		}
 	}
 	return &Argument{
@@ -51,12 +51,42 @@ func PassthroughModelArgumentWithEnvelope(o *Operation, name string, model *Mode
 			PayloadType: field.Type,
 		})
 	}
-	o.RequestEnvelope(descs...)
+	o.RequestEnvelope = RequestEnvelope(o, descs...)
 	return &Argument{
 		Name:       name,
 		Type:       model,
 		MapConvTag: ",squash",
 	}
+}
+
+// RequestEnvelope リクエストのエンベロープを追加する
+func RequestEnvelope(o *Operation, descs ...*EnvelopePayloadDesc) *EnvelopeType {
+	ret := &EnvelopeType{
+		Form: PayloadForms.Singular,
+	}
+
+	for _, desc := range descs {
+		if desc.PayloadName == "" {
+			desc.PayloadName = o.resource.FieldName(ret.Form)
+		}
+		ret.Payloads = append(ret.Payloads, desc)
+	}
+
+	return ret
+}
+
+// RequestEnvelopePlural リクエストのエンベロープを複数形として追加する
+func RequestEnvelopePlural(o *Operation, descs ...*EnvelopePayloadDesc) *EnvelopeType {
+	ret := &EnvelopeType{
+		Form: PayloadForms.Plural,
+	}
+	for _, desc := range descs {
+		if desc.PayloadName == "" {
+			desc.PayloadName = o.resource.FieldName(ret.Form)
+		}
+		ret.Payloads = append(ret.Payloads, desc)
+	}
+	return ret
 }
 
 // AddArguments 引数定義の追加(複数)
@@ -122,39 +152,6 @@ func (o *Operation) resultFromEnvelope(sourceField, destField string, isPlural b
 		IsPlural:    isPlural,
 	}
 	o.results = append(o.results, result)
-	return o
-}
-
-// RequestEnvelope リクエストのエンベロープを追加する
-func (o *Operation) RequestEnvelope(descs ...*EnvelopePayloadDesc) *Operation {
-	if o.requestEnvelope == nil {
-		o.requestEnvelope = &EnvelopeType{
-			Form: PayloadForms.Singular,
-		}
-	}
-	for _, desc := range descs {
-		if desc.PayloadName == "" {
-			desc.PayloadName = o.resource.FieldName(o.requestEnvelope.Form)
-		}
-		o.requestEnvelope.Payloads = append(o.requestEnvelope.Payloads, desc)
-	}
-
-	return o
-}
-
-// RequestEnvelopePlural リクエストのエンベロープを複数形として追加する
-func (o *Operation) RequestEnvelopePlural(descs ...*EnvelopePayloadDesc) *Operation {
-	if o.requestEnvelope == nil {
-		o.requestEnvelope = &EnvelopeType{
-			Form: PayloadForms.Plural,
-		}
-	}
-	for _, desc := range descs {
-		if desc.PayloadName == "" {
-			desc.PayloadName = o.resource.FieldName(o.requestEnvelope.Form)
-		}
-		o.requestEnvelope.Payloads = append(o.requestEnvelope.Payloads, desc)
-	}
 	return o
 }
 
@@ -262,13 +259,13 @@ func (o *Operation) Models() Models {
 
 // HasRequestEnvelope リクエストエンベロープが設定されているか
 func (o *Operation) HasRequestEnvelope() bool {
-	return o.requestEnvelope != nil
+	return o.RequestEnvelope != nil
 }
 
 // RequestPayloads リクエストペイロードを取得
 func (o *Operation) RequestPayloads() []*EnvelopePayloadDesc {
 	if o.HasRequestEnvelope() {
-		return o.requestEnvelope.Payloads
+		return o.RequestEnvelope.Payloads
 	}
 	return nil
 }
@@ -289,7 +286,7 @@ func (o *Operation) ResponsePayloads() []*EnvelopePayloadDesc {
 // IsRequestSingular リクエストが単数系か
 func (o *Operation) IsRequestSingular() bool {
 	if o.HasRequestEnvelope() {
-		return o.requestEnvelope.IsSingular()
+		return o.RequestEnvelope.IsSingular()
 	}
 	return false
 }
@@ -297,7 +294,7 @@ func (o *Operation) IsRequestSingular() bool {
 // IsRequestPlural リクエストが複数形か
 func (o *Operation) IsRequestPlural() bool {
 	if o.HasRequestEnvelope() {
-		return o.requestEnvelope.IsPlural()
+		return o.RequestEnvelope.IsPlural()
 	}
 	return false
 }

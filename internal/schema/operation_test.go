@@ -53,7 +53,7 @@ func TestOperation(t *testing.T) {
 					PathFormat: DefaultPathFormat,
 					Method:     http.MethodPost,
 				}
-				o.RequestEnvelope(&EnvelopePayloadDesc{PayloadType: meta.Static(struct{}{})})
+				o.RequestEnvelope = RequestEnvelope(o, &EnvelopePayloadDesc{PayloadType: meta.Static(struct{}{})})
 				o.ResultFromEnvelope(&Model{
 					Name: "ResultFromEnvelope",
 					Fields: []*FieldDesc{
