@@ -27,13 +27,13 @@ func main() {
 	tools.WriteFileWithTemplate(&tools.TemplateConfig{
 		OutputPath: filepath.Join(tools.ProjectRootPath(), outputPath),
 		Template:   apisTmpl,
-		Parameter:  define.Resources,
+		Parameter:  define.APIs,
 	})
 	log.Printf("generated: %s\n", outputPath)
 
 	// generate funcs
 	schema.IsOutOfSacloudPackage = true
-	for _, resource := range define.Resources {
+	for _, resource := range define.APIs {
 		dest := fmt.Sprintf(opsDestination, resource.FileSafeName())
 		wrote := tools.WriteFileWithTemplate(&tools.TemplateConfig{
 			OutputPath:         filepath.Join(tools.ProjectRootPath(), dest),
@@ -51,7 +51,7 @@ func main() {
 	tools.WriteFileWithTemplate(&tools.TemplateConfig{
 		OutputPath: filepath.Join(tools.ProjectRootPath(), outputPath),
 		Template:   testTmpl,
-		Parameter:  define.Resources,
+		Parameter:  define.APIs,
 	})
 	log.Printf("generated: %s\n", outputPath)
 

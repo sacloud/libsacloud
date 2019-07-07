@@ -22,7 +22,7 @@ func main() {
 	tools.WriteFileWithTemplate(&tools.TemplateConfig{
 		OutputPath: filepath.Join(tools.ProjectRootPath(), destination),
 		Template:   tmpl,
-		Parameter:  define.Resources,
+		Parameter:  define.APIs,
 	})
 	log.Printf("generated: %s\n", filepath.Join(destination))
 }
