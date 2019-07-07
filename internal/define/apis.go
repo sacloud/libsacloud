@@ -13,24 +13,24 @@ package define
 
 import "github.com/sacloud/libsacloud/v2/internal/schema"
 
-// Resources APIでの操作対象リソースの定義
-var Resources schema.Resources
+// APIs APIでの操作対象リソースの定義
+var APIs schema.Resources
 
 func init() {
-	Resources.Def(archiveAPI)      // アーカイブ
-	Resources.Def(bridgeAPI)       // ブリッジ
-	Resources.Def(cdromAPI)        // ISOイメージ(CD-ROM)
-	Resources.Def(diskAPI)         // ディスク
-	Resources.Def(gslbAPI)         // GSLB
-	Resources.Def(interfaceAPI)    // インターフェース(NIC)
-	Resources.Def(internetAPI)     // スイッチ+ルータ
-	Resources.Def(loadBalancerAPI) // ロードバランサ
-	Resources.Def(nfsAPI)          // NFS
-	Resources.Def(noteAPI)         // スタートアップスクリプト
-	Resources.Def(packetFilterAPI) // パケットフィルタ
-	Resources.Def(serverAPI)       // サーバ
-	Resources.Def(simAPI)          // SIM
-	Resources.Def(switchAPI)       // スイッチ
-	Resources.Def(vpcRouterAPI)    // VPCルータ
-	Resources.Def(zoneAPI)         // ゾーン
+	APIs.Define(archiveAPI)      // アーカイブ
+	APIs.Define(bridgeAPI)       // ブリッジ
+	APIs.Define(cdromAPI)        // ISOイメージ(CD-ROM)
+	APIs.Define(diskAPI)         // ディスク
+	APIs.Define(gslbAPI)         // GSLB
+	APIs.Define(interfaceAPI)    // インターフェース(NIC)
+	APIs.Define(internetAPI)     // スイッチ+ルータ
+	APIs.Define(loadBalancerAPI) // ロードバランサ
+	APIs.Define(nfsAPI)          // NFS
+	APIs.Define(noteAPI)         // スタートアップスクリプト
+	APIs.Define(packetFilterAPI) // パケットフィルタ
+	APIs.Define(serverAPI)       // サーバ
+	APIs.Define(simAPI)          // SIM
+	APIs.Define(switchAPI)       // スイッチ
+	APIs.Define(vpcRouterAPI)    // VPCルータ
+	APIs.Define(zoneAPI)         // ゾーン
 }

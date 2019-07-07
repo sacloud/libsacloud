@@ -23,8 +23,8 @@ func (r Resources) ImportStatementsForModelDef(additionalImports ...string) []st
 	return uniqStrings(ss)
 }
 
-// Def リソースの定義
-func (r *Resources) Def(rs *Resource) {
+// Define リソースの定義
+func (r *Resources) Define(rs *Resource) {
 	if *r == nil {
 		rr := Resources{}
 		*r = rr

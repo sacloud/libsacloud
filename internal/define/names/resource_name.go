@@ -25,3 +25,13 @@ func ResourceFieldName(resourceName string, form schema.PayloadForm) string {
 		return ""
 	}
 }
+
+// CreateParameterName Create操作に渡すパラメータの名称
+func CreateParameterName(resourceName string) string {
+	return resourceName + "CreateRequest"
+}
+
+// UpdateParameterName Create操作に渡すパラメータの名称
+func UpdateParameterName(resourceName string) string {
+	return resourceName + "UpdateRequest"
+}

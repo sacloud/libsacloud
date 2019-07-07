@@ -3,6 +3,7 @@ package define
 import (
 	"net/http"
 
+	"github.com/sacloud/libsacloud/v2/internal/define/names"
 	"github.com/sacloud/libsacloud/v2/internal/define/ops"
 	"github.com/sacloud/libsacloud/v2/internal/schema"
 	"github.com/sacloud/libsacloud/v2/internal/schema/meta"
@@ -51,6 +52,8 @@ var (
 	switchNakedType = meta.Static(naked.Switch{})
 
 	switchView = &schema.Model{
+		Name:      switchAPIName,
+		NakedType: switchNakedType,
 		Fields: []*schema.FieldDesc{
 			fields.ID(),
 			fields.Name(),
@@ -75,6 +78,8 @@ var (
 	}
 
 	switchCreateParam = &schema.Model{
+		Name:      names.CreateParameterName(switchAPIName),
+		NakedType: switchNakedType,
 		Fields: []*schema.FieldDesc{
 			fields.Name(),
 			fields.UserSubnetNetworkMaskLen(),
@@ -86,6 +91,8 @@ var (
 	}
 
 	switchUpdateParam = &schema.Model{
+		Name:      names.UpdateParameterName(switchAPIName),
+		NakedType: switchNakedType,
 		Fields: []*schema.FieldDesc{
 			fields.Name(),
 			fields.UserSubnetNetworkMaskLen(),

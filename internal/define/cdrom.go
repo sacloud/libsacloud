@@ -83,6 +83,8 @@ var (
 	cdromNakedType = meta.Static(naked.CDROM{})
 
 	cdromView = &schema.Model{
+		Name:      cdromAPIName,
+		NakedType: cdromNakedType,
 		Fields: []*schema.FieldDesc{
 			fields.ID(),
 			fields.Name(),
@@ -99,7 +101,8 @@ var (
 	}
 
 	cdromCreateParam = &schema.Model{
-		Name: "CDROMCreateRequest",
+		Name:      names.CreateParameterName(cdromAPIName),
+		NakedType: cdromNakedType,
 		Fields: []*schema.FieldDesc{
 			fields.SizeMB(),
 			fields.Name(),
@@ -107,10 +110,11 @@ var (
 			fields.Tags(),
 			fields.IconID(),
 		},
-		NakedType: cdromNakedType,
 	}
 
 	cdromUpdateParam = &schema.Model{
+		Name:      names.UpdateParameterName(cdromAPIName),
+		NakedType: cdromNakedType,
 		Fields: []*schema.FieldDesc{
 			fields.Name(),
 			fields.Description(),
