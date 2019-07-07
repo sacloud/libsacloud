@@ -5,9 +5,12 @@ import (
 	"strings"
 )
 
+// Operations リソースへの操作(スライス)
+type Operations []*Operation
+
 // Operation リソースへの操作
 type Operation struct {
-	Resource         *Resource
+	ResourceName     string
 	Name             string        // 操作名、メソッド名となる
 	Method           string        // HTTPリクエストメソッド GET/POST/PUT/DELETE
 	PathFormat       string        // パスのフォーマット、省略した場合はDefaultPathFormatが設定される
@@ -55,12 +58,12 @@ func (o *Operation) ReturnErrorStatement() string {
 
 // RequestEnvelopeStructName エンベロープのstruct名(camel-case)
 func (o *Operation) RequestEnvelopeStructName() string {
-	return fmt.Sprintf("%s%sRequestEnvelope", toCamelWithFirstLower(o.Resource.Name), o.Name)
+	return fmt.Sprintf("%s%sRequestEnvelope", toCamelWithFirstLower(o.ResourceName), o.Name)
 }
 
 // ResponseEnvelopeStructName エンベロープのstruct名(camel-case)
 func (o *Operation) ResponseEnvelopeStructName() string {
-	return fmt.Sprintf("%s%sResponseEnvelope", toCamelWithFirstLower(o.Resource.Name), o.Name)
+	return fmt.Sprintf("%s%sResponseEnvelope", toCamelWithFirstLower(o.ResourceName), o.Name)
 }
 
 // ResultTypeName API戻り値の型名
@@ -172,25 +175,10 @@ func (o *Operation) IsResponsePlural() bool {
 	return false
 }
 
-// FileSafeName スネークケースにしたResourceの名前、コード生成時の保存先ファイル名に利用される
-func (o *Operation) FileSafeName() string {
-	return toSnakeCaseName(o.Name)
-}
-
-// ResourceTypeName リソースの名称を取得
-func (o *Operation) ResourceTypeName() string {
-	return o.Resource.TypeName()
-}
-
-// ResourceIsGlobal リソースがグローバルリソースか
-func (o *Operation) ResourceIsGlobal() bool {
-	return o.Resource.IsGlobal
-}
-
 func (o *Operation) resultType() *ResultType {
 	return &ResultType{
-		resource:  o.Resource,
-		operation: o,
-		results:   o.Results,
+		resourceName: o.ResourceName,
+		operation:    o,
+		results:      o.Results,
 	}
 }

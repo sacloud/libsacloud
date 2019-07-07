@@ -3,153 +3,157 @@ package define
 import (
 	"net/http"
 
+	"github.com/sacloud/libsacloud/v2/internal/define/ops"
 	"github.com/sacloud/libsacloud/v2/internal/schema"
 	"github.com/sacloud/libsacloud/v2/internal/schema/meta"
 	"github.com/sacloud/libsacloud/v2/sacloud/naked"
 )
 
+const (
+	simAPIName     = "SIM"
+	simAPIPathName = "commonserviceitem"
+)
+
 var simAPI = &schema.Resource{
-	Name:       "SIM",
-	PathName:   "commonserviceitem",
+	Name:       simAPIName,
+	PathName:   simAPIPathName,
 	PathSuffix: schema.CloudAPISuffix,
-	OperationsDefineFunc: func(r *schema.Resource) []*schema.Operation {
-		return []*schema.Operation{
-			// find
-			r.DefineOperationCommonServiceItemFind(simNakedType, findParameter, simView),
+	Operations: schema.Operations{
+		// find
+		ops.FindCommonServiceItem(simAPIName, simNakedType, findParameter, simView),
 
-			// create
-			r.DefineOperationCommonServiceItemCreate(simNakedType, simCreateParam, simView),
+		// create
+		ops.CreateCommonServiceItem(simAPIName, simNakedType, simCreateParam, simView),
 
-			// read
-			r.DefineOperationCommonServiceItemRead(simNakedType, simView),
+		// read
+		ops.ReadCommonServiceItem(simAPIName, simNakedType, simView),
 
-			// update
-			r.DefineOperationCommonServiceItemUpdate(simNakedType, simUpdateParam, simView),
+		// update
+		ops.UpdateCommonServiceItem(simAPIName, simNakedType, simUpdateParam, simView),
 
-			// delete
-			r.DefineOperationDelete(),
+		// delete
+		ops.Delete(simAPIName),
 
-			// activate
-			r.DefineSimpleOperation("Activate", http.MethodPut, "sim/activate"),
-			// deactivate
-			r.DefineSimpleOperation("Deactivate", http.MethodPut, "sim/deactivate"),
+		// activate
+		ops.WithIDAction(simAPIName, "Activate", http.MethodPut, "sim/activate"),
+		// deactivate
+		ops.WithIDAction(simAPIName, "Deactivate", http.MethodPut, "sim/deactivate"),
 
-			// assignIP
-			{
-				Resource:   r,
-				Name:       "AssignIP",
-				PathFormat: schema.IDAndSuffixPathFormat("sim/ip"),
-				Method:     http.MethodPut,
-				RequestEnvelope: schema.RequestEnvelope(
-					&schema.EnvelopePayloadDesc{
-						Name: "SIM",
-						Type: meta.Static(naked.SIMAssignIPRequest{}),
-						Tags: &schema.FieldTags{
-							JSON: "sim",
-						},
-					},
-				),
-				Arguments: schema.Arguments{
-					schema.ArgumentZone,
-					schema.ArgumentID,
-					schema.MappableArgument("param", simAssignIPParam, "SIM"),
-				},
-			},
-
-			// clearIP
-			r.DefineSimpleOperation("ClearIP", http.MethodDelete, "sim/ip"),
-
-			// IMEILock
-			{
-				Resource:   r,
-				Name:       "IMEILock",
-				PathFormat: schema.IDAndSuffixPathFormat("sim/imeilock"),
-				Method:     http.MethodPut,
-				RequestEnvelope: schema.RequestEnvelope(
-					&schema.EnvelopePayloadDesc{
-						Name: "SIM",
-						Type: meta.Static(naked.SIMIMEILockRequest{}),
-						Tags: &schema.FieldTags{
-							JSON: "sim",
-						},
-					},
-				),
-				Arguments: schema.Arguments{
-					schema.ArgumentZone,
-					schema.ArgumentID,
-					schema.MappableArgument("param", simIMEILockParam, "SIM"),
-				},
-			},
-
-			// IMEIUnlock
-			r.DefineSimpleOperation("IMEIUnlock", http.MethodDelete, "sim/imeilock"),
-
-			// Logs
-			{
-				Resource:   r,
-				PathFormat: schema.IDAndSuffixPathFormat("sim/sessionlog"),
-				Method:     http.MethodGet,
-				Name:       "Logs",
-				Arguments: schema.Arguments{
-					schema.ArgumentZone,
-					schema.ArgumentID,
-				},
-				ResponseEnvelope: schema.ResponseEnvelopePlural(&schema.EnvelopePayloadDesc{
-					Name: "Logs",
-					Type: meta.Static(naked.SIMLog{}),
-				}),
-				Results: schema.Results{
-					{
-						SourceField: "Logs",
-						DestField:   "Logs",
-						IsPlural:    true,
-						Model:       simLogView,
+		// assignIP
+		{
+			ResourceName: simAPIName,
+			Name:         "AssignIP",
+			PathFormat:   schema.IDAndSuffixPathFormat("sim/ip"),
+			Method:       http.MethodPut,
+			RequestEnvelope: schema.RequestEnvelope(
+				&schema.EnvelopePayloadDesc{
+					Name: "SIM",
+					Type: meta.Static(naked.SIMAssignIPRequest{}),
+					Tags: &schema.FieldTags{
+						JSON: "sim",
 					},
 				},
+			),
+			Arguments: schema.Arguments{
+				schema.ArgumentZone,
+				schema.ArgumentID,
+				schema.MappableArgument("param", simAssignIPParam, "SIM"),
 			},
+		},
 
-			// GetNetworkOperator
-			{
-				Resource:   r,
-				Name:       "GetNetworkOperator",
-				PathFormat: schema.IDAndSuffixPathFormat("sim/network_operator_config"),
-				Method:     http.MethodGet,
-				Arguments: schema.Arguments{
-					schema.ArgumentZone,
-					schema.ArgumentID,
-				},
-				ResponseEnvelope: schema.ResponseEnvelopePlural(&schema.EnvelopePayloadDesc{
-					Name: "NetworkOperationConfigs",
-					Type: meta.Static(naked.SIMNetworkOperatorConfig{}),
-				}),
-				Results: schema.Results{
-					{
-						SourceField: "NetworkOperationConfigs",
-						DestField:   "Configs",
-						IsPlural:    true,
-						Model:       simNetworkOperatorConfigView,
+		// clearIP
+		ops.WithIDAction(simAPIName, "ClearIP", http.MethodDelete, "sim/ip"),
+
+		// IMEILock
+		{
+			ResourceName: simAPIName,
+			Name:         "IMEILock",
+			PathFormat:   schema.IDAndSuffixPathFormat("sim/imeilock"),
+			Method:       http.MethodPut,
+			RequestEnvelope: schema.RequestEnvelope(
+				&schema.EnvelopePayloadDesc{
+					Name: "SIM",
+					Type: meta.Static(naked.SIMIMEILockRequest{}),
+					Tags: &schema.FieldTags{
+						JSON: "sim",
 					},
 				},
+			),
+			Arguments: schema.Arguments{
+				schema.ArgumentZone,
+				schema.ArgumentID,
+				schema.MappableArgument("param", simIMEILockParam, "SIM"),
 			},
+		},
 
-			// SetNetworkOperator
-			{
-				Resource:        r,
-				Name:            "SetNetworkOperator",
-				PathFormat:      schema.IDAndSuffixPathFormat("sim/network_operator_config"),
-				Method:          http.MethodPut,
-				RequestEnvelope: schema.RequestEnvelopeFromModel(simNetworkOperatorsConfigView),
-				Arguments: schema.Arguments{
-					schema.ArgumentZone,
-					schema.ArgumentID,
-					schema.PassthroughModelArgument("configs", simNetworkOperatorsConfigView),
+		// IMEIUnlock
+		ops.WithIDAction(simAPIName, "IMEIUnlock", http.MethodDelete, "sim/imeilock"),
+
+		// Logs
+		{
+			ResourceName: simAPIName,
+			PathFormat:   schema.IDAndSuffixPathFormat("sim/sessionlog"),
+			Method:       http.MethodGet,
+			Name:         "Logs",
+			Arguments: schema.Arguments{
+				schema.ArgumentZone,
+				schema.ArgumentID,
+			},
+			ResponseEnvelope: schema.ResponseEnvelopePlural(&schema.EnvelopePayloadDesc{
+				Name: "Logs",
+				Type: meta.Static(naked.SIMLog{}),
+			}),
+			Results: schema.Results{
+				{
+					SourceField: "Logs",
+					DestField:   "Logs",
+					IsPlural:    true,
+					Model:       simLogView,
 				},
 			},
+		},
 
-			// monitor
-			r.DefineOperationMonitorChild("SIM", "sim/metrics",
-				monitorParameter, monitors.linkModel()),
-		}
+		// GetNetworkOperator
+		{
+			ResourceName: simAPIName,
+			Name:         "GetNetworkOperator",
+			PathFormat:   schema.IDAndSuffixPathFormat("sim/network_operator_config"),
+			Method:       http.MethodGet,
+			Arguments: schema.Arguments{
+				schema.ArgumentZone,
+				schema.ArgumentID,
+			},
+			ResponseEnvelope: schema.ResponseEnvelopePlural(&schema.EnvelopePayloadDesc{
+				Name: "NetworkOperationConfigs",
+				Type: meta.Static(naked.SIMNetworkOperatorConfig{}),
+			}),
+			Results: schema.Results{
+				{
+					SourceField: "NetworkOperationConfigs",
+					DestField:   "Configs",
+					IsPlural:    true,
+					Model:       simNetworkOperatorConfigView,
+				},
+			},
+		},
+
+		// SetNetworkOperator
+		{
+			ResourceName:    simAPIName,
+			Name:            "SetNetworkOperator",
+			PathFormat:      schema.IDAndSuffixPathFormat("sim/network_operator_config"),
+			Method:          http.MethodPut,
+			RequestEnvelope: schema.RequestEnvelopeFromModel(simNetworkOperatorsConfigView),
+			Arguments: schema.Arguments{
+				schema.ArgumentZone,
+				schema.ArgumentID,
+				schema.PassthroughModelArgument("configs", simNetworkOperatorsConfigView),
+			},
+		},
+
+		// monitor
+		ops.MonitorChild(simAPIName, "SIM", "sim/metrics",
+			monitorParameter, monitors.linkModel()),
 	},
 }
 

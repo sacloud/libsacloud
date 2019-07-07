@@ -3,300 +3,304 @@ package define
 import (
 	"net/http"
 
+	"github.com/sacloud/libsacloud/v2/internal/define/ops"
 	"github.com/sacloud/libsacloud/v2/internal/schema"
 	"github.com/sacloud/libsacloud/v2/internal/schema/meta"
 	"github.com/sacloud/libsacloud/v2/sacloud/naked"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
+const (
+	diskAPIName     = "Disk"
+	diskAPIPathName = "disk"
+)
+
 var diskAPI = &schema.Resource{
-	Name:       "Disk",
-	PathName:   "disk",
+	Name:       diskAPIName,
+	PathName:   diskAPIPathName,
 	PathSuffix: schema.CloudAPISuffix,
-	OperationsDefineFunc: func(r *schema.Resource) []*schema.Operation {
-		return []*schema.Operation{
-			// find
-			r.DefineOperationFind(diskNakedType, findParameter, diskModel),
+	Operations: schema.Operations{
+		// find
+		ops.Find(diskAPIName, diskNakedType, findParameter, diskModel),
 
-			// create
-			r.DefineOperationCreate(diskNakedType, diskCreateParam, diskModel),
+		// create
+		ops.Create(diskAPIName, diskNakedType, diskCreateParam, diskModel),
 
-			// create distantly
-			{
-				Resource:   r,
-				Name:       "CreateDistantly",
-				PathFormat: schema.DefaultPathFormat,
-				Method:     http.MethodPost,
-				RequestEnvelope: schema.RequestEnvelope(
-					&schema.EnvelopePayloadDesc{
-						Type: diskNakedType,
-						Name: "Disk",
-					},
-					&schema.EnvelopePayloadDesc{
-						Type: diskDistantFromType,
-						Name: "DistantFrom",
-					},
-				),
-				Arguments: schema.Arguments{
-					schema.ArgumentZone,
-					{
-						Name:       "createParam",
-						MapConvTag: "Disk",
-						Type:       diskCreateParam,
-					},
-					{
-						Name:       "distantFrom",
-						MapConvTag: "DistantFrom",
-						Type:       diskDistantFromType,
-					},
-				},
-				ResponseEnvelope: schema.ResponseEnvelope(&schema.EnvelopePayloadDesc{
+		// create distantly
+		{
+			ResourceName: diskAPIName,
+			Name:         "CreateDistantly",
+			PathFormat:   schema.DefaultPathFormat,
+			Method:       http.MethodPost,
+			RequestEnvelope: schema.RequestEnvelope(
+				&schema.EnvelopePayloadDesc{
 					Type: diskNakedType,
 					Name: "Disk",
-				}),
-				Results: schema.Results{
-					{
-						SourceField: "Disk",
-						DestField:   diskModel.Name,
-						IsPlural:    false,
-						Model:       diskModel,
-					},
 				},
-			},
-
-			// config(DiskEdit)
-			{
-				Resource:        r,
-				Name:            "Config",
-				PathFormat:      schema.IDAndSuffixPathFormat("config"),
-				Method:          http.MethodPut,
-				RequestEnvelope: schema.RequestEnvelopeFromModel(diskEditParam),
-				Arguments: schema.Arguments{
-					schema.ArgumentZone,
-					schema.ArgumentID,
-					schema.PassthroughModelArgument("edit", diskEditParam),
-				},
-			},
-
-			// create with config(DiskEdit)
-			{
-				Resource:   r,
-				Name:       "CreateWithConfig",
-				PathFormat: schema.DefaultPathFormat,
-				Method:     http.MethodPost,
-				RequestEnvelope: schema.RequestEnvelope(
-					&schema.EnvelopePayloadDesc{
-						Type: diskNakedType,
-						Name: "Disk",
-					},
-					&schema.EnvelopePayloadDesc{
-						Type: diskEditNakedType,
-						Name: "Config",
-					},
-					&schema.EnvelopePayloadDesc{
-						Type: meta.TypeFlag,
-						Name: "BootAtAvailable",
-					},
-				),
-				Arguments: schema.Arguments{
-					schema.ArgumentZone,
-					{
-						Name:       "createParam",
-						MapConvTag: "Disk",
-						Type:       diskCreateParam,
-					},
-					{
-						Name:       "editParam",
-						MapConvTag: "Config",
-						Type:       diskEditParam,
-					},
-					{
-						Name:       "bootAtAvailable",
-						Type:       meta.TypeFlag,
-						MapConvTag: "BootAtAvailable",
-					},
-				},
-				ResponseEnvelope: schema.ResponseEnvelope(&schema.EnvelopePayloadDesc{
-					Type: diskNakedType,
-					Name: "Disk",
-				}),
-				Results: schema.Results{
-					{
-						SourceField: "Disk",
-						DestField:   diskModel.Name,
-						IsPlural:    false,
-						Model:       diskModel,
-					},
-				},
-			},
-
-			{
-				Resource:   r,
-				Name:       "CreateWithConfigDistantly",
-				PathFormat: schema.DefaultPathFormat,
-				Method:     http.MethodPost,
-				RequestEnvelope: schema.RequestEnvelope(
-					&schema.EnvelopePayloadDesc{
-						Type: diskNakedType,
-						Name: "Disk",
-					},
-					&schema.EnvelopePayloadDesc{
-						Type: diskEditNakedType,
-						Name: "Config",
-					},
-					&schema.EnvelopePayloadDesc{
-						Type: meta.TypeFlag,
-						Name: "BootAtAvailable",
-					},
-					&schema.EnvelopePayloadDesc{
-						Type: diskDistantFromType,
-						Name: "DistantFrom",
-					},
-				),
-				Arguments: schema.Arguments{
-					schema.ArgumentZone,
-					{
-						Name:       "createParam",
-						MapConvTag: "Disk",
-						Type:       diskCreateParam,
-					},
-					{
-						Name:       "editParam",
-						MapConvTag: "Config",
-						Type:       diskEditParam,
-					},
-					{
-						Name:       "bootAtAvailable",
-						Type:       meta.TypeFlag,
-						MapConvTag: "BootAtAvailable",
-					},
-					{
-						Name:       "distantFrom",
-						Type:       diskDistantFromType,
-						MapConvTag: "DistantFrom",
-					},
-				},
-				ResponseEnvelope: schema.ResponseEnvelope(&schema.EnvelopePayloadDesc{
-					Type: diskNakedType,
-					Name: "Disk",
-				}),
-				Results: schema.Results{
-					{
-						SourceField: "Disk",
-						DestField:   diskModel.Name,
-						IsPlural:    false,
-						Model:       diskModel,
-					},
-				},
-			},
-
-			// to blank
-			r.DefineSimpleOperation("ToBlank", http.MethodPut, "to/blank"),
-
-			// resize partition
-			r.DefineSimpleOperation("ResizePartition", http.MethodPut, "resize-partition"),
-
-			// connect to server
-			r.DefineSimpleOperation("ConnectToServer", http.MethodPut, "to/server/{{.serverID}}",
-				&schema.Argument{
-					Name: "serverID",
-					Type: meta.TypeID,
+				&schema.EnvelopePayloadDesc{
+					Type: diskDistantFromType,
+					Name: "DistantFrom",
 				},
 			),
-
-			// disconnect from server
-			r.DefineSimpleOperation("DisconnectFromServer", http.MethodDelete, "to/server"),
-
-			// install
-			{
-				Resource:   r,
-				Name:       "InstallDistantFrom",
-				PathFormat: schema.IDAndSuffixPathFormat("install"),
-				Method:     http.MethodPut,
-				RequestEnvelope: schema.RequestEnvelope(
-					&schema.EnvelopePayloadDesc{
-						Type: diskNakedType,
-						Name: "Disk",
-					},
-					&schema.EnvelopePayloadDesc{
-						Type: diskDistantFromType,
-						Name: "DistantFrom",
-					},
-				),
-				Arguments: schema.Arguments{
-					schema.ArgumentZone,
-					schema.ArgumentID,
-					{
-						Name:       "installParam",
-						MapConvTag: "Disk",
-						Type:       diskInstallParam,
-					},
-					{
-						Name:       "distantFrom",
-						MapConvTag: "DistantFrom",
-						Type:       diskDistantFromType,
-					},
+			Arguments: schema.Arguments{
+				schema.ArgumentZone,
+				{
+					Name:       "createParam",
+					MapConvTag: "Disk",
+					Type:       diskCreateParam,
 				},
-				ResponseEnvelope: schema.ResponseEnvelope(&schema.EnvelopePayloadDesc{
-					Type: diskNakedType,
-					Name: "Disk",
-				}),
-				Results: schema.Results{
-					{
-						SourceField: "Disk",
-						DestField:   diskModel.Name,
-						IsPlural:    false,
-						Model:       diskModel,
-					},
+				{
+					Name:       "distantFrom",
+					MapConvTag: "DistantFrom",
+					Type:       diskDistantFromType,
 				},
 			},
-
-			{
-				Resource:   r,
-				Name:       "Install",
-				PathFormat: schema.IDAndSuffixPathFormat("install"),
-				Method:     http.MethodPut,
-				RequestEnvelope: schema.RequestEnvelope(
-					&schema.EnvelopePayloadDesc{
-						Type: diskNakedType,
-						Name: "Disk",
-					},
-				),
-				Arguments: schema.Arguments{
-					schema.ArgumentZone,
-					schema.ArgumentID,
-					{
-						Name:       "installParam",
-						MapConvTag: "Disk",
-						Type:       diskInstallParam,
-					},
-				},
-				ResponseEnvelope: schema.ResponseEnvelope(&schema.EnvelopePayloadDesc{
-					Type: diskNakedType,
-					Name: "Disk",
-				}),
-				Results: schema.Results{
-					{
-						SourceField: "Disk",
-						DestField:   diskModel.Name,
-						IsPlural:    false,
-						Model:       diskModel,
-					},
+			ResponseEnvelope: schema.ResponseEnvelope(&schema.EnvelopePayloadDesc{
+				Type: diskNakedType,
+				Name: "Disk",
+			}),
+			Results: schema.Results{
+				{
+					SourceField: "Disk",
+					DestField:   diskModel.Name,
+					IsPlural:    false,
+					Model:       diskModel,
 				},
 			},
+		},
 
-			// read
-			r.DefineOperationRead(diskNakedType, diskModel),
+		// config(DiskEdit)
+		{
+			ResourceName:    diskAPIName,
+			Name:            "Config",
+			PathFormat:      schema.IDAndSuffixPathFormat("config"),
+			Method:          http.MethodPut,
+			RequestEnvelope: schema.RequestEnvelopeFromModel(diskEditParam),
+			Arguments: schema.Arguments{
+				schema.ArgumentZone,
+				schema.ArgumentID,
+				schema.PassthroughModelArgument("edit", diskEditParam),
+			},
+		},
 
-			// update
-			r.DefineOperationUpdate(diskNakedType, diskUpdateParam, diskModel),
+		// create with config(DiskEdit)
+		{
+			ResourceName: diskAPIName,
+			Name:         "CreateWithConfig",
+			PathFormat:   schema.DefaultPathFormat,
+			Method:       http.MethodPost,
+			RequestEnvelope: schema.RequestEnvelope(
+				&schema.EnvelopePayloadDesc{
+					Type: diskNakedType,
+					Name: "Disk",
+				},
+				&schema.EnvelopePayloadDesc{
+					Type: diskEditNakedType,
+					Name: "Config",
+				},
+				&schema.EnvelopePayloadDesc{
+					Type: meta.TypeFlag,
+					Name: "BootAtAvailable",
+				},
+			),
+			ResponseEnvelope: schema.ResponseEnvelope(&schema.EnvelopePayloadDesc{
+				Type: diskNakedType,
+				Name: "Disk",
+			}),
+			Arguments: schema.Arguments{
+				schema.ArgumentZone,
+				{
+					Name:       "createParam",
+					MapConvTag: "Disk",
+					Type:       diskCreateParam,
+				},
+				{
+					Name:       "editParam",
+					MapConvTag: "Config",
+					Type:       diskEditParam,
+				},
+				{
+					Name:       "bootAtAvailable",
+					Type:       meta.TypeFlag,
+					MapConvTag: "BootAtAvailable",
+				},
+			},
+			Results: schema.Results{
+				{
+					SourceField: "Disk",
+					DestField:   diskModel.Name,
+					IsPlural:    false,
+					Model:       diskModel,
+				},
+			},
+		},
 
-			// delete
-			r.DefineOperationDelete(),
+		{
+			ResourceName: diskAPIName,
+			Name:         "CreateWithConfigDistantly",
+			PathFormat:   schema.DefaultPathFormat,
+			Method:       http.MethodPost,
+			RequestEnvelope: schema.RequestEnvelope(
+				&schema.EnvelopePayloadDesc{
+					Type: diskNakedType,
+					Name: "Disk",
+				},
+				&schema.EnvelopePayloadDesc{
+					Type: diskEditNakedType,
+					Name: "Config",
+				},
+				&schema.EnvelopePayloadDesc{
+					Type: meta.TypeFlag,
+					Name: "BootAtAvailable",
+				},
+				&schema.EnvelopePayloadDesc{
+					Type: diskDistantFromType,
+					Name: "DistantFrom",
+				},
+			),
+			ResponseEnvelope: schema.ResponseEnvelope(&schema.EnvelopePayloadDesc{
+				Type: diskNakedType,
+				Name: "Disk",
+			}),
+			Arguments: schema.Arguments{
+				schema.ArgumentZone,
+				{
+					Name:       "createParam",
+					MapConvTag: "Disk",
+					Type:       diskCreateParam,
+				},
+				{
+					Name:       "editParam",
+					MapConvTag: "Config",
+					Type:       diskEditParam,
+				},
+				{
+					Name:       "bootAtAvailable",
+					Type:       meta.TypeFlag,
+					MapConvTag: "BootAtAvailable",
+				},
+				{
+					Name:       "distantFrom",
+					Type:       diskDistantFromType,
+					MapConvTag: "DistantFrom",
+				},
+			},
+			Results: schema.Results{
+				{
+					SourceField: "Disk",
+					DestField:   diskModel.Name,
+					IsPlural:    false,
+					Model:       diskModel,
+				},
+			},
+		},
 
-			// monitor
-			r.DefineOperationMonitor(monitorParameter, monitors.diskModel()),
-		}
+		// to blank
+		ops.WithIDAction(diskAPIName, "ToBlank", http.MethodPut, "to/blank"),
+
+		// resize partition
+		ops.WithIDAction(diskAPIName, "ResizePartition", http.MethodPut, "resize-partition"),
+
+		// connect to server
+		ops.WithIDAction(diskAPIName, "ConnectToServer", http.MethodPut, "to/server/{{.serverID}}",
+			&schema.Argument{
+				Name: "serverID",
+				Type: meta.TypeID,
+			},
+		),
+
+		// disconnect from server
+		ops.WithIDAction(diskAPIName, "DisconnectFromServer", http.MethodDelete, "to/server"),
+
+		// install
+		{
+			ResourceName: diskAPIName,
+			Name:         "InstallDistantFrom",
+			PathFormat:   schema.IDAndSuffixPathFormat("install"),
+			Method:       http.MethodPut,
+			RequestEnvelope: schema.RequestEnvelope(
+				&schema.EnvelopePayloadDesc{
+					Type: diskNakedType,
+					Name: "Disk",
+				},
+				&schema.EnvelopePayloadDesc{
+					Type: diskDistantFromType,
+					Name: "DistantFrom",
+				},
+			),
+			ResponseEnvelope: schema.ResponseEnvelope(&schema.EnvelopePayloadDesc{
+				Type: diskNakedType,
+				Name: "Disk",
+			}),
+			Arguments: schema.Arguments{
+				schema.ArgumentZone,
+				schema.ArgumentID,
+				{
+					Name:       "installParam",
+					MapConvTag: "Disk",
+					Type:       diskInstallParam,
+				},
+				{
+					Name:       "distantFrom",
+					MapConvTag: "DistantFrom",
+					Type:       diskDistantFromType,
+				},
+			},
+			Results: schema.Results{
+				{
+					SourceField: "Disk",
+					DestField:   diskModel.Name,
+					IsPlural:    false,
+					Model:       diskModel,
+				},
+			},
+		},
+
+		{
+			ResourceName: diskAPIName,
+			Name:         "Install",
+			PathFormat:   schema.IDAndSuffixPathFormat("install"),
+			Method:       http.MethodPut,
+			RequestEnvelope: schema.RequestEnvelope(
+				&schema.EnvelopePayloadDesc{
+					Type: diskNakedType,
+					Name: "Disk",
+				},
+			),
+			ResponseEnvelope: schema.ResponseEnvelope(&schema.EnvelopePayloadDesc{
+				Type: diskNakedType,
+				Name: "Disk",
+			}),
+			Arguments: schema.Arguments{
+				schema.ArgumentZone,
+				schema.ArgumentID,
+				{
+					Name:       "installParam",
+					MapConvTag: "Disk",
+					Type:       diskInstallParam,
+				},
+			},
+			Results: schema.Results{
+				{
+					SourceField: "Disk",
+					DestField:   diskModel.Name,
+					IsPlural:    false,
+					Model:       diskModel,
+				},
+			},
+		},
+
+		// read
+		ops.Read(diskAPIName, diskNakedType, diskModel),
+
+		// update
+		ops.Update(diskAPIName, diskNakedType, diskUpdateParam, diskModel),
+
+		// delete
+		ops.Delete(diskAPIName),
+
+		// monitor
+		ops.Monitor(diskAPIName, monitorParameter, monitors.diskModel()),
 	},
 }
 
