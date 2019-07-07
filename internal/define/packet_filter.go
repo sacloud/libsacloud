@@ -1,6 +1,7 @@
 package define
 
 import (
+	"github.com/sacloud/libsacloud/v2/internal/define/names"
 	"github.com/sacloud/libsacloud/v2/internal/define/ops"
 	"github.com/sacloud/libsacloud/v2/internal/schema"
 	"github.com/sacloud/libsacloud/v2/internal/schema/meta"
@@ -38,6 +39,8 @@ var (
 	packetFilterNakedType = meta.Static(naked.PacketFilter{})
 
 	packetFilterView = &schema.Model{
+		Name:      packetFilterAPIName,
+		NakedType: packetFilterNakedType,
 		Fields: []*schema.FieldDesc{
 			fields.ID(),
 			fields.Name(),
@@ -50,6 +53,8 @@ var (
 	}
 
 	packetFilterCreateParam = &schema.Model{
+		Name:      names.CreateParameterName(packetFilterAPIName),
+		NakedType: packetFilterNakedType,
 		Fields: []*schema.FieldDesc{
 			fields.Name(),
 			fields.Description(),
@@ -58,6 +63,8 @@ var (
 	}
 
 	packetFilterUpdateParam = &schema.Model{
+		Name:      names.UpdateParameterName(packetFilterAPIName),
+		NakedType: packetFilterNakedType,
 		Fields: []*schema.FieldDesc{
 			fields.Name(),
 			fields.Description(),

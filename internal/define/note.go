@@ -1,6 +1,7 @@
 package define
 
 import (
+	"github.com/sacloud/libsacloud/v2/internal/define/names"
 	"github.com/sacloud/libsacloud/v2/internal/define/ops"
 	"github.com/sacloud/libsacloud/v2/internal/schema"
 	"github.com/sacloud/libsacloud/v2/internal/schema/meta"
@@ -39,6 +40,8 @@ var (
 	noteNakedType = meta.Static(naked.Note{})
 
 	noteView = &schema.Model{
+		Name:      noteAPIName,
+		NakedType: noteNakedType,
 		Fields: []*schema.FieldDesc{
 			fields.ID(),
 			fields.Name(),
@@ -55,6 +58,8 @@ var (
 	}
 
 	noteCreateParam = &schema.Model{
+		Name:      names.CreateParameterName(noteAPIName),
+		NakedType: noteNakedType,
 		Fields: []*schema.FieldDesc{
 			fields.Name(),
 			fields.Tags(),
@@ -65,6 +70,8 @@ var (
 	}
 
 	noteUpdateParam = &schema.Model{
+		Name:      names.UpdateParameterName(noteAPIName),
+		NakedType: noteNakedType,
 		Fields: []*schema.FieldDesc{
 			fields.Name(),
 			fields.Tags(),

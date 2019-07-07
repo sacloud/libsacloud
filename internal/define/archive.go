@@ -89,6 +89,8 @@ var (
 	archiveNakedType = meta.Static(naked.Archive{})
 
 	archiveView = &schema.Model{
+		Name:      archiveAPIName,
+		NakedType: archiveNakedType,
 		Fields: []*schema.FieldDesc{
 			fields.ID(),
 			fields.Name(),
@@ -117,6 +119,8 @@ var (
 	}
 
 	archiveCreateParam = &schema.Model{
+		Name:      names.CreateParameterName(archiveAPIName),
+		NakedType: archiveNakedType,
 		Fields: []*schema.FieldDesc{
 			fields.SourceDiskID(),
 			fields.SourceArchiveID(),
@@ -128,7 +132,8 @@ var (
 	}
 
 	archiveCreateBlankParam = &schema.Model{
-		Name: "ArchiveCreateBlankRequest",
+		Name:      "ArchiveCreateBlankRequest",
+		NakedType: archiveNakedType,
 		Fields: []*schema.FieldDesc{
 			fields.SizeMB(),
 			fields.Name(),
@@ -139,6 +144,8 @@ var (
 	}
 
 	archiveUpdateParam = &schema.Model{
+		Name:      names.UpdateParameterName(archiveAPIName),
+		NakedType: archiveNakedType,
 		Fields: []*schema.FieldDesc{
 			fields.Name(),
 			fields.Description(),

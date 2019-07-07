@@ -3,6 +3,7 @@ package define
 import (
 	"net/http"
 
+	"github.com/sacloud/libsacloud/v2/internal/define/names"
 	"github.com/sacloud/libsacloud/v2/internal/define/ops"
 	"github.com/sacloud/libsacloud/v2/internal/schema"
 	"github.com/sacloud/libsacloud/v2/internal/schema/meta"
@@ -161,6 +162,8 @@ var (
 	simNakedType = meta.Static(naked.SIM{})
 
 	simView = &schema.Model{
+		Name:      simAPIName,
+		NakedType: simNakedType,
 		Fields: []*schema.FieldDesc{
 			fields.ID(),
 			fields.Name(),
@@ -176,6 +179,8 @@ var (
 	}
 
 	simCreateParam = &schema.Model{
+		Name:      names.CreateParameterName(simAPIName),
+		NakedType: simNakedType,
 		Fields: []*schema.FieldDesc{
 			fields.Name(),
 			fields.Description(),
@@ -188,6 +193,8 @@ var (
 	}
 
 	simUpdateParam = &schema.Model{
+		Name:      names.UpdateParameterName(simAPIName),
+		NakedType: simNakedType,
 		Fields: []*schema.FieldDesc{
 			fields.Name(),
 			fields.Description(),

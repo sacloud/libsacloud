@@ -3,6 +3,7 @@ package define
 import (
 	"net/http"
 
+	"github.com/sacloud/libsacloud/v2/internal/define/names"
 	"github.com/sacloud/libsacloud/v2/internal/define/ops"
 	"github.com/sacloud/libsacloud/v2/internal/schema"
 	"github.com/sacloud/libsacloud/v2/internal/schema/meta"
@@ -74,6 +75,8 @@ var (
 	vpcRouterNakedType = meta.Static(naked.VPCRouter{})
 
 	vpcRouterView = &schema.Model{
+		Name:      vpcRouterAPIName,
+		NakedType: vpcRouterNakedType,
 		Fields: []*schema.FieldDesc{
 			fields.ID(),
 			fields.Name(),
@@ -110,6 +113,8 @@ var (
 	}
 
 	vpcRouterCreateParam = &schema.Model{
+		Name:      names.CreateParameterName(vpcRouterAPIName),
+		NakedType: vpcRouterNakedType,
 		Fields: []*schema.FieldDesc{
 			fields.VPCRouterClass(),
 			fields.Name(),
@@ -149,6 +154,8 @@ var (
 	}
 
 	vpcRouterUpdateParam = &schema.Model{
+		Name:      names.UpdateParameterName(vpcRouterAPIName),
+		NakedType: vpcRouterNakedType,
 		Fields: []*schema.FieldDesc{
 			fields.Name(),
 			fields.Description(),

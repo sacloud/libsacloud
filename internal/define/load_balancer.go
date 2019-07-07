@@ -1,6 +1,7 @@
 package define
 
 import (
+	"github.com/sacloud/libsacloud/v2/internal/define/names"
 	"github.com/sacloud/libsacloud/v2/internal/define/ops"
 	"github.com/sacloud/libsacloud/v2/internal/schema"
 	"github.com/sacloud/libsacloud/v2/internal/schema/meta"
@@ -53,6 +54,8 @@ var (
 	loadBalancerNakedType = meta.Static(naked.LoadBalancer{})
 
 	loadBalancerView = &schema.Model{
+		Name:      loadBalancerAPIName,
+		NakedType: loadBalancerNakedType,
 		Fields: []*schema.FieldDesc{
 			fields.ID(),
 			fields.Name(),
@@ -89,6 +92,8 @@ var (
 	}
 
 	loadBalancerCreateParam = &schema.Model{
+		Name:      names.CreateParameterName(loadBalancerAPIName),
+		NakedType: loadBalancerNakedType,
 		Fields: []*schema.FieldDesc{
 			fields.LoadBalancerClass(),
 			fields.ApplianceSwitchID(),
@@ -106,6 +111,8 @@ var (
 	}
 
 	loadBalancerUpdateParam = &schema.Model{
+		Name:      names.UpdateParameterName(loadBalancerAPIName),
+		NakedType: loadBalancerNakedType,
 		Fields: []*schema.FieldDesc{
 			fields.Name(),
 			fields.Description(),

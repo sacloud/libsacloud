@@ -26,6 +26,7 @@ var monitorParameter = &schema.Model{
 }
 
 var findParameter = &schema.Model{
+	Name: "FindCondition",
 	Fields: []*schema.FieldDesc{
 		conditions.Count(),
 		conditions.From(),

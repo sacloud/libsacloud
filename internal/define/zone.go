@@ -26,6 +26,8 @@ var zoneAPI = &schema.Resource{
 var (
 	zoneNakedType = meta.Static(naked.Zone{})
 	zoneView      = &schema.Model{
+		Name:      zoneAPIName,
+		NakedType: zoneNakedType,
 		Fields: []*schema.FieldDesc{
 			fields.ID(),
 			fields.Name(),

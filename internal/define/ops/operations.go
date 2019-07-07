@@ -10,18 +10,6 @@ import (
 )
 
 func find(resourceName string, nakedType meta.Type, findParam, result *schema.Model, payloadName string) *schema.Operation {
-	if findParam.Name == "" {
-		findParam.Name = "FindCondition"
-	}
-
-	if result.Name == "" {
-		result.Name = resourceName
-	}
-
-	if result.NakedType == nil {
-		result.NakedType = nakedType
-	}
-
 	if payloadName == "" {
 		payloadName = names.ResourceFieldName(resourceName, schema.PayloadForms.Plural)
 	}
@@ -67,20 +55,6 @@ func FindCommonServiceItem(resourceName string, nakedType meta.Type, findParam, 
 }
 
 func create(resourceName string, nakedType meta.Type, createParam, result *schema.Model, payloadName string) *schema.Operation {
-	if createParam.Name == "" {
-		createParam.Name = resourceName + "CreateRequest"
-	}
-	if result.Name == "" {
-		result.Name = resourceName
-	}
-
-	if createParam.NakedType == nil {
-		createParam.NakedType = nakedType
-	}
-	if result.NakedType == nil {
-		result.NakedType = nakedType
-	}
-
 	if payloadName == "" {
 		payloadName = names.ResourceFieldName(resourceName, schema.PayloadForms.Singular)
 	}
@@ -129,14 +103,6 @@ func CreateCommonServiceItem(resourceName string, nakedType meta.Type, createPar
 }
 
 func read(resourceName string, nakedType meta.Type, result *schema.Model, payloadName string) *schema.Operation {
-	if result.Name == "" {
-		result.Name = resourceName
-	}
-
-	if result.NakedType == nil {
-		result.NakedType = nakedType
-	}
-
 	if payloadName == "" {
 		payloadName = names.ResourceFieldName(resourceName, schema.PayloadForms.Singular)
 	}
@@ -181,18 +147,6 @@ func ReadCommonServiceItem(resourceName string, nakedType meta.Type, result *sch
 }
 
 func update(resourceName string, nakedType meta.Type, updateParam, result *schema.Model, payloadName string) *schema.Operation {
-	if updateParam.Name == "" {
-		updateParam.Name = resourceName + "UpdateRequest"
-	}
-	if result.Name == "" {
-		result.Name = resourceName
-	}
-	if updateParam.NakedType == nil {
-		updateParam.NakedType = nakedType
-	}
-	if result.NakedType == nil {
-		result.NakedType = nakedType
-	}
 	if payloadName == "" {
 		payloadName = names.ResourceFieldName(resourceName, schema.PayloadForms.Singular)
 	}
@@ -462,10 +416,8 @@ func MonitorChild(resourceName, funcNameSuffix, childResourceName string, monito
 
 // MonitorChildBy アプライアンスなどでの内部リソースインデックスを持つアクティビティモニタ取得操作を定義
 func MonitorChildBy(resourceName, funcNameSuffix, childResourceName string, monitorParam, result *schema.Model) *schema.Operation {
-
 	pathSuffix := childResourceName + "/{{if eq .index 0}}{{.index}}{{end}}/monitor"
-
-	o := &schema.Operation{
+	return &schema.Operation{
 		ResourceName:    resourceName,
 		Name:            "Monitor" + funcNameSuffix,
 		PathFormat:      schema.IDAndSuffixPathFormat(pathSuffix),
@@ -493,5 +445,4 @@ func MonitorChildBy(resourceName, funcNameSuffix, childResourceName string, moni
 			},
 		},
 	}
-	return o
 }

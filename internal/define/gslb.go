@@ -1,6 +1,7 @@
 package define
 
 import (
+	"github.com/sacloud/libsacloud/v2/internal/define/names"
 	"github.com/sacloud/libsacloud/v2/internal/define/ops"
 	"github.com/sacloud/libsacloud/v2/internal/schema"
 	"github.com/sacloud/libsacloud/v2/internal/schema/meta"
@@ -39,6 +40,8 @@ var (
 	gslbNakedType = meta.Static(naked.GSLB{})
 
 	gslbView = &schema.Model{
+		Name:      gslbAPIName,
+		NakedType: gslbNakedType,
 		Fields: []*schema.FieldDesc{
 			fields.ID(),
 			fields.Name(),
@@ -65,6 +68,8 @@ var (
 	}
 
 	gslbCreateParam = &schema.Model{
+		Name:      names.CreateParameterName(gslbAPIName),
+		NakedType: gslbNakedType,
 		Fields: []*schema.FieldDesc{
 			fields.GSLBProviderClass(),
 
@@ -86,6 +91,8 @@ var (
 	}
 
 	gslbUpdateParam = &schema.Model{
+		Name:      names.UpdateParameterName(gslbAPIName),
+		NakedType: gslbNakedType,
 		Fields: []*schema.FieldDesc{
 			fields.GSLBHealthCheckProtocol(),
 			fields.GSLBHealthCheckHostHeader(),
