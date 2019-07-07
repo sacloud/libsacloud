@@ -1,6 +1,7 @@
 package define
 
 import (
+	"github.com/sacloud/libsacloud/v2/internal/define/names"
 	"github.com/sacloud/libsacloud/v2/internal/define/ops"
 	"github.com/sacloud/libsacloud/v2/internal/schema"
 	"github.com/sacloud/libsacloud/v2/internal/schema/meta"
@@ -38,6 +39,8 @@ var (
 	bridgeNakedType = meta.Static(naked.Bridge{})
 
 	bridgeView = &schema.Model{
+		Name:      bridgeAPIName,
+		NakedType: bridgeNakedType,
 		Fields: []*schema.FieldDesc{
 			fields.ID(),
 			fields.Name(),
@@ -50,6 +53,8 @@ var (
 	}
 
 	bridgeCreateParam = &schema.Model{
+		Name:      names.CreateParameterName(bridgeAPIName),
+		NakedType: bridgeNakedType,
 		Fields: []*schema.FieldDesc{
 			fields.Name(),
 			fields.Description(),
@@ -57,6 +62,8 @@ var (
 	}
 
 	bridgeUpdateParam = &schema.Model{
+		Name:      names.UpdateParameterName(bridgeAPIName),
+		NakedType: bridgeNakedType,
 		Fields: []*schema.FieldDesc{
 			fields.Name(),
 			fields.Description(),

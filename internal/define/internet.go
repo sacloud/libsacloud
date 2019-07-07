@@ -3,6 +3,7 @@ package define
 import (
 	"net/http"
 
+	"github.com/sacloud/libsacloud/v2/internal/define/names"
 	"github.com/sacloud/libsacloud/v2/internal/define/ops"
 	"github.com/sacloud/libsacloud/v2/internal/schema"
 	"github.com/sacloud/libsacloud/v2/internal/schema/meta"
@@ -142,6 +143,8 @@ var (
 	internetView = models.internetModel()
 
 	internetCreateParam = &schema.Model{
+		Name:      names.CreateParameterName(internetAPIName),
+		NakedType: internetNakedType,
 		Fields: []*schema.FieldDesc{
 			fields.Name(),
 			fields.Description(),
@@ -153,6 +156,8 @@ var (
 	}
 
 	internetUpdateParam = &schema.Model{
+		Name:      names.UpdateParameterName(internetAPIName),
+		NakedType: internetNakedType,
 		Fields: []*schema.FieldDesc{
 			fields.Name(),
 			fields.Description(),

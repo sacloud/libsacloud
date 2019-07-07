@@ -3,6 +3,7 @@ package define
 import (
 	"net/http"
 
+	"github.com/sacloud/libsacloud/v2/internal/define/names"
 	"github.com/sacloud/libsacloud/v2/internal/define/ops"
 	"github.com/sacloud/libsacloud/v2/internal/schema"
 	"github.com/sacloud/libsacloud/v2/internal/schema/meta"
@@ -62,6 +63,8 @@ var (
 	interfaceNakedType = meta.Static(naked.Interface{})
 
 	interfaceView = &schema.Model{
+		Name:      interfaceAPIName,
+		NakedType: interfaceNakedType,
 		Fields: []*schema.FieldDesc{
 			fields.ID(),
 			fields.MACAddress(),
@@ -77,12 +80,16 @@ var (
 	}
 
 	interfaceCreateParam = &schema.Model{
+		Name:      names.CreateParameterName(interfaceAPIName),
+		NakedType: interfaceNakedType,
 		Fields: []*schema.FieldDesc{
 			fields.ServerID(),
 		},
 	}
 
 	interfaceUpdateParam = &schema.Model{
+		Name:      names.UpdateParameterName(interfaceAPIName),
+		NakedType: interfaceNakedType,
 		Fields: []*schema.FieldDesc{
 			fields.UserIPAddress(),
 		},

@@ -1,6 +1,7 @@
 package define
 
 import (
+	"github.com/sacloud/libsacloud/v2/internal/define/names"
 	"github.com/sacloud/libsacloud/v2/internal/define/ops"
 	"github.com/sacloud/libsacloud/v2/internal/schema"
 	"github.com/sacloud/libsacloud/v2/internal/schema/meta"
@@ -49,6 +50,8 @@ var (
 	nfsNakedType = meta.Static(naked.NFS{})
 
 	nfsView = &schema.Model{
+		Name:      nfsAPIName,
+		NakedType: nfsNakedType,
 		Fields: []*schema.FieldDesc{
 			fields.ID(),
 			fields.Name(),
@@ -81,6 +84,8 @@ var (
 	}
 
 	nfsCreateParam = &schema.Model{
+		Name:      names.CreateParameterName(nfsAPIName),
+		NakedType: nfsNakedType,
 		Fields: []*schema.FieldDesc{
 			fields.NFSClass(),
 			fields.ApplianceSwitchID(),
@@ -96,6 +101,8 @@ var (
 	}
 
 	nfsUpdateParam = &schema.Model{
+		Name:      names.UpdateParameterName(nfsAPIName),
+		NakedType: nfsNakedType,
 		Fields: []*schema.FieldDesc{
 			fields.Name(),
 			fields.Description(),

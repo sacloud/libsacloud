@@ -3,6 +3,7 @@ package define
 import (
 	"net/http"
 
+	"github.com/sacloud/libsacloud/v2/internal/define/names"
 	"github.com/sacloud/libsacloud/v2/internal/define/ops"
 	"github.com/sacloud/libsacloud/v2/internal/schema"
 	"github.com/sacloud/libsacloud/v2/internal/schema/meta"
@@ -310,7 +311,8 @@ var (
 	diskDistantFromType = meta.Static([]types.ID{})
 
 	diskModel = &schema.Model{
-		Name: "Disk",
+		Name:      diskAPIName,
+		NakedType: diskNakedType,
 		Fields: []*schema.FieldDesc{
 			fields.ID(),
 			fields.Name(),
@@ -339,6 +341,8 @@ var (
 	}
 
 	diskCreateParam = &schema.Model{
+		Name:      names.CreateParameterName(diskAPIName),
+		NakedType: diskNakedType,
 		Fields: []*schema.FieldDesc{
 			fields.DiskPlanID(),
 			fields.DiskConnection(),
@@ -354,6 +358,8 @@ var (
 	}
 
 	diskUpdateParam = &schema.Model{
+		Name:      names.UpdateParameterName(diskAPIName),
+		NakedType: diskNakedType,
 		Fields: []*schema.FieldDesc{
 			fields.Name(),
 			fields.Description(),

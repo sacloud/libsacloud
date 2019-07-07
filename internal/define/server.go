@@ -133,7 +133,8 @@ var (
 	serverNakedType = meta.Static(naked.Server{})
 
 	serverView = &schema.Model{
-		Name: "Server",
+		Name:      serverAPIName,
+		NakedType: serverNakedType,
 		Fields: []*schema.FieldDesc{
 			fields.ID(),
 			fields.Name(),
@@ -190,6 +191,8 @@ var (
 	}
 
 	serverCreateParam = &schema.Model{
+		Name:      names.CreateParameterName(serverAPIName),
+		NakedType: serverNakedType,
 		Fields: []*schema.FieldDesc{
 			// server plan
 			fields.ServerPlanCPU(),
@@ -230,6 +233,8 @@ var (
 	}
 
 	serverUpdateParam = &schema.Model{
+		Name:      names.UpdateParameterName(serverAPIName),
+		NakedType: serverNakedType,
 		Fields: []*schema.FieldDesc{
 			fields.Name(),
 			fields.Description(),
