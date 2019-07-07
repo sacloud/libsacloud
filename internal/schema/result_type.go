@@ -8,9 +8,9 @@ import (
 
 // ResultType Operationからの戻り値の型情報
 type ResultType struct {
-	resource  *Resource
-	operation *Operation
-	results   Results
+	resourceName string
+	operation    *Operation
+	results      Results
 }
 
 // Type モデルの型情報
@@ -20,7 +20,7 @@ func (r *ResultType) Type() meta.Type {
 
 // GoType 型名
 func (r *ResultType) GoType() string {
-	return fmt.Sprintf("%s%sResult", r.resource.Name, r.operation.Name)
+	return fmt.Sprintf("%s%sResult", r.resourceName, r.operation.Name)
 }
 
 // GoPkg パッケージ名

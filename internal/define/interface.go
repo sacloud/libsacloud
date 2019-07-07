@@ -3,55 +3,59 @@ package define
 import (
 	"net/http"
 
+	"github.com/sacloud/libsacloud/v2/internal/define/ops"
 	"github.com/sacloud/libsacloud/v2/internal/schema"
 	"github.com/sacloud/libsacloud/v2/internal/schema/meta"
 	"github.com/sacloud/libsacloud/v2/sacloud/naked"
 )
 
+const (
+	interfaceAPIName     = "Interface"
+	interfaceAPIPathName = "interface"
+)
+
 var interfaceAPI = &schema.Resource{
-	Name:       "Interface",
-	PathName:   "interface",
+	Name:       interfaceAPIName,
+	PathName:   interfaceAPIPathName,
 	PathSuffix: schema.CloudAPISuffix,
-	OperationsDefineFunc: func(r *schema.Resource) []*schema.Operation {
-		return []*schema.Operation{
-			// find
-			r.DefineOperationFind(interfaceNakedType, findParameter, interfaceView),
+	Operations: schema.Operations{
+		// find
+		ops.Find(interfaceAPIName, interfaceNakedType, findParameter, interfaceView),
 
-			// create
-			r.DefineOperationCreate(interfaceNakedType, interfaceCreateParam, interfaceView),
+		// create
+		ops.Create(interfaceAPIName, interfaceNakedType, interfaceCreateParam, interfaceView),
 
-			// read
-			r.DefineOperationRead(interfaceNakedType, interfaceView),
+		// read
+		ops.Read(interfaceAPIName, interfaceNakedType, interfaceView),
 
-			// update
-			r.DefineOperationUpdate(interfaceNakedType, interfaceUpdateParam, interfaceView),
+		// update
+		ops.Update(interfaceAPIName, interfaceNakedType, interfaceUpdateParam, interfaceView),
 
-			// delete
-			r.DefineOperationDelete(),
+		// delete
+		ops.Delete(interfaceAPIName),
 
-			// monitor
-			r.DefineOperationMonitor(monitorParameter, monitors.interfaceModel()),
+		// monitor
+		ops.Monitor(interfaceAPIName, monitorParameter, monitors.interfaceModel()),
 
-			r.DefineSimpleOperation("ConnectToSharedSegment", http.MethodPut, "to/switch/shared"),
+		ops.WithIDAction(interfaceAPIName, "ConnectToSharedSegment", http.MethodPut, "to/switch/shared"),
 
-			r.DefineSimpleOperation("ConnectToSwitch", http.MethodPut, "to/switch/{{.switchID}}",
-				&schema.Argument{
-					Name: "switchID",
-					Type: meta.TypeID,
-				},
-			),
+		ops.WithIDAction(interfaceAPIName, "ConnectToSwitch", http.MethodPut, "to/switch/{{.switchID}}",
+			&schema.Argument{
+				Name: "switchID",
+				Type: meta.TypeID,
+			},
+		),
 
-			r.DefineSimpleOperation("DisconnectFromSwitch", http.MethodDelete, "to/switch"),
+		ops.WithIDAction(interfaceAPIName, "DisconnectFromSwitch", http.MethodDelete, "to/switch"),
 
-			r.DefineSimpleOperation("ConnectToPacketFilter", http.MethodPut, "to/packetfilter/{{.packetFilterID}}",
-				&schema.Argument{
-					Name: "packetFilterID",
-					Type: meta.TypeID,
-				},
-			),
+		ops.WithIDAction(interfaceAPIName, "ConnectToPacketFilter", http.MethodPut, "to/packetfilter/{{.packetFilterID}}",
+			&schema.Argument{
+				Name: "packetFilterID",
+				Type: meta.TypeID,
+			},
+		),
 
-			r.DefineSimpleOperation("DisconnectFromPacketFilter", http.MethodDelete, "to/packetfilter"),
-		}
+		ops.WithIDAction(interfaceAPIName, "DisconnectFromPacketFilter", http.MethodDelete, "to/packetfilter"),
 	},
 }
 var (

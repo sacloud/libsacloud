@@ -3,80 +3,85 @@ package define
 import (
 	"net/http"
 
+	"github.com/sacloud/libsacloud/v2/internal/define/names"
+	"github.com/sacloud/libsacloud/v2/internal/define/ops"
 	"github.com/sacloud/libsacloud/v2/internal/schema"
 	"github.com/sacloud/libsacloud/v2/internal/schema/meta"
 	"github.com/sacloud/libsacloud/v2/sacloud/naked"
 )
 
+const (
+	archiveAPIName     = "Archive"
+	archiveAPIPathName = "archive"
+)
+
 var archiveAPI = &schema.Resource{
-	Name:       "Archive",
-	PathName:   "archive",
+	Name:       archiveAPIName,
+	PathName:   archiveAPIPathName,
 	PathSuffix: schema.CloudAPISuffix,
-	OperationsDefineFunc: func(r *schema.Resource) []*schema.Operation {
-		return []*schema.Operation{
-			// find
-			r.DefineOperationFind(archiveNakedType, findParameter, archiveView),
+	Operations: schema.Operations{
+		// find
+		ops.Find(archiveAPIName, archiveNakedType, findParameter, archiveView),
 
-			// create
-			r.DefineOperationCreate(archiveNakedType, archiveCreateParam, archiveView),
+		// create
+		ops.Create(archiveAPIName, archiveNakedType, archiveCreateParam, archiveView),
 
-			// CreateBlank
-			{
-				Resource:   r,
-				Name:       "CreateBlank",
-				PathFormat: schema.DefaultPathFormat,
-				Method:     http.MethodPost,
-				RequestEnvelope: schema.RequestEnvelope(&schema.EnvelopePayloadDesc{
-					Name: r.FieldName(schema.PayloadForms.Singular),
+		// CreateBlank
+		{
+			ResourceName: archiveAPIName,
+			Name:         "CreateBlank",
+			PathFormat:   schema.DefaultPathFormat,
+			Method:       http.MethodPost,
+			RequestEnvelope: schema.RequestEnvelope(&schema.EnvelopePayloadDesc{
+				Name: names.ResourceFieldName(archiveAPIName, schema.PayloadForms.Singular),
+				Type: archiveNakedType,
+			}),
+			ResponseEnvelope: schema.ResponseEnvelope(
+				&schema.EnvelopePayloadDesc{
+					Name: names.ResourceFieldName(archiveAPIName, schema.PayloadForms.Singular),
 					Type: archiveNakedType,
-				}),
-				ResponseEnvelope: schema.ResponseEnvelope(
-					&schema.EnvelopePayloadDesc{
-						Name: r.FieldName(schema.PayloadForms.Singular),
-						Type: archiveNakedType,
-					},
-					&schema.EnvelopePayloadDesc{
-						Name: models.ftpServer().Name,
-						Type: meta.Static(naked.OpeningFTPServer{}),
-					},
-				),
-				Arguments: schema.Arguments{
-					schema.ArgumentZone,
-					schema.MappableArgument("param", archiveCreateBlankParam, r.FieldName(schema.PayloadForms.Singular)),
 				},
-				Results: schema.Results{
-					{
-						SourceField: r.FieldName(schema.PayloadForms.Singular),
-						DestField:   archiveView.Name,
-						IsPlural:    false,
-						Model:       archiveView,
-					},
-					{
-						SourceField: models.ftpServer().Name,
-						DestField:   models.ftpServer().Name,
-						IsPlural:    false,
-						Model:       models.ftpServer(),
-					},
+				&schema.EnvelopePayloadDesc{
+					Name: models.ftpServer().Name,
+					Type: meta.Static(naked.OpeningFTPServer{}),
+				},
+			),
+			Arguments: schema.Arguments{
+				schema.ArgumentZone,
+				schema.MappableArgument("param", archiveCreateBlankParam, names.ResourceFieldName(archiveAPIName, schema.PayloadForms.Singular)),
+			},
+			Results: schema.Results{
+				{
+					SourceField: names.ResourceFieldName(archiveAPIName, schema.PayloadForms.Singular),
+					DestField:   archiveView.Name,
+					IsPlural:    false,
+					Model:       archiveView,
+				},
+				{
+					SourceField: models.ftpServer().Name,
+					DestField:   models.ftpServer().Name,
+					IsPlural:    false,
+					Model:       models.ftpServer(),
 				},
 			},
+		},
 
-			// TODO 他ゾーンからの転送コピー作成
+		// TODO 他ゾーンからの転送コピー作成
 
-			// read
-			r.DefineOperationRead(archiveNakedType, archiveView),
+		// read
+		ops.Read(archiveAPIName, archiveNakedType, archiveView),
 
-			// update
-			r.DefineOperationUpdate(archiveNakedType, archiveUpdateParam, archiveView),
+		// update
+		ops.Update(archiveAPIName, archiveNakedType, archiveUpdateParam, archiveView),
 
-			// delete
-			r.DefineOperationDelete(),
+		// delete
+		ops.Delete(archiveAPIName),
 
-			// openFTP
-			r.DefineOperationOpenFTP(models.ftpServerOpenParameter(), models.ftpServer()),
+		// openFTP
+		ops.OpenFTP(archiveAPIName, models.ftpServerOpenParameter(), models.ftpServer()),
 
-			// closeFTP
-			r.DefineOperationCloseFTP(),
-		}
+		// closeFTP
+		ops.CloseFTP(archiveAPIName),
 	},
 }
 

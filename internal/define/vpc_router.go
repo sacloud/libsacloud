@@ -3,64 +3,70 @@ package define
 import (
 	"net/http"
 
+	"github.com/sacloud/libsacloud/v2/internal/define/ops"
 	"github.com/sacloud/libsacloud/v2/internal/schema"
 	"github.com/sacloud/libsacloud/v2/internal/schema/meta"
 	"github.com/sacloud/libsacloud/v2/sacloud/naked"
 )
 
+const (
+	vpcRouterAPIName     = "VPCRouter"
+	vpcRouterAPIPathName = "appliance"
+)
+
 var vpcRouterAPI = &schema.Resource{
-	Name:       "VPCRouter",
-	PathName:   "appliance",
+	Name:       vpcRouterAPIName,
+	PathName:   vpcRouterAPIPathName,
 	PathSuffix: schema.CloudAPISuffix,
-	OperationsDefineFunc: func(r *schema.Resource) []*schema.Operation {
-		return []*schema.Operation{
-			// find
-			r.DefineOperationApplianceFind(vpcRouterNakedType, findParameter, vpcRouterView),
+	Operations: schema.Operations{
+		// find
+		ops.FindAppliance(vpcRouterAPIName, vpcRouterNakedType, findParameter, vpcRouterView),
 
-			// create
-			r.DefineOperationApplianceCreate(vpcRouterNakedType, vpcRouterCreateParam, vpcRouterView),
+		// create
+		ops.CreateAppliance(vpcRouterAPIName, vpcRouterNakedType, vpcRouterCreateParam, vpcRouterView),
 
-			// read
-			r.DefineOperationApplianceRead(vpcRouterNakedType, vpcRouterView),
+		// read
+		ops.ReadAppliance(vpcRouterAPIName, vpcRouterNakedType, vpcRouterView),
 
-			// update
-			r.DefineOperationApplianceUpdate(vpcRouterNakedType, vpcRouterUpdateParam, vpcRouterView),
+		// update
+		ops.UpdateAppliance(vpcRouterAPIName, vpcRouterNakedType, vpcRouterUpdateParam, vpcRouterView),
 
-			// delete
-			r.DefineOperationDelete(),
+		// delete
+		ops.Delete(vpcRouterAPIName),
 
-			// config
-			r.DefineOperationConfig(),
+		// config
+		ops.Config(vpcRouterAPIName),
 
-			// power management(boot/shutdown/reset)
-			r.DefineOperationBoot(),
-			r.DefineOperationShutdown(),
-			r.DefineOperationReset(),
+		// power management(boot/shutdown/reset)
+		ops.Boot(vpcRouterAPIName),
+		ops.Shutdown(vpcRouterAPIName),
+		ops.Reset(vpcRouterAPIName),
 
-			// connect to switch
-			r.DefineSimpleOperation("ConnectToSwitch", http.MethodPut, "interface/{{.nicIndex}}/to/switch/{{.switchID}}",
-				&schema.Argument{
-					Name: "nicIndex",
-					Type: meta.TypeInt,
-				},
-				&schema.Argument{
-					Name: "switchID",
-					Type: meta.TypeID,
-				},
-			),
+		// connect to switch
+		ops.WithIDAction(
+			vpcRouterAPIName, "ConnectToSwitch", http.MethodPut, "interface/{{.nicIndex}}/to/switch/{{.switchID}}",
+			&schema.Argument{
+				Name: "nicIndex",
+				Type: meta.TypeInt,
+			},
+			&schema.Argument{
+				Name: "switchID",
+				Type: meta.TypeID,
+			},
+		),
 
-			// disconnect from switch
-			r.DefineSimpleOperation("DisconnectFromSwitch", http.MethodDelete, "interface/{{.nicIndex}}/to/switch",
-				&schema.Argument{
-					Name: "nicIndex",
-					Type: meta.TypeInt,
-				},
-			),
+		// disconnect from switch
+		ops.WithIDAction(
+			vpcRouterAPIName, "DisconnectFromSwitch", http.MethodDelete, "interface/{{.nicIndex}}/to/switch",
+			&schema.Argument{
+				Name: "nicIndex",
+				Type: meta.TypeInt,
+			},
+		),
 
-			// monitor
-			r.DefineOperationMonitorChildBy("Interface", "interface",
-				monitorParameter, monitors.interfaceModel()),
-		}
+		// monitor
+		ops.MonitorChildBy(vpcRouterAPIName, "Interface", "interface",
+			monitorParameter, monitors.interfaceModel()),
 	},
 }
 

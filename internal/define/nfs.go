@@ -1,43 +1,47 @@
 package define
 
 import (
+	"github.com/sacloud/libsacloud/v2/internal/define/ops"
 	"github.com/sacloud/libsacloud/v2/internal/schema"
 	"github.com/sacloud/libsacloud/v2/internal/schema/meta"
 	"github.com/sacloud/libsacloud/v2/sacloud/naked"
 )
 
+const (
+	nfsAPIName     = "NFS"
+	nfsAPIPathName = "appliance"
+)
+
 var nfsAPI = &schema.Resource{
-	Name:       "NFS",
-	PathName:   "appliance",
+	Name:       nfsAPIName,
+	PathName:   nfsAPIPathName,
 	PathSuffix: schema.CloudAPISuffix,
-	OperationsDefineFunc: func(r *schema.Resource) []*schema.Operation {
-		return []*schema.Operation{
-			// find
-			r.DefineOperationApplianceFind(nfsNakedType, findParameter, nfsView),
+	Operations: schema.Operations{
+		// find
+		ops.FindAppliance(nfsAPIName, nfsNakedType, findParameter, nfsView),
 
-			// create
-			r.DefineOperationApplianceCreate(nfsNakedType, nfsCreateParam, nfsView),
+		// create
+		ops.CreateAppliance(nfsAPIName, nfsNakedType, nfsCreateParam, nfsView),
 
-			// read
-			r.DefineOperationApplianceRead(nfsNakedType, nfsView),
+		// read
+		ops.ReadAppliance(nfsAPIName, nfsNakedType, nfsView),
 
-			// update
-			r.DefineOperationApplianceUpdate(nfsNakedType, nfsUpdateParam, nfsView),
+		// update
+		ops.UpdateAppliance(nfsAPIName, nfsNakedType, nfsUpdateParam, nfsView),
 
-			// delete
-			r.DefineOperationDelete(),
+		// delete
+		ops.Delete(nfsAPIName),
 
-			// power management(boot/shutdown/reset)
-			r.DefineOperationBoot(),
-			r.DefineOperationShutdown(),
-			r.DefineOperationReset(),
+		// power management(boot/shutdown/reset)
+		ops.Boot(nfsAPIName),
+		ops.Shutdown(nfsAPIName),
+		ops.Reset(nfsAPIName),
 
-			// monitor
-			r.DefineOperationMonitorChild("FreeDiskSize", "database",
-				monitorParameter, monitors.freeDiskSizeModel()),
-			r.DefineOperationMonitorChild("Interface", "interface",
-				monitorParameter, monitors.interfaceModel()),
-		}
+		// monitor
+		ops.MonitorChild(nfsAPIName, "FreeDiskSize", "database",
+			monitorParameter, monitors.freeDiskSizeModel()),
+		ops.MonitorChild(nfsAPIName, "Interface", "interface",
+			monitorParameter, monitors.interfaceModel()),
 	},
 }
 

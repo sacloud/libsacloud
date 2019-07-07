@@ -1,21 +1,25 @@
 package define
 
 import (
+	"github.com/sacloud/libsacloud/v2/internal/define/ops"
 	"github.com/sacloud/libsacloud/v2/internal/schema"
 	"github.com/sacloud/libsacloud/v2/internal/schema/meta"
 	"github.com/sacloud/libsacloud/v2/sacloud/naked"
 )
 
+const (
+	zoneAPIName     = "Zone"
+	zoneAPIPathName = "zone"
+)
+
 var zoneAPI = &schema.Resource{
-	Name:       "Zone",
-	PathName:   "zone",
+	Name:       zoneAPIName,
+	PathName:   zoneAPIPathName,
 	PathSuffix: schema.CloudAPISuffix,
 	IsGlobal:   true,
-	OperationsDefineFunc: func(r *schema.Resource) []*schema.Operation {
-		return []*schema.Operation{
-			r.DefineOperationFind(zoneNakedType, findParameter, zoneView),
-			r.DefineOperationRead(zoneNakedType, zoneView),
-		}
+	Operations: schema.Operations{
+		ops.Find(zoneAPIName, zoneNakedType, findParameter, zoneView),
+		ops.Read(zoneAPIName, zoneNakedType, zoneView),
 	},
 }
 

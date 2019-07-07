@@ -1,32 +1,36 @@
 package define
 
 import (
+	"github.com/sacloud/libsacloud/v2/internal/define/ops"
 	"github.com/sacloud/libsacloud/v2/internal/schema"
 	"github.com/sacloud/libsacloud/v2/internal/schema/meta"
 	"github.com/sacloud/libsacloud/v2/sacloud/naked"
 )
 
+const (
+	packetFilterAPIName     = "PacketFilter"
+	packetFilterAPIPathName = "packetfilter"
+)
+
 var packetFilterAPI = &schema.Resource{
-	Name:       "PacketFilter",
-	PathName:   "packetfilter",
+	Name:       packetFilterAPIName,
+	PathName:   packetFilterAPIPathName,
 	PathSuffix: schema.CloudAPISuffix,
-	OperationsDefineFunc: func(r *schema.Resource) []*schema.Operation {
-		return []*schema.Operation{
-			// find
-			r.DefineOperationFind(packetFilterNakedType, findParameter, packetFilterView),
+	Operations: schema.Operations{
+		// find
+		ops.Find(packetFilterAPIName, packetFilterNakedType, findParameter, packetFilterView),
 
-			// create
-			r.DefineOperationCreate(packetFilterNakedType, packetFilterCreateParam, packetFilterView),
+		// create
+		ops.Create(packetFilterAPIName, packetFilterNakedType, packetFilterCreateParam, packetFilterView),
 
-			// read
-			r.DefineOperationRead(packetFilterNakedType, packetFilterView),
+		// read
+		ops.Read(packetFilterAPIName, packetFilterNakedType, packetFilterView),
 
-			// update
-			r.DefineOperationUpdate(packetFilterNakedType, packetFilterUpdateParam, packetFilterView),
+		// update
+		ops.Update(packetFilterAPIName, packetFilterNakedType, packetFilterUpdateParam, packetFilterView),
 
-			// delete
-			r.DefineOperationDelete(),
-		}
+		// delete
+		ops.Delete(packetFilterAPIName),
 	},
 }
 

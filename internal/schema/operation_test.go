@@ -10,7 +10,10 @@ import (
 
 func TestOperation(t *testing.T) {
 	resources := Resources{}
-	resource := resources.Define("Test")
+	resource := &Resource{
+		Name: "Test",
+	}
+	resources.Def(resource)
 
 	type expectOperationValues struct {
 		methodName                 string
@@ -26,13 +29,13 @@ func TestOperation(t *testing.T) {
 	}{
 		{
 			operation: &Operation{
-				Resource:   resource,
-				Name:       "Create",
-				PathFormat: DefaultPathFormat,
-				Method:     http.MethodPost,
+				ResourceName: resource.Name,
+				Name:         "Create",
+				PathFormat:   DefaultPathFormat,
+				Method:       http.MethodPost,
 				RequestEnvelope: RequestEnvelope(&EnvelopePayloadDesc{
 					Type: meta.Static(struct{}{}),
-					Name: resource.FieldName(PayloadForms.Singular),
+					Name: "Test",
 				}),
 				Arguments: []*Argument{
 					ArgumentZone,
@@ -90,7 +93,7 @@ func TestOperation(t *testing.T) {
 	}
 
 	for _, tc := range expects {
-		resource.AddOperation(tc.operation)
+		resource.Operations = []*Operation{tc.operation}
 		require.Equal(t, tc.expect.methodName, tc.operation.MethodName())
 		require.Equal(t, tc.expect.requestEnvelopeStructName, tc.operation.RequestEnvelopeStructName())
 		require.Equal(t, tc.expect.responseEnvelopeStructName, tc.operation.ResponseEnvelopeStructName())

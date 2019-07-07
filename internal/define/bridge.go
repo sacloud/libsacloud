@@ -1,32 +1,36 @@
 package define
 
 import (
+	"github.com/sacloud/libsacloud/v2/internal/define/ops"
 	"github.com/sacloud/libsacloud/v2/internal/schema"
 	"github.com/sacloud/libsacloud/v2/internal/schema/meta"
 	"github.com/sacloud/libsacloud/v2/sacloud/naked"
 )
 
+const (
+	bridgeAPIName     = "Bridge"
+	bridgeAPIPathName = "bridge"
+)
+
 var bridgeAPI = &schema.Resource{
-	Name:       "Bridge",
-	PathName:   "bridge",
+	Name:       bridgeAPIName,
+	PathName:   bridgeAPIPathName,
 	PathSuffix: schema.CloudAPISuffix,
-	OperationsDefineFunc: func(r *schema.Resource) []*schema.Operation {
-		return []*schema.Operation{
-			// find
-			r.DefineOperationFind(bridgeNakedType, findParameter, bridgeView),
+	Operations: schema.Operations{
+		// find
+		ops.Find(bridgeAPIName, bridgeNakedType, findParameter, bridgeView),
 
-			// create
-			r.DefineOperationCreate(bridgeNakedType, bridgeCreateParam, bridgeView),
+		// create
+		ops.Create(bridgeAPIName, bridgeNakedType, bridgeCreateParam, bridgeView),
 
-			// read
-			r.DefineOperationRead(bridgeNakedType, bridgeView),
+		// read
+		ops.Read(bridgeAPIName, bridgeNakedType, bridgeView),
 
-			// update
-			r.DefineOperationUpdate(bridgeNakedType, bridgeUpdateParam, bridgeView),
+		// update
+		ops.Update(bridgeAPIName, bridgeNakedType, bridgeUpdateParam, bridgeView),
 
-			// delete
-			r.DefineOperationDelete(),
-		}
+		// delete
+		ops.Delete(bridgeAPIName),
 	},
 }
 

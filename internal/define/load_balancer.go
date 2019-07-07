@@ -1,47 +1,51 @@
 package define
 
 import (
+	"github.com/sacloud/libsacloud/v2/internal/define/ops"
 	"github.com/sacloud/libsacloud/v2/internal/schema"
 	"github.com/sacloud/libsacloud/v2/internal/schema/meta"
 	"github.com/sacloud/libsacloud/v2/sacloud/naked"
 )
 
+const (
+	loadBalancerAPIName     = "LoadBalancer"
+	loadBalancerAPIPathName = "appliance"
+)
+
 var loadBalancerAPI = &schema.Resource{
-	Name:       "LoadBalancer",
-	PathName:   "appliance",
+	Name:       loadBalancerAPIName,
+	PathName:   loadBalancerAPIPathName,
 	PathSuffix: schema.CloudAPISuffix,
-	OperationsDefineFunc: func(r *schema.Resource) []*schema.Operation {
-		return []*schema.Operation{
-			// find
-			r.DefineOperationApplianceFind(loadBalancerNakedType, findParameter, loadBalancerView),
+	Operations: schema.Operations{
+		// find
+		ops.FindAppliance(loadBalancerAPIName, loadBalancerNakedType, findParameter, loadBalancerView),
 
-			// create
-			r.DefineOperationApplianceCreate(loadBalancerNakedType, loadBalancerCreateParam, loadBalancerView),
+		// create
+		ops.CreateAppliance(loadBalancerAPIName, loadBalancerNakedType, loadBalancerCreateParam, loadBalancerView),
 
-			// read
-			r.DefineOperationApplianceRead(loadBalancerNakedType, loadBalancerView),
+		// read
+		ops.ReadAppliance(loadBalancerAPIName, loadBalancerNakedType, loadBalancerView),
 
-			// update
-			r.DefineOperationApplianceUpdate(loadBalancerNakedType, loadBalancerUpdateParam, loadBalancerView),
+		// update
+		ops.UpdateAppliance(loadBalancerAPIName, loadBalancerNakedType, loadBalancerUpdateParam, loadBalancerView),
 
-			// delete
-			r.DefineOperationDelete(),
+		// delete
+		ops.Delete(loadBalancerAPIName),
 
-			// config
-			r.DefineOperationConfig(),
+		// config
+		ops.Config(loadBalancerAPIName),
 
-			// power management(boot/shutdown/reset)
-			r.DefineOperationBoot(),
-			r.DefineOperationShutdown(),
-			r.DefineOperationReset(),
+		// power management(boot/shutdown/reset)
+		ops.Boot(loadBalancerAPIName),
+		ops.Shutdown(loadBalancerAPIName),
+		ops.Reset(loadBalancerAPIName),
 
-			// monitor
-			r.DefineOperationMonitorChild("Interface", "interface",
-				monitorParameter, monitors.interfaceModel()),
+		// monitor
+		ops.MonitorChild(loadBalancerAPIName, "Interface", "interface",
+			monitorParameter, monitors.interfaceModel()),
 
-			// status
-			r.DefineOperationStatus(meta.Static(naked.LoadBalancerStatus{}), loadBalancerStatus),
-		}
+		// status
+		ops.Status(loadBalancerAPIName, meta.Static(naked.LoadBalancerStatus{}), loadBalancerStatus),
 	},
 }
 

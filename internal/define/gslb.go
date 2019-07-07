@@ -1,33 +1,37 @@
 package define
 
 import (
+	"github.com/sacloud/libsacloud/v2/internal/define/ops"
 	"github.com/sacloud/libsacloud/v2/internal/schema"
 	"github.com/sacloud/libsacloud/v2/internal/schema/meta"
 	"github.com/sacloud/libsacloud/v2/sacloud/naked"
 )
 
+const (
+	gslbAPIName     = "GSLB"
+	gslbAPIPathName = "commonserviceitem"
+)
+
 var gslbAPI = &schema.Resource{
-	Name:       "GSLB",
-	PathName:   "commonserviceitem",
+	Name:       gslbAPIName,
+	PathName:   gslbAPIPathName,
 	PathSuffix: schema.CloudAPISuffix,
 	IsGlobal:   true,
-	OperationsDefineFunc: func(r *schema.Resource) []*schema.Operation {
-		return []*schema.Operation{
-			// find
-			r.DefineOperationCommonServiceItemFind(gslbNakedType, findParameter, gslbView),
+	Operations: schema.Operations{
+		// find
+		ops.FindCommonServiceItem(gslbAPIName, gslbNakedType, findParameter, gslbView),
 
-			// create
-			r.DefineOperationCommonServiceItemCreate(gslbNakedType, gslbCreateParam, gslbView),
+		// create
+		ops.CreateCommonServiceItem(gslbAPIName, gslbNakedType, gslbCreateParam, gslbView),
 
-			// read
-			r.DefineOperationCommonServiceItemRead(gslbNakedType, gslbView),
+		// read
+		ops.ReadCommonServiceItem(gslbAPIName, gslbNakedType, gslbView),
 
-			// update
-			r.DefineOperationCommonServiceItemUpdate(gslbNakedType, gslbUpdateParam, gslbView),
+		// update
+		ops.UpdateCommonServiceItem(gslbAPIName, gslbNakedType, gslbUpdateParam, gslbView),
 
-			// delete
-			r.DefineOperationDelete(),
-		}
+		// delete
+		ops.Delete(gslbAPIName),
 	},
 }
 
