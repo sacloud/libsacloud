@@ -30,60 +30,88 @@ var serverAPI = &schema.Resource{
 			r.DefineOperationDelete(),
 
 			// change plan
-			r.DefineOperation("ChangePlan").
-				Method(http.MethodPut).
-				PathFormat(schema.IDAndSuffixPathFormat("plan")).
-				Argument(schema.ArgumentZone).
-				Argument(schema.ArgumentID).
-				PassthroughModelArgumentWithEnvelope("plan", serverChangePlanParam).
-				ResultFromEnvelope(serverView, &schema.EnvelopePayloadDesc{
-					PayloadName: r.Name,
-					PayloadType: meta.Static(naked.Server{}),
-				}, ""),
+			{
+				Resource:        r,
+				Name:            "ChangePlan",
+				PathFormat:      schema.IDAndSuffixPathFormat("plan"),
+				Method:          http.MethodPut,
+				RequestEnvelope: schema.RequestEnvelopeFromModel(serverChangePlanParam),
+				Arguments: schema.Arguments{
+					schema.ArgumentZone,
+					schema.ArgumentID,
+					schema.PassthroughModelArgument("plan", serverChangePlanParam),
+				},
+				ResponseEnvelope: schema.ResponseEnvelope(&schema.EnvelopePayloadDesc{
+					Name: r.Name,
+					Type: meta.Static(naked.Server{}),
+				}),
+				Results: schema.Results{
+					{
+						SourceField: r.FieldName(schema.PayloadForms.Singular),
+						DestField:   r.FieldName(schema.PayloadForms.Singular),
+						IsPlural:    false,
+						Model:       serverView,
+					},
+				},
+			},
 
 			// insert cdrom
-			r.DefineOperation("InsertCDROM").
-				Method(http.MethodPut).
-				PathFormat(schema.IDAndSuffixPathFormat("cdrom")).
-				RequestEnvelope(&schema.EnvelopePayloadDesc{
-					PayloadType: meta.Static(naked.CDROM{}),
-					PayloadName: "CDROM",
-				}).
-				Argument(schema.ArgumentZone).
-				Argument(schema.ArgumentID).
-				Argument(&schema.Argument{
-					Name: "insertParam",
-					Type: &schema.Model{
-						Name: "InsertCDROMRequest",
-						Fields: []*schema.FieldDesc{
-							fields.ID(),
-						},
-						NakedType: meta.Static(naked.CDROM{}),
+			{
+				Resource:   r,
+				Name:       "InsertCDROM",
+				PathFormat: schema.IDAndSuffixPathFormat("cdrom"),
+				Method:     http.MethodPut,
+				RequestEnvelope: schema.RequestEnvelope(
+					&schema.EnvelopePayloadDesc{
+						Type: meta.Static(naked.CDROM{}),
+						Name: "CDROM",
 					},
-					MapConvTag: "CDROM",
-				}),
+				),
+				Arguments: schema.Arguments{
+					schema.ArgumentZone,
+					schema.ArgumentID,
+					{
+						Name: "insertParam",
+						Type: &schema.Model{
+							Name: "InsertCDROMRequest",
+							Fields: []*schema.FieldDesc{
+								fields.ID(),
+							},
+							NakedType: meta.Static(naked.CDROM{}),
+						},
+						MapConvTag: "CDROM",
+					},
+				},
+			},
 
 			// eject cdrom
-			r.DefineOperation("EjectCDROM").
-				Method(http.MethodDelete).
-				PathFormat(schema.IDAndSuffixPathFormat("cdrom")).
-				RequestEnvelope(&schema.EnvelopePayloadDesc{
-					PayloadType: meta.Static(naked.CDROM{}),
-					PayloadName: "CDROM",
-				}).
-				Argument(schema.ArgumentZone).
-				Argument(schema.ArgumentID).
-				Argument(&schema.Argument{
-					Name: "insertParam",
-					Type: &schema.Model{
-						Name: "EjectCDROMRequest",
-						Fields: []*schema.FieldDesc{
-							fields.ID(),
-						},
-						NakedType: meta.Static(naked.CDROM{}),
+			{
+				Resource:   r,
+				Name:       "EjectCDROM",
+				PathFormat: schema.IDAndSuffixPathFormat("cdrom"),
+				Method:     http.MethodDelete,
+				RequestEnvelope: schema.RequestEnvelope(
+					&schema.EnvelopePayloadDesc{
+						Type: meta.Static(naked.CDROM{}),
+						Name: "CDROM",
 					},
-					MapConvTag: "CDROM",
-				}),
+				),
+				Arguments: schema.Arguments{
+					schema.ArgumentZone,
+					schema.ArgumentID,
+					{
+						Name: "insertParam",
+						Type: &schema.Model{
+							Name: "EjectCDROMRequest",
+							Fields: []*schema.FieldDesc{
+								fields.ID(),
+							},
+							NakedType: meta.Static(naked.CDROM{}),
+						},
+						MapConvTag: "CDROM",
+					},
+				},
+			},
 
 			// power management(boot/shutdown/reset)
 			r.DefineOperationBoot(),

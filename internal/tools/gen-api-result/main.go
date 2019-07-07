@@ -50,11 +50,11 @@ type {{ .ResultTypeName }} struct {
 	IsOk    bool  ` + "`" + `json:",omitempty"` + "`" + ` // is_ok
 {{ end }}
 {{ if .IsResponseSingular }}
-	{{- range .AllResults}}
+	{{- range .Results}}
 	{{.DestField}} {{.GoTypeSourceCode}} {{.TagString}}
 	{{- end }}
 {{- else if .IsResponsePlural -}}
-	{{- range .AllResults}}
+	{{- range .Results}}
 	{{.DestField}} []{{.GoTypeSourceCode}} {{.TagString}}
 	{{- end }}
 {{ end }}

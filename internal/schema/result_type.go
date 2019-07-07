@@ -20,7 +20,7 @@ func (r *ResultType) Type() meta.Type {
 
 // GoType 型名
 func (r *ResultType) GoType() string {
-	return fmt.Sprintf("%s%sResult", r.resource.Name, r.operation.name)
+	return fmt.Sprintf("%s%sResult", r.resource.Name, r.operation.Name)
 }
 
 // GoPkg パッケージ名

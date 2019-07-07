@@ -107,7 +107,7 @@ import (
 
 {{ range .Operations }}
 // {{ .MethodName }} is fake implementation
-func (o *{{ .ResourceTypeName }}Op) {{ .MethodName }}(ctx context.Context{{ range .AllArguments }}, {{ .ArgName }} {{ .TypeName }}{{ end }}) {{.ResultsStatement}} {
+func (o *{{ .ResourceTypeName }}Op) {{ .MethodName }}(ctx context.Context{{ range .Arguments }}, {{ .ArgName }} {{ .TypeName }}{{ end }}) {{.ResultsStatement}} {
 {{ if eq .MethodName "Find" -}}
 	results, _ := find(o.key, {{if .ResourceIsGlobal}}sacloud.DefaultZone{{else}}zone{{end}}, conditions)
 	var values []*sacloud.{{.ResourceTypeName}}

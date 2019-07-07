@@ -44,11 +44,11 @@ import (
 type {{ .RequestEnvelopeStructName }} struct {
 {{ if .IsRequestSingular }}
 	{{- range .RequestPayloads}}
-	{{.PayloadName}} {{.TypeName}} {{.TagString}}
+	{{.Name}} {{.TypeName}} {{.TagString}}
 	{{- end }}
 {{- else if .IsRequestPlural -}}
 	{{- range .RequestPayloads}}
-	{{.PayloadName}} []{{.TypeName}} {{.TagString}}
+	{{.Name}} []{{.TypeName}} {{.TagString}}
 	{{- end }}
 {{ end }}
 }
@@ -67,11 +67,11 @@ type {{ .ResponseEnvelopeStructName }} struct {
 {{ end }}
 {{ if .IsResponseSingular }}
 	{{- range .ResponsePayloads}}
-	{{.PayloadName}} {{.TypeName}} {{.TagString}}
+	{{.Name}} {{.TypeName}} {{.TagString}}
 	{{- end }}
 {{- else if .IsResponsePlural -}}
 	{{- range .ResponsePayloads}}
-	{{.PayloadName}} []{{.TypeName}} {{.TagString}}
+	{{.Name}} []{{.TypeName}} {{.TagString}}
 	{{- end }}
 {{ end }}
 }
