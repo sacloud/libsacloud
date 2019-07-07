@@ -29,12 +29,12 @@ var diskAPI = &schema.Resource{
 				Method:     http.MethodPost,
 				RequestEnvelope: schema.RequestEnvelope(
 					&schema.EnvelopePayloadDesc{
-						PayloadType: diskNakedType,
-						PayloadName: "Disk",
+						Type: diskNakedType,
+						Name: "Disk",
 					},
 					&schema.EnvelopePayloadDesc{
-						PayloadType: diskDistantFromType,
-						PayloadName: "DistantFrom",
+						Type: diskDistantFromType,
+						Name: "DistantFrom",
 					},
 				),
 				Arguments: schema.Arguments{
@@ -51,8 +51,8 @@ var diskAPI = &schema.Resource{
 					},
 				},
 				ResponseEnvelope: schema.ResponseEnvelope(&schema.EnvelopePayloadDesc{
-					PayloadType: diskNakedType,
-					PayloadName: "Disk",
+					Type: diskNakedType,
+					Name: "Disk",
 				}),
 				Results: schema.Results{
 					{
@@ -86,16 +86,16 @@ var diskAPI = &schema.Resource{
 				Method:     http.MethodPost,
 				RequestEnvelope: schema.RequestEnvelope(
 					&schema.EnvelopePayloadDesc{
-						PayloadType: diskNakedType,
-						PayloadName: "Disk",
+						Type: diskNakedType,
+						Name: "Disk",
 					},
 					&schema.EnvelopePayloadDesc{
-						PayloadType: diskEditNakedType,
-						PayloadName: "Config",
+						Type: diskEditNakedType,
+						Name: "Config",
 					},
 					&schema.EnvelopePayloadDesc{
-						PayloadType: meta.TypeFlag,
-						PayloadName: "BootAtAvailable",
+						Type: meta.TypeFlag,
+						Name: "BootAtAvailable",
 					},
 				),
 				Arguments: schema.Arguments{
@@ -117,8 +117,8 @@ var diskAPI = &schema.Resource{
 					},
 				},
 				ResponseEnvelope: schema.ResponseEnvelope(&schema.EnvelopePayloadDesc{
-					PayloadType: diskNakedType,
-					PayloadName: "Disk",
+					Type: diskNakedType,
+					Name: "Disk",
 				}),
 				Results: schema.Results{
 					{
@@ -137,20 +137,20 @@ var diskAPI = &schema.Resource{
 				Method:     http.MethodPost,
 				RequestEnvelope: schema.RequestEnvelope(
 					&schema.EnvelopePayloadDesc{
-						PayloadType: diskNakedType,
-						PayloadName: "Disk",
+						Type: diskNakedType,
+						Name: "Disk",
 					},
 					&schema.EnvelopePayloadDesc{
-						PayloadType: diskEditNakedType,
-						PayloadName: "Config",
+						Type: diskEditNakedType,
+						Name: "Config",
 					},
 					&schema.EnvelopePayloadDesc{
-						PayloadType: meta.TypeFlag,
-						PayloadName: "BootAtAvailable",
+						Type: meta.TypeFlag,
+						Name: "BootAtAvailable",
 					},
 					&schema.EnvelopePayloadDesc{
-						PayloadType: diskDistantFromType,
-						PayloadName: "DistantFrom",
+						Type: diskDistantFromType,
+						Name: "DistantFrom",
 					},
 				),
 				Arguments: schema.Arguments{
@@ -177,8 +177,8 @@ var diskAPI = &schema.Resource{
 					},
 				},
 				ResponseEnvelope: schema.ResponseEnvelope(&schema.EnvelopePayloadDesc{
-					PayloadType: diskNakedType,
-					PayloadName: "Disk",
+					Type: diskNakedType,
+					Name: "Disk",
 				}),
 				Results: schema.Results{
 					{
@@ -215,12 +215,12 @@ var diskAPI = &schema.Resource{
 				Method:     http.MethodPut,
 				RequestEnvelope: schema.RequestEnvelope(
 					&schema.EnvelopePayloadDesc{
-						PayloadType: diskNakedType,
-						PayloadName: "Disk",
+						Type: diskNakedType,
+						Name: "Disk",
 					},
 					&schema.EnvelopePayloadDesc{
-						PayloadType: diskDistantFromType,
-						PayloadName: "DistantFrom",
+						Type: diskDistantFromType,
+						Name: "DistantFrom",
 					},
 				),
 				Arguments: schema.Arguments{
@@ -238,8 +238,8 @@ var diskAPI = &schema.Resource{
 					},
 				},
 				ResponseEnvelope: schema.ResponseEnvelope(&schema.EnvelopePayloadDesc{
-					PayloadType: diskNakedType,
-					PayloadName: "Disk",
+					Type: diskNakedType,
+					Name: "Disk",
 				}),
 				Results: schema.Results{
 					{
@@ -258,8 +258,8 @@ var diskAPI = &schema.Resource{
 				Method:     http.MethodPut,
 				RequestEnvelope: schema.RequestEnvelope(
 					&schema.EnvelopePayloadDesc{
-						PayloadType: diskNakedType,
-						PayloadName: "Disk",
+						Type: diskNakedType,
+						Name: "Disk",
 					},
 				),
 				Arguments: schema.Arguments{
@@ -272,8 +272,8 @@ var diskAPI = &schema.Resource{
 					},
 				},
 				ResponseEnvelope: schema.ResponseEnvelope(&schema.EnvelopePayloadDesc{
-					PayloadType: diskNakedType,
-					PayloadName: "Disk",
+					Type: diskNakedType,
+					Name: "Disk",
 				}),
 				Results: schema.Results{
 					{

@@ -42,8 +42,8 @@ var serverAPI = &schema.Resource{
 					schema.PassthroughModelArgument("plan", serverChangePlanParam),
 				},
 				ResponseEnvelope: schema.ResponseEnvelope(&schema.EnvelopePayloadDesc{
-					PayloadName: r.Name,
-					PayloadType: meta.Static(naked.Server{}),
+					Name: r.Name,
+					Type: meta.Static(naked.Server{}),
 				}),
 				Results: schema.Results{
 					{
@@ -63,8 +63,8 @@ var serverAPI = &schema.Resource{
 				Method:     http.MethodPut,
 				RequestEnvelope: schema.RequestEnvelope(
 					&schema.EnvelopePayloadDesc{
-						PayloadType: meta.Static(naked.CDROM{}),
-						PayloadName: "CDROM",
+						Type: meta.Static(naked.CDROM{}),
+						Name: "CDROM",
 					},
 				),
 				Arguments: schema.Arguments{
@@ -92,8 +92,8 @@ var serverAPI = &schema.Resource{
 				Method:     http.MethodDelete,
 				RequestEnvelope: schema.RequestEnvelope(
 					&schema.EnvelopePayloadDesc{
-						PayloadType: meta.Static(naked.CDROM{}),
-						PayloadName: "CDROM",
+						Type: meta.Static(naked.CDROM{}),
+						Name: "CDROM",
 					},
 				),
 				Arguments: schema.Arguments{

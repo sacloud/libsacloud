@@ -1,6 +1,8 @@
 package define
 
 import (
+	"net/http"
+
 	"github.com/sacloud/libsacloud/v2/internal/schema"
 	"github.com/sacloud/libsacloud/v2/internal/schema/meta"
 	"github.com/sacloud/libsacloud/v2/sacloud/naked"
@@ -19,22 +21,45 @@ var archiveAPI = &schema.Resource{
 			r.DefineOperationCreate(archiveNakedType, archiveCreateParam, archiveView),
 
 			// CreateBlank
-			func() *schema.Operation {
-				o := r.DefineOperationCreate(archiveNakedType, archiveCreateBlankParam, archiveView)
-				o.Name = "CreateBlank"
-				o.ResponseEnvelope.Payloads = append(o.ResponseEnvelope.Payloads, &schema.EnvelopePayloadDesc{
-					PayloadName: models.ftpServer().Name,
-					PayloadType: meta.Static(naked.OpeningFTPServer{}),
-				})
-				o.Results = append(o.Results, &schema.Result{
-					SourceField: models.ftpServer().Name,
-					DestField:   models.ftpServer().Name,
-					IsPlural:    false,
-					Model:       models.ftpServer(),
-				})
-				return o
-				// TODO あとで直す
-			}(),
+			{
+				Resource:   r,
+				Name:       "CreateBlank",
+				PathFormat: schema.DefaultPathFormat,
+				Method:     http.MethodPost,
+				RequestEnvelope: schema.RequestEnvelope(&schema.EnvelopePayloadDesc{
+					Name: r.FieldName(schema.PayloadForms.Singular),
+					Type: archiveNakedType,
+				}),
+				ResponseEnvelope: schema.ResponseEnvelope(
+					&schema.EnvelopePayloadDesc{
+						Name: r.FieldName(schema.PayloadForms.Singular),
+						Type: archiveNakedType,
+					},
+					&schema.EnvelopePayloadDesc{
+						Name: models.ftpServer().Name,
+						Type: meta.Static(naked.OpeningFTPServer{}),
+					},
+				),
+				Arguments: schema.Arguments{
+					schema.ArgumentZone,
+					schema.MappableArgument("param", archiveCreateBlankParam, r.FieldName(schema.PayloadForms.Singular)),
+				},
+				Results: schema.Results{
+					{
+						SourceField: r.FieldName(schema.PayloadForms.Singular),
+						DestField:   archiveView.Name,
+						IsPlural:    false,
+						Model:       archiveView,
+					},
+					{
+						SourceField: models.ftpServer().Name,
+						DestField:   models.ftpServer().Name,
+						IsPlural:    false,
+						Model:       models.ftpServer(),
+					},
+				},
+			},
+
 			// TODO 他ゾーンからの転送コピー作成
 
 			// read

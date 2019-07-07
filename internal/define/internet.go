@@ -38,8 +38,8 @@ var internetAPI = &schema.Resource{
 				Method:     http.MethodPut,
 				RequestEnvelope: schema.RequestEnvelope(
 					&schema.EnvelopePayloadDesc{
-						PayloadType: internetNakedType,
-						PayloadName: "Internet",
+						Type: internetNakedType,
+						Name: "Internet",
 					},
 				),
 				Arguments: schema.Arguments{
@@ -48,8 +48,8 @@ var internetAPI = &schema.Resource{
 					schema.MappableArgument("param", internetUpdateBandWidthParam, "Internet"),
 				},
 				ResponseEnvelope: schema.ResponseEnvelope(&schema.EnvelopePayloadDesc{
-					PayloadType: internetNakedType,
-					PayloadName: "Internet",
+					Type: internetNakedType,
+					Name: "Internet",
 				}),
 				Results: schema.Results{
 					{
@@ -74,8 +74,8 @@ var internetAPI = &schema.Resource{
 					schema.PassthroughModelArgument("param", internetAddSubnetParam),
 				},
 				ResponseEnvelope: schema.ResponseEnvelope(&schema.EnvelopePayloadDesc{
-					PayloadType: meta.Static(naked.Subnet{}),
-					PayloadName: "Subnet",
+					Type: meta.Static(naked.Subnet{}),
+					Name: "Subnet",
 				}),
 				Results: schema.Results{
 					{
@@ -104,8 +104,8 @@ var internetAPI = &schema.Resource{
 					schema.PassthroughModelArgument("param", internetUpdateSubnetParam),
 				},
 				ResponseEnvelope: schema.ResponseEnvelope(&schema.EnvelopePayloadDesc{
-					PayloadType: meta.Static(naked.Subnet{}),
-					PayloadName: "Subnet",
+					Type: meta.Static(naked.Subnet{}),
+					Name: "Subnet",
 				}),
 				Results: schema.Results{
 					{

@@ -150,8 +150,8 @@ func (r *Resource) defineOperationFind(nakedType meta.Type, findParam, result *M
 			PassthroughModelArgument("conditions", findParam),
 		},
 		ResponseEnvelope: ResponseEnvelopePlural(&EnvelopePayloadDesc{
-			PayloadType: nakedType,
-			PayloadName: payloadName,
+			Type: nakedType,
+			Name: payloadName,
 		}),
 		Results: Results{
 			{
@@ -204,16 +204,16 @@ func (r *Resource) defineOperationCreate(nakedType meta.Type, createParam, resul
 		PathFormat: DefaultPathFormat,
 		Method:     http.MethodPost,
 		RequestEnvelope: RequestEnvelope(&EnvelopePayloadDesc{
-			PayloadType: nakedType,
-			PayloadName: payloadName,
+			Type: nakedType,
+			Name: payloadName,
 		}),
 		Arguments: Arguments{
 			ArgumentZone,
 			MappableArgument("param", createParam, payloadName),
 		},
 		ResponseEnvelope: ResponseEnvelope(&EnvelopePayloadDesc{
-			PayloadType: nakedType,
-			PayloadName: payloadName,
+			Type: nakedType,
+			Name: payloadName,
 		}),
 		Results: Results{
 			{
@@ -264,8 +264,8 @@ func (r *Resource) defineOperationRead(nakedType meta.Type, result *Model, paylo
 			ArgumentID,
 		},
 		ResponseEnvelope: ResponseEnvelope(&EnvelopePayloadDesc{
-			PayloadType: nakedType,
-			PayloadName: payloadName,
+			Type: nakedType,
+			Name: payloadName,
 		}),
 		Results: Results{
 			{
@@ -316,8 +316,8 @@ func (r *Resource) defineOperationUpdate(nakedType meta.Type, updateParam, resul
 		PathFormat: DefaultPathFormatWithID,
 		Method:     http.MethodPut,
 		RequestEnvelope: RequestEnvelope(&EnvelopePayloadDesc{
-			PayloadType: nakedType,
-			PayloadName: payloadName,
+			Type: nakedType,
+			Name: payloadName,
 		}),
 		Arguments: Arguments{
 			ArgumentZone,
@@ -325,8 +325,8 @@ func (r *Resource) defineOperationUpdate(nakedType meta.Type, updateParam, resul
 			MappableArgument("param", updateParam, payloadName),
 		},
 		ResponseEnvelope: ResponseEnvelope(&EnvelopePayloadDesc{
-			PayloadType: nakedType,
-			PayloadName: payloadName,
+			Type: nakedType,
+			Name: payloadName,
 		}),
 		Results: Results{
 			{
@@ -468,8 +468,8 @@ func (r *Resource) DefineOperationStatus(nakedType meta.Type, result *Model) *Op
 		PathFormat: IDAndSuffixPathFormat("status"),
 		Method:     http.MethodGet,
 		ResponseEnvelope: ResponseEnvelopePlural(&EnvelopePayloadDesc{
-			PayloadType: meta.Static(naked.LoadBalancerStatus{}),
-			PayloadName: payloadName,
+			Type: meta.Static(naked.LoadBalancerStatus{}),
+			Name: payloadName,
 		}),
 		Results: Results{
 			{
@@ -496,8 +496,8 @@ func (r *Resource) DefineOperationOpenFTP(openParam, result *Model) *Operation {
 			PassthroughModelArgument("openOption", openParam),
 		},
 		ResponseEnvelope: ResponseEnvelope(&EnvelopePayloadDesc{
-			PayloadName: result.Name,
-			PayloadType: meta.Static(naked.OpeningFTPServer{}),
+			Name: result.Name,
+			Type: meta.Static(naked.OpeningFTPServer{}),
 		}),
 		Results: Results{
 			{
@@ -551,8 +551,8 @@ func (r *Resource) DefineOperationMonitor(monitorParam, result *Model) *Operatio
 			PassthroughModelArgument("condition", monitorParam),
 		},
 		ResponseEnvelope: ResponseEnvelope(&EnvelopePayloadDesc{
-			PayloadType: meta.Static(naked.MonitorValues{}),
-			PayloadName: "Data",
+			Type: meta.Static(naked.MonitorValues{}),
+			Name: "Data",
 		}),
 		Results: Results{
 			{
@@ -579,8 +579,8 @@ func (r *Resource) DefineOperationMonitorChild(funcNameSuffix, childResourceName
 			PassthroughModelArgument("condition", monitorParam),
 		},
 		ResponseEnvelope: ResponseEnvelope(&EnvelopePayloadDesc{
-			PayloadType: meta.Static(naked.MonitorValues{}),
-			PayloadName: "Data",
+			Type: meta.Static(naked.MonitorValues{}),
+			Name: "Data",
 		}),
 		Results: Results{
 			{
@@ -614,8 +614,8 @@ func (r *Resource) DefineOperationMonitorChildBy(funcNameSuffix, childResourceNa
 			PassthroughModelArgument("condition", monitorParam),
 		},
 		ResponseEnvelope: ResponseEnvelope(&EnvelopePayloadDesc{
-			PayloadType: meta.Static(naked.MonitorValues{}),
-			PayloadName: "Data",
+			Type: meta.Static(naked.MonitorValues{}),
+			Name: "Data",
 		}),
 		Results: Results{
 			{

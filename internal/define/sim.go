@@ -42,8 +42,8 @@ var simAPI = &schema.Resource{
 				Method:     http.MethodPut,
 				RequestEnvelope: schema.RequestEnvelope(
 					&schema.EnvelopePayloadDesc{
-						PayloadName: "SIM",
-						PayloadType: meta.Static(naked.SIMAssignIPRequest{}),
+						Name: "SIM",
+						Type: meta.Static(naked.SIMAssignIPRequest{}),
 						Tags: &schema.FieldTags{
 							JSON: "sim",
 						},
@@ -67,8 +67,8 @@ var simAPI = &schema.Resource{
 				Method:     http.MethodPut,
 				RequestEnvelope: schema.RequestEnvelope(
 					&schema.EnvelopePayloadDesc{
-						PayloadName: "SIM",
-						PayloadType: meta.Static(naked.SIMIMEILockRequest{}),
+						Name: "SIM",
+						Type: meta.Static(naked.SIMIMEILockRequest{}),
 						Tags: &schema.FieldTags{
 							JSON: "sim",
 						},
@@ -95,8 +95,8 @@ var simAPI = &schema.Resource{
 					schema.ArgumentID,
 				},
 				ResponseEnvelope: schema.ResponseEnvelopePlural(&schema.EnvelopePayloadDesc{
-					PayloadName: "Logs",
-					PayloadType: meta.Static(naked.SIMLog{}),
+					Name: "Logs",
+					Type: meta.Static(naked.SIMLog{}),
 				}),
 				Results: schema.Results{
 					{
@@ -119,8 +119,8 @@ var simAPI = &schema.Resource{
 					schema.ArgumentID,
 				},
 				ResponseEnvelope: schema.ResponseEnvelopePlural(&schema.EnvelopePayloadDesc{
-					PayloadName: "NetworkOperationConfigs",
-					PayloadType: meta.Static(naked.SIMNetworkOperatorConfig{}),
+					Name: "NetworkOperationConfigs",
+					Type: meta.Static(naked.SIMNetworkOperatorConfig{}),
 				}),
 				Results: schema.Results{
 					{

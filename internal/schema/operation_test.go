@@ -31,8 +31,8 @@ func TestOperation(t *testing.T) {
 				PathFormat: DefaultPathFormat,
 				Method:     http.MethodPost,
 				RequestEnvelope: RequestEnvelope(&EnvelopePayloadDesc{
-					PayloadType: meta.Static(struct{}{}),
-					PayloadName: resource.FieldName(PayloadForms.Singular),
+					Type: meta.Static(struct{}{}),
+					Name: resource.FieldName(PayloadForms.Singular),
 				}),
 				Arguments: []*Argument{
 					ArgumentZone,
@@ -55,8 +55,8 @@ func TestOperation(t *testing.T) {
 					},
 				},
 				ResponseEnvelope: ResponseEnvelope(&EnvelopePayloadDesc{
-					PayloadName: "Test",
-					PayloadType: meta.Static(struct{}{}),
+					Name: "Test",
+					Type: meta.Static(struct{}{}),
 				}),
 				Results: Results{
 					{
@@ -94,7 +94,7 @@ func TestOperation(t *testing.T) {
 		require.Equal(t, tc.expect.methodName, tc.operation.MethodName())
 		require.Equal(t, tc.expect.requestEnvelopeStructName, tc.operation.RequestEnvelopeStructName())
 		require.Equal(t, tc.expect.responseEnvelopeStructName, tc.operation.ResponseEnvelopeStructName())
-		require.Equal(t, tc.expect.requestPayloadName, tc.operation.RequestPayloads()[0].PayloadName)
-		require.Equal(t, tc.expect.responsePayloadName, tc.operation.ResponsePayloads()[0].PayloadName)
+		require.Equal(t, tc.expect.requestPayloadName, tc.operation.RequestPayloads()[0].Name)
+		require.Equal(t, tc.expect.responsePayloadName, tc.operation.ResponsePayloads()[0].Name)
 	}
 }
