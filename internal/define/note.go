@@ -1,33 +1,37 @@
 package define
 
 import (
+	"github.com/sacloud/libsacloud/v2/internal/define/ops"
 	"github.com/sacloud/libsacloud/v2/internal/schema"
 	"github.com/sacloud/libsacloud/v2/internal/schema/meta"
 	"github.com/sacloud/libsacloud/v2/sacloud/naked"
 )
 
+const (
+	noteAPIName     = "Note"
+	noteAPIPathName = "note"
+)
+
 var noteAPI = &schema.Resource{
-	Name:       "Note",
-	PathName:   "note",
+	Name:       noteAPIName,
+	PathName:   noteAPIPathName,
 	PathSuffix: schema.CloudAPISuffix,
 	IsGlobal:   true,
-	OperationsDefineFunc: func(r *schema.Resource) []*schema.Operation {
-		return []*schema.Operation{
-			// find
-			r.DefineOperationFind(noteNakedType, findParameter, noteView),
+	Operations: schema.Operations{
+		// find
+		ops.Find(noteAPIName, noteNakedType, findParameter, noteView),
 
-			// create
-			r.DefineOperationCreate(noteNakedType, noteCreateParam, noteView),
+		// create
+		ops.Create(noteAPIName, noteNakedType, noteCreateParam, noteView),
 
-			// read
-			r.DefineOperationRead(noteNakedType, noteView),
+		// read
+		ops.Read(noteAPIName, noteNakedType, noteView),
 
-			// update
-			r.DefineOperationUpdate(noteNakedType, noteUpdateParam, noteView),
+		// update
+		ops.Update(noteAPIName, noteNakedType, noteUpdateParam, noteView),
 
-			// delete
-			r.DefineOperationDelete(),
-		}
+		// delete
+		ops.Delete(noteAPIName),
 	},
 }
 

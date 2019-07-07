@@ -3,124 +3,129 @@ package define
 import (
 	"net/http"
 
+	"github.com/sacloud/libsacloud/v2/internal/define/names"
+	"github.com/sacloud/libsacloud/v2/internal/define/ops"
 	"github.com/sacloud/libsacloud/v2/internal/schema"
 	"github.com/sacloud/libsacloud/v2/internal/schema/meta"
 	"github.com/sacloud/libsacloud/v2/sacloud/naked"
 )
 
+const (
+	serverAPIName     = "Server"
+	serverAPIPathName = "server"
+)
+
 var serverAPI = &schema.Resource{
-	Name:       "Server",
-	PathName:   "server",
+	Name:       serverAPIName,
+	PathName:   serverAPIPathName,
 	PathSuffix: schema.CloudAPISuffix,
-	OperationsDefineFunc: func(r *schema.Resource) []*schema.Operation {
-		return []*schema.Operation{
-			// find
-			r.DefineOperationFind(serverNakedType, findParameter, serverView),
+	Operations: schema.Operations{
+		// find
+		ops.Find(serverAPIName, serverNakedType, findParameter, serverView),
 
-			// create
-			r.DefineOperationCreate(serverNakedType, serverCreateParam, serverView),
+		// create
+		ops.Create(serverAPIName, serverNakedType, serverCreateParam, serverView),
 
-			// read
-			r.DefineOperationRead(serverNakedType, serverView),
+		// read
+		ops.Read(serverAPIName, serverNakedType, serverView),
 
-			// update
-			r.DefineOperationUpdate(serverNakedType, serverUpdateParam, serverView),
+		// update
+		ops.Update(serverAPIName, serverNakedType, serverUpdateParam, serverView),
 
-			// delete
-			r.DefineOperationDelete(),
+		// delete
+		ops.Delete(serverAPIName),
 
-			// change plan
-			{
-				Resource:        r,
-				Name:            "ChangePlan",
-				PathFormat:      schema.IDAndSuffixPathFormat("plan"),
-				Method:          http.MethodPut,
-				RequestEnvelope: schema.RequestEnvelopeFromModel(serverChangePlanParam),
-				Arguments: schema.Arguments{
-					schema.ArgumentZone,
-					schema.ArgumentID,
-					schema.PassthroughModelArgument("plan", serverChangePlanParam),
-				},
-				ResponseEnvelope: schema.ResponseEnvelope(&schema.EnvelopePayloadDesc{
-					Name: r.Name,
-					Type: meta.Static(naked.Server{}),
-				}),
-				Results: schema.Results{
-					{
-						SourceField: r.FieldName(schema.PayloadForms.Singular),
-						DestField:   r.FieldName(schema.PayloadForms.Singular),
-						IsPlural:    false,
-						Model:       serverView,
-					},
+		// change plan
+		{
+			ResourceName:    serverAPIName,
+			Name:            "ChangePlan",
+			PathFormat:      schema.IDAndSuffixPathFormat("plan"),
+			Method:          http.MethodPut,
+			RequestEnvelope: schema.RequestEnvelopeFromModel(serverChangePlanParam),
+			Arguments: schema.Arguments{
+				schema.ArgumentZone,
+				schema.ArgumentID,
+				schema.PassthroughModelArgument("plan", serverChangePlanParam),
+			},
+			ResponseEnvelope: schema.ResponseEnvelope(&schema.EnvelopePayloadDesc{
+				Name: serverAPIName,
+				Type: meta.Static(naked.Server{}),
+			}),
+			Results: schema.Results{
+				{
+					SourceField: names.ResourceFieldName(serverAPIName, schema.PayloadForms.Singular),
+					DestField:   names.ResourceFieldName(serverAPIName, schema.PayloadForms.Singular),
+					IsPlural:    false,
+					Model:       serverView,
 				},
 			},
+		},
 
-			// insert cdrom
-			{
-				Resource:   r,
-				Name:       "InsertCDROM",
-				PathFormat: schema.IDAndSuffixPathFormat("cdrom"),
-				Method:     http.MethodPut,
-				RequestEnvelope: schema.RequestEnvelope(
-					&schema.EnvelopePayloadDesc{
-						Type: meta.Static(naked.CDROM{}),
-						Name: "CDROM",
-					},
-				),
-				Arguments: schema.Arguments{
-					schema.ArgumentZone,
-					schema.ArgumentID,
-					{
-						Name: "insertParam",
-						Type: &schema.Model{
-							Name: "InsertCDROMRequest",
-							Fields: []*schema.FieldDesc{
-								fields.ID(),
-							},
-							NakedType: meta.Static(naked.CDROM{}),
+		// insert cdrom
+		{
+			ResourceName: serverAPIName,
+			Name:         "InsertCDROM",
+			PathFormat:   schema.IDAndSuffixPathFormat("cdrom"),
+			Method:       http.MethodPut,
+			RequestEnvelope: schema.RequestEnvelope(
+				&schema.EnvelopePayloadDesc{
+					Type: meta.Static(naked.CDROM{}),
+					Name: "CDROM",
+				},
+			),
+			Arguments: schema.Arguments{
+				schema.ArgumentZone,
+				schema.ArgumentID,
+				{
+					Name: "insertParam",
+					Type: &schema.Model{
+						Name: "InsertCDROMRequest",
+						Fields: []*schema.FieldDesc{
+							fields.ID(),
 						},
-						MapConvTag: "CDROM",
+						NakedType: meta.Static(naked.CDROM{}),
 					},
+					MapConvTag: "CDROM",
 				},
 			},
+		},
 
-			// eject cdrom
-			{
-				Resource:   r,
-				Name:       "EjectCDROM",
-				PathFormat: schema.IDAndSuffixPathFormat("cdrom"),
-				Method:     http.MethodDelete,
-				RequestEnvelope: schema.RequestEnvelope(
-					&schema.EnvelopePayloadDesc{
-						Type: meta.Static(naked.CDROM{}),
-						Name: "CDROM",
-					},
-				),
-				Arguments: schema.Arguments{
-					schema.ArgumentZone,
-					schema.ArgumentID,
-					{
-						Name: "insertParam",
-						Type: &schema.Model{
-							Name: "EjectCDROMRequest",
-							Fields: []*schema.FieldDesc{
-								fields.ID(),
-							},
-							NakedType: meta.Static(naked.CDROM{}),
+		// eject cdrom
+		{
+			ResourceName: serverAPIName,
+			Name:         "EjectCDROM",
+			PathFormat:   schema.IDAndSuffixPathFormat("cdrom"),
+			Method:       http.MethodDelete,
+			RequestEnvelope: schema.RequestEnvelope(
+				&schema.EnvelopePayloadDesc{
+					Type: meta.Static(naked.CDROM{}),
+					Name: "CDROM",
+				},
+			),
+			Arguments: schema.Arguments{
+				schema.ArgumentZone,
+				schema.ArgumentID,
+				{
+					Name: "insertParam",
+					Type: &schema.Model{
+						Name: "EjectCDROMRequest",
+						Fields: []*schema.FieldDesc{
+							fields.ID(),
 						},
-						MapConvTag: "CDROM",
+						NakedType: meta.Static(naked.CDROM{}),
 					},
+					MapConvTag: "CDROM",
 				},
 			},
+		},
 
-			// power management(boot/shutdown/reset)
-			r.DefineOperationBoot(),
-			r.DefineOperationShutdown(),
-			r.DefineOperationReset(),
+		// power management(boot/shutdown/reset)
+		ops.Boot(serverAPIName),
+		ops.Shutdown(serverAPIName),
+		ops.Reset(serverAPIName),
 
-			// monitor
-			r.DefineOperationMonitor(monitorParameter, monitors.cpuTimeModel()),
-		}
+		// monitor
+		ops.Monitor(serverAPIName, monitorParameter, monitors.cpuTimeModel()),
 	},
 }
 

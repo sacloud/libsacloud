@@ -3,43 +3,47 @@ package define
 import (
 	"net/http"
 
+	"github.com/sacloud/libsacloud/v2/internal/define/ops"
 	"github.com/sacloud/libsacloud/v2/internal/schema"
 	"github.com/sacloud/libsacloud/v2/internal/schema/meta"
 	"github.com/sacloud/libsacloud/v2/sacloud/naked"
 )
 
+const (
+	switchAPIName     = "Switch"
+	switchAPIPathName = "switch"
+)
+
 var switchAPI = &schema.Resource{
-	Name:       "Switch",
-	PathName:   "switch",
+	Name:       switchAPIName,
+	PathName:   switchAPIPathName,
 	PathSuffix: schema.CloudAPISuffix,
-	OperationsDefineFunc: func(r *schema.Resource) []*schema.Operation {
-		return []*schema.Operation{
-			// find
-			r.DefineOperationFind(switchNakedType, findParameter, switchView),
+	Operations: schema.Operations{
+		// find
+		ops.Find(switchAPIName, switchNakedType, findParameter, switchView),
 
-			// create
-			r.DefineOperationCreate(switchNakedType, switchCreateParam, switchView),
+		// create
+		ops.Create(switchAPIName, switchNakedType, switchCreateParam, switchView),
 
-			// read
-			r.DefineOperationRead(switchNakedType, switchView),
+		// read
+		ops.Read(switchAPIName, switchNakedType, switchView),
 
-			// update
-			r.DefineOperationUpdate(switchNakedType, switchUpdateParam, switchView),
+		// update
+		ops.Update(switchAPIName, switchNakedType, switchUpdateParam, switchView),
 
-			// delete
-			r.DefineOperationDelete(),
+		// delete
+		ops.Delete(switchAPIName),
 
-			// connect from bridge
-			r.DefineSimpleOperation("ConnectToBridge", http.MethodPut, "to/bridge/{{.bridgeID}}",
-				&schema.Argument{
-					Name: "bridgeID",
-					Type: meta.TypeID,
-				},
-			),
+		// connect from bridge
+		ops.WithIDAction(switchAPIName, "ConnectToBridge", http.MethodPut, "to/bridge/{{.bridgeID}}",
+			&schema.Argument{
+				Name: "bridgeID",
+				Type: meta.TypeID,
+			},
+		),
 
-			// disconnect from bridge
-			r.DefineSimpleOperation("DisconnectFromBridge", http.MethodDelete, "to/bridge/"),
-		}
+		// disconnect from bridge
+		ops.WithIDAction(switchAPIName, "DisconnectFromBridge", http.MethodDelete, "to/bridge/"),
 	},
 }
 

@@ -107,12 +107,12 @@ import (
 
 {{ range .Operations }}
 // {{ .MethodName }} is fake implementation
-func (o *{{ .ResourceTypeName }}Op) {{ .MethodName }}(ctx context.Context{{ range .Arguments }}, {{ .ArgName }} {{ .TypeName }}{{ end }}) {{.ResultsStatement}} {
+func (o *{{ $.TypeName }}Op) {{ .MethodName }}(ctx context.Context{{ range .Arguments }}, {{ .ArgName }} {{ .TypeName }}{{ end }}) {{.ResultsStatement}} {
 {{ if eq .MethodName "Find" -}}
-	results, _ := find(o.key, {{if .ResourceIsGlobal}}sacloud.DefaultZone{{else}}zone{{end}}, conditions)
-	var values []*sacloud.{{.ResourceTypeName}}
+	results, _ := find(o.key, {{if $.IsGlobal}}sacloud.DefaultZone{{else}}zone{{end}}, conditions)
+	var values []*sacloud.{{$.TypeName}}
 	for _, res := range results {
-		dest := &sacloud.{{.ResourceTypeName}}{}
+		dest := &sacloud.{{$.TypeName}}{}
 		copySameNameField(res, dest)
 		values = append(values, dest)
 	}
@@ -120,37 +120,37 @@ func (o *{{ .ResourceTypeName }}Op) {{ .MethodName }}(ctx context.Context{{ rang
 		Total:    len(results),
 		Count:    len(results),
 		From:     0,
-		{{.ResourceTypeName}}: values,
+		{{$.TypeName}}: values,
 	}, nil
 {{ else if eq .MethodName "Create" -}}
-	result := &sacloud.{{.ResourceTypeName}}{}
+	result := &sacloud.{{$.TypeName}}{}
 	copySameNameField(param, result)
 	fill(result, fillID, fillCreatedAt)
 
 	// TODO core logic is not implemented
 
-	s.set{{.ResourceTypeName}}({{if .ResourceIsGlobal}}sacloud.DefaultZone{{else}}zone{{end}}, result)
+	s.set{{$.TypeName}}({{if $.IsGlobal}}sacloud.DefaultZone{{else}}zone{{end}}, result)
 	return &sacloud.{{.ResultTypeName}}{
 		IsOk: true,
-		{{.ResourceTypeName}}: result,
+		{{$.TypeName}}: result,
 	}, nil
 {{ else if eq .MethodName "Read" -}}
-	value := s.get{{.ResourceTypeName}}ByID({{if .ResourceIsGlobal}}sacloud.DefaultZone{{else}}zone{{end}}, id)
+	value := s.get{{$.TypeName}}ByID({{if $.IsGlobal}}sacloud.DefaultZone{{else}}zone{{end}}, id)
 	if value == nil {
 		return nil, newErrorNotFound(o.key, id)
 	}
-	dest := &sacloud.{{.ResourceTypeName}}{}
+	dest := &sacloud.{{$.TypeName}}{}
 	copySameNameField(value, dest)
 	return &sacloud.{{.ResultTypeName}}{
 		IsOk: true,
-		{{.ResourceTypeName}}: dest,
+		{{$.TypeName}}: dest,
 	}, nil
 {{ else if eq .MethodName "Update" -}}
-	readResult, err := o.Read(ctx, {{if .ResourceIsGlobal}}sacloud.DefaultZone{{else}}zone{{end}}, id)
+	readResult, err := o.Read(ctx, {{if $.IsGlobal}}sacloud.DefaultZone{{else}}zone{{end}}, id)
 	if err != nil {
 		return nil, err
 	}
-	value := readResult.{{.ResourceTypeName}}
+	value := readResult.{{$.TypeName}}
 	copySameNameField(param, value)
 	fill(value, fillModifiedAt)
 
@@ -158,17 +158,17 @@ func (o *{{ .ResourceTypeName }}Op) {{ .MethodName }}(ctx context.Context{{ rang
 
 	return &sacloud.{{.ResultTypeName}}{
 		IsOk: true,
-		{{.ResourceTypeName}}: dest,
+		{{$.TypeName}}: dest,
 	}, nil
 {{ else if eq .MethodName "Delete" -}}
-	_, err := o.Read(ctx, {{if .ResourceIsGlobal}}sacloud.DefaultZone{{else}}zone{{end}}, id)
+	_, err := o.Read(ctx, {{if $.IsGlobal}}sacloud.DefaultZone{{else}}zone{{end}}, id)
 	if err != nil {
 		return err
 	}
 
 	// TODO core logic is not implemented
 
-	s.delete(o.key, {{if .ResourceIsGlobal}}sacloud.DefaultZone{{else}}zone{{end}}, id)
+	s.delete(o.key, {{if $.IsGlobal}}sacloud.DefaultZone{{else}}zone{{end}}, id)
 	return nil
 {{ else -}}
 	// TODO not implemented
