@@ -1,6 +1,8 @@
 package define
 
 import (
+	"net/http"
+
 	"github.com/sacloud/libsacloud/v2/internal/schema"
 	"github.com/sacloud/libsacloud/v2/internal/schema/meta"
 	"github.com/sacloud/libsacloud/v2/sacloud/naked"
@@ -16,11 +18,44 @@ var cdromAPI = &schema.Resource{
 			r.DefineOperationFind(cdromNakedType, findParameter, cdromView),
 
 			// create
-			r.DefineOperationCreate(cdromNakedType, cdromCreateParam, cdromView).
-				ResultFromEnvelope(models.ftpServer(), &schema.EnvelopePayloadDesc{
-					PayloadName: models.ftpServer().Name,
-					PayloadType: meta.Static(naked.OpeningFTPServer{}),
-				}, models.ftpServer().Name),
+			{
+				Resource:   r,
+				Name:       "Create",
+				PathFormat: schema.DefaultPathFormat,
+				Method:     http.MethodPost,
+				RequestEnvelope: schema.RequestEnvelope(&schema.EnvelopePayloadDesc{
+					Name: r.FieldName(schema.PayloadForms.Singular),
+					Type: cdromNakedType,
+				}),
+				ResponseEnvelope: schema.ResponseEnvelope(
+					&schema.EnvelopePayloadDesc{
+						Name: r.FieldName(schema.PayloadForms.Singular),
+						Type: cdromNakedType,
+					},
+					&schema.EnvelopePayloadDesc{
+						Name: models.ftpServer().Name,
+						Type: meta.Static(naked.OpeningFTPServer{}),
+					},
+				),
+				Arguments: schema.Arguments{
+					schema.ArgumentZone,
+					schema.MappableArgument("param", cdromCreateParam, r.FieldName(schema.PayloadForms.Singular)),
+				},
+				Results: schema.Results{
+					{
+						SourceField: r.FieldName(schema.PayloadForms.Singular),
+						DestField:   cdromView.Name,
+						IsPlural:    false,
+						Model:       cdromView,
+					},
+					{
+						SourceField: models.ftpServer().Name,
+						DestField:   models.ftpServer().Name,
+						IsPlural:    false,
+						Model:       models.ftpServer(),
+					},
+				},
+			},
 
 			// read
 			r.DefineOperationRead(cdromNakedType, cdromView),
@@ -59,6 +94,7 @@ var (
 	}
 
 	cdromCreateParam = &schema.Model{
+		Name: "CDROMCreateRequest",
 		Fields: []*schema.FieldDesc{
 			fields.SizeMB(),
 			fields.Name(),
@@ -66,6 +102,7 @@ var (
 			fields.Tags(),
 			fields.IconID(),
 		},
+		NakedType: cdromNakedType,
 	}
 
 	cdromUpdateParam = &schema.Model{

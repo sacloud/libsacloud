@@ -63,7 +63,7 @@ func TestResource_ImportStatements(t *testing.T) {
 			resource: &Resource{
 				operations: []*Operation{
 					{
-						arguments: []*Argument{
+						Arguments: []*Argument{
 							{
 								Type: meta.Static(sacloud.Client{}),
 							},
@@ -99,7 +99,7 @@ func TestResources_ImportStatements(t *testing.T) {
 				{
 					operations: []*Operation{
 						{
-							arguments: []*Argument{
+							Arguments: []*Argument{
 								{
 									Type: meta.Static(sacloud.Client{}),
 								},
@@ -110,12 +110,12 @@ func TestResources_ImportStatements(t *testing.T) {
 				{
 					operations: []*Operation{
 						{
-							arguments: []*Argument{
+							Arguments: []*Argument{
 								{
 									Type: meta.Static(sacloud.Client{}),
 								},
 							},
-							results: Results([]*Result{
+							Results: Results([]*Result{
 								{
 									Model: &Model{
 										Name: "Note",

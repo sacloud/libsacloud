@@ -122,14 +122,6 @@ func (r *Resource) AddOperations(ops ...*Operation) {
 	}
 }
 
-// DefineOperation リソースに対する操作の定義
-func (r *Resource) DefineOperation(name string) *Operation {
-	return &Operation{
-		resource: r,
-		name:     name,
-	}
-}
-
 func (r *Resource) defineOperationFind(nakedType meta.Type, findParam, result *Model, payloadName string) *Operation {
 	if findParam.Name == "" {
 		findParam.Name = "FindCondition"
@@ -143,15 +135,33 @@ func (r *Resource) defineOperationFind(nakedType meta.Type, findParam, result *M
 		result.NakedType = nakedType
 	}
 
-	return r.DefineOperation("Find").
-		Method(http.MethodGet).
-		PathFormat(DefaultPathFormat).
-		Argument(ArgumentZone).
-		PassthroughModelArgumentWithEnvelope("conditions", findParam).
-		ResultPluralFromEnvelope(result, &EnvelopePayloadDesc{
-			PayloadType: nakedType,
-			PayloadName: payloadName,
-		}, "")
+	if payloadName == "" {
+		payloadName = r.FieldName(PayloadForms.Plural)
+	}
+
+	return &Operation{
+		Resource:        r,
+		Name:            "Find",
+		PathFormat:      DefaultPathFormat,
+		Method:          http.MethodGet,
+		RequestEnvelope: RequestEnvelopeFromModel(findParam),
+		Arguments: Arguments{
+			ArgumentZone,
+			PassthroughModelArgument("conditions", findParam),
+		},
+		ResponseEnvelope: ResponseEnvelopePlural(&EnvelopePayloadDesc{
+			Type: nakedType,
+			Name: payloadName,
+		}),
+		Results: Results{
+			{
+				SourceField: payloadName,
+				DestField:   r.FieldName(PayloadForms.Plural),
+				IsPlural:    true,
+				Model:       result,
+			},
+		},
+	}
 }
 
 // DefineOperationFind Find操作を定義
@@ -184,19 +194,36 @@ func (r *Resource) defineOperationCreate(nakedType meta.Type, createParam, resul
 		result.NakedType = nakedType
 	}
 
-	return r.DefineOperation("Create").
-		Method(http.MethodPost).
-		PathFormat(DefaultPathFormat).
-		RequestEnvelope(&EnvelopePayloadDesc{
-			PayloadType: nakedType,
-			PayloadName: payloadName,
-		}).
-		Argument(ArgumentZone).
-		MappableArgument("param", createParam).
-		ResultFromEnvelope(result, &EnvelopePayloadDesc{
-			PayloadType: nakedType,
-			PayloadName: payloadName,
-		}, "")
+	if payloadName == "" {
+		payloadName = r.FieldName(PayloadForms.Singular)
+	}
+
+	return &Operation{
+		Resource:   r,
+		Name:       "Create",
+		PathFormat: DefaultPathFormat,
+		Method:     http.MethodPost,
+		RequestEnvelope: RequestEnvelope(&EnvelopePayloadDesc{
+			Type: nakedType,
+			Name: payloadName,
+		}),
+		Arguments: Arguments{
+			ArgumentZone,
+			MappableArgument("param", createParam, payloadName),
+		},
+		ResponseEnvelope: ResponseEnvelope(&EnvelopePayloadDesc{
+			Type: nakedType,
+			Name: payloadName,
+		}),
+		Results: Results{
+			{
+				SourceField: payloadName,
+				DestField:   result.Name,
+				IsPlural:    false,
+				Model:       result,
+			},
+		},
+	}
 }
 
 // DefineOperationCreate Create操作を定義
@@ -223,15 +250,32 @@ func (r *Resource) defineOperationRead(nakedType meta.Type, result *Model, paylo
 		result.NakedType = nakedType
 	}
 
-	return r.DefineOperation("Read").
-		Method(http.MethodGet).
-		PathFormat(DefaultPathFormatWithID).
-		Argument(ArgumentZone).
-		Argument(ArgumentID).
-		ResultFromEnvelope(result, &EnvelopePayloadDesc{
-			PayloadType: nakedType,
-			PayloadName: payloadName,
-		}, "")
+	if payloadName == "" {
+		payloadName = r.FieldName(PayloadForms.Singular)
+	}
+
+	return &Operation{
+		Resource:   r,
+		Name:       "Read",
+		PathFormat: DefaultPathFormatWithID,
+		Method:     http.MethodGet,
+		Arguments: Arguments{
+			ArgumentZone,
+			ArgumentID,
+		},
+		ResponseEnvelope: ResponseEnvelope(&EnvelopePayloadDesc{
+			Type: nakedType,
+			Name: payloadName,
+		}),
+		Results: Results{
+			{
+				SourceField: payloadName,
+				DestField:   result.Name,
+				IsPlural:    false,
+				Model:       result,
+			},
+		},
+	}
 }
 
 // DefineOperationRead Read操作を定義
@@ -256,28 +300,43 @@ func (r *Resource) defineOperationUpdate(nakedType meta.Type, updateParam, resul
 	if result.Name == "" {
 		result.Name = r.Name
 	}
-
 	if updateParam.NakedType == nil {
 		updateParam.NakedType = nakedType
 	}
 	if result.NakedType == nil {
 		result.NakedType = nakedType
 	}
+	if payloadName == "" {
+		payloadName = r.FieldName(PayloadForms.Singular)
+	}
 
-	return r.DefineOperation("Update").
-		Method(http.MethodPut).
-		PathFormat(DefaultPathFormatWithID).
-		RequestEnvelope(&EnvelopePayloadDesc{
-			PayloadType: nakedType,
-			PayloadName: payloadName,
-		}).
-		Argument(ArgumentZone).
-		Argument(ArgumentID).
-		MappableArgument("param", updateParam).
-		ResultFromEnvelope(result, &EnvelopePayloadDesc{
-			PayloadType: nakedType,
-			PayloadName: payloadName,
-		}, "")
+	return &Operation{
+		Resource:   r,
+		Name:       "Update",
+		PathFormat: DefaultPathFormatWithID,
+		Method:     http.MethodPut,
+		RequestEnvelope: RequestEnvelope(&EnvelopePayloadDesc{
+			Type: nakedType,
+			Name: payloadName,
+		}),
+		Arguments: Arguments{
+			ArgumentZone,
+			ArgumentID,
+			MappableArgument("param", updateParam, payloadName),
+		},
+		ResponseEnvelope: ResponseEnvelope(&EnvelopePayloadDesc{
+			Type: nakedType,
+			Name: payloadName,
+		}),
+		Results: Results{
+			{
+				SourceField: payloadName,
+				DestField:   result.Name,
+				IsPlural:    false,
+				Model:       result,
+			},
+		},
+	}
 }
 
 // DefineOperationUpdate Update操作を定義
@@ -297,11 +356,16 @@ func (r *Resource) DefineOperationCommonServiceItemUpdate(nakedType meta.Type, u
 
 // DefineOperationDelete Delete操作を定義
 func (r *Resource) DefineOperationDelete() *Operation {
-	return r.DefineOperation("Delete").
-		Method(http.MethodDelete).
-		PathFormat(DefaultPathFormatWithID).
-		Argument(ArgumentZone).
-		Argument(ArgumentID)
+	return &Operation{
+		Resource:   r,
+		Name:       "Delete",
+		PathFormat: DefaultPathFormatWithID,
+		Method:     http.MethodDelete,
+		Arguments: Arguments{
+			ArgumentZone,
+			ArgumentID,
+		},
+	}
 }
 
 // DefineOperationCRUD リソースに対する基本的なCRUDを定義
@@ -317,47 +381,69 @@ func (r *Resource) DefineOperationCRUD(nakedType meta.Type, findParam, createPar
 
 // DefineOperationConfig Config操作を定義
 func (r *Resource) DefineOperationConfig() *Operation {
-	return r.DefineOperation("Config").
-		Method(http.MethodPut).
-		PathFormat(IDAndSuffixPathFormat("config")).
-		Argument(ArgumentZone).
-		Argument(ArgumentID)
+	return &Operation{
+		Resource:   r,
+		Name:       "Config",
+		PathFormat: IDAndSuffixPathFormat("config"),
+		Method:     http.MethodPut,
+		Arguments: Arguments{
+			ArgumentZone,
+			ArgumentID,
+		},
+	}
 }
 
 // DefineOperationBoot リソースに対するBoot操作を定義
 func (r *Resource) DefineOperationBoot() *Operation {
-	return r.DefineOperation("Boot").
-		Method(http.MethodPut).
-		PathFormat(IDAndSuffixPathFormat("power")).
-		Argument(ArgumentZone).
-		Argument(ArgumentID)
+	return &Operation{
+		Resource:   r,
+		Name:       "Boot",
+		PathFormat: IDAndSuffixPathFormat("power"),
+		Method:     http.MethodPut,
+		Arguments: Arguments{
+			ArgumentZone,
+			ArgumentID,
+		},
+	}
 }
 
 // DefineOperationShutdown リソースに対するシャットダウン操作を定義
 func (r *Resource) DefineOperationShutdown() *Operation {
-	return r.DefineOperation("Shutdown").
-		Method(http.MethodDelete).
-		PathFormat(IDAndSuffixPathFormat("power")).
-		Argument(ArgumentZone).
-		Argument(ArgumentID).
-		PassthroughModelArgumentWithEnvelope("shutdownOption", &Model{
-			Name: "ShutdownOption",
-			Fields: []*FieldDesc{
-				{
-					Name: "Force",
-					Type: meta.TypeFlag,
-				},
+	param := &Model{
+		Name: "ShutdownOption",
+		Fields: []*FieldDesc{
+			{
+				Name: "Force",
+				Type: meta.TypeFlag,
 			},
-		})
+		},
+	}
+	return &Operation{
+		Resource:        r,
+		Name:            "Shutdown",
+		PathFormat:      IDAndSuffixPathFormat("power"),
+		Method:          http.MethodDelete,
+		RequestEnvelope: RequestEnvelopeFromModel(param),
+		Arguments: Arguments{
+			ArgumentZone,
+			ArgumentID,
+			PassthroughModelArgument("shutdownOption", param),
+		},
+	}
 }
 
 // DefineOperationReset リソースに対するリセット操作を定義
 func (r *Resource) DefineOperationReset() *Operation {
-	return r.DefineOperation("Reset").
-		Method(http.MethodPut).
-		PathFormat(IDAndSuffixPathFormat("reset")).
-		Argument(ArgumentZone).
-		Argument(ArgumentID)
+	return &Operation{
+		Resource:   r,
+		Name:       "Reset",
+		PathFormat: IDAndSuffixPathFormat("reset"),
+		Method:     http.MethodPut,
+		Arguments: Arguments{
+			ArgumentZone,
+			ArgumentID,
+		},
+	}
 }
 
 // DefineOperationPowerManagement リソースに対する電源管理操作を定義
@@ -371,82 +457,140 @@ func (r *Resource) DefineOperationPowerManagement() []*Operation {
 
 // DefineOperationStatus ステータス取得操作を定義
 func (r *Resource) DefineOperationStatus(nakedType meta.Type, result *Model) *Operation {
-	return r.DefineOperation("Status").
-		Method(http.MethodGet).
-		PathFormat(IDAndSuffixPathFormat("status")).
-		Argument(ArgumentZone).
-		Argument(ArgumentID).
-		ResultPluralFromEnvelope(result, &EnvelopePayloadDesc{
-			PayloadType: meta.Static(naked.LoadBalancerStatus{}),
-			PayloadName: r.FieldName(PayloadForms.Singular),
-		}, "Status")
+	payloadName := r.FieldName(PayloadForms.Singular)
+	return &Operation{
+		Resource: r,
+		Name:     "Status",
+		Arguments: Arguments{
+			ArgumentZone,
+			ArgumentID,
+		},
+		PathFormat: IDAndSuffixPathFormat("status"),
+		Method:     http.MethodGet,
+		ResponseEnvelope: ResponseEnvelopePlural(&EnvelopePayloadDesc{
+			Type: meta.Static(naked.LoadBalancerStatus{}),
+			Name: payloadName,
+		}),
+		Results: Results{
+			{
+				SourceField: payloadName,
+				DestField:   "Status",
+				IsPlural:    true,
+				Model:       result,
+			},
+		},
+	}
 }
 
 // DefineOperationOpenFTP FTPオープン操作を定義
 func (r *Resource) DefineOperationOpenFTP(openParam, result *Model) *Operation {
-	o := r.DefineOperation("OpenFTP").
-		Method(http.MethodPut).
-		PathFormat(IDAndSuffixPathFormat("ftp")).
-		Argument(ArgumentZone).
-		Argument(ArgumentID).
-		ResultFromEnvelope(result, &EnvelopePayloadDesc{
-			PayloadName: result.Name,
-			PayloadType: meta.Static(naked.OpeningFTPServer{}),
-		}, result.Name)
-	if openParam != nil {
-		o.PassthroughModelArgumentWithEnvelope("openOption", openParam)
+	return &Operation{
+		Resource:        r,
+		Name:            "OpenFTP",
+		PathFormat:      IDAndSuffixPathFormat("ftp"),
+		Method:          http.MethodPut,
+		RequestEnvelope: RequestEnvelopeFromModel(openParam),
+		Arguments: Arguments{
+			ArgumentZone,
+			ArgumentID,
+			PassthroughModelArgument("openOption", openParam),
+		},
+		ResponseEnvelope: ResponseEnvelope(&EnvelopePayloadDesc{
+			Name: result.Name,
+			Type: meta.Static(naked.OpeningFTPServer{}),
+		}),
+		Results: Results{
+			{
+				SourceField: result.Name,
+				DestField:   result.Name,
+				IsPlural:    false,
+				Model:       result,
+			},
+		},
 	}
-	return o
 }
 
 // DefineOperationCloseFTP FTPクローズ操作を定義
 func (r *Resource) DefineOperationCloseFTP() *Operation {
-	return r.DefineOperation("CloseFTP").
-		Method(http.MethodDelete).
-		PathFormat(IDAndSuffixPathFormat("ftp")).
-		Argument(ArgumentZone).
-		Argument(ArgumentID)
+	return &Operation{
+		Resource: r,
+		Name:     "CloseFTP",
+		Arguments: Arguments{
+			ArgumentZone,
+			ArgumentID,
+		},
+		PathFormat: IDAndSuffixPathFormat("ftp"),
+		Method:     http.MethodDelete,
+	}
 }
 
 // DefineSimpleOperation ID+αのみを引数にとるシンプルなオペレーションを定義
 func (r *Resource) DefineSimpleOperation(opName, method, pathSuffix string, arguments ...*Argument) *Operation {
-	o := r.DefineOperation(opName).
-		Method(method).
-		PathFormat(IDAndSuffixPathFormat(pathSuffix)).
-		Argument(ArgumentZone).
-		Argument(ArgumentID)
-	if len(arguments) > 0 {
-		o.Arguments(arguments)
+	args := Arguments{ArgumentZone, ArgumentID}
+	args = append(args, arguments...)
+	return &Operation{
+		Resource:   r,
+		Name:       opName,
+		PathFormat: IDAndSuffixPathFormat(pathSuffix),
+		Method:     method,
+		Arguments:  args,
 	}
-	return o
 }
 
 // DefineOperationMonitor アクティビティモニタ取得操作を定義
 func (r *Resource) DefineOperationMonitor(monitorParam, result *Model) *Operation {
-	return r.DefineOperation("Monitor").
-		Method(http.MethodGet).
-		PathFormat(IDAndSuffixPathFormat("monitor")).
-		Argument(ArgumentZone).
-		Argument(ArgumentID).
-		PassthroughModelArgumentWithEnvelope("condition", monitorParam).
-		ResultFromEnvelope(result, &EnvelopePayloadDesc{
-			PayloadType: meta.Static(naked.MonitorValues{}),
-			PayloadName: "Data",
-		}, result.Name)
+	return &Operation{
+		Resource:        r,
+		Name:            "Monitor",
+		PathFormat:      IDAndSuffixPathFormat("monitor"),
+		Method:          http.MethodGet,
+		RequestEnvelope: RequestEnvelopeFromModel(monitorParam),
+		Arguments: Arguments{
+			ArgumentZone,
+			ArgumentID,
+			PassthroughModelArgument("condition", monitorParam),
+		},
+		ResponseEnvelope: ResponseEnvelope(&EnvelopePayloadDesc{
+			Type: meta.Static(naked.MonitorValues{}),
+			Name: "Data",
+		}),
+		Results: Results{
+			{
+				SourceField: "Data",
+				DestField:   result.Name,
+				IsPlural:    false,
+				Model:       result,
+			},
+		},
+	}
 }
 
 // DefineOperationMonitorChild アクティビティモニタ取得操作を定義
 func (r *Resource) DefineOperationMonitorChild(funcNameSuffix, childResourceName string, monitorParam, result *Model) *Operation {
-	return r.DefineOperation("Monitor"+funcNameSuffix).
-		Method(http.MethodGet).
-		PathFormat(IDAndSuffixPathFormat(childResourceName+"/monitor")).
-		Argument(ArgumentZone).
-		Argument(ArgumentID).
-		PassthroughModelArgumentWithEnvelope("condition", monitorParam).
-		ResultFromEnvelope(result, &EnvelopePayloadDesc{
-			PayloadType: meta.Static(naked.MonitorValues{}),
-			PayloadName: "Data",
-		}, result.Name)
+	return &Operation{
+		Resource:        r,
+		Name:            "Monitor" + funcNameSuffix,
+		PathFormat:      IDAndSuffixPathFormat(childResourceName + "/monitor"),
+		Method:          http.MethodGet,
+		RequestEnvelope: RequestEnvelopeFromModel(monitorParam),
+		Arguments: Arguments{
+			ArgumentZone,
+			ArgumentID,
+			PassthroughModelArgument("condition", monitorParam),
+		},
+		ResponseEnvelope: ResponseEnvelope(&EnvelopePayloadDesc{
+			Type: meta.Static(naked.MonitorValues{}),
+			Name: "Data",
+		}),
+		Results: Results{
+			{
+				SourceField: "Data",
+				DestField:   result.Name,
+				IsPlural:    false,
+				Model:       result,
+			},
+		},
+	}
 }
 
 // DefineOperationMonitorChildBy アプライアンスなどでの内部リソースインデックスを持つアクティビティモニタ取得操作を定義
@@ -454,20 +598,35 @@ func (r *Resource) DefineOperationMonitorChildBy(funcNameSuffix, childResourceNa
 
 	pathSuffix := childResourceName + "/{{if eq .index 0}}{{.index}}{{end}}/monitor"
 
-	return r.DefineOperation("Monitor"+funcNameSuffix).
-		Method(http.MethodGet).
-		PathFormat(IDAndSuffixPathFormat(pathSuffix)).
-		Argument(ArgumentZone).
-		Argument(ArgumentID).
-		Argument(&Argument{
-			Name: "index",
-			Type: meta.TypeInt,
-		}).
-		PassthroughModelArgumentWithEnvelope("condition", monitorParam).
-		ResultFromEnvelope(result, &EnvelopePayloadDesc{
-			PayloadType: meta.Static(naked.MonitorValues{}),
-			PayloadName: "Data",
-		}, result.Name)
+	o := &Operation{
+		Resource:        r,
+		Name:            "Monitor" + funcNameSuffix,
+		PathFormat:      IDAndSuffixPathFormat(pathSuffix),
+		Method:          http.MethodGet,
+		RequestEnvelope: RequestEnvelopeFromModel(monitorParam),
+		Arguments: Arguments{
+			ArgumentZone,
+			ArgumentID,
+			{
+				Name: "index",
+				Type: meta.TypeInt,
+			},
+			PassthroughModelArgument("condition", monitorParam),
+		},
+		ResponseEnvelope: ResponseEnvelope(&EnvelopePayloadDesc{
+			Type: meta.Static(naked.MonitorValues{}),
+			Name: "Data",
+		}),
+		Results: Results{
+			{
+				SourceField: "Data",
+				DestField:   result.Name,
+				IsPlural:    false,
+				Model:       result,
+			},
+		},
+	}
+	return o
 }
 
 // FileSafeName スネークケースにしたResourceの名前、コード生成時の保存先ファイル名に利用される

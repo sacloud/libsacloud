@@ -31,48 +31,91 @@ var internetAPI = &schema.Resource{
 			r.DefineOperationDelete(),
 
 			// UpdateBandWidth
-			r.DefineOperation("UpdateBandWidth").
-				Method(http.MethodPut).
-				PathFormat(schema.IDAndSuffixPathFormat("bandwidth")).
-				RequestEnvelope(&schema.EnvelopePayloadDesc{
-					PayloadType: internetNakedType,
-					PayloadName: "Internet",
-				}).
-				Argument(schema.ArgumentZone).
-				Argument(schema.ArgumentID).
-				MappableArgument("param", internetUpdateBandWidthParam).
-				ResultFromEnvelope(internetView, &schema.EnvelopePayloadDesc{
-					PayloadType: internetNakedType,
-					PayloadName: "Internet",
-				}, ""),
+			{
+				Resource:   r,
+				Name:       "UpdateBandWidth",
+				PathFormat: schema.IDAndSuffixPathFormat("bandwidth"),
+				Method:     http.MethodPut,
+				RequestEnvelope: schema.RequestEnvelope(
+					&schema.EnvelopePayloadDesc{
+						Type: internetNakedType,
+						Name: "Internet",
+					},
+				),
+				Arguments: schema.Arguments{
+					schema.ArgumentZone,
+					schema.ArgumentID,
+					schema.MappableArgument("param", internetUpdateBandWidthParam, "Internet"),
+				},
+				ResponseEnvelope: schema.ResponseEnvelope(&schema.EnvelopePayloadDesc{
+					Type: internetNakedType,
+					Name: "Internet",
+				}),
+				Results: schema.Results{
+					{
+						SourceField: "Internet",
+						DestField:   "Internet",
+						IsPlural:    false,
+						Model:       internetView,
+					},
+				},
+			},
 
 			// AddSubnet
-			r.DefineOperation("AddSubnet").
-				Method(http.MethodPost).
-				PathFormat(schema.IDAndSuffixPathFormat("subnet")).
-				Argument(schema.ArgumentZone).
-				Argument(schema.ArgumentID).
-				PassthroughModelArgumentWithEnvelope("param", internetAddSubnetParam).
-				ResultFromEnvelope(models.internetSubnetOperationResult(), &schema.EnvelopePayloadDesc{
-					PayloadType: meta.Static(naked.Subnet{}),
-					PayloadName: "Subnet",
-				}, "Subnet"),
+			{
+				Resource:        r,
+				Name:            "AddSubnet",
+				PathFormat:      schema.IDAndSuffixPathFormat("subnet"),
+				Method:          http.MethodPost,
+				RequestEnvelope: schema.RequestEnvelopeFromModel(internetAddSubnetParam),
+				Arguments: schema.Arguments{
+					schema.ArgumentZone,
+					schema.ArgumentID,
+					schema.PassthroughModelArgument("param", internetAddSubnetParam),
+				},
+				ResponseEnvelope: schema.ResponseEnvelope(&schema.EnvelopePayloadDesc{
+					Type: meta.Static(naked.Subnet{}),
+					Name: "Subnet",
+				}),
+				Results: schema.Results{
+					{
+						SourceField: "Subnet",
+						DestField:   "Subnet",
+						IsPlural:    false,
+						Model:       models.internetSubnetOperationResult(),
+					},
+				},
+			},
 
 			// UpdateSubnet
-			r.DefineOperation("UpdateSubnet").
-				Method(http.MethodPut).
-				PathFormat(schema.IDAndSuffixPathFormat("subnet/{{.subnetID}}")).
-				Argument(schema.ArgumentZone).
-				Argument(schema.ArgumentID).
-				Argument(&schema.Argument{
-					Name: "subnetID",
-					Type: meta.TypeID,
-				}).
-				PassthroughModelArgumentWithEnvelope("param", internetUpdateSubnetParam).
-				ResultFromEnvelope(models.internetSubnetOperationResult(), &schema.EnvelopePayloadDesc{
-					PayloadType: meta.Static(naked.Subnet{}),
-					PayloadName: "Subnet",
-				}, "Subnet"),
+			{
+				Resource:        r,
+				Name:            "UpdateSubnet",
+				PathFormat:      schema.IDAndSuffixPathFormat("subnet/{{.subnetID}}"),
+				Method:          http.MethodPut,
+				RequestEnvelope: schema.RequestEnvelopeFromModel(internetUpdateSubnetParam),
+				Arguments: schema.Arguments{
+					schema.ArgumentZone,
+					schema.ArgumentID,
+					{
+						Name: "subnetID",
+						Type: meta.TypeID,
+					},
+					schema.PassthroughModelArgument("param", internetUpdateSubnetParam),
+				},
+				ResponseEnvelope: schema.ResponseEnvelope(&schema.EnvelopePayloadDesc{
+					Type: meta.Static(naked.Subnet{}),
+					Name: "Subnet",
+				}),
+				Results: schema.Results{
+					{
+						SourceField: "Subnet",
+						DestField:   "Subnet",
+						IsPlural:    false,
+						Model:       models.internetSubnetOperationResult(),
+					},
+				},
+			},
 
 			// DeleteSubnet
 			r.DefineSimpleOperation("DeleteSubnet", http.MethodDelete, "subnet/{{.subnetID}}",

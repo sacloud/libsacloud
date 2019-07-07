@@ -70,12 +70,12 @@ func New{{ $typeName}}Op(caller APICaller) {{ $typeName}}API {
 
 {{ range .Operations }}{{$returnErrStatement := .ReturnErrorStatement}}{{ $operationName := .MethodName }}
 // {{ .MethodName }} is API call
-func (o *{{ $typeName }}Op) {{ .MethodName }}(ctx context.Context{{ range .AllArguments }}, {{ .ArgName }} {{ .TypeName }}{{ end }}) {{.ResultsStatement}} {
+func (o *{{ $typeName }}Op) {{ .MethodName }}(ctx context.Context{{ range .Arguments }}, {{ .ArgName }} {{ .TypeName }}{{ end }}) {{.ResultsStatement}} {
 	url, err := buildURL("{{.GetPathFormat}}", map[string]interface{}{
 		"rootURL": SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName": o.PathName,
-		{{- range .AllArguments }}
+		{{- range .Arguments }}
 		"{{.Name}}": {{.Name}},
 		{{- end }}
 	})
@@ -85,17 +85,17 @@ func (o *{{ $typeName }}Op) {{ .MethodName }}(ctx context.Context{{ range .AllAr
 
 	var body interface{}
 {{ if .HasRequestEnvelope }}
-	{{- range .AllArguments }}
+	{{- range .Arguments }}
 	if {{.ArgName}} == {{.ZeroValueOnSource}} {
 		{{.ArgName}} = {{.ZeroInitializer}}	
 	}
 	{{- end }}
 	args := &struct {
-		{{- range .AllArguments }}
+		{{- range .Arguments }}
 		Arg{{ .ArgName }} {{ .TypeName }} {{.MapConvTagSrc}}
 		{{- end }}
 	}{
-		{{- range .AllArguments }}
+		{{- range .Arguments }}
 		Arg{{ .ArgName }}:{{ .ArgName}},
 		{{- end }}
 	}
@@ -108,9 +108,9 @@ func (o *{{ $typeName }}Op) {{ .MethodName }}(ctx context.Context{{ range .AllAr
 {{ end }}
 
 	{{ if .HasResponseEnvelope -}}
-	data, err := o.Client.Do(ctx, "{{.GetMethod}}", url, body)
+	data, err := o.Client.Do(ctx, "{{.Method}}", url, body)
 	{{ else -}}
-	_, err = o.Client.Do(ctx, "{{.GetMethod}}", url, body)
+	_, err = o.Client.Do(ctx, "{{.Method}}", url, body)
 	{{ end -}}
 	if err != nil {
 		return {{ $returnErrStatement }}

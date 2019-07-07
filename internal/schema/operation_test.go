@@ -25,44 +25,60 @@ func TestOperation(t *testing.T) {
 		expect    *expectOperationValues
 	}{
 		{
-			operation: resource.DefineOperation("Create").
-				Method(http.MethodPost).
-				PathFormat(DefaultPathFormat).
-				RequestEnvelope(&EnvelopePayloadDesc{PayloadType: meta.Static(struct{}{})}).
-				Argument(ArgumentZone).
-				Argument(&Argument{
-					Name:       "arg1",
-					MapConvTag: "Destination",
-					Type: &Model{
-						Name: "Model",
-						Fields: []*FieldDesc{
-							{
-								Name: "Field1",
-								Type: meta.Static(""),
-							},
-							{
-								Name: "Field2",
-								Type: meta.Static(""),
+			operation: &Operation{
+				Resource:   resource,
+				Name:       "Create",
+				PathFormat: DefaultPathFormat,
+				Method:     http.MethodPost,
+				RequestEnvelope: RequestEnvelope(&EnvelopePayloadDesc{
+					Type: meta.Static(struct{}{}),
+					Name: resource.FieldName(PayloadForms.Singular),
+				}),
+				Arguments: []*Argument{
+					ArgumentZone,
+					{
+						Name:       "arg1",
+						MapConvTag: "Destination",
+						Type: &Model{
+							Name: "Model",
+							Fields: []*FieldDesc{
+								{
+									Name: "Field1",
+									Type: meta.Static(""),
+								},
+								{
+									Name: "Field2",
+									Type: meta.Static(""),
+								},
 							},
 						},
 					},
-				}).
-				ResultFromEnvelope(&Model{
-					Name: "ResultFromEnvelope",
-					Fields: []*FieldDesc{
-						{
-							Name: "Field3",
-							Type: meta.Static(""),
-						},
-						{
-							Name: "Field4",
-							Type: meta.Static(""),
+				},
+				ResponseEnvelope: ResponseEnvelope(&EnvelopePayloadDesc{
+					Name: "Test",
+					Type: meta.Static(struct{}{}),
+				}),
+				Results: Results{
+					{
+						SourceField: "Test",
+						DestField:   "Test",
+						IsPlural:    false,
+						Model: &Model{
+							Name: "ResponseEnvelope",
+							Fields: []*FieldDesc{
+								{
+									Name: "Field3",
+									Type: meta.Static(""),
+								},
+								{
+									Name: "Field4",
+									Type: meta.Static(""),
+								},
+							},
 						},
 					},
-				}, &EnvelopePayloadDesc{
-					PayloadName: "Test",
-					PayloadType: meta.Static(struct{}{}),
-				}, "Test"),
+				},
+			},
 			expect: &expectOperationValues{
 				methodName:                 "Create",
 				requestEnvelopeStructName:  "testCreateRequestEnvelope",
@@ -78,7 +94,7 @@ func TestOperation(t *testing.T) {
 		require.Equal(t, tc.expect.methodName, tc.operation.MethodName())
 		require.Equal(t, tc.expect.requestEnvelopeStructName, tc.operation.RequestEnvelopeStructName())
 		require.Equal(t, tc.expect.responseEnvelopeStructName, tc.operation.ResponseEnvelopeStructName())
-		require.Equal(t, tc.expect.requestPayloadName, tc.operation.RequestPayloads()[0].PayloadName)
-		require.Equal(t, tc.expect.responsePayloadName, tc.operation.ResponsePayloads()[0].PayloadName)
+		require.Equal(t, tc.expect.requestPayloadName, tc.operation.RequestPayloads()[0].Name)
+		require.Equal(t, tc.expect.responsePayloadName, tc.operation.ResponsePayloads()[0].Name)
 	}
 }

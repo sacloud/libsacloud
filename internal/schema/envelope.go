@@ -22,32 +22,16 @@ func (f *EnvelopeType) IsPlural() bool {
 	return f.Form.IsPlural()
 }
 
-// PayloadName ペイロード名を取得
-func (f *EnvelopeType) PayloadName() string {
-	if len(f.Payloads) > 0 {
-		return f.Payloads[0].PayloadName
-	}
-	return ""
-}
-
-// PayloadType ペイロードの型情報を取得
-func (f *EnvelopeType) PayloadType() meta.Type {
-	if len(f.Payloads) > 0 {
-		return f.Payloads[0].PayloadType
-	}
-	return nil
-}
-
 // EnvelopePayloadDesc エンベロープに含まれるペイロードの情報
 type EnvelopePayloadDesc struct {
-	PayloadName string    // ペイロードのフィールド名
-	PayloadType meta.Type // ペイロードの型情報
-	Tags        *FieldTags
+	Name string    // ペイロードのフィールド名
+	Type meta.Type // ペイロードの型情報
+	Tags *FieldTags
 }
 
 // TypeName ペイロードの型定義
 func (d *EnvelopePayloadDesc) TypeName() string {
-	return d.PayloadType.GoTypeSourceCode()
+	return d.Type.GoTypeSourceCode()
 }
 
 // TagString タグの文字列表現
@@ -80,4 +64,62 @@ func (f PayloadForm) IsSingular() bool {
 // IsPlural 複数形か判定
 func (f PayloadForm) IsPlural() bool {
 	return int(f) == int(PayloadForms.Plural)
+}
+
+// RequestEnvelope リクエストのエンベロープを作成する
+func RequestEnvelope(descs ...*EnvelopePayloadDesc) *EnvelopeType {
+	ret := &EnvelopeType{
+		Form: PayloadForms.Singular,
+	}
+
+	for _, desc := range descs {
+		ret.Payloads = append(ret.Payloads, desc)
+	}
+
+	return ret
+}
+
+// RequestEnvelopeFromModel モデル定義からリクエストのエンベロープを作成する
+func RequestEnvelopeFromModel(model *Model) *EnvelopeType {
+	var descs []*EnvelopePayloadDesc
+	for _, field := range model.Fields {
+		descs = append(descs, &EnvelopePayloadDesc{
+			Name: field.Name,
+			Type: field.Type,
+		})
+	}
+	ret := &EnvelopeType{
+		Form: PayloadForms.Singular,
+	}
+
+	for _, desc := range descs {
+		ret.Payloads = append(ret.Payloads, desc)
+	}
+
+	return ret
+}
+
+// ResponseEnvelope エンベロープから抽出するレスポンス定義の追加
+func ResponseEnvelope(sourceFields ...*EnvelopePayloadDesc) *EnvelopeType {
+	return responseEnvelope(PayloadForms.Singular, sourceFields...)
+}
+
+// ResponseEnvelopePlural エンベロープから抽出するレスポンス定義の追加(複数形)
+func ResponseEnvelopePlural(sourceFields ...*EnvelopePayloadDesc) *EnvelopeType {
+	return responseEnvelope(PayloadForms.Plural, sourceFields...)
+}
+
+func responseEnvelope(form PayloadForm, sourceFields ...*EnvelopePayloadDesc) *EnvelopeType {
+	et := &EnvelopeType{
+		Form: form,
+	}
+	for _, sf := range sourceFields {
+		if sf.Tags == nil {
+			sf.Tags = &FieldTags{
+				JSON: ",omitempty",
+			}
+		}
+		et.Payloads = append(et.Payloads, sf)
+	}
+	return et
 }
