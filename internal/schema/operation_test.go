@@ -13,7 +13,7 @@ func TestOperation(t *testing.T) {
 	resource := &Resource{
 		Name: "Test",
 	}
-	resources.Def(resource)
+	resources.Define(resource)
 
 	type expectOperationValues struct {
 		methodName                 string
