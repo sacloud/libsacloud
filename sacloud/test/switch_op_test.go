@@ -82,29 +82,17 @@ var (
 
 func testSwitchCreate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewSwitchOp(caller)
-	res, err := client.Create(context.Background(), testZone, createSwitchParam)
-	if err != nil {
-		return nil, err
-	}
-	return res.Switch, nil
+	return client.Create(context.Background(), testZone, createSwitchParam)
 }
 
 func testSwitchRead(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewSwitchOp(caller)
-	res, err := client.Read(context.Background(), testZone, testContext.ID)
-	if err != nil {
-		return nil, err
-	}
-	return res.Switch, nil
+	return client.Read(context.Background(), testZone, testContext.ID)
 }
 
 func testSwitchUpdate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewSwitchOp(caller)
-	res, err := client.Update(context.Background(), testZone, testContext.ID, updateSwitchParam)
-	if err != nil {
-		return nil, err
-	}
-	return res.Switch, nil
+	return client.Update(context.Background(), testZone, testContext.ID, updateSwitchParam)
 }
 
 func testSwitchDelete(testContext *CRUDTestContext, caller sacloud.APICaller) error {
@@ -122,31 +110,27 @@ func TestSwitchOp_BridgeConnection(t *testing.T) {
 	bridgeOp := sacloud.NewBridgeOp(caller)
 
 	// create switch
-	swCreateResult, err := swOp.Create(ctx, testZone, &sacloud.SwitchCreateRequest{
+	sw, err := swOp.Create(ctx, testZone, &sacloud.SwitchCreateRequest{
 		Name: "libsacloud-switch-for-bridge",
 	})
 	require.NoError(t, err)
-	sw := swCreateResult.Switch
 
-	bridgeCreateResult, err := bridgeOp.Create(ctx, testZone, &sacloud.BridgeCreateRequest{
+	bridge, err := bridgeOp.Create(ctx, testZone, &sacloud.BridgeCreateRequest{
 		Name: "libsacloud-bridge",
 	})
 	require.NoError(t, err)
-	bridge := bridgeCreateResult.Bridge
 
 	// connect to bridge
 	err = swOp.ConnectToBridge(ctx, testZone, sw.ID, bridge.ID)
 	require.NoError(t, err)
 
 	// confirm
-	swReadResult, err := swOp.Read(ctx, testZone, sw.ID)
+	sw, err = swOp.Read(ctx, testZone, sw.ID)
 	require.NoError(t, err)
-	sw = swReadResult.Switch
 	require.Equal(t, bridge.ID, sw.BridgeID)
 
-	bridgeReadResult, err := bridgeOp.Read(ctx, testZone, bridge.ID)
+	bridge, err = bridgeOp.Read(ctx, testZone, bridge.ID)
 	require.NoError(t, err)
-	bridge = bridgeReadResult.Bridge
 
 	require.Equal(t, sw.ID, bridge.SwitchInZone.ID)
 	require.Len(t, bridge.BridgeInfo, 0) // 他ゾーンのスイッチのみ
@@ -156,15 +140,13 @@ func TestSwitchOp_BridgeConnection(t *testing.T) {
 	require.NoError(t, err)
 
 	// confirm
-	swReadResult, err = swOp.Read(ctx, testZone, sw.ID)
+	sw, err = swOp.Read(ctx, testZone, sw.ID)
 	require.NoError(t, err)
-	sw = swReadResult.Switch
 
 	require.True(t, sw.BridgeID.IsEmpty())
 
-	bridgeReadResult, err = bridgeOp.Read(ctx, testZone, bridge.ID)
+	bridge, err = bridgeOp.Read(ctx, testZone, bridge.ID)
 	require.NoError(t, err)
-	bridge = bridgeReadResult.Bridge
 
 	require.Nil(t, bridge.SwitchInZone)
 	require.Len(t, bridge.BridgeInfo, 0)

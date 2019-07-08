@@ -27,7 +27,7 @@ func (o *ServerOp) Find(ctx context.Context, zone string, conditions *sacloud.Fi
 }
 
 // Create is fake implementation
-func (o *ServerOp) Create(ctx context.Context, zone string, param *sacloud.ServerCreateRequest) (*sacloud.ServerCreateResult, error) {
+func (o *ServerOp) Create(ctx context.Context, zone string, param *sacloud.ServerCreateRequest) (*sacloud.Server, error) {
 	result := &sacloud.Server{}
 	copySameNameField(param, result)
 	fill(result, fillID, fillCreatedAt)
@@ -59,11 +59,10 @@ func (o *ServerOp) Create(ctx context.Context, zone string, param *sacloud.Serve
 			}
 		}
 
-		ifCreateResult, err := ifOp.Create(ctx, zone, ifCreateParam)
+		iface, err := ifOp.Create(ctx, zone, ifCreateParam)
 		if err != nil {
 			return nil, newErrorConflict(o.key, types.ID(0), err.Error())
 		}
-		iface := ifCreateResult.Interface
 
 		if cs.Scope == types.Scopes.Shared {
 			if err := ifOp.ConnectToSharedSegment(ctx, zone, iface.ID); err != nil {
@@ -75,23 +74,19 @@ func (o *ServerOp) Create(ctx context.Context, zone string, param *sacloud.Serve
 			}
 		}
 
-		ifReadResult, err := ifOp.Read(ctx, zone, iface.ID)
+		iface, err = ifOp.Read(ctx, zone, iface.ID)
 		if err != nil {
 			return nil, newErrorConflict(o.key, types.ID(0), err.Error())
 		}
-		iface = ifReadResult.Interface
 		result.Interfaces = append(result.Interfaces, iface)
 	}
 
 	s.setServer(zone, result)
-	return &sacloud.ServerCreateResult{
-		IsOk:   true,
-		Server: result,
-	}, nil
+	return result, nil
 }
 
 // Read is fake implementation
-func (o *ServerOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.ServerReadResult, error) {
+func (o *ServerOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Server, error) {
 	value := s.getServerByID(zone, id)
 	if value == nil {
 		return nil, newErrorNotFound(o.key, id)
@@ -99,35 +94,27 @@ func (o *ServerOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud
 
 	dest := &sacloud.Server{}
 	copySameNameField(value, dest)
-	return &sacloud.ServerReadResult{
-		IsOk:   true,
-		Server: dest,
-	}, nil
+	return dest, nil
 }
 
 // Update is fake implementation
-func (o *ServerOp) Update(ctx context.Context, zone string, id types.ID, param *sacloud.ServerUpdateRequest) (*sacloud.ServerUpdateResult, error) {
-	readResult, err := o.Read(ctx, zone, id)
+func (o *ServerOp) Update(ctx context.Context, zone string, id types.ID, param *sacloud.ServerUpdateRequest) (*sacloud.Server, error) {
+	value, err := o.Read(ctx, zone, id)
 	if err != nil {
 		return nil, err
 	}
-	value := readResult.Server
 
 	copySameNameField(param, value)
 	fill(value, fillModifiedAt)
-	return &sacloud.ServerUpdateResult{
-		IsOk:   true,
-		Server: value,
-	}, nil
+	return value, nil
 }
 
 // Delete is fake implementation
 func (o *ServerOp) Delete(ctx context.Context, zone string, id types.ID) error {
-	readResult, err := o.Read(ctx, zone, id)
+	value, err := o.Read(ctx, zone, id)
 	if err != nil {
 		return err
 	}
-	value := readResult.Server
 
 	if value.InstanceStatus.IsUp() {
 		return newErrorConflict(o.key, id, fmt.Sprintf("Server[%s] is still running", id))
@@ -152,12 +139,11 @@ func (o *ServerOp) Delete(ctx context.Context, zone string, id types.ID) error {
 }
 
 // ChangePlan is fake implementation
-func (o *ServerOp) ChangePlan(ctx context.Context, zone string, id types.ID, plan *sacloud.ServerChangePlanRequest) (*sacloud.ServerChangePlanResult, error) {
-	readResult, err := o.Read(ctx, zone, id)
+func (o *ServerOp) ChangePlan(ctx context.Context, zone string, id types.ID, plan *sacloud.ServerChangePlanRequest) (*sacloud.Server, error) {
+	value, err := o.Read(ctx, zone, id)
 	if err != nil {
 		return nil, err
 	}
-	value := readResult.Server
 
 	if value.InstanceStatus.IsUp() {
 		return nil, newErrorConflict(o.key, id, fmt.Sprintf("Server[%d] is running", value.ID))
@@ -174,19 +160,15 @@ func (o *ServerOp) ChangePlan(ctx context.Context, zone string, id types.ID, pla
 	newServer.ID = pool.generateID()
 	s.setServer(zone, newServer)
 
-	return &sacloud.ServerChangePlanResult{
-		IsOk:   true,
-		Server: newServer,
-	}, nil
+	return newServer, nil
 }
 
 // InsertCDROM is fake implementation
 func (o *ServerOp) InsertCDROM(ctx context.Context, zone string, id types.ID, insertParam *sacloud.InsertCDROMRequest) error {
-	readResult, err := o.Read(ctx, zone, id)
+	value, err := o.Read(ctx, zone, id)
 	if err != nil {
 		return err
 	}
-	value := readResult.Server
 
 	cdromOp := NewCDROMOp()
 	if _, err = cdromOp.Read(ctx, zone, insertParam.ID); err != nil {
@@ -200,11 +182,10 @@ func (o *ServerOp) InsertCDROM(ctx context.Context, zone string, id types.ID, in
 
 // EjectCDROM is fake implementation
 func (o *ServerOp) EjectCDROM(ctx context.Context, zone string, id types.ID, insertParam *sacloud.EjectCDROMRequest) error {
-	readResult, err := o.Read(ctx, zone, id)
+	value, err := o.Read(ctx, zone, id)
 	if err != nil {
 		return err
 	}
-	value := readResult.Server
 
 	cdromOp := NewCDROMOp()
 	if _, err = cdromOp.Read(ctx, zone, insertParam.ID); err != nil {
@@ -218,21 +199,16 @@ func (o *ServerOp) EjectCDROM(ctx context.Context, zone string, id types.ID, ins
 
 // Boot is fake implementation
 func (o *ServerOp) Boot(ctx context.Context, zone string, id types.ID) error {
-	readResult, err := o.Read(ctx, zone, id)
+	value, err := o.Read(ctx, zone, id)
 	if err != nil {
 		return err
 	}
-	value := readResult.Server
 	if value.InstanceStatus.IsUp() {
 		return newErrorConflict(o.key, id, "Boot is failed")
 	}
 
 	startPowerOn(o.key, zone, func() (interface{}, error) {
-		res, err := o.Read(context.Background(), zone, id)
-		if err != nil {
-			return nil, err
-		}
-		return res.Server, nil
+		return o.Read(context.Background(), zone, id)
 	})
 
 	return err
@@ -240,21 +216,16 @@ func (o *ServerOp) Boot(ctx context.Context, zone string, id types.ID) error {
 
 // Shutdown is fake implementation
 func (o *ServerOp) Shutdown(ctx context.Context, zone string, id types.ID, shutdownOption *sacloud.ShutdownOption) error {
-	readResult, err := o.Read(ctx, zone, id)
+	value, err := o.Read(ctx, zone, id)
 	if err != nil {
 		return err
 	}
-	value := readResult.Server
 	if !value.InstanceStatus.IsUp() {
 		return newErrorConflict(o.key, id, "Shutdown is failed")
 	}
 
 	startPowerOff(o.key, zone, func() (interface{}, error) {
-		res, err := o.Read(context.Background(), zone, id)
-		if err != nil {
-			return nil, err
-		}
-		return res.Server, nil
+		return o.Read(context.Background(), zone, id)
 	})
 
 	return err
@@ -262,33 +233,27 @@ func (o *ServerOp) Shutdown(ctx context.Context, zone string, id types.ID, shutd
 
 // Reset is fake implementation
 func (o *ServerOp) Reset(ctx context.Context, zone string, id types.ID) error {
-	readResult, err := o.Read(ctx, zone, id)
+	value, err := o.Read(ctx, zone, id)
 	if err != nil {
 		return err
 	}
-	value := readResult.Server
 	if !value.InstanceStatus.IsUp() {
 		return newErrorConflict(o.key, id, "Reset is failed")
 	}
 
 	startPowerOn(o.key, zone, func() (interface{}, error) {
-		res, err := o.Read(context.Background(), zone, id)
-		if err != nil {
-			return nil, err
-		}
-		return res.Server, nil
+		return o.Read(context.Background(), zone, id)
 	})
 
 	return nil
 }
 
 // Monitor is fake implementation
-func (o *ServerOp) Monitor(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.ServerMonitorResult, error) {
-	readResult, err := o.Read(ctx, zone, id)
+func (o *ServerOp) Monitor(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.CPUTimeActivity, error) {
+	value, err := o.Read(ctx, zone, id)
 	if err != nil {
 		return nil, err
 	}
-	value := readResult.Server
 
 	now := time.Now().Truncate(time.Second)
 	m := now.Minute() % 5
@@ -304,8 +269,5 @@ func (o *ServerOp) Monitor(ctx context.Context, zone string, id types.ID, condit
 		})
 	}
 
-	return &sacloud.ServerMonitorResult{
-		IsOk:            true,
-		CPUTimeActivity: res,
-	}, nil
+	return res, nil
 }

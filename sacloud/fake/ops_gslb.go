@@ -26,7 +26,7 @@ func (o *GSLBOp) Find(ctx context.Context, zone string, conditions *sacloud.Find
 }
 
 // Create is fake implementation
-func (o *GSLBOp) Create(ctx context.Context, zone string, param *sacloud.GSLBCreateRequest) (*sacloud.GSLBCreateResult, error) {
+func (o *GSLBOp) Create(ctx context.Context, zone string, param *sacloud.GSLBCreateRequest) (*sacloud.GSLB, error) {
 	result := &sacloud.GSLB{}
 	copySameNameField(param, result)
 	fill(result, fillID, fillCreatedAt, fillAvailability)
@@ -41,14 +41,11 @@ func (o *GSLBOp) Create(ctx context.Context, zone string, param *sacloud.GSLBCre
 	}
 
 	s.setGSLB(sacloud.APIDefaultZone, result)
-	return &sacloud.GSLBCreateResult{
-		IsOk: true,
-		GSLB: result,
-	}, nil
+	return result, nil
 }
 
 // Read is fake implementation
-func (o *GSLBOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.GSLBReadResult, error) {
+func (o *GSLBOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.GSLB, error) {
 	value := s.getGSLBByID(sacloud.APIDefaultZone, id)
 	if value == nil {
 		return nil, newErrorNotFound(o.key, id)
@@ -56,25 +53,18 @@ func (o *GSLBOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.G
 
 	dest := &sacloud.GSLB{}
 	copySameNameField(value, dest)
-	return &sacloud.GSLBReadResult{
-		IsOk: true,
-		GSLB: dest,
-	}, nil
+	return dest, nil
 }
 
 // Update is fake implementation
-func (o *GSLBOp) Update(ctx context.Context, zone string, id types.ID, param *sacloud.GSLBUpdateRequest) (*sacloud.GSLBUpdateResult, error) {
-	readResult, err := o.Read(ctx, sacloud.APIDefaultZone, id)
+func (o *GSLBOp) Update(ctx context.Context, zone string, id types.ID, param *sacloud.GSLBUpdateRequest) (*sacloud.GSLB, error) {
+	value, err := o.Read(ctx, sacloud.APIDefaultZone, id)
 	if err != nil {
 		return nil, err
 	}
-	value := readResult.GSLB
 	copySameNameField(param, value)
 	fill(value, fillModifiedAt)
-	return &sacloud.GSLBUpdateResult{
-		IsOk: true,
-		GSLB: value,
-	}, nil
+	return value, nil
 }
 
 // Delete is fake implementation

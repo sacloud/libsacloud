@@ -92,10 +92,11 @@ var simAPI = &dsl.Resource{
 
 		// Logs
 		{
-			ResourceName: simAPIName,
-			PathFormat:   dsl.IDAndSuffixPathFormat("sim/sessionlog"),
-			Method:       http.MethodGet,
-			Name:         "Logs",
+			ResourceName:     simAPIName,
+			PathFormat:       dsl.IDAndSuffixPathFormat("sim/sessionlog"),
+			Method:           http.MethodGet,
+			Name:             "Logs",
+			UseWrappedResult: true,
 			Arguments: dsl.Arguments{
 				dsl.ArgumentZone,
 				dsl.ArgumentID,
@@ -116,10 +117,11 @@ var simAPI = &dsl.Resource{
 
 		// GetNetworkOperator
 		{
-			ResourceName: simAPIName,
-			Name:         "GetNetworkOperator",
-			PathFormat:   dsl.IDAndSuffixPathFormat("sim/network_operator_config"),
-			Method:       http.MethodGet,
+			ResourceName:     simAPIName,
+			Name:             "GetNetworkOperator",
+			PathFormat:       dsl.IDAndSuffixPathFormat("sim/network_operator_config"),
+			Method:           http.MethodGet,
+			UseWrappedResult: true,
 			Arguments: dsl.Arguments{
 				dsl.ArgumentZone,
 				dsl.ArgumentID,

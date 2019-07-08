@@ -82,13 +82,12 @@ func compositeAPIFunc(funcs ...func(*CRUDTestContext, sacloud.APICaller) error) 
 func setupSwitchFunc(targetResource string, dests ...accessor.SwitchID) func(*CRUDTestContext, sacloud.APICaller) error {
 	return func(testContext *CRUDTestContext, caller sacloud.APICaller) error {
 		swClient := sacloud.NewSwitchOp(caller)
-		swCreateResult, err := swClient.Create(context.Background(), testZone, &sacloud.SwitchCreateRequest{
+		sw, err := swClient.Create(context.Background(), testZone, &sacloud.SwitchCreateRequest{
 			Name: "libsacloud-switch-for-" + targetResource,
 		})
 		if err != nil {
 			return err
 		}
-		sw := swCreateResult.Switch
 
 		testContext.Values[targetResource+"/switch"] = sw.ID
 		for _, dest := range dests {

@@ -15,11 +15,12 @@ func find(resourceName string, nakedType meta.Type, findParam, result *dsl.Model
 	}
 
 	return &dsl.Operation{
-		ResourceName:    resourceName,
-		Name:            "Find",
-		PathFormat:      dsl.DefaultPathFormat,
-		Method:          http.MethodGet,
-		RequestEnvelope: dsl.RequestEnvelopeFromModel(findParam),
+		ResourceName:     resourceName,
+		Name:             "Find",
+		PathFormat:       dsl.DefaultPathFormat,
+		Method:           http.MethodGet,
+		UseWrappedResult: true,
+		RequestEnvelope:  dsl.RequestEnvelopeFromModel(findParam),
 		Arguments: dsl.Arguments{
 			dsl.ArgumentZone,
 			dsl.PassthroughModelArgument("conditions", findParam),
@@ -280,8 +281,9 @@ func Reset(resourceName string) *dsl.Operation {
 func Status(resourceName string, nakedType meta.Type, result *dsl.Model) *dsl.Operation {
 	payloadName := names.ResourceFieldName(resourceName, dsl.PayloadForms.Singular)
 	return &dsl.Operation{
-		ResourceName: resourceName,
-		Name:         "Status",
+		ResourceName:     resourceName,
+		Name:             "Status",
+		UseWrappedResult: true,
 		Arguments: dsl.Arguments{
 			dsl.ArgumentZone,
 			dsl.ArgumentID,

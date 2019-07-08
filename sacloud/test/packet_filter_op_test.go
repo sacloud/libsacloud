@@ -100,29 +100,17 @@ var (
 
 func testPacketFilterCreate(_ *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewPacketFilterOp(caller)
-	res, err := client.Create(context.Background(), testZone, createPacketFilterParam)
-	if err != nil {
-		return nil, err
-	}
-	return res.PacketFilter, nil
+	return client.Create(context.Background(), testZone, createPacketFilterParam)
 }
 
 func testPacketFilterRead(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewPacketFilterOp(caller)
-	res, err := client.Read(context.Background(), testZone, testContext.ID)
-	if err != nil {
-		return nil, err
-	}
-	return res.PacketFilter, nil
+	return client.Read(context.Background(), testZone, testContext.ID)
 }
 
 func testPacketFilterUpdate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewPacketFilterOp(caller)
-	res, err := client.Update(context.Background(), testZone, testContext.ID, updatePacketFilterParam)
-	if err != nil {
-		return nil, err
-	}
-	return res.PacketFilter, nil
+	return client.Update(context.Background(), testZone, testContext.ID, updatePacketFilterParam)
 }
 
 func testPacketFilterDelete(testContext *CRUDTestContext, caller sacloud.APICaller) error {

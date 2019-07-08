@@ -11,7 +11,7 @@ import (
 func TestAuthStatusOp_Read(t *testing.T) {
 	client := sacloud.NewAuthStatusOp(singletonAPICaller())
 
-	readResult, err := client.Read(context.Background(), sacloud.APIDefaultZone)
+	authStatus, err := client.Read(context.Background(), sacloud.APIDefaultZone)
 	require.NoError(t, err)
-	require.NotNil(t, readResult.AuthStatus)
+	require.NotNil(t, authStatus)
 }
