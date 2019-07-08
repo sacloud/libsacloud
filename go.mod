@@ -11,6 +11,9 @@ require (
 	github.com/leodido/go-urn v1.1.0 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/stretchr/testify v1.2.2
+	github.com/uber-go/atomic v1.4.0 // indirect
+	go.uber.org/atomic v1.4.0 // indirect
+	go.uber.org/ratelimit v0.0.0-20180316092928-c15da0234277
 	gopkg.in/go-playground/assert.v1 v1.2.1 // indirect
 	gopkg.in/go-playground/validator.v9 v9.29.0
 )
