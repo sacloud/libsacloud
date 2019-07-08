@@ -96,6 +96,45 @@ func (o *Operation) ResultsStatement() string {
 	return fmt.Sprintf("(%s error)", ret)
 }
 
+// ResultsTypeInfo 戻り値の型情報(error型を含まない)
+func (o *Operation) ResultsTypeInfo() []*ResultTypeInfo {
+	var info []*ResultTypeInfo
+	if !o.HasResults() {
+		return info
+	}
+	if o.UseWrappedResult {
+		info = append(info, &ResultTypeInfo{
+			VarName:   "result",
+			FieldName: "Result",
+			Type:      o.resultType().Type(),
+		})
+		return info
+	}
+	for _, r := range o.Results {
+		info = append(info, &ResultTypeInfo{
+			VarName:   "result" + r.DestField,
+			FieldName: r.DestField,
+			Type:      r.Type(),
+		})
+	}
+	return info
+}
+
+// ResultsAssignStatement API戻り値を変数にアサインする場合の変数部分のソースを出力、主にtraceで利用する
+func (o *Operation) ResultsAssignStatement() string {
+	if !o.HasResults() {
+		return "err"
+	}
+	if o.UseWrappedResult {
+		return "result, err"
+	}
+	var ret string
+	for _, r := range o.Results {
+		ret += fmt.Sprintf(",result%s", r.DestField)
+	}
+	return fmt.Sprintf("%s, err", ret)
+}
+
 // RequestEnvelopeStructName エンベロープのstruct名(camel-case)
 func (o *Operation) RequestEnvelopeStructName() string {
 	return fmt.Sprintf("%s%sRequestEnvelope", firstRuneToLower(o.ResourceName), o.Name)
