@@ -3,8 +3,8 @@ package define
 import (
 	"github.com/sacloud/libsacloud/v2/internal/define/names"
 	"github.com/sacloud/libsacloud/v2/internal/define/ops"
-	"github.com/sacloud/libsacloud/v2/internal/schema"
-	"github.com/sacloud/libsacloud/v2/internal/schema/meta"
+	"github.com/sacloud/libsacloud/v2/internal/dsl"
+	"github.com/sacloud/libsacloud/v2/internal/dsl/meta"
 	"github.com/sacloud/libsacloud/v2/sacloud/naked"
 )
 
@@ -13,12 +13,12 @@ const (
 	noteAPIPathName = "note"
 )
 
-var noteAPI = &schema.Resource{
+var noteAPI = &dsl.Resource{
 	Name:       noteAPIName,
 	PathName:   noteAPIPathName,
-	PathSuffix: schema.CloudAPISuffix,
+	PathSuffix: dsl.CloudAPISuffix,
 	IsGlobal:   true,
-	Operations: schema.Operations{
+	Operations: dsl.Operations{
 		// find
 		ops.Find(noteAPIName, noteNakedType, findParameter, noteView),
 
@@ -39,10 +39,10 @@ var noteAPI = &schema.Resource{
 var (
 	noteNakedType = meta.Static(naked.Note{})
 
-	noteView = &schema.Model{
+	noteView = &dsl.Model{
 		Name:      noteAPIName,
 		NakedType: noteNakedType,
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			fields.ID(),
 			fields.Name(),
 			fields.Description(),
@@ -57,10 +57,10 @@ var (
 		},
 	}
 
-	noteCreateParam = &schema.Model{
+	noteCreateParam = &dsl.Model{
 		Name:      names.CreateParameterName(noteAPIName),
 		NakedType: noteNakedType,
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			fields.Name(),
 			fields.Tags(),
 			fields.IconID(),
@@ -69,10 +69,10 @@ var (
 		},
 	}
 
-	noteUpdateParam = &schema.Model{
+	noteUpdateParam = &dsl.Model{
 		Name:      names.UpdateParameterName(noteAPIName),
 		NakedType: noteNakedType,
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			fields.Name(),
 			fields.Tags(),
 			fields.IconID(),

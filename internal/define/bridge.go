@@ -3,8 +3,8 @@ package define
 import (
 	"github.com/sacloud/libsacloud/v2/internal/define/names"
 	"github.com/sacloud/libsacloud/v2/internal/define/ops"
-	"github.com/sacloud/libsacloud/v2/internal/schema"
-	"github.com/sacloud/libsacloud/v2/internal/schema/meta"
+	"github.com/sacloud/libsacloud/v2/internal/dsl"
+	"github.com/sacloud/libsacloud/v2/internal/dsl/meta"
 	"github.com/sacloud/libsacloud/v2/sacloud/naked"
 )
 
@@ -13,11 +13,11 @@ const (
 	bridgeAPIPathName = "bridge"
 )
 
-var bridgeAPI = &schema.Resource{
+var bridgeAPI = &dsl.Resource{
 	Name:       bridgeAPIName,
 	PathName:   bridgeAPIPathName,
-	PathSuffix: schema.CloudAPISuffix,
-	Operations: schema.Operations{
+	PathSuffix: dsl.CloudAPISuffix,
+	Operations: dsl.Operations{
 		// find
 		ops.Find(bridgeAPIName, bridgeNakedType, findParameter, bridgeView),
 
@@ -38,10 +38,10 @@ var bridgeAPI = &schema.Resource{
 var (
 	bridgeNakedType = meta.Static(naked.Bridge{})
 
-	bridgeView = &schema.Model{
+	bridgeView = &dsl.Model{
 		Name:      bridgeAPIName,
 		NakedType: bridgeNakedType,
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			fields.ID(),
 			fields.Name(),
 			fields.Description(),
@@ -52,19 +52,19 @@ var (
 		},
 	}
 
-	bridgeCreateParam = &schema.Model{
+	bridgeCreateParam = &dsl.Model{
 		Name:      names.CreateParameterName(bridgeAPIName),
 		NakedType: bridgeNakedType,
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			fields.Name(),
 			fields.Description(),
 		},
 	}
 
-	bridgeUpdateParam = &schema.Model{
+	bridgeUpdateParam = &dsl.Model{
 		Name:      names.UpdateParameterName(bridgeAPIName),
 		NakedType: bridgeNakedType,
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			fields.Name(),
 			fields.Description(),
 		},

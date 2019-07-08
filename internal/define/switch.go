@@ -5,8 +5,8 @@ import (
 
 	"github.com/sacloud/libsacloud/v2/internal/define/names"
 	"github.com/sacloud/libsacloud/v2/internal/define/ops"
-	"github.com/sacloud/libsacloud/v2/internal/schema"
-	"github.com/sacloud/libsacloud/v2/internal/schema/meta"
+	"github.com/sacloud/libsacloud/v2/internal/dsl"
+	"github.com/sacloud/libsacloud/v2/internal/dsl/meta"
 	"github.com/sacloud/libsacloud/v2/sacloud/naked"
 )
 
@@ -15,11 +15,11 @@ const (
 	switchAPIPathName = "switch"
 )
 
-var switchAPI = &schema.Resource{
+var switchAPI = &dsl.Resource{
 	Name:       switchAPIName,
 	PathName:   switchAPIPathName,
-	PathSuffix: schema.CloudAPISuffix,
-	Operations: schema.Operations{
+	PathSuffix: dsl.CloudAPISuffix,
+	Operations: dsl.Operations{
 		// find
 		ops.Find(switchAPIName, switchNakedType, findParameter, switchView),
 
@@ -37,7 +37,7 @@ var switchAPI = &schema.Resource{
 
 		// connect from bridge
 		ops.WithIDAction(switchAPIName, "ConnectToBridge", http.MethodPut, "to/bridge/{{.bridgeID}}",
-			&schema.Argument{
+			&dsl.Argument{
 				Name: "bridgeID",
 				Type: meta.TypeID,
 			},
@@ -51,10 +51,10 @@ var switchAPI = &schema.Resource{
 var (
 	switchNakedType = meta.Static(naked.Switch{})
 
-	switchView = &schema.Model{
+	switchView = &dsl.Model{
 		Name:      switchAPIName,
 		NakedType: switchNakedType,
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			fields.ID(),
 			fields.Name(),
 			fields.Description(),
@@ -68,7 +68,7 @@ var (
 			{
 				Name: "Subnets",
 				Type: models.switchSubnet(),
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					MapConv: "[]Subnets,omitempty,recursive",
 					JSON:    ",omitempty",
 				},
@@ -77,10 +77,10 @@ var (
 		},
 	}
 
-	switchCreateParam = &schema.Model{
+	switchCreateParam = &dsl.Model{
 		Name:      names.CreateParameterName(switchAPIName),
 		NakedType: switchNakedType,
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			fields.Name(),
 			fields.UserSubnetNetworkMaskLen(),
 			fields.UserSubnetDefaultRoute(),
@@ -90,10 +90,10 @@ var (
 		},
 	}
 
-	switchUpdateParam = &schema.Model{
+	switchUpdateParam = &dsl.Model{
 		Name:      names.UpdateParameterName(switchAPIName),
 		NakedType: switchNakedType,
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			fields.Name(),
 			fields.UserSubnetNetworkMaskLen(),
 			fields.UserSubnetDefaultRoute(),

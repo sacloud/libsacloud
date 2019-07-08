@@ -1,9 +1,9 @@
-package schema
+package dsl
 
 import (
 	"fmt"
 
-	"github.com/sacloud/libsacloud/v2/internal/schema/meta"
+	"github.com/sacloud/libsacloud/v2/internal/dsl/meta"
 )
 
 // ResultType Operationからの戻り値の型情報

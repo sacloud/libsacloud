@@ -5,8 +5,8 @@ import (
 
 	"github.com/sacloud/libsacloud/v2/internal/define/names"
 	"github.com/sacloud/libsacloud/v2/internal/define/ops"
-	"github.com/sacloud/libsacloud/v2/internal/schema"
-	"github.com/sacloud/libsacloud/v2/internal/schema/meta"
+	"github.com/sacloud/libsacloud/v2/internal/dsl"
+	"github.com/sacloud/libsacloud/v2/internal/dsl/meta"
 	"github.com/sacloud/libsacloud/v2/sacloud/naked"
 )
 
@@ -15,11 +15,11 @@ const (
 	archiveAPIPathName = "archive"
 )
 
-var archiveAPI = &schema.Resource{
+var archiveAPI = &dsl.Resource{
 	Name:       archiveAPIName,
 	PathName:   archiveAPIPathName,
-	PathSuffix: schema.CloudAPISuffix,
-	Operations: schema.Operations{
+	PathSuffix: dsl.CloudAPISuffix,
+	Operations: dsl.Operations{
 		// find
 		ops.Find(archiveAPIName, archiveNakedType, findParameter, archiveView),
 
@@ -30,29 +30,29 @@ var archiveAPI = &schema.Resource{
 		{
 			ResourceName: archiveAPIName,
 			Name:         "CreateBlank",
-			PathFormat:   schema.DefaultPathFormat,
+			PathFormat:   dsl.DefaultPathFormat,
 			Method:       http.MethodPost,
-			RequestEnvelope: schema.RequestEnvelope(&schema.EnvelopePayloadDesc{
-				Name: names.ResourceFieldName(archiveAPIName, schema.PayloadForms.Singular),
+			RequestEnvelope: dsl.RequestEnvelope(&dsl.EnvelopePayloadDesc{
+				Name: names.ResourceFieldName(archiveAPIName, dsl.PayloadForms.Singular),
 				Type: archiveNakedType,
 			}),
-			ResponseEnvelope: schema.ResponseEnvelope(
-				&schema.EnvelopePayloadDesc{
-					Name: names.ResourceFieldName(archiveAPIName, schema.PayloadForms.Singular),
+			ResponseEnvelope: dsl.ResponseEnvelope(
+				&dsl.EnvelopePayloadDesc{
+					Name: names.ResourceFieldName(archiveAPIName, dsl.PayloadForms.Singular),
 					Type: archiveNakedType,
 				},
-				&schema.EnvelopePayloadDesc{
+				&dsl.EnvelopePayloadDesc{
 					Name: models.ftpServer().Name,
 					Type: meta.Static(naked.OpeningFTPServer{}),
 				},
 			),
-			Arguments: schema.Arguments{
-				schema.ArgumentZone,
-				schema.MappableArgument("param", archiveCreateBlankParam, names.ResourceFieldName(archiveAPIName, schema.PayloadForms.Singular)),
+			Arguments: dsl.Arguments{
+				dsl.ArgumentZone,
+				dsl.MappableArgument("param", archiveCreateBlankParam, names.ResourceFieldName(archiveAPIName, dsl.PayloadForms.Singular)),
 			},
-			Results: schema.Results{
+			Results: dsl.Results{
 				{
-					SourceField: names.ResourceFieldName(archiveAPIName, schema.PayloadForms.Singular),
+					SourceField: names.ResourceFieldName(archiveAPIName, dsl.PayloadForms.Singular),
 					DestField:   archiveView.Name,
 					IsPlural:    false,
 					Model:       archiveView,
@@ -88,10 +88,10 @@ var archiveAPI = &schema.Resource{
 var (
 	archiveNakedType = meta.Static(naked.Archive{})
 
-	archiveView = &schema.Model{
+	archiveView = &dsl.Model{
 		Name:      archiveAPIName,
 		NakedType: archiveNakedType,
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			fields.ID(),
 			fields.Name(),
 			fields.Description(),
@@ -118,10 +118,10 @@ var (
 		},
 	}
 
-	archiveCreateParam = &schema.Model{
+	archiveCreateParam = &dsl.Model{
 		Name:      names.CreateParameterName(archiveAPIName),
 		NakedType: archiveNakedType,
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			fields.SourceDiskID(),
 			fields.SourceArchiveID(),
 			fields.Name(),
@@ -131,10 +131,10 @@ var (
 		},
 	}
 
-	archiveCreateBlankParam = &schema.Model{
+	archiveCreateBlankParam = &dsl.Model{
 		Name:      "ArchiveCreateBlankRequest",
 		NakedType: archiveNakedType,
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			fields.SizeMB(),
 			fields.Name(),
 			fields.Description(),
@@ -143,10 +143,10 @@ var (
 		},
 	}
 
-	archiveUpdateParam = &schema.Model{
+	archiveUpdateParam = &dsl.Model{
 		Name:      names.UpdateParameterName(archiveAPIName),
 		NakedType: archiveNakedType,
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			fields.Name(),
 			fields.Description(),
 			fields.Tags(),

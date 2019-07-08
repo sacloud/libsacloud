@@ -1,8 +1,8 @@
 package define
 
 import (
-	"github.com/sacloud/libsacloud/v2/internal/schema"
-	"github.com/sacloud/libsacloud/v2/internal/schema/meta"
+	"github.com/sacloud/libsacloud/v2/internal/dsl"
+	"github.com/sacloud/libsacloud/v2/internal/dsl/meta"
 	"github.com/sacloud/libsacloud/v2/sacloud/naked"
 )
 
@@ -10,10 +10,10 @@ type modelsDef struct{}
 
 var models = &modelsDef{}
 
-func (m *modelsDef) ftpServerOpenParameter() *schema.Model {
-	return &schema.Model{
+func (m *modelsDef) ftpServerOpenParameter() *dsl.Model {
+	return &dsl.Model{
 		Name: "OpenFTPRequest",
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			{
 				Name: "ChangePassword",
 				Type: meta.TypeFlag,
@@ -22,11 +22,11 @@ func (m *modelsDef) ftpServerOpenParameter() *schema.Model {
 	}
 }
 
-func (m *modelsDef) ftpServer() *schema.Model {
-	return &schema.Model{
+func (m *modelsDef) ftpServer() *dsl.Model {
+	return &dsl.Model{
 		Name:      "FTPServer",
 		NakedType: meta.Static(naked.OpeningFTPServer{}),
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			fields.HostName(),
 			fields.IPAddress(),
 			fields.User(),
@@ -35,24 +35,24 @@ func (m *modelsDef) ftpServer() *schema.Model {
 	}
 }
 
-func (m *modelsDef) ftpServerInfo() *schema.Model {
-	return &schema.Model{
+func (m *modelsDef) ftpServerInfo() *dsl.Model {
+	return &dsl.Model{
 		Name:      "FTPServerInfo",
 		NakedType: meta.Static(naked.FTPServer{}),
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			fields.HostName(),
 			fields.IPAddress(),
 		},
 	}
 }
 
-func (m *modelsDef) diskEdit() *schema.Model {
+func (m *modelsDef) diskEdit() *dsl.Model {
 
-	sshKeyFields := []*schema.FieldDesc{
+	sshKeyFields := []*dsl.FieldDesc{
 		{
 			Name: "ID",
 			Type: meta.TypeID,
-			Tags: &schema.FieldTags{
+			Tags: &dsl.FieldTags{
 				MapConv: ",omitempty",
 				JSON:    ",omitempty",
 			},
@@ -60,18 +60,18 @@ func (m *modelsDef) diskEdit() *schema.Model {
 		{
 			Name: "PublicKey",
 			Type: meta.TypeString,
-			Tags: &schema.FieldTags{
+			Tags: &dsl.FieldTags{
 				MapConv: ",omitempty",
 				JSON:    ",omitempty",
 			},
 		},
 	}
 
-	noteFields := []*schema.FieldDesc{
+	noteFields := []*dsl.FieldDesc{
 		{
 			Name: "ID",
 			Type: meta.TypeID,
-			Tags: &schema.FieldTags{
+			Tags: &dsl.FieldTags{
 				MapConv: ",omitempty",
 				JSON:    ",omitempty",
 			},
@@ -79,18 +79,18 @@ func (m *modelsDef) diskEdit() *schema.Model {
 		{
 			Name: "Variables",
 			Type: meta.Static(map[string]interface{}{}),
-			Tags: &schema.FieldTags{
+			Tags: &dsl.FieldTags{
 				MapConv: ",omitempty",
 				JSON:    ",omitempty",
 			},
 		},
 	}
 
-	userSubnetFdields := []*schema.FieldDesc{
+	userSubnetFdields := []*dsl.FieldDesc{
 		{
 			Name: "DefaultRoute",
 			Type: meta.TypeString,
-			Tags: &schema.FieldTags{
+			Tags: &dsl.FieldTags{
 				MapConv: ",omitempty",
 				JSON:    ",omitempty",
 			},
@@ -98,7 +98,7 @@ func (m *modelsDef) diskEdit() *schema.Model {
 		{
 			Name: "NetworkMaskLen",
 			Type: meta.TypeInt,
-			Tags: &schema.FieldTags{
+			Tags: &dsl.FieldTags{
 				MapConv:  ",omitempty",
 				Validate: "min=0,max=32",
 				JSON:     ",omitempty",
@@ -106,37 +106,37 @@ func (m *modelsDef) diskEdit() *schema.Model {
 		},
 	}
 
-	return &schema.Model{
+	return &dsl.Model{
 		Name:      "DiskEditRequest",
 		NakedType: meta.Static(naked.DiskEdit{}),
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			{
 				Name: "Password",
 				Type: meta.TypeString,
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					MapConv: ",omitempty",
 					JSON:    ",omitempty",
 				},
 			},
 			{
 				Name: "SSHKey",
-				Type: &schema.Model{
+				Type: &dsl.Model{
 					Name:   "DiskEditSSHKey",
 					Fields: sshKeyFields,
 				},
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					MapConv: ",omitempty,recursive",
 					JSON:    ",omitempty",
 				},
 			},
 			{
 				Name: "SSHKeys",
-				Type: &schema.Model{
+				Type: &dsl.Model{
 					Name:    "DiskEditSSHKey",
 					IsArray: true,
 					Fields:  sshKeyFields,
 				},
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					MapConv: "[]SSHKeys,omitempty,recursive",
 					JSON:    ",omitempty",
 				},
@@ -144,7 +144,7 @@ func (m *modelsDef) diskEdit() *schema.Model {
 			{
 				Name: "DisablePWAuth",
 				Type: meta.TypeFlag,
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					MapConv: ",omitempty",
 					JSON:    ",omitempty",
 				},
@@ -152,7 +152,7 @@ func (m *modelsDef) diskEdit() *schema.Model {
 			{
 				Name: "EnableDHCP",
 				Type: meta.TypeFlag,
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					MapConv: ",omitempty",
 					JSON:    ",omitempty",
 				},
@@ -160,7 +160,7 @@ func (m *modelsDef) diskEdit() *schema.Model {
 			{
 				Name: "ChangePartitionUUID",
 				Type: meta.TypeFlag,
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					MapConv: ",omitempty",
 					JSON:    ",omitempty",
 				},
@@ -168,19 +168,19 @@ func (m *modelsDef) diskEdit() *schema.Model {
 			{
 				Name: "HostName",
 				Type: meta.TypeString,
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					MapConv: ",omitempty",
 					JSON:    ",omitempty",
 				},
 			},
 			{
 				Name: "Notes",
-				Type: &schema.Model{
+				Type: &dsl.Model{
 					Name:    "DiskEditNote",
 					IsArray: true,
 					Fields:  noteFields,
 				},
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					MapConv: ",omitempty,recursive",
 					JSON:    ",omitempty",
 				},
@@ -188,18 +188,18 @@ func (m *modelsDef) diskEdit() *schema.Model {
 			{
 				Name: "UserIPAddress",
 				Type: meta.TypeString,
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					MapConv: ",omitempty",
 					JSON:    ",omitempty",
 				},
 			},
 			{
 				Name: "UserSubnet",
-				Type: &schema.Model{
+				Type: &dsl.Model{
 					Name:   "DiskEditUserSubnet",
 					Fields: userSubnetFdields,
 				},
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					MapConv: ",omitempty",
 					JSON:    ",omitempty",
 				},
@@ -208,12 +208,12 @@ func (m *modelsDef) diskEdit() *schema.Model {
 	}
 }
 
-func (m *modelsDef) interfaceModel() *schema.Model {
-	return &schema.Model{
+func (m *modelsDef) interfaceModel() *dsl.Model {
+	return &dsl.Model{
 		Name:      "Interface",
 		NakedType: meta.Static(naked.Interface{}),
 		IsArray:   true,
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			fields.ID(),
 			fields.MACAddress(),
 			fields.IPAddress(),
@@ -223,63 +223,63 @@ func (m *modelsDef) interfaceModel() *schema.Model {
 			{
 				Name: "SwitchID",
 				Type: meta.TypeID,
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					MapConv: "Switch.ID",
 				},
 			},
 			{
 				Name: "SwitchName",
 				Type: meta.TypeString,
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					MapConv: "Switch.Name",
 				},
 			},
 			{
 				Name: "SwitchScope",
 				Type: meta.TypeScope,
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					MapConv: "Switch.Scope",
 				},
 			},
 			{
 				Name: "UserSubnetDefaultRoute",
 				Type: meta.TypeString,
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					MapConv: "Switch.UserSubnet.DefaultRoute",
 				},
 			},
 			{
 				Name: "UserSubnetNetworkMaskLen",
 				Type: meta.TypeInt,
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					MapConv: "Switch.UserSubnet.NetworkMaskLen",
 				},
 			},
 			{
 				Name: "SubnetDefaultRoute",
 				Type: meta.TypeString,
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					MapConv: "Switch.Subnet.DefaultRoute",
 				},
 			},
 			{
 				Name: "SubnetNetworkMaskLen",
 				Type: meta.TypeInt,
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					MapConv: "Switch.Subnet.NetworkMaskLen",
 				},
 			},
 			{
 				Name: "SubnetNetworkAddress",
 				Type: meta.TypeString,
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					MapConv: "Switch.Subnet.NetworkAddress",
 				},
 			},
 			{
 				Name: "SubnetBandWidthMbps",
 				Type: meta.TypeInt,
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					MapConv: "Switch.Subnet.Internet.BandWidthMbps",
 				},
 			},
@@ -287,21 +287,21 @@ func (m *modelsDef) interfaceModel() *schema.Model {
 			{
 				Name: "PacketFilterID",
 				Type: meta.TypeString,
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					MapConv: "PacketFilter.ID",
 				},
 			},
 			{
 				Name: "PacketFilterName",
 				Type: meta.TypeString,
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					MapConv: "PacketFilter.Name",
 				},
 			},
 			{
 				Name: "PacketFilterRequiredHostVersion",
 				Type: meta.TypeStringNumber,
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					MapConv: "PacketFilter.RequiredHostVersionn",
 				},
 			},
@@ -309,29 +309,29 @@ func (m *modelsDef) interfaceModel() *schema.Model {
 	}
 }
 
-func (m *modelsDef) vpcRouterInterfaceModel() *schema.Model {
+func (m *modelsDef) vpcRouterInterfaceModel() *dsl.Model {
 	ifModel := m.interfaceModel()
 	ifModel.Name = "VPCRouterInterface"
-	ifModel.Fields = append(ifModel.Fields, &schema.FieldDesc{
+	ifModel.Fields = append(ifModel.Fields, &dsl.FieldDesc{
 		Name: "Index",
 		Type: meta.TypeInt,
-		Tags: &schema.FieldTags{
+		Tags: &dsl.FieldTags{
 			MapConv: ",omitempty",
 		},
 	})
 	return ifModel
 }
 
-func (m *modelsDef) bundleInfoModel() *schema.Model {
-	return &schema.Model{
+func (m *modelsDef) bundleInfoModel() *dsl.Model {
+	return &dsl.Model{
 		Name:      "BundleInfo",
 		NakedType: meta.Static(naked.BundleInfo{}),
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			fields.ID(),
 			{
 				Name: "HostClass",
 				Type: meta.TypeString,
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					MapConv: ",omitempty",
 					JSON:    ",omitempty",
 				},
@@ -339,7 +339,7 @@ func (m *modelsDef) bundleInfoModel() *schema.Model {
 			{
 				Name: "ServiceClass",
 				Type: meta.TypeString,
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					MapConv: ",omitempty",
 					JSON:    ",omitempty",
 				},
@@ -348,17 +348,17 @@ func (m *modelsDef) bundleInfoModel() *schema.Model {
 	}
 }
 
-func (m *modelsDef) storageModel() *schema.Model {
-	return &schema.Model{
+func (m *modelsDef) storageModel() *dsl.Model {
+	return &dsl.Model{
 		Name:      "Storage",
 		NakedType: meta.Static(naked.Storage{}),
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			fields.ID(),
 			fields.Name(),
 			{
 				Name: "Class",
 				Type: meta.TypeString,
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					MapConv: ",omitempty",
 					JSON:    ",omitempty",
 				},
@@ -366,7 +366,7 @@ func (m *modelsDef) storageModel() *schema.Model {
 			{
 				Name: "Generation",
 				Type: meta.TypeInt,
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					MapConv: ",omitempty",
 					JSON:    ",omitempty",
 				},
@@ -375,18 +375,18 @@ func (m *modelsDef) storageModel() *schema.Model {
 	}
 }
 
-func (m *modelsDef) region() *schema.Model {
-	return &schema.Model{
+func (m *modelsDef) region() *dsl.Model {
+	return &dsl.Model{
 		Name:      "Region",
 		NakedType: meta.Static(naked.Region{}),
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			fields.ID(),
 			fields.Name(),
 			fields.Description(),
 			{
 				Name: "NameServers",
 				Type: meta.TypeStringSlice,
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					MapConv: ",omitempty",
 					JSON:    ",omitempty",
 				},
@@ -395,17 +395,17 @@ func (m *modelsDef) region() *schema.Model {
 	}
 }
 
-func (m *modelsDef) zoneInfoModel() *schema.Model {
-	return &schema.Model{
+func (m *modelsDef) zoneInfoModel() *dsl.Model {
+	return &dsl.Model{
 		Name:      "ZoneInfo",
 		NakedType: meta.Static(naked.Zone{}),
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			fields.ID(),
 			fields.Name(),
 			{
 				Name: "DisplayName",
 				Type: meta.TypeString,
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					MapConv: "Description,omitempty",
 					JSON:    ",omitempty",
 				},
@@ -413,7 +413,7 @@ func (m *modelsDef) zoneInfoModel() *schema.Model {
 			{
 				Name: "IsDummy",
 				Type: meta.TypeFlag,
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					MapConv: ",omitempty",
 					JSON:    ",omitempty",
 				},
@@ -421,7 +421,7 @@ func (m *modelsDef) zoneInfoModel() *schema.Model {
 			{
 				Name: "VNCProxy",
 				Type: m.vncProxyModel(),
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					MapConv: ",omitempty,recursive",
 					JSON:    ",omitempty",
 				},
@@ -429,7 +429,7 @@ func (m *modelsDef) zoneInfoModel() *schema.Model {
 			{
 				Name: "FTPServer",
 				Type: m.ftpServerInfo(),
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					MapConv: ",omitempty,recursive",
 					JSON:    ",omitempty",
 				},
@@ -437,7 +437,7 @@ func (m *modelsDef) zoneInfoModel() *schema.Model {
 			{
 				Name: "Region",
 				Type: m.region(),
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					MapConv: ",omitempty,recursive",
 					JSON:    ",omitempty",
 				},
@@ -446,15 +446,15 @@ func (m *modelsDef) zoneInfoModel() *schema.Model {
 	}
 }
 
-func (m *modelsDef) vncProxyModel() *schema.Model {
-	return &schema.Model{
+func (m *modelsDef) vncProxyModel() *dsl.Model {
+	return &dsl.Model{
 		Name:      "VNCProxy",
 		NakedType: meta.Static(naked.VNCProxy{}),
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			{
 				Name: "HostName",
 				Type: meta.TypeString,
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					MapConv: ",omitempty",
 					JSON:    ",omitempty",
 				},
@@ -462,7 +462,7 @@ func (m *modelsDef) vncProxyModel() *schema.Model {
 			{
 				Name: "IPAddress",
 				Type: meta.TypeString,
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					MapConv: ",omitempty",
 					JSON:    ",omitempty",
 				},
@@ -471,35 +471,35 @@ func (m *modelsDef) vncProxyModel() *schema.Model {
 	}
 }
 
-func (m *modelsDef) sourceArchiveInfo() *schema.Model {
-	return &schema.Model{
+func (m *modelsDef) sourceArchiveInfo() *dsl.Model {
+	return &dsl.Model{
 		Name: "SourceArchiveInfo",
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			{
 				Name: "ID",
 				Type: meta.TypeID,
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					MapConv: "ArchiveUnderZone.ID",
 				},
 			},
 			{
 				Name: "AccountID",
 				Type: meta.TypeID,
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					MapConv: "ArchiveUnderZone.Account.ID",
 				},
 			},
 			{
 				Name: "ZoneID",
 				Type: meta.TypeID,
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					MapConv: "ArchiveUnderZone.Zone.ID",
 				},
 			},
 			{
 				Name: "ZoneName",
 				Type: meta.TypeString,
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					MapConv: "ArchiveUnderZone.Zone.Name",
 				},
 			},
@@ -507,12 +507,12 @@ func (m *modelsDef) sourceArchiveInfo() *schema.Model {
 	}
 }
 
-func (m *modelsDef) packetFilterExpressions() *schema.Model {
-	return &schema.Model{
+func (m *modelsDef) packetFilterExpressions() *dsl.Model {
+	return &dsl.Model{
 		Name:      "PacketFilterExpression",
 		NakedType: meta.Static(naked.PacketFilterExpression{}),
 		IsArray:   true,
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			{
 				Name: "Protocol",
 				Type: meta.TypeProtocol,
@@ -536,12 +536,12 @@ func (m *modelsDef) packetFilterExpressions() *schema.Model {
 		},
 	}
 }
-func (m *modelsDef) bridgeInfoModel() *schema.Model {
-	return &schema.Model{
+func (m *modelsDef) bridgeInfoModel() *dsl.Model {
+	return &dsl.Model{
 		Name:      "BridgeInfo",
 		IsArray:   true,
 		NakedType: meta.Static(naked.Switch{}),
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			fields.ID(),
 			fields.Name(),
 			fields.ZoneID(),
@@ -549,11 +549,11 @@ func (m *modelsDef) bridgeInfoModel() *schema.Model {
 	}
 }
 
-func (m *modelsDef) switchInZoneModel() *schema.Model {
-	return &schema.Model{
+func (m *modelsDef) switchInZoneModel() *dsl.Model {
+	return &dsl.Model{
 		Name:      "BridgeSwitchInfo",
 		NakedType: meta.Static(naked.BridgeSwitchInfo{}),
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			fields.ID(),
 			fields.Name(),
 			fields.Scope(),
@@ -569,11 +569,11 @@ func (m *modelsDef) switchInZoneModel() *schema.Model {
 	}
 }
 
-func (m *modelsDef) internetModel() *schema.Model {
-	return &schema.Model{
+func (m *modelsDef) internetModel() *dsl.Model {
+	return &dsl.Model{
 		Name:      "Internet",
 		NakedType: meta.Static(naked.Internet{}),
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			fields.ID(),
 			fields.Name(),
 			fields.Description(),
@@ -585,7 +585,7 @@ func (m *modelsDef) internetModel() *schema.Model {
 			{
 				Name: "Switch",
 				Type: m.switchInfoModel(),
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					MapConv: ",recursive",
 				},
 			},
@@ -597,11 +597,11 @@ func (m *modelsDef) internetModel() *schema.Model {
 //
 // Subnetの情報は限定的にしか返ってこない(IPAddresses.Max/Minなどがない)ため注意
 // 必要であればSwitchリソース配下のSubnetsを参照すればOK
-func (m *modelsDef) switchInfoModel() *schema.Model {
-	return &schema.Model{
+func (m *modelsDef) switchInfoModel() *dsl.Model {
+	return &dsl.Model{
 		Name:      "SwitchInfo",
 		NakedType: meta.Static(naked.Switch{}),
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			fields.ID(),
 			fields.Name(),
 			fields.Description(),
@@ -610,7 +610,7 @@ func (m *modelsDef) switchInfoModel() *schema.Model {
 			{
 				Name: "Subnets",
 				Type: m.internetSubnet(),
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					MapConv: "[]Subnets,recursive",
 				},
 			},
@@ -618,12 +618,12 @@ func (m *modelsDef) switchInfoModel() *schema.Model {
 	}
 }
 
-func (m *modelsDef) internetSubnet() *schema.Model {
-	return &schema.Model{
+func (m *modelsDef) internetSubnet() *dsl.Model {
+	return &dsl.Model{
 		Name:      "InternetSubnet",
 		NakedType: meta.Static(naked.Subnet{}),
 		IsArray:   true,
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			fields.ID(),
 			fields.DefaultRoute(),
 			fields.NextHop(),
@@ -637,11 +637,11 @@ func (m *modelsDef) internetSubnet() *schema.Model {
 // internetSubnetOperationResult Internetリソースへのサブネット追加/更新時の戻り値
 //
 // internetSubnetに対しIPAddresses(文字列配列)を追加したもの
-func (m *modelsDef) internetSubnetOperationResult() *schema.Model {
-	return &schema.Model{
+func (m *modelsDef) internetSubnetOperationResult() *dsl.Model {
+	return &dsl.Model{
 		Name:      "InternetSubnetOperationResult",
 		NakedType: meta.Static(naked.Subnet{}),
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			fields.ID(),
 			fields.DefaultRoute(),
 			fields.NextHop(),
@@ -651,7 +651,7 @@ func (m *modelsDef) internetSubnetOperationResult() *schema.Model {
 			{
 				Name: "IPAddresses",
 				Type: meta.TypeStringSlice,
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					MapConv: "[]IPAddresses.IPAddress",
 				},
 			},
@@ -659,31 +659,31 @@ func (m *modelsDef) internetSubnetOperationResult() *schema.Model {
 	}
 }
 
-func (m *modelsDef) switchSubnet() *schema.Model {
+func (m *modelsDef) switchSubnet() *dsl.Model {
 	// switchSubnetはinternetSubnetにInternetとIPAddressesを追加したもの
 	subnet := m.internetSubnet()
 	subnet.Name = "SwitchSubnet"
 	subnet.Fields = append(subnet.Fields,
-		&schema.FieldDesc{
+		&dsl.FieldDesc{
 			Name: "Internet",
 			Type: m.internetModel(),
 		},
-		&schema.FieldDesc{
+		&dsl.FieldDesc{
 			Name: "AssignedIPAddressMax",
 			Type: meta.TypeString,
-			Tags: &schema.FieldTags{
+			Tags: &dsl.FieldTags{
 				MapConv: "IPAddresses.Max",
 			},
 		},
-		&schema.FieldDesc{
+		&dsl.FieldDesc{
 			Name: "AssignedIPAddressMin",
 			Type: meta.TypeString,
-			Tags: &schema.FieldTags{
+			Tags: &dsl.FieldTags{
 				MapConv: "IPAddresses.Min",
 			},
 		},
 	)
-	subnet.Accessors = []*schema.Accessor{
+	subnet.Accessors = []*dsl.Accessor{
 		{
 			Name:             "GetAssignedIPAddresses",
 			Description:      "割り当てられたIPアドレスのリスト",
@@ -694,15 +694,15 @@ func (m *modelsDef) switchSubnet() *schema.Model {
 	return subnet
 }
 
-func (m *modelsDef) vpcRouterSetting() *schema.Model {
-	return &schema.Model{
+func (m *modelsDef) vpcRouterSetting() *dsl.Model {
+	return &dsl.Model{
 		Name:      "VPCRouterSetting",
 		NakedType: meta.Static(naked.VPCRouterSettings{}),
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			{
 				Name: "VRID",
 				Type: meta.TypeInt,
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					JSON:    ",omitempty",
 					MapConv: "Router.VRID",
 				},
@@ -710,7 +710,7 @@ func (m *modelsDef) vpcRouterSetting() *schema.Model {
 			{
 				Name: "InternetConnectionEnabled",
 				Type: meta.TypeStringFlag,
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					JSON:    ",omitempty",
 					MapConv: "Router.InternetConnection.Enabled,omitempty",
 				},
@@ -718,7 +718,7 @@ func (m *modelsDef) vpcRouterSetting() *schema.Model {
 			{
 				Name: "Interfaces",
 				Type: m.vpcRouterInterface(),
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					JSON:    ",omitempty",
 					MapConv: "Router.[]Interface,omitempty,recursive",
 				},
@@ -726,7 +726,7 @@ func (m *modelsDef) vpcRouterSetting() *schema.Model {
 			{
 				Name: "StaticNAT",
 				Type: m.vpcRouterStaticNAT(),
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					JSON:    ",omitempty",
 					MapConv: "Router.StaticNAT.[]Config,omitempty,recursive",
 				},
@@ -734,7 +734,7 @@ func (m *modelsDef) vpcRouterSetting() *schema.Model {
 			{
 				Name: "Firewall",
 				Type: m.vpcRouterFirewall(),
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					JSON:    ",omitempty",
 					MapConv: "Router.Firewall.[]Config,omitempty,recursive",
 				},
@@ -742,7 +742,7 @@ func (m *modelsDef) vpcRouterSetting() *schema.Model {
 			{
 				Name: "DHCPServer",
 				Type: m.vpcRouterDHCPServer(),
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					JSON:    ",omitempty",
 					MapConv: "Router.DHCPServer.[]Config,omitempty,recursive",
 				},
@@ -750,7 +750,7 @@ func (m *modelsDef) vpcRouterSetting() *schema.Model {
 			{
 				Name: "DHCPStaticMapping",
 				Type: m.vpcRouterDHCPStaticMapping(),
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					JSON:    ",omitempty",
 					MapConv: "Router.DHCPStaticMapping.[]Config,omitempty,recursive",
 				},
@@ -758,7 +758,7 @@ func (m *modelsDef) vpcRouterSetting() *schema.Model {
 			{
 				Name: "PPTPServer",
 				Type: m.vpcRouterPPTPServer(),
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					JSON:    ",omitempty",
 					MapConv: "Router.PPTPServer.Config,omitempty,recursive",
 				},
@@ -766,7 +766,7 @@ func (m *modelsDef) vpcRouterSetting() *schema.Model {
 			{
 				Name: "PPTPServerEnabled",
 				Type: meta.TypeStringFlag,
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					JSON:    ",omitempty",
 					MapConv: "Router.PPTPServer.Enabled,omitempty",
 				},
@@ -774,7 +774,7 @@ func (m *modelsDef) vpcRouterSetting() *schema.Model {
 			{
 				Name: "L2TPIPsecServer",
 				Type: m.vpcRouterL2TPIPsecServer(),
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					JSON:    ",omitempty",
 					MapConv: "Router.L2TPIPsecServer.Config,omitempty,recursive",
 				},
@@ -782,7 +782,7 @@ func (m *modelsDef) vpcRouterSetting() *schema.Model {
 			{
 				Name: "L2TPIPsecServerEnabled",
 				Type: meta.TypeStringFlag,
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					JSON:    ",omitempty",
 					MapConv: "Router.L2TPIPsecServer.Enabled,omitempty",
 				},
@@ -790,7 +790,7 @@ func (m *modelsDef) vpcRouterSetting() *schema.Model {
 			{
 				Name: "RemoteAccessUsers",
 				Type: m.vpcRouterRemoteAccessUser(),
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					JSON:    ",omitempty",
 					MapConv: "Router.RemoteAccessUsers.[]Config,omitempty,recursive",
 				},
@@ -798,7 +798,7 @@ func (m *modelsDef) vpcRouterSetting() *schema.Model {
 			{
 				Name: "SiteToSiteIPsecVPN",
 				Type: m.vpcRouterSiteToSiteIPsecVPN(),
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					JSON:    ",omitempty",
 					MapConv: "Router.SiteToSiteIPsecVPN.[]Config,omitempty,recursive",
 				},
@@ -806,7 +806,7 @@ func (m *modelsDef) vpcRouterSetting() *schema.Model {
 			{
 				Name: "StaticRoute",
 				Type: m.vpcRouterStaticRoute(),
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					JSON:    ",omitempty",
 					MapConv: "Router.StaticRoutes.[]Config,omitempty,recursive",
 				},
@@ -815,12 +815,12 @@ func (m *modelsDef) vpcRouterSetting() *schema.Model {
 	}
 }
 
-func (m *modelsDef) vpcRouterInterface() *schema.Model {
-	return &schema.Model{
+func (m *modelsDef) vpcRouterInterface() *dsl.Model {
+	return &dsl.Model{
 		Name:      "VPCRouterInterfaceSetting",
 		NakedType: meta.Static(naked.VPCRouterInterface{}),
 		IsArray:   true,
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			fields.stringEnabled(),
 			{
 				Name: "IPAddress",
@@ -846,16 +846,16 @@ func (m *modelsDef) vpcRouterInterface() *schema.Model {
 	}
 }
 
-func (m *modelsDef) vpcRouterStaticNAT() *schema.Model {
-	return &schema.Model{
+func (m *modelsDef) vpcRouterStaticNAT() *dsl.Model {
+	return &dsl.Model{
 		Name:      "VPCRouterStaticNAT",
 		NakedType: meta.Static(naked.VPCRouterStaticNATConfig{}),
 		IsArray:   true,
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			{
 				Name: "GlobalAddress",
 				Type: meta.TypeString,
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					MapConv:  "GlobalAddress",
 					Validate: "ipv4",
 				},
@@ -863,7 +863,7 @@ func (m *modelsDef) vpcRouterStaticNAT() *schema.Model {
 			{
 				Name: "PrivateAddress",
 				Type: meta.TypeString,
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					MapConv:  "PrivateAddress",
 					Validate: "ipv4",
 				},
@@ -876,12 +876,12 @@ func (m *modelsDef) vpcRouterStaticNAT() *schema.Model {
 	}
 }
 
-func (m *modelsDef) vpcRouterFirewall() *schema.Model {
-	return &schema.Model{
+func (m *modelsDef) vpcRouterFirewall() *dsl.Model {
+	return &dsl.Model{
 		Name:      "VPCRouterFirewall",
 		NakedType: meta.Static(naked.VPCRouterFirewallConfig{}),
 		IsArray:   true,
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			{
 				Name: "Send",
 				Type: m.vpcRouterFirewallRule(),
@@ -893,12 +893,12 @@ func (m *modelsDef) vpcRouterFirewall() *schema.Model {
 		},
 	}
 }
-func (m *modelsDef) vpcRouterFirewallRule() *schema.Model {
-	return &schema.Model{
+func (m *modelsDef) vpcRouterFirewallRule() *dsl.Model {
+	return &dsl.Model{
 		Name:      "VPCRouterFirewallRule",
 		NakedType: meta.Static(naked.VPCRouterFirewallRule{}),
 		IsArray:   true,
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			{
 				Name: "Protocol",
 				Type: meta.TypeProtocol,
@@ -935,12 +935,12 @@ func (m *modelsDef) vpcRouterFirewallRule() *schema.Model {
 	}
 }
 
-func (m *modelsDef) vpcRouterDHCPServer() *schema.Model {
-	return &schema.Model{
+func (m *modelsDef) vpcRouterDHCPServer() *dsl.Model {
+	return &dsl.Model{
 		Name:      "VPCRouterDHCPServer",
 		NakedType: meta.Static(naked.VPCRouterDHCPServerConfig{}),
 		IsArray:   true,
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			{
 				Name: "Interface",
 				Type: meta.TypeString,
@@ -948,21 +948,21 @@ func (m *modelsDef) vpcRouterDHCPServer() *schema.Model {
 			{
 				Name: "RangeStart",
 				Type: meta.TypeString,
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					Validate: "ipv4",
 				},
 			},
 			{
 				Name: "RangeStop",
 				Type: meta.TypeString,
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					Validate: "ipv4",
 				},
 			},
 			{
 				Name: "DNSServers",
 				Type: meta.TypeStringSlice,
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					Validate: "dive,ipv4",
 				},
 			},
@@ -970,12 +970,12 @@ func (m *modelsDef) vpcRouterDHCPServer() *schema.Model {
 	}
 }
 
-func (m *modelsDef) vpcRouterDHCPStaticMapping() *schema.Model {
-	return &schema.Model{
+func (m *modelsDef) vpcRouterDHCPStaticMapping() *dsl.Model {
+	return &dsl.Model{
 		Name:      "VPCRouterDHCPStaticMapping",
 		NakedType: meta.Static(naked.VPCRouterDHCPStaticMappingConfig{}),
 		IsArray:   true,
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			{
 				Name: "MACAddress", // TODO typesに独自型作っておくべきか?
 				Type: meta.TypeString,
@@ -983,7 +983,7 @@ func (m *modelsDef) vpcRouterDHCPStaticMapping() *schema.Model {
 			{
 				Name: "IPAddress",
 				Type: meta.TypeString,
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					Validate: "ipv4",
 				},
 			},
@@ -991,22 +991,22 @@ func (m *modelsDef) vpcRouterDHCPStaticMapping() *schema.Model {
 	}
 }
 
-func (m *modelsDef) vpcRouterPPTPServer() *schema.Model {
-	return &schema.Model{
+func (m *modelsDef) vpcRouterPPTPServer() *dsl.Model {
+	return &dsl.Model{
 		Name:      "VPCRouterPPTPServer",
 		NakedType: meta.Static(naked.VPCRouterPPTPServerConfig{}),
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			{
 				Name: "RangeStart",
 				Type: meta.TypeString,
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					Validate: "ipv4",
 				},
 			},
 			{
 				Name: "RangeStop",
 				Type: meta.TypeString,
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					Validate: "ipv4",
 				},
 			},
@@ -1014,22 +1014,22 @@ func (m *modelsDef) vpcRouterPPTPServer() *schema.Model {
 	}
 }
 
-func (m *modelsDef) vpcRouterL2TPIPsecServer() *schema.Model {
-	return &schema.Model{
+func (m *modelsDef) vpcRouterL2TPIPsecServer() *dsl.Model {
+	return &dsl.Model{
 		Name:      "VPCRouterL2TPIPsecServer",
 		NakedType: meta.Static(naked.VPCRouterL2TPIPsecServerConfig{}),
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			{
 				Name: "RangeStart",
 				Type: meta.TypeString,
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					Validate: "ipv4",
 				},
 			},
 			{
 				Name: "RangeStop",
 				Type: meta.TypeString,
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					Validate: "ipv4",
 				},
 			},
@@ -1041,12 +1041,12 @@ func (m *modelsDef) vpcRouterL2TPIPsecServer() *schema.Model {
 	}
 }
 
-func (m *modelsDef) vpcRouterRemoteAccessUser() *schema.Model {
-	return &schema.Model{
+func (m *modelsDef) vpcRouterRemoteAccessUser() *dsl.Model {
+	return &dsl.Model{
 		Name:      "VPCRouterRemoteAccessUser",
 		NakedType: meta.Static(naked.VPCRouterRemoteAccessUserConfig{}),
 		IsArray:   true,
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			{
 				Name: "UserName",
 				Type: meta.TypeString,
@@ -1059,12 +1059,12 @@ func (m *modelsDef) vpcRouterRemoteAccessUser() *schema.Model {
 	}
 }
 
-func (m *modelsDef) vpcRouterSiteToSiteIPsecVPN() *schema.Model {
-	return &schema.Model{
+func (m *modelsDef) vpcRouterSiteToSiteIPsecVPN() *dsl.Model {
+	return &dsl.Model{
 		Name:      "VPCRouterSiteToSiteIPsecVPN",
 		NakedType: meta.Static(naked.VPCRouterSiteToSiteIPsecVPNConfig{}),
 		IsArray:   true,
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			{
 				Name: "Peer",
 				Type: meta.TypeString,
@@ -1089,12 +1089,12 @@ func (m *modelsDef) vpcRouterSiteToSiteIPsecVPN() *schema.Model {
 	}
 }
 
-func (m *modelsDef) vpcRouterStaticRoute() *schema.Model {
-	return &schema.Model{
+func (m *modelsDef) vpcRouterStaticRoute() *dsl.Model {
+	return &dsl.Model{
 		Name:      "VPCRouterStaticRoute",
 		NakedType: meta.Static(naked.VPCRouterStaticRouteConfig{}),
 		IsArray:   true,
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			{
 				Name: "Prefix",
 				Type: meta.TypeString,

@@ -3,11 +3,11 @@ package names
 import (
 	"strings"
 
-	"github.com/sacloud/libsacloud/v2/internal/schema"
+	"github.com/sacloud/libsacloud/v2/internal/dsl"
 )
 
 // ResourceFieldName リソース名がペイロードなどで利用される場合のフィールド名、コード生成時に利用される
-func ResourceFieldName(resourceName string, form schema.PayloadForm) string {
+func ResourceFieldName(resourceName string, form dsl.PayloadForm) string {
 	switch {
 	case form.IsSingular():
 		return resourceName
