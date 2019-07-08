@@ -94,7 +94,7 @@ type authstatusReadResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	AuthStatus *naked.Archive `json:",omitempty"`
+	AuthStatus *naked.AuthStatus `json:",omitempty"`
 }
 
 // bridgeFindRequestEnvelope is envelop of API request
