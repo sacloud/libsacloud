@@ -26,46 +26,36 @@ func (o *SwitchOp) Find(ctx context.Context, zone string, conditions *sacloud.Fi
 }
 
 // Create is fake implementation
-func (o *SwitchOp) Create(ctx context.Context, zone string, param *sacloud.SwitchCreateRequest) (*sacloud.SwitchCreateResult, error) {
+func (o *SwitchOp) Create(ctx context.Context, zone string, param *sacloud.SwitchCreateRequest) (*sacloud.Switch, error) {
 	result := &sacloud.Switch{}
 	copySameNameField(param, result)
 	fill(result, fillID, fillCreatedAt, fillAvailability, fillScope)
 	result.Scope = types.Scopes.User
 	s.setSwitch(zone, result)
-	return &sacloud.SwitchCreateResult{
-		IsOk:   true,
-		Switch: result,
-	}, nil
+	return result, nil
 }
 
 // Read is fake implementation
-func (o *SwitchOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.SwitchReadResult, error) {
+func (o *SwitchOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Switch, error) {
 	value := s.getSwitchByID(zone, id)
 	if value == nil {
 		return nil, newErrorNotFound(o.key, id)
 	}
 	dest := &sacloud.Switch{}
 	copySameNameField(value, dest)
-	return &sacloud.SwitchReadResult{
-		IsOk:   true,
-		Switch: dest,
-	}, nil
+	return dest, nil
 }
 
 // Update is fake implementation
-func (o *SwitchOp) Update(ctx context.Context, zone string, id types.ID, param *sacloud.SwitchUpdateRequest) (*sacloud.SwitchUpdateResult, error) {
-	readResult, err := o.Read(ctx, zone, id)
+func (o *SwitchOp) Update(ctx context.Context, zone string, id types.ID, param *sacloud.SwitchUpdateRequest) (*sacloud.Switch, error) {
+	value, err := o.Read(ctx, zone, id)
 	if err != nil {
 		return nil, err
 	}
-	value := readResult.Switch
 
 	copySameNameField(param, value)
 	fill(value, fillModifiedAt)
-	return &sacloud.SwitchUpdateResult{
-		IsOk:   true,
-		Switch: value,
-	}, nil
+	return value, nil
 }
 
 // Delete is fake implementation
@@ -80,18 +70,16 @@ func (o *SwitchOp) Delete(ctx context.Context, zone string, id types.ID) error {
 
 // ConnectToBridge is fake implementation
 func (o *SwitchOp) ConnectToBridge(ctx context.Context, zone string, id types.ID, bridgeID types.ID) error {
-	readResult, err := o.Read(ctx, zone, id)
+	value, err := o.Read(ctx, zone, id)
 	if err != nil {
 		return err
 	}
-	value := readResult.Switch
 
 	bridgeOp := NewBridgeOp()
-	bridgeReadResult, err := bridgeOp.Read(ctx, zone, bridgeID)
+	bridge, err := bridgeOp.Read(ctx, zone, bridgeID)
 	if err != nil {
 		return fmt.Errorf("ConnectToBridge is failed: %s", err)
 	}
-	bridge := bridgeReadResult.Bridge
 
 	if bridge.SwitchInZone != nil {
 		return newErrorConflict(o.key, id, fmt.Sprintf("Bridge[%d] already connected to switch", bridgeID))
@@ -116,22 +104,20 @@ func (o *SwitchOp) ConnectToBridge(ctx context.Context, zone string, id types.ID
 
 // DisconnectFromBridge is fake implementation
 func (o *SwitchOp) DisconnectFromBridge(ctx context.Context, zone string, id types.ID) error {
-	readResult, err := o.Read(ctx, zone, id)
+	value, err := o.Read(ctx, zone, id)
 	if err != nil {
 		return err
 	}
-	value := readResult.Switch
 
 	if value.BridgeID.IsEmpty() {
 		return newErrorConflict(o.key, id, fmt.Sprintf("Switch[%d] already disconnected from switch", id))
 	}
 
 	bridgeOp := NewBridgeOp()
-	bridgeReadResult, err := bridgeOp.Read(ctx, zone, value.BridgeID)
+	bridge, err := bridgeOp.Read(ctx, zone, value.BridgeID)
 	if err != nil {
 		return fmt.Errorf("DisconnectFromBridge is failed: %s", err)
 	}
-	bridge := bridgeReadResult.Bridge
 
 	//var bridgeInfo []*sacloud.BridgeInfo
 	//for _, i := range bridge.BridgeInfo {

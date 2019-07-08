@@ -25,19 +25,16 @@ func (o *NoteOp) Find(ctx context.Context, zone string, conditions *sacloud.Find
 }
 
 // Create is fake implementation
-func (o *NoteOp) Create(ctx context.Context, zone string, param *sacloud.NoteCreateRequest) (*sacloud.NoteCreateResult, error) {
+func (o *NoteOp) Create(ctx context.Context, zone string, param *sacloud.NoteCreateRequest) (*sacloud.Note, error) {
 	result := &sacloud.Note{}
 	copySameNameField(param, result)
 	fill(result, fillID, fillCreatedAt, fillAvailability, fillScope)
 	s.setNote(sacloud.APIDefaultZone, result)
-	return &sacloud.NoteCreateResult{
-		IsOk: true,
-		Note: result,
-	}, nil
+	return result, nil
 }
 
 // Read is fake implementation
-func (o *NoteOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.NoteReadResult, error) {
+func (o *NoteOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Note, error) {
 	value := s.getNoteByID(sacloud.APIDefaultZone, id)
 	if value == nil {
 		return nil, newErrorNotFound(o.key, id)
@@ -45,26 +42,19 @@ func (o *NoteOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.N
 
 	dest := &sacloud.Note{}
 	copySameNameField(value, dest)
-	return &sacloud.NoteReadResult{
-		IsOk: true,
-		Note: dest,
-	}, nil
+	return dest, nil
 }
 
 // Update is fake implementation
-func (o *NoteOp) Update(ctx context.Context, zone string, id types.ID, param *sacloud.NoteUpdateRequest) (*sacloud.NoteUpdateResult, error) {
-	readResult, err := o.Read(ctx, sacloud.APIDefaultZone, id)
+func (o *NoteOp) Update(ctx context.Context, zone string, id types.ID, param *sacloud.NoteUpdateRequest) (*sacloud.Note, error) {
+	value, err := o.Read(ctx, sacloud.APIDefaultZone, id)
 	if err != nil {
 		return nil, err
 	}
-	value := readResult.Note
 
 	copySameNameField(param, value)
 	fill(value, fillModifiedAt)
-	return &sacloud.NoteUpdateResult{
-		IsOk: true,
-		Note: value,
-	}, nil
+	return value, nil
 }
 
 // Delete is fake implementation

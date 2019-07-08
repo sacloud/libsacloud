@@ -27,7 +27,7 @@ func (o *NFSOp) Find(ctx context.Context, zone string, conditions *sacloud.FindC
 }
 
 // Create is fake implementation
-func (o *NFSOp) Create(ctx context.Context, zone string, param *sacloud.NFSCreateRequest) (*sacloud.NFSCreateResult, error) {
+func (o *NFSOp) Create(ctx context.Context, zone string, param *sacloud.NFSCreateRequest) (*sacloud.NFS, error) {
 	result := &sacloud.NFS{}
 	copySameNameField(param, result)
 	fill(result, fillID, fillCreatedAt)
@@ -40,55 +40,40 @@ func (o *NFSOp) Create(ctx context.Context, zone string, param *sacloud.NFSCreat
 
 	id := result.ID
 	startPowerOn(o.key, zone, func() (interface{}, error) {
-		res, err := o.Read(context.Background(), zone, id)
-		if err != nil {
-			return nil, err
-		}
-		return res.NFS, nil
+		return o.Read(context.Background(), zone, id)
 	})
-	return &sacloud.NFSCreateResult{
-		IsOk: true,
-		NFS:  result,
-	}, nil
+	return result, nil
 }
 
 // Read is fake implementation
-func (o *NFSOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.NFSReadResult, error) {
+func (o *NFSOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.NFS, error) {
 	value := s.getNFSByID(zone, id)
 	if value == nil {
 		return nil, newErrorNotFound(o.key, id)
 	}
 	dest := &sacloud.NFS{}
 	copySameNameField(value, dest)
-	return &sacloud.NFSReadResult{
-		IsOk: true,
-		NFS:  dest,
-	}, nil
+	return dest, nil
 }
 
 // Update is fake implementation
-func (o *NFSOp) Update(ctx context.Context, zone string, id types.ID, param *sacloud.NFSUpdateRequest) (*sacloud.NFSUpdateResult, error) {
-	readResult, err := o.Read(ctx, zone, id)
+func (o *NFSOp) Update(ctx context.Context, zone string, id types.ID, param *sacloud.NFSUpdateRequest) (*sacloud.NFS, error) {
+	value, err := o.Read(ctx, zone, id)
 	if err != nil {
 		return nil, err
 	}
-	value := readResult.NFS
 
 	copySameNameField(param, value)
 	fill(value, fillModifiedAt)
-	return &sacloud.NFSUpdateResult{
-		IsOk: true,
-		NFS:  value,
-	}, nil
+	return value, nil
 }
 
 // Delete is fake implementation
 func (o *NFSOp) Delete(ctx context.Context, zone string, id types.ID) error {
-	readResult, err := o.Read(ctx, zone, id)
+	value, err := o.Read(ctx, zone, id)
 	if err != nil {
 		return err
 	}
-	value := readResult.NFS
 	if value.InstanceStatus.IsUp() {
 		return newErrorConflict(o.key, id, fmt.Sprintf("NFS[%s] is still running", id))
 	}
@@ -99,21 +84,16 @@ func (o *NFSOp) Delete(ctx context.Context, zone string, id types.ID) error {
 
 // Boot is fake implementation
 func (o *NFSOp) Boot(ctx context.Context, zone string, id types.ID) error {
-	readResult, err := o.Read(ctx, zone, id)
+	value, err := o.Read(ctx, zone, id)
 	if err != nil {
 		return err
 	}
-	value := readResult.NFS
 	if value.InstanceStatus.IsUp() {
 		return newErrorConflict(o.key, id, "Boot is failed")
 	}
 
 	startPowerOn(o.key, zone, func() (interface{}, error) {
-		res, err := o.Read(context.Background(), zone, id)
-		if err != nil {
-			return nil, err
-		}
-		return res.NFS, nil
+		return o.Read(context.Background(), zone, id)
 	})
 
 	return err
@@ -121,21 +101,16 @@ func (o *NFSOp) Boot(ctx context.Context, zone string, id types.ID) error {
 
 // Shutdown is fake implementation
 func (o *NFSOp) Shutdown(ctx context.Context, zone string, id types.ID, shutdownOption *sacloud.ShutdownOption) error {
-	readResult, err := o.Read(ctx, zone, id)
+	value, err := o.Read(ctx, zone, id)
 	if err != nil {
 		return err
 	}
-	value := readResult.NFS
 	if !value.InstanceStatus.IsUp() {
 		return newErrorConflict(o.key, id, "Shutdown is failed")
 	}
 
 	startPowerOff(o.key, zone, func() (interface{}, error) {
-		res, err := o.Read(context.Background(), zone, id)
-		if err != nil {
-			return nil, err
-		}
-		return res.NFS, nil
+		return o.Read(context.Background(), zone, id)
 	})
 
 	return err
@@ -143,28 +118,23 @@ func (o *NFSOp) Shutdown(ctx context.Context, zone string, id types.ID, shutdown
 
 // Reset is fake implementation
 func (o *NFSOp) Reset(ctx context.Context, zone string, id types.ID) error {
-	readResult, err := o.Read(ctx, zone, id)
+	value, err := o.Read(ctx, zone, id)
 	if err != nil {
 		return err
 	}
-	value := readResult.NFS
 	if !value.InstanceStatus.IsUp() {
 		return newErrorConflict(o.key, id, "Reset is failed")
 	}
 
 	startPowerOn(o.key, zone, func() (interface{}, error) {
-		res, err := o.Read(context.Background(), zone, id)
-		if err != nil {
-			return nil, err
-		}
-		return res.NFS, nil
+		return o.Read(context.Background(), zone, id)
 	})
 
 	return nil
 }
 
 // MonitorFreeDiskSize is fake implementation
-func (o *NFSOp) MonitorFreeDiskSize(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.NFSMonitorFreeDiskSizeResult, error) {
+func (o *NFSOp) MonitorFreeDiskSize(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.FreeDiskSizeActivity, error) {
 	_, err := o.Read(ctx, zone, id)
 	if err != nil {
 		return nil, err
@@ -184,14 +154,11 @@ func (o *NFSOp) MonitorFreeDiskSize(ctx context.Context, zone string, id types.I
 		})
 	}
 
-	return &sacloud.NFSMonitorFreeDiskSizeResult{
-		IsOk:                 true,
-		FreeDiskSizeActivity: res,
-	}, nil
+	return res, nil
 }
 
 // MonitorInterface is fake implementation
-func (o *NFSOp) MonitorInterface(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.NFSMonitorInterfaceResult, error) {
+func (o *NFSOp) MonitorInterface(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.InterfaceActivity, error) {
 	_, err := o.Read(ctx, zone, id)
 	if err != nil {
 		return nil, err
@@ -212,8 +179,5 @@ func (o *NFSOp) MonitorInterface(ctx context.Context, zone string, id types.ID, 
 		})
 	}
 
-	return &sacloud.NFSMonitorInterfaceResult{
-		IsOk:              true,
-		InterfaceActivity: res,
-	}, nil
+	return res, nil
 }

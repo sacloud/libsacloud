@@ -72,29 +72,17 @@ var (
 
 func testBridgeCreate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewBridgeOp(caller)
-	res, err := client.Create(context.Background(), testZone, createBridgeParam)
-	if err != nil {
-		return nil, err
-	}
-	return res.Bridge, nil
+	return client.Create(context.Background(), testZone, createBridgeParam)
 }
 
 func testBridgeRead(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewBridgeOp(caller)
-	res, err := client.Read(context.Background(), testZone, testContext.ID)
-	if err != nil {
-		return nil, err
-	}
-	return res.Bridge, nil
+	return client.Read(context.Background(), testZone, testContext.ID)
 }
 
 func testBridgeUpdate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewBridgeOp(caller)
-	res, err := client.Update(context.Background(), testZone, testContext.ID, updateBridgeParam)
-	if err != nil {
-		return nil, err
-	}
-	return res.Bridge, nil
+	return client.Update(context.Background(), testZone, testContext.ID, updateBridgeParam)
 }
 
 func testBridgeDelete(testContext *CRUDTestContext, caller sacloud.APICaller) error {
