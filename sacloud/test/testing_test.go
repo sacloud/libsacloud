@@ -14,10 +14,6 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func isAccTest() bool {
-	return os.Getenv("TESTACC") == "1"
-}
-
 // TestT テストのライフサイクルを管理するためのインターフェース.
 //
 // 通常は*testing.Tを実装として利用する

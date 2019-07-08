@@ -37,8 +37,16 @@ import (
 {{- end }}
 )
 
-{{ range . }} {{ $typeName := .TypeName }}
+// AddClientFactoryHooks add client factory hooks
+func AddClientFactoryHooks() {
+{{ range . -}} 
+	sacloud.AddClientFacotyHookFunc("{{.TypeName}}", func(in interface{}) interface{} {
+		return New{{.TypeName}}Tracer(in.(sacloud.{{.TypeName}}API))
+	})
+{{ end -}}
+}
 
+{{ range . }} {{$typeName := .TypeName}}
 /************************************************* 
 * {{ $typeName }}Tracer
 *************************************************/
