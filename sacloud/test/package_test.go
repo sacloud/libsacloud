@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"net/http"
 	"os"
 	"sync"
 	"testing"
@@ -19,6 +20,7 @@ import (
 
 var testZone string
 var apiCaller sacloud.APICaller
+var httpTrace bool
 
 var accTestOnce sync.Once
 var accTestMu sync.Mutex
@@ -42,6 +44,10 @@ func singletonAPICaller() sacloud.APICaller {
 
 		client.RetryMax = 20
 		client.RetryInterval = 3 * time.Second
+		client.HTTPClient = &http.Client{}
+		if httpTrace {
+			client.HTTPClient.Transport = &sacloud.TracingRoundTripper{}
+		}
 
 		apiCaller = client
 	})
@@ -56,6 +62,14 @@ func isEnableTrace() bool {
 	return os.Getenv("SAKURACLOUD_TRACE") != ""
 }
 
+func isEnableAPITrace() bool {
+	return os.Getenv("SAKURACLOUD_TRACE_API") != ""
+}
+
+func isEnableHTTPTrace() bool {
+	return os.Getenv("SAKURACLOUD_TRACE_HTTP") != ""
+}
+
 func TestMain(m *testing.M) {
 	testZone = os.Getenv("SAKURACLOUD_ZONE")
 	if testZone == "" {
@@ -67,8 +81,12 @@ func TestMain(m *testing.M) {
 		fake.SwitchFactoryFuncToFake()
 	}
 
-	if isEnableTrace() {
+	if isEnableTrace() || isEnableAPITrace() {
 		trace.AddClientFactoryHooks()
+	}
+
+	if isEnableTrace() || isEnableHTTPTrace() {
+		httpTrace = true
 	}
 
 	ret := m.Run()
