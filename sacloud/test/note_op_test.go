@@ -74,29 +74,17 @@ var (
 
 func testNoteCreate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewNoteOp(caller)
-	res, err := client.Create(context.Background(), sacloud.APIDefaultZone, createNoteParam)
-	if err != nil {
-		return nil, err
-	}
-	return res.Note, nil
+	return client.Create(context.Background(), sacloud.APIDefaultZone, createNoteParam)
 }
 
 func testNoteRead(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewNoteOp(caller)
-	res, err := client.Read(context.Background(), sacloud.APIDefaultZone, testContext.ID)
-	if err != nil {
-		return nil, err
-	}
-	return res.Note, nil
+	return client.Read(context.Background(), sacloud.APIDefaultZone, testContext.ID)
 }
 
 func testNoteUpdate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewNoteOp(caller)
-	res, err := client.Update(context.Background(), sacloud.APIDefaultZone, testContext.ID, updateNoteParam)
-	if err != nil {
-		return nil, err
-	}
-	return res.Note, nil
+	return client.Update(context.Background(), sacloud.APIDefaultZone, testContext.ID, updateNoteParam)
 }
 
 func testNoteDelete(testContext *CRUDTestContext, caller sacloud.APICaller) error {

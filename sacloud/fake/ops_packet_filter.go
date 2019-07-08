@@ -25,46 +25,36 @@ func (o *PacketFilterOp) Find(ctx context.Context, zone string, conditions *sacl
 }
 
 // Create is fake implementation
-func (o *PacketFilterOp) Create(ctx context.Context, zone string, param *sacloud.PacketFilterCreateRequest) (*sacloud.PacketFilterCreateResult, error) {
+func (o *PacketFilterOp) Create(ctx context.Context, zone string, param *sacloud.PacketFilterCreateRequest) (*sacloud.PacketFilter, error) {
 	result := &sacloud.PacketFilter{}
 	copySameNameField(param, result)
 	fill(result, fillID, fillCreatedAt)
 
 	s.setPacketFilter(zone, result)
-	return &sacloud.PacketFilterCreateResult{
-		IsOk:         true,
-		PacketFilter: result,
-	}, nil
+	return result, nil
 }
 
 // Read is fake implementation
-func (o *PacketFilterOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.PacketFilterReadResult, error) {
+func (o *PacketFilterOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.PacketFilter, error) {
 	value := s.getPacketFilterByID(zone, id)
 	if value == nil {
 		return nil, newErrorNotFound(o.key, id)
 	}
 	dest := &sacloud.PacketFilter{}
 	copySameNameField(value, dest)
-	return &sacloud.PacketFilterReadResult{
-		IsOk:         true,
-		PacketFilter: dest,
-	}, nil
+	return dest, nil
 }
 
 // Update is fake implementation
-func (o *PacketFilterOp) Update(ctx context.Context, zone string, id types.ID, param *sacloud.PacketFilterUpdateRequest) (*sacloud.PacketFilterUpdateResult, error) {
-	readResult, err := o.Read(ctx, zone, id)
+func (o *PacketFilterOp) Update(ctx context.Context, zone string, id types.ID, param *sacloud.PacketFilterUpdateRequest) (*sacloud.PacketFilter, error) {
+	value, err := o.Read(ctx, zone, id)
 	if err != nil {
 		return nil, err
 	}
-	value := readResult.PacketFilter
 	copySameNameField(param, value)
 	fill(value, fillModifiedAt)
 
-	return &sacloud.PacketFilterUpdateResult{
-		IsOk:         true,
-		PacketFilter: value,
-	}, nil
+	return value, nil
 }
 
 // Delete is fake implementation

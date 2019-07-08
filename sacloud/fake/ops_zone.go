@@ -25,15 +25,12 @@ func (o *ZoneOp) Find(ctx context.Context, zone string, conditions *sacloud.Find
 }
 
 // Read is fake implementation
-func (o *ZoneOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.ZoneReadResult, error) {
+func (o *ZoneOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Zone, error) {
 	value := s.getZoneByID(sacloud.APIDefaultZone, id)
 	if value == nil {
 		return nil, newErrorNotFound(o.key, id)
 	}
 	dest := &sacloud.Zone{}
 	copySameNameField(value, dest)
-	return &sacloud.ZoneReadResult{
-		IsOk: true,
-		Zone: dest,
-	}, nil
+	return dest, nil
 }

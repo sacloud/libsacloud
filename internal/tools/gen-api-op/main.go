@@ -126,7 +126,7 @@ func (o *{{ $typeName }}Op) {{ .MethodName }}(ctx context.Context{{ range .Argum
 	if err :=  mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return {{ $returnErrStatement }}
 	}	
-	return results, nil
+	return {{ .ReturnStatement }}
 	{{ else }}
 	return nil
 	{{ end -}}

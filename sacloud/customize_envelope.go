@@ -7,8 +7,8 @@ import (
 )
 
 // UnmarshalJSON APIからの戻り値でレスポンスボディ直下にデータを持つことへの対応
-func (a *authstatusReadResponseEnvelope) UnmarshalJSON(data []byte) error {
-	type alias authstatusReadResponseEnvelope
+func (a *authStatusReadResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type alias authStatusReadResponseEnvelope
 
 	var tmp alias
 	if err := json.Unmarshal(data, &tmp); err != nil {
@@ -21,6 +21,6 @@ func (a *authstatusReadResponseEnvelope) UnmarshalJSON(data []byte) error {
 	}
 	tmp.AuthStatus = &nakedAuthStatus
 
-	*a = authstatusReadResponseEnvelope(tmp)
+	*a = authStatusReadResponseEnvelope(tmp)
 	return nil
 }

@@ -130,10 +130,7 @@ func (o *{{ $.TypeName }}Op) {{ .MethodName }}(ctx context.Context{{ range .Argu
 	// TODO core logic is not implemented
 
 	s.set{{$.TypeName}}({{if $.IsGlobal}}sacloud.DefaultZone{{else}}zone{{end}}, result)
-	return &sacloud.{{.ResultTypeName}}{
-		IsOk: true,
-		{{$.TypeName}}: result,
-	}, nil
+	return result, nil
 {{ else if eq .MethodName "Read" -}}
 	value := s.get{{$.TypeName}}ByID({{if $.IsGlobal}}sacloud.DefaultZone{{else}}zone{{end}}, id)
 	if value == nil {
@@ -141,25 +138,17 @@ func (o *{{ $.TypeName }}Op) {{ .MethodName }}(ctx context.Context{{ range .Argu
 	}
 	dest := &sacloud.{{$.TypeName}}{}
 	copySameNameField(value, dest)
-	return &sacloud.{{.ResultTypeName}}{
-		IsOk: true,
-		{{$.TypeName}}: dest,
-	}, nil
+	return dest, nil
 {{ else if eq .MethodName "Update" -}}
-	readResult, err := o.Read(ctx, {{if $.IsGlobal}}sacloud.DefaultZone{{else}}zone{{end}}, id)
+	value, err := o.Read(ctx, {{if $.IsGlobal}}sacloud.DefaultZone{{else}}zone{{end}}, id)
 	if err != nil {
 		return nil, err
 	}
-	value := readResult.{{$.TypeName}}
 	copySameNameField(param, value)
 	fill(value, fillModifiedAt)
 
 	// TODO core logic is not implemented
-
-	return &sacloud.{{.ResultTypeName}}{
-		IsOk: true,
-		{{$.TypeName}}: dest,
-	}, nil
+	return value, nil
 {{ else if eq .MethodName "Delete" -}}
 	_, err := o.Read(ctx, {{if $.IsGlobal}}sacloud.DefaultZone{{else}}zone{{end}}, id)
 	if err != nil {

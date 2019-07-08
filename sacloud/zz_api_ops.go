@@ -217,11 +217,11 @@ func (o *ArchiveOp) Find(ctx context.Context, zone string, conditions *FindCondi
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results, err
 }
 
 // Create is API call
-func (o *ArchiveOp) Create(ctx context.Context, zone string, param *ArchiveCreateRequest) (*ArchiveCreateResult, error) {
+func (o *ArchiveOp) Create(ctx context.Context, zone string, param *ArchiveCreateRequest) (*Archive, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -265,15 +265,15 @@ func (o *ArchiveOp) Create(ctx context.Context, zone string, param *ArchiveCreat
 		return nil, err
 	}
 
-	results := &ArchiveCreateResult{}
+	results := &archiveCreateResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results.Archive, nil
 }
 
 // CreateBlank is API call
-func (o *ArchiveOp) CreateBlank(ctx context.Context, zone string, param *ArchiveCreateBlankRequest) (*ArchiveCreateBlankResult, error) {
+func (o *ArchiveOp) CreateBlank(ctx context.Context, zone string, param *ArchiveCreateBlankRequest) (*Archive, *FTPServer, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -282,7 +282,7 @@ func (o *ArchiveOp) CreateBlank(ctx context.Context, zone string, param *Archive
 		"param":      param,
 	})
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	var body interface{}
@@ -303,29 +303,29 @@ func (o *ArchiveOp) CreateBlank(ctx context.Context, zone string, param *Archive
 
 	v := &archiveCreateBlankRequestEnvelope{}
 	if err := mapconv.ConvertTo(args, v); err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	body = v
 
 	data, err := o.Client.Do(ctx, "POST", url, body)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	nakedResponse := &archiveCreateBlankResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
-	results := &ArchiveCreateBlankResult{}
+	results := &archiveCreateBlankResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
-		return nil, err
+		return nil, nil, err
 	}
-	return results, nil
+	return results.Archive, results.FTPServer, nil
 }
 
 // Read is API call
-func (o *ArchiveOp) Read(ctx context.Context, zone string, id types.ID) (*ArchiveReadResult, error) {
+func (o *ArchiveOp) Read(ctx context.Context, zone string, id types.ID) (*Archive, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -349,15 +349,15 @@ func (o *ArchiveOp) Read(ctx context.Context, zone string, id types.ID) (*Archiv
 		return nil, err
 	}
 
-	results := &ArchiveReadResult{}
+	results := &archiveReadResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results.Archive, nil
 }
 
 // Update is API call
-func (o *ArchiveOp) Update(ctx context.Context, zone string, id types.ID, param *ArchiveUpdateRequest) (*ArchiveUpdateResult, error) {
+func (o *ArchiveOp) Update(ctx context.Context, zone string, id types.ID, param *ArchiveUpdateRequest) (*Archive, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -407,11 +407,11 @@ func (o *ArchiveOp) Update(ctx context.Context, zone string, id types.ID, param 
 		return nil, err
 	}
 
-	results := &ArchiveUpdateResult{}
+	results := &archiveUpdateResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results.Archive, nil
 }
 
 // Delete is API call
@@ -438,7 +438,7 @@ func (o *ArchiveOp) Delete(ctx context.Context, zone string, id types.ID) error 
 }
 
 // OpenFTP is API call
-func (o *ArchiveOp) OpenFTP(ctx context.Context, zone string, id types.ID, openOption *OpenFTPRequest) (*ArchiveOpenFTPResult, error) {
+func (o *ArchiveOp) OpenFTP(ctx context.Context, zone string, id types.ID, openOption *OpenFTPRequest) (*FTPServer, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/ftp", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -488,11 +488,11 @@ func (o *ArchiveOp) OpenFTP(ctx context.Context, zone string, id types.ID, openO
 		return nil, err
 	}
 
-	results := &ArchiveOpenFTPResult{}
+	results := &archiveOpenFTPResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results.FTPServer, nil
 }
 
 // CloseFTP is API call
@@ -538,7 +538,7 @@ func NewAuthStatusOp(caller APICaller) AuthStatusAPI {
 }
 
 // Read is API call
-func (o *AuthStatusOp) Read(ctx context.Context, zone string) (*AuthStatusReadResult, error) {
+func (o *AuthStatusOp) Read(ctx context.Context, zone string) (*AuthStatus, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -556,16 +556,16 @@ func (o *AuthStatusOp) Read(ctx context.Context, zone string) (*AuthStatusReadRe
 		return nil, err
 	}
 
-	nakedResponse := &authstatusReadResponseEnvelope{}
+	nakedResponse := &authStatusReadResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
 
-	results := &AuthStatusReadResult{}
+	results := &authStatusReadResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results.AuthStatus, nil
 }
 
 /*************************************************
@@ -636,11 +636,11 @@ func (o *BridgeOp) Find(ctx context.Context, zone string, conditions *FindCondit
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results, err
 }
 
 // Create is API call
-func (o *BridgeOp) Create(ctx context.Context, zone string, param *BridgeCreateRequest) (*BridgeCreateResult, error) {
+func (o *BridgeOp) Create(ctx context.Context, zone string, param *BridgeCreateRequest) (*Bridge, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -684,15 +684,15 @@ func (o *BridgeOp) Create(ctx context.Context, zone string, param *BridgeCreateR
 		return nil, err
 	}
 
-	results := &BridgeCreateResult{}
+	results := &bridgeCreateResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results.Bridge, nil
 }
 
 // Read is API call
-func (o *BridgeOp) Read(ctx context.Context, zone string, id types.ID) (*BridgeReadResult, error) {
+func (o *BridgeOp) Read(ctx context.Context, zone string, id types.ID) (*Bridge, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -716,15 +716,15 @@ func (o *BridgeOp) Read(ctx context.Context, zone string, id types.ID) (*BridgeR
 		return nil, err
 	}
 
-	results := &BridgeReadResult{}
+	results := &bridgeReadResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results.Bridge, nil
 }
 
 // Update is API call
-func (o *BridgeOp) Update(ctx context.Context, zone string, id types.ID, param *BridgeUpdateRequest) (*BridgeUpdateResult, error) {
+func (o *BridgeOp) Update(ctx context.Context, zone string, id types.ID, param *BridgeUpdateRequest) (*Bridge, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -774,11 +774,11 @@ func (o *BridgeOp) Update(ctx context.Context, zone string, id types.ID, param *
 		return nil, err
 	}
 
-	results := &BridgeUpdateResult{}
+	results := &bridgeUpdateResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results.Bridge, nil
 }
 
 // Delete is API call
@@ -852,7 +852,7 @@ func (o *CDROMOp) Find(ctx context.Context, zone string, conditions *FindConditi
 		Argconditions: conditions,
 	}
 
-	v := &cdromFindRequestEnvelope{}
+	v := &cDROMFindRequestEnvelope{}
 	if err := mapconv.ConvertTo(args, v); err != nil {
 		return nil, err
 	}
@@ -863,7 +863,7 @@ func (o *CDROMOp) Find(ctx context.Context, zone string, conditions *FindConditi
 		return nil, err
 	}
 
-	nakedResponse := &cdromFindResponseEnvelope{}
+	nakedResponse := &cDROMFindResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
@@ -872,11 +872,11 @@ func (o *CDROMOp) Find(ctx context.Context, zone string, conditions *FindConditi
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results, err
 }
 
 // Create is API call
-func (o *CDROMOp) Create(ctx context.Context, zone string, param *CDROMCreateRequest) (*CDROMCreateResult, error) {
+func (o *CDROMOp) Create(ctx context.Context, zone string, param *CDROMCreateRequest) (*CDROM, *FTPServer, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -885,7 +885,7 @@ func (o *CDROMOp) Create(ctx context.Context, zone string, param *CDROMCreateReq
 		"param":      param,
 	})
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	var body interface{}
@@ -904,31 +904,31 @@ func (o *CDROMOp) Create(ctx context.Context, zone string, param *CDROMCreateReq
 		Argparam: param,
 	}
 
-	v := &cdromCreateRequestEnvelope{}
+	v := &cDROMCreateRequestEnvelope{}
 	if err := mapconv.ConvertTo(args, v); err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	body = v
 
 	data, err := o.Client.Do(ctx, "POST", url, body)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
-	nakedResponse := &cdromCreateResponseEnvelope{}
+	nakedResponse := &cDROMCreateResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
-	results := &CDROMCreateResult{}
+	results := &cDROMCreateResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
-		return nil, err
+		return nil, nil, err
 	}
-	return results, nil
+	return results.CDROM, results.FTPServer, nil
 }
 
 // Read is API call
-func (o *CDROMOp) Read(ctx context.Context, zone string, id types.ID) (*CDROMReadResult, error) {
+func (o *CDROMOp) Read(ctx context.Context, zone string, id types.ID) (*CDROM, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -947,20 +947,20 @@ func (o *CDROMOp) Read(ctx context.Context, zone string, id types.ID) (*CDROMRea
 		return nil, err
 	}
 
-	nakedResponse := &cdromReadResponseEnvelope{}
+	nakedResponse := &cDROMReadResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
 
-	results := &CDROMReadResult{}
+	results := &cDROMReadResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results.CDROM, nil
 }
 
 // Update is API call
-func (o *CDROMOp) Update(ctx context.Context, zone string, id types.ID, param *CDROMUpdateRequest) (*CDROMUpdateResult, error) {
+func (o *CDROMOp) Update(ctx context.Context, zone string, id types.ID, param *CDROMUpdateRequest) (*CDROM, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -994,7 +994,7 @@ func (o *CDROMOp) Update(ctx context.Context, zone string, id types.ID, param *C
 		Argparam: param,
 	}
 
-	v := &cdromUpdateRequestEnvelope{}
+	v := &cDROMUpdateRequestEnvelope{}
 	if err := mapconv.ConvertTo(args, v); err != nil {
 		return nil, err
 	}
@@ -1005,16 +1005,16 @@ func (o *CDROMOp) Update(ctx context.Context, zone string, id types.ID, param *C
 		return nil, err
 	}
 
-	nakedResponse := &cdromUpdateResponseEnvelope{}
+	nakedResponse := &cDROMUpdateResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
 
-	results := &CDROMUpdateResult{}
+	results := &cDROMUpdateResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results.CDROM, nil
 }
 
 // Delete is API call
@@ -1041,7 +1041,7 @@ func (o *CDROMOp) Delete(ctx context.Context, zone string, id types.ID) error {
 }
 
 // OpenFTP is API call
-func (o *CDROMOp) OpenFTP(ctx context.Context, zone string, id types.ID, openOption *OpenFTPRequest) (*CDROMOpenFTPResult, error) {
+func (o *CDROMOp) OpenFTP(ctx context.Context, zone string, id types.ID, openOption *OpenFTPRequest) (*FTPServer, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/ftp", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -1075,7 +1075,7 @@ func (o *CDROMOp) OpenFTP(ctx context.Context, zone string, id types.ID, openOpt
 		ArgopenOption: openOption,
 	}
 
-	v := &cdromOpenFTPRequestEnvelope{}
+	v := &cDROMOpenFTPRequestEnvelope{}
 	if err := mapconv.ConvertTo(args, v); err != nil {
 		return nil, err
 	}
@@ -1086,16 +1086,16 @@ func (o *CDROMOp) OpenFTP(ctx context.Context, zone string, id types.ID, openOpt
 		return nil, err
 	}
 
-	nakedResponse := &cdromOpenFTPResponseEnvelope{}
+	nakedResponse := &cDROMOpenFTPResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
 
-	results := &CDROMOpenFTPResult{}
+	results := &cDROMOpenFTPResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results.FTPServer, nil
 }
 
 // CloseFTP is API call
@@ -1189,11 +1189,11 @@ func (o *DiskOp) Find(ctx context.Context, zone string, conditions *FindConditio
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results, err
 }
 
 // Create is API call
-func (o *DiskOp) Create(ctx context.Context, zone string, param *DiskCreateRequest) (*DiskCreateResult, error) {
+func (o *DiskOp) Create(ctx context.Context, zone string, param *DiskCreateRequest) (*Disk, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -1237,15 +1237,15 @@ func (o *DiskOp) Create(ctx context.Context, zone string, param *DiskCreateReque
 		return nil, err
 	}
 
-	results := &DiskCreateResult{}
+	results := &diskCreateResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results.Disk, nil
 }
 
 // CreateDistantly is API call
-func (o *DiskOp) CreateDistantly(ctx context.Context, zone string, createParam *DiskCreateRequest, distantFrom []types.ID) (*DiskCreateDistantlyResult, error) {
+func (o *DiskOp) CreateDistantly(ctx context.Context, zone string, createParam *DiskCreateRequest, distantFrom []types.ID) (*Disk, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
 		"rootURL":     SakuraCloudAPIRoot,
 		"pathSuffix":  o.PathSuffix,
@@ -1295,11 +1295,11 @@ func (o *DiskOp) CreateDistantly(ctx context.Context, zone string, createParam *
 		return nil, err
 	}
 
-	results := &DiskCreateDistantlyResult{}
+	results := &diskCreateDistantlyResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results.Disk, nil
 }
 
 // Config is API call
@@ -1352,7 +1352,7 @@ func (o *DiskOp) Config(ctx context.Context, zone string, id types.ID, edit *Dis
 }
 
 // CreateWithConfig is API call
-func (o *DiskOp) CreateWithConfig(ctx context.Context, zone string, createParam *DiskCreateRequest, editParam *DiskEditRequest, bootAtAvailable bool) (*DiskCreateWithConfigResult, error) {
+func (o *DiskOp) CreateWithConfig(ctx context.Context, zone string, createParam *DiskCreateRequest, editParam *DiskEditRequest, bootAtAvailable bool) (*Disk, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
 		"rootURL":         SakuraCloudAPIRoot,
 		"pathSuffix":      o.PathSuffix,
@@ -1408,15 +1408,15 @@ func (o *DiskOp) CreateWithConfig(ctx context.Context, zone string, createParam 
 		return nil, err
 	}
 
-	results := &DiskCreateWithConfigResult{}
+	results := &diskCreateWithConfigResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results.Disk, nil
 }
 
 // CreateWithConfigDistantly is API call
-func (o *DiskOp) CreateWithConfigDistantly(ctx context.Context, zone string, createParam *DiskCreateRequest, editParam *DiskEditRequest, bootAtAvailable bool, distantFrom []types.ID) (*DiskCreateWithConfigDistantlyResult, error) {
+func (o *DiskOp) CreateWithConfigDistantly(ctx context.Context, zone string, createParam *DiskCreateRequest, editParam *DiskEditRequest, bootAtAvailable bool, distantFrom []types.ID) (*Disk, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
 		"rootURL":         SakuraCloudAPIRoot,
 		"pathSuffix":      o.PathSuffix,
@@ -1478,11 +1478,11 @@ func (o *DiskOp) CreateWithConfigDistantly(ctx context.Context, zone string, cre
 		return nil, err
 	}
 
-	results := &DiskCreateWithConfigDistantlyResult{}
+	results := &diskCreateWithConfigDistantlyResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results.Disk, nil
 }
 
 // ToBlank is API call
@@ -1579,7 +1579,7 @@ func (o *DiskOp) DisconnectFromServer(ctx context.Context, zone string, id types
 }
 
 // InstallDistantFrom is API call
-func (o *DiskOp) InstallDistantFrom(ctx context.Context, zone string, id types.ID, installParam *DiskInstallRequest, distantFrom []types.ID) (*DiskInstallDistantFromResult, error) {
+func (o *DiskOp) InstallDistantFrom(ctx context.Context, zone string, id types.ID, installParam *DiskInstallRequest, distantFrom []types.ID) (*Disk, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/install", map[string]interface{}{
 		"rootURL":      SakuraCloudAPIRoot,
 		"pathSuffix":   o.PathSuffix,
@@ -1635,15 +1635,15 @@ func (o *DiskOp) InstallDistantFrom(ctx context.Context, zone string, id types.I
 		return nil, err
 	}
 
-	results := &DiskInstallDistantFromResult{}
+	results := &diskInstallDistantFromResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results.Disk, nil
 }
 
 // Install is API call
-func (o *DiskOp) Install(ctx context.Context, zone string, id types.ID, installParam *DiskInstallRequest) (*DiskInstallResult, error) {
+func (o *DiskOp) Install(ctx context.Context, zone string, id types.ID, installParam *DiskInstallRequest) (*Disk, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/install", map[string]interface{}{
 		"rootURL":      SakuraCloudAPIRoot,
 		"pathSuffix":   o.PathSuffix,
@@ -1693,15 +1693,15 @@ func (o *DiskOp) Install(ctx context.Context, zone string, id types.ID, installP
 		return nil, err
 	}
 
-	results := &DiskInstallResult{}
+	results := &diskInstallResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results.Disk, nil
 }
 
 // Read is API call
-func (o *DiskOp) Read(ctx context.Context, zone string, id types.ID) (*DiskReadResult, error) {
+func (o *DiskOp) Read(ctx context.Context, zone string, id types.ID) (*Disk, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -1725,15 +1725,15 @@ func (o *DiskOp) Read(ctx context.Context, zone string, id types.ID) (*DiskReadR
 		return nil, err
 	}
 
-	results := &DiskReadResult{}
+	results := &diskReadResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results.Disk, nil
 }
 
 // Update is API call
-func (o *DiskOp) Update(ctx context.Context, zone string, id types.ID, param *DiskUpdateRequest) (*DiskUpdateResult, error) {
+func (o *DiskOp) Update(ctx context.Context, zone string, id types.ID, param *DiskUpdateRequest) (*Disk, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -1783,11 +1783,11 @@ func (o *DiskOp) Update(ctx context.Context, zone string, id types.ID, param *Di
 		return nil, err
 	}
 
-	results := &DiskUpdateResult{}
+	results := &diskUpdateResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results.Disk, nil
 }
 
 // Delete is API call
@@ -1814,7 +1814,7 @@ func (o *DiskOp) Delete(ctx context.Context, zone string, id types.ID) error {
 }
 
 // Monitor is API call
-func (o *DiskOp) Monitor(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*DiskMonitorResult, error) {
+func (o *DiskOp) Monitor(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*DiskActivity, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/monitor", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -1864,11 +1864,11 @@ func (o *DiskOp) Monitor(ctx context.Context, zone string, id types.ID, conditio
 		return nil, err
 	}
 
-	results := &DiskMonitorResult{}
+	results := &diskMonitorResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results.DiskActivity, nil
 }
 
 /*************************************************
@@ -1919,7 +1919,7 @@ func (o *GSLBOp) Find(ctx context.Context, zone string, conditions *FindConditio
 		Argconditions: conditions,
 	}
 
-	v := &gslbFindRequestEnvelope{}
+	v := &gSLBFindRequestEnvelope{}
 	if err := mapconv.ConvertTo(args, v); err != nil {
 		return nil, err
 	}
@@ -1930,7 +1930,7 @@ func (o *GSLBOp) Find(ctx context.Context, zone string, conditions *FindConditio
 		return nil, err
 	}
 
-	nakedResponse := &gslbFindResponseEnvelope{}
+	nakedResponse := &gSLBFindResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
@@ -1939,11 +1939,11 @@ func (o *GSLBOp) Find(ctx context.Context, zone string, conditions *FindConditio
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results, err
 }
 
 // Create is API call
-func (o *GSLBOp) Create(ctx context.Context, zone string, param *GSLBCreateRequest) (*GSLBCreateResult, error) {
+func (o *GSLBOp) Create(ctx context.Context, zone string, param *GSLBCreateRequest) (*GSLB, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -1971,7 +1971,7 @@ func (o *GSLBOp) Create(ctx context.Context, zone string, param *GSLBCreateReque
 		Argparam: param,
 	}
 
-	v := &gslbCreateRequestEnvelope{}
+	v := &gSLBCreateRequestEnvelope{}
 	if err := mapconv.ConvertTo(args, v); err != nil {
 		return nil, err
 	}
@@ -1982,20 +1982,20 @@ func (o *GSLBOp) Create(ctx context.Context, zone string, param *GSLBCreateReque
 		return nil, err
 	}
 
-	nakedResponse := &gslbCreateResponseEnvelope{}
+	nakedResponse := &gSLBCreateResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
 
-	results := &GSLBCreateResult{}
+	results := &gSLBCreateResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results.GSLB, nil
 }
 
 // Read is API call
-func (o *GSLBOp) Read(ctx context.Context, zone string, id types.ID) (*GSLBReadResult, error) {
+func (o *GSLBOp) Read(ctx context.Context, zone string, id types.ID) (*GSLB, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -2014,20 +2014,20 @@ func (o *GSLBOp) Read(ctx context.Context, zone string, id types.ID) (*GSLBReadR
 		return nil, err
 	}
 
-	nakedResponse := &gslbReadResponseEnvelope{}
+	nakedResponse := &gSLBReadResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
 
-	results := &GSLBReadResult{}
+	results := &gSLBReadResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results.GSLB, nil
 }
 
 // Update is API call
-func (o *GSLBOp) Update(ctx context.Context, zone string, id types.ID, param *GSLBUpdateRequest) (*GSLBUpdateResult, error) {
+func (o *GSLBOp) Update(ctx context.Context, zone string, id types.ID, param *GSLBUpdateRequest) (*GSLB, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -2061,7 +2061,7 @@ func (o *GSLBOp) Update(ctx context.Context, zone string, id types.ID, param *GS
 		Argparam: param,
 	}
 
-	v := &gslbUpdateRequestEnvelope{}
+	v := &gSLBUpdateRequestEnvelope{}
 	if err := mapconv.ConvertTo(args, v); err != nil {
 		return nil, err
 	}
@@ -2072,16 +2072,16 @@ func (o *GSLBOp) Update(ctx context.Context, zone string, id types.ID, param *GS
 		return nil, err
 	}
 
-	nakedResponse := &gslbUpdateResponseEnvelope{}
+	nakedResponse := &gSLBUpdateResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
 
-	results := &GSLBUpdateResult{}
+	results := &gSLBUpdateResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results.GSLB, nil
 }
 
 // Delete is API call
@@ -2175,11 +2175,11 @@ func (o *InterfaceOp) Find(ctx context.Context, zone string, conditions *FindCon
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results, err
 }
 
 // Create is API call
-func (o *InterfaceOp) Create(ctx context.Context, zone string, param *InterfaceCreateRequest) (*InterfaceCreateResult, error) {
+func (o *InterfaceOp) Create(ctx context.Context, zone string, param *InterfaceCreateRequest) (*Interface, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -2223,15 +2223,15 @@ func (o *InterfaceOp) Create(ctx context.Context, zone string, param *InterfaceC
 		return nil, err
 	}
 
-	results := &InterfaceCreateResult{}
+	results := &interfaceCreateResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results.Interface, nil
 }
 
 // Read is API call
-func (o *InterfaceOp) Read(ctx context.Context, zone string, id types.ID) (*InterfaceReadResult, error) {
+func (o *InterfaceOp) Read(ctx context.Context, zone string, id types.ID) (*Interface, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -2255,15 +2255,15 @@ func (o *InterfaceOp) Read(ctx context.Context, zone string, id types.ID) (*Inte
 		return nil, err
 	}
 
-	results := &InterfaceReadResult{}
+	results := &interfaceReadResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results.Interface, nil
 }
 
 // Update is API call
-func (o *InterfaceOp) Update(ctx context.Context, zone string, id types.ID, param *InterfaceUpdateRequest) (*InterfaceUpdateResult, error) {
+func (o *InterfaceOp) Update(ctx context.Context, zone string, id types.ID, param *InterfaceUpdateRequest) (*Interface, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -2313,11 +2313,11 @@ func (o *InterfaceOp) Update(ctx context.Context, zone string, id types.ID, para
 		return nil, err
 	}
 
-	results := &InterfaceUpdateResult{}
+	results := &interfaceUpdateResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results.Interface, nil
 }
 
 // Delete is API call
@@ -2344,7 +2344,7 @@ func (o *InterfaceOp) Delete(ctx context.Context, zone string, id types.ID) erro
 }
 
 // Monitor is API call
-func (o *InterfaceOp) Monitor(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*InterfaceMonitorResult, error) {
+func (o *InterfaceOp) Monitor(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*InterfaceActivity, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/monitor", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -2394,11 +2394,11 @@ func (o *InterfaceOp) Monitor(ctx context.Context, zone string, id types.ID, con
 		return nil, err
 	}
 
-	results := &InterfaceMonitorResult{}
+	results := &interfaceMonitorResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results.InterfaceActivity, nil
 }
 
 // ConnectToSharedSegment is API call
@@ -2586,11 +2586,11 @@ func (o *InternetOp) Find(ctx context.Context, zone string, conditions *FindCond
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results, err
 }
 
 // Create is API call
-func (o *InternetOp) Create(ctx context.Context, zone string, param *InternetCreateRequest) (*InternetCreateResult, error) {
+func (o *InternetOp) Create(ctx context.Context, zone string, param *InternetCreateRequest) (*Internet, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -2634,15 +2634,15 @@ func (o *InternetOp) Create(ctx context.Context, zone string, param *InternetCre
 		return nil, err
 	}
 
-	results := &InternetCreateResult{}
+	results := &internetCreateResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results.Internet, nil
 }
 
 // Read is API call
-func (o *InternetOp) Read(ctx context.Context, zone string, id types.ID) (*InternetReadResult, error) {
+func (o *InternetOp) Read(ctx context.Context, zone string, id types.ID) (*Internet, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -2666,15 +2666,15 @@ func (o *InternetOp) Read(ctx context.Context, zone string, id types.ID) (*Inter
 		return nil, err
 	}
 
-	results := &InternetReadResult{}
+	results := &internetReadResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results.Internet, nil
 }
 
 // Update is API call
-func (o *InternetOp) Update(ctx context.Context, zone string, id types.ID, param *InternetUpdateRequest) (*InternetUpdateResult, error) {
+func (o *InternetOp) Update(ctx context.Context, zone string, id types.ID, param *InternetUpdateRequest) (*Internet, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -2724,11 +2724,11 @@ func (o *InternetOp) Update(ctx context.Context, zone string, id types.ID, param
 		return nil, err
 	}
 
-	results := &InternetUpdateResult{}
+	results := &internetUpdateResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results.Internet, nil
 }
 
 // Delete is API call
@@ -2755,7 +2755,7 @@ func (o *InternetOp) Delete(ctx context.Context, zone string, id types.ID) error
 }
 
 // UpdateBandWidth is API call
-func (o *InternetOp) UpdateBandWidth(ctx context.Context, zone string, id types.ID, param *InternetUpdateBandWidthRequest) (*InternetUpdateBandWidthResult, error) {
+func (o *InternetOp) UpdateBandWidth(ctx context.Context, zone string, id types.ID, param *InternetUpdateBandWidthRequest) (*Internet, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/bandwidth", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -2805,15 +2805,15 @@ func (o *InternetOp) UpdateBandWidth(ctx context.Context, zone string, id types.
 		return nil, err
 	}
 
-	results := &InternetUpdateBandWidthResult{}
+	results := &internetUpdateBandWidthResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results.Internet, nil
 }
 
 // AddSubnet is API call
-func (o *InternetOp) AddSubnet(ctx context.Context, zone string, id types.ID, param *InternetAddSubnetRequest) (*InternetAddSubnetResult, error) {
+func (o *InternetOp) AddSubnet(ctx context.Context, zone string, id types.ID, param *InternetAddSubnetRequest) (*InternetSubnetOperationResult, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/subnet", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -2863,15 +2863,15 @@ func (o *InternetOp) AddSubnet(ctx context.Context, zone string, id types.ID, pa
 		return nil, err
 	}
 
-	results := &InternetAddSubnetResult{}
+	results := &internetAddSubnetResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results.Subnet, nil
 }
 
 // UpdateSubnet is API call
-func (o *InternetOp) UpdateSubnet(ctx context.Context, zone string, id types.ID, subnetID types.ID, param *InternetUpdateSubnetRequest) (*InternetUpdateSubnetResult, error) {
+func (o *InternetOp) UpdateSubnet(ctx context.Context, zone string, id types.ID, subnetID types.ID, param *InternetUpdateSubnetRequest) (*InternetSubnetOperationResult, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/subnet/{{.subnetID}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -2927,11 +2927,11 @@ func (o *InternetOp) UpdateSubnet(ctx context.Context, zone string, id types.ID,
 		return nil, err
 	}
 
-	results := &InternetUpdateSubnetResult{}
+	results := &internetUpdateSubnetResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results.Subnet, nil
 }
 
 // DeleteSubnet is API call
@@ -2959,7 +2959,7 @@ func (o *InternetOp) DeleteSubnet(ctx context.Context, zone string, id types.ID,
 }
 
 // Monitor is API call
-func (o *InternetOp) Monitor(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*InternetMonitorResult, error) {
+func (o *InternetOp) Monitor(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*RouterActivity, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/monitor", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -3009,11 +3009,11 @@ func (o *InternetOp) Monitor(ctx context.Context, zone string, id types.ID, cond
 		return nil, err
 	}
 
-	results := &InternetMonitorResult{}
+	results := &internetMonitorResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results.RouterActivity, nil
 }
 
 /*************************************************
@@ -3064,7 +3064,7 @@ func (o *LoadBalancerOp) Find(ctx context.Context, zone string, conditions *Find
 		Argconditions: conditions,
 	}
 
-	v := &loadbalancerFindRequestEnvelope{}
+	v := &loadBalancerFindRequestEnvelope{}
 	if err := mapconv.ConvertTo(args, v); err != nil {
 		return nil, err
 	}
@@ -3075,7 +3075,7 @@ func (o *LoadBalancerOp) Find(ctx context.Context, zone string, conditions *Find
 		return nil, err
 	}
 
-	nakedResponse := &loadbalancerFindResponseEnvelope{}
+	nakedResponse := &loadBalancerFindResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
@@ -3084,11 +3084,11 @@ func (o *LoadBalancerOp) Find(ctx context.Context, zone string, conditions *Find
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results, err
 }
 
 // Create is API call
-func (o *LoadBalancerOp) Create(ctx context.Context, zone string, param *LoadBalancerCreateRequest) (*LoadBalancerCreateResult, error) {
+func (o *LoadBalancerOp) Create(ctx context.Context, zone string, param *LoadBalancerCreateRequest) (*LoadBalancer, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -3116,7 +3116,7 @@ func (o *LoadBalancerOp) Create(ctx context.Context, zone string, param *LoadBal
 		Argparam: param,
 	}
 
-	v := &loadbalancerCreateRequestEnvelope{}
+	v := &loadBalancerCreateRequestEnvelope{}
 	if err := mapconv.ConvertTo(args, v); err != nil {
 		return nil, err
 	}
@@ -3127,20 +3127,20 @@ func (o *LoadBalancerOp) Create(ctx context.Context, zone string, param *LoadBal
 		return nil, err
 	}
 
-	nakedResponse := &loadbalancerCreateResponseEnvelope{}
+	nakedResponse := &loadBalancerCreateResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
 
-	results := &LoadBalancerCreateResult{}
+	results := &loadBalancerCreateResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results.LoadBalancer, nil
 }
 
 // Read is API call
-func (o *LoadBalancerOp) Read(ctx context.Context, zone string, id types.ID) (*LoadBalancerReadResult, error) {
+func (o *LoadBalancerOp) Read(ctx context.Context, zone string, id types.ID) (*LoadBalancer, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -3159,20 +3159,20 @@ func (o *LoadBalancerOp) Read(ctx context.Context, zone string, id types.ID) (*L
 		return nil, err
 	}
 
-	nakedResponse := &loadbalancerReadResponseEnvelope{}
+	nakedResponse := &loadBalancerReadResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
 
-	results := &LoadBalancerReadResult{}
+	results := &loadBalancerReadResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results.LoadBalancer, nil
 }
 
 // Update is API call
-func (o *LoadBalancerOp) Update(ctx context.Context, zone string, id types.ID, param *LoadBalancerUpdateRequest) (*LoadBalancerUpdateResult, error) {
+func (o *LoadBalancerOp) Update(ctx context.Context, zone string, id types.ID, param *LoadBalancerUpdateRequest) (*LoadBalancer, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -3206,7 +3206,7 @@ func (o *LoadBalancerOp) Update(ctx context.Context, zone string, id types.ID, p
 		Argparam: param,
 	}
 
-	v := &loadbalancerUpdateRequestEnvelope{}
+	v := &loadBalancerUpdateRequestEnvelope{}
 	if err := mapconv.ConvertTo(args, v); err != nil {
 		return nil, err
 	}
@@ -3217,16 +3217,16 @@ func (o *LoadBalancerOp) Update(ctx context.Context, zone string, id types.ID, p
 		return nil, err
 	}
 
-	nakedResponse := &loadbalancerUpdateResponseEnvelope{}
+	nakedResponse := &loadBalancerUpdateResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
 
-	results := &LoadBalancerUpdateResult{}
+	results := &loadBalancerUpdateResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results.LoadBalancer, nil
 }
 
 // Delete is API call
@@ -3333,7 +3333,7 @@ func (o *LoadBalancerOp) Shutdown(ctx context.Context, zone string, id types.ID,
 		ArgshutdownOption: shutdownOption,
 	}
 
-	v := &loadbalancerShutdownRequestEnvelope{}
+	v := &loadBalancerShutdownRequestEnvelope{}
 	if err := mapconv.ConvertTo(args, v); err != nil {
 		return err
 	}
@@ -3371,7 +3371,7 @@ func (o *LoadBalancerOp) Reset(ctx context.Context, zone string, id types.ID) er
 }
 
 // MonitorInterface is API call
-func (o *LoadBalancerOp) MonitorInterface(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*LoadBalancerMonitorInterfaceResult, error) {
+func (o *LoadBalancerOp) MonitorInterface(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*InterfaceActivity, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/interface/monitor", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -3405,7 +3405,7 @@ func (o *LoadBalancerOp) MonitorInterface(ctx context.Context, zone string, id t
 		Argcondition: condition,
 	}
 
-	v := &loadbalancerMonitorInterfaceRequestEnvelope{}
+	v := &loadBalancerMonitorInterfaceRequestEnvelope{}
 	if err := mapconv.ConvertTo(args, v); err != nil {
 		return nil, err
 	}
@@ -3416,16 +3416,16 @@ func (o *LoadBalancerOp) MonitorInterface(ctx context.Context, zone string, id t
 		return nil, err
 	}
 
-	nakedResponse := &loadbalancerMonitorInterfaceResponseEnvelope{}
+	nakedResponse := &loadBalancerMonitorInterfaceResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
 
-	results := &LoadBalancerMonitorInterfaceResult{}
+	results := &loadBalancerMonitorInterfaceResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results.InterfaceActivity, nil
 }
 
 // Status is API call
@@ -3448,7 +3448,7 @@ func (o *LoadBalancerOp) Status(ctx context.Context, zone string, id types.ID) (
 		return nil, err
 	}
 
-	nakedResponse := &loadbalancerStatusResponseEnvelope{}
+	nakedResponse := &loadBalancerStatusResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
@@ -3457,7 +3457,7 @@ func (o *LoadBalancerOp) Status(ctx context.Context, zone string, id types.ID) (
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results, err
 }
 
 /*************************************************
@@ -3508,7 +3508,7 @@ func (o *NFSOp) Find(ctx context.Context, zone string, conditions *FindCondition
 		Argconditions: conditions,
 	}
 
-	v := &nfsFindRequestEnvelope{}
+	v := &nFSFindRequestEnvelope{}
 	if err := mapconv.ConvertTo(args, v); err != nil {
 		return nil, err
 	}
@@ -3519,7 +3519,7 @@ func (o *NFSOp) Find(ctx context.Context, zone string, conditions *FindCondition
 		return nil, err
 	}
 
-	nakedResponse := &nfsFindResponseEnvelope{}
+	nakedResponse := &nFSFindResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
@@ -3528,11 +3528,11 @@ func (o *NFSOp) Find(ctx context.Context, zone string, conditions *FindCondition
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results, err
 }
 
 // Create is API call
-func (o *NFSOp) Create(ctx context.Context, zone string, param *NFSCreateRequest) (*NFSCreateResult, error) {
+func (o *NFSOp) Create(ctx context.Context, zone string, param *NFSCreateRequest) (*NFS, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -3560,7 +3560,7 @@ func (o *NFSOp) Create(ctx context.Context, zone string, param *NFSCreateRequest
 		Argparam: param,
 	}
 
-	v := &nfsCreateRequestEnvelope{}
+	v := &nFSCreateRequestEnvelope{}
 	if err := mapconv.ConvertTo(args, v); err != nil {
 		return nil, err
 	}
@@ -3571,20 +3571,20 @@ func (o *NFSOp) Create(ctx context.Context, zone string, param *NFSCreateRequest
 		return nil, err
 	}
 
-	nakedResponse := &nfsCreateResponseEnvelope{}
+	nakedResponse := &nFSCreateResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
 
-	results := &NFSCreateResult{}
+	results := &nFSCreateResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results.NFS, nil
 }
 
 // Read is API call
-func (o *NFSOp) Read(ctx context.Context, zone string, id types.ID) (*NFSReadResult, error) {
+func (o *NFSOp) Read(ctx context.Context, zone string, id types.ID) (*NFS, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -3603,20 +3603,20 @@ func (o *NFSOp) Read(ctx context.Context, zone string, id types.ID) (*NFSReadRes
 		return nil, err
 	}
 
-	nakedResponse := &nfsReadResponseEnvelope{}
+	nakedResponse := &nFSReadResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
 
-	results := &NFSReadResult{}
+	results := &nFSReadResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results.NFS, nil
 }
 
 // Update is API call
-func (o *NFSOp) Update(ctx context.Context, zone string, id types.ID, param *NFSUpdateRequest) (*NFSUpdateResult, error) {
+func (o *NFSOp) Update(ctx context.Context, zone string, id types.ID, param *NFSUpdateRequest) (*NFS, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -3650,7 +3650,7 @@ func (o *NFSOp) Update(ctx context.Context, zone string, id types.ID, param *NFS
 		Argparam: param,
 	}
 
-	v := &nfsUpdateRequestEnvelope{}
+	v := &nFSUpdateRequestEnvelope{}
 	if err := mapconv.ConvertTo(args, v); err != nil {
 		return nil, err
 	}
@@ -3661,16 +3661,16 @@ func (o *NFSOp) Update(ctx context.Context, zone string, id types.ID, param *NFS
 		return nil, err
 	}
 
-	nakedResponse := &nfsUpdateResponseEnvelope{}
+	nakedResponse := &nFSUpdateResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
 
-	results := &NFSUpdateResult{}
+	results := &nFSUpdateResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results.NFS, nil
 }
 
 // Delete is API call
@@ -3754,7 +3754,7 @@ func (o *NFSOp) Shutdown(ctx context.Context, zone string, id types.ID, shutdown
 		ArgshutdownOption: shutdownOption,
 	}
 
-	v := &nfsShutdownRequestEnvelope{}
+	v := &nFSShutdownRequestEnvelope{}
 	if err := mapconv.ConvertTo(args, v); err != nil {
 		return err
 	}
@@ -3792,7 +3792,7 @@ func (o *NFSOp) Reset(ctx context.Context, zone string, id types.ID) error {
 }
 
 // MonitorFreeDiskSize is API call
-func (o *NFSOp) MonitorFreeDiskSize(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*NFSMonitorFreeDiskSizeResult, error) {
+func (o *NFSOp) MonitorFreeDiskSize(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*FreeDiskSizeActivity, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/database/monitor", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -3826,7 +3826,7 @@ func (o *NFSOp) MonitorFreeDiskSize(ctx context.Context, zone string, id types.I
 		Argcondition: condition,
 	}
 
-	v := &nfsMonitorFreeDiskSizeRequestEnvelope{}
+	v := &nFSMonitorFreeDiskSizeRequestEnvelope{}
 	if err := mapconv.ConvertTo(args, v); err != nil {
 		return nil, err
 	}
@@ -3837,20 +3837,20 @@ func (o *NFSOp) MonitorFreeDiskSize(ctx context.Context, zone string, id types.I
 		return nil, err
 	}
 
-	nakedResponse := &nfsMonitorFreeDiskSizeResponseEnvelope{}
+	nakedResponse := &nFSMonitorFreeDiskSizeResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
 
-	results := &NFSMonitorFreeDiskSizeResult{}
+	results := &nFSMonitorFreeDiskSizeResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results.FreeDiskSizeActivity, nil
 }
 
 // MonitorInterface is API call
-func (o *NFSOp) MonitorInterface(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*NFSMonitorInterfaceResult, error) {
+func (o *NFSOp) MonitorInterface(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*InterfaceActivity, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/interface/monitor", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -3884,7 +3884,7 @@ func (o *NFSOp) MonitorInterface(ctx context.Context, zone string, id types.ID, 
 		Argcondition: condition,
 	}
 
-	v := &nfsMonitorInterfaceRequestEnvelope{}
+	v := &nFSMonitorInterfaceRequestEnvelope{}
 	if err := mapconv.ConvertTo(args, v); err != nil {
 		return nil, err
 	}
@@ -3895,16 +3895,16 @@ func (o *NFSOp) MonitorInterface(ctx context.Context, zone string, id types.ID, 
 		return nil, err
 	}
 
-	nakedResponse := &nfsMonitorInterfaceResponseEnvelope{}
+	nakedResponse := &nFSMonitorInterfaceResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
 
-	results := &NFSMonitorInterfaceResult{}
+	results := &nFSMonitorInterfaceResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results.InterfaceActivity, nil
 }
 
 /*************************************************
@@ -3975,11 +3975,11 @@ func (o *NoteOp) Find(ctx context.Context, zone string, conditions *FindConditio
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results, err
 }
 
 // Create is API call
-func (o *NoteOp) Create(ctx context.Context, zone string, param *NoteCreateRequest) (*NoteCreateResult, error) {
+func (o *NoteOp) Create(ctx context.Context, zone string, param *NoteCreateRequest) (*Note, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -4023,15 +4023,15 @@ func (o *NoteOp) Create(ctx context.Context, zone string, param *NoteCreateReque
 		return nil, err
 	}
 
-	results := &NoteCreateResult{}
+	results := &noteCreateResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results.Note, nil
 }
 
 // Read is API call
-func (o *NoteOp) Read(ctx context.Context, zone string, id types.ID) (*NoteReadResult, error) {
+func (o *NoteOp) Read(ctx context.Context, zone string, id types.ID) (*Note, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -4055,15 +4055,15 @@ func (o *NoteOp) Read(ctx context.Context, zone string, id types.ID) (*NoteReadR
 		return nil, err
 	}
 
-	results := &NoteReadResult{}
+	results := &noteReadResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results.Note, nil
 }
 
 // Update is API call
-func (o *NoteOp) Update(ctx context.Context, zone string, id types.ID, param *NoteUpdateRequest) (*NoteUpdateResult, error) {
+func (o *NoteOp) Update(ctx context.Context, zone string, id types.ID, param *NoteUpdateRequest) (*Note, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -4113,11 +4113,11 @@ func (o *NoteOp) Update(ctx context.Context, zone string, id types.ID, param *No
 		return nil, err
 	}
 
-	results := &NoteUpdateResult{}
+	results := &noteUpdateResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results.Note, nil
 }
 
 // Delete is API call
@@ -4191,7 +4191,7 @@ func (o *PacketFilterOp) Find(ctx context.Context, zone string, conditions *Find
 		Argconditions: conditions,
 	}
 
-	v := &packetfilterFindRequestEnvelope{}
+	v := &packetFilterFindRequestEnvelope{}
 	if err := mapconv.ConvertTo(args, v); err != nil {
 		return nil, err
 	}
@@ -4202,7 +4202,7 @@ func (o *PacketFilterOp) Find(ctx context.Context, zone string, conditions *Find
 		return nil, err
 	}
 
-	nakedResponse := &packetfilterFindResponseEnvelope{}
+	nakedResponse := &packetFilterFindResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
@@ -4211,11 +4211,11 @@ func (o *PacketFilterOp) Find(ctx context.Context, zone string, conditions *Find
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results, err
 }
 
 // Create is API call
-func (o *PacketFilterOp) Create(ctx context.Context, zone string, param *PacketFilterCreateRequest) (*PacketFilterCreateResult, error) {
+func (o *PacketFilterOp) Create(ctx context.Context, zone string, param *PacketFilterCreateRequest) (*PacketFilter, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -4243,7 +4243,7 @@ func (o *PacketFilterOp) Create(ctx context.Context, zone string, param *PacketF
 		Argparam: param,
 	}
 
-	v := &packetfilterCreateRequestEnvelope{}
+	v := &packetFilterCreateRequestEnvelope{}
 	if err := mapconv.ConvertTo(args, v); err != nil {
 		return nil, err
 	}
@@ -4254,20 +4254,20 @@ func (o *PacketFilterOp) Create(ctx context.Context, zone string, param *PacketF
 		return nil, err
 	}
 
-	nakedResponse := &packetfilterCreateResponseEnvelope{}
+	nakedResponse := &packetFilterCreateResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
 
-	results := &PacketFilterCreateResult{}
+	results := &packetFilterCreateResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results.PacketFilter, nil
 }
 
 // Read is API call
-func (o *PacketFilterOp) Read(ctx context.Context, zone string, id types.ID) (*PacketFilterReadResult, error) {
+func (o *PacketFilterOp) Read(ctx context.Context, zone string, id types.ID) (*PacketFilter, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -4286,20 +4286,20 @@ func (o *PacketFilterOp) Read(ctx context.Context, zone string, id types.ID) (*P
 		return nil, err
 	}
 
-	nakedResponse := &packetfilterReadResponseEnvelope{}
+	nakedResponse := &packetFilterReadResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
 
-	results := &PacketFilterReadResult{}
+	results := &packetFilterReadResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results.PacketFilter, nil
 }
 
 // Update is API call
-func (o *PacketFilterOp) Update(ctx context.Context, zone string, id types.ID, param *PacketFilterUpdateRequest) (*PacketFilterUpdateResult, error) {
+func (o *PacketFilterOp) Update(ctx context.Context, zone string, id types.ID, param *PacketFilterUpdateRequest) (*PacketFilter, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -4333,7 +4333,7 @@ func (o *PacketFilterOp) Update(ctx context.Context, zone string, id types.ID, p
 		Argparam: param,
 	}
 
-	v := &packetfilterUpdateRequestEnvelope{}
+	v := &packetFilterUpdateRequestEnvelope{}
 	if err := mapconv.ConvertTo(args, v); err != nil {
 		return nil, err
 	}
@@ -4344,16 +4344,16 @@ func (o *PacketFilterOp) Update(ctx context.Context, zone string, id types.ID, p
 		return nil, err
 	}
 
-	nakedResponse := &packetfilterUpdateResponseEnvelope{}
+	nakedResponse := &packetFilterUpdateResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
 
-	results := &PacketFilterUpdateResult{}
+	results := &packetFilterUpdateResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results.PacketFilter, nil
 }
 
 // Delete is API call
@@ -4447,11 +4447,11 @@ func (o *ServerOp) Find(ctx context.Context, zone string, conditions *FindCondit
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results, err
 }
 
 // Create is API call
-func (o *ServerOp) Create(ctx context.Context, zone string, param *ServerCreateRequest) (*ServerCreateResult, error) {
+func (o *ServerOp) Create(ctx context.Context, zone string, param *ServerCreateRequest) (*Server, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -4495,15 +4495,15 @@ func (o *ServerOp) Create(ctx context.Context, zone string, param *ServerCreateR
 		return nil, err
 	}
 
-	results := &ServerCreateResult{}
+	results := &serverCreateResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results.Server, nil
 }
 
 // Read is API call
-func (o *ServerOp) Read(ctx context.Context, zone string, id types.ID) (*ServerReadResult, error) {
+func (o *ServerOp) Read(ctx context.Context, zone string, id types.ID) (*Server, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -4527,15 +4527,15 @@ func (o *ServerOp) Read(ctx context.Context, zone string, id types.ID) (*ServerR
 		return nil, err
 	}
 
-	results := &ServerReadResult{}
+	results := &serverReadResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results.Server, nil
 }
 
 // Update is API call
-func (o *ServerOp) Update(ctx context.Context, zone string, id types.ID, param *ServerUpdateRequest) (*ServerUpdateResult, error) {
+func (o *ServerOp) Update(ctx context.Context, zone string, id types.ID, param *ServerUpdateRequest) (*Server, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -4585,11 +4585,11 @@ func (o *ServerOp) Update(ctx context.Context, zone string, id types.ID, param *
 		return nil, err
 	}
 
-	results := &ServerUpdateResult{}
+	results := &serverUpdateResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results.Server, nil
 }
 
 // Delete is API call
@@ -4616,7 +4616,7 @@ func (o *ServerOp) Delete(ctx context.Context, zone string, id types.ID) error {
 }
 
 // ChangePlan is API call
-func (o *ServerOp) ChangePlan(ctx context.Context, zone string, id types.ID, plan *ServerChangePlanRequest) (*ServerChangePlanResult, error) {
+func (o *ServerOp) ChangePlan(ctx context.Context, zone string, id types.ID, plan *ServerChangePlanRequest) (*Server, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/plan", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -4666,11 +4666,11 @@ func (o *ServerOp) ChangePlan(ctx context.Context, zone string, id types.ID, pla
 		return nil, err
 	}
 
-	results := &ServerChangePlanResult{}
+	results := &serverChangePlanResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results.Server, nil
 }
 
 // InsertCDROM is API call
@@ -4867,7 +4867,7 @@ func (o *ServerOp) Reset(ctx context.Context, zone string, id types.ID) error {
 }
 
 // Monitor is API call
-func (o *ServerOp) Monitor(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*ServerMonitorResult, error) {
+func (o *ServerOp) Monitor(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*CPUTimeActivity, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/monitor", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -4917,11 +4917,11 @@ func (o *ServerOp) Monitor(ctx context.Context, zone string, id types.ID, condit
 		return nil, err
 	}
 
-	results := &ServerMonitorResult{}
+	results := &serverMonitorResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results.CPUTimeActivity, nil
 }
 
 /*************************************************
@@ -4972,7 +4972,7 @@ func (o *SIMOp) Find(ctx context.Context, zone string, conditions *FindCondition
 		Argconditions: conditions,
 	}
 
-	v := &simFindRequestEnvelope{}
+	v := &sIMFindRequestEnvelope{}
 	if err := mapconv.ConvertTo(args, v); err != nil {
 		return nil, err
 	}
@@ -4983,7 +4983,7 @@ func (o *SIMOp) Find(ctx context.Context, zone string, conditions *FindCondition
 		return nil, err
 	}
 
-	nakedResponse := &simFindResponseEnvelope{}
+	nakedResponse := &sIMFindResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
@@ -4992,11 +4992,11 @@ func (o *SIMOp) Find(ctx context.Context, zone string, conditions *FindCondition
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results, err
 }
 
 // Create is API call
-func (o *SIMOp) Create(ctx context.Context, zone string, param *SIMCreateRequest) (*SIMCreateResult, error) {
+func (o *SIMOp) Create(ctx context.Context, zone string, param *SIMCreateRequest) (*SIM, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -5024,7 +5024,7 @@ func (o *SIMOp) Create(ctx context.Context, zone string, param *SIMCreateRequest
 		Argparam: param,
 	}
 
-	v := &simCreateRequestEnvelope{}
+	v := &sIMCreateRequestEnvelope{}
 	if err := mapconv.ConvertTo(args, v); err != nil {
 		return nil, err
 	}
@@ -5035,20 +5035,20 @@ func (o *SIMOp) Create(ctx context.Context, zone string, param *SIMCreateRequest
 		return nil, err
 	}
 
-	nakedResponse := &simCreateResponseEnvelope{}
+	nakedResponse := &sIMCreateResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
 
-	results := &SIMCreateResult{}
+	results := &sIMCreateResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results.SIM, nil
 }
 
 // Read is API call
-func (o *SIMOp) Read(ctx context.Context, zone string, id types.ID) (*SIMReadResult, error) {
+func (o *SIMOp) Read(ctx context.Context, zone string, id types.ID) (*SIM, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -5067,20 +5067,20 @@ func (o *SIMOp) Read(ctx context.Context, zone string, id types.ID) (*SIMReadRes
 		return nil, err
 	}
 
-	nakedResponse := &simReadResponseEnvelope{}
+	nakedResponse := &sIMReadResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
 
-	results := &SIMReadResult{}
+	results := &sIMReadResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results.SIM, nil
 }
 
 // Update is API call
-func (o *SIMOp) Update(ctx context.Context, zone string, id types.ID, param *SIMUpdateRequest) (*SIMUpdateResult, error) {
+func (o *SIMOp) Update(ctx context.Context, zone string, id types.ID, param *SIMUpdateRequest) (*SIM, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -5114,7 +5114,7 @@ func (o *SIMOp) Update(ctx context.Context, zone string, id types.ID, param *SIM
 		Argparam: param,
 	}
 
-	v := &simUpdateRequestEnvelope{}
+	v := &sIMUpdateRequestEnvelope{}
 	if err := mapconv.ConvertTo(args, v); err != nil {
 		return nil, err
 	}
@@ -5125,16 +5125,16 @@ func (o *SIMOp) Update(ctx context.Context, zone string, id types.ID, param *SIM
 		return nil, err
 	}
 
-	nakedResponse := &simUpdateResponseEnvelope{}
+	nakedResponse := &sIMUpdateResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
 
-	results := &SIMUpdateResult{}
+	results := &sIMUpdateResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results.SIM, nil
 }
 
 // Delete is API call
@@ -5241,7 +5241,7 @@ func (o *SIMOp) AssignIP(ctx context.Context, zone string, id types.ID, param *S
 		Argparam: param,
 	}
 
-	v := &simAssignIPRequestEnvelope{}
+	v := &sIMAssignIPRequestEnvelope{}
 	if err := mapconv.ConvertTo(args, v); err != nil {
 		return err
 	}
@@ -5313,7 +5313,7 @@ func (o *SIMOp) IMEILock(ctx context.Context, zone string, id types.ID, param *S
 		Argparam: param,
 	}
 
-	v := &simIMEILockRequestEnvelope{}
+	v := &sIMIMEILockRequestEnvelope{}
 	if err := mapconv.ConvertTo(args, v); err != nil {
 		return err
 	}
@@ -5370,7 +5370,7 @@ func (o *SIMOp) Logs(ctx context.Context, zone string, id types.ID) (*SIMLogsRes
 		return nil, err
 	}
 
-	nakedResponse := &simLogsResponseEnvelope{}
+	nakedResponse := &sIMLogsResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
@@ -5379,7 +5379,7 @@ func (o *SIMOp) Logs(ctx context.Context, zone string, id types.ID) (*SIMLogsRes
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results, err
 }
 
 // GetNetworkOperator is API call
@@ -5402,7 +5402,7 @@ func (o *SIMOp) GetNetworkOperator(ctx context.Context, zone string, id types.ID
 		return nil, err
 	}
 
-	nakedResponse := &simGetNetworkOperatorResponseEnvelope{}
+	nakedResponse := &sIMGetNetworkOperatorResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
@@ -5411,7 +5411,7 @@ func (o *SIMOp) GetNetworkOperator(ctx context.Context, zone string, id types.ID
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results, err
 }
 
 // SetNetworkOperator is API call
@@ -5449,7 +5449,7 @@ func (o *SIMOp) SetNetworkOperator(ctx context.Context, zone string, id types.ID
 		Argconfigs: configs,
 	}
 
-	v := &simSetNetworkOperatorRequestEnvelope{}
+	v := &sIMSetNetworkOperatorRequestEnvelope{}
 	if err := mapconv.ConvertTo(args, v); err != nil {
 		return err
 	}
@@ -5464,7 +5464,7 @@ func (o *SIMOp) SetNetworkOperator(ctx context.Context, zone string, id types.ID
 }
 
 // MonitorSIM is API call
-func (o *SIMOp) MonitorSIM(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*SIMMonitorSIMResult, error) {
+func (o *SIMOp) MonitorSIM(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*LinkActivity, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/sim/metrics/monitor", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -5498,7 +5498,7 @@ func (o *SIMOp) MonitorSIM(ctx context.Context, zone string, id types.ID, condit
 		Argcondition: condition,
 	}
 
-	v := &simMonitorSIMRequestEnvelope{}
+	v := &sIMMonitorSIMRequestEnvelope{}
 	if err := mapconv.ConvertTo(args, v); err != nil {
 		return nil, err
 	}
@@ -5509,16 +5509,16 @@ func (o *SIMOp) MonitorSIM(ctx context.Context, zone string, id types.ID, condit
 		return nil, err
 	}
 
-	nakedResponse := &simMonitorSIMResponseEnvelope{}
+	nakedResponse := &sIMMonitorSIMResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
 
-	results := &SIMMonitorSIMResult{}
+	results := &sIMMonitorSIMResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results.LinkActivity, nil
 }
 
 /*************************************************
@@ -5589,11 +5589,11 @@ func (o *SwitchOp) Find(ctx context.Context, zone string, conditions *FindCondit
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results, err
 }
 
 // Create is API call
-func (o *SwitchOp) Create(ctx context.Context, zone string, param *SwitchCreateRequest) (*SwitchCreateResult, error) {
+func (o *SwitchOp) Create(ctx context.Context, zone string, param *SwitchCreateRequest) (*Switch, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -5637,15 +5637,15 @@ func (o *SwitchOp) Create(ctx context.Context, zone string, param *SwitchCreateR
 		return nil, err
 	}
 
-	results := &SwitchCreateResult{}
+	results := &switchCreateResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results.Switch, nil
 }
 
 // Read is API call
-func (o *SwitchOp) Read(ctx context.Context, zone string, id types.ID) (*SwitchReadResult, error) {
+func (o *SwitchOp) Read(ctx context.Context, zone string, id types.ID) (*Switch, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -5669,15 +5669,15 @@ func (o *SwitchOp) Read(ctx context.Context, zone string, id types.ID) (*SwitchR
 		return nil, err
 	}
 
-	results := &SwitchReadResult{}
+	results := &switchReadResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results.Switch, nil
 }
 
 // Update is API call
-func (o *SwitchOp) Update(ctx context.Context, zone string, id types.ID, param *SwitchUpdateRequest) (*SwitchUpdateResult, error) {
+func (o *SwitchOp) Update(ctx context.Context, zone string, id types.ID, param *SwitchUpdateRequest) (*Switch, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -5727,11 +5727,11 @@ func (o *SwitchOp) Update(ctx context.Context, zone string, id types.ID, param *
 		return nil, err
 	}
 
-	results := &SwitchUpdateResult{}
+	results := &switchUpdateResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results.Switch, nil
 }
 
 // Delete is API call
@@ -5852,7 +5852,7 @@ func (o *VPCRouterOp) Find(ctx context.Context, zone string, conditions *FindCon
 		Argconditions: conditions,
 	}
 
-	v := &vpcrouterFindRequestEnvelope{}
+	v := &vPCRouterFindRequestEnvelope{}
 	if err := mapconv.ConvertTo(args, v); err != nil {
 		return nil, err
 	}
@@ -5863,7 +5863,7 @@ func (o *VPCRouterOp) Find(ctx context.Context, zone string, conditions *FindCon
 		return nil, err
 	}
 
-	nakedResponse := &vpcrouterFindResponseEnvelope{}
+	nakedResponse := &vPCRouterFindResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
@@ -5872,11 +5872,11 @@ func (o *VPCRouterOp) Find(ctx context.Context, zone string, conditions *FindCon
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results, err
 }
 
 // Create is API call
-func (o *VPCRouterOp) Create(ctx context.Context, zone string, param *VPCRouterCreateRequest) (*VPCRouterCreateResult, error) {
+func (o *VPCRouterOp) Create(ctx context.Context, zone string, param *VPCRouterCreateRequest) (*VPCRouter, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -5904,7 +5904,7 @@ func (o *VPCRouterOp) Create(ctx context.Context, zone string, param *VPCRouterC
 		Argparam: param,
 	}
 
-	v := &vpcrouterCreateRequestEnvelope{}
+	v := &vPCRouterCreateRequestEnvelope{}
 	if err := mapconv.ConvertTo(args, v); err != nil {
 		return nil, err
 	}
@@ -5915,20 +5915,20 @@ func (o *VPCRouterOp) Create(ctx context.Context, zone string, param *VPCRouterC
 		return nil, err
 	}
 
-	nakedResponse := &vpcrouterCreateResponseEnvelope{}
+	nakedResponse := &vPCRouterCreateResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
 
-	results := &VPCRouterCreateResult{}
+	results := &vPCRouterCreateResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results.VPCRouter, nil
 }
 
 // Read is API call
-func (o *VPCRouterOp) Read(ctx context.Context, zone string, id types.ID) (*VPCRouterReadResult, error) {
+func (o *VPCRouterOp) Read(ctx context.Context, zone string, id types.ID) (*VPCRouter, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -5947,20 +5947,20 @@ func (o *VPCRouterOp) Read(ctx context.Context, zone string, id types.ID) (*VPCR
 		return nil, err
 	}
 
-	nakedResponse := &vpcrouterReadResponseEnvelope{}
+	nakedResponse := &vPCRouterReadResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
 
-	results := &VPCRouterReadResult{}
+	results := &vPCRouterReadResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results.VPCRouter, nil
 }
 
 // Update is API call
-func (o *VPCRouterOp) Update(ctx context.Context, zone string, id types.ID, param *VPCRouterUpdateRequest) (*VPCRouterUpdateResult, error) {
+func (o *VPCRouterOp) Update(ctx context.Context, zone string, id types.ID, param *VPCRouterUpdateRequest) (*VPCRouter, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -5994,7 +5994,7 @@ func (o *VPCRouterOp) Update(ctx context.Context, zone string, id types.ID, para
 		Argparam: param,
 	}
 
-	v := &vpcrouterUpdateRequestEnvelope{}
+	v := &vPCRouterUpdateRequestEnvelope{}
 	if err := mapconv.ConvertTo(args, v); err != nil {
 		return nil, err
 	}
@@ -6005,16 +6005,16 @@ func (o *VPCRouterOp) Update(ctx context.Context, zone string, id types.ID, para
 		return nil, err
 	}
 
-	nakedResponse := &vpcrouterUpdateResponseEnvelope{}
+	nakedResponse := &vPCRouterUpdateResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
 
-	results := &VPCRouterUpdateResult{}
+	results := &vPCRouterUpdateResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results.VPCRouter, nil
 }
 
 // Delete is API call
@@ -6121,7 +6121,7 @@ func (o *VPCRouterOp) Shutdown(ctx context.Context, zone string, id types.ID, sh
 		ArgshutdownOption: shutdownOption,
 	}
 
-	v := &vpcrouterShutdownRequestEnvelope{}
+	v := &vPCRouterShutdownRequestEnvelope{}
 	if err := mapconv.ConvertTo(args, v); err != nil {
 		return err
 	}
@@ -6208,7 +6208,7 @@ func (o *VPCRouterOp) DisconnectFromSwitch(ctx context.Context, zone string, id 
 }
 
 // MonitorInterface is API call
-func (o *VPCRouterOp) MonitorInterface(ctx context.Context, zone string, id types.ID, index int, condition *MonitorCondition) (*VPCRouterMonitorInterfaceResult, error) {
+func (o *VPCRouterOp) MonitorInterface(ctx context.Context, zone string, id types.ID, index int, condition *MonitorCondition) (*InterfaceActivity, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/interface/{{if eq .index 0}}{{.index}}{{end}}/monitor", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -6248,7 +6248,7 @@ func (o *VPCRouterOp) MonitorInterface(ctx context.Context, zone string, id type
 		Argcondition: condition,
 	}
 
-	v := &vpcrouterMonitorInterfaceRequestEnvelope{}
+	v := &vPCRouterMonitorInterfaceRequestEnvelope{}
 	if err := mapconv.ConvertTo(args, v); err != nil {
 		return nil, err
 	}
@@ -6259,16 +6259,16 @@ func (o *VPCRouterOp) MonitorInterface(ctx context.Context, zone string, id type
 		return nil, err
 	}
 
-	nakedResponse := &vpcrouterMonitorInterfaceResponseEnvelope{}
+	nakedResponse := &vPCRouterMonitorInterfaceResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
 
-	results := &VPCRouterMonitorInterfaceResult{}
+	results := &vPCRouterMonitorInterfaceResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results.InterfaceActivity, nil
 }
 
 /*************************************************
@@ -6339,11 +6339,11 @@ func (o *ZoneOp) Find(ctx context.Context, zone string, conditions *FindConditio
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results, err
 }
 
 // Read is API call
-func (o *ZoneOp) Read(ctx context.Context, zone string, id types.ID) (*ZoneReadResult, error) {
+func (o *ZoneOp) Read(ctx context.Context, zone string, id types.ID) (*Zone, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -6367,9 +6367,9 @@ func (o *ZoneOp) Read(ctx context.Context, zone string, id types.ID) (*ZoneReadR
 		return nil, err
 	}
 
-	results := &ZoneReadResult{}
+	results := &zoneReadResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, nil
+	return results.Zone, nil
 }

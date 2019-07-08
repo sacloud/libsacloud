@@ -15,12 +15,12 @@ import (
 // ArchiveAPI is interface for operate Archive resource
 type ArchiveAPI interface {
 	Find(ctx context.Context, zone string, conditions *FindCondition) (*ArchiveFindResult, error)
-	Create(ctx context.Context, zone string, param *ArchiveCreateRequest) (*ArchiveCreateResult, error)
-	CreateBlank(ctx context.Context, zone string, param *ArchiveCreateBlankRequest) (*ArchiveCreateBlankResult, error)
-	Read(ctx context.Context, zone string, id types.ID) (*ArchiveReadResult, error)
-	Update(ctx context.Context, zone string, id types.ID, param *ArchiveUpdateRequest) (*ArchiveUpdateResult, error)
+	Create(ctx context.Context, zone string, param *ArchiveCreateRequest) (*Archive, error)
+	CreateBlank(ctx context.Context, zone string, param *ArchiveCreateBlankRequest) (*Archive, *FTPServer, error)
+	Read(ctx context.Context, zone string, id types.ID) (*Archive, error)
+	Update(ctx context.Context, zone string, id types.ID, param *ArchiveUpdateRequest) (*Archive, error)
 	Delete(ctx context.Context, zone string, id types.ID) error
-	OpenFTP(ctx context.Context, zone string, id types.ID, openOption *OpenFTPRequest) (*ArchiveOpenFTPResult, error)
+	OpenFTP(ctx context.Context, zone string, id types.ID, openOption *OpenFTPRequest) (*FTPServer, error)
 	CloseFTP(ctx context.Context, zone string, id types.ID) error
 }
 
@@ -30,7 +30,7 @@ type ArchiveAPI interface {
 
 // AuthStatusAPI is interface for operate AuthStatus resource
 type AuthStatusAPI interface {
-	Read(ctx context.Context, zone string) (*AuthStatusReadResult, error)
+	Read(ctx context.Context, zone string) (*AuthStatus, error)
 }
 
 /*************************************************
@@ -40,9 +40,9 @@ type AuthStatusAPI interface {
 // BridgeAPI is interface for operate Bridge resource
 type BridgeAPI interface {
 	Find(ctx context.Context, zone string, conditions *FindCondition) (*BridgeFindResult, error)
-	Create(ctx context.Context, zone string, param *BridgeCreateRequest) (*BridgeCreateResult, error)
-	Read(ctx context.Context, zone string, id types.ID) (*BridgeReadResult, error)
-	Update(ctx context.Context, zone string, id types.ID, param *BridgeUpdateRequest) (*BridgeUpdateResult, error)
+	Create(ctx context.Context, zone string, param *BridgeCreateRequest) (*Bridge, error)
+	Read(ctx context.Context, zone string, id types.ID) (*Bridge, error)
+	Update(ctx context.Context, zone string, id types.ID, param *BridgeUpdateRequest) (*Bridge, error)
 	Delete(ctx context.Context, zone string, id types.ID) error
 }
 
@@ -53,11 +53,11 @@ type BridgeAPI interface {
 // CDROMAPI is interface for operate CDROM resource
 type CDROMAPI interface {
 	Find(ctx context.Context, zone string, conditions *FindCondition) (*CDROMFindResult, error)
-	Create(ctx context.Context, zone string, param *CDROMCreateRequest) (*CDROMCreateResult, error)
-	Read(ctx context.Context, zone string, id types.ID) (*CDROMReadResult, error)
-	Update(ctx context.Context, zone string, id types.ID, param *CDROMUpdateRequest) (*CDROMUpdateResult, error)
+	Create(ctx context.Context, zone string, param *CDROMCreateRequest) (*CDROM, *FTPServer, error)
+	Read(ctx context.Context, zone string, id types.ID) (*CDROM, error)
+	Update(ctx context.Context, zone string, id types.ID, param *CDROMUpdateRequest) (*CDROM, error)
 	Delete(ctx context.Context, zone string, id types.ID) error
-	OpenFTP(ctx context.Context, zone string, id types.ID, openOption *OpenFTPRequest) (*CDROMOpenFTPResult, error)
+	OpenFTP(ctx context.Context, zone string, id types.ID, openOption *OpenFTPRequest) (*FTPServer, error)
 	CloseFTP(ctx context.Context, zone string, id types.ID) error
 }
 
@@ -68,21 +68,21 @@ type CDROMAPI interface {
 // DiskAPI is interface for operate Disk resource
 type DiskAPI interface {
 	Find(ctx context.Context, zone string, conditions *FindCondition) (*DiskFindResult, error)
-	Create(ctx context.Context, zone string, param *DiskCreateRequest) (*DiskCreateResult, error)
-	CreateDistantly(ctx context.Context, zone string, createParam *DiskCreateRequest, distantFrom []types.ID) (*DiskCreateDistantlyResult, error)
+	Create(ctx context.Context, zone string, param *DiskCreateRequest) (*Disk, error)
+	CreateDistantly(ctx context.Context, zone string, createParam *DiskCreateRequest, distantFrom []types.ID) (*Disk, error)
 	Config(ctx context.Context, zone string, id types.ID, edit *DiskEditRequest) error
-	CreateWithConfig(ctx context.Context, zone string, createParam *DiskCreateRequest, editParam *DiskEditRequest, bootAtAvailable bool) (*DiskCreateWithConfigResult, error)
-	CreateWithConfigDistantly(ctx context.Context, zone string, createParam *DiskCreateRequest, editParam *DiskEditRequest, bootAtAvailable bool, distantFrom []types.ID) (*DiskCreateWithConfigDistantlyResult, error)
+	CreateWithConfig(ctx context.Context, zone string, createParam *DiskCreateRequest, editParam *DiskEditRequest, bootAtAvailable bool) (*Disk, error)
+	CreateWithConfigDistantly(ctx context.Context, zone string, createParam *DiskCreateRequest, editParam *DiskEditRequest, bootAtAvailable bool, distantFrom []types.ID) (*Disk, error)
 	ToBlank(ctx context.Context, zone string, id types.ID) error
 	ResizePartition(ctx context.Context, zone string, id types.ID) error
 	ConnectToServer(ctx context.Context, zone string, id types.ID, serverID types.ID) error
 	DisconnectFromServer(ctx context.Context, zone string, id types.ID) error
-	InstallDistantFrom(ctx context.Context, zone string, id types.ID, installParam *DiskInstallRequest, distantFrom []types.ID) (*DiskInstallDistantFromResult, error)
-	Install(ctx context.Context, zone string, id types.ID, installParam *DiskInstallRequest) (*DiskInstallResult, error)
-	Read(ctx context.Context, zone string, id types.ID) (*DiskReadResult, error)
-	Update(ctx context.Context, zone string, id types.ID, param *DiskUpdateRequest) (*DiskUpdateResult, error)
+	InstallDistantFrom(ctx context.Context, zone string, id types.ID, installParam *DiskInstallRequest, distantFrom []types.ID) (*Disk, error)
+	Install(ctx context.Context, zone string, id types.ID, installParam *DiskInstallRequest) (*Disk, error)
+	Read(ctx context.Context, zone string, id types.ID) (*Disk, error)
+	Update(ctx context.Context, zone string, id types.ID, param *DiskUpdateRequest) (*Disk, error)
 	Delete(ctx context.Context, zone string, id types.ID) error
-	Monitor(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*DiskMonitorResult, error)
+	Monitor(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*DiskActivity, error)
 }
 
 /*************************************************
@@ -92,9 +92,9 @@ type DiskAPI interface {
 // GSLBAPI is interface for operate GSLB resource
 type GSLBAPI interface {
 	Find(ctx context.Context, zone string, conditions *FindCondition) (*GSLBFindResult, error)
-	Create(ctx context.Context, zone string, param *GSLBCreateRequest) (*GSLBCreateResult, error)
-	Read(ctx context.Context, zone string, id types.ID) (*GSLBReadResult, error)
-	Update(ctx context.Context, zone string, id types.ID, param *GSLBUpdateRequest) (*GSLBUpdateResult, error)
+	Create(ctx context.Context, zone string, param *GSLBCreateRequest) (*GSLB, error)
+	Read(ctx context.Context, zone string, id types.ID) (*GSLB, error)
+	Update(ctx context.Context, zone string, id types.ID, param *GSLBUpdateRequest) (*GSLB, error)
 	Delete(ctx context.Context, zone string, id types.ID) error
 }
 
@@ -105,11 +105,11 @@ type GSLBAPI interface {
 // InterfaceAPI is interface for operate Interface resource
 type InterfaceAPI interface {
 	Find(ctx context.Context, zone string, conditions *FindCondition) (*InterfaceFindResult, error)
-	Create(ctx context.Context, zone string, param *InterfaceCreateRequest) (*InterfaceCreateResult, error)
-	Read(ctx context.Context, zone string, id types.ID) (*InterfaceReadResult, error)
-	Update(ctx context.Context, zone string, id types.ID, param *InterfaceUpdateRequest) (*InterfaceUpdateResult, error)
+	Create(ctx context.Context, zone string, param *InterfaceCreateRequest) (*Interface, error)
+	Read(ctx context.Context, zone string, id types.ID) (*Interface, error)
+	Update(ctx context.Context, zone string, id types.ID, param *InterfaceUpdateRequest) (*Interface, error)
 	Delete(ctx context.Context, zone string, id types.ID) error
-	Monitor(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*InterfaceMonitorResult, error)
+	Monitor(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*InterfaceActivity, error)
 	ConnectToSharedSegment(ctx context.Context, zone string, id types.ID) error
 	ConnectToSwitch(ctx context.Context, zone string, id types.ID, switchID types.ID) error
 	DisconnectFromSwitch(ctx context.Context, zone string, id types.ID) error
@@ -124,15 +124,15 @@ type InterfaceAPI interface {
 // InternetAPI is interface for operate Internet resource
 type InternetAPI interface {
 	Find(ctx context.Context, zone string, conditions *FindCondition) (*InternetFindResult, error)
-	Create(ctx context.Context, zone string, param *InternetCreateRequest) (*InternetCreateResult, error)
-	Read(ctx context.Context, zone string, id types.ID) (*InternetReadResult, error)
-	Update(ctx context.Context, zone string, id types.ID, param *InternetUpdateRequest) (*InternetUpdateResult, error)
+	Create(ctx context.Context, zone string, param *InternetCreateRequest) (*Internet, error)
+	Read(ctx context.Context, zone string, id types.ID) (*Internet, error)
+	Update(ctx context.Context, zone string, id types.ID, param *InternetUpdateRequest) (*Internet, error)
 	Delete(ctx context.Context, zone string, id types.ID) error
-	UpdateBandWidth(ctx context.Context, zone string, id types.ID, param *InternetUpdateBandWidthRequest) (*InternetUpdateBandWidthResult, error)
-	AddSubnet(ctx context.Context, zone string, id types.ID, param *InternetAddSubnetRequest) (*InternetAddSubnetResult, error)
-	UpdateSubnet(ctx context.Context, zone string, id types.ID, subnetID types.ID, param *InternetUpdateSubnetRequest) (*InternetUpdateSubnetResult, error)
+	UpdateBandWidth(ctx context.Context, zone string, id types.ID, param *InternetUpdateBandWidthRequest) (*Internet, error)
+	AddSubnet(ctx context.Context, zone string, id types.ID, param *InternetAddSubnetRequest) (*InternetSubnetOperationResult, error)
+	UpdateSubnet(ctx context.Context, zone string, id types.ID, subnetID types.ID, param *InternetUpdateSubnetRequest) (*InternetSubnetOperationResult, error)
 	DeleteSubnet(ctx context.Context, zone string, id types.ID, subnetID types.ID) error
-	Monitor(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*InternetMonitorResult, error)
+	Monitor(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*RouterActivity, error)
 }
 
 /*************************************************
@@ -142,15 +142,15 @@ type InternetAPI interface {
 // LoadBalancerAPI is interface for operate LoadBalancer resource
 type LoadBalancerAPI interface {
 	Find(ctx context.Context, zone string, conditions *FindCondition) (*LoadBalancerFindResult, error)
-	Create(ctx context.Context, zone string, param *LoadBalancerCreateRequest) (*LoadBalancerCreateResult, error)
-	Read(ctx context.Context, zone string, id types.ID) (*LoadBalancerReadResult, error)
-	Update(ctx context.Context, zone string, id types.ID, param *LoadBalancerUpdateRequest) (*LoadBalancerUpdateResult, error)
+	Create(ctx context.Context, zone string, param *LoadBalancerCreateRequest) (*LoadBalancer, error)
+	Read(ctx context.Context, zone string, id types.ID) (*LoadBalancer, error)
+	Update(ctx context.Context, zone string, id types.ID, param *LoadBalancerUpdateRequest) (*LoadBalancer, error)
 	Delete(ctx context.Context, zone string, id types.ID) error
 	Config(ctx context.Context, zone string, id types.ID) error
 	Boot(ctx context.Context, zone string, id types.ID) error
 	Shutdown(ctx context.Context, zone string, id types.ID, shutdownOption *ShutdownOption) error
 	Reset(ctx context.Context, zone string, id types.ID) error
-	MonitorInterface(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*LoadBalancerMonitorInterfaceResult, error)
+	MonitorInterface(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*InterfaceActivity, error)
 	Status(ctx context.Context, zone string, id types.ID) (*LoadBalancerStatusResult, error)
 }
 
@@ -161,15 +161,15 @@ type LoadBalancerAPI interface {
 // NFSAPI is interface for operate NFS resource
 type NFSAPI interface {
 	Find(ctx context.Context, zone string, conditions *FindCondition) (*NFSFindResult, error)
-	Create(ctx context.Context, zone string, param *NFSCreateRequest) (*NFSCreateResult, error)
-	Read(ctx context.Context, zone string, id types.ID) (*NFSReadResult, error)
-	Update(ctx context.Context, zone string, id types.ID, param *NFSUpdateRequest) (*NFSUpdateResult, error)
+	Create(ctx context.Context, zone string, param *NFSCreateRequest) (*NFS, error)
+	Read(ctx context.Context, zone string, id types.ID) (*NFS, error)
+	Update(ctx context.Context, zone string, id types.ID, param *NFSUpdateRequest) (*NFS, error)
 	Delete(ctx context.Context, zone string, id types.ID) error
 	Boot(ctx context.Context, zone string, id types.ID) error
 	Shutdown(ctx context.Context, zone string, id types.ID, shutdownOption *ShutdownOption) error
 	Reset(ctx context.Context, zone string, id types.ID) error
-	MonitorFreeDiskSize(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*NFSMonitorFreeDiskSizeResult, error)
-	MonitorInterface(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*NFSMonitorInterfaceResult, error)
+	MonitorFreeDiskSize(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*FreeDiskSizeActivity, error)
+	MonitorInterface(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*InterfaceActivity, error)
 }
 
 /*************************************************
@@ -179,9 +179,9 @@ type NFSAPI interface {
 // NoteAPI is interface for operate Note resource
 type NoteAPI interface {
 	Find(ctx context.Context, zone string, conditions *FindCondition) (*NoteFindResult, error)
-	Create(ctx context.Context, zone string, param *NoteCreateRequest) (*NoteCreateResult, error)
-	Read(ctx context.Context, zone string, id types.ID) (*NoteReadResult, error)
-	Update(ctx context.Context, zone string, id types.ID, param *NoteUpdateRequest) (*NoteUpdateResult, error)
+	Create(ctx context.Context, zone string, param *NoteCreateRequest) (*Note, error)
+	Read(ctx context.Context, zone string, id types.ID) (*Note, error)
+	Update(ctx context.Context, zone string, id types.ID, param *NoteUpdateRequest) (*Note, error)
 	Delete(ctx context.Context, zone string, id types.ID) error
 }
 
@@ -192,9 +192,9 @@ type NoteAPI interface {
 // PacketFilterAPI is interface for operate PacketFilter resource
 type PacketFilterAPI interface {
 	Find(ctx context.Context, zone string, conditions *FindCondition) (*PacketFilterFindResult, error)
-	Create(ctx context.Context, zone string, param *PacketFilterCreateRequest) (*PacketFilterCreateResult, error)
-	Read(ctx context.Context, zone string, id types.ID) (*PacketFilterReadResult, error)
-	Update(ctx context.Context, zone string, id types.ID, param *PacketFilterUpdateRequest) (*PacketFilterUpdateResult, error)
+	Create(ctx context.Context, zone string, param *PacketFilterCreateRequest) (*PacketFilter, error)
+	Read(ctx context.Context, zone string, id types.ID) (*PacketFilter, error)
+	Update(ctx context.Context, zone string, id types.ID, param *PacketFilterUpdateRequest) (*PacketFilter, error)
 	Delete(ctx context.Context, zone string, id types.ID) error
 }
 
@@ -205,17 +205,17 @@ type PacketFilterAPI interface {
 // ServerAPI is interface for operate Server resource
 type ServerAPI interface {
 	Find(ctx context.Context, zone string, conditions *FindCondition) (*ServerFindResult, error)
-	Create(ctx context.Context, zone string, param *ServerCreateRequest) (*ServerCreateResult, error)
-	Read(ctx context.Context, zone string, id types.ID) (*ServerReadResult, error)
-	Update(ctx context.Context, zone string, id types.ID, param *ServerUpdateRequest) (*ServerUpdateResult, error)
+	Create(ctx context.Context, zone string, param *ServerCreateRequest) (*Server, error)
+	Read(ctx context.Context, zone string, id types.ID) (*Server, error)
+	Update(ctx context.Context, zone string, id types.ID, param *ServerUpdateRequest) (*Server, error)
 	Delete(ctx context.Context, zone string, id types.ID) error
-	ChangePlan(ctx context.Context, zone string, id types.ID, plan *ServerChangePlanRequest) (*ServerChangePlanResult, error)
+	ChangePlan(ctx context.Context, zone string, id types.ID, plan *ServerChangePlanRequest) (*Server, error)
 	InsertCDROM(ctx context.Context, zone string, id types.ID, insertParam *InsertCDROMRequest) error
 	EjectCDROM(ctx context.Context, zone string, id types.ID, insertParam *EjectCDROMRequest) error
 	Boot(ctx context.Context, zone string, id types.ID) error
 	Shutdown(ctx context.Context, zone string, id types.ID, shutdownOption *ShutdownOption) error
 	Reset(ctx context.Context, zone string, id types.ID) error
-	Monitor(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*ServerMonitorResult, error)
+	Monitor(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*CPUTimeActivity, error)
 }
 
 /*************************************************
@@ -225,9 +225,9 @@ type ServerAPI interface {
 // SIMAPI is interface for operate SIM resource
 type SIMAPI interface {
 	Find(ctx context.Context, zone string, conditions *FindCondition) (*SIMFindResult, error)
-	Create(ctx context.Context, zone string, param *SIMCreateRequest) (*SIMCreateResult, error)
-	Read(ctx context.Context, zone string, id types.ID) (*SIMReadResult, error)
-	Update(ctx context.Context, zone string, id types.ID, param *SIMUpdateRequest) (*SIMUpdateResult, error)
+	Create(ctx context.Context, zone string, param *SIMCreateRequest) (*SIM, error)
+	Read(ctx context.Context, zone string, id types.ID) (*SIM, error)
+	Update(ctx context.Context, zone string, id types.ID, param *SIMUpdateRequest) (*SIM, error)
 	Delete(ctx context.Context, zone string, id types.ID) error
 	Activate(ctx context.Context, zone string, id types.ID) error
 	Deactivate(ctx context.Context, zone string, id types.ID) error
@@ -238,7 +238,7 @@ type SIMAPI interface {
 	Logs(ctx context.Context, zone string, id types.ID) (*SIMLogsResult, error)
 	GetNetworkOperator(ctx context.Context, zone string, id types.ID) (*SIMGetNetworkOperatorResult, error)
 	SetNetworkOperator(ctx context.Context, zone string, id types.ID, configs *SIMNetworkOperatorConfigs) error
-	MonitorSIM(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*SIMMonitorSIMResult, error)
+	MonitorSIM(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*LinkActivity, error)
 }
 
 /*************************************************
@@ -248,9 +248,9 @@ type SIMAPI interface {
 // SwitchAPI is interface for operate Switch resource
 type SwitchAPI interface {
 	Find(ctx context.Context, zone string, conditions *FindCondition) (*SwitchFindResult, error)
-	Create(ctx context.Context, zone string, param *SwitchCreateRequest) (*SwitchCreateResult, error)
-	Read(ctx context.Context, zone string, id types.ID) (*SwitchReadResult, error)
-	Update(ctx context.Context, zone string, id types.ID, param *SwitchUpdateRequest) (*SwitchUpdateResult, error)
+	Create(ctx context.Context, zone string, param *SwitchCreateRequest) (*Switch, error)
+	Read(ctx context.Context, zone string, id types.ID) (*Switch, error)
+	Update(ctx context.Context, zone string, id types.ID, param *SwitchUpdateRequest) (*Switch, error)
 	Delete(ctx context.Context, zone string, id types.ID) error
 	ConnectToBridge(ctx context.Context, zone string, id types.ID, bridgeID types.ID) error
 	DisconnectFromBridge(ctx context.Context, zone string, id types.ID) error
@@ -263,9 +263,9 @@ type SwitchAPI interface {
 // VPCRouterAPI is interface for operate VPCRouter resource
 type VPCRouterAPI interface {
 	Find(ctx context.Context, zone string, conditions *FindCondition) (*VPCRouterFindResult, error)
-	Create(ctx context.Context, zone string, param *VPCRouterCreateRequest) (*VPCRouterCreateResult, error)
-	Read(ctx context.Context, zone string, id types.ID) (*VPCRouterReadResult, error)
-	Update(ctx context.Context, zone string, id types.ID, param *VPCRouterUpdateRequest) (*VPCRouterUpdateResult, error)
+	Create(ctx context.Context, zone string, param *VPCRouterCreateRequest) (*VPCRouter, error)
+	Read(ctx context.Context, zone string, id types.ID) (*VPCRouter, error)
+	Update(ctx context.Context, zone string, id types.ID, param *VPCRouterUpdateRequest) (*VPCRouter, error)
 	Delete(ctx context.Context, zone string, id types.ID) error
 	Config(ctx context.Context, zone string, id types.ID) error
 	Boot(ctx context.Context, zone string, id types.ID) error
@@ -273,7 +273,7 @@ type VPCRouterAPI interface {
 	Reset(ctx context.Context, zone string, id types.ID) error
 	ConnectToSwitch(ctx context.Context, zone string, id types.ID, nicIndex int, switchID types.ID) error
 	DisconnectFromSwitch(ctx context.Context, zone string, id types.ID, nicIndex int) error
-	MonitorInterface(ctx context.Context, zone string, id types.ID, index int, condition *MonitorCondition) (*VPCRouterMonitorInterfaceResult, error)
+	MonitorInterface(ctx context.Context, zone string, id types.ID, index int, condition *MonitorCondition) (*InterfaceActivity, error)
 }
 
 /*************************************************
@@ -283,5 +283,5 @@ type VPCRouterAPI interface {
 // ZoneAPI is interface for operate Zone resource
 type ZoneAPI interface {
 	Find(ctx context.Context, zone string, conditions *FindCondition) (*ZoneFindResult, error)
-	Read(ctx context.Context, zone string, id types.ID) (*ZoneReadResult, error)
+	Read(ctx context.Context, zone string, id types.ID) (*Zone, error)
 }

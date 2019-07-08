@@ -26,7 +26,7 @@ func (o *SIMOp) Find(ctx context.Context, zone string, conditions *sacloud.FindC
 }
 
 // Create is fake implementation
-func (o *SIMOp) Create(ctx context.Context, zone string, param *sacloud.SIMCreateRequest) (*sacloud.SIMCreateResult, error) {
+func (o *SIMOp) Create(ctx context.Context, zone string, param *sacloud.SIMCreateRequest) (*sacloud.SIM, error) {
 	result := &sacloud.SIM{}
 	copySameNameField(param, result)
 	fill(result, fillID, fillCreatedAt)
@@ -34,42 +34,31 @@ func (o *SIMOp) Create(ctx context.Context, zone string, param *sacloud.SIMCreat
 	// TODO core logic is not implemented
 
 	s.setSIM(zone, result)
-	return &sacloud.SIMCreateResult{
-		IsOk: true,
-		SIM:  result,
-	}, nil
+	return result, nil
 }
 
 // Read is fake implementation
-func (o *SIMOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.SIMReadResult, error) {
+func (o *SIMOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.SIM, error) {
 	value := s.getSIMByID(zone, id)
 	if value == nil {
 		return nil, newErrorNotFound(o.key, id)
 	}
 	dest := &sacloud.SIM{}
 	copySameNameField(value, dest)
-	return &sacloud.SIMReadResult{
-		IsOk: true,
-		SIM:  dest,
-	}, nil
+	return dest, nil
 }
 
 // Update is fake implementation
-func (o *SIMOp) Update(ctx context.Context, zone string, id types.ID, param *sacloud.SIMUpdateRequest) (*sacloud.SIMUpdateResult, error) {
-	readResult, err := o.Read(ctx, zone, id)
+func (o *SIMOp) Update(ctx context.Context, zone string, id types.ID, param *sacloud.SIMUpdateRequest) (*sacloud.SIM, error) {
+	value, err := o.Read(ctx, zone, id)
 	if err != nil {
 		return nil, err
 	}
-	value := readResult.SIM
 	copySameNameField(param, value)
 	fill(value, fillModifiedAt)
 
 	// TODO core logic is not implemented
-
-	return &sacloud.SIMUpdateResult{
-		IsOk: true,
-		SIM:  value,
-	}, nil
+	return value, nil
 }
 
 // Delete is fake implementation
@@ -149,7 +138,7 @@ func (o *SIMOp) SetNetworkOperator(ctx context.Context, zone string, id types.ID
 }
 
 // MonitorSIM is fake implementation
-func (o *SIMOp) MonitorSIM(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.SIMMonitorSIMResult, error) {
+func (o *SIMOp) MonitorSIM(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.LinkActivity, error) {
 	// TODO not implemented
 	err := errors.New("not implements")
 	return nil, err
