@@ -11,6 +11,61 @@ import (
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
+// AddClientFactoryHooks add client factory hooks
+func AddClientFactoryHooks() {
+	sacloud.AddClientFacotyHookFunc("Archive", func(in interface{}) interface{} {
+		return NewArchiveTracer(in.(sacloud.ArchiveAPI))
+	})
+	sacloud.AddClientFacotyHookFunc("AuthStatus", func(in interface{}) interface{} {
+		return NewAuthStatusTracer(in.(sacloud.AuthStatusAPI))
+	})
+	sacloud.AddClientFacotyHookFunc("Bridge", func(in interface{}) interface{} {
+		return NewBridgeTracer(in.(sacloud.BridgeAPI))
+	})
+	sacloud.AddClientFacotyHookFunc("CDROM", func(in interface{}) interface{} {
+		return NewCDROMTracer(in.(sacloud.CDROMAPI))
+	})
+	sacloud.AddClientFacotyHookFunc("Disk", func(in interface{}) interface{} {
+		return NewDiskTracer(in.(sacloud.DiskAPI))
+	})
+	sacloud.AddClientFacotyHookFunc("GSLB", func(in interface{}) interface{} {
+		return NewGSLBTracer(in.(sacloud.GSLBAPI))
+	})
+	sacloud.AddClientFacotyHookFunc("Interface", func(in interface{}) interface{} {
+		return NewInterfaceTracer(in.(sacloud.InterfaceAPI))
+	})
+	sacloud.AddClientFacotyHookFunc("Internet", func(in interface{}) interface{} {
+		return NewInternetTracer(in.(sacloud.InternetAPI))
+	})
+	sacloud.AddClientFacotyHookFunc("LoadBalancer", func(in interface{}) interface{} {
+		return NewLoadBalancerTracer(in.(sacloud.LoadBalancerAPI))
+	})
+	sacloud.AddClientFacotyHookFunc("NFS", func(in interface{}) interface{} {
+		return NewNFSTracer(in.(sacloud.NFSAPI))
+	})
+	sacloud.AddClientFacotyHookFunc("Note", func(in interface{}) interface{} {
+		return NewNoteTracer(in.(sacloud.NoteAPI))
+	})
+	sacloud.AddClientFacotyHookFunc("PacketFilter", func(in interface{}) interface{} {
+		return NewPacketFilterTracer(in.(sacloud.PacketFilterAPI))
+	})
+	sacloud.AddClientFacotyHookFunc("Server", func(in interface{}) interface{} {
+		return NewServerTracer(in.(sacloud.ServerAPI))
+	})
+	sacloud.AddClientFacotyHookFunc("SIM", func(in interface{}) interface{} {
+		return NewSIMTracer(in.(sacloud.SIMAPI))
+	})
+	sacloud.AddClientFacotyHookFunc("Switch", func(in interface{}) interface{} {
+		return NewSwitchTracer(in.(sacloud.SwitchAPI))
+	})
+	sacloud.AddClientFacotyHookFunc("VPCRouter", func(in interface{}) interface{} {
+		return NewVPCRouterTracer(in.(sacloud.VPCRouterAPI))
+	})
+	sacloud.AddClientFacotyHookFunc("Zone", func(in interface{}) interface{} {
+		return NewZoneTracer(in.(sacloud.ZoneAPI))
+	})
+}
+
 /*************************************************
 * ArchiveTracer
 *************************************************/
