@@ -13,6 +13,7 @@ import (
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/accessor"
 	"github.com/sacloud/libsacloud/v2/sacloud/fake"
+	"github.com/sacloud/libsacloud/v2/sacloud/trace"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
@@ -47,6 +48,14 @@ func singletonAPICaller() sacloud.APICaller {
 	return apiCaller
 }
 
+func isAccTest() bool {
+	return os.Getenv("TESTACC") != ""
+}
+
+func isEnableTrace() bool {
+	return os.Getenv("SAKURACLOUD_TRACE") != ""
+}
+
 func TestMain(m *testing.M) {
 	testZone = os.Getenv("SAKURACLOUD_ZONE")
 	if testZone == "" {
@@ -56,6 +65,10 @@ func TestMain(m *testing.M) {
 	if !isAccTest() {
 		sacloud.DefaultStatePollInterval = 100 * time.Millisecond
 		fake.SwitchFactoryFuncToFake()
+	}
+
+	if isEnableTrace() {
+		trace.AddClientFactoryHooks()
 	}
 
 	ret := m.Run()
