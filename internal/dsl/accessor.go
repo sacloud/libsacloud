@@ -1,6 +1,6 @@
-package schema
+package dsl
 
-import "github.com/sacloud/libsacloud/v2/internal/schema/meta"
+import "github.com/sacloud/libsacloud/v2/internal/dsl/meta"
 
 // Accessor モデルに拡張アクセサを持たせるための定義
 type Accessor struct {

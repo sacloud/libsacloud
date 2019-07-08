@@ -3,8 +3,8 @@ package define
 import (
 	"net/http"
 
-	"github.com/sacloud/libsacloud/v2/internal/schema"
-	"github.com/sacloud/libsacloud/v2/internal/schema/meta"
+	"github.com/sacloud/libsacloud/v2/internal/dsl"
+	"github.com/sacloud/libsacloud/v2/internal/dsl/meta"
 	"github.com/sacloud/libsacloud/v2/sacloud/naked"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
@@ -14,25 +14,25 @@ const (
 	authStatusPathName = "auth-status"
 )
 
-var authStatusAPI = &schema.Resource{
+var authStatusAPI = &dsl.Resource{
 	Name:       authStatusAPIName,
 	PathName:   authStatusPathName,
-	PathSuffix: schema.CloudAPISuffix,
+	PathSuffix: dsl.CloudAPISuffix,
 	IsGlobal:   true,
-	Operations: schema.Operations{
+	Operations: dsl.Operations{
 		{
 			ResourceName: authStatusAPIName,
 			Name:         "Read",
 			Method:       http.MethodGet,
-			PathFormat:   schema.DefaultPathFormat,
-			Arguments:    schema.Arguments{schema.ArgumentZone},
-			ResponseEnvelope: schema.ResponseEnvelope(
-				&schema.EnvelopePayloadDesc{
+			PathFormat:   dsl.DefaultPathFormat,
+			Arguments:    dsl.Arguments{dsl.ArgumentZone},
+			ResponseEnvelope: dsl.ResponseEnvelope(
+				&dsl.EnvelopePayloadDesc{
 					Name: authStatusAPIName,
 					Type: authStatusNakedType,
 				},
 			),
-			Results: schema.Results{
+			Results: dsl.Results{
 				{
 					SourceField: authStatusAPIName,
 					DestField:   authStatusView.Name,
@@ -46,10 +46,10 @@ var authStatusAPI = &schema.Resource{
 
 var (
 	authStatusNakedType = meta.Static(naked.AuthStatus{})
-	authStatusView      = &schema.Model{
+	authStatusView      = &dsl.Model{
 		Name:      "AuthStatus",
 		NakedType: authStatusNakedType,
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			fields.AccountID(),
 			fields.AccountName(),
 			fields.AccountCode(),

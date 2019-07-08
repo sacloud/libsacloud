@@ -1,10 +1,10 @@
-package schema
+package dsl
 
 import (
 	"fmt"
 	"strings"
 
-	"github.com/sacloud/libsacloud/v2/internal/schema/meta"
+	"github.com/sacloud/libsacloud/v2/internal/dsl/meta"
 )
 
 // FieldDesc フィールド記述

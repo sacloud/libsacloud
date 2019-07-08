@@ -3,8 +3,8 @@ package define
 import (
 	"github.com/sacloud/libsacloud/v2/internal/define/names"
 	"github.com/sacloud/libsacloud/v2/internal/define/ops"
-	"github.com/sacloud/libsacloud/v2/internal/schema"
-	"github.com/sacloud/libsacloud/v2/internal/schema/meta"
+	"github.com/sacloud/libsacloud/v2/internal/dsl"
+	"github.com/sacloud/libsacloud/v2/internal/dsl/meta"
 	"github.com/sacloud/libsacloud/v2/sacloud/naked"
 )
 
@@ -13,12 +13,12 @@ const (
 	gslbAPIPathName = "commonserviceitem"
 )
 
-var gslbAPI = &schema.Resource{
+var gslbAPI = &dsl.Resource{
 	Name:       gslbAPIName,
 	PathName:   gslbAPIPathName,
-	PathSuffix: schema.CloudAPISuffix,
+	PathSuffix: dsl.CloudAPISuffix,
 	IsGlobal:   true,
-	Operations: schema.Operations{
+	Operations: dsl.Operations{
 		// find
 		ops.FindCommonServiceItem(gslbAPIName, gslbNakedType, findParameter, gslbView),
 
@@ -39,10 +39,10 @@ var gslbAPI = &schema.Resource{
 var (
 	gslbNakedType = meta.Static(naked.GSLB{})
 
-	gslbView = &schema.Model{
+	gslbView = &dsl.Model{
 		Name:      gslbAPIName,
 		NakedType: gslbNakedType,
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			fields.ID(),
 			fields.Name(),
 			fields.Description(),
@@ -67,10 +67,10 @@ var (
 		},
 	}
 
-	gslbCreateParam = &schema.Model{
+	gslbCreateParam = &dsl.Model{
 		Name:      names.CreateParameterName(gslbAPIName),
 		NakedType: gslbNakedType,
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			fields.GSLBProviderClass(),
 
 			fields.GSLBHealthCheckProtocol(),
@@ -90,10 +90,10 @@ var (
 		},
 	}
 
-	gslbUpdateParam = &schema.Model{
+	gslbUpdateParam = &dsl.Model{
 		Name:      names.UpdateParameterName(gslbAPIName),
 		NakedType: gslbNakedType,
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			fields.GSLBHealthCheckProtocol(),
 			fields.GSLBHealthCheckHostHeader(),
 			fields.GSLBHealthCheckPath(),

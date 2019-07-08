@@ -5,8 +5,8 @@ import (
 
 	"github.com/sacloud/libsacloud/v2/internal/define/names"
 	"github.com/sacloud/libsacloud/v2/internal/define/ops"
-	"github.com/sacloud/libsacloud/v2/internal/schema"
-	"github.com/sacloud/libsacloud/v2/internal/schema/meta"
+	"github.com/sacloud/libsacloud/v2/internal/dsl"
+	"github.com/sacloud/libsacloud/v2/internal/dsl/meta"
 	"github.com/sacloud/libsacloud/v2/sacloud/naked"
 )
 
@@ -15,11 +15,11 @@ const (
 	internetAPIPathName = "internet"
 )
 
-var internetAPI = &schema.Resource{
+var internetAPI = &dsl.Resource{
 	Name:       internetAPIName,
 	PathName:   internetAPIPathName,
-	PathSuffix: schema.CloudAPISuffix,
-	Operations: schema.Operations{
+	PathSuffix: dsl.CloudAPISuffix,
+	Operations: dsl.Operations{
 
 		// find
 		ops.Find(internetAPIName, internetNakedType, findParameter, internetView),
@@ -40,24 +40,24 @@ var internetAPI = &schema.Resource{
 		{
 			ResourceName: internetAPIName,
 			Name:         "UpdateBandWidth",
-			PathFormat:   schema.IDAndSuffixPathFormat("bandwidth"),
+			PathFormat:   dsl.IDAndSuffixPathFormat("bandwidth"),
 			Method:       http.MethodPut,
-			RequestEnvelope: schema.RequestEnvelope(
-				&schema.EnvelopePayloadDesc{
+			RequestEnvelope: dsl.RequestEnvelope(
+				&dsl.EnvelopePayloadDesc{
 					Type: internetNakedType,
 					Name: "Internet",
 				},
 			),
-			Arguments: schema.Arguments{
-				schema.ArgumentZone,
-				schema.ArgumentID,
-				schema.MappableArgument("param", internetUpdateBandWidthParam, "Internet"),
+			Arguments: dsl.Arguments{
+				dsl.ArgumentZone,
+				dsl.ArgumentID,
+				dsl.MappableArgument("param", internetUpdateBandWidthParam, "Internet"),
 			},
-			ResponseEnvelope: schema.ResponseEnvelope(&schema.EnvelopePayloadDesc{
+			ResponseEnvelope: dsl.ResponseEnvelope(&dsl.EnvelopePayloadDesc{
 				Type: internetNakedType,
 				Name: "Internet",
 			}),
-			Results: schema.Results{
+			Results: dsl.Results{
 				{
 					SourceField: "Internet",
 					DestField:   "Internet",
@@ -71,19 +71,19 @@ var internetAPI = &schema.Resource{
 		{
 			ResourceName:    internetAPIName,
 			Name:            "AddSubnet",
-			PathFormat:      schema.IDAndSuffixPathFormat("subnet"),
+			PathFormat:      dsl.IDAndSuffixPathFormat("subnet"),
 			Method:          http.MethodPost,
-			RequestEnvelope: schema.RequestEnvelopeFromModel(internetAddSubnetParam),
-			Arguments: schema.Arguments{
-				schema.ArgumentZone,
-				schema.ArgumentID,
-				schema.PassthroughModelArgument("param", internetAddSubnetParam),
+			RequestEnvelope: dsl.RequestEnvelopeFromModel(internetAddSubnetParam),
+			Arguments: dsl.Arguments{
+				dsl.ArgumentZone,
+				dsl.ArgumentID,
+				dsl.PassthroughModelArgument("param", internetAddSubnetParam),
 			},
-			ResponseEnvelope: schema.ResponseEnvelope(&schema.EnvelopePayloadDesc{
+			ResponseEnvelope: dsl.ResponseEnvelope(&dsl.EnvelopePayloadDesc{
 				Type: meta.Static(naked.Subnet{}),
 				Name: "Subnet",
 			}),
-			Results: schema.Results{
+			Results: dsl.Results{
 				{
 					SourceField: "Subnet",
 					DestField:   "Subnet",
@@ -97,23 +97,23 @@ var internetAPI = &schema.Resource{
 		{
 			ResourceName:    internetAPIName,
 			Name:            "UpdateSubnet",
-			PathFormat:      schema.IDAndSuffixPathFormat("subnet/{{.subnetID}}"),
+			PathFormat:      dsl.IDAndSuffixPathFormat("subnet/{{.subnetID}}"),
 			Method:          http.MethodPut,
-			RequestEnvelope: schema.RequestEnvelopeFromModel(internetUpdateSubnetParam),
-			Arguments: schema.Arguments{
-				schema.ArgumentZone,
-				schema.ArgumentID,
+			RequestEnvelope: dsl.RequestEnvelopeFromModel(internetUpdateSubnetParam),
+			Arguments: dsl.Arguments{
+				dsl.ArgumentZone,
+				dsl.ArgumentID,
 				{
 					Name: "subnetID",
 					Type: meta.TypeID,
 				},
-				schema.PassthroughModelArgument("param", internetUpdateSubnetParam),
+				dsl.PassthroughModelArgument("param", internetUpdateSubnetParam),
 			},
-			ResponseEnvelope: schema.ResponseEnvelope(&schema.EnvelopePayloadDesc{
+			ResponseEnvelope: dsl.ResponseEnvelope(&dsl.EnvelopePayloadDesc{
 				Type: meta.Static(naked.Subnet{}),
 				Name: "Subnet",
 			}),
-			Results: schema.Results{
+			Results: dsl.Results{
 				{
 					SourceField: "Subnet",
 					DestField:   "Subnet",
@@ -125,7 +125,7 @@ var internetAPI = &schema.Resource{
 
 		// DeleteSubnet
 		ops.WithIDAction(internetAPIName, "DeleteSubnet", http.MethodDelete, "subnet/{{.subnetID}}",
-			&schema.Argument{
+			&dsl.Argument{
 				Name: "subnetID",
 				Type: meta.TypeID,
 			},
@@ -142,10 +142,10 @@ var (
 
 	internetView = models.internetModel()
 
-	internetCreateParam = &schema.Model{
+	internetCreateParam = &dsl.Model{
 		Name:      names.CreateParameterName(internetAPIName),
 		NakedType: internetNakedType,
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			fields.Name(),
 			fields.Description(),
 			fields.Tags(),
@@ -155,10 +155,10 @@ var (
 		},
 	}
 
-	internetUpdateParam = &schema.Model{
+	internetUpdateParam = &dsl.Model{
 		Name:      names.UpdateParameterName(internetAPIName),
 		NakedType: internetNakedType,
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			fields.Name(),
 			fields.Description(),
 			fields.Tags(),
@@ -166,26 +166,26 @@ var (
 		},
 	}
 
-	internetUpdateBandWidthParam = &schema.Model{
+	internetUpdateBandWidthParam = &dsl.Model{
 		Name:      "InternetUpdateBandWidthRequest",
 		NakedType: internetNakedType,
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			fields.BandWidthMbps(),
 		},
 	}
 
-	internetAddSubnetParam = &schema.Model{
+	internetAddSubnetParam = &dsl.Model{
 		Name:      "InternetAddSubnetRequest",
 		NakedType: meta.Static(naked.SubnetOperationRequest{}),
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			fields.NetworkMaskLen(),
 			fields.NextHop(),
 		},
 	}
-	internetUpdateSubnetParam = &schema.Model{
+	internetUpdateSubnetParam = &dsl.Model{
 		Name:      "InternetUpdateSubnetRequest",
 		NakedType: meta.Static(naked.SubnetOperationRequest{}),
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			fields.NextHop(),
 		},
 	}

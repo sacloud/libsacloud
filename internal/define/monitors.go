@@ -1,8 +1,8 @@
 package define
 
 import (
-	"github.com/sacloud/libsacloud/v2/internal/schema"
-	"github.com/sacloud/libsacloud/v2/internal/schema/meta"
+	"github.com/sacloud/libsacloud/v2/internal/dsl"
+	"github.com/sacloud/libsacloud/v2/internal/dsl/meta"
 	"github.com/sacloud/libsacloud/v2/sacloud/naked"
 )
 
@@ -10,22 +10,22 @@ type monitorsDef struct{}
 
 var monitors = &monitorsDef{}
 
-func (m *monitorsDef) cpuTimeModel() *schema.Model {
-	return &schema.Model{
+func (m *monitorsDef) cpuTimeModel() *dsl.Model {
+	return &dsl.Model{
 		Name: "CPUTimeActivity",
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			{
 				Name: "Values",
-				Type: &schema.Model{
+				Type: &dsl.Model{
 					Name:      "MonitorCPUTimeValue",
 					NakedType: meta.Static(naked.MonitorCPUTimeValue{}),
 					IsArray:   true,
-					Fields: []*schema.FieldDesc{
+					Fields: []*dsl.FieldDesc{
 						fields.MonitorTime(),
 						fields.MonitorCPUTime(),
 					},
 				},
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					MapConv: "[]CPU",
 				},
 			},
@@ -34,23 +34,23 @@ func (m *monitorsDef) cpuTimeModel() *schema.Model {
 	}
 }
 
-func (m *monitorsDef) diskModel() *schema.Model {
-	return &schema.Model{
+func (m *monitorsDef) diskModel() *dsl.Model {
+	return &dsl.Model{
 		Name: "DiskActivity",
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			{
 				Name: "Values",
-				Type: &schema.Model{
+				Type: &dsl.Model{
 					Name:      "MonitorDiskValue",
 					NakedType: meta.Static(naked.MonitorDiskValue{}),
 					IsArray:   true,
-					Fields: []*schema.FieldDesc{
+					Fields: []*dsl.FieldDesc{
 						fields.MonitorTime(),
 						fields.MonitorDiskRead(),
 						fields.MonitorDiskWrite(),
 					},
 				},
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					MapConv: "[]Disk",
 				},
 			},
@@ -59,23 +59,23 @@ func (m *monitorsDef) diskModel() *schema.Model {
 	}
 }
 
-func (m *monitorsDef) interfaceModel() *schema.Model {
-	return &schema.Model{
+func (m *monitorsDef) interfaceModel() *dsl.Model {
+	return &dsl.Model{
 		Name: "InterfaceActivity",
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			{
 				Name: "Values",
-				Type: &schema.Model{
+				Type: &dsl.Model{
 					Name:      "MonitorInterfaceValue",
 					NakedType: meta.Static(naked.MonitorInterfaceValue{}),
 					IsArray:   true,
-					Fields: []*schema.FieldDesc{
+					Fields: []*dsl.FieldDesc{
 						fields.MonitorTime(),
 						fields.MonitorInterfaceReceive(),
 						fields.MonitorInterfaceSend(),
 					},
 				},
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					MapConv: "[]Interface",
 				},
 			},
@@ -84,23 +84,23 @@ func (m *monitorsDef) interfaceModel() *schema.Model {
 	}
 }
 
-func (m *monitorsDef) routerModel() *schema.Model {
-	return &schema.Model{
+func (m *monitorsDef) routerModel() *dsl.Model {
+	return &dsl.Model{
 		Name: "RouterActivity",
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			{
 				Name: "Values",
-				Type: &schema.Model{
+				Type: &dsl.Model{
 					Name:      "MonitorRouterValue",
 					NakedType: meta.Static(naked.MonitorRouterValue{}),
 					IsArray:   true,
-					Fields: []*schema.FieldDesc{
+					Fields: []*dsl.FieldDesc{
 						fields.MonitorTime(),
 						fields.MonitorRouterIn(),
 						fields.MonitorRouterOut(),
 					},
 				},
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					MapConv: "[]Router",
 				},
 			},
@@ -109,18 +109,18 @@ func (m *monitorsDef) routerModel() *schema.Model {
 	}
 }
 
-func (m *monitorsDef) databaseModel() *schema.Model {
-	return &schema.Model{
+func (m *monitorsDef) databaseModel() *dsl.Model {
+	return &dsl.Model{
 		Name: "DatabaseActivity",
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			{
 				Name: "Values",
 				//Type: meta.Static([]naked.MonitorDatabaseValue{}),
-				Type: &schema.Model{
+				Type: &dsl.Model{
 					Name:      "MonitorDatabaseValue",
 					NakedType: meta.Static(naked.MonitorDatabaseValue{}),
 					IsArray:   true,
-					Fields: []*schema.FieldDesc{
+					Fields: []*dsl.FieldDesc{
 						fields.MonitorTime(),
 						fields.MonitorDatabaseTotalMemorySize(),
 						fields.MonitorDatabaseUsedMemorySize(),
@@ -132,7 +132,7 @@ func (m *monitorsDef) databaseModel() *schema.Model {
 						fields.MonitorDatabaseDelayTimeSec(),
 					},
 				},
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					MapConv: "[]Database",
 				},
 			},
@@ -141,22 +141,22 @@ func (m *monitorsDef) databaseModel() *schema.Model {
 	}
 }
 
-func (m *monitorsDef) freeDiskSizeModel() *schema.Model {
-	return &schema.Model{
+func (m *monitorsDef) freeDiskSizeModel() *dsl.Model {
+	return &dsl.Model{
 		Name: "FreeDiskSizeActivity",
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			{
 				Name: "Values",
-				Type: &schema.Model{
+				Type: &dsl.Model{
 					Name:      "MonitorFreeDiskSizeValue",
 					NakedType: meta.Static(naked.MonitorFreeDiskSizeValue{}),
 					IsArray:   true,
-					Fields: []*schema.FieldDesc{
+					Fields: []*dsl.FieldDesc{
 						fields.MonitorTime(),
 						fields.MonitorFreeDiskSize(),
 					},
 				},
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					MapConv: "[]FreeDiskSize",
 				},
 			},
@@ -165,22 +165,22 @@ func (m *monitorsDef) freeDiskSizeModel() *schema.Model {
 	}
 }
 
-func (m *monitorsDef) responseTimeSecModel() *schema.Model {
-	return &schema.Model{
+func (m *monitorsDef) responseTimeSecModel() *dsl.Model {
+	return &dsl.Model{
 		Name: "ResponseTimeSecActivity",
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			{
 				Name: "Values",
-				Type: &schema.Model{
+				Type: &dsl.Model{
 					Name:      "MonitorResponseTimeSecValue",
 					NakedType: meta.Static(naked.MonitorResponseTimeSecValue{}),
 					IsArray:   true,
-					Fields: []*schema.FieldDesc{
+					Fields: []*dsl.FieldDesc{
 						fields.MonitorTime(),
 						fields.MonitorResponseTimeSec(),
 					},
 				},
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					MapConv: "[]ResponseTimeSec",
 				},
 			},
@@ -189,23 +189,23 @@ func (m *monitorsDef) responseTimeSecModel() *schema.Model {
 	}
 }
 
-func (m *monitorsDef) linkModel() *schema.Model {
-	return &schema.Model{
+func (m *monitorsDef) linkModel() *dsl.Model {
+	return &dsl.Model{
 		Name: "LinkActivity",
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			{
 				Name: "Values",
-				Type: &schema.Model{
+				Type: &dsl.Model{
 					Name:      "MonitorLinkValue",
 					NakedType: meta.Static(naked.MonitorLinkValue{}),
 					IsArray:   true,
-					Fields: []*schema.FieldDesc{
+					Fields: []*dsl.FieldDesc{
 						fields.MonitorTime(),
 						fields.MonitorUplinkBPS(),
 						fields.MonitorDownlinkBPS(),
 					},
 				},
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					MapConv: "[]Link",
 				},
 			},
@@ -214,24 +214,24 @@ func (m *monitorsDef) linkModel() *schema.Model {
 	}
 }
 
-func (m *monitorsDef) connectionModel() *schema.Model {
-	return &schema.Model{
+func (m *monitorsDef) connectionModel() *dsl.Model {
+	return &dsl.Model{
 		Name: "ConnectionActivity",
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			{
 				Name: "Values",
 				//Type: meta.Static([]naked.MonitorConnectionValue{}),
-				Type: &schema.Model{
+				Type: &dsl.Model{
 					Name:      "MonitorConnectionValue",
 					NakedType: meta.Static(naked.MonitorConnectionValue{}),
 					IsArray:   true,
-					Fields: []*schema.FieldDesc{
+					Fields: []*dsl.FieldDesc{
 						fields.MonitorTime(),
 						fields.MonitorActiveConnections(),
 						fields.MonitorConnectionsPerSec(),
 					},
 				},
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					MapConv: "[]Connection",
 				},
 			},

@@ -1,33 +1,33 @@
 package define
 
 import (
-	"github.com/sacloud/libsacloud/v2/internal/schema"
-	"github.com/sacloud/libsacloud/v2/internal/schema/meta"
+	"github.com/sacloud/libsacloud/v2/internal/dsl"
+	"github.com/sacloud/libsacloud/v2/internal/dsl/meta"
 )
 
-var monitorParameter = &schema.Model{
+var monitorParameter = &dsl.Model{
 	Name: "MonitorCondition",
-	Fields: []*schema.FieldDesc{
+	Fields: []*dsl.FieldDesc{
 		{
 			Name: "Start",
 			Type: meta.TypeTime,
-			Tags: &schema.FieldTags{
+			Tags: &dsl.FieldTags{
 				JSON: ",omitempty",
 			},
 		},
 		{
 			Name: "End",
 			Type: meta.TypeTime,
-			Tags: &schema.FieldTags{
+			Tags: &dsl.FieldTags{
 				JSON: ",omitempty",
 			},
 		},
 	},
 }
 
-var findParameter = &schema.Model{
+var findParameter = &dsl.Model{
 	Name: "FindCondition",
-	Fields: []*schema.FieldDesc{
+	Fields: []*dsl.FieldDesc{
 		conditions.Count(),
 		conditions.From(),
 		conditions.Sort(),
@@ -41,61 +41,61 @@ type findCondtionsDef struct{}
 
 var conditions = &findCondtionsDef{}
 
-func (f *findCondtionsDef) From() *schema.FieldDesc {
-	return &schema.FieldDesc{
+func (f *findCondtionsDef) From() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
 		Name: "From",
 		Type: meta.Static(int(0)),
-		Tags: &schema.FieldTags{
+		Tags: &dsl.FieldTags{
 			MapConv: ",omitempty",
 		},
 	}
 }
 
-func (f *findCondtionsDef) Count() *schema.FieldDesc {
-	return &schema.FieldDesc{
+func (f *findCondtionsDef) Count() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
 		Name: "Count",
 		Type: meta.Static(int(0)),
-		Tags: &schema.FieldTags{
+		Tags: &dsl.FieldTags{
 			MapConv: ",omitempty",
 		},
 	}
 }
 
-func (f *findCondtionsDef) Sort() *schema.FieldDesc {
-	return &schema.FieldDesc{
+func (f *findCondtionsDef) Sort() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
 		Name: "Sort",
 		Type: meta.Static([]string{}),
-		Tags: &schema.FieldTags{
+		Tags: &dsl.FieldTags{
 			MapConv: ",omitempty",
 		},
 	}
 }
 
-func (f *findCondtionsDef) Filter() *schema.FieldDesc {
-	return &schema.FieldDesc{
+func (f *findCondtionsDef) Filter() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
 		Name: "Filter",
 		Type: meta.Static(map[string]interface{}{}),
-		Tags: &schema.FieldTags{
+		Tags: &dsl.FieldTags{
 			MapConv: ",omitempty",
 		},
 	}
 }
 
-func (f *findCondtionsDef) Include() *schema.FieldDesc {
-	return &schema.FieldDesc{
+func (f *findCondtionsDef) Include() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
 		Name: "Include",
 		Type: meta.Static([]string{}),
-		Tags: &schema.FieldTags{
+		Tags: &dsl.FieldTags{
 			MapConv: ",omitempty",
 		},
 	}
 }
 
-func (f *findCondtionsDef) Exclude() *schema.FieldDesc {
-	return &schema.FieldDesc{
+func (f *findCondtionsDef) Exclude() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
 		Name: "Exclude",
 		Type: meta.Static([]string{}),
-		Tags: &schema.FieldTags{
+		Tags: &dsl.FieldTags{
 			MapConv: ",omitempty",
 		},
 	}

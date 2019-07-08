@@ -5,7 +5,7 @@ import (
 	"path/filepath"
 
 	"github.com/sacloud/libsacloud/v2/internal/define"
-	"github.com/sacloud/libsacloud/v2/internal/schema"
+	"github.com/sacloud/libsacloud/v2/internal/dsl"
 	"github.com/sacloud/libsacloud/v2/internal/tools"
 )
 
@@ -17,7 +17,7 @@ func init() {
 }
 
 func main() {
-	schema.IsOutOfSacloudPackage = true
+	dsl.IsOutOfSacloudPackage = true
 
 	tools.WriteFileWithTemplate(&tools.TemplateConfig{
 		OutputPath: filepath.Join(tools.ProjectRootPath(), destination),
