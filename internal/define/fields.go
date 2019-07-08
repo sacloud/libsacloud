@@ -43,6 +43,64 @@ func (f *fieldsDef) Name() *schema.FieldDesc {
 	}
 }
 
+func (f *fieldsDef) AccountID() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "AccountID",
+		Type: meta.TypeID,
+		Tags: &schema.FieldTags{
+			MapConv: "Account.ID",
+		},
+	}
+}
+
+func (f *fieldsDef) AccountName() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "AccountName",
+		Type: meta.TypeString,
+		Tags: &schema.FieldTags{
+			MapConv: "Account.Name",
+		},
+	}
+}
+
+func (f *fieldsDef) AccountCode() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "AccountCode",
+		Type: meta.TypeString,
+		Tags: &schema.FieldTags{
+			MapConv: "Account.Code",
+		},
+	}
+}
+func (f *fieldsDef) AccountClass() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "AccountClass",
+		Type: meta.TypeString,
+		Tags: &schema.FieldTags{
+			MapConv: "Account.Class",
+		},
+	}
+}
+
+func (f *fieldsDef) MemberCode() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "MemberCode",
+		Type: meta.TypeString,
+		Tags: &schema.FieldTags{
+			MapConv: "Member.Code",
+		},
+	}
+}
+func (f *fieldsDef) MemberClass() *schema.FieldDesc {
+	return &schema.FieldDesc{
+		Name: "MemberClass",
+		Type: meta.TypeString,
+		Tags: &schema.FieldTags{
+			MapConv: "Member.Class",
+		},
+	}
+}
+
 func (f *fieldsDef) InterfaceDriver() *schema.FieldDesc {
 	return &schema.FieldDesc{
 		Name: "InterfaceDriver",

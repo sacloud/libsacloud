@@ -20,6 +20,14 @@ func init() {
 		}
 	})
 
+	SetClientFactoryFunc("AuthStatus", func(caller APICaller) interface{} {
+		return &AuthStatusOp{
+			Client:     caller,
+			PathSuffix: "api/cloud/1.1",
+			PathName:   "auth-status",
+		}
+	})
+
 	SetClientFactoryFunc("Bridge", func(caller APICaller) interface{} {
 		return &BridgeOp{
 			Client:     caller,
@@ -508,6 +516,56 @@ func (o *ArchiveOp) CloseFTP(ctx context.Context, zone string, id types.ID) erro
 	}
 
 	return nil
+}
+
+/*************************************************
+* AuthStatusOp
+*************************************************/
+
+// AuthStatusOp implements AuthStatusAPI interface
+type AuthStatusOp struct {
+	// Client APICaller
+	Client APICaller
+	// PathSuffix is used when building URL
+	PathSuffix string
+	// PathName is used when building URL
+	PathName string
+}
+
+// NewAuthStatusOp creates new AuthStatusOp instance
+func NewAuthStatusOp(caller APICaller) AuthStatusAPI {
+	return GetClientFactoryFunc("AuthStatus")(caller).(AuthStatusAPI)
+}
+
+// Read is API call
+func (o *AuthStatusOp) Read(ctx context.Context, zone string) (*AuthStatusReadResult, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &authstatusReadResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &AuthStatusReadResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
 }
 
 /*************************************************
