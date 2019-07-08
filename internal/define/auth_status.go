@@ -29,7 +29,7 @@ var authStatusAPI = &schema.Resource{
 			ResponseEnvelope: schema.ResponseEnvelope(
 				&schema.EnvelopePayloadDesc{
 					Name: authStatusAPIName,
-					Type: archiveNakedType,
+					Type: authStatusNakedType,
 				},
 			),
 			Results: schema.Results{
