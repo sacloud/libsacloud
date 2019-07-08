@@ -3,8 +3,8 @@ package define
 import (
 	"github.com/sacloud/libsacloud/v2/internal/define/names"
 	"github.com/sacloud/libsacloud/v2/internal/define/ops"
-	"github.com/sacloud/libsacloud/v2/internal/schema"
-	"github.com/sacloud/libsacloud/v2/internal/schema/meta"
+	"github.com/sacloud/libsacloud/v2/internal/dsl"
+	"github.com/sacloud/libsacloud/v2/internal/dsl/meta"
 	"github.com/sacloud/libsacloud/v2/sacloud/naked"
 )
 
@@ -13,11 +13,11 @@ const (
 	loadBalancerAPIPathName = "appliance"
 )
 
-var loadBalancerAPI = &schema.Resource{
+var loadBalancerAPI = &dsl.Resource{
 	Name:       loadBalancerAPIName,
 	PathName:   loadBalancerAPIPathName,
-	PathSuffix: schema.CloudAPISuffix,
-	Operations: schema.Operations{
+	PathSuffix: dsl.CloudAPISuffix,
+	Operations: dsl.Operations{
 		// find
 		ops.FindAppliance(loadBalancerAPIName, loadBalancerNakedType, findParameter, loadBalancerView),
 
@@ -53,10 +53,10 @@ var loadBalancerAPI = &schema.Resource{
 var (
 	loadBalancerNakedType = meta.Static(naked.LoadBalancer{})
 
-	loadBalancerView = &schema.Model{
+	loadBalancerView = &dsl.Model{
 		Name:      loadBalancerAPIName,
 		NakedType: loadBalancerNakedType,
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			fields.ID(),
 			fields.Name(),
 			fields.Description(),
@@ -91,10 +91,10 @@ var (
 		},
 	}
 
-	loadBalancerCreateParam = &schema.Model{
+	loadBalancerCreateParam = &dsl.Model{
 		Name:      names.CreateParameterName(loadBalancerAPIName),
 		NakedType: loadBalancerNakedType,
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			fields.LoadBalancerClass(),
 			fields.ApplianceSwitchID(),
 			fields.AppliancePlanID(),
@@ -110,10 +110,10 @@ var (
 		},
 	}
 
-	loadBalancerUpdateParam = &schema.Model{
+	loadBalancerUpdateParam = &dsl.Model{
 		Name:      names.UpdateParameterName(loadBalancerAPIName),
 		NakedType: loadBalancerNakedType,
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			fields.Name(),
 			fields.Description(),
 			fields.Tags(),
@@ -122,9 +122,9 @@ var (
 		},
 	}
 
-	loadBalancerStatus = &schema.Model{
+	loadBalancerStatus = &dsl.Model{
 		Name: "LoadBalancerStatus",
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			{
 				Name: "VirtualIPAddress",
 				Type: meta.TypeString,
@@ -139,10 +139,10 @@ var (
 			},
 			{
 				Name: "Servers",
-				Type: &schema.Model{
+				Type: &dsl.Model{
 					Name:    "LoadBalancerServerStatus",
 					IsArray: true,
-					Fields: []*schema.FieldDesc{
+					Fields: []*dsl.FieldDesc{
 						{
 							Name: "ActiveConn",
 							Type: meta.TypeStringNumber,
@@ -165,7 +165,7 @@ var (
 						},
 					},
 				},
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					MapConv: ",recursive",
 				},
 			},

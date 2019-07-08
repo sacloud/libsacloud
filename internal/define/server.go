@@ -5,8 +5,8 @@ import (
 
 	"github.com/sacloud/libsacloud/v2/internal/define/names"
 	"github.com/sacloud/libsacloud/v2/internal/define/ops"
-	"github.com/sacloud/libsacloud/v2/internal/schema"
-	"github.com/sacloud/libsacloud/v2/internal/schema/meta"
+	"github.com/sacloud/libsacloud/v2/internal/dsl"
+	"github.com/sacloud/libsacloud/v2/internal/dsl/meta"
 	"github.com/sacloud/libsacloud/v2/sacloud/naked"
 )
 
@@ -15,11 +15,11 @@ const (
 	serverAPIPathName = "server"
 )
 
-var serverAPI = &schema.Resource{
+var serverAPI = &dsl.Resource{
 	Name:       serverAPIName,
 	PathName:   serverAPIPathName,
-	PathSuffix: schema.CloudAPISuffix,
-	Operations: schema.Operations{
+	PathSuffix: dsl.CloudAPISuffix,
+	Operations: dsl.Operations{
 		// find
 		ops.Find(serverAPIName, serverNakedType, findParameter, serverView),
 
@@ -39,22 +39,22 @@ var serverAPI = &schema.Resource{
 		{
 			ResourceName:    serverAPIName,
 			Name:            "ChangePlan",
-			PathFormat:      schema.IDAndSuffixPathFormat("plan"),
+			PathFormat:      dsl.IDAndSuffixPathFormat("plan"),
 			Method:          http.MethodPut,
-			RequestEnvelope: schema.RequestEnvelopeFromModel(serverChangePlanParam),
-			Arguments: schema.Arguments{
-				schema.ArgumentZone,
-				schema.ArgumentID,
-				schema.PassthroughModelArgument("plan", serverChangePlanParam),
+			RequestEnvelope: dsl.RequestEnvelopeFromModel(serverChangePlanParam),
+			Arguments: dsl.Arguments{
+				dsl.ArgumentZone,
+				dsl.ArgumentID,
+				dsl.PassthroughModelArgument("plan", serverChangePlanParam),
 			},
-			ResponseEnvelope: schema.ResponseEnvelope(&schema.EnvelopePayloadDesc{
+			ResponseEnvelope: dsl.ResponseEnvelope(&dsl.EnvelopePayloadDesc{
 				Name: serverAPIName,
 				Type: meta.Static(naked.Server{}),
 			}),
-			Results: schema.Results{
+			Results: dsl.Results{
 				{
-					SourceField: names.ResourceFieldName(serverAPIName, schema.PayloadForms.Singular),
-					DestField:   names.ResourceFieldName(serverAPIName, schema.PayloadForms.Singular),
+					SourceField: names.ResourceFieldName(serverAPIName, dsl.PayloadForms.Singular),
+					DestField:   names.ResourceFieldName(serverAPIName, dsl.PayloadForms.Singular),
 					IsPlural:    false,
 					Model:       serverView,
 				},
@@ -65,22 +65,22 @@ var serverAPI = &schema.Resource{
 		{
 			ResourceName: serverAPIName,
 			Name:         "InsertCDROM",
-			PathFormat:   schema.IDAndSuffixPathFormat("cdrom"),
+			PathFormat:   dsl.IDAndSuffixPathFormat("cdrom"),
 			Method:       http.MethodPut,
-			RequestEnvelope: schema.RequestEnvelope(
-				&schema.EnvelopePayloadDesc{
+			RequestEnvelope: dsl.RequestEnvelope(
+				&dsl.EnvelopePayloadDesc{
 					Type: meta.Static(naked.CDROM{}),
 					Name: "CDROM",
 				},
 			),
-			Arguments: schema.Arguments{
-				schema.ArgumentZone,
-				schema.ArgumentID,
+			Arguments: dsl.Arguments{
+				dsl.ArgumentZone,
+				dsl.ArgumentID,
 				{
 					Name: "insertParam",
-					Type: &schema.Model{
+					Type: &dsl.Model{
 						Name: "InsertCDROMRequest",
-						Fields: []*schema.FieldDesc{
+						Fields: []*dsl.FieldDesc{
 							fields.ID(),
 						},
 						NakedType: meta.Static(naked.CDROM{}),
@@ -94,22 +94,22 @@ var serverAPI = &schema.Resource{
 		{
 			ResourceName: serverAPIName,
 			Name:         "EjectCDROM",
-			PathFormat:   schema.IDAndSuffixPathFormat("cdrom"),
+			PathFormat:   dsl.IDAndSuffixPathFormat("cdrom"),
 			Method:       http.MethodDelete,
-			RequestEnvelope: schema.RequestEnvelope(
-				&schema.EnvelopePayloadDesc{
+			RequestEnvelope: dsl.RequestEnvelope(
+				&dsl.EnvelopePayloadDesc{
 					Type: meta.Static(naked.CDROM{}),
 					Name: "CDROM",
 				},
 			),
-			Arguments: schema.Arguments{
-				schema.ArgumentZone,
-				schema.ArgumentID,
+			Arguments: dsl.Arguments{
+				dsl.ArgumentZone,
+				dsl.ArgumentID,
 				{
 					Name: "insertParam",
-					Type: &schema.Model{
+					Type: &dsl.Model{
 						Name: "EjectCDROMRequest",
-						Fields: []*schema.FieldDesc{
+						Fields: []*dsl.FieldDesc{
 							fields.ID(),
 						},
 						NakedType: meta.Static(naked.CDROM{}),
@@ -132,10 +132,10 @@ var serverAPI = &schema.Resource{
 var (
 	serverNakedType = meta.Static(naked.Server{})
 
-	serverView = &schema.Model{
+	serverView = &dsl.Model{
 		Name:      serverAPIName,
 		NakedType: serverNakedType,
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			fields.ID(),
 			fields.Name(),
 			fields.Description(),
@@ -164,13 +164,13 @@ var (
 			// disks
 			{
 				Name: "Disks",
-				Type: &schema.Model{
+				Type: &dsl.Model{
 					Name:      diskModel.Name,
 					Fields:    diskModel.Fields,
 					NakedType: meta.Static(naked.Disk{}),
 					IsArray:   true,
 				},
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					JSON:    ",omitempty",
 					MapConv: ",recursive",
 				},
@@ -190,10 +190,10 @@ var (
 		},
 	}
 
-	serverCreateParam = &schema.Model{
+	serverCreateParam = &dsl.Model{
 		Name:      names.CreateParameterName(serverAPIName),
 		NakedType: serverNakedType,
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			// server plan
 			fields.ServerPlanCPU(),
 			fields.ServerPlanMemoryMB(),
@@ -201,16 +201,16 @@ var (
 			fields.ServerPlanGeneration(),
 			{
 				Name: "ConnectedSwitches",
-				Type: &schema.Model{
+				Type: &dsl.Model{
 					Name: "ConnectedSwitch",
-					Fields: []*schema.FieldDesc{
+					Fields: []*dsl.FieldDesc{
 						fields.ID(),
 						fields.Scope(),
 					},
 					IsArray:   true,
 					NakedType: meta.Static(naked.ConnectedSwitch{}),
 				},
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					JSON:    ",omitempty",
 					MapConv: "[]ConnectedSwitches,recursive",
 				},
@@ -224,7 +224,7 @@ var (
 			{
 				Name: "WaitDiskMigration",
 				Type: meta.TypeFlag,
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					MapConv: ",omitempty",
 					JSON:    ",omitempty",
 				},
@@ -232,10 +232,10 @@ var (
 		},
 	}
 
-	serverUpdateParam = &schema.Model{
+	serverUpdateParam = &dsl.Model{
 		Name:      names.UpdateParameterName(serverAPIName),
 		NakedType: serverNakedType,
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			fields.Name(),
 			fields.Description(),
 			fields.Tags(),
@@ -243,9 +243,9 @@ var (
 		},
 	}
 
-	serverChangePlanParam = &schema.Model{
+	serverChangePlanParam = &dsl.Model{
 		Name: "ServerChangePlanRequest",
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			fields.CPU(),
 			fields.MemoryMB(),
 			fields.Generation(),

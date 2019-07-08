@@ -5,8 +5,8 @@ import (
 
 	"github.com/sacloud/libsacloud/v2/internal/define/names"
 	"github.com/sacloud/libsacloud/v2/internal/define/ops"
-	"github.com/sacloud/libsacloud/v2/internal/schema"
-	"github.com/sacloud/libsacloud/v2/internal/schema/meta"
+	"github.com/sacloud/libsacloud/v2/internal/dsl"
+	"github.com/sacloud/libsacloud/v2/internal/dsl/meta"
 	"github.com/sacloud/libsacloud/v2/sacloud/naked"
 )
 
@@ -15,11 +15,11 @@ const (
 	cdromAPIPathName = "cdrom"
 )
 
-var cdromAPI = &schema.Resource{
+var cdromAPI = &dsl.Resource{
 	Name:       cdromAPIName,
 	PathName:   cdromAPIPathName,
-	PathSuffix: schema.CloudAPISuffix,
-	Operations: schema.Operations{
+	PathSuffix: dsl.CloudAPISuffix,
+	Operations: dsl.Operations{
 		// find
 		ops.Find(cdromAPIName, cdromNakedType, findParameter, cdromView),
 
@@ -27,29 +27,29 @@ var cdromAPI = &schema.Resource{
 		{
 			ResourceName: cdromAPIName,
 			Name:         "Create",
-			PathFormat:   schema.DefaultPathFormat,
+			PathFormat:   dsl.DefaultPathFormat,
 			Method:       http.MethodPost,
-			RequestEnvelope: schema.RequestEnvelope(&schema.EnvelopePayloadDesc{
-				Name: names.ResourceFieldName(cdromAPIName, schema.PayloadForms.Singular),
+			RequestEnvelope: dsl.RequestEnvelope(&dsl.EnvelopePayloadDesc{
+				Name: names.ResourceFieldName(cdromAPIName, dsl.PayloadForms.Singular),
 				Type: cdromNakedType,
 			}),
-			ResponseEnvelope: schema.ResponseEnvelope(
-				&schema.EnvelopePayloadDesc{
-					Name: names.ResourceFieldName(cdromAPIName, schema.PayloadForms.Singular),
+			ResponseEnvelope: dsl.ResponseEnvelope(
+				&dsl.EnvelopePayloadDesc{
+					Name: names.ResourceFieldName(cdromAPIName, dsl.PayloadForms.Singular),
 					Type: cdromNakedType,
 				},
-				&schema.EnvelopePayloadDesc{
+				&dsl.EnvelopePayloadDesc{
 					Name: models.ftpServer().Name,
 					Type: meta.Static(naked.OpeningFTPServer{}),
 				},
 			),
-			Arguments: schema.Arguments{
-				schema.ArgumentZone,
-				schema.MappableArgument("param", cdromCreateParam, names.ResourceFieldName(cdromAPIName, schema.PayloadForms.Singular)),
+			Arguments: dsl.Arguments{
+				dsl.ArgumentZone,
+				dsl.MappableArgument("param", cdromCreateParam, names.ResourceFieldName(cdromAPIName, dsl.PayloadForms.Singular)),
 			},
-			Results: schema.Results{
+			Results: dsl.Results{
 				{
-					SourceField: names.ResourceFieldName(cdromAPIName, schema.PayloadForms.Singular),
+					SourceField: names.ResourceFieldName(cdromAPIName, dsl.PayloadForms.Singular),
 					DestField:   cdromView.Name,
 					IsPlural:    false,
 					Model:       cdromView,
@@ -82,10 +82,10 @@ var cdromAPI = &schema.Resource{
 var (
 	cdromNakedType = meta.Static(naked.CDROM{})
 
-	cdromView = &schema.Model{
+	cdromView = &dsl.Model{
 		Name:      cdromAPIName,
 		NakedType: cdromNakedType,
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			fields.ID(),
 			fields.Name(),
 			fields.Description(),
@@ -100,10 +100,10 @@ var (
 		},
 	}
 
-	cdromCreateParam = &schema.Model{
+	cdromCreateParam = &dsl.Model{
 		Name:      names.CreateParameterName(cdromAPIName),
 		NakedType: cdromNakedType,
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			fields.SizeMB(),
 			fields.Name(),
 			fields.Description(),
@@ -112,10 +112,10 @@ var (
 		},
 	}
 
-	cdromUpdateParam = &schema.Model{
+	cdromUpdateParam = &dsl.Model{
 		Name:      names.UpdateParameterName(cdromAPIName),
 		NakedType: cdromNakedType,
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			fields.Name(),
 			fields.Description(),
 			fields.Tags(),

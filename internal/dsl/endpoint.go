@@ -1,4 +1,4 @@
-package schema
+package dsl
 
 import "fmt"
 

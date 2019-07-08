@@ -4,34 +4,34 @@ import (
 	"net/http"
 
 	"github.com/sacloud/libsacloud/v2/internal/define/names"
-	"github.com/sacloud/libsacloud/v2/internal/schema"
-	"github.com/sacloud/libsacloud/v2/internal/schema/meta"
+	"github.com/sacloud/libsacloud/v2/internal/dsl"
+	"github.com/sacloud/libsacloud/v2/internal/dsl/meta"
 	"github.com/sacloud/libsacloud/v2/sacloud/naked"
 )
 
-func find(resourceName string, nakedType meta.Type, findParam, result *schema.Model, payloadName string) *schema.Operation {
+func find(resourceName string, nakedType meta.Type, findParam, result *dsl.Model, payloadName string) *dsl.Operation {
 	if payloadName == "" {
-		payloadName = names.ResourceFieldName(resourceName, schema.PayloadForms.Plural)
+		payloadName = names.ResourceFieldName(resourceName, dsl.PayloadForms.Plural)
 	}
 
-	return &schema.Operation{
+	return &dsl.Operation{
 		ResourceName:    resourceName,
 		Name:            "Find",
-		PathFormat:      schema.DefaultPathFormat,
+		PathFormat:      dsl.DefaultPathFormat,
 		Method:          http.MethodGet,
-		RequestEnvelope: schema.RequestEnvelopeFromModel(findParam),
-		Arguments: schema.Arguments{
-			schema.ArgumentZone,
-			schema.PassthroughModelArgument("conditions", findParam),
+		RequestEnvelope: dsl.RequestEnvelopeFromModel(findParam),
+		Arguments: dsl.Arguments{
+			dsl.ArgumentZone,
+			dsl.PassthroughModelArgument("conditions", findParam),
 		},
-		ResponseEnvelope: schema.ResponseEnvelopePlural(&schema.EnvelopePayloadDesc{
+		ResponseEnvelope: dsl.ResponseEnvelopePlural(&dsl.EnvelopePayloadDesc{
 			Type: nakedType,
 			Name: payloadName,
 		}),
-		Results: schema.Results{
+		Results: dsl.Results{
 			{
 				SourceField: payloadName,
-				DestField:   names.ResourceFieldName(resourceName, schema.PayloadForms.Plural),
+				DestField:   names.ResourceFieldName(resourceName, dsl.PayloadForms.Plural),
 				IsPlural:    true,
 				Model:       result,
 			},
@@ -40,43 +40,43 @@ func find(resourceName string, nakedType meta.Type, findParam, result *schema.Mo
 }
 
 // Find Find操作を定義
-func Find(resourceName string, nakedType meta.Type, findParam, result *schema.Model) *schema.Operation {
+func Find(resourceName string, nakedType meta.Type, findParam, result *dsl.Model) *dsl.Operation {
 	return find(resourceName, nakedType, findParam, result, "")
 }
 
 // FindAppliance Find操作を定義
-func FindAppliance(resourceName string, nakedType meta.Type, findParam, result *schema.Model) *schema.Operation {
+func FindAppliance(resourceName string, nakedType meta.Type, findParam, result *dsl.Model) *dsl.Operation {
 	return find(resourceName, nakedType, findParam, result, "Appliances")
 }
 
 // FindCommonServiceItem Find操作を定義
-func FindCommonServiceItem(resourceName string, nakedType meta.Type, findParam, result *schema.Model) *schema.Operation {
+func FindCommonServiceItem(resourceName string, nakedType meta.Type, findParam, result *dsl.Model) *dsl.Operation {
 	return find(resourceName, nakedType, findParam, result, "CommonServiceItems")
 }
 
-func create(resourceName string, nakedType meta.Type, createParam, result *schema.Model, payloadName string) *schema.Operation {
+func create(resourceName string, nakedType meta.Type, createParam, result *dsl.Model, payloadName string) *dsl.Operation {
 	if payloadName == "" {
-		payloadName = names.ResourceFieldName(resourceName, schema.PayloadForms.Singular)
+		payloadName = names.ResourceFieldName(resourceName, dsl.PayloadForms.Singular)
 	}
 
-	return &schema.Operation{
+	return &dsl.Operation{
 		ResourceName: resourceName,
 		Name:         "Create",
-		PathFormat:   schema.DefaultPathFormat,
+		PathFormat:   dsl.DefaultPathFormat,
 		Method:       http.MethodPost,
-		RequestEnvelope: schema.RequestEnvelope(&schema.EnvelopePayloadDesc{
+		RequestEnvelope: dsl.RequestEnvelope(&dsl.EnvelopePayloadDesc{
 			Type: nakedType,
 			Name: payloadName,
 		}),
-		Arguments: schema.Arguments{
-			schema.ArgumentZone,
-			schema.MappableArgument("param", createParam, payloadName),
+		Arguments: dsl.Arguments{
+			dsl.ArgumentZone,
+			dsl.MappableArgument("param", createParam, payloadName),
 		},
-		ResponseEnvelope: schema.ResponseEnvelope(&schema.EnvelopePayloadDesc{
+		ResponseEnvelope: dsl.ResponseEnvelope(&dsl.EnvelopePayloadDesc{
 			Type: nakedType,
 			Name: payloadName,
 		}),
-		Results: schema.Results{
+		Results: dsl.Results{
 			{
 				SourceField: payloadName,
 				DestField:   result.Name,
@@ -88,39 +88,39 @@ func create(resourceName string, nakedType meta.Type, createParam, result *schem
 }
 
 // Create Create操作を定義
-func Create(resourceName string, nakedType meta.Type, createParam, result *schema.Model) *schema.Operation {
+func Create(resourceName string, nakedType meta.Type, createParam, result *dsl.Model) *dsl.Operation {
 	return create(resourceName, nakedType, createParam, result, "")
 }
 
 // CreateAppliance Create操作を定義
-func CreateAppliance(resourceName string, nakedType meta.Type, createParam, result *schema.Model) *schema.Operation {
+func CreateAppliance(resourceName string, nakedType meta.Type, createParam, result *dsl.Model) *dsl.Operation {
 	return create(resourceName, nakedType, createParam, result, "Appliance")
 }
 
 // CreateCommonServiceItem Create操作を定義
-func CreateCommonServiceItem(resourceName string, nakedType meta.Type, createParam, result *schema.Model) *schema.Operation {
+func CreateCommonServiceItem(resourceName string, nakedType meta.Type, createParam, result *dsl.Model) *dsl.Operation {
 	return create(resourceName, nakedType, createParam, result, "CommonServiceItem")
 }
 
-func read(resourceName string, nakedType meta.Type, result *schema.Model, payloadName string) *schema.Operation {
+func read(resourceName string, nakedType meta.Type, result *dsl.Model, payloadName string) *dsl.Operation {
 	if payloadName == "" {
-		payloadName = names.ResourceFieldName(resourceName, schema.PayloadForms.Singular)
+		payloadName = names.ResourceFieldName(resourceName, dsl.PayloadForms.Singular)
 	}
 
-	return &schema.Operation{
+	return &dsl.Operation{
 		ResourceName: resourceName,
 		Name:         "Read",
-		PathFormat:   schema.DefaultPathFormatWithID,
+		PathFormat:   dsl.DefaultPathFormatWithID,
 		Method:       http.MethodGet,
-		Arguments: schema.Arguments{
-			schema.ArgumentZone,
-			schema.ArgumentID,
+		Arguments: dsl.Arguments{
+			dsl.ArgumentZone,
+			dsl.ArgumentID,
 		},
-		ResponseEnvelope: schema.ResponseEnvelope(&schema.EnvelopePayloadDesc{
+		ResponseEnvelope: dsl.ResponseEnvelope(&dsl.EnvelopePayloadDesc{
 			Type: nakedType,
 			Name: payloadName,
 		}),
-		Results: schema.Results{
+		Results: dsl.Results{
 			{
 				SourceField: payloadName,
 				DestField:   result.Name,
@@ -132,44 +132,44 @@ func read(resourceName string, nakedType meta.Type, result *schema.Model, payloa
 }
 
 // Read Read操作を定義
-func Read(resourceName string, nakedType meta.Type, result *schema.Model) *schema.Operation {
+func Read(resourceName string, nakedType meta.Type, result *dsl.Model) *dsl.Operation {
 	return read(resourceName, nakedType, result, "")
 }
 
 // ReadAppliance Read操作を定義
-func ReadAppliance(resourceName string, nakedType meta.Type, result *schema.Model) *schema.Operation {
+func ReadAppliance(resourceName string, nakedType meta.Type, result *dsl.Model) *dsl.Operation {
 	return read(resourceName, nakedType, result, "Appliance")
 }
 
 // ReadCommonServiceItem Read操作を定義
-func ReadCommonServiceItem(resourceName string, nakedType meta.Type, result *schema.Model) *schema.Operation {
+func ReadCommonServiceItem(resourceName string, nakedType meta.Type, result *dsl.Model) *dsl.Operation {
 	return read(resourceName, nakedType, result, "CommonServiceItem")
 }
 
-func update(resourceName string, nakedType meta.Type, updateParam, result *schema.Model, payloadName string) *schema.Operation {
+func update(resourceName string, nakedType meta.Type, updateParam, result *dsl.Model, payloadName string) *dsl.Operation {
 	if payloadName == "" {
-		payloadName = names.ResourceFieldName(resourceName, schema.PayloadForms.Singular)
+		payloadName = names.ResourceFieldName(resourceName, dsl.PayloadForms.Singular)
 	}
 
-	return &schema.Operation{
+	return &dsl.Operation{
 		ResourceName: resourceName,
 		Name:         "Update",
-		PathFormat:   schema.DefaultPathFormatWithID,
+		PathFormat:   dsl.DefaultPathFormatWithID,
 		Method:       http.MethodPut,
-		RequestEnvelope: schema.RequestEnvelope(&schema.EnvelopePayloadDesc{
+		RequestEnvelope: dsl.RequestEnvelope(&dsl.EnvelopePayloadDesc{
 			Type: nakedType,
 			Name: payloadName,
 		}),
-		Arguments: schema.Arguments{
-			schema.ArgumentZone,
-			schema.ArgumentID,
-			schema.MappableArgument("param", updateParam, payloadName),
+		Arguments: dsl.Arguments{
+			dsl.ArgumentZone,
+			dsl.ArgumentID,
+			dsl.MappableArgument("param", updateParam, payloadName),
 		},
-		ResponseEnvelope: schema.ResponseEnvelope(&schema.EnvelopePayloadDesc{
+		ResponseEnvelope: dsl.ResponseEnvelope(&dsl.EnvelopePayloadDesc{
 			Type: nakedType,
 			Name: payloadName,
 		}),
-		Results: schema.Results{
+		Results: dsl.Results{
 			{
 				SourceField: payloadName,
 				DestField:   result.Name,
@@ -181,118 +181,118 @@ func update(resourceName string, nakedType meta.Type, updateParam, result *schem
 }
 
 // Update Update操作を定義
-func Update(resourceName string, nakedType meta.Type, updateParam, result *schema.Model) *schema.Operation {
+func Update(resourceName string, nakedType meta.Type, updateParam, result *dsl.Model) *dsl.Operation {
 	return update(resourceName, nakedType, updateParam, result, "")
 }
 
 // UpdateAppliance Update操作を定義
-func UpdateAppliance(resourceName string, nakedType meta.Type, updateParam, result *schema.Model) *schema.Operation {
+func UpdateAppliance(resourceName string, nakedType meta.Type, updateParam, result *dsl.Model) *dsl.Operation {
 	return update(resourceName, nakedType, updateParam, result, "Appliance")
 }
 
 // UpdateCommonServiceItem Update操作を定義
-func UpdateCommonServiceItem(resourceName string, nakedType meta.Type, updateParam, result *schema.Model) *schema.Operation {
+func UpdateCommonServiceItem(resourceName string, nakedType meta.Type, updateParam, result *dsl.Model) *dsl.Operation {
 	return update(resourceName, nakedType, updateParam, result, "CommonServiceItem")
 }
 
 // Delete Delete操作を定義
-func Delete(resourceName string) *schema.Operation {
-	return &schema.Operation{
+func Delete(resourceName string) *dsl.Operation {
+	return &dsl.Operation{
 		ResourceName: resourceName,
 		Name:         "Delete",
-		PathFormat:   schema.DefaultPathFormatWithID,
+		PathFormat:   dsl.DefaultPathFormatWithID,
 		Method:       http.MethodDelete,
-		Arguments: schema.Arguments{
-			schema.ArgumentZone,
-			schema.ArgumentID,
+		Arguments: dsl.Arguments{
+			dsl.ArgumentZone,
+			dsl.ArgumentID,
 		},
 	}
 }
 
 // Config Config操作を定義
-func Config(resourceName string) *schema.Operation {
-	return &schema.Operation{
+func Config(resourceName string) *dsl.Operation {
+	return &dsl.Operation{
 		ResourceName: resourceName,
 		Name:         "Config",
-		PathFormat:   schema.IDAndSuffixPathFormat("config"),
+		PathFormat:   dsl.IDAndSuffixPathFormat("config"),
 		Method:       http.MethodPut,
-		Arguments: schema.Arguments{
-			schema.ArgumentZone,
-			schema.ArgumentID,
+		Arguments: dsl.Arguments{
+			dsl.ArgumentZone,
+			dsl.ArgumentID,
 		},
 	}
 }
 
 // Boot リソースに対するBoot操作を定義
-func Boot(resourceName string) *schema.Operation {
-	return &schema.Operation{
+func Boot(resourceName string) *dsl.Operation {
+	return &dsl.Operation{
 		ResourceName: resourceName,
 		Name:         "Boot",
-		PathFormat:   schema.IDAndSuffixPathFormat("power"),
+		PathFormat:   dsl.IDAndSuffixPathFormat("power"),
 		Method:       http.MethodPut,
-		Arguments: schema.Arguments{
-			schema.ArgumentZone,
-			schema.ArgumentID,
+		Arguments: dsl.Arguments{
+			dsl.ArgumentZone,
+			dsl.ArgumentID,
 		},
 	}
 }
 
 // Shutdown リソースに対するシャットダウン操作を定義
-func Shutdown(resourceName string) *schema.Operation {
-	param := &schema.Model{
+func Shutdown(resourceName string) *dsl.Operation {
+	param := &dsl.Model{
 		Name: "ShutdownOption",
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			{
 				Name: "Force",
 				Type: meta.TypeFlag,
 			},
 		},
 	}
-	return &schema.Operation{
+	return &dsl.Operation{
 		ResourceName:    resourceName,
 		Name:            "Shutdown",
-		PathFormat:      schema.IDAndSuffixPathFormat("power"),
+		PathFormat:      dsl.IDAndSuffixPathFormat("power"),
 		Method:          http.MethodDelete,
-		RequestEnvelope: schema.RequestEnvelopeFromModel(param),
-		Arguments: schema.Arguments{
-			schema.ArgumentZone,
-			schema.ArgumentID,
-			schema.PassthroughModelArgument("shutdownOption", param),
+		RequestEnvelope: dsl.RequestEnvelopeFromModel(param),
+		Arguments: dsl.Arguments{
+			dsl.ArgumentZone,
+			dsl.ArgumentID,
+			dsl.PassthroughModelArgument("shutdownOption", param),
 		},
 	}
 }
 
 // Reset リソースに対するリセット操作を定義
-func Reset(resourceName string) *schema.Operation {
-	return &schema.Operation{
+func Reset(resourceName string) *dsl.Operation {
+	return &dsl.Operation{
 		ResourceName: resourceName,
 		Name:         "Reset",
-		PathFormat:   schema.IDAndSuffixPathFormat("reset"),
+		PathFormat:   dsl.IDAndSuffixPathFormat("reset"),
 		Method:       http.MethodPut,
-		Arguments: schema.Arguments{
-			schema.ArgumentZone,
-			schema.ArgumentID,
+		Arguments: dsl.Arguments{
+			dsl.ArgumentZone,
+			dsl.ArgumentID,
 		},
 	}
 }
 
 // Status ステータス取得操作を定義
-func Status(resourceName string, nakedType meta.Type, result *schema.Model) *schema.Operation {
-	payloadName := names.ResourceFieldName(resourceName, schema.PayloadForms.Singular)
-	return &schema.Operation{
+func Status(resourceName string, nakedType meta.Type, result *dsl.Model) *dsl.Operation {
+	payloadName := names.ResourceFieldName(resourceName, dsl.PayloadForms.Singular)
+	return &dsl.Operation{
 		ResourceName: resourceName,
 		Name:         "Status",
-		Arguments: schema.Arguments{
-			schema.ArgumentZone,
-			schema.ArgumentID,
+		Arguments: dsl.Arguments{
+			dsl.ArgumentZone,
+			dsl.ArgumentID,
 		},
-		PathFormat: schema.IDAndSuffixPathFormat("status"),
+		PathFormat: dsl.IDAndSuffixPathFormat("status"),
 		Method:     http.MethodGet,
-		ResponseEnvelope: schema.ResponseEnvelopePlural(&schema.EnvelopePayloadDesc{
+		ResponseEnvelope: dsl.ResponseEnvelopePlural(&dsl.EnvelopePayloadDesc{
 			Type: nakedType,
 			Name: payloadName,
 		}),
-		Results: schema.Results{
+		Results: dsl.Results{
 			{
 				SourceField: payloadName,
 				DestField:   "Status",
@@ -304,23 +304,23 @@ func Status(resourceName string, nakedType meta.Type, result *schema.Model) *sch
 }
 
 // OpenFTP FTPオープン操作を定義
-func OpenFTP(resourceName string, openParam, result *schema.Model) *schema.Operation {
-	return &schema.Operation{
+func OpenFTP(resourceName string, openParam, result *dsl.Model) *dsl.Operation {
+	return &dsl.Operation{
 		ResourceName:    resourceName,
 		Name:            "OpenFTP",
-		PathFormat:      schema.IDAndSuffixPathFormat("ftp"),
+		PathFormat:      dsl.IDAndSuffixPathFormat("ftp"),
 		Method:          http.MethodPut,
-		RequestEnvelope: schema.RequestEnvelopeFromModel(openParam),
-		Arguments: schema.Arguments{
-			schema.ArgumentZone,
-			schema.ArgumentID,
-			schema.PassthroughModelArgument("openOption", openParam),
+		RequestEnvelope: dsl.RequestEnvelopeFromModel(openParam),
+		Arguments: dsl.Arguments{
+			dsl.ArgumentZone,
+			dsl.ArgumentID,
+			dsl.PassthroughModelArgument("openOption", openParam),
 		},
-		ResponseEnvelope: schema.ResponseEnvelope(&schema.EnvelopePayloadDesc{
+		ResponseEnvelope: dsl.ResponseEnvelope(&dsl.EnvelopePayloadDesc{
 			Name: result.Name,
 			Type: meta.Static(naked.OpeningFTPServer{}),
 		}),
-		Results: schema.Results{
+		Results: dsl.Results{
 			{
 				SourceField: result.Name,
 				DestField:   result.Name,
@@ -332,50 +332,50 @@ func OpenFTP(resourceName string, openParam, result *schema.Model) *schema.Opera
 }
 
 // CloseFTP FTPクローズ操作を定義
-func CloseFTP(resourceName string) *schema.Operation {
-	return &schema.Operation{
+func CloseFTP(resourceName string) *dsl.Operation {
+	return &dsl.Operation{
 		ResourceName: resourceName,
 		Name:         "CloseFTP",
-		Arguments: schema.Arguments{
-			schema.ArgumentZone,
-			schema.ArgumentID,
+		Arguments: dsl.Arguments{
+			dsl.ArgumentZone,
+			dsl.ArgumentID,
 		},
-		PathFormat: schema.IDAndSuffixPathFormat("ftp"),
+		PathFormat: dsl.IDAndSuffixPathFormat("ftp"),
 		Method:     http.MethodDelete,
 	}
 }
 
 // WithIDAction ID+αのみを引数にとるシンプルなオペレーションを定義
-func WithIDAction(resourceName, opName, method, pathSuffix string, arguments ...*schema.Argument) *schema.Operation {
-	args := schema.Arguments{schema.ArgumentZone, schema.ArgumentID}
+func WithIDAction(resourceName, opName, method, pathSuffix string, arguments ...*dsl.Argument) *dsl.Operation {
+	args := dsl.Arguments{dsl.ArgumentZone, dsl.ArgumentID}
 	args = append(args, arguments...)
-	return &schema.Operation{
+	return &dsl.Operation{
 		ResourceName: resourceName,
 		Name:         opName,
-		PathFormat:   schema.IDAndSuffixPathFormat(pathSuffix),
+		PathFormat:   dsl.IDAndSuffixPathFormat(pathSuffix),
 		Method:       method,
 		Arguments:    args,
 	}
 }
 
 // Monitor アクティビティモニタ取得操作を定義
-func Monitor(resourceName string, monitorParam, result *schema.Model) *schema.Operation {
-	return &schema.Operation{
+func Monitor(resourceName string, monitorParam, result *dsl.Model) *dsl.Operation {
+	return &dsl.Operation{
 		ResourceName:    resourceName,
 		Name:            "Monitor",
-		PathFormat:      schema.IDAndSuffixPathFormat("monitor"),
+		PathFormat:      dsl.IDAndSuffixPathFormat("monitor"),
 		Method:          http.MethodGet,
-		RequestEnvelope: schema.RequestEnvelopeFromModel(monitorParam),
-		Arguments: schema.Arguments{
-			schema.ArgumentZone,
-			schema.ArgumentID,
-			schema.PassthroughModelArgument("condition", monitorParam),
+		RequestEnvelope: dsl.RequestEnvelopeFromModel(monitorParam),
+		Arguments: dsl.Arguments{
+			dsl.ArgumentZone,
+			dsl.ArgumentID,
+			dsl.PassthroughModelArgument("condition", monitorParam),
 		},
-		ResponseEnvelope: schema.ResponseEnvelope(&schema.EnvelopePayloadDesc{
+		ResponseEnvelope: dsl.ResponseEnvelope(&dsl.EnvelopePayloadDesc{
 			Type: meta.Static(naked.MonitorValues{}),
 			Name: "Data",
 		}),
-		Results: schema.Results{
+		Results: dsl.Results{
 			{
 				SourceField: "Data",
 				DestField:   result.Name,
@@ -387,23 +387,23 @@ func Monitor(resourceName string, monitorParam, result *schema.Model) *schema.Op
 }
 
 // MonitorChild アクティビティモニタ取得操作を定義
-func MonitorChild(resourceName, funcNameSuffix, childResourceName string, monitorParam, result *schema.Model) *schema.Operation {
-	return &schema.Operation{
+func MonitorChild(resourceName, funcNameSuffix, childResourceName string, monitorParam, result *dsl.Model) *dsl.Operation {
+	return &dsl.Operation{
 		ResourceName:    resourceName,
 		Name:            "Monitor" + funcNameSuffix,
-		PathFormat:      schema.IDAndSuffixPathFormat(childResourceName + "/monitor"),
+		PathFormat:      dsl.IDAndSuffixPathFormat(childResourceName + "/monitor"),
 		Method:          http.MethodGet,
-		RequestEnvelope: schema.RequestEnvelopeFromModel(monitorParam),
-		Arguments: schema.Arguments{
-			schema.ArgumentZone,
-			schema.ArgumentID,
-			schema.PassthroughModelArgument("condition", monitorParam),
+		RequestEnvelope: dsl.RequestEnvelopeFromModel(monitorParam),
+		Arguments: dsl.Arguments{
+			dsl.ArgumentZone,
+			dsl.ArgumentID,
+			dsl.PassthroughModelArgument("condition", monitorParam),
 		},
-		ResponseEnvelope: schema.ResponseEnvelope(&schema.EnvelopePayloadDesc{
+		ResponseEnvelope: dsl.ResponseEnvelope(&dsl.EnvelopePayloadDesc{
 			Type: meta.Static(naked.MonitorValues{}),
 			Name: "Data",
 		}),
-		Results: schema.Results{
+		Results: dsl.Results{
 			{
 				SourceField: "Data",
 				DestField:   result.Name,
@@ -415,28 +415,28 @@ func MonitorChild(resourceName, funcNameSuffix, childResourceName string, monito
 }
 
 // MonitorChildBy アプライアンスなどでの内部リソースインデックスを持つアクティビティモニタ取得操作を定義
-func MonitorChildBy(resourceName, funcNameSuffix, childResourceName string, monitorParam, result *schema.Model) *schema.Operation {
+func MonitorChildBy(resourceName, funcNameSuffix, childResourceName string, monitorParam, result *dsl.Model) *dsl.Operation {
 	pathSuffix := childResourceName + "/{{if eq .index 0}}{{.index}}{{end}}/monitor"
-	return &schema.Operation{
+	return &dsl.Operation{
 		ResourceName:    resourceName,
 		Name:            "Monitor" + funcNameSuffix,
-		PathFormat:      schema.IDAndSuffixPathFormat(pathSuffix),
+		PathFormat:      dsl.IDAndSuffixPathFormat(pathSuffix),
 		Method:          http.MethodGet,
-		RequestEnvelope: schema.RequestEnvelopeFromModel(monitorParam),
-		Arguments: schema.Arguments{
-			schema.ArgumentZone,
-			schema.ArgumentID,
+		RequestEnvelope: dsl.RequestEnvelopeFromModel(monitorParam),
+		Arguments: dsl.Arguments{
+			dsl.ArgumentZone,
+			dsl.ArgumentID,
 			{
 				Name: "index",
 				Type: meta.TypeInt,
 			},
-			schema.PassthroughModelArgument("condition", monitorParam),
+			dsl.PassthroughModelArgument("condition", monitorParam),
 		},
-		ResponseEnvelope: schema.ResponseEnvelope(&schema.EnvelopePayloadDesc{
+		ResponseEnvelope: dsl.ResponseEnvelope(&dsl.EnvelopePayloadDesc{
 			Type: meta.Static(naked.MonitorValues{}),
 			Name: "Data",
 		}),
-		Results: schema.Results{
+		Results: dsl.Results{
 			{
 				SourceField: "Data",
 				DestField:   result.Name,

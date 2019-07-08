@@ -5,8 +5,8 @@ import (
 
 	"github.com/sacloud/libsacloud/v2/internal/define/names"
 	"github.com/sacloud/libsacloud/v2/internal/define/ops"
-	"github.com/sacloud/libsacloud/v2/internal/schema"
-	"github.com/sacloud/libsacloud/v2/internal/schema/meta"
+	"github.com/sacloud/libsacloud/v2/internal/dsl"
+	"github.com/sacloud/libsacloud/v2/internal/dsl/meta"
 	"github.com/sacloud/libsacloud/v2/sacloud/naked"
 )
 
@@ -15,11 +15,11 @@ const (
 	vpcRouterAPIPathName = "appliance"
 )
 
-var vpcRouterAPI = &schema.Resource{
+var vpcRouterAPI = &dsl.Resource{
 	Name:       vpcRouterAPIName,
 	PathName:   vpcRouterAPIPathName,
-	PathSuffix: schema.CloudAPISuffix,
-	Operations: schema.Operations{
+	PathSuffix: dsl.CloudAPISuffix,
+	Operations: dsl.Operations{
 		// find
 		ops.FindAppliance(vpcRouterAPIName, vpcRouterNakedType, findParameter, vpcRouterView),
 
@@ -46,11 +46,11 @@ var vpcRouterAPI = &schema.Resource{
 		// connect to switch
 		ops.WithIDAction(
 			vpcRouterAPIName, "ConnectToSwitch", http.MethodPut, "interface/{{.nicIndex}}/to/switch/{{.switchID}}",
-			&schema.Argument{
+			&dsl.Argument{
 				Name: "nicIndex",
 				Type: meta.TypeInt,
 			},
-			&schema.Argument{
+			&dsl.Argument{
 				Name: "switchID",
 				Type: meta.TypeID,
 			},
@@ -59,7 +59,7 @@ var vpcRouterAPI = &schema.Resource{
 		// disconnect from switch
 		ops.WithIDAction(
 			vpcRouterAPIName, "DisconnectFromSwitch", http.MethodDelete, "interface/{{.nicIndex}}/to/switch",
-			&schema.Argument{
+			&dsl.Argument{
 				Name: "nicIndex",
 				Type: meta.TypeInt,
 			},
@@ -74,10 +74,10 @@ var vpcRouterAPI = &schema.Resource{
 var (
 	vpcRouterNakedType = meta.Static(naked.VPCRouter{})
 
-	vpcRouterView = &schema.Model{
+	vpcRouterView = &dsl.Model{
 		Name:      vpcRouterAPIName,
 		NakedType: vpcRouterNakedType,
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			fields.ID(),
 			fields.Name(),
 			fields.Description(),
@@ -93,7 +93,7 @@ var (
 			{
 				Name: "Settings",
 				Type: models.vpcRouterSetting(),
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					MapConv: ",omitempty,recursive",
 				},
 			},
@@ -112,10 +112,10 @@ var (
 		},
 	}
 
-	vpcRouterCreateParam = &schema.Model{
+	vpcRouterCreateParam = &dsl.Model{
 		Name:      names.CreateParameterName(vpcRouterAPIName),
 		NakedType: vpcRouterNakedType,
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			fields.VPCRouterClass(),
 			fields.Name(),
 			fields.Description(),
@@ -126,15 +126,15 @@ var (
 			// nic
 			{
 				Name: "Switch",
-				Type: &schema.Model{
+				Type: &dsl.Model{
 					Name: "ApplianceConnectedSwitch",
-					Fields: []*schema.FieldDesc{
+					Fields: []*dsl.FieldDesc{
 						fields.ID(),
 						fields.Scope(),
 					},
 					NakedType: meta.Static(naked.ConnectedSwitch{}),
 				},
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					JSON:    ",omitempty",
 					MapConv: "Remark.Switch,recursive",
 				},
@@ -146,17 +146,17 @@ var (
 			{
 				Name: "Settings",
 				Type: models.vpcRouterSetting(),
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					MapConv: ",omitempty,recursive",
 				},
 			},
 		},
 	}
 
-	vpcRouterUpdateParam = &schema.Model{
+	vpcRouterUpdateParam = &dsl.Model{
 		Name:      names.UpdateParameterName(vpcRouterAPIName),
 		NakedType: vpcRouterNakedType,
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			fields.Name(),
 			fields.Description(),
 			fields.Tags(),
@@ -164,7 +164,7 @@ var (
 			{
 				Name: "Settings",
 				Type: models.vpcRouterSetting(),
-				Tags: &schema.FieldTags{
+				Tags: &dsl.FieldTags{
 					MapConv: ",omitempty,recursive",
 				},
 			},

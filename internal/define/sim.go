@@ -5,8 +5,8 @@ import (
 
 	"github.com/sacloud/libsacloud/v2/internal/define/names"
 	"github.com/sacloud/libsacloud/v2/internal/define/ops"
-	"github.com/sacloud/libsacloud/v2/internal/schema"
-	"github.com/sacloud/libsacloud/v2/internal/schema/meta"
+	"github.com/sacloud/libsacloud/v2/internal/dsl"
+	"github.com/sacloud/libsacloud/v2/internal/dsl/meta"
 	"github.com/sacloud/libsacloud/v2/sacloud/naked"
 )
 
@@ -15,11 +15,11 @@ const (
 	simAPIPathName = "commonserviceitem"
 )
 
-var simAPI = &schema.Resource{
+var simAPI = &dsl.Resource{
 	Name:       simAPIName,
 	PathName:   simAPIPathName,
-	PathSuffix: schema.CloudAPISuffix,
-	Operations: schema.Operations{
+	PathSuffix: dsl.CloudAPISuffix,
+	Operations: dsl.Operations{
 		// find
 		ops.FindCommonServiceItem(simAPIName, simNakedType, findParameter, simView),
 
@@ -44,21 +44,21 @@ var simAPI = &schema.Resource{
 		{
 			ResourceName: simAPIName,
 			Name:         "AssignIP",
-			PathFormat:   schema.IDAndSuffixPathFormat("sim/ip"),
+			PathFormat:   dsl.IDAndSuffixPathFormat("sim/ip"),
 			Method:       http.MethodPut,
-			RequestEnvelope: schema.RequestEnvelope(
-				&schema.EnvelopePayloadDesc{
+			RequestEnvelope: dsl.RequestEnvelope(
+				&dsl.EnvelopePayloadDesc{
 					Name: "SIM",
 					Type: meta.Static(naked.SIMAssignIPRequest{}),
-					Tags: &schema.FieldTags{
+					Tags: &dsl.FieldTags{
 						JSON: "sim",
 					},
 				},
 			),
-			Arguments: schema.Arguments{
-				schema.ArgumentZone,
-				schema.ArgumentID,
-				schema.MappableArgument("param", simAssignIPParam, "SIM"),
+			Arguments: dsl.Arguments{
+				dsl.ArgumentZone,
+				dsl.ArgumentID,
+				dsl.MappableArgument("param", simAssignIPParam, "SIM"),
 			},
 		},
 
@@ -69,21 +69,21 @@ var simAPI = &schema.Resource{
 		{
 			ResourceName: simAPIName,
 			Name:         "IMEILock",
-			PathFormat:   schema.IDAndSuffixPathFormat("sim/imeilock"),
+			PathFormat:   dsl.IDAndSuffixPathFormat("sim/imeilock"),
 			Method:       http.MethodPut,
-			RequestEnvelope: schema.RequestEnvelope(
-				&schema.EnvelopePayloadDesc{
+			RequestEnvelope: dsl.RequestEnvelope(
+				&dsl.EnvelopePayloadDesc{
 					Name: "SIM",
 					Type: meta.Static(naked.SIMIMEILockRequest{}),
-					Tags: &schema.FieldTags{
+					Tags: &dsl.FieldTags{
 						JSON: "sim",
 					},
 				},
 			),
-			Arguments: schema.Arguments{
-				schema.ArgumentZone,
-				schema.ArgumentID,
-				schema.MappableArgument("param", simIMEILockParam, "SIM"),
+			Arguments: dsl.Arguments{
+				dsl.ArgumentZone,
+				dsl.ArgumentID,
+				dsl.MappableArgument("param", simIMEILockParam, "SIM"),
 			},
 		},
 
@@ -93,18 +93,18 @@ var simAPI = &schema.Resource{
 		// Logs
 		{
 			ResourceName: simAPIName,
-			PathFormat:   schema.IDAndSuffixPathFormat("sim/sessionlog"),
+			PathFormat:   dsl.IDAndSuffixPathFormat("sim/sessionlog"),
 			Method:       http.MethodGet,
 			Name:         "Logs",
-			Arguments: schema.Arguments{
-				schema.ArgumentZone,
-				schema.ArgumentID,
+			Arguments: dsl.Arguments{
+				dsl.ArgumentZone,
+				dsl.ArgumentID,
 			},
-			ResponseEnvelope: schema.ResponseEnvelopePlural(&schema.EnvelopePayloadDesc{
+			ResponseEnvelope: dsl.ResponseEnvelopePlural(&dsl.EnvelopePayloadDesc{
 				Name: "Logs",
 				Type: meta.Static(naked.SIMLog{}),
 			}),
-			Results: schema.Results{
+			Results: dsl.Results{
 				{
 					SourceField: "Logs",
 					DestField:   "Logs",
@@ -118,17 +118,17 @@ var simAPI = &schema.Resource{
 		{
 			ResourceName: simAPIName,
 			Name:         "GetNetworkOperator",
-			PathFormat:   schema.IDAndSuffixPathFormat("sim/network_operator_config"),
+			PathFormat:   dsl.IDAndSuffixPathFormat("sim/network_operator_config"),
 			Method:       http.MethodGet,
-			Arguments: schema.Arguments{
-				schema.ArgumentZone,
-				schema.ArgumentID,
+			Arguments: dsl.Arguments{
+				dsl.ArgumentZone,
+				dsl.ArgumentID,
 			},
-			ResponseEnvelope: schema.ResponseEnvelopePlural(&schema.EnvelopePayloadDesc{
+			ResponseEnvelope: dsl.ResponseEnvelopePlural(&dsl.EnvelopePayloadDesc{
 				Name: "NetworkOperationConfigs",
 				Type: meta.Static(naked.SIMNetworkOperatorConfig{}),
 			}),
-			Results: schema.Results{
+			Results: dsl.Results{
 				{
 					SourceField: "NetworkOperationConfigs",
 					DestField:   "Configs",
@@ -142,13 +142,13 @@ var simAPI = &schema.Resource{
 		{
 			ResourceName:    simAPIName,
 			Name:            "SetNetworkOperator",
-			PathFormat:      schema.IDAndSuffixPathFormat("sim/network_operator_config"),
+			PathFormat:      dsl.IDAndSuffixPathFormat("sim/network_operator_config"),
 			Method:          http.MethodPut,
-			RequestEnvelope: schema.RequestEnvelopeFromModel(simNetworkOperatorsConfigView),
-			Arguments: schema.Arguments{
-				schema.ArgumentZone,
-				schema.ArgumentID,
-				schema.PassthroughModelArgument("configs", simNetworkOperatorsConfigView),
+			RequestEnvelope: dsl.RequestEnvelopeFromModel(simNetworkOperatorsConfigView),
+			Arguments: dsl.Arguments{
+				dsl.ArgumentZone,
+				dsl.ArgumentID,
+				dsl.PassthroughModelArgument("configs", simNetworkOperatorsConfigView),
 			},
 		},
 
@@ -161,10 +161,10 @@ var simAPI = &schema.Resource{
 var (
 	simNakedType = meta.Static(naked.SIM{})
 
-	simView = &schema.Model{
+	simView = &dsl.Model{
 		Name:      simAPIName,
 		NakedType: simNakedType,
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			fields.ID(),
 			fields.Name(),
 			fields.Description(),
@@ -178,10 +178,10 @@ var (
 		},
 	}
 
-	simCreateParam = &schema.Model{
+	simCreateParam = &dsl.Model{
 		Name:      names.CreateParameterName(simAPIName),
 		NakedType: simNakedType,
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			fields.Name(),
 			fields.Description(),
 			fields.Tags(),
@@ -192,10 +192,10 @@ var (
 		},
 	}
 
-	simUpdateParam = &schema.Model{
+	simUpdateParam = &dsl.Model{
 		Name:      names.UpdateParameterName(simAPIName),
 		NakedType: simNakedType,
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			fields.Name(),
 			fields.Description(),
 			fields.Tags(),
@@ -203,9 +203,9 @@ var (
 		},
 	}
 
-	simAssignIPParam = &schema.Model{
+	simAssignIPParam = &dsl.Model{
 		Name: "SIMAssignIPRequest",
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			{
 				Name: "IP",
 				Type: meta.TypeString,
@@ -213,9 +213,9 @@ var (
 		},
 		NakedType: meta.Static(naked.SIMAssignIPRequest{}),
 	}
-	simIMEILockParam = &schema.Model{
+	simIMEILockParam = &dsl.Model{
 		Name: "SIMIMEILockRequest",
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			{
 				Name: "IMEI",
 				Type: meta.TypeString,
@@ -224,9 +224,9 @@ var (
 		NakedType: meta.Static(naked.SIMIMEILockRequest{}),
 	}
 
-	simLogView = &schema.Model{
+	simLogView = &dsl.Model{
 		Name: "SIMLog",
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			fields.New("Date", meta.TypeTime),
 			fields.New("SessionStatus", meta.TypeString),
 			fields.New("ResourceID", meta.TypeString),
@@ -235,23 +235,23 @@ var (
 		},
 		NakedType: meta.Static(naked.SIMLog{}),
 	}
-	simNetworkOperatorConfigView = &schema.Model{
+	simNetworkOperatorConfigView = &dsl.Model{
 		Name: "SIMNetworkOperatorConfig",
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			fields.New("Allow", meta.TypeFlag),
 			fields.New("CountryCode", meta.TypeString),
 			fields.New("Name", meta.TypeString),
 		},
 		NakedType: meta.Static(naked.SIMNetworkOperatorConfig{}),
 	}
-	simNetworkOperatorsConfigView = &schema.Model{
+	simNetworkOperatorsConfigView = &dsl.Model{
 		Name: "SIMNetworkOperatorConfigs",
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			{
 				Name: "NetworkOperatorConfigs",
-				Type: &schema.Model{
+				Type: &dsl.Model{
 					Name: "SIMNetworkOperatorConfig",
-					Fields: []*schema.FieldDesc{
+					Fields: []*dsl.FieldDesc{
 						fields.New("Allow", meta.TypeFlag),
 						fields.New("CountryCode", meta.TypeString),
 						fields.New("Name", meta.TypeString),

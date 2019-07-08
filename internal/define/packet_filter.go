@@ -3,8 +3,8 @@ package define
 import (
 	"github.com/sacloud/libsacloud/v2/internal/define/names"
 	"github.com/sacloud/libsacloud/v2/internal/define/ops"
-	"github.com/sacloud/libsacloud/v2/internal/schema"
-	"github.com/sacloud/libsacloud/v2/internal/schema/meta"
+	"github.com/sacloud/libsacloud/v2/internal/dsl"
+	"github.com/sacloud/libsacloud/v2/internal/dsl/meta"
 	"github.com/sacloud/libsacloud/v2/sacloud/naked"
 )
 
@@ -13,11 +13,11 @@ const (
 	packetFilterAPIPathName = "packetfilter"
 )
 
-var packetFilterAPI = &schema.Resource{
+var packetFilterAPI = &dsl.Resource{
 	Name:       packetFilterAPIName,
 	PathName:   packetFilterAPIPathName,
-	PathSuffix: schema.CloudAPISuffix,
-	Operations: schema.Operations{
+	PathSuffix: dsl.CloudAPISuffix,
+	Operations: dsl.Operations{
 		// find
 		ops.Find(packetFilterAPIName, packetFilterNakedType, findParameter, packetFilterView),
 
@@ -38,10 +38,10 @@ var packetFilterAPI = &schema.Resource{
 var (
 	packetFilterNakedType = meta.Static(naked.PacketFilter{})
 
-	packetFilterView = &schema.Model{
+	packetFilterView = &dsl.Model{
 		Name:      packetFilterAPIName,
 		NakedType: packetFilterNakedType,
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			fields.ID(),
 			fields.Name(),
 			fields.Description(),
@@ -52,20 +52,20 @@ var (
 		},
 	}
 
-	packetFilterCreateParam = &schema.Model{
+	packetFilterCreateParam = &dsl.Model{
 		Name:      names.CreateParameterName(packetFilterAPIName),
 		NakedType: packetFilterNakedType,
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			fields.Name(),
 			fields.Description(),
 			fields.PacketFilterExpressions(),
 		},
 	}
 
-	packetFilterUpdateParam = &schema.Model{
+	packetFilterUpdateParam = &dsl.Model{
 		Name:      names.UpdateParameterName(packetFilterAPIName),
 		NakedType: packetFilterNakedType,
-		Fields: []*schema.FieldDesc{
+		Fields: []*dsl.FieldDesc{
 			fields.Name(),
 			fields.Description(),
 			fields.PacketFilterExpressions(),

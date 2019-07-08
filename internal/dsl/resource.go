@@ -1,4 +1,4 @@
-package schema
+package dsl
 
 // Resources []*Resourceのエイリアス
 type Resources []*Resource

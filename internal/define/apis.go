@@ -11,10 +11,10 @@
 //go:generate go run ../tools/gen-api-fake-op/main.go
 package define
 
-import "github.com/sacloud/libsacloud/v2/internal/schema"
+import "github.com/sacloud/libsacloud/v2/internal/dsl"
 
 // APIs APIでの操作対象リソースの定義
-var APIs schema.Resources
+var APIs dsl.Resources
 
 func init() {
 	APIs.Define(archiveAPI)      // アーカイブ

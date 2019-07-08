@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 
 	"github.com/sacloud/libsacloud/v2/internal/define"
-	"github.com/sacloud/libsacloud/v2/internal/schema"
+	"github.com/sacloud/libsacloud/v2/internal/dsl"
 	"github.com/sacloud/libsacloud/v2/internal/tools"
 )
 
@@ -32,7 +32,7 @@ func main() {
 	log.Printf("generated: %s\n", outputPath)
 
 	// generate funcs
-	schema.IsOutOfSacloudPackage = true
+	dsl.IsOutOfSacloudPackage = true
 	for _, resource := range define.APIs {
 		dest := fmt.Sprintf(opsDestination, resource.FileSafeName())
 		wrote := tools.WriteFileWithTemplate(&tools.TemplateConfig{
