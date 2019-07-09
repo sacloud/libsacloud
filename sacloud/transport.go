@@ -1,10 +1,8 @@
 package sacloud
 
 import (
-	"bytes"
-	"encoding/json"
-	"io/ioutil"
 	"log"
+	"net/http/httputil"
 
 	"go.uber.org/ratelimit"
 
@@ -48,55 +46,22 @@ func (r *TracingRoundTripper) RoundTrip(req *http.Request) (*http.Response, erro
 		r.Transport = http.DefaultTransport
 	}
 
-	reqView := struct {
-		Method string
-		URL    string
-		Header http.Header
-		Body   string
-	}{
-		Method: req.Method,
-		URL:    req.URL.String(),
-		Header: req.Header,
+	data, err := httputil.DumpRequest(req, true)
+	if err != nil {
+		return nil, err
 	}
-	if req.Body != nil {
-		body, err := ioutil.ReadAll(req.Body)
-		if err != nil {
-			return nil, err
-		}
-		reqView.Body = string(body)
-	}
-	if data, err := json.Marshal(reqView); err == nil {
-		log.Printf("[TRACE] \trequest: %s", string(data))
-	}
+	log.Printf("[TRACE] \trequest: %s %s\n==============================\n%s\n============================\n", req.Method, req.URL.String(), string(data))
 
 	res, err := r.Transport.RoundTrip(req)
 	if err != nil {
 		return nil, err
 	}
-	if res != nil {
-		resView := struct {
-			Status     string
-			StatusCode int
-			Header     http.Header
-			Body       string
-		}{
-			Status:     res.Status,
-			StatusCode: res.StatusCode,
-			Header:     res.Header,
-		}
-		if res.Body != nil {
-			body, err := ioutil.ReadAll(res.Body)
-			if err != nil {
-				return nil, err
-			}
-			resView.Body = string(body)
-			res.Body = ioutil.NopCloser(bytes.NewReader(body))
-		}
 
-		if data, err := json.Marshal(resView); err == nil {
-			log.Printf("[TRACE] \tresponse: %s", string(data))
-		}
+	data, err = httputil.DumpResponse(res, true)
+	if err != nil {
+		return nil, err
 	}
+	log.Printf("[TRACE] \tresponse: %s %s\n==============================\n%s\n============================\n", req.Method, req.URL.String(), string(data))
 
 	return res, err
 }
