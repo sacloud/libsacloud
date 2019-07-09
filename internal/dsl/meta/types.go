@@ -59,4 +59,10 @@ var (
 	TypeVPCFirewallPort = Static(types.VPCFirewallPort(""))
 	// TypeAction パケットフィルタルールでのallow/deny動作
 	TypeAction = Static(types.Action(""))
+
+	// TypeBackupSpanType 自動バックアップの取得間隔種別
+	TypeBackupSpanType = Static(types.EBackupSpanType(""))
+
+	// TypeBackupSpanWeekdays 自動バックアップの取得曜日
+	TypeBackupSpanWeekdays = Static([]types.EBackupSpanWeekday{})
 )

@@ -1036,6 +1036,428 @@ func (o *AuthStatus) SetPermission(v types.EPermission) {
 }
 
 /*************************************************
+* AutoBackup
+*************************************************/
+
+// AutoBackup represents API parameter/response structure
+type AutoBackup struct {
+	ID                      types.ID
+	Name                    string `validate:"required"`
+	Description             string `validate:"min=0,max=512"`
+	Tags                    []string
+	Availability            types.EAvailability
+	IconID                  types.ID `mapconv:"Icon.ID"`
+	CreatedAt               time.Time
+	ModifiedAt              time.Time
+	Class                   string                     `mapconv:"Provider.Class,default=autobackup"`
+	BackupSpanType          types.EBackupSpanType      `mapconv:"Settings.Autobackup.BackupSpanType,default=weekdays"`
+	BackupSpanWeekdays      []types.EBackupSpanWeekday `mapconv:"Settings.Autobackup.BackupSpanWeekdays"`
+	MaximumNumberOfArchives int                        `mapconv:"Settings.Autobackup.MaximumNumberOfArchives"`
+	SettingsHash            string
+	DiskID                  types.ID `mapconv:"Status.DiskId"`
+	AccountID               types.ID `mapconv:"Status.AccountId"`
+	ZoneID                  types.ID `mapconv:"Status.ZoneId"`
+	ZoneName                string   `mapconv:"Status.ZoneName"`
+}
+
+// Validate validates by field tags
+func (o *AutoBackup) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetID returns value of ID
+func (o *AutoBackup) GetID() types.ID {
+	return o.ID
+}
+
+// SetID sets value to ID
+func (o *AutoBackup) SetID(v types.ID) {
+	o.ID = v
+}
+
+// GetStringID gets value to StringID
+func (o *AutoBackup) GetStringID() string {
+	return accessor.GetStringID(o)
+}
+
+// SetStringID sets value to StringID
+func (o *AutoBackup) SetStringID(v string) {
+	accessor.SetStringID(o, v)
+}
+
+// GetInt64ID gets value to Int64ID
+func (o *AutoBackup) GetInt64ID() int64 {
+	return accessor.GetInt64ID(o)
+}
+
+// SetInt64ID sets value to Int64ID
+func (o *AutoBackup) SetInt64ID(v int64) {
+	accessor.SetInt64ID(o, v)
+}
+
+// GetName returns value of Name
+func (o *AutoBackup) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *AutoBackup) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *AutoBackup) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *AutoBackup) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetTags returns value of Tags
+func (o *AutoBackup) GetTags() []string {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *AutoBackup) SetTags(v []string) {
+	o.Tags = v
+}
+
+// GetAvailability returns value of Availability
+func (o *AutoBackup) GetAvailability() types.EAvailability {
+	return o.Availability
+}
+
+// SetAvailability sets value to Availability
+func (o *AutoBackup) SetAvailability(v types.EAvailability) {
+	o.Availability = v
+}
+
+// GetIconID returns value of IconID
+func (o *AutoBackup) GetIconID() types.ID {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *AutoBackup) SetIconID(v types.ID) {
+	o.IconID = v
+}
+
+// GetCreatedAt returns value of CreatedAt
+func (o *AutoBackup) GetCreatedAt() time.Time {
+	return o.CreatedAt
+}
+
+// SetCreatedAt sets value to CreatedAt
+func (o *AutoBackup) SetCreatedAt(v time.Time) {
+	o.CreatedAt = v
+}
+
+// GetModifiedAt returns value of ModifiedAt
+func (o *AutoBackup) GetModifiedAt() time.Time {
+	return o.ModifiedAt
+}
+
+// SetModifiedAt sets value to ModifiedAt
+func (o *AutoBackup) SetModifiedAt(v time.Time) {
+	o.ModifiedAt = v
+}
+
+// GetClass returns value of Class
+func (o *AutoBackup) GetClass() string {
+	return o.Class
+}
+
+// SetClass sets value to Class
+func (o *AutoBackup) SetClass(v string) {
+	o.Class = v
+}
+
+// GetBackupSpanType returns value of BackupSpanType
+func (o *AutoBackup) GetBackupSpanType() types.EBackupSpanType {
+	return o.BackupSpanType
+}
+
+// SetBackupSpanType sets value to BackupSpanType
+func (o *AutoBackup) SetBackupSpanType(v types.EBackupSpanType) {
+	o.BackupSpanType = v
+}
+
+// GetBackupSpanWeekdays returns value of BackupSpanWeekdays
+func (o *AutoBackup) GetBackupSpanWeekdays() []types.EBackupSpanWeekday {
+	return o.BackupSpanWeekdays
+}
+
+// SetBackupSpanWeekdays sets value to BackupSpanWeekdays
+func (o *AutoBackup) SetBackupSpanWeekdays(v []types.EBackupSpanWeekday) {
+	o.BackupSpanWeekdays = v
+}
+
+// GetMaximumNumberOfArchives returns value of MaximumNumberOfArchives
+func (o *AutoBackup) GetMaximumNumberOfArchives() int {
+	return o.MaximumNumberOfArchives
+}
+
+// SetMaximumNumberOfArchives sets value to MaximumNumberOfArchives
+func (o *AutoBackup) SetMaximumNumberOfArchives(v int) {
+	o.MaximumNumberOfArchives = v
+}
+
+// GetSettingsHash returns value of SettingsHash
+func (o *AutoBackup) GetSettingsHash() string {
+	return o.SettingsHash
+}
+
+// SetSettingsHash sets value to SettingsHash
+func (o *AutoBackup) SetSettingsHash(v string) {
+	o.SettingsHash = v
+}
+
+// GetDiskID returns value of DiskID
+func (o *AutoBackup) GetDiskID() types.ID {
+	return o.DiskID
+}
+
+// SetDiskID sets value to DiskID
+func (o *AutoBackup) SetDiskID(v types.ID) {
+	o.DiskID = v
+}
+
+// GetAccountID returns value of AccountID
+func (o *AutoBackup) GetAccountID() types.ID {
+	return o.AccountID
+}
+
+// SetAccountID sets value to AccountID
+func (o *AutoBackup) SetAccountID(v types.ID) {
+	o.AccountID = v
+}
+
+// GetZoneID returns value of ZoneID
+func (o *AutoBackup) GetZoneID() types.ID {
+	return o.ZoneID
+}
+
+// SetZoneID sets value to ZoneID
+func (o *AutoBackup) SetZoneID(v types.ID) {
+	o.ZoneID = v
+}
+
+// GetZoneName returns value of ZoneName
+func (o *AutoBackup) GetZoneName() string {
+	return o.ZoneName
+}
+
+// SetZoneName sets value to ZoneName
+func (o *AutoBackup) SetZoneName(v string) {
+	o.ZoneName = v
+}
+
+/*************************************************
+* AutoBackupCreateRequest
+*************************************************/
+
+// AutoBackupCreateRequest represents API parameter/response structure
+type AutoBackupCreateRequest struct {
+	Class                   string                     `mapconv:"Provider.Class,default=autobackup"`
+	DiskID                  types.ID                   `mapconv:"Status.DiskId"`
+	BackupSpanType          types.EBackupSpanType      `mapconv:"Settings.Autobackup.BackupSpanType,default=weekdays"`
+	BackupSpanWeekdays      []types.EBackupSpanWeekday `mapconv:"Settings.Autobackup.BackupSpanWeekdays"`
+	MaximumNumberOfArchives int                        `mapconv:"Settings.Autobackup.MaximumNumberOfArchives"`
+	Name                    string                     `validate:"required"`
+	Description             string                     `validate:"min=0,max=512"`
+	Tags                    []string
+	IconID                  types.ID `mapconv:"Icon.ID"`
+}
+
+// Validate validates by field tags
+func (o *AutoBackupCreateRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetClass returns value of Class
+func (o *AutoBackupCreateRequest) GetClass() string {
+	return o.Class
+}
+
+// SetClass sets value to Class
+func (o *AutoBackupCreateRequest) SetClass(v string) {
+	o.Class = v
+}
+
+// GetDiskID returns value of DiskID
+func (o *AutoBackupCreateRequest) GetDiskID() types.ID {
+	return o.DiskID
+}
+
+// SetDiskID sets value to DiskID
+func (o *AutoBackupCreateRequest) SetDiskID(v types.ID) {
+	o.DiskID = v
+}
+
+// GetBackupSpanType returns value of BackupSpanType
+func (o *AutoBackupCreateRequest) GetBackupSpanType() types.EBackupSpanType {
+	return o.BackupSpanType
+}
+
+// SetBackupSpanType sets value to BackupSpanType
+func (o *AutoBackupCreateRequest) SetBackupSpanType(v types.EBackupSpanType) {
+	o.BackupSpanType = v
+}
+
+// GetBackupSpanWeekdays returns value of BackupSpanWeekdays
+func (o *AutoBackupCreateRequest) GetBackupSpanWeekdays() []types.EBackupSpanWeekday {
+	return o.BackupSpanWeekdays
+}
+
+// SetBackupSpanWeekdays sets value to BackupSpanWeekdays
+func (o *AutoBackupCreateRequest) SetBackupSpanWeekdays(v []types.EBackupSpanWeekday) {
+	o.BackupSpanWeekdays = v
+}
+
+// GetMaximumNumberOfArchives returns value of MaximumNumberOfArchives
+func (o *AutoBackupCreateRequest) GetMaximumNumberOfArchives() int {
+	return o.MaximumNumberOfArchives
+}
+
+// SetMaximumNumberOfArchives sets value to MaximumNumberOfArchives
+func (o *AutoBackupCreateRequest) SetMaximumNumberOfArchives(v int) {
+	o.MaximumNumberOfArchives = v
+}
+
+// GetName returns value of Name
+func (o *AutoBackupCreateRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *AutoBackupCreateRequest) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *AutoBackupCreateRequest) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *AutoBackupCreateRequest) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetTags returns value of Tags
+func (o *AutoBackupCreateRequest) GetTags() []string {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *AutoBackupCreateRequest) SetTags(v []string) {
+	o.Tags = v
+}
+
+// GetIconID returns value of IconID
+func (o *AutoBackupCreateRequest) GetIconID() types.ID {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *AutoBackupCreateRequest) SetIconID(v types.ID) {
+	o.IconID = v
+}
+
+/*************************************************
+* AutoBackupUpdateRequest
+*************************************************/
+
+// AutoBackupUpdateRequest represents API parameter/response structure
+type AutoBackupUpdateRequest struct {
+	BackupSpanType          types.EBackupSpanType      `mapconv:"Settings.Autobackup.BackupSpanType,default=weekdays"`
+	BackupSpanWeekdays      []types.EBackupSpanWeekday `mapconv:"Settings.Autobackup.BackupSpanWeekdays"`
+	MaximumNumberOfArchives int                        `mapconv:"Settings.Autobackup.MaximumNumberOfArchives"`
+	Name                    string                     `validate:"required"`
+	Description             string                     `validate:"min=0,max=512"`
+	Tags                    []string
+	IconID                  types.ID `mapconv:"Icon.ID"`
+}
+
+// Validate validates by field tags
+func (o *AutoBackupUpdateRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetBackupSpanType returns value of BackupSpanType
+func (o *AutoBackupUpdateRequest) GetBackupSpanType() types.EBackupSpanType {
+	return o.BackupSpanType
+}
+
+// SetBackupSpanType sets value to BackupSpanType
+func (o *AutoBackupUpdateRequest) SetBackupSpanType(v types.EBackupSpanType) {
+	o.BackupSpanType = v
+}
+
+// GetBackupSpanWeekdays returns value of BackupSpanWeekdays
+func (o *AutoBackupUpdateRequest) GetBackupSpanWeekdays() []types.EBackupSpanWeekday {
+	return o.BackupSpanWeekdays
+}
+
+// SetBackupSpanWeekdays sets value to BackupSpanWeekdays
+func (o *AutoBackupUpdateRequest) SetBackupSpanWeekdays(v []types.EBackupSpanWeekday) {
+	o.BackupSpanWeekdays = v
+}
+
+// GetMaximumNumberOfArchives returns value of MaximumNumberOfArchives
+func (o *AutoBackupUpdateRequest) GetMaximumNumberOfArchives() int {
+	return o.MaximumNumberOfArchives
+}
+
+// SetMaximumNumberOfArchives sets value to MaximumNumberOfArchives
+func (o *AutoBackupUpdateRequest) SetMaximumNumberOfArchives(v int) {
+	o.MaximumNumberOfArchives = v
+}
+
+// GetName returns value of Name
+func (o *AutoBackupUpdateRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *AutoBackupUpdateRequest) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *AutoBackupUpdateRequest) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *AutoBackupUpdateRequest) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetTags returns value of Tags
+func (o *AutoBackupUpdateRequest) GetTags() []string {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *AutoBackupUpdateRequest) SetTags(v []string) {
+	o.Tags = v
+}
+
+// GetIconID returns value of IconID
+func (o *AutoBackupUpdateRequest) GetIconID() types.ID {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *AutoBackupUpdateRequest) SetIconID(v types.ID) {
+	o.IconID = v
+}
+
+/*************************************************
 * Bridge
 *************************************************/
 

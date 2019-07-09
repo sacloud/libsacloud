@@ -34,6 +34,19 @@ type AuthStatusAPI interface {
 }
 
 /*************************************************
+* AutoBackupAPI
+*************************************************/
+
+// AutoBackupAPI is interface for operate AutoBackup resource
+type AutoBackupAPI interface {
+	Find(ctx context.Context, zone string, conditions *FindCondition) (*AutoBackupFindResult, error)
+	Create(ctx context.Context, zone string, param *AutoBackupCreateRequest) (*AutoBackup, error)
+	Read(ctx context.Context, zone string, id types.ID) (*AutoBackup, error)
+	Update(ctx context.Context, zone string, id types.ID, param *AutoBackupUpdateRequest) (*AutoBackup, error)
+	Delete(ctx context.Context, zone string, id types.ID) error
+}
+
+/*************************************************
 * BridgeAPI
 *************************************************/
 

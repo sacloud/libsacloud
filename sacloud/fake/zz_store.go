@@ -53,6 +53,29 @@ func (s *store) setAuthStatus(zone string, value *sacloud.AuthStatus) {
 	s.set(ResourceAuthStatus, zone, value)
 }
 
+func (s *store) getAutoBackup(zone string) []*sacloud.AutoBackup {
+	values := s.get(ResourceAutoBackup, zone)
+	var ret []*sacloud.AutoBackup
+	for _, v := range values {
+		if v, ok := v.(*sacloud.AutoBackup); ok {
+			ret = append(ret, v)
+		}
+	}
+	return ret
+}
+
+func (s *store) getAutoBackupByID(zone string, id types.ID) *sacloud.AutoBackup {
+	v := s.getByID(ResourceAutoBackup, zone, id)
+	if v, ok := v.(*sacloud.AutoBackup); ok {
+		return v
+	}
+	return nil
+}
+
+func (s *store) setAutoBackup(zone string, value *sacloud.AutoBackup) {
+	s.set(ResourceAutoBackup, zone, value)
+}
+
 func (s *store) getBridge(zone string) []*sacloud.Bridge {
 	values := s.get(ResourceBridge, zone)
 	var ret []*sacloud.Bridge

@@ -97,6 +97,59 @@ type authStatusReadResponseEnvelope struct {
 	AuthStatus *naked.AuthStatus `json:",omitempty"`
 }
 
+// autoBackupFindRequestEnvelope is envelop of API request
+type autoBackupFindRequestEnvelope struct {
+	Count   int                    `json:",omitempty"`
+	From    int                    `json:",omitempty"`
+	Sort    []string               `json:",omitempty"`
+	Filter  map[string]interface{} `json:",omitempty"`
+	Include []string               `json:",omitempty"`
+	Exclude []string               `json:",omitempty"`
+}
+
+// autoBackupFindResponseEnvelope is envelop of API response
+type autoBackupFindResponseEnvelope struct {
+	Total int `json:",omitempty"` // トータル件数
+	From  int `json:",omitempty"` // ページング開始ページ
+	Count int `json:",omitempty"` // 件数
+
+	CommonServiceItems []*naked.AutoBackup `json:",omitempty"`
+}
+
+// autoBackupCreateRequestEnvelope is envelop of API request
+type autoBackupCreateRequestEnvelope struct {
+	CommonServiceItem *naked.AutoBackup `json:",omitempty"`
+}
+
+// autoBackupCreateResponseEnvelope is envelop of API response
+type autoBackupCreateResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	CommonServiceItem *naked.AutoBackup `json:",omitempty"`
+}
+
+// autoBackupReadResponseEnvelope is envelop of API response
+type autoBackupReadResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	CommonServiceItem *naked.AutoBackup `json:",omitempty"`
+}
+
+// autoBackupUpdateRequestEnvelope is envelop of API request
+type autoBackupUpdateRequestEnvelope struct {
+	CommonServiceItem *naked.AutoBackup `json:",omitempty"`
+}
+
+// autoBackupUpdateResponseEnvelope is envelop of API response
+type autoBackupUpdateResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	CommonServiceItem *naked.AutoBackup `json:",omitempty"`
+}
+
 // bridgeFindRequestEnvelope is envelop of API request
 type bridgeFindRequestEnvelope struct {
 	Count   int                    `json:",omitempty"`

@@ -171,6 +171,93 @@ func (s *AuthStatusStub) Read(ctx context.Context, zone string) (*sacloud.AuthSt
 }
 
 /*************************************************
+* AutoBackupStub
+*************************************************/
+
+// AutoBackupFindStubResult is expected values of the Find operation
+type AutoBackupFindStubResult struct {
+	Values *sacloud.AutoBackupFindResult
+	Err    error
+}
+
+// AutoBackupCreateStubResult is expected values of the Create operation
+type AutoBackupCreateStubResult struct {
+	AutoBackup *sacloud.AutoBackup
+	Err        error
+}
+
+// AutoBackupReadStubResult is expected values of the Read operation
+type AutoBackupReadStubResult struct {
+	AutoBackup *sacloud.AutoBackup
+	Err        error
+}
+
+// AutoBackupUpdateStubResult is expected values of the Update operation
+type AutoBackupUpdateStubResult struct {
+	AutoBackup *sacloud.AutoBackup
+	Err        error
+}
+
+// AutoBackupDeleteStubResult is expected values of the Delete operation
+type AutoBackupDeleteStubResult struct {
+	Err error
+}
+
+// AutoBackupStub is for trace AutoBackupOp operations
+type AutoBackupStub struct {
+	FindStubResult   *AutoBackupFindStubResult
+	CreateStubResult *AutoBackupCreateStubResult
+	ReadStubResult   *AutoBackupReadStubResult
+	UpdateStubResult *AutoBackupUpdateStubResult
+	DeleteStubResult *AutoBackupDeleteStubResult
+}
+
+// NewAutoBackupStub creates new AutoBackupStub instance
+func NewAutoBackupStub(caller sacloud.APICaller) sacloud.AutoBackupAPI {
+	return &AutoBackupStub{}
+}
+
+// Find is API call with trace log
+func (s *AutoBackupStub) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.AutoBackupFindResult, error) {
+	if s.FindStubResult == nil {
+		log.Fatal("AutoBackupStub.FindStubResult is not set")
+	}
+	return s.FindStubResult.Values, s.FindStubResult.Err
+}
+
+// Create is API call with trace log
+func (s *AutoBackupStub) Create(ctx context.Context, zone string, param *sacloud.AutoBackupCreateRequest) (*sacloud.AutoBackup, error) {
+	if s.CreateStubResult == nil {
+		log.Fatal("AutoBackupStub.CreateStubResult is not set")
+	}
+	return s.CreateStubResult.AutoBackup, s.CreateStubResult.Err
+}
+
+// Read is API call with trace log
+func (s *AutoBackupStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.AutoBackup, error) {
+	if s.ReadStubResult == nil {
+		log.Fatal("AutoBackupStub.ReadStubResult is not set")
+	}
+	return s.ReadStubResult.AutoBackup, s.ReadStubResult.Err
+}
+
+// Update is API call with trace log
+func (s *AutoBackupStub) Update(ctx context.Context, zone string, id types.ID, param *sacloud.AutoBackupUpdateRequest) (*sacloud.AutoBackup, error) {
+	if s.UpdateStubResult == nil {
+		log.Fatal("AutoBackupStub.UpdateStubResult is not set")
+	}
+	return s.UpdateStubResult.AutoBackup, s.UpdateStubResult.Err
+}
+
+// Delete is API call with trace log
+func (s *AutoBackupStub) Delete(ctx context.Context, zone string, id types.ID) error {
+	if s.DeleteStubResult == nil {
+		log.Fatal("AutoBackupStub.DeleteStubResult is not set")
+	}
+	return s.DeleteStubResult.Err
+}
+
+/*************************************************
 * BridgeStub
 *************************************************/
 
