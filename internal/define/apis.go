@@ -19,6 +19,7 @@ var APIs dsl.Resources
 func init() {
 	APIs.Define(archiveAPI)      // アーカイブ
 	APIs.Define(authStatusAPI)   // 認証情報
+	APIs.Define(autoBackupAPI)   // 自動バックアップ
 	APIs.Define(bridgeAPI)       // ブリッジ
 	APIs.Define(cdromAPI)        // ISOイメージ(CD-ROM)
 	APIs.Define(diskAPI)         // ディスク

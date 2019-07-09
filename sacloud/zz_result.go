@@ -54,6 +54,36 @@ type authStatusReadResult struct {
 	AuthStatus *AuthStatus `json:",omitempty" mapconv:"AuthStatus,omitempty,recursive"`
 }
 
+// AutoBackupFindResult represents the Result of API
+type AutoBackupFindResult struct {
+	Total int `json:",omitempty"` // Total count of target resources
+	From  int `json:",omitempty"` // Current page number
+	Count int `json:",omitempty"` // Count of current page
+
+	AutoBackups []*AutoBackup `json:",omitempty" mapconv:"[]CommonServiceItems,omitempty,recursive"`
+}
+
+// autoBackupCreateResult represents the Result of API
+type autoBackupCreateResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	AutoBackup *AutoBackup `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
+}
+
+// autoBackupReadResult represents the Result of API
+type autoBackupReadResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	AutoBackup *AutoBackup `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
+}
+
+// autoBackupUpdateResult represents the Result of API
+type autoBackupUpdateResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	AutoBackup *AutoBackup `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
+}
+
 // BridgeFindResult represents the Result of API
 type BridgeFindResult struct {
 	Total int `json:",omitempty"` // Total count of target resources

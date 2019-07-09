@@ -28,6 +28,14 @@ func init() {
 		}
 	})
 
+	SetClientFactoryFunc("AutoBackup", func(caller APICaller) interface{} {
+		return &AutoBackupOp{
+			Client:     caller,
+			PathSuffix: "api/cloud/1.1",
+			PathName:   "commonserviceitem",
+		}
+	})
+
 	SetClientFactoryFunc("Bridge", func(caller APICaller) interface{} {
 		return &BridgeOp{
 			Client:     caller,
@@ -566,6 +574,242 @@ func (o *AuthStatusOp) Read(ctx context.Context, zone string) (*AuthStatus, erro
 		return nil, err
 	}
 	return results.AuthStatus, nil
+}
+
+/*************************************************
+* AutoBackupOp
+*************************************************/
+
+// AutoBackupOp implements AutoBackupAPI interface
+type AutoBackupOp struct {
+	// Client APICaller
+	Client APICaller
+	// PathSuffix is used when building URL
+	PathSuffix string
+	// PathName is used when building URL
+	PathName string
+}
+
+// NewAutoBackupOp creates new AutoBackupOp instance
+func NewAutoBackupOp(caller APICaller) AutoBackupAPI {
+	return GetClientFactoryFunc("AutoBackup")(caller).(AutoBackupAPI)
+}
+
+// Find is API call
+func (o *AutoBackupOp) Find(ctx context.Context, zone string, conditions *FindCondition) (*AutoBackupFindResult, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"conditions": conditions,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	if zone == "" {
+		zone = ""
+	}
+	if conditions == nil {
+		conditions = &FindCondition{}
+	}
+	args := &struct {
+		Argzone       string
+		Argconditions *FindCondition `mapconv:",squash"`
+	}{
+		Argzone:       zone,
+		Argconditions: conditions,
+	}
+
+	v := &autoBackupFindRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &autoBackupFindResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &AutoBackupFindResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, err
+}
+
+// Create is API call
+func (o *AutoBackupOp) Create(ctx context.Context, zone string, param *AutoBackupCreateRequest) (*AutoBackup, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"param":      param,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	if zone == "" {
+		zone = ""
+	}
+	if param == nil {
+		param = &AutoBackupCreateRequest{}
+	}
+	args := &struct {
+		Argzone  string
+		Argparam *AutoBackupCreateRequest `mapconv:"CommonServiceItem,recursive"`
+	}{
+		Argzone:  zone,
+		Argparam: param,
+	}
+
+	v := &autoBackupCreateRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
+
+	data, err := o.Client.Do(ctx, "POST", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &autoBackupCreateResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &autoBackupCreateResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results.AutoBackup, nil
+}
+
+// Read is API call
+func (o *AutoBackupOp) Read(ctx context.Context, zone string, id types.ID) (*AutoBackup, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &autoBackupReadResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &autoBackupReadResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results.AutoBackup, nil
+}
+
+// Update is API call
+func (o *AutoBackupOp) Update(ctx context.Context, zone string, id types.ID, param *AutoBackupUpdateRequest) (*AutoBackup, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+		"param":      param,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	if zone == "" {
+		zone = ""
+	}
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	if param == nil {
+		param = &AutoBackupUpdateRequest{}
+	}
+	args := &struct {
+		Argzone  string
+		Argid    types.ID
+		Argparam *AutoBackupUpdateRequest `mapconv:"CommonServiceItem,recursive"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+
+	v := &autoBackupUpdateRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
+
+	data, err := o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &autoBackupUpdateResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &autoBackupUpdateResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results.AutoBackup, nil
+}
+
+// Delete is API call
+func (o *AutoBackupOp) Delete(ctx context.Context, zone string, id types.ID) error {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+	})
+	if err != nil {
+		return err
+	}
+
+	var body interface{}
+
+	_, err = o.Client.Do(ctx, "DELETE", url, body)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 /*************************************************
