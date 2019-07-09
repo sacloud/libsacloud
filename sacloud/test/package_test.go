@@ -44,9 +44,13 @@ func singletonAPICaller() sacloud.APICaller {
 
 		client.RetryMax = 20
 		client.RetryInterval = 3 * time.Second
-		client.HTTPClient = &http.Client{}
+		client.HTTPClient = &http.Client{
+			Transport: &sacloud.RateLimitRoundTripper{RateLimitPerSec: 1},
+		}
 		if httpTrace {
-			client.HTTPClient.Transport = &sacloud.TracingRoundTripper{}
+			client.HTTPClient.Transport = &sacloud.TracingRoundTripper{
+				Transport: client.HTTPClient.Transport,
+			}
 		}
 
 		apiCaller = client
