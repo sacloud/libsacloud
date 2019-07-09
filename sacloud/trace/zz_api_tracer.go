@@ -31,6 +31,9 @@ func AddClientFactoryHooks() {
 	sacloud.AddClientFacotyHookFunc("Disk", func(in interface{}) interface{} {
 		return NewDiskTracer(in.(sacloud.DiskAPI))
 	})
+	sacloud.AddClientFacotyHookFunc("DNS", func(in interface{}) interface{} {
+		return NewDNSTracer(in.(sacloud.DNSAPI))
+	})
 	sacloud.AddClientFacotyHookFunc("GSLB", func(in interface{}) interface{} {
 		return NewGSLBTracer(in.(sacloud.GSLBAPI))
 	})
@@ -1565,6 +1568,187 @@ func (t *DiskTracer) Monitor(ctx context.Context, zone string, id types.ID, cond
 	}
 
 	return resultDiskActivity, err
+}
+
+/*************************************************
+* DNSTracer
+*************************************************/
+
+// DNSTracer is for trace DNSOp operations
+type DNSTracer struct {
+	Internal sacloud.DNSAPI
+}
+
+// NewDNSTracer creates new DNSTracer instance
+func NewDNSTracer(in sacloud.DNSAPI) sacloud.DNSAPI {
+	return &DNSTracer{
+		Internal: in,
+	}
+}
+
+// Find is API call with trace log
+func (t *DNSTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.DNSFindResult, error) {
+	log.Println("[TRACE] DNSTracer.Find start")
+	targetArguments := struct {
+		Argzone       string                 `json:"zone"`
+		Argconditions *sacloud.FindCondition `json:"conditions"`
+	}{
+		Argzone:       zone,
+		Argconditions: conditions,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] DNSTracer.Find end")
+	}()
+
+	result, err := t.Internal.Find(ctx, zone, conditions)
+	targetResults := struct {
+		Result *sacloud.DNSFindResult
+		Error  error
+	}{
+		Result: result,
+		Error:  err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return result, err
+}
+
+// Create is API call with trace log
+func (t *DNSTracer) Create(ctx context.Context, zone string, param *sacloud.DNSCreateRequest) (*sacloud.DNS, error) {
+	log.Println("[TRACE] DNSTracer.Create start")
+	targetArguments := struct {
+		Argzone  string                    `json:"zone"`
+		Argparam *sacloud.DNSCreateRequest `json:"param"`
+	}{
+		Argzone:  zone,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] DNSTracer.Create end")
+	}()
+
+	resultDNS, err := t.Internal.Create(ctx, zone, param)
+	targetResults := struct {
+		DNS   *sacloud.DNS
+		Error error
+	}{
+		DNS:   resultDNS,
+		Error: err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultDNS, err
+}
+
+// Read is API call with trace log
+func (t *DNSTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.DNS, error) {
+	log.Println("[TRACE] DNSTracer.Read start")
+	targetArguments := struct {
+		Argzone string   `json:"zone"`
+		Argid   types.ID `json:"id"`
+	}{
+		Argzone: zone,
+		Argid:   id,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] DNSTracer.Read end")
+	}()
+
+	resultDNS, err := t.Internal.Read(ctx, zone, id)
+	targetResults := struct {
+		DNS   *sacloud.DNS
+		Error error
+	}{
+		DNS:   resultDNS,
+		Error: err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultDNS, err
+}
+
+// Update is API call with trace log
+func (t *DNSTracer) Update(ctx context.Context, zone string, id types.ID, param *sacloud.DNSUpdateRequest) (*sacloud.DNS, error) {
+	log.Println("[TRACE] DNSTracer.Update start")
+	targetArguments := struct {
+		Argzone  string                    `json:"zone"`
+		Argid    types.ID                  `json:"id"`
+		Argparam *sacloud.DNSUpdateRequest `json:"param"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] DNSTracer.Update end")
+	}()
+
+	resultDNS, err := t.Internal.Update(ctx, zone, id, param)
+	targetResults := struct {
+		DNS   *sacloud.DNS
+		Error error
+	}{
+		DNS:   resultDNS,
+		Error: err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultDNS, err
+}
+
+// Delete is API call with trace log
+func (t *DNSTracer) Delete(ctx context.Context, zone string, id types.ID) error {
+	log.Println("[TRACE] DNSTracer.Delete start")
+	targetArguments := struct {
+		Argzone string   `json:"zone"`
+		Argid   types.ID `json:"id"`
+	}{
+		Argzone: zone,
+		Argid:   id,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] DNSTracer.Delete end")
+	}()
+
+	err := t.Internal.Delete(ctx, zone, id)
+	targetResults := struct {
+		Error error
+	}{
+		Error: err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return err
 }
 
 /*************************************************

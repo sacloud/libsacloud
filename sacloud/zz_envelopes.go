@@ -423,6 +423,59 @@ type diskMonitorResponseEnvelope struct {
 	Data *naked.MonitorValues `json:",omitempty"`
 }
 
+// dNSFindRequestEnvelope is envelop of API request
+type dNSFindRequestEnvelope struct {
+	Count   int                    `json:",omitempty"`
+	From    int                    `json:",omitempty"`
+	Sort    []string               `json:",omitempty"`
+	Filter  map[string]interface{} `json:",omitempty"`
+	Include []string               `json:",omitempty"`
+	Exclude []string               `json:",omitempty"`
+}
+
+// dNSFindResponseEnvelope is envelop of API response
+type dNSFindResponseEnvelope struct {
+	Total int `json:",omitempty"` // トータル件数
+	From  int `json:",omitempty"` // ページング開始ページ
+	Count int `json:",omitempty"` // 件数
+
+	CommonServiceItems []*naked.DNS `json:",omitempty"`
+}
+
+// dNSCreateRequestEnvelope is envelop of API request
+type dNSCreateRequestEnvelope struct {
+	CommonServiceItem *naked.DNS `json:",omitempty"`
+}
+
+// dNSCreateResponseEnvelope is envelop of API response
+type dNSCreateResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	CommonServiceItem *naked.DNS `json:",omitempty"`
+}
+
+// dNSReadResponseEnvelope is envelop of API response
+type dNSReadResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	CommonServiceItem *naked.DNS `json:",omitempty"`
+}
+
+// dNSUpdateRequestEnvelope is envelop of API request
+type dNSUpdateRequestEnvelope struct {
+	CommonServiceItem *naked.DNS `json:",omitempty"`
+}
+
+// dNSUpdateResponseEnvelope is envelop of API response
+type dNSUpdateResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	CommonServiceItem *naked.DNS `json:",omitempty"`
+}
+
 // gSLBFindRequestEnvelope is envelop of API request
 type gSLBFindRequestEnvelope struct {
 	Count   int                    `json:",omitempty"`

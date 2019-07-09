@@ -26,6 +26,9 @@ func SwitchFactoryFuncToFake() {
 	sacloud.SetClientFactoryFunc(ResourceDisk, func(caller sacloud.APICaller) interface{} {
 		return NewDiskOp()
 	})
+	sacloud.SetClientFactoryFunc(ResourceDNS, func(caller sacloud.APICaller) interface{} {
+		return NewDNSOp()
+	})
 	sacloud.SetClientFactoryFunc(ResourceGSLB, func(caller sacloud.APICaller) interface{} {
 		return NewGSLBOp()
 	})
@@ -157,6 +160,22 @@ type DiskOp struct {
 func NewDiskOp() sacloud.DiskAPI {
 	return &DiskOp{
 		key: ResourceDisk,
+	}
+}
+
+/*************************************************
+* DNSOp
+*************************************************/
+
+// DNSOp is fake implementation of DNSAPI interface
+type DNSOp struct {
+	key string
+}
+
+// NewDNSOp creates new DNSOp instance
+func NewDNSOp() sacloud.DNSAPI {
+	return &DNSOp{
+		key: ResourceDNS,
 	}
 }
 
