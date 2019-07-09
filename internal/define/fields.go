@@ -863,6 +863,68 @@ func (f *fieldsDef) AutoBackupZoneName() *dsl.FieldDesc {
 	}
 }
 
+func (f *fieldsDef) DNSProviderClass() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "Class",
+		Type: meta.TypeString,
+		Tags: &dsl.FieldTags{
+			MapConv: "Provider.Class,default=dns",
+		},
+	}
+}
+
+func (f *fieldsDef) DNSRecords() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "Records",
+		Type: &dsl.Model{
+			Name:    "DNSRecord",
+			IsArray: true,
+			Fields: []*dsl.FieldDesc{
+				{
+					Name: "Name",
+					Type: meta.TypeString,
+				},
+				{
+					Name: "Type",
+					Type: meta.TypeDNSRecordType,
+				},
+				{
+					Name: "RData",
+					Type: meta.TypeString,
+				},
+				{
+					Name: "TTL",
+					Type: meta.TypeInt,
+				},
+			},
+		},
+		Tags: &dsl.FieldTags{
+			MapConv:  "Settings.DNS.[]ResourceRecordSets,recursive",
+			Validate: "min=0,max=1000",
+		},
+	}
+}
+
+func (f *fieldsDef) DNSZone() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "DNSZone",
+		Type: meta.TypeString,
+		Tags: &dsl.FieldTags{
+			MapConv: "Status.Zone",
+		},
+	}
+}
+
+func (f *fieldsDef) DNSNameServers() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "DNSNameServers",
+		Type: meta.TypeStringSlice,
+		Tags: &dsl.FieldTags{
+			MapConv: "Status.NS",
+		},
+	}
+}
+
 func (f *fieldsDef) SettingsHash() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "SettingsHash",

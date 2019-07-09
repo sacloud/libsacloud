@@ -224,6 +224,36 @@ type diskMonitorResult struct {
 	DiskActivity *DiskActivity `json:",omitempty" mapconv:"Data,omitempty,recursive"`
 }
 
+// DNSFindResult represents the Result of API
+type DNSFindResult struct {
+	Total int `json:",omitempty"` // Total count of target resources
+	From  int `json:",omitempty"` // Current page number
+	Count int `json:",omitempty"` // Count of current page
+
+	DNS []*DNS `json:",omitempty" mapconv:"[]CommonServiceItems,omitempty,recursive"`
+}
+
+// dNSCreateResult represents the Result of API
+type dNSCreateResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	DNS *DNS `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
+}
+
+// dNSReadResult represents the Result of API
+type dNSReadResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	DNS *DNS `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
+}
+
+// dNSUpdateResult represents the Result of API
+type dNSUpdateResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	DNS *DNS `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
+}
+
 // GSLBFindResult represents the Result of API
 type GSLBFindResult struct {
 	Total int `json:",omitempty"` // Total count of target resources

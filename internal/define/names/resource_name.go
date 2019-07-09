@@ -16,6 +16,8 @@ func ResourceFieldName(resourceName string, form dsl.PayloadForm) string {
 		switch {
 		case resourceName == "NFS":
 			return resourceName
+		case resourceName == "DNS":
+			return resourceName
 		case strings.HasSuffix(resourceName, "ch"):
 			return resourceName + "es"
 		default:

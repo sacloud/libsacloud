@@ -23,6 +23,7 @@ func init() {
 	APIs.Define(bridgeAPI)       // ブリッジ
 	APIs.Define(cdromAPI)        // ISOイメージ(CD-ROM)
 	APIs.Define(diskAPI)         // ディスク
+	APIs.Define(dnsAPI)          // DNS
 	APIs.Define(gslbAPI)         // GSLB
 	APIs.Define(interfaceAPI)    // インターフェース(NIC)
 	APIs.Define(internetAPI)     // スイッチ+ルータ

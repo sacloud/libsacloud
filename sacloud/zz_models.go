@@ -3054,6 +3054,375 @@ func (o *MonitorCondition) SetEnd(v time.Time) {
 }
 
 /*************************************************
+* DNS
+*************************************************/
+
+// DNS represents API parameter/response structure
+type DNS struct {
+	ID             types.ID
+	Name           string `validate:"required"`
+	Description    string `validate:"min=0,max=512"`
+	Tags           []string
+	Availability   types.EAvailability
+	IconID         types.ID `mapconv:"Icon.ID"`
+	CreatedAt      time.Time
+	ModifiedAt     time.Time
+	Class          string       `mapconv:"Provider.Class,default=dns"`
+	Records        []*DNSRecord `mapconv:"Settings.DNS.[]ResourceRecordSets,recursive" validate:"min=0,max=1000"`
+	SettingsHash   string
+	DNSZone        string   `mapconv:"Status.Zone"`
+	DNSNameServers []string `mapconv:"Status.NS"`
+}
+
+// Validate validates by field tags
+func (o *DNS) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetID returns value of ID
+func (o *DNS) GetID() types.ID {
+	return o.ID
+}
+
+// SetID sets value to ID
+func (o *DNS) SetID(v types.ID) {
+	o.ID = v
+}
+
+// GetStringID gets value to StringID
+func (o *DNS) GetStringID() string {
+	return accessor.GetStringID(o)
+}
+
+// SetStringID sets value to StringID
+func (o *DNS) SetStringID(v string) {
+	accessor.SetStringID(o, v)
+}
+
+// GetInt64ID gets value to Int64ID
+func (o *DNS) GetInt64ID() int64 {
+	return accessor.GetInt64ID(o)
+}
+
+// SetInt64ID sets value to Int64ID
+func (o *DNS) SetInt64ID(v int64) {
+	accessor.SetInt64ID(o, v)
+}
+
+// GetName returns value of Name
+func (o *DNS) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *DNS) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *DNS) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *DNS) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetTags returns value of Tags
+func (o *DNS) GetTags() []string {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *DNS) SetTags(v []string) {
+	o.Tags = v
+}
+
+// GetAvailability returns value of Availability
+func (o *DNS) GetAvailability() types.EAvailability {
+	return o.Availability
+}
+
+// SetAvailability sets value to Availability
+func (o *DNS) SetAvailability(v types.EAvailability) {
+	o.Availability = v
+}
+
+// GetIconID returns value of IconID
+func (o *DNS) GetIconID() types.ID {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *DNS) SetIconID(v types.ID) {
+	o.IconID = v
+}
+
+// GetCreatedAt returns value of CreatedAt
+func (o *DNS) GetCreatedAt() time.Time {
+	return o.CreatedAt
+}
+
+// SetCreatedAt sets value to CreatedAt
+func (o *DNS) SetCreatedAt(v time.Time) {
+	o.CreatedAt = v
+}
+
+// GetModifiedAt returns value of ModifiedAt
+func (o *DNS) GetModifiedAt() time.Time {
+	return o.ModifiedAt
+}
+
+// SetModifiedAt sets value to ModifiedAt
+func (o *DNS) SetModifiedAt(v time.Time) {
+	o.ModifiedAt = v
+}
+
+// GetClass returns value of Class
+func (o *DNS) GetClass() string {
+	return o.Class
+}
+
+// SetClass sets value to Class
+func (o *DNS) SetClass(v string) {
+	o.Class = v
+}
+
+// GetRecords returns value of Records
+func (o *DNS) GetRecords() []*DNSRecord {
+	return o.Records
+}
+
+// SetRecords sets value to Records
+func (o *DNS) SetRecords(v []*DNSRecord) {
+	o.Records = v
+}
+
+// GetSettingsHash returns value of SettingsHash
+func (o *DNS) GetSettingsHash() string {
+	return o.SettingsHash
+}
+
+// SetSettingsHash sets value to SettingsHash
+func (o *DNS) SetSettingsHash(v string) {
+	o.SettingsHash = v
+}
+
+// GetDNSZone returns value of DNSZone
+func (o *DNS) GetDNSZone() string {
+	return o.DNSZone
+}
+
+// SetDNSZone sets value to DNSZone
+func (o *DNS) SetDNSZone(v string) {
+	o.DNSZone = v
+}
+
+// GetDNSNameServers returns value of DNSNameServers
+func (o *DNS) GetDNSNameServers() []string {
+	return o.DNSNameServers
+}
+
+// SetDNSNameServers sets value to DNSNameServers
+func (o *DNS) SetDNSNameServers(v []string) {
+	o.DNSNameServers = v
+}
+
+/*************************************************
+* DNSRecord
+*************************************************/
+
+// DNSRecord represents API parameter/response structure
+type DNSRecord struct {
+	Name  string
+	Type  types.EDNSRecordType
+	RData string
+	TTL   int
+}
+
+// Validate validates by field tags
+func (o *DNSRecord) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetName returns value of Name
+func (o *DNSRecord) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *DNSRecord) SetName(v string) {
+	o.Name = v
+}
+
+// GetType returns value of Type
+func (o *DNSRecord) GetType() types.EDNSRecordType {
+	return o.Type
+}
+
+// SetType sets value to Type
+func (o *DNSRecord) SetType(v types.EDNSRecordType) {
+	o.Type = v
+}
+
+// GetRData returns value of RData
+func (o *DNSRecord) GetRData() string {
+	return o.RData
+}
+
+// SetRData sets value to RData
+func (o *DNSRecord) SetRData(v string) {
+	o.RData = v
+}
+
+// GetTTL returns value of TTL
+func (o *DNSRecord) GetTTL() int {
+	return o.TTL
+}
+
+// SetTTL sets value to TTL
+func (o *DNSRecord) SetTTL(v int) {
+	o.TTL = v
+}
+
+/*************************************************
+* DNSCreateRequest
+*************************************************/
+
+// DNSCreateRequest represents API parameter/response structure
+type DNSCreateRequest struct {
+	Class       string       `mapconv:"Provider.Class,default=dns"`
+	Name        string       `mapconv:"Name/Status.Zone" validate:"required"`
+	Records     []*DNSRecord `mapconv:"Settings.DNS.[]ResourceRecordSets,recursive" validate:"min=0,max=1000"`
+	Description string       `validate:"min=0,max=512"`
+	Tags        []string
+	IconID      types.ID `mapconv:"Icon.ID"`
+}
+
+// Validate validates by field tags
+func (o *DNSCreateRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetClass returns value of Class
+func (o *DNSCreateRequest) GetClass() string {
+	return o.Class
+}
+
+// SetClass sets value to Class
+func (o *DNSCreateRequest) SetClass(v string) {
+	o.Class = v
+}
+
+// GetName returns value of Name
+func (o *DNSCreateRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *DNSCreateRequest) SetName(v string) {
+	o.Name = v
+}
+
+// GetRecords returns value of Records
+func (o *DNSCreateRequest) GetRecords() []*DNSRecord {
+	return o.Records
+}
+
+// SetRecords sets value to Records
+func (o *DNSCreateRequest) SetRecords(v []*DNSRecord) {
+	o.Records = v
+}
+
+// GetDescription returns value of Description
+func (o *DNSCreateRequest) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *DNSCreateRequest) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetTags returns value of Tags
+func (o *DNSCreateRequest) GetTags() []string {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *DNSCreateRequest) SetTags(v []string) {
+	o.Tags = v
+}
+
+// GetIconID returns value of IconID
+func (o *DNSCreateRequest) GetIconID() types.ID {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *DNSCreateRequest) SetIconID(v types.ID) {
+	o.IconID = v
+}
+
+/*************************************************
+* DNSUpdateRequest
+*************************************************/
+
+// DNSUpdateRequest represents API parameter/response structure
+type DNSUpdateRequest struct {
+	Records     []*DNSRecord `mapconv:"Settings.DNS.[]ResourceRecordSets,recursive" validate:"min=0,max=1000"`
+	Description string       `validate:"min=0,max=512"`
+	Tags        []string
+	IconID      types.ID `mapconv:"Icon.ID"`
+}
+
+// Validate validates by field tags
+func (o *DNSUpdateRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetRecords returns value of Records
+func (o *DNSUpdateRequest) GetRecords() []*DNSRecord {
+	return o.Records
+}
+
+// SetRecords sets value to Records
+func (o *DNSUpdateRequest) SetRecords(v []*DNSRecord) {
+	o.Records = v
+}
+
+// GetDescription returns value of Description
+func (o *DNSUpdateRequest) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *DNSUpdateRequest) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetTags returns value of Tags
+func (o *DNSUpdateRequest) GetTags() []string {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *DNSUpdateRequest) SetTags(v []string) {
+	o.Tags = v
+}
+
+// GetIconID returns value of IconID
+func (o *DNSUpdateRequest) GetIconID() types.ID {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *DNSUpdateRequest) SetIconID(v types.ID) {
+	o.IconID = v
+}
+
+/*************************************************
 * GSLB
 *************************************************/
 
