@@ -783,6 +783,86 @@ func (f *fieldsDef) GSLBSorryServer() *dsl.FieldDesc {
 	}
 }
 
+func (f *fieldsDef) AutoBackupProviderClass() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "Class",
+		Type: meta.TypeString,
+		Tags: &dsl.FieldTags{
+			MapConv: "Provider.Class,default=autobackup",
+		},
+	}
+}
+
+func (f *fieldsDef) AutoBackupBackupSpanType() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "BackupSpanType",
+		Type: meta.TypeBackupSpanType,
+		Tags: &dsl.FieldTags{
+			MapConv: "Settings.Autobackup.BackupSpanType,default=weekdays",
+		},
+	}
+}
+
+func (f *fieldsDef) AutoBackupBackupSpanWeekDays() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "BackupSpanWeekdays",
+		Type: meta.TypeBackupSpanWeekdays,
+		Tags: &dsl.FieldTags{
+			MapConv: "Settings.Autobackup.BackupSpanWeekdays",
+		},
+	}
+}
+
+func (f *fieldsDef) AutoBackupMaximumNumberOfArchives() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "MaximumNumberOfArchives",
+		Type: meta.TypeInt,
+		Tags: &dsl.FieldTags{
+			MapConv: "Settings.Autobackup.MaximumNumberOfArchives",
+		},
+	}
+}
+
+func (f *fieldsDef) AutoBackupDiskID() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "DiskID",
+		Type: meta.TypeID,
+		Tags: &dsl.FieldTags{
+			MapConv: "Status.DiskId",
+		},
+	}
+}
+
+func (f *fieldsDef) AutoBackupAccountID() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "AccountID",
+		Type: meta.TypeID,
+		Tags: &dsl.FieldTags{
+			MapConv: "Status.AccountId",
+		},
+	}
+}
+
+func (f *fieldsDef) AutoBackupZoneID() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "ZoneID",
+		Type: meta.TypeID,
+		Tags: &dsl.FieldTags{
+			MapConv: "Status.ZoneId",
+		},
+	}
+}
+
+func (f *fieldsDef) AutoBackupZoneName() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "ZoneName",
+		Type: meta.TypeString,
+		Tags: &dsl.FieldTags{
+			MapConv: "Status.ZoneName",
+		},
+	}
+}
+
 func (f *fieldsDef) SettingsHash() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "SettingsHash",

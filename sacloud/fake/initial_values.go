@@ -5,13 +5,22 @@ import (
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
+var (
+	accountID    = types.ID(123456789012)
+	accountName  = "fakeアカウント"
+	accountCode  = "fake"
+	accountClass = "member"
+	memberCode   = "fake-member"
+	memberClass  = "member"
+)
+
 var authStatus = &sacloud.AuthStatus{
-	AccountID:          types.ID(123456789012),
-	AccountName:        "fakeアカウント",
-	AccountCode:        "fake",
-	AccountClass:       "member",
-	MemberCode:         "fake-member",
-	MemberClass:        "member",
+	AccountID:          accountID,
+	AccountName:        accountName,
+	AccountCode:        accountCode,
+	AccountClass:       accountClass,
+	MemberCode:         memberCode,
+	MemberClass:        memberClass,
 	AuthClass:          types.AuthClasses.Account,
 	AuthMethod:         types.AuthMethods.APIKey,
 	IsAPIKey:           true,
