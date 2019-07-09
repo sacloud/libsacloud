@@ -35,6 +35,8 @@ const (
 	ResourceServer = "Server"
 	// ResourceSIM is resource key of fake store
 	ResourceSIM = "SIM"
+	// ResourceSimpleMonitor is resource key of fake store
+	ResourceSimpleMonitor = "SimpleMonitor"
 	// ResourceSwitch is resource key of fake store
 	ResourceSwitch = "Switch"
 	// ResourceVPCRouter is resource key of fake store

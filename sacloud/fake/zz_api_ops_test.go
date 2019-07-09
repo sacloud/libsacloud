@@ -74,6 +74,10 @@ func TestResourceOps(t *testing.T) {
 		t.Fatalf("%s is not sacloud.SIM", op)
 	}
 
+	if op, ok := NewSimpleMonitorOp().(sacloud.SimpleMonitorAPI); !ok {
+		t.Fatalf("%s is not sacloud.SimpleMonitor", op)
+	}
+
 	if op, ok := NewSwitchOp().(sacloud.SwitchAPI); !ok {
 		t.Fatalf("%s is not sacloud.Switch", op)
 	}
