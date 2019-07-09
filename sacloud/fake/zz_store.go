@@ -145,6 +145,29 @@ func (s *store) setDisk(zone string, value *sacloud.Disk) {
 	s.set(ResourceDisk, zone, value)
 }
 
+func (s *store) getDNS(zone string) []*sacloud.DNS {
+	values := s.get(ResourceDNS, zone)
+	var ret []*sacloud.DNS
+	for _, v := range values {
+		if v, ok := v.(*sacloud.DNS); ok {
+			ret = append(ret, v)
+		}
+	}
+	return ret
+}
+
+func (s *store) getDNSByID(zone string, id types.ID) *sacloud.DNS {
+	v := s.getByID(ResourceDNS, zone, id)
+	if v, ok := v.(*sacloud.DNS); ok {
+		return v
+	}
+	return nil
+}
+
+func (s *store) setDNS(zone string, value *sacloud.DNS) {
+	s.set(ResourceDNS, zone, value)
+}
+
 func (s *store) getGSLB(zone string) []*sacloud.GSLB {
 	values := s.get(ResourceGSLB, zone)
 	var ret []*sacloud.GSLB

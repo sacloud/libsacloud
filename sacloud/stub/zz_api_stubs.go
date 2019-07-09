@@ -709,6 +709,93 @@ func (s *DiskStub) Monitor(ctx context.Context, zone string, id types.ID, condit
 }
 
 /*************************************************
+* DNSStub
+*************************************************/
+
+// DNSFindStubResult is expected values of the Find operation
+type DNSFindStubResult struct {
+	Values *sacloud.DNSFindResult
+	Err    error
+}
+
+// DNSCreateStubResult is expected values of the Create operation
+type DNSCreateStubResult struct {
+	DNS *sacloud.DNS
+	Err error
+}
+
+// DNSReadStubResult is expected values of the Read operation
+type DNSReadStubResult struct {
+	DNS *sacloud.DNS
+	Err error
+}
+
+// DNSUpdateStubResult is expected values of the Update operation
+type DNSUpdateStubResult struct {
+	DNS *sacloud.DNS
+	Err error
+}
+
+// DNSDeleteStubResult is expected values of the Delete operation
+type DNSDeleteStubResult struct {
+	Err error
+}
+
+// DNSStub is for trace DNSOp operations
+type DNSStub struct {
+	FindStubResult   *DNSFindStubResult
+	CreateStubResult *DNSCreateStubResult
+	ReadStubResult   *DNSReadStubResult
+	UpdateStubResult *DNSUpdateStubResult
+	DeleteStubResult *DNSDeleteStubResult
+}
+
+// NewDNSStub creates new DNSStub instance
+func NewDNSStub(caller sacloud.APICaller) sacloud.DNSAPI {
+	return &DNSStub{}
+}
+
+// Find is API call with trace log
+func (s *DNSStub) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.DNSFindResult, error) {
+	if s.FindStubResult == nil {
+		log.Fatal("DNSStub.FindStubResult is not set")
+	}
+	return s.FindStubResult.Values, s.FindStubResult.Err
+}
+
+// Create is API call with trace log
+func (s *DNSStub) Create(ctx context.Context, zone string, param *sacloud.DNSCreateRequest) (*sacloud.DNS, error) {
+	if s.CreateStubResult == nil {
+		log.Fatal("DNSStub.CreateStubResult is not set")
+	}
+	return s.CreateStubResult.DNS, s.CreateStubResult.Err
+}
+
+// Read is API call with trace log
+func (s *DNSStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.DNS, error) {
+	if s.ReadStubResult == nil {
+		log.Fatal("DNSStub.ReadStubResult is not set")
+	}
+	return s.ReadStubResult.DNS, s.ReadStubResult.Err
+}
+
+// Update is API call with trace log
+func (s *DNSStub) Update(ctx context.Context, zone string, id types.ID, param *sacloud.DNSUpdateRequest) (*sacloud.DNS, error) {
+	if s.UpdateStubResult == nil {
+		log.Fatal("DNSStub.UpdateStubResult is not set")
+	}
+	return s.UpdateStubResult.DNS, s.UpdateStubResult.Err
+}
+
+// Delete is API call with trace log
+func (s *DNSStub) Delete(ctx context.Context, zone string, id types.ID) error {
+	if s.DeleteStubResult == nil {
+		log.Fatal("DNSStub.DeleteStubResult is not set")
+	}
+	return s.DeleteStubResult.Err
+}
+
+/*************************************************
 * GSLBStub
 *************************************************/
 

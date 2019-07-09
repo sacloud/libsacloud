@@ -99,6 +99,19 @@ type DiskAPI interface {
 }
 
 /*************************************************
+* DNSAPI
+*************************************************/
+
+// DNSAPI is interface for operate DNS resource
+type DNSAPI interface {
+	Find(ctx context.Context, zone string, conditions *FindCondition) (*DNSFindResult, error)
+	Create(ctx context.Context, zone string, param *DNSCreateRequest) (*DNS, error)
+	Read(ctx context.Context, zone string, id types.ID) (*DNS, error)
+	Update(ctx context.Context, zone string, id types.ID, param *DNSUpdateRequest) (*DNS, error)
+	Delete(ctx context.Context, zone string, id types.ID) error
+}
+
+/*************************************************
 * GSLBAPI
 *************************************************/
 
