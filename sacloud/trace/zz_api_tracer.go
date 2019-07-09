@@ -61,6 +61,9 @@ func AddClientFactoryHooks() {
 	sacloud.AddClientFacotyHookFunc("SIM", func(in interface{}) interface{} {
 		return NewSIMTracer(in.(sacloud.SIMAPI))
 	})
+	sacloud.AddClientFacotyHookFunc("SimpleMonitor", func(in interface{}) interface{} {
+		return NewSimpleMonitorTracer(in.(sacloud.SimpleMonitorAPI))
+	})
 	sacloud.AddClientFacotyHookFunc("Switch", func(in interface{}) interface{} {
 		return NewSwitchTracer(in.(sacloud.SwitchAPI))
 	})
@@ -4661,6 +4664,187 @@ func (t *SIMTracer) MonitorSIM(ctx context.Context, zone string, id types.ID, co
 	}
 
 	return resultLinkActivity, err
+}
+
+/*************************************************
+* SimpleMonitorTracer
+*************************************************/
+
+// SimpleMonitorTracer is for trace SimpleMonitorOp operations
+type SimpleMonitorTracer struct {
+	Internal sacloud.SimpleMonitorAPI
+}
+
+// NewSimpleMonitorTracer creates new SimpleMonitorTracer instance
+func NewSimpleMonitorTracer(in sacloud.SimpleMonitorAPI) sacloud.SimpleMonitorAPI {
+	return &SimpleMonitorTracer{
+		Internal: in,
+	}
+}
+
+// Find is API call with trace log
+func (t *SimpleMonitorTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.SimpleMonitorFindResult, error) {
+	log.Println("[TRACE] SimpleMonitorTracer.Find start")
+	targetArguments := struct {
+		Argzone       string                 `json:"zone"`
+		Argconditions *sacloud.FindCondition `json:"conditions"`
+	}{
+		Argzone:       zone,
+		Argconditions: conditions,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] SimpleMonitorTracer.Find end")
+	}()
+
+	result, err := t.Internal.Find(ctx, zone, conditions)
+	targetResults := struct {
+		Result *sacloud.SimpleMonitorFindResult
+		Error  error
+	}{
+		Result: result,
+		Error:  err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return result, err
+}
+
+// Create is API call with trace log
+func (t *SimpleMonitorTracer) Create(ctx context.Context, zone string, param *sacloud.SimpleMonitorCreateRequest) (*sacloud.SimpleMonitor, error) {
+	log.Println("[TRACE] SimpleMonitorTracer.Create start")
+	targetArguments := struct {
+		Argzone  string                              `json:"zone"`
+		Argparam *sacloud.SimpleMonitorCreateRequest `json:"param"`
+	}{
+		Argzone:  zone,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] SimpleMonitorTracer.Create end")
+	}()
+
+	resultSimpleMonitor, err := t.Internal.Create(ctx, zone, param)
+	targetResults := struct {
+		SimpleMonitor *sacloud.SimpleMonitor
+		Error         error
+	}{
+		SimpleMonitor: resultSimpleMonitor,
+		Error:         err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultSimpleMonitor, err
+}
+
+// Read is API call with trace log
+func (t *SimpleMonitorTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.SimpleMonitor, error) {
+	log.Println("[TRACE] SimpleMonitorTracer.Read start")
+	targetArguments := struct {
+		Argzone string   `json:"zone"`
+		Argid   types.ID `json:"id"`
+	}{
+		Argzone: zone,
+		Argid:   id,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] SimpleMonitorTracer.Read end")
+	}()
+
+	resultSimpleMonitor, err := t.Internal.Read(ctx, zone, id)
+	targetResults := struct {
+		SimpleMonitor *sacloud.SimpleMonitor
+		Error         error
+	}{
+		SimpleMonitor: resultSimpleMonitor,
+		Error:         err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultSimpleMonitor, err
+}
+
+// Update is API call with trace log
+func (t *SimpleMonitorTracer) Update(ctx context.Context, zone string, id types.ID, param *sacloud.SimpleMonitorUpdateRequest) (*sacloud.SimpleMonitor, error) {
+	log.Println("[TRACE] SimpleMonitorTracer.Update start")
+	targetArguments := struct {
+		Argzone  string                              `json:"zone"`
+		Argid    types.ID                            `json:"id"`
+		Argparam *sacloud.SimpleMonitorUpdateRequest `json:"param"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] SimpleMonitorTracer.Update end")
+	}()
+
+	resultSimpleMonitor, err := t.Internal.Update(ctx, zone, id, param)
+	targetResults := struct {
+		SimpleMonitor *sacloud.SimpleMonitor
+		Error         error
+	}{
+		SimpleMonitor: resultSimpleMonitor,
+		Error:         err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultSimpleMonitor, err
+}
+
+// Delete is API call with trace log
+func (t *SimpleMonitorTracer) Delete(ctx context.Context, zone string, id types.ID) error {
+	log.Println("[TRACE] SimpleMonitorTracer.Delete start")
+	targetArguments := struct {
+		Argzone string   `json:"zone"`
+		Argid   types.ID `json:"id"`
+	}{
+		Argzone: zone,
+		Argid:   id,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] SimpleMonitorTracer.Delete end")
+	}()
+
+	err := t.Internal.Delete(ctx, zone, id)
+	targetResults := struct {
+		Error error
+	}{
+		Error: err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return err
 }
 
 /*************************************************

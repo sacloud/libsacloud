@@ -925,6 +925,157 @@ func (f *fieldsDef) DNSNameServers() *dsl.FieldDesc {
 	}
 }
 
+func (f *fieldsDef) SimpleMonitorProviderClass() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "Class",
+		Type: meta.TypeString,
+		Tags: &dsl.FieldTags{
+			MapConv: "Provider.Class,default=simplemon",
+		},
+	}
+}
+
+func (f *fieldsDef) SimpleMonitorTarget() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "Target",
+		Type: meta.TypeString,
+		Tags: &dsl.FieldTags{
+			MapConv: "Status.Target",
+		},
+	}
+}
+
+func (f *fieldsDef) SimpleMonitorDelayLoop() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "DelayLoop",
+		Type: meta.TypeInt,
+		Tags: &dsl.FieldTags{
+			Validate: "min=60,max=3600",
+			MapConv:  "Settings.SimpleMonitor.DelayLoop,default=60",
+		},
+	}
+}
+
+func (f *fieldsDef) SimpleMonitorEnabled() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "Enabled",
+		Type: meta.TypeStringFlag,
+		Tags: &dsl.FieldTags{
+			MapConv: "Settings.SimpleMonitor.Enabled",
+		},
+	}
+}
+
+func (f *fieldsDef) SimpleMonitorNotifyEmailEnabled() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "NotifyEmailEnabled",
+		Type: meta.TypeStringFlag,
+		Tags: &dsl.FieldTags{
+			MapConv: "Settings.SimpleMonitor.NotifyEmail.Enabled",
+		},
+	}
+}
+
+func (f *fieldsDef) SimpleMonitorNotifyEmailHTML() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "NotifyEmailHTML",
+		Type: meta.TypeStringFlag,
+		Tags: &dsl.FieldTags{
+			MapConv: "Settings.SimpleMonitor.NotifyEmail.HTML",
+		},
+	}
+}
+
+func (f *fieldsDef) SimpleMonitorNotifySlackEnabled() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "NotifySlackEnabled",
+		Type: meta.TypeStringFlag,
+		Tags: &dsl.FieldTags{
+			MapConv: "Settings.SimpleMonitor.NotifySlack.Enabled",
+		},
+	}
+}
+
+func (f *fieldsDef) SimpleMonitorSlackWebhooksURL() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "SlackWebhooksURL",
+		Type: meta.TypeString,
+		Tags: &dsl.FieldTags{
+			MapConv: "Settings.SimpleMonitor.NotifySlack.IncomingWebhooksURL",
+		},
+	}
+}
+
+func (f *fieldsDef) SimpleMonitorHealthCheck() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "HealthCheck",
+		Type: &dsl.Model{
+			Name: "SimpleMonitorHealthCheck",
+			Fields: []*dsl.FieldDesc{
+				{
+					Name: "Protocol",
+					Type: meta.TypeSimpleMonitorHealthCheckProtocol,
+				},
+				{
+					Name: "Port",
+					Type: meta.TypeStringNumber,
+				},
+				{
+					Name: "Path",
+					Type: meta.TypeString,
+				},
+				{
+					Name: "Status",
+					Type: meta.TypeStringNumber,
+				},
+				{
+					Name: "SNI",
+					Type: meta.TypeStringFlag,
+				},
+				{
+					Name: "Host",
+					Type: meta.TypeString,
+				},
+				{
+					Name: "BasicAuthUsername",
+					Type: meta.TypeString,
+				},
+				{
+					Name: "BasicAuthPassword",
+					Type: meta.TypeString,
+				},
+				{
+					Name: "QName",
+					Type: meta.TypeString,
+				},
+				{
+					Name: "ExpectedData",
+					Type: meta.TypeString,
+				},
+				{
+					Name: "Community",
+					Type: meta.TypeString,
+				},
+				{
+					Name: "SNMPVersion",
+					Type: meta.TypeString,
+				},
+				{
+					Name: "OID",
+					Type: meta.TypeString,
+				},
+				{
+					Name: "RemainingDays",
+					Type: meta.TypeInt,
+				},
+			},
+		},
+		Tags: &dsl.FieldTags{
+			MapConv: "Settings.SimpleMonitor.HealthCheck,recursive",
+		},
+	}
+}
+
 func (f *fieldsDef) SettingsHash() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "SettingsHash",

@@ -2139,6 +2139,93 @@ func (s *SIMStub) MonitorSIM(ctx context.Context, zone string, id types.ID, cond
 }
 
 /*************************************************
+* SimpleMonitorStub
+*************************************************/
+
+// SimpleMonitorFindStubResult is expected values of the Find operation
+type SimpleMonitorFindStubResult struct {
+	Values *sacloud.SimpleMonitorFindResult
+	Err    error
+}
+
+// SimpleMonitorCreateStubResult is expected values of the Create operation
+type SimpleMonitorCreateStubResult struct {
+	SimpleMonitor *sacloud.SimpleMonitor
+	Err           error
+}
+
+// SimpleMonitorReadStubResult is expected values of the Read operation
+type SimpleMonitorReadStubResult struct {
+	SimpleMonitor *sacloud.SimpleMonitor
+	Err           error
+}
+
+// SimpleMonitorUpdateStubResult is expected values of the Update operation
+type SimpleMonitorUpdateStubResult struct {
+	SimpleMonitor *sacloud.SimpleMonitor
+	Err           error
+}
+
+// SimpleMonitorDeleteStubResult is expected values of the Delete operation
+type SimpleMonitorDeleteStubResult struct {
+	Err error
+}
+
+// SimpleMonitorStub is for trace SimpleMonitorOp operations
+type SimpleMonitorStub struct {
+	FindStubResult   *SimpleMonitorFindStubResult
+	CreateStubResult *SimpleMonitorCreateStubResult
+	ReadStubResult   *SimpleMonitorReadStubResult
+	UpdateStubResult *SimpleMonitorUpdateStubResult
+	DeleteStubResult *SimpleMonitorDeleteStubResult
+}
+
+// NewSimpleMonitorStub creates new SimpleMonitorStub instance
+func NewSimpleMonitorStub(caller sacloud.APICaller) sacloud.SimpleMonitorAPI {
+	return &SimpleMonitorStub{}
+}
+
+// Find is API call with trace log
+func (s *SimpleMonitorStub) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.SimpleMonitorFindResult, error) {
+	if s.FindStubResult == nil {
+		log.Fatal("SimpleMonitorStub.FindStubResult is not set")
+	}
+	return s.FindStubResult.Values, s.FindStubResult.Err
+}
+
+// Create is API call with trace log
+func (s *SimpleMonitorStub) Create(ctx context.Context, zone string, param *sacloud.SimpleMonitorCreateRequest) (*sacloud.SimpleMonitor, error) {
+	if s.CreateStubResult == nil {
+		log.Fatal("SimpleMonitorStub.CreateStubResult is not set")
+	}
+	return s.CreateStubResult.SimpleMonitor, s.CreateStubResult.Err
+}
+
+// Read is API call with trace log
+func (s *SimpleMonitorStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.SimpleMonitor, error) {
+	if s.ReadStubResult == nil {
+		log.Fatal("SimpleMonitorStub.ReadStubResult is not set")
+	}
+	return s.ReadStubResult.SimpleMonitor, s.ReadStubResult.Err
+}
+
+// Update is API call with trace log
+func (s *SimpleMonitorStub) Update(ctx context.Context, zone string, id types.ID, param *sacloud.SimpleMonitorUpdateRequest) (*sacloud.SimpleMonitor, error) {
+	if s.UpdateStubResult == nil {
+		log.Fatal("SimpleMonitorStub.UpdateStubResult is not set")
+	}
+	return s.UpdateStubResult.SimpleMonitor, s.UpdateStubResult.Err
+}
+
+// Delete is API call with trace log
+func (s *SimpleMonitorStub) Delete(ctx context.Context, zone string, id types.ID) error {
+	if s.DeleteStubResult == nil {
+		log.Fatal("SimpleMonitorStub.DeleteStubResult is not set")
+	}
+	return s.DeleteStubResult.Err
+}
+
+/*************************************************
 * SwitchStub
 *************************************************/
 
