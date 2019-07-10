@@ -157,7 +157,9 @@ func TestSimpleMonitorOpStatusAndHealth(t *testing.T) {
 	defer func() {
 		client.Delete(ctx, sacloud.APIDefaultZone, sm.ID) // nolint - ignore error
 	}()
-	time.Sleep(2 * time.Minute) // Statusの戻り値を確認するために数分待つ
+	if isAccTest() {
+		time.Sleep(2 * time.Minute) // Statusの戻り値を確認するために数分待つ
+	}
 
 	// status
 	status, err := client.HealthStatus(ctx, sacloud.APIDefaultZone, sm.ID)
