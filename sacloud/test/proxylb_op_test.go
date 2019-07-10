@@ -2,11 +2,16 @@ package test
 
 import (
 	"context"
+	"fmt"
 	"os"
+	"strings"
 	"testing"
+	"time"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestProxyLBOpCRUD(t *testing.T) {
@@ -55,6 +60,9 @@ var (
 	createProxyLBExpected *sacloud.ProxyLB
 	updateProxyLBParam    *sacloud.ProxyLBUpdateRequest
 	updateProxyLBExpected *sacloud.ProxyLB
+
+	createProxyLBForACMEParam *sacloud.ProxyLBCreateRequest
+	updateProxyLBForACMEParam *sacloud.ProxyLBUpdateRequest
 )
 
 func initProxyLBVariables() {
@@ -191,6 +199,81 @@ func initProxyLBVariables() {
 		StickySession:  updateProxyLBParam.StickySession,
 		UseVIPFailover: createProxyLBParam.UseVIPFailover,
 	}
+
+	createProxyLBForACMEParam = &sacloud.ProxyLBCreateRequest{
+		Name: "libsacloud-proxyLB-acme",
+		Plan: types.ProxyLBPlans.CPS100,
+		HealthCheck: &sacloud.ProxyLBHealthCheck{
+			Protocol:  types.ProxyLBProtocols.HTTP,
+			Path:      "/",
+			DelayLoop: 20,
+		},
+		BindPorts: []*sacloud.ProxyLBBindPort{
+			{
+				ProxyMode:       types.ProxyLBProxyModes.HTTP,
+				Port:            80,
+				RedirectToHTTPS: true,
+			},
+			{
+				ProxyMode:    types.ProxyLBProxyModes.HTTPS,
+				Port:         443,
+				SupportHTTP2: true,
+			},
+		},
+		Servers: []*sacloud.ProxyLBServer{
+			{
+				IPAddress: os.Getenv("SAKURACLOUD_PROXYLB_SERVER0"),
+				Port:      80,
+				Enabled:   true,
+			},
+			{
+				IPAddress: os.Getenv("SAKURACLOUD_PROXYLB_SERVER1"),
+				Port:      80,
+				Enabled:   true,
+			},
+		},
+		LetsEncrypt: &sacloud.ProxyLBACMESetting{
+			Enabled: false,
+		},
+		UseVIPFailover: true,
+	}
+
+	updateProxyLBForACMEParam = &sacloud.ProxyLBUpdateRequest{
+		Name: "libsacloud-proxyLB-acme",
+		HealthCheck: &sacloud.ProxyLBHealthCheck{
+			Protocol:  types.ProxyLBProtocols.HTTP,
+			Path:      "/",
+			DelayLoop: 20,
+		},
+		BindPorts: []*sacloud.ProxyLBBindPort{
+			{
+				ProxyMode:       types.ProxyLBProxyModes.HTTP,
+				Port:            80,
+				RedirectToHTTPS: true,
+			},
+			{
+				ProxyMode:    types.ProxyLBProxyModes.HTTPS,
+				Port:         443,
+				SupportHTTP2: true,
+			},
+		},
+		Servers: []*sacloud.ProxyLBServer{
+			{
+				IPAddress: os.Getenv("SAKURACLOUD_PROXYLB_SERVER0"),
+				Port:      80,
+				Enabled:   true,
+			},
+			{
+				IPAddress: os.Getenv("SAKURACLOUD_PROXYLB_SERVER1"),
+				Port:      80,
+				Enabled:   true,
+			},
+		},
+		LetsEncrypt: &sacloud.ProxyLBACMESetting{
+			CommonName: os.Getenv("SAKURACLOUD_PROXYLB_COMMON_NAME"),
+			Enabled:    true,
+		},
+	}
 }
 
 func testProxyLBCreate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
@@ -211,4 +294,119 @@ func testProxyLBUpdate(testContext *CRUDTestContext, caller sacloud.APICaller) (
 func testProxyLBDelete(testContext *CRUDTestContext, caller sacloud.APICaller) error {
 	client := sacloud.NewProxyLBOp(caller)
 	return client.Delete(context.Background(), sacloud.APIDefaultZone, testContext.ID)
+}
+
+func TestProxyLBOpLetsEncryptAndHealth(t *testing.T) {
+	if !isAccTest() {
+		t.Skip("TestProxyLBOpLetsEncrypt only exec at Acceptance Test")
+	}
+
+	t.Parallel()
+	initProxyLBVariables()
+	PreCheckEnvsFunc(
+		"SAKURACLOUD_PROXYLB_SERVER0",
+		"SAKURACLOUD_PROXYLB_SERVER1",
+		"SAKURACLOUD_PROXYLB_COMMON_NAME",
+		"SAKURACLOUD_PROXYLB_ZONE_NAME",
+	)(t)
+
+	// prepare variables
+	commonName := os.Getenv("SAKURACLOUD_PROXYLB_COMMON_NAME")
+	zoneName := os.Getenv("SAKURACLOUD_PROXYLB_ZONE_NAME")
+	if !strings.HasSuffix(commonName, zoneName) {
+		t.Fatal("$SAKURACLOUD_PROXYLB_COMMON_NAME does not have suffix $SAKURACLOUD_PROXYLB_ZONE_NAME")
+	}
+	recordName := strings.Replace(commonName, "."+zoneName, "", -1)
+
+	ctx := context.Background()
+	proxyLBOp := sacloud.NewProxyLBOp(singletonAPICaller())
+
+	// create proxyLB
+	proxyLB, err := proxyLBOp.Create(ctx, sacloud.APIDefaultZone, createProxyLBForACMEParam)
+	require.NoError(t, err)
+	defer func() {
+		proxyLBOp.Delete(ctx, sacloud.APIDefaultZone, proxyLB.ID) // nolint - ignore error
+	}()
+
+	// read DNS
+	dns, err := lookupDNSByName(singletonAPICaller(), os.Getenv("SAKURACLOUD_PROXYLB_ZONE_NAME"))
+	if !assert.NoError(t, err) {
+		return
+	}
+
+	dns.Records = append(dns.Records, &sacloud.DNSRecord{
+		Name:  recordName,
+		Type:  types.DNSRecordTypes.CNAME,
+		RData: fmt.Sprintf("%s.", proxyLB.FQDN),
+		TTL:   10,
+	})
+
+	// update DNS record
+	dnsOp := sacloud.NewDNSOp(singletonAPICaller())
+	dns, err = dnsOp.Update(ctx, sacloud.APIDefaultZone, dns.ID, &sacloud.DNSUpdateRequest{
+		Records: dns.Records,
+	})
+	if !assert.NoError(t, err) {
+		return
+	}
+	defer func() {
+		var records []*sacloud.DNSRecord
+		for i, r := range dns.Records {
+			if r.Name != recordName {
+				records = append(records, dns.Records[i])
+			}
+		}
+		dnsOp.Update(ctx, sacloud.APIDefaultZone, dns.ID, &sacloud.DNSUpdateRequest{
+			Records: records,
+		}) // nolint - ignore error
+	}()
+
+	time.Sleep(time.Minute)
+
+	// update proxyLB
+	retryMax := 10
+	done := false
+
+	for retryMax >= 0 {
+		proxyLB, err = proxyLBOp.Update(ctx, sacloud.APIDefaultZone, proxyLB.ID, updateProxyLBForACMEParam)
+		if err != nil {
+			t.Log("Update Let's encrypt setting is failed. retry after 10 sec.")
+			time.Sleep(10 * time.Second)
+			retryMax--
+			continue
+		}
+		done = true
+		break
+	}
+	if !done {
+		t.Error("Update Let's encrypt settings was failed: given up after 10 retries")
+		return
+	}
+
+	// renew certs
+	err = proxyLBOp.RenewLetsEncryptCert(ctx, sacloud.APIDefaultZone, proxyLB.ID)
+	if !assert.NoError(t, err) {
+		return
+	}
+
+	time.Sleep(time.Minute)
+
+	// get cert
+	certs, err := proxyLBOp.GetCertificates(ctx, sacloud.APIDefaultZone, proxyLB.ID)
+
+	if !assert.NoError(t, err) {
+		return
+	}
+	assert.NotEmpty(t, certs.ServerCertificate)
+	assert.NotEmpty(t, certs.IntermediateCertificate)
+	assert.NotEmpty(t, certs.PrivateKey)
+	assert.NotEmpty(t, certs.CertificateCommonName)
+	assert.NotEmpty(t, certs.CertificateEndDate)
+
+	// check health status
+	status, err := proxyLBOp.HealthStatus(ctx, sacloud.APIDefaultZone, proxyLB.ID)
+	if !assert.NoError(t, err) {
+		return
+	}
+	assert.NotEmpty(t, status.CurrentVIP)
 }

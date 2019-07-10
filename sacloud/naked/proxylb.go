@@ -52,8 +52,8 @@ type ProxyLBHealthCheck struct {
 
 // ProxyLBSorryServer ソーリーサーバ設定
 type ProxyLBSorryServer struct {
-	IPAddress string `json:",omitempty" yaml:"ip_address,omitempty" structs:",omitempty"`
-	Port      int    `json:",omitempty" yaml:"port,omitempty" structs:",omitempty"`
+	IPAddress string `yaml:"ip_address"`
+	Port      *int   `yaml:"port"`
 }
 
 // ProxyLBBindPorts プロキシ方式
