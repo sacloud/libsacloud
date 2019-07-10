@@ -3,6 +3,7 @@ package define
 import (
 	"github.com/sacloud/libsacloud/v2/internal/dsl"
 	"github.com/sacloud/libsacloud/v2/internal/dsl/meta"
+	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
 type fieldsDef struct{}
@@ -1072,6 +1073,231 @@ func (f *fieldsDef) SimpleMonitorHealthCheck() *dsl.FieldDesc {
 		},
 		Tags: &dsl.FieldTags{
 			MapConv: "Settings.SimpleMonitor.HealthCheck,recursive",
+		},
+	}
+}
+
+func (f *fieldsDef) ProxyLBPlan() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "Plan",
+		Type: meta.Static(types.EProxyLBPlan(0)),
+		Tags: &dsl.FieldTags{
+			MapConv: "ServiceClass",
+		},
+	}
+}
+
+func (f *fieldsDef) ProxyLBProviderClass() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "Class",
+		Type: meta.TypeString,
+		Tags: &dsl.FieldTags{
+			MapConv: "Provider.Class,default=proxylb",
+		},
+	}
+}
+
+func (f *fieldsDef) ProxyLBUseVIPFailover() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "UseVIPFailover",
+		Type: meta.TypeFlag,
+		Tags: &dsl.FieldTags{
+			MapConv: "Status.UseVIPFailover",
+		},
+	}
+}
+
+func (f *fieldsDef) ProxyLBRegion() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "Region",
+		Type: meta.TypeString,
+		Tags: &dsl.FieldTags{
+			MapConv: "Status.Region",
+		},
+	}
+}
+
+func (f *fieldsDef) ProxyLBProxyNetworks() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "ProxyNetworks",
+		Type: meta.TypeStringSlice,
+		Tags: &dsl.FieldTags{
+			MapConv: "Status.ProxyNetworks",
+		},
+	}
+}
+
+func (f *fieldsDef) ProxyLBFQDN() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "FQDN",
+		Type: meta.TypeString,
+		Tags: &dsl.FieldTags{
+			MapConv: "Status.FQDN",
+		},
+	}
+}
+
+func (f *fieldsDef) ProxyLBHealthCheck() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "HealthCheck",
+		Type: &dsl.Model{
+			Name: "ProxyLBHealthCheck",
+			Fields: []*dsl.FieldDesc{
+				{
+					Name: "Protocol",
+					Type: meta.Static(types.EProxyLBHealthCheckProtocol("")),
+				},
+				{
+					Name: "Path",
+					Type: meta.TypeString,
+				},
+				{
+					Name: "DelayLoop",
+					Type: meta.TypeInt,
+				},
+			},
+		},
+		Tags: &dsl.FieldTags{
+			MapConv: "Settings.ProxyLB.HealthCheck,recursive",
+		},
+	}
+}
+
+func (f *fieldsDef) ProxyLBSorryServer() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "SorryServer",
+		Type: &dsl.Model{
+			Name: "ProxyLBSorryServer",
+			Fields: []*dsl.FieldDesc{
+				{
+					Name: "IPAddress",
+					Type: meta.TypeString,
+					Tags: &dsl.FieldTags{
+						Validate: "ipv4",
+					},
+				},
+				{
+					Name: "Port",
+					Type: meta.TypeInt,
+					Tags: &dsl.FieldTags{
+						Validate: "min=0,max=65535",
+					},
+				},
+			},
+		},
+		Tags: &dsl.FieldTags{
+			MapConv: "Settings.ProxyLB.SorryServer,recursive",
+		},
+	}
+}
+
+func (f *fieldsDef) ProxyLBBindPorts() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "BindPorts",
+		Type: &dsl.Model{
+			Name:    "ProxyLBBindPort",
+			IsArray: true,
+			Fields: []*dsl.FieldDesc{
+				{
+					Name: "ProxyMode",
+					Type: meta.Static(types.EProxyLBProxyMode("")),
+				},
+				{
+					Name: "Port",
+					Type: meta.TypeInt,
+					Tags: &dsl.FieldTags{
+						Validate: "min=0,max=65535",
+					},
+				},
+				{
+					Name: "RedirectToHTTPS",
+					Type: meta.TypeFlag,
+				},
+				{
+					Name: "SupportHTTP2",
+					Type: meta.TypeFlag,
+				},
+			},
+		},
+		Tags: &dsl.FieldTags{
+			MapConv: "Settings.ProxyLB.[]BindPorts,recursive",
+		},
+	}
+}
+
+func (f *fieldsDef) ProxyLBServers() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "Servers",
+		Type: &dsl.Model{
+			Name:    "ProxyLBServer",
+			IsArray: true,
+			Fields: []*dsl.FieldDesc{
+				{
+					Name: "IPAddress",
+					Type: meta.TypeString,
+					Tags: &dsl.FieldTags{
+						Validate: "ipv4",
+					},
+				},
+				{
+					Name: "Port",
+					Type: meta.TypeInt,
+					Tags: &dsl.FieldTags{
+						Validate: "min=0,max=65535",
+					},
+				},
+				{
+					Name: "Enabled",
+					Type: meta.TypeFlag,
+				},
+			},
+		},
+		Tags: &dsl.FieldTags{
+			MapConv: "Settings.ProxyLB.[]Servers,recursive",
+		},
+	}
+}
+
+func (f *fieldsDef) ProxyLBLetsEncrypt() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "LetsEncrypt",
+		Type: &dsl.Model{
+			Name: "ProxyLBACMESetting",
+			Fields: []*dsl.FieldDesc{
+				{
+					Name: "CommonName",
+					Type: meta.TypeString,
+				},
+				{
+					Name: "Enabled",
+					Type: meta.TypeFlag,
+				},
+			},
+		},
+		Tags: &dsl.FieldTags{
+			MapConv: "Settings.ProxyLB.LetsEncrypt,recursive",
+		},
+	}
+}
+
+func (f *fieldsDef) ProxyLBStickySession() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "StickySession",
+		Type: &dsl.Model{
+			Name: "ProxyLBStickySession",
+			Fields: []*dsl.FieldDesc{
+				{
+					Name: "Method",
+					Type: meta.TypeString,
+				},
+				{
+					Name: "Enabled",
+					Type: meta.TypeFlag,
+				},
+			},
+		},
+		Tags: &dsl.FieldTags{
+			MapConv: "Settings.ProxyLB.StickySession,recursive",
 		},
 	}
 }

@@ -6,7 +6,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"testing"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/accessor"
@@ -25,12 +24,16 @@ type TestT interface {
 	FailNow()
 	Fatal(args ...interface{})
 	Skip(args ...interface{})
+	Skipf(format string, args ...interface{})
 	Name() string
 	Parallel()
 }
 
 // CRUDTestCase CRUD操作テストケース
 type CRUDTestCase struct {
+	// PreCheck テスト実行 or スキップを判定するためのFunc
+	PreCheck func(TestT)
+
 	// APICallerのセットアップ用Func、テストケースごとに1回呼ばれる
 	SetupAPICallerFunc func() sacloud.APICaller
 
@@ -120,9 +123,9 @@ func (c *CRUDTestExpect) Prepare(actual interface{}) (interface{}, interface{}) 
 	return toMap(actual), toMap(c.ExpectValue)
 }
 
-// PreCheckEnvs 指定の環境変数が指定されていなかった場合にテストをスキップするためのFuncを返す
-func PreCheckEnvs(envs ...string) func(*testing.T) {
-	return func(t *testing.T) {
+// PreCheckEnvsFunc 指定の環境変数が指定されていなかった場合にテストをスキップするためのFuncを返す
+func PreCheckEnvsFunc(envs ...string) func(TestT) {
+	return func(t TestT) {
 		for _, env := range envs {
 			v := os.Getenv(env)
 			if v == "" {
@@ -143,6 +146,10 @@ func Run(t TestT, testCase *CRUDTestCase) {
 
 	if testCase.Parallel {
 		t.Parallel()
+	}
+
+	if testCase.PreCheck != nil {
+		testCase.PreCheck(t)
 	}
 
 	testContext := &CRUDTestContext{

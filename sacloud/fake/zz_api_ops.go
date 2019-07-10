@@ -50,6 +50,9 @@ func SwitchFactoryFuncToFake() {
 	sacloud.SetClientFactoryFunc(ResourcePacketFilter, func(caller sacloud.APICaller) interface{} {
 		return NewPacketFilterOp()
 	})
+	sacloud.SetClientFactoryFunc(ResourceProxyLB, func(caller sacloud.APICaller) interface{} {
+		return NewProxyLBOp()
+	})
 	sacloud.SetClientFactoryFunc(ResourceServer, func(caller sacloud.APICaller) interface{} {
 		return NewServerOp()
 	})
@@ -291,6 +294,22 @@ type PacketFilterOp struct {
 func NewPacketFilterOp() sacloud.PacketFilterAPI {
 	return &PacketFilterOp{
 		key: ResourcePacketFilter,
+	}
+}
+
+/*************************************************
+* ProxyLBOp
+*************************************************/
+
+// ProxyLBOp is fake implementation of ProxyLBAPI interface
+type ProxyLBOp struct {
+	key string
+}
+
+// NewProxyLBOp creates new ProxyLBOp instance
+func NewProxyLBOp() sacloud.ProxyLBAPI {
+	return &ProxyLBOp{
+		key: ResourceProxyLB,
 	}
 }
 

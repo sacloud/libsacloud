@@ -1,0 +1,205 @@
+package naked
+
+import (
+	"encoding/json"
+	"strings"
+	"time"
+
+	"github.com/sacloud/libsacloud/v2/sacloud/types"
+)
+
+// ProxyLB エンハンスドロードバランサ
+type ProxyLB struct {
+	ID           types.ID            `json:",omitempty" yaml:"id,omitempty" structs:",omitempty"`
+	Name         string              `json:",omitempty" yaml:"name,omitempty" structs:",omitempty"`
+	Description  string              `json:",omitempty" yaml:"description,omitempty" structs:",omitempty"`
+	Tags         []string            `json:"" yaml:"tags"`
+	Icon         *Icon               `json:",omitempty" yaml:"icon,omitempty" structs:",omitempty"`
+	CreatedAt    *time.Time          `json:",omitempty" yaml:"created_at,omitempty" structs:",omitempty"`
+	ModifiedAt   *time.Time          `json:",omitempty" yaml:"modified_at,omitempty" structs:",omitempty"`
+	Availability types.EAvailability `json:",omitempty" yaml:"availability,omitempty" structs:",omitempty"`
+	Provider     *Provider           `json:",omitempty" yaml:"provider,omitempty" structs:",omitempty"`
+	Settings     *ProxyLBSettings    `json:",omitempty" yaml:"settings,omitempty" structs:",omitempty"`
+	SettingsHash string              `json:",omitempty" yaml:"settings_hash,omitempty" structs:",omitempty"`
+	Status       *ProxyLBStatus      `json:",omitempty" yaml:"status,omitempty" structs:",omitempty"`
+
+	// ServiceClass [HACK] プランはServiceClassとして文字列で表す必要がある。 詳細はtypes.EProxyLBPlanのコメント参照
+	ServiceClass types.EProxyLBPlan `json:",omitempty" yaml:"service_class,omitempty" structs:",omitempty"`
+}
+
+// ProxyLBSettings エンハンスドロードバランサ設定
+type ProxyLBSettings struct {
+	ProxyLB *ProxyLBSetting `json:",omitempty" yaml:"proxy_lb,omitempty" structs:",omitempty"`
+}
+
+// ProxyLBSetting エンハンスドロードバランサ設定
+type ProxyLBSetting struct {
+	HealthCheck   ProxyLBHealthCheck   `yaml:"health_check,omitempty"`   // ヘルスチェック
+	SorryServer   ProxyLBSorryServer   `yaml:"sorry_server,omitempty"`   // ソーリーサーバー
+	BindPorts     []*ProxyLBBindPorts  `yaml:"bind_ports,omitempty"`     // プロキシ方式(プロトコル&ポート)
+	Servers       []ProxyLBServer      `yaml:"servers,omitempty"`        // サーバー
+	LetsEncrypt   ProxyLBACMESetting   `yaml:"lets_encrypt,omitempty"`   // Let's encryptでの証明書取得設定
+	StickySession ProxyLBStickySession `yaml:"sticky_session,omitempty"` // StickySession
+}
+
+// ProxyLBHealthCheck ヘルスチェック
+type ProxyLBHealthCheck struct {
+	Protocol  types.EProxyLBHealthCheckProtocol `json:",omitempty" yaml:"protocol,omitempty" structs:",omitempty"`
+	Path      string                            `json:",omitempty" yaml:"path,omitempty" structs:",omitempty"`
+	Host      string                            `json:",omitempty" yaml:"host,omitempty" structs:",omitempty"`
+	DelayLoop int                               `json:",omitempty" yaml:"delay_loop,omitempty" structs:",omitempty"`
+}
+
+// ProxyLBSorryServer ソーリーサーバ設定
+type ProxyLBSorryServer struct {
+	IPAddress string `yaml:"ip_address"`
+	Port      *int   `yaml:"port"`
+}
+
+// ProxyLBBindPorts プロキシ方式
+type ProxyLBBindPorts struct {
+	ProxyMode       types.EProxyLBProxyMode `json:",omitempty" yaml:"proxy_mode,omitempty" structs:",omitempty"` // モード(プロトコル)
+	Port            int                     `json:",omitempty" yaml:"port,omitempty" structs:",omitempty"`       // ポート
+	RedirectToHTTPS bool                    `json:"RedirectToHttps" yaml:"redirect_to_https"`                    // HTTPSへのリダイレクト(モードがhttpの場合のみ)
+	SupportHTTP2    bool                    `json:"SupportHttp2" yaml:"support_http2"`                           // HTTP/2のサポート(モードがhttpsの場合のみ)
+}
+
+// ProxyLBServer ProxyLB配下のサーバー
+type ProxyLBServer struct {
+	IPAddress string `json:",omitempty" yaml:"ip_address,omitempty" structs:",omitempty"` // IPアドレス
+	Port      int    `json:",omitempty" yaml:"port,omitempty" structs:",omitempty"`       // ポート
+	Enabled   bool   // 有効/無効
+}
+
+// ProxyLBACMESetting Let's Encryptでの証明書取得設定
+type ProxyLBACMESetting struct {
+	Enabled    bool
+	CommonName string `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
+}
+
+// ProxyLBStickySession セッション維持(Sticky session)設定
+type ProxyLBStickySession struct {
+	Enabled bool
+	Method  string `json:",omitempty" yaml:"method,omitempty" structs:",omitempty"`
+}
+
+// ProxyLBStatus ステータス
+type ProxyLBStatus struct {
+	UseVIPFailover bool     `yaml:"use_vip_failover"`
+	Region         string   `json:",omitempty" yaml:"region,omitempty" structs:",omitempty"`
+	ProxyNetworks  []string `json:",omitempty" yaml:"proxy_networks,omitempty" structs:",omitempty"`
+	FQDN           string   `json:",omitempty" yaml:"fqdn,omitempty" structs:",omitempty"`
+}
+
+// ProxyLBAdditionalCerts additional certificates
+type ProxyLBAdditionalCerts []*ProxyLBCertificate
+
+// ProxyLBCertificates ProxyLBのSSL証明書
+type ProxyLBCertificates struct {
+	ServerCertificate       string                 `yaml:"server_certificate"`                                                       // サーバ証明書
+	IntermediateCertificate string                 `yaml:"intermediate_certificate"`                                                 // 中間証明書
+	PrivateKey              string                 `yaml:"private_key"`                                                              // 秘密鍵
+	CertificateEndDate      *time.Time             `json:",omitempty" yaml:"certificate_end_date,omitempty" structs:",omitempty"`    // 有効期限
+	CertificateCommonName   string                 `json:",omitempty" yaml:"certificate_common_name,omitempty" structs:",omitempty"` // CommonName
+	AdditionalCerts         ProxyLBAdditionalCerts `json:",omitempty" yaml:"additional_certs,omitempty" structs:",omitempty"`
+}
+
+// UnmarshalJSON UnmarshalJSON(AdditionalCertsが空の場合に空文字を返す問題への対応)
+func (p *ProxyLBAdditionalCerts) UnmarshalJSON(data []byte) error {
+	targetData := strings.Replace(strings.Replace(string(data), " ", "", -1), "\n", "", -1)
+	if targetData == `` {
+		return nil
+	}
+
+	var certs []*ProxyLBCertificate
+	if err := json.Unmarshal(data, &certs); err != nil {
+		return err
+	}
+
+	*p = certs
+	return nil
+}
+
+// UnmarshalJSON UnmarshalJSON(CertificateEndDateのtime.TimeへのUnmarshal対応)
+func (p *ProxyLBCertificates) UnmarshalJSON(data []byte) error {
+	var tmp map[string]interface{}
+	if err := json.Unmarshal(data, &tmp); err != nil {
+		return err
+	}
+
+	p.ServerCertificate = tmp["ServerCertificate"].(string)
+	p.IntermediateCertificate = tmp["IntermediateCertificate"].(string)
+	p.PrivateKey = tmp["PrivateKey"].(string)
+	p.CertificateCommonName = tmp["CertificateCommonName"].(string)
+	endDate := tmp["CertificateEndDate"].(string)
+	if endDate != "" {
+		date, err := time.Parse("Jan _2 15:04:05 2006 MST", endDate)
+		if err != nil {
+			return err
+		}
+		p.CertificateEndDate = &date
+	}
+
+	if _, ok := tmp["AdditionalCerts"].(string); !ok {
+		rawCerts, err := json.Marshal(tmp["AdditionalCerts"])
+		if err != nil {
+			return err
+		}
+		var additionalCerts ProxyLBAdditionalCerts
+		if err := json.Unmarshal(rawCerts, &additionalCerts); err != nil {
+			return err
+		}
+		p.AdditionalCerts = additionalCerts
+	}
+
+	return nil
+}
+
+// ProxyLBCertificate ProxyLBのSSL証明書詳細
+type ProxyLBCertificate struct {
+	ServerCertificate       string     `yaml:"server_certificate"`                                                       // サーバ証明書
+	IntermediateCertificate string     `yaml:"intermediate_certificate"`                                                 // 中間証明書
+	PrivateKey              string     `yaml:"private_key"`                                                              // 秘密鍵
+	CertificateEndDate      *time.Time `json:",omitempty" yaml:"certificate_end_date,omitempty" structs:",omitempty"`    // 有効期限
+	CertificateCommonName   string     `json:",omitempty" yaml:"certificate_common_name,omitempty" structs:",omitempty"` // CommonName
+}
+
+// UnmarshalJSON UnmarshalJSON(CertificateEndDateのtime.TimeへのUnmarshal対応)
+func (p *ProxyLBCertificate) UnmarshalJSON(data []byte) error {
+	var tmp map[string]interface{}
+	if err := json.Unmarshal(data, &tmp); err != nil {
+		return err
+	}
+
+	p.ServerCertificate = tmp["ServerCertificate"].(string)
+	p.IntermediateCertificate = tmp["IntermediateCertificate"].(string)
+	p.PrivateKey = tmp["PrivateKey"].(string)
+	p.CertificateCommonName = tmp["CertificateCommonName"].(string)
+	endDate := tmp["CertificateEndDate"].(string)
+	if endDate != "" {
+		date, err := time.Parse("Jan _2 15:04:05 2006 MST", endDate)
+		if err != nil {
+			return err
+		}
+		p.CertificateEndDate = &date
+	}
+
+	return nil
+}
+
+// ProxyLBHealth ProxyLBのヘルスチェック戻り値
+type ProxyLBHealth struct {
+	ActiveConn int                    `json:",omitempty" yaml:"active_conn,omitempty" structs:",omitempty"` // アクティブなコネクション数
+	CPS        int                    `json:",omitempty" yaml:"cps,omitempty" structs:",omitempty"`         // 秒あたりコネクション数
+	Servers    []*ProxyLBHealthServer `json:",omitempty" yaml:"servers,omitempty" structs:",omitempty"`     // 実サーバのステータス
+	CurrentVIP string                 `json:",omitempty" yaml:"current_vip,omitempty" structs:",omitempty"` // 現在のVIP
+}
+
+// ProxyLBHealthServer ProxyLBの実サーバのステータス
+type ProxyLBHealthServer struct {
+	ActiveConn int                         `json:",omitempty" yaml:"active_conn,omitempty" structs:",omitempty"` // アクティブなコネクション数
+	Status     types.EServerInstanceStatus `json:",omitempty" yaml:"status,omitempty" structs:",omitempty"`      // ステータス(UP or DOWN)
+	IPAddress  string                      `json:",omitempty" yaml:"ip_address,omitempty" structs:",omitempty"`  // IPアドレス
+	Port       string                      `json:",omitempty" yaml:"port,omitempty" structs:",omitempty"`        // ポート
+	CPS        int                         `json:",omitempty" yaml:"cps,omitempty" structs:",omitempty"`         // 秒あたりコネクション数
+}
