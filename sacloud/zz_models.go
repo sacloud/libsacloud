@@ -6893,6 +6893,1088 @@ func (o *PacketFilterUpdateRequest) SetExpression(v []*PacketFilterExpression) {
 }
 
 /*************************************************
+* ProxyLB
+*************************************************/
+
+// ProxyLB represents API parameter/response structure
+type ProxyLB struct {
+	ID             types.ID
+	Name           string `validate:"required"`
+	Description    string `validate:"min=0,max=512"`
+	Tags           []string
+	Availability   types.EAvailability
+	IconID         types.ID `mapconv:"Icon.ID"`
+	CreatedAt      time.Time
+	ModifiedAt     time.Time
+	Class          string                `mapconv:"Provider.Class,default=proxylb"`
+	Plan           types.EProxyLBPlan    `mapconv:"ServiceClass"`
+	HealthCheck    *ProxyLBHealthCheck   `mapconv:"Settings.ProxyLB.HealthCheck,recursive"`
+	SorryServer    *ProxyLBSorryServer   `mapconv:"Settings.ProxyLB.SorryServer,recursive"`
+	BindPorts      []*ProxyLBBindPort    `mapconv:"Settings.ProxyLB.[]BindPorts,recursive"`
+	Servers        []*ProxyLBServer      `mapconv:"Settings.ProxyLB.[]Servers,recursive"`
+	LetsEncrypt    *ProxyLBACMESetting   `mapconv:"Settings.ProxyLB.LetsEncrypt,recursive"`
+	StickySession  *ProxyLBStickySession `mapconv:"Settings.ProxyLB.StickySession,recursive"`
+	SettingsHash   string
+	UseVIPFailover bool     `mapconv:"Status.UseVIPFailover"`
+	Region         string   `mapconv:"Status.Region"`
+	ProxyNetworks  []string `mapconv:"Status.ProxyNetworks"`
+	FQDN           string   `mapconv:"Status.FQDN"`
+}
+
+// Validate validates by field tags
+func (o *ProxyLB) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetID returns value of ID
+func (o *ProxyLB) GetID() types.ID {
+	return o.ID
+}
+
+// SetID sets value to ID
+func (o *ProxyLB) SetID(v types.ID) {
+	o.ID = v
+}
+
+// GetStringID gets value to StringID
+func (o *ProxyLB) GetStringID() string {
+	return accessor.GetStringID(o)
+}
+
+// SetStringID sets value to StringID
+func (o *ProxyLB) SetStringID(v string) {
+	accessor.SetStringID(o, v)
+}
+
+// GetInt64ID gets value to Int64ID
+func (o *ProxyLB) GetInt64ID() int64 {
+	return accessor.GetInt64ID(o)
+}
+
+// SetInt64ID sets value to Int64ID
+func (o *ProxyLB) SetInt64ID(v int64) {
+	accessor.SetInt64ID(o, v)
+}
+
+// GetName returns value of Name
+func (o *ProxyLB) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *ProxyLB) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *ProxyLB) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *ProxyLB) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetTags returns value of Tags
+func (o *ProxyLB) GetTags() []string {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *ProxyLB) SetTags(v []string) {
+	o.Tags = v
+}
+
+// GetAvailability returns value of Availability
+func (o *ProxyLB) GetAvailability() types.EAvailability {
+	return o.Availability
+}
+
+// SetAvailability sets value to Availability
+func (o *ProxyLB) SetAvailability(v types.EAvailability) {
+	o.Availability = v
+}
+
+// GetIconID returns value of IconID
+func (o *ProxyLB) GetIconID() types.ID {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *ProxyLB) SetIconID(v types.ID) {
+	o.IconID = v
+}
+
+// GetCreatedAt returns value of CreatedAt
+func (o *ProxyLB) GetCreatedAt() time.Time {
+	return o.CreatedAt
+}
+
+// SetCreatedAt sets value to CreatedAt
+func (o *ProxyLB) SetCreatedAt(v time.Time) {
+	o.CreatedAt = v
+}
+
+// GetModifiedAt returns value of ModifiedAt
+func (o *ProxyLB) GetModifiedAt() time.Time {
+	return o.ModifiedAt
+}
+
+// SetModifiedAt sets value to ModifiedAt
+func (o *ProxyLB) SetModifiedAt(v time.Time) {
+	o.ModifiedAt = v
+}
+
+// GetClass returns value of Class
+func (o *ProxyLB) GetClass() string {
+	return o.Class
+}
+
+// SetClass sets value to Class
+func (o *ProxyLB) SetClass(v string) {
+	o.Class = v
+}
+
+// GetPlan returns value of Plan
+func (o *ProxyLB) GetPlan() types.EProxyLBPlan {
+	return o.Plan
+}
+
+// SetPlan sets value to Plan
+func (o *ProxyLB) SetPlan(v types.EProxyLBPlan) {
+	o.Plan = v
+}
+
+// GetHealthCheck returns value of HealthCheck
+func (o *ProxyLB) GetHealthCheck() *ProxyLBHealthCheck {
+	return o.HealthCheck
+}
+
+// SetHealthCheck sets value to HealthCheck
+func (o *ProxyLB) SetHealthCheck(v *ProxyLBHealthCheck) {
+	o.HealthCheck = v
+}
+
+// GetSorryServer returns value of SorryServer
+func (o *ProxyLB) GetSorryServer() *ProxyLBSorryServer {
+	return o.SorryServer
+}
+
+// SetSorryServer sets value to SorryServer
+func (o *ProxyLB) SetSorryServer(v *ProxyLBSorryServer) {
+	o.SorryServer = v
+}
+
+// GetBindPorts returns value of BindPorts
+func (o *ProxyLB) GetBindPorts() []*ProxyLBBindPort {
+	return o.BindPorts
+}
+
+// SetBindPorts sets value to BindPorts
+func (o *ProxyLB) SetBindPorts(v []*ProxyLBBindPort) {
+	o.BindPorts = v
+}
+
+// GetServers returns value of Servers
+func (o *ProxyLB) GetServers() []*ProxyLBServer {
+	return o.Servers
+}
+
+// SetServers sets value to Servers
+func (o *ProxyLB) SetServers(v []*ProxyLBServer) {
+	o.Servers = v
+}
+
+// GetLetsEncrypt returns value of LetsEncrypt
+func (o *ProxyLB) GetLetsEncrypt() *ProxyLBACMESetting {
+	return o.LetsEncrypt
+}
+
+// SetLetsEncrypt sets value to LetsEncrypt
+func (o *ProxyLB) SetLetsEncrypt(v *ProxyLBACMESetting) {
+	o.LetsEncrypt = v
+}
+
+// GetStickySession returns value of StickySession
+func (o *ProxyLB) GetStickySession() *ProxyLBStickySession {
+	return o.StickySession
+}
+
+// SetStickySession sets value to StickySession
+func (o *ProxyLB) SetStickySession(v *ProxyLBStickySession) {
+	o.StickySession = v
+}
+
+// GetSettingsHash returns value of SettingsHash
+func (o *ProxyLB) GetSettingsHash() string {
+	return o.SettingsHash
+}
+
+// SetSettingsHash sets value to SettingsHash
+func (o *ProxyLB) SetSettingsHash(v string) {
+	o.SettingsHash = v
+}
+
+// GetUseVIPFailover returns value of UseVIPFailover
+func (o *ProxyLB) GetUseVIPFailover() bool {
+	return o.UseVIPFailover
+}
+
+// SetUseVIPFailover sets value to UseVIPFailover
+func (o *ProxyLB) SetUseVIPFailover(v bool) {
+	o.UseVIPFailover = v
+}
+
+// GetRegion returns value of Region
+func (o *ProxyLB) GetRegion() string {
+	return o.Region
+}
+
+// SetRegion sets value to Region
+func (o *ProxyLB) SetRegion(v string) {
+	o.Region = v
+}
+
+// GetProxyNetworks returns value of ProxyNetworks
+func (o *ProxyLB) GetProxyNetworks() []string {
+	return o.ProxyNetworks
+}
+
+// SetProxyNetworks sets value to ProxyNetworks
+func (o *ProxyLB) SetProxyNetworks(v []string) {
+	o.ProxyNetworks = v
+}
+
+// GetFQDN returns value of FQDN
+func (o *ProxyLB) GetFQDN() string {
+	return o.FQDN
+}
+
+// SetFQDN sets value to FQDN
+func (o *ProxyLB) SetFQDN(v string) {
+	o.FQDN = v
+}
+
+/*************************************************
+* ProxyLBHealthCheck
+*************************************************/
+
+// ProxyLBHealthCheck represents API parameter/response structure
+type ProxyLBHealthCheck struct {
+	Protocol  types.EProxyLBHealthCheckProtocol
+	Path      string
+	DelayLoop int
+}
+
+// Validate validates by field tags
+func (o *ProxyLBHealthCheck) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetProtocol returns value of Protocol
+func (o *ProxyLBHealthCheck) GetProtocol() types.EProxyLBHealthCheckProtocol {
+	return o.Protocol
+}
+
+// SetProtocol sets value to Protocol
+func (o *ProxyLBHealthCheck) SetProtocol(v types.EProxyLBHealthCheckProtocol) {
+	o.Protocol = v
+}
+
+// GetPath returns value of Path
+func (o *ProxyLBHealthCheck) GetPath() string {
+	return o.Path
+}
+
+// SetPath sets value to Path
+func (o *ProxyLBHealthCheck) SetPath(v string) {
+	o.Path = v
+}
+
+// GetDelayLoop returns value of DelayLoop
+func (o *ProxyLBHealthCheck) GetDelayLoop() int {
+	return o.DelayLoop
+}
+
+// SetDelayLoop sets value to DelayLoop
+func (o *ProxyLBHealthCheck) SetDelayLoop(v int) {
+	o.DelayLoop = v
+}
+
+/*************************************************
+* ProxyLBSorryServer
+*************************************************/
+
+// ProxyLBSorryServer represents API parameter/response structure
+type ProxyLBSorryServer struct {
+	IPAddress string             `validate:"ipv4"`
+	Port      types.StringNumber `validate:"min=0,max=65535"`
+}
+
+// Validate validates by field tags
+func (o *ProxyLBSorryServer) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetIPAddress returns value of IPAddress
+func (o *ProxyLBSorryServer) GetIPAddress() string {
+	return o.IPAddress
+}
+
+// SetIPAddress sets value to IPAddress
+func (o *ProxyLBSorryServer) SetIPAddress(v string) {
+	o.IPAddress = v
+}
+
+// GetPort returns value of Port
+func (o *ProxyLBSorryServer) GetPort() types.StringNumber {
+	return o.Port
+}
+
+// SetPort sets value to Port
+func (o *ProxyLBSorryServer) SetPort(v types.StringNumber) {
+	o.Port = v
+}
+
+/*************************************************
+* ProxyLBBindPort
+*************************************************/
+
+// ProxyLBBindPort represents API parameter/response structure
+type ProxyLBBindPort struct {
+	ProxyMode       types.EProxyLBProxyMode
+	Port            int `validate:"min=0,max=65535"`
+	RedirectToHTTPS bool
+	SupportHTTP2    bool
+}
+
+// Validate validates by field tags
+func (o *ProxyLBBindPort) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetProxyMode returns value of ProxyMode
+func (o *ProxyLBBindPort) GetProxyMode() types.EProxyLBProxyMode {
+	return o.ProxyMode
+}
+
+// SetProxyMode sets value to ProxyMode
+func (o *ProxyLBBindPort) SetProxyMode(v types.EProxyLBProxyMode) {
+	o.ProxyMode = v
+}
+
+// GetPort returns value of Port
+func (o *ProxyLBBindPort) GetPort() int {
+	return o.Port
+}
+
+// SetPort sets value to Port
+func (o *ProxyLBBindPort) SetPort(v int) {
+	o.Port = v
+}
+
+// GetRedirectToHTTPS returns value of RedirectToHTTPS
+func (o *ProxyLBBindPort) GetRedirectToHTTPS() bool {
+	return o.RedirectToHTTPS
+}
+
+// SetRedirectToHTTPS sets value to RedirectToHTTPS
+func (o *ProxyLBBindPort) SetRedirectToHTTPS(v bool) {
+	o.RedirectToHTTPS = v
+}
+
+// GetSupportHTTP2 returns value of SupportHTTP2
+func (o *ProxyLBBindPort) GetSupportHTTP2() bool {
+	return o.SupportHTTP2
+}
+
+// SetSupportHTTP2 sets value to SupportHTTP2
+func (o *ProxyLBBindPort) SetSupportHTTP2(v bool) {
+	o.SupportHTTP2 = v
+}
+
+/*************************************************
+* ProxyLBServer
+*************************************************/
+
+// ProxyLBServer represents API parameter/response structure
+type ProxyLBServer struct {
+	IPAddress string `validate:"ipv4"`
+	Port      int    `validate:"min=0,max=65535"`
+	Enabled   bool
+}
+
+// Validate validates by field tags
+func (o *ProxyLBServer) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetIPAddress returns value of IPAddress
+func (o *ProxyLBServer) GetIPAddress() string {
+	return o.IPAddress
+}
+
+// SetIPAddress sets value to IPAddress
+func (o *ProxyLBServer) SetIPAddress(v string) {
+	o.IPAddress = v
+}
+
+// GetPort returns value of Port
+func (o *ProxyLBServer) GetPort() int {
+	return o.Port
+}
+
+// SetPort sets value to Port
+func (o *ProxyLBServer) SetPort(v int) {
+	o.Port = v
+}
+
+// GetEnabled returns value of Enabled
+func (o *ProxyLBServer) GetEnabled() bool {
+	return o.Enabled
+}
+
+// SetEnabled sets value to Enabled
+func (o *ProxyLBServer) SetEnabled(v bool) {
+	o.Enabled = v
+}
+
+/*************************************************
+* ProxyLBACMESetting
+*************************************************/
+
+// ProxyLBACMESetting represents API parameter/response structure
+type ProxyLBACMESetting struct {
+	CommonName string
+	Enabled    bool
+}
+
+// Validate validates by field tags
+func (o *ProxyLBACMESetting) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetCommonName returns value of CommonName
+func (o *ProxyLBACMESetting) GetCommonName() string {
+	return o.CommonName
+}
+
+// SetCommonName sets value to CommonName
+func (o *ProxyLBACMESetting) SetCommonName(v string) {
+	o.CommonName = v
+}
+
+// GetEnabled returns value of Enabled
+func (o *ProxyLBACMESetting) GetEnabled() bool {
+	return o.Enabled
+}
+
+// SetEnabled sets value to Enabled
+func (o *ProxyLBACMESetting) SetEnabled(v bool) {
+	o.Enabled = v
+}
+
+/*************************************************
+* ProxyLBStickySession
+*************************************************/
+
+// ProxyLBStickySession represents API parameter/response structure
+type ProxyLBStickySession struct {
+	Method  string
+	Enabled bool
+}
+
+// Validate validates by field tags
+func (o *ProxyLBStickySession) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetMethod returns value of Method
+func (o *ProxyLBStickySession) GetMethod() string {
+	return o.Method
+}
+
+// SetMethod sets value to Method
+func (o *ProxyLBStickySession) SetMethod(v string) {
+	o.Method = v
+}
+
+// GetEnabled returns value of Enabled
+func (o *ProxyLBStickySession) GetEnabled() bool {
+	return o.Enabled
+}
+
+// SetEnabled sets value to Enabled
+func (o *ProxyLBStickySession) SetEnabled(v bool) {
+	o.Enabled = v
+}
+
+/*************************************************
+* ProxyLBCreateRequest
+*************************************************/
+
+// ProxyLBCreateRequest represents API parameter/response structure
+type ProxyLBCreateRequest struct {
+	Class          string                `mapconv:"Provider.Class,default=proxylb"`
+	Plan           types.EProxyLBPlan    `mapconv:"ServiceClass"`
+	HealthCheck    *ProxyLBHealthCheck   `mapconv:"Settings.ProxyLB.HealthCheck,recursive"`
+	SorryServer    *ProxyLBSorryServer   `mapconv:"Settings.ProxyLB.SorryServer,recursive"`
+	BindPorts      []*ProxyLBBindPort    `mapconv:"Settings.ProxyLB.[]BindPorts,recursive"`
+	Servers        []*ProxyLBServer      `mapconv:"Settings.ProxyLB.[]Servers,recursive"`
+	LetsEncrypt    *ProxyLBACMESetting   `mapconv:"Settings.ProxyLB.LetsEncrypt,recursive"`
+	StickySession  *ProxyLBStickySession `mapconv:"Settings.ProxyLB.StickySession,recursive"`
+	UseVIPFailover bool                  `mapconv:"Status.UseVIPFailover"`
+	Name           string                `validate:"required"`
+	Description    string                `validate:"min=0,max=512"`
+	Tags           []string
+	IconID         types.ID `mapconv:"Icon.ID"`
+}
+
+// Validate validates by field tags
+func (o *ProxyLBCreateRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetClass returns value of Class
+func (o *ProxyLBCreateRequest) GetClass() string {
+	return o.Class
+}
+
+// SetClass sets value to Class
+func (o *ProxyLBCreateRequest) SetClass(v string) {
+	o.Class = v
+}
+
+// GetPlan returns value of Plan
+func (o *ProxyLBCreateRequest) GetPlan() types.EProxyLBPlan {
+	return o.Plan
+}
+
+// SetPlan sets value to Plan
+func (o *ProxyLBCreateRequest) SetPlan(v types.EProxyLBPlan) {
+	o.Plan = v
+}
+
+// GetHealthCheck returns value of HealthCheck
+func (o *ProxyLBCreateRequest) GetHealthCheck() *ProxyLBHealthCheck {
+	return o.HealthCheck
+}
+
+// SetHealthCheck sets value to HealthCheck
+func (o *ProxyLBCreateRequest) SetHealthCheck(v *ProxyLBHealthCheck) {
+	o.HealthCheck = v
+}
+
+// GetSorryServer returns value of SorryServer
+func (o *ProxyLBCreateRequest) GetSorryServer() *ProxyLBSorryServer {
+	return o.SorryServer
+}
+
+// SetSorryServer sets value to SorryServer
+func (o *ProxyLBCreateRequest) SetSorryServer(v *ProxyLBSorryServer) {
+	o.SorryServer = v
+}
+
+// GetBindPorts returns value of BindPorts
+func (o *ProxyLBCreateRequest) GetBindPorts() []*ProxyLBBindPort {
+	return o.BindPorts
+}
+
+// SetBindPorts sets value to BindPorts
+func (o *ProxyLBCreateRequest) SetBindPorts(v []*ProxyLBBindPort) {
+	o.BindPorts = v
+}
+
+// GetServers returns value of Servers
+func (o *ProxyLBCreateRequest) GetServers() []*ProxyLBServer {
+	return o.Servers
+}
+
+// SetServers sets value to Servers
+func (o *ProxyLBCreateRequest) SetServers(v []*ProxyLBServer) {
+	o.Servers = v
+}
+
+// GetLetsEncrypt returns value of LetsEncrypt
+func (o *ProxyLBCreateRequest) GetLetsEncrypt() *ProxyLBACMESetting {
+	return o.LetsEncrypt
+}
+
+// SetLetsEncrypt sets value to LetsEncrypt
+func (o *ProxyLBCreateRequest) SetLetsEncrypt(v *ProxyLBACMESetting) {
+	o.LetsEncrypt = v
+}
+
+// GetStickySession returns value of StickySession
+func (o *ProxyLBCreateRequest) GetStickySession() *ProxyLBStickySession {
+	return o.StickySession
+}
+
+// SetStickySession sets value to StickySession
+func (o *ProxyLBCreateRequest) SetStickySession(v *ProxyLBStickySession) {
+	o.StickySession = v
+}
+
+// GetUseVIPFailover returns value of UseVIPFailover
+func (o *ProxyLBCreateRequest) GetUseVIPFailover() bool {
+	return o.UseVIPFailover
+}
+
+// SetUseVIPFailover sets value to UseVIPFailover
+func (o *ProxyLBCreateRequest) SetUseVIPFailover(v bool) {
+	o.UseVIPFailover = v
+}
+
+// GetName returns value of Name
+func (o *ProxyLBCreateRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *ProxyLBCreateRequest) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *ProxyLBCreateRequest) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *ProxyLBCreateRequest) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetTags returns value of Tags
+func (o *ProxyLBCreateRequest) GetTags() []string {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *ProxyLBCreateRequest) SetTags(v []string) {
+	o.Tags = v
+}
+
+// GetIconID returns value of IconID
+func (o *ProxyLBCreateRequest) GetIconID() types.ID {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *ProxyLBCreateRequest) SetIconID(v types.ID) {
+	o.IconID = v
+}
+
+/*************************************************
+* ProxyLBUpdateRequest
+*************************************************/
+
+// ProxyLBUpdateRequest represents API parameter/response structure
+type ProxyLBUpdateRequest struct {
+	HealthCheck   *ProxyLBHealthCheck   `mapconv:"Settings.ProxyLB.HealthCheck,recursive"`
+	SorryServer   *ProxyLBSorryServer   `mapconv:"Settings.ProxyLB.SorryServer,recursive"`
+	BindPorts     []*ProxyLBBindPort    `mapconv:"Settings.ProxyLB.[]BindPorts,recursive"`
+	Servers       []*ProxyLBServer      `mapconv:"Settings.ProxyLB.[]Servers,recursive"`
+	LetsEncrypt   *ProxyLBACMESetting   `mapconv:"Settings.ProxyLB.LetsEncrypt,recursive"`
+	StickySession *ProxyLBStickySession `mapconv:"Settings.ProxyLB.StickySession,recursive"`
+	Name          string                `validate:"required"`
+	Description   string                `validate:"min=0,max=512"`
+	Tags          []string
+	IconID        types.ID `mapconv:"Icon.ID"`
+}
+
+// Validate validates by field tags
+func (o *ProxyLBUpdateRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetHealthCheck returns value of HealthCheck
+func (o *ProxyLBUpdateRequest) GetHealthCheck() *ProxyLBHealthCheck {
+	return o.HealthCheck
+}
+
+// SetHealthCheck sets value to HealthCheck
+func (o *ProxyLBUpdateRequest) SetHealthCheck(v *ProxyLBHealthCheck) {
+	o.HealthCheck = v
+}
+
+// GetSorryServer returns value of SorryServer
+func (o *ProxyLBUpdateRequest) GetSorryServer() *ProxyLBSorryServer {
+	return o.SorryServer
+}
+
+// SetSorryServer sets value to SorryServer
+func (o *ProxyLBUpdateRequest) SetSorryServer(v *ProxyLBSorryServer) {
+	o.SorryServer = v
+}
+
+// GetBindPorts returns value of BindPorts
+func (o *ProxyLBUpdateRequest) GetBindPorts() []*ProxyLBBindPort {
+	return o.BindPorts
+}
+
+// SetBindPorts sets value to BindPorts
+func (o *ProxyLBUpdateRequest) SetBindPorts(v []*ProxyLBBindPort) {
+	o.BindPorts = v
+}
+
+// GetServers returns value of Servers
+func (o *ProxyLBUpdateRequest) GetServers() []*ProxyLBServer {
+	return o.Servers
+}
+
+// SetServers sets value to Servers
+func (o *ProxyLBUpdateRequest) SetServers(v []*ProxyLBServer) {
+	o.Servers = v
+}
+
+// GetLetsEncrypt returns value of LetsEncrypt
+func (o *ProxyLBUpdateRequest) GetLetsEncrypt() *ProxyLBACMESetting {
+	return o.LetsEncrypt
+}
+
+// SetLetsEncrypt sets value to LetsEncrypt
+func (o *ProxyLBUpdateRequest) SetLetsEncrypt(v *ProxyLBACMESetting) {
+	o.LetsEncrypt = v
+}
+
+// GetStickySession returns value of StickySession
+func (o *ProxyLBUpdateRequest) GetStickySession() *ProxyLBStickySession {
+	return o.StickySession
+}
+
+// SetStickySession sets value to StickySession
+func (o *ProxyLBUpdateRequest) SetStickySession(v *ProxyLBStickySession) {
+	o.StickySession = v
+}
+
+// GetName returns value of Name
+func (o *ProxyLBUpdateRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *ProxyLBUpdateRequest) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *ProxyLBUpdateRequest) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *ProxyLBUpdateRequest) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetTags returns value of Tags
+func (o *ProxyLBUpdateRequest) GetTags() []string {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *ProxyLBUpdateRequest) SetTags(v []string) {
+	o.Tags = v
+}
+
+// GetIconID returns value of IconID
+func (o *ProxyLBUpdateRequest) GetIconID() types.ID {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *ProxyLBUpdateRequest) SetIconID(v types.ID) {
+	o.IconID = v
+}
+
+/*************************************************
+* ProxyLBChangePlanRequest
+*************************************************/
+
+// ProxyLBChangePlanRequest represents API parameter/response structure
+type ProxyLBChangePlanRequest struct {
+	Plan types.EProxyLBPlan `mapconv:"ServiceClass"`
+}
+
+// Validate validates by field tags
+func (o *ProxyLBChangePlanRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetPlan returns value of Plan
+func (o *ProxyLBChangePlanRequest) GetPlan() types.EProxyLBPlan {
+	return o.Plan
+}
+
+// SetPlan sets value to Plan
+func (o *ProxyLBChangePlanRequest) SetPlan(v types.EProxyLBPlan) {
+	o.Plan = v
+}
+
+/*************************************************
+* ProxyLBCertificates
+*************************************************/
+
+// ProxyLBCertificates represents API parameter/response structure
+type ProxyLBCertificates struct {
+	ServerCertificate       string
+	IntermediateCertificate string
+	PrivateKey              string
+	CertificateEndDate      time.Time
+	CertificateCommonName   string
+	AdditionalCerts         []*ProxyLBAdditionalCert `mapconv:"[]AdditionalCerts, recursive"`
+}
+
+// Validate validates by field tags
+func (o *ProxyLBCertificates) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetServerCertificate returns value of ServerCertificate
+func (o *ProxyLBCertificates) GetServerCertificate() string {
+	return o.ServerCertificate
+}
+
+// SetServerCertificate sets value to ServerCertificate
+func (o *ProxyLBCertificates) SetServerCertificate(v string) {
+	o.ServerCertificate = v
+}
+
+// GetIntermediateCertificate returns value of IntermediateCertificate
+func (o *ProxyLBCertificates) GetIntermediateCertificate() string {
+	return o.IntermediateCertificate
+}
+
+// SetIntermediateCertificate sets value to IntermediateCertificate
+func (o *ProxyLBCertificates) SetIntermediateCertificate(v string) {
+	o.IntermediateCertificate = v
+}
+
+// GetPrivateKey returns value of PrivateKey
+func (o *ProxyLBCertificates) GetPrivateKey() string {
+	return o.PrivateKey
+}
+
+// SetPrivateKey sets value to PrivateKey
+func (o *ProxyLBCertificates) SetPrivateKey(v string) {
+	o.PrivateKey = v
+}
+
+// GetCertificateEndDate returns value of CertificateEndDate
+func (o *ProxyLBCertificates) GetCertificateEndDate() time.Time {
+	return o.CertificateEndDate
+}
+
+// SetCertificateEndDate sets value to CertificateEndDate
+func (o *ProxyLBCertificates) SetCertificateEndDate(v time.Time) {
+	o.CertificateEndDate = v
+}
+
+// GetCertificateCommonName returns value of CertificateCommonName
+func (o *ProxyLBCertificates) GetCertificateCommonName() string {
+	return o.CertificateCommonName
+}
+
+// SetCertificateCommonName sets value to CertificateCommonName
+func (o *ProxyLBCertificates) SetCertificateCommonName(v string) {
+	o.CertificateCommonName = v
+}
+
+// GetAdditionalCerts returns value of AdditionalCerts
+func (o *ProxyLBCertificates) GetAdditionalCerts() []*ProxyLBAdditionalCert {
+	return o.AdditionalCerts
+}
+
+// SetAdditionalCerts sets value to AdditionalCerts
+func (o *ProxyLBCertificates) SetAdditionalCerts(v []*ProxyLBAdditionalCert) {
+	o.AdditionalCerts = v
+}
+
+/*************************************************
+* ProxyLBAdditionalCert
+*************************************************/
+
+// ProxyLBAdditionalCert represents API parameter/response structure
+type ProxyLBAdditionalCert struct {
+	ServerCertificate       string
+	IntermediateCertificate string
+	PrivateKey              string
+	CertificateEndDate      string
+	CertificateCommonName   string
+}
+
+// Validate validates by field tags
+func (o *ProxyLBAdditionalCert) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetServerCertificate returns value of ServerCertificate
+func (o *ProxyLBAdditionalCert) GetServerCertificate() string {
+	return o.ServerCertificate
+}
+
+// SetServerCertificate sets value to ServerCertificate
+func (o *ProxyLBAdditionalCert) SetServerCertificate(v string) {
+	o.ServerCertificate = v
+}
+
+// GetIntermediateCertificate returns value of IntermediateCertificate
+func (o *ProxyLBAdditionalCert) GetIntermediateCertificate() string {
+	return o.IntermediateCertificate
+}
+
+// SetIntermediateCertificate sets value to IntermediateCertificate
+func (o *ProxyLBAdditionalCert) SetIntermediateCertificate(v string) {
+	o.IntermediateCertificate = v
+}
+
+// GetPrivateKey returns value of PrivateKey
+func (o *ProxyLBAdditionalCert) GetPrivateKey() string {
+	return o.PrivateKey
+}
+
+// SetPrivateKey sets value to PrivateKey
+func (o *ProxyLBAdditionalCert) SetPrivateKey(v string) {
+	o.PrivateKey = v
+}
+
+// GetCertificateEndDate returns value of CertificateEndDate
+func (o *ProxyLBAdditionalCert) GetCertificateEndDate() string {
+	return o.CertificateEndDate
+}
+
+// SetCertificateEndDate sets value to CertificateEndDate
+func (o *ProxyLBAdditionalCert) SetCertificateEndDate(v string) {
+	o.CertificateEndDate = v
+}
+
+// GetCertificateCommonName returns value of CertificateCommonName
+func (o *ProxyLBAdditionalCert) GetCertificateCommonName() string {
+	return o.CertificateCommonName
+}
+
+// SetCertificateCommonName sets value to CertificateCommonName
+func (o *ProxyLBAdditionalCert) SetCertificateCommonName(v string) {
+	o.CertificateCommonName = v
+}
+
+/*************************************************
+* ProxyLBSetCertificatesRequest
+*************************************************/
+
+// ProxyLBSetCertificatesRequest represents API parameter/response structure
+type ProxyLBSetCertificatesRequest struct {
+	ServerCertificate       string
+	IntermediateCertificate string
+	PrivateKey              string
+	AdditionalCerts         []*ProxyLBAdditionalCert `mapconv:"[]AdditionalCerts, recursive"`
+}
+
+// Validate validates by field tags
+func (o *ProxyLBSetCertificatesRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetServerCertificate returns value of ServerCertificate
+func (o *ProxyLBSetCertificatesRequest) GetServerCertificate() string {
+	return o.ServerCertificate
+}
+
+// SetServerCertificate sets value to ServerCertificate
+func (o *ProxyLBSetCertificatesRequest) SetServerCertificate(v string) {
+	o.ServerCertificate = v
+}
+
+// GetIntermediateCertificate returns value of IntermediateCertificate
+func (o *ProxyLBSetCertificatesRequest) GetIntermediateCertificate() string {
+	return o.IntermediateCertificate
+}
+
+// SetIntermediateCertificate sets value to IntermediateCertificate
+func (o *ProxyLBSetCertificatesRequest) SetIntermediateCertificate(v string) {
+	o.IntermediateCertificate = v
+}
+
+// GetPrivateKey returns value of PrivateKey
+func (o *ProxyLBSetCertificatesRequest) GetPrivateKey() string {
+	return o.PrivateKey
+}
+
+// SetPrivateKey sets value to PrivateKey
+func (o *ProxyLBSetCertificatesRequest) SetPrivateKey(v string) {
+	o.PrivateKey = v
+}
+
+// GetAdditionalCerts returns value of AdditionalCerts
+func (o *ProxyLBSetCertificatesRequest) GetAdditionalCerts() []*ProxyLBAdditionalCert {
+	return o.AdditionalCerts
+}
+
+// SetAdditionalCerts sets value to AdditionalCerts
+func (o *ProxyLBSetCertificatesRequest) SetAdditionalCerts(v []*ProxyLBAdditionalCert) {
+	o.AdditionalCerts = v
+}
+
+/*************************************************
+* ProxyLBHealth
+*************************************************/
+
+// ProxyLBHealth represents API parameter/response structure
+type ProxyLBHealth struct {
+	ActiveConn int
+	CPS        int
+	CurrentVIP string
+	Servers    []*LoadBalancerServerStatus `mapconv:"[]Servers,recursive"`
+}
+
+// Validate validates by field tags
+func (o *ProxyLBHealth) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetActiveConn returns value of ActiveConn
+func (o *ProxyLBHealth) GetActiveConn() int {
+	return o.ActiveConn
+}
+
+// SetActiveConn sets value to ActiveConn
+func (o *ProxyLBHealth) SetActiveConn(v int) {
+	o.ActiveConn = v
+}
+
+// GetCPS returns value of CPS
+func (o *ProxyLBHealth) GetCPS() int {
+	return o.CPS
+}
+
+// SetCPS sets value to CPS
+func (o *ProxyLBHealth) SetCPS(v int) {
+	o.CPS = v
+}
+
+// GetCurrentVIP returns value of CurrentVIP
+func (o *ProxyLBHealth) GetCurrentVIP() string {
+	return o.CurrentVIP
+}
+
+// SetCurrentVIP sets value to CurrentVIP
+func (o *ProxyLBHealth) SetCurrentVIP(v string) {
+	o.CurrentVIP = v
+}
+
+// GetServers returns value of Servers
+func (o *ProxyLBHealth) GetServers() []*LoadBalancerServerStatus {
+	return o.Servers
+}
+
+// SetServers sets value to Servers
+func (o *ProxyLBHealth) SetServers(v []*LoadBalancerServerStatus) {
+	o.Servers = v
+}
+
+/*************************************************
 * Server
 *************************************************/
 

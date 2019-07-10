@@ -11,7 +11,7 @@ import (
 // APIリクエスト/レスポンスに文字列/数値が混在するためここで吸収する
 type ID int64
 
-// UnmarshalJSON implememts unmarshal from both of JSON number and JSON string
+// UnmarshalJSON implements unmarshal from both of JSON number and JSON string
 func (i *ID) UnmarshalJSON(b []byte) error {
 	s := string(b)
 	if s == "" || s == "null" {

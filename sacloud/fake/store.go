@@ -65,6 +65,18 @@ func (s *store) set(resourceKey, zone string, value interface{}) {
 	s.data[s.key(resourceKey, zone)] = values
 }
 
+func (s *store) setWithID(resourceKey, zone string, value interface{}, id types.ID) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+
+	values := s.values(resourceKey, zone)
+	if values == nil {
+		values = map[types.ID]interface{}{}
+	}
+	values[id] = value
+	s.data[s.key(resourceKey, zone)] = values
+}
+
 func (s *store) delete(resourceKey, zone string, id types.ID) {
 	s.mu.Lock()
 	defer s.mu.Unlock()

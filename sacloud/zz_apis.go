@@ -225,6 +225,25 @@ type PacketFilterAPI interface {
 }
 
 /*************************************************
+* ProxyLBAPI
+*************************************************/
+
+// ProxyLBAPI is interface for operate ProxyLB resource
+type ProxyLBAPI interface {
+	Find(ctx context.Context, zone string, conditions *FindCondition) (*ProxyLBFindResult, error)
+	Create(ctx context.Context, zone string, param *ProxyLBCreateRequest) (*ProxyLB, error)
+	Read(ctx context.Context, zone string, id types.ID) (*ProxyLB, error)
+	Update(ctx context.Context, zone string, id types.ID, param *ProxyLBUpdateRequest) (*ProxyLB, error)
+	Delete(ctx context.Context, zone string, id types.ID) error
+	ChangePlan(ctx context.Context, zone string, id types.ID, param *ProxyLBChangePlanRequest) (*ProxyLB, error)
+	GetCertificates(ctx context.Context, zone string, id types.ID) (*ProxyLBCertificates, error)
+	SetCertificates(ctx context.Context, zone string, id types.ID, param *ProxyLBSetCertificatesRequest) (*ProxyLBCertificates, error)
+	DeleteCertificates(ctx context.Context, zone string, id types.ID) error
+	RenewLetsEncryptCert(ctx context.Context, zone string, id types.ID) error
+	HealthStatus(ctx context.Context, zone string, id types.ID) (*ProxyLBHealth, error)
+}
+
+/*************************************************
 * ServerAPI
 *************************************************/
 

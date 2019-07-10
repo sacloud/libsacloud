@@ -8,7 +8,7 @@ import (
 // StringNumber 数値型を文字列で表す型
 type StringNumber int64
 
-// MarshalJSON implememts json.Marshaler
+// MarshalJSON implements json.Marshaler
 func (n *StringNumber) MarshalJSON() ([]byte, error) {
 	if n == nil {
 		return []byte(`""`), nil
@@ -16,7 +16,7 @@ func (n *StringNumber) MarshalJSON() ([]byte, error) {
 	return []byte(fmt.Sprintf(`"%s"`, n.String())), nil
 }
 
-// UnmarshalJSON implememts json.Unmarshaler
+// UnmarshalJSON implements json.Unmarshaler
 func (n *StringNumber) UnmarshalJSON(b []byte) error {
 	if string(b) == `""` {
 		*n = StringNumber(0)

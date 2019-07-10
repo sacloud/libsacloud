@@ -329,6 +329,29 @@ func (s *store) setPacketFilter(zone string, value *sacloud.PacketFilter) {
 	s.set(ResourcePacketFilter, zone, value)
 }
 
+func (s *store) getProxyLB(zone string) []*sacloud.ProxyLB {
+	values := s.get(ResourceProxyLB, zone)
+	var ret []*sacloud.ProxyLB
+	for _, v := range values {
+		if v, ok := v.(*sacloud.ProxyLB); ok {
+			ret = append(ret, v)
+		}
+	}
+	return ret
+}
+
+func (s *store) getProxyLBByID(zone string, id types.ID) *sacloud.ProxyLB {
+	v := s.getByID(ResourceProxyLB, zone, id)
+	if v, ok := v.(*sacloud.ProxyLB); ok {
+		return v
+	}
+	return nil
+}
+
+func (s *store) setProxyLB(zone string, value *sacloud.ProxyLB) {
+	s.set(ResourceProxyLB, zone, value)
+}
+
 func (s *store) getServer(zone string) []*sacloud.Server {
 	values := s.get(ResourceServer, zone)
 	var ret []*sacloud.Server
