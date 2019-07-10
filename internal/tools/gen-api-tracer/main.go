@@ -66,7 +66,7 @@ func New{{ $typeName}}Tracer(in sacloud.{{$typeName}}API) sacloud.{{$typeName}}A
 {{ range .Operations }}{{$returnErrStatement := .ReturnErrorStatement}}{{ $operationName := .MethodName }}
 // {{ .MethodName }} is API call with trace log
 func (t *{{ $typeName }}Tracer) {{ .MethodName }}(ctx context.Context{{ range .Arguments }}, {{ .ArgName }} {{ .TypeName }}{{ end }}) {{.ResultsStatement}} {
-	log.Println("[TRACE] {{ $typeName }}Tracer.{{ .MethodName }} start")
+	log.Println("[TRACE] {{ $typeName }}API.{{ .MethodName }} start")
 	targetArguments := struct {
 {{ range .Arguments -}}
 		Arg{{.ArgName}} {{.TypeName}} ` + "`json:\"{{.ArgName}}\"`" + `
@@ -81,7 +81,7 @@ func (t *{{ $typeName }}Tracer) {{ .MethodName }}(ctx context.Context{{ range .A
 	}
 
 	defer func() {
-		log.Println("[TRACE] {{ $typeName }}Tracer.{{ .MethodName }} end")
+		log.Println("[TRACE] {{ $typeName }}API.{{ .MethodName }} end")
 	}()
 
 	{{range .ResultsTypeInfo}}{{.VarName}}, {{end}}err := t.Internal.{{ .MethodName }}(ctx{{ range .Arguments }}, {{ .ArgName }}{{ end }})
