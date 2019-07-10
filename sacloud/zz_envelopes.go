@@ -1227,6 +1227,28 @@ type simpleMonitorUpdateResponseEnvelope struct {
 	CommonServiceItem *naked.SimpleMonitor `json:",omitempty"`
 }
 
+// simpleMonitorMonitorResponseTimeRequestEnvelope is envelop of API request
+type simpleMonitorMonitorResponseTimeRequestEnvelope struct {
+	Start time.Time `json:",omitempty"`
+	End   time.Time `json:",omitempty"`
+}
+
+// simpleMonitorMonitorResponseTimeResponseEnvelope is envelop of API response
+type simpleMonitorMonitorResponseTimeResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Data *naked.MonitorValues `json:",omitempty"`
+}
+
+// simpleMonitorHealthStatusResponseEnvelope is envelop of API response
+type simpleMonitorHealthStatusResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	SimpleMonitor *naked.SimpleMonitorHealthCheckStatus `json:",omitempty"`
+}
+
 // switchFindRequestEnvelope is envelop of API request
 type switchFindRequestEnvelope struct {
 	Count   int                    `json:",omitempty"`

@@ -8489,7 +8489,7 @@ type SimpleMonitor struct {
 	Class              string `mapconv:"Provider.Class,default=simplemon"`
 	Target             string `mapconv:"Status.Target"`
 	SettingsHash       string
-	DelayLoop          int                       `mapconv:"Settings.SimpleMonitor.DelayLoop,default=10" validate:"min=10,max=60"`
+	DelayLoop          int                       `mapconv:"Settings.SimpleMonitor.DelayLoop,default=60" validate:"min=60,max=3600"`
 	Enabled            types.StringFlag          `mapconv:"Settings.SimpleMonitor.Enabled"`
 	HealthCheck        *SimpleMonitorHealthCheck `mapconv:"Settings.SimpleMonitor.HealthCheck,recursive"`
 	NotifyEmailEnabled types.StringFlag          `mapconv:"Settings.SimpleMonitor.NotifyEmail.Enabled"`
@@ -8878,7 +8878,7 @@ func (o *SimpleMonitorHealthCheck) SetRemainingDays(v int) {
 type SimpleMonitorCreateRequest struct {
 	Class              string                    `mapconv:"Provider.Class,default=simplemon"`
 	Target             string                    `mapconv:"Name/Status.Target" validate:"required"`
-	DelayLoop          int                       `mapconv:"Settings.SimpleMonitor.DelayLoop,default=10" validate:"min=10,max=60"`
+	DelayLoop          int                       `mapconv:"Settings.SimpleMonitor.DelayLoop,default=60" validate:"min=60,max=3600"`
 	Enabled            types.StringFlag          `mapconv:"Settings.SimpleMonitor.Enabled"`
 	HealthCheck        *SimpleMonitorHealthCheck `mapconv:"Settings.SimpleMonitor.HealthCheck,recursive"`
 	NotifyEmailEnabled types.StringFlag          `mapconv:"Settings.SimpleMonitor.NotifyEmail.Enabled"`
@@ -9021,7 +9021,7 @@ func (o *SimpleMonitorCreateRequest) SetIconID(v types.ID) {
 
 // SimpleMonitorUpdateRequest represents API parameter/response structure
 type SimpleMonitorUpdateRequest struct {
-	DelayLoop          int                       `mapconv:"Settings.SimpleMonitor.DelayLoop,default=10" validate:"min=10,max=60"`
+	DelayLoop          int                       `mapconv:"Settings.SimpleMonitor.DelayLoop,default=60" validate:"min=60,max=3600"`
 	Enabled            types.StringFlag          `mapconv:"Settings.SimpleMonitor.Enabled"`
 	HealthCheck        *SimpleMonitorHealthCheck `mapconv:"Settings.SimpleMonitor.HealthCheck,recursive"`
 	NotifyEmailEnabled types.StringFlag          `mapconv:"Settings.SimpleMonitor.NotifyEmail.Enabled"`
@@ -9136,6 +9136,111 @@ func (o *SimpleMonitorUpdateRequest) GetIconID() types.ID {
 // SetIconID sets value to IconID
 func (o *SimpleMonitorUpdateRequest) SetIconID(v types.ID) {
 	o.IconID = v
+}
+
+/*************************************************
+* ResponseTimeSecActivity
+*************************************************/
+
+// ResponseTimeSecActivity represents API parameter/response structure
+type ResponseTimeSecActivity struct {
+	Values []*MonitorResponseTimeSecValue `mapconv:"[]ResponseTimeSec"`
+}
+
+// Validate validates by field tags
+func (o *ResponseTimeSecActivity) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetValues returns value of Values
+func (o *ResponseTimeSecActivity) GetValues() []*MonitorResponseTimeSecValue {
+	return o.Values
+}
+
+// SetValues sets value to Values
+func (o *ResponseTimeSecActivity) SetValues(v []*MonitorResponseTimeSecValue) {
+	o.Values = v
+}
+
+/*************************************************
+* MonitorResponseTimeSecValue
+*************************************************/
+
+// MonitorResponseTimeSecValue represents API parameter/response structure
+type MonitorResponseTimeSecValue struct {
+	Time            time.Time `json:",omitempty" mapconv:",omitempty"`
+	ResponseTimeSec float64   `json:",omitempty" mapconv:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *MonitorResponseTimeSecValue) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetTime returns value of Time
+func (o *MonitorResponseTimeSecValue) GetTime() time.Time {
+	return o.Time
+}
+
+// SetTime sets value to Time
+func (o *MonitorResponseTimeSecValue) SetTime(v time.Time) {
+	o.Time = v
+}
+
+// GetResponseTimeSec returns value of ResponseTimeSec
+func (o *MonitorResponseTimeSecValue) GetResponseTimeSec() float64 {
+	return o.ResponseTimeSec
+}
+
+// SetResponseTimeSec sets value to ResponseTimeSec
+func (o *MonitorResponseTimeSecValue) SetResponseTimeSec(v float64) {
+	o.ResponseTimeSec = v
+}
+
+/*************************************************
+* SimpleMonitorHealthStatus
+*************************************************/
+
+// SimpleMonitorHealthStatus represents API parameter/response structure
+type SimpleMonitorHealthStatus struct {
+	LastCheckedAt       time.Time
+	LastHealthChangedAt time.Time
+	Health              types.ESimpleMonitorHealth
+}
+
+// Validate validates by field tags
+func (o *SimpleMonitorHealthStatus) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetLastCheckedAt returns value of LastCheckedAt
+func (o *SimpleMonitorHealthStatus) GetLastCheckedAt() time.Time {
+	return o.LastCheckedAt
+}
+
+// SetLastCheckedAt sets value to LastCheckedAt
+func (o *SimpleMonitorHealthStatus) SetLastCheckedAt(v time.Time) {
+	o.LastCheckedAt = v
+}
+
+// GetLastHealthChangedAt returns value of LastHealthChangedAt
+func (o *SimpleMonitorHealthStatus) GetLastHealthChangedAt() time.Time {
+	return o.LastHealthChangedAt
+}
+
+// SetLastHealthChangedAt sets value to LastHealthChangedAt
+func (o *SimpleMonitorHealthStatus) SetLastHealthChangedAt(v time.Time) {
+	o.LastHealthChangedAt = v
+}
+
+// GetHealth returns value of Health
+func (o *SimpleMonitorHealthStatus) GetHealth() types.ESimpleMonitorHealth {
+	return o.Health
+}
+
+// SetHealth sets value to Health
+func (o *SimpleMonitorHealthStatus) SetHealth(v types.ESimpleMonitorHealth) {
+	o.Health = v
 }
 
 /*************************************************

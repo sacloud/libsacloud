@@ -6253,6 +6253,96 @@ func (o *SimpleMonitorOp) Delete(ctx context.Context, zone string, id types.ID) 
 	return nil
 }
 
+// MonitorResponseTime is API call
+func (o *SimpleMonitorOp) MonitorResponseTime(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*ResponseTimeSecActivity, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}//activity/responsetimesec/monitor", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+		"condition":  condition,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	if zone == "" {
+		zone = ""
+	}
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	if condition == nil {
+		condition = &MonitorCondition{}
+	}
+	args := &struct {
+		Argzone      string
+		Argid        types.ID
+		Argcondition *MonitorCondition `mapconv:",squash"`
+	}{
+		Argzone:      zone,
+		Argid:        id,
+		Argcondition: condition,
+	}
+
+	v := &simpleMonitorMonitorResponseTimeRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &simpleMonitorMonitorResponseTimeResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &simpleMonitorMonitorResponseTimeResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results.ResponseTimeSecActivity, nil
+}
+
+// HealthStatus is API call
+func (o *SimpleMonitorOp) HealthStatus(ctx context.Context, zone string, id types.ID) (*SimpleMonitorHealthStatus, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/health", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &simpleMonitorHealthStatusResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &simpleMonitorHealthStatusResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results.SimpleMonitorHealthStatus, nil
+}
+
 /*************************************************
 * SwitchOp
 *************************************************/

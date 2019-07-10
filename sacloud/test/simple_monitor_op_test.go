@@ -3,9 +3,11 @@ package test
 import (
 	"context"
 	"testing"
+	"time"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
+	"github.com/stretchr/testify/require"
 )
 
 func TestSimpleMonitorOpCRUD(t *testing.T) {
@@ -141,4 +143,43 @@ func testSimpleMonitorUpdate(testContext *CRUDTestContext, caller sacloud.APICal
 func testSimpleMonitorDelete(testContext *CRUDTestContext, caller sacloud.APICaller) error {
 	client := sacloud.NewSimpleMonitorOp(caller)
 	return client.Delete(context.Background(), sacloud.APIDefaultZone, testContext.ID)
+}
+
+func TestSimpleMonitorOpStatusAndHealth(t *testing.T) {
+	t.Parallel()
+
+	client := sacloud.NewSimpleMonitorOp(singletonAPICaller())
+	ctx := context.Background()
+
+	// create
+	sm, err := client.Create(ctx, sacloud.APIDefaultZone, simpleMonitorStatusAndHealthTargetParam)
+	require.NoError(t, err)
+	defer func() {
+		client.Delete(ctx, sacloud.APIDefaultZone, sm.ID) // nolint - ignore error
+	}()
+	time.Sleep(2 * time.Minute) // Statusの戻り値を確認するために数分待つ
+
+	// status
+	status, err := client.HealthStatus(ctx, sacloud.APIDefaultZone, sm.ID)
+	require.NoError(t, err)
+	require.NotNil(t, status)
+
+	// monitor
+	monitor, err := client.MonitorResponseTime(ctx, sacloud.APIDefaultZone, sm.ID, &sacloud.MonitorCondition{})
+	require.NoError(t, err)
+	require.NotNil(t, monitor)
+}
+
+var simpleMonitorStatusAndHealthTargetParam = &sacloud.SimpleMonitorCreateRequest{
+	Target:    "cloud.sakura.ad.jp",
+	DelayLoop: 60,
+	Enabled:   true,
+	HealthCheck: &sacloud.SimpleMonitorHealthCheck{
+		Protocol: types.SimpleMonitorProtocols.HTTPS,
+		Port:     443,
+		Path:     "/",
+		Status:   200,
+	},
+	NotifySlackEnabled: true,
+	SlackWebhooksURL:   "https://hooks.slack.com/services/XXXXXXXXX/XXXXXXXXX/XXXXXXXXXXXXXXXXXXXXXXXX",
 }
