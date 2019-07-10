@@ -1178,7 +1178,7 @@ func (f *fieldsDef) ProxyLBSorryServer() *dsl.FieldDesc {
 				},
 				{
 					Name: "Port",
-					Type: meta.TypeStringNumber,
+					Type: meta.TypeInt,
 					Tags: &dsl.FieldTags{
 						Validate: "min=0,max=65535",
 					},

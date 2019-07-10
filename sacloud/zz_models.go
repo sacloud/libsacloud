@@ -7208,8 +7208,8 @@ func (o *ProxyLBHealthCheck) SetDelayLoop(v int) {
 
 // ProxyLBSorryServer represents API parameter/response structure
 type ProxyLBSorryServer struct {
-	IPAddress string             `validate:"ipv4"`
-	Port      types.StringNumber `validate:"min=0,max=65535"`
+	IPAddress string `validate:"ipv4"`
+	Port      int    `validate:"min=0,max=65535"`
 }
 
 // Validate validates by field tags
@@ -7228,12 +7228,12 @@ func (o *ProxyLBSorryServer) SetIPAddress(v string) {
 }
 
 // GetPort returns value of Port
-func (o *ProxyLBSorryServer) GetPort() types.StringNumber {
+func (o *ProxyLBSorryServer) GetPort() int {
 	return o.Port
 }
 
 // SetPort sets value to Port
-func (o *ProxyLBSorryServer) SetPort(v types.StringNumber) {
+func (o *ProxyLBSorryServer) SetPort(v int) {
 	o.Port = v
 }
 
