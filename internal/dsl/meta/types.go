@@ -67,4 +67,7 @@ var (
 
 	// TypeDNSRecordType DNSレコード種別
 	TypeDNSRecordType = Static(types.EDNSRecordType(""))
+
+	// TypeSimpleMonitorHealthCheckProtocol シンプル監視 ヘルスチェックプロトコル
+	TypeSimpleMonitorHealthCheckProtocol = Static(types.ESimpleMonitorProtocol(""))
 )

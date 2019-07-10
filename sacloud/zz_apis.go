@@ -268,6 +268,21 @@ type SIMAPI interface {
 }
 
 /*************************************************
+* SimpleMonitorAPI
+*************************************************/
+
+// SimpleMonitorAPI is interface for operate SimpleMonitor resource
+type SimpleMonitorAPI interface {
+	Find(ctx context.Context, zone string, conditions *FindCondition) (*SimpleMonitorFindResult, error)
+	Create(ctx context.Context, zone string, param *SimpleMonitorCreateRequest) (*SimpleMonitor, error)
+	Read(ctx context.Context, zone string, id types.ID) (*SimpleMonitor, error)
+	Update(ctx context.Context, zone string, id types.ID, param *SimpleMonitorUpdateRequest) (*SimpleMonitor, error)
+	Delete(ctx context.Context, zone string, id types.ID) error
+	MonitorResponseTime(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*ResponseTimeSecActivity, error)
+	HealthStatus(ctx context.Context, zone string, id types.ID) (*SimpleMonitorHealthStatus, error)
+}
+
+/*************************************************
 * SwitchAPI
 *************************************************/
 

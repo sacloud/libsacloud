@@ -628,6 +628,50 @@ type sIMMonitorSIMResult struct {
 	LinkActivity *LinkActivity `json:",omitempty" mapconv:"Data,omitempty,recursive"`
 }
 
+// SimpleMonitorFindResult represents the Result of API
+type SimpleMonitorFindResult struct {
+	Total int `json:",omitempty"` // Total count of target resources
+	From  int `json:",omitempty"` // Current page number
+	Count int `json:",omitempty"` // Count of current page
+
+	SimpleMonitors []*SimpleMonitor `json:",omitempty" mapconv:"[]CommonServiceItems,omitempty,recursive"`
+}
+
+// simpleMonitorCreateResult represents the Result of API
+type simpleMonitorCreateResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	SimpleMonitor *SimpleMonitor `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
+}
+
+// simpleMonitorReadResult represents the Result of API
+type simpleMonitorReadResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	SimpleMonitor *SimpleMonitor `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
+}
+
+// simpleMonitorUpdateResult represents the Result of API
+type simpleMonitorUpdateResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	SimpleMonitor *SimpleMonitor `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
+}
+
+// simpleMonitorMonitorResponseTimeResult represents the Result of API
+type simpleMonitorMonitorResponseTimeResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	ResponseTimeSecActivity *ResponseTimeSecActivity `json:",omitempty" mapconv:"Data,omitempty,recursive"`
+}
+
+// simpleMonitorHealthStatusResult represents the Result of API
+type simpleMonitorHealthStatusResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	SimpleMonitorHealthStatus *SimpleMonitorHealthStatus `json:",omitempty" mapconv:"SimpleMonitor,omitempty,recursive"`
+}
+
 // SwitchFindResult represents the Result of API
 type SwitchFindResult struct {
 	Total int `json:",omitempty"` // Total count of target resources

@@ -8473,6 +8473,777 @@ func (o *MonitorLinkValue) SetDownlinkBPS(v float64) {
 }
 
 /*************************************************
+* SimpleMonitor
+*************************************************/
+
+// SimpleMonitor represents API parameter/response structure
+type SimpleMonitor struct {
+	ID                 types.ID
+	Name               string `validate:"required"`
+	Description        string `validate:"min=0,max=512"`
+	Tags               []string
+	Availability       types.EAvailability
+	IconID             types.ID `mapconv:"Icon.ID"`
+	CreatedAt          time.Time
+	ModifiedAt         time.Time
+	Class              string `mapconv:"Provider.Class,default=simplemon"`
+	Target             string `mapconv:"Status.Target"`
+	SettingsHash       string
+	DelayLoop          int                       `mapconv:"Settings.SimpleMonitor.DelayLoop,default=60" validate:"min=60,max=3600"`
+	Enabled            types.StringFlag          `mapconv:"Settings.SimpleMonitor.Enabled"`
+	HealthCheck        *SimpleMonitorHealthCheck `mapconv:"Settings.SimpleMonitor.HealthCheck,recursive"`
+	NotifyEmailEnabled types.StringFlag          `mapconv:"Settings.SimpleMonitor.NotifyEmail.Enabled"`
+	NotifyEmailHTML    types.StringFlag          `mapconv:"Settings.SimpleMonitor.NotifyEmail.HTML"`
+	NotifySlackEnabled types.StringFlag          `mapconv:"Settings.SimpleMonitor.NotifySlack.Enabled"`
+	SlackWebhooksURL   string                    `mapconv:"Settings.SimpleMonitor.NotifySlack.IncomingWebhooksURL"`
+}
+
+// Validate validates by field tags
+func (o *SimpleMonitor) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetID returns value of ID
+func (o *SimpleMonitor) GetID() types.ID {
+	return o.ID
+}
+
+// SetID sets value to ID
+func (o *SimpleMonitor) SetID(v types.ID) {
+	o.ID = v
+}
+
+// GetStringID gets value to StringID
+func (o *SimpleMonitor) GetStringID() string {
+	return accessor.GetStringID(o)
+}
+
+// SetStringID sets value to StringID
+func (o *SimpleMonitor) SetStringID(v string) {
+	accessor.SetStringID(o, v)
+}
+
+// GetInt64ID gets value to Int64ID
+func (o *SimpleMonitor) GetInt64ID() int64 {
+	return accessor.GetInt64ID(o)
+}
+
+// SetInt64ID sets value to Int64ID
+func (o *SimpleMonitor) SetInt64ID(v int64) {
+	accessor.SetInt64ID(o, v)
+}
+
+// GetName returns value of Name
+func (o *SimpleMonitor) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *SimpleMonitor) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *SimpleMonitor) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *SimpleMonitor) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetTags returns value of Tags
+func (o *SimpleMonitor) GetTags() []string {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *SimpleMonitor) SetTags(v []string) {
+	o.Tags = v
+}
+
+// GetAvailability returns value of Availability
+func (o *SimpleMonitor) GetAvailability() types.EAvailability {
+	return o.Availability
+}
+
+// SetAvailability sets value to Availability
+func (o *SimpleMonitor) SetAvailability(v types.EAvailability) {
+	o.Availability = v
+}
+
+// GetIconID returns value of IconID
+func (o *SimpleMonitor) GetIconID() types.ID {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *SimpleMonitor) SetIconID(v types.ID) {
+	o.IconID = v
+}
+
+// GetCreatedAt returns value of CreatedAt
+func (o *SimpleMonitor) GetCreatedAt() time.Time {
+	return o.CreatedAt
+}
+
+// SetCreatedAt sets value to CreatedAt
+func (o *SimpleMonitor) SetCreatedAt(v time.Time) {
+	o.CreatedAt = v
+}
+
+// GetModifiedAt returns value of ModifiedAt
+func (o *SimpleMonitor) GetModifiedAt() time.Time {
+	return o.ModifiedAt
+}
+
+// SetModifiedAt sets value to ModifiedAt
+func (o *SimpleMonitor) SetModifiedAt(v time.Time) {
+	o.ModifiedAt = v
+}
+
+// GetClass returns value of Class
+func (o *SimpleMonitor) GetClass() string {
+	return o.Class
+}
+
+// SetClass sets value to Class
+func (o *SimpleMonitor) SetClass(v string) {
+	o.Class = v
+}
+
+// GetTarget returns value of Target
+func (o *SimpleMonitor) GetTarget() string {
+	return o.Target
+}
+
+// SetTarget sets value to Target
+func (o *SimpleMonitor) SetTarget(v string) {
+	o.Target = v
+}
+
+// GetSettingsHash returns value of SettingsHash
+func (o *SimpleMonitor) GetSettingsHash() string {
+	return o.SettingsHash
+}
+
+// SetSettingsHash sets value to SettingsHash
+func (o *SimpleMonitor) SetSettingsHash(v string) {
+	o.SettingsHash = v
+}
+
+// GetDelayLoop returns value of DelayLoop
+func (o *SimpleMonitor) GetDelayLoop() int {
+	return o.DelayLoop
+}
+
+// SetDelayLoop sets value to DelayLoop
+func (o *SimpleMonitor) SetDelayLoop(v int) {
+	o.DelayLoop = v
+}
+
+// GetEnabled returns value of Enabled
+func (o *SimpleMonitor) GetEnabled() types.StringFlag {
+	return o.Enabled
+}
+
+// SetEnabled sets value to Enabled
+func (o *SimpleMonitor) SetEnabled(v types.StringFlag) {
+	o.Enabled = v
+}
+
+// GetHealthCheck returns value of HealthCheck
+func (o *SimpleMonitor) GetHealthCheck() *SimpleMonitorHealthCheck {
+	return o.HealthCheck
+}
+
+// SetHealthCheck sets value to HealthCheck
+func (o *SimpleMonitor) SetHealthCheck(v *SimpleMonitorHealthCheck) {
+	o.HealthCheck = v
+}
+
+// GetNotifyEmailEnabled returns value of NotifyEmailEnabled
+func (o *SimpleMonitor) GetNotifyEmailEnabled() types.StringFlag {
+	return o.NotifyEmailEnabled
+}
+
+// SetNotifyEmailEnabled sets value to NotifyEmailEnabled
+func (o *SimpleMonitor) SetNotifyEmailEnabled(v types.StringFlag) {
+	o.NotifyEmailEnabled = v
+}
+
+// GetNotifyEmailHTML returns value of NotifyEmailHTML
+func (o *SimpleMonitor) GetNotifyEmailHTML() types.StringFlag {
+	return o.NotifyEmailHTML
+}
+
+// SetNotifyEmailHTML sets value to NotifyEmailHTML
+func (o *SimpleMonitor) SetNotifyEmailHTML(v types.StringFlag) {
+	o.NotifyEmailHTML = v
+}
+
+// GetNotifySlackEnabled returns value of NotifySlackEnabled
+func (o *SimpleMonitor) GetNotifySlackEnabled() types.StringFlag {
+	return o.NotifySlackEnabled
+}
+
+// SetNotifySlackEnabled sets value to NotifySlackEnabled
+func (o *SimpleMonitor) SetNotifySlackEnabled(v types.StringFlag) {
+	o.NotifySlackEnabled = v
+}
+
+// GetSlackWebhooksURL returns value of SlackWebhooksURL
+func (o *SimpleMonitor) GetSlackWebhooksURL() string {
+	return o.SlackWebhooksURL
+}
+
+// SetSlackWebhooksURL sets value to SlackWebhooksURL
+func (o *SimpleMonitor) SetSlackWebhooksURL(v string) {
+	o.SlackWebhooksURL = v
+}
+
+/*************************************************
+* SimpleMonitorHealthCheck
+*************************************************/
+
+// SimpleMonitorHealthCheck represents API parameter/response structure
+type SimpleMonitorHealthCheck struct {
+	Protocol          types.ESimpleMonitorProtocol
+	Port              types.StringNumber
+	Path              string
+	Status            types.StringNumber
+	SNI               types.StringFlag
+	Host              string
+	BasicAuthUsername string
+	BasicAuthPassword string
+	QName             string
+	ExpectedData      string
+	Community         string
+	SNMPVersion       string
+	OID               string
+	RemainingDays     int
+}
+
+// Validate validates by field tags
+func (o *SimpleMonitorHealthCheck) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetProtocol returns value of Protocol
+func (o *SimpleMonitorHealthCheck) GetProtocol() types.ESimpleMonitorProtocol {
+	return o.Protocol
+}
+
+// SetProtocol sets value to Protocol
+func (o *SimpleMonitorHealthCheck) SetProtocol(v types.ESimpleMonitorProtocol) {
+	o.Protocol = v
+}
+
+// GetPort returns value of Port
+func (o *SimpleMonitorHealthCheck) GetPort() types.StringNumber {
+	return o.Port
+}
+
+// SetPort sets value to Port
+func (o *SimpleMonitorHealthCheck) SetPort(v types.StringNumber) {
+	o.Port = v
+}
+
+// GetPath returns value of Path
+func (o *SimpleMonitorHealthCheck) GetPath() string {
+	return o.Path
+}
+
+// SetPath sets value to Path
+func (o *SimpleMonitorHealthCheck) SetPath(v string) {
+	o.Path = v
+}
+
+// GetStatus returns value of Status
+func (o *SimpleMonitorHealthCheck) GetStatus() types.StringNumber {
+	return o.Status
+}
+
+// SetStatus sets value to Status
+func (o *SimpleMonitorHealthCheck) SetStatus(v types.StringNumber) {
+	o.Status = v
+}
+
+// GetSNI returns value of SNI
+func (o *SimpleMonitorHealthCheck) GetSNI() types.StringFlag {
+	return o.SNI
+}
+
+// SetSNI sets value to SNI
+func (o *SimpleMonitorHealthCheck) SetSNI(v types.StringFlag) {
+	o.SNI = v
+}
+
+// GetHost returns value of Host
+func (o *SimpleMonitorHealthCheck) GetHost() string {
+	return o.Host
+}
+
+// SetHost sets value to Host
+func (o *SimpleMonitorHealthCheck) SetHost(v string) {
+	o.Host = v
+}
+
+// GetBasicAuthUsername returns value of BasicAuthUsername
+func (o *SimpleMonitorHealthCheck) GetBasicAuthUsername() string {
+	return o.BasicAuthUsername
+}
+
+// SetBasicAuthUsername sets value to BasicAuthUsername
+func (o *SimpleMonitorHealthCheck) SetBasicAuthUsername(v string) {
+	o.BasicAuthUsername = v
+}
+
+// GetBasicAuthPassword returns value of BasicAuthPassword
+func (o *SimpleMonitorHealthCheck) GetBasicAuthPassword() string {
+	return o.BasicAuthPassword
+}
+
+// SetBasicAuthPassword sets value to BasicAuthPassword
+func (o *SimpleMonitorHealthCheck) SetBasicAuthPassword(v string) {
+	o.BasicAuthPassword = v
+}
+
+// GetQName returns value of QName
+func (o *SimpleMonitorHealthCheck) GetQName() string {
+	return o.QName
+}
+
+// SetQName sets value to QName
+func (o *SimpleMonitorHealthCheck) SetQName(v string) {
+	o.QName = v
+}
+
+// GetExpectedData returns value of ExpectedData
+func (o *SimpleMonitorHealthCheck) GetExpectedData() string {
+	return o.ExpectedData
+}
+
+// SetExpectedData sets value to ExpectedData
+func (o *SimpleMonitorHealthCheck) SetExpectedData(v string) {
+	o.ExpectedData = v
+}
+
+// GetCommunity returns value of Community
+func (o *SimpleMonitorHealthCheck) GetCommunity() string {
+	return o.Community
+}
+
+// SetCommunity sets value to Community
+func (o *SimpleMonitorHealthCheck) SetCommunity(v string) {
+	o.Community = v
+}
+
+// GetSNMPVersion returns value of SNMPVersion
+func (o *SimpleMonitorHealthCheck) GetSNMPVersion() string {
+	return o.SNMPVersion
+}
+
+// SetSNMPVersion sets value to SNMPVersion
+func (o *SimpleMonitorHealthCheck) SetSNMPVersion(v string) {
+	o.SNMPVersion = v
+}
+
+// GetOID returns value of OID
+func (o *SimpleMonitorHealthCheck) GetOID() string {
+	return o.OID
+}
+
+// SetOID sets value to OID
+func (o *SimpleMonitorHealthCheck) SetOID(v string) {
+	o.OID = v
+}
+
+// GetRemainingDays returns value of RemainingDays
+func (o *SimpleMonitorHealthCheck) GetRemainingDays() int {
+	return o.RemainingDays
+}
+
+// SetRemainingDays sets value to RemainingDays
+func (o *SimpleMonitorHealthCheck) SetRemainingDays(v int) {
+	o.RemainingDays = v
+}
+
+/*************************************************
+* SimpleMonitorCreateRequest
+*************************************************/
+
+// SimpleMonitorCreateRequest represents API parameter/response structure
+type SimpleMonitorCreateRequest struct {
+	Class              string                    `mapconv:"Provider.Class,default=simplemon"`
+	Target             string                    `mapconv:"Name/Status.Target" validate:"required"`
+	DelayLoop          int                       `mapconv:"Settings.SimpleMonitor.DelayLoop,default=60" validate:"min=60,max=3600"`
+	Enabled            types.StringFlag          `mapconv:"Settings.SimpleMonitor.Enabled"`
+	HealthCheck        *SimpleMonitorHealthCheck `mapconv:"Settings.SimpleMonitor.HealthCheck,recursive"`
+	NotifyEmailEnabled types.StringFlag          `mapconv:"Settings.SimpleMonitor.NotifyEmail.Enabled"`
+	NotifyEmailHTML    types.StringFlag          `mapconv:"Settings.SimpleMonitor.NotifyEmail.HTML"`
+	NotifySlackEnabled types.StringFlag          `mapconv:"Settings.SimpleMonitor.NotifySlack.Enabled"`
+	SlackWebhooksURL   string                    `mapconv:"Settings.SimpleMonitor.NotifySlack.IncomingWebhooksURL"`
+	Description        string                    `validate:"min=0,max=512"`
+	Tags               []string
+	IconID             types.ID `mapconv:"Icon.ID"`
+}
+
+// Validate validates by field tags
+func (o *SimpleMonitorCreateRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetClass returns value of Class
+func (o *SimpleMonitorCreateRequest) GetClass() string {
+	return o.Class
+}
+
+// SetClass sets value to Class
+func (o *SimpleMonitorCreateRequest) SetClass(v string) {
+	o.Class = v
+}
+
+// GetTarget returns value of Target
+func (o *SimpleMonitorCreateRequest) GetTarget() string {
+	return o.Target
+}
+
+// SetTarget sets value to Target
+func (o *SimpleMonitorCreateRequest) SetTarget(v string) {
+	o.Target = v
+}
+
+// GetDelayLoop returns value of DelayLoop
+func (o *SimpleMonitorCreateRequest) GetDelayLoop() int {
+	return o.DelayLoop
+}
+
+// SetDelayLoop sets value to DelayLoop
+func (o *SimpleMonitorCreateRequest) SetDelayLoop(v int) {
+	o.DelayLoop = v
+}
+
+// GetEnabled returns value of Enabled
+func (o *SimpleMonitorCreateRequest) GetEnabled() types.StringFlag {
+	return o.Enabled
+}
+
+// SetEnabled sets value to Enabled
+func (o *SimpleMonitorCreateRequest) SetEnabled(v types.StringFlag) {
+	o.Enabled = v
+}
+
+// GetHealthCheck returns value of HealthCheck
+func (o *SimpleMonitorCreateRequest) GetHealthCheck() *SimpleMonitorHealthCheck {
+	return o.HealthCheck
+}
+
+// SetHealthCheck sets value to HealthCheck
+func (o *SimpleMonitorCreateRequest) SetHealthCheck(v *SimpleMonitorHealthCheck) {
+	o.HealthCheck = v
+}
+
+// GetNotifyEmailEnabled returns value of NotifyEmailEnabled
+func (o *SimpleMonitorCreateRequest) GetNotifyEmailEnabled() types.StringFlag {
+	return o.NotifyEmailEnabled
+}
+
+// SetNotifyEmailEnabled sets value to NotifyEmailEnabled
+func (o *SimpleMonitorCreateRequest) SetNotifyEmailEnabled(v types.StringFlag) {
+	o.NotifyEmailEnabled = v
+}
+
+// GetNotifyEmailHTML returns value of NotifyEmailHTML
+func (o *SimpleMonitorCreateRequest) GetNotifyEmailHTML() types.StringFlag {
+	return o.NotifyEmailHTML
+}
+
+// SetNotifyEmailHTML sets value to NotifyEmailHTML
+func (o *SimpleMonitorCreateRequest) SetNotifyEmailHTML(v types.StringFlag) {
+	o.NotifyEmailHTML = v
+}
+
+// GetNotifySlackEnabled returns value of NotifySlackEnabled
+func (o *SimpleMonitorCreateRequest) GetNotifySlackEnabled() types.StringFlag {
+	return o.NotifySlackEnabled
+}
+
+// SetNotifySlackEnabled sets value to NotifySlackEnabled
+func (o *SimpleMonitorCreateRequest) SetNotifySlackEnabled(v types.StringFlag) {
+	o.NotifySlackEnabled = v
+}
+
+// GetSlackWebhooksURL returns value of SlackWebhooksURL
+func (o *SimpleMonitorCreateRequest) GetSlackWebhooksURL() string {
+	return o.SlackWebhooksURL
+}
+
+// SetSlackWebhooksURL sets value to SlackWebhooksURL
+func (o *SimpleMonitorCreateRequest) SetSlackWebhooksURL(v string) {
+	o.SlackWebhooksURL = v
+}
+
+// GetDescription returns value of Description
+func (o *SimpleMonitorCreateRequest) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *SimpleMonitorCreateRequest) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetTags returns value of Tags
+func (o *SimpleMonitorCreateRequest) GetTags() []string {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *SimpleMonitorCreateRequest) SetTags(v []string) {
+	o.Tags = v
+}
+
+// GetIconID returns value of IconID
+func (o *SimpleMonitorCreateRequest) GetIconID() types.ID {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *SimpleMonitorCreateRequest) SetIconID(v types.ID) {
+	o.IconID = v
+}
+
+/*************************************************
+* SimpleMonitorUpdateRequest
+*************************************************/
+
+// SimpleMonitorUpdateRequest represents API parameter/response structure
+type SimpleMonitorUpdateRequest struct {
+	DelayLoop          int                       `mapconv:"Settings.SimpleMonitor.DelayLoop,default=60" validate:"min=60,max=3600"`
+	Enabled            types.StringFlag          `mapconv:"Settings.SimpleMonitor.Enabled"`
+	HealthCheck        *SimpleMonitorHealthCheck `mapconv:"Settings.SimpleMonitor.HealthCheck,recursive"`
+	NotifyEmailEnabled types.StringFlag          `mapconv:"Settings.SimpleMonitor.NotifyEmail.Enabled"`
+	NotifyEmailHTML    types.StringFlag          `mapconv:"Settings.SimpleMonitor.NotifyEmail.HTML"`
+	NotifySlackEnabled types.StringFlag          `mapconv:"Settings.SimpleMonitor.NotifySlack.Enabled"`
+	SlackWebhooksURL   string                    `mapconv:"Settings.SimpleMonitor.NotifySlack.IncomingWebhooksURL"`
+	Description        string                    `validate:"min=0,max=512"`
+	Tags               []string
+	IconID             types.ID `mapconv:"Icon.ID"`
+}
+
+// Validate validates by field tags
+func (o *SimpleMonitorUpdateRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetDelayLoop returns value of DelayLoop
+func (o *SimpleMonitorUpdateRequest) GetDelayLoop() int {
+	return o.DelayLoop
+}
+
+// SetDelayLoop sets value to DelayLoop
+func (o *SimpleMonitorUpdateRequest) SetDelayLoop(v int) {
+	o.DelayLoop = v
+}
+
+// GetEnabled returns value of Enabled
+func (o *SimpleMonitorUpdateRequest) GetEnabled() types.StringFlag {
+	return o.Enabled
+}
+
+// SetEnabled sets value to Enabled
+func (o *SimpleMonitorUpdateRequest) SetEnabled(v types.StringFlag) {
+	o.Enabled = v
+}
+
+// GetHealthCheck returns value of HealthCheck
+func (o *SimpleMonitorUpdateRequest) GetHealthCheck() *SimpleMonitorHealthCheck {
+	return o.HealthCheck
+}
+
+// SetHealthCheck sets value to HealthCheck
+func (o *SimpleMonitorUpdateRequest) SetHealthCheck(v *SimpleMonitorHealthCheck) {
+	o.HealthCheck = v
+}
+
+// GetNotifyEmailEnabled returns value of NotifyEmailEnabled
+func (o *SimpleMonitorUpdateRequest) GetNotifyEmailEnabled() types.StringFlag {
+	return o.NotifyEmailEnabled
+}
+
+// SetNotifyEmailEnabled sets value to NotifyEmailEnabled
+func (o *SimpleMonitorUpdateRequest) SetNotifyEmailEnabled(v types.StringFlag) {
+	o.NotifyEmailEnabled = v
+}
+
+// GetNotifyEmailHTML returns value of NotifyEmailHTML
+func (o *SimpleMonitorUpdateRequest) GetNotifyEmailHTML() types.StringFlag {
+	return o.NotifyEmailHTML
+}
+
+// SetNotifyEmailHTML sets value to NotifyEmailHTML
+func (o *SimpleMonitorUpdateRequest) SetNotifyEmailHTML(v types.StringFlag) {
+	o.NotifyEmailHTML = v
+}
+
+// GetNotifySlackEnabled returns value of NotifySlackEnabled
+func (o *SimpleMonitorUpdateRequest) GetNotifySlackEnabled() types.StringFlag {
+	return o.NotifySlackEnabled
+}
+
+// SetNotifySlackEnabled sets value to NotifySlackEnabled
+func (o *SimpleMonitorUpdateRequest) SetNotifySlackEnabled(v types.StringFlag) {
+	o.NotifySlackEnabled = v
+}
+
+// GetSlackWebhooksURL returns value of SlackWebhooksURL
+func (o *SimpleMonitorUpdateRequest) GetSlackWebhooksURL() string {
+	return o.SlackWebhooksURL
+}
+
+// SetSlackWebhooksURL sets value to SlackWebhooksURL
+func (o *SimpleMonitorUpdateRequest) SetSlackWebhooksURL(v string) {
+	o.SlackWebhooksURL = v
+}
+
+// GetDescription returns value of Description
+func (o *SimpleMonitorUpdateRequest) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *SimpleMonitorUpdateRequest) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetTags returns value of Tags
+func (o *SimpleMonitorUpdateRequest) GetTags() []string {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *SimpleMonitorUpdateRequest) SetTags(v []string) {
+	o.Tags = v
+}
+
+// GetIconID returns value of IconID
+func (o *SimpleMonitorUpdateRequest) GetIconID() types.ID {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *SimpleMonitorUpdateRequest) SetIconID(v types.ID) {
+	o.IconID = v
+}
+
+/*************************************************
+* ResponseTimeSecActivity
+*************************************************/
+
+// ResponseTimeSecActivity represents API parameter/response structure
+type ResponseTimeSecActivity struct {
+	Values []*MonitorResponseTimeSecValue `mapconv:"[]ResponseTimeSec"`
+}
+
+// Validate validates by field tags
+func (o *ResponseTimeSecActivity) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetValues returns value of Values
+func (o *ResponseTimeSecActivity) GetValues() []*MonitorResponseTimeSecValue {
+	return o.Values
+}
+
+// SetValues sets value to Values
+func (o *ResponseTimeSecActivity) SetValues(v []*MonitorResponseTimeSecValue) {
+	o.Values = v
+}
+
+/*************************************************
+* MonitorResponseTimeSecValue
+*************************************************/
+
+// MonitorResponseTimeSecValue represents API parameter/response structure
+type MonitorResponseTimeSecValue struct {
+	Time            time.Time `json:",omitempty" mapconv:",omitempty"`
+	ResponseTimeSec float64   `json:",omitempty" mapconv:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *MonitorResponseTimeSecValue) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetTime returns value of Time
+func (o *MonitorResponseTimeSecValue) GetTime() time.Time {
+	return o.Time
+}
+
+// SetTime sets value to Time
+func (o *MonitorResponseTimeSecValue) SetTime(v time.Time) {
+	o.Time = v
+}
+
+// GetResponseTimeSec returns value of ResponseTimeSec
+func (o *MonitorResponseTimeSecValue) GetResponseTimeSec() float64 {
+	return o.ResponseTimeSec
+}
+
+// SetResponseTimeSec sets value to ResponseTimeSec
+func (o *MonitorResponseTimeSecValue) SetResponseTimeSec(v float64) {
+	o.ResponseTimeSec = v
+}
+
+/*************************************************
+* SimpleMonitorHealthStatus
+*************************************************/
+
+// SimpleMonitorHealthStatus represents API parameter/response structure
+type SimpleMonitorHealthStatus struct {
+	LastCheckedAt       time.Time
+	LastHealthChangedAt time.Time
+	Health              types.ESimpleMonitorHealth
+}
+
+// Validate validates by field tags
+func (o *SimpleMonitorHealthStatus) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetLastCheckedAt returns value of LastCheckedAt
+func (o *SimpleMonitorHealthStatus) GetLastCheckedAt() time.Time {
+	return o.LastCheckedAt
+}
+
+// SetLastCheckedAt sets value to LastCheckedAt
+func (o *SimpleMonitorHealthStatus) SetLastCheckedAt(v time.Time) {
+	o.LastCheckedAt = v
+}
+
+// GetLastHealthChangedAt returns value of LastHealthChangedAt
+func (o *SimpleMonitorHealthStatus) GetLastHealthChangedAt() time.Time {
+	return o.LastHealthChangedAt
+}
+
+// SetLastHealthChangedAt sets value to LastHealthChangedAt
+func (o *SimpleMonitorHealthStatus) SetLastHealthChangedAt(v time.Time) {
+	o.LastHealthChangedAt = v
+}
+
+// GetHealth returns value of Health
+func (o *SimpleMonitorHealthStatus) GetHealth() types.ESimpleMonitorHealth {
+	return o.Health
+}
+
+// SetHealth sets value to Health
+func (o *SimpleMonitorHealthStatus) SetHealth(v types.ESimpleMonitorHealth) {
+	o.Health = v
+}
+
+/*************************************************
 * Switch
 *************************************************/
 

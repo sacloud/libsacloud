@@ -375,6 +375,29 @@ func (s *store) setSIM(zone string, value *sacloud.SIM) {
 	s.set(ResourceSIM, zone, value)
 }
 
+func (s *store) getSimpleMonitor(zone string) []*sacloud.SimpleMonitor {
+	values := s.get(ResourceSimpleMonitor, zone)
+	var ret []*sacloud.SimpleMonitor
+	for _, v := range values {
+		if v, ok := v.(*sacloud.SimpleMonitor); ok {
+			ret = append(ret, v)
+		}
+	}
+	return ret
+}
+
+func (s *store) getSimpleMonitorByID(zone string, id types.ID) *sacloud.SimpleMonitor {
+	v := s.getByID(ResourceSimpleMonitor, zone, id)
+	if v, ok := v.(*sacloud.SimpleMonitor); ok {
+		return v
+	}
+	return nil
+}
+
+func (s *store) setSimpleMonitor(zone string, value *sacloud.SimpleMonitor) {
+	s.set(ResourceSimpleMonitor, zone, value)
+}
+
 func (s *store) getSwitch(zone string) []*sacloud.Switch {
 	values := s.get(ResourceSwitch, zone)
 	var ret []*sacloud.Switch

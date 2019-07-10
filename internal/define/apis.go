@@ -17,23 +17,24 @@ import "github.com/sacloud/libsacloud/v2/internal/dsl"
 var APIs dsl.Resources
 
 func init() {
-	APIs.Define(archiveAPI)      // アーカイブ
-	APIs.Define(authStatusAPI)   // 認証情報
-	APIs.Define(autoBackupAPI)   // 自動バックアップ
-	APIs.Define(bridgeAPI)       // ブリッジ
-	APIs.Define(cdromAPI)        // ISOイメージ(CD-ROM)
-	APIs.Define(diskAPI)         // ディスク
-	APIs.Define(dnsAPI)          // DNS
-	APIs.Define(gslbAPI)         // GSLB
-	APIs.Define(interfaceAPI)    // インターフェース(NIC)
-	APIs.Define(internetAPI)     // スイッチ+ルータ
-	APIs.Define(loadBalancerAPI) // ロードバランサ
-	APIs.Define(nfsAPI)          // NFS
-	APIs.Define(noteAPI)         // スタートアップスクリプト
-	APIs.Define(packetFilterAPI) // パケットフィルタ
-	APIs.Define(serverAPI)       // サーバ
-	APIs.Define(simAPI)          // SIM
-	APIs.Define(switchAPI)       // スイッチ
-	APIs.Define(vpcRouterAPI)    // VPCルータ
-	APIs.Define(zoneAPI)         // ゾーン
+	APIs.Define(archiveAPI)       // アーカイブ
+	APIs.Define(authStatusAPI)    // 認証情報
+	APIs.Define(autoBackupAPI)    // 自動バックアップ
+	APIs.Define(bridgeAPI)        // ブリッジ
+	APIs.Define(cdromAPI)         // ISOイメージ(CD-ROM)
+	APIs.Define(diskAPI)          // ディスク
+	APIs.Define(dnsAPI)           // DNS
+	APIs.Define(gslbAPI)          // GSLB
+	APIs.Define(interfaceAPI)     // インターフェース(NIC)
+	APIs.Define(internetAPI)      // スイッチ+ルータ
+	APIs.Define(loadBalancerAPI)  // ロードバランサ
+	APIs.Define(nfsAPI)           // NFS
+	APIs.Define(noteAPI)          // スタートアップスクリプト
+	APIs.Define(packetFilterAPI)  // パケットフィルタ
+	APIs.Define(serverAPI)        // サーバ
+	APIs.Define(simAPI)           // SIM
+	APIs.Define(simpleMonitorAPI) // シンプル監視
+	APIs.Define(switchAPI)        // スイッチ
+	APIs.Define(vpcRouterAPI)     // VPCルータ
+	APIs.Define(zoneAPI)          // ゾーン
 }
