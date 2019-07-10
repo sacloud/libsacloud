@@ -55,6 +55,9 @@ func AddClientFactoryHooks() {
 	sacloud.AddClientFacotyHookFunc("PacketFilter", func(in interface{}) interface{} {
 		return NewPacketFilterTracer(in.(sacloud.PacketFilterAPI))
 	})
+	sacloud.AddClientFacotyHookFunc("ProxyLB", func(in interface{}) interface{} {
+		return NewProxyLBTracer(in.(sacloud.ProxyLBAPI))
+	})
 	sacloud.AddClientFacotyHookFunc("Server", func(in interface{}) interface{} {
 		return NewServerTracer(in.(sacloud.ServerAPI))
 	})
@@ -3747,6 +3750,385 @@ func (t *PacketFilterTracer) Delete(ctx context.Context, zone string, id types.I
 	}
 
 	return err
+}
+
+/*************************************************
+* ProxyLBTracer
+*************************************************/
+
+// ProxyLBTracer is for trace ProxyLBOp operations
+type ProxyLBTracer struct {
+	Internal sacloud.ProxyLBAPI
+}
+
+// NewProxyLBTracer creates new ProxyLBTracer instance
+func NewProxyLBTracer(in sacloud.ProxyLBAPI) sacloud.ProxyLBAPI {
+	return &ProxyLBTracer{
+		Internal: in,
+	}
+}
+
+// Find is API call with trace log
+func (t *ProxyLBTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.ProxyLBFindResult, error) {
+	log.Println("[TRACE] ProxyLBAPI.Find start")
+	targetArguments := struct {
+		Argzone       string                 `json:"zone"`
+		Argconditions *sacloud.FindCondition `json:"conditions"`
+	}{
+		Argzone:       zone,
+		Argconditions: conditions,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] ProxyLBAPI.Find end")
+	}()
+
+	result, err := t.Internal.Find(ctx, zone, conditions)
+	targetResults := struct {
+		Result *sacloud.ProxyLBFindResult
+		Error  error
+	}{
+		Result: result,
+		Error:  err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return result, err
+}
+
+// Create is API call with trace log
+func (t *ProxyLBTracer) Create(ctx context.Context, zone string, param *sacloud.ProxyLBCreateRequest) (*sacloud.ProxyLB, error) {
+	log.Println("[TRACE] ProxyLBAPI.Create start")
+	targetArguments := struct {
+		Argzone  string                        `json:"zone"`
+		Argparam *sacloud.ProxyLBCreateRequest `json:"param"`
+	}{
+		Argzone:  zone,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] ProxyLBAPI.Create end")
+	}()
+
+	resultProxyLB, err := t.Internal.Create(ctx, zone, param)
+	targetResults := struct {
+		ProxyLB *sacloud.ProxyLB
+		Error   error
+	}{
+		ProxyLB: resultProxyLB,
+		Error:   err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultProxyLB, err
+}
+
+// Read is API call with trace log
+func (t *ProxyLBTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.ProxyLB, error) {
+	log.Println("[TRACE] ProxyLBAPI.Read start")
+	targetArguments := struct {
+		Argzone string   `json:"zone"`
+		Argid   types.ID `json:"id"`
+	}{
+		Argzone: zone,
+		Argid:   id,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] ProxyLBAPI.Read end")
+	}()
+
+	resultProxyLB, err := t.Internal.Read(ctx, zone, id)
+	targetResults := struct {
+		ProxyLB *sacloud.ProxyLB
+		Error   error
+	}{
+		ProxyLB: resultProxyLB,
+		Error:   err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultProxyLB, err
+}
+
+// Update is API call with trace log
+func (t *ProxyLBTracer) Update(ctx context.Context, zone string, id types.ID, param *sacloud.ProxyLBUpdateRequest) (*sacloud.ProxyLB, error) {
+	log.Println("[TRACE] ProxyLBAPI.Update start")
+	targetArguments := struct {
+		Argzone  string                        `json:"zone"`
+		Argid    types.ID                      `json:"id"`
+		Argparam *sacloud.ProxyLBUpdateRequest `json:"param"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] ProxyLBAPI.Update end")
+	}()
+
+	resultProxyLB, err := t.Internal.Update(ctx, zone, id, param)
+	targetResults := struct {
+		ProxyLB *sacloud.ProxyLB
+		Error   error
+	}{
+		ProxyLB: resultProxyLB,
+		Error:   err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultProxyLB, err
+}
+
+// Delete is API call with trace log
+func (t *ProxyLBTracer) Delete(ctx context.Context, zone string, id types.ID) error {
+	log.Println("[TRACE] ProxyLBAPI.Delete start")
+	targetArguments := struct {
+		Argzone string   `json:"zone"`
+		Argid   types.ID `json:"id"`
+	}{
+		Argzone: zone,
+		Argid:   id,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] ProxyLBAPI.Delete end")
+	}()
+
+	err := t.Internal.Delete(ctx, zone, id)
+	targetResults := struct {
+		Error error
+	}{
+		Error: err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return err
+}
+
+// ChangePlan is API call with trace log
+func (t *ProxyLBTracer) ChangePlan(ctx context.Context, zone string, id types.ID, param *sacloud.ProxyLBChangePlanRequest) (*sacloud.ProxyLB, error) {
+	log.Println("[TRACE] ProxyLBAPI.ChangePlan start")
+	targetArguments := struct {
+		Argzone  string                            `json:"zone"`
+		Argid    types.ID                          `json:"id"`
+		Argparam *sacloud.ProxyLBChangePlanRequest `json:"param"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] ProxyLBAPI.ChangePlan end")
+	}()
+
+	resultProxyLB, err := t.Internal.ChangePlan(ctx, zone, id, param)
+	targetResults := struct {
+		ProxyLB *sacloud.ProxyLB
+		Error   error
+	}{
+		ProxyLB: resultProxyLB,
+		Error:   err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultProxyLB, err
+}
+
+// GetCertificates is API call with trace log
+func (t *ProxyLBTracer) GetCertificates(ctx context.Context, zone string, id types.ID) (*sacloud.ProxyLBCertificates, error) {
+	log.Println("[TRACE] ProxyLBAPI.GetCertificates start")
+	targetArguments := struct {
+		Argzone string   `json:"zone"`
+		Argid   types.ID `json:"id"`
+	}{
+		Argzone: zone,
+		Argid:   id,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] ProxyLBAPI.GetCertificates end")
+	}()
+
+	resultProxyLBCertificates, err := t.Internal.GetCertificates(ctx, zone, id)
+	targetResults := struct {
+		ProxyLBCertificates *sacloud.ProxyLBCertificates
+		Error               error
+	}{
+		ProxyLBCertificates: resultProxyLBCertificates,
+		Error:               err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultProxyLBCertificates, err
+}
+
+// SetCertificates is API call with trace log
+func (t *ProxyLBTracer) SetCertificates(ctx context.Context, zone string, id types.ID, param *sacloud.ProxyLBSetCertificatesRequest) (*sacloud.ProxyLBCertificates, error) {
+	log.Println("[TRACE] ProxyLBAPI.SetCertificates start")
+	targetArguments := struct {
+		Argzone  string                                 `json:"zone"`
+		Argid    types.ID                               `json:"id"`
+		Argparam *sacloud.ProxyLBSetCertificatesRequest `json:"param"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] ProxyLBAPI.SetCertificates end")
+	}()
+
+	resultProxyLBCertificates, err := t.Internal.SetCertificates(ctx, zone, id, param)
+	targetResults := struct {
+		ProxyLBCertificates *sacloud.ProxyLBCertificates
+		Error               error
+	}{
+		ProxyLBCertificates: resultProxyLBCertificates,
+		Error:               err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultProxyLBCertificates, err
+}
+
+// DeleteCertificates is API call with trace log
+func (t *ProxyLBTracer) DeleteCertificates(ctx context.Context, zone string, id types.ID) error {
+	log.Println("[TRACE] ProxyLBAPI.DeleteCertificates start")
+	targetArguments := struct {
+		Argzone string   `json:"zone"`
+		Argid   types.ID `json:"id"`
+	}{
+		Argzone: zone,
+		Argid:   id,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] ProxyLBAPI.DeleteCertificates end")
+	}()
+
+	err := t.Internal.DeleteCertificates(ctx, zone, id)
+	targetResults := struct {
+		Error error
+	}{
+		Error: err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return err
+}
+
+// RenewLetsEncryptCert is API call with trace log
+func (t *ProxyLBTracer) RenewLetsEncryptCert(ctx context.Context, zone string, id types.ID) error {
+	log.Println("[TRACE] ProxyLBAPI.RenewLetsEncryptCert start")
+	targetArguments := struct {
+		Argzone string   `json:"zone"`
+		Argid   types.ID `json:"id"`
+	}{
+		Argzone: zone,
+		Argid:   id,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] ProxyLBAPI.RenewLetsEncryptCert end")
+	}()
+
+	err := t.Internal.RenewLetsEncryptCert(ctx, zone, id)
+	targetResults := struct {
+		Error error
+	}{
+		Error: err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return err
+}
+
+// HealthStatus is API call with trace log
+func (t *ProxyLBTracer) HealthStatus(ctx context.Context, zone string, id types.ID) (*sacloud.ProxyLBHealth, error) {
+	log.Println("[TRACE] ProxyLBAPI.HealthStatus start")
+	targetArguments := struct {
+		Argzone string   `json:"zone"`
+		Argid   types.ID `json:"id"`
+	}{
+		Argzone: zone,
+		Argid:   id,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] ProxyLBAPI.HealthStatus end")
+	}()
+
+	resultProxyLBHealth, err := t.Internal.HealthStatus(ctx, zone, id)
+	targetResults := struct {
+		ProxyLBHealth *sacloud.ProxyLBHealth
+		Error         error
+	}{
+		ProxyLBHealth: resultProxyLBHealth,
+		Error:         err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultProxyLBHealth, err
 }
 
 /*************************************************

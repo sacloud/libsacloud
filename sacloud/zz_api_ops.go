@@ -124,6 +124,14 @@ func init() {
 		}
 	})
 
+	SetClientFactoryFunc("ProxyLB", func(caller APICaller) interface{} {
+		return &ProxyLBOp{
+			Client:     caller,
+			PathSuffix: "api/cloud/1.1",
+			PathName:   "commonserviceitem",
+		}
+	})
+
 	SetClientFactoryFunc("Server", func(caller APICaller) interface{} {
 		return &ServerOp{
 			Client:     caller,
@@ -4873,6 +4881,468 @@ func (o *PacketFilterOp) Delete(ctx context.Context, zone string, id types.ID) e
 	}
 
 	return nil
+}
+
+/*************************************************
+* ProxyLBOp
+*************************************************/
+
+// ProxyLBOp implements ProxyLBAPI interface
+type ProxyLBOp struct {
+	// Client APICaller
+	Client APICaller
+	// PathSuffix is used when building URL
+	PathSuffix string
+	// PathName is used when building URL
+	PathName string
+}
+
+// NewProxyLBOp creates new ProxyLBOp instance
+func NewProxyLBOp(caller APICaller) ProxyLBAPI {
+	return GetClientFactoryFunc("ProxyLB")(caller).(ProxyLBAPI)
+}
+
+// Find is API call
+func (o *ProxyLBOp) Find(ctx context.Context, zone string, conditions *FindCondition) (*ProxyLBFindResult, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"conditions": conditions,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	if zone == "" {
+		zone = ""
+	}
+	if conditions == nil {
+		conditions = &FindCondition{}
+	}
+	args := &struct {
+		Argzone       string
+		Argconditions *FindCondition `mapconv:",squash"`
+	}{
+		Argzone:       zone,
+		Argconditions: conditions,
+	}
+
+	v := &proxyLBFindRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &proxyLBFindResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &ProxyLBFindResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, err
+}
+
+// Create is API call
+func (o *ProxyLBOp) Create(ctx context.Context, zone string, param *ProxyLBCreateRequest) (*ProxyLB, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"param":      param,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	if zone == "" {
+		zone = ""
+	}
+	if param == nil {
+		param = &ProxyLBCreateRequest{}
+	}
+	args := &struct {
+		Argzone  string
+		Argparam *ProxyLBCreateRequest `mapconv:"CommonServiceItem,recursive"`
+	}{
+		Argzone:  zone,
+		Argparam: param,
+	}
+
+	v := &proxyLBCreateRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
+
+	data, err := o.Client.Do(ctx, "POST", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &proxyLBCreateResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &proxyLBCreateResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results.ProxyLB, nil
+}
+
+// Read is API call
+func (o *ProxyLBOp) Read(ctx context.Context, zone string, id types.ID) (*ProxyLB, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &proxyLBReadResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &proxyLBReadResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results.ProxyLB, nil
+}
+
+// Update is API call
+func (o *ProxyLBOp) Update(ctx context.Context, zone string, id types.ID, param *ProxyLBUpdateRequest) (*ProxyLB, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+		"param":      param,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	if zone == "" {
+		zone = ""
+	}
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	if param == nil {
+		param = &ProxyLBUpdateRequest{}
+	}
+	args := &struct {
+		Argzone  string
+		Argid    types.ID
+		Argparam *ProxyLBUpdateRequest `mapconv:"CommonServiceItem,recursive"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+
+	v := &proxyLBUpdateRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
+
+	data, err := o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &proxyLBUpdateResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &proxyLBUpdateResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results.ProxyLB, nil
+}
+
+// Delete is API call
+func (o *ProxyLBOp) Delete(ctx context.Context, zone string, id types.ID) error {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+	})
+	if err != nil {
+		return err
+	}
+
+	var body interface{}
+
+	_, err = o.Client.Do(ctx, "DELETE", url, body)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// ChangePlan is API call
+func (o *ProxyLBOp) ChangePlan(ctx context.Context, zone string, id types.ID, param *ProxyLBChangePlanRequest) (*ProxyLB, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+		"param":      param,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	if zone == "" {
+		zone = ""
+	}
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	if param == nil {
+		param = &ProxyLBChangePlanRequest{}
+	}
+	args := &struct {
+		Argzone  string
+		Argid    types.ID
+		Argparam *ProxyLBChangePlanRequest `mapconv:"CommonServiceItem,recursive"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+
+	v := &proxyLBChangePlanRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
+
+	data, err := o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &proxyLBChangePlanResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &proxyLBChangePlanResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results.ProxyLB, nil
+}
+
+// GetCertificates is API call
+func (o *ProxyLBOp) GetCertificates(ctx context.Context, zone string, id types.ID) (*ProxyLBCertificates, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/proxylb/sslcertificate", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &proxyLBGetCertificatesResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &proxyLBGetCertificatesResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results.ProxyLBCertificates, nil
+}
+
+// SetCertificates is API call
+func (o *ProxyLBOp) SetCertificates(ctx context.Context, zone string, id types.ID, param *ProxyLBSetCertificatesRequest) (*ProxyLBCertificates, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/proxylb/sslcertificate", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+		"param":      param,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	if zone == "" {
+		zone = ""
+	}
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	if param == nil {
+		param = &ProxyLBSetCertificatesRequest{}
+	}
+	args := &struct {
+		Argzone  string
+		Argid    types.ID
+		Argparam *ProxyLBSetCertificatesRequest `mapconv:"ProxyLB,recursive"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+
+	v := &proxyLBSetCertificatesRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
+
+	data, err := o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &proxyLBSetCertificatesResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &proxyLBSetCertificatesResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results.ProxyLBCertificates, nil
+}
+
+// DeleteCertificates is API call
+func (o *ProxyLBOp) DeleteCertificates(ctx context.Context, zone string, id types.ID) error {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/proxylb/sslcertificate", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+	})
+	if err != nil {
+		return err
+	}
+
+	var body interface{}
+
+	_, err = o.Client.Do(ctx, "DELETE", url, body)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// RenewLetsEncryptCert is API call
+func (o *ProxyLBOp) RenewLetsEncryptCert(ctx context.Context, zone string, id types.ID) error {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/proxylb/letsencryptrenew", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+	})
+	if err != nil {
+		return err
+	}
+
+	var body interface{}
+
+	_, err = o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// HealthStatus is API call
+func (o *ProxyLBOp) HealthStatus(ctx context.Context, zone string, id types.ID) (*ProxyLBHealth, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/health", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &proxyLBHealthStatusResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &proxyLBHealthStatusResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results.ProxyLBHealth, nil
 }
 
 /*************************************************

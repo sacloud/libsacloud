@@ -39,7 +39,7 @@ type ApplianceRemarkServers []*ApplianceRemarkServer
 
 // ApplianceRemarkServer Applianceの稼働している仮想サーバのIPアドレス
 type ApplianceRemarkServer struct {
-	IPAddress string `json:",omitempty" yaml:"ipaddress,omitempty" structs:",omitempty"`
+	IPAddress string `json:",omitempty" yaml:"ip_address,omitempty" structs:",omitempty"`
 }
 
 // ApplianceRemarkSwitch Applianceに接続されているスイッチのID

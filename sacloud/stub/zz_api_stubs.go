@@ -1722,6 +1722,181 @@ func (s *PacketFilterStub) Delete(ctx context.Context, zone string, id types.ID)
 }
 
 /*************************************************
+* ProxyLBStub
+*************************************************/
+
+// ProxyLBFindStubResult is expected values of the Find operation
+type ProxyLBFindStubResult struct {
+	Values *sacloud.ProxyLBFindResult
+	Err    error
+}
+
+// ProxyLBCreateStubResult is expected values of the Create operation
+type ProxyLBCreateStubResult struct {
+	ProxyLB *sacloud.ProxyLB
+	Err     error
+}
+
+// ProxyLBReadStubResult is expected values of the Read operation
+type ProxyLBReadStubResult struct {
+	ProxyLB *sacloud.ProxyLB
+	Err     error
+}
+
+// ProxyLBUpdateStubResult is expected values of the Update operation
+type ProxyLBUpdateStubResult struct {
+	ProxyLB *sacloud.ProxyLB
+	Err     error
+}
+
+// ProxyLBDeleteStubResult is expected values of the Delete operation
+type ProxyLBDeleteStubResult struct {
+	Err error
+}
+
+// ProxyLBChangePlanStubResult is expected values of the ChangePlan operation
+type ProxyLBChangePlanStubResult struct {
+	ProxyLB *sacloud.ProxyLB
+	Err     error
+}
+
+// ProxyLBGetCertificatesStubResult is expected values of the GetCertificates operation
+type ProxyLBGetCertificatesStubResult struct {
+	ProxyLBCertificates *sacloud.ProxyLBCertificates
+	Err                 error
+}
+
+// ProxyLBSetCertificatesStubResult is expected values of the SetCertificates operation
+type ProxyLBSetCertificatesStubResult struct {
+	ProxyLBCertificates *sacloud.ProxyLBCertificates
+	Err                 error
+}
+
+// ProxyLBDeleteCertificatesStubResult is expected values of the DeleteCertificates operation
+type ProxyLBDeleteCertificatesStubResult struct {
+	Err error
+}
+
+// ProxyLBRenewLetsEncryptCertStubResult is expected values of the RenewLetsEncryptCert operation
+type ProxyLBRenewLetsEncryptCertStubResult struct {
+	Err error
+}
+
+// ProxyLBHealthStatusStubResult is expected values of the HealthStatus operation
+type ProxyLBHealthStatusStubResult struct {
+	ProxyLBHealth *sacloud.ProxyLBHealth
+	Err           error
+}
+
+// ProxyLBStub is for trace ProxyLBOp operations
+type ProxyLBStub struct {
+	FindStubResult                 *ProxyLBFindStubResult
+	CreateStubResult               *ProxyLBCreateStubResult
+	ReadStubResult                 *ProxyLBReadStubResult
+	UpdateStubResult               *ProxyLBUpdateStubResult
+	DeleteStubResult               *ProxyLBDeleteStubResult
+	ChangePlanStubResult           *ProxyLBChangePlanStubResult
+	GetCertificatesStubResult      *ProxyLBGetCertificatesStubResult
+	SetCertificatesStubResult      *ProxyLBSetCertificatesStubResult
+	DeleteCertificatesStubResult   *ProxyLBDeleteCertificatesStubResult
+	RenewLetsEncryptCertStubResult *ProxyLBRenewLetsEncryptCertStubResult
+	HealthStatusStubResult         *ProxyLBHealthStatusStubResult
+}
+
+// NewProxyLBStub creates new ProxyLBStub instance
+func NewProxyLBStub(caller sacloud.APICaller) sacloud.ProxyLBAPI {
+	return &ProxyLBStub{}
+}
+
+// Find is API call with trace log
+func (s *ProxyLBStub) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.ProxyLBFindResult, error) {
+	if s.FindStubResult == nil {
+		log.Fatal("ProxyLBStub.FindStubResult is not set")
+	}
+	return s.FindStubResult.Values, s.FindStubResult.Err
+}
+
+// Create is API call with trace log
+func (s *ProxyLBStub) Create(ctx context.Context, zone string, param *sacloud.ProxyLBCreateRequest) (*sacloud.ProxyLB, error) {
+	if s.CreateStubResult == nil {
+		log.Fatal("ProxyLBStub.CreateStubResult is not set")
+	}
+	return s.CreateStubResult.ProxyLB, s.CreateStubResult.Err
+}
+
+// Read is API call with trace log
+func (s *ProxyLBStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.ProxyLB, error) {
+	if s.ReadStubResult == nil {
+		log.Fatal("ProxyLBStub.ReadStubResult is not set")
+	}
+	return s.ReadStubResult.ProxyLB, s.ReadStubResult.Err
+}
+
+// Update is API call with trace log
+func (s *ProxyLBStub) Update(ctx context.Context, zone string, id types.ID, param *sacloud.ProxyLBUpdateRequest) (*sacloud.ProxyLB, error) {
+	if s.UpdateStubResult == nil {
+		log.Fatal("ProxyLBStub.UpdateStubResult is not set")
+	}
+	return s.UpdateStubResult.ProxyLB, s.UpdateStubResult.Err
+}
+
+// Delete is API call with trace log
+func (s *ProxyLBStub) Delete(ctx context.Context, zone string, id types.ID) error {
+	if s.DeleteStubResult == nil {
+		log.Fatal("ProxyLBStub.DeleteStubResult is not set")
+	}
+	return s.DeleteStubResult.Err
+}
+
+// ChangePlan is API call with trace log
+func (s *ProxyLBStub) ChangePlan(ctx context.Context, zone string, id types.ID, param *sacloud.ProxyLBChangePlanRequest) (*sacloud.ProxyLB, error) {
+	if s.ChangePlanStubResult == nil {
+		log.Fatal("ProxyLBStub.ChangePlanStubResult is not set")
+	}
+	return s.ChangePlanStubResult.ProxyLB, s.ChangePlanStubResult.Err
+}
+
+// GetCertificates is API call with trace log
+func (s *ProxyLBStub) GetCertificates(ctx context.Context, zone string, id types.ID) (*sacloud.ProxyLBCertificates, error) {
+	if s.GetCertificatesStubResult == nil {
+		log.Fatal("ProxyLBStub.GetCertificatesStubResult is not set")
+	}
+	return s.GetCertificatesStubResult.ProxyLBCertificates, s.GetCertificatesStubResult.Err
+}
+
+// SetCertificates is API call with trace log
+func (s *ProxyLBStub) SetCertificates(ctx context.Context, zone string, id types.ID, param *sacloud.ProxyLBSetCertificatesRequest) (*sacloud.ProxyLBCertificates, error) {
+	if s.SetCertificatesStubResult == nil {
+		log.Fatal("ProxyLBStub.SetCertificatesStubResult is not set")
+	}
+	return s.SetCertificatesStubResult.ProxyLBCertificates, s.SetCertificatesStubResult.Err
+}
+
+// DeleteCertificates is API call with trace log
+func (s *ProxyLBStub) DeleteCertificates(ctx context.Context, zone string, id types.ID) error {
+	if s.DeleteCertificatesStubResult == nil {
+		log.Fatal("ProxyLBStub.DeleteCertificatesStubResult is not set")
+	}
+	return s.DeleteCertificatesStubResult.Err
+}
+
+// RenewLetsEncryptCert is API call with trace log
+func (s *ProxyLBStub) RenewLetsEncryptCert(ctx context.Context, zone string, id types.ID) error {
+	if s.RenewLetsEncryptCertStubResult == nil {
+		log.Fatal("ProxyLBStub.RenewLetsEncryptCertStubResult is not set")
+	}
+	return s.RenewLetsEncryptCertStubResult.Err
+}
+
+// HealthStatus is API call with trace log
+func (s *ProxyLBStub) HealthStatus(ctx context.Context, zone string, id types.ID) (*sacloud.ProxyLBHealth, error) {
+	if s.HealthStatusStubResult == nil {
+		log.Fatal("ProxyLBStub.HealthStatusStubResult is not set")
+	}
+	return s.HealthStatusStubResult.ProxyLBHealth, s.HealthStatusStubResult.Err
+}
+
+/*************************************************
 * ServerStub
 *************************************************/
 

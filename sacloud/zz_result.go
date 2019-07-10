@@ -529,6 +529,64 @@ type packetFilterUpdateResult struct {
 	PacketFilter *PacketFilter `json:",omitempty" mapconv:"PacketFilter,omitempty,recursive"`
 }
 
+// ProxyLBFindResult represents the Result of API
+type ProxyLBFindResult struct {
+	Total int `json:",omitempty"` // Total count of target resources
+	From  int `json:",omitempty"` // Current page number
+	Count int `json:",omitempty"` // Count of current page
+
+	ProxyLBs []*ProxyLB `json:",omitempty" mapconv:"[]CommonServiceItems,omitempty,recursive"`
+}
+
+// proxyLBCreateResult represents the Result of API
+type proxyLBCreateResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	ProxyLB *ProxyLB `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
+}
+
+// proxyLBReadResult represents the Result of API
+type proxyLBReadResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	ProxyLB *ProxyLB `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
+}
+
+// proxyLBUpdateResult represents the Result of API
+type proxyLBUpdateResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	ProxyLB *ProxyLB `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
+}
+
+// proxyLBChangePlanResult represents the Result of API
+type proxyLBChangePlanResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	ProxyLB *ProxyLB `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
+}
+
+// proxyLBGetCertificatesResult represents the Result of API
+type proxyLBGetCertificatesResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	ProxyLBCertificates *ProxyLBCertificates `json:",omitempty" mapconv:"ProxyLB,omitempty,recursive"`
+}
+
+// proxyLBSetCertificatesResult represents the Result of API
+type proxyLBSetCertificatesResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	ProxyLBCertificates *ProxyLBCertificates `json:",omitempty" mapconv:"ProxyLB,omitempty,recursive"`
+}
+
+// proxyLBHealthStatusResult represents the Result of API
+type proxyLBHealthStatusResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	ProxyLBHealth *ProxyLBHealth `json:",omitempty" mapconv:"ProxyLB,omitempty,recursive"`
+}
+
 // ServerFindResult represents the Result of API
 type ServerFindResult struct {
 	Total int `json:",omitempty"` // Total count of target resources

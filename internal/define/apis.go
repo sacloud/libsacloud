@@ -31,6 +31,7 @@ func init() {
 	APIs.Define(nfsAPI)           // NFS
 	APIs.Define(noteAPI)          // スタートアップスクリプト
 	APIs.Define(packetFilterAPI)  // パケットフィルタ
+	APIs.Define(proxyLBAPI)       // エンハンスドロードバランサ
 	APIs.Define(serverAPI)        // サーバ
 	APIs.Define(simAPI)           // SIM
 	APIs.Define(simpleMonitorAPI) // シンプル監視
