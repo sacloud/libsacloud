@@ -305,6 +305,33 @@ func Status(resourceName string, nakedType meta.Type, result *dsl.Model) *dsl.Op
 	}
 }
 
+// HealthStatus ステータス取得操作を定義(シンプル監視)
+func HealthStatus(resourceName string, nakedType meta.Type, result *dsl.Model) *dsl.Operation {
+	payloadName := names.ResourceFieldName(resourceName, dsl.PayloadForms.Singular)
+	return &dsl.Operation{
+		ResourceName: resourceName,
+		Name:         "HealthStatus",
+		Arguments: dsl.Arguments{
+			dsl.ArgumentZone,
+			dsl.ArgumentID,
+		},
+		PathFormat: dsl.IDAndSuffixPathFormat("health"),
+		Method:     http.MethodGet,
+		ResponseEnvelope: dsl.ResponseEnvelope(&dsl.EnvelopePayloadDesc{
+			Type: nakedType,
+			Name: payloadName,
+		}),
+		Results: dsl.Results{
+			{
+				SourceField: payloadName,
+				DestField:   result.Name,
+				IsPlural:    false,
+				Model:       result,
+			},
+		},
+	}
+}
+
 // OpenFTP FTPオープン操作を定義
 func OpenFTP(resourceName string, openParam, result *dsl.Model) *dsl.Operation {
 	return &dsl.Operation{

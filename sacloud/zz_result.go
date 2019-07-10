@@ -658,6 +658,20 @@ type simpleMonitorUpdateResult struct {
 	SimpleMonitor *SimpleMonitor `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
 }
 
+// simpleMonitorMonitorResponseTimeResult represents the Result of API
+type simpleMonitorMonitorResponseTimeResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	ResponseTimeSecActivity *ResponseTimeSecActivity `json:",omitempty" mapconv:"Data,omitempty,recursive"`
+}
+
+// simpleMonitorHealthStatusResult represents the Result of API
+type simpleMonitorHealthStatusResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	SimpleMonitorHealthStatus *SimpleMonitorHealthStatus `json:",omitempty" mapconv:"SimpleMonitor,omitempty,recursive"`
+}
+
 // SwitchFindResult represents the Result of API
 type SwitchFindResult struct {
 	Total int `json:",omitempty"` // Total count of target resources

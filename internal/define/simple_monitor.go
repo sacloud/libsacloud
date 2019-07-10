@@ -6,6 +6,7 @@ import (
 	"github.com/sacloud/libsacloud/v2/internal/dsl"
 	"github.com/sacloud/libsacloud/v2/internal/dsl/meta"
 	"github.com/sacloud/libsacloud/v2/sacloud/naked"
+	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
 const (
@@ -33,11 +34,19 @@ var simpleMonitorAPI = &dsl.Resource{
 
 		// delete
 		ops.Delete(simpleMonitorAPIName),
+
+		// momitor
+		ops.MonitorChild(simpleMonitorAPIName, "ResponseTime", "/activity/responsetimesec",
+			monitorParameter, monitors.responseTimeSecModel()),
+
+		// health check
+		ops.HealthStatus(simpleMonitorAPIName, simpleMonitorHealthStatusNakedType, simpleMonitorHealthStatus),
 	},
 }
 
 var (
-	simpleMonitorNakedType = meta.Static(naked.SimpleMonitor{})
+	simpleMonitorNakedType             = meta.Static(naked.SimpleMonitor{})
+	simpleMonitorHealthStatusNakedType = meta.Static(naked.SimpleMonitorHealthCheckStatus{})
 
 	simpleMonitorView = &dsl.Model{
 		Name:      simpleMonitorAPIName,
@@ -129,6 +138,25 @@ var (
 			fields.Description(),
 			fields.Tags(),
 			fields.IconID(),
+		},
+	}
+
+	simpleMonitorHealthStatus = &dsl.Model{
+		Name:      "SimpleMonitorHealthStatus",
+		NakedType: simpleMonitorHealthStatusNakedType,
+		Fields: []*dsl.FieldDesc{
+			{
+				Name: "LastCheckedAt",
+				Type: meta.TypeTime,
+			},
+			{
+				Name: "LastHealthChangedAt",
+				Type: meta.TypeTime,
+			},
+			{
+				Name: "Health",
+				Type: meta.Static(types.ESimpleMonitorHealth("")),
+			},
 		},
 	}
 )

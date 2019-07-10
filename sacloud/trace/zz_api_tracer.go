@@ -4847,6 +4847,74 @@ func (t *SimpleMonitorTracer) Delete(ctx context.Context, zone string, id types.
 	return err
 }
 
+// MonitorResponseTime is API call with trace log
+func (t *SimpleMonitorTracer) MonitorResponseTime(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.ResponseTimeSecActivity, error) {
+	log.Println("[TRACE] SimpleMonitorTracer.MonitorResponseTime start")
+	targetArguments := struct {
+		Argzone      string                    `json:"zone"`
+		Argid        types.ID                  `json:"id"`
+		Argcondition *sacloud.MonitorCondition `json:"condition"`
+	}{
+		Argzone:      zone,
+		Argid:        id,
+		Argcondition: condition,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] SimpleMonitorTracer.MonitorResponseTime end")
+	}()
+
+	resultResponseTimeSecActivity, err := t.Internal.MonitorResponseTime(ctx, zone, id, condition)
+	targetResults := struct {
+		ResponseTimeSecActivity *sacloud.ResponseTimeSecActivity
+		Error                   error
+	}{
+		ResponseTimeSecActivity: resultResponseTimeSecActivity,
+		Error:                   err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultResponseTimeSecActivity, err
+}
+
+// HealthStatus is API call with trace log
+func (t *SimpleMonitorTracer) HealthStatus(ctx context.Context, zone string, id types.ID) (*sacloud.SimpleMonitorHealthStatus, error) {
+	log.Println("[TRACE] SimpleMonitorTracer.HealthStatus start")
+	targetArguments := struct {
+		Argzone string   `json:"zone"`
+		Argid   types.ID `json:"id"`
+	}{
+		Argzone: zone,
+		Argid:   id,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] SimpleMonitorTracer.HealthStatus end")
+	}()
+
+	resultSimpleMonitorHealthStatus, err := t.Internal.HealthStatus(ctx, zone, id)
+	targetResults := struct {
+		SimpleMonitorHealthStatus *sacloud.SimpleMonitorHealthStatus
+		Error                     error
+	}{
+		SimpleMonitorHealthStatus: resultSimpleMonitorHealthStatus,
+		Error:                     err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultSimpleMonitorHealthStatus, err
+}
+
 /*************************************************
 * SwitchTracer
 *************************************************/

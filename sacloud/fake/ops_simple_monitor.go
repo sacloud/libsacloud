@@ -2,6 +2,7 @@ package fake
 
 import (
 	"context"
+	"time"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
@@ -71,4 +72,42 @@ func (o *SimpleMonitorOp) Delete(ctx context.Context, zone string, id types.ID) 
 
 	s.delete(o.key, sacloud.APIDefaultZone, id)
 	return nil
+}
+
+// MonitorResponseTime is fake implementation
+func (o *SimpleMonitorOp) MonitorResponseTime(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.ResponseTimeSecActivity, error) {
+	_, err := o.Read(ctx, zone, id)
+	if err != nil {
+		return nil, err
+	}
+	now := time.Now().Truncate(time.Second)
+	m := now.Minute() % 5
+	if m != 0 {
+		now.Add(time.Duration(m) * time.Minute)
+	}
+
+	res := &sacloud.ResponseTimeSecActivity{}
+	for i := 0; i < 5; i++ {
+		res.Values = append(res.Values, &sacloud.MonitorResponseTimeSecValue{
+			Time:            now.Add(time.Duration(i*-5) * time.Minute),
+			ResponseTimeSec: float64(random(1000)),
+		})
+	}
+
+	return res, nil
+}
+
+// HealthStatus is fake implementation
+func (o *SimpleMonitorOp) HealthStatus(ctx context.Context, zone string, id types.ID) (*sacloud.SimpleMonitorHealthStatus, error) {
+	_, err := o.Read(ctx, zone, id)
+	if err != nil {
+		return nil, err
+	}
+
+	return &sacloud.SimpleMonitorHealthStatus{
+		LastCheckedAt:       time.Now(),
+		LastHealthChangedAt: time.Now(),
+		Health:              types.SimpleMonitorHealth.Up,
+	}, nil
+
 }

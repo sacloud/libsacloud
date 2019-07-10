@@ -2171,13 +2171,27 @@ type SimpleMonitorDeleteStubResult struct {
 	Err error
 }
 
+// SimpleMonitorMonitorResponseTimeStubResult is expected values of the MonitorResponseTime operation
+type SimpleMonitorMonitorResponseTimeStubResult struct {
+	ResponseTimeSecActivity *sacloud.ResponseTimeSecActivity
+	Err                     error
+}
+
+// SimpleMonitorHealthStatusStubResult is expected values of the HealthStatus operation
+type SimpleMonitorHealthStatusStubResult struct {
+	SimpleMonitorHealthStatus *sacloud.SimpleMonitorHealthStatus
+	Err                       error
+}
+
 // SimpleMonitorStub is for trace SimpleMonitorOp operations
 type SimpleMonitorStub struct {
-	FindStubResult   *SimpleMonitorFindStubResult
-	CreateStubResult *SimpleMonitorCreateStubResult
-	ReadStubResult   *SimpleMonitorReadStubResult
-	UpdateStubResult *SimpleMonitorUpdateStubResult
-	DeleteStubResult *SimpleMonitorDeleteStubResult
+	FindStubResult                *SimpleMonitorFindStubResult
+	CreateStubResult              *SimpleMonitorCreateStubResult
+	ReadStubResult                *SimpleMonitorReadStubResult
+	UpdateStubResult              *SimpleMonitorUpdateStubResult
+	DeleteStubResult              *SimpleMonitorDeleteStubResult
+	MonitorResponseTimeStubResult *SimpleMonitorMonitorResponseTimeStubResult
+	HealthStatusStubResult        *SimpleMonitorHealthStatusStubResult
 }
 
 // NewSimpleMonitorStub creates new SimpleMonitorStub instance
@@ -2223,6 +2237,22 @@ func (s *SimpleMonitorStub) Delete(ctx context.Context, zone string, id types.ID
 		log.Fatal("SimpleMonitorStub.DeleteStubResult is not set")
 	}
 	return s.DeleteStubResult.Err
+}
+
+// MonitorResponseTime is API call with trace log
+func (s *SimpleMonitorStub) MonitorResponseTime(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.ResponseTimeSecActivity, error) {
+	if s.MonitorResponseTimeStubResult == nil {
+		log.Fatal("SimpleMonitorStub.MonitorResponseTimeStubResult is not set")
+	}
+	return s.MonitorResponseTimeStubResult.ResponseTimeSecActivity, s.MonitorResponseTimeStubResult.Err
+}
+
+// HealthStatus is API call with trace log
+func (s *SimpleMonitorStub) HealthStatus(ctx context.Context, zone string, id types.ID) (*sacloud.SimpleMonitorHealthStatus, error) {
+	if s.HealthStatusStubResult == nil {
+		log.Fatal("SimpleMonitorStub.HealthStatusStubResult is not set")
+	}
+	return s.HealthStatusStubResult.SimpleMonitorHealthStatus, s.HealthStatusStubResult.Err
 }
 
 /*************************************************
