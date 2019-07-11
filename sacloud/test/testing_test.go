@@ -340,6 +340,22 @@ func AssertTrue(t TestT, value bool, targetName string) error {
 	return nil
 }
 
+// AssertEmpty emptyチェック
+func AssertEmpty(t TestT, object interface{}, targetName string) error {
+	if !assert.Empty(t, object) {
+		return fmt.Errorf("assert.Empty is failed: %s", targetName)
+	}
+	return nil
+}
+
+// AssertNotEmpty not emptyチェック
+func AssertNotEmpty(t TestT, object interface{}, targetName string) error {
+	if !assert.NotEmpty(t, object) {
+		return fmt.Errorf("assert.NotEmpty is failed: %s", targetName)
+	}
+	return nil
+}
+
 // DoAsserts アサーションを複数適用、最初のエラーを返す
 func DoAsserts(funcs ...func() error) error {
 	for _, f := range funcs {
@@ -348,4 +364,53 @@ func DoAsserts(funcs ...func() error) error {
 		}
 	}
 	return nil
+}
+
+// AssertEqualFunc 値の比較
+func AssertEqualFunc(t TestT, expected interface{}, actual interface{}, targetName string) func() error {
+	return func() error {
+		return AssertEqual(t, expected, actual, targetName)
+	}
+}
+
+// AssertLenFunc lengthのチェック
+func AssertLenFunc(t TestT, object interface{}, length int, targetName string) func() error {
+	return func() error {
+		return AssertLen(t, object, length, targetName)
+	}
+}
+
+// AssertNilFunc nilチェック
+func AssertNilFunc(t TestT, object interface{}, targetName string) func() error {
+	return func() error {
+		return AssertNil(t, object, targetName)
+	}
+}
+
+// AssertNotNilFunc not nilチェック
+func AssertNotNilFunc(t TestT, object interface{}, targetName string) func() error {
+	return func() error {
+		return AssertNotNil(t, object, targetName)
+	}
+}
+
+// AssertTrueFunc trueチェック
+func AssertTrueFunc(t TestT, value bool, targetName string) func() error {
+	return func() error {
+		return AssertTrue(t, value, targetName)
+	}
+}
+
+// AssertEmptyFunc emptyチェック
+func AssertEmptyFunc(t TestT, object interface{}, targetName string) func() error {
+	return func() error {
+		return AssertEmpty(t, object, targetName)
+	}
+}
+
+// AssertNotEmptyFunc not emptyチェック
+func AssertNotEmptyFunc(t TestT, object interface{}, targetName string) func() error {
+	return func() error {
+		return AssertNotEmpty(t, object, targetName)
+	}
 }

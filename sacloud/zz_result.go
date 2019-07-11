@@ -760,6 +760,43 @@ type simpleMonitorHealthStatusResult struct {
 	SimpleMonitorHealthStatus *SimpleMonitorHealthStatus `json:",omitempty" mapconv:"SimpleMonitor,omitempty,recursive"`
 }
 
+// SSHKeyFindResult represents the Result of API
+type SSHKeyFindResult struct {
+	Total int `json:",omitempty"` // Total count of target resources
+	From  int `json:",omitempty"` // Current page number
+	Count int `json:",omitempty"` // Count of current page
+
+	SSHKeys []*SSHKey `json:",omitempty" mapconv:"[]SSHKeys,omitempty,recursive"`
+}
+
+// sSHKeyCreateResult represents the Result of API
+type sSHKeyCreateResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	SSHKey *SSHKey `json:",omitempty" mapconv:"SSHKey,omitempty,recursive"`
+}
+
+// sSHKeyGenerateResult represents the Result of API
+type sSHKeyGenerateResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	SSHKeyGenerated *SSHKeyGenerated `json:",omitempty" mapconv:"SSHKey,omitempty,recursive"`
+}
+
+// sSHKeyReadResult represents the Result of API
+type sSHKeyReadResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	SSHKey *SSHKey `json:",omitempty" mapconv:"SSHKey,omitempty,recursive"`
+}
+
+// sSHKeyUpdateResult represents the Result of API
+type sSHKeyUpdateResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	SSHKey *SSHKey `json:",omitempty" mapconv:"SSHKey,omitempty,recursive"`
+}
+
 // SwitchFindResult represents the Result of API
 type SwitchFindResult struct {
 	Total int `json:",omitempty"` // Total count of target resources

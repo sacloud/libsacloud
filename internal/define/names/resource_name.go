@@ -1,6 +1,7 @@
 package names
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/sacloud/libsacloud/v2/internal/dsl"
@@ -30,10 +31,15 @@ func ResourceFieldName(resourceName string, form dsl.PayloadForm) string {
 
 // CreateParameterName Create操作に渡すパラメータの名称
 func CreateParameterName(resourceName string) string {
-	return resourceName + "CreateRequest"
+	return RequestParameterName(resourceName, "Create")
 }
 
-// UpdateParameterName Create操作に渡すパラメータの名称
+// UpdateParameterName Update操作に渡すパラメータの名称
 func UpdateParameterName(resourceName string) string {
-	return resourceName + "UpdateRequest"
+	return RequestParameterName(resourceName, "Update")
+}
+
+// RequestParameterName 任意の操作に渡すパラメータの名称
+func RequestParameterName(resourceName, funcName string) string {
+	return fmt.Sprintf("%s%sRequest", resourceName, funcName)
 }

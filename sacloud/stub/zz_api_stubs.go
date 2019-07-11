@@ -2518,6 +2518,108 @@ func (s *SimpleMonitorStub) HealthStatus(ctx context.Context, zone string, id ty
 }
 
 /*************************************************
+* SSHKeyStub
+*************************************************/
+
+// SSHKeyFindStubResult is expected values of the Find operation
+type SSHKeyFindStubResult struct {
+	Values *sacloud.SSHKeyFindResult
+	Err    error
+}
+
+// SSHKeyCreateStubResult is expected values of the Create operation
+type SSHKeyCreateStubResult struct {
+	SSHKey *sacloud.SSHKey
+	Err    error
+}
+
+// SSHKeyGenerateStubResult is expected values of the Generate operation
+type SSHKeyGenerateStubResult struct {
+	SSHKeyGenerated *sacloud.SSHKeyGenerated
+	Err             error
+}
+
+// SSHKeyReadStubResult is expected values of the Read operation
+type SSHKeyReadStubResult struct {
+	SSHKey *sacloud.SSHKey
+	Err    error
+}
+
+// SSHKeyUpdateStubResult is expected values of the Update operation
+type SSHKeyUpdateStubResult struct {
+	SSHKey *sacloud.SSHKey
+	Err    error
+}
+
+// SSHKeyDeleteStubResult is expected values of the Delete operation
+type SSHKeyDeleteStubResult struct {
+	Err error
+}
+
+// SSHKeyStub is for trace SSHKeyOp operations
+type SSHKeyStub struct {
+	FindStubResult     *SSHKeyFindStubResult
+	CreateStubResult   *SSHKeyCreateStubResult
+	GenerateStubResult *SSHKeyGenerateStubResult
+	ReadStubResult     *SSHKeyReadStubResult
+	UpdateStubResult   *SSHKeyUpdateStubResult
+	DeleteStubResult   *SSHKeyDeleteStubResult
+}
+
+// NewSSHKeyStub creates new SSHKeyStub instance
+func NewSSHKeyStub(caller sacloud.APICaller) sacloud.SSHKeyAPI {
+	return &SSHKeyStub{}
+}
+
+// Find is API call with trace log
+func (s *SSHKeyStub) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.SSHKeyFindResult, error) {
+	if s.FindStubResult == nil {
+		log.Fatal("SSHKeyStub.FindStubResult is not set")
+	}
+	return s.FindStubResult.Values, s.FindStubResult.Err
+}
+
+// Create is API call with trace log
+func (s *SSHKeyStub) Create(ctx context.Context, zone string, param *sacloud.SSHKeyCreateRequest) (*sacloud.SSHKey, error) {
+	if s.CreateStubResult == nil {
+		log.Fatal("SSHKeyStub.CreateStubResult is not set")
+	}
+	return s.CreateStubResult.SSHKey, s.CreateStubResult.Err
+}
+
+// Generate is API call with trace log
+func (s *SSHKeyStub) Generate(ctx context.Context, zone string, param *sacloud.SSHKeyGenerateRequest) (*sacloud.SSHKeyGenerated, error) {
+	if s.GenerateStubResult == nil {
+		log.Fatal("SSHKeyStub.GenerateStubResult is not set")
+	}
+	return s.GenerateStubResult.SSHKeyGenerated, s.GenerateStubResult.Err
+}
+
+// Read is API call with trace log
+func (s *SSHKeyStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.SSHKey, error) {
+	if s.ReadStubResult == nil {
+		log.Fatal("SSHKeyStub.ReadStubResult is not set")
+	}
+	return s.ReadStubResult.SSHKey, s.ReadStubResult.Err
+}
+
+// Update is API call with trace log
+func (s *SSHKeyStub) Update(ctx context.Context, zone string, id types.ID, param *sacloud.SSHKeyUpdateRequest) (*sacloud.SSHKey, error) {
+	if s.UpdateStubResult == nil {
+		log.Fatal("SSHKeyStub.UpdateStubResult is not set")
+	}
+	return s.UpdateStubResult.SSHKey, s.UpdateStubResult.Err
+}
+
+// Delete is API call with trace log
+func (s *SSHKeyStub) Delete(ctx context.Context, zone string, id types.ID) error {
+	if s.DeleteStubResult == nil {
+		log.Fatal("SSHKeyStub.DeleteStubResult is not set")
+	}
+	return s.DeleteStubResult.Err
+}
+
+/*************************************************
 * SwitchStub
 *************************************************/
 

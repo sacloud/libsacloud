@@ -1397,6 +1397,72 @@ type simpleMonitorHealthStatusResponseEnvelope struct {
 	SimpleMonitor *naked.SimpleMonitorHealthCheckStatus `json:",omitempty"`
 }
 
+// sSHKeyFindRequestEnvelope is envelop of API request
+type sSHKeyFindRequestEnvelope struct {
+	Count   int                    `json:",omitempty"`
+	From    int                    `json:",omitempty"`
+	Sort    []string               `json:",omitempty"`
+	Filter  map[string]interface{} `json:",omitempty"`
+	Include []string               `json:",omitempty"`
+	Exclude []string               `json:",omitempty"`
+}
+
+// sSHKeyFindResponseEnvelope is envelop of API response
+type sSHKeyFindResponseEnvelope struct {
+	Total int `json:",omitempty"` // トータル件数
+	From  int `json:",omitempty"` // ページング開始ページ
+	Count int `json:",omitempty"` // 件数
+
+	SSHKeys []*naked.SSHKey `json:",omitempty"`
+}
+
+// sSHKeyCreateRequestEnvelope is envelop of API request
+type sSHKeyCreateRequestEnvelope struct {
+	SSHKey *naked.SSHKey `json:",omitempty"`
+}
+
+// sSHKeyCreateResponseEnvelope is envelop of API response
+type sSHKeyCreateResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	SSHKey *naked.SSHKey `json:",omitempty"`
+}
+
+// sSHKeyGenerateRequestEnvelope is envelop of API request
+type sSHKeyGenerateRequestEnvelope struct {
+	SSHKey *naked.SSHKey `json:",omitempty"`
+}
+
+// sSHKeyGenerateResponseEnvelope is envelop of API response
+type sSHKeyGenerateResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	SSHKey *naked.SSHKey `json:",omitempty"`
+}
+
+// sSHKeyReadResponseEnvelope is envelop of API response
+type sSHKeyReadResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	SSHKey *naked.SSHKey `json:",omitempty"`
+}
+
+// sSHKeyUpdateRequestEnvelope is envelop of API request
+type sSHKeyUpdateRequestEnvelope struct {
+	SSHKey *naked.SSHKey `json:",omitempty"`
+}
+
+// sSHKeyUpdateResponseEnvelope is envelop of API response
+type sSHKeyUpdateResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	SSHKey *naked.SSHKey `json:",omitempty"`
+}
+
 // switchFindRequestEnvelope is envelop of API request
 type switchFindRequestEnvelope struct {
 	Count   int                    `json:",omitempty"`

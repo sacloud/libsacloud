@@ -41,6 +41,8 @@ const (
 	ResourceSIM = "SIM"
 	// ResourceSimpleMonitor is resource key of fake store
 	ResourceSimpleMonitor = "SimpleMonitor"
+	// ResourceSSHKey is resource key of fake store
+	ResourceSSHKey = "SSHKey"
 	// ResourceSwitch is resource key of fake store
 	ResourceSwitch = "Switch"
 	// ResourceVPCRouter is resource key of fake store

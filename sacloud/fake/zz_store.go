@@ -444,6 +444,29 @@ func (s *store) setSimpleMonitor(zone string, value *sacloud.SimpleMonitor) {
 	s.set(ResourceSimpleMonitor, zone, value)
 }
 
+func (s *store) getSSHKey(zone string) []*sacloud.SSHKey {
+	values := s.get(ResourceSSHKey, zone)
+	var ret []*sacloud.SSHKey
+	for _, v := range values {
+		if v, ok := v.(*sacloud.SSHKey); ok {
+			ret = append(ret, v)
+		}
+	}
+	return ret
+}
+
+func (s *store) getSSHKeyByID(zone string, id types.ID) *sacloud.SSHKey {
+	v := s.getByID(ResourceSSHKey, zone, id)
+	if v, ok := v.(*sacloud.SSHKey); ok {
+		return v
+	}
+	return nil
+}
+
+func (s *store) setSSHKey(zone string, value *sacloud.SSHKey) {
+	s.set(ResourceSSHKey, zone, value)
+}
+
 func (s *store) getSwitch(zone string) []*sacloud.Switch {
 	values := s.get(ResourceSwitch, zone)
 	var ret []*sacloud.Switch
