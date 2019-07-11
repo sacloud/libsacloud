@@ -28,11 +28,13 @@ func TestSwitchOpCRUD(t *testing.T) {
 				IgnoreFields: ignoreSwitchFields,
 			},
 		},
-		Update: &CRUDTestFunc{
-			Func: testSwitchUpdate,
-			Expect: &CRUDTestExpect{
-				ExpectValue:  updateSwitchExpected,
-				IgnoreFields: ignoreSwitchFields,
+		Updates: []*CRUDTestFunc{
+			{
+				Func: testSwitchUpdate,
+				Expect: &CRUDTestExpect{
+					ExpectValue:  updateSwitchExpected,
+					IgnoreFields: ignoreSwitchFields,
+				},
 			},
 		},
 		Delete: &CRUDTestDeleteFunc{

@@ -30,11 +30,13 @@ func TestLoadBalancerOpCRUD(t *testing.T) {
 			},
 		},
 
-		Update: &CRUDTestFunc{
-			Func: testLoadBalancerUpdate,
-			Expect: &CRUDTestExpect{
-				ExpectValue:  updateLoadBalancerExpected,
-				IgnoreFields: ignoreLoadBalancerFields,
+		Updates: []*CRUDTestFunc{
+			{
+				Func: testLoadBalancerUpdate,
+				Expect: &CRUDTestExpect{
+					ExpectValue:  updateLoadBalancerExpected,
+					IgnoreFields: ignoreLoadBalancerFields,
+				},
 			},
 		},
 

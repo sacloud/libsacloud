@@ -27,11 +27,13 @@ func TestPacketFilterOpCRUD(t *testing.T) {
 				IgnoreFields: packetFilterIgnoreFields,
 			},
 		},
-		Update: &CRUDTestFunc{
-			Func: testPacketFilterUpdate,
-			Expect: &CRUDTestExpect{
-				ExpectValue:  updatePacketFilterExpected,
-				IgnoreFields: packetFilterIgnoreFields,
+		Updates: []*CRUDTestFunc{
+			{
+				Func: testPacketFilterUpdate,
+				Expect: &CRUDTestExpect{
+					ExpectValue:  updatePacketFilterExpected,
+					IgnoreFields: packetFilterIgnoreFields,
+				},
 			},
 		},
 		Delete: &CRUDTestDeleteFunc{

@@ -52,11 +52,13 @@ func TestAutoBackupOpCRUD(t *testing.T) {
 			},
 		},
 
-		Update: &CRUDTestFunc{
-			Func: testAutoBackupUpdate,
-			Expect: &CRUDTestExpect{
-				ExpectValue:  updateAutoBackupExpected,
-				IgnoreFields: ignoreAutoBackupFields,
+		Updates: []*CRUDTestFunc{
+			{
+				Func: testAutoBackupUpdate,
+				Expect: &CRUDTestExpect{
+					ExpectValue:  updateAutoBackupExpected,
+					IgnoreFields: ignoreAutoBackupFields,
+				},
 			},
 		},
 
