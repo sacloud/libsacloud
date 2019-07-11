@@ -2,13 +2,14 @@ package test
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"testing"
 	"time"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
-	"github.com/stretchr/testify/require"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestInternetOpCRUD(t *testing.T) {
@@ -18,25 +19,25 @@ func TestInternetOpCRUD(t *testing.T) {
 		SetupAPICallerFunc: singletonAPICaller,
 		Create: &CRUDTestFunc{
 			Func: testInternetCreate,
-			Expect: &CRUDTestExpect{
+			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
 				ExpectValue:  createInternetExpected,
 				IgnoreFields: ignoreInternetFields,
-			},
+			}),
 		},
 		Read: &CRUDTestFunc{
 			Func: testInternetRead,
-			Expect: &CRUDTestExpect{
+			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
 				ExpectValue:  createInternetExpected,
 				IgnoreFields: ignoreInternetFields,
-			},
+			}),
 		},
 		Updates: []*CRUDTestFunc{
 			{
 				Func: testInternetUpdate,
-				Expect: &CRUDTestExpect{
+				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
 					ExpectValue:  updateInternetExpected,
 					IgnoreFields: ignoreInternetFields,
-				},
+				}),
 			},
 		},
 		Delete: &CRUDTestDeleteFunc{
@@ -126,49 +127,98 @@ func readInternet(id types.ID, caller sacloud.APICaller) (*sacloud.Internet, err
 	return nil, fmt.Errorf("internet[%s] is not found", id)
 }
 
-func TestInternetOp_Subnets(t *testing.T) {
-	t.Parallel()
-
+func TestInternetOp_Subnet(t *testing.T) {
 	client := sacloud.NewInternetOp(singletonAPICaller())
-	ctx := context.Background()
+	var minIP, maxIP string
+	var subnetID types.ID
 
-	// prepare
-	var internet *sacloud.Internet
-	internet, err := client.Create(ctx, testZone, createInternetParam)
-	require.NoError(t, err)
+	Run(t, &CRUDTestCase{
+		Parallel:           true,
+		IgnoreStartupWait:  true,
+		SetupAPICallerFunc: singletonAPICaller,
+		Create: &CRUDTestFunc{
+			Func: func(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+				ctx := context.Background()
 
-	internet, err = readInternet(internet.ID, singletonAPICaller())
-	require.NoError(t, err)
+				var internet *sacloud.Internet
+				internet, err := client.Create(ctx, testZone, createInternetParam)
+				if err != nil {
+					return nil, err
+				}
 
-	swOp := sacloud.NewSwitchOp(singletonAPICaller())
-	sw, err := swOp.Read(ctx, testZone, internet.Switch.ID)
-	require.NoError(t, err)
+				internet, err = readInternet(internet.ID, singletonAPICaller())
+				if err != nil {
+					return nil, err
+				}
 
-	// add subnet
-	subnet, err := client.AddSubnet(ctx, testZone, internet.ID, &sacloud.InternetAddSubnetRequest{
-		NetworkMaskLen: 28,
-		NextHop:        sw.Subnets[0].AssignedIPAddressMin,
+				swOp := sacloud.NewSwitchOp(singletonAPICaller())
+				sw, err := swOp.Read(ctx, testZone, internet.Switch.ID)
+				if err != nil {
+					return nil, err
+				}
+				minIP = sw.Subnets[0].AssignedIPAddressMin
+				maxIP = sw.Subnets[0].AssignedIPAddressMax
+
+				return internet, nil
+			},
+		},
+		Read: &CRUDTestFunc{
+			Func: testInternetRead,
+		},
+		Updates: []*CRUDTestFunc{
+			// add subnet
+			{
+				Func: func(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+					// add subnet
+					subnet, err := client.AddSubnet(context.Background(), testZone, testContext.ID, &sacloud.InternetAddSubnetRequest{
+						NetworkMaskLen: 28,
+						NextHop:        minIP,
+					})
+					if err != nil {
+						return nil, err
+					}
+
+					if !assert.Len(t, subnet.IPAddresses, 16) {
+						return nil, errors.New("unexpected state: Subnet.IPAddresses")
+					}
+					if !assert.Equal(t, minIP, subnet.NextHop) {
+						return nil, errors.New("unexpected state: Subnet.NextHop")
+					}
+					subnetID = subnet.ID
+					return subnet, nil
+				},
+				SkipExtractID: true,
+			},
+			// update subnet
+			{
+				Func: func(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+					subnet, err := client.UpdateSubnet(context.Background(), testZone, testContext.ID, subnetID, &sacloud.InternetUpdateSubnetRequest{
+						NextHop: maxIP,
+					})
+					if err != nil {
+						return nil, err
+					}
+
+					if !assert.Len(t, subnet.IPAddresses, 16) {
+						return nil, errors.New("unexpected state: Subnet.IPAddresses")
+					}
+					if !assert.Equal(t, maxIP, subnet.NextHop) {
+						return nil, errors.New("unexpected state: Subnet.NextHop")
+					}
+					return subnet, nil
+				},
+				SkipExtractID: true,
+			},
+			// delete subnet
+			{
+				Func: func(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+					return nil, client.DeleteSubnet(context.Background(), testZone, testContext.ID, subnetID)
+				},
+				SkipExtractID: true,
+			},
+		},
+		Delete: &CRUDTestDeleteFunc{
+			Func: testInternetDelete,
+		},
 	})
-	require.NoError(t, err)
-
-	require.Len(t, subnet.IPAddresses, 16)
-	require.Equal(t, sw.Subnets[0].AssignedIPAddressMin, subnet.NextHop)
-
-	// update
-	updSubnet, err := client.UpdateSubnet(ctx, testZone, internet.ID, subnet.ID, &sacloud.InternetUpdateSubnetRequest{
-		NextHop: sw.Subnets[0].AssignedIPAddressMax,
-	})
-	require.NoError(t, err)
-
-	require.Len(t, updSubnet.IPAddresses, 16)
-	require.Equal(t, sw.Subnets[0].AssignedIPAddressMax, updSubnet.NextHop)
-
-	// delete
-	err = client.DeleteSubnet(ctx, testZone, internet.ID, subnet.ID)
-	require.NoError(t, err)
-
-	// delete internet
-	err = client.Delete(ctx, testZone, internet.ID)
-	require.NoError(t, err)
-
 }

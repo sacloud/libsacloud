@@ -2,11 +2,12 @@ package test
 
 import (
 	"context"
+	"errors"
 	"testing"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
-	"github.com/stretchr/testify/require"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestServerOpCRUD(t *testing.T) {
@@ -17,27 +18,27 @@ func TestServerOpCRUD(t *testing.T) {
 
 		Create: &CRUDTestFunc{
 			Func: testServerCreate,
-			Expect: &CRUDTestExpect{
+			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
 				ExpectValue:  createServerExpected,
 				IgnoreFields: ignoreServerFields,
-			},
+			}),
 		},
 
 		Read: &CRUDTestFunc{
 			Func: testServerRead,
-			Expect: &CRUDTestExpect{
+			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
 				ExpectValue:  createServerExpected,
 				IgnoreFields: ignoreServerFields,
-			},
+			}),
 		},
 
 		Updates: []*CRUDTestFunc{
 			{
 				Func: testServerUpdate,
-				Expect: &CRUDTestExpect{
+				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
 					ExpectValue:  updateServerExpected,
 					IgnoreFields: ignoreServerFields,
-				},
+				}),
 			},
 		},
 
@@ -48,17 +49,6 @@ func TestServerOpCRUD(t *testing.T) {
 
 		Delete: &CRUDTestDeleteFunc{
 			Func: testServerDelete,
-		},
-
-		Cleanup: func(testContext *CRUDTestContext, caller sacloud.APICaller) error {
-
-			switchID, ok := testContext.Values["nfs/switch"]
-			if !ok {
-				return nil
-			}
-
-			swClient := sacloud.NewSwitchOp(caller)
-			return swClient.Delete(context.Background(), testZone, switchID.(types.ID))
 		},
 	})
 }
@@ -156,43 +146,73 @@ func testServerDelete(testContext *CRUDTestContext, caller sacloud.APICaller) er
 }
 
 func TestServerOp_ChangePlan(t *testing.T) {
-	t.Parallel()
-
 	client := sacloud.NewServerOp(singletonAPICaller())
 	ctx := context.Background()
-	server, err := client.Create(ctx, testZone, &sacloud.ServerCreateRequest{
-		CPU:      1,
-		MemoryMB: 1 * 1024,
-		ConnectedSwitches: []*sacloud.ConnectedSwitch{
-			{
-				Scope: types.Scopes.Shared,
+
+	Run(t, &CRUDTestCase{
+		Parallel:           true,
+		SetupAPICallerFunc: singletonAPICaller,
+		IgnoreStartupWait:  true,
+		Create: &CRUDTestFunc{
+			Func: func(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+				return client.Create(ctx, testZone, &sacloud.ServerCreateRequest{
+					CPU:      1,
+					MemoryMB: 1 * 1024,
+					ConnectedSwitches: []*sacloud.ConnectedSwitch{
+						{
+							Scope: types.Scopes.Shared,
+						},
+					},
+					InterfaceDriver:   types.InterfaceDrivers.VirtIO,
+					HostName:          "libsacloud-server",
+					Name:              "libsacloud-server",
+					Description:       "desc",
+					Tags:              []string{"tag1", "tag2"},
+					WaitDiskMigration: false,
+				})
+			},
+			CheckFunc: func(t TestT, _ *CRUDTestContext, v interface{}) error {
+				server := v.(*sacloud.Server)
+
+				if !assert.Equal(t, server.CPU, 1) {
+					return errors.New("unexpected state: Server.CPU")
+				}
+				if !assert.Equal(t, server.GetMemoryGB(), 1) {
+					return errors.New("unexpected state: Server.GerMemoryGB()")
+				}
+				return nil
 			},
 		},
-		InterfaceDriver:   types.InterfaceDrivers.VirtIO,
-		HostName:          "libsacloud-server",
-		Name:              "libsacloud-server",
-		Description:       "desc",
-		Tags:              []string{"tag1", "tag2"},
-		WaitDiskMigration: false,
+		Read: &CRUDTestFunc{
+			Func: testServerRead,
+		},
+		Updates: []*CRUDTestFunc{
+			// change plan
+			{
+				Func: func(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+					return client.ChangePlan(ctx, testZone, testContext.ID, &sacloud.ServerChangePlanRequest{
+						CPU:      2,
+						MemoryMB: 4 * 1024,
+					})
+
+				},
+				CheckFunc: func(t TestT, testContext *CRUDTestContext, v interface{}) error {
+					newServer := v.(*sacloud.Server)
+					if !assert.Equal(t, newServer.CPU, 2) {
+						return errors.New("unexpected state: Server.CPU")
+					}
+					if !assert.Equal(t, newServer.GetMemoryGB(), 4) {
+						return errors.New("unexpected state: Server.GerMemoryGB()")
+					}
+					if !assert.NotEqual(t, testContext.ID, newServer.ID) {
+						return errors.New("unexpected state: Server.ID(renew)")
+					}
+					return nil
+				},
+			},
+		},
+		Delete: &CRUDTestDeleteFunc{
+			Func: testServerDelete,
+		},
 	})
-	require.NoError(t, err)
-
-	require.Equal(t, server.CPU, 1)
-	require.Equal(t, server.GetMemoryGB(), 1)
-
-	// change
-	newServer, err := client.ChangePlan(ctx, testZone, server.ID, &sacloud.ServerChangePlanRequest{
-		CPU:      2,
-		MemoryMB: 4 * 1024,
-	})
-	require.NoError(t, err)
-
-	require.Equal(t, 2, newServer.CPU)
-	require.Equal(t, 4, newServer.GetMemoryGB())
-	require.NotEqual(t, server.ID, newServer.ID)
-
-	// cleanup
-	err = client.Delete(ctx, testZone, newServer.ID)
-	require.NoError(t, err)
-
 }

@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
-	"github.com/stretchr/testify/require"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestZoneOp_Find(t *testing.T) {
@@ -14,6 +14,6 @@ func TestZoneOp_Find(t *testing.T) {
 	client := sacloud.NewZoneOp(singletonAPICaller())
 
 	zoneFindResult, err := client.Find(context.Background(), sacloud.APIDefaultZone, &sacloud.FindCondition{Count: 1})
-	require.NoError(t, err)
-	require.Len(t, zoneFindResult.Zones, 1)
+	assert.NoError(t, err)
+	assert.Len(t, zoneFindResult.Zones, 1)
 }

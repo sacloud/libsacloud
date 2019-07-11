@@ -11,7 +11,6 @@ import (
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 )
 
 func TestProxyLBOpCRUD(t *testing.T) {
@@ -26,27 +25,27 @@ func TestProxyLBOpCRUD(t *testing.T) {
 
 		Create: &CRUDTestFunc{
 			Func: testProxyLBCreate,
-			Expect: &CRUDTestExpect{
+			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
 				ExpectValue:  createProxyLBExpected,
 				IgnoreFields: ignoreProxyLBFields,
-			},
+			}),
 		},
 
 		Read: &CRUDTestFunc{
 			Func: testProxyLBRead,
-			Expect: &CRUDTestExpect{
+			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
 				ExpectValue:  createProxyLBExpected,
 				IgnoreFields: ignoreProxyLBFields,
-			},
+			}),
 		},
 
 		Updates: []*CRUDTestFunc{
 			{
 				Func: testProxyLBUpdate,
-				Expect: &CRUDTestExpect{
+				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
 					ExpectValue:  updateProxyLBExpected,
 					IgnoreFields: ignoreProxyLBFields,
-				},
+				}),
 			},
 		},
 
@@ -325,7 +324,9 @@ func TestProxyLBOpLetsEncryptAndHealth(t *testing.T) {
 
 	// create proxyLB
 	proxyLB, err := proxyLBOp.Create(ctx, sacloud.APIDefaultZone, createProxyLBForACMEParam)
-	require.NoError(t, err)
+	if !assert.NoError(t, err) {
+		return
+	}
 	defer func() {
 		proxyLBOp.Delete(ctx, sacloud.APIDefaultZone, proxyLB.ID) // nolint - ignore error
 	}()

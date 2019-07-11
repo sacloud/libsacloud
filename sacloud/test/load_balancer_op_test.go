@@ -16,27 +16,27 @@ func TestLoadBalancerOpCRUD(t *testing.T) {
 		Setup:              setupSwitchFunc("lb", createLoadBalancerParam, createLoadBalancerExpected, updateLoadBalancerExpected),
 		Create: &CRUDTestFunc{
 			Func: testLoadBalancerCreate,
-			Expect: &CRUDTestExpect{
+			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
 				ExpectValue:  createLoadBalancerExpected,
 				IgnoreFields: ignoreLoadBalancerFields,
-			},
+			}),
 		},
 
 		Read: &CRUDTestFunc{
 			Func: testLoadBalancerRead,
-			Expect: &CRUDTestExpect{
+			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
 				ExpectValue:  createLoadBalancerExpected,
 				IgnoreFields: ignoreLoadBalancerFields,
-			},
+			}),
 		},
 
 		Updates: []*CRUDTestFunc{
 			{
 				Func: testLoadBalancerUpdate,
-				Expect: &CRUDTestExpect{
+				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
 					ExpectValue:  updateLoadBalancerExpected,
 					IgnoreFields: ignoreLoadBalancerFields,
-				},
+				}),
 			},
 		},
 

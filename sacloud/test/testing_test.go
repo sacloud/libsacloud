@@ -3,6 +3,8 @@ package test
 import (
 	"context"
 	"encoding/json"
+	"errors"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -10,7 +12,7 @@ import (
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/accessor"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
-	"github.com/stretchr/testify/require"
+	"github.com/stretchr/testify/assert"
 )
 
 // TestT テストのライフサイクルを管理するためのインターフェース.
@@ -76,6 +78,9 @@ type CRUDTestContext struct {
 	//
 	// 依存リソースのIDの保持などで利用する
 	Values map[string]interface{}
+
+	// LastValue 最後の操作での戻り値
+	LastValue interface{}
 }
 
 // CRUDTestFunc CRUD操作(DELETE以外)テストでのテスト用Func
@@ -83,8 +88,8 @@ type CRUDTestFunc struct {
 	// Func API操作を行うFunc
 	Func func(*CRUDTestContext, sacloud.APICaller) (interface{}, error)
 
-	// Expect 期待値、省略可能。省略してFunc内で自前実装することも可能。
-	Expect *CRUDTestExpect
+	// CheckFunc 任意のチェックを行うためのFunc、省略可能。
+	CheckFunc func(TestT, *CRUDTestContext, interface{}) error
 
 	// SkipExtractID Trueの場合Funcの戻り値からのID抽出(ioAddessor経由)を行わない
 	SkipExtractID bool
@@ -141,9 +146,6 @@ func PreCheckEnvsFunc(envs ...string) func(TestT) {
 
 // Run 任意の条件でCRUD操作をテストする
 func Run(t TestT, testCase *CRUDTestCase) {
-	if testCase.Read == nil {
-		t.Fatal("CRUDTestCase.Read is required")
-	}
 	if testCase.SetupAPICallerFunc == nil {
 		t.Fatal("CRUDTestCase.SetupAPICallerFunc is required")
 	}
@@ -170,7 +172,8 @@ func Run(t TestT, testCase *CRUDTestCase) {
 
 	if testCase.Setup != nil {
 		if err := testCase.Setup(testContext, testCase.SetupAPICallerFunc()); err != nil {
-			t.Fatal("Setup is failed: ", err)
+			t.Error("Setup is failed: ", err)
+			return
 		}
 	}
 
@@ -178,6 +181,13 @@ func Run(t TestT, testCase *CRUDTestCase) {
 		actual, err := f.Func(testContext, testCase.SetupAPICallerFunc())
 		if err != nil {
 			return err
+		}
+		testContext.LastValue = actual
+
+		if actual != nil && f.CheckFunc != nil {
+			if err := f.CheckFunc(t, testContext, actual); err != nil {
+				return err
+			}
 		}
 
 		// extract ID from result of f.Func()
@@ -187,29 +197,27 @@ func Run(t TestT, testCase *CRUDTestCase) {
 			}
 		}
 
-		if f.Expect != nil {
-			actual, expect := f.Expect.Prepare(actual)
-			require.Equal(t, expect, actual)
-		}
 		return nil
 	}
 
 	// Create
 	if testCase.Create != nil {
 		if err := testFunc(testCase.Create); err != nil {
-			t.Fatal("Create is failed: ", err)
+			t.Error("Create is failed: ", err)
+			return
 		}
 
-		if testCase.Create.Expect != nil && !testCase.IgnoreStartupWait {
+		if !testCase.IgnoreStartupWait && testCase.Read != nil && testContext.LastValue != nil {
 
-			_, ok1 := testCase.Create.Expect.ExpectValue.(accessor.Availability)
-			_, ok2 := testCase.Create.Expect.ExpectValue.(accessor.InstanceStatus)
+			_, ok1 := testContext.LastValue.(accessor.Availability)
+			_, ok2 := testContext.LastValue.(accessor.InstanceStatus)
 			if ok1 || ok2 {
 				waiter := sacloud.WaiterForApplianceUp(func() (interface{}, error) {
 					return testCase.Read.Func(testContext, testCase.SetupAPICallerFunc())
 				}, 30)
 				if _, err := waiter.WaitForState(context.TODO()); err != nil {
-					t.Fatal("WaitForUp is failed: ", err)
+					t.Error("WaitForUp is failed: ", err)
+					return
 				}
 			}
 
@@ -217,33 +225,43 @@ func Run(t TestT, testCase *CRUDTestCase) {
 	}
 
 	// Read
-	if err := testFunc(testCase.Read); err != nil {
-		t.Fatal("Read is failed: ", err)
+	if testCase.Read != nil {
+		if err := testFunc(testCase.Read); err != nil {
+			t.Fatal("Read is failed: ", err)
+		}
 	}
 
 	// Updates
 	for _, updFunc := range testCase.Updates {
 		if err := testFunc(updFunc); err != nil {
-			t.Fatal("Update is failed: ", err)
+			t.Error("Update is failed: ", err)
+			return
 		}
 	}
 
 	// Shutdown
 	if testCase.Shutdown != nil {
-		v, err := testCase.Read.Func(testContext, testCase.SetupAPICallerFunc())
-		if err != nil {
-			t.Fatal("Shutdown is failed: ", err)
-		}
-		if v, ok := v.(accessor.InstanceStatus); ok && v.GetInstanceStatus().IsUp() {
-			if err := testCase.Shutdown(testContext, testCase.SetupAPICallerFunc()); err != nil {
-				t.Fatal("Shutdown is failed: ", err)
+		if testCase.Read == nil {
+			t.Log("CRUDTestCase.Shutdown is set, but CRUDTestCase.Read is nil. Shutdown is skipped")
+		} else {
+			v, err := testCase.Read.Func(testContext, testCase.SetupAPICallerFunc())
+			if err != nil {
+				t.Error("Shutdown is failed: ", err)
+				return
 			}
+			if v, ok := v.(accessor.InstanceStatus); ok && v.GetInstanceStatus().IsUp() {
+				if err := testCase.Shutdown(testContext, testCase.SetupAPICallerFunc()); err != nil {
+					t.Error("Shutdown is failed: ", err)
+					return
+				}
 
-			waiter := sacloud.WaiterForDown(func() (interface{}, error) {
-				return testCase.Read.Func(testContext, testCase.SetupAPICallerFunc())
-			})
-			if _, err := waiter.WaitForState(context.TODO()); err != nil {
-				t.Fatal("WaitForDown is failed: ", err)
+				waiter := sacloud.WaiterForDown(func() (interface{}, error) {
+					return testCase.Read.Func(testContext, testCase.SetupAPICallerFunc())
+				})
+				if _, err := waiter.WaitForState(context.TODO()); err != nil {
+					t.Error("WaitForDown is failed: ", err)
+					return
+				}
 			}
 		}
 	}
@@ -251,18 +269,83 @@ func Run(t TestT, testCase *CRUDTestCase) {
 	// Delete
 	if testCase.Delete != nil {
 		if err := testCase.Delete.Func(testContext, testCase.SetupAPICallerFunc()); err != nil {
-			t.Fatal("Delete is failed: ", err)
+			t.Error("Delete is failed: ", err)
+			return
 		}
-		// check not exists
-		_, err := testCase.Read.Func(testContext, testCase.SetupAPICallerFunc())
-		if err == nil {
-			t.Fatal("Resource still exists: ", testContext.ID)
-		}
-		if e, ok := err.(sacloud.APIError); ok {
-			if e.ResponseCode() != http.StatusNotFound {
-				t.Fatal("Reading after delete is failed: ", e)
+		if testCase.Read != nil {
+			// check not exists
+			_, err := testCase.Read.Func(testContext, testCase.SetupAPICallerFunc())
+			if err == nil {
+				t.Error("Resource still exists: ", testContext.ID)
+				return
+			}
+			if e, ok := err.(sacloud.APIError); ok {
+				if e.ResponseCode() != http.StatusNotFound {
+					t.Error("Reading after delete is failed: ", e)
+					return
+				}
 			}
 		}
 	}
+}
 
+// AssertEqualWithExpected 項目ごとに除外設定のできる期待値との比較
+func AssertEqualWithExpected(testExpect *CRUDTestExpect) func(TestT, *CRUDTestContext, interface{}) error {
+	return func(t TestT, testContext *CRUDTestContext, v interface{}) error {
+		actual, expect := testExpect.Prepare(v)
+		if !assert.Equal(t, expect, actual) {
+			return errors.New("assert.Equal is failed")
+		}
+		return nil
+	}
+}
+
+// AssertEqual 値の比較
+func AssertEqual(t TestT, expected interface{}, actual interface{}, targetName string) error {
+	if !assert.Equal(t, expected, actual) {
+		return fmt.Errorf("assert.Equal is failed: %s", targetName)
+	}
+	return nil
+}
+
+// AssertLen lengthのチェック
+func AssertLen(t TestT, object interface{}, length int, targetName string) error {
+	if !assert.Len(t, object, length) {
+		return fmt.Errorf("assert.Len is failed: %s", targetName)
+	}
+	return nil
+}
+
+// AssertNil nilチェック
+func AssertNil(t TestT, object interface{}, targetName string) error {
+	if !assert.Nil(t, object) {
+		return fmt.Errorf("assert.Nil is failed: %s", targetName)
+	}
+	return nil
+}
+
+// AssertNotNil not nilチェック
+func AssertNotNil(t TestT, object interface{}, targetName string) error {
+	if !assert.NotNil(t, object) {
+		return fmt.Errorf("assert.NotNil is failed: %s", targetName)
+	}
+	return nil
+}
+
+// AssertTrue trueチェック
+func AssertTrue(t TestT, value bool, targetName string) error {
+	if !assert.True(t, value) {
+		return fmt.Errorf("assert.True is failed: %s", targetName)
+	}
+	return nil
+}
+
+// DoAsserts アサーションを複数適用、最初のエラーを返す
+func DoAsserts(funcs ...func() error) error {
+	for _, f := range funcs {
+		if err := f(); err != nil {
+			return err
+		}
+	}
+	return nil
 }

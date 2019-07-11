@@ -6,7 +6,7 @@ import (
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
-	"github.com/stretchr/testify/require"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestAutoBackupOpCRUD(t *testing.T) {
@@ -22,12 +22,16 @@ func TestAutoBackupOpCRUD(t *testing.T) {
 				SizeMB:     20 * 1024,
 				DiskPlanID: types.ID(4), //SSD
 			})
-			require.NoError(t, err)
+			if !assert.NoError(t, err) {
+				return err
+			}
 
 			_, err = sacloud.WaiterForReady(func() (interface{}, error) {
 				return diskOp.Read(context.Background(), testZone, disk.ID)
 			}).WaitForState(context.Background())
-			require.NoError(t, err)
+			if !assert.NoError(t, err) {
+				return err
+			}
 
 			testContext.Values["autobackup/disk"] = disk.ID
 			createAutoBackupParam.DiskID = disk.ID
@@ -38,27 +42,27 @@ func TestAutoBackupOpCRUD(t *testing.T) {
 
 		Create: &CRUDTestFunc{
 			Func: testAutoBackupCreate,
-			Expect: &CRUDTestExpect{
+			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
 				ExpectValue:  createAutoBackupExpected,
 				IgnoreFields: ignoreAutoBackupFields,
-			},
+			}),
 		},
 
 		Read: &CRUDTestFunc{
 			Func: testAutoBackupRead,
-			Expect: &CRUDTestExpect{
+			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
 				ExpectValue:  createAutoBackupExpected,
 				IgnoreFields: ignoreAutoBackupFields,
-			},
+			}),
 		},
 
 		Updates: []*CRUDTestFunc{
 			{
 				Func: testAutoBackupUpdate,
-				Expect: &CRUDTestExpect{
+				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
 					ExpectValue:  updateAutoBackupExpected,
 					IgnoreFields: ignoreAutoBackupFields,
-				},
+				}),
 			},
 		},
 
