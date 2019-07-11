@@ -883,6 +883,93 @@ func (s *GSLBStub) Delete(ctx context.Context, zone string, id types.ID) error {
 }
 
 /*************************************************
+* IconStub
+*************************************************/
+
+// IconFindStubResult is expected values of the Find operation
+type IconFindStubResult struct {
+	Values *sacloud.IconFindResult
+	Err    error
+}
+
+// IconCreateStubResult is expected values of the Create operation
+type IconCreateStubResult struct {
+	Icon *sacloud.Icon
+	Err  error
+}
+
+// IconReadStubResult is expected values of the Read operation
+type IconReadStubResult struct {
+	Icon *sacloud.Icon
+	Err  error
+}
+
+// IconUpdateStubResult is expected values of the Update operation
+type IconUpdateStubResult struct {
+	Icon *sacloud.Icon
+	Err  error
+}
+
+// IconDeleteStubResult is expected values of the Delete operation
+type IconDeleteStubResult struct {
+	Err error
+}
+
+// IconStub is for trace IconOp operations
+type IconStub struct {
+	FindStubResult   *IconFindStubResult
+	CreateStubResult *IconCreateStubResult
+	ReadStubResult   *IconReadStubResult
+	UpdateStubResult *IconUpdateStubResult
+	DeleteStubResult *IconDeleteStubResult
+}
+
+// NewIconStub creates new IconStub instance
+func NewIconStub(caller sacloud.APICaller) sacloud.IconAPI {
+	return &IconStub{}
+}
+
+// Find is API call with trace log
+func (s *IconStub) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.IconFindResult, error) {
+	if s.FindStubResult == nil {
+		log.Fatal("IconStub.FindStubResult is not set")
+	}
+	return s.FindStubResult.Values, s.FindStubResult.Err
+}
+
+// Create is API call with trace log
+func (s *IconStub) Create(ctx context.Context, zone string, param *sacloud.IconCreateRequest) (*sacloud.Icon, error) {
+	if s.CreateStubResult == nil {
+		log.Fatal("IconStub.CreateStubResult is not set")
+	}
+	return s.CreateStubResult.Icon, s.CreateStubResult.Err
+}
+
+// Read is API call with trace log
+func (s *IconStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Icon, error) {
+	if s.ReadStubResult == nil {
+		log.Fatal("IconStub.ReadStubResult is not set")
+	}
+	return s.ReadStubResult.Icon, s.ReadStubResult.Err
+}
+
+// Update is API call with trace log
+func (s *IconStub) Update(ctx context.Context, zone string, id types.ID, param *sacloud.IconUpdateRequest) (*sacloud.Icon, error) {
+	if s.UpdateStubResult == nil {
+		log.Fatal("IconStub.UpdateStubResult is not set")
+	}
+	return s.UpdateStubResult.Icon, s.UpdateStubResult.Err
+}
+
+// Delete is API call with trace log
+func (s *IconStub) Delete(ctx context.Context, zone string, id types.ID) error {
+	if s.DeleteStubResult == nil {
+		log.Fatal("IconStub.DeleteStubResult is not set")
+	}
+	return s.DeleteStubResult.Err
+}
+
+/*************************************************
 * InterfaceStub
 *************************************************/
 

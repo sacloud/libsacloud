@@ -284,6 +284,36 @@ type gSLBUpdateResult struct {
 	GSLB *GSLB `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
 }
 
+// IconFindResult represents the Result of API
+type IconFindResult struct {
+	Total int `json:",omitempty"` // Total count of target resources
+	From  int `json:",omitempty"` // Current page number
+	Count int `json:",omitempty"` // Count of current page
+
+	Icons []*Icon `json:",omitempty" mapconv:"[]Icons,omitempty,recursive"`
+}
+
+// iconCreateResult represents the Result of API
+type iconCreateResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	Icon *Icon `json:",omitempty" mapconv:"Icon,omitempty,recursive"`
+}
+
+// iconReadResult represents the Result of API
+type iconReadResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	Icon *Icon `json:",omitempty" mapconv:"Icon,omitempty,recursive"`
+}
+
+// iconUpdateResult represents the Result of API
+type iconUpdateResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	Icon *Icon `json:",omitempty" mapconv:"Icon,omitempty,recursive"`
+}
+
 // InterfaceFindResult represents the Result of API
 type InterfaceFindResult struct {
 	Total int `json:",omitempty"` // Total count of target resources

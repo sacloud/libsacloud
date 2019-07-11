@@ -191,6 +191,29 @@ func (s *store) setGSLB(zone string, value *sacloud.GSLB) {
 	s.set(ResourceGSLB, zone, value)
 }
 
+func (s *store) getIcon(zone string) []*sacloud.Icon {
+	values := s.get(ResourceIcon, zone)
+	var ret []*sacloud.Icon
+	for _, v := range values {
+		if v, ok := v.(*sacloud.Icon); ok {
+			ret = append(ret, v)
+		}
+	}
+	return ret
+}
+
+func (s *store) getIconByID(zone string, id types.ID) *sacloud.Icon {
+	v := s.getByID(ResourceIcon, zone, id)
+	if v, ok := v.(*sacloud.Icon); ok {
+		return v
+	}
+	return nil
+}
+
+func (s *store) setIcon(zone string, value *sacloud.Icon) {
+	s.set(ResourceIcon, zone, value)
+}
+
 func (s *store) getInterface(zone string) []*sacloud.Interface {
 	values := s.get(ResourceInterface, zone)
 	var ret []*sacloud.Interface

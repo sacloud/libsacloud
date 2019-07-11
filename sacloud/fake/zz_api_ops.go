@@ -32,6 +32,9 @@ func SwitchFactoryFuncToFake() {
 	sacloud.SetClientFactoryFunc(ResourceGSLB, func(caller sacloud.APICaller) interface{} {
 		return NewGSLBOp()
 	})
+	sacloud.SetClientFactoryFunc(ResourceIcon, func(caller sacloud.APICaller) interface{} {
+		return NewIconOp()
+	})
 	sacloud.SetClientFactoryFunc(ResourceInterface, func(caller sacloud.APICaller) interface{} {
 		return NewInterfaceOp()
 	})
@@ -198,6 +201,22 @@ type GSLBOp struct {
 func NewGSLBOp() sacloud.GSLBAPI {
 	return &GSLBOp{
 		key: ResourceGSLB,
+	}
+}
+
+/*************************************************
+* IconOp
+*************************************************/
+
+// IconOp is fake implementation of IconAPI interface
+type IconOp struct {
+	key string
+}
+
+// NewIconOp creates new IconOp instance
+func NewIconOp() sacloud.IconAPI {
+	return &IconOp{
+		key: ResourceIcon,
 	}
 }
 

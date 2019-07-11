@@ -529,6 +529,59 @@ type gSLBUpdateResponseEnvelope struct {
 	CommonServiceItem *naked.GSLB `json:",omitempty"`
 }
 
+// iconFindRequestEnvelope is envelop of API request
+type iconFindRequestEnvelope struct {
+	Count   int                    `json:",omitempty"`
+	From    int                    `json:",omitempty"`
+	Sort    []string               `json:",omitempty"`
+	Filter  map[string]interface{} `json:",omitempty"`
+	Include []string               `json:",omitempty"`
+	Exclude []string               `json:",omitempty"`
+}
+
+// iconFindResponseEnvelope is envelop of API response
+type iconFindResponseEnvelope struct {
+	Total int `json:",omitempty"` // トータル件数
+	From  int `json:",omitempty"` // ページング開始ページ
+	Count int `json:",omitempty"` // 件数
+
+	Icons []*naked.Icon `json:",omitempty"`
+}
+
+// iconCreateRequestEnvelope is envelop of API request
+type iconCreateRequestEnvelope struct {
+	Icon *naked.Icon `json:",omitempty"`
+}
+
+// iconCreateResponseEnvelope is envelop of API response
+type iconCreateResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Icon *naked.Icon `json:",omitempty"`
+}
+
+// iconReadResponseEnvelope is envelop of API response
+type iconReadResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Icon *naked.Icon `json:",omitempty"`
+}
+
+// iconUpdateRequestEnvelope is envelop of API request
+type iconUpdateRequestEnvelope struct {
+	Icon *naked.Icon `json:",omitempty"`
+}
+
+// iconUpdateResponseEnvelope is envelop of API response
+type iconUpdateResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Icon *naked.Icon `json:",omitempty"`
+}
+
 // interfaceFindRequestEnvelope is envelop of API request
 type interfaceFindRequestEnvelope struct {
 	Count   int                    `json:",omitempty"`
