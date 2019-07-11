@@ -162,13 +162,10 @@ func TestSwitchOp_BridgeConnection(t *testing.T) {
 						return err
 					}
 
-					if err := DoAsserts(
-						func() error { return AssertEqual(t, sw.ID, bridge.SwitchInZone.ID, "Bridge.SwitchInZone.ID") },
-						func() error { return AssertLen(t, bridge.BridgeInfo, 0, "Bridge.BridgeInfo") },
-					); err != nil {
-						return err
-					}
-					return nil
+					return DoAsserts(
+						AssertEqualFunc(t, sw.ID, bridge.SwitchInZone.ID, "Bridge.SwitchInZone.ID"),
+						AssertLenFunc(t, bridge.BridgeInfo, 0, "Bridge.BridgeInfo"),
+					)
 				},
 			},
 			// disconnect
@@ -194,13 +191,10 @@ func TestSwitchOp_BridgeConnection(t *testing.T) {
 						return err
 					}
 
-					if err := DoAsserts(
-						func() error { return AssertNil(t, bridge.SwitchInZone, "Bridge.SwitchInZone") },
-						func() error { return AssertLen(t, bridge.BridgeInfo, 0, "Bridge.BridgeInfo") },
-					); err != nil {
-						return err
-					}
-					return nil
+					return DoAsserts(
+						AssertNilFunc(t, bridge.SwitchInZone, "Bridge.SwitchInZone"),
+						AssertLenFunc(t, bridge.BridgeInfo, 0, "Bridge.BridgeInfo"),
+					)
 				},
 			},
 			// bridge delete
