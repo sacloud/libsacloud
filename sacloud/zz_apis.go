@@ -125,6 +125,19 @@ type GSLBAPI interface {
 }
 
 /*************************************************
+* IconAPI
+*************************************************/
+
+// IconAPI is interface for operate Icon resource
+type IconAPI interface {
+	Find(ctx context.Context, zone string, conditions *FindCondition) (*IconFindResult, error)
+	Create(ctx context.Context, zone string, param *IconCreateRequest) (*Icon, error)
+	Read(ctx context.Context, zone string, id types.ID) (*Icon, error)
+	Update(ctx context.Context, zone string, id types.ID, param *IconUpdateRequest) (*Icon, error)
+	Delete(ctx context.Context, zone string, id types.ID) error
+}
+
+/*************************************************
 * InterfaceAPI
 *************************************************/
 

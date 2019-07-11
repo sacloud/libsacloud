@@ -19,6 +19,8 @@ const (
 	ResourceDNS = "DNS"
 	// ResourceGSLB is resource key of fake store
 	ResourceGSLB = "GSLB"
+	// ResourceIcon is resource key of fake store
+	ResourceIcon = "Icon"
 	// ResourceInterface is resource key of fake store
 	ResourceInterface = "Interface"
 	// ResourceInternet is resource key of fake store

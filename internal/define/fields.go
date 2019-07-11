@@ -296,6 +296,20 @@ func (f *fieldsDef) stringEnabled() *dsl.FieldDesc {
 	}
 }
 
+func (f *fieldsDef) IconURL() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "URL",
+		Type: meta.TypeString,
+	}
+}
+
+func (f *fieldsDef) IconImage() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "Image",
+		Type: meta.TypeString,
+	}
+}
+
 func (f *fieldsDef) SourceDiskID() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "SourceDiskID",
