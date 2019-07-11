@@ -375,6 +375,29 @@ func (s *store) setProxyLB(zone string, value *sacloud.ProxyLB) {
 	s.set(ResourceProxyLB, zone, value)
 }
 
+func (s *store) getRegion(zone string) []*sacloud.Region {
+	values := s.get(ResourceRegion, zone)
+	var ret []*sacloud.Region
+	for _, v := range values {
+		if v, ok := v.(*sacloud.Region); ok {
+			ret = append(ret, v)
+		}
+	}
+	return ret
+}
+
+func (s *store) getRegionByID(zone string, id types.ID) *sacloud.Region {
+	v := s.getByID(ResourceRegion, zone, id)
+	if v, ok := v.(*sacloud.Region); ok {
+		return v
+	}
+	return nil
+}
+
+func (s *store) setRegion(zone string, value *sacloud.Region) {
+	s.set(ResourceRegion, zone, value)
+}
+
 func (s *store) getServer(zone string) []*sacloud.Server {
 	values := s.get(ResourceServer, zone)
 	var ret []*sacloud.Server

@@ -74,6 +74,10 @@ func TestResourceOps(t *testing.T) {
 		t.Fatalf("%s is not sacloud.ProxyLB", op)
 	}
 
+	if op, ok := NewRegionOp().(sacloud.RegionAPI); !ok {
+		t.Fatalf("%s is not sacloud.Region", op)
+	}
+
 	if op, ok := NewServerOp().(sacloud.ServerAPI); !ok {
 		t.Fatalf("%s is not sacloud.Server", op)
 	}

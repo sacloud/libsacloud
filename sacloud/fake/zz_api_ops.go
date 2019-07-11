@@ -56,6 +56,9 @@ func SwitchFactoryFuncToFake() {
 	sacloud.SetClientFactoryFunc(ResourceProxyLB, func(caller sacloud.APICaller) interface{} {
 		return NewProxyLBOp()
 	})
+	sacloud.SetClientFactoryFunc(ResourceRegion, func(caller sacloud.APICaller) interface{} {
+		return NewRegionOp()
+	})
 	sacloud.SetClientFactoryFunc(ResourceServer, func(caller sacloud.APICaller) interface{} {
 		return NewServerOp()
 	})
@@ -332,6 +335,22 @@ type ProxyLBOp struct {
 func NewProxyLBOp() sacloud.ProxyLBAPI {
 	return &ProxyLBOp{
 		key: ResourceProxyLB,
+	}
+}
+
+/*************************************************
+* RegionOp
+*************************************************/
+
+// RegionOp is fake implementation of RegionAPI interface
+type RegionOp struct {
+	key string
+}
+
+// NewRegionOp creates new RegionOp instance
+func NewRegionOp() sacloud.RegionAPI {
+	return &RegionOp{
+		key: ResourceRegion,
 	}
 }
 
