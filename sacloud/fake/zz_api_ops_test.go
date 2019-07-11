@@ -86,6 +86,10 @@ func TestResourceOps(t *testing.T) {
 		t.Fatalf("%s is not sacloud.SimpleMonitor", op)
 	}
 
+	if op, ok := NewSSHKeyOp().(sacloud.SSHKeyAPI); !ok {
+		t.Fatalf("%s is not sacloud.SSHKey", op)
+	}
+
 	if op, ok := NewSwitchOp().(sacloud.SwitchAPI); !ok {
 		t.Fatalf("%s is not sacloud.Switch", op)
 	}

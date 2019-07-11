@@ -315,6 +315,20 @@ type SimpleMonitorAPI interface {
 }
 
 /*************************************************
+* SSHKeyAPI
+*************************************************/
+
+// SSHKeyAPI is interface for operate SSHKey resource
+type SSHKeyAPI interface {
+	Find(ctx context.Context, zone string, conditions *FindCondition) (*SSHKeyFindResult, error)
+	Create(ctx context.Context, zone string, param *SSHKeyCreateRequest) (*SSHKey, error)
+	Generate(ctx context.Context, zone string, param *SSHKeyGenerateRequest) (*SSHKeyGenerated, error)
+	Read(ctx context.Context, zone string, id types.ID) (*SSHKey, error)
+	Update(ctx context.Context, zone string, id types.ID, param *SSHKeyUpdateRequest) (*SSHKey, error)
+	Delete(ctx context.Context, zone string, id types.ID) error
+}
+
+/*************************************************
 * SwitchAPI
 *************************************************/
 

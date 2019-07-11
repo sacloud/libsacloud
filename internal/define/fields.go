@@ -310,6 +310,34 @@ func (f *fieldsDef) IconImage() *dsl.FieldDesc {
 	}
 }
 
+func (f *fieldsDef) PublicKey() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "PublicKey",
+		Type: meta.TypeString,
+	}
+}
+
+func (f *fieldsDef) PrivateKey() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "PrivateKey",
+		Type: meta.TypeString,
+	}
+}
+
+func (f *fieldsDef) Fingerprint() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "Fingerprint",
+		Type: meta.TypeString,
+	}
+}
+
+func (f *fieldsDef) PassPhrase() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "PassPhrase",
+		Type: meta.TypeString,
+	}
+}
+
 func (f *fieldsDef) SourceDiskID() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "SourceDiskID",

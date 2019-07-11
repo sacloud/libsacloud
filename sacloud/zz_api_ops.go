@@ -164,6 +164,14 @@ func init() {
 		}
 	})
 
+	SetClientFactoryFunc("SSHKey", func(caller APICaller) interface{} {
+		return &SSHKeyOp{
+			Client:     caller,
+			PathSuffix: "api/cloud/1.1",
+			PathName:   "sshkey",
+		}
+	})
+
 	SetClientFactoryFunc("Switch", func(caller APICaller) interface{} {
 		return &SwitchOp{
 			Client:     caller,
@@ -7055,6 +7063,294 @@ func (o *SimpleMonitorOp) HealthStatus(ctx context.Context, zone string, id type
 		return nil, err
 	}
 	return results.SimpleMonitorHealthStatus, nil
+}
+
+/*************************************************
+* SSHKeyOp
+*************************************************/
+
+// SSHKeyOp implements SSHKeyAPI interface
+type SSHKeyOp struct {
+	// Client APICaller
+	Client APICaller
+	// PathSuffix is used when building URL
+	PathSuffix string
+	// PathName is used when building URL
+	PathName string
+}
+
+// NewSSHKeyOp creates new SSHKeyOp instance
+func NewSSHKeyOp(caller APICaller) SSHKeyAPI {
+	return GetClientFactoryFunc("SSHKey")(caller).(SSHKeyAPI)
+}
+
+// Find is API call
+func (o *SSHKeyOp) Find(ctx context.Context, zone string, conditions *FindCondition) (*SSHKeyFindResult, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"conditions": conditions,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	if zone == "" {
+		zone = ""
+	}
+	if conditions == nil {
+		conditions = &FindCondition{}
+	}
+	args := &struct {
+		Argzone       string
+		Argconditions *FindCondition `mapconv:",squash"`
+	}{
+		Argzone:       zone,
+		Argconditions: conditions,
+	}
+
+	v := &sSHKeyFindRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &sSHKeyFindResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &SSHKeyFindResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, err
+}
+
+// Create is API call
+func (o *SSHKeyOp) Create(ctx context.Context, zone string, param *SSHKeyCreateRequest) (*SSHKey, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"param":      param,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	if zone == "" {
+		zone = ""
+	}
+	if param == nil {
+		param = &SSHKeyCreateRequest{}
+	}
+	args := &struct {
+		Argzone  string
+		Argparam *SSHKeyCreateRequest `mapconv:"SSHKey,recursive"`
+	}{
+		Argzone:  zone,
+		Argparam: param,
+	}
+
+	v := &sSHKeyCreateRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
+
+	data, err := o.Client.Do(ctx, "POST", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &sSHKeyCreateResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &sSHKeyCreateResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results.SSHKey, nil
+}
+
+// Generate is API call
+func (o *SSHKeyOp) Generate(ctx context.Context, zone string, param *SSHKeyGenerateRequest) (*SSHKeyGenerated, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/generate", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"param":      param,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	if zone == "" {
+		zone = ""
+	}
+	if param == nil {
+		param = &SSHKeyGenerateRequest{}
+	}
+	args := &struct {
+		Argzone  string
+		Argparam *SSHKeyGenerateRequest `mapconv:"SSHKey,recursive"`
+	}{
+		Argzone:  zone,
+		Argparam: param,
+	}
+
+	v := &sSHKeyGenerateRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
+
+	data, err := o.Client.Do(ctx, "POST", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &sSHKeyGenerateResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &sSHKeyGenerateResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results.SSHKeyGenerated, nil
+}
+
+// Read is API call
+func (o *SSHKeyOp) Read(ctx context.Context, zone string, id types.ID) (*SSHKey, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &sSHKeyReadResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &sSHKeyReadResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results.SSHKey, nil
+}
+
+// Update is API call
+func (o *SSHKeyOp) Update(ctx context.Context, zone string, id types.ID, param *SSHKeyUpdateRequest) (*SSHKey, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+		"param":      param,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	if zone == "" {
+		zone = ""
+	}
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	if param == nil {
+		param = &SSHKeyUpdateRequest{}
+	}
+	args := &struct {
+		Argzone  string
+		Argid    types.ID
+		Argparam *SSHKeyUpdateRequest `mapconv:"SSHKey,recursive"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+
+	v := &sSHKeyUpdateRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
+
+	data, err := o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &sSHKeyUpdateResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &sSHKeyUpdateResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results.SSHKey, nil
+}
+
+// Delete is API call
+func (o *SSHKeyOp) Delete(ctx context.Context, zone string, id types.ID) error {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+	})
+	if err != nil {
+		return err
+	}
+
+	var body interface{}
+
+	_, err = o.Client.Do(ctx, "DELETE", url, body)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 /*************************************************
