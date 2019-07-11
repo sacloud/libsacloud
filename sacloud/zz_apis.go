@@ -257,6 +257,16 @@ type ProxyLBAPI interface {
 }
 
 /*************************************************
+* RegionAPI
+*************************************************/
+
+// RegionAPI is interface for operate Region resource
+type RegionAPI interface {
+	Find(ctx context.Context, zone string, conditions *FindCondition) (*RegionFindResult, error)
+	Read(ctx context.Context, zone string, id types.ID) (*Region, error)
+}
+
+/*************************************************
 * ServerAPI
 *************************************************/
 

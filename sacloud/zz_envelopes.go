@@ -1124,6 +1124,33 @@ type proxyLBHealthStatusResponseEnvelope struct {
 	ProxyLB *naked.ProxyLBHealth `json:",omitempty"`
 }
 
+// regionFindRequestEnvelope is envelop of API request
+type regionFindRequestEnvelope struct {
+	Count   int                    `json:",omitempty"`
+	From    int                    `json:",omitempty"`
+	Sort    []string               `json:",omitempty"`
+	Filter  map[string]interface{} `json:",omitempty"`
+	Include []string               `json:",omitempty"`
+	Exclude []string               `json:",omitempty"`
+}
+
+// regionFindResponseEnvelope is envelop of API response
+type regionFindResponseEnvelope struct {
+	Total int `json:",omitempty"` // トータル件数
+	From  int `json:",omitempty"` // ページング開始ページ
+	Count int `json:",omitempty"` // 件数
+
+	Regions []*naked.Region `json:",omitempty"`
+}
+
+// regionReadResponseEnvelope is envelop of API response
+type regionReadResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Region *naked.Region `json:",omitempty"`
+}
+
 // serverFindRequestEnvelope is envelop of API request
 type serverFindRequestEnvelope struct {
 	Count   int                    `json:",omitempty"`

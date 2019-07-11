@@ -1784,6 +1784,17 @@ func (f *fieldsDef) Region() *dsl.FieldDesc {
 	}
 }
 
+func (f *fieldsDef) NameServers() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "NameServers",
+		Type: meta.TypeStringSlice,
+		Tags: &dsl.FieldTags{
+			MapConv: ",omitempty",
+			JSON:    ",omitempty",
+		},
+	}
+}
+
 func (f *fieldsDef) Zone() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "Zone",

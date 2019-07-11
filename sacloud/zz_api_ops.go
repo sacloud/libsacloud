@@ -140,6 +140,14 @@ func init() {
 		}
 	})
 
+	SetClientFactoryFunc("Region", func(caller APICaller) interface{} {
+		return &RegionOp{
+			Client:     caller,
+			PathSuffix: "api/cloud/1.1",
+			PathName:   "region",
+		}
+	})
+
 	SetClientFactoryFunc("Server", func(caller APICaller) interface{} {
 		return &ServerOp{
 			Client:     caller,
@@ -5595,6 +5603,109 @@ func (o *ProxyLBOp) HealthStatus(ctx context.Context, zone string, id types.ID) 
 		return nil, err
 	}
 	return results.ProxyLBHealth, nil
+}
+
+/*************************************************
+* RegionOp
+*************************************************/
+
+// RegionOp implements RegionAPI interface
+type RegionOp struct {
+	// Client APICaller
+	Client APICaller
+	// PathSuffix is used when building URL
+	PathSuffix string
+	// PathName is used when building URL
+	PathName string
+}
+
+// NewRegionOp creates new RegionOp instance
+func NewRegionOp(caller APICaller) RegionAPI {
+	return GetClientFactoryFunc("Region")(caller).(RegionAPI)
+}
+
+// Find is API call
+func (o *RegionOp) Find(ctx context.Context, zone string, conditions *FindCondition) (*RegionFindResult, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"conditions": conditions,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	if zone == "" {
+		zone = ""
+	}
+	if conditions == nil {
+		conditions = &FindCondition{}
+	}
+	args := &struct {
+		Argzone       string
+		Argconditions *FindCondition `mapconv:",squash"`
+	}{
+		Argzone:       zone,
+		Argconditions: conditions,
+	}
+
+	v := &regionFindRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &regionFindResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &RegionFindResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, err
+}
+
+// Read is API call
+func (o *RegionOp) Read(ctx context.Context, zone string, id types.ID) (*Region, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &regionReadResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &regionReadResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results.Region, nil
 }
 
 /*************************************************

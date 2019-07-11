@@ -1984,6 +1984,49 @@ func (s *ProxyLBStub) HealthStatus(ctx context.Context, zone string, id types.ID
 }
 
 /*************************************************
+* RegionStub
+*************************************************/
+
+// RegionFindStubResult is expected values of the Find operation
+type RegionFindStubResult struct {
+	Values *sacloud.RegionFindResult
+	Err    error
+}
+
+// RegionReadStubResult is expected values of the Read operation
+type RegionReadStubResult struct {
+	Region *sacloud.Region
+	Err    error
+}
+
+// RegionStub is for trace RegionOp operations
+type RegionStub struct {
+	FindStubResult *RegionFindStubResult
+	ReadStubResult *RegionReadStubResult
+}
+
+// NewRegionStub creates new RegionStub instance
+func NewRegionStub(caller sacloud.APICaller) sacloud.RegionAPI {
+	return &RegionStub{}
+}
+
+// Find is API call with trace log
+func (s *RegionStub) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.RegionFindResult, error) {
+	if s.FindStubResult == nil {
+		log.Fatal("RegionStub.FindStubResult is not set")
+	}
+	return s.FindStubResult.Values, s.FindStubResult.Err
+}
+
+// Read is API call with trace log
+func (s *RegionStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Region, error) {
+	if s.ReadStubResult == nil {
+		log.Fatal("RegionStub.ReadStubResult is not set")
+	}
+	return s.ReadStubResult.Region, s.ReadStubResult.Err
+}
+
+/*************************************************
 * ServerStub
 *************************************************/
 

@@ -61,6 +61,9 @@ func AddClientFactoryHooks() {
 	sacloud.AddClientFacotyHookFunc("ProxyLB", func(in interface{}) interface{} {
 		return NewProxyLBTracer(in.(sacloud.ProxyLBAPI))
 	})
+	sacloud.AddClientFacotyHookFunc("Region", func(in interface{}) interface{} {
+		return NewRegionTracer(in.(sacloud.RegionAPI))
+	})
 	sacloud.AddClientFacotyHookFunc("Server", func(in interface{}) interface{} {
 		return NewServerTracer(in.(sacloud.ServerAPI))
 	})
@@ -4316,6 +4319,88 @@ func (t *ProxyLBTracer) HealthStatus(ctx context.Context, zone string, id types.
 	}
 
 	return resultProxyLBHealth, err
+}
+
+/*************************************************
+* RegionTracer
+*************************************************/
+
+// RegionTracer is for trace RegionOp operations
+type RegionTracer struct {
+	Internal sacloud.RegionAPI
+}
+
+// NewRegionTracer creates new RegionTracer instance
+func NewRegionTracer(in sacloud.RegionAPI) sacloud.RegionAPI {
+	return &RegionTracer{
+		Internal: in,
+	}
+}
+
+// Find is API call with trace log
+func (t *RegionTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.RegionFindResult, error) {
+	log.Println("[TRACE] RegionAPI.Find start")
+	targetArguments := struct {
+		Argzone       string                 `json:"zone"`
+		Argconditions *sacloud.FindCondition `json:"conditions"`
+	}{
+		Argzone:       zone,
+		Argconditions: conditions,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] RegionAPI.Find end")
+	}()
+
+	result, err := t.Internal.Find(ctx, zone, conditions)
+	targetResults := struct {
+		Result *sacloud.RegionFindResult
+		Error  error
+	}{
+		Result: result,
+		Error:  err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return result, err
+}
+
+// Read is API call with trace log
+func (t *RegionTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Region, error) {
+	log.Println("[TRACE] RegionAPI.Read start")
+	targetArguments := struct {
+		Argzone string   `json:"zone"`
+		Argid   types.ID `json:"id"`
+	}{
+		Argzone: zone,
+		Argid:   id,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] RegionAPI.Read end")
+	}()
+
+	resultRegion, err := t.Internal.Read(ctx, zone, id)
+	targetResults := struct {
+		Region *sacloud.Region
+		Error  error
+	}{
+		Region: resultRegion,
+		Error:  err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultRegion, err
 }
 
 /*************************************************
