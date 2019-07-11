@@ -383,14 +383,7 @@ func (m *modelsDef) region() *dsl.Model {
 			fields.ID(),
 			fields.Name(),
 			fields.Description(),
-			{
-				Name: "NameServers",
-				Type: meta.TypeStringSlice,
-				Tags: &dsl.FieldTags{
-					MapConv: ",omitempty",
-					JSON:    ",omitempty",
-				},
-			},
+			fields.NameServers(),
 		},
 	}
 }

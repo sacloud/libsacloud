@@ -33,6 +33,7 @@ func init() {
 	APIs.Define(noteAPI)          // スタートアップスクリプト
 	APIs.Define(packetFilterAPI)  // パケットフィルタ
 	APIs.Define(proxyLBAPI)       // エンハンスドロードバランサ
+	APIs.Define(regionAPI)        // リージョン
 	APIs.Define(serverAPI)        // サーバ
 	APIs.Define(simAPI)           // SIM
 	APIs.Define(simpleMonitorAPI) // シンプル監視

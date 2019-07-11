@@ -52,6 +52,7 @@ func init() {
 	initNotes()
 	initSwitch()
 	initZones()
+	initRegions()
 }
 
 func initArchives() {
@@ -135,5 +136,35 @@ func initZones() {
 		Description:  "Sandbox",
 		DisplayOrder: 4,
 		IsDummy:      true,
+	})
+}
+
+func initRegions() {
+	s.setRegion(sacloud.APIDefaultZone, &sacloud.Region{
+		ID:          210,
+		Name:        "東京",
+		Description: "東京",
+		NameServers: []string{
+			"210.188.224.10",
+			"210.188.224.11",
+		},
+	})
+	s.setRegion(sacloud.APIDefaultZone, &sacloud.Region{
+		ID:          290,
+		Name:        "Sandbox",
+		Description: "Sandbox",
+		NameServers: []string{
+			"133.242.0.3",
+			"133.242.0.4",
+		},
+	})
+	s.setRegion(sacloud.APIDefaultZone, &sacloud.Region{
+		ID:          310,
+		Name:        "石狩",
+		Description: "石狩",
+		NameServers: []string{
+			"133.242.0.3",
+			"133.242.0.4",
+		},
 	})
 }

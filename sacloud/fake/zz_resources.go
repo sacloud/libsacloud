@@ -35,6 +35,8 @@ const (
 	ResourcePacketFilter = "PacketFilter"
 	// ResourceProxyLB is resource key of fake store
 	ResourceProxyLB = "ProxyLB"
+	// ResourceRegion is resource key of fake store
+	ResourceRegion = "Region"
 	// ResourceServer is resource key of fake store
 	ResourceServer = "Server"
 	// ResourceSIM is resource key of fake store

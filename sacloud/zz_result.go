@@ -617,6 +617,22 @@ type proxyLBHealthStatusResult struct {
 	ProxyLBHealth *ProxyLBHealth `json:",omitempty" mapconv:"ProxyLB,omitempty,recursive"`
 }
 
+// RegionFindResult represents the Result of API
+type RegionFindResult struct {
+	Total int `json:",omitempty"` // Total count of target resources
+	From  int `json:",omitempty"` // Current page number
+	Count int `json:",omitempty"` // Count of current page
+
+	Regions []*Region `json:",omitempty" mapconv:"[]Regions,omitempty,recursive"`
+}
+
+// regionReadResult represents the Result of API
+type regionReadResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	Region *Region `json:",omitempty" mapconv:"Region,omitempty,recursive"`
+}
+
 // ServerFindResult represents the Result of API
 type ServerFindResult struct {
 	Total int `json:",omitempty"` // Total count of target resources
