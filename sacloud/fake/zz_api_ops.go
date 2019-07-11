@@ -65,6 +65,9 @@ func SwitchFactoryFuncToFake() {
 	sacloud.SetClientFactoryFunc(ResourceSimpleMonitor, func(caller sacloud.APICaller) interface{} {
 		return NewSimpleMonitorOp()
 	})
+	sacloud.SetClientFactoryFunc(ResourceSSHKey, func(caller sacloud.APICaller) interface{} {
+		return NewSSHKeyOp()
+	})
 	sacloud.SetClientFactoryFunc(ResourceSwitch, func(caller sacloud.APICaller) interface{} {
 		return NewSwitchOp()
 	})
@@ -377,6 +380,22 @@ type SimpleMonitorOp struct {
 func NewSimpleMonitorOp() sacloud.SimpleMonitorAPI {
 	return &SimpleMonitorOp{
 		key: ResourceSimpleMonitor,
+	}
+}
+
+/*************************************************
+* SSHKeyOp
+*************************************************/
+
+// SSHKeyOp is fake implementation of SSHKeyAPI interface
+type SSHKeyOp struct {
+	key string
+}
+
+// NewSSHKeyOp creates new SSHKeyOp instance
+func NewSSHKeyOp() sacloud.SSHKeyAPI {
+	return &SSHKeyOp{
+		key: ResourceSSHKey,
 	}
 }
 

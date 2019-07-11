@@ -36,6 +36,7 @@ func init() {
 	APIs.Define(serverAPI)        // サーバ
 	APIs.Define(simAPI)           // SIM
 	APIs.Define(simpleMonitorAPI) // シンプル監視
+	APIs.Define(sshKeyAPI)        // 公開鍵
 	APIs.Define(switchAPI)        // スイッチ
 	APIs.Define(vpcRouterAPI)     // VPCルータ
 	APIs.Define(zoneAPI)          // ゾーン

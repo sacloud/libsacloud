@@ -70,6 +70,9 @@ func AddClientFactoryHooks() {
 	sacloud.AddClientFacotyHookFunc("SimpleMonitor", func(in interface{}) interface{} {
 		return NewSimpleMonitorTracer(in.(sacloud.SimpleMonitorAPI))
 	})
+	sacloud.AddClientFacotyHookFunc("SSHKey", func(in interface{}) interface{} {
+		return NewSSHKeyTracer(in.(sacloud.SSHKeyAPI))
+	})
 	sacloud.AddClientFacotyHookFunc("Switch", func(in interface{}) interface{} {
 		return NewSwitchTracer(in.(sacloud.SwitchAPI))
 	})
@@ -5479,6 +5482,220 @@ func (t *SimpleMonitorTracer) HealthStatus(ctx context.Context, zone string, id 
 	}
 
 	return resultSimpleMonitorHealthStatus, err
+}
+
+/*************************************************
+* SSHKeyTracer
+*************************************************/
+
+// SSHKeyTracer is for trace SSHKeyOp operations
+type SSHKeyTracer struct {
+	Internal sacloud.SSHKeyAPI
+}
+
+// NewSSHKeyTracer creates new SSHKeyTracer instance
+func NewSSHKeyTracer(in sacloud.SSHKeyAPI) sacloud.SSHKeyAPI {
+	return &SSHKeyTracer{
+		Internal: in,
+	}
+}
+
+// Find is API call with trace log
+func (t *SSHKeyTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.SSHKeyFindResult, error) {
+	log.Println("[TRACE] SSHKeyAPI.Find start")
+	targetArguments := struct {
+		Argzone       string                 `json:"zone"`
+		Argconditions *sacloud.FindCondition `json:"conditions"`
+	}{
+		Argzone:       zone,
+		Argconditions: conditions,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] SSHKeyAPI.Find end")
+	}()
+
+	result, err := t.Internal.Find(ctx, zone, conditions)
+	targetResults := struct {
+		Result *sacloud.SSHKeyFindResult
+		Error  error
+	}{
+		Result: result,
+		Error:  err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return result, err
+}
+
+// Create is API call with trace log
+func (t *SSHKeyTracer) Create(ctx context.Context, zone string, param *sacloud.SSHKeyCreateRequest) (*sacloud.SSHKey, error) {
+	log.Println("[TRACE] SSHKeyAPI.Create start")
+	targetArguments := struct {
+		Argzone  string                       `json:"zone"`
+		Argparam *sacloud.SSHKeyCreateRequest `json:"param"`
+	}{
+		Argzone:  zone,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] SSHKeyAPI.Create end")
+	}()
+
+	resultSSHKey, err := t.Internal.Create(ctx, zone, param)
+	targetResults := struct {
+		SSHKey *sacloud.SSHKey
+		Error  error
+	}{
+		SSHKey: resultSSHKey,
+		Error:  err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultSSHKey, err
+}
+
+// Generate is API call with trace log
+func (t *SSHKeyTracer) Generate(ctx context.Context, zone string, param *sacloud.SSHKeyGenerateRequest) (*sacloud.SSHKeyGenerated, error) {
+	log.Println("[TRACE] SSHKeyAPI.Generate start")
+	targetArguments := struct {
+		Argzone  string                         `json:"zone"`
+		Argparam *sacloud.SSHKeyGenerateRequest `json:"param"`
+	}{
+		Argzone:  zone,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] SSHKeyAPI.Generate end")
+	}()
+
+	resultSSHKeyGenerated, err := t.Internal.Generate(ctx, zone, param)
+	targetResults := struct {
+		SSHKeyGenerated *sacloud.SSHKeyGenerated
+		Error           error
+	}{
+		SSHKeyGenerated: resultSSHKeyGenerated,
+		Error:           err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultSSHKeyGenerated, err
+}
+
+// Read is API call with trace log
+func (t *SSHKeyTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.SSHKey, error) {
+	log.Println("[TRACE] SSHKeyAPI.Read start")
+	targetArguments := struct {
+		Argzone string   `json:"zone"`
+		Argid   types.ID `json:"id"`
+	}{
+		Argzone: zone,
+		Argid:   id,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] SSHKeyAPI.Read end")
+	}()
+
+	resultSSHKey, err := t.Internal.Read(ctx, zone, id)
+	targetResults := struct {
+		SSHKey *sacloud.SSHKey
+		Error  error
+	}{
+		SSHKey: resultSSHKey,
+		Error:  err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultSSHKey, err
+}
+
+// Update is API call with trace log
+func (t *SSHKeyTracer) Update(ctx context.Context, zone string, id types.ID, param *sacloud.SSHKeyUpdateRequest) (*sacloud.SSHKey, error) {
+	log.Println("[TRACE] SSHKeyAPI.Update start")
+	targetArguments := struct {
+		Argzone  string                       `json:"zone"`
+		Argid    types.ID                     `json:"id"`
+		Argparam *sacloud.SSHKeyUpdateRequest `json:"param"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] SSHKeyAPI.Update end")
+	}()
+
+	resultSSHKey, err := t.Internal.Update(ctx, zone, id, param)
+	targetResults := struct {
+		SSHKey *sacloud.SSHKey
+		Error  error
+	}{
+		SSHKey: resultSSHKey,
+		Error:  err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultSSHKey, err
+}
+
+// Delete is API call with trace log
+func (t *SSHKeyTracer) Delete(ctx context.Context, zone string, id types.ID) error {
+	log.Println("[TRACE] SSHKeyAPI.Delete start")
+	targetArguments := struct {
+		Argzone string   `json:"zone"`
+		Argid   types.ID `json:"id"`
+	}{
+		Argzone: zone,
+		Argid:   id,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] SSHKeyAPI.Delete end")
+	}()
+
+	err := t.Internal.Delete(ctx, zone, id)
+	targetResults := struct {
+		Error error
+	}{
+		Error: err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return err
 }
 
 /*************************************************

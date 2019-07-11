@@ -10528,6 +10528,353 @@ func (o *SimpleMonitorHealthStatus) SetHealth(v types.ESimpleMonitorHealth) {
 }
 
 /*************************************************
+* SSHKey
+*************************************************/
+
+// SSHKey represents API parameter/response structure
+type SSHKey struct {
+	ID          types.ID
+	Name        string `validate:"required"`
+	Description string `validate:"min=0,max=512"`
+	CreatedAt   time.Time
+	PublicKey   string
+	Fingerprint string
+}
+
+// Validate validates by field tags
+func (o *SSHKey) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetID returns value of ID
+func (o *SSHKey) GetID() types.ID {
+	return o.ID
+}
+
+// SetID sets value to ID
+func (o *SSHKey) SetID(v types.ID) {
+	o.ID = v
+}
+
+// GetStringID gets value to StringID
+func (o *SSHKey) GetStringID() string {
+	return accessor.GetStringID(o)
+}
+
+// SetStringID sets value to StringID
+func (o *SSHKey) SetStringID(v string) {
+	accessor.SetStringID(o, v)
+}
+
+// GetInt64ID gets value to Int64ID
+func (o *SSHKey) GetInt64ID() int64 {
+	return accessor.GetInt64ID(o)
+}
+
+// SetInt64ID sets value to Int64ID
+func (o *SSHKey) SetInt64ID(v int64) {
+	accessor.SetInt64ID(o, v)
+}
+
+// GetName returns value of Name
+func (o *SSHKey) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *SSHKey) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *SSHKey) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *SSHKey) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetCreatedAt returns value of CreatedAt
+func (o *SSHKey) GetCreatedAt() time.Time {
+	return o.CreatedAt
+}
+
+// SetCreatedAt sets value to CreatedAt
+func (o *SSHKey) SetCreatedAt(v time.Time) {
+	o.CreatedAt = v
+}
+
+// GetPublicKey returns value of PublicKey
+func (o *SSHKey) GetPublicKey() string {
+	return o.PublicKey
+}
+
+// SetPublicKey sets value to PublicKey
+func (o *SSHKey) SetPublicKey(v string) {
+	o.PublicKey = v
+}
+
+// GetFingerprint returns value of Fingerprint
+func (o *SSHKey) GetFingerprint() string {
+	return o.Fingerprint
+}
+
+// SetFingerprint sets value to Fingerprint
+func (o *SSHKey) SetFingerprint(v string) {
+	o.Fingerprint = v
+}
+
+/*************************************************
+* SSHKeyCreateRequest
+*************************************************/
+
+// SSHKeyCreateRequest represents API parameter/response structure
+type SSHKeyCreateRequest struct {
+	Name        string `validate:"required"`
+	Description string `validate:"min=0,max=512"`
+	PublicKey   string
+}
+
+// Validate validates by field tags
+func (o *SSHKeyCreateRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetName returns value of Name
+func (o *SSHKeyCreateRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *SSHKeyCreateRequest) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *SSHKeyCreateRequest) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *SSHKeyCreateRequest) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetPublicKey returns value of PublicKey
+func (o *SSHKeyCreateRequest) GetPublicKey() string {
+	return o.PublicKey
+}
+
+// SetPublicKey sets value to PublicKey
+func (o *SSHKeyCreateRequest) SetPublicKey(v string) {
+	o.PublicKey = v
+}
+
+/*************************************************
+* SSHKeyGenerated
+*************************************************/
+
+// SSHKeyGenerated represents API parameter/response structure
+type SSHKeyGenerated struct {
+	ID          types.ID
+	Name        string `validate:"required"`
+	Description string `validate:"min=0,max=512"`
+	CreatedAt   time.Time
+	PublicKey   string
+	Fingerprint string
+	PrivateKey  string
+}
+
+// Validate validates by field tags
+func (o *SSHKeyGenerated) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetID returns value of ID
+func (o *SSHKeyGenerated) GetID() types.ID {
+	return o.ID
+}
+
+// SetID sets value to ID
+func (o *SSHKeyGenerated) SetID(v types.ID) {
+	o.ID = v
+}
+
+// GetStringID gets value to StringID
+func (o *SSHKeyGenerated) GetStringID() string {
+	return accessor.GetStringID(o)
+}
+
+// SetStringID sets value to StringID
+func (o *SSHKeyGenerated) SetStringID(v string) {
+	accessor.SetStringID(o, v)
+}
+
+// GetInt64ID gets value to Int64ID
+func (o *SSHKeyGenerated) GetInt64ID() int64 {
+	return accessor.GetInt64ID(o)
+}
+
+// SetInt64ID sets value to Int64ID
+func (o *SSHKeyGenerated) SetInt64ID(v int64) {
+	accessor.SetInt64ID(o, v)
+}
+
+// GetName returns value of Name
+func (o *SSHKeyGenerated) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *SSHKeyGenerated) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *SSHKeyGenerated) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *SSHKeyGenerated) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetCreatedAt returns value of CreatedAt
+func (o *SSHKeyGenerated) GetCreatedAt() time.Time {
+	return o.CreatedAt
+}
+
+// SetCreatedAt sets value to CreatedAt
+func (o *SSHKeyGenerated) SetCreatedAt(v time.Time) {
+	o.CreatedAt = v
+}
+
+// GetPublicKey returns value of PublicKey
+func (o *SSHKeyGenerated) GetPublicKey() string {
+	return o.PublicKey
+}
+
+// SetPublicKey sets value to PublicKey
+func (o *SSHKeyGenerated) SetPublicKey(v string) {
+	o.PublicKey = v
+}
+
+// GetFingerprint returns value of Fingerprint
+func (o *SSHKeyGenerated) GetFingerprint() string {
+	return o.Fingerprint
+}
+
+// SetFingerprint sets value to Fingerprint
+func (o *SSHKeyGenerated) SetFingerprint(v string) {
+	o.Fingerprint = v
+}
+
+// GetPrivateKey returns value of PrivateKey
+func (o *SSHKeyGenerated) GetPrivateKey() string {
+	return o.PrivateKey
+}
+
+// SetPrivateKey sets value to PrivateKey
+func (o *SSHKeyGenerated) SetPrivateKey(v string) {
+	o.PrivateKey = v
+}
+
+/*************************************************
+* SSHKeyGenerateRequest
+*************************************************/
+
+// SSHKeyGenerateRequest represents API parameter/response structure
+type SSHKeyGenerateRequest struct {
+	Name           string `validate:"required"`
+	Description    string `validate:"min=0,max=512"`
+	PassPhrase     string
+	GenerateFormat string `mapconv:",default=openssh"`
+}
+
+// Validate validates by field tags
+func (o *SSHKeyGenerateRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetName returns value of Name
+func (o *SSHKeyGenerateRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *SSHKeyGenerateRequest) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *SSHKeyGenerateRequest) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *SSHKeyGenerateRequest) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetPassPhrase returns value of PassPhrase
+func (o *SSHKeyGenerateRequest) GetPassPhrase() string {
+	return o.PassPhrase
+}
+
+// SetPassPhrase sets value to PassPhrase
+func (o *SSHKeyGenerateRequest) SetPassPhrase(v string) {
+	o.PassPhrase = v
+}
+
+// GetGenerateFormat returns value of GenerateFormat
+func (o *SSHKeyGenerateRequest) GetGenerateFormat() string {
+	return o.GenerateFormat
+}
+
+// SetGenerateFormat sets value to GenerateFormat
+func (o *SSHKeyGenerateRequest) SetGenerateFormat(v string) {
+	o.GenerateFormat = v
+}
+
+/*************************************************
+* SSHKeyUpdateRequest
+*************************************************/
+
+// SSHKeyUpdateRequest represents API parameter/response structure
+type SSHKeyUpdateRequest struct {
+	Name        string `validate:"required"`
+	Description string `validate:"min=0,max=512"`
+}
+
+// Validate validates by field tags
+func (o *SSHKeyUpdateRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetName returns value of Name
+func (o *SSHKeyUpdateRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *SSHKeyUpdateRequest) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *SSHKeyUpdateRequest) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *SSHKeyUpdateRequest) SetDescription(v string) {
+	o.Description = v
+}
+
+/*************************************************
 * Switch
 *************************************************/
 
