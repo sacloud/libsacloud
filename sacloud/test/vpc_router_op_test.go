@@ -15,27 +15,27 @@ func TestVPCRouterOpCRUD(t *testing.T) {
 		SetupAPICallerFunc: singletonAPICaller,
 		Create: &CRUDTestFunc{
 			Func: testVPCRouterCreate(createVPCRouterParam),
-			Expect: &CRUDTestExpect{
+			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
 				ExpectValue:  createVPCRouterExpected,
 				IgnoreFields: ignoreVPCRouterFields,
-			},
+			}),
 		},
 
 		Read: &CRUDTestFunc{
 			Func: testVPCRouterRead,
-			Expect: &CRUDTestExpect{
+			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
 				ExpectValue:  createVPCRouterExpected,
 				IgnoreFields: ignoreVPCRouterFields,
-			},
+			}),
 		},
 
 		Updates: []*CRUDTestFunc{
 			{
 				Func: testVPCRouterUpdate(updateVPCRouterParam),
-				Expect: &CRUDTestExpect{
+				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
 					ExpectValue:  updateVPCRouterExpected,
 					IgnoreFields: ignoreVPCRouterFields,
-				},
+				}),
 			},
 		},
 
@@ -220,18 +220,18 @@ func TestVPCRouterOpWithRouterCRUD(t *testing.T) {
 		},
 		Create: &CRUDTestFunc{
 			Func: testVPCRouterCreate(createVPCRouterParam),
-			Expect: &CRUDTestExpect{
+			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
 				ExpectValue:  createVPCRouterExpected,
 				IgnoreFields: ignoreVPCRouterFields,
-			},
+			}),
 		},
 
 		Read: &CRUDTestFunc{
 			Func: testVPCRouterRead,
-			Expect: &CRUDTestExpect{
+			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
 				ExpectValue:  createVPCRouterExpected,
 				IgnoreFields: ignoreVPCRouterFields,
-			},
+			}),
 		},
 
 		Updates: []*CRUDTestFunc{
@@ -334,10 +334,10 @@ func TestVPCRouterOpWithRouterCRUD(t *testing.T) {
 					withRouterUpdateVPCRouterExpected.Settings = p.Settings
 					return testVPCRouterUpdate(updateVPCRouterParam)(testContext, caller)
 				},
-				Expect: &CRUDTestExpect{
+				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
 					ExpectValue:  updateVPCRouterExpected,
 					IgnoreFields: ignoreVPCRouterFields,
-				},
+				}),
 			},
 		},
 

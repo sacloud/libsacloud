@@ -15,25 +15,25 @@ func TestPacketFilterOpCRUD(t *testing.T) {
 		SetupAPICallerFunc: singletonAPICaller,
 		Create: &CRUDTestFunc{
 			Func: testPacketFilterCreate,
-			Expect: &CRUDTestExpect{
+			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
 				ExpectValue:  createPacketFilterExpected,
 				IgnoreFields: packetFilterIgnoreFields,
-			},
+			}),
 		},
 		Read: &CRUDTestFunc{
 			Func: testPacketFilterRead,
-			Expect: &CRUDTestExpect{
+			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
 				ExpectValue:  createPacketFilterExpected,
 				IgnoreFields: packetFilterIgnoreFields,
-			},
+			}),
 		},
 		Updates: []*CRUDTestFunc{
 			{
 				Func: testPacketFilterUpdate,
-				Expect: &CRUDTestExpect{
+				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
 					ExpectValue:  updatePacketFilterExpected,
 					IgnoreFields: packetFilterIgnoreFields,
-				},
+				}),
 			},
 		},
 		Delete: &CRUDTestDeleteFunc{

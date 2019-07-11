@@ -15,27 +15,27 @@ func TestBridgeOpCRUD(t *testing.T) {
 
 		Create: &CRUDTestFunc{
 			Func: testBridgeCreate,
-			Expect: &CRUDTestExpect{
+			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
 				ExpectValue:  createBridgeExpected,
 				IgnoreFields: ignoreBridgeFields,
-			},
+			}),
 		},
 
 		Read: &CRUDTestFunc{
 			Func: testBridgeRead,
-			Expect: &CRUDTestExpect{
+			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
 				ExpectValue:  createBridgeExpected,
 				IgnoreFields: ignoreBridgeFields,
-			},
+			}),
 		},
 
 		Updates: []*CRUDTestFunc{
 			{
 				Func: testBridgeUpdate,
-				Expect: &CRUDTestExpect{
+				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
 					ExpectValue:  updateBridgeExpected,
 					IgnoreFields: ignoreBridgeFields,
-				},
+				}),
 			},
 		},
 

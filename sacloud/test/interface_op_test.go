@@ -6,7 +6,7 @@ import (
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
-	"github.com/stretchr/testify/require"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestInterface_Operations(t *testing.T) {
@@ -28,7 +28,9 @@ func TestInterface_Operations(t *testing.T) {
 				ServerPlanCommitment: types.Commitments.Standard,
 				Name:                 "libsacloud-server-with-interface",
 			})
-			require.NoError(t, err)
+			if !assert.NoError(t, err) {
+				return err
+			}
 
 			testContext.Values["interface/server"] = server.ID
 			createInterfaceParam.ServerID = server.ID
@@ -39,25 +41,25 @@ func TestInterface_Operations(t *testing.T) {
 
 		Create: &CRUDTestFunc{
 			Func: testInterfaceCreate,
-			Expect: &CRUDTestExpect{
+			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
 				ExpectValue:  createInterfaceExpected,
 				IgnoreFields: ignoreInterfaceFields,
-			},
+			}),
 		},
 		Read: &CRUDTestFunc{
 			Func: testInterfaceRead,
-			Expect: &CRUDTestExpect{
+			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
 				ExpectValue:  createInterfaceExpected,
 				IgnoreFields: ignoreInterfaceFields,
-			},
+			}),
 		},
 		Updates: []*CRUDTestFunc{
 			{
 				Func: testInterfaceUpdate,
-				Expect: &CRUDTestExpect{
+				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
 					ExpectValue:  updateInterfaceExpected,
 					IgnoreFields: ignoreInterfaceFields,
-				},
+				}),
 			},
 		},
 		Delete: &CRUDTestDeleteFunc{
