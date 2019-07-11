@@ -5,13 +5,22 @@ import (
 	"testing"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
-	"github.com/stretchr/testify/require"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestAuthStatusOp_Read(t *testing.T) {
-	client := sacloud.NewAuthStatusOp(singletonAPICaller())
+	Run(t, &CRUDTestCase{
+		Parallel:           true,
+		SetupAPICallerFunc: singletonAPICaller,
+		Read: &CRUDTestFunc{
+			Func: func(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+				client := sacloud.NewAuthStatusOp(singletonAPICaller())
+				authStatus, err := client.Read(context.Background(), sacloud.APIDefaultZone)
 
-	authStatus, err := client.Read(context.Background(), sacloud.APIDefaultZone)
-	require.NoError(t, err)
-	require.NotNil(t, authStatus)
+				assert.NotNil(t, authStatus)
+
+				return nil, err
+			},
+		},
+	})
 }

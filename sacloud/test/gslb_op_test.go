@@ -16,25 +16,27 @@ func TestGSLBOpCRUD(t *testing.T) {
 
 		Create: &CRUDTestFunc{
 			Func: testGSLBCreate,
-			Expect: &CRUDTestExpect{
+			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
 				ExpectValue:  createGSLBExpected,
 				IgnoreFields: ignoreGSLBFields,
-			},
+			}),
 		},
 
 		Read: &CRUDTestFunc{
 			Func: testGSLBRead,
-			Expect: &CRUDTestExpect{
+			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
 				ExpectValue:  createGSLBExpected,
 				IgnoreFields: ignoreGSLBFields,
-			},
+			}),
 		},
 
-		Update: &CRUDTestFunc{
-			Func: testGSLBUpdate,
-			Expect: &CRUDTestExpect{
-				ExpectValue:  updateGSLBExpected,
-				IgnoreFields: ignoreGSLBFields,
+		Updates: []*CRUDTestFunc{
+			{
+				Func: testGSLBUpdate,
+				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+					ExpectValue:  updateGSLBExpected,
+					IgnoreFields: ignoreGSLBFields,
+				}),
 			},
 		},
 

@@ -6,7 +6,6 @@ import (
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
-	"github.com/stretchr/testify/require"
 )
 
 func TestNoteOpCRUD(t *testing.T) {
@@ -16,23 +15,25 @@ func TestNoteOpCRUD(t *testing.T) {
 		SetupAPICallerFunc: singletonAPICaller,
 		Create: &CRUDTestFunc{
 			Func: testNoteCreate,
-			Expect: &CRUDTestExpect{
+			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
 				ExpectValue:  createNoteExpected,
 				IgnoreFields: []string{"ID", "CreatedAt", "ModifiedAt"},
-			},
+			}),
 		},
 		Read: &CRUDTestFunc{
 			Func: testNoteRead,
-			Expect: &CRUDTestExpect{
+			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
 				ExpectValue:  createNoteExpected,
 				IgnoreFields: []string{"ID", "CreatedAt", "ModifiedAt"},
-			},
+			}),
 		},
-		Update: &CRUDTestFunc{
-			Func: testNoteUpdate,
-			Expect: &CRUDTestExpect{
-				ExpectValue:  updateNoteExpected,
-				IgnoreFields: []string{"ID", "CreatedAt", "ModifiedAt"},
+		Updates: []*CRUDTestFunc{
+			{
+				Func: testNoteUpdate,
+				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+					ExpectValue:  updateNoteExpected,
+					IgnoreFields: []string{"ID", "CreatedAt", "ModifiedAt"},
+				}),
 			},
 		},
 		Delete: &CRUDTestDeleteFunc{
@@ -90,14 +91,4 @@ func testNoteUpdate(testContext *CRUDTestContext, caller sacloud.APICaller) (int
 func testNoteDelete(testContext *CRUDTestContext, caller sacloud.APICaller) error {
 	client := sacloud.NewNoteOp(caller)
 	return client.Delete(context.Background(), sacloud.APIDefaultZone, testContext.ID)
-}
-
-func TestNoteOp_Find(t *testing.T) {
-	t.Parallel()
-
-	client := sacloud.NewNoteOp(singletonAPICaller())
-
-	noteFindResult, err := client.Find(context.Background(), sacloud.APIDefaultZone, &sacloud.FindCondition{Count: 1})
-	require.NoError(t, err)
-	require.Len(t, noteFindResult.Notes, 1)
 }

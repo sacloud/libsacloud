@@ -31,25 +31,27 @@ func TestNFSOpCRUD(t *testing.T) {
 
 		Create: &CRUDTestFunc{
 			Func: testNFSCreate,
-			Expect: &CRUDTestExpect{
+			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
 				ExpectValue:  createNFSExpected,
 				IgnoreFields: ignoreNFSFields,
-			},
+			}),
 		},
 
 		Read: &CRUDTestFunc{
 			Func: testNFSRead,
-			Expect: &CRUDTestExpect{
+			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
 				ExpectValue:  createNFSExpected,
 				IgnoreFields: ignoreNFSFields,
-			},
+			}),
 		},
 
-		Update: &CRUDTestFunc{
-			Func: testNFSUpdate,
-			Expect: &CRUDTestExpect{
-				ExpectValue:  updateNFSExpected,
-				IgnoreFields: ignoreNFSFields,
+		Updates: []*CRUDTestFunc{
+			{
+				Func: testNFSUpdate,
+				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+					ExpectValue:  updateNFSExpected,
+					IgnoreFields: ignoreNFSFields,
+				}),
 			},
 		},
 

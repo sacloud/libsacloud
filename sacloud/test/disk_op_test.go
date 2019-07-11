@@ -2,12 +2,12 @@ package test
 
 import (
 	"context"
-	"strings"
+	"errors"
 	"testing"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
-	"github.com/stretchr/testify/require"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestDiskOpBlankDiskCRUD(t *testing.T) {
@@ -18,25 +18,27 @@ func TestDiskOpBlankDiskCRUD(t *testing.T) {
 
 		Create: &CRUDTestFunc{
 			Func: testDiskCreate,
-			Expect: &CRUDTestExpect{
+			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
 				ExpectValue:  createDiskExpected,
 				IgnoreFields: ignoreDiskFields,
-			},
+			}),
 		},
 
 		Read: &CRUDTestFunc{
 			Func: testDiskRead,
-			Expect: &CRUDTestExpect{
+			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
 				ExpectValue:  createDiskExpected,
 				IgnoreFields: ignoreDiskFields,
-			},
+			}),
 		},
 
-		Update: &CRUDTestFunc{
-			Func: testDiskUpdate,
-			Expect: &CRUDTestExpect{
-				ExpectValue:  updateDiskExpected,
-				IgnoreFields: ignoreDiskFields,
+		Updates: []*CRUDTestFunc{
+			{
+				Func: testDiskUpdate,
+				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+					ExpectValue:  updateDiskExpected,
+					IgnoreFields: ignoreDiskFields,
+				}),
 			},
 		},
 
@@ -117,71 +119,82 @@ func testDiskDelete(testContext *CRUDTestContext, caller sacloud.APICaller) erro
 }
 
 func TestDiskOp_Config(t *testing.T) {
-	t.Parallel()
 
-	archiveClient := sacloud.NewArchiveOp(singletonAPICaller())
-	client := sacloud.NewDiskOp(singletonAPICaller())
-	ctx := context.Background()
-
-	// find source public archive
+	// source archive
 	var archiveID types.ID
-	archiveFindResult, err := archiveClient.Find(ctx, testZone, nil)
-	require.NoError(t, err)
-	for _, a := range archiveFindResult.Archives {
-		if strings.HasPrefix(a.Name, "CentOS 7") {
-			archiveID = a.ID
-			break
-		}
-	}
-	if archiveID.IsEmpty() {
-		t.Fatal("archive is not found")
-	}
 
-	// create
-	disk, err := client.Create(ctx, testZone, &sacloud.DiskCreateRequest{
-		Name:            "libsacloud-disk-edit",
-		DiskPlanID:      types.ID(4),
-		SizeMB:          20 * 1024,
-		SourceArchiveID: archiveID,
-	})
-	require.NoError(t, err)
+	Run(t, &CRUDTestCase{
+		Parallel:           true,
+		SetupAPICallerFunc: singletonAPICaller,
+		Setup: func(testContext *CRUDTestContext, caller sacloud.APICaller) error {
+			archiveName := "CentOS"
+			client := sacloud.NewArchiveOp(singletonAPICaller())
+			searched, err := client.Find(context.Background(), testZone, &sacloud.FindCondition{
+				Filter: map[string]interface{}{
+					"Name": archiveName,
+				},
+			})
+			if !assert.NoError(t, err) {
+				return err
+			}
+			if searched.Count == 0 {
+				return errors.New("archive is not found")
+			}
+			archiveID = searched.Archives[0].ID
+			return nil
+		},
+		Create: &CRUDTestFunc{
+			Func: func(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+				client := sacloud.NewDiskOp(singletonAPICaller())
+				disk, err := client.Create(context.Background(), testZone, &sacloud.DiskCreateRequest{
+					Name:            "libsacloud-disk-edit",
+					DiskPlanID:      types.ID(4),
+					SizeMB:          20 * 1024,
+					SourceArchiveID: archiveID,
+				})
+				if err != nil {
+					return nil, err
+				}
+				if _, err = sacloud.WaiterForReady(func() (interface{}, error) {
+					return client.Read(context.Background(), testZone, disk.ID)
+				}).WaitForState(context.TODO()); err != nil {
+					return disk, err
+				}
 
-	// wait for ready
-	waiter := sacloud.WaiterForReady(func() (interface{}, error) {
-		return client.Read(ctx, testZone, disk.ID)
-	})
-	_, err = waiter.WaitForState(ctx)
-	require.NoError(t, err)
-
-	defer func() {
-		// cleanup
-		if err := client.Delete(ctx, testZone, disk.ID); err != nil {
-			t.Fatal(err)
-		}
-	}()
-
-	// edit disk
-	err = client.Config(context.Background(), testZone, disk.ID, &sacloud.DiskEditRequest{
-		Password: "password",
-		SSHKeys: []*sacloud.DiskEditSSHKey{
-			{
-				PublicKey: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC4LDQuDiKecOJDPY9InS7EswZ2fPnoRZXc48T1EqyRLyJhgEYGSDWaBiMDs2R/lWgA81Hp37qhrNqZPjFHUkBr93FOXxt9W0m1TNlkNepK0Uyi+14B2n0pdoeqsKEkb3sTevWF0ztxxWrwUd7Mems2hf+wFODITHYye9RlDAKLKPCFRvlQ9xQj4bBWOogQwoaXMSK1znMPjudcm1tRry4KIifLdXmwVKU4qDPGxoXfqs44Dgsikk43UVBStQ7IFoqPgAqcJFSGHLoMS7tPKdTvY9+GME5QidWK84gl69piAkgIdwd+JTMUOc/J+9DXAt220HqZ6l3yhWG5nIgi0x8n",
+				return disk, nil
 			},
 		},
-		DisablePWAuth: true,
-		EnableDHCP:    true,
-		HostName:      "hostname",
-		//Notes: []*DiskEditNote{
-		//	{
-		//		ID: types.ID(123456789012),
-		//	},
-		//},
-		UserIPAddress: "192.2.0.11",
-		UserSubnet: &sacloud.DiskEditUserSubnet{
-			DefaultRoute:   "192.2.0.1",
-			NetworkMaskLen: 24,
+		Read: &CRUDTestFunc{
+			Func: testDiskRead,
+		},
+		Updates: []*CRUDTestFunc{
+			{
+				Func: func(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+					// edit disk
+					client := sacloud.NewDiskOp(singletonAPICaller())
+					err := client.Config(context.Background(), testZone, testContext.ID, &sacloud.DiskEditRequest{
+						Password: "password",
+						SSHKeys: []*sacloud.DiskEditSSHKey{
+							{
+								PublicKey: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC4LDQuDiKecOJDPY9InS7EswZ2fPnoRZXc48T1EqyRLyJhgEYGSDWaBiMDs2R/lWgA81Hp37qhrNqZPjFHUkBr93FOXxt9W0m1TNlkNepK0Uyi+14B2n0pdoeqsKEkb3sTevWF0ztxxWrwUd7Mems2hf+wFODITHYye9RlDAKLKPCFRvlQ9xQj4bBWOogQwoaXMSK1znMPjudcm1tRry4KIifLdXmwVKU4qDPGxoXfqs44Dgsikk43UVBStQ7IFoqPgAqcJFSGHLoMS7tPKdTvY9+GME5QidWK84gl69piAkgIdwd+JTMUOc/J+9DXAt220HqZ6l3yhWG5nIgi0x8n",
+							},
+						},
+						DisablePWAuth: true,
+						EnableDHCP:    true,
+						HostName:      "hostname",
+						UserIPAddress: "192.2.0.11",
+						UserSubnet: &sacloud.DiskEditUserSubnet{
+							DefaultRoute:   "192.2.0.1",
+							NetworkMaskLen: 24,
+						},
+					})
+					return nil, err
+				},
+			},
+		},
+		Delete: &CRUDTestDeleteFunc{
+			Func: testDiskDelete,
 		},
 	})
-	require.NoError(t, err)
 
 }

@@ -7,7 +7,7 @@ import (
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
-	"github.com/stretchr/testify/require"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestArchiveOpCRUD(t *testing.T) {
@@ -40,25 +40,27 @@ func TestArchiveOpCRUD(t *testing.T) {
 
 		Create: &CRUDTestFunc{
 			Func: testArchiveCreate,
-			Expect: &CRUDTestExpect{
+			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
 				ExpectValue:  createArchiveExpected,
 				IgnoreFields: ignoreArchiveFields,
-			},
+			}),
 		},
 
 		Read: &CRUDTestFunc{
 			Func: testArchiveRead,
-			Expect: &CRUDTestExpect{
+			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
 				ExpectValue:  createArchiveExpected,
 				IgnoreFields: ignoreArchiveFields,
-			},
+			}),
 		},
 
-		Update: &CRUDTestFunc{
-			Func: testArchiveUpdate,
-			Expect: &CRUDTestExpect{
-				ExpectValue:  updateArchiveExpected,
-				IgnoreFields: ignoreArchiveFields,
+		Updates: []*CRUDTestFunc{
+			{
+				Func: testArchiveUpdate,
+				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+					ExpectValue:  updateArchiveExpected,
+					IgnoreFields: ignoreArchiveFields,
+				}),
 			},
 		},
 
@@ -135,18 +137,33 @@ func testArchiveDelete(testContext *CRUDTestContext, caller sacloud.APICaller) e
 }
 
 func TestArchiveOp_CreateBlank(t *testing.T) {
-	t.Parallel()
+	Run(t, &CRUDTestCase{
+		Parallel:           true,
+		IgnoreStartupWait:  true,
+		SetupAPICallerFunc: singletonAPICaller,
+		Create: &CRUDTestFunc{
+			Func: func(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+				client := sacloud.NewArchiveOp(singletonAPICaller())
+				archive, ftpServer, err := client.CreateBlank(context.Background(), testZone, &sacloud.ArchiveCreateBlankRequest{
+					SizeMB: 20 * 1024,
+					Name:   "libsacloud-archive-blank",
+				})
 
-	client := sacloud.NewArchiveOp(singletonAPICaller())
+				if err != nil {
+					return nil, err
+				}
 
-	archive, ftpServer, err := client.CreateBlank(context.Background(), testZone, &sacloud.ArchiveCreateBlankRequest{
-		SizeMB: 20 * 1024,
-		Name:   "libsacloud-archive-blank",
+				assert.NotNil(t, archive)
+				assert.NotNil(t, ftpServer)
+
+				return archive, err
+			},
+		},
+		Delete: &CRUDTestDeleteFunc{
+			Func: func(testContext *CRUDTestContext, caller sacloud.APICaller) error {
+				client := sacloud.NewArchiveOp(singletonAPICaller())
+				return client.Delete(context.Background(), testZone, testContext.ID)
+			},
+		},
 	})
-	require.NoError(t, err)
-	require.NotNil(t, archive)
-	require.NotNil(t, ftpServer)
-	defer func() {
-		client.Delete(context.Background(), testZone, archive.ID) // nolint ignore error
-	}()
 }

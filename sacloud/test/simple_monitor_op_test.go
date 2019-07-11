@@ -2,12 +2,13 @@ package test
 
 import (
 	"context"
+	"errors"
 	"testing"
 	"time"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
-	"github.com/stretchr/testify/require"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestSimpleMonitorOpCRUD(t *testing.T) {
@@ -18,25 +19,27 @@ func TestSimpleMonitorOpCRUD(t *testing.T) {
 
 		Create: &CRUDTestFunc{
 			Func: testSimpleMonitorCreate,
-			Expect: &CRUDTestExpect{
+			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
 				ExpectValue:  createSimpleMonitorExpected,
 				IgnoreFields: ignoreSimpleMonitorFields,
-			},
+			}),
 		},
 
 		Read: &CRUDTestFunc{
 			Func: testSimpleMonitorRead,
-			Expect: &CRUDTestExpect{
+			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
 				ExpectValue:  createSimpleMonitorExpected,
 				IgnoreFields: ignoreSimpleMonitorFields,
-			},
+			}),
 		},
 
-		Update: &CRUDTestFunc{
-			Func: testSimpleMonitorUpdate,
-			Expect: &CRUDTestExpect{
-				ExpectValue:  updateSimpleMonitorExpected,
-				IgnoreFields: ignoreSimpleMonitorFields,
+		Updates: []*CRUDTestFunc{
+			{
+				Func: testSimpleMonitorUpdate,
+				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+					ExpectValue:  updateSimpleMonitorExpected,
+					IgnoreFields: ignoreSimpleMonitorFields,
+				}),
 			},
 		},
 
@@ -145,31 +148,63 @@ func testSimpleMonitorDelete(testContext *CRUDTestContext, caller sacloud.APICal
 	return client.Delete(context.Background(), sacloud.APIDefaultZone, testContext.ID)
 }
 
-func TestSimpleMonitorOpStatusAndHealth(t *testing.T) {
-	t.Parallel()
-
+func TestSimpleMonitorOp_StatusAndHealth(t *testing.T) {
 	client := sacloud.NewSimpleMonitorOp(singletonAPICaller())
 	ctx := context.Background()
 
-	// create
-	sm, err := client.Create(ctx, sacloud.APIDefaultZone, simpleMonitorStatusAndHealthTargetParam)
-	require.NoError(t, err)
-	defer func() {
-		client.Delete(ctx, sacloud.APIDefaultZone, sm.ID) // nolint - ignore error
-	}()
-	if isAccTest() {
-		time.Sleep(2 * time.Minute) // Statusの戻り値を確認するために数分待つ
-	}
+	Run(t, &CRUDTestCase{
+		Parallel: true,
 
-	// status
-	status, err := client.HealthStatus(ctx, sacloud.APIDefaultZone, sm.ID)
-	require.NoError(t, err)
-	require.NotNil(t, status)
+		SetupAPICallerFunc: singletonAPICaller,
 
-	// monitor
-	monitor, err := client.MonitorResponseTime(ctx, sacloud.APIDefaultZone, sm.ID, &sacloud.MonitorCondition{})
-	require.NoError(t, err)
-	require.NotNil(t, monitor)
+		Create: &CRUDTestFunc{
+			Func: func(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+				sm, err := client.Create(ctx, sacloud.APIDefaultZone, simpleMonitorStatusAndHealthTargetParam)
+				if err != nil {
+					return nil, err
+				}
+				if isAccTest() {
+					time.Sleep(2 * time.Minute) // Statusの戻り値を確認するために数分待つ
+				}
+				return sm, nil
+			},
+		},
+
+		Read: &CRUDTestFunc{
+			Func: testSimpleMonitorRead,
+		},
+
+		Updates: []*CRUDTestFunc{
+			{
+				Func: func(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+					return client.HealthStatus(ctx, sacloud.APIDefaultZone, testContext.ID)
+				},
+				CheckFunc: func(t TestT, testContext *CRUDTestContext, v interface{}) error {
+					healthStatus := v.(*sacloud.SimpleMonitorHealthStatus)
+					if !assert.NotNil(t, healthStatus) {
+						return errors.New("unexpected state: SimpleMonitorHealthStatus")
+					}
+					return nil
+				},
+			},
+			{
+				Func: func(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+					return client.MonitorResponseTime(ctx, sacloud.APIDefaultZone, testContext.ID, &sacloud.MonitorCondition{})
+				},
+				CheckFunc: func(t TestT, testContext *CRUDTestContext, v interface{}) error {
+					monitor := v.(*sacloud.ResponseTimeSecActivity)
+					if !assert.NotNil(t, monitor) {
+						return errors.New("unexpected state: ResponseTimeSecActivity")
+					}
+					return nil
+				},
+			},
+		},
+
+		Delete: &CRUDTestDeleteFunc{
+			Func: testSimpleMonitorDelete,
+		},
+	})
 }
 
 var simpleMonitorStatusAndHealthTargetParam = &sacloud.SimpleMonitorCreateRequest{

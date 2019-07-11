@@ -16,25 +16,27 @@ func TestDNSOpCRUD(t *testing.T) {
 
 		Create: &CRUDTestFunc{
 			Func: testDNSCreate,
-			Expect: &CRUDTestExpect{
+			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
 				ExpectValue:  createDNSExpected,
 				IgnoreFields: ignoreDNSFields,
-			},
+			}),
 		},
 
 		Read: &CRUDTestFunc{
 			Func: testDNSRead,
-			Expect: &CRUDTestExpect{
+			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
 				ExpectValue:  createDNSExpected,
 				IgnoreFields: ignoreDNSFields,
-			},
+			}),
 		},
 
-		Update: &CRUDTestFunc{
-			Func: testDNSUpdate,
-			Expect: &CRUDTestExpect{
-				ExpectValue:  updateDNSExpected,
-				IgnoreFields: ignoreDNSFields,
+		Updates: []*CRUDTestFunc{
+			{
+				Func: testDNSUpdate,
+				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+					ExpectValue:  updateDNSExpected,
+					IgnoreFields: ignoreDNSFields,
+				}),
 			},
 		},
 

@@ -15,25 +15,27 @@ func TestVPCRouterOpCRUD(t *testing.T) {
 		SetupAPICallerFunc: singletonAPICaller,
 		Create: &CRUDTestFunc{
 			Func: testVPCRouterCreate(createVPCRouterParam),
-			Expect: &CRUDTestExpect{
+			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
 				ExpectValue:  createVPCRouterExpected,
 				IgnoreFields: ignoreVPCRouterFields,
-			},
+			}),
 		},
 
 		Read: &CRUDTestFunc{
 			Func: testVPCRouterRead,
-			Expect: &CRUDTestExpect{
+			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
 				ExpectValue:  createVPCRouterExpected,
 				IgnoreFields: ignoreVPCRouterFields,
-			},
+			}),
 		},
 
-		Update: &CRUDTestFunc{
-			Func: testVPCRouterUpdate(updateVPCRouterParam),
-			Expect: &CRUDTestExpect{
-				ExpectValue:  updateVPCRouterExpected,
-				IgnoreFields: ignoreVPCRouterFields,
+		Updates: []*CRUDTestFunc{
+			{
+				Func: testVPCRouterUpdate(updateVPCRouterParam),
+				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+					ExpectValue:  updateVPCRouterExpected,
+					IgnoreFields: ignoreVPCRouterFields,
+				}),
 			},
 		},
 
@@ -218,122 +220,124 @@ func TestVPCRouterOpWithRouterCRUD(t *testing.T) {
 		},
 		Create: &CRUDTestFunc{
 			Func: testVPCRouterCreate(createVPCRouterParam),
-			Expect: &CRUDTestExpect{
+			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
 				ExpectValue:  createVPCRouterExpected,
 				IgnoreFields: ignoreVPCRouterFields,
-			},
+			}),
 		},
 
 		Read: &CRUDTestFunc{
 			Func: testVPCRouterRead,
-			Expect: &CRUDTestExpect{
+			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
 				ExpectValue:  createVPCRouterExpected,
 				IgnoreFields: ignoreVPCRouterFields,
-			},
+			}),
 		},
 
-		Update: &CRUDTestFunc{
-			Func: func(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
-				vpcOp := sacloud.NewVPCRouterOp(caller)
-				ctx := context.Background()
+		Updates: []*CRUDTestFunc{
+			{
+				Func: func(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+					vpcOp := sacloud.NewVPCRouterOp(caller)
+					ctx := context.Background()
 
-				// shutdown
-				if err := vpcOp.Shutdown(ctx, testZone, testContext.ID, nil); err != nil {
-					return nil, err
-				}
-				_, err := sacloud.WaiterForDown(func() (interface{}, error) {
-					return vpcOp.Read(context.Background(), testZone, testContext.ID)
-				}).WaitForState(context.Background())
-				if err != nil {
-					return nil, err
-				}
+					// shutdown
+					if err := vpcOp.Shutdown(ctx, testZone, testContext.ID, nil); err != nil {
+						return nil, err
+					}
+					_, err := sacloud.WaiterForDown(func() (interface{}, error) {
+						return vpcOp.Read(context.Background(), testZone, testContext.ID)
+					}).WaitForState(context.Background())
+					if err != nil {
+						return nil, err
+					}
 
-				swOp := sacloud.NewSwitchOp(caller)
-				sw, err := swOp.Create(ctx, testZone, &sacloud.SwitchCreateRequest{
-					Name: "libsacloud-switch-for-vpc-router",
-				})
-				if err != nil {
-					return nil, err
-				}
-				testContext.Values["vpcrouter/switch"] = sw.ID
+					swOp := sacloud.NewSwitchOp(caller)
+					sw, err := swOp.Create(ctx, testZone, &sacloud.SwitchCreateRequest{
+						Name: "libsacloud-switch-for-vpc-router",
+					})
+					if err != nil {
+						return nil, err
+					}
+					testContext.Values["vpcrouter/switch"] = sw.ID
 
-				// connect to switch
-				if err := vpcOp.ConnectToSwitch(ctx, testZone, testContext.ID, 2, sw.ID); err != nil {
-					return nil, err
-				}
+					// connect to switch
+					if err := vpcOp.ConnectToSwitch(ctx, testZone, testContext.ID, 2, sw.ID); err != nil {
+						return nil, err
+					}
 
-				// setup update param
-				p := withRouterUpdateVPCRouterParam
-				p.Settings = &sacloud.VPCRouterSetting{
-					InternetConnectionEnabled: true,
-					Interfaces: []*sacloud.VPCRouterInterfaceSetting{
-						withRouterCreateVPCRouterParam.Settings.Interfaces[0],
-						{
-							VirtualIPAddress: "192.0.2.1",
-							IPAddress:        []string{"192.0.2.11", "192.0.2.12"},
-							NetworkMaskLen:   24,
-							Index:            2,
+					// setup update param
+					p := withRouterUpdateVPCRouterParam
+					p.Settings = &sacloud.VPCRouterSetting{
+						InternetConnectionEnabled: true,
+						Interfaces: []*sacloud.VPCRouterInterfaceSetting{
+							withRouterCreateVPCRouterParam.Settings.Interfaces[0],
+							{
+								VirtualIPAddress: "192.0.2.1",
+								IPAddress:        []string{"192.0.2.11", "192.0.2.12"},
+								NetworkMaskLen:   24,
+								Index:            2,
+							},
 						},
-					},
-					StaticNAT: []*sacloud.VPCRouterStaticNAT{
-						{
-							GlobalAddress:  withRouterCreateVPCRouterParam.Settings.Interfaces[0].IPAliases[0],
-							PrivateAddress: "192.0.2.1",
+						StaticNAT: []*sacloud.VPCRouterStaticNAT{
+							{
+								GlobalAddress:  withRouterCreateVPCRouterParam.Settings.Interfaces[0].IPAliases[0],
+								PrivateAddress: "192.0.2.1",
+							},
 						},
-					},
-					DHCPServer: []*sacloud.VPCRouterDHCPServer{
-						{
-							Interface:  "eth2",
-							RangeStart: "192.0.2.51",
-							RangeStop:  "192.0.2.60",
+						DHCPServer: []*sacloud.VPCRouterDHCPServer{
+							{
+								Interface:  "eth2",
+								RangeStart: "192.0.2.51",
+								RangeStop:  "192.0.2.60",
+							},
 						},
-					},
-					DHCPStaticMapping: []*sacloud.VPCRouterDHCPStaticMapping{
-						{
-							MACAddress: "aa:bb:cc:dd:ee:ff",
-							IPAddress:  "192.0.2.21",
+						DHCPStaticMapping: []*sacloud.VPCRouterDHCPStaticMapping{
+							{
+								MACAddress: "aa:bb:cc:dd:ee:ff",
+								IPAddress:  "192.0.2.21",
+							},
 						},
-					},
-					PPTPServer: &sacloud.VPCRouterPPTPServer{
-						RangeStart: "192.0.2.61",
-						RangeStop:  "192.0.2.70",
-					},
-					PPTPServerEnabled: true,
-					L2TPIPsecServer: &sacloud.VPCRouterL2TPIPsecServer{
-						RangeStart:      "192.0.2.71",
-						RangeStop:       "192.0.2.80",
-						PreSharedSecret: "presharedsecret",
-					},
-					L2TPIPsecServerEnabled: true,
-					RemoteAccessUsers: []*sacloud.VPCRouterRemoteAccessUser{
-						{
-							UserName: "user1",
-							Password: "password1",
+						PPTPServer: &sacloud.VPCRouterPPTPServer{
+							RangeStart: "192.0.2.61",
+							RangeStop:  "192.0.2.70",
 						},
-					},
-					SiteToSiteIPsecVPN: []*sacloud.VPCRouterSiteToSiteIPsecVPN{
-						{
-							Peer:            "10.0.0.1",
+						PPTPServerEnabled: true,
+						L2TPIPsecServer: &sacloud.VPCRouterL2TPIPsecServer{
+							RangeStart:      "192.0.2.71",
+							RangeStop:       "192.0.2.80",
 							PreSharedSecret: "presharedsecret",
-							RemoteID:        "10.0.0.1",
-							Routes:          []string{"192.0.2.248/28"},
-							LocalPrefix:     []string{"192.0.2.0/24"},
 						},
-					},
-					StaticRoute: []*sacloud.VPCRouterStaticRoute{
-						{
-							Prefix:  "172.16.0.0/16",
-							NextHop: "192.0.2.11",
+						L2TPIPsecServerEnabled: true,
+						RemoteAccessUsers: []*sacloud.VPCRouterRemoteAccessUser{
+							{
+								UserName: "user1",
+								Password: "password1",
+							},
 						},
-					},
-				}
+						SiteToSiteIPsecVPN: []*sacloud.VPCRouterSiteToSiteIPsecVPN{
+							{
+								Peer:            "10.0.0.1",
+								PreSharedSecret: "presharedsecret",
+								RemoteID:        "10.0.0.1",
+								Routes:          []string{"192.0.2.248/28"},
+								LocalPrefix:     []string{"192.0.2.0/24"},
+							},
+						},
+						StaticRoute: []*sacloud.VPCRouterStaticRoute{
+							{
+								Prefix:  "172.16.0.0/16",
+								NextHop: "192.0.2.11",
+							},
+						},
+					}
 
-				withRouterUpdateVPCRouterExpected.Settings = p.Settings
-				return testVPCRouterUpdate(updateVPCRouterParam)(testContext, caller)
-			},
-			Expect: &CRUDTestExpect{
-				ExpectValue:  updateVPCRouterExpected,
-				IgnoreFields: ignoreVPCRouterFields,
+					withRouterUpdateVPCRouterExpected.Settings = p.Settings
+					return testVPCRouterUpdate(updateVPCRouterParam)(testContext, caller)
+				},
+				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+					ExpectValue:  updateVPCRouterExpected,
+					IgnoreFields: ignoreVPCRouterFields,
+				}),
 			},
 		},
 
