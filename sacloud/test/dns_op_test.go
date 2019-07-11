@@ -30,11 +30,13 @@ func TestDNSOpCRUD(t *testing.T) {
 			},
 		},
 
-		Update: &CRUDTestFunc{
-			Func: testDNSUpdate,
-			Expect: &CRUDTestExpect{
-				ExpectValue:  updateDNSExpected,
-				IgnoreFields: ignoreDNSFields,
+		Updates: []*CRUDTestFunc{
+			{
+				Func: testDNSUpdate,
+				Expect: &CRUDTestExpect{
+					ExpectValue:  updateDNSExpected,
+					IgnoreFields: ignoreDNSFields,
+				},
 			},
 		},
 

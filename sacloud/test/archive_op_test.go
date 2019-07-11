@@ -54,11 +54,13 @@ func TestArchiveOpCRUD(t *testing.T) {
 			},
 		},
 
-		Update: &CRUDTestFunc{
-			Func: testArchiveUpdate,
-			Expect: &CRUDTestExpect{
-				ExpectValue:  updateArchiveExpected,
-				IgnoreFields: ignoreArchiveFields,
+		Updates: []*CRUDTestFunc{
+			{
+				Func: testArchiveUpdate,
+				Expect: &CRUDTestExpect{
+					ExpectValue:  updateArchiveExpected,
+					IgnoreFields: ignoreArchiveFields,
+				},
 			},
 		},
 

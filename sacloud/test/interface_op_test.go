@@ -51,11 +51,13 @@ func TestInterface_Operations(t *testing.T) {
 				IgnoreFields: ignoreInterfaceFields,
 			},
 		},
-		Update: &CRUDTestFunc{
-			Func: testInterfaceUpdate,
-			Expect: &CRUDTestExpect{
-				ExpectValue:  updateInterfaceExpected,
-				IgnoreFields: ignoreInterfaceFields,
+		Updates: []*CRUDTestFunc{
+			{
+				Func: testInterfaceUpdate,
+				Expect: &CRUDTestExpect{
+					ExpectValue:  updateInterfaceExpected,
+					IgnoreFields: ignoreInterfaceFields,
+				},
 			},
 		},
 		Delete: &CRUDTestDeleteFunc{

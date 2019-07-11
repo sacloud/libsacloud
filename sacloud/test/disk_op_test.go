@@ -32,11 +32,13 @@ func TestDiskOpBlankDiskCRUD(t *testing.T) {
 			},
 		},
 
-		Update: &CRUDTestFunc{
-			Func: testDiskUpdate,
-			Expect: &CRUDTestExpect{
-				ExpectValue:  updateDiskExpected,
-				IgnoreFields: ignoreDiskFields,
+		Updates: []*CRUDTestFunc{
+			{
+				Func: testDiskUpdate,
+				Expect: &CRUDTestExpect{
+					ExpectValue:  updateDiskExpected,
+					IgnoreFields: ignoreDiskFields,
+				},
 			},
 		},
 

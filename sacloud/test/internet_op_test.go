@@ -30,11 +30,13 @@ func TestInternetOpCRUD(t *testing.T) {
 				IgnoreFields: ignoreInternetFields,
 			},
 		},
-		Update: &CRUDTestFunc{
-			Func: testInternetUpdate,
-			Expect: &CRUDTestExpect{
-				ExpectValue:  updateInternetExpected,
-				IgnoreFields: ignoreInternetFields,
+		Updates: []*CRUDTestFunc{
+			{
+				Func: testInternetUpdate,
+				Expect: &CRUDTestExpect{
+					ExpectValue:  updateInternetExpected,
+					IgnoreFields: ignoreInternetFields,
+				},
 			},
 		},
 		Delete: &CRUDTestDeleteFunc{

@@ -9,9 +9,18 @@ import (
 )
 
 func TestAuthStatusOp_Read(t *testing.T) {
-	client := sacloud.NewAuthStatusOp(singletonAPICaller())
+	Run(t, &CRUDTestCase{
+		Parallel:           true,
+		SetupAPICallerFunc: singletonAPICaller,
+		Read: &CRUDTestFunc{
+			Func: func(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+				client := sacloud.NewAuthStatusOp(singletonAPICaller())
+				authStatus, err := client.Read(context.Background(), sacloud.APIDefaultZone)
 
-	authStatus, err := client.Read(context.Background(), sacloud.APIDefaultZone)
-	require.NoError(t, err)
-	require.NotNil(t, authStatus)
+				require.NotNil(t, authStatus)
+
+				return nil, err
+			},
+		},
+	})
 }

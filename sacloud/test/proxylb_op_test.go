@@ -40,11 +40,13 @@ func TestProxyLBOpCRUD(t *testing.T) {
 			},
 		},
 
-		Update: &CRUDTestFunc{
-			Func: testProxyLBUpdate,
-			Expect: &CRUDTestExpect{
-				ExpectValue:  updateProxyLBExpected,
-				IgnoreFields: ignoreProxyLBFields,
+		Updates: []*CRUDTestFunc{
+			{
+				Func: testProxyLBUpdate,
+				Expect: &CRUDTestExpect{
+					ExpectValue:  updateProxyLBExpected,
+					IgnoreFields: ignoreProxyLBFields,
+				},
 			},
 		},
 

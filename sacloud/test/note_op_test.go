@@ -28,11 +28,13 @@ func TestNoteOpCRUD(t *testing.T) {
 				IgnoreFields: []string{"ID", "CreatedAt", "ModifiedAt"},
 			},
 		},
-		Update: &CRUDTestFunc{
-			Func: testNoteUpdate,
-			Expect: &CRUDTestExpect{
-				ExpectValue:  updateNoteExpected,
-				IgnoreFields: []string{"ID", "CreatedAt", "ModifiedAt"},
+		Updates: []*CRUDTestFunc{
+			{
+				Func: testNoteUpdate,
+				Expect: &CRUDTestExpect{
+					ExpectValue:  updateNoteExpected,
+					IgnoreFields: []string{"ID", "CreatedAt", "ModifiedAt"},
+				},
 			},
 		},
 		Delete: &CRUDTestDeleteFunc{

@@ -30,11 +30,13 @@ func TestGSLBOpCRUD(t *testing.T) {
 			},
 		},
 
-		Update: &CRUDTestFunc{
-			Func: testGSLBUpdate,
-			Expect: &CRUDTestExpect{
-				ExpectValue:  updateGSLBExpected,
-				IgnoreFields: ignoreGSLBFields,
+		Updates: []*CRUDTestFunc{
+			{
+				Func: testGSLBUpdate,
+				Expect: &CRUDTestExpect{
+					ExpectValue:  updateGSLBExpected,
+					IgnoreFields: ignoreGSLBFields,
+				},
 			},
 		},
 

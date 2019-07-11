@@ -31,11 +31,13 @@ func TestServerOpCRUD(t *testing.T) {
 			},
 		},
 
-		Update: &CRUDTestFunc{
-			Func: testServerUpdate,
-			Expect: &CRUDTestExpect{
-				ExpectValue:  updateServerExpected,
-				IgnoreFields: ignoreServerFields,
+		Updates: []*CRUDTestFunc{
+			{
+				Func: testServerUpdate,
+				Expect: &CRUDTestExpect{
+					ExpectValue:  updateServerExpected,
+					IgnoreFields: ignoreServerFields,
+				},
 			},
 		},
 

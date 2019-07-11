@@ -32,11 +32,13 @@ func TestSimpleMonitorOpCRUD(t *testing.T) {
 			},
 		},
 
-		Update: &CRUDTestFunc{
-			Func: testSimpleMonitorUpdate,
-			Expect: &CRUDTestExpect{
-				ExpectValue:  updateSimpleMonitorExpected,
-				IgnoreFields: ignoreSimpleMonitorFields,
+		Updates: []*CRUDTestFunc{
+			{
+				Func: testSimpleMonitorUpdate,
+				Expect: &CRUDTestExpect{
+					ExpectValue:  updateSimpleMonitorExpected,
+					IgnoreFields: ignoreSimpleMonitorFields,
+				},
 			},
 		},
 

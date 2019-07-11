@@ -46,8 +46,8 @@ type CRUDTestCase struct {
 	// Read Read操作のテスト用Func(必須)
 	Read *CRUDTestFunc
 
-	// Update Update操作のテスト用Func(省略可)
-	Update *CRUDTestFunc
+	// Updates Update操作のテスト用Func(省略可)
+	Updates []*CRUDTestFunc
 
 	// Shutdown Delete操作の前のシャットダウン(省略可)
 	Shutdown func(*CRUDTestContext, sacloud.APICaller) error
@@ -82,8 +82,12 @@ type CRUDTestContext struct {
 type CRUDTestFunc struct {
 	// Func API操作を行うFunc
 	Func func(*CRUDTestContext, sacloud.APICaller) (interface{}, error)
-	// Expect 期待値
+
+	// Expect 期待値、省略可能。省略してFunc内で自前実装することも可能。
 	Expect *CRUDTestExpect
+
+	// SkipExtractID Trueの場合Funcの戻り値からのID抽出(ioAddessor経由)を行わない
+	SkipExtractID bool
 }
 
 // CRUDTestDeleteFunc CRUD操作テストのDeleteテスト用Func
@@ -175,9 +179,14 @@ func Run(t TestT, testCase *CRUDTestCase) {
 		if err != nil {
 			return err
 		}
-		if idHolder, ok := actual.(accessor.ID); ok {
-			testContext.ID = idHolder.GetID()
+
+		// extract ID from result of f.Func()
+		if actual != nil && !f.SkipExtractID {
+			if idHolder, ok := actual.(accessor.ID); ok {
+				testContext.ID = idHolder.GetID()
+			}
 		}
+
 		if f.Expect != nil {
 			actual, expect := f.Expect.Prepare(actual)
 			require.Equal(t, expect, actual)
@@ -212,9 +221,9 @@ func Run(t TestT, testCase *CRUDTestCase) {
 		t.Fatal("Read is failed: ", err)
 	}
 
-	// Update
-	if testCase.Update != nil {
-		if err := testFunc(testCase.Update); err != nil {
+	// Updates
+	for _, updFunc := range testCase.Updates {
+		if err := testFunc(updFunc); err != nil {
 			t.Fatal("Update is failed: ", err)
 		}
 	}

@@ -29,11 +29,13 @@ func TestBridgeOpCRUD(t *testing.T) {
 			},
 		},
 
-		Update: &CRUDTestFunc{
-			Func: testBridgeUpdate,
-			Expect: &CRUDTestExpect{
-				ExpectValue:  updateBridgeExpected,
-				IgnoreFields: ignoreBridgeFields,
+		Updates: []*CRUDTestFunc{
+			{
+				Func: testBridgeUpdate,
+				Expect: &CRUDTestExpect{
+					ExpectValue:  updateBridgeExpected,
+					IgnoreFields: ignoreBridgeFields,
+				},
 			},
 		},
 

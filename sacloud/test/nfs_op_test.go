@@ -45,11 +45,13 @@ func TestNFSOpCRUD(t *testing.T) {
 			},
 		},
 
-		Update: &CRUDTestFunc{
-			Func: testNFSUpdate,
-			Expect: &CRUDTestExpect{
-				ExpectValue:  updateNFSExpected,
-				IgnoreFields: ignoreNFSFields,
+		Updates: []*CRUDTestFunc{
+			{
+				Func: testNFSUpdate,
+				Expect: &CRUDTestExpect{
+					ExpectValue:  updateNFSExpected,
+					IgnoreFields: ignoreNFSFields,
+				},
 			},
 		},
 
