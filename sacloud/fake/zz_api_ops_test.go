@@ -42,6 +42,10 @@ func TestResourceOps(t *testing.T) {
 		t.Fatalf("%s is not sacloud.GSLB", op)
 	}
 
+	if op, ok := NewIconOp().(sacloud.IconAPI); !ok {
+		t.Fatalf("%s is not sacloud.Icon", op)
+	}
+
 	if op, ok := NewInterfaceOp().(sacloud.InterfaceAPI); !ok {
 		t.Fatalf("%s is not sacloud.Interface", op)
 	}

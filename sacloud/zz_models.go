@@ -4045,6 +4045,208 @@ func (o *GSLBUpdateRequest) SetIconID(v types.ID) {
 }
 
 /*************************************************
+* Icon
+*************************************************/
+
+// Icon represents API parameter/response structure
+type Icon struct {
+	ID           types.ID
+	Name         string `validate:"required"`
+	Tags         []string
+	Availability types.EAvailability
+	Scope        types.EScope
+	URL          string
+	CreatedAt    time.Time
+	ModifiedAt   time.Time
+}
+
+// Validate validates by field tags
+func (o *Icon) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetID returns value of ID
+func (o *Icon) GetID() types.ID {
+	return o.ID
+}
+
+// SetID sets value to ID
+func (o *Icon) SetID(v types.ID) {
+	o.ID = v
+}
+
+// GetStringID gets value to StringID
+func (o *Icon) GetStringID() string {
+	return accessor.GetStringID(o)
+}
+
+// SetStringID sets value to StringID
+func (o *Icon) SetStringID(v string) {
+	accessor.SetStringID(o, v)
+}
+
+// GetInt64ID gets value to Int64ID
+func (o *Icon) GetInt64ID() int64 {
+	return accessor.GetInt64ID(o)
+}
+
+// SetInt64ID sets value to Int64ID
+func (o *Icon) SetInt64ID(v int64) {
+	accessor.SetInt64ID(o, v)
+}
+
+// GetName returns value of Name
+func (o *Icon) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *Icon) SetName(v string) {
+	o.Name = v
+}
+
+// GetTags returns value of Tags
+func (o *Icon) GetTags() []string {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *Icon) SetTags(v []string) {
+	o.Tags = v
+}
+
+// GetAvailability returns value of Availability
+func (o *Icon) GetAvailability() types.EAvailability {
+	return o.Availability
+}
+
+// SetAvailability sets value to Availability
+func (o *Icon) SetAvailability(v types.EAvailability) {
+	o.Availability = v
+}
+
+// GetScope returns value of Scope
+func (o *Icon) GetScope() types.EScope {
+	return o.Scope
+}
+
+// SetScope sets value to Scope
+func (o *Icon) SetScope(v types.EScope) {
+	o.Scope = v
+}
+
+// GetURL returns value of URL
+func (o *Icon) GetURL() string {
+	return o.URL
+}
+
+// SetURL sets value to URL
+func (o *Icon) SetURL(v string) {
+	o.URL = v
+}
+
+// GetCreatedAt returns value of CreatedAt
+func (o *Icon) GetCreatedAt() time.Time {
+	return o.CreatedAt
+}
+
+// SetCreatedAt sets value to CreatedAt
+func (o *Icon) SetCreatedAt(v time.Time) {
+	o.CreatedAt = v
+}
+
+// GetModifiedAt returns value of ModifiedAt
+func (o *Icon) GetModifiedAt() time.Time {
+	return o.ModifiedAt
+}
+
+// SetModifiedAt sets value to ModifiedAt
+func (o *Icon) SetModifiedAt(v time.Time) {
+	o.ModifiedAt = v
+}
+
+/*************************************************
+* IconCreateRequest
+*************************************************/
+
+// IconCreateRequest represents API parameter/response structure
+type IconCreateRequest struct {
+	Name  string `validate:"required"`
+	Tags  []string
+	Image string
+}
+
+// Validate validates by field tags
+func (o *IconCreateRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetName returns value of Name
+func (o *IconCreateRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *IconCreateRequest) SetName(v string) {
+	o.Name = v
+}
+
+// GetTags returns value of Tags
+func (o *IconCreateRequest) GetTags() []string {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *IconCreateRequest) SetTags(v []string) {
+	o.Tags = v
+}
+
+// GetImage returns value of Image
+func (o *IconCreateRequest) GetImage() string {
+	return o.Image
+}
+
+// SetImage sets value to Image
+func (o *IconCreateRequest) SetImage(v string) {
+	o.Image = v
+}
+
+/*************************************************
+* IconUpdateRequest
+*************************************************/
+
+// IconUpdateRequest represents API parameter/response structure
+type IconUpdateRequest struct {
+	Name string `validate:"required"`
+	Tags []string
+}
+
+// Validate validates by field tags
+func (o *IconUpdateRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetName returns value of Name
+func (o *IconUpdateRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *IconUpdateRequest) SetName(v string) {
+	o.Name = v
+}
+
+// GetTags returns value of Tags
+func (o *IconUpdateRequest) GetTags() []string {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *IconUpdateRequest) SetTags(v []string) {
+	o.Tags = v
+}
+
+/*************************************************
 * Interface
 *************************************************/
 

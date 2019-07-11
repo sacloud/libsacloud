@@ -25,6 +25,7 @@ func init() {
 	APIs.Define(diskAPI)          // ディスク
 	APIs.Define(dnsAPI)           // DNS
 	APIs.Define(gslbAPI)          // GSLB
+	APIs.Define(iconAPI)          // アイコン
 	APIs.Define(interfaceAPI)     // インターフェース(NIC)
 	APIs.Define(internetAPI)      // スイッチ+ルータ
 	APIs.Define(loadBalancerAPI)  // ロードバランサ

@@ -37,6 +37,9 @@ func AddClientFactoryHooks() {
 	sacloud.AddClientFacotyHookFunc("GSLB", func(in interface{}) interface{} {
 		return NewGSLBTracer(in.(sacloud.GSLBAPI))
 	})
+	sacloud.AddClientFacotyHookFunc("Icon", func(in interface{}) interface{} {
+		return NewIconTracer(in.(sacloud.IconAPI))
+	})
 	sacloud.AddClientFacotyHookFunc("Interface", func(in interface{}) interface{} {
 		return NewInterfaceTracer(in.(sacloud.InterfaceAPI))
 	})
@@ -1923,6 +1926,187 @@ func (t *GSLBTracer) Delete(ctx context.Context, zone string, id types.ID) error
 
 	defer func() {
 		log.Println("[TRACE] GSLBAPI.Delete end")
+	}()
+
+	err := t.Internal.Delete(ctx, zone, id)
+	targetResults := struct {
+		Error error
+	}{
+		Error: err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return err
+}
+
+/*************************************************
+* IconTracer
+*************************************************/
+
+// IconTracer is for trace IconOp operations
+type IconTracer struct {
+	Internal sacloud.IconAPI
+}
+
+// NewIconTracer creates new IconTracer instance
+func NewIconTracer(in sacloud.IconAPI) sacloud.IconAPI {
+	return &IconTracer{
+		Internal: in,
+	}
+}
+
+// Find is API call with trace log
+func (t *IconTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.IconFindResult, error) {
+	log.Println("[TRACE] IconAPI.Find start")
+	targetArguments := struct {
+		Argzone       string                 `json:"zone"`
+		Argconditions *sacloud.FindCondition `json:"conditions"`
+	}{
+		Argzone:       zone,
+		Argconditions: conditions,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] IconAPI.Find end")
+	}()
+
+	result, err := t.Internal.Find(ctx, zone, conditions)
+	targetResults := struct {
+		Result *sacloud.IconFindResult
+		Error  error
+	}{
+		Result: result,
+		Error:  err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return result, err
+}
+
+// Create is API call with trace log
+func (t *IconTracer) Create(ctx context.Context, zone string, param *sacloud.IconCreateRequest) (*sacloud.Icon, error) {
+	log.Println("[TRACE] IconAPI.Create start")
+	targetArguments := struct {
+		Argzone  string                     `json:"zone"`
+		Argparam *sacloud.IconCreateRequest `json:"param"`
+	}{
+		Argzone:  zone,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] IconAPI.Create end")
+	}()
+
+	resultIcon, err := t.Internal.Create(ctx, zone, param)
+	targetResults := struct {
+		Icon  *sacloud.Icon
+		Error error
+	}{
+		Icon:  resultIcon,
+		Error: err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultIcon, err
+}
+
+// Read is API call with trace log
+func (t *IconTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Icon, error) {
+	log.Println("[TRACE] IconAPI.Read start")
+	targetArguments := struct {
+		Argzone string   `json:"zone"`
+		Argid   types.ID `json:"id"`
+	}{
+		Argzone: zone,
+		Argid:   id,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] IconAPI.Read end")
+	}()
+
+	resultIcon, err := t.Internal.Read(ctx, zone, id)
+	targetResults := struct {
+		Icon  *sacloud.Icon
+		Error error
+	}{
+		Icon:  resultIcon,
+		Error: err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultIcon, err
+}
+
+// Update is API call with trace log
+func (t *IconTracer) Update(ctx context.Context, zone string, id types.ID, param *sacloud.IconUpdateRequest) (*sacloud.Icon, error) {
+	log.Println("[TRACE] IconAPI.Update start")
+	targetArguments := struct {
+		Argzone  string                     `json:"zone"`
+		Argid    types.ID                   `json:"id"`
+		Argparam *sacloud.IconUpdateRequest `json:"param"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] IconAPI.Update end")
+	}()
+
+	resultIcon, err := t.Internal.Update(ctx, zone, id, param)
+	targetResults := struct {
+		Icon  *sacloud.Icon
+		Error error
+	}{
+		Icon:  resultIcon,
+		Error: err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultIcon, err
+}
+
+// Delete is API call with trace log
+func (t *IconTracer) Delete(ctx context.Context, zone string, id types.ID) error {
+	log.Println("[TRACE] IconAPI.Delete start")
+	targetArguments := struct {
+		Argzone string   `json:"zone"`
+		Argid   types.ID `json:"id"`
+	}{
+		Argzone: zone,
+		Argid:   id,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] IconAPI.Delete end")
 	}()
 
 	err := t.Internal.Delete(ctx, zone, id)
