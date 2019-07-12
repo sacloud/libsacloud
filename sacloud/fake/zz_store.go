@@ -145,6 +145,29 @@ func (s *store) setCDROM(zone string, value *sacloud.CDROM) {
 	s.set(ResourceCDROM, zone, value)
 }
 
+func (s *store) getCoupon(zone string) []*sacloud.Coupon {
+	values := s.get(ResourceCoupon, zone)
+	var ret []*sacloud.Coupon
+	for _, v := range values {
+		if v, ok := v.(*sacloud.Coupon); ok {
+			ret = append(ret, v)
+		}
+	}
+	return ret
+}
+
+func (s *store) getCouponByID(zone string, id types.ID) *sacloud.Coupon {
+	v := s.getByID(ResourceCoupon, zone, id)
+	if v, ok := v.(*sacloud.Coupon); ok {
+		return v
+	}
+	return nil
+}
+
+func (s *store) setCoupon(zone string, value *sacloud.Coupon) {
+	s.set(ResourceCoupon, zone, value)
+}
+
 func (s *store) getDisk(zone string) []*sacloud.Disk {
 	values := s.get(ResourceDisk, zone)
 	var ret []*sacloud.Disk

@@ -2457,6 +2457,116 @@ func (o *CDROMUpdateRequest) SetIconID(v types.ID) {
 }
 
 /*************************************************
+* Coupon
+*************************************************/
+
+// Coupon represents API parameter/response structure
+type Coupon struct {
+	ID             types.ID
+	MemberID       string
+	ContractID     types.ID
+	ServiceClassID types.ID
+	Discount       int64
+	AppliedAt      time.Time
+	UntilAt        time.Time
+}
+
+// Validate validates by field tags
+func (o *Coupon) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetID returns value of ID
+func (o *Coupon) GetID() types.ID {
+	return o.ID
+}
+
+// SetID sets value to ID
+func (o *Coupon) SetID(v types.ID) {
+	o.ID = v
+}
+
+// GetStringID gets value to StringID
+func (o *Coupon) GetStringID() string {
+	return accessor.GetStringID(o)
+}
+
+// SetStringID sets value to StringID
+func (o *Coupon) SetStringID(v string) {
+	accessor.SetStringID(o, v)
+}
+
+// GetInt64ID gets value to Int64ID
+func (o *Coupon) GetInt64ID() int64 {
+	return accessor.GetInt64ID(o)
+}
+
+// SetInt64ID sets value to Int64ID
+func (o *Coupon) SetInt64ID(v int64) {
+	accessor.SetInt64ID(o, v)
+}
+
+// GetMemberID returns value of MemberID
+func (o *Coupon) GetMemberID() string {
+	return o.MemberID
+}
+
+// SetMemberID sets value to MemberID
+func (o *Coupon) SetMemberID(v string) {
+	o.MemberID = v
+}
+
+// GetContractID returns value of ContractID
+func (o *Coupon) GetContractID() types.ID {
+	return o.ContractID
+}
+
+// SetContractID sets value to ContractID
+func (o *Coupon) SetContractID(v types.ID) {
+	o.ContractID = v
+}
+
+// GetServiceClassID returns value of ServiceClassID
+func (o *Coupon) GetServiceClassID() types.ID {
+	return o.ServiceClassID
+}
+
+// SetServiceClassID sets value to ServiceClassID
+func (o *Coupon) SetServiceClassID(v types.ID) {
+	o.ServiceClassID = v
+}
+
+// GetDiscount returns value of Discount
+func (o *Coupon) GetDiscount() int64 {
+	return o.Discount
+}
+
+// SetDiscount sets value to Discount
+func (o *Coupon) SetDiscount(v int64) {
+	o.Discount = v
+}
+
+// GetAppliedAt returns value of AppliedAt
+func (o *Coupon) GetAppliedAt() time.Time {
+	return o.AppliedAt
+}
+
+// SetAppliedAt sets value to AppliedAt
+func (o *Coupon) SetAppliedAt(v time.Time) {
+	o.AppliedAt = v
+}
+
+// GetUntilAt returns value of UntilAt
+func (o *Coupon) GetUntilAt() time.Time {
+	return o.UntilAt
+}
+
+// SetUntilAt sets value to UntilAt
+func (o *Coupon) SetUntilAt(v time.Time) {
+	o.UntilAt = v
+}
+
+/*************************************************
 * Disk
 *************************************************/
 

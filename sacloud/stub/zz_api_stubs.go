@@ -565,6 +565,34 @@ func (s *CDROMStub) CloseFTP(ctx context.Context, zone string, id types.ID) erro
 }
 
 /*************************************************
+* CouponStub
+*************************************************/
+
+// CouponFindStubResult is expected values of the Find operation
+type CouponFindStubResult struct {
+	Values *sacloud.CouponFindResult
+	Err    error
+}
+
+// CouponStub is for trace CouponOp operations
+type CouponStub struct {
+	FindStubResult *CouponFindStubResult
+}
+
+// NewCouponStub creates new CouponStub instance
+func NewCouponStub(caller sacloud.APICaller) sacloud.CouponAPI {
+	return &CouponStub{}
+}
+
+// Find is API call with trace log
+func (s *CouponStub) Find(ctx context.Context, zone string, accountID types.ID) (*sacloud.CouponFindResult, error) {
+	if s.FindStubResult == nil {
+		log.Fatal("CouponStub.FindStubResult is not set")
+	}
+	return s.FindStubResult.Values, s.FindStubResult.Err
+}
+
+/*************************************************
 * DiskStub
 *************************************************/
 

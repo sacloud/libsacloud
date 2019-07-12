@@ -31,6 +31,9 @@ func AddClientFactoryHooks() {
 	sacloud.AddClientFacotyHookFunc("CDROM", func(in interface{}) interface{} {
 		return NewCDROMTracer(in.(sacloud.CDROMAPI))
 	})
+	sacloud.AddClientFacotyHookFunc("Coupon", func(in interface{}) interface{} {
+		return NewCouponTracer(in.(sacloud.CouponAPI))
+	})
 	sacloud.AddClientFacotyHookFunc("Disk", func(in interface{}) interface{} {
 		return NewDiskTracer(in.(sacloud.DiskAPI))
 	})
@@ -1252,6 +1255,55 @@ func (t *CDROMTracer) CloseFTP(ctx context.Context, zone string, id types.ID) er
 	}
 
 	return err
+}
+
+/*************************************************
+* CouponTracer
+*************************************************/
+
+// CouponTracer is for trace CouponOp operations
+type CouponTracer struct {
+	Internal sacloud.CouponAPI
+}
+
+// NewCouponTracer creates new CouponTracer instance
+func NewCouponTracer(in sacloud.CouponAPI) sacloud.CouponAPI {
+	return &CouponTracer{
+		Internal: in,
+	}
+}
+
+// Find is API call with trace log
+func (t *CouponTracer) Find(ctx context.Context, zone string, accountID types.ID) (*sacloud.CouponFindResult, error) {
+	log.Println("[TRACE] CouponAPI.Find start")
+	targetArguments := struct {
+		Argzone      string   `json:"zone"`
+		ArgaccountID types.ID `json:"accountID"`
+	}{
+		Argzone:      zone,
+		ArgaccountID: accountID,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] CouponAPI.Find end")
+	}()
+
+	result, err := t.Internal.Find(ctx, zone, accountID)
+	targetResults := struct {
+		Result *sacloud.CouponFindResult
+		Error  error
+	}{
+		Result: result,
+		Error:  err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return result, err
 }
 
 /*************************************************
