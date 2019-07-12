@@ -34,6 +34,9 @@ func AddClientFactoryHooks() {
 	sacloud.AddClientFacotyHookFunc("Coupon", func(in interface{}) interface{} {
 		return NewCouponTracer(in.(sacloud.CouponAPI))
 	})
+	sacloud.AddClientFacotyHookFunc("Database", func(in interface{}) interface{} {
+		return NewDatabaseTracer(in.(sacloud.DatabaseAPI))
+	})
 	sacloud.AddClientFacotyHookFunc("Disk", func(in interface{}) interface{} {
 		return NewDiskTracer(in.(sacloud.DiskAPI))
 	})
@@ -1304,6 +1307,486 @@ func (t *CouponTracer) Find(ctx context.Context, zone string, accountID types.ID
 	}
 
 	return result, err
+}
+
+/*************************************************
+* DatabaseTracer
+*************************************************/
+
+// DatabaseTracer is for trace DatabaseOp operations
+type DatabaseTracer struct {
+	Internal sacloud.DatabaseAPI
+}
+
+// NewDatabaseTracer creates new DatabaseTracer instance
+func NewDatabaseTracer(in sacloud.DatabaseAPI) sacloud.DatabaseAPI {
+	return &DatabaseTracer{
+		Internal: in,
+	}
+}
+
+// Find is API call with trace log
+func (t *DatabaseTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.DatabaseFindResult, error) {
+	log.Println("[TRACE] DatabaseAPI.Find start")
+	targetArguments := struct {
+		Argzone       string                 `json:"zone"`
+		Argconditions *sacloud.FindCondition `json:"conditions"`
+	}{
+		Argzone:       zone,
+		Argconditions: conditions,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] DatabaseAPI.Find end")
+	}()
+
+	result, err := t.Internal.Find(ctx, zone, conditions)
+	targetResults := struct {
+		Result *sacloud.DatabaseFindResult
+		Error  error
+	}{
+		Result: result,
+		Error:  err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return result, err
+}
+
+// Create is API call with trace log
+func (t *DatabaseTracer) Create(ctx context.Context, zone string, param *sacloud.DatabaseCreateRequest) (*sacloud.Database, error) {
+	log.Println("[TRACE] DatabaseAPI.Create start")
+	targetArguments := struct {
+		Argzone  string                         `json:"zone"`
+		Argparam *sacloud.DatabaseCreateRequest `json:"param"`
+	}{
+		Argzone:  zone,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] DatabaseAPI.Create end")
+	}()
+
+	resultDatabase, err := t.Internal.Create(ctx, zone, param)
+	targetResults := struct {
+		Database *sacloud.Database
+		Error    error
+	}{
+		Database: resultDatabase,
+		Error:    err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultDatabase, err
+}
+
+// Read is API call with trace log
+func (t *DatabaseTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Database, error) {
+	log.Println("[TRACE] DatabaseAPI.Read start")
+	targetArguments := struct {
+		Argzone string   `json:"zone"`
+		Argid   types.ID `json:"id"`
+	}{
+		Argzone: zone,
+		Argid:   id,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] DatabaseAPI.Read end")
+	}()
+
+	resultDatabase, err := t.Internal.Read(ctx, zone, id)
+	targetResults := struct {
+		Database *sacloud.Database
+		Error    error
+	}{
+		Database: resultDatabase,
+		Error:    err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultDatabase, err
+}
+
+// Update is API call with trace log
+func (t *DatabaseTracer) Update(ctx context.Context, zone string, id types.ID, param *sacloud.DatabaseUpdateRequest) (*sacloud.Database, error) {
+	log.Println("[TRACE] DatabaseAPI.Update start")
+	targetArguments := struct {
+		Argzone  string                         `json:"zone"`
+		Argid    types.ID                       `json:"id"`
+		Argparam *sacloud.DatabaseUpdateRequest `json:"param"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] DatabaseAPI.Update end")
+	}()
+
+	resultDatabase, err := t.Internal.Update(ctx, zone, id, param)
+	targetResults := struct {
+		Database *sacloud.Database
+		Error    error
+	}{
+		Database: resultDatabase,
+		Error:    err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultDatabase, err
+}
+
+// Delete is API call with trace log
+func (t *DatabaseTracer) Delete(ctx context.Context, zone string, id types.ID) error {
+	log.Println("[TRACE] DatabaseAPI.Delete start")
+	targetArguments := struct {
+		Argzone string   `json:"zone"`
+		Argid   types.ID `json:"id"`
+	}{
+		Argzone: zone,
+		Argid:   id,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] DatabaseAPI.Delete end")
+	}()
+
+	err := t.Internal.Delete(ctx, zone, id)
+	targetResults := struct {
+		Error error
+	}{
+		Error: err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return err
+}
+
+// Config is API call with trace log
+func (t *DatabaseTracer) Config(ctx context.Context, zone string, id types.ID) error {
+	log.Println("[TRACE] DatabaseAPI.Config start")
+	targetArguments := struct {
+		Argzone string   `json:"zone"`
+		Argid   types.ID `json:"id"`
+	}{
+		Argzone: zone,
+		Argid:   id,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] DatabaseAPI.Config end")
+	}()
+
+	err := t.Internal.Config(ctx, zone, id)
+	targetResults := struct {
+		Error error
+	}{
+		Error: err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return err
+}
+
+// Boot is API call with trace log
+func (t *DatabaseTracer) Boot(ctx context.Context, zone string, id types.ID) error {
+	log.Println("[TRACE] DatabaseAPI.Boot start")
+	targetArguments := struct {
+		Argzone string   `json:"zone"`
+		Argid   types.ID `json:"id"`
+	}{
+		Argzone: zone,
+		Argid:   id,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] DatabaseAPI.Boot end")
+	}()
+
+	err := t.Internal.Boot(ctx, zone, id)
+	targetResults := struct {
+		Error error
+	}{
+		Error: err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return err
+}
+
+// Shutdown is API call with trace log
+func (t *DatabaseTracer) Shutdown(ctx context.Context, zone string, id types.ID, shutdownOption *sacloud.ShutdownOption) error {
+	log.Println("[TRACE] DatabaseAPI.Shutdown start")
+	targetArguments := struct {
+		Argzone           string                  `json:"zone"`
+		Argid             types.ID                `json:"id"`
+		ArgshutdownOption *sacloud.ShutdownOption `json:"shutdownOption"`
+	}{
+		Argzone:           zone,
+		Argid:             id,
+		ArgshutdownOption: shutdownOption,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] DatabaseAPI.Shutdown end")
+	}()
+
+	err := t.Internal.Shutdown(ctx, zone, id, shutdownOption)
+	targetResults := struct {
+		Error error
+	}{
+		Error: err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return err
+}
+
+// Reset is API call with trace log
+func (t *DatabaseTracer) Reset(ctx context.Context, zone string, id types.ID) error {
+	log.Println("[TRACE] DatabaseAPI.Reset start")
+	targetArguments := struct {
+		Argzone string   `json:"zone"`
+		Argid   types.ID `json:"id"`
+	}{
+		Argzone: zone,
+		Argid:   id,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] DatabaseAPI.Reset end")
+	}()
+
+	err := t.Internal.Reset(ctx, zone, id)
+	targetResults := struct {
+		Error error
+	}{
+		Error: err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return err
+}
+
+// MonitorCPU is API call with trace log
+func (t *DatabaseTracer) MonitorCPU(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.CPUTimeActivity, error) {
+	log.Println("[TRACE] DatabaseAPI.MonitorCPU start")
+	targetArguments := struct {
+		Argzone      string                    `json:"zone"`
+		Argid        types.ID                  `json:"id"`
+		Argcondition *sacloud.MonitorCondition `json:"condition"`
+	}{
+		Argzone:      zone,
+		Argid:        id,
+		Argcondition: condition,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] DatabaseAPI.MonitorCPU end")
+	}()
+
+	resultCPUTimeActivity, err := t.Internal.MonitorCPU(ctx, zone, id, condition)
+	targetResults := struct {
+		CPUTimeActivity *sacloud.CPUTimeActivity
+		Error           error
+	}{
+		CPUTimeActivity: resultCPUTimeActivity,
+		Error:           err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultCPUTimeActivity, err
+}
+
+// MonitorDisk is API call with trace log
+func (t *DatabaseTracer) MonitorDisk(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.DiskActivity, error) {
+	log.Println("[TRACE] DatabaseAPI.MonitorDisk start")
+	targetArguments := struct {
+		Argzone      string                    `json:"zone"`
+		Argid        types.ID                  `json:"id"`
+		Argcondition *sacloud.MonitorCondition `json:"condition"`
+	}{
+		Argzone:      zone,
+		Argid:        id,
+		Argcondition: condition,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] DatabaseAPI.MonitorDisk end")
+	}()
+
+	resultDiskActivity, err := t.Internal.MonitorDisk(ctx, zone, id, condition)
+	targetResults := struct {
+		DiskActivity *sacloud.DiskActivity
+		Error        error
+	}{
+		DiskActivity: resultDiskActivity,
+		Error:        err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultDiskActivity, err
+}
+
+// MonitorInterface is API call with trace log
+func (t *DatabaseTracer) MonitorInterface(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.InterfaceActivity, error) {
+	log.Println("[TRACE] DatabaseAPI.MonitorInterface start")
+	targetArguments := struct {
+		Argzone      string                    `json:"zone"`
+		Argid        types.ID                  `json:"id"`
+		Argcondition *sacloud.MonitorCondition `json:"condition"`
+	}{
+		Argzone:      zone,
+		Argid:        id,
+		Argcondition: condition,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] DatabaseAPI.MonitorInterface end")
+	}()
+
+	resultInterfaceActivity, err := t.Internal.MonitorInterface(ctx, zone, id, condition)
+	targetResults := struct {
+		InterfaceActivity *sacloud.InterfaceActivity
+		Error             error
+	}{
+		InterfaceActivity: resultInterfaceActivity,
+		Error:             err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultInterfaceActivity, err
+}
+
+// MonitorDatabase is API call with trace log
+func (t *DatabaseTracer) MonitorDatabase(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.DatabaseActivity, error) {
+	log.Println("[TRACE] DatabaseAPI.MonitorDatabase start")
+	targetArguments := struct {
+		Argzone      string                    `json:"zone"`
+		Argid        types.ID                  `json:"id"`
+		Argcondition *sacloud.MonitorCondition `json:"condition"`
+	}{
+		Argzone:      zone,
+		Argid:        id,
+		Argcondition: condition,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] DatabaseAPI.MonitorDatabase end")
+	}()
+
+	resultDatabaseActivity, err := t.Internal.MonitorDatabase(ctx, zone, id, condition)
+	targetResults := struct {
+		DatabaseActivity *sacloud.DatabaseActivity
+		Error            error
+	}{
+		DatabaseActivity: resultDatabaseActivity,
+		Error:            err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultDatabaseActivity, err
+}
+
+// Status is API call with trace log
+func (t *DatabaseTracer) Status(ctx context.Context, zone string, id types.ID) (*sacloud.DatabaseStatus, error) {
+	log.Println("[TRACE] DatabaseAPI.Status start")
+	targetArguments := struct {
+		Argzone string   `json:"zone"`
+		Argid   types.ID `json:"id"`
+	}{
+		Argzone: zone,
+		Argid:   id,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] DatabaseAPI.Status end")
+	}()
+
+	resultDatabaseStatus, err := t.Internal.Status(ctx, zone, id)
+	targetResults := struct {
+		DatabaseStatus *sacloud.DatabaseStatus
+		Error          error
+	}{
+		DatabaseStatus: resultDatabaseStatus,
+		Error:          err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultDatabaseStatus, err
 }
 
 /*************************************************

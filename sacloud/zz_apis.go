@@ -98,6 +98,28 @@ type CouponAPI interface {
 }
 
 /*************************************************
+* DatabaseAPI
+*************************************************/
+
+// DatabaseAPI is interface for operate Database resource
+type DatabaseAPI interface {
+	Find(ctx context.Context, zone string, conditions *FindCondition) (*DatabaseFindResult, error)
+	Create(ctx context.Context, zone string, param *DatabaseCreateRequest) (*Database, error)
+	Read(ctx context.Context, zone string, id types.ID) (*Database, error)
+	Update(ctx context.Context, zone string, id types.ID, param *DatabaseUpdateRequest) (*Database, error)
+	Delete(ctx context.Context, zone string, id types.ID) error
+	Config(ctx context.Context, zone string, id types.ID) error
+	Boot(ctx context.Context, zone string, id types.ID) error
+	Shutdown(ctx context.Context, zone string, id types.ID, shutdownOption *ShutdownOption) error
+	Reset(ctx context.Context, zone string, id types.ID) error
+	MonitorCPU(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*CPUTimeActivity, error)
+	MonitorDisk(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*DiskActivity, error)
+	MonitorInterface(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*InterfaceActivity, error)
+	MonitorDatabase(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*DatabaseActivity, error)
+	Status(ctx context.Context, zone string, id types.ID) (*DatabaseStatus, error)
+}
+
+/*************************************************
 * DiskAPI
 *************************************************/
 

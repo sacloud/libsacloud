@@ -168,6 +168,29 @@ func (s *store) setCoupon(zone string, value *sacloud.Coupon) {
 	s.set(ResourceCoupon, zone, value)
 }
 
+func (s *store) getDatabase(zone string) []*sacloud.Database {
+	values := s.get(ResourceDatabase, zone)
+	var ret []*sacloud.Database
+	for _, v := range values {
+		if v, ok := v.(*sacloud.Database); ok {
+			ret = append(ret, v)
+		}
+	}
+	return ret
+}
+
+func (s *store) getDatabaseByID(zone string, id types.ID) *sacloud.Database {
+	v := s.getByID(ResourceDatabase, zone, id)
+	if v, ok := v.(*sacloud.Database); ok {
+		return v
+	}
+	return nil
+}
+
+func (s *store) setDatabase(zone string, value *sacloud.Database) {
+	s.set(ResourceDatabase, zone, value)
+}
+
 func (s *store) getDisk(zone string) []*sacloud.Disk {
 	values := s.get(ResourceDisk, zone)
 	var ret []*sacloud.Disk

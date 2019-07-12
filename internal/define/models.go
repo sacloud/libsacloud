@@ -210,7 +210,7 @@ func (m *modelsDef) diskEdit() *dsl.Model {
 
 func (m *modelsDef) interfaceModel() *dsl.Model {
 	return &dsl.Model{
-		Name:      "Interface",
+		Name:      "InterfaceView",
 		NakedType: meta.Static(naked.Interface{}),
 		IsArray:   true,
 		Fields: []*dsl.FieldDesc{
