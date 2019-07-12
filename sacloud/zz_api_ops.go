@@ -68,6 +68,14 @@ func init() {
 		}
 	})
 
+	SetClientFactoryFunc("Database", func(caller APICaller) interface{} {
+		return &DatabaseOp{
+			Client:     caller,
+			PathSuffix: "api/cloud/1.1",
+			PathName:   "appliance",
+		}
+	})
+
 	SetClientFactoryFunc("Disk", func(caller APICaller) interface{} {
 		return &DiskOp{
 			Client:     caller,
@@ -1694,6 +1702,624 @@ func (o *CouponOp) Find(ctx context.Context, zone string, accountID types.ID) (*
 		return nil, err
 	}
 	return results, err
+}
+
+/*************************************************
+* DatabaseOp
+*************************************************/
+
+// DatabaseOp implements DatabaseAPI interface
+type DatabaseOp struct {
+	// Client APICaller
+	Client APICaller
+	// PathSuffix is used when building URL
+	PathSuffix string
+	// PathName is used when building URL
+	PathName string
+}
+
+// NewDatabaseOp creates new DatabaseOp instance
+func NewDatabaseOp(caller APICaller) DatabaseAPI {
+	return GetClientFactoryFunc("Database")(caller).(DatabaseAPI)
+}
+
+// Find is API call
+func (o *DatabaseOp) Find(ctx context.Context, zone string, conditions *FindCondition) (*DatabaseFindResult, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"conditions": conditions,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	if zone == "" {
+		zone = ""
+	}
+	if conditions == nil {
+		conditions = &FindCondition{}
+	}
+	args := &struct {
+		Argzone       string
+		Argconditions *FindCondition `mapconv:",squash"`
+	}{
+		Argzone:       zone,
+		Argconditions: conditions,
+	}
+
+	v := &databaseFindRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &databaseFindResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &DatabaseFindResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, err
+}
+
+// Create is API call
+func (o *DatabaseOp) Create(ctx context.Context, zone string, param *DatabaseCreateRequest) (*Database, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"param":      param,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	if zone == "" {
+		zone = ""
+	}
+	if param == nil {
+		param = &DatabaseCreateRequest{}
+	}
+	args := &struct {
+		Argzone  string
+		Argparam *DatabaseCreateRequest `mapconv:"Appliance,recursive"`
+	}{
+		Argzone:  zone,
+		Argparam: param,
+	}
+
+	v := &databaseCreateRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
+
+	data, err := o.Client.Do(ctx, "POST", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &databaseCreateResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &databaseCreateResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results.Database, nil
+}
+
+// Read is API call
+func (o *DatabaseOp) Read(ctx context.Context, zone string, id types.ID) (*Database, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &databaseReadResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &databaseReadResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results.Database, nil
+}
+
+// Update is API call
+func (o *DatabaseOp) Update(ctx context.Context, zone string, id types.ID, param *DatabaseUpdateRequest) (*Database, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+		"param":      param,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	if zone == "" {
+		zone = ""
+	}
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	if param == nil {
+		param = &DatabaseUpdateRequest{}
+	}
+	args := &struct {
+		Argzone  string
+		Argid    types.ID
+		Argparam *DatabaseUpdateRequest `mapconv:"Appliance,recursive"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+
+	v := &databaseUpdateRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
+
+	data, err := o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &databaseUpdateResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &databaseUpdateResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results.Database, nil
+}
+
+// Delete is API call
+func (o *DatabaseOp) Delete(ctx context.Context, zone string, id types.ID) error {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+	})
+	if err != nil {
+		return err
+	}
+
+	var body interface{}
+
+	_, err = o.Client.Do(ctx, "DELETE", url, body)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// Config is API call
+func (o *DatabaseOp) Config(ctx context.Context, zone string, id types.ID) error {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/config", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+	})
+	if err != nil {
+		return err
+	}
+
+	var body interface{}
+
+	_, err = o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// Boot is API call
+func (o *DatabaseOp) Boot(ctx context.Context, zone string, id types.ID) error {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/power", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+	})
+	if err != nil {
+		return err
+	}
+
+	var body interface{}
+
+	_, err = o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// Shutdown is API call
+func (o *DatabaseOp) Shutdown(ctx context.Context, zone string, id types.ID, shutdownOption *ShutdownOption) error {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/power", map[string]interface{}{
+		"rootURL":        SakuraCloudAPIRoot,
+		"pathSuffix":     o.PathSuffix,
+		"pathName":       o.PathName,
+		"zone":           zone,
+		"id":             id,
+		"shutdownOption": shutdownOption,
+	})
+	if err != nil {
+		return err
+	}
+
+	var body interface{}
+
+	if zone == "" {
+		zone = ""
+	}
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	if shutdownOption == nil {
+		shutdownOption = &ShutdownOption{}
+	}
+	args := &struct {
+		Argzone           string
+		Argid             types.ID
+		ArgshutdownOption *ShutdownOption `mapconv:",squash"`
+	}{
+		Argzone:           zone,
+		Argid:             id,
+		ArgshutdownOption: shutdownOption,
+	}
+
+	v := &databaseShutdownRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return err
+	}
+	body = v
+
+	_, err = o.Client.Do(ctx, "DELETE", url, body)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// Reset is API call
+func (o *DatabaseOp) Reset(ctx context.Context, zone string, id types.ID) error {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/reset", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+	})
+	if err != nil {
+		return err
+	}
+
+	var body interface{}
+
+	_, err = o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// MonitorCPU is API call
+func (o *DatabaseOp) MonitorCPU(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*CPUTimeActivity, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/cpu/monitor", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+		"condition":  condition,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	if zone == "" {
+		zone = ""
+	}
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	if condition == nil {
+		condition = &MonitorCondition{}
+	}
+	args := &struct {
+		Argzone      string
+		Argid        types.ID
+		Argcondition *MonitorCondition `mapconv:",squash"`
+	}{
+		Argzone:      zone,
+		Argid:        id,
+		Argcondition: condition,
+	}
+
+	v := &databaseMonitorCPURequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &databaseMonitorCPUResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &databaseMonitorCPUResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results.CPUTimeActivity, nil
+}
+
+// MonitorDisk is API call
+func (o *DatabaseOp) MonitorDisk(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*DiskActivity, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/disk/0/monitor", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+		"condition":  condition,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	if zone == "" {
+		zone = ""
+	}
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	if condition == nil {
+		condition = &MonitorCondition{}
+	}
+	args := &struct {
+		Argzone      string
+		Argid        types.ID
+		Argcondition *MonitorCondition `mapconv:",squash"`
+	}{
+		Argzone:      zone,
+		Argid:        id,
+		Argcondition: condition,
+	}
+
+	v := &databaseMonitorDiskRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &databaseMonitorDiskResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &databaseMonitorDiskResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results.DiskActivity, nil
+}
+
+// MonitorInterface is API call
+func (o *DatabaseOp) MonitorInterface(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*InterfaceActivity, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/interface/monitor", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+		"condition":  condition,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	if zone == "" {
+		zone = ""
+	}
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	if condition == nil {
+		condition = &MonitorCondition{}
+	}
+	args := &struct {
+		Argzone      string
+		Argid        types.ID
+		Argcondition *MonitorCondition `mapconv:",squash"`
+	}{
+		Argzone:      zone,
+		Argid:        id,
+		Argcondition: condition,
+	}
+
+	v := &databaseMonitorInterfaceRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &databaseMonitorInterfaceResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &databaseMonitorInterfaceResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results.InterfaceActivity, nil
+}
+
+// MonitorDatabase is API call
+func (o *DatabaseOp) MonitorDatabase(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*DatabaseActivity, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/database/monitor", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+		"condition":  condition,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	if zone == "" {
+		zone = ""
+	}
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	if condition == nil {
+		condition = &MonitorCondition{}
+	}
+	args := &struct {
+		Argzone      string
+		Argid        types.ID
+		Argcondition *MonitorCondition `mapconv:",squash"`
+	}{
+		Argzone:      zone,
+		Argid:        id,
+		Argcondition: condition,
+	}
+
+	v := &databaseMonitorDatabaseRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &databaseMonitorDatabaseResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &databaseMonitorDatabaseResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results.DatabaseActivity, nil
+}
+
+// Status is API call
+func (o *DatabaseOp) Status(ctx context.Context, zone string, id types.ID) (*DatabaseStatus, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/status", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &databaseStatusResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &databaseStatusResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results.DatabaseStatus, nil
 }
 
 /*************************************************

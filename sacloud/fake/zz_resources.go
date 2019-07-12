@@ -17,6 +17,8 @@ const (
 	ResourceCDROM = "CDROM"
 	// ResourceCoupon is resource key of fake store
 	ResourceCoupon = "Coupon"
+	// ResourceDatabase is resource key of fake store
+	ResourceDatabase = "Database"
 	// ResourceDisk is resource key of fake store
 	ResourceDisk = "Disk"
 	// ResourceDNS is resource key of fake store

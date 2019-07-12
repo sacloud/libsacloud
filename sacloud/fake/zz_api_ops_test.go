@@ -38,6 +38,10 @@ func TestResourceOps(t *testing.T) {
 		t.Fatalf("%s is not sacloud.Coupon", op)
 	}
 
+	if op, ok := NewDatabaseOp().(sacloud.DatabaseAPI); !ok {
+		t.Fatalf("%s is not sacloud.Database", op)
+	}
+
 	if op, ok := NewDiskOp().(sacloud.DiskAPI); !ok {
 		t.Fatalf("%s is not sacloud.Disk", op)
 	}

@@ -332,6 +332,128 @@ type couponFindResponseEnvelope struct {
 	Coupon []*naked.Coupon `json:",omitempty"`
 }
 
+// databaseFindRequestEnvelope is envelop of API request
+type databaseFindRequestEnvelope struct {
+	Count   int                    `json:",omitempty"`
+	From    int                    `json:",omitempty"`
+	Sort    []string               `json:",omitempty"`
+	Filter  map[string]interface{} `json:",omitempty"`
+	Include []string               `json:",omitempty"`
+	Exclude []string               `json:",omitempty"`
+}
+
+// databaseFindResponseEnvelope is envelop of API response
+type databaseFindResponseEnvelope struct {
+	Total int `json:",omitempty"` // トータル件数
+	From  int `json:",omitempty"` // ページング開始ページ
+	Count int `json:",omitempty"` // 件数
+
+	Appliances []*naked.Database `json:",omitempty"`
+}
+
+// databaseCreateRequestEnvelope is envelop of API request
+type databaseCreateRequestEnvelope struct {
+	Appliance *naked.Database `json:",omitempty"`
+}
+
+// databaseCreateResponseEnvelope is envelop of API response
+type databaseCreateResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Appliance *naked.Database `json:",omitempty"`
+}
+
+// databaseReadResponseEnvelope is envelop of API response
+type databaseReadResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Appliance *naked.Database `json:",omitempty"`
+}
+
+// databaseUpdateRequestEnvelope is envelop of API request
+type databaseUpdateRequestEnvelope struct {
+	Appliance *naked.Database `json:",omitempty"`
+}
+
+// databaseUpdateResponseEnvelope is envelop of API response
+type databaseUpdateResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Appliance *naked.Database `json:",omitempty"`
+}
+
+// databaseShutdownRequestEnvelope is envelop of API request
+type databaseShutdownRequestEnvelope struct {
+	Force bool `json:",omitempty"`
+}
+
+// databaseMonitorCPURequestEnvelope is envelop of API request
+type databaseMonitorCPURequestEnvelope struct {
+	Start time.Time `json:",omitempty"`
+	End   time.Time `json:",omitempty"`
+}
+
+// databaseMonitorCPUResponseEnvelope is envelop of API response
+type databaseMonitorCPUResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Data *naked.MonitorValues `json:",omitempty"`
+}
+
+// databaseMonitorDiskRequestEnvelope is envelop of API request
+type databaseMonitorDiskRequestEnvelope struct {
+	Start time.Time `json:",omitempty"`
+	End   time.Time `json:",omitempty"`
+}
+
+// databaseMonitorDiskResponseEnvelope is envelop of API response
+type databaseMonitorDiskResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Data *naked.MonitorValues `json:",omitempty"`
+}
+
+// databaseMonitorInterfaceRequestEnvelope is envelop of API request
+type databaseMonitorInterfaceRequestEnvelope struct {
+	Start time.Time `json:",omitempty"`
+	End   time.Time `json:",omitempty"`
+}
+
+// databaseMonitorInterfaceResponseEnvelope is envelop of API response
+type databaseMonitorInterfaceResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Data *naked.MonitorValues `json:",omitempty"`
+}
+
+// databaseMonitorDatabaseRequestEnvelope is envelop of API request
+type databaseMonitorDatabaseRequestEnvelope struct {
+	Start time.Time `json:",omitempty"`
+	End   time.Time `json:",omitempty"`
+}
+
+// databaseMonitorDatabaseResponseEnvelope is envelop of API response
+type databaseMonitorDatabaseResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Data *naked.MonitorValues `json:",omitempty"`
+}
+
+// databaseStatusResponseEnvelope is envelop of API response
+type databaseStatusResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Appliance *naked.DatabaseStatusResponse `json:",omitempty"`
+}
+
 // diskFindRequestEnvelope is envelop of API request
 type diskFindRequestEnvelope struct {
 	Count   int                    `json:",omitempty"`

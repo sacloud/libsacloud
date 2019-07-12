@@ -593,6 +593,224 @@ func (s *CouponStub) Find(ctx context.Context, zone string, accountID types.ID) 
 }
 
 /*************************************************
+* DatabaseStub
+*************************************************/
+
+// DatabaseFindStubResult is expected values of the Find operation
+type DatabaseFindStubResult struct {
+	Values *sacloud.DatabaseFindResult
+	Err    error
+}
+
+// DatabaseCreateStubResult is expected values of the Create operation
+type DatabaseCreateStubResult struct {
+	Database *sacloud.Database
+	Err      error
+}
+
+// DatabaseReadStubResult is expected values of the Read operation
+type DatabaseReadStubResult struct {
+	Database *sacloud.Database
+	Err      error
+}
+
+// DatabaseUpdateStubResult is expected values of the Update operation
+type DatabaseUpdateStubResult struct {
+	Database *sacloud.Database
+	Err      error
+}
+
+// DatabaseDeleteStubResult is expected values of the Delete operation
+type DatabaseDeleteStubResult struct {
+	Err error
+}
+
+// DatabaseConfigStubResult is expected values of the Config operation
+type DatabaseConfigStubResult struct {
+	Err error
+}
+
+// DatabaseBootStubResult is expected values of the Boot operation
+type DatabaseBootStubResult struct {
+	Err error
+}
+
+// DatabaseShutdownStubResult is expected values of the Shutdown operation
+type DatabaseShutdownStubResult struct {
+	Err error
+}
+
+// DatabaseResetStubResult is expected values of the Reset operation
+type DatabaseResetStubResult struct {
+	Err error
+}
+
+// DatabaseMonitorCPUStubResult is expected values of the MonitorCPU operation
+type DatabaseMonitorCPUStubResult struct {
+	CPUTimeActivity *sacloud.CPUTimeActivity
+	Err             error
+}
+
+// DatabaseMonitorDiskStubResult is expected values of the MonitorDisk operation
+type DatabaseMonitorDiskStubResult struct {
+	DiskActivity *sacloud.DiskActivity
+	Err          error
+}
+
+// DatabaseMonitorInterfaceStubResult is expected values of the MonitorInterface operation
+type DatabaseMonitorInterfaceStubResult struct {
+	InterfaceActivity *sacloud.InterfaceActivity
+	Err               error
+}
+
+// DatabaseMonitorDatabaseStubResult is expected values of the MonitorDatabase operation
+type DatabaseMonitorDatabaseStubResult struct {
+	DatabaseActivity *sacloud.DatabaseActivity
+	Err              error
+}
+
+// DatabaseStatusStubResult is expected values of the Status operation
+type DatabaseStatusStubResult struct {
+	DatabaseStatus *sacloud.DatabaseStatus
+	Err            error
+}
+
+// DatabaseStub is for trace DatabaseOp operations
+type DatabaseStub struct {
+	FindStubResult             *DatabaseFindStubResult
+	CreateStubResult           *DatabaseCreateStubResult
+	ReadStubResult             *DatabaseReadStubResult
+	UpdateStubResult           *DatabaseUpdateStubResult
+	DeleteStubResult           *DatabaseDeleteStubResult
+	ConfigStubResult           *DatabaseConfigStubResult
+	BootStubResult             *DatabaseBootStubResult
+	ShutdownStubResult         *DatabaseShutdownStubResult
+	ResetStubResult            *DatabaseResetStubResult
+	MonitorCPUStubResult       *DatabaseMonitorCPUStubResult
+	MonitorDiskStubResult      *DatabaseMonitorDiskStubResult
+	MonitorInterfaceStubResult *DatabaseMonitorInterfaceStubResult
+	MonitorDatabaseStubResult  *DatabaseMonitorDatabaseStubResult
+	StatusStubResult           *DatabaseStatusStubResult
+}
+
+// NewDatabaseStub creates new DatabaseStub instance
+func NewDatabaseStub(caller sacloud.APICaller) sacloud.DatabaseAPI {
+	return &DatabaseStub{}
+}
+
+// Find is API call with trace log
+func (s *DatabaseStub) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.DatabaseFindResult, error) {
+	if s.FindStubResult == nil {
+		log.Fatal("DatabaseStub.FindStubResult is not set")
+	}
+	return s.FindStubResult.Values, s.FindStubResult.Err
+}
+
+// Create is API call with trace log
+func (s *DatabaseStub) Create(ctx context.Context, zone string, param *sacloud.DatabaseCreateRequest) (*sacloud.Database, error) {
+	if s.CreateStubResult == nil {
+		log.Fatal("DatabaseStub.CreateStubResult is not set")
+	}
+	return s.CreateStubResult.Database, s.CreateStubResult.Err
+}
+
+// Read is API call with trace log
+func (s *DatabaseStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Database, error) {
+	if s.ReadStubResult == nil {
+		log.Fatal("DatabaseStub.ReadStubResult is not set")
+	}
+	return s.ReadStubResult.Database, s.ReadStubResult.Err
+}
+
+// Update is API call with trace log
+func (s *DatabaseStub) Update(ctx context.Context, zone string, id types.ID, param *sacloud.DatabaseUpdateRequest) (*sacloud.Database, error) {
+	if s.UpdateStubResult == nil {
+		log.Fatal("DatabaseStub.UpdateStubResult is not set")
+	}
+	return s.UpdateStubResult.Database, s.UpdateStubResult.Err
+}
+
+// Delete is API call with trace log
+func (s *DatabaseStub) Delete(ctx context.Context, zone string, id types.ID) error {
+	if s.DeleteStubResult == nil {
+		log.Fatal("DatabaseStub.DeleteStubResult is not set")
+	}
+	return s.DeleteStubResult.Err
+}
+
+// Config is API call with trace log
+func (s *DatabaseStub) Config(ctx context.Context, zone string, id types.ID) error {
+	if s.ConfigStubResult == nil {
+		log.Fatal("DatabaseStub.ConfigStubResult is not set")
+	}
+	return s.ConfigStubResult.Err
+}
+
+// Boot is API call with trace log
+func (s *DatabaseStub) Boot(ctx context.Context, zone string, id types.ID) error {
+	if s.BootStubResult == nil {
+		log.Fatal("DatabaseStub.BootStubResult is not set")
+	}
+	return s.BootStubResult.Err
+}
+
+// Shutdown is API call with trace log
+func (s *DatabaseStub) Shutdown(ctx context.Context, zone string, id types.ID, shutdownOption *sacloud.ShutdownOption) error {
+	if s.ShutdownStubResult == nil {
+		log.Fatal("DatabaseStub.ShutdownStubResult is not set")
+	}
+	return s.ShutdownStubResult.Err
+}
+
+// Reset is API call with trace log
+func (s *DatabaseStub) Reset(ctx context.Context, zone string, id types.ID) error {
+	if s.ResetStubResult == nil {
+		log.Fatal("DatabaseStub.ResetStubResult is not set")
+	}
+	return s.ResetStubResult.Err
+}
+
+// MonitorCPU is API call with trace log
+func (s *DatabaseStub) MonitorCPU(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.CPUTimeActivity, error) {
+	if s.MonitorCPUStubResult == nil {
+		log.Fatal("DatabaseStub.MonitorCPUStubResult is not set")
+	}
+	return s.MonitorCPUStubResult.CPUTimeActivity, s.MonitorCPUStubResult.Err
+}
+
+// MonitorDisk is API call with trace log
+func (s *DatabaseStub) MonitorDisk(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.DiskActivity, error) {
+	if s.MonitorDiskStubResult == nil {
+		log.Fatal("DatabaseStub.MonitorDiskStubResult is not set")
+	}
+	return s.MonitorDiskStubResult.DiskActivity, s.MonitorDiskStubResult.Err
+}
+
+// MonitorInterface is API call with trace log
+func (s *DatabaseStub) MonitorInterface(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.InterfaceActivity, error) {
+	if s.MonitorInterfaceStubResult == nil {
+		log.Fatal("DatabaseStub.MonitorInterfaceStubResult is not set")
+	}
+	return s.MonitorInterfaceStubResult.InterfaceActivity, s.MonitorInterfaceStubResult.Err
+}
+
+// MonitorDatabase is API call with trace log
+func (s *DatabaseStub) MonitorDatabase(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.DatabaseActivity, error) {
+	if s.MonitorDatabaseStubResult == nil {
+		log.Fatal("DatabaseStub.MonitorDatabaseStubResult is not set")
+	}
+	return s.MonitorDatabaseStubResult.DatabaseActivity, s.MonitorDatabaseStubResult.Err
+}
+
+// Status is API call with trace log
+func (s *DatabaseStub) Status(ctx context.Context, zone string, id types.ID) (*sacloud.DatabaseStatus, error) {
+	if s.StatusStubResult == nil {
+		log.Fatal("DatabaseStub.StatusStubResult is not set")
+	}
+	return s.StatusStubResult.DatabaseStatus, s.StatusStubResult.Err
+}
+
+/*************************************************
 * DiskStub
 *************************************************/
 
