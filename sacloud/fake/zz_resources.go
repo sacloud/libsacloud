@@ -9,6 +9,8 @@ const (
 	ResourceAuthStatus = "AuthStatus"
 	// ResourceAutoBackup is resource key of fake store
 	ResourceAutoBackup = "AutoBackup"
+	// ResourceBill is resource key of fake store
+	ResourceBill = "Bill"
 	// ResourceBridge is resource key of fake store
 	ResourceBridge = "Bridge"
 	// ResourceCDROM is resource key of fake store

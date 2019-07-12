@@ -1458,6 +1458,305 @@ func (o *AutoBackupUpdateRequest) SetIconID(v types.ID) {
 }
 
 /*************************************************
+* Bill
+*************************************************/
+
+// Bill represents API parameter/response structure
+type Bill struct {
+	ID             types.ID
+	Amount         int64
+	Date           time.Time
+	MemberID       string
+	Paid           bool
+	PayLimit       time.Time
+	PaymentClassID types.ID
+}
+
+// Validate validates by field tags
+func (o *Bill) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetID returns value of ID
+func (o *Bill) GetID() types.ID {
+	return o.ID
+}
+
+// SetID sets value to ID
+func (o *Bill) SetID(v types.ID) {
+	o.ID = v
+}
+
+// GetStringID gets value to StringID
+func (o *Bill) GetStringID() string {
+	return accessor.GetStringID(o)
+}
+
+// SetStringID sets value to StringID
+func (o *Bill) SetStringID(v string) {
+	accessor.SetStringID(o, v)
+}
+
+// GetInt64ID gets value to Int64ID
+func (o *Bill) GetInt64ID() int64 {
+	return accessor.GetInt64ID(o)
+}
+
+// SetInt64ID sets value to Int64ID
+func (o *Bill) SetInt64ID(v int64) {
+	accessor.SetInt64ID(o, v)
+}
+
+// GetAmount returns value of Amount
+func (o *Bill) GetAmount() int64 {
+	return o.Amount
+}
+
+// SetAmount sets value to Amount
+func (o *Bill) SetAmount(v int64) {
+	o.Amount = v
+}
+
+// GetDate returns value of Date
+func (o *Bill) GetDate() time.Time {
+	return o.Date
+}
+
+// SetDate sets value to Date
+func (o *Bill) SetDate(v time.Time) {
+	o.Date = v
+}
+
+// GetMemberID returns value of MemberID
+func (o *Bill) GetMemberID() string {
+	return o.MemberID
+}
+
+// SetMemberID sets value to MemberID
+func (o *Bill) SetMemberID(v string) {
+	o.MemberID = v
+}
+
+// GetPaid returns value of Paid
+func (o *Bill) GetPaid() bool {
+	return o.Paid
+}
+
+// SetPaid sets value to Paid
+func (o *Bill) SetPaid(v bool) {
+	o.Paid = v
+}
+
+// GetPayLimit returns value of PayLimit
+func (o *Bill) GetPayLimit() time.Time {
+	return o.PayLimit
+}
+
+// SetPayLimit sets value to PayLimit
+func (o *Bill) SetPayLimit(v time.Time) {
+	o.PayLimit = v
+}
+
+// GetPaymentClassID returns value of PaymentClassID
+func (o *Bill) GetPaymentClassID() types.ID {
+	return o.PaymentClassID
+}
+
+// SetPaymentClassID sets value to PaymentClassID
+func (o *Bill) SetPaymentClassID(v types.ID) {
+	o.PaymentClassID = v
+}
+
+/*************************************************
+* BillDetail
+*************************************************/
+
+// BillDetail represents API parameter/response structure
+type BillDetail struct {
+	ID             types.ID
+	Amount         int64
+	Description    string `validate:"min=0,max=512"`
+	ServiceClassID types.ID
+	Usage          int64
+	Zone           string
+	ContractEndAt  time.Time
+}
+
+// Validate validates by field tags
+func (o *BillDetail) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetID returns value of ID
+func (o *BillDetail) GetID() types.ID {
+	return o.ID
+}
+
+// SetID sets value to ID
+func (o *BillDetail) SetID(v types.ID) {
+	o.ID = v
+}
+
+// GetStringID gets value to StringID
+func (o *BillDetail) GetStringID() string {
+	return accessor.GetStringID(o)
+}
+
+// SetStringID sets value to StringID
+func (o *BillDetail) SetStringID(v string) {
+	accessor.SetStringID(o, v)
+}
+
+// GetInt64ID gets value to Int64ID
+func (o *BillDetail) GetInt64ID() int64 {
+	return accessor.GetInt64ID(o)
+}
+
+// SetInt64ID sets value to Int64ID
+func (o *BillDetail) SetInt64ID(v int64) {
+	accessor.SetInt64ID(o, v)
+}
+
+// GetAmount returns value of Amount
+func (o *BillDetail) GetAmount() int64 {
+	return o.Amount
+}
+
+// SetAmount sets value to Amount
+func (o *BillDetail) SetAmount(v int64) {
+	o.Amount = v
+}
+
+// GetDescription returns value of Description
+func (o *BillDetail) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *BillDetail) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetServiceClassID returns value of ServiceClassID
+func (o *BillDetail) GetServiceClassID() types.ID {
+	return o.ServiceClassID
+}
+
+// SetServiceClassID sets value to ServiceClassID
+func (o *BillDetail) SetServiceClassID(v types.ID) {
+	o.ServiceClassID = v
+}
+
+// GetUsage returns value of Usage
+func (o *BillDetail) GetUsage() int64 {
+	return o.Usage
+}
+
+// SetUsage sets value to Usage
+func (o *BillDetail) SetUsage(v int64) {
+	o.Usage = v
+}
+
+// GetZone returns value of Zone
+func (o *BillDetail) GetZone() string {
+	return o.Zone
+}
+
+// SetZone sets value to Zone
+func (o *BillDetail) SetZone(v string) {
+	o.Zone = v
+}
+
+// GetContractEndAt returns value of ContractEndAt
+func (o *BillDetail) GetContractEndAt() time.Time {
+	return o.ContractEndAt
+}
+
+// SetContractEndAt sets value to ContractEndAt
+func (o *BillDetail) SetContractEndAt(v time.Time) {
+	o.ContractEndAt = v
+}
+
+/*************************************************
+* BillDetailCSV
+*************************************************/
+
+// BillDetailCSV represents API parameter/response structure
+type BillDetailCSV struct {
+	Count       int
+	ResponsedAt time.Time
+	Filename    string
+	RawBody     string
+	HeaderRow   []string
+	BodyRows    [][]string
+}
+
+// Validate validates by field tags
+func (o *BillDetailCSV) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetCount returns value of Count
+func (o *BillDetailCSV) GetCount() int {
+	return o.Count
+}
+
+// SetCount sets value to Count
+func (o *BillDetailCSV) SetCount(v int) {
+	o.Count = v
+}
+
+// GetResponsedAt returns value of ResponsedAt
+func (o *BillDetailCSV) GetResponsedAt() time.Time {
+	return o.ResponsedAt
+}
+
+// SetResponsedAt sets value to ResponsedAt
+func (o *BillDetailCSV) SetResponsedAt(v time.Time) {
+	o.ResponsedAt = v
+}
+
+// GetFilename returns value of Filename
+func (o *BillDetailCSV) GetFilename() string {
+	return o.Filename
+}
+
+// SetFilename sets value to Filename
+func (o *BillDetailCSV) SetFilename(v string) {
+	o.Filename = v
+}
+
+// GetRawBody returns value of RawBody
+func (o *BillDetailCSV) GetRawBody() string {
+	return o.RawBody
+}
+
+// SetRawBody sets value to RawBody
+func (o *BillDetailCSV) SetRawBody(v string) {
+	o.RawBody = v
+}
+
+// GetHeaderRow returns value of HeaderRow
+func (o *BillDetailCSV) GetHeaderRow() []string {
+	return o.HeaderRow
+}
+
+// SetHeaderRow sets value to HeaderRow
+func (o *BillDetailCSV) SetHeaderRow(v []string) {
+	o.HeaderRow = v
+}
+
+// GetBodyRows returns value of BodyRows
+func (o *BillDetailCSV) GetBodyRows() [][]string {
+	return o.BodyRows
+}
+
+// SetBodyRows sets value to BodyRows
+func (o *BillDetailCSV) SetBodyRows(v [][]string) {
+	o.BodyRows = v
+}
+
+/*************************************************
 * Bridge
 *************************************************/
 

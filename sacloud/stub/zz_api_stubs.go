@@ -258,6 +258,109 @@ func (s *AutoBackupStub) Delete(ctx context.Context, zone string, id types.ID) e
 }
 
 /*************************************************
+* BillStub
+*************************************************/
+
+// BillByContractStubResult is expected values of the ByContract operation
+type BillByContractStubResult struct {
+	Values *sacloud.BillByContractResult
+	Err    error
+}
+
+// BillByContractYearStubResult is expected values of the ByContractYear operation
+type BillByContractYearStubResult struct {
+	Values *sacloud.BillByContractYearResult
+	Err    error
+}
+
+// BillByContractYearMonthStubResult is expected values of the ByContractYearMonth operation
+type BillByContractYearMonthStubResult struct {
+	Values *sacloud.BillByContractYearMonthResult
+	Err    error
+}
+
+// BillReadStubResult is expected values of the Read operation
+type BillReadStubResult struct {
+	Values *sacloud.BillReadResult
+	Err    error
+}
+
+// BillDetailsStubResult is expected values of the Details operation
+type BillDetailsStubResult struct {
+	Values *sacloud.BillDetailsResult
+	Err    error
+}
+
+// BillDetailsCSVStubResult is expected values of the DetailsCSV operation
+type BillDetailsCSVStubResult struct {
+	BillDetailCSV *sacloud.BillDetailCSV
+	Err           error
+}
+
+// BillStub is for trace BillOp operations
+type BillStub struct {
+	ByContractStubResult          *BillByContractStubResult
+	ByContractYearStubResult      *BillByContractYearStubResult
+	ByContractYearMonthStubResult *BillByContractYearMonthStubResult
+	ReadStubResult                *BillReadStubResult
+	DetailsStubResult             *BillDetailsStubResult
+	DetailsCSVStubResult          *BillDetailsCSVStubResult
+}
+
+// NewBillStub creates new BillStub instance
+func NewBillStub(caller sacloud.APICaller) sacloud.BillAPI {
+	return &BillStub{}
+}
+
+// ByContract is API call with trace log
+func (s *BillStub) ByContract(ctx context.Context, zone string, accountID types.ID) (*sacloud.BillByContractResult, error) {
+	if s.ByContractStubResult == nil {
+		log.Fatal("BillStub.ByContractStubResult is not set")
+	}
+	return s.ByContractStubResult.Values, s.ByContractStubResult.Err
+}
+
+// ByContractYear is API call with trace log
+func (s *BillStub) ByContractYear(ctx context.Context, zone string, accountID types.ID, year int) (*sacloud.BillByContractYearResult, error) {
+	if s.ByContractYearStubResult == nil {
+		log.Fatal("BillStub.ByContractYearStubResult is not set")
+	}
+	return s.ByContractYearStubResult.Values, s.ByContractYearStubResult.Err
+}
+
+// ByContractYearMonth is API call with trace log
+func (s *BillStub) ByContractYearMonth(ctx context.Context, zone string, accountID types.ID, year int, month int) (*sacloud.BillByContractYearMonthResult, error) {
+	if s.ByContractYearMonthStubResult == nil {
+		log.Fatal("BillStub.ByContractYearMonthStubResult is not set")
+	}
+	return s.ByContractYearMonthStubResult.Values, s.ByContractYearMonthStubResult.Err
+}
+
+// Read is API call with trace log
+func (s *BillStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.BillReadResult, error) {
+	if s.ReadStubResult == nil {
+		log.Fatal("BillStub.ReadStubResult is not set")
+	}
+	return s.ReadStubResult.Values, s.ReadStubResult.Err
+}
+
+// Details is API call with trace log
+func (s *BillStub) Details(ctx context.Context, zone string, MemberCode string, id types.ID) (*sacloud.BillDetailsResult, error) {
+	if s.DetailsStubResult == nil {
+		log.Fatal("BillStub.DetailsStubResult is not set")
+	}
+	return s.DetailsStubResult.Values, s.DetailsStubResult.Err
+}
+
+// DetailsCSV is API call with trace log
+func (s *BillStub) DetailsCSV(ctx context.Context, zone string, MemberCode string, id types.ID) (*sacloud.BillDetailCSV, error) {
+	if s.DetailsCSVStubResult == nil {
+		log.Fatal("BillStub.DetailsCSVStubResult is not set")
+	}
+	return s.DetailsCSVStubResult.BillDetailCSV, s.DetailsCSVStubResult.Err
+}
+
+/*************************************************
 * BridgeStub
 *************************************************/
 

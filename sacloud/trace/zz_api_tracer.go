@@ -22,6 +22,9 @@ func AddClientFactoryHooks() {
 	sacloud.AddClientFacotyHookFunc("AutoBackup", func(in interface{}) interface{} {
 		return NewAutoBackupTracer(in.(sacloud.AutoBackupAPI))
 	})
+	sacloud.AddClientFacotyHookFunc("Bill", func(in interface{}) interface{} {
+		return NewBillTracer(in.(sacloud.BillAPI))
+	})
 	sacloud.AddClientFacotyHookFunc("Bridge", func(in interface{}) interface{} {
 		return NewBridgeTracer(in.(sacloud.BridgeAPI))
 	})
@@ -595,6 +598,230 @@ func (t *AutoBackupTracer) Delete(ctx context.Context, zone string, id types.ID)
 	}
 
 	return err
+}
+
+/*************************************************
+* BillTracer
+*************************************************/
+
+// BillTracer is for trace BillOp operations
+type BillTracer struct {
+	Internal sacloud.BillAPI
+}
+
+// NewBillTracer creates new BillTracer instance
+func NewBillTracer(in sacloud.BillAPI) sacloud.BillAPI {
+	return &BillTracer{
+		Internal: in,
+	}
+}
+
+// ByContract is API call with trace log
+func (t *BillTracer) ByContract(ctx context.Context, zone string, accountID types.ID) (*sacloud.BillByContractResult, error) {
+	log.Println("[TRACE] BillAPI.ByContract start")
+	targetArguments := struct {
+		Argzone      string   `json:"zone"`
+		ArgaccountID types.ID `json:"accountID"`
+	}{
+		Argzone:      zone,
+		ArgaccountID: accountID,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] BillAPI.ByContract end")
+	}()
+
+	result, err := t.Internal.ByContract(ctx, zone, accountID)
+	targetResults := struct {
+		Result *sacloud.BillByContractResult
+		Error  error
+	}{
+		Result: result,
+		Error:  err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return result, err
+}
+
+// ByContractYear is API call with trace log
+func (t *BillTracer) ByContractYear(ctx context.Context, zone string, accountID types.ID, year int) (*sacloud.BillByContractYearResult, error) {
+	log.Println("[TRACE] BillAPI.ByContractYear start")
+	targetArguments := struct {
+		Argzone      string   `json:"zone"`
+		ArgaccountID types.ID `json:"accountID"`
+		Argyear      int      `json:"year"`
+	}{
+		Argzone:      zone,
+		ArgaccountID: accountID,
+		Argyear:      year,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] BillAPI.ByContractYear end")
+	}()
+
+	result, err := t.Internal.ByContractYear(ctx, zone, accountID, year)
+	targetResults := struct {
+		Result *sacloud.BillByContractYearResult
+		Error  error
+	}{
+		Result: result,
+		Error:  err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return result, err
+}
+
+// ByContractYearMonth is API call with trace log
+func (t *BillTracer) ByContractYearMonth(ctx context.Context, zone string, accountID types.ID, year int, month int) (*sacloud.BillByContractYearMonthResult, error) {
+	log.Println("[TRACE] BillAPI.ByContractYearMonth start")
+	targetArguments := struct {
+		Argzone      string   `json:"zone"`
+		ArgaccountID types.ID `json:"accountID"`
+		Argyear      int      `json:"year"`
+		Argmonth     int      `json:"month"`
+	}{
+		Argzone:      zone,
+		ArgaccountID: accountID,
+		Argyear:      year,
+		Argmonth:     month,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] BillAPI.ByContractYearMonth end")
+	}()
+
+	result, err := t.Internal.ByContractYearMonth(ctx, zone, accountID, year, month)
+	targetResults := struct {
+		Result *sacloud.BillByContractYearMonthResult
+		Error  error
+	}{
+		Result: result,
+		Error:  err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return result, err
+}
+
+// Read is API call with trace log
+func (t *BillTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.BillReadResult, error) {
+	log.Println("[TRACE] BillAPI.Read start")
+	targetArguments := struct {
+		Argzone string   `json:"zone"`
+		Argid   types.ID `json:"id"`
+	}{
+		Argzone: zone,
+		Argid:   id,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] BillAPI.Read end")
+	}()
+
+	result, err := t.Internal.Read(ctx, zone, id)
+	targetResults := struct {
+		Result *sacloud.BillReadResult
+		Error  error
+	}{
+		Result: result,
+		Error:  err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return result, err
+}
+
+// Details is API call with trace log
+func (t *BillTracer) Details(ctx context.Context, zone string, MemberCode string, id types.ID) (*sacloud.BillDetailsResult, error) {
+	log.Println("[TRACE] BillAPI.Details start")
+	targetArguments := struct {
+		Argzone       string   `json:"zone"`
+		ArgMemberCode string   `json:"MemberCode"`
+		Argid         types.ID `json:"id"`
+	}{
+		Argzone:       zone,
+		ArgMemberCode: MemberCode,
+		Argid:         id,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] BillAPI.Details end")
+	}()
+
+	result, err := t.Internal.Details(ctx, zone, MemberCode, id)
+	targetResults := struct {
+		Result *sacloud.BillDetailsResult
+		Error  error
+	}{
+		Result: result,
+		Error:  err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return result, err
+}
+
+// DetailsCSV is API call with trace log
+func (t *BillTracer) DetailsCSV(ctx context.Context, zone string, MemberCode string, id types.ID) (*sacloud.BillDetailCSV, error) {
+	log.Println("[TRACE] BillAPI.DetailsCSV start")
+	targetArguments := struct {
+		Argzone       string   `json:"zone"`
+		ArgMemberCode string   `json:"MemberCode"`
+		Argid         types.ID `json:"id"`
+	}{
+		Argzone:       zone,
+		ArgMemberCode: MemberCode,
+		Argid:         id,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] BillAPI.DetailsCSV end")
+	}()
+
+	resultBillDetailCSV, err := t.Internal.DetailsCSV(ctx, zone, MemberCode, id)
+	targetResults := struct {
+		BillDetailCSV *sacloud.BillDetailCSV
+		Error         error
+	}{
+		BillDetailCSV: resultBillDetailCSV,
+		Error:         err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultBillDetailCSV, err
 }
 
 /*************************************************

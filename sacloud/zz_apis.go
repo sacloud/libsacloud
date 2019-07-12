@@ -47,6 +47,20 @@ type AutoBackupAPI interface {
 }
 
 /*************************************************
+* BillAPI
+*************************************************/
+
+// BillAPI is interface for operate Bill resource
+type BillAPI interface {
+	ByContract(ctx context.Context, zone string, accountID types.ID) (*BillByContractResult, error)
+	ByContractYear(ctx context.Context, zone string, accountID types.ID, year int) (*BillByContractYearResult, error)
+	ByContractYearMonth(ctx context.Context, zone string, accountID types.ID, year int, month int) (*BillByContractYearMonthResult, error)
+	Read(ctx context.Context, zone string, id types.ID) (*BillReadResult, error)
+	Details(ctx context.Context, zone string, MemberCode string, id types.ID) (*BillDetailsResult, error)
+	DetailsCSV(ctx context.Context, zone string, MemberCode string, id types.ID) (*BillDetailCSV, error)
+}
+
+/*************************************************
 * BridgeAPI
 *************************************************/
 
