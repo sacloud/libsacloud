@@ -111,7 +111,7 @@ func readInternet(id types.ID, caller sacloud.APICaller) (*sacloud.Internet, err
 		return client.Read(context.Background(), testZone, id)
 	}
 	// TODO スイッチ+ルータ作成後しばらくは404が返ってくる問題にどう対応するか?
-	max := 30
+	max := 100
 	for {
 		if max == 0 {
 			break
@@ -119,7 +119,7 @@ func readInternet(id types.ID, caller sacloud.APICaller) (*sacloud.Internet, err
 		res, err := client.Read(context.Background(), testZone, id)
 		if err != nil || sacloud.IsNotFoundError(err) {
 			max--
-			time.Sleep(3 * time.Second)
+			time.Sleep(5 * time.Second)
 			continue
 		}
 		return res, err
