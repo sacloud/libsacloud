@@ -8412,7 +8412,7 @@ type ProxyLBAdditionalCert struct {
 	ServerCertificate       string
 	IntermediateCertificate string
 	PrivateKey              string
-	CertificateEndDate      string
+	CertificateEndDate      time.Time
 	CertificateCommonName   string
 }
 
@@ -8452,12 +8452,12 @@ func (o *ProxyLBAdditionalCert) SetPrivateKey(v string) {
 }
 
 // GetCertificateEndDate returns value of CertificateEndDate
-func (o *ProxyLBAdditionalCert) GetCertificateEndDate() string {
+func (o *ProxyLBAdditionalCert) GetCertificateEndDate() time.Time {
 	return o.CertificateEndDate
 }
 
 // SetCertificateEndDate sets value to CertificateEndDate
-func (o *ProxyLBAdditionalCert) SetCertificateEndDate(v string) {
+func (o *ProxyLBAdditionalCert) SetCertificateEndDate(v time.Time) {
 	o.CertificateEndDate = v
 }
 

@@ -238,30 +238,12 @@ var (
 		Name:      billAPIName + "DetailCSV",
 		NakedType: billDetailCSVNakedType,
 		Fields: []*dsl.FieldDesc{
-			{
-				Name: "Count",
-				Type: meta.TypeInt,
-			},
-			{
-				Name: "ResponsedAt",
-				Type: meta.TypeTime,
-			},
-			{
-				Name: "Filename",
-				Type: meta.TypeString,
-			},
-			{
-				Name: "RawBody",
-				Type: meta.TypeString,
-			},
-			{
-				Name: "HeaderRow",
-				Type: meta.TypeStringSlice,
-			},
-			{
-				Name: "BodyRows",
-				Type: meta.Static([][]string{}),
-			},
+			fields.New("Count", meta.TypeInt),
+			fields.New("ResponsedAt", meta.TypeTime),
+			fields.New("Filename", meta.TypeString),
+			fields.New("RawBody", meta.TypeString),
+			fields.New("HeaderRow", meta.TypeStringSlice),
+			fields.New("BodyRows", meta.Static([][]string{})),
 		},
 	}
 )
