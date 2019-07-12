@@ -36,6 +36,14 @@ func init() {
 		}
 	})
 
+	SetClientFactoryFunc("Bill", func(caller APICaller) interface{} {
+		return &BillOp{
+			Client:     caller,
+			PathSuffix: "api/system/1.0",
+			PathName:   "bill",
+		}
+	})
+
 	SetClientFactoryFunc("Bridge", func(caller APICaller) interface{} {
 		return &BridgeOp{
 			Client:     caller,
@@ -858,6 +866,222 @@ func (o *AutoBackupOp) Delete(ctx context.Context, zone string, id types.ID) err
 	}
 
 	return nil
+}
+
+/*************************************************
+* BillOp
+*************************************************/
+
+// BillOp implements BillAPI interface
+type BillOp struct {
+	// Client APICaller
+	Client APICaller
+	// PathSuffix is used when building URL
+	PathSuffix string
+	// PathName is used when building URL
+	PathName string
+}
+
+// NewBillOp creates new BillOp instance
+func NewBillOp(caller APICaller) BillAPI {
+	return GetClientFactoryFunc("Bill")(caller).(BillAPI)
+}
+
+// ByContract is API call
+func (o *BillOp) ByContract(ctx context.Context, zone string, accountID types.ID) (*BillByContractResult, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/by-contract/{{.accountID}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"accountID":  accountID,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &billByContractResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &BillByContractResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, err
+}
+
+// ByContractYear is API call
+func (o *BillOp) ByContractYear(ctx context.Context, zone string, accountID types.ID, year int) (*BillByContractYearResult, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/by-contract/{{.accountID}}/{{.year}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"accountID":  accountID,
+		"year":       year,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &billByContractYearResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &BillByContractYearResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, err
+}
+
+// ByContractYearMonth is API call
+func (o *BillOp) ByContractYearMonth(ctx context.Context, zone string, accountID types.ID, year int, month int) (*BillByContractYearMonthResult, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/by-contract/{{.accountID}}/{{.year}}/{{.month}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"accountID":  accountID,
+		"year":       year,
+		"month":      month,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &billByContractYearMonthResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &BillByContractYearMonthResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, err
+}
+
+// Read is API call
+func (o *BillOp) Read(ctx context.Context, zone string, id types.ID) (*BillReadResult, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/id/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &billReadResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &BillReadResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, err
+}
+
+// Details is API call
+func (o *BillOp) Details(ctx context.Context, zone string, MemberCode string, id types.ID) (*BillDetailsResult, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}detail/{{.MemberCode}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"MemberCode": MemberCode,
+		"id":         id,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &billDetailsResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &BillDetailsResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, err
+}
+
+// DetailsCSV is API call
+func (o *BillOp) DetailsCSV(ctx context.Context, zone string, MemberCode string, id types.ID) (*BillDetailCSV, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}detail/{{.MemberCode}}/{{.id}}/csv", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"MemberCode": MemberCode,
+		"id":         id,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &billDetailsCSVResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &billDetailsCSVResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results.BillDetailCSV, nil
 }
 
 /*************************************************

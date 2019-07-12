@@ -109,7 +109,7 @@ import (
 // {{ .MethodName }} is fake implementation
 func (o *{{ $.TypeName }}Op) {{ .MethodName }}(ctx context.Context{{ range .Arguments }}, {{ .ArgName }} {{ .TypeName }}{{ end }}) {{.ResultsStatement}} {
 {{ if eq .MethodName "Find" -}}
-	results, _ := find(o.key, {{if $.IsGlobal}}sacloud.DefaultZone{{else}}zone{{end}}, conditions)
+	results, _ := find(o.key, {{if $.IsGlobal}}sacloud.APIDefaultZone{{else}}zone{{end}}, conditions)
 	var values []*sacloud.{{$.TypeName}}
 	for _, res := range results {
 		dest := &sacloud.{{$.TypeName}}{}
@@ -129,10 +129,10 @@ func (o *{{ $.TypeName }}Op) {{ .MethodName }}(ctx context.Context{{ range .Argu
 
 	// TODO core logic is not implemented
 
-	s.set{{$.TypeName}}({{if $.IsGlobal}}sacloud.DefaultZone{{else}}zone{{end}}, result)
+	s.set{{$.TypeName}}({{if $.IsGlobal}}sacloud.APIDefaultZone{{else}}zone{{end}}, result)
 	return result, nil
 {{ else if eq .MethodName "Read" -}}
-	value := s.get{{$.TypeName}}ByID({{if $.IsGlobal}}sacloud.DefaultZone{{else}}zone{{end}}, id)
+	value := s.get{{$.TypeName}}ByID({{if $.IsGlobal}}sacloud.APIDefaultZone{{else}}zone{{end}}, id)
 	if value == nil {
 		return nil, newErrorNotFound(o.key, id)
 	}
@@ -140,7 +140,7 @@ func (o *{{ $.TypeName }}Op) {{ .MethodName }}(ctx context.Context{{ range .Argu
 	copySameNameField(value, dest)
 	return dest, nil
 {{ else if eq .MethodName "Update" -}}
-	value, err := o.Read(ctx, {{if $.IsGlobal}}sacloud.DefaultZone{{else}}zone{{end}}, id)
+	value, err := o.Read(ctx, {{if $.IsGlobal}}sacloud.APIDefaultZone{{else}}zone{{end}}, id)
 	if err != nil {
 		return nil, err
 	}
@@ -150,14 +150,14 @@ func (o *{{ $.TypeName }}Op) {{ .MethodName }}(ctx context.Context{{ range .Argu
 	// TODO core logic is not implemented
 	return value, nil
 {{ else if eq .MethodName "Delete" -}}
-	_, err := o.Read(ctx, {{if $.IsGlobal}}sacloud.DefaultZone{{else}}zone{{end}}, id)
+	_, err := o.Read(ctx, {{if $.IsGlobal}}sacloud.APIDefaultZone{{else}}zone{{end}}, id)
 	if err != nil {
 		return err
 	}
 
 	// TODO core logic is not implemented
 
-	s.delete(o.key, {{if $.IsGlobal}}sacloud.DefaultZone{{else}}zone{{end}}, id)
+	s.delete(o.key, {{if $.IsGlobal}}sacloud.APIDefaultZone{{else}}zone{{end}}, id)
 	return nil
 {{ else -}}
 	// TODO not implemented

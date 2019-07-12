@@ -1,6 +1,8 @@
 package fake
 
 import (
+	"time"
+
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
@@ -49,6 +51,7 @@ var sharedSegmentSwitch = &sacloud.Switch{
 
 func init() {
 	initArchives()
+	initBills()
 	initNotes()
 	initSwitch()
 	initZones()
@@ -87,6 +90,39 @@ func initArchives() {
 			s.setArchive(zone, archive)
 		}
 	}
+}
+
+func initBills() {
+	bills := []*sacloud.Bill{
+		{
+			ID:             pool.generateID(),
+			Amount:         1080,
+			Date:           time.Now(),
+			MemberID:       "dummy00000",
+			Paid:           false,
+			PayLimit:       time.Now().AddDate(0, 1, 0),
+			PaymentClassID: 999,
+		},
+	}
+	for _, bill := range bills {
+		s.setBill(sacloud.APIDefaultZone, bill)
+		initBillDetails(bill.ID)
+	}
+}
+
+func initBillDetails(billID types.ID) {
+	details := []*sacloud.BillDetail{
+		{
+			ID:             pool.generateID(),
+			Amount:         108,
+			Description:    "description",
+			ServiceClassID: 999,
+			Usage:          100,
+			Zone:           "tk1a",
+			ContractEndAt:  time.Now(),
+		},
+	}
+	s.setWithID(ResourceBill+"Details", sacloud.APIDefaultZone, details, billID)
 }
 
 func initNotes() {

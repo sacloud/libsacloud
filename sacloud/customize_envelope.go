@@ -24,3 +24,21 @@ func (a *authStatusReadResponseEnvelope) UnmarshalJSON(data []byte) error {
 	*a = authStatusReadResponseEnvelope(tmp)
 	return nil
 }
+
+func (b *billDetailsCSVResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type alias billDetailsCSVResponseEnvelope
+
+	var tmp alias
+	if err := json.Unmarshal(data, &tmp); err != nil {
+		return err
+	}
+
+	var nakedBillDetailCSV naked.BillDetailCSV
+	if err := json.Unmarshal(data, &nakedBillDetailCSV); err != nil {
+		return err
+	}
+	tmp.CSV = &nakedBillDetailCSV
+
+	*b = billDetailsCSVResponseEnvelope(tmp)
+	return nil
+}
