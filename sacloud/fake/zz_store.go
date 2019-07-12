@@ -76,6 +76,29 @@ func (s *store) setAutoBackup(zone string, value *sacloud.AutoBackup) {
 	s.set(ResourceAutoBackup, zone, value)
 }
 
+func (s *store) getBill(zone string) []*sacloud.Bill {
+	values := s.get(ResourceBill, zone)
+	var ret []*sacloud.Bill
+	for _, v := range values {
+		if v, ok := v.(*sacloud.Bill); ok {
+			ret = append(ret, v)
+		}
+	}
+	return ret
+}
+
+func (s *store) getBillByID(zone string, id types.ID) *sacloud.Bill {
+	v := s.getByID(ResourceBill, zone, id)
+	if v, ok := v.(*sacloud.Bill); ok {
+		return v
+	}
+	return nil
+}
+
+func (s *store) setBill(zone string, value *sacloud.Bill) {
+	s.set(ResourceBill, zone, value)
+}
+
 func (s *store) getBridge(zone string) []*sacloud.Bridge {
 	values := s.get(ResourceBridge, zone)
 	var ret []*sacloud.Bridge

@@ -340,6 +340,14 @@ func AssertTrue(t TestT, value bool, targetName string) error {
 	return nil
 }
 
+// AssertFalse falseチェック
+func AssertFalse(t TestT, value bool, targetName string) error {
+	if !assert.False(t, value) {
+		return fmt.Errorf("assert.False is failed: %s", targetName)
+	}
+	return nil
+}
+
 // AssertEmpty emptyチェック
 func AssertEmpty(t TestT, object interface{}, targetName string) error {
 	if !assert.Empty(t, object) {
@@ -398,6 +406,13 @@ func AssertNotNilFunc(t TestT, object interface{}, targetName string) func() err
 func AssertTrueFunc(t TestT, value bool, targetName string) func() error {
 	return func() error {
 		return AssertTrue(t, value, targetName)
+	}
+}
+
+// AssertFalseFunc falseチェック
+func AssertFalseFunc(t TestT, value bool, targetName string) func() error {
+	return func() error {
+		return AssertFalse(t, value, targetName)
 	}
 }
 

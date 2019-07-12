@@ -84,6 +84,58 @@ type autoBackupUpdateResult struct {
 	AutoBackup *AutoBackup `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
 }
 
+// BillByContractResult represents the Result of API
+type BillByContractResult struct {
+	Total int `json:",omitempty"` // Total count of target resources
+	From  int `json:",omitempty"` // Current page number
+	Count int `json:",omitempty"` // Count of current page
+
+	Bills []*Bill `json:",omitempty" mapconv:"[]Bills,omitempty,recursive"`
+}
+
+// BillByContractYearResult represents the Result of API
+type BillByContractYearResult struct {
+	Total int `json:",omitempty"` // Total count of target resources
+	From  int `json:",omitempty"` // Current page number
+	Count int `json:",omitempty"` // Count of current page
+
+	Bills []*Bill `json:",omitempty" mapconv:"[]Bills,omitempty,recursive"`
+}
+
+// BillByContractYearMonthResult represents the Result of API
+type BillByContractYearMonthResult struct {
+	Total int `json:",omitempty"` // Total count of target resources
+	From  int `json:",omitempty"` // Current page number
+	Count int `json:",omitempty"` // Count of current page
+
+	Bills []*Bill `json:",omitempty" mapconv:"[]Bills,omitempty,recursive"`
+}
+
+// BillReadResult represents the Result of API
+type BillReadResult struct {
+	Total int `json:",omitempty"` // Total count of target resources
+	From  int `json:",omitempty"` // Current page number
+	Count int `json:",omitempty"` // Count of current page
+
+	Bills []*Bill `json:",omitempty" mapconv:"[]Bills,omitempty,recursive"`
+}
+
+// BillDetailsResult represents the Result of API
+type BillDetailsResult struct {
+	Total int `json:",omitempty"` // Total count of target resources
+	From  int `json:",omitempty"` // Current page number
+	Count int `json:",omitempty"` // Count of current page
+
+	BillDetails []*BillDetail `json:",omitempty" mapconv:"[]BillDetails,omitempty,recursive"`
+}
+
+// billDetailsCSVResult represents the Result of API
+type billDetailsCSVResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	BillDetailCSV *BillDetailCSV `json:",omitempty" mapconv:"CSV,omitempty,recursive"`
+}
+
 // BridgeFindResult represents the Result of API
 type BridgeFindResult struct {
 	Total int `json:",omitempty"` // Total count of target resources

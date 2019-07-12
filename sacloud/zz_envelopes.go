@@ -150,6 +150,59 @@ type autoBackupUpdateResponseEnvelope struct {
 	CommonServiceItem *naked.AutoBackup `json:",omitempty"`
 }
 
+// billByContractResponseEnvelope is envelop of API response
+type billByContractResponseEnvelope struct {
+	Total int `json:",omitempty"` // トータル件数
+	From  int `json:",omitempty"` // ページング開始ページ
+	Count int `json:",omitempty"` // 件数
+
+	Bills []*naked.Bill `json:",omitempty"`
+}
+
+// billByContractYearResponseEnvelope is envelop of API response
+type billByContractYearResponseEnvelope struct {
+	Total int `json:",omitempty"` // トータル件数
+	From  int `json:",omitempty"` // ページング開始ページ
+	Count int `json:",omitempty"` // 件数
+
+	Bills []*naked.Bill `json:",omitempty"`
+}
+
+// billByContractYearMonthResponseEnvelope is envelop of API response
+type billByContractYearMonthResponseEnvelope struct {
+	Total int `json:",omitempty"` // トータル件数
+	From  int `json:",omitempty"` // ページング開始ページ
+	Count int `json:",omitempty"` // 件数
+
+	Bills []*naked.Bill `json:",omitempty"`
+}
+
+// billReadResponseEnvelope is envelop of API response
+type billReadResponseEnvelope struct {
+	Total int `json:",omitempty"` // トータル件数
+	From  int `json:",omitempty"` // ページング開始ページ
+	Count int `json:",omitempty"` // 件数
+
+	Bills []*naked.Bill `json:",omitempty"`
+}
+
+// billDetailsResponseEnvelope is envelop of API response
+type billDetailsResponseEnvelope struct {
+	Total int `json:",omitempty"` // トータル件数
+	From  int `json:",omitempty"` // ページング開始ページ
+	Count int `json:",omitempty"` // 件数
+
+	BillDetails []*naked.BillDetail `json:",omitempty"`
+}
+
+// billDetailsCSVResponseEnvelope is envelop of API response
+type billDetailsCSVResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	CSV *naked.BillDetailCSV `json:",omitempty"`
+}
+
 // bridgeFindRequestEnvelope is envelop of API request
 type bridgeFindRequestEnvelope struct {
 	Count   int                    `json:",omitempty"`

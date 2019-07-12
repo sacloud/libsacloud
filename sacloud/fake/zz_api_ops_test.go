@@ -22,6 +22,10 @@ func TestResourceOps(t *testing.T) {
 		t.Fatalf("%s is not sacloud.AutoBackup", op)
 	}
 
+	if op, ok := NewBillOp().(sacloud.BillAPI); !ok {
+		t.Fatalf("%s is not sacloud.Bill", op)
+	}
+
 	if op, ok := NewBridgeOp().(sacloud.BridgeAPI); !ok {
 		t.Fatalf("%s is not sacloud.Bridge", op)
 	}
