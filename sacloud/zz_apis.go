@@ -89,6 +89,15 @@ type CDROMAPI interface {
 }
 
 /*************************************************
+* CouponAPI
+*************************************************/
+
+// CouponAPI is interface for operate Coupon resource
+type CouponAPI interface {
+	Find(ctx context.Context, zone string, accountID types.ID) (*CouponFindResult, error)
+}
+
+/*************************************************
 * DiskAPI
 *************************************************/
 

@@ -60,6 +60,14 @@ func init() {
 		}
 	})
 
+	SetClientFactoryFunc("Coupon", func(caller APICaller) interface{} {
+		return &CouponOp{
+			Client:     caller,
+			PathSuffix: "api/system/1.0",
+			PathName:   "coupon",
+		}
+	})
+
 	SetClientFactoryFunc("Disk", func(caller APICaller) interface{} {
 		return &DiskOp{
 			Client:     caller,
@@ -1635,6 +1643,57 @@ func (o *CDROMOp) CloseFTP(ctx context.Context, zone string, id types.ID) error 
 	}
 
 	return nil
+}
+
+/*************************************************
+* CouponOp
+*************************************************/
+
+// CouponOp implements CouponAPI interface
+type CouponOp struct {
+	// Client APICaller
+	Client APICaller
+	// PathSuffix is used when building URL
+	PathSuffix string
+	// PathName is used when building URL
+	PathName string
+}
+
+// NewCouponOp creates new CouponOp instance
+func NewCouponOp(caller APICaller) CouponAPI {
+	return GetClientFactoryFunc("Coupon")(caller).(CouponAPI)
+}
+
+// Find is API call
+func (o *CouponOp) Find(ctx context.Context, zone string, accountID types.ID) (*CouponFindResult, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.accountID}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"accountID":  accountID,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &couponFindResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &CouponFindResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, err
 }
 
 /*************************************************

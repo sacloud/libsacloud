@@ -204,6 +204,15 @@ type cDROMOpenFTPResult struct {
 	FTPServer *FTPServer `json:",omitempty" mapconv:"FTPServer,omitempty,recursive"`
 }
 
+// CouponFindResult represents the Result of API
+type CouponFindResult struct {
+	Total int `json:",omitempty"` // Total count of target resources
+	From  int `json:",omitempty"` // Current page number
+	Count int `json:",omitempty"` // Count of current page
+
+	Coupons []*Coupon `json:",omitempty" mapconv:"[]Coupon,omitempty,recursive"`
+}
+
 // DiskFindResult represents the Result of API
 type DiskFindResult struct {
 	Total int `json:",omitempty"` // Total count of target resources

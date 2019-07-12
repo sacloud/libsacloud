@@ -34,6 +34,10 @@ func TestResourceOps(t *testing.T) {
 		t.Fatalf("%s is not sacloud.CDROM", op)
 	}
 
+	if op, ok := NewCouponOp().(sacloud.CouponAPI); !ok {
+		t.Fatalf("%s is not sacloud.Coupon", op)
+	}
+
 	if op, ok := NewDiskOp().(sacloud.DiskAPI); !ok {
 		t.Fatalf("%s is not sacloud.Disk", op)
 	}

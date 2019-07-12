@@ -323,6 +323,15 @@ type cDROMOpenFTPResponseEnvelope struct {
 	FTPServer *naked.OpeningFTPServer `json:",omitempty"`
 }
 
+// couponFindResponseEnvelope is envelop of API response
+type couponFindResponseEnvelope struct {
+	Total int `json:",omitempty"` // トータル件数
+	From  int `json:",omitempty"` // ページング開始ページ
+	Count int `json:",omitempty"` // 件数
+
+	Coupon []*naked.Coupon `json:",omitempty"`
+}
+
 // diskFindRequestEnvelope is envelop of API request
 type diskFindRequestEnvelope struct {
 	Count   int                    `json:",omitempty"`
