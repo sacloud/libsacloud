@@ -26,6 +26,9 @@ func SwitchFactoryFuncToFake() {
 	sacloud.SetClientFactoryFunc(ResourceCDROM, func(caller sacloud.APICaller) interface{} {
 		return NewCDROMOp()
 	})
+	sacloud.SetClientFactoryFunc(ResourceCoupon, func(caller sacloud.APICaller) interface{} {
+		return NewCouponOp()
+	})
 	sacloud.SetClientFactoryFunc(ResourceDisk, func(caller sacloud.APICaller) interface{} {
 		return NewDiskOp()
 	})
@@ -178,6 +181,22 @@ type CDROMOp struct {
 func NewCDROMOp() sacloud.CDROMAPI {
 	return &CDROMOp{
 		key: ResourceCDROM,
+	}
+}
+
+/*************************************************
+* CouponOp
+*************************************************/
+
+// CouponOp is fake implementation of CouponAPI interface
+type CouponOp struct {
+	key string
+}
+
+// NewCouponOp creates new CouponOp instance
+func NewCouponOp() sacloud.CouponAPI {
+	return &CouponOp{
+		key: ResourceCoupon,
 	}
 }
 

@@ -52,6 +52,7 @@ var sharedSegmentSwitch = &sacloud.Switch{
 func init() {
 	initArchives()
 	initBills()
+	initCoupons()
 	initNotes()
 	initSwitch()
 	initZones()
@@ -123,6 +124,23 @@ func initBillDetails(billID types.ID) {
 		},
 	}
 	s.setWithID(ResourceBill+"Details", sacloud.APIDefaultZone, details, billID)
+}
+
+func initCoupons() {
+	coupons := []*sacloud.Coupon{
+		{
+			ID:             pool.generateID(),
+			MemberID:       "dummy00000",
+			ContractID:     pool.generateID(),
+			ServiceClassID: 999,
+			Discount:       20000,
+			AppliedAt:      time.Now().AddDate(0, -1, 0),
+			UntilAt:        time.Now().AddDate(0, 1, 0),
+		},
+	}
+	for _, c := range coupons {
+		s.setCoupon(sacloud.APIDefaultZone, c)
+	}
 }
 
 func initNotes() {

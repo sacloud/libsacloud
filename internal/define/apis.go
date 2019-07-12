@@ -23,6 +23,7 @@ func init() {
 	APIs.Define(billAPI)          // 請求情報
 	APIs.Define(bridgeAPI)        // ブリッジ
 	APIs.Define(cdromAPI)         // ISOイメージ(CD-ROM)
+	APIs.Define(couponAPI)        // クーポン
 	APIs.Define(diskAPI)          // ディスク
 	APIs.Define(dnsAPI)           // DNS
 	APIs.Define(gslbAPI)          // GSLB
