@@ -235,52 +235,22 @@ var (
 		Name:      proxyLBAPIName + "Certificates",
 		NakedType: meta.Static(naked.ProxyLBCertificates{}),
 		Fields: []*dsl.FieldDesc{
-			{
-				Name: "ServerCertificate",
-				Type: meta.TypeString,
-			},
-			{
-				Name: "IntermediateCertificate",
-				Type: meta.TypeString,
-			},
-			{
-				Name: "PrivateKey",
-				Type: meta.TypeString,
-			},
-			{
-				Name: "CertificateEndDate",
-				Type: meta.TypeTime,
-			},
-			{
-				Name: "CertificateCommonName",
-				Type: meta.TypeString,
-			},
+			fields.New("ServerCertificate", meta.TypeString),
+			fields.New("IntermediateCertificate", meta.TypeString),
+			fields.New("PrivateKey", meta.TypeString),
+			fields.New("CertificateEndDate", meta.TypeTime),
+			fields.New("CertificateCommonName", meta.TypeString),
 			{
 				Name: "AdditionalCerts",
 				Type: &dsl.Model{
 					Name:    proxyLBAPIName + "AdditionalCert",
 					IsArray: true,
 					Fields: []*dsl.FieldDesc{
-						{
-							Name: "ServerCertificate",
-							Type: meta.TypeString,
-						},
-						{
-							Name: "IntermediateCertificate",
-							Type: meta.TypeString,
-						},
-						{
-							Name: "PrivateKey",
-							Type: meta.TypeString,
-						},
-						{
-							Name: "CertificateEndDate",
-							Type: meta.TypeString,
-						},
-						{
-							Name: "CertificateCommonName",
-							Type: meta.TypeString,
-						},
+						fields.New("ServerCertificate", meta.TypeString),
+						fields.New("IntermediateCertificate", meta.TypeString),
+						fields.New("PrivateKey", meta.TypeString),
+						fields.New("CertificateEndDate", meta.TypeTime),
+						fields.New("CertificateCommonName", meta.TypeString),
 					},
 				},
 				Tags: &dsl.FieldTags{
@@ -294,36 +264,18 @@ var (
 		Name:      proxyLBAPIName + "SetCertificatesRequest",
 		NakedType: meta.Static(naked.ProxyLBCertificates{}),
 		Fields: []*dsl.FieldDesc{
-			{
-				Name: "ServerCertificate",
-				Type: meta.TypeString,
-			},
-			{
-				Name: "IntermediateCertificate",
-				Type: meta.TypeString,
-			},
-			{
-				Name: "PrivateKey",
-				Type: meta.TypeString,
-			},
+			fields.New("ServerCertificate", meta.TypeString),
+			fields.New("IntermediateCertificate", meta.TypeString),
+			fields.New("PrivateKey", meta.TypeString),
 			{
 				Name: "AdditionalCerts",
 				Type: &dsl.Model{
 					Name:    proxyLBAPIName + "AdditionalCert",
 					IsArray: true,
 					Fields: []*dsl.FieldDesc{
-						{
-							Name: "ServerCertificate",
-							Type: meta.TypeString,
-						},
-						{
-							Name: "IntermediateCertificate",
-							Type: meta.TypeString,
-						},
-						{
-							Name: "PrivateKey",
-							Type: meta.TypeString,
-						},
+						fields.New("ServerCertificate", meta.TypeString),
+						fields.New("IntermediateCertificate", meta.TypeString),
+						fields.New("PrivateKey", meta.TypeString),
 					},
 				},
 				Tags: &dsl.FieldTags{
@@ -336,44 +288,20 @@ var (
 	proxyLBHealth = &dsl.Model{
 		Name: "ProxyLBHealth",
 		Fields: []*dsl.FieldDesc{
-			{
-				Name: "ActiveConn",
-				Type: meta.TypeInt,
-			},
-			{
-				Name: "CPS",
-				Type: meta.TypeInt,
-			},
-			{
-				Name: "CurrentVIP",
-				Type: meta.TypeString,
-			},
+			fields.New("ActiveConn", meta.TypeInt),
+			fields.New("CPS", meta.TypeInt),
+			fields.New("CurrentVIP", meta.TypeString),
 			{
 				Name: "Servers",
 				Type: &dsl.Model{
 					Name:    "LoadBalancerServerStatus",
 					IsArray: true,
 					Fields: []*dsl.FieldDesc{
-						{
-							Name: "ActiveConn",
-							Type: meta.TypeInt,
-						},
-						{
-							Name: "Status",
-							Type: meta.TypeInstanceStatus,
-						},
-						{
-							Name: "IPAddress",
-							Type: meta.TypeString,
-						},
-						{
-							Name: "Port",
-							Type: meta.TypeStringNumber,
-						},
-						{
-							Name: "CPS",
-							Type: meta.TypeInt,
-						},
+						fields.New("ActiveConn", meta.TypeInt),
+						fields.New("Status", meta.TypeInstanceStatus),
+						fields.New("IPAddress", meta.TypeString),
+						fields.New("Port", meta.TypeStringNumber),
+						fields.New("CPS", meta.TypeInt),
 					},
 				},
 				Tags: &dsl.FieldTags{

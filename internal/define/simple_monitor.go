@@ -145,18 +145,9 @@ var (
 		Name:      "SimpleMonitorHealthStatus",
 		NakedType: simpleMonitorHealthStatusNakedType,
 		Fields: []*dsl.FieldDesc{
-			{
-				Name: "LastCheckedAt",
-				Type: meta.TypeTime,
-			},
-			{
-				Name: "LastHealthChangedAt",
-				Type: meta.TypeTime,
-			},
-			{
-				Name: "Health",
-				Type: meta.Static(types.ESimpleMonitorHealth("")),
-			},
+			fields.New("LastCheckedAt", meta.TypeTime),
+			fields.New("LastHealthChangedAt", meta.TypeTime),
+			fields.New("Health", meta.Static(types.ESimpleMonitorHealth(""))),
 		},
 	}
 )
