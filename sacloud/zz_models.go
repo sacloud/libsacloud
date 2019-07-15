@@ -7229,6 +7229,164 @@ func (o *MonitorRouterValue) SetOut(v float64) {
 }
 
 /*************************************************
+* License
+*************************************************/
+
+// License represents API parameter/response structure
+type License struct {
+	ID              types.ID
+	Name            string   `validate:"required"`
+	LicenseInfoID   types.ID `mapconv:"LicenseInfo.ID"`
+	LicenseInfoName string   `mapconv:"LicenseInfo.Name"`
+	CreatedAt       time.Time
+	ModifiedAt      time.Time
+}
+
+// Validate validates by field tags
+func (o *License) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetID returns value of ID
+func (o *License) GetID() types.ID {
+	return o.ID
+}
+
+// SetID sets value to ID
+func (o *License) SetID(v types.ID) {
+	o.ID = v
+}
+
+// GetStringID gets value to StringID
+func (o *License) GetStringID() string {
+	return accessor.GetStringID(o)
+}
+
+// SetStringID sets value to StringID
+func (o *License) SetStringID(v string) {
+	accessor.SetStringID(o, v)
+}
+
+// GetInt64ID gets value to Int64ID
+func (o *License) GetInt64ID() int64 {
+	return accessor.GetInt64ID(o)
+}
+
+// SetInt64ID sets value to Int64ID
+func (o *License) SetInt64ID(v int64) {
+	accessor.SetInt64ID(o, v)
+}
+
+// GetName returns value of Name
+func (o *License) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *License) SetName(v string) {
+	o.Name = v
+}
+
+// GetLicenseInfoID returns value of LicenseInfoID
+func (o *License) GetLicenseInfoID() types.ID {
+	return o.LicenseInfoID
+}
+
+// SetLicenseInfoID sets value to LicenseInfoID
+func (o *License) SetLicenseInfoID(v types.ID) {
+	o.LicenseInfoID = v
+}
+
+// GetLicenseInfoName returns value of LicenseInfoName
+func (o *License) GetLicenseInfoName() string {
+	return o.LicenseInfoName
+}
+
+// SetLicenseInfoName sets value to LicenseInfoName
+func (o *License) SetLicenseInfoName(v string) {
+	o.LicenseInfoName = v
+}
+
+// GetCreatedAt returns value of CreatedAt
+func (o *License) GetCreatedAt() time.Time {
+	return o.CreatedAt
+}
+
+// SetCreatedAt sets value to CreatedAt
+func (o *License) SetCreatedAt(v time.Time) {
+	o.CreatedAt = v
+}
+
+// GetModifiedAt returns value of ModifiedAt
+func (o *License) GetModifiedAt() time.Time {
+	return o.ModifiedAt
+}
+
+// SetModifiedAt sets value to ModifiedAt
+func (o *License) SetModifiedAt(v time.Time) {
+	o.ModifiedAt = v
+}
+
+/*************************************************
+* LicenseCreateRequest
+*************************************************/
+
+// LicenseCreateRequest represents API parameter/response structure
+type LicenseCreateRequest struct {
+	Name          string   `validate:"required"`
+	LicenseInfoID types.ID `mapconv:"LicenseInfo.ID"`
+}
+
+// Validate validates by field tags
+func (o *LicenseCreateRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetName returns value of Name
+func (o *LicenseCreateRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *LicenseCreateRequest) SetName(v string) {
+	o.Name = v
+}
+
+// GetLicenseInfoID returns value of LicenseInfoID
+func (o *LicenseCreateRequest) GetLicenseInfoID() types.ID {
+	return o.LicenseInfoID
+}
+
+// SetLicenseInfoID sets value to LicenseInfoID
+func (o *LicenseCreateRequest) SetLicenseInfoID(v types.ID) {
+	o.LicenseInfoID = v
+}
+
+/*************************************************
+* LicenseUpdateRequest
+*************************************************/
+
+// LicenseUpdateRequest represents API parameter/response structure
+type LicenseUpdateRequest struct {
+	Name string `validate:"required"`
+}
+
+// Validate validates by field tags
+func (o *LicenseUpdateRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetName returns value of Name
+func (o *LicenseUpdateRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *LicenseUpdateRequest) SetName(v string) {
+	o.Name = v
+}
+
+/*************************************************
 * LoadBalancer
 *************************************************/
 

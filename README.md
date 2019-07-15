@@ -19,7 +19,7 @@ Library for SakuraCloud API
 - [x] `Interface`: インターフェース
 - [ ] `Internet`: スイッチ+ルータ(残: IPv6関連)
 - [ ] `IPv4Addr/IPv6Addr`: IPv4/v6アドレス
-- [ ] `License`: ライセンス
+- [x] `License`: ライセンス
 - [x] `LoadBalancer`: ロードバランサ
 - [ ] `MobileGateway`: モバイルゲートウェイ 
 - [ ] `NewsFeed`: ニュースフィード(メンテナンス情報)

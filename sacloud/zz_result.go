@@ -535,6 +535,36 @@ type internetMonitorResult struct {
 	RouterActivity *RouterActivity `json:",omitempty" mapconv:"Data,omitempty,recursive"`
 }
 
+// LicenseFindResult represents the Result of API
+type LicenseFindResult struct {
+	Total int `json:",omitempty"` // Total count of target resources
+	From  int `json:",omitempty"` // Current page number
+	Count int `json:",omitempty"` // Count of current page
+
+	Licenses []*License `json:",omitempty" mapconv:"[]Licenses,omitempty,recursive"`
+}
+
+// licenseCreateResult represents the Result of API
+type licenseCreateResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	License *License `json:",omitempty" mapconv:"License,omitempty,recursive"`
+}
+
+// licenseReadResult represents the Result of API
+type licenseReadResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	License *License `json:",omitempty" mapconv:"License,omitempty,recursive"`
+}
+
+// licenseUpdateResult represents the Result of API
+type licenseUpdateResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	License *License `json:",omitempty" mapconv:"License,omitempty,recursive"`
+}
+
 // LoadBalancerFindResult represents the Result of API
 type LoadBalancerFindResult struct {
 	Total int `json:",omitempty"` // Total count of target resources

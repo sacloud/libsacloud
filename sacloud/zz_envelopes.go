@@ -940,6 +940,59 @@ type internetMonitorResponseEnvelope struct {
 	Data *naked.MonitorValues `json:",omitempty"`
 }
 
+// licenseFindRequestEnvelope is envelop of API request
+type licenseFindRequestEnvelope struct {
+	Count   int                    `json:",omitempty"`
+	From    int                    `json:",omitempty"`
+	Sort    []string               `json:",omitempty"`
+	Filter  map[string]interface{} `json:",omitempty"`
+	Include []string               `json:",omitempty"`
+	Exclude []string               `json:",omitempty"`
+}
+
+// licenseFindResponseEnvelope is envelop of API response
+type licenseFindResponseEnvelope struct {
+	Total int `json:",omitempty"` // トータル件数
+	From  int `json:",omitempty"` // ページング開始ページ
+	Count int `json:",omitempty"` // 件数
+
+	Licenses []*naked.License `json:",omitempty"`
+}
+
+// licenseCreateRequestEnvelope is envelop of API request
+type licenseCreateRequestEnvelope struct {
+	License *naked.License `json:",omitempty"`
+}
+
+// licenseCreateResponseEnvelope is envelop of API response
+type licenseCreateResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	License *naked.License `json:",omitempty"`
+}
+
+// licenseReadResponseEnvelope is envelop of API response
+type licenseReadResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	License *naked.License `json:",omitempty"`
+}
+
+// licenseUpdateRequestEnvelope is envelop of API request
+type licenseUpdateRequestEnvelope struct {
+	License *naked.License `json:",omitempty"`
+}
+
+// licenseUpdateResponseEnvelope is envelop of API response
+type licenseUpdateResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	License *naked.License `json:",omitempty"`
+}
+
 // loadBalancerFindRequestEnvelope is envelop of API request
 type loadBalancerFindRequestEnvelope struct {
 	Count   int                    `json:",omitempty"`

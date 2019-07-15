@@ -55,6 +55,9 @@ func AddClientFactoryHooks() {
 	sacloud.AddClientFacotyHookFunc("Internet", func(in interface{}) interface{} {
 		return NewInternetTracer(in.(sacloud.InternetAPI))
 	})
+	sacloud.AddClientFacotyHookFunc("License", func(in interface{}) interface{} {
+		return NewLicenseTracer(in.(sacloud.LicenseAPI))
+	})
 	sacloud.AddClientFacotyHookFunc("LoadBalancer", func(in interface{}) interface{} {
 		return NewLoadBalancerTracer(in.(sacloud.LoadBalancerAPI))
 	})
@@ -3619,6 +3622,187 @@ func (t *InternetTracer) Monitor(ctx context.Context, zone string, id types.ID, 
 	}
 
 	return resultRouterActivity, err
+}
+
+/*************************************************
+* LicenseTracer
+*************************************************/
+
+// LicenseTracer is for trace LicenseOp operations
+type LicenseTracer struct {
+	Internal sacloud.LicenseAPI
+}
+
+// NewLicenseTracer creates new LicenseTracer instance
+func NewLicenseTracer(in sacloud.LicenseAPI) sacloud.LicenseAPI {
+	return &LicenseTracer{
+		Internal: in,
+	}
+}
+
+// Find is API call with trace log
+func (t *LicenseTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.LicenseFindResult, error) {
+	log.Println("[TRACE] LicenseAPI.Find start")
+	targetArguments := struct {
+		Argzone       string                 `json:"zone"`
+		Argconditions *sacloud.FindCondition `json:"conditions"`
+	}{
+		Argzone:       zone,
+		Argconditions: conditions,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] LicenseAPI.Find end")
+	}()
+
+	result, err := t.Internal.Find(ctx, zone, conditions)
+	targetResults := struct {
+		Result *sacloud.LicenseFindResult
+		Error  error
+	}{
+		Result: result,
+		Error:  err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return result, err
+}
+
+// Create is API call with trace log
+func (t *LicenseTracer) Create(ctx context.Context, zone string, param *sacloud.LicenseCreateRequest) (*sacloud.License, error) {
+	log.Println("[TRACE] LicenseAPI.Create start")
+	targetArguments := struct {
+		Argzone  string                        `json:"zone"`
+		Argparam *sacloud.LicenseCreateRequest `json:"param"`
+	}{
+		Argzone:  zone,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] LicenseAPI.Create end")
+	}()
+
+	resultLicense, err := t.Internal.Create(ctx, zone, param)
+	targetResults := struct {
+		License *sacloud.License
+		Error   error
+	}{
+		License: resultLicense,
+		Error:   err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultLicense, err
+}
+
+// Read is API call with trace log
+func (t *LicenseTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.License, error) {
+	log.Println("[TRACE] LicenseAPI.Read start")
+	targetArguments := struct {
+		Argzone string   `json:"zone"`
+		Argid   types.ID `json:"id"`
+	}{
+		Argzone: zone,
+		Argid:   id,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] LicenseAPI.Read end")
+	}()
+
+	resultLicense, err := t.Internal.Read(ctx, zone, id)
+	targetResults := struct {
+		License *sacloud.License
+		Error   error
+	}{
+		License: resultLicense,
+		Error:   err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultLicense, err
+}
+
+// Update is API call with trace log
+func (t *LicenseTracer) Update(ctx context.Context, zone string, id types.ID, param *sacloud.LicenseUpdateRequest) (*sacloud.License, error) {
+	log.Println("[TRACE] LicenseAPI.Update start")
+	targetArguments := struct {
+		Argzone  string                        `json:"zone"`
+		Argid    types.ID                      `json:"id"`
+		Argparam *sacloud.LicenseUpdateRequest `json:"param"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] LicenseAPI.Update end")
+	}()
+
+	resultLicense, err := t.Internal.Update(ctx, zone, id, param)
+	targetResults := struct {
+		License *sacloud.License
+		Error   error
+	}{
+		License: resultLicense,
+		Error:   err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultLicense, err
+}
+
+// Delete is API call with trace log
+func (t *LicenseTracer) Delete(ctx context.Context, zone string, id types.ID) error {
+	log.Println("[TRACE] LicenseAPI.Delete start")
+	targetArguments := struct {
+		Argzone string   `json:"zone"`
+		Argid   types.ID `json:"id"`
+	}{
+		Argzone: zone,
+		Argid:   id,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] LicenseAPI.Delete end")
+	}()
+
+	err := t.Internal.Delete(ctx, zone, id)
+	targetResults := struct {
+		Error error
+	}{
+		Error: err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return err
 }
 
 /*************************************************

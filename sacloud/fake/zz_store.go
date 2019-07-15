@@ -329,6 +329,29 @@ func (s *store) setInternet(zone string, value *sacloud.Internet) {
 	s.set(ResourceInternet, zone, value)
 }
 
+func (s *store) getLicense(zone string) []*sacloud.License {
+	values := s.get(ResourceLicense, zone)
+	var ret []*sacloud.License
+	for _, v := range values {
+		if v, ok := v.(*sacloud.License); ok {
+			ret = append(ret, v)
+		}
+	}
+	return ret
+}
+
+func (s *store) getLicenseByID(zone string, id types.ID) *sacloud.License {
+	v := s.getByID(ResourceLicense, zone, id)
+	if v, ok := v.(*sacloud.License); ok {
+		return v
+	}
+	return nil
+}
+
+func (s *store) setLicense(zone string, value *sacloud.License) {
+	s.set(ResourceLicense, zone, value)
+}
+
 func (s *store) getLoadBalancer(zone string) []*sacloud.LoadBalancer {
 	values := s.get(ResourceLoadBalancer, zone)
 	var ret []*sacloud.LoadBalancer
