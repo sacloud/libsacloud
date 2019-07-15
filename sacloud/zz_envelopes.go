@@ -607,6 +607,33 @@ type diskMonitorResponseEnvelope struct {
 	Data *naked.MonitorValues `json:",omitempty"`
 }
 
+// diskPlanFindRequestEnvelope is envelop of API request
+type diskPlanFindRequestEnvelope struct {
+	Count   int                    `json:",omitempty"`
+	From    int                    `json:",omitempty"`
+	Sort    []string               `json:",omitempty"`
+	Filter  map[string]interface{} `json:",omitempty"`
+	Include []string               `json:",omitempty"`
+	Exclude []string               `json:",omitempty"`
+}
+
+// diskPlanFindResponseEnvelope is envelop of API response
+type diskPlanFindResponseEnvelope struct {
+	Total int `json:",omitempty"` // トータル件数
+	From  int `json:",omitempty"` // ページング開始ページ
+	Count int `json:",omitempty"` // 件数
+
+	DiskPlans []*naked.DiskPlan `json:",omitempty"`
+}
+
+// diskPlanReadResponseEnvelope is envelop of API response
+type diskPlanReadResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	DiskPlan *naked.DiskPlan `json:",omitempty"`
+}
+
 // dNSFindRequestEnvelope is envelop of API request
 type dNSFindRequestEnvelope struct {
 	Count   int                    `json:",omitempty"`
@@ -940,6 +967,33 @@ type internetMonitorResponseEnvelope struct {
 	Data *naked.MonitorValues `json:",omitempty"`
 }
 
+// internetPlanFindRequestEnvelope is envelop of API request
+type internetPlanFindRequestEnvelope struct {
+	Count   int                    `json:",omitempty"`
+	From    int                    `json:",omitempty"`
+	Sort    []string               `json:",omitempty"`
+	Filter  map[string]interface{} `json:",omitempty"`
+	Include []string               `json:",omitempty"`
+	Exclude []string               `json:",omitempty"`
+}
+
+// internetPlanFindResponseEnvelope is envelop of API response
+type internetPlanFindResponseEnvelope struct {
+	Total int `json:",omitempty"` // トータル件数
+	From  int `json:",omitempty"` // ページング開始ページ
+	Count int `json:",omitempty"` // 件数
+
+	InternetPlans []*naked.InternetPlan `json:",omitempty"`
+}
+
+// internetPlanReadResponseEnvelope is envelop of API response
+type internetPlanReadResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	InternetPlan *naked.InternetPlan `json:",omitempty"`
+}
+
 // licenseFindRequestEnvelope is envelop of API request
 type licenseFindRequestEnvelope struct {
 	Count   int                    `json:",omitempty"`
@@ -991,6 +1045,33 @@ type licenseUpdateResponseEnvelope struct {
 	Success types.APIResult `json:",omitempty"`      // success項目
 
 	License *naked.License `json:",omitempty"`
+}
+
+// licenseInfoFindRequestEnvelope is envelop of API request
+type licenseInfoFindRequestEnvelope struct {
+	Count   int                    `json:",omitempty"`
+	From    int                    `json:",omitempty"`
+	Sort    []string               `json:",omitempty"`
+	Filter  map[string]interface{} `json:",omitempty"`
+	Include []string               `json:",omitempty"`
+	Exclude []string               `json:",omitempty"`
+}
+
+// licenseInfoFindResponseEnvelope is envelop of API response
+type licenseInfoFindResponseEnvelope struct {
+	Total int `json:",omitempty"` // トータル件数
+	From  int `json:",omitempty"` // ページング開始ページ
+	Count int `json:",omitempty"` // 件数
+
+	LicenseInfo []*naked.LicenseInfo `json:",omitempty"`
+}
+
+// licenseInfoReadResponseEnvelope is envelop of API response
+type licenseInfoReadResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	LicenseInfo *naked.LicenseInfo `json:",omitempty"`
 }
 
 // loadBalancerFindRequestEnvelope is envelop of API request
@@ -1335,7 +1416,7 @@ type privateHostPlanFindResponseEnvelope struct {
 	From  int `json:",omitempty"` // ページング開始ページ
 	Count int `json:",omitempty"` // 件数
 
-	PrivateHostPlans []*naked.ProductPrivateHost `json:",omitempty"`
+	PrivateHostPlans []*naked.PrivateHostPlan `json:",omitempty"`
 }
 
 // privateHostPlanReadResponseEnvelope is envelop of API response
@@ -1343,7 +1424,7 @@ type privateHostPlanReadResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	PrivateHostPlan *naked.ProductPrivateHost `json:",omitempty"`
+	PrivateHostPlan *naked.PrivateHostPlan `json:",omitempty"`
 }
 
 // proxyLBFindRequestEnvelope is envelop of API request
@@ -1564,6 +1645,33 @@ type serverMonitorResponseEnvelope struct {
 	Success types.APIResult `json:",omitempty"`      // success項目
 
 	Data *naked.MonitorValues `json:",omitempty"`
+}
+
+// serverPlanFindRequestEnvelope is envelop of API request
+type serverPlanFindRequestEnvelope struct {
+	Count   int                    `json:",omitempty"`
+	From    int                    `json:",omitempty"`
+	Sort    []string               `json:",omitempty"`
+	Filter  map[string]interface{} `json:",omitempty"`
+	Include []string               `json:",omitempty"`
+	Exclude []string               `json:",omitempty"`
+}
+
+// serverPlanFindResponseEnvelope is envelop of API response
+type serverPlanFindResponseEnvelope struct {
+	Total int `json:",omitempty"` // トータル件数
+	From  int `json:",omitempty"` // ページング開始ページ
+	Count int `json:",omitempty"` // 件数
+
+	ServerPlans []*naked.ServerPlan `json:",omitempty"`
+}
+
+// serverPlanReadResponseEnvelope is envelop of API response
+type serverPlanReadResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	ServerPlan *naked.ServerPlan `json:",omitempty"`
 }
 
 // sIMFindRequestEnvelope is envelop of API request

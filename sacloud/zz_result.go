@@ -350,6 +350,22 @@ type diskMonitorResult struct {
 	DiskActivity *DiskActivity `json:",omitempty" mapconv:"Data,omitempty,recursive"`
 }
 
+// DiskPlanFindResult represents the Result of API
+type DiskPlanFindResult struct {
+	Total int `json:",omitempty"` // Total count of target resources
+	From  int `json:",omitempty"` // Current page number
+	Count int `json:",omitempty"` // Count of current page
+
+	DiskPlans []*DiskPlan `json:",omitempty" mapconv:"[]DiskPlans,omitempty,recursive"`
+}
+
+// diskPlanReadResult represents the Result of API
+type diskPlanReadResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	DiskPlan *DiskPlan `json:",omitempty" mapconv:"DiskPlan,omitempty,recursive"`
+}
+
 // DNSFindResult represents the Result of API
 type DNSFindResult struct {
 	Total int `json:",omitempty"` // Total count of target resources
@@ -535,6 +551,22 @@ type internetMonitorResult struct {
 	RouterActivity *RouterActivity `json:",omitempty" mapconv:"Data,omitempty,recursive"`
 }
 
+// InternetPlanFindResult represents the Result of API
+type InternetPlanFindResult struct {
+	Total int `json:",omitempty"` // Total count of target resources
+	From  int `json:",omitempty"` // Current page number
+	Count int `json:",omitempty"` // Count of current page
+
+	InternetPlans []*InternetPlan `json:",omitempty" mapconv:"[]InternetPlans,omitempty,recursive"`
+}
+
+// internetPlanReadResult represents the Result of API
+type internetPlanReadResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	InternetPlan *InternetPlan `json:",omitempty" mapconv:"InternetPlan,omitempty,recursive"`
+}
+
 // LicenseFindResult represents the Result of API
 type LicenseFindResult struct {
 	Total int `json:",omitempty"` // Total count of target resources
@@ -563,6 +595,22 @@ type licenseUpdateResult struct {
 	IsOk bool `json:",omitempty"` // is_ok
 
 	License *License `json:",omitempty" mapconv:"License,omitempty,recursive"`
+}
+
+// LicenseInfoFindResult represents the Result of API
+type LicenseInfoFindResult struct {
+	Total int `json:",omitempty"` // Total count of target resources
+	From  int `json:",omitempty"` // Current page number
+	Count int `json:",omitempty"` // Count of current page
+
+	LicenseInfo []*LicenseInfo `json:",omitempty" mapconv:"[]LicenseInfo,omitempty,recursive"`
+}
+
+// licenseInfoReadResult represents the Result of API
+type licenseInfoReadResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	LicenseInfo *LicenseInfo `json:",omitempty" mapconv:"LicenseInfo,omitempty,recursive"`
 }
 
 // LoadBalancerFindResult represents the Result of API
@@ -877,6 +925,22 @@ type serverMonitorResult struct {
 	IsOk bool `json:",omitempty"` // is_ok
 
 	CPUTimeActivity *CPUTimeActivity `json:",omitempty" mapconv:"Data,omitempty,recursive"`
+}
+
+// ServerPlanFindResult represents the Result of API
+type ServerPlanFindResult struct {
+	Total int `json:",omitempty"` // Total count of target resources
+	From  int `json:",omitempty"` // Current page number
+	Count int `json:",omitempty"` // Count of current page
+
+	ServerPlans []*ServerPlan `json:",omitempty" mapconv:"[]ServerPlans,omitempty,recursive"`
+}
+
+// serverPlanReadResult represents the Result of API
+type serverPlanReadResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	ServerPlan *ServerPlan `json:",omitempty" mapconv:"ServerPlan,omitempty,recursive"`
 }
 
 // SIMFindResult represents the Result of API

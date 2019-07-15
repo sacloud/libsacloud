@@ -19,7 +19,7 @@ func ResourceFieldName(resourceName string, form dsl.PayloadForm) string {
 			return resourceName
 		case resourceName == "DNS":
 			return resourceName
-		case strings.HasPrefix(resourceName, "Product"):
+		case strings.HasSuffix(resourceName, "Info"):
 			return resourceName
 		case strings.HasSuffix(resourceName, "ch"):
 			return resourceName + "es"

@@ -144,6 +144,16 @@ type DiskAPI interface {
 }
 
 /*************************************************
+* DiskPlanAPI
+*************************************************/
+
+// DiskPlanAPI is interface for operate DiskPlan resource
+type DiskPlanAPI interface {
+	Find(ctx context.Context, zone string, conditions *FindCondition) (*DiskPlanFindResult, error)
+	Read(ctx context.Context, zone string, id types.ID) (*DiskPlan, error)
+}
+
+/*************************************************
 * DNSAPI
 *************************************************/
 
@@ -220,6 +230,16 @@ type InternetAPI interface {
 }
 
 /*************************************************
+* InternetPlanAPI
+*************************************************/
+
+// InternetPlanAPI is interface for operate InternetPlan resource
+type InternetPlanAPI interface {
+	Find(ctx context.Context, zone string, conditions *FindCondition) (*InternetPlanFindResult, error)
+	Read(ctx context.Context, zone string, id types.ID) (*InternetPlan, error)
+}
+
+/*************************************************
 * LicenseAPI
 *************************************************/
 
@@ -230,6 +250,16 @@ type LicenseAPI interface {
 	Read(ctx context.Context, zone string, id types.ID) (*License, error)
 	Update(ctx context.Context, zone string, id types.ID, param *LicenseUpdateRequest) (*License, error)
 	Delete(ctx context.Context, zone string, id types.ID) error
+}
+
+/*************************************************
+* LicenseInfoAPI
+*************************************************/
+
+// LicenseInfoAPI is interface for operate LicenseInfo resource
+type LicenseInfoAPI interface {
+	Find(ctx context.Context, zone string, conditions *FindCondition) (*LicenseInfoFindResult, error)
+	Read(ctx context.Context, zone string, id types.ID) (*LicenseInfo, error)
 }
 
 /*************************************************
@@ -365,6 +395,16 @@ type ServerAPI interface {
 	Shutdown(ctx context.Context, zone string, id types.ID, shutdownOption *ShutdownOption) error
 	Reset(ctx context.Context, zone string, id types.ID) error
 	Monitor(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*CPUTimeActivity, error)
+}
+
+/*************************************************
+* ServerPlanAPI
+*************************************************/
+
+// ServerPlanAPI is interface for operate ServerPlan resource
+type ServerPlanAPI interface {
+	Find(ctx context.Context, zone string, conditions *FindCondition) (*ServerPlanFindResult, error)
+	Read(ctx context.Context, zone string, id types.ID) (*ServerPlan, error)
 }
 
 /*************************************************

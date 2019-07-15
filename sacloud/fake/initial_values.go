@@ -1,6 +1,7 @@
 package fake
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
@@ -57,7 +58,11 @@ func init() {
 	initSwitch()
 	initZones()
 	initRegions()
-	initProductPrivateHost()
+	initPrivateHostPlan()
+	initDiskPlan()
+	initLicensePlan()
+	initInternetPlan()
+	initServerPlan()
 }
 
 func initArchives() {
@@ -224,19 +229,140 @@ func initRegions() {
 	})
 }
 
-func initProductPrivateHost() {
+func initPrivateHostPlan() {
 	s.setPrivateHostPlan("is1b", &sacloud.PrivateHostPlan{
-		ID:       112900526366,
-		Name:     "200Core 224GB 標準",
-		Class:    "dynamic",
-		CPU:      200,
-		MemoryMB: 229376,
+		ID:           112900526366,
+		Name:         "200Core 224GB 標準",
+		Class:        "dynamic",
+		CPU:          200,
+		MemoryMB:     229376,
+		Availability: types.Availabilities.Available,
 	})
 	s.setPrivateHostPlan("tk1a", &sacloud.PrivateHostPlan{
-		ID:       112900526366,
-		Name:     "200Core 224GB 標準",
-		Class:    "dynamic",
-		CPU:      200,
-		MemoryMB: 229376,
+		ID:           112900526366,
+		Name:         "200Core 224GB 標準",
+		Class:        "dynamic",
+		CPU:          200,
+		MemoryMB:     229376,
+		Availability: types.Availabilities.Available,
 	})
+}
+
+func initServerPlan() {
+	plans := []*sacloud.ServerPlan{
+		{
+			ID:           pool.generateID(),
+			Name:         "プラン/1Core-1GB",
+			CPU:          1,
+			MemoryMB:     1024,
+			Commitment:   types.Commitments.Standard,
+			Generation:   100,
+			Availability: types.Availabilities.Available,
+		},
+		{
+			ID:           pool.generateID(),
+			Name:         "プラン/2Core-4GB",
+			CPU:          2,
+			MemoryMB:     4 * 1024,
+			Commitment:   types.Commitments.Standard,
+			Generation:   100,
+			Availability: types.Availabilities.Available,
+		},
+		// TODO add more plans
+	}
+
+	for _, zone := range zones {
+		for _, plan := range plans {
+			s.setServerPlan(zone, plan)
+		}
+	}
+}
+
+func initInternetPlan() {
+	bandWidthList := []int{100, 250500, 1000, 1500, 2000, 2500, 3000, 5000}
+
+	var plans []*sacloud.InternetPlan
+
+	for _, bw := range bandWidthList {
+		plans = append(plans, &sacloud.InternetPlan{
+			ID:            types.ID(bw),
+			BandWidthMbps: bw,
+			Name:          fmt.Sprintf("%dMbps共有", bw),
+			Availability:  types.Availabilities.Available,
+		})
+	}
+
+	for _, zone := range zones {
+		for _, plan := range plans {
+			s.setInternetPlan(zone, plan)
+		}
+	}
+}
+
+func initDiskPlan() {
+	plans := []*sacloud.DiskPlan{
+		{
+			ID:           2,
+			Name:         "HDDプラン",
+			Availability: types.Availabilities.Available,
+			StorageClass: "iscsi1204",
+			Size: []*sacloud.DiskPlanSizeInfo{
+				{
+					Availability:  types.Availabilities.Available,
+					DisplaySize:   20,
+					DisplaySuffix: "GB",
+					SizeMB:        20 * 1024,
+				},
+				{
+					Availability:  types.Availabilities.Available,
+					DisplaySize:   40,
+					DisplaySuffix: "GB",
+					SizeMB:        40 * 1024,
+				},
+			},
+		},
+		{
+			ID:           4,
+			Name:         "SSDプラン",
+			Availability: types.Availabilities.Available,
+			StorageClass: "iscsi1204",
+			Size: []*sacloud.DiskPlanSizeInfo{
+				{
+					Availability:  types.Availabilities.Available,
+					DisplaySize:   20,
+					DisplaySuffix: "GB",
+					SizeMB:        20 * 1024,
+				},
+				{
+					Availability:  types.Availabilities.Available,
+					DisplaySize:   40,
+					DisplaySuffix: "GB",
+					SizeMB:        40 * 1024,
+				},
+			},
+		},
+		// TODO add more size-info
+	}
+
+	for _, zone := range zones {
+		for _, plan := range plans {
+			s.setDiskPlan(zone, plan)
+		}
+	}
+}
+
+func initLicensePlan() {
+	plans := []*sacloud.LicenseInfo{
+		{
+			ID:         types.ID(10001),
+			Name:       "Windows RDS SAL",
+			TermsOfUse: "1ライセンスにつき、1人のユーザが利用できます。",
+		},
+	}
+
+	for _, zone := range zones {
+		for _, plan := range plans {
+			s.setLicenseInfo(zone, plan)
+		}
+	}
 }

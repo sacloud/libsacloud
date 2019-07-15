@@ -46,6 +46,10 @@ func TestResourceOps(t *testing.T) {
 		t.Fatalf("%s is not sacloud.Disk", op)
 	}
 
+	if op, ok := NewDiskPlanOp().(sacloud.DiskPlanAPI); !ok {
+		t.Fatalf("%s is not sacloud.DiskPlan", op)
+	}
+
 	if op, ok := NewDNSOp().(sacloud.DNSAPI); !ok {
 		t.Fatalf("%s is not sacloud.DNS", op)
 	}
@@ -66,8 +70,16 @@ func TestResourceOps(t *testing.T) {
 		t.Fatalf("%s is not sacloud.Internet", op)
 	}
 
+	if op, ok := NewInternetPlanOp().(sacloud.InternetPlanAPI); !ok {
+		t.Fatalf("%s is not sacloud.InternetPlan", op)
+	}
+
 	if op, ok := NewLicenseOp().(sacloud.LicenseAPI); !ok {
 		t.Fatalf("%s is not sacloud.License", op)
+	}
+
+	if op, ok := NewLicenseInfoOp().(sacloud.LicenseInfoAPI); !ok {
+		t.Fatalf("%s is not sacloud.LicenseInfo", op)
 	}
 
 	if op, ok := NewLoadBalancerOp().(sacloud.LoadBalancerAPI); !ok {
@@ -104,6 +116,10 @@ func TestResourceOps(t *testing.T) {
 
 	if op, ok := NewServerOp().(sacloud.ServerAPI); !ok {
 		t.Fatalf("%s is not sacloud.Server", op)
+	}
+
+	if op, ok := NewServerPlanOp().(sacloud.ServerPlanAPI); !ok {
+		t.Fatalf("%s is not sacloud.ServerPlan", op)
 	}
 
 	if op, ok := NewSIMOp().(sacloud.SIMAPI); !ok {

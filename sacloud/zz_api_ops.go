@@ -84,6 +84,14 @@ func init() {
 		}
 	})
 
+	SetClientFactoryFunc("DiskPlan", func(caller APICaller) interface{} {
+		return &DiskPlanOp{
+			Client:     caller,
+			PathSuffix: "api/cloud/1.1",
+			PathName:   "product/disk",
+		}
+	})
+
 	SetClientFactoryFunc("DNS", func(caller APICaller) interface{} {
 		return &DNSOp{
 			Client:     caller,
@@ -124,11 +132,27 @@ func init() {
 		}
 	})
 
+	SetClientFactoryFunc("InternetPlan", func(caller APICaller) interface{} {
+		return &InternetPlanOp{
+			Client:     caller,
+			PathSuffix: "api/cloud/1.1",
+			PathName:   "product/internet",
+		}
+	})
+
 	SetClientFactoryFunc("License", func(caller APICaller) interface{} {
 		return &LicenseOp{
 			Client:     caller,
 			PathSuffix: "api/cloud/1.1",
 			PathName:   "license",
+		}
+	})
+
+	SetClientFactoryFunc("LicenseInfo", func(caller APICaller) interface{} {
+		return &LicenseInfoOp{
+			Client:     caller,
+			PathSuffix: "api/cloud/1.1",
+			PathName:   "product/license",
 		}
 	})
 
@@ -201,6 +225,14 @@ func init() {
 			Client:     caller,
 			PathSuffix: "api/cloud/1.1",
 			PathName:   "server",
+		}
+	})
+
+	SetClientFactoryFunc("ServerPlan", func(caller APICaller) interface{} {
+		return &ServerPlanOp{
+			Client:     caller,
+			PathSuffix: "api/cloud/1.1",
+			PathName:   "product/server",
 		}
 	})
 
@@ -3097,6 +3129,109 @@ func (o *DiskOp) Monitor(ctx context.Context, zone string, id types.ID, conditio
 }
 
 /*************************************************
+* DiskPlanOp
+*************************************************/
+
+// DiskPlanOp implements DiskPlanAPI interface
+type DiskPlanOp struct {
+	// Client APICaller
+	Client APICaller
+	// PathSuffix is used when building URL
+	PathSuffix string
+	// PathName is used when building URL
+	PathName string
+}
+
+// NewDiskPlanOp creates new DiskPlanOp instance
+func NewDiskPlanOp(caller APICaller) DiskPlanAPI {
+	return GetClientFactoryFunc("DiskPlan")(caller).(DiskPlanAPI)
+}
+
+// Find is API call
+func (o *DiskPlanOp) Find(ctx context.Context, zone string, conditions *FindCondition) (*DiskPlanFindResult, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"conditions": conditions,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	if zone == "" {
+		zone = ""
+	}
+	if conditions == nil {
+		conditions = &FindCondition{}
+	}
+	args := &struct {
+		Argzone       string
+		Argconditions *FindCondition `mapconv:",squash"`
+	}{
+		Argzone:       zone,
+		Argconditions: conditions,
+	}
+
+	v := &diskPlanFindRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &diskPlanFindResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &DiskPlanFindResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, err
+}
+
+// Read is API call
+func (o *DiskPlanOp) Read(ctx context.Context, zone string, id types.ID) (*DiskPlan, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &diskPlanReadResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &diskPlanReadResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results.DiskPlan, nil
+}
+
+/*************************************************
 * DNSOp
 *************************************************/
 
@@ -4714,6 +4849,109 @@ func (o *InternetOp) Monitor(ctx context.Context, zone string, id types.ID, cond
 }
 
 /*************************************************
+* InternetPlanOp
+*************************************************/
+
+// InternetPlanOp implements InternetPlanAPI interface
+type InternetPlanOp struct {
+	// Client APICaller
+	Client APICaller
+	// PathSuffix is used when building URL
+	PathSuffix string
+	// PathName is used when building URL
+	PathName string
+}
+
+// NewInternetPlanOp creates new InternetPlanOp instance
+func NewInternetPlanOp(caller APICaller) InternetPlanAPI {
+	return GetClientFactoryFunc("InternetPlan")(caller).(InternetPlanAPI)
+}
+
+// Find is API call
+func (o *InternetPlanOp) Find(ctx context.Context, zone string, conditions *FindCondition) (*InternetPlanFindResult, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"conditions": conditions,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	if zone == "" {
+		zone = ""
+	}
+	if conditions == nil {
+		conditions = &FindCondition{}
+	}
+	args := &struct {
+		Argzone       string
+		Argconditions *FindCondition `mapconv:",squash"`
+	}{
+		Argzone:       zone,
+		Argconditions: conditions,
+	}
+
+	v := &internetPlanFindRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &internetPlanFindResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &InternetPlanFindResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, err
+}
+
+// Read is API call
+func (o *InternetPlanOp) Read(ctx context.Context, zone string, id types.ID) (*InternetPlan, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &internetPlanReadResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &internetPlanReadResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results.InternetPlan, nil
+}
+
+/*************************************************
 * LicenseOp
 *************************************************/
 
@@ -4947,6 +5185,109 @@ func (o *LicenseOp) Delete(ctx context.Context, zone string, id types.ID) error 
 	}
 
 	return nil
+}
+
+/*************************************************
+* LicenseInfoOp
+*************************************************/
+
+// LicenseInfoOp implements LicenseInfoAPI interface
+type LicenseInfoOp struct {
+	// Client APICaller
+	Client APICaller
+	// PathSuffix is used when building URL
+	PathSuffix string
+	// PathName is used when building URL
+	PathName string
+}
+
+// NewLicenseInfoOp creates new LicenseInfoOp instance
+func NewLicenseInfoOp(caller APICaller) LicenseInfoAPI {
+	return GetClientFactoryFunc("LicenseInfo")(caller).(LicenseInfoAPI)
+}
+
+// Find is API call
+func (o *LicenseInfoOp) Find(ctx context.Context, zone string, conditions *FindCondition) (*LicenseInfoFindResult, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"conditions": conditions,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	if zone == "" {
+		zone = ""
+	}
+	if conditions == nil {
+		conditions = &FindCondition{}
+	}
+	args := &struct {
+		Argzone       string
+		Argconditions *FindCondition `mapconv:",squash"`
+	}{
+		Argzone:       zone,
+		Argconditions: conditions,
+	}
+
+	v := &licenseInfoFindRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &licenseInfoFindResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &LicenseInfoFindResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, err
+}
+
+// Read is API call
+func (o *LicenseInfoOp) Read(ctx context.Context, zone string, id types.ID) (*LicenseInfo, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &licenseInfoReadResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &licenseInfoReadResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results.LicenseInfo, nil
 }
 
 /*************************************************
@@ -7759,6 +8100,109 @@ func (o *ServerOp) Monitor(ctx context.Context, zone string, id types.ID, condit
 		return nil, err
 	}
 	return results.CPUTimeActivity, nil
+}
+
+/*************************************************
+* ServerPlanOp
+*************************************************/
+
+// ServerPlanOp implements ServerPlanAPI interface
+type ServerPlanOp struct {
+	// Client APICaller
+	Client APICaller
+	// PathSuffix is used when building URL
+	PathSuffix string
+	// PathName is used when building URL
+	PathName string
+}
+
+// NewServerPlanOp creates new ServerPlanOp instance
+func NewServerPlanOp(caller APICaller) ServerPlanAPI {
+	return GetClientFactoryFunc("ServerPlan")(caller).(ServerPlanAPI)
+}
+
+// Find is API call
+func (o *ServerPlanOp) Find(ctx context.Context, zone string, conditions *FindCondition) (*ServerPlanFindResult, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"conditions": conditions,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	if zone == "" {
+		zone = ""
+	}
+	if conditions == nil {
+		conditions = &FindCondition{}
+	}
+	args := &struct {
+		Argzone       string
+		Argconditions *FindCondition `mapconv:",squash"`
+	}{
+		Argzone:       zone,
+		Argconditions: conditions,
+	}
+
+	v := &serverPlanFindRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &serverPlanFindResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &ServerPlanFindResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, err
+}
+
+// Read is API call
+func (o *ServerPlanOp) Read(ctx context.Context, zone string, id types.ID) (*ServerPlan, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &serverPlanReadResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &serverPlanReadResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results.ServerPlan, nil
 }
 
 /*************************************************

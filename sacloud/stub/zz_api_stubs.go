@@ -1058,6 +1058,49 @@ func (s *DiskStub) Monitor(ctx context.Context, zone string, id types.ID, condit
 }
 
 /*************************************************
+* DiskPlanStub
+*************************************************/
+
+// DiskPlanFindStubResult is expected values of the Find operation
+type DiskPlanFindStubResult struct {
+	Values *sacloud.DiskPlanFindResult
+	Err    error
+}
+
+// DiskPlanReadStubResult is expected values of the Read operation
+type DiskPlanReadStubResult struct {
+	DiskPlan *sacloud.DiskPlan
+	Err      error
+}
+
+// DiskPlanStub is for trace DiskPlanOp operations
+type DiskPlanStub struct {
+	FindStubResult *DiskPlanFindStubResult
+	ReadStubResult *DiskPlanReadStubResult
+}
+
+// NewDiskPlanStub creates new DiskPlanStub instance
+func NewDiskPlanStub(caller sacloud.APICaller) sacloud.DiskPlanAPI {
+	return &DiskPlanStub{}
+}
+
+// Find is API call with trace log
+func (s *DiskPlanStub) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.DiskPlanFindResult, error) {
+	if s.FindStubResult == nil {
+		log.Fatal("DiskPlanStub.FindStubResult is not set")
+	}
+	return s.FindStubResult.Values, s.FindStubResult.Err
+}
+
+// Read is API call with trace log
+func (s *DiskPlanStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.DiskPlan, error) {
+	if s.ReadStubResult == nil {
+		log.Fatal("DiskPlanStub.ReadStubResult is not set")
+	}
+	return s.ReadStubResult.DiskPlan, s.ReadStubResult.Err
+}
+
+/*************************************************
 * DNSStub
 *************************************************/
 
@@ -1652,6 +1695,49 @@ func (s *InternetStub) Monitor(ctx context.Context, zone string, id types.ID, co
 }
 
 /*************************************************
+* InternetPlanStub
+*************************************************/
+
+// InternetPlanFindStubResult is expected values of the Find operation
+type InternetPlanFindStubResult struct {
+	Values *sacloud.InternetPlanFindResult
+	Err    error
+}
+
+// InternetPlanReadStubResult is expected values of the Read operation
+type InternetPlanReadStubResult struct {
+	InternetPlan *sacloud.InternetPlan
+	Err          error
+}
+
+// InternetPlanStub is for trace InternetPlanOp operations
+type InternetPlanStub struct {
+	FindStubResult *InternetPlanFindStubResult
+	ReadStubResult *InternetPlanReadStubResult
+}
+
+// NewInternetPlanStub creates new InternetPlanStub instance
+func NewInternetPlanStub(caller sacloud.APICaller) sacloud.InternetPlanAPI {
+	return &InternetPlanStub{}
+}
+
+// Find is API call with trace log
+func (s *InternetPlanStub) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.InternetPlanFindResult, error) {
+	if s.FindStubResult == nil {
+		log.Fatal("InternetPlanStub.FindStubResult is not set")
+	}
+	return s.FindStubResult.Values, s.FindStubResult.Err
+}
+
+// Read is API call with trace log
+func (s *InternetPlanStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.InternetPlan, error) {
+	if s.ReadStubResult == nil {
+		log.Fatal("InternetPlanStub.ReadStubResult is not set")
+	}
+	return s.ReadStubResult.InternetPlan, s.ReadStubResult.Err
+}
+
+/*************************************************
 * LicenseStub
 *************************************************/
 
@@ -1736,6 +1822,49 @@ func (s *LicenseStub) Delete(ctx context.Context, zone string, id types.ID) erro
 		log.Fatal("LicenseStub.DeleteStubResult is not set")
 	}
 	return s.DeleteStubResult.Err
+}
+
+/*************************************************
+* LicenseInfoStub
+*************************************************/
+
+// LicenseInfoFindStubResult is expected values of the Find operation
+type LicenseInfoFindStubResult struct {
+	Values *sacloud.LicenseInfoFindResult
+	Err    error
+}
+
+// LicenseInfoReadStubResult is expected values of the Read operation
+type LicenseInfoReadStubResult struct {
+	LicenseInfo *sacloud.LicenseInfo
+	Err         error
+}
+
+// LicenseInfoStub is for trace LicenseInfoOp operations
+type LicenseInfoStub struct {
+	FindStubResult *LicenseInfoFindStubResult
+	ReadStubResult *LicenseInfoReadStubResult
+}
+
+// NewLicenseInfoStub creates new LicenseInfoStub instance
+func NewLicenseInfoStub(caller sacloud.APICaller) sacloud.LicenseInfoAPI {
+	return &LicenseInfoStub{}
+}
+
+// Find is API call with trace log
+func (s *LicenseInfoStub) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.LicenseInfoFindResult, error) {
+	if s.FindStubResult == nil {
+		log.Fatal("LicenseInfoStub.FindStubResult is not set")
+	}
+	return s.FindStubResult.Values, s.FindStubResult.Err
+}
+
+// Read is API call with trace log
+func (s *LicenseInfoStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.LicenseInfo, error) {
+	if s.ReadStubResult == nil {
+		log.Fatal("LicenseInfoStub.ReadStubResult is not set")
+	}
+	return s.ReadStubResult.LicenseInfo, s.ReadStubResult.Err
 }
 
 /*************************************************
@@ -2777,6 +2906,49 @@ func (s *ServerStub) Monitor(ctx context.Context, zone string, id types.ID, cond
 		log.Fatal("ServerStub.MonitorStubResult is not set")
 	}
 	return s.MonitorStubResult.CPUTimeActivity, s.MonitorStubResult.Err
+}
+
+/*************************************************
+* ServerPlanStub
+*************************************************/
+
+// ServerPlanFindStubResult is expected values of the Find operation
+type ServerPlanFindStubResult struct {
+	Values *sacloud.ServerPlanFindResult
+	Err    error
+}
+
+// ServerPlanReadStubResult is expected values of the Read operation
+type ServerPlanReadStubResult struct {
+	ServerPlan *sacloud.ServerPlan
+	Err        error
+}
+
+// ServerPlanStub is for trace ServerPlanOp operations
+type ServerPlanStub struct {
+	FindStubResult *ServerPlanFindStubResult
+	ReadStubResult *ServerPlanReadStubResult
+}
+
+// NewServerPlanStub creates new ServerPlanStub instance
+func NewServerPlanStub(caller sacloud.APICaller) sacloud.ServerPlanAPI {
+	return &ServerPlanStub{}
+}
+
+// Find is API call with trace log
+func (s *ServerPlanStub) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.ServerPlanFindResult, error) {
+	if s.FindStubResult == nil {
+		log.Fatal("ServerPlanStub.FindStubResult is not set")
+	}
+	return s.FindStubResult.Values, s.FindStubResult.Err
+}
+
+// Read is API call with trace log
+func (s *ServerPlanStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.ServerPlan, error) {
+	if s.ReadStubResult == nil {
+		log.Fatal("ServerPlanStub.ReadStubResult is not set")
+	}
+	return s.ReadStubResult.ServerPlan, s.ReadStubResult.Err
 }
 
 /*************************************************
