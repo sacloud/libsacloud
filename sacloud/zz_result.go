@@ -715,6 +715,52 @@ type packetFilterUpdateResult struct {
 	PacketFilter *PacketFilter `json:",omitempty" mapconv:"PacketFilter,omitempty,recursive"`
 }
 
+// PrivateHostFindResult represents the Result of API
+type PrivateHostFindResult struct {
+	Total int `json:",omitempty"` // Total count of target resources
+	From  int `json:",omitempty"` // Current page number
+	Count int `json:",omitempty"` // Count of current page
+
+	PrivateHosts []*PrivateHost `json:",omitempty" mapconv:"[]PrivateHosts,omitempty,recursive"`
+}
+
+// privateHostCreateResult represents the Result of API
+type privateHostCreateResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	PrivateHost *PrivateHost `json:",omitempty" mapconv:"PrivateHost,omitempty,recursive"`
+}
+
+// privateHostReadResult represents the Result of API
+type privateHostReadResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	PrivateHost *PrivateHost `json:",omitempty" mapconv:"PrivateHost,omitempty,recursive"`
+}
+
+// privateHostUpdateResult represents the Result of API
+type privateHostUpdateResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	PrivateHost *PrivateHost `json:",omitempty" mapconv:"PrivateHost,omitempty,recursive"`
+}
+
+// PrivateHostPlanFindResult represents the Result of API
+type PrivateHostPlanFindResult struct {
+	Total int `json:",omitempty"` // Total count of target resources
+	From  int `json:",omitempty"` // Current page number
+	Count int `json:",omitempty"` // Count of current page
+
+	PrivateHostPlans []*PrivateHostPlan `json:",omitempty" mapconv:"[]PrivateHostPlans,omitempty,recursive"`
+}
+
+// privateHostPlanReadResult represents the Result of API
+type privateHostPlanReadResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	PrivateHostPlan *PrivateHostPlan `json:",omitempty" mapconv:"PrivateHostPlan,omitempty,recursive"`
+}
+
 // ProxyLBFindResult represents the Result of API
 type ProxyLBFindResult struct {
 	Total int `json:",omitempty"` // Total count of target resources

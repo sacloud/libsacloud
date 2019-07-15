@@ -26,7 +26,7 @@ Library for SakuraCloud API
 - [x] `NFS`: NFS
 - [x] `Note`: スタートアップスクリプト
 - [x] `PacketFilter`: パケットフィルタ
-- [ ] `PrivateHost`: 専有ホスト
+- [x] `PrivateHost`: 専有ホスト
 - [ ] `ProductXXX`: 商品関連(productXXX)
 - [ ] `Price`: 価格表(public/price)
 - [x] `ProxyLB`: エンハンスドロードバランサ

@@ -1266,6 +1266,86 @@ type packetFilterUpdateResponseEnvelope struct {
 	PacketFilter *naked.PacketFilter `json:",omitempty"`
 }
 
+// privateHostFindRequestEnvelope is envelop of API request
+type privateHostFindRequestEnvelope struct {
+	Count   int                    `json:",omitempty"`
+	From    int                    `json:",omitempty"`
+	Sort    []string               `json:",omitempty"`
+	Filter  map[string]interface{} `json:",omitempty"`
+	Include []string               `json:",omitempty"`
+	Exclude []string               `json:",omitempty"`
+}
+
+// privateHostFindResponseEnvelope is envelop of API response
+type privateHostFindResponseEnvelope struct {
+	Total int `json:",omitempty"` // トータル件数
+	From  int `json:",omitempty"` // ページング開始ページ
+	Count int `json:",omitempty"` // 件数
+
+	PrivateHosts []*naked.PrivateHost `json:",omitempty"`
+}
+
+// privateHostCreateRequestEnvelope is envelop of API request
+type privateHostCreateRequestEnvelope struct {
+	PrivateHost *naked.PrivateHost `json:",omitempty"`
+}
+
+// privateHostCreateResponseEnvelope is envelop of API response
+type privateHostCreateResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	PrivateHost *naked.PrivateHost `json:",omitempty"`
+}
+
+// privateHostReadResponseEnvelope is envelop of API response
+type privateHostReadResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	PrivateHost *naked.PrivateHost `json:",omitempty"`
+}
+
+// privateHostUpdateRequestEnvelope is envelop of API request
+type privateHostUpdateRequestEnvelope struct {
+	PrivateHost *naked.PrivateHost `json:",omitempty"`
+}
+
+// privateHostUpdateResponseEnvelope is envelop of API response
+type privateHostUpdateResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	PrivateHost *naked.PrivateHost `json:",omitempty"`
+}
+
+// privateHostPlanFindRequestEnvelope is envelop of API request
+type privateHostPlanFindRequestEnvelope struct {
+	Count   int                    `json:",omitempty"`
+	From    int                    `json:",omitempty"`
+	Sort    []string               `json:",omitempty"`
+	Filter  map[string]interface{} `json:",omitempty"`
+	Include []string               `json:",omitempty"`
+	Exclude []string               `json:",omitempty"`
+}
+
+// privateHostPlanFindResponseEnvelope is envelop of API response
+type privateHostPlanFindResponseEnvelope struct {
+	Total int `json:",omitempty"` // トータル件数
+	From  int `json:",omitempty"` // ページング開始ページ
+	Count int `json:",omitempty"` // 件数
+
+	PrivateHostPlans []*naked.ProductPrivateHost `json:",omitempty"`
+}
+
+// privateHostPlanReadResponseEnvelope is envelop of API response
+type privateHostPlanReadResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	PrivateHostPlan *naked.ProductPrivateHost `json:",omitempty"`
+}
+
 // proxyLBFindRequestEnvelope is envelop of API request
 type proxyLBFindRequestEnvelope struct {
 	Count   int                    `json:",omitempty"`

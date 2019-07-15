@@ -70,6 +70,12 @@ func AddClientFactoryHooks() {
 	sacloud.AddClientFacotyHookFunc("PacketFilter", func(in interface{}) interface{} {
 		return NewPacketFilterTracer(in.(sacloud.PacketFilterAPI))
 	})
+	sacloud.AddClientFacotyHookFunc("PrivateHost", func(in interface{}) interface{} {
+		return NewPrivateHostTracer(in.(sacloud.PrivateHostAPI))
+	})
+	sacloud.AddClientFacotyHookFunc("PrivateHostPlan", func(in interface{}) interface{} {
+		return NewPrivateHostPlanTracer(in.(sacloud.PrivateHostPlanAPI))
+	})
 	sacloud.AddClientFacotyHookFunc("ProxyLB", func(in interface{}) interface{} {
 		return NewProxyLBTracer(in.(sacloud.ProxyLBAPI))
 	})
@@ -4886,6 +4892,269 @@ func (t *PacketFilterTracer) Delete(ctx context.Context, zone string, id types.I
 	}
 
 	return err
+}
+
+/*************************************************
+* PrivateHostTracer
+*************************************************/
+
+// PrivateHostTracer is for trace PrivateHostOp operations
+type PrivateHostTracer struct {
+	Internal sacloud.PrivateHostAPI
+}
+
+// NewPrivateHostTracer creates new PrivateHostTracer instance
+func NewPrivateHostTracer(in sacloud.PrivateHostAPI) sacloud.PrivateHostAPI {
+	return &PrivateHostTracer{
+		Internal: in,
+	}
+}
+
+// Find is API call with trace log
+func (t *PrivateHostTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.PrivateHostFindResult, error) {
+	log.Println("[TRACE] PrivateHostAPI.Find start")
+	targetArguments := struct {
+		Argzone       string                 `json:"zone"`
+		Argconditions *sacloud.FindCondition `json:"conditions"`
+	}{
+		Argzone:       zone,
+		Argconditions: conditions,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] PrivateHostAPI.Find end")
+	}()
+
+	result, err := t.Internal.Find(ctx, zone, conditions)
+	targetResults := struct {
+		Result *sacloud.PrivateHostFindResult
+		Error  error
+	}{
+		Result: result,
+		Error:  err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return result, err
+}
+
+// Create is API call with trace log
+func (t *PrivateHostTracer) Create(ctx context.Context, zone string, param *sacloud.PrivateHostCreateRequest) (*sacloud.PrivateHost, error) {
+	log.Println("[TRACE] PrivateHostAPI.Create start")
+	targetArguments := struct {
+		Argzone  string                            `json:"zone"`
+		Argparam *sacloud.PrivateHostCreateRequest `json:"param"`
+	}{
+		Argzone:  zone,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] PrivateHostAPI.Create end")
+	}()
+
+	resultPrivateHost, err := t.Internal.Create(ctx, zone, param)
+	targetResults := struct {
+		PrivateHost *sacloud.PrivateHost
+		Error       error
+	}{
+		PrivateHost: resultPrivateHost,
+		Error:       err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultPrivateHost, err
+}
+
+// Read is API call with trace log
+func (t *PrivateHostTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.PrivateHost, error) {
+	log.Println("[TRACE] PrivateHostAPI.Read start")
+	targetArguments := struct {
+		Argzone string   `json:"zone"`
+		Argid   types.ID `json:"id"`
+	}{
+		Argzone: zone,
+		Argid:   id,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] PrivateHostAPI.Read end")
+	}()
+
+	resultPrivateHost, err := t.Internal.Read(ctx, zone, id)
+	targetResults := struct {
+		PrivateHost *sacloud.PrivateHost
+		Error       error
+	}{
+		PrivateHost: resultPrivateHost,
+		Error:       err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultPrivateHost, err
+}
+
+// Update is API call with trace log
+func (t *PrivateHostTracer) Update(ctx context.Context, zone string, id types.ID, param *sacloud.PrivateHostUpdateRequest) (*sacloud.PrivateHost, error) {
+	log.Println("[TRACE] PrivateHostAPI.Update start")
+	targetArguments := struct {
+		Argzone  string                            `json:"zone"`
+		Argid    types.ID                          `json:"id"`
+		Argparam *sacloud.PrivateHostUpdateRequest `json:"param"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] PrivateHostAPI.Update end")
+	}()
+
+	resultPrivateHost, err := t.Internal.Update(ctx, zone, id, param)
+	targetResults := struct {
+		PrivateHost *sacloud.PrivateHost
+		Error       error
+	}{
+		PrivateHost: resultPrivateHost,
+		Error:       err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultPrivateHost, err
+}
+
+// Delete is API call with trace log
+func (t *PrivateHostTracer) Delete(ctx context.Context, zone string, id types.ID) error {
+	log.Println("[TRACE] PrivateHostAPI.Delete start")
+	targetArguments := struct {
+		Argzone string   `json:"zone"`
+		Argid   types.ID `json:"id"`
+	}{
+		Argzone: zone,
+		Argid:   id,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] PrivateHostAPI.Delete end")
+	}()
+
+	err := t.Internal.Delete(ctx, zone, id)
+	targetResults := struct {
+		Error error
+	}{
+		Error: err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return err
+}
+
+/*************************************************
+* PrivateHostPlanTracer
+*************************************************/
+
+// PrivateHostPlanTracer is for trace PrivateHostPlanOp operations
+type PrivateHostPlanTracer struct {
+	Internal sacloud.PrivateHostPlanAPI
+}
+
+// NewPrivateHostPlanTracer creates new PrivateHostPlanTracer instance
+func NewPrivateHostPlanTracer(in sacloud.PrivateHostPlanAPI) sacloud.PrivateHostPlanAPI {
+	return &PrivateHostPlanTracer{
+		Internal: in,
+	}
+}
+
+// Find is API call with trace log
+func (t *PrivateHostPlanTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.PrivateHostPlanFindResult, error) {
+	log.Println("[TRACE] PrivateHostPlanAPI.Find start")
+	targetArguments := struct {
+		Argzone       string                 `json:"zone"`
+		Argconditions *sacloud.FindCondition `json:"conditions"`
+	}{
+		Argzone:       zone,
+		Argconditions: conditions,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] PrivateHostPlanAPI.Find end")
+	}()
+
+	result, err := t.Internal.Find(ctx, zone, conditions)
+	targetResults := struct {
+		Result *sacloud.PrivateHostPlanFindResult
+		Error  error
+	}{
+		Result: result,
+		Error:  err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return result, err
+}
+
+// Read is API call with trace log
+func (t *PrivateHostPlanTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.PrivateHostPlan, error) {
+	log.Println("[TRACE] PrivateHostPlanAPI.Read start")
+	targetArguments := struct {
+		Argzone string   `json:"zone"`
+		Argid   types.ID `json:"id"`
+	}{
+		Argzone: zone,
+		Argid:   id,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] PrivateHostPlanAPI.Read end")
+	}()
+
+	resultPrivateHostPlan, err := t.Internal.Read(ctx, zone, id)
+	targetResults := struct {
+		PrivateHostPlan *sacloud.PrivateHostPlan
+		Error           error
+	}{
+		PrivateHostPlan: resultPrivateHostPlan,
+		Error:           err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultPrivateHostPlan, err
 }
 
 /*************************************************

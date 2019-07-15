@@ -57,6 +57,7 @@ func init() {
 	initSwitch()
 	initZones()
 	initRegions()
+	initProductPrivateHost()
 }
 
 func initArchives() {
@@ -220,5 +221,22 @@ func initRegions() {
 			"133.242.0.3",
 			"133.242.0.4",
 		},
+	})
+}
+
+func initProductPrivateHost() {
+	s.setPrivateHostPlan("is1b", &sacloud.PrivateHostPlan{
+		ID:       112900526366,
+		Name:     "200Core 224GB 標準",
+		Class:    "dynamic",
+		CPU:      200,
+		MemoryMB: 229376,
+	})
+	s.setPrivateHostPlan("tk1a", &sacloud.PrivateHostPlan{
+		ID:       112900526366,
+		Name:     "200Core 224GB 標準",
+		Class:    "dynamic",
+		CPU:      200,
+		MemoryMB: 229376,
 	})
 }

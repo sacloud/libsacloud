@@ -9221,6 +9221,426 @@ func (o *PacketFilterUpdateRequest) SetExpression(v []*PacketFilterExpression) {
 }
 
 /*************************************************
+* PrivateHost
+*************************************************/
+
+// PrivateHost represents API parameter/response structure
+type PrivateHost struct {
+	ID               types.ID
+	Name             string `validate:"required"`
+	Description      string `validate:"min=0,max=512"`
+	Tags             []string
+	IconID           types.ID `mapconv:"Icon.ID"`
+	CreatedAt        time.Time
+	PlanID           types.ID `mapconv:"Plan.ID,omitempty"`
+	PlanName         string
+	PlanClass        string
+	CPU              int `mapconv:"Plan.CPU"`
+	MemoryMB         int `mapconv:"Plan.MemoryMB"`
+	AssignedCPU      int
+	AssignedMemoryMB int
+	HostName         string `mapconv:"Host.Name"`
+}
+
+// Validate validates by field tags
+func (o *PrivateHost) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetID returns value of ID
+func (o *PrivateHost) GetID() types.ID {
+	return o.ID
+}
+
+// SetID sets value to ID
+func (o *PrivateHost) SetID(v types.ID) {
+	o.ID = v
+}
+
+// GetStringID gets value to StringID
+func (o *PrivateHost) GetStringID() string {
+	return accessor.GetStringID(o)
+}
+
+// SetStringID sets value to StringID
+func (o *PrivateHost) SetStringID(v string) {
+	accessor.SetStringID(o, v)
+}
+
+// GetInt64ID gets value to Int64ID
+func (o *PrivateHost) GetInt64ID() int64 {
+	return accessor.GetInt64ID(o)
+}
+
+// SetInt64ID sets value to Int64ID
+func (o *PrivateHost) SetInt64ID(v int64) {
+	accessor.SetInt64ID(o, v)
+}
+
+// GetName returns value of Name
+func (o *PrivateHost) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *PrivateHost) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *PrivateHost) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *PrivateHost) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetTags returns value of Tags
+func (o *PrivateHost) GetTags() []string {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *PrivateHost) SetTags(v []string) {
+	o.Tags = v
+}
+
+// GetIconID returns value of IconID
+func (o *PrivateHost) GetIconID() types.ID {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *PrivateHost) SetIconID(v types.ID) {
+	o.IconID = v
+}
+
+// GetCreatedAt returns value of CreatedAt
+func (o *PrivateHost) GetCreatedAt() time.Time {
+	return o.CreatedAt
+}
+
+// SetCreatedAt sets value to CreatedAt
+func (o *PrivateHost) SetCreatedAt(v time.Time) {
+	o.CreatedAt = v
+}
+
+// GetPlanID returns value of PlanID
+func (o *PrivateHost) GetPlanID() types.ID {
+	return o.PlanID
+}
+
+// SetPlanID sets value to PlanID
+func (o *PrivateHost) SetPlanID(v types.ID) {
+	o.PlanID = v
+}
+
+// GetPlanName returns value of PlanName
+func (o *PrivateHost) GetPlanName() string {
+	return o.PlanName
+}
+
+// SetPlanName sets value to PlanName
+func (o *PrivateHost) SetPlanName(v string) {
+	o.PlanName = v
+}
+
+// GetPlanClass returns value of PlanClass
+func (o *PrivateHost) GetPlanClass() string {
+	return o.PlanClass
+}
+
+// SetPlanClass sets value to PlanClass
+func (o *PrivateHost) SetPlanClass(v string) {
+	o.PlanClass = v
+}
+
+// GetCPU returns value of CPU
+func (o *PrivateHost) GetCPU() int {
+	return o.CPU
+}
+
+// SetCPU sets value to CPU
+func (o *PrivateHost) SetCPU(v int) {
+	o.CPU = v
+}
+
+// GetMemoryMB returns value of MemoryMB
+func (o *PrivateHost) GetMemoryMB() int {
+	return o.MemoryMB
+}
+
+// SetMemoryMB sets value to MemoryMB
+func (o *PrivateHost) SetMemoryMB(v int) {
+	o.MemoryMB = v
+}
+
+// GetMemoryGB gets value to MemoryGB
+func (o *PrivateHost) GetMemoryGB() int {
+	return accessor.GetMemoryGB(o)
+}
+
+// SetMemoryGB sets value to MemoryGB
+func (o *PrivateHost) SetMemoryGB(v int) {
+	accessor.SetMemoryGB(o, v)
+}
+
+// GetAssignedCPU returns value of AssignedCPU
+func (o *PrivateHost) GetAssignedCPU() int {
+	return o.AssignedCPU
+}
+
+// SetAssignedCPU sets value to AssignedCPU
+func (o *PrivateHost) SetAssignedCPU(v int) {
+	o.AssignedCPU = v
+}
+
+// GetAssignedMemoryMB returns value of AssignedMemoryMB
+func (o *PrivateHost) GetAssignedMemoryMB() int {
+	return o.AssignedMemoryMB
+}
+
+// SetAssignedMemoryMB sets value to AssignedMemoryMB
+func (o *PrivateHost) SetAssignedMemoryMB(v int) {
+	o.AssignedMemoryMB = v
+}
+
+// GetHostName returns value of HostName
+func (o *PrivateHost) GetHostName() string {
+	return o.HostName
+}
+
+// SetHostName sets value to HostName
+func (o *PrivateHost) SetHostName(v string) {
+	o.HostName = v
+}
+
+/*************************************************
+* PrivateHostCreateRequest
+*************************************************/
+
+// PrivateHostCreateRequest represents API parameter/response structure
+type PrivateHostCreateRequest struct {
+	Name        string `validate:"required"`
+	Description string `validate:"min=0,max=512"`
+	Tags        []string
+	IconID      types.ID `mapconv:"Icon.ID"`
+	PlanID      types.ID `mapconv:"Plan.ID,omitempty"`
+}
+
+// Validate validates by field tags
+func (o *PrivateHostCreateRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetName returns value of Name
+func (o *PrivateHostCreateRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *PrivateHostCreateRequest) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *PrivateHostCreateRequest) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *PrivateHostCreateRequest) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetTags returns value of Tags
+func (o *PrivateHostCreateRequest) GetTags() []string {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *PrivateHostCreateRequest) SetTags(v []string) {
+	o.Tags = v
+}
+
+// GetIconID returns value of IconID
+func (o *PrivateHostCreateRequest) GetIconID() types.ID {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *PrivateHostCreateRequest) SetIconID(v types.ID) {
+	o.IconID = v
+}
+
+// GetPlanID returns value of PlanID
+func (o *PrivateHostCreateRequest) GetPlanID() types.ID {
+	return o.PlanID
+}
+
+// SetPlanID sets value to PlanID
+func (o *PrivateHostCreateRequest) SetPlanID(v types.ID) {
+	o.PlanID = v
+}
+
+/*************************************************
+* PrivateHostUpdateRequest
+*************************************************/
+
+// PrivateHostUpdateRequest represents API parameter/response structure
+type PrivateHostUpdateRequest struct {
+	Name        string `validate:"required"`
+	Description string `validate:"min=0,max=512"`
+	Tags        []string
+	IconID      types.ID `mapconv:"Icon.ID"`
+}
+
+// Validate validates by field tags
+func (o *PrivateHostUpdateRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetName returns value of Name
+func (o *PrivateHostUpdateRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *PrivateHostUpdateRequest) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *PrivateHostUpdateRequest) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *PrivateHostUpdateRequest) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetTags returns value of Tags
+func (o *PrivateHostUpdateRequest) GetTags() []string {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *PrivateHostUpdateRequest) SetTags(v []string) {
+	o.Tags = v
+}
+
+// GetIconID returns value of IconID
+func (o *PrivateHostUpdateRequest) GetIconID() types.ID {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *PrivateHostUpdateRequest) SetIconID(v types.ID) {
+	o.IconID = v
+}
+
+/*************************************************
+* PrivateHostPlan
+*************************************************/
+
+// PrivateHostPlan represents API parameter/response structure
+type PrivateHostPlan struct {
+	ID       types.ID
+	Name     string `validate:"required"`
+	Class    string
+	CPU      int
+	MemoryMB int
+}
+
+// Validate validates by field tags
+func (o *PrivateHostPlan) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetID returns value of ID
+func (o *PrivateHostPlan) GetID() types.ID {
+	return o.ID
+}
+
+// SetID sets value to ID
+func (o *PrivateHostPlan) SetID(v types.ID) {
+	o.ID = v
+}
+
+// GetStringID gets value to StringID
+func (o *PrivateHostPlan) GetStringID() string {
+	return accessor.GetStringID(o)
+}
+
+// SetStringID sets value to StringID
+func (o *PrivateHostPlan) SetStringID(v string) {
+	accessor.SetStringID(o, v)
+}
+
+// GetInt64ID gets value to Int64ID
+func (o *PrivateHostPlan) GetInt64ID() int64 {
+	return accessor.GetInt64ID(o)
+}
+
+// SetInt64ID sets value to Int64ID
+func (o *PrivateHostPlan) SetInt64ID(v int64) {
+	accessor.SetInt64ID(o, v)
+}
+
+// GetName returns value of Name
+func (o *PrivateHostPlan) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *PrivateHostPlan) SetName(v string) {
+	o.Name = v
+}
+
+// GetClass returns value of Class
+func (o *PrivateHostPlan) GetClass() string {
+	return o.Class
+}
+
+// SetClass sets value to Class
+func (o *PrivateHostPlan) SetClass(v string) {
+	o.Class = v
+}
+
+// GetCPU returns value of CPU
+func (o *PrivateHostPlan) GetCPU() int {
+	return o.CPU
+}
+
+// SetCPU sets value to CPU
+func (o *PrivateHostPlan) SetCPU(v int) {
+	o.CPU = v
+}
+
+// GetMemoryMB returns value of MemoryMB
+func (o *PrivateHostPlan) GetMemoryMB() int {
+	return o.MemoryMB
+}
+
+// SetMemoryMB sets value to MemoryMB
+func (o *PrivateHostPlan) SetMemoryMB(v int) {
+	o.MemoryMB = v
+}
+
+// GetMemoryGB gets value to MemoryGB
+func (o *PrivateHostPlan) GetMemoryGB() int {
+	return accessor.GetMemoryGB(o)
+}
+
+// SetMemoryGB sets value to MemoryGB
+func (o *PrivateHostPlan) SetMemoryGB(v int) {
+	accessor.SetMemoryGB(o, v)
+}
+
+/*************************************************
 * ProxyLB
 *************************************************/
 
