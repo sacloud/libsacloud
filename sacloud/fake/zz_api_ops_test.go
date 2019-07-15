@@ -86,6 +86,14 @@ func TestResourceOps(t *testing.T) {
 		t.Fatalf("%s is not sacloud.PacketFilter", op)
 	}
 
+	if op, ok := NewPrivateHostOp().(sacloud.PrivateHostAPI); !ok {
+		t.Fatalf("%s is not sacloud.PrivateHost", op)
+	}
+
+	if op, ok := NewPrivateHostPlanOp().(sacloud.PrivateHostPlanAPI); !ok {
+		t.Fatalf("%s is not sacloud.PrivateHostPlan", op)
+	}
+
 	if op, ok := NewProxyLBOp().(sacloud.ProxyLBAPI); !ok {
 		t.Fatalf("%s is not sacloud.ProxyLB", op)
 	}

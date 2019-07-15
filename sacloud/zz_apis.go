@@ -296,6 +296,29 @@ type PacketFilterAPI interface {
 }
 
 /*************************************************
+* PrivateHostAPI
+*************************************************/
+
+// PrivateHostAPI is interface for operate PrivateHost resource
+type PrivateHostAPI interface {
+	Find(ctx context.Context, zone string, conditions *FindCondition) (*PrivateHostFindResult, error)
+	Create(ctx context.Context, zone string, param *PrivateHostCreateRequest) (*PrivateHost, error)
+	Read(ctx context.Context, zone string, id types.ID) (*PrivateHost, error)
+	Update(ctx context.Context, zone string, id types.ID, param *PrivateHostUpdateRequest) (*PrivateHost, error)
+	Delete(ctx context.Context, zone string, id types.ID) error
+}
+
+/*************************************************
+* PrivateHostPlanAPI
+*************************************************/
+
+// PrivateHostPlanAPI is interface for operate PrivateHostPlan resource
+type PrivateHostPlanAPI interface {
+	Find(ctx context.Context, zone string, conditions *FindCondition) (*PrivateHostPlanFindResult, error)
+	Read(ctx context.Context, zone string, id types.ID) (*PrivateHostPlan, error)
+}
+
+/*************************************************
 * ProxyLBAPI
 *************************************************/
 
