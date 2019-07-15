@@ -50,6 +50,9 @@ func SwitchFactoryFuncToFake() {
 	sacloud.SetClientFactoryFunc(ResourceInternet, func(caller sacloud.APICaller) interface{} {
 		return NewInternetOp()
 	})
+	sacloud.SetClientFactoryFunc(ResourceLicense, func(caller sacloud.APICaller) interface{} {
+		return NewLicenseOp()
+	})
 	sacloud.SetClientFactoryFunc(ResourceLoadBalancer, func(caller sacloud.APICaller) interface{} {
 		return NewLoadBalancerOp()
 	})
@@ -312,6 +315,22 @@ type InternetOp struct {
 func NewInternetOp() sacloud.InternetAPI {
 	return &InternetOp{
 		key: ResourceInternet,
+	}
+}
+
+/*************************************************
+* LicenseOp
+*************************************************/
+
+// LicenseOp is fake implementation of LicenseAPI interface
+type LicenseOp struct {
+	key string
+}
+
+// NewLicenseOp creates new LicenseOp instance
+func NewLicenseOp() sacloud.LicenseAPI {
+	return &LicenseOp{
+		key: ResourceLicense,
 	}
 }
 

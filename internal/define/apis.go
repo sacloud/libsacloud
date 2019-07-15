@@ -31,6 +31,7 @@ func init() {
 	APIs.Define(iconAPI)          // アイコン
 	APIs.Define(interfaceAPI)     // インターフェース(NIC)
 	APIs.Define(internetAPI)      // スイッチ+ルータ
+	APIs.Define(licenseAPI)       // ライセンス
 	APIs.Define(loadBalancerAPI)  // ロードバランサ
 	APIs.Define(nfsAPI)           // NFS
 	APIs.Define(noteAPI)          // スタートアップスクリプト

@@ -439,6 +439,26 @@ func (f *fieldsDef) IconID() *dsl.FieldDesc {
 	}
 }
 
+func (f *fieldsDef) LicenseInfoID() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "LicenseInfoID",
+		Tags: &dsl.FieldTags{
+			MapConv: "LicenseInfo.ID",
+		},
+		Type: meta.TypeID,
+	}
+}
+
+func (f *fieldsDef) LicenseInfoName() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "LicenseInfoName",
+		Tags: &dsl.FieldTags{
+			MapConv: "LicenseInfo.Name",
+		},
+		Type: meta.TypeString,
+	}
+}
+
 func (f *fieldsDef) ZoneID() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "ZoneID",

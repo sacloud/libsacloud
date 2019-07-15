@@ -66,6 +66,10 @@ func TestResourceOps(t *testing.T) {
 		t.Fatalf("%s is not sacloud.Internet", op)
 	}
 
+	if op, ok := NewLicenseOp().(sacloud.LicenseAPI); !ok {
+		t.Fatalf("%s is not sacloud.License", op)
+	}
+
 	if op, ok := NewLoadBalancerOp().(sacloud.LoadBalancerAPI); !ok {
 		t.Fatalf("%s is not sacloud.LoadBalancer", op)
 	}
