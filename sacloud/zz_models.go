@@ -5116,6 +5116,161 @@ func (o *DiskUpdateRequest) SetConnection(v types.EDiskConnection) {
 }
 
 /*************************************************
+* DiskPlan
+*************************************************/
+
+// DiskPlan represents API parameter/response structure
+type DiskPlan struct {
+	ID           types.ID
+	Name         string `validate:"required"`
+	StorageClass string
+	Availability types.EAvailability
+	Size         []*DiskPlanSizeInfo `mapconv:"[]Size,recursive"`
+}
+
+// Validate validates by field tags
+func (o *DiskPlan) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetID returns value of ID
+func (o *DiskPlan) GetID() types.ID {
+	return o.ID
+}
+
+// SetID sets value to ID
+func (o *DiskPlan) SetID(v types.ID) {
+	o.ID = v
+}
+
+// GetStringID gets value to StringID
+func (o *DiskPlan) GetStringID() string {
+	return accessor.GetStringID(o)
+}
+
+// SetStringID sets value to StringID
+func (o *DiskPlan) SetStringID(v string) {
+	accessor.SetStringID(o, v)
+}
+
+// GetInt64ID gets value to Int64ID
+func (o *DiskPlan) GetInt64ID() int64 {
+	return accessor.GetInt64ID(o)
+}
+
+// SetInt64ID sets value to Int64ID
+func (o *DiskPlan) SetInt64ID(v int64) {
+	accessor.SetInt64ID(o, v)
+}
+
+// GetName returns value of Name
+func (o *DiskPlan) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *DiskPlan) SetName(v string) {
+	o.Name = v
+}
+
+// GetStorageClass returns value of StorageClass
+func (o *DiskPlan) GetStorageClass() string {
+	return o.StorageClass
+}
+
+// SetStorageClass sets value to StorageClass
+func (o *DiskPlan) SetStorageClass(v string) {
+	o.StorageClass = v
+}
+
+// GetAvailability returns value of Availability
+func (o *DiskPlan) GetAvailability() types.EAvailability {
+	return o.Availability
+}
+
+// SetAvailability sets value to Availability
+func (o *DiskPlan) SetAvailability(v types.EAvailability) {
+	o.Availability = v
+}
+
+// GetSize returns value of Size
+func (o *DiskPlan) GetSize() []*DiskPlanSizeInfo {
+	return o.Size
+}
+
+// SetSize sets value to Size
+func (o *DiskPlan) SetSize(v []*DiskPlanSizeInfo) {
+	o.Size = v
+}
+
+/*************************************************
+* DiskPlanSizeInfo
+*************************************************/
+
+// DiskPlanSizeInfo represents API parameter/response structure
+type DiskPlanSizeInfo struct {
+	Availability  types.EAvailability
+	DisplaySize   int
+	DisplaySuffix string
+	SizeMB        int
+}
+
+// Validate validates by field tags
+func (o *DiskPlanSizeInfo) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetAvailability returns value of Availability
+func (o *DiskPlanSizeInfo) GetAvailability() types.EAvailability {
+	return o.Availability
+}
+
+// SetAvailability sets value to Availability
+func (o *DiskPlanSizeInfo) SetAvailability(v types.EAvailability) {
+	o.Availability = v
+}
+
+// GetDisplaySize returns value of DisplaySize
+func (o *DiskPlanSizeInfo) GetDisplaySize() int {
+	return o.DisplaySize
+}
+
+// SetDisplaySize sets value to DisplaySize
+func (o *DiskPlanSizeInfo) SetDisplaySize(v int) {
+	o.DisplaySize = v
+}
+
+// GetDisplaySuffix returns value of DisplaySuffix
+func (o *DiskPlanSizeInfo) GetDisplaySuffix() string {
+	return o.DisplaySuffix
+}
+
+// SetDisplaySuffix sets value to DisplaySuffix
+func (o *DiskPlanSizeInfo) SetDisplaySuffix(v string) {
+	o.DisplaySuffix = v
+}
+
+// GetSizeMB returns value of SizeMB
+func (o *DiskPlanSizeInfo) GetSizeMB() int {
+	return o.SizeMB
+}
+
+// SetSizeMB sets value to SizeMB
+func (o *DiskPlanSizeInfo) SetSizeMB(v int) {
+	o.SizeMB = v
+}
+
+// GetSizeGB gets value to SizeGB
+func (o *DiskPlanSizeInfo) GetSizeGB() int {
+	return accessor.GetSizeGB(o)
+}
+
+// SetSizeGB sets value to SizeGB
+func (o *DiskPlanSizeInfo) SetSizeGB(v int) {
+	accessor.SetSizeGB(o, v)
+}
+
+/*************************************************
 * DNS
 *************************************************/
 
@@ -7229,6 +7384,83 @@ func (o *MonitorRouterValue) SetOut(v float64) {
 }
 
 /*************************************************
+* InternetPlan
+*************************************************/
+
+// InternetPlan represents API parameter/response structure
+type InternetPlan struct {
+	ID            types.ID
+	Name          string `validate:"required"`
+	BandWidthMbps int
+	Availability  types.EAvailability
+}
+
+// Validate validates by field tags
+func (o *InternetPlan) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetID returns value of ID
+func (o *InternetPlan) GetID() types.ID {
+	return o.ID
+}
+
+// SetID sets value to ID
+func (o *InternetPlan) SetID(v types.ID) {
+	o.ID = v
+}
+
+// GetStringID gets value to StringID
+func (o *InternetPlan) GetStringID() string {
+	return accessor.GetStringID(o)
+}
+
+// SetStringID sets value to StringID
+func (o *InternetPlan) SetStringID(v string) {
+	accessor.SetStringID(o, v)
+}
+
+// GetInt64ID gets value to Int64ID
+func (o *InternetPlan) GetInt64ID() int64 {
+	return accessor.GetInt64ID(o)
+}
+
+// SetInt64ID sets value to Int64ID
+func (o *InternetPlan) SetInt64ID(v int64) {
+	accessor.SetInt64ID(o, v)
+}
+
+// GetName returns value of Name
+func (o *InternetPlan) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *InternetPlan) SetName(v string) {
+	o.Name = v
+}
+
+// GetBandWidthMbps returns value of BandWidthMbps
+func (o *InternetPlan) GetBandWidthMbps() int {
+	return o.BandWidthMbps
+}
+
+// SetBandWidthMbps sets value to BandWidthMbps
+func (o *InternetPlan) SetBandWidthMbps(v int) {
+	o.BandWidthMbps = v
+}
+
+// GetAvailability returns value of Availability
+func (o *InternetPlan) GetAvailability() types.EAvailability {
+	return o.Availability
+}
+
+// SetAvailability sets value to Availability
+func (o *InternetPlan) SetAvailability(v types.EAvailability) {
+	o.Availability = v
+}
+
+/*************************************************
 * License
 *************************************************/
 
@@ -7384,6 +7616,94 @@ func (o *LicenseUpdateRequest) GetName() string {
 // SetName sets value to Name
 func (o *LicenseUpdateRequest) SetName(v string) {
 	o.Name = v
+}
+
+/*************************************************
+* LicenseInfo
+*************************************************/
+
+// LicenseInfo represents API parameter/response structure
+type LicenseInfo struct {
+	ID         types.ID
+	Name       string `validate:"required"`
+	CreatedAt  time.Time
+	ModifiedAt time.Time
+	TermsOfUse string
+}
+
+// Validate validates by field tags
+func (o *LicenseInfo) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetID returns value of ID
+func (o *LicenseInfo) GetID() types.ID {
+	return o.ID
+}
+
+// SetID sets value to ID
+func (o *LicenseInfo) SetID(v types.ID) {
+	o.ID = v
+}
+
+// GetStringID gets value to StringID
+func (o *LicenseInfo) GetStringID() string {
+	return accessor.GetStringID(o)
+}
+
+// SetStringID sets value to StringID
+func (o *LicenseInfo) SetStringID(v string) {
+	accessor.SetStringID(o, v)
+}
+
+// GetInt64ID gets value to Int64ID
+func (o *LicenseInfo) GetInt64ID() int64 {
+	return accessor.GetInt64ID(o)
+}
+
+// SetInt64ID sets value to Int64ID
+func (o *LicenseInfo) SetInt64ID(v int64) {
+	accessor.SetInt64ID(o, v)
+}
+
+// GetName returns value of Name
+func (o *LicenseInfo) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *LicenseInfo) SetName(v string) {
+	o.Name = v
+}
+
+// GetCreatedAt returns value of CreatedAt
+func (o *LicenseInfo) GetCreatedAt() time.Time {
+	return o.CreatedAt
+}
+
+// SetCreatedAt sets value to CreatedAt
+func (o *LicenseInfo) SetCreatedAt(v time.Time) {
+	o.CreatedAt = v
+}
+
+// GetModifiedAt returns value of ModifiedAt
+func (o *LicenseInfo) GetModifiedAt() time.Time {
+	return o.ModifiedAt
+}
+
+// SetModifiedAt sets value to ModifiedAt
+func (o *LicenseInfo) SetModifiedAt(v time.Time) {
+	o.ModifiedAt = v
+}
+
+// GetTermsOfUse returns value of TermsOfUse
+func (o *LicenseInfo) GetTermsOfUse() string {
+	return o.TermsOfUse
+}
+
+// SetTermsOfUse sets value to TermsOfUse
+func (o *LicenseInfo) SetTermsOfUse(v string) {
+	o.TermsOfUse = v
 }
 
 /*************************************************
@@ -9548,11 +9868,12 @@ func (o *PrivateHostUpdateRequest) SetIconID(v types.ID) {
 
 // PrivateHostPlan represents API parameter/response structure
 type PrivateHostPlan struct {
-	ID       types.ID
-	Name     string `validate:"required"`
-	Class    string
-	CPU      int
-	MemoryMB int
+	ID           types.ID
+	Name         string `validate:"required"`
+	Class        string
+	CPU          int
+	MemoryMB     int
+	Availability types.EAvailability
 }
 
 // Validate validates by field tags
@@ -9638,6 +9959,16 @@ func (o *PrivateHostPlan) GetMemoryGB() int {
 // SetMemoryGB sets value to MemoryGB
 func (o *PrivateHostPlan) SetMemoryGB(v int) {
 	accessor.SetMemoryGB(o, v)
+}
+
+// GetAvailability returns value of Availability
+func (o *PrivateHostPlan) GetAvailability() types.EAvailability {
+	return o.Availability
+}
+
+// SetAvailability sets value to Availability
+func (o *PrivateHostPlan) SetAvailability(v types.EAvailability) {
+	o.Availability = v
 }
 
 /*************************************************
@@ -11695,6 +12026,126 @@ func (o *EjectCDROMRequest) GetInt64ID() int64 {
 // SetInt64ID sets value to Int64ID
 func (o *EjectCDROMRequest) SetInt64ID(v int64) {
 	accessor.SetInt64ID(o, v)
+}
+
+/*************************************************
+* ServerPlan
+*************************************************/
+
+// ServerPlan represents API parameter/response structure
+type ServerPlan struct {
+	ID           types.ID
+	Name         string `validate:"required"`
+	CPU          int
+	MemoryMB     int
+	Commitment   types.ECommitment
+	Generation   int
+	Availability types.EAvailability
+}
+
+// Validate validates by field tags
+func (o *ServerPlan) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetID returns value of ID
+func (o *ServerPlan) GetID() types.ID {
+	return o.ID
+}
+
+// SetID sets value to ID
+func (o *ServerPlan) SetID(v types.ID) {
+	o.ID = v
+}
+
+// GetStringID gets value to StringID
+func (o *ServerPlan) GetStringID() string {
+	return accessor.GetStringID(o)
+}
+
+// SetStringID sets value to StringID
+func (o *ServerPlan) SetStringID(v string) {
+	accessor.SetStringID(o, v)
+}
+
+// GetInt64ID gets value to Int64ID
+func (o *ServerPlan) GetInt64ID() int64 {
+	return accessor.GetInt64ID(o)
+}
+
+// SetInt64ID sets value to Int64ID
+func (o *ServerPlan) SetInt64ID(v int64) {
+	accessor.SetInt64ID(o, v)
+}
+
+// GetName returns value of Name
+func (o *ServerPlan) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *ServerPlan) SetName(v string) {
+	o.Name = v
+}
+
+// GetCPU returns value of CPU
+func (o *ServerPlan) GetCPU() int {
+	return o.CPU
+}
+
+// SetCPU sets value to CPU
+func (o *ServerPlan) SetCPU(v int) {
+	o.CPU = v
+}
+
+// GetMemoryMB returns value of MemoryMB
+func (o *ServerPlan) GetMemoryMB() int {
+	return o.MemoryMB
+}
+
+// SetMemoryMB sets value to MemoryMB
+func (o *ServerPlan) SetMemoryMB(v int) {
+	o.MemoryMB = v
+}
+
+// GetMemoryGB gets value to MemoryGB
+func (o *ServerPlan) GetMemoryGB() int {
+	return accessor.GetMemoryGB(o)
+}
+
+// SetMemoryGB sets value to MemoryGB
+func (o *ServerPlan) SetMemoryGB(v int) {
+	accessor.SetMemoryGB(o, v)
+}
+
+// GetCommitment returns value of Commitment
+func (o *ServerPlan) GetCommitment() types.ECommitment {
+	return o.Commitment
+}
+
+// SetCommitment sets value to Commitment
+func (o *ServerPlan) SetCommitment(v types.ECommitment) {
+	o.Commitment = v
+}
+
+// GetGeneration returns value of Generation
+func (o *ServerPlan) GetGeneration() int {
+	return o.Generation
+}
+
+// SetGeneration sets value to Generation
+func (o *ServerPlan) SetGeneration(v int) {
+	o.Generation = v
+}
+
+// GetAvailability returns value of Availability
+func (o *ServerPlan) GetAvailability() types.EAvailability {
+	return o.Availability
+}
+
+// SetAvailability sets value to Availability
+func (o *ServerPlan) SetAvailability(v types.EAvailability) {
+	o.Availability = v
 }
 
 /*************************************************

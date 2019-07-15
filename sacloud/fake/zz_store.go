@@ -214,6 +214,29 @@ func (s *store) setDisk(zone string, value *sacloud.Disk) {
 	s.set(ResourceDisk, zone, value)
 }
 
+func (s *store) getDiskPlan(zone string) []*sacloud.DiskPlan {
+	values := s.get(ResourceDiskPlan, zone)
+	var ret []*sacloud.DiskPlan
+	for _, v := range values {
+		if v, ok := v.(*sacloud.DiskPlan); ok {
+			ret = append(ret, v)
+		}
+	}
+	return ret
+}
+
+func (s *store) getDiskPlanByID(zone string, id types.ID) *sacloud.DiskPlan {
+	v := s.getByID(ResourceDiskPlan, zone, id)
+	if v, ok := v.(*sacloud.DiskPlan); ok {
+		return v
+	}
+	return nil
+}
+
+func (s *store) setDiskPlan(zone string, value *sacloud.DiskPlan) {
+	s.set(ResourceDiskPlan, zone, value)
+}
+
 func (s *store) getDNS(zone string) []*sacloud.DNS {
 	values := s.get(ResourceDNS, zone)
 	var ret []*sacloud.DNS
@@ -329,6 +352,29 @@ func (s *store) setInternet(zone string, value *sacloud.Internet) {
 	s.set(ResourceInternet, zone, value)
 }
 
+func (s *store) getInternetPlan(zone string) []*sacloud.InternetPlan {
+	values := s.get(ResourceInternetPlan, zone)
+	var ret []*sacloud.InternetPlan
+	for _, v := range values {
+		if v, ok := v.(*sacloud.InternetPlan); ok {
+			ret = append(ret, v)
+		}
+	}
+	return ret
+}
+
+func (s *store) getInternetPlanByID(zone string, id types.ID) *sacloud.InternetPlan {
+	v := s.getByID(ResourceInternetPlan, zone, id)
+	if v, ok := v.(*sacloud.InternetPlan); ok {
+		return v
+	}
+	return nil
+}
+
+func (s *store) setInternetPlan(zone string, value *sacloud.InternetPlan) {
+	s.set(ResourceInternetPlan, zone, value)
+}
+
 func (s *store) getLicense(zone string) []*sacloud.License {
 	values := s.get(ResourceLicense, zone)
 	var ret []*sacloud.License
@@ -350,6 +396,29 @@ func (s *store) getLicenseByID(zone string, id types.ID) *sacloud.License {
 
 func (s *store) setLicense(zone string, value *sacloud.License) {
 	s.set(ResourceLicense, zone, value)
+}
+
+func (s *store) getLicenseInfo(zone string) []*sacloud.LicenseInfo {
+	values := s.get(ResourceLicenseInfo, zone)
+	var ret []*sacloud.LicenseInfo
+	for _, v := range values {
+		if v, ok := v.(*sacloud.LicenseInfo); ok {
+			ret = append(ret, v)
+		}
+	}
+	return ret
+}
+
+func (s *store) getLicenseInfoByID(zone string, id types.ID) *sacloud.LicenseInfo {
+	v := s.getByID(ResourceLicenseInfo, zone, id)
+	if v, ok := v.(*sacloud.LicenseInfo); ok {
+		return v
+	}
+	return nil
+}
+
+func (s *store) setLicenseInfo(zone string, value *sacloud.LicenseInfo) {
+	s.set(ResourceLicenseInfo, zone, value)
 }
 
 func (s *store) getLoadBalancer(zone string) []*sacloud.LoadBalancer {
@@ -557,6 +626,29 @@ func (s *store) getServerByID(zone string, id types.ID) *sacloud.Server {
 
 func (s *store) setServer(zone string, value *sacloud.Server) {
 	s.set(ResourceServer, zone, value)
+}
+
+func (s *store) getServerPlan(zone string) []*sacloud.ServerPlan {
+	values := s.get(ResourceServerPlan, zone)
+	var ret []*sacloud.ServerPlan
+	for _, v := range values {
+		if v, ok := v.(*sacloud.ServerPlan); ok {
+			ret = append(ret, v)
+		}
+	}
+	return ret
+}
+
+func (s *store) getServerPlanByID(zone string, id types.ID) *sacloud.ServerPlan {
+	v := s.getByID(ResourceServerPlan, zone, id)
+	if v, ok := v.(*sacloud.ServerPlan); ok {
+		return v
+	}
+	return nil
+}
+
+func (s *store) setServerPlan(zone string, value *sacloud.ServerPlan) {
+	s.set(ResourceServerPlan, zone, value)
 }
 
 func (s *store) getSIM(zone string) []*sacloud.SIM {

@@ -17,7 +17,6 @@ var privateHostAPI = &dsl.Resource{
 	Name:       privateHostAPIName,
 	PathName:   privateHostAPIPathName,
 	PathSuffix: dsl.CloudAPISuffix,
-	IsGlobal:   true,
 	Operations: dsl.Operations{
 		// find
 		ops.Find(privateHostAPIName, privateHostNakedType, findParameter, privateHostView),
