@@ -41,6 +41,10 @@ const (
 	ResourceNote = "Note"
 	// ResourcePacketFilter is resource key of fake store
 	ResourcePacketFilter = "PacketFilter"
+	// ResourcePrivateHost is resource key of fake store
+	ResourcePrivateHost = "PrivateHost"
+	// ResourcePrivateHostPlan is resource key of fake store
+	ResourcePrivateHostPlan = "PrivateHostPlan"
 	// ResourceProxyLB is resource key of fake store
 	ResourceProxyLB = "ProxyLB"
 	// ResourceRegion is resource key of fake store

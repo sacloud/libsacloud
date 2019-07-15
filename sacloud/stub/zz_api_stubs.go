@@ -2245,6 +2245,136 @@ func (s *PacketFilterStub) Delete(ctx context.Context, zone string, id types.ID)
 }
 
 /*************************************************
+* PrivateHostStub
+*************************************************/
+
+// PrivateHostFindStubResult is expected values of the Find operation
+type PrivateHostFindStubResult struct {
+	Values *sacloud.PrivateHostFindResult
+	Err    error
+}
+
+// PrivateHostCreateStubResult is expected values of the Create operation
+type PrivateHostCreateStubResult struct {
+	PrivateHost *sacloud.PrivateHost
+	Err         error
+}
+
+// PrivateHostReadStubResult is expected values of the Read operation
+type PrivateHostReadStubResult struct {
+	PrivateHost *sacloud.PrivateHost
+	Err         error
+}
+
+// PrivateHostUpdateStubResult is expected values of the Update operation
+type PrivateHostUpdateStubResult struct {
+	PrivateHost *sacloud.PrivateHost
+	Err         error
+}
+
+// PrivateHostDeleteStubResult is expected values of the Delete operation
+type PrivateHostDeleteStubResult struct {
+	Err error
+}
+
+// PrivateHostStub is for trace PrivateHostOp operations
+type PrivateHostStub struct {
+	FindStubResult   *PrivateHostFindStubResult
+	CreateStubResult *PrivateHostCreateStubResult
+	ReadStubResult   *PrivateHostReadStubResult
+	UpdateStubResult *PrivateHostUpdateStubResult
+	DeleteStubResult *PrivateHostDeleteStubResult
+}
+
+// NewPrivateHostStub creates new PrivateHostStub instance
+func NewPrivateHostStub(caller sacloud.APICaller) sacloud.PrivateHostAPI {
+	return &PrivateHostStub{}
+}
+
+// Find is API call with trace log
+func (s *PrivateHostStub) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.PrivateHostFindResult, error) {
+	if s.FindStubResult == nil {
+		log.Fatal("PrivateHostStub.FindStubResult is not set")
+	}
+	return s.FindStubResult.Values, s.FindStubResult.Err
+}
+
+// Create is API call with trace log
+func (s *PrivateHostStub) Create(ctx context.Context, zone string, param *sacloud.PrivateHostCreateRequest) (*sacloud.PrivateHost, error) {
+	if s.CreateStubResult == nil {
+		log.Fatal("PrivateHostStub.CreateStubResult is not set")
+	}
+	return s.CreateStubResult.PrivateHost, s.CreateStubResult.Err
+}
+
+// Read is API call with trace log
+func (s *PrivateHostStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.PrivateHost, error) {
+	if s.ReadStubResult == nil {
+		log.Fatal("PrivateHostStub.ReadStubResult is not set")
+	}
+	return s.ReadStubResult.PrivateHost, s.ReadStubResult.Err
+}
+
+// Update is API call with trace log
+func (s *PrivateHostStub) Update(ctx context.Context, zone string, id types.ID, param *sacloud.PrivateHostUpdateRequest) (*sacloud.PrivateHost, error) {
+	if s.UpdateStubResult == nil {
+		log.Fatal("PrivateHostStub.UpdateStubResult is not set")
+	}
+	return s.UpdateStubResult.PrivateHost, s.UpdateStubResult.Err
+}
+
+// Delete is API call with trace log
+func (s *PrivateHostStub) Delete(ctx context.Context, zone string, id types.ID) error {
+	if s.DeleteStubResult == nil {
+		log.Fatal("PrivateHostStub.DeleteStubResult is not set")
+	}
+	return s.DeleteStubResult.Err
+}
+
+/*************************************************
+* PrivateHostPlanStub
+*************************************************/
+
+// PrivateHostPlanFindStubResult is expected values of the Find operation
+type PrivateHostPlanFindStubResult struct {
+	Values *sacloud.PrivateHostPlanFindResult
+	Err    error
+}
+
+// PrivateHostPlanReadStubResult is expected values of the Read operation
+type PrivateHostPlanReadStubResult struct {
+	PrivateHostPlan *sacloud.PrivateHostPlan
+	Err             error
+}
+
+// PrivateHostPlanStub is for trace PrivateHostPlanOp operations
+type PrivateHostPlanStub struct {
+	FindStubResult *PrivateHostPlanFindStubResult
+	ReadStubResult *PrivateHostPlanReadStubResult
+}
+
+// NewPrivateHostPlanStub creates new PrivateHostPlanStub instance
+func NewPrivateHostPlanStub(caller sacloud.APICaller) sacloud.PrivateHostPlanAPI {
+	return &PrivateHostPlanStub{}
+}
+
+// Find is API call with trace log
+func (s *PrivateHostPlanStub) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.PrivateHostPlanFindResult, error) {
+	if s.FindStubResult == nil {
+		log.Fatal("PrivateHostPlanStub.FindStubResult is not set")
+	}
+	return s.FindStubResult.Values, s.FindStubResult.Err
+}
+
+// Read is API call with trace log
+func (s *PrivateHostPlanStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.PrivateHostPlan, error) {
+	if s.ReadStubResult == nil {
+		log.Fatal("PrivateHostPlanStub.ReadStubResult is not set")
+	}
+	return s.ReadStubResult.PrivateHostPlan, s.ReadStubResult.Err
+}
+
+/*************************************************
 * ProxyLBStub
 *************************************************/
 

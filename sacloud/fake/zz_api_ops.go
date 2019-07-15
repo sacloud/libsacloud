@@ -65,6 +65,12 @@ func SwitchFactoryFuncToFake() {
 	sacloud.SetClientFactoryFunc(ResourcePacketFilter, func(caller sacloud.APICaller) interface{} {
 		return NewPacketFilterOp()
 	})
+	sacloud.SetClientFactoryFunc(ResourcePrivateHost, func(caller sacloud.APICaller) interface{} {
+		return NewPrivateHostOp()
+	})
+	sacloud.SetClientFactoryFunc(ResourcePrivateHostPlan, func(caller sacloud.APICaller) interface{} {
+		return NewPrivateHostPlanOp()
+	})
 	sacloud.SetClientFactoryFunc(ResourceProxyLB, func(caller sacloud.APICaller) interface{} {
 		return NewProxyLBOp()
 	})
@@ -395,6 +401,38 @@ type PacketFilterOp struct {
 func NewPacketFilterOp() sacloud.PacketFilterAPI {
 	return &PacketFilterOp{
 		key: ResourcePacketFilter,
+	}
+}
+
+/*************************************************
+* PrivateHostOp
+*************************************************/
+
+// PrivateHostOp is fake implementation of PrivateHostAPI interface
+type PrivateHostOp struct {
+	key string
+}
+
+// NewPrivateHostOp creates new PrivateHostOp instance
+func NewPrivateHostOp() sacloud.PrivateHostAPI {
+	return &PrivateHostOp{
+		key: ResourcePrivateHost,
+	}
+}
+
+/*************************************************
+* PrivateHostPlanOp
+*************************************************/
+
+// PrivateHostPlanOp is fake implementation of PrivateHostPlanAPI interface
+type PrivateHostPlanOp struct {
+	key string
+}
+
+// NewPrivateHostPlanOp creates new PrivateHostPlanOp instance
+func NewPrivateHostPlanOp() sacloud.PrivateHostPlanAPI {
+	return &PrivateHostPlanOp{
+		key: ResourcePrivateHostPlan,
 	}
 }
 

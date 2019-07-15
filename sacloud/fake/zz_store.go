@@ -444,6 +444,52 @@ func (s *store) setPacketFilter(zone string, value *sacloud.PacketFilter) {
 	s.set(ResourcePacketFilter, zone, value)
 }
 
+func (s *store) getPrivateHost(zone string) []*sacloud.PrivateHost {
+	values := s.get(ResourcePrivateHost, zone)
+	var ret []*sacloud.PrivateHost
+	for _, v := range values {
+		if v, ok := v.(*sacloud.PrivateHost); ok {
+			ret = append(ret, v)
+		}
+	}
+	return ret
+}
+
+func (s *store) getPrivateHostByID(zone string, id types.ID) *sacloud.PrivateHost {
+	v := s.getByID(ResourcePrivateHost, zone, id)
+	if v, ok := v.(*sacloud.PrivateHost); ok {
+		return v
+	}
+	return nil
+}
+
+func (s *store) setPrivateHost(zone string, value *sacloud.PrivateHost) {
+	s.set(ResourcePrivateHost, zone, value)
+}
+
+func (s *store) getPrivateHostPlan(zone string) []*sacloud.PrivateHostPlan {
+	values := s.get(ResourcePrivateHostPlan, zone)
+	var ret []*sacloud.PrivateHostPlan
+	for _, v := range values {
+		if v, ok := v.(*sacloud.PrivateHostPlan); ok {
+			ret = append(ret, v)
+		}
+	}
+	return ret
+}
+
+func (s *store) getPrivateHostPlanByID(zone string, id types.ID) *sacloud.PrivateHostPlan {
+	v := s.getByID(ResourcePrivateHostPlan, zone, id)
+	if v, ok := v.(*sacloud.PrivateHostPlan); ok {
+		return v
+	}
+	return nil
+}
+
+func (s *store) setPrivateHostPlan(zone string, value *sacloud.PrivateHostPlan) {
+	s.set(ResourcePrivateHostPlan, zone, value)
+}
+
 func (s *store) getProxyLB(zone string) []*sacloud.ProxyLB {
 	values := s.get(ResourceProxyLB, zone)
 	var ret []*sacloud.ProxyLB

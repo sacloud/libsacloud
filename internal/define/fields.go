@@ -429,6 +429,26 @@ func (f *fieldsDef) ServerID() *dsl.FieldDesc {
 	}
 }
 
+func (f *fieldsDef) PrivateHostHostName() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "HostName",
+		Type: meta.TypeString,
+		Tags: &dsl.FieldTags{
+			MapConv: "Host.Name",
+		},
+	}
+}
+
+func (f *fieldsDef) PrivateHostPlanID() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "PlanID",
+		Tags: &dsl.FieldTags{
+			MapConv: "Plan.ID,omitempty",
+		},
+		Type: meta.TypeID,
+	}
+}
+
 func (f *fieldsDef) IconID() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "IconID",
