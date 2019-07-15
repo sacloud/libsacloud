@@ -35,6 +35,9 @@ func SwitchFactoryFuncToFake() {
 	sacloud.SetClientFactoryFunc(ResourceDisk, func(caller sacloud.APICaller) interface{} {
 		return NewDiskOp()
 	})
+	sacloud.SetClientFactoryFunc(ResourceDiskPlan, func(caller sacloud.APICaller) interface{} {
+		return NewDiskPlanOp()
+	})
 	sacloud.SetClientFactoryFunc(ResourceDNS, func(caller sacloud.APICaller) interface{} {
 		return NewDNSOp()
 	})
@@ -50,8 +53,14 @@ func SwitchFactoryFuncToFake() {
 	sacloud.SetClientFactoryFunc(ResourceInternet, func(caller sacloud.APICaller) interface{} {
 		return NewInternetOp()
 	})
+	sacloud.SetClientFactoryFunc(ResourceInternetPlan, func(caller sacloud.APICaller) interface{} {
+		return NewInternetPlanOp()
+	})
 	sacloud.SetClientFactoryFunc(ResourceLicense, func(caller sacloud.APICaller) interface{} {
 		return NewLicenseOp()
+	})
+	sacloud.SetClientFactoryFunc(ResourceLicenseInfo, func(caller sacloud.APICaller) interface{} {
+		return NewLicenseInfoOp()
 	})
 	sacloud.SetClientFactoryFunc(ResourceLoadBalancer, func(caller sacloud.APICaller) interface{} {
 		return NewLoadBalancerOp()
@@ -79,6 +88,9 @@ func SwitchFactoryFuncToFake() {
 	})
 	sacloud.SetClientFactoryFunc(ResourceServer, func(caller sacloud.APICaller) interface{} {
 		return NewServerOp()
+	})
+	sacloud.SetClientFactoryFunc(ResourceServerPlan, func(caller sacloud.APICaller) interface{} {
+		return NewServerPlanOp()
 	})
 	sacloud.SetClientFactoryFunc(ResourceSIM, func(caller sacloud.APICaller) interface{} {
 		return NewSIMOp()
@@ -245,6 +257,22 @@ func NewDiskOp() sacloud.DiskAPI {
 }
 
 /*************************************************
+* DiskPlanOp
+*************************************************/
+
+// DiskPlanOp is fake implementation of DiskPlanAPI interface
+type DiskPlanOp struct {
+	key string
+}
+
+// NewDiskPlanOp creates new DiskPlanOp instance
+func NewDiskPlanOp() sacloud.DiskPlanAPI {
+	return &DiskPlanOp{
+		key: ResourceDiskPlan,
+	}
+}
+
+/*************************************************
 * DNSOp
 *************************************************/
 
@@ -325,6 +353,22 @@ func NewInternetOp() sacloud.InternetAPI {
 }
 
 /*************************************************
+* InternetPlanOp
+*************************************************/
+
+// InternetPlanOp is fake implementation of InternetPlanAPI interface
+type InternetPlanOp struct {
+	key string
+}
+
+// NewInternetPlanOp creates new InternetPlanOp instance
+func NewInternetPlanOp() sacloud.InternetPlanAPI {
+	return &InternetPlanOp{
+		key: ResourceInternetPlan,
+	}
+}
+
+/*************************************************
 * LicenseOp
 *************************************************/
 
@@ -337,6 +381,22 @@ type LicenseOp struct {
 func NewLicenseOp() sacloud.LicenseAPI {
 	return &LicenseOp{
 		key: ResourceLicense,
+	}
+}
+
+/*************************************************
+* LicenseInfoOp
+*************************************************/
+
+// LicenseInfoOp is fake implementation of LicenseInfoAPI interface
+type LicenseInfoOp struct {
+	key string
+}
+
+// NewLicenseInfoOp creates new LicenseInfoOp instance
+func NewLicenseInfoOp() sacloud.LicenseInfoAPI {
+	return &LicenseInfoOp{
+		key: ResourceLicenseInfo,
 	}
 }
 
@@ -481,6 +541,22 @@ type ServerOp struct {
 func NewServerOp() sacloud.ServerAPI {
 	return &ServerOp{
 		key: ResourceServer,
+	}
+}
+
+/*************************************************
+* ServerPlanOp
+*************************************************/
+
+// ServerPlanOp is fake implementation of ServerPlanAPI interface
+type ServerPlanOp struct {
+	key string
+}
+
+// NewServerPlanOp creates new ServerPlanOp instance
+func NewServerPlanOp() sacloud.ServerPlanAPI {
+	return &ServerPlanOp{
+		key: ResourceServerPlan,
 	}
 }
 

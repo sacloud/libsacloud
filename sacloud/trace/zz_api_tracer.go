@@ -40,6 +40,9 @@ func AddClientFactoryHooks() {
 	sacloud.AddClientFacotyHookFunc("Disk", func(in interface{}) interface{} {
 		return NewDiskTracer(in.(sacloud.DiskAPI))
 	})
+	sacloud.AddClientFacotyHookFunc("DiskPlan", func(in interface{}) interface{} {
+		return NewDiskPlanTracer(in.(sacloud.DiskPlanAPI))
+	})
 	sacloud.AddClientFacotyHookFunc("DNS", func(in interface{}) interface{} {
 		return NewDNSTracer(in.(sacloud.DNSAPI))
 	})
@@ -55,8 +58,14 @@ func AddClientFactoryHooks() {
 	sacloud.AddClientFacotyHookFunc("Internet", func(in interface{}) interface{} {
 		return NewInternetTracer(in.(sacloud.InternetAPI))
 	})
+	sacloud.AddClientFacotyHookFunc("InternetPlan", func(in interface{}) interface{} {
+		return NewInternetPlanTracer(in.(sacloud.InternetPlanAPI))
+	})
 	sacloud.AddClientFacotyHookFunc("License", func(in interface{}) interface{} {
 		return NewLicenseTracer(in.(sacloud.LicenseAPI))
+	})
+	sacloud.AddClientFacotyHookFunc("LicenseInfo", func(in interface{}) interface{} {
+		return NewLicenseInfoTracer(in.(sacloud.LicenseInfoAPI))
 	})
 	sacloud.AddClientFacotyHookFunc("LoadBalancer", func(in interface{}) interface{} {
 		return NewLoadBalancerTracer(in.(sacloud.LoadBalancerAPI))
@@ -84,6 +93,9 @@ func AddClientFactoryHooks() {
 	})
 	sacloud.AddClientFacotyHookFunc("Server", func(in interface{}) interface{} {
 		return NewServerTracer(in.(sacloud.ServerAPI))
+	})
+	sacloud.AddClientFacotyHookFunc("ServerPlan", func(in interface{}) interface{} {
+		return NewServerPlanTracer(in.(sacloud.ServerPlanAPI))
 	})
 	sacloud.AddClientFacotyHookFunc("SIM", func(in interface{}) interface{} {
 		return NewSIMTracer(in.(sacloud.SIMAPI))
@@ -2357,6 +2369,88 @@ func (t *DiskTracer) Monitor(ctx context.Context, zone string, id types.ID, cond
 }
 
 /*************************************************
+* DiskPlanTracer
+*************************************************/
+
+// DiskPlanTracer is for trace DiskPlanOp operations
+type DiskPlanTracer struct {
+	Internal sacloud.DiskPlanAPI
+}
+
+// NewDiskPlanTracer creates new DiskPlanTracer instance
+func NewDiskPlanTracer(in sacloud.DiskPlanAPI) sacloud.DiskPlanAPI {
+	return &DiskPlanTracer{
+		Internal: in,
+	}
+}
+
+// Find is API call with trace log
+func (t *DiskPlanTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.DiskPlanFindResult, error) {
+	log.Println("[TRACE] DiskPlanAPI.Find start")
+	targetArguments := struct {
+		Argzone       string                 `json:"zone"`
+		Argconditions *sacloud.FindCondition `json:"conditions"`
+	}{
+		Argzone:       zone,
+		Argconditions: conditions,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] DiskPlanAPI.Find end")
+	}()
+
+	result, err := t.Internal.Find(ctx, zone, conditions)
+	targetResults := struct {
+		Result *sacloud.DiskPlanFindResult
+		Error  error
+	}{
+		Result: result,
+		Error:  err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return result, err
+}
+
+// Read is API call with trace log
+func (t *DiskPlanTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.DiskPlan, error) {
+	log.Println("[TRACE] DiskPlanAPI.Read start")
+	targetArguments := struct {
+		Argzone string   `json:"zone"`
+		Argid   types.ID `json:"id"`
+	}{
+		Argzone: zone,
+		Argid:   id,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] DiskPlanAPI.Read end")
+	}()
+
+	resultDiskPlan, err := t.Internal.Read(ctx, zone, id)
+	targetResults := struct {
+		DiskPlan *sacloud.DiskPlan
+		Error    error
+	}{
+		DiskPlan: resultDiskPlan,
+		Error:    err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultDiskPlan, err
+}
+
+/*************************************************
 * DNSTracer
 *************************************************/
 
@@ -3631,6 +3725,88 @@ func (t *InternetTracer) Monitor(ctx context.Context, zone string, id types.ID, 
 }
 
 /*************************************************
+* InternetPlanTracer
+*************************************************/
+
+// InternetPlanTracer is for trace InternetPlanOp operations
+type InternetPlanTracer struct {
+	Internal sacloud.InternetPlanAPI
+}
+
+// NewInternetPlanTracer creates new InternetPlanTracer instance
+func NewInternetPlanTracer(in sacloud.InternetPlanAPI) sacloud.InternetPlanAPI {
+	return &InternetPlanTracer{
+		Internal: in,
+	}
+}
+
+// Find is API call with trace log
+func (t *InternetPlanTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.InternetPlanFindResult, error) {
+	log.Println("[TRACE] InternetPlanAPI.Find start")
+	targetArguments := struct {
+		Argzone       string                 `json:"zone"`
+		Argconditions *sacloud.FindCondition `json:"conditions"`
+	}{
+		Argzone:       zone,
+		Argconditions: conditions,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] InternetPlanAPI.Find end")
+	}()
+
+	result, err := t.Internal.Find(ctx, zone, conditions)
+	targetResults := struct {
+		Result *sacloud.InternetPlanFindResult
+		Error  error
+	}{
+		Result: result,
+		Error:  err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return result, err
+}
+
+// Read is API call with trace log
+func (t *InternetPlanTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.InternetPlan, error) {
+	log.Println("[TRACE] InternetPlanAPI.Read start")
+	targetArguments := struct {
+		Argzone string   `json:"zone"`
+		Argid   types.ID `json:"id"`
+	}{
+		Argzone: zone,
+		Argid:   id,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] InternetPlanAPI.Read end")
+	}()
+
+	resultInternetPlan, err := t.Internal.Read(ctx, zone, id)
+	targetResults := struct {
+		InternetPlan *sacloud.InternetPlan
+		Error        error
+	}{
+		InternetPlan: resultInternetPlan,
+		Error:        err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultInternetPlan, err
+}
+
+/*************************************************
 * LicenseTracer
 *************************************************/
 
@@ -3809,6 +3985,88 @@ func (t *LicenseTracer) Delete(ctx context.Context, zone string, id types.ID) er
 	}
 
 	return err
+}
+
+/*************************************************
+* LicenseInfoTracer
+*************************************************/
+
+// LicenseInfoTracer is for trace LicenseInfoOp operations
+type LicenseInfoTracer struct {
+	Internal sacloud.LicenseInfoAPI
+}
+
+// NewLicenseInfoTracer creates new LicenseInfoTracer instance
+func NewLicenseInfoTracer(in sacloud.LicenseInfoAPI) sacloud.LicenseInfoAPI {
+	return &LicenseInfoTracer{
+		Internal: in,
+	}
+}
+
+// Find is API call with trace log
+func (t *LicenseInfoTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.LicenseInfoFindResult, error) {
+	log.Println("[TRACE] LicenseInfoAPI.Find start")
+	targetArguments := struct {
+		Argzone       string                 `json:"zone"`
+		Argconditions *sacloud.FindCondition `json:"conditions"`
+	}{
+		Argzone:       zone,
+		Argconditions: conditions,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] LicenseInfoAPI.Find end")
+	}()
+
+	result, err := t.Internal.Find(ctx, zone, conditions)
+	targetResults := struct {
+		Result *sacloud.LicenseInfoFindResult
+		Error  error
+	}{
+		Result: result,
+		Error:  err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return result, err
+}
+
+// Read is API call with trace log
+func (t *LicenseInfoTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.LicenseInfo, error) {
+	log.Println("[TRACE] LicenseInfoAPI.Read start")
+	targetArguments := struct {
+		Argzone string   `json:"zone"`
+		Argid   types.ID `json:"id"`
+	}{
+		Argzone: zone,
+		Argid:   id,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] LicenseInfoAPI.Read end")
+	}()
+
+	resultLicenseInfo, err := t.Internal.Read(ctx, zone, id)
+	targetResults := struct {
+		LicenseInfo *sacloud.LicenseInfo
+		Error       error
+	}{
+		LicenseInfo: resultLicenseInfo,
+		Error:       err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultLicenseInfo, err
 }
 
 /*************************************************
@@ -6028,6 +6286,88 @@ func (t *ServerTracer) Monitor(ctx context.Context, zone string, id types.ID, co
 	}
 
 	return resultCPUTimeActivity, err
+}
+
+/*************************************************
+* ServerPlanTracer
+*************************************************/
+
+// ServerPlanTracer is for trace ServerPlanOp operations
+type ServerPlanTracer struct {
+	Internal sacloud.ServerPlanAPI
+}
+
+// NewServerPlanTracer creates new ServerPlanTracer instance
+func NewServerPlanTracer(in sacloud.ServerPlanAPI) sacloud.ServerPlanAPI {
+	return &ServerPlanTracer{
+		Internal: in,
+	}
+}
+
+// Find is API call with trace log
+func (t *ServerPlanTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.ServerPlanFindResult, error) {
+	log.Println("[TRACE] ServerPlanAPI.Find start")
+	targetArguments := struct {
+		Argzone       string                 `json:"zone"`
+		Argconditions *sacloud.FindCondition `json:"conditions"`
+	}{
+		Argzone:       zone,
+		Argconditions: conditions,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] ServerPlanAPI.Find end")
+	}()
+
+	result, err := t.Internal.Find(ctx, zone, conditions)
+	targetResults := struct {
+		Result *sacloud.ServerPlanFindResult
+		Error  error
+	}{
+		Result: result,
+		Error:  err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return result, err
+}
+
+// Read is API call with trace log
+func (t *ServerPlanTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.ServerPlan, error) {
+	log.Println("[TRACE] ServerPlanAPI.Read start")
+	targetArguments := struct {
+		Argzone string   `json:"zone"`
+		Argid   types.ID `json:"id"`
+	}{
+		Argzone: zone,
+		Argid:   id,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] ServerPlanAPI.Read end")
+	}()
+
+	resultServerPlan, err := t.Internal.Read(ctx, zone, id)
+	targetResults := struct {
+		ServerPlan *sacloud.ServerPlan
+		Error      error
+	}{
+		ServerPlan: resultServerPlan,
+		Error:      err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultServerPlan, err
 }
 
 /*************************************************

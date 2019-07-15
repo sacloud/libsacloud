@@ -21,6 +21,8 @@ const (
 	ResourceDatabase = "Database"
 	// ResourceDisk is resource key of fake store
 	ResourceDisk = "Disk"
+	// ResourceDiskPlan is resource key of fake store
+	ResourceDiskPlan = "DiskPlan"
 	// ResourceDNS is resource key of fake store
 	ResourceDNS = "DNS"
 	// ResourceGSLB is resource key of fake store
@@ -31,8 +33,12 @@ const (
 	ResourceInterface = "Interface"
 	// ResourceInternet is resource key of fake store
 	ResourceInternet = "Internet"
+	// ResourceInternetPlan is resource key of fake store
+	ResourceInternetPlan = "InternetPlan"
 	// ResourceLicense is resource key of fake store
 	ResourceLicense = "License"
+	// ResourceLicenseInfo is resource key of fake store
+	ResourceLicenseInfo = "LicenseInfo"
 	// ResourceLoadBalancer is resource key of fake store
 	ResourceLoadBalancer = "LoadBalancer"
 	// ResourceNFS is resource key of fake store
@@ -51,6 +57,8 @@ const (
 	ResourceRegion = "Region"
 	// ResourceServer is resource key of fake store
 	ResourceServer = "Server"
+	// ResourceServerPlan is resource key of fake store
+	ResourceServerPlan = "ServerPlan"
 	// ResourceSIM is resource key of fake store
 	ResourceSIM = "SIM"
 	// ResourceSimpleMonitor is resource key of fake store

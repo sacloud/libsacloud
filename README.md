@@ -27,7 +27,12 @@ Library for SakuraCloud API
 - [x] `Note`: スタートアップスクリプト
 - [x] `PacketFilter`: パケットフィルタ
 - [x] `PrivateHost`: 専有ホスト
-- [ ] `ProductXXX`: 商品関連(productXXX)
+- [x] `ProductXXX`: 商品関連
+  - [x] `Disk`: ディスクプラン
+  - [x] `Internet`: ルータープラン
+  - [x] `License`: ライセンスプラン
+  - [x] `PrivateHost`: 専有ホストプラン
+  - [x] `Server`: サーバプラン
 - [ ] `Price`: 価格表(public/price)
 - [x] `ProxyLB`: エンハンスドロードバランサ
 - [x] `Region`: リージョン
