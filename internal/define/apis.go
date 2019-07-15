@@ -24,6 +24,7 @@ func init() {
 	APIs.Define(bridgeAPI)        // ブリッジ
 	APIs.Define(cdromAPI)         // ISOイメージ(CD-ROM)
 	APIs.Define(couponAPI)        // クーポン
+	APIs.Define(databaseAPI)      // データベース
 	APIs.Define(diskAPI)          // ディスク
 	APIs.Define(dnsAPI)           // DNS
 	APIs.Define(gslbAPI)          // GSLB

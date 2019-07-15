@@ -213,6 +213,71 @@ type CouponFindResult struct {
 	Coupons []*Coupon `json:",omitempty" mapconv:"[]Coupon,omitempty,recursive"`
 }
 
+// DatabaseFindResult represents the Result of API
+type DatabaseFindResult struct {
+	Total int `json:",omitempty"` // Total count of target resources
+	From  int `json:",omitempty"` // Current page number
+	Count int `json:",omitempty"` // Count of current page
+
+	Databases []*Database `json:",omitempty" mapconv:"[]Appliances,omitempty,recursive"`
+}
+
+// databaseCreateResult represents the Result of API
+type databaseCreateResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	Database *Database `json:",omitempty" mapconv:"Appliance,omitempty,recursive"`
+}
+
+// databaseReadResult represents the Result of API
+type databaseReadResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	Database *Database `json:",omitempty" mapconv:"Appliance,omitempty,recursive"`
+}
+
+// databaseUpdateResult represents the Result of API
+type databaseUpdateResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	Database *Database `json:",omitempty" mapconv:"Appliance,omitempty,recursive"`
+}
+
+// databaseMonitorCPUResult represents the Result of API
+type databaseMonitorCPUResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	CPUTimeActivity *CPUTimeActivity `json:",omitempty" mapconv:"Data,omitempty,recursive"`
+}
+
+// databaseMonitorDiskResult represents the Result of API
+type databaseMonitorDiskResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	DiskActivity *DiskActivity `json:",omitempty" mapconv:"Data,omitempty,recursive"`
+}
+
+// databaseMonitorInterfaceResult represents the Result of API
+type databaseMonitorInterfaceResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	InterfaceActivity *InterfaceActivity `json:",omitempty" mapconv:"Data,omitempty,recursive"`
+}
+
+// databaseMonitorDatabaseResult represents the Result of API
+type databaseMonitorDatabaseResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	DatabaseActivity *DatabaseActivity `json:",omitempty" mapconv:"Data,omitempty,recursive"`
+}
+
+// databaseStatusResult represents the Result of API
+type databaseStatusResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	DatabaseStatus *DatabaseStatus `json:",omitempty" mapconv:"Appliance,omitempty,recursive"`
+}
+
 // DiskFindResult represents the Result of API
 type DiskFindResult struct {
 	Total int `json:",omitempty"` // Total count of target resources

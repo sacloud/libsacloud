@@ -2567,6 +2567,1764 @@ func (o *Coupon) SetUntilAt(v time.Time) {
 }
 
 /*************************************************
+* Database
+*************************************************/
+
+// Database represents API parameter/response structure
+type Database struct {
+	ID                      types.ID
+	Class                   string
+	Name                    string `validate:"required"`
+	Description             string `validate:"min=0,max=512"`
+	Tags                    []string
+	Availability            types.EAvailability
+	IconID                  types.ID `mapconv:"Icon.ID"`
+	CreatedAt               time.Time
+	ModifiedAt              time.Time
+	CommonSetting           *DatabaseSettingCommon      `mapconv:"Settings.DBConf.Common,recursive"`
+	BackupSetting           *DatabaseSettingBackup      `mapconv:"Settings.DBConf.Backup,recursive"`
+	ReplicationSetting      *DatabaseReplicationSetting `mapconv:"Settings.DBConf.Replication,recursive"`
+	SettingsHash            string
+	InstanceHostName        string                      `mapconv:"Instance.Host.Name"`
+	InstanceHostInfoURL     string                      `mapconv:"Instance.Host.InfoURL"`
+	InstanceStatus          types.EServerInstanceStatus `mapconv:"Instance.Status"`
+	InstanceStatusChangedAt time.Time                   `mapconv:"Instance.StatusChangedAt"`
+	PlanID                  types.ID                    `mapconv:"Remark.Plan.ID/Plan.ID"`
+	SwitchID                types.ID                    `mapconv:"Remark.Switch.ID"`
+	Conf                    *DatabaseRemarkDBConfCommon `mapconv:"Remark.DBConf.Common,recursive"`
+	DefaultRoute            string                      `mapconv:"Remark.Network.DefaultRoute" validate:"ipv4"`
+	NetworkMaskLen          int                         `mapconv:"Remark.Network.NetworkMaskLen" validate:"min=1,max=32"`
+	IPAddresses             []string                    `mapconv:"Remark.[]Servers.IPAddress"`
+	ZoneID                  types.ID                    `mapconv:"Remark.Zone.ID"`
+	Interfaces              []*InterfaceView            `json:",omitempty" mapconv:"[]Interfaces,recursive,omitempty"`
+}
+
+// Validate validates by field tags
+func (o *Database) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetID returns value of ID
+func (o *Database) GetID() types.ID {
+	return o.ID
+}
+
+// SetID sets value to ID
+func (o *Database) SetID(v types.ID) {
+	o.ID = v
+}
+
+// GetStringID gets value to StringID
+func (o *Database) GetStringID() string {
+	return accessor.GetStringID(o)
+}
+
+// SetStringID sets value to StringID
+func (o *Database) SetStringID(v string) {
+	accessor.SetStringID(o, v)
+}
+
+// GetInt64ID gets value to Int64ID
+func (o *Database) GetInt64ID() int64 {
+	return accessor.GetInt64ID(o)
+}
+
+// SetInt64ID sets value to Int64ID
+func (o *Database) SetInt64ID(v int64) {
+	accessor.SetInt64ID(o, v)
+}
+
+// GetClass returns value of Class
+func (o *Database) GetClass() string {
+	return o.Class
+}
+
+// SetClass sets value to Class
+func (o *Database) SetClass(v string) {
+	o.Class = v
+}
+
+// GetName returns value of Name
+func (o *Database) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *Database) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *Database) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *Database) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetTags returns value of Tags
+func (o *Database) GetTags() []string {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *Database) SetTags(v []string) {
+	o.Tags = v
+}
+
+// GetAvailability returns value of Availability
+func (o *Database) GetAvailability() types.EAvailability {
+	return o.Availability
+}
+
+// SetAvailability sets value to Availability
+func (o *Database) SetAvailability(v types.EAvailability) {
+	o.Availability = v
+}
+
+// GetIconID returns value of IconID
+func (o *Database) GetIconID() types.ID {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *Database) SetIconID(v types.ID) {
+	o.IconID = v
+}
+
+// GetCreatedAt returns value of CreatedAt
+func (o *Database) GetCreatedAt() time.Time {
+	return o.CreatedAt
+}
+
+// SetCreatedAt sets value to CreatedAt
+func (o *Database) SetCreatedAt(v time.Time) {
+	o.CreatedAt = v
+}
+
+// GetModifiedAt returns value of ModifiedAt
+func (o *Database) GetModifiedAt() time.Time {
+	return o.ModifiedAt
+}
+
+// SetModifiedAt sets value to ModifiedAt
+func (o *Database) SetModifiedAt(v time.Time) {
+	o.ModifiedAt = v
+}
+
+// GetCommonSetting returns value of CommonSetting
+func (o *Database) GetCommonSetting() *DatabaseSettingCommon {
+	return o.CommonSetting
+}
+
+// SetCommonSetting sets value to CommonSetting
+func (o *Database) SetCommonSetting(v *DatabaseSettingCommon) {
+	o.CommonSetting = v
+}
+
+// GetBackupSetting returns value of BackupSetting
+func (o *Database) GetBackupSetting() *DatabaseSettingBackup {
+	return o.BackupSetting
+}
+
+// SetBackupSetting sets value to BackupSetting
+func (o *Database) SetBackupSetting(v *DatabaseSettingBackup) {
+	o.BackupSetting = v
+}
+
+// GetReplicationSetting returns value of ReplicationSetting
+func (o *Database) GetReplicationSetting() *DatabaseReplicationSetting {
+	return o.ReplicationSetting
+}
+
+// SetReplicationSetting sets value to ReplicationSetting
+func (o *Database) SetReplicationSetting(v *DatabaseReplicationSetting) {
+	o.ReplicationSetting = v
+}
+
+// GetSettingsHash returns value of SettingsHash
+func (o *Database) GetSettingsHash() string {
+	return o.SettingsHash
+}
+
+// SetSettingsHash sets value to SettingsHash
+func (o *Database) SetSettingsHash(v string) {
+	o.SettingsHash = v
+}
+
+// GetInstanceHostName returns value of InstanceHostName
+func (o *Database) GetInstanceHostName() string {
+	return o.InstanceHostName
+}
+
+// SetInstanceHostName sets value to InstanceHostName
+func (o *Database) SetInstanceHostName(v string) {
+	o.InstanceHostName = v
+}
+
+// GetInstanceHostInfoURL returns value of InstanceHostInfoURL
+func (o *Database) GetInstanceHostInfoURL() string {
+	return o.InstanceHostInfoURL
+}
+
+// SetInstanceHostInfoURL sets value to InstanceHostInfoURL
+func (o *Database) SetInstanceHostInfoURL(v string) {
+	o.InstanceHostInfoURL = v
+}
+
+// GetInstanceStatus returns value of InstanceStatus
+func (o *Database) GetInstanceStatus() types.EServerInstanceStatus {
+	return o.InstanceStatus
+}
+
+// SetInstanceStatus sets value to InstanceStatus
+func (o *Database) SetInstanceStatus(v types.EServerInstanceStatus) {
+	o.InstanceStatus = v
+}
+
+// GetInstanceStatusChangedAt returns value of InstanceStatusChangedAt
+func (o *Database) GetInstanceStatusChangedAt() time.Time {
+	return o.InstanceStatusChangedAt
+}
+
+// SetInstanceStatusChangedAt sets value to InstanceStatusChangedAt
+func (o *Database) SetInstanceStatusChangedAt(v time.Time) {
+	o.InstanceStatusChangedAt = v
+}
+
+// GetPlanID returns value of PlanID
+func (o *Database) GetPlanID() types.ID {
+	return o.PlanID
+}
+
+// SetPlanID sets value to PlanID
+func (o *Database) SetPlanID(v types.ID) {
+	o.PlanID = v
+}
+
+// GetSwitchID returns value of SwitchID
+func (o *Database) GetSwitchID() types.ID {
+	return o.SwitchID
+}
+
+// SetSwitchID sets value to SwitchID
+func (o *Database) SetSwitchID(v types.ID) {
+	o.SwitchID = v
+}
+
+// GetConf returns value of Conf
+func (o *Database) GetConf() *DatabaseRemarkDBConfCommon {
+	return o.Conf
+}
+
+// SetConf sets value to Conf
+func (o *Database) SetConf(v *DatabaseRemarkDBConfCommon) {
+	o.Conf = v
+}
+
+// GetDefaultRoute returns value of DefaultRoute
+func (o *Database) GetDefaultRoute() string {
+	return o.DefaultRoute
+}
+
+// SetDefaultRoute sets value to DefaultRoute
+func (o *Database) SetDefaultRoute(v string) {
+	o.DefaultRoute = v
+}
+
+// GetNetworkMaskLen returns value of NetworkMaskLen
+func (o *Database) GetNetworkMaskLen() int {
+	return o.NetworkMaskLen
+}
+
+// SetNetworkMaskLen sets value to NetworkMaskLen
+func (o *Database) SetNetworkMaskLen(v int) {
+	o.NetworkMaskLen = v
+}
+
+// GetIPAddresses returns value of IPAddresses
+func (o *Database) GetIPAddresses() []string {
+	return o.IPAddresses
+}
+
+// SetIPAddresses sets value to IPAddresses
+func (o *Database) SetIPAddresses(v []string) {
+	o.IPAddresses = v
+}
+
+// GetZoneID returns value of ZoneID
+func (o *Database) GetZoneID() types.ID {
+	return o.ZoneID
+}
+
+// SetZoneID sets value to ZoneID
+func (o *Database) SetZoneID(v types.ID) {
+	o.ZoneID = v
+}
+
+// GetInterfaces returns value of Interfaces
+func (o *Database) GetInterfaces() []*InterfaceView {
+	return o.Interfaces
+}
+
+// SetInterfaces sets value to Interfaces
+func (o *Database) SetInterfaces(v []*InterfaceView) {
+	o.Interfaces = v
+}
+
+/*************************************************
+* DatabaseSettingCommon
+*************************************************/
+
+// DatabaseSettingCommon represents API parameter/response structure
+type DatabaseSettingCommon struct {
+	WebUI         bool
+	ServicePort   int
+	SourceNetwork []string
+	DefaultUser   string
+	UserPassword  string
+}
+
+// Validate validates by field tags
+func (o *DatabaseSettingCommon) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetWebUI returns value of WebUI
+func (o *DatabaseSettingCommon) GetWebUI() bool {
+	return o.WebUI
+}
+
+// SetWebUI sets value to WebUI
+func (o *DatabaseSettingCommon) SetWebUI(v bool) {
+	o.WebUI = v
+}
+
+// GetServicePort returns value of ServicePort
+func (o *DatabaseSettingCommon) GetServicePort() int {
+	return o.ServicePort
+}
+
+// SetServicePort sets value to ServicePort
+func (o *DatabaseSettingCommon) SetServicePort(v int) {
+	o.ServicePort = v
+}
+
+// GetSourceNetwork returns value of SourceNetwork
+func (o *DatabaseSettingCommon) GetSourceNetwork() []string {
+	return o.SourceNetwork
+}
+
+// SetSourceNetwork sets value to SourceNetwork
+func (o *DatabaseSettingCommon) SetSourceNetwork(v []string) {
+	o.SourceNetwork = v
+}
+
+// GetDefaultUser returns value of DefaultUser
+func (o *DatabaseSettingCommon) GetDefaultUser() string {
+	return o.DefaultUser
+}
+
+// SetDefaultUser sets value to DefaultUser
+func (o *DatabaseSettingCommon) SetDefaultUser(v string) {
+	o.DefaultUser = v
+}
+
+// GetUserPassword returns value of UserPassword
+func (o *DatabaseSettingCommon) GetUserPassword() string {
+	return o.UserPassword
+}
+
+// SetUserPassword sets value to UserPassword
+func (o *DatabaseSettingCommon) SetUserPassword(v string) {
+	o.UserPassword = v
+}
+
+/*************************************************
+* DatabaseSettingBackup
+*************************************************/
+
+// DatabaseSettingBackup represents API parameter/response structure
+type DatabaseSettingBackup struct {
+	Rotate    int
+	Time      string
+	DayOfWeek []types.EBackupSpanWeekday
+}
+
+// Validate validates by field tags
+func (o *DatabaseSettingBackup) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetRotate returns value of Rotate
+func (o *DatabaseSettingBackup) GetRotate() int {
+	return o.Rotate
+}
+
+// SetRotate sets value to Rotate
+func (o *DatabaseSettingBackup) SetRotate(v int) {
+	o.Rotate = v
+}
+
+// GetTime returns value of Time
+func (o *DatabaseSettingBackup) GetTime() string {
+	return o.Time
+}
+
+// SetTime sets value to Time
+func (o *DatabaseSettingBackup) SetTime(v string) {
+	o.Time = v
+}
+
+// GetDayOfWeek returns value of DayOfWeek
+func (o *DatabaseSettingBackup) GetDayOfWeek() []types.EBackupSpanWeekday {
+	return o.DayOfWeek
+}
+
+// SetDayOfWeek sets value to DayOfWeek
+func (o *DatabaseSettingBackup) SetDayOfWeek(v []types.EBackupSpanWeekday) {
+	o.DayOfWeek = v
+}
+
+/*************************************************
+* DatabaseReplicationSetting
+*************************************************/
+
+// DatabaseReplicationSetting represents API parameter/response structure
+type DatabaseReplicationSetting struct {
+	Model       types.EDatabaseReplicationModel
+	IPAddress   string
+	Port        int
+	User        string
+	Password    string
+	ApplianceID types.ID `mapconv:"Appliance.ID"`
+}
+
+// Validate validates by field tags
+func (o *DatabaseReplicationSetting) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetModel returns value of Model
+func (o *DatabaseReplicationSetting) GetModel() types.EDatabaseReplicationModel {
+	return o.Model
+}
+
+// SetModel sets value to Model
+func (o *DatabaseReplicationSetting) SetModel(v types.EDatabaseReplicationModel) {
+	o.Model = v
+}
+
+// GetIPAddress returns value of IPAddress
+func (o *DatabaseReplicationSetting) GetIPAddress() string {
+	return o.IPAddress
+}
+
+// SetIPAddress sets value to IPAddress
+func (o *DatabaseReplicationSetting) SetIPAddress(v string) {
+	o.IPAddress = v
+}
+
+// GetPort returns value of Port
+func (o *DatabaseReplicationSetting) GetPort() int {
+	return o.Port
+}
+
+// SetPort sets value to Port
+func (o *DatabaseReplicationSetting) SetPort(v int) {
+	o.Port = v
+}
+
+// GetUser returns value of User
+func (o *DatabaseReplicationSetting) GetUser() string {
+	return o.User
+}
+
+// SetUser sets value to User
+func (o *DatabaseReplicationSetting) SetUser(v string) {
+	o.User = v
+}
+
+// GetPassword returns value of Password
+func (o *DatabaseReplicationSetting) GetPassword() string {
+	return o.Password
+}
+
+// SetPassword sets value to Password
+func (o *DatabaseReplicationSetting) SetPassword(v string) {
+	o.Password = v
+}
+
+// GetApplianceID returns value of ApplianceID
+func (o *DatabaseReplicationSetting) GetApplianceID() types.ID {
+	return o.ApplianceID
+}
+
+// SetApplianceID sets value to ApplianceID
+func (o *DatabaseReplicationSetting) SetApplianceID(v types.ID) {
+	o.ApplianceID = v
+}
+
+/*************************************************
+* DatabaseRemarkDBConfCommon
+*************************************************/
+
+// DatabaseRemarkDBConfCommon represents API parameter/response structure
+type DatabaseRemarkDBConfCommon struct {
+	DatabaseName     string
+	DatabaseVersion  string
+	DatabaseRevision string
+	DefaultUser      string
+	UserPassword     string
+}
+
+// Validate validates by field tags
+func (o *DatabaseRemarkDBConfCommon) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetDatabaseName returns value of DatabaseName
+func (o *DatabaseRemarkDBConfCommon) GetDatabaseName() string {
+	return o.DatabaseName
+}
+
+// SetDatabaseName sets value to DatabaseName
+func (o *DatabaseRemarkDBConfCommon) SetDatabaseName(v string) {
+	o.DatabaseName = v
+}
+
+// GetDatabaseVersion returns value of DatabaseVersion
+func (o *DatabaseRemarkDBConfCommon) GetDatabaseVersion() string {
+	return o.DatabaseVersion
+}
+
+// SetDatabaseVersion sets value to DatabaseVersion
+func (o *DatabaseRemarkDBConfCommon) SetDatabaseVersion(v string) {
+	o.DatabaseVersion = v
+}
+
+// GetDatabaseRevision returns value of DatabaseRevision
+func (o *DatabaseRemarkDBConfCommon) GetDatabaseRevision() string {
+	return o.DatabaseRevision
+}
+
+// SetDatabaseRevision sets value to DatabaseRevision
+func (o *DatabaseRemarkDBConfCommon) SetDatabaseRevision(v string) {
+	o.DatabaseRevision = v
+}
+
+// GetDefaultUser returns value of DefaultUser
+func (o *DatabaseRemarkDBConfCommon) GetDefaultUser() string {
+	return o.DefaultUser
+}
+
+// SetDefaultUser sets value to DefaultUser
+func (o *DatabaseRemarkDBConfCommon) SetDefaultUser(v string) {
+	o.DefaultUser = v
+}
+
+// GetUserPassword returns value of UserPassword
+func (o *DatabaseRemarkDBConfCommon) GetUserPassword() string {
+	return o.UserPassword
+}
+
+// SetUserPassword sets value to UserPassword
+func (o *DatabaseRemarkDBConfCommon) SetUserPassword(v string) {
+	o.UserPassword = v
+}
+
+/*************************************************
+* InterfaceView
+*************************************************/
+
+// InterfaceView represents API parameter/response structure
+type InterfaceView struct {
+	ID                              types.ID
+	MACAddress                      string
+	IPAddress                       string
+	UserIPAddress                   string
+	HostName                        string
+	SwitchID                        types.ID           `mapconv:"Switch.ID"`
+	SwitchName                      string             `mapconv:"Switch.Name"`
+	SwitchScope                     types.EScope       `mapconv:"Switch.Scope"`
+	UserSubnetDefaultRoute          string             `mapconv:"Switch.UserSubnet.DefaultRoute"`
+	UserSubnetNetworkMaskLen        int                `mapconv:"Switch.UserSubnet.NetworkMaskLen"`
+	SubnetDefaultRoute              string             `mapconv:"Switch.Subnet.DefaultRoute"`
+	SubnetNetworkMaskLen            int                `mapconv:"Switch.Subnet.NetworkMaskLen"`
+	SubnetNetworkAddress            string             `mapconv:"Switch.Subnet.NetworkAddress"`
+	SubnetBandWidthMbps             int                `mapconv:"Switch.Subnet.Internet.BandWidthMbps"`
+	PacketFilterID                  string             `mapconv:"PacketFilter.ID"`
+	PacketFilterName                string             `mapconv:"PacketFilter.Name"`
+	PacketFilterRequiredHostVersion types.StringNumber `mapconv:"PacketFilter.RequiredHostVersionn"`
+}
+
+// Validate validates by field tags
+func (o *InterfaceView) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetID returns value of ID
+func (o *InterfaceView) GetID() types.ID {
+	return o.ID
+}
+
+// SetID sets value to ID
+func (o *InterfaceView) SetID(v types.ID) {
+	o.ID = v
+}
+
+// GetStringID gets value to StringID
+func (o *InterfaceView) GetStringID() string {
+	return accessor.GetStringID(o)
+}
+
+// SetStringID sets value to StringID
+func (o *InterfaceView) SetStringID(v string) {
+	accessor.SetStringID(o, v)
+}
+
+// GetInt64ID gets value to Int64ID
+func (o *InterfaceView) GetInt64ID() int64 {
+	return accessor.GetInt64ID(o)
+}
+
+// SetInt64ID sets value to Int64ID
+func (o *InterfaceView) SetInt64ID(v int64) {
+	accessor.SetInt64ID(o, v)
+}
+
+// GetMACAddress returns value of MACAddress
+func (o *InterfaceView) GetMACAddress() string {
+	return o.MACAddress
+}
+
+// SetMACAddress sets value to MACAddress
+func (o *InterfaceView) SetMACAddress(v string) {
+	o.MACAddress = v
+}
+
+// GetIPAddress returns value of IPAddress
+func (o *InterfaceView) GetIPAddress() string {
+	return o.IPAddress
+}
+
+// SetIPAddress sets value to IPAddress
+func (o *InterfaceView) SetIPAddress(v string) {
+	o.IPAddress = v
+}
+
+// GetUserIPAddress returns value of UserIPAddress
+func (o *InterfaceView) GetUserIPAddress() string {
+	return o.UserIPAddress
+}
+
+// SetUserIPAddress sets value to UserIPAddress
+func (o *InterfaceView) SetUserIPAddress(v string) {
+	o.UserIPAddress = v
+}
+
+// GetHostName returns value of HostName
+func (o *InterfaceView) GetHostName() string {
+	return o.HostName
+}
+
+// SetHostName sets value to HostName
+func (o *InterfaceView) SetHostName(v string) {
+	o.HostName = v
+}
+
+// GetSwitchID returns value of SwitchID
+func (o *InterfaceView) GetSwitchID() types.ID {
+	return o.SwitchID
+}
+
+// SetSwitchID sets value to SwitchID
+func (o *InterfaceView) SetSwitchID(v types.ID) {
+	o.SwitchID = v
+}
+
+// GetSwitchName returns value of SwitchName
+func (o *InterfaceView) GetSwitchName() string {
+	return o.SwitchName
+}
+
+// SetSwitchName sets value to SwitchName
+func (o *InterfaceView) SetSwitchName(v string) {
+	o.SwitchName = v
+}
+
+// GetSwitchScope returns value of SwitchScope
+func (o *InterfaceView) GetSwitchScope() types.EScope {
+	return o.SwitchScope
+}
+
+// SetSwitchScope sets value to SwitchScope
+func (o *InterfaceView) SetSwitchScope(v types.EScope) {
+	o.SwitchScope = v
+}
+
+// GetUserSubnetDefaultRoute returns value of UserSubnetDefaultRoute
+func (o *InterfaceView) GetUserSubnetDefaultRoute() string {
+	return o.UserSubnetDefaultRoute
+}
+
+// SetUserSubnetDefaultRoute sets value to UserSubnetDefaultRoute
+func (o *InterfaceView) SetUserSubnetDefaultRoute(v string) {
+	o.UserSubnetDefaultRoute = v
+}
+
+// GetUserSubnetNetworkMaskLen returns value of UserSubnetNetworkMaskLen
+func (o *InterfaceView) GetUserSubnetNetworkMaskLen() int {
+	return o.UserSubnetNetworkMaskLen
+}
+
+// SetUserSubnetNetworkMaskLen sets value to UserSubnetNetworkMaskLen
+func (o *InterfaceView) SetUserSubnetNetworkMaskLen(v int) {
+	o.UserSubnetNetworkMaskLen = v
+}
+
+// GetSubnetDefaultRoute returns value of SubnetDefaultRoute
+func (o *InterfaceView) GetSubnetDefaultRoute() string {
+	return o.SubnetDefaultRoute
+}
+
+// SetSubnetDefaultRoute sets value to SubnetDefaultRoute
+func (o *InterfaceView) SetSubnetDefaultRoute(v string) {
+	o.SubnetDefaultRoute = v
+}
+
+// GetSubnetNetworkMaskLen returns value of SubnetNetworkMaskLen
+func (o *InterfaceView) GetSubnetNetworkMaskLen() int {
+	return o.SubnetNetworkMaskLen
+}
+
+// SetSubnetNetworkMaskLen sets value to SubnetNetworkMaskLen
+func (o *InterfaceView) SetSubnetNetworkMaskLen(v int) {
+	o.SubnetNetworkMaskLen = v
+}
+
+// GetSubnetNetworkAddress returns value of SubnetNetworkAddress
+func (o *InterfaceView) GetSubnetNetworkAddress() string {
+	return o.SubnetNetworkAddress
+}
+
+// SetSubnetNetworkAddress sets value to SubnetNetworkAddress
+func (o *InterfaceView) SetSubnetNetworkAddress(v string) {
+	o.SubnetNetworkAddress = v
+}
+
+// GetSubnetBandWidthMbps returns value of SubnetBandWidthMbps
+func (o *InterfaceView) GetSubnetBandWidthMbps() int {
+	return o.SubnetBandWidthMbps
+}
+
+// SetSubnetBandWidthMbps sets value to SubnetBandWidthMbps
+func (o *InterfaceView) SetSubnetBandWidthMbps(v int) {
+	o.SubnetBandWidthMbps = v
+}
+
+// GetPacketFilterID returns value of PacketFilterID
+func (o *InterfaceView) GetPacketFilterID() string {
+	return o.PacketFilterID
+}
+
+// SetPacketFilterID sets value to PacketFilterID
+func (o *InterfaceView) SetPacketFilterID(v string) {
+	o.PacketFilterID = v
+}
+
+// GetPacketFilterName returns value of PacketFilterName
+func (o *InterfaceView) GetPacketFilterName() string {
+	return o.PacketFilterName
+}
+
+// SetPacketFilterName sets value to PacketFilterName
+func (o *InterfaceView) SetPacketFilterName(v string) {
+	o.PacketFilterName = v
+}
+
+// GetPacketFilterRequiredHostVersion returns value of PacketFilterRequiredHostVersion
+func (o *InterfaceView) GetPacketFilterRequiredHostVersion() types.StringNumber {
+	return o.PacketFilterRequiredHostVersion
+}
+
+// SetPacketFilterRequiredHostVersion sets value to PacketFilterRequiredHostVersion
+func (o *InterfaceView) SetPacketFilterRequiredHostVersion(v types.StringNumber) {
+	o.PacketFilterRequiredHostVersion = v
+}
+
+/*************************************************
+* DatabaseCreateRequest
+*************************************************/
+
+// DatabaseCreateRequest represents API parameter/response structure
+type DatabaseCreateRequest struct {
+	Class              string                      `mapconv:",default=database"`
+	PlanID             types.ID                    `mapconv:"Remark.Plan.ID/Plan.ID"`
+	SwitchID           types.ID                    `mapconv:"Remark.Switch.ID"`
+	IPAddresses        []string                    `mapconv:"Remark.[]Servers.IPAddress" validate:"min=1,max=2,dive,ipv4"`
+	NetworkMaskLen     int                         `mapconv:"Remark.Network.NetworkMaskLen" validate:"min=1,max=32"`
+	DefaultRoute       string                      `mapconv:"Remark.Network.DefaultRoute" validate:"ipv4"`
+	Conf               *DatabaseRemarkDBConfCommon `mapconv:"Remark.DBConf.Common,recursive"`
+	SourceID           types.ID                    `mapconv:"Remark.SourceAppliance.ID"`
+	CommonSetting      *DatabaseSettingCommon      `mapconv:"Settings.DBConf.Common,recursive"`
+	BackupSetting      *DatabaseSettingBackup      `mapconv:"Settings.DBConf.Backup,recursive"`
+	ReplicationSetting *DatabaseReplicationSetting `mapconv:"Settings.DBConf.Replication,recursive"`
+	Name               string                      `validate:"required"`
+	Description        string                      `validate:"min=0,max=512"`
+	Tags               []string
+	IconID             types.ID `mapconv:"Icon.ID"`
+}
+
+// Validate validates by field tags
+func (o *DatabaseCreateRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetClass returns value of Class
+func (o *DatabaseCreateRequest) GetClass() string {
+	return o.Class
+}
+
+// SetClass sets value to Class
+func (o *DatabaseCreateRequest) SetClass(v string) {
+	o.Class = v
+}
+
+// GetPlanID returns value of PlanID
+func (o *DatabaseCreateRequest) GetPlanID() types.ID {
+	return o.PlanID
+}
+
+// SetPlanID sets value to PlanID
+func (o *DatabaseCreateRequest) SetPlanID(v types.ID) {
+	o.PlanID = v
+}
+
+// GetSwitchID returns value of SwitchID
+func (o *DatabaseCreateRequest) GetSwitchID() types.ID {
+	return o.SwitchID
+}
+
+// SetSwitchID sets value to SwitchID
+func (o *DatabaseCreateRequest) SetSwitchID(v types.ID) {
+	o.SwitchID = v
+}
+
+// GetIPAddresses returns value of IPAddresses
+func (o *DatabaseCreateRequest) GetIPAddresses() []string {
+	return o.IPAddresses
+}
+
+// SetIPAddresses sets value to IPAddresses
+func (o *DatabaseCreateRequest) SetIPAddresses(v []string) {
+	o.IPAddresses = v
+}
+
+// GetNetworkMaskLen returns value of NetworkMaskLen
+func (o *DatabaseCreateRequest) GetNetworkMaskLen() int {
+	return o.NetworkMaskLen
+}
+
+// SetNetworkMaskLen sets value to NetworkMaskLen
+func (o *DatabaseCreateRequest) SetNetworkMaskLen(v int) {
+	o.NetworkMaskLen = v
+}
+
+// GetDefaultRoute returns value of DefaultRoute
+func (o *DatabaseCreateRequest) GetDefaultRoute() string {
+	return o.DefaultRoute
+}
+
+// SetDefaultRoute sets value to DefaultRoute
+func (o *DatabaseCreateRequest) SetDefaultRoute(v string) {
+	o.DefaultRoute = v
+}
+
+// GetConf returns value of Conf
+func (o *DatabaseCreateRequest) GetConf() *DatabaseRemarkDBConfCommon {
+	return o.Conf
+}
+
+// SetConf sets value to Conf
+func (o *DatabaseCreateRequest) SetConf(v *DatabaseRemarkDBConfCommon) {
+	o.Conf = v
+}
+
+// GetSourceID returns value of SourceID
+func (o *DatabaseCreateRequest) GetSourceID() types.ID {
+	return o.SourceID
+}
+
+// SetSourceID sets value to SourceID
+func (o *DatabaseCreateRequest) SetSourceID(v types.ID) {
+	o.SourceID = v
+}
+
+// GetCommonSetting returns value of CommonSetting
+func (o *DatabaseCreateRequest) GetCommonSetting() *DatabaseSettingCommon {
+	return o.CommonSetting
+}
+
+// SetCommonSetting sets value to CommonSetting
+func (o *DatabaseCreateRequest) SetCommonSetting(v *DatabaseSettingCommon) {
+	o.CommonSetting = v
+}
+
+// GetBackupSetting returns value of BackupSetting
+func (o *DatabaseCreateRequest) GetBackupSetting() *DatabaseSettingBackup {
+	return o.BackupSetting
+}
+
+// SetBackupSetting sets value to BackupSetting
+func (o *DatabaseCreateRequest) SetBackupSetting(v *DatabaseSettingBackup) {
+	o.BackupSetting = v
+}
+
+// GetReplicationSetting returns value of ReplicationSetting
+func (o *DatabaseCreateRequest) GetReplicationSetting() *DatabaseReplicationSetting {
+	return o.ReplicationSetting
+}
+
+// SetReplicationSetting sets value to ReplicationSetting
+func (o *DatabaseCreateRequest) SetReplicationSetting(v *DatabaseReplicationSetting) {
+	o.ReplicationSetting = v
+}
+
+// GetName returns value of Name
+func (o *DatabaseCreateRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *DatabaseCreateRequest) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *DatabaseCreateRequest) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *DatabaseCreateRequest) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetTags returns value of Tags
+func (o *DatabaseCreateRequest) GetTags() []string {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *DatabaseCreateRequest) SetTags(v []string) {
+	o.Tags = v
+}
+
+// GetIconID returns value of IconID
+func (o *DatabaseCreateRequest) GetIconID() types.ID {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *DatabaseCreateRequest) SetIconID(v types.ID) {
+	o.IconID = v
+}
+
+/*************************************************
+* DatabaseUpdateRequest
+*************************************************/
+
+// DatabaseUpdateRequest represents API parameter/response structure
+type DatabaseUpdateRequest struct {
+	CommonSetting      *DatabaseSettingCommonUpdate `mapconv:"Settings.DBConf.Common,recursive"`
+	BackupSetting      *DatabaseSettingBackup       `mapconv:"Settings.DBConf.Backup,recursive"`
+	ReplicationSetting *DatabaseReplicationSetting  `mapconv:"Settings.DBConf.Replication,recursive"`
+	Name               string                       `validate:"required"`
+	Description        string                       `validate:"min=0,max=512"`
+	Tags               []string
+	IconID             types.ID `mapconv:"Icon.ID"`
+}
+
+// Validate validates by field tags
+func (o *DatabaseUpdateRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetCommonSetting returns value of CommonSetting
+func (o *DatabaseUpdateRequest) GetCommonSetting() *DatabaseSettingCommonUpdate {
+	return o.CommonSetting
+}
+
+// SetCommonSetting sets value to CommonSetting
+func (o *DatabaseUpdateRequest) SetCommonSetting(v *DatabaseSettingCommonUpdate) {
+	o.CommonSetting = v
+}
+
+// GetBackupSetting returns value of BackupSetting
+func (o *DatabaseUpdateRequest) GetBackupSetting() *DatabaseSettingBackup {
+	return o.BackupSetting
+}
+
+// SetBackupSetting sets value to BackupSetting
+func (o *DatabaseUpdateRequest) SetBackupSetting(v *DatabaseSettingBackup) {
+	o.BackupSetting = v
+}
+
+// GetReplicationSetting returns value of ReplicationSetting
+func (o *DatabaseUpdateRequest) GetReplicationSetting() *DatabaseReplicationSetting {
+	return o.ReplicationSetting
+}
+
+// SetReplicationSetting sets value to ReplicationSetting
+func (o *DatabaseUpdateRequest) SetReplicationSetting(v *DatabaseReplicationSetting) {
+	o.ReplicationSetting = v
+}
+
+// GetName returns value of Name
+func (o *DatabaseUpdateRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *DatabaseUpdateRequest) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *DatabaseUpdateRequest) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *DatabaseUpdateRequest) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetTags returns value of Tags
+func (o *DatabaseUpdateRequest) GetTags() []string {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *DatabaseUpdateRequest) SetTags(v []string) {
+	o.Tags = v
+}
+
+// GetIconID returns value of IconID
+func (o *DatabaseUpdateRequest) GetIconID() types.ID {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *DatabaseUpdateRequest) SetIconID(v types.ID) {
+	o.IconID = v
+}
+
+/*************************************************
+* DatabaseSettingCommonUpdate
+*************************************************/
+
+// DatabaseSettingCommonUpdate represents API parameter/response structure
+type DatabaseSettingCommonUpdate struct {
+	WebUI         bool
+	ServicePort   int
+	SourceNetwork []string
+	DefaultUser   string
+	UserPassword  string
+}
+
+// Validate validates by field tags
+func (o *DatabaseSettingCommonUpdate) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetWebUI returns value of WebUI
+func (o *DatabaseSettingCommonUpdate) GetWebUI() bool {
+	return o.WebUI
+}
+
+// SetWebUI sets value to WebUI
+func (o *DatabaseSettingCommonUpdate) SetWebUI(v bool) {
+	o.WebUI = v
+}
+
+// GetServicePort returns value of ServicePort
+func (o *DatabaseSettingCommonUpdate) GetServicePort() int {
+	return o.ServicePort
+}
+
+// SetServicePort sets value to ServicePort
+func (o *DatabaseSettingCommonUpdate) SetServicePort(v int) {
+	o.ServicePort = v
+}
+
+// GetSourceNetwork returns value of SourceNetwork
+func (o *DatabaseSettingCommonUpdate) GetSourceNetwork() []string {
+	return o.SourceNetwork
+}
+
+// SetSourceNetwork sets value to SourceNetwork
+func (o *DatabaseSettingCommonUpdate) SetSourceNetwork(v []string) {
+	o.SourceNetwork = v
+}
+
+// GetDefaultUser returns value of DefaultUser
+func (o *DatabaseSettingCommonUpdate) GetDefaultUser() string {
+	return o.DefaultUser
+}
+
+// SetDefaultUser sets value to DefaultUser
+func (o *DatabaseSettingCommonUpdate) SetDefaultUser(v string) {
+	o.DefaultUser = v
+}
+
+// GetUserPassword returns value of UserPassword
+func (o *DatabaseSettingCommonUpdate) GetUserPassword() string {
+	return o.UserPassword
+}
+
+// SetUserPassword sets value to UserPassword
+func (o *DatabaseSettingCommonUpdate) SetUserPassword(v string) {
+	o.UserPassword = v
+}
+
+/*************************************************
+* ShutdownOption
+*************************************************/
+
+// ShutdownOption represents API parameter/response structure
+type ShutdownOption struct {
+	Force bool
+}
+
+// Validate validates by field tags
+func (o *ShutdownOption) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetForce returns value of Force
+func (o *ShutdownOption) GetForce() bool {
+	return o.Force
+}
+
+// SetForce sets value to Force
+func (o *ShutdownOption) SetForce(v bool) {
+	o.Force = v
+}
+
+/*************************************************
+* CPUTimeActivity
+*************************************************/
+
+// CPUTimeActivity represents API parameter/response structure
+type CPUTimeActivity struct {
+	Values []*MonitorCPUTimeValue `mapconv:"[]CPU"`
+}
+
+// Validate validates by field tags
+func (o *CPUTimeActivity) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetValues returns value of Values
+func (o *CPUTimeActivity) GetValues() []*MonitorCPUTimeValue {
+	return o.Values
+}
+
+// SetValues sets value to Values
+func (o *CPUTimeActivity) SetValues(v []*MonitorCPUTimeValue) {
+	o.Values = v
+}
+
+/*************************************************
+* MonitorCPUTimeValue
+*************************************************/
+
+// MonitorCPUTimeValue represents API parameter/response structure
+type MonitorCPUTimeValue struct {
+	Time    time.Time `json:",omitempty" mapconv:",omitempty"`
+	CPUTime float64   `json:",omitempty" mapconv:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *MonitorCPUTimeValue) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetTime returns value of Time
+func (o *MonitorCPUTimeValue) GetTime() time.Time {
+	return o.Time
+}
+
+// SetTime sets value to Time
+func (o *MonitorCPUTimeValue) SetTime(v time.Time) {
+	o.Time = v
+}
+
+// GetCPUTime returns value of CPUTime
+func (o *MonitorCPUTimeValue) GetCPUTime() float64 {
+	return o.CPUTime
+}
+
+// SetCPUTime sets value to CPUTime
+func (o *MonitorCPUTimeValue) SetCPUTime(v float64) {
+	o.CPUTime = v
+}
+
+/*************************************************
+* MonitorCondition
+*************************************************/
+
+// MonitorCondition represents API parameter/response structure
+type MonitorCondition struct {
+	Start time.Time `json:",omitempty"`
+	End   time.Time `json:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *MonitorCondition) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetStart returns value of Start
+func (o *MonitorCondition) GetStart() time.Time {
+	return o.Start
+}
+
+// SetStart sets value to Start
+func (o *MonitorCondition) SetStart(v time.Time) {
+	o.Start = v
+}
+
+// GetEnd returns value of End
+func (o *MonitorCondition) GetEnd() time.Time {
+	return o.End
+}
+
+// SetEnd sets value to End
+func (o *MonitorCondition) SetEnd(v time.Time) {
+	o.End = v
+}
+
+/*************************************************
+* DiskActivity
+*************************************************/
+
+// DiskActivity represents API parameter/response structure
+type DiskActivity struct {
+	Values []*MonitorDiskValue `mapconv:"[]Disk"`
+}
+
+// Validate validates by field tags
+func (o *DiskActivity) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetValues returns value of Values
+func (o *DiskActivity) GetValues() []*MonitorDiskValue {
+	return o.Values
+}
+
+// SetValues sets value to Values
+func (o *DiskActivity) SetValues(v []*MonitorDiskValue) {
+	o.Values = v
+}
+
+/*************************************************
+* MonitorDiskValue
+*************************************************/
+
+// MonitorDiskValue represents API parameter/response structure
+type MonitorDiskValue struct {
+	Time  time.Time `json:",omitempty" mapconv:",omitempty"`
+	Read  float64   `json:",omitempty" mapconv:",omitempty"`
+	Write float64   `json:",omitempty" mapconv:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *MonitorDiskValue) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetTime returns value of Time
+func (o *MonitorDiskValue) GetTime() time.Time {
+	return o.Time
+}
+
+// SetTime sets value to Time
+func (o *MonitorDiskValue) SetTime(v time.Time) {
+	o.Time = v
+}
+
+// GetRead returns value of Read
+func (o *MonitorDiskValue) GetRead() float64 {
+	return o.Read
+}
+
+// SetRead sets value to Read
+func (o *MonitorDiskValue) SetRead(v float64) {
+	o.Read = v
+}
+
+// GetWrite returns value of Write
+func (o *MonitorDiskValue) GetWrite() float64 {
+	return o.Write
+}
+
+// SetWrite sets value to Write
+func (o *MonitorDiskValue) SetWrite(v float64) {
+	o.Write = v
+}
+
+/*************************************************
+* InterfaceActivity
+*************************************************/
+
+// InterfaceActivity represents API parameter/response structure
+type InterfaceActivity struct {
+	Values []*MonitorInterfaceValue `mapconv:"[]Interface"`
+}
+
+// Validate validates by field tags
+func (o *InterfaceActivity) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetValues returns value of Values
+func (o *InterfaceActivity) GetValues() []*MonitorInterfaceValue {
+	return o.Values
+}
+
+// SetValues sets value to Values
+func (o *InterfaceActivity) SetValues(v []*MonitorInterfaceValue) {
+	o.Values = v
+}
+
+/*************************************************
+* MonitorInterfaceValue
+*************************************************/
+
+// MonitorInterfaceValue represents API parameter/response structure
+type MonitorInterfaceValue struct {
+	Time    time.Time `json:",omitempty" mapconv:",omitempty"`
+	Receive float64   `json:",omitempty" mapconv:",omitempty"`
+	Send    float64   `json:",omitempty" mapconv:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *MonitorInterfaceValue) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetTime returns value of Time
+func (o *MonitorInterfaceValue) GetTime() time.Time {
+	return o.Time
+}
+
+// SetTime sets value to Time
+func (o *MonitorInterfaceValue) SetTime(v time.Time) {
+	o.Time = v
+}
+
+// GetReceive returns value of Receive
+func (o *MonitorInterfaceValue) GetReceive() float64 {
+	return o.Receive
+}
+
+// SetReceive sets value to Receive
+func (o *MonitorInterfaceValue) SetReceive(v float64) {
+	o.Receive = v
+}
+
+// GetSend returns value of Send
+func (o *MonitorInterfaceValue) GetSend() float64 {
+	return o.Send
+}
+
+// SetSend sets value to Send
+func (o *MonitorInterfaceValue) SetSend(v float64) {
+	o.Send = v
+}
+
+/*************************************************
+* DatabaseActivity
+*************************************************/
+
+// DatabaseActivity represents API parameter/response structure
+type DatabaseActivity struct {
+	Values []*MonitorDatabaseValue `mapconv:"[]Database"`
+}
+
+// Validate validates by field tags
+func (o *DatabaseActivity) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetValues returns value of Values
+func (o *DatabaseActivity) GetValues() []*MonitorDatabaseValue {
+	return o.Values
+}
+
+// SetValues sets value to Values
+func (o *DatabaseActivity) SetValues(v []*MonitorDatabaseValue) {
+	o.Values = v
+}
+
+/*************************************************
+* MonitorDatabaseValue
+*************************************************/
+
+// MonitorDatabaseValue represents API parameter/response structure
+type MonitorDatabaseValue struct {
+	Time              time.Time `json:",omitempty" mapconv:",omitempty"`
+	TotalMemorySize   float64   `json:",omitempty" mapconv:",omitempty"`
+	UsedMemorySize    float64   `json:",omitempty" mapconv:",omitempty"`
+	TotalDisk1Size    float64   `json:",omitempty" mapconv:",omitempty"`
+	UsedDisk1Size     float64   `json:",omitempty" mapconv:",omitempty"`
+	TotalDisk2Size    float64   `json:",omitempty" mapconv:",omitempty"`
+	UsedDisk2Size     float64   `json:",omitempty" mapconv:",omitempty"`
+	BinlogUsedSizeKiB float64   `json:",omitempty" mapconv:",omitempty"`
+	DelayTimeSec      float64   `json:",omitempty" mapconv:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *MonitorDatabaseValue) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetTime returns value of Time
+func (o *MonitorDatabaseValue) GetTime() time.Time {
+	return o.Time
+}
+
+// SetTime sets value to Time
+func (o *MonitorDatabaseValue) SetTime(v time.Time) {
+	o.Time = v
+}
+
+// GetTotalMemorySize  returns value of TotalMemorySize
+func (o *MonitorDatabaseValue) GetTotalMemorySize() float64 {
+	return o.TotalMemorySize
+}
+
+// SetTotalMemorySize  sets value to TotalMemorySize
+func (o *MonitorDatabaseValue) SetTotalMemorySize(v float64) {
+	o.TotalMemorySize = v
+}
+
+// GetUsedMemorySize returns value of UsedMemorySize
+func (o *MonitorDatabaseValue) GetUsedMemorySize() float64 {
+	return o.UsedMemorySize
+}
+
+// SetUsedMemorySize sets value to UsedMemorySize
+func (o *MonitorDatabaseValue) SetUsedMemorySize(v float64) {
+	o.UsedMemorySize = v
+}
+
+// GetTotalDisk1Size returns value of TotalDisk1Size
+func (o *MonitorDatabaseValue) GetTotalDisk1Size() float64 {
+	return o.TotalDisk1Size
+}
+
+// SetTotalDisk1Size sets value to TotalDisk1Size
+func (o *MonitorDatabaseValue) SetTotalDisk1Size(v float64) {
+	o.TotalDisk1Size = v
+}
+
+// GetUsedDisk1Size returns value of UsedDisk1Size
+func (o *MonitorDatabaseValue) GetUsedDisk1Size() float64 {
+	return o.UsedDisk1Size
+}
+
+// SetUsedDisk1Size sets value to UsedDisk1Size
+func (o *MonitorDatabaseValue) SetUsedDisk1Size(v float64) {
+	o.UsedDisk1Size = v
+}
+
+// GetTotalDisk2Size returns value of TotalDisk2Size
+func (o *MonitorDatabaseValue) GetTotalDisk2Size() float64 {
+	return o.TotalDisk2Size
+}
+
+// SetTotalDisk2Size sets value to TotalDisk2Size
+func (o *MonitorDatabaseValue) SetTotalDisk2Size(v float64) {
+	o.TotalDisk2Size = v
+}
+
+// GetUsedDisk2Size returns value of UsedDisk2Size
+func (o *MonitorDatabaseValue) GetUsedDisk2Size() float64 {
+	return o.UsedDisk2Size
+}
+
+// SetUsedDisk2Size sets value to UsedDisk2Size
+func (o *MonitorDatabaseValue) SetUsedDisk2Size(v float64) {
+	o.UsedDisk2Size = v
+}
+
+// GetBinlogUsedSizeKiB returns value of BinlogUsedSizeKiB
+func (o *MonitorDatabaseValue) GetBinlogUsedSizeKiB() float64 {
+	return o.BinlogUsedSizeKiB
+}
+
+// SetBinlogUsedSizeKiB sets value to BinlogUsedSizeKiB
+func (o *MonitorDatabaseValue) SetBinlogUsedSizeKiB(v float64) {
+	o.BinlogUsedSizeKiB = v
+}
+
+// GetDelayTimeSec returns value of DelayTimeSec
+func (o *MonitorDatabaseValue) GetDelayTimeSec() float64 {
+	return o.DelayTimeSec
+}
+
+// SetDelayTimeSec sets value to DelayTimeSec
+func (o *MonitorDatabaseValue) SetDelayTimeSec(v float64) {
+	o.DelayTimeSec = v
+}
+
+/*************************************************
+* DatabaseStatus
+*************************************************/
+
+// DatabaseStatus represents API parameter/response structure
+type DatabaseStatus struct {
+	Status  types.EServerInstanceStatus `mapconv:"SettingsResponse.Status"`
+	IsFatal bool                        `mapconv:"SettingsResponse.IsFatal"`
+	Version *DatabaseVersionInfo        `mapconv:"SettingsResponse.DBConf.Version,recursive"`
+	Logs    []*DatabaseLog              `mapconv:"SettingsResponse.DBConf.[]Log,recursive"`
+	Backups []*DatabaseBackupHistory    `mapconv:"SettingsResponse.DBConf.Backup.[]History,recursive"`
+}
+
+// Validate validates by field tags
+func (o *DatabaseStatus) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetStatus returns value of Status
+func (o *DatabaseStatus) GetStatus() types.EServerInstanceStatus {
+	return o.Status
+}
+
+// SetStatus sets value to Status
+func (o *DatabaseStatus) SetStatus(v types.EServerInstanceStatus) {
+	o.Status = v
+}
+
+// GetIsFatal returns value of IsFatal
+func (o *DatabaseStatus) GetIsFatal() bool {
+	return o.IsFatal
+}
+
+// SetIsFatal sets value to IsFatal
+func (o *DatabaseStatus) SetIsFatal(v bool) {
+	o.IsFatal = v
+}
+
+// GetVersion returns value of Version
+func (o *DatabaseStatus) GetVersion() *DatabaseVersionInfo {
+	return o.Version
+}
+
+// SetVersion sets value to Version
+func (o *DatabaseStatus) SetVersion(v *DatabaseVersionInfo) {
+	o.Version = v
+}
+
+// GetLogs returns value of Logs
+func (o *DatabaseStatus) GetLogs() []*DatabaseLog {
+	return o.Logs
+}
+
+// SetLogs sets value to Logs
+func (o *DatabaseStatus) SetLogs(v []*DatabaseLog) {
+	o.Logs = v
+}
+
+// GetBackups returns value of Backups
+func (o *DatabaseStatus) GetBackups() []*DatabaseBackupHistory {
+	return o.Backups
+}
+
+// SetBackups sets value to Backups
+func (o *DatabaseStatus) SetBackups(v []*DatabaseBackupHistory) {
+	o.Backups = v
+}
+
+/*************************************************
+* DatabaseVersionInfo
+*************************************************/
+
+// DatabaseVersionInfo represents API parameter/response structure
+type DatabaseVersionInfo struct {
+	LastModified string
+	CommitHash   string
+	Status       string
+	Tag          string
+	Expire       string
+}
+
+// Validate validates by field tags
+func (o *DatabaseVersionInfo) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetLastModified returns value of LastModified
+func (o *DatabaseVersionInfo) GetLastModified() string {
+	return o.LastModified
+}
+
+// SetLastModified sets value to LastModified
+func (o *DatabaseVersionInfo) SetLastModified(v string) {
+	o.LastModified = v
+}
+
+// GetCommitHash returns value of CommitHash
+func (o *DatabaseVersionInfo) GetCommitHash() string {
+	return o.CommitHash
+}
+
+// SetCommitHash sets value to CommitHash
+func (o *DatabaseVersionInfo) SetCommitHash(v string) {
+	o.CommitHash = v
+}
+
+// GetStatus returns value of Status
+func (o *DatabaseVersionInfo) GetStatus() string {
+	return o.Status
+}
+
+// SetStatus sets value to Status
+func (o *DatabaseVersionInfo) SetStatus(v string) {
+	o.Status = v
+}
+
+// GetTag returns value of Tag
+func (o *DatabaseVersionInfo) GetTag() string {
+	return o.Tag
+}
+
+// SetTag sets value to Tag
+func (o *DatabaseVersionInfo) SetTag(v string) {
+	o.Tag = v
+}
+
+// GetExpire returns value of Expire
+func (o *DatabaseVersionInfo) GetExpire() string {
+	return o.Expire
+}
+
+// SetExpire sets value to Expire
+func (o *DatabaseVersionInfo) SetExpire(v string) {
+	o.Expire = v
+}
+
+/*************************************************
+* DatabaseLog
+*************************************************/
+
+// DatabaseLog represents API parameter/response structure
+type DatabaseLog struct {
+	Name string
+	Data string
+	Size int
+}
+
+// Validate validates by field tags
+func (o *DatabaseLog) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetName returns value of Name
+func (o *DatabaseLog) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *DatabaseLog) SetName(v string) {
+	o.Name = v
+}
+
+// GetData returns value of Data
+func (o *DatabaseLog) GetData() string {
+	return o.Data
+}
+
+// SetData sets value to Data
+func (o *DatabaseLog) SetData(v string) {
+	o.Data = v
+}
+
+// GetSize returns value of Size
+func (o *DatabaseLog) GetSize() int {
+	return o.Size
+}
+
+// SetSize sets value to Size
+func (o *DatabaseLog) SetSize(v int) {
+	o.Size = v
+}
+
+/*************************************************
+* DatabaseBackupHistory
+*************************************************/
+
+// DatabaseBackupHistory represents API parameter/response structure
+type DatabaseBackupHistory struct {
+	CreatedAt    time.Time
+	Availability string
+	RecoveredAt  time.Time
+	Size         int64
+}
+
+// Validate validates by field tags
+func (o *DatabaseBackupHistory) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetCreatedAt returns value of CreatedAt
+func (o *DatabaseBackupHistory) GetCreatedAt() time.Time {
+	return o.CreatedAt
+}
+
+// SetCreatedAt sets value to CreatedAt
+func (o *DatabaseBackupHistory) SetCreatedAt(v time.Time) {
+	o.CreatedAt = v
+}
+
+// GetAvailability returns value of Availability
+func (o *DatabaseBackupHistory) GetAvailability() string {
+	return o.Availability
+}
+
+// SetAvailability sets value to Availability
+func (o *DatabaseBackupHistory) SetAvailability(v string) {
+	o.Availability = v
+}
+
+// GetRecoveredAt returns value of RecoveredAt
+func (o *DatabaseBackupHistory) GetRecoveredAt() time.Time {
+	return o.RecoveredAt
+}
+
+// SetRecoveredAt sets value to RecoveredAt
+func (o *DatabaseBackupHistory) SetRecoveredAt(v time.Time) {
+	o.RecoveredAt = v
+}
+
+// GetSize returns value of Size
+func (o *DatabaseBackupHistory) GetSize() int64 {
+	return o.Size
+}
+
+// SetSize sets value to Size
+func (o *DatabaseBackupHistory) SetSize(v int64) {
+	o.Size = v
+}
+
+/*************************************************
 * Disk
 *************************************************/
 
@@ -3355,111 +5113,6 @@ func (o *DiskUpdateRequest) GetConnection() types.EDiskConnection {
 // SetConnection sets value to Connection
 func (o *DiskUpdateRequest) SetConnection(v types.EDiskConnection) {
 	o.Connection = v
-}
-
-/*************************************************
-* DiskActivity
-*************************************************/
-
-// DiskActivity represents API parameter/response structure
-type DiskActivity struct {
-	Values []*MonitorDiskValue `mapconv:"[]Disk"`
-}
-
-// Validate validates by field tags
-func (o *DiskActivity) Validate() error {
-	return validator.New().Struct(o)
-}
-
-// GetValues returns value of Values
-func (o *DiskActivity) GetValues() []*MonitorDiskValue {
-	return o.Values
-}
-
-// SetValues sets value to Values
-func (o *DiskActivity) SetValues(v []*MonitorDiskValue) {
-	o.Values = v
-}
-
-/*************************************************
-* MonitorDiskValue
-*************************************************/
-
-// MonitorDiskValue represents API parameter/response structure
-type MonitorDiskValue struct {
-	Time  time.Time `json:",omitempty" mapconv:",omitempty"`
-	Read  float64   `json:",omitempty" mapconv:",omitempty"`
-	Write float64   `json:",omitempty" mapconv:",omitempty"`
-}
-
-// Validate validates by field tags
-func (o *MonitorDiskValue) Validate() error {
-	return validator.New().Struct(o)
-}
-
-// GetTime returns value of Time
-func (o *MonitorDiskValue) GetTime() time.Time {
-	return o.Time
-}
-
-// SetTime sets value to Time
-func (o *MonitorDiskValue) SetTime(v time.Time) {
-	o.Time = v
-}
-
-// GetRead returns value of Read
-func (o *MonitorDiskValue) GetRead() float64 {
-	return o.Read
-}
-
-// SetRead sets value to Read
-func (o *MonitorDiskValue) SetRead(v float64) {
-	o.Read = v
-}
-
-// GetWrite returns value of Write
-func (o *MonitorDiskValue) GetWrite() float64 {
-	return o.Write
-}
-
-// SetWrite sets value to Write
-func (o *MonitorDiskValue) SetWrite(v float64) {
-	o.Write = v
-}
-
-/*************************************************
-* MonitorCondition
-*************************************************/
-
-// MonitorCondition represents API parameter/response structure
-type MonitorCondition struct {
-	Start time.Time `json:",omitempty"`
-	End   time.Time `json:",omitempty"`
-}
-
-// Validate validates by field tags
-func (o *MonitorCondition) Validate() error {
-	return validator.New().Struct(o)
-}
-
-// GetStart returns value of Start
-func (o *MonitorCondition) GetStart() time.Time {
-	return o.Start
-}
-
-// SetStart sets value to Start
-func (o *MonitorCondition) SetStart(v time.Time) {
-	o.Start = v
-}
-
-// GetEnd returns value of End
-func (o *MonitorCondition) GetEnd() time.Time {
-	return o.End
-}
-
-// SetEnd sets value to End
-func (o *MonitorCondition) SetEnd(v time.Time) {
-	o.End = v
 }
 
 /*************************************************
@@ -4847,76 +6500,6 @@ func (o *InterfaceUpdateRequest) SetUserIPAddress(v string) {
 }
 
 /*************************************************
-* InterfaceActivity
-*************************************************/
-
-// InterfaceActivity represents API parameter/response structure
-type InterfaceActivity struct {
-	Values []*MonitorInterfaceValue `mapconv:"[]Interface"`
-}
-
-// Validate validates by field tags
-func (o *InterfaceActivity) Validate() error {
-	return validator.New().Struct(o)
-}
-
-// GetValues returns value of Values
-func (o *InterfaceActivity) GetValues() []*MonitorInterfaceValue {
-	return o.Values
-}
-
-// SetValues sets value to Values
-func (o *InterfaceActivity) SetValues(v []*MonitorInterfaceValue) {
-	o.Values = v
-}
-
-/*************************************************
-* MonitorInterfaceValue
-*************************************************/
-
-// MonitorInterfaceValue represents API parameter/response structure
-type MonitorInterfaceValue struct {
-	Time    time.Time `json:",omitempty" mapconv:",omitempty"`
-	Receive float64   `json:",omitempty" mapconv:",omitempty"`
-	Send    float64   `json:",omitempty" mapconv:",omitempty"`
-}
-
-// Validate validates by field tags
-func (o *MonitorInterfaceValue) Validate() error {
-	return validator.New().Struct(o)
-}
-
-// GetTime returns value of Time
-func (o *MonitorInterfaceValue) GetTime() time.Time {
-	return o.Time
-}
-
-// SetTime sets value to Time
-func (o *MonitorInterfaceValue) SetTime(v time.Time) {
-	o.Time = v
-}
-
-// GetReceive returns value of Receive
-func (o *MonitorInterfaceValue) GetReceive() float64 {
-	return o.Receive
-}
-
-// SetReceive sets value to Receive
-func (o *MonitorInterfaceValue) SetReceive(v float64) {
-	o.Receive = v
-}
-
-// GetSend returns value of Send
-func (o *MonitorInterfaceValue) GetSend() float64 {
-	return o.Send
-}
-
-// SetSend sets value to Send
-func (o *MonitorInterfaceValue) SetSend(v float64) {
-	o.Send = v
-}
-
-/*************************************************
 * Internet
 *************************************************/
 
@@ -5673,7 +7256,7 @@ type LoadBalancer struct {
 	VRID                    int                             `mapconv:"Remark.VRRP.VRID"`
 	VirtualIPAddresses      []*LoadBalancerVirtualIPAddress `mapconv:"Settings.[]LoadBalancer,recursive" validate:"min=0,max=10"`
 	SettingsHash            string
-	Interfaces              []*Interface `json:",omitempty" mapconv:"[]Interfaces,recursive,omitempty"`
+	Interfaces              []*InterfaceView `json:",omitempty" mapconv:"[]Interfaces,recursive,omitempty"`
 }
 
 // Validate validates by field tags
@@ -5922,12 +7505,12 @@ func (o *LoadBalancer) SetSettingsHash(v string) {
 }
 
 // GetInterfaces returns value of Interfaces
-func (o *LoadBalancer) GetInterfaces() []*Interface {
+func (o *LoadBalancer) GetInterfaces() []*InterfaceView {
 	return o.Interfaces
 }
 
 // SetInterfaces sets value to Interfaces
-func (o *LoadBalancer) SetInterfaces(v []*Interface) {
+func (o *LoadBalancer) SetInterfaces(v []*InterfaceView) {
 	o.Interfaces = v
 }
 
@@ -6303,30 +7886,6 @@ func (o *LoadBalancerUpdateRequest) SetVirtualIPAddresses(v []*LoadBalancerVirtu
 }
 
 /*************************************************
-* ShutdownOption
-*************************************************/
-
-// ShutdownOption represents API parameter/response structure
-type ShutdownOption struct {
-	Force bool
-}
-
-// Validate validates by field tags
-func (o *ShutdownOption) Validate() error {
-	return validator.New().Struct(o)
-}
-
-// GetForce returns value of Force
-func (o *ShutdownOption) GetForce() bool {
-	return o.Force
-}
-
-// SetForce sets value to Force
-func (o *ShutdownOption) SetForce(v bool) {
-	o.Force = v
-}
-
-/*************************************************
 * LoadBalancerStatus
 *************************************************/
 
@@ -6467,7 +8026,7 @@ type NFS struct {
 	InstanceHostInfoURL     string                      `mapconv:"Instance.Host.InfoURL"`
 	InstanceStatus          types.EServerInstanceStatus `mapconv:"Instance.Status"`
 	InstanceStatusChangedAt time.Time                   `mapconv:"Instance.StatusChangedAt"`
-	Interfaces              []*Interface                `json:",omitempty" mapconv:"[]Interfaces,recursive,omitempty"`
+	Interfaces              []*InterfaceView            `json:",omitempty" mapconv:"[]Interfaces,recursive,omitempty"`
 	PlanID                  types.ID                    `mapconv:"Remark.Plan.ID/Plan.ID"`
 	SwitchID                types.ID                    `mapconv:"Remark.Switch.ID"`
 	DefaultRoute            string                      `mapconv:"Remark.Network.DefaultRoute" validate:"ipv4"`
@@ -6605,12 +8164,12 @@ func (o *NFS) SetInstanceStatusChangedAt(v time.Time) {
 }
 
 // GetInterfaces returns value of Interfaces
-func (o *NFS) GetInterfaces() []*Interface {
+func (o *NFS) GetInterfaces() []*InterfaceView {
 	return o.Interfaces
 }
 
 // SetInterfaces sets value to Interfaces
-func (o *NFS) SetInterfaces(v []*Interface) {
+func (o *NFS) SetInterfaces(v []*InterfaceView) {
 	o.Interfaces = v
 }
 
@@ -8613,7 +10172,7 @@ type Server struct {
 	InstanceWarnings        string                      `mapconv:"Instance.Warnings"`
 	InstanceWarningsValue   int                         `mapconv:"Instance.WarningsValue"`
 	Disks                   []*Disk                     `json:",omitempty" mapconv:",recursive"`
-	Interfaces              []*Interface                `json:",omitempty" mapconv:"[]Interfaces,recursive,omitempty"`
+	Interfaces              []*InterfaceView            `json:",omitempty" mapconv:"[]Interfaces,recursive,omitempty"`
 	CDROMID                 types.ID                    `mapconv:"CDROM.ID"`
 	PrivateHostID           types.ID                    `mapconv:"PrivateHost.ID"`
 	PrivateHostName         string                      `mapconv:"PrivateHost.Name"`
@@ -8879,12 +10438,12 @@ func (o *Server) SetDisks(v []*Disk) {
 }
 
 // GetInterfaces returns value of Interfaces
-func (o *Server) GetInterfaces() []*Interface {
+func (o *Server) GetInterfaces() []*InterfaceView {
 	return o.Interfaces
 }
 
 // SetInterfaces sets value to Interfaces
-func (o *Server) SetInterfaces(v []*Interface) {
+func (o *Server) SetInterfaces(v []*InterfaceView) {
 	o.Interfaces = v
 }
 
@@ -9558,65 +11117,6 @@ func (o *EjectCDROMRequest) GetInt64ID() int64 {
 // SetInt64ID sets value to Int64ID
 func (o *EjectCDROMRequest) SetInt64ID(v int64) {
 	accessor.SetInt64ID(o, v)
-}
-
-/*************************************************
-* CPUTimeActivity
-*************************************************/
-
-// CPUTimeActivity represents API parameter/response structure
-type CPUTimeActivity struct {
-	Values []*MonitorCPUTimeValue `mapconv:"[]CPU"`
-}
-
-// Validate validates by field tags
-func (o *CPUTimeActivity) Validate() error {
-	return validator.New().Struct(o)
-}
-
-// GetValues returns value of Values
-func (o *CPUTimeActivity) GetValues() []*MonitorCPUTimeValue {
-	return o.Values
-}
-
-// SetValues sets value to Values
-func (o *CPUTimeActivity) SetValues(v []*MonitorCPUTimeValue) {
-	o.Values = v
-}
-
-/*************************************************
-* MonitorCPUTimeValue
-*************************************************/
-
-// MonitorCPUTimeValue represents API parameter/response structure
-type MonitorCPUTimeValue struct {
-	Time    time.Time `json:",omitempty" mapconv:",omitempty"`
-	CPUTime float64   `json:",omitempty" mapconv:",omitempty"`
-}
-
-// Validate validates by field tags
-func (o *MonitorCPUTimeValue) Validate() error {
-	return validator.New().Struct(o)
-}
-
-// GetTime returns value of Time
-func (o *MonitorCPUTimeValue) GetTime() time.Time {
-	return o.Time
-}
-
-// SetTime sets value to Time
-func (o *MonitorCPUTimeValue) SetTime(v time.Time) {
-	o.Time = v
-}
-
-// GetCPUTime returns value of CPUTime
-func (o *MonitorCPUTimeValue) GetCPUTime() float64 {
-	return o.CPUTime
-}
-
-// SetCPUTime sets value to CPUTime
-func (o *MonitorCPUTimeValue) SetCPUTime(v float64) {
-	o.CPUTime = v
 }
 
 /*************************************************

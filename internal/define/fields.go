@@ -3,6 +3,7 @@ package define
 import (
 	"github.com/sacloud/libsacloud/v2/internal/dsl"
 	"github.com/sacloud/libsacloud/v2/internal/dsl/meta"
+	"github.com/sacloud/libsacloud/v2/sacloud/naked"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
@@ -1661,6 +1662,131 @@ func (f *fieldsDef) RemarkVRID() *dsl.FieldDesc {
 		Type: meta.TypeInt,
 		Tags: &dsl.FieldTags{
 			MapConv: "Remark.VRRP.VRID",
+		},
+	}
+}
+
+func (f *fieldsDef) RemarkDBConf() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "Conf",
+		Type: &dsl.Model{
+			Name:      "DatabaseRemarkDBConfCommon",
+			NakedType: meta.Static(naked.ApplianceRemarkDBConfCommon{}),
+			Fields: []*dsl.FieldDesc{
+				fields.New("DatabaseName", meta.TypeString),
+				fields.New("DatabaseVersion", meta.TypeString),
+				fields.New("DatabaseRevision", meta.TypeString),
+				fields.New("DefaultUser", meta.TypeString),
+				fields.New("UserPassword", meta.TypeString),
+			},
+		},
+		Tags: &dsl.FieldTags{
+			MapConv: "Remark.DBConf.Common,recursive",
+		},
+	}
+}
+
+func (f *fieldsDef) RemarkSourceAppliance() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "SourceID",
+		Type: meta.TypeID,
+		Tags: &dsl.FieldTags{
+			MapConv: "Remark.SourceAppliance.ID",
+		},
+	}
+}
+
+func (f *fieldsDef) DatabaseSettingsCommon() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "CommonSetting",
+		Type: &dsl.Model{
+			Name:      "DatabaseSettingCommon",
+			NakedType: meta.Static(naked.DatabaseSettingCommon{}),
+			Fields: []*dsl.FieldDesc{
+				fields.New("WebUI", meta.TypeFlag),
+				fields.New("ServicePort", meta.TypeInt),
+				fields.New("SourceNetwork", meta.TypeStringSlice),
+				fields.New("DefaultUser", meta.TypeString),
+				fields.New("UserPassword", meta.TypeString),
+			},
+		},
+		Tags: &dsl.FieldTags{
+			MapConv: "Settings.DBConf.Common,recursive",
+		},
+	}
+}
+
+func (f *fieldsDef) DatabaseSettingsCommonUpdate() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "CommonSetting",
+		Type: &dsl.Model{
+			Name:      "DatabaseSettingCommonUpdate",
+			NakedType: meta.Static(naked.DatabaseSettingCommon{}),
+			Fields: []*dsl.FieldDesc{
+				fields.New("WebUI", meta.TypeFlag), // TODO trueにした場合、文字列が返ってくるが未対応
+				fields.New("ServicePort", meta.TypeInt),
+				fields.New("SourceNetwork", meta.TypeStringSlice),
+				fields.New("DefaultUser", meta.TypeString),
+				fields.New("UserPassword", meta.TypeString),
+			},
+		},
+		Tags: &dsl.FieldTags{
+			MapConv: "Settings.DBConf.Common,recursive",
+		},
+	}
+}
+
+func (f *fieldsDef) DatabaseSettingsBackup() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "BackupSetting",
+		Type: &dsl.Model{
+			Name:      "DatabaseSettingBackup",
+			NakedType: meta.Static(naked.DatabaseSettingBackup{}),
+			Fields: []*dsl.FieldDesc{
+				fields.New("Rotate", meta.TypeInt),
+				fields.New("Time", meta.TypeString),
+				fields.New("DayOfWeek", meta.Static([]types.EBackupSpanWeekday{})),
+			},
+		},
+		Tags: &dsl.FieldTags{
+			MapConv: "Settings.DBConf.Backup,recursive",
+		},
+	}
+}
+
+func (f *fieldsDef) DatabaseSettingsReplication() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "ReplicationSetting",
+		Type: &dsl.Model{
+			Name:      "DatabaseReplicationSetting",
+			NakedType: meta.Static(naked.DatabaseSettingReplication{}),
+			Fields: []*dsl.FieldDesc{
+				fields.New("Model", meta.Static(types.EDatabaseReplicationModel(""))),
+				fields.New("IPAddress", meta.TypeString),
+				fields.New("Port", meta.TypeInt),
+				fields.New("User", meta.TypeString),
+				fields.New("Password", meta.TypeString),
+				{
+					Name: "ApplianceID",
+					Type: meta.TypeID,
+					Tags: &dsl.FieldTags{
+						MapConv: "Appliance.ID",
+					},
+				},
+			},
+		},
+		Tags: &dsl.FieldTags{
+			MapConv: "Settings.DBConf.Replication,recursive",
+		},
+	}
+}
+
+func (f *fieldsDef) DatabaseClass() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "Class",
+		Type: meta.TypeString,
+		Tags: &dsl.FieldTags{
+			MapConv: ",default=database",
 		},
 	}
 }

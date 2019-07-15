@@ -78,7 +78,9 @@ func (o *ServerOp) Create(ctx context.Context, zone string, param *sacloud.Serve
 		if err != nil {
 			return nil, newErrorConflict(o.key, types.ID(0), err.Error())
 		}
-		result.Interfaces = append(result.Interfaces, iface)
+		ifaceView := &sacloud.InterfaceView{}
+		copySameNameField(iface, ifaceView)
+		result.Interfaces = append(result.Interfaces, ifaceView)
 	}
 
 	s.setServer(zone, result)

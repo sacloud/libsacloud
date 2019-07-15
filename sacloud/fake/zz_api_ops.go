@@ -29,6 +29,9 @@ func SwitchFactoryFuncToFake() {
 	sacloud.SetClientFactoryFunc(ResourceCoupon, func(caller sacloud.APICaller) interface{} {
 		return NewCouponOp()
 	})
+	sacloud.SetClientFactoryFunc(ResourceDatabase, func(caller sacloud.APICaller) interface{} {
+		return NewDatabaseOp()
+	})
 	sacloud.SetClientFactoryFunc(ResourceDisk, func(caller sacloud.APICaller) interface{} {
 		return NewDiskOp()
 	})
@@ -197,6 +200,22 @@ type CouponOp struct {
 func NewCouponOp() sacloud.CouponAPI {
 	return &CouponOp{
 		key: ResourceCoupon,
+	}
+}
+
+/*************************************************
+* DatabaseOp
+*************************************************/
+
+// DatabaseOp is fake implementation of DatabaseAPI interface
+type DatabaseOp struct {
+	key string
+}
+
+// NewDatabaseOp creates new DatabaseOp instance
+func NewDatabaseOp() sacloud.DatabaseAPI {
+	return &DatabaseOp{
+		key: ResourceDatabase,
 	}
 }
 
