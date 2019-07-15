@@ -1,0 +1,27 @@
+package naked
+
+import (
+	"time"
+
+	"github.com/sacloud/libsacloud/v2/sacloud/types"
+)
+
+// License ライセンス
+type License struct {
+	ID          types.ID        `json:",omitempty" yaml:"id,omitempty" structs:",omitempty"`
+	Name        string          `json:",omitempty" yaml:"name,omitempty" structs:",omitempty"`
+	Description string          `json:",omitempty" yaml:"description,omitempty" structs:",omitempty"`
+	CreatedAt   *time.Time      `json:",omitempty" yaml:"created_at,omitempty" structs:",omitempty"`
+	ModifieddAt *time.Time      `json:",omitempty" yaml:"created_at,omitempty" structs:",omitempty"`
+	LicenseInfo *ProductLicense `json:",omitempty" yaml:"license_info,omitempty" structs:",omitempty"` // ライセンス情報
+}
+
+// ProductLicense ライセンスプラン
+type ProductLicense struct {
+	ID           types.ID   `json:",omitempty" yaml:"id,omitempty" structs:",omitempty"`
+	Name         string     `json:",omitempty" yaml:"name,omitempty" structs:",omitempty"`
+	ServiceClass string     `json:",omitempty" yaml:"service_class,omitempty" structs:",omitempty"`
+	CreatedAt    *time.Time `json:",omitempty" yaml:"created_at,omitempty" structs:",omitempty"`
+	Region       *Region    `json:",omitempty" yaml:"region,omitempty" structs:",omitempty"`
+	TermsOfUse   string     `json:",omitempty" yaml:"terms_of_use,omitempty" structs:",omitempty"` // 利用規約
+}

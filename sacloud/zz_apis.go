@@ -220,6 +220,19 @@ type InternetAPI interface {
 }
 
 /*************************************************
+* LicenseAPI
+*************************************************/
+
+// LicenseAPI is interface for operate License resource
+type LicenseAPI interface {
+	Find(ctx context.Context, zone string, conditions *FindCondition) (*LicenseFindResult, error)
+	Create(ctx context.Context, zone string, param *LicenseCreateRequest) (*License, error)
+	Read(ctx context.Context, zone string, id types.ID) (*License, error)
+	Update(ctx context.Context, zone string, id types.ID, param *LicenseUpdateRequest) (*License, error)
+	Delete(ctx context.Context, zone string, id types.ID) error
+}
+
+/*************************************************
 * LoadBalancerAPI
 *************************************************/
 

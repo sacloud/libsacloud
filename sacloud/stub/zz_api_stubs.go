@@ -1652,6 +1652,93 @@ func (s *InternetStub) Monitor(ctx context.Context, zone string, id types.ID, co
 }
 
 /*************************************************
+* LicenseStub
+*************************************************/
+
+// LicenseFindStubResult is expected values of the Find operation
+type LicenseFindStubResult struct {
+	Values *sacloud.LicenseFindResult
+	Err    error
+}
+
+// LicenseCreateStubResult is expected values of the Create operation
+type LicenseCreateStubResult struct {
+	License *sacloud.License
+	Err     error
+}
+
+// LicenseReadStubResult is expected values of the Read operation
+type LicenseReadStubResult struct {
+	License *sacloud.License
+	Err     error
+}
+
+// LicenseUpdateStubResult is expected values of the Update operation
+type LicenseUpdateStubResult struct {
+	License *sacloud.License
+	Err     error
+}
+
+// LicenseDeleteStubResult is expected values of the Delete operation
+type LicenseDeleteStubResult struct {
+	Err error
+}
+
+// LicenseStub is for trace LicenseOp operations
+type LicenseStub struct {
+	FindStubResult   *LicenseFindStubResult
+	CreateStubResult *LicenseCreateStubResult
+	ReadStubResult   *LicenseReadStubResult
+	UpdateStubResult *LicenseUpdateStubResult
+	DeleteStubResult *LicenseDeleteStubResult
+}
+
+// NewLicenseStub creates new LicenseStub instance
+func NewLicenseStub(caller sacloud.APICaller) sacloud.LicenseAPI {
+	return &LicenseStub{}
+}
+
+// Find is API call with trace log
+func (s *LicenseStub) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.LicenseFindResult, error) {
+	if s.FindStubResult == nil {
+		log.Fatal("LicenseStub.FindStubResult is not set")
+	}
+	return s.FindStubResult.Values, s.FindStubResult.Err
+}
+
+// Create is API call with trace log
+func (s *LicenseStub) Create(ctx context.Context, zone string, param *sacloud.LicenseCreateRequest) (*sacloud.License, error) {
+	if s.CreateStubResult == nil {
+		log.Fatal("LicenseStub.CreateStubResult is not set")
+	}
+	return s.CreateStubResult.License, s.CreateStubResult.Err
+}
+
+// Read is API call with trace log
+func (s *LicenseStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.License, error) {
+	if s.ReadStubResult == nil {
+		log.Fatal("LicenseStub.ReadStubResult is not set")
+	}
+	return s.ReadStubResult.License, s.ReadStubResult.Err
+}
+
+// Update is API call with trace log
+func (s *LicenseStub) Update(ctx context.Context, zone string, id types.ID, param *sacloud.LicenseUpdateRequest) (*sacloud.License, error) {
+	if s.UpdateStubResult == nil {
+		log.Fatal("LicenseStub.UpdateStubResult is not set")
+	}
+	return s.UpdateStubResult.License, s.UpdateStubResult.Err
+}
+
+// Delete is API call with trace log
+func (s *LicenseStub) Delete(ctx context.Context, zone string, id types.ID) error {
+	if s.DeleteStubResult == nil {
+		log.Fatal("LicenseStub.DeleteStubResult is not set")
+	}
+	return s.DeleteStubResult.Err
+}
+
+/*************************************************
 * LoadBalancerStub
 *************************************************/
 

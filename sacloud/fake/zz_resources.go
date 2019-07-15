@@ -31,6 +31,8 @@ const (
 	ResourceInterface = "Interface"
 	// ResourceInternet is resource key of fake store
 	ResourceInternet = "Internet"
+	// ResourceLicense is resource key of fake store
+	ResourceLicense = "License"
 	// ResourceLoadBalancer is resource key of fake store
 	ResourceLoadBalancer = "LoadBalancer"
 	// ResourceNFS is resource key of fake store

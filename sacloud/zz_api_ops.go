@@ -124,6 +124,14 @@ func init() {
 		}
 	})
 
+	SetClientFactoryFunc("License", func(caller APICaller) interface{} {
+		return &LicenseOp{
+			Client:     caller,
+			PathSuffix: "api/cloud/1.1",
+			PathName:   "license",
+		}
+	})
+
 	SetClientFactoryFunc("LoadBalancer", func(caller APICaller) interface{} {
 		return &LoadBalancerOp{
 			Client:     caller,
@@ -4687,6 +4695,242 @@ func (o *InternetOp) Monitor(ctx context.Context, zone string, id types.ID, cond
 		return nil, err
 	}
 	return results.RouterActivity, nil
+}
+
+/*************************************************
+* LicenseOp
+*************************************************/
+
+// LicenseOp implements LicenseAPI interface
+type LicenseOp struct {
+	// Client APICaller
+	Client APICaller
+	// PathSuffix is used when building URL
+	PathSuffix string
+	// PathName is used when building URL
+	PathName string
+}
+
+// NewLicenseOp creates new LicenseOp instance
+func NewLicenseOp(caller APICaller) LicenseAPI {
+	return GetClientFactoryFunc("License")(caller).(LicenseAPI)
+}
+
+// Find is API call
+func (o *LicenseOp) Find(ctx context.Context, zone string, conditions *FindCondition) (*LicenseFindResult, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"conditions": conditions,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	if zone == "" {
+		zone = ""
+	}
+	if conditions == nil {
+		conditions = &FindCondition{}
+	}
+	args := &struct {
+		Argzone       string
+		Argconditions *FindCondition `mapconv:",squash"`
+	}{
+		Argzone:       zone,
+		Argconditions: conditions,
+	}
+
+	v := &licenseFindRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &licenseFindResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &LicenseFindResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, err
+}
+
+// Create is API call
+func (o *LicenseOp) Create(ctx context.Context, zone string, param *LicenseCreateRequest) (*License, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"param":      param,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	if zone == "" {
+		zone = ""
+	}
+	if param == nil {
+		param = &LicenseCreateRequest{}
+	}
+	args := &struct {
+		Argzone  string
+		Argparam *LicenseCreateRequest `mapconv:"License,recursive"`
+	}{
+		Argzone:  zone,
+		Argparam: param,
+	}
+
+	v := &licenseCreateRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
+
+	data, err := o.Client.Do(ctx, "POST", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &licenseCreateResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &licenseCreateResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results.License, nil
+}
+
+// Read is API call
+func (o *LicenseOp) Read(ctx context.Context, zone string, id types.ID) (*License, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &licenseReadResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &licenseReadResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results.License, nil
+}
+
+// Update is API call
+func (o *LicenseOp) Update(ctx context.Context, zone string, id types.ID, param *LicenseUpdateRequest) (*License, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+		"param":      param,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	if zone == "" {
+		zone = ""
+	}
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	if param == nil {
+		param = &LicenseUpdateRequest{}
+	}
+	args := &struct {
+		Argzone  string
+		Argid    types.ID
+		Argparam *LicenseUpdateRequest `mapconv:"License,recursive"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+
+	v := &licenseUpdateRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
+
+	data, err := o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &licenseUpdateResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &licenseUpdateResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results.License, nil
+}
+
+// Delete is API call
+func (o *LicenseOp) Delete(ctx context.Context, zone string, id types.ID) error {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+	})
+	if err != nil {
+		return err
+	}
+
+	var body interface{}
+
+	_, err = o.Client.Do(ctx, "DELETE", url, body)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 /*************************************************
