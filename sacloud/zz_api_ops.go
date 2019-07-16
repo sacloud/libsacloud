@@ -148,6 +148,14 @@ func init() {
 		}
 	})
 
+	SetClientFactoryFunc("IPv6Net", func(caller APICaller) interface{} {
+		return &IPv6NetOp{
+			Client:     caller,
+			PathSuffix: "api/cloud/1.1",
+			PathName:   "ipv6net",
+		}
+	})
+
 	SetClientFactoryFunc("License", func(caller APICaller) interface{} {
 		return &LicenseOp{
 			Client:     caller,
@@ -4872,6 +4880,62 @@ func (o *InternetOp) Monitor(ctx context.Context, zone string, id types.ID, cond
 	return results.RouterActivity, nil
 }
 
+// EnableIPv6 is API call
+func (o *InternetOp) EnableIPv6(ctx context.Context, zone string, id types.ID) (*IPv6NetInfo, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/ipv6net", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	data, err := o.Client.Do(ctx, "POST", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &internetEnableIPv6ResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &internetEnableIPv6Result{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results.IPv6Net, nil
+}
+
+// DisableIPv6 is API call
+func (o *InternetOp) DisableIPv6(ctx context.Context, zone string, id types.ID, ipv6netID types.ID) error {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/ipv6net/{{.ipv6netID}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+		"ipv6netID":  ipv6netID,
+	})
+	if err != nil {
+		return err
+	}
+
+	var body interface{}
+
+	_, err = o.Client.Do(ctx, "DELETE", url, body)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 /*************************************************
 * InternetPlanOp
 *************************************************/
@@ -5113,6 +5177,88 @@ func (o *IPAddressOp) UpdateHostName(ctx context.Context, zone string, ipAddress
 		return nil, err
 	}
 	return results.IPAddress, nil
+}
+
+/*************************************************
+* IPv6NetOp
+*************************************************/
+
+// IPv6NetOp implements IPv6NetAPI interface
+type IPv6NetOp struct {
+	// Client APICaller
+	Client APICaller
+	// PathSuffix is used when building URL
+	PathSuffix string
+	// PathName is used when building URL
+	PathName string
+}
+
+// NewIPv6NetOp creates new IPv6NetOp instance
+func NewIPv6NetOp(caller APICaller) IPv6NetAPI {
+	return GetClientFactoryFunc("IPv6Net")(caller).(IPv6NetAPI)
+}
+
+// List is API call
+func (o *IPv6NetOp) List(ctx context.Context, zone string) (*IPv6NetListResult, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &iPv6NetListResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &IPv6NetListResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, err
+}
+
+// Read is API call
+func (o *IPv6NetOp) Read(ctx context.Context, zone string, id types.ID) (*IPv6Net, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &iPv6NetReadResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &iPv6NetReadResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results.IPv6Net, nil
 }
 
 /*************************************************

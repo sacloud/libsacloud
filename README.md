@@ -17,8 +17,9 @@ Library for SakuraCloud API
 - [x] `GSLB`: GSLB
 - [x] `Icon`: アイコン
 - [x] `Interface`: インターフェース
-- [ ] `Internet`: スイッチ+ルータ(残: IPv6関連)
+- [x] `Internet`: スイッチ+ルータ
 - [x] `IPAddress`: IPv4アドレス
+- [x] `IPv6Net`: IPv6ネットワーク
 - [ ] `IPv6Addr`: IPv6アドレス
 - [x] `License`: ライセンス
 - [x] `LoadBalancer`: ロードバランサ

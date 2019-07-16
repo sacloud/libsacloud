@@ -111,6 +111,14 @@ func (o *InternetOp) Delete(ctx context.Context, zone string, id types.ID) error
 		return err
 	}
 
+	// check subnets/ipv6nets
+	if len(value.Switch.Subnets) > 1 {
+		return newErrorBadRequest(ResourceInternet, value.ID, "Internet resource still have Subnets")
+	}
+	if len(value.Switch.IPv6Nets) > 1 {
+		return newErrorBadRequest(ResourceInternet, value.ID, "Internet resource still have Subnets")
+	}
+
 	swOp := NewSwitchOp()
 	if err := swOp.Delete(ctx, zone, value.Switch.ID); err != nil {
 		return err
@@ -300,4 +308,43 @@ func (o *InternetOp) Monitor(ctx context.Context, zone string, id types.ID, cond
 	}
 
 	return res, nil
+}
+
+// EnableIPv6 is fake implementation
+func (o *InternetOp) EnableIPv6(ctx context.Context, zone string, id types.ID) (*sacloud.IPv6NetInfo, error) {
+	value, err := o.Read(ctx, zone, id)
+	if err != nil {
+		return nil, err
+	}
+
+	ipv6net := &sacloud.IPv6Net{
+		ID:            pool.generateID(),
+		IPv6Prefix:    "2001:db8:11aa:22bb::/64",
+		IPv6PrefixLen: 64,
+	}
+	s.setIPv6Net(zone, ipv6net)
+
+	ipv6netInfo := &sacloud.IPv6NetInfo{}
+	copySameNameField(ipv6net, ipv6netInfo)
+
+	value.Switch.IPv6Nets = []*sacloud.IPv6NetInfo{ipv6netInfo}
+	s.setInternet(zone, value)
+	return ipv6netInfo, nil
+}
+
+// DisableIPv6 is fake implementation
+func (o *InternetOp) DisableIPv6(ctx context.Context, zone string, id types.ID, ipv6netID types.ID) error {
+	value, err := o.Read(ctx, zone, id)
+	if err != nil {
+		return err
+	}
+
+	if len(value.Switch.IPv6Nets) == 0 {
+		return nil
+	}
+
+	s.delete(ResourceIPv6Net, zone, value.Switch.IPv6Nets[0].ID)
+	value.Switch.IPv6Nets = []*sacloud.IPv6NetInfo{}
+	s.setInternet(zone, value)
+	return nil
 }

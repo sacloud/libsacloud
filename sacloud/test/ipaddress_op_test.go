@@ -26,9 +26,9 @@ func TestIPAddressOp_List_Read(t *testing.T) {
 	assert.NoError(t, err)
 
 	// read
-	readed, err := client.Read(context.Background(), testZone, ip.IPAddress)
+	read, err := client.Read(context.Background(), testZone, ip.IPAddress)
 	assert.NoError(t, err)
-	assert.Equal(t, ip, readed)
+	assert.Equal(t, ip, read)
 }
 
 func TestIPAddressOp_UpdateHostName(t *testing.T) {

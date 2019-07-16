@@ -51,9 +51,9 @@ func TestWebAccelOp_Find(t *testing.T) {
 	assert.NoError(t, err)
 
 	// read
-	readed, err := client.Read(context.Background(), sacloud.APIDefaultZone, site.ID)
+	read, err := client.Read(context.Background(), sacloud.APIDefaultZone, site.ID)
 	assert.NoError(t, err)
-	assert.Equal(t, site, readed)
+	assert.Equal(t, site, read)
 }
 
 func TestWebAccelOp_Cert(t *testing.T) {
@@ -86,11 +86,11 @@ func TestWebAccelOp_Cert(t *testing.T) {
 	}
 
 	// read cert
-	readed, err := client.ReadCertificate(ctx, sacloud.APIDefaultZone, id)
+	read, err := client.ReadCertificate(ctx, sacloud.APIDefaultZone, id)
 	if !assert.NoError(t, err) {
 		return
 	}
-	assert.Equal(t, certs, readed)
+	assert.Equal(t, certs, read)
 }
 
 func TestWebAccelOp_DeleteAllCache(t *testing.T) {

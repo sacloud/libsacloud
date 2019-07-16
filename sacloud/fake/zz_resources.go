@@ -37,6 +37,8 @@ const (
 	ResourceInternetPlan = "InternetPlan"
 	// ResourceIPAddress is resource key of fake store
 	ResourceIPAddress = "IPAddress"
+	// ResourceIPv6Net is resource key of fake store
+	ResourceIPv6Net = "IPv6Net"
 	// ResourceLicense is resource key of fake store
 	ResourceLicense = "License"
 	// ResourceLicenseInfo is resource key of fake store
