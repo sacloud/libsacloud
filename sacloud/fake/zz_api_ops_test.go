@@ -74,6 +74,10 @@ func TestResourceOps(t *testing.T) {
 		t.Fatalf("%s is not sacloud.InternetPlan", op)
 	}
 
+	if op, ok := NewIPAddressOp().(sacloud.IPAddressAPI); !ok {
+		t.Fatalf("%s is not sacloud.IPAddress", op)
+	}
+
 	if op, ok := NewLicenseOp().(sacloud.LicenseAPI); !ok {
 		t.Fatalf("%s is not sacloud.License", op)
 	}

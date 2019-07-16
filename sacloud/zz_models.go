@@ -7461,6 +7461,63 @@ func (o *InternetPlan) SetAvailability(v types.EAvailability) {
 }
 
 /*************************************************
+* IPAddress
+*************************************************/
+
+// IPAddress represents API parameter/response structure
+type IPAddress struct {
+	HostName    string
+	IPAddress   string
+	InterfaceID types.ID `mapconv:"Interface.ID,omitempty"`
+	SubnetID    types.ID `mapconv:"Subnet.ID,omitempty"`
+}
+
+// Validate validates by field tags
+func (o *IPAddress) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetHostName returns value of HostName
+func (o *IPAddress) GetHostName() string {
+	return o.HostName
+}
+
+// SetHostName sets value to HostName
+func (o *IPAddress) SetHostName(v string) {
+	o.HostName = v
+}
+
+// GetIPAddress returns value of IPAddress
+func (o *IPAddress) GetIPAddress() string {
+	return o.IPAddress
+}
+
+// SetIPAddress sets value to IPAddress
+func (o *IPAddress) SetIPAddress(v string) {
+	o.IPAddress = v
+}
+
+// GetInterfaceID returns value of InterfaceID
+func (o *IPAddress) GetInterfaceID() types.ID {
+	return o.InterfaceID
+}
+
+// SetInterfaceID sets value to InterfaceID
+func (o *IPAddress) SetInterfaceID(v types.ID) {
+	o.InterfaceID = v
+}
+
+// GetSubnetID returns value of SubnetID
+func (o *IPAddress) GetSubnetID() types.ID {
+	return o.SubnetID
+}
+
+// SetSubnetID sets value to SubnetID
+func (o *IPAddress) SetSubnetID(v types.ID) {
+	o.SubnetID = v
+}
+
+/*************************************************
 * License
 *************************************************/
 

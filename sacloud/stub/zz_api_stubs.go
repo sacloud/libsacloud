@@ -1738,6 +1738,64 @@ func (s *InternetPlanStub) Read(ctx context.Context, zone string, id types.ID) (
 }
 
 /*************************************************
+* IPAddressStub
+*************************************************/
+
+// IPAddressListStubResult is expected values of the List operation
+type IPAddressListStubResult struct {
+	Values *sacloud.IPAddressListResult
+	Err    error
+}
+
+// IPAddressReadStubResult is expected values of the Read operation
+type IPAddressReadStubResult struct {
+	IPAddress *sacloud.IPAddress
+	Err       error
+}
+
+// IPAddressUpdateHostNameStubResult is expected values of the UpdateHostName operation
+type IPAddressUpdateHostNameStubResult struct {
+	IPAddress *sacloud.IPAddress
+	Err       error
+}
+
+// IPAddressStub is for trace IPAddressOp operations
+type IPAddressStub struct {
+	ListStubResult           *IPAddressListStubResult
+	ReadStubResult           *IPAddressReadStubResult
+	UpdateHostNameStubResult *IPAddressUpdateHostNameStubResult
+}
+
+// NewIPAddressStub creates new IPAddressStub instance
+func NewIPAddressStub(caller sacloud.APICaller) sacloud.IPAddressAPI {
+	return &IPAddressStub{}
+}
+
+// List is API call with trace log
+func (s *IPAddressStub) List(ctx context.Context, zone string) (*sacloud.IPAddressListResult, error) {
+	if s.ListStubResult == nil {
+		log.Fatal("IPAddressStub.ListStubResult is not set")
+	}
+	return s.ListStubResult.Values, s.ListStubResult.Err
+}
+
+// Read is API call with trace log
+func (s *IPAddressStub) Read(ctx context.Context, zone string, ipAddress string) (*sacloud.IPAddress, error) {
+	if s.ReadStubResult == nil {
+		log.Fatal("IPAddressStub.ReadStubResult is not set")
+	}
+	return s.ReadStubResult.IPAddress, s.ReadStubResult.Err
+}
+
+// UpdateHostName is API call with trace log
+func (s *IPAddressStub) UpdateHostName(ctx context.Context, zone string, ipAddress string, hostName string) (*sacloud.IPAddress, error) {
+	if s.UpdateHostNameStubResult == nil {
+		log.Fatal("IPAddressStub.UpdateHostNameStubResult is not set")
+	}
+	return s.UpdateHostNameStubResult.IPAddress, s.UpdateHostNameStubResult.Err
+}
+
+/*************************************************
 * LicenseStub
 *************************************************/
 

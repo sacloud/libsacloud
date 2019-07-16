@@ -33,6 +33,7 @@ func init() {
 	APIs.Define(interfaceAPI)       // インターフェース(NIC)
 	APIs.Define(internetAPI)        // スイッチ+ルータ
 	APIs.Define(internetPlanAPI)    // ルータプラン
+	APIs.Define(ipAPI)              // IPアドレス
 	APIs.Define(licenseAPI)         // ライセンス
 	APIs.Define(licenseInfoAPI)     // ライセンスプラン
 	APIs.Define(loadBalancerAPI)    // ロードバランサ
