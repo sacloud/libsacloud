@@ -61,6 +61,9 @@ func AddClientFactoryHooks() {
 	sacloud.AddClientFacotyHookFunc("InternetPlan", func(in interface{}) interface{} {
 		return NewInternetPlanTracer(in.(sacloud.InternetPlanAPI))
 	})
+	sacloud.AddClientFacotyHookFunc("IPAddress", func(in interface{}) interface{} {
+		return NewIPAddressTracer(in.(sacloud.IPAddressAPI))
+	})
 	sacloud.AddClientFacotyHookFunc("License", func(in interface{}) interface{} {
 		return NewLicenseTracer(in.(sacloud.LicenseAPI))
 	})
@@ -3810,6 +3813,121 @@ func (t *InternetPlanTracer) Read(ctx context.Context, zone string, id types.ID)
 	}
 
 	return resultInternetPlan, err
+}
+
+/*************************************************
+* IPAddressTracer
+*************************************************/
+
+// IPAddressTracer is for trace IPAddressOp operations
+type IPAddressTracer struct {
+	Internal sacloud.IPAddressAPI
+}
+
+// NewIPAddressTracer creates new IPAddressTracer instance
+func NewIPAddressTracer(in sacloud.IPAddressAPI) sacloud.IPAddressAPI {
+	return &IPAddressTracer{
+		Internal: in,
+	}
+}
+
+// List is API call with trace log
+func (t *IPAddressTracer) List(ctx context.Context, zone string) (*sacloud.IPAddressListResult, error) {
+	log.Println("[TRACE] IPAddressAPI.List start")
+	targetArguments := struct {
+		Argzone string `json:"zone"`
+	}{
+		Argzone: zone,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] IPAddressAPI.List end")
+	}()
+
+	result, err := t.Internal.List(ctx, zone)
+	targetResults := struct {
+		Result *sacloud.IPAddressListResult
+		Error  error
+	}{
+		Result: result,
+		Error:  err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return result, err
+}
+
+// Read is API call with trace log
+func (t *IPAddressTracer) Read(ctx context.Context, zone string, ipAddress string) (*sacloud.IPAddress, error) {
+	log.Println("[TRACE] IPAddressAPI.Read start")
+	targetArguments := struct {
+		Argzone      string `json:"zone"`
+		ArgipAddress string `json:"ipAddress"`
+	}{
+		Argzone:      zone,
+		ArgipAddress: ipAddress,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] IPAddressAPI.Read end")
+	}()
+
+	resultIPAddress, err := t.Internal.Read(ctx, zone, ipAddress)
+	targetResults := struct {
+		IPAddress *sacloud.IPAddress
+		Error     error
+	}{
+		IPAddress: resultIPAddress,
+		Error:     err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultIPAddress, err
+}
+
+// UpdateHostName is API call with trace log
+func (t *IPAddressTracer) UpdateHostName(ctx context.Context, zone string, ipAddress string, hostName string) (*sacloud.IPAddress, error) {
+	log.Println("[TRACE] IPAddressAPI.UpdateHostName start")
+	targetArguments := struct {
+		Argzone      string `json:"zone"`
+		ArgipAddress string `json:"ipAddress"`
+		ArghostName  string `json:"hostName"`
+	}{
+		Argzone:      zone,
+		ArgipAddress: ipAddress,
+		ArghostName:  hostName,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] IPAddressAPI.UpdateHostName end")
+	}()
+
+	resultIPAddress, err := t.Internal.UpdateHostName(ctx, zone, ipAddress, hostName)
+	targetResults := struct {
+		IPAddress *sacloud.IPAddress
+		Error     error
+	}{
+		IPAddress: resultIPAddress,
+		Error:     err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultIPAddress, err
 }
 
 /*************************************************

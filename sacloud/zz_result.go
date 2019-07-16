@@ -567,6 +567,29 @@ type internetPlanReadResult struct {
 	InternetPlan *InternetPlan `json:",omitempty" mapconv:"InternetPlan,omitempty,recursive"`
 }
 
+// IPAddressListResult represents the Result of API
+type IPAddressListResult struct {
+	Total int `json:",omitempty"` // Total count of target resources
+	From  int `json:",omitempty"` // Current page number
+	Count int `json:",omitempty"` // Count of current page
+
+	IPAddress []*IPAddress `json:",omitempty" mapconv:"[]IPAddress,omitempty,recursive"`
+}
+
+// iPAddressReadResult represents the Result of API
+type iPAddressReadResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	IPAddress *IPAddress `json:",omitempty" mapconv:"IPAddress,omitempty,recursive"`
+}
+
+// iPAddressUpdateHostNameResult represents the Result of API
+type iPAddressUpdateHostNameResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	IPAddress *IPAddress `json:",omitempty" mapconv:"IPAddress,omitempty,recursive"`
+}
+
 // LicenseFindResult represents the Result of API
 type LicenseFindResult struct {
 	Total int `json:",omitempty"` // Total count of target resources

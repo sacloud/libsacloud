@@ -17,7 +17,7 @@ func find(resourceName string, nakedType meta.Type, findParam, result *dsl.Model
 	return &dsl.Operation{
 		ResourceName:     resourceName,
 		Name:             "Find",
-		PathFormat:       "{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}",
+		PathFormat:       dsl.DefaultPathFormat,
 		Method:           http.MethodGet,
 		UseWrappedResult: true,
 		RequestEnvelope:  dsl.RequestEnvelopeFromModel(findParam),
