@@ -1595,6 +1595,17 @@ type InternetMonitorStubResult struct {
 	Err            error
 }
 
+// InternetEnableIPv6StubResult is expected values of the EnableIPv6 operation
+type InternetEnableIPv6StubResult struct {
+	IPv6Net *sacloud.IPv6NetInfo
+	Err     error
+}
+
+// InternetDisableIPv6StubResult is expected values of the DisableIPv6 operation
+type InternetDisableIPv6StubResult struct {
+	Err error
+}
+
 // InternetStub is for trace InternetOp operations
 type InternetStub struct {
 	FindStubResult            *InternetFindStubResult
@@ -1607,6 +1618,8 @@ type InternetStub struct {
 	UpdateSubnetStubResult    *InternetUpdateSubnetStubResult
 	DeleteSubnetStubResult    *InternetDeleteSubnetStubResult
 	MonitorStubResult         *InternetMonitorStubResult
+	EnableIPv6StubResult      *InternetEnableIPv6StubResult
+	DisableIPv6StubResult     *InternetDisableIPv6StubResult
 }
 
 // NewInternetStub creates new InternetStub instance
@@ -1692,6 +1705,22 @@ func (s *InternetStub) Monitor(ctx context.Context, zone string, id types.ID, co
 		log.Fatal("InternetStub.MonitorStubResult is not set")
 	}
 	return s.MonitorStubResult.RouterActivity, s.MonitorStubResult.Err
+}
+
+// EnableIPv6 is API call with trace log
+func (s *InternetStub) EnableIPv6(ctx context.Context, zone string, id types.ID) (*sacloud.IPv6NetInfo, error) {
+	if s.EnableIPv6StubResult == nil {
+		log.Fatal("InternetStub.EnableIPv6StubResult is not set")
+	}
+	return s.EnableIPv6StubResult.IPv6Net, s.EnableIPv6StubResult.Err
+}
+
+// DisableIPv6 is API call with trace log
+func (s *InternetStub) DisableIPv6(ctx context.Context, zone string, id types.ID, ipv6netID types.ID) error {
+	if s.DisableIPv6StubResult == nil {
+		log.Fatal("InternetStub.DisableIPv6StubResult is not set")
+	}
+	return s.DisableIPv6StubResult.Err
 }
 
 /*************************************************
@@ -1793,6 +1822,49 @@ func (s *IPAddressStub) UpdateHostName(ctx context.Context, zone string, ipAddre
 		log.Fatal("IPAddressStub.UpdateHostNameStubResult is not set")
 	}
 	return s.UpdateHostNameStubResult.IPAddress, s.UpdateHostNameStubResult.Err
+}
+
+/*************************************************
+* IPv6NetStub
+*************************************************/
+
+// IPv6NetListStubResult is expected values of the List operation
+type IPv6NetListStubResult struct {
+	Values *sacloud.IPv6NetListResult
+	Err    error
+}
+
+// IPv6NetReadStubResult is expected values of the Read operation
+type IPv6NetReadStubResult struct {
+	IPv6Net *sacloud.IPv6Net
+	Err     error
+}
+
+// IPv6NetStub is for trace IPv6NetOp operations
+type IPv6NetStub struct {
+	ListStubResult *IPv6NetListStubResult
+	ReadStubResult *IPv6NetReadStubResult
+}
+
+// NewIPv6NetStub creates new IPv6NetStub instance
+func NewIPv6NetStub(caller sacloud.APICaller) sacloud.IPv6NetAPI {
+	return &IPv6NetStub{}
+}
+
+// List is API call with trace log
+func (s *IPv6NetStub) List(ctx context.Context, zone string) (*sacloud.IPv6NetListResult, error) {
+	if s.ListStubResult == nil {
+		log.Fatal("IPv6NetStub.ListStubResult is not set")
+	}
+	return s.ListStubResult.Values, s.ListStubResult.Err
+}
+
+// Read is API call with trace log
+func (s *IPv6NetStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.IPv6Net, error) {
+	if s.ReadStubResult == nil {
+		log.Fatal("IPv6NetStub.ReadStubResult is not set")
+	}
+	return s.ReadStubResult.IPv6Net, s.ReadStubResult.Err
 }
 
 /*************************************************

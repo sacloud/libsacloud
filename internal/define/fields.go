@@ -7,15 +7,25 @@ import (
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
+func mapConvTag(tag string) *dsl.FieldTags {
+	return &dsl.FieldTags{
+		MapConv: tag,
+	}
+}
+
 type fieldsDef struct{}
 
 var fields = &fieldsDef{}
 
-func (f *fieldsDef) New(name string, t meta.Type) *dsl.FieldDesc {
-	return &dsl.FieldDesc{
+func (f *fieldsDef) New(name string, t meta.Type, tag ...*dsl.FieldTags) *dsl.FieldDesc {
+	desc := &dsl.FieldDesc{
 		Name: name,
 		Type: t,
 	}
+	if len(tag) > 0 {
+		desc.Tags = tag[0]
+	}
+	return desc
 }
 
 func (f *fieldsDef) ID() *dsl.FieldDesc {

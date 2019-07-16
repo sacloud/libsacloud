@@ -64,6 +64,9 @@ func AddClientFactoryHooks() {
 	sacloud.AddClientFacotyHookFunc("IPAddress", func(in interface{}) interface{} {
 		return NewIPAddressTracer(in.(sacloud.IPAddressAPI))
 	})
+	sacloud.AddClientFacotyHookFunc("IPv6Net", func(in interface{}) interface{} {
+		return NewIPv6NetTracer(in.(sacloud.IPv6NetAPI))
+	})
 	sacloud.AddClientFacotyHookFunc("License", func(in interface{}) interface{} {
 		return NewLicenseTracer(in.(sacloud.LicenseAPI))
 	})
@@ -3733,6 +3736,72 @@ func (t *InternetTracer) Monitor(ctx context.Context, zone string, id types.ID, 
 	return resultRouterActivity, err
 }
 
+// EnableIPv6 is API call with trace log
+func (t *InternetTracer) EnableIPv6(ctx context.Context, zone string, id types.ID) (*sacloud.IPv6NetInfo, error) {
+	log.Println("[TRACE] InternetAPI.EnableIPv6 start")
+	targetArguments := struct {
+		Argzone string   `json:"zone"`
+		Argid   types.ID `json:"id"`
+	}{
+		Argzone: zone,
+		Argid:   id,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] InternetAPI.EnableIPv6 end")
+	}()
+
+	resultIPv6Net, err := t.Internal.EnableIPv6(ctx, zone, id)
+	targetResults := struct {
+		IPv6Net *sacloud.IPv6NetInfo
+		Error   error
+	}{
+		IPv6Net: resultIPv6Net,
+		Error:   err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultIPv6Net, err
+}
+
+// DisableIPv6 is API call with trace log
+func (t *InternetTracer) DisableIPv6(ctx context.Context, zone string, id types.ID, ipv6netID types.ID) error {
+	log.Println("[TRACE] InternetAPI.DisableIPv6 start")
+	targetArguments := struct {
+		Argzone      string   `json:"zone"`
+		Argid        types.ID `json:"id"`
+		Argipv6netID types.ID `json:"ipv6netID"`
+	}{
+		Argzone:      zone,
+		Argid:        id,
+		Argipv6netID: ipv6netID,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] InternetAPI.DisableIPv6 end")
+	}()
+
+	err := t.Internal.DisableIPv6(ctx, zone, id, ipv6netID)
+	targetResults := struct {
+		Error error
+	}{
+		Error: err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return err
+}
+
 /*************************************************
 * InternetPlanTracer
 *************************************************/
@@ -3928,6 +3997,86 @@ func (t *IPAddressTracer) UpdateHostName(ctx context.Context, zone string, ipAdd
 	}
 
 	return resultIPAddress, err
+}
+
+/*************************************************
+* IPv6NetTracer
+*************************************************/
+
+// IPv6NetTracer is for trace IPv6NetOp operations
+type IPv6NetTracer struct {
+	Internal sacloud.IPv6NetAPI
+}
+
+// NewIPv6NetTracer creates new IPv6NetTracer instance
+func NewIPv6NetTracer(in sacloud.IPv6NetAPI) sacloud.IPv6NetAPI {
+	return &IPv6NetTracer{
+		Internal: in,
+	}
+}
+
+// List is API call with trace log
+func (t *IPv6NetTracer) List(ctx context.Context, zone string) (*sacloud.IPv6NetListResult, error) {
+	log.Println("[TRACE] IPv6NetAPI.List start")
+	targetArguments := struct {
+		Argzone string `json:"zone"`
+	}{
+		Argzone: zone,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] IPv6NetAPI.List end")
+	}()
+
+	result, err := t.Internal.List(ctx, zone)
+	targetResults := struct {
+		Result *sacloud.IPv6NetListResult
+		Error  error
+	}{
+		Result: result,
+		Error:  err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return result, err
+}
+
+// Read is API call with trace log
+func (t *IPv6NetTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.IPv6Net, error) {
+	log.Println("[TRACE] IPv6NetAPI.Read start")
+	targetArguments := struct {
+		Argzone string   `json:"zone"`
+		Argid   types.ID `json:"id"`
+	}{
+		Argzone: zone,
+		Argid:   id,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] IPv6NetAPI.Read end")
+	}()
+
+	resultIPv6Net, err := t.Internal.Read(ctx, zone, id)
+	targetResults := struct {
+		IPv6Net *sacloud.IPv6Net
+		Error   error
+	}{
+		IPv6Net: resultIPv6Net,
+		Error:   err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultIPv6Net, err
 }
 
 /*************************************************

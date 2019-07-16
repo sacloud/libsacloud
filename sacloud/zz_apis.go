@@ -227,6 +227,8 @@ type InternetAPI interface {
 	UpdateSubnet(ctx context.Context, zone string, id types.ID, subnetID types.ID, param *InternetUpdateSubnetRequest) (*InternetSubnetOperationResult, error)
 	DeleteSubnet(ctx context.Context, zone string, id types.ID, subnetID types.ID) error
 	Monitor(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*RouterActivity, error)
+	EnableIPv6(ctx context.Context, zone string, id types.ID) (*IPv6NetInfo, error)
+	DisableIPv6(ctx context.Context, zone string, id types.ID, ipv6netID types.ID) error
 }
 
 /*************************************************
@@ -248,6 +250,16 @@ type IPAddressAPI interface {
 	List(ctx context.Context, zone string) (*IPAddressListResult, error)
 	Read(ctx context.Context, zone string, ipAddress string) (*IPAddress, error)
 	UpdateHostName(ctx context.Context, zone string, ipAddress string, hostName string) (*IPAddress, error)
+}
+
+/*************************************************
+* IPv6NetAPI
+*************************************************/
+
+// IPv6NetAPI is interface for operate IPv6Net resource
+type IPv6NetAPI interface {
+	List(ctx context.Context, zone string) (*IPv6NetListResult, error)
+	Read(ctx context.Context, zone string, id types.ID) (*IPv6Net, error)
 }
 
 /*************************************************

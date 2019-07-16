@@ -586,6 +586,34 @@ func (m *modelsDef) internetModel() *dsl.Model {
 	}
 }
 
+// switchIPv6NetModel InternetリソースのフィールドとしてのIPv6Net
+func (m *modelsDef) switchIPv6NetModel() *dsl.Model {
+	return &dsl.Model{
+		Name:      "IPv6NetInfo",
+		NakedType: meta.Static(naked.IPv6Net{}),
+		IsArray:   false,
+		Fields: []*dsl.FieldDesc{
+			fields.ID(),
+			fields.New("IPv6Prefix", meta.TypeString),
+			fields.New("IPv6PrefixLen", meta.TypeInt),
+		},
+	}
+}
+
+// switchIPv6NetsModel InternetリソースのフィールドとしてのIPv6Net
+func (m *modelsDef) switchIPv6NetsModel() *dsl.Model {
+	return &dsl.Model{
+		Name:      "IPv6NetInfo",
+		NakedType: meta.Static(naked.IPv6Net{}),
+		IsArray:   true,
+		Fields: []*dsl.FieldDesc{
+			fields.ID(),
+			fields.New("IPv6Prefix", meta.TypeString),
+			fields.New("IPv6PrefixLen", meta.TypeInt),
+		},
+	}
+}
+
 // switchInfoModel Internetリソースのフィールドとしてのswitch
 //
 // Subnetの情報は限定的にしか返ってこない(IPAddresses.Max/Minなどがない)ため注意
@@ -607,6 +635,7 @@ func (m *modelsDef) switchInfoModel() *dsl.Model {
 					MapConv: "[]Subnets,recursive",
 				},
 			},
+			fields.New("IPv6Nets", m.switchIPv6NetsModel(), mapConvTag("[]IPv6Nets,recursive,omitempty")),
 		},
 	}
 }

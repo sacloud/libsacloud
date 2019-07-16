@@ -6798,6 +6798,7 @@ type SwitchInfo struct {
 	Tags        []string
 	Scope       types.EScope
 	Subnets     []*InternetSubnet `mapconv:"[]Subnets,recursive"`
+	IPv6Nets    []*IPv6NetInfo    `mapconv:"[]IPv6Nets,recursive,omitempty"`
 }
 
 // Validate validates by field tags
@@ -6883,6 +6884,16 @@ func (o *SwitchInfo) GetSubnets() []*InternetSubnet {
 // SetSubnets sets value to Subnets
 func (o *SwitchInfo) SetSubnets(v []*InternetSubnet) {
 	o.Subnets = v
+}
+
+// GetIPv6Nets returns value of IPv6Nets
+func (o *SwitchInfo) GetIPv6Nets() []*IPv6NetInfo {
+	return o.IPv6Nets
+}
+
+// SetIPv6Nets sets value to IPv6Nets
+func (o *SwitchInfo) SetIPv6Nets(v []*IPv6NetInfo) {
+	o.IPv6Nets = v
 }
 
 /*************************************************
@@ -6982,6 +6993,72 @@ func (o *InternetSubnet) GetNetworkMaskLen() int {
 // SetNetworkMaskLen sets value to NetworkMaskLen
 func (o *InternetSubnet) SetNetworkMaskLen(v int) {
 	o.NetworkMaskLen = v
+}
+
+/*************************************************
+* IPv6NetInfo
+*************************************************/
+
+// IPv6NetInfo represents API parameter/response structure
+type IPv6NetInfo struct {
+	ID            types.ID
+	IPv6Prefix    string
+	IPv6PrefixLen int
+}
+
+// Validate validates by field tags
+func (o *IPv6NetInfo) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetID returns value of ID
+func (o *IPv6NetInfo) GetID() types.ID {
+	return o.ID
+}
+
+// SetID sets value to ID
+func (o *IPv6NetInfo) SetID(v types.ID) {
+	o.ID = v
+}
+
+// GetStringID gets value to StringID
+func (o *IPv6NetInfo) GetStringID() string {
+	return accessor.GetStringID(o)
+}
+
+// SetStringID sets value to StringID
+func (o *IPv6NetInfo) SetStringID(v string) {
+	accessor.SetStringID(o, v)
+}
+
+// GetInt64ID gets value to Int64ID
+func (o *IPv6NetInfo) GetInt64ID() int64 {
+	return accessor.GetInt64ID(o)
+}
+
+// SetInt64ID sets value to Int64ID
+func (o *IPv6NetInfo) SetInt64ID(v int64) {
+	accessor.SetInt64ID(o, v)
+}
+
+// GetIPv6Prefix returns value of IPv6Prefix
+func (o *IPv6NetInfo) GetIPv6Prefix() string {
+	return o.IPv6Prefix
+}
+
+// SetIPv6Prefix sets value to IPv6Prefix
+func (o *IPv6NetInfo) SetIPv6Prefix(v string) {
+	o.IPv6Prefix = v
+}
+
+// GetIPv6PrefixLen returns value of IPv6PrefixLen
+func (o *IPv6NetInfo) GetIPv6PrefixLen() int {
+	return o.IPv6PrefixLen
+}
+
+// SetIPv6PrefixLen sets value to IPv6PrefixLen
+func (o *IPv6NetInfo) SetIPv6PrefixLen(v int) {
+	o.IPv6PrefixLen = v
 }
 
 /*************************************************
@@ -7515,6 +7592,149 @@ func (o *IPAddress) GetSubnetID() types.ID {
 // SetSubnetID sets value to SubnetID
 func (o *IPAddress) SetSubnetID(v types.ID) {
 	o.SubnetID = v
+}
+
+/*************************************************
+* IPv6Net
+*************************************************/
+
+// IPv6Net represents API parameter/response structure
+type IPv6Net struct {
+	ID                 types.ID
+	ServiceID          types.ID
+	IPv6Prefix         string
+	IPv6PrefixLen      int
+	IPv6PrefixTail     string
+	ServiceClass       string
+	IPv6TableID        types.ID `mapconv:"IPv6Table.ID"`
+	NamedIPv6AddrCount int
+	CreatedAt          time.Time
+	SwitchID           types.ID `mapconv:"Switch.ID,omitempty"`
+}
+
+// Validate validates by field tags
+func (o *IPv6Net) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetID returns value of ID
+func (o *IPv6Net) GetID() types.ID {
+	return o.ID
+}
+
+// SetID sets value to ID
+func (o *IPv6Net) SetID(v types.ID) {
+	o.ID = v
+}
+
+// GetStringID gets value to StringID
+func (o *IPv6Net) GetStringID() string {
+	return accessor.GetStringID(o)
+}
+
+// SetStringID sets value to StringID
+func (o *IPv6Net) SetStringID(v string) {
+	accessor.SetStringID(o, v)
+}
+
+// GetInt64ID gets value to Int64ID
+func (o *IPv6Net) GetInt64ID() int64 {
+	return accessor.GetInt64ID(o)
+}
+
+// SetInt64ID sets value to Int64ID
+func (o *IPv6Net) SetInt64ID(v int64) {
+	accessor.SetInt64ID(o, v)
+}
+
+// GetServiceID returns value of ServiceID
+func (o *IPv6Net) GetServiceID() types.ID {
+	return o.ServiceID
+}
+
+// SetServiceID sets value to ServiceID
+func (o *IPv6Net) SetServiceID(v types.ID) {
+	o.ServiceID = v
+}
+
+// GetIPv6Prefix returns value of IPv6Prefix
+func (o *IPv6Net) GetIPv6Prefix() string {
+	return o.IPv6Prefix
+}
+
+// SetIPv6Prefix sets value to IPv6Prefix
+func (o *IPv6Net) SetIPv6Prefix(v string) {
+	o.IPv6Prefix = v
+}
+
+// GetIPv6PrefixLen returns value of IPv6PrefixLen
+func (o *IPv6Net) GetIPv6PrefixLen() int {
+	return o.IPv6PrefixLen
+}
+
+// SetIPv6PrefixLen sets value to IPv6PrefixLen
+func (o *IPv6Net) SetIPv6PrefixLen(v int) {
+	o.IPv6PrefixLen = v
+}
+
+// GetIPv6PrefixTail returns value of IPv6PrefixTail
+func (o *IPv6Net) GetIPv6PrefixTail() string {
+	return o.IPv6PrefixTail
+}
+
+// SetIPv6PrefixTail sets value to IPv6PrefixTail
+func (o *IPv6Net) SetIPv6PrefixTail(v string) {
+	o.IPv6PrefixTail = v
+}
+
+// GetServiceClass returns value of ServiceClass
+func (o *IPv6Net) GetServiceClass() string {
+	return o.ServiceClass
+}
+
+// SetServiceClass sets value to ServiceClass
+func (o *IPv6Net) SetServiceClass(v string) {
+	o.ServiceClass = v
+}
+
+// GetIPv6TableID returns value of IPv6TableID
+func (o *IPv6Net) GetIPv6TableID() types.ID {
+	return o.IPv6TableID
+}
+
+// SetIPv6TableID sets value to IPv6TableID
+func (o *IPv6Net) SetIPv6TableID(v types.ID) {
+	o.IPv6TableID = v
+}
+
+// GetNamedIPv6AddrCount returns value of NamedIPv6AddrCount
+func (o *IPv6Net) GetNamedIPv6AddrCount() int {
+	return o.NamedIPv6AddrCount
+}
+
+// SetNamedIPv6AddrCount sets value to NamedIPv6AddrCount
+func (o *IPv6Net) SetNamedIPv6AddrCount(v int) {
+	o.NamedIPv6AddrCount = v
+}
+
+// GetCreatedAt returns value of CreatedAt
+func (o *IPv6Net) GetCreatedAt() time.Time {
+	return o.CreatedAt
+}
+
+// SetCreatedAt sets value to CreatedAt
+func (o *IPv6Net) SetCreatedAt(v time.Time) {
+	o.CreatedAt = v
+}
+
+// GetSwitchID returns value of SwitchID
+func (o *IPv6Net) GetSwitchID() types.ID {
+	return o.SwitchID
+}
+
+// SetSwitchID sets value to SwitchID
+func (o *IPv6Net) SetSwitchID(v types.ID) {
+	o.SwitchID = v
 }
 
 /*************************************************

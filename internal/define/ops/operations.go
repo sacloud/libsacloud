@@ -55,6 +55,32 @@ func FindCommonServiceItem(resourceName string, nakedType meta.Type, findParam, 
 	return find(resourceName, nakedType, findParam, result, "CommonServiceItems")
 }
 
+// List List操作(パラメータのないFind)を定義
+func List(resourceName string, nakedType meta.Type, result *dsl.Model) *dsl.Operation {
+	return &dsl.Operation{
+		ResourceName:     resourceName,
+		Name:             "List",
+		PathFormat:       dsl.DefaultPathFormat,
+		Method:           http.MethodGet,
+		UseWrappedResult: true,
+		Arguments: dsl.Arguments{
+			dsl.ArgumentZone,
+		},
+		ResponseEnvelope: dsl.ResponseEnvelopePlural(&dsl.EnvelopePayloadDesc{
+			Type: nakedType,
+			Name: names.ResourceFieldName(resourceName, dsl.PayloadForms.Plural),
+		}),
+		Results: dsl.Results{
+			{
+				SourceField: names.ResourceFieldName(resourceName, dsl.PayloadForms.Plural),
+				DestField:   names.ResourceFieldName(resourceName, dsl.PayloadForms.Plural),
+				IsPlural:    true,
+				Model:       result,
+			},
+		},
+	}
+}
+
 func create(resourceName string, nakedType meta.Type, createParam, result *dsl.Model, payloadName string) *dsl.Operation {
 	if payloadName == "" {
 		payloadName = names.ResourceFieldName(resourceName, dsl.PayloadForms.Singular)
