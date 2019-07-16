@@ -1462,6 +1462,26 @@ func (f *fieldsDef) InstanceWarningsValue() *dsl.FieldDesc {
 	}
 }
 
+func (f *fieldsDef) SubnetID() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "SubnetID",
+		Type: meta.TypeID,
+		Tags: &dsl.FieldTags{
+			MapConv: "Subnet.ID,omitempty",
+		},
+	}
+}
+
+func (f *fieldsDef) InterfaceID() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "InterfaceID",
+		Type: meta.TypeID,
+		Tags: &dsl.FieldTags{
+			MapConv: "Interface.ID,omitempty",
+		},
+	}
+}
+
 func (f *fieldsDef) Interfaces() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "Interfaces",

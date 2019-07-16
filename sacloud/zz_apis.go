@@ -240,6 +240,17 @@ type InternetPlanAPI interface {
 }
 
 /*************************************************
+* IPAddressAPI
+*************************************************/
+
+// IPAddressAPI is interface for operate IPAddress resource
+type IPAddressAPI interface {
+	List(ctx context.Context, zone string) (*IPAddressListResult, error)
+	Read(ctx context.Context, zone string, ipAddress string) (*IPAddress, error)
+	UpdateHostName(ctx context.Context, zone string, ipAddress string, hostName string) (*IPAddress, error)
+}
+
+/*************************************************
 * LicenseAPI
 *************************************************/
 

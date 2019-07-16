@@ -375,6 +375,29 @@ func (s *store) setInternetPlan(zone string, value *sacloud.InternetPlan) {
 	s.set(ResourceInternetPlan, zone, value)
 }
 
+func (s *store) getIPAddress(zone string) []*sacloud.IPAddress {
+	values := s.get(ResourceIPAddress, zone)
+	var ret []*sacloud.IPAddress
+	for _, v := range values {
+		if v, ok := v.(*sacloud.IPAddress); ok {
+			ret = append(ret, v)
+		}
+	}
+	return ret
+}
+
+func (s *store) getIPAddressByID(zone string, id types.ID) *sacloud.IPAddress {
+	v := s.getByID(ResourceIPAddress, zone, id)
+	if v, ok := v.(*sacloud.IPAddress); ok {
+		return v
+	}
+	return nil
+}
+
+func (s *store) setIPAddress(zone string, value *sacloud.IPAddress) {
+	s.set(ResourceIPAddress, zone, value)
+}
+
 func (s *store) getLicense(zone string) []*sacloud.License {
 	values := s.get(ResourceLicense, zone)
 	var ret []*sacloud.License

@@ -56,6 +56,9 @@ func SwitchFactoryFuncToFake() {
 	sacloud.SetClientFactoryFunc(ResourceInternetPlan, func(caller sacloud.APICaller) interface{} {
 		return NewInternetPlanOp()
 	})
+	sacloud.SetClientFactoryFunc(ResourceIPAddress, func(caller sacloud.APICaller) interface{} {
+		return NewIPAddressOp()
+	})
 	sacloud.SetClientFactoryFunc(ResourceLicense, func(caller sacloud.APICaller) interface{} {
 		return NewLicenseOp()
 	})
@@ -371,6 +374,22 @@ type InternetPlanOp struct {
 func NewInternetPlanOp() sacloud.InternetPlanAPI {
 	return &InternetPlanOp{
 		key: ResourceInternetPlan,
+	}
+}
+
+/*************************************************
+* IPAddressOp
+*************************************************/
+
+// IPAddressOp is fake implementation of IPAddressAPI interface
+type IPAddressOp struct {
+	key string
+}
+
+// NewIPAddressOp creates new IPAddressOp instance
+func NewIPAddressOp() sacloud.IPAddressAPI {
+	return &IPAddressOp{
+		key: ResourceIPAddress,
 	}
 }
 

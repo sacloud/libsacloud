@@ -140,6 +140,14 @@ func init() {
 		}
 	})
 
+	SetClientFactoryFunc("IPAddress", func(caller APICaller) interface{} {
+		return &IPAddressOp{
+			Client:     caller,
+			PathSuffix: "api/cloud/1.1",
+			PathName:   "ipaddress",
+		}
+	})
+
 	SetClientFactoryFunc("License", func(caller APICaller) interface{} {
 		return &LicenseOp{
 			Client:     caller,
@@ -4965,6 +4973,146 @@ func (o *InternetPlanOp) Read(ctx context.Context, zone string, id types.ID) (*I
 		return nil, err
 	}
 	return results.InternetPlan, nil
+}
+
+/*************************************************
+* IPAddressOp
+*************************************************/
+
+// IPAddressOp implements IPAddressAPI interface
+type IPAddressOp struct {
+	// Client APICaller
+	Client APICaller
+	// PathSuffix is used when building URL
+	PathSuffix string
+	// PathName is used when building URL
+	PathName string
+}
+
+// NewIPAddressOp creates new IPAddressOp instance
+func NewIPAddressOp(caller APICaller) IPAddressAPI {
+	return GetClientFactoryFunc("IPAddress")(caller).(IPAddressAPI)
+}
+
+// List is API call
+func (o *IPAddressOp) List(ctx context.Context, zone string) (*IPAddressListResult, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &iPAddressListResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &IPAddressListResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, err
+}
+
+// Read is API call
+func (o *IPAddressOp) Read(ctx context.Context, zone string, ipAddress string) (*IPAddress, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.ipAddress}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"ipAddress":  ipAddress,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &iPAddressReadResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &iPAddressReadResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results.IPAddress, nil
+}
+
+// UpdateHostName is API call
+func (o *IPAddressOp) UpdateHostName(ctx context.Context, zone string, ipAddress string, hostName string) (*IPAddress, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.ipAddress}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"ipAddress":  ipAddress,
+		"hostName":   hostName,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	if zone == "" {
+		zone = ""
+	}
+	if ipAddress == "" {
+		ipAddress = ""
+	}
+	if hostName == "" {
+		hostName = ""
+	}
+	args := &struct {
+		Argzone      string
+		ArgipAddress string
+		ArghostName  string `mapconv:"IPAddress.HostName"`
+	}{
+		Argzone:      zone,
+		ArgipAddress: ipAddress,
+		ArghostName:  hostName,
+	}
+
+	v := &iPAddressUpdateHostNameRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
+
+	data, err := o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &iPAddressUpdateHostNameResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &iPAddressUpdateHostNameResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results.IPAddress, nil
 }
 
 /*************************************************
