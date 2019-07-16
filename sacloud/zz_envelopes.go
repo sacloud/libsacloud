@@ -2059,6 +2059,62 @@ type vPCRouterMonitorInterfaceResponseEnvelope struct {
 	Data *naked.MonitorValues `json:",omitempty"`
 }
 
+// webAccelListResponseEnvelope is envelop of API response
+type webAccelListResponseEnvelope struct {
+	Total int `json:",omitempty"` // トータル件数
+	From  int `json:",omitempty"` // ページング開始ページ
+	Count int `json:",omitempty"` // 件数
+
+	Sites []*naked.WebAccelSite `json:",omitempty"`
+}
+
+// webAccelReadResponseEnvelope is envelop of API response
+type webAccelReadResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Site *naked.WebAccelSite `json:",omitempty"`
+}
+
+// webAccelReadCertificateResponseEnvelope is envelop of API response
+type webAccelReadCertificateResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Certificate *naked.WebAccelCerts `json:",omitempty"`
+}
+
+// webAccelUpdateCertificateRequestEnvelope is envelop of API request
+type webAccelUpdateCertificateRequestEnvelope struct {
+	Certificate *naked.WebAccelCert `json:",omitempty"`
+}
+
+// webAccelUpdateCertificateResponseEnvelope is envelop of API response
+type webAccelUpdateCertificateResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Certificate *naked.WebAccelCerts `json:",omitempty"`
+}
+
+// webAccelDeleteAllCacheRequestEnvelope is envelop of API request
+type webAccelDeleteAllCacheRequestEnvelope struct {
+	Site *naked.WebAccelSite `json:",omitempty"`
+}
+
+// webAccelDeleteCacheRequestEnvelope is envelop of API request
+type webAccelDeleteCacheRequestEnvelope struct {
+	URL []string `json:",omitempty"`
+}
+
+// webAccelDeleteCacheResponseEnvelope is envelop of API response
+type webAccelDeleteCacheResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Results []*naked.WebAccelDeleteCacheResult `json:",omitempty"`
+}
+
 // zoneFindRequestEnvelope is envelop of API request
 type zoneFindRequestEnvelope struct {
 	Count   int                    `json:",omitempty"`

@@ -1155,6 +1155,43 @@ type vPCRouterMonitorInterfaceResult struct {
 	InterfaceActivity *InterfaceActivity `json:",omitempty" mapconv:"Data,omitempty,recursive"`
 }
 
+// WebAccelListResult represents the Result of API
+type WebAccelListResult struct {
+	Total int `json:",omitempty"` // Total count of target resources
+	From  int `json:",omitempty"` // Current page number
+	Count int `json:",omitempty"` // Count of current page
+
+	WebAccels []*WebAccel `json:",omitempty" mapconv:"[]Sites,omitempty,recursive"`
+}
+
+// webAccelReadResult represents the Result of API
+type webAccelReadResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	WebAccel *WebAccel `json:",omitempty" mapconv:"Site,omitempty,recursive"`
+}
+
+// webAccelReadCertificateResult represents the Result of API
+type webAccelReadCertificateResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	Certificate *WebAccelCerts `json:",omitempty" mapconv:"Certificate,omitempty,recursive"`
+}
+
+// webAccelUpdateCertificateResult represents the Result of API
+type webAccelUpdateCertificateResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	Certificate *WebAccelCerts `json:",omitempty" mapconv:"Certificate,omitempty,recursive"`
+}
+
+// webAccelDeleteCacheResult represents the Result of API
+type webAccelDeleteCacheResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	Results []*WebAccelDeleteCacheResult `json:",omitempty" mapconv:"[]Results,omitempty,recursive"`
+}
+
 // ZoneFindResult represents the Result of API
 type ZoneFindResult struct {
 	Total int `json:",omitempty"` // Total count of target resources

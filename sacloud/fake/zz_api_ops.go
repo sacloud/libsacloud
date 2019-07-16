@@ -110,6 +110,9 @@ func SwitchFactoryFuncToFake() {
 	sacloud.SetClientFactoryFunc(ResourceVPCRouter, func(caller sacloud.APICaller) interface{} {
 		return NewVPCRouterOp()
 	})
+	sacloud.SetClientFactoryFunc(ResourceWebAccel, func(caller sacloud.APICaller) interface{} {
+		return NewWebAccelOp()
+	})
 	sacloud.SetClientFactoryFunc(ResourceZone, func(caller sacloud.APICaller) interface{} {
 		return NewZoneOp()
 	})
@@ -656,6 +659,22 @@ type VPCRouterOp struct {
 func NewVPCRouterOp() sacloud.VPCRouterAPI {
 	return &VPCRouterOp{
 		key: ResourceVPCRouter,
+	}
+}
+
+/*************************************************
+* WebAccelOp
+*************************************************/
+
+// WebAccelOp is fake implementation of WebAccelAPI interface
+type WebAccelOp struct {
+	key string
+}
+
+// NewWebAccelOp creates new WebAccelOp instance
+func NewWebAccelOp() sacloud.WebAccelAPI {
+	return &WebAccelOp{
+		key: ResourceWebAccel,
 	}
 }
 

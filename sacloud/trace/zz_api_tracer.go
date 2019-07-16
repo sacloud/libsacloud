@@ -115,6 +115,9 @@ func AddClientFactoryHooks() {
 	sacloud.AddClientFacotyHookFunc("VPCRouter", func(in interface{}) interface{} {
 		return NewVPCRouterTracer(in.(sacloud.VPCRouterAPI))
 	})
+	sacloud.AddClientFacotyHookFunc("WebAccel", func(in interface{}) interface{} {
+		return NewWebAccelTracer(in.(sacloud.WebAccelAPI))
+	})
 	sacloud.AddClientFacotyHookFunc("Zone", func(in interface{}) interface{} {
 		return NewZoneTracer(in.(sacloud.ZoneAPI))
 	})
@@ -8045,6 +8048,218 @@ func (t *VPCRouterTracer) MonitorInterface(ctx context.Context, zone string, id 
 	}
 
 	return resultInterfaceActivity, err
+}
+
+/*************************************************
+* WebAccelTracer
+*************************************************/
+
+// WebAccelTracer is for trace WebAccelOp operations
+type WebAccelTracer struct {
+	Internal sacloud.WebAccelAPI
+}
+
+// NewWebAccelTracer creates new WebAccelTracer instance
+func NewWebAccelTracer(in sacloud.WebAccelAPI) sacloud.WebAccelAPI {
+	return &WebAccelTracer{
+		Internal: in,
+	}
+}
+
+// List is API call with trace log
+func (t *WebAccelTracer) List(ctx context.Context, zone string) (*sacloud.WebAccelListResult, error) {
+	log.Println("[TRACE] WebAccelAPI.List start")
+	targetArguments := struct {
+		Argzone string `json:"zone"`
+	}{
+		Argzone: zone,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] WebAccelAPI.List end")
+	}()
+
+	result, err := t.Internal.List(ctx, zone)
+	targetResults := struct {
+		Result *sacloud.WebAccelListResult
+		Error  error
+	}{
+		Result: result,
+		Error:  err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return result, err
+}
+
+// Read is API call with trace log
+func (t *WebAccelTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.WebAccel, error) {
+	log.Println("[TRACE] WebAccelAPI.Read start")
+	targetArguments := struct {
+		Argzone string   `json:"zone"`
+		Argid   types.ID `json:"id"`
+	}{
+		Argzone: zone,
+		Argid:   id,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] WebAccelAPI.Read end")
+	}()
+
+	resultWebAccel, err := t.Internal.Read(ctx, zone, id)
+	targetResults := struct {
+		WebAccel *sacloud.WebAccel
+		Error    error
+	}{
+		WebAccel: resultWebAccel,
+		Error:    err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultWebAccel, err
+}
+
+// ReadCertificate is API call with trace log
+func (t *WebAccelTracer) ReadCertificate(ctx context.Context, zone string, id types.ID) (*sacloud.WebAccelCerts, error) {
+	log.Println("[TRACE] WebAccelAPI.ReadCertificate start")
+	targetArguments := struct {
+		Argzone string   `json:"zone"`
+		Argid   types.ID `json:"id"`
+	}{
+		Argzone: zone,
+		Argid:   id,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] WebAccelAPI.ReadCertificate end")
+	}()
+
+	resultCertificate, err := t.Internal.ReadCertificate(ctx, zone, id)
+	targetResults := struct {
+		Certificate *sacloud.WebAccelCerts
+		Error       error
+	}{
+		Certificate: resultCertificate,
+		Error:       err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultCertificate, err
+}
+
+// UpdateCertificate is API call with trace log
+func (t *WebAccelTracer) UpdateCertificate(ctx context.Context, zone string, id types.ID, param *sacloud.WebAccelCertUpdateRequest) (*sacloud.WebAccelCerts, error) {
+	log.Println("[TRACE] WebAccelAPI.UpdateCertificate start")
+	targetArguments := struct {
+		Argzone  string                             `json:"zone"`
+		Argid    types.ID                           `json:"id"`
+		Argparam *sacloud.WebAccelCertUpdateRequest `json:"param"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] WebAccelAPI.UpdateCertificate end")
+	}()
+
+	resultCertificate, err := t.Internal.UpdateCertificate(ctx, zone, id, param)
+	targetResults := struct {
+		Certificate *sacloud.WebAccelCerts
+		Error       error
+	}{
+		Certificate: resultCertificate,
+		Error:       err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultCertificate, err
+}
+
+// DeleteAllCache is API call with trace log
+func (t *WebAccelTracer) DeleteAllCache(ctx context.Context, zone string, param *sacloud.WebAccelDeleteAllCacheRequest) error {
+	log.Println("[TRACE] WebAccelAPI.DeleteAllCache start")
+	targetArguments := struct {
+		Argzone  string                                 `json:"zone"`
+		Argparam *sacloud.WebAccelDeleteAllCacheRequest `json:"param"`
+	}{
+		Argzone:  zone,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] WebAccelAPI.DeleteAllCache end")
+	}()
+
+	err := t.Internal.DeleteAllCache(ctx, zone, param)
+	targetResults := struct {
+		Error error
+	}{
+		Error: err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return err
+}
+
+// DeleteCache is API call with trace log
+func (t *WebAccelTracer) DeleteCache(ctx context.Context, zone string, param *sacloud.WebAccelDeleteCacheRequest) ([]*sacloud.WebAccelDeleteCacheResult, error) {
+	log.Println("[TRACE] WebAccelAPI.DeleteCache start")
+	targetArguments := struct {
+		Argzone  string                              `json:"zone"`
+		Argparam *sacloud.WebAccelDeleteCacheRequest `json:"param"`
+	}{
+		Argzone:  zone,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] WebAccelAPI.DeleteCache end")
+	}()
+
+	resultResults, err := t.Internal.DeleteCache(ctx, zone, param)
+	targetResults := struct {
+		Results []*sacloud.WebAccelDeleteCacheResult
+		Error   error
+	}{
+		Results: resultResults,
+		Error:   err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultResults, err
 }
 
 /*************************************************
