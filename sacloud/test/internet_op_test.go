@@ -57,7 +57,7 @@ var (
 		Name:           "libsacloud-internet",
 		Description:    "desc",
 		Tags:           []string{"tag1", "tag2"},
-		NetworkMaskLen: 24,
+		NetworkMaskLen: 28,
 		BandWidthMbps:  100,
 	}
 	createInternetExpected = &sacloud.Internet{
