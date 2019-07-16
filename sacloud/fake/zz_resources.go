@@ -71,6 +71,8 @@ const (
 	ResourceSwitch = "Switch"
 	// ResourceVPCRouter is resource key of fake store
 	ResourceVPCRouter = "VPCRouter"
+	// ResourceWebAccel is resource key of fake store
+	ResourceWebAccel = "WebAccel"
 	// ResourceZone is resource key of fake store
 	ResourceZone = "Zone"
 )

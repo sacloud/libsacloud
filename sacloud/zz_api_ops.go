@@ -284,6 +284,14 @@ func init() {
 		}
 	})
 
+	SetClientFactoryFunc("WebAccel", func(caller APICaller) interface{} {
+		return &WebAccelOp{
+			Client:     caller,
+			PathSuffix: "api/webaccel/1.0",
+			PathName:   "web_accel",
+		}
+	})
+
 	SetClientFactoryFunc("Zone", func(caller APICaller) interface{} {
 		return &ZoneOp{
 			Client:     caller,
@@ -10243,6 +10251,273 @@ func (o *VPCRouterOp) MonitorInterface(ctx context.Context, zone string, id type
 		return nil, err
 	}
 	return results.InterfaceActivity, nil
+}
+
+/*************************************************
+* WebAccelOp
+*************************************************/
+
+// WebAccelOp implements WebAccelAPI interface
+type WebAccelOp struct {
+	// Client APICaller
+	Client APICaller
+	// PathSuffix is used when building URL
+	PathSuffix string
+	// PathName is used when building URL
+	PathName string
+}
+
+// NewWebAccelOp creates new WebAccelOp instance
+func NewWebAccelOp(caller APICaller) WebAccelAPI {
+	return GetClientFactoryFunc("WebAccel")(caller).(WebAccelAPI)
+}
+
+// List is API call
+func (o *WebAccelOp) List(ctx context.Context, zone string) (*WebAccelListResult, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/site", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &webAccelListResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &WebAccelListResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, err
+}
+
+// Read is API call
+func (o *WebAccelOp) Read(ctx context.Context, zone string, id types.ID) (*WebAccel, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/site/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &webAccelReadResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &webAccelReadResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results.WebAccel, nil
+}
+
+// ReadCertificate is API call
+func (o *WebAccelOp) ReadCertificate(ctx context.Context, zone string, id types.ID) (*WebAccelCerts, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/site/{{.id}}/certificate", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &webAccelReadCertificateResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &webAccelReadCertificateResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results.Certificate, nil
+}
+
+// UpdateCertificate is API call
+func (o *WebAccelOp) UpdateCertificate(ctx context.Context, zone string, id types.ID, param *WebAccelCertUpdateRequest) (*WebAccelCerts, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/site/{{.id}}/certificate", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+		"param":      param,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	if zone == "" {
+		zone = ""
+	}
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	if param == nil {
+		param = &WebAccelCertUpdateRequest{}
+	}
+	args := &struct {
+		Argzone  string
+		Argid    types.ID
+		Argparam *WebAccelCertUpdateRequest `mapconv:"Certificate,recursive"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+
+	v := &webAccelUpdateCertificateRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
+
+	data, err := o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &webAccelUpdateCertificateResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &webAccelUpdateCertificateResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results.Certificate, nil
+}
+
+// DeleteAllCache is API call
+func (o *WebAccelOp) DeleteAllCache(ctx context.Context, zone string, param *WebAccelDeleteAllCacheRequest) error {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/deleteallcache", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"param":      param,
+	})
+	if err != nil {
+		return err
+	}
+
+	var body interface{}
+
+	if zone == "" {
+		zone = ""
+	}
+	if param == nil {
+		param = &WebAccelDeleteAllCacheRequest{}
+	}
+	args := &struct {
+		Argzone  string
+		Argparam *WebAccelDeleteAllCacheRequest `mapconv:"Site,recursive"`
+	}{
+		Argzone:  zone,
+		Argparam: param,
+	}
+
+	v := &webAccelDeleteAllCacheRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return err
+	}
+	body = v
+
+	_, err = o.Client.Do(ctx, "POST", url, body)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// DeleteCache is API call
+func (o *WebAccelOp) DeleteCache(ctx context.Context, zone string, param *WebAccelDeleteCacheRequest) ([]*WebAccelDeleteCacheResult, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/deletecache", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"param":      param,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	if zone == "" {
+		zone = ""
+	}
+	if param == nil {
+		param = &WebAccelDeleteCacheRequest{}
+	}
+	args := &struct {
+		Argzone  string
+		Argparam *WebAccelDeleteCacheRequest `mapconv:",squash"`
+	}{
+		Argzone:  zone,
+		Argparam: param,
+	}
+
+	v := &webAccelDeleteCacheRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
+
+	data, err := o.Client.Do(ctx, "POST", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &webAccelDeleteCacheResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &webAccelDeleteCacheResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results.Results, nil
 }
 
 /*************************************************

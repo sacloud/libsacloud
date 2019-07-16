@@ -44,7 +44,7 @@ Library for SakuraCloud API
 - [x] `Switch`: スイッチ
 - [x] `VPCRouter`: VPCルータ
 - [x] `Zone`: ゾーン
-- [ ] `WebAccel`: ウェブアクセラレータ
+- [x] `WebAccel`: ウェブアクセラレータ
 
 # License
 

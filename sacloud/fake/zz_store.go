@@ -789,6 +789,29 @@ func (s *store) setVPCRouter(zone string, value *sacloud.VPCRouter) {
 	s.set(ResourceVPCRouter, zone, value)
 }
 
+func (s *store) getWebAccel(zone string) []*sacloud.WebAccel {
+	values := s.get(ResourceWebAccel, zone)
+	var ret []*sacloud.WebAccel
+	for _, v := range values {
+		if v, ok := v.(*sacloud.WebAccel); ok {
+			ret = append(ret, v)
+		}
+	}
+	return ret
+}
+
+func (s *store) getWebAccelByID(zone string, id types.ID) *sacloud.WebAccel {
+	v := s.getByID(ResourceWebAccel, zone, id)
+	if v, ok := v.(*sacloud.WebAccel); ok {
+		return v
+	}
+	return nil
+}
+
+func (s *store) setWebAccel(zone string, value *sacloud.WebAccel) {
+	s.set(ResourceWebAccel, zone, value)
+}
+
 func (s *store) getZone(zone string) []*sacloud.Zone {
 	values := s.get(ResourceZone, zone)
 	var ret []*sacloud.Zone

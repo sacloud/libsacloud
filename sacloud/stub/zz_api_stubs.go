@@ -3730,6 +3730,108 @@ func (s *VPCRouterStub) MonitorInterface(ctx context.Context, zone string, id ty
 }
 
 /*************************************************
+* WebAccelStub
+*************************************************/
+
+// WebAccelListStubResult is expected values of the List operation
+type WebAccelListStubResult struct {
+	Values *sacloud.WebAccelListResult
+	Err    error
+}
+
+// WebAccelReadStubResult is expected values of the Read operation
+type WebAccelReadStubResult struct {
+	WebAccel *sacloud.WebAccel
+	Err      error
+}
+
+// WebAccelReadCertificateStubResult is expected values of the ReadCertificate operation
+type WebAccelReadCertificateStubResult struct {
+	Certificate *sacloud.WebAccelCerts
+	Err         error
+}
+
+// WebAccelUpdateCertificateStubResult is expected values of the UpdateCertificate operation
+type WebAccelUpdateCertificateStubResult struct {
+	Certificate *sacloud.WebAccelCerts
+	Err         error
+}
+
+// WebAccelDeleteAllCacheStubResult is expected values of the DeleteAllCache operation
+type WebAccelDeleteAllCacheStubResult struct {
+	Err error
+}
+
+// WebAccelDeleteCacheStubResult is expected values of the DeleteCache operation
+type WebAccelDeleteCacheStubResult struct {
+	Results []*sacloud.WebAccelDeleteCacheResult
+	Err     error
+}
+
+// WebAccelStub is for trace WebAccelOp operations
+type WebAccelStub struct {
+	ListStubResult              *WebAccelListStubResult
+	ReadStubResult              *WebAccelReadStubResult
+	ReadCertificateStubResult   *WebAccelReadCertificateStubResult
+	UpdateCertificateStubResult *WebAccelUpdateCertificateStubResult
+	DeleteAllCacheStubResult    *WebAccelDeleteAllCacheStubResult
+	DeleteCacheStubResult       *WebAccelDeleteCacheStubResult
+}
+
+// NewWebAccelStub creates new WebAccelStub instance
+func NewWebAccelStub(caller sacloud.APICaller) sacloud.WebAccelAPI {
+	return &WebAccelStub{}
+}
+
+// List is API call with trace log
+func (s *WebAccelStub) List(ctx context.Context, zone string) (*sacloud.WebAccelListResult, error) {
+	if s.ListStubResult == nil {
+		log.Fatal("WebAccelStub.ListStubResult is not set")
+	}
+	return s.ListStubResult.Values, s.ListStubResult.Err
+}
+
+// Read is API call with trace log
+func (s *WebAccelStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.WebAccel, error) {
+	if s.ReadStubResult == nil {
+		log.Fatal("WebAccelStub.ReadStubResult is not set")
+	}
+	return s.ReadStubResult.WebAccel, s.ReadStubResult.Err
+}
+
+// ReadCertificate is API call with trace log
+func (s *WebAccelStub) ReadCertificate(ctx context.Context, zone string, id types.ID) (*sacloud.WebAccelCerts, error) {
+	if s.ReadCertificateStubResult == nil {
+		log.Fatal("WebAccelStub.ReadCertificateStubResult is not set")
+	}
+	return s.ReadCertificateStubResult.Certificate, s.ReadCertificateStubResult.Err
+}
+
+// UpdateCertificate is API call with trace log
+func (s *WebAccelStub) UpdateCertificate(ctx context.Context, zone string, id types.ID, param *sacloud.WebAccelCertUpdateRequest) (*sacloud.WebAccelCerts, error) {
+	if s.UpdateCertificateStubResult == nil {
+		log.Fatal("WebAccelStub.UpdateCertificateStubResult is not set")
+	}
+	return s.UpdateCertificateStubResult.Certificate, s.UpdateCertificateStubResult.Err
+}
+
+// DeleteAllCache is API call with trace log
+func (s *WebAccelStub) DeleteAllCache(ctx context.Context, zone string, param *sacloud.WebAccelDeleteAllCacheRequest) error {
+	if s.DeleteAllCacheStubResult == nil {
+		log.Fatal("WebAccelStub.DeleteAllCacheStubResult is not set")
+	}
+	return s.DeleteAllCacheStubResult.Err
+}
+
+// DeleteCache is API call with trace log
+func (s *WebAccelStub) DeleteCache(ctx context.Context, zone string, param *sacloud.WebAccelDeleteCacheRequest) ([]*sacloud.WebAccelDeleteCacheResult, error) {
+	if s.DeleteCacheStubResult == nil {
+		log.Fatal("WebAccelStub.DeleteCacheStubResult is not set")
+	}
+	return s.DeleteCacheStubResult.Results, s.DeleteCacheStubResult.Err
+}
+
+/*************************************************
 * ZoneStub
 *************************************************/
 
