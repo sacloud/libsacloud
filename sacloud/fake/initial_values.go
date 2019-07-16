@@ -63,6 +63,7 @@ func init() {
 	initLicensePlan()
 	initInternetPlan()
 	initServerPlan()
+	initServiceClass()
 }
 
 func initArchives() {
@@ -363,6 +364,44 @@ func initLicensePlan() {
 	for _, zone := range zones {
 		for _, plan := range plans {
 			s.setLicenseInfo(zone, plan)
+		}
+	}
+}
+
+func initServiceClass() {
+	classes := []*sacloud.ServiceClass{
+		{
+			ID:               types.ID(50050),
+			ServiceClassName: "plan/1",
+			ServiceClassPath: "cloud/plan/1",
+			DisplayName:      "プラン1(ディスクなし)",
+			IsPublic:         true,
+			Price: &sacloud.Price{
+				Base:    0,
+				Daily:   108,
+				Hourly:  10,
+				Monthly: 2139,
+			},
+		},
+		{
+			ID:               types.ID(50051),
+			ServiceClassName: "plan/2",
+			ServiceClassPath: "cloud/plan/2",
+			DisplayName:      "プラン2(ディスクなし)",
+			IsPublic:         true,
+			Price: &sacloud.Price{
+				Base:    0,
+				Daily:   172,
+				Hourly:  17,
+				Monthly: 3425,
+			},
+		},
+	}
+
+	for _, zone := range zones {
+		for _, class := range classes {
+			class.Price.Zone = zone
+			s.setServiceClass(zone, class)
 		}
 	}
 }

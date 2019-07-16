@@ -122,6 +122,10 @@ func TestResourceOps(t *testing.T) {
 		t.Fatalf("%s is not sacloud.ServerPlan", op)
 	}
 
+	if op, ok := NewServiceClassOp().(sacloud.ServiceClassAPI); !ok {
+		t.Fatalf("%s is not sacloud.ServiceClass", op)
+	}
+
 	if op, ok := NewSIMOp().(sacloud.SIMAPI); !ok {
 		t.Fatalf("%s is not sacloud.SIM", op)
 	}

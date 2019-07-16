@@ -12149,6 +12149,173 @@ func (o *ServerPlan) SetAvailability(v types.EAvailability) {
 }
 
 /*************************************************
+* ServiceClass
+*************************************************/
+
+// ServiceClass represents API parameter/response structure
+type ServiceClass struct {
+	ID               types.ID
+	ServiceClassName string
+	ServiceClassPath string
+	DisplayName      string
+	IsPublic         bool
+	Price            *Price `mapconv:",recursive"`
+}
+
+// Validate validates by field tags
+func (o *ServiceClass) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetID returns value of ID
+func (o *ServiceClass) GetID() types.ID {
+	return o.ID
+}
+
+// SetID sets value to ID
+func (o *ServiceClass) SetID(v types.ID) {
+	o.ID = v
+}
+
+// GetStringID gets value to StringID
+func (o *ServiceClass) GetStringID() string {
+	return accessor.GetStringID(o)
+}
+
+// SetStringID sets value to StringID
+func (o *ServiceClass) SetStringID(v string) {
+	accessor.SetStringID(o, v)
+}
+
+// GetInt64ID gets value to Int64ID
+func (o *ServiceClass) GetInt64ID() int64 {
+	return accessor.GetInt64ID(o)
+}
+
+// SetInt64ID sets value to Int64ID
+func (o *ServiceClass) SetInt64ID(v int64) {
+	accessor.SetInt64ID(o, v)
+}
+
+// GetServiceClassName returns value of ServiceClassName
+func (o *ServiceClass) GetServiceClassName() string {
+	return o.ServiceClassName
+}
+
+// SetServiceClassName sets value to ServiceClassName
+func (o *ServiceClass) SetServiceClassName(v string) {
+	o.ServiceClassName = v
+}
+
+// GetServiceClassPath returns value of ServiceClassPath
+func (o *ServiceClass) GetServiceClassPath() string {
+	return o.ServiceClassPath
+}
+
+// SetServiceClassPath sets value to ServiceClassPath
+func (o *ServiceClass) SetServiceClassPath(v string) {
+	o.ServiceClassPath = v
+}
+
+// GetDisplayName returns value of DisplayName
+func (o *ServiceClass) GetDisplayName() string {
+	return o.DisplayName
+}
+
+// SetDisplayName sets value to DisplayName
+func (o *ServiceClass) SetDisplayName(v string) {
+	o.DisplayName = v
+}
+
+// GetIsPublic returns value of IsPublic
+func (o *ServiceClass) GetIsPublic() bool {
+	return o.IsPublic
+}
+
+// SetIsPublic sets value to IsPublic
+func (o *ServiceClass) SetIsPublic(v bool) {
+	o.IsPublic = v
+}
+
+// GetPrice returns value of Price
+func (o *ServiceClass) GetPrice() *Price {
+	return o.Price
+}
+
+// SetPrice sets value to Price
+func (o *ServiceClass) SetPrice(v *Price) {
+	o.Price = v
+}
+
+/*************************************************
+* Price
+*************************************************/
+
+// Price represents API parameter/response structure
+type Price struct {
+	Base    int
+	Daily   int
+	Hourly  int
+	Monthly int
+	Zone    string
+}
+
+// Validate validates by field tags
+func (o *Price) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetBase returns value of Base
+func (o *Price) GetBase() int {
+	return o.Base
+}
+
+// SetBase sets value to Base
+func (o *Price) SetBase(v int) {
+	o.Base = v
+}
+
+// GetDaily returns value of Daily
+func (o *Price) GetDaily() int {
+	return o.Daily
+}
+
+// SetDaily sets value to Daily
+func (o *Price) SetDaily(v int) {
+	o.Daily = v
+}
+
+// GetHourly returns value of Hourly
+func (o *Price) GetHourly() int {
+	return o.Hourly
+}
+
+// SetHourly sets value to Hourly
+func (o *Price) SetHourly(v int) {
+	o.Hourly = v
+}
+
+// GetMonthly returns value of Monthly
+func (o *Price) GetMonthly() int {
+	return o.Monthly
+}
+
+// SetMonthly sets value to Monthly
+func (o *Price) SetMonthly(v int) {
+	o.Monthly = v
+}
+
+// GetZone returns value of Zone
+func (o *Price) GetZone() string {
+	return o.Zone
+}
+
+// SetZone sets value to Zone
+func (o *Price) SetZone(v string) {
+	o.Zone = v
+}
+
+/*************************************************
 * SIM
 *************************************************/
 
