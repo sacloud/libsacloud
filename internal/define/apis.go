@@ -51,5 +51,6 @@ func init() {
 	APIs.Define(sshKeyAPI)          // 公開鍵
 	APIs.Define(switchAPI)          // スイッチ
 	APIs.Define(vpcRouterAPI)       // VPCルータ
+	APIs.Define(webaccelAPI)        // ウェブアクセラレータ
 	APIs.Define(zoneAPI)            // ゾーン
 }

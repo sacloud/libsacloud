@@ -504,6 +504,20 @@ type VPCRouterAPI interface {
 }
 
 /*************************************************
+* WebAccelAPI
+*************************************************/
+
+// WebAccelAPI is interface for operate WebAccel resource
+type WebAccelAPI interface {
+	List(ctx context.Context, zone string) (*WebAccelListResult, error)
+	Read(ctx context.Context, zone string, id types.ID) (*WebAccel, error)
+	ReadCertificate(ctx context.Context, zone string, id types.ID) (*WebAccelCerts, error)
+	UpdateCertificate(ctx context.Context, zone string, id types.ID, param *WebAccelCertUpdateRequest) (*WebAccelCerts, error)
+	DeleteAllCache(ctx context.Context, zone string, param *WebAccelDeleteAllCacheRequest) error
+	DeleteCache(ctx context.Context, zone string, param *WebAccelDeleteCacheRequest) ([]*WebAccelDeleteCacheResult, error)
+}
+
+/*************************************************
 * ZoneAPI
 *************************************************/
 

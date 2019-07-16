@@ -80,7 +80,7 @@ func MappableArgument(name string, model *Model, destField string) *Argument {
 	}
 }
 
-// PassthroughModelArgument 引数定義の追加、ペイロードの定義も同時に行われる
+// PassthroughModelArgument 引数定義の追加
 func PassthroughModelArgument(name string, model *Model) *Argument {
 	return &Argument{
 		Name:       name,

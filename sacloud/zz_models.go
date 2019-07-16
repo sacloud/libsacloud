@@ -15887,6 +15887,889 @@ func (o *VPCRouterUpdateRequest) SetSettings(v *VPCRouterSetting) {
 }
 
 /*************************************************
+* WebAccel
+*************************************************/
+
+// WebAccel represents API parameter/response structure
+type WebAccel struct {
+	ID                 types.ID
+	Name               string `validate:"required"`
+	DomainType         types.EWebAccelDomainType
+	Domain             string
+	Subdomain          string
+	ASCIIDomain        string
+	Origin             string
+	HostHeader         string
+	Status             types.EWebAccelStatus
+	HasCertificate     bool
+	HasOldCertificate  bool
+	GibSentInLastWeek  int64
+	CertValidNotBefore int64
+	CertValidNotAfter  int64
+	CreatedAt          time.Time
+}
+
+// Validate validates by field tags
+func (o *WebAccel) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetID returns value of ID
+func (o *WebAccel) GetID() types.ID {
+	return o.ID
+}
+
+// SetID sets value to ID
+func (o *WebAccel) SetID(v types.ID) {
+	o.ID = v
+}
+
+// GetStringID gets value to StringID
+func (o *WebAccel) GetStringID() string {
+	return accessor.GetStringID(o)
+}
+
+// SetStringID sets value to StringID
+func (o *WebAccel) SetStringID(v string) {
+	accessor.SetStringID(o, v)
+}
+
+// GetInt64ID gets value to Int64ID
+func (o *WebAccel) GetInt64ID() int64 {
+	return accessor.GetInt64ID(o)
+}
+
+// SetInt64ID sets value to Int64ID
+func (o *WebAccel) SetInt64ID(v int64) {
+	accessor.SetInt64ID(o, v)
+}
+
+// GetName returns value of Name
+func (o *WebAccel) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *WebAccel) SetName(v string) {
+	o.Name = v
+}
+
+// GetDomainType returns value of DomainType
+func (o *WebAccel) GetDomainType() types.EWebAccelDomainType {
+	return o.DomainType
+}
+
+// SetDomainType sets value to DomainType
+func (o *WebAccel) SetDomainType(v types.EWebAccelDomainType) {
+	o.DomainType = v
+}
+
+// GetDomain returns value of Domain
+func (o *WebAccel) GetDomain() string {
+	return o.Domain
+}
+
+// SetDomain sets value to Domain
+func (o *WebAccel) SetDomain(v string) {
+	o.Domain = v
+}
+
+// GetSubdomain returns value of Subdomain
+func (o *WebAccel) GetSubdomain() string {
+	return o.Subdomain
+}
+
+// SetSubdomain sets value to Subdomain
+func (o *WebAccel) SetSubdomain(v string) {
+	o.Subdomain = v
+}
+
+// GetASCIIDomain returns value of ASCIIDomain
+func (o *WebAccel) GetASCIIDomain() string {
+	return o.ASCIIDomain
+}
+
+// SetASCIIDomain sets value to ASCIIDomain
+func (o *WebAccel) SetASCIIDomain(v string) {
+	o.ASCIIDomain = v
+}
+
+// GetOrigin returns value of Origin
+func (o *WebAccel) GetOrigin() string {
+	return o.Origin
+}
+
+// SetOrigin sets value to Origin
+func (o *WebAccel) SetOrigin(v string) {
+	o.Origin = v
+}
+
+// GetHostHeader returns value of HostHeader
+func (o *WebAccel) GetHostHeader() string {
+	return o.HostHeader
+}
+
+// SetHostHeader sets value to HostHeader
+func (o *WebAccel) SetHostHeader(v string) {
+	o.HostHeader = v
+}
+
+// GetStatus returns value of Status
+func (o *WebAccel) GetStatus() types.EWebAccelStatus {
+	return o.Status
+}
+
+// SetStatus sets value to Status
+func (o *WebAccel) SetStatus(v types.EWebAccelStatus) {
+	o.Status = v
+}
+
+// GetHasCertificate returns value of HasCertificate
+func (o *WebAccel) GetHasCertificate() bool {
+	return o.HasCertificate
+}
+
+// SetHasCertificate sets value to HasCertificate
+func (o *WebAccel) SetHasCertificate(v bool) {
+	o.HasCertificate = v
+}
+
+// GetHasOldCertificate returns value of HasOldCertificate
+func (o *WebAccel) GetHasOldCertificate() bool {
+	return o.HasOldCertificate
+}
+
+// SetHasOldCertificate sets value to HasOldCertificate
+func (o *WebAccel) SetHasOldCertificate(v bool) {
+	o.HasOldCertificate = v
+}
+
+// GetGibSentInLastWeek returns value of GibSentInLastWeek
+func (o *WebAccel) GetGibSentInLastWeek() int64 {
+	return o.GibSentInLastWeek
+}
+
+// SetGibSentInLastWeek sets value to GibSentInLastWeek
+func (o *WebAccel) SetGibSentInLastWeek(v int64) {
+	o.GibSentInLastWeek = v
+}
+
+// GetCertValidNotBefore returns value of CertValidNotBefore
+func (o *WebAccel) GetCertValidNotBefore() int64 {
+	return o.CertValidNotBefore
+}
+
+// SetCertValidNotBefore sets value to CertValidNotBefore
+func (o *WebAccel) SetCertValidNotBefore(v int64) {
+	o.CertValidNotBefore = v
+}
+
+// GetCertValidNotAfter returns value of CertValidNotAfter
+func (o *WebAccel) GetCertValidNotAfter() int64 {
+	return o.CertValidNotAfter
+}
+
+// SetCertValidNotAfter sets value to CertValidNotAfter
+func (o *WebAccel) SetCertValidNotAfter(v int64) {
+	o.CertValidNotAfter = v
+}
+
+// GetCreatedAt returns value of CreatedAt
+func (o *WebAccel) GetCreatedAt() time.Time {
+	return o.CreatedAt
+}
+
+// SetCreatedAt sets value to CreatedAt
+func (o *WebAccel) SetCreatedAt(v time.Time) {
+	o.CreatedAt = v
+}
+
+/*************************************************
+* WebAccelCerts
+*************************************************/
+
+// WebAccelCerts represents API parameter/response structure
+type WebAccelCerts struct {
+	Current *WebAccelCurrentCert
+	Old     []*WebAccelOldCerts
+}
+
+// Validate validates by field tags
+func (o *WebAccelCerts) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetCurrent returns value of Current
+func (o *WebAccelCerts) GetCurrent() *WebAccelCurrentCert {
+	return o.Current
+}
+
+// SetCurrent sets value to Current
+func (o *WebAccelCerts) SetCurrent(v *WebAccelCurrentCert) {
+	o.Current = v
+}
+
+// GetOld returns value of Old
+func (o *WebAccelCerts) GetOld() []*WebAccelOldCerts {
+	return o.Old
+}
+
+// SetOld sets value to Old
+func (o *WebAccelCerts) SetOld(v []*WebAccelOldCerts) {
+	o.Old = v
+}
+
+/*************************************************
+* WebAccelCurrentCert
+*************************************************/
+
+// WebAccelCurrentCert represents API parameter/response structure
+type WebAccelCurrentCert struct {
+	ID                types.ID
+	SiteID            types.ID
+	CertificateChain  string
+	Key               string
+	CreatedAt         time.Time
+	UpdatedAt         time.Time
+	SerialNumber      string
+	NotBefore         int64
+	NotAfter          int64
+	Issuer            *WebAccelCertIssuer  `mapconv:",recursive"`
+	Subject           *WebAccelCertSubject `mapconv:",recursive"`
+	DNSNames          []string
+	SHA256Fingerprint string
+}
+
+// Validate validates by field tags
+func (o *WebAccelCurrentCert) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetID returns value of ID
+func (o *WebAccelCurrentCert) GetID() types.ID {
+	return o.ID
+}
+
+// SetID sets value to ID
+func (o *WebAccelCurrentCert) SetID(v types.ID) {
+	o.ID = v
+}
+
+// GetStringID gets value to StringID
+func (o *WebAccelCurrentCert) GetStringID() string {
+	return accessor.GetStringID(o)
+}
+
+// SetStringID sets value to StringID
+func (o *WebAccelCurrentCert) SetStringID(v string) {
+	accessor.SetStringID(o, v)
+}
+
+// GetInt64ID gets value to Int64ID
+func (o *WebAccelCurrentCert) GetInt64ID() int64 {
+	return accessor.GetInt64ID(o)
+}
+
+// SetInt64ID sets value to Int64ID
+func (o *WebAccelCurrentCert) SetInt64ID(v int64) {
+	accessor.SetInt64ID(o, v)
+}
+
+// GetSiteID returns value of SiteID
+func (o *WebAccelCurrentCert) GetSiteID() types.ID {
+	return o.SiteID
+}
+
+// SetSiteID sets value to SiteID
+func (o *WebAccelCurrentCert) SetSiteID(v types.ID) {
+	o.SiteID = v
+}
+
+// GetCertificateChain returns value of CertificateChain
+func (o *WebAccelCurrentCert) GetCertificateChain() string {
+	return o.CertificateChain
+}
+
+// SetCertificateChain sets value to CertificateChain
+func (o *WebAccelCurrentCert) SetCertificateChain(v string) {
+	o.CertificateChain = v
+}
+
+// GetKey returns value of Key
+func (o *WebAccelCurrentCert) GetKey() string {
+	return o.Key
+}
+
+// SetKey sets value to Key
+func (o *WebAccelCurrentCert) SetKey(v string) {
+	o.Key = v
+}
+
+// GetCreatedAt returns value of CreatedAt
+func (o *WebAccelCurrentCert) GetCreatedAt() time.Time {
+	return o.CreatedAt
+}
+
+// SetCreatedAt sets value to CreatedAt
+func (o *WebAccelCurrentCert) SetCreatedAt(v time.Time) {
+	o.CreatedAt = v
+}
+
+// GetUpdatedAt returns value of UpdatedAt
+func (o *WebAccelCurrentCert) GetUpdatedAt() time.Time {
+	return o.UpdatedAt
+}
+
+// SetUpdatedAt sets value to UpdatedAt
+func (o *WebAccelCurrentCert) SetUpdatedAt(v time.Time) {
+	o.UpdatedAt = v
+}
+
+// GetSerialNumber returns value of SerialNumber
+func (o *WebAccelCurrentCert) GetSerialNumber() string {
+	return o.SerialNumber
+}
+
+// SetSerialNumber sets value to SerialNumber
+func (o *WebAccelCurrentCert) SetSerialNumber(v string) {
+	o.SerialNumber = v
+}
+
+// GetNotBefore returns value of NotBefore
+func (o *WebAccelCurrentCert) GetNotBefore() int64 {
+	return o.NotBefore
+}
+
+// SetNotBefore sets value to NotBefore
+func (o *WebAccelCurrentCert) SetNotBefore(v int64) {
+	o.NotBefore = v
+}
+
+// GetNotAfter returns value of NotAfter
+func (o *WebAccelCurrentCert) GetNotAfter() int64 {
+	return o.NotAfter
+}
+
+// SetNotAfter sets value to NotAfter
+func (o *WebAccelCurrentCert) SetNotAfter(v int64) {
+	o.NotAfter = v
+}
+
+// GetIssuer returns value of Issuer
+func (o *WebAccelCurrentCert) GetIssuer() *WebAccelCertIssuer {
+	return o.Issuer
+}
+
+// SetIssuer sets value to Issuer
+func (o *WebAccelCurrentCert) SetIssuer(v *WebAccelCertIssuer) {
+	o.Issuer = v
+}
+
+// GetSubject returns value of Subject
+func (o *WebAccelCurrentCert) GetSubject() *WebAccelCertSubject {
+	return o.Subject
+}
+
+// SetSubject sets value to Subject
+func (o *WebAccelCurrentCert) SetSubject(v *WebAccelCertSubject) {
+	o.Subject = v
+}
+
+// GetDNSNames returns value of DNSNames
+func (o *WebAccelCurrentCert) GetDNSNames() []string {
+	return o.DNSNames
+}
+
+// SetDNSNames sets value to DNSNames
+func (o *WebAccelCurrentCert) SetDNSNames(v []string) {
+	o.DNSNames = v
+}
+
+// GetSHA256Fingerprint returns value of SHA256Fingerprint
+func (o *WebAccelCurrentCert) GetSHA256Fingerprint() string {
+	return o.SHA256Fingerprint
+}
+
+// SetSHA256Fingerprint sets value to SHA256Fingerprint
+func (o *WebAccelCurrentCert) SetSHA256Fingerprint(v string) {
+	o.SHA256Fingerprint = v
+}
+
+/*************************************************
+* WebAccelCertIssuer
+*************************************************/
+
+// WebAccelCertIssuer represents API parameter/response structure
+type WebAccelCertIssuer struct {
+	Country            string
+	Organization       string
+	OrganizationalUnit string
+	CommonName         string
+}
+
+// Validate validates by field tags
+func (o *WebAccelCertIssuer) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetCountry returns value of Country
+func (o *WebAccelCertIssuer) GetCountry() string {
+	return o.Country
+}
+
+// SetCountry sets value to Country
+func (o *WebAccelCertIssuer) SetCountry(v string) {
+	o.Country = v
+}
+
+// GetOrganization returns value of Organization
+func (o *WebAccelCertIssuer) GetOrganization() string {
+	return o.Organization
+}
+
+// SetOrganization sets value to Organization
+func (o *WebAccelCertIssuer) SetOrganization(v string) {
+	o.Organization = v
+}
+
+// GetOrganizationalUnit returns value of OrganizationalUnit
+func (o *WebAccelCertIssuer) GetOrganizationalUnit() string {
+	return o.OrganizationalUnit
+}
+
+// SetOrganizationalUnit sets value to OrganizationalUnit
+func (o *WebAccelCertIssuer) SetOrganizationalUnit(v string) {
+	o.OrganizationalUnit = v
+}
+
+// GetCommonName returns value of CommonName
+func (o *WebAccelCertIssuer) GetCommonName() string {
+	return o.CommonName
+}
+
+// SetCommonName sets value to CommonName
+func (o *WebAccelCertIssuer) SetCommonName(v string) {
+	o.CommonName = v
+}
+
+/*************************************************
+* WebAccelCertSubject
+*************************************************/
+
+// WebAccelCertSubject represents API parameter/response structure
+type WebAccelCertSubject struct {
+	Country            string
+	Organization       string
+	OrganizationalUnit string
+	Locality           string
+	Province           string
+	StreetAddress      string
+	PostalCode         string
+	SerialNumber       string
+	CommonName         string
+}
+
+// Validate validates by field tags
+func (o *WebAccelCertSubject) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetCountry returns value of Country
+func (o *WebAccelCertSubject) GetCountry() string {
+	return o.Country
+}
+
+// SetCountry sets value to Country
+func (o *WebAccelCertSubject) SetCountry(v string) {
+	o.Country = v
+}
+
+// GetOrganization returns value of Organization
+func (o *WebAccelCertSubject) GetOrganization() string {
+	return o.Organization
+}
+
+// SetOrganization sets value to Organization
+func (o *WebAccelCertSubject) SetOrganization(v string) {
+	o.Organization = v
+}
+
+// GetOrganizationalUnit returns value of OrganizationalUnit
+func (o *WebAccelCertSubject) GetOrganizationalUnit() string {
+	return o.OrganizationalUnit
+}
+
+// SetOrganizationalUnit sets value to OrganizationalUnit
+func (o *WebAccelCertSubject) SetOrganizationalUnit(v string) {
+	o.OrganizationalUnit = v
+}
+
+// GetLocality returns value of Locality
+func (o *WebAccelCertSubject) GetLocality() string {
+	return o.Locality
+}
+
+// SetLocality sets value to Locality
+func (o *WebAccelCertSubject) SetLocality(v string) {
+	o.Locality = v
+}
+
+// GetProvince returns value of Province
+func (o *WebAccelCertSubject) GetProvince() string {
+	return o.Province
+}
+
+// SetProvince sets value to Province
+func (o *WebAccelCertSubject) SetProvince(v string) {
+	o.Province = v
+}
+
+// GetStreetAddress returns value of StreetAddress
+func (o *WebAccelCertSubject) GetStreetAddress() string {
+	return o.StreetAddress
+}
+
+// SetStreetAddress sets value to StreetAddress
+func (o *WebAccelCertSubject) SetStreetAddress(v string) {
+	o.StreetAddress = v
+}
+
+// GetPostalCode returns value of PostalCode
+func (o *WebAccelCertSubject) GetPostalCode() string {
+	return o.PostalCode
+}
+
+// SetPostalCode sets value to PostalCode
+func (o *WebAccelCertSubject) SetPostalCode(v string) {
+	o.PostalCode = v
+}
+
+// GetSerialNumber returns value of SerialNumber
+func (o *WebAccelCertSubject) GetSerialNumber() string {
+	return o.SerialNumber
+}
+
+// SetSerialNumber sets value to SerialNumber
+func (o *WebAccelCertSubject) SetSerialNumber(v string) {
+	o.SerialNumber = v
+}
+
+// GetCommonName returns value of CommonName
+func (o *WebAccelCertSubject) GetCommonName() string {
+	return o.CommonName
+}
+
+// SetCommonName sets value to CommonName
+func (o *WebAccelCertSubject) SetCommonName(v string) {
+	o.CommonName = v
+}
+
+/*************************************************
+* WebAccelOldCerts
+*************************************************/
+
+// WebAccelOldCerts represents API parameter/response structure
+type WebAccelOldCerts struct {
+	ID                types.ID
+	SiteID            types.ID
+	CertificateChain  string
+	Key               string
+	CreatedAt         time.Time
+	UpdatedAt         time.Time
+	SerialNumber      string
+	NotBefore         int64
+	NotAfter          int64
+	Issuer            *WebAccelCertIssuer  `mapconv:",recursive"`
+	Subject           *WebAccelCertSubject `mapconv:",recursive"`
+	DNSNames          []string
+	SHA256Fingerprint string
+}
+
+// Validate validates by field tags
+func (o *WebAccelOldCerts) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetID returns value of ID
+func (o *WebAccelOldCerts) GetID() types.ID {
+	return o.ID
+}
+
+// SetID sets value to ID
+func (o *WebAccelOldCerts) SetID(v types.ID) {
+	o.ID = v
+}
+
+// GetStringID gets value to StringID
+func (o *WebAccelOldCerts) GetStringID() string {
+	return accessor.GetStringID(o)
+}
+
+// SetStringID sets value to StringID
+func (o *WebAccelOldCerts) SetStringID(v string) {
+	accessor.SetStringID(o, v)
+}
+
+// GetInt64ID gets value to Int64ID
+func (o *WebAccelOldCerts) GetInt64ID() int64 {
+	return accessor.GetInt64ID(o)
+}
+
+// SetInt64ID sets value to Int64ID
+func (o *WebAccelOldCerts) SetInt64ID(v int64) {
+	accessor.SetInt64ID(o, v)
+}
+
+// GetSiteID returns value of SiteID
+func (o *WebAccelOldCerts) GetSiteID() types.ID {
+	return o.SiteID
+}
+
+// SetSiteID sets value to SiteID
+func (o *WebAccelOldCerts) SetSiteID(v types.ID) {
+	o.SiteID = v
+}
+
+// GetCertificateChain returns value of CertificateChain
+func (o *WebAccelOldCerts) GetCertificateChain() string {
+	return o.CertificateChain
+}
+
+// SetCertificateChain sets value to CertificateChain
+func (o *WebAccelOldCerts) SetCertificateChain(v string) {
+	o.CertificateChain = v
+}
+
+// GetKey returns value of Key
+func (o *WebAccelOldCerts) GetKey() string {
+	return o.Key
+}
+
+// SetKey sets value to Key
+func (o *WebAccelOldCerts) SetKey(v string) {
+	o.Key = v
+}
+
+// GetCreatedAt returns value of CreatedAt
+func (o *WebAccelOldCerts) GetCreatedAt() time.Time {
+	return o.CreatedAt
+}
+
+// SetCreatedAt sets value to CreatedAt
+func (o *WebAccelOldCerts) SetCreatedAt(v time.Time) {
+	o.CreatedAt = v
+}
+
+// GetUpdatedAt returns value of UpdatedAt
+func (o *WebAccelOldCerts) GetUpdatedAt() time.Time {
+	return o.UpdatedAt
+}
+
+// SetUpdatedAt sets value to UpdatedAt
+func (o *WebAccelOldCerts) SetUpdatedAt(v time.Time) {
+	o.UpdatedAt = v
+}
+
+// GetSerialNumber returns value of SerialNumber
+func (o *WebAccelOldCerts) GetSerialNumber() string {
+	return o.SerialNumber
+}
+
+// SetSerialNumber sets value to SerialNumber
+func (o *WebAccelOldCerts) SetSerialNumber(v string) {
+	o.SerialNumber = v
+}
+
+// GetNotBefore returns value of NotBefore
+func (o *WebAccelOldCerts) GetNotBefore() int64 {
+	return o.NotBefore
+}
+
+// SetNotBefore sets value to NotBefore
+func (o *WebAccelOldCerts) SetNotBefore(v int64) {
+	o.NotBefore = v
+}
+
+// GetNotAfter returns value of NotAfter
+func (o *WebAccelOldCerts) GetNotAfter() int64 {
+	return o.NotAfter
+}
+
+// SetNotAfter sets value to NotAfter
+func (o *WebAccelOldCerts) SetNotAfter(v int64) {
+	o.NotAfter = v
+}
+
+// GetIssuer returns value of Issuer
+func (o *WebAccelOldCerts) GetIssuer() *WebAccelCertIssuer {
+	return o.Issuer
+}
+
+// SetIssuer sets value to Issuer
+func (o *WebAccelOldCerts) SetIssuer(v *WebAccelCertIssuer) {
+	o.Issuer = v
+}
+
+// GetSubject returns value of Subject
+func (o *WebAccelOldCerts) GetSubject() *WebAccelCertSubject {
+	return o.Subject
+}
+
+// SetSubject sets value to Subject
+func (o *WebAccelOldCerts) SetSubject(v *WebAccelCertSubject) {
+	o.Subject = v
+}
+
+// GetDNSNames returns value of DNSNames
+func (o *WebAccelOldCerts) GetDNSNames() []string {
+	return o.DNSNames
+}
+
+// SetDNSNames sets value to DNSNames
+func (o *WebAccelOldCerts) SetDNSNames(v []string) {
+	o.DNSNames = v
+}
+
+// GetSHA256Fingerprint returns value of SHA256Fingerprint
+func (o *WebAccelOldCerts) GetSHA256Fingerprint() string {
+	return o.SHA256Fingerprint
+}
+
+// SetSHA256Fingerprint sets value to SHA256Fingerprint
+func (o *WebAccelOldCerts) SetSHA256Fingerprint(v string) {
+	o.SHA256Fingerprint = v
+}
+
+/*************************************************
+* WebAccelCertUpdateRequest
+*************************************************/
+
+// WebAccelCertUpdateRequest represents API parameter/response structure
+type WebAccelCertUpdateRequest struct {
+	CertificateChain string
+	Key              string
+}
+
+// Validate validates by field tags
+func (o *WebAccelCertUpdateRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetCertificateChain returns value of CertificateChain
+func (o *WebAccelCertUpdateRequest) GetCertificateChain() string {
+	return o.CertificateChain
+}
+
+// SetCertificateChain sets value to CertificateChain
+func (o *WebAccelCertUpdateRequest) SetCertificateChain(v string) {
+	o.CertificateChain = v
+}
+
+// GetKey returns value of Key
+func (o *WebAccelCertUpdateRequest) GetKey() string {
+	return o.Key
+}
+
+// SetKey sets value to Key
+func (o *WebAccelCertUpdateRequest) SetKey(v string) {
+	o.Key = v
+}
+
+/*************************************************
+* WebAccelDeleteAllCacheRequest
+*************************************************/
+
+// WebAccelDeleteAllCacheRequest represents API parameter/response structure
+type WebAccelDeleteAllCacheRequest struct {
+	Domain string
+}
+
+// Validate validates by field tags
+func (o *WebAccelDeleteAllCacheRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetDomain returns value of Domain
+func (o *WebAccelDeleteAllCacheRequest) GetDomain() string {
+	return o.Domain
+}
+
+// SetDomain sets value to Domain
+func (o *WebAccelDeleteAllCacheRequest) SetDomain(v string) {
+	o.Domain = v
+}
+
+/*************************************************
+* WebAccelDeleteCacheResult
+*************************************************/
+
+// WebAccelDeleteCacheResult represents API parameter/response structure
+type WebAccelDeleteCacheResult struct {
+	URL    string
+	Status int
+	Result string
+}
+
+// Validate validates by field tags
+func (o *WebAccelDeleteCacheResult) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetURL returns value of URL
+func (o *WebAccelDeleteCacheResult) GetURL() string {
+	return o.URL
+}
+
+// SetURL sets value to URL
+func (o *WebAccelDeleteCacheResult) SetURL(v string) {
+	o.URL = v
+}
+
+// GetStatus returns value of Status
+func (o *WebAccelDeleteCacheResult) GetStatus() int {
+	return o.Status
+}
+
+// SetStatus sets value to Status
+func (o *WebAccelDeleteCacheResult) SetStatus(v int) {
+	o.Status = v
+}
+
+// GetResult returns value of Result
+func (o *WebAccelDeleteCacheResult) GetResult() string {
+	return o.Result
+}
+
+// SetResult sets value to Result
+func (o *WebAccelDeleteCacheResult) SetResult(v string) {
+	o.Result = v
+}
+
+/*************************************************
+* WebAccelDeleteCacheRequest
+*************************************************/
+
+// WebAccelDeleteCacheRequest represents API parameter/response structure
+type WebAccelDeleteCacheRequest struct {
+	URL []string
+}
+
+// Validate validates by field tags
+func (o *WebAccelDeleteCacheRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetURL returns value of URL
+func (o *WebAccelDeleteCacheRequest) GetURL() []string {
+	return o.URL
+}
+
+// SetURL sets value to URL
+func (o *WebAccelDeleteCacheRequest) SetURL(v []string) {
+	o.URL = v
+}
+
+/*************************************************
 * Zone
 *************************************************/
 
