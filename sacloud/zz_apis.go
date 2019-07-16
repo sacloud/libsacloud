@@ -408,6 +408,15 @@ type ServerPlanAPI interface {
 }
 
 /*************************************************
+* ServiceClassAPI
+*************************************************/
+
+// ServiceClassAPI is interface for operate ServiceClass resource
+type ServiceClassAPI interface {
+	Find(ctx context.Context, zone string, conditions *FindCondition) (*ServiceClassFindResult, error)
+}
+
+/*************************************************
 * SIMAPI
 *************************************************/
 

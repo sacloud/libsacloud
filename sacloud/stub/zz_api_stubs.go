@@ -2952,6 +2952,34 @@ func (s *ServerPlanStub) Read(ctx context.Context, zone string, id types.ID) (*s
 }
 
 /*************************************************
+* ServiceClassStub
+*************************************************/
+
+// ServiceClassFindStubResult is expected values of the Find operation
+type ServiceClassFindStubResult struct {
+	Values *sacloud.ServiceClassFindResult
+	Err    error
+}
+
+// ServiceClassStub is for trace ServiceClassOp operations
+type ServiceClassStub struct {
+	FindStubResult *ServiceClassFindStubResult
+}
+
+// NewServiceClassStub creates new ServiceClassStub instance
+func NewServiceClassStub(caller sacloud.APICaller) sacloud.ServiceClassAPI {
+	return &ServiceClassStub{}
+}
+
+// Find is API call with trace log
+func (s *ServiceClassStub) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.ServiceClassFindResult, error) {
+	if s.FindStubResult == nil {
+		log.Fatal("ServiceClassStub.FindStubResult is not set")
+	}
+	return s.FindStubResult.Values, s.FindStubResult.Err
+}
+
+/*************************************************
 * SIMStub
 *************************************************/
 

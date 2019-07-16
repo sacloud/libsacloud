@@ -651,6 +651,29 @@ func (s *store) setServerPlan(zone string, value *sacloud.ServerPlan) {
 	s.set(ResourceServerPlan, zone, value)
 }
 
+func (s *store) getServiceClass(zone string) []*sacloud.ServiceClass {
+	values := s.get(ResourceServiceClass, zone)
+	var ret []*sacloud.ServiceClass
+	for _, v := range values {
+		if v, ok := v.(*sacloud.ServiceClass); ok {
+			ret = append(ret, v)
+		}
+	}
+	return ret
+}
+
+func (s *store) getServiceClassByID(zone string, id types.ID) *sacloud.ServiceClass {
+	v := s.getByID(ResourceServiceClass, zone, id)
+	if v, ok := v.(*sacloud.ServiceClass); ok {
+		return v
+	}
+	return nil
+}
+
+func (s *store) setServiceClass(zone string, value *sacloud.ServiceClass) {
+	s.set(ResourceServiceClass, zone, value)
+}
+
 func (s *store) getSIM(zone string) []*sacloud.SIM {
 	values := s.get(ResourceSIM, zone)
 	var ret []*sacloud.SIM

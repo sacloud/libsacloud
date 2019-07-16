@@ -45,6 +45,7 @@ func init() {
 	APIs.Define(regionAPI)          // リージョン
 	APIs.Define(serverAPI)          // サーバ
 	APIs.Define(serverPlanAPI)      // サーバプラン
+	APIs.Define(serviceClassAPI)    // サービスクラス(価格)
 	APIs.Define(simAPI)             // SIM
 	APIs.Define(simpleMonitorAPI)   // シンプル監視
 	APIs.Define(sshKeyAPI)          // 公開鍵

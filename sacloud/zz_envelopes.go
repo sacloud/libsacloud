@@ -1674,6 +1674,25 @@ type serverPlanReadResponseEnvelope struct {
 	ServerPlan *naked.ServerPlan `json:",omitempty"`
 }
 
+// serviceClassFindRequestEnvelope is envelop of API request
+type serviceClassFindRequestEnvelope struct {
+	Count   int                    `json:",omitempty"`
+	From    int                    `json:",omitempty"`
+	Sort    []string               `json:",omitempty"`
+	Filter  map[string]interface{} `json:",omitempty"`
+	Include []string               `json:",omitempty"`
+	Exclude []string               `json:",omitempty"`
+}
+
+// serviceClassFindResponseEnvelope is envelop of API response
+type serviceClassFindResponseEnvelope struct {
+	Total int `json:",omitempty"` // トータル件数
+	From  int `json:",omitempty"` // ページング開始ページ
+	Count int `json:",omitempty"` // 件数
+
+	ServiceClasses []*naked.ServiceClass `json:",omitempty"`
+}
+
 // sIMFindRequestEnvelope is envelop of API request
 type sIMFindRequestEnvelope struct {
 	Count   int                    `json:",omitempty"`
