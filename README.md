@@ -33,9 +33,10 @@ Library for SakuraCloud API
   - [x] `License`: ライセンスプラン
   - [x] `PrivateHost`: 専有ホストプラン
   - [x] `Server`: サーバプラン
-- [ ] `Price`: 価格表(public/price)
 - [x] `ProxyLB`: エンハンスドロードバランサ
 - [x] `Region`: リージョン
+- [x] `Server`: サーバ
+- [x] `ServiceClass`: 価格表(public/price)
 - [x] `SimpleMonitor`: シンプル監視
 - [ ] `SIM`: SIM
 - [x] `SSHKey`: 公開鍵

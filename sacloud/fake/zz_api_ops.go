@@ -92,6 +92,9 @@ func SwitchFactoryFuncToFake() {
 	sacloud.SetClientFactoryFunc(ResourceServerPlan, func(caller sacloud.APICaller) interface{} {
 		return NewServerPlanOp()
 	})
+	sacloud.SetClientFactoryFunc(ResourceServiceClass, func(caller sacloud.APICaller) interface{} {
+		return NewServiceClassOp()
+	})
 	sacloud.SetClientFactoryFunc(ResourceSIM, func(caller sacloud.APICaller) interface{} {
 		return NewSIMOp()
 	})
@@ -557,6 +560,22 @@ type ServerPlanOp struct {
 func NewServerPlanOp() sacloud.ServerPlanAPI {
 	return &ServerPlanOp{
 		key: ResourceServerPlan,
+	}
+}
+
+/*************************************************
+* ServiceClassOp
+*************************************************/
+
+// ServiceClassOp is fake implementation of ServiceClassAPI interface
+type ServiceClassOp struct {
+	key string
+}
+
+// NewServiceClassOp creates new ServiceClassOp instance
+func NewServiceClassOp() sacloud.ServiceClassAPI {
+	return &ServiceClassOp{
+		key: ResourceServiceClass,
 	}
 }
 

@@ -97,6 +97,9 @@ func AddClientFactoryHooks() {
 	sacloud.AddClientFacotyHookFunc("ServerPlan", func(in interface{}) interface{} {
 		return NewServerPlanTracer(in.(sacloud.ServerPlanAPI))
 	})
+	sacloud.AddClientFacotyHookFunc("ServiceClass", func(in interface{}) interface{} {
+		return NewServiceClassTracer(in.(sacloud.ServiceClassAPI))
+	})
 	sacloud.AddClientFacotyHookFunc("SIM", func(in interface{}) interface{} {
 		return NewSIMTracer(in.(sacloud.SIMAPI))
 	})
@@ -6368,6 +6371,55 @@ func (t *ServerPlanTracer) Read(ctx context.Context, zone string, id types.ID) (
 	}
 
 	return resultServerPlan, err
+}
+
+/*************************************************
+* ServiceClassTracer
+*************************************************/
+
+// ServiceClassTracer is for trace ServiceClassOp operations
+type ServiceClassTracer struct {
+	Internal sacloud.ServiceClassAPI
+}
+
+// NewServiceClassTracer creates new ServiceClassTracer instance
+func NewServiceClassTracer(in sacloud.ServiceClassAPI) sacloud.ServiceClassAPI {
+	return &ServiceClassTracer{
+		Internal: in,
+	}
+}
+
+// Find is API call with trace log
+func (t *ServiceClassTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.ServiceClassFindResult, error) {
+	log.Println("[TRACE] ServiceClassAPI.Find start")
+	targetArguments := struct {
+		Argzone       string                 `json:"zone"`
+		Argconditions *sacloud.FindCondition `json:"conditions"`
+	}{
+		Argzone:       zone,
+		Argconditions: conditions,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] ServiceClassAPI.Find end")
+	}()
+
+	result, err := t.Internal.Find(ctx, zone, conditions)
+	targetResults := struct {
+		Result *sacloud.ServiceClassFindResult
+		Error  error
+	}{
+		Result: result,
+		Error:  err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return result, err
 }
 
 /*************************************************

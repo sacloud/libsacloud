@@ -236,6 +236,14 @@ func init() {
 		}
 	})
 
+	SetClientFactoryFunc("ServiceClass", func(caller APICaller) interface{} {
+		return &ServiceClassOp{
+			Client:     caller,
+			PathSuffix: "api/cloud/1.1",
+			PathName:   "public/price",
+		}
+	})
+
 	SetClientFactoryFunc("SIM", func(caller APICaller) interface{} {
 		return &SIMOp{
 			Client:     caller,
@@ -8203,6 +8211,77 @@ func (o *ServerPlanOp) Read(ctx context.Context, zone string, id types.ID) (*Ser
 		return nil, err
 	}
 	return results.ServerPlan, nil
+}
+
+/*************************************************
+* ServiceClassOp
+*************************************************/
+
+// ServiceClassOp implements ServiceClassAPI interface
+type ServiceClassOp struct {
+	// Client APICaller
+	Client APICaller
+	// PathSuffix is used when building URL
+	PathSuffix string
+	// PathName is used when building URL
+	PathName string
+}
+
+// NewServiceClassOp creates new ServiceClassOp instance
+func NewServiceClassOp(caller APICaller) ServiceClassAPI {
+	return GetClientFactoryFunc("ServiceClass")(caller).(ServiceClassAPI)
+}
+
+// Find is API call
+func (o *ServiceClassOp) Find(ctx context.Context, zone string, conditions *FindCondition) (*ServiceClassFindResult, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"conditions": conditions,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	if zone == "" {
+		zone = ""
+	}
+	if conditions == nil {
+		conditions = &FindCondition{}
+	}
+	args := &struct {
+		Argzone       string
+		Argconditions *FindCondition `mapconv:",squash"`
+	}{
+		Argzone:       zone,
+		Argconditions: conditions,
+	}
+
+	v := &serviceClassFindRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &serviceClassFindResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &ServiceClassFindResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, err
 }
 
 /*************************************************

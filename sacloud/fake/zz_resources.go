@@ -59,6 +59,8 @@ const (
 	ResourceServer = "Server"
 	// ResourceServerPlan is resource key of fake store
 	ResourceServerPlan = "ServerPlan"
+	// ResourceServiceClass is resource key of fake store
+	ResourceServiceClass = "ServiceClass"
 	// ResourceSIM is resource key of fake store
 	ResourceSIM = "SIM"
 	// ResourceSimpleMonitor is resource key of fake store

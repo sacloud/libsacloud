@@ -21,7 +21,7 @@ func ResourceFieldName(resourceName string, form dsl.PayloadForm) string {
 			return resourceName
 		case strings.HasSuffix(resourceName, "Info"):
 			return resourceName
-		case strings.HasSuffix(resourceName, "ch"):
+		case strings.HasSuffix(resourceName, "ch"), strings.HasSuffix(resourceName, "ss"):
 			return resourceName + "es"
 		default:
 			return resourceName + "s"

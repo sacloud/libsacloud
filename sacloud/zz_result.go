@@ -943,6 +943,15 @@ type serverPlanReadResult struct {
 	ServerPlan *ServerPlan `json:",omitempty" mapconv:"ServerPlan,omitempty,recursive"`
 }
 
+// ServiceClassFindResult represents the Result of API
+type ServiceClassFindResult struct {
+	Total int `json:",omitempty"` // Total count of target resources
+	From  int `json:",omitempty"` // Current page number
+	Count int `json:",omitempty"` // Count of current page
+
+	ServiceClasses []*ServiceClass `json:",omitempty" mapconv:"[]ServiceClasses,omitempty,recursive"`
+}
+
 // SIMFindResult represents the Result of API
 type SIMFindResult struct {
 	Total int `json:",omitempty"` // Total count of target resources
