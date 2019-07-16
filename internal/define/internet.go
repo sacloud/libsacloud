@@ -134,7 +134,36 @@ var internetAPI = &dsl.Resource{
 		// monitor
 		ops.Monitor(internetAPIName, monitorParameter, monitors.routerModel()),
 
-		// TODO IPv6関連は後回し
+		// ipv6
+		{
+			ResourceName: internetAPIName,
+			Name:         "EnableIPv6",
+			PathFormat:   dsl.IDAndSuffixPathFormat("ipv6net"),
+			Method:       http.MethodPost,
+			Arguments: dsl.Arguments{
+				dsl.ArgumentZone,
+				dsl.ArgumentID,
+			},
+			ResponseEnvelope: dsl.ResponseEnvelope(&dsl.EnvelopePayloadDesc{
+				Type: ipv6netNakedType,
+				Name: ipv6netAPIName,
+			}),
+			Results: dsl.Results{
+				{
+					SourceField: ipv6netAPIName,
+					DestField:   ipv6netAPIName,
+					IsPlural:    false,
+					Model:       models.switchIPv6NetModel(),
+				},
+			},
+		},
+
+		ops.WithIDAction(internetAPIName, "DisableIPv6", http.MethodDelete, "ipv6net/{{.ipv6netID}}",
+			&dsl.Argument{
+				Name: "ipv6netID",
+				Type: meta.TypeID,
+			},
+		),
 	},
 }
 var (

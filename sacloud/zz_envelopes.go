@@ -967,6 +967,14 @@ type internetMonitorResponseEnvelope struct {
 	Data *naked.MonitorValues `json:",omitempty"`
 }
 
+// internetEnableIPv6ResponseEnvelope is envelop of API response
+type internetEnableIPv6ResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	IPv6Net *naked.IPv6Net `json:",omitempty"`
+}
+
 // internetPlanFindRequestEnvelope is envelop of API request
 type internetPlanFindRequestEnvelope struct {
 	Count   int                    `json:",omitempty"`
@@ -1022,6 +1030,23 @@ type iPAddressUpdateHostNameResponseEnvelope struct {
 	Success types.APIResult `json:",omitempty"`      // success項目
 
 	IPAddress *naked.IPAddress `json:",omitempty"`
+}
+
+// iPv6NetListResponseEnvelope is envelop of API response
+type iPv6NetListResponseEnvelope struct {
+	Total int `json:",omitempty"` // トータル件数
+	From  int `json:",omitempty"` // ページング開始ページ
+	Count int `json:",omitempty"` // 件数
+
+	IPv6Nets []*naked.IPv6Net `json:",omitempty"`
+}
+
+// iPv6NetReadResponseEnvelope is envelop of API response
+type iPv6NetReadResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	IPv6Net *naked.IPv6Net `json:",omitempty"`
 }
 
 // licenseFindRequestEnvelope is envelop of API request

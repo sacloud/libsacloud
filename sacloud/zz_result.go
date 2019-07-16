@@ -551,6 +551,13 @@ type internetMonitorResult struct {
 	RouterActivity *RouterActivity `json:",omitempty" mapconv:"Data,omitempty,recursive"`
 }
 
+// internetEnableIPv6Result represents the Result of API
+type internetEnableIPv6Result struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	IPv6Net *IPv6NetInfo `json:",omitempty" mapconv:"IPv6Net,omitempty,recursive"`
+}
+
 // InternetPlanFindResult represents the Result of API
 type InternetPlanFindResult struct {
 	Total int `json:",omitempty"` // Total count of target resources
@@ -588,6 +595,22 @@ type iPAddressUpdateHostNameResult struct {
 	IsOk bool `json:",omitempty"` // is_ok
 
 	IPAddress *IPAddress `json:",omitempty" mapconv:"IPAddress,omitempty,recursive"`
+}
+
+// IPv6NetListResult represents the Result of API
+type IPv6NetListResult struct {
+	Total int `json:",omitempty"` // Total count of target resources
+	From  int `json:",omitempty"` // Current page number
+	Count int `json:",omitempty"` // Count of current page
+
+	IPv6Nets []*IPv6Net `json:",omitempty" mapconv:"[]IPv6Nets,omitempty,recursive"`
+}
+
+// iPv6NetReadResult represents the Result of API
+type iPv6NetReadResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	IPv6Net *IPv6Net `json:",omitempty" mapconv:"IPv6Net,omitempty,recursive"`
 }
 
 // LicenseFindResult represents the Result of API

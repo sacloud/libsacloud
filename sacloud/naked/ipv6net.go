@@ -9,7 +9,7 @@ import (
 // IPv6Net InternetリソースでのIPv6アドレス帯を表す
 type IPv6Net struct {
 	ID                 types.ID   `json:",omitempty" yaml:"id,omitempty" structs:",omitempty"`
-	ServiceID          string     `json:",omitempty" yaml:"service_id,omitempty" structs:",omitempty"`
+	ServiceID          types.ID   `json:",omitempty" yaml:"service_id,omitempty" structs:",omitempty"`
 	IPv6Prefix         string     `json:",omitempty" yaml:"ipv6prefix,omitempty" structs:",omitempty"`
 	IPv6PrefixLen      int        `json:",omitempty" yaml:"ipv6prefix_len,omitempty" structs:",omitempty"`
 	IPv6PrefixTail     string     `json:",omitempty" yaml:"ipv6prefix_tail,omitempty" structs:",omitempty"`

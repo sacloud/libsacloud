@@ -398,6 +398,29 @@ func (s *store) setIPAddress(zone string, value *sacloud.IPAddress) {
 	s.set(ResourceIPAddress, zone, value)
 }
 
+func (s *store) getIPv6Net(zone string) []*sacloud.IPv6Net {
+	values := s.get(ResourceIPv6Net, zone)
+	var ret []*sacloud.IPv6Net
+	for _, v := range values {
+		if v, ok := v.(*sacloud.IPv6Net); ok {
+			ret = append(ret, v)
+		}
+	}
+	return ret
+}
+
+func (s *store) getIPv6NetByID(zone string, id types.ID) *sacloud.IPv6Net {
+	v := s.getByID(ResourceIPv6Net, zone, id)
+	if v, ok := v.(*sacloud.IPv6Net); ok {
+		return v
+	}
+	return nil
+}
+
+func (s *store) setIPv6Net(zone string, value *sacloud.IPv6Net) {
+	s.set(ResourceIPv6Net, zone, value)
+}
+
 func (s *store) getLicense(zone string) []*sacloud.License {
 	values := s.get(ResourceLicense, zone)
 	var ret []*sacloud.License

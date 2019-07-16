@@ -14,7 +14,7 @@ type Subnet struct {
 	DefaultRoute   string      `json:",omitempty" yaml:"default_route,omitempty" structs:",omitempty"`
 	NetworkAddress string      `json:",omitempty" yaml:"network_address,omitempty" structs:",omitempty"`
 	NetworkMaskLen int         `json:",omitempty" yaml:"network_mask_len,omitempty" structs:",omitempty"`
-	ServiceID      int64       `json:",omitempty" yaml:"service_id,omitempty" structs:",omitempty"`
+	ServiceID      types.ID    `json:",omitempty" yaml:"service_id,omitempty" structs:",omitempty"`
 	StaticRoute    string      `json:",omitempty" yaml:"static_route,omitempty" structs:",omitempty"`
 	NextHop        string      `json:",omitempty" yaml:"next_hop,omitempty" structs:",omitempty"`
 	Switch         *Switch     `json:",omitempty" yaml:"switch,omitempty" structs:",omitempty"`

@@ -59,6 +59,9 @@ func SwitchFactoryFuncToFake() {
 	sacloud.SetClientFactoryFunc(ResourceIPAddress, func(caller sacloud.APICaller) interface{} {
 		return NewIPAddressOp()
 	})
+	sacloud.SetClientFactoryFunc(ResourceIPv6Net, func(caller sacloud.APICaller) interface{} {
+		return NewIPv6NetOp()
+	})
 	sacloud.SetClientFactoryFunc(ResourceLicense, func(caller sacloud.APICaller) interface{} {
 		return NewLicenseOp()
 	})
@@ -390,6 +393,22 @@ type IPAddressOp struct {
 func NewIPAddressOp() sacloud.IPAddressAPI {
 	return &IPAddressOp{
 		key: ResourceIPAddress,
+	}
+}
+
+/*************************************************
+* IPv6NetOp
+*************************************************/
+
+// IPv6NetOp is fake implementation of IPv6NetAPI interface
+type IPv6NetOp struct {
+	key string
+}
+
+// NewIPv6NetOp creates new IPv6NetOp instance
+func NewIPv6NetOp() sacloud.IPv6NetAPI {
+	return &IPv6NetOp{
+		key: ResourceIPv6Net,
 	}
 }
 

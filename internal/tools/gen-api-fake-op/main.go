@@ -122,6 +122,20 @@ func (o *{{ $.TypeName }}Op) {{ .MethodName }}(ctx context.Context{{ range .Argu
 		From:     0,
 		{{$.TypeName}}: values,
 	}, nil
+{{ else if eq .MethodName "List" -}}
+	results, _ := find(o.key, {{if $.IsGlobal}}sacloud.APIDefaultZone{{else}}zone{{end}}, nil)
+	var values []*sacloud.{{$.TypeName}}
+	for _, res := range results {
+		dest := &sacloud.{{$.TypeName}}{}
+		copySameNameField(res, dest)
+		values = append(values, dest)
+	}
+	return &sacloud.{{.ResultTypeName}}{
+		Total:    len(results),
+		Count:    len(results),
+		From:     0,
+		{{$.TypeName}}: values,
+	}, nil
 {{ else if eq .MethodName "Create" -}}
 	result := &sacloud.{{$.TypeName}}{}
 	copySameNameField(param, result)
