@@ -25,9 +25,10 @@ var (
 
 // Argument 引数の型情報
 type Argument struct {
-	Name       string    // パラメータ名、引数名に利用される
-	Type       meta.Type // パラメータの型情報
-	MapConvTag string
+	Name            string    // パラメータ名、引数名に利用される
+	Type            meta.Type // パラメータの型情報
+	PathFormatAlias string    // リクエストパス組み立て時に利用するパラメータ名のエイリアス 省略時はNameとなる
+	MapConvTag      string
 }
 
 // ImportStatements コード生成時に利用するimport文を生成する
@@ -69,6 +70,14 @@ func (a *Argument) MapConvTagSrc() string {
 		return ""
 	}
 	return fmt.Sprintf("`mapconv:\"%s\"`", a.MapConvTag)
+}
+
+// PathFormatName リクエストパス組み立て時に利用するパラメータ名の
+func (a *Argument) PathFormatName() string {
+	if a.PathFormatAlias != "" {
+		return a.PathFormatAlias
+	}
+	return a.Name
 }
 
 // MappableArgument 引数定義の追加

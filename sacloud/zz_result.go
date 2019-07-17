@@ -613,6 +613,36 @@ type iPv6NetReadResult struct {
 	IPv6Net *IPv6Net `json:",omitempty" mapconv:"IPv6Net,omitempty,recursive"`
 }
 
+// IPv6AddrFindResult represents the Result of API
+type IPv6AddrFindResult struct {
+	Total int `json:",omitempty"` // Total count of target resources
+	From  int `json:",omitempty"` // Current page number
+	Count int `json:",omitempty"` // Count of current page
+
+	IPv6Addrs []*IPv6Addr `json:",omitempty" mapconv:"[]IPv6Addrs,omitempty,recursive"`
+}
+
+// iPv6AddrCreateResult represents the Result of API
+type iPv6AddrCreateResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	IPv6Addr *IPv6Addr `json:",omitempty" mapconv:"IPv6Addr,omitempty,recursive"`
+}
+
+// iPv6AddrReadResult represents the Result of API
+type iPv6AddrReadResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	IPv6Addr *IPv6Addr `json:",omitempty" mapconv:"IPv6Addr,omitempty,recursive"`
+}
+
+// iPv6AddrUpdateResult represents the Result of API
+type iPv6AddrUpdateResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	IPv6Addr *IPv6Addr `json:",omitempty" mapconv:"IPv6Addr,omitempty,recursive"`
+}
+
 // LicenseFindResult represents the Result of API
 type LicenseFindResult struct {
 	Total int `json:",omitempty"` // Total count of target resources

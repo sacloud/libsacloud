@@ -263,6 +263,19 @@ type IPv6NetAPI interface {
 }
 
 /*************************************************
+* IPv6AddrAPI
+*************************************************/
+
+// IPv6AddrAPI is interface for operate IPv6Addr resource
+type IPv6AddrAPI interface {
+	Find(ctx context.Context, zone string, conditions *FindCondition) (*IPv6AddrFindResult, error)
+	Create(ctx context.Context, zone string, param *IPv6AddrCreateRequest) (*IPv6Addr, error)
+	Read(ctx context.Context, zone string, ipv6addr string) (*IPv6Addr, error)
+	Update(ctx context.Context, zone string, ipv6addr string, param *IPv6AddrUpdateRequest) (*IPv6Addr, error)
+	Delete(ctx context.Context, zone string, ipv6addr string) error
+}
+
+/*************************************************
 * LicenseAPI
 *************************************************/
 

@@ -1868,6 +1868,93 @@ func (s *IPv6NetStub) Read(ctx context.Context, zone string, id types.ID) (*sacl
 }
 
 /*************************************************
+* IPv6AddrStub
+*************************************************/
+
+// IPv6AddrFindStubResult is expected values of the Find operation
+type IPv6AddrFindStubResult struct {
+	Values *sacloud.IPv6AddrFindResult
+	Err    error
+}
+
+// IPv6AddrCreateStubResult is expected values of the Create operation
+type IPv6AddrCreateStubResult struct {
+	IPv6Addr *sacloud.IPv6Addr
+	Err      error
+}
+
+// IPv6AddrReadStubResult is expected values of the Read operation
+type IPv6AddrReadStubResult struct {
+	IPv6Addr *sacloud.IPv6Addr
+	Err      error
+}
+
+// IPv6AddrUpdateStubResult is expected values of the Update operation
+type IPv6AddrUpdateStubResult struct {
+	IPv6Addr *sacloud.IPv6Addr
+	Err      error
+}
+
+// IPv6AddrDeleteStubResult is expected values of the Delete operation
+type IPv6AddrDeleteStubResult struct {
+	Err error
+}
+
+// IPv6AddrStub is for trace IPv6AddrOp operations
+type IPv6AddrStub struct {
+	FindStubResult   *IPv6AddrFindStubResult
+	CreateStubResult *IPv6AddrCreateStubResult
+	ReadStubResult   *IPv6AddrReadStubResult
+	UpdateStubResult *IPv6AddrUpdateStubResult
+	DeleteStubResult *IPv6AddrDeleteStubResult
+}
+
+// NewIPv6AddrStub creates new IPv6AddrStub instance
+func NewIPv6AddrStub(caller sacloud.APICaller) sacloud.IPv6AddrAPI {
+	return &IPv6AddrStub{}
+}
+
+// Find is API call with trace log
+func (s *IPv6AddrStub) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.IPv6AddrFindResult, error) {
+	if s.FindStubResult == nil {
+		log.Fatal("IPv6AddrStub.FindStubResult is not set")
+	}
+	return s.FindStubResult.Values, s.FindStubResult.Err
+}
+
+// Create is API call with trace log
+func (s *IPv6AddrStub) Create(ctx context.Context, zone string, param *sacloud.IPv6AddrCreateRequest) (*sacloud.IPv6Addr, error) {
+	if s.CreateStubResult == nil {
+		log.Fatal("IPv6AddrStub.CreateStubResult is not set")
+	}
+	return s.CreateStubResult.IPv6Addr, s.CreateStubResult.Err
+}
+
+// Read is API call with trace log
+func (s *IPv6AddrStub) Read(ctx context.Context, zone string, ipv6addr string) (*sacloud.IPv6Addr, error) {
+	if s.ReadStubResult == nil {
+		log.Fatal("IPv6AddrStub.ReadStubResult is not set")
+	}
+	return s.ReadStubResult.IPv6Addr, s.ReadStubResult.Err
+}
+
+// Update is API call with trace log
+func (s *IPv6AddrStub) Update(ctx context.Context, zone string, ipv6addr string, param *sacloud.IPv6AddrUpdateRequest) (*sacloud.IPv6Addr, error) {
+	if s.UpdateStubResult == nil {
+		log.Fatal("IPv6AddrStub.UpdateStubResult is not set")
+	}
+	return s.UpdateStubResult.IPv6Addr, s.UpdateStubResult.Err
+}
+
+// Delete is API call with trace log
+func (s *IPv6AddrStub) Delete(ctx context.Context, zone string, ipv6addr string) error {
+	if s.DeleteStubResult == nil {
+		log.Fatal("IPv6AddrStub.DeleteStubResult is not set")
+	}
+	return s.DeleteStubResult.Err
+}
+
+/*************************************************
 * LicenseStub
 *************************************************/
 
