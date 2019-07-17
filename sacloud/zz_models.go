@@ -7738,6 +7738,133 @@ func (o *IPv6Net) SetSwitchID(v types.ID) {
 }
 
 /*************************************************
+* IPv6Addr
+*************************************************/
+
+// IPv6Addr represents API parameter/response structure
+type IPv6Addr struct {
+	IPv6Addr    string
+	HostName    string
+	IPv6NetID   types.ID `mapconv:"IPv6Net.ID"`
+	SwitchID    types.ID `mapconv:"IPv6Net.Switch.ID"`
+	InterfaceID types.ID `mapconv:"Interface.ID,omitempty"`
+}
+
+// Validate validates by field tags
+func (o *IPv6Addr) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetIPv6Addr returns value of IPv6Addr
+func (o *IPv6Addr) GetIPv6Addr() string {
+	return o.IPv6Addr
+}
+
+// SetIPv6Addr sets value to IPv6Addr
+func (o *IPv6Addr) SetIPv6Addr(v string) {
+	o.IPv6Addr = v
+}
+
+// GetHostName returns value of HostName
+func (o *IPv6Addr) GetHostName() string {
+	return o.HostName
+}
+
+// SetHostName sets value to HostName
+func (o *IPv6Addr) SetHostName(v string) {
+	o.HostName = v
+}
+
+// GetIPv6NetID returns value of IPv6NetID
+func (o *IPv6Addr) GetIPv6NetID() types.ID {
+	return o.IPv6NetID
+}
+
+// SetIPv6NetID sets value to IPv6NetID
+func (o *IPv6Addr) SetIPv6NetID(v types.ID) {
+	o.IPv6NetID = v
+}
+
+// GetSwitchID returns value of SwitchID
+func (o *IPv6Addr) GetSwitchID() types.ID {
+	return o.SwitchID
+}
+
+// SetSwitchID sets value to SwitchID
+func (o *IPv6Addr) SetSwitchID(v types.ID) {
+	o.SwitchID = v
+}
+
+// GetInterfaceID returns value of InterfaceID
+func (o *IPv6Addr) GetInterfaceID() types.ID {
+	return o.InterfaceID
+}
+
+// SetInterfaceID sets value to InterfaceID
+func (o *IPv6Addr) SetInterfaceID(v types.ID) {
+	o.InterfaceID = v
+}
+
+/*************************************************
+* IPv6AddrCreateRequest
+*************************************************/
+
+// IPv6AddrCreateRequest represents API parameter/response structure
+type IPv6AddrCreateRequest struct {
+	IPv6Addr string
+	HostName string
+}
+
+// Validate validates by field tags
+func (o *IPv6AddrCreateRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetIPv6Addr returns value of IPv6Addr
+func (o *IPv6AddrCreateRequest) GetIPv6Addr() string {
+	return o.IPv6Addr
+}
+
+// SetIPv6Addr sets value to IPv6Addr
+func (o *IPv6AddrCreateRequest) SetIPv6Addr(v string) {
+	o.IPv6Addr = v
+}
+
+// GetHostName returns value of HostName
+func (o *IPv6AddrCreateRequest) GetHostName() string {
+	return o.HostName
+}
+
+// SetHostName sets value to HostName
+func (o *IPv6AddrCreateRequest) SetHostName(v string) {
+	o.HostName = v
+}
+
+/*************************************************
+* IPv6AddrUpdateRequest
+*************************************************/
+
+// IPv6AddrUpdateRequest represents API parameter/response structure
+type IPv6AddrUpdateRequest struct {
+	HostName string
+}
+
+// Validate validates by field tags
+func (o *IPv6AddrUpdateRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetHostName returns value of HostName
+func (o *IPv6AddrUpdateRequest) GetHostName() string {
+	return o.HostName
+}
+
+// SetHostName sets value to HostName
+func (o *IPv6AddrUpdateRequest) SetHostName(v string) {
+	o.HostName = v
+}
+
+/*************************************************
 * License
 *************************************************/
 

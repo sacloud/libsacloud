@@ -67,6 +67,9 @@ func AddClientFactoryHooks() {
 	sacloud.AddClientFacotyHookFunc("IPv6Net", func(in interface{}) interface{} {
 		return NewIPv6NetTracer(in.(sacloud.IPv6NetAPI))
 	})
+	sacloud.AddClientFacotyHookFunc("IPv6Addr", func(in interface{}) interface{} {
+		return NewIPv6AddrTracer(in.(sacloud.IPv6AddrAPI))
+	})
 	sacloud.AddClientFacotyHookFunc("License", func(in interface{}) interface{} {
 		return NewLicenseTracer(in.(sacloud.LicenseAPI))
 	})
@@ -4077,6 +4080,187 @@ func (t *IPv6NetTracer) Read(ctx context.Context, zone string, id types.ID) (*sa
 	}
 
 	return resultIPv6Net, err
+}
+
+/*************************************************
+* IPv6AddrTracer
+*************************************************/
+
+// IPv6AddrTracer is for trace IPv6AddrOp operations
+type IPv6AddrTracer struct {
+	Internal sacloud.IPv6AddrAPI
+}
+
+// NewIPv6AddrTracer creates new IPv6AddrTracer instance
+func NewIPv6AddrTracer(in sacloud.IPv6AddrAPI) sacloud.IPv6AddrAPI {
+	return &IPv6AddrTracer{
+		Internal: in,
+	}
+}
+
+// Find is API call with trace log
+func (t *IPv6AddrTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.IPv6AddrFindResult, error) {
+	log.Println("[TRACE] IPv6AddrAPI.Find start")
+	targetArguments := struct {
+		Argzone       string                 `json:"zone"`
+		Argconditions *sacloud.FindCondition `json:"conditions"`
+	}{
+		Argzone:       zone,
+		Argconditions: conditions,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] IPv6AddrAPI.Find end")
+	}()
+
+	result, err := t.Internal.Find(ctx, zone, conditions)
+	targetResults := struct {
+		Result *sacloud.IPv6AddrFindResult
+		Error  error
+	}{
+		Result: result,
+		Error:  err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return result, err
+}
+
+// Create is API call with trace log
+func (t *IPv6AddrTracer) Create(ctx context.Context, zone string, param *sacloud.IPv6AddrCreateRequest) (*sacloud.IPv6Addr, error) {
+	log.Println("[TRACE] IPv6AddrAPI.Create start")
+	targetArguments := struct {
+		Argzone  string                         `json:"zone"`
+		Argparam *sacloud.IPv6AddrCreateRequest `json:"param"`
+	}{
+		Argzone:  zone,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] IPv6AddrAPI.Create end")
+	}()
+
+	resultIPv6Addr, err := t.Internal.Create(ctx, zone, param)
+	targetResults := struct {
+		IPv6Addr *sacloud.IPv6Addr
+		Error    error
+	}{
+		IPv6Addr: resultIPv6Addr,
+		Error:    err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultIPv6Addr, err
+}
+
+// Read is API call with trace log
+func (t *IPv6AddrTracer) Read(ctx context.Context, zone string, ipv6addr string) (*sacloud.IPv6Addr, error) {
+	log.Println("[TRACE] IPv6AddrAPI.Read start")
+	targetArguments := struct {
+		Argzone     string `json:"zone"`
+		Argipv6addr string `json:"ipv6addr"`
+	}{
+		Argzone:     zone,
+		Argipv6addr: ipv6addr,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] IPv6AddrAPI.Read end")
+	}()
+
+	resultIPv6Addr, err := t.Internal.Read(ctx, zone, ipv6addr)
+	targetResults := struct {
+		IPv6Addr *sacloud.IPv6Addr
+		Error    error
+	}{
+		IPv6Addr: resultIPv6Addr,
+		Error:    err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultIPv6Addr, err
+}
+
+// Update is API call with trace log
+func (t *IPv6AddrTracer) Update(ctx context.Context, zone string, ipv6addr string, param *sacloud.IPv6AddrUpdateRequest) (*sacloud.IPv6Addr, error) {
+	log.Println("[TRACE] IPv6AddrAPI.Update start")
+	targetArguments := struct {
+		Argzone     string                         `json:"zone"`
+		Argipv6addr string                         `json:"ipv6addr"`
+		Argparam    *sacloud.IPv6AddrUpdateRequest `json:"param"`
+	}{
+		Argzone:     zone,
+		Argipv6addr: ipv6addr,
+		Argparam:    param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] IPv6AddrAPI.Update end")
+	}()
+
+	resultIPv6Addr, err := t.Internal.Update(ctx, zone, ipv6addr, param)
+	targetResults := struct {
+		IPv6Addr *sacloud.IPv6Addr
+		Error    error
+	}{
+		IPv6Addr: resultIPv6Addr,
+		Error:    err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultIPv6Addr, err
+}
+
+// Delete is API call with trace log
+func (t *IPv6AddrTracer) Delete(ctx context.Context, zone string, ipv6addr string) error {
+	log.Println("[TRACE] IPv6AddrAPI.Delete start")
+	targetArguments := struct {
+		Argzone     string `json:"zone"`
+		Argipv6addr string `json:"ipv6addr"`
+	}{
+		Argzone:     zone,
+		Argipv6addr: ipv6addr,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] IPv6AddrAPI.Delete end")
+	}()
+
+	err := t.Internal.Delete(ctx, zone, ipv6addr)
+	targetResults := struct {
+		Error error
+	}{
+		Error: err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return err
 }
 
 /*************************************************

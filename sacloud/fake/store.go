@@ -9,11 +9,11 @@ import (
 )
 
 var s = &store{
-	data: make(map[string]map[types.ID]interface{}),
+	data: make(map[string]map[string]interface{}),
 }
 
 type store struct {
-	data map[string]map[types.ID]interface{}
+	data map[string]map[string]interface{}
 	mu   sync.Mutex
 }
 
@@ -21,7 +21,7 @@ func (s *store) key(resourceKey, zone string) string {
 	return fmt.Sprintf("%s/%s", resourceKey, zone)
 }
 
-func (s *store) values(resourceKey, zone string) map[types.ID]interface{} {
+func (s *store) values(resourceKey, zone string) map[string]interface{} {
 	return s.data[s.key(resourceKey, zone)]
 }
 
@@ -45,7 +45,7 @@ func (s *store) getByID(resourceKey, zone string, id types.ID) interface{} {
 	if values == nil {
 		return nil
 	}
-	return values[id]
+	return values[id.String()]
 }
 
 func (s *store) set(resourceKey, zone string, value interface{}) {
@@ -54,10 +54,10 @@ func (s *store) set(resourceKey, zone string, value interface{}) {
 
 	values := s.values(resourceKey, zone)
 	if values == nil {
-		values = map[types.ID]interface{}{}
+		values = map[string]interface{}{}
 	}
 	if v, ok := value.(accessor.ID); ok {
-		values[v.GetID()] = value
+		values[v.GetID().String()] = value
 	} else {
 		panic("value has no ID")
 	}
@@ -71,9 +71,9 @@ func (s *store) setWithID(resourceKey, zone string, value interface{}, id types.
 
 	values := s.values(resourceKey, zone)
 	if values == nil {
-		values = map[types.ID]interface{}{}
+		values = map[string]interface{}{}
 	}
-	values[id] = value
+	values[id.String()] = value
 	s.data[s.key(resourceKey, zone)] = values
 }
 
@@ -83,6 +83,6 @@ func (s *store) delete(resourceKey, zone string, id types.ID) {
 
 	values := s.values(resourceKey, zone)
 	if values != nil {
-		delete(values, id)
+		delete(values, id.String())
 	}
 }

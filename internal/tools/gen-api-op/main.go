@@ -76,7 +76,7 @@ func (o *{{ $typeName }}Op) {{ .MethodName }}(ctx context.Context{{ range .Argum
 		"pathSuffix": o.PathSuffix,
 		"pathName": o.PathName,
 		{{- range .Arguments }}
-		"{{.Name}}": {{.Name}},
+		"{{.PathFormatName}}": {{.Name}},
 		{{- end }}
 	})
 	if err != nil {

@@ -1049,6 +1049,59 @@ type iPv6NetReadResponseEnvelope struct {
 	IPv6Net *naked.IPv6Net `json:",omitempty"`
 }
 
+// iPv6AddrFindRequestEnvelope is envelop of API request
+type iPv6AddrFindRequestEnvelope struct {
+	Count   int                    `json:",omitempty"`
+	From    int                    `json:",omitempty"`
+	Sort    []string               `json:",omitempty"`
+	Filter  map[string]interface{} `json:",omitempty"`
+	Include []string               `json:",omitempty"`
+	Exclude []string               `json:",omitempty"`
+}
+
+// iPv6AddrFindResponseEnvelope is envelop of API response
+type iPv6AddrFindResponseEnvelope struct {
+	Total int `json:",omitempty"` // トータル件数
+	From  int `json:",omitempty"` // ページング開始ページ
+	Count int `json:",omitempty"` // 件数
+
+	IPv6Addrs []*naked.IPv6Addr `json:",omitempty"`
+}
+
+// iPv6AddrCreateRequestEnvelope is envelop of API request
+type iPv6AddrCreateRequestEnvelope struct {
+	IPv6Addr *naked.IPv6Addr `json:",omitempty"`
+}
+
+// iPv6AddrCreateResponseEnvelope is envelop of API response
+type iPv6AddrCreateResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	IPv6Addr *naked.IPv6Addr `json:",omitempty"`
+}
+
+// iPv6AddrReadResponseEnvelope is envelop of API response
+type iPv6AddrReadResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	IPv6Addr *naked.IPv6Addr `json:",omitempty"`
+}
+
+// iPv6AddrUpdateRequestEnvelope is envelop of API request
+type iPv6AddrUpdateRequestEnvelope struct {
+	IPv6Addr *naked.IPv6Addr `json:",omitempty"`
+}
+
+// iPv6AddrUpdateResponseEnvelope is envelop of API response
+type iPv6AddrUpdateResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	IPv6Addr *naked.IPv6Addr `json:",omitempty"`
+}
+
 // licenseFindRequestEnvelope is envelop of API request
 type licenseFindRequestEnvelope struct {
 	Count   int                    `json:",omitempty"`

@@ -35,6 +35,7 @@ func init() {
 	APIs.Define(internetPlanAPI)    // ルータプラン
 	APIs.Define(ipAPI)              // IPアドレス
 	APIs.Define(ipv6netAPI)         // IPv6ネットワーク
+	APIs.Define(ipv6AddrAPI)        // IPv6アドレス
 	APIs.Define(licenseAPI)         // ライセンス
 	APIs.Define(licenseInfoAPI)     // ライセンスプラン
 	APIs.Define(loadBalancerAPI)    // ロードバランサ

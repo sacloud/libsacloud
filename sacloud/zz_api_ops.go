@@ -156,6 +156,14 @@ func init() {
 		}
 	})
 
+	SetClientFactoryFunc("IPv6Addr", func(caller APICaller) interface{} {
+		return &IPv6AddrOp{
+			Client:     caller,
+			PathSuffix: "api/cloud/1.1",
+			PathName:   "ipv6addr",
+		}
+	})
+
 	SetClientFactoryFunc("License", func(caller APICaller) interface{} {
 		return &LicenseOp{
 			Client:     caller,
@@ -5259,6 +5267,242 @@ func (o *IPv6NetOp) Read(ctx context.Context, zone string, id types.ID) (*IPv6Ne
 		return nil, err
 	}
 	return results.IPv6Net, nil
+}
+
+/*************************************************
+* IPv6AddrOp
+*************************************************/
+
+// IPv6AddrOp implements IPv6AddrAPI interface
+type IPv6AddrOp struct {
+	// Client APICaller
+	Client APICaller
+	// PathSuffix is used when building URL
+	PathSuffix string
+	// PathName is used when building URL
+	PathName string
+}
+
+// NewIPv6AddrOp creates new IPv6AddrOp instance
+func NewIPv6AddrOp(caller APICaller) IPv6AddrAPI {
+	return GetClientFactoryFunc("IPv6Addr")(caller).(IPv6AddrAPI)
+}
+
+// Find is API call
+func (o *IPv6AddrOp) Find(ctx context.Context, zone string, conditions *FindCondition) (*IPv6AddrFindResult, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"conditions": conditions,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	if zone == "" {
+		zone = ""
+	}
+	if conditions == nil {
+		conditions = &FindCondition{}
+	}
+	args := &struct {
+		Argzone       string
+		Argconditions *FindCondition `mapconv:",squash"`
+	}{
+		Argzone:       zone,
+		Argconditions: conditions,
+	}
+
+	v := &iPv6AddrFindRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &iPv6AddrFindResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &IPv6AddrFindResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, err
+}
+
+// Create is API call
+func (o *IPv6AddrOp) Create(ctx context.Context, zone string, param *IPv6AddrCreateRequest) (*IPv6Addr, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"param":      param,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	if zone == "" {
+		zone = ""
+	}
+	if param == nil {
+		param = &IPv6AddrCreateRequest{}
+	}
+	args := &struct {
+		Argzone  string
+		Argparam *IPv6AddrCreateRequest `mapconv:"IPv6Addr,recursive"`
+	}{
+		Argzone:  zone,
+		Argparam: param,
+	}
+
+	v := &iPv6AddrCreateRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
+
+	data, err := o.Client.Do(ctx, "POST", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &iPv6AddrCreateResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &iPv6AddrCreateResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results.IPv6Addr, nil
+}
+
+// Read is API call
+func (o *IPv6AddrOp) Read(ctx context.Context, zone string, ipv6addr string) (*IPv6Addr, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         ipv6addr,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &iPv6AddrReadResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &iPv6AddrReadResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results.IPv6Addr, nil
+}
+
+// Update is API call
+func (o *IPv6AddrOp) Update(ctx context.Context, zone string, ipv6addr string, param *IPv6AddrUpdateRequest) (*IPv6Addr, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         ipv6addr,
+		"param":      param,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	if zone == "" {
+		zone = ""
+	}
+	if ipv6addr == "" {
+		ipv6addr = ""
+	}
+	if param == nil {
+		param = &IPv6AddrUpdateRequest{}
+	}
+	args := &struct {
+		Argzone     string
+		Argipv6addr string
+		Argparam    *IPv6AddrUpdateRequest `mapconv:"IPv6Addr,recursive"`
+	}{
+		Argzone:     zone,
+		Argipv6addr: ipv6addr,
+		Argparam:    param,
+	}
+
+	v := &iPv6AddrUpdateRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
+
+	data, err := o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &iPv6AddrUpdateResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &iPv6AddrUpdateResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results.IPv6Addr, nil
+}
+
+// Delete is API call
+func (o *IPv6AddrOp) Delete(ctx context.Context, zone string, ipv6addr string) error {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         ipv6addr,
+	})
+	if err != nil {
+		return err
+	}
+
+	var body interface{}
+
+	_, err = o.Client.Do(ctx, "DELETE", url, body)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 /*************************************************
