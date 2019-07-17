@@ -19,6 +19,7 @@ var simAPI = &dsl.Resource{
 	Name:       simAPIName,
 	PathName:   simAPIPathName,
 	PathSuffix: dsl.CloudAPISuffix,
+	IsGlobal:   true,
 	Operations: dsl.Operations{
 		// find
 		ops.FindCommonServiceItem(simAPIName, simNakedType, findParameter, simView),
@@ -104,6 +105,9 @@ var simAPI = &dsl.Resource{
 			ResponseEnvelope: dsl.ResponseEnvelopePlural(&dsl.EnvelopePayloadDesc{
 				Name: "Logs",
 				Type: meta.Static(naked.SIMLog{}),
+				Tags: &dsl.FieldTags{
+					JSON: "logs",
+				},
 			}),
 			Results: dsl.Results{
 				{
@@ -117,18 +121,20 @@ var simAPI = &dsl.Resource{
 
 		// GetNetworkOperator
 		{
-			ResourceName:     simAPIName,
-			Name:             "GetNetworkOperator",
-			PathFormat:       dsl.IDAndSuffixPathFormat("sim/network_operator_config"),
-			Method:           http.MethodGet,
-			UseWrappedResult: true,
+			ResourceName: simAPIName,
+			Name:         "GetNetworkOperator",
+			PathFormat:   dsl.IDAndSuffixPathFormat("sim/network_operator_config"),
+			Method:       http.MethodGet,
 			Arguments: dsl.Arguments{
 				dsl.ArgumentZone,
 				dsl.ArgumentID,
 			},
-			ResponseEnvelope: dsl.ResponseEnvelopePlural(&dsl.EnvelopePayloadDesc{
+			ResponseEnvelope: dsl.ResponseEnvelope(&dsl.EnvelopePayloadDesc{
 				Name: "NetworkOperationConfigs",
-				Type: meta.Static(naked.SIMNetworkOperatorConfig{}),
+				Type: meta.Static([]*naked.SIMNetworkOperatorConfig{}),
+				Tags: &dsl.FieldTags{
+					JSON: "network_operator_config",
+				},
 			}),
 			Results: dsl.Results{
 				{
@@ -142,21 +148,58 @@ var simAPI = &dsl.Resource{
 
 		// SetNetworkOperator
 		{
-			ResourceName:    simAPIName,
-			Name:            "SetNetworkOperator",
-			PathFormat:      dsl.IDAndSuffixPathFormat("sim/network_operator_config"),
-			Method:          http.MethodPut,
-			RequestEnvelope: dsl.RequestEnvelopeFromModel(simNetworkOperatorsConfigView),
+			ResourceName: simAPIName,
+			Name:         "SetNetworkOperator",
+			PathFormat:   dsl.IDAndSuffixPathFormat("sim/network_operator_config"),
+			Method:       http.MethodPut,
+			RequestEnvelope: dsl.RequestEnvelope(&dsl.EnvelopePayloadDesc{
+				Name: "NetworkOperatorConfigs",
+				Type: meta.Static([]*naked.SIMNetworkOperatorConfig{}),
+				Tags: &dsl.FieldTags{
+					JSON: "network_operator_config",
+				},
+			}),
 			Arguments: dsl.Arguments{
 				dsl.ArgumentZone,
 				dsl.ArgumentID,
-				dsl.PassthroughModelArgument("configs", simNetworkOperatorsConfigView),
+				&dsl.Argument{
+					Name:       "configs",
+					Type:       simNetworkOperatorConfigView,
+					MapConvTag: "[]NetworkOperatorConfigs,recursive",
+				},
 			},
 		},
 
 		// monitor
 		ops.MonitorChild(simAPIName, "SIM", "sim/metrics",
 			monitorParameter, monitors.linkModel()),
+
+		// status
+		{
+			ResourceName: simAPIName,
+			Name:         "Status",
+			PathFormat:   dsl.IDAndSuffixPathFormat("sim/status"),
+			Method:       http.MethodGet,
+			Arguments: dsl.Arguments{
+				dsl.ArgumentZone,
+				dsl.ArgumentID,
+			},
+			ResponseEnvelope: dsl.ResponseEnvelope(&dsl.EnvelopePayloadDesc{
+				Name: "SIM",
+				Type: meta.Static(naked.SIMInfo{}),
+				Tags: &dsl.FieldTags{
+					JSON: "sim",
+				},
+			}),
+			Results: dsl.Results{
+				{
+					SourceField: "SIM",
+					DestField:   "SIM",
+					IsPlural:    false,
+					Model:       models.simInfo(),
+				},
+			},
+		},
 	},
 }
 
@@ -174,6 +217,7 @@ var (
 			fields.Availability(),
 			fields.Class(),
 			fields.SIMICCID(),
+			fields.New("Info", models.simInfo(), mapConvTag("Status.SIMInfo")),
 			fields.IconID(),
 			fields.CreatedAt(),
 			fields.ModifiedAt(),
@@ -238,31 +282,13 @@ var (
 		NakedType: meta.Static(naked.SIMLog{}),
 	}
 	simNetworkOperatorConfigView = &dsl.Model{
-		Name: "SIMNetworkOperatorConfig",
+		Name:    "SIMNetworkOperatorConfig",
+		IsArray: true,
 		Fields: []*dsl.FieldDesc{
 			fields.New("Allow", meta.TypeFlag),
 			fields.New("CountryCode", meta.TypeString),
 			fields.New("Name", meta.TypeString),
 		},
 		NakedType: meta.Static(naked.SIMNetworkOperatorConfig{}),
-	}
-	simNetworkOperatorsConfigView = &dsl.Model{
-		Name: "SIMNetworkOperatorConfigs",
-		Fields: []*dsl.FieldDesc{
-			{
-				Name: "NetworkOperatorConfigs",
-				Type: &dsl.Model{
-					Name: "SIMNetworkOperatorConfig",
-					Fields: []*dsl.FieldDesc{
-						fields.New("Allow", meta.TypeFlag),
-						fields.New("CountryCode", meta.TypeString),
-						fields.New("Name", meta.TypeString),
-					},
-					NakedType: meta.Static(naked.SIMNetworkOperatorConfig{}),
-					IsArray:   true,
-				},
-			},
-		},
-		NakedType: meta.Static(naked.SIMNetworkOperatorConfigs{}),
 	}
 )

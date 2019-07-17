@@ -10,22 +10,46 @@ import (
 
 // MobileGateway モバイルゲートウェイ
 type MobileGateway struct {
-	ID           int64                  `json:",omitempty" yaml:"id,omitempty" structs:",omitempty"`
-	Class        string                 `json:",omitempty" yaml:"class,omitempty" structs:",omitempty"`
-	Name         string                 `json:",omitempty" yaml:"name,omitempty" structs:",omitempty"`
-	Tags         []string               `yaml:"tags"`
-	Description  string                 `json:",omitempty" yaml:"description,omitempty" structs:",omitempty"`
-	Plan         *AppliancePlan         `json:",omitempty" yaml:"plan,omitempty" structs:",omitempty"`
-	Settings     *MobileGatewaySettings `json:",omitempty" yaml:"settings,omitempty" structs:",omitempty"`
-	SettingsHash string                 `json:",omitempty" yaml:"settings_hash,omitempty" structs:",omitempty"`
-	Remark       *ApplianceRemark       `json:",omitempty" yaml:"remark,omitempty" structs:",omitempty"`
-	Availability types.EAvailability    `json:",omitempty" yaml:"availability,omitempty" structs:",omitempty"`
-	Instance     *Instance              `json:",omitempty" yaml:"instance,omitempty" structs:",omitempty"`
-	ServiceClass string                 `json:",omitempty" yaml:"service_class,omitempty" structs:",omitempty"`
-	CreatedAt    time.Time              `json:",omitempty" yaml:"created_at,omitempty" structs:",omitempty"`
-	Icon         *Icon                  `json:",omitempty" yaml:"icon,omitempty" structs:",omitempty"`
-	Switch       *Switch                `json:",omitempty" yaml:"switch,omitempty" structs:",omitempty"`
-	Interfaces   []*Interface           `json:",omitempty" yaml:"interfaces,omitempty" structs:",omitempty"`
+	ID           types.ID                `json:",omitempty" yaml:"id,omitempty" structs:",omitempty"`
+	Class        string                  `json:",omitempty" yaml:"class,omitempty" structs:",omitempty"`
+	Name         string                  `json:",omitempty" yaml:"name,omitempty" structs:",omitempty"`
+	Tags         []string                `yaml:"tags"`
+	Description  string                  `json:",omitempty" yaml:"description,omitempty" structs:",omitempty"`
+	Plan         *AppliancePlan          `json:",omitempty" yaml:"plan,omitempty" structs:",omitempty"`
+	Settings     *MobileGatewaySettings  `json:",omitempty" yaml:"settings,omitempty" structs:",omitempty"`
+	SettingsHash string                  `json:",omitempty" yaml:"settings_hash,omitempty" structs:",omitempty"`
+	Remark       *ApplianceRemark        `json:",omitempty" yaml:"remark,omitempty" structs:",omitempty"`
+	Availability types.EAvailability     `json:",omitempty" yaml:"availability,omitempty" structs:",omitempty"`
+	Instance     *Instance               `json:",omitempty" yaml:"instance,omitempty" structs:",omitempty"`
+	ServiceClass string                  `json:",omitempty" yaml:"service_class,omitempty" structs:",omitempty"`
+	CreatedAt    *time.Time              `json:",omitempty" yaml:"created_at,omitempty" structs:",omitempty"`
+	Icon         *Icon                   `json:",omitempty" yaml:"icon,omitempty" structs:",omitempty"`
+	Switch       *Switch                 `json:",omitempty" yaml:"switch,omitempty" structs:",omitempty"`
+	Interfaces   MobileGatewayInterfaces `json:",omitempty" yaml:"interfaces,omitempty" structs:",omitempty"`
+}
+
+// MobileGatewayInterfaces 要素がnullにことがある場合に対応するためのtype
+//
+// 例: モバイルゲートウェイ 作成時、eth0/eth1の2要素が返ってくるがeth1の分はnullとなっている。
+type MobileGatewayInterfaces []*Interface
+
+// UnmarshalJSON 配列中にnullが返ってくる(VPCルータなど)への対応
+func (i *MobileGatewayInterfaces) UnmarshalJSON(b []byte) error {
+	type alias MobileGatewayInterfaces
+	var a alias
+	if err := json.Unmarshal(b, &a); err != nil {
+		return err
+	}
+
+	var dest []*Interface
+	for _, v := range a {
+		if v != nil {
+			dest = append(dest, v)
+		}
+	}
+
+	*i = MobileGatewayInterfaces(dest)
+	return nil
 }
 
 // MobileGatewaySettings モバイルゲートウェイ セッティング
@@ -35,7 +59,7 @@ type MobileGatewaySettings struct {
 
 // MobileGatewaySetting モバイルゲートウェイ セッティング
 type MobileGatewaySetting struct {
-	Interfaces               []*MobileGatewayInterface              `json:",omitempty" yaml:"interfaces,omitempty" structs:",omitempty"`
+	Interfaces               MobileGatewayInterfacesSettings        `json:",omitempty" yaml:"interfaces,omitempty" structs:",omitempty"`
 	InternetConnection       *MobileGatewayInternetConnection       `json:",omitempty" yaml:"internet_connection,omitempty" structs:",omitempty"`
 	StaticRoutes             []*MobileGatewayStaticRoute            `json:",omitempty" yaml:"static_routes,omitempty" structs:",omitempty"`
 	InterDeviceCommunication *MobileGatewayInterDeviceCommunication `json:",omitempty" yaml:"inter_device_communication,omitempty" structs:",omitempty"`
@@ -43,18 +67,12 @@ type MobileGatewaySetting struct {
 
 // MobileGatewayInterDeviceCommunication デバイス間通信
 type MobileGatewayInterDeviceCommunication struct {
-	Enabled string `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
+	Enabled types.StringFlag `yaml:"enabled"`
 }
 
 // MobileGatewayInternetConnection インターネット接続
 type MobileGatewayInternetConnection struct {
-	Enabled string `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
-}
-
-// MobileGatewayInterface インターフェース
-type MobileGatewayInterface struct {
-	IPAddress      []string `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
-	NetworkMaskLen int      `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
+	Enabled types.StringFlag `yaml:"enabled"`
 }
 
 // MobileGatewayStaticRoute スタティックルート
@@ -90,7 +108,7 @@ func (m *MobileGatewaySIMGroup) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MobileGatewaySIMRoute SIルート
+// MobileGatewaySIMRoute SIMルート
 type MobileGatewaySIMRoute struct {
 	ICCID      string `json:"iccid,omitempty" yaml:"iccid,omitempty" structs:",omitempty"`
 	Prefix     string `json:"prefix,omitempty" yaml:"prefix,omitempty" structs:",omitempty"`
@@ -106,7 +124,7 @@ type MobileGatewaySIMRoutes struct {
 type TrafficStatus struct {
 	UplinkBytes    types.StringNumber `json:"uplink_bytes,omitempty" yaml:"uplink_bytes,omitempty" structs:",omitempty"`
 	DownlinkBytes  types.StringNumber `json:"downlink_bytes,omitempty" yaml:"downlink_bytes,omitempty" structs:",omitempty"`
-	TrafficShaping bool               `json:"traffic_shaping" yaml:"traffic_shaping,omitempty" structs:",omitempty"` // 帯域制限
+	TrafficShaping bool               `json:"traffic_shaping" yaml:"traffic_shaping"` // 帯域制限
 }
 
 // UnmarshalJSON JSONアンマーシャル(uint64文字列対応)
@@ -122,11 +140,11 @@ func (s *TrafficStatus) UnmarshalJSON(data []byte) error {
 
 // TrafficMonitoringConfig トラフィックコントロール 設定
 type TrafficMonitoringConfig struct {
-	TrafficQuotaInMB     int                           `json:"traffic_quota_in_mb,omitempty" yaml:"traffic_quota_in_mb" structs:",omitempty"`
-	BandWidthLimitInKbps int                           `json:"bandwidth_limit_in_kbps,omitempty" yaml:"bandwidth_limit_in_kbps" structs:",omitempty"`
-	EMailConfig          *TrafficMonitoringNotifyEmail `json:"email_config,omitempty" yaml:"email_config,omitempty" structs:",omitempty"`
-	SlackConfig          *TrafficMonitoringNotifySlack `json:"slack_config,omitempty" yaml:"slack_config,omitempty" structs:",omitempty"`
-	AutoTrafficShaping   bool                          `json:"auto_traffic_shaping,omitempty" yaml:"auto_traffic_shaping,omitempty" structs:",omitempty"`
+	TrafficQuotaInMB     int                          `json:"traffic_quota_in_mb" yaml:"traffic_quota_in_mb"`
+	BandWidthLimitInKbps int                          `json:"bandwidth_limit_in_kbps" yaml:"bandwidth_limit_in_kbps"`
+	EMailConfig          TrafficMonitoringNotifyEmail `json:"email_config" yaml:"email_config"`
+	SlackConfig          TrafficMonitoringNotifySlack `json:"slack_config" yaml:"slack_config"`
+	AutoTrafficShaping   bool                         `json:"auto_traffic_shaping" yaml:"auto_traffic_shaping"`
 }
 
 // TrafficMonitoringNotifyEmail トラフィックコントロール通知設定
@@ -138,4 +156,72 @@ type TrafficMonitoringNotifyEmail struct {
 type TrafficMonitoringNotifySlack struct {
 	Enabled             bool   `json:"enabled" yaml:"enabled"`                         // 有効/無効
 	IncomingWebhooksURL string `json:"slack_url,omitempty" yaml:"slack_url,omitempty"` // Slack通知の場合のWebhook URL
+}
+
+// MobileGatewayInterface インターフェース
+type MobileGatewayInterface struct {
+	IPAddress      []string `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
+	NetworkMaskLen int      `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
+	// Index 仮想フィールド、VPCルータなどでInterfaces(実体は[]*Interface)を扱う場合にUnmarshalJSONの中で設定される
+	//
+	// Findした際のAPIからの応答にも同名のフィールドが含まれるが無関係。
+	Index int
+}
+
+// MobileGatewayInterfacesSettings Interface配列
+//
+// 配列中にnullが返ってくる(VPCルータなど)への対応のためのtype
+type MobileGatewayInterfacesSettings []*MobileGatewayInterface
+
+// UnmarshalJSON 配列中にnullが返ってくる(VPCルータなど)への対応
+func (i *MobileGatewayInterfacesSettings) UnmarshalJSON(b []byte) error {
+	type alias MobileGatewayInterfacesSettings
+	var a alias
+	if err := json.Unmarshal(b, &a); err != nil {
+		return err
+	}
+
+	var dest []*MobileGatewayInterface
+	for i, v := range a {
+		if v != nil {
+			if v.Index == 0 {
+				v.Index = i
+			}
+			dest = append(dest, v)
+		}
+	}
+
+	*i = MobileGatewayInterfacesSettings(dest)
+	return nil
+}
+
+// MarshalJSON 配列中にnullが入る場合(VPCルータなど)への対応
+func (i MobileGatewayInterfacesSettings) MarshalJSON() ([]byte, error) {
+	max := 0
+	for _, iface := range i {
+		if max < iface.Index {
+			max = iface.Index
+		}
+	}
+
+	var dest = make([]*MobileGatewayInterface, max+1)
+	for _, iface := range i {
+		dest[iface.Index] = iface
+	}
+
+	return json.Marshal(dest)
+}
+
+// MarshalJSON JSON
+func (i *MobileGatewayInterface) MarshalJSON() ([]byte, error) {
+	type alias struct {
+		IPAddress      []string `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
+		NetworkMaskLen int      `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
+	}
+
+	tmp := alias{
+		IPAddress:      i.IPAddress,
+		NetworkMaskLen: i.NetworkMaskLen,
+	}
+	return json.Marshal(tmp)
 }

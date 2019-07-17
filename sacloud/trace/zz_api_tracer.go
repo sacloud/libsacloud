@@ -79,6 +79,9 @@ func AddClientFactoryHooks() {
 	sacloud.AddClientFacotyHookFunc("LoadBalancer", func(in interface{}) interface{} {
 		return NewLoadBalancerTracer(in.(sacloud.LoadBalancerAPI))
 	})
+	sacloud.AddClientFacotyHookFunc("MobileGateway", func(in interface{}) interface{} {
+		return NewMobileGatewayTracer(in.(sacloud.MobileGatewayAPI))
+	})
 	sacloud.AddClientFacotyHookFunc("NFS", func(in interface{}) interface{} {
 		return NewNFSTracer(in.(sacloud.NFSAPI))
 	})
@@ -4902,6 +4905,808 @@ func (t *LoadBalancerTracer) Status(ctx context.Context, zone string, id types.I
 }
 
 /*************************************************
+* MobileGatewayTracer
+*************************************************/
+
+// MobileGatewayTracer is for trace MobileGatewayOp operations
+type MobileGatewayTracer struct {
+	Internal sacloud.MobileGatewayAPI
+}
+
+// NewMobileGatewayTracer creates new MobileGatewayTracer instance
+func NewMobileGatewayTracer(in sacloud.MobileGatewayAPI) sacloud.MobileGatewayAPI {
+	return &MobileGatewayTracer{
+		Internal: in,
+	}
+}
+
+// Find is API call with trace log
+func (t *MobileGatewayTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.MobileGatewayFindResult, error) {
+	log.Println("[TRACE] MobileGatewayAPI.Find start")
+	targetArguments := struct {
+		Argzone       string                 `json:"zone"`
+		Argconditions *sacloud.FindCondition `json:"conditions"`
+	}{
+		Argzone:       zone,
+		Argconditions: conditions,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] MobileGatewayAPI.Find end")
+	}()
+
+	result, err := t.Internal.Find(ctx, zone, conditions)
+	targetResults := struct {
+		Result *sacloud.MobileGatewayFindResult
+		Error  error
+	}{
+		Result: result,
+		Error:  err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return result, err
+}
+
+// Create is API call with trace log
+func (t *MobileGatewayTracer) Create(ctx context.Context, zone string, param *sacloud.MobileGatewayCreateRequest) (*sacloud.MobileGateway, error) {
+	log.Println("[TRACE] MobileGatewayAPI.Create start")
+	targetArguments := struct {
+		Argzone  string                              `json:"zone"`
+		Argparam *sacloud.MobileGatewayCreateRequest `json:"param"`
+	}{
+		Argzone:  zone,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] MobileGatewayAPI.Create end")
+	}()
+
+	resultMobileGateway, err := t.Internal.Create(ctx, zone, param)
+	targetResults := struct {
+		MobileGateway *sacloud.MobileGateway
+		Error         error
+	}{
+		MobileGateway: resultMobileGateway,
+		Error:         err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultMobileGateway, err
+}
+
+// Read is API call with trace log
+func (t *MobileGatewayTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.MobileGateway, error) {
+	log.Println("[TRACE] MobileGatewayAPI.Read start")
+	targetArguments := struct {
+		Argzone string   `json:"zone"`
+		Argid   types.ID `json:"id"`
+	}{
+		Argzone: zone,
+		Argid:   id,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] MobileGatewayAPI.Read end")
+	}()
+
+	resultMobileGateway, err := t.Internal.Read(ctx, zone, id)
+	targetResults := struct {
+		MobileGateway *sacloud.MobileGateway
+		Error         error
+	}{
+		MobileGateway: resultMobileGateway,
+		Error:         err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultMobileGateway, err
+}
+
+// Update is API call with trace log
+func (t *MobileGatewayTracer) Update(ctx context.Context, zone string, id types.ID, param *sacloud.MobileGatewayUpdateRequest) (*sacloud.MobileGateway, error) {
+	log.Println("[TRACE] MobileGatewayAPI.Update start")
+	targetArguments := struct {
+		Argzone  string                              `json:"zone"`
+		Argid    types.ID                            `json:"id"`
+		Argparam *sacloud.MobileGatewayUpdateRequest `json:"param"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] MobileGatewayAPI.Update end")
+	}()
+
+	resultMobileGateway, err := t.Internal.Update(ctx, zone, id, param)
+	targetResults := struct {
+		MobileGateway *sacloud.MobileGateway
+		Error         error
+	}{
+		MobileGateway: resultMobileGateway,
+		Error:         err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultMobileGateway, err
+}
+
+// Delete is API call with trace log
+func (t *MobileGatewayTracer) Delete(ctx context.Context, zone string, id types.ID) error {
+	log.Println("[TRACE] MobileGatewayAPI.Delete start")
+	targetArguments := struct {
+		Argzone string   `json:"zone"`
+		Argid   types.ID `json:"id"`
+	}{
+		Argzone: zone,
+		Argid:   id,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] MobileGatewayAPI.Delete end")
+	}()
+
+	err := t.Internal.Delete(ctx, zone, id)
+	targetResults := struct {
+		Error error
+	}{
+		Error: err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return err
+}
+
+// Config is API call with trace log
+func (t *MobileGatewayTracer) Config(ctx context.Context, zone string, id types.ID) error {
+	log.Println("[TRACE] MobileGatewayAPI.Config start")
+	targetArguments := struct {
+		Argzone string   `json:"zone"`
+		Argid   types.ID `json:"id"`
+	}{
+		Argzone: zone,
+		Argid:   id,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] MobileGatewayAPI.Config end")
+	}()
+
+	err := t.Internal.Config(ctx, zone, id)
+	targetResults := struct {
+		Error error
+	}{
+		Error: err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return err
+}
+
+// Boot is API call with trace log
+func (t *MobileGatewayTracer) Boot(ctx context.Context, zone string, id types.ID) error {
+	log.Println("[TRACE] MobileGatewayAPI.Boot start")
+	targetArguments := struct {
+		Argzone string   `json:"zone"`
+		Argid   types.ID `json:"id"`
+	}{
+		Argzone: zone,
+		Argid:   id,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] MobileGatewayAPI.Boot end")
+	}()
+
+	err := t.Internal.Boot(ctx, zone, id)
+	targetResults := struct {
+		Error error
+	}{
+		Error: err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return err
+}
+
+// Shutdown is API call with trace log
+func (t *MobileGatewayTracer) Shutdown(ctx context.Context, zone string, id types.ID, shutdownOption *sacloud.ShutdownOption) error {
+	log.Println("[TRACE] MobileGatewayAPI.Shutdown start")
+	targetArguments := struct {
+		Argzone           string                  `json:"zone"`
+		Argid             types.ID                `json:"id"`
+		ArgshutdownOption *sacloud.ShutdownOption `json:"shutdownOption"`
+	}{
+		Argzone:           zone,
+		Argid:             id,
+		ArgshutdownOption: shutdownOption,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] MobileGatewayAPI.Shutdown end")
+	}()
+
+	err := t.Internal.Shutdown(ctx, zone, id, shutdownOption)
+	targetResults := struct {
+		Error error
+	}{
+		Error: err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return err
+}
+
+// Reset is API call with trace log
+func (t *MobileGatewayTracer) Reset(ctx context.Context, zone string, id types.ID) error {
+	log.Println("[TRACE] MobileGatewayAPI.Reset start")
+	targetArguments := struct {
+		Argzone string   `json:"zone"`
+		Argid   types.ID `json:"id"`
+	}{
+		Argzone: zone,
+		Argid:   id,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] MobileGatewayAPI.Reset end")
+	}()
+
+	err := t.Internal.Reset(ctx, zone, id)
+	targetResults := struct {
+		Error error
+	}{
+		Error: err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return err
+}
+
+// ConnectToSwitch is API call with trace log
+func (t *MobileGatewayTracer) ConnectToSwitch(ctx context.Context, zone string, id types.ID, switchID types.ID) error {
+	log.Println("[TRACE] MobileGatewayAPI.ConnectToSwitch start")
+	targetArguments := struct {
+		Argzone     string   `json:"zone"`
+		Argid       types.ID `json:"id"`
+		ArgswitchID types.ID `json:"switchID"`
+	}{
+		Argzone:     zone,
+		Argid:       id,
+		ArgswitchID: switchID,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] MobileGatewayAPI.ConnectToSwitch end")
+	}()
+
+	err := t.Internal.ConnectToSwitch(ctx, zone, id, switchID)
+	targetResults := struct {
+		Error error
+	}{
+		Error: err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return err
+}
+
+// DisconnectFromSwitch is API call with trace log
+func (t *MobileGatewayTracer) DisconnectFromSwitch(ctx context.Context, zone string, id types.ID) error {
+	log.Println("[TRACE] MobileGatewayAPI.DisconnectFromSwitch start")
+	targetArguments := struct {
+		Argzone string   `json:"zone"`
+		Argid   types.ID `json:"id"`
+	}{
+		Argzone: zone,
+		Argid:   id,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] MobileGatewayAPI.DisconnectFromSwitch end")
+	}()
+
+	err := t.Internal.DisconnectFromSwitch(ctx, zone, id)
+	targetResults := struct {
+		Error error
+	}{
+		Error: err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return err
+}
+
+// GetDNS is API call with trace log
+func (t *MobileGatewayTracer) GetDNS(ctx context.Context, zone string, id types.ID) (*sacloud.MobileGatewayDNSSetting, error) {
+	log.Println("[TRACE] MobileGatewayAPI.GetDNS start")
+	targetArguments := struct {
+		Argzone string   `json:"zone"`
+		Argid   types.ID `json:"id"`
+	}{
+		Argzone: zone,
+		Argid:   id,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] MobileGatewayAPI.GetDNS end")
+	}()
+
+	resultSIMGroup, err := t.Internal.GetDNS(ctx, zone, id)
+	targetResults := struct {
+		SIMGroup *sacloud.MobileGatewayDNSSetting
+		Error    error
+	}{
+		SIMGroup: resultSIMGroup,
+		Error:    err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultSIMGroup, err
+}
+
+// SetDNS is API call with trace log
+func (t *MobileGatewayTracer) SetDNS(ctx context.Context, zone string, id types.ID, param *sacloud.MobileGatewayDNSSetting) error {
+	log.Println("[TRACE] MobileGatewayAPI.SetDNS start")
+	targetArguments := struct {
+		Argzone  string                           `json:"zone"`
+		Argid    types.ID                         `json:"id"`
+		Argparam *sacloud.MobileGatewayDNSSetting `json:"param"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] MobileGatewayAPI.SetDNS end")
+	}()
+
+	err := t.Internal.SetDNS(ctx, zone, id, param)
+	targetResults := struct {
+		Error error
+	}{
+		Error: err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return err
+}
+
+// GetSIMRoutes is API call with trace log
+func (t *MobileGatewayTracer) GetSIMRoutes(ctx context.Context, zone string, id types.ID) ([]*sacloud.MobileGatewaySIMRoute, error) {
+	log.Println("[TRACE] MobileGatewayAPI.GetSIMRoutes start")
+	targetArguments := struct {
+		Argzone string   `json:"zone"`
+		Argid   types.ID `json:"id"`
+	}{
+		Argzone: zone,
+		Argid:   id,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] MobileGatewayAPI.GetSIMRoutes end")
+	}()
+
+	resultSIMRoutes, err := t.Internal.GetSIMRoutes(ctx, zone, id)
+	targetResults := struct {
+		SIMRoutes []*sacloud.MobileGatewaySIMRoute
+		Error     error
+	}{
+		SIMRoutes: resultSIMRoutes,
+		Error:     err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultSIMRoutes, err
+}
+
+// SetSIMRoutes is API call with trace log
+func (t *MobileGatewayTracer) SetSIMRoutes(ctx context.Context, zone string, id types.ID, param []*sacloud.MobileGatewaySIMRouteParam) error {
+	log.Println("[TRACE] MobileGatewayAPI.SetSIMRoutes start")
+	targetArguments := struct {
+		Argzone  string                                `json:"zone"`
+		Argid    types.ID                              `json:"id"`
+		Argparam []*sacloud.MobileGatewaySIMRouteParam `json:"param"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] MobileGatewayAPI.SetSIMRoutes end")
+	}()
+
+	err := t.Internal.SetSIMRoutes(ctx, zone, id, param)
+	targetResults := struct {
+		Error error
+	}{
+		Error: err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return err
+}
+
+// ListSIM is API call with trace log
+func (t *MobileGatewayTracer) ListSIM(ctx context.Context, zone string, id types.ID) ([]*sacloud.MobileGatewaySIMInfo, error) {
+	log.Println("[TRACE] MobileGatewayAPI.ListSIM start")
+	targetArguments := struct {
+		Argzone string   `json:"zone"`
+		Argid   types.ID `json:"id"`
+	}{
+		Argzone: zone,
+		Argid:   id,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] MobileGatewayAPI.ListSIM end")
+	}()
+
+	resultSIM, err := t.Internal.ListSIM(ctx, zone, id)
+	targetResults := struct {
+		SIM   []*sacloud.MobileGatewaySIMInfo
+		Error error
+	}{
+		SIM:   resultSIM,
+		Error: err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultSIM, err
+}
+
+// AddSIM is API call with trace log
+func (t *MobileGatewayTracer) AddSIM(ctx context.Context, zone string, id types.ID, param *sacloud.MobileGatewayAddSIMRequest) error {
+	log.Println("[TRACE] MobileGatewayAPI.AddSIM start")
+	targetArguments := struct {
+		Argzone  string                              `json:"zone"`
+		Argid    types.ID                            `json:"id"`
+		Argparam *sacloud.MobileGatewayAddSIMRequest `json:"param"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] MobileGatewayAPI.AddSIM end")
+	}()
+
+	err := t.Internal.AddSIM(ctx, zone, id, param)
+	targetResults := struct {
+		Error error
+	}{
+		Error: err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return err
+}
+
+// DeleteSIM is API call with trace log
+func (t *MobileGatewayTracer) DeleteSIM(ctx context.Context, zone string, id types.ID, simID types.ID) error {
+	log.Println("[TRACE] MobileGatewayAPI.DeleteSIM start")
+	targetArguments := struct {
+		Argzone  string   `json:"zone"`
+		Argid    types.ID `json:"id"`
+		ArgsimID types.ID `json:"simID"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		ArgsimID: simID,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] MobileGatewayAPI.DeleteSIM end")
+	}()
+
+	err := t.Internal.DeleteSIM(ctx, zone, id, simID)
+	targetResults := struct {
+		Error error
+	}{
+		Error: err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return err
+}
+
+// Logs is API call with trace log
+func (t *MobileGatewayTracer) Logs(ctx context.Context, zone string, id types.ID) ([]*sacloud.MobileGatewaySIMLogs, error) {
+	log.Println("[TRACE] MobileGatewayAPI.Logs start")
+	targetArguments := struct {
+		Argzone string   `json:"zone"`
+		Argid   types.ID `json:"id"`
+	}{
+		Argzone: zone,
+		Argid:   id,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] MobileGatewayAPI.Logs end")
+	}()
+
+	resultLogs, err := t.Internal.Logs(ctx, zone, id)
+	targetResults := struct {
+		Logs  []*sacloud.MobileGatewaySIMLogs
+		Error error
+	}{
+		Logs:  resultLogs,
+		Error: err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultLogs, err
+}
+
+// GetTrafficConfig is API call with trace log
+func (t *MobileGatewayTracer) GetTrafficConfig(ctx context.Context, zone string, id types.ID) (*sacloud.MobileGatewayTrafficControl, error) {
+	log.Println("[TRACE] MobileGatewayAPI.GetTrafficConfig start")
+	targetArguments := struct {
+		Argzone string   `json:"zone"`
+		Argid   types.ID `json:"id"`
+	}{
+		Argzone: zone,
+		Argid:   id,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] MobileGatewayAPI.GetTrafficConfig end")
+	}()
+
+	resultTrafficMonitoring, err := t.Internal.GetTrafficConfig(ctx, zone, id)
+	targetResults := struct {
+		TrafficMonitoring *sacloud.MobileGatewayTrafficControl
+		Error             error
+	}{
+		TrafficMonitoring: resultTrafficMonitoring,
+		Error:             err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultTrafficMonitoring, err
+}
+
+// SetTrafficConfig is API call with trace log
+func (t *MobileGatewayTracer) SetTrafficConfig(ctx context.Context, zone string, id types.ID, param *sacloud.MobileGatewayTrafficControl) error {
+	log.Println("[TRACE] MobileGatewayAPI.SetTrafficConfig start")
+	targetArguments := struct {
+		Argzone  string                               `json:"zone"`
+		Argid    types.ID                             `json:"id"`
+		Argparam *sacloud.MobileGatewayTrafficControl `json:"param"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] MobileGatewayAPI.SetTrafficConfig end")
+	}()
+
+	err := t.Internal.SetTrafficConfig(ctx, zone, id, param)
+	targetResults := struct {
+		Error error
+	}{
+		Error: err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return err
+}
+
+// DeleteTrafficConfig is API call with trace log
+func (t *MobileGatewayTracer) DeleteTrafficConfig(ctx context.Context, zone string, id types.ID) error {
+	log.Println("[TRACE] MobileGatewayAPI.DeleteTrafficConfig start")
+	targetArguments := struct {
+		Argzone string   `json:"zone"`
+		Argid   types.ID `json:"id"`
+	}{
+		Argzone: zone,
+		Argid:   id,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] MobileGatewayAPI.DeleteTrafficConfig end")
+	}()
+
+	err := t.Internal.DeleteTrafficConfig(ctx, zone, id)
+	targetResults := struct {
+		Error error
+	}{
+		Error: err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return err
+}
+
+// TrafficStatus is API call with trace log
+func (t *MobileGatewayTracer) TrafficStatus(ctx context.Context, zone string, id types.ID) (*sacloud.MobileGatewayTrafficStatus, error) {
+	log.Println("[TRACE] MobileGatewayAPI.TrafficStatus start")
+	targetArguments := struct {
+		Argzone string   `json:"zone"`
+		Argid   types.ID `json:"id"`
+	}{
+		Argzone: zone,
+		Argid:   id,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] MobileGatewayAPI.TrafficStatus end")
+	}()
+
+	resultTrafficStatus, err := t.Internal.TrafficStatus(ctx, zone, id)
+	targetResults := struct {
+		TrafficStatus *sacloud.MobileGatewayTrafficStatus
+		Error         error
+	}{
+		TrafficStatus: resultTrafficStatus,
+		Error:         err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultTrafficStatus, err
+}
+
+// MonitorInterface is API call with trace log
+func (t *MobileGatewayTracer) MonitorInterface(ctx context.Context, zone string, id types.ID, index int, condition *sacloud.MonitorCondition) (*sacloud.InterfaceActivity, error) {
+	log.Println("[TRACE] MobileGatewayAPI.MonitorInterface start")
+	targetArguments := struct {
+		Argzone      string                    `json:"zone"`
+		Argid        types.ID                  `json:"id"`
+		Argindex     int                       `json:"index"`
+		Argcondition *sacloud.MonitorCondition `json:"condition"`
+	}{
+		Argzone:      zone,
+		Argid:        id,
+		Argindex:     index,
+		Argcondition: condition,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] MobileGatewayAPI.MonitorInterface end")
+	}()
+
+	resultInterfaceActivity, err := t.Internal.MonitorInterface(ctx, zone, id, index, condition)
+	targetResults := struct {
+		InterfaceActivity *sacloud.InterfaceActivity
+		Error             error
+	}{
+		InterfaceActivity: resultInterfaceActivity,
+		Error:             err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultInterfaceActivity, err
+}
+
+/*************************************************
 * NFSTracer
 *************************************************/
 
@@ -7281,7 +8086,7 @@ func (t *SIMTracer) Logs(ctx context.Context, zone string, id types.ID) (*saclou
 }
 
 // GetNetworkOperator is API call with trace log
-func (t *SIMTracer) GetNetworkOperator(ctx context.Context, zone string, id types.ID) (*sacloud.SIMGetNetworkOperatorResult, error) {
+func (t *SIMTracer) GetNetworkOperator(ctx context.Context, zone string, id types.ID) ([]*sacloud.SIMNetworkOperatorConfig, error) {
 	log.Println("[TRACE] SIMAPI.GetNetworkOperator start")
 	targetArguments := struct {
 		Argzone string   `json:"zone"`
@@ -7298,28 +8103,28 @@ func (t *SIMTracer) GetNetworkOperator(ctx context.Context, zone string, id type
 		log.Println("[TRACE] SIMAPI.GetNetworkOperator end")
 	}()
 
-	result, err := t.Internal.GetNetworkOperator(ctx, zone, id)
+	resultConfigs, err := t.Internal.GetNetworkOperator(ctx, zone, id)
 	targetResults := struct {
-		Result *sacloud.SIMGetNetworkOperatorResult
-		Error  error
+		Configs []*sacloud.SIMNetworkOperatorConfig
+		Error   error
 	}{
-		Result: result,
-		Error:  err,
+		Configs: resultConfigs,
+		Error:   err,
 	}
 	if d, err := json.Marshal(targetResults); err == nil {
 		log.Printf("[TRACE] \tresults: %s\n", string(d))
 	}
 
-	return result, err
+	return resultConfigs, err
 }
 
 // SetNetworkOperator is API call with trace log
-func (t *SIMTracer) SetNetworkOperator(ctx context.Context, zone string, id types.ID, configs *sacloud.SIMNetworkOperatorConfigs) error {
+func (t *SIMTracer) SetNetworkOperator(ctx context.Context, zone string, id types.ID, configs []*sacloud.SIMNetworkOperatorConfig) error {
 	log.Println("[TRACE] SIMAPI.SetNetworkOperator start")
 	targetArguments := struct {
-		Argzone    string                             `json:"zone"`
-		Argid      types.ID                           `json:"id"`
-		Argconfigs *sacloud.SIMNetworkOperatorConfigs `json:"configs"`
+		Argzone    string                              `json:"zone"`
+		Argid      types.ID                            `json:"id"`
+		Argconfigs []*sacloud.SIMNetworkOperatorConfig `json:"configs"`
 	}{
 		Argzone:    zone,
 		Argid:      id,
@@ -7379,6 +8184,39 @@ func (t *SIMTracer) MonitorSIM(ctx context.Context, zone string, id types.ID, co
 	}
 
 	return resultLinkActivity, err
+}
+
+// Status is API call with trace log
+func (t *SIMTracer) Status(ctx context.Context, zone string, id types.ID) (*sacloud.SIMInfo, error) {
+	log.Println("[TRACE] SIMAPI.Status start")
+	targetArguments := struct {
+		Argzone string   `json:"zone"`
+		Argid   types.ID `json:"id"`
+	}{
+		Argzone: zone,
+		Argid:   id,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] SIMAPI.Status end")
+	}()
+
+	resultSIM, err := t.Internal.Status(ctx, zone, id)
+	targetResults := struct {
+		SIM   *sacloud.SIMInfo
+		Error error
+	}{
+		SIM:   resultSIM,
+		Error: err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultSIM, err
 }
 
 /*************************************************

@@ -42,3 +42,16 @@ func (b *billDetailsCSVResponseEnvelope) UnmarshalJSON(data []byte) error {
 	*b = billDetailsCSVResponseEnvelope(tmp)
 	return nil
 }
+
+func (m *mobileGatewaySetSIMRoutesRequestEnvelope) MarshalJSON() ([]byte, error) {
+	type alias struct {
+		SIMRoutes []*naked.MobileGatewaySIMRoute `json:"sim_routes"`
+	}
+	tmp := &alias{
+		SIMRoutes: m.SIMRoutes,
+	}
+	if len(tmp.SIMRoutes) == 0 {
+		tmp.SIMRoutes = make([]*naked.MobileGatewaySIMRoute, 0)
+	}
+	return json.Marshal(tmp)
+}
