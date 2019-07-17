@@ -21,7 +21,7 @@ func random(max int) int {
 	return rand.Intn(max)
 }
 
-func newErrorNotFound(resourceKey string, id types.ID) error {
+func newErrorNotFound(resourceKey string, id interface{}) error {
 	return sacloud.NewAPIError("", nil, "", http.StatusNotFound, &sacloud.APIErrorResponse{
 		IsFatal:      true,
 		Serial:       "",
@@ -31,7 +31,7 @@ func newErrorNotFound(resourceKey string, id types.ID) error {
 	})
 }
 
-func newErrorBadRequest(resourceKey string, id types.ID, msgs ...string) error {
+func newErrorBadRequest(resourceKey string, id interface{}, msgs ...string) error {
 	return sacloud.NewAPIError("", nil, "", http.StatusBadRequest, &sacloud.APIErrorResponse{
 		IsFatal:      true,
 		Serial:       "",
@@ -41,7 +41,7 @@ func newErrorBadRequest(resourceKey string, id types.ID, msgs ...string) error {
 	})
 }
 
-func newErrorConflict(resourceKey string, id types.ID, msgs ...string) error {
+func newErrorConflict(resourceKey string, id interface{}, msgs ...string) error {
 	return sacloud.NewAPIError("", nil, "", http.StatusConflict, &sacloud.APIErrorResponse{
 		IsFatal:      true,
 		Serial:       "",
@@ -51,7 +51,7 @@ func newErrorConflict(resourceKey string, id types.ID, msgs ...string) error {
 	})
 }
 
-func newInternalServerError(resourceKey string, id types.ID, msgs ...string) error {
+func newInternalServerError(resourceKey string, id interface{}, msgs ...string) error {
 	return sacloud.NewAPIError("", nil, "", http.StatusInternalServerError, &sacloud.APIErrorResponse{
 		IsFatal:      true,
 		Serial:       "",

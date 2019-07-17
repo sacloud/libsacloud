@@ -421,6 +421,29 @@ func (s *store) setIPv6Net(zone string, value *sacloud.IPv6Net) {
 	s.set(ResourceIPv6Net, zone, value)
 }
 
+func (s *store) getIPv6Addr(zone string) []*sacloud.IPv6Addr {
+	values := s.get(ResourceIPv6Addr, zone)
+	var ret []*sacloud.IPv6Addr
+	for _, v := range values {
+		if v, ok := v.(*sacloud.IPv6Addr); ok {
+			ret = append(ret, v)
+		}
+	}
+	return ret
+}
+
+func (s *store) getIPv6AddrByID(zone string, id types.ID) *sacloud.IPv6Addr {
+	v := s.getByID(ResourceIPv6Addr, zone, id)
+	if v, ok := v.(*sacloud.IPv6Addr); ok {
+		return v
+	}
+	return nil
+}
+
+func (s *store) setIPv6Addr(zone string, value *sacloud.IPv6Addr) {
+	s.set(ResourceIPv6Addr, zone, value)
+}
+
 func (s *store) getLicense(zone string) []*sacloud.License {
 	values := s.get(ResourceLicense, zone)
 	var ret []*sacloud.License
