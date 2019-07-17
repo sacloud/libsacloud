@@ -513,6 +513,29 @@ func (s *store) setLoadBalancer(zone string, value *sacloud.LoadBalancer) {
 	s.set(ResourceLoadBalancer, zone, value)
 }
 
+func (s *store) getMobileGateway(zone string) []*sacloud.MobileGateway {
+	values := s.get(ResourceMobileGateway, zone)
+	var ret []*sacloud.MobileGateway
+	for _, v := range values {
+		if v, ok := v.(*sacloud.MobileGateway); ok {
+			ret = append(ret, v)
+		}
+	}
+	return ret
+}
+
+func (s *store) getMobileGatewayByID(zone string, id types.ID) *sacloud.MobileGateway {
+	v := s.getByID(ResourceMobileGateway, zone, id)
+	if v, ok := v.(*sacloud.MobileGateway); ok {
+		return v
+	}
+	return nil
+}
+
+func (s *store) setMobileGateway(zone string, value *sacloud.MobileGateway) {
+	s.set(ResourceMobileGateway, zone, value)
+}
+
 func (s *store) getNFS(zone string) []*sacloud.NFS {
 	values := s.get(ResourceNFS, zone)
 	var ret []*sacloud.NFS

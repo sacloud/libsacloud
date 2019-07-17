@@ -2258,6 +2258,366 @@ func (s *LoadBalancerStub) Status(ctx context.Context, zone string, id types.ID)
 }
 
 /*************************************************
+* MobileGatewayStub
+*************************************************/
+
+// MobileGatewayFindStubResult is expected values of the Find operation
+type MobileGatewayFindStubResult struct {
+	Values *sacloud.MobileGatewayFindResult
+	Err    error
+}
+
+// MobileGatewayCreateStubResult is expected values of the Create operation
+type MobileGatewayCreateStubResult struct {
+	MobileGateway *sacloud.MobileGateway
+	Err           error
+}
+
+// MobileGatewayReadStubResult is expected values of the Read operation
+type MobileGatewayReadStubResult struct {
+	MobileGateway *sacloud.MobileGateway
+	Err           error
+}
+
+// MobileGatewayUpdateStubResult is expected values of the Update operation
+type MobileGatewayUpdateStubResult struct {
+	MobileGateway *sacloud.MobileGateway
+	Err           error
+}
+
+// MobileGatewayDeleteStubResult is expected values of the Delete operation
+type MobileGatewayDeleteStubResult struct {
+	Err error
+}
+
+// MobileGatewayConfigStubResult is expected values of the Config operation
+type MobileGatewayConfigStubResult struct {
+	Err error
+}
+
+// MobileGatewayBootStubResult is expected values of the Boot operation
+type MobileGatewayBootStubResult struct {
+	Err error
+}
+
+// MobileGatewayShutdownStubResult is expected values of the Shutdown operation
+type MobileGatewayShutdownStubResult struct {
+	Err error
+}
+
+// MobileGatewayResetStubResult is expected values of the Reset operation
+type MobileGatewayResetStubResult struct {
+	Err error
+}
+
+// MobileGatewayConnectToSwitchStubResult is expected values of the ConnectToSwitch operation
+type MobileGatewayConnectToSwitchStubResult struct {
+	Err error
+}
+
+// MobileGatewayDisconnectFromSwitchStubResult is expected values of the DisconnectFromSwitch operation
+type MobileGatewayDisconnectFromSwitchStubResult struct {
+	Err error
+}
+
+// MobileGatewayGetDNSStubResult is expected values of the GetDNS operation
+type MobileGatewayGetDNSStubResult struct {
+	SIMGroup *sacloud.MobileGatewayDNSSetting
+	Err      error
+}
+
+// MobileGatewaySetDNSStubResult is expected values of the SetDNS operation
+type MobileGatewaySetDNSStubResult struct {
+	Err error
+}
+
+// MobileGatewayGetSIMRoutesStubResult is expected values of the GetSIMRoutes operation
+type MobileGatewayGetSIMRoutesStubResult struct {
+	SIMRoutes []*sacloud.MobileGatewaySIMRoute
+	Err       error
+}
+
+// MobileGatewaySetSIMRoutesStubResult is expected values of the SetSIMRoutes operation
+type MobileGatewaySetSIMRoutesStubResult struct {
+	Err error
+}
+
+// MobileGatewayListSIMStubResult is expected values of the ListSIM operation
+type MobileGatewayListSIMStubResult struct {
+	SIM []*sacloud.MobileGatewaySIMInfo
+	Err error
+}
+
+// MobileGatewayAddSIMStubResult is expected values of the AddSIM operation
+type MobileGatewayAddSIMStubResult struct {
+	Err error
+}
+
+// MobileGatewayDeleteSIMStubResult is expected values of the DeleteSIM operation
+type MobileGatewayDeleteSIMStubResult struct {
+	Err error
+}
+
+// MobileGatewayLogsStubResult is expected values of the Logs operation
+type MobileGatewayLogsStubResult struct {
+	Logs []*sacloud.MobileGatewaySIMLogs
+	Err  error
+}
+
+// MobileGatewayGetTrafficConfigStubResult is expected values of the GetTrafficConfig operation
+type MobileGatewayGetTrafficConfigStubResult struct {
+	TrafficMonitoring *sacloud.MobileGatewayTrafficControl
+	Err               error
+}
+
+// MobileGatewaySetTrafficConfigStubResult is expected values of the SetTrafficConfig operation
+type MobileGatewaySetTrafficConfigStubResult struct {
+	Err error
+}
+
+// MobileGatewayDeleteTrafficConfigStubResult is expected values of the DeleteTrafficConfig operation
+type MobileGatewayDeleteTrafficConfigStubResult struct {
+	Err error
+}
+
+// MobileGatewayTrafficStatusStubResult is expected values of the TrafficStatus operation
+type MobileGatewayTrafficStatusStubResult struct {
+	TrafficStatus *sacloud.MobileGatewayTrafficStatus
+	Err           error
+}
+
+// MobileGatewayMonitorInterfaceStubResult is expected values of the MonitorInterface operation
+type MobileGatewayMonitorInterfaceStubResult struct {
+	InterfaceActivity *sacloud.InterfaceActivity
+	Err               error
+}
+
+// MobileGatewayStub is for trace MobileGatewayOp operations
+type MobileGatewayStub struct {
+	FindStubResult                 *MobileGatewayFindStubResult
+	CreateStubResult               *MobileGatewayCreateStubResult
+	ReadStubResult                 *MobileGatewayReadStubResult
+	UpdateStubResult               *MobileGatewayUpdateStubResult
+	DeleteStubResult               *MobileGatewayDeleteStubResult
+	ConfigStubResult               *MobileGatewayConfigStubResult
+	BootStubResult                 *MobileGatewayBootStubResult
+	ShutdownStubResult             *MobileGatewayShutdownStubResult
+	ResetStubResult                *MobileGatewayResetStubResult
+	ConnectToSwitchStubResult      *MobileGatewayConnectToSwitchStubResult
+	DisconnectFromSwitchStubResult *MobileGatewayDisconnectFromSwitchStubResult
+	GetDNSStubResult               *MobileGatewayGetDNSStubResult
+	SetDNSStubResult               *MobileGatewaySetDNSStubResult
+	GetSIMRoutesStubResult         *MobileGatewayGetSIMRoutesStubResult
+	SetSIMRoutesStubResult         *MobileGatewaySetSIMRoutesStubResult
+	ListSIMStubResult              *MobileGatewayListSIMStubResult
+	AddSIMStubResult               *MobileGatewayAddSIMStubResult
+	DeleteSIMStubResult            *MobileGatewayDeleteSIMStubResult
+	LogsStubResult                 *MobileGatewayLogsStubResult
+	GetTrafficConfigStubResult     *MobileGatewayGetTrafficConfigStubResult
+	SetTrafficConfigStubResult     *MobileGatewaySetTrafficConfigStubResult
+	DeleteTrafficConfigStubResult  *MobileGatewayDeleteTrafficConfigStubResult
+	TrafficStatusStubResult        *MobileGatewayTrafficStatusStubResult
+	MonitorInterfaceStubResult     *MobileGatewayMonitorInterfaceStubResult
+}
+
+// NewMobileGatewayStub creates new MobileGatewayStub instance
+func NewMobileGatewayStub(caller sacloud.APICaller) sacloud.MobileGatewayAPI {
+	return &MobileGatewayStub{}
+}
+
+// Find is API call with trace log
+func (s *MobileGatewayStub) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.MobileGatewayFindResult, error) {
+	if s.FindStubResult == nil {
+		log.Fatal("MobileGatewayStub.FindStubResult is not set")
+	}
+	return s.FindStubResult.Values, s.FindStubResult.Err
+}
+
+// Create is API call with trace log
+func (s *MobileGatewayStub) Create(ctx context.Context, zone string, param *sacloud.MobileGatewayCreateRequest) (*sacloud.MobileGateway, error) {
+	if s.CreateStubResult == nil {
+		log.Fatal("MobileGatewayStub.CreateStubResult is not set")
+	}
+	return s.CreateStubResult.MobileGateway, s.CreateStubResult.Err
+}
+
+// Read is API call with trace log
+func (s *MobileGatewayStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.MobileGateway, error) {
+	if s.ReadStubResult == nil {
+		log.Fatal("MobileGatewayStub.ReadStubResult is not set")
+	}
+	return s.ReadStubResult.MobileGateway, s.ReadStubResult.Err
+}
+
+// Update is API call with trace log
+func (s *MobileGatewayStub) Update(ctx context.Context, zone string, id types.ID, param *sacloud.MobileGatewayUpdateRequest) (*sacloud.MobileGateway, error) {
+	if s.UpdateStubResult == nil {
+		log.Fatal("MobileGatewayStub.UpdateStubResult is not set")
+	}
+	return s.UpdateStubResult.MobileGateway, s.UpdateStubResult.Err
+}
+
+// Delete is API call with trace log
+func (s *MobileGatewayStub) Delete(ctx context.Context, zone string, id types.ID) error {
+	if s.DeleteStubResult == nil {
+		log.Fatal("MobileGatewayStub.DeleteStubResult is not set")
+	}
+	return s.DeleteStubResult.Err
+}
+
+// Config is API call with trace log
+func (s *MobileGatewayStub) Config(ctx context.Context, zone string, id types.ID) error {
+	if s.ConfigStubResult == nil {
+		log.Fatal("MobileGatewayStub.ConfigStubResult is not set")
+	}
+	return s.ConfigStubResult.Err
+}
+
+// Boot is API call with trace log
+func (s *MobileGatewayStub) Boot(ctx context.Context, zone string, id types.ID) error {
+	if s.BootStubResult == nil {
+		log.Fatal("MobileGatewayStub.BootStubResult is not set")
+	}
+	return s.BootStubResult.Err
+}
+
+// Shutdown is API call with trace log
+func (s *MobileGatewayStub) Shutdown(ctx context.Context, zone string, id types.ID, shutdownOption *sacloud.ShutdownOption) error {
+	if s.ShutdownStubResult == nil {
+		log.Fatal("MobileGatewayStub.ShutdownStubResult is not set")
+	}
+	return s.ShutdownStubResult.Err
+}
+
+// Reset is API call with trace log
+func (s *MobileGatewayStub) Reset(ctx context.Context, zone string, id types.ID) error {
+	if s.ResetStubResult == nil {
+		log.Fatal("MobileGatewayStub.ResetStubResult is not set")
+	}
+	return s.ResetStubResult.Err
+}
+
+// ConnectToSwitch is API call with trace log
+func (s *MobileGatewayStub) ConnectToSwitch(ctx context.Context, zone string, id types.ID, switchID types.ID) error {
+	if s.ConnectToSwitchStubResult == nil {
+		log.Fatal("MobileGatewayStub.ConnectToSwitchStubResult is not set")
+	}
+	return s.ConnectToSwitchStubResult.Err
+}
+
+// DisconnectFromSwitch is API call with trace log
+func (s *MobileGatewayStub) DisconnectFromSwitch(ctx context.Context, zone string, id types.ID) error {
+	if s.DisconnectFromSwitchStubResult == nil {
+		log.Fatal("MobileGatewayStub.DisconnectFromSwitchStubResult is not set")
+	}
+	return s.DisconnectFromSwitchStubResult.Err
+}
+
+// GetDNS is API call with trace log
+func (s *MobileGatewayStub) GetDNS(ctx context.Context, zone string, id types.ID) (*sacloud.MobileGatewayDNSSetting, error) {
+	if s.GetDNSStubResult == nil {
+		log.Fatal("MobileGatewayStub.GetDNSStubResult is not set")
+	}
+	return s.GetDNSStubResult.SIMGroup, s.GetDNSStubResult.Err
+}
+
+// SetDNS is API call with trace log
+func (s *MobileGatewayStub) SetDNS(ctx context.Context, zone string, id types.ID, param *sacloud.MobileGatewayDNSSetting) error {
+	if s.SetDNSStubResult == nil {
+		log.Fatal("MobileGatewayStub.SetDNSStubResult is not set")
+	}
+	return s.SetDNSStubResult.Err
+}
+
+// GetSIMRoutes is API call with trace log
+func (s *MobileGatewayStub) GetSIMRoutes(ctx context.Context, zone string, id types.ID) ([]*sacloud.MobileGatewaySIMRoute, error) {
+	if s.GetSIMRoutesStubResult == nil {
+		log.Fatal("MobileGatewayStub.GetSIMRoutesStubResult is not set")
+	}
+	return s.GetSIMRoutesStubResult.SIMRoutes, s.GetSIMRoutesStubResult.Err
+}
+
+// SetSIMRoutes is API call with trace log
+func (s *MobileGatewayStub) SetSIMRoutes(ctx context.Context, zone string, id types.ID, param []*sacloud.MobileGatewaySIMRouteParam) error {
+	if s.SetSIMRoutesStubResult == nil {
+		log.Fatal("MobileGatewayStub.SetSIMRoutesStubResult is not set")
+	}
+	return s.SetSIMRoutesStubResult.Err
+}
+
+// ListSIM is API call with trace log
+func (s *MobileGatewayStub) ListSIM(ctx context.Context, zone string, id types.ID) ([]*sacloud.MobileGatewaySIMInfo, error) {
+	if s.ListSIMStubResult == nil {
+		log.Fatal("MobileGatewayStub.ListSIMStubResult is not set")
+	}
+	return s.ListSIMStubResult.SIM, s.ListSIMStubResult.Err
+}
+
+// AddSIM is API call with trace log
+func (s *MobileGatewayStub) AddSIM(ctx context.Context, zone string, id types.ID, param *sacloud.MobileGatewayAddSIMRequest) error {
+	if s.AddSIMStubResult == nil {
+		log.Fatal("MobileGatewayStub.AddSIMStubResult is not set")
+	}
+	return s.AddSIMStubResult.Err
+}
+
+// DeleteSIM is API call with trace log
+func (s *MobileGatewayStub) DeleteSIM(ctx context.Context, zone string, id types.ID, simID types.ID) error {
+	if s.DeleteSIMStubResult == nil {
+		log.Fatal("MobileGatewayStub.DeleteSIMStubResult is not set")
+	}
+	return s.DeleteSIMStubResult.Err
+}
+
+// Logs is API call with trace log
+func (s *MobileGatewayStub) Logs(ctx context.Context, zone string, id types.ID) ([]*sacloud.MobileGatewaySIMLogs, error) {
+	if s.LogsStubResult == nil {
+		log.Fatal("MobileGatewayStub.LogsStubResult is not set")
+	}
+	return s.LogsStubResult.Logs, s.LogsStubResult.Err
+}
+
+// GetTrafficConfig is API call with trace log
+func (s *MobileGatewayStub) GetTrafficConfig(ctx context.Context, zone string, id types.ID) (*sacloud.MobileGatewayTrafficControl, error) {
+	if s.GetTrafficConfigStubResult == nil {
+		log.Fatal("MobileGatewayStub.GetTrafficConfigStubResult is not set")
+	}
+	return s.GetTrafficConfigStubResult.TrafficMonitoring, s.GetTrafficConfigStubResult.Err
+}
+
+// SetTrafficConfig is API call with trace log
+func (s *MobileGatewayStub) SetTrafficConfig(ctx context.Context, zone string, id types.ID, param *sacloud.MobileGatewayTrafficControl) error {
+	if s.SetTrafficConfigStubResult == nil {
+		log.Fatal("MobileGatewayStub.SetTrafficConfigStubResult is not set")
+	}
+	return s.SetTrafficConfigStubResult.Err
+}
+
+// DeleteTrafficConfig is API call with trace log
+func (s *MobileGatewayStub) DeleteTrafficConfig(ctx context.Context, zone string, id types.ID) error {
+	if s.DeleteTrafficConfigStubResult == nil {
+		log.Fatal("MobileGatewayStub.DeleteTrafficConfigStubResult is not set")
+	}
+	return s.DeleteTrafficConfigStubResult.Err
+}
+
+// TrafficStatus is API call with trace log
+func (s *MobileGatewayStub) TrafficStatus(ctx context.Context, zone string, id types.ID) (*sacloud.MobileGatewayTrafficStatus, error) {
+	if s.TrafficStatusStubResult == nil {
+		log.Fatal("MobileGatewayStub.TrafficStatusStubResult is not set")
+	}
+	return s.TrafficStatusStubResult.TrafficStatus, s.TrafficStatusStubResult.Err
+}
+
+// MonitorInterface is API call with trace log
+func (s *MobileGatewayStub) MonitorInterface(ctx context.Context, zone string, id types.ID, index int, condition *sacloud.MonitorCondition) (*sacloud.InterfaceActivity, error) {
+	if s.MonitorInterfaceStubResult == nil {
+		log.Fatal("MobileGatewayStub.MonitorInterfaceStubResult is not set")
+	}
+	return s.MonitorInterfaceStubResult.InterfaceActivity, s.MonitorInterfaceStubResult.Err
+}
+
+/*************************************************
 * NFSStub
 *************************************************/
 
@@ -3267,8 +3627,8 @@ type SIMLogsStubResult struct {
 
 // SIMGetNetworkOperatorStubResult is expected values of the GetNetworkOperator operation
 type SIMGetNetworkOperatorStubResult struct {
-	Values *sacloud.SIMGetNetworkOperatorResult
-	Err    error
+	Configs []*sacloud.SIMNetworkOperatorConfig
+	Err     error
 }
 
 // SIMSetNetworkOperatorStubResult is expected values of the SetNetworkOperator operation
@@ -3280,6 +3640,12 @@ type SIMSetNetworkOperatorStubResult struct {
 type SIMMonitorSIMStubResult struct {
 	LinkActivity *sacloud.LinkActivity
 	Err          error
+}
+
+// SIMStatusStubResult is expected values of the Status operation
+type SIMStatusStubResult struct {
+	SIM *sacloud.SIMInfo
+	Err error
 }
 
 // SIMStub is for trace SIMOp operations
@@ -3299,6 +3665,7 @@ type SIMStub struct {
 	GetNetworkOperatorStubResult *SIMGetNetworkOperatorStubResult
 	SetNetworkOperatorStubResult *SIMSetNetworkOperatorStubResult
 	MonitorSIMStubResult         *SIMMonitorSIMStubResult
+	StatusStubResult             *SIMStatusStubResult
 }
 
 // NewSIMStub creates new SIMStub instance
@@ -3403,15 +3770,15 @@ func (s *SIMStub) Logs(ctx context.Context, zone string, id types.ID) (*sacloud.
 }
 
 // GetNetworkOperator is API call with trace log
-func (s *SIMStub) GetNetworkOperator(ctx context.Context, zone string, id types.ID) (*sacloud.SIMGetNetworkOperatorResult, error) {
+func (s *SIMStub) GetNetworkOperator(ctx context.Context, zone string, id types.ID) ([]*sacloud.SIMNetworkOperatorConfig, error) {
 	if s.GetNetworkOperatorStubResult == nil {
 		log.Fatal("SIMStub.GetNetworkOperatorStubResult is not set")
 	}
-	return s.GetNetworkOperatorStubResult.Values, s.GetNetworkOperatorStubResult.Err
+	return s.GetNetworkOperatorStubResult.Configs, s.GetNetworkOperatorStubResult.Err
 }
 
 // SetNetworkOperator is API call with trace log
-func (s *SIMStub) SetNetworkOperator(ctx context.Context, zone string, id types.ID, configs *sacloud.SIMNetworkOperatorConfigs) error {
+func (s *SIMStub) SetNetworkOperator(ctx context.Context, zone string, id types.ID, configs []*sacloud.SIMNetworkOperatorConfig) error {
 	if s.SetNetworkOperatorStubResult == nil {
 		log.Fatal("SIMStub.SetNetworkOperatorStubResult is not set")
 	}
@@ -3424,6 +3791,14 @@ func (s *SIMStub) MonitorSIM(ctx context.Context, zone string, id types.ID, cond
 		log.Fatal("SIMStub.MonitorSIMStubResult is not set")
 	}
 	return s.MonitorSIMStubResult.LinkActivity, s.MonitorSIMStubResult.Err
+}
+
+// Status is API call with trace log
+func (s *SIMStub) Status(ctx context.Context, zone string, id types.ID) (*sacloud.SIMInfo, error) {
+	if s.StatusStubResult == nil {
+		log.Fatal("SIMStub.StatusStubResult is not set")
+	}
+	return s.StatusStubResult.SIM, s.StatusStubResult.Err
 }
 
 /*************************************************

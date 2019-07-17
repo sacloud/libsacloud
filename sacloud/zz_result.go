@@ -735,6 +735,85 @@ type LoadBalancerStatusResult struct {
 	Status []*LoadBalancerStatus `json:",omitempty" mapconv:"[]LoadBalancer,omitempty,recursive"`
 }
 
+// MobileGatewayFindResult represents the Result of API
+type MobileGatewayFindResult struct {
+	Total int `json:",omitempty"` // Total count of target resources
+	From  int `json:",omitempty"` // Current page number
+	Count int `json:",omitempty"` // Count of current page
+
+	MobileGateways []*MobileGateway `json:",omitempty" mapconv:"[]Appliances,omitempty,recursive"`
+}
+
+// mobileGatewayCreateResult represents the Result of API
+type mobileGatewayCreateResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	MobileGateway *MobileGateway `json:",omitempty" mapconv:"Appliance,omitempty,recursive"`
+}
+
+// mobileGatewayReadResult represents the Result of API
+type mobileGatewayReadResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	MobileGateway *MobileGateway `json:",omitempty" mapconv:"Appliance,omitempty,recursive"`
+}
+
+// mobileGatewayUpdateResult represents the Result of API
+type mobileGatewayUpdateResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	MobileGateway *MobileGateway `json:",omitempty" mapconv:"Appliance,omitempty,recursive"`
+}
+
+// mobileGatewayGetDNSResult represents the Result of API
+type mobileGatewayGetDNSResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	SIMGroup *MobileGatewayDNSSetting `json:",omitempty" mapconv:"SIMGroup,omitempty,recursive"`
+}
+
+// mobileGatewayGetSIMRoutesResult represents the Result of API
+type mobileGatewayGetSIMRoutesResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	SIMRoutes []*MobileGatewaySIMRoute `json:",omitempty" mapconv:"[]SIMRoutes,omitempty,recursive"`
+}
+
+// mobileGatewayListSIMResult represents the Result of API
+type mobileGatewayListSIMResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	SIM []*MobileGatewaySIMInfo `json:",omitempty" mapconv:"[]SIM,omitempty,recursive"`
+}
+
+// mobileGatewayLogsResult represents the Result of API
+type mobileGatewayLogsResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	Logs []*MobileGatewaySIMLogs `json:",omitempty" mapconv:"[]Logs,omitempty,recursive"`
+}
+
+// mobileGatewayGetTrafficConfigResult represents the Result of API
+type mobileGatewayGetTrafficConfigResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	TrafficMonitoring *MobileGatewayTrafficControl `json:",omitempty" mapconv:"TrafficMonitoring,omitempty,recursive"`
+}
+
+// mobileGatewayTrafficStatusResult represents the Result of API
+type mobileGatewayTrafficStatusResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	TrafficStatus *MobileGatewayTrafficStatus `json:",omitempty" mapconv:"TrafficStatus,omitempty,recursive"`
+}
+
+// mobileGatewayMonitorInterfaceResult represents the Result of API
+type mobileGatewayMonitorInterfaceResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	InterfaceActivity *InterfaceActivity `json:",omitempty" mapconv:"Data,omitempty,recursive"`
+}
+
 // NFSFindResult represents the Result of API
 type NFSFindResult struct {
 	Total int `json:",omitempty"` // Total count of target resources
@@ -1067,11 +1146,9 @@ type SIMLogsResult struct {
 	Logs []*SIMLog `json:",omitempty" mapconv:"[]Logs,omitempty,recursive"`
 }
 
-// SIMGetNetworkOperatorResult represents the Result of API
-type SIMGetNetworkOperatorResult struct {
-	Total int `json:",omitempty"` // Total count of target resources
-	From  int `json:",omitempty"` // Current page number
-	Count int `json:",omitempty"` // Count of current page
+// sIMGetNetworkOperatorResult represents the Result of API
+type sIMGetNetworkOperatorResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
 
 	Configs []*SIMNetworkOperatorConfig `json:",omitempty" mapconv:"[]NetworkOperationConfigs,omitempty,recursive"`
 }
@@ -1081,6 +1158,13 @@ type sIMMonitorSIMResult struct {
 	IsOk bool `json:",omitempty"` // is_ok
 
 	LinkActivity *LinkActivity `json:",omitempty" mapconv:"Data,omitempty,recursive"`
+}
+
+// sIMStatusResult represents the Result of API
+type sIMStatusResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	SIM *SIMInfo `json:",omitempty" mapconv:"SIM,omitempty,recursive"`
 }
 
 // SimpleMonitorFindResult represents the Result of API

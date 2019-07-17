@@ -318,6 +318,38 @@ type LoadBalancerAPI interface {
 }
 
 /*************************************************
+* MobileGatewayAPI
+*************************************************/
+
+// MobileGatewayAPI is interface for operate MobileGateway resource
+type MobileGatewayAPI interface {
+	Find(ctx context.Context, zone string, conditions *FindCondition) (*MobileGatewayFindResult, error)
+	Create(ctx context.Context, zone string, param *MobileGatewayCreateRequest) (*MobileGateway, error)
+	Read(ctx context.Context, zone string, id types.ID) (*MobileGateway, error)
+	Update(ctx context.Context, zone string, id types.ID, param *MobileGatewayUpdateRequest) (*MobileGateway, error)
+	Delete(ctx context.Context, zone string, id types.ID) error
+	Config(ctx context.Context, zone string, id types.ID) error
+	Boot(ctx context.Context, zone string, id types.ID) error
+	Shutdown(ctx context.Context, zone string, id types.ID, shutdownOption *ShutdownOption) error
+	Reset(ctx context.Context, zone string, id types.ID) error
+	ConnectToSwitch(ctx context.Context, zone string, id types.ID, switchID types.ID) error
+	DisconnectFromSwitch(ctx context.Context, zone string, id types.ID) error
+	GetDNS(ctx context.Context, zone string, id types.ID) (*MobileGatewayDNSSetting, error)
+	SetDNS(ctx context.Context, zone string, id types.ID, param *MobileGatewayDNSSetting) error
+	GetSIMRoutes(ctx context.Context, zone string, id types.ID) ([]*MobileGatewaySIMRoute, error)
+	SetSIMRoutes(ctx context.Context, zone string, id types.ID, param []*MobileGatewaySIMRouteParam) error
+	ListSIM(ctx context.Context, zone string, id types.ID) ([]*MobileGatewaySIMInfo, error)
+	AddSIM(ctx context.Context, zone string, id types.ID, param *MobileGatewayAddSIMRequest) error
+	DeleteSIM(ctx context.Context, zone string, id types.ID, simID types.ID) error
+	Logs(ctx context.Context, zone string, id types.ID) ([]*MobileGatewaySIMLogs, error)
+	GetTrafficConfig(ctx context.Context, zone string, id types.ID) (*MobileGatewayTrafficControl, error)
+	SetTrafficConfig(ctx context.Context, zone string, id types.ID, param *MobileGatewayTrafficControl) error
+	DeleteTrafficConfig(ctx context.Context, zone string, id types.ID) error
+	TrafficStatus(ctx context.Context, zone string, id types.ID) (*MobileGatewayTrafficStatus, error)
+	MonitorInterface(ctx context.Context, zone string, id types.ID, index int, condition *MonitorCondition) (*InterfaceActivity, error)
+}
+
+/*************************************************
 * NFSAPI
 *************************************************/
 
@@ -470,9 +502,10 @@ type SIMAPI interface {
 	IMEILock(ctx context.Context, zone string, id types.ID, param *SIMIMEILockRequest) error
 	IMEIUnlock(ctx context.Context, zone string, id types.ID) error
 	Logs(ctx context.Context, zone string, id types.ID) (*SIMLogsResult, error)
-	GetNetworkOperator(ctx context.Context, zone string, id types.ID) (*SIMGetNetworkOperatorResult, error)
-	SetNetworkOperator(ctx context.Context, zone string, id types.ID, configs *SIMNetworkOperatorConfigs) error
+	GetNetworkOperator(ctx context.Context, zone string, id types.ID) ([]*SIMNetworkOperatorConfig, error)
+	SetNetworkOperator(ctx context.Context, zone string, id types.ID, configs []*SIMNetworkOperatorConfig) error
 	MonitorSIM(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*LinkActivity, error)
+	Status(ctx context.Context, zone string, id types.ID) (*SIMInfo, error)
 }
 
 /*************************************************

@@ -188,6 +188,14 @@ func init() {
 		}
 	})
 
+	SetClientFactoryFunc("MobileGateway", func(caller APICaller) interface{} {
+		return &MobileGatewayOp{
+			Client:     caller,
+			PathSuffix: "api/cloud/1.1",
+			PathName:   "appliance",
+		}
+	})
+
 	SetClientFactoryFunc("NFS", func(caller APICaller) interface{} {
 		return &NFSOp{
 			Client:     caller,
@@ -6289,6 +6297,906 @@ func (o *LoadBalancerOp) Status(ctx context.Context, zone string, id types.ID) (
 }
 
 /*************************************************
+* MobileGatewayOp
+*************************************************/
+
+// MobileGatewayOp implements MobileGatewayAPI interface
+type MobileGatewayOp struct {
+	// Client APICaller
+	Client APICaller
+	// PathSuffix is used when building URL
+	PathSuffix string
+	// PathName is used when building URL
+	PathName string
+}
+
+// NewMobileGatewayOp creates new MobileGatewayOp instance
+func NewMobileGatewayOp(caller APICaller) MobileGatewayAPI {
+	return GetClientFactoryFunc("MobileGateway")(caller).(MobileGatewayAPI)
+}
+
+// Find is API call
+func (o *MobileGatewayOp) Find(ctx context.Context, zone string, conditions *FindCondition) (*MobileGatewayFindResult, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"conditions": conditions,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	if zone == "" {
+		zone = ""
+	}
+	if conditions == nil {
+		conditions = &FindCondition{}
+	}
+	args := &struct {
+		Argzone       string
+		Argconditions *FindCondition `mapconv:",squash"`
+	}{
+		Argzone:       zone,
+		Argconditions: conditions,
+	}
+
+	v := &mobileGatewayFindRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &mobileGatewayFindResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &MobileGatewayFindResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, err
+}
+
+// Create is API call
+func (o *MobileGatewayOp) Create(ctx context.Context, zone string, param *MobileGatewayCreateRequest) (*MobileGateway, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"param":      param,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	if zone == "" {
+		zone = ""
+	}
+	if param == nil {
+		param = &MobileGatewayCreateRequest{}
+	}
+	args := &struct {
+		Argzone  string
+		Argparam *MobileGatewayCreateRequest `mapconv:"Appliance,recursive"`
+	}{
+		Argzone:  zone,
+		Argparam: param,
+	}
+
+	v := &mobileGatewayCreateRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
+
+	data, err := o.Client.Do(ctx, "POST", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &mobileGatewayCreateResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &mobileGatewayCreateResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results.MobileGateway, nil
+}
+
+// Read is API call
+func (o *MobileGatewayOp) Read(ctx context.Context, zone string, id types.ID) (*MobileGateway, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &mobileGatewayReadResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &mobileGatewayReadResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results.MobileGateway, nil
+}
+
+// Update is API call
+func (o *MobileGatewayOp) Update(ctx context.Context, zone string, id types.ID, param *MobileGatewayUpdateRequest) (*MobileGateway, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+		"param":      param,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	if zone == "" {
+		zone = ""
+	}
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	if param == nil {
+		param = &MobileGatewayUpdateRequest{}
+	}
+	args := &struct {
+		Argzone  string
+		Argid    types.ID
+		Argparam *MobileGatewayUpdateRequest `mapconv:"Appliance,recursive"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+
+	v := &mobileGatewayUpdateRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
+
+	data, err := o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &mobileGatewayUpdateResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &mobileGatewayUpdateResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results.MobileGateway, nil
+}
+
+// Delete is API call
+func (o *MobileGatewayOp) Delete(ctx context.Context, zone string, id types.ID) error {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+	})
+	if err != nil {
+		return err
+	}
+
+	var body interface{}
+
+	_, err = o.Client.Do(ctx, "DELETE", url, body)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// Config is API call
+func (o *MobileGatewayOp) Config(ctx context.Context, zone string, id types.ID) error {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/config", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+	})
+	if err != nil {
+		return err
+	}
+
+	var body interface{}
+
+	_, err = o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// Boot is API call
+func (o *MobileGatewayOp) Boot(ctx context.Context, zone string, id types.ID) error {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/power", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+	})
+	if err != nil {
+		return err
+	}
+
+	var body interface{}
+
+	_, err = o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// Shutdown is API call
+func (o *MobileGatewayOp) Shutdown(ctx context.Context, zone string, id types.ID, shutdownOption *ShutdownOption) error {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/power", map[string]interface{}{
+		"rootURL":        SakuraCloudAPIRoot,
+		"pathSuffix":     o.PathSuffix,
+		"pathName":       o.PathName,
+		"zone":           zone,
+		"id":             id,
+		"shutdownOption": shutdownOption,
+	})
+	if err != nil {
+		return err
+	}
+
+	var body interface{}
+
+	if zone == "" {
+		zone = ""
+	}
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	if shutdownOption == nil {
+		shutdownOption = &ShutdownOption{}
+	}
+	args := &struct {
+		Argzone           string
+		Argid             types.ID
+		ArgshutdownOption *ShutdownOption `mapconv:",squash"`
+	}{
+		Argzone:           zone,
+		Argid:             id,
+		ArgshutdownOption: shutdownOption,
+	}
+
+	v := &mobileGatewayShutdownRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return err
+	}
+	body = v
+
+	_, err = o.Client.Do(ctx, "DELETE", url, body)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// Reset is API call
+func (o *MobileGatewayOp) Reset(ctx context.Context, zone string, id types.ID) error {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/reset", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+	})
+	if err != nil {
+		return err
+	}
+
+	var body interface{}
+
+	_, err = o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// ConnectToSwitch is API call
+func (o *MobileGatewayOp) ConnectToSwitch(ctx context.Context, zone string, id types.ID, switchID types.ID) error {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/interface/1/to/switch/{{.switchID}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+		"switchID":   switchID,
+	})
+	if err != nil {
+		return err
+	}
+
+	var body interface{}
+
+	_, err = o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// DisconnectFromSwitch is API call
+func (o *MobileGatewayOp) DisconnectFromSwitch(ctx context.Context, zone string, id types.ID) error {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/interface/1/to/switch", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+	})
+	if err != nil {
+		return err
+	}
+
+	var body interface{}
+
+	_, err = o.Client.Do(ctx, "DELETE", url, body)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// GetDNS is API call
+func (o *MobileGatewayOp) GetDNS(ctx context.Context, zone string, id types.ID) (*MobileGatewayDNSSetting, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/mobilegateway/dnsresolver", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &mobileGatewayGetDNSResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &mobileGatewayGetDNSResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results.SIMGroup, nil
+}
+
+// SetDNS is API call
+func (o *MobileGatewayOp) SetDNS(ctx context.Context, zone string, id types.ID, param *MobileGatewayDNSSetting) error {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/mobilegateway/dnsresolver", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+		"param":      param,
+	})
+	if err != nil {
+		return err
+	}
+
+	var body interface{}
+
+	if zone == "" {
+		zone = ""
+	}
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	if param == nil {
+		param = &MobileGatewayDNSSetting{}
+	}
+	args := &struct {
+		Argzone  string
+		Argid    types.ID
+		Argparam *MobileGatewayDNSSetting `mapconv:"SIMGroup,recursive"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+
+	v := &mobileGatewaySetDNSRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return err
+	}
+	body = v
+
+	_, err = o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// GetSIMRoutes is API call
+func (o *MobileGatewayOp) GetSIMRoutes(ctx context.Context, zone string, id types.ID) ([]*MobileGatewaySIMRoute, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/mobilegateway/simroutes", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &mobileGatewayGetSIMRoutesResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &mobileGatewayGetSIMRoutesResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results.SIMRoutes, nil
+}
+
+// SetSIMRoutes is API call
+func (o *MobileGatewayOp) SetSIMRoutes(ctx context.Context, zone string, id types.ID, param []*MobileGatewaySIMRouteParam) error {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/mobilegateway/simroutes", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+		"param":      param,
+	})
+	if err != nil {
+		return err
+	}
+
+	var body interface{}
+
+	if zone == "" {
+		zone = ""
+	}
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	if param == nil {
+		param = []*MobileGatewaySIMRouteParam{}
+	}
+	args := &struct {
+		Argzone  string
+		Argid    types.ID
+		Argparam []*MobileGatewaySIMRouteParam `mapconv:"[]SIMRoutes,recursive"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+
+	v := &mobileGatewaySetSIMRoutesRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return err
+	}
+	body = v
+
+	_, err = o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// ListSIM is API call
+func (o *MobileGatewayOp) ListSIM(ctx context.Context, zone string, id types.ID) ([]*MobileGatewaySIMInfo, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/mobilegateway/sims", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &mobileGatewayListSIMResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &mobileGatewayListSIMResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results.SIM, nil
+}
+
+// AddSIM is API call
+func (o *MobileGatewayOp) AddSIM(ctx context.Context, zone string, id types.ID, param *MobileGatewayAddSIMRequest) error {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/mobilegateway/sims", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+		"param":      param,
+	})
+	if err != nil {
+		return err
+	}
+
+	var body interface{}
+
+	if zone == "" {
+		zone = ""
+	}
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	if param == nil {
+		param = &MobileGatewayAddSIMRequest{}
+	}
+	args := &struct {
+		Argzone  string
+		Argid    types.ID
+		Argparam *MobileGatewayAddSIMRequest `mapconv:"SIM,recursive"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+
+	v := &mobileGatewayAddSIMRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return err
+	}
+	body = v
+
+	_, err = o.Client.Do(ctx, "POST", url, body)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// DeleteSIM is API call
+func (o *MobileGatewayOp) DeleteSIM(ctx context.Context, zone string, id types.ID, simID types.ID) error {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/mobilegateway/sims/{{.simID}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+		"simID":      simID,
+	})
+	if err != nil {
+		return err
+	}
+
+	var body interface{}
+
+	_, err = o.Client.Do(ctx, "DELETE", url, body)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// Logs is API call
+func (o *MobileGatewayOp) Logs(ctx context.Context, zone string, id types.ID) ([]*MobileGatewaySIMLogs, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/mobilegateway/sessionlog", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &mobileGatewayLogsResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &mobileGatewayLogsResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results.Logs, nil
+}
+
+// GetTrafficConfig is API call
+func (o *MobileGatewayOp) GetTrafficConfig(ctx context.Context, zone string, id types.ID) (*MobileGatewayTrafficControl, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/mobilegateway/traffic_monitoring", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &mobileGatewayGetTrafficConfigResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &mobileGatewayGetTrafficConfigResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results.TrafficMonitoring, nil
+}
+
+// SetTrafficConfig is API call
+func (o *MobileGatewayOp) SetTrafficConfig(ctx context.Context, zone string, id types.ID, param *MobileGatewayTrafficControl) error {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/mobilegateway/traffic_monitoring", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+		"param":      param,
+	})
+	if err != nil {
+		return err
+	}
+
+	var body interface{}
+
+	if zone == "" {
+		zone = ""
+	}
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	if param == nil {
+		param = &MobileGatewayTrafficControl{}
+	}
+	args := &struct {
+		Argzone  string
+		Argid    types.ID
+		Argparam *MobileGatewayTrafficControl `mapconv:"TrafficMonitoring,recursive"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+
+	v := &mobileGatewaySetTrafficConfigRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return err
+	}
+	body = v
+
+	_, err = o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// DeleteTrafficConfig is API call
+func (o *MobileGatewayOp) DeleteTrafficConfig(ctx context.Context, zone string, id types.ID) error {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/mobilegateway/traffic_monitoring", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+	})
+	if err != nil {
+		return err
+	}
+
+	var body interface{}
+
+	_, err = o.Client.Do(ctx, "DELETE", url, body)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// TrafficStatus is API call
+func (o *MobileGatewayOp) TrafficStatus(ctx context.Context, zone string, id types.ID) (*MobileGatewayTrafficStatus, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/mobilegateway/traffic_status", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &mobileGatewayTrafficStatusResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &mobileGatewayTrafficStatusResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results.TrafficStatus, nil
+}
+
+// MonitorInterface is API call
+func (o *MobileGatewayOp) MonitorInterface(ctx context.Context, zone string, id types.ID, index int, condition *MonitorCondition) (*InterfaceActivity, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/interface/{{if eq .index 0}}{{.index}}{{end}}/monitor", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+		"index":      index,
+		"condition":  condition,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	if zone == "" {
+		zone = ""
+	}
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	if index == 0 {
+		index = 0
+	}
+	if condition == nil {
+		condition = &MonitorCondition{}
+	}
+	args := &struct {
+		Argzone      string
+		Argid        types.ID
+		Argindex     int
+		Argcondition *MonitorCondition `mapconv:",squash"`
+	}{
+		Argzone:      zone,
+		Argid:        id,
+		Argindex:     index,
+		Argcondition: condition,
+	}
+
+	v := &mobileGatewayMonitorInterfaceRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	body = v
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &mobileGatewayMonitorInterfaceResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &mobileGatewayMonitorInterfaceResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results.InterfaceActivity, nil
+}
+
+/*************************************************
 * NFSOp
 *************************************************/
 
@@ -9289,7 +10197,7 @@ func (o *SIMOp) Logs(ctx context.Context, zone string, id types.ID) (*SIMLogsRes
 }
 
 // GetNetworkOperator is API call
-func (o *SIMOp) GetNetworkOperator(ctx context.Context, zone string, id types.ID) (*SIMGetNetworkOperatorResult, error) {
+func (o *SIMOp) GetNetworkOperator(ctx context.Context, zone string, id types.ID) ([]*SIMNetworkOperatorConfig, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/sim/network_operator_config", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -9313,15 +10221,15 @@ func (o *SIMOp) GetNetworkOperator(ctx context.Context, zone string, id types.ID
 		return nil, err
 	}
 
-	results := &SIMGetNetworkOperatorResult{}
+	results := &sIMGetNetworkOperatorResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
-	return results, err
+	return results.Configs, nil
 }
 
 // SetNetworkOperator is API call
-func (o *SIMOp) SetNetworkOperator(ctx context.Context, zone string, id types.ID, configs *SIMNetworkOperatorConfigs) error {
+func (o *SIMOp) SetNetworkOperator(ctx context.Context, zone string, id types.ID, configs []*SIMNetworkOperatorConfig) error {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/sim/network_operator_config", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -9343,12 +10251,12 @@ func (o *SIMOp) SetNetworkOperator(ctx context.Context, zone string, id types.ID
 		id = types.ID(int64(0))
 	}
 	if configs == nil {
-		configs = &SIMNetworkOperatorConfigs{}
+		configs = []*SIMNetworkOperatorConfig{}
 	}
 	args := &struct {
 		Argzone    string
 		Argid      types.ID
-		Argconfigs *SIMNetworkOperatorConfigs `mapconv:",squash"`
+		Argconfigs []*SIMNetworkOperatorConfig `mapconv:"[]NetworkOperatorConfigs,recursive"`
 	}{
 		Argzone:    zone,
 		Argid:      id,
@@ -9425,6 +10333,38 @@ func (o *SIMOp) MonitorSIM(ctx context.Context, zone string, id types.ID, condit
 		return nil, err
 	}
 	return results.LinkActivity, nil
+}
+
+// Status is API call
+func (o *SIMOp) Status(ctx context.Context, zone string, id types.ID) (*SIMInfo, error) {
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/sim/status", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var body interface{}
+
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	nakedResponse := &sIMStatusResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &sIMStatusResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results.SIM, nil
 }
 
 /*************************************************
