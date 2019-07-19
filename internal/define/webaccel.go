@@ -171,18 +171,18 @@ var (
 		Fields: []*dsl.FieldDesc{
 			fields.ID(),
 			fields.Name(),
-			fields.New("DomainType", meta.Static(types.EWebAccelDomainType(""))),
-			fields.New("Domain", meta.TypeString),
-			fields.New("Subdomain", meta.TypeString),
-			fields.New("ASCIIDomain", meta.TypeString),
-			fields.New("Origin", meta.TypeString),
-			fields.New("HostHeader", meta.TypeString),
-			fields.New("Status", meta.Static(types.EWebAccelStatus(""))),
-			fields.New("HasCertificate", meta.TypeFlag),
-			fields.New("HasOldCertificate", meta.TypeFlag),
-			fields.New("GibSentInLastWeek", meta.TypeInt64),
-			fields.New("CertValidNotBefore", meta.TypeInt64),
-			fields.New("CertValidNotAfter", meta.TypeInt64),
+			fields.Def("DomainType", meta.Static(types.EWebAccelDomainType(""))),
+			fields.Def("Domain", meta.TypeString),
+			fields.Def("Subdomain", meta.TypeString),
+			fields.Def("ASCIIDomain", meta.TypeString),
+			fields.Def("Origin", meta.TypeString),
+			fields.Def("HostHeader", meta.TypeString),
+			fields.Def("Status", meta.Static(types.EWebAccelStatus(""))),
+			fields.Def("HasCertificate", meta.TypeFlag),
+			fields.Def("HasOldCertificate", meta.TypeFlag),
+			fields.Def("GibSentInLastWeek", meta.TypeInt64),
+			fields.Def("CertValidNotBefore", meta.TypeInt64),
+			fields.Def("CertValidNotAfter", meta.TypeInt64),
 			fields.CreatedAt(),
 		},
 	}
@@ -214,23 +214,23 @@ var (
 
 	webAccelCertViewFields = []*dsl.FieldDesc{
 		fields.ID(),
-		fields.New("SiteID", meta.TypeID),
-		fields.New("CertificateChain", meta.TypeString),
-		fields.New("Key", meta.TypeString),
-		fields.New("CreatedAt", meta.TypeTime),
-		fields.New("UpdatedAt", meta.TypeTime),
-		fields.New("SerialNumber", meta.TypeString),
-		fields.New("NotBefore", meta.TypeInt64),
-		fields.New("NotAfter", meta.TypeInt64),
+		fields.Def("SiteID", meta.TypeID),
+		fields.Def("CertificateChain", meta.TypeString),
+		fields.Def("Key", meta.TypeString),
+		fields.Def("CreatedAt", meta.TypeTime),
+		fields.Def("UpdatedAt", meta.TypeTime),
+		fields.Def("SerialNumber", meta.TypeString),
+		fields.Def("NotBefore", meta.TypeInt64),
+		fields.Def("NotAfter", meta.TypeInt64),
 		{
 			Name: "Issuer",
 			Type: &dsl.Model{
 				Name: "WebAccelCertIssuer",
 				Fields: []*dsl.FieldDesc{
-					fields.New("Country", meta.TypeString),
-					fields.New("Organization", meta.TypeString),
-					fields.New("OrganizationalUnit", meta.TypeString),
-					fields.New("CommonName", meta.TypeString),
+					fields.Def("Country", meta.TypeString),
+					fields.Def("Organization", meta.TypeString),
+					fields.Def("OrganizationalUnit", meta.TypeString),
+					fields.Def("CommonName", meta.TypeString),
 				},
 			},
 			Tags: &dsl.FieldTags{
@@ -242,31 +242,31 @@ var (
 			Type: &dsl.Model{
 				Name: "WebAccelCertSubject",
 				Fields: []*dsl.FieldDesc{
-					fields.New("Country", meta.TypeString),
-					fields.New("Organization", meta.TypeString),
-					fields.New("OrganizationalUnit", meta.TypeString),
-					fields.New("Locality", meta.TypeString),
-					fields.New("Province", meta.TypeString),
-					fields.New("StreetAddress", meta.TypeString),
-					fields.New("PostalCode", meta.TypeString),
-					fields.New("SerialNumber", meta.TypeString),
-					fields.New("CommonName", meta.TypeString),
+					fields.Def("Country", meta.TypeString),
+					fields.Def("Organization", meta.TypeString),
+					fields.Def("OrganizationalUnit", meta.TypeString),
+					fields.Def("Locality", meta.TypeString),
+					fields.Def("Province", meta.TypeString),
+					fields.Def("StreetAddress", meta.TypeString),
+					fields.Def("PostalCode", meta.TypeString),
+					fields.Def("SerialNumber", meta.TypeString),
+					fields.Def("CommonName", meta.TypeString),
 				},
 			},
 			Tags: &dsl.FieldTags{
 				MapConv: ",recursive",
 			},
 		},
-		fields.New("DNSNames", meta.TypeStringSlice),
-		fields.New("SHA256Fingerprint", meta.TypeString),
+		fields.Def("DNSNames", meta.TypeStringSlice),
+		fields.Def("SHA256Fingerprint", meta.TypeString),
 	}
 
 	webAccelCertUpdateParam = &dsl.Model{
 		Name:      names.UpdateParameterName(webAccelAPIName + "Cert"),
 		NakedType: webAccelCertNakedType,
 		Fields: []*dsl.FieldDesc{
-			fields.New("CertificateChain", meta.TypeString),
-			fields.New("Key", meta.TypeString),
+			fields.Def("CertificateChain", meta.TypeString),
+			fields.Def("Key", meta.TypeString),
 		},
 	}
 
@@ -274,7 +274,7 @@ var (
 		Name:      names.RequestParameterName(webAccelAPIName, "DeleteAllCache"),
 		NakedType: webAccelSiteNakedType,
 		Fields: []*dsl.FieldDesc{
-			fields.New("Domain", meta.TypeString),
+			fields.Def("Domain", meta.TypeString),
 		},
 	}
 
@@ -282,7 +282,7 @@ var (
 		Name:      names.RequestParameterName(webAccelAPIName, "DeleteCache"),
 		NakedType: webAccelSiteNakedType,
 		Fields: []*dsl.FieldDesc{
-			fields.New("URL", meta.TypeStringSlice),
+			fields.Def("URL", meta.TypeStringSlice),
 		},
 	}
 
@@ -291,9 +291,9 @@ var (
 		NakedType: meta.Static(naked.WebAccelDeleteCacheResult{}),
 		IsArray:   true,
 		Fields: []*dsl.FieldDesc{
-			fields.New("URL", meta.TypeString),
-			fields.New("Status", meta.TypeInt),
-			fields.New("Result", meta.TypeString),
+			fields.Def("URL", meta.TypeString),
+			fields.Def("Status", meta.TypeInt),
+			fields.Def("Result", meta.TypeString),
 		},
 	}
 )

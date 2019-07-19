@@ -209,11 +209,11 @@ var (
 		Name:      "DatabaseVersionInfo",
 		NakedType: meta.Static(naked.DatabaseStatusVersion{}),
 		Fields: []*dsl.FieldDesc{
-			fields.New("LastModified", meta.TypeString),
-			fields.New("CommitHash", meta.TypeString),
-			fields.New("Status", meta.TypeString),
-			fields.New("Tag", meta.TypeString),
-			fields.New("Expire", meta.TypeString),
+			fields.Def("LastModified", meta.TypeString),
+			fields.Def("CommitHash", meta.TypeString),
+			fields.Def("Status", meta.TypeString),
+			fields.Def("Tag", meta.TypeString),
+			fields.Def("Expire", meta.TypeString),
 		},
 	}
 
@@ -222,9 +222,9 @@ var (
 		NakedType: meta.Static(naked.DatabaseLog{}),
 		IsArray:   true,
 		Fields: []*dsl.FieldDesc{
-			fields.New("Name", meta.TypeString),
-			fields.New("Data", meta.TypeString),
-			fields.New("Size", meta.TypeInt),
+			fields.Def("Name", meta.TypeString),
+			fields.Def("Data", meta.TypeString),
+			fields.Def("Size", meta.TypeInt),
 		},
 	}
 	databaseStatusBackupHistoryView = &dsl.Model{
@@ -232,10 +232,10 @@ var (
 		NakedType: meta.Static(naked.DatabaseBackupHistory{}),
 		IsArray:   true,
 		Fields: []*dsl.FieldDesc{
-			fields.New("CreatedAt", meta.TypeTime),
-			fields.New("Availability", meta.TypeString),
-			fields.New("RecoveredAt", meta.TypeTime),
-			fields.New("Size", meta.TypeInt64),
+			fields.Def("CreatedAt", meta.TypeTime),
+			fields.Def("Availability", meta.TypeString),
+			fields.Def("RecoveredAt", meta.TypeTime),
+			fields.Def("Size", meta.TypeInt64),
 		},
 	}
 )

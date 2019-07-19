@@ -217,7 +217,7 @@ var (
 			fields.Availability(),
 			fields.Class(),
 			fields.SIMICCID(),
-			fields.New("Info", models.simInfo(), mapConvTag("Status.SIMInfo")),
+			fields.Def("Info", models.simInfo(), mapConvTag("Status.SIMInfo")),
 			fields.IconID(),
 			fields.CreatedAt(),
 			fields.ModifiedAt(),
@@ -273,11 +273,11 @@ var (
 	simLogView = &dsl.Model{
 		Name: "SIMLog",
 		Fields: []*dsl.FieldDesc{
-			fields.New("Date", meta.TypeTime),
-			fields.New("SessionStatus", meta.TypeString),
-			fields.New("ResourceID", meta.TypeString),
-			fields.New("IMEI", meta.TypeString),
-			fields.New("IMSI", meta.TypeString),
+			fields.Def("Date", meta.TypeTime),
+			fields.Def("SessionStatus", meta.TypeString),
+			fields.Def("ResourceID", meta.TypeString),
+			fields.Def("IMEI", meta.TypeString),
+			fields.Def("IMSI", meta.TypeString),
 		},
 		NakedType: meta.Static(naked.SIMLog{}),
 	}
@@ -285,9 +285,9 @@ var (
 		Name:    "SIMNetworkOperatorConfig",
 		IsArray: true,
 		Fields: []*dsl.FieldDesc{
-			fields.New("Allow", meta.TypeFlag),
-			fields.New("CountryCode", meta.TypeString),
-			fields.New("Name", meta.TypeString),
+			fields.Def("Allow", meta.TypeFlag),
+			fields.Def("CountryCode", meta.TypeString),
+			fields.Def("Name", meta.TypeString),
 		},
 		NakedType: meta.Static(naked.SIMNetworkOperatorConfig{}),
 	}

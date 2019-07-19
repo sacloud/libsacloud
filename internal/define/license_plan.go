@@ -33,7 +33,7 @@ var (
 			fields.Name(),
 			fields.CreatedAt(),
 			fields.ModifiedAt(),
-			fields.New("TermsOfUse", meta.TypeString),
+			fields.Def("TermsOfUse", meta.TypeString),
 		},
 	}
 )

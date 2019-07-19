@@ -49,8 +49,8 @@ var (
 			fields.IconID(),
 			fields.CreatedAt(),
 			fields.PrivateHostPlanID(),
-			fields.New("PlanName", meta.TypeString),
-			fields.New("PlanClass", meta.TypeString),
+			fields.Def("PlanName", meta.TypeString),
+			fields.Def("PlanClass", meta.TypeString),
 			{
 				Name: "CPU",
 				Type: meta.TypeInt,
@@ -71,8 +71,8 @@ var (
 					},
 				},
 			},
-			fields.New("AssignedCPU", meta.TypeInt),
-			fields.New("AssignedMemoryMB", meta.TypeInt),
+			fields.Def("AssignedCPU", meta.TypeInt),
+			fields.Def("AssignedMemoryMB", meta.TypeInt),
 			fields.PrivateHostHostName(),
 		},
 	}

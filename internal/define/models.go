@@ -607,8 +607,8 @@ func (m *modelsDef) switchIPv6NetModel() *dsl.Model {
 		IsArray:   false,
 		Fields: []*dsl.FieldDesc{
 			fields.ID(),
-			fields.New("IPv6Prefix", meta.TypeString),
-			fields.New("IPv6PrefixLen", meta.TypeInt),
+			fields.Def("IPv6Prefix", meta.TypeString),
+			fields.Def("IPv6PrefixLen", meta.TypeInt),
 		},
 	}
 }
@@ -621,8 +621,8 @@ func (m *modelsDef) switchIPv6NetsModel() *dsl.Model {
 		IsArray:   true,
 		Fields: []*dsl.FieldDesc{
 			fields.ID(),
-			fields.New("IPv6Prefix", meta.TypeString),
-			fields.New("IPv6PrefixLen", meta.TypeInt),
+			fields.Def("IPv6Prefix", meta.TypeString),
+			fields.Def("IPv6PrefixLen", meta.TypeInt),
 		},
 	}
 }
@@ -648,7 +648,7 @@ func (m *modelsDef) switchInfoModel() *dsl.Model {
 					MapConv: "[]Subnets,recursive",
 				},
 			},
-			fields.New("IPv6Nets", m.switchIPv6NetsModel(), mapConvTag("[]IPv6Nets,recursive,omitempty")),
+			fields.Def("IPv6Nets", m.switchIPv6NetsModel(), mapConvTag("[]IPv6Nets,recursive,omitempty")),
 		},
 	}
 }
@@ -1227,9 +1227,9 @@ func (m *modelsDef) mobileGatewayInterface() *dsl.Model {
 		NakedType: meta.Static(naked.MobileGatewayInterface{}),
 		IsArray:   true,
 		Fields: []*dsl.FieldDesc{
-			fields.New("IPAddress", meta.TypeStringSlice),
-			fields.New("NetworkMaskLen", meta.TypeInt),
-			fields.New("Index", meta.TypeInt),
+			fields.Def("IPAddress", meta.TypeStringSlice),
+			fields.Def("NetworkMaskLen", meta.TypeInt),
+			fields.Def("Index", meta.TypeInt),
 		},
 	}
 }
@@ -1240,8 +1240,8 @@ func (m *modelsDef) mobileGatewayStaticRoute() *dsl.Model {
 		NakedType: meta.Static(naked.MobileGatewayStaticRoute{}),
 		IsArray:   true,
 		Fields: []*dsl.FieldDesc{
-			fields.New("Prefix", meta.TypeString),
-			fields.New("NextHop", meta.TypeString),
+			fields.Def("Prefix", meta.TypeString),
+			fields.Def("NextHop", meta.TypeString),
 		},
 	}
 }
@@ -1269,31 +1269,31 @@ func (m *modelsDef) simInfoList() *dsl.Model {
 
 func (m *modelsDef) simInfoFields() []*dsl.FieldDesc {
 	return []*dsl.FieldDesc{
-		fields.New("ICCID", meta.TypeString),
-		fields.New("IMSI", meta.TypeStringSlice),
-		fields.New("IP", meta.TypeString),
-		fields.New("SessionStatus", meta.TypeString),
-		fields.New("IMEILock", meta.TypeFlag),
-		fields.New("Registered", meta.TypeFlag),
-		fields.New("Activated", meta.TypeFlag),
-		fields.New("ResourceID", meta.TypeString),
-		fields.New("RegisteredDate", meta.TypeTime),
-		fields.New("ActivatedDate", meta.TypeTime),
-		fields.New("DeactivatedDate", meta.TypeTime),
-		fields.New("SIMGroupID", meta.TypeString),
+		fields.Def("ICCID", meta.TypeString),
+		fields.Def("IMSI", meta.TypeStringSlice),
+		fields.Def("IP", meta.TypeString),
+		fields.Def("SessionStatus", meta.TypeString),
+		fields.Def("IMEILock", meta.TypeFlag),
+		fields.Def("Registered", meta.TypeFlag),
+		fields.Def("Activated", meta.TypeFlag),
+		fields.Def("ResourceID", meta.TypeString),
+		fields.Def("RegisteredDate", meta.TypeTime),
+		fields.Def("ActivatedDate", meta.TypeTime),
+		fields.Def("DeactivatedDate", meta.TypeTime),
+		fields.Def("SIMGroupID", meta.TypeString),
 		{
 			Name: "TrafficBytesOfCurrentMonth",
 			Type: &dsl.Model{
 				Name: "SIMTrafficBytes",
 				Fields: []*dsl.FieldDesc{
-					fields.New("UplinkBytes", meta.TypeInt64),
-					fields.New("DownlinkBytes", meta.TypeInt64),
+					fields.Def("UplinkBytes", meta.TypeInt64),
+					fields.Def("DownlinkBytes", meta.TypeInt64),
 				},
 			},
 			Tags: &dsl.FieldTags{
 				MapConv: ",recursive",
 			},
 		},
-		fields.New("ConnectedIMEI", meta.TypeString),
+		fields.Def("ConnectedIMEI", meta.TypeString),
 	}
 }
