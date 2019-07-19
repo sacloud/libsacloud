@@ -193,6 +193,7 @@ var (
 
 			// status
 			fields.ProxyLBUseVIPFailover(),
+			fields.ProxyLBRegion(),
 
 			// common fields
 			fields.Name(),
