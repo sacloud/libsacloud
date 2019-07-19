@@ -1,12 +1,12 @@
 package mapconv
 
 import (
-	"encoding/json"
 	"errors"
 	"reflect"
 	"strings"
 
 	"github.com/fatih/structs"
+	"github.com/mitchellh/mapstructure"
 )
 
 // ConvertTo converts struct which input by mapconv to plain models
@@ -72,11 +72,7 @@ func ConvertTo(source interface{}, dest interface{}) error {
 		}
 	}
 
-	data, err := json.Marshal(destMap)
-	if err != nil {
-		return err
-	}
-	return json.Unmarshal(data, dest)
+	return mapstructure.Decode(destMap.Map(), dest)
 }
 
 // ConvertFrom converts struct which input by mapconv from plain models
@@ -149,12 +145,7 @@ func ConvertFrom(source interface{}, dest interface{}) error {
 		}
 
 	}
-
-	data, err := json.Marshal(destMap)
-	if err != nil {
-		return err
-	}
-	return json.Unmarshal(data, dest)
+	return mapstructure.Decode(destMap.Map(), dest)
 }
 
 type mapConv string
