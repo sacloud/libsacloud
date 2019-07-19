@@ -94,8 +94,14 @@ var (
 	loadBalancerCreateParam = &dsl.Model{
 		Name:      names.CreateParameterName(loadBalancerAPIName),
 		NakedType: loadBalancerNakedType,
+		ConstFields: []*dsl.ConstFieldDesc{
+			{
+				Name:  "Class",
+				Type:  meta.TypeString,
+				Value: `"loadbalancer"`,
+			},
+		},
 		Fields: []*dsl.FieldDesc{
-			fields.LoadBalancerClass(),
 			fields.ApplianceSwitchID(),
 			fields.AppliancePlanID(),
 			fields.RemarkVRID(),

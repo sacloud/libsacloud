@@ -1270,8 +1270,6 @@ type AutoBackup struct {
 	IconID                  types.ID `mapconv:"Icon.ID"`
 	CreatedAt               time.Time
 	ModifiedAt              time.Time
-	Class                   string                     `mapconv:"Provider.Class,default=autobackup"`
-	BackupSpanType          types.EBackupSpanType      `mapconv:"Settings.Autobackup.BackupSpanType,default=weekdays"`
 	BackupSpanWeekdays      []types.EBackupSpanWeekday `mapconv:"Settings.Autobackup.BackupSpanWeekdays"`
 	MaximumNumberOfArchives int                        `mapconv:"Settings.Autobackup.MaximumNumberOfArchives"`
 	SettingsHash            string
@@ -1297,8 +1295,6 @@ func (o *AutoBackup) setDefaults() interface{} {
 		IconID                  types.ID `mapconv:"Icon.ID"`
 		CreatedAt               time.Time
 		ModifiedAt              time.Time
-		Class                   string                     `mapconv:"Provider.Class,default=autobackup"`
-		BackupSpanType          types.EBackupSpanType      `mapconv:"Settings.Autobackup.BackupSpanType,default=weekdays"`
 		BackupSpanWeekdays      []types.EBackupSpanWeekday `mapconv:"Settings.Autobackup.BackupSpanWeekdays"`
 		MaximumNumberOfArchives int                        `mapconv:"Settings.Autobackup.MaximumNumberOfArchives"`
 		SettingsHash            string
@@ -1315,8 +1311,6 @@ func (o *AutoBackup) setDefaults() interface{} {
 		IconID:                  o.IconID,
 		CreatedAt:               o.CreatedAt,
 		ModifiedAt:              o.ModifiedAt,
-		Class:                   o.Class,
-		BackupSpanType:          o.BackupSpanType,
 		BackupSpanWeekdays:      o.BackupSpanWeekdays,
 		MaximumNumberOfArchives: o.MaximumNumberOfArchives,
 		SettingsHash:            o.SettingsHash,
@@ -1427,26 +1421,6 @@ func (o *AutoBackup) SetModifiedAt(v time.Time) {
 	o.ModifiedAt = v
 }
 
-// GetClass returns value of Class
-func (o *AutoBackup) GetClass() string {
-	return o.Class
-}
-
-// SetClass sets value to Class
-func (o *AutoBackup) SetClass(v string) {
-	o.Class = v
-}
-
-// GetBackupSpanType returns value of BackupSpanType
-func (o *AutoBackup) GetBackupSpanType() types.EBackupSpanType {
-	return o.BackupSpanType
-}
-
-// SetBackupSpanType sets value to BackupSpanType
-func (o *AutoBackup) SetBackupSpanType(v types.EBackupSpanType) {
-	o.BackupSpanType = v
-}
-
 // GetBackupSpanWeekdays returns value of BackupSpanWeekdays
 func (o *AutoBackup) GetBackupSpanWeekdays() []types.EBackupSpanWeekday {
 	return o.BackupSpanWeekdays
@@ -1523,9 +1497,7 @@ func (o *AutoBackup) SetZoneName(v string) {
 
 // AutoBackupCreateRequest represents API parameter/response structure
 type AutoBackupCreateRequest struct {
-	Class                   string                     `mapconv:"Provider.Class,default=autobackup"`
 	DiskID                  types.ID                   `mapconv:"Status.DiskId"`
-	BackupSpanType          types.EBackupSpanType      `mapconv:"Settings.Autobackup.BackupSpanType,default=weekdays"`
 	BackupSpanWeekdays      []types.EBackupSpanWeekday `mapconv:"Settings.Autobackup.BackupSpanWeekdays"`
 	MaximumNumberOfArchives int                        `mapconv:"Settings.Autobackup.MaximumNumberOfArchives"`
 	Name                    string                     `validate:"required"`
@@ -1542,36 +1514,26 @@ func (o *AutoBackupCreateRequest) Validate() error {
 // setDefaults implements sacloud.argumentDefaulter
 func (o *AutoBackupCreateRequest) setDefaults() interface{} {
 	return &struct {
-		Class                   string                     `mapconv:"Provider.Class,default=autobackup"`
 		DiskID                  types.ID                   `mapconv:"Status.DiskId"`
-		BackupSpanType          types.EBackupSpanType      `mapconv:"Settings.Autobackup.BackupSpanType,default=weekdays"`
 		BackupSpanWeekdays      []types.EBackupSpanWeekday `mapconv:"Settings.Autobackup.BackupSpanWeekdays"`
 		MaximumNumberOfArchives int                        `mapconv:"Settings.Autobackup.MaximumNumberOfArchives"`
 		Name                    string                     `validate:"required"`
 		Description             string                     `validate:"min=0,max=512"`
 		Tags                    []string
-		IconID                  types.ID `mapconv:"Icon.ID"`
+		IconID                  types.ID              `mapconv:"Icon.ID"`
+		Class                   string                `mapconv:"Provider.Class"`
+		BackupSpanType          types.EBackupSpanType `mapconv:"Settings.Autobackup.BackupSpanType"`
 	}{
-		Class:                   o.Class,
 		DiskID:                  o.DiskID,
-		BackupSpanType:          o.BackupSpanType,
 		BackupSpanWeekdays:      o.BackupSpanWeekdays,
 		MaximumNumberOfArchives: o.MaximumNumberOfArchives,
 		Name:                    o.Name,
 		Description:             o.Description,
 		Tags:                    o.Tags,
 		IconID:                  o.IconID,
+		Class:                   "autobackup",
+		BackupSpanType:          types.BackupSpanTypes.Weekdays,
 	}
-}
-
-// GetClass returns value of Class
-func (o *AutoBackupCreateRequest) GetClass() string {
-	return o.Class
-}
-
-// SetClass sets value to Class
-func (o *AutoBackupCreateRequest) SetClass(v string) {
-	o.Class = v
 }
 
 // GetDiskID returns value of DiskID
@@ -1582,16 +1544,6 @@ func (o *AutoBackupCreateRequest) GetDiskID() types.ID {
 // SetDiskID sets value to DiskID
 func (o *AutoBackupCreateRequest) SetDiskID(v types.ID) {
 	o.DiskID = v
-}
-
-// GetBackupSpanType returns value of BackupSpanType
-func (o *AutoBackupCreateRequest) GetBackupSpanType() types.EBackupSpanType {
-	return o.BackupSpanType
-}
-
-// SetBackupSpanType sets value to BackupSpanType
-func (o *AutoBackupCreateRequest) SetBackupSpanType(v types.EBackupSpanType) {
-	o.BackupSpanType = v
 }
 
 // GetBackupSpanWeekdays returns value of BackupSpanWeekdays
@@ -1660,7 +1612,6 @@ func (o *AutoBackupCreateRequest) SetIconID(v types.ID) {
 
 // AutoBackupUpdateRequest represents API parameter/response structure
 type AutoBackupUpdateRequest struct {
-	BackupSpanType          types.EBackupSpanType      `mapconv:"Settings.Autobackup.BackupSpanType,default=weekdays"`
 	BackupSpanWeekdays      []types.EBackupSpanWeekday `mapconv:"Settings.Autobackup.BackupSpanWeekdays"`
 	MaximumNumberOfArchives int                        `mapconv:"Settings.Autobackup.MaximumNumberOfArchives"`
 	Name                    string                     `validate:"required"`
@@ -1677,32 +1628,22 @@ func (o *AutoBackupUpdateRequest) Validate() error {
 // setDefaults implements sacloud.argumentDefaulter
 func (o *AutoBackupUpdateRequest) setDefaults() interface{} {
 	return &struct {
-		BackupSpanType          types.EBackupSpanType      `mapconv:"Settings.Autobackup.BackupSpanType,default=weekdays"`
 		BackupSpanWeekdays      []types.EBackupSpanWeekday `mapconv:"Settings.Autobackup.BackupSpanWeekdays"`
 		MaximumNumberOfArchives int                        `mapconv:"Settings.Autobackup.MaximumNumberOfArchives"`
 		Name                    string                     `validate:"required"`
 		Description             string                     `validate:"min=0,max=512"`
 		Tags                    []string
-		IconID                  types.ID `mapconv:"Icon.ID"`
+		IconID                  types.ID              `mapconv:"Icon.ID"`
+		BackupSpanType          types.EBackupSpanType `mapconv:"Settings.Autobackup.BackupSpanType"`
 	}{
-		BackupSpanType:          o.BackupSpanType,
 		BackupSpanWeekdays:      o.BackupSpanWeekdays,
 		MaximumNumberOfArchives: o.MaximumNumberOfArchives,
 		Name:                    o.Name,
 		Description:             o.Description,
 		Tags:                    o.Tags,
 		IconID:                  o.IconID,
+		BackupSpanType:          types.BackupSpanTypes.Weekdays,
 	}
-}
-
-// GetBackupSpanType returns value of BackupSpanType
-func (o *AutoBackupUpdateRequest) GetBackupSpanType() types.EBackupSpanType {
-	return o.BackupSpanType
-}
-
-// SetBackupSpanType sets value to BackupSpanType
-func (o *AutoBackupUpdateRequest) SetBackupSpanType(v types.EBackupSpanType) {
-	o.BackupSpanType = v
 }
 
 // GetBackupSpanWeekdays returns value of BackupSpanWeekdays
@@ -4064,7 +4005,6 @@ func (o *InterfaceView) SetPacketFilterRequiredHostVersion(v types.StringNumber)
 
 // DatabaseCreateRequest represents API parameter/response structure
 type DatabaseCreateRequest struct {
-	Class              string                      `mapconv:",default=database"`
 	PlanID             types.ID                    `mapconv:"Remark.Plan.ID/Plan.ID"`
 	SwitchID           types.ID                    `mapconv:"Remark.Switch.ID"`
 	IPAddresses        []string                    `mapconv:"Remark.[]Servers.IPAddress" validate:"min=1,max=2,dive,ipv4"`
@@ -4089,7 +4029,6 @@ func (o *DatabaseCreateRequest) Validate() error {
 // setDefaults implements sacloud.argumentDefaulter
 func (o *DatabaseCreateRequest) setDefaults() interface{} {
 	return &struct {
-		Class              string                      `mapconv:",default=database"`
 		PlanID             types.ID                    `mapconv:"Remark.Plan.ID/Plan.ID"`
 		SwitchID           types.ID                    `mapconv:"Remark.Switch.ID"`
 		IPAddresses        []string                    `mapconv:"Remark.[]Servers.IPAddress" validate:"min=1,max=2,dive,ipv4"`
@@ -4104,8 +4043,8 @@ func (o *DatabaseCreateRequest) setDefaults() interface{} {
 		Description        string                      `validate:"min=0,max=512"`
 		Tags               []string
 		IconID             types.ID `mapconv:"Icon.ID"`
+		Class              string
 	}{
-		Class:              o.Class,
 		PlanID:             o.PlanID,
 		SwitchID:           o.SwitchID,
 		IPAddresses:        o.IPAddresses,
@@ -4120,17 +4059,8 @@ func (o *DatabaseCreateRequest) setDefaults() interface{} {
 		Description:        o.Description,
 		Tags:               o.Tags,
 		IconID:             o.IconID,
+		Class:              "database",
 	}
-}
-
-// GetClass returns value of Class
-func (o *DatabaseCreateRequest) GetClass() string {
-	return o.Class
-}
-
-// SetClass sets value to Class
-func (o *DatabaseCreateRequest) SetClass(v string) {
-	o.Class = v
 }
 
 // GetPlanID returns value of PlanID
@@ -6444,7 +6374,6 @@ type DNS struct {
 	IconID         types.ID `mapconv:"Icon.ID"`
 	CreatedAt      time.Time
 	ModifiedAt     time.Time
-	Class          string       `mapconv:"Provider.Class,default=dns"`
 	Records        []*DNSRecord `mapconv:"Settings.DNS.[]ResourceRecordSets,recursive" validate:"min=0,max=1000"`
 	SettingsHash   string
 	DNSZone        string   `mapconv:"Status.Zone"`
@@ -6467,7 +6396,6 @@ func (o *DNS) setDefaults() interface{} {
 		IconID         types.ID `mapconv:"Icon.ID"`
 		CreatedAt      time.Time
 		ModifiedAt     time.Time
-		Class          string       `mapconv:"Provider.Class,default=dns"`
 		Records        []*DNSRecord `mapconv:"Settings.DNS.[]ResourceRecordSets,recursive" validate:"min=0,max=1000"`
 		SettingsHash   string
 		DNSZone        string   `mapconv:"Status.Zone"`
@@ -6481,7 +6409,6 @@ func (o *DNS) setDefaults() interface{} {
 		IconID:         o.IconID,
 		CreatedAt:      o.CreatedAt,
 		ModifiedAt:     o.ModifiedAt,
-		Class:          o.Class,
 		Records:        o.Records,
 		SettingsHash:   o.SettingsHash,
 		DNSZone:        o.DNSZone,
@@ -6587,16 +6514,6 @@ func (o *DNS) GetModifiedAt() time.Time {
 // SetModifiedAt sets value to ModifiedAt
 func (o *DNS) SetModifiedAt(v time.Time) {
 	o.ModifiedAt = v
-}
-
-// GetClass returns value of Class
-func (o *DNS) GetClass() string {
-	return o.Class
-}
-
-// SetClass sets value to Class
-func (o *DNS) SetClass(v string) {
-	o.Class = v
 }
 
 // GetRecords returns value of Records
@@ -6717,7 +6634,6 @@ func (o *DNSRecord) SetTTL(v int) {
 
 // DNSCreateRequest represents API parameter/response structure
 type DNSCreateRequest struct {
-	Class       string       `mapconv:"Provider.Class,default=dns"`
 	Name        string       `mapconv:"Name/Status.Zone" validate:"required"`
 	Records     []*DNSRecord `mapconv:"Settings.DNS.[]ResourceRecordSets,recursive" validate:"min=0,max=1000"`
 	Description string       `validate:"min=0,max=512"`
@@ -6733,30 +6649,20 @@ func (o *DNSCreateRequest) Validate() error {
 // setDefaults implements sacloud.argumentDefaulter
 func (o *DNSCreateRequest) setDefaults() interface{} {
 	return &struct {
-		Class       string       `mapconv:"Provider.Class,default=dns"`
 		Name        string       `mapconv:"Name/Status.Zone" validate:"required"`
 		Records     []*DNSRecord `mapconv:"Settings.DNS.[]ResourceRecordSets,recursive" validate:"min=0,max=1000"`
 		Description string       `validate:"min=0,max=512"`
 		Tags        []string
 		IconID      types.ID `mapconv:"Icon.ID"`
+		Class       string   `mapconv:"Provider.Class"`
 	}{
-		Class:       o.Class,
 		Name:        o.Name,
 		Records:     o.Records,
 		Description: o.Description,
 		Tags:        o.Tags,
 		IconID:      o.IconID,
+		Class:       "dns",
 	}
-}
-
-// GetClass returns value of Class
-func (o *DNSCreateRequest) GetClass() string {
-	return o.Class
-}
-
-// SetClass sets value to Class
-func (o *DNSCreateRequest) SetClass(v string) {
-	o.Class = v
 }
 
 // GetName returns value of Name
@@ -6895,7 +6801,6 @@ type GSLB struct {
 	IconID                  types.ID `mapconv:"Icon.ID"`
 	CreatedAt               time.Time
 	ModifiedAt              time.Time
-	Class                   string `mapconv:"Provider.Class,default=gslb"`
 	SettingsHash            string
 	FQDN                    string             `mapconv:"Status.FQDN"`
 	DelayLoop               int                `mapconv:"Settings.GSLB.DelayLoop,default=10" validate:"min=10,max=60"`
@@ -6925,7 +6830,6 @@ func (o *GSLB) setDefaults() interface{} {
 		IconID                  types.ID `mapconv:"Icon.ID"`
 		CreatedAt               time.Time
 		ModifiedAt              time.Time
-		Class                   string `mapconv:"Provider.Class,default=gslb"`
 		SettingsHash            string
 		FQDN                    string             `mapconv:"Status.FQDN"`
 		DelayLoop               int                `mapconv:"Settings.GSLB.DelayLoop,default=10" validate:"min=10,max=60"`
@@ -6946,7 +6850,6 @@ func (o *GSLB) setDefaults() interface{} {
 		IconID:                  o.IconID,
 		CreatedAt:               o.CreatedAt,
 		ModifiedAt:              o.ModifiedAt,
-		Class:                   o.Class,
 		SettingsHash:            o.SettingsHash,
 		FQDN:                    o.FQDN,
 		DelayLoop:               o.DelayLoop,
@@ -7059,16 +6962,6 @@ func (o *GSLB) GetModifiedAt() time.Time {
 // SetModifiedAt sets value to ModifiedAt
 func (o *GSLB) SetModifiedAt(v time.Time) {
 	o.ModifiedAt = v
-}
-
-// GetClass returns value of Class
-func (o *GSLB) GetClass() string {
-	return o.Class
-}
-
-// SetClass sets value to Class
-func (o *GSLB) SetClass(v string) {
-	o.Class = v
 }
 
 // GetSettingsHash returns value of SettingsHash
@@ -7246,7 +7139,6 @@ func (o *GSLBServer) SetWeight(v types.StringNumber) {
 
 // GSLBCreateRequest represents API parameter/response structure
 type GSLBCreateRequest struct {
-	Class                   string             `mapconv:"Provider.Class,default=gslb"`
 	HealthCheckProtocol     types.Protocol     `mapconv:"Settings.GSLB.HealthCheck.Protocol" validate:"oneof=http https ping tcp"`
 	HealthCheckHostHeader   string             `mapconv:"Settings.GSLB.HealthCheck.Host"`
 	HealthCheckPath         string             `mapconv:"Settings.GSLB.HealthCheck.Path"`
@@ -7270,7 +7162,6 @@ func (o *GSLBCreateRequest) Validate() error {
 // setDefaults implements sacloud.argumentDefaulter
 func (o *GSLBCreateRequest) setDefaults() interface{} {
 	return &struct {
-		Class                   string             `mapconv:"Provider.Class,default=gslb"`
 		HealthCheckProtocol     types.Protocol     `mapconv:"Settings.GSLB.HealthCheck.Protocol" validate:"oneof=http https ping tcp"`
 		HealthCheckHostHeader   string             `mapconv:"Settings.GSLB.HealthCheck.Host"`
 		HealthCheckPath         string             `mapconv:"Settings.GSLB.HealthCheck.Path"`
@@ -7284,8 +7175,8 @@ func (o *GSLBCreateRequest) setDefaults() interface{} {
 		Description             string             `validate:"min=0,max=512"`
 		Tags                    []string
 		IconID                  types.ID `mapconv:"Icon.ID"`
+		Class                   string   `mapconv:"Provider.Class"`
 	}{
-		Class:                   o.Class,
 		HealthCheckProtocol:     o.HealthCheckProtocol,
 		HealthCheckHostHeader:   o.HealthCheckHostHeader,
 		HealthCheckPath:         o.HealthCheckPath,
@@ -7299,17 +7190,8 @@ func (o *GSLBCreateRequest) setDefaults() interface{} {
 		Description:             o.Description,
 		Tags:                    o.Tags,
 		IconID:                  o.IconID,
+		Class:                   "gslb",
 	}
-}
-
-// GetClass returns value of Class
-func (o *GSLBCreateRequest) GetClass() string {
-	return o.Class
-}
-
-// SetClass sets value to Class
-func (o *GSLBCreateRequest) SetClass(v string) {
-	o.Class = v
 }
 
 // GetHealthCheckProtocol returns value of HealthCheckProtocol
@@ -10447,7 +10329,6 @@ func (o *LoadBalancerServer) SetHealthCheckResponseCode(v types.StringNumber) {
 
 // LoadBalancerCreateRequest represents API parameter/response structure
 type LoadBalancerCreateRequest struct {
-	Class              string   `mapconv:",default=loadbalancer"`
 	SwitchID           types.ID `mapconv:"Remark.Switch.ID"`
 	PlanID             types.ID `mapconv:"Remark.Plan.ID/Plan.ID"`
 	VRID               int      `mapconv:"Remark.VRRP.VRID"`
@@ -10469,7 +10350,6 @@ func (o *LoadBalancerCreateRequest) Validate() error {
 // setDefaults implements sacloud.argumentDefaulter
 func (o *LoadBalancerCreateRequest) setDefaults() interface{} {
 	return &struct {
-		Class              string   `mapconv:",default=loadbalancer"`
 		SwitchID           types.ID `mapconv:"Remark.Switch.ID"`
 		PlanID             types.ID `mapconv:"Remark.Plan.ID/Plan.ID"`
 		VRID               int      `mapconv:"Remark.VRRP.VRID"`
@@ -10481,8 +10361,8 @@ func (o *LoadBalancerCreateRequest) setDefaults() interface{} {
 		Tags               []string
 		IconID             types.ID                        `mapconv:"Icon.ID"`
 		VirtualIPAddresses []*LoadBalancerVirtualIPAddress `mapconv:"Settings.[]LoadBalancer,recursive" validate:"min=0,max=10"`
+		Class              string
 	}{
-		Class:              o.Class,
 		SwitchID:           o.SwitchID,
 		PlanID:             o.PlanID,
 		VRID:               o.VRID,
@@ -10494,17 +10374,8 @@ func (o *LoadBalancerCreateRequest) setDefaults() interface{} {
 		Tags:               o.Tags,
 		IconID:             o.IconID,
 		VirtualIPAddresses: o.VirtualIPAddresses,
+		Class:              "loadbalancer",
 	}
-}
-
-// GetClass returns value of Class
-func (o *LoadBalancerCreateRequest) GetClass() string {
-	return o.Class
-}
-
-// SetClass sets value to Class
-func (o *LoadBalancerCreateRequest) SetClass(v string) {
-	o.Class = v
 }
 
 // GetSwitchID returns value of SwitchID
@@ -10873,7 +10744,6 @@ type MobileGateway struct {
 	Class                   string
 	IconID                  types.ID `mapconv:"Icon.ID"`
 	CreatedAt               time.Time
-	PlanID                  types.ID                    `mapconv:"Remark.Plan.ID/Plan.ID"`
 	InstanceHostName        string                      `mapconv:"Instance.Host.Name"`
 	InstanceHostInfoURL     string                      `mapconv:"Instance.Host.InfoURL"`
 	InstanceStatus          types.EServerInstanceStatus `mapconv:"Instance.Status"`
@@ -10900,7 +10770,6 @@ func (o *MobileGateway) setDefaults() interface{} {
 		Class                   string
 		IconID                  types.ID `mapconv:"Icon.ID"`
 		CreatedAt               time.Time
-		PlanID                  types.ID                    `mapconv:"Remark.Plan.ID/Plan.ID"`
 		InstanceHostName        string                      `mapconv:"Instance.Host.Name"`
 		InstanceHostInfoURL     string                      `mapconv:"Instance.Host.InfoURL"`
 		InstanceStatus          types.EServerInstanceStatus `mapconv:"Instance.Status"`
@@ -10918,7 +10787,6 @@ func (o *MobileGateway) setDefaults() interface{} {
 		Class:                   o.Class,
 		IconID:                  o.IconID,
 		CreatedAt:               o.CreatedAt,
-		PlanID:                  o.PlanID,
 		InstanceHostName:        o.InstanceHostName,
 		InstanceHostInfoURL:     o.InstanceHostInfoURL,
 		InstanceStatus:          o.InstanceStatus,
@@ -11028,16 +10896,6 @@ func (o *MobileGateway) GetCreatedAt() time.Time {
 // SetCreatedAt sets value to CreatedAt
 func (o *MobileGateway) SetCreatedAt(v time.Time) {
 	o.CreatedAt = v
-}
-
-// GetPlanID returns value of PlanID
-func (o *MobileGateway) GetPlanID() types.ID {
-	return o.PlanID
-}
-
-// SetPlanID sets value to PlanID
-func (o *MobileGateway) SetPlanID(v types.ID) {
-	o.PlanID = v
 }
 
 // GetInstanceHostName returns value of InstanceHostName
@@ -11577,11 +11435,8 @@ func (o *MobileGatewayStaticRoute) SetNextHop(v string) {
 
 // MobileGatewayCreateRequest represents API parameter/response structure
 type MobileGatewayCreateRequest struct {
-	Class       string   `mapconv:",default=mobilegateway"`
-	SwitchID    string   `mapconv:"Remark.Switch.Scope,default=shared"`
-	PlanID      types.ID `mapconv:"Remark.Plan.ID/Plan.ID"`
-	Name        string   `validate:"required"`
-	Description string   `validate:"min=0,max=512"`
+	Name        string `validate:"required"`
+	Description string `validate:"min=0,max=512"`
 	Tags        []string
 	IconID      types.ID                    `mapconv:"Icon.ID"`
 	Settings    *MobileGatewaySettingCreate `json:",omitempty" mapconv:",omitempty,recursive"`
@@ -11595,54 +11450,24 @@ func (o *MobileGatewayCreateRequest) Validate() error {
 // setDefaults implements sacloud.argumentDefaulter
 func (o *MobileGatewayCreateRequest) setDefaults() interface{} {
 	return &struct {
-		Class       string   `mapconv:",default=mobilegateway"`
-		SwitchID    string   `mapconv:"Remark.Switch.Scope,default=shared"`
-		PlanID      types.ID `mapconv:"Remark.Plan.ID/Plan.ID"`
-		Name        string   `validate:"required"`
-		Description string   `validate:"min=0,max=512"`
+		Name        string `validate:"required"`
+		Description string `validate:"min=0,max=512"`
 		Tags        []string
 		IconID      types.ID                    `mapconv:"Icon.ID"`
 		Settings    *MobileGatewaySettingCreate `json:",omitempty" mapconv:",omitempty,recursive"`
+		Class       string
+		PlanID      types.ID `mapconv:"Remark.Plan.ID/Plan.ID"`
+		SwitchID    string   `mapconv:"Remark.Switch.Scope"`
 	}{
-		Class:       o.Class,
-		SwitchID:    o.SwitchID,
-		PlanID:      o.PlanID,
 		Name:        o.Name,
 		Description: o.Description,
 		Tags:        o.Tags,
 		IconID:      o.IconID,
 		Settings:    o.Settings,
+		Class:       "mobilegateway",
+		PlanID:      types.ID(1),
+		SwitchID:    "shared",
 	}
-}
-
-// GetClass returns value of Class
-func (o *MobileGatewayCreateRequest) GetClass() string {
-	return o.Class
-}
-
-// SetClass sets value to Class
-func (o *MobileGatewayCreateRequest) SetClass(v string) {
-	o.Class = v
-}
-
-// GetSwitchID returns value of SwitchID
-func (o *MobileGatewayCreateRequest) GetSwitchID() string {
-	return o.SwitchID
-}
-
-// SetSwitchID sets value to SwitchID
-func (o *MobileGatewayCreateRequest) SetSwitchID(v string) {
-	o.SwitchID = v
-}
-
-// GetPlanID returns value of PlanID
-func (o *MobileGatewayCreateRequest) GetPlanID() types.ID {
-	return o.PlanID
-}
-
-// SetPlanID sets value to PlanID
-func (o *MobileGatewayCreateRequest) SetPlanID(v types.ID) {
-	o.PlanID = v
 }
 
 // GetName returns value of Name
@@ -12819,7 +12644,6 @@ func (o *NFS) SetModifiedAt(v time.Time) {
 
 // NFSCreateRequest represents API parameter/response structure
 type NFSCreateRequest struct {
-	Class          string   `mapconv:",default=nfs"`
 	SwitchID       types.ID `mapconv:"Remark.Switch.ID"`
 	PlanID         types.ID `mapconv:"Remark.Plan.ID/Plan.ID"`
 	IPAddresses    []string `mapconv:"Remark.[]Servers.IPAddress" validate:"min=1,max=2,dive,ipv4"`
@@ -12839,7 +12663,6 @@ func (o *NFSCreateRequest) Validate() error {
 // setDefaults implements sacloud.argumentDefaulter
 func (o *NFSCreateRequest) setDefaults() interface{} {
 	return &struct {
-		Class          string   `mapconv:",default=nfs"`
 		SwitchID       types.ID `mapconv:"Remark.Switch.ID"`
 		PlanID         types.ID `mapconv:"Remark.Plan.ID/Plan.ID"`
 		IPAddresses    []string `mapconv:"Remark.[]Servers.IPAddress" validate:"min=1,max=2,dive,ipv4"`
@@ -12849,8 +12672,8 @@ func (o *NFSCreateRequest) setDefaults() interface{} {
 		Description    string   `validate:"min=0,max=512"`
 		Tags           []string
 		IconID         types.ID `mapconv:"Icon.ID"`
+		Class          string
 	}{
-		Class:          o.Class,
 		SwitchID:       o.SwitchID,
 		PlanID:         o.PlanID,
 		IPAddresses:    o.IPAddresses,
@@ -12860,17 +12683,8 @@ func (o *NFSCreateRequest) setDefaults() interface{} {
 		Description:    o.Description,
 		Tags:           o.Tags,
 		IconID:         o.IconID,
+		Class:          "nfs",
 	}
-}
-
-// GetClass returns value of Class
-func (o *NFSCreateRequest) GetClass() string {
-	return o.Class
-}
-
-// SetClass sets value to Class
-func (o *NFSCreateRequest) SetClass(v string) {
-	o.Class = v
 }
 
 // GetSwitchID returns value of SwitchID
@@ -14332,7 +14146,6 @@ type ProxyLB struct {
 	IconID         types.ID `mapconv:"Icon.ID"`
 	CreatedAt      time.Time
 	ModifiedAt     time.Time
-	Class          string                `mapconv:"Provider.Class,default=proxylb"`
 	Plan           types.EProxyLBPlan    `mapconv:"ServiceClass"`
 	HealthCheck    *ProxyLBHealthCheck   `mapconv:"Settings.ProxyLB.HealthCheck,recursive"`
 	SorryServer    *ProxyLBSorryServer   `mapconv:"Settings.ProxyLB.SorryServer,recursive"`
@@ -14363,7 +14176,6 @@ func (o *ProxyLB) setDefaults() interface{} {
 		IconID         types.ID `mapconv:"Icon.ID"`
 		CreatedAt      time.Time
 		ModifiedAt     time.Time
-		Class          string                `mapconv:"Provider.Class,default=proxylb"`
 		Plan           types.EProxyLBPlan    `mapconv:"ServiceClass"`
 		HealthCheck    *ProxyLBHealthCheck   `mapconv:"Settings.ProxyLB.HealthCheck,recursive"`
 		SorryServer    *ProxyLBSorryServer   `mapconv:"Settings.ProxyLB.SorryServer,recursive"`
@@ -14385,7 +14197,6 @@ func (o *ProxyLB) setDefaults() interface{} {
 		IconID:         o.IconID,
 		CreatedAt:      o.CreatedAt,
 		ModifiedAt:     o.ModifiedAt,
-		Class:          o.Class,
 		Plan:           o.Plan,
 		HealthCheck:    o.HealthCheck,
 		SorryServer:    o.SorryServer,
@@ -14499,16 +14310,6 @@ func (o *ProxyLB) GetModifiedAt() time.Time {
 // SetModifiedAt sets value to ModifiedAt
 func (o *ProxyLB) SetModifiedAt(v time.Time) {
 	o.ModifiedAt = v
-}
-
-// GetClass returns value of Class
-func (o *ProxyLB) GetClass() string {
-	return o.Class
-}
-
-// SetClass sets value to Class
-func (o *ProxyLB) SetClass(v string) {
-	o.Class = v
 }
 
 // GetPlan returns value of Plan
@@ -14965,7 +14766,6 @@ func (o *ProxyLBStickySession) SetEnabled(v bool) {
 
 // ProxyLBCreateRequest represents API parameter/response structure
 type ProxyLBCreateRequest struct {
-	Class          string                `mapconv:"Provider.Class,default=proxylb"`
 	Plan           types.EProxyLBPlan    `mapconv:"ServiceClass"`
 	HealthCheck    *ProxyLBHealthCheck   `mapconv:"Settings.ProxyLB.HealthCheck,recursive"`
 	SorryServer    *ProxyLBSorryServer   `mapconv:"Settings.ProxyLB.SorryServer,recursive"`
@@ -14989,7 +14789,6 @@ func (o *ProxyLBCreateRequest) Validate() error {
 // setDefaults implements sacloud.argumentDefaulter
 func (o *ProxyLBCreateRequest) setDefaults() interface{} {
 	return &struct {
-		Class          string                `mapconv:"Provider.Class,default=proxylb"`
 		Plan           types.EProxyLBPlan    `mapconv:"ServiceClass"`
 		HealthCheck    *ProxyLBHealthCheck   `mapconv:"Settings.ProxyLB.HealthCheck,recursive"`
 		SorryServer    *ProxyLBSorryServer   `mapconv:"Settings.ProxyLB.SorryServer,recursive"`
@@ -15003,8 +14802,8 @@ func (o *ProxyLBCreateRequest) setDefaults() interface{} {
 		Description    string                `validate:"min=0,max=512"`
 		Tags           []string
 		IconID         types.ID `mapconv:"Icon.ID"`
+		Class          string   `mapconv:"Provider.Class"`
 	}{
-		Class:          o.Class,
 		Plan:           o.Plan,
 		HealthCheck:    o.HealthCheck,
 		SorryServer:    o.SorryServer,
@@ -15018,17 +14817,8 @@ func (o *ProxyLBCreateRequest) setDefaults() interface{} {
 		Description:    o.Description,
 		Tags:           o.Tags,
 		IconID:         o.IconID,
+		Class:          "proxylb",
 	}
-}
-
-// GetClass returns value of Class
-func (o *ProxyLBCreateRequest) GetClass() string {
-	return o.Class
-}
-
-// SetClass sets value to Class
-func (o *ProxyLBCreateRequest) SetClass(v string) {
-	o.Class = v
 }
 
 // GetPlan returns value of Plan
@@ -17585,7 +17375,6 @@ type SIMCreateRequest struct {
 	Description string `validate:"min=0,max=512"`
 	Tags        []string
 	IconID      types.ID `mapconv:"Icon.ID"`
-	Class       string   `mapconv:"Provider.Class,default=sim"`
 	ICCID       string   `mapconv:"Status.ICCID" validate:"numeric"`
 	PassCode    string   `mapconv:"Remark.PassCode"`
 }
@@ -17602,17 +17391,17 @@ func (o *SIMCreateRequest) setDefaults() interface{} {
 		Description string `validate:"min=0,max=512"`
 		Tags        []string
 		IconID      types.ID `mapconv:"Icon.ID"`
-		Class       string   `mapconv:"Provider.Class,default=sim"`
 		ICCID       string   `mapconv:"Status.ICCID" validate:"numeric"`
 		PassCode    string   `mapconv:"Remark.PassCode"`
+		Class       string   `mapconv:"Provider.Class"`
 	}{
 		Name:        o.Name,
 		Description: o.Description,
 		Tags:        o.Tags,
 		IconID:      o.IconID,
-		Class:       o.Class,
 		ICCID:       o.ICCID,
 		PassCode:    o.PassCode,
+		Class:       "sim",
 	}
 }
 
@@ -17654,16 +17443,6 @@ func (o *SIMCreateRequest) GetIconID() types.ID {
 // SetIconID sets value to IconID
 func (o *SIMCreateRequest) SetIconID(v types.ID) {
 	o.IconID = v
-}
-
-// GetClass returns value of Class
-func (o *SIMCreateRequest) GetClass() string {
-	return o.Class
-}
-
-// SetClass sets value to Class
-func (o *SIMCreateRequest) SetClass(v string) {
-	o.Class = v
 }
 
 // GetICCID returns value of ICCID
@@ -18074,7 +17853,7 @@ type SimpleMonitor struct {
 	IconID             types.ID `mapconv:"Icon.ID"`
 	CreatedAt          time.Time
 	ModifiedAt         time.Time
-	Class              string `mapconv:"Provider.Class,default=simplemon"`
+	Class              string
 	Target             string `mapconv:"Status.Target"`
 	SettingsHash       string
 	DelayLoop          int                       `mapconv:"Settings.SimpleMonitor.DelayLoop,default=60" validate:"min=60,max=3600"`
@@ -18102,7 +17881,7 @@ func (o *SimpleMonitor) setDefaults() interface{} {
 		IconID             types.ID `mapconv:"Icon.ID"`
 		CreatedAt          time.Time
 		ModifiedAt         time.Time
-		Class              string `mapconv:"Provider.Class,default=simplemon"`
+		Class              string
 		Target             string `mapconv:"Status.Target"`
 		SettingsHash       string
 		DelayLoop          int                       `mapconv:"Settings.SimpleMonitor.DelayLoop,default=60" validate:"min=60,max=3600"`
@@ -18542,7 +18321,6 @@ func (o *SimpleMonitorHealthCheck) SetRemainingDays(v int) {
 
 // SimpleMonitorCreateRequest represents API parameter/response structure
 type SimpleMonitorCreateRequest struct {
-	Class              string                    `mapconv:"Provider.Class,default=simplemon"`
 	Target             string                    `mapconv:"Name/Status.Target" validate:"required"`
 	DelayLoop          int                       `mapconv:"Settings.SimpleMonitor.DelayLoop,default=60" validate:"min=60,max=3600"`
 	Enabled            types.StringFlag          `mapconv:"Settings.SimpleMonitor.Enabled"`
@@ -18564,7 +18342,6 @@ func (o *SimpleMonitorCreateRequest) Validate() error {
 // setDefaults implements sacloud.argumentDefaulter
 func (o *SimpleMonitorCreateRequest) setDefaults() interface{} {
 	return &struct {
-		Class              string                    `mapconv:"Provider.Class,default=simplemon"`
 		Target             string                    `mapconv:"Name/Status.Target" validate:"required"`
 		DelayLoop          int                       `mapconv:"Settings.SimpleMonitor.DelayLoop,default=60" validate:"min=60,max=3600"`
 		Enabled            types.StringFlag          `mapconv:"Settings.SimpleMonitor.Enabled"`
@@ -18576,8 +18353,8 @@ func (o *SimpleMonitorCreateRequest) setDefaults() interface{} {
 		Description        string                    `validate:"min=0,max=512"`
 		Tags               []string
 		IconID             types.ID `mapconv:"Icon.ID"`
+		Class              string   `mapconv:"Provider.Class"`
 	}{
-		Class:              o.Class,
 		Target:             o.Target,
 		DelayLoop:          o.DelayLoop,
 		Enabled:            o.Enabled,
@@ -18589,17 +18366,8 @@ func (o *SimpleMonitorCreateRequest) setDefaults() interface{} {
 		Description:        o.Description,
 		Tags:               o.Tags,
 		IconID:             o.IconID,
+		Class:              "simplemon",
 	}
-}
-
-// GetClass returns value of Class
-func (o *SimpleMonitorCreateRequest) GetClass() string {
-	return o.Class
-}
-
-// SetClass sets value to Class
-func (o *SimpleMonitorCreateRequest) SetClass(v string) {
-	o.Class = v
 }
 
 // GetTarget returns value of Target
@@ -21476,7 +21244,6 @@ func (o *VPCRouterInterface) SetIndex(v int) {
 
 // VPCRouterCreateRequest represents API parameter/response structure
 type VPCRouterCreateRequest struct {
-	Class       string `mapconv:",default=vpcrouter"`
 	Name        string `validate:"required"`
 	Description string `validate:"min=0,max=512"`
 	Tags        []string
@@ -21495,7 +21262,6 @@ func (o *VPCRouterCreateRequest) Validate() error {
 // setDefaults implements sacloud.argumentDefaulter
 func (o *VPCRouterCreateRequest) setDefaults() interface{} {
 	return &struct {
-		Class       string `mapconv:",default=vpcrouter"`
 		Name        string `validate:"required"`
 		Description string `validate:"min=0,max=512"`
 		Tags        []string
@@ -21504,8 +21270,8 @@ func (o *VPCRouterCreateRequest) setDefaults() interface{} {
 		Switch      *ApplianceConnectedSwitch `json:",omitempty" mapconv:"Remark.Switch,recursive"`
 		IPAddresses []string                  `mapconv:"Remark.[]Servers.IPAddress" validate:"min=1,max=2,dive,ipv4"`
 		Settings    *VPCRouterSetting         `mapconv:",omitempty,recursive"`
+		Class       string
 	}{
-		Class:       o.Class,
 		Name:        o.Name,
 		Description: o.Description,
 		Tags:        o.Tags,
@@ -21514,17 +21280,8 @@ func (o *VPCRouterCreateRequest) setDefaults() interface{} {
 		Switch:      o.Switch,
 		IPAddresses: o.IPAddresses,
 		Settings:    o.Settings,
+		Class:       "vpcrouter",
 	}
-}
-
-// GetClass returns value of Class
-func (o *VPCRouterCreateRequest) GetClass() string {
-	return o.Class
-}
-
-// SetClass sets value to Class
-func (o *VPCRouterCreateRequest) SetClass(v string) {
-	o.Class = v
 }
 
 // GetName returns value of Name

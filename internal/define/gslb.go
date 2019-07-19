@@ -51,7 +51,6 @@ var (
 			fields.IconID(),
 			fields.CreatedAt(),
 			fields.ModifiedAt(),
-			fields.GSLBProviderClass(),
 			fields.SettingsHash(),
 			fields.GSLBFQDN(),
 			// settings
@@ -70,9 +69,17 @@ var (
 	gslbCreateParam = &dsl.Model{
 		Name:      names.CreateParameterName(gslbAPIName),
 		NakedType: gslbNakedType,
+		ConstFields: []*dsl.ConstFieldDesc{
+			{
+				Name: "Class",
+				Type: meta.TypeString,
+				Tags: &dsl.FieldTags{
+					MapConv: "Provider.Class",
+				},
+				Value: `"gslb"`,
+			},
+		},
 		Fields: []*dsl.FieldDesc{
-			fields.GSLBProviderClass(),
-
 			fields.GSLBHealthCheckProtocol(),
 			fields.GSLBHealthCheckHostHeader(),
 			fields.GSLBHealthCheckPath(),

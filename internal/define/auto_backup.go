@@ -50,10 +50,8 @@ var (
 			fields.IconID(),
 			fields.CreatedAt(),
 			fields.ModifiedAt(),
-			fields.AutoBackupProviderClass(),
 
 			// settings
-			fields.AutoBackupBackupSpanType(),
 			fields.AutoBackupBackupSpanWeekDays(),
 			fields.AutoBackupMaximumNumberOfArchives(),
 			fields.SettingsHash(),
@@ -69,13 +67,30 @@ var (
 	autoBackupCreateParam = &dsl.Model{
 		Name:      names.CreateParameterName(autoBackupAPIName),
 		NakedType: autoBackupNakedType,
+		ConstFields: []*dsl.ConstFieldDesc{
+			{
+				Name: "Class",
+				Type: meta.TypeString,
+				Tags: &dsl.FieldTags{
+					MapConv: "Provider.Class",
+				},
+				Value: `"autobackup"`,
+			},
+			{
+				Name: "BackupSpanType",
+				Type: meta.TypeBackupSpanType,
+				Tags: &dsl.FieldTags{
+					MapConv: "Settings.Autobackup.BackupSpanType",
+				},
+				Value: `types.BackupSpanTypes.Weekdays`,
+			},
+		},
+
 		Fields: []*dsl.FieldDesc{
 			// creation time only
-			fields.AutoBackupProviderClass(),
 			fields.AutoBackupDiskID(),
 
 			// backup setting
-			fields.AutoBackupBackupSpanType(),
 			fields.AutoBackupBackupSpanWeekDays(),
 			fields.AutoBackupMaximumNumberOfArchives(),
 
@@ -90,9 +105,18 @@ var (
 	autoBackupUpdateParam = &dsl.Model{
 		Name:      names.UpdateParameterName(autoBackupAPIName),
 		NakedType: autoBackupNakedType,
+		ConstFields: []*dsl.ConstFieldDesc{
+			{
+				Name: "BackupSpanType",
+				Type: meta.TypeBackupSpanType,
+				Tags: &dsl.FieldTags{
+					MapConv: "Settings.Autobackup.BackupSpanType",
+				},
+				Value: `types.BackupSpanTypes.Weekdays`,
+			},
+		},
 		Fields: []*dsl.FieldDesc{
 			// backup setting
-			fields.AutoBackupBackupSpanType(),
 			fields.AutoBackupBackupSpanWeekDays(),
 			fields.AutoBackupMaximumNumberOfArchives(),
 

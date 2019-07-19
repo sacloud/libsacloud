@@ -549,16 +549,6 @@ func (f *fieldsDef) ApplianceSwitchID() *dsl.FieldDesc {
 	}
 }
 
-func (f *fieldsDef) ApplianceSwitchShared() *dsl.FieldDesc {
-	return &dsl.FieldDesc{
-		Name: "SwitchID",
-		Tags: &dsl.FieldTags{
-			MapConv: "Remark.Switch.Scope,default=shared",
-		},
-		Type: meta.TypeString,
-	}
-}
-
 func (f *fieldsDef) ApplianceIPAddress() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "IPAddress",
@@ -690,56 +680,6 @@ func (f *fieldsDef) Class() *dsl.FieldDesc {
 	}
 }
 
-func (f *fieldsDef) NFSClass() *dsl.FieldDesc {
-	return &dsl.FieldDesc{
-		Name: "Class",
-		Type: meta.TypeString,
-		Tags: &dsl.FieldTags{
-			MapConv: ",default=nfs",
-		},
-	}
-}
-
-func (f *fieldsDef) LoadBalancerClass() *dsl.FieldDesc {
-	return &dsl.FieldDesc{
-		Name: "Class",
-		Type: meta.TypeString,
-		Tags: &dsl.FieldTags{
-			MapConv: ",default=loadbalancer",
-		},
-	}
-}
-
-func (f *fieldsDef) VPCRouterClass() *dsl.FieldDesc {
-	return &dsl.FieldDesc{
-		Name: "Class",
-		Type: meta.TypeString,
-		Tags: &dsl.FieldTags{
-			MapConv: ",default=vpcrouter",
-		},
-	}
-}
-
-func (f *fieldsDef) MobileGatewayClass() *dsl.FieldDesc {
-	return &dsl.FieldDesc{
-		Name: "Class",
-		Type: meta.TypeString,
-		Tags: &dsl.FieldTags{
-			MapConv: ",default=mobilegateway",
-		},
-	}
-}
-
-func (f *fieldsDef) SIMProviderClass() *dsl.FieldDesc {
-	return &dsl.FieldDesc{
-		Name: "Class",
-		Type: meta.TypeString,
-		Tags: &dsl.FieldTags{
-			MapConv: "Provider.Class,default=sim",
-		},
-	}
-}
-
 func (f *fieldsDef) SIMICCID() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "ICCID",
@@ -757,16 +697,6 @@ func (f *fieldsDef) SIMPassCode() *dsl.FieldDesc {
 		Type: meta.TypeString,
 		Tags: &dsl.FieldTags{
 			MapConv: "Remark.PassCode",
-		},
-	}
-}
-
-func (f *fieldsDef) GSLBProviderClass() *dsl.FieldDesc {
-	return &dsl.FieldDesc{
-		Name: "Class",
-		Type: meta.TypeString,
-		Tags: &dsl.FieldTags{
-			MapConv: "Provider.Class,default=gslb",
 		},
 	}
 }
@@ -894,26 +824,6 @@ func (f *fieldsDef) GSLBSorryServer() *dsl.FieldDesc {
 	}
 }
 
-func (f *fieldsDef) AutoBackupProviderClass() *dsl.FieldDesc {
-	return &dsl.FieldDesc{
-		Name: "Class",
-		Type: meta.TypeString,
-		Tags: &dsl.FieldTags{
-			MapConv: "Provider.Class,default=autobackup",
-		},
-	}
-}
-
-func (f *fieldsDef) AutoBackupBackupSpanType() *dsl.FieldDesc {
-	return &dsl.FieldDesc{
-		Name: "BackupSpanType",
-		Type: meta.TypeBackupSpanType,
-		Tags: &dsl.FieldTags{
-			MapConv: "Settings.Autobackup.BackupSpanType,default=weekdays",
-		},
-	}
-}
-
 func (f *fieldsDef) AutoBackupBackupSpanWeekDays() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "BackupSpanWeekdays",
@@ -974,16 +884,6 @@ func (f *fieldsDef) AutoBackupZoneName() *dsl.FieldDesc {
 	}
 }
 
-func (f *fieldsDef) DNSProviderClass() *dsl.FieldDesc {
-	return &dsl.FieldDesc{
-		Name: "Class",
-		Type: meta.TypeString,
-		Tags: &dsl.FieldTags{
-			MapConv: "Provider.Class,default=dns",
-		},
-	}
-}
-
 func (f *fieldsDef) DNSRecords() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "Records",
@@ -1032,16 +932,6 @@ func (f *fieldsDef) DNSNameServers() *dsl.FieldDesc {
 		Type: meta.TypeStringSlice,
 		Tags: &dsl.FieldTags{
 			MapConv: "Status.NS",
-		},
-	}
-}
-
-func (f *fieldsDef) SimpleMonitorProviderClass() *dsl.FieldDesc {
-	return &dsl.FieldDesc{
-		Name: "Class",
-		Type: meta.TypeString,
-		Tags: &dsl.FieldTags{
-			MapConv: "Provider.Class,default=simplemon",
 		},
 	}
 }
@@ -1193,16 +1083,6 @@ func (f *fieldsDef) ProxyLBPlan() *dsl.FieldDesc {
 		Type: meta.Static(types.EProxyLBPlan(0)),
 		Tags: &dsl.FieldTags{
 			MapConv: "ServiceClass",
-		},
-	}
-}
-
-func (f *fieldsDef) ProxyLBProviderClass() *dsl.FieldDesc {
-	return &dsl.FieldDesc{
-		Name: "Class",
-		Type: meta.TypeString,
-		Tags: &dsl.FieldTags{
-			MapConv: "Provider.Class,default=proxylb",
 		},
 	}
 }
@@ -1875,16 +1755,6 @@ func (f *fieldsDef) DatabaseSettingsReplication() *dsl.FieldDesc {
 		},
 		Tags: &dsl.FieldTags{
 			MapConv: "Settings.DBConf.Replication,recursive",
-		},
-	}
-}
-
-func (f *fieldsDef) DatabaseClass() *dsl.FieldDesc {
-	return &dsl.FieldDesc{
-		Name: "Class",
-		Type: meta.TypeString,
-		Tags: &dsl.FieldTags{
-			MapConv: ",default=database",
 		},
 	}
 }
