@@ -53,6 +53,25 @@ func (o *{{ .Name}}) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter 
+func (o *{{.Name}}) setDefaults() interface{} {
+	return &struct {
+	{{- range .Fields }}
+	{{.Name}} {{.TypeName}} {{if .HasTag }}` + "`" + `{{.TagString}}` + "`" + `{{end}}
+	{{- end }}
+	{{- range .ConstFields }}
+	{{.Name}} {{.TypeName}} {{if .HasTag }}` + "`" + `{{.TagString}}` + "`" + `{{end}}
+	{{- end }}
+	} {
+	{{- range .Fields }}
+	{{.Name}}: o.{{.Name}},
+	{{- end }}
+	{{- range .ConstFields }}
+	{{.Name}}: {{.Value}},
+	{{- end }}
+	}
+}
+
 {{- $struct := .Name -}}
 {{- range .Accessors }}
 // {{.Name}} {{.Description}} 
