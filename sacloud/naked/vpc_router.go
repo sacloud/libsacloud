@@ -62,7 +62,7 @@ type VPCRouterInterface struct {
 	// Index 仮想フィールド、VPCルータなどでInterfaces(実体は[]*Interface)を扱う場合にUnmarshalJSONの中で設定される
 	//
 	// Findした際のAPIからの応答にも同名のフィールドが含まれるが無関係。
-	Index int `json:"-" yaml:"-" structs:"-"`
+	Index int
 }
 
 // VPCRouterInterfaces Interface配列
@@ -81,7 +81,9 @@ func (i *VPCRouterInterfaces) UnmarshalJSON(b []byte) error {
 	var dest []*VPCRouterInterface
 	for i, v := range a {
 		if v != nil {
-			v.Index = i
+			if v.Index == 0 {
+				v.Index = i
+			}
 			dest = append(dest, v)
 		}
 	}
@@ -99,7 +101,7 @@ func (i *VPCRouterInterfaces) MarshalJSON() ([]byte, error) {
 		}
 	}
 
-	var dest = make([]*VPCRouterInterface, max)
+	var dest = make([]*VPCRouterInterface, max+1)
 	for _, iface := range *i {
 		dest[iface.Index] = iface
 	}
@@ -107,15 +109,22 @@ func (i *VPCRouterInterfaces) MarshalJSON() ([]byte, error) {
 	return json.Marshal(dest)
 }
 
-// UnmarshalJSON JSON
-func (i *VPCRouterInterface) UnmarshalJSON(b []byte) error {
-	type alias VPCRouterInterface
-	var a alias
-	if err := json.Unmarshal(b, &a); err != nil {
-		return err
+// MarshalJSON JSON
+func (i *VPCRouterInterface) MarshalJSON() ([]byte, error) {
+	type alias struct {
+		IPAddress        []string `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
+		VirtualIPAddress string   `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
+		IPAliases        []string `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
+		NetworkMaskLen   int      `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
 	}
-	*i = VPCRouterInterface(a)
-	return nil
+
+	tmp := alias{
+		IPAddress:        i.IPAddress,
+		VirtualIPAddress: i.VirtualIPAddress,
+		IPAliases:        i.IPAliases,
+		NetworkMaskLen:   i.NetworkMaskLen,
+	}
+	return json.Marshal(tmp)
 }
 
 // VPCRouterStaticNAT スタティックNAT

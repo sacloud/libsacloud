@@ -3,6 +3,7 @@ package types
 import (
 	"encoding/json"
 	"fmt"
+	"strconv"
 )
 
 // StringNumber 数値型を文字列で表す型
@@ -51,4 +52,14 @@ func (n StringNumber) Int() int {
 // Int64 returns the number as an int64.
 func (n StringNumber) Int64() int64 {
 	return int64(n)
+}
+
+// ParseStringNumber 文字列からStringNumberへの変換
+func ParseStringNumber(s string) (StringNumber, error) {
+	n, err := strconv.ParseInt(s, 10, 64)
+	if err != nil {
+		return StringNumber(0), err
+	}
+	return StringNumber(n), nil
+
 }

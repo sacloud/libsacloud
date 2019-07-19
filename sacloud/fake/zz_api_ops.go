@@ -74,6 +74,9 @@ func SwitchFactoryFuncToFake() {
 	sacloud.SetClientFactoryFunc(ResourceLoadBalancer, func(caller sacloud.APICaller) interface{} {
 		return NewLoadBalancerOp()
 	})
+	sacloud.SetClientFactoryFunc(ResourceMobileGateway, func(caller sacloud.APICaller) interface{} {
+		return NewMobileGatewayOp()
+	})
 	sacloud.SetClientFactoryFunc(ResourceNFS, func(caller sacloud.APICaller) interface{} {
 		return NewNFSOp()
 	})
@@ -476,6 +479,22 @@ type LoadBalancerOp struct {
 func NewLoadBalancerOp() sacloud.LoadBalancerAPI {
 	return &LoadBalancerOp{
 		key: ResourceLoadBalancer,
+	}
+}
+
+/*************************************************
+* MobileGatewayOp
+*************************************************/
+
+// MobileGatewayOp is fake implementation of MobileGatewayAPI interface
+type MobileGatewayOp struct {
+	key string
+}
+
+// NewMobileGatewayOp creates new MobileGatewayOp instance
+func NewMobileGatewayOp() sacloud.MobileGatewayAPI {
+	return &MobileGatewayOp{
+		key: ResourceMobileGateway,
 	}
 }
 

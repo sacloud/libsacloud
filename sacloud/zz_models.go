@@ -5900,7 +5900,7 @@ func (o *GSLB) SetDestinationServers(v []*GSLBServer) {
 type GSLBServer struct {
 	IPAddress string `validate:"ipv4"`
 	Enabled   types.StringFlag
-	Weight    types.StringNumber `mapconv:",default=1"`
+	Weight    types.StringNumber
 }
 
 // Validate validates by field tags
@@ -8890,6 +8890,1345 @@ func (o *LoadBalancerServerStatus) GetCPS() types.StringNumber {
 // SetCPS sets value to CPS
 func (o *LoadBalancerServerStatus) SetCPS(v types.StringNumber) {
 	o.CPS = v
+}
+
+/*************************************************
+* MobileGateway
+*************************************************/
+
+// MobileGateway represents API parameter/response structure
+type MobileGateway struct {
+	ID                      types.ID
+	Name                    string `validate:"required"`
+	Description             string `validate:"min=0,max=512"`
+	Tags                    []string
+	Availability            types.EAvailability
+	Class                   string
+	IconID                  types.ID `mapconv:"Icon.ID"`
+	CreatedAt               time.Time
+	PlanID                  types.ID                    `mapconv:"Remark.Plan.ID/Plan.ID"`
+	InstanceHostName        string                      `mapconv:"Instance.Host.Name"`
+	InstanceHostInfoURL     string                      `mapconv:"Instance.Host.InfoURL"`
+	InstanceStatus          types.EServerInstanceStatus `mapconv:"Instance.Status"`
+	InstanceStatusChangedAt time.Time                   `mapconv:"Instance.StatusChangedAt"`
+	Interfaces              []*MobileGatewayInterface   `json:",omitempty" mapconv:"[]Interfaces,recursive,omitempty"`
+	ZoneID                  types.ID                    `mapconv:"Remark.Zone.ID"`
+	Settings                *MobileGatewaySetting       `mapconv:",omitempty,recursive"`
+	SettingsHash            string
+}
+
+// Validate validates by field tags
+func (o *MobileGateway) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetID returns value of ID
+func (o *MobileGateway) GetID() types.ID {
+	return o.ID
+}
+
+// SetID sets value to ID
+func (o *MobileGateway) SetID(v types.ID) {
+	o.ID = v
+}
+
+// GetStringID gets value to StringID
+func (o *MobileGateway) GetStringID() string {
+	return accessor.GetStringID(o)
+}
+
+// SetStringID sets value to StringID
+func (o *MobileGateway) SetStringID(v string) {
+	accessor.SetStringID(o, v)
+}
+
+// GetInt64ID gets value to Int64ID
+func (o *MobileGateway) GetInt64ID() int64 {
+	return accessor.GetInt64ID(o)
+}
+
+// SetInt64ID sets value to Int64ID
+func (o *MobileGateway) SetInt64ID(v int64) {
+	accessor.SetInt64ID(o, v)
+}
+
+// GetName returns value of Name
+func (o *MobileGateway) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *MobileGateway) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *MobileGateway) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *MobileGateway) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetTags returns value of Tags
+func (o *MobileGateway) GetTags() []string {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *MobileGateway) SetTags(v []string) {
+	o.Tags = v
+}
+
+// GetAvailability returns value of Availability
+func (o *MobileGateway) GetAvailability() types.EAvailability {
+	return o.Availability
+}
+
+// SetAvailability sets value to Availability
+func (o *MobileGateway) SetAvailability(v types.EAvailability) {
+	o.Availability = v
+}
+
+// GetClass returns value of Class
+func (o *MobileGateway) GetClass() string {
+	return o.Class
+}
+
+// SetClass sets value to Class
+func (o *MobileGateway) SetClass(v string) {
+	o.Class = v
+}
+
+// GetIconID returns value of IconID
+func (o *MobileGateway) GetIconID() types.ID {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *MobileGateway) SetIconID(v types.ID) {
+	o.IconID = v
+}
+
+// GetCreatedAt returns value of CreatedAt
+func (o *MobileGateway) GetCreatedAt() time.Time {
+	return o.CreatedAt
+}
+
+// SetCreatedAt sets value to CreatedAt
+func (o *MobileGateway) SetCreatedAt(v time.Time) {
+	o.CreatedAt = v
+}
+
+// GetPlanID returns value of PlanID
+func (o *MobileGateway) GetPlanID() types.ID {
+	return o.PlanID
+}
+
+// SetPlanID sets value to PlanID
+func (o *MobileGateway) SetPlanID(v types.ID) {
+	o.PlanID = v
+}
+
+// GetInstanceHostName returns value of InstanceHostName
+func (o *MobileGateway) GetInstanceHostName() string {
+	return o.InstanceHostName
+}
+
+// SetInstanceHostName sets value to InstanceHostName
+func (o *MobileGateway) SetInstanceHostName(v string) {
+	o.InstanceHostName = v
+}
+
+// GetInstanceHostInfoURL returns value of InstanceHostInfoURL
+func (o *MobileGateway) GetInstanceHostInfoURL() string {
+	return o.InstanceHostInfoURL
+}
+
+// SetInstanceHostInfoURL sets value to InstanceHostInfoURL
+func (o *MobileGateway) SetInstanceHostInfoURL(v string) {
+	o.InstanceHostInfoURL = v
+}
+
+// GetInstanceStatus returns value of InstanceStatus
+func (o *MobileGateway) GetInstanceStatus() types.EServerInstanceStatus {
+	return o.InstanceStatus
+}
+
+// SetInstanceStatus sets value to InstanceStatus
+func (o *MobileGateway) SetInstanceStatus(v types.EServerInstanceStatus) {
+	o.InstanceStatus = v
+}
+
+// GetInstanceStatusChangedAt returns value of InstanceStatusChangedAt
+func (o *MobileGateway) GetInstanceStatusChangedAt() time.Time {
+	return o.InstanceStatusChangedAt
+}
+
+// SetInstanceStatusChangedAt sets value to InstanceStatusChangedAt
+func (o *MobileGateway) SetInstanceStatusChangedAt(v time.Time) {
+	o.InstanceStatusChangedAt = v
+}
+
+// GetInterfaces returns value of Interfaces
+func (o *MobileGateway) GetInterfaces() []*MobileGatewayInterface {
+	return o.Interfaces
+}
+
+// SetInterfaces sets value to Interfaces
+func (o *MobileGateway) SetInterfaces(v []*MobileGatewayInterface) {
+	o.Interfaces = v
+}
+
+// GetZoneID returns value of ZoneID
+func (o *MobileGateway) GetZoneID() types.ID {
+	return o.ZoneID
+}
+
+// SetZoneID sets value to ZoneID
+func (o *MobileGateway) SetZoneID(v types.ID) {
+	o.ZoneID = v
+}
+
+// GetSettings returns value of Settings
+func (o *MobileGateway) GetSettings() *MobileGatewaySetting {
+	return o.Settings
+}
+
+// SetSettings sets value to Settings
+func (o *MobileGateway) SetSettings(v *MobileGatewaySetting) {
+	o.Settings = v
+}
+
+// GetSettingsHash returns value of SettingsHash
+func (o *MobileGateway) GetSettingsHash() string {
+	return o.SettingsHash
+}
+
+// SetSettingsHash sets value to SettingsHash
+func (o *MobileGateway) SetSettingsHash(v string) {
+	o.SettingsHash = v
+}
+
+/*************************************************
+* MobileGatewayInterface
+*************************************************/
+
+// MobileGatewayInterface represents API parameter/response structure
+type MobileGatewayInterface struct {
+	ID                              types.ID
+	MACAddress                      string
+	IPAddress                       string
+	UserIPAddress                   string
+	HostName                        string
+	SwitchID                        types.ID           `mapconv:"Switch.ID"`
+	SwitchName                      string             `mapconv:"Switch.Name"`
+	SwitchScope                     types.EScope       `mapconv:"Switch.Scope"`
+	UserSubnetDefaultRoute          string             `mapconv:"Switch.UserSubnet.DefaultRoute"`
+	UserSubnetNetworkMaskLen        int                `mapconv:"Switch.UserSubnet.NetworkMaskLen"`
+	SubnetDefaultRoute              string             `mapconv:"Switch.Subnet.DefaultRoute"`
+	SubnetNetworkMaskLen            int                `mapconv:"Switch.Subnet.NetworkMaskLen"`
+	SubnetNetworkAddress            string             `mapconv:"Switch.Subnet.NetworkAddress"`
+	SubnetBandWidthMbps             int                `mapconv:"Switch.Subnet.Internet.BandWidthMbps"`
+	PacketFilterID                  string             `mapconv:"PacketFilter.ID"`
+	PacketFilterName                string             `mapconv:"PacketFilter.Name"`
+	PacketFilterRequiredHostVersion types.StringNumber `mapconv:"PacketFilter.RequiredHostVersionn"`
+	Index                           int                `mapconv:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *MobileGatewayInterface) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetID returns value of ID
+func (o *MobileGatewayInterface) GetID() types.ID {
+	return o.ID
+}
+
+// SetID sets value to ID
+func (o *MobileGatewayInterface) SetID(v types.ID) {
+	o.ID = v
+}
+
+// GetStringID gets value to StringID
+func (o *MobileGatewayInterface) GetStringID() string {
+	return accessor.GetStringID(o)
+}
+
+// SetStringID sets value to StringID
+func (o *MobileGatewayInterface) SetStringID(v string) {
+	accessor.SetStringID(o, v)
+}
+
+// GetInt64ID gets value to Int64ID
+func (o *MobileGatewayInterface) GetInt64ID() int64 {
+	return accessor.GetInt64ID(o)
+}
+
+// SetInt64ID sets value to Int64ID
+func (o *MobileGatewayInterface) SetInt64ID(v int64) {
+	accessor.SetInt64ID(o, v)
+}
+
+// GetMACAddress returns value of MACAddress
+func (o *MobileGatewayInterface) GetMACAddress() string {
+	return o.MACAddress
+}
+
+// SetMACAddress sets value to MACAddress
+func (o *MobileGatewayInterface) SetMACAddress(v string) {
+	o.MACAddress = v
+}
+
+// GetIPAddress returns value of IPAddress
+func (o *MobileGatewayInterface) GetIPAddress() string {
+	return o.IPAddress
+}
+
+// SetIPAddress sets value to IPAddress
+func (o *MobileGatewayInterface) SetIPAddress(v string) {
+	o.IPAddress = v
+}
+
+// GetUserIPAddress returns value of UserIPAddress
+func (o *MobileGatewayInterface) GetUserIPAddress() string {
+	return o.UserIPAddress
+}
+
+// SetUserIPAddress sets value to UserIPAddress
+func (o *MobileGatewayInterface) SetUserIPAddress(v string) {
+	o.UserIPAddress = v
+}
+
+// GetHostName returns value of HostName
+func (o *MobileGatewayInterface) GetHostName() string {
+	return o.HostName
+}
+
+// SetHostName sets value to HostName
+func (o *MobileGatewayInterface) SetHostName(v string) {
+	o.HostName = v
+}
+
+// GetSwitchID returns value of SwitchID
+func (o *MobileGatewayInterface) GetSwitchID() types.ID {
+	return o.SwitchID
+}
+
+// SetSwitchID sets value to SwitchID
+func (o *MobileGatewayInterface) SetSwitchID(v types.ID) {
+	o.SwitchID = v
+}
+
+// GetSwitchName returns value of SwitchName
+func (o *MobileGatewayInterface) GetSwitchName() string {
+	return o.SwitchName
+}
+
+// SetSwitchName sets value to SwitchName
+func (o *MobileGatewayInterface) SetSwitchName(v string) {
+	o.SwitchName = v
+}
+
+// GetSwitchScope returns value of SwitchScope
+func (o *MobileGatewayInterface) GetSwitchScope() types.EScope {
+	return o.SwitchScope
+}
+
+// SetSwitchScope sets value to SwitchScope
+func (o *MobileGatewayInterface) SetSwitchScope(v types.EScope) {
+	o.SwitchScope = v
+}
+
+// GetUserSubnetDefaultRoute returns value of UserSubnetDefaultRoute
+func (o *MobileGatewayInterface) GetUserSubnetDefaultRoute() string {
+	return o.UserSubnetDefaultRoute
+}
+
+// SetUserSubnetDefaultRoute sets value to UserSubnetDefaultRoute
+func (o *MobileGatewayInterface) SetUserSubnetDefaultRoute(v string) {
+	o.UserSubnetDefaultRoute = v
+}
+
+// GetUserSubnetNetworkMaskLen returns value of UserSubnetNetworkMaskLen
+func (o *MobileGatewayInterface) GetUserSubnetNetworkMaskLen() int {
+	return o.UserSubnetNetworkMaskLen
+}
+
+// SetUserSubnetNetworkMaskLen sets value to UserSubnetNetworkMaskLen
+func (o *MobileGatewayInterface) SetUserSubnetNetworkMaskLen(v int) {
+	o.UserSubnetNetworkMaskLen = v
+}
+
+// GetSubnetDefaultRoute returns value of SubnetDefaultRoute
+func (o *MobileGatewayInterface) GetSubnetDefaultRoute() string {
+	return o.SubnetDefaultRoute
+}
+
+// SetSubnetDefaultRoute sets value to SubnetDefaultRoute
+func (o *MobileGatewayInterface) SetSubnetDefaultRoute(v string) {
+	o.SubnetDefaultRoute = v
+}
+
+// GetSubnetNetworkMaskLen returns value of SubnetNetworkMaskLen
+func (o *MobileGatewayInterface) GetSubnetNetworkMaskLen() int {
+	return o.SubnetNetworkMaskLen
+}
+
+// SetSubnetNetworkMaskLen sets value to SubnetNetworkMaskLen
+func (o *MobileGatewayInterface) SetSubnetNetworkMaskLen(v int) {
+	o.SubnetNetworkMaskLen = v
+}
+
+// GetSubnetNetworkAddress returns value of SubnetNetworkAddress
+func (o *MobileGatewayInterface) GetSubnetNetworkAddress() string {
+	return o.SubnetNetworkAddress
+}
+
+// SetSubnetNetworkAddress sets value to SubnetNetworkAddress
+func (o *MobileGatewayInterface) SetSubnetNetworkAddress(v string) {
+	o.SubnetNetworkAddress = v
+}
+
+// GetSubnetBandWidthMbps returns value of SubnetBandWidthMbps
+func (o *MobileGatewayInterface) GetSubnetBandWidthMbps() int {
+	return o.SubnetBandWidthMbps
+}
+
+// SetSubnetBandWidthMbps sets value to SubnetBandWidthMbps
+func (o *MobileGatewayInterface) SetSubnetBandWidthMbps(v int) {
+	o.SubnetBandWidthMbps = v
+}
+
+// GetPacketFilterID returns value of PacketFilterID
+func (o *MobileGatewayInterface) GetPacketFilterID() string {
+	return o.PacketFilterID
+}
+
+// SetPacketFilterID sets value to PacketFilterID
+func (o *MobileGatewayInterface) SetPacketFilterID(v string) {
+	o.PacketFilterID = v
+}
+
+// GetPacketFilterName returns value of PacketFilterName
+func (o *MobileGatewayInterface) GetPacketFilterName() string {
+	return o.PacketFilterName
+}
+
+// SetPacketFilterName sets value to PacketFilterName
+func (o *MobileGatewayInterface) SetPacketFilterName(v string) {
+	o.PacketFilterName = v
+}
+
+// GetPacketFilterRequiredHostVersion returns value of PacketFilterRequiredHostVersion
+func (o *MobileGatewayInterface) GetPacketFilterRequiredHostVersion() types.StringNumber {
+	return o.PacketFilterRequiredHostVersion
+}
+
+// SetPacketFilterRequiredHostVersion sets value to PacketFilterRequiredHostVersion
+func (o *MobileGatewayInterface) SetPacketFilterRequiredHostVersion(v types.StringNumber) {
+	o.PacketFilterRequiredHostVersion = v
+}
+
+// GetIndex returns value of Index
+func (o *MobileGatewayInterface) GetIndex() int {
+	return o.Index
+}
+
+// SetIndex sets value to Index
+func (o *MobileGatewayInterface) SetIndex(v int) {
+	o.Index = v
+}
+
+/*************************************************
+* MobileGatewaySetting
+*************************************************/
+
+// MobileGatewaySetting represents API parameter/response structure
+type MobileGatewaySetting struct {
+	Interfaces                      []*MobileGatewayInterfaceSetting `json:",omitempty" mapconv:"MobileGateway.[]Interfaces,omitempty,recursive"`
+	StaticRoute                     []*MobileGatewayStaticRoute      `json:",omitempty" mapconv:"MobileGateway.[]StaticRoutes,omitempty,recursive"`
+	InternetConnectionEnabled       types.StringFlag                 `mapconv:"MobileGateway.InternetConnection.Enabled"`
+	InterDeviceCommunicationEnabled types.StringFlag                 `mapconv:"MobileGateway.InterDeviceCommunication.Enabled"`
+}
+
+// Validate validates by field tags
+func (o *MobileGatewaySetting) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetInterfaces returns value of Interfaces
+func (o *MobileGatewaySetting) GetInterfaces() []*MobileGatewayInterfaceSetting {
+	return o.Interfaces
+}
+
+// SetInterfaces sets value to Interfaces
+func (o *MobileGatewaySetting) SetInterfaces(v []*MobileGatewayInterfaceSetting) {
+	o.Interfaces = v
+}
+
+// GetStaticRoute returns value of StaticRoute
+func (o *MobileGatewaySetting) GetStaticRoute() []*MobileGatewayStaticRoute {
+	return o.StaticRoute
+}
+
+// SetStaticRoute sets value to StaticRoute
+func (o *MobileGatewaySetting) SetStaticRoute(v []*MobileGatewayStaticRoute) {
+	o.StaticRoute = v
+}
+
+// GetInternetConnectionEnabled returns value of InternetConnectionEnabled
+func (o *MobileGatewaySetting) GetInternetConnectionEnabled() types.StringFlag {
+	return o.InternetConnectionEnabled
+}
+
+// SetInternetConnectionEnabled sets value to InternetConnectionEnabled
+func (o *MobileGatewaySetting) SetInternetConnectionEnabled(v types.StringFlag) {
+	o.InternetConnectionEnabled = v
+}
+
+// GetInterDeviceCommunicationEnabled returns value of InterDeviceCommunicationEnabled
+func (o *MobileGatewaySetting) GetInterDeviceCommunicationEnabled() types.StringFlag {
+	return o.InterDeviceCommunicationEnabled
+}
+
+// SetInterDeviceCommunicationEnabled sets value to InterDeviceCommunicationEnabled
+func (o *MobileGatewaySetting) SetInterDeviceCommunicationEnabled(v types.StringFlag) {
+	o.InterDeviceCommunicationEnabled = v
+}
+
+/*************************************************
+* MobileGatewayInterfaceSetting
+*************************************************/
+
+// MobileGatewayInterfaceSetting represents API parameter/response structure
+type MobileGatewayInterfaceSetting struct {
+	IPAddress      []string
+	NetworkMaskLen int
+	Index          int
+}
+
+// Validate validates by field tags
+func (o *MobileGatewayInterfaceSetting) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetIPAddress returns value of IPAddress
+func (o *MobileGatewayInterfaceSetting) GetIPAddress() []string {
+	return o.IPAddress
+}
+
+// SetIPAddress sets value to IPAddress
+func (o *MobileGatewayInterfaceSetting) SetIPAddress(v []string) {
+	o.IPAddress = v
+}
+
+// GetNetworkMaskLen returns value of NetworkMaskLen
+func (o *MobileGatewayInterfaceSetting) GetNetworkMaskLen() int {
+	return o.NetworkMaskLen
+}
+
+// SetNetworkMaskLen sets value to NetworkMaskLen
+func (o *MobileGatewayInterfaceSetting) SetNetworkMaskLen(v int) {
+	o.NetworkMaskLen = v
+}
+
+// GetIndex returns value of Index
+func (o *MobileGatewayInterfaceSetting) GetIndex() int {
+	return o.Index
+}
+
+// SetIndex sets value to Index
+func (o *MobileGatewayInterfaceSetting) SetIndex(v int) {
+	o.Index = v
+}
+
+/*************************************************
+* MobileGatewayStaticRoute
+*************************************************/
+
+// MobileGatewayStaticRoute represents API parameter/response structure
+type MobileGatewayStaticRoute struct {
+	Prefix  string
+	NextHop string
+}
+
+// Validate validates by field tags
+func (o *MobileGatewayStaticRoute) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetPrefix returns value of Prefix
+func (o *MobileGatewayStaticRoute) GetPrefix() string {
+	return o.Prefix
+}
+
+// SetPrefix sets value to Prefix
+func (o *MobileGatewayStaticRoute) SetPrefix(v string) {
+	o.Prefix = v
+}
+
+// GetNextHop returns value of NextHop
+func (o *MobileGatewayStaticRoute) GetNextHop() string {
+	return o.NextHop
+}
+
+// SetNextHop sets value to NextHop
+func (o *MobileGatewayStaticRoute) SetNextHop(v string) {
+	o.NextHop = v
+}
+
+/*************************************************
+* MobileGatewayCreateRequest
+*************************************************/
+
+// MobileGatewayCreateRequest represents API parameter/response structure
+type MobileGatewayCreateRequest struct {
+	Class       string   `mapconv:",default=mobilegateway"`
+	SwitchID    string   `mapconv:"Remark.Switch.Scope,default=shared"`
+	PlanID      types.ID `mapconv:"Remark.Plan.ID/Plan.ID"`
+	Name        string   `validate:"required"`
+	Description string   `validate:"min=0,max=512"`
+	Tags        []string
+	IconID      types.ID                    `mapconv:"Icon.ID"`
+	Settings    *MobileGatewaySettingCreate `json:",omitempty" mapconv:",omitempty,recursive"`
+}
+
+// Validate validates by field tags
+func (o *MobileGatewayCreateRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetClass returns value of Class
+func (o *MobileGatewayCreateRequest) GetClass() string {
+	return o.Class
+}
+
+// SetClass sets value to Class
+func (o *MobileGatewayCreateRequest) SetClass(v string) {
+	o.Class = v
+}
+
+// GetSwitchID returns value of SwitchID
+func (o *MobileGatewayCreateRequest) GetSwitchID() string {
+	return o.SwitchID
+}
+
+// SetSwitchID sets value to SwitchID
+func (o *MobileGatewayCreateRequest) SetSwitchID(v string) {
+	o.SwitchID = v
+}
+
+// GetPlanID returns value of PlanID
+func (o *MobileGatewayCreateRequest) GetPlanID() types.ID {
+	return o.PlanID
+}
+
+// SetPlanID sets value to PlanID
+func (o *MobileGatewayCreateRequest) SetPlanID(v types.ID) {
+	o.PlanID = v
+}
+
+// GetName returns value of Name
+func (o *MobileGatewayCreateRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *MobileGatewayCreateRequest) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *MobileGatewayCreateRequest) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *MobileGatewayCreateRequest) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetTags returns value of Tags
+func (o *MobileGatewayCreateRequest) GetTags() []string {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *MobileGatewayCreateRequest) SetTags(v []string) {
+	o.Tags = v
+}
+
+// GetIconID returns value of IconID
+func (o *MobileGatewayCreateRequest) GetIconID() types.ID {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *MobileGatewayCreateRequest) SetIconID(v types.ID) {
+	o.IconID = v
+}
+
+// GetSettings returns value of Settings
+func (o *MobileGatewayCreateRequest) GetSettings() *MobileGatewaySettingCreate {
+	return o.Settings
+}
+
+// SetSettings sets value to Settings
+func (o *MobileGatewayCreateRequest) SetSettings(v *MobileGatewaySettingCreate) {
+	o.Settings = v
+}
+
+/*************************************************
+* MobileGatewaySettingCreate
+*************************************************/
+
+// MobileGatewaySettingCreate represents API parameter/response structure
+type MobileGatewaySettingCreate struct {
+	StaticRoute                     []*MobileGatewayStaticRoute `json:",omitempty" mapconv:"MobileGateway.[]StaticRoutes,omitempty,recursive"`
+	InternetConnectionEnabled       types.StringFlag            `mapconv:"MobileGateway.InternetConnection.Enabled"`
+	InterDeviceCommunicationEnabled types.StringFlag            `mapconv:"MobileGateway.InterDeviceCommunication.Enabled"`
+}
+
+// Validate validates by field tags
+func (o *MobileGatewaySettingCreate) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetStaticRoute returns value of StaticRoute
+func (o *MobileGatewaySettingCreate) GetStaticRoute() []*MobileGatewayStaticRoute {
+	return o.StaticRoute
+}
+
+// SetStaticRoute sets value to StaticRoute
+func (o *MobileGatewaySettingCreate) SetStaticRoute(v []*MobileGatewayStaticRoute) {
+	o.StaticRoute = v
+}
+
+// GetInternetConnectionEnabled returns value of InternetConnectionEnabled
+func (o *MobileGatewaySettingCreate) GetInternetConnectionEnabled() types.StringFlag {
+	return o.InternetConnectionEnabled
+}
+
+// SetInternetConnectionEnabled sets value to InternetConnectionEnabled
+func (o *MobileGatewaySettingCreate) SetInternetConnectionEnabled(v types.StringFlag) {
+	o.InternetConnectionEnabled = v
+}
+
+// GetInterDeviceCommunicationEnabled returns value of InterDeviceCommunicationEnabled
+func (o *MobileGatewaySettingCreate) GetInterDeviceCommunicationEnabled() types.StringFlag {
+	return o.InterDeviceCommunicationEnabled
+}
+
+// SetInterDeviceCommunicationEnabled sets value to InterDeviceCommunicationEnabled
+func (o *MobileGatewaySettingCreate) SetInterDeviceCommunicationEnabled(v types.StringFlag) {
+	o.InterDeviceCommunicationEnabled = v
+}
+
+/*************************************************
+* MobileGatewayUpdateRequest
+*************************************************/
+
+// MobileGatewayUpdateRequest represents API parameter/response structure
+type MobileGatewayUpdateRequest struct {
+	Name        string `validate:"required"`
+	Description string `validate:"min=0,max=512"`
+	Tags        []string
+	IconID      types.ID              `mapconv:"Icon.ID"`
+	Settings    *MobileGatewaySetting `json:",omitempty" mapconv:",omitempty,recursive"`
+}
+
+// Validate validates by field tags
+func (o *MobileGatewayUpdateRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetName returns value of Name
+func (o *MobileGatewayUpdateRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *MobileGatewayUpdateRequest) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *MobileGatewayUpdateRequest) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *MobileGatewayUpdateRequest) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetTags returns value of Tags
+func (o *MobileGatewayUpdateRequest) GetTags() []string {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *MobileGatewayUpdateRequest) SetTags(v []string) {
+	o.Tags = v
+}
+
+// GetIconID returns value of IconID
+func (o *MobileGatewayUpdateRequest) GetIconID() types.ID {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *MobileGatewayUpdateRequest) SetIconID(v types.ID) {
+	o.IconID = v
+}
+
+// GetSettings returns value of Settings
+func (o *MobileGatewayUpdateRequest) GetSettings() *MobileGatewaySetting {
+	return o.Settings
+}
+
+// SetSettings sets value to Settings
+func (o *MobileGatewayUpdateRequest) SetSettings(v *MobileGatewaySetting) {
+	o.Settings = v
+}
+
+/*************************************************
+* MobileGatewayDNSSetting
+*************************************************/
+
+// MobileGatewayDNSSetting represents API parameter/response structure
+type MobileGatewayDNSSetting struct {
+	DNS1 string
+	DNS2 string
+}
+
+// Validate validates by field tags
+func (o *MobileGatewayDNSSetting) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetDNS1 returns value of DNS1
+func (o *MobileGatewayDNSSetting) GetDNS1() string {
+	return o.DNS1
+}
+
+// SetDNS1 sets value to DNS1
+func (o *MobileGatewayDNSSetting) SetDNS1(v string) {
+	o.DNS1 = v
+}
+
+// GetDNS2 returns value of DNS2
+func (o *MobileGatewayDNSSetting) GetDNS2() string {
+	return o.DNS2
+}
+
+// SetDNS2 sets value to DNS2
+func (o *MobileGatewayDNSSetting) SetDNS2(v string) {
+	o.DNS2 = v
+}
+
+/*************************************************
+* MobileGatewaySIMRoute
+*************************************************/
+
+// MobileGatewaySIMRoute represents API parameter/response structure
+type MobileGatewaySIMRoute struct {
+	ResourceID string
+	Prefix     string
+	ICCID      string
+}
+
+// Validate validates by field tags
+func (o *MobileGatewaySIMRoute) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetResourceID returns value of ResourceID
+func (o *MobileGatewaySIMRoute) GetResourceID() string {
+	return o.ResourceID
+}
+
+// SetResourceID sets value to ResourceID
+func (o *MobileGatewaySIMRoute) SetResourceID(v string) {
+	o.ResourceID = v
+}
+
+// GetPrefix returns value of Prefix
+func (o *MobileGatewaySIMRoute) GetPrefix() string {
+	return o.Prefix
+}
+
+// SetPrefix sets value to Prefix
+func (o *MobileGatewaySIMRoute) SetPrefix(v string) {
+	o.Prefix = v
+}
+
+// GetICCID returns value of ICCID
+func (o *MobileGatewaySIMRoute) GetICCID() string {
+	return o.ICCID
+}
+
+// SetICCID sets value to ICCID
+func (o *MobileGatewaySIMRoute) SetICCID(v string) {
+	o.ICCID = v
+}
+
+/*************************************************
+* MobileGatewaySIMRouteParam
+*************************************************/
+
+// MobileGatewaySIMRouteParam represents API parameter/response structure
+type MobileGatewaySIMRouteParam struct {
+	ResourceID string
+	Prefix     string
+}
+
+// Validate validates by field tags
+func (o *MobileGatewaySIMRouteParam) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetResourceID returns value of ResourceID
+func (o *MobileGatewaySIMRouteParam) GetResourceID() string {
+	return o.ResourceID
+}
+
+// SetResourceID sets value to ResourceID
+func (o *MobileGatewaySIMRouteParam) SetResourceID(v string) {
+	o.ResourceID = v
+}
+
+// GetPrefix returns value of Prefix
+func (o *MobileGatewaySIMRouteParam) GetPrefix() string {
+	return o.Prefix
+}
+
+// SetPrefix sets value to Prefix
+func (o *MobileGatewaySIMRouteParam) SetPrefix(v string) {
+	o.Prefix = v
+}
+
+/*************************************************
+* MobileGatewaySIMInfo
+*************************************************/
+
+// MobileGatewaySIMInfo represents API parameter/response structure
+type MobileGatewaySIMInfo struct {
+	ICCID                      string
+	IMSI                       []string
+	IP                         string
+	SessionStatus              string
+	IMEILock                   bool
+	Registered                 bool
+	Activated                  bool
+	ResourceID                 string
+	RegisteredDate             time.Time
+	ActivatedDate              time.Time
+	DeactivatedDate            time.Time
+	SIMGroupID                 string
+	TrafficBytesOfCurrentMonth *SIMTrafficBytes `mapconv:",recursive"`
+	ConnectedIMEI              string
+}
+
+// Validate validates by field tags
+func (o *MobileGatewaySIMInfo) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetICCID returns value of ICCID
+func (o *MobileGatewaySIMInfo) GetICCID() string {
+	return o.ICCID
+}
+
+// SetICCID sets value to ICCID
+func (o *MobileGatewaySIMInfo) SetICCID(v string) {
+	o.ICCID = v
+}
+
+// GetIMSI returns value of IMSI
+func (o *MobileGatewaySIMInfo) GetIMSI() []string {
+	return o.IMSI
+}
+
+// SetIMSI sets value to IMSI
+func (o *MobileGatewaySIMInfo) SetIMSI(v []string) {
+	o.IMSI = v
+}
+
+// GetIP returns value of IP
+func (o *MobileGatewaySIMInfo) GetIP() string {
+	return o.IP
+}
+
+// SetIP sets value to IP
+func (o *MobileGatewaySIMInfo) SetIP(v string) {
+	o.IP = v
+}
+
+// GetSessionStatus returns value of SessionStatus
+func (o *MobileGatewaySIMInfo) GetSessionStatus() string {
+	return o.SessionStatus
+}
+
+// SetSessionStatus sets value to SessionStatus
+func (o *MobileGatewaySIMInfo) SetSessionStatus(v string) {
+	o.SessionStatus = v
+}
+
+// GetIMEILock returns value of IMEILock
+func (o *MobileGatewaySIMInfo) GetIMEILock() bool {
+	return o.IMEILock
+}
+
+// SetIMEILock sets value to IMEILock
+func (o *MobileGatewaySIMInfo) SetIMEILock(v bool) {
+	o.IMEILock = v
+}
+
+// GetRegistered returns value of Registered
+func (o *MobileGatewaySIMInfo) GetRegistered() bool {
+	return o.Registered
+}
+
+// SetRegistered sets value to Registered
+func (o *MobileGatewaySIMInfo) SetRegistered(v bool) {
+	o.Registered = v
+}
+
+// GetActivated returns value of Activated
+func (o *MobileGatewaySIMInfo) GetActivated() bool {
+	return o.Activated
+}
+
+// SetActivated sets value to Activated
+func (o *MobileGatewaySIMInfo) SetActivated(v bool) {
+	o.Activated = v
+}
+
+// GetResourceID returns value of ResourceID
+func (o *MobileGatewaySIMInfo) GetResourceID() string {
+	return o.ResourceID
+}
+
+// SetResourceID sets value to ResourceID
+func (o *MobileGatewaySIMInfo) SetResourceID(v string) {
+	o.ResourceID = v
+}
+
+// GetRegisteredDate returns value of RegisteredDate
+func (o *MobileGatewaySIMInfo) GetRegisteredDate() time.Time {
+	return o.RegisteredDate
+}
+
+// SetRegisteredDate sets value to RegisteredDate
+func (o *MobileGatewaySIMInfo) SetRegisteredDate(v time.Time) {
+	o.RegisteredDate = v
+}
+
+// GetActivatedDate returns value of ActivatedDate
+func (o *MobileGatewaySIMInfo) GetActivatedDate() time.Time {
+	return o.ActivatedDate
+}
+
+// SetActivatedDate sets value to ActivatedDate
+func (o *MobileGatewaySIMInfo) SetActivatedDate(v time.Time) {
+	o.ActivatedDate = v
+}
+
+// GetDeactivatedDate returns value of DeactivatedDate
+func (o *MobileGatewaySIMInfo) GetDeactivatedDate() time.Time {
+	return o.DeactivatedDate
+}
+
+// SetDeactivatedDate sets value to DeactivatedDate
+func (o *MobileGatewaySIMInfo) SetDeactivatedDate(v time.Time) {
+	o.DeactivatedDate = v
+}
+
+// GetSIMGroupID returns value of SIMGroupID
+func (o *MobileGatewaySIMInfo) GetSIMGroupID() string {
+	return o.SIMGroupID
+}
+
+// SetSIMGroupID sets value to SIMGroupID
+func (o *MobileGatewaySIMInfo) SetSIMGroupID(v string) {
+	o.SIMGroupID = v
+}
+
+// GetTrafficBytesOfCurrentMonth returns value of TrafficBytesOfCurrentMonth
+func (o *MobileGatewaySIMInfo) GetTrafficBytesOfCurrentMonth() *SIMTrafficBytes {
+	return o.TrafficBytesOfCurrentMonth
+}
+
+// SetTrafficBytesOfCurrentMonth sets value to TrafficBytesOfCurrentMonth
+func (o *MobileGatewaySIMInfo) SetTrafficBytesOfCurrentMonth(v *SIMTrafficBytes) {
+	o.TrafficBytesOfCurrentMonth = v
+}
+
+// GetConnectedIMEI returns value of ConnectedIMEI
+func (o *MobileGatewaySIMInfo) GetConnectedIMEI() string {
+	return o.ConnectedIMEI
+}
+
+// SetConnectedIMEI sets value to ConnectedIMEI
+func (o *MobileGatewaySIMInfo) SetConnectedIMEI(v string) {
+	o.ConnectedIMEI = v
+}
+
+/*************************************************
+* SIMTrafficBytes
+*************************************************/
+
+// SIMTrafficBytes represents API parameter/response structure
+type SIMTrafficBytes struct {
+	UplinkBytes   int64
+	DownlinkBytes int64
+}
+
+// Validate validates by field tags
+func (o *SIMTrafficBytes) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetUplinkBytes returns value of UplinkBytes
+func (o *SIMTrafficBytes) GetUplinkBytes() int64 {
+	return o.UplinkBytes
+}
+
+// SetUplinkBytes sets value to UplinkBytes
+func (o *SIMTrafficBytes) SetUplinkBytes(v int64) {
+	o.UplinkBytes = v
+}
+
+// GetDownlinkBytes returns value of DownlinkBytes
+func (o *SIMTrafficBytes) GetDownlinkBytes() int64 {
+	return o.DownlinkBytes
+}
+
+// SetDownlinkBytes sets value to DownlinkBytes
+func (o *SIMTrafficBytes) SetDownlinkBytes(v int64) {
+	o.DownlinkBytes = v
+}
+
+/*************************************************
+* MobileGatewayAddSIMRequest
+*************************************************/
+
+// MobileGatewayAddSIMRequest represents API parameter/response structure
+type MobileGatewayAddSIMRequest struct {
+	SIMID string `json:"resource_id" mapconv:"ResourceID"`
+}
+
+// Validate validates by field tags
+func (o *MobileGatewayAddSIMRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetSIMID returns value of SIMID
+func (o *MobileGatewayAddSIMRequest) GetSIMID() string {
+	return o.SIMID
+}
+
+// SetSIMID sets value to SIMID
+func (o *MobileGatewayAddSIMRequest) SetSIMID(v string) {
+	o.SIMID = v
+}
+
+/*************************************************
+* MobileGatewaySIMLogs
+*************************************************/
+
+// MobileGatewaySIMLogs represents API parameter/response structure
+type MobileGatewaySIMLogs struct {
+	Date          time.Time
+	SessionStatus string
+	ResourceID    string
+	IMEI          string
+	IMSI          string
+}
+
+// Validate validates by field tags
+func (o *MobileGatewaySIMLogs) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetDate returns value of Date
+func (o *MobileGatewaySIMLogs) GetDate() time.Time {
+	return o.Date
+}
+
+// SetDate sets value to Date
+func (o *MobileGatewaySIMLogs) SetDate(v time.Time) {
+	o.Date = v
+}
+
+// GetSessionStatus returns value of SessionStatus
+func (o *MobileGatewaySIMLogs) GetSessionStatus() string {
+	return o.SessionStatus
+}
+
+// SetSessionStatus sets value to SessionStatus
+func (o *MobileGatewaySIMLogs) SetSessionStatus(v string) {
+	o.SessionStatus = v
+}
+
+// GetResourceID returns value of ResourceID
+func (o *MobileGatewaySIMLogs) GetResourceID() string {
+	return o.ResourceID
+}
+
+// SetResourceID sets value to ResourceID
+func (o *MobileGatewaySIMLogs) SetResourceID(v string) {
+	o.ResourceID = v
+}
+
+// GetIMEI returns value of IMEI
+func (o *MobileGatewaySIMLogs) GetIMEI() string {
+	return o.IMEI
+}
+
+// SetIMEI sets value to IMEI
+func (o *MobileGatewaySIMLogs) SetIMEI(v string) {
+	o.IMEI = v
+}
+
+// GetIMSI returns value of IMSI
+func (o *MobileGatewaySIMLogs) GetIMSI() string {
+	return o.IMSI
+}
+
+// SetIMSI sets value to IMSI
+func (o *MobileGatewaySIMLogs) SetIMSI(v string) {
+	o.IMSI = v
+}
+
+/*************************************************
+* MobileGatewayTrafficControl
+*************************************************/
+
+// MobileGatewayTrafficControl represents API parameter/response structure
+type MobileGatewayTrafficControl struct {
+	TrafficQuotaInMB       int
+	BandWidthLimitInKbps   int
+	EmailNotifyEnabled     bool   `mapconv:"EMailConfig.Enabled"`
+	SlackNotifyEnabled     bool   `mapconv:"SlackConfig.Enabled"`
+	SlackNotifyWebhooksURL string `mapconv:"SlackConfig.IncomingWebhooksURL"`
+	AutoTrafficShaping     bool
+}
+
+// Validate validates by field tags
+func (o *MobileGatewayTrafficControl) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetTrafficQuotaInMB returns value of TrafficQuotaInMB
+func (o *MobileGatewayTrafficControl) GetTrafficQuotaInMB() int {
+	return o.TrafficQuotaInMB
+}
+
+// SetTrafficQuotaInMB sets value to TrafficQuotaInMB
+func (o *MobileGatewayTrafficControl) SetTrafficQuotaInMB(v int) {
+	o.TrafficQuotaInMB = v
+}
+
+// GetBandWidthLimitInKbps returns value of BandWidthLimitInKbps
+func (o *MobileGatewayTrafficControl) GetBandWidthLimitInKbps() int {
+	return o.BandWidthLimitInKbps
+}
+
+// SetBandWidthLimitInKbps sets value to BandWidthLimitInKbps
+func (o *MobileGatewayTrafficControl) SetBandWidthLimitInKbps(v int) {
+	o.BandWidthLimitInKbps = v
+}
+
+// GetEmailNotifyEnabled returns value of EmailNotifyEnabled
+func (o *MobileGatewayTrafficControl) GetEmailNotifyEnabled() bool {
+	return o.EmailNotifyEnabled
+}
+
+// SetEmailNotifyEnabled sets value to EmailNotifyEnabled
+func (o *MobileGatewayTrafficControl) SetEmailNotifyEnabled(v bool) {
+	o.EmailNotifyEnabled = v
+}
+
+// GetSlackNotifyEnabled returns value of SlackNotifyEnabled
+func (o *MobileGatewayTrafficControl) GetSlackNotifyEnabled() bool {
+	return o.SlackNotifyEnabled
+}
+
+// SetSlackNotifyEnabled sets value to SlackNotifyEnabled
+func (o *MobileGatewayTrafficControl) SetSlackNotifyEnabled(v bool) {
+	o.SlackNotifyEnabled = v
+}
+
+// GetSlackNotifyWebhooksURL returns value of SlackNotifyWebhooksURL
+func (o *MobileGatewayTrafficControl) GetSlackNotifyWebhooksURL() string {
+	return o.SlackNotifyWebhooksURL
+}
+
+// SetSlackNotifyWebhooksURL sets value to SlackNotifyWebhooksURL
+func (o *MobileGatewayTrafficControl) SetSlackNotifyWebhooksURL(v string) {
+	o.SlackNotifyWebhooksURL = v
+}
+
+// GetAutoTrafficShaping returns value of AutoTrafficShaping
+func (o *MobileGatewayTrafficControl) GetAutoTrafficShaping() bool {
+	return o.AutoTrafficShaping
+}
+
+// SetAutoTrafficShaping sets value to AutoTrafficShaping
+func (o *MobileGatewayTrafficControl) SetAutoTrafficShaping(v bool) {
+	o.AutoTrafficShaping = v
+}
+
+/*************************************************
+* MobileGatewayTrafficStatus
+*************************************************/
+
+// MobileGatewayTrafficStatus represents API parameter/response structure
+type MobileGatewayTrafficStatus struct {
+	UplinkBytes    types.StringNumber
+	DownlinkBytes  types.StringNumber
+	TrafficShaping bool
+}
+
+// Validate validates by field tags
+func (o *MobileGatewayTrafficStatus) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetUplinkBytes returns value of UplinkBytes
+func (o *MobileGatewayTrafficStatus) GetUplinkBytes() types.StringNumber {
+	return o.UplinkBytes
+}
+
+// SetUplinkBytes sets value to UplinkBytes
+func (o *MobileGatewayTrafficStatus) SetUplinkBytes(v types.StringNumber) {
+	o.UplinkBytes = v
+}
+
+// GetDownlinkBytes returns value of DownlinkBytes
+func (o *MobileGatewayTrafficStatus) GetDownlinkBytes() types.StringNumber {
+	return o.DownlinkBytes
+}
+
+// SetDownlinkBytes sets value to DownlinkBytes
+func (o *MobileGatewayTrafficStatus) SetDownlinkBytes(v types.StringNumber) {
+	o.DownlinkBytes = v
+}
+
+// GetTrafficShaping returns value of TrafficShaping
+func (o *MobileGatewayTrafficStatus) GetTrafficShaping() bool {
+	return o.TrafficShaping
+}
+
+// SetTrafficShaping sets value to TrafficShaping
+func (o *MobileGatewayTrafficStatus) SetTrafficShaping(v bool) {
+	o.TrafficShaping = v
 }
 
 /*************************************************
@@ -12731,8 +14070,9 @@ type SIM struct {
 	Tags         []string
 	Availability types.EAvailability
 	Class        string
-	ICCID        types.StringNumber `mapconv:"Status.ICCID" validate:"numeric"`
-	IconID       types.ID           `mapconv:"Icon.ID"`
+	ICCID        string   `mapconv:"Status.ICCID" validate:"numeric"`
+	Info         *SIMInfo `mapconv:"Status.SIMInfo"`
+	IconID       types.ID `mapconv:"Icon.ID"`
 	CreatedAt    time.Time
 	ModifiedAt   time.Time
 }
@@ -12823,13 +14163,23 @@ func (o *SIM) SetClass(v string) {
 }
 
 // GetICCID returns value of ICCID
-func (o *SIM) GetICCID() types.StringNumber {
+func (o *SIM) GetICCID() string {
 	return o.ICCID
 }
 
 // SetICCID sets value to ICCID
-func (o *SIM) SetICCID(v types.StringNumber) {
+func (o *SIM) SetICCID(v string) {
 	o.ICCID = v
+}
+
+// GetInfo returns value of Info
+func (o *SIM) GetInfo() *SIMInfo {
+	return o.Info
+}
+
+// SetInfo sets value to Info
+func (o *SIM) SetInfo(v *SIMInfo) {
+	o.Info = v
 }
 
 // GetIconID returns value of IconID
@@ -12863,6 +14213,173 @@ func (o *SIM) SetModifiedAt(v time.Time) {
 }
 
 /*************************************************
+* SIMInfo
+*************************************************/
+
+// SIMInfo represents API parameter/response structure
+type SIMInfo struct {
+	ICCID                      string
+	IMSI                       []string
+	IP                         string
+	SessionStatus              string
+	IMEILock                   bool
+	Registered                 bool
+	Activated                  bool
+	ResourceID                 string
+	RegisteredDate             time.Time
+	ActivatedDate              time.Time
+	DeactivatedDate            time.Time
+	SIMGroupID                 string
+	TrafficBytesOfCurrentMonth *SIMTrafficBytes `mapconv:",recursive"`
+	ConnectedIMEI              string
+}
+
+// Validate validates by field tags
+func (o *SIMInfo) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// GetICCID returns value of ICCID
+func (o *SIMInfo) GetICCID() string {
+	return o.ICCID
+}
+
+// SetICCID sets value to ICCID
+func (o *SIMInfo) SetICCID(v string) {
+	o.ICCID = v
+}
+
+// GetIMSI returns value of IMSI
+func (o *SIMInfo) GetIMSI() []string {
+	return o.IMSI
+}
+
+// SetIMSI sets value to IMSI
+func (o *SIMInfo) SetIMSI(v []string) {
+	o.IMSI = v
+}
+
+// GetIP returns value of IP
+func (o *SIMInfo) GetIP() string {
+	return o.IP
+}
+
+// SetIP sets value to IP
+func (o *SIMInfo) SetIP(v string) {
+	o.IP = v
+}
+
+// GetSessionStatus returns value of SessionStatus
+func (o *SIMInfo) GetSessionStatus() string {
+	return o.SessionStatus
+}
+
+// SetSessionStatus sets value to SessionStatus
+func (o *SIMInfo) SetSessionStatus(v string) {
+	o.SessionStatus = v
+}
+
+// GetIMEILock returns value of IMEILock
+func (o *SIMInfo) GetIMEILock() bool {
+	return o.IMEILock
+}
+
+// SetIMEILock sets value to IMEILock
+func (o *SIMInfo) SetIMEILock(v bool) {
+	o.IMEILock = v
+}
+
+// GetRegistered returns value of Registered
+func (o *SIMInfo) GetRegistered() bool {
+	return o.Registered
+}
+
+// SetRegistered sets value to Registered
+func (o *SIMInfo) SetRegistered(v bool) {
+	o.Registered = v
+}
+
+// GetActivated returns value of Activated
+func (o *SIMInfo) GetActivated() bool {
+	return o.Activated
+}
+
+// SetActivated sets value to Activated
+func (o *SIMInfo) SetActivated(v bool) {
+	o.Activated = v
+}
+
+// GetResourceID returns value of ResourceID
+func (o *SIMInfo) GetResourceID() string {
+	return o.ResourceID
+}
+
+// SetResourceID sets value to ResourceID
+func (o *SIMInfo) SetResourceID(v string) {
+	o.ResourceID = v
+}
+
+// GetRegisteredDate returns value of RegisteredDate
+func (o *SIMInfo) GetRegisteredDate() time.Time {
+	return o.RegisteredDate
+}
+
+// SetRegisteredDate sets value to RegisteredDate
+func (o *SIMInfo) SetRegisteredDate(v time.Time) {
+	o.RegisteredDate = v
+}
+
+// GetActivatedDate returns value of ActivatedDate
+func (o *SIMInfo) GetActivatedDate() time.Time {
+	return o.ActivatedDate
+}
+
+// SetActivatedDate sets value to ActivatedDate
+func (o *SIMInfo) SetActivatedDate(v time.Time) {
+	o.ActivatedDate = v
+}
+
+// GetDeactivatedDate returns value of DeactivatedDate
+func (o *SIMInfo) GetDeactivatedDate() time.Time {
+	return o.DeactivatedDate
+}
+
+// SetDeactivatedDate sets value to DeactivatedDate
+func (o *SIMInfo) SetDeactivatedDate(v time.Time) {
+	o.DeactivatedDate = v
+}
+
+// GetSIMGroupID returns value of SIMGroupID
+func (o *SIMInfo) GetSIMGroupID() string {
+	return o.SIMGroupID
+}
+
+// SetSIMGroupID sets value to SIMGroupID
+func (o *SIMInfo) SetSIMGroupID(v string) {
+	o.SIMGroupID = v
+}
+
+// GetTrafficBytesOfCurrentMonth returns value of TrafficBytesOfCurrentMonth
+func (o *SIMInfo) GetTrafficBytesOfCurrentMonth() *SIMTrafficBytes {
+	return o.TrafficBytesOfCurrentMonth
+}
+
+// SetTrafficBytesOfCurrentMonth sets value to TrafficBytesOfCurrentMonth
+func (o *SIMInfo) SetTrafficBytesOfCurrentMonth(v *SIMTrafficBytes) {
+	o.TrafficBytesOfCurrentMonth = v
+}
+
+// GetConnectedIMEI returns value of ConnectedIMEI
+func (o *SIMInfo) GetConnectedIMEI() string {
+	return o.ConnectedIMEI
+}
+
+// SetConnectedIMEI sets value to ConnectedIMEI
+func (o *SIMInfo) SetConnectedIMEI(v string) {
+	o.ConnectedIMEI = v
+}
+
+/*************************************************
 * SIMCreateRequest
 *************************************************/
 
@@ -12871,10 +14388,10 @@ type SIMCreateRequest struct {
 	Name        string `validate:"required"`
 	Description string `validate:"min=0,max=512"`
 	Tags        []string
-	IconID      types.ID           `mapconv:"Icon.ID"`
-	Class       string             `mapconv:"Provider.Class,default=sim"`
-	ICCID       types.StringNumber `mapconv:"Status.ICCID" validate:"numeric"`
-	PassCode    string             `mapconv:"Remark.PassCode"`
+	IconID      types.ID `mapconv:"Icon.ID"`
+	Class       string   `mapconv:"Provider.Class,default=sim"`
+	ICCID       string   `mapconv:"Status.ICCID" validate:"numeric"`
+	PassCode    string   `mapconv:"Remark.PassCode"`
 }
 
 // Validate validates by field tags
@@ -12933,12 +14450,12 @@ func (o *SIMCreateRequest) SetClass(v string) {
 }
 
 // GetICCID returns value of ICCID
-func (o *SIMCreateRequest) GetICCID() types.StringNumber {
+func (o *SIMCreateRequest) GetICCID() string {
 	return o.ICCID
 }
 
 // SetICCID sets value to ICCID
-func (o *SIMCreateRequest) SetICCID(v types.StringNumber) {
+func (o *SIMCreateRequest) SetICCID(v string) {
 	o.ICCID = v
 }
 
@@ -13169,30 +14686,6 @@ func (o *SIMNetworkOperatorConfig) GetName() string {
 // SetName sets value to Name
 func (o *SIMNetworkOperatorConfig) SetName(v string) {
 	o.Name = v
-}
-
-/*************************************************
-* SIMNetworkOperatorConfigs
-*************************************************/
-
-// SIMNetworkOperatorConfigs represents API parameter/response structure
-type SIMNetworkOperatorConfigs struct {
-	NetworkOperatorConfigs []*SIMNetworkOperatorConfig
-}
-
-// Validate validates by field tags
-func (o *SIMNetworkOperatorConfigs) Validate() error {
-	return validator.New().Struct(o)
-}
-
-// GetNetworkOperatorConfigs returns value of NetworkOperatorConfigs
-func (o *SIMNetworkOperatorConfigs) GetNetworkOperatorConfigs() []*SIMNetworkOperatorConfig {
-	return o.NetworkOperatorConfigs
-}
-
-// SetNetworkOperatorConfigs sets value to NetworkOperatorConfigs
-func (o *SIMNetworkOperatorConfigs) SetNetworkOperatorConfigs(v []*SIMNetworkOperatorConfig) {
-	o.NetworkOperatorConfigs = v
 }
 
 /*************************************************

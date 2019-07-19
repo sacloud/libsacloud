@@ -1263,6 +1263,146 @@ type loadBalancerStatusResponseEnvelope struct {
 	LoadBalancer []*naked.LoadBalancerStatus `json:",omitempty"`
 }
 
+// mobileGatewayFindRequestEnvelope is envelop of API request
+type mobileGatewayFindRequestEnvelope struct {
+	Count   int                    `json:",omitempty"`
+	From    int                    `json:",omitempty"`
+	Sort    []string               `json:",omitempty"`
+	Filter  map[string]interface{} `json:",omitempty"`
+	Include []string               `json:",omitempty"`
+	Exclude []string               `json:",omitempty"`
+}
+
+// mobileGatewayFindResponseEnvelope is envelop of API response
+type mobileGatewayFindResponseEnvelope struct {
+	Total int `json:",omitempty"` // トータル件数
+	From  int `json:",omitempty"` // ページング開始ページ
+	Count int `json:",omitempty"` // 件数
+
+	Appliances []*naked.MobileGateway `json:",omitempty"`
+}
+
+// mobileGatewayCreateRequestEnvelope is envelop of API request
+type mobileGatewayCreateRequestEnvelope struct {
+	Appliance *naked.MobileGateway `json:",omitempty"`
+}
+
+// mobileGatewayCreateResponseEnvelope is envelop of API response
+type mobileGatewayCreateResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Appliance *naked.MobileGateway `json:",omitempty"`
+}
+
+// mobileGatewayReadResponseEnvelope is envelop of API response
+type mobileGatewayReadResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Appliance *naked.MobileGateway `json:",omitempty"`
+}
+
+// mobileGatewayUpdateRequestEnvelope is envelop of API request
+type mobileGatewayUpdateRequestEnvelope struct {
+	Appliance *naked.MobileGateway `json:",omitempty"`
+}
+
+// mobileGatewayUpdateResponseEnvelope is envelop of API response
+type mobileGatewayUpdateResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Appliance *naked.MobileGateway `json:",omitempty"`
+}
+
+// mobileGatewayShutdownRequestEnvelope is envelop of API request
+type mobileGatewayShutdownRequestEnvelope struct {
+	Force bool `json:",omitempty"`
+}
+
+// mobileGatewayGetDNSResponseEnvelope is envelop of API response
+type mobileGatewayGetDNSResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	SIMGroup *naked.MobileGatewaySIMGroup `json:"sim_group"`
+}
+
+// mobileGatewaySetDNSRequestEnvelope is envelop of API request
+type mobileGatewaySetDNSRequestEnvelope struct {
+	SIMGroup *naked.MobileGatewaySIMGroup `json:"sim_group"`
+}
+
+// mobileGatewayGetSIMRoutesResponseEnvelope is envelop of API response
+type mobileGatewayGetSIMRoutesResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	SIMRoutes []*naked.MobileGatewaySIMRoute `json:"sim_routes"`
+}
+
+// mobileGatewaySetSIMRoutesRequestEnvelope is envelop of API request
+type mobileGatewaySetSIMRoutesRequestEnvelope struct {
+	SIMRoutes []*naked.MobileGatewaySIMRoute `json:"sim_routes"`
+}
+
+// mobileGatewayListSIMResponseEnvelope is envelop of API response
+type mobileGatewayListSIMResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	SIM []*naked.SIMInfo `json:"sim"`
+}
+
+// mobileGatewayAddSIMRequestEnvelope is envelop of API request
+type mobileGatewayAddSIMRequestEnvelope struct {
+	SIM *naked.SIMInfo `json:"sim"`
+}
+
+// mobileGatewayLogsResponseEnvelope is envelop of API response
+type mobileGatewayLogsResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Logs []*naked.SIMLog `json:"logs"`
+}
+
+// mobileGatewayGetTrafficConfigResponseEnvelope is envelop of API response
+type mobileGatewayGetTrafficConfigResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	TrafficMonitoring *naked.TrafficMonitoringConfig `json:"traffic_monitoring_config"`
+}
+
+// mobileGatewaySetTrafficConfigRequestEnvelope is envelop of API request
+type mobileGatewaySetTrafficConfigRequestEnvelope struct {
+	TrafficMonitoring *naked.TrafficMonitoringConfig `json:"traffic_monitoring_config"`
+}
+
+// mobileGatewayTrafficStatusResponseEnvelope is envelop of API response
+type mobileGatewayTrafficStatusResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	TrafficStatus *naked.TrafficStatus `json:"traffic_status"`
+}
+
+// mobileGatewayMonitorInterfaceRequestEnvelope is envelop of API request
+type mobileGatewayMonitorInterfaceRequestEnvelope struct {
+	Start time.Time `json:",omitempty"`
+	End   time.Time `json:",omitempty"`
+}
+
+// mobileGatewayMonitorInterfaceResponseEnvelope is envelop of API response
+type mobileGatewayMonitorInterfaceResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Data *naked.MonitorValues `json:",omitempty"`
+}
+
 // nFSFindRequestEnvelope is envelop of API request
 type nFSFindRequestEnvelope struct {
 	Count   int                    `json:",omitempty"`
@@ -1870,21 +2010,20 @@ type sIMLogsResponseEnvelope struct {
 	From  int `json:",omitempty"` // ページング開始ページ
 	Count int `json:",omitempty"` // 件数
 
-	Logs []*naked.SIMLog `json:",omitempty"`
+	Logs []*naked.SIMLog `json:"logs"`
 }
 
 // sIMGetNetworkOperatorResponseEnvelope is envelop of API response
 type sIMGetNetworkOperatorResponseEnvelope struct {
-	Total int `json:",omitempty"` // トータル件数
-	From  int `json:",omitempty"` // ページング開始ページ
-	Count int `json:",omitempty"` // 件数
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
 
-	NetworkOperationConfigs []*naked.SIMNetworkOperatorConfig `json:",omitempty"`
+	NetworkOperationConfigs []*naked.SIMNetworkOperatorConfig `json:"network_operator_config"`
 }
 
 // sIMSetNetworkOperatorRequestEnvelope is envelop of API request
 type sIMSetNetworkOperatorRequestEnvelope struct {
-	NetworkOperatorConfigs []*SIMNetworkOperatorConfig `json:",omitempty"`
+	NetworkOperatorConfigs []*naked.SIMNetworkOperatorConfig `json:"network_operator_config"`
 }
 
 // sIMMonitorSIMRequestEnvelope is envelop of API request
@@ -1899,6 +2038,14 @@ type sIMMonitorSIMResponseEnvelope struct {
 	Success types.APIResult `json:",omitempty"`      // success項目
 
 	Data *naked.MonitorValues `json:",omitempty"`
+}
+
+// sIMStatusResponseEnvelope is envelop of API response
+type sIMStatusResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	SIM *naked.SIMInfo `json:"sim"`
 }
 
 // simpleMonitorFindRequestEnvelope is envelop of API request

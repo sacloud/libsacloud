@@ -549,6 +549,16 @@ func (f *fieldsDef) ApplianceSwitchID() *dsl.FieldDesc {
 	}
 }
 
+func (f *fieldsDef) ApplianceSwitchShared() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "SwitchID",
+		Tags: &dsl.FieldTags{
+			MapConv: "Remark.Switch.Scope,default=shared",
+		},
+		Type: meta.TypeString,
+	}
+}
+
 func (f *fieldsDef) ApplianceIPAddress() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "IPAddress",
@@ -710,6 +720,16 @@ func (f *fieldsDef) VPCRouterClass() *dsl.FieldDesc {
 	}
 }
 
+func (f *fieldsDef) MobileGatewayClass() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "Class",
+		Type: meta.TypeString,
+		Tags: &dsl.FieldTags{
+			MapConv: ",default=mobilegateway",
+		},
+	}
+}
+
 func (f *fieldsDef) SIMProviderClass() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "Class",
@@ -723,7 +743,7 @@ func (f *fieldsDef) SIMProviderClass() *dsl.FieldDesc {
 func (f *fieldsDef) SIMICCID() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "ICCID",
-		Type: meta.TypeStringNumber,
+		Type: meta.TypeString,
 		Tags: &dsl.FieldTags{
 			MapConv:  "Status.ICCID",
 			Validate: "numeric", // TODO 数値のみ15桁固定
@@ -854,9 +874,6 @@ func (f *fieldsDef) GSLBDestinationServers() *dsl.FieldDesc {
 				{
 					Name: "Weight",
 					Type: meta.TypeStringNumber,
-					Tags: &dsl.FieldTags{
-						MapConv: ",default=1",
-					},
 				},
 			},
 		},
@@ -1507,6 +1524,17 @@ func (f *fieldsDef) VPCRouterInterfaces() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "Interfaces",
 		Type: models.vpcRouterInterfaceModel(),
+		Tags: &dsl.FieldTags{
+			JSON:    ",omitempty",
+			MapConv: "[]Interfaces,recursive,omitempty",
+		},
+	}
+}
+
+func (f *fieldsDef) MobileGatewayInterfaces() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "Interfaces",
+		Type: models.mobileGatewayInterfaceModel(),
 		Tags: &dsl.FieldTags{
 			JSON:    ",omitempty",
 			MapConv: "[]Interfaces,recursive,omitempty",

@@ -322,6 +322,19 @@ func (m *modelsDef) vpcRouterInterfaceModel() *dsl.Model {
 	return ifModel
 }
 
+func (m *modelsDef) mobileGatewayInterfaceModel() *dsl.Model {
+	ifModel := m.interfaceModel()
+	ifModel.Name = "MobileGatewayInterface"
+	ifModel.Fields = append(ifModel.Fields, &dsl.FieldDesc{
+		Name: "Index",
+		Type: meta.TypeInt,
+		Tags: &dsl.FieldTags{
+			MapConv: ",omitempty",
+		},
+	})
+	return ifModel
+}
+
 func (m *modelsDef) bundleInfoModel() *dsl.Model {
 	return &dsl.Model{
 		Name:      "BundleInfo",
@@ -715,6 +728,10 @@ func (m *modelsDef) switchSubnet() *dsl.Model {
 	}
 	return subnet
 }
+
+//******************************************************************************
+// VPCRouter
+//******************************************************************************
 
 func (m *modelsDef) vpcRouterSetting() *dsl.Model {
 	return &dsl.Model{
@@ -1126,5 +1143,157 @@ func (m *modelsDef) vpcRouterStaticRoute() *dsl.Model {
 				Type: meta.TypeString,
 			},
 		},
+	}
+}
+
+//******************************************************************************
+// Mobile Gateway
+//******************************************************************************
+
+func (m *modelsDef) mobileGatewaySetting() *dsl.Model {
+	return &dsl.Model{
+		Name:      "MobileGatewaySetting",
+		NakedType: meta.Static(naked.MobileGatewaySettings{}),
+		Fields: []*dsl.FieldDesc{
+
+			{
+				Name: "Interfaces",
+				Type: m.mobileGatewayInterface(),
+				Tags: &dsl.FieldTags{
+					JSON:    ",omitempty",
+					MapConv: "MobileGateway.[]Interfaces,omitempty,recursive",
+				},
+			},
+			{
+				Name: "StaticRoute",
+				Type: m.mobileGatewayStaticRoute(),
+				Tags: &dsl.FieldTags{
+					JSON:    ",omitempty",
+					MapConv: "MobileGateway.[]StaticRoutes,omitempty,recursive",
+				},
+			},
+			{
+				Name: "InternetConnectionEnabled",
+				Type: meta.TypeStringFlag,
+				Tags: &dsl.FieldTags{
+					MapConv: "MobileGateway.InternetConnection.Enabled",
+				},
+			},
+			{
+				Name: "InterDeviceCommunicationEnabled",
+				Type: meta.TypeStringFlag,
+				Tags: &dsl.FieldTags{
+					MapConv: "MobileGateway.InterDeviceCommunication.Enabled",
+				},
+			},
+		},
+	}
+}
+
+func (m *modelsDef) mobileGatewaySettingCreate() *dsl.Model {
+	return &dsl.Model{
+		Name:      "MobileGatewaySettingCreate",
+		NakedType: meta.Static(naked.MobileGatewaySettings{}),
+		Fields: []*dsl.FieldDesc{
+			{
+				Name: "StaticRoute",
+				Type: m.mobileGatewayStaticRoute(),
+				Tags: &dsl.FieldTags{
+					JSON:    ",omitempty",
+					MapConv: "MobileGateway.[]StaticRoutes,omitempty,recursive",
+				},
+			},
+			{
+				Name: "InternetConnectionEnabled",
+				Type: meta.TypeStringFlag,
+				Tags: &dsl.FieldTags{
+					MapConv: "MobileGateway.InternetConnection.Enabled",
+				},
+			},
+			{
+				Name: "InterDeviceCommunicationEnabled",
+				Type: meta.TypeStringFlag,
+				Tags: &dsl.FieldTags{
+					MapConv: "MobileGateway.InterDeviceCommunication.Enabled",
+				},
+			},
+		},
+	}
+}
+
+func (m *modelsDef) mobileGatewayInterface() *dsl.Model {
+	return &dsl.Model{
+		Name:      "MobileGatewayInterfaceSetting",
+		NakedType: meta.Static(naked.MobileGatewayInterface{}),
+		IsArray:   true,
+		Fields: []*dsl.FieldDesc{
+			fields.New("IPAddress", meta.TypeStringSlice),
+			fields.New("NetworkMaskLen", meta.TypeInt),
+			fields.New("Index", meta.TypeInt),
+		},
+	}
+}
+
+func (m *modelsDef) mobileGatewayStaticRoute() *dsl.Model {
+	return &dsl.Model{
+		Name:      "MobileGatewayStaticRoute",
+		NakedType: meta.Static(naked.MobileGatewayStaticRoute{}),
+		IsArray:   true,
+		Fields: []*dsl.FieldDesc{
+			fields.New("Prefix", meta.TypeString),
+			fields.New("NextHop", meta.TypeString),
+		},
+	}
+}
+
+//******************************************************************************
+// SIM
+//******************************************************************************
+
+func (m *modelsDef) simInfo() *dsl.Model {
+	return &dsl.Model{
+		Name:      "SIMInfo",
+		NakedType: meta.Static(naked.SIMInfo{}),
+		Fields:    m.simInfoFields(),
+	}
+}
+
+func (m *modelsDef) simInfoList() *dsl.Model {
+	return &dsl.Model{
+		Name:      "MobileGatewaySIMInfo",
+		NakedType: meta.Static(naked.SIMInfo{}),
+		IsArray:   true,
+		Fields:    m.simInfoFields(),
+	}
+}
+
+func (m *modelsDef) simInfoFields() []*dsl.FieldDesc {
+	return []*dsl.FieldDesc{
+		fields.New("ICCID", meta.TypeString),
+		fields.New("IMSI", meta.TypeStringSlice),
+		fields.New("IP", meta.TypeString),
+		fields.New("SessionStatus", meta.TypeString),
+		fields.New("IMEILock", meta.TypeFlag),
+		fields.New("Registered", meta.TypeFlag),
+		fields.New("Activated", meta.TypeFlag),
+		fields.New("ResourceID", meta.TypeString),
+		fields.New("RegisteredDate", meta.TypeTime),
+		fields.New("ActivatedDate", meta.TypeTime),
+		fields.New("DeactivatedDate", meta.TypeTime),
+		fields.New("SIMGroupID", meta.TypeString),
+		{
+			Name: "TrafficBytesOfCurrentMonth",
+			Type: &dsl.Model{
+				Name: "SIMTrafficBytes",
+				Fields: []*dsl.FieldDesc{
+					fields.New("UplinkBytes", meta.TypeInt64),
+					fields.New("DownlinkBytes", meta.TypeInt64),
+				},
+			},
+			Tags: &dsl.FieldTags{
+				MapConv: ",recursive",
+			},
+		},
+		fields.New("ConnectedIMEI", meta.TypeString),
 	}
 }
