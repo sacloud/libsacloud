@@ -33,12 +33,6 @@ func (o *GSLBOp) Create(ctx context.Context, zone string, param *sacloud.GSLBCre
 
 	result.FQDN = fmt.Sprintf("site-%d.gslb7.example.ne.jp", result.ID)
 	result.SettingsHash = "settingshash"
-	// TODO mapconvで設定しているデフォルト値をどう扱うか?
-	for _, server := range result.DestinationServers {
-		if server.Weight.Int() == 0 {
-			server.Weight = types.StringNumber(1)
-		}
-	}
 
 	s.setGSLB(sacloud.APIDefaultZone, result)
 	return result, nil

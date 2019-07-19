@@ -874,9 +874,6 @@ func (f *fieldsDef) GSLBDestinationServers() *dsl.FieldDesc {
 				{
 					Name: "Weight",
 					Type: meta.TypeStringNumber,
-					Tags: &dsl.FieldTags{
-						MapConv: ",default=1",
-					},
 				},
 			},
 		},

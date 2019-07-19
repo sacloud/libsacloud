@@ -94,12 +94,10 @@ var (
 		DestinationServers: []*sacloud.GSLBServer{
 			{
 				IPAddress: "192.2.0.1",
-				Weight:    types.StringNumber(1),
 				Enabled:   types.StringTrue,
 			},
 			{
 				IPAddress: "192.2.0.2",
-				Weight:    types.StringNumber(1),
 				Enabled:   types.StringTrue,
 			},
 		},
