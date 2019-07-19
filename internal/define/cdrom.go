@@ -44,7 +44,6 @@ var cdromAPI = &dsl.Resource{
 				},
 			),
 			Arguments: dsl.Arguments{
-				dsl.ArgumentZone,
 				dsl.MappableArgument("param", cdromCreateParam, names.ResourceFieldName(cdromAPIName, dsl.PayloadForms.Singular)),
 			},
 			Results: dsl.Results{

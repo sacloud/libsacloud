@@ -26,9 +26,6 @@ var ipAPI = &dsl.Resource{
 			PathFormat:       dsl.DefaultPathFormat,
 			Method:           http.MethodGet,
 			UseWrappedResult: true,
-			Arguments: dsl.Arguments{
-				dsl.ArgumentZone,
-			},
 			ResponseEnvelope: dsl.ResponseEnvelopePlural(&dsl.EnvelopePayloadDesc{
 				Type: ipNakedType,
 				Name: ipAPIName,
@@ -49,7 +46,6 @@ var ipAPI = &dsl.Resource{
 			PathFormat:   dsl.DefaultPathFormat + "/{{.ipAddress}}",
 			Method:       http.MethodGet,
 			Arguments: dsl.Arguments{
-				dsl.ArgumentZone,
 				{
 					Name: "ipAddress",
 					Type: meta.TypeString,
@@ -80,7 +76,6 @@ var ipAPI = &dsl.Resource{
 				Name: ipAPIName,
 			}),
 			Arguments: dsl.Arguments{
-				dsl.ArgumentZone,
 				{
 					Name: "ipAddress",
 					Type: meta.TypeString,

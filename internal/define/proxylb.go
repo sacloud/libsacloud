@@ -47,7 +47,6 @@ var proxyLBAPI = &dsl.Resource{
 				Name: "CommonServiceItem",
 			}),
 			Arguments: dsl.Arguments{
-				dsl.ArgumentZone,
 				dsl.ArgumentID,
 				dsl.MappableArgument("param", proxyLBChangePlanParam, "CommonServiceItem"),
 			},
@@ -72,7 +71,6 @@ var proxyLBAPI = &dsl.Resource{
 			PathFormat:   dsl.IDAndSuffixPathFormat("proxylb/sslcertificate"),
 			Method:       http.MethodGet,
 			Arguments: dsl.Arguments{
-				dsl.ArgumentZone,
 				dsl.ArgumentID,
 			},
 			ResponseEnvelope: dsl.ResponseEnvelope(&dsl.EnvelopePayloadDesc{
@@ -100,7 +98,6 @@ var proxyLBAPI = &dsl.Resource{
 				Name: proxyLBAPIName,
 			}),
 			Arguments: dsl.Arguments{
-				dsl.ArgumentZone,
 				dsl.ArgumentID,
 				dsl.MappableArgument("param", proxyLBCertificateSetParam, proxyLBAPIName),
 			},
@@ -125,7 +122,6 @@ var proxyLBAPI = &dsl.Resource{
 			PathFormat:   dsl.IDAndSuffixPathFormat("proxylb/sslcertificate"),
 			Method:       http.MethodDelete,
 			Arguments: dsl.Arguments{
-				dsl.ArgumentZone,
 				dsl.ArgumentID,
 			},
 		},

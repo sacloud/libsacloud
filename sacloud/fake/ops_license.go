@@ -8,7 +8,7 @@ import (
 )
 
 // Find is fake implementation
-func (o *LicenseOp) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.LicenseFindResult, error) {
+func (o *LicenseOp) Find(ctx context.Context, conditions *sacloud.FindCondition) (*sacloud.LicenseFindResult, error) {
 	results, _ := find(o.key, sacloud.APIDefaultZone, conditions)
 	var values []*sacloud.License
 	for _, res := range results {
@@ -25,7 +25,7 @@ func (o *LicenseOp) Find(ctx context.Context, zone string, conditions *sacloud.F
 }
 
 // Create is fake implementation
-func (o *LicenseOp) Create(ctx context.Context, zone string, param *sacloud.LicenseCreateRequest) (*sacloud.License, error) {
+func (o *LicenseOp) Create(ctx context.Context, param *sacloud.LicenseCreateRequest) (*sacloud.License, error) {
 	result := &sacloud.License{}
 	copySameNameField(param, result)
 	fill(result, fillID, fillCreatedAt, fillModifiedAt)
@@ -35,7 +35,7 @@ func (o *LicenseOp) Create(ctx context.Context, zone string, param *sacloud.Lice
 }
 
 // Read is fake implementation
-func (o *LicenseOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.License, error) {
+func (o *LicenseOp) Read(ctx context.Context, id types.ID) (*sacloud.License, error) {
 	value := s.getLicenseByID(sacloud.APIDefaultZone, id)
 	if value == nil {
 		return nil, newErrorNotFound(o.key, id)
@@ -46,8 +46,8 @@ func (o *LicenseOp) Read(ctx context.Context, zone string, id types.ID) (*saclou
 }
 
 // Update is fake implementation
-func (o *LicenseOp) Update(ctx context.Context, zone string, id types.ID, param *sacloud.LicenseUpdateRequest) (*sacloud.License, error) {
-	value, err := o.Read(ctx, sacloud.APIDefaultZone, id)
+func (o *LicenseOp) Update(ctx context.Context, id types.ID, param *sacloud.LicenseUpdateRequest) (*sacloud.License, error) {
+	value, err := o.Read(ctx, id)
 	if err != nil {
 		return nil, err
 	}
@@ -57,8 +57,8 @@ func (o *LicenseOp) Update(ctx context.Context, zone string, id types.ID, param 
 }
 
 // Delete is fake implementation
-func (o *LicenseOp) Delete(ctx context.Context, zone string, id types.ID) error {
-	_, err := o.Read(ctx, sacloud.APIDefaultZone, id)
+func (o *LicenseOp) Delete(ctx context.Context, id types.ID) error {
+	_, err := o.Read(ctx, id)
 	if err != nil {
 		return err
 	}

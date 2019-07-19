@@ -13,7 +13,7 @@ func TestZoneOp_Find(t *testing.T) {
 
 	client := sacloud.NewZoneOp(singletonAPICaller())
 
-	zoneFindResult, err := client.Find(context.Background(), sacloud.APIDefaultZone, &sacloud.FindCondition{Count: 1})
+	zoneFindResult, err := client.Find(context.Background(), &sacloud.FindCondition{Count: 1})
 	assert.NoError(t, err)
 	assert.Len(t, zoneFindResult.Zones, 1)
 }

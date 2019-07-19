@@ -43,7 +43,6 @@ var serverAPI = &dsl.Resource{
 			Method:          http.MethodPut,
 			RequestEnvelope: dsl.RequestEnvelopeFromModel(serverChangePlanParam),
 			Arguments: dsl.Arguments{
-				dsl.ArgumentZone,
 				dsl.ArgumentID,
 				dsl.PassthroughModelArgument("plan", serverChangePlanParam),
 			},
@@ -74,7 +73,6 @@ var serverAPI = &dsl.Resource{
 				},
 			),
 			Arguments: dsl.Arguments{
-				dsl.ArgumentZone,
 				dsl.ArgumentID,
 				{
 					Name: "insertParam",
@@ -103,7 +101,6 @@ var serverAPI = &dsl.Resource{
 				},
 			),
 			Arguments: dsl.Arguments{
-				dsl.ArgumentZone,
 				dsl.ArgumentID,
 				{
 					Name: "insertParam",

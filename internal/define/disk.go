@@ -44,7 +44,6 @@ var diskAPI = &dsl.Resource{
 				},
 			),
 			Arguments: dsl.Arguments{
-				dsl.ArgumentZone,
 				{
 					Name:       "createParam",
 					MapConvTag: "Disk",
@@ -78,7 +77,6 @@ var diskAPI = &dsl.Resource{
 			Method:          http.MethodPut,
 			RequestEnvelope: dsl.RequestEnvelopeFromModel(diskEditParam),
 			Arguments: dsl.Arguments{
-				dsl.ArgumentZone,
 				dsl.ArgumentID,
 				dsl.PassthroughModelArgument("edit", diskEditParam),
 			},
@@ -109,7 +107,6 @@ var diskAPI = &dsl.Resource{
 				Name: "Disk",
 			}),
 			Arguments: dsl.Arguments{
-				dsl.ArgumentZone,
 				{
 					Name:       "createParam",
 					MapConvTag: "Disk",
@@ -164,7 +161,6 @@ var diskAPI = &dsl.Resource{
 				Name: "Disk",
 			}),
 			Arguments: dsl.Arguments{
-				dsl.ArgumentZone,
 				{
 					Name:       "createParam",
 					MapConvTag: "Disk",
@@ -234,7 +230,6 @@ var diskAPI = &dsl.Resource{
 				Name: "Disk",
 			}),
 			Arguments: dsl.Arguments{
-				dsl.ArgumentZone,
 				dsl.ArgumentID,
 				{
 					Name:       "installParam",
@@ -273,7 +268,6 @@ var diskAPI = &dsl.Resource{
 				Name: "Disk",
 			}),
 			Arguments: dsl.Arguments{
-				dsl.ArgumentZone,
 				dsl.ArgumentID,
 				{
 					Name:       "installParam",

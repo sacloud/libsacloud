@@ -64,7 +64,6 @@ var mobileGatewayAPI = &dsl.Resource{
 			PathFormat:   dsl.IDAndSuffixPathFormat("mobilegateway/dnsresolver"),
 			Method:       http.MethodGet,
 			Arguments: dsl.Arguments{
-				dsl.ArgumentZone,
 				dsl.ArgumentID,
 			},
 			ResponseEnvelope: dsl.ResponseEnvelope(&dsl.EnvelopePayloadDesc{
@@ -89,7 +88,6 @@ var mobileGatewayAPI = &dsl.Resource{
 			PathFormat:   dsl.IDAndSuffixPathFormat("mobilegateway/dnsresolver"),
 			Method:       http.MethodPut,
 			Arguments: dsl.Arguments{
-				dsl.ArgumentZone,
 				dsl.ArgumentID,
 				dsl.MappableArgument("param", mobileGatewayDNSModel, "SIMGroup"),
 			},
@@ -109,7 +107,6 @@ var mobileGatewayAPI = &dsl.Resource{
 			PathFormat:   dsl.IDAndSuffixPathFormat("mobilegateway/simroutes"),
 			Method:       http.MethodGet,
 			Arguments: dsl.Arguments{
-				dsl.ArgumentZone,
 				dsl.ArgumentID,
 			},
 			ResponseEnvelope: dsl.ResponseEnvelope(&dsl.EnvelopePayloadDesc{
@@ -141,7 +138,6 @@ var mobileGatewayAPI = &dsl.Resource{
 				},
 			}),
 			Arguments: dsl.Arguments{
-				dsl.ArgumentZone,
 				dsl.ArgumentID,
 				dsl.MappableArgument("param", mobileGatewaySIMRouteParam, "[]SIMRoutes"),
 			},
@@ -154,7 +150,6 @@ var mobileGatewayAPI = &dsl.Resource{
 			PathFormat:   dsl.IDAndSuffixPathFormat("mobilegateway/sims"),
 			Method:       http.MethodGet,
 			Arguments: dsl.Arguments{
-				dsl.ArgumentZone,
 				dsl.ArgumentID,
 			},
 			ResponseEnvelope: dsl.ResponseEnvelope(&dsl.EnvelopePayloadDesc{
@@ -187,7 +182,6 @@ var mobileGatewayAPI = &dsl.Resource{
 				},
 			}),
 			Arguments: dsl.Arguments{
-				dsl.ArgumentZone,
 				dsl.ArgumentID,
 				dsl.MappableArgument("param", mobileGatewayAddSIMParam, "SIM"),
 			},
@@ -199,7 +193,6 @@ var mobileGatewayAPI = &dsl.Resource{
 			PathFormat:   dsl.IDAndSuffixPathFormat("mobilegateway/sims/{{.simID}}"),
 			Method:       http.MethodDelete,
 			Arguments: dsl.Arguments{
-				dsl.ArgumentZone,
 				dsl.ArgumentID,
 				{
 					Name: "simID",
@@ -215,7 +208,6 @@ var mobileGatewayAPI = &dsl.Resource{
 			PathFormat:   dsl.IDAndSuffixPathFormat("mobilegateway/sessionlog"),
 			Method:       http.MethodGet,
 			Arguments: dsl.Arguments{
-				dsl.ArgumentZone,
 				dsl.ArgumentID,
 			},
 			ResponseEnvelope: dsl.ResponseEnvelope(&dsl.EnvelopePayloadDesc{
@@ -242,7 +234,6 @@ var mobileGatewayAPI = &dsl.Resource{
 			PathFormat:   dsl.IDAndSuffixPathFormat("mobilegateway/traffic_monitoring"),
 			Method:       http.MethodGet,
 			Arguments: dsl.Arguments{
-				dsl.ArgumentZone,
 				dsl.ArgumentID,
 			},
 			ResponseEnvelope: dsl.ResponseEnvelope(&dsl.EnvelopePayloadDesc{
@@ -275,7 +266,6 @@ var mobileGatewayAPI = &dsl.Resource{
 				},
 			}),
 			Arguments: dsl.Arguments{
-				dsl.ArgumentZone,
 				dsl.ArgumentID,
 				dsl.MappableArgument("param", mobileGatewayTrafficConfigModel, "TrafficMonitoring"),
 			},
@@ -287,7 +277,6 @@ var mobileGatewayAPI = &dsl.Resource{
 			PathFormat:   dsl.IDAndSuffixPathFormat("mobilegateway/traffic_monitoring"),
 			Method:       http.MethodDelete,
 			Arguments: dsl.Arguments{
-				dsl.ArgumentZone,
 				dsl.ArgumentID,
 			},
 		},
@@ -299,7 +288,6 @@ var mobileGatewayAPI = &dsl.Resource{
 			PathFormat:   dsl.IDAndSuffixPathFormat("mobilegateway/traffic_status"),
 			Method:       http.MethodGet,
 			Arguments: dsl.Arguments{
-				dsl.ArgumentZone,
 				dsl.ArgumentID,
 			},
 			ResponseEnvelope: dsl.ResponseEnvelope(&dsl.EnvelopePayloadDesc{

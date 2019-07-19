@@ -30,7 +30,7 @@ type ArchiveAPI interface {
 
 // AuthStatusAPI is interface for operate AuthStatus resource
 type AuthStatusAPI interface {
-	Read(ctx context.Context, zone string) (*AuthStatus, error)
+	Read(ctx context.Context) (*AuthStatus, error)
 }
 
 /*************************************************
@@ -52,12 +52,12 @@ type AutoBackupAPI interface {
 
 // BillAPI is interface for operate Bill resource
 type BillAPI interface {
-	ByContract(ctx context.Context, zone string, accountID types.ID) (*BillByContractResult, error)
-	ByContractYear(ctx context.Context, zone string, accountID types.ID, year int) (*BillByContractYearResult, error)
-	ByContractYearMonth(ctx context.Context, zone string, accountID types.ID, year int, month int) (*BillByContractYearMonthResult, error)
-	Read(ctx context.Context, zone string, id types.ID) (*BillReadResult, error)
-	Details(ctx context.Context, zone string, MemberCode string, id types.ID) (*BillDetailsResult, error)
-	DetailsCSV(ctx context.Context, zone string, MemberCode string, id types.ID) (*BillDetailCSV, error)
+	ByContract(ctx context.Context, accountID types.ID) (*BillByContractResult, error)
+	ByContractYear(ctx context.Context, accountID types.ID, year int) (*BillByContractYearResult, error)
+	ByContractYearMonth(ctx context.Context, accountID types.ID, year int, month int) (*BillByContractYearMonthResult, error)
+	Read(ctx context.Context, id types.ID) (*BillReadResult, error)
+	Details(ctx context.Context, MemberCode string, id types.ID) (*BillDetailsResult, error)
+	DetailsCSV(ctx context.Context, MemberCode string, id types.ID) (*BillDetailCSV, error)
 }
 
 /*************************************************
@@ -94,7 +94,7 @@ type CDROMAPI interface {
 
 // CouponAPI is interface for operate Coupon resource
 type CouponAPI interface {
-	Find(ctx context.Context, zone string, accountID types.ID) (*CouponFindResult, error)
+	Find(ctx context.Context, accountID types.ID) (*CouponFindResult, error)
 }
 
 /*************************************************
@@ -159,11 +159,11 @@ type DiskPlanAPI interface {
 
 // DNSAPI is interface for operate DNS resource
 type DNSAPI interface {
-	Find(ctx context.Context, zone string, conditions *FindCondition) (*DNSFindResult, error)
-	Create(ctx context.Context, zone string, param *DNSCreateRequest) (*DNS, error)
-	Read(ctx context.Context, zone string, id types.ID) (*DNS, error)
-	Update(ctx context.Context, zone string, id types.ID, param *DNSUpdateRequest) (*DNS, error)
-	Delete(ctx context.Context, zone string, id types.ID) error
+	Find(ctx context.Context, conditions *FindCondition) (*DNSFindResult, error)
+	Create(ctx context.Context, param *DNSCreateRequest) (*DNS, error)
+	Read(ctx context.Context, id types.ID) (*DNS, error)
+	Update(ctx context.Context, id types.ID, param *DNSUpdateRequest) (*DNS, error)
+	Delete(ctx context.Context, id types.ID) error
 }
 
 /*************************************************
@@ -172,11 +172,11 @@ type DNSAPI interface {
 
 // GSLBAPI is interface for operate GSLB resource
 type GSLBAPI interface {
-	Find(ctx context.Context, zone string, conditions *FindCondition) (*GSLBFindResult, error)
-	Create(ctx context.Context, zone string, param *GSLBCreateRequest) (*GSLB, error)
-	Read(ctx context.Context, zone string, id types.ID) (*GSLB, error)
-	Update(ctx context.Context, zone string, id types.ID, param *GSLBUpdateRequest) (*GSLB, error)
-	Delete(ctx context.Context, zone string, id types.ID) error
+	Find(ctx context.Context, conditions *FindCondition) (*GSLBFindResult, error)
+	Create(ctx context.Context, param *GSLBCreateRequest) (*GSLB, error)
+	Read(ctx context.Context, id types.ID) (*GSLB, error)
+	Update(ctx context.Context, id types.ID, param *GSLBUpdateRequest) (*GSLB, error)
+	Delete(ctx context.Context, id types.ID) error
 }
 
 /*************************************************
@@ -185,11 +185,11 @@ type GSLBAPI interface {
 
 // IconAPI is interface for operate Icon resource
 type IconAPI interface {
-	Find(ctx context.Context, zone string, conditions *FindCondition) (*IconFindResult, error)
-	Create(ctx context.Context, zone string, param *IconCreateRequest) (*Icon, error)
-	Read(ctx context.Context, zone string, id types.ID) (*Icon, error)
-	Update(ctx context.Context, zone string, id types.ID, param *IconUpdateRequest) (*Icon, error)
-	Delete(ctx context.Context, zone string, id types.ID) error
+	Find(ctx context.Context, conditions *FindCondition) (*IconFindResult, error)
+	Create(ctx context.Context, param *IconCreateRequest) (*Icon, error)
+	Read(ctx context.Context, id types.ID) (*Icon, error)
+	Update(ctx context.Context, id types.ID, param *IconUpdateRequest) (*Icon, error)
+	Delete(ctx context.Context, id types.ID) error
 }
 
 /*************************************************
@@ -281,11 +281,11 @@ type IPv6AddrAPI interface {
 
 // LicenseAPI is interface for operate License resource
 type LicenseAPI interface {
-	Find(ctx context.Context, zone string, conditions *FindCondition) (*LicenseFindResult, error)
-	Create(ctx context.Context, zone string, param *LicenseCreateRequest) (*License, error)
-	Read(ctx context.Context, zone string, id types.ID) (*License, error)
-	Update(ctx context.Context, zone string, id types.ID, param *LicenseUpdateRequest) (*License, error)
-	Delete(ctx context.Context, zone string, id types.ID) error
+	Find(ctx context.Context, conditions *FindCondition) (*LicenseFindResult, error)
+	Create(ctx context.Context, param *LicenseCreateRequest) (*License, error)
+	Read(ctx context.Context, id types.ID) (*License, error)
+	Update(ctx context.Context, id types.ID, param *LicenseUpdateRequest) (*License, error)
+	Delete(ctx context.Context, id types.ID) error
 }
 
 /*************************************************
@@ -294,8 +294,8 @@ type LicenseAPI interface {
 
 // LicenseInfoAPI is interface for operate LicenseInfo resource
 type LicenseInfoAPI interface {
-	Find(ctx context.Context, zone string, conditions *FindCondition) (*LicenseInfoFindResult, error)
-	Read(ctx context.Context, zone string, id types.ID) (*LicenseInfo, error)
+	Find(ctx context.Context, conditions *FindCondition) (*LicenseInfoFindResult, error)
+	Read(ctx context.Context, id types.ID) (*LicenseInfo, error)
 }
 
 /*************************************************
@@ -373,11 +373,11 @@ type NFSAPI interface {
 
 // NoteAPI is interface for operate Note resource
 type NoteAPI interface {
-	Find(ctx context.Context, zone string, conditions *FindCondition) (*NoteFindResult, error)
-	Create(ctx context.Context, zone string, param *NoteCreateRequest) (*Note, error)
-	Read(ctx context.Context, zone string, id types.ID) (*Note, error)
-	Update(ctx context.Context, zone string, id types.ID, param *NoteUpdateRequest) (*Note, error)
-	Delete(ctx context.Context, zone string, id types.ID) error
+	Find(ctx context.Context, conditions *FindCondition) (*NoteFindResult, error)
+	Create(ctx context.Context, param *NoteCreateRequest) (*Note, error)
+	Read(ctx context.Context, id types.ID) (*Note, error)
+	Update(ctx context.Context, id types.ID, param *NoteUpdateRequest) (*Note, error)
+	Delete(ctx context.Context, id types.ID) error
 }
 
 /*************************************************
@@ -422,17 +422,17 @@ type PrivateHostPlanAPI interface {
 
 // ProxyLBAPI is interface for operate ProxyLB resource
 type ProxyLBAPI interface {
-	Find(ctx context.Context, zone string, conditions *FindCondition) (*ProxyLBFindResult, error)
-	Create(ctx context.Context, zone string, param *ProxyLBCreateRequest) (*ProxyLB, error)
-	Read(ctx context.Context, zone string, id types.ID) (*ProxyLB, error)
-	Update(ctx context.Context, zone string, id types.ID, param *ProxyLBUpdateRequest) (*ProxyLB, error)
-	Delete(ctx context.Context, zone string, id types.ID) error
-	ChangePlan(ctx context.Context, zone string, id types.ID, param *ProxyLBChangePlanRequest) (*ProxyLB, error)
-	GetCertificates(ctx context.Context, zone string, id types.ID) (*ProxyLBCertificates, error)
-	SetCertificates(ctx context.Context, zone string, id types.ID, param *ProxyLBSetCertificatesRequest) (*ProxyLBCertificates, error)
-	DeleteCertificates(ctx context.Context, zone string, id types.ID) error
-	RenewLetsEncryptCert(ctx context.Context, zone string, id types.ID) error
-	HealthStatus(ctx context.Context, zone string, id types.ID) (*ProxyLBHealth, error)
+	Find(ctx context.Context, conditions *FindCondition) (*ProxyLBFindResult, error)
+	Create(ctx context.Context, param *ProxyLBCreateRequest) (*ProxyLB, error)
+	Read(ctx context.Context, id types.ID) (*ProxyLB, error)
+	Update(ctx context.Context, id types.ID, param *ProxyLBUpdateRequest) (*ProxyLB, error)
+	Delete(ctx context.Context, id types.ID) error
+	ChangePlan(ctx context.Context, id types.ID, param *ProxyLBChangePlanRequest) (*ProxyLB, error)
+	GetCertificates(ctx context.Context, id types.ID) (*ProxyLBCertificates, error)
+	SetCertificates(ctx context.Context, id types.ID, param *ProxyLBSetCertificatesRequest) (*ProxyLBCertificates, error)
+	DeleteCertificates(ctx context.Context, id types.ID) error
+	RenewLetsEncryptCert(ctx context.Context, id types.ID) error
+	HealthStatus(ctx context.Context, id types.ID) (*ProxyLBHealth, error)
 }
 
 /*************************************************
@@ -441,8 +441,8 @@ type ProxyLBAPI interface {
 
 // RegionAPI is interface for operate Region resource
 type RegionAPI interface {
-	Find(ctx context.Context, zone string, conditions *FindCondition) (*RegionFindResult, error)
-	Read(ctx context.Context, zone string, id types.ID) (*Region, error)
+	Find(ctx context.Context, conditions *FindCondition) (*RegionFindResult, error)
+	Read(ctx context.Context, id types.ID) (*Region, error)
 }
 
 /*************************************************
@@ -490,22 +490,22 @@ type ServiceClassAPI interface {
 
 // SIMAPI is interface for operate SIM resource
 type SIMAPI interface {
-	Find(ctx context.Context, zone string, conditions *FindCondition) (*SIMFindResult, error)
-	Create(ctx context.Context, zone string, param *SIMCreateRequest) (*SIM, error)
-	Read(ctx context.Context, zone string, id types.ID) (*SIM, error)
-	Update(ctx context.Context, zone string, id types.ID, param *SIMUpdateRequest) (*SIM, error)
-	Delete(ctx context.Context, zone string, id types.ID) error
-	Activate(ctx context.Context, zone string, id types.ID) error
-	Deactivate(ctx context.Context, zone string, id types.ID) error
-	AssignIP(ctx context.Context, zone string, id types.ID, param *SIMAssignIPRequest) error
-	ClearIP(ctx context.Context, zone string, id types.ID) error
-	IMEILock(ctx context.Context, zone string, id types.ID, param *SIMIMEILockRequest) error
-	IMEIUnlock(ctx context.Context, zone string, id types.ID) error
-	Logs(ctx context.Context, zone string, id types.ID) (*SIMLogsResult, error)
-	GetNetworkOperator(ctx context.Context, zone string, id types.ID) ([]*SIMNetworkOperatorConfig, error)
-	SetNetworkOperator(ctx context.Context, zone string, id types.ID, configs []*SIMNetworkOperatorConfig) error
-	MonitorSIM(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*LinkActivity, error)
-	Status(ctx context.Context, zone string, id types.ID) (*SIMInfo, error)
+	Find(ctx context.Context, conditions *FindCondition) (*SIMFindResult, error)
+	Create(ctx context.Context, param *SIMCreateRequest) (*SIM, error)
+	Read(ctx context.Context, id types.ID) (*SIM, error)
+	Update(ctx context.Context, id types.ID, param *SIMUpdateRequest) (*SIM, error)
+	Delete(ctx context.Context, id types.ID) error
+	Activate(ctx context.Context, id types.ID) error
+	Deactivate(ctx context.Context, id types.ID) error
+	AssignIP(ctx context.Context, id types.ID, param *SIMAssignIPRequest) error
+	ClearIP(ctx context.Context, id types.ID) error
+	IMEILock(ctx context.Context, id types.ID, param *SIMIMEILockRequest) error
+	IMEIUnlock(ctx context.Context, id types.ID) error
+	Logs(ctx context.Context, id types.ID) (*SIMLogsResult, error)
+	GetNetworkOperator(ctx context.Context, id types.ID) ([]*SIMNetworkOperatorConfig, error)
+	SetNetworkOperator(ctx context.Context, id types.ID, configs []*SIMNetworkOperatorConfig) error
+	MonitorSIM(ctx context.Context, id types.ID, condition *MonitorCondition) (*LinkActivity, error)
+	Status(ctx context.Context, id types.ID) (*SIMInfo, error)
 }
 
 /*************************************************
@@ -514,13 +514,13 @@ type SIMAPI interface {
 
 // SimpleMonitorAPI is interface for operate SimpleMonitor resource
 type SimpleMonitorAPI interface {
-	Find(ctx context.Context, zone string, conditions *FindCondition) (*SimpleMonitorFindResult, error)
-	Create(ctx context.Context, zone string, param *SimpleMonitorCreateRequest) (*SimpleMonitor, error)
-	Read(ctx context.Context, zone string, id types.ID) (*SimpleMonitor, error)
-	Update(ctx context.Context, zone string, id types.ID, param *SimpleMonitorUpdateRequest) (*SimpleMonitor, error)
-	Delete(ctx context.Context, zone string, id types.ID) error
-	MonitorResponseTime(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*ResponseTimeSecActivity, error)
-	HealthStatus(ctx context.Context, zone string, id types.ID) (*SimpleMonitorHealthStatus, error)
+	Find(ctx context.Context, conditions *FindCondition) (*SimpleMonitorFindResult, error)
+	Create(ctx context.Context, param *SimpleMonitorCreateRequest) (*SimpleMonitor, error)
+	Read(ctx context.Context, id types.ID) (*SimpleMonitor, error)
+	Update(ctx context.Context, id types.ID, param *SimpleMonitorUpdateRequest) (*SimpleMonitor, error)
+	Delete(ctx context.Context, id types.ID) error
+	MonitorResponseTime(ctx context.Context, id types.ID, condition *MonitorCondition) (*ResponseTimeSecActivity, error)
+	HealthStatus(ctx context.Context, id types.ID) (*SimpleMonitorHealthStatus, error)
 }
 
 /*************************************************
@@ -529,12 +529,12 @@ type SimpleMonitorAPI interface {
 
 // SSHKeyAPI is interface for operate SSHKey resource
 type SSHKeyAPI interface {
-	Find(ctx context.Context, zone string, conditions *FindCondition) (*SSHKeyFindResult, error)
-	Create(ctx context.Context, zone string, param *SSHKeyCreateRequest) (*SSHKey, error)
-	Generate(ctx context.Context, zone string, param *SSHKeyGenerateRequest) (*SSHKeyGenerated, error)
-	Read(ctx context.Context, zone string, id types.ID) (*SSHKey, error)
-	Update(ctx context.Context, zone string, id types.ID, param *SSHKeyUpdateRequest) (*SSHKey, error)
-	Delete(ctx context.Context, zone string, id types.ID) error
+	Find(ctx context.Context, conditions *FindCondition) (*SSHKeyFindResult, error)
+	Create(ctx context.Context, param *SSHKeyCreateRequest) (*SSHKey, error)
+	Generate(ctx context.Context, param *SSHKeyGenerateRequest) (*SSHKeyGenerated, error)
+	Read(ctx context.Context, id types.ID) (*SSHKey, error)
+	Update(ctx context.Context, id types.ID, param *SSHKeyUpdateRequest) (*SSHKey, error)
+	Delete(ctx context.Context, id types.ID) error
 }
 
 /*************************************************
@@ -578,12 +578,12 @@ type VPCRouterAPI interface {
 
 // WebAccelAPI is interface for operate WebAccel resource
 type WebAccelAPI interface {
-	List(ctx context.Context, zone string) (*WebAccelListResult, error)
-	Read(ctx context.Context, zone string, id types.ID) (*WebAccel, error)
-	ReadCertificate(ctx context.Context, zone string, id types.ID) (*WebAccelCerts, error)
-	UpdateCertificate(ctx context.Context, zone string, id types.ID, param *WebAccelCertUpdateRequest) (*WebAccelCerts, error)
-	DeleteAllCache(ctx context.Context, zone string, param *WebAccelDeleteAllCacheRequest) error
-	DeleteCache(ctx context.Context, zone string, param *WebAccelDeleteCacheRequest) ([]*WebAccelDeleteCacheResult, error)
+	List(ctx context.Context) (*WebAccelListResult, error)
+	Read(ctx context.Context, id types.ID) (*WebAccel, error)
+	ReadCertificate(ctx context.Context, id types.ID) (*WebAccelCerts, error)
+	UpdateCertificate(ctx context.Context, id types.ID, param *WebAccelCertUpdateRequest) (*WebAccelCerts, error)
+	DeleteAllCache(ctx context.Context, param *WebAccelDeleteAllCacheRequest) error
+	DeleteCache(ctx context.Context, param *WebAccelDeleteCacheRequest) ([]*WebAccelDeleteCacheResult, error)
 }
 
 /*************************************************
@@ -592,6 +592,6 @@ type WebAccelAPI interface {
 
 // ZoneAPI is interface for operate Zone resource
 type ZoneAPI interface {
-	Find(ctx context.Context, zone string, conditions *FindCondition) (*ZoneFindResult, error)
-	Read(ctx context.Context, zone string, id types.ID) (*Zone, error)
+	Find(ctx context.Context, conditions *FindCondition) (*ZoneFindResult, error)
+	Read(ctx context.Context, id types.ID) (*Zone, error)
 }

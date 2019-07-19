@@ -33,7 +33,6 @@ var ipv6AddrAPI = &dsl.Resource{
 			PathFormat:   dsl.DefaultPathFormatWithID,
 			Method:       http.MethodGet,
 			Arguments: dsl.Arguments{
-				dsl.ArgumentZone,
 				argIPv6Addr,
 			},
 			ResponseEnvelope: dsl.ResponseEnvelope(&dsl.EnvelopePayloadDesc{
@@ -61,7 +60,6 @@ var ipv6AddrAPI = &dsl.Resource{
 				Name: ipv6AddrAPIName,
 			}),
 			Arguments: dsl.Arguments{
-				dsl.ArgumentZone,
 				argIPv6Addr,
 				dsl.MappableArgument("param", ipv6AddrUpdateParam, ipv6AddrAPIName),
 			},
@@ -86,7 +84,6 @@ var ipv6AddrAPI = &dsl.Resource{
 			PathFormat:   dsl.DefaultPathFormatWithID,
 			Method:       http.MethodDelete,
 			Arguments: dsl.Arguments{
-				dsl.ArgumentZone,
 				argIPv6Addr,
 			},
 		},

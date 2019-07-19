@@ -49,7 +49,7 @@ func TestSSHKeyOp_Generate(t *testing.T) {
 		Create: &CRUDTestFunc{
 			Func: func(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 				client := sacloud.NewSSHKeyOp(caller)
-				return client.Generate(context.Background(), sacloud.APIDefaultZone, &sacloud.SSHKeyGenerateRequest{
+				return client.Generate(context.Background(), &sacloud.SSHKeyGenerateRequest{
 					Name:        "libsacloud-sshKey-generate",
 					Description: "libsacloud-sshKey-generate",
 					PassPhrase:  "libsacloud-sshKey-passphrase",
@@ -107,20 +107,20 @@ var (
 
 func testSSHKeyCreate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewSSHKeyOp(caller)
-	return client.Create(context.Background(), sacloud.APIDefaultZone, createSSHKeyParam)
+	return client.Create(context.Background(), createSSHKeyParam)
 }
 
 func testSSHKeyRead(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewSSHKeyOp(caller)
-	return client.Read(context.Background(), sacloud.APIDefaultZone, testContext.ID)
+	return client.Read(context.Background(), testContext.ID)
 }
 
 func testSSHKeyUpdate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewSSHKeyOp(caller)
-	return client.Update(context.Background(), sacloud.APIDefaultZone, testContext.ID, updateSSHKeyParam)
+	return client.Update(context.Background(), testContext.ID, updateSSHKeyParam)
 }
 
 func testSSHKeyDelete(testContext *CRUDTestContext, caller sacloud.APICaller) error {
 	client := sacloud.NewSSHKeyOp(caller)
-	return client.Delete(context.Background(), sacloud.APIDefaultZone, testContext.ID)
+	return client.Delete(context.Background(), testContext.ID)
 }

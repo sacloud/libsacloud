@@ -10,7 +10,7 @@ import (
 )
 
 // Find is fake implementation
-func (o *ProxyLBOp) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.ProxyLBFindResult, error) {
+func (o *ProxyLBOp) Find(ctx context.Context, conditions *sacloud.FindCondition) (*sacloud.ProxyLBFindResult, error) {
 	results, _ := find(o.key, sacloud.APIDefaultZone, conditions)
 	var values []*sacloud.ProxyLB
 	for _, res := range results {
@@ -27,7 +27,7 @@ func (o *ProxyLBOp) Find(ctx context.Context, zone string, conditions *sacloud.F
 }
 
 // Create is fake implementation
-func (o *ProxyLBOp) Create(ctx context.Context, zone string, param *sacloud.ProxyLBCreateRequest) (*sacloud.ProxyLB, error) {
+func (o *ProxyLBOp) Create(ctx context.Context, param *sacloud.ProxyLBCreateRequest) (*sacloud.ProxyLB, error) {
 	result := &sacloud.ProxyLB{}
 	copySameNameField(param, result)
 	fill(result, fillID, fillCreatedAt)
@@ -56,14 +56,14 @@ func (o *ProxyLBOp) Create(ctx context.Context, zone string, param *sacloud.Prox
 			CPS:        10,
 		})
 	}
-	s.setWithID(ResourceProxyLB+"Status", zone, status, result.ID)
+	s.setWithID(ResourceProxyLB+"Status", sacloud.APIDefaultZone, status, result.ID)
 
 	s.setProxyLB(sacloud.APIDefaultZone, result)
 	return result, nil
 }
 
 // Read is fake implementation
-func (o *ProxyLBOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.ProxyLB, error) {
+func (o *ProxyLBOp) Read(ctx context.Context, id types.ID) (*sacloud.ProxyLB, error) {
 	value := s.getProxyLBByID(sacloud.APIDefaultZone, id)
 	if value == nil {
 		return nil, newErrorNotFound(o.key, id)
@@ -74,15 +74,15 @@ func (o *ProxyLBOp) Read(ctx context.Context, zone string, id types.ID) (*saclou
 }
 
 // Update is fake implementation
-func (o *ProxyLBOp) Update(ctx context.Context, zone string, id types.ID, param *sacloud.ProxyLBUpdateRequest) (*sacloud.ProxyLB, error) {
-	value, err := o.Read(ctx, sacloud.APIDefaultZone, id)
+func (o *ProxyLBOp) Update(ctx context.Context, id types.ID, param *sacloud.ProxyLBUpdateRequest) (*sacloud.ProxyLB, error) {
+	value, err := o.Read(ctx, id)
 	if err != nil {
 		return nil, err
 	}
 	copySameNameField(param, value)
 	fill(value, fillModifiedAt)
 
-	status := s.getByID(ResourceProxyLB+"Status", zone, id).(*sacloud.ProxyLBHealth)
+	status := s.getByID(ResourceProxyLB+"Status", sacloud.APIDefaultZone, id).(*sacloud.ProxyLBHealth)
 	status.Servers = []*sacloud.LoadBalancerServerStatus{}
 	for _, server := range param.Servers {
 		status.Servers = append(status.Servers, &sacloud.LoadBalancerServerStatus{
@@ -93,28 +93,28 @@ func (o *ProxyLBOp) Update(ctx context.Context, zone string, id types.ID, param 
 			CPS:        10,
 		})
 	}
-	s.setWithID(ResourceProxyLB+"Status", zone, status, id)
+	s.setWithID(ResourceProxyLB+"Status", sacloud.APIDefaultZone, status, id)
 
 	return value, nil
 }
 
 // Delete is fake implementation
-func (o *ProxyLBOp) Delete(ctx context.Context, zone string, id types.ID) error {
-	_, err := o.Read(ctx, sacloud.APIDefaultZone, id)
+func (o *ProxyLBOp) Delete(ctx context.Context, id types.ID) error {
+	_, err := o.Read(ctx, id)
 	if err != nil {
 		return err
 	}
 
-	s.delete(ResourceProxyLB+"Status", zone, id)
-	s.delete(ResourceProxyLB+"Certs", zone, id)
+	s.delete(ResourceProxyLB+"Status", sacloud.APIDefaultZone, id)
+	s.delete(ResourceProxyLB+"Certs", sacloud.APIDefaultZone, id)
 	s.delete(o.key, sacloud.APIDefaultZone, id)
 
 	return nil
 }
 
 // ChangePlan is fake implementation
-func (o *ProxyLBOp) ChangePlan(ctx context.Context, zone string, id types.ID, param *sacloud.ProxyLBChangePlanRequest) (*sacloud.ProxyLB, error) {
-	value, err := o.Read(ctx, sacloud.APIDefaultZone, id)
+func (o *ProxyLBOp) ChangePlan(ctx context.Context, id types.ID, param *sacloud.ProxyLBChangePlanRequest) (*sacloud.ProxyLB, error) {
+	value, err := o.Read(ctx, id)
 	if err != nil {
 		return nil, err
 	}
@@ -124,13 +124,13 @@ func (o *ProxyLBOp) ChangePlan(ctx context.Context, zone string, id types.ID, pa
 }
 
 // GetCertificates is fake implementation
-func (o *ProxyLBOp) GetCertificates(ctx context.Context, zone string, id types.ID) (*sacloud.ProxyLBCertificates, error) {
-	_, err := o.Read(ctx, sacloud.APIDefaultZone, id)
+func (o *ProxyLBOp) GetCertificates(ctx context.Context, id types.ID) (*sacloud.ProxyLBCertificates, error) {
+	_, err := o.Read(ctx, id)
 	if err != nil {
 		return nil, err
 	}
 
-	v := s.getByID(ResourceProxyLB+"Certs", zone, id)
+	v := s.getByID(ResourceProxyLB+"Certs", sacloud.APIDefaultZone, id)
 	if v != nil {
 		return v.(*sacloud.ProxyLBCertificates), nil
 	}
@@ -139,8 +139,8 @@ func (o *ProxyLBOp) GetCertificates(ctx context.Context, zone string, id types.I
 }
 
 // SetCertificates is fake implementation
-func (o *ProxyLBOp) SetCertificates(ctx context.Context, zone string, id types.ID, param *sacloud.ProxyLBSetCertificatesRequest) (*sacloud.ProxyLBCertificates, error) {
-	_, err := o.Read(ctx, sacloud.APIDefaultZone, id)
+func (o *ProxyLBOp) SetCertificates(ctx context.Context, id types.ID, param *sacloud.ProxyLBSetCertificatesRequest) (*sacloud.ProxyLBCertificates, error) {
+	_, err := o.Read(ctx, id)
 	if err != nil {
 		return nil, err
 	}
@@ -150,35 +150,35 @@ func (o *ProxyLBOp) SetCertificates(ctx context.Context, zone string, id types.I
 	cert.CertificateCommonName = "dummy-common-name.org"
 	cert.CertificateEndDate = time.Now().Add(365 * 24 * time.Hour)
 
-	s.set(ResourceProxyLB+"Certs", zone, cert)
+	s.set(ResourceProxyLB+"Certs", sacloud.APIDefaultZone, cert)
 	return cert, nil
 }
 
 // DeleteCertificates is fake implementation
-func (o *ProxyLBOp) DeleteCertificates(ctx context.Context, zone string, id types.ID) error {
-	_, err := o.Read(ctx, sacloud.APIDefaultZone, id)
+func (o *ProxyLBOp) DeleteCertificates(ctx context.Context, id types.ID) error {
+	_, err := o.Read(ctx, id)
 	if err != nil {
 		return err
 	}
 
-	v := s.getByID(ResourceProxyLB+"Certs", zone, id)
+	v := s.getByID(ResourceProxyLB+"Certs", sacloud.APIDefaultZone, id)
 	if v != nil {
-		s.delete(ResourceProxyLB+"Certs", zone, id)
+		s.delete(ResourceProxyLB+"Certs", sacloud.APIDefaultZone, id)
 	}
 	return nil
 }
 
 // RenewLetsEncryptCert is fake implementation
-func (o *ProxyLBOp) RenewLetsEncryptCert(ctx context.Context, zone string, id types.ID) error {
+func (o *ProxyLBOp) RenewLetsEncryptCert(ctx context.Context, id types.ID) error {
 	return nil
 }
 
 // HealthStatus is fake implementation
-func (o *ProxyLBOp) HealthStatus(ctx context.Context, zone string, id types.ID) (*sacloud.ProxyLBHealth, error) {
-	_, err := o.Read(ctx, sacloud.APIDefaultZone, id)
+func (o *ProxyLBOp) HealthStatus(ctx context.Context, id types.ID) (*sacloud.ProxyLBHealth, error) {
+	_, err := o.Read(ctx, id)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.getByID(ResourceProxyLB+"Status", zone, id).(*sacloud.ProxyLBHealth), nil
+	return s.getByID(ResourceProxyLB+"Status", sacloud.APIDefaultZone, id).(*sacloud.ProxyLBHealth), nil
 }

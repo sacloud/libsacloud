@@ -8,7 +8,7 @@ import (
 )
 
 // Find is fake implementation
-func (o *CouponOp) Find(ctx context.Context, zone string, accountID types.ID) (*sacloud.CouponFindResult, error) {
+func (o *CouponOp) Find(ctx context.Context, accountID types.ID) (*sacloud.CouponFindResult, error) {
 	results, _ := find(o.key, sacloud.APIDefaultZone, nil)
 	var values []*sacloud.Coupon
 	for _, res := range results {

@@ -15,7 +15,7 @@ func TestAuthStatusOp_Read(t *testing.T) {
 		Read: &CRUDTestFunc{
 			Func: func(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 				client := sacloud.NewAuthStatusOp(singletonAPICaller())
-				authStatus, err := client.Read(context.Background(), sacloud.APIDefaultZone)
+				authStatus, err := client.Read(context.Background())
 
 				assert.NotNil(t, authStatus)
 

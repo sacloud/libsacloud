@@ -70,20 +70,20 @@ var (
 
 func testLicenseCreate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewLicenseOp(caller)
-	return client.Create(context.Background(), sacloud.APIDefaultZone, createLicenseParam)
+	return client.Create(context.Background(), createLicenseParam)
 }
 
 func testLicenseRead(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewLicenseOp(caller)
-	return client.Read(context.Background(), sacloud.APIDefaultZone, testContext.ID)
+	return client.Read(context.Background(), testContext.ID)
 }
 
 func testLicenseUpdate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewLicenseOp(caller)
-	return client.Update(context.Background(), sacloud.APIDefaultZone, testContext.ID, updateLicenseParam)
+	return client.Update(context.Background(), testContext.ID, updateLicenseParam)
 }
 
 func testLicenseDelete(testContext *CRUDTestContext, caller sacloud.APICaller) error {
 	client := sacloud.NewLicenseOp(caller)
-	return client.Delete(context.Background(), sacloud.APIDefaultZone, testContext.ID)
+	return client.Delete(context.Background(), testContext.ID)
 }

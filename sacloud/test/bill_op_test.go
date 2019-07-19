@@ -15,7 +15,7 @@ func TestBillOp_ByContract(t *testing.T) {
 
 	// get account ID
 	authStatusOp := sacloud.NewAuthStatusOp(singletonAPICaller())
-	authStatus, err := authStatusOp.Read(context.Background(), sacloud.APIDefaultZone)
+	authStatus, err := authStatusOp.Read(context.Background())
 	if !assert.NoError(t, err) {
 		return
 	}
@@ -25,7 +25,7 @@ func TestBillOp_ByContract(t *testing.T) {
 		t.Skip("current account is not permitted to viewing bills")
 	}
 
-	searched, err := client.ByContract(context.Background(), sacloud.APIDefaultZone, authStatus.AccountID)
+	searched, err := client.ByContract(context.Background(), authStatus.AccountID)
 	if !assert.NoError(t, err) {
 		return
 	}
@@ -39,7 +39,7 @@ func TestBillOp_ByContract(t *testing.T) {
 	assert.NoError(t, err)
 
 	// Details
-	details, err := client.Details(context.Background(), sacloud.APIDefaultZone, authStatus.MemberCode, searched.Bills[0].ID)
+	details, err := client.Details(context.Background(), authStatus.MemberCode, searched.Bills[0].ID)
 	if !assert.NoError(t, err) {
 		return
 	}

@@ -25,7 +25,6 @@ var authStatusAPI = &dsl.Resource{
 			Name:         "Read",
 			Method:       http.MethodGet,
 			PathFormat:   dsl.DefaultPathFormat,
-			Arguments:    dsl.Arguments{dsl.ArgumentZone},
 			ResponseEnvelope: dsl.ResponseEnvelope(
 				&dsl.EnvelopePayloadDesc{
 					Name: authStatusAPIName,

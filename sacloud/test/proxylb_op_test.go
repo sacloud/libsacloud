@@ -282,22 +282,22 @@ func initProxyLBVariables() {
 
 func testProxyLBCreate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewProxyLBOp(caller)
-	return client.Create(context.Background(), sacloud.APIDefaultZone, createProxyLBParam)
+	return client.Create(context.Background(), createProxyLBParam)
 }
 
 func testProxyLBRead(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewProxyLBOp(caller)
-	return client.Read(context.Background(), sacloud.APIDefaultZone, testContext.ID)
+	return client.Read(context.Background(), testContext.ID)
 }
 
 func testProxyLBUpdate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewProxyLBOp(caller)
-	return client.Update(context.Background(), sacloud.APIDefaultZone, testContext.ID, updateProxyLBParam)
+	return client.Update(context.Background(), testContext.ID, updateProxyLBParam)
 }
 
 func testProxyLBDelete(testContext *CRUDTestContext, caller sacloud.APICaller) error {
 	client := sacloud.NewProxyLBOp(caller)
-	return client.Delete(context.Background(), sacloud.APIDefaultZone, testContext.ID)
+	return client.Delete(context.Background(), testContext.ID)
 }
 
 func TestProxyLBOpLetsEncryptAndHealth(t *testing.T) {
@@ -326,12 +326,12 @@ func TestProxyLBOpLetsEncryptAndHealth(t *testing.T) {
 	proxyLBOp := sacloud.NewProxyLBOp(singletonAPICaller())
 
 	// create proxyLB
-	proxyLB, err := proxyLBOp.Create(ctx, sacloud.APIDefaultZone, createProxyLBForACMEParam)
+	proxyLB, err := proxyLBOp.Create(ctx, createProxyLBForACMEParam)
 	if !assert.NoError(t, err) {
 		return
 	}
 	defer func() {
-		proxyLBOp.Delete(ctx, sacloud.APIDefaultZone, proxyLB.ID) // nolint - ignore error
+		proxyLBOp.Delete(ctx, proxyLB.ID) // nolint - ignore error
 	}()
 
 	// read DNS
@@ -349,7 +349,7 @@ func TestProxyLBOpLetsEncryptAndHealth(t *testing.T) {
 
 	// update DNS record
 	dnsOp := sacloud.NewDNSOp(singletonAPICaller())
-	dns, err = dnsOp.Update(ctx, sacloud.APIDefaultZone, dns.ID, &sacloud.DNSUpdateRequest{
+	dns, err = dnsOp.Update(ctx, dns.ID, &sacloud.DNSUpdateRequest{
 		Records: dns.Records,
 	})
 	if !assert.NoError(t, err) {
@@ -362,7 +362,7 @@ func TestProxyLBOpLetsEncryptAndHealth(t *testing.T) {
 				records = append(records, dns.Records[i])
 			}
 		}
-		dnsOp.Update(ctx, sacloud.APIDefaultZone, dns.ID, &sacloud.DNSUpdateRequest{
+		dnsOp.Update(ctx, dns.ID, &sacloud.DNSUpdateRequest{
 			Records: records,
 		}) // nolint - ignore error
 	}()
@@ -374,7 +374,7 @@ func TestProxyLBOpLetsEncryptAndHealth(t *testing.T) {
 	done := false
 
 	for retryMax >= 0 {
-		proxyLB, err = proxyLBOp.Update(ctx, sacloud.APIDefaultZone, proxyLB.ID, updateProxyLBForACMEParam)
+		proxyLB, err = proxyLBOp.Update(ctx, proxyLB.ID, updateProxyLBForACMEParam)
 		if err != nil {
 			t.Log("Update Let's encrypt setting is failed. retry after 10 sec.")
 			time.Sleep(10 * time.Second)
@@ -390,7 +390,7 @@ func TestProxyLBOpLetsEncryptAndHealth(t *testing.T) {
 	}
 
 	// renew certs
-	err = proxyLBOp.RenewLetsEncryptCert(ctx, sacloud.APIDefaultZone, proxyLB.ID)
+	err = proxyLBOp.RenewLetsEncryptCert(ctx, proxyLB.ID)
 	if !assert.NoError(t, err) {
 		return
 	}
@@ -398,7 +398,7 @@ func TestProxyLBOpLetsEncryptAndHealth(t *testing.T) {
 	time.Sleep(time.Minute)
 
 	// get cert
-	certs, err := proxyLBOp.GetCertificates(ctx, sacloud.APIDefaultZone, proxyLB.ID)
+	certs, err := proxyLBOp.GetCertificates(ctx, proxyLB.ID)
 
 	if !assert.NoError(t, err) {
 		return
@@ -410,7 +410,7 @@ func TestProxyLBOpLetsEncryptAndHealth(t *testing.T) {
 	assert.NotEmpty(t, certs.CertificateEndDate)
 
 	// check health status
-	status, err := proxyLBOp.HealthStatus(ctx, sacloud.APIDefaultZone, proxyLB.ID)
+	status, err := proxyLBOp.HealthStatus(ctx, proxyLB.ID)
 	if !assert.NoError(t, err) {
 		return
 	}

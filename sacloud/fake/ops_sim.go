@@ -11,8 +11,8 @@ import (
 )
 
 // Find is fake implementation
-func (o *SIMOp) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.SIMFindResult, error) {
-	results, _ := find(o.key, zone, conditions)
+func (o *SIMOp) Find(ctx context.Context, conditions *sacloud.FindCondition) (*sacloud.SIMFindResult, error) {
+	results, _ := find(o.key, sacloud.APIDefaultZone, conditions)
 	var values []*sacloud.SIM
 	for _, res := range results {
 		dest := &sacloud.SIM{}
@@ -28,7 +28,7 @@ func (o *SIMOp) Find(ctx context.Context, zone string, conditions *sacloud.FindC
 }
 
 // Create is fake implementation
-func (o *SIMOp) Create(ctx context.Context, zone string, param *sacloud.SIMCreateRequest) (*sacloud.SIM, error) {
+func (o *SIMOp) Create(ctx context.Context, param *sacloud.SIMCreateRequest) (*sacloud.SIM, error) {
 	result := &sacloud.SIM{}
 	copySameNameField(param, result)
 	fill(result, fillID, fillCreatedAt, fillModifiedAt)
@@ -39,13 +39,13 @@ func (o *SIMOp) Create(ctx context.Context, zone string, param *sacloud.SIMCreat
 		ICCID: param.ICCID,
 	}
 
-	s.setSIM(zone, result)
+	s.setSIM(sacloud.APIDefaultZone, result)
 	return result, nil
 }
 
 // Read is fake implementation
-func (o *SIMOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.SIM, error) {
-	value := s.getSIMByID(zone, id)
+func (o *SIMOp) Read(ctx context.Context, id types.ID) (*sacloud.SIM, error) {
+	value := s.getSIMByID(sacloud.APIDefaultZone, id)
 	if value == nil {
 		return nil, newErrorNotFound(o.key, id)
 	}
@@ -55,8 +55,8 @@ func (o *SIMOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.SI
 }
 
 // Update is fake implementation
-func (o *SIMOp) Update(ctx context.Context, zone string, id types.ID, param *sacloud.SIMUpdateRequest) (*sacloud.SIM, error) {
-	value, err := o.Read(ctx, zone, id)
+func (o *SIMOp) Update(ctx context.Context, id types.ID, param *sacloud.SIMUpdateRequest) (*sacloud.SIM, error) {
+	value, err := o.Read(ctx, id)
 	if err != nil {
 		return nil, err
 	}
@@ -67,19 +67,19 @@ func (o *SIMOp) Update(ctx context.Context, zone string, id types.ID, param *sac
 }
 
 // Delete is fake implementation
-func (o *SIMOp) Delete(ctx context.Context, zone string, id types.ID) error {
-	_, err := o.Read(ctx, zone, id)
+func (o *SIMOp) Delete(ctx context.Context, id types.ID) error {
+	_, err := o.Read(ctx, id)
 	if err != nil {
 		return err
 	}
 
-	s.delete(o.key, zone, id)
+	s.delete(o.key, sacloud.APIDefaultZone, id)
 	return nil
 }
 
 // Activate is fake implementation
-func (o *SIMOp) Activate(ctx context.Context, zone string, id types.ID) error {
-	value, err := o.Read(ctx, zone, id)
+func (o *SIMOp) Activate(ctx context.Context, id types.ID) error {
+	value, err := o.Read(ctx, id)
 	if err != nil {
 		return err
 	}
@@ -93,8 +93,8 @@ func (o *SIMOp) Activate(ctx context.Context, zone string, id types.ID) error {
 }
 
 // Deactivate is fake implementation
-func (o *SIMOp) Deactivate(ctx context.Context, zone string, id types.ID) error {
-	value, err := o.Read(ctx, zone, id)
+func (o *SIMOp) Deactivate(ctx context.Context, id types.ID) error {
+	value, err := o.Read(ctx, id)
 	if err != nil {
 		return err
 	}
@@ -108,8 +108,8 @@ func (o *SIMOp) Deactivate(ctx context.Context, zone string, id types.ID) error 
 }
 
 // AssignIP is fake implementation
-func (o *SIMOp) AssignIP(ctx context.Context, zone string, id types.ID, param *sacloud.SIMAssignIPRequest) error {
-	value, err := o.Read(ctx, zone, id)
+func (o *SIMOp) AssignIP(ctx context.Context, id types.ID, param *sacloud.SIMAssignIPRequest) error {
+	value, err := o.Read(ctx, id)
 	if err != nil {
 		return err
 	}
@@ -121,8 +121,8 @@ func (o *SIMOp) AssignIP(ctx context.Context, zone string, id types.ID, param *s
 }
 
 // ClearIP is fake implementation
-func (o *SIMOp) ClearIP(ctx context.Context, zone string, id types.ID) error {
-	value, err := o.Read(ctx, zone, id)
+func (o *SIMOp) ClearIP(ctx context.Context, id types.ID) error {
+	value, err := o.Read(ctx, id)
 	if err != nil {
 		return err
 	}
@@ -134,8 +134,8 @@ func (o *SIMOp) ClearIP(ctx context.Context, zone string, id types.ID) error {
 }
 
 // IMEILock is fake implementation
-func (o *SIMOp) IMEILock(ctx context.Context, zone string, id types.ID, param *sacloud.SIMIMEILockRequest) error {
-	value, err := o.Read(ctx, zone, id)
+func (o *SIMOp) IMEILock(ctx context.Context, id types.ID, param *sacloud.SIMIMEILockRequest) error {
+	value, err := o.Read(ctx, id)
 	if err != nil {
 		return err
 	}
@@ -148,8 +148,8 @@ func (o *SIMOp) IMEILock(ctx context.Context, zone string, id types.ID, param *s
 }
 
 // IMEIUnlock is fake implementation
-func (o *SIMOp) IMEIUnlock(ctx context.Context, zone string, id types.ID) error {
-	value, err := o.Read(ctx, zone, id)
+func (o *SIMOp) IMEIUnlock(ctx context.Context, id types.ID) error {
+	value, err := o.Read(ctx, id)
 	if err != nil {
 		return err
 	}
@@ -162,8 +162,8 @@ func (o *SIMOp) IMEIUnlock(ctx context.Context, zone string, id types.ID) error 
 }
 
 // Logs is fake implementation
-func (o *SIMOp) Logs(ctx context.Context, zone string, id types.ID) (*sacloud.SIMLogsResult, error) {
-	value, err := o.Read(ctx, zone, id)
+func (o *SIMOp) Logs(ctx context.Context, id types.ID) (*sacloud.SIMLogsResult, error) {
+	value, err := o.Read(ctx, id)
 	if err != nil {
 		return nil, err
 	}
@@ -185,8 +185,8 @@ func (o *SIMOp) Logs(ctx context.Context, zone string, id types.ID) (*sacloud.SI
 }
 
 // GetNetworkOperator is fake implementation
-func (o *SIMOp) GetNetworkOperator(ctx context.Context, zone string, id types.ID) ([]*sacloud.SIMNetworkOperatorConfig, error) {
-	_, err := o.Read(ctx, zone, id)
+func (o *SIMOp) GetNetworkOperator(ctx context.Context, id types.ID) ([]*sacloud.SIMNetworkOperatorConfig, error) {
+	_, err := o.Read(ctx, id)
 	if err != nil {
 		return nil, err
 	}
@@ -200,8 +200,8 @@ func (o *SIMOp) GetNetworkOperator(ctx context.Context, zone string, id types.ID
 }
 
 // SetNetworkOperator is fake implementation
-func (o *SIMOp) SetNetworkOperator(ctx context.Context, zone string, id types.ID, configs []*sacloud.SIMNetworkOperatorConfig) error {
-	_, err := o.Read(ctx, zone, id)
+func (o *SIMOp) SetNetworkOperator(ctx context.Context, id types.ID, configs []*sacloud.SIMNetworkOperatorConfig) error {
+	_, err := o.Read(ctx, id)
 	if err != nil {
 		return err
 	}
@@ -209,8 +209,8 @@ func (o *SIMOp) SetNetworkOperator(ctx context.Context, zone string, id types.ID
 }
 
 // MonitorSIM is fake implementation
-func (o *SIMOp) MonitorSIM(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.LinkActivity, error) {
-	_, err := o.Read(ctx, zone, id)
+func (o *SIMOp) MonitorSIM(ctx context.Context, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.LinkActivity, error) {
+	_, err := o.Read(ctx, id)
 	if err != nil {
 		return nil, err
 	}
@@ -233,8 +233,8 @@ func (o *SIMOp) MonitorSIM(ctx context.Context, zone string, id types.ID, condit
 }
 
 // Status is fake implementation
-func (o *SIMOp) Status(ctx context.Context, zone string, id types.ID) (*sacloud.SIMInfo, error) {
-	v, err := o.Read(ctx, zone, id)
+func (o *SIMOp) Status(ctx context.Context, id types.ID) (*sacloud.SIMInfo, error) {
+	v, err := o.Read(ctx, id)
 	if err != nil {
 		return nil, err
 	}

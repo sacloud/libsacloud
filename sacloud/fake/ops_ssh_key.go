@@ -17,7 +17,7 @@ var (
 )
 
 // Find is fake implementation
-func (o *SSHKeyOp) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.SSHKeyFindResult, error) {
+func (o *SSHKeyOp) Find(ctx context.Context, conditions *sacloud.FindCondition) (*sacloud.SSHKeyFindResult, error) {
 	results, _ := find(o.key, sacloud.APIDefaultZone, conditions)
 	var values []*sacloud.SSHKey
 	for _, res := range results {
@@ -34,7 +34,7 @@ func (o *SSHKeyOp) Find(ctx context.Context, zone string, conditions *sacloud.Fi
 }
 
 // Create is fake implementation
-func (o *SSHKeyOp) Create(ctx context.Context, zone string, param *sacloud.SSHKeyCreateRequest) (*sacloud.SSHKey, error) {
+func (o *SSHKeyOp) Create(ctx context.Context, param *sacloud.SSHKeyCreateRequest) (*sacloud.SSHKey, error) {
 	result := &sacloud.SSHKey{}
 	copySameNameField(param, result)
 	fill(result, fillID, fillCreatedAt)
@@ -46,7 +46,7 @@ func (o *SSHKeyOp) Create(ctx context.Context, zone string, param *sacloud.SSHKe
 }
 
 // Generate is fake implementation
-func (o *SSHKeyOp) Generate(ctx context.Context, zone string, param *sacloud.SSHKeyGenerateRequest) (*sacloud.SSHKeyGenerated, error) {
+func (o *SSHKeyOp) Generate(ctx context.Context, param *sacloud.SSHKeyGenerateRequest) (*sacloud.SSHKeyGenerated, error) {
 	key := &sacloud.SSHKey{}
 	copySameNameField(param, key)
 	fill(key, fillID, fillCreatedAt)
@@ -63,7 +63,7 @@ func (o *SSHKeyOp) Generate(ctx context.Context, zone string, param *sacloud.SSH
 }
 
 // Read is fake implementation
-func (o *SSHKeyOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.SSHKey, error) {
+func (o *SSHKeyOp) Read(ctx context.Context, id types.ID) (*sacloud.SSHKey, error) {
 	value := s.getSSHKeyByID(sacloud.APIDefaultZone, id)
 	if value == nil {
 		return nil, newErrorNotFound(o.key, id)
@@ -74,8 +74,8 @@ func (o *SSHKeyOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud
 }
 
 // Update is fake implementation
-func (o *SSHKeyOp) Update(ctx context.Context, zone string, id types.ID, param *sacloud.SSHKeyUpdateRequest) (*sacloud.SSHKey, error) {
-	value, err := o.Read(ctx, sacloud.APIDefaultZone, id)
+func (o *SSHKeyOp) Update(ctx context.Context, id types.ID, param *sacloud.SSHKeyUpdateRequest) (*sacloud.SSHKey, error) {
+	value, err := o.Read(ctx, id)
 	if err != nil {
 		return nil, err
 	}
@@ -84,8 +84,8 @@ func (o *SSHKeyOp) Update(ctx context.Context, zone string, id types.ID, param *
 }
 
 // Delete is fake implementation
-func (o *SSHKeyOp) Delete(ctx context.Context, zone string, id types.ID) error {
-	_, err := o.Read(ctx, sacloud.APIDefaultZone, id)
+func (o *SSHKeyOp) Delete(ctx context.Context, id types.ID) error {
+	_, err := o.Read(ctx, id)
 	if err != nil {
 		return err
 	}
