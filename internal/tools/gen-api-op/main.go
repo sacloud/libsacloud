@@ -77,6 +77,8 @@ func (o *{{ $typeName }}Op) {{ .MethodName }}(ctx context.Context{{if not $resou
 		"pathName": o.PathName,
 		{{- if $resource.IsGlobal }}
 		"zone": APIDefaultZone,
+		{{- else }}
+		"zone": zone,
 		{{- end }}
 		{{- range .Arguments }}
 		"{{.PathFormatName}}": {{.Name}},
