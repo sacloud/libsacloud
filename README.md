@@ -23,7 +23,7 @@ Library for SakuraCloud API
 - [x] `IPv6Addr`: IPv6アドレス
 - [x] `License`: ライセンス
 - [x] `LoadBalancer`: ロードバランサ
-- [ ] `MobileGateway`: モバイルゲートウェイ 
+- [x] `MobileGateway`: モバイルゲートウェイ 
 - [ ] `NewsFeed`: ニュースフィード(メンテナンス情報)
 - [x] `NFS`: NFS
 - [x] `Note`: スタートアップスクリプト
@@ -40,7 +40,7 @@ Library for SakuraCloud API
 - [x] `Server`: サーバ
 - [x] `ServiceClass`: 価格表(public/price)
 - [x] `SimpleMonitor`: シンプル監視
-- [ ] `SIM`: SIM
+- [x] `SIM`: SIM
 - [x] `SSHKey`: 公開鍵
 - [x] `Subnet`: サブネット
 - [x] `Switch`: スイッチ
