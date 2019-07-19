@@ -1,5 +1,7 @@
 # libsacloud DSL for defination of API
 
+(このドキュメントは古くなっています。v2リリース時に最新の内容を反映します)
+
 ここではlibsacloudでAPIを定義するために用いられているDSL`libsacloud DSL`について記します。
 
 ## libsacloudで利用されるDSLの主要概念/用語

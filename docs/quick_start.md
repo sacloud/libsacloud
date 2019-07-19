@@ -1,5 +1,7 @@
 # Quick Start Guide
 
+(このドキュメントは古くなっています。v2リリース時に最新の内容を反映します)
+
 ここではlibsacloud DSLを用いてAPIリソースの定義を行う方法について記します。  
 libsacloud DSLについては[libsacloud DSL for defination of API](dls_overview.md)を参照してください。
 
