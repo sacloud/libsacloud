@@ -96,7 +96,7 @@ var (
 		"ZoneName",
 	}
 	createAutoBackupParam = &sacloud.AutoBackupCreateRequest{
-		Name:        "libsacloud-gslb",
+		Name:        "libsacloud-auto-backup",
 		Description: "desc",
 		Tags:        []string{"tag1", "tag2"},
 		BackupSpanWeekdays: []types.EBackupSpanWeekday{
@@ -110,12 +110,11 @@ var (
 		Description:             createAutoBackupParam.Description,
 		Tags:                    createAutoBackupParam.Tags,
 		Availability:            types.Availabilities.Available,
-		BackupSpanType:          types.BackupSpanTypes.Weekdays,
 		BackupSpanWeekdays:      createAutoBackupParam.BackupSpanWeekdays,
 		MaximumNumberOfArchives: createAutoBackupParam.MaximumNumberOfArchives,
 	}
 	updateAutoBackupParam = &sacloud.AutoBackupUpdateRequest{
-		Name:        "libsacloud-gslb-upd",
+		Name:        "libsacloud-auto-backup-upd",
 		Description: "desc-upd",
 		Tags:        []string{"tag1-upd", "tag2-upd"},
 		BackupSpanWeekdays: []types.EBackupSpanWeekday{
@@ -131,7 +130,6 @@ var (
 		Description:             updateAutoBackupParam.Description,
 		Tags:                    updateAutoBackupParam.Tags,
 		Availability:            types.Availabilities.Available,
-		BackupSpanType:          types.BackupSpanTypes.Weekdays,
 		BackupSpanWeekdays:      updateAutoBackupParam.BackupSpanWeekdays,
 		MaximumNumberOfArchives: updateAutoBackupParam.MaximumNumberOfArchives,
 	}

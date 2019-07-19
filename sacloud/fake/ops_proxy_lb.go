@@ -33,7 +33,6 @@ func (o *ProxyLBOp) Create(ctx context.Context, param *sacloud.ProxyLBCreateRequ
 	fill(result, fillID, fillCreatedAt)
 
 	result.Availability = types.Availabilities.Available
-	result.Class = "proxylb"
 
 	vip := pool.nextSharedIP()
 	vipNet := net.IPNet{IP: vip, Mask: []byte{255, 255, 255, 0}}

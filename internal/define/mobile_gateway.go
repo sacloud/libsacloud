@@ -328,8 +328,6 @@ var (
 			fields.Class(),
 			fields.IconID(),
 			fields.CreatedAt(),
-			// plan
-			fields.AppliancePlanID(),
 			// instance
 			fields.InstanceHostName(),
 			fields.InstanceHostInfoURL(),
@@ -348,10 +346,30 @@ var (
 	mobileGatewayCreateParam = &dsl.Model{
 		Name:      names.CreateParameterName(mobileGatewayAPIName),
 		NakedType: mobileGatewayNakedType,
+		ConstFields: []*dsl.ConstFieldDesc{
+			{
+				Name:  "Class",
+				Type:  meta.TypeString,
+				Value: `"mobilegateway"`,
+			},
+			{
+				Name: "PlanID",
+				Tags: &dsl.FieldTags{
+					MapConv: "Remark.Plan.ID/Plan.ID",
+				},
+				Type:  meta.TypeID,
+				Value: `types.ID(1)`,
+			},
+			{
+				Name: "SwitchID",
+				Tags: &dsl.FieldTags{
+					MapConv: "Remark.Switch.Scope",
+				},
+				Type:  meta.TypeString,
+				Value: `"shared"`,
+			},
+		},
 		Fields: []*dsl.FieldDesc{
-			fields.MobileGatewayClass(),
-			fields.ApplianceSwitchShared(),
-			fields.AppliancePlanID(),
 			fields.Name(),
 			fields.Description(),
 			fields.Tags(),

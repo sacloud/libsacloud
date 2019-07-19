@@ -368,7 +368,6 @@ func initMobileGatewayVariables() {
 		Name:        "libsacloud-mobile-gateway",
 		Description: "desc",
 		Tags:        []string{"tag1", "tag2"},
-		PlanID:      types.ID(1),
 		Settings: &sacloud.MobileGatewaySettingCreate{
 			InternetConnectionEnabled:       true,
 			InterDeviceCommunicationEnabled: true,
@@ -379,7 +378,6 @@ func initMobileGatewayVariables() {
 		Description:  createMobileGatewayParam.Description,
 		Tags:         createMobileGatewayParam.Tags,
 		Availability: types.Availabilities.Available,
-		PlanID:       createMobileGatewayParam.PlanID,
 		Settings: &sacloud.MobileGatewaySetting{
 			InternetConnectionEnabled:       true,
 			InterDeviceCommunicationEnabled: true,
@@ -399,7 +397,6 @@ func initMobileGatewayVariables() {
 		Description:  updateMobileGatewayParam.Description,
 		Tags:         updateMobileGatewayParam.Tags,
 		Availability: types.Availabilities.Available,
-		PlanID:       createMobileGatewayParam.PlanID,
 		Settings: &sacloud.MobileGatewaySetting{
 			InternetConnectionEnabled:       false,
 			InterDeviceCommunicationEnabled: false,
