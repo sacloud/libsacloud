@@ -9,7 +9,7 @@ import (
 )
 
 // List is fake implementation
-func (o *WebAccelOp) List(ctx context.Context, zone string) (*sacloud.WebAccelListResult, error) {
+func (o *WebAccelOp) List(ctx context.Context) (*sacloud.WebAccelListResult, error) {
 	results, _ := find(o.key, sacloud.APIDefaultZone, nil)
 	var values []*sacloud.WebAccel
 	for _, res := range results {
@@ -26,7 +26,7 @@ func (o *WebAccelOp) List(ctx context.Context, zone string) (*sacloud.WebAccelLi
 }
 
 // Read is fake implementation
-func (o *WebAccelOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.WebAccel, error) {
+func (o *WebAccelOp) Read(ctx context.Context, id types.ID) (*sacloud.WebAccel, error) {
 	value := s.getWebAccelByID(sacloud.APIDefaultZone, id)
 	if value == nil {
 		return nil, newErrorNotFound(o.key, id)
@@ -37,26 +37,26 @@ func (o *WebAccelOp) Read(ctx context.Context, zone string, id types.ID) (*saclo
 }
 
 // ReadCertificate is fake implementation
-func (o *WebAccelOp) ReadCertificate(ctx context.Context, zone string, id types.ID) (*sacloud.WebAccelCerts, error) {
+func (o *WebAccelOp) ReadCertificate(ctx context.Context, id types.ID) (*sacloud.WebAccelCerts, error) {
 	// valid only when running acc test
 	err := errors.New("not implements")
 	return nil, err
 }
 
 // UpdateCertificate is fake implementation
-func (o *WebAccelOp) UpdateCertificate(ctx context.Context, zone string, id types.ID, param *sacloud.WebAccelCertUpdateRequest) (*sacloud.WebAccelCerts, error) {
+func (o *WebAccelOp) UpdateCertificate(ctx context.Context, id types.ID, param *sacloud.WebAccelCertUpdateRequest) (*sacloud.WebAccelCerts, error) {
 	// valid only when running acc test
 	err := errors.New("not implements")
 	return nil, err
 }
 
 // DeleteAllCache is fake implementation
-func (o *WebAccelOp) DeleteAllCache(ctx context.Context, zone string, param *sacloud.WebAccelDeleteAllCacheRequest) error {
+func (o *WebAccelOp) DeleteAllCache(ctx context.Context, param *sacloud.WebAccelDeleteAllCacheRequest) error {
 	return nil
 }
 
 // DeleteCache is fake implementation
-func (o *WebAccelOp) DeleteCache(ctx context.Context, zone string, param *sacloud.WebAccelDeleteCacheRequest) ([]*sacloud.WebAccelDeleteCacheResult, error) {
+func (o *WebAccelOp) DeleteCache(ctx context.Context, param *sacloud.WebAccelDeleteCacheRequest) ([]*sacloud.WebAccelDeleteCacheResult, error) {
 	var result []*sacloud.WebAccelDeleteCacheResult
 	for _, url := range param.URL {
 		result = append(result, &sacloud.WebAccelDeleteCacheResult{

@@ -49,7 +49,6 @@ var internetAPI = &dsl.Resource{
 				},
 			),
 			Arguments: dsl.Arguments{
-				dsl.ArgumentZone,
 				dsl.ArgumentID,
 				dsl.MappableArgument("param", internetUpdateBandWidthParam, "Internet"),
 			},
@@ -75,7 +74,6 @@ var internetAPI = &dsl.Resource{
 			Method:          http.MethodPost,
 			RequestEnvelope: dsl.RequestEnvelopeFromModel(internetAddSubnetParam),
 			Arguments: dsl.Arguments{
-				dsl.ArgumentZone,
 				dsl.ArgumentID,
 				dsl.PassthroughModelArgument("param", internetAddSubnetParam),
 			},
@@ -101,7 +99,6 @@ var internetAPI = &dsl.Resource{
 			Method:          http.MethodPut,
 			RequestEnvelope: dsl.RequestEnvelopeFromModel(internetUpdateSubnetParam),
 			Arguments: dsl.Arguments{
-				dsl.ArgumentZone,
 				dsl.ArgumentID,
 				{
 					Name: "subnetID",
@@ -141,7 +138,6 @@ var internetAPI = &dsl.Resource{
 			PathFormat:   dsl.IDAndSuffixPathFormat("ipv6net"),
 			Method:       http.MethodPost,
 			Arguments: dsl.Arguments{
-				dsl.ArgumentZone,
 				dsl.ArgumentID,
 			},
 			ResponseEnvelope: dsl.ResponseEnvelope(&dsl.EnvelopePayloadDesc{

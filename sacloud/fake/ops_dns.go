@@ -8,8 +8,8 @@ import (
 )
 
 // Find is fake implementation
-func (o *DNSOp) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.DNSFindResult, error) {
-	results, _ := find(o.key, zone, conditions)
+func (o *DNSOp) Find(ctx context.Context, conditions *sacloud.FindCondition) (*sacloud.DNSFindResult, error) {
+	results, _ := find(o.key, sacloud.APIDefaultZone, conditions)
 	var values []*sacloud.DNS
 	for _, res := range results {
 		dest := &sacloud.DNS{}
@@ -25,7 +25,7 @@ func (o *DNSOp) Find(ctx context.Context, zone string, conditions *sacloud.FindC
 }
 
 // Create is fake implementation
-func (o *DNSOp) Create(ctx context.Context, zone string, param *sacloud.DNSCreateRequest) (*sacloud.DNS, error) {
+func (o *DNSOp) Create(ctx context.Context, param *sacloud.DNSCreateRequest) (*sacloud.DNS, error) {
 	result := &sacloud.DNS{}
 	copySameNameField(param, result)
 	fill(result, fillID, fillCreatedAt)
@@ -35,13 +35,13 @@ func (o *DNSOp) Create(ctx context.Context, zone string, param *sacloud.DNSCreat
 	result.SettingsHash = "settingshash"
 	result.DNSZone = param.Name
 
-	s.setDNS(zone, result)
+	s.setDNS(sacloud.APIDefaultZone, result)
 	return result, nil
 }
 
 // Read is fake implementation
-func (o *DNSOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.DNS, error) {
-	value := s.getDNSByID(zone, id)
+func (o *DNSOp) Read(ctx context.Context, id types.ID) (*sacloud.DNS, error) {
+	value := s.getDNSByID(sacloud.APIDefaultZone, id)
 	if value == nil {
 		return nil, newErrorNotFound(o.key, id)
 	}
@@ -51,8 +51,8 @@ func (o *DNSOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.DN
 }
 
 // Update is fake implementation
-func (o *DNSOp) Update(ctx context.Context, zone string, id types.ID, param *sacloud.DNSUpdateRequest) (*sacloud.DNS, error) {
-	value, err := o.Read(ctx, zone, id)
+func (o *DNSOp) Update(ctx context.Context, id types.ID, param *sacloud.DNSUpdateRequest) (*sacloud.DNS, error) {
+	value, err := o.Read(ctx, id)
 	if err != nil {
 		return nil, err
 	}
@@ -63,12 +63,12 @@ func (o *DNSOp) Update(ctx context.Context, zone string, id types.ID, param *sac
 }
 
 // Delete is fake implementation
-func (o *DNSOp) Delete(ctx context.Context, zone string, id types.ID) error {
-	_, err := o.Read(ctx, zone, id)
+func (o *DNSOp) Delete(ctx context.Context, id types.ID) error {
+	_, err := o.Read(ctx, id)
 	if err != nil {
 		return err
 	}
 
-	s.delete(o.key, zone, id)
+	s.delete(o.key, sacloud.APIDefaultZone, id)
 	return nil
 }

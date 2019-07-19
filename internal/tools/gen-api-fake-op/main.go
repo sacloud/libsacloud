@@ -77,7 +77,7 @@ func SwitchFactoryFuncToFake() {
 }
 
 
-{{ range . }}{{ $typeName := .TypeName}}
+{{ range . }}{{ $typeName := .TypeName}} 
 
 /************************************************* 
 * {{$typeName}}Op
@@ -107,7 +107,7 @@ import (
 
 {{ range .Operations }}
 // {{ .MethodName }} is fake implementation
-func (o *{{ $.TypeName }}Op) {{ .MethodName }}(ctx context.Context{{ range .Arguments }}, {{ .ArgName }} {{ .TypeName }}{{ end }}) {{.ResultsStatement}} {
+func (o *{{ $.TypeName }}Op) {{ .MethodName }}(ctx context.Context{{if not $.IsGlobal}}, zone string{{end}}{{ range .Arguments }}, {{ .ArgName }} {{ .TypeName }}{{ end }}) {{.ResultsStatement}} {
 {{ if eq .MethodName "Find" -}}
 	results, _ := find(o.key, {{if $.IsGlobal}}sacloud.APIDefaultZone{{else}}zone{{end}}, conditions)
 	var values []*sacloud.{{$.TypeName}}
@@ -154,7 +154,7 @@ func (o *{{ $.TypeName }}Op) {{ .MethodName }}(ctx context.Context{{ range .Argu
 	copySameNameField(value, dest)
 	return dest, nil
 {{ else if eq .MethodName "Update" -}}
-	value, err := o.Read(ctx, {{if $.IsGlobal}}sacloud.APIDefaultZone{{else}}zone{{end}}, id)
+	value, err := o.Read(ctx{{if not $.IsGlobal}}, zone{{end}}, id)
 	if err != nil {
 		return nil, err
 	}
@@ -164,7 +164,7 @@ func (o *{{ $.TypeName }}Op) {{ .MethodName }}(ctx context.Context{{ range .Argu
 	// TODO core logic is not implemented
 	return value, nil
 {{ else if eq .MethodName "Delete" -}}
-	_, err := o.Read(ctx, {{if $.IsGlobal}}sacloud.APIDefaultZone{{else}}zone{{end}}, id)
+	_, err := o.Read(ctx{{if not $.IsGlobal}}, zone{{end}}, id)
 	if err != nil {
 		return err
 	}

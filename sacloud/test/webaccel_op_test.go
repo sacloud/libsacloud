@@ -24,7 +24,7 @@ func TestWebAccelOp_Find(t *testing.T) {
 	}
 
 	client := sacloud.NewWebAccelOp(singletonAPICaller())
-	searched, err := client.List(context.Background(), sacloud.APIDefaultZone)
+	searched, err := client.List(context.Background())
 	assert.NoError(t, err)
 
 	if searched.Count == 0 {
@@ -51,7 +51,7 @@ func TestWebAccelOp_Find(t *testing.T) {
 	assert.NoError(t, err)
 
 	// read
-	read, err := client.Read(context.Background(), sacloud.APIDefaultZone, site.ID)
+	read, err := client.Read(context.Background(), site.ID)
 	assert.NoError(t, err)
 	assert.Equal(t, site, read)
 }
@@ -77,7 +77,7 @@ func TestWebAccelOp_Cert(t *testing.T) {
 	key := os.Getenv("SAKURACLOUD_WEBACCEL_KEY")
 
 	// update certs
-	certs, err := client.UpdateCertificate(ctx, sacloud.APIDefaultZone, id, &sacloud.WebAccelCertUpdateRequest{
+	certs, err := client.UpdateCertificate(ctx, id, &sacloud.WebAccelCertUpdateRequest{
 		CertificateChain: crt,
 		Key:              key,
 	})
@@ -86,7 +86,7 @@ func TestWebAccelOp_Cert(t *testing.T) {
 	}
 
 	// read cert
-	read, err := client.ReadCertificate(ctx, sacloud.APIDefaultZone, id)
+	read, err := client.ReadCertificate(ctx, id)
 	if !assert.NoError(t, err) {
 		return
 	}
@@ -112,7 +112,7 @@ func TestWebAccelOp_DeleteAllCache(t *testing.T) {
 	domain := os.Getenv("SAKURACLOUD_WEBACCEL_DOMAIN")
 
 	// delete cache
-	err = client.DeleteAllCache(ctx, sacloud.APIDefaultZone, &sacloud.WebAccelDeleteAllCacheRequest{
+	err = client.DeleteAllCache(ctx, &sacloud.WebAccelDeleteAllCacheRequest{
 		Domain: domain,
 	})
 	if !assert.NoError(t, err) {
@@ -141,7 +141,7 @@ func TestWebAccelOp_DeleteCache(t *testing.T) {
 	urls := strings.Split(strURLs, ",")
 
 	// delete cache
-	result, err := client.DeleteCache(ctx, sacloud.APIDefaultZone, &sacloud.WebAccelDeleteCacheRequest{
+	result, err := client.DeleteCache(ctx, &sacloud.WebAccelDeleteCacheRequest{
 		URL: urls,
 	})
 	if !assert.NoError(t, err) {
@@ -152,7 +152,7 @@ func TestWebAccelOp_DeleteCache(t *testing.T) {
 
 func hasWebAccelPermission() (bool, error) {
 	authStatusOp := sacloud.NewAuthStatusOp(singletonAPICaller())
-	authStatus, err := authStatusOp.Read(context.Background(), sacloud.APIDefaultZone)
+	authStatus, err := authStatusOp.Read(context.Background())
 	if err != nil {
 		return false, err
 	}

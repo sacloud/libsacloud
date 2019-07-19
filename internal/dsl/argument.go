@@ -15,12 +15,6 @@ var (
 		Name: "id",
 		Type: meta.TypeID,
 	}
-
-	// ArgumentZone 引数でのゾーンを示すValue
-	ArgumentZone = &Argument{
-		Name: "zone",
-		Type: meta.TypeString,
-	}
 )
 
 // Argument 引数の型情報

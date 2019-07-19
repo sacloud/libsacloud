@@ -13,7 +13,7 @@ func TestCouponOp_Find(t *testing.T) {
 
 	// get account ID
 	authStatusOp := sacloud.NewAuthStatusOp(singletonAPICaller())
-	authStatus, err := authStatusOp.Read(context.Background(), sacloud.APIDefaultZone)
+	authStatus, err := authStatusOp.Read(context.Background())
 	if !assert.NoError(t, err) {
 		return
 	}
@@ -24,7 +24,7 @@ func TestCouponOp_Find(t *testing.T) {
 	}
 
 	client := sacloud.NewCouponOp(singletonAPICaller())
-	searched, err := client.Find(context.Background(), sacloud.APIDefaultZone, authStatus.AccountID)
+	searched, err := client.Find(context.Background(), authStatus.AccountID)
 	assert.NoError(t, err)
 
 	if searched.Count > 0 {

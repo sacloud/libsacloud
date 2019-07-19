@@ -13,7 +13,7 @@ func TestLicenseInfoOp_Find(t *testing.T) {
 
 	client := sacloud.NewLicenseInfoOp(singletonAPICaller())
 
-	searched, err := client.Find(context.Background(), sacloud.APIDefaultZone, &sacloud.FindCondition{Count: 1})
+	searched, err := client.Find(context.Background(), &sacloud.FindCondition{Count: 1})
 	assert.NoError(t, err)
 
 	err = DoAsserts(

@@ -29,7 +29,6 @@ var billAPI = &dsl.Resource{
 			Method:           http.MethodGet,
 			UseWrappedResult: true,
 			Arguments: dsl.Arguments{
-				dsl.ArgumentZone,
 				billArgAccountID,
 			},
 			ResponseEnvelope: dsl.ResponseEnvelopePlural(&dsl.EnvelopePayloadDesc{
@@ -53,7 +52,6 @@ var billAPI = &dsl.Resource{
 			Method:           http.MethodGet,
 			UseWrappedResult: true,
 			Arguments: dsl.Arguments{
-				dsl.ArgumentZone,
 				billArgAccountID,
 				billArgYear,
 			},
@@ -78,7 +76,6 @@ var billAPI = &dsl.Resource{
 			Method:           http.MethodGet,
 			UseWrappedResult: true,
 			Arguments: dsl.Arguments{
-				dsl.ArgumentZone,
 				billArgAccountID,
 				billArgYear,
 				billArgMonth,
@@ -104,7 +101,6 @@ var billAPI = &dsl.Resource{
 			Method:           http.MethodGet,
 			UseWrappedResult: true,
 			Arguments: dsl.Arguments{
-				dsl.ArgumentZone,
 				dsl.ArgumentID,
 			},
 			ResponseEnvelope: dsl.ResponseEnvelopePlural(&dsl.EnvelopePayloadDesc{
@@ -128,7 +124,6 @@ var billAPI = &dsl.Resource{
 			Method:           http.MethodGet,
 			UseWrappedResult: true,
 			Arguments: dsl.Arguments{
-				dsl.ArgumentZone,
 				billArgMemberCode,
 				dsl.ArgumentID,
 			},
@@ -152,7 +147,6 @@ var billAPI = &dsl.Resource{
 			PathFormat:   billDetailPath + "/csv",
 			Method:       http.MethodGet,
 			Arguments: dsl.Arguments{
-				dsl.ArgumentZone,
 				billArgMemberCode,
 				dsl.ArgumentID,
 			},

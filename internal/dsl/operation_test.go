@@ -38,7 +38,6 @@ func TestOperation(t *testing.T) {
 					Name: "Test",
 				}),
 				Arguments: []*Argument{
-					ArgumentZone,
 					{
 						Name:       "arg1",
 						MapConvTag: "Destination",

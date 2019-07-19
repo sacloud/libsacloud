@@ -47,7 +47,6 @@ var archiveAPI = &dsl.Resource{
 				},
 			),
 			Arguments: dsl.Arguments{
-				dsl.ArgumentZone,
 				dsl.MappableArgument("param", archiveCreateBlankParam, names.ResourceFieldName(archiveAPIName, dsl.PayloadForms.Singular)),
 			},
 			Results: dsl.Results{

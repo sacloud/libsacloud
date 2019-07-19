@@ -57,7 +57,6 @@ var simAPI = &dsl.Resource{
 				},
 			),
 			Arguments: dsl.Arguments{
-				dsl.ArgumentZone,
 				dsl.ArgumentID,
 				dsl.MappableArgument("param", simAssignIPParam, "SIM"),
 			},
@@ -82,7 +81,6 @@ var simAPI = &dsl.Resource{
 				},
 			),
 			Arguments: dsl.Arguments{
-				dsl.ArgumentZone,
 				dsl.ArgumentID,
 				dsl.MappableArgument("param", simIMEILockParam, "SIM"),
 			},
@@ -99,7 +97,6 @@ var simAPI = &dsl.Resource{
 			Name:             "Logs",
 			UseWrappedResult: true,
 			Arguments: dsl.Arguments{
-				dsl.ArgumentZone,
 				dsl.ArgumentID,
 			},
 			ResponseEnvelope: dsl.ResponseEnvelopePlural(&dsl.EnvelopePayloadDesc{
@@ -126,7 +123,6 @@ var simAPI = &dsl.Resource{
 			PathFormat:   dsl.IDAndSuffixPathFormat("sim/network_operator_config"),
 			Method:       http.MethodGet,
 			Arguments: dsl.Arguments{
-				dsl.ArgumentZone,
 				dsl.ArgumentID,
 			},
 			ResponseEnvelope: dsl.ResponseEnvelope(&dsl.EnvelopePayloadDesc{
@@ -160,7 +156,6 @@ var simAPI = &dsl.Resource{
 				},
 			}),
 			Arguments: dsl.Arguments{
-				dsl.ArgumentZone,
 				dsl.ArgumentID,
 				&dsl.Argument{
 					Name:       "configs",
@@ -181,7 +176,6 @@ var simAPI = &dsl.Resource{
 			PathFormat:   dsl.IDAndSuffixPathFormat("sim/status"),
 			Method:       http.MethodGet,
 			Arguments: dsl.Arguments{
-				dsl.ArgumentZone,
 				dsl.ArgumentID,
 			},
 			ResponseEnvelope: dsl.ResponseEnvelope(&dsl.EnvelopePayloadDesc{

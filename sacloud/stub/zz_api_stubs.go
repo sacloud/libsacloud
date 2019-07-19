@@ -163,7 +163,7 @@ func NewAuthStatusStub(caller sacloud.APICaller) sacloud.AuthStatusAPI {
 }
 
 // Read is API call with trace log
-func (s *AuthStatusStub) Read(ctx context.Context, zone string) (*sacloud.AuthStatus, error) {
+func (s *AuthStatusStub) Read(ctx context.Context) (*sacloud.AuthStatus, error) {
 	if s.ReadStubResult == nil {
 		log.Fatal("AuthStatusStub.ReadStubResult is not set")
 	}
@@ -313,7 +313,7 @@ func NewBillStub(caller sacloud.APICaller) sacloud.BillAPI {
 }
 
 // ByContract is API call with trace log
-func (s *BillStub) ByContract(ctx context.Context, zone string, accountID types.ID) (*sacloud.BillByContractResult, error) {
+func (s *BillStub) ByContract(ctx context.Context, accountID types.ID) (*sacloud.BillByContractResult, error) {
 	if s.ByContractStubResult == nil {
 		log.Fatal("BillStub.ByContractStubResult is not set")
 	}
@@ -321,7 +321,7 @@ func (s *BillStub) ByContract(ctx context.Context, zone string, accountID types.
 }
 
 // ByContractYear is API call with trace log
-func (s *BillStub) ByContractYear(ctx context.Context, zone string, accountID types.ID, year int) (*sacloud.BillByContractYearResult, error) {
+func (s *BillStub) ByContractYear(ctx context.Context, accountID types.ID, year int) (*sacloud.BillByContractYearResult, error) {
 	if s.ByContractYearStubResult == nil {
 		log.Fatal("BillStub.ByContractYearStubResult is not set")
 	}
@@ -329,7 +329,7 @@ func (s *BillStub) ByContractYear(ctx context.Context, zone string, accountID ty
 }
 
 // ByContractYearMonth is API call with trace log
-func (s *BillStub) ByContractYearMonth(ctx context.Context, zone string, accountID types.ID, year int, month int) (*sacloud.BillByContractYearMonthResult, error) {
+func (s *BillStub) ByContractYearMonth(ctx context.Context, accountID types.ID, year int, month int) (*sacloud.BillByContractYearMonthResult, error) {
 	if s.ByContractYearMonthStubResult == nil {
 		log.Fatal("BillStub.ByContractYearMonthStubResult is not set")
 	}
@@ -337,7 +337,7 @@ func (s *BillStub) ByContractYearMonth(ctx context.Context, zone string, account
 }
 
 // Read is API call with trace log
-func (s *BillStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.BillReadResult, error) {
+func (s *BillStub) Read(ctx context.Context, id types.ID) (*sacloud.BillReadResult, error) {
 	if s.ReadStubResult == nil {
 		log.Fatal("BillStub.ReadStubResult is not set")
 	}
@@ -345,7 +345,7 @@ func (s *BillStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud
 }
 
 // Details is API call with trace log
-func (s *BillStub) Details(ctx context.Context, zone string, MemberCode string, id types.ID) (*sacloud.BillDetailsResult, error) {
+func (s *BillStub) Details(ctx context.Context, MemberCode string, id types.ID) (*sacloud.BillDetailsResult, error) {
 	if s.DetailsStubResult == nil {
 		log.Fatal("BillStub.DetailsStubResult is not set")
 	}
@@ -353,7 +353,7 @@ func (s *BillStub) Details(ctx context.Context, zone string, MemberCode string, 
 }
 
 // DetailsCSV is API call with trace log
-func (s *BillStub) DetailsCSV(ctx context.Context, zone string, MemberCode string, id types.ID) (*sacloud.BillDetailCSV, error) {
+func (s *BillStub) DetailsCSV(ctx context.Context, MemberCode string, id types.ID) (*sacloud.BillDetailCSV, error) {
 	if s.DetailsCSVStubResult == nil {
 		log.Fatal("BillStub.DetailsCSVStubResult is not set")
 	}
@@ -585,7 +585,7 @@ func NewCouponStub(caller sacloud.APICaller) sacloud.CouponAPI {
 }
 
 // Find is API call with trace log
-func (s *CouponStub) Find(ctx context.Context, zone string, accountID types.ID) (*sacloud.CouponFindResult, error) {
+func (s *CouponStub) Find(ctx context.Context, accountID types.ID) (*sacloud.CouponFindResult, error) {
 	if s.FindStubResult == nil {
 		log.Fatal("CouponStub.FindStubResult is not set")
 	}
@@ -1148,7 +1148,7 @@ func NewDNSStub(caller sacloud.APICaller) sacloud.DNSAPI {
 }
 
 // Find is API call with trace log
-func (s *DNSStub) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.DNSFindResult, error) {
+func (s *DNSStub) Find(ctx context.Context, conditions *sacloud.FindCondition) (*sacloud.DNSFindResult, error) {
 	if s.FindStubResult == nil {
 		log.Fatal("DNSStub.FindStubResult is not set")
 	}
@@ -1156,7 +1156,7 @@ func (s *DNSStub) Find(ctx context.Context, zone string, conditions *sacloud.Fin
 }
 
 // Create is API call with trace log
-func (s *DNSStub) Create(ctx context.Context, zone string, param *sacloud.DNSCreateRequest) (*sacloud.DNS, error) {
+func (s *DNSStub) Create(ctx context.Context, param *sacloud.DNSCreateRequest) (*sacloud.DNS, error) {
 	if s.CreateStubResult == nil {
 		log.Fatal("DNSStub.CreateStubResult is not set")
 	}
@@ -1164,7 +1164,7 @@ func (s *DNSStub) Create(ctx context.Context, zone string, param *sacloud.DNSCre
 }
 
 // Read is API call with trace log
-func (s *DNSStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.DNS, error) {
+func (s *DNSStub) Read(ctx context.Context, id types.ID) (*sacloud.DNS, error) {
 	if s.ReadStubResult == nil {
 		log.Fatal("DNSStub.ReadStubResult is not set")
 	}
@@ -1172,7 +1172,7 @@ func (s *DNSStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.
 }
 
 // Update is API call with trace log
-func (s *DNSStub) Update(ctx context.Context, zone string, id types.ID, param *sacloud.DNSUpdateRequest) (*sacloud.DNS, error) {
+func (s *DNSStub) Update(ctx context.Context, id types.ID, param *sacloud.DNSUpdateRequest) (*sacloud.DNS, error) {
 	if s.UpdateStubResult == nil {
 		log.Fatal("DNSStub.UpdateStubResult is not set")
 	}
@@ -1180,7 +1180,7 @@ func (s *DNSStub) Update(ctx context.Context, zone string, id types.ID, param *s
 }
 
 // Delete is API call with trace log
-func (s *DNSStub) Delete(ctx context.Context, zone string, id types.ID) error {
+func (s *DNSStub) Delete(ctx context.Context, id types.ID) error {
 	if s.DeleteStubResult == nil {
 		log.Fatal("DNSStub.DeleteStubResult is not set")
 	}
@@ -1235,7 +1235,7 @@ func NewGSLBStub(caller sacloud.APICaller) sacloud.GSLBAPI {
 }
 
 // Find is API call with trace log
-func (s *GSLBStub) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.GSLBFindResult, error) {
+func (s *GSLBStub) Find(ctx context.Context, conditions *sacloud.FindCondition) (*sacloud.GSLBFindResult, error) {
 	if s.FindStubResult == nil {
 		log.Fatal("GSLBStub.FindStubResult is not set")
 	}
@@ -1243,7 +1243,7 @@ func (s *GSLBStub) Find(ctx context.Context, zone string, conditions *sacloud.Fi
 }
 
 // Create is API call with trace log
-func (s *GSLBStub) Create(ctx context.Context, zone string, param *sacloud.GSLBCreateRequest) (*sacloud.GSLB, error) {
+func (s *GSLBStub) Create(ctx context.Context, param *sacloud.GSLBCreateRequest) (*sacloud.GSLB, error) {
 	if s.CreateStubResult == nil {
 		log.Fatal("GSLBStub.CreateStubResult is not set")
 	}
@@ -1251,7 +1251,7 @@ func (s *GSLBStub) Create(ctx context.Context, zone string, param *sacloud.GSLBC
 }
 
 // Read is API call with trace log
-func (s *GSLBStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.GSLB, error) {
+func (s *GSLBStub) Read(ctx context.Context, id types.ID) (*sacloud.GSLB, error) {
 	if s.ReadStubResult == nil {
 		log.Fatal("GSLBStub.ReadStubResult is not set")
 	}
@@ -1259,7 +1259,7 @@ func (s *GSLBStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud
 }
 
 // Update is API call with trace log
-func (s *GSLBStub) Update(ctx context.Context, zone string, id types.ID, param *sacloud.GSLBUpdateRequest) (*sacloud.GSLB, error) {
+func (s *GSLBStub) Update(ctx context.Context, id types.ID, param *sacloud.GSLBUpdateRequest) (*sacloud.GSLB, error) {
 	if s.UpdateStubResult == nil {
 		log.Fatal("GSLBStub.UpdateStubResult is not set")
 	}
@@ -1267,7 +1267,7 @@ func (s *GSLBStub) Update(ctx context.Context, zone string, id types.ID, param *
 }
 
 // Delete is API call with trace log
-func (s *GSLBStub) Delete(ctx context.Context, zone string, id types.ID) error {
+func (s *GSLBStub) Delete(ctx context.Context, id types.ID) error {
 	if s.DeleteStubResult == nil {
 		log.Fatal("GSLBStub.DeleteStubResult is not set")
 	}
@@ -1322,7 +1322,7 @@ func NewIconStub(caller sacloud.APICaller) sacloud.IconAPI {
 }
 
 // Find is API call with trace log
-func (s *IconStub) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.IconFindResult, error) {
+func (s *IconStub) Find(ctx context.Context, conditions *sacloud.FindCondition) (*sacloud.IconFindResult, error) {
 	if s.FindStubResult == nil {
 		log.Fatal("IconStub.FindStubResult is not set")
 	}
@@ -1330,7 +1330,7 @@ func (s *IconStub) Find(ctx context.Context, zone string, conditions *sacloud.Fi
 }
 
 // Create is API call with trace log
-func (s *IconStub) Create(ctx context.Context, zone string, param *sacloud.IconCreateRequest) (*sacloud.Icon, error) {
+func (s *IconStub) Create(ctx context.Context, param *sacloud.IconCreateRequest) (*sacloud.Icon, error) {
 	if s.CreateStubResult == nil {
 		log.Fatal("IconStub.CreateStubResult is not set")
 	}
@@ -1338,7 +1338,7 @@ func (s *IconStub) Create(ctx context.Context, zone string, param *sacloud.IconC
 }
 
 // Read is API call with trace log
-func (s *IconStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Icon, error) {
+func (s *IconStub) Read(ctx context.Context, id types.ID) (*sacloud.Icon, error) {
 	if s.ReadStubResult == nil {
 		log.Fatal("IconStub.ReadStubResult is not set")
 	}
@@ -1346,7 +1346,7 @@ func (s *IconStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud
 }
 
 // Update is API call with trace log
-func (s *IconStub) Update(ctx context.Context, zone string, id types.ID, param *sacloud.IconUpdateRequest) (*sacloud.Icon, error) {
+func (s *IconStub) Update(ctx context.Context, id types.ID, param *sacloud.IconUpdateRequest) (*sacloud.Icon, error) {
 	if s.UpdateStubResult == nil {
 		log.Fatal("IconStub.UpdateStubResult is not set")
 	}
@@ -1354,7 +1354,7 @@ func (s *IconStub) Update(ctx context.Context, zone string, id types.ID, param *
 }
 
 // Delete is API call with trace log
-func (s *IconStub) Delete(ctx context.Context, zone string, id types.ID) error {
+func (s *IconStub) Delete(ctx context.Context, id types.ID) error {
 	if s.DeleteStubResult == nil {
 		log.Fatal("IconStub.DeleteStubResult is not set")
 	}
@@ -2002,7 +2002,7 @@ func NewLicenseStub(caller sacloud.APICaller) sacloud.LicenseAPI {
 }
 
 // Find is API call with trace log
-func (s *LicenseStub) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.LicenseFindResult, error) {
+func (s *LicenseStub) Find(ctx context.Context, conditions *sacloud.FindCondition) (*sacloud.LicenseFindResult, error) {
 	if s.FindStubResult == nil {
 		log.Fatal("LicenseStub.FindStubResult is not set")
 	}
@@ -2010,7 +2010,7 @@ func (s *LicenseStub) Find(ctx context.Context, zone string, conditions *sacloud
 }
 
 // Create is API call with trace log
-func (s *LicenseStub) Create(ctx context.Context, zone string, param *sacloud.LicenseCreateRequest) (*sacloud.License, error) {
+func (s *LicenseStub) Create(ctx context.Context, param *sacloud.LicenseCreateRequest) (*sacloud.License, error) {
 	if s.CreateStubResult == nil {
 		log.Fatal("LicenseStub.CreateStubResult is not set")
 	}
@@ -2018,7 +2018,7 @@ func (s *LicenseStub) Create(ctx context.Context, zone string, param *sacloud.Li
 }
 
 // Read is API call with trace log
-func (s *LicenseStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.License, error) {
+func (s *LicenseStub) Read(ctx context.Context, id types.ID) (*sacloud.License, error) {
 	if s.ReadStubResult == nil {
 		log.Fatal("LicenseStub.ReadStubResult is not set")
 	}
@@ -2026,7 +2026,7 @@ func (s *LicenseStub) Read(ctx context.Context, zone string, id types.ID) (*sacl
 }
 
 // Update is API call with trace log
-func (s *LicenseStub) Update(ctx context.Context, zone string, id types.ID, param *sacloud.LicenseUpdateRequest) (*sacloud.License, error) {
+func (s *LicenseStub) Update(ctx context.Context, id types.ID, param *sacloud.LicenseUpdateRequest) (*sacloud.License, error) {
 	if s.UpdateStubResult == nil {
 		log.Fatal("LicenseStub.UpdateStubResult is not set")
 	}
@@ -2034,7 +2034,7 @@ func (s *LicenseStub) Update(ctx context.Context, zone string, id types.ID, para
 }
 
 // Delete is API call with trace log
-func (s *LicenseStub) Delete(ctx context.Context, zone string, id types.ID) error {
+func (s *LicenseStub) Delete(ctx context.Context, id types.ID) error {
 	if s.DeleteStubResult == nil {
 		log.Fatal("LicenseStub.DeleteStubResult is not set")
 	}
@@ -2069,7 +2069,7 @@ func NewLicenseInfoStub(caller sacloud.APICaller) sacloud.LicenseInfoAPI {
 }
 
 // Find is API call with trace log
-func (s *LicenseInfoStub) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.LicenseInfoFindResult, error) {
+func (s *LicenseInfoStub) Find(ctx context.Context, conditions *sacloud.FindCondition) (*sacloud.LicenseInfoFindResult, error) {
 	if s.FindStubResult == nil {
 		log.Fatal("LicenseInfoStub.FindStubResult is not set")
 	}
@@ -2077,7 +2077,7 @@ func (s *LicenseInfoStub) Find(ctx context.Context, zone string, conditions *sac
 }
 
 // Read is API call with trace log
-func (s *LicenseInfoStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.LicenseInfo, error) {
+func (s *LicenseInfoStub) Read(ctx context.Context, id types.ID) (*sacloud.LicenseInfo, error) {
 	if s.ReadStubResult == nil {
 		log.Fatal("LicenseInfoStub.ReadStubResult is not set")
 	}
@@ -2824,7 +2824,7 @@ func NewNoteStub(caller sacloud.APICaller) sacloud.NoteAPI {
 }
 
 // Find is API call with trace log
-func (s *NoteStub) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.NoteFindResult, error) {
+func (s *NoteStub) Find(ctx context.Context, conditions *sacloud.FindCondition) (*sacloud.NoteFindResult, error) {
 	if s.FindStubResult == nil {
 		log.Fatal("NoteStub.FindStubResult is not set")
 	}
@@ -2832,7 +2832,7 @@ func (s *NoteStub) Find(ctx context.Context, zone string, conditions *sacloud.Fi
 }
 
 // Create is API call with trace log
-func (s *NoteStub) Create(ctx context.Context, zone string, param *sacloud.NoteCreateRequest) (*sacloud.Note, error) {
+func (s *NoteStub) Create(ctx context.Context, param *sacloud.NoteCreateRequest) (*sacloud.Note, error) {
 	if s.CreateStubResult == nil {
 		log.Fatal("NoteStub.CreateStubResult is not set")
 	}
@@ -2840,7 +2840,7 @@ func (s *NoteStub) Create(ctx context.Context, zone string, param *sacloud.NoteC
 }
 
 // Read is API call with trace log
-func (s *NoteStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Note, error) {
+func (s *NoteStub) Read(ctx context.Context, id types.ID) (*sacloud.Note, error) {
 	if s.ReadStubResult == nil {
 		log.Fatal("NoteStub.ReadStubResult is not set")
 	}
@@ -2848,7 +2848,7 @@ func (s *NoteStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud
 }
 
 // Update is API call with trace log
-func (s *NoteStub) Update(ctx context.Context, zone string, id types.ID, param *sacloud.NoteUpdateRequest) (*sacloud.Note, error) {
+func (s *NoteStub) Update(ctx context.Context, id types.ID, param *sacloud.NoteUpdateRequest) (*sacloud.Note, error) {
 	if s.UpdateStubResult == nil {
 		log.Fatal("NoteStub.UpdateStubResult is not set")
 	}
@@ -2856,7 +2856,7 @@ func (s *NoteStub) Update(ctx context.Context, zone string, id types.ID, param *
 }
 
 // Delete is API call with trace log
-func (s *NoteStub) Delete(ctx context.Context, zone string, id types.ID) error {
+func (s *NoteStub) Delete(ctx context.Context, id types.ID) error {
 	if s.DeleteStubResult == nil {
 		log.Fatal("NoteStub.DeleteStubResult is not set")
 	}
@@ -3168,7 +3168,7 @@ func NewProxyLBStub(caller sacloud.APICaller) sacloud.ProxyLBAPI {
 }
 
 // Find is API call with trace log
-func (s *ProxyLBStub) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.ProxyLBFindResult, error) {
+func (s *ProxyLBStub) Find(ctx context.Context, conditions *sacloud.FindCondition) (*sacloud.ProxyLBFindResult, error) {
 	if s.FindStubResult == nil {
 		log.Fatal("ProxyLBStub.FindStubResult is not set")
 	}
@@ -3176,7 +3176,7 @@ func (s *ProxyLBStub) Find(ctx context.Context, zone string, conditions *sacloud
 }
 
 // Create is API call with trace log
-func (s *ProxyLBStub) Create(ctx context.Context, zone string, param *sacloud.ProxyLBCreateRequest) (*sacloud.ProxyLB, error) {
+func (s *ProxyLBStub) Create(ctx context.Context, param *sacloud.ProxyLBCreateRequest) (*sacloud.ProxyLB, error) {
 	if s.CreateStubResult == nil {
 		log.Fatal("ProxyLBStub.CreateStubResult is not set")
 	}
@@ -3184,7 +3184,7 @@ func (s *ProxyLBStub) Create(ctx context.Context, zone string, param *sacloud.Pr
 }
 
 // Read is API call with trace log
-func (s *ProxyLBStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.ProxyLB, error) {
+func (s *ProxyLBStub) Read(ctx context.Context, id types.ID) (*sacloud.ProxyLB, error) {
 	if s.ReadStubResult == nil {
 		log.Fatal("ProxyLBStub.ReadStubResult is not set")
 	}
@@ -3192,7 +3192,7 @@ func (s *ProxyLBStub) Read(ctx context.Context, zone string, id types.ID) (*sacl
 }
 
 // Update is API call with trace log
-func (s *ProxyLBStub) Update(ctx context.Context, zone string, id types.ID, param *sacloud.ProxyLBUpdateRequest) (*sacloud.ProxyLB, error) {
+func (s *ProxyLBStub) Update(ctx context.Context, id types.ID, param *sacloud.ProxyLBUpdateRequest) (*sacloud.ProxyLB, error) {
 	if s.UpdateStubResult == nil {
 		log.Fatal("ProxyLBStub.UpdateStubResult is not set")
 	}
@@ -3200,7 +3200,7 @@ func (s *ProxyLBStub) Update(ctx context.Context, zone string, id types.ID, para
 }
 
 // Delete is API call with trace log
-func (s *ProxyLBStub) Delete(ctx context.Context, zone string, id types.ID) error {
+func (s *ProxyLBStub) Delete(ctx context.Context, id types.ID) error {
 	if s.DeleteStubResult == nil {
 		log.Fatal("ProxyLBStub.DeleteStubResult is not set")
 	}
@@ -3208,7 +3208,7 @@ func (s *ProxyLBStub) Delete(ctx context.Context, zone string, id types.ID) erro
 }
 
 // ChangePlan is API call with trace log
-func (s *ProxyLBStub) ChangePlan(ctx context.Context, zone string, id types.ID, param *sacloud.ProxyLBChangePlanRequest) (*sacloud.ProxyLB, error) {
+func (s *ProxyLBStub) ChangePlan(ctx context.Context, id types.ID, param *sacloud.ProxyLBChangePlanRequest) (*sacloud.ProxyLB, error) {
 	if s.ChangePlanStubResult == nil {
 		log.Fatal("ProxyLBStub.ChangePlanStubResult is not set")
 	}
@@ -3216,7 +3216,7 @@ func (s *ProxyLBStub) ChangePlan(ctx context.Context, zone string, id types.ID, 
 }
 
 // GetCertificates is API call with trace log
-func (s *ProxyLBStub) GetCertificates(ctx context.Context, zone string, id types.ID) (*sacloud.ProxyLBCertificates, error) {
+func (s *ProxyLBStub) GetCertificates(ctx context.Context, id types.ID) (*sacloud.ProxyLBCertificates, error) {
 	if s.GetCertificatesStubResult == nil {
 		log.Fatal("ProxyLBStub.GetCertificatesStubResult is not set")
 	}
@@ -3224,7 +3224,7 @@ func (s *ProxyLBStub) GetCertificates(ctx context.Context, zone string, id types
 }
 
 // SetCertificates is API call with trace log
-func (s *ProxyLBStub) SetCertificates(ctx context.Context, zone string, id types.ID, param *sacloud.ProxyLBSetCertificatesRequest) (*sacloud.ProxyLBCertificates, error) {
+func (s *ProxyLBStub) SetCertificates(ctx context.Context, id types.ID, param *sacloud.ProxyLBSetCertificatesRequest) (*sacloud.ProxyLBCertificates, error) {
 	if s.SetCertificatesStubResult == nil {
 		log.Fatal("ProxyLBStub.SetCertificatesStubResult is not set")
 	}
@@ -3232,7 +3232,7 @@ func (s *ProxyLBStub) SetCertificates(ctx context.Context, zone string, id types
 }
 
 // DeleteCertificates is API call with trace log
-func (s *ProxyLBStub) DeleteCertificates(ctx context.Context, zone string, id types.ID) error {
+func (s *ProxyLBStub) DeleteCertificates(ctx context.Context, id types.ID) error {
 	if s.DeleteCertificatesStubResult == nil {
 		log.Fatal("ProxyLBStub.DeleteCertificatesStubResult is not set")
 	}
@@ -3240,7 +3240,7 @@ func (s *ProxyLBStub) DeleteCertificates(ctx context.Context, zone string, id ty
 }
 
 // RenewLetsEncryptCert is API call with trace log
-func (s *ProxyLBStub) RenewLetsEncryptCert(ctx context.Context, zone string, id types.ID) error {
+func (s *ProxyLBStub) RenewLetsEncryptCert(ctx context.Context, id types.ID) error {
 	if s.RenewLetsEncryptCertStubResult == nil {
 		log.Fatal("ProxyLBStub.RenewLetsEncryptCertStubResult is not set")
 	}
@@ -3248,7 +3248,7 @@ func (s *ProxyLBStub) RenewLetsEncryptCert(ctx context.Context, zone string, id 
 }
 
 // HealthStatus is API call with trace log
-func (s *ProxyLBStub) HealthStatus(ctx context.Context, zone string, id types.ID) (*sacloud.ProxyLBHealth, error) {
+func (s *ProxyLBStub) HealthStatus(ctx context.Context, id types.ID) (*sacloud.ProxyLBHealth, error) {
 	if s.HealthStatusStubResult == nil {
 		log.Fatal("ProxyLBStub.HealthStatusStubResult is not set")
 	}
@@ -3283,7 +3283,7 @@ func NewRegionStub(caller sacloud.APICaller) sacloud.RegionAPI {
 }
 
 // Find is API call with trace log
-func (s *RegionStub) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.RegionFindResult, error) {
+func (s *RegionStub) Find(ctx context.Context, conditions *sacloud.FindCondition) (*sacloud.RegionFindResult, error) {
 	if s.FindStubResult == nil {
 		log.Fatal("RegionStub.FindStubResult is not set")
 	}
@@ -3291,7 +3291,7 @@ func (s *RegionStub) Find(ctx context.Context, zone string, conditions *sacloud.
 }
 
 // Read is API call with trace log
-func (s *RegionStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Region, error) {
+func (s *RegionStub) Read(ctx context.Context, id types.ID) (*sacloud.Region, error) {
 	if s.ReadStubResult == nil {
 		log.Fatal("RegionStub.ReadStubResult is not set")
 	}
@@ -3674,7 +3674,7 @@ func NewSIMStub(caller sacloud.APICaller) sacloud.SIMAPI {
 }
 
 // Find is API call with trace log
-func (s *SIMStub) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.SIMFindResult, error) {
+func (s *SIMStub) Find(ctx context.Context, conditions *sacloud.FindCondition) (*sacloud.SIMFindResult, error) {
 	if s.FindStubResult == nil {
 		log.Fatal("SIMStub.FindStubResult is not set")
 	}
@@ -3682,7 +3682,7 @@ func (s *SIMStub) Find(ctx context.Context, zone string, conditions *sacloud.Fin
 }
 
 // Create is API call with trace log
-func (s *SIMStub) Create(ctx context.Context, zone string, param *sacloud.SIMCreateRequest) (*sacloud.SIM, error) {
+func (s *SIMStub) Create(ctx context.Context, param *sacloud.SIMCreateRequest) (*sacloud.SIM, error) {
 	if s.CreateStubResult == nil {
 		log.Fatal("SIMStub.CreateStubResult is not set")
 	}
@@ -3690,7 +3690,7 @@ func (s *SIMStub) Create(ctx context.Context, zone string, param *sacloud.SIMCre
 }
 
 // Read is API call with trace log
-func (s *SIMStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.SIM, error) {
+func (s *SIMStub) Read(ctx context.Context, id types.ID) (*sacloud.SIM, error) {
 	if s.ReadStubResult == nil {
 		log.Fatal("SIMStub.ReadStubResult is not set")
 	}
@@ -3698,7 +3698,7 @@ func (s *SIMStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.
 }
 
 // Update is API call with trace log
-func (s *SIMStub) Update(ctx context.Context, zone string, id types.ID, param *sacloud.SIMUpdateRequest) (*sacloud.SIM, error) {
+func (s *SIMStub) Update(ctx context.Context, id types.ID, param *sacloud.SIMUpdateRequest) (*sacloud.SIM, error) {
 	if s.UpdateStubResult == nil {
 		log.Fatal("SIMStub.UpdateStubResult is not set")
 	}
@@ -3706,7 +3706,7 @@ func (s *SIMStub) Update(ctx context.Context, zone string, id types.ID, param *s
 }
 
 // Delete is API call with trace log
-func (s *SIMStub) Delete(ctx context.Context, zone string, id types.ID) error {
+func (s *SIMStub) Delete(ctx context.Context, id types.ID) error {
 	if s.DeleteStubResult == nil {
 		log.Fatal("SIMStub.DeleteStubResult is not set")
 	}
@@ -3714,7 +3714,7 @@ func (s *SIMStub) Delete(ctx context.Context, zone string, id types.ID) error {
 }
 
 // Activate is API call with trace log
-func (s *SIMStub) Activate(ctx context.Context, zone string, id types.ID) error {
+func (s *SIMStub) Activate(ctx context.Context, id types.ID) error {
 	if s.ActivateStubResult == nil {
 		log.Fatal("SIMStub.ActivateStubResult is not set")
 	}
@@ -3722,7 +3722,7 @@ func (s *SIMStub) Activate(ctx context.Context, zone string, id types.ID) error 
 }
 
 // Deactivate is API call with trace log
-func (s *SIMStub) Deactivate(ctx context.Context, zone string, id types.ID) error {
+func (s *SIMStub) Deactivate(ctx context.Context, id types.ID) error {
 	if s.DeactivateStubResult == nil {
 		log.Fatal("SIMStub.DeactivateStubResult is not set")
 	}
@@ -3730,7 +3730,7 @@ func (s *SIMStub) Deactivate(ctx context.Context, zone string, id types.ID) erro
 }
 
 // AssignIP is API call with trace log
-func (s *SIMStub) AssignIP(ctx context.Context, zone string, id types.ID, param *sacloud.SIMAssignIPRequest) error {
+func (s *SIMStub) AssignIP(ctx context.Context, id types.ID, param *sacloud.SIMAssignIPRequest) error {
 	if s.AssignIPStubResult == nil {
 		log.Fatal("SIMStub.AssignIPStubResult is not set")
 	}
@@ -3738,7 +3738,7 @@ func (s *SIMStub) AssignIP(ctx context.Context, zone string, id types.ID, param 
 }
 
 // ClearIP is API call with trace log
-func (s *SIMStub) ClearIP(ctx context.Context, zone string, id types.ID) error {
+func (s *SIMStub) ClearIP(ctx context.Context, id types.ID) error {
 	if s.ClearIPStubResult == nil {
 		log.Fatal("SIMStub.ClearIPStubResult is not set")
 	}
@@ -3746,7 +3746,7 @@ func (s *SIMStub) ClearIP(ctx context.Context, zone string, id types.ID) error {
 }
 
 // IMEILock is API call with trace log
-func (s *SIMStub) IMEILock(ctx context.Context, zone string, id types.ID, param *sacloud.SIMIMEILockRequest) error {
+func (s *SIMStub) IMEILock(ctx context.Context, id types.ID, param *sacloud.SIMIMEILockRequest) error {
 	if s.IMEILockStubResult == nil {
 		log.Fatal("SIMStub.IMEILockStubResult is not set")
 	}
@@ -3754,7 +3754,7 @@ func (s *SIMStub) IMEILock(ctx context.Context, zone string, id types.ID, param 
 }
 
 // IMEIUnlock is API call with trace log
-func (s *SIMStub) IMEIUnlock(ctx context.Context, zone string, id types.ID) error {
+func (s *SIMStub) IMEIUnlock(ctx context.Context, id types.ID) error {
 	if s.IMEIUnlockStubResult == nil {
 		log.Fatal("SIMStub.IMEIUnlockStubResult is not set")
 	}
@@ -3762,7 +3762,7 @@ func (s *SIMStub) IMEIUnlock(ctx context.Context, zone string, id types.ID) erro
 }
 
 // Logs is API call with trace log
-func (s *SIMStub) Logs(ctx context.Context, zone string, id types.ID) (*sacloud.SIMLogsResult, error) {
+func (s *SIMStub) Logs(ctx context.Context, id types.ID) (*sacloud.SIMLogsResult, error) {
 	if s.LogsStubResult == nil {
 		log.Fatal("SIMStub.LogsStubResult is not set")
 	}
@@ -3770,7 +3770,7 @@ func (s *SIMStub) Logs(ctx context.Context, zone string, id types.ID) (*sacloud.
 }
 
 // GetNetworkOperator is API call with trace log
-func (s *SIMStub) GetNetworkOperator(ctx context.Context, zone string, id types.ID) ([]*sacloud.SIMNetworkOperatorConfig, error) {
+func (s *SIMStub) GetNetworkOperator(ctx context.Context, id types.ID) ([]*sacloud.SIMNetworkOperatorConfig, error) {
 	if s.GetNetworkOperatorStubResult == nil {
 		log.Fatal("SIMStub.GetNetworkOperatorStubResult is not set")
 	}
@@ -3778,7 +3778,7 @@ func (s *SIMStub) GetNetworkOperator(ctx context.Context, zone string, id types.
 }
 
 // SetNetworkOperator is API call with trace log
-func (s *SIMStub) SetNetworkOperator(ctx context.Context, zone string, id types.ID, configs []*sacloud.SIMNetworkOperatorConfig) error {
+func (s *SIMStub) SetNetworkOperator(ctx context.Context, id types.ID, configs []*sacloud.SIMNetworkOperatorConfig) error {
 	if s.SetNetworkOperatorStubResult == nil {
 		log.Fatal("SIMStub.SetNetworkOperatorStubResult is not set")
 	}
@@ -3786,7 +3786,7 @@ func (s *SIMStub) SetNetworkOperator(ctx context.Context, zone string, id types.
 }
 
 // MonitorSIM is API call with trace log
-func (s *SIMStub) MonitorSIM(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.LinkActivity, error) {
+func (s *SIMStub) MonitorSIM(ctx context.Context, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.LinkActivity, error) {
 	if s.MonitorSIMStubResult == nil {
 		log.Fatal("SIMStub.MonitorSIMStubResult is not set")
 	}
@@ -3794,7 +3794,7 @@ func (s *SIMStub) MonitorSIM(ctx context.Context, zone string, id types.ID, cond
 }
 
 // Status is API call with trace log
-func (s *SIMStub) Status(ctx context.Context, zone string, id types.ID) (*sacloud.SIMInfo, error) {
+func (s *SIMStub) Status(ctx context.Context, id types.ID) (*sacloud.SIMInfo, error) {
 	if s.StatusStubResult == nil {
 		log.Fatal("SIMStub.StatusStubResult is not set")
 	}
@@ -3863,7 +3863,7 @@ func NewSimpleMonitorStub(caller sacloud.APICaller) sacloud.SimpleMonitorAPI {
 }
 
 // Find is API call with trace log
-func (s *SimpleMonitorStub) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.SimpleMonitorFindResult, error) {
+func (s *SimpleMonitorStub) Find(ctx context.Context, conditions *sacloud.FindCondition) (*sacloud.SimpleMonitorFindResult, error) {
 	if s.FindStubResult == nil {
 		log.Fatal("SimpleMonitorStub.FindStubResult is not set")
 	}
@@ -3871,7 +3871,7 @@ func (s *SimpleMonitorStub) Find(ctx context.Context, zone string, conditions *s
 }
 
 // Create is API call with trace log
-func (s *SimpleMonitorStub) Create(ctx context.Context, zone string, param *sacloud.SimpleMonitorCreateRequest) (*sacloud.SimpleMonitor, error) {
+func (s *SimpleMonitorStub) Create(ctx context.Context, param *sacloud.SimpleMonitorCreateRequest) (*sacloud.SimpleMonitor, error) {
 	if s.CreateStubResult == nil {
 		log.Fatal("SimpleMonitorStub.CreateStubResult is not set")
 	}
@@ -3879,7 +3879,7 @@ func (s *SimpleMonitorStub) Create(ctx context.Context, zone string, param *sacl
 }
 
 // Read is API call with trace log
-func (s *SimpleMonitorStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.SimpleMonitor, error) {
+func (s *SimpleMonitorStub) Read(ctx context.Context, id types.ID) (*sacloud.SimpleMonitor, error) {
 	if s.ReadStubResult == nil {
 		log.Fatal("SimpleMonitorStub.ReadStubResult is not set")
 	}
@@ -3887,7 +3887,7 @@ func (s *SimpleMonitorStub) Read(ctx context.Context, zone string, id types.ID) 
 }
 
 // Update is API call with trace log
-func (s *SimpleMonitorStub) Update(ctx context.Context, zone string, id types.ID, param *sacloud.SimpleMonitorUpdateRequest) (*sacloud.SimpleMonitor, error) {
+func (s *SimpleMonitorStub) Update(ctx context.Context, id types.ID, param *sacloud.SimpleMonitorUpdateRequest) (*sacloud.SimpleMonitor, error) {
 	if s.UpdateStubResult == nil {
 		log.Fatal("SimpleMonitorStub.UpdateStubResult is not set")
 	}
@@ -3895,7 +3895,7 @@ func (s *SimpleMonitorStub) Update(ctx context.Context, zone string, id types.ID
 }
 
 // Delete is API call with trace log
-func (s *SimpleMonitorStub) Delete(ctx context.Context, zone string, id types.ID) error {
+func (s *SimpleMonitorStub) Delete(ctx context.Context, id types.ID) error {
 	if s.DeleteStubResult == nil {
 		log.Fatal("SimpleMonitorStub.DeleteStubResult is not set")
 	}
@@ -3903,7 +3903,7 @@ func (s *SimpleMonitorStub) Delete(ctx context.Context, zone string, id types.ID
 }
 
 // MonitorResponseTime is API call with trace log
-func (s *SimpleMonitorStub) MonitorResponseTime(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.ResponseTimeSecActivity, error) {
+func (s *SimpleMonitorStub) MonitorResponseTime(ctx context.Context, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.ResponseTimeSecActivity, error) {
 	if s.MonitorResponseTimeStubResult == nil {
 		log.Fatal("SimpleMonitorStub.MonitorResponseTimeStubResult is not set")
 	}
@@ -3911,7 +3911,7 @@ func (s *SimpleMonitorStub) MonitorResponseTime(ctx context.Context, zone string
 }
 
 // HealthStatus is API call with trace log
-func (s *SimpleMonitorStub) HealthStatus(ctx context.Context, zone string, id types.ID) (*sacloud.SimpleMonitorHealthStatus, error) {
+func (s *SimpleMonitorStub) HealthStatus(ctx context.Context, id types.ID) (*sacloud.SimpleMonitorHealthStatus, error) {
 	if s.HealthStatusStubResult == nil {
 		log.Fatal("SimpleMonitorStub.HealthStatusStubResult is not set")
 	}
@@ -3973,7 +3973,7 @@ func NewSSHKeyStub(caller sacloud.APICaller) sacloud.SSHKeyAPI {
 }
 
 // Find is API call with trace log
-func (s *SSHKeyStub) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.SSHKeyFindResult, error) {
+func (s *SSHKeyStub) Find(ctx context.Context, conditions *sacloud.FindCondition) (*sacloud.SSHKeyFindResult, error) {
 	if s.FindStubResult == nil {
 		log.Fatal("SSHKeyStub.FindStubResult is not set")
 	}
@@ -3981,7 +3981,7 @@ func (s *SSHKeyStub) Find(ctx context.Context, zone string, conditions *sacloud.
 }
 
 // Create is API call with trace log
-func (s *SSHKeyStub) Create(ctx context.Context, zone string, param *sacloud.SSHKeyCreateRequest) (*sacloud.SSHKey, error) {
+func (s *SSHKeyStub) Create(ctx context.Context, param *sacloud.SSHKeyCreateRequest) (*sacloud.SSHKey, error) {
 	if s.CreateStubResult == nil {
 		log.Fatal("SSHKeyStub.CreateStubResult is not set")
 	}
@@ -3989,7 +3989,7 @@ func (s *SSHKeyStub) Create(ctx context.Context, zone string, param *sacloud.SSH
 }
 
 // Generate is API call with trace log
-func (s *SSHKeyStub) Generate(ctx context.Context, zone string, param *sacloud.SSHKeyGenerateRequest) (*sacloud.SSHKeyGenerated, error) {
+func (s *SSHKeyStub) Generate(ctx context.Context, param *sacloud.SSHKeyGenerateRequest) (*sacloud.SSHKeyGenerated, error) {
 	if s.GenerateStubResult == nil {
 		log.Fatal("SSHKeyStub.GenerateStubResult is not set")
 	}
@@ -3997,7 +3997,7 @@ func (s *SSHKeyStub) Generate(ctx context.Context, zone string, param *sacloud.S
 }
 
 // Read is API call with trace log
-func (s *SSHKeyStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.SSHKey, error) {
+func (s *SSHKeyStub) Read(ctx context.Context, id types.ID) (*sacloud.SSHKey, error) {
 	if s.ReadStubResult == nil {
 		log.Fatal("SSHKeyStub.ReadStubResult is not set")
 	}
@@ -4005,7 +4005,7 @@ func (s *SSHKeyStub) Read(ctx context.Context, zone string, id types.ID) (*saclo
 }
 
 // Update is API call with trace log
-func (s *SSHKeyStub) Update(ctx context.Context, zone string, id types.ID, param *sacloud.SSHKeyUpdateRequest) (*sacloud.SSHKey, error) {
+func (s *SSHKeyStub) Update(ctx context.Context, id types.ID, param *sacloud.SSHKeyUpdateRequest) (*sacloud.SSHKey, error) {
 	if s.UpdateStubResult == nil {
 		log.Fatal("SSHKeyStub.UpdateStubResult is not set")
 	}
@@ -4013,7 +4013,7 @@ func (s *SSHKeyStub) Update(ctx context.Context, zone string, id types.ID, param
 }
 
 // Delete is API call with trace log
-func (s *SSHKeyStub) Delete(ctx context.Context, zone string, id types.ID) error {
+func (s *SSHKeyStub) Delete(ctx context.Context, id types.ID) error {
 	if s.DeleteStubResult == nil {
 		log.Fatal("SSHKeyStub.DeleteStubResult is not set")
 	}
@@ -4376,7 +4376,7 @@ func NewWebAccelStub(caller sacloud.APICaller) sacloud.WebAccelAPI {
 }
 
 // List is API call with trace log
-func (s *WebAccelStub) List(ctx context.Context, zone string) (*sacloud.WebAccelListResult, error) {
+func (s *WebAccelStub) List(ctx context.Context) (*sacloud.WebAccelListResult, error) {
 	if s.ListStubResult == nil {
 		log.Fatal("WebAccelStub.ListStubResult is not set")
 	}
@@ -4384,7 +4384,7 @@ func (s *WebAccelStub) List(ctx context.Context, zone string) (*sacloud.WebAccel
 }
 
 // Read is API call with trace log
-func (s *WebAccelStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.WebAccel, error) {
+func (s *WebAccelStub) Read(ctx context.Context, id types.ID) (*sacloud.WebAccel, error) {
 	if s.ReadStubResult == nil {
 		log.Fatal("WebAccelStub.ReadStubResult is not set")
 	}
@@ -4392,7 +4392,7 @@ func (s *WebAccelStub) Read(ctx context.Context, zone string, id types.ID) (*sac
 }
 
 // ReadCertificate is API call with trace log
-func (s *WebAccelStub) ReadCertificate(ctx context.Context, zone string, id types.ID) (*sacloud.WebAccelCerts, error) {
+func (s *WebAccelStub) ReadCertificate(ctx context.Context, id types.ID) (*sacloud.WebAccelCerts, error) {
 	if s.ReadCertificateStubResult == nil {
 		log.Fatal("WebAccelStub.ReadCertificateStubResult is not set")
 	}
@@ -4400,7 +4400,7 @@ func (s *WebAccelStub) ReadCertificate(ctx context.Context, zone string, id type
 }
 
 // UpdateCertificate is API call with trace log
-func (s *WebAccelStub) UpdateCertificate(ctx context.Context, zone string, id types.ID, param *sacloud.WebAccelCertUpdateRequest) (*sacloud.WebAccelCerts, error) {
+func (s *WebAccelStub) UpdateCertificate(ctx context.Context, id types.ID, param *sacloud.WebAccelCertUpdateRequest) (*sacloud.WebAccelCerts, error) {
 	if s.UpdateCertificateStubResult == nil {
 		log.Fatal("WebAccelStub.UpdateCertificateStubResult is not set")
 	}
@@ -4408,7 +4408,7 @@ func (s *WebAccelStub) UpdateCertificate(ctx context.Context, zone string, id ty
 }
 
 // DeleteAllCache is API call with trace log
-func (s *WebAccelStub) DeleteAllCache(ctx context.Context, zone string, param *sacloud.WebAccelDeleteAllCacheRequest) error {
+func (s *WebAccelStub) DeleteAllCache(ctx context.Context, param *sacloud.WebAccelDeleteAllCacheRequest) error {
 	if s.DeleteAllCacheStubResult == nil {
 		log.Fatal("WebAccelStub.DeleteAllCacheStubResult is not set")
 	}
@@ -4416,7 +4416,7 @@ func (s *WebAccelStub) DeleteAllCache(ctx context.Context, zone string, param *s
 }
 
 // DeleteCache is API call with trace log
-func (s *WebAccelStub) DeleteCache(ctx context.Context, zone string, param *sacloud.WebAccelDeleteCacheRequest) ([]*sacloud.WebAccelDeleteCacheResult, error) {
+func (s *WebAccelStub) DeleteCache(ctx context.Context, param *sacloud.WebAccelDeleteCacheRequest) ([]*sacloud.WebAccelDeleteCacheResult, error) {
 	if s.DeleteCacheStubResult == nil {
 		log.Fatal("WebAccelStub.DeleteCacheStubResult is not set")
 	}
@@ -4451,7 +4451,7 @@ func NewZoneStub(caller sacloud.APICaller) sacloud.ZoneAPI {
 }
 
 // Find is API call with trace log
-func (s *ZoneStub) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.ZoneFindResult, error) {
+func (s *ZoneStub) Find(ctx context.Context, conditions *sacloud.FindCondition) (*sacloud.ZoneFindResult, error) {
 	if s.FindStubResult == nil {
 		log.Fatal("ZoneStub.FindStubResult is not set")
 	}
@@ -4459,7 +4459,7 @@ func (s *ZoneStub) Find(ctx context.Context, zone string, conditions *sacloud.Fi
 }
 
 // Read is API call with trace log
-func (s *ZoneStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Zone, error) {
+func (s *ZoneStub) Read(ctx context.Context, id types.ID) (*sacloud.Zone, error) {
 	if s.ReadStubResult == nil {
 		log.Fatal("ZoneStub.ReadStubResult is not set")
 	}

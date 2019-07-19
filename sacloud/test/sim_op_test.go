@@ -50,10 +50,10 @@ func TestSIMOpCRUD(t *testing.T) {
 			{
 				Func: func(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 					client := sacloud.NewSIMOp(caller)
-					if err := client.Activate(context.Background(), sacloud.APIDefaultZone, testContext.ID); err != nil {
+					if err := client.Activate(context.Background(), testContext.ID); err != nil {
 						return nil, err
 					}
-					return client.Status(context.Background(), sacloud.APIDefaultZone, testContext.ID)
+					return client.Status(context.Background(), testContext.ID)
 				},
 				CheckFunc: func(t TestT, testContext *CRUDTestContext, v interface{}) error {
 					simInfo := v.(*sacloud.SIMInfo)
@@ -68,10 +68,10 @@ func TestSIMOpCRUD(t *testing.T) {
 			{
 				Func: func(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 					client := sacloud.NewSIMOp(caller)
-					if err := client.Deactivate(context.Background(), sacloud.APIDefaultZone, testContext.ID); err != nil {
+					if err := client.Deactivate(context.Background(), testContext.ID); err != nil {
 						return nil, err
 					}
-					return client.Status(context.Background(), sacloud.APIDefaultZone, testContext.ID)
+					return client.Status(context.Background(), testContext.ID)
 				},
 				CheckFunc: func(t TestT, testContext *CRUDTestContext, v interface{}) error {
 					simInfo := v.(*sacloud.SIMInfo)
@@ -86,12 +86,12 @@ func TestSIMOpCRUD(t *testing.T) {
 			{
 				Func: func(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 					client := sacloud.NewSIMOp(caller)
-					if err := client.IMEILock(context.Background(), sacloud.APIDefaultZone, testContext.ID, &sacloud.SIMIMEILockRequest{
+					if err := client.IMEILock(context.Background(), testContext.ID, &sacloud.SIMIMEILockRequest{
 						IMEI: "123456789012345",
 					}); err != nil {
 						return nil, err
 					}
-					return client.Status(context.Background(), sacloud.APIDefaultZone, testContext.ID)
+					return client.Status(context.Background(), testContext.ID)
 				},
 				CheckFunc: func(t TestT, testContext *CRUDTestContext, v interface{}) error {
 					simInfo := v.(*sacloud.SIMInfo)
@@ -105,10 +105,10 @@ func TestSIMOpCRUD(t *testing.T) {
 			{
 				Func: func(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 					client := sacloud.NewSIMOp(caller)
-					if err := client.IMEIUnlock(context.Background(), sacloud.APIDefaultZone, testContext.ID); err != nil {
+					if err := client.IMEIUnlock(context.Background(), testContext.ID); err != nil {
 						return nil, err
 					}
-					return client.Status(context.Background(), sacloud.APIDefaultZone, testContext.ID)
+					return client.Status(context.Background(), testContext.ID)
 				},
 				CheckFunc: func(t TestT, testContext *CRUDTestContext, v interface{}) error {
 					simInfo := v.(*sacloud.SIMInfo)
@@ -128,10 +128,10 @@ func TestSIMOpCRUD(t *testing.T) {
 							Allow: true,
 						},
 					}
-					if err := client.SetNetworkOperator(context.Background(), sacloud.APIDefaultZone, testContext.ID, configs); err != nil {
+					if err := client.SetNetworkOperator(context.Background(), testContext.ID, configs); err != nil {
 						return nil, err
 					}
-					return client.GetNetworkOperator(context.Background(), sacloud.APIDefaultZone, testContext.ID)
+					return client.GetNetworkOperator(context.Background(), testContext.ID)
 				},
 				CheckFunc: func(t TestT, testContext *CRUDTestContext, v interface{}) error {
 					config := v.([]*sacloud.SIMNetworkOperatorConfig)
@@ -157,7 +157,7 @@ func TestSIMOp_Logs(t *testing.T) {
 	id := types.StringID(os.Getenv("SAKURACLOUD_SIM_ID"))
 
 	client := sacloud.NewSIMOp(singletonAPICaller())
-	logs, err := client.Logs(context.Background(), sacloud.APIDefaultZone, id)
+	logs, err := client.Logs(context.Background(), id)
 	assert.NoError(t, err)
 	assert.NotEmpty(t, logs)
 
@@ -213,20 +213,20 @@ var (
 
 func testSIMCreate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewSIMOp(caller)
-	return client.Create(context.Background(), sacloud.APIDefaultZone, createSIMParam)
+	return client.Create(context.Background(), createSIMParam)
 }
 
 func testSIMRead(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewSIMOp(caller)
-	return client.Read(context.Background(), sacloud.APIDefaultZone, testContext.ID)
+	return client.Read(context.Background(), testContext.ID)
 }
 
 func testSIMUpdate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewSIMOp(caller)
-	return client.Update(context.Background(), sacloud.APIDefaultZone, testContext.ID, updateSIMParam)
+	return client.Update(context.Background(), testContext.ID, updateSIMParam)
 }
 
 func testSIMDelete(testContext *CRUDTestContext, caller sacloud.APICaller) error {
 	client := sacloud.NewSIMOp(caller)
-	return client.Delete(context.Background(), sacloud.APIDefaultZone, testContext.ID)
+	return client.Delete(context.Background(), testContext.ID)
 }

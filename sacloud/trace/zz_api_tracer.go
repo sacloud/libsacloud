@@ -155,7 +155,7 @@ func NewArchiveTracer(in sacloud.ArchiveAPI) sacloud.ArchiveAPI {
 func (t *ArchiveTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.ArchiveFindResult, error) {
 	log.Println("[TRACE] ArchiveAPI.Find start")
 	targetArguments := struct {
-		Argzone       string                 `json:"zone"`
+		Argzone       string
 		Argconditions *sacloud.FindCondition `json:"conditions"`
 	}{
 		Argzone:       zone,
@@ -188,7 +188,7 @@ func (t *ArchiveTracer) Find(ctx context.Context, zone string, conditions *saclo
 func (t *ArchiveTracer) Create(ctx context.Context, zone string, param *sacloud.ArchiveCreateRequest) (*sacloud.Archive, error) {
 	log.Println("[TRACE] ArchiveAPI.Create start")
 	targetArguments := struct {
-		Argzone  string                        `json:"zone"`
+		Argzone  string
 		Argparam *sacloud.ArchiveCreateRequest `json:"param"`
 	}{
 		Argzone:  zone,
@@ -221,7 +221,7 @@ func (t *ArchiveTracer) Create(ctx context.Context, zone string, param *sacloud.
 func (t *ArchiveTracer) CreateBlank(ctx context.Context, zone string, param *sacloud.ArchiveCreateBlankRequest) (*sacloud.Archive, *sacloud.FTPServer, error) {
 	log.Println("[TRACE] ArchiveAPI.CreateBlank start")
 	targetArguments := struct {
-		Argzone  string                             `json:"zone"`
+		Argzone  string
 		Argparam *sacloud.ArchiveCreateBlankRequest `json:"param"`
 	}{
 		Argzone:  zone,
@@ -256,7 +256,7 @@ func (t *ArchiveTracer) CreateBlank(ctx context.Context, zone string, param *sac
 func (t *ArchiveTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Archive, error) {
 	log.Println("[TRACE] ArchiveAPI.Read start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -289,7 +289,7 @@ func (t *ArchiveTracer) Read(ctx context.Context, zone string, id types.ID) (*sa
 func (t *ArchiveTracer) Update(ctx context.Context, zone string, id types.ID, param *sacloud.ArchiveUpdateRequest) (*sacloud.Archive, error) {
 	log.Println("[TRACE] ArchiveAPI.Update start")
 	targetArguments := struct {
-		Argzone  string                        `json:"zone"`
+		Argzone  string
 		Argid    types.ID                      `json:"id"`
 		Argparam *sacloud.ArchiveUpdateRequest `json:"param"`
 	}{
@@ -324,7 +324,7 @@ func (t *ArchiveTracer) Update(ctx context.Context, zone string, id types.ID, pa
 func (t *ArchiveTracer) Delete(ctx context.Context, zone string, id types.ID) error {
 	log.Println("[TRACE] ArchiveAPI.Delete start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -355,7 +355,7 @@ func (t *ArchiveTracer) Delete(ctx context.Context, zone string, id types.ID) er
 func (t *ArchiveTracer) OpenFTP(ctx context.Context, zone string, id types.ID, openOption *sacloud.OpenFTPRequest) (*sacloud.FTPServer, error) {
 	log.Println("[TRACE] ArchiveAPI.OpenFTP start")
 	targetArguments := struct {
-		Argzone       string                  `json:"zone"`
+		Argzone       string
 		Argid         types.ID                `json:"id"`
 		ArgopenOption *sacloud.OpenFTPRequest `json:"openOption"`
 	}{
@@ -390,7 +390,7 @@ func (t *ArchiveTracer) OpenFTP(ctx context.Context, zone string, id types.ID, o
 func (t *ArchiveTracer) CloseFTP(ctx context.Context, zone string, id types.ID) error {
 	log.Println("[TRACE] ArchiveAPI.CloseFTP start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -434,13 +434,10 @@ func NewAuthStatusTracer(in sacloud.AuthStatusAPI) sacloud.AuthStatusAPI {
 }
 
 // Read is API call with trace log
-func (t *AuthStatusTracer) Read(ctx context.Context, zone string) (*sacloud.AuthStatus, error) {
+func (t *AuthStatusTracer) Read(ctx context.Context) (*sacloud.AuthStatus, error) {
 	log.Println("[TRACE] AuthStatusAPI.Read start")
 	targetArguments := struct {
-		Argzone string `json:"zone"`
-	}{
-		Argzone: zone,
-	}
+	}{}
 	if d, err := json.Marshal(targetArguments); err == nil {
 		log.Printf("[TRACE] \targs: %s\n", string(d))
 	}
@@ -449,7 +446,7 @@ func (t *AuthStatusTracer) Read(ctx context.Context, zone string) (*sacloud.Auth
 		log.Println("[TRACE] AuthStatusAPI.Read end")
 	}()
 
-	resultAuthStatus, err := t.Internal.Read(ctx, zone)
+	resultAuthStatus, err := t.Internal.Read(ctx)
 	targetResults := struct {
 		AuthStatus *sacloud.AuthStatus
 		Error      error
@@ -484,7 +481,7 @@ func NewAutoBackupTracer(in sacloud.AutoBackupAPI) sacloud.AutoBackupAPI {
 func (t *AutoBackupTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.AutoBackupFindResult, error) {
 	log.Println("[TRACE] AutoBackupAPI.Find start")
 	targetArguments := struct {
-		Argzone       string                 `json:"zone"`
+		Argzone       string
 		Argconditions *sacloud.FindCondition `json:"conditions"`
 	}{
 		Argzone:       zone,
@@ -517,7 +514,7 @@ func (t *AutoBackupTracer) Find(ctx context.Context, zone string, conditions *sa
 func (t *AutoBackupTracer) Create(ctx context.Context, zone string, param *sacloud.AutoBackupCreateRequest) (*sacloud.AutoBackup, error) {
 	log.Println("[TRACE] AutoBackupAPI.Create start")
 	targetArguments := struct {
-		Argzone  string                           `json:"zone"`
+		Argzone  string
 		Argparam *sacloud.AutoBackupCreateRequest `json:"param"`
 	}{
 		Argzone:  zone,
@@ -550,7 +547,7 @@ func (t *AutoBackupTracer) Create(ctx context.Context, zone string, param *saclo
 func (t *AutoBackupTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.AutoBackup, error) {
 	log.Println("[TRACE] AutoBackupAPI.Read start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -583,7 +580,7 @@ func (t *AutoBackupTracer) Read(ctx context.Context, zone string, id types.ID) (
 func (t *AutoBackupTracer) Update(ctx context.Context, zone string, id types.ID, param *sacloud.AutoBackupUpdateRequest) (*sacloud.AutoBackup, error) {
 	log.Println("[TRACE] AutoBackupAPI.Update start")
 	targetArguments := struct {
-		Argzone  string                           `json:"zone"`
+		Argzone  string
 		Argid    types.ID                         `json:"id"`
 		Argparam *sacloud.AutoBackupUpdateRequest `json:"param"`
 	}{
@@ -618,7 +615,7 @@ func (t *AutoBackupTracer) Update(ctx context.Context, zone string, id types.ID,
 func (t *AutoBackupTracer) Delete(ctx context.Context, zone string, id types.ID) error {
 	log.Println("[TRACE] AutoBackupAPI.Delete start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -662,13 +659,11 @@ func NewBillTracer(in sacloud.BillAPI) sacloud.BillAPI {
 }
 
 // ByContract is API call with trace log
-func (t *BillTracer) ByContract(ctx context.Context, zone string, accountID types.ID) (*sacloud.BillByContractResult, error) {
+func (t *BillTracer) ByContract(ctx context.Context, accountID types.ID) (*sacloud.BillByContractResult, error) {
 	log.Println("[TRACE] BillAPI.ByContract start")
 	targetArguments := struct {
-		Argzone      string   `json:"zone"`
 		ArgaccountID types.ID `json:"accountID"`
 	}{
-		Argzone:      zone,
 		ArgaccountID: accountID,
 	}
 	if d, err := json.Marshal(targetArguments); err == nil {
@@ -679,7 +674,7 @@ func (t *BillTracer) ByContract(ctx context.Context, zone string, accountID type
 		log.Println("[TRACE] BillAPI.ByContract end")
 	}()
 
-	result, err := t.Internal.ByContract(ctx, zone, accountID)
+	result, err := t.Internal.ByContract(ctx, accountID)
 	targetResults := struct {
 		Result *sacloud.BillByContractResult
 		Error  error
@@ -695,14 +690,12 @@ func (t *BillTracer) ByContract(ctx context.Context, zone string, accountID type
 }
 
 // ByContractYear is API call with trace log
-func (t *BillTracer) ByContractYear(ctx context.Context, zone string, accountID types.ID, year int) (*sacloud.BillByContractYearResult, error) {
+func (t *BillTracer) ByContractYear(ctx context.Context, accountID types.ID, year int) (*sacloud.BillByContractYearResult, error) {
 	log.Println("[TRACE] BillAPI.ByContractYear start")
 	targetArguments := struct {
-		Argzone      string   `json:"zone"`
 		ArgaccountID types.ID `json:"accountID"`
 		Argyear      int      `json:"year"`
 	}{
-		Argzone:      zone,
 		ArgaccountID: accountID,
 		Argyear:      year,
 	}
@@ -714,7 +707,7 @@ func (t *BillTracer) ByContractYear(ctx context.Context, zone string, accountID 
 		log.Println("[TRACE] BillAPI.ByContractYear end")
 	}()
 
-	result, err := t.Internal.ByContractYear(ctx, zone, accountID, year)
+	result, err := t.Internal.ByContractYear(ctx, accountID, year)
 	targetResults := struct {
 		Result *sacloud.BillByContractYearResult
 		Error  error
@@ -730,15 +723,13 @@ func (t *BillTracer) ByContractYear(ctx context.Context, zone string, accountID 
 }
 
 // ByContractYearMonth is API call with trace log
-func (t *BillTracer) ByContractYearMonth(ctx context.Context, zone string, accountID types.ID, year int, month int) (*sacloud.BillByContractYearMonthResult, error) {
+func (t *BillTracer) ByContractYearMonth(ctx context.Context, accountID types.ID, year int, month int) (*sacloud.BillByContractYearMonthResult, error) {
 	log.Println("[TRACE] BillAPI.ByContractYearMonth start")
 	targetArguments := struct {
-		Argzone      string   `json:"zone"`
 		ArgaccountID types.ID `json:"accountID"`
 		Argyear      int      `json:"year"`
 		Argmonth     int      `json:"month"`
 	}{
-		Argzone:      zone,
 		ArgaccountID: accountID,
 		Argyear:      year,
 		Argmonth:     month,
@@ -751,7 +742,7 @@ func (t *BillTracer) ByContractYearMonth(ctx context.Context, zone string, accou
 		log.Println("[TRACE] BillAPI.ByContractYearMonth end")
 	}()
 
-	result, err := t.Internal.ByContractYearMonth(ctx, zone, accountID, year, month)
+	result, err := t.Internal.ByContractYearMonth(ctx, accountID, year, month)
 	targetResults := struct {
 		Result *sacloud.BillByContractYearMonthResult
 		Error  error
@@ -767,14 +758,12 @@ func (t *BillTracer) ByContractYearMonth(ctx context.Context, zone string, accou
 }
 
 // Read is API call with trace log
-func (t *BillTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.BillReadResult, error) {
+func (t *BillTracer) Read(ctx context.Context, id types.ID) (*sacloud.BillReadResult, error) {
 	log.Println("[TRACE] BillAPI.Read start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
-		Argid   types.ID `json:"id"`
+		Argid types.ID `json:"id"`
 	}{
-		Argzone: zone,
-		Argid:   id,
+		Argid: id,
 	}
 	if d, err := json.Marshal(targetArguments); err == nil {
 		log.Printf("[TRACE] \targs: %s\n", string(d))
@@ -784,7 +773,7 @@ func (t *BillTracer) Read(ctx context.Context, zone string, id types.ID) (*saclo
 		log.Println("[TRACE] BillAPI.Read end")
 	}()
 
-	result, err := t.Internal.Read(ctx, zone, id)
+	result, err := t.Internal.Read(ctx, id)
 	targetResults := struct {
 		Result *sacloud.BillReadResult
 		Error  error
@@ -800,14 +789,12 @@ func (t *BillTracer) Read(ctx context.Context, zone string, id types.ID) (*saclo
 }
 
 // Details is API call with trace log
-func (t *BillTracer) Details(ctx context.Context, zone string, MemberCode string, id types.ID) (*sacloud.BillDetailsResult, error) {
+func (t *BillTracer) Details(ctx context.Context, MemberCode string, id types.ID) (*sacloud.BillDetailsResult, error) {
 	log.Println("[TRACE] BillAPI.Details start")
 	targetArguments := struct {
-		Argzone       string   `json:"zone"`
 		ArgMemberCode string   `json:"MemberCode"`
 		Argid         types.ID `json:"id"`
 	}{
-		Argzone:       zone,
 		ArgMemberCode: MemberCode,
 		Argid:         id,
 	}
@@ -819,7 +806,7 @@ func (t *BillTracer) Details(ctx context.Context, zone string, MemberCode string
 		log.Println("[TRACE] BillAPI.Details end")
 	}()
 
-	result, err := t.Internal.Details(ctx, zone, MemberCode, id)
+	result, err := t.Internal.Details(ctx, MemberCode, id)
 	targetResults := struct {
 		Result *sacloud.BillDetailsResult
 		Error  error
@@ -835,14 +822,12 @@ func (t *BillTracer) Details(ctx context.Context, zone string, MemberCode string
 }
 
 // DetailsCSV is API call with trace log
-func (t *BillTracer) DetailsCSV(ctx context.Context, zone string, MemberCode string, id types.ID) (*sacloud.BillDetailCSV, error) {
+func (t *BillTracer) DetailsCSV(ctx context.Context, MemberCode string, id types.ID) (*sacloud.BillDetailCSV, error) {
 	log.Println("[TRACE] BillAPI.DetailsCSV start")
 	targetArguments := struct {
-		Argzone       string   `json:"zone"`
 		ArgMemberCode string   `json:"MemberCode"`
 		Argid         types.ID `json:"id"`
 	}{
-		Argzone:       zone,
 		ArgMemberCode: MemberCode,
 		Argid:         id,
 	}
@@ -854,7 +839,7 @@ func (t *BillTracer) DetailsCSV(ctx context.Context, zone string, MemberCode str
 		log.Println("[TRACE] BillAPI.DetailsCSV end")
 	}()
 
-	resultBillDetailCSV, err := t.Internal.DetailsCSV(ctx, zone, MemberCode, id)
+	resultBillDetailCSV, err := t.Internal.DetailsCSV(ctx, MemberCode, id)
 	targetResults := struct {
 		BillDetailCSV *sacloud.BillDetailCSV
 		Error         error
@@ -889,7 +874,7 @@ func NewBridgeTracer(in sacloud.BridgeAPI) sacloud.BridgeAPI {
 func (t *BridgeTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.BridgeFindResult, error) {
 	log.Println("[TRACE] BridgeAPI.Find start")
 	targetArguments := struct {
-		Argzone       string                 `json:"zone"`
+		Argzone       string
 		Argconditions *sacloud.FindCondition `json:"conditions"`
 	}{
 		Argzone:       zone,
@@ -922,7 +907,7 @@ func (t *BridgeTracer) Find(ctx context.Context, zone string, conditions *saclou
 func (t *BridgeTracer) Create(ctx context.Context, zone string, param *sacloud.BridgeCreateRequest) (*sacloud.Bridge, error) {
 	log.Println("[TRACE] BridgeAPI.Create start")
 	targetArguments := struct {
-		Argzone  string                       `json:"zone"`
+		Argzone  string
 		Argparam *sacloud.BridgeCreateRequest `json:"param"`
 	}{
 		Argzone:  zone,
@@ -955,7 +940,7 @@ func (t *BridgeTracer) Create(ctx context.Context, zone string, param *sacloud.B
 func (t *BridgeTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Bridge, error) {
 	log.Println("[TRACE] BridgeAPI.Read start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -988,7 +973,7 @@ func (t *BridgeTracer) Read(ctx context.Context, zone string, id types.ID) (*sac
 func (t *BridgeTracer) Update(ctx context.Context, zone string, id types.ID, param *sacloud.BridgeUpdateRequest) (*sacloud.Bridge, error) {
 	log.Println("[TRACE] BridgeAPI.Update start")
 	targetArguments := struct {
-		Argzone  string                       `json:"zone"`
+		Argzone  string
 		Argid    types.ID                     `json:"id"`
 		Argparam *sacloud.BridgeUpdateRequest `json:"param"`
 	}{
@@ -1023,7 +1008,7 @@ func (t *BridgeTracer) Update(ctx context.Context, zone string, id types.ID, par
 func (t *BridgeTracer) Delete(ctx context.Context, zone string, id types.ID) error {
 	log.Println("[TRACE] BridgeAPI.Delete start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -1070,7 +1055,7 @@ func NewCDROMTracer(in sacloud.CDROMAPI) sacloud.CDROMAPI {
 func (t *CDROMTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.CDROMFindResult, error) {
 	log.Println("[TRACE] CDROMAPI.Find start")
 	targetArguments := struct {
-		Argzone       string                 `json:"zone"`
+		Argzone       string
 		Argconditions *sacloud.FindCondition `json:"conditions"`
 	}{
 		Argzone:       zone,
@@ -1103,7 +1088,7 @@ func (t *CDROMTracer) Find(ctx context.Context, zone string, conditions *sacloud
 func (t *CDROMTracer) Create(ctx context.Context, zone string, param *sacloud.CDROMCreateRequest) (*sacloud.CDROM, *sacloud.FTPServer, error) {
 	log.Println("[TRACE] CDROMAPI.Create start")
 	targetArguments := struct {
-		Argzone  string                      `json:"zone"`
+		Argzone  string
 		Argparam *sacloud.CDROMCreateRequest `json:"param"`
 	}{
 		Argzone:  zone,
@@ -1138,7 +1123,7 @@ func (t *CDROMTracer) Create(ctx context.Context, zone string, param *sacloud.CD
 func (t *CDROMTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.CDROM, error) {
 	log.Println("[TRACE] CDROMAPI.Read start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -1171,7 +1156,7 @@ func (t *CDROMTracer) Read(ctx context.Context, zone string, id types.ID) (*sacl
 func (t *CDROMTracer) Update(ctx context.Context, zone string, id types.ID, param *sacloud.CDROMUpdateRequest) (*sacloud.CDROM, error) {
 	log.Println("[TRACE] CDROMAPI.Update start")
 	targetArguments := struct {
-		Argzone  string                      `json:"zone"`
+		Argzone  string
 		Argid    types.ID                    `json:"id"`
 		Argparam *sacloud.CDROMUpdateRequest `json:"param"`
 	}{
@@ -1206,7 +1191,7 @@ func (t *CDROMTracer) Update(ctx context.Context, zone string, id types.ID, para
 func (t *CDROMTracer) Delete(ctx context.Context, zone string, id types.ID) error {
 	log.Println("[TRACE] CDROMAPI.Delete start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -1237,7 +1222,7 @@ func (t *CDROMTracer) Delete(ctx context.Context, zone string, id types.ID) erro
 func (t *CDROMTracer) OpenFTP(ctx context.Context, zone string, id types.ID, openOption *sacloud.OpenFTPRequest) (*sacloud.FTPServer, error) {
 	log.Println("[TRACE] CDROMAPI.OpenFTP start")
 	targetArguments := struct {
-		Argzone       string                  `json:"zone"`
+		Argzone       string
 		Argid         types.ID                `json:"id"`
 		ArgopenOption *sacloud.OpenFTPRequest `json:"openOption"`
 	}{
@@ -1272,7 +1257,7 @@ func (t *CDROMTracer) OpenFTP(ctx context.Context, zone string, id types.ID, ope
 func (t *CDROMTracer) CloseFTP(ctx context.Context, zone string, id types.ID) error {
 	log.Println("[TRACE] CDROMAPI.CloseFTP start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -1316,13 +1301,11 @@ func NewCouponTracer(in sacloud.CouponAPI) sacloud.CouponAPI {
 }
 
 // Find is API call with trace log
-func (t *CouponTracer) Find(ctx context.Context, zone string, accountID types.ID) (*sacloud.CouponFindResult, error) {
+func (t *CouponTracer) Find(ctx context.Context, accountID types.ID) (*sacloud.CouponFindResult, error) {
 	log.Println("[TRACE] CouponAPI.Find start")
 	targetArguments := struct {
-		Argzone      string   `json:"zone"`
 		ArgaccountID types.ID `json:"accountID"`
 	}{
-		Argzone:      zone,
 		ArgaccountID: accountID,
 	}
 	if d, err := json.Marshal(targetArguments); err == nil {
@@ -1333,7 +1316,7 @@ func (t *CouponTracer) Find(ctx context.Context, zone string, accountID types.ID
 		log.Println("[TRACE] CouponAPI.Find end")
 	}()
 
-	result, err := t.Internal.Find(ctx, zone, accountID)
+	result, err := t.Internal.Find(ctx, accountID)
 	targetResults := struct {
 		Result *sacloud.CouponFindResult
 		Error  error
@@ -1368,7 +1351,7 @@ func NewDatabaseTracer(in sacloud.DatabaseAPI) sacloud.DatabaseAPI {
 func (t *DatabaseTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.DatabaseFindResult, error) {
 	log.Println("[TRACE] DatabaseAPI.Find start")
 	targetArguments := struct {
-		Argzone       string                 `json:"zone"`
+		Argzone       string
 		Argconditions *sacloud.FindCondition `json:"conditions"`
 	}{
 		Argzone:       zone,
@@ -1401,7 +1384,7 @@ func (t *DatabaseTracer) Find(ctx context.Context, zone string, conditions *sacl
 func (t *DatabaseTracer) Create(ctx context.Context, zone string, param *sacloud.DatabaseCreateRequest) (*sacloud.Database, error) {
 	log.Println("[TRACE] DatabaseAPI.Create start")
 	targetArguments := struct {
-		Argzone  string                         `json:"zone"`
+		Argzone  string
 		Argparam *sacloud.DatabaseCreateRequest `json:"param"`
 	}{
 		Argzone:  zone,
@@ -1434,7 +1417,7 @@ func (t *DatabaseTracer) Create(ctx context.Context, zone string, param *sacloud
 func (t *DatabaseTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Database, error) {
 	log.Println("[TRACE] DatabaseAPI.Read start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -1467,7 +1450,7 @@ func (t *DatabaseTracer) Read(ctx context.Context, zone string, id types.ID) (*s
 func (t *DatabaseTracer) Update(ctx context.Context, zone string, id types.ID, param *sacloud.DatabaseUpdateRequest) (*sacloud.Database, error) {
 	log.Println("[TRACE] DatabaseAPI.Update start")
 	targetArguments := struct {
-		Argzone  string                         `json:"zone"`
+		Argzone  string
 		Argid    types.ID                       `json:"id"`
 		Argparam *sacloud.DatabaseUpdateRequest `json:"param"`
 	}{
@@ -1502,7 +1485,7 @@ func (t *DatabaseTracer) Update(ctx context.Context, zone string, id types.ID, p
 func (t *DatabaseTracer) Delete(ctx context.Context, zone string, id types.ID) error {
 	log.Println("[TRACE] DatabaseAPI.Delete start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -1533,7 +1516,7 @@ func (t *DatabaseTracer) Delete(ctx context.Context, zone string, id types.ID) e
 func (t *DatabaseTracer) Config(ctx context.Context, zone string, id types.ID) error {
 	log.Println("[TRACE] DatabaseAPI.Config start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -1564,7 +1547,7 @@ func (t *DatabaseTracer) Config(ctx context.Context, zone string, id types.ID) e
 func (t *DatabaseTracer) Boot(ctx context.Context, zone string, id types.ID) error {
 	log.Println("[TRACE] DatabaseAPI.Boot start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -1595,7 +1578,7 @@ func (t *DatabaseTracer) Boot(ctx context.Context, zone string, id types.ID) err
 func (t *DatabaseTracer) Shutdown(ctx context.Context, zone string, id types.ID, shutdownOption *sacloud.ShutdownOption) error {
 	log.Println("[TRACE] DatabaseAPI.Shutdown start")
 	targetArguments := struct {
-		Argzone           string                  `json:"zone"`
+		Argzone           string
 		Argid             types.ID                `json:"id"`
 		ArgshutdownOption *sacloud.ShutdownOption `json:"shutdownOption"`
 	}{
@@ -1628,7 +1611,7 @@ func (t *DatabaseTracer) Shutdown(ctx context.Context, zone string, id types.ID,
 func (t *DatabaseTracer) Reset(ctx context.Context, zone string, id types.ID) error {
 	log.Println("[TRACE] DatabaseAPI.Reset start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -1659,7 +1642,7 @@ func (t *DatabaseTracer) Reset(ctx context.Context, zone string, id types.ID) er
 func (t *DatabaseTracer) MonitorCPU(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.CPUTimeActivity, error) {
 	log.Println("[TRACE] DatabaseAPI.MonitorCPU start")
 	targetArguments := struct {
-		Argzone      string                    `json:"zone"`
+		Argzone      string
 		Argid        types.ID                  `json:"id"`
 		Argcondition *sacloud.MonitorCondition `json:"condition"`
 	}{
@@ -1694,7 +1677,7 @@ func (t *DatabaseTracer) MonitorCPU(ctx context.Context, zone string, id types.I
 func (t *DatabaseTracer) MonitorDisk(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.DiskActivity, error) {
 	log.Println("[TRACE] DatabaseAPI.MonitorDisk start")
 	targetArguments := struct {
-		Argzone      string                    `json:"zone"`
+		Argzone      string
 		Argid        types.ID                  `json:"id"`
 		Argcondition *sacloud.MonitorCondition `json:"condition"`
 	}{
@@ -1729,7 +1712,7 @@ func (t *DatabaseTracer) MonitorDisk(ctx context.Context, zone string, id types.
 func (t *DatabaseTracer) MonitorInterface(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.InterfaceActivity, error) {
 	log.Println("[TRACE] DatabaseAPI.MonitorInterface start")
 	targetArguments := struct {
-		Argzone      string                    `json:"zone"`
+		Argzone      string
 		Argid        types.ID                  `json:"id"`
 		Argcondition *sacloud.MonitorCondition `json:"condition"`
 	}{
@@ -1764,7 +1747,7 @@ func (t *DatabaseTracer) MonitorInterface(ctx context.Context, zone string, id t
 func (t *DatabaseTracer) MonitorDatabase(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.DatabaseActivity, error) {
 	log.Println("[TRACE] DatabaseAPI.MonitorDatabase start")
 	targetArguments := struct {
-		Argzone      string                    `json:"zone"`
+		Argzone      string
 		Argid        types.ID                  `json:"id"`
 		Argcondition *sacloud.MonitorCondition `json:"condition"`
 	}{
@@ -1799,7 +1782,7 @@ func (t *DatabaseTracer) MonitorDatabase(ctx context.Context, zone string, id ty
 func (t *DatabaseTracer) Status(ctx context.Context, zone string, id types.ID) (*sacloud.DatabaseStatus, error) {
 	log.Println("[TRACE] DatabaseAPI.Status start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -1848,7 +1831,7 @@ func NewDiskTracer(in sacloud.DiskAPI) sacloud.DiskAPI {
 func (t *DiskTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.DiskFindResult, error) {
 	log.Println("[TRACE] DiskAPI.Find start")
 	targetArguments := struct {
-		Argzone       string                 `json:"zone"`
+		Argzone       string
 		Argconditions *sacloud.FindCondition `json:"conditions"`
 	}{
 		Argzone:       zone,
@@ -1881,7 +1864,7 @@ func (t *DiskTracer) Find(ctx context.Context, zone string, conditions *sacloud.
 func (t *DiskTracer) Create(ctx context.Context, zone string, param *sacloud.DiskCreateRequest) (*sacloud.Disk, error) {
 	log.Println("[TRACE] DiskAPI.Create start")
 	targetArguments := struct {
-		Argzone  string                     `json:"zone"`
+		Argzone  string
 		Argparam *sacloud.DiskCreateRequest `json:"param"`
 	}{
 		Argzone:  zone,
@@ -1914,7 +1897,7 @@ func (t *DiskTracer) Create(ctx context.Context, zone string, param *sacloud.Dis
 func (t *DiskTracer) CreateDistantly(ctx context.Context, zone string, createParam *sacloud.DiskCreateRequest, distantFrom []types.ID) (*sacloud.Disk, error) {
 	log.Println("[TRACE] DiskAPI.CreateDistantly start")
 	targetArguments := struct {
-		Argzone        string                     `json:"zone"`
+		Argzone        string
 		ArgcreateParam *sacloud.DiskCreateRequest `json:"createParam"`
 		ArgdistantFrom []types.ID                 `json:"distantFrom"`
 	}{
@@ -1949,7 +1932,7 @@ func (t *DiskTracer) CreateDistantly(ctx context.Context, zone string, createPar
 func (t *DiskTracer) Config(ctx context.Context, zone string, id types.ID, edit *sacloud.DiskEditRequest) error {
 	log.Println("[TRACE] DiskAPI.Config start")
 	targetArguments := struct {
-		Argzone string                   `json:"zone"`
+		Argzone string
 		Argid   types.ID                 `json:"id"`
 		Argedit *sacloud.DiskEditRequest `json:"edit"`
 	}{
@@ -1982,7 +1965,7 @@ func (t *DiskTracer) Config(ctx context.Context, zone string, id types.ID, edit 
 func (t *DiskTracer) CreateWithConfig(ctx context.Context, zone string, createParam *sacloud.DiskCreateRequest, editParam *sacloud.DiskEditRequest, bootAtAvailable bool) (*sacloud.Disk, error) {
 	log.Println("[TRACE] DiskAPI.CreateWithConfig start")
 	targetArguments := struct {
-		Argzone            string                     `json:"zone"`
+		Argzone            string
 		ArgcreateParam     *sacloud.DiskCreateRequest `json:"createParam"`
 		ArgeditParam       *sacloud.DiskEditRequest   `json:"editParam"`
 		ArgbootAtAvailable bool                       `json:"bootAtAvailable"`
@@ -2019,7 +2002,7 @@ func (t *DiskTracer) CreateWithConfig(ctx context.Context, zone string, createPa
 func (t *DiskTracer) CreateWithConfigDistantly(ctx context.Context, zone string, createParam *sacloud.DiskCreateRequest, editParam *sacloud.DiskEditRequest, bootAtAvailable bool, distantFrom []types.ID) (*sacloud.Disk, error) {
 	log.Println("[TRACE] DiskAPI.CreateWithConfigDistantly start")
 	targetArguments := struct {
-		Argzone            string                     `json:"zone"`
+		Argzone            string
 		ArgcreateParam     *sacloud.DiskCreateRequest `json:"createParam"`
 		ArgeditParam       *sacloud.DiskEditRequest   `json:"editParam"`
 		ArgbootAtAvailable bool                       `json:"bootAtAvailable"`
@@ -2058,7 +2041,7 @@ func (t *DiskTracer) CreateWithConfigDistantly(ctx context.Context, zone string,
 func (t *DiskTracer) ToBlank(ctx context.Context, zone string, id types.ID) error {
 	log.Println("[TRACE] DiskAPI.ToBlank start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -2089,7 +2072,7 @@ func (t *DiskTracer) ToBlank(ctx context.Context, zone string, id types.ID) erro
 func (t *DiskTracer) ResizePartition(ctx context.Context, zone string, id types.ID) error {
 	log.Println("[TRACE] DiskAPI.ResizePartition start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -2120,7 +2103,7 @@ func (t *DiskTracer) ResizePartition(ctx context.Context, zone string, id types.
 func (t *DiskTracer) ConnectToServer(ctx context.Context, zone string, id types.ID, serverID types.ID) error {
 	log.Println("[TRACE] DiskAPI.ConnectToServer start")
 	targetArguments := struct {
-		Argzone     string   `json:"zone"`
+		Argzone     string
 		Argid       types.ID `json:"id"`
 		ArgserverID types.ID `json:"serverID"`
 	}{
@@ -2153,7 +2136,7 @@ func (t *DiskTracer) ConnectToServer(ctx context.Context, zone string, id types.
 func (t *DiskTracer) DisconnectFromServer(ctx context.Context, zone string, id types.ID) error {
 	log.Println("[TRACE] DiskAPI.DisconnectFromServer start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -2184,7 +2167,7 @@ func (t *DiskTracer) DisconnectFromServer(ctx context.Context, zone string, id t
 func (t *DiskTracer) InstallDistantFrom(ctx context.Context, zone string, id types.ID, installParam *sacloud.DiskInstallRequest, distantFrom []types.ID) (*sacloud.Disk, error) {
 	log.Println("[TRACE] DiskAPI.InstallDistantFrom start")
 	targetArguments := struct {
-		Argzone         string                      `json:"zone"`
+		Argzone         string
 		Argid           types.ID                    `json:"id"`
 		ArginstallParam *sacloud.DiskInstallRequest `json:"installParam"`
 		ArgdistantFrom  []types.ID                  `json:"distantFrom"`
@@ -2221,7 +2204,7 @@ func (t *DiskTracer) InstallDistantFrom(ctx context.Context, zone string, id typ
 func (t *DiskTracer) Install(ctx context.Context, zone string, id types.ID, installParam *sacloud.DiskInstallRequest) (*sacloud.Disk, error) {
 	log.Println("[TRACE] DiskAPI.Install start")
 	targetArguments := struct {
-		Argzone         string                      `json:"zone"`
+		Argzone         string
 		Argid           types.ID                    `json:"id"`
 		ArginstallParam *sacloud.DiskInstallRequest `json:"installParam"`
 	}{
@@ -2256,7 +2239,7 @@ func (t *DiskTracer) Install(ctx context.Context, zone string, id types.ID, inst
 func (t *DiskTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Disk, error) {
 	log.Println("[TRACE] DiskAPI.Read start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -2289,7 +2272,7 @@ func (t *DiskTracer) Read(ctx context.Context, zone string, id types.ID) (*saclo
 func (t *DiskTracer) Update(ctx context.Context, zone string, id types.ID, param *sacloud.DiskUpdateRequest) (*sacloud.Disk, error) {
 	log.Println("[TRACE] DiskAPI.Update start")
 	targetArguments := struct {
-		Argzone  string                     `json:"zone"`
+		Argzone  string
 		Argid    types.ID                   `json:"id"`
 		Argparam *sacloud.DiskUpdateRequest `json:"param"`
 	}{
@@ -2324,7 +2307,7 @@ func (t *DiskTracer) Update(ctx context.Context, zone string, id types.ID, param
 func (t *DiskTracer) Delete(ctx context.Context, zone string, id types.ID) error {
 	log.Println("[TRACE] DiskAPI.Delete start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -2355,7 +2338,7 @@ func (t *DiskTracer) Delete(ctx context.Context, zone string, id types.ID) error
 func (t *DiskTracer) Monitor(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.DiskActivity, error) {
 	log.Println("[TRACE] DiskAPI.Monitor start")
 	targetArguments := struct {
-		Argzone      string                    `json:"zone"`
+		Argzone      string
 		Argid        types.ID                  `json:"id"`
 		Argcondition *sacloud.MonitorCondition `json:"condition"`
 	}{
@@ -2406,7 +2389,7 @@ func NewDiskPlanTracer(in sacloud.DiskPlanAPI) sacloud.DiskPlanAPI {
 func (t *DiskPlanTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.DiskPlanFindResult, error) {
 	log.Println("[TRACE] DiskPlanAPI.Find start")
 	targetArguments := struct {
-		Argzone       string                 `json:"zone"`
+		Argzone       string
 		Argconditions *sacloud.FindCondition `json:"conditions"`
 	}{
 		Argzone:       zone,
@@ -2439,7 +2422,7 @@ func (t *DiskPlanTracer) Find(ctx context.Context, zone string, conditions *sacl
 func (t *DiskPlanTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.DiskPlan, error) {
 	log.Println("[TRACE] DiskPlanAPI.Read start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -2485,13 +2468,11 @@ func NewDNSTracer(in sacloud.DNSAPI) sacloud.DNSAPI {
 }
 
 // Find is API call with trace log
-func (t *DNSTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.DNSFindResult, error) {
+func (t *DNSTracer) Find(ctx context.Context, conditions *sacloud.FindCondition) (*sacloud.DNSFindResult, error) {
 	log.Println("[TRACE] DNSAPI.Find start")
 	targetArguments := struct {
-		Argzone       string                 `json:"zone"`
 		Argconditions *sacloud.FindCondition `json:"conditions"`
 	}{
-		Argzone:       zone,
 		Argconditions: conditions,
 	}
 	if d, err := json.Marshal(targetArguments); err == nil {
@@ -2502,7 +2483,7 @@ func (t *DNSTracer) Find(ctx context.Context, zone string, conditions *sacloud.F
 		log.Println("[TRACE] DNSAPI.Find end")
 	}()
 
-	result, err := t.Internal.Find(ctx, zone, conditions)
+	result, err := t.Internal.Find(ctx, conditions)
 	targetResults := struct {
 		Result *sacloud.DNSFindResult
 		Error  error
@@ -2518,13 +2499,11 @@ func (t *DNSTracer) Find(ctx context.Context, zone string, conditions *sacloud.F
 }
 
 // Create is API call with trace log
-func (t *DNSTracer) Create(ctx context.Context, zone string, param *sacloud.DNSCreateRequest) (*sacloud.DNS, error) {
+func (t *DNSTracer) Create(ctx context.Context, param *sacloud.DNSCreateRequest) (*sacloud.DNS, error) {
 	log.Println("[TRACE] DNSAPI.Create start")
 	targetArguments := struct {
-		Argzone  string                    `json:"zone"`
 		Argparam *sacloud.DNSCreateRequest `json:"param"`
 	}{
-		Argzone:  zone,
 		Argparam: param,
 	}
 	if d, err := json.Marshal(targetArguments); err == nil {
@@ -2535,7 +2514,7 @@ func (t *DNSTracer) Create(ctx context.Context, zone string, param *sacloud.DNSC
 		log.Println("[TRACE] DNSAPI.Create end")
 	}()
 
-	resultDNS, err := t.Internal.Create(ctx, zone, param)
+	resultDNS, err := t.Internal.Create(ctx, param)
 	targetResults := struct {
 		DNS   *sacloud.DNS
 		Error error
@@ -2551,14 +2530,12 @@ func (t *DNSTracer) Create(ctx context.Context, zone string, param *sacloud.DNSC
 }
 
 // Read is API call with trace log
-func (t *DNSTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.DNS, error) {
+func (t *DNSTracer) Read(ctx context.Context, id types.ID) (*sacloud.DNS, error) {
 	log.Println("[TRACE] DNSAPI.Read start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
-		Argid   types.ID `json:"id"`
+		Argid types.ID `json:"id"`
 	}{
-		Argzone: zone,
-		Argid:   id,
+		Argid: id,
 	}
 	if d, err := json.Marshal(targetArguments); err == nil {
 		log.Printf("[TRACE] \targs: %s\n", string(d))
@@ -2568,7 +2545,7 @@ func (t *DNSTracer) Read(ctx context.Context, zone string, id types.ID) (*saclou
 		log.Println("[TRACE] DNSAPI.Read end")
 	}()
 
-	resultDNS, err := t.Internal.Read(ctx, zone, id)
+	resultDNS, err := t.Internal.Read(ctx, id)
 	targetResults := struct {
 		DNS   *sacloud.DNS
 		Error error
@@ -2584,14 +2561,12 @@ func (t *DNSTracer) Read(ctx context.Context, zone string, id types.ID) (*saclou
 }
 
 // Update is API call with trace log
-func (t *DNSTracer) Update(ctx context.Context, zone string, id types.ID, param *sacloud.DNSUpdateRequest) (*sacloud.DNS, error) {
+func (t *DNSTracer) Update(ctx context.Context, id types.ID, param *sacloud.DNSUpdateRequest) (*sacloud.DNS, error) {
 	log.Println("[TRACE] DNSAPI.Update start")
 	targetArguments := struct {
-		Argzone  string                    `json:"zone"`
 		Argid    types.ID                  `json:"id"`
 		Argparam *sacloud.DNSUpdateRequest `json:"param"`
 	}{
-		Argzone:  zone,
 		Argid:    id,
 		Argparam: param,
 	}
@@ -2603,7 +2578,7 @@ func (t *DNSTracer) Update(ctx context.Context, zone string, id types.ID, param 
 		log.Println("[TRACE] DNSAPI.Update end")
 	}()
 
-	resultDNS, err := t.Internal.Update(ctx, zone, id, param)
+	resultDNS, err := t.Internal.Update(ctx, id, param)
 	targetResults := struct {
 		DNS   *sacloud.DNS
 		Error error
@@ -2619,14 +2594,12 @@ func (t *DNSTracer) Update(ctx context.Context, zone string, id types.ID, param 
 }
 
 // Delete is API call with trace log
-func (t *DNSTracer) Delete(ctx context.Context, zone string, id types.ID) error {
+func (t *DNSTracer) Delete(ctx context.Context, id types.ID) error {
 	log.Println("[TRACE] DNSAPI.Delete start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
-		Argid   types.ID `json:"id"`
+		Argid types.ID `json:"id"`
 	}{
-		Argzone: zone,
-		Argid:   id,
+		Argid: id,
 	}
 	if d, err := json.Marshal(targetArguments); err == nil {
 		log.Printf("[TRACE] \targs: %s\n", string(d))
@@ -2636,7 +2609,7 @@ func (t *DNSTracer) Delete(ctx context.Context, zone string, id types.ID) error 
 		log.Println("[TRACE] DNSAPI.Delete end")
 	}()
 
-	err := t.Internal.Delete(ctx, zone, id)
+	err := t.Internal.Delete(ctx, id)
 	targetResults := struct {
 		Error error
 	}{
@@ -2666,13 +2639,11 @@ func NewGSLBTracer(in sacloud.GSLBAPI) sacloud.GSLBAPI {
 }
 
 // Find is API call with trace log
-func (t *GSLBTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.GSLBFindResult, error) {
+func (t *GSLBTracer) Find(ctx context.Context, conditions *sacloud.FindCondition) (*sacloud.GSLBFindResult, error) {
 	log.Println("[TRACE] GSLBAPI.Find start")
 	targetArguments := struct {
-		Argzone       string                 `json:"zone"`
 		Argconditions *sacloud.FindCondition `json:"conditions"`
 	}{
-		Argzone:       zone,
 		Argconditions: conditions,
 	}
 	if d, err := json.Marshal(targetArguments); err == nil {
@@ -2683,7 +2654,7 @@ func (t *GSLBTracer) Find(ctx context.Context, zone string, conditions *sacloud.
 		log.Println("[TRACE] GSLBAPI.Find end")
 	}()
 
-	result, err := t.Internal.Find(ctx, zone, conditions)
+	result, err := t.Internal.Find(ctx, conditions)
 	targetResults := struct {
 		Result *sacloud.GSLBFindResult
 		Error  error
@@ -2699,13 +2670,11 @@ func (t *GSLBTracer) Find(ctx context.Context, zone string, conditions *sacloud.
 }
 
 // Create is API call with trace log
-func (t *GSLBTracer) Create(ctx context.Context, zone string, param *sacloud.GSLBCreateRequest) (*sacloud.GSLB, error) {
+func (t *GSLBTracer) Create(ctx context.Context, param *sacloud.GSLBCreateRequest) (*sacloud.GSLB, error) {
 	log.Println("[TRACE] GSLBAPI.Create start")
 	targetArguments := struct {
-		Argzone  string                     `json:"zone"`
 		Argparam *sacloud.GSLBCreateRequest `json:"param"`
 	}{
-		Argzone:  zone,
 		Argparam: param,
 	}
 	if d, err := json.Marshal(targetArguments); err == nil {
@@ -2716,7 +2685,7 @@ func (t *GSLBTracer) Create(ctx context.Context, zone string, param *sacloud.GSL
 		log.Println("[TRACE] GSLBAPI.Create end")
 	}()
 
-	resultGSLB, err := t.Internal.Create(ctx, zone, param)
+	resultGSLB, err := t.Internal.Create(ctx, param)
 	targetResults := struct {
 		GSLB  *sacloud.GSLB
 		Error error
@@ -2732,14 +2701,12 @@ func (t *GSLBTracer) Create(ctx context.Context, zone string, param *sacloud.GSL
 }
 
 // Read is API call with trace log
-func (t *GSLBTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.GSLB, error) {
+func (t *GSLBTracer) Read(ctx context.Context, id types.ID) (*sacloud.GSLB, error) {
 	log.Println("[TRACE] GSLBAPI.Read start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
-		Argid   types.ID `json:"id"`
+		Argid types.ID `json:"id"`
 	}{
-		Argzone: zone,
-		Argid:   id,
+		Argid: id,
 	}
 	if d, err := json.Marshal(targetArguments); err == nil {
 		log.Printf("[TRACE] \targs: %s\n", string(d))
@@ -2749,7 +2716,7 @@ func (t *GSLBTracer) Read(ctx context.Context, zone string, id types.ID) (*saclo
 		log.Println("[TRACE] GSLBAPI.Read end")
 	}()
 
-	resultGSLB, err := t.Internal.Read(ctx, zone, id)
+	resultGSLB, err := t.Internal.Read(ctx, id)
 	targetResults := struct {
 		GSLB  *sacloud.GSLB
 		Error error
@@ -2765,14 +2732,12 @@ func (t *GSLBTracer) Read(ctx context.Context, zone string, id types.ID) (*saclo
 }
 
 // Update is API call with trace log
-func (t *GSLBTracer) Update(ctx context.Context, zone string, id types.ID, param *sacloud.GSLBUpdateRequest) (*sacloud.GSLB, error) {
+func (t *GSLBTracer) Update(ctx context.Context, id types.ID, param *sacloud.GSLBUpdateRequest) (*sacloud.GSLB, error) {
 	log.Println("[TRACE] GSLBAPI.Update start")
 	targetArguments := struct {
-		Argzone  string                     `json:"zone"`
 		Argid    types.ID                   `json:"id"`
 		Argparam *sacloud.GSLBUpdateRequest `json:"param"`
 	}{
-		Argzone:  zone,
 		Argid:    id,
 		Argparam: param,
 	}
@@ -2784,7 +2749,7 @@ func (t *GSLBTracer) Update(ctx context.Context, zone string, id types.ID, param
 		log.Println("[TRACE] GSLBAPI.Update end")
 	}()
 
-	resultGSLB, err := t.Internal.Update(ctx, zone, id, param)
+	resultGSLB, err := t.Internal.Update(ctx, id, param)
 	targetResults := struct {
 		GSLB  *sacloud.GSLB
 		Error error
@@ -2800,14 +2765,12 @@ func (t *GSLBTracer) Update(ctx context.Context, zone string, id types.ID, param
 }
 
 // Delete is API call with trace log
-func (t *GSLBTracer) Delete(ctx context.Context, zone string, id types.ID) error {
+func (t *GSLBTracer) Delete(ctx context.Context, id types.ID) error {
 	log.Println("[TRACE] GSLBAPI.Delete start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
-		Argid   types.ID `json:"id"`
+		Argid types.ID `json:"id"`
 	}{
-		Argzone: zone,
-		Argid:   id,
+		Argid: id,
 	}
 	if d, err := json.Marshal(targetArguments); err == nil {
 		log.Printf("[TRACE] \targs: %s\n", string(d))
@@ -2817,7 +2780,7 @@ func (t *GSLBTracer) Delete(ctx context.Context, zone string, id types.ID) error
 		log.Println("[TRACE] GSLBAPI.Delete end")
 	}()
 
-	err := t.Internal.Delete(ctx, zone, id)
+	err := t.Internal.Delete(ctx, id)
 	targetResults := struct {
 		Error error
 	}{
@@ -2847,13 +2810,11 @@ func NewIconTracer(in sacloud.IconAPI) sacloud.IconAPI {
 }
 
 // Find is API call with trace log
-func (t *IconTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.IconFindResult, error) {
+func (t *IconTracer) Find(ctx context.Context, conditions *sacloud.FindCondition) (*sacloud.IconFindResult, error) {
 	log.Println("[TRACE] IconAPI.Find start")
 	targetArguments := struct {
-		Argzone       string                 `json:"zone"`
 		Argconditions *sacloud.FindCondition `json:"conditions"`
 	}{
-		Argzone:       zone,
 		Argconditions: conditions,
 	}
 	if d, err := json.Marshal(targetArguments); err == nil {
@@ -2864,7 +2825,7 @@ func (t *IconTracer) Find(ctx context.Context, zone string, conditions *sacloud.
 		log.Println("[TRACE] IconAPI.Find end")
 	}()
 
-	result, err := t.Internal.Find(ctx, zone, conditions)
+	result, err := t.Internal.Find(ctx, conditions)
 	targetResults := struct {
 		Result *sacloud.IconFindResult
 		Error  error
@@ -2880,13 +2841,11 @@ func (t *IconTracer) Find(ctx context.Context, zone string, conditions *sacloud.
 }
 
 // Create is API call with trace log
-func (t *IconTracer) Create(ctx context.Context, zone string, param *sacloud.IconCreateRequest) (*sacloud.Icon, error) {
+func (t *IconTracer) Create(ctx context.Context, param *sacloud.IconCreateRequest) (*sacloud.Icon, error) {
 	log.Println("[TRACE] IconAPI.Create start")
 	targetArguments := struct {
-		Argzone  string                     `json:"zone"`
 		Argparam *sacloud.IconCreateRequest `json:"param"`
 	}{
-		Argzone:  zone,
 		Argparam: param,
 	}
 	if d, err := json.Marshal(targetArguments); err == nil {
@@ -2897,7 +2856,7 @@ func (t *IconTracer) Create(ctx context.Context, zone string, param *sacloud.Ico
 		log.Println("[TRACE] IconAPI.Create end")
 	}()
 
-	resultIcon, err := t.Internal.Create(ctx, zone, param)
+	resultIcon, err := t.Internal.Create(ctx, param)
 	targetResults := struct {
 		Icon  *sacloud.Icon
 		Error error
@@ -2913,14 +2872,12 @@ func (t *IconTracer) Create(ctx context.Context, zone string, param *sacloud.Ico
 }
 
 // Read is API call with trace log
-func (t *IconTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Icon, error) {
+func (t *IconTracer) Read(ctx context.Context, id types.ID) (*sacloud.Icon, error) {
 	log.Println("[TRACE] IconAPI.Read start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
-		Argid   types.ID `json:"id"`
+		Argid types.ID `json:"id"`
 	}{
-		Argzone: zone,
-		Argid:   id,
+		Argid: id,
 	}
 	if d, err := json.Marshal(targetArguments); err == nil {
 		log.Printf("[TRACE] \targs: %s\n", string(d))
@@ -2930,7 +2887,7 @@ func (t *IconTracer) Read(ctx context.Context, zone string, id types.ID) (*saclo
 		log.Println("[TRACE] IconAPI.Read end")
 	}()
 
-	resultIcon, err := t.Internal.Read(ctx, zone, id)
+	resultIcon, err := t.Internal.Read(ctx, id)
 	targetResults := struct {
 		Icon  *sacloud.Icon
 		Error error
@@ -2946,14 +2903,12 @@ func (t *IconTracer) Read(ctx context.Context, zone string, id types.ID) (*saclo
 }
 
 // Update is API call with trace log
-func (t *IconTracer) Update(ctx context.Context, zone string, id types.ID, param *sacloud.IconUpdateRequest) (*sacloud.Icon, error) {
+func (t *IconTracer) Update(ctx context.Context, id types.ID, param *sacloud.IconUpdateRequest) (*sacloud.Icon, error) {
 	log.Println("[TRACE] IconAPI.Update start")
 	targetArguments := struct {
-		Argzone  string                     `json:"zone"`
 		Argid    types.ID                   `json:"id"`
 		Argparam *sacloud.IconUpdateRequest `json:"param"`
 	}{
-		Argzone:  zone,
 		Argid:    id,
 		Argparam: param,
 	}
@@ -2965,7 +2920,7 @@ func (t *IconTracer) Update(ctx context.Context, zone string, id types.ID, param
 		log.Println("[TRACE] IconAPI.Update end")
 	}()
 
-	resultIcon, err := t.Internal.Update(ctx, zone, id, param)
+	resultIcon, err := t.Internal.Update(ctx, id, param)
 	targetResults := struct {
 		Icon  *sacloud.Icon
 		Error error
@@ -2981,14 +2936,12 @@ func (t *IconTracer) Update(ctx context.Context, zone string, id types.ID, param
 }
 
 // Delete is API call with trace log
-func (t *IconTracer) Delete(ctx context.Context, zone string, id types.ID) error {
+func (t *IconTracer) Delete(ctx context.Context, id types.ID) error {
 	log.Println("[TRACE] IconAPI.Delete start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
-		Argid   types.ID `json:"id"`
+		Argid types.ID `json:"id"`
 	}{
-		Argzone: zone,
-		Argid:   id,
+		Argid: id,
 	}
 	if d, err := json.Marshal(targetArguments); err == nil {
 		log.Printf("[TRACE] \targs: %s\n", string(d))
@@ -2998,7 +2951,7 @@ func (t *IconTracer) Delete(ctx context.Context, zone string, id types.ID) error
 		log.Println("[TRACE] IconAPI.Delete end")
 	}()
 
-	err := t.Internal.Delete(ctx, zone, id)
+	err := t.Internal.Delete(ctx, id)
 	targetResults := struct {
 		Error error
 	}{
@@ -3031,7 +2984,7 @@ func NewInterfaceTracer(in sacloud.InterfaceAPI) sacloud.InterfaceAPI {
 func (t *InterfaceTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.InterfaceFindResult, error) {
 	log.Println("[TRACE] InterfaceAPI.Find start")
 	targetArguments := struct {
-		Argzone       string                 `json:"zone"`
+		Argzone       string
 		Argconditions *sacloud.FindCondition `json:"conditions"`
 	}{
 		Argzone:       zone,
@@ -3064,7 +3017,7 @@ func (t *InterfaceTracer) Find(ctx context.Context, zone string, conditions *sac
 func (t *InterfaceTracer) Create(ctx context.Context, zone string, param *sacloud.InterfaceCreateRequest) (*sacloud.Interface, error) {
 	log.Println("[TRACE] InterfaceAPI.Create start")
 	targetArguments := struct {
-		Argzone  string                          `json:"zone"`
+		Argzone  string
 		Argparam *sacloud.InterfaceCreateRequest `json:"param"`
 	}{
 		Argzone:  zone,
@@ -3097,7 +3050,7 @@ func (t *InterfaceTracer) Create(ctx context.Context, zone string, param *saclou
 func (t *InterfaceTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Interface, error) {
 	log.Println("[TRACE] InterfaceAPI.Read start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -3130,7 +3083,7 @@ func (t *InterfaceTracer) Read(ctx context.Context, zone string, id types.ID) (*
 func (t *InterfaceTracer) Update(ctx context.Context, zone string, id types.ID, param *sacloud.InterfaceUpdateRequest) (*sacloud.Interface, error) {
 	log.Println("[TRACE] InterfaceAPI.Update start")
 	targetArguments := struct {
-		Argzone  string                          `json:"zone"`
+		Argzone  string
 		Argid    types.ID                        `json:"id"`
 		Argparam *sacloud.InterfaceUpdateRequest `json:"param"`
 	}{
@@ -3165,7 +3118,7 @@ func (t *InterfaceTracer) Update(ctx context.Context, zone string, id types.ID, 
 func (t *InterfaceTracer) Delete(ctx context.Context, zone string, id types.ID) error {
 	log.Println("[TRACE] InterfaceAPI.Delete start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -3196,7 +3149,7 @@ func (t *InterfaceTracer) Delete(ctx context.Context, zone string, id types.ID) 
 func (t *InterfaceTracer) Monitor(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.InterfaceActivity, error) {
 	log.Println("[TRACE] InterfaceAPI.Monitor start")
 	targetArguments := struct {
-		Argzone      string                    `json:"zone"`
+		Argzone      string
 		Argid        types.ID                  `json:"id"`
 		Argcondition *sacloud.MonitorCondition `json:"condition"`
 	}{
@@ -3231,7 +3184,7 @@ func (t *InterfaceTracer) Monitor(ctx context.Context, zone string, id types.ID,
 func (t *InterfaceTracer) ConnectToSharedSegment(ctx context.Context, zone string, id types.ID) error {
 	log.Println("[TRACE] InterfaceAPI.ConnectToSharedSegment start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -3262,7 +3215,7 @@ func (t *InterfaceTracer) ConnectToSharedSegment(ctx context.Context, zone strin
 func (t *InterfaceTracer) ConnectToSwitch(ctx context.Context, zone string, id types.ID, switchID types.ID) error {
 	log.Println("[TRACE] InterfaceAPI.ConnectToSwitch start")
 	targetArguments := struct {
-		Argzone     string   `json:"zone"`
+		Argzone     string
 		Argid       types.ID `json:"id"`
 		ArgswitchID types.ID `json:"switchID"`
 	}{
@@ -3295,7 +3248,7 @@ func (t *InterfaceTracer) ConnectToSwitch(ctx context.Context, zone string, id t
 func (t *InterfaceTracer) DisconnectFromSwitch(ctx context.Context, zone string, id types.ID) error {
 	log.Println("[TRACE] InterfaceAPI.DisconnectFromSwitch start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -3326,7 +3279,7 @@ func (t *InterfaceTracer) DisconnectFromSwitch(ctx context.Context, zone string,
 func (t *InterfaceTracer) ConnectToPacketFilter(ctx context.Context, zone string, id types.ID, packetFilterID types.ID) error {
 	log.Println("[TRACE] InterfaceAPI.ConnectToPacketFilter start")
 	targetArguments := struct {
-		Argzone           string   `json:"zone"`
+		Argzone           string
 		Argid             types.ID `json:"id"`
 		ArgpacketFilterID types.ID `json:"packetFilterID"`
 	}{
@@ -3359,7 +3312,7 @@ func (t *InterfaceTracer) ConnectToPacketFilter(ctx context.Context, zone string
 func (t *InterfaceTracer) DisconnectFromPacketFilter(ctx context.Context, zone string, id types.ID) error {
 	log.Println("[TRACE] InterfaceAPI.DisconnectFromPacketFilter start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -3406,7 +3359,7 @@ func NewInternetTracer(in sacloud.InternetAPI) sacloud.InternetAPI {
 func (t *InternetTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.InternetFindResult, error) {
 	log.Println("[TRACE] InternetAPI.Find start")
 	targetArguments := struct {
-		Argzone       string                 `json:"zone"`
+		Argzone       string
 		Argconditions *sacloud.FindCondition `json:"conditions"`
 	}{
 		Argzone:       zone,
@@ -3439,7 +3392,7 @@ func (t *InternetTracer) Find(ctx context.Context, zone string, conditions *sacl
 func (t *InternetTracer) Create(ctx context.Context, zone string, param *sacloud.InternetCreateRequest) (*sacloud.Internet, error) {
 	log.Println("[TRACE] InternetAPI.Create start")
 	targetArguments := struct {
-		Argzone  string                         `json:"zone"`
+		Argzone  string
 		Argparam *sacloud.InternetCreateRequest `json:"param"`
 	}{
 		Argzone:  zone,
@@ -3472,7 +3425,7 @@ func (t *InternetTracer) Create(ctx context.Context, zone string, param *sacloud
 func (t *InternetTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Internet, error) {
 	log.Println("[TRACE] InternetAPI.Read start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -3505,7 +3458,7 @@ func (t *InternetTracer) Read(ctx context.Context, zone string, id types.ID) (*s
 func (t *InternetTracer) Update(ctx context.Context, zone string, id types.ID, param *sacloud.InternetUpdateRequest) (*sacloud.Internet, error) {
 	log.Println("[TRACE] InternetAPI.Update start")
 	targetArguments := struct {
-		Argzone  string                         `json:"zone"`
+		Argzone  string
 		Argid    types.ID                       `json:"id"`
 		Argparam *sacloud.InternetUpdateRequest `json:"param"`
 	}{
@@ -3540,7 +3493,7 @@ func (t *InternetTracer) Update(ctx context.Context, zone string, id types.ID, p
 func (t *InternetTracer) Delete(ctx context.Context, zone string, id types.ID) error {
 	log.Println("[TRACE] InternetAPI.Delete start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -3571,7 +3524,7 @@ func (t *InternetTracer) Delete(ctx context.Context, zone string, id types.ID) e
 func (t *InternetTracer) UpdateBandWidth(ctx context.Context, zone string, id types.ID, param *sacloud.InternetUpdateBandWidthRequest) (*sacloud.Internet, error) {
 	log.Println("[TRACE] InternetAPI.UpdateBandWidth start")
 	targetArguments := struct {
-		Argzone  string                                  `json:"zone"`
+		Argzone  string
 		Argid    types.ID                                `json:"id"`
 		Argparam *sacloud.InternetUpdateBandWidthRequest `json:"param"`
 	}{
@@ -3606,7 +3559,7 @@ func (t *InternetTracer) UpdateBandWidth(ctx context.Context, zone string, id ty
 func (t *InternetTracer) AddSubnet(ctx context.Context, zone string, id types.ID, param *sacloud.InternetAddSubnetRequest) (*sacloud.InternetSubnetOperationResult, error) {
 	log.Println("[TRACE] InternetAPI.AddSubnet start")
 	targetArguments := struct {
-		Argzone  string                            `json:"zone"`
+		Argzone  string
 		Argid    types.ID                          `json:"id"`
 		Argparam *sacloud.InternetAddSubnetRequest `json:"param"`
 	}{
@@ -3641,7 +3594,7 @@ func (t *InternetTracer) AddSubnet(ctx context.Context, zone string, id types.ID
 func (t *InternetTracer) UpdateSubnet(ctx context.Context, zone string, id types.ID, subnetID types.ID, param *sacloud.InternetUpdateSubnetRequest) (*sacloud.InternetSubnetOperationResult, error) {
 	log.Println("[TRACE] InternetAPI.UpdateSubnet start")
 	targetArguments := struct {
-		Argzone     string                               `json:"zone"`
+		Argzone     string
 		Argid       types.ID                             `json:"id"`
 		ArgsubnetID types.ID                             `json:"subnetID"`
 		Argparam    *sacloud.InternetUpdateSubnetRequest `json:"param"`
@@ -3678,7 +3631,7 @@ func (t *InternetTracer) UpdateSubnet(ctx context.Context, zone string, id types
 func (t *InternetTracer) DeleteSubnet(ctx context.Context, zone string, id types.ID, subnetID types.ID) error {
 	log.Println("[TRACE] InternetAPI.DeleteSubnet start")
 	targetArguments := struct {
-		Argzone     string   `json:"zone"`
+		Argzone     string
 		Argid       types.ID `json:"id"`
 		ArgsubnetID types.ID `json:"subnetID"`
 	}{
@@ -3711,7 +3664,7 @@ func (t *InternetTracer) DeleteSubnet(ctx context.Context, zone string, id types
 func (t *InternetTracer) Monitor(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.RouterActivity, error) {
 	log.Println("[TRACE] InternetAPI.Monitor start")
 	targetArguments := struct {
-		Argzone      string                    `json:"zone"`
+		Argzone      string
 		Argid        types.ID                  `json:"id"`
 		Argcondition *sacloud.MonitorCondition `json:"condition"`
 	}{
@@ -3746,7 +3699,7 @@ func (t *InternetTracer) Monitor(ctx context.Context, zone string, id types.ID, 
 func (t *InternetTracer) EnableIPv6(ctx context.Context, zone string, id types.ID) (*sacloud.IPv6NetInfo, error) {
 	log.Println("[TRACE] InternetAPI.EnableIPv6 start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -3779,7 +3732,7 @@ func (t *InternetTracer) EnableIPv6(ctx context.Context, zone string, id types.I
 func (t *InternetTracer) DisableIPv6(ctx context.Context, zone string, id types.ID, ipv6netID types.ID) error {
 	log.Println("[TRACE] InternetAPI.DisableIPv6 start")
 	targetArguments := struct {
-		Argzone      string   `json:"zone"`
+		Argzone      string
 		Argid        types.ID `json:"id"`
 		Argipv6netID types.ID `json:"ipv6netID"`
 	}{
@@ -3828,7 +3781,7 @@ func NewInternetPlanTracer(in sacloud.InternetPlanAPI) sacloud.InternetPlanAPI {
 func (t *InternetPlanTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.InternetPlanFindResult, error) {
 	log.Println("[TRACE] InternetPlanAPI.Find start")
 	targetArguments := struct {
-		Argzone       string                 `json:"zone"`
+		Argzone       string
 		Argconditions *sacloud.FindCondition `json:"conditions"`
 	}{
 		Argzone:       zone,
@@ -3861,7 +3814,7 @@ func (t *InternetPlanTracer) Find(ctx context.Context, zone string, conditions *
 func (t *InternetPlanTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.InternetPlan, error) {
 	log.Println("[TRACE] InternetPlanAPI.Read start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -3910,7 +3863,7 @@ func NewIPAddressTracer(in sacloud.IPAddressAPI) sacloud.IPAddressAPI {
 func (t *IPAddressTracer) List(ctx context.Context, zone string) (*sacloud.IPAddressListResult, error) {
 	log.Println("[TRACE] IPAddressAPI.List start")
 	targetArguments := struct {
-		Argzone string `json:"zone"`
+		Argzone string
 	}{
 		Argzone: zone,
 	}
@@ -3941,7 +3894,7 @@ func (t *IPAddressTracer) List(ctx context.Context, zone string) (*sacloud.IPAdd
 func (t *IPAddressTracer) Read(ctx context.Context, zone string, ipAddress string) (*sacloud.IPAddress, error) {
 	log.Println("[TRACE] IPAddressAPI.Read start")
 	targetArguments := struct {
-		Argzone      string `json:"zone"`
+		Argzone      string
 		ArgipAddress string `json:"ipAddress"`
 	}{
 		Argzone:      zone,
@@ -3974,7 +3927,7 @@ func (t *IPAddressTracer) Read(ctx context.Context, zone string, ipAddress strin
 func (t *IPAddressTracer) UpdateHostName(ctx context.Context, zone string, ipAddress string, hostName string) (*sacloud.IPAddress, error) {
 	log.Println("[TRACE] IPAddressAPI.UpdateHostName start")
 	targetArguments := struct {
-		Argzone      string `json:"zone"`
+		Argzone      string
 		ArgipAddress string `json:"ipAddress"`
 		ArghostName  string `json:"hostName"`
 	}{
@@ -4025,7 +3978,7 @@ func NewIPv6NetTracer(in sacloud.IPv6NetAPI) sacloud.IPv6NetAPI {
 func (t *IPv6NetTracer) List(ctx context.Context, zone string) (*sacloud.IPv6NetListResult, error) {
 	log.Println("[TRACE] IPv6NetAPI.List start")
 	targetArguments := struct {
-		Argzone string `json:"zone"`
+		Argzone string
 	}{
 		Argzone: zone,
 	}
@@ -4056,7 +4009,7 @@ func (t *IPv6NetTracer) List(ctx context.Context, zone string) (*sacloud.IPv6Net
 func (t *IPv6NetTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.IPv6Net, error) {
 	log.Println("[TRACE] IPv6NetAPI.Read start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -4105,7 +4058,7 @@ func NewIPv6AddrTracer(in sacloud.IPv6AddrAPI) sacloud.IPv6AddrAPI {
 func (t *IPv6AddrTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.IPv6AddrFindResult, error) {
 	log.Println("[TRACE] IPv6AddrAPI.Find start")
 	targetArguments := struct {
-		Argzone       string                 `json:"zone"`
+		Argzone       string
 		Argconditions *sacloud.FindCondition `json:"conditions"`
 	}{
 		Argzone:       zone,
@@ -4138,7 +4091,7 @@ func (t *IPv6AddrTracer) Find(ctx context.Context, zone string, conditions *sacl
 func (t *IPv6AddrTracer) Create(ctx context.Context, zone string, param *sacloud.IPv6AddrCreateRequest) (*sacloud.IPv6Addr, error) {
 	log.Println("[TRACE] IPv6AddrAPI.Create start")
 	targetArguments := struct {
-		Argzone  string                         `json:"zone"`
+		Argzone  string
 		Argparam *sacloud.IPv6AddrCreateRequest `json:"param"`
 	}{
 		Argzone:  zone,
@@ -4171,7 +4124,7 @@ func (t *IPv6AddrTracer) Create(ctx context.Context, zone string, param *sacloud
 func (t *IPv6AddrTracer) Read(ctx context.Context, zone string, ipv6addr string) (*sacloud.IPv6Addr, error) {
 	log.Println("[TRACE] IPv6AddrAPI.Read start")
 	targetArguments := struct {
-		Argzone     string `json:"zone"`
+		Argzone     string
 		Argipv6addr string `json:"ipv6addr"`
 	}{
 		Argzone:     zone,
@@ -4204,7 +4157,7 @@ func (t *IPv6AddrTracer) Read(ctx context.Context, zone string, ipv6addr string)
 func (t *IPv6AddrTracer) Update(ctx context.Context, zone string, ipv6addr string, param *sacloud.IPv6AddrUpdateRequest) (*sacloud.IPv6Addr, error) {
 	log.Println("[TRACE] IPv6AddrAPI.Update start")
 	targetArguments := struct {
-		Argzone     string                         `json:"zone"`
+		Argzone     string
 		Argipv6addr string                         `json:"ipv6addr"`
 		Argparam    *sacloud.IPv6AddrUpdateRequest `json:"param"`
 	}{
@@ -4239,7 +4192,7 @@ func (t *IPv6AddrTracer) Update(ctx context.Context, zone string, ipv6addr strin
 func (t *IPv6AddrTracer) Delete(ctx context.Context, zone string, ipv6addr string) error {
 	log.Println("[TRACE] IPv6AddrAPI.Delete start")
 	targetArguments := struct {
-		Argzone     string `json:"zone"`
+		Argzone     string
 		Argipv6addr string `json:"ipv6addr"`
 	}{
 		Argzone:     zone,
@@ -4283,13 +4236,11 @@ func NewLicenseTracer(in sacloud.LicenseAPI) sacloud.LicenseAPI {
 }
 
 // Find is API call with trace log
-func (t *LicenseTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.LicenseFindResult, error) {
+func (t *LicenseTracer) Find(ctx context.Context, conditions *sacloud.FindCondition) (*sacloud.LicenseFindResult, error) {
 	log.Println("[TRACE] LicenseAPI.Find start")
 	targetArguments := struct {
-		Argzone       string                 `json:"zone"`
 		Argconditions *sacloud.FindCondition `json:"conditions"`
 	}{
-		Argzone:       zone,
 		Argconditions: conditions,
 	}
 	if d, err := json.Marshal(targetArguments); err == nil {
@@ -4300,7 +4251,7 @@ func (t *LicenseTracer) Find(ctx context.Context, zone string, conditions *saclo
 		log.Println("[TRACE] LicenseAPI.Find end")
 	}()
 
-	result, err := t.Internal.Find(ctx, zone, conditions)
+	result, err := t.Internal.Find(ctx, conditions)
 	targetResults := struct {
 		Result *sacloud.LicenseFindResult
 		Error  error
@@ -4316,13 +4267,11 @@ func (t *LicenseTracer) Find(ctx context.Context, zone string, conditions *saclo
 }
 
 // Create is API call with trace log
-func (t *LicenseTracer) Create(ctx context.Context, zone string, param *sacloud.LicenseCreateRequest) (*sacloud.License, error) {
+func (t *LicenseTracer) Create(ctx context.Context, param *sacloud.LicenseCreateRequest) (*sacloud.License, error) {
 	log.Println("[TRACE] LicenseAPI.Create start")
 	targetArguments := struct {
-		Argzone  string                        `json:"zone"`
 		Argparam *sacloud.LicenseCreateRequest `json:"param"`
 	}{
-		Argzone:  zone,
 		Argparam: param,
 	}
 	if d, err := json.Marshal(targetArguments); err == nil {
@@ -4333,7 +4282,7 @@ func (t *LicenseTracer) Create(ctx context.Context, zone string, param *sacloud.
 		log.Println("[TRACE] LicenseAPI.Create end")
 	}()
 
-	resultLicense, err := t.Internal.Create(ctx, zone, param)
+	resultLicense, err := t.Internal.Create(ctx, param)
 	targetResults := struct {
 		License *sacloud.License
 		Error   error
@@ -4349,14 +4298,12 @@ func (t *LicenseTracer) Create(ctx context.Context, zone string, param *sacloud.
 }
 
 // Read is API call with trace log
-func (t *LicenseTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.License, error) {
+func (t *LicenseTracer) Read(ctx context.Context, id types.ID) (*sacloud.License, error) {
 	log.Println("[TRACE] LicenseAPI.Read start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
-		Argid   types.ID `json:"id"`
+		Argid types.ID `json:"id"`
 	}{
-		Argzone: zone,
-		Argid:   id,
+		Argid: id,
 	}
 	if d, err := json.Marshal(targetArguments); err == nil {
 		log.Printf("[TRACE] \targs: %s\n", string(d))
@@ -4366,7 +4313,7 @@ func (t *LicenseTracer) Read(ctx context.Context, zone string, id types.ID) (*sa
 		log.Println("[TRACE] LicenseAPI.Read end")
 	}()
 
-	resultLicense, err := t.Internal.Read(ctx, zone, id)
+	resultLicense, err := t.Internal.Read(ctx, id)
 	targetResults := struct {
 		License *sacloud.License
 		Error   error
@@ -4382,14 +4329,12 @@ func (t *LicenseTracer) Read(ctx context.Context, zone string, id types.ID) (*sa
 }
 
 // Update is API call with trace log
-func (t *LicenseTracer) Update(ctx context.Context, zone string, id types.ID, param *sacloud.LicenseUpdateRequest) (*sacloud.License, error) {
+func (t *LicenseTracer) Update(ctx context.Context, id types.ID, param *sacloud.LicenseUpdateRequest) (*sacloud.License, error) {
 	log.Println("[TRACE] LicenseAPI.Update start")
 	targetArguments := struct {
-		Argzone  string                        `json:"zone"`
 		Argid    types.ID                      `json:"id"`
 		Argparam *sacloud.LicenseUpdateRequest `json:"param"`
 	}{
-		Argzone:  zone,
 		Argid:    id,
 		Argparam: param,
 	}
@@ -4401,7 +4346,7 @@ func (t *LicenseTracer) Update(ctx context.Context, zone string, id types.ID, pa
 		log.Println("[TRACE] LicenseAPI.Update end")
 	}()
 
-	resultLicense, err := t.Internal.Update(ctx, zone, id, param)
+	resultLicense, err := t.Internal.Update(ctx, id, param)
 	targetResults := struct {
 		License *sacloud.License
 		Error   error
@@ -4417,14 +4362,12 @@ func (t *LicenseTracer) Update(ctx context.Context, zone string, id types.ID, pa
 }
 
 // Delete is API call with trace log
-func (t *LicenseTracer) Delete(ctx context.Context, zone string, id types.ID) error {
+func (t *LicenseTracer) Delete(ctx context.Context, id types.ID) error {
 	log.Println("[TRACE] LicenseAPI.Delete start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
-		Argid   types.ID `json:"id"`
+		Argid types.ID `json:"id"`
 	}{
-		Argzone: zone,
-		Argid:   id,
+		Argid: id,
 	}
 	if d, err := json.Marshal(targetArguments); err == nil {
 		log.Printf("[TRACE] \targs: %s\n", string(d))
@@ -4434,7 +4377,7 @@ func (t *LicenseTracer) Delete(ctx context.Context, zone string, id types.ID) er
 		log.Println("[TRACE] LicenseAPI.Delete end")
 	}()
 
-	err := t.Internal.Delete(ctx, zone, id)
+	err := t.Internal.Delete(ctx, id)
 	targetResults := struct {
 		Error error
 	}{
@@ -4464,13 +4407,11 @@ func NewLicenseInfoTracer(in sacloud.LicenseInfoAPI) sacloud.LicenseInfoAPI {
 }
 
 // Find is API call with trace log
-func (t *LicenseInfoTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.LicenseInfoFindResult, error) {
+func (t *LicenseInfoTracer) Find(ctx context.Context, conditions *sacloud.FindCondition) (*sacloud.LicenseInfoFindResult, error) {
 	log.Println("[TRACE] LicenseInfoAPI.Find start")
 	targetArguments := struct {
-		Argzone       string                 `json:"zone"`
 		Argconditions *sacloud.FindCondition `json:"conditions"`
 	}{
-		Argzone:       zone,
 		Argconditions: conditions,
 	}
 	if d, err := json.Marshal(targetArguments); err == nil {
@@ -4481,7 +4422,7 @@ func (t *LicenseInfoTracer) Find(ctx context.Context, zone string, conditions *s
 		log.Println("[TRACE] LicenseInfoAPI.Find end")
 	}()
 
-	result, err := t.Internal.Find(ctx, zone, conditions)
+	result, err := t.Internal.Find(ctx, conditions)
 	targetResults := struct {
 		Result *sacloud.LicenseInfoFindResult
 		Error  error
@@ -4497,14 +4438,12 @@ func (t *LicenseInfoTracer) Find(ctx context.Context, zone string, conditions *s
 }
 
 // Read is API call with trace log
-func (t *LicenseInfoTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.LicenseInfo, error) {
+func (t *LicenseInfoTracer) Read(ctx context.Context, id types.ID) (*sacloud.LicenseInfo, error) {
 	log.Println("[TRACE] LicenseInfoAPI.Read start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
-		Argid   types.ID `json:"id"`
+		Argid types.ID `json:"id"`
 	}{
-		Argzone: zone,
-		Argid:   id,
+		Argid: id,
 	}
 	if d, err := json.Marshal(targetArguments); err == nil {
 		log.Printf("[TRACE] \targs: %s\n", string(d))
@@ -4514,7 +4453,7 @@ func (t *LicenseInfoTracer) Read(ctx context.Context, zone string, id types.ID) 
 		log.Println("[TRACE] LicenseInfoAPI.Read end")
 	}()
 
-	resultLicenseInfo, err := t.Internal.Read(ctx, zone, id)
+	resultLicenseInfo, err := t.Internal.Read(ctx, id)
 	targetResults := struct {
 		LicenseInfo *sacloud.LicenseInfo
 		Error       error
@@ -4549,7 +4488,7 @@ func NewLoadBalancerTracer(in sacloud.LoadBalancerAPI) sacloud.LoadBalancerAPI {
 func (t *LoadBalancerTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.LoadBalancerFindResult, error) {
 	log.Println("[TRACE] LoadBalancerAPI.Find start")
 	targetArguments := struct {
-		Argzone       string                 `json:"zone"`
+		Argzone       string
 		Argconditions *sacloud.FindCondition `json:"conditions"`
 	}{
 		Argzone:       zone,
@@ -4582,7 +4521,7 @@ func (t *LoadBalancerTracer) Find(ctx context.Context, zone string, conditions *
 func (t *LoadBalancerTracer) Create(ctx context.Context, zone string, param *sacloud.LoadBalancerCreateRequest) (*sacloud.LoadBalancer, error) {
 	log.Println("[TRACE] LoadBalancerAPI.Create start")
 	targetArguments := struct {
-		Argzone  string                             `json:"zone"`
+		Argzone  string
 		Argparam *sacloud.LoadBalancerCreateRequest `json:"param"`
 	}{
 		Argzone:  zone,
@@ -4615,7 +4554,7 @@ func (t *LoadBalancerTracer) Create(ctx context.Context, zone string, param *sac
 func (t *LoadBalancerTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.LoadBalancer, error) {
 	log.Println("[TRACE] LoadBalancerAPI.Read start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -4648,7 +4587,7 @@ func (t *LoadBalancerTracer) Read(ctx context.Context, zone string, id types.ID)
 func (t *LoadBalancerTracer) Update(ctx context.Context, zone string, id types.ID, param *sacloud.LoadBalancerUpdateRequest) (*sacloud.LoadBalancer, error) {
 	log.Println("[TRACE] LoadBalancerAPI.Update start")
 	targetArguments := struct {
-		Argzone  string                             `json:"zone"`
+		Argzone  string
 		Argid    types.ID                           `json:"id"`
 		Argparam *sacloud.LoadBalancerUpdateRequest `json:"param"`
 	}{
@@ -4683,7 +4622,7 @@ func (t *LoadBalancerTracer) Update(ctx context.Context, zone string, id types.I
 func (t *LoadBalancerTracer) Delete(ctx context.Context, zone string, id types.ID) error {
 	log.Println("[TRACE] LoadBalancerAPI.Delete start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -4714,7 +4653,7 @@ func (t *LoadBalancerTracer) Delete(ctx context.Context, zone string, id types.I
 func (t *LoadBalancerTracer) Config(ctx context.Context, zone string, id types.ID) error {
 	log.Println("[TRACE] LoadBalancerAPI.Config start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -4745,7 +4684,7 @@ func (t *LoadBalancerTracer) Config(ctx context.Context, zone string, id types.I
 func (t *LoadBalancerTracer) Boot(ctx context.Context, zone string, id types.ID) error {
 	log.Println("[TRACE] LoadBalancerAPI.Boot start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -4776,7 +4715,7 @@ func (t *LoadBalancerTracer) Boot(ctx context.Context, zone string, id types.ID)
 func (t *LoadBalancerTracer) Shutdown(ctx context.Context, zone string, id types.ID, shutdownOption *sacloud.ShutdownOption) error {
 	log.Println("[TRACE] LoadBalancerAPI.Shutdown start")
 	targetArguments := struct {
-		Argzone           string                  `json:"zone"`
+		Argzone           string
 		Argid             types.ID                `json:"id"`
 		ArgshutdownOption *sacloud.ShutdownOption `json:"shutdownOption"`
 	}{
@@ -4809,7 +4748,7 @@ func (t *LoadBalancerTracer) Shutdown(ctx context.Context, zone string, id types
 func (t *LoadBalancerTracer) Reset(ctx context.Context, zone string, id types.ID) error {
 	log.Println("[TRACE] LoadBalancerAPI.Reset start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -4840,7 +4779,7 @@ func (t *LoadBalancerTracer) Reset(ctx context.Context, zone string, id types.ID
 func (t *LoadBalancerTracer) MonitorInterface(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.InterfaceActivity, error) {
 	log.Println("[TRACE] LoadBalancerAPI.MonitorInterface start")
 	targetArguments := struct {
-		Argzone      string                    `json:"zone"`
+		Argzone      string
 		Argid        types.ID                  `json:"id"`
 		Argcondition *sacloud.MonitorCondition `json:"condition"`
 	}{
@@ -4875,7 +4814,7 @@ func (t *LoadBalancerTracer) MonitorInterface(ctx context.Context, zone string, 
 func (t *LoadBalancerTracer) Status(ctx context.Context, zone string, id types.ID) (*sacloud.LoadBalancerStatusResult, error) {
 	log.Println("[TRACE] LoadBalancerAPI.Status start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -4924,7 +4863,7 @@ func NewMobileGatewayTracer(in sacloud.MobileGatewayAPI) sacloud.MobileGatewayAP
 func (t *MobileGatewayTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.MobileGatewayFindResult, error) {
 	log.Println("[TRACE] MobileGatewayAPI.Find start")
 	targetArguments := struct {
-		Argzone       string                 `json:"zone"`
+		Argzone       string
 		Argconditions *sacloud.FindCondition `json:"conditions"`
 	}{
 		Argzone:       zone,
@@ -4957,7 +4896,7 @@ func (t *MobileGatewayTracer) Find(ctx context.Context, zone string, conditions 
 func (t *MobileGatewayTracer) Create(ctx context.Context, zone string, param *sacloud.MobileGatewayCreateRequest) (*sacloud.MobileGateway, error) {
 	log.Println("[TRACE] MobileGatewayAPI.Create start")
 	targetArguments := struct {
-		Argzone  string                              `json:"zone"`
+		Argzone  string
 		Argparam *sacloud.MobileGatewayCreateRequest `json:"param"`
 	}{
 		Argzone:  zone,
@@ -4990,7 +4929,7 @@ func (t *MobileGatewayTracer) Create(ctx context.Context, zone string, param *sa
 func (t *MobileGatewayTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.MobileGateway, error) {
 	log.Println("[TRACE] MobileGatewayAPI.Read start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -5023,7 +4962,7 @@ func (t *MobileGatewayTracer) Read(ctx context.Context, zone string, id types.ID
 func (t *MobileGatewayTracer) Update(ctx context.Context, zone string, id types.ID, param *sacloud.MobileGatewayUpdateRequest) (*sacloud.MobileGateway, error) {
 	log.Println("[TRACE] MobileGatewayAPI.Update start")
 	targetArguments := struct {
-		Argzone  string                              `json:"zone"`
+		Argzone  string
 		Argid    types.ID                            `json:"id"`
 		Argparam *sacloud.MobileGatewayUpdateRequest `json:"param"`
 	}{
@@ -5058,7 +4997,7 @@ func (t *MobileGatewayTracer) Update(ctx context.Context, zone string, id types.
 func (t *MobileGatewayTracer) Delete(ctx context.Context, zone string, id types.ID) error {
 	log.Println("[TRACE] MobileGatewayAPI.Delete start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -5089,7 +5028,7 @@ func (t *MobileGatewayTracer) Delete(ctx context.Context, zone string, id types.
 func (t *MobileGatewayTracer) Config(ctx context.Context, zone string, id types.ID) error {
 	log.Println("[TRACE] MobileGatewayAPI.Config start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -5120,7 +5059,7 @@ func (t *MobileGatewayTracer) Config(ctx context.Context, zone string, id types.
 func (t *MobileGatewayTracer) Boot(ctx context.Context, zone string, id types.ID) error {
 	log.Println("[TRACE] MobileGatewayAPI.Boot start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -5151,7 +5090,7 @@ func (t *MobileGatewayTracer) Boot(ctx context.Context, zone string, id types.ID
 func (t *MobileGatewayTracer) Shutdown(ctx context.Context, zone string, id types.ID, shutdownOption *sacloud.ShutdownOption) error {
 	log.Println("[TRACE] MobileGatewayAPI.Shutdown start")
 	targetArguments := struct {
-		Argzone           string                  `json:"zone"`
+		Argzone           string
 		Argid             types.ID                `json:"id"`
 		ArgshutdownOption *sacloud.ShutdownOption `json:"shutdownOption"`
 	}{
@@ -5184,7 +5123,7 @@ func (t *MobileGatewayTracer) Shutdown(ctx context.Context, zone string, id type
 func (t *MobileGatewayTracer) Reset(ctx context.Context, zone string, id types.ID) error {
 	log.Println("[TRACE] MobileGatewayAPI.Reset start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -5215,7 +5154,7 @@ func (t *MobileGatewayTracer) Reset(ctx context.Context, zone string, id types.I
 func (t *MobileGatewayTracer) ConnectToSwitch(ctx context.Context, zone string, id types.ID, switchID types.ID) error {
 	log.Println("[TRACE] MobileGatewayAPI.ConnectToSwitch start")
 	targetArguments := struct {
-		Argzone     string   `json:"zone"`
+		Argzone     string
 		Argid       types.ID `json:"id"`
 		ArgswitchID types.ID `json:"switchID"`
 	}{
@@ -5248,7 +5187,7 @@ func (t *MobileGatewayTracer) ConnectToSwitch(ctx context.Context, zone string, 
 func (t *MobileGatewayTracer) DisconnectFromSwitch(ctx context.Context, zone string, id types.ID) error {
 	log.Println("[TRACE] MobileGatewayAPI.DisconnectFromSwitch start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -5279,7 +5218,7 @@ func (t *MobileGatewayTracer) DisconnectFromSwitch(ctx context.Context, zone str
 func (t *MobileGatewayTracer) GetDNS(ctx context.Context, zone string, id types.ID) (*sacloud.MobileGatewayDNSSetting, error) {
 	log.Println("[TRACE] MobileGatewayAPI.GetDNS start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -5312,7 +5251,7 @@ func (t *MobileGatewayTracer) GetDNS(ctx context.Context, zone string, id types.
 func (t *MobileGatewayTracer) SetDNS(ctx context.Context, zone string, id types.ID, param *sacloud.MobileGatewayDNSSetting) error {
 	log.Println("[TRACE] MobileGatewayAPI.SetDNS start")
 	targetArguments := struct {
-		Argzone  string                           `json:"zone"`
+		Argzone  string
 		Argid    types.ID                         `json:"id"`
 		Argparam *sacloud.MobileGatewayDNSSetting `json:"param"`
 	}{
@@ -5345,7 +5284,7 @@ func (t *MobileGatewayTracer) SetDNS(ctx context.Context, zone string, id types.
 func (t *MobileGatewayTracer) GetSIMRoutes(ctx context.Context, zone string, id types.ID) ([]*sacloud.MobileGatewaySIMRoute, error) {
 	log.Println("[TRACE] MobileGatewayAPI.GetSIMRoutes start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -5378,7 +5317,7 @@ func (t *MobileGatewayTracer) GetSIMRoutes(ctx context.Context, zone string, id 
 func (t *MobileGatewayTracer) SetSIMRoutes(ctx context.Context, zone string, id types.ID, param []*sacloud.MobileGatewaySIMRouteParam) error {
 	log.Println("[TRACE] MobileGatewayAPI.SetSIMRoutes start")
 	targetArguments := struct {
-		Argzone  string                                `json:"zone"`
+		Argzone  string
 		Argid    types.ID                              `json:"id"`
 		Argparam []*sacloud.MobileGatewaySIMRouteParam `json:"param"`
 	}{
@@ -5411,7 +5350,7 @@ func (t *MobileGatewayTracer) SetSIMRoutes(ctx context.Context, zone string, id 
 func (t *MobileGatewayTracer) ListSIM(ctx context.Context, zone string, id types.ID) ([]*sacloud.MobileGatewaySIMInfo, error) {
 	log.Println("[TRACE] MobileGatewayAPI.ListSIM start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -5444,7 +5383,7 @@ func (t *MobileGatewayTracer) ListSIM(ctx context.Context, zone string, id types
 func (t *MobileGatewayTracer) AddSIM(ctx context.Context, zone string, id types.ID, param *sacloud.MobileGatewayAddSIMRequest) error {
 	log.Println("[TRACE] MobileGatewayAPI.AddSIM start")
 	targetArguments := struct {
-		Argzone  string                              `json:"zone"`
+		Argzone  string
 		Argid    types.ID                            `json:"id"`
 		Argparam *sacloud.MobileGatewayAddSIMRequest `json:"param"`
 	}{
@@ -5477,7 +5416,7 @@ func (t *MobileGatewayTracer) AddSIM(ctx context.Context, zone string, id types.
 func (t *MobileGatewayTracer) DeleteSIM(ctx context.Context, zone string, id types.ID, simID types.ID) error {
 	log.Println("[TRACE] MobileGatewayAPI.DeleteSIM start")
 	targetArguments := struct {
-		Argzone  string   `json:"zone"`
+		Argzone  string
 		Argid    types.ID `json:"id"`
 		ArgsimID types.ID `json:"simID"`
 	}{
@@ -5510,7 +5449,7 @@ func (t *MobileGatewayTracer) DeleteSIM(ctx context.Context, zone string, id typ
 func (t *MobileGatewayTracer) Logs(ctx context.Context, zone string, id types.ID) ([]*sacloud.MobileGatewaySIMLogs, error) {
 	log.Println("[TRACE] MobileGatewayAPI.Logs start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -5543,7 +5482,7 @@ func (t *MobileGatewayTracer) Logs(ctx context.Context, zone string, id types.ID
 func (t *MobileGatewayTracer) GetTrafficConfig(ctx context.Context, zone string, id types.ID) (*sacloud.MobileGatewayTrafficControl, error) {
 	log.Println("[TRACE] MobileGatewayAPI.GetTrafficConfig start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -5576,7 +5515,7 @@ func (t *MobileGatewayTracer) GetTrafficConfig(ctx context.Context, zone string,
 func (t *MobileGatewayTracer) SetTrafficConfig(ctx context.Context, zone string, id types.ID, param *sacloud.MobileGatewayTrafficControl) error {
 	log.Println("[TRACE] MobileGatewayAPI.SetTrafficConfig start")
 	targetArguments := struct {
-		Argzone  string                               `json:"zone"`
+		Argzone  string
 		Argid    types.ID                             `json:"id"`
 		Argparam *sacloud.MobileGatewayTrafficControl `json:"param"`
 	}{
@@ -5609,7 +5548,7 @@ func (t *MobileGatewayTracer) SetTrafficConfig(ctx context.Context, zone string,
 func (t *MobileGatewayTracer) DeleteTrafficConfig(ctx context.Context, zone string, id types.ID) error {
 	log.Println("[TRACE] MobileGatewayAPI.DeleteTrafficConfig start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -5640,7 +5579,7 @@ func (t *MobileGatewayTracer) DeleteTrafficConfig(ctx context.Context, zone stri
 func (t *MobileGatewayTracer) TrafficStatus(ctx context.Context, zone string, id types.ID) (*sacloud.MobileGatewayTrafficStatus, error) {
 	log.Println("[TRACE] MobileGatewayAPI.TrafficStatus start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -5673,7 +5612,7 @@ func (t *MobileGatewayTracer) TrafficStatus(ctx context.Context, zone string, id
 func (t *MobileGatewayTracer) MonitorInterface(ctx context.Context, zone string, id types.ID, index int, condition *sacloud.MonitorCondition) (*sacloud.InterfaceActivity, error) {
 	log.Println("[TRACE] MobileGatewayAPI.MonitorInterface start")
 	targetArguments := struct {
-		Argzone      string                    `json:"zone"`
+		Argzone      string
 		Argid        types.ID                  `json:"id"`
 		Argindex     int                       `json:"index"`
 		Argcondition *sacloud.MonitorCondition `json:"condition"`
@@ -5726,7 +5665,7 @@ func NewNFSTracer(in sacloud.NFSAPI) sacloud.NFSAPI {
 func (t *NFSTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.NFSFindResult, error) {
 	log.Println("[TRACE] NFSAPI.Find start")
 	targetArguments := struct {
-		Argzone       string                 `json:"zone"`
+		Argzone       string
 		Argconditions *sacloud.FindCondition `json:"conditions"`
 	}{
 		Argzone:       zone,
@@ -5759,7 +5698,7 @@ func (t *NFSTracer) Find(ctx context.Context, zone string, conditions *sacloud.F
 func (t *NFSTracer) Create(ctx context.Context, zone string, param *sacloud.NFSCreateRequest) (*sacloud.NFS, error) {
 	log.Println("[TRACE] NFSAPI.Create start")
 	targetArguments := struct {
-		Argzone  string                    `json:"zone"`
+		Argzone  string
 		Argparam *sacloud.NFSCreateRequest `json:"param"`
 	}{
 		Argzone:  zone,
@@ -5792,7 +5731,7 @@ func (t *NFSTracer) Create(ctx context.Context, zone string, param *sacloud.NFSC
 func (t *NFSTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.NFS, error) {
 	log.Println("[TRACE] NFSAPI.Read start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -5825,7 +5764,7 @@ func (t *NFSTracer) Read(ctx context.Context, zone string, id types.ID) (*saclou
 func (t *NFSTracer) Update(ctx context.Context, zone string, id types.ID, param *sacloud.NFSUpdateRequest) (*sacloud.NFS, error) {
 	log.Println("[TRACE] NFSAPI.Update start")
 	targetArguments := struct {
-		Argzone  string                    `json:"zone"`
+		Argzone  string
 		Argid    types.ID                  `json:"id"`
 		Argparam *sacloud.NFSUpdateRequest `json:"param"`
 	}{
@@ -5860,7 +5799,7 @@ func (t *NFSTracer) Update(ctx context.Context, zone string, id types.ID, param 
 func (t *NFSTracer) Delete(ctx context.Context, zone string, id types.ID) error {
 	log.Println("[TRACE] NFSAPI.Delete start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -5891,7 +5830,7 @@ func (t *NFSTracer) Delete(ctx context.Context, zone string, id types.ID) error 
 func (t *NFSTracer) Boot(ctx context.Context, zone string, id types.ID) error {
 	log.Println("[TRACE] NFSAPI.Boot start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -5922,7 +5861,7 @@ func (t *NFSTracer) Boot(ctx context.Context, zone string, id types.ID) error {
 func (t *NFSTracer) Shutdown(ctx context.Context, zone string, id types.ID, shutdownOption *sacloud.ShutdownOption) error {
 	log.Println("[TRACE] NFSAPI.Shutdown start")
 	targetArguments := struct {
-		Argzone           string                  `json:"zone"`
+		Argzone           string
 		Argid             types.ID                `json:"id"`
 		ArgshutdownOption *sacloud.ShutdownOption `json:"shutdownOption"`
 	}{
@@ -5955,7 +5894,7 @@ func (t *NFSTracer) Shutdown(ctx context.Context, zone string, id types.ID, shut
 func (t *NFSTracer) Reset(ctx context.Context, zone string, id types.ID) error {
 	log.Println("[TRACE] NFSAPI.Reset start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -5986,7 +5925,7 @@ func (t *NFSTracer) Reset(ctx context.Context, zone string, id types.ID) error {
 func (t *NFSTracer) MonitorFreeDiskSize(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.FreeDiskSizeActivity, error) {
 	log.Println("[TRACE] NFSAPI.MonitorFreeDiskSize start")
 	targetArguments := struct {
-		Argzone      string                    `json:"zone"`
+		Argzone      string
 		Argid        types.ID                  `json:"id"`
 		Argcondition *sacloud.MonitorCondition `json:"condition"`
 	}{
@@ -6021,7 +5960,7 @@ func (t *NFSTracer) MonitorFreeDiskSize(ctx context.Context, zone string, id typ
 func (t *NFSTracer) MonitorInterface(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.InterfaceActivity, error) {
 	log.Println("[TRACE] NFSAPI.MonitorInterface start")
 	targetArguments := struct {
-		Argzone      string                    `json:"zone"`
+		Argzone      string
 		Argid        types.ID                  `json:"id"`
 		Argcondition *sacloud.MonitorCondition `json:"condition"`
 	}{
@@ -6069,13 +6008,11 @@ func NewNoteTracer(in sacloud.NoteAPI) sacloud.NoteAPI {
 }
 
 // Find is API call with trace log
-func (t *NoteTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.NoteFindResult, error) {
+func (t *NoteTracer) Find(ctx context.Context, conditions *sacloud.FindCondition) (*sacloud.NoteFindResult, error) {
 	log.Println("[TRACE] NoteAPI.Find start")
 	targetArguments := struct {
-		Argzone       string                 `json:"zone"`
 		Argconditions *sacloud.FindCondition `json:"conditions"`
 	}{
-		Argzone:       zone,
 		Argconditions: conditions,
 	}
 	if d, err := json.Marshal(targetArguments); err == nil {
@@ -6086,7 +6023,7 @@ func (t *NoteTracer) Find(ctx context.Context, zone string, conditions *sacloud.
 		log.Println("[TRACE] NoteAPI.Find end")
 	}()
 
-	result, err := t.Internal.Find(ctx, zone, conditions)
+	result, err := t.Internal.Find(ctx, conditions)
 	targetResults := struct {
 		Result *sacloud.NoteFindResult
 		Error  error
@@ -6102,13 +6039,11 @@ func (t *NoteTracer) Find(ctx context.Context, zone string, conditions *sacloud.
 }
 
 // Create is API call with trace log
-func (t *NoteTracer) Create(ctx context.Context, zone string, param *sacloud.NoteCreateRequest) (*sacloud.Note, error) {
+func (t *NoteTracer) Create(ctx context.Context, param *sacloud.NoteCreateRequest) (*sacloud.Note, error) {
 	log.Println("[TRACE] NoteAPI.Create start")
 	targetArguments := struct {
-		Argzone  string                     `json:"zone"`
 		Argparam *sacloud.NoteCreateRequest `json:"param"`
 	}{
-		Argzone:  zone,
 		Argparam: param,
 	}
 	if d, err := json.Marshal(targetArguments); err == nil {
@@ -6119,7 +6054,7 @@ func (t *NoteTracer) Create(ctx context.Context, zone string, param *sacloud.Not
 		log.Println("[TRACE] NoteAPI.Create end")
 	}()
 
-	resultNote, err := t.Internal.Create(ctx, zone, param)
+	resultNote, err := t.Internal.Create(ctx, param)
 	targetResults := struct {
 		Note  *sacloud.Note
 		Error error
@@ -6135,14 +6070,12 @@ func (t *NoteTracer) Create(ctx context.Context, zone string, param *sacloud.Not
 }
 
 // Read is API call with trace log
-func (t *NoteTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Note, error) {
+func (t *NoteTracer) Read(ctx context.Context, id types.ID) (*sacloud.Note, error) {
 	log.Println("[TRACE] NoteAPI.Read start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
-		Argid   types.ID `json:"id"`
+		Argid types.ID `json:"id"`
 	}{
-		Argzone: zone,
-		Argid:   id,
+		Argid: id,
 	}
 	if d, err := json.Marshal(targetArguments); err == nil {
 		log.Printf("[TRACE] \targs: %s\n", string(d))
@@ -6152,7 +6085,7 @@ func (t *NoteTracer) Read(ctx context.Context, zone string, id types.ID) (*saclo
 		log.Println("[TRACE] NoteAPI.Read end")
 	}()
 
-	resultNote, err := t.Internal.Read(ctx, zone, id)
+	resultNote, err := t.Internal.Read(ctx, id)
 	targetResults := struct {
 		Note  *sacloud.Note
 		Error error
@@ -6168,14 +6101,12 @@ func (t *NoteTracer) Read(ctx context.Context, zone string, id types.ID) (*saclo
 }
 
 // Update is API call with trace log
-func (t *NoteTracer) Update(ctx context.Context, zone string, id types.ID, param *sacloud.NoteUpdateRequest) (*sacloud.Note, error) {
+func (t *NoteTracer) Update(ctx context.Context, id types.ID, param *sacloud.NoteUpdateRequest) (*sacloud.Note, error) {
 	log.Println("[TRACE] NoteAPI.Update start")
 	targetArguments := struct {
-		Argzone  string                     `json:"zone"`
 		Argid    types.ID                   `json:"id"`
 		Argparam *sacloud.NoteUpdateRequest `json:"param"`
 	}{
-		Argzone:  zone,
 		Argid:    id,
 		Argparam: param,
 	}
@@ -6187,7 +6118,7 @@ func (t *NoteTracer) Update(ctx context.Context, zone string, id types.ID, param
 		log.Println("[TRACE] NoteAPI.Update end")
 	}()
 
-	resultNote, err := t.Internal.Update(ctx, zone, id, param)
+	resultNote, err := t.Internal.Update(ctx, id, param)
 	targetResults := struct {
 		Note  *sacloud.Note
 		Error error
@@ -6203,14 +6134,12 @@ func (t *NoteTracer) Update(ctx context.Context, zone string, id types.ID, param
 }
 
 // Delete is API call with trace log
-func (t *NoteTracer) Delete(ctx context.Context, zone string, id types.ID) error {
+func (t *NoteTracer) Delete(ctx context.Context, id types.ID) error {
 	log.Println("[TRACE] NoteAPI.Delete start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
-		Argid   types.ID `json:"id"`
+		Argid types.ID `json:"id"`
 	}{
-		Argzone: zone,
-		Argid:   id,
+		Argid: id,
 	}
 	if d, err := json.Marshal(targetArguments); err == nil {
 		log.Printf("[TRACE] \targs: %s\n", string(d))
@@ -6220,7 +6149,7 @@ func (t *NoteTracer) Delete(ctx context.Context, zone string, id types.ID) error
 		log.Println("[TRACE] NoteAPI.Delete end")
 	}()
 
-	err := t.Internal.Delete(ctx, zone, id)
+	err := t.Internal.Delete(ctx, id)
 	targetResults := struct {
 		Error error
 	}{
@@ -6253,7 +6182,7 @@ func NewPacketFilterTracer(in sacloud.PacketFilterAPI) sacloud.PacketFilterAPI {
 func (t *PacketFilterTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.PacketFilterFindResult, error) {
 	log.Println("[TRACE] PacketFilterAPI.Find start")
 	targetArguments := struct {
-		Argzone       string                 `json:"zone"`
+		Argzone       string
 		Argconditions *sacloud.FindCondition `json:"conditions"`
 	}{
 		Argzone:       zone,
@@ -6286,7 +6215,7 @@ func (t *PacketFilterTracer) Find(ctx context.Context, zone string, conditions *
 func (t *PacketFilterTracer) Create(ctx context.Context, zone string, param *sacloud.PacketFilterCreateRequest) (*sacloud.PacketFilter, error) {
 	log.Println("[TRACE] PacketFilterAPI.Create start")
 	targetArguments := struct {
-		Argzone  string                             `json:"zone"`
+		Argzone  string
 		Argparam *sacloud.PacketFilterCreateRequest `json:"param"`
 	}{
 		Argzone:  zone,
@@ -6319,7 +6248,7 @@ func (t *PacketFilterTracer) Create(ctx context.Context, zone string, param *sac
 func (t *PacketFilterTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.PacketFilter, error) {
 	log.Println("[TRACE] PacketFilterAPI.Read start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -6352,7 +6281,7 @@ func (t *PacketFilterTracer) Read(ctx context.Context, zone string, id types.ID)
 func (t *PacketFilterTracer) Update(ctx context.Context, zone string, id types.ID, param *sacloud.PacketFilterUpdateRequest) (*sacloud.PacketFilter, error) {
 	log.Println("[TRACE] PacketFilterAPI.Update start")
 	targetArguments := struct {
-		Argzone  string                             `json:"zone"`
+		Argzone  string
 		Argid    types.ID                           `json:"id"`
 		Argparam *sacloud.PacketFilterUpdateRequest `json:"param"`
 	}{
@@ -6387,7 +6316,7 @@ func (t *PacketFilterTracer) Update(ctx context.Context, zone string, id types.I
 func (t *PacketFilterTracer) Delete(ctx context.Context, zone string, id types.ID) error {
 	log.Println("[TRACE] PacketFilterAPI.Delete start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -6434,7 +6363,7 @@ func NewPrivateHostTracer(in sacloud.PrivateHostAPI) sacloud.PrivateHostAPI {
 func (t *PrivateHostTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.PrivateHostFindResult, error) {
 	log.Println("[TRACE] PrivateHostAPI.Find start")
 	targetArguments := struct {
-		Argzone       string                 `json:"zone"`
+		Argzone       string
 		Argconditions *sacloud.FindCondition `json:"conditions"`
 	}{
 		Argzone:       zone,
@@ -6467,7 +6396,7 @@ func (t *PrivateHostTracer) Find(ctx context.Context, zone string, conditions *s
 func (t *PrivateHostTracer) Create(ctx context.Context, zone string, param *sacloud.PrivateHostCreateRequest) (*sacloud.PrivateHost, error) {
 	log.Println("[TRACE] PrivateHostAPI.Create start")
 	targetArguments := struct {
-		Argzone  string                            `json:"zone"`
+		Argzone  string
 		Argparam *sacloud.PrivateHostCreateRequest `json:"param"`
 	}{
 		Argzone:  zone,
@@ -6500,7 +6429,7 @@ func (t *PrivateHostTracer) Create(ctx context.Context, zone string, param *sacl
 func (t *PrivateHostTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.PrivateHost, error) {
 	log.Println("[TRACE] PrivateHostAPI.Read start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -6533,7 +6462,7 @@ func (t *PrivateHostTracer) Read(ctx context.Context, zone string, id types.ID) 
 func (t *PrivateHostTracer) Update(ctx context.Context, zone string, id types.ID, param *sacloud.PrivateHostUpdateRequest) (*sacloud.PrivateHost, error) {
 	log.Println("[TRACE] PrivateHostAPI.Update start")
 	targetArguments := struct {
-		Argzone  string                            `json:"zone"`
+		Argzone  string
 		Argid    types.ID                          `json:"id"`
 		Argparam *sacloud.PrivateHostUpdateRequest `json:"param"`
 	}{
@@ -6568,7 +6497,7 @@ func (t *PrivateHostTracer) Update(ctx context.Context, zone string, id types.ID
 func (t *PrivateHostTracer) Delete(ctx context.Context, zone string, id types.ID) error {
 	log.Println("[TRACE] PrivateHostAPI.Delete start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -6615,7 +6544,7 @@ func NewPrivateHostPlanTracer(in sacloud.PrivateHostPlanAPI) sacloud.PrivateHost
 func (t *PrivateHostPlanTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.PrivateHostPlanFindResult, error) {
 	log.Println("[TRACE] PrivateHostPlanAPI.Find start")
 	targetArguments := struct {
-		Argzone       string                 `json:"zone"`
+		Argzone       string
 		Argconditions *sacloud.FindCondition `json:"conditions"`
 	}{
 		Argzone:       zone,
@@ -6648,7 +6577,7 @@ func (t *PrivateHostPlanTracer) Find(ctx context.Context, zone string, condition
 func (t *PrivateHostPlanTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.PrivateHostPlan, error) {
 	log.Println("[TRACE] PrivateHostPlanAPI.Read start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -6694,13 +6623,11 @@ func NewProxyLBTracer(in sacloud.ProxyLBAPI) sacloud.ProxyLBAPI {
 }
 
 // Find is API call with trace log
-func (t *ProxyLBTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.ProxyLBFindResult, error) {
+func (t *ProxyLBTracer) Find(ctx context.Context, conditions *sacloud.FindCondition) (*sacloud.ProxyLBFindResult, error) {
 	log.Println("[TRACE] ProxyLBAPI.Find start")
 	targetArguments := struct {
-		Argzone       string                 `json:"zone"`
 		Argconditions *sacloud.FindCondition `json:"conditions"`
 	}{
-		Argzone:       zone,
 		Argconditions: conditions,
 	}
 	if d, err := json.Marshal(targetArguments); err == nil {
@@ -6711,7 +6638,7 @@ func (t *ProxyLBTracer) Find(ctx context.Context, zone string, conditions *saclo
 		log.Println("[TRACE] ProxyLBAPI.Find end")
 	}()
 
-	result, err := t.Internal.Find(ctx, zone, conditions)
+	result, err := t.Internal.Find(ctx, conditions)
 	targetResults := struct {
 		Result *sacloud.ProxyLBFindResult
 		Error  error
@@ -6727,13 +6654,11 @@ func (t *ProxyLBTracer) Find(ctx context.Context, zone string, conditions *saclo
 }
 
 // Create is API call with trace log
-func (t *ProxyLBTracer) Create(ctx context.Context, zone string, param *sacloud.ProxyLBCreateRequest) (*sacloud.ProxyLB, error) {
+func (t *ProxyLBTracer) Create(ctx context.Context, param *sacloud.ProxyLBCreateRequest) (*sacloud.ProxyLB, error) {
 	log.Println("[TRACE] ProxyLBAPI.Create start")
 	targetArguments := struct {
-		Argzone  string                        `json:"zone"`
 		Argparam *sacloud.ProxyLBCreateRequest `json:"param"`
 	}{
-		Argzone:  zone,
 		Argparam: param,
 	}
 	if d, err := json.Marshal(targetArguments); err == nil {
@@ -6744,7 +6669,7 @@ func (t *ProxyLBTracer) Create(ctx context.Context, zone string, param *sacloud.
 		log.Println("[TRACE] ProxyLBAPI.Create end")
 	}()
 
-	resultProxyLB, err := t.Internal.Create(ctx, zone, param)
+	resultProxyLB, err := t.Internal.Create(ctx, param)
 	targetResults := struct {
 		ProxyLB *sacloud.ProxyLB
 		Error   error
@@ -6760,14 +6685,12 @@ func (t *ProxyLBTracer) Create(ctx context.Context, zone string, param *sacloud.
 }
 
 // Read is API call with trace log
-func (t *ProxyLBTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.ProxyLB, error) {
+func (t *ProxyLBTracer) Read(ctx context.Context, id types.ID) (*sacloud.ProxyLB, error) {
 	log.Println("[TRACE] ProxyLBAPI.Read start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
-		Argid   types.ID `json:"id"`
+		Argid types.ID `json:"id"`
 	}{
-		Argzone: zone,
-		Argid:   id,
+		Argid: id,
 	}
 	if d, err := json.Marshal(targetArguments); err == nil {
 		log.Printf("[TRACE] \targs: %s\n", string(d))
@@ -6777,7 +6700,7 @@ func (t *ProxyLBTracer) Read(ctx context.Context, zone string, id types.ID) (*sa
 		log.Println("[TRACE] ProxyLBAPI.Read end")
 	}()
 
-	resultProxyLB, err := t.Internal.Read(ctx, zone, id)
+	resultProxyLB, err := t.Internal.Read(ctx, id)
 	targetResults := struct {
 		ProxyLB *sacloud.ProxyLB
 		Error   error
@@ -6793,14 +6716,12 @@ func (t *ProxyLBTracer) Read(ctx context.Context, zone string, id types.ID) (*sa
 }
 
 // Update is API call with trace log
-func (t *ProxyLBTracer) Update(ctx context.Context, zone string, id types.ID, param *sacloud.ProxyLBUpdateRequest) (*sacloud.ProxyLB, error) {
+func (t *ProxyLBTracer) Update(ctx context.Context, id types.ID, param *sacloud.ProxyLBUpdateRequest) (*sacloud.ProxyLB, error) {
 	log.Println("[TRACE] ProxyLBAPI.Update start")
 	targetArguments := struct {
-		Argzone  string                        `json:"zone"`
 		Argid    types.ID                      `json:"id"`
 		Argparam *sacloud.ProxyLBUpdateRequest `json:"param"`
 	}{
-		Argzone:  zone,
 		Argid:    id,
 		Argparam: param,
 	}
@@ -6812,7 +6733,7 @@ func (t *ProxyLBTracer) Update(ctx context.Context, zone string, id types.ID, pa
 		log.Println("[TRACE] ProxyLBAPI.Update end")
 	}()
 
-	resultProxyLB, err := t.Internal.Update(ctx, zone, id, param)
+	resultProxyLB, err := t.Internal.Update(ctx, id, param)
 	targetResults := struct {
 		ProxyLB *sacloud.ProxyLB
 		Error   error
@@ -6828,14 +6749,12 @@ func (t *ProxyLBTracer) Update(ctx context.Context, zone string, id types.ID, pa
 }
 
 // Delete is API call with trace log
-func (t *ProxyLBTracer) Delete(ctx context.Context, zone string, id types.ID) error {
+func (t *ProxyLBTracer) Delete(ctx context.Context, id types.ID) error {
 	log.Println("[TRACE] ProxyLBAPI.Delete start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
-		Argid   types.ID `json:"id"`
+		Argid types.ID `json:"id"`
 	}{
-		Argzone: zone,
-		Argid:   id,
+		Argid: id,
 	}
 	if d, err := json.Marshal(targetArguments); err == nil {
 		log.Printf("[TRACE] \targs: %s\n", string(d))
@@ -6845,7 +6764,7 @@ func (t *ProxyLBTracer) Delete(ctx context.Context, zone string, id types.ID) er
 		log.Println("[TRACE] ProxyLBAPI.Delete end")
 	}()
 
-	err := t.Internal.Delete(ctx, zone, id)
+	err := t.Internal.Delete(ctx, id)
 	targetResults := struct {
 		Error error
 	}{
@@ -6859,14 +6778,12 @@ func (t *ProxyLBTracer) Delete(ctx context.Context, zone string, id types.ID) er
 }
 
 // ChangePlan is API call with trace log
-func (t *ProxyLBTracer) ChangePlan(ctx context.Context, zone string, id types.ID, param *sacloud.ProxyLBChangePlanRequest) (*sacloud.ProxyLB, error) {
+func (t *ProxyLBTracer) ChangePlan(ctx context.Context, id types.ID, param *sacloud.ProxyLBChangePlanRequest) (*sacloud.ProxyLB, error) {
 	log.Println("[TRACE] ProxyLBAPI.ChangePlan start")
 	targetArguments := struct {
-		Argzone  string                            `json:"zone"`
 		Argid    types.ID                          `json:"id"`
 		Argparam *sacloud.ProxyLBChangePlanRequest `json:"param"`
 	}{
-		Argzone:  zone,
 		Argid:    id,
 		Argparam: param,
 	}
@@ -6878,7 +6795,7 @@ func (t *ProxyLBTracer) ChangePlan(ctx context.Context, zone string, id types.ID
 		log.Println("[TRACE] ProxyLBAPI.ChangePlan end")
 	}()
 
-	resultProxyLB, err := t.Internal.ChangePlan(ctx, zone, id, param)
+	resultProxyLB, err := t.Internal.ChangePlan(ctx, id, param)
 	targetResults := struct {
 		ProxyLB *sacloud.ProxyLB
 		Error   error
@@ -6894,14 +6811,12 @@ func (t *ProxyLBTracer) ChangePlan(ctx context.Context, zone string, id types.ID
 }
 
 // GetCertificates is API call with trace log
-func (t *ProxyLBTracer) GetCertificates(ctx context.Context, zone string, id types.ID) (*sacloud.ProxyLBCertificates, error) {
+func (t *ProxyLBTracer) GetCertificates(ctx context.Context, id types.ID) (*sacloud.ProxyLBCertificates, error) {
 	log.Println("[TRACE] ProxyLBAPI.GetCertificates start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
-		Argid   types.ID `json:"id"`
+		Argid types.ID `json:"id"`
 	}{
-		Argzone: zone,
-		Argid:   id,
+		Argid: id,
 	}
 	if d, err := json.Marshal(targetArguments); err == nil {
 		log.Printf("[TRACE] \targs: %s\n", string(d))
@@ -6911,7 +6826,7 @@ func (t *ProxyLBTracer) GetCertificates(ctx context.Context, zone string, id typ
 		log.Println("[TRACE] ProxyLBAPI.GetCertificates end")
 	}()
 
-	resultProxyLBCertificates, err := t.Internal.GetCertificates(ctx, zone, id)
+	resultProxyLBCertificates, err := t.Internal.GetCertificates(ctx, id)
 	targetResults := struct {
 		ProxyLBCertificates *sacloud.ProxyLBCertificates
 		Error               error
@@ -6927,14 +6842,12 @@ func (t *ProxyLBTracer) GetCertificates(ctx context.Context, zone string, id typ
 }
 
 // SetCertificates is API call with trace log
-func (t *ProxyLBTracer) SetCertificates(ctx context.Context, zone string, id types.ID, param *sacloud.ProxyLBSetCertificatesRequest) (*sacloud.ProxyLBCertificates, error) {
+func (t *ProxyLBTracer) SetCertificates(ctx context.Context, id types.ID, param *sacloud.ProxyLBSetCertificatesRequest) (*sacloud.ProxyLBCertificates, error) {
 	log.Println("[TRACE] ProxyLBAPI.SetCertificates start")
 	targetArguments := struct {
-		Argzone  string                                 `json:"zone"`
 		Argid    types.ID                               `json:"id"`
 		Argparam *sacloud.ProxyLBSetCertificatesRequest `json:"param"`
 	}{
-		Argzone:  zone,
 		Argid:    id,
 		Argparam: param,
 	}
@@ -6946,7 +6859,7 @@ func (t *ProxyLBTracer) SetCertificates(ctx context.Context, zone string, id typ
 		log.Println("[TRACE] ProxyLBAPI.SetCertificates end")
 	}()
 
-	resultProxyLBCertificates, err := t.Internal.SetCertificates(ctx, zone, id, param)
+	resultProxyLBCertificates, err := t.Internal.SetCertificates(ctx, id, param)
 	targetResults := struct {
 		ProxyLBCertificates *sacloud.ProxyLBCertificates
 		Error               error
@@ -6962,14 +6875,12 @@ func (t *ProxyLBTracer) SetCertificates(ctx context.Context, zone string, id typ
 }
 
 // DeleteCertificates is API call with trace log
-func (t *ProxyLBTracer) DeleteCertificates(ctx context.Context, zone string, id types.ID) error {
+func (t *ProxyLBTracer) DeleteCertificates(ctx context.Context, id types.ID) error {
 	log.Println("[TRACE] ProxyLBAPI.DeleteCertificates start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
-		Argid   types.ID `json:"id"`
+		Argid types.ID `json:"id"`
 	}{
-		Argzone: zone,
-		Argid:   id,
+		Argid: id,
 	}
 	if d, err := json.Marshal(targetArguments); err == nil {
 		log.Printf("[TRACE] \targs: %s\n", string(d))
@@ -6979,7 +6890,7 @@ func (t *ProxyLBTracer) DeleteCertificates(ctx context.Context, zone string, id 
 		log.Println("[TRACE] ProxyLBAPI.DeleteCertificates end")
 	}()
 
-	err := t.Internal.DeleteCertificates(ctx, zone, id)
+	err := t.Internal.DeleteCertificates(ctx, id)
 	targetResults := struct {
 		Error error
 	}{
@@ -6993,14 +6904,12 @@ func (t *ProxyLBTracer) DeleteCertificates(ctx context.Context, zone string, id 
 }
 
 // RenewLetsEncryptCert is API call with trace log
-func (t *ProxyLBTracer) RenewLetsEncryptCert(ctx context.Context, zone string, id types.ID) error {
+func (t *ProxyLBTracer) RenewLetsEncryptCert(ctx context.Context, id types.ID) error {
 	log.Println("[TRACE] ProxyLBAPI.RenewLetsEncryptCert start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
-		Argid   types.ID `json:"id"`
+		Argid types.ID `json:"id"`
 	}{
-		Argzone: zone,
-		Argid:   id,
+		Argid: id,
 	}
 	if d, err := json.Marshal(targetArguments); err == nil {
 		log.Printf("[TRACE] \targs: %s\n", string(d))
@@ -7010,7 +6919,7 @@ func (t *ProxyLBTracer) RenewLetsEncryptCert(ctx context.Context, zone string, i
 		log.Println("[TRACE] ProxyLBAPI.RenewLetsEncryptCert end")
 	}()
 
-	err := t.Internal.RenewLetsEncryptCert(ctx, zone, id)
+	err := t.Internal.RenewLetsEncryptCert(ctx, id)
 	targetResults := struct {
 		Error error
 	}{
@@ -7024,14 +6933,12 @@ func (t *ProxyLBTracer) RenewLetsEncryptCert(ctx context.Context, zone string, i
 }
 
 // HealthStatus is API call with trace log
-func (t *ProxyLBTracer) HealthStatus(ctx context.Context, zone string, id types.ID) (*sacloud.ProxyLBHealth, error) {
+func (t *ProxyLBTracer) HealthStatus(ctx context.Context, id types.ID) (*sacloud.ProxyLBHealth, error) {
 	log.Println("[TRACE] ProxyLBAPI.HealthStatus start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
-		Argid   types.ID `json:"id"`
+		Argid types.ID `json:"id"`
 	}{
-		Argzone: zone,
-		Argid:   id,
+		Argid: id,
 	}
 	if d, err := json.Marshal(targetArguments); err == nil {
 		log.Printf("[TRACE] \targs: %s\n", string(d))
@@ -7041,7 +6948,7 @@ func (t *ProxyLBTracer) HealthStatus(ctx context.Context, zone string, id types.
 		log.Println("[TRACE] ProxyLBAPI.HealthStatus end")
 	}()
 
-	resultProxyLBHealth, err := t.Internal.HealthStatus(ctx, zone, id)
+	resultProxyLBHealth, err := t.Internal.HealthStatus(ctx, id)
 	targetResults := struct {
 		ProxyLBHealth *sacloud.ProxyLBHealth
 		Error         error
@@ -7073,13 +6980,11 @@ func NewRegionTracer(in sacloud.RegionAPI) sacloud.RegionAPI {
 }
 
 // Find is API call with trace log
-func (t *RegionTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.RegionFindResult, error) {
+func (t *RegionTracer) Find(ctx context.Context, conditions *sacloud.FindCondition) (*sacloud.RegionFindResult, error) {
 	log.Println("[TRACE] RegionAPI.Find start")
 	targetArguments := struct {
-		Argzone       string                 `json:"zone"`
 		Argconditions *sacloud.FindCondition `json:"conditions"`
 	}{
-		Argzone:       zone,
 		Argconditions: conditions,
 	}
 	if d, err := json.Marshal(targetArguments); err == nil {
@@ -7090,7 +6995,7 @@ func (t *RegionTracer) Find(ctx context.Context, zone string, conditions *saclou
 		log.Println("[TRACE] RegionAPI.Find end")
 	}()
 
-	result, err := t.Internal.Find(ctx, zone, conditions)
+	result, err := t.Internal.Find(ctx, conditions)
 	targetResults := struct {
 		Result *sacloud.RegionFindResult
 		Error  error
@@ -7106,14 +7011,12 @@ func (t *RegionTracer) Find(ctx context.Context, zone string, conditions *saclou
 }
 
 // Read is API call with trace log
-func (t *RegionTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Region, error) {
+func (t *RegionTracer) Read(ctx context.Context, id types.ID) (*sacloud.Region, error) {
 	log.Println("[TRACE] RegionAPI.Read start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
-		Argid   types.ID `json:"id"`
+		Argid types.ID `json:"id"`
 	}{
-		Argzone: zone,
-		Argid:   id,
+		Argid: id,
 	}
 	if d, err := json.Marshal(targetArguments); err == nil {
 		log.Printf("[TRACE] \targs: %s\n", string(d))
@@ -7123,7 +7026,7 @@ func (t *RegionTracer) Read(ctx context.Context, zone string, id types.ID) (*sac
 		log.Println("[TRACE] RegionAPI.Read end")
 	}()
 
-	resultRegion, err := t.Internal.Read(ctx, zone, id)
+	resultRegion, err := t.Internal.Read(ctx, id)
 	targetResults := struct {
 		Region *sacloud.Region
 		Error  error
@@ -7158,7 +7061,7 @@ func NewServerTracer(in sacloud.ServerAPI) sacloud.ServerAPI {
 func (t *ServerTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.ServerFindResult, error) {
 	log.Println("[TRACE] ServerAPI.Find start")
 	targetArguments := struct {
-		Argzone       string                 `json:"zone"`
+		Argzone       string
 		Argconditions *sacloud.FindCondition `json:"conditions"`
 	}{
 		Argzone:       zone,
@@ -7191,7 +7094,7 @@ func (t *ServerTracer) Find(ctx context.Context, zone string, conditions *saclou
 func (t *ServerTracer) Create(ctx context.Context, zone string, param *sacloud.ServerCreateRequest) (*sacloud.Server, error) {
 	log.Println("[TRACE] ServerAPI.Create start")
 	targetArguments := struct {
-		Argzone  string                       `json:"zone"`
+		Argzone  string
 		Argparam *sacloud.ServerCreateRequest `json:"param"`
 	}{
 		Argzone:  zone,
@@ -7224,7 +7127,7 @@ func (t *ServerTracer) Create(ctx context.Context, zone string, param *sacloud.S
 func (t *ServerTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Server, error) {
 	log.Println("[TRACE] ServerAPI.Read start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -7257,7 +7160,7 @@ func (t *ServerTracer) Read(ctx context.Context, zone string, id types.ID) (*sac
 func (t *ServerTracer) Update(ctx context.Context, zone string, id types.ID, param *sacloud.ServerUpdateRequest) (*sacloud.Server, error) {
 	log.Println("[TRACE] ServerAPI.Update start")
 	targetArguments := struct {
-		Argzone  string                       `json:"zone"`
+		Argzone  string
 		Argid    types.ID                     `json:"id"`
 		Argparam *sacloud.ServerUpdateRequest `json:"param"`
 	}{
@@ -7292,7 +7195,7 @@ func (t *ServerTracer) Update(ctx context.Context, zone string, id types.ID, par
 func (t *ServerTracer) Delete(ctx context.Context, zone string, id types.ID) error {
 	log.Println("[TRACE] ServerAPI.Delete start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -7323,7 +7226,7 @@ func (t *ServerTracer) Delete(ctx context.Context, zone string, id types.ID) err
 func (t *ServerTracer) ChangePlan(ctx context.Context, zone string, id types.ID, plan *sacloud.ServerChangePlanRequest) (*sacloud.Server, error) {
 	log.Println("[TRACE] ServerAPI.ChangePlan start")
 	targetArguments := struct {
-		Argzone string                           `json:"zone"`
+		Argzone string
 		Argid   types.ID                         `json:"id"`
 		Argplan *sacloud.ServerChangePlanRequest `json:"plan"`
 	}{
@@ -7358,7 +7261,7 @@ func (t *ServerTracer) ChangePlan(ctx context.Context, zone string, id types.ID,
 func (t *ServerTracer) InsertCDROM(ctx context.Context, zone string, id types.ID, insertParam *sacloud.InsertCDROMRequest) error {
 	log.Println("[TRACE] ServerAPI.InsertCDROM start")
 	targetArguments := struct {
-		Argzone        string                      `json:"zone"`
+		Argzone        string
 		Argid          types.ID                    `json:"id"`
 		ArginsertParam *sacloud.InsertCDROMRequest `json:"insertParam"`
 	}{
@@ -7391,7 +7294,7 @@ func (t *ServerTracer) InsertCDROM(ctx context.Context, zone string, id types.ID
 func (t *ServerTracer) EjectCDROM(ctx context.Context, zone string, id types.ID, insertParam *sacloud.EjectCDROMRequest) error {
 	log.Println("[TRACE] ServerAPI.EjectCDROM start")
 	targetArguments := struct {
-		Argzone        string                     `json:"zone"`
+		Argzone        string
 		Argid          types.ID                   `json:"id"`
 		ArginsertParam *sacloud.EjectCDROMRequest `json:"insertParam"`
 	}{
@@ -7424,7 +7327,7 @@ func (t *ServerTracer) EjectCDROM(ctx context.Context, zone string, id types.ID,
 func (t *ServerTracer) Boot(ctx context.Context, zone string, id types.ID) error {
 	log.Println("[TRACE] ServerAPI.Boot start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -7455,7 +7358,7 @@ func (t *ServerTracer) Boot(ctx context.Context, zone string, id types.ID) error
 func (t *ServerTracer) Shutdown(ctx context.Context, zone string, id types.ID, shutdownOption *sacloud.ShutdownOption) error {
 	log.Println("[TRACE] ServerAPI.Shutdown start")
 	targetArguments := struct {
-		Argzone           string                  `json:"zone"`
+		Argzone           string
 		Argid             types.ID                `json:"id"`
 		ArgshutdownOption *sacloud.ShutdownOption `json:"shutdownOption"`
 	}{
@@ -7488,7 +7391,7 @@ func (t *ServerTracer) Shutdown(ctx context.Context, zone string, id types.ID, s
 func (t *ServerTracer) Reset(ctx context.Context, zone string, id types.ID) error {
 	log.Println("[TRACE] ServerAPI.Reset start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -7519,7 +7422,7 @@ func (t *ServerTracer) Reset(ctx context.Context, zone string, id types.ID) erro
 func (t *ServerTracer) Monitor(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.CPUTimeActivity, error) {
 	log.Println("[TRACE] ServerAPI.Monitor start")
 	targetArguments := struct {
-		Argzone      string                    `json:"zone"`
+		Argzone      string
 		Argid        types.ID                  `json:"id"`
 		Argcondition *sacloud.MonitorCondition `json:"condition"`
 	}{
@@ -7570,7 +7473,7 @@ func NewServerPlanTracer(in sacloud.ServerPlanAPI) sacloud.ServerPlanAPI {
 func (t *ServerPlanTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.ServerPlanFindResult, error) {
 	log.Println("[TRACE] ServerPlanAPI.Find start")
 	targetArguments := struct {
-		Argzone       string                 `json:"zone"`
+		Argzone       string
 		Argconditions *sacloud.FindCondition `json:"conditions"`
 	}{
 		Argzone:       zone,
@@ -7603,7 +7506,7 @@ func (t *ServerPlanTracer) Find(ctx context.Context, zone string, conditions *sa
 func (t *ServerPlanTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.ServerPlan, error) {
 	log.Println("[TRACE] ServerPlanAPI.Read start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -7652,7 +7555,7 @@ func NewServiceClassTracer(in sacloud.ServiceClassAPI) sacloud.ServiceClassAPI {
 func (t *ServiceClassTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.ServiceClassFindResult, error) {
 	log.Println("[TRACE] ServiceClassAPI.Find start")
 	targetArguments := struct {
-		Argzone       string                 `json:"zone"`
+		Argzone       string
 		Argconditions *sacloud.FindCondition `json:"conditions"`
 	}{
 		Argzone:       zone,
@@ -7698,13 +7601,11 @@ func NewSIMTracer(in sacloud.SIMAPI) sacloud.SIMAPI {
 }
 
 // Find is API call with trace log
-func (t *SIMTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.SIMFindResult, error) {
+func (t *SIMTracer) Find(ctx context.Context, conditions *sacloud.FindCondition) (*sacloud.SIMFindResult, error) {
 	log.Println("[TRACE] SIMAPI.Find start")
 	targetArguments := struct {
-		Argzone       string                 `json:"zone"`
 		Argconditions *sacloud.FindCondition `json:"conditions"`
 	}{
-		Argzone:       zone,
 		Argconditions: conditions,
 	}
 	if d, err := json.Marshal(targetArguments); err == nil {
@@ -7715,7 +7616,7 @@ func (t *SIMTracer) Find(ctx context.Context, zone string, conditions *sacloud.F
 		log.Println("[TRACE] SIMAPI.Find end")
 	}()
 
-	result, err := t.Internal.Find(ctx, zone, conditions)
+	result, err := t.Internal.Find(ctx, conditions)
 	targetResults := struct {
 		Result *sacloud.SIMFindResult
 		Error  error
@@ -7731,13 +7632,11 @@ func (t *SIMTracer) Find(ctx context.Context, zone string, conditions *sacloud.F
 }
 
 // Create is API call with trace log
-func (t *SIMTracer) Create(ctx context.Context, zone string, param *sacloud.SIMCreateRequest) (*sacloud.SIM, error) {
+func (t *SIMTracer) Create(ctx context.Context, param *sacloud.SIMCreateRequest) (*sacloud.SIM, error) {
 	log.Println("[TRACE] SIMAPI.Create start")
 	targetArguments := struct {
-		Argzone  string                    `json:"zone"`
 		Argparam *sacloud.SIMCreateRequest `json:"param"`
 	}{
-		Argzone:  zone,
 		Argparam: param,
 	}
 	if d, err := json.Marshal(targetArguments); err == nil {
@@ -7748,7 +7647,7 @@ func (t *SIMTracer) Create(ctx context.Context, zone string, param *sacloud.SIMC
 		log.Println("[TRACE] SIMAPI.Create end")
 	}()
 
-	resultSIM, err := t.Internal.Create(ctx, zone, param)
+	resultSIM, err := t.Internal.Create(ctx, param)
 	targetResults := struct {
 		SIM   *sacloud.SIM
 		Error error
@@ -7764,14 +7663,12 @@ func (t *SIMTracer) Create(ctx context.Context, zone string, param *sacloud.SIMC
 }
 
 // Read is API call with trace log
-func (t *SIMTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.SIM, error) {
+func (t *SIMTracer) Read(ctx context.Context, id types.ID) (*sacloud.SIM, error) {
 	log.Println("[TRACE] SIMAPI.Read start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
-		Argid   types.ID `json:"id"`
+		Argid types.ID `json:"id"`
 	}{
-		Argzone: zone,
-		Argid:   id,
+		Argid: id,
 	}
 	if d, err := json.Marshal(targetArguments); err == nil {
 		log.Printf("[TRACE] \targs: %s\n", string(d))
@@ -7781,7 +7678,7 @@ func (t *SIMTracer) Read(ctx context.Context, zone string, id types.ID) (*saclou
 		log.Println("[TRACE] SIMAPI.Read end")
 	}()
 
-	resultSIM, err := t.Internal.Read(ctx, zone, id)
+	resultSIM, err := t.Internal.Read(ctx, id)
 	targetResults := struct {
 		SIM   *sacloud.SIM
 		Error error
@@ -7797,14 +7694,12 @@ func (t *SIMTracer) Read(ctx context.Context, zone string, id types.ID) (*saclou
 }
 
 // Update is API call with trace log
-func (t *SIMTracer) Update(ctx context.Context, zone string, id types.ID, param *sacloud.SIMUpdateRequest) (*sacloud.SIM, error) {
+func (t *SIMTracer) Update(ctx context.Context, id types.ID, param *sacloud.SIMUpdateRequest) (*sacloud.SIM, error) {
 	log.Println("[TRACE] SIMAPI.Update start")
 	targetArguments := struct {
-		Argzone  string                    `json:"zone"`
 		Argid    types.ID                  `json:"id"`
 		Argparam *sacloud.SIMUpdateRequest `json:"param"`
 	}{
-		Argzone:  zone,
 		Argid:    id,
 		Argparam: param,
 	}
@@ -7816,7 +7711,7 @@ func (t *SIMTracer) Update(ctx context.Context, zone string, id types.ID, param 
 		log.Println("[TRACE] SIMAPI.Update end")
 	}()
 
-	resultSIM, err := t.Internal.Update(ctx, zone, id, param)
+	resultSIM, err := t.Internal.Update(ctx, id, param)
 	targetResults := struct {
 		SIM   *sacloud.SIM
 		Error error
@@ -7832,14 +7727,12 @@ func (t *SIMTracer) Update(ctx context.Context, zone string, id types.ID, param 
 }
 
 // Delete is API call with trace log
-func (t *SIMTracer) Delete(ctx context.Context, zone string, id types.ID) error {
+func (t *SIMTracer) Delete(ctx context.Context, id types.ID) error {
 	log.Println("[TRACE] SIMAPI.Delete start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
-		Argid   types.ID `json:"id"`
+		Argid types.ID `json:"id"`
 	}{
-		Argzone: zone,
-		Argid:   id,
+		Argid: id,
 	}
 	if d, err := json.Marshal(targetArguments); err == nil {
 		log.Printf("[TRACE] \targs: %s\n", string(d))
@@ -7849,7 +7742,7 @@ func (t *SIMTracer) Delete(ctx context.Context, zone string, id types.ID) error 
 		log.Println("[TRACE] SIMAPI.Delete end")
 	}()
 
-	err := t.Internal.Delete(ctx, zone, id)
+	err := t.Internal.Delete(ctx, id)
 	targetResults := struct {
 		Error error
 	}{
@@ -7863,14 +7756,12 @@ func (t *SIMTracer) Delete(ctx context.Context, zone string, id types.ID) error 
 }
 
 // Activate is API call with trace log
-func (t *SIMTracer) Activate(ctx context.Context, zone string, id types.ID) error {
+func (t *SIMTracer) Activate(ctx context.Context, id types.ID) error {
 	log.Println("[TRACE] SIMAPI.Activate start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
-		Argid   types.ID `json:"id"`
+		Argid types.ID `json:"id"`
 	}{
-		Argzone: zone,
-		Argid:   id,
+		Argid: id,
 	}
 	if d, err := json.Marshal(targetArguments); err == nil {
 		log.Printf("[TRACE] \targs: %s\n", string(d))
@@ -7880,7 +7771,7 @@ func (t *SIMTracer) Activate(ctx context.Context, zone string, id types.ID) erro
 		log.Println("[TRACE] SIMAPI.Activate end")
 	}()
 
-	err := t.Internal.Activate(ctx, zone, id)
+	err := t.Internal.Activate(ctx, id)
 	targetResults := struct {
 		Error error
 	}{
@@ -7894,14 +7785,12 @@ func (t *SIMTracer) Activate(ctx context.Context, zone string, id types.ID) erro
 }
 
 // Deactivate is API call with trace log
-func (t *SIMTracer) Deactivate(ctx context.Context, zone string, id types.ID) error {
+func (t *SIMTracer) Deactivate(ctx context.Context, id types.ID) error {
 	log.Println("[TRACE] SIMAPI.Deactivate start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
-		Argid   types.ID `json:"id"`
+		Argid types.ID `json:"id"`
 	}{
-		Argzone: zone,
-		Argid:   id,
+		Argid: id,
 	}
 	if d, err := json.Marshal(targetArguments); err == nil {
 		log.Printf("[TRACE] \targs: %s\n", string(d))
@@ -7911,7 +7800,7 @@ func (t *SIMTracer) Deactivate(ctx context.Context, zone string, id types.ID) er
 		log.Println("[TRACE] SIMAPI.Deactivate end")
 	}()
 
-	err := t.Internal.Deactivate(ctx, zone, id)
+	err := t.Internal.Deactivate(ctx, id)
 	targetResults := struct {
 		Error error
 	}{
@@ -7925,14 +7814,12 @@ func (t *SIMTracer) Deactivate(ctx context.Context, zone string, id types.ID) er
 }
 
 // AssignIP is API call with trace log
-func (t *SIMTracer) AssignIP(ctx context.Context, zone string, id types.ID, param *sacloud.SIMAssignIPRequest) error {
+func (t *SIMTracer) AssignIP(ctx context.Context, id types.ID, param *sacloud.SIMAssignIPRequest) error {
 	log.Println("[TRACE] SIMAPI.AssignIP start")
 	targetArguments := struct {
-		Argzone  string                      `json:"zone"`
 		Argid    types.ID                    `json:"id"`
 		Argparam *sacloud.SIMAssignIPRequest `json:"param"`
 	}{
-		Argzone:  zone,
 		Argid:    id,
 		Argparam: param,
 	}
@@ -7944,7 +7831,7 @@ func (t *SIMTracer) AssignIP(ctx context.Context, zone string, id types.ID, para
 		log.Println("[TRACE] SIMAPI.AssignIP end")
 	}()
 
-	err := t.Internal.AssignIP(ctx, zone, id, param)
+	err := t.Internal.AssignIP(ctx, id, param)
 	targetResults := struct {
 		Error error
 	}{
@@ -7958,14 +7845,12 @@ func (t *SIMTracer) AssignIP(ctx context.Context, zone string, id types.ID, para
 }
 
 // ClearIP is API call with trace log
-func (t *SIMTracer) ClearIP(ctx context.Context, zone string, id types.ID) error {
+func (t *SIMTracer) ClearIP(ctx context.Context, id types.ID) error {
 	log.Println("[TRACE] SIMAPI.ClearIP start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
-		Argid   types.ID `json:"id"`
+		Argid types.ID `json:"id"`
 	}{
-		Argzone: zone,
-		Argid:   id,
+		Argid: id,
 	}
 	if d, err := json.Marshal(targetArguments); err == nil {
 		log.Printf("[TRACE] \targs: %s\n", string(d))
@@ -7975,7 +7860,7 @@ func (t *SIMTracer) ClearIP(ctx context.Context, zone string, id types.ID) error
 		log.Println("[TRACE] SIMAPI.ClearIP end")
 	}()
 
-	err := t.Internal.ClearIP(ctx, zone, id)
+	err := t.Internal.ClearIP(ctx, id)
 	targetResults := struct {
 		Error error
 	}{
@@ -7989,14 +7874,12 @@ func (t *SIMTracer) ClearIP(ctx context.Context, zone string, id types.ID) error
 }
 
 // IMEILock is API call with trace log
-func (t *SIMTracer) IMEILock(ctx context.Context, zone string, id types.ID, param *sacloud.SIMIMEILockRequest) error {
+func (t *SIMTracer) IMEILock(ctx context.Context, id types.ID, param *sacloud.SIMIMEILockRequest) error {
 	log.Println("[TRACE] SIMAPI.IMEILock start")
 	targetArguments := struct {
-		Argzone  string                      `json:"zone"`
 		Argid    types.ID                    `json:"id"`
 		Argparam *sacloud.SIMIMEILockRequest `json:"param"`
 	}{
-		Argzone:  zone,
 		Argid:    id,
 		Argparam: param,
 	}
@@ -8008,7 +7891,7 @@ func (t *SIMTracer) IMEILock(ctx context.Context, zone string, id types.ID, para
 		log.Println("[TRACE] SIMAPI.IMEILock end")
 	}()
 
-	err := t.Internal.IMEILock(ctx, zone, id, param)
+	err := t.Internal.IMEILock(ctx, id, param)
 	targetResults := struct {
 		Error error
 	}{
@@ -8022,14 +7905,12 @@ func (t *SIMTracer) IMEILock(ctx context.Context, zone string, id types.ID, para
 }
 
 // IMEIUnlock is API call with trace log
-func (t *SIMTracer) IMEIUnlock(ctx context.Context, zone string, id types.ID) error {
+func (t *SIMTracer) IMEIUnlock(ctx context.Context, id types.ID) error {
 	log.Println("[TRACE] SIMAPI.IMEIUnlock start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
-		Argid   types.ID `json:"id"`
+		Argid types.ID `json:"id"`
 	}{
-		Argzone: zone,
-		Argid:   id,
+		Argid: id,
 	}
 	if d, err := json.Marshal(targetArguments); err == nil {
 		log.Printf("[TRACE] \targs: %s\n", string(d))
@@ -8039,7 +7920,7 @@ func (t *SIMTracer) IMEIUnlock(ctx context.Context, zone string, id types.ID) er
 		log.Println("[TRACE] SIMAPI.IMEIUnlock end")
 	}()
 
-	err := t.Internal.IMEIUnlock(ctx, zone, id)
+	err := t.Internal.IMEIUnlock(ctx, id)
 	targetResults := struct {
 		Error error
 	}{
@@ -8053,14 +7934,12 @@ func (t *SIMTracer) IMEIUnlock(ctx context.Context, zone string, id types.ID) er
 }
 
 // Logs is API call with trace log
-func (t *SIMTracer) Logs(ctx context.Context, zone string, id types.ID) (*sacloud.SIMLogsResult, error) {
+func (t *SIMTracer) Logs(ctx context.Context, id types.ID) (*sacloud.SIMLogsResult, error) {
 	log.Println("[TRACE] SIMAPI.Logs start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
-		Argid   types.ID `json:"id"`
+		Argid types.ID `json:"id"`
 	}{
-		Argzone: zone,
-		Argid:   id,
+		Argid: id,
 	}
 	if d, err := json.Marshal(targetArguments); err == nil {
 		log.Printf("[TRACE] \targs: %s\n", string(d))
@@ -8070,7 +7949,7 @@ func (t *SIMTracer) Logs(ctx context.Context, zone string, id types.ID) (*saclou
 		log.Println("[TRACE] SIMAPI.Logs end")
 	}()
 
-	result, err := t.Internal.Logs(ctx, zone, id)
+	result, err := t.Internal.Logs(ctx, id)
 	targetResults := struct {
 		Result *sacloud.SIMLogsResult
 		Error  error
@@ -8086,14 +7965,12 @@ func (t *SIMTracer) Logs(ctx context.Context, zone string, id types.ID) (*saclou
 }
 
 // GetNetworkOperator is API call with trace log
-func (t *SIMTracer) GetNetworkOperator(ctx context.Context, zone string, id types.ID) ([]*sacloud.SIMNetworkOperatorConfig, error) {
+func (t *SIMTracer) GetNetworkOperator(ctx context.Context, id types.ID) ([]*sacloud.SIMNetworkOperatorConfig, error) {
 	log.Println("[TRACE] SIMAPI.GetNetworkOperator start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
-		Argid   types.ID `json:"id"`
+		Argid types.ID `json:"id"`
 	}{
-		Argzone: zone,
-		Argid:   id,
+		Argid: id,
 	}
 	if d, err := json.Marshal(targetArguments); err == nil {
 		log.Printf("[TRACE] \targs: %s\n", string(d))
@@ -8103,7 +7980,7 @@ func (t *SIMTracer) GetNetworkOperator(ctx context.Context, zone string, id type
 		log.Println("[TRACE] SIMAPI.GetNetworkOperator end")
 	}()
 
-	resultConfigs, err := t.Internal.GetNetworkOperator(ctx, zone, id)
+	resultConfigs, err := t.Internal.GetNetworkOperator(ctx, id)
 	targetResults := struct {
 		Configs []*sacloud.SIMNetworkOperatorConfig
 		Error   error
@@ -8119,14 +7996,12 @@ func (t *SIMTracer) GetNetworkOperator(ctx context.Context, zone string, id type
 }
 
 // SetNetworkOperator is API call with trace log
-func (t *SIMTracer) SetNetworkOperator(ctx context.Context, zone string, id types.ID, configs []*sacloud.SIMNetworkOperatorConfig) error {
+func (t *SIMTracer) SetNetworkOperator(ctx context.Context, id types.ID, configs []*sacloud.SIMNetworkOperatorConfig) error {
 	log.Println("[TRACE] SIMAPI.SetNetworkOperator start")
 	targetArguments := struct {
-		Argzone    string                              `json:"zone"`
 		Argid      types.ID                            `json:"id"`
 		Argconfigs []*sacloud.SIMNetworkOperatorConfig `json:"configs"`
 	}{
-		Argzone:    zone,
 		Argid:      id,
 		Argconfigs: configs,
 	}
@@ -8138,7 +8013,7 @@ func (t *SIMTracer) SetNetworkOperator(ctx context.Context, zone string, id type
 		log.Println("[TRACE] SIMAPI.SetNetworkOperator end")
 	}()
 
-	err := t.Internal.SetNetworkOperator(ctx, zone, id, configs)
+	err := t.Internal.SetNetworkOperator(ctx, id, configs)
 	targetResults := struct {
 		Error error
 	}{
@@ -8152,14 +8027,12 @@ func (t *SIMTracer) SetNetworkOperator(ctx context.Context, zone string, id type
 }
 
 // MonitorSIM is API call with trace log
-func (t *SIMTracer) MonitorSIM(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.LinkActivity, error) {
+func (t *SIMTracer) MonitorSIM(ctx context.Context, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.LinkActivity, error) {
 	log.Println("[TRACE] SIMAPI.MonitorSIM start")
 	targetArguments := struct {
-		Argzone      string                    `json:"zone"`
 		Argid        types.ID                  `json:"id"`
 		Argcondition *sacloud.MonitorCondition `json:"condition"`
 	}{
-		Argzone:      zone,
 		Argid:        id,
 		Argcondition: condition,
 	}
@@ -8171,7 +8044,7 @@ func (t *SIMTracer) MonitorSIM(ctx context.Context, zone string, id types.ID, co
 		log.Println("[TRACE] SIMAPI.MonitorSIM end")
 	}()
 
-	resultLinkActivity, err := t.Internal.MonitorSIM(ctx, zone, id, condition)
+	resultLinkActivity, err := t.Internal.MonitorSIM(ctx, id, condition)
 	targetResults := struct {
 		LinkActivity *sacloud.LinkActivity
 		Error        error
@@ -8187,14 +8060,12 @@ func (t *SIMTracer) MonitorSIM(ctx context.Context, zone string, id types.ID, co
 }
 
 // Status is API call with trace log
-func (t *SIMTracer) Status(ctx context.Context, zone string, id types.ID) (*sacloud.SIMInfo, error) {
+func (t *SIMTracer) Status(ctx context.Context, id types.ID) (*sacloud.SIMInfo, error) {
 	log.Println("[TRACE] SIMAPI.Status start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
-		Argid   types.ID `json:"id"`
+		Argid types.ID `json:"id"`
 	}{
-		Argzone: zone,
-		Argid:   id,
+		Argid: id,
 	}
 	if d, err := json.Marshal(targetArguments); err == nil {
 		log.Printf("[TRACE] \targs: %s\n", string(d))
@@ -8204,7 +8075,7 @@ func (t *SIMTracer) Status(ctx context.Context, zone string, id types.ID) (*sacl
 		log.Println("[TRACE] SIMAPI.Status end")
 	}()
 
-	resultSIM, err := t.Internal.Status(ctx, zone, id)
+	resultSIM, err := t.Internal.Status(ctx, id)
 	targetResults := struct {
 		SIM   *sacloud.SIMInfo
 		Error error
@@ -8236,13 +8107,11 @@ func NewSimpleMonitorTracer(in sacloud.SimpleMonitorAPI) sacloud.SimpleMonitorAP
 }
 
 // Find is API call with trace log
-func (t *SimpleMonitorTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.SimpleMonitorFindResult, error) {
+func (t *SimpleMonitorTracer) Find(ctx context.Context, conditions *sacloud.FindCondition) (*sacloud.SimpleMonitorFindResult, error) {
 	log.Println("[TRACE] SimpleMonitorAPI.Find start")
 	targetArguments := struct {
-		Argzone       string                 `json:"zone"`
 		Argconditions *sacloud.FindCondition `json:"conditions"`
 	}{
-		Argzone:       zone,
 		Argconditions: conditions,
 	}
 	if d, err := json.Marshal(targetArguments); err == nil {
@@ -8253,7 +8122,7 @@ func (t *SimpleMonitorTracer) Find(ctx context.Context, zone string, conditions 
 		log.Println("[TRACE] SimpleMonitorAPI.Find end")
 	}()
 
-	result, err := t.Internal.Find(ctx, zone, conditions)
+	result, err := t.Internal.Find(ctx, conditions)
 	targetResults := struct {
 		Result *sacloud.SimpleMonitorFindResult
 		Error  error
@@ -8269,13 +8138,11 @@ func (t *SimpleMonitorTracer) Find(ctx context.Context, zone string, conditions 
 }
 
 // Create is API call with trace log
-func (t *SimpleMonitorTracer) Create(ctx context.Context, zone string, param *sacloud.SimpleMonitorCreateRequest) (*sacloud.SimpleMonitor, error) {
+func (t *SimpleMonitorTracer) Create(ctx context.Context, param *sacloud.SimpleMonitorCreateRequest) (*sacloud.SimpleMonitor, error) {
 	log.Println("[TRACE] SimpleMonitorAPI.Create start")
 	targetArguments := struct {
-		Argzone  string                              `json:"zone"`
 		Argparam *sacloud.SimpleMonitorCreateRequest `json:"param"`
 	}{
-		Argzone:  zone,
 		Argparam: param,
 	}
 	if d, err := json.Marshal(targetArguments); err == nil {
@@ -8286,7 +8153,7 @@ func (t *SimpleMonitorTracer) Create(ctx context.Context, zone string, param *sa
 		log.Println("[TRACE] SimpleMonitorAPI.Create end")
 	}()
 
-	resultSimpleMonitor, err := t.Internal.Create(ctx, zone, param)
+	resultSimpleMonitor, err := t.Internal.Create(ctx, param)
 	targetResults := struct {
 		SimpleMonitor *sacloud.SimpleMonitor
 		Error         error
@@ -8302,14 +8169,12 @@ func (t *SimpleMonitorTracer) Create(ctx context.Context, zone string, param *sa
 }
 
 // Read is API call with trace log
-func (t *SimpleMonitorTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.SimpleMonitor, error) {
+func (t *SimpleMonitorTracer) Read(ctx context.Context, id types.ID) (*sacloud.SimpleMonitor, error) {
 	log.Println("[TRACE] SimpleMonitorAPI.Read start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
-		Argid   types.ID `json:"id"`
+		Argid types.ID `json:"id"`
 	}{
-		Argzone: zone,
-		Argid:   id,
+		Argid: id,
 	}
 	if d, err := json.Marshal(targetArguments); err == nil {
 		log.Printf("[TRACE] \targs: %s\n", string(d))
@@ -8319,7 +8184,7 @@ func (t *SimpleMonitorTracer) Read(ctx context.Context, zone string, id types.ID
 		log.Println("[TRACE] SimpleMonitorAPI.Read end")
 	}()
 
-	resultSimpleMonitor, err := t.Internal.Read(ctx, zone, id)
+	resultSimpleMonitor, err := t.Internal.Read(ctx, id)
 	targetResults := struct {
 		SimpleMonitor *sacloud.SimpleMonitor
 		Error         error
@@ -8335,14 +8200,12 @@ func (t *SimpleMonitorTracer) Read(ctx context.Context, zone string, id types.ID
 }
 
 // Update is API call with trace log
-func (t *SimpleMonitorTracer) Update(ctx context.Context, zone string, id types.ID, param *sacloud.SimpleMonitorUpdateRequest) (*sacloud.SimpleMonitor, error) {
+func (t *SimpleMonitorTracer) Update(ctx context.Context, id types.ID, param *sacloud.SimpleMonitorUpdateRequest) (*sacloud.SimpleMonitor, error) {
 	log.Println("[TRACE] SimpleMonitorAPI.Update start")
 	targetArguments := struct {
-		Argzone  string                              `json:"zone"`
 		Argid    types.ID                            `json:"id"`
 		Argparam *sacloud.SimpleMonitorUpdateRequest `json:"param"`
 	}{
-		Argzone:  zone,
 		Argid:    id,
 		Argparam: param,
 	}
@@ -8354,7 +8217,7 @@ func (t *SimpleMonitorTracer) Update(ctx context.Context, zone string, id types.
 		log.Println("[TRACE] SimpleMonitorAPI.Update end")
 	}()
 
-	resultSimpleMonitor, err := t.Internal.Update(ctx, zone, id, param)
+	resultSimpleMonitor, err := t.Internal.Update(ctx, id, param)
 	targetResults := struct {
 		SimpleMonitor *sacloud.SimpleMonitor
 		Error         error
@@ -8370,14 +8233,12 @@ func (t *SimpleMonitorTracer) Update(ctx context.Context, zone string, id types.
 }
 
 // Delete is API call with trace log
-func (t *SimpleMonitorTracer) Delete(ctx context.Context, zone string, id types.ID) error {
+func (t *SimpleMonitorTracer) Delete(ctx context.Context, id types.ID) error {
 	log.Println("[TRACE] SimpleMonitorAPI.Delete start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
-		Argid   types.ID `json:"id"`
+		Argid types.ID `json:"id"`
 	}{
-		Argzone: zone,
-		Argid:   id,
+		Argid: id,
 	}
 	if d, err := json.Marshal(targetArguments); err == nil {
 		log.Printf("[TRACE] \targs: %s\n", string(d))
@@ -8387,7 +8248,7 @@ func (t *SimpleMonitorTracer) Delete(ctx context.Context, zone string, id types.
 		log.Println("[TRACE] SimpleMonitorAPI.Delete end")
 	}()
 
-	err := t.Internal.Delete(ctx, zone, id)
+	err := t.Internal.Delete(ctx, id)
 	targetResults := struct {
 		Error error
 	}{
@@ -8401,14 +8262,12 @@ func (t *SimpleMonitorTracer) Delete(ctx context.Context, zone string, id types.
 }
 
 // MonitorResponseTime is API call with trace log
-func (t *SimpleMonitorTracer) MonitorResponseTime(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.ResponseTimeSecActivity, error) {
+func (t *SimpleMonitorTracer) MonitorResponseTime(ctx context.Context, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.ResponseTimeSecActivity, error) {
 	log.Println("[TRACE] SimpleMonitorAPI.MonitorResponseTime start")
 	targetArguments := struct {
-		Argzone      string                    `json:"zone"`
 		Argid        types.ID                  `json:"id"`
 		Argcondition *sacloud.MonitorCondition `json:"condition"`
 	}{
-		Argzone:      zone,
 		Argid:        id,
 		Argcondition: condition,
 	}
@@ -8420,7 +8279,7 @@ func (t *SimpleMonitorTracer) MonitorResponseTime(ctx context.Context, zone stri
 		log.Println("[TRACE] SimpleMonitorAPI.MonitorResponseTime end")
 	}()
 
-	resultResponseTimeSecActivity, err := t.Internal.MonitorResponseTime(ctx, zone, id, condition)
+	resultResponseTimeSecActivity, err := t.Internal.MonitorResponseTime(ctx, id, condition)
 	targetResults := struct {
 		ResponseTimeSecActivity *sacloud.ResponseTimeSecActivity
 		Error                   error
@@ -8436,14 +8295,12 @@ func (t *SimpleMonitorTracer) MonitorResponseTime(ctx context.Context, zone stri
 }
 
 // HealthStatus is API call with trace log
-func (t *SimpleMonitorTracer) HealthStatus(ctx context.Context, zone string, id types.ID) (*sacloud.SimpleMonitorHealthStatus, error) {
+func (t *SimpleMonitorTracer) HealthStatus(ctx context.Context, id types.ID) (*sacloud.SimpleMonitorHealthStatus, error) {
 	log.Println("[TRACE] SimpleMonitorAPI.HealthStatus start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
-		Argid   types.ID `json:"id"`
+		Argid types.ID `json:"id"`
 	}{
-		Argzone: zone,
-		Argid:   id,
+		Argid: id,
 	}
 	if d, err := json.Marshal(targetArguments); err == nil {
 		log.Printf("[TRACE] \targs: %s\n", string(d))
@@ -8453,7 +8310,7 @@ func (t *SimpleMonitorTracer) HealthStatus(ctx context.Context, zone string, id 
 		log.Println("[TRACE] SimpleMonitorAPI.HealthStatus end")
 	}()
 
-	resultSimpleMonitorHealthStatus, err := t.Internal.HealthStatus(ctx, zone, id)
+	resultSimpleMonitorHealthStatus, err := t.Internal.HealthStatus(ctx, id)
 	targetResults := struct {
 		SimpleMonitorHealthStatus *sacloud.SimpleMonitorHealthStatus
 		Error                     error
@@ -8485,13 +8342,11 @@ func NewSSHKeyTracer(in sacloud.SSHKeyAPI) sacloud.SSHKeyAPI {
 }
 
 // Find is API call with trace log
-func (t *SSHKeyTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.SSHKeyFindResult, error) {
+func (t *SSHKeyTracer) Find(ctx context.Context, conditions *sacloud.FindCondition) (*sacloud.SSHKeyFindResult, error) {
 	log.Println("[TRACE] SSHKeyAPI.Find start")
 	targetArguments := struct {
-		Argzone       string                 `json:"zone"`
 		Argconditions *sacloud.FindCondition `json:"conditions"`
 	}{
-		Argzone:       zone,
 		Argconditions: conditions,
 	}
 	if d, err := json.Marshal(targetArguments); err == nil {
@@ -8502,7 +8357,7 @@ func (t *SSHKeyTracer) Find(ctx context.Context, zone string, conditions *saclou
 		log.Println("[TRACE] SSHKeyAPI.Find end")
 	}()
 
-	result, err := t.Internal.Find(ctx, zone, conditions)
+	result, err := t.Internal.Find(ctx, conditions)
 	targetResults := struct {
 		Result *sacloud.SSHKeyFindResult
 		Error  error
@@ -8518,13 +8373,11 @@ func (t *SSHKeyTracer) Find(ctx context.Context, zone string, conditions *saclou
 }
 
 // Create is API call with trace log
-func (t *SSHKeyTracer) Create(ctx context.Context, zone string, param *sacloud.SSHKeyCreateRequest) (*sacloud.SSHKey, error) {
+func (t *SSHKeyTracer) Create(ctx context.Context, param *sacloud.SSHKeyCreateRequest) (*sacloud.SSHKey, error) {
 	log.Println("[TRACE] SSHKeyAPI.Create start")
 	targetArguments := struct {
-		Argzone  string                       `json:"zone"`
 		Argparam *sacloud.SSHKeyCreateRequest `json:"param"`
 	}{
-		Argzone:  zone,
 		Argparam: param,
 	}
 	if d, err := json.Marshal(targetArguments); err == nil {
@@ -8535,7 +8388,7 @@ func (t *SSHKeyTracer) Create(ctx context.Context, zone string, param *sacloud.S
 		log.Println("[TRACE] SSHKeyAPI.Create end")
 	}()
 
-	resultSSHKey, err := t.Internal.Create(ctx, zone, param)
+	resultSSHKey, err := t.Internal.Create(ctx, param)
 	targetResults := struct {
 		SSHKey *sacloud.SSHKey
 		Error  error
@@ -8551,13 +8404,11 @@ func (t *SSHKeyTracer) Create(ctx context.Context, zone string, param *sacloud.S
 }
 
 // Generate is API call with trace log
-func (t *SSHKeyTracer) Generate(ctx context.Context, zone string, param *sacloud.SSHKeyGenerateRequest) (*sacloud.SSHKeyGenerated, error) {
+func (t *SSHKeyTracer) Generate(ctx context.Context, param *sacloud.SSHKeyGenerateRequest) (*sacloud.SSHKeyGenerated, error) {
 	log.Println("[TRACE] SSHKeyAPI.Generate start")
 	targetArguments := struct {
-		Argzone  string                         `json:"zone"`
 		Argparam *sacloud.SSHKeyGenerateRequest `json:"param"`
 	}{
-		Argzone:  zone,
 		Argparam: param,
 	}
 	if d, err := json.Marshal(targetArguments); err == nil {
@@ -8568,7 +8419,7 @@ func (t *SSHKeyTracer) Generate(ctx context.Context, zone string, param *sacloud
 		log.Println("[TRACE] SSHKeyAPI.Generate end")
 	}()
 
-	resultSSHKeyGenerated, err := t.Internal.Generate(ctx, zone, param)
+	resultSSHKeyGenerated, err := t.Internal.Generate(ctx, param)
 	targetResults := struct {
 		SSHKeyGenerated *sacloud.SSHKeyGenerated
 		Error           error
@@ -8584,14 +8435,12 @@ func (t *SSHKeyTracer) Generate(ctx context.Context, zone string, param *sacloud
 }
 
 // Read is API call with trace log
-func (t *SSHKeyTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.SSHKey, error) {
+func (t *SSHKeyTracer) Read(ctx context.Context, id types.ID) (*sacloud.SSHKey, error) {
 	log.Println("[TRACE] SSHKeyAPI.Read start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
-		Argid   types.ID `json:"id"`
+		Argid types.ID `json:"id"`
 	}{
-		Argzone: zone,
-		Argid:   id,
+		Argid: id,
 	}
 	if d, err := json.Marshal(targetArguments); err == nil {
 		log.Printf("[TRACE] \targs: %s\n", string(d))
@@ -8601,7 +8450,7 @@ func (t *SSHKeyTracer) Read(ctx context.Context, zone string, id types.ID) (*sac
 		log.Println("[TRACE] SSHKeyAPI.Read end")
 	}()
 
-	resultSSHKey, err := t.Internal.Read(ctx, zone, id)
+	resultSSHKey, err := t.Internal.Read(ctx, id)
 	targetResults := struct {
 		SSHKey *sacloud.SSHKey
 		Error  error
@@ -8617,14 +8466,12 @@ func (t *SSHKeyTracer) Read(ctx context.Context, zone string, id types.ID) (*sac
 }
 
 // Update is API call with trace log
-func (t *SSHKeyTracer) Update(ctx context.Context, zone string, id types.ID, param *sacloud.SSHKeyUpdateRequest) (*sacloud.SSHKey, error) {
+func (t *SSHKeyTracer) Update(ctx context.Context, id types.ID, param *sacloud.SSHKeyUpdateRequest) (*sacloud.SSHKey, error) {
 	log.Println("[TRACE] SSHKeyAPI.Update start")
 	targetArguments := struct {
-		Argzone  string                       `json:"zone"`
 		Argid    types.ID                     `json:"id"`
 		Argparam *sacloud.SSHKeyUpdateRequest `json:"param"`
 	}{
-		Argzone:  zone,
 		Argid:    id,
 		Argparam: param,
 	}
@@ -8636,7 +8483,7 @@ func (t *SSHKeyTracer) Update(ctx context.Context, zone string, id types.ID, par
 		log.Println("[TRACE] SSHKeyAPI.Update end")
 	}()
 
-	resultSSHKey, err := t.Internal.Update(ctx, zone, id, param)
+	resultSSHKey, err := t.Internal.Update(ctx, id, param)
 	targetResults := struct {
 		SSHKey *sacloud.SSHKey
 		Error  error
@@ -8652,14 +8499,12 @@ func (t *SSHKeyTracer) Update(ctx context.Context, zone string, id types.ID, par
 }
 
 // Delete is API call with trace log
-func (t *SSHKeyTracer) Delete(ctx context.Context, zone string, id types.ID) error {
+func (t *SSHKeyTracer) Delete(ctx context.Context, id types.ID) error {
 	log.Println("[TRACE] SSHKeyAPI.Delete start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
-		Argid   types.ID `json:"id"`
+		Argid types.ID `json:"id"`
 	}{
-		Argzone: zone,
-		Argid:   id,
+		Argid: id,
 	}
 	if d, err := json.Marshal(targetArguments); err == nil {
 		log.Printf("[TRACE] \targs: %s\n", string(d))
@@ -8669,7 +8514,7 @@ func (t *SSHKeyTracer) Delete(ctx context.Context, zone string, id types.ID) err
 		log.Println("[TRACE] SSHKeyAPI.Delete end")
 	}()
 
-	err := t.Internal.Delete(ctx, zone, id)
+	err := t.Internal.Delete(ctx, id)
 	targetResults := struct {
 		Error error
 	}{
@@ -8702,7 +8547,7 @@ func NewSwitchTracer(in sacloud.SwitchAPI) sacloud.SwitchAPI {
 func (t *SwitchTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.SwitchFindResult, error) {
 	log.Println("[TRACE] SwitchAPI.Find start")
 	targetArguments := struct {
-		Argzone       string                 `json:"zone"`
+		Argzone       string
 		Argconditions *sacloud.FindCondition `json:"conditions"`
 	}{
 		Argzone:       zone,
@@ -8735,7 +8580,7 @@ func (t *SwitchTracer) Find(ctx context.Context, zone string, conditions *saclou
 func (t *SwitchTracer) Create(ctx context.Context, zone string, param *sacloud.SwitchCreateRequest) (*sacloud.Switch, error) {
 	log.Println("[TRACE] SwitchAPI.Create start")
 	targetArguments := struct {
-		Argzone  string                       `json:"zone"`
+		Argzone  string
 		Argparam *sacloud.SwitchCreateRequest `json:"param"`
 	}{
 		Argzone:  zone,
@@ -8768,7 +8613,7 @@ func (t *SwitchTracer) Create(ctx context.Context, zone string, param *sacloud.S
 func (t *SwitchTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Switch, error) {
 	log.Println("[TRACE] SwitchAPI.Read start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -8801,7 +8646,7 @@ func (t *SwitchTracer) Read(ctx context.Context, zone string, id types.ID) (*sac
 func (t *SwitchTracer) Update(ctx context.Context, zone string, id types.ID, param *sacloud.SwitchUpdateRequest) (*sacloud.Switch, error) {
 	log.Println("[TRACE] SwitchAPI.Update start")
 	targetArguments := struct {
-		Argzone  string                       `json:"zone"`
+		Argzone  string
 		Argid    types.ID                     `json:"id"`
 		Argparam *sacloud.SwitchUpdateRequest `json:"param"`
 	}{
@@ -8836,7 +8681,7 @@ func (t *SwitchTracer) Update(ctx context.Context, zone string, id types.ID, par
 func (t *SwitchTracer) Delete(ctx context.Context, zone string, id types.ID) error {
 	log.Println("[TRACE] SwitchAPI.Delete start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -8867,7 +8712,7 @@ func (t *SwitchTracer) Delete(ctx context.Context, zone string, id types.ID) err
 func (t *SwitchTracer) ConnectToBridge(ctx context.Context, zone string, id types.ID, bridgeID types.ID) error {
 	log.Println("[TRACE] SwitchAPI.ConnectToBridge start")
 	targetArguments := struct {
-		Argzone     string   `json:"zone"`
+		Argzone     string
 		Argid       types.ID `json:"id"`
 		ArgbridgeID types.ID `json:"bridgeID"`
 	}{
@@ -8900,7 +8745,7 @@ func (t *SwitchTracer) ConnectToBridge(ctx context.Context, zone string, id type
 func (t *SwitchTracer) DisconnectFromBridge(ctx context.Context, zone string, id types.ID) error {
 	log.Println("[TRACE] SwitchAPI.DisconnectFromBridge start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -8947,7 +8792,7 @@ func NewVPCRouterTracer(in sacloud.VPCRouterAPI) sacloud.VPCRouterAPI {
 func (t *VPCRouterTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.VPCRouterFindResult, error) {
 	log.Println("[TRACE] VPCRouterAPI.Find start")
 	targetArguments := struct {
-		Argzone       string                 `json:"zone"`
+		Argzone       string
 		Argconditions *sacloud.FindCondition `json:"conditions"`
 	}{
 		Argzone:       zone,
@@ -8980,7 +8825,7 @@ func (t *VPCRouterTracer) Find(ctx context.Context, zone string, conditions *sac
 func (t *VPCRouterTracer) Create(ctx context.Context, zone string, param *sacloud.VPCRouterCreateRequest) (*sacloud.VPCRouter, error) {
 	log.Println("[TRACE] VPCRouterAPI.Create start")
 	targetArguments := struct {
-		Argzone  string                          `json:"zone"`
+		Argzone  string
 		Argparam *sacloud.VPCRouterCreateRequest `json:"param"`
 	}{
 		Argzone:  zone,
@@ -9013,7 +8858,7 @@ func (t *VPCRouterTracer) Create(ctx context.Context, zone string, param *saclou
 func (t *VPCRouterTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.VPCRouter, error) {
 	log.Println("[TRACE] VPCRouterAPI.Read start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -9046,7 +8891,7 @@ func (t *VPCRouterTracer) Read(ctx context.Context, zone string, id types.ID) (*
 func (t *VPCRouterTracer) Update(ctx context.Context, zone string, id types.ID, param *sacloud.VPCRouterUpdateRequest) (*sacloud.VPCRouter, error) {
 	log.Println("[TRACE] VPCRouterAPI.Update start")
 	targetArguments := struct {
-		Argzone  string                          `json:"zone"`
+		Argzone  string
 		Argid    types.ID                        `json:"id"`
 		Argparam *sacloud.VPCRouterUpdateRequest `json:"param"`
 	}{
@@ -9081,7 +8926,7 @@ func (t *VPCRouterTracer) Update(ctx context.Context, zone string, id types.ID, 
 func (t *VPCRouterTracer) Delete(ctx context.Context, zone string, id types.ID) error {
 	log.Println("[TRACE] VPCRouterAPI.Delete start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -9112,7 +8957,7 @@ func (t *VPCRouterTracer) Delete(ctx context.Context, zone string, id types.ID) 
 func (t *VPCRouterTracer) Config(ctx context.Context, zone string, id types.ID) error {
 	log.Println("[TRACE] VPCRouterAPI.Config start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -9143,7 +8988,7 @@ func (t *VPCRouterTracer) Config(ctx context.Context, zone string, id types.ID) 
 func (t *VPCRouterTracer) Boot(ctx context.Context, zone string, id types.ID) error {
 	log.Println("[TRACE] VPCRouterAPI.Boot start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -9174,7 +9019,7 @@ func (t *VPCRouterTracer) Boot(ctx context.Context, zone string, id types.ID) er
 func (t *VPCRouterTracer) Shutdown(ctx context.Context, zone string, id types.ID, shutdownOption *sacloud.ShutdownOption) error {
 	log.Println("[TRACE] VPCRouterAPI.Shutdown start")
 	targetArguments := struct {
-		Argzone           string                  `json:"zone"`
+		Argzone           string
 		Argid             types.ID                `json:"id"`
 		ArgshutdownOption *sacloud.ShutdownOption `json:"shutdownOption"`
 	}{
@@ -9207,7 +9052,7 @@ func (t *VPCRouterTracer) Shutdown(ctx context.Context, zone string, id types.ID
 func (t *VPCRouterTracer) Reset(ctx context.Context, zone string, id types.ID) error {
 	log.Println("[TRACE] VPCRouterAPI.Reset start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
+		Argzone string
 		Argid   types.ID `json:"id"`
 	}{
 		Argzone: zone,
@@ -9238,7 +9083,7 @@ func (t *VPCRouterTracer) Reset(ctx context.Context, zone string, id types.ID) e
 func (t *VPCRouterTracer) ConnectToSwitch(ctx context.Context, zone string, id types.ID, nicIndex int, switchID types.ID) error {
 	log.Println("[TRACE] VPCRouterAPI.ConnectToSwitch start")
 	targetArguments := struct {
-		Argzone     string   `json:"zone"`
+		Argzone     string
 		Argid       types.ID `json:"id"`
 		ArgnicIndex int      `json:"nicIndex"`
 		ArgswitchID types.ID `json:"switchID"`
@@ -9273,7 +9118,7 @@ func (t *VPCRouterTracer) ConnectToSwitch(ctx context.Context, zone string, id t
 func (t *VPCRouterTracer) DisconnectFromSwitch(ctx context.Context, zone string, id types.ID, nicIndex int) error {
 	log.Println("[TRACE] VPCRouterAPI.DisconnectFromSwitch start")
 	targetArguments := struct {
-		Argzone     string   `json:"zone"`
+		Argzone     string
 		Argid       types.ID `json:"id"`
 		ArgnicIndex int      `json:"nicIndex"`
 	}{
@@ -9306,7 +9151,7 @@ func (t *VPCRouterTracer) DisconnectFromSwitch(ctx context.Context, zone string,
 func (t *VPCRouterTracer) MonitorInterface(ctx context.Context, zone string, id types.ID, index int, condition *sacloud.MonitorCondition) (*sacloud.InterfaceActivity, error) {
 	log.Println("[TRACE] VPCRouterAPI.MonitorInterface start")
 	targetArguments := struct {
-		Argzone      string                    `json:"zone"`
+		Argzone      string
 		Argid        types.ID                  `json:"id"`
 		Argindex     int                       `json:"index"`
 		Argcondition *sacloud.MonitorCondition `json:"condition"`
@@ -9356,13 +9201,10 @@ func NewWebAccelTracer(in sacloud.WebAccelAPI) sacloud.WebAccelAPI {
 }
 
 // List is API call with trace log
-func (t *WebAccelTracer) List(ctx context.Context, zone string) (*sacloud.WebAccelListResult, error) {
+func (t *WebAccelTracer) List(ctx context.Context) (*sacloud.WebAccelListResult, error) {
 	log.Println("[TRACE] WebAccelAPI.List start")
 	targetArguments := struct {
-		Argzone string `json:"zone"`
-	}{
-		Argzone: zone,
-	}
+	}{}
 	if d, err := json.Marshal(targetArguments); err == nil {
 		log.Printf("[TRACE] \targs: %s\n", string(d))
 	}
@@ -9371,7 +9213,7 @@ func (t *WebAccelTracer) List(ctx context.Context, zone string) (*sacloud.WebAcc
 		log.Println("[TRACE] WebAccelAPI.List end")
 	}()
 
-	result, err := t.Internal.List(ctx, zone)
+	result, err := t.Internal.List(ctx)
 	targetResults := struct {
 		Result *sacloud.WebAccelListResult
 		Error  error
@@ -9387,14 +9229,12 @@ func (t *WebAccelTracer) List(ctx context.Context, zone string) (*sacloud.WebAcc
 }
 
 // Read is API call with trace log
-func (t *WebAccelTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.WebAccel, error) {
+func (t *WebAccelTracer) Read(ctx context.Context, id types.ID) (*sacloud.WebAccel, error) {
 	log.Println("[TRACE] WebAccelAPI.Read start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
-		Argid   types.ID `json:"id"`
+		Argid types.ID `json:"id"`
 	}{
-		Argzone: zone,
-		Argid:   id,
+		Argid: id,
 	}
 	if d, err := json.Marshal(targetArguments); err == nil {
 		log.Printf("[TRACE] \targs: %s\n", string(d))
@@ -9404,7 +9244,7 @@ func (t *WebAccelTracer) Read(ctx context.Context, zone string, id types.ID) (*s
 		log.Println("[TRACE] WebAccelAPI.Read end")
 	}()
 
-	resultWebAccel, err := t.Internal.Read(ctx, zone, id)
+	resultWebAccel, err := t.Internal.Read(ctx, id)
 	targetResults := struct {
 		WebAccel *sacloud.WebAccel
 		Error    error
@@ -9420,14 +9260,12 @@ func (t *WebAccelTracer) Read(ctx context.Context, zone string, id types.ID) (*s
 }
 
 // ReadCertificate is API call with trace log
-func (t *WebAccelTracer) ReadCertificate(ctx context.Context, zone string, id types.ID) (*sacloud.WebAccelCerts, error) {
+func (t *WebAccelTracer) ReadCertificate(ctx context.Context, id types.ID) (*sacloud.WebAccelCerts, error) {
 	log.Println("[TRACE] WebAccelAPI.ReadCertificate start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
-		Argid   types.ID `json:"id"`
+		Argid types.ID `json:"id"`
 	}{
-		Argzone: zone,
-		Argid:   id,
+		Argid: id,
 	}
 	if d, err := json.Marshal(targetArguments); err == nil {
 		log.Printf("[TRACE] \targs: %s\n", string(d))
@@ -9437,7 +9275,7 @@ func (t *WebAccelTracer) ReadCertificate(ctx context.Context, zone string, id ty
 		log.Println("[TRACE] WebAccelAPI.ReadCertificate end")
 	}()
 
-	resultCertificate, err := t.Internal.ReadCertificate(ctx, zone, id)
+	resultCertificate, err := t.Internal.ReadCertificate(ctx, id)
 	targetResults := struct {
 		Certificate *sacloud.WebAccelCerts
 		Error       error
@@ -9453,14 +9291,12 @@ func (t *WebAccelTracer) ReadCertificate(ctx context.Context, zone string, id ty
 }
 
 // UpdateCertificate is API call with trace log
-func (t *WebAccelTracer) UpdateCertificate(ctx context.Context, zone string, id types.ID, param *sacloud.WebAccelCertUpdateRequest) (*sacloud.WebAccelCerts, error) {
+func (t *WebAccelTracer) UpdateCertificate(ctx context.Context, id types.ID, param *sacloud.WebAccelCertUpdateRequest) (*sacloud.WebAccelCerts, error) {
 	log.Println("[TRACE] WebAccelAPI.UpdateCertificate start")
 	targetArguments := struct {
-		Argzone  string                             `json:"zone"`
 		Argid    types.ID                           `json:"id"`
 		Argparam *sacloud.WebAccelCertUpdateRequest `json:"param"`
 	}{
-		Argzone:  zone,
 		Argid:    id,
 		Argparam: param,
 	}
@@ -9472,7 +9308,7 @@ func (t *WebAccelTracer) UpdateCertificate(ctx context.Context, zone string, id 
 		log.Println("[TRACE] WebAccelAPI.UpdateCertificate end")
 	}()
 
-	resultCertificate, err := t.Internal.UpdateCertificate(ctx, zone, id, param)
+	resultCertificate, err := t.Internal.UpdateCertificate(ctx, id, param)
 	targetResults := struct {
 		Certificate *sacloud.WebAccelCerts
 		Error       error
@@ -9488,13 +9324,11 @@ func (t *WebAccelTracer) UpdateCertificate(ctx context.Context, zone string, id 
 }
 
 // DeleteAllCache is API call with trace log
-func (t *WebAccelTracer) DeleteAllCache(ctx context.Context, zone string, param *sacloud.WebAccelDeleteAllCacheRequest) error {
+func (t *WebAccelTracer) DeleteAllCache(ctx context.Context, param *sacloud.WebAccelDeleteAllCacheRequest) error {
 	log.Println("[TRACE] WebAccelAPI.DeleteAllCache start")
 	targetArguments := struct {
-		Argzone  string                                 `json:"zone"`
 		Argparam *sacloud.WebAccelDeleteAllCacheRequest `json:"param"`
 	}{
-		Argzone:  zone,
 		Argparam: param,
 	}
 	if d, err := json.Marshal(targetArguments); err == nil {
@@ -9505,7 +9339,7 @@ func (t *WebAccelTracer) DeleteAllCache(ctx context.Context, zone string, param 
 		log.Println("[TRACE] WebAccelAPI.DeleteAllCache end")
 	}()
 
-	err := t.Internal.DeleteAllCache(ctx, zone, param)
+	err := t.Internal.DeleteAllCache(ctx, param)
 	targetResults := struct {
 		Error error
 	}{
@@ -9519,13 +9353,11 @@ func (t *WebAccelTracer) DeleteAllCache(ctx context.Context, zone string, param 
 }
 
 // DeleteCache is API call with trace log
-func (t *WebAccelTracer) DeleteCache(ctx context.Context, zone string, param *sacloud.WebAccelDeleteCacheRequest) ([]*sacloud.WebAccelDeleteCacheResult, error) {
+func (t *WebAccelTracer) DeleteCache(ctx context.Context, param *sacloud.WebAccelDeleteCacheRequest) ([]*sacloud.WebAccelDeleteCacheResult, error) {
 	log.Println("[TRACE] WebAccelAPI.DeleteCache start")
 	targetArguments := struct {
-		Argzone  string                              `json:"zone"`
 		Argparam *sacloud.WebAccelDeleteCacheRequest `json:"param"`
 	}{
-		Argzone:  zone,
 		Argparam: param,
 	}
 	if d, err := json.Marshal(targetArguments); err == nil {
@@ -9536,7 +9368,7 @@ func (t *WebAccelTracer) DeleteCache(ctx context.Context, zone string, param *sa
 		log.Println("[TRACE] WebAccelAPI.DeleteCache end")
 	}()
 
-	resultResults, err := t.Internal.DeleteCache(ctx, zone, param)
+	resultResults, err := t.Internal.DeleteCache(ctx, param)
 	targetResults := struct {
 		Results []*sacloud.WebAccelDeleteCacheResult
 		Error   error
@@ -9568,13 +9400,11 @@ func NewZoneTracer(in sacloud.ZoneAPI) sacloud.ZoneAPI {
 }
 
 // Find is API call with trace log
-func (t *ZoneTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.ZoneFindResult, error) {
+func (t *ZoneTracer) Find(ctx context.Context, conditions *sacloud.FindCondition) (*sacloud.ZoneFindResult, error) {
 	log.Println("[TRACE] ZoneAPI.Find start")
 	targetArguments := struct {
-		Argzone       string                 `json:"zone"`
 		Argconditions *sacloud.FindCondition `json:"conditions"`
 	}{
-		Argzone:       zone,
 		Argconditions: conditions,
 	}
 	if d, err := json.Marshal(targetArguments); err == nil {
@@ -9585,7 +9415,7 @@ func (t *ZoneTracer) Find(ctx context.Context, zone string, conditions *sacloud.
 		log.Println("[TRACE] ZoneAPI.Find end")
 	}()
 
-	result, err := t.Internal.Find(ctx, zone, conditions)
+	result, err := t.Internal.Find(ctx, conditions)
 	targetResults := struct {
 		Result *sacloud.ZoneFindResult
 		Error  error
@@ -9601,14 +9431,12 @@ func (t *ZoneTracer) Find(ctx context.Context, zone string, conditions *sacloud.
 }
 
 // Read is API call with trace log
-func (t *ZoneTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Zone, error) {
+func (t *ZoneTracer) Read(ctx context.Context, id types.ID) (*sacloud.Zone, error) {
 	log.Println("[TRACE] ZoneAPI.Read start")
 	targetArguments := struct {
-		Argzone string   `json:"zone"`
-		Argid   types.ID `json:"id"`
+		Argid types.ID `json:"id"`
 	}{
-		Argzone: zone,
-		Argid:   id,
+		Argid: id,
 	}
 	if d, err := json.Marshal(targetArguments); err == nil {
 		log.Printf("[TRACE] \targs: %s\n", string(d))
@@ -9618,7 +9446,7 @@ func (t *ZoneTracer) Read(ctx context.Context, zone string, id types.ID) (*saclo
 		log.Println("[TRACE] ZoneAPI.Read end")
 	}()
 
-	resultZone, err := t.Internal.Read(ctx, zone, id)
+	resultZone, err := t.Internal.Read(ctx, id)
 	targetResults := struct {
 		Zone  *sacloud.Zone
 		Error error

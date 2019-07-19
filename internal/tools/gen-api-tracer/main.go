@@ -46,7 +46,7 @@ func AddClientFactoryHooks() {
 {{ end -}}
 }
 
-{{ range . }} {{$typeName := .TypeName}}
+{{ range . }} {{$typeName := .TypeName}} {{ $resource := . }}
 /************************************************* 
 * {{ $typeName }}Tracer
 *************************************************/
@@ -65,13 +65,19 @@ func New{{ $typeName}}Tracer(in sacloud.{{$typeName}}API) sacloud.{{$typeName}}A
 
 {{ range .Operations }}{{$returnErrStatement := .ReturnErrorStatement}}{{ $operationName := .MethodName }}
 // {{ .MethodName }} is API call with trace log
-func (t *{{ $typeName }}Tracer) {{ .MethodName }}(ctx context.Context{{ range .Arguments }}, {{ .ArgName }} {{ .TypeName }}{{ end }}) {{.ResultsStatement}} {
+func (t *{{ $typeName }}Tracer) {{ .MethodName }}(ctx context.Context{{if not $resource.IsGlobal}}, zone string{{end}}{{ range .Arguments }}, {{ .ArgName }} {{ .TypeName }}{{ end }}) {{.ResultsStatement}} {
 	log.Println("[TRACE] {{ $typeName }}API.{{ .MethodName }} start")
 	targetArguments := struct {
+{{ if not $resource.IsGlobal }}
+		Argzone string
+{{ end -}}
 {{ range .Arguments -}}
 		Arg{{.ArgName}} {{.TypeName}} ` + "`json:\"{{.ArgName}}\"`" + `
 {{ end -}}
 	} {
+{{if not $resource.IsGlobal -}}
+		Argzone: zone,
+{{ end -}}
 {{ range .Arguments -}}
 		Arg{{.ArgName}}: {{.ArgName}},
 {{ end -}}
@@ -84,7 +90,7 @@ func (t *{{ $typeName }}Tracer) {{ .MethodName }}(ctx context.Context{{ range .A
 		log.Println("[TRACE] {{ $typeName }}API.{{ .MethodName }} end")
 	}()
 
-	{{range .ResultsTypeInfo}}{{.VarName}}, {{end}}err := t.Internal.{{ .MethodName }}(ctx{{ range .Arguments }}, {{ .ArgName }}{{ end }})
+	{{range .ResultsTypeInfo}}{{.VarName}}, {{end}}err := t.Internal.{{ .MethodName }}(ctx{{if not $resource.IsGlobal}}, zone{{end}}{{ range .Arguments }}, {{ .ArgName }}{{ end }})
 	targetResults := struct {
 {{ range .ResultsTypeInfo -}}
 		{{.FieldName}} {{.Type.GoTypeSourceCode}} 

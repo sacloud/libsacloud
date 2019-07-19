@@ -22,7 +22,6 @@ func find(resourceName string, nakedType meta.Type, findParam, result *dsl.Model
 		UseWrappedResult: true,
 		RequestEnvelope:  dsl.RequestEnvelopeFromModel(findParam),
 		Arguments: dsl.Arguments{
-			dsl.ArgumentZone,
 			dsl.PassthroughModelArgument("conditions", findParam),
 		},
 		ResponseEnvelope: dsl.ResponseEnvelopePlural(&dsl.EnvelopePayloadDesc{
@@ -63,9 +62,6 @@ func List(resourceName string, nakedType meta.Type, result *dsl.Model) *dsl.Oper
 		PathFormat:       dsl.DefaultPathFormat,
 		Method:           http.MethodGet,
 		UseWrappedResult: true,
-		Arguments: dsl.Arguments{
-			dsl.ArgumentZone,
-		},
 		ResponseEnvelope: dsl.ResponseEnvelopePlural(&dsl.EnvelopePayloadDesc{
 			Type: nakedType,
 			Name: names.ResourceFieldName(resourceName, dsl.PayloadForms.Plural),
@@ -96,7 +92,6 @@ func create(resourceName string, nakedType meta.Type, createParam, result *dsl.M
 			Name: payloadName,
 		}),
 		Arguments: dsl.Arguments{
-			dsl.ArgumentZone,
 			dsl.MappableArgument("param", createParam, payloadName),
 		},
 		ResponseEnvelope: dsl.ResponseEnvelope(&dsl.EnvelopePayloadDesc{
@@ -140,7 +135,6 @@ func read(resourceName string, nakedType meta.Type, result *dsl.Model, payloadNa
 		PathFormat:   dsl.DefaultPathFormatWithID,
 		Method:       http.MethodGet,
 		Arguments: dsl.Arguments{
-			dsl.ArgumentZone,
 			dsl.ArgumentID,
 		},
 		ResponseEnvelope: dsl.ResponseEnvelope(&dsl.EnvelopePayloadDesc{
@@ -188,7 +182,6 @@ func update(resourceName string, nakedType meta.Type, updateParam, result *dsl.M
 			Name: payloadName,
 		}),
 		Arguments: dsl.Arguments{
-			dsl.ArgumentZone,
 			dsl.ArgumentID,
 			dsl.MappableArgument("param", updateParam, payloadName),
 		},
@@ -230,7 +223,6 @@ func Delete(resourceName string) *dsl.Operation {
 		PathFormat:   dsl.DefaultPathFormatWithID,
 		Method:       http.MethodDelete,
 		Arguments: dsl.Arguments{
-			dsl.ArgumentZone,
 			dsl.ArgumentID,
 		},
 	}
@@ -244,7 +236,6 @@ func Config(resourceName string) *dsl.Operation {
 		PathFormat:   dsl.IDAndSuffixPathFormat("config"),
 		Method:       http.MethodPut,
 		Arguments: dsl.Arguments{
-			dsl.ArgumentZone,
 			dsl.ArgumentID,
 		},
 	}
@@ -258,7 +249,6 @@ func Boot(resourceName string) *dsl.Operation {
 		PathFormat:   dsl.IDAndSuffixPathFormat("power"),
 		Method:       http.MethodPut,
 		Arguments: dsl.Arguments{
-			dsl.ArgumentZone,
 			dsl.ArgumentID,
 		},
 	}
@@ -282,7 +272,6 @@ func Shutdown(resourceName string) *dsl.Operation {
 		Method:          http.MethodDelete,
 		RequestEnvelope: dsl.RequestEnvelopeFromModel(param),
 		Arguments: dsl.Arguments{
-			dsl.ArgumentZone,
 			dsl.ArgumentID,
 			dsl.PassthroughModelArgument("shutdownOption", param),
 		},
@@ -297,7 +286,6 @@ func Reset(resourceName string) *dsl.Operation {
 		PathFormat:   dsl.IDAndSuffixPathFormat("reset"),
 		Method:       http.MethodPut,
 		Arguments: dsl.Arguments{
-			dsl.ArgumentZone,
 			dsl.ArgumentID,
 		},
 	}
@@ -311,7 +299,6 @@ func Status(resourceName string, nakedType meta.Type, result *dsl.Model) *dsl.Op
 		Name:             "Status",
 		UseWrappedResult: true,
 		Arguments: dsl.Arguments{
-			dsl.ArgumentZone,
 			dsl.ArgumentID,
 		},
 		PathFormat: dsl.IDAndSuffixPathFormat("status"),
@@ -338,7 +325,6 @@ func HealthStatus(resourceName string, nakedType meta.Type, result *dsl.Model) *
 		ResourceName: resourceName,
 		Name:         "HealthStatus",
 		Arguments: dsl.Arguments{
-			dsl.ArgumentZone,
 			dsl.ArgumentID,
 		},
 		PathFormat: dsl.IDAndSuffixPathFormat("health"),
@@ -367,7 +353,6 @@ func OpenFTP(resourceName string, openParam, result *dsl.Model) *dsl.Operation {
 		Method:          http.MethodPut,
 		RequestEnvelope: dsl.RequestEnvelopeFromModel(openParam),
 		Arguments: dsl.Arguments{
-			dsl.ArgumentZone,
 			dsl.ArgumentID,
 			dsl.PassthroughModelArgument("openOption", openParam),
 		},
@@ -392,7 +377,6 @@ func CloseFTP(resourceName string) *dsl.Operation {
 		ResourceName: resourceName,
 		Name:         "CloseFTP",
 		Arguments: dsl.Arguments{
-			dsl.ArgumentZone,
 			dsl.ArgumentID,
 		},
 		PathFormat: dsl.IDAndSuffixPathFormat("ftp"),
@@ -402,7 +386,7 @@ func CloseFTP(resourceName string) *dsl.Operation {
 
 // WithIDAction ID+αのみを引数にとるシンプルなオペレーションを定義
 func WithIDAction(resourceName, opName, method, pathSuffix string, arguments ...*dsl.Argument) *dsl.Operation {
-	args := dsl.Arguments{dsl.ArgumentZone, dsl.ArgumentID}
+	args := dsl.Arguments{dsl.ArgumentID}
 	args = append(args, arguments...)
 	return &dsl.Operation{
 		ResourceName: resourceName,
@@ -422,7 +406,6 @@ func Monitor(resourceName string, monitorParam, result *dsl.Model) *dsl.Operatio
 		Method:          http.MethodGet,
 		RequestEnvelope: dsl.RequestEnvelopeFromModel(monitorParam),
 		Arguments: dsl.Arguments{
-			dsl.ArgumentZone,
 			dsl.ArgumentID,
 			dsl.PassthroughModelArgument("condition", monitorParam),
 		},
@@ -450,7 +433,6 @@ func MonitorChild(resourceName, funcNameSuffix, childResourceName string, monito
 		Method:          http.MethodGet,
 		RequestEnvelope: dsl.RequestEnvelopeFromModel(monitorParam),
 		Arguments: dsl.Arguments{
-			dsl.ArgumentZone,
 			dsl.ArgumentID,
 			dsl.PassthroughModelArgument("condition", monitorParam),
 		},
@@ -479,7 +461,6 @@ func MonitorChildBy(resourceName, funcNameSuffix, childResourceName string, moni
 		Method:          http.MethodGet,
 		RequestEnvelope: dsl.RequestEnvelopeFromModel(monitorParam),
 		Arguments: dsl.Arguments{
-			dsl.ArgumentZone,
 			dsl.ArgumentID,
 			{
 				Name: "index",

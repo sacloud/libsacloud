@@ -28,7 +28,6 @@ var couponAPI = &dsl.Resource{
 			Method:           http.MethodGet,
 			UseWrappedResult: true,
 			Arguments: dsl.Arguments{
-				dsl.ArgumentZone,
 				couponArgAccountID,
 			},
 			ResponseEnvelope: dsl.ResponseEnvelopePlural(&dsl.EnvelopePayloadDesc{

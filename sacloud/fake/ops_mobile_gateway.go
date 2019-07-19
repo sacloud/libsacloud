@@ -295,7 +295,7 @@ func (o *MobileGatewayOp) AddSIM(ctx context.Context, zone string, id types.ID, 
 	}
 
 	simOp := NewSIMOp()
-	simInfo, err := simOp.Status(context.Background(), sacloud.APIDefaultZone, types.StringID(param.SIMID))
+	simInfo, err := simOp.Status(context.Background(), types.StringID(param.SIMID))
 	if err != nil {
 		return err
 	}

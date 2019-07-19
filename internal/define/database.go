@@ -60,7 +60,6 @@ var databaseAPI = &dsl.Resource{
 			PathFormat:   dsl.IDAndSuffixPathFormat("status"),
 			Method:       http.MethodGet,
 			Arguments: dsl.Arguments{
-				dsl.ArgumentZone,
 				dsl.ArgumentID,
 			},
 			ResponseEnvelope: dsl.ResponseEnvelope(&dsl.EnvelopePayloadDesc{

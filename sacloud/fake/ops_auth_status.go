@@ -7,6 +7,6 @@ import (
 )
 
 // Read is fake implementation
-func (o *AuthStatusOp) Read(ctx context.Context, zone string) (*sacloud.AuthStatus, error) {
+func (o *AuthStatusOp) Read(ctx context.Context) (*sacloud.AuthStatus, error) {
 	return authStatus, nil
 }

@@ -142,7 +142,7 @@ func TestMobileGatewayOpCRUD(t *testing.T) {
 			{
 				Func: func(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 					simOp := sacloud.NewSIMOp(caller)
-					sim, err := simOp.Create(context.Background(), sacloud.APIDefaultZone, &sacloud.SIMCreateRequest{
+					sim, err := simOp.Create(context.Background(), &sacloud.SIMCreateRequest{
 						Name:     "libsacloud-switch-for-mobile-gateway",
 						ICCID:    iccid,
 						PassCode: passcode,
@@ -174,12 +174,12 @@ func TestMobileGatewayOpCRUD(t *testing.T) {
 				Func: func(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 					client := sacloud.NewSIMOp(caller)
 					simID := testContext.Values["mobile-gateway/sim"].(types.ID)
-					if err := client.AssignIP(context.Background(), sacloud.APIDefaultZone, simID, &sacloud.SIMAssignIPRequest{
+					if err := client.AssignIP(context.Background(), simID, &sacloud.SIMAssignIPRequest{
 						IP: "192.168.2.1",
 					}); err != nil {
 						return nil, err
 					}
-					return client.Status(context.Background(), sacloud.APIDefaultZone, simID)
+					return client.Status(context.Background(), simID)
 				},
 				CheckFunc: func(t TestT, testContext *CRUDTestContext, v interface{}) error {
 					simInfo := v.(*sacloud.SIMInfo)
@@ -194,10 +194,10 @@ func TestMobileGatewayOpCRUD(t *testing.T) {
 				Func: func(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 					client := sacloud.NewSIMOp(caller)
 					simID := testContext.Values["mobile-gateway/sim"].(types.ID)
-					if err := client.ClearIP(context.Background(), sacloud.APIDefaultZone, simID); err != nil {
+					if err := client.ClearIP(context.Background(), simID); err != nil {
 						return nil, err
 					}
-					return client.Status(context.Background(), sacloud.APIDefaultZone, simID)
+					return client.Status(context.Background(), simID)
 				},
 				CheckFunc: func(t TestT, testContext *CRUDTestContext, v interface{}) error {
 					simInfo := v.(*sacloud.SIMInfo)
@@ -317,7 +317,7 @@ func TestMobileGatewayOpCRUD(t *testing.T) {
 					}
 
 					simOp := sacloud.NewSIMOp(caller)
-					if err := simOp.Delete(context.Background(), testZone, simID); err != nil {
+					if err := simOp.Delete(context.Background(), simID); err != nil {
 						return nil, err
 					}
 
