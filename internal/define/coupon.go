@@ -62,12 +62,12 @@ var (
 		NakedType: couponNakedType,
 		Fields: []*dsl.FieldDesc{
 			fields.ID(),
-			fields.New("MemberID", meta.TypeString),
-			fields.New("ContractID", meta.TypeID),
-			fields.New("ServiceClassID", meta.TypeID),
-			fields.New("Discount", meta.TypeInt64),
-			fields.New("AppliedAt", meta.TypeTime),
-			fields.New("UntilAt", meta.TypeTime),
+			fields.Def("MemberID", meta.TypeString),
+			fields.Def("ContractID", meta.TypeID),
+			fields.Def("ServiceClassID", meta.TypeID),
+			fields.Def("Discount", meta.TypeInt64),
+			fields.Def("AppliedAt", meta.TypeTime),
+			fields.Def("UntilAt", meta.TypeTime),
 		},
 	}
 )

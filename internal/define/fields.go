@@ -17,7 +17,7 @@ type fieldsDef struct{}
 
 var fields = &fieldsDef{}
 
-func (f *fieldsDef) New(name string, t meta.Type, tag ...*dsl.FieldTags) *dsl.FieldDesc {
+func (f *fieldsDef) Def(name string, t meta.Type, tag ...*dsl.FieldTags) *dsl.FieldDesc {
 	desc := &dsl.FieldDesc{
 		Name: name,
 		Type: t,
@@ -1771,11 +1771,11 @@ func (f *fieldsDef) RemarkDBConf() *dsl.FieldDesc {
 			Name:      "DatabaseRemarkDBConfCommon",
 			NakedType: meta.Static(naked.ApplianceRemarkDBConfCommon{}),
 			Fields: []*dsl.FieldDesc{
-				fields.New("DatabaseName", meta.TypeString),
-				fields.New("DatabaseVersion", meta.TypeString),
-				fields.New("DatabaseRevision", meta.TypeString),
-				fields.New("DefaultUser", meta.TypeString),
-				fields.New("UserPassword", meta.TypeString),
+				fields.Def("DatabaseName", meta.TypeString),
+				fields.Def("DatabaseVersion", meta.TypeString),
+				fields.Def("DatabaseRevision", meta.TypeString),
+				fields.Def("DefaultUser", meta.TypeString),
+				fields.Def("UserPassword", meta.TypeString),
 			},
 		},
 		Tags: &dsl.FieldTags{
@@ -1801,11 +1801,11 @@ func (f *fieldsDef) DatabaseSettingsCommon() *dsl.FieldDesc {
 			Name:      "DatabaseSettingCommon",
 			NakedType: meta.Static(naked.DatabaseSettingCommon{}),
 			Fields: []*dsl.FieldDesc{
-				fields.New("WebUI", meta.TypeFlag),
-				fields.New("ServicePort", meta.TypeInt),
-				fields.New("SourceNetwork", meta.TypeStringSlice),
-				fields.New("DefaultUser", meta.TypeString),
-				fields.New("UserPassword", meta.TypeString),
+				fields.Def("WebUI", meta.TypeFlag),
+				fields.Def("ServicePort", meta.TypeInt),
+				fields.Def("SourceNetwork", meta.TypeStringSlice),
+				fields.Def("DefaultUser", meta.TypeString),
+				fields.Def("UserPassword", meta.TypeString),
 			},
 		},
 		Tags: &dsl.FieldTags{
@@ -1821,11 +1821,11 @@ func (f *fieldsDef) DatabaseSettingsCommonUpdate() *dsl.FieldDesc {
 			Name:      "DatabaseSettingCommonUpdate",
 			NakedType: meta.Static(naked.DatabaseSettingCommon{}),
 			Fields: []*dsl.FieldDesc{
-				fields.New("WebUI", meta.TypeFlag), // TODO trueにした場合、文字列が返ってくるが未対応
-				fields.New("ServicePort", meta.TypeInt),
-				fields.New("SourceNetwork", meta.TypeStringSlice),
-				fields.New("DefaultUser", meta.TypeString),
-				fields.New("UserPassword", meta.TypeString),
+				fields.Def("WebUI", meta.TypeFlag), // TODO trueにした場合、文字列が返ってくるが未対応
+				fields.Def("ServicePort", meta.TypeInt),
+				fields.Def("SourceNetwork", meta.TypeStringSlice),
+				fields.Def("DefaultUser", meta.TypeString),
+				fields.Def("UserPassword", meta.TypeString),
 			},
 		},
 		Tags: &dsl.FieldTags{
@@ -1841,9 +1841,9 @@ func (f *fieldsDef) DatabaseSettingsBackup() *dsl.FieldDesc {
 			Name:      "DatabaseSettingBackup",
 			NakedType: meta.Static(naked.DatabaseSettingBackup{}),
 			Fields: []*dsl.FieldDesc{
-				fields.New("Rotate", meta.TypeInt),
-				fields.New("Time", meta.TypeString),
-				fields.New("DayOfWeek", meta.Static([]types.EBackupSpanWeekday{})),
+				fields.Def("Rotate", meta.TypeInt),
+				fields.Def("Time", meta.TypeString),
+				fields.Def("DayOfWeek", meta.Static([]types.EBackupSpanWeekday{})),
 			},
 		},
 		Tags: &dsl.FieldTags{
@@ -1859,11 +1859,11 @@ func (f *fieldsDef) DatabaseSettingsReplication() *dsl.FieldDesc {
 			Name:      "DatabaseReplicationSetting",
 			NakedType: meta.Static(naked.DatabaseSettingReplication{}),
 			Fields: []*dsl.FieldDesc{
-				fields.New("Model", meta.Static(types.EDatabaseReplicationModel(""))),
-				fields.New("IPAddress", meta.TypeString),
-				fields.New("Port", meta.TypeInt),
-				fields.New("User", meta.TypeString),
-				fields.New("Password", meta.TypeString),
+				fields.Def("Model", meta.Static(types.EDatabaseReplicationModel(""))),
+				fields.Def("IPAddress", meta.TypeString),
+				fields.Def("Port", meta.TypeInt),
+				fields.Def("User", meta.TypeString),
+				fields.Def("Password", meta.TypeString),
 				{
 					Name: "ApplianceID",
 					Type: meta.TypeID,

@@ -143,11 +143,11 @@ var (
 					Name:    "LoadBalancerServerStatus",
 					IsArray: true,
 					Fields: []*dsl.FieldDesc{
-						fields.New("ActiveConn", meta.TypeStringNumber),
-						fields.New("Status", meta.TypeInstanceStatus),
-						fields.New("IPAddress", meta.TypeString),
-						fields.New("Port", meta.TypeStringNumber),
-						fields.New("CPS", meta.TypeStringNumber),
+						fields.Def("ActiveConn", meta.TypeStringNumber),
+						fields.Def("Status", meta.TypeInstanceStatus),
+						fields.Def("IPAddress", meta.TypeString),
+						fields.Def("Port", meta.TypeStringNumber),
+						fields.Def("CPS", meta.TypeStringNumber),
 					},
 				},
 				Tags: &dsl.FieldTags{

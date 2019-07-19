@@ -30,7 +30,7 @@ var (
 		Fields: []*dsl.FieldDesc{
 			fields.ID(),
 			fields.Name(),
-			fields.New("StorageClass", meta.TypeString),
+			fields.Def("StorageClass", meta.TypeString),
 			fields.Availability(),
 			{
 				Name: "Size",
@@ -40,8 +40,8 @@ var (
 					IsArray:   true,
 					Fields: []*dsl.FieldDesc{
 						fields.Availability(),
-						fields.New("DisplaySize", meta.TypeInt),
-						fields.New("DisplaySuffix", meta.TypeString),
+						fields.Def("DisplaySize", meta.TypeInt),
+						fields.Def("DisplaySuffix", meta.TypeString),
 						fields.SizeMB(),
 					},
 				},

@@ -28,10 +28,10 @@ var (
 		NakedType: serviceClassNakedType,
 		Fields: []*dsl.FieldDesc{
 			fields.ID(),
-			fields.New("ServiceClassName", meta.TypeString),
-			fields.New("ServiceClassPath", meta.TypeString),
-			fields.New("DisplayName", meta.TypeString),
-			fields.New("IsPublic", meta.TypeFlag),
+			fields.Def("ServiceClassName", meta.TypeString),
+			fields.Def("ServiceClassPath", meta.TypeString),
+			fields.Def("DisplayName", meta.TypeString),
+			fields.Def("IsPublic", meta.TypeFlag),
 			{
 				Name: "Price",
 				Type: priceModel,
@@ -46,11 +46,11 @@ var (
 		Name:      "Price",
 		NakedType: meta.Static(naked.Price{}),
 		Fields: []*dsl.FieldDesc{
-			fields.New("Base", meta.TypeInt),
-			fields.New("Daily", meta.TypeInt),
-			fields.New("Hourly", meta.TypeInt),
-			fields.New("Monthly", meta.TypeInt),
-			fields.New("Zone", meta.TypeString),
+			fields.Def("Base", meta.TypeInt),
+			fields.Def("Daily", meta.TypeInt),
+			fields.Def("Hourly", meta.TypeInt),
+			fields.Def("Monthly", meta.TypeInt),
+			fields.Def("Zone", meta.TypeString),
 		},
 	}
 )

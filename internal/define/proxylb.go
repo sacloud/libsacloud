@@ -236,22 +236,22 @@ var (
 		Name:      proxyLBAPIName + "Certificates",
 		NakedType: meta.Static(naked.ProxyLBCertificates{}),
 		Fields: []*dsl.FieldDesc{
-			fields.New("ServerCertificate", meta.TypeString),
-			fields.New("IntermediateCertificate", meta.TypeString),
-			fields.New("PrivateKey", meta.TypeString),
-			fields.New("CertificateEndDate", meta.TypeTime),
-			fields.New("CertificateCommonName", meta.TypeString),
+			fields.Def("ServerCertificate", meta.TypeString),
+			fields.Def("IntermediateCertificate", meta.TypeString),
+			fields.Def("PrivateKey", meta.TypeString),
+			fields.Def("CertificateEndDate", meta.TypeTime),
+			fields.Def("CertificateCommonName", meta.TypeString),
 			{
 				Name: "AdditionalCerts",
 				Type: &dsl.Model{
 					Name:    proxyLBAPIName + "AdditionalCert",
 					IsArray: true,
 					Fields: []*dsl.FieldDesc{
-						fields.New("ServerCertificate", meta.TypeString),
-						fields.New("IntermediateCertificate", meta.TypeString),
-						fields.New("PrivateKey", meta.TypeString),
-						fields.New("CertificateEndDate", meta.TypeTime),
-						fields.New("CertificateCommonName", meta.TypeString),
+						fields.Def("ServerCertificate", meta.TypeString),
+						fields.Def("IntermediateCertificate", meta.TypeString),
+						fields.Def("PrivateKey", meta.TypeString),
+						fields.Def("CertificateEndDate", meta.TypeTime),
+						fields.Def("CertificateCommonName", meta.TypeString),
 					},
 				},
 				Tags: &dsl.FieldTags{
@@ -265,18 +265,18 @@ var (
 		Name:      proxyLBAPIName + "SetCertificatesRequest",
 		NakedType: meta.Static(naked.ProxyLBCertificates{}),
 		Fields: []*dsl.FieldDesc{
-			fields.New("ServerCertificate", meta.TypeString),
-			fields.New("IntermediateCertificate", meta.TypeString),
-			fields.New("PrivateKey", meta.TypeString),
+			fields.Def("ServerCertificate", meta.TypeString),
+			fields.Def("IntermediateCertificate", meta.TypeString),
+			fields.Def("PrivateKey", meta.TypeString),
 			{
 				Name: "AdditionalCerts",
 				Type: &dsl.Model{
 					Name:    proxyLBAPIName + "AdditionalCert",
 					IsArray: true,
 					Fields: []*dsl.FieldDesc{
-						fields.New("ServerCertificate", meta.TypeString),
-						fields.New("IntermediateCertificate", meta.TypeString),
-						fields.New("PrivateKey", meta.TypeString),
+						fields.Def("ServerCertificate", meta.TypeString),
+						fields.Def("IntermediateCertificate", meta.TypeString),
+						fields.Def("PrivateKey", meta.TypeString),
 					},
 				},
 				Tags: &dsl.FieldTags{
@@ -289,20 +289,20 @@ var (
 	proxyLBHealth = &dsl.Model{
 		Name: "ProxyLBHealth",
 		Fields: []*dsl.FieldDesc{
-			fields.New("ActiveConn", meta.TypeInt),
-			fields.New("CPS", meta.TypeInt),
-			fields.New("CurrentVIP", meta.TypeString),
+			fields.Def("ActiveConn", meta.TypeInt),
+			fields.Def("CPS", meta.TypeInt),
+			fields.Def("CurrentVIP", meta.TypeString),
 			{
 				Name: "Servers",
 				Type: &dsl.Model{
 					Name:    "LoadBalancerServerStatus",
 					IsArray: true,
 					Fields: []*dsl.FieldDesc{
-						fields.New("ActiveConn", meta.TypeInt),
-						fields.New("Status", meta.TypeInstanceStatus),
-						fields.New("IPAddress", meta.TypeString),
-						fields.New("Port", meta.TypeStringNumber),
-						fields.New("CPS", meta.TypeInt),
+						fields.Def("ActiveConn", meta.TypeInt),
+						fields.Def("Status", meta.TypeInstanceStatus),
+						fields.Def("IPAddress", meta.TypeString),
+						fields.Def("Port", meta.TypeStringNumber),
+						fields.Def("CPS", meta.TypeInt),
 					},
 				},
 				Tags: &dsl.FieldTags{

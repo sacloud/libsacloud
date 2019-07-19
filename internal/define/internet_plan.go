@@ -30,7 +30,7 @@ var (
 		Fields: []*dsl.FieldDesc{
 			fields.ID(),
 			fields.Name(),
-			fields.New("BandWidthMbps", meta.TypeInt),
+			fields.Def("BandWidthMbps", meta.TypeInt),
 			fields.Availability(),
 		},
 	}
