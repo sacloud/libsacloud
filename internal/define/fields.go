@@ -879,7 +879,7 @@ func (f *fieldsDef) GSLBDestinationServers() *dsl.FieldDesc {
 		},
 		Tags: &dsl.FieldTags{
 			MapConv:  "Settings.GSLB.[]Servers,recursive",
-			Validate: "min=0,max=6",
+			Validate: "min=0,max=12",
 		},
 	}
 }
