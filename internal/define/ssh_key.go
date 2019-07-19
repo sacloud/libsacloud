@@ -38,7 +38,6 @@ var sshKeyAPI = &dsl.Resource{
 				Name: sshKeyAPIName,
 			}),
 			Arguments: dsl.Arguments{
-				dsl.ArgumentZone,
 				dsl.MappableArgument("param", sshKeyGenerateParam, sshKeyAPIName),
 			},
 			ResponseEnvelope: dsl.ResponseEnvelope(&dsl.EnvelopePayloadDesc{

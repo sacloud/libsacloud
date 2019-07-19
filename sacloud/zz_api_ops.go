@@ -367,17 +367,12 @@ func (o *ArchiveOp) Find(ctx context.Context, zone string, conditions *FindCondi
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if conditions == nil {
 		conditions = &FindCondition{}
 	}
 	args := &struct {
-		Argzone       string
 		Argconditions *FindCondition `mapconv:",squash"`
 	}{
-		Argzone:       zone,
 		Argconditions: conditions,
 	}
 
@@ -419,17 +414,12 @@ func (o *ArchiveOp) Create(ctx context.Context, zone string, param *ArchiveCreat
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if param == nil {
 		param = &ArchiveCreateRequest{}
 	}
 	args := &struct {
-		Argzone  string
 		Argparam *ArchiveCreateRequest `mapconv:"Archive,recursive"`
 	}{
-		Argzone:  zone,
 		Argparam: param,
 	}
 
@@ -471,17 +461,12 @@ func (o *ArchiveOp) CreateBlank(ctx context.Context, zone string, param *Archive
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if param == nil {
 		param = &ArchiveCreateBlankRequest{}
 	}
 	args := &struct {
-		Argzone  string
 		Argparam *ArchiveCreateBlankRequest `mapconv:"Archive,recursive"`
 	}{
-		Argzone:  zone,
 		Argparam: param,
 	}
 
@@ -556,9 +541,6 @@ func (o *ArchiveOp) Update(ctx context.Context, zone string, id types.ID, param 
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -566,11 +548,9 @@ func (o *ArchiveOp) Update(ctx context.Context, zone string, id types.ID, param 
 		param = &ArchiveUpdateRequest{}
 	}
 	args := &struct {
-		Argzone  string
 		Argid    types.ID
 		Argparam *ArchiveUpdateRequest `mapconv:"Archive,recursive"`
 	}{
-		Argzone:  zone,
 		Argid:    id,
 		Argparam: param,
 	}
@@ -637,9 +617,6 @@ func (o *ArchiveOp) OpenFTP(ctx context.Context, zone string, id types.ID, openO
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -647,11 +624,9 @@ func (o *ArchiveOp) OpenFTP(ctx context.Context, zone string, id types.ID, openO
 		openOption = &OpenFTPRequest{}
 	}
 	args := &struct {
-		Argzone       string
 		Argid         types.ID
 		ArgopenOption *OpenFTPRequest `mapconv:",squash"`
 	}{
-		Argzone:       zone,
 		Argid:         id,
 		ArgopenOption: openOption,
 	}
@@ -722,12 +697,12 @@ func NewAuthStatusOp(caller APICaller) AuthStatusAPI {
 }
 
 // Read is API call
-func (o *AuthStatusOp) Read(ctx context.Context, zone string) (*AuthStatus, error) {
+func (o *AuthStatusOp) Read(ctx context.Context) (*AuthStatus, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 	})
 	if err != nil {
 		return nil, err
@@ -786,17 +761,12 @@ func (o *AutoBackupOp) Find(ctx context.Context, zone string, conditions *FindCo
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if conditions == nil {
 		conditions = &FindCondition{}
 	}
 	args := &struct {
-		Argzone       string
 		Argconditions *FindCondition `mapconv:",squash"`
 	}{
-		Argzone:       zone,
 		Argconditions: conditions,
 	}
 
@@ -838,17 +808,12 @@ func (o *AutoBackupOp) Create(ctx context.Context, zone string, param *AutoBacku
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if param == nil {
 		param = &AutoBackupCreateRequest{}
 	}
 	args := &struct {
-		Argzone  string
 		Argparam *AutoBackupCreateRequest `mapconv:"CommonServiceItem,recursive"`
 	}{
-		Argzone:  zone,
 		Argparam: param,
 	}
 
@@ -923,9 +888,6 @@ func (o *AutoBackupOp) Update(ctx context.Context, zone string, id types.ID, par
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -933,11 +895,9 @@ func (o *AutoBackupOp) Update(ctx context.Context, zone string, id types.ID, par
 		param = &AutoBackupUpdateRequest{}
 	}
 	args := &struct {
-		Argzone  string
 		Argid    types.ID
 		Argparam *AutoBackupUpdateRequest `mapconv:"CommonServiceItem,recursive"`
 	}{
-		Argzone:  zone,
 		Argid:    id,
 		Argparam: param,
 	}
@@ -1008,12 +968,12 @@ func NewBillOp(caller APICaller) BillAPI {
 }
 
 // ByContract is API call
-func (o *BillOp) ByContract(ctx context.Context, zone string, accountID types.ID) (*BillByContractResult, error) {
+func (o *BillOp) ByContract(ctx context.Context, accountID types.ID) (*BillByContractResult, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/by-contract/{{.accountID}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"accountID":  accountID,
 	})
 	if err != nil {
@@ -1040,12 +1000,12 @@ func (o *BillOp) ByContract(ctx context.Context, zone string, accountID types.ID
 }
 
 // ByContractYear is API call
-func (o *BillOp) ByContractYear(ctx context.Context, zone string, accountID types.ID, year int) (*BillByContractYearResult, error) {
+func (o *BillOp) ByContractYear(ctx context.Context, accountID types.ID, year int) (*BillByContractYearResult, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/by-contract/{{.accountID}}/{{.year}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"accountID":  accountID,
 		"year":       year,
 	})
@@ -1073,12 +1033,12 @@ func (o *BillOp) ByContractYear(ctx context.Context, zone string, accountID type
 }
 
 // ByContractYearMonth is API call
-func (o *BillOp) ByContractYearMonth(ctx context.Context, zone string, accountID types.ID, year int, month int) (*BillByContractYearMonthResult, error) {
+func (o *BillOp) ByContractYearMonth(ctx context.Context, accountID types.ID, year int, month int) (*BillByContractYearMonthResult, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/by-contract/{{.accountID}}/{{.year}}/{{.month}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"accountID":  accountID,
 		"year":       year,
 		"month":      month,
@@ -1107,12 +1067,12 @@ func (o *BillOp) ByContractYearMonth(ctx context.Context, zone string, accountID
 }
 
 // Read is API call
-func (o *BillOp) Read(ctx context.Context, zone string, id types.ID) (*BillReadResult, error) {
+func (o *BillOp) Read(ctx context.Context, id types.ID) (*BillReadResult, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/id/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"id":         id,
 	})
 	if err != nil {
@@ -1139,12 +1099,12 @@ func (o *BillOp) Read(ctx context.Context, zone string, id types.ID) (*BillReadR
 }
 
 // Details is API call
-func (o *BillOp) Details(ctx context.Context, zone string, MemberCode string, id types.ID) (*BillDetailsResult, error) {
+func (o *BillOp) Details(ctx context.Context, MemberCode string, id types.ID) (*BillDetailsResult, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}detail/{{.MemberCode}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"MemberCode": MemberCode,
 		"id":         id,
 	})
@@ -1172,12 +1132,12 @@ func (o *BillOp) Details(ctx context.Context, zone string, MemberCode string, id
 }
 
 // DetailsCSV is API call
-func (o *BillOp) DetailsCSV(ctx context.Context, zone string, MemberCode string, id types.ID) (*BillDetailCSV, error) {
+func (o *BillOp) DetailsCSV(ctx context.Context, MemberCode string, id types.ID) (*BillDetailCSV, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}detail/{{.MemberCode}}/{{.id}}/csv", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"MemberCode": MemberCode,
 		"id":         id,
 	})
@@ -1238,17 +1198,12 @@ func (o *BridgeOp) Find(ctx context.Context, zone string, conditions *FindCondit
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if conditions == nil {
 		conditions = &FindCondition{}
 	}
 	args := &struct {
-		Argzone       string
 		Argconditions *FindCondition `mapconv:",squash"`
 	}{
-		Argzone:       zone,
 		Argconditions: conditions,
 	}
 
@@ -1290,17 +1245,12 @@ func (o *BridgeOp) Create(ctx context.Context, zone string, param *BridgeCreateR
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if param == nil {
 		param = &BridgeCreateRequest{}
 	}
 	args := &struct {
-		Argzone  string
 		Argparam *BridgeCreateRequest `mapconv:"Bridge,recursive"`
 	}{
-		Argzone:  zone,
 		Argparam: param,
 	}
 
@@ -1375,9 +1325,6 @@ func (o *BridgeOp) Update(ctx context.Context, zone string, id types.ID, param *
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -1385,11 +1332,9 @@ func (o *BridgeOp) Update(ctx context.Context, zone string, id types.ID, param *
 		param = &BridgeUpdateRequest{}
 	}
 	args := &struct {
-		Argzone  string
 		Argid    types.ID
 		Argparam *BridgeUpdateRequest `mapconv:"Bridge,recursive"`
 	}{
-		Argzone:  zone,
 		Argid:    id,
 		Argparam: param,
 	}
@@ -1474,17 +1419,12 @@ func (o *CDROMOp) Find(ctx context.Context, zone string, conditions *FindConditi
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if conditions == nil {
 		conditions = &FindCondition{}
 	}
 	args := &struct {
-		Argzone       string
 		Argconditions *FindCondition `mapconv:",squash"`
 	}{
-		Argzone:       zone,
 		Argconditions: conditions,
 	}
 
@@ -1526,17 +1466,12 @@ func (o *CDROMOp) Create(ctx context.Context, zone string, param *CDROMCreateReq
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if param == nil {
 		param = &CDROMCreateRequest{}
 	}
 	args := &struct {
-		Argzone  string
 		Argparam *CDROMCreateRequest `mapconv:"CDROM,recursive"`
 	}{
-		Argzone:  zone,
 		Argparam: param,
 	}
 
@@ -1611,9 +1546,6 @@ func (o *CDROMOp) Update(ctx context.Context, zone string, id types.ID, param *C
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -1621,11 +1553,9 @@ func (o *CDROMOp) Update(ctx context.Context, zone string, id types.ID, param *C
 		param = &CDROMUpdateRequest{}
 	}
 	args := &struct {
-		Argzone  string
 		Argid    types.ID
 		Argparam *CDROMUpdateRequest `mapconv:"CDROM,recursive"`
 	}{
-		Argzone:  zone,
 		Argid:    id,
 		Argparam: param,
 	}
@@ -1692,9 +1622,6 @@ func (o *CDROMOp) OpenFTP(ctx context.Context, zone string, id types.ID, openOpt
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -1702,11 +1629,9 @@ func (o *CDROMOp) OpenFTP(ctx context.Context, zone string, id types.ID, openOpt
 		openOption = &OpenFTPRequest{}
 	}
 	args := &struct {
-		Argzone       string
 		Argid         types.ID
 		ArgopenOption *OpenFTPRequest `mapconv:",squash"`
 	}{
-		Argzone:       zone,
 		Argid:         id,
 		ArgopenOption: openOption,
 	}
@@ -1777,12 +1702,12 @@ func NewCouponOp(caller APICaller) CouponAPI {
 }
 
 // Find is API call
-func (o *CouponOp) Find(ctx context.Context, zone string, accountID types.ID) (*CouponFindResult, error) {
+func (o *CouponOp) Find(ctx context.Context, accountID types.ID) (*CouponFindResult, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.accountID}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"accountID":  accountID,
 	})
 	if err != nil {
@@ -1842,17 +1767,12 @@ func (o *DatabaseOp) Find(ctx context.Context, zone string, conditions *FindCond
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if conditions == nil {
 		conditions = &FindCondition{}
 	}
 	args := &struct {
-		Argzone       string
 		Argconditions *FindCondition `mapconv:",squash"`
 	}{
-		Argzone:       zone,
 		Argconditions: conditions,
 	}
 
@@ -1894,17 +1814,12 @@ func (o *DatabaseOp) Create(ctx context.Context, zone string, param *DatabaseCre
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if param == nil {
 		param = &DatabaseCreateRequest{}
 	}
 	args := &struct {
-		Argzone  string
 		Argparam *DatabaseCreateRequest `mapconv:"Appliance,recursive"`
 	}{
-		Argzone:  zone,
 		Argparam: param,
 	}
 
@@ -1979,9 +1894,6 @@ func (o *DatabaseOp) Update(ctx context.Context, zone string, id types.ID, param
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -1989,11 +1901,9 @@ func (o *DatabaseOp) Update(ctx context.Context, zone string, id types.ID, param
 		param = &DatabaseUpdateRequest{}
 	}
 	args := &struct {
-		Argzone  string
 		Argid    types.ID
 		Argparam *DatabaseUpdateRequest `mapconv:"Appliance,recursive"`
 	}{
-		Argzone:  zone,
 		Argid:    id,
 		Argparam: param,
 	}
@@ -2106,9 +2016,6 @@ func (o *DatabaseOp) Shutdown(ctx context.Context, zone string, id types.ID, shu
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -2116,11 +2023,9 @@ func (o *DatabaseOp) Shutdown(ctx context.Context, zone string, id types.ID, shu
 		shutdownOption = &ShutdownOption{}
 	}
 	args := &struct {
-		Argzone           string
 		Argid             types.ID
 		ArgshutdownOption *ShutdownOption `mapconv:",squash"`
 	}{
-		Argzone:           zone,
 		Argid:             id,
 		ArgshutdownOption: shutdownOption,
 	}
@@ -2178,9 +2083,6 @@ func (o *DatabaseOp) MonitorCPU(ctx context.Context, zone string, id types.ID, c
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -2188,11 +2090,9 @@ func (o *DatabaseOp) MonitorCPU(ctx context.Context, zone string, id types.ID, c
 		condition = &MonitorCondition{}
 	}
 	args := &struct {
-		Argzone      string
 		Argid        types.ID
 		Argcondition *MonitorCondition `mapconv:",squash"`
 	}{
-		Argzone:      zone,
 		Argid:        id,
 		Argcondition: condition,
 	}
@@ -2236,9 +2136,6 @@ func (o *DatabaseOp) MonitorDisk(ctx context.Context, zone string, id types.ID, 
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -2246,11 +2143,9 @@ func (o *DatabaseOp) MonitorDisk(ctx context.Context, zone string, id types.ID, 
 		condition = &MonitorCondition{}
 	}
 	args := &struct {
-		Argzone      string
 		Argid        types.ID
 		Argcondition *MonitorCondition `mapconv:",squash"`
 	}{
-		Argzone:      zone,
 		Argid:        id,
 		Argcondition: condition,
 	}
@@ -2294,9 +2189,6 @@ func (o *DatabaseOp) MonitorInterface(ctx context.Context, zone string, id types
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -2304,11 +2196,9 @@ func (o *DatabaseOp) MonitorInterface(ctx context.Context, zone string, id types
 		condition = &MonitorCondition{}
 	}
 	args := &struct {
-		Argzone      string
 		Argid        types.ID
 		Argcondition *MonitorCondition `mapconv:",squash"`
 	}{
-		Argzone:      zone,
 		Argid:        id,
 		Argcondition: condition,
 	}
@@ -2352,9 +2242,6 @@ func (o *DatabaseOp) MonitorDatabase(ctx context.Context, zone string, id types.
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -2362,11 +2249,9 @@ func (o *DatabaseOp) MonitorDatabase(ctx context.Context, zone string, id types.
 		condition = &MonitorCondition{}
 	}
 	args := &struct {
-		Argzone      string
 		Argid        types.ID
 		Argcondition *MonitorCondition `mapconv:",squash"`
 	}{
-		Argzone:      zone,
 		Argid:        id,
 		Argcondition: condition,
 	}
@@ -2460,17 +2345,12 @@ func (o *DiskOp) Find(ctx context.Context, zone string, conditions *FindConditio
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if conditions == nil {
 		conditions = &FindCondition{}
 	}
 	args := &struct {
-		Argzone       string
 		Argconditions *FindCondition `mapconv:",squash"`
 	}{
-		Argzone:       zone,
 		Argconditions: conditions,
 	}
 
@@ -2512,17 +2392,12 @@ func (o *DiskOp) Create(ctx context.Context, zone string, param *DiskCreateReque
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if param == nil {
 		param = &DiskCreateRequest{}
 	}
 	args := &struct {
-		Argzone  string
 		Argparam *DiskCreateRequest `mapconv:"Disk,recursive"`
 	}{
-		Argzone:  zone,
 		Argparam: param,
 	}
 
@@ -2565,9 +2440,6 @@ func (o *DiskOp) CreateDistantly(ctx context.Context, zone string, createParam *
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if createParam == nil {
 		createParam = &DiskCreateRequest{}
 	}
@@ -2575,11 +2447,9 @@ func (o *DiskOp) CreateDistantly(ctx context.Context, zone string, createParam *
 		distantFrom = []types.ID{}
 	}
 	args := &struct {
-		Argzone        string
 		ArgcreateParam *DiskCreateRequest `mapconv:"Disk"`
 		ArgdistantFrom []types.ID         `mapconv:"DistantFrom"`
 	}{
-		Argzone:        zone,
 		ArgcreateParam: createParam,
 		ArgdistantFrom: distantFrom,
 	}
@@ -2623,9 +2493,6 @@ func (o *DiskOp) Config(ctx context.Context, zone string, id types.ID, edit *Dis
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -2633,11 +2500,9 @@ func (o *DiskOp) Config(ctx context.Context, zone string, id types.ID, edit *Dis
 		edit = &DiskEditRequest{}
 	}
 	args := &struct {
-		Argzone string
 		Argid   types.ID
 		Argedit *DiskEditRequest `mapconv:",squash"`
 	}{
-		Argzone: zone,
 		Argid:   id,
 		Argedit: edit,
 	}
@@ -2673,9 +2538,6 @@ func (o *DiskOp) CreateWithConfig(ctx context.Context, zone string, createParam 
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if createParam == nil {
 		createParam = &DiskCreateRequest{}
 	}
@@ -2686,12 +2548,10 @@ func (o *DiskOp) CreateWithConfig(ctx context.Context, zone string, createParam 
 		bootAtAvailable = false
 	}
 	args := &struct {
-		Argzone            string
 		ArgcreateParam     *DiskCreateRequest `mapconv:"Disk"`
 		ArgeditParam       *DiskEditRequest   `mapconv:"Config"`
 		ArgbootAtAvailable bool               `mapconv:"BootAtAvailable"`
 	}{
-		Argzone:            zone,
 		ArgcreateParam:     createParam,
 		ArgeditParam:       editParam,
 		ArgbootAtAvailable: bootAtAvailable,
@@ -2738,9 +2598,6 @@ func (o *DiskOp) CreateWithConfigDistantly(ctx context.Context, zone string, cre
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if createParam == nil {
 		createParam = &DiskCreateRequest{}
 	}
@@ -2754,13 +2611,11 @@ func (o *DiskOp) CreateWithConfigDistantly(ctx context.Context, zone string, cre
 		distantFrom = []types.ID{}
 	}
 	args := &struct {
-		Argzone            string
 		ArgcreateParam     *DiskCreateRequest `mapconv:"Disk"`
 		ArgeditParam       *DiskEditRequest   `mapconv:"Config"`
 		ArgbootAtAvailable bool               `mapconv:"BootAtAvailable"`
 		ArgdistantFrom     []types.ID         `mapconv:"DistantFrom"`
 	}{
-		Argzone:            zone,
 		ArgcreateParam:     createParam,
 		ArgeditParam:       editParam,
 		ArgbootAtAvailable: bootAtAvailable,
@@ -2900,9 +2755,6 @@ func (o *DiskOp) InstallDistantFrom(ctx context.Context, zone string, id types.I
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -2913,12 +2765,10 @@ func (o *DiskOp) InstallDistantFrom(ctx context.Context, zone string, id types.I
 		distantFrom = []types.ID{}
 	}
 	args := &struct {
-		Argzone         string
 		Argid           types.ID
 		ArginstallParam *DiskInstallRequest `mapconv:"Disk"`
 		ArgdistantFrom  []types.ID          `mapconv:"DistantFrom"`
 	}{
-		Argzone:         zone,
 		Argid:           id,
 		ArginstallParam: installParam,
 		ArgdistantFrom:  distantFrom,
@@ -2963,9 +2813,6 @@ func (o *DiskOp) Install(ctx context.Context, zone string, id types.ID, installP
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -2973,11 +2820,9 @@ func (o *DiskOp) Install(ctx context.Context, zone string, id types.ID, installP
 		installParam = &DiskInstallRequest{}
 	}
 	args := &struct {
-		Argzone         string
 		Argid           types.ID
 		ArginstallParam *DiskInstallRequest `mapconv:"Disk"`
 	}{
-		Argzone:         zone,
 		Argid:           id,
 		ArginstallParam: installParam,
 	}
@@ -3053,9 +2898,6 @@ func (o *DiskOp) Update(ctx context.Context, zone string, id types.ID, param *Di
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -3063,11 +2905,9 @@ func (o *DiskOp) Update(ctx context.Context, zone string, id types.ID, param *Di
 		param = &DiskUpdateRequest{}
 	}
 	args := &struct {
-		Argzone  string
 		Argid    types.ID
 		Argparam *DiskUpdateRequest `mapconv:"Disk,recursive"`
 	}{
-		Argzone:  zone,
 		Argid:    id,
 		Argparam: param,
 	}
@@ -3134,9 +2974,6 @@ func (o *DiskOp) Monitor(ctx context.Context, zone string, id types.ID, conditio
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -3144,11 +2981,9 @@ func (o *DiskOp) Monitor(ctx context.Context, zone string, id types.ID, conditio
 		condition = &MonitorCondition{}
 	}
 	args := &struct {
-		Argzone      string
 		Argid        types.ID
 		Argcondition *MonitorCondition `mapconv:",squash"`
 	}{
-		Argzone:      zone,
 		Argid:        id,
 		Argcondition: condition,
 	}
@@ -3210,17 +3045,12 @@ func (o *DiskPlanOp) Find(ctx context.Context, zone string, conditions *FindCond
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if conditions == nil {
 		conditions = &FindCondition{}
 	}
 	args := &struct {
-		Argzone       string
 		Argconditions *FindCondition `mapconv:",squash"`
 	}{
-		Argzone:       zone,
 		Argconditions: conditions,
 	}
 
@@ -3299,12 +3129,12 @@ func NewDNSOp(caller APICaller) DNSAPI {
 }
 
 // Find is API call
-func (o *DNSOp) Find(ctx context.Context, zone string, conditions *FindCondition) (*DNSFindResult, error) {
+func (o *DNSOp) Find(ctx context.Context, conditions *FindCondition) (*DNSFindResult, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"conditions": conditions,
 	})
 	if err != nil {
@@ -3313,17 +3143,12 @@ func (o *DNSOp) Find(ctx context.Context, zone string, conditions *FindCondition
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if conditions == nil {
 		conditions = &FindCondition{}
 	}
 	args := &struct {
-		Argzone       string
 		Argconditions *FindCondition `mapconv:",squash"`
 	}{
-		Argzone:       zone,
 		Argconditions: conditions,
 	}
 
@@ -3351,12 +3176,12 @@ func (o *DNSOp) Find(ctx context.Context, zone string, conditions *FindCondition
 }
 
 // Create is API call
-func (o *DNSOp) Create(ctx context.Context, zone string, param *DNSCreateRequest) (*DNS, error) {
+func (o *DNSOp) Create(ctx context.Context, param *DNSCreateRequest) (*DNS, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"param":      param,
 	})
 	if err != nil {
@@ -3365,17 +3190,12 @@ func (o *DNSOp) Create(ctx context.Context, zone string, param *DNSCreateRequest
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if param == nil {
 		param = &DNSCreateRequest{}
 	}
 	args := &struct {
-		Argzone  string
 		Argparam *DNSCreateRequest `mapconv:"CommonServiceItem,recursive"`
 	}{
-		Argzone:  zone,
 		Argparam: param,
 	}
 
@@ -3403,12 +3223,12 @@ func (o *DNSOp) Create(ctx context.Context, zone string, param *DNSCreateRequest
 }
 
 // Read is API call
-func (o *DNSOp) Read(ctx context.Context, zone string, id types.ID) (*DNS, error) {
+func (o *DNSOp) Read(ctx context.Context, id types.ID) (*DNS, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"id":         id,
 	})
 	if err != nil {
@@ -3435,12 +3255,12 @@ func (o *DNSOp) Read(ctx context.Context, zone string, id types.ID) (*DNS, error
 }
 
 // Update is API call
-func (o *DNSOp) Update(ctx context.Context, zone string, id types.ID, param *DNSUpdateRequest) (*DNS, error) {
+func (o *DNSOp) Update(ctx context.Context, id types.ID, param *DNSUpdateRequest) (*DNS, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"id":         id,
 		"param":      param,
 	})
@@ -3450,9 +3270,6 @@ func (o *DNSOp) Update(ctx context.Context, zone string, id types.ID, param *DNS
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -3460,11 +3277,9 @@ func (o *DNSOp) Update(ctx context.Context, zone string, id types.ID, param *DNS
 		param = &DNSUpdateRequest{}
 	}
 	args := &struct {
-		Argzone  string
 		Argid    types.ID
 		Argparam *DNSUpdateRequest `mapconv:"CommonServiceItem,recursive"`
 	}{
-		Argzone:  zone,
 		Argid:    id,
 		Argparam: param,
 	}
@@ -3493,12 +3308,12 @@ func (o *DNSOp) Update(ctx context.Context, zone string, id types.ID, param *DNS
 }
 
 // Delete is API call
-func (o *DNSOp) Delete(ctx context.Context, zone string, id types.ID) error {
+func (o *DNSOp) Delete(ctx context.Context, id types.ID) error {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"id":         id,
 	})
 	if err != nil {
@@ -3535,12 +3350,12 @@ func NewGSLBOp(caller APICaller) GSLBAPI {
 }
 
 // Find is API call
-func (o *GSLBOp) Find(ctx context.Context, zone string, conditions *FindCondition) (*GSLBFindResult, error) {
+func (o *GSLBOp) Find(ctx context.Context, conditions *FindCondition) (*GSLBFindResult, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"conditions": conditions,
 	})
 	if err != nil {
@@ -3549,17 +3364,12 @@ func (o *GSLBOp) Find(ctx context.Context, zone string, conditions *FindConditio
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if conditions == nil {
 		conditions = &FindCondition{}
 	}
 	args := &struct {
-		Argzone       string
 		Argconditions *FindCondition `mapconv:",squash"`
 	}{
-		Argzone:       zone,
 		Argconditions: conditions,
 	}
 
@@ -3587,12 +3397,12 @@ func (o *GSLBOp) Find(ctx context.Context, zone string, conditions *FindConditio
 }
 
 // Create is API call
-func (o *GSLBOp) Create(ctx context.Context, zone string, param *GSLBCreateRequest) (*GSLB, error) {
+func (o *GSLBOp) Create(ctx context.Context, param *GSLBCreateRequest) (*GSLB, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"param":      param,
 	})
 	if err != nil {
@@ -3601,17 +3411,12 @@ func (o *GSLBOp) Create(ctx context.Context, zone string, param *GSLBCreateReque
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if param == nil {
 		param = &GSLBCreateRequest{}
 	}
 	args := &struct {
-		Argzone  string
 		Argparam *GSLBCreateRequest `mapconv:"CommonServiceItem,recursive"`
 	}{
-		Argzone:  zone,
 		Argparam: param,
 	}
 
@@ -3639,12 +3444,12 @@ func (o *GSLBOp) Create(ctx context.Context, zone string, param *GSLBCreateReque
 }
 
 // Read is API call
-func (o *GSLBOp) Read(ctx context.Context, zone string, id types.ID) (*GSLB, error) {
+func (o *GSLBOp) Read(ctx context.Context, id types.ID) (*GSLB, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"id":         id,
 	})
 	if err != nil {
@@ -3671,12 +3476,12 @@ func (o *GSLBOp) Read(ctx context.Context, zone string, id types.ID) (*GSLB, err
 }
 
 // Update is API call
-func (o *GSLBOp) Update(ctx context.Context, zone string, id types.ID, param *GSLBUpdateRequest) (*GSLB, error) {
+func (o *GSLBOp) Update(ctx context.Context, id types.ID, param *GSLBUpdateRequest) (*GSLB, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"id":         id,
 		"param":      param,
 	})
@@ -3686,9 +3491,6 @@ func (o *GSLBOp) Update(ctx context.Context, zone string, id types.ID, param *GS
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -3696,11 +3498,9 @@ func (o *GSLBOp) Update(ctx context.Context, zone string, id types.ID, param *GS
 		param = &GSLBUpdateRequest{}
 	}
 	args := &struct {
-		Argzone  string
 		Argid    types.ID
 		Argparam *GSLBUpdateRequest `mapconv:"CommonServiceItem,recursive"`
 	}{
-		Argzone:  zone,
 		Argid:    id,
 		Argparam: param,
 	}
@@ -3729,12 +3529,12 @@ func (o *GSLBOp) Update(ctx context.Context, zone string, id types.ID, param *GS
 }
 
 // Delete is API call
-func (o *GSLBOp) Delete(ctx context.Context, zone string, id types.ID) error {
+func (o *GSLBOp) Delete(ctx context.Context, id types.ID) error {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"id":         id,
 	})
 	if err != nil {
@@ -3771,12 +3571,12 @@ func NewIconOp(caller APICaller) IconAPI {
 }
 
 // Find is API call
-func (o *IconOp) Find(ctx context.Context, zone string, conditions *FindCondition) (*IconFindResult, error) {
+func (o *IconOp) Find(ctx context.Context, conditions *FindCondition) (*IconFindResult, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"conditions": conditions,
 	})
 	if err != nil {
@@ -3785,17 +3585,12 @@ func (o *IconOp) Find(ctx context.Context, zone string, conditions *FindConditio
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if conditions == nil {
 		conditions = &FindCondition{}
 	}
 	args := &struct {
-		Argzone       string
 		Argconditions *FindCondition `mapconv:",squash"`
 	}{
-		Argzone:       zone,
 		Argconditions: conditions,
 	}
 
@@ -3823,12 +3618,12 @@ func (o *IconOp) Find(ctx context.Context, zone string, conditions *FindConditio
 }
 
 // Create is API call
-func (o *IconOp) Create(ctx context.Context, zone string, param *IconCreateRequest) (*Icon, error) {
+func (o *IconOp) Create(ctx context.Context, param *IconCreateRequest) (*Icon, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"param":      param,
 	})
 	if err != nil {
@@ -3837,17 +3632,12 @@ func (o *IconOp) Create(ctx context.Context, zone string, param *IconCreateReque
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if param == nil {
 		param = &IconCreateRequest{}
 	}
 	args := &struct {
-		Argzone  string
 		Argparam *IconCreateRequest `mapconv:"Icon,recursive"`
 	}{
-		Argzone:  zone,
 		Argparam: param,
 	}
 
@@ -3875,12 +3665,12 @@ func (o *IconOp) Create(ctx context.Context, zone string, param *IconCreateReque
 }
 
 // Read is API call
-func (o *IconOp) Read(ctx context.Context, zone string, id types.ID) (*Icon, error) {
+func (o *IconOp) Read(ctx context.Context, id types.ID) (*Icon, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"id":         id,
 	})
 	if err != nil {
@@ -3907,12 +3697,12 @@ func (o *IconOp) Read(ctx context.Context, zone string, id types.ID) (*Icon, err
 }
 
 // Update is API call
-func (o *IconOp) Update(ctx context.Context, zone string, id types.ID, param *IconUpdateRequest) (*Icon, error) {
+func (o *IconOp) Update(ctx context.Context, id types.ID, param *IconUpdateRequest) (*Icon, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"id":         id,
 		"param":      param,
 	})
@@ -3922,9 +3712,6 @@ func (o *IconOp) Update(ctx context.Context, zone string, id types.ID, param *Ic
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -3932,11 +3719,9 @@ func (o *IconOp) Update(ctx context.Context, zone string, id types.ID, param *Ic
 		param = &IconUpdateRequest{}
 	}
 	args := &struct {
-		Argzone  string
 		Argid    types.ID
 		Argparam *IconUpdateRequest `mapconv:"Icon,recursive"`
 	}{
-		Argzone:  zone,
 		Argid:    id,
 		Argparam: param,
 	}
@@ -3965,12 +3750,12 @@ func (o *IconOp) Update(ctx context.Context, zone string, id types.ID, param *Ic
 }
 
 // Delete is API call
-func (o *IconOp) Delete(ctx context.Context, zone string, id types.ID) error {
+func (o *IconOp) Delete(ctx context.Context, id types.ID) error {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"id":         id,
 	})
 	if err != nil {
@@ -4021,17 +3806,12 @@ func (o *InterfaceOp) Find(ctx context.Context, zone string, conditions *FindCon
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if conditions == nil {
 		conditions = &FindCondition{}
 	}
 	args := &struct {
-		Argzone       string
 		Argconditions *FindCondition `mapconv:",squash"`
 	}{
-		Argzone:       zone,
 		Argconditions: conditions,
 	}
 
@@ -4073,17 +3853,12 @@ func (o *InterfaceOp) Create(ctx context.Context, zone string, param *InterfaceC
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if param == nil {
 		param = &InterfaceCreateRequest{}
 	}
 	args := &struct {
-		Argzone  string
 		Argparam *InterfaceCreateRequest `mapconv:"Interface,recursive"`
 	}{
-		Argzone:  zone,
 		Argparam: param,
 	}
 
@@ -4158,9 +3933,6 @@ func (o *InterfaceOp) Update(ctx context.Context, zone string, id types.ID, para
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -4168,11 +3940,9 @@ func (o *InterfaceOp) Update(ctx context.Context, zone string, id types.ID, para
 		param = &InterfaceUpdateRequest{}
 	}
 	args := &struct {
-		Argzone  string
 		Argid    types.ID
 		Argparam *InterfaceUpdateRequest `mapconv:"Interface,recursive"`
 	}{
-		Argzone:  zone,
 		Argid:    id,
 		Argparam: param,
 	}
@@ -4239,9 +4009,6 @@ func (o *InterfaceOp) Monitor(ctx context.Context, zone string, id types.ID, con
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -4249,11 +4016,9 @@ func (o *InterfaceOp) Monitor(ctx context.Context, zone string, id types.ID, con
 		condition = &MonitorCondition{}
 	}
 	args := &struct {
-		Argzone      string
 		Argid        types.ID
 		Argcondition *MonitorCondition `mapconv:",squash"`
 	}{
-		Argzone:      zone,
 		Argid:        id,
 		Argcondition: condition,
 	}
@@ -4432,17 +4197,12 @@ func (o *InternetOp) Find(ctx context.Context, zone string, conditions *FindCond
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if conditions == nil {
 		conditions = &FindCondition{}
 	}
 	args := &struct {
-		Argzone       string
 		Argconditions *FindCondition `mapconv:",squash"`
 	}{
-		Argzone:       zone,
 		Argconditions: conditions,
 	}
 
@@ -4484,17 +4244,12 @@ func (o *InternetOp) Create(ctx context.Context, zone string, param *InternetCre
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if param == nil {
 		param = &InternetCreateRequest{}
 	}
 	args := &struct {
-		Argzone  string
 		Argparam *InternetCreateRequest `mapconv:"Internet,recursive"`
 	}{
-		Argzone:  zone,
 		Argparam: param,
 	}
 
@@ -4569,9 +4324,6 @@ func (o *InternetOp) Update(ctx context.Context, zone string, id types.ID, param
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -4579,11 +4331,9 @@ func (o *InternetOp) Update(ctx context.Context, zone string, id types.ID, param
 		param = &InternetUpdateRequest{}
 	}
 	args := &struct {
-		Argzone  string
 		Argid    types.ID
 		Argparam *InternetUpdateRequest `mapconv:"Internet,recursive"`
 	}{
-		Argzone:  zone,
 		Argid:    id,
 		Argparam: param,
 	}
@@ -4650,9 +4400,6 @@ func (o *InternetOp) UpdateBandWidth(ctx context.Context, zone string, id types.
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -4660,11 +4407,9 @@ func (o *InternetOp) UpdateBandWidth(ctx context.Context, zone string, id types.
 		param = &InternetUpdateBandWidthRequest{}
 	}
 	args := &struct {
-		Argzone  string
 		Argid    types.ID
 		Argparam *InternetUpdateBandWidthRequest `mapconv:"Internet,recursive"`
 	}{
-		Argzone:  zone,
 		Argid:    id,
 		Argparam: param,
 	}
@@ -4708,9 +4453,6 @@ func (o *InternetOp) AddSubnet(ctx context.Context, zone string, id types.ID, pa
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -4718,11 +4460,9 @@ func (o *InternetOp) AddSubnet(ctx context.Context, zone string, id types.ID, pa
 		param = &InternetAddSubnetRequest{}
 	}
 	args := &struct {
-		Argzone  string
 		Argid    types.ID
 		Argparam *InternetAddSubnetRequest `mapconv:",squash"`
 	}{
-		Argzone:  zone,
 		Argid:    id,
 		Argparam: param,
 	}
@@ -4767,9 +4507,6 @@ func (o *InternetOp) UpdateSubnet(ctx context.Context, zone string, id types.ID,
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -4780,12 +4517,10 @@ func (o *InternetOp) UpdateSubnet(ctx context.Context, zone string, id types.ID,
 		param = &InternetUpdateSubnetRequest{}
 	}
 	args := &struct {
-		Argzone     string
 		Argid       types.ID
 		ArgsubnetID types.ID
 		Argparam    *InternetUpdateSubnetRequest `mapconv:",squash"`
 	}{
-		Argzone:     zone,
 		Argid:       id,
 		ArgsubnetID: subnetID,
 		Argparam:    param,
@@ -4854,9 +4589,6 @@ func (o *InternetOp) Monitor(ctx context.Context, zone string, id types.ID, cond
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -4864,11 +4596,9 @@ func (o *InternetOp) Monitor(ctx context.Context, zone string, id types.ID, cond
 		condition = &MonitorCondition{}
 	}
 	args := &struct {
-		Argzone      string
 		Argid        types.ID
 		Argcondition *MonitorCondition `mapconv:",squash"`
 	}{
-		Argzone:      zone,
 		Argid:        id,
 		Argcondition: condition,
 	}
@@ -4986,17 +4716,12 @@ func (o *InternetPlanOp) Find(ctx context.Context, zone string, conditions *Find
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if conditions == nil {
 		conditions = &FindCondition{}
 	}
 	args := &struct {
-		Argzone       string
 		Argconditions *FindCondition `mapconv:",squash"`
 	}{
-		Argzone:       zone,
 		Argconditions: conditions,
 	}
 
@@ -5153,9 +4878,6 @@ func (o *IPAddressOp) UpdateHostName(ctx context.Context, zone string, ipAddress
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if ipAddress == "" {
 		ipAddress = ""
 	}
@@ -5163,11 +4885,9 @@ func (o *IPAddressOp) UpdateHostName(ctx context.Context, zone string, ipAddress
 		hostName = ""
 	}
 	args := &struct {
-		Argzone      string
 		ArgipAddress string
 		ArghostName  string `mapconv:"IPAddress.HostName"`
 	}{
-		Argzone:      zone,
 		ArgipAddress: ipAddress,
 		ArghostName:  hostName,
 	}
@@ -5311,17 +5031,12 @@ func (o *IPv6AddrOp) Find(ctx context.Context, zone string, conditions *FindCond
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if conditions == nil {
 		conditions = &FindCondition{}
 	}
 	args := &struct {
-		Argzone       string
 		Argconditions *FindCondition `mapconv:",squash"`
 	}{
-		Argzone:       zone,
 		Argconditions: conditions,
 	}
 
@@ -5363,17 +5078,12 @@ func (o *IPv6AddrOp) Create(ctx context.Context, zone string, param *IPv6AddrCre
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if param == nil {
 		param = &IPv6AddrCreateRequest{}
 	}
 	args := &struct {
-		Argzone  string
 		Argparam *IPv6AddrCreateRequest `mapconv:"IPv6Addr,recursive"`
 	}{
-		Argzone:  zone,
 		Argparam: param,
 	}
 
@@ -5448,9 +5158,6 @@ func (o *IPv6AddrOp) Update(ctx context.Context, zone string, ipv6addr string, p
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if ipv6addr == "" {
 		ipv6addr = ""
 	}
@@ -5458,11 +5165,9 @@ func (o *IPv6AddrOp) Update(ctx context.Context, zone string, ipv6addr string, p
 		param = &IPv6AddrUpdateRequest{}
 	}
 	args := &struct {
-		Argzone     string
 		Argipv6addr string
 		Argparam    *IPv6AddrUpdateRequest `mapconv:"IPv6Addr,recursive"`
 	}{
-		Argzone:     zone,
 		Argipv6addr: ipv6addr,
 		Argparam:    param,
 	}
@@ -5533,12 +5238,12 @@ func NewLicenseOp(caller APICaller) LicenseAPI {
 }
 
 // Find is API call
-func (o *LicenseOp) Find(ctx context.Context, zone string, conditions *FindCondition) (*LicenseFindResult, error) {
+func (o *LicenseOp) Find(ctx context.Context, conditions *FindCondition) (*LicenseFindResult, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"conditions": conditions,
 	})
 	if err != nil {
@@ -5547,17 +5252,12 @@ func (o *LicenseOp) Find(ctx context.Context, zone string, conditions *FindCondi
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if conditions == nil {
 		conditions = &FindCondition{}
 	}
 	args := &struct {
-		Argzone       string
 		Argconditions *FindCondition `mapconv:",squash"`
 	}{
-		Argzone:       zone,
 		Argconditions: conditions,
 	}
 
@@ -5585,12 +5285,12 @@ func (o *LicenseOp) Find(ctx context.Context, zone string, conditions *FindCondi
 }
 
 // Create is API call
-func (o *LicenseOp) Create(ctx context.Context, zone string, param *LicenseCreateRequest) (*License, error) {
+func (o *LicenseOp) Create(ctx context.Context, param *LicenseCreateRequest) (*License, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"param":      param,
 	})
 	if err != nil {
@@ -5599,17 +5299,12 @@ func (o *LicenseOp) Create(ctx context.Context, zone string, param *LicenseCreat
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if param == nil {
 		param = &LicenseCreateRequest{}
 	}
 	args := &struct {
-		Argzone  string
 		Argparam *LicenseCreateRequest `mapconv:"License,recursive"`
 	}{
-		Argzone:  zone,
 		Argparam: param,
 	}
 
@@ -5637,12 +5332,12 @@ func (o *LicenseOp) Create(ctx context.Context, zone string, param *LicenseCreat
 }
 
 // Read is API call
-func (o *LicenseOp) Read(ctx context.Context, zone string, id types.ID) (*License, error) {
+func (o *LicenseOp) Read(ctx context.Context, id types.ID) (*License, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"id":         id,
 	})
 	if err != nil {
@@ -5669,12 +5364,12 @@ func (o *LicenseOp) Read(ctx context.Context, zone string, id types.ID) (*Licens
 }
 
 // Update is API call
-func (o *LicenseOp) Update(ctx context.Context, zone string, id types.ID, param *LicenseUpdateRequest) (*License, error) {
+func (o *LicenseOp) Update(ctx context.Context, id types.ID, param *LicenseUpdateRequest) (*License, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"id":         id,
 		"param":      param,
 	})
@@ -5684,9 +5379,6 @@ func (o *LicenseOp) Update(ctx context.Context, zone string, id types.ID, param 
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -5694,11 +5386,9 @@ func (o *LicenseOp) Update(ctx context.Context, zone string, id types.ID, param 
 		param = &LicenseUpdateRequest{}
 	}
 	args := &struct {
-		Argzone  string
 		Argid    types.ID
 		Argparam *LicenseUpdateRequest `mapconv:"License,recursive"`
 	}{
-		Argzone:  zone,
 		Argid:    id,
 		Argparam: param,
 	}
@@ -5727,12 +5417,12 @@ func (o *LicenseOp) Update(ctx context.Context, zone string, id types.ID, param 
 }
 
 // Delete is API call
-func (o *LicenseOp) Delete(ctx context.Context, zone string, id types.ID) error {
+func (o *LicenseOp) Delete(ctx context.Context, id types.ID) error {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"id":         id,
 	})
 	if err != nil {
@@ -5769,12 +5459,12 @@ func NewLicenseInfoOp(caller APICaller) LicenseInfoAPI {
 }
 
 // Find is API call
-func (o *LicenseInfoOp) Find(ctx context.Context, zone string, conditions *FindCondition) (*LicenseInfoFindResult, error) {
+func (o *LicenseInfoOp) Find(ctx context.Context, conditions *FindCondition) (*LicenseInfoFindResult, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"conditions": conditions,
 	})
 	if err != nil {
@@ -5783,17 +5473,12 @@ func (o *LicenseInfoOp) Find(ctx context.Context, zone string, conditions *FindC
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if conditions == nil {
 		conditions = &FindCondition{}
 	}
 	args := &struct {
-		Argzone       string
 		Argconditions *FindCondition `mapconv:",squash"`
 	}{
-		Argzone:       zone,
 		Argconditions: conditions,
 	}
 
@@ -5821,12 +5506,12 @@ func (o *LicenseInfoOp) Find(ctx context.Context, zone string, conditions *FindC
 }
 
 // Read is API call
-func (o *LicenseInfoOp) Read(ctx context.Context, zone string, id types.ID) (*LicenseInfo, error) {
+func (o *LicenseInfoOp) Read(ctx context.Context, id types.ID) (*LicenseInfo, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"id":         id,
 	})
 	if err != nil {
@@ -5886,17 +5571,12 @@ func (o *LoadBalancerOp) Find(ctx context.Context, zone string, conditions *Find
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if conditions == nil {
 		conditions = &FindCondition{}
 	}
 	args := &struct {
-		Argzone       string
 		Argconditions *FindCondition `mapconv:",squash"`
 	}{
-		Argzone:       zone,
 		Argconditions: conditions,
 	}
 
@@ -5938,17 +5618,12 @@ func (o *LoadBalancerOp) Create(ctx context.Context, zone string, param *LoadBal
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if param == nil {
 		param = &LoadBalancerCreateRequest{}
 	}
 	args := &struct {
-		Argzone  string
 		Argparam *LoadBalancerCreateRequest `mapconv:"Appliance,recursive"`
 	}{
-		Argzone:  zone,
 		Argparam: param,
 	}
 
@@ -6023,9 +5698,6 @@ func (o *LoadBalancerOp) Update(ctx context.Context, zone string, id types.ID, p
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -6033,11 +5705,9 @@ func (o *LoadBalancerOp) Update(ctx context.Context, zone string, id types.ID, p
 		param = &LoadBalancerUpdateRequest{}
 	}
 	args := &struct {
-		Argzone  string
 		Argid    types.ID
 		Argparam *LoadBalancerUpdateRequest `mapconv:"Appliance,recursive"`
 	}{
-		Argzone:  zone,
 		Argid:    id,
 		Argparam: param,
 	}
@@ -6150,9 +5820,6 @@ func (o *LoadBalancerOp) Shutdown(ctx context.Context, zone string, id types.ID,
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -6160,11 +5827,9 @@ func (o *LoadBalancerOp) Shutdown(ctx context.Context, zone string, id types.ID,
 		shutdownOption = &ShutdownOption{}
 	}
 	args := &struct {
-		Argzone           string
 		Argid             types.ID
 		ArgshutdownOption *ShutdownOption `mapconv:",squash"`
 	}{
-		Argzone:           zone,
 		Argid:             id,
 		ArgshutdownOption: shutdownOption,
 	}
@@ -6222,9 +5887,6 @@ func (o *LoadBalancerOp) MonitorInterface(ctx context.Context, zone string, id t
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -6232,11 +5894,9 @@ func (o *LoadBalancerOp) MonitorInterface(ctx context.Context, zone string, id t
 		condition = &MonitorCondition{}
 	}
 	args := &struct {
-		Argzone      string
 		Argid        types.ID
 		Argcondition *MonitorCondition `mapconv:",squash"`
 	}{
-		Argzone:      zone,
 		Argid:        id,
 		Argcondition: condition,
 	}
@@ -6330,17 +5990,12 @@ func (o *MobileGatewayOp) Find(ctx context.Context, zone string, conditions *Fin
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if conditions == nil {
 		conditions = &FindCondition{}
 	}
 	args := &struct {
-		Argzone       string
 		Argconditions *FindCondition `mapconv:",squash"`
 	}{
-		Argzone:       zone,
 		Argconditions: conditions,
 	}
 
@@ -6382,17 +6037,12 @@ func (o *MobileGatewayOp) Create(ctx context.Context, zone string, param *Mobile
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if param == nil {
 		param = &MobileGatewayCreateRequest{}
 	}
 	args := &struct {
-		Argzone  string
 		Argparam *MobileGatewayCreateRequest `mapconv:"Appliance,recursive"`
 	}{
-		Argzone:  zone,
 		Argparam: param,
 	}
 
@@ -6467,9 +6117,6 @@ func (o *MobileGatewayOp) Update(ctx context.Context, zone string, id types.ID, 
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -6477,11 +6124,9 @@ func (o *MobileGatewayOp) Update(ctx context.Context, zone string, id types.ID, 
 		param = &MobileGatewayUpdateRequest{}
 	}
 	args := &struct {
-		Argzone  string
 		Argid    types.ID
 		Argparam *MobileGatewayUpdateRequest `mapconv:"Appliance,recursive"`
 	}{
-		Argzone:  zone,
 		Argid:    id,
 		Argparam: param,
 	}
@@ -6594,9 +6239,6 @@ func (o *MobileGatewayOp) Shutdown(ctx context.Context, zone string, id types.ID
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -6604,11 +6246,9 @@ func (o *MobileGatewayOp) Shutdown(ctx context.Context, zone string, id types.ID
 		shutdownOption = &ShutdownOption{}
 	}
 	args := &struct {
-		Argzone           string
 		Argid             types.ID
 		ArgshutdownOption *ShutdownOption `mapconv:",squash"`
 	}{
-		Argzone:           zone,
 		Argid:             id,
 		ArgshutdownOption: shutdownOption,
 	}
@@ -6745,9 +6385,6 @@ func (o *MobileGatewayOp) SetDNS(ctx context.Context, zone string, id types.ID, 
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -6755,11 +6392,9 @@ func (o *MobileGatewayOp) SetDNS(ctx context.Context, zone string, id types.ID, 
 		param = &MobileGatewayDNSSetting{}
 	}
 	args := &struct {
-		Argzone  string
 		Argid    types.ID
 		Argparam *MobileGatewayDNSSetting `mapconv:"SIMGroup,recursive"`
 	}{
-		Argzone:  zone,
 		Argid:    id,
 		Argparam: param,
 	}
@@ -6826,9 +6461,6 @@ func (o *MobileGatewayOp) SetSIMRoutes(ctx context.Context, zone string, id type
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -6836,11 +6468,9 @@ func (o *MobileGatewayOp) SetSIMRoutes(ctx context.Context, zone string, id type
 		param = []*MobileGatewaySIMRouteParam{}
 	}
 	args := &struct {
-		Argzone  string
 		Argid    types.ID
 		Argparam []*MobileGatewaySIMRouteParam `mapconv:"[]SIMRoutes,recursive"`
 	}{
-		Argzone:  zone,
 		Argid:    id,
 		Argparam: param,
 	}
@@ -6907,9 +6537,6 @@ func (o *MobileGatewayOp) AddSIM(ctx context.Context, zone string, id types.ID, 
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -6917,11 +6544,9 @@ func (o *MobileGatewayOp) AddSIM(ctx context.Context, zone string, id types.ID, 
 		param = &MobileGatewayAddSIMRequest{}
 	}
 	args := &struct {
-		Argzone  string
 		Argid    types.ID
 		Argparam *MobileGatewayAddSIMRequest `mapconv:"SIM,recursive"`
 	}{
-		Argzone:  zone,
 		Argid:    id,
 		Argparam: param,
 	}
@@ -7044,9 +6669,6 @@ func (o *MobileGatewayOp) SetTrafficConfig(ctx context.Context, zone string, id 
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -7054,11 +6676,9 @@ func (o *MobileGatewayOp) SetTrafficConfig(ctx context.Context, zone string, id 
 		param = &MobileGatewayTrafficControl{}
 	}
 	args := &struct {
-		Argzone  string
 		Argid    types.ID
 		Argparam *MobileGatewayTrafficControl `mapconv:"TrafficMonitoring,recursive"`
 	}{
-		Argzone:  zone,
 		Argid:    id,
 		Argparam: param,
 	}
@@ -7149,9 +6769,6 @@ func (o *MobileGatewayOp) MonitorInterface(ctx context.Context, zone string, id 
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -7162,12 +6779,10 @@ func (o *MobileGatewayOp) MonitorInterface(ctx context.Context, zone string, id 
 		condition = &MonitorCondition{}
 	}
 	args := &struct {
-		Argzone      string
 		Argid        types.ID
 		Argindex     int
 		Argcondition *MonitorCondition `mapconv:",squash"`
 	}{
-		Argzone:      zone,
 		Argid:        id,
 		Argindex:     index,
 		Argcondition: condition,
@@ -7230,17 +6845,12 @@ func (o *NFSOp) Find(ctx context.Context, zone string, conditions *FindCondition
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if conditions == nil {
 		conditions = &FindCondition{}
 	}
 	args := &struct {
-		Argzone       string
 		Argconditions *FindCondition `mapconv:",squash"`
 	}{
-		Argzone:       zone,
 		Argconditions: conditions,
 	}
 
@@ -7282,17 +6892,12 @@ func (o *NFSOp) Create(ctx context.Context, zone string, param *NFSCreateRequest
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if param == nil {
 		param = &NFSCreateRequest{}
 	}
 	args := &struct {
-		Argzone  string
 		Argparam *NFSCreateRequest `mapconv:"Appliance,recursive"`
 	}{
-		Argzone:  zone,
 		Argparam: param,
 	}
 
@@ -7367,9 +6972,6 @@ func (o *NFSOp) Update(ctx context.Context, zone string, id types.ID, param *NFS
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -7377,11 +6979,9 @@ func (o *NFSOp) Update(ctx context.Context, zone string, id types.ID, param *NFS
 		param = &NFSUpdateRequest{}
 	}
 	args := &struct {
-		Argzone  string
 		Argid    types.ID
 		Argparam *NFSUpdateRequest `mapconv:"Appliance,recursive"`
 	}{
-		Argzone:  zone,
 		Argid:    id,
 		Argparam: param,
 	}
@@ -7471,9 +7071,6 @@ func (o *NFSOp) Shutdown(ctx context.Context, zone string, id types.ID, shutdown
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -7481,11 +7078,9 @@ func (o *NFSOp) Shutdown(ctx context.Context, zone string, id types.ID, shutdown
 		shutdownOption = &ShutdownOption{}
 	}
 	args := &struct {
-		Argzone           string
 		Argid             types.ID
 		ArgshutdownOption *ShutdownOption `mapconv:",squash"`
 	}{
-		Argzone:           zone,
 		Argid:             id,
 		ArgshutdownOption: shutdownOption,
 	}
@@ -7543,9 +7138,6 @@ func (o *NFSOp) MonitorFreeDiskSize(ctx context.Context, zone string, id types.I
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -7553,11 +7145,9 @@ func (o *NFSOp) MonitorFreeDiskSize(ctx context.Context, zone string, id types.I
 		condition = &MonitorCondition{}
 	}
 	args := &struct {
-		Argzone      string
 		Argid        types.ID
 		Argcondition *MonitorCondition `mapconv:",squash"`
 	}{
-		Argzone:      zone,
 		Argid:        id,
 		Argcondition: condition,
 	}
@@ -7601,9 +7191,6 @@ func (o *NFSOp) MonitorInterface(ctx context.Context, zone string, id types.ID, 
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -7611,11 +7198,9 @@ func (o *NFSOp) MonitorInterface(ctx context.Context, zone string, id types.ID, 
 		condition = &MonitorCondition{}
 	}
 	args := &struct {
-		Argzone      string
 		Argid        types.ID
 		Argcondition *MonitorCondition `mapconv:",squash"`
 	}{
-		Argzone:      zone,
 		Argid:        id,
 		Argcondition: condition,
 	}
@@ -7663,12 +7248,12 @@ func NewNoteOp(caller APICaller) NoteAPI {
 }
 
 // Find is API call
-func (o *NoteOp) Find(ctx context.Context, zone string, conditions *FindCondition) (*NoteFindResult, error) {
+func (o *NoteOp) Find(ctx context.Context, conditions *FindCondition) (*NoteFindResult, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"conditions": conditions,
 	})
 	if err != nil {
@@ -7677,17 +7262,12 @@ func (o *NoteOp) Find(ctx context.Context, zone string, conditions *FindConditio
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if conditions == nil {
 		conditions = &FindCondition{}
 	}
 	args := &struct {
-		Argzone       string
 		Argconditions *FindCondition `mapconv:",squash"`
 	}{
-		Argzone:       zone,
 		Argconditions: conditions,
 	}
 
@@ -7715,12 +7295,12 @@ func (o *NoteOp) Find(ctx context.Context, zone string, conditions *FindConditio
 }
 
 // Create is API call
-func (o *NoteOp) Create(ctx context.Context, zone string, param *NoteCreateRequest) (*Note, error) {
+func (o *NoteOp) Create(ctx context.Context, param *NoteCreateRequest) (*Note, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"param":      param,
 	})
 	if err != nil {
@@ -7729,17 +7309,12 @@ func (o *NoteOp) Create(ctx context.Context, zone string, param *NoteCreateReque
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if param == nil {
 		param = &NoteCreateRequest{}
 	}
 	args := &struct {
-		Argzone  string
 		Argparam *NoteCreateRequest `mapconv:"Note,recursive"`
 	}{
-		Argzone:  zone,
 		Argparam: param,
 	}
 
@@ -7767,12 +7342,12 @@ func (o *NoteOp) Create(ctx context.Context, zone string, param *NoteCreateReque
 }
 
 // Read is API call
-func (o *NoteOp) Read(ctx context.Context, zone string, id types.ID) (*Note, error) {
+func (o *NoteOp) Read(ctx context.Context, id types.ID) (*Note, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"id":         id,
 	})
 	if err != nil {
@@ -7799,12 +7374,12 @@ func (o *NoteOp) Read(ctx context.Context, zone string, id types.ID) (*Note, err
 }
 
 // Update is API call
-func (o *NoteOp) Update(ctx context.Context, zone string, id types.ID, param *NoteUpdateRequest) (*Note, error) {
+func (o *NoteOp) Update(ctx context.Context, id types.ID, param *NoteUpdateRequest) (*Note, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"id":         id,
 		"param":      param,
 	})
@@ -7814,9 +7389,6 @@ func (o *NoteOp) Update(ctx context.Context, zone string, id types.ID, param *No
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -7824,11 +7396,9 @@ func (o *NoteOp) Update(ctx context.Context, zone string, id types.ID, param *No
 		param = &NoteUpdateRequest{}
 	}
 	args := &struct {
-		Argzone  string
 		Argid    types.ID
 		Argparam *NoteUpdateRequest `mapconv:"Note,recursive"`
 	}{
-		Argzone:  zone,
 		Argid:    id,
 		Argparam: param,
 	}
@@ -7857,12 +7427,12 @@ func (o *NoteOp) Update(ctx context.Context, zone string, id types.ID, param *No
 }
 
 // Delete is API call
-func (o *NoteOp) Delete(ctx context.Context, zone string, id types.ID) error {
+func (o *NoteOp) Delete(ctx context.Context, id types.ID) error {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"id":         id,
 	})
 	if err != nil {
@@ -7913,17 +7483,12 @@ func (o *PacketFilterOp) Find(ctx context.Context, zone string, conditions *Find
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if conditions == nil {
 		conditions = &FindCondition{}
 	}
 	args := &struct {
-		Argzone       string
 		Argconditions *FindCondition `mapconv:",squash"`
 	}{
-		Argzone:       zone,
 		Argconditions: conditions,
 	}
 
@@ -7965,17 +7530,12 @@ func (o *PacketFilterOp) Create(ctx context.Context, zone string, param *PacketF
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if param == nil {
 		param = &PacketFilterCreateRequest{}
 	}
 	args := &struct {
-		Argzone  string
 		Argparam *PacketFilterCreateRequest `mapconv:"PacketFilter,recursive"`
 	}{
-		Argzone:  zone,
 		Argparam: param,
 	}
 
@@ -8050,9 +7610,6 @@ func (o *PacketFilterOp) Update(ctx context.Context, zone string, id types.ID, p
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -8060,11 +7617,9 @@ func (o *PacketFilterOp) Update(ctx context.Context, zone string, id types.ID, p
 		param = &PacketFilterUpdateRequest{}
 	}
 	args := &struct {
-		Argzone  string
 		Argid    types.ID
 		Argparam *PacketFilterUpdateRequest `mapconv:"PacketFilter,recursive"`
 	}{
-		Argzone:  zone,
 		Argid:    id,
 		Argparam: param,
 	}
@@ -8149,17 +7704,12 @@ func (o *PrivateHostOp) Find(ctx context.Context, zone string, conditions *FindC
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if conditions == nil {
 		conditions = &FindCondition{}
 	}
 	args := &struct {
-		Argzone       string
 		Argconditions *FindCondition `mapconv:",squash"`
 	}{
-		Argzone:       zone,
 		Argconditions: conditions,
 	}
 
@@ -8201,17 +7751,12 @@ func (o *PrivateHostOp) Create(ctx context.Context, zone string, param *PrivateH
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if param == nil {
 		param = &PrivateHostCreateRequest{}
 	}
 	args := &struct {
-		Argzone  string
 		Argparam *PrivateHostCreateRequest `mapconv:"PrivateHost,recursive"`
 	}{
-		Argzone:  zone,
 		Argparam: param,
 	}
 
@@ -8286,9 +7831,6 @@ func (o *PrivateHostOp) Update(ctx context.Context, zone string, id types.ID, pa
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -8296,11 +7838,9 @@ func (o *PrivateHostOp) Update(ctx context.Context, zone string, id types.ID, pa
 		param = &PrivateHostUpdateRequest{}
 	}
 	args := &struct {
-		Argzone  string
 		Argid    types.ID
 		Argparam *PrivateHostUpdateRequest `mapconv:"PrivateHost,recursive"`
 	}{
-		Argzone:  zone,
 		Argid:    id,
 		Argparam: param,
 	}
@@ -8385,17 +7925,12 @@ func (o *PrivateHostPlanOp) Find(ctx context.Context, zone string, conditions *F
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if conditions == nil {
 		conditions = &FindCondition{}
 	}
 	args := &struct {
-		Argzone       string
 		Argconditions *FindCondition `mapconv:",squash"`
 	}{
-		Argzone:       zone,
 		Argconditions: conditions,
 	}
 
@@ -8474,12 +8009,12 @@ func NewProxyLBOp(caller APICaller) ProxyLBAPI {
 }
 
 // Find is API call
-func (o *ProxyLBOp) Find(ctx context.Context, zone string, conditions *FindCondition) (*ProxyLBFindResult, error) {
+func (o *ProxyLBOp) Find(ctx context.Context, conditions *FindCondition) (*ProxyLBFindResult, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"conditions": conditions,
 	})
 	if err != nil {
@@ -8488,17 +8023,12 @@ func (o *ProxyLBOp) Find(ctx context.Context, zone string, conditions *FindCondi
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if conditions == nil {
 		conditions = &FindCondition{}
 	}
 	args := &struct {
-		Argzone       string
 		Argconditions *FindCondition `mapconv:",squash"`
 	}{
-		Argzone:       zone,
 		Argconditions: conditions,
 	}
 
@@ -8526,12 +8056,12 @@ func (o *ProxyLBOp) Find(ctx context.Context, zone string, conditions *FindCondi
 }
 
 // Create is API call
-func (o *ProxyLBOp) Create(ctx context.Context, zone string, param *ProxyLBCreateRequest) (*ProxyLB, error) {
+func (o *ProxyLBOp) Create(ctx context.Context, param *ProxyLBCreateRequest) (*ProxyLB, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"param":      param,
 	})
 	if err != nil {
@@ -8540,17 +8070,12 @@ func (o *ProxyLBOp) Create(ctx context.Context, zone string, param *ProxyLBCreat
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if param == nil {
 		param = &ProxyLBCreateRequest{}
 	}
 	args := &struct {
-		Argzone  string
 		Argparam *ProxyLBCreateRequest `mapconv:"CommonServiceItem,recursive"`
 	}{
-		Argzone:  zone,
 		Argparam: param,
 	}
 
@@ -8578,12 +8103,12 @@ func (o *ProxyLBOp) Create(ctx context.Context, zone string, param *ProxyLBCreat
 }
 
 // Read is API call
-func (o *ProxyLBOp) Read(ctx context.Context, zone string, id types.ID) (*ProxyLB, error) {
+func (o *ProxyLBOp) Read(ctx context.Context, id types.ID) (*ProxyLB, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"id":         id,
 	})
 	if err != nil {
@@ -8610,12 +8135,12 @@ func (o *ProxyLBOp) Read(ctx context.Context, zone string, id types.ID) (*ProxyL
 }
 
 // Update is API call
-func (o *ProxyLBOp) Update(ctx context.Context, zone string, id types.ID, param *ProxyLBUpdateRequest) (*ProxyLB, error) {
+func (o *ProxyLBOp) Update(ctx context.Context, id types.ID, param *ProxyLBUpdateRequest) (*ProxyLB, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"id":         id,
 		"param":      param,
 	})
@@ -8625,9 +8150,6 @@ func (o *ProxyLBOp) Update(ctx context.Context, zone string, id types.ID, param 
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -8635,11 +8157,9 @@ func (o *ProxyLBOp) Update(ctx context.Context, zone string, id types.ID, param 
 		param = &ProxyLBUpdateRequest{}
 	}
 	args := &struct {
-		Argzone  string
 		Argid    types.ID
 		Argparam *ProxyLBUpdateRequest `mapconv:"CommonServiceItem,recursive"`
 	}{
-		Argzone:  zone,
 		Argid:    id,
 		Argparam: param,
 	}
@@ -8668,12 +8188,12 @@ func (o *ProxyLBOp) Update(ctx context.Context, zone string, id types.ID, param 
 }
 
 // Delete is API call
-func (o *ProxyLBOp) Delete(ctx context.Context, zone string, id types.ID) error {
+func (o *ProxyLBOp) Delete(ctx context.Context, id types.ID) error {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"id":         id,
 	})
 	if err != nil {
@@ -8691,12 +8211,12 @@ func (o *ProxyLBOp) Delete(ctx context.Context, zone string, id types.ID) error 
 }
 
 // ChangePlan is API call
-func (o *ProxyLBOp) ChangePlan(ctx context.Context, zone string, id types.ID, param *ProxyLBChangePlanRequest) (*ProxyLB, error) {
+func (o *ProxyLBOp) ChangePlan(ctx context.Context, id types.ID, param *ProxyLBChangePlanRequest) (*ProxyLB, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"id":         id,
 		"param":      param,
 	})
@@ -8706,9 +8226,6 @@ func (o *ProxyLBOp) ChangePlan(ctx context.Context, zone string, id types.ID, pa
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -8716,11 +8233,9 @@ func (o *ProxyLBOp) ChangePlan(ctx context.Context, zone string, id types.ID, pa
 		param = &ProxyLBChangePlanRequest{}
 	}
 	args := &struct {
-		Argzone  string
 		Argid    types.ID
 		Argparam *ProxyLBChangePlanRequest `mapconv:"CommonServiceItem,recursive"`
 	}{
-		Argzone:  zone,
 		Argid:    id,
 		Argparam: param,
 	}
@@ -8749,12 +8264,12 @@ func (o *ProxyLBOp) ChangePlan(ctx context.Context, zone string, id types.ID, pa
 }
 
 // GetCertificates is API call
-func (o *ProxyLBOp) GetCertificates(ctx context.Context, zone string, id types.ID) (*ProxyLBCertificates, error) {
+func (o *ProxyLBOp) GetCertificates(ctx context.Context, id types.ID) (*ProxyLBCertificates, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/proxylb/sslcertificate", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"id":         id,
 	})
 	if err != nil {
@@ -8781,12 +8296,12 @@ func (o *ProxyLBOp) GetCertificates(ctx context.Context, zone string, id types.I
 }
 
 // SetCertificates is API call
-func (o *ProxyLBOp) SetCertificates(ctx context.Context, zone string, id types.ID, param *ProxyLBSetCertificatesRequest) (*ProxyLBCertificates, error) {
+func (o *ProxyLBOp) SetCertificates(ctx context.Context, id types.ID, param *ProxyLBSetCertificatesRequest) (*ProxyLBCertificates, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/proxylb/sslcertificate", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"id":         id,
 		"param":      param,
 	})
@@ -8796,9 +8311,6 @@ func (o *ProxyLBOp) SetCertificates(ctx context.Context, zone string, id types.I
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -8806,11 +8318,9 @@ func (o *ProxyLBOp) SetCertificates(ctx context.Context, zone string, id types.I
 		param = &ProxyLBSetCertificatesRequest{}
 	}
 	args := &struct {
-		Argzone  string
 		Argid    types.ID
 		Argparam *ProxyLBSetCertificatesRequest `mapconv:"ProxyLB,recursive"`
 	}{
-		Argzone:  zone,
 		Argid:    id,
 		Argparam: param,
 	}
@@ -8839,12 +8349,12 @@ func (o *ProxyLBOp) SetCertificates(ctx context.Context, zone string, id types.I
 }
 
 // DeleteCertificates is API call
-func (o *ProxyLBOp) DeleteCertificates(ctx context.Context, zone string, id types.ID) error {
+func (o *ProxyLBOp) DeleteCertificates(ctx context.Context, id types.ID) error {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/proxylb/sslcertificate", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"id":         id,
 	})
 	if err != nil {
@@ -8862,12 +8372,12 @@ func (o *ProxyLBOp) DeleteCertificates(ctx context.Context, zone string, id type
 }
 
 // RenewLetsEncryptCert is API call
-func (o *ProxyLBOp) RenewLetsEncryptCert(ctx context.Context, zone string, id types.ID) error {
+func (o *ProxyLBOp) RenewLetsEncryptCert(ctx context.Context, id types.ID) error {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/proxylb/letsencryptrenew", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"id":         id,
 	})
 	if err != nil {
@@ -8885,12 +8395,12 @@ func (o *ProxyLBOp) RenewLetsEncryptCert(ctx context.Context, zone string, id ty
 }
 
 // HealthStatus is API call
-func (o *ProxyLBOp) HealthStatus(ctx context.Context, zone string, id types.ID) (*ProxyLBHealth, error) {
+func (o *ProxyLBOp) HealthStatus(ctx context.Context, id types.ID) (*ProxyLBHealth, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/health", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"id":         id,
 	})
 	if err != nil {
@@ -8936,12 +8446,12 @@ func NewRegionOp(caller APICaller) RegionAPI {
 }
 
 // Find is API call
-func (o *RegionOp) Find(ctx context.Context, zone string, conditions *FindCondition) (*RegionFindResult, error) {
+func (o *RegionOp) Find(ctx context.Context, conditions *FindCondition) (*RegionFindResult, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"conditions": conditions,
 	})
 	if err != nil {
@@ -8950,17 +8460,12 @@ func (o *RegionOp) Find(ctx context.Context, zone string, conditions *FindCondit
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if conditions == nil {
 		conditions = &FindCondition{}
 	}
 	args := &struct {
-		Argzone       string
 		Argconditions *FindCondition `mapconv:",squash"`
 	}{
-		Argzone:       zone,
 		Argconditions: conditions,
 	}
 
@@ -8988,12 +8493,12 @@ func (o *RegionOp) Find(ctx context.Context, zone string, conditions *FindCondit
 }
 
 // Read is API call
-func (o *RegionOp) Read(ctx context.Context, zone string, id types.ID) (*Region, error) {
+func (o *RegionOp) Read(ctx context.Context, id types.ID) (*Region, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"id":         id,
 	})
 	if err != nil {
@@ -9053,17 +8558,12 @@ func (o *ServerOp) Find(ctx context.Context, zone string, conditions *FindCondit
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if conditions == nil {
 		conditions = &FindCondition{}
 	}
 	args := &struct {
-		Argzone       string
 		Argconditions *FindCondition `mapconv:",squash"`
 	}{
-		Argzone:       zone,
 		Argconditions: conditions,
 	}
 
@@ -9105,17 +8605,12 @@ func (o *ServerOp) Create(ctx context.Context, zone string, param *ServerCreateR
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if param == nil {
 		param = &ServerCreateRequest{}
 	}
 	args := &struct {
-		Argzone  string
 		Argparam *ServerCreateRequest `mapconv:"Server,recursive"`
 	}{
-		Argzone:  zone,
 		Argparam: param,
 	}
 
@@ -9190,9 +8685,6 @@ func (o *ServerOp) Update(ctx context.Context, zone string, id types.ID, param *
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -9200,11 +8692,9 @@ func (o *ServerOp) Update(ctx context.Context, zone string, id types.ID, param *
 		param = &ServerUpdateRequest{}
 	}
 	args := &struct {
-		Argzone  string
 		Argid    types.ID
 		Argparam *ServerUpdateRequest `mapconv:"Server,recursive"`
 	}{
-		Argzone:  zone,
 		Argid:    id,
 		Argparam: param,
 	}
@@ -9271,9 +8761,6 @@ func (o *ServerOp) ChangePlan(ctx context.Context, zone string, id types.ID, pla
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -9281,11 +8768,9 @@ func (o *ServerOp) ChangePlan(ctx context.Context, zone string, id types.ID, pla
 		plan = &ServerChangePlanRequest{}
 	}
 	args := &struct {
-		Argzone string
 		Argid   types.ID
 		Argplan *ServerChangePlanRequest `mapconv:",squash"`
 	}{
-		Argzone: zone,
 		Argid:   id,
 		Argplan: plan,
 	}
@@ -9329,9 +8814,6 @@ func (o *ServerOp) InsertCDROM(ctx context.Context, zone string, id types.ID, in
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -9339,11 +8821,9 @@ func (o *ServerOp) InsertCDROM(ctx context.Context, zone string, id types.ID, in
 		insertParam = &InsertCDROMRequest{}
 	}
 	args := &struct {
-		Argzone        string
 		Argid          types.ID
 		ArginsertParam *InsertCDROMRequest `mapconv:"CDROM"`
 	}{
-		Argzone:        zone,
 		Argid:          id,
 		ArginsertParam: insertParam,
 	}
@@ -9378,9 +8858,6 @@ func (o *ServerOp) EjectCDROM(ctx context.Context, zone string, id types.ID, ins
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -9388,11 +8865,9 @@ func (o *ServerOp) EjectCDROM(ctx context.Context, zone string, id types.ID, ins
 		insertParam = &EjectCDROMRequest{}
 	}
 	args := &struct {
-		Argzone        string
 		Argid          types.ID
 		ArginsertParam *EjectCDROMRequest `mapconv:"CDROM"`
 	}{
-		Argzone:        zone,
 		Argid:          id,
 		ArginsertParam: insertParam,
 	}
@@ -9450,9 +8925,6 @@ func (o *ServerOp) Shutdown(ctx context.Context, zone string, id types.ID, shutd
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -9460,11 +8932,9 @@ func (o *ServerOp) Shutdown(ctx context.Context, zone string, id types.ID, shutd
 		shutdownOption = &ShutdownOption{}
 	}
 	args := &struct {
-		Argzone           string
 		Argid             types.ID
 		ArgshutdownOption *ShutdownOption `mapconv:",squash"`
 	}{
-		Argzone:           zone,
 		Argid:             id,
 		ArgshutdownOption: shutdownOption,
 	}
@@ -9522,9 +8992,6 @@ func (o *ServerOp) Monitor(ctx context.Context, zone string, id types.ID, condit
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -9532,11 +8999,9 @@ func (o *ServerOp) Monitor(ctx context.Context, zone string, id types.ID, condit
 		condition = &MonitorCondition{}
 	}
 	args := &struct {
-		Argzone      string
 		Argid        types.ID
 		Argcondition *MonitorCondition `mapconv:",squash"`
 	}{
-		Argzone:      zone,
 		Argid:        id,
 		Argcondition: condition,
 	}
@@ -9598,17 +9063,12 @@ func (o *ServerPlanOp) Find(ctx context.Context, zone string, conditions *FindCo
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if conditions == nil {
 		conditions = &FindCondition{}
 	}
 	args := &struct {
-		Argzone       string
 		Argconditions *FindCondition `mapconv:",squash"`
 	}{
-		Argzone:       zone,
 		Argconditions: conditions,
 	}
 
@@ -9701,17 +9161,12 @@ func (o *ServiceClassOp) Find(ctx context.Context, zone string, conditions *Find
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if conditions == nil {
 		conditions = &FindCondition{}
 	}
 	args := &struct {
-		Argzone       string
 		Argconditions *FindCondition `mapconv:",squash"`
 	}{
-		Argzone:       zone,
 		Argconditions: conditions,
 	}
 
@@ -9758,12 +9213,12 @@ func NewSIMOp(caller APICaller) SIMAPI {
 }
 
 // Find is API call
-func (o *SIMOp) Find(ctx context.Context, zone string, conditions *FindCondition) (*SIMFindResult, error) {
+func (o *SIMOp) Find(ctx context.Context, conditions *FindCondition) (*SIMFindResult, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"conditions": conditions,
 	})
 	if err != nil {
@@ -9772,17 +9227,12 @@ func (o *SIMOp) Find(ctx context.Context, zone string, conditions *FindCondition
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if conditions == nil {
 		conditions = &FindCondition{}
 	}
 	args := &struct {
-		Argzone       string
 		Argconditions *FindCondition `mapconv:",squash"`
 	}{
-		Argzone:       zone,
 		Argconditions: conditions,
 	}
 
@@ -9810,12 +9260,12 @@ func (o *SIMOp) Find(ctx context.Context, zone string, conditions *FindCondition
 }
 
 // Create is API call
-func (o *SIMOp) Create(ctx context.Context, zone string, param *SIMCreateRequest) (*SIM, error) {
+func (o *SIMOp) Create(ctx context.Context, param *SIMCreateRequest) (*SIM, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"param":      param,
 	})
 	if err != nil {
@@ -9824,17 +9274,12 @@ func (o *SIMOp) Create(ctx context.Context, zone string, param *SIMCreateRequest
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if param == nil {
 		param = &SIMCreateRequest{}
 	}
 	args := &struct {
-		Argzone  string
 		Argparam *SIMCreateRequest `mapconv:"CommonServiceItem,recursive"`
 	}{
-		Argzone:  zone,
 		Argparam: param,
 	}
 
@@ -9862,12 +9307,12 @@ func (o *SIMOp) Create(ctx context.Context, zone string, param *SIMCreateRequest
 }
 
 // Read is API call
-func (o *SIMOp) Read(ctx context.Context, zone string, id types.ID) (*SIM, error) {
+func (o *SIMOp) Read(ctx context.Context, id types.ID) (*SIM, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"id":         id,
 	})
 	if err != nil {
@@ -9894,12 +9339,12 @@ func (o *SIMOp) Read(ctx context.Context, zone string, id types.ID) (*SIM, error
 }
 
 // Update is API call
-func (o *SIMOp) Update(ctx context.Context, zone string, id types.ID, param *SIMUpdateRequest) (*SIM, error) {
+func (o *SIMOp) Update(ctx context.Context, id types.ID, param *SIMUpdateRequest) (*SIM, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"id":         id,
 		"param":      param,
 	})
@@ -9909,9 +9354,6 @@ func (o *SIMOp) Update(ctx context.Context, zone string, id types.ID, param *SIM
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -9919,11 +9361,9 @@ func (o *SIMOp) Update(ctx context.Context, zone string, id types.ID, param *SIM
 		param = &SIMUpdateRequest{}
 	}
 	args := &struct {
-		Argzone  string
 		Argid    types.ID
 		Argparam *SIMUpdateRequest `mapconv:"CommonServiceItem,recursive"`
 	}{
-		Argzone:  zone,
 		Argid:    id,
 		Argparam: param,
 	}
@@ -9952,12 +9392,12 @@ func (o *SIMOp) Update(ctx context.Context, zone string, id types.ID, param *SIM
 }
 
 // Delete is API call
-func (o *SIMOp) Delete(ctx context.Context, zone string, id types.ID) error {
+func (o *SIMOp) Delete(ctx context.Context, id types.ID) error {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"id":         id,
 	})
 	if err != nil {
@@ -9975,12 +9415,12 @@ func (o *SIMOp) Delete(ctx context.Context, zone string, id types.ID) error {
 }
 
 // Activate is API call
-func (o *SIMOp) Activate(ctx context.Context, zone string, id types.ID) error {
+func (o *SIMOp) Activate(ctx context.Context, id types.ID) error {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/sim/activate", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"id":         id,
 	})
 	if err != nil {
@@ -9998,12 +9438,12 @@ func (o *SIMOp) Activate(ctx context.Context, zone string, id types.ID) error {
 }
 
 // Deactivate is API call
-func (o *SIMOp) Deactivate(ctx context.Context, zone string, id types.ID) error {
+func (o *SIMOp) Deactivate(ctx context.Context, id types.ID) error {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/sim/deactivate", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"id":         id,
 	})
 	if err != nil {
@@ -10021,12 +9461,12 @@ func (o *SIMOp) Deactivate(ctx context.Context, zone string, id types.ID) error 
 }
 
 // AssignIP is API call
-func (o *SIMOp) AssignIP(ctx context.Context, zone string, id types.ID, param *SIMAssignIPRequest) error {
+func (o *SIMOp) AssignIP(ctx context.Context, id types.ID, param *SIMAssignIPRequest) error {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/sim/ip", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"id":         id,
 		"param":      param,
 	})
@@ -10036,9 +9476,6 @@ func (o *SIMOp) AssignIP(ctx context.Context, zone string, id types.ID, param *S
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -10046,11 +9483,9 @@ func (o *SIMOp) AssignIP(ctx context.Context, zone string, id types.ID, param *S
 		param = &SIMAssignIPRequest{}
 	}
 	args := &struct {
-		Argzone  string
 		Argid    types.ID
 		Argparam *SIMAssignIPRequest `mapconv:"SIM,recursive"`
 	}{
-		Argzone:  zone,
 		Argid:    id,
 		Argparam: param,
 	}
@@ -10070,12 +9505,12 @@ func (o *SIMOp) AssignIP(ctx context.Context, zone string, id types.ID, param *S
 }
 
 // ClearIP is API call
-func (o *SIMOp) ClearIP(ctx context.Context, zone string, id types.ID) error {
+func (o *SIMOp) ClearIP(ctx context.Context, id types.ID) error {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/sim/ip", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"id":         id,
 	})
 	if err != nil {
@@ -10093,12 +9528,12 @@ func (o *SIMOp) ClearIP(ctx context.Context, zone string, id types.ID) error {
 }
 
 // IMEILock is API call
-func (o *SIMOp) IMEILock(ctx context.Context, zone string, id types.ID, param *SIMIMEILockRequest) error {
+func (o *SIMOp) IMEILock(ctx context.Context, id types.ID, param *SIMIMEILockRequest) error {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/sim/imeilock", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"id":         id,
 		"param":      param,
 	})
@@ -10108,9 +9543,6 @@ func (o *SIMOp) IMEILock(ctx context.Context, zone string, id types.ID, param *S
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -10118,11 +9550,9 @@ func (o *SIMOp) IMEILock(ctx context.Context, zone string, id types.ID, param *S
 		param = &SIMIMEILockRequest{}
 	}
 	args := &struct {
-		Argzone  string
 		Argid    types.ID
 		Argparam *SIMIMEILockRequest `mapconv:"SIM,recursive"`
 	}{
-		Argzone:  zone,
 		Argid:    id,
 		Argparam: param,
 	}
@@ -10142,12 +9572,12 @@ func (o *SIMOp) IMEILock(ctx context.Context, zone string, id types.ID, param *S
 }
 
 // IMEIUnlock is API call
-func (o *SIMOp) IMEIUnlock(ctx context.Context, zone string, id types.ID) error {
+func (o *SIMOp) IMEIUnlock(ctx context.Context, id types.ID) error {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/sim/imeilock", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"id":         id,
 	})
 	if err != nil {
@@ -10165,12 +9595,12 @@ func (o *SIMOp) IMEIUnlock(ctx context.Context, zone string, id types.ID) error 
 }
 
 // Logs is API call
-func (o *SIMOp) Logs(ctx context.Context, zone string, id types.ID) (*SIMLogsResult, error) {
+func (o *SIMOp) Logs(ctx context.Context, id types.ID) (*SIMLogsResult, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/sim/sessionlog", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"id":         id,
 	})
 	if err != nil {
@@ -10197,12 +9627,12 @@ func (o *SIMOp) Logs(ctx context.Context, zone string, id types.ID) (*SIMLogsRes
 }
 
 // GetNetworkOperator is API call
-func (o *SIMOp) GetNetworkOperator(ctx context.Context, zone string, id types.ID) ([]*SIMNetworkOperatorConfig, error) {
+func (o *SIMOp) GetNetworkOperator(ctx context.Context, id types.ID) ([]*SIMNetworkOperatorConfig, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/sim/network_operator_config", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"id":         id,
 	})
 	if err != nil {
@@ -10229,12 +9659,12 @@ func (o *SIMOp) GetNetworkOperator(ctx context.Context, zone string, id types.ID
 }
 
 // SetNetworkOperator is API call
-func (o *SIMOp) SetNetworkOperator(ctx context.Context, zone string, id types.ID, configs []*SIMNetworkOperatorConfig) error {
+func (o *SIMOp) SetNetworkOperator(ctx context.Context, id types.ID, configs []*SIMNetworkOperatorConfig) error {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/sim/network_operator_config", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"id":         id,
 		"configs":    configs,
 	})
@@ -10244,9 +9674,6 @@ func (o *SIMOp) SetNetworkOperator(ctx context.Context, zone string, id types.ID
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -10254,11 +9681,9 @@ func (o *SIMOp) SetNetworkOperator(ctx context.Context, zone string, id types.ID
 		configs = []*SIMNetworkOperatorConfig{}
 	}
 	args := &struct {
-		Argzone    string
 		Argid      types.ID
 		Argconfigs []*SIMNetworkOperatorConfig `mapconv:"[]NetworkOperatorConfigs,recursive"`
 	}{
-		Argzone:    zone,
 		Argid:      id,
 		Argconfigs: configs,
 	}
@@ -10278,12 +9703,12 @@ func (o *SIMOp) SetNetworkOperator(ctx context.Context, zone string, id types.ID
 }
 
 // MonitorSIM is API call
-func (o *SIMOp) MonitorSIM(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*LinkActivity, error) {
+func (o *SIMOp) MonitorSIM(ctx context.Context, id types.ID, condition *MonitorCondition) (*LinkActivity, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/sim/metrics/monitor", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"id":         id,
 		"condition":  condition,
 	})
@@ -10293,9 +9718,6 @@ func (o *SIMOp) MonitorSIM(ctx context.Context, zone string, id types.ID, condit
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -10303,11 +9725,9 @@ func (o *SIMOp) MonitorSIM(ctx context.Context, zone string, id types.ID, condit
 		condition = &MonitorCondition{}
 	}
 	args := &struct {
-		Argzone      string
 		Argid        types.ID
 		Argcondition *MonitorCondition `mapconv:",squash"`
 	}{
-		Argzone:      zone,
 		Argid:        id,
 		Argcondition: condition,
 	}
@@ -10336,12 +9756,12 @@ func (o *SIMOp) MonitorSIM(ctx context.Context, zone string, id types.ID, condit
 }
 
 // Status is API call
-func (o *SIMOp) Status(ctx context.Context, zone string, id types.ID) (*SIMInfo, error) {
+func (o *SIMOp) Status(ctx context.Context, id types.ID) (*SIMInfo, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/sim/status", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"id":         id,
 	})
 	if err != nil {
@@ -10387,12 +9807,12 @@ func NewSimpleMonitorOp(caller APICaller) SimpleMonitorAPI {
 }
 
 // Find is API call
-func (o *SimpleMonitorOp) Find(ctx context.Context, zone string, conditions *FindCondition) (*SimpleMonitorFindResult, error) {
+func (o *SimpleMonitorOp) Find(ctx context.Context, conditions *FindCondition) (*SimpleMonitorFindResult, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"conditions": conditions,
 	})
 	if err != nil {
@@ -10401,17 +9821,12 @@ func (o *SimpleMonitorOp) Find(ctx context.Context, zone string, conditions *Fin
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if conditions == nil {
 		conditions = &FindCondition{}
 	}
 	args := &struct {
-		Argzone       string
 		Argconditions *FindCondition `mapconv:",squash"`
 	}{
-		Argzone:       zone,
 		Argconditions: conditions,
 	}
 
@@ -10439,12 +9854,12 @@ func (o *SimpleMonitorOp) Find(ctx context.Context, zone string, conditions *Fin
 }
 
 // Create is API call
-func (o *SimpleMonitorOp) Create(ctx context.Context, zone string, param *SimpleMonitorCreateRequest) (*SimpleMonitor, error) {
+func (o *SimpleMonitorOp) Create(ctx context.Context, param *SimpleMonitorCreateRequest) (*SimpleMonitor, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"param":      param,
 	})
 	if err != nil {
@@ -10453,17 +9868,12 @@ func (o *SimpleMonitorOp) Create(ctx context.Context, zone string, param *Simple
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if param == nil {
 		param = &SimpleMonitorCreateRequest{}
 	}
 	args := &struct {
-		Argzone  string
 		Argparam *SimpleMonitorCreateRequest `mapconv:"CommonServiceItem,recursive"`
 	}{
-		Argzone:  zone,
 		Argparam: param,
 	}
 
@@ -10491,12 +9901,12 @@ func (o *SimpleMonitorOp) Create(ctx context.Context, zone string, param *Simple
 }
 
 // Read is API call
-func (o *SimpleMonitorOp) Read(ctx context.Context, zone string, id types.ID) (*SimpleMonitor, error) {
+func (o *SimpleMonitorOp) Read(ctx context.Context, id types.ID) (*SimpleMonitor, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"id":         id,
 	})
 	if err != nil {
@@ -10523,12 +9933,12 @@ func (o *SimpleMonitorOp) Read(ctx context.Context, zone string, id types.ID) (*
 }
 
 // Update is API call
-func (o *SimpleMonitorOp) Update(ctx context.Context, zone string, id types.ID, param *SimpleMonitorUpdateRequest) (*SimpleMonitor, error) {
+func (o *SimpleMonitorOp) Update(ctx context.Context, id types.ID, param *SimpleMonitorUpdateRequest) (*SimpleMonitor, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"id":         id,
 		"param":      param,
 	})
@@ -10538,9 +9948,6 @@ func (o *SimpleMonitorOp) Update(ctx context.Context, zone string, id types.ID, 
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -10548,11 +9955,9 @@ func (o *SimpleMonitorOp) Update(ctx context.Context, zone string, id types.ID, 
 		param = &SimpleMonitorUpdateRequest{}
 	}
 	args := &struct {
-		Argzone  string
 		Argid    types.ID
 		Argparam *SimpleMonitorUpdateRequest `mapconv:"CommonServiceItem,recursive"`
 	}{
-		Argzone:  zone,
 		Argid:    id,
 		Argparam: param,
 	}
@@ -10581,12 +9986,12 @@ func (o *SimpleMonitorOp) Update(ctx context.Context, zone string, id types.ID, 
 }
 
 // Delete is API call
-func (o *SimpleMonitorOp) Delete(ctx context.Context, zone string, id types.ID) error {
+func (o *SimpleMonitorOp) Delete(ctx context.Context, id types.ID) error {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"id":         id,
 	})
 	if err != nil {
@@ -10604,12 +10009,12 @@ func (o *SimpleMonitorOp) Delete(ctx context.Context, zone string, id types.ID) 
 }
 
 // MonitorResponseTime is API call
-func (o *SimpleMonitorOp) MonitorResponseTime(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*ResponseTimeSecActivity, error) {
+func (o *SimpleMonitorOp) MonitorResponseTime(ctx context.Context, id types.ID, condition *MonitorCondition) (*ResponseTimeSecActivity, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}//activity/responsetimesec/monitor", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"id":         id,
 		"condition":  condition,
 	})
@@ -10619,9 +10024,6 @@ func (o *SimpleMonitorOp) MonitorResponseTime(ctx context.Context, zone string, 
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -10629,11 +10031,9 @@ func (o *SimpleMonitorOp) MonitorResponseTime(ctx context.Context, zone string, 
 		condition = &MonitorCondition{}
 	}
 	args := &struct {
-		Argzone      string
 		Argid        types.ID
 		Argcondition *MonitorCondition `mapconv:",squash"`
 	}{
-		Argzone:      zone,
 		Argid:        id,
 		Argcondition: condition,
 	}
@@ -10662,12 +10062,12 @@ func (o *SimpleMonitorOp) MonitorResponseTime(ctx context.Context, zone string, 
 }
 
 // HealthStatus is API call
-func (o *SimpleMonitorOp) HealthStatus(ctx context.Context, zone string, id types.ID) (*SimpleMonitorHealthStatus, error) {
+func (o *SimpleMonitorOp) HealthStatus(ctx context.Context, id types.ID) (*SimpleMonitorHealthStatus, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/health", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"id":         id,
 	})
 	if err != nil {
@@ -10713,12 +10113,12 @@ func NewSSHKeyOp(caller APICaller) SSHKeyAPI {
 }
 
 // Find is API call
-func (o *SSHKeyOp) Find(ctx context.Context, zone string, conditions *FindCondition) (*SSHKeyFindResult, error) {
+func (o *SSHKeyOp) Find(ctx context.Context, conditions *FindCondition) (*SSHKeyFindResult, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"conditions": conditions,
 	})
 	if err != nil {
@@ -10727,17 +10127,12 @@ func (o *SSHKeyOp) Find(ctx context.Context, zone string, conditions *FindCondit
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if conditions == nil {
 		conditions = &FindCondition{}
 	}
 	args := &struct {
-		Argzone       string
 		Argconditions *FindCondition `mapconv:",squash"`
 	}{
-		Argzone:       zone,
 		Argconditions: conditions,
 	}
 
@@ -10765,12 +10160,12 @@ func (o *SSHKeyOp) Find(ctx context.Context, zone string, conditions *FindCondit
 }
 
 // Create is API call
-func (o *SSHKeyOp) Create(ctx context.Context, zone string, param *SSHKeyCreateRequest) (*SSHKey, error) {
+func (o *SSHKeyOp) Create(ctx context.Context, param *SSHKeyCreateRequest) (*SSHKey, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"param":      param,
 	})
 	if err != nil {
@@ -10779,17 +10174,12 @@ func (o *SSHKeyOp) Create(ctx context.Context, zone string, param *SSHKeyCreateR
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if param == nil {
 		param = &SSHKeyCreateRequest{}
 	}
 	args := &struct {
-		Argzone  string
 		Argparam *SSHKeyCreateRequest `mapconv:"SSHKey,recursive"`
 	}{
-		Argzone:  zone,
 		Argparam: param,
 	}
 
@@ -10817,12 +10207,12 @@ func (o *SSHKeyOp) Create(ctx context.Context, zone string, param *SSHKeyCreateR
 }
 
 // Generate is API call
-func (o *SSHKeyOp) Generate(ctx context.Context, zone string, param *SSHKeyGenerateRequest) (*SSHKeyGenerated, error) {
+func (o *SSHKeyOp) Generate(ctx context.Context, param *SSHKeyGenerateRequest) (*SSHKeyGenerated, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/generate", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"param":      param,
 	})
 	if err != nil {
@@ -10831,17 +10221,12 @@ func (o *SSHKeyOp) Generate(ctx context.Context, zone string, param *SSHKeyGener
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if param == nil {
 		param = &SSHKeyGenerateRequest{}
 	}
 	args := &struct {
-		Argzone  string
 		Argparam *SSHKeyGenerateRequest `mapconv:"SSHKey,recursive"`
 	}{
-		Argzone:  zone,
 		Argparam: param,
 	}
 
@@ -10869,12 +10254,12 @@ func (o *SSHKeyOp) Generate(ctx context.Context, zone string, param *SSHKeyGener
 }
 
 // Read is API call
-func (o *SSHKeyOp) Read(ctx context.Context, zone string, id types.ID) (*SSHKey, error) {
+func (o *SSHKeyOp) Read(ctx context.Context, id types.ID) (*SSHKey, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"id":         id,
 	})
 	if err != nil {
@@ -10901,12 +10286,12 @@ func (o *SSHKeyOp) Read(ctx context.Context, zone string, id types.ID) (*SSHKey,
 }
 
 // Update is API call
-func (o *SSHKeyOp) Update(ctx context.Context, zone string, id types.ID, param *SSHKeyUpdateRequest) (*SSHKey, error) {
+func (o *SSHKeyOp) Update(ctx context.Context, id types.ID, param *SSHKeyUpdateRequest) (*SSHKey, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"id":         id,
 		"param":      param,
 	})
@@ -10916,9 +10301,6 @@ func (o *SSHKeyOp) Update(ctx context.Context, zone string, id types.ID, param *
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -10926,11 +10308,9 @@ func (o *SSHKeyOp) Update(ctx context.Context, zone string, id types.ID, param *
 		param = &SSHKeyUpdateRequest{}
 	}
 	args := &struct {
-		Argzone  string
 		Argid    types.ID
 		Argparam *SSHKeyUpdateRequest `mapconv:"SSHKey,recursive"`
 	}{
-		Argzone:  zone,
 		Argid:    id,
 		Argparam: param,
 	}
@@ -10959,12 +10339,12 @@ func (o *SSHKeyOp) Update(ctx context.Context, zone string, id types.ID, param *
 }
 
 // Delete is API call
-func (o *SSHKeyOp) Delete(ctx context.Context, zone string, id types.ID) error {
+func (o *SSHKeyOp) Delete(ctx context.Context, id types.ID) error {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"id":         id,
 	})
 	if err != nil {
@@ -11015,17 +10395,12 @@ func (o *SwitchOp) Find(ctx context.Context, zone string, conditions *FindCondit
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if conditions == nil {
 		conditions = &FindCondition{}
 	}
 	args := &struct {
-		Argzone       string
 		Argconditions *FindCondition `mapconv:",squash"`
 	}{
-		Argzone:       zone,
 		Argconditions: conditions,
 	}
 
@@ -11067,17 +10442,12 @@ func (o *SwitchOp) Create(ctx context.Context, zone string, param *SwitchCreateR
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if param == nil {
 		param = &SwitchCreateRequest{}
 	}
 	args := &struct {
-		Argzone  string
 		Argparam *SwitchCreateRequest `mapconv:"Switch,recursive"`
 	}{
-		Argzone:  zone,
 		Argparam: param,
 	}
 
@@ -11152,9 +10522,6 @@ func (o *SwitchOp) Update(ctx context.Context, zone string, id types.ID, param *
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -11162,11 +10529,9 @@ func (o *SwitchOp) Update(ctx context.Context, zone string, id types.ID, param *
 		param = &SwitchUpdateRequest{}
 	}
 	args := &struct {
-		Argzone  string
 		Argid    types.ID
 		Argparam *SwitchUpdateRequest `mapconv:"Switch,recursive"`
 	}{
-		Argzone:  zone,
 		Argid:    id,
 		Argparam: param,
 	}
@@ -11298,17 +10663,12 @@ func (o *VPCRouterOp) Find(ctx context.Context, zone string, conditions *FindCon
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if conditions == nil {
 		conditions = &FindCondition{}
 	}
 	args := &struct {
-		Argzone       string
 		Argconditions *FindCondition `mapconv:",squash"`
 	}{
-		Argzone:       zone,
 		Argconditions: conditions,
 	}
 
@@ -11350,17 +10710,12 @@ func (o *VPCRouterOp) Create(ctx context.Context, zone string, param *VPCRouterC
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if param == nil {
 		param = &VPCRouterCreateRequest{}
 	}
 	args := &struct {
-		Argzone  string
 		Argparam *VPCRouterCreateRequest `mapconv:"Appliance,recursive"`
 	}{
-		Argzone:  zone,
 		Argparam: param,
 	}
 
@@ -11435,9 +10790,6 @@ func (o *VPCRouterOp) Update(ctx context.Context, zone string, id types.ID, para
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -11445,11 +10797,9 @@ func (o *VPCRouterOp) Update(ctx context.Context, zone string, id types.ID, para
 		param = &VPCRouterUpdateRequest{}
 	}
 	args := &struct {
-		Argzone  string
 		Argid    types.ID
 		Argparam *VPCRouterUpdateRequest `mapconv:"Appliance,recursive"`
 	}{
-		Argzone:  zone,
 		Argid:    id,
 		Argparam: param,
 	}
@@ -11562,9 +10912,6 @@ func (o *VPCRouterOp) Shutdown(ctx context.Context, zone string, id types.ID, sh
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -11572,11 +10919,9 @@ func (o *VPCRouterOp) Shutdown(ctx context.Context, zone string, id types.ID, sh
 		shutdownOption = &ShutdownOption{}
 	}
 	args := &struct {
-		Argzone           string
 		Argid             types.ID
 		ArgshutdownOption *ShutdownOption `mapconv:",squash"`
 	}{
-		Argzone:           zone,
 		Argid:             id,
 		ArgshutdownOption: shutdownOption,
 	}
@@ -11684,9 +11029,6 @@ func (o *VPCRouterOp) MonitorInterface(ctx context.Context, zone string, id type
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -11697,12 +11039,10 @@ func (o *VPCRouterOp) MonitorInterface(ctx context.Context, zone string, id type
 		condition = &MonitorCondition{}
 	}
 	args := &struct {
-		Argzone      string
 		Argid        types.ID
 		Argindex     int
 		Argcondition *MonitorCondition `mapconv:",squash"`
 	}{
-		Argzone:      zone,
 		Argid:        id,
 		Argindex:     index,
 		Argcondition: condition,
@@ -11751,12 +11091,12 @@ func NewWebAccelOp(caller APICaller) WebAccelAPI {
 }
 
 // List is API call
-func (o *WebAccelOp) List(ctx context.Context, zone string) (*WebAccelListResult, error) {
+func (o *WebAccelOp) List(ctx context.Context) (*WebAccelListResult, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/site", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 	})
 	if err != nil {
 		return nil, err
@@ -11782,12 +11122,12 @@ func (o *WebAccelOp) List(ctx context.Context, zone string) (*WebAccelListResult
 }
 
 // Read is API call
-func (o *WebAccelOp) Read(ctx context.Context, zone string, id types.ID) (*WebAccel, error) {
+func (o *WebAccelOp) Read(ctx context.Context, id types.ID) (*WebAccel, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/site/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"id":         id,
 	})
 	if err != nil {
@@ -11814,12 +11154,12 @@ func (o *WebAccelOp) Read(ctx context.Context, zone string, id types.ID) (*WebAc
 }
 
 // ReadCertificate is API call
-func (o *WebAccelOp) ReadCertificate(ctx context.Context, zone string, id types.ID) (*WebAccelCerts, error) {
+func (o *WebAccelOp) ReadCertificate(ctx context.Context, id types.ID) (*WebAccelCerts, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/site/{{.id}}/certificate", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"id":         id,
 	})
 	if err != nil {
@@ -11846,12 +11186,12 @@ func (o *WebAccelOp) ReadCertificate(ctx context.Context, zone string, id types.
 }
 
 // UpdateCertificate is API call
-func (o *WebAccelOp) UpdateCertificate(ctx context.Context, zone string, id types.ID, param *WebAccelCertUpdateRequest) (*WebAccelCerts, error) {
+func (o *WebAccelOp) UpdateCertificate(ctx context.Context, id types.ID, param *WebAccelCertUpdateRequest) (*WebAccelCerts, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/site/{{.id}}/certificate", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"id":         id,
 		"param":      param,
 	})
@@ -11861,9 +11201,6 @@ func (o *WebAccelOp) UpdateCertificate(ctx context.Context, zone string, id type
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -11871,11 +11208,9 @@ func (o *WebAccelOp) UpdateCertificate(ctx context.Context, zone string, id type
 		param = &WebAccelCertUpdateRequest{}
 	}
 	args := &struct {
-		Argzone  string
 		Argid    types.ID
 		Argparam *WebAccelCertUpdateRequest `mapconv:"Certificate,recursive"`
 	}{
-		Argzone:  zone,
 		Argid:    id,
 		Argparam: param,
 	}
@@ -11904,12 +11239,12 @@ func (o *WebAccelOp) UpdateCertificate(ctx context.Context, zone string, id type
 }
 
 // DeleteAllCache is API call
-func (o *WebAccelOp) DeleteAllCache(ctx context.Context, zone string, param *WebAccelDeleteAllCacheRequest) error {
+func (o *WebAccelOp) DeleteAllCache(ctx context.Context, param *WebAccelDeleteAllCacheRequest) error {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/deleteallcache", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"param":      param,
 	})
 	if err != nil {
@@ -11918,17 +11253,12 @@ func (o *WebAccelOp) DeleteAllCache(ctx context.Context, zone string, param *Web
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if param == nil {
 		param = &WebAccelDeleteAllCacheRequest{}
 	}
 	args := &struct {
-		Argzone  string
 		Argparam *WebAccelDeleteAllCacheRequest `mapconv:"Site,recursive"`
 	}{
-		Argzone:  zone,
 		Argparam: param,
 	}
 
@@ -11947,12 +11277,12 @@ func (o *WebAccelOp) DeleteAllCache(ctx context.Context, zone string, param *Web
 }
 
 // DeleteCache is API call
-func (o *WebAccelOp) DeleteCache(ctx context.Context, zone string, param *WebAccelDeleteCacheRequest) ([]*WebAccelDeleteCacheResult, error) {
+func (o *WebAccelOp) DeleteCache(ctx context.Context, param *WebAccelDeleteCacheRequest) ([]*WebAccelDeleteCacheResult, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/deletecache", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"param":      param,
 	})
 	if err != nil {
@@ -11961,17 +11291,12 @@ func (o *WebAccelOp) DeleteCache(ctx context.Context, zone string, param *WebAcc
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if param == nil {
 		param = &WebAccelDeleteCacheRequest{}
 	}
 	args := &struct {
-		Argzone  string
 		Argparam *WebAccelDeleteCacheRequest `mapconv:",squash"`
 	}{
-		Argzone:  zone,
 		Argparam: param,
 	}
 
@@ -12018,12 +11343,12 @@ func NewZoneOp(caller APICaller) ZoneAPI {
 }
 
 // Find is API call
-func (o *ZoneOp) Find(ctx context.Context, zone string, conditions *FindCondition) (*ZoneFindResult, error) {
+func (o *ZoneOp) Find(ctx context.Context, conditions *FindCondition) (*ZoneFindResult, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"conditions": conditions,
 	})
 	if err != nil {
@@ -12032,17 +11357,12 @@ func (o *ZoneOp) Find(ctx context.Context, zone string, conditions *FindConditio
 
 	var body interface{}
 
-	if zone == "" {
-		zone = ""
-	}
 	if conditions == nil {
 		conditions = &FindCondition{}
 	}
 	args := &struct {
-		Argzone       string
 		Argconditions *FindCondition `mapconv:",squash"`
 	}{
-		Argzone:       zone,
 		Argconditions: conditions,
 	}
 
@@ -12070,12 +11390,12 @@ func (o *ZoneOp) Find(ctx context.Context, zone string, conditions *FindConditio
 }
 
 // Read is API call
-func (o *ZoneOp) Read(ctx context.Context, zone string, id types.ID) (*Zone, error) {
+func (o *ZoneOp) Read(ctx context.Context, id types.ID) (*Zone, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
-		"zone":       zone,
+		"zone":       APIDefaultZone,
 		"id":         id,
 	})
 	if err != nil {

@@ -27,9 +27,6 @@ var webaccelAPI = &dsl.Resource{
 			PathFormat:       "{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/site",
 			Method:           http.MethodGet,
 			UseWrappedResult: true,
-			Arguments: dsl.Arguments{
-				dsl.ArgumentZone,
-			},
 			ResponseEnvelope: dsl.ResponseEnvelopePlural(&dsl.EnvelopePayloadDesc{
 				Type: webAccelSiteNakedType,
 				Name: "Sites",
@@ -50,7 +47,6 @@ var webaccelAPI = &dsl.Resource{
 			PathFormat:   "{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/site/{{.id}}",
 			Method:       http.MethodGet,
 			Arguments: dsl.Arguments{
-				dsl.ArgumentZone,
 				dsl.ArgumentID,
 			},
 			ResponseEnvelope: dsl.ResponseEnvelope(&dsl.EnvelopePayloadDesc{
@@ -73,7 +69,6 @@ var webaccelAPI = &dsl.Resource{
 			PathFormat:   "{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/site/{{.id}}/certificate",
 			Method:       http.MethodGet,
 			Arguments: dsl.Arguments{
-				dsl.ArgumentZone,
 				dsl.ArgumentID,
 			},
 			ResponseEnvelope: dsl.ResponseEnvelope(&dsl.EnvelopePayloadDesc{
@@ -100,7 +95,6 @@ var webaccelAPI = &dsl.Resource{
 				Name: "Certificate",
 			}),
 			Arguments: dsl.Arguments{
-				dsl.ArgumentZone,
 				dsl.ArgumentID,
 				dsl.MappableArgument("param", webAccelCertUpdateParam, "Certificate"),
 			},
@@ -128,7 +122,6 @@ var webaccelAPI = &dsl.Resource{
 				Name: "Site",
 			}),
 			Arguments: dsl.Arguments{
-				dsl.ArgumentZone,
 				dsl.MappableArgument("param", webAccelDeleteAllCacheParam, "Site"),
 			},
 		},
@@ -141,7 +134,6 @@ var webaccelAPI = &dsl.Resource{
 			Method:          http.MethodPost,
 			RequestEnvelope: dsl.RequestEnvelopeFromModel(webAccelDeleteCacheParam),
 			Arguments: dsl.Arguments{
-				dsl.ArgumentZone,
 				dsl.PassthroughModelArgument("param", webAccelDeleteCacheParam),
 			},
 			ResponseEnvelope: dsl.ResponseEnvelope(&dsl.EnvelopePayloadDesc{

@@ -74,20 +74,20 @@ var (
 
 func testIconCreate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewIconOp(caller)
-	return client.Create(context.Background(), sacloud.APIDefaultZone, createIconParam)
+	return client.Create(context.Background(), createIconParam)
 }
 
 func testIconRead(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewIconOp(caller)
-	return client.Read(context.Background(), sacloud.APIDefaultZone, testContext.ID)
+	return client.Read(context.Background(), testContext.ID)
 }
 
 func testIconUpdate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewIconOp(caller)
-	return client.Update(context.Background(), sacloud.APIDefaultZone, testContext.ID, updateIconParam)
+	return client.Update(context.Background(), testContext.ID, updateIconParam)
 }
 
 func testIconDelete(testContext *CRUDTestContext, caller sacloud.APICaller) error {
 	client := sacloud.NewIconOp(caller)
-	return client.Delete(context.Background(), sacloud.APIDefaultZone, testContext.ID)
+	return client.Delete(context.Background(), testContext.ID)
 }

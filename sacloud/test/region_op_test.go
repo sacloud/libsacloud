@@ -14,7 +14,7 @@ func TestRegionOp_Find(t *testing.T) {
 
 	client := sacloud.NewRegionOp(singletonAPICaller())
 
-	searched, err := client.Find(context.Background(), sacloud.APIDefaultZone, &sacloud.FindCondition{Count: 1})
+	searched, err := client.Find(context.Background(), &sacloud.FindCondition{Count: 1})
 	assert.NoError(t, err)
 
 	err = DoAsserts(
@@ -33,7 +33,7 @@ func TestRegionOp_Read(t *testing.T) {
 	client := sacloud.NewRegionOp(singletonAPICaller())
 
 	sandboxRegionID := types.ID(290)
-	region, err := client.Read(context.Background(), sacloud.APIDefaultZone, sandboxRegionID)
+	region, err := client.Read(context.Background(), sandboxRegionID)
 	assert.NoError(t, err)
 
 	err = DoAsserts(

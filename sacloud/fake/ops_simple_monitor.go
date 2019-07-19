@@ -9,7 +9,7 @@ import (
 )
 
 // Find is fake implementation
-func (o *SimpleMonitorOp) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.SimpleMonitorFindResult, error) {
+func (o *SimpleMonitorOp) Find(ctx context.Context, conditions *sacloud.FindCondition) (*sacloud.SimpleMonitorFindResult, error) {
 	results, _ := find(o.key, sacloud.APIDefaultZone, conditions)
 	var values []*sacloud.SimpleMonitor
 	for _, res := range results {
@@ -26,7 +26,7 @@ func (o *SimpleMonitorOp) Find(ctx context.Context, zone string, conditions *sac
 }
 
 // Create is fake implementation
-func (o *SimpleMonitorOp) Create(ctx context.Context, zone string, param *sacloud.SimpleMonitorCreateRequest) (*sacloud.SimpleMonitor, error) {
+func (o *SimpleMonitorOp) Create(ctx context.Context, param *sacloud.SimpleMonitorCreateRequest) (*sacloud.SimpleMonitor, error) {
 	result := &sacloud.SimpleMonitor{}
 	copySameNameField(param, result)
 	fill(result, fillID, fillCreatedAt)
@@ -41,7 +41,7 @@ func (o *SimpleMonitorOp) Create(ctx context.Context, zone string, param *saclou
 }
 
 // Read is fake implementation
-func (o *SimpleMonitorOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.SimpleMonitor, error) {
+func (o *SimpleMonitorOp) Read(ctx context.Context, id types.ID) (*sacloud.SimpleMonitor, error) {
 	value := s.getSimpleMonitorByID(sacloud.APIDefaultZone, id)
 	if value == nil {
 		return nil, newErrorNotFound(o.key, id)
@@ -52,8 +52,8 @@ func (o *SimpleMonitorOp) Read(ctx context.Context, zone string, id types.ID) (*
 }
 
 // Update is fake implementation
-func (o *SimpleMonitorOp) Update(ctx context.Context, zone string, id types.ID, param *sacloud.SimpleMonitorUpdateRequest) (*sacloud.SimpleMonitor, error) {
-	value, err := o.Read(ctx, sacloud.APIDefaultZone, id)
+func (o *SimpleMonitorOp) Update(ctx context.Context, id types.ID, param *sacloud.SimpleMonitorUpdateRequest) (*sacloud.SimpleMonitor, error) {
+	value, err := o.Read(ctx, id)
 	if err != nil {
 		return nil, err
 	}
@@ -64,8 +64,8 @@ func (o *SimpleMonitorOp) Update(ctx context.Context, zone string, id types.ID, 
 }
 
 // Delete is fake implementation
-func (o *SimpleMonitorOp) Delete(ctx context.Context, zone string, id types.ID) error {
-	_, err := o.Read(ctx, sacloud.APIDefaultZone, id)
+func (o *SimpleMonitorOp) Delete(ctx context.Context, id types.ID) error {
+	_, err := o.Read(ctx, id)
 	if err != nil {
 		return err
 	}
@@ -75,8 +75,8 @@ func (o *SimpleMonitorOp) Delete(ctx context.Context, zone string, id types.ID) 
 }
 
 // MonitorResponseTime is fake implementation
-func (o *SimpleMonitorOp) MonitorResponseTime(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.ResponseTimeSecActivity, error) {
-	_, err := o.Read(ctx, zone, id)
+func (o *SimpleMonitorOp) MonitorResponseTime(ctx context.Context, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.ResponseTimeSecActivity, error) {
+	_, err := o.Read(ctx, id)
 	if err != nil {
 		return nil, err
 	}
@@ -98,8 +98,8 @@ func (o *SimpleMonitorOp) MonitorResponseTime(ctx context.Context, zone string, 
 }
 
 // HealthStatus is fake implementation
-func (o *SimpleMonitorOp) HealthStatus(ctx context.Context, zone string, id types.ID) (*sacloud.SimpleMonitorHealthStatus, error) {
-	_, err := o.Read(ctx, zone, id)
+func (o *SimpleMonitorOp) HealthStatus(ctx context.Context, id types.ID) (*sacloud.SimpleMonitorHealthStatus, error) {
+	_, err := o.Read(ctx, id)
 	if err != nil {
 		return nil, err
 	}

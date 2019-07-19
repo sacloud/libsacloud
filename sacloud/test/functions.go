@@ -9,7 +9,7 @@ import (
 
 func lookupDNSByName(caller sacloud.APICaller, zoneName string) (*sacloud.DNS, error) {
 	dnsOp := sacloud.NewDNSOp(caller)
-	searched, err := dnsOp.Find(context.Background(), sacloud.APIDefaultZone, &sacloud.FindCondition{
+	searched, err := dnsOp.Find(context.Background(), &sacloud.FindCondition{
 		Count: 1,
 		Filter: map[string]interface{}{
 			"Name": zoneName,

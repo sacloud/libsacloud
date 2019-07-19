@@ -8,7 +8,7 @@ import (
 )
 
 // Find is fake implementation
-func (o *RegionOp) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.RegionFindResult, error) {
+func (o *RegionOp) Find(ctx context.Context, conditions *sacloud.FindCondition) (*sacloud.RegionFindResult, error) {
 	results, _ := find(o.key, sacloud.APIDefaultZone, conditions)
 	var values []*sacloud.Region
 	for _, res := range results {
@@ -25,7 +25,7 @@ func (o *RegionOp) Find(ctx context.Context, zone string, conditions *sacloud.Fi
 }
 
 // Read is fake implementation
-func (o *RegionOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Region, error) {
+func (o *RegionOp) Read(ctx context.Context, id types.ID) (*sacloud.Region, error) {
 	value := s.getRegionByID(sacloud.APIDefaultZone, id)
 	if value == nil {
 		return nil, newErrorNotFound(o.key, id)

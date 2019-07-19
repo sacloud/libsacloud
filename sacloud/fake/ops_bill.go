@@ -9,7 +9,7 @@ import (
 )
 
 // ByContract is fake implementation
-func (o *BillOp) ByContract(ctx context.Context, zone string, accountID types.ID) (*sacloud.BillByContractResult, error) {
+func (o *BillOp) ByContract(ctx context.Context, accountID types.ID) (*sacloud.BillByContractResult, error) {
 	results, _ := find(o.key, sacloud.APIDefaultZone, nil)
 	var values []*sacloud.Bill
 	for _, res := range results {
@@ -26,7 +26,7 @@ func (o *BillOp) ByContract(ctx context.Context, zone string, accountID types.ID
 }
 
 // ByContractYear is fake implementation
-func (o *BillOp) ByContractYear(ctx context.Context, zone string, accountID types.ID, year int) (*sacloud.BillByContractYearResult, error) {
+func (o *BillOp) ByContractYear(ctx context.Context, accountID types.ID, year int) (*sacloud.BillByContractYearResult, error) {
 	results, _ := find(o.key, sacloud.APIDefaultZone, nil)
 	var values []*sacloud.Bill
 	for _, res := range results {
@@ -45,7 +45,7 @@ func (o *BillOp) ByContractYear(ctx context.Context, zone string, accountID type
 }
 
 // ByContractYearMonth is fake implementation
-func (o *BillOp) ByContractYearMonth(ctx context.Context, zone string, accountID types.ID, year int, month int) (*sacloud.BillByContractYearMonthResult, error) {
+func (o *BillOp) ByContractYearMonth(ctx context.Context, accountID types.ID, year int, month int) (*sacloud.BillByContractYearMonthResult, error) {
 	results, _ := find(o.key, sacloud.APIDefaultZone, nil)
 	var values []*sacloud.Bill
 	for _, res := range results {
@@ -64,7 +64,7 @@ func (o *BillOp) ByContractYearMonth(ctx context.Context, zone string, accountID
 }
 
 // Read is fake implementation
-func (o *BillOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.BillReadResult, error) {
+func (o *BillOp) Read(ctx context.Context, id types.ID) (*sacloud.BillReadResult, error) {
 	results, _ := find(o.key, sacloud.APIDefaultZone, nil)
 	var values []*sacloud.Bill
 	for _, res := range results {
@@ -83,7 +83,7 @@ func (o *BillOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.B
 }
 
 // Details is fake implementation
-func (o *BillOp) Details(ctx context.Context, zone string, MemberCode string, id types.ID) (*sacloud.BillDetailsResult, error) {
+func (o *BillOp) Details(ctx context.Context, MemberCode string, id types.ID) (*sacloud.BillDetailsResult, error) {
 	rawResults := s.getByID(o.key+"Details", sacloud.APIDefaultZone, id)
 	if rawResults == nil {
 		return nil, newErrorNotFound(o.key+"Details", id)
@@ -106,7 +106,7 @@ func (o *BillOp) Details(ctx context.Context, zone string, MemberCode string, id
 }
 
 // DetailsCSV is fake implementation
-func (o *BillOp) DetailsCSV(ctx context.Context, zone string, MemberCode string, id types.ID) (*sacloud.BillDetailCSV, error) {
+func (o *BillOp) DetailsCSV(ctx context.Context, MemberCode string, id types.ID) (*sacloud.BillDetailCSV, error) {
 	rawResults := s.getByID(o.key+"Details", sacloud.APIDefaultZone, id)
 	if rawResults == nil {
 		return nil, newErrorNotFound(o.key+"Details", id)

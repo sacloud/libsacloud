@@ -115,20 +115,20 @@ var (
 
 func testDNSCreate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewDNSOp(caller)
-	return client.Create(context.Background(), sacloud.APIDefaultZone, createDNSParam)
+	return client.Create(context.Background(), createDNSParam)
 }
 
 func testDNSRead(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewDNSOp(caller)
-	return client.Read(context.Background(), sacloud.APIDefaultZone, testContext.ID)
+	return client.Read(context.Background(), testContext.ID)
 }
 
 func testDNSUpdate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewDNSOp(caller)
-	return client.Update(context.Background(), sacloud.APIDefaultZone, testContext.ID, updateDNSParam)
+	return client.Update(context.Background(), testContext.ID, updateDNSParam)
 }
 
 func testDNSDelete(testContext *CRUDTestContext, caller sacloud.APICaller) error {
 	client := sacloud.NewDNSOp(caller)
-	return client.Delete(context.Background(), sacloud.APIDefaultZone, testContext.ID)
+	return client.Delete(context.Background(), testContext.ID)
 }

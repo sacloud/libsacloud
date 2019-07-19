@@ -47,7 +47,7 @@ func init() {
 {{ end -}}
 }
 
-{{ range . }}{{ $typeName := .TypeName}}
+{{ range . }}{{ $typeName := .TypeName }}{{$resource := .}}
 
 /************************************************* 
 * {{$typeName}}Op
@@ -70,11 +70,16 @@ func New{{ $typeName}}Op(caller APICaller) {{ $typeName}}API {
 
 {{ range .Operations }}{{$returnErrStatement := .ReturnErrorStatement}}{{ $operationName := .MethodName }}
 // {{ .MethodName }} is API call
-func (o *{{ $typeName }}Op) {{ .MethodName }}(ctx context.Context{{ range .Arguments }}, {{ .ArgName }} {{ .TypeName }}{{ end }}) {{.ResultsStatement}} {
+func (o *{{ $typeName }}Op) {{ .MethodName }}(ctx context.Context{{if not $resource.IsGlobal}}, zone string{{end}}{{ range .Arguments }}, {{ .ArgName }} {{ .TypeName }}{{ end }}) {{.ResultsStatement}} {
 	url, err := buildURL("{{.GetPathFormat}}", map[string]interface{}{
 		"rootURL": SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName": o.PathName,
+		{{- if $resource.IsGlobal }}
+		"zone": APIDefaultZone,
+		{{- else }}
+		"zone": zone,
+		{{- end }}
 		{{- range .Arguments }}
 		"{{.PathFormatName}}": {{.Name}},
 		{{- end }}

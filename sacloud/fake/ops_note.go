@@ -8,7 +8,7 @@ import (
 )
 
 // Find is fake implementation
-func (o *NoteOp) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.NoteFindResult, error) {
+func (o *NoteOp) Find(ctx context.Context, conditions *sacloud.FindCondition) (*sacloud.NoteFindResult, error) {
 	results, _ := find(o.key, sacloud.APIDefaultZone, conditions)
 	var values []*sacloud.Note
 	for _, res := range results {
@@ -25,7 +25,7 @@ func (o *NoteOp) Find(ctx context.Context, zone string, conditions *sacloud.Find
 }
 
 // Create is fake implementation
-func (o *NoteOp) Create(ctx context.Context, zone string, param *sacloud.NoteCreateRequest) (*sacloud.Note, error) {
+func (o *NoteOp) Create(ctx context.Context, param *sacloud.NoteCreateRequest) (*sacloud.Note, error) {
 	result := &sacloud.Note{}
 	copySameNameField(param, result)
 	fill(result, fillID, fillCreatedAt, fillAvailability, fillScope)
@@ -34,7 +34,7 @@ func (o *NoteOp) Create(ctx context.Context, zone string, param *sacloud.NoteCre
 }
 
 // Read is fake implementation
-func (o *NoteOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Note, error) {
+func (o *NoteOp) Read(ctx context.Context, id types.ID) (*sacloud.Note, error) {
 	value := s.getNoteByID(sacloud.APIDefaultZone, id)
 	if value == nil {
 		return nil, newErrorNotFound(o.key, id)
@@ -46,8 +46,8 @@ func (o *NoteOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.N
 }
 
 // Update is fake implementation
-func (o *NoteOp) Update(ctx context.Context, zone string, id types.ID, param *sacloud.NoteUpdateRequest) (*sacloud.Note, error) {
-	value, err := o.Read(ctx, sacloud.APIDefaultZone, id)
+func (o *NoteOp) Update(ctx context.Context, id types.ID, param *sacloud.NoteUpdateRequest) (*sacloud.Note, error) {
+	value, err := o.Read(ctx, id)
 	if err != nil {
 		return nil, err
 	}
@@ -58,8 +58,8 @@ func (o *NoteOp) Update(ctx context.Context, zone string, id types.ID, param *sa
 }
 
 // Delete is fake implementation
-func (o *NoteOp) Delete(ctx context.Context, zone string, id types.ID) error {
-	_, err := o.Read(ctx, sacloud.APIDefaultZone, id)
+func (o *NoteOp) Delete(ctx context.Context, id types.ID) error {
+	_, err := o.Read(ctx, id)
 	if err != nil {
 		return err
 	}
