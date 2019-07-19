@@ -108,10 +108,10 @@ var (
 		Name:      ipv6AddrAPIName,
 		NakedType: ipv6AddrNakedType,
 		Fields: []*dsl.FieldDesc{
-			fields.New("IPv6Addr", meta.TypeString),
+			fields.Def("IPv6Addr", meta.TypeString),
 			fields.HostName(),
-			fields.New("IPv6NetID", meta.TypeID, mapConvTag("IPv6Net.ID")),
-			fields.New("SwitchID", meta.TypeID, mapConvTag("IPv6Net.Switch.ID")),
+			fields.Def("IPv6NetID", meta.TypeID, mapConvTag("IPv6Net.ID")),
+			fields.Def("SwitchID", meta.TypeID, mapConvTag("IPv6Net.Switch.ID")),
 			fields.InterfaceID(),
 		},
 	}
@@ -120,7 +120,7 @@ var (
 		Name:      names.CreateParameterName(ipv6AddrAPIName),
 		NakedType: ipv6AddrNakedType,
 		Fields: []*dsl.FieldDesc{
-			fields.New("IPv6Addr", meta.TypeString),
+			fields.Def("IPv6Addr", meta.TypeString),
 			fields.HostName(),
 		},
 	}

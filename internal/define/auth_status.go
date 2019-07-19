@@ -56,12 +56,12 @@ var (
 			fields.AccountClass(),
 			fields.MemberCode(),
 			fields.MemberClass(),
-			fields.New("AuthClass", meta.Static(types.EAuthClass(""))),
-			fields.New("AuthMethod", meta.Static(types.EAuthMethod(""))),
-			fields.New("IsAPIKey", meta.TypeFlag),
-			fields.New("ExternalPermission", meta.Static(types.ExternalPermission(""))),
-			fields.New("OperationPenalty", meta.Static(types.EOperationPenalty(""))),
-			fields.New("Permission", meta.Static(types.EPermission(""))),
+			fields.Def("AuthClass", meta.Static(types.EAuthClass(""))),
+			fields.Def("AuthMethod", meta.Static(types.EAuthMethod(""))),
+			fields.Def("IsAPIKey", meta.TypeFlag),
+			fields.Def("ExternalPermission", meta.Static(types.ExternalPermission(""))),
+			fields.Def("OperationPenalty", meta.Static(types.EOperationPenalty(""))),
+			fields.Def("Permission", meta.Static(types.EPermission(""))),
 		},
 	}
 )

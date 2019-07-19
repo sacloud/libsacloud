@@ -352,7 +352,7 @@ var (
 			// remark
 			fields.RemarkZoneID(),
 			// settings
-			fields.New("Settings", models.mobileGatewaySetting(), mapConvTag(",omitempty,recursive")),
+			fields.Def("Settings", models.mobileGatewaySetting(), mapConvTag(",omitempty,recursive")),
 			fields.SettingsHash(),
 		},
 	}
@@ -402,8 +402,8 @@ var (
 		Name:      "MobileGatewayDNSSetting",
 		NakedType: meta.Static(naked.MobileGatewaySIMGroup{}),
 		Fields: []*dsl.FieldDesc{
-			fields.New("DNS1", meta.TypeString),
-			fields.New("DNS2", meta.TypeString),
+			fields.Def("DNS1", meta.TypeString),
+			fields.Def("DNS2", meta.TypeString),
 		},
 	}
 
@@ -412,8 +412,8 @@ var (
 		NakedType: meta.Static(naked.MobileGatewaySIMRoute{}),
 		IsArray:   true,
 		Fields: []*dsl.FieldDesc{
-			fields.New("ResourceID", meta.TypeString),
-			fields.New("Prefix", meta.TypeString),
+			fields.Def("ResourceID", meta.TypeString),
+			fields.Def("Prefix", meta.TypeString),
 		},
 	}
 	mobileGatewaySIMRouteView = &dsl.Model{
@@ -421,9 +421,9 @@ var (
 		NakedType: meta.Static(naked.MobileGatewaySIMRoute{}),
 		IsArray:   true,
 		Fields: []*dsl.FieldDesc{
-			fields.New("ResourceID", meta.TypeString),
-			fields.New("Prefix", meta.TypeString),
-			fields.New("ICCID", meta.TypeString),
+			fields.Def("ResourceID", meta.TypeString),
+			fields.Def("Prefix", meta.TypeString),
+			fields.Def("ICCID", meta.TypeString),
 		},
 	}
 
@@ -447,11 +447,11 @@ var (
 		NakedType: meta.Static(naked.SIMLog{}),
 		IsArray:   true,
 		Fields: []*dsl.FieldDesc{
-			fields.New("Date", meta.TypeTime),
-			fields.New("SessionStatus", meta.TypeString),
-			fields.New("ResourceID", meta.TypeString),
-			fields.New("IMEI", meta.TypeString),
-			fields.New("IMSI", meta.TypeString),
+			fields.Def("Date", meta.TypeTime),
+			fields.Def("SessionStatus", meta.TypeString),
+			fields.Def("ResourceID", meta.TypeString),
+			fields.Def("IMEI", meta.TypeString),
+			fields.Def("IMSI", meta.TypeString),
 		},
 	}
 
@@ -459,12 +459,12 @@ var (
 		Name:      mobileGatewayAPIName + "TrafficControl",
 		NakedType: meta.Static(naked.TrafficMonitoringConfig{}),
 		Fields: []*dsl.FieldDesc{
-			fields.New("TrafficQuotaInMB", meta.TypeInt),
-			fields.New("BandWidthLimitInKbps", meta.TypeInt),
-			fields.New("EmailNotifyEnabled", meta.TypeFlag, mapConvTag("EMailConfig.Enabled")),
-			fields.New("SlackNotifyEnabled", meta.TypeFlag, mapConvTag("SlackConfig.Enabled")),
-			fields.New("SlackNotifyWebhooksURL", meta.TypeString, mapConvTag("SlackConfig.IncomingWebhooksURL")),
-			fields.New("AutoTrafficShaping", meta.TypeFlag),
+			fields.Def("TrafficQuotaInMB", meta.TypeInt),
+			fields.Def("BandWidthLimitInKbps", meta.TypeInt),
+			fields.Def("EmailNotifyEnabled", meta.TypeFlag, mapConvTag("EMailConfig.Enabled")),
+			fields.Def("SlackNotifyEnabled", meta.TypeFlag, mapConvTag("SlackConfig.Enabled")),
+			fields.Def("SlackNotifyWebhooksURL", meta.TypeString, mapConvTag("SlackConfig.IncomingWebhooksURL")),
+			fields.Def("AutoTrafficShaping", meta.TypeFlag),
 		},
 	}
 
@@ -472,9 +472,9 @@ var (
 		Name:      mobileGatewayAPIName + "TrafficStatus",
 		NakedType: meta.Static(naked.TrafficStatus{}),
 		Fields: []*dsl.FieldDesc{
-			fields.New("UplinkBytes", meta.TypeStringNumber),
-			fields.New("DownlinkBytes", meta.TypeStringNumber),
-			fields.New("TrafficShaping", meta.TypeFlag),
+			fields.Def("UplinkBytes", meta.TypeStringNumber),
+			fields.Def("DownlinkBytes", meta.TypeStringNumber),
+			fields.Def("TrafficShaping", meta.TypeFlag),
 		},
 	}
 )
