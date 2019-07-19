@@ -143,7 +143,7 @@ func TestMobileGatewayOpCRUD(t *testing.T) {
 				Func: func(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 					simOp := sacloud.NewSIMOp(caller)
 					sim, err := simOp.Create(context.Background(), sacloud.APIDefaultZone, &sacloud.SIMCreateRequest{
-						Name:     "libsacloud-test-mobile-gateway",
+						Name:     "libsacloud-switch-for-mobile-gateway",
 						ICCID:    iccid,
 						PassCode: passcode,
 					})

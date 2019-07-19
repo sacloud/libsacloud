@@ -5900,7 +5900,7 @@ func (o *GSLB) SetDestinationServers(v []*GSLBServer) {
 type GSLBServer struct {
 	IPAddress string `validate:"ipv4"`
 	Enabled   types.StringFlag
-	Weight    types.StringNumber `mapconv:",default=1"`
+	Weight    types.StringNumber
 }
 
 // Validate validates by field tags
