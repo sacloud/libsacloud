@@ -90,18 +90,23 @@ func (o *{{ $typeName }}Op) {{ .MethodName }}(ctx context.Context{{if not $resou
 
 	var body interface{}
 {{ if .HasRequestEnvelope }}
-	{{- range .Arguments }}
+	{{- range $i, $v := .Arguments }}
 	if {{.ArgName}} == {{.ZeroValueOnSource}} {
 		{{.ArgName}} = {{.ZeroInitializer}}	
 	}
+	var arg{{$i}} interface{} = {{.ArgName}}
+	if v , ok := arg{{$i}}.(argumentDefaulter); ok {
+		arg{{$i}} = v.setDefaults()
+	}
+
 	{{- end }}
 	args := &struct {
-		{{- range .Arguments }}
-		Arg{{ .ArgName }} {{ .TypeName }} {{.MapConvTagSrc}}
+		{{- range $i, $v := .Arguments }}
+		Arg{{ $i }} interface{} {{.MapConvTagSrc}}
 		{{- end }}
 	}{
-		{{- range .Arguments }}
-		Arg{{ .ArgName }}:{{ .ArgName}},
+		{{- range $i, $v := .Arguments }}
+		Arg{{ $i }}: arg{{ $i }},
 		{{- end }}
 	}
 

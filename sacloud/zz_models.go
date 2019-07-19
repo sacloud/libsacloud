@@ -46,6 +46,59 @@ func (o *Archive) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *Archive) setDefaults() interface{} {
+	return &struct {
+		ID                        types.ID
+		Name                      string `validate:"required"`
+		Description               string `validate:"min=0,max=512"`
+		Tags                      []string
+		DisplayOrder              int
+		Availability              types.EAvailability
+		Scope                     types.EScope
+		SizeMB                    int
+		MigratedMB                int
+		DiskPlanID                types.ID            `mapconv:"Plan.ID"`
+		DiskPlanName              string              `mapconv:"Plan.Name"`
+		DiskPlanStorageClass      string              `mapconv:"Plan.StorageClass"`
+		SourceDiskID              types.ID            `mapconv:"SourceDisk.ID,omitempty"`
+		SourceDiskAvailability    types.EAvailability `mapconv:"SourceDisk.Availability,omitempty"`
+		SourceArchiveID           types.ID            `mapconv:"SourceArchive.ID,omitempty"`
+		SourceArchiveAvailability types.EAvailability `mapconv:"SourceArchive.Availability,omitempty"`
+		BundleInfo                *BundleInfo         `json:",omitempty" mapconv:",omitempty,recursive"`
+		Storage                   *Storage            `json:",omitempty" mapconv:",omitempty,recursive"`
+		IconID                    types.ID            `mapconv:"Icon.ID"`
+		CreatedAt                 time.Time
+		ModifiedAt                time.Time
+		OriginalArchiveID         types.ID           `mapconv:"OriginalArchive.ID,omitempty"`
+		SourceInfo                *SourceArchiveInfo `mapconv:",omitempty,recursive"`
+	}{
+		ID:                        o.ID,
+		Name:                      o.Name,
+		Description:               o.Description,
+		Tags:                      o.Tags,
+		DisplayOrder:              o.DisplayOrder,
+		Availability:              o.Availability,
+		Scope:                     o.Scope,
+		SizeMB:                    o.SizeMB,
+		MigratedMB:                o.MigratedMB,
+		DiskPlanID:                o.DiskPlanID,
+		DiskPlanName:              o.DiskPlanName,
+		DiskPlanStorageClass:      o.DiskPlanStorageClass,
+		SourceDiskID:              o.SourceDiskID,
+		SourceDiskAvailability:    o.SourceDiskAvailability,
+		SourceArchiveID:           o.SourceArchiveID,
+		SourceArchiveAvailability: o.SourceArchiveAvailability,
+		BundleInfo:                o.BundleInfo,
+		Storage:                   o.Storage,
+		IconID:                    o.IconID,
+		CreatedAt:                 o.CreatedAt,
+		ModifiedAt:                o.ModifiedAt,
+		OriginalArchiveID:         o.OriginalArchiveID,
+		SourceInfo:                o.SourceInfo,
+	}
+}
+
 // GetID returns value of ID
 func (o *Archive) GetID() types.ID {
 	return o.ID
@@ -332,6 +385,19 @@ func (o *BundleInfo) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *BundleInfo) setDefaults() interface{} {
+	return &struct {
+		ID           types.ID
+		HostClass    string `json:",omitempty" mapconv:",omitempty"`
+		ServiceClass string `json:",omitempty" mapconv:",omitempty"`
+	}{
+		ID:           o.ID,
+		HostClass:    o.HostClass,
+		ServiceClass: o.ServiceClass,
+	}
+}
+
 // GetID returns value of ID
 func (o *BundleInfo) GetID() types.ID {
 	return o.ID
@@ -397,6 +463,21 @@ type Storage struct {
 // Validate validates by field tags
 func (o *Storage) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *Storage) setDefaults() interface{} {
+	return &struct {
+		ID         types.ID
+		Name       string `validate:"required"`
+		Class      string `json:",omitempty" mapconv:",omitempty"`
+		Generation int    `json:",omitempty" mapconv:",omitempty"`
+	}{
+		ID:         o.ID,
+		Name:       o.Name,
+		Class:      o.Class,
+		Generation: o.Generation,
+	}
 }
 
 // GetID returns value of ID
@@ -476,6 +557,21 @@ func (o *SourceArchiveInfo) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *SourceArchiveInfo) setDefaults() interface{} {
+	return &struct {
+		ID        types.ID `mapconv:"ArchiveUnderZone.ID"`
+		AccountID types.ID `mapconv:"ArchiveUnderZone.Account.ID"`
+		ZoneID    types.ID `mapconv:"ArchiveUnderZone.Zone.ID"`
+		ZoneName  string   `mapconv:"ArchiveUnderZone.Zone.Name"`
+	}{
+		ID:        o.ID,
+		AccountID: o.AccountID,
+		ZoneID:    o.ZoneID,
+		ZoneName:  o.ZoneName,
+	}
+}
+
 // GetID returns value of ID
 func (o *SourceArchiveInfo) GetID() types.ID {
 	return o.ID
@@ -533,6 +629,25 @@ type FindCondition struct {
 // Validate validates by field tags
 func (o *FindCondition) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *FindCondition) setDefaults() interface{} {
+	return &struct {
+		Count   int                    `mapconv:",omitempty"`
+		From    int                    `mapconv:",omitempty"`
+		Sort    []string               `mapconv:",omitempty"`
+		Filter  map[string]interface{} `mapconv:",omitempty"`
+		Include []string               `mapconv:",omitempty"`
+		Exclude []string               `mapconv:",omitempty"`
+	}{
+		Count:   o.Count,
+		From:    o.From,
+		Sort:    o.Sort,
+		Filter:  o.Filter,
+		Include: o.Include,
+		Exclude: o.Exclude,
+	}
 }
 
 // GetCount returns value of Count
@@ -614,6 +729,25 @@ func (o *ArchiveCreateRequest) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *ArchiveCreateRequest) setDefaults() interface{} {
+	return &struct {
+		SourceDiskID    types.ID `mapconv:"SourceDisk.ID,omitempty"`
+		SourceArchiveID types.ID `mapconv:"SourceArchive.ID,omitempty"`
+		Name            string   `validate:"required"`
+		Description     string   `validate:"min=0,max=512"`
+		Tags            []string
+		IconID          types.ID `mapconv:"Icon.ID"`
+	}{
+		SourceDiskID:    o.SourceDiskID,
+		SourceArchiveID: o.SourceArchiveID,
+		Name:            o.Name,
+		Description:     o.Description,
+		Tags:            o.Tags,
+		IconID:          o.IconID,
+	}
+}
+
 // GetSourceDiskID returns value of SourceDiskID
 func (o *ArchiveCreateRequest) GetSourceDiskID() types.ID {
 	return o.SourceDiskID
@@ -691,6 +825,21 @@ func (o *FTPServer) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *FTPServer) setDefaults() interface{} {
+	return &struct {
+		HostName  string
+		IPAddress string
+		User      string
+		Password  string
+	}{
+		HostName:  o.HostName,
+		IPAddress: o.IPAddress,
+		User:      o.User,
+		Password:  o.Password,
+	}
+}
+
 // GetHostName returns value of HostName
 func (o *FTPServer) GetHostName() string {
 	return o.HostName
@@ -747,6 +896,23 @@ type ArchiveCreateBlankRequest struct {
 // Validate validates by field tags
 func (o *ArchiveCreateBlankRequest) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *ArchiveCreateBlankRequest) setDefaults() interface{} {
+	return &struct {
+		SizeMB      int
+		Name        string `validate:"required"`
+		Description string `validate:"min=0,max=512"`
+		Tags        []string
+		IconID      types.ID `mapconv:"Icon.ID"`
+	}{
+		SizeMB:      o.SizeMB,
+		Name:        o.Name,
+		Description: o.Description,
+		Tags:        o.Tags,
+		IconID:      o.IconID,
+	}
 }
 
 // GetSizeMB returns value of SizeMB
@@ -826,6 +992,21 @@ func (o *ArchiveUpdateRequest) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *ArchiveUpdateRequest) setDefaults() interface{} {
+	return &struct {
+		Name        string `validate:"required"`
+		Description string `validate:"min=0,max=512"`
+		Tags        []string
+		IconID      types.ID `mapconv:"Icon.ID"`
+	}{
+		Name:        o.Name,
+		Description: o.Description,
+		Tags:        o.Tags,
+		IconID:      o.IconID,
+	}
+}
+
 // GetName returns value of Name
 func (o *ArchiveUpdateRequest) GetName() string {
 	return o.Name
@@ -880,6 +1061,15 @@ func (o *OpenFTPRequest) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *OpenFTPRequest) setDefaults() interface{} {
+	return &struct {
+		ChangePassword bool
+	}{
+		ChangePassword: o.ChangePassword,
+	}
+}
+
 // GetChangePassword returns value of ChangePassword
 func (o *OpenFTPRequest) GetChangePassword() bool {
 	return o.ChangePassword
@@ -913,6 +1103,37 @@ type AuthStatus struct {
 // Validate validates by field tags
 func (o *AuthStatus) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *AuthStatus) setDefaults() interface{} {
+	return &struct {
+		AccountID          types.ID `mapconv:"Account.ID"`
+		AccountName        string   `mapconv:"Account.Name"`
+		AccountCode        string   `mapconv:"Account.Code"`
+		AccountClass       string   `mapconv:"Account.Class"`
+		MemberCode         string   `mapconv:"Member.Code"`
+		MemberClass        string   `mapconv:"Member.Class"`
+		AuthClass          types.EAuthClass
+		AuthMethod         types.EAuthMethod
+		IsAPIKey           bool
+		ExternalPermission types.ExternalPermission
+		OperationPenalty   types.EOperationPenalty
+		Permission         types.EPermission
+	}{
+		AccountID:          o.AccountID,
+		AccountName:        o.AccountName,
+		AccountCode:        o.AccountCode,
+		AccountClass:       o.AccountClass,
+		MemberCode:         o.MemberCode,
+		MemberClass:        o.MemberClass,
+		AuthClass:          o.AuthClass,
+		AuthMethod:         o.AuthMethod,
+		IsAPIKey:           o.IsAPIKey,
+		ExternalPermission: o.ExternalPermission,
+		OperationPenalty:   o.OperationPenalty,
+		Permission:         o.Permission,
+	}
 }
 
 // GetAccountID returns value of AccountID
@@ -1063,6 +1284,47 @@ type AutoBackup struct {
 // Validate validates by field tags
 func (o *AutoBackup) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *AutoBackup) setDefaults() interface{} {
+	return &struct {
+		ID                      types.ID
+		Name                    string `validate:"required"`
+		Description             string `validate:"min=0,max=512"`
+		Tags                    []string
+		Availability            types.EAvailability
+		IconID                  types.ID `mapconv:"Icon.ID"`
+		CreatedAt               time.Time
+		ModifiedAt              time.Time
+		Class                   string                     `mapconv:"Provider.Class,default=autobackup"`
+		BackupSpanType          types.EBackupSpanType      `mapconv:"Settings.Autobackup.BackupSpanType,default=weekdays"`
+		BackupSpanWeekdays      []types.EBackupSpanWeekday `mapconv:"Settings.Autobackup.BackupSpanWeekdays"`
+		MaximumNumberOfArchives int                        `mapconv:"Settings.Autobackup.MaximumNumberOfArchives"`
+		SettingsHash            string
+		DiskID                  types.ID `mapconv:"Status.DiskId"`
+		AccountID               types.ID `mapconv:"Status.AccountId"`
+		ZoneID                  types.ID `mapconv:"Status.ZoneId"`
+		ZoneName                string   `mapconv:"Status.ZoneName"`
+	}{
+		ID:                      o.ID,
+		Name:                    o.Name,
+		Description:             o.Description,
+		Tags:                    o.Tags,
+		Availability:            o.Availability,
+		IconID:                  o.IconID,
+		CreatedAt:               o.CreatedAt,
+		ModifiedAt:              o.ModifiedAt,
+		Class:                   o.Class,
+		BackupSpanType:          o.BackupSpanType,
+		BackupSpanWeekdays:      o.BackupSpanWeekdays,
+		MaximumNumberOfArchives: o.MaximumNumberOfArchives,
+		SettingsHash:            o.SettingsHash,
+		DiskID:                  o.DiskID,
+		AccountID:               o.AccountID,
+		ZoneID:                  o.ZoneID,
+		ZoneName:                o.ZoneName,
+	}
 }
 
 // GetID returns value of ID
@@ -1277,6 +1539,31 @@ func (o *AutoBackupCreateRequest) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *AutoBackupCreateRequest) setDefaults() interface{} {
+	return &struct {
+		Class                   string                     `mapconv:"Provider.Class,default=autobackup"`
+		DiskID                  types.ID                   `mapconv:"Status.DiskId"`
+		BackupSpanType          types.EBackupSpanType      `mapconv:"Settings.Autobackup.BackupSpanType,default=weekdays"`
+		BackupSpanWeekdays      []types.EBackupSpanWeekday `mapconv:"Settings.Autobackup.BackupSpanWeekdays"`
+		MaximumNumberOfArchives int                        `mapconv:"Settings.Autobackup.MaximumNumberOfArchives"`
+		Name                    string                     `validate:"required"`
+		Description             string                     `validate:"min=0,max=512"`
+		Tags                    []string
+		IconID                  types.ID `mapconv:"Icon.ID"`
+	}{
+		Class:                   o.Class,
+		DiskID:                  o.DiskID,
+		BackupSpanType:          o.BackupSpanType,
+		BackupSpanWeekdays:      o.BackupSpanWeekdays,
+		MaximumNumberOfArchives: o.MaximumNumberOfArchives,
+		Name:                    o.Name,
+		Description:             o.Description,
+		Tags:                    o.Tags,
+		IconID:                  o.IconID,
+	}
+}
+
 // GetClass returns value of Class
 func (o *AutoBackupCreateRequest) GetClass() string {
 	return o.Class
@@ -1387,6 +1674,27 @@ func (o *AutoBackupUpdateRequest) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *AutoBackupUpdateRequest) setDefaults() interface{} {
+	return &struct {
+		BackupSpanType          types.EBackupSpanType      `mapconv:"Settings.Autobackup.BackupSpanType,default=weekdays"`
+		BackupSpanWeekdays      []types.EBackupSpanWeekday `mapconv:"Settings.Autobackup.BackupSpanWeekdays"`
+		MaximumNumberOfArchives int                        `mapconv:"Settings.Autobackup.MaximumNumberOfArchives"`
+		Name                    string                     `validate:"required"`
+		Description             string                     `validate:"min=0,max=512"`
+		Tags                    []string
+		IconID                  types.ID `mapconv:"Icon.ID"`
+	}{
+		BackupSpanType:          o.BackupSpanType,
+		BackupSpanWeekdays:      o.BackupSpanWeekdays,
+		MaximumNumberOfArchives: o.MaximumNumberOfArchives,
+		Name:                    o.Name,
+		Description:             o.Description,
+		Tags:                    o.Tags,
+		IconID:                  o.IconID,
+	}
+}
+
 // GetBackupSpanType returns value of BackupSpanType
 func (o *AutoBackupUpdateRequest) GetBackupSpanType() types.EBackupSpanType {
 	return o.BackupSpanType
@@ -1475,6 +1783,27 @@ type Bill struct {
 // Validate validates by field tags
 func (o *Bill) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *Bill) setDefaults() interface{} {
+	return &struct {
+		ID             types.ID
+		Amount         int64
+		Date           time.Time
+		MemberID       string
+		Paid           bool
+		PayLimit       time.Time
+		PaymentClassID types.ID
+	}{
+		ID:             o.ID,
+		Amount:         o.Amount,
+		Date:           o.Date,
+		MemberID:       o.MemberID,
+		Paid:           o.Paid,
+		PayLimit:       o.PayLimit,
+		PaymentClassID: o.PaymentClassID,
+	}
 }
 
 // GetID returns value of ID
@@ -1587,6 +1916,27 @@ func (o *BillDetail) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *BillDetail) setDefaults() interface{} {
+	return &struct {
+		ID             types.ID
+		Amount         int64
+		Description    string `validate:"min=0,max=512"`
+		ServiceClassID types.ID
+		Usage          int64
+		Zone           string
+		ContractEndAt  time.Time
+	}{
+		ID:             o.ID,
+		Amount:         o.Amount,
+		Description:    o.Description,
+		ServiceClassID: o.ServiceClassID,
+		Usage:          o.Usage,
+		Zone:           o.Zone,
+		ContractEndAt:  o.ContractEndAt,
+	}
+}
+
 // GetID returns value of ID
 func (o *BillDetail) GetID() types.ID {
 	return o.ID
@@ -1696,6 +2046,25 @@ func (o *BillDetailCSV) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *BillDetailCSV) setDefaults() interface{} {
+	return &struct {
+		Count       int
+		ResponsedAt time.Time
+		Filename    string
+		RawBody     string
+		HeaderRow   []string
+		BodyRows    [][]string
+	}{
+		Count:       o.Count,
+		ResponsedAt: o.ResponsedAt,
+		Filename:    o.Filename,
+		RawBody:     o.RawBody,
+		HeaderRow:   o.HeaderRow,
+		BodyRows:    o.BodyRows,
+	}
+}
+
 // GetCount returns value of Count
 func (o *BillDetailCSV) GetCount() int {
 	return o.Count
@@ -1774,6 +2143,27 @@ type Bridge struct {
 // Validate validates by field tags
 func (o *Bridge) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *Bridge) setDefaults() interface{} {
+	return &struct {
+		ID           types.ID
+		Name         string `validate:"required"`
+		Description  string `validate:"min=0,max=512"`
+		CreatedAt    time.Time
+		Region       *Region       `json:",omitempty"`
+		BridgeInfo   []*BridgeInfo `mapconv:"[]Switches,recursive"`
+		SwitchInZone *BridgeSwitchInfo
+	}{
+		ID:           o.ID,
+		Name:         o.Name,
+		Description:  o.Description,
+		CreatedAt:    o.CreatedAt,
+		Region:       o.Region,
+		BridgeInfo:   o.BridgeInfo,
+		SwitchInZone: o.SwitchInZone,
+	}
 }
 
 // GetID returns value of ID
@@ -1883,6 +2273,21 @@ func (o *Region) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *Region) setDefaults() interface{} {
+	return &struct {
+		ID          types.ID
+		Name        string   `validate:"required"`
+		Description string   `validate:"min=0,max=512"`
+		NameServers []string `json:",omitempty" mapconv:",omitempty"`
+	}{
+		ID:          o.ID,
+		Name:        o.Name,
+		Description: o.Description,
+		NameServers: o.NameServers,
+	}
+}
+
 // GetID returns value of ID
 func (o *Region) GetID() types.ID {
 	return o.ID
@@ -1959,6 +2364,19 @@ func (o *BridgeInfo) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *BridgeInfo) setDefaults() interface{} {
+	return &struct {
+		ID     types.ID
+		Name   string   `validate:"required"`
+		ZoneID types.ID `mapconv:"Zone.ID"`
+	}{
+		ID:     o.ID,
+		Name:   o.Name,
+		ZoneID: o.ZoneID,
+	}
+}
+
 // GetID returns value of ID
 func (o *BridgeInfo) GetID() types.ID {
 	return o.ID
@@ -2025,6 +2443,23 @@ type BridgeSwitchInfo struct {
 // Validate validates by field tags
 func (o *BridgeSwitchInfo) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *BridgeSwitchInfo) setDefaults() interface{} {
+	return &struct {
+		ID             types.ID
+		Name           string `validate:"required"`
+		Scope          types.EScope
+		ServerCount    int
+		ApplianceCount int
+	}{
+		ID:             o.ID,
+		Name:           o.Name,
+		Scope:          o.Scope,
+		ServerCount:    o.ServerCount,
+		ApplianceCount: o.ApplianceCount,
+	}
 }
 
 // GetID returns value of ID
@@ -2112,6 +2547,17 @@ func (o *BridgeCreateRequest) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *BridgeCreateRequest) setDefaults() interface{} {
+	return &struct {
+		Name        string `validate:"required"`
+		Description string `validate:"min=0,max=512"`
+	}{
+		Name:        o.Name,
+		Description: o.Description,
+	}
+}
+
 // GetName returns value of Name
 func (o *BridgeCreateRequest) GetName() string {
 	return o.Name
@@ -2145,6 +2591,17 @@ type BridgeUpdateRequest struct {
 // Validate validates by field tags
 func (o *BridgeUpdateRequest) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *BridgeUpdateRequest) setDefaults() interface{} {
+	return &struct {
+		Name        string `validate:"required"`
+		Description string `validate:"min=0,max=512"`
+	}{
+		Name:        o.Name,
+		Description: o.Description,
+	}
 }
 
 // GetName returns value of Name
@@ -2189,6 +2646,35 @@ type CDROM struct {
 // Validate validates by field tags
 func (o *CDROM) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *CDROM) setDefaults() interface{} {
+	return &struct {
+		ID           types.ID
+		Name         string `validate:"required"`
+		Description  string `validate:"min=0,max=512"`
+		DisplayOrder int
+		Tags         []string
+		Availability types.EAvailability
+		Scope        types.EScope
+		Storage      *Storage `json:",omitempty" mapconv:",omitempty,recursive"`
+		IconID       types.ID `mapconv:"Icon.ID"`
+		CreatedAt    time.Time
+		ModifiedAt   time.Time
+	}{
+		ID:           o.ID,
+		Name:         o.Name,
+		Description:  o.Description,
+		DisplayOrder: o.DisplayOrder,
+		Tags:         o.Tags,
+		Availability: o.Availability,
+		Scope:        o.Scope,
+		Storage:      o.Storage,
+		IconID:       o.IconID,
+		CreatedAt:    o.CreatedAt,
+		ModifiedAt:   o.ModifiedAt,
+	}
 }
 
 // GetID returns value of ID
@@ -2339,6 +2825,23 @@ func (o *CDROMCreateRequest) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *CDROMCreateRequest) setDefaults() interface{} {
+	return &struct {
+		SizeMB      int
+		Name        string `validate:"required"`
+		Description string `validate:"min=0,max=512"`
+		Tags        []string
+		IconID      types.ID `mapconv:"Icon.ID"`
+	}{
+		SizeMB:      o.SizeMB,
+		Name:        o.Name,
+		Description: o.Description,
+		Tags:        o.Tags,
+		IconID:      o.IconID,
+	}
+}
+
 // GetSizeMB returns value of SizeMB
 func (o *CDROMCreateRequest) GetSizeMB() int {
 	return o.SizeMB
@@ -2416,6 +2919,21 @@ func (o *CDROMUpdateRequest) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *CDROMUpdateRequest) setDefaults() interface{} {
+	return &struct {
+		Name        string `validate:"required"`
+		Description string `validate:"min=0,max=512"`
+		Tags        []string
+		IconID      types.ID `mapconv:"Icon.ID"`
+	}{
+		Name:        o.Name,
+		Description: o.Description,
+		Tags:        o.Tags,
+		IconID:      o.IconID,
+	}
+}
+
 // GetName returns value of Name
 func (o *CDROMUpdateRequest) GetName() string {
 	return o.Name
@@ -2474,6 +2992,27 @@ type Coupon struct {
 // Validate validates by field tags
 func (o *Coupon) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *Coupon) setDefaults() interface{} {
+	return &struct {
+		ID             types.ID
+		MemberID       string
+		ContractID     types.ID
+		ServiceClassID types.ID
+		Discount       int64
+		AppliedAt      time.Time
+		UntilAt        time.Time
+	}{
+		ID:             o.ID,
+		MemberID:       o.MemberID,
+		ContractID:     o.ContractID,
+		ServiceClassID: o.ServiceClassID,
+		Discount:       o.Discount,
+		AppliedAt:      o.AppliedAt,
+		UntilAt:        o.UntilAt,
+	}
 }
 
 // GetID returns value of ID
@@ -2602,6 +3141,63 @@ type Database struct {
 // Validate validates by field tags
 func (o *Database) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *Database) setDefaults() interface{} {
+	return &struct {
+		ID                      types.ID
+		Class                   string
+		Name                    string `validate:"required"`
+		Description             string `validate:"min=0,max=512"`
+		Tags                    []string
+		Availability            types.EAvailability
+		IconID                  types.ID `mapconv:"Icon.ID"`
+		CreatedAt               time.Time
+		ModifiedAt              time.Time
+		CommonSetting           *DatabaseSettingCommon      `mapconv:"Settings.DBConf.Common,recursive"`
+		BackupSetting           *DatabaseSettingBackup      `mapconv:"Settings.DBConf.Backup,recursive"`
+		ReplicationSetting      *DatabaseReplicationSetting `mapconv:"Settings.DBConf.Replication,recursive"`
+		SettingsHash            string
+		InstanceHostName        string                      `mapconv:"Instance.Host.Name"`
+		InstanceHostInfoURL     string                      `mapconv:"Instance.Host.InfoURL"`
+		InstanceStatus          types.EServerInstanceStatus `mapconv:"Instance.Status"`
+		InstanceStatusChangedAt time.Time                   `mapconv:"Instance.StatusChangedAt"`
+		PlanID                  types.ID                    `mapconv:"Remark.Plan.ID/Plan.ID"`
+		SwitchID                types.ID                    `mapconv:"Remark.Switch.ID"`
+		Conf                    *DatabaseRemarkDBConfCommon `mapconv:"Remark.DBConf.Common,recursive"`
+		DefaultRoute            string                      `mapconv:"Remark.Network.DefaultRoute" validate:"ipv4"`
+		NetworkMaskLen          int                         `mapconv:"Remark.Network.NetworkMaskLen" validate:"min=1,max=32"`
+		IPAddresses             []string                    `mapconv:"Remark.[]Servers.IPAddress"`
+		ZoneID                  types.ID                    `mapconv:"Remark.Zone.ID"`
+		Interfaces              []*InterfaceView            `json:",omitempty" mapconv:"[]Interfaces,recursive,omitempty"`
+	}{
+		ID:                      o.ID,
+		Class:                   o.Class,
+		Name:                    o.Name,
+		Description:             o.Description,
+		Tags:                    o.Tags,
+		Availability:            o.Availability,
+		IconID:                  o.IconID,
+		CreatedAt:               o.CreatedAt,
+		ModifiedAt:              o.ModifiedAt,
+		CommonSetting:           o.CommonSetting,
+		BackupSetting:           o.BackupSetting,
+		ReplicationSetting:      o.ReplicationSetting,
+		SettingsHash:            o.SettingsHash,
+		InstanceHostName:        o.InstanceHostName,
+		InstanceHostInfoURL:     o.InstanceHostInfoURL,
+		InstanceStatus:          o.InstanceStatus,
+		InstanceStatusChangedAt: o.InstanceStatusChangedAt,
+		PlanID:                  o.PlanID,
+		SwitchID:                o.SwitchID,
+		Conf:                    o.Conf,
+		DefaultRoute:            o.DefaultRoute,
+		NetworkMaskLen:          o.NetworkMaskLen,
+		IPAddresses:             o.IPAddresses,
+		ZoneID:                  o.ZoneID,
+		Interfaces:              o.Interfaces,
+	}
 }
 
 // GetID returns value of ID
@@ -2892,6 +3488,23 @@ func (o *DatabaseSettingCommon) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *DatabaseSettingCommon) setDefaults() interface{} {
+	return &struct {
+		WebUI         bool
+		ServicePort   int
+		SourceNetwork []string
+		DefaultUser   string
+		UserPassword  string
+	}{
+		WebUI:         o.WebUI,
+		ServicePort:   o.ServicePort,
+		SourceNetwork: o.SourceNetwork,
+		DefaultUser:   o.DefaultUser,
+		UserPassword:  o.UserPassword,
+	}
+}
+
 // GetWebUI returns value of WebUI
 func (o *DatabaseSettingCommon) GetWebUI() bool {
 	return o.WebUI
@@ -2958,6 +3571,19 @@ func (o *DatabaseSettingBackup) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *DatabaseSettingBackup) setDefaults() interface{} {
+	return &struct {
+		Rotate    int
+		Time      string
+		DayOfWeek []types.EBackupSpanWeekday
+	}{
+		Rotate:    o.Rotate,
+		Time:      o.Time,
+		DayOfWeek: o.DayOfWeek,
+	}
+}
+
 // GetRotate returns value of Rotate
 func (o *DatabaseSettingBackup) GetRotate() int {
 	return o.Rotate
@@ -3005,6 +3631,25 @@ type DatabaseReplicationSetting struct {
 // Validate validates by field tags
 func (o *DatabaseReplicationSetting) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *DatabaseReplicationSetting) setDefaults() interface{} {
+	return &struct {
+		Model       types.EDatabaseReplicationModel
+		IPAddress   string
+		Port        int
+		User        string
+		Password    string
+		ApplianceID types.ID `mapconv:"Appliance.ID"`
+	}{
+		Model:       o.Model,
+		IPAddress:   o.IPAddress,
+		Port:        o.Port,
+		User:        o.User,
+		Password:    o.Password,
+		ApplianceID: o.ApplianceID,
+	}
 }
 
 // GetModel returns value of Model
@@ -3085,6 +3730,23 @@ func (o *DatabaseRemarkDBConfCommon) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *DatabaseRemarkDBConfCommon) setDefaults() interface{} {
+	return &struct {
+		DatabaseName     string
+		DatabaseVersion  string
+		DatabaseRevision string
+		DefaultUser      string
+		UserPassword     string
+	}{
+		DatabaseName:     o.DatabaseName,
+		DatabaseVersion:  o.DatabaseVersion,
+		DatabaseRevision: o.DatabaseRevision,
+		DefaultUser:      o.DefaultUser,
+		UserPassword:     o.UserPassword,
+	}
+}
+
 // GetDatabaseName returns value of DatabaseName
 func (o *DatabaseRemarkDBConfCommon) GetDatabaseName() string {
 	return o.DatabaseName
@@ -3163,6 +3825,47 @@ type InterfaceView struct {
 // Validate validates by field tags
 func (o *InterfaceView) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *InterfaceView) setDefaults() interface{} {
+	return &struct {
+		ID                              types.ID
+		MACAddress                      string
+		IPAddress                       string
+		UserIPAddress                   string
+		HostName                        string
+		SwitchID                        types.ID           `mapconv:"Switch.ID"`
+		SwitchName                      string             `mapconv:"Switch.Name"`
+		SwitchScope                     types.EScope       `mapconv:"Switch.Scope"`
+		UserSubnetDefaultRoute          string             `mapconv:"Switch.UserSubnet.DefaultRoute"`
+		UserSubnetNetworkMaskLen        int                `mapconv:"Switch.UserSubnet.NetworkMaskLen"`
+		SubnetDefaultRoute              string             `mapconv:"Switch.Subnet.DefaultRoute"`
+		SubnetNetworkMaskLen            int                `mapconv:"Switch.Subnet.NetworkMaskLen"`
+		SubnetNetworkAddress            string             `mapconv:"Switch.Subnet.NetworkAddress"`
+		SubnetBandWidthMbps             int                `mapconv:"Switch.Subnet.Internet.BandWidthMbps"`
+		PacketFilterID                  string             `mapconv:"PacketFilter.ID"`
+		PacketFilterName                string             `mapconv:"PacketFilter.Name"`
+		PacketFilterRequiredHostVersion types.StringNumber `mapconv:"PacketFilter.RequiredHostVersionn"`
+	}{
+		ID:                              o.ID,
+		MACAddress:                      o.MACAddress,
+		IPAddress:                       o.IPAddress,
+		UserIPAddress:                   o.UserIPAddress,
+		HostName:                        o.HostName,
+		SwitchID:                        o.SwitchID,
+		SwitchName:                      o.SwitchName,
+		SwitchScope:                     o.SwitchScope,
+		UserSubnetDefaultRoute:          o.UserSubnetDefaultRoute,
+		UserSubnetNetworkMaskLen:        o.UserSubnetNetworkMaskLen,
+		SubnetDefaultRoute:              o.SubnetDefaultRoute,
+		SubnetNetworkMaskLen:            o.SubnetNetworkMaskLen,
+		SubnetNetworkAddress:            o.SubnetNetworkAddress,
+		SubnetBandWidthMbps:             o.SubnetBandWidthMbps,
+		PacketFilterID:                  o.PacketFilterID,
+		PacketFilterName:                o.PacketFilterName,
+		PacketFilterRequiredHostVersion: o.PacketFilterRequiredHostVersion,
+	}
 }
 
 // GetID returns value of ID
@@ -3383,6 +4086,43 @@ func (o *DatabaseCreateRequest) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *DatabaseCreateRequest) setDefaults() interface{} {
+	return &struct {
+		Class              string                      `mapconv:",default=database"`
+		PlanID             types.ID                    `mapconv:"Remark.Plan.ID/Plan.ID"`
+		SwitchID           types.ID                    `mapconv:"Remark.Switch.ID"`
+		IPAddresses        []string                    `mapconv:"Remark.[]Servers.IPAddress" validate:"min=1,max=2,dive,ipv4"`
+		NetworkMaskLen     int                         `mapconv:"Remark.Network.NetworkMaskLen" validate:"min=1,max=32"`
+		DefaultRoute       string                      `mapconv:"Remark.Network.DefaultRoute" validate:"ipv4"`
+		Conf               *DatabaseRemarkDBConfCommon `mapconv:"Remark.DBConf.Common,recursive"`
+		SourceID           types.ID                    `mapconv:"Remark.SourceAppliance.ID"`
+		CommonSetting      *DatabaseSettingCommon      `mapconv:"Settings.DBConf.Common,recursive"`
+		BackupSetting      *DatabaseSettingBackup      `mapconv:"Settings.DBConf.Backup,recursive"`
+		ReplicationSetting *DatabaseReplicationSetting `mapconv:"Settings.DBConf.Replication,recursive"`
+		Name               string                      `validate:"required"`
+		Description        string                      `validate:"min=0,max=512"`
+		Tags               []string
+		IconID             types.ID `mapconv:"Icon.ID"`
+	}{
+		Class:              o.Class,
+		PlanID:             o.PlanID,
+		SwitchID:           o.SwitchID,
+		IPAddresses:        o.IPAddresses,
+		NetworkMaskLen:     o.NetworkMaskLen,
+		DefaultRoute:       o.DefaultRoute,
+		Conf:               o.Conf,
+		SourceID:           o.SourceID,
+		CommonSetting:      o.CommonSetting,
+		BackupSetting:      o.BackupSetting,
+		ReplicationSetting: o.ReplicationSetting,
+		Name:               o.Name,
+		Description:        o.Description,
+		Tags:               o.Tags,
+		IconID:             o.IconID,
+	}
+}
+
 // GetClass returns value of Class
 func (o *DatabaseCreateRequest) GetClass() string {
 	return o.Class
@@ -3553,6 +4293,27 @@ func (o *DatabaseUpdateRequest) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *DatabaseUpdateRequest) setDefaults() interface{} {
+	return &struct {
+		CommonSetting      *DatabaseSettingCommonUpdate `mapconv:"Settings.DBConf.Common,recursive"`
+		BackupSetting      *DatabaseSettingBackup       `mapconv:"Settings.DBConf.Backup,recursive"`
+		ReplicationSetting *DatabaseReplicationSetting  `mapconv:"Settings.DBConf.Replication,recursive"`
+		Name               string                       `validate:"required"`
+		Description        string                       `validate:"min=0,max=512"`
+		Tags               []string
+		IconID             types.ID `mapconv:"Icon.ID"`
+	}{
+		CommonSetting:      o.CommonSetting,
+		BackupSetting:      o.BackupSetting,
+		ReplicationSetting: o.ReplicationSetting,
+		Name:               o.Name,
+		Description:        o.Description,
+		Tags:               o.Tags,
+		IconID:             o.IconID,
+	}
+}
+
 // GetCommonSetting returns value of CommonSetting
 func (o *DatabaseUpdateRequest) GetCommonSetting() *DatabaseSettingCommonUpdate {
 	return o.CommonSetting
@@ -3641,6 +4402,23 @@ func (o *DatabaseSettingCommonUpdate) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *DatabaseSettingCommonUpdate) setDefaults() interface{} {
+	return &struct {
+		WebUI         bool
+		ServicePort   int
+		SourceNetwork []string
+		DefaultUser   string
+		UserPassword  string
+	}{
+		WebUI:         o.WebUI,
+		ServicePort:   o.ServicePort,
+		SourceNetwork: o.SourceNetwork,
+		DefaultUser:   o.DefaultUser,
+		UserPassword:  o.UserPassword,
+	}
+}
+
 // GetWebUI returns value of WebUI
 func (o *DatabaseSettingCommonUpdate) GetWebUI() bool {
 	return o.WebUI
@@ -3705,6 +4483,15 @@ func (o *ShutdownOption) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *ShutdownOption) setDefaults() interface{} {
+	return &struct {
+		Force bool
+	}{
+		Force: o.Force,
+	}
+}
+
 // GetForce returns value of Force
 func (o *ShutdownOption) GetForce() bool {
 	return o.Force
@@ -3727,6 +4514,15 @@ type CPUTimeActivity struct {
 // Validate validates by field tags
 func (o *CPUTimeActivity) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *CPUTimeActivity) setDefaults() interface{} {
+	return &struct {
+		Values []*MonitorCPUTimeValue `mapconv:"[]CPU"`
+	}{
+		Values: o.Values,
+	}
 }
 
 // GetValues returns value of Values
@@ -3752,6 +4548,17 @@ type MonitorCPUTimeValue struct {
 // Validate validates by field tags
 func (o *MonitorCPUTimeValue) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *MonitorCPUTimeValue) setDefaults() interface{} {
+	return &struct {
+		Time    time.Time `json:",omitempty" mapconv:",omitempty"`
+		CPUTime float64   `json:",omitempty" mapconv:",omitempty"`
+	}{
+		Time:    o.Time,
+		CPUTime: o.CPUTime,
+	}
 }
 
 // GetTime returns value of Time
@@ -3789,6 +4596,17 @@ func (o *MonitorCondition) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *MonitorCondition) setDefaults() interface{} {
+	return &struct {
+		Start time.Time `json:",omitempty"`
+		End   time.Time `json:",omitempty"`
+	}{
+		Start: o.Start,
+		End:   o.End,
+	}
+}
+
 // GetStart returns value of Start
 func (o *MonitorCondition) GetStart() time.Time {
 	return o.Start
@@ -3823,6 +4641,15 @@ func (o *DiskActivity) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *DiskActivity) setDefaults() interface{} {
+	return &struct {
+		Values []*MonitorDiskValue `mapconv:"[]Disk"`
+	}{
+		Values: o.Values,
+	}
+}
+
 // GetValues returns value of Values
 func (o *DiskActivity) GetValues() []*MonitorDiskValue {
 	return o.Values
@@ -3847,6 +4674,19 @@ type MonitorDiskValue struct {
 // Validate validates by field tags
 func (o *MonitorDiskValue) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *MonitorDiskValue) setDefaults() interface{} {
+	return &struct {
+		Time  time.Time `json:",omitempty" mapconv:",omitempty"`
+		Read  float64   `json:",omitempty" mapconv:",omitempty"`
+		Write float64   `json:",omitempty" mapconv:",omitempty"`
+	}{
+		Time:  o.Time,
+		Read:  o.Read,
+		Write: o.Write,
+	}
 }
 
 // GetTime returns value of Time
@@ -3893,6 +4733,15 @@ func (o *InterfaceActivity) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *InterfaceActivity) setDefaults() interface{} {
+	return &struct {
+		Values []*MonitorInterfaceValue `mapconv:"[]Interface"`
+	}{
+		Values: o.Values,
+	}
+}
+
 // GetValues returns value of Values
 func (o *InterfaceActivity) GetValues() []*MonitorInterfaceValue {
 	return o.Values
@@ -3917,6 +4766,19 @@ type MonitorInterfaceValue struct {
 // Validate validates by field tags
 func (o *MonitorInterfaceValue) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *MonitorInterfaceValue) setDefaults() interface{} {
+	return &struct {
+		Time    time.Time `json:",omitempty" mapconv:",omitempty"`
+		Receive float64   `json:",omitempty" mapconv:",omitempty"`
+		Send    float64   `json:",omitempty" mapconv:",omitempty"`
+	}{
+		Time:    o.Time,
+		Receive: o.Receive,
+		Send:    o.Send,
+	}
 }
 
 // GetTime returns value of Time
@@ -3963,6 +4825,15 @@ func (o *DatabaseActivity) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *DatabaseActivity) setDefaults() interface{} {
+	return &struct {
+		Values []*MonitorDatabaseValue `mapconv:"[]Database"`
+	}{
+		Values: o.Values,
+	}
+}
+
 // GetValues returns value of Values
 func (o *DatabaseActivity) GetValues() []*MonitorDatabaseValue {
 	return o.Values
@@ -3993,6 +4864,31 @@ type MonitorDatabaseValue struct {
 // Validate validates by field tags
 func (o *MonitorDatabaseValue) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *MonitorDatabaseValue) setDefaults() interface{} {
+	return &struct {
+		Time              time.Time `json:",omitempty" mapconv:",omitempty"`
+		TotalMemorySize   float64   `json:",omitempty" mapconv:",omitempty"`
+		UsedMemorySize    float64   `json:",omitempty" mapconv:",omitempty"`
+		TotalDisk1Size    float64   `json:",omitempty" mapconv:",omitempty"`
+		UsedDisk1Size     float64   `json:",omitempty" mapconv:",omitempty"`
+		TotalDisk2Size    float64   `json:",omitempty" mapconv:",omitempty"`
+		UsedDisk2Size     float64   `json:",omitempty" mapconv:",omitempty"`
+		BinlogUsedSizeKiB float64   `json:",omitempty" mapconv:",omitempty"`
+		DelayTimeSec      float64   `json:",omitempty" mapconv:",omitempty"`
+	}{
+		Time:              o.Time,
+		TotalMemorySize:   o.TotalMemorySize,
+		UsedMemorySize:    o.UsedMemorySize,
+		TotalDisk1Size:    o.TotalDisk1Size,
+		UsedDisk1Size:     o.UsedDisk1Size,
+		TotalDisk2Size:    o.TotalDisk2Size,
+		UsedDisk2Size:     o.UsedDisk2Size,
+		BinlogUsedSizeKiB: o.BinlogUsedSizeKiB,
+		DelayTimeSec:      o.DelayTimeSec,
+	}
 }
 
 // GetTime returns value of Time
@@ -4103,6 +4999,23 @@ func (o *DatabaseStatus) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *DatabaseStatus) setDefaults() interface{} {
+	return &struct {
+		Status  types.EServerInstanceStatus `mapconv:"SettingsResponse.Status"`
+		IsFatal bool                        `mapconv:"SettingsResponse.IsFatal"`
+		Version *DatabaseVersionInfo        `mapconv:"SettingsResponse.DBConf.Version,recursive"`
+		Logs    []*DatabaseLog              `mapconv:"SettingsResponse.DBConf.[]Log,recursive"`
+		Backups []*DatabaseBackupHistory    `mapconv:"SettingsResponse.DBConf.Backup.[]History,recursive"`
+	}{
+		Status:  o.Status,
+		IsFatal: o.IsFatal,
+		Version: o.Version,
+		Logs:    o.Logs,
+		Backups: o.Backups,
+	}
+}
+
 // GetStatus returns value of Status
 func (o *DatabaseStatus) GetStatus() types.EServerInstanceStatus {
 	return o.Status
@@ -4171,6 +5084,23 @@ func (o *DatabaseVersionInfo) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *DatabaseVersionInfo) setDefaults() interface{} {
+	return &struct {
+		LastModified string
+		CommitHash   string
+		Status       string
+		Tag          string
+		Expire       string
+	}{
+		LastModified: o.LastModified,
+		CommitHash:   o.CommitHash,
+		Status:       o.Status,
+		Tag:          o.Tag,
+		Expire:       o.Expire,
+	}
+}
+
 // GetLastModified returns value of LastModified
 func (o *DatabaseVersionInfo) GetLastModified() string {
 	return o.LastModified
@@ -4237,6 +5167,19 @@ func (o *DatabaseLog) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *DatabaseLog) setDefaults() interface{} {
+	return &struct {
+		Name string
+		Data string
+		Size int
+	}{
+		Name: o.Name,
+		Data: o.Data,
+		Size: o.Size,
+	}
+}
+
 // GetName returns value of Name
 func (o *DatabaseLog) GetName() string {
 	return o.Name
@@ -4282,6 +5225,21 @@ type DatabaseBackupHistory struct {
 // Validate validates by field tags
 func (o *DatabaseBackupHistory) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *DatabaseBackupHistory) setDefaults() interface{} {
+	return &struct {
+		CreatedAt    time.Time
+		Availability string
+		RecoveredAt  time.Time
+		Size         int64
+	}{
+		CreatedAt:    o.CreatedAt,
+		Availability: o.Availability,
+		RecoveredAt:  o.RecoveredAt,
+		Size:         o.Size,
+	}
 }
 
 // GetCreatedAt returns value of CreatedAt
@@ -4358,6 +5316,59 @@ type Disk struct {
 // Validate validates by field tags
 func (o *Disk) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *Disk) setDefaults() interface{} {
+	return &struct {
+		ID                        types.ID
+		Name                      string `validate:"required"`
+		Description               string `validate:"min=0,max=512"`
+		Tags                      []string
+		Availability              types.EAvailability
+		Connection                types.EDiskConnection `json:",omitempty" mapconv:",omitempty"`
+		ConnectionOrder           int
+		ReinstallCount            int
+		SizeMB                    int
+		MigratedMB                int
+		DiskPlanID                types.ID            `mapconv:"Plan.ID"`
+		DiskPlanName              string              `mapconv:"Plan.Name"`
+		DiskPlanStorageClass      string              `mapconv:"Plan.StorageClass"`
+		SourceDiskID              types.ID            `mapconv:"SourceDisk.ID,omitempty"`
+		SourceDiskAvailability    types.EAvailability `mapconv:"SourceDisk.Availability,omitempty"`
+		SourceArchiveID           types.ID            `mapconv:"SourceArchive.ID,omitempty"`
+		SourceArchiveAvailability types.EAvailability `mapconv:"SourceArchive.Availability,omitempty"`
+		BundleInfo                *BundleInfo         `json:",omitempty" mapconv:",omitempty,recursive"`
+		Storage                   *Storage            `json:",omitempty" mapconv:",omitempty,recursive"`
+		ServerID                  types.ID            `mapconv:"Server.ID,omitempty"`
+		IconID                    types.ID            `mapconv:"Icon.ID"`
+		CreatedAt                 time.Time
+		ModifiedAt                time.Time
+	}{
+		ID:                        o.ID,
+		Name:                      o.Name,
+		Description:               o.Description,
+		Tags:                      o.Tags,
+		Availability:              o.Availability,
+		Connection:                o.Connection,
+		ConnectionOrder:           o.ConnectionOrder,
+		ReinstallCount:            o.ReinstallCount,
+		SizeMB:                    o.SizeMB,
+		MigratedMB:                o.MigratedMB,
+		DiskPlanID:                o.DiskPlanID,
+		DiskPlanName:              o.DiskPlanName,
+		DiskPlanStorageClass:      o.DiskPlanStorageClass,
+		SourceDiskID:              o.SourceDiskID,
+		SourceDiskAvailability:    o.SourceDiskAvailability,
+		SourceArchiveID:           o.SourceArchiveID,
+		SourceArchiveAvailability: o.SourceArchiveAvailability,
+		BundleInfo:                o.BundleInfo,
+		Storage:                   o.Storage,
+		ServerID:                  o.ServerID,
+		IconID:                    o.IconID,
+		CreatedAt:                 o.CreatedAt,
+		ModifiedAt:                o.ModifiedAt,
+	}
 }
 
 // GetID returns value of ID
@@ -4653,6 +5664,33 @@ func (o *DiskCreateRequest) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *DiskCreateRequest) setDefaults() interface{} {
+	return &struct {
+		DiskPlanID      types.ID              `mapconv:"Plan.ID"`
+		Connection      types.EDiskConnection `json:",omitempty" mapconv:",omitempty"`
+		SourceDiskID    types.ID              `mapconv:"SourceDisk.ID,omitempty"`
+		SourceArchiveID types.ID              `mapconv:"SourceArchive.ID,omitempty"`
+		ServerID        types.ID              `mapconv:"Server.ID,omitempty"`
+		SizeMB          int
+		Name            string `validate:"required"`
+		Description     string `validate:"min=0,max=512"`
+		Tags            []string
+		IconID          types.ID `mapconv:"Icon.ID"`
+	}{
+		DiskPlanID:      o.DiskPlanID,
+		Connection:      o.Connection,
+		SourceDiskID:    o.SourceDiskID,
+		SourceArchiveID: o.SourceArchiveID,
+		ServerID:        o.ServerID,
+		SizeMB:          o.SizeMB,
+		Name:            o.Name,
+		Description:     o.Description,
+		Tags:            o.Tags,
+		IconID:          o.IconID,
+	}
+}
+
 // GetDiskPlanID returns value of DiskPlanID
 func (o *DiskCreateRequest) GetDiskPlanID() types.ID {
 	return o.DiskPlanID
@@ -4786,6 +5824,33 @@ func (o *DiskEditRequest) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *DiskEditRequest) setDefaults() interface{} {
+	return &struct {
+		Password            string              `json:",omitempty" mapconv:",omitempty"`
+		SSHKey              *DiskEditSSHKey     `json:",omitempty" mapconv:",omitempty,recursive"`
+		SSHKeys             []*DiskEditSSHKey   `json:",omitempty" mapconv:"[]SSHKeys,omitempty,recursive"`
+		DisablePWAuth       bool                `json:",omitempty" mapconv:",omitempty"`
+		EnableDHCP          bool                `json:",omitempty" mapconv:",omitempty"`
+		ChangePartitionUUID bool                `json:",omitempty" mapconv:",omitempty"`
+		HostName            string              `json:",omitempty" mapconv:",omitempty"`
+		Notes               []*DiskEditNote     `json:",omitempty" mapconv:",omitempty,recursive"`
+		UserIPAddress       string              `json:",omitempty" mapconv:",omitempty"`
+		UserSubnet          *DiskEditUserSubnet `json:",omitempty" mapconv:",omitempty"`
+	}{
+		Password:            o.Password,
+		SSHKey:              o.SSHKey,
+		SSHKeys:             o.SSHKeys,
+		DisablePWAuth:       o.DisablePWAuth,
+		EnableDHCP:          o.EnableDHCP,
+		ChangePartitionUUID: o.ChangePartitionUUID,
+		HostName:            o.HostName,
+		Notes:               o.Notes,
+		UserIPAddress:       o.UserIPAddress,
+		UserSubnet:          o.UserSubnet,
+	}
+}
+
 // GetPassword returns value of Password
 func (o *DiskEditRequest) GetPassword() string {
 	return o.Password
@@ -4901,6 +5966,17 @@ func (o *DiskEditSSHKey) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *DiskEditSSHKey) setDefaults() interface{} {
+	return &struct {
+		ID        types.ID `json:",omitempty" mapconv:",omitempty"`
+		PublicKey string   `json:",omitempty" mapconv:",omitempty"`
+	}{
+		ID:        o.ID,
+		PublicKey: o.PublicKey,
+	}
+}
+
 // GetID returns value of ID
 func (o *DiskEditSSHKey) GetID() types.ID {
 	return o.ID
@@ -4934,6 +6010,17 @@ type DiskEditNote struct {
 // Validate validates by field tags
 func (o *DiskEditNote) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *DiskEditNote) setDefaults() interface{} {
+	return &struct {
+		ID        types.ID               `json:",omitempty" mapconv:",omitempty"`
+		Variables map[string]interface{} `json:",omitempty" mapconv:",omitempty"`
+	}{
+		ID:        o.ID,
+		Variables: o.Variables,
+	}
 }
 
 // GetID returns value of ID
@@ -4971,6 +6058,17 @@ func (o *DiskEditUserSubnet) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *DiskEditUserSubnet) setDefaults() interface{} {
+	return &struct {
+		DefaultRoute   string `json:",omitempty" mapconv:",omitempty"`
+		NetworkMaskLen int    `json:",omitempty" mapconv:",omitempty" validate:"min=0,max=32"`
+	}{
+		DefaultRoute:   o.DefaultRoute,
+		NetworkMaskLen: o.NetworkMaskLen,
+	}
+}
+
 // GetDefaultRoute returns value of DefaultRoute
 func (o *DiskEditUserSubnet) GetDefaultRoute() string {
 	return o.DefaultRoute
@@ -5005,6 +6103,19 @@ type DiskInstallRequest struct {
 // Validate validates by field tags
 func (o *DiskInstallRequest) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *DiskInstallRequest) setDefaults() interface{} {
+	return &struct {
+		SourceDiskID    types.ID `mapconv:"SourceDisk.ID,omitempty"`
+		SourceArchiveID types.ID `mapconv:"SourceArchive.ID,omitempty"`
+		SizeMB          int
+	}{
+		SourceDiskID:    o.SourceDiskID,
+		SourceArchiveID: o.SourceArchiveID,
+		SizeMB:          o.SizeMB,
+	}
 }
 
 // GetSourceDiskID returns value of SourceDiskID
@@ -5063,6 +6174,23 @@ type DiskUpdateRequest struct {
 // Validate validates by field tags
 func (o *DiskUpdateRequest) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *DiskUpdateRequest) setDefaults() interface{} {
+	return &struct {
+		Name        string `validate:"required"`
+		Description string `validate:"min=0,max=512"`
+		Tags        []string
+		IconID      types.ID              `mapconv:"Icon.ID"`
+		Connection  types.EDiskConnection `json:",omitempty" mapconv:",omitempty"`
+	}{
+		Name:        o.Name,
+		Description: o.Description,
+		Tags:        o.Tags,
+		IconID:      o.IconID,
+		Connection:  o.Connection,
+	}
 }
 
 // GetName returns value of Name
@@ -5131,6 +6259,23 @@ type DiskPlan struct {
 // Validate validates by field tags
 func (o *DiskPlan) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *DiskPlan) setDefaults() interface{} {
+	return &struct {
+		ID           types.ID
+		Name         string `validate:"required"`
+		StorageClass string
+		Availability types.EAvailability
+		Size         []*DiskPlanSizeInfo `mapconv:"[]Size,recursive"`
+	}{
+		ID:           o.ID,
+		Name:         o.Name,
+		StorageClass: o.StorageClass,
+		Availability: o.Availability,
+		Size:         o.Size,
+	}
 }
 
 // GetID returns value of ID
@@ -5220,6 +6365,21 @@ func (o *DiskPlanSizeInfo) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *DiskPlanSizeInfo) setDefaults() interface{} {
+	return &struct {
+		Availability  types.EAvailability
+		DisplaySize   int
+		DisplaySuffix string
+		SizeMB        int
+	}{
+		Availability:  o.Availability,
+		DisplaySize:   o.DisplaySize,
+		DisplaySuffix: o.DisplaySuffix,
+		SizeMB:        o.SizeMB,
+	}
+}
+
 // GetAvailability returns value of Availability
 func (o *DiskPlanSizeInfo) GetAvailability() types.EAvailability {
 	return o.Availability
@@ -5294,6 +6454,39 @@ type DNS struct {
 // Validate validates by field tags
 func (o *DNS) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *DNS) setDefaults() interface{} {
+	return &struct {
+		ID             types.ID
+		Name           string `validate:"required"`
+		Description    string `validate:"min=0,max=512"`
+		Tags           []string
+		Availability   types.EAvailability
+		IconID         types.ID `mapconv:"Icon.ID"`
+		CreatedAt      time.Time
+		ModifiedAt     time.Time
+		Class          string       `mapconv:"Provider.Class,default=dns"`
+		Records        []*DNSRecord `mapconv:"Settings.DNS.[]ResourceRecordSets,recursive" validate:"min=0,max=1000"`
+		SettingsHash   string
+		DNSZone        string   `mapconv:"Status.Zone"`
+		DNSNameServers []string `mapconv:"Status.NS"`
+	}{
+		ID:             o.ID,
+		Name:           o.Name,
+		Description:    o.Description,
+		Tags:           o.Tags,
+		Availability:   o.Availability,
+		IconID:         o.IconID,
+		CreatedAt:      o.CreatedAt,
+		ModifiedAt:     o.ModifiedAt,
+		Class:          o.Class,
+		Records:        o.Records,
+		SettingsHash:   o.SettingsHash,
+		DNSZone:        o.DNSZone,
+		DNSNameServers: o.DNSNameServers,
+	}
 }
 
 // GetID returns value of ID
@@ -5463,6 +6656,21 @@ func (o *DNSRecord) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *DNSRecord) setDefaults() interface{} {
+	return &struct {
+		Name  string
+		Type  types.EDNSRecordType
+		RData string
+		TTL   int
+	}{
+		Name:  o.Name,
+		Type:  o.Type,
+		RData: o.RData,
+		TTL:   o.TTL,
+	}
+}
+
 // GetName returns value of Name
 func (o *DNSRecord) GetName() string {
 	return o.Name
@@ -5520,6 +6728,25 @@ type DNSCreateRequest struct {
 // Validate validates by field tags
 func (o *DNSCreateRequest) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *DNSCreateRequest) setDefaults() interface{} {
+	return &struct {
+		Class       string       `mapconv:"Provider.Class,default=dns"`
+		Name        string       `mapconv:"Name/Status.Zone" validate:"required"`
+		Records     []*DNSRecord `mapconv:"Settings.DNS.[]ResourceRecordSets,recursive" validate:"min=0,max=1000"`
+		Description string       `validate:"min=0,max=512"`
+		Tags        []string
+		IconID      types.ID `mapconv:"Icon.ID"`
+	}{
+		Class:       o.Class,
+		Name:        o.Name,
+		Records:     o.Records,
+		Description: o.Description,
+		Tags:        o.Tags,
+		IconID:      o.IconID,
+	}
 }
 
 // GetClass returns value of Class
@@ -5599,6 +6826,21 @@ func (o *DNSUpdateRequest) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *DNSUpdateRequest) setDefaults() interface{} {
+	return &struct {
+		Records     []*DNSRecord `mapconv:"Settings.DNS.[]ResourceRecordSets,recursive" validate:"min=0,max=1000"`
+		Description string       `validate:"min=0,max=512"`
+		Tags        []string
+		IconID      types.ID `mapconv:"Icon.ID"`
+	}{
+		Records:     o.Records,
+		Description: o.Description,
+		Tags:        o.Tags,
+		IconID:      o.IconID,
+	}
+}
+
 // GetRecords returns value of Records
 func (o *DNSUpdateRequest) GetRecords() []*DNSRecord {
 	return o.Records
@@ -5670,6 +6912,53 @@ type GSLB struct {
 // Validate validates by field tags
 func (o *GSLB) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *GSLB) setDefaults() interface{} {
+	return &struct {
+		ID                      types.ID
+		Name                    string `validate:"required"`
+		Description             string `validate:"min=0,max=512"`
+		Tags                    []string
+		Availability            types.EAvailability
+		IconID                  types.ID `mapconv:"Icon.ID"`
+		CreatedAt               time.Time
+		ModifiedAt              time.Time
+		Class                   string `mapconv:"Provider.Class,default=gslb"`
+		SettingsHash            string
+		FQDN                    string             `mapconv:"Status.FQDN"`
+		DelayLoop               int                `mapconv:"Settings.GSLB.DelayLoop,default=10" validate:"min=10,max=60"`
+		Weighted                types.StringFlag   `mapconv:"Settings.GSLB.Weighted"`
+		HealthCheckProtocol     types.Protocol     `mapconv:"Settings.GSLB.HealthCheck.Protocol" validate:"oneof=http https ping tcp"`
+		HealthCheckHostHeader   string             `mapconv:"Settings.GSLB.HealthCheck.Host"`
+		HealthCheckPath         string             `mapconv:"Settings.GSLB.HealthCheck.Path"`
+		HealthCheckResponseCode types.StringNumber `mapconv:"Settings.GSLB.HealthCheck.Status"`
+		HealthCheckPort         types.StringNumber `mapconv:"Settings.GSLB.HealthCheck.Port"`
+		SorryServer             string             `mapconv:"Settings.GSLB.SorryServer"`
+		DestinationServers      []*GSLBServer      `mapconv:"Settings.GSLB.[]Servers,recursive" validate:"min=0,max=12"`
+	}{
+		ID:                      o.ID,
+		Name:                    o.Name,
+		Description:             o.Description,
+		Tags:                    o.Tags,
+		Availability:            o.Availability,
+		IconID:                  o.IconID,
+		CreatedAt:               o.CreatedAt,
+		ModifiedAt:              o.ModifiedAt,
+		Class:                   o.Class,
+		SettingsHash:            o.SettingsHash,
+		FQDN:                    o.FQDN,
+		DelayLoop:               o.DelayLoop,
+		Weighted:                o.Weighted,
+		HealthCheckProtocol:     o.HealthCheckProtocol,
+		HealthCheckHostHeader:   o.HealthCheckHostHeader,
+		HealthCheckPath:         o.HealthCheckPath,
+		HealthCheckResponseCode: o.HealthCheckResponseCode,
+		HealthCheckPort:         o.HealthCheckPort,
+		SorryServer:             o.SorryServer,
+		DestinationServers:      o.DestinationServers,
+	}
 }
 
 // GetID returns value of ID
@@ -5908,6 +7197,19 @@ func (o *GSLBServer) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *GSLBServer) setDefaults() interface{} {
+	return &struct {
+		IPAddress string `validate:"ipv4"`
+		Enabled   types.StringFlag
+		Weight    types.StringNumber
+	}{
+		IPAddress: o.IPAddress,
+		Enabled:   o.Enabled,
+		Weight:    o.Weight,
+	}
+}
+
 // GetIPAddress returns value of IPAddress
 func (o *GSLBServer) GetIPAddress() string {
 	return o.IPAddress
@@ -5963,6 +7265,41 @@ type GSLBCreateRequest struct {
 // Validate validates by field tags
 func (o *GSLBCreateRequest) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *GSLBCreateRequest) setDefaults() interface{} {
+	return &struct {
+		Class                   string             `mapconv:"Provider.Class,default=gslb"`
+		HealthCheckProtocol     types.Protocol     `mapconv:"Settings.GSLB.HealthCheck.Protocol" validate:"oneof=http https ping tcp"`
+		HealthCheckHostHeader   string             `mapconv:"Settings.GSLB.HealthCheck.Host"`
+		HealthCheckPath         string             `mapconv:"Settings.GSLB.HealthCheck.Path"`
+		HealthCheckResponseCode types.StringNumber `mapconv:"Settings.GSLB.HealthCheck.Status"`
+		HealthCheckPort         types.StringNumber `mapconv:"Settings.GSLB.HealthCheck.Port"`
+		DelayLoop               int                `mapconv:"Settings.GSLB.DelayLoop,default=10" validate:"min=10,max=60"`
+		Weighted                types.StringFlag   `mapconv:"Settings.GSLB.Weighted"`
+		SorryServer             string             `mapconv:"Settings.GSLB.SorryServer"`
+		DestinationServers      []*GSLBServer      `mapconv:"Settings.GSLB.[]Servers,recursive" validate:"min=0,max=12"`
+		Name                    string             `validate:"required"`
+		Description             string             `validate:"min=0,max=512"`
+		Tags                    []string
+		IconID                  types.ID `mapconv:"Icon.ID"`
+	}{
+		Class:                   o.Class,
+		HealthCheckProtocol:     o.HealthCheckProtocol,
+		HealthCheckHostHeader:   o.HealthCheckHostHeader,
+		HealthCheckPath:         o.HealthCheckPath,
+		HealthCheckResponseCode: o.HealthCheckResponseCode,
+		HealthCheckPort:         o.HealthCheckPort,
+		DelayLoop:               o.DelayLoop,
+		Weighted:                o.Weighted,
+		SorryServer:             o.SorryServer,
+		DestinationServers:      o.DestinationServers,
+		Name:                    o.Name,
+		Description:             o.Description,
+		Tags:                    o.Tags,
+		IconID:                  o.IconID,
+	}
 }
 
 // GetClass returns value of Class
@@ -6131,6 +7468,39 @@ func (o *GSLBUpdateRequest) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *GSLBUpdateRequest) setDefaults() interface{} {
+	return &struct {
+		HealthCheckProtocol     types.Protocol     `mapconv:"Settings.GSLB.HealthCheck.Protocol" validate:"oneof=http https ping tcp"`
+		HealthCheckHostHeader   string             `mapconv:"Settings.GSLB.HealthCheck.Host"`
+		HealthCheckPath         string             `mapconv:"Settings.GSLB.HealthCheck.Path"`
+		HealthCheckResponseCode types.StringNumber `mapconv:"Settings.GSLB.HealthCheck.Status"`
+		HealthCheckPort         types.StringNumber `mapconv:"Settings.GSLB.HealthCheck.Port"`
+		DelayLoop               int                `mapconv:"Settings.GSLB.DelayLoop,default=10" validate:"min=10,max=60"`
+		Weighted                types.StringFlag   `mapconv:"Settings.GSLB.Weighted"`
+		SorryServer             string             `mapconv:"Settings.GSLB.SorryServer"`
+		DestinationServers      []*GSLBServer      `mapconv:"Settings.GSLB.[]Servers,recursive" validate:"min=0,max=12"`
+		Name                    string             `validate:"required"`
+		Description             string             `validate:"min=0,max=512"`
+		Tags                    []string
+		IconID                  types.ID `mapconv:"Icon.ID"`
+	}{
+		HealthCheckProtocol:     o.HealthCheckProtocol,
+		HealthCheckHostHeader:   o.HealthCheckHostHeader,
+		HealthCheckPath:         o.HealthCheckPath,
+		HealthCheckResponseCode: o.HealthCheckResponseCode,
+		HealthCheckPort:         o.HealthCheckPort,
+		DelayLoop:               o.DelayLoop,
+		Weighted:                o.Weighted,
+		SorryServer:             o.SorryServer,
+		DestinationServers:      o.DestinationServers,
+		Name:                    o.Name,
+		Description:             o.Description,
+		Tags:                    o.Tags,
+		IconID:                  o.IconID,
+	}
+}
+
 // GetHealthCheckProtocol returns value of HealthCheckProtocol
 func (o *GSLBUpdateRequest) GetHealthCheckProtocol() types.Protocol {
 	return o.HealthCheckProtocol
@@ -6282,6 +7652,29 @@ func (o *Icon) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *Icon) setDefaults() interface{} {
+	return &struct {
+		ID           types.ID
+		Name         string `validate:"required"`
+		Tags         []string
+		Availability types.EAvailability
+		Scope        types.EScope
+		URL          string
+		CreatedAt    time.Time
+		ModifiedAt   time.Time
+	}{
+		ID:           o.ID,
+		Name:         o.Name,
+		Tags:         o.Tags,
+		Availability: o.Availability,
+		Scope:        o.Scope,
+		URL:          o.URL,
+		CreatedAt:    o.CreatedAt,
+		ModifiedAt:   o.ModifiedAt,
+	}
+}
+
 // GetID returns value of ID
 func (o *Icon) GetID() types.ID {
 	return o.ID
@@ -6398,6 +7791,19 @@ func (o *IconCreateRequest) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *IconCreateRequest) setDefaults() interface{} {
+	return &struct {
+		Name  string `validate:"required"`
+		Tags  []string
+		Image string
+	}{
+		Name:  o.Name,
+		Tags:  o.Tags,
+		Image: o.Image,
+	}
+}
+
 // GetName returns value of Name
 func (o *IconCreateRequest) GetName() string {
 	return o.Name
@@ -6443,6 +7849,17 @@ func (o *IconUpdateRequest) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *IconUpdateRequest) setDefaults() interface{} {
+	return &struct {
+		Name string `validate:"required"`
+		Tags []string
+	}{
+		Name: o.Name,
+		Tags: o.Tags,
+	}
+}
+
 // GetName returns value of Name
 func (o *IconUpdateRequest) GetName() string {
 	return o.Name
@@ -6484,6 +7901,33 @@ type Interface struct {
 // Validate validates by field tags
 func (o *Interface) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *Interface) setDefaults() interface{} {
+	return &struct {
+		ID             types.ID
+		MACAddress     string
+		IPAddress      string
+		UserIPAddress  string
+		HostName       string
+		SwitchID       types.ID `mapconv:"Switch.ID,omitempty"`
+		PacketFilterID types.ID `mapconv:"PacketFilter.ID,omitempty"`
+		ServerID       types.ID `mapconv:"Server.ID,omitempty"`
+		CreatedAt      time.Time
+		ModifiedAt     time.Time
+	}{
+		ID:             o.ID,
+		MACAddress:     o.MACAddress,
+		IPAddress:      o.IPAddress,
+		UserIPAddress:  o.UserIPAddress,
+		HostName:       o.HostName,
+		SwitchID:       o.SwitchID,
+		PacketFilterID: o.PacketFilterID,
+		ServerID:       o.ServerID,
+		CreatedAt:      o.CreatedAt,
+		ModifiedAt:     o.ModifiedAt,
+	}
 }
 
 // GetID returns value of ID
@@ -6620,6 +8064,15 @@ func (o *InterfaceCreateRequest) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *InterfaceCreateRequest) setDefaults() interface{} {
+	return &struct {
+		ServerID types.ID `mapconv:"Server.ID,omitempty"`
+	}{
+		ServerID: o.ServerID,
+	}
+}
+
 // GetServerID returns value of ServerID
 func (o *InterfaceCreateRequest) GetServerID() types.ID {
 	return o.ServerID
@@ -6642,6 +8095,15 @@ type InterfaceUpdateRequest struct {
 // Validate validates by field tags
 func (o *InterfaceUpdateRequest) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *InterfaceUpdateRequest) setDefaults() interface{} {
+	return &struct {
+		UserIPAddress string
+	}{
+		UserIPAddress: o.UserIPAddress,
+	}
 }
 
 // GetUserIPAddress returns value of UserIPAddress
@@ -6674,6 +8136,31 @@ type Internet struct {
 // Validate validates by field tags
 func (o *Internet) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *Internet) setDefaults() interface{} {
+	return &struct {
+		ID             types.ID
+		Name           string `validate:"required"`
+		Description    string `validate:"min=0,max=512"`
+		Tags           []string
+		IconID         types.ID `mapconv:"Icon.ID"`
+		CreatedAt      time.Time
+		BandWidthMbps  int
+		NetworkMaskLen int         `validate:"min=24,max=28"`
+		Switch         *SwitchInfo `mapconv:",recursive"`
+	}{
+		ID:             o.ID,
+		Name:           o.Name,
+		Description:    o.Description,
+		Tags:           o.Tags,
+		IconID:         o.IconID,
+		CreatedAt:      o.CreatedAt,
+		BandWidthMbps:  o.BandWidthMbps,
+		NetworkMaskLen: o.NetworkMaskLen,
+		Switch:         o.Switch,
+	}
 }
 
 // GetID returns value of ID
@@ -6806,6 +8293,27 @@ func (o *SwitchInfo) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *SwitchInfo) setDefaults() interface{} {
+	return &struct {
+		ID          types.ID
+		Name        string `validate:"required"`
+		Description string `validate:"min=0,max=512"`
+		Tags        []string
+		Scope       types.EScope
+		Subnets     []*InternetSubnet `mapconv:"[]Subnets,recursive"`
+		IPv6Nets    []*IPv6NetInfo    `mapconv:"[]IPv6Nets,recursive,omitempty"`
+	}{
+		ID:          o.ID,
+		Name:        o.Name,
+		Description: o.Description,
+		Tags:        o.Tags,
+		Scope:       o.Scope,
+		Subnets:     o.Subnets,
+		IPv6Nets:    o.IPv6Nets,
+	}
+}
+
 // GetID returns value of ID
 func (o *SwitchInfo) GetID() types.ID {
 	return o.ID
@@ -6915,6 +8423,25 @@ func (o *InternetSubnet) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *InternetSubnet) setDefaults() interface{} {
+	return &struct {
+		ID             types.ID
+		DefaultRoute   string `validate:"ipv4"`
+		NextHop        string `validate:"ipv4"`
+		StaticRoute    string `validate:"ipv4"`
+		NetworkAddress string `validate:"ipv4"`
+		NetworkMaskLen int    `validate:"min=24,max=28"`
+	}{
+		ID:             o.ID,
+		DefaultRoute:   o.DefaultRoute,
+		NextHop:        o.NextHop,
+		StaticRoute:    o.StaticRoute,
+		NetworkAddress: o.NetworkAddress,
+		NetworkMaskLen: o.NetworkMaskLen,
+	}
+}
+
 // GetID returns value of ID
 func (o *InternetSubnet) GetID() types.ID {
 	return o.ID
@@ -7011,6 +8538,19 @@ func (o *IPv6NetInfo) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *IPv6NetInfo) setDefaults() interface{} {
+	return &struct {
+		ID            types.ID
+		IPv6Prefix    string
+		IPv6PrefixLen int
+	}{
+		ID:            o.ID,
+		IPv6Prefix:    o.IPv6Prefix,
+		IPv6PrefixLen: o.IPv6PrefixLen,
+	}
+}
+
 // GetID returns value of ID
 func (o *IPv6NetInfo) GetID() types.ID {
 	return o.ID
@@ -7078,6 +8618,25 @@ type InternetCreateRequest struct {
 // Validate validates by field tags
 func (o *InternetCreateRequest) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *InternetCreateRequest) setDefaults() interface{} {
+	return &struct {
+		Name           string `validate:"required"`
+		Description    string `validate:"min=0,max=512"`
+		Tags           []string
+		IconID         types.ID `mapconv:"Icon.ID"`
+		NetworkMaskLen int      `validate:"min=24,max=28"`
+		BandWidthMbps  int
+	}{
+		Name:           o.Name,
+		Description:    o.Description,
+		Tags:           o.Tags,
+		IconID:         o.IconID,
+		NetworkMaskLen: o.NetworkMaskLen,
+		BandWidthMbps:  o.BandWidthMbps,
+	}
 }
 
 // GetName returns value of Name
@@ -7157,6 +8716,21 @@ func (o *InternetUpdateRequest) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *InternetUpdateRequest) setDefaults() interface{} {
+	return &struct {
+		Name        string `validate:"required"`
+		Description string `validate:"min=0,max=512"`
+		Tags        []string
+		IconID      types.ID `mapconv:"Icon.ID"`
+	}{
+		Name:        o.Name,
+		Description: o.Description,
+		Tags:        o.Tags,
+		IconID:      o.IconID,
+	}
+}
+
 // GetName returns value of Name
 func (o *InternetUpdateRequest) GetName() string {
 	return o.Name
@@ -7211,6 +8785,15 @@ func (o *InternetUpdateBandWidthRequest) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *InternetUpdateBandWidthRequest) setDefaults() interface{} {
+	return &struct {
+		BandWidthMbps int
+	}{
+		BandWidthMbps: o.BandWidthMbps,
+	}
+}
+
 // GetBandWidthMbps returns value of BandWidthMbps
 func (o *InternetUpdateBandWidthRequest) GetBandWidthMbps() int {
 	return o.BandWidthMbps
@@ -7239,6 +8822,27 @@ type InternetSubnetOperationResult struct {
 // Validate validates by field tags
 func (o *InternetSubnetOperationResult) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *InternetSubnetOperationResult) setDefaults() interface{} {
+	return &struct {
+		ID             types.ID
+		DefaultRoute   string   `validate:"ipv4"`
+		NextHop        string   `validate:"ipv4"`
+		StaticRoute    string   `validate:"ipv4"`
+		NetworkAddress string   `validate:"ipv4"`
+		NetworkMaskLen int      `validate:"min=24,max=28"`
+		IPAddresses    []string `mapconv:"[]IPAddresses.IPAddress"`
+	}{
+		ID:             o.ID,
+		DefaultRoute:   o.DefaultRoute,
+		NextHop:        o.NextHop,
+		StaticRoute:    o.StaticRoute,
+		NetworkAddress: o.NetworkAddress,
+		NetworkMaskLen: o.NetworkMaskLen,
+		IPAddresses:    o.IPAddresses,
+	}
 }
 
 // GetID returns value of ID
@@ -7346,6 +8950,17 @@ func (o *InternetAddSubnetRequest) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *InternetAddSubnetRequest) setDefaults() interface{} {
+	return &struct {
+		NetworkMaskLen int    `validate:"min=24,max=28"`
+		NextHop        string `validate:"ipv4"`
+	}{
+		NetworkMaskLen: o.NetworkMaskLen,
+		NextHop:        o.NextHop,
+	}
+}
+
 // GetNetworkMaskLen returns value of NetworkMaskLen
 func (o *InternetAddSubnetRequest) GetNetworkMaskLen() int {
 	return o.NetworkMaskLen
@@ -7380,6 +8995,15 @@ func (o *InternetUpdateSubnetRequest) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *InternetUpdateSubnetRequest) setDefaults() interface{} {
+	return &struct {
+		NextHop string `validate:"ipv4"`
+	}{
+		NextHop: o.NextHop,
+	}
+}
+
 // GetNextHop returns value of NextHop
 func (o *InternetUpdateSubnetRequest) GetNextHop() string {
 	return o.NextHop
@@ -7402,6 +9026,15 @@ type RouterActivity struct {
 // Validate validates by field tags
 func (o *RouterActivity) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *RouterActivity) setDefaults() interface{} {
+	return &struct {
+		Values []*MonitorRouterValue `mapconv:"[]Router"`
+	}{
+		Values: o.Values,
+	}
 }
 
 // GetValues returns value of Values
@@ -7428,6 +9061,19 @@ type MonitorRouterValue struct {
 // Validate validates by field tags
 func (o *MonitorRouterValue) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *MonitorRouterValue) setDefaults() interface{} {
+	return &struct {
+		Time time.Time `json:",omitempty" mapconv:",omitempty"`
+		In   float64   `json:",omitempty" mapconv:",omitempty"`
+		Out  float64   `json:",omitempty" mapconv:",omitempty"`
+	}{
+		Time: o.Time,
+		In:   o.In,
+		Out:  o.Out,
+	}
 }
 
 // GetTime returns value of Time
@@ -7475,6 +9121,21 @@ type InternetPlan struct {
 // Validate validates by field tags
 func (o *InternetPlan) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *InternetPlan) setDefaults() interface{} {
+	return &struct {
+		ID            types.ID
+		Name          string `validate:"required"`
+		BandWidthMbps int
+		Availability  types.EAvailability
+	}{
+		ID:            o.ID,
+		Name:          o.Name,
+		BandWidthMbps: o.BandWidthMbps,
+		Availability:  o.Availability,
+	}
 }
 
 // GetID returns value of ID
@@ -7554,6 +9215,21 @@ func (o *IPAddress) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *IPAddress) setDefaults() interface{} {
+	return &struct {
+		HostName    string
+		IPAddress   string
+		InterfaceID types.ID `mapconv:"Interface.ID,omitempty"`
+		SubnetID    types.ID `mapconv:"Subnet.ID,omitempty"`
+	}{
+		HostName:    o.HostName,
+		IPAddress:   o.IPAddress,
+		InterfaceID: o.InterfaceID,
+		SubnetID:    o.SubnetID,
+	}
+}
+
 // GetHostName returns value of HostName
 func (o *IPAddress) GetHostName() string {
 	return o.HostName
@@ -7615,6 +9291,33 @@ type IPv6Net struct {
 // Validate validates by field tags
 func (o *IPv6Net) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *IPv6Net) setDefaults() interface{} {
+	return &struct {
+		ID                 types.ID
+		ServiceID          types.ID
+		IPv6Prefix         string
+		IPv6PrefixLen      int
+		IPv6PrefixTail     string
+		ServiceClass       string
+		IPv6TableID        types.ID `mapconv:"IPv6Table.ID"`
+		NamedIPv6AddrCount int
+		CreatedAt          time.Time
+		SwitchID           types.ID `mapconv:"Switch.ID,omitempty"`
+	}{
+		ID:                 o.ID,
+		ServiceID:          o.ServiceID,
+		IPv6Prefix:         o.IPv6Prefix,
+		IPv6PrefixLen:      o.IPv6PrefixLen,
+		IPv6PrefixTail:     o.IPv6PrefixTail,
+		ServiceClass:       o.ServiceClass,
+		IPv6TableID:        o.IPv6TableID,
+		NamedIPv6AddrCount: o.NamedIPv6AddrCount,
+		CreatedAt:          o.CreatedAt,
+		SwitchID:           o.SwitchID,
+	}
 }
 
 // GetID returns value of ID
@@ -7755,6 +9458,23 @@ func (o *IPv6Addr) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *IPv6Addr) setDefaults() interface{} {
+	return &struct {
+		IPv6Addr    string
+		HostName    string
+		IPv6NetID   types.ID `mapconv:"IPv6Net.ID"`
+		SwitchID    types.ID `mapconv:"IPv6Net.Switch.ID"`
+		InterfaceID types.ID `mapconv:"Interface.ID,omitempty"`
+	}{
+		IPv6Addr:    o.IPv6Addr,
+		HostName:    o.HostName,
+		IPv6NetID:   o.IPv6NetID,
+		SwitchID:    o.SwitchID,
+		InterfaceID: o.InterfaceID,
+	}
+}
+
 // GetIPv6Addr returns value of IPv6Addr
 func (o *IPv6Addr) GetIPv6Addr() string {
 	return o.IPv6Addr
@@ -7820,6 +9540,17 @@ func (o *IPv6AddrCreateRequest) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *IPv6AddrCreateRequest) setDefaults() interface{} {
+	return &struct {
+		IPv6Addr string
+		HostName string
+	}{
+		IPv6Addr: o.IPv6Addr,
+		HostName: o.HostName,
+	}
+}
+
 // GetIPv6Addr returns value of IPv6Addr
 func (o *IPv6AddrCreateRequest) GetIPv6Addr() string {
 	return o.IPv6Addr
@@ -7854,6 +9585,15 @@ func (o *IPv6AddrUpdateRequest) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *IPv6AddrUpdateRequest) setDefaults() interface{} {
+	return &struct {
+		HostName string
+	}{
+		HostName: o.HostName,
+	}
+}
+
 // GetHostName returns value of HostName
 func (o *IPv6AddrUpdateRequest) GetHostName() string {
 	return o.HostName
@@ -7881,6 +9621,25 @@ type License struct {
 // Validate validates by field tags
 func (o *License) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *License) setDefaults() interface{} {
+	return &struct {
+		ID              types.ID
+		Name            string   `validate:"required"`
+		LicenseInfoID   types.ID `mapconv:"LicenseInfo.ID"`
+		LicenseInfoName string   `mapconv:"LicenseInfo.Name"`
+		CreatedAt       time.Time
+		ModifiedAt      time.Time
+	}{
+		ID:              o.ID,
+		Name:            o.Name,
+		LicenseInfoID:   o.LicenseInfoID,
+		LicenseInfoName: o.LicenseInfoName,
+		CreatedAt:       o.CreatedAt,
+		ModifiedAt:      o.ModifiedAt,
+	}
 }
 
 // GetID returns value of ID
@@ -7978,6 +9737,17 @@ func (o *LicenseCreateRequest) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *LicenseCreateRequest) setDefaults() interface{} {
+	return &struct {
+		Name          string   `validate:"required"`
+		LicenseInfoID types.ID `mapconv:"LicenseInfo.ID"`
+	}{
+		Name:          o.Name,
+		LicenseInfoID: o.LicenseInfoID,
+	}
+}
+
 // GetName returns value of Name
 func (o *LicenseCreateRequest) GetName() string {
 	return o.Name
@@ -8012,6 +9782,15 @@ func (o *LicenseUpdateRequest) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *LicenseUpdateRequest) setDefaults() interface{} {
+	return &struct {
+		Name string `validate:"required"`
+	}{
+		Name: o.Name,
+	}
+}
+
 // GetName returns value of Name
 func (o *LicenseUpdateRequest) GetName() string {
 	return o.Name
@@ -8038,6 +9817,23 @@ type LicenseInfo struct {
 // Validate validates by field tags
 func (o *LicenseInfo) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *LicenseInfo) setDefaults() interface{} {
+	return &struct {
+		ID         types.ID
+		Name       string `validate:"required"`
+		CreatedAt  time.Time
+		ModifiedAt time.Time
+		TermsOfUse string
+	}{
+		ID:         o.ID,
+		Name:       o.Name,
+		CreatedAt:  o.CreatedAt,
+		ModifiedAt: o.ModifiedAt,
+		TermsOfUse: o.TermsOfUse,
+	}
 }
 
 // GetID returns value of ID
@@ -8144,6 +9940,59 @@ type LoadBalancer struct {
 // Validate validates by field tags
 func (o *LoadBalancer) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *LoadBalancer) setDefaults() interface{} {
+	return &struct {
+		ID                      types.ID
+		Name                    string `validate:"required"`
+		Description             string `validate:"min=0,max=512"`
+		Tags                    []string
+		Availability            types.EAvailability
+		Class                   string
+		IconID                  types.ID `mapconv:"Icon.ID"`
+		CreatedAt               time.Time
+		ModifiedAt              time.Time
+		InstanceHostName        string                          `mapconv:"Instance.Host.Name"`
+		InstanceHostInfoURL     string                          `mapconv:"Instance.Host.InfoURL"`
+		InstanceStatus          types.EServerInstanceStatus     `mapconv:"Instance.Status"`
+		InstanceStatusChangedAt time.Time                       `mapconv:"Instance.StatusChangedAt"`
+		PlanID                  types.ID                        `mapconv:"Remark.Plan.ID/Plan.ID"`
+		SwitchID                types.ID                        `mapconv:"Remark.Switch.ID"`
+		DefaultRoute            string                          `mapconv:"Remark.Network.DefaultRoute" validate:"ipv4"`
+		NetworkMaskLen          int                             `mapconv:"Remark.Network.NetworkMaskLen" validate:"min=1,max=32"`
+		IPAddresses             []string                        `mapconv:"Remark.[]Servers.IPAddress"`
+		ZoneID                  types.ID                        `mapconv:"Remark.Zone.ID"`
+		VRID                    int                             `mapconv:"Remark.VRRP.VRID"`
+		VirtualIPAddresses      []*LoadBalancerVirtualIPAddress `mapconv:"Settings.[]LoadBalancer,recursive" validate:"min=0,max=10"`
+		SettingsHash            string
+		Interfaces              []*InterfaceView `json:",omitempty" mapconv:"[]Interfaces,recursive,omitempty"`
+	}{
+		ID:                      o.ID,
+		Name:                    o.Name,
+		Description:             o.Description,
+		Tags:                    o.Tags,
+		Availability:            o.Availability,
+		Class:                   o.Class,
+		IconID:                  o.IconID,
+		CreatedAt:               o.CreatedAt,
+		ModifiedAt:              o.ModifiedAt,
+		InstanceHostName:        o.InstanceHostName,
+		InstanceHostInfoURL:     o.InstanceHostInfoURL,
+		InstanceStatus:          o.InstanceStatus,
+		InstanceStatusChangedAt: o.InstanceStatusChangedAt,
+		PlanID:                  o.PlanID,
+		SwitchID:                o.SwitchID,
+		DefaultRoute:            o.DefaultRoute,
+		NetworkMaskLen:          o.NetworkMaskLen,
+		IPAddresses:             o.IPAddresses,
+		ZoneID:                  o.ZoneID,
+		VRID:                    o.VRID,
+		VirtualIPAddresses:      o.VirtualIPAddresses,
+		SettingsHash:            o.SettingsHash,
+		Interfaces:              o.Interfaces,
+	}
 }
 
 // GetID returns value of ID
@@ -8415,6 +10264,25 @@ func (o *LoadBalancerVirtualIPAddress) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *LoadBalancerVirtualIPAddress) setDefaults() interface{} {
+	return &struct {
+		VirtualIPAddress string `validate:"ipv4"`
+		Port             types.StringNumber
+		DelayLoop        types.StringNumber    `mapconv:",default=10" validate:"min=0,max=60"`
+		SorryServer      string                `validate:"ipv4"`
+		Description      string                `validate:"min=0,max=512"`
+		Servers          []*LoadBalancerServer `mapconv:",recursive" validate:"min=0,max=40"`
+	}{
+		VirtualIPAddress: o.VirtualIPAddress,
+		Port:             o.Port,
+		DelayLoop:        o.DelayLoop,
+		SorryServer:      o.SorryServer,
+		Description:      o.Description,
+		Servers:          o.Servers,
+	}
+}
+
 // GetVirtualIPAddress returns value of VirtualIPAddress
 func (o *LoadBalancerVirtualIPAddress) GetVirtualIPAddress() string {
 	return o.VirtualIPAddress
@@ -8492,6 +10360,25 @@ type LoadBalancerServer struct {
 // Validate validates by field tags
 func (o *LoadBalancerServer) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *LoadBalancerServer) setDefaults() interface{} {
+	return &struct {
+		IPAddress               string             `validate:"ipv4"`
+		Port                    types.StringNumber `validate:"min=1,max=65535"`
+		Enabled                 types.StringFlag
+		HealthCheckProtocol     types.Protocol     `mapconv:"HealthCheck.Protocol" validate:"oneof=http https ping tcp"`
+		HealthCheckPath         string             `mapconv:"HealthCheck.Path"`
+		HealthCheckResponseCode types.StringNumber `mapconv:"HealthCheck.Status"`
+	}{
+		IPAddress:               o.IPAddress,
+		Port:                    o.Port,
+		Enabled:                 o.Enabled,
+		HealthCheckProtocol:     o.HealthCheckProtocol,
+		HealthCheckPath:         o.HealthCheckPath,
+		HealthCheckResponseCode: o.HealthCheckResponseCode,
+	}
 }
 
 // GetIPAddress returns value of IPAddress
@@ -8577,6 +10464,37 @@ type LoadBalancerCreateRequest struct {
 // Validate validates by field tags
 func (o *LoadBalancerCreateRequest) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *LoadBalancerCreateRequest) setDefaults() interface{} {
+	return &struct {
+		Class              string   `mapconv:",default=loadbalancer"`
+		SwitchID           types.ID `mapconv:"Remark.Switch.ID"`
+		PlanID             types.ID `mapconv:"Remark.Plan.ID/Plan.ID"`
+		VRID               int      `mapconv:"Remark.VRRP.VRID"`
+		IPAddresses        []string `mapconv:"Remark.[]Servers.IPAddress" validate:"min=1,max=2,dive,ipv4"`
+		NetworkMaskLen     int      `mapconv:"Remark.Network.NetworkMaskLen" validate:"min=1,max=32"`
+		DefaultRoute       string   `mapconv:"Remark.Network.DefaultRoute" validate:"ipv4"`
+		Name               string   `validate:"required"`
+		Description        string   `validate:"min=0,max=512"`
+		Tags               []string
+		IconID             types.ID                        `mapconv:"Icon.ID"`
+		VirtualIPAddresses []*LoadBalancerVirtualIPAddress `mapconv:"Settings.[]LoadBalancer,recursive" validate:"min=0,max=10"`
+	}{
+		Class:              o.Class,
+		SwitchID:           o.SwitchID,
+		PlanID:             o.PlanID,
+		VRID:               o.VRID,
+		IPAddresses:        o.IPAddresses,
+		NetworkMaskLen:     o.NetworkMaskLen,
+		DefaultRoute:       o.DefaultRoute,
+		Name:               o.Name,
+		Description:        o.Description,
+		Tags:               o.Tags,
+		IconID:             o.IconID,
+		VirtualIPAddresses: o.VirtualIPAddresses,
+	}
 }
 
 // GetClass returns value of Class
@@ -8717,6 +10635,23 @@ func (o *LoadBalancerUpdateRequest) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *LoadBalancerUpdateRequest) setDefaults() interface{} {
+	return &struct {
+		Name               string `validate:"required"`
+		Description        string `validate:"min=0,max=512"`
+		Tags               []string
+		IconID             types.ID                        `mapconv:"Icon.ID"`
+		VirtualIPAddresses []*LoadBalancerVirtualIPAddress `mapconv:"Settings.[]LoadBalancer,recursive" validate:"min=0,max=10"`
+	}{
+		Name:               o.Name,
+		Description:        o.Description,
+		Tags:               o.Tags,
+		IconID:             o.IconID,
+		VirtualIPAddresses: o.VirtualIPAddresses,
+	}
+}
+
 // GetName returns value of Name
 func (o *LoadBalancerUpdateRequest) GetName() string {
 	return o.Name
@@ -8784,6 +10719,21 @@ func (o *LoadBalancerStatus) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *LoadBalancerStatus) setDefaults() interface{} {
+	return &struct {
+		VirtualIPAddress string
+		Port             types.StringNumber
+		CPS              types.StringNumber
+		Servers          []*LoadBalancerServerStatus `mapconv:",recursive"`
+	}{
+		VirtualIPAddress: o.VirtualIPAddress,
+		Port:             o.Port,
+		CPS:              o.CPS,
+		Servers:          o.Servers,
+	}
+}
+
 // GetVirtualIPAddress returns value of VirtualIPAddress
 func (o *LoadBalancerStatus) GetVirtualIPAddress() string {
 	return o.VirtualIPAddress
@@ -8840,6 +10790,23 @@ type LoadBalancerServerStatus struct {
 // Validate validates by field tags
 func (o *LoadBalancerServerStatus) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *LoadBalancerServerStatus) setDefaults() interface{} {
+	return &struct {
+		ActiveConn types.StringNumber
+		Status     types.EServerInstanceStatus
+		IPAddress  string
+		Port       types.StringNumber
+		CPS        types.StringNumber
+	}{
+		ActiveConn: o.ActiveConn,
+		Status:     o.Status,
+		IPAddress:  o.IPAddress,
+		Port:       o.Port,
+		CPS:        o.CPS,
+	}
 }
 
 // GetActiveConn returns value of ActiveConn
@@ -8920,6 +10887,47 @@ type MobileGateway struct {
 // Validate validates by field tags
 func (o *MobileGateway) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *MobileGateway) setDefaults() interface{} {
+	return &struct {
+		ID                      types.ID
+		Name                    string `validate:"required"`
+		Description             string `validate:"min=0,max=512"`
+		Tags                    []string
+		Availability            types.EAvailability
+		Class                   string
+		IconID                  types.ID `mapconv:"Icon.ID"`
+		CreatedAt               time.Time
+		PlanID                  types.ID                    `mapconv:"Remark.Plan.ID/Plan.ID"`
+		InstanceHostName        string                      `mapconv:"Instance.Host.Name"`
+		InstanceHostInfoURL     string                      `mapconv:"Instance.Host.InfoURL"`
+		InstanceStatus          types.EServerInstanceStatus `mapconv:"Instance.Status"`
+		InstanceStatusChangedAt time.Time                   `mapconv:"Instance.StatusChangedAt"`
+		Interfaces              []*MobileGatewayInterface   `json:",omitempty" mapconv:"[]Interfaces,recursive,omitempty"`
+		ZoneID                  types.ID                    `mapconv:"Remark.Zone.ID"`
+		Settings                *MobileGatewaySetting       `mapconv:",omitempty,recursive"`
+		SettingsHash            string
+	}{
+		ID:                      o.ID,
+		Name:                    o.Name,
+		Description:             o.Description,
+		Tags:                    o.Tags,
+		Availability:            o.Availability,
+		Class:                   o.Class,
+		IconID:                  o.IconID,
+		CreatedAt:               o.CreatedAt,
+		PlanID:                  o.PlanID,
+		InstanceHostName:        o.InstanceHostName,
+		InstanceHostInfoURL:     o.InstanceHostInfoURL,
+		InstanceStatus:          o.InstanceStatus,
+		InstanceStatusChangedAt: o.InstanceStatusChangedAt,
+		Interfaces:              o.Interfaces,
+		ZoneID:                  o.ZoneID,
+		Settings:                o.Settings,
+		SettingsHash:            o.SettingsHash,
+	}
 }
 
 // GetID returns value of ID
@@ -9143,6 +11151,49 @@ func (o *MobileGatewayInterface) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *MobileGatewayInterface) setDefaults() interface{} {
+	return &struct {
+		ID                              types.ID
+		MACAddress                      string
+		IPAddress                       string
+		UserIPAddress                   string
+		HostName                        string
+		SwitchID                        types.ID           `mapconv:"Switch.ID"`
+		SwitchName                      string             `mapconv:"Switch.Name"`
+		SwitchScope                     types.EScope       `mapconv:"Switch.Scope"`
+		UserSubnetDefaultRoute          string             `mapconv:"Switch.UserSubnet.DefaultRoute"`
+		UserSubnetNetworkMaskLen        int                `mapconv:"Switch.UserSubnet.NetworkMaskLen"`
+		SubnetDefaultRoute              string             `mapconv:"Switch.Subnet.DefaultRoute"`
+		SubnetNetworkMaskLen            int                `mapconv:"Switch.Subnet.NetworkMaskLen"`
+		SubnetNetworkAddress            string             `mapconv:"Switch.Subnet.NetworkAddress"`
+		SubnetBandWidthMbps             int                `mapconv:"Switch.Subnet.Internet.BandWidthMbps"`
+		PacketFilterID                  string             `mapconv:"PacketFilter.ID"`
+		PacketFilterName                string             `mapconv:"PacketFilter.Name"`
+		PacketFilterRequiredHostVersion types.StringNumber `mapconv:"PacketFilter.RequiredHostVersionn"`
+		Index                           int                `mapconv:",omitempty"`
+	}{
+		ID:                              o.ID,
+		MACAddress:                      o.MACAddress,
+		IPAddress:                       o.IPAddress,
+		UserIPAddress:                   o.UserIPAddress,
+		HostName:                        o.HostName,
+		SwitchID:                        o.SwitchID,
+		SwitchName:                      o.SwitchName,
+		SwitchScope:                     o.SwitchScope,
+		UserSubnetDefaultRoute:          o.UserSubnetDefaultRoute,
+		UserSubnetNetworkMaskLen:        o.UserSubnetNetworkMaskLen,
+		SubnetDefaultRoute:              o.SubnetDefaultRoute,
+		SubnetNetworkMaskLen:            o.SubnetNetworkMaskLen,
+		SubnetNetworkAddress:            o.SubnetNetworkAddress,
+		SubnetBandWidthMbps:             o.SubnetBandWidthMbps,
+		PacketFilterID:                  o.PacketFilterID,
+		PacketFilterName:                o.PacketFilterName,
+		PacketFilterRequiredHostVersion: o.PacketFilterRequiredHostVersion,
+		Index:                           o.Index,
+	}
+}
+
 // GetID returns value of ID
 func (o *MobileGatewayInterface) GetID() types.ID {
 	return o.ID
@@ -9360,6 +11411,21 @@ func (o *MobileGatewaySetting) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *MobileGatewaySetting) setDefaults() interface{} {
+	return &struct {
+		Interfaces                      []*MobileGatewayInterfaceSetting `json:",omitempty" mapconv:"MobileGateway.[]Interfaces,omitempty,recursive"`
+		StaticRoute                     []*MobileGatewayStaticRoute      `json:",omitempty" mapconv:"MobileGateway.[]StaticRoutes,omitempty,recursive"`
+		InternetConnectionEnabled       types.StringFlag                 `mapconv:"MobileGateway.InternetConnection.Enabled"`
+		InterDeviceCommunicationEnabled types.StringFlag                 `mapconv:"MobileGateway.InterDeviceCommunication.Enabled"`
+	}{
+		Interfaces:                      o.Interfaces,
+		StaticRoute:                     o.StaticRoute,
+		InternetConnectionEnabled:       o.InternetConnectionEnabled,
+		InterDeviceCommunicationEnabled: o.InterDeviceCommunicationEnabled,
+	}
+}
+
 // GetInterfaces returns value of Interfaces
 func (o *MobileGatewaySetting) GetInterfaces() []*MobileGatewayInterfaceSetting {
 	return o.Interfaces
@@ -9416,6 +11482,19 @@ func (o *MobileGatewayInterfaceSetting) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *MobileGatewayInterfaceSetting) setDefaults() interface{} {
+	return &struct {
+		IPAddress      []string
+		NetworkMaskLen int
+		Index          int
+	}{
+		IPAddress:      o.IPAddress,
+		NetworkMaskLen: o.NetworkMaskLen,
+		Index:          o.Index,
+	}
+}
+
 // GetIPAddress returns value of IPAddress
 func (o *MobileGatewayInterfaceSetting) GetIPAddress() []string {
 	return o.IPAddress
@@ -9461,6 +11540,17 @@ func (o *MobileGatewayStaticRoute) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *MobileGatewayStaticRoute) setDefaults() interface{} {
+	return &struct {
+		Prefix  string
+		NextHop string
+	}{
+		Prefix:  o.Prefix,
+		NextHop: o.NextHop,
+	}
+}
+
 // GetPrefix returns value of Prefix
 func (o *MobileGatewayStaticRoute) GetPrefix() string {
 	return o.Prefix
@@ -9500,6 +11590,29 @@ type MobileGatewayCreateRequest struct {
 // Validate validates by field tags
 func (o *MobileGatewayCreateRequest) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *MobileGatewayCreateRequest) setDefaults() interface{} {
+	return &struct {
+		Class       string   `mapconv:",default=mobilegateway"`
+		SwitchID    string   `mapconv:"Remark.Switch.Scope,default=shared"`
+		PlanID      types.ID `mapconv:"Remark.Plan.ID/Plan.ID"`
+		Name        string   `validate:"required"`
+		Description string   `validate:"min=0,max=512"`
+		Tags        []string
+		IconID      types.ID                    `mapconv:"Icon.ID"`
+		Settings    *MobileGatewaySettingCreate `json:",omitempty" mapconv:",omitempty,recursive"`
+	}{
+		Class:       o.Class,
+		SwitchID:    o.SwitchID,
+		PlanID:      o.PlanID,
+		Name:        o.Name,
+		Description: o.Description,
+		Tags:        o.Tags,
+		IconID:      o.IconID,
+		Settings:    o.Settings,
+	}
 }
 
 // GetClass returns value of Class
@@ -9598,6 +11711,19 @@ func (o *MobileGatewaySettingCreate) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *MobileGatewaySettingCreate) setDefaults() interface{} {
+	return &struct {
+		StaticRoute                     []*MobileGatewayStaticRoute `json:",omitempty" mapconv:"MobileGateway.[]StaticRoutes,omitempty,recursive"`
+		InternetConnectionEnabled       types.StringFlag            `mapconv:"MobileGateway.InternetConnection.Enabled"`
+		InterDeviceCommunicationEnabled types.StringFlag            `mapconv:"MobileGateway.InterDeviceCommunication.Enabled"`
+	}{
+		StaticRoute:                     o.StaticRoute,
+		InternetConnectionEnabled:       o.InternetConnectionEnabled,
+		InterDeviceCommunicationEnabled: o.InterDeviceCommunicationEnabled,
+	}
+}
+
 // GetStaticRoute returns value of StaticRoute
 func (o *MobileGatewaySettingCreate) GetStaticRoute() []*MobileGatewayStaticRoute {
 	return o.StaticRoute
@@ -9644,6 +11770,23 @@ type MobileGatewayUpdateRequest struct {
 // Validate validates by field tags
 func (o *MobileGatewayUpdateRequest) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *MobileGatewayUpdateRequest) setDefaults() interface{} {
+	return &struct {
+		Name        string `validate:"required"`
+		Description string `validate:"min=0,max=512"`
+		Tags        []string
+		IconID      types.ID              `mapconv:"Icon.ID"`
+		Settings    *MobileGatewaySetting `json:",omitempty" mapconv:",omitempty,recursive"`
+	}{
+		Name:        o.Name,
+		Description: o.Description,
+		Tags:        o.Tags,
+		IconID:      o.IconID,
+		Settings:    o.Settings,
+	}
 }
 
 // GetName returns value of Name
@@ -9711,6 +11854,17 @@ func (o *MobileGatewayDNSSetting) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *MobileGatewayDNSSetting) setDefaults() interface{} {
+	return &struct {
+		DNS1 string
+		DNS2 string
+	}{
+		DNS1: o.DNS1,
+		DNS2: o.DNS2,
+	}
+}
+
 // GetDNS1 returns value of DNS1
 func (o *MobileGatewayDNSSetting) GetDNS1() string {
 	return o.DNS1
@@ -9745,6 +11899,19 @@ type MobileGatewaySIMRoute struct {
 // Validate validates by field tags
 func (o *MobileGatewaySIMRoute) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *MobileGatewaySIMRoute) setDefaults() interface{} {
+	return &struct {
+		ResourceID string
+		Prefix     string
+		ICCID      string
+	}{
+		ResourceID: o.ResourceID,
+		Prefix:     o.Prefix,
+		ICCID:      o.ICCID,
+	}
 }
 
 // GetResourceID returns value of ResourceID
@@ -9792,6 +11959,17 @@ func (o *MobileGatewaySIMRouteParam) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *MobileGatewaySIMRouteParam) setDefaults() interface{} {
+	return &struct {
+		ResourceID string
+		Prefix     string
+	}{
+		ResourceID: o.ResourceID,
+		Prefix:     o.Prefix,
+	}
+}
+
 // GetResourceID returns value of ResourceID
 func (o *MobileGatewaySIMRouteParam) GetResourceID() string {
 	return o.ResourceID
@@ -9837,6 +12015,41 @@ type MobileGatewaySIMInfo struct {
 // Validate validates by field tags
 func (o *MobileGatewaySIMInfo) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *MobileGatewaySIMInfo) setDefaults() interface{} {
+	return &struct {
+		ICCID                      string
+		IMSI                       []string
+		IP                         string
+		SessionStatus              string
+		IMEILock                   bool
+		Registered                 bool
+		Activated                  bool
+		ResourceID                 string
+		RegisteredDate             time.Time
+		ActivatedDate              time.Time
+		DeactivatedDate            time.Time
+		SIMGroupID                 string
+		TrafficBytesOfCurrentMonth *SIMTrafficBytes `mapconv:",recursive"`
+		ConnectedIMEI              string
+	}{
+		ICCID:                      o.ICCID,
+		IMSI:                       o.IMSI,
+		IP:                         o.IP,
+		SessionStatus:              o.SessionStatus,
+		IMEILock:                   o.IMEILock,
+		Registered:                 o.Registered,
+		Activated:                  o.Activated,
+		ResourceID:                 o.ResourceID,
+		RegisteredDate:             o.RegisteredDate,
+		ActivatedDate:              o.ActivatedDate,
+		DeactivatedDate:            o.DeactivatedDate,
+		SIMGroupID:                 o.SIMGroupID,
+		TrafficBytesOfCurrentMonth: o.TrafficBytesOfCurrentMonth,
+		ConnectedIMEI:              o.ConnectedIMEI,
+	}
 }
 
 // GetICCID returns value of ICCID
@@ -9994,6 +12207,17 @@ func (o *SIMTrafficBytes) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *SIMTrafficBytes) setDefaults() interface{} {
+	return &struct {
+		UplinkBytes   int64
+		DownlinkBytes int64
+	}{
+		UplinkBytes:   o.UplinkBytes,
+		DownlinkBytes: o.DownlinkBytes,
+	}
+}
+
 // GetUplinkBytes returns value of UplinkBytes
 func (o *SIMTrafficBytes) GetUplinkBytes() int64 {
 	return o.UplinkBytes
@@ -10028,6 +12252,15 @@ func (o *MobileGatewayAddSIMRequest) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *MobileGatewayAddSIMRequest) setDefaults() interface{} {
+	return &struct {
+		SIMID string `json:"resource_id" mapconv:"ResourceID"`
+	}{
+		SIMID: o.SIMID,
+	}
+}
+
 // GetSIMID returns value of SIMID
 func (o *MobileGatewayAddSIMRequest) GetSIMID() string {
 	return o.SIMID
@@ -10054,6 +12287,23 @@ type MobileGatewaySIMLogs struct {
 // Validate validates by field tags
 func (o *MobileGatewaySIMLogs) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *MobileGatewaySIMLogs) setDefaults() interface{} {
+	return &struct {
+		Date          time.Time
+		SessionStatus string
+		ResourceID    string
+		IMEI          string
+		IMSI          string
+	}{
+		Date:          o.Date,
+		SessionStatus: o.SessionStatus,
+		ResourceID:    o.ResourceID,
+		IMEI:          o.IMEI,
+		IMSI:          o.IMSI,
+	}
 }
 
 // GetDate returns value of Date
@@ -10123,6 +12373,25 @@ type MobileGatewayTrafficControl struct {
 // Validate validates by field tags
 func (o *MobileGatewayTrafficControl) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *MobileGatewayTrafficControl) setDefaults() interface{} {
+	return &struct {
+		TrafficQuotaInMB       int
+		BandWidthLimitInKbps   int
+		EmailNotifyEnabled     bool   `mapconv:"EMailConfig.Enabled"`
+		SlackNotifyEnabled     bool   `mapconv:"SlackConfig.Enabled"`
+		SlackNotifyWebhooksURL string `mapconv:"SlackConfig.IncomingWebhooksURL"`
+		AutoTrafficShaping     bool
+	}{
+		TrafficQuotaInMB:       o.TrafficQuotaInMB,
+		BandWidthLimitInKbps:   o.BandWidthLimitInKbps,
+		EmailNotifyEnabled:     o.EmailNotifyEnabled,
+		SlackNotifyEnabled:     o.SlackNotifyEnabled,
+		SlackNotifyWebhooksURL: o.SlackNotifyWebhooksURL,
+		AutoTrafficShaping:     o.AutoTrafficShaping,
+	}
 }
 
 // GetTrafficQuotaInMB returns value of TrafficQuotaInMB
@@ -10201,6 +12470,19 @@ func (o *MobileGatewayTrafficStatus) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *MobileGatewayTrafficStatus) setDefaults() interface{} {
+	return &struct {
+		UplinkBytes    types.StringNumber
+		DownlinkBytes  types.StringNumber
+		TrafficShaping bool
+	}{
+		UplinkBytes:    o.UplinkBytes,
+		DownlinkBytes:  o.DownlinkBytes,
+		TrafficShaping: o.TrafficShaping,
+	}
+}
+
 // GetUplinkBytes returns value of UplinkBytes
 func (o *MobileGatewayTrafficStatus) GetUplinkBytes() types.StringNumber {
 	return o.UplinkBytes
@@ -10262,6 +12544,53 @@ type NFS struct {
 // Validate validates by field tags
 func (o *NFS) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *NFS) setDefaults() interface{} {
+	return &struct {
+		ID                      types.ID
+		Name                    string `validate:"required"`
+		Description             string `validate:"min=0,max=512"`
+		Tags                    []string
+		Availability            types.EAvailability
+		Class                   string
+		InstanceHostName        string                      `mapconv:"Instance.Host.Name"`
+		InstanceHostInfoURL     string                      `mapconv:"Instance.Host.InfoURL"`
+		InstanceStatus          types.EServerInstanceStatus `mapconv:"Instance.Status"`
+		InstanceStatusChangedAt time.Time                   `mapconv:"Instance.StatusChangedAt"`
+		Interfaces              []*InterfaceView            `json:",omitempty" mapconv:"[]Interfaces,recursive,omitempty"`
+		PlanID                  types.ID                    `mapconv:"Remark.Plan.ID/Plan.ID"`
+		SwitchID                types.ID                    `mapconv:"Remark.Switch.ID"`
+		DefaultRoute            string                      `mapconv:"Remark.Network.DefaultRoute" validate:"ipv4"`
+		NetworkMaskLen          int                         `mapconv:"Remark.Network.NetworkMaskLen" validate:"min=1,max=32"`
+		IPAddresses             []string                    `mapconv:"Remark.[]Servers.IPAddress"`
+		ZoneID                  types.ID                    `mapconv:"Remark.Zone.ID"`
+		IconID                  types.ID                    `mapconv:"Icon.ID"`
+		CreatedAt               time.Time
+		ModifiedAt              time.Time
+	}{
+		ID:                      o.ID,
+		Name:                    o.Name,
+		Description:             o.Description,
+		Tags:                    o.Tags,
+		Availability:            o.Availability,
+		Class:                   o.Class,
+		InstanceHostName:        o.InstanceHostName,
+		InstanceHostInfoURL:     o.InstanceHostInfoURL,
+		InstanceStatus:          o.InstanceStatus,
+		InstanceStatusChangedAt: o.InstanceStatusChangedAt,
+		Interfaces:              o.Interfaces,
+		PlanID:                  o.PlanID,
+		SwitchID:                o.SwitchID,
+		DefaultRoute:            o.DefaultRoute,
+		NetworkMaskLen:          o.NetworkMaskLen,
+		IPAddresses:             o.IPAddresses,
+		ZoneID:                  o.ZoneID,
+		IconID:                  o.IconID,
+		CreatedAt:               o.CreatedAt,
+		ModifiedAt:              o.ModifiedAt,
+	}
 }
 
 // GetID returns value of ID
@@ -10507,6 +12836,33 @@ func (o *NFSCreateRequest) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *NFSCreateRequest) setDefaults() interface{} {
+	return &struct {
+		Class          string   `mapconv:",default=nfs"`
+		SwitchID       types.ID `mapconv:"Remark.Switch.ID"`
+		PlanID         types.ID `mapconv:"Remark.Plan.ID/Plan.ID"`
+		IPAddresses    []string `mapconv:"Remark.[]Servers.IPAddress" validate:"min=1,max=2,dive,ipv4"`
+		NetworkMaskLen int      `mapconv:"Remark.Network.NetworkMaskLen" validate:"min=1,max=32"`
+		DefaultRoute   string   `mapconv:"Remark.Network.DefaultRoute" validate:"ipv4"`
+		Name           string   `validate:"required"`
+		Description    string   `validate:"min=0,max=512"`
+		Tags           []string
+		IconID         types.ID `mapconv:"Icon.ID"`
+	}{
+		Class:          o.Class,
+		SwitchID:       o.SwitchID,
+		PlanID:         o.PlanID,
+		IPAddresses:    o.IPAddresses,
+		NetworkMaskLen: o.NetworkMaskLen,
+		DefaultRoute:   o.DefaultRoute,
+		Name:           o.Name,
+		Description:    o.Description,
+		Tags:           o.Tags,
+		IconID:         o.IconID,
+	}
+}
+
 // GetClass returns value of Class
 func (o *NFSCreateRequest) GetClass() string {
 	return o.Class
@@ -10624,6 +12980,21 @@ func (o *NFSUpdateRequest) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *NFSUpdateRequest) setDefaults() interface{} {
+	return &struct {
+		Name        string `validate:"required"`
+		Description string `validate:"min=0,max=512"`
+		Tags        []string
+		IconID      types.ID `mapconv:"Icon.ID"`
+	}{
+		Name:        o.Name,
+		Description: o.Description,
+		Tags:        o.Tags,
+		IconID:      o.IconID,
+	}
+}
+
 // GetName returns value of Name
 func (o *NFSUpdateRequest) GetName() string {
 	return o.Name
@@ -10678,6 +13049,15 @@ func (o *FreeDiskSizeActivity) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *FreeDiskSizeActivity) setDefaults() interface{} {
+	return &struct {
+		Values []*MonitorFreeDiskSizeValue `mapconv:"[]FreeDiskSize"`
+	}{
+		Values: o.Values,
+	}
+}
+
 // GetValues returns value of Values
 func (o *FreeDiskSizeActivity) GetValues() []*MonitorFreeDiskSizeValue {
 	return o.Values
@@ -10701,6 +13081,17 @@ type MonitorFreeDiskSizeValue struct {
 // Validate validates by field tags
 func (o *MonitorFreeDiskSizeValue) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *MonitorFreeDiskSizeValue) setDefaults() interface{} {
+	return &struct {
+		Time         time.Time `json:",omitempty" mapconv:",omitempty"`
+		FreeDiskSize float64   `json:",omitempty" mapconv:",omitempty"`
+	}{
+		Time:         o.Time,
+		FreeDiskSize: o.FreeDiskSize,
+	}
 }
 
 // GetTime returns value of Time
@@ -10745,6 +13136,35 @@ type Note struct {
 // Validate validates by field tags
 func (o *Note) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *Note) setDefaults() interface{} {
+	return &struct {
+		ID           types.ID
+		Name         string `validate:"required"`
+		Description  string `validate:"min=0,max=512"`
+		Tags         []string
+		Availability types.EAvailability
+		Scope        types.EScope
+		Class        string
+		Content      string
+		IconID       types.ID `mapconv:"Icon.ID"`
+		CreatedAt    time.Time
+		ModifiedAt   time.Time
+	}{
+		ID:           o.ID,
+		Name:         o.Name,
+		Description:  o.Description,
+		Tags:         o.Tags,
+		Availability: o.Availability,
+		Scope:        o.Scope,
+		Class:        o.Class,
+		Content:      o.Content,
+		IconID:       o.IconID,
+		CreatedAt:    o.CreatedAt,
+		ModifiedAt:   o.ModifiedAt,
+	}
 }
 
 // GetID returns value of ID
@@ -10895,6 +13315,23 @@ func (o *NoteCreateRequest) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *NoteCreateRequest) setDefaults() interface{} {
+	return &struct {
+		Name    string `validate:"required"`
+		Tags    []string
+		IconID  types.ID `mapconv:"Icon.ID"`
+		Class   string
+		Content string
+	}{
+		Name:    o.Name,
+		Tags:    o.Tags,
+		IconID:  o.IconID,
+		Class:   o.Class,
+		Content: o.Content,
+	}
+}
+
 // GetName returns value of Name
 func (o *NoteCreateRequest) GetName() string {
 	return o.Name
@@ -10961,6 +13398,23 @@ type NoteUpdateRequest struct {
 // Validate validates by field tags
 func (o *NoteUpdateRequest) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *NoteUpdateRequest) setDefaults() interface{} {
+	return &struct {
+		Name    string `validate:"required"`
+		Tags    []string
+		IconID  types.ID `mapconv:"Icon.ID"`
+		Class   string
+		Content string
+	}{
+		Name:    o.Name,
+		Tags:    o.Tags,
+		IconID:  o.IconID,
+		Class:   o.Class,
+		Content: o.Content,
+	}
 }
 
 // GetName returns value of Name
@@ -11031,6 +13485,27 @@ type PacketFilter struct {
 // Validate validates by field tags
 func (o *PacketFilter) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *PacketFilter) setDefaults() interface{} {
+	return &struct {
+		ID                  types.ID
+		Name                string `validate:"required"`
+		Description         string `validate:"min=0,max=512"`
+		RequiredHostVersion types.StringNumber
+		Expression          []*PacketFilterExpression `mapconv:"[]Expression,recursive"`
+		ExpressionHash      string
+		CreatedAt           time.Time
+	}{
+		ID:                  o.ID,
+		Name:                o.Name,
+		Description:         o.Description,
+		RequiredHostVersion: o.RequiredHostVersion,
+		Expression:          o.Expression,
+		ExpressionHash:      o.ExpressionHash,
+		CreatedAt:           o.CreatedAt,
+	}
 }
 
 // GetID returns value of ID
@@ -11141,6 +13616,23 @@ func (o *PacketFilterExpression) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *PacketFilterExpression) setDefaults() interface{} {
+	return &struct {
+		Protocol        types.Protocol
+		SourceNetwork   types.PacketFilterNetwork
+		SourcePort      types.PacketFilterPort
+		DestinationPort types.PacketFilterPort
+		Action          types.Action
+	}{
+		Protocol:        o.Protocol,
+		SourceNetwork:   o.SourceNetwork,
+		SourcePort:      o.SourcePort,
+		DestinationPort: o.DestinationPort,
+		Action:          o.Action,
+	}
+}
+
 // GetProtocol returns value of Protocol
 func (o *PacketFilterExpression) GetProtocol() types.Protocol {
 	return o.Protocol
@@ -11207,6 +13699,19 @@ func (o *PacketFilterCreateRequest) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *PacketFilterCreateRequest) setDefaults() interface{} {
+	return &struct {
+		Name        string                    `validate:"required"`
+		Description string                    `validate:"min=0,max=512"`
+		Expression  []*PacketFilterExpression `mapconv:"[]Expression,recursive"`
+	}{
+		Name:        o.Name,
+		Description: o.Description,
+		Expression:  o.Expression,
+	}
+}
+
 // GetName returns value of Name
 func (o *PacketFilterCreateRequest) GetName() string {
 	return o.Name
@@ -11251,6 +13756,19 @@ type PacketFilterUpdateRequest struct {
 // Validate validates by field tags
 func (o *PacketFilterUpdateRequest) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *PacketFilterUpdateRequest) setDefaults() interface{} {
+	return &struct {
+		Name        string                    `validate:"required"`
+		Description string                    `validate:"min=0,max=512"`
+		Expression  []*PacketFilterExpression `mapconv:"[]Expression,recursive"`
+	}{
+		Name:        o.Name,
+		Description: o.Description,
+		Expression:  o.Expression,
+	}
 }
 
 // GetName returns value of Name
@@ -11308,6 +13826,41 @@ type PrivateHost struct {
 // Validate validates by field tags
 func (o *PrivateHost) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *PrivateHost) setDefaults() interface{} {
+	return &struct {
+		ID               types.ID
+		Name             string `validate:"required"`
+		Description      string `validate:"min=0,max=512"`
+		Tags             []string
+		IconID           types.ID `mapconv:"Icon.ID"`
+		CreatedAt        time.Time
+		PlanID           types.ID `mapconv:"Plan.ID,omitempty"`
+		PlanName         string
+		PlanClass        string
+		CPU              int `mapconv:"Plan.CPU"`
+		MemoryMB         int `mapconv:"Plan.MemoryMB"`
+		AssignedCPU      int
+		AssignedMemoryMB int
+		HostName         string `mapconv:"Host.Name"`
+	}{
+		ID:               o.ID,
+		Name:             o.Name,
+		Description:      o.Description,
+		Tags:             o.Tags,
+		IconID:           o.IconID,
+		CreatedAt:        o.CreatedAt,
+		PlanID:           o.PlanID,
+		PlanName:         o.PlanName,
+		PlanClass:        o.PlanClass,
+		CPU:              o.CPU,
+		MemoryMB:         o.MemoryMB,
+		AssignedCPU:      o.AssignedCPU,
+		AssignedMemoryMB: o.AssignedMemoryMB,
+		HostName:         o.HostName,
+	}
 }
 
 // GetID returns value of ID
@@ -11498,6 +14051,23 @@ func (o *PrivateHostCreateRequest) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *PrivateHostCreateRequest) setDefaults() interface{} {
+	return &struct {
+		Name        string `validate:"required"`
+		Description string `validate:"min=0,max=512"`
+		Tags        []string
+		IconID      types.ID `mapconv:"Icon.ID"`
+		PlanID      types.ID `mapconv:"Plan.ID,omitempty"`
+	}{
+		Name:        o.Name,
+		Description: o.Description,
+		Tags:        o.Tags,
+		IconID:      o.IconID,
+		PlanID:      o.PlanID,
+	}
+}
+
 // GetName returns value of Name
 func (o *PrivateHostCreateRequest) GetName() string {
 	return o.Name
@@ -11565,6 +14135,21 @@ func (o *PrivateHostUpdateRequest) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *PrivateHostUpdateRequest) setDefaults() interface{} {
+	return &struct {
+		Name        string `validate:"required"`
+		Description string `validate:"min=0,max=512"`
+		Tags        []string
+		IconID      types.ID `mapconv:"Icon.ID"`
+	}{
+		Name:        o.Name,
+		Description: o.Description,
+		Tags:        o.Tags,
+		IconID:      o.IconID,
+	}
+}
+
 // GetName returns value of Name
 func (o *PrivateHostUpdateRequest) GetName() string {
 	return o.Name
@@ -11622,6 +14207,25 @@ type PrivateHostPlan struct {
 // Validate validates by field tags
 func (o *PrivateHostPlan) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *PrivateHostPlan) setDefaults() interface{} {
+	return &struct {
+		ID           types.ID
+		Name         string `validate:"required"`
+		Class        string
+		CPU          int
+		MemoryMB     int
+		Availability types.EAvailability
+	}{
+		ID:           o.ID,
+		Name:         o.Name,
+		Class:        o.Class,
+		CPU:          o.CPU,
+		MemoryMB:     o.MemoryMB,
+		Availability: o.Availability,
+	}
 }
 
 // GetID returns value of ID
@@ -11746,6 +14350,55 @@ type ProxyLB struct {
 // Validate validates by field tags
 func (o *ProxyLB) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *ProxyLB) setDefaults() interface{} {
+	return &struct {
+		ID             types.ID
+		Name           string `validate:"required"`
+		Description    string `validate:"min=0,max=512"`
+		Tags           []string
+		Availability   types.EAvailability
+		IconID         types.ID `mapconv:"Icon.ID"`
+		CreatedAt      time.Time
+		ModifiedAt     time.Time
+		Class          string                `mapconv:"Provider.Class,default=proxylb"`
+		Plan           types.EProxyLBPlan    `mapconv:"ServiceClass"`
+		HealthCheck    *ProxyLBHealthCheck   `mapconv:"Settings.ProxyLB.HealthCheck,recursive"`
+		SorryServer    *ProxyLBSorryServer   `mapconv:"Settings.ProxyLB.SorryServer,recursive"`
+		BindPorts      []*ProxyLBBindPort    `mapconv:"Settings.ProxyLB.[]BindPorts,recursive"`
+		Servers        []*ProxyLBServer      `mapconv:"Settings.ProxyLB.[]Servers,recursive"`
+		LetsEncrypt    *ProxyLBACMESetting   `mapconv:"Settings.ProxyLB.LetsEncrypt,recursive"`
+		StickySession  *ProxyLBStickySession `mapconv:"Settings.ProxyLB.StickySession,recursive"`
+		SettingsHash   string
+		UseVIPFailover bool                 `mapconv:"Status.UseVIPFailover"`
+		Region         types.EProxyLBRegion `mapconv:"Status.Region"`
+		ProxyNetworks  []string             `mapconv:"Status.ProxyNetworks"`
+		FQDN           string               `mapconv:"Status.FQDN"`
+	}{
+		ID:             o.ID,
+		Name:           o.Name,
+		Description:    o.Description,
+		Tags:           o.Tags,
+		Availability:   o.Availability,
+		IconID:         o.IconID,
+		CreatedAt:      o.CreatedAt,
+		ModifiedAt:     o.ModifiedAt,
+		Class:          o.Class,
+		Plan:           o.Plan,
+		HealthCheck:    o.HealthCheck,
+		SorryServer:    o.SorryServer,
+		BindPorts:      o.BindPorts,
+		Servers:        o.Servers,
+		LetsEncrypt:    o.LetsEncrypt,
+		StickySession:  o.StickySession,
+		SettingsHash:   o.SettingsHash,
+		UseVIPFailover: o.UseVIPFailover,
+		Region:         o.Region,
+		ProxyNetworks:  o.ProxyNetworks,
+		FQDN:           o.FQDN,
+	}
 }
 
 // GetID returns value of ID
@@ -11994,6 +14647,19 @@ func (o *ProxyLBHealthCheck) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *ProxyLBHealthCheck) setDefaults() interface{} {
+	return &struct {
+		Protocol  types.EProxyLBHealthCheckProtocol
+		Path      string
+		DelayLoop int
+	}{
+		Protocol:  o.Protocol,
+		Path:      o.Path,
+		DelayLoop: o.DelayLoop,
+	}
+}
+
 // GetProtocol returns value of Protocol
 func (o *ProxyLBHealthCheck) GetProtocol() types.EProxyLBHealthCheckProtocol {
 	return o.Protocol
@@ -12039,6 +14705,17 @@ func (o *ProxyLBSorryServer) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *ProxyLBSorryServer) setDefaults() interface{} {
+	return &struct {
+		IPAddress string `validate:"ipv4"`
+		Port      int    `validate:"min=0,max=65535"`
+	}{
+		IPAddress: o.IPAddress,
+		Port:      o.Port,
+	}
+}
+
 // GetIPAddress returns value of IPAddress
 func (o *ProxyLBSorryServer) GetIPAddress() string {
 	return o.IPAddress
@@ -12074,6 +14751,21 @@ type ProxyLBBindPort struct {
 // Validate validates by field tags
 func (o *ProxyLBBindPort) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *ProxyLBBindPort) setDefaults() interface{} {
+	return &struct {
+		ProxyMode       types.EProxyLBProxyMode
+		Port            int `validate:"min=0,max=65535"`
+		RedirectToHTTPS bool
+		SupportHTTP2    bool
+	}{
+		ProxyMode:       o.ProxyMode,
+		Port:            o.Port,
+		RedirectToHTTPS: o.RedirectToHTTPS,
+		SupportHTTP2:    o.SupportHTTP2,
+	}
 }
 
 // GetProxyMode returns value of ProxyMode
@@ -12132,6 +14824,19 @@ func (o *ProxyLBServer) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *ProxyLBServer) setDefaults() interface{} {
+	return &struct {
+		IPAddress string `validate:"ipv4"`
+		Port      int    `validate:"min=0,max=65535"`
+		Enabled   bool
+	}{
+		IPAddress: o.IPAddress,
+		Port:      o.Port,
+		Enabled:   o.Enabled,
+	}
+}
+
 // GetIPAddress returns value of IPAddress
 func (o *ProxyLBServer) GetIPAddress() string {
 	return o.IPAddress
@@ -12177,6 +14882,17 @@ func (o *ProxyLBACMESetting) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *ProxyLBACMESetting) setDefaults() interface{} {
+	return &struct {
+		CommonName string
+		Enabled    bool
+	}{
+		CommonName: o.CommonName,
+		Enabled:    o.Enabled,
+	}
+}
+
 // GetCommonName returns value of CommonName
 func (o *ProxyLBACMESetting) GetCommonName() string {
 	return o.CommonName
@@ -12210,6 +14926,17 @@ type ProxyLBStickySession struct {
 // Validate validates by field tags
 func (o *ProxyLBStickySession) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *ProxyLBStickySession) setDefaults() interface{} {
+	return &struct {
+		Method  string
+		Enabled bool
+	}{
+		Method:  o.Method,
+		Enabled: o.Enabled,
+	}
 }
 
 // GetMethod returns value of Method
@@ -12257,6 +14984,41 @@ type ProxyLBCreateRequest struct {
 // Validate validates by field tags
 func (o *ProxyLBCreateRequest) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *ProxyLBCreateRequest) setDefaults() interface{} {
+	return &struct {
+		Class          string                `mapconv:"Provider.Class,default=proxylb"`
+		Plan           types.EProxyLBPlan    `mapconv:"ServiceClass"`
+		HealthCheck    *ProxyLBHealthCheck   `mapconv:"Settings.ProxyLB.HealthCheck,recursive"`
+		SorryServer    *ProxyLBSorryServer   `mapconv:"Settings.ProxyLB.SorryServer,recursive"`
+		BindPorts      []*ProxyLBBindPort    `mapconv:"Settings.ProxyLB.[]BindPorts,recursive"`
+		Servers        []*ProxyLBServer      `mapconv:"Settings.ProxyLB.[]Servers,recursive"`
+		LetsEncrypt    *ProxyLBACMESetting   `mapconv:"Settings.ProxyLB.LetsEncrypt,recursive"`
+		StickySession  *ProxyLBStickySession `mapconv:"Settings.ProxyLB.StickySession,recursive"`
+		UseVIPFailover bool                  `mapconv:"Status.UseVIPFailover"`
+		Region         types.EProxyLBRegion  `mapconv:"Status.Region"`
+		Name           string                `validate:"required"`
+		Description    string                `validate:"min=0,max=512"`
+		Tags           []string
+		IconID         types.ID `mapconv:"Icon.ID"`
+	}{
+		Class:          o.Class,
+		Plan:           o.Plan,
+		HealthCheck:    o.HealthCheck,
+		SorryServer:    o.SorryServer,
+		BindPorts:      o.BindPorts,
+		Servers:        o.Servers,
+		LetsEncrypt:    o.LetsEncrypt,
+		StickySession:  o.StickySession,
+		UseVIPFailover: o.UseVIPFailover,
+		Region:         o.Region,
+		Name:           o.Name,
+		Description:    o.Description,
+		Tags:           o.Tags,
+		IconID:         o.IconID,
+	}
 }
 
 // GetClass returns value of Class
@@ -12422,6 +15184,33 @@ func (o *ProxyLBUpdateRequest) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *ProxyLBUpdateRequest) setDefaults() interface{} {
+	return &struct {
+		HealthCheck   *ProxyLBHealthCheck   `mapconv:"Settings.ProxyLB.HealthCheck,recursive"`
+		SorryServer   *ProxyLBSorryServer   `mapconv:"Settings.ProxyLB.SorryServer,recursive"`
+		BindPorts     []*ProxyLBBindPort    `mapconv:"Settings.ProxyLB.[]BindPorts,recursive"`
+		Servers       []*ProxyLBServer      `mapconv:"Settings.ProxyLB.[]Servers,recursive"`
+		LetsEncrypt   *ProxyLBACMESetting   `mapconv:"Settings.ProxyLB.LetsEncrypt,recursive"`
+		StickySession *ProxyLBStickySession `mapconv:"Settings.ProxyLB.StickySession,recursive"`
+		Name          string                `validate:"required"`
+		Description   string                `validate:"min=0,max=512"`
+		Tags          []string
+		IconID        types.ID `mapconv:"Icon.ID"`
+	}{
+		HealthCheck:   o.HealthCheck,
+		SorryServer:   o.SorryServer,
+		BindPorts:     o.BindPorts,
+		Servers:       o.Servers,
+		LetsEncrypt:   o.LetsEncrypt,
+		StickySession: o.StickySession,
+		Name:          o.Name,
+		Description:   o.Description,
+		Tags:          o.Tags,
+		IconID:        o.IconID,
+	}
+}
+
 // GetHealthCheck returns value of HealthCheck
 func (o *ProxyLBUpdateRequest) GetHealthCheck() *ProxyLBHealthCheck {
 	return o.HealthCheck
@@ -12536,6 +15325,15 @@ func (o *ProxyLBChangePlanRequest) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *ProxyLBChangePlanRequest) setDefaults() interface{} {
+	return &struct {
+		Plan types.EProxyLBPlan `mapconv:"ServiceClass"`
+	}{
+		Plan: o.Plan,
+	}
+}
+
 // GetPlan returns value of Plan
 func (o *ProxyLBChangePlanRequest) GetPlan() types.EProxyLBPlan {
 	return o.Plan
@@ -12563,6 +15361,25 @@ type ProxyLBCertificates struct {
 // Validate validates by field tags
 func (o *ProxyLBCertificates) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *ProxyLBCertificates) setDefaults() interface{} {
+	return &struct {
+		ServerCertificate       string
+		IntermediateCertificate string
+		PrivateKey              string
+		CertificateEndDate      time.Time
+		CertificateCommonName   string
+		AdditionalCerts         []*ProxyLBAdditionalCert `mapconv:"[]AdditionalCerts, recursive"`
+	}{
+		ServerCertificate:       o.ServerCertificate,
+		IntermediateCertificate: o.IntermediateCertificate,
+		PrivateKey:              o.PrivateKey,
+		CertificateEndDate:      o.CertificateEndDate,
+		CertificateCommonName:   o.CertificateCommonName,
+		AdditionalCerts:         o.AdditionalCerts,
+	}
 }
 
 // GetServerCertificate returns value of ServerCertificate
@@ -12643,6 +15460,23 @@ func (o *ProxyLBAdditionalCert) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *ProxyLBAdditionalCert) setDefaults() interface{} {
+	return &struct {
+		ServerCertificate       string
+		IntermediateCertificate string
+		PrivateKey              string
+		CertificateEndDate      time.Time
+		CertificateCommonName   string
+	}{
+		ServerCertificate:       o.ServerCertificate,
+		IntermediateCertificate: o.IntermediateCertificate,
+		PrivateKey:              o.PrivateKey,
+		CertificateEndDate:      o.CertificateEndDate,
+		CertificateCommonName:   o.CertificateCommonName,
+	}
+}
+
 // GetServerCertificate returns value of ServerCertificate
 func (o *ProxyLBAdditionalCert) GetServerCertificate() string {
 	return o.ServerCertificate
@@ -12710,6 +15544,21 @@ func (o *ProxyLBSetCertificatesRequest) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *ProxyLBSetCertificatesRequest) setDefaults() interface{} {
+	return &struct {
+		ServerCertificate       string
+		IntermediateCertificate string
+		PrivateKey              string
+		AdditionalCerts         []*ProxyLBAdditionalCert `mapconv:"[]AdditionalCerts, recursive"`
+	}{
+		ServerCertificate:       o.ServerCertificate,
+		IntermediateCertificate: o.IntermediateCertificate,
+		PrivateKey:              o.PrivateKey,
+		AdditionalCerts:         o.AdditionalCerts,
+	}
+}
+
 // GetServerCertificate returns value of ServerCertificate
 func (o *ProxyLBSetCertificatesRequest) GetServerCertificate() string {
 	return o.ServerCertificate
@@ -12765,6 +15614,21 @@ type ProxyLBHealth struct {
 // Validate validates by field tags
 func (o *ProxyLBHealth) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *ProxyLBHealth) setDefaults() interface{} {
+	return &struct {
+		ActiveConn int
+		CPS        int
+		CurrentVIP string
+		Servers    []*LoadBalancerServerStatus `mapconv:"[]Servers,recursive"`
+	}{
+		ActiveConn: o.ActiveConn,
+		CPS:        o.CPS,
+		CurrentVIP: o.CurrentVIP,
+		Servers:    o.Servers,
+	}
 }
 
 // GetActiveConn returns value of ActiveConn
@@ -12848,6 +15712,73 @@ type Server struct {
 // Validate validates by field tags
 func (o *Server) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *Server) setDefaults() interface{} {
+	return &struct {
+		ID                      types.ID
+		Name                    string `validate:"required"`
+		Description             string `validate:"min=0,max=512"`
+		Tags                    []string
+		Availability            types.EAvailability
+		HostName                string
+		InterfaceDriver         types.EInterfaceDriver      `mapconv:",default=virtio"`
+		ServerPlanID            types.ID                    `mapconv:"ServerPlan.ID"`
+		ServerPlanName          string                      `mapconv:"ServerPlan.Name"`
+		CPU                     int                         `mapconv:"ServerPlan.CPU"`
+		MemoryMB                int                         `mapconv:"ServerPlan.MemoryMB"`
+		ServerPlanCommitment    types.ECommitment           `mapconv:"ServerPlan.Commitment,default=standard"`
+		ServerPlanGeneration    types.EPlanGeneration       `mapconv:"ServerPlan.Generation"`
+		Zone                    *ZoneInfo                   `json:",omitempty" mapconv:",omitempty,recursive"`
+		InstanceHostName        string                      `mapconv:"Instance.Host.Name"`
+		InstanceHostInfoURL     string                      `mapconv:"Instance.Host.InfoURL"`
+		InstanceStatus          types.EServerInstanceStatus `mapconv:"Instance.Status"`
+		InstanceBeforeStatus    types.EServerInstanceStatus `mapconv:"Instance.BeforeStatus"`
+		InstanceStatusChangedAt time.Time                   `mapconv:"Instance.StatusChangedAt"`
+		InstanceWarnings        string                      `mapconv:"Instance.Warnings"`
+		InstanceWarningsValue   int                         `mapconv:"Instance.WarningsValue"`
+		Disks                   []*Disk                     `json:",omitempty" mapconv:",recursive"`
+		Interfaces              []*InterfaceView            `json:",omitempty" mapconv:"[]Interfaces,recursive,omitempty"`
+		CDROMID                 types.ID                    `mapconv:"CDROM.ID"`
+		PrivateHostID           types.ID                    `mapconv:"PrivateHost.ID"`
+		PrivateHostName         string                      `mapconv:"PrivateHost.Name"`
+		BundleInfo              *BundleInfo                 `json:",omitempty" mapconv:",omitempty,recursive"`
+		IconID                  types.ID                    `mapconv:"Icon.ID"`
+		CreatedAt               time.Time
+		ModifiedAt              time.Time
+	}{
+		ID:                      o.ID,
+		Name:                    o.Name,
+		Description:             o.Description,
+		Tags:                    o.Tags,
+		Availability:            o.Availability,
+		HostName:                o.HostName,
+		InterfaceDriver:         o.InterfaceDriver,
+		ServerPlanID:            o.ServerPlanID,
+		ServerPlanName:          o.ServerPlanName,
+		CPU:                     o.CPU,
+		MemoryMB:                o.MemoryMB,
+		ServerPlanCommitment:    o.ServerPlanCommitment,
+		ServerPlanGeneration:    o.ServerPlanGeneration,
+		Zone:                    o.Zone,
+		InstanceHostName:        o.InstanceHostName,
+		InstanceHostInfoURL:     o.InstanceHostInfoURL,
+		InstanceStatus:          o.InstanceStatus,
+		InstanceBeforeStatus:    o.InstanceBeforeStatus,
+		InstanceStatusChangedAt: o.InstanceStatusChangedAt,
+		InstanceWarnings:        o.InstanceWarnings,
+		InstanceWarningsValue:   o.InstanceWarningsValue,
+		Disks:                   o.Disks,
+		Interfaces:              o.Interfaces,
+		CDROMID:                 o.CDROMID,
+		PrivateHostID:           o.PrivateHostID,
+		PrivateHostName:         o.PrivateHostName,
+		BundleInfo:              o.BundleInfo,
+		IconID:                  o.IconID,
+		CreatedAt:               o.CreatedAt,
+		ModifiedAt:              o.ModifiedAt,
+	}
 }
 
 // GetID returns value of ID
@@ -13200,6 +16131,27 @@ func (o *ZoneInfo) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *ZoneInfo) setDefaults() interface{} {
+	return &struct {
+		ID          types.ID
+		Name        string         `validate:"required"`
+		DisplayName string         `json:",omitempty" mapconv:"Description,omitempty"`
+		IsDummy     bool           `json:",omitempty" mapconv:",omitempty"`
+		VNCProxy    *VNCProxy      `json:",omitempty" mapconv:",omitempty,recursive"`
+		FTPServer   *FTPServerInfo `json:",omitempty" mapconv:",omitempty,recursive"`
+		Region      *Region        `json:",omitempty" mapconv:",omitempty,recursive"`
+	}{
+		ID:          o.ID,
+		Name:        o.Name,
+		DisplayName: o.DisplayName,
+		IsDummy:     o.IsDummy,
+		VNCProxy:    o.VNCProxy,
+		FTPServer:   o.FTPServer,
+		Region:      o.Region,
+	}
+}
+
 // GetID returns value of ID
 func (o *ZoneInfo) GetID() types.ID {
 	return o.ID
@@ -13305,6 +16257,17 @@ func (o *VNCProxy) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *VNCProxy) setDefaults() interface{} {
+	return &struct {
+		HostName  string `json:",omitempty" mapconv:",omitempty"`
+		IPAddress string `json:",omitempty" mapconv:",omitempty"`
+	}{
+		HostName:  o.HostName,
+		IPAddress: o.IPAddress,
+	}
+}
+
 // GetHostName returns value of HostName
 func (o *VNCProxy) GetHostName() string {
 	return o.HostName
@@ -13338,6 +16301,17 @@ type FTPServerInfo struct {
 // Validate validates by field tags
 func (o *FTPServerInfo) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *FTPServerInfo) setDefaults() interface{} {
+	return &struct {
+		HostName  string
+		IPAddress string
+	}{
+		HostName:  o.HostName,
+		IPAddress: o.IPAddress,
+	}
 }
 
 // GetHostName returns value of HostName
@@ -13383,6 +16357,37 @@ type ServerCreateRequest struct {
 // Validate validates by field tags
 func (o *ServerCreateRequest) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *ServerCreateRequest) setDefaults() interface{} {
+	return &struct {
+		CPU                  int                    `mapconv:"ServerPlan.CPU"`
+		MemoryMB             int                    `mapconv:"ServerPlan.MemoryMB"`
+		ServerPlanCommitment types.ECommitment      `mapconv:"ServerPlan.Commitment,default=standard"`
+		ServerPlanGeneration types.EPlanGeneration  `mapconv:"ServerPlan.Generation"`
+		ConnectedSwitches    []*ConnectedSwitch     `json:",omitempty" mapconv:"[]ConnectedSwitches,recursive"`
+		InterfaceDriver      types.EInterfaceDriver `mapconv:",default=virtio"`
+		HostName             string
+		Name                 string `validate:"required"`
+		Description          string `validate:"min=0,max=512"`
+		Tags                 []string
+		IconID               types.ID `mapconv:"Icon.ID"`
+		WaitDiskMigration    bool     `json:",omitempty" mapconv:",omitempty"`
+	}{
+		CPU:                  o.CPU,
+		MemoryMB:             o.MemoryMB,
+		ServerPlanCommitment: o.ServerPlanCommitment,
+		ServerPlanGeneration: o.ServerPlanGeneration,
+		ConnectedSwitches:    o.ConnectedSwitches,
+		InterfaceDriver:      o.InterfaceDriver,
+		HostName:             o.HostName,
+		Name:                 o.Name,
+		Description:          o.Description,
+		Tags:                 o.Tags,
+		IconID:               o.IconID,
+		WaitDiskMigration:    o.WaitDiskMigration,
+	}
 }
 
 // GetCPU returns value of CPU
@@ -13530,6 +16535,17 @@ func (o *ConnectedSwitch) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *ConnectedSwitch) setDefaults() interface{} {
+	return &struct {
+		ID    types.ID
+		Scope types.EScope
+	}{
+		ID:    o.ID,
+		Scope: o.Scope,
+	}
+}
+
 // GetID returns value of ID
 func (o *ConnectedSwitch) GetID() types.ID {
 	return o.ID
@@ -13587,6 +16603,21 @@ func (o *ServerUpdateRequest) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *ServerUpdateRequest) setDefaults() interface{} {
+	return &struct {
+		Name        string `validate:"required"`
+		Description string `validate:"min=0,max=512"`
+		Tags        []string
+		IconID      types.ID `mapconv:"Icon.ID"`
+	}{
+		Name:        o.Name,
+		Description: o.Description,
+		Tags:        o.Tags,
+		IconID:      o.IconID,
+	}
+}
+
 // GetName returns value of Name
 func (o *ServerUpdateRequest) GetName() string {
 	return o.Name
@@ -13642,6 +16673,21 @@ type ServerChangePlanRequest struct {
 // Validate validates by field tags
 func (o *ServerChangePlanRequest) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *ServerChangePlanRequest) setDefaults() interface{} {
+	return &struct {
+		CPU                  int
+		MemoryMB             int
+		ServerPlanGeneration types.EPlanGeneration
+		ServerPlanCommitment types.ECommitment `mapconv:"ServerPlan.Commitment,default=standard"`
+	}{
+		CPU:                  o.CPU,
+		MemoryMB:             o.MemoryMB,
+		ServerPlanGeneration: o.ServerPlanGeneration,
+		ServerPlanCommitment: o.ServerPlanCommitment,
+	}
 }
 
 // GetCPU returns value of CPU
@@ -13708,6 +16754,15 @@ func (o *InsertCDROMRequest) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *InsertCDROMRequest) setDefaults() interface{} {
+	return &struct {
+		ID types.ID
+	}{
+		ID: o.ID,
+	}
+}
+
 // GetID returns value of ID
 func (o *InsertCDROMRequest) GetID() types.ID {
 	return o.ID
@@ -13750,6 +16805,15 @@ type EjectCDROMRequest struct {
 // Validate validates by field tags
 func (o *EjectCDROMRequest) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *EjectCDROMRequest) setDefaults() interface{} {
+	return &struct {
+		ID types.ID
+	}{
+		ID: o.ID,
+	}
 }
 
 // GetID returns value of ID
@@ -13800,6 +16864,27 @@ type ServerPlan struct {
 // Validate validates by field tags
 func (o *ServerPlan) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *ServerPlan) setDefaults() interface{} {
+	return &struct {
+		ID           types.ID
+		Name         string `validate:"required"`
+		CPU          int
+		MemoryMB     int
+		Commitment   types.ECommitment
+		Generation   int
+		Availability types.EAvailability
+	}{
+		ID:           o.ID,
+		Name:         o.Name,
+		CPU:          o.CPU,
+		MemoryMB:     o.MemoryMB,
+		Commitment:   o.Commitment,
+		Generation:   o.Generation,
+		Availability: o.Availability,
+	}
 }
 
 // GetID returns value of ID
@@ -13921,6 +17006,25 @@ func (o *ServiceClass) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *ServiceClass) setDefaults() interface{} {
+	return &struct {
+		ID               types.ID
+		ServiceClassName string
+		ServiceClassPath string
+		DisplayName      string
+		IsPublic         bool
+		Price            *Price `mapconv:",recursive"`
+	}{
+		ID:               o.ID,
+		ServiceClassName: o.ServiceClassName,
+		ServiceClassPath: o.ServiceClassPath,
+		DisplayName:      o.DisplayName,
+		IsPublic:         o.IsPublic,
+		Price:            o.Price,
+	}
+}
+
 // GetID returns value of ID
 func (o *ServiceClass) GetID() types.ID {
 	return o.ID
@@ -14019,6 +17123,23 @@ func (o *Price) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *Price) setDefaults() interface{} {
+	return &struct {
+		Base    int
+		Daily   int
+		Hourly  int
+		Monthly int
+		Zone    string
+	}{
+		Base:    o.Base,
+		Daily:   o.Daily,
+		Hourly:  o.Hourly,
+		Monthly: o.Monthly,
+		Zone:    o.Zone,
+	}
+}
+
 // GetBase returns value of Base
 func (o *Price) GetBase() int {
 	return o.Base
@@ -14091,6 +17212,35 @@ type SIM struct {
 // Validate validates by field tags
 func (o *SIM) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *SIM) setDefaults() interface{} {
+	return &struct {
+		ID           types.ID
+		Name         string `validate:"required"`
+		Description  string `validate:"min=0,max=512"`
+		Tags         []string
+		Availability types.EAvailability
+		Class        string
+		ICCID        string   `mapconv:"Status.ICCID" validate:"numeric"`
+		Info         *SIMInfo `mapconv:"Status.SIMInfo"`
+		IconID       types.ID `mapconv:"Icon.ID"`
+		CreatedAt    time.Time
+		ModifiedAt   time.Time
+	}{
+		ID:           o.ID,
+		Name:         o.Name,
+		Description:  o.Description,
+		Tags:         o.Tags,
+		Availability: o.Availability,
+		Class:        o.Class,
+		ICCID:        o.ICCID,
+		Info:         o.Info,
+		IconID:       o.IconID,
+		CreatedAt:    o.CreatedAt,
+		ModifiedAt:   o.ModifiedAt,
+	}
 }
 
 // GetID returns value of ID
@@ -14248,6 +17398,41 @@ type SIMInfo struct {
 // Validate validates by field tags
 func (o *SIMInfo) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *SIMInfo) setDefaults() interface{} {
+	return &struct {
+		ICCID                      string
+		IMSI                       []string
+		IP                         string
+		SessionStatus              string
+		IMEILock                   bool
+		Registered                 bool
+		Activated                  bool
+		ResourceID                 string
+		RegisteredDate             time.Time
+		ActivatedDate              time.Time
+		DeactivatedDate            time.Time
+		SIMGroupID                 string
+		TrafficBytesOfCurrentMonth *SIMTrafficBytes `mapconv:",recursive"`
+		ConnectedIMEI              string
+	}{
+		ICCID:                      o.ICCID,
+		IMSI:                       o.IMSI,
+		IP:                         o.IP,
+		SessionStatus:              o.SessionStatus,
+		IMEILock:                   o.IMEILock,
+		Registered:                 o.Registered,
+		Activated:                  o.Activated,
+		ResourceID:                 o.ResourceID,
+		RegisteredDate:             o.RegisteredDate,
+		ActivatedDate:              o.ActivatedDate,
+		DeactivatedDate:            o.DeactivatedDate,
+		SIMGroupID:                 o.SIMGroupID,
+		TrafficBytesOfCurrentMonth: o.TrafficBytesOfCurrentMonth,
+		ConnectedIMEI:              o.ConnectedIMEI,
+	}
 }
 
 // GetICCID returns value of ICCID
@@ -14410,6 +17595,27 @@ func (o *SIMCreateRequest) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *SIMCreateRequest) setDefaults() interface{} {
+	return &struct {
+		Name        string `validate:"required"`
+		Description string `validate:"min=0,max=512"`
+		Tags        []string
+		IconID      types.ID `mapconv:"Icon.ID"`
+		Class       string   `mapconv:"Provider.Class,default=sim"`
+		ICCID       string   `mapconv:"Status.ICCID" validate:"numeric"`
+		PassCode    string   `mapconv:"Remark.PassCode"`
+	}{
+		Name:        o.Name,
+		Description: o.Description,
+		Tags:        o.Tags,
+		IconID:      o.IconID,
+		Class:       o.Class,
+		ICCID:       o.ICCID,
+		PassCode:    o.PassCode,
+	}
+}
+
 // GetName returns value of Name
 func (o *SIMCreateRequest) GetName() string {
 	return o.Name
@@ -14497,6 +17703,21 @@ func (o *SIMUpdateRequest) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *SIMUpdateRequest) setDefaults() interface{} {
+	return &struct {
+		Name        string `validate:"required"`
+		Description string `validate:"min=0,max=512"`
+		Tags        []string
+		IconID      types.ID `mapconv:"Icon.ID"`
+	}{
+		Name:        o.Name,
+		Description: o.Description,
+		Tags:        o.Tags,
+		IconID:      o.IconID,
+	}
+}
+
 // GetName returns value of Name
 func (o *SIMUpdateRequest) GetName() string {
 	return o.Name
@@ -14551,6 +17772,15 @@ func (o *SIMAssignIPRequest) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *SIMAssignIPRequest) setDefaults() interface{} {
+	return &struct {
+		IP string
+	}{
+		IP: o.IP,
+	}
+}
+
 // GetIP returns value of IP
 func (o *SIMAssignIPRequest) GetIP() string {
 	return o.IP
@@ -14573,6 +17803,15 @@ type SIMIMEILockRequest struct {
 // Validate validates by field tags
 func (o *SIMIMEILockRequest) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *SIMIMEILockRequest) setDefaults() interface{} {
+	return &struct {
+		IMEI string
+	}{
+		IMEI: o.IMEI,
+	}
 }
 
 // GetIMEI returns value of IMEI
@@ -14601,6 +17840,23 @@ type SIMLog struct {
 // Validate validates by field tags
 func (o *SIMLog) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *SIMLog) setDefaults() interface{} {
+	return &struct {
+		Date          time.Time
+		SessionStatus string
+		ResourceID    string
+		IMEI          string
+		IMSI          string
+	}{
+		Date:          o.Date,
+		SessionStatus: o.SessionStatus,
+		ResourceID:    o.ResourceID,
+		IMEI:          o.IMEI,
+		IMSI:          o.IMSI,
+	}
 }
 
 // GetDate returns value of Date
@@ -14669,6 +17925,19 @@ func (o *SIMNetworkOperatorConfig) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *SIMNetworkOperatorConfig) setDefaults() interface{} {
+	return &struct {
+		Allow       bool
+		CountryCode string
+		Name        string
+	}{
+		Allow:       o.Allow,
+		CountryCode: o.CountryCode,
+		Name:        o.Name,
+	}
+}
+
 // GetAllow returns value of Allow
 func (o *SIMNetworkOperatorConfig) GetAllow() bool {
 	return o.Allow
@@ -14713,6 +17982,15 @@ func (o *LinkActivity) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *LinkActivity) setDefaults() interface{} {
+	return &struct {
+		Values []*MonitorLinkValue `mapconv:"[]Link"`
+	}{
+		Values: o.Values,
+	}
+}
+
 // GetValues returns value of Values
 func (o *LinkActivity) GetValues() []*MonitorLinkValue {
 	return o.Values
@@ -14737,6 +18015,19 @@ type MonitorLinkValue struct {
 // Validate validates by field tags
 func (o *MonitorLinkValue) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *MonitorLinkValue) setDefaults() interface{} {
+	return &struct {
+		Time        time.Time `json:",omitempty" mapconv:",omitempty"`
+		UplinkBPS   float64   `json:",omitempty" mapconv:",omitempty"`
+		DownlinkBPS float64   `json:",omitempty" mapconv:",omitempty"`
+	}{
+		Time:        o.Time,
+		UplinkBPS:   o.UplinkBPS,
+		DownlinkBPS: o.DownlinkBPS,
+	}
 }
 
 // GetTime returns value of Time
@@ -14798,6 +18089,49 @@ type SimpleMonitor struct {
 // Validate validates by field tags
 func (o *SimpleMonitor) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *SimpleMonitor) setDefaults() interface{} {
+	return &struct {
+		ID                 types.ID
+		Name               string `validate:"required"`
+		Description        string `validate:"min=0,max=512"`
+		Tags               []string
+		Availability       types.EAvailability
+		IconID             types.ID `mapconv:"Icon.ID"`
+		CreatedAt          time.Time
+		ModifiedAt         time.Time
+		Class              string `mapconv:"Provider.Class,default=simplemon"`
+		Target             string `mapconv:"Status.Target"`
+		SettingsHash       string
+		DelayLoop          int                       `mapconv:"Settings.SimpleMonitor.DelayLoop,default=60" validate:"min=60,max=3600"`
+		Enabled            types.StringFlag          `mapconv:"Settings.SimpleMonitor.Enabled"`
+		HealthCheck        *SimpleMonitorHealthCheck `mapconv:"Settings.SimpleMonitor.HealthCheck,recursive"`
+		NotifyEmailEnabled types.StringFlag          `mapconv:"Settings.SimpleMonitor.NotifyEmail.Enabled"`
+		NotifyEmailHTML    types.StringFlag          `mapconv:"Settings.SimpleMonitor.NotifyEmail.HTML"`
+		NotifySlackEnabled types.StringFlag          `mapconv:"Settings.SimpleMonitor.NotifySlack.Enabled"`
+		SlackWebhooksURL   string                    `mapconv:"Settings.SimpleMonitor.NotifySlack.IncomingWebhooksURL"`
+	}{
+		ID:                 o.ID,
+		Name:               o.Name,
+		Description:        o.Description,
+		Tags:               o.Tags,
+		Availability:       o.Availability,
+		IconID:             o.IconID,
+		CreatedAt:          o.CreatedAt,
+		ModifiedAt:         o.ModifiedAt,
+		Class:              o.Class,
+		Target:             o.Target,
+		SettingsHash:       o.SettingsHash,
+		DelayLoop:          o.DelayLoop,
+		Enabled:            o.Enabled,
+		HealthCheck:        o.HealthCheck,
+		NotifyEmailEnabled: o.NotifyEmailEnabled,
+		NotifyEmailHTML:    o.NotifyEmailHTML,
+		NotifySlackEnabled: o.NotifySlackEnabled,
+		SlackWebhooksURL:   o.SlackWebhooksURL,
+	}
 }
 
 // GetID returns value of ID
@@ -15027,6 +18361,41 @@ func (o *SimpleMonitorHealthCheck) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *SimpleMonitorHealthCheck) setDefaults() interface{} {
+	return &struct {
+		Protocol          types.ESimpleMonitorProtocol
+		Port              types.StringNumber
+		Path              string
+		Status            types.StringNumber
+		SNI               types.StringFlag
+		Host              string
+		BasicAuthUsername string
+		BasicAuthPassword string
+		QName             string
+		ExpectedData      string
+		Community         string
+		SNMPVersion       string
+		OID               string
+		RemainingDays     int
+	}{
+		Protocol:          o.Protocol,
+		Port:              o.Port,
+		Path:              o.Path,
+		Status:            o.Status,
+		SNI:               o.SNI,
+		Host:              o.Host,
+		BasicAuthUsername: o.BasicAuthUsername,
+		BasicAuthPassword: o.BasicAuthPassword,
+		QName:             o.QName,
+		ExpectedData:      o.ExpectedData,
+		Community:         o.Community,
+		SNMPVersion:       o.SNMPVersion,
+		OID:               o.OID,
+		RemainingDays:     o.RemainingDays,
+	}
+}
+
 // GetProtocol returns value of Protocol
 func (o *SimpleMonitorHealthCheck) GetProtocol() types.ESimpleMonitorProtocol {
 	return o.Protocol
@@ -15192,6 +18561,37 @@ func (o *SimpleMonitorCreateRequest) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *SimpleMonitorCreateRequest) setDefaults() interface{} {
+	return &struct {
+		Class              string                    `mapconv:"Provider.Class,default=simplemon"`
+		Target             string                    `mapconv:"Name/Status.Target" validate:"required"`
+		DelayLoop          int                       `mapconv:"Settings.SimpleMonitor.DelayLoop,default=60" validate:"min=60,max=3600"`
+		Enabled            types.StringFlag          `mapconv:"Settings.SimpleMonitor.Enabled"`
+		HealthCheck        *SimpleMonitorHealthCheck `mapconv:"Settings.SimpleMonitor.HealthCheck,recursive"`
+		NotifyEmailEnabled types.StringFlag          `mapconv:"Settings.SimpleMonitor.NotifyEmail.Enabled"`
+		NotifyEmailHTML    types.StringFlag          `mapconv:"Settings.SimpleMonitor.NotifyEmail.HTML"`
+		NotifySlackEnabled types.StringFlag          `mapconv:"Settings.SimpleMonitor.NotifySlack.Enabled"`
+		SlackWebhooksURL   string                    `mapconv:"Settings.SimpleMonitor.NotifySlack.IncomingWebhooksURL"`
+		Description        string                    `validate:"min=0,max=512"`
+		Tags               []string
+		IconID             types.ID `mapconv:"Icon.ID"`
+	}{
+		Class:              o.Class,
+		Target:             o.Target,
+		DelayLoop:          o.DelayLoop,
+		Enabled:            o.Enabled,
+		HealthCheck:        o.HealthCheck,
+		NotifyEmailEnabled: o.NotifyEmailEnabled,
+		NotifyEmailHTML:    o.NotifyEmailHTML,
+		NotifySlackEnabled: o.NotifySlackEnabled,
+		SlackWebhooksURL:   o.SlackWebhooksURL,
+		Description:        o.Description,
+		Tags:               o.Tags,
+		IconID:             o.IconID,
+	}
+}
+
 // GetClass returns value of Class
 func (o *SimpleMonitorCreateRequest) GetClass() string {
 	return o.Class
@@ -15335,6 +18735,33 @@ func (o *SimpleMonitorUpdateRequest) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *SimpleMonitorUpdateRequest) setDefaults() interface{} {
+	return &struct {
+		DelayLoop          int                       `mapconv:"Settings.SimpleMonitor.DelayLoop,default=60" validate:"min=60,max=3600"`
+		Enabled            types.StringFlag          `mapconv:"Settings.SimpleMonitor.Enabled"`
+		HealthCheck        *SimpleMonitorHealthCheck `mapconv:"Settings.SimpleMonitor.HealthCheck,recursive"`
+		NotifyEmailEnabled types.StringFlag          `mapconv:"Settings.SimpleMonitor.NotifyEmail.Enabled"`
+		NotifyEmailHTML    types.StringFlag          `mapconv:"Settings.SimpleMonitor.NotifyEmail.HTML"`
+		NotifySlackEnabled types.StringFlag          `mapconv:"Settings.SimpleMonitor.NotifySlack.Enabled"`
+		SlackWebhooksURL   string                    `mapconv:"Settings.SimpleMonitor.NotifySlack.IncomingWebhooksURL"`
+		Description        string                    `validate:"min=0,max=512"`
+		Tags               []string
+		IconID             types.ID `mapconv:"Icon.ID"`
+	}{
+		DelayLoop:          o.DelayLoop,
+		Enabled:            o.Enabled,
+		HealthCheck:        o.HealthCheck,
+		NotifyEmailEnabled: o.NotifyEmailEnabled,
+		NotifyEmailHTML:    o.NotifyEmailHTML,
+		NotifySlackEnabled: o.NotifySlackEnabled,
+		SlackWebhooksURL:   o.SlackWebhooksURL,
+		Description:        o.Description,
+		Tags:               o.Tags,
+		IconID:             o.IconID,
+	}
+}
+
 // GetDelayLoop returns value of DelayLoop
 func (o *SimpleMonitorUpdateRequest) GetDelayLoop() int {
 	return o.DelayLoop
@@ -15449,6 +18876,15 @@ func (o *ResponseTimeSecActivity) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *ResponseTimeSecActivity) setDefaults() interface{} {
+	return &struct {
+		Values []*MonitorResponseTimeSecValue `mapconv:"[]ResponseTimeSec"`
+	}{
+		Values: o.Values,
+	}
+}
+
 // GetValues returns value of Values
 func (o *ResponseTimeSecActivity) GetValues() []*MonitorResponseTimeSecValue {
 	return o.Values
@@ -15472,6 +18908,17 @@ type MonitorResponseTimeSecValue struct {
 // Validate validates by field tags
 func (o *MonitorResponseTimeSecValue) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *MonitorResponseTimeSecValue) setDefaults() interface{} {
+	return &struct {
+		Time            time.Time `json:",omitempty" mapconv:",omitempty"`
+		ResponseTimeSec float64   `json:",omitempty" mapconv:",omitempty"`
+	}{
+		Time:            o.Time,
+		ResponseTimeSec: o.ResponseTimeSec,
+	}
 }
 
 // GetTime returns value of Time
@@ -15508,6 +18955,19 @@ type SimpleMonitorHealthStatus struct {
 // Validate validates by field tags
 func (o *SimpleMonitorHealthStatus) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *SimpleMonitorHealthStatus) setDefaults() interface{} {
+	return &struct {
+		LastCheckedAt       time.Time
+		LastHealthChangedAt time.Time
+		Health              types.ESimpleMonitorHealth
+	}{
+		LastCheckedAt:       o.LastCheckedAt,
+		LastHealthChangedAt: o.LastHealthChangedAt,
+		Health:              o.Health,
+	}
 }
 
 // GetLastCheckedAt returns value of LastCheckedAt
@@ -15557,6 +19017,25 @@ type SSHKey struct {
 // Validate validates by field tags
 func (o *SSHKey) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *SSHKey) setDefaults() interface{} {
+	return &struct {
+		ID          types.ID
+		Name        string `validate:"required"`
+		Description string `validate:"min=0,max=512"`
+		CreatedAt   time.Time
+		PublicKey   string
+		Fingerprint string
+	}{
+		ID:          o.ID,
+		Name:        o.Name,
+		Description: o.Description,
+		CreatedAt:   o.CreatedAt,
+		PublicKey:   o.PublicKey,
+		Fingerprint: o.Fingerprint,
+	}
 }
 
 // GetID returns value of ID
@@ -15655,6 +19134,19 @@ func (o *SSHKeyCreateRequest) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *SSHKeyCreateRequest) setDefaults() interface{} {
+	return &struct {
+		Name        string `validate:"required"`
+		Description string `validate:"min=0,max=512"`
+		PublicKey   string
+	}{
+		Name:        o.Name,
+		Description: o.Description,
+		PublicKey:   o.PublicKey,
+	}
+}
+
 // GetName returns value of Name
 func (o *SSHKeyCreateRequest) GetName() string {
 	return o.Name
@@ -15703,6 +19195,27 @@ type SSHKeyGenerated struct {
 // Validate validates by field tags
 func (o *SSHKeyGenerated) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *SSHKeyGenerated) setDefaults() interface{} {
+	return &struct {
+		ID          types.ID
+		Name        string `validate:"required"`
+		Description string `validate:"min=0,max=512"`
+		CreatedAt   time.Time
+		PublicKey   string
+		Fingerprint string
+		PrivateKey  string
+	}{
+		ID:          o.ID,
+		Name:        o.Name,
+		Description: o.Description,
+		CreatedAt:   o.CreatedAt,
+		PublicKey:   o.PublicKey,
+		Fingerprint: o.Fingerprint,
+		PrivateKey:  o.PrivateKey,
+	}
 }
 
 // GetID returns value of ID
@@ -15812,6 +19325,21 @@ func (o *SSHKeyGenerateRequest) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *SSHKeyGenerateRequest) setDefaults() interface{} {
+	return &struct {
+		Name           string `validate:"required"`
+		Description    string `validate:"min=0,max=512"`
+		PassPhrase     string
+		GenerateFormat string `mapconv:",default=openssh"`
+	}{
+		Name:           o.Name,
+		Description:    o.Description,
+		PassPhrase:     o.PassPhrase,
+		GenerateFormat: o.GenerateFormat,
+	}
+}
+
 // GetName returns value of Name
 func (o *SSHKeyGenerateRequest) GetName() string {
 	return o.Name
@@ -15867,6 +19395,17 @@ func (o *SSHKeyUpdateRequest) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *SSHKeyUpdateRequest) setDefaults() interface{} {
+	return &struct {
+		Name        string `validate:"required"`
+		Description string `validate:"min=0,max=512"`
+	}{
+		Name:        o.Name,
+		Description: o.Description,
+	}
+}
+
 // GetName returns value of Name
 func (o *SSHKeyUpdateRequest) GetName() string {
 	return o.Name
@@ -15910,6 +19449,37 @@ type Switch struct {
 // Validate validates by field tags
 func (o *Switch) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *Switch) setDefaults() interface{} {
+	return &struct {
+		ID             types.ID
+		Name           string `validate:"required"`
+		Description    string `validate:"min=0,max=512"`
+		Tags           []string
+		IconID         types.ID `mapconv:"Icon.ID"`
+		CreatedAt      time.Time
+		ModifiedAt     time.Time
+		Scope          types.EScope
+		NetworkMaskLen int             `mapconv:"UserSubnet.NetworkMaskLen" validate:"min=1,max=32"`
+		DefaultRoute   string          `mapconv:"UserSubnet.DefaultRoute" validate:"ipv4"`
+		Subnets        []*SwitchSubnet `json:",omitempty" mapconv:"[]Subnets,omitempty,recursive"`
+		BridgeID       types.ID        `mapconv:"Bridge.ID,omitempty"`
+	}{
+		ID:             o.ID,
+		Name:           o.Name,
+		Description:    o.Description,
+		Tags:           o.Tags,
+		IconID:         o.IconID,
+		CreatedAt:      o.CreatedAt,
+		ModifiedAt:     o.ModifiedAt,
+		Scope:          o.Scope,
+		NetworkMaskLen: o.NetworkMaskLen,
+		DefaultRoute:   o.DefaultRoute,
+		Subnets:        o.Subnets,
+		BridgeID:       o.BridgeID,
+	}
 }
 
 // GetID returns value of ID
@@ -16074,6 +19644,31 @@ func (o *SwitchSubnet) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *SwitchSubnet) setDefaults() interface{} {
+	return &struct {
+		ID                   types.ID
+		DefaultRoute         string `validate:"ipv4"`
+		NextHop              string `validate:"ipv4"`
+		StaticRoute          string `validate:"ipv4"`
+		NetworkAddress       string `validate:"ipv4"`
+		NetworkMaskLen       int    `validate:"min=24,max=28"`
+		Internet             *Internet
+		AssignedIPAddressMax string `mapconv:"IPAddresses.Max"`
+		AssignedIPAddressMin string `mapconv:"IPAddresses.Min"`
+	}{
+		ID:                   o.ID,
+		DefaultRoute:         o.DefaultRoute,
+		NextHop:              o.NextHop,
+		StaticRoute:          o.StaticRoute,
+		NetworkAddress:       o.NetworkAddress,
+		NetworkMaskLen:       o.NetworkMaskLen,
+		Internet:             o.Internet,
+		AssignedIPAddressMax: o.AssignedIPAddressMax,
+		AssignedIPAddressMin: o.AssignedIPAddressMin,
+	}
+}
+
 // GetAssignedIPAddresses 割り当てられたIPアドレスのリスト
 func (o *SwitchSubnet) GetAssignedIPAddresses() []string {
 	return accessor.GetAssignedIPAddresses(o)
@@ -16208,6 +19803,25 @@ func (o *SwitchCreateRequest) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *SwitchCreateRequest) setDefaults() interface{} {
+	return &struct {
+		Name           string `validate:"required"`
+		NetworkMaskLen int    `mapconv:"UserSubnet.NetworkMaskLen" validate:"min=1,max=32"`
+		DefaultRoute   string `mapconv:"UserSubnet.DefaultRoute" validate:"ipv4"`
+		Description    string `validate:"min=0,max=512"`
+		Tags           []string
+		IconID         types.ID `mapconv:"Icon.ID"`
+	}{
+		Name:           o.Name,
+		NetworkMaskLen: o.NetworkMaskLen,
+		DefaultRoute:   o.DefaultRoute,
+		Description:    o.Description,
+		Tags:           o.Tags,
+		IconID:         o.IconID,
+	}
+}
+
 // GetName returns value of Name
 func (o *SwitchCreateRequest) GetName() string {
 	return o.Name
@@ -16285,6 +19899,25 @@ type SwitchUpdateRequest struct {
 // Validate validates by field tags
 func (o *SwitchUpdateRequest) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *SwitchUpdateRequest) setDefaults() interface{} {
+	return &struct {
+		Name           string `validate:"required"`
+		NetworkMaskLen int    `mapconv:"UserSubnet.NetworkMaskLen" validate:"min=1,max=32"`
+		DefaultRoute   string `mapconv:"UserSubnet.DefaultRoute" validate:"ipv4"`
+		Description    string `validate:"min=0,max=512"`
+		Tags           []string
+		IconID         types.ID `mapconv:"Icon.ID"`
+	}{
+		Name:           o.Name,
+		NetworkMaskLen: o.NetworkMaskLen,
+		DefaultRoute:   o.DefaultRoute,
+		Description:    o.Description,
+		Tags:           o.Tags,
+		IconID:         o.IconID,
+	}
 }
 
 // GetName returns value of Name
@@ -16377,6 +20010,51 @@ type VPCRouter struct {
 // Validate validates by field tags
 func (o *VPCRouter) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *VPCRouter) setDefaults() interface{} {
+	return &struct {
+		ID                      types.ID
+		Name                    string `validate:"required"`
+		Description             string `validate:"min=0,max=512"`
+		Tags                    []string
+		Availability            types.EAvailability
+		Class                   string
+		IconID                  types.ID `mapconv:"Icon.ID"`
+		CreatedAt               time.Time
+		PlanID                  types.ID `mapconv:"Remark.Plan.ID/Plan.ID"`
+		SettingsHash            string
+		Settings                *VPCRouterSetting           `mapconv:",omitempty,recursive"`
+		InstanceHostName        string                      `mapconv:"Instance.Host.Name"`
+		InstanceHostInfoURL     string                      `mapconv:"Instance.Host.InfoURL"`
+		InstanceStatus          types.EServerInstanceStatus `mapconv:"Instance.Status"`
+		InstanceStatusChangedAt time.Time                   `mapconv:"Instance.StatusChangedAt"`
+		Interfaces              []*VPCRouterInterface       `json:",omitempty" mapconv:"[]Interfaces,recursive,omitempty"`
+		SwitchID                types.ID                    `mapconv:"Remark.Switch.ID"`
+		IPAddresses             []string                    `mapconv:"Remark.[]Servers.IPAddress"`
+		ZoneID                  types.ID                    `mapconv:"Remark.Zone.ID"`
+	}{
+		ID:                      o.ID,
+		Name:                    o.Name,
+		Description:             o.Description,
+		Tags:                    o.Tags,
+		Availability:            o.Availability,
+		Class:                   o.Class,
+		IconID:                  o.IconID,
+		CreatedAt:               o.CreatedAt,
+		PlanID:                  o.PlanID,
+		SettingsHash:            o.SettingsHash,
+		Settings:                o.Settings,
+		InstanceHostName:        o.InstanceHostName,
+		InstanceHostInfoURL:     o.InstanceHostInfoURL,
+		InstanceStatus:          o.InstanceStatus,
+		InstanceStatusChangedAt: o.InstanceStatusChangedAt,
+		Interfaces:              o.Interfaces,
+		SwitchID:                o.SwitchID,
+		IPAddresses:             o.IPAddresses,
+		ZoneID:                  o.ZoneID,
+	}
 }
 
 // GetID returns value of ID
@@ -16616,6 +20294,41 @@ func (o *VPCRouterSetting) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *VPCRouterSetting) setDefaults() interface{} {
+	return &struct {
+		VRID                      int                            `json:",omitempty" mapconv:"Router.VRID"`
+		InternetConnectionEnabled types.StringFlag               `json:",omitempty" mapconv:"Router.InternetConnection.Enabled,omitempty"`
+		Interfaces                []*VPCRouterInterfaceSetting   `json:",omitempty" mapconv:"Router.[]Interface,omitempty,recursive"`
+		StaticNAT                 []*VPCRouterStaticNAT          `json:",omitempty" mapconv:"Router.StaticNAT.[]Config,omitempty,recursive"`
+		Firewall                  []*VPCRouterFirewall           `json:",omitempty" mapconv:"Router.Firewall.[]Config,omitempty,recursive"`
+		DHCPServer                []*VPCRouterDHCPServer         `json:",omitempty" mapconv:"Router.DHCPServer.[]Config,omitempty,recursive"`
+		DHCPStaticMapping         []*VPCRouterDHCPStaticMapping  `json:",omitempty" mapconv:"Router.DHCPStaticMapping.[]Config,omitempty,recursive"`
+		PPTPServer                *VPCRouterPPTPServer           `json:",omitempty" mapconv:"Router.PPTPServer.Config,omitempty,recursive"`
+		PPTPServerEnabled         types.StringFlag               `json:",omitempty" mapconv:"Router.PPTPServer.Enabled,omitempty"`
+		L2TPIPsecServer           *VPCRouterL2TPIPsecServer      `json:",omitempty" mapconv:"Router.L2TPIPsecServer.Config,omitempty,recursive"`
+		L2TPIPsecServerEnabled    types.StringFlag               `json:",omitempty" mapconv:"Router.L2TPIPsecServer.Enabled,omitempty"`
+		RemoteAccessUsers         []*VPCRouterRemoteAccessUser   `json:",omitempty" mapconv:"Router.RemoteAccessUsers.[]Config,omitempty,recursive"`
+		SiteToSiteIPsecVPN        []*VPCRouterSiteToSiteIPsecVPN `json:",omitempty" mapconv:"Router.SiteToSiteIPsecVPN.[]Config,omitempty,recursive"`
+		StaticRoute               []*VPCRouterStaticRoute        `json:",omitempty" mapconv:"Router.StaticRoutes.[]Config,omitempty,recursive"`
+	}{
+		VRID:                      o.VRID,
+		InternetConnectionEnabled: o.InternetConnectionEnabled,
+		Interfaces:                o.Interfaces,
+		StaticNAT:                 o.StaticNAT,
+		Firewall:                  o.Firewall,
+		DHCPServer:                o.DHCPServer,
+		DHCPStaticMapping:         o.DHCPStaticMapping,
+		PPTPServer:                o.PPTPServer,
+		PPTPServerEnabled:         o.PPTPServerEnabled,
+		L2TPIPsecServer:           o.L2TPIPsecServer,
+		L2TPIPsecServerEnabled:    o.L2TPIPsecServerEnabled,
+		RemoteAccessUsers:         o.RemoteAccessUsers,
+		SiteToSiteIPsecVPN:        o.SiteToSiteIPsecVPN,
+		StaticRoute:               o.StaticRoute,
+	}
+}
+
 // GetVRID returns value of VRID
 func (o *VPCRouterSetting) GetVRID() int {
 	return o.VRID
@@ -16775,6 +20488,25 @@ func (o *VPCRouterInterfaceSetting) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *VPCRouterInterfaceSetting) setDefaults() interface{} {
+	return &struct {
+		Enabled          types.StringFlag `mapconv:",omitempty"`
+		IPAddress        []string
+		VirtualIPAddress string
+		IPAliases        []string
+		NetworkMaskLen   int
+		Index            int
+	}{
+		Enabled:          o.Enabled,
+		IPAddress:        o.IPAddress,
+		VirtualIPAddress: o.VirtualIPAddress,
+		IPAliases:        o.IPAliases,
+		NetworkMaskLen:   o.NetworkMaskLen,
+		Index:            o.Index,
+	}
+}
+
 // GetEnabled returns value of Enabled
 func (o *VPCRouterInterfaceSetting) GetEnabled() types.StringFlag {
 	return o.Enabled
@@ -16851,6 +20583,19 @@ func (o *VPCRouterStaticNAT) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *VPCRouterStaticNAT) setDefaults() interface{} {
+	return &struct {
+		GlobalAddress  string `mapconv:"GlobalAddress" validate:"ipv4"`
+		PrivateAddress string `mapconv:"PrivateAddress" validate:"ipv4"`
+		Description    string
+	}{
+		GlobalAddress:  o.GlobalAddress,
+		PrivateAddress: o.PrivateAddress,
+		Description:    o.Description,
+	}
+}
+
 // GetGlobalAddress returns value of GlobalAddress
 func (o *VPCRouterStaticNAT) GetGlobalAddress() string {
 	return o.GlobalAddress
@@ -16896,6 +20641,17 @@ func (o *VPCRouterFirewall) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *VPCRouterFirewall) setDefaults() interface{} {
+	return &struct {
+		Send    []*VPCRouterFirewallRule
+		Receive []*VPCRouterFirewallRule
+	}{
+		Send:    o.Send,
+		Receive: o.Receive,
+	}
+}
+
 // GetSend returns value of Send
 func (o *VPCRouterFirewall) GetSend() []*VPCRouterFirewallRule {
 	return o.Send
@@ -16935,6 +20691,29 @@ type VPCRouterFirewallRule struct {
 // Validate validates by field tags
 func (o *VPCRouterFirewallRule) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *VPCRouterFirewallRule) setDefaults() interface{} {
+	return &struct {
+		Protocol           types.Protocol
+		SourceNetwork      types.VPCFirewallNetwork
+		SourcePort         types.VPCFirewallPort
+		DestinationNetwork types.VPCFirewallNetwork
+		DestinationPort    types.VPCFirewallPort
+		Action             types.Action
+		Logging            types.StringFlag
+		Description        string
+	}{
+		Protocol:           o.Protocol,
+		SourceNetwork:      o.SourceNetwork,
+		SourcePort:         o.SourcePort,
+		DestinationNetwork: o.DestinationNetwork,
+		DestinationPort:    o.DestinationPort,
+		Action:             o.Action,
+		Logging:            o.Logging,
+		Description:        o.Description,
+	}
 }
 
 // GetProtocol returns value of Protocol
@@ -17034,6 +20813,21 @@ func (o *VPCRouterDHCPServer) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *VPCRouterDHCPServer) setDefaults() interface{} {
+	return &struct {
+		Interface  string
+		RangeStart string   `validate:"ipv4"`
+		RangeStop  string   `validate:"ipv4"`
+		DNSServers []string `validate:"dive,ipv4"`
+	}{
+		Interface:  o.Interface,
+		RangeStart: o.RangeStart,
+		RangeStop:  o.RangeStop,
+		DNSServers: o.DNSServers,
+	}
+}
+
 // GetInterface returns value of Interface
 func (o *VPCRouterDHCPServer) GetInterface() string {
 	return o.Interface
@@ -17089,6 +20883,17 @@ func (o *VPCRouterDHCPStaticMapping) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *VPCRouterDHCPStaticMapping) setDefaults() interface{} {
+	return &struct {
+		MACAddress string
+		IPAddress  string `validate:"ipv4"`
+	}{
+		MACAddress: o.MACAddress,
+		IPAddress:  o.IPAddress,
+	}
+}
+
 // GetMACAddress returns value of MACAddress
 func (o *VPCRouterDHCPStaticMapping) GetMACAddress() string {
 	return o.MACAddress
@@ -17122,6 +20927,17 @@ type VPCRouterPPTPServer struct {
 // Validate validates by field tags
 func (o *VPCRouterPPTPServer) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *VPCRouterPPTPServer) setDefaults() interface{} {
+	return &struct {
+		RangeStart string `validate:"ipv4"`
+		RangeStop  string `validate:"ipv4"`
+	}{
+		RangeStart: o.RangeStart,
+		RangeStop:  o.RangeStop,
+	}
 }
 
 // GetRangeStart returns value of RangeStart
@@ -17158,6 +20974,19 @@ type VPCRouterL2TPIPsecServer struct {
 // Validate validates by field tags
 func (o *VPCRouterL2TPIPsecServer) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *VPCRouterL2TPIPsecServer) setDefaults() interface{} {
+	return &struct {
+		RangeStart      string `validate:"ipv4"`
+		RangeStop       string `validate:"ipv4"`
+		PreSharedSecret string
+	}{
+		RangeStart:      o.RangeStart,
+		RangeStop:       o.RangeStop,
+		PreSharedSecret: o.PreSharedSecret,
+	}
 }
 
 // GetRangeStart returns value of RangeStart
@@ -17205,6 +21034,17 @@ func (o *VPCRouterRemoteAccessUser) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *VPCRouterRemoteAccessUser) setDefaults() interface{} {
+	return &struct {
+		UserName string
+		Password string
+	}{
+		UserName: o.UserName,
+		Password: o.Password,
+	}
+}
+
 // GetUserName returns value of UserName
 func (o *VPCRouterRemoteAccessUser) GetUserName() string {
 	return o.UserName
@@ -17241,6 +21081,23 @@ type VPCRouterSiteToSiteIPsecVPN struct {
 // Validate validates by field tags
 func (o *VPCRouterSiteToSiteIPsecVPN) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *VPCRouterSiteToSiteIPsecVPN) setDefaults() interface{} {
+	return &struct {
+		Peer            string
+		PreSharedSecret string
+		RemoteID        string
+		Routes          []string
+		LocalPrefix     []string
+	}{
+		Peer:            o.Peer,
+		PreSharedSecret: o.PreSharedSecret,
+		RemoteID:        o.RemoteID,
+		Routes:          o.Routes,
+		LocalPrefix:     o.LocalPrefix,
+	}
 }
 
 // GetPeer returns value of Peer
@@ -17308,6 +21165,17 @@ func (o *VPCRouterStaticRoute) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *VPCRouterStaticRoute) setDefaults() interface{} {
+	return &struct {
+		Prefix  string
+		NextHop string
+	}{
+		Prefix:  o.Prefix,
+		NextHop: o.NextHop,
+	}
+}
+
 // GetPrefix returns value of Prefix
 func (o *VPCRouterStaticRoute) GetPrefix() string {
 	return o.Prefix
@@ -17357,6 +21225,49 @@ type VPCRouterInterface struct {
 // Validate validates by field tags
 func (o *VPCRouterInterface) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *VPCRouterInterface) setDefaults() interface{} {
+	return &struct {
+		ID                              types.ID
+		MACAddress                      string
+		IPAddress                       string
+		UserIPAddress                   string
+		HostName                        string
+		SwitchID                        types.ID           `mapconv:"Switch.ID"`
+		SwitchName                      string             `mapconv:"Switch.Name"`
+		SwitchScope                     types.EScope       `mapconv:"Switch.Scope"`
+		UserSubnetDefaultRoute          string             `mapconv:"Switch.UserSubnet.DefaultRoute"`
+		UserSubnetNetworkMaskLen        int                `mapconv:"Switch.UserSubnet.NetworkMaskLen"`
+		SubnetDefaultRoute              string             `mapconv:"Switch.Subnet.DefaultRoute"`
+		SubnetNetworkMaskLen            int                `mapconv:"Switch.Subnet.NetworkMaskLen"`
+		SubnetNetworkAddress            string             `mapconv:"Switch.Subnet.NetworkAddress"`
+		SubnetBandWidthMbps             int                `mapconv:"Switch.Subnet.Internet.BandWidthMbps"`
+		PacketFilterID                  string             `mapconv:"PacketFilter.ID"`
+		PacketFilterName                string             `mapconv:"PacketFilter.Name"`
+		PacketFilterRequiredHostVersion types.StringNumber `mapconv:"PacketFilter.RequiredHostVersionn"`
+		Index                           int                `mapconv:",omitempty"`
+	}{
+		ID:                              o.ID,
+		MACAddress:                      o.MACAddress,
+		IPAddress:                       o.IPAddress,
+		UserIPAddress:                   o.UserIPAddress,
+		HostName:                        o.HostName,
+		SwitchID:                        o.SwitchID,
+		SwitchName:                      o.SwitchName,
+		SwitchScope:                     o.SwitchScope,
+		UserSubnetDefaultRoute:          o.UserSubnetDefaultRoute,
+		UserSubnetNetworkMaskLen:        o.UserSubnetNetworkMaskLen,
+		SubnetDefaultRoute:              o.SubnetDefaultRoute,
+		SubnetNetworkMaskLen:            o.SubnetNetworkMaskLen,
+		SubnetNetworkAddress:            o.SubnetNetworkAddress,
+		SubnetBandWidthMbps:             o.SubnetBandWidthMbps,
+		PacketFilterID:                  o.PacketFilterID,
+		PacketFilterName:                o.PacketFilterName,
+		PacketFilterRequiredHostVersion: o.PacketFilterRequiredHostVersion,
+		Index:                           o.Index,
+	}
 }
 
 // GetID returns value of ID
@@ -17581,6 +21492,31 @@ func (o *VPCRouterCreateRequest) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *VPCRouterCreateRequest) setDefaults() interface{} {
+	return &struct {
+		Class       string `mapconv:",default=vpcrouter"`
+		Name        string `validate:"required"`
+		Description string `validate:"min=0,max=512"`
+		Tags        []string
+		IconID      types.ID                  `mapconv:"Icon.ID"`
+		PlanID      types.ID                  `mapconv:"Plan.ID"`
+		Switch      *ApplianceConnectedSwitch `json:",omitempty" mapconv:"Remark.Switch,recursive"`
+		IPAddresses []string                  `mapconv:"Remark.[]Servers.IPAddress" validate:"min=1,max=2,dive,ipv4"`
+		Settings    *VPCRouterSetting         `mapconv:",omitempty,recursive"`
+	}{
+		Class:       o.Class,
+		Name:        o.Name,
+		Description: o.Description,
+		Tags:        o.Tags,
+		IconID:      o.IconID,
+		PlanID:      o.PlanID,
+		Switch:      o.Switch,
+		IPAddresses: o.IPAddresses,
+		Settings:    o.Settings,
+	}
+}
+
 // GetClass returns value of Class
 func (o *VPCRouterCreateRequest) GetClass() string {
 	return o.Class
@@ -17686,6 +21622,17 @@ func (o *ApplianceConnectedSwitch) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *ApplianceConnectedSwitch) setDefaults() interface{} {
+	return &struct {
+		ID    types.ID
+		Scope types.EScope
+	}{
+		ID:    o.ID,
+		Scope: o.Scope,
+	}
+}
+
 // GetID returns value of ID
 func (o *ApplianceConnectedSwitch) GetID() types.ID {
 	return o.ID
@@ -17742,6 +21689,23 @@ type VPCRouterUpdateRequest struct {
 // Validate validates by field tags
 func (o *VPCRouterUpdateRequest) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *VPCRouterUpdateRequest) setDefaults() interface{} {
+	return &struct {
+		Name        string `validate:"required"`
+		Description string `validate:"min=0,max=512"`
+		Tags        []string
+		IconID      types.ID          `mapconv:"Icon.ID"`
+		Settings    *VPCRouterSetting `mapconv:",omitempty,recursive"`
+	}{
+		Name:        o.Name,
+		Description: o.Description,
+		Tags:        o.Tags,
+		IconID:      o.IconID,
+		Settings:    o.Settings,
+	}
 }
 
 // GetName returns value of Name
@@ -17820,6 +21784,43 @@ type WebAccel struct {
 // Validate validates by field tags
 func (o *WebAccel) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *WebAccel) setDefaults() interface{} {
+	return &struct {
+		ID                 types.ID
+		Name               string `validate:"required"`
+		DomainType         types.EWebAccelDomainType
+		Domain             string
+		Subdomain          string
+		ASCIIDomain        string
+		Origin             string
+		HostHeader         string
+		Status             types.EWebAccelStatus
+		HasCertificate     bool
+		HasOldCertificate  bool
+		GibSentInLastWeek  int64
+		CertValidNotBefore int64
+		CertValidNotAfter  int64
+		CreatedAt          time.Time
+	}{
+		ID:                 o.ID,
+		Name:               o.Name,
+		DomainType:         o.DomainType,
+		Domain:             o.Domain,
+		Subdomain:          o.Subdomain,
+		ASCIIDomain:        o.ASCIIDomain,
+		Origin:             o.Origin,
+		HostHeader:         o.HostHeader,
+		Status:             o.Status,
+		HasCertificate:     o.HasCertificate,
+		HasOldCertificate:  o.HasOldCertificate,
+		GibSentInLastWeek:  o.GibSentInLastWeek,
+		CertValidNotBefore: o.CertValidNotBefore,
+		CertValidNotAfter:  o.CertValidNotAfter,
+		CreatedAt:          o.CreatedAt,
+	}
 }
 
 // GetID returns value of ID
@@ -18007,6 +22008,17 @@ func (o *WebAccelCerts) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *WebAccelCerts) setDefaults() interface{} {
+	return &struct {
+		Current *WebAccelCurrentCert
+		Old     []*WebAccelOldCerts
+	}{
+		Current: o.Current,
+		Old:     o.Old,
+	}
+}
+
 // GetCurrent returns value of Current
 func (o *WebAccelCerts) GetCurrent() *WebAccelCurrentCert {
 	return o.Current
@@ -18051,6 +22063,39 @@ type WebAccelCurrentCert struct {
 // Validate validates by field tags
 func (o *WebAccelCurrentCert) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *WebAccelCurrentCert) setDefaults() interface{} {
+	return &struct {
+		ID                types.ID
+		SiteID            types.ID
+		CertificateChain  string
+		Key               string
+		CreatedAt         time.Time
+		UpdatedAt         time.Time
+		SerialNumber      string
+		NotBefore         int64
+		NotAfter          int64
+		Issuer            *WebAccelCertIssuer  `mapconv:",recursive"`
+		Subject           *WebAccelCertSubject `mapconv:",recursive"`
+		DNSNames          []string
+		SHA256Fingerprint string
+	}{
+		ID:                o.ID,
+		SiteID:            o.SiteID,
+		CertificateChain:  o.CertificateChain,
+		Key:               o.Key,
+		CreatedAt:         o.CreatedAt,
+		UpdatedAt:         o.UpdatedAt,
+		SerialNumber:      o.SerialNumber,
+		NotBefore:         o.NotBefore,
+		NotAfter:          o.NotAfter,
+		Issuer:            o.Issuer,
+		Subject:           o.Subject,
+		DNSNames:          o.DNSNames,
+		SHA256Fingerprint: o.SHA256Fingerprint,
+	}
 }
 
 // GetID returns value of ID
@@ -18220,6 +22265,21 @@ func (o *WebAccelCertIssuer) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *WebAccelCertIssuer) setDefaults() interface{} {
+	return &struct {
+		Country            string
+		Organization       string
+		OrganizationalUnit string
+		CommonName         string
+	}{
+		Country:            o.Country,
+		Organization:       o.Organization,
+		OrganizationalUnit: o.OrganizationalUnit,
+		CommonName:         o.CommonName,
+	}
+}
+
 // GetCountry returns value of Country
 func (o *WebAccelCertIssuer) GetCountry() string {
 	return o.Country
@@ -18280,6 +22340,31 @@ type WebAccelCertSubject struct {
 // Validate validates by field tags
 func (o *WebAccelCertSubject) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *WebAccelCertSubject) setDefaults() interface{} {
+	return &struct {
+		Country            string
+		Organization       string
+		OrganizationalUnit string
+		Locality           string
+		Province           string
+		StreetAddress      string
+		PostalCode         string
+		SerialNumber       string
+		CommonName         string
+	}{
+		Country:            o.Country,
+		Organization:       o.Organization,
+		OrganizationalUnit: o.OrganizationalUnit,
+		Locality:           o.Locality,
+		Province:           o.Province,
+		StreetAddress:      o.StreetAddress,
+		PostalCode:         o.PostalCode,
+		SerialNumber:       o.SerialNumber,
+		CommonName:         o.CommonName,
+	}
 }
 
 // GetCountry returns value of Country
@@ -18396,6 +22481,39 @@ type WebAccelOldCerts struct {
 // Validate validates by field tags
 func (o *WebAccelOldCerts) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *WebAccelOldCerts) setDefaults() interface{} {
+	return &struct {
+		ID                types.ID
+		SiteID            types.ID
+		CertificateChain  string
+		Key               string
+		CreatedAt         time.Time
+		UpdatedAt         time.Time
+		SerialNumber      string
+		NotBefore         int64
+		NotAfter          int64
+		Issuer            *WebAccelCertIssuer  `mapconv:",recursive"`
+		Subject           *WebAccelCertSubject `mapconv:",recursive"`
+		DNSNames          []string
+		SHA256Fingerprint string
+	}{
+		ID:                o.ID,
+		SiteID:            o.SiteID,
+		CertificateChain:  o.CertificateChain,
+		Key:               o.Key,
+		CreatedAt:         o.CreatedAt,
+		UpdatedAt:         o.UpdatedAt,
+		SerialNumber:      o.SerialNumber,
+		NotBefore:         o.NotBefore,
+		NotAfter:          o.NotAfter,
+		Issuer:            o.Issuer,
+		Subject:           o.Subject,
+		DNSNames:          o.DNSNames,
+		SHA256Fingerprint: o.SHA256Fingerprint,
+	}
 }
 
 // GetID returns value of ID
@@ -18563,6 +22681,17 @@ func (o *WebAccelCertUpdateRequest) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *WebAccelCertUpdateRequest) setDefaults() interface{} {
+	return &struct {
+		CertificateChain string
+		Key              string
+	}{
+		CertificateChain: o.CertificateChain,
+		Key:              o.Key,
+	}
+}
+
 // GetCertificateChain returns value of CertificateChain
 func (o *WebAccelCertUpdateRequest) GetCertificateChain() string {
 	return o.CertificateChain
@@ -18597,6 +22726,15 @@ func (o *WebAccelDeleteAllCacheRequest) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *WebAccelDeleteAllCacheRequest) setDefaults() interface{} {
+	return &struct {
+		Domain string
+	}{
+		Domain: o.Domain,
+	}
+}
+
 // GetDomain returns value of Domain
 func (o *WebAccelDeleteAllCacheRequest) GetDomain() string {
 	return o.Domain
@@ -18621,6 +22759,19 @@ type WebAccelDeleteCacheResult struct {
 // Validate validates by field tags
 func (o *WebAccelDeleteCacheResult) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *WebAccelDeleteCacheResult) setDefaults() interface{} {
+	return &struct {
+		URL    string
+		Status int
+		Result string
+	}{
+		URL:    o.URL,
+		Status: o.Status,
+		Result: o.Result,
+	}
 }
 
 // GetURL returns value of URL
@@ -18667,6 +22818,15 @@ func (o *WebAccelDeleteCacheRequest) Validate() error {
 	return validator.New().Struct(o)
 }
 
+// setDefaults implements sacloud.argumentDefaulter
+func (o *WebAccelDeleteCacheRequest) setDefaults() interface{} {
+	return &struct {
+		URL []string
+	}{
+		URL: o.URL,
+	}
+}
+
 // GetURL returns value of URL
 func (o *WebAccelDeleteCacheRequest) GetURL() []string {
 	return o.URL
@@ -18696,6 +22856,29 @@ type Zone struct {
 // Validate validates by field tags
 func (o *Zone) Validate() error {
 	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *Zone) setDefaults() interface{} {
+	return &struct {
+		ID           types.ID
+		Name         string `validate:"required"`
+		Description  string `validate:"min=0,max=512"`
+		DisplayOrder int
+		IsDummy      bool
+		VNCProxy     *VNCProxy      `json:",omitempty"`
+		FTPServer    *FTPServerInfo `json:",omitempty"`
+		Region       *Region        `json:",omitempty"`
+	}{
+		ID:           o.ID,
+		Name:         o.Name,
+		Description:  o.Description,
+		DisplayOrder: o.DisplayOrder,
+		IsDummy:      o.IsDummy,
+		VNCProxy:     o.VNCProxy,
+		FTPServer:    o.FTPServer,
+		Region:       o.Region,
+	}
 }
 
 // GetID returns value of ID
