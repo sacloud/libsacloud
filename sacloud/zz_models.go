@@ -11737,10 +11737,10 @@ type ProxyLB struct {
 	LetsEncrypt    *ProxyLBACMESetting   `mapconv:"Settings.ProxyLB.LetsEncrypt,recursive"`
 	StickySession  *ProxyLBStickySession `mapconv:"Settings.ProxyLB.StickySession,recursive"`
 	SettingsHash   string
-	UseVIPFailover bool     `mapconv:"Status.UseVIPFailover"`
-	Region         string   `mapconv:"Status.Region"`
-	ProxyNetworks  []string `mapconv:"Status.ProxyNetworks"`
-	FQDN           string   `mapconv:"Status.FQDN"`
+	UseVIPFailover bool                 `mapconv:"Status.UseVIPFailover"`
+	Region         types.EProxyLBRegion `mapconv:"Status.Region"`
+	ProxyNetworks  []string             `mapconv:"Status.ProxyNetworks"`
+	FQDN           string               `mapconv:"Status.FQDN"`
 }
 
 // Validate validates by field tags
@@ -11949,12 +11949,12 @@ func (o *ProxyLB) SetUseVIPFailover(v bool) {
 }
 
 // GetRegion returns value of Region
-func (o *ProxyLB) GetRegion() string {
+func (o *ProxyLB) GetRegion() types.EProxyLBRegion {
 	return o.Region
 }
 
 // SetRegion sets value to Region
-func (o *ProxyLB) SetRegion(v string) {
+func (o *ProxyLB) SetRegion(v types.EProxyLBRegion) {
 	o.Region = v
 }
 
@@ -12247,6 +12247,7 @@ type ProxyLBCreateRequest struct {
 	LetsEncrypt    *ProxyLBACMESetting   `mapconv:"Settings.ProxyLB.LetsEncrypt,recursive"`
 	StickySession  *ProxyLBStickySession `mapconv:"Settings.ProxyLB.StickySession,recursive"`
 	UseVIPFailover bool                  `mapconv:"Status.UseVIPFailover"`
+	Region         types.EProxyLBRegion  `mapconv:"Status.Region"`
 	Name           string                `validate:"required"`
 	Description    string                `validate:"min=0,max=512"`
 	Tags           []string
@@ -12346,6 +12347,16 @@ func (o *ProxyLBCreateRequest) GetUseVIPFailover() bool {
 // SetUseVIPFailover sets value to UseVIPFailover
 func (o *ProxyLBCreateRequest) SetUseVIPFailover(v bool) {
 	o.UseVIPFailover = v
+}
+
+// GetRegion returns value of Region
+func (o *ProxyLBCreateRequest) GetRegion() types.EProxyLBRegion {
+	return o.Region
+}
+
+// SetRegion sets value to Region
+func (o *ProxyLBCreateRequest) SetRegion(v types.EProxyLBRegion) {
+	o.Region = v
 }
 
 // GetName returns value of Name

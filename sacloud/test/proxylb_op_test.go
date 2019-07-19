@@ -125,6 +125,7 @@ func initProxyLBVariables() {
 			Enabled: true,
 		},
 		UseVIPFailover: true,
+		Region:         types.ProxyLBRegions.IS1,
 	}
 	createProxyLBExpected = &sacloud.ProxyLB{
 		Name:         createProxyLBParam.Name,
@@ -140,6 +141,7 @@ func initProxyLBVariables() {
 		LetsEncrypt:    createProxyLBParam.LetsEncrypt,
 		StickySession:  createProxyLBParam.StickySession,
 		UseVIPFailover: createProxyLBParam.UseVIPFailover,
+		Region:         createProxyLBParam.Region,
 	}
 	updateProxyLBParam = &sacloud.ProxyLBUpdateRequest{
 		Name:        "libsacloud-proxyLB-upd",
@@ -199,6 +201,7 @@ func initProxyLBVariables() {
 		LetsEncrypt:    updateProxyLBParam.LetsEncrypt,
 		StickySession:  updateProxyLBParam.StickySession,
 		UseVIPFailover: createProxyLBParam.UseVIPFailover,
+		Region:         createProxyLBParam.Region,
 	}
 
 	createProxyLBForACMEParam = &sacloud.ProxyLBCreateRequest{

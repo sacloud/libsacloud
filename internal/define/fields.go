@@ -1220,7 +1220,7 @@ func (f *fieldsDef) ProxyLBUseVIPFailover() *dsl.FieldDesc {
 func (f *fieldsDef) ProxyLBRegion() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "Region",
-		Type: meta.TypeString,
+		Type: meta.Static(types.EProxyLBRegion("")),
 		Tags: &dsl.FieldTags{
 			MapConv: "Status.Region",
 		},
