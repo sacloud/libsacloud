@@ -5664,7 +5664,7 @@ type GSLB struct {
 	HealthCheckResponseCode types.StringNumber `mapconv:"Settings.GSLB.HealthCheck.Status"`
 	HealthCheckPort         types.StringNumber `mapconv:"Settings.GSLB.HealthCheck.Port"`
 	SorryServer             string             `mapconv:"Settings.GSLB.SorryServer"`
-	DestinationServers      []*GSLBServer      `mapconv:"Settings.GSLB.[]Servers,recursive" validate:"min=0,max=6"`
+	DestinationServers      []*GSLBServer      `mapconv:"Settings.GSLB.[]Servers,recursive" validate:"min=0,max=12"`
 }
 
 // Validate validates by field tags
@@ -5953,7 +5953,7 @@ type GSLBCreateRequest struct {
 	DelayLoop               int                `mapconv:"Settings.GSLB.DelayLoop,default=10" validate:"min=10,max=60"`
 	Weighted                types.StringFlag   `mapconv:"Settings.GSLB.Weighted"`
 	SorryServer             string             `mapconv:"Settings.GSLB.SorryServer"`
-	DestinationServers      []*GSLBServer      `mapconv:"Settings.GSLB.[]Servers,recursive" validate:"min=0,max=6"`
+	DestinationServers      []*GSLBServer      `mapconv:"Settings.GSLB.[]Servers,recursive" validate:"min=0,max=12"`
 	Name                    string             `validate:"required"`
 	Description             string             `validate:"min=0,max=512"`
 	Tags                    []string
@@ -6119,7 +6119,7 @@ type GSLBUpdateRequest struct {
 	DelayLoop               int                `mapconv:"Settings.GSLB.DelayLoop,default=10" validate:"min=10,max=60"`
 	Weighted                types.StringFlag   `mapconv:"Settings.GSLB.Weighted"`
 	SorryServer             string             `mapconv:"Settings.GSLB.SorryServer"`
-	DestinationServers      []*GSLBServer      `mapconv:"Settings.GSLB.[]Servers,recursive" validate:"min=0,max=6"`
+	DestinationServers      []*GSLBServer      `mapconv:"Settings.GSLB.[]Servers,recursive" validate:"min=0,max=12"`
 	Name                    string             `validate:"required"`
 	Description             string             `validate:"min=0,max=512"`
 	Tags                    []string
