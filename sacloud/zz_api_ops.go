@@ -358,6 +358,7 @@ func (o *ArchiveOp) Find(ctx context.Context, zone string, conditions *FindCondi
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"conditions": conditions,
 	})
 	if err != nil {
@@ -404,6 +405,7 @@ func (o *ArchiveOp) Create(ctx context.Context, zone string, param *ArchiveCreat
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"param":      param,
 	})
 	if err != nil {
@@ -450,6 +452,7 @@ func (o *ArchiveOp) CreateBlank(ctx context.Context, zone string, param *Archive
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"param":      param,
 	})
 	if err != nil {
@@ -496,6 +499,7 @@ func (o *ArchiveOp) Read(ctx context.Context, zone string, id types.ID) (*Archiv
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -527,6 +531,7 @@ func (o *ArchiveOp) Update(ctx context.Context, zone string, id types.ID, param 
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 		"param":      param,
 	})
@@ -579,6 +584,7 @@ func (o *ArchiveOp) Delete(ctx context.Context, zone string, id types.ID) error 
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -601,6 +607,7 @@ func (o *ArchiveOp) OpenFTP(ctx context.Context, zone string, id types.ID, openO
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 		"openOption": openOption,
 	})
@@ -653,6 +660,7 @@ func (o *ArchiveOp) CloseFTP(ctx context.Context, zone string, id types.ID) erro
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -744,6 +752,7 @@ func (o *AutoBackupOp) Find(ctx context.Context, zone string, conditions *FindCo
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"conditions": conditions,
 	})
 	if err != nil {
@@ -790,6 +799,7 @@ func (o *AutoBackupOp) Create(ctx context.Context, zone string, param *AutoBacku
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"param":      param,
 	})
 	if err != nil {
@@ -836,6 +846,7 @@ func (o *AutoBackupOp) Read(ctx context.Context, zone string, id types.ID) (*Aut
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -867,6 +878,7 @@ func (o *AutoBackupOp) Update(ctx context.Context, zone string, id types.ID, par
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 		"param":      param,
 	})
@@ -919,6 +931,7 @@ func (o *AutoBackupOp) Delete(ctx context.Context, zone string, id types.ID) err
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -1176,6 +1189,7 @@ func (o *BridgeOp) Find(ctx context.Context, zone string, conditions *FindCondit
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"conditions": conditions,
 	})
 	if err != nil {
@@ -1222,6 +1236,7 @@ func (o *BridgeOp) Create(ctx context.Context, zone string, param *BridgeCreateR
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"param":      param,
 	})
 	if err != nil {
@@ -1268,6 +1283,7 @@ func (o *BridgeOp) Read(ctx context.Context, zone string, id types.ID) (*Bridge,
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -1299,6 +1315,7 @@ func (o *BridgeOp) Update(ctx context.Context, zone string, id types.ID, param *
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 		"param":      param,
 	})
@@ -1351,6 +1368,7 @@ func (o *BridgeOp) Delete(ctx context.Context, zone string, id types.ID) error {
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -1392,6 +1410,7 @@ func (o *CDROMOp) Find(ctx context.Context, zone string, conditions *FindConditi
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"conditions": conditions,
 	})
 	if err != nil {
@@ -1438,6 +1457,7 @@ func (o *CDROMOp) Create(ctx context.Context, zone string, param *CDROMCreateReq
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"param":      param,
 	})
 	if err != nil {
@@ -1484,6 +1504,7 @@ func (o *CDROMOp) Read(ctx context.Context, zone string, id types.ID) (*CDROM, e
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -1515,6 +1536,7 @@ func (o *CDROMOp) Update(ctx context.Context, zone string, id types.ID, param *C
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 		"param":      param,
 	})
@@ -1567,6 +1589,7 @@ func (o *CDROMOp) Delete(ctx context.Context, zone string, id types.ID) error {
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -1589,6 +1612,7 @@ func (o *CDROMOp) OpenFTP(ctx context.Context, zone string, id types.ID, openOpt
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 		"openOption": openOption,
 	})
@@ -1641,6 +1665,7 @@ func (o *CDROMOp) CloseFTP(ctx context.Context, zone string, id types.ID) error 
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -1733,6 +1758,7 @@ func (o *DatabaseOp) Find(ctx context.Context, zone string, conditions *FindCond
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"conditions": conditions,
 	})
 	if err != nil {
@@ -1779,6 +1805,7 @@ func (o *DatabaseOp) Create(ctx context.Context, zone string, param *DatabaseCre
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"param":      param,
 	})
 	if err != nil {
@@ -1825,6 +1852,7 @@ func (o *DatabaseOp) Read(ctx context.Context, zone string, id types.ID) (*Datab
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -1856,6 +1884,7 @@ func (o *DatabaseOp) Update(ctx context.Context, zone string, id types.ID, param
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 		"param":      param,
 	})
@@ -1908,6 +1937,7 @@ func (o *DatabaseOp) Delete(ctx context.Context, zone string, id types.ID) error
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -1930,6 +1960,7 @@ func (o *DatabaseOp) Config(ctx context.Context, zone string, id types.ID) error
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -1952,6 +1983,7 @@ func (o *DatabaseOp) Boot(ctx context.Context, zone string, id types.ID) error {
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -1974,6 +2006,7 @@ func (o *DatabaseOp) Shutdown(ctx context.Context, zone string, id types.ID, shu
 		"rootURL":        SakuraCloudAPIRoot,
 		"pathSuffix":     o.PathSuffix,
 		"pathName":       o.PathName,
+		"zone":           zone,
 		"id":             id,
 		"shutdownOption": shutdownOption,
 	})
@@ -2017,6 +2050,7 @@ func (o *DatabaseOp) Reset(ctx context.Context, zone string, id types.ID) error 
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -2039,6 +2073,7 @@ func (o *DatabaseOp) MonitorCPU(ctx context.Context, zone string, id types.ID, c
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 		"condition":  condition,
 	})
@@ -2091,6 +2126,7 @@ func (o *DatabaseOp) MonitorDisk(ctx context.Context, zone string, id types.ID, 
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 		"condition":  condition,
 	})
@@ -2143,6 +2179,7 @@ func (o *DatabaseOp) MonitorInterface(ctx context.Context, zone string, id types
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 		"condition":  condition,
 	})
@@ -2195,6 +2232,7 @@ func (o *DatabaseOp) MonitorDatabase(ctx context.Context, zone string, id types.
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 		"condition":  condition,
 	})
@@ -2247,6 +2285,7 @@ func (o *DatabaseOp) Status(ctx context.Context, zone string, id types.ID) (*Dat
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -2297,6 +2336,7 @@ func (o *DiskOp) Find(ctx context.Context, zone string, conditions *FindConditio
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"conditions": conditions,
 	})
 	if err != nil {
@@ -2343,6 +2383,7 @@ func (o *DiskOp) Create(ctx context.Context, zone string, param *DiskCreateReque
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"param":      param,
 	})
 	if err != nil {
@@ -2389,6 +2430,7 @@ func (o *DiskOp) CreateDistantly(ctx context.Context, zone string, createParam *
 		"rootURL":     SakuraCloudAPIRoot,
 		"pathSuffix":  o.PathSuffix,
 		"pathName":    o.PathName,
+		"zone":        zone,
 		"createParam": createParam,
 		"distantFrom": distantFrom,
 	})
@@ -2441,6 +2483,7 @@ func (o *DiskOp) Config(ctx context.Context, zone string, id types.ID, edit *Dis
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 		"edit":       edit,
 	})
@@ -2484,6 +2527,7 @@ func (o *DiskOp) CreateWithConfig(ctx context.Context, zone string, createParam 
 		"rootURL":         SakuraCloudAPIRoot,
 		"pathSuffix":      o.PathSuffix,
 		"pathName":        o.PathName,
+		"zone":            zone,
 		"createParam":     createParam,
 		"editParam":       editParam,
 		"bootAtAvailable": bootAtAvailable,
@@ -2542,6 +2586,7 @@ func (o *DiskOp) CreateWithConfigDistantly(ctx context.Context, zone string, cre
 		"rootURL":         SakuraCloudAPIRoot,
 		"pathSuffix":      o.PathSuffix,
 		"pathName":        o.PathName,
+		"zone":            zone,
 		"createParam":     createParam,
 		"editParam":       editParam,
 		"bootAtAvailable": bootAtAvailable,
@@ -2606,6 +2651,7 @@ func (o *DiskOp) ToBlank(ctx context.Context, zone string, id types.ID) error {
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -2628,6 +2674,7 @@ func (o *DiskOp) ResizePartition(ctx context.Context, zone string, id types.ID) 
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -2650,6 +2697,7 @@ func (o *DiskOp) ConnectToServer(ctx context.Context, zone string, id types.ID, 
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 		"serverID":   serverID,
 	})
@@ -2673,6 +2721,7 @@ func (o *DiskOp) DisconnectFromServer(ctx context.Context, zone string, id types
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -2695,6 +2744,7 @@ func (o *DiskOp) InstallDistantFrom(ctx context.Context, zone string, id types.I
 		"rootURL":      SakuraCloudAPIRoot,
 		"pathSuffix":   o.PathSuffix,
 		"pathName":     o.PathName,
+		"zone":         zone,
 		"id":           id,
 		"installParam": installParam,
 		"distantFrom":  distantFrom,
@@ -2753,6 +2803,7 @@ func (o *DiskOp) Install(ctx context.Context, zone string, id types.ID, installP
 		"rootURL":      SakuraCloudAPIRoot,
 		"pathSuffix":   o.PathSuffix,
 		"pathName":     o.PathName,
+		"zone":         zone,
 		"id":           id,
 		"installParam": installParam,
 	})
@@ -2805,6 +2856,7 @@ func (o *DiskOp) Read(ctx context.Context, zone string, id types.ID) (*Disk, err
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -2836,6 +2888,7 @@ func (o *DiskOp) Update(ctx context.Context, zone string, id types.ID, param *Di
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 		"param":      param,
 	})
@@ -2888,6 +2941,7 @@ func (o *DiskOp) Delete(ctx context.Context, zone string, id types.ID) error {
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -2910,6 +2964,7 @@ func (o *DiskOp) Monitor(ctx context.Context, zone string, id types.ID, conditio
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 		"condition":  condition,
 	})
@@ -2981,6 +3036,7 @@ func (o *DiskPlanOp) Find(ctx context.Context, zone string, conditions *FindCond
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"conditions": conditions,
 	})
 	if err != nil {
@@ -3027,6 +3083,7 @@ func (o *DiskPlanOp) Read(ctx context.Context, zone string, id types.ID) (*DiskP
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -3740,6 +3797,7 @@ func (o *InterfaceOp) Find(ctx context.Context, zone string, conditions *FindCon
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"conditions": conditions,
 	})
 	if err != nil {
@@ -3786,6 +3844,7 @@ func (o *InterfaceOp) Create(ctx context.Context, zone string, param *InterfaceC
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"param":      param,
 	})
 	if err != nil {
@@ -3832,6 +3891,7 @@ func (o *InterfaceOp) Read(ctx context.Context, zone string, id types.ID) (*Inte
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -3863,6 +3923,7 @@ func (o *InterfaceOp) Update(ctx context.Context, zone string, id types.ID, para
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 		"param":      param,
 	})
@@ -3915,6 +3976,7 @@ func (o *InterfaceOp) Delete(ctx context.Context, zone string, id types.ID) erro
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -3937,6 +3999,7 @@ func (o *InterfaceOp) Monitor(ctx context.Context, zone string, id types.ID, con
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 		"condition":  condition,
 	})
@@ -3989,6 +4052,7 @@ func (o *InterfaceOp) ConnectToSharedSegment(ctx context.Context, zone string, i
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -4011,6 +4075,7 @@ func (o *InterfaceOp) ConnectToSwitch(ctx context.Context, zone string, id types
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 		"switchID":   switchID,
 	})
@@ -4034,6 +4099,7 @@ func (o *InterfaceOp) DisconnectFromSwitch(ctx context.Context, zone string, id 
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -4056,6 +4122,7 @@ func (o *InterfaceOp) ConnectToPacketFilter(ctx context.Context, zone string, id
 		"rootURL":        SakuraCloudAPIRoot,
 		"pathSuffix":     o.PathSuffix,
 		"pathName":       o.PathName,
+		"zone":           zone,
 		"id":             id,
 		"packetFilterID": packetFilterID,
 	})
@@ -4079,6 +4146,7 @@ func (o *InterfaceOp) DisconnectFromPacketFilter(ctx context.Context, zone strin
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -4120,6 +4188,7 @@ func (o *InternetOp) Find(ctx context.Context, zone string, conditions *FindCond
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"conditions": conditions,
 	})
 	if err != nil {
@@ -4166,6 +4235,7 @@ func (o *InternetOp) Create(ctx context.Context, zone string, param *InternetCre
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"param":      param,
 	})
 	if err != nil {
@@ -4212,6 +4282,7 @@ func (o *InternetOp) Read(ctx context.Context, zone string, id types.ID) (*Inter
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -4243,6 +4314,7 @@ func (o *InternetOp) Update(ctx context.Context, zone string, id types.ID, param
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 		"param":      param,
 	})
@@ -4295,6 +4367,7 @@ func (o *InternetOp) Delete(ctx context.Context, zone string, id types.ID) error
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -4317,6 +4390,7 @@ func (o *InternetOp) UpdateBandWidth(ctx context.Context, zone string, id types.
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 		"param":      param,
 	})
@@ -4369,6 +4443,7 @@ func (o *InternetOp) AddSubnet(ctx context.Context, zone string, id types.ID, pa
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 		"param":      param,
 	})
@@ -4421,6 +4496,7 @@ func (o *InternetOp) UpdateSubnet(ctx context.Context, zone string, id types.ID,
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 		"subnetID":   subnetID,
 		"param":      param,
@@ -4479,6 +4555,7 @@ func (o *InternetOp) DeleteSubnet(ctx context.Context, zone string, id types.ID,
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 		"subnetID":   subnetID,
 	})
@@ -4502,6 +4579,7 @@ func (o *InternetOp) Monitor(ctx context.Context, zone string, id types.ID, cond
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 		"condition":  condition,
 	})
@@ -4554,6 +4632,7 @@ func (o *InternetOp) EnableIPv6(ctx context.Context, zone string, id types.ID) (
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -4585,6 +4664,7 @@ func (o *InternetOp) DisableIPv6(ctx context.Context, zone string, id types.ID, 
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 		"ipv6netID":  ipv6netID,
 	})
@@ -4627,6 +4707,7 @@ func (o *InternetPlanOp) Find(ctx context.Context, zone string, conditions *Find
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"conditions": conditions,
 	})
 	if err != nil {
@@ -4673,6 +4754,7 @@ func (o *InternetPlanOp) Read(ctx context.Context, zone string, id types.ID) (*I
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -4723,6 +4805,7 @@ func (o *IPAddressOp) List(ctx context.Context, zone string) (*IPAddressListResu
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 	})
 	if err != nil {
 		return nil, err
@@ -4753,6 +4836,7 @@ func (o *IPAddressOp) Read(ctx context.Context, zone string, ipAddress string) (
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"ipAddress":  ipAddress,
 	})
 	if err != nil {
@@ -4784,6 +4868,7 @@ func (o *IPAddressOp) UpdateHostName(ctx context.Context, zone string, ipAddress
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"ipAddress":  ipAddress,
 		"hostName":   hostName,
 	})
@@ -4855,6 +4940,7 @@ func (o *IPv6NetOp) List(ctx context.Context, zone string) (*IPv6NetListResult, 
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 	})
 	if err != nil {
 		return nil, err
@@ -4885,6 +4971,7 @@ func (o *IPv6NetOp) Read(ctx context.Context, zone string, id types.ID) (*IPv6Ne
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -4935,6 +5022,7 @@ func (o *IPv6AddrOp) Find(ctx context.Context, zone string, conditions *FindCond
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"conditions": conditions,
 	})
 	if err != nil {
@@ -4981,6 +5069,7 @@ func (o *IPv6AddrOp) Create(ctx context.Context, zone string, param *IPv6AddrCre
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"param":      param,
 	})
 	if err != nil {
@@ -5027,6 +5116,7 @@ func (o *IPv6AddrOp) Read(ctx context.Context, zone string, ipv6addr string) (*I
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         ipv6addr,
 	})
 	if err != nil {
@@ -5058,6 +5148,7 @@ func (o *IPv6AddrOp) Update(ctx context.Context, zone string, ipv6addr string, p
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         ipv6addr,
 		"param":      param,
 	})
@@ -5110,6 +5201,7 @@ func (o *IPv6AddrOp) Delete(ctx context.Context, zone string, ipv6addr string) e
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         ipv6addr,
 	})
 	if err != nil {
@@ -5470,6 +5562,7 @@ func (o *LoadBalancerOp) Find(ctx context.Context, zone string, conditions *Find
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"conditions": conditions,
 	})
 	if err != nil {
@@ -5516,6 +5609,7 @@ func (o *LoadBalancerOp) Create(ctx context.Context, zone string, param *LoadBal
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"param":      param,
 	})
 	if err != nil {
@@ -5562,6 +5656,7 @@ func (o *LoadBalancerOp) Read(ctx context.Context, zone string, id types.ID) (*L
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -5593,6 +5688,7 @@ func (o *LoadBalancerOp) Update(ctx context.Context, zone string, id types.ID, p
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 		"param":      param,
 	})
@@ -5645,6 +5741,7 @@ func (o *LoadBalancerOp) Delete(ctx context.Context, zone string, id types.ID) e
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -5667,6 +5764,7 @@ func (o *LoadBalancerOp) Config(ctx context.Context, zone string, id types.ID) e
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -5689,6 +5787,7 @@ func (o *LoadBalancerOp) Boot(ctx context.Context, zone string, id types.ID) err
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -5711,6 +5810,7 @@ func (o *LoadBalancerOp) Shutdown(ctx context.Context, zone string, id types.ID,
 		"rootURL":        SakuraCloudAPIRoot,
 		"pathSuffix":     o.PathSuffix,
 		"pathName":       o.PathName,
+		"zone":           zone,
 		"id":             id,
 		"shutdownOption": shutdownOption,
 	})
@@ -5754,6 +5854,7 @@ func (o *LoadBalancerOp) Reset(ctx context.Context, zone string, id types.ID) er
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -5776,6 +5877,7 @@ func (o *LoadBalancerOp) MonitorInterface(ctx context.Context, zone string, id t
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 		"condition":  condition,
 	})
@@ -5828,6 +5930,7 @@ func (o *LoadBalancerOp) Status(ctx context.Context, zone string, id types.ID) (
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -5878,6 +5981,7 @@ func (o *MobileGatewayOp) Find(ctx context.Context, zone string, conditions *Fin
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"conditions": conditions,
 	})
 	if err != nil {
@@ -5924,6 +6028,7 @@ func (o *MobileGatewayOp) Create(ctx context.Context, zone string, param *Mobile
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"param":      param,
 	})
 	if err != nil {
@@ -5970,6 +6075,7 @@ func (o *MobileGatewayOp) Read(ctx context.Context, zone string, id types.ID) (*
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -6001,6 +6107,7 @@ func (o *MobileGatewayOp) Update(ctx context.Context, zone string, id types.ID, 
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 		"param":      param,
 	})
@@ -6053,6 +6160,7 @@ func (o *MobileGatewayOp) Delete(ctx context.Context, zone string, id types.ID) 
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -6075,6 +6183,7 @@ func (o *MobileGatewayOp) Config(ctx context.Context, zone string, id types.ID) 
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -6097,6 +6206,7 @@ func (o *MobileGatewayOp) Boot(ctx context.Context, zone string, id types.ID) er
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -6119,6 +6229,7 @@ func (o *MobileGatewayOp) Shutdown(ctx context.Context, zone string, id types.ID
 		"rootURL":        SakuraCloudAPIRoot,
 		"pathSuffix":     o.PathSuffix,
 		"pathName":       o.PathName,
+		"zone":           zone,
 		"id":             id,
 		"shutdownOption": shutdownOption,
 	})
@@ -6162,6 +6273,7 @@ func (o *MobileGatewayOp) Reset(ctx context.Context, zone string, id types.ID) e
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -6184,6 +6296,7 @@ func (o *MobileGatewayOp) ConnectToSwitch(ctx context.Context, zone string, id t
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 		"switchID":   switchID,
 	})
@@ -6207,6 +6320,7 @@ func (o *MobileGatewayOp) DisconnectFromSwitch(ctx context.Context, zone string,
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -6229,6 +6343,7 @@ func (o *MobileGatewayOp) GetDNS(ctx context.Context, zone string, id types.ID) 
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -6260,6 +6375,7 @@ func (o *MobileGatewayOp) SetDNS(ctx context.Context, zone string, id types.ID, 
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 		"param":      param,
 	})
@@ -6303,6 +6419,7 @@ func (o *MobileGatewayOp) GetSIMRoutes(ctx context.Context, zone string, id type
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -6334,6 +6451,7 @@ func (o *MobileGatewayOp) SetSIMRoutes(ctx context.Context, zone string, id type
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 		"param":      param,
 	})
@@ -6377,6 +6495,7 @@ func (o *MobileGatewayOp) ListSIM(ctx context.Context, zone string, id types.ID)
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -6408,6 +6527,7 @@ func (o *MobileGatewayOp) AddSIM(ctx context.Context, zone string, id types.ID, 
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 		"param":      param,
 	})
@@ -6451,6 +6571,7 @@ func (o *MobileGatewayOp) DeleteSIM(ctx context.Context, zone string, id types.I
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 		"simID":      simID,
 	})
@@ -6474,6 +6595,7 @@ func (o *MobileGatewayOp) Logs(ctx context.Context, zone string, id types.ID) ([
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -6505,6 +6627,7 @@ func (o *MobileGatewayOp) GetTrafficConfig(ctx context.Context, zone string, id 
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -6536,6 +6659,7 @@ func (o *MobileGatewayOp) SetTrafficConfig(ctx context.Context, zone string, id 
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 		"param":      param,
 	})
@@ -6579,6 +6703,7 @@ func (o *MobileGatewayOp) DeleteTrafficConfig(ctx context.Context, zone string, 
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -6601,6 +6726,7 @@ func (o *MobileGatewayOp) TrafficStatus(ctx context.Context, zone string, id typ
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -6632,6 +6758,7 @@ func (o *MobileGatewayOp) MonitorInterface(ctx context.Context, zone string, id 
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 		"index":      index,
 		"condition":  condition,
@@ -6709,6 +6836,7 @@ func (o *NFSOp) Find(ctx context.Context, zone string, conditions *FindCondition
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"conditions": conditions,
 	})
 	if err != nil {
@@ -6755,6 +6883,7 @@ func (o *NFSOp) Create(ctx context.Context, zone string, param *NFSCreateRequest
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"param":      param,
 	})
 	if err != nil {
@@ -6801,6 +6930,7 @@ func (o *NFSOp) Read(ctx context.Context, zone string, id types.ID) (*NFS, error
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -6832,6 +6962,7 @@ func (o *NFSOp) Update(ctx context.Context, zone string, id types.ID, param *NFS
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 		"param":      param,
 	})
@@ -6884,6 +7015,7 @@ func (o *NFSOp) Delete(ctx context.Context, zone string, id types.ID) error {
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -6906,6 +7038,7 @@ func (o *NFSOp) Boot(ctx context.Context, zone string, id types.ID) error {
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -6928,6 +7061,7 @@ func (o *NFSOp) Shutdown(ctx context.Context, zone string, id types.ID, shutdown
 		"rootURL":        SakuraCloudAPIRoot,
 		"pathSuffix":     o.PathSuffix,
 		"pathName":       o.PathName,
+		"zone":           zone,
 		"id":             id,
 		"shutdownOption": shutdownOption,
 	})
@@ -6971,6 +7105,7 @@ func (o *NFSOp) Reset(ctx context.Context, zone string, id types.ID) error {
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -6993,6 +7128,7 @@ func (o *NFSOp) MonitorFreeDiskSize(ctx context.Context, zone string, id types.I
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 		"condition":  condition,
 	})
@@ -7045,6 +7181,7 @@ func (o *NFSOp) MonitorInterface(ctx context.Context, zone string, id types.ID, 
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 		"condition":  condition,
 	})
@@ -7337,6 +7474,7 @@ func (o *PacketFilterOp) Find(ctx context.Context, zone string, conditions *Find
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"conditions": conditions,
 	})
 	if err != nil {
@@ -7383,6 +7521,7 @@ func (o *PacketFilterOp) Create(ctx context.Context, zone string, param *PacketF
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"param":      param,
 	})
 	if err != nil {
@@ -7429,6 +7568,7 @@ func (o *PacketFilterOp) Read(ctx context.Context, zone string, id types.ID) (*P
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -7460,6 +7600,7 @@ func (o *PacketFilterOp) Update(ctx context.Context, zone string, id types.ID, p
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 		"param":      param,
 	})
@@ -7512,6 +7653,7 @@ func (o *PacketFilterOp) Delete(ctx context.Context, zone string, id types.ID) e
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -7553,6 +7695,7 @@ func (o *PrivateHostOp) Find(ctx context.Context, zone string, conditions *FindC
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"conditions": conditions,
 	})
 	if err != nil {
@@ -7599,6 +7742,7 @@ func (o *PrivateHostOp) Create(ctx context.Context, zone string, param *PrivateH
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"param":      param,
 	})
 	if err != nil {
@@ -7645,6 +7789,7 @@ func (o *PrivateHostOp) Read(ctx context.Context, zone string, id types.ID) (*Pr
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -7676,6 +7821,7 @@ func (o *PrivateHostOp) Update(ctx context.Context, zone string, id types.ID, pa
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 		"param":      param,
 	})
@@ -7728,6 +7874,7 @@ func (o *PrivateHostOp) Delete(ctx context.Context, zone string, id types.ID) er
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -7769,6 +7916,7 @@ func (o *PrivateHostPlanOp) Find(ctx context.Context, zone string, conditions *F
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"conditions": conditions,
 	})
 	if err != nil {
@@ -7815,6 +7963,7 @@ func (o *PrivateHostPlanOp) Read(ctx context.Context, zone string, id types.ID) 
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -8400,6 +8549,7 @@ func (o *ServerOp) Find(ctx context.Context, zone string, conditions *FindCondit
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"conditions": conditions,
 	})
 	if err != nil {
@@ -8446,6 +8596,7 @@ func (o *ServerOp) Create(ctx context.Context, zone string, param *ServerCreateR
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"param":      param,
 	})
 	if err != nil {
@@ -8492,6 +8643,7 @@ func (o *ServerOp) Read(ctx context.Context, zone string, id types.ID) (*Server,
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -8523,6 +8675,7 @@ func (o *ServerOp) Update(ctx context.Context, zone string, id types.ID, param *
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 		"param":      param,
 	})
@@ -8575,6 +8728,7 @@ func (o *ServerOp) Delete(ctx context.Context, zone string, id types.ID) error {
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -8597,6 +8751,7 @@ func (o *ServerOp) ChangePlan(ctx context.Context, zone string, id types.ID, pla
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 		"plan":       plan,
 	})
@@ -8649,6 +8804,7 @@ func (o *ServerOp) InsertCDROM(ctx context.Context, zone string, id types.ID, in
 		"rootURL":     SakuraCloudAPIRoot,
 		"pathSuffix":  o.PathSuffix,
 		"pathName":    o.PathName,
+		"zone":        zone,
 		"id":          id,
 		"insertParam": insertParam,
 	})
@@ -8692,6 +8848,7 @@ func (o *ServerOp) EjectCDROM(ctx context.Context, zone string, id types.ID, ins
 		"rootURL":     SakuraCloudAPIRoot,
 		"pathSuffix":  o.PathSuffix,
 		"pathName":    o.PathName,
+		"zone":        zone,
 		"id":          id,
 		"insertParam": insertParam,
 	})
@@ -8735,6 +8892,7 @@ func (o *ServerOp) Boot(ctx context.Context, zone string, id types.ID) error {
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -8757,6 +8915,7 @@ func (o *ServerOp) Shutdown(ctx context.Context, zone string, id types.ID, shutd
 		"rootURL":        SakuraCloudAPIRoot,
 		"pathSuffix":     o.PathSuffix,
 		"pathName":       o.PathName,
+		"zone":           zone,
 		"id":             id,
 		"shutdownOption": shutdownOption,
 	})
@@ -8800,6 +8959,7 @@ func (o *ServerOp) Reset(ctx context.Context, zone string, id types.ID) error {
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -8822,6 +8982,7 @@ func (o *ServerOp) Monitor(ctx context.Context, zone string, id types.ID, condit
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 		"condition":  condition,
 	})
@@ -8893,6 +9054,7 @@ func (o *ServerPlanOp) Find(ctx context.Context, zone string, conditions *FindCo
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"conditions": conditions,
 	})
 	if err != nil {
@@ -8939,6 +9101,7 @@ func (o *ServerPlanOp) Read(ctx context.Context, zone string, id types.ID) (*Ser
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -8989,6 +9152,7 @@ func (o *ServiceClassOp) Find(ctx context.Context, zone string, conditions *Find
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"conditions": conditions,
 	})
 	if err != nil {
@@ -10222,6 +10386,7 @@ func (o *SwitchOp) Find(ctx context.Context, zone string, conditions *FindCondit
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"conditions": conditions,
 	})
 	if err != nil {
@@ -10268,6 +10433,7 @@ func (o *SwitchOp) Create(ctx context.Context, zone string, param *SwitchCreateR
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"param":      param,
 	})
 	if err != nil {
@@ -10314,6 +10480,7 @@ func (o *SwitchOp) Read(ctx context.Context, zone string, id types.ID) (*Switch,
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -10345,6 +10512,7 @@ func (o *SwitchOp) Update(ctx context.Context, zone string, id types.ID, param *
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 		"param":      param,
 	})
@@ -10397,6 +10565,7 @@ func (o *SwitchOp) Delete(ctx context.Context, zone string, id types.ID) error {
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -10419,6 +10588,7 @@ func (o *SwitchOp) ConnectToBridge(ctx context.Context, zone string, id types.ID
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 		"bridgeID":   bridgeID,
 	})
@@ -10442,6 +10612,7 @@ func (o *SwitchOp) DisconnectFromBridge(ctx context.Context, zone string, id typ
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -10483,6 +10654,7 @@ func (o *VPCRouterOp) Find(ctx context.Context, zone string, conditions *FindCon
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"conditions": conditions,
 	})
 	if err != nil {
@@ -10529,6 +10701,7 @@ func (o *VPCRouterOp) Create(ctx context.Context, zone string, param *VPCRouterC
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"param":      param,
 	})
 	if err != nil {
@@ -10575,6 +10748,7 @@ func (o *VPCRouterOp) Read(ctx context.Context, zone string, id types.ID) (*VPCR
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -10606,6 +10780,7 @@ func (o *VPCRouterOp) Update(ctx context.Context, zone string, id types.ID, para
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 		"param":      param,
 	})
@@ -10658,6 +10833,7 @@ func (o *VPCRouterOp) Delete(ctx context.Context, zone string, id types.ID) erro
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -10680,6 +10856,7 @@ func (o *VPCRouterOp) Config(ctx context.Context, zone string, id types.ID) erro
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -10702,6 +10879,7 @@ func (o *VPCRouterOp) Boot(ctx context.Context, zone string, id types.ID) error 
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -10724,6 +10902,7 @@ func (o *VPCRouterOp) Shutdown(ctx context.Context, zone string, id types.ID, sh
 		"rootURL":        SakuraCloudAPIRoot,
 		"pathSuffix":     o.PathSuffix,
 		"pathName":       o.PathName,
+		"zone":           zone,
 		"id":             id,
 		"shutdownOption": shutdownOption,
 	})
@@ -10767,6 +10946,7 @@ func (o *VPCRouterOp) Reset(ctx context.Context, zone string, id types.ID) error
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 	})
 	if err != nil {
@@ -10789,6 +10969,7 @@ func (o *VPCRouterOp) ConnectToSwitch(ctx context.Context, zone string, id types
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 		"nicIndex":   nicIndex,
 		"switchID":   switchID,
@@ -10813,6 +10994,7 @@ func (o *VPCRouterOp) DisconnectFromSwitch(ctx context.Context, zone string, id 
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 		"nicIndex":   nicIndex,
 	})
@@ -10836,6 +11018,7 @@ func (o *VPCRouterOp) MonitorInterface(ctx context.Context, zone string, id type
 		"rootURL":    SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
 		"pathName":   o.PathName,
+		"zone":       zone,
 		"id":         id,
 		"index":      index,
 		"condition":  condition,
