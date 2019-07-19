@@ -24,7 +24,6 @@ Library for SakuraCloud API
 - [x] `License`: ライセンス
 - [x] `LoadBalancer`: ロードバランサ
 - [x] `MobileGateway`: モバイルゲートウェイ 
-- [ ] `NewsFeed`: ニュースフィード(メンテナンス情報)
 - [x] `NFS`: NFS
 - [x] `Note`: スタートアップスクリプト
 - [x] `PacketFilter`: パケットフィルタ
