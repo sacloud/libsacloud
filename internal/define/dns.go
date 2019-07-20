@@ -52,8 +52,6 @@ var (
 			fields.CreatedAt(),
 			fields.ModifiedAt(),
 
-			fields.DNSProviderClass(),
-
 			// settings
 			fields.DNSRecords(),
 			fields.SettingsHash(),
@@ -67,9 +65,18 @@ var (
 	dnsCreateParam = &dsl.Model{
 		Name:      names.CreateParameterName(dnsAPIName),
 		NakedType: dnsNakedType,
+		ConstFields: []*dsl.ConstFieldDesc{
+			{
+				Name: "Class",
+				Type: meta.TypeString,
+				Tags: &dsl.FieldTags{
+					MapConv: "Provider.Class",
+				},
+				Value: `"dns"`,
+			},
+		},
 		Fields: []*dsl.FieldDesc{
 			// creation time only
-			fields.DNSProviderClass(),
 			{
 				Name: "Name",
 				Type: meta.TypeString,

@@ -115,8 +115,14 @@ var (
 	vpcRouterCreateParam = &dsl.Model{
 		Name:      names.CreateParameterName(vpcRouterAPIName),
 		NakedType: vpcRouterNakedType,
+		ConstFields: []*dsl.ConstFieldDesc{
+			{
+				Name:  "Class",
+				Type:  meta.TypeString,
+				Value: `"vpcrouter"`,
+			},
+		},
 		Fields: []*dsl.FieldDesc{
-			fields.VPCRouterClass(),
 			fields.Name(),
 			fields.Description(),
 			fields.Tags(),

@@ -44,11 +44,12 @@ func (m Models) UniqByName() Models {
 
 // Model APIのリクエスト/レスポンスなどのデータ型を示すモデル
 type Model struct {
-	Name      string       // 型名
-	Fields    []*FieldDesc // フィールド定義
-	Accessors []*Accessor  // アクセサ
-	NakedType meta.Type    // 対応するnaked型の情報
-	IsArray   bool
+	Name        string            // 型名
+	Fields      []*FieldDesc      // フィールド定義
+	ConstFields []*ConstFieldDesc // 定数フィールド
+	Accessors   []*Accessor       // アクセサ
+	NakedType   meta.Type         // 対応するnaked型の情報
+	IsArray     bool
 }
 
 // HasNakedType 対応するnaked型の情報が登録されているか

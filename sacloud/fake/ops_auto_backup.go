@@ -30,10 +30,6 @@ func (o *AutoBackupOp) Create(ctx context.Context, zone string, param *sacloud.A
 	copySameNameField(param, result)
 	fill(result, fillID, fillCreatedAt)
 
-	result.Class = "autobackup"
-	if param.BackupSpanType == types.BackupSpanTypes.Unknown {
-		result.BackupSpanType = types.BackupSpanTypes.Weekdays
-	}
 	result.Availability = types.Availabilities.Available
 	result.SettingsHash = "settingshash"
 	result.AccountID = accountID
@@ -63,10 +59,6 @@ func (o *AutoBackupOp) Update(ctx context.Context, zone string, id types.ID, par
 	}
 	copySameNameField(param, value)
 	fill(value, fillModifiedAt)
-
-	if param.BackupSpanType == types.BackupSpanTypes.Unknown {
-		value.BackupSpanType = types.BackupSpanTypes.Weekdays
-	}
 
 	return value, nil
 }

@@ -126,8 +126,14 @@ var (
 	databaseCreateParam = &dsl.Model{
 		Name:      names.CreateParameterName(databaseAPIName),
 		NakedType: databaseNakedType,
+		ConstFields: []*dsl.ConstFieldDesc{
+			{
+				Name:  "Class",
+				Type:  meta.TypeString,
+				Value: `"database"`,
+			},
+		},
 		Fields: []*dsl.FieldDesc{
-			fields.DatabaseClass(),
 			fields.AppliancePlanID(),
 			fields.ApplianceSwitchID(),
 			fields.ApplianceIPAddresses(),

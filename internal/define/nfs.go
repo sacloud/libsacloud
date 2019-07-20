@@ -86,8 +86,14 @@ var (
 	nfsCreateParam = &dsl.Model{
 		Name:      names.CreateParameterName(nfsAPIName),
 		NakedType: nfsNakedType,
+		ConstFields: []*dsl.ConstFieldDesc{
+			{
+				Name:  "Class",
+				Type:  meta.TypeString,
+				Value: `"nfs"`,
+			},
+		},
 		Fields: []*dsl.FieldDesc{
-			fields.NFSClass(),
 			fields.ApplianceSwitchID(),
 			fields.AppliancePlanID(),
 			fields.ApplianceIPAddresses(),

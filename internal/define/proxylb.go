@@ -151,7 +151,6 @@ var (
 			fields.CreatedAt(),
 			fields.ModifiedAt(),
 
-			fields.ProxyLBProviderClass(),
 			fields.ProxyLBPlan(),
 
 			// settings
@@ -174,9 +173,18 @@ var (
 	proxyLBCreateParam = &dsl.Model{
 		Name:      names.CreateParameterName(proxyLBAPIName),
 		NakedType: proxyLBNakedType,
+		ConstFields: []*dsl.ConstFieldDesc{
+			{
+				Name: "Class",
+				Type: meta.TypeString,
+				Tags: &dsl.FieldTags{
+					MapConv: "Provider.Class",
+				},
+				Value: `"proxylb"`,
+			},
+		},
 		Fields: []*dsl.FieldDesc{
 			// required
-			fields.ProxyLBProviderClass(),
 			fields.ProxyLBPlan(),
 
 			// settings

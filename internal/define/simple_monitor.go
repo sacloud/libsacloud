@@ -60,7 +60,7 @@ var (
 			fields.IconID(),
 			fields.CreatedAt(),
 			fields.ModifiedAt(),
-			fields.SimpleMonitorProviderClass(),
+			fields.Class(),
 
 			// status
 			fields.SimpleMonitorTarget(),
@@ -85,9 +85,18 @@ var (
 	simpleMonitorCreateParam = &dsl.Model{
 		Name:      names.CreateParameterName(simpleMonitorAPIName),
 		NakedType: simpleMonitorNakedType,
+		ConstFields: []*dsl.ConstFieldDesc{
+			{
+				Name: "Class",
+				Type: meta.TypeString,
+				Tags: &dsl.FieldTags{
+					MapConv: "Provider.Class",
+				},
+				Value: `"simplemon"`,
+			},
+		},
 		Fields: []*dsl.FieldDesc{
 			// creation time only
-			fields.SimpleMonitorProviderClass(),
 			{
 				Name: "Target",
 				Type: meta.TypeString,

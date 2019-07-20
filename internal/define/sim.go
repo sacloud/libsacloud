@@ -221,12 +221,21 @@ var (
 	simCreateParam = &dsl.Model{
 		Name:      names.CreateParameterName(simAPIName),
 		NakedType: simNakedType,
+		ConstFields: []*dsl.ConstFieldDesc{
+			{
+				Name: "Class",
+				Type: meta.TypeString,
+				Tags: &dsl.FieldTags{
+					MapConv: "Provider.Class",
+				},
+				Value: `"sim"`,
+			},
+		},
 		Fields: []*dsl.FieldDesc{
 			fields.Name(),
 			fields.Description(),
 			fields.Tags(),
 			fields.IconID(),
-			fields.SIMProviderClass(),
 			fields.SIMICCID(),
 			fields.SIMPassCode(),
 		},
