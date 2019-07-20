@@ -47,7 +47,7 @@ type Model struct {
 	Name        string            // 型名
 	Fields      []*FieldDesc      // フィールド定義
 	ConstFields []*ConstFieldDesc // 定数フィールド
-	Accessors   []*Accessor       // アクセサ
+	Accessors   []*MethodDesc     // アクセサ
 	NakedType   meta.Type         // 対応するnaked型の情報
 	IsArray     bool
 }

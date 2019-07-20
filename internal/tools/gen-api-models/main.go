@@ -75,8 +75,8 @@ func (o *{{.Name}}) setDefaults() interface{} {
 {{- $struct := .Name -}}
 {{- range .Accessors }}
 // {{.Name}} {{.Description}} 
-func (o *{{ $struct }}) {{ .Name }}() {{.ResultType.GoTypeSourceCode}} {
-	return accessor.{{.Name}}(o)
+func (o *{{ $struct }}) {{ .Name }}({{ range .Arguments }}{{ .ArgName }} {{ .TypeName }},{{ end }}) ({{ range .ResultTypes }}{{.GoTypeSourceCode}},{{end}}) {
+	return accessor.{{.Name}}(o,{{ range .Arguments }}, {{ .ArgName }}{{ end }})
 }
 {{- end }}
 
