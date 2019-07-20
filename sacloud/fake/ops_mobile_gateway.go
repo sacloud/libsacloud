@@ -170,7 +170,8 @@ func (o *MobileGatewayOp) ConnectToSwitch(ctx context.Context, zone string, id t
 
 	mobileGatewayInterface := &sacloud.MobileGatewayInterface{}
 	copySameNameField(iface, mobileGatewayInterface)
-	value.Interfaces = append(value.Interfaces, mobileGatewayInterface)
+	mobileGatewayInterface.Index = 1 // 1固定
+	value.Interfaces = []*sacloud.MobileGatewayInterface{nil, mobileGatewayInterface}
 
 	s.setMobileGateway(zone, value)
 	return nil
@@ -188,7 +189,7 @@ func (o *MobileGatewayOp) DisconnectFromSwitch(ctx context.Context, zone string,
 	var interfaces []*sacloud.MobileGatewayInterface
 
 	for _, nic := range value.Interfaces {
-		if nic.Index == 1 {
+		if nic != nil && nic.Index == 1 {
 			exists = true
 			nicID = nic.ID
 		} else {
@@ -258,7 +259,21 @@ func (o *MobileGatewayOp) SetSIMRoutes(ctx context.Context, zone string, id type
 		return err
 	}
 
-	s.setWithID(o.simRoutesStoreKey(), zone, param, id)
+	simOp := NewSIMOp()
+	var values []*sacloud.MobileGatewaySIMRoute
+	for _, p := range param {
+		sim, err := simOp.Read(ctx, types.StringID(p.ResourceID))
+		if err != nil {
+			return err
+		}
+		values = append(values, &sacloud.MobileGatewaySIMRoute{
+			ResourceID: p.ResourceID,
+			Prefix:     p.Prefix,
+			ICCID:      sim.ICCID,
+		})
+	}
+
+	s.setWithID(o.simRoutesStoreKey(), zone, values, id)
 	return nil
 }
 
@@ -392,8 +407,8 @@ func (o *MobileGatewayOp) TrafficStatus(ctx context.Context, zone string, id typ
 	}
 
 	return &sacloud.MobileGatewayTrafficStatus{
-		UplinkBytes:    100,
-		DownlinkBytes:  100,
+		UplinkBytes:    0,
+		DownlinkBytes:  0,
 		TrafficShaping: true,
 	}, nil
 }
@@ -432,7 +447,7 @@ func (o *MobileGatewayOp) simRoutesStoreKey() string {
 }
 
 func (o *MobileGatewayOp) simsStoreKey() string {
-	return o.key + "SIMRoutes"
+	return o.key + "SIMs"
 }
 
 func (o *MobileGatewayOp) trafficConfigStoreKey() string {

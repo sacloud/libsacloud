@@ -57,6 +57,11 @@ func TestWebAccelOp_Find(t *testing.T) {
 }
 
 func TestWebAccelOp_Cert(t *testing.T) {
+
+	if !isAccTest() {
+		t.Skip("TestWebAccelOp_Cert only exec at Acceptance Test")
+	}
+
 	t.Parallel()
 
 	PreCheckEnvsFunc("SAKURACLOUD_WEBACCEL_SITE_ID", "SAKURACLOUD_WEBACCEL_CERT", "SAKURACLOUD_WEBACCEL_KEY")(t)

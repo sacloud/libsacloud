@@ -36,7 +36,10 @@ func (o *SIMOp) Create(ctx context.Context, param *sacloud.SIMCreateRequest) (*s
 	result.Class = "sim"
 	result.Availability = types.Availabilities.Available
 	result.Info = &sacloud.SIMInfo{
-		ICCID: param.ICCID,
+		ICCID:          param.ICCID,
+		RegisteredDate: time.Now(),
+		Registered:     true,
+		ResourceID:     result.ID.String(),
 	}
 
 	s.setSIM(sacloud.APIDefaultZone, result)
@@ -62,7 +65,7 @@ func (o *SIMOp) Update(ctx context.Context, id types.ID, param *sacloud.SIMUpdat
 	}
 	copySameNameField(param, value)
 	fill(value, fillModifiedAt)
-
+	s.setSIM(sacloud.APIDefaultZone, value)
 	return value, nil
 }
 
@@ -89,6 +92,7 @@ func (o *SIMOp) Activate(ctx context.Context, id types.ID) error {
 	value.Info.Activated = true
 	value.Info.ActivatedDate = time.Now()
 	value.Info.DeactivatedDate = time.Time{}
+	s.setSIM(sacloud.APIDefaultZone, value)
 	return nil
 }
 
@@ -104,6 +108,7 @@ func (o *SIMOp) Deactivate(ctx context.Context, id types.ID) error {
 	value.Info.Activated = false
 	value.Info.ActivatedDate = time.Time{}
 	value.Info.DeactivatedDate = time.Now()
+	s.setSIM(sacloud.APIDefaultZone, value)
 	return nil
 }
 
@@ -117,6 +122,7 @@ func (o *SIMOp) AssignIP(ctx context.Context, id types.ID, param *sacloud.SIMAss
 		return errors.New("SIM[%d] already has IPAddress")
 	}
 	value.Info.IP = param.IP
+	s.setSIM(sacloud.APIDefaultZone, value)
 	return nil
 }
 
@@ -130,6 +136,7 @@ func (o *SIMOp) ClearIP(ctx context.Context, id types.ID) error {
 		return errors.New("SIM[%d] doesn't have IPAddress")
 	}
 	value.Info.IP = ""
+	s.setSIM(sacloud.APIDefaultZone, value)
 	return nil
 }
 
@@ -144,6 +151,7 @@ func (o *SIMOp) IMEILock(ctx context.Context, id types.ID, param *sacloud.SIMIME
 	}
 	value.Info.IMEILock = true
 	value.Info.ConnectedIMEI = param.IMEI
+	s.setSIM(sacloud.APIDefaultZone, value)
 	return nil
 }
 
@@ -158,6 +166,7 @@ func (o *SIMOp) IMEIUnlock(ctx context.Context, id types.ID) error {
 	}
 	value.Info.IMEILock = false
 	value.Info.ConnectedIMEI = ""
+	s.setSIM(sacloud.APIDefaultZone, value)
 	return nil
 }
 
@@ -190,13 +199,12 @@ func (o *SIMOp) GetNetworkOperator(ctx context.Context, id types.ID) ([]*sacloud
 	if err != nil {
 		return nil, err
 	}
-	return []*sacloud.SIMNetworkOperatorConfig{
-		{
-			Allow:       true,
-			CountryCode: "XX",
-			Name:        "name",
-		},
-	}, nil
+	v := s.getByID(o.key+"NetworkOperator", sacloud.APIDefaultZone, id)
+	if v != nil {
+		return v.([]*sacloud.SIMNetworkOperatorConfig), nil
+	}
+
+	return []*sacloud.SIMNetworkOperatorConfig{}, nil
 }
 
 // SetNetworkOperator is fake implementation
@@ -205,6 +213,8 @@ func (o *SIMOp) SetNetworkOperator(ctx context.Context, id types.ID, configs []*
 	if err != nil {
 		return err
 	}
+
+	s.setWithID(o.key+"NetworkOperator", sacloud.APIDefaultZone, configs, id)
 	return nil
 }
 
