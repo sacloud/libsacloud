@@ -72,7 +72,15 @@ func ConvertTo(source interface{}, dest interface{}) error {
 		}
 	}
 
-	return mapstructure.Decode(destMap.Map(), dest)
+	config := &mapstructure.DecoderConfig{
+		WeaklyTypedInput: true,
+		Result:           dest,
+	}
+	decoder, err := mapstructure.NewDecoder(config)
+	if err != nil {
+		return err
+	}
+	return decoder.Decode(destMap.Map())
 }
 
 // ConvertFrom converts struct which input by mapconv from plain models
@@ -145,7 +153,15 @@ func ConvertFrom(source interface{}, dest interface{}) error {
 		}
 
 	}
-	return mapstructure.Decode(destMap.Map(), dest)
+	config := &mapstructure.DecoderConfig{
+		WeaklyTypedInput: true,
+		Result:           dest,
+	}
+	decoder, err := mapstructure.NewDecoder(config)
+	if err != nil {
+		return err
+	}
+	return decoder.Decode(destMap.Map())
 }
 
 type mapConv string
