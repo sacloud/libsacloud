@@ -650,6 +650,31 @@ func (o *FindCondition) setDefaults() interface{} {
 	}
 }
 
+// ClearFilter フィルタのクリア
+func (o *FindCondition) ClearFilter() {
+	accessor.ClearFilter(o)
+}
+
+// SetANDFilterWithPartialMatch 指定キーの値に中間一致するフィルタを設定 複数指定した場合はAND条件となる
+func (o *FindCondition) SetANDFilterWithPartialMatch(key string, patterns []string) {
+	accessor.SetANDFilterWithPartialMatch(o, key, patterns)
+}
+
+// SetORFilterWithExactMatch 指定キーの値に完全一致するフィルタを設定 複数指定した場合はOR条件となる
+func (o *FindCondition) SetORFilterWithExactMatch(key string, patterns []string) {
+	accessor.SetORFilterWithExactMatch(o, key, patterns)
+}
+
+// SetNumericFilter 数値型フィルタの設定
+func (o *FindCondition) SetNumericFilter(key string, op accessor.FilterOperator, value int64) {
+	accessor.SetNumericFilter(o, key, op, value)
+}
+
+// SetTimeFilter Time型フィルタの設定
+func (o *FindCondition) SetTimeFilter(key string, op accessor.FilterOperator, value time.Time) {
+	accessor.SetTimeFilter(o, key, op, value)
+}
+
 // GetCount returns value of Count
 func (o *FindCondition) GetCount() int {
 	return o.Count
