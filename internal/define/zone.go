@@ -18,7 +18,7 @@ var zoneAPI = &dsl.Resource{
 	PathSuffix: dsl.CloudAPISuffix,
 	IsGlobal:   true,
 	Operations: dsl.Operations{
-		ops.Find(zoneAPIName, zoneNakedType, findParameter, zoneView),
+		ops.Find(zoneAPIName, zoneNakedType, findParameter, zoneView, nil),
 		ops.Read(zoneAPIName, zoneNakedType, zoneView),
 	},
 }

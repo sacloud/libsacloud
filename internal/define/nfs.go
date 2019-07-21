@@ -19,7 +19,7 @@ var nfsAPI = &dsl.Resource{
 	PathSuffix: dsl.CloudAPISuffix,
 	Operations: dsl.Operations{
 		// find
-		ops.FindAppliance(nfsAPIName, nfsNakedType, findParameter, nfsView),
+		ops.FindAppliance(nfsAPIName, nfsNakedType, findParameter, nfsView, nil),
 
 		// create
 		ops.CreateAppliance(nfsAPIName, nfsNakedType, nfsCreateParam, nfsView),

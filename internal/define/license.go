@@ -20,7 +20,7 @@ var licenseAPI = &dsl.Resource{
 	IsGlobal:   true,
 	Operations: dsl.Operations{
 		// find
-		ops.Find(licenseAPIName, licenseNakedType, findParameter, licenseView),
+		ops.Find(licenseAPIName, licenseNakedType, findParameter, licenseView, nil),
 
 		// create
 		ops.Create(licenseAPIName, licenseNakedType, licenseCreateParam, licenseView),

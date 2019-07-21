@@ -23,7 +23,7 @@ var iconAPI = &dsl.Resource{
 	IsGlobal:   true,
 	Operations: dsl.Operations{
 		// find
-		ops.Find(iconAPIName, iconNakedType, findParameter, iconView),
+		ops.Find(iconAPIName, iconNakedType, findParameter, iconView, nil),
 
 		// create
 		ops.Create(iconAPIName, iconNakedType, iconCreateParam, iconView),

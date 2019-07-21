@@ -19,7 +19,7 @@ var autoBackupAPI = &dsl.Resource{
 	PathSuffix: dsl.CloudAPISuffix,
 	Operations: dsl.Operations{
 		// find
-		ops.FindCommonServiceItem(autoBackupAPIName, autoBackupNakedType, findParameter, autoBackupView),
+		ops.FindCommonServiceItem(autoBackupAPIName, autoBackupNakedType, findParameter, autoBackupView, nil),
 
 		// create
 		ops.CreateCommonServiceItem(autoBackupAPIName, autoBackupNakedType, autoBackupCreateParam, autoBackupView),

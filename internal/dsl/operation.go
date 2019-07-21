@@ -11,14 +11,15 @@ type Operations []*Operation
 // Operation リソースへの操作
 type Operation struct {
 	ResourceName     string
-	Name             string        // 操作名、メソッド名となる
-	Method           string        // HTTPリクエストメソッド GET/POST/PUT/DELETE
-	PathFormat       string        // パスのフォーマット、省略した場合はDefaultPathFormatが設定される
-	Arguments        Arguments     // 引数の定義
-	Results          Results       // レスポンス
-	RequestEnvelope  *EnvelopeType // リクエスト時のエンベロープ
-	ResponseEnvelope *EnvelopeType // レスポンス時のエンベロープ
-	UseWrappedResult bool          // trueの場合APIからの戻り値としてラッパー型(xxxResult)を返す
+	Name             string          // 操作名、メソッド名となる
+	Method           string          // HTTPリクエストメソッド GET/POST/PUT/DELETE
+	PathFormat       string          // パスのフォーマット、省略した場合はDefaultPathFormatが設定される
+	Arguments        Arguments       // 引数の定義
+	Results          Results         // レスポンス
+	RequestEnvelope  *EnvelopeType   // リクエスト時のエンベロープ
+	ResponseEnvelope *EnvelopeType   // レスポンス時のエンベロープ
+	UseWrappedResult bool            // trueの場合APIからの戻り値としてラッパー型(xxxResult)を返す
+	SearchKeys       []SearchKeyDesc // sacloud/searchで利用する、検索条件のキー情報
 }
 
 // GetPathFormat パスのフォーマット

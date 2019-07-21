@@ -21,7 +21,7 @@ var archiveAPI = &dsl.Resource{
 	PathSuffix: dsl.CloudAPISuffix,
 	Operations: dsl.Operations{
 		// find
-		ops.Find(archiveAPIName, archiveNakedType, findParameter, archiveView),
+		ops.Find(archiveAPIName, archiveNakedType, findParameter, archiveView, []dsl.SearchKeyDesc{fields.Availability()}),
 
 		// create
 		ops.Create(archiveAPIName, archiveNakedType, archiveCreateParam, archiveView),

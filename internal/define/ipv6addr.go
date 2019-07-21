@@ -21,7 +21,7 @@ var ipv6AddrAPI = &dsl.Resource{
 	PathSuffix: dsl.CloudAPISuffix,
 	Operations: dsl.Operations{
 		// find
-		ops.Find(ipv6AddrAPIName, ipv6AddrNakedType, findParameter, ipv6AddrView),
+		ops.Find(ipv6AddrAPIName, ipv6AddrNakedType, findParameter, ipv6AddrView, nil),
 
 		// create
 		ops.Create(ipv6AddrAPIName, ipv6AddrNakedType, ipv6AddrCreateParam, ipv6AddrView),

@@ -19,7 +19,7 @@ var bridgeAPI = &dsl.Resource{
 	PathSuffix: dsl.CloudAPISuffix,
 	Operations: dsl.Operations{
 		// find
-		ops.Find(bridgeAPIName, bridgeNakedType, findParameter, bridgeView),
+		ops.Find(bridgeAPIName, bridgeNakedType, findParameter, bridgeView, nil),
 
 		// create
 		ops.Create(bridgeAPIName, bridgeNakedType, bridgeCreateParam, bridgeView),

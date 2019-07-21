@@ -20,7 +20,7 @@ var gslbAPI = &dsl.Resource{
 	IsGlobal:   true,
 	Operations: dsl.Operations{
 		// find
-		ops.FindCommonServiceItem(gslbAPIName, gslbNakedType, findParameter, gslbView),
+		ops.FindCommonServiceItem(gslbAPIName, gslbNakedType, findParameter, gslbView, nil),
 
 		// create
 		ops.CreateCommonServiceItem(gslbAPIName, gslbNakedType, gslbCreateParam, gslbView),

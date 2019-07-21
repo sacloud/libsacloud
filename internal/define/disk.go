@@ -22,7 +22,7 @@ var diskAPI = &dsl.Resource{
 	PathSuffix: dsl.CloudAPISuffix,
 	Operations: dsl.Operations{
 		// find
-		ops.Find(diskAPIName, diskNakedType, findParameter, diskModel),
+		ops.Find(diskAPIName, diskNakedType, findParameter, diskModel, nil),
 
 		// create
 		ops.Create(diskAPIName, diskNakedType, diskCreateParam, diskModel),

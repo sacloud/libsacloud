@@ -9,7 +9,7 @@ import (
 	"github.com/sacloud/libsacloud/v2/sacloud/naked"
 )
 
-func find(resourceName string, nakedType meta.Type, findParam, result *dsl.Model, payloadName string) *dsl.Operation {
+func find(resourceName string, nakedType meta.Type, findParam, result *dsl.Model, payloadName string, searchKeys []dsl.SearchKeyDesc) *dsl.Operation {
 	if payloadName == "" {
 		payloadName = names.ResourceFieldName(resourceName, dsl.PayloadForms.Plural)
 	}
@@ -36,22 +36,23 @@ func find(resourceName string, nakedType meta.Type, findParam, result *dsl.Model
 				Model:       result,
 			},
 		},
+		SearchKeys: searchKeys,
 	}
 }
 
 // Find Find操作を定義
-func Find(resourceName string, nakedType meta.Type, findParam, result *dsl.Model) *dsl.Operation {
-	return find(resourceName, nakedType, findParam, result, "")
+func Find(resourceName string, nakedType meta.Type, findParam, result *dsl.Model, searchKeys []dsl.SearchKeyDesc) *dsl.Operation {
+	return find(resourceName, nakedType, findParam, result, "", searchKeys)
 }
 
 // FindAppliance Find操作を定義
-func FindAppliance(resourceName string, nakedType meta.Type, findParam, result *dsl.Model) *dsl.Operation {
-	return find(resourceName, nakedType, findParam, result, "Appliances")
+func FindAppliance(resourceName string, nakedType meta.Type, findParam, result *dsl.Model, searchKeys []dsl.SearchKeyDesc) *dsl.Operation {
+	return find(resourceName, nakedType, findParam, result, "Appliances", searchKeys)
 }
 
 // FindCommonServiceItem Find操作を定義
-func FindCommonServiceItem(resourceName string, nakedType meta.Type, findParam, result *dsl.Model) *dsl.Operation {
-	return find(resourceName, nakedType, findParam, result, "CommonServiceItems")
+func FindCommonServiceItem(resourceName string, nakedType meta.Type, findParam, result *dsl.Model, searchKeys []dsl.SearchKeyDesc) *dsl.Operation {
+	return find(resourceName, nakedType, findParam, result, "CommonServiceItems", searchKeys)
 }
 
 // List List操作(パラメータのないFind)を定義

@@ -22,7 +22,7 @@ var simAPI = &dsl.Resource{
 	IsGlobal:   true,
 	Operations: dsl.Operations{
 		// find
-		ops.FindCommonServiceItem(simAPIName, simNakedType, findParameter, simView),
+		ops.FindCommonServiceItem(simAPIName, simNakedType, findParameter, simView, nil),
 
 		// create
 		ops.CreateCommonServiceItem(simAPIName, simNakedType, simCreateParam, simView),
