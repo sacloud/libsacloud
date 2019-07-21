@@ -8,46 +8,46 @@ import (
 
 func TestKey(t *testing.T) {
 	cases := []struct {
-		input  Key
+		input  FilterKey
 		expect string
 	}{
 		{
-			input: Key{
+			input: FilterKey{
 				Field: "field",
 				Op:    OpEqual,
 			},
 			expect: "field",
 		},
 		{
-			input: Key{
+			input: FilterKey{
 				Field: "field",
 				Op:    OpGreaterThan,
 			},
 			expect: "field>",
 		},
 		{
-			input: Key{
+			input: FilterKey{
 				Field: "field",
 				Op:    OpGreaterEqual,
 			},
 			expect: "field>=",
 		},
 		{
-			input: Key{
+			input: FilterKey{
 				Field: "field",
 				Op:    OpLessThan,
 			},
 			expect: "field<",
 		},
 		{
-			input: Key{
+			input: FilterKey{
 				Field: "field",
 				Op:    OpLessEqual,
 			},
 			expect: "field<=",
 		},
 		{
-			input: Key{
+			input: FilterKey{
 				Field: "another-field-name",
 				Op:    OpEqual,
 			},

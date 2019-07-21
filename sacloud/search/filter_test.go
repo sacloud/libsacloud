@@ -9,7 +9,7 @@ import (
 )
 
 type inputKeyValue struct {
-	key       Key
+	key       FilterKey
 	condition interface{}
 }
 
@@ -25,7 +25,7 @@ func TestFilter(t *testing.T) {
 		{
 			conditions: []*inputKeyValue{
 				{
-					key:       NewKey("field"), // same as NewKeyWithOp("fields", OpEqual)
+					key:       Key("field"), // same as KeyWithOp("fields", OpEqual)
 					condition: "value",
 				},
 			},
@@ -35,7 +35,7 @@ func TestFilter(t *testing.T) {
 		{
 			conditions: []*inputKeyValue{
 				{
-					key:       NewKeyWithOp("field", OpLessEqual),
+					key:       KeyWithOp("field", OpLessEqual),
 					condition: "1",
 				},
 			},
@@ -45,7 +45,7 @@ func TestFilter(t *testing.T) {
 		{
 			conditions: []*inputKeyValue{
 				{
-					key:       NewKey("field"),
+					key:       Key("field"),
 					condition: AndEqual("value1", "value2"),
 				},
 			},
@@ -55,11 +55,11 @@ func TestFilter(t *testing.T) {
 		{
 			conditions: []*inputKeyValue{
 				{
-					key:       NewKey("field1"),
+					key:       Key("field1"),
 					condition: "value1",
 				},
 				{
-					key:       NewKey("field2"),
+					key:       Key("field2"),
 					condition: "value2",
 				},
 			},
@@ -69,11 +69,11 @@ func TestFilter(t *testing.T) {
 		{
 			conditions: []*inputKeyValue{
 				{
-					key:       NewKeyWithOp("field", OpLessEqual),
+					key:       KeyWithOp("field", OpLessEqual),
 					condition: "1",
 				},
 				{
-					key:       NewKeyWithOp("field", OpGreaterThan),
+					key:       KeyWithOp("field", OpGreaterThan),
 					condition: "2",
 				},
 			},
@@ -83,15 +83,15 @@ func TestFilter(t *testing.T) {
 		{
 			conditions: []*inputKeyValue{
 				{
-					key:       NewKey("Name"),
+					key:       Key("Name"),
 					condition: AndEqual("test", "example"),
 				},
 				{
-					key:       NewKey("Zone.Name"),
+					key:       Key("Zone.Name"),
 					condition: OrEqual("is1a", "is1b"),
 				},
 				{
-					key:       NewKeyWithOp("CreatedAt", OpLessThan),
+					key:       KeyWithOp("CreatedAt", OpLessThan),
 					condition: time.Date(2011, 9, 1, 0, 0, 0, 0, loc),
 				},
 			},

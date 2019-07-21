@@ -8,7 +8,7 @@ import (
 )
 
 // Filter 検索系APIでの検索条件
-type Filter map[Key]interface{}
+type Filter map[FilterKey]interface{}
 
 // MarshalJSON 検索系APIコール時のGETパラメータを出力するためのjson.Marshaler実装
 func (f Filter) MarshalJSON() ([]byte, error) {

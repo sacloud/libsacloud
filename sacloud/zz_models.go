@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/sacloud/libsacloud/v2/sacloud/accessor"
+	"github.com/sacloud/libsacloud/v2/sacloud/search"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 	"gopkg.in/go-playground/validator.v9"
 )
@@ -618,12 +619,12 @@ func (o *SourceArchiveInfo) SetZoneName(v string) {
 
 // FindCondition represents API parameter/response structure
 type FindCondition struct {
-	Count   int                    `mapconv:",omitempty"`
-	From    int                    `mapconv:",omitempty"`
-	Sort    []string               `mapconv:",omitempty"`
-	Filter  map[string]interface{} `mapconv:",omitempty"`
-	Include []string               `mapconv:",omitempty"`
-	Exclude []string               `mapconv:",omitempty"`
+	Count   int           `mapconv:",omitempty"`
+	From    int           `mapconv:",omitempty"`
+	Sort    []string      `mapconv:",omitempty"`
+	Filter  search.Filter `mapconv:",omitempty"`
+	Include []string      `mapconv:",omitempty"`
+	Exclude []string      `mapconv:",omitempty"`
 }
 
 // Validate validates by field tags
@@ -634,12 +635,12 @@ func (o *FindCondition) Validate() error {
 // setDefaults implements sacloud.argumentDefaulter
 func (o *FindCondition) setDefaults() interface{} {
 	return &struct {
-		Count   int                    `mapconv:",omitempty"`
-		From    int                    `mapconv:",omitempty"`
-		Sort    []string               `mapconv:",omitempty"`
-		Filter  map[string]interface{} `mapconv:",omitempty"`
-		Include []string               `mapconv:",omitempty"`
-		Exclude []string               `mapconv:",omitempty"`
+		Count   int           `mapconv:",omitempty"`
+		From    int           `mapconv:",omitempty"`
+		Sort    []string      `mapconv:",omitempty"`
+		Filter  search.Filter `mapconv:",omitempty"`
+		Include []string      `mapconv:",omitempty"`
+		Exclude []string      `mapconv:",omitempty"`
 	}{
 		Count:   o.Count,
 		From:    o.From,
@@ -648,31 +649,6 @@ func (o *FindCondition) setDefaults() interface{} {
 		Include: o.Include,
 		Exclude: o.Exclude,
 	}
-}
-
-// ClearFilter フィルタのクリア
-func (o *FindCondition) ClearFilter() {
-	accessor.ClearFilter(o)
-}
-
-// SetANDFilterWithPartialMatch 指定キーの値に中間一致するフィルタを設定 複数指定した場合はAND条件となる
-func (o *FindCondition) SetANDFilterWithPartialMatch(key string, patterns []string) {
-	accessor.SetANDFilterWithPartialMatch(o, key, patterns)
-}
-
-// SetORFilterWithExactMatch 指定キーの値に完全一致するフィルタを設定 複数指定した場合はOR条件となる
-func (o *FindCondition) SetORFilterWithExactMatch(key string, patterns []string) {
-	accessor.SetORFilterWithExactMatch(o, key, patterns)
-}
-
-// SetNumericFilter 数値型フィルタの設定
-func (o *FindCondition) SetNumericFilter(key string, op accessor.FilterOperator, value int64) {
-	accessor.SetNumericFilter(o, key, op, value)
-}
-
-// SetTimeFilter Time型フィルタの設定
-func (o *FindCondition) SetTimeFilter(key string, op accessor.FilterOperator, value time.Time) {
-	accessor.SetTimeFilter(o, key, op, value)
 }
 
 // GetCount returns value of Count
@@ -706,12 +682,12 @@ func (o *FindCondition) SetSort(v []string) {
 }
 
 // GetFilter returns value of Filter
-func (o *FindCondition) GetFilter() map[string]interface{} {
+func (o *FindCondition) GetFilter() search.Filter {
 	return o.Filter
 }
 
 // SetFilter sets value to Filter
-func (o *FindCondition) SetFilter(v map[string]interface{}) {
+func (o *FindCondition) SetFilter(v search.Filter) {
 	o.Filter = v
 }
 

@@ -2,8 +2,8 @@ package search
 
 import "fmt"
 
-// Key 検索条件(Filter)のキー
-type Key struct {
+// FilterKey 検索条件(Filter)のキー
+type FilterKey struct {
 	// フィールド名
 	Field string
 	// 演算子
@@ -11,16 +11,16 @@ type Key struct {
 }
 
 // String Keyの文字列表現
-func (k *Key) String() string {
+func (k *FilterKey) String() string {
 	return fmt.Sprintf("%s%s", k.Field, k.Op)
 }
 
-// NewKey キーの作成
-func NewKey(field string) Key {
-	return Key{Field: field}
+// Key キーの作成
+func Key(field string) FilterKey {
+	return FilterKey{Field: field}
 }
 
-// NewKeyWithOp 演算子を指定してキーを作成
-func NewKeyWithOp(field string, op ComparisonOperator) Key {
-	return Key{Field: field, Op: op}
+// KeyWithOp 演算子を指定してキーを作成
+func KeyWithOp(field string, op ComparisonOperator) FilterKey {
+	return FilterKey{Field: field, Op: op}
 }

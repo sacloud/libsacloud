@@ -5,14 +5,15 @@ import (
 	"fmt"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
+	"github.com/sacloud/libsacloud/v2/sacloud/search"
 )
 
 func lookupDNSByName(caller sacloud.APICaller, zoneName string) (*sacloud.DNS, error) {
 	dnsOp := sacloud.NewDNSOp(caller)
 	searched, err := dnsOp.Find(context.Background(), &sacloud.FindCondition{
 		Count: 1,
-		Filter: map[string]interface{}{
-			"Name": zoneName,
+		Filter: search.Filter{
+			search.Key("Name"): zoneName,
 		},
 	})
 	if err != nil {

@@ -12,6 +12,24 @@ type EqualExpression struct {
 	Conditions []interface{}
 }
 
+// PartialMatch 部分一致(Partial Match)かつAND条件を示すEqualFilterを作成
+//
+// AndEqualのエイリアス
+func PartialMatch(conditions ...string) *EqualExpression {
+	return AndEqual(conditions...)
+}
+
+// ExactMatch 完全一致(Partial Match)かつOR条件を示すEqualFilterを作成
+//
+// OrEqualのエイリアス
+func ExactMatch(conditions ...string) *EqualExpression {
+	var values []interface{}
+	for _, p := range conditions {
+		values = append(values, p)
+	}
+	return OrEqual(values...)
+}
+
 // AndEqual 部分一致(Partial Match)かつAND条件を示すEqualFilterを作成
 func AndEqual(conditions ...string) *EqualExpression {
 	var values []interface{}
