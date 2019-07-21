@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/sacloud/libsacloud/v2/internal/dsl/meta"
+	"github.com/sacloud/libsacloud/v2/pkg/mapconv"
 )
 
 // FieldDesc フィールド記述
@@ -32,6 +33,23 @@ func (f *FieldDesc) TagString() string {
 		return ""
 	}
 	return f.Tags.String()
+}
+
+// KeyName キー名 コード生成時にフィールド名となる FieldDescをSearchKeyとして利用するための実装
+func (f *FieldDesc) KeyName() string {
+	return f.Name
+}
+
+// SourceFieldName フィールド名 SourceFieldが空の場合はNameを返す FieldDescをSearchKeyとして利用するための実装
+func (f *FieldDesc) SourceFieldName() string {
+	if f.Tags != nil && f.Tags.MapConv != "" {
+		tagInfo := mapconv.ParseMapConvTag(f.Tags.MapConv)
+		// 配列でない最初のSourceFieldsを返す
+		if !tagInfo.IsSlice && len(tagInfo.SourceFields) > 0 {
+			return tagInfo.SourceFields[0]
+		}
+	}
+	return f.Name
 }
 
 // FieldTags フィールドに付与するタグ
