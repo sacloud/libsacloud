@@ -43,7 +43,7 @@ var diskAPI = &dsl.Resource{
 			Arguments: dsl.Arguments{
 				{
 					Name:       "createParam",
-					MapConvTag: "Disk",
+					MapConvTag: "Disk,recursive",
 					Type:       diskCreateParam,
 				},
 				{
@@ -110,12 +110,12 @@ var diskAPI = &dsl.Resource{
 			Arguments: dsl.Arguments{
 				{
 					Name:       "createParam",
-					MapConvTag: "Disk",
+					MapConvTag: "Disk,recursive",
 					Type:       diskCreateParam,
 				},
 				{
 					Name:       "editParam",
-					MapConvTag: "Config",
+					MapConvTag: "Config,recursive",
 					Type:       diskEditParam,
 				},
 				{
@@ -180,7 +180,7 @@ var diskAPI = &dsl.Resource{
 				dsl.ArgumentID,
 				{
 					Name:       "installParam",
-					MapConvTag: "Disk",
+					MapConvTag: "Disk,recursive",
 					Type:       diskInstallParam,
 				},
 				{

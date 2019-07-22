@@ -2552,7 +2552,7 @@ func (o *DiskOp) Create(ctx context.Context, zone string, createParam *DiskCreat
 		arg1 = v.setDefaults()
 	}
 	args := &struct {
-		Arg0 interface{} `mapconv:"Disk"`
+		Arg0 interface{} `mapconv:"Disk,recursive"`
 		Arg1 interface{} `mapconv:"DistantFrom"`
 	}{
 		Arg0: arg0,
@@ -2681,8 +2681,8 @@ func (o *DiskOp) CreateWithConfig(ctx context.Context, zone string, createParam 
 		arg3 = v.setDefaults()
 	}
 	args := &struct {
-		Arg0 interface{} `mapconv:"Disk"`
-		Arg1 interface{} `mapconv:"Config"`
+		Arg0 interface{} `mapconv:"Disk,recursive"`
+		Arg1 interface{} `mapconv:"Config,recursive"`
 		Arg2 interface{} `mapconv:"BootAtAvailable"`
 		Arg3 interface{} `mapconv:"DistantFrom"`
 	}{
@@ -2848,7 +2848,7 @@ func (o *DiskOp) Install(ctx context.Context, zone string, id types.ID, installP
 	}
 	args := &struct {
 		Arg0 interface{}
-		Arg1 interface{} `mapconv:"Disk"`
+		Arg1 interface{} `mapconv:"Disk,recursive"`
 		Arg2 interface{} `mapconv:"DistantFrom"`
 	}{
 		Arg0: arg0,
