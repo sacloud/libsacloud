@@ -6799,25 +6799,21 @@ func (o *DNSUpdateRequest) SetIconID(v types.ID) {
 
 // GSLB represents API parameter/response structure
 type GSLB struct {
-	ID                      types.ID
-	Name                    string `validate:"required"`
-	Description             string `validate:"min=0,max=512"`
-	Tags                    []string
-	Availability            types.EAvailability
-	IconID                  types.ID `mapconv:"Icon.ID"`
-	CreatedAt               time.Time
-	ModifiedAt              time.Time
-	SettingsHash            string
-	FQDN                    string             `mapconv:"Status.FQDN"`
-	DelayLoop               int                `mapconv:"Settings.GSLB.DelayLoop,default=10" validate:"min=10,max=60"`
-	Weighted                types.StringFlag   `mapconv:"Settings.GSLB.Weighted"`
-	HealthCheckProtocol     types.Protocol     `mapconv:"Settings.GSLB.HealthCheck.Protocol" validate:"oneof=http https ping tcp"`
-	HealthCheckHostHeader   string             `mapconv:"Settings.GSLB.HealthCheck.Host"`
-	HealthCheckPath         string             `mapconv:"Settings.GSLB.HealthCheck.Path"`
-	HealthCheckResponseCode types.StringNumber `mapconv:"Settings.GSLB.HealthCheck.Status"`
-	HealthCheckPort         types.StringNumber `mapconv:"Settings.GSLB.HealthCheck.Port"`
-	SorryServer             string             `mapconv:"Settings.GSLB.SorryServer"`
-	DestinationServers      []*GSLBServer      `mapconv:"Settings.GSLB.[]Servers,recursive" validate:"min=0,max=12"`
+	ID                 types.ID
+	Name               string `validate:"required"`
+	Description        string `validate:"min=0,max=512"`
+	Tags               []string
+	Availability       types.EAvailability
+	IconID             types.ID `mapconv:"Icon.ID"`
+	CreatedAt          time.Time
+	ModifiedAt         time.Time
+	SettingsHash       string
+	FQDN               string           `mapconv:"Status.FQDN"`
+	DelayLoop          int              `mapconv:"Settings.GSLB.DelayLoop,default=10" validate:"min=10,max=60"`
+	Weighted           types.StringFlag `mapconv:"Settings.GSLB.Weighted"`
+	HealthCheck        *GSLBHealthCheck `mapconv:"Settings.GSLB.HealthCheck,recursive"`
+	SorryServer        string           `mapconv:"Settings.GSLB.SorryServer"`
+	DestinationServers []*GSLBServer    `mapconv:"Settings.GSLB.[]Servers,recursive" validate:"min=0,max=12"`
 }
 
 // Validate validates by field tags
@@ -6828,45 +6824,37 @@ func (o *GSLB) Validate() error {
 // setDefaults implements sacloud.argumentDefaulter
 func (o *GSLB) setDefaults() interface{} {
 	return &struct {
-		ID                      types.ID
-		Name                    string `validate:"required"`
-		Description             string `validate:"min=0,max=512"`
-		Tags                    []string
-		Availability            types.EAvailability
-		IconID                  types.ID `mapconv:"Icon.ID"`
-		CreatedAt               time.Time
-		ModifiedAt              time.Time
-		SettingsHash            string
-		FQDN                    string             `mapconv:"Status.FQDN"`
-		DelayLoop               int                `mapconv:"Settings.GSLB.DelayLoop,default=10" validate:"min=10,max=60"`
-		Weighted                types.StringFlag   `mapconv:"Settings.GSLB.Weighted"`
-		HealthCheckProtocol     types.Protocol     `mapconv:"Settings.GSLB.HealthCheck.Protocol" validate:"oneof=http https ping tcp"`
-		HealthCheckHostHeader   string             `mapconv:"Settings.GSLB.HealthCheck.Host"`
-		HealthCheckPath         string             `mapconv:"Settings.GSLB.HealthCheck.Path"`
-		HealthCheckResponseCode types.StringNumber `mapconv:"Settings.GSLB.HealthCheck.Status"`
-		HealthCheckPort         types.StringNumber `mapconv:"Settings.GSLB.HealthCheck.Port"`
-		SorryServer             string             `mapconv:"Settings.GSLB.SorryServer"`
-		DestinationServers      []*GSLBServer      `mapconv:"Settings.GSLB.[]Servers,recursive" validate:"min=0,max=12"`
+		ID                 types.ID
+		Name               string `validate:"required"`
+		Description        string `validate:"min=0,max=512"`
+		Tags               []string
+		Availability       types.EAvailability
+		IconID             types.ID `mapconv:"Icon.ID"`
+		CreatedAt          time.Time
+		ModifiedAt         time.Time
+		SettingsHash       string
+		FQDN               string           `mapconv:"Status.FQDN"`
+		DelayLoop          int              `mapconv:"Settings.GSLB.DelayLoop,default=10" validate:"min=10,max=60"`
+		Weighted           types.StringFlag `mapconv:"Settings.GSLB.Weighted"`
+		HealthCheck        *GSLBHealthCheck `mapconv:"Settings.GSLB.HealthCheck,recursive"`
+		SorryServer        string           `mapconv:"Settings.GSLB.SorryServer"`
+		DestinationServers []*GSLBServer    `mapconv:"Settings.GSLB.[]Servers,recursive" validate:"min=0,max=12"`
 	}{
-		ID:                      o.ID,
-		Name:                    o.Name,
-		Description:             o.Description,
-		Tags:                    o.Tags,
-		Availability:            o.Availability,
-		IconID:                  o.IconID,
-		CreatedAt:               o.CreatedAt,
-		ModifiedAt:              o.ModifiedAt,
-		SettingsHash:            o.SettingsHash,
-		FQDN:                    o.FQDN,
-		DelayLoop:               o.DelayLoop,
-		Weighted:                o.Weighted,
-		HealthCheckProtocol:     o.HealthCheckProtocol,
-		HealthCheckHostHeader:   o.HealthCheckHostHeader,
-		HealthCheckPath:         o.HealthCheckPath,
-		HealthCheckResponseCode: o.HealthCheckResponseCode,
-		HealthCheckPort:         o.HealthCheckPort,
-		SorryServer:             o.SorryServer,
-		DestinationServers:      o.DestinationServers,
+		ID:                 o.ID,
+		Name:               o.Name,
+		Description:        o.Description,
+		Tags:               o.Tags,
+		Availability:       o.Availability,
+		IconID:             o.IconID,
+		CreatedAt:          o.CreatedAt,
+		ModifiedAt:         o.ModifiedAt,
+		SettingsHash:       o.SettingsHash,
+		FQDN:               o.FQDN,
+		DelayLoop:          o.DelayLoop,
+		Weighted:           o.Weighted,
+		HealthCheck:        o.HealthCheck,
+		SorryServer:        o.SorryServer,
+		DestinationServers: o.DestinationServers,
 	}
 }
 
@@ -7010,54 +6998,14 @@ func (o *GSLB) SetWeighted(v types.StringFlag) {
 	o.Weighted = v
 }
 
-// GetHealthCheckProtocol returns value of HealthCheckProtocol
-func (o *GSLB) GetHealthCheckProtocol() types.Protocol {
-	return o.HealthCheckProtocol
+// GetHealthCheck returns value of HealthCheck
+func (o *GSLB) GetHealthCheck() *GSLBHealthCheck {
+	return o.HealthCheck
 }
 
-// SetHealthCheckProtocol sets value to HealthCheckProtocol
-func (o *GSLB) SetHealthCheckProtocol(v types.Protocol) {
-	o.HealthCheckProtocol = v
-}
-
-// GetHealthCheckHostHeader returns value of HealthCheckHostHeader
-func (o *GSLB) GetHealthCheckHostHeader() string {
-	return o.HealthCheckHostHeader
-}
-
-// SetHealthCheckHostHeader sets value to HealthCheckHostHeader
-func (o *GSLB) SetHealthCheckHostHeader(v string) {
-	o.HealthCheckHostHeader = v
-}
-
-// GetHealthCheckPath returns value of HealthCheckPath
-func (o *GSLB) GetHealthCheckPath() string {
-	return o.HealthCheckPath
-}
-
-// SetHealthCheckPath sets value to HealthCheckPath
-func (o *GSLB) SetHealthCheckPath(v string) {
-	o.HealthCheckPath = v
-}
-
-// GetHealthCheckResponseCode returns value of HealthCheckResponseCode
-func (o *GSLB) GetHealthCheckResponseCode() types.StringNumber {
-	return o.HealthCheckResponseCode
-}
-
-// SetHealthCheckResponseCode sets value to HealthCheckResponseCode
-func (o *GSLB) SetHealthCheckResponseCode(v types.StringNumber) {
-	o.HealthCheckResponseCode = v
-}
-
-// GetHealthCheckPort returns value of HealthCheckPort
-func (o *GSLB) GetHealthCheckPort() types.StringNumber {
-	return o.HealthCheckPort
-}
-
-// SetHealthCheckPort sets value to HealthCheckPort
-func (o *GSLB) SetHealthCheckPort(v types.StringNumber) {
-	o.HealthCheckPort = v
+// SetHealthCheck sets value to HealthCheck
+func (o *GSLB) SetHealthCheck(v *GSLBHealthCheck) {
+	o.HealthCheck = v
 }
 
 // GetSorryServer returns value of SorryServer
@@ -7078,6 +7026,91 @@ func (o *GSLB) GetDestinationServers() []*GSLBServer {
 // SetDestinationServers sets value to DestinationServers
 func (o *GSLB) SetDestinationServers(v []*GSLBServer) {
 	o.DestinationServers = v
+}
+
+/*************************************************
+* GSLBHealthCheck
+*************************************************/
+
+// GSLBHealthCheck represents API parameter/response structure
+type GSLBHealthCheck struct {
+	Protocol     types.Protocol     `validate:"oneof=http https ping tcp"`
+	HostHeader   string             `mapconv:"Host"`
+	Path         string             `mapconv:"Path"`
+	ResponseCode types.StringNumber `mapconv:"Status"`
+	Port         types.StringNumber `mapconv:"Port"`
+}
+
+// Validate validates by field tags
+func (o *GSLBHealthCheck) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *GSLBHealthCheck) setDefaults() interface{} {
+	return &struct {
+		Protocol     types.Protocol     `validate:"oneof=http https ping tcp"`
+		HostHeader   string             `mapconv:"Host"`
+		Path         string             `mapconv:"Path"`
+		ResponseCode types.StringNumber `mapconv:"Status"`
+		Port         types.StringNumber `mapconv:"Port"`
+	}{
+		Protocol:     o.Protocol,
+		HostHeader:   o.HostHeader,
+		Path:         o.Path,
+		ResponseCode: o.ResponseCode,
+		Port:         o.Port,
+	}
+}
+
+// GetProtocol returns value of Protocol
+func (o *GSLBHealthCheck) GetProtocol() types.Protocol {
+	return o.Protocol
+}
+
+// SetProtocol sets value to Protocol
+func (o *GSLBHealthCheck) SetProtocol(v types.Protocol) {
+	o.Protocol = v
+}
+
+// GetHostHeader returns value of HostHeader
+func (o *GSLBHealthCheck) GetHostHeader() string {
+	return o.HostHeader
+}
+
+// SetHostHeader sets value to HostHeader
+func (o *GSLBHealthCheck) SetHostHeader(v string) {
+	o.HostHeader = v
+}
+
+// GetPath returns value of Path
+func (o *GSLBHealthCheck) GetPath() string {
+	return o.Path
+}
+
+// SetPath sets value to Path
+func (o *GSLBHealthCheck) SetPath(v string) {
+	o.Path = v
+}
+
+// GetResponseCode returns value of ResponseCode
+func (o *GSLBHealthCheck) GetResponseCode() types.StringNumber {
+	return o.ResponseCode
+}
+
+// SetResponseCode sets value to ResponseCode
+func (o *GSLBHealthCheck) SetResponseCode(v types.StringNumber) {
+	o.ResponseCode = v
+}
+
+// GetPort returns value of Port
+func (o *GSLBHealthCheck) GetPort() types.StringNumber {
+	return o.Port
+}
+
+// SetPort sets value to Port
+func (o *GSLBHealthCheck) SetPort(v types.StringNumber) {
+	o.Port = v
 }
 
 /*************************************************
@@ -7145,19 +7178,15 @@ func (o *GSLBServer) SetWeight(v types.StringNumber) {
 
 // GSLBCreateRequest represents API parameter/response structure
 type GSLBCreateRequest struct {
-	HealthCheckProtocol     types.Protocol     `mapconv:"Settings.GSLB.HealthCheck.Protocol" validate:"oneof=http https ping tcp"`
-	HealthCheckHostHeader   string             `mapconv:"Settings.GSLB.HealthCheck.Host"`
-	HealthCheckPath         string             `mapconv:"Settings.GSLB.HealthCheck.Path"`
-	HealthCheckResponseCode types.StringNumber `mapconv:"Settings.GSLB.HealthCheck.Status"`
-	HealthCheckPort         types.StringNumber `mapconv:"Settings.GSLB.HealthCheck.Port"`
-	DelayLoop               int                `mapconv:"Settings.GSLB.DelayLoop,default=10" validate:"min=10,max=60"`
-	Weighted                types.StringFlag   `mapconv:"Settings.GSLB.Weighted"`
-	SorryServer             string             `mapconv:"Settings.GSLB.SorryServer"`
-	DestinationServers      []*GSLBServer      `mapconv:"Settings.GSLB.[]Servers,recursive" validate:"min=0,max=12"`
-	Name                    string             `validate:"required"`
-	Description             string             `validate:"min=0,max=512"`
-	Tags                    []string
-	IconID                  types.ID `mapconv:"Icon.ID"`
+	HealthCheck        *GSLBHealthCheck `mapconv:"Settings.GSLB.HealthCheck,recursive"`
+	DelayLoop          int              `mapconv:"Settings.GSLB.DelayLoop,default=10" validate:"min=10,max=60"`
+	Weighted           types.StringFlag `mapconv:"Settings.GSLB.Weighted"`
+	SorryServer        string           `mapconv:"Settings.GSLB.SorryServer"`
+	DestinationServers []*GSLBServer    `mapconv:"Settings.GSLB.[]Servers,recursive" validate:"min=0,max=12"`
+	Name               string           `validate:"required"`
+	Description        string           `validate:"min=0,max=512"`
+	Tags               []string
+	IconID             types.ID `mapconv:"Icon.ID"`
 }
 
 // Validate validates by field tags
@@ -7168,86 +7197,38 @@ func (o *GSLBCreateRequest) Validate() error {
 // setDefaults implements sacloud.argumentDefaulter
 func (o *GSLBCreateRequest) setDefaults() interface{} {
 	return &struct {
-		HealthCheckProtocol     types.Protocol     `mapconv:"Settings.GSLB.HealthCheck.Protocol" validate:"oneof=http https ping tcp"`
-		HealthCheckHostHeader   string             `mapconv:"Settings.GSLB.HealthCheck.Host"`
-		HealthCheckPath         string             `mapconv:"Settings.GSLB.HealthCheck.Path"`
-		HealthCheckResponseCode types.StringNumber `mapconv:"Settings.GSLB.HealthCheck.Status"`
-		HealthCheckPort         types.StringNumber `mapconv:"Settings.GSLB.HealthCheck.Port"`
-		DelayLoop               int                `mapconv:"Settings.GSLB.DelayLoop,default=10" validate:"min=10,max=60"`
-		Weighted                types.StringFlag   `mapconv:"Settings.GSLB.Weighted"`
-		SorryServer             string             `mapconv:"Settings.GSLB.SorryServer"`
-		DestinationServers      []*GSLBServer      `mapconv:"Settings.GSLB.[]Servers,recursive" validate:"min=0,max=12"`
-		Name                    string             `validate:"required"`
-		Description             string             `validate:"min=0,max=512"`
-		Tags                    []string
-		IconID                  types.ID `mapconv:"Icon.ID"`
-		Class                   string   `mapconv:"Provider.Class"`
+		HealthCheck        *GSLBHealthCheck `mapconv:"Settings.GSLB.HealthCheck,recursive"`
+		DelayLoop          int              `mapconv:"Settings.GSLB.DelayLoop,default=10" validate:"min=10,max=60"`
+		Weighted           types.StringFlag `mapconv:"Settings.GSLB.Weighted"`
+		SorryServer        string           `mapconv:"Settings.GSLB.SorryServer"`
+		DestinationServers []*GSLBServer    `mapconv:"Settings.GSLB.[]Servers,recursive" validate:"min=0,max=12"`
+		Name               string           `validate:"required"`
+		Description        string           `validate:"min=0,max=512"`
+		Tags               []string
+		IconID             types.ID `mapconv:"Icon.ID"`
+		Class              string   `mapconv:"Provider.Class"`
 	}{
-		HealthCheckProtocol:     o.HealthCheckProtocol,
-		HealthCheckHostHeader:   o.HealthCheckHostHeader,
-		HealthCheckPath:         o.HealthCheckPath,
-		HealthCheckResponseCode: o.HealthCheckResponseCode,
-		HealthCheckPort:         o.HealthCheckPort,
-		DelayLoop:               o.DelayLoop,
-		Weighted:                o.Weighted,
-		SorryServer:             o.SorryServer,
-		DestinationServers:      o.DestinationServers,
-		Name:                    o.Name,
-		Description:             o.Description,
-		Tags:                    o.Tags,
-		IconID:                  o.IconID,
-		Class:                   "gslb",
+		HealthCheck:        o.HealthCheck,
+		DelayLoop:          o.DelayLoop,
+		Weighted:           o.Weighted,
+		SorryServer:        o.SorryServer,
+		DestinationServers: o.DestinationServers,
+		Name:               o.Name,
+		Description:        o.Description,
+		Tags:               o.Tags,
+		IconID:             o.IconID,
+		Class:              "gslb",
 	}
 }
 
-// GetHealthCheckProtocol returns value of HealthCheckProtocol
-func (o *GSLBCreateRequest) GetHealthCheckProtocol() types.Protocol {
-	return o.HealthCheckProtocol
+// GetHealthCheck returns value of HealthCheck
+func (o *GSLBCreateRequest) GetHealthCheck() *GSLBHealthCheck {
+	return o.HealthCheck
 }
 
-// SetHealthCheckProtocol sets value to HealthCheckProtocol
-func (o *GSLBCreateRequest) SetHealthCheckProtocol(v types.Protocol) {
-	o.HealthCheckProtocol = v
-}
-
-// GetHealthCheckHostHeader returns value of HealthCheckHostHeader
-func (o *GSLBCreateRequest) GetHealthCheckHostHeader() string {
-	return o.HealthCheckHostHeader
-}
-
-// SetHealthCheckHostHeader sets value to HealthCheckHostHeader
-func (o *GSLBCreateRequest) SetHealthCheckHostHeader(v string) {
-	o.HealthCheckHostHeader = v
-}
-
-// GetHealthCheckPath returns value of HealthCheckPath
-func (o *GSLBCreateRequest) GetHealthCheckPath() string {
-	return o.HealthCheckPath
-}
-
-// SetHealthCheckPath sets value to HealthCheckPath
-func (o *GSLBCreateRequest) SetHealthCheckPath(v string) {
-	o.HealthCheckPath = v
-}
-
-// GetHealthCheckResponseCode returns value of HealthCheckResponseCode
-func (o *GSLBCreateRequest) GetHealthCheckResponseCode() types.StringNumber {
-	return o.HealthCheckResponseCode
-}
-
-// SetHealthCheckResponseCode sets value to HealthCheckResponseCode
-func (o *GSLBCreateRequest) SetHealthCheckResponseCode(v types.StringNumber) {
-	o.HealthCheckResponseCode = v
-}
-
-// GetHealthCheckPort returns value of HealthCheckPort
-func (o *GSLBCreateRequest) GetHealthCheckPort() types.StringNumber {
-	return o.HealthCheckPort
-}
-
-// SetHealthCheckPort sets value to HealthCheckPort
-func (o *GSLBCreateRequest) SetHealthCheckPort(v types.StringNumber) {
-	o.HealthCheckPort = v
+// SetHealthCheck sets value to HealthCheck
+func (o *GSLBCreateRequest) SetHealthCheck(v *GSLBHealthCheck) {
+	o.HealthCheck = v
 }
 
 // GetDelayLoop returns value of DelayLoop
@@ -7336,19 +7317,15 @@ func (o *GSLBCreateRequest) SetIconID(v types.ID) {
 
 // GSLBUpdateRequest represents API parameter/response structure
 type GSLBUpdateRequest struct {
-	HealthCheckProtocol     types.Protocol     `mapconv:"Settings.GSLB.HealthCheck.Protocol" validate:"oneof=http https ping tcp"`
-	HealthCheckHostHeader   string             `mapconv:"Settings.GSLB.HealthCheck.Host"`
-	HealthCheckPath         string             `mapconv:"Settings.GSLB.HealthCheck.Path"`
-	HealthCheckResponseCode types.StringNumber `mapconv:"Settings.GSLB.HealthCheck.Status"`
-	HealthCheckPort         types.StringNumber `mapconv:"Settings.GSLB.HealthCheck.Port"`
-	DelayLoop               int                `mapconv:"Settings.GSLB.DelayLoop,default=10" validate:"min=10,max=60"`
-	Weighted                types.StringFlag   `mapconv:"Settings.GSLB.Weighted"`
-	SorryServer             string             `mapconv:"Settings.GSLB.SorryServer"`
-	DestinationServers      []*GSLBServer      `mapconv:"Settings.GSLB.[]Servers,recursive" validate:"min=0,max=12"`
-	Name                    string             `validate:"required"`
-	Description             string             `validate:"min=0,max=512"`
-	Tags                    []string
-	IconID                  types.ID `mapconv:"Icon.ID"`
+	HealthCheck        *GSLBHealthCheck `mapconv:"Settings.GSLB.HealthCheck,recursive"`
+	DelayLoop          int              `mapconv:"Settings.GSLB.DelayLoop,default=10" validate:"min=10,max=60"`
+	Weighted           types.StringFlag `mapconv:"Settings.GSLB.Weighted"`
+	SorryServer        string           `mapconv:"Settings.GSLB.SorryServer"`
+	DestinationServers []*GSLBServer    `mapconv:"Settings.GSLB.[]Servers,recursive" validate:"min=0,max=12"`
+	Name               string           `validate:"required"`
+	Description        string           `validate:"min=0,max=512"`
+	Tags               []string
+	IconID             types.ID `mapconv:"Icon.ID"`
 }
 
 // Validate validates by field tags
@@ -7359,84 +7336,36 @@ func (o *GSLBUpdateRequest) Validate() error {
 // setDefaults implements sacloud.argumentDefaulter
 func (o *GSLBUpdateRequest) setDefaults() interface{} {
 	return &struct {
-		HealthCheckProtocol     types.Protocol     `mapconv:"Settings.GSLB.HealthCheck.Protocol" validate:"oneof=http https ping tcp"`
-		HealthCheckHostHeader   string             `mapconv:"Settings.GSLB.HealthCheck.Host"`
-		HealthCheckPath         string             `mapconv:"Settings.GSLB.HealthCheck.Path"`
-		HealthCheckResponseCode types.StringNumber `mapconv:"Settings.GSLB.HealthCheck.Status"`
-		HealthCheckPort         types.StringNumber `mapconv:"Settings.GSLB.HealthCheck.Port"`
-		DelayLoop               int                `mapconv:"Settings.GSLB.DelayLoop,default=10" validate:"min=10,max=60"`
-		Weighted                types.StringFlag   `mapconv:"Settings.GSLB.Weighted"`
-		SorryServer             string             `mapconv:"Settings.GSLB.SorryServer"`
-		DestinationServers      []*GSLBServer      `mapconv:"Settings.GSLB.[]Servers,recursive" validate:"min=0,max=12"`
-		Name                    string             `validate:"required"`
-		Description             string             `validate:"min=0,max=512"`
-		Tags                    []string
-		IconID                  types.ID `mapconv:"Icon.ID"`
+		HealthCheck        *GSLBHealthCheck `mapconv:"Settings.GSLB.HealthCheck,recursive"`
+		DelayLoop          int              `mapconv:"Settings.GSLB.DelayLoop,default=10" validate:"min=10,max=60"`
+		Weighted           types.StringFlag `mapconv:"Settings.GSLB.Weighted"`
+		SorryServer        string           `mapconv:"Settings.GSLB.SorryServer"`
+		DestinationServers []*GSLBServer    `mapconv:"Settings.GSLB.[]Servers,recursive" validate:"min=0,max=12"`
+		Name               string           `validate:"required"`
+		Description        string           `validate:"min=0,max=512"`
+		Tags               []string
+		IconID             types.ID `mapconv:"Icon.ID"`
 	}{
-		HealthCheckProtocol:     o.HealthCheckProtocol,
-		HealthCheckHostHeader:   o.HealthCheckHostHeader,
-		HealthCheckPath:         o.HealthCheckPath,
-		HealthCheckResponseCode: o.HealthCheckResponseCode,
-		HealthCheckPort:         o.HealthCheckPort,
-		DelayLoop:               o.DelayLoop,
-		Weighted:                o.Weighted,
-		SorryServer:             o.SorryServer,
-		DestinationServers:      o.DestinationServers,
-		Name:                    o.Name,
-		Description:             o.Description,
-		Tags:                    o.Tags,
-		IconID:                  o.IconID,
+		HealthCheck:        o.HealthCheck,
+		DelayLoop:          o.DelayLoop,
+		Weighted:           o.Weighted,
+		SorryServer:        o.SorryServer,
+		DestinationServers: o.DestinationServers,
+		Name:               o.Name,
+		Description:        o.Description,
+		Tags:               o.Tags,
+		IconID:             o.IconID,
 	}
 }
 
-// GetHealthCheckProtocol returns value of HealthCheckProtocol
-func (o *GSLBUpdateRequest) GetHealthCheckProtocol() types.Protocol {
-	return o.HealthCheckProtocol
+// GetHealthCheck returns value of HealthCheck
+func (o *GSLBUpdateRequest) GetHealthCheck() *GSLBHealthCheck {
+	return o.HealthCheck
 }
 
-// SetHealthCheckProtocol sets value to HealthCheckProtocol
-func (o *GSLBUpdateRequest) SetHealthCheckProtocol(v types.Protocol) {
-	o.HealthCheckProtocol = v
-}
-
-// GetHealthCheckHostHeader returns value of HealthCheckHostHeader
-func (o *GSLBUpdateRequest) GetHealthCheckHostHeader() string {
-	return o.HealthCheckHostHeader
-}
-
-// SetHealthCheckHostHeader sets value to HealthCheckHostHeader
-func (o *GSLBUpdateRequest) SetHealthCheckHostHeader(v string) {
-	o.HealthCheckHostHeader = v
-}
-
-// GetHealthCheckPath returns value of HealthCheckPath
-func (o *GSLBUpdateRequest) GetHealthCheckPath() string {
-	return o.HealthCheckPath
-}
-
-// SetHealthCheckPath sets value to HealthCheckPath
-func (o *GSLBUpdateRequest) SetHealthCheckPath(v string) {
-	o.HealthCheckPath = v
-}
-
-// GetHealthCheckResponseCode returns value of HealthCheckResponseCode
-func (o *GSLBUpdateRequest) GetHealthCheckResponseCode() types.StringNumber {
-	return o.HealthCheckResponseCode
-}
-
-// SetHealthCheckResponseCode sets value to HealthCheckResponseCode
-func (o *GSLBUpdateRequest) SetHealthCheckResponseCode(v types.StringNumber) {
-	o.HealthCheckResponseCode = v
-}
-
-// GetHealthCheckPort returns value of HealthCheckPort
-func (o *GSLBUpdateRequest) GetHealthCheckPort() types.StringNumber {
-	return o.HealthCheckPort
-}
-
-// SetHealthCheckPort sets value to HealthCheckPort
-func (o *GSLBUpdateRequest) SetHealthCheckPort(v types.StringNumber) {
-	o.HealthCheckPort = v
+// SetHealthCheck sets value to HealthCheck
+func (o *GSLBUpdateRequest) SetHealthCheck(v *GSLBHealthCheck) {
+	o.HealthCheck = v
 }
 
 // GetDelayLoop returns value of DelayLoop
@@ -7783,7 +7712,6 @@ type Interface struct {
 	PacketFilterID types.ID `mapconv:"PacketFilter.ID,omitempty"`
 	ServerID       types.ID `mapconv:"Server.ID,omitempty"`
 	CreatedAt      time.Time
-	ModifiedAt     time.Time
 }
 
 // Validate validates by field tags
@@ -7803,7 +7731,6 @@ func (o *Interface) setDefaults() interface{} {
 		PacketFilterID types.ID `mapconv:"PacketFilter.ID,omitempty"`
 		ServerID       types.ID `mapconv:"Server.ID,omitempty"`
 		CreatedAt      time.Time
-		ModifiedAt     time.Time
 	}{
 		ID:             o.ID,
 		MACAddress:     o.MACAddress,
@@ -7814,7 +7741,6 @@ func (o *Interface) setDefaults() interface{} {
 		PacketFilterID: o.PacketFilterID,
 		ServerID:       o.ServerID,
 		CreatedAt:      o.CreatedAt,
-		ModifiedAt:     o.ModifiedAt,
 	}
 }
 
@@ -7926,16 +7852,6 @@ func (o *Interface) GetCreatedAt() time.Time {
 // SetCreatedAt sets value to CreatedAt
 func (o *Interface) SetCreatedAt(v time.Time) {
 	o.CreatedAt = v
-}
-
-// GetModifiedAt returns value of ModifiedAt
-func (o *Interface) GetModifiedAt() time.Time {
-	return o.ModifiedAt
-}
-
-// SetModifiedAt sets value to ModifiedAt
-func (o *Interface) SetModifiedAt(v time.Time) {
-	o.ModifiedAt = v
 }
 
 /*************************************************

@@ -71,11 +71,10 @@ var (
 			fields.IPAddress(),
 			fields.UserIPAddress(),
 			fields.HostName(),
-			fields.SwitchID(), // TODO どこまで実装する? デフォルトゲートウェイなどはSubnetまでみないとわからないかも
+			fields.SwitchID(),
 			fields.PacketFilterID(),
 			fields.ServerID(),
 			fields.CreatedAt(),
-			fields.ModifiedAt(), // TODO ModifiedAtがないかも?
 		},
 	}
 

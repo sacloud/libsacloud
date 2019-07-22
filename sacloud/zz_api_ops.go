@@ -2522,58 +2522,7 @@ func (o *DiskOp) Find(ctx context.Context, zone string, conditions *FindConditio
 }
 
 // Create is API call
-func (o *DiskOp) Create(ctx context.Context, zone string, param *DiskCreateRequest) (*Disk, error) {
-	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
-		"rootURL":    SakuraCloudAPIRoot,
-		"pathSuffix": o.PathSuffix,
-		"pathName":   o.PathName,
-		"zone":       zone,
-		"param":      param,
-	})
-	if err != nil {
-		return nil, err
-	}
-
-	var body interface{}
-
-	if param == nil {
-		param = &DiskCreateRequest{}
-	}
-	var arg0 interface{} = param
-	if v, ok := arg0.(argumentDefaulter); ok {
-		arg0 = v.setDefaults()
-	}
-	args := &struct {
-		Arg0 interface{} `mapconv:"Disk,recursive"`
-	}{
-		Arg0: arg0,
-	}
-
-	v := &diskCreateRequestEnvelope{}
-	if err := mapconv.ConvertTo(args, v); err != nil {
-		return nil, err
-	}
-	body = v
-
-	data, err := o.Client.Do(ctx, "POST", url, body)
-	if err != nil {
-		return nil, err
-	}
-
-	nakedResponse := &diskCreateResponseEnvelope{}
-	if err := json.Unmarshal(data, nakedResponse); err != nil {
-		return nil, err
-	}
-
-	results := &diskCreateResult{}
-	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
-		return nil, err
-	}
-	return results.Disk, nil
-}
-
-// CreateDistantly is API call
-func (o *DiskOp) CreateDistantly(ctx context.Context, zone string, createParam *DiskCreateRequest, distantFrom []types.ID) (*Disk, error) {
+func (o *DiskOp) Create(ctx context.Context, zone string, createParam *DiskCreateRequest, distantFrom []types.ID) (*Disk, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
 		"rootURL":     SakuraCloudAPIRoot,
 		"pathSuffix":  o.PathSuffix,
@@ -2610,7 +2559,7 @@ func (o *DiskOp) CreateDistantly(ctx context.Context, zone string, createParam *
 		Arg1: arg1,
 	}
 
-	v := &diskCreateDistantlyRequestEnvelope{}
+	v := &diskCreateRequestEnvelope{}
 	if err := mapconv.ConvertTo(args, v); err != nil {
 		return nil, err
 	}
@@ -2621,12 +2570,12 @@ func (o *DiskOp) CreateDistantly(ctx context.Context, zone string, createParam *
 		return nil, err
 	}
 
-	nakedResponse := &diskCreateDistantlyResponseEnvelope{}
+	nakedResponse := &diskCreateResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
 
-	results := &diskCreateDistantlyResult{}
+	results := &diskCreateResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
@@ -2686,78 +2635,7 @@ func (o *DiskOp) Config(ctx context.Context, zone string, id types.ID, edit *Dis
 }
 
 // CreateWithConfig is API call
-func (o *DiskOp) CreateWithConfig(ctx context.Context, zone string, createParam *DiskCreateRequest, editParam *DiskEditRequest, bootAtAvailable bool) (*Disk, error) {
-	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
-		"rootURL":         SakuraCloudAPIRoot,
-		"pathSuffix":      o.PathSuffix,
-		"pathName":        o.PathName,
-		"zone":            zone,
-		"createParam":     createParam,
-		"editParam":       editParam,
-		"bootAtAvailable": bootAtAvailable,
-	})
-	if err != nil {
-		return nil, err
-	}
-
-	var body interface{}
-
-	if createParam == nil {
-		createParam = &DiskCreateRequest{}
-	}
-	var arg0 interface{} = createParam
-	if v, ok := arg0.(argumentDefaulter); ok {
-		arg0 = v.setDefaults()
-	}
-	if editParam == nil {
-		editParam = &DiskEditRequest{}
-	}
-	var arg1 interface{} = editParam
-	if v, ok := arg1.(argumentDefaulter); ok {
-		arg1 = v.setDefaults()
-	}
-	if bootAtAvailable == false {
-		bootAtAvailable = false
-	}
-	var arg2 interface{} = bootAtAvailable
-	if v, ok := arg2.(argumentDefaulter); ok {
-		arg2 = v.setDefaults()
-	}
-	args := &struct {
-		Arg0 interface{} `mapconv:"Disk"`
-		Arg1 interface{} `mapconv:"Config"`
-		Arg2 interface{} `mapconv:"BootAtAvailable"`
-	}{
-		Arg0: arg0,
-		Arg1: arg1,
-		Arg2: arg2,
-	}
-
-	v := &diskCreateWithConfigRequestEnvelope{}
-	if err := mapconv.ConvertTo(args, v); err != nil {
-		return nil, err
-	}
-	body = v
-
-	data, err := o.Client.Do(ctx, "POST", url, body)
-	if err != nil {
-		return nil, err
-	}
-
-	nakedResponse := &diskCreateWithConfigResponseEnvelope{}
-	if err := json.Unmarshal(data, nakedResponse); err != nil {
-		return nil, err
-	}
-
-	results := &diskCreateWithConfigResult{}
-	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
-		return nil, err
-	}
-	return results.Disk, nil
-}
-
-// CreateWithConfigDistantly is API call
-func (o *DiskOp) CreateWithConfigDistantly(ctx context.Context, zone string, createParam *DiskCreateRequest, editParam *DiskEditRequest, bootAtAvailable bool, distantFrom []types.ID) (*Disk, error) {
+func (o *DiskOp) CreateWithConfig(ctx context.Context, zone string, createParam *DiskCreateRequest, editParam *DiskEditRequest, bootAtAvailable bool, distantFrom []types.ID) (*Disk, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
 		"rootURL":         SakuraCloudAPIRoot,
 		"pathSuffix":      o.PathSuffix,
@@ -2814,7 +2692,7 @@ func (o *DiskOp) CreateWithConfigDistantly(ctx context.Context, zone string, cre
 		Arg3: arg3,
 	}
 
-	v := &diskCreateWithConfigDistantlyRequestEnvelope{}
+	v := &diskCreateWithConfigRequestEnvelope{}
 	if err := mapconv.ConvertTo(args, v); err != nil {
 		return nil, err
 	}
@@ -2825,12 +2703,12 @@ func (o *DiskOp) CreateWithConfigDistantly(ctx context.Context, zone string, cre
 		return nil, err
 	}
 
-	nakedResponse := &diskCreateWithConfigDistantlyResponseEnvelope{}
+	nakedResponse := &diskCreateWithConfigResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
 		return nil, err
 	}
 
-	results := &diskCreateWithConfigDistantlyResult{}
+	results := &diskCreateWithConfigResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
@@ -2930,8 +2808,8 @@ func (o *DiskOp) DisconnectFromServer(ctx context.Context, zone string, id types
 	return nil
 }
 
-// InstallDistantFrom is API call
-func (o *DiskOp) InstallDistantFrom(ctx context.Context, zone string, id types.ID, installParam *DiskInstallRequest, distantFrom []types.ID) (*Disk, error) {
+// Install is API call
+func (o *DiskOp) Install(ctx context.Context, zone string, id types.ID, installParam *DiskInstallRequest, distantFrom []types.ID) (*Disk, error) {
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/install", map[string]interface{}{
 		"rootURL":      SakuraCloudAPIRoot,
 		"pathSuffix":   o.PathSuffix,
@@ -2976,67 +2854,6 @@ func (o *DiskOp) InstallDistantFrom(ctx context.Context, zone string, id types.I
 		Arg0: arg0,
 		Arg1: arg1,
 		Arg2: arg2,
-	}
-
-	v := &diskInstallDistantFromRequestEnvelope{}
-	if err := mapconv.ConvertTo(args, v); err != nil {
-		return nil, err
-	}
-	body = v
-
-	data, err := o.Client.Do(ctx, "PUT", url, body)
-	if err != nil {
-		return nil, err
-	}
-
-	nakedResponse := &diskInstallDistantFromResponseEnvelope{}
-	if err := json.Unmarshal(data, nakedResponse); err != nil {
-		return nil, err
-	}
-
-	results := &diskInstallDistantFromResult{}
-	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
-		return nil, err
-	}
-	return results.Disk, nil
-}
-
-// Install is API call
-func (o *DiskOp) Install(ctx context.Context, zone string, id types.ID, installParam *DiskInstallRequest) (*Disk, error) {
-	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/install", map[string]interface{}{
-		"rootURL":      SakuraCloudAPIRoot,
-		"pathSuffix":   o.PathSuffix,
-		"pathName":     o.PathName,
-		"zone":         zone,
-		"id":           id,
-		"installParam": installParam,
-	})
-	if err != nil {
-		return nil, err
-	}
-
-	var body interface{}
-
-	if id == types.ID(int64(0)) {
-		id = types.ID(int64(0))
-	}
-	var arg0 interface{} = id
-	if v, ok := arg0.(argumentDefaulter); ok {
-		arg0 = v.setDefaults()
-	}
-	if installParam == nil {
-		installParam = &DiskInstallRequest{}
-	}
-	var arg1 interface{} = installParam
-	if v, ok := arg1.(argumentDefaulter); ok {
-		arg1 = v.setDefaults()
-	}
-	args := &struct {
-		Arg0 interface{}
-		Arg1 interface{} `mapconv:"Disk"`
-	}{
-		Arg0: arg0,
-		Arg1: arg1,
 	}
 
 	v := &diskInstallRequestEnvelope{}

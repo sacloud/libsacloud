@@ -1861,41 +1861,8 @@ func (t *DiskTracer) Find(ctx context.Context, zone string, conditions *sacloud.
 }
 
 // Create is API call with trace log
-func (t *DiskTracer) Create(ctx context.Context, zone string, param *sacloud.DiskCreateRequest) (*sacloud.Disk, error) {
+func (t *DiskTracer) Create(ctx context.Context, zone string, createParam *sacloud.DiskCreateRequest, distantFrom []types.ID) (*sacloud.Disk, error) {
 	log.Println("[TRACE] DiskAPI.Create start")
-	targetArguments := struct {
-		Argzone  string
-		Argparam *sacloud.DiskCreateRequest `json:"param"`
-	}{
-		Argzone:  zone,
-		Argparam: param,
-	}
-	if d, err := json.Marshal(targetArguments); err == nil {
-		log.Printf("[TRACE] \targs: %s\n", string(d))
-	}
-
-	defer func() {
-		log.Println("[TRACE] DiskAPI.Create end")
-	}()
-
-	resultDisk, err := t.Internal.Create(ctx, zone, param)
-	targetResults := struct {
-		Disk  *sacloud.Disk
-		Error error
-	}{
-		Disk:  resultDisk,
-		Error: err,
-	}
-	if d, err := json.Marshal(targetResults); err == nil {
-		log.Printf("[TRACE] \tresults: %s\n", string(d))
-	}
-
-	return resultDisk, err
-}
-
-// CreateDistantly is API call with trace log
-func (t *DiskTracer) CreateDistantly(ctx context.Context, zone string, createParam *sacloud.DiskCreateRequest, distantFrom []types.ID) (*sacloud.Disk, error) {
-	log.Println("[TRACE] DiskAPI.CreateDistantly start")
 	targetArguments := struct {
 		Argzone        string
 		ArgcreateParam *sacloud.DiskCreateRequest `json:"createParam"`
@@ -1910,10 +1877,10 @@ func (t *DiskTracer) CreateDistantly(ctx context.Context, zone string, createPar
 	}
 
 	defer func() {
-		log.Println("[TRACE] DiskAPI.CreateDistantly end")
+		log.Println("[TRACE] DiskAPI.Create end")
 	}()
 
-	resultDisk, err := t.Internal.CreateDistantly(ctx, zone, createParam, distantFrom)
+	resultDisk, err := t.Internal.Create(ctx, zone, createParam, distantFrom)
 	targetResults := struct {
 		Disk  *sacloud.Disk
 		Error error
@@ -1962,45 +1929,8 @@ func (t *DiskTracer) Config(ctx context.Context, zone string, id types.ID, edit 
 }
 
 // CreateWithConfig is API call with trace log
-func (t *DiskTracer) CreateWithConfig(ctx context.Context, zone string, createParam *sacloud.DiskCreateRequest, editParam *sacloud.DiskEditRequest, bootAtAvailable bool) (*sacloud.Disk, error) {
+func (t *DiskTracer) CreateWithConfig(ctx context.Context, zone string, createParam *sacloud.DiskCreateRequest, editParam *sacloud.DiskEditRequest, bootAtAvailable bool, distantFrom []types.ID) (*sacloud.Disk, error) {
 	log.Println("[TRACE] DiskAPI.CreateWithConfig start")
-	targetArguments := struct {
-		Argzone            string
-		ArgcreateParam     *sacloud.DiskCreateRequest `json:"createParam"`
-		ArgeditParam       *sacloud.DiskEditRequest   `json:"editParam"`
-		ArgbootAtAvailable bool                       `json:"bootAtAvailable"`
-	}{
-		Argzone:            zone,
-		ArgcreateParam:     createParam,
-		ArgeditParam:       editParam,
-		ArgbootAtAvailable: bootAtAvailable,
-	}
-	if d, err := json.Marshal(targetArguments); err == nil {
-		log.Printf("[TRACE] \targs: %s\n", string(d))
-	}
-
-	defer func() {
-		log.Println("[TRACE] DiskAPI.CreateWithConfig end")
-	}()
-
-	resultDisk, err := t.Internal.CreateWithConfig(ctx, zone, createParam, editParam, bootAtAvailable)
-	targetResults := struct {
-		Disk  *sacloud.Disk
-		Error error
-	}{
-		Disk:  resultDisk,
-		Error: err,
-	}
-	if d, err := json.Marshal(targetResults); err == nil {
-		log.Printf("[TRACE] \tresults: %s\n", string(d))
-	}
-
-	return resultDisk, err
-}
-
-// CreateWithConfigDistantly is API call with trace log
-func (t *DiskTracer) CreateWithConfigDistantly(ctx context.Context, zone string, createParam *sacloud.DiskCreateRequest, editParam *sacloud.DiskEditRequest, bootAtAvailable bool, distantFrom []types.ID) (*sacloud.Disk, error) {
-	log.Println("[TRACE] DiskAPI.CreateWithConfigDistantly start")
 	targetArguments := struct {
 		Argzone            string
 		ArgcreateParam     *sacloud.DiskCreateRequest `json:"createParam"`
@@ -2019,10 +1949,10 @@ func (t *DiskTracer) CreateWithConfigDistantly(ctx context.Context, zone string,
 	}
 
 	defer func() {
-		log.Println("[TRACE] DiskAPI.CreateWithConfigDistantly end")
+		log.Println("[TRACE] DiskAPI.CreateWithConfig end")
 	}()
 
-	resultDisk, err := t.Internal.CreateWithConfigDistantly(ctx, zone, createParam, editParam, bootAtAvailable, distantFrom)
+	resultDisk, err := t.Internal.CreateWithConfig(ctx, zone, createParam, editParam, bootAtAvailable, distantFrom)
 	targetResults := struct {
 		Disk  *sacloud.Disk
 		Error error
@@ -2163,9 +2093,9 @@ func (t *DiskTracer) DisconnectFromServer(ctx context.Context, zone string, id t
 	return err
 }
 
-// InstallDistantFrom is API call with trace log
-func (t *DiskTracer) InstallDistantFrom(ctx context.Context, zone string, id types.ID, installParam *sacloud.DiskInstallRequest, distantFrom []types.ID) (*sacloud.Disk, error) {
-	log.Println("[TRACE] DiskAPI.InstallDistantFrom start")
+// Install is API call with trace log
+func (t *DiskTracer) Install(ctx context.Context, zone string, id types.ID, installParam *sacloud.DiskInstallRequest, distantFrom []types.ID) (*sacloud.Disk, error) {
+	log.Println("[TRACE] DiskAPI.Install start")
 	targetArguments := struct {
 		Argzone         string
 		Argid           types.ID                    `json:"id"`
@@ -2182,45 +2112,10 @@ func (t *DiskTracer) InstallDistantFrom(ctx context.Context, zone string, id typ
 	}
 
 	defer func() {
-		log.Println("[TRACE] DiskAPI.InstallDistantFrom end")
-	}()
-
-	resultDisk, err := t.Internal.InstallDistantFrom(ctx, zone, id, installParam, distantFrom)
-	targetResults := struct {
-		Disk  *sacloud.Disk
-		Error error
-	}{
-		Disk:  resultDisk,
-		Error: err,
-	}
-	if d, err := json.Marshal(targetResults); err == nil {
-		log.Printf("[TRACE] \tresults: %s\n", string(d))
-	}
-
-	return resultDisk, err
-}
-
-// Install is API call with trace log
-func (t *DiskTracer) Install(ctx context.Context, zone string, id types.ID, installParam *sacloud.DiskInstallRequest) (*sacloud.Disk, error) {
-	log.Println("[TRACE] DiskAPI.Install start")
-	targetArguments := struct {
-		Argzone         string
-		Argid           types.ID                    `json:"id"`
-		ArginstallParam *sacloud.DiskInstallRequest `json:"installParam"`
-	}{
-		Argzone:         zone,
-		Argid:           id,
-		ArginstallParam: installParam,
-	}
-	if d, err := json.Marshal(targetArguments); err == nil {
-		log.Printf("[TRACE] \targs: %s\n", string(d))
-	}
-
-	defer func() {
 		log.Println("[TRACE] DiskAPI.Install end")
 	}()
 
-	resultDisk, err := t.Internal.Install(ctx, zone, id, installParam)
+	resultDisk, err := t.Internal.Install(ctx, zone, id, installParam, distantFrom)
 	targetResults := struct {
 		Disk  *sacloud.Disk
 		Error error
