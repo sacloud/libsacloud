@@ -13,7 +13,6 @@ func ResourceFieldName(resourceName string, form dsl.PayloadForm) string {
 	case form.IsSingular():
 		return resourceName
 	case form.IsPlural():
-		// TODO とりあえずワードで例外指定
 		switch {
 		case
 			resourceName == "NFS",
