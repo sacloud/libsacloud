@@ -21,7 +21,7 @@ func TestAutoBackupOpCRUD(t *testing.T) {
 				Name:       "libsacloud-disk-with-autobackup",
 				SizeMB:     20 * 1024,
 				DiskPlanID: types.ID(4), //SSD
-			})
+			}, nil)
 			if !assert.NoError(t, err) {
 				return err
 			}

@@ -294,29 +294,8 @@ type diskCreateResult struct {
 	Disk *Disk `json:",omitempty" mapconv:"Disk,omitempty,recursive"`
 }
 
-// diskCreateDistantlyResult represents the Result of API
-type diskCreateDistantlyResult struct {
-	IsOk bool `json:",omitempty"` // is_ok
-
-	Disk *Disk `json:",omitempty" mapconv:"Disk,omitempty,recursive"`
-}
-
 // diskCreateWithConfigResult represents the Result of API
 type diskCreateWithConfigResult struct {
-	IsOk bool `json:",omitempty"` // is_ok
-
-	Disk *Disk `json:",omitempty" mapconv:"Disk,omitempty,recursive"`
-}
-
-// diskCreateWithConfigDistantlyResult represents the Result of API
-type diskCreateWithConfigDistantlyResult struct {
-	IsOk bool `json:",omitempty"` // is_ok
-
-	Disk *Disk `json:",omitempty" mapconv:"Disk,omitempty,recursive"`
-}
-
-// diskInstallDistantFromResult represents the Result of API
-type diskInstallDistantFromResult struct {
 	IsOk bool `json:",omitempty"` // is_ok
 
 	Disk *Disk `json:",omitempty" mapconv:"Disk,omitempty,recursive"`

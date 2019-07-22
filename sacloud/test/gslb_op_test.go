@@ -57,16 +57,18 @@ var (
 		"ModifiedAt",
 	}
 	createGSLBParam = &sacloud.GSLBCreateRequest{
-		Name:                    "libsacloud-gslb",
-		Description:             "desc",
-		Tags:                    []string{"tag1", "tag2"},
-		HealthCheckProtocol:     "http",
-		HealthCheckHostHeader:   "usacloud.jp",
-		HealthCheckPath:         "/index.html",
-		HealthCheckResponseCode: types.StringNumber(200),
-		DelayLoop:               20,
-		Weighted:                types.StringTrue,
-		SorryServer:             "8.8.8.8",
+		Name:        "libsacloud-gslb",
+		Description: "desc",
+		Tags:        []string{"tag1", "tag2"},
+		HealthCheck: &sacloud.GSLBHealthCheck{
+			Protocol:     "http",
+			HostHeader:   "usacloud.jp",
+			Path:         "/index.html",
+			ResponseCode: types.StringNumber(200),
+		},
+		DelayLoop:   20,
+		Weighted:    types.StringTrue,
+		SorryServer: "8.8.8.8",
 		DestinationServers: []*sacloud.GSLBServer{
 			{
 				IPAddress: "192.2.0.1",
@@ -79,18 +81,14 @@ var (
 		},
 	}
 	createGSLBExpected = &sacloud.GSLB{
-		Name:                    createGSLBParam.Name,
-		Description:             createGSLBParam.Description,
-		Tags:                    createGSLBParam.Tags,
-		Availability:            types.Availabilities.Available,
-		DelayLoop:               createGSLBParam.DelayLoop,
-		Weighted:                createGSLBParam.Weighted,
-		HealthCheckProtocol:     createGSLBParam.HealthCheckProtocol,
-		HealthCheckHostHeader:   createGSLBParam.HealthCheckHostHeader,
-		HealthCheckPath:         createGSLBParam.HealthCheckPath,
-		HealthCheckResponseCode: createGSLBParam.HealthCheckResponseCode,
-		HealthCheckPort:         createGSLBParam.HealthCheckPort,
-		SorryServer:             createGSLBParam.SorryServer,
+		Name:         createGSLBParam.Name,
+		Description:  createGSLBParam.Description,
+		Tags:         createGSLBParam.Tags,
+		Availability: types.Availabilities.Available,
+		DelayLoop:    createGSLBParam.DelayLoop,
+		Weighted:     createGSLBParam.Weighted,
+		HealthCheck:  createGSLBParam.HealthCheck,
+		SorryServer:  createGSLBParam.SorryServer,
 		DestinationServers: []*sacloud.GSLBServer{
 			{
 				IPAddress: "192.2.0.1",
@@ -103,16 +101,18 @@ var (
 		},
 	}
 	updateGSLBParam = &sacloud.GSLBUpdateRequest{
-		Name:                    "libsacloud-gslb-upd",
-		Description:             "desc-upd",
-		Tags:                    []string{"tag1-upd", "tag2-upd"},
-		HealthCheckProtocol:     "https",
-		HealthCheckHostHeader:   "upd.usacloud.jp",
-		HealthCheckPath:         "/index-upd.html",
-		HealthCheckResponseCode: types.StringNumber(201),
-		DelayLoop:               21,
-		Weighted:                types.StringTrue,
-		SorryServer:             "8.8.4.4",
+		Name:        "libsacloud-gslb-upd",
+		Description: "desc-upd",
+		Tags:        []string{"tag1-upd", "tag2-upd"},
+		HealthCheck: &sacloud.GSLBHealthCheck{
+			Protocol:     "https",
+			HostHeader:   "upd.usacloud.jp",
+			Path:         "/index-upd.html",
+			ResponseCode: types.StringNumber(201),
+		},
+		DelayLoop:   21,
+		Weighted:    types.StringTrue,
+		SorryServer: "8.8.4.4",
 		DestinationServers: []*sacloud.GSLBServer{
 			{
 				IPAddress: "192.2.0.11",
@@ -127,19 +127,15 @@ var (
 		},
 	}
 	updateGSLBExpected = &sacloud.GSLB{
-		Name:                    updateGSLBParam.Name,
-		Description:             updateGSLBParam.Description,
-		Tags:                    updateGSLBParam.Tags,
-		Availability:            types.Availabilities.Available,
-		DelayLoop:               updateGSLBParam.DelayLoop,
-		Weighted:                updateGSLBParam.Weighted,
-		HealthCheckProtocol:     updateGSLBParam.HealthCheckProtocol,
-		HealthCheckHostHeader:   updateGSLBParam.HealthCheckHostHeader,
-		HealthCheckPath:         updateGSLBParam.HealthCheckPath,
-		HealthCheckResponseCode: updateGSLBParam.HealthCheckResponseCode,
-		HealthCheckPort:         updateGSLBParam.HealthCheckPort,
-		SorryServer:             updateGSLBParam.SorryServer,
-		DestinationServers:      updateGSLBParam.DestinationServers,
+		Name:               updateGSLBParam.Name,
+		Description:        updateGSLBParam.Description,
+		Tags:               updateGSLBParam.Tags,
+		Availability:       types.Availabilities.Available,
+		DelayLoop:          updateGSLBParam.DelayLoop,
+		Weighted:           updateGSLBParam.Weighted,
+		HealthCheck:        updateGSLBParam.HealthCheck,
+		SorryServer:        updateGSLBParam.SorryServer,
+		DestinationServers: updateGSLBParam.DestinationServers,
 	}
 )
 

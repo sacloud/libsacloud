@@ -27,7 +27,7 @@ func (o *DiskOp) Find(ctx context.Context, zone string, conditions *sacloud.Find
 }
 
 // Create is fake implementation
-func (o *DiskOp) Create(ctx context.Context, zone string, param *sacloud.DiskCreateRequest) (*sacloud.Disk, error) {
+func (o *DiskOp) Create(ctx context.Context, zone string, param *sacloud.DiskCreateRequest, distantFrom []types.ID) (*sacloud.Disk, error) {
 	result := &sacloud.Disk{}
 	copySameNameField(param, result)
 	fill(result, fillID, fillCreatedAt, fillDiskPlan)
@@ -65,11 +65,6 @@ func (o *DiskOp) Create(ctx context.Context, zone string, param *sacloud.DiskCre
 	return result, nil
 }
 
-// CreateDistantly is fake implementation
-func (o *DiskOp) CreateDistantly(ctx context.Context, zone string, createParam *sacloud.DiskCreateRequest, distantFrom []types.ID) (*sacloud.Disk, error) {
-	return o.Create(ctx, zone, createParam)
-}
-
 // Config is fake implementation
 func (o *DiskOp) Config(ctx context.Context, zone string, id types.ID, edit *sacloud.DiskEditRequest) error {
 	// TODO ディスクに接続されたサーバのIDを拾ってInterfaces[0].UserSubnet.DefaultRoute/UserIPAddressなども書き換えた方がいいかも?
@@ -77,7 +72,7 @@ func (o *DiskOp) Config(ctx context.Context, zone string, id types.ID, edit *sac
 }
 
 // CreateWithConfig is fake implementation
-func (o *DiskOp) CreateWithConfig(ctx context.Context, zone string, createParam *sacloud.DiskCreateRequest, editParam *sacloud.DiskEditRequest, bootAtAvailable bool) (*sacloud.Disk, error) {
+func (o *DiskOp) CreateWithConfig(ctx context.Context, zone string, createParam *sacloud.DiskCreateRequest, editParam *sacloud.DiskEditRequest, bootAtAvailable bool, distantFrom []types.ID) (*sacloud.Disk, error) {
 	// check
 	if !createParam.ServerID.IsEmpty() {
 		serverOp := NewServerOp()
@@ -87,7 +82,7 @@ func (o *DiskOp) CreateWithConfig(ctx context.Context, zone string, createParam 
 		}
 	}
 
-	result, err := o.Create(ctx, zone, createParam)
+	result, err := o.Create(ctx, zone, createParam, distantFrom)
 	if err != nil {
 		return nil, err
 	}
@@ -113,11 +108,6 @@ func (o *DiskOp) CreateWithConfig(ctx context.Context, zone string, createParam 
 		}
 	}
 	return result, nil
-}
-
-// CreateWithConfigDistantly is fake implementation
-func (o *DiskOp) CreateWithConfigDistantly(ctx context.Context, zone string, createParam *sacloud.DiskCreateRequest, editParam *sacloud.DiskEditRequest, bootAtAvailable bool, distantFrom []types.ID) (*sacloud.Disk, error) {
-	return o.CreateWithConfig(ctx, zone, createParam, editParam, bootAtAvailable)
 }
 
 // ToBlank is fake implementation
@@ -209,13 +199,8 @@ func (o *DiskOp) DisconnectFromServer(ctx context.Context, zone string, id types
 	return nil
 }
 
-// InstallDistantFrom is fake implementation
-func (o *DiskOp) InstallDistantFrom(ctx context.Context, zone string, id types.ID, installParam *sacloud.DiskInstallRequest, distantFrom []types.ID) (*sacloud.Disk, error) {
-	return o.Install(ctx, zone, id, installParam)
-}
-
 // Install is fake implementation
-func (o *DiskOp) Install(ctx context.Context, zone string, id types.ID, installParam *sacloud.DiskInstallRequest) (*sacloud.Disk, error) {
+func (o *DiskOp) Install(ctx context.Context, zone string, id types.ID, installParam *sacloud.DiskInstallRequest, distantFrom []types.ID) (*sacloud.Disk, error) {
 	value, err := o.Read(ctx, zone, id)
 	if err != nil {
 		return nil, err

@@ -101,7 +101,7 @@ var (
 
 func testDiskCreate(_ *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewDiskOp(caller)
-	return client.Create(context.Background(), testZone, createDiskParam)
+	return client.Create(context.Background(), testZone, createDiskParam, nil)
 }
 
 func testDiskRead(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
@@ -152,7 +152,7 @@ func TestDiskOp_Config(t *testing.T) {
 					DiskPlanID:      types.ID(4),
 					SizeMB:          20 * 1024,
 					SourceArchiveID: archiveID,
-				})
+				}, nil)
 				if err != nil {
 					return nil, err
 				}

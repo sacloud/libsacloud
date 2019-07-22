@@ -25,12 +25,9 @@ var diskAPI = &dsl.Resource{
 		ops.Find(diskAPIName, diskNakedType, findParameter, diskModel),
 
 		// create
-		ops.Create(diskAPIName, diskNakedType, diskCreateParam, diskModel),
-
-		// create distantly
 		{
 			ResourceName: diskAPIName,
-			Name:         "CreateDistantly",
+			Name:         "Create",
 			PathFormat:   dsl.DefaultPathFormat,
 			Method:       http.MethodPost,
 			RequestEnvelope: dsl.RequestEnvelope(
@@ -46,7 +43,7 @@ var diskAPI = &dsl.Resource{
 			Arguments: dsl.Arguments{
 				{
 					Name:       "createParam",
-					MapConvTag: "Disk",
+					MapConvTag: "Disk,recursive",
 					Type:       diskCreateParam,
 				},
 				{
@@ -101,56 +98,6 @@ var diskAPI = &dsl.Resource{
 					Type: meta.TypeFlag,
 					Name: "BootAtAvailable",
 				},
-			),
-			ResponseEnvelope: dsl.ResponseEnvelope(&dsl.EnvelopePayloadDesc{
-				Type: diskNakedType,
-				Name: "Disk",
-			}),
-			Arguments: dsl.Arguments{
-				{
-					Name:       "createParam",
-					MapConvTag: "Disk",
-					Type:       diskCreateParam,
-				},
-				{
-					Name:       "editParam",
-					MapConvTag: "Config",
-					Type:       diskEditParam,
-				},
-				{
-					Name:       "bootAtAvailable",
-					Type:       meta.TypeFlag,
-					MapConvTag: "BootAtAvailable",
-				},
-			},
-			Results: dsl.Results{
-				{
-					SourceField: "Disk",
-					DestField:   diskModel.Name,
-					IsPlural:    false,
-					Model:       diskModel,
-				},
-			},
-		},
-
-		{
-			ResourceName: diskAPIName,
-			Name:         "CreateWithConfigDistantly",
-			PathFormat:   dsl.DefaultPathFormat,
-			Method:       http.MethodPost,
-			RequestEnvelope: dsl.RequestEnvelope(
-				&dsl.EnvelopePayloadDesc{
-					Type: diskNakedType,
-					Name: "Disk",
-				},
-				&dsl.EnvelopePayloadDesc{
-					Type: diskEditNakedType,
-					Name: "Config",
-				},
-				&dsl.EnvelopePayloadDesc{
-					Type: meta.TypeFlag,
-					Name: "BootAtAvailable",
-				},
 				&dsl.EnvelopePayloadDesc{
 					Type: diskDistantFromType,
 					Name: "DistantFrom",
@@ -163,12 +110,12 @@ var diskAPI = &dsl.Resource{
 			Arguments: dsl.Arguments{
 				{
 					Name:       "createParam",
-					MapConvTag: "Disk",
+					MapConvTag: "Disk,recursive",
 					Type:       diskCreateParam,
 				},
 				{
 					Name:       "editParam",
-					MapConvTag: "Config",
+					MapConvTag: "Config,recursive",
 					Type:       diskEditParam,
 				},
 				{
@@ -212,7 +159,7 @@ var diskAPI = &dsl.Resource{
 		// install
 		{
 			ResourceName: diskAPIName,
-			Name:         "InstallDistantFrom",
+			Name:         "Install",
 			PathFormat:   dsl.IDAndSuffixPathFormat("install"),
 			Method:       http.MethodPut,
 			RequestEnvelope: dsl.RequestEnvelope(
@@ -233,46 +180,13 @@ var diskAPI = &dsl.Resource{
 				dsl.ArgumentID,
 				{
 					Name:       "installParam",
-					MapConvTag: "Disk",
+					MapConvTag: "Disk,recursive",
 					Type:       diskInstallParam,
 				},
 				{
 					Name:       "distantFrom",
 					MapConvTag: "DistantFrom",
 					Type:       diskDistantFromType,
-				},
-			},
-			Results: dsl.Results{
-				{
-					SourceField: "Disk",
-					DestField:   diskModel.Name,
-					IsPlural:    false,
-					Model:       diskModel,
-				},
-			},
-		},
-
-		{
-			ResourceName: diskAPIName,
-			Name:         "Install",
-			PathFormat:   dsl.IDAndSuffixPathFormat("install"),
-			Method:       http.MethodPut,
-			RequestEnvelope: dsl.RequestEnvelope(
-				&dsl.EnvelopePayloadDesc{
-					Type: diskNakedType,
-					Name: "Disk",
-				},
-			),
-			ResponseEnvelope: dsl.ResponseEnvelope(&dsl.EnvelopePayloadDesc{
-				Type: diskNakedType,
-				Name: "Disk",
-			}),
-			Arguments: dsl.Arguments{
-				dsl.ArgumentID,
-				{
-					Name:       "installParam",
-					MapConvTag: "Disk",
-					Type:       diskInstallParam,
 				},
 			},
 			Results: dsl.Results{
