@@ -651,6 +651,11 @@ func (o *FindCondition) setDefaults() interface{} {
 	}
 }
 
+// ClearFilter フィルタのクリア
+func (o *FindCondition) ClearFilter() {
+	accessor.ClearFilter(o)
+}
+
 // GetCount returns value of Count
 func (o *FindCondition) GetCount() int {
 	return o.Count
