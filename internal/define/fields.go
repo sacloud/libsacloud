@@ -55,64 +55,6 @@ func (f *fieldsDef) Name() *dsl.FieldDesc {
 	}
 }
 
-func (f *fieldsDef) AccountID() *dsl.FieldDesc {
-	return &dsl.FieldDesc{
-		Name: "AccountID",
-		Type: meta.TypeID,
-		Tags: &dsl.FieldTags{
-			MapConv: "Account.ID",
-		},
-	}
-}
-
-func (f *fieldsDef) AccountName() *dsl.FieldDesc {
-	return &dsl.FieldDesc{
-		Name: "AccountName",
-		Type: meta.TypeString,
-		Tags: &dsl.FieldTags{
-			MapConv: "Account.Name",
-		},
-	}
-}
-
-func (f *fieldsDef) AccountCode() *dsl.FieldDesc {
-	return &dsl.FieldDesc{
-		Name: "AccountCode",
-		Type: meta.TypeString,
-		Tags: &dsl.FieldTags{
-			MapConv: "Account.Code",
-		},
-	}
-}
-func (f *fieldsDef) AccountClass() *dsl.FieldDesc {
-	return &dsl.FieldDesc{
-		Name: "AccountClass",
-		Type: meta.TypeString,
-		Tags: &dsl.FieldTags{
-			MapConv: "Account.Class",
-		},
-	}
-}
-
-func (f *fieldsDef) MemberCode() *dsl.FieldDesc {
-	return &dsl.FieldDesc{
-		Name: "MemberCode",
-		Type: meta.TypeString,
-		Tags: &dsl.FieldTags{
-			MapConv: "Member.Code",
-		},
-	}
-}
-func (f *fieldsDef) MemberClass() *dsl.FieldDesc {
-	return &dsl.FieldDesc{
-		Name: "MemberClass",
-		Type: meta.TypeString,
-		Tags: &dsl.FieldTags{
-			MapConv: "Member.Class",
-		},
-	}
-}
-
 func (f *fieldsDef) InterfaceDriver() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "InterfaceDriver",
@@ -721,53 +663,52 @@ func (f *fieldsDef) GSLBFQDN() *dsl.FieldDesc {
 	}
 }
 
-func (f *fieldsDef) GSLBHealthCheckProtocol() *dsl.FieldDesc {
+func (f *fieldsDef) GSLBHealthCheck() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
-		Name: "HealthCheckProtocol",
-		Type: meta.TypeProtocol,
-		Tags: &dsl.FieldTags{
-			MapConv:  "Settings.GSLB.HealthCheck.Protocol",
-			Validate: "oneof=http https ping tcp",
+		Name: "HealthCheck",
+		Type: &dsl.Model{
+			Name:      "GSLBHealthCheck",
+			NakedType: meta.Static(naked.HealthCheck{}),
+			Fields: []*dsl.FieldDesc{
+				{
+					Name: "Protocol",
+					Type: meta.TypeProtocol,
+					Tags: &dsl.FieldTags{
+						Validate: "oneof=http https ping tcp",
+					},
+				},
+				{
+					Name: "HostHeader",
+					Type: meta.TypeString,
+					Tags: &dsl.FieldTags{
+						MapConv: "Host",
+					},
+				},
+				{
+					Name: "Path",
+					Type: meta.TypeString,
+					Tags: &dsl.FieldTags{
+						MapConv: "Path",
+					},
+				},
+				{
+					Name: "ResponseCode",
+					Type: meta.TypeStringNumber,
+					Tags: &dsl.FieldTags{
+						MapConv: "Status",
+					},
+				},
+				{
+					Name: "Port",
+					Type: meta.TypeStringNumber,
+					Tags: &dsl.FieldTags{
+						MapConv: "Port",
+					},
+				},
+			},
 		},
-	}
-}
-
-func (f *fieldsDef) GSLBHealthCheckHostHeader() *dsl.FieldDesc {
-	return &dsl.FieldDesc{
-		Name: "HealthCheckHostHeader",
-		Type: meta.TypeString,
 		Tags: &dsl.FieldTags{
-			MapConv: "Settings.GSLB.HealthCheck.Host",
-		},
-	}
-}
-
-func (f *fieldsDef) GSLBHealthCheckPath() *dsl.FieldDesc {
-	return &dsl.FieldDesc{
-		Name: "HealthCheckPath",
-		Type: meta.TypeString,
-		Tags: &dsl.FieldTags{
-			MapConv: "Settings.GSLB.HealthCheck.Path",
-		},
-	}
-}
-
-func (f *fieldsDef) GSLBHealthCheckResponseCode() *dsl.FieldDesc {
-	return &dsl.FieldDesc{
-		Name: "HealthCheckResponseCode",
-		Type: meta.TypeStringNumber,
-		Tags: &dsl.FieldTags{
-			MapConv: "Settings.GSLB.HealthCheck.Status",
-		},
-	}
-}
-
-func (f *fieldsDef) GSLBHealthCheckPort() *dsl.FieldDesc {
-	return &dsl.FieldDesc{
-		Name: "HealthCheckPort",
-		Type: meta.TypeStringNumber,
-		Tags: &dsl.FieldTags{
-			MapConv: "Settings.GSLB.HealthCheck.Port",
+			MapConv: "Settings.GSLB.HealthCheck,recursive",
 		},
 	}
 }

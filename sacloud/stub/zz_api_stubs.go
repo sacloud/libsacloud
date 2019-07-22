@@ -826,12 +826,6 @@ type DiskCreateStubResult struct {
 	Err  error
 }
 
-// DiskCreateDistantlyStubResult is expected values of the CreateDistantly operation
-type DiskCreateDistantlyStubResult struct {
-	Disk *sacloud.Disk
-	Err  error
-}
-
 // DiskConfigStubResult is expected values of the Config operation
 type DiskConfigStubResult struct {
 	Err error
@@ -839,12 +833,6 @@ type DiskConfigStubResult struct {
 
 // DiskCreateWithConfigStubResult is expected values of the CreateWithConfig operation
 type DiskCreateWithConfigStubResult struct {
-	Disk *sacloud.Disk
-	Err  error
-}
-
-// DiskCreateWithConfigDistantlyStubResult is expected values of the CreateWithConfigDistantly operation
-type DiskCreateWithConfigDistantlyStubResult struct {
 	Disk *sacloud.Disk
 	Err  error
 }
@@ -867,12 +855,6 @@ type DiskConnectToServerStubResult struct {
 // DiskDisconnectFromServerStubResult is expected values of the DisconnectFromServer operation
 type DiskDisconnectFromServerStubResult struct {
 	Err error
-}
-
-// DiskInstallDistantFromStubResult is expected values of the InstallDistantFrom operation
-type DiskInstallDistantFromStubResult struct {
-	Disk *sacloud.Disk
-	Err  error
 }
 
 // DiskInstallStubResult is expected values of the Install operation
@@ -906,22 +888,19 @@ type DiskMonitorStubResult struct {
 
 // DiskStub is for trace DiskOp operations
 type DiskStub struct {
-	FindStubResult                      *DiskFindStubResult
-	CreateStubResult                    *DiskCreateStubResult
-	CreateDistantlyStubResult           *DiskCreateDistantlyStubResult
-	ConfigStubResult                    *DiskConfigStubResult
-	CreateWithConfigStubResult          *DiskCreateWithConfigStubResult
-	CreateWithConfigDistantlyStubResult *DiskCreateWithConfigDistantlyStubResult
-	ToBlankStubResult                   *DiskToBlankStubResult
-	ResizePartitionStubResult           *DiskResizePartitionStubResult
-	ConnectToServerStubResult           *DiskConnectToServerStubResult
-	DisconnectFromServerStubResult      *DiskDisconnectFromServerStubResult
-	InstallDistantFromStubResult        *DiskInstallDistantFromStubResult
-	InstallStubResult                   *DiskInstallStubResult
-	ReadStubResult                      *DiskReadStubResult
-	UpdateStubResult                    *DiskUpdateStubResult
-	DeleteStubResult                    *DiskDeleteStubResult
-	MonitorStubResult                   *DiskMonitorStubResult
+	FindStubResult                 *DiskFindStubResult
+	CreateStubResult               *DiskCreateStubResult
+	ConfigStubResult               *DiskConfigStubResult
+	CreateWithConfigStubResult     *DiskCreateWithConfigStubResult
+	ToBlankStubResult              *DiskToBlankStubResult
+	ResizePartitionStubResult      *DiskResizePartitionStubResult
+	ConnectToServerStubResult      *DiskConnectToServerStubResult
+	DisconnectFromServerStubResult *DiskDisconnectFromServerStubResult
+	InstallStubResult              *DiskInstallStubResult
+	ReadStubResult                 *DiskReadStubResult
+	UpdateStubResult               *DiskUpdateStubResult
+	DeleteStubResult               *DiskDeleteStubResult
+	MonitorStubResult              *DiskMonitorStubResult
 }
 
 // NewDiskStub creates new DiskStub instance
@@ -938,19 +917,11 @@ func (s *DiskStub) Find(ctx context.Context, zone string, conditions *sacloud.Fi
 }
 
 // Create is API call with trace log
-func (s *DiskStub) Create(ctx context.Context, zone string, param *sacloud.DiskCreateRequest) (*sacloud.Disk, error) {
+func (s *DiskStub) Create(ctx context.Context, zone string, createParam *sacloud.DiskCreateRequest, distantFrom []types.ID) (*sacloud.Disk, error) {
 	if s.CreateStubResult == nil {
 		log.Fatal("DiskStub.CreateStubResult is not set")
 	}
 	return s.CreateStubResult.Disk, s.CreateStubResult.Err
-}
-
-// CreateDistantly is API call with trace log
-func (s *DiskStub) CreateDistantly(ctx context.Context, zone string, createParam *sacloud.DiskCreateRequest, distantFrom []types.ID) (*sacloud.Disk, error) {
-	if s.CreateDistantlyStubResult == nil {
-		log.Fatal("DiskStub.CreateDistantlyStubResult is not set")
-	}
-	return s.CreateDistantlyStubResult.Disk, s.CreateDistantlyStubResult.Err
 }
 
 // Config is API call with trace log
@@ -962,19 +933,11 @@ func (s *DiskStub) Config(ctx context.Context, zone string, id types.ID, edit *s
 }
 
 // CreateWithConfig is API call with trace log
-func (s *DiskStub) CreateWithConfig(ctx context.Context, zone string, createParam *sacloud.DiskCreateRequest, editParam *sacloud.DiskEditRequest, bootAtAvailable bool) (*sacloud.Disk, error) {
+func (s *DiskStub) CreateWithConfig(ctx context.Context, zone string, createParam *sacloud.DiskCreateRequest, editParam *sacloud.DiskEditRequest, bootAtAvailable bool, distantFrom []types.ID) (*sacloud.Disk, error) {
 	if s.CreateWithConfigStubResult == nil {
 		log.Fatal("DiskStub.CreateWithConfigStubResult is not set")
 	}
 	return s.CreateWithConfigStubResult.Disk, s.CreateWithConfigStubResult.Err
-}
-
-// CreateWithConfigDistantly is API call with trace log
-func (s *DiskStub) CreateWithConfigDistantly(ctx context.Context, zone string, createParam *sacloud.DiskCreateRequest, editParam *sacloud.DiskEditRequest, bootAtAvailable bool, distantFrom []types.ID) (*sacloud.Disk, error) {
-	if s.CreateWithConfigDistantlyStubResult == nil {
-		log.Fatal("DiskStub.CreateWithConfigDistantlyStubResult is not set")
-	}
-	return s.CreateWithConfigDistantlyStubResult.Disk, s.CreateWithConfigDistantlyStubResult.Err
 }
 
 // ToBlank is API call with trace log
@@ -1009,16 +972,8 @@ func (s *DiskStub) DisconnectFromServer(ctx context.Context, zone string, id typ
 	return s.DisconnectFromServerStubResult.Err
 }
 
-// InstallDistantFrom is API call with trace log
-func (s *DiskStub) InstallDistantFrom(ctx context.Context, zone string, id types.ID, installParam *sacloud.DiskInstallRequest, distantFrom []types.ID) (*sacloud.Disk, error) {
-	if s.InstallDistantFromStubResult == nil {
-		log.Fatal("DiskStub.InstallDistantFromStubResult is not set")
-	}
-	return s.InstallDistantFromStubResult.Disk, s.InstallDistantFromStubResult.Err
-}
-
 // Install is API call with trace log
-func (s *DiskStub) Install(ctx context.Context, zone string, id types.ID, installParam *sacloud.DiskInstallRequest) (*sacloud.Disk, error) {
+func (s *DiskStub) Install(ctx context.Context, zone string, id types.ID, installParam *sacloud.DiskInstallRequest, distantFrom []types.ID) (*sacloud.Disk, error) {
 	if s.InstallStubResult == nil {
 		log.Fatal("DiskStub.InstallStubResult is not set")
 	}
