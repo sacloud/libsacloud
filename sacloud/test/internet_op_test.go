@@ -1,7 +1,6 @@
 package test
 
 import (
-	"context"
 	"errors"
 	"testing"
 
@@ -79,24 +78,24 @@ var (
 	}
 )
 
-func testInternetCreate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testInternetCreate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewInternetOp(caller)
-	return client.Create(context.Background(), testZone, createInternetParam)
+	return client.Create(ctx, testZone, createInternetParam)
 }
 
-func testInternetRead(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testInternetRead(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewInternetOp(caller)
-	return client.Read(context.Background(), testZone, testContext.ID)
+	return client.Read(ctx, testZone, ctx.ID)
 }
 
-func testInternetUpdate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testInternetUpdate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewInternetOp(caller)
-	return client.Update(context.Background(), testZone, testContext.ID, updateInternetParam)
+	return client.Update(ctx, testZone, ctx.ID, updateInternetParam)
 }
 
-func testInternetDelete(testContext *CRUDTestContext, caller sacloud.APICaller) error {
+func testInternetDelete(ctx *CRUDTestContext, caller sacloud.APICaller) error {
 	client := sacloud.NewInternetOp(caller)
-	return client.Delete(context.Background(), testZone, testContext.ID)
+	return client.Delete(ctx, testZone, ctx.ID)
 }
 
 func TestInternetOp_Subnet(t *testing.T) {
@@ -109,9 +108,7 @@ func TestInternetOp_Subnet(t *testing.T) {
 		IgnoreStartupWait:  true,
 		SetupAPICallerFunc: singletonAPICaller,
 		Create: &CRUDTestFunc{
-			Func: func(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
-				ctx := context.Background()
-
+			Func: func(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 				var internet *sacloud.Internet
 				internet, err := client.Create(ctx, testZone, createInternetParam)
 				if err != nil {
@@ -120,7 +117,7 @@ func TestInternetOp_Subnet(t *testing.T) {
 				waiter := sacloud.WaiterForApplianceUp(func() (interface{}, error) {
 					return client.Read(ctx, testZone, internet.ID)
 				}, 100)
-				if _, err := waiter.WaitForState(context.TODO()); err != nil {
+				if _, err := waiter.WaitForState(ctx); err != nil {
 					t.Error("WaitForUp is failed: ", err)
 					return nil, err
 				}
@@ -147,9 +144,9 @@ func TestInternetOp_Subnet(t *testing.T) {
 		Updates: []*CRUDTestFunc{
 			// add subnet
 			{
-				Func: func(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+				Func: func(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 					// add subnet
-					subnet, err := client.AddSubnet(context.Background(), testZone, testContext.ID, &sacloud.InternetAddSubnetRequest{
+					subnet, err := client.AddSubnet(ctx, testZone, ctx.ID, &sacloud.InternetAddSubnetRequest{
 						NetworkMaskLen: 28,
 						NextHop:        minIP,
 					})
@@ -170,8 +167,8 @@ func TestInternetOp_Subnet(t *testing.T) {
 			},
 			// update subnet
 			{
-				Func: func(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
-					subnet, err := client.UpdateSubnet(context.Background(), testZone, testContext.ID, subnetID, &sacloud.InternetUpdateSubnetRequest{
+				Func: func(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+					subnet, err := client.UpdateSubnet(ctx, testZone, ctx.ID, subnetID, &sacloud.InternetUpdateSubnetRequest{
 						NextHop: maxIP,
 					})
 					if err != nil {
@@ -190,8 +187,8 @@ func TestInternetOp_Subnet(t *testing.T) {
 			},
 			// delete subnet
 			{
-				Func: func(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
-					return nil, client.DeleteSubnet(context.Background(), testZone, testContext.ID, subnetID)
+				Func: func(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+					return nil, client.DeleteSubnet(ctx, testZone, ctx.ID, subnetID)
 				},
 				SkipExtractID: true,
 			},

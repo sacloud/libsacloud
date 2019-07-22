@@ -1,7 +1,6 @@
 package test
 
 import (
-	"context"
 	"testing"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
@@ -81,28 +80,27 @@ var (
 	}
 )
 
-func testSwitchCreate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testSwitchCreate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewSwitchOp(caller)
-	return client.Create(context.Background(), testZone, createSwitchParam)
+	return client.Create(ctx, testZone, createSwitchParam)
 }
 
-func testSwitchRead(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testSwitchRead(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewSwitchOp(caller)
-	return client.Read(context.Background(), testZone, testContext.ID)
+	return client.Read(ctx, testZone, ctx.ID)
 }
 
-func testSwitchUpdate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testSwitchUpdate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewSwitchOp(caller)
-	return client.Update(context.Background(), testZone, testContext.ID, updateSwitchParam)
+	return client.Update(ctx, testZone, ctx.ID, updateSwitchParam)
 }
 
-func testSwitchDelete(testContext *CRUDTestContext, caller sacloud.APICaller) error {
+func testSwitchDelete(ctx *CRUDTestContext, caller sacloud.APICaller) error {
 	client := sacloud.NewSwitchOp(caller)
-	return client.Delete(context.Background(), testZone, testContext.ID)
+	return client.Delete(ctx, testZone, ctx.ID)
 }
 
 func TestSwitchOp_BridgeConnection(t *testing.T) {
-	ctx := context.Background()
 	caller := singletonAPICaller()
 
 	swOp := sacloud.NewSwitchOp(caller)
@@ -114,7 +112,7 @@ func TestSwitchOp_BridgeConnection(t *testing.T) {
 		Parallel:           true,
 		SetupAPICallerFunc: singletonAPICaller,
 		Create: &CRUDTestFunc{
-			Func: func(testContext *CRUDTestContext, caller sacloud.APICaller) (i interface{}, e error) {
+			Func: func(ctx *CRUDTestContext, caller sacloud.APICaller) (i interface{}, e error) {
 				return swOp.Create(ctx, testZone, &sacloud.SwitchCreateRequest{
 					Name: "libsacloud-switch-for-bridge",
 				})
@@ -126,7 +124,7 @@ func TestSwitchOp_BridgeConnection(t *testing.T) {
 		Updates: []*CRUDTestFunc{
 			// bridge create and connect
 			{
-				Func: func(testContext *CRUDTestContext, caller sacloud.APICaller) (i interface{}, e error) {
+				Func: func(ctx *CRUDTestContext, caller sacloud.APICaller) (i interface{}, e error) {
 					bridge, err := bridgeOp.Create(ctx, testZone, &sacloud.BridgeCreateRequest{
 						Name: "libsacloud-bridge",
 					})
@@ -140,16 +138,16 @@ func TestSwitchOp_BridgeConnection(t *testing.T) {
 			},
 			// connect
 			{
-				Func: func(testContext *CRUDTestContext, caller sacloud.APICaller) (i interface{}, e error) {
+				Func: func(ctx *CRUDTestContext, caller sacloud.APICaller) (i interface{}, e error) {
 					// connect to bridge
-					if err := swOp.ConnectToBridge(ctx, testZone, testContext.ID, bridgeID); err != nil {
+					if err := swOp.ConnectToBridge(ctx, testZone, ctx.ID, bridgeID); err != nil {
 						return nil, err
 					}
 					return nil, nil
 				},
 				SkipExtractID: true,
-				CheckFunc: func(t TestT, testContext *CRUDTestContext, i interface{}) error {
-					sw, err := swOp.Read(ctx, testZone, testContext.ID)
+				CheckFunc: func(t TestT, ctx *CRUDTestContext, i interface{}) error {
+					sw, err := swOp.Read(ctx, testZone, ctx.ID)
 					if err != nil {
 						return err
 					}
@@ -170,15 +168,15 @@ func TestSwitchOp_BridgeConnection(t *testing.T) {
 			},
 			// disconnect
 			{
-				Func: func(testContext *CRUDTestContext, caller sacloud.APICaller) (i interface{}, e error) {
-					if err := swOp.DisconnectFromBridge(ctx, testZone, testContext.ID); err != nil {
+				Func: func(ctx *CRUDTestContext, caller sacloud.APICaller) (i interface{}, e error) {
+					if err := swOp.DisconnectFromBridge(ctx, testZone, ctx.ID); err != nil {
 						return nil, err
 					}
 					return nil, nil
 				},
 				SkipExtractID: true,
-				CheckFunc: func(t TestT, testContext *CRUDTestContext, i interface{}) error {
-					sw, err := swOp.Read(ctx, testZone, testContext.ID)
+				CheckFunc: func(t TestT, ctx *CRUDTestContext, i interface{}) error {
+					sw, err := swOp.Read(ctx, testZone, ctx.ID)
 					if err != nil {
 						return err
 					}
@@ -199,7 +197,7 @@ func TestSwitchOp_BridgeConnection(t *testing.T) {
 			},
 			// bridge delete
 			{
-				Func: func(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+				Func: func(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 					if err := bridgeOp.Delete(ctx, testZone, bridgeID); err != nil {
 						return nil, err
 					}

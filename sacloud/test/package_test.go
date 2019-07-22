@@ -103,17 +103,6 @@ func TestMain(m *testing.M) {
 	os.Exit(ret)
 }
 
-func compositeAPIFunc(funcs ...func(*CRUDTestContext, sacloud.APICaller) error) func(*CRUDTestContext, sacloud.APICaller) error {
-	return func(testContext *CRUDTestContext, caller sacloud.APICaller) error {
-		for _, f := range funcs {
-			if err := f(testContext, caller); err != nil {
-				return err
-			}
-		}
-		return nil
-	}
-}
-
 func setupSwitchFunc(targetResource string, dests ...accessor.SwitchID) func(*CRUDTestContext, sacloud.APICaller) error {
 	return func(testContext *CRUDTestContext, caller sacloud.APICaller) error {
 		swClient := sacloud.NewSwitchOp(caller)

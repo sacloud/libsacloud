@@ -1,7 +1,6 @@
 package test
 
 import (
-	"context"
 	"testing"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
@@ -47,15 +46,15 @@ func TestSSHKeyOp_Generate(t *testing.T) {
 		IgnoreStartupWait:  true,
 		SetupAPICallerFunc: singletonAPICaller,
 		Create: &CRUDTestFunc{
-			Func: func(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+			Func: func(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 				client := sacloud.NewSSHKeyOp(caller)
-				return client.Generate(context.Background(), &sacloud.SSHKeyGenerateRequest{
+				return client.Generate(ctx, &sacloud.SSHKeyGenerateRequest{
 					Name:        "libsacloud-sshKey-generate",
 					Description: "libsacloud-sshKey-generate",
 					PassPhrase:  "libsacloud-sshKey-passphrase",
 				})
 			},
-			CheckFunc: func(t TestT, testContext *CRUDTestContext, v interface{}) error {
+			CheckFunc: func(t TestT, ctx *CRUDTestContext, v interface{}) error {
 				sshKey := v.(*sacloud.SSHKeyGenerated)
 				return DoAsserts(
 					AssertNotNilFunc(t, sshKey, "SSHKeyGenerated"),
@@ -105,22 +104,22 @@ var (
 	}
 )
 
-func testSSHKeyCreate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testSSHKeyCreate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewSSHKeyOp(caller)
-	return client.Create(context.Background(), createSSHKeyParam)
+	return client.Create(ctx, createSSHKeyParam)
 }
 
-func testSSHKeyRead(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testSSHKeyRead(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewSSHKeyOp(caller)
-	return client.Read(context.Background(), testContext.ID)
+	return client.Read(ctx, ctx.ID)
 }
 
-func testSSHKeyUpdate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testSSHKeyUpdate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewSSHKeyOp(caller)
-	return client.Update(context.Background(), testContext.ID, updateSSHKeyParam)
+	return client.Update(ctx, ctx.ID, updateSSHKeyParam)
 }
 
-func testSSHKeyDelete(testContext *CRUDTestContext, caller sacloud.APICaller) error {
+func testSSHKeyDelete(ctx *CRUDTestContext, caller sacloud.APICaller) error {
 	client := sacloud.NewSSHKeyOp(caller)
-	return client.Delete(context.Background(), testContext.ID)
+	return client.Delete(ctx, ctx.ID)
 }
