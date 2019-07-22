@@ -619,7 +619,7 @@ func (f *fieldsDef) LoadBalancerVIP() *dsl.FieldDesc {
 func (f *fieldsDef) Tags() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "Tags",
-		Type: meta.TypeStringSlice,
+		Type: meta.Static(types.Tags{}),
 	}
 }
 

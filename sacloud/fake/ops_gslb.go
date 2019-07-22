@@ -56,6 +56,9 @@ func (o *GSLBOp) Update(ctx context.Context, id types.ID, param *sacloud.GSLBUpd
 	if err != nil {
 		return nil, err
 	}
+	if param.DelayLoop == 0 {
+		param.DelayLoop = 10 // default value
+	}
 	copySameNameField(param, value)
 	fill(value, fillModifiedAt)
 	return value, nil

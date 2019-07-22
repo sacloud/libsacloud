@@ -13,8 +13,8 @@ type MobileGateway struct {
 	ID           types.ID                `json:",omitempty" yaml:"id,omitempty" structs:",omitempty"`
 	Class        string                  `json:",omitempty" yaml:"class,omitempty" structs:",omitempty"`
 	Name         string                  `json:",omitempty" yaml:"name,omitempty" structs:",omitempty"`
-	Tags         []string                `yaml:"tags"`
-	Description  string                  `json:",omitempty" yaml:"description,omitempty" structs:",omitempty"`
+	Tags         types.Tags              `yaml:"tags"`
+	Description  string                  `yaml:"description"`
 	Plan         *AppliancePlan          `json:",omitempty" yaml:"plan,omitempty" structs:",omitempty"`
 	Settings     *MobileGatewaySettings  `json:",omitempty" yaml:"settings,omitempty" structs:",omitempty"`
 	SettingsHash string                  `json:",omitempty" yaml:"settings_hash,omitempty" structs:",omitempty"`

@@ -12,8 +12,8 @@ import (
 type SIM struct {
 	ID           types.ID     `json:",omitempty" yaml:"id,omitempty" structs:",omitempty"`
 	Name         string       `json:",omitempty" yaml:"name,omitempty" structs:",omitempty"`
-	Description  string       `json:",omitempty" yaml:"description,omitempty" structs:",omitempty"`
-	Tags         []string     `json:",omitempty" yaml:"tags"`
+	Description  string       `yaml:"description"`
+	Tags         types.Tags   `yaml:"tags"`
 	Status       *SIMStatus   `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
 	ServiceClass string       `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
 	Availability string       `json:",omitempty" yaml:",omitempty" structs:",omitempty"`

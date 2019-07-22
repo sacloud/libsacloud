@@ -8,7 +8,7 @@ import (
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
-func TestVPCRouterOpCRUD(t *testing.T) {
+func TestVPCRouterOp_CRUD(t *testing.T) {
 	Run(t, &CRUDTestCase{
 		Parallel:           true,
 		SetupAPICallerFunc: singletonAPICaller,
@@ -54,7 +54,6 @@ var (
 		"ID",
 		"Availability",
 		"Class",
-		"IconID",
 		"CreatedAt",
 		"SettingsHash",
 		"Settings",
@@ -157,7 +156,7 @@ func testVPCRouterDelete(ctx *CRUDTestContext, caller sacloud.APICaller) error {
 	return client.Delete(ctx, testZone, ctx.ID)
 }
 
-func TestVPCRouterOpWithRouterCRUD(t *testing.T) {
+func TestVPCRouterOp_WithRouterCRUD(t *testing.T) {
 	Run(t, &CRUDTestCase{
 		Parallel:           true,
 		SetupAPICallerFunc: singletonAPICaller,
@@ -235,9 +234,14 @@ func TestVPCRouterOpWithRouterCRUD(t *testing.T) {
 		Updates: []*CRUDTestFunc{
 			{
 				Func: func(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+					if isAccTest() {
+						// 起動直後だとシャットダウンできない場合があるため10秒ほど待つ
+						time.Sleep(10 * time.Second)
+					}
+
 					vpcOp := sacloud.NewVPCRouterOp(caller)
 					// shutdown
-					if err := vpcOp.Shutdown(ctx, testZone, ctx.ID, nil); err != nil {
+					if err := vpcOp.Shutdown(ctx, testZone, ctx.ID, &sacloud.ShutdownOption{Force: true}); err != nil {
 						return nil, err
 					}
 					_, err := sacloud.WaiterForDown(func() (interface{}, error) {
@@ -335,6 +339,25 @@ func TestVPCRouterOpWithRouterCRUD(t *testing.T) {
 					IgnoreFields: ignoreVPCRouterFields,
 				}),
 			},
+			{
+				Func: func(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+					// setup update param
+					p := withRouterUpdateVPCRouterToMinParam
+					p.Settings = &sacloud.VPCRouterSetting{
+						InternetConnectionEnabled: false,
+						Interfaces: []*sacloud.VPCRouterInterfaceSetting{
+							withRouterCreateVPCRouterParam.Settings.Interfaces[0],
+						},
+					}
+
+					withRouterUpdateVPCRouterToMinExpected.Settings = p.Settings
+					return testVPCRouterUpdate(updateVPCRouterParam)(ctx, caller)
+				},
+				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+					ExpectValue:  updateVPCRouterExpected,
+					IgnoreFields: ignoreVPCRouterFields,
+				}),
+			},
 		},
 
 		Shutdown: func(ctx *CRUDTestContext, caller sacloud.APICaller) error {
@@ -389,6 +412,7 @@ var (
 		Name:        "libsacloud-vpc-router-upd",
 		Tags:        []string{"tag1-upd", "tag2-upd"},
 		Description: "desc-upd",
+		IconID:      testIconID,
 	}
 	withRouterUpdateVPCRouterExpected = &sacloud.VPCRouter{
 		Class:          "vpcrouter",
@@ -399,5 +423,17 @@ var (
 		InstanceStatus: types.ServerInstanceStatuses.Up,
 		PlanID:         createVPCRouterParam.PlanID,
 		Settings:       withRouterUpdateVPCRouterParam.Settings,
+		IconID:         testIconID,
+	}
+	withRouterUpdateVPCRouterToMinParam = &sacloud.VPCRouterUpdateRequest{
+		Name: "libsacloud-vpc-router-to-min",
+	}
+	withRouterUpdateVPCRouterToMinExpected = &sacloud.VPCRouter{
+		Class:          "vpcrouter",
+		Name:           updateVPCRouterParam.Name,
+		Availability:   types.Availabilities.Available,
+		InstanceStatus: types.ServerInstanceStatuses.Up,
+		PlanID:         createVPCRouterParam.PlanID,
+		Settings:       withRouterUpdateVPCRouterToMinParam.Settings,
 	}
 )

@@ -9,7 +9,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestServerOpCRUD(t *testing.T) {
+func TestServerOp_CRUD(t *testing.T) {
 	Run(t, &CRUDTestCase{
 		Parallel: true,
 
@@ -36,6 +36,13 @@ func TestServerOpCRUD(t *testing.T) {
 				Func: testServerUpdate,
 				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
 					ExpectValue:  updateServerExpected,
+					IgnoreFields: ignoreServerFields,
+				}),
+			},
+			{
+				Func: testServerUpdateToMin,
+				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+					ExpectValue:  updateServerToMinExpected,
 					IgnoreFields: ignoreServerFields,
 				}),
 			},
@@ -73,7 +80,6 @@ var (
 		"PrivateHostID",
 		"PrivateHostName",
 		"BundleInfo",
-		"IconID",
 		"CreatedAt",
 		"ModifiedAt",
 	}
@@ -105,11 +111,23 @@ var (
 		Name:        "libsacloud-nfs-upd",
 		Tags:        []string{"tag1-upd", "tag2-upd"},
 		Description: "desc-upd",
+		IconID:      testIconID,
 	}
 	updateServerExpected = &sacloud.Server{
 		Name:            updateServerParam.Name,
 		Description:     updateServerParam.Description,
 		Tags:            updateServerParam.Tags,
+		HostName:        createServerParam.HostName,
+		InterfaceDriver: createServerParam.InterfaceDriver,
+		CPU:             createServerParam.CPU,
+		MemoryMB:        createServerParam.MemoryMB,
+		IconID:          testIconID,
+	}
+	updateServerToMinParam = &sacloud.ServerUpdateRequest{
+		Name: "libsacloud-nfs-to-min",
+	}
+	updateServerToMinExpected = &sacloud.Server{
+		Name:            updateServerToMinParam.Name,
 		HostName:        createServerParam.HostName,
 		InterfaceDriver: createServerParam.InterfaceDriver,
 		CPU:             createServerParam.CPU,
@@ -137,6 +155,11 @@ func testServerRead(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}
 func testServerUpdate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewServerOp(caller)
 	return client.Update(ctx, testZone, ctx.ID, updateServerParam)
+}
+
+func testServerUpdateToMin(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+	client := sacloud.NewServerOp(caller)
+	return client.Update(ctx, testZone, ctx.ID, updateServerToMinParam)
 }
 
 func testServerDelete(ctx *CRUDTestContext, caller sacloud.APICaller) error {

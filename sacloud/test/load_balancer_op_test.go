@@ -7,12 +7,18 @@ import (
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
-func TestLoadBalancerOpCRUD(t *testing.T) {
+func TestLoadBalancerOp_CRUD(t *testing.T) {
 	Run(t, &CRUDTestCase{
 		Parallel: true,
 
 		SetupAPICallerFunc: singletonAPICaller,
-		Setup:              setupSwitchFunc("lb", createLoadBalancerParam, createLoadBalancerExpected, updateLoadBalancerExpected),
+		Setup: setupSwitchFunc("lb",
+			createLoadBalancerParam,
+			createLoadBalancerExpected,
+			updateLoadBalancerExpected,
+			updateLoadBalancerToMin1Expected,
+			updateLoadBalancerToMin2Expected,
+		),
 		Create: &CRUDTestFunc{
 			Func: testLoadBalancerCreate,
 			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
@@ -34,6 +40,20 @@ func TestLoadBalancerOpCRUD(t *testing.T) {
 				Func: testLoadBalancerUpdate,
 				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
 					ExpectValue:  updateLoadBalancerExpected,
+					IgnoreFields: ignoreLoadBalancerFields,
+				}),
+			},
+			{
+				Func: testLoadBalancerUpdateToMin1,
+				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+					ExpectValue:  updateLoadBalancerToMin1Expected,
+					IgnoreFields: ignoreLoadBalancerFields,
+				}),
+			},
+			{
+				Func: testLoadBalancerUpdateToMin2,
+				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+					ExpectValue:  updateLoadBalancerToMin2Expected,
 					IgnoreFields: ignoreLoadBalancerFields,
 				}),
 			},
@@ -64,7 +84,6 @@ var (
 		"Interfaces",
 		"Switch",
 		"ZoneID",
-		"IconID",
 		"CreatedAt",
 		"ModifiedAt",
 		"SettingsHash",
@@ -149,6 +168,7 @@ var (
 		Name:        "libsacloud-lb-upd",
 		Tags:        []string{"tag1-upd", "tag2-upd"},
 		Description: "desc-upd",
+		IconID:      testIconID,
 		VirtualIPAddresses: []*sacloud.LoadBalancerVirtualIPAddress{
 			{
 				VirtualIPAddress: "192.168.0.111",
@@ -206,6 +226,7 @@ var (
 		Name:               updateLoadBalancerParam.Name,
 		Description:        updateLoadBalancerParam.Description,
 		Tags:               updateLoadBalancerParam.Tags,
+		IconID:             testIconID,
 		Availability:       types.Availabilities.Available,
 		PlanID:             createLoadBalancerParam.PlanID,
 		InstanceStatus:     types.ServerInstanceStatuses.Up,
@@ -214,6 +235,61 @@ var (
 		IPAddresses:        createLoadBalancerParam.IPAddresses,
 		VRID:               createLoadBalancerParam.VRID,
 		VirtualIPAddresses: updateLoadBalancerParam.VirtualIPAddresses,
+	}
+	updateLoadBalancerToMin1Param = &sacloud.LoadBalancerUpdateRequest{
+		Name: "libsacloud-lb-to-min1",
+		VirtualIPAddresses: []*sacloud.LoadBalancerVirtualIPAddress{
+			{
+				VirtualIPAddress: "192.168.0.111",
+				Port:             80,
+				Servers: []*sacloud.LoadBalancerServer{
+					{
+						IPAddress:           "192.168.0.211",
+						Enabled:             types.StringTrue,
+						Port:                80,
+						HealthCheckProtocol: "ping",
+					},
+				},
+			},
+		},
+	}
+	updateLoadBalancerToMin1Expected = &sacloud.LoadBalancer{
+		Name:           updateLoadBalancerToMin1Param.Name,
+		Availability:   types.Availabilities.Available,
+		PlanID:         createLoadBalancerParam.PlanID,
+		InstanceStatus: types.ServerInstanceStatuses.Up,
+		DefaultRoute:   createLoadBalancerParam.DefaultRoute,
+		NetworkMaskLen: createLoadBalancerParam.NetworkMaskLen,
+		IPAddresses:    createLoadBalancerParam.IPAddresses,
+		VRID:           createLoadBalancerParam.VRID,
+		VirtualIPAddresses: []*sacloud.LoadBalancerVirtualIPAddress{
+			{
+				VirtualIPAddress: "192.168.0.111",
+				Port:             80,
+				DelayLoop:        10, // default value
+				Servers: []*sacloud.LoadBalancerServer{
+					{
+						IPAddress:           "192.168.0.211",
+						Enabled:             types.StringTrue,
+						Port:                80,
+						HealthCheckProtocol: "ping",
+					},
+				},
+			},
+		},
+	}
+	updateLoadBalancerToMin2Param = &sacloud.LoadBalancerUpdateRequest{
+		Name: "libsacloud-lb-to-min2",
+	}
+	updateLoadBalancerToMin2Expected = &sacloud.LoadBalancer{
+		Name:           updateLoadBalancerToMin2Param.Name,
+		Availability:   types.Availabilities.Available,
+		PlanID:         createLoadBalancerParam.PlanID,
+		InstanceStatus: types.ServerInstanceStatuses.Up,
+		DefaultRoute:   createLoadBalancerParam.DefaultRoute,
+		NetworkMaskLen: createLoadBalancerParam.NetworkMaskLen,
+		IPAddresses:    createLoadBalancerParam.IPAddresses,
+		VRID:           createLoadBalancerParam.VRID,
 	}
 )
 
@@ -230,6 +306,16 @@ func testLoadBalancerRead(ctx *CRUDTestContext, caller sacloud.APICaller) (inter
 func testLoadBalancerUpdate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewLoadBalancerOp(caller)
 	return client.Update(ctx, testZone, ctx.ID, updateLoadBalancerParam)
+}
+
+func testLoadBalancerUpdateToMin1(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+	client := sacloud.NewLoadBalancerOp(caller)
+	return client.Update(ctx, testZone, ctx.ID, updateLoadBalancerToMin1Param)
+}
+
+func testLoadBalancerUpdateToMin2(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+	client := sacloud.NewLoadBalancerOp(caller)
+	return client.Update(ctx, testZone, ctx.ID, updateLoadBalancerToMin2Param)
 }
 
 func testLoadBalancerDelete(ctx *CRUDTestContext, caller sacloud.APICaller) error {

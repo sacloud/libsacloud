@@ -9,7 +9,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestInternetOpCRUD(t *testing.T) {
+func TestInternetOp_CRUD(t *testing.T) {
 	Run(t, &CRUDTestCase{
 		Parallel: true,
 
@@ -36,6 +36,13 @@ func TestInternetOpCRUD(t *testing.T) {
 					IgnoreFields: ignoreInternetFields,
 				}),
 			},
+			{
+				Func: testInternetUpdateToMin,
+				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+					ExpectValue:  updateInternetToMinExpected,
+					IgnoreFields: ignoreInternetFields,
+				}),
+			},
 		},
 		Delete: &CRUDTestDeleteFunc{
 			Func: testInternetDelete,
@@ -46,7 +53,6 @@ func TestInternetOpCRUD(t *testing.T) {
 var (
 	ignoreInternetFields = []string{
 		"ID",
-		"IconID",
 		"CreatedAt",
 		"Switch",
 	}
@@ -68,11 +74,21 @@ var (
 		Name:        "libsacloud-internet-upd",
 		Tags:        []string{"tag1-upd", "tag2-upd"},
 		Description: "desc-upd",
+		IconID:      testIconID,
 	}
 	updateInternetExpected = &sacloud.Internet{
 		Name:           updateInternetParam.Name,
 		Description:    updateInternetParam.Description,
 		Tags:           updateInternetParam.Tags,
+		NetworkMaskLen: createInternetParam.NetworkMaskLen,
+		BandWidthMbps:  createInternetParam.BandWidthMbps,
+		IconID:         testIconID,
+	}
+	updateInternetToMinParam = &sacloud.InternetUpdateRequest{
+		Name: "libsacloud-internet-to-min",
+	}
+	updateInternetToMinExpected = &sacloud.Internet{
+		Name:           updateInternetToMinParam.Name,
 		NetworkMaskLen: createInternetParam.NetworkMaskLen,
 		BandWidthMbps:  createInternetParam.BandWidthMbps,
 	}
@@ -91,6 +107,11 @@ func testInternetRead(ctx *CRUDTestContext, caller sacloud.APICaller) (interface
 func testInternetUpdate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewInternetOp(caller)
 	return client.Update(ctx, testZone, ctx.ID, updateInternetParam)
+}
+
+func testInternetUpdateToMin(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+	client := sacloud.NewInternetOp(caller)
+	return client.Update(ctx, testZone, ctx.ID, updateInternetToMinParam)
 }
 
 func testInternetDelete(ctx *CRUDTestContext, caller sacloud.APICaller) error {

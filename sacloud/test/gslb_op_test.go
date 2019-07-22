@@ -7,7 +7,7 @@ import (
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
-func TestGSLBOpCRUD(t *testing.T) {
+func TestGSLBOp_CRUD(t *testing.T) {
 	Run(t, &CRUDTestCase{
 		Parallel: true,
 
@@ -37,6 +37,13 @@ func TestGSLBOpCRUD(t *testing.T) {
 					IgnoreFields: ignoreGSLBFields,
 				}),
 			},
+			{
+				Func: testGSLBUpdateToMin,
+				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+					ExpectValue:  updateGSLBToMinExpected,
+					IgnoreFields: ignoreGSLBFields,
+				}),
+			},
 		},
 
 		Delete: &CRUDTestDeleteFunc{
@@ -51,7 +58,6 @@ var (
 		"Class",
 		"SettingsHash",
 		"FQDN",
-		"IconID",
 		"CreatedAt",
 		"ModifiedAt",
 	}
@@ -124,6 +130,7 @@ var (
 				Weight:    types.StringNumber(200),
 			},
 		},
+		IconID: testIconID,
 	}
 	updateGSLBExpected = &sacloud.GSLB{
 		Name:               updateGSLBParam.Name,
@@ -135,6 +142,19 @@ var (
 		HealthCheck:        updateGSLBParam.HealthCheck,
 		SorryServer:        updateGSLBParam.SorryServer,
 		DestinationServers: updateGSLBParam.DestinationServers,
+		IconID:             testIconID,
+	}
+	updateGSLBToMinParam = &sacloud.GSLBUpdateRequest{
+		Name: "libsacloud-gslb-to-min",
+		HealthCheck: &sacloud.GSLBHealthCheck{
+			Protocol: "ping",
+		},
+	}
+	updateGSLBToMinExpected = &sacloud.GSLB{
+		Name:         updateGSLBToMinParam.Name,
+		DelayLoop:    10, // default value
+		Availability: types.Availabilities.Available,
+		HealthCheck:  updateGSLBToMinParam.HealthCheck,
 	}
 )
 
@@ -151,6 +171,11 @@ func testGSLBRead(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, 
 func testGSLBUpdate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewGSLBOp(caller)
 	return client.Update(ctx, ctx.ID, updateGSLBParam)
+}
+
+func testGSLBUpdateToMin(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+	client := sacloud.NewGSLBOp(caller)
+	return client.Update(ctx, ctx.ID, updateGSLBToMinParam)
 }
 
 func testGSLBDelete(ctx *CRUDTestContext, caller sacloud.APICaller) error {

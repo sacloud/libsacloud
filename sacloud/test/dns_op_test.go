@@ -7,7 +7,7 @@ import (
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
-func TestDNSOpCRUD(t *testing.T) {
+func TestDNSOp_CRUD(t *testing.T) {
 	Run(t, &CRUDTestCase{
 		Parallel: true,
 
@@ -37,6 +37,13 @@ func TestDNSOpCRUD(t *testing.T) {
 					IgnoreFields: ignoreDNSFields,
 				}),
 			},
+			{
+				Func: testDNSUpdateToMin,
+				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+					ExpectValue:  updateDNSToMinExpected,
+					IgnoreFields: ignoreDNSFields,
+				}),
+			},
 		},
 
 		Delete: &CRUDTestDeleteFunc{
@@ -51,7 +58,6 @@ var (
 		"Class",
 		"SettingsHash",
 		"FQDN",
-		"IconID",
 		"CreatedAt",
 		"ModifiedAt",
 		"DNSNameServers",
@@ -84,6 +90,7 @@ var (
 	updateDNSParam = &sacloud.DNSUpdateRequest{
 		Description: "desc-upd",
 		Tags:        []string{"tag1-upd", "tag2-upd"},
+		IconID:      testIconID,
 		Records: []*sacloud.DNSRecord{
 			{
 				Name:  "host1",
@@ -105,10 +112,17 @@ var (
 	updateDNSExpected = &sacloud.DNS{
 		Name:         createDNSParam.Name,
 		Description:  updateDNSParam.Description,
+		IconID:       testIconID,
 		Tags:         updateDNSParam.Tags,
 		Availability: types.Availabilities.Available,
 		DNSZone:      createDNSParam.Name,
 		Records:      updateDNSParam.Records,
+	}
+	updateDNSToMinParam    = &sacloud.DNSUpdateRequest{}
+	updateDNSToMinExpected = &sacloud.DNS{
+		Name:         createDNSParam.Name,
+		Availability: types.Availabilities.Available,
+		DNSZone:      createDNSParam.Name,
 	}
 )
 
@@ -125,6 +139,11 @@ func testDNSRead(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, e
 func testDNSUpdate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewDNSOp(caller)
 	return client.Update(ctx, ctx.ID, updateDNSParam)
+}
+
+func testDNSUpdateToMin(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+	client := sacloud.NewDNSOp(caller)
+	return client.Update(ctx, ctx.ID, updateDNSToMinParam)
 }
 
 func testDNSDelete(ctx *CRUDTestContext, caller sacloud.APICaller) error {

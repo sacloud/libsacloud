@@ -10,8 +10,8 @@ import (
 type CDROM struct {
 	ID           types.ID            `json:",omitempty" yaml:"id,omitempty" structs:",omitempty"`
 	Name         string              `json:",omitempty" yaml:"name,omitempty" structs:",omitempty"`
-	Description  string              `json:",omitempty" yaml:"description,omitempty" structs:",omitempty"`
-	Tags         []string            `json:"" yaml:"tags"`
+	Description  string              `yaml:"description"`
+	Tags         types.Tags          `yaml:"tags"`
 	DisplayOrder int                 `json:",omitempty" yaml:"display_order,omitempty" structs:",omitempty"`
 	Availability types.EAvailability `json:",omitempty" yaml:"availability,omitempty" structs:",omitempty"`
 	Scope        types.EScope        `json:",omitempty" yaml:"scope,omitempty" structs:",omitempty"`

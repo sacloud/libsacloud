@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestProxyLBOpCRUD(t *testing.T) {
+func TestProxyLBOp_CRUD(t *testing.T) {
 	initProxyLBVariables()
 
 	Run(t, &CRUDTestCase{
@@ -47,6 +47,13 @@ func TestProxyLBOpCRUD(t *testing.T) {
 					IgnoreFields: ignoreProxyLBFields,
 				}),
 			},
+			{
+				Func: testProxyLBUpdateToMin,
+				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+					ExpectValue:  updateProxyLBToMinExpected,
+					IgnoreFields: ignoreProxyLBFields,
+				}),
+			},
 		},
 
 		Delete: &CRUDTestDeleteFunc{
@@ -56,11 +63,13 @@ func TestProxyLBOpCRUD(t *testing.T) {
 }
 
 var (
-	ignoreProxyLBFields   []string
-	createProxyLBParam    *sacloud.ProxyLBCreateRequest
-	createProxyLBExpected *sacloud.ProxyLB
-	updateProxyLBParam    *sacloud.ProxyLBUpdateRequest
-	updateProxyLBExpected *sacloud.ProxyLB
+	ignoreProxyLBFields        []string
+	createProxyLBParam         *sacloud.ProxyLBCreateRequest
+	createProxyLBExpected      *sacloud.ProxyLB
+	updateProxyLBParam         *sacloud.ProxyLBUpdateRequest
+	updateProxyLBExpected      *sacloud.ProxyLB
+	updateProxyLBToMinParam    *sacloud.ProxyLBUpdateRequest
+	updateProxyLBToMinExpected *sacloud.ProxyLB
 
 	createProxyLBForACMEParam *sacloud.ProxyLBCreateRequest
 	updateProxyLBForACMEParam *sacloud.ProxyLBUpdateRequest
@@ -69,7 +78,6 @@ var (
 func initProxyLBVariables() {
 	ignoreProxyLBFields = []string{
 		"ID",
-		"IconID",
 		"CreatedAt",
 		"ModifiedAt",
 		"Class",
@@ -147,6 +155,7 @@ func initProxyLBVariables() {
 		Name:        "libsacloud-proxyLB-upd",
 		Description: "desc-upd",
 		Tags:        []string{"tag1-upd", "tag2-upd"},
+		IconID:      testIconID,
 		HealthCheck: &sacloud.ProxyLBHealthCheck{
 			Protocol:  types.ProxyLBProtocols.HTTP,
 			Path:      "/index.html",
@@ -192,6 +201,7 @@ func initProxyLBVariables() {
 		Name:           updateProxyLBParam.Name,
 		Description:    updateProxyLBParam.Description,
 		Tags:           updateProxyLBParam.Tags,
+		IconID:         testIconID,
 		Availability:   types.Availabilities.Available,
 		Plan:           createProxyLBParam.Plan,
 		HealthCheck:    updateProxyLBParam.HealthCheck,
@@ -200,6 +210,35 @@ func initProxyLBVariables() {
 		Servers:        updateProxyLBParam.Servers,
 		LetsEncrypt:    updateProxyLBParam.LetsEncrypt,
 		StickySession:  updateProxyLBParam.StickySession,
+		UseVIPFailover: createProxyLBParam.UseVIPFailover,
+		Region:         createProxyLBParam.Region,
+	}
+
+	updateProxyLBToMinParam = &sacloud.ProxyLBUpdateRequest{
+		Name: "libsacloud-proxyLB-to-min",
+		HealthCheck: &sacloud.ProxyLBHealthCheck{
+			Protocol:  types.ProxyLBProtocols.TCP,
+			DelayLoop: 10,
+		},
+		LetsEncrypt: &sacloud.ProxyLBACMESetting{
+			Enabled: false,
+		},
+		StickySession: &sacloud.ProxyLBStickySession{
+			Enabled: false,
+		},
+	}
+	updateProxyLBToMinExpected = &sacloud.ProxyLB{
+		Name:         updateProxyLBToMinParam.Name,
+		Availability: types.Availabilities.Available,
+		Plan:         createProxyLBParam.Plan,
+		HealthCheck:  updateProxyLBToMinParam.HealthCheck,
+		SorryServer:  &sacloud.ProxyLBSorryServer{},
+		LetsEncrypt: &sacloud.ProxyLBACMESetting{
+			Enabled: false,
+		},
+		StickySession: &sacloud.ProxyLBStickySession{
+			Enabled: false,
+		},
 		UseVIPFailover: createProxyLBParam.UseVIPFailover,
 		Region:         createProxyLBParam.Region,
 	}
@@ -293,6 +332,11 @@ func testProxyLBRead(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{
 func testProxyLBUpdate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewProxyLBOp(caller)
 	return client.Update(ctx, ctx.ID, updateProxyLBParam)
+}
+
+func testProxyLBUpdateToMin(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+	client := sacloud.NewProxyLBOp(caller)
+	return client.Update(ctx, ctx.ID, updateProxyLBToMinParam)
 }
 
 func testProxyLBDelete(ctx *CRUDTestContext, caller sacloud.APICaller) error {
