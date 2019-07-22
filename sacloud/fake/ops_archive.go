@@ -48,7 +48,7 @@ func (o *ArchiveOp) Create(ctx context.Context, zone string, param *sacloud.Arch
 		result.SourceDiskAvailability = source.Availability
 	}
 
-	result.DisplayOrder = random(100)
+	result.DisplayOrder = int64(random(100))
 	result.Availability = types.Availabilities.Migrating
 	result.DiskPlanID = types.ID(2)
 	result.DiskPlanName = "標準プラン"

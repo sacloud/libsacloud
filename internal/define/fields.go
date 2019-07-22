@@ -297,6 +297,16 @@ func (f *fieldsDef) PlanID() *dsl.FieldDesc {
 	}
 }
 
+func (f *fieldsDef) PlanName() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "PlanName",
+		Tags: &dsl.FieldTags{
+			MapConv: "Plan.Name",
+		},
+		Type: meta.TypeString,
+	}
+}
+
 func (f *fieldsDef) stringEnabled() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "Enabled",
@@ -1786,7 +1796,7 @@ func (f *fieldsDef) ExpressionHash() *dsl.FieldDesc {
 func (f *fieldsDef) DisplayOrder() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "DisplayOrder",
-		Type: meta.TypeInt,
+		Type: meta.TypeInt64,
 	}
 }
 
