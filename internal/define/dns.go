@@ -20,7 +20,7 @@ var dnsAPI = &dsl.Resource{
 	IsGlobal:   true,
 	Operations: dsl.Operations{
 		// find
-		ops.FindCommonServiceItem(dnsAPIName, dnsNakedType, findParameter, dnsView, nil),
+		ops.FindCommonServiceItem(dnsAPIName, dnsNakedType, findParameter, dnsView),
 
 		// create
 		ops.CreateCommonServiceItem(dnsAPIName, dnsNakedType, dnsCreateParam, dnsView),

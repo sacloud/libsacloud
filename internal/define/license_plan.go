@@ -18,7 +18,7 @@ var licenseInfoAPI = &dsl.Resource{
 	PathSuffix: dsl.CloudAPISuffix,
 	IsGlobal:   true,
 	Operations: dsl.Operations{
-		ops.Find(licenseInfoAPIName, licenseInfoNakedType, findParameter, licenseInfoView, nil),
+		ops.Find(licenseInfoAPIName, licenseInfoNakedType, findParameter, licenseInfoView),
 		ops.Read(licenseInfoAPIName, licenseInfoNakedType, licenseInfoView),
 	},
 }

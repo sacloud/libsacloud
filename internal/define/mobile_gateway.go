@@ -21,7 +21,7 @@ var mobileGatewayAPI = &dsl.Resource{
 	PathSuffix: dsl.CloudAPISuffix,
 	Operations: dsl.Operations{
 		// find
-		ops.FindAppliance(mobileGatewayAPIName, mobileGatewayNakedType, findParameter, mobileGatewayView, nil),
+		ops.FindAppliance(mobileGatewayAPIName, mobileGatewayNakedType, findParameter, mobileGatewayView),
 
 		// create
 		ops.CreateAppliance(mobileGatewayAPIName, mobileGatewayNakedType, mobileGatewayCreateParam, mobileGatewayView),

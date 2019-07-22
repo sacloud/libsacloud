@@ -18,7 +18,7 @@ var regionAPI = &dsl.Resource{
 	PathSuffix: dsl.CloudAPISuffix,
 	IsGlobal:   true,
 	Operations: dsl.Operations{
-		ops.Find(regionAPIName, regionNakedType, findParameter, regionView, nil),
+		ops.Find(regionAPIName, regionNakedType, findParameter, regionView),
 		ops.Read(regionAPIName, regionNakedType, regionView),
 	},
 }

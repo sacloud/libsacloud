@@ -22,7 +22,7 @@ var proxyLBAPI = &dsl.Resource{
 	IsGlobal:   true,
 	Operations: dsl.Operations{
 		// find
-		ops.FindCommonServiceItem(proxyLBAPIName, proxyLBNakedType, findParameter, proxyLBView, nil),
+		ops.FindCommonServiceItem(proxyLBAPIName, proxyLBNakedType, findParameter, proxyLBView),
 
 		// create
 		ops.CreateCommonServiceItem(proxyLBAPIName, proxyLBNakedType, proxyLBCreateParam, proxyLBView),

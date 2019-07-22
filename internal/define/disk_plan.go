@@ -17,7 +17,7 @@ var diskPlanAPI = &dsl.Resource{
 	PathName:   diskPlanAPIPathName,
 	PathSuffix: dsl.CloudAPISuffix,
 	Operations: dsl.Operations{
-		ops.Find(diskPlanAPIName, diskPlanNakedType, findParameter, diskPlanView, nil),
+		ops.Find(diskPlanAPIName, diskPlanNakedType, findParameter, diskPlanView),
 		ops.Read(diskPlanAPIName, diskPlanNakedType, diskPlanView),
 	},
 }

@@ -21,7 +21,7 @@ var simpleMonitorAPI = &dsl.Resource{
 	IsGlobal:   true,
 	Operations: dsl.Operations{
 		// find
-		ops.FindCommonServiceItem(simpleMonitorAPIName, simpleMonitorNakedType, findParameter, simpleMonitorView, nil),
+		ops.FindCommonServiceItem(simpleMonitorAPIName, simpleMonitorNakedType, findParameter, simpleMonitorView),
 
 		// create
 		ops.CreateCommonServiceItem(simpleMonitorAPIName, simpleMonitorNakedType, simpleMonitorCreateParam, simpleMonitorView),

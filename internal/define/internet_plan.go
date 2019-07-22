@@ -17,7 +17,7 @@ var internetPlanAPI = &dsl.Resource{
 	PathName:   internetPlanAPIPathName,
 	PathSuffix: dsl.CloudAPISuffix,
 	Operations: dsl.Operations{
-		ops.Find(internetPlanAPIName, internetPlanNakedType, findParameter, internetPlanView, nil),
+		ops.Find(internetPlanAPIName, internetPlanNakedType, findParameter, internetPlanView),
 		ops.Read(internetPlanAPIName, internetPlanNakedType, internetPlanView),
 	},
 }

@@ -19,7 +19,7 @@ var loadBalancerAPI = &dsl.Resource{
 	PathSuffix: dsl.CloudAPISuffix,
 	Operations: dsl.Operations{
 		// find
-		ops.FindAppliance(loadBalancerAPIName, loadBalancerNakedType, findParameter, loadBalancerView, nil),
+		ops.FindAppliance(loadBalancerAPIName, loadBalancerNakedType, findParameter, loadBalancerView),
 
 		// create
 		ops.CreateAppliance(loadBalancerAPIName, loadBalancerNakedType, loadBalancerCreateParam, loadBalancerView),

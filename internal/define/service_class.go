@@ -17,7 +17,7 @@ var serviceClassAPI = &dsl.Resource{
 	PathName:   serviceClassAPIPathName,
 	PathSuffix: dsl.CloudAPISuffix,
 	Operations: dsl.Operations{
-		ops.Find(serviceClassAPIName, serviceClassNakedType, findParameter, serviceClassView, nil),
+		ops.Find(serviceClassAPIName, serviceClassNakedType, findParameter, serviceClassView),
 	},
 }
 

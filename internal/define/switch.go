@@ -21,7 +21,7 @@ var switchAPI = &dsl.Resource{
 	PathSuffix: dsl.CloudAPISuffix,
 	Operations: dsl.Operations{
 		// find
-		ops.Find(switchAPIName, switchNakedType, findParameter, switchView, nil),
+		ops.Find(switchAPIName, switchNakedType, findParameter, switchView),
 
 		// create
 		ops.Create(switchAPIName, switchNakedType, switchCreateParam, switchView),

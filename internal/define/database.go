@@ -21,7 +21,7 @@ var databaseAPI = &dsl.Resource{
 	PathSuffix: dsl.CloudAPISuffix,
 	Operations: dsl.Operations{
 		// find
-		ops.FindAppliance(databaseAPIName, databaseNakedType, findParameter, databaseView, nil),
+		ops.FindAppliance(databaseAPIName, databaseNakedType, findParameter, databaseView),
 
 		// create
 		ops.CreateAppliance(databaseAPIName, databaseNakedType, databaseCreateParam, databaseView),

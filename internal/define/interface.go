@@ -21,7 +21,7 @@ var interfaceAPI = &dsl.Resource{
 	PathSuffix: dsl.CloudAPISuffix,
 	Operations: dsl.Operations{
 		// find
-		ops.Find(interfaceAPIName, interfaceNakedType, findParameter, interfaceView, nil),
+		ops.Find(interfaceAPIName, interfaceNakedType, findParameter, interfaceView),
 
 		// create
 		ops.Create(interfaceAPIName, interfaceNakedType, interfaceCreateParam, interfaceView),

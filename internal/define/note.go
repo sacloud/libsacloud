@@ -20,7 +20,7 @@ var noteAPI = &dsl.Resource{
 	IsGlobal:   true,
 	Operations: dsl.Operations{
 		// find
-		ops.Find(noteAPIName, noteNakedType, findParameter, noteView, nil),
+		ops.Find(noteAPIName, noteNakedType, findParameter, noteView),
 
 		// create
 		ops.Create(noteAPIName, noteNakedType, noteCreateParam, noteView),

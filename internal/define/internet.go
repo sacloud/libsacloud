@@ -22,7 +22,7 @@ var internetAPI = &dsl.Resource{
 	Operations: dsl.Operations{
 
 		// find
-		ops.Find(internetAPIName, internetNakedType, findParameter, internetView, nil),
+		ops.Find(internetAPIName, internetNakedType, findParameter, internetView),
 
 		// create
 		ops.Create(internetAPIName, internetNakedType, internetCreateParam, internetView),

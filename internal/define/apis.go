@@ -4,7 +4,6 @@
 //go:generate go run ../tools/gen-api-envelope/main.go
 //go:generate go run ../tools/gen-api-result/main.go
 //go:generate go run ../tools/gen-api-op/main.go
-//go:generate go run ../tools/gen-search-keys/main.go
 //go:generate go run ../tools/gen-api-tracer/main.go
 //go:generate go run ../tools/gen-api-stub/main.go
 //go:generate go run ../tools/gen-api-meta/main.go

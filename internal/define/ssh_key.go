@@ -22,7 +22,7 @@ var sshKeyAPI = &dsl.Resource{
 	IsGlobal:   true,
 	Operations: dsl.Operations{
 		// find
-		ops.Find(sshKeyAPIName, sshKeyNakedType, findParameter, sshKeyView, nil),
+		ops.Find(sshKeyAPIName, sshKeyNakedType, findParameter, sshKeyView),
 
 		// create
 		ops.Create(sshKeyAPIName, sshKeyNakedType, sshKeyCreateParam, sshKeyView),

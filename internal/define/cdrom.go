@@ -21,7 +21,7 @@ var cdromAPI = &dsl.Resource{
 	PathSuffix: dsl.CloudAPISuffix,
 	Operations: dsl.Operations{
 		// find
-		ops.Find(cdromAPIName, cdromNakedType, findParameter, cdromView, nil),
+		ops.Find(cdromAPIName, cdromNakedType, findParameter, cdromView),
 
 		// create
 		{

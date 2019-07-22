@@ -19,7 +19,7 @@ var packetFilterAPI = &dsl.Resource{
 	PathSuffix: dsl.CloudAPISuffix,
 	Operations: dsl.Operations{
 		// find
-		ops.Find(packetFilterAPIName, packetFilterNakedType, findParameter, packetFilterView, nil),
+		ops.Find(packetFilterAPIName, packetFilterNakedType, findParameter, packetFilterView),
 
 		// create
 		ops.Create(packetFilterAPIName, packetFilterNakedType, packetFilterCreateParam, packetFilterView),
