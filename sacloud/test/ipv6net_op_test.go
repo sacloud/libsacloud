@@ -23,7 +23,15 @@ func TestIPv6NetOp_List_Read(t *testing.T) {
 	assert.NoError(t, err)
 
 	// wait
-	internet, err = readInternet(internet.ID, singletonAPICaller())
+	waiter := sacloud.WaiterForApplianceUp(func() (interface{}, error) {
+		return internetOp.Read(ctx, testZone, internet.ID)
+	}, 100)
+	if _, err := waiter.WaitForState(context.TODO()); err != nil {
+		t.Error("WaitForUp is failed: ", err)
+		return
+	}
+
+	internet, err = internetOp.Read(ctx, testZone, internet.ID)
 	assert.NoError(t, err)
 
 	// Enable IPv6

@@ -208,19 +208,13 @@ func Run(t TestT, testCase *CRUDTestCase) {
 		}
 
 		if !testCase.IgnoreStartupWait && testCase.Read != nil && testContext.LastValue != nil {
-
-			_, ok1 := testContext.LastValue.(accessor.Availability)
-			_, ok2 := testContext.LastValue.(accessor.InstanceStatus)
-			if ok1 || ok2 {
-				waiter := sacloud.WaiterForApplianceUp(func() (interface{}, error) {
-					return testCase.Read.Func(testContext, testCase.SetupAPICallerFunc())
-				}, 30)
-				if _, err := waiter.WaitForState(context.TODO()); err != nil {
-					t.Error("WaitForUp is failed: ", err)
-					return
-				}
+			waiter := sacloud.WaiterForApplianceUp(func() (interface{}, error) {
+				return testCase.Read.Func(testContext, testCase.SetupAPICallerFunc())
+			}, 100)
+			if _, err := waiter.WaitForState(context.TODO()); err != nil {
+				t.Error("WaitForUp is failed: ", err)
+				return
 			}
-
 		}
 	}
 
