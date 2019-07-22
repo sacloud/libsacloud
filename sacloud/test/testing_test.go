@@ -8,6 +8,8 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"sync"
+	"time"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/accessor"
@@ -81,6 +83,38 @@ type CRUDTestContext struct {
 
 	// LastValue 最後の操作での戻り値
 	LastValue interface{}
+
+	ctx  context.Context
+	once sync.Once
+}
+
+func (c *CRUDTestContext) initInnerContext() {
+	c.once.Do(func() {
+		c.ctx = context.TODO()
+	})
+}
+
+// Deadline context.Context実装
+func (c *CRUDTestContext) Deadline() (deadline time.Time, ok bool) {
+	c.initInnerContext()
+	return c.ctx.Deadline()
+}
+
+// Done context.Context実装
+func (c *CRUDTestContext) Done() <-chan struct{} {
+	c.initInnerContext()
+	return c.ctx.Done()
+}
+
+// Err context.Context実装
+func (c *CRUDTestContext) Err() error {
+	c.initInnerContext()
+	return c.ctx.Err()
+}
+
+// Value context.Context実装
+func (c *CRUDTestContext) Value(key interface{}) interface{} {
+	return c.ctx.Value(key)
 }
 
 // CRUDTestFunc CRUD操作(DELETE以外)テストでのテスト用Func

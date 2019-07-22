@@ -1,7 +1,6 @@
 package test
 
 import (
-	"context"
 	"testing"
 	"time"
 
@@ -39,9 +38,9 @@ func TestVPCRouterOpCRUD(t *testing.T) {
 			},
 		},
 
-		Shutdown: func(testContext *CRUDTestContext, caller sacloud.APICaller) error {
+		Shutdown: func(ctx *CRUDTestContext, caller sacloud.APICaller) error {
 			client := sacloud.NewVPCRouterOp(caller)
-			return client.Shutdown(context.Background(), testZone, testContext.ID, &sacloud.ShutdownOption{Force: true})
+			return client.Shutdown(ctx, testZone, ctx.ID, &sacloud.ShutdownOption{Force: true})
 		},
 
 		Delete: &CRUDTestDeleteFunc{
@@ -119,21 +118,21 @@ var (
 )
 
 func testVPCRouterCreate(createParam *sacloud.VPCRouterCreateRequest) func(*CRUDTestContext, sacloud.APICaller) (interface{}, error) {
-	return func(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+	return func(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 		client := sacloud.NewVPCRouterOp(caller)
-		vpcRouter, err := client.Create(context.Background(), testZone, createParam)
+		vpcRouter, err := client.Create(ctx, testZone, createParam)
 		if err != nil {
 			return nil, err
 		}
 
 		n, err := sacloud.WaiterForReady(func() (interface{}, error) {
-			return client.Read(context.Background(), testZone, vpcRouter.ID)
-		}).WaitForState(context.Background())
+			return client.Read(ctx, testZone, vpcRouter.ID)
+		}).WaitForState(ctx)
 		if err != nil {
 			return nil, err
 		}
 
-		if err := client.Boot(context.Background(), testZone, vpcRouter.ID); err != nil {
+		if err := client.Boot(ctx, testZone, vpcRouter.ID); err != nil {
 			return nil, err
 		}
 
@@ -141,21 +140,21 @@ func testVPCRouterCreate(createParam *sacloud.VPCRouterCreateRequest) func(*CRUD
 	}
 }
 
-func testVPCRouterRead(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testVPCRouterRead(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewVPCRouterOp(caller)
-	return client.Read(context.Background(), testZone, testContext.ID)
+	return client.Read(ctx, testZone, ctx.ID)
 }
 
 func testVPCRouterUpdate(updateParam *sacloud.VPCRouterUpdateRequest) func(*CRUDTestContext, sacloud.APICaller) (interface{}, error) {
-	return func(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+	return func(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 		client := sacloud.NewVPCRouterOp(caller)
-		return client.Update(context.Background(), testZone, testContext.ID, updateParam)
+		return client.Update(ctx, testZone, ctx.ID, updateParam)
 	}
 }
 
-func testVPCRouterDelete(testContext *CRUDTestContext, caller sacloud.APICaller) error {
+func testVPCRouterDelete(ctx *CRUDTestContext, caller sacloud.APICaller) error {
 	client := sacloud.NewVPCRouterOp(caller)
-	return client.Delete(context.Background(), testZone, testContext.ID)
+	return client.Delete(ctx, testZone, ctx.ID)
 }
 
 func TestVPCRouterOpWithRouterCRUD(t *testing.T) {
@@ -163,8 +162,7 @@ func TestVPCRouterOpWithRouterCRUD(t *testing.T) {
 		Parallel:           true,
 		SetupAPICallerFunc: singletonAPICaller,
 
-		Setup: func(testContext *CRUDTestContext, caller sacloud.APICaller) error {
-			ctx := context.Background()
+		Setup: func(ctx *CRUDTestContext, caller sacloud.APICaller) error {
 			routerOp := sacloud.NewInternetOp(caller)
 			created, err := routerOp.Create(ctx, testZone, &sacloud.InternetCreateRequest{
 				Name:           "libsacloud-internet-for-vpc-router",
@@ -175,13 +173,13 @@ func TestVPCRouterOpWithRouterCRUD(t *testing.T) {
 				return err
 			}
 
-			testContext.Values["vpcrouter/internet"] = created.ID
+			ctx.Values["vpcrouter/internet"] = created.ID
 			max := 30
 			for {
 				if max == 0 {
 					break
 				}
-				_, err := routerOp.Read(context.Background(), testZone, created.ID)
+				_, err := routerOp.Read(ctx, testZone, created.ID)
 				if err != nil || sacloud.IsNotFoundError(err) {
 					max--
 					time.Sleep(3 * time.Second)
@@ -236,17 +234,15 @@ func TestVPCRouterOpWithRouterCRUD(t *testing.T) {
 
 		Updates: []*CRUDTestFunc{
 			{
-				Func: func(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+				Func: func(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 					vpcOp := sacloud.NewVPCRouterOp(caller)
-					ctx := context.Background()
-
 					// shutdown
-					if err := vpcOp.Shutdown(ctx, testZone, testContext.ID, nil); err != nil {
+					if err := vpcOp.Shutdown(ctx, testZone, ctx.ID, nil); err != nil {
 						return nil, err
 					}
 					_, err := sacloud.WaiterForDown(func() (interface{}, error) {
-						return vpcOp.Read(context.Background(), testZone, testContext.ID)
-					}).WaitForState(context.Background())
+						return vpcOp.Read(ctx, testZone, ctx.ID)
+					}).WaitForState(ctx)
 					if err != nil {
 						return nil, err
 					}
@@ -258,10 +254,10 @@ func TestVPCRouterOpWithRouterCRUD(t *testing.T) {
 					if err != nil {
 						return nil, err
 					}
-					testContext.Values["vpcrouter/switch"] = sw.ID
+					ctx.Values["vpcrouter/switch"] = sw.ID
 
 					// connect to switch
-					if err := vpcOp.ConnectToSwitch(ctx, testZone, testContext.ID, 2, sw.ID); err != nil {
+					if err := vpcOp.ConnectToSwitch(ctx, testZone, ctx.ID, 2, sw.ID); err != nil {
 						return nil, err
 					}
 
@@ -332,7 +328,7 @@ func TestVPCRouterOpWithRouterCRUD(t *testing.T) {
 					}
 
 					withRouterUpdateVPCRouterExpected.Settings = p.Settings
-					return testVPCRouterUpdate(updateVPCRouterParam)(testContext, caller)
+					return testVPCRouterUpdate(updateVPCRouterParam)(ctx, caller)
 				},
 				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
 					ExpectValue:  updateVPCRouterExpected,
@@ -341,19 +337,18 @@ func TestVPCRouterOpWithRouterCRUD(t *testing.T) {
 			},
 		},
 
-		Shutdown: func(testContext *CRUDTestContext, caller sacloud.APICaller) error {
+		Shutdown: func(ctx *CRUDTestContext, caller sacloud.APICaller) error {
 			client := sacloud.NewVPCRouterOp(caller)
-			return client.Shutdown(context.Background(), testZone, testContext.ID, &sacloud.ShutdownOption{Force: true})
+			return client.Shutdown(ctx, testZone, ctx.ID, &sacloud.ShutdownOption{Force: true})
 		},
 
 		Delete: &CRUDTestDeleteFunc{
 			Func: testVPCRouterDelete,
 		},
 
-		Cleanup: func(testContext *CRUDTestContext, caller sacloud.APICaller) error {
-			ctx := context.Background()
+		Cleanup: func(ctx *CRUDTestContext, caller sacloud.APICaller) error {
 			routerOp := sacloud.NewInternetOp(caller)
-			routerID, ok := testContext.Values["vpcrouter/internet"]
+			routerID, ok := ctx.Values["vpcrouter/internet"]
 			if ok {
 				if err := routerOp.Delete(ctx, testZone, routerID.(types.ID)); err != nil {
 					return err
@@ -361,7 +356,7 @@ func TestVPCRouterOpWithRouterCRUD(t *testing.T) {
 			}
 
 			swOp := sacloud.NewSwitchOp(caller)
-			switchID, ok := testContext.Values["vpcrouter/switch"]
+			switchID, ok := ctx.Values["vpcrouter/switch"]
 			if ok {
 				if err := swOp.Delete(ctx, testZone, switchID.(types.ID)); err != nil {
 					return err

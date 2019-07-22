@@ -1,7 +1,6 @@
 package test
 
 import (
-	"context"
 	"errors"
 	"testing"
 
@@ -99,24 +98,24 @@ var (
 	}
 )
 
-func testDiskCreate(_ *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testDiskCreate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewDiskOp(caller)
-	return client.Create(context.Background(), testZone, createDiskParam, nil)
+	return client.Create(ctx, testZone, createDiskParam, nil)
 }
 
-func testDiskRead(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testDiskRead(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewDiskOp(caller)
-	return client.Read(context.Background(), testZone, testContext.ID)
+	return client.Read(ctx, testZone, ctx.ID)
 }
 
-func testDiskUpdate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testDiskUpdate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewDiskOp(caller)
-	return client.Update(context.Background(), testZone, testContext.ID, updateDiskParam)
+	return client.Update(ctx, testZone, ctx.ID, updateDiskParam)
 }
 
-func testDiskDelete(testContext *CRUDTestContext, caller sacloud.APICaller) error {
+func testDiskDelete(ctx *CRUDTestContext, caller sacloud.APICaller) error {
 	client := sacloud.NewDiskOp(caller)
-	return client.Delete(context.Background(), testZone, testContext.ID)
+	return client.Delete(ctx, testZone, ctx.ID)
 }
 
 func TestDiskOp_Config(t *testing.T) {
@@ -127,10 +126,10 @@ func TestDiskOp_Config(t *testing.T) {
 	Run(t, &CRUDTestCase{
 		Parallel:           true,
 		SetupAPICallerFunc: singletonAPICaller,
-		Setup: func(testContext *CRUDTestContext, caller sacloud.APICaller) error {
+		Setup: func(ctx *CRUDTestContext, caller sacloud.APICaller) error {
 			archiveName := "CentOS"
 			client := sacloud.NewArchiveOp(singletonAPICaller())
-			searched, err := client.Find(context.Background(), testZone, &sacloud.FindCondition{
+			searched, err := client.Find(ctx, testZone, &sacloud.FindCondition{
 				Filter: search.Filter{
 					search.Key("Name"): search.PartialMatch(archiveName),
 				},
@@ -145,9 +144,9 @@ func TestDiskOp_Config(t *testing.T) {
 			return nil
 		},
 		Create: &CRUDTestFunc{
-			Func: func(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+			Func: func(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 				client := sacloud.NewDiskOp(singletonAPICaller())
-				disk, err := client.Create(context.Background(), testZone, &sacloud.DiskCreateRequest{
+				disk, err := client.Create(ctx, testZone, &sacloud.DiskCreateRequest{
 					Name:            "libsacloud-disk-edit",
 					DiskPlanID:      types.ID(4),
 					SizeMB:          20 * 1024,
@@ -157,8 +156,8 @@ func TestDiskOp_Config(t *testing.T) {
 					return nil, err
 				}
 				if _, err = sacloud.WaiterForReady(func() (interface{}, error) {
-					return client.Read(context.Background(), testZone, disk.ID)
-				}).WaitForState(context.TODO()); err != nil {
+					return client.Read(ctx, testZone, disk.ID)
+				}).WaitForState(ctx); err != nil {
 					return disk, err
 				}
 
@@ -170,10 +169,10 @@ func TestDiskOp_Config(t *testing.T) {
 		},
 		Updates: []*CRUDTestFunc{
 			{
-				Func: func(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+				Func: func(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 					// edit disk
 					client := sacloud.NewDiskOp(singletonAPICaller())
-					err := client.Config(context.Background(), testZone, testContext.ID, &sacloud.DiskEditRequest{
+					err := client.Config(ctx, testZone, ctx.ID, &sacloud.DiskEditRequest{
 						Password: "password",
 						SSHKeys: []*sacloud.DiskEditSSHKey{
 							{

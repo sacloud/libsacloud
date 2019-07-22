@@ -1,7 +1,6 @@
 package test
 
 import (
-	"context"
 	"testing"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
@@ -37,9 +36,9 @@ func TestDatabaseOpCRUD(t *testing.T) {
 				}),
 			},
 		},
-		Shutdown: func(testContext *CRUDTestContext, caller sacloud.APICaller) error {
+		Shutdown: func(ctx *CRUDTestContext, caller sacloud.APICaller) error {
 			client := sacloud.NewDatabaseOp(caller)
-			return client.Shutdown(context.Background(), testZone, testContext.ID, &sacloud.ShutdownOption{Force: true})
+			return client.Shutdown(ctx, testZone, ctx.ID, &sacloud.ShutdownOption{Force: true})
 		},
 
 		Delete: &CRUDTestDeleteFunc{
@@ -127,22 +126,22 @@ var (
 	}
 )
 
-func testDatabaseCreate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testDatabaseCreate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewDatabaseOp(caller)
-	return client.Create(context.Background(), testZone, createDatabaseParam)
+	return client.Create(ctx, testZone, createDatabaseParam)
 }
 
-func testDatabaseRead(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testDatabaseRead(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewDatabaseOp(caller)
-	return client.Read(context.Background(), testZone, testContext.ID)
+	return client.Read(ctx, testZone, ctx.ID)
 }
 
-func testDatabaseUpdate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testDatabaseUpdate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewDatabaseOp(caller)
-	return client.Update(context.Background(), testZone, testContext.ID, updateDatabaseParam)
+	return client.Update(ctx, testZone, ctx.ID, updateDatabaseParam)
 }
 
-func testDatabaseDelete(testContext *CRUDTestContext, caller sacloud.APICaller) error {
+func testDatabaseDelete(ctx *CRUDTestContext, caller sacloud.APICaller) error {
 	client := sacloud.NewDatabaseOp(caller)
-	return client.Delete(context.Background(), testZone, testContext.ID)
+	return client.Delete(ctx, testZone, ctx.ID)
 }

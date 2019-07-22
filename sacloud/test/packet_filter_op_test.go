@@ -1,7 +1,6 @@
 package test
 
 import (
-	"context"
 	"testing"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
@@ -100,22 +99,22 @@ var (
 	}
 )
 
-func testPacketFilterCreate(_ *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testPacketFilterCreate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewPacketFilterOp(caller)
-	return client.Create(context.Background(), testZone, createPacketFilterParam)
+	return client.Create(ctx, testZone, createPacketFilterParam)
 }
 
-func testPacketFilterRead(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testPacketFilterRead(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewPacketFilterOp(caller)
-	return client.Read(context.Background(), testZone, testContext.ID)
+	return client.Read(ctx, testZone, ctx.ID)
 }
 
-func testPacketFilterUpdate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testPacketFilterUpdate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewPacketFilterOp(caller)
-	return client.Update(context.Background(), testZone, testContext.ID, updatePacketFilterParam)
+	return client.Update(ctx, testZone, ctx.ID, updatePacketFilterParam)
 }
 
-func testPacketFilterDelete(testContext *CRUDTestContext, caller sacloud.APICaller) error {
+func testPacketFilterDelete(ctx *CRUDTestContext, caller sacloud.APICaller) error {
 	client := sacloud.NewPacketFilterOp(caller)
-	return client.Delete(context.Background(), testZone, testContext.ID)
+	return client.Delete(ctx, testZone, ctx.ID)
 }

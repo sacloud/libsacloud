@@ -1,7 +1,6 @@
 package test
 
 import (
-	"context"
 	"testing"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
@@ -73,22 +72,22 @@ var (
 	}
 )
 
-func testNoteCreate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testNoteCreate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewNoteOp(caller)
-	return client.Create(context.Background(), createNoteParam)
+	return client.Create(ctx, createNoteParam)
 }
 
-func testNoteRead(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testNoteRead(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewNoteOp(caller)
-	return client.Read(context.Background(), testContext.ID)
+	return client.Read(ctx, ctx.ID)
 }
 
-func testNoteUpdate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testNoteUpdate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewNoteOp(caller)
-	return client.Update(context.Background(), testContext.ID, updateNoteParam)
+	return client.Update(ctx, ctx.ID, updateNoteParam)
 }
 
-func testNoteDelete(testContext *CRUDTestContext, caller sacloud.APICaller) error {
+func testNoteDelete(ctx *CRUDTestContext, caller sacloud.APICaller) error {
 	client := sacloud.NewNoteOp(caller)
-	return client.Delete(context.Background(), testContext.ID)
+	return client.Delete(ctx, ctx.ID)
 }

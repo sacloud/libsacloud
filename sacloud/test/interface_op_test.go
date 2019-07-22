@@ -1,7 +1,6 @@
 package test
 
 import (
-	"context"
 	"testing"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
@@ -17,9 +16,9 @@ func TestInterface_Operations(t *testing.T) {
 
 		SetupAPICallerFunc: singletonAPICaller,
 
-		Setup: func(testContext *CRUDTestContext, caller sacloud.APICaller) error {
+		Setup: func(ctx *CRUDTestContext, caller sacloud.APICaller) error {
 			serverClient := sacloud.NewServerOp(caller)
-			server, err := serverClient.Create(context.Background(), testZone, &sacloud.ServerCreateRequest{
+			server, err := serverClient.Create(ctx, testZone, &sacloud.ServerCreateRequest{
 				CPU:      1,
 				MemoryMB: 1 * 1024,
 				//ConnectedSwitches: []*ConnectedSwitch{
@@ -32,7 +31,7 @@ func TestInterface_Operations(t *testing.T) {
 				return err
 			}
 
-			testContext.Values["interface/server"] = server.ID
+			ctx.Values["interface/server"] = server.ID
 			createInterfaceParam.ServerID = server.ID
 			createInterfaceExpected.ServerID = server.ID
 			updateInterfaceExpected.ServerID = server.ID
@@ -66,14 +65,14 @@ func TestInterface_Operations(t *testing.T) {
 			Func: testInterfaceDelete,
 		},
 
-		Cleanup: func(testContext *CRUDTestContext, caller sacloud.APICaller) error {
-			serverID, ok := testContext.Values["interface/server"]
+		Cleanup: func(ctx *CRUDTestContext, caller sacloud.APICaller) error {
+			serverID, ok := ctx.Values["interface/server"]
 			if !ok {
 				return nil
 			}
 
 			serverClient := sacloud.NewServerOp(caller)
-			return serverClient.Delete(context.Background(), testZone, serverID.(types.ID))
+			return serverClient.Delete(ctx, testZone, serverID.(types.ID))
 		},
 	})
 
@@ -106,22 +105,22 @@ var (
 	}
 )
 
-func testInterfaceCreate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testInterfaceCreate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewInterfaceOp(caller)
-	return client.Create(context.Background(), testZone, createInterfaceParam)
+	return client.Create(ctx, testZone, createInterfaceParam)
 }
 
-func testInterfaceRead(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testInterfaceRead(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewInterfaceOp(caller)
-	return client.Read(context.Background(), testZone, testContext.ID)
+	return client.Read(ctx, testZone, ctx.ID)
 }
 
-func testInterfaceUpdate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testInterfaceUpdate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewInterfaceOp(caller)
-	return client.Update(context.Background(), testZone, testContext.ID, updateInterfaceParam)
+	return client.Update(ctx, testZone, ctx.ID, updateInterfaceParam)
 }
 
-func testInterfaceDelete(testContext *CRUDTestContext, caller sacloud.APICaller) error {
+func testInterfaceDelete(ctx *CRUDTestContext, caller sacloud.APICaller) error {
 	client := sacloud.NewInterfaceOp(caller)
-	return client.Delete(context.Background(), testZone, testContext.ID)
+	return client.Delete(ctx, testZone, ctx.ID)
 }

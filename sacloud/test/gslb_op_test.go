@@ -1,7 +1,6 @@
 package test
 
 import (
-	"context"
 	"testing"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
@@ -139,22 +138,22 @@ var (
 	}
 )
 
-func testGSLBCreate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testGSLBCreate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewGSLBOp(caller)
-	return client.Create(context.Background(), createGSLBParam)
+	return client.Create(ctx, createGSLBParam)
 }
 
-func testGSLBRead(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testGSLBRead(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewGSLBOp(caller)
-	return client.Read(context.Background(), testContext.ID)
+	return client.Read(ctx, ctx.ID)
 }
 
-func testGSLBUpdate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testGSLBUpdate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewGSLBOp(caller)
-	return client.Update(context.Background(), testContext.ID, updateGSLBParam)
+	return client.Update(ctx, ctx.ID, updateGSLBParam)
 }
 
-func testGSLBDelete(testContext *CRUDTestContext, caller sacloud.APICaller) error {
+func testGSLBDelete(ctx *CRUDTestContext, caller sacloud.APICaller) error {
 	client := sacloud.NewGSLBOp(caller)
-	return client.Delete(context.Background(), testContext.ID)
+	return client.Delete(ctx, ctx.ID)
 }

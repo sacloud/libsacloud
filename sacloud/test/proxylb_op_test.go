@@ -280,24 +280,24 @@ func initProxyLBVariables() {
 	}
 }
 
-func testProxyLBCreate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testProxyLBCreate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewProxyLBOp(caller)
-	return client.Create(context.Background(), createProxyLBParam)
+	return client.Create(ctx, createProxyLBParam)
 }
 
-func testProxyLBRead(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testProxyLBRead(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewProxyLBOp(caller)
-	return client.Read(context.Background(), testContext.ID)
+	return client.Read(ctx, ctx.ID)
 }
 
-func testProxyLBUpdate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testProxyLBUpdate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewProxyLBOp(caller)
-	return client.Update(context.Background(), testContext.ID, updateProxyLBParam)
+	return client.Update(ctx, ctx.ID, updateProxyLBParam)
 }
 
-func testProxyLBDelete(testContext *CRUDTestContext, caller sacloud.APICaller) error {
+func testProxyLBDelete(ctx *CRUDTestContext, caller sacloud.APICaller) error {
 	client := sacloud.NewProxyLBOp(caller)
-	return client.Delete(context.Background(), testContext.ID)
+	return client.Delete(ctx, ctx.ID)
 }
 
 func TestProxyLBOpLetsEncryptAndHealth(t *testing.T) {

@@ -1,7 +1,6 @@
 package test
 
 import (
-	"context"
 	"errors"
 	"testing"
 	"time"
@@ -128,37 +127,35 @@ var (
 	}
 )
 
-func testSimpleMonitorCreate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testSimpleMonitorCreate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewSimpleMonitorOp(caller)
-	return client.Create(context.Background(), createSimpleMonitorParam)
+	return client.Create(ctx, createSimpleMonitorParam)
 }
 
-func testSimpleMonitorRead(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testSimpleMonitorRead(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewSimpleMonitorOp(caller)
-	return client.Read(context.Background(), testContext.ID)
+	return client.Read(ctx, ctx.ID)
 }
 
-func testSimpleMonitorUpdate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testSimpleMonitorUpdate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewSimpleMonitorOp(caller)
-	return client.Update(context.Background(), testContext.ID, updateSimpleMonitorParam)
+	return client.Update(ctx, ctx.ID, updateSimpleMonitorParam)
 }
 
-func testSimpleMonitorDelete(testContext *CRUDTestContext, caller sacloud.APICaller) error {
+func testSimpleMonitorDelete(ctx *CRUDTestContext, caller sacloud.APICaller) error {
 	client := sacloud.NewSimpleMonitorOp(caller)
-	return client.Delete(context.Background(), testContext.ID)
+	return client.Delete(ctx, ctx.ID)
 }
 
 func TestSimpleMonitorOp_StatusAndHealth(t *testing.T) {
 	client := sacloud.NewSimpleMonitorOp(singletonAPICaller())
-	ctx := context.Background()
-
 	Run(t, &CRUDTestCase{
 		Parallel: true,
 
 		SetupAPICallerFunc: singletonAPICaller,
 
 		Create: &CRUDTestFunc{
-			Func: func(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+			Func: func(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 				sm, err := client.Create(ctx, simpleMonitorStatusAndHealthTargetParam)
 				if err != nil {
 					return nil, err
@@ -176,10 +173,10 @@ func TestSimpleMonitorOp_StatusAndHealth(t *testing.T) {
 
 		Updates: []*CRUDTestFunc{
 			{
-				Func: func(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
-					return client.HealthStatus(ctx, testContext.ID)
+				Func: func(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+					return client.HealthStatus(ctx, ctx.ID)
 				},
-				CheckFunc: func(t TestT, testContext *CRUDTestContext, v interface{}) error {
+				CheckFunc: func(t TestT, ctx *CRUDTestContext, v interface{}) error {
 					healthStatus := v.(*sacloud.SimpleMonitorHealthStatus)
 					if !assert.NotNil(t, healthStatus) {
 						return errors.New("unexpected state: SimpleMonitorHealthStatus")
@@ -188,10 +185,10 @@ func TestSimpleMonitorOp_StatusAndHealth(t *testing.T) {
 				},
 			},
 			{
-				Func: func(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
-					return client.MonitorResponseTime(ctx, testContext.ID, &sacloud.MonitorCondition{})
+				Func: func(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+					return client.MonitorResponseTime(ctx, ctx.ID, &sacloud.MonitorCondition{})
 				},
-				CheckFunc: func(t TestT, testContext *CRUDTestContext, v interface{}) error {
+				CheckFunc: func(t TestT, ctx *CRUDTestContext, v interface{}) error {
 					monitor := v.(*sacloud.ResponseTimeSecActivity)
 					if !assert.NotNil(t, monitor) {
 						return errors.New("unexpected state: ResponseTimeSecActivity")

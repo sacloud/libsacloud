@@ -1,7 +1,6 @@
 package test
 
 import (
-	"context"
 	"testing"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
@@ -12,9 +11,9 @@ func TestPrivateHostOpCRUD(t *testing.T) {
 		Parallel:           true,
 		IgnoreStartupWait:  true,
 		SetupAPICallerFunc: singletonAPICaller,
-		Setup: func(testContext *CRUDTestContext, caller sacloud.APICaller) error {
+		Setup: func(ctx *CRUDTestContext, caller sacloud.APICaller) error {
 			planOp := sacloud.NewPrivateHostPlanOp(caller)
-			searched, err := planOp.Find(context.Background(), privateHostTestZone, nil)
+			searched, err := planOp.Find(ctx, privateHostTestZone, nil)
 			if err != nil {
 				return err
 			}
@@ -95,22 +94,22 @@ var (
 	}
 )
 
-func testPrivateHostCreate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testPrivateHostCreate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewPrivateHostOp(caller)
-	return client.Create(context.Background(), privateHostTestZone, createPrivateHostParam)
+	return client.Create(ctx, privateHostTestZone, createPrivateHostParam)
 }
 
-func testPrivateHostRead(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testPrivateHostRead(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewPrivateHostOp(caller)
-	return client.Read(context.Background(), privateHostTestZone, testContext.ID)
+	return client.Read(ctx, privateHostTestZone, ctx.ID)
 }
 
-func testPrivateHostUpdate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testPrivateHostUpdate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewPrivateHostOp(caller)
-	return client.Update(context.Background(), privateHostTestZone, testContext.ID, updatePrivateHostParam)
+	return client.Update(ctx, privateHostTestZone, ctx.ID, updatePrivateHostParam)
 }
 
-func testPrivateHostDelete(testContext *CRUDTestContext, caller sacloud.APICaller) error {
+func testPrivateHostDelete(ctx *CRUDTestContext, caller sacloud.APICaller) error {
 	client := sacloud.NewPrivateHostOp(caller)
-	return client.Delete(context.Background(), privateHostTestZone, testContext.ID)
+	return client.Delete(ctx, privateHostTestZone, ctx.ID)
 }

@@ -1,7 +1,6 @@
 package test
 
 import (
-	"context"
 	"testing"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
@@ -40,9 +39,9 @@ func TestLoadBalancerOpCRUD(t *testing.T) {
 			},
 		},
 
-		Shutdown: func(testContext *CRUDTestContext, caller sacloud.APICaller) error {
+		Shutdown: func(ctx *CRUDTestContext, caller sacloud.APICaller) error {
 			client := sacloud.NewLoadBalancerOp(caller)
-			return client.Shutdown(context.Background(), testZone, testContext.ID, &sacloud.ShutdownOption{Force: true})
+			return client.Shutdown(ctx, testZone, ctx.ID, &sacloud.ShutdownOption{Force: true})
 		},
 
 		Delete: &CRUDTestDeleteFunc{
@@ -218,22 +217,22 @@ var (
 	}
 )
 
-func testLoadBalancerCreate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testLoadBalancerCreate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewLoadBalancerOp(caller)
-	return client.Create(context.Background(), testZone, createLoadBalancerParam)
+	return client.Create(ctx, testZone, createLoadBalancerParam)
 }
 
-func testLoadBalancerRead(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testLoadBalancerRead(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewLoadBalancerOp(caller)
-	return client.Read(context.Background(), testZone, testContext.ID)
+	return client.Read(ctx, testZone, ctx.ID)
 }
 
-func testLoadBalancerUpdate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testLoadBalancerUpdate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewLoadBalancerOp(caller)
-	return client.Update(context.Background(), testZone, testContext.ID, updateLoadBalancerParam)
+	return client.Update(ctx, testZone, ctx.ID, updateLoadBalancerParam)
 }
 
-func testLoadBalancerDelete(testContext *CRUDTestContext, caller sacloud.APICaller) error {
+func testLoadBalancerDelete(ctx *CRUDTestContext, caller sacloud.APICaller) error {
 	client := sacloud.NewLoadBalancerOp(caller)
-	return client.Delete(context.Background(), testZone, testContext.ID)
+	return client.Delete(ctx, testZone, ctx.ID)
 }
