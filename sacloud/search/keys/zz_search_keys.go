@@ -4,7 +4,43 @@ package keys
 
 // FindArchive represents strong-typed filter keys for Archive.Find
 var FindArchive = struct {
-	Availability string
+	Availability        string
+	BundleInfoHostClass string
+	BundleInfoID        string
+	BundleInfoName      string
+	DisplayOrder        string
+	ID                  string
+	IconID              string
+	IconScope           string
+	IconName            string
+	MigratedMB          string
+	Name                string
+	OriginalArchiveID   string
+	PlanID              string
+	PlanName            string
+	PlanStorageClass    string
+	Scope               string
+	SizeMB              string
+	SourceArchiveID     string
+	SourceDiskID        string
 }{
-	Availability: "Availability",
+	Availability:        "Availability",
+	BundleInfoHostClass: "BundleInfo.HostClass",
+	BundleInfoID:        "BundleInfo.ID",
+	BundleInfoName:      "BundleInfo.Name",
+	DisplayOrder:        "DisplayOrder",
+	ID:                  "ID",
+	IconID:              "Icon.ID",
+	IconScope:           "Icon.Scope",
+	IconName:            "Icon.Name",
+	MigratedMB:          "MigratedMB",
+	Name:                "Name",
+	OriginalArchiveID:   "OriginalArchive.ID",
+	PlanID:              "Plan.ID",
+	PlanName:            "Plan.Name",
+	PlanStorageClass:    "Plan.StorageClass",
+	Scope:               "Scope",
+	SizeMB:              "SizeMB",
+	SourceArchiveID:     "SourceArchive.ID",
+	SourceDiskID:        "SourceDisk.ID",
 }

@@ -21,7 +21,7 @@ type Archive struct {
 	Name                      string `validate:"required"`
 	Description               string `validate:"min=0,max=512"`
 	Tags                      []string
-	DisplayOrder              int
+	DisplayOrder              int64
 	Availability              types.EAvailability
 	Scope                     types.EScope
 	SizeMB                    int
@@ -54,7 +54,7 @@ func (o *Archive) setDefaults() interface{} {
 		Name                      string `validate:"required"`
 		Description               string `validate:"min=0,max=512"`
 		Tags                      []string
-		DisplayOrder              int
+		DisplayOrder              int64
 		Availability              types.EAvailability
 		Scope                     types.EScope
 		SizeMB                    int
@@ -161,12 +161,12 @@ func (o *Archive) SetTags(v []string) {
 }
 
 // GetDisplayOrder returns value of DisplayOrder
-func (o *Archive) GetDisplayOrder() int {
+func (o *Archive) GetDisplayOrder() int64 {
 	return o.DisplayOrder
 }
 
 // SetDisplayOrder sets value to DisplayOrder
-func (o *Archive) SetDisplayOrder(v int) {
+func (o *Archive) SetDisplayOrder(v int64) {
 	o.DisplayOrder = v
 }
 
@@ -2575,7 +2575,7 @@ type CDROM struct {
 	ID           types.ID
 	Name         string `validate:"required"`
 	Description  string `validate:"min=0,max=512"`
-	DisplayOrder int
+	DisplayOrder int64
 	Tags         []string
 	Availability types.EAvailability
 	Scope        types.EScope
@@ -2596,7 +2596,7 @@ func (o *CDROM) setDefaults() interface{} {
 		ID           types.ID
 		Name         string `validate:"required"`
 		Description  string `validate:"min=0,max=512"`
-		DisplayOrder int
+		DisplayOrder int64
 		Tags         []string
 		Availability types.EAvailability
 		Scope        types.EScope
@@ -2670,12 +2670,12 @@ func (o *CDROM) SetDescription(v string) {
 }
 
 // GetDisplayOrder returns value of DisplayOrder
-func (o *CDROM) GetDisplayOrder() int {
+func (o *CDROM) GetDisplayOrder() int64 {
 	return o.DisplayOrder
 }
 
 // SetDisplayOrder sets value to DisplayOrder
-func (o *CDROM) SetDisplayOrder(v int) {
+func (o *CDROM) SetDisplayOrder(v int64) {
 	o.DisplayOrder = v
 }
 
@@ -22604,7 +22604,7 @@ type Zone struct {
 	ID           types.ID
 	Name         string `validate:"required"`
 	Description  string `validate:"min=0,max=512"`
-	DisplayOrder int
+	DisplayOrder int64
 	IsDummy      bool
 	VNCProxy     *VNCProxy      `json:",omitempty"`
 	FTPServer    *FTPServerInfo `json:",omitempty"`
@@ -22622,7 +22622,7 @@ func (o *Zone) setDefaults() interface{} {
 		ID           types.ID
 		Name         string `validate:"required"`
 		Description  string `validate:"min=0,max=512"`
-		DisplayOrder int
+		DisplayOrder int64
 		IsDummy      bool
 		VNCProxy     *VNCProxy      `json:",omitempty"`
 		FTPServer    *FTPServerInfo `json:",omitempty"`
@@ -22690,12 +22690,12 @@ func (o *Zone) SetDescription(v string) {
 }
 
 // GetDisplayOrder returns value of DisplayOrder
-func (o *Zone) GetDisplayOrder() int {
+func (o *Zone) GetDisplayOrder() int64 {
 	return o.DisplayOrder
 }
 
 // SetDisplayOrder sets value to DisplayOrder
-func (o *Zone) SetDisplayOrder(v int) {
+func (o *Zone) SetDisplayOrder(v int64) {
 	o.DisplayOrder = v
 }
 

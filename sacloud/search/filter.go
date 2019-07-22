@@ -8,6 +8,12 @@ import (
 )
 
 // Filter 検索系APIでの検索条件
+//
+// Note: libsacloudではリクエスト時に`X-Sakura-Bigint-As-Int`ヘッダを指定することで
+// 文字列で表されているBitintをintとして取得している。
+// このため、libsacloud側では数値型に見える項目でもさくらのクラウド側では文字列となっている場合がある。
+// これらの項目ではOpEqual以外の演算子は利用できない。
+// また、これらの項目でスカラ値を検索条件に与えた場合は部分一致ではなく完全一致となるため注意。
 type Filter map[FilterKey]interface{}
 
 // MarshalJSON 検索系APIコール時のGETパラメータを出力するためのjson.Marshaler実装

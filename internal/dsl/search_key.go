@@ -28,3 +28,8 @@ func (k *SearchKey) SourceFieldName() string {
 	}
 	return k.Name
 }
+
+// SearchKeyDef SearchKeyを作成
+func SearchKeyDef(name string, sourceField string) *SearchKey {
+	return &SearchKey{Name: name, SourceField: sourceField}
+}

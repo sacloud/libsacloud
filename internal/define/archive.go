@@ -21,7 +21,7 @@ var archiveAPI = &dsl.Resource{
 	PathSuffix: dsl.CloudAPISuffix,
 	Operations: dsl.Operations{
 		// find
-		ops.Find(archiveAPIName, archiveNakedType, findParameter, archiveView, []dsl.SearchKeyDesc{fields.Availability()}),
+		ops.Find(archiveAPIName, archiveNakedType, findParameter, archiveView, archiveSearchKeys),
 
 		// create
 		ops.Create(archiveAPIName, archiveNakedType, archiveCreateParam, archiveView),
@@ -115,6 +115,28 @@ var (
 			fields.OriginalArchiveID(),
 			fields.SourceInfo(),
 		},
+	}
+
+	archiveSearchKeys = []dsl.SearchKeyDesc{
+		fields.Availability(),
+		dsl.SearchKeyDef("BundleInfoHostClass", "BundleInfo.HostClass"),
+		dsl.SearchKeyDef("BundleInfoID", "BundleInfo.ID"),
+		dsl.SearchKeyDef("BundleInfoName", "BundleInfo.Name"),
+		fields.DisplayOrder(),
+		fields.ID(),
+		fields.IconID(),
+		dsl.SearchKeyDef("IconScope", "Icon.Scope"),
+		dsl.SearchKeyDef("IconName", "Icon.Name"),
+		fields.MigratedMB(),
+		fields.Name(),
+		dsl.SearchKeyDef("OriginalArchiveID", "OriginalArchive.ID"),
+		fields.PlanID(),
+		fields.PlanName(),
+		dsl.SearchKeyDef("PlanStorageClass", "Plan.StorageClass"),
+		fields.Scope(),
+		fields.SizeMB(),
+		fields.SourceArchiveID(),
+		fields.SourceDiskID(),
 	}
 
 	archiveCreateParam = &dsl.Model{

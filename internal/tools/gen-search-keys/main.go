@@ -32,9 +32,13 @@ package keys
 {{ range .Operations }}{{ if .SearchKeys }}
 // {{.MethodName}}{{$typeName}} represents strong-typed filter keys for {{$typeName}}.{{.MethodName}}
 var {{.MethodName}}{{$typeName}} = struct {
-	{{ range .SearchKeys}}{{.KeyName}} string{{ end }}
+	{{ range .SearchKeys -}}
+	{{.KeyName}} string
+	{{ end -}}
 }{
-	{{ range .SearchKeys}}{{.KeyName}}: "{{.SourceFieldName}}",{{ end }}
+	{{ range .SearchKeys -}}
+	{{.KeyName}}: "{{.SourceFieldName}}",
+	{{ end -}}
 }
 {{ end }}{{- end -}}
 {{ end }}
