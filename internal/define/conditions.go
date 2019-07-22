@@ -3,6 +3,7 @@ package define
 import (
 	"github.com/sacloud/libsacloud/v2/internal/dsl"
 	"github.com/sacloud/libsacloud/v2/internal/dsl/meta"
+	"github.com/sacloud/libsacloud/v2/sacloud/search"
 )
 
 var monitorParameter = &dsl.Model{
@@ -34,6 +35,13 @@ var findParameter = &dsl.Model{
 		conditions.Filter(),
 		conditions.Include(),
 		conditions.Exclude(),
+	},
+	Methods: []*dsl.MethodDesc{
+		{
+			Name:             "ClearFilter",
+			Description:      "フィルタのクリア",
+			AccessorTypeName: "Filter",
+		},
 	},
 }
 
@@ -74,7 +82,7 @@ func (f *findCondtionsDef) Sort() *dsl.FieldDesc {
 func (f *findCondtionsDef) Filter() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "Filter",
-		Type: meta.Static(map[string]interface{}{}),
+		Type: meta.Static(search.Filter{}),
 		Tags: &dsl.FieldTags{
 			MapConv: ",omitempty",
 		},

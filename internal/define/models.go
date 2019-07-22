@@ -718,12 +718,12 @@ func (m *modelsDef) switchSubnet() *dsl.Model {
 			},
 		},
 	)
-	subnet.Accessors = []*dsl.Accessor{
+	subnet.Methods = []*dsl.MethodDesc{
 		{
 			Name:             "GetAssignedIPAddresses",
 			Description:      "割り当てられたIPアドレスのリスト",
 			AccessorTypeName: "AssignedIPAddress",
-			ResultType:       meta.TypeStringSlice,
+			ResultTypes:      []meta.Type{meta.TypeStringSlice},
 		},
 	}
 	return subnet

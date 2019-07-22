@@ -21,8 +21,8 @@ func ConvertTo(source interface{}, dest interface{}) error {
 			continue
 		}
 
-		tags := mapConv(f.Tag("mapconv")).value()
-		for _, key := range tags.keys {
+		tags := ParseMapConvTag(f.Tag("mapconv"))
+		for _, key := range tags.SourceFields {
 			destKey := f.Name()
 			value := f.Value()
 
@@ -30,15 +30,15 @@ func ConvertTo(source interface{}, dest interface{}) error {
 				destKey = key
 			}
 			if f.IsZero() {
-				if tags.omitEmpty {
+				if tags.OmitEmpty {
 					continue
 				}
-				if tags.defaultValue != nil {
-					value = tags.defaultValue
+				if tags.DefaultValue != nil {
+					value = tags.DefaultValue
 				}
 			}
 
-			if tags.squash {
+			if tags.Squash {
 				d := Map(make(map[string]interface{}))
 				ConvertTo(value, &d)
 				for k, v := range d {
@@ -47,7 +47,7 @@ func ConvertTo(source interface{}, dest interface{}) error {
 				continue
 			}
 
-			if tags.recursive {
+			if tags.Recursive {
 				var dest []interface{}
 				values := valueToSlice(value)
 				for _, v := range values {
@@ -61,7 +61,7 @@ func ConvertTo(source interface{}, dest interface{}) error {
 						dest = append(dest, v)
 					}
 				}
-				if tags.isSlice || dest == nil || len(dest) > 1 {
+				if tags.IsSlice || dest == nil || len(dest) > 1 {
 					value = dest
 				} else {
 					value = dest[0]
@@ -100,11 +100,11 @@ func ConvertFrom(source interface{}, dest interface{}) error {
 			continue
 		}
 
-		tags := mapConv(f.Tag("mapconv")).value()
-		if tags.squash {
+		tags := ParseMapConvTag(f.Tag("mapconv"))
+		if tags.Squash {
 			return errors.New("ConvertFrom is not allowed squash")
 		}
-		for _, key := range tags.keys {
+		for _, key := range tags.SourceFields {
 			sourceKey := f.Name()
 			if key != "" {
 				sourceKey = key
@@ -118,7 +118,7 @@ func ConvertFrom(source interface{}, dest interface{}) error {
 				continue
 			}
 
-			if tags.recursive {
+			if tags.Recursive {
 				t := reflect.TypeOf(f.Value())
 				if t.Kind() == reflect.Slice {
 					t = t.Elem().Elem()
@@ -141,7 +141,7 @@ func ConvertFrom(source interface{}, dest interface{}) error {
 				}
 
 				if dest != nil {
-					if tags.isSlice || len(dest) > 1 {
+					if tags.IsSlice || len(dest) > 1 {
 						value = dest
 					} else {
 						value = dest[0]
@@ -164,19 +164,19 @@ func ConvertFrom(source interface{}, dest interface{}) error {
 	return decoder.Decode(destMap.Map())
 }
 
-type mapConv string
-
-type mapConvValue struct {
-	keys         []string
-	defaultValue interface{}
-	omitEmpty    bool
-	recursive    bool
-	squash       bool
-	isSlice      bool
+// TagInfo mapconvタグの情報
+type TagInfo struct {
+	SourceFields []string
+	DefaultValue interface{}
+	OmitEmpty    bool
+	Recursive    bool
+	Squash       bool
+	IsSlice      bool
 }
 
-func (m mapConv) value() mapConvValue {
-	tokens := strings.Split(string(m), ",")
+// ParseMapConvTag mapconvタグを文字列で受け取りパースしてTagInfoを返す
+func ParseMapConvTag(tagBody string) TagInfo {
+	tokens := strings.Split(tagBody, ",")
 	key := tokens[0]
 
 	keys := strings.Split(key, "/")
@@ -209,12 +209,12 @@ func (m mapConv) value() mapConvValue {
 		}
 
 	}
-	return mapConvValue{
-		keys:         keys,
-		defaultValue: defaultValue,
-		omitEmpty:    omitEmpty,
-		recursive:    recursive,
-		squash:       squash,
-		isSlice:      isSlice,
+	return TagInfo{
+		SourceFields: keys,
+		DefaultValue: defaultValue,
+		OmitEmpty:    omitEmpty,
+		Recursive:    recursive,
+		Squash:       squash,
+		IsSlice:      isSlice,
 	}
 }

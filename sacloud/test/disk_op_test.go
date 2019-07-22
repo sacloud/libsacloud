@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
+	"github.com/sacloud/libsacloud/v2/sacloud/search"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 	"github.com/stretchr/testify/assert"
 )
@@ -130,8 +131,8 @@ func TestDiskOp_Config(t *testing.T) {
 			archiveName := "CentOS"
 			client := sacloud.NewArchiveOp(singletonAPICaller())
 			searched, err := client.Find(context.Background(), testZone, &sacloud.FindCondition{
-				Filter: map[string]interface{}{
-					"Name": archiveName,
+				Filter: search.Filter{
+					search.Key("Name"): search.PartialMatch(archiveName),
 				},
 			})
 			if !assert.NoError(t, err) {
