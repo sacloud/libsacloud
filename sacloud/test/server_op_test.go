@@ -1,7 +1,6 @@
 package test
 
 import (
-	"context"
 	"errors"
 	"testing"
 
@@ -42,9 +41,9 @@ func TestServerOpCRUD(t *testing.T) {
 			},
 		},
 
-		Shutdown: func(testContext *CRUDTestContext, caller sacloud.APICaller) error {
+		Shutdown: func(ctx *CRUDTestContext, caller sacloud.APICaller) error {
 			client := sacloud.NewServerOp(caller)
-			return client.Shutdown(context.Background(), testZone, testContext.ID, &sacloud.ShutdownOption{Force: true})
+			return client.Shutdown(ctx, testZone, ctx.ID, &sacloud.ShutdownOption{Force: true})
 		},
 
 		Delete: &CRUDTestDeleteFunc{
@@ -118,43 +117,41 @@ var (
 	}
 )
 
-func testServerCreate(_ *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testServerCreate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewServerOp(caller)
-	server, err := client.Create(context.Background(), testZone, createServerParam)
+	server, err := client.Create(ctx, testZone, createServerParam)
 	if err != nil {
 		return nil, err
 	}
-	if err := client.Boot(context.Background(), testZone, server.ID); err != nil {
+	if err := client.Boot(ctx, testZone, server.ID); err != nil {
 		return nil, err
 	}
 	return server, nil
 }
 
-func testServerRead(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testServerRead(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewServerOp(caller)
-	return client.Read(context.Background(), testZone, testContext.ID)
+	return client.Read(ctx, testZone, ctx.ID)
 }
 
-func testServerUpdate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testServerUpdate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewServerOp(caller)
-	return client.Update(context.Background(), testZone, testContext.ID, updateServerParam)
+	return client.Update(ctx, testZone, ctx.ID, updateServerParam)
 }
 
-func testServerDelete(testContext *CRUDTestContext, caller sacloud.APICaller) error {
+func testServerDelete(ctx *CRUDTestContext, caller sacloud.APICaller) error {
 	client := sacloud.NewServerOp(caller)
-	return client.Delete(context.Background(), testZone, testContext.ID)
+	return client.Delete(ctx, testZone, ctx.ID)
 }
 
 func TestServerOp_ChangePlan(t *testing.T) {
 	client := sacloud.NewServerOp(singletonAPICaller())
-	ctx := context.Background()
-
 	Run(t, &CRUDTestCase{
 		Parallel:           true,
 		SetupAPICallerFunc: singletonAPICaller,
 		IgnoreStartupWait:  true,
 		Create: &CRUDTestFunc{
-			Func: func(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+			Func: func(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 				return client.Create(ctx, testZone, &sacloud.ServerCreateRequest{
 					CPU:      1,
 					MemoryMB: 1 * 1024,
@@ -189,14 +186,14 @@ func TestServerOp_ChangePlan(t *testing.T) {
 		Updates: []*CRUDTestFunc{
 			// change plan
 			{
-				Func: func(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
-					return client.ChangePlan(ctx, testZone, testContext.ID, &sacloud.ServerChangePlanRequest{
+				Func: func(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+					return client.ChangePlan(ctx, testZone, ctx.ID, &sacloud.ServerChangePlanRequest{
 						CPU:      2,
 						MemoryMB: 4 * 1024,
 					})
 
 				},
-				CheckFunc: func(t TestT, testContext *CRUDTestContext, v interface{}) error {
+				CheckFunc: func(t TestT, ctx *CRUDTestContext, v interface{}) error {
 					newServer := v.(*sacloud.Server)
 					if !assert.Equal(t, newServer.CPU, 2) {
 						return errors.New("unexpected state: Server.CPU")
@@ -204,7 +201,7 @@ func TestServerOp_ChangePlan(t *testing.T) {
 					if !assert.Equal(t, newServer.GetMemoryGB(), 4) {
 						return errors.New("unexpected state: Server.GerMemoryGB()")
 					}
-					if !assert.NotEqual(t, testContext.ID, newServer.ID) {
+					if !assert.NotEqual(t, ctx.ID, newServer.ID) {
 						return errors.New("unexpected state: Server.ID(renew)")
 					}
 					return nil

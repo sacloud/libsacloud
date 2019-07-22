@@ -1016,7 +1016,7 @@ func (m *modelsDef) vpcRouterDHCPStaticMapping() *dsl.Model {
 		IsArray:   true,
 		Fields: []*dsl.FieldDesc{
 			{
-				Name: "MACAddress", // TODO typesに独自型作っておくべきか?
+				Name: "MACAddress",
 				Type: meta.TypeString,
 			},
 			{

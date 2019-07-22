@@ -112,8 +112,6 @@ func (f *fieldsDef) DiskPlanStorageClass() *dsl.FieldDesc {
 	}
 }
 
-// TODO CPUとServerPlanCPUのようにmapconvのタグだけ違う値をどう扱うか
-
 func (f *fieldsDef) CPU() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "CPU",

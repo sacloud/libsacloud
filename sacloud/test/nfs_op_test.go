@@ -1,7 +1,6 @@
 package test
 
 import (
-	"context"
 	"testing"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
@@ -13,16 +12,16 @@ func TestNFSOpCRUD(t *testing.T) {
 		Parallel: true,
 
 		SetupAPICallerFunc: singletonAPICaller,
-		Setup: func(testContext *CRUDTestContext, caller sacloud.APICaller) error {
+		Setup: func(ctx *CRUDTestContext, caller sacloud.APICaller) error {
 			swClient := sacloud.NewSwitchOp(caller)
-			sw, err := swClient.Create(context.Background(), testZone, &sacloud.SwitchCreateRequest{
+			sw, err := swClient.Create(ctx, testZone, &sacloud.SwitchCreateRequest{
 				Name: "libsacloud-switch-for-nfs",
 			})
 			if err != nil {
 				return err
 			}
 
-			testContext.Values["nfs/switch"] = sw.ID
+			ctx.Values["nfs/switch"] = sw.ID
 			createNFSParam.SwitchID = sw.ID
 			createNFSExpected.SwitchID = sw.ID
 			updateNFSExpected.SwitchID = sw.ID
@@ -55,24 +54,24 @@ func TestNFSOpCRUD(t *testing.T) {
 			},
 		},
 
-		Shutdown: func(testContext *CRUDTestContext, caller sacloud.APICaller) error {
+		Shutdown: func(ctx *CRUDTestContext, caller sacloud.APICaller) error {
 			client := sacloud.NewNFSOp(caller)
-			return client.Shutdown(context.Background(), testZone, testContext.ID, &sacloud.ShutdownOption{Force: true})
+			return client.Shutdown(ctx, testZone, ctx.ID, &sacloud.ShutdownOption{Force: true})
 		},
 
 		Delete: &CRUDTestDeleteFunc{
 			Func: testNFSDelete,
 		},
 
-		Cleanup: func(testContext *CRUDTestContext, caller sacloud.APICaller) error {
+		Cleanup: func(ctx *CRUDTestContext, caller sacloud.APICaller) error {
 
-			switchID, ok := testContext.Values["nfs/switch"]
+			switchID, ok := ctx.Values["nfs/switch"]
 			if !ok {
 				return nil
 			}
 
 			swClient := sacloud.NewSwitchOp(caller)
-			return swClient.Delete(context.Background(), testZone, switchID.(types.ID))
+			return swClient.Delete(ctx, testZone, switchID.(types.ID))
 		},
 	})
 }
@@ -127,22 +126,22 @@ var (
 	}
 )
 
-func testNFSCreate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testNFSCreate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewNFSOp(caller)
-	return client.Create(context.Background(), testZone, createNFSParam)
+	return client.Create(ctx, testZone, createNFSParam)
 }
 
-func testNFSRead(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testNFSRead(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewNFSOp(caller)
-	return client.Read(context.Background(), testZone, testContext.ID)
+	return client.Read(ctx, testZone, ctx.ID)
 }
 
-func testNFSUpdate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testNFSUpdate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewNFSOp(caller)
-	return client.Update(context.Background(), testZone, testContext.ID, updateNFSParam)
+	return client.Update(ctx, testZone, ctx.ID, updateNFSParam)
 }
 
-func testNFSDelete(testContext *CRUDTestContext, caller sacloud.APICaller) error {
+func testNFSDelete(ctx *CRUDTestContext, caller sacloud.APICaller) error {
 	client := sacloud.NewNFSOp(caller)
-	return client.Delete(context.Background(), testZone, testContext.ID)
+	return client.Delete(ctx, testZone, ctx.ID)
 }

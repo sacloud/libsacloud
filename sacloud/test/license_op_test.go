@@ -1,7 +1,6 @@
 package test
 
 import (
-	"context"
 	"testing"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
@@ -68,22 +67,22 @@ var (
 	}
 )
 
-func testLicenseCreate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testLicenseCreate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewLicenseOp(caller)
-	return client.Create(context.Background(), createLicenseParam)
+	return client.Create(ctx, createLicenseParam)
 }
 
-func testLicenseRead(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testLicenseRead(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewLicenseOp(caller)
-	return client.Read(context.Background(), testContext.ID)
+	return client.Read(ctx, ctx.ID)
 }
 
-func testLicenseUpdate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testLicenseUpdate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewLicenseOp(caller)
-	return client.Update(context.Background(), testContext.ID, updateLicenseParam)
+	return client.Update(ctx, ctx.ID, updateLicenseParam)
 }
 
-func testLicenseDelete(testContext *CRUDTestContext, caller sacloud.APICaller) error {
+func testLicenseDelete(ctx *CRUDTestContext, caller sacloud.APICaller) error {
 	client := sacloud.NewLicenseOp(caller)
-	return client.Delete(context.Background(), testContext.ID)
+	return client.Delete(ctx, ctx.ID)
 }

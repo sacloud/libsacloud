@@ -233,7 +233,8 @@ func (w *StatePollWaiter) handleState(state interface{}) (bool, error) {
 	case hasInstanceState:
 		return w.handleInstanceState(instanceStateHolder)
 	default:
-		return false, fmt.Errorf("state is invalid type: %v", state)
+		// どちらのインターフェースも実装していない場合、stateが存在するだけでtrueとする
+		return true, nil
 	}
 }
 

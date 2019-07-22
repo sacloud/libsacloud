@@ -1,7 +1,6 @@
 package test
 
 import (
-	"context"
 	"testing"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
@@ -72,22 +71,22 @@ var (
 	}
 )
 
-func testIconCreate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testIconCreate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewIconOp(caller)
-	return client.Create(context.Background(), createIconParam)
+	return client.Create(ctx, createIconParam)
 }
 
-func testIconRead(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testIconRead(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewIconOp(caller)
-	return client.Read(context.Background(), testContext.ID)
+	return client.Read(ctx, ctx.ID)
 }
 
-func testIconUpdate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testIconUpdate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewIconOp(caller)
-	return client.Update(context.Background(), testContext.ID, updateIconParam)
+	return client.Update(ctx, ctx.ID, updateIconParam)
 }
 
-func testIconDelete(testContext *CRUDTestContext, caller sacloud.APICaller) error {
+func testIconDelete(ctx *CRUDTestContext, caller sacloud.APICaller) error {
 	client := sacloud.NewIconOp(caller)
-	return client.Delete(context.Background(), testContext.ID)
+	return client.Delete(ctx, ctx.ID)
 }

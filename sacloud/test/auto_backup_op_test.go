@@ -1,7 +1,6 @@
 package test
 
 import (
-	"context"
 	"testing"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
@@ -15,9 +14,9 @@ func TestAutoBackupOpCRUD(t *testing.T) {
 
 		SetupAPICallerFunc: singletonAPICaller,
 
-		Setup: func(testContext *CRUDTestContext, caller sacloud.APICaller) error {
+		Setup: func(ctx *CRUDTestContext, caller sacloud.APICaller) error {
 			diskOp := sacloud.NewDiskOp(caller)
-			disk, err := diskOp.Create(context.Background(), testZone, &sacloud.DiskCreateRequest{
+			disk, err := diskOp.Create(ctx, testZone, &sacloud.DiskCreateRequest{
 				Name:       "libsacloud-disk-with-autobackup",
 				SizeMB:     20 * 1024,
 				DiskPlanID: types.ID(4), //SSD
@@ -27,13 +26,13 @@ func TestAutoBackupOpCRUD(t *testing.T) {
 			}
 
 			_, err = sacloud.WaiterForReady(func() (interface{}, error) {
-				return diskOp.Read(context.Background(), testZone, disk.ID)
-			}).WaitForState(context.Background())
+				return diskOp.Read(ctx, testZone, disk.ID)
+			}).WaitForState(ctx)
 			if !assert.NoError(t, err) {
 				return err
 			}
 
-			testContext.Values["autobackup/disk"] = disk.ID
+			ctx.Values["autobackup/disk"] = disk.ID
 			createAutoBackupParam.DiskID = disk.ID
 			createAutoBackupExpected.DiskID = disk.ID
 			updateAutoBackupExpected.DiskID = disk.ID
@@ -70,14 +69,14 @@ func TestAutoBackupOpCRUD(t *testing.T) {
 			Func: testAutoBackupDelete,
 		},
 
-		Cleanup: func(testContext *CRUDTestContext, caller sacloud.APICaller) error {
-			diskID, ok := testContext.Values["autobackup/disk"]
+		Cleanup: func(ctx *CRUDTestContext, caller sacloud.APICaller) error {
+			diskID, ok := ctx.Values["autobackup/disk"]
 			if !ok {
 				return nil
 			}
 
 			diskOp := sacloud.NewDiskOp(caller)
-			return diskOp.Delete(context.Background(), testZone, diskID.(types.ID))
+			return diskOp.Delete(ctx, testZone, diskID.(types.ID))
 		},
 	})
 }
@@ -135,22 +134,22 @@ var (
 	}
 )
 
-func testAutoBackupCreate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testAutoBackupCreate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewAutoBackupOp(caller)
-	return client.Create(context.Background(), testZone, createAutoBackupParam)
+	return client.Create(ctx, testZone, createAutoBackupParam)
 }
 
-func testAutoBackupRead(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testAutoBackupRead(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewAutoBackupOp(caller)
-	return client.Read(context.Background(), testZone, testContext.ID)
+	return client.Read(ctx, testZone, ctx.ID)
 }
 
-func testAutoBackupUpdate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testAutoBackupUpdate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewAutoBackupOp(caller)
-	return client.Update(context.Background(), testZone, testContext.ID, updateAutoBackupParam)
+	return client.Update(ctx, testZone, ctx.ID, updateAutoBackupParam)
 }
 
-func testAutoBackupDelete(testContext *CRUDTestContext, caller sacloud.APICaller) error {
+func testAutoBackupDelete(ctx *CRUDTestContext, caller sacloud.APICaller) error {
 	client := sacloud.NewAutoBackupOp(caller)
-	return client.Delete(context.Background(), testZone, testContext.ID)
+	return client.Delete(ctx, testZone, ctx.ID)
 }

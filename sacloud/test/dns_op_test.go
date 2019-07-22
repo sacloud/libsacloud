@@ -1,7 +1,6 @@
 package test
 
 import (
-	"context"
 	"testing"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
@@ -113,22 +112,22 @@ var (
 	}
 )
 
-func testDNSCreate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testDNSCreate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewDNSOp(caller)
-	return client.Create(context.Background(), createDNSParam)
+	return client.Create(ctx, createDNSParam)
 }
 
-func testDNSRead(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testDNSRead(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewDNSOp(caller)
-	return client.Read(context.Background(), testContext.ID)
+	return client.Read(ctx, ctx.ID)
 }
 
-func testDNSUpdate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testDNSUpdate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewDNSOp(caller)
-	return client.Update(context.Background(), testContext.ID, updateDNSParam)
+	return client.Update(ctx, ctx.ID, updateDNSParam)
 }
 
-func testDNSDelete(testContext *CRUDTestContext, caller sacloud.APICaller) error {
+func testDNSDelete(ctx *CRUDTestContext, caller sacloud.APICaller) error {
 	client := sacloud.NewDNSOp(caller)
-	return client.Delete(context.Background(), testContext.ID)
+	return client.Delete(ctx, ctx.ID)
 }

@@ -1,7 +1,6 @@
 package test
 
 import (
-	"context"
 	"testing"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
@@ -13,9 +12,9 @@ func TestAuthStatusOp_Read(t *testing.T) {
 		Parallel:           true,
 		SetupAPICallerFunc: singletonAPICaller,
 		Read: &CRUDTestFunc{
-			Func: func(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+			Func: func(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 				client := sacloud.NewAuthStatusOp(singletonAPICaller())
-				authStatus, err := client.Read(context.Background())
+				authStatus, err := client.Read(ctx)
 
 				assert.NotNil(t, authStatus)
 

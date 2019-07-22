@@ -1,7 +1,6 @@
 package test
 
 import (
-	"context"
 	"os"
 	"testing"
 
@@ -46,27 +45,27 @@ func TestMobileGatewayOpCRUD(t *testing.T) {
 			},
 			// shutdown(no check)
 			{
-				Func: func(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+				Func: func(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 					mgwOp := sacloud.NewMobileGatewayOp(caller)
 					// shutdown
-					if err := mgwOp.Shutdown(context.Background(), testZone, testContext.ID, &sacloud.ShutdownOption{Force: true}); err != nil {
+					if err := mgwOp.Shutdown(ctx, testZone, ctx.ID, &sacloud.ShutdownOption{Force: true}); err != nil {
 						return nil, err
 					}
 
 					waiter := sacloud.WaiterForDown(func() (interface{}, error) {
-						return mgwOp.Read(context.Background(), testZone, testContext.ID)
+						return mgwOp.Read(ctx, testZone, ctx.ID)
 					})
 
-					return waiter.WaitForState(context.Background())
+					return waiter.WaitForState(ctx)
 				},
 				SkipExtractID: true,
 			},
 			// connect to switch
 			{
-				Func: func(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+				Func: func(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 					// prepare switch
 					swOp := sacloud.NewSwitchOp(caller)
-					sw, err := swOp.Create(context.Background(), testZone, &sacloud.SwitchCreateRequest{
+					sw, err := swOp.Create(ctx, testZone, &sacloud.SwitchCreateRequest{
 						Name: "libsacloud-test-mobile-gateway",
 					})
 					if err != nil {
@@ -75,13 +74,13 @@ func TestMobileGatewayOpCRUD(t *testing.T) {
 
 					// connect
 					mgwOp := sacloud.NewMobileGatewayOp(caller)
-					if err := mgwOp.ConnectToSwitch(context.Background(), testZone, testContext.ID, sw.ID); err != nil {
+					if err := mgwOp.ConnectToSwitch(ctx, testZone, ctx.ID, sw.ID); err != nil {
 						return nil, err
 					}
 
-					return mgwOp.Read(context.Background(), testZone, testContext.ID)
+					return mgwOp.Read(ctx, testZone, ctx.ID)
 				},
-				CheckFunc: func(t TestT, testContext *CRUDTestContext, i interface{}) error {
+				CheckFunc: func(t TestT, ctx *CRUDTestContext, i interface{}) error {
 					mgw := i.(*sacloud.MobileGateway)
 					return DoAsserts(
 						AssertLenFunc(t, mgw.Interfaces, 2, "len(MobileGateway.Interfaces)"),
@@ -91,9 +90,9 @@ func TestMobileGatewayOpCRUD(t *testing.T) {
 			},
 			// set IPAddress to eth1
 			{
-				Func: func(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+				Func: func(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 					mgwOp := sacloud.NewMobileGatewayOp(caller)
-					return mgwOp.Update(context.Background(), testZone, testContext.ID, &sacloud.MobileGatewayUpdateRequest{
+					return mgwOp.Update(ctx, testZone, ctx.ID, &sacloud.MobileGatewayUpdateRequest{
 						Settings: &sacloud.MobileGatewaySetting{
 							Interfaces: []*sacloud.MobileGatewayInterfaceSetting{
 								{
@@ -105,7 +104,7 @@ func TestMobileGatewayOpCRUD(t *testing.T) {
 						},
 					})
 				},
-				CheckFunc: func(t TestT, testContext *CRUDTestContext, i interface{}) error {
+				CheckFunc: func(t TestT, ctx *CRUDTestContext, i interface{}) error {
 					mgw := i.(*sacloud.MobileGateway)
 					return DoAsserts(
 						AssertNotNilFunc(t, mgw.Settings.Interfaces, "MobileGateway.Settings.Interfaces"),
@@ -119,17 +118,17 @@ func TestMobileGatewayOpCRUD(t *testing.T) {
 
 			// Get/Set DNS
 			{
-				Func: func(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+				Func: func(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 					mgwOp := sacloud.NewMobileGatewayOp(caller)
-					if err := mgwOp.SetDNS(context.Background(), testZone, testContext.ID, &sacloud.MobileGatewayDNSSetting{
+					if err := mgwOp.SetDNS(ctx, testZone, ctx.ID, &sacloud.MobileGatewayDNSSetting{
 						DNS1: "8.8.8.8",
 						DNS2: "8.8.4.4",
 					}); err != nil {
 						return nil, err
 					}
-					return mgwOp.GetDNS(context.Background(), testZone, testContext.ID)
+					return mgwOp.GetDNS(ctx, testZone, ctx.ID)
 				},
-				CheckFunc: func(t TestT, testContext *CRUDTestContext, i interface{}) error {
+				CheckFunc: func(t TestT, ctx *CRUDTestContext, i interface{}) error {
 					dns := i.(*sacloud.MobileGatewayDNSSetting)
 					return DoAsserts(
 						AssertEqualFunc(t, "8.8.8.8", dns.DNS1, "DNS1"),
@@ -140,9 +139,9 @@ func TestMobileGatewayOpCRUD(t *testing.T) {
 			},
 			// Add/List SIM
 			{
-				Func: func(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+				Func: func(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 					simOp := sacloud.NewSIMOp(caller)
-					sim, err := simOp.Create(context.Background(), &sacloud.SIMCreateRequest{
+					sim, err := simOp.Create(ctx, &sacloud.SIMCreateRequest{
 						Name:     "libsacloud-switch-for-mobile-gateway",
 						ICCID:    iccid,
 						PassCode: passcode,
@@ -152,16 +151,16 @@ func TestMobileGatewayOpCRUD(t *testing.T) {
 					}
 
 					mgwOp := sacloud.NewMobileGatewayOp(caller)
-					if err := mgwOp.AddSIM(context.Background(), testZone, testContext.ID, &sacloud.MobileGatewayAddSIMRequest{
+					if err := mgwOp.AddSIM(ctx, testZone, ctx.ID, &sacloud.MobileGatewayAddSIMRequest{
 						SIMID: sim.ID.String(),
 					}); err != nil {
 						return nil, err
 					}
 
-					testContext.Values["mobile-gateway/sim"] = sim.ID
-					return mgwOp.ListSIM(context.Background(), testZone, testContext.ID)
+					ctx.Values["mobile-gateway/sim"] = sim.ID
+					return mgwOp.ListSIM(ctx, testZone, ctx.ID)
 				},
-				CheckFunc: func(t TestT, testContext *CRUDTestContext, i interface{}) error {
+				CheckFunc: func(t TestT, ctx *CRUDTestContext, i interface{}) error {
 					sims := i.([]*sacloud.MobileGatewaySIMInfo)
 					return DoAsserts(
 						AssertLenFunc(t, sims, 1, "len(SIM)"),
@@ -171,17 +170,17 @@ func TestMobileGatewayOpCRUD(t *testing.T) {
 			},
 			// SIMOp: Assign IP
 			{
-				Func: func(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+				Func: func(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 					client := sacloud.NewSIMOp(caller)
-					simID := testContext.Values["mobile-gateway/sim"].(types.ID)
-					if err := client.AssignIP(context.Background(), simID, &sacloud.SIMAssignIPRequest{
+					simID := ctx.Values["mobile-gateway/sim"].(types.ID)
+					if err := client.AssignIP(ctx, simID, &sacloud.SIMAssignIPRequest{
 						IP: "192.168.2.1",
 					}); err != nil {
 						return nil, err
 					}
-					return client.Status(context.Background(), simID)
+					return client.Status(ctx, simID)
 				},
-				CheckFunc: func(t TestT, testContext *CRUDTestContext, v interface{}) error {
+				CheckFunc: func(t TestT, ctx *CRUDTestContext, v interface{}) error {
 					simInfo := v.(*sacloud.SIMInfo)
 					return DoAsserts(
 						AssertEqualFunc(t, "192.168.2.1", simInfo.IP, "SIMInfo.IP"),
@@ -191,15 +190,15 @@ func TestMobileGatewayOpCRUD(t *testing.T) {
 			},
 			// SIMOp: clear IP
 			{
-				Func: func(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+				Func: func(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 					client := sacloud.NewSIMOp(caller)
-					simID := testContext.Values["mobile-gateway/sim"].(types.ID)
-					if err := client.ClearIP(context.Background(), simID); err != nil {
+					simID := ctx.Values["mobile-gateway/sim"].(types.ID)
+					if err := client.ClearIP(ctx, simID); err != nil {
 						return nil, err
 					}
-					return client.Status(context.Background(), simID)
+					return client.Status(ctx, simID)
 				},
-				CheckFunc: func(t TestT, testContext *CRUDTestContext, v interface{}) error {
+				CheckFunc: func(t TestT, ctx *CRUDTestContext, v interface{}) error {
 					simInfo := v.(*sacloud.SIMInfo)
 					return DoAsserts(
 						AssertEmptyFunc(t, simInfo.IP, "SIMInfo.IP"),
@@ -210,21 +209,21 @@ func TestMobileGatewayOpCRUD(t *testing.T) {
 
 			// Get/Set SIMRoutes
 			{
-				Func: func(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+				Func: func(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 					mgwOp := sacloud.NewMobileGatewayOp(caller)
-					if err := mgwOp.SetSIMRoutes(context.Background(), testZone, testContext.ID, []*sacloud.MobileGatewaySIMRouteParam{
+					if err := mgwOp.SetSIMRoutes(ctx, testZone, ctx.ID, []*sacloud.MobileGatewaySIMRouteParam{
 						{
-							ResourceID: testContext.Values["mobile-gateway/sim"].(types.ID).String(),
+							ResourceID: ctx.Values["mobile-gateway/sim"].(types.ID).String(),
 							Prefix:     "192.168.3.0/24",
 						},
 					}); err != nil {
 						return nil, err
 					}
-					return mgwOp.GetSIMRoutes(context.Background(), testZone, testContext.ID)
+					return mgwOp.GetSIMRoutes(ctx, testZone, ctx.ID)
 				},
-				CheckFunc: func(t TestT, testContext *CRUDTestContext, i interface{}) error {
+				CheckFunc: func(t TestT, ctx *CRUDTestContext, i interface{}) error {
 					routes := i.([]*sacloud.MobileGatewaySIMRoute)
-					simID := testContext.Values["mobile-gateway/sim"].(types.ID)
+					simID := ctx.Values["mobile-gateway/sim"].(types.ID)
 					return DoAsserts(
 						AssertLenFunc(t, routes, 1, "len(SIMRoutes)"),
 						AssertEqualFunc(t, "192.168.3.0/24", routes[0].Prefix, "SIMRoute.Prefix"),
@@ -235,14 +234,14 @@ func TestMobileGatewayOpCRUD(t *testing.T) {
 			},
 			// Delete SIMRoutes
 			{
-				Func: func(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+				Func: func(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 					mgwOp := sacloud.NewMobileGatewayOp(caller)
-					if err := mgwOp.SetSIMRoutes(context.Background(), testZone, testContext.ID, []*sacloud.MobileGatewaySIMRouteParam{}); err != nil {
+					if err := mgwOp.SetSIMRoutes(ctx, testZone, ctx.ID, []*sacloud.MobileGatewaySIMRouteParam{}); err != nil {
 						return nil, err
 					}
-					return mgwOp.GetSIMRoutes(context.Background(), testZone, testContext.ID)
+					return mgwOp.GetSIMRoutes(ctx, testZone, ctx.ID)
 				},
-				CheckFunc: func(t TestT, testContext *CRUDTestContext, i interface{}) error {
+				CheckFunc: func(t TestT, ctx *CRUDTestContext, i interface{}) error {
 					routes := i.([]*sacloud.MobileGatewaySIMRoute)
 					return DoAsserts(
 						AssertLenFunc(t, routes, 0, "len(SIMRoutes)"),
@@ -253,9 +252,9 @@ func TestMobileGatewayOpCRUD(t *testing.T) {
 
 			// Get/Set TrafficConfig
 			{
-				Func: func(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+				Func: func(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 					mgwOp := sacloud.NewMobileGatewayOp(caller)
-					if err := mgwOp.SetTrafficConfig(context.Background(), testZone, testContext.ID, &sacloud.MobileGatewayTrafficControl{
+					if err := mgwOp.SetTrafficConfig(ctx, testZone, ctx.ID, &sacloud.MobileGatewayTrafficControl{
 						TrafficQuotaInMB:       10,
 						BandWidthLimitInKbps:   20,
 						EmailNotifyEnabled:     true,
@@ -265,9 +264,9 @@ func TestMobileGatewayOpCRUD(t *testing.T) {
 					}); err != nil {
 						return nil, err
 					}
-					return mgwOp.GetTrafficConfig(context.Background(), testZone, testContext.ID)
+					return mgwOp.GetTrafficConfig(ctx, testZone, ctx.ID)
 				},
-				CheckFunc: func(t TestT, testContext *CRUDTestContext, i interface{}) error {
+				CheckFunc: func(t TestT, ctx *CRUDTestContext, i interface{}) error {
 					slackURL := "https://hooks.slack.com/services/XXXXXXXXX/XXXXXXXXX/XXXXXXXXXXXXXXXXXXXXXXXX"
 					config := i.(*sacloud.MobileGatewayTrafficControl)
 					return DoAsserts(
@@ -283,20 +282,20 @@ func TestMobileGatewayOpCRUD(t *testing.T) {
 			},
 			// Delete TrafficConfig(no check)
 			{
-				Func: func(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+				Func: func(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 					mgwOp := sacloud.NewMobileGatewayOp(caller)
-					return nil, mgwOp.DeleteTrafficConfig(context.Background(), testZone, testContext.ID)
+					return nil, mgwOp.DeleteTrafficConfig(ctx, testZone, ctx.ID)
 				},
 				SkipExtractID: true,
 			},
 
 			// Get TrafficStatus
 			{
-				Func: func(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+				Func: func(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 					mgwOp := sacloud.NewMobileGatewayOp(caller)
-					return mgwOp.TrafficStatus(context.Background(), testZone, testContext.ID)
+					return mgwOp.TrafficStatus(ctx, testZone, ctx.ID)
 				},
-				CheckFunc: func(t TestT, testContext *CRUDTestContext, i interface{}) error {
+				CheckFunc: func(t TestT, ctx *CRUDTestContext, i interface{}) error {
 					status := i.(*sacloud.MobileGatewayTrafficStatus)
 					return DoAsserts(
 						AssertNotNilFunc(t, status, "TrafficStatus"),
@@ -309,21 +308,21 @@ func TestMobileGatewayOpCRUD(t *testing.T) {
 
 			// Delete SIM
 			{
-				Func: func(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
-					simID := testContext.Values["mobile-gateway/sim"].(types.ID)
+				Func: func(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+					simID := ctx.Values["mobile-gateway/sim"].(types.ID)
 					mgwOp := sacloud.NewMobileGatewayOp(caller)
-					if err := mgwOp.DeleteSIM(context.Background(), testZone, testContext.ID, simID); err != nil {
+					if err := mgwOp.DeleteSIM(ctx, testZone, ctx.ID, simID); err != nil {
 						return nil, err
 					}
 
 					simOp := sacloud.NewSIMOp(caller)
-					if err := simOp.Delete(context.Background(), simID); err != nil {
+					if err := simOp.Delete(ctx, simID); err != nil {
 						return nil, err
 					}
 
-					return mgwOp.ListSIM(context.Background(), testZone, testContext.ID)
+					return mgwOp.ListSIM(ctx, testZone, ctx.ID)
 				},
-				CheckFunc: func(t TestT, testContext *CRUDTestContext, i interface{}) error {
+				CheckFunc: func(t TestT, ctx *CRUDTestContext, i interface{}) error {
 					sims := i.([]*sacloud.MobileGatewaySIMInfo)
 					return DoAsserts(
 						AssertLenFunc(t, sims, 0, "len(SIM)"),
@@ -333,14 +332,14 @@ func TestMobileGatewayOpCRUD(t *testing.T) {
 			},
 			// disconnect from switch
 			{
-				Func: func(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+				Func: func(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 					mgwOp := sacloud.NewMobileGatewayOp(caller)
-					if err := mgwOp.DisconnectFromSwitch(context.Background(), testZone, testContext.ID); err != nil {
+					if err := mgwOp.DisconnectFromSwitch(ctx, testZone, ctx.ID); err != nil {
 						return nil, err
 					}
-					return mgwOp.Read(context.Background(), testZone, testContext.ID)
+					return mgwOp.Read(ctx, testZone, ctx.ID)
 				},
-				CheckFunc: func(t TestT, testContext *CRUDTestContext, i interface{}) error {
+				CheckFunc: func(t TestT, ctx *CRUDTestContext, i interface{}) error {
 					mgw := i.(*sacloud.MobileGateway)
 					return DoAsserts(
 						AssertLenFunc(t, mgw.Interfaces, 1, "len(MobileGateway.Interfaces)"),
@@ -349,9 +348,9 @@ func TestMobileGatewayOpCRUD(t *testing.T) {
 				SkipExtractID: true,
 			},
 		},
-		Shutdown: func(testContext *CRUDTestContext, caller sacloud.APICaller) error {
+		Shutdown: func(ctx *CRUDTestContext, caller sacloud.APICaller) error {
 			client := sacloud.NewMobileGatewayOp(caller)
-			return client.Shutdown(context.Background(), testZone, testContext.ID, &sacloud.ShutdownOption{Force: true})
+			return client.Shutdown(ctx, testZone, ctx.ID, &sacloud.ShutdownOption{Force: true})
 		},
 		Delete: &CRUDTestDeleteFunc{
 			Func: testMobileGatewayDelete,
@@ -427,35 +426,35 @@ var (
 	updateMobileGatewayExpected *sacloud.MobileGateway
 )
 
-func testMobileGatewayCreate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testMobileGatewayCreate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewMobileGatewayOp(caller)
-	v, err := client.Create(context.Background(), testZone, createMobileGatewayParam)
+	v, err := client.Create(ctx, testZone, createMobileGatewayParam)
 	if err != nil {
 		return nil, err
 	}
 	value, err := sacloud.WaiterForReady(func() (interface{}, error) {
-		return client.Read(context.Background(), testZone, v.ID)
-	}).WaitForState(context.Background())
+		return client.Read(ctx, testZone, v.ID)
+	}).WaitForState(ctx)
 	if err != nil {
 		return nil, err
 	}
-	if err := client.Boot(context.Background(), testZone, v.ID); err != nil {
+	if err := client.Boot(ctx, testZone, v.ID); err != nil {
 		return nil, err
 	}
 	return value, nil
 }
 
-func testMobileGatewayRead(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testMobileGatewayRead(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewMobileGatewayOp(caller)
-	return client.Read(context.Background(), testZone, testContext.ID)
+	return client.Read(ctx, testZone, ctx.ID)
 }
 
-func testMobileGatewayUpdate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testMobileGatewayUpdate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewMobileGatewayOp(caller)
-	return client.Update(context.Background(), testZone, testContext.ID, updateMobileGatewayParam)
+	return client.Update(ctx, testZone, ctx.ID, updateMobileGatewayParam)
 }
 
-func testMobileGatewayDelete(testContext *CRUDTestContext, caller sacloud.APICaller) error {
+func testMobileGatewayDelete(ctx *CRUDTestContext, caller sacloud.APICaller) error {
 	client := sacloud.NewMobileGatewayOp(caller)
-	return client.Delete(context.Background(), testZone, testContext.ID)
+	return client.Delete(ctx, testZone, ctx.ID)
 }

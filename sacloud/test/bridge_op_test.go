@@ -1,7 +1,6 @@
 package test
 
 import (
-	"context"
 	"testing"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
@@ -72,22 +71,22 @@ var (
 	}
 )
 
-func testBridgeCreate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testBridgeCreate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewBridgeOp(caller)
-	return client.Create(context.Background(), testZone, createBridgeParam)
+	return client.Create(ctx, testZone, createBridgeParam)
 }
 
-func testBridgeRead(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testBridgeRead(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewBridgeOp(caller)
-	return client.Read(context.Background(), testZone, testContext.ID)
+	return client.Read(ctx, testZone, ctx.ID)
 }
 
-func testBridgeUpdate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testBridgeUpdate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewBridgeOp(caller)
-	return client.Update(context.Background(), testZone, testContext.ID, updateBridgeParam)
+	return client.Update(ctx, testZone, ctx.ID, updateBridgeParam)
 }
 
-func testBridgeDelete(testContext *CRUDTestContext, caller sacloud.APICaller) error {
+func testBridgeDelete(ctx *CRUDTestContext, caller sacloud.APICaller) error {
 	client := sacloud.NewBridgeOp(caller)
-	return client.Delete(context.Background(), testZone, testContext.ID)
+	return client.Delete(ctx, testZone, ctx.ID)
 }
