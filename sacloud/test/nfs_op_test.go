@@ -7,26 +7,17 @@ import (
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
-func TestNFSOpCRUD(t *testing.T) {
+func TestNFSOp_CRUD(t *testing.T) {
 	Run(t, &CRUDTestCase{
 		Parallel: true,
 
 		SetupAPICallerFunc: singletonAPICaller,
-		Setup: func(ctx *CRUDTestContext, caller sacloud.APICaller) error {
-			swClient := sacloud.NewSwitchOp(caller)
-			sw, err := swClient.Create(ctx, testZone, &sacloud.SwitchCreateRequest{
-				Name: "libsacloud-switch-for-nfs",
-			})
-			if err != nil {
-				return err
-			}
-
-			ctx.Values["nfs/switch"] = sw.ID
-			createNFSParam.SwitchID = sw.ID
-			createNFSExpected.SwitchID = sw.ID
-			updateNFSExpected.SwitchID = sw.ID
-			return nil
-		},
+		Setup: setupSwitchFunc("nfs",
+			createNFSParam,
+			createNFSExpected,
+			updateNFSExpected,
+			updateNFSToMinExpected,
+		),
 
 		Create: &CRUDTestFunc{
 			Func: testNFSCreate,
@@ -52,6 +43,13 @@ func TestNFSOpCRUD(t *testing.T) {
 					IgnoreFields: ignoreNFSFields,
 				}),
 			},
+			{
+				Func: testNFSUpdateToMin,
+				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+					ExpectValue:  updateNFSToMinExpected,
+					IgnoreFields: ignoreNFSFields,
+				}),
+			},
 		},
 
 		Shutdown: func(ctx *CRUDTestContext, caller sacloud.APICaller) error {
@@ -63,16 +61,7 @@ func TestNFSOpCRUD(t *testing.T) {
 			Func: testNFSDelete,
 		},
 
-		Cleanup: func(ctx *CRUDTestContext, caller sacloud.APICaller) error {
-
-			switchID, ok := ctx.Values["nfs/switch"]
-			if !ok {
-				return nil
-			}
-
-			swClient := sacloud.NewSwitchOp(caller)
-			return swClient.Delete(ctx, testZone, switchID.(types.ID))
-		},
+		Cleanup: cleanupSwitchFunc("nfs"),
 	})
 }
 
@@ -88,7 +77,6 @@ var (
 		"Interfaces",
 		"Switch",
 		"ZoneID",
-		"IconID",
 		"CreatedAt",
 		"ModifiedAt",
 	}
@@ -114,11 +102,23 @@ var (
 		Name:        "libsacloud-nfs-upd",
 		Tags:        []string{"tag1-upd", "tag2-upd"},
 		Description: "desc-upd",
+		IconID:      testIconID,
 	}
 	updateNFSExpected = &sacloud.NFS{
 		Name:           updateNFSParam.Name,
 		Description:    updateNFSParam.Description,
 		Tags:           updateNFSParam.Tags,
+		PlanID:         createNFSParam.PlanID,
+		DefaultRoute:   createNFSParam.DefaultRoute,
+		NetworkMaskLen: createNFSParam.NetworkMaskLen,
+		IPAddresses:    createNFSParam.IPAddresses,
+		IconID:         testIconID,
+	}
+	updateNFSToMinParam = &sacloud.NFSUpdateRequest{
+		Name: "libsacloud-nfs-to-min",
+	}
+	updateNFSToMinExpected = &sacloud.NFS{
+		Name:           updateNFSToMinParam.Name,
 		PlanID:         createNFSParam.PlanID,
 		DefaultRoute:   createNFSParam.DefaultRoute,
 		NetworkMaskLen: createNFSParam.NetworkMaskLen,
@@ -139,6 +139,11 @@ func testNFSRead(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, e
 func testNFSUpdate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewNFSOp(caller)
 	return client.Update(ctx, testZone, ctx.ID, updateNFSParam)
+}
+
+func testNFSUpdateToMin(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+	client := sacloud.NewNFSOp(caller)
+	return client.Update(ctx, testZone, ctx.ID, updateNFSToMinParam)
 }
 
 func testNFSDelete(ctx *CRUDTestContext, caller sacloud.APICaller) error {

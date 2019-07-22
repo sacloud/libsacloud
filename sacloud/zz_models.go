@@ -20,7 +20,7 @@ type Archive struct {
 	ID                        types.ID
 	Name                      string `validate:"required"`
 	Description               string `validate:"min=0,max=512"`
-	Tags                      []string
+	Tags                      types.Tags
 	DisplayOrder              int64
 	Availability              types.EAvailability
 	Scope                     types.EScope
@@ -53,7 +53,7 @@ func (o *Archive) setDefaults() interface{} {
 		ID                        types.ID
 		Name                      string `validate:"required"`
 		Description               string `validate:"min=0,max=512"`
-		Tags                      []string
+		Tags                      types.Tags
 		DisplayOrder              int64
 		Availability              types.EAvailability
 		Scope                     types.EScope
@@ -151,12 +151,12 @@ func (o *Archive) SetDescription(v string) {
 }
 
 // GetTags returns value of Tags
-func (o *Archive) GetTags() []string {
+func (o *Archive) GetTags() types.Tags {
 	return o.Tags
 }
 
 // SetTags sets value to Tags
-func (o *Archive) SetTags(v []string) {
+func (o *Archive) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
@@ -726,7 +726,7 @@ type ArchiveCreateRequest struct {
 	SourceArchiveID types.ID `mapconv:"SourceArchive.ID,omitempty"`
 	Name            string   `validate:"required"`
 	Description     string   `validate:"min=0,max=512"`
-	Tags            []string
+	Tags            types.Tags
 	IconID          types.ID `mapconv:"Icon.ID"`
 }
 
@@ -742,7 +742,7 @@ func (o *ArchiveCreateRequest) setDefaults() interface{} {
 		SourceArchiveID types.ID `mapconv:"SourceArchive.ID,omitempty"`
 		Name            string   `validate:"required"`
 		Description     string   `validate:"min=0,max=512"`
-		Tags            []string
+		Tags            types.Tags
 		IconID          types.ID `mapconv:"Icon.ID"`
 	}{
 		SourceDiskID:    o.SourceDiskID,
@@ -795,12 +795,12 @@ func (o *ArchiveCreateRequest) SetDescription(v string) {
 }
 
 // GetTags returns value of Tags
-func (o *ArchiveCreateRequest) GetTags() []string {
+func (o *ArchiveCreateRequest) GetTags() types.Tags {
 	return o.Tags
 }
 
 // SetTags sets value to Tags
-func (o *ArchiveCreateRequest) SetTags(v []string) {
+func (o *ArchiveCreateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
@@ -895,7 +895,7 @@ type ArchiveCreateBlankRequest struct {
 	SizeMB      int
 	Name        string `validate:"required"`
 	Description string `validate:"min=0,max=512"`
-	Tags        []string
+	Tags        types.Tags
 	IconID      types.ID `mapconv:"Icon.ID"`
 }
 
@@ -910,7 +910,7 @@ func (o *ArchiveCreateBlankRequest) setDefaults() interface{} {
 		SizeMB      int
 		Name        string `validate:"required"`
 		Description string `validate:"min=0,max=512"`
-		Tags        []string
+		Tags        types.Tags
 		IconID      types.ID `mapconv:"Icon.ID"`
 	}{
 		SizeMB:      o.SizeMB,
@@ -962,12 +962,12 @@ func (o *ArchiveCreateBlankRequest) SetDescription(v string) {
 }
 
 // GetTags returns value of Tags
-func (o *ArchiveCreateBlankRequest) GetTags() []string {
+func (o *ArchiveCreateBlankRequest) GetTags() types.Tags {
 	return o.Tags
 }
 
 // SetTags sets value to Tags
-func (o *ArchiveCreateBlankRequest) SetTags(v []string) {
+func (o *ArchiveCreateBlankRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
@@ -989,7 +989,7 @@ func (o *ArchiveCreateBlankRequest) SetIconID(v types.ID) {
 type ArchiveUpdateRequest struct {
 	Name        string `validate:"required"`
 	Description string `validate:"min=0,max=512"`
-	Tags        []string
+	Tags        types.Tags
 	IconID      types.ID `mapconv:"Icon.ID"`
 }
 
@@ -1003,7 +1003,7 @@ func (o *ArchiveUpdateRequest) setDefaults() interface{} {
 	return &struct {
 		Name        string `validate:"required"`
 		Description string `validate:"min=0,max=512"`
-		Tags        []string
+		Tags        types.Tags
 		IconID      types.ID `mapconv:"Icon.ID"`
 	}{
 		Name:        o.Name,
@@ -1034,12 +1034,12 @@ func (o *ArchiveUpdateRequest) SetDescription(v string) {
 }
 
 // GetTags returns value of Tags
-func (o *ArchiveUpdateRequest) GetTags() []string {
+func (o *ArchiveUpdateRequest) GetTags() types.Tags {
 	return o.Tags
 }
 
 // SetTags sets value to Tags
-func (o *ArchiveUpdateRequest) SetTags(v []string) {
+func (o *ArchiveUpdateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
@@ -1271,7 +1271,7 @@ type AutoBackup struct {
 	ID                      types.ID
 	Name                    string `validate:"required"`
 	Description             string `validate:"min=0,max=512"`
-	Tags                    []string
+	Tags                    types.Tags
 	Availability            types.EAvailability
 	IconID                  types.ID `mapconv:"Icon.ID"`
 	CreatedAt               time.Time
@@ -1296,7 +1296,7 @@ func (o *AutoBackup) setDefaults() interface{} {
 		ID                      types.ID
 		Name                    string `validate:"required"`
 		Description             string `validate:"min=0,max=512"`
-		Tags                    []string
+		Tags                    types.Tags
 		Availability            types.EAvailability
 		IconID                  types.ID `mapconv:"Icon.ID"`
 		CreatedAt               time.Time
@@ -1378,12 +1378,12 @@ func (o *AutoBackup) SetDescription(v string) {
 }
 
 // GetTags returns value of Tags
-func (o *AutoBackup) GetTags() []string {
+func (o *AutoBackup) GetTags() types.Tags {
 	return o.Tags
 }
 
 // SetTags sets value to Tags
-func (o *AutoBackup) SetTags(v []string) {
+func (o *AutoBackup) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
@@ -1508,7 +1508,7 @@ type AutoBackupCreateRequest struct {
 	MaximumNumberOfArchives int                        `mapconv:"Settings.Autobackup.MaximumNumberOfArchives"`
 	Name                    string                     `validate:"required"`
 	Description             string                     `validate:"min=0,max=512"`
-	Tags                    []string
+	Tags                    types.Tags
 	IconID                  types.ID `mapconv:"Icon.ID"`
 }
 
@@ -1525,7 +1525,7 @@ func (o *AutoBackupCreateRequest) setDefaults() interface{} {
 		MaximumNumberOfArchives int                        `mapconv:"Settings.Autobackup.MaximumNumberOfArchives"`
 		Name                    string                     `validate:"required"`
 		Description             string                     `validate:"min=0,max=512"`
-		Tags                    []string
+		Tags                    types.Tags
 		IconID                  types.ID              `mapconv:"Icon.ID"`
 		Class                   string                `mapconv:"Provider.Class"`
 		BackupSpanType          types.EBackupSpanType `mapconv:"Settings.Autobackup.BackupSpanType"`
@@ -1593,12 +1593,12 @@ func (o *AutoBackupCreateRequest) SetDescription(v string) {
 }
 
 // GetTags returns value of Tags
-func (o *AutoBackupCreateRequest) GetTags() []string {
+func (o *AutoBackupCreateRequest) GetTags() types.Tags {
 	return o.Tags
 }
 
 // SetTags sets value to Tags
-func (o *AutoBackupCreateRequest) SetTags(v []string) {
+func (o *AutoBackupCreateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
@@ -1622,7 +1622,7 @@ type AutoBackupUpdateRequest struct {
 	MaximumNumberOfArchives int                        `mapconv:"Settings.Autobackup.MaximumNumberOfArchives"`
 	Name                    string                     `validate:"required"`
 	Description             string                     `validate:"min=0,max=512"`
-	Tags                    []string
+	Tags                    types.Tags
 	IconID                  types.ID `mapconv:"Icon.ID"`
 }
 
@@ -1638,7 +1638,7 @@ func (o *AutoBackupUpdateRequest) setDefaults() interface{} {
 		MaximumNumberOfArchives int                        `mapconv:"Settings.Autobackup.MaximumNumberOfArchives"`
 		Name                    string                     `validate:"required"`
 		Description             string                     `validate:"min=0,max=512"`
-		Tags                    []string
+		Tags                    types.Tags
 		IconID                  types.ID              `mapconv:"Icon.ID"`
 		BackupSpanType          types.EBackupSpanType `mapconv:"Settings.Autobackup.BackupSpanType"`
 	}{
@@ -1693,12 +1693,12 @@ func (o *AutoBackupUpdateRequest) SetDescription(v string) {
 }
 
 // GetTags returns value of Tags
-func (o *AutoBackupUpdateRequest) GetTags() []string {
+func (o *AutoBackupUpdateRequest) GetTags() types.Tags {
 	return o.Tags
 }
 
 // SetTags sets value to Tags
-func (o *AutoBackupUpdateRequest) SetTags(v []string) {
+func (o *AutoBackupUpdateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
@@ -2581,7 +2581,7 @@ type CDROM struct {
 	Name         string `validate:"required"`
 	Description  string `validate:"min=0,max=512"`
 	DisplayOrder int64
-	Tags         []string
+	Tags         types.Tags
 	Availability types.EAvailability
 	Scope        types.EScope
 	Storage      *Storage `json:",omitempty" mapconv:",omitempty,recursive"`
@@ -2602,7 +2602,7 @@ func (o *CDROM) setDefaults() interface{} {
 		Name         string `validate:"required"`
 		Description  string `validate:"min=0,max=512"`
 		DisplayOrder int64
-		Tags         []string
+		Tags         types.Tags
 		Availability types.EAvailability
 		Scope        types.EScope
 		Storage      *Storage `json:",omitempty" mapconv:",omitempty,recursive"`
@@ -2685,12 +2685,12 @@ func (o *CDROM) SetDisplayOrder(v int64) {
 }
 
 // GetTags returns value of Tags
-func (o *CDROM) GetTags() []string {
+func (o *CDROM) GetTags() types.Tags {
 	return o.Tags
 }
 
 // SetTags sets value to Tags
-func (o *CDROM) SetTags(v []string) {
+func (o *CDROM) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
@@ -2763,7 +2763,7 @@ type CDROMCreateRequest struct {
 	SizeMB      int
 	Name        string `validate:"required"`
 	Description string `validate:"min=0,max=512"`
-	Tags        []string
+	Tags        types.Tags
 	IconID      types.ID `mapconv:"Icon.ID"`
 }
 
@@ -2778,7 +2778,7 @@ func (o *CDROMCreateRequest) setDefaults() interface{} {
 		SizeMB      int
 		Name        string `validate:"required"`
 		Description string `validate:"min=0,max=512"`
-		Tags        []string
+		Tags        types.Tags
 		IconID      types.ID `mapconv:"Icon.ID"`
 	}{
 		SizeMB:      o.SizeMB,
@@ -2830,12 +2830,12 @@ func (o *CDROMCreateRequest) SetDescription(v string) {
 }
 
 // GetTags returns value of Tags
-func (o *CDROMCreateRequest) GetTags() []string {
+func (o *CDROMCreateRequest) GetTags() types.Tags {
 	return o.Tags
 }
 
 // SetTags sets value to Tags
-func (o *CDROMCreateRequest) SetTags(v []string) {
+func (o *CDROMCreateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
@@ -2857,7 +2857,7 @@ func (o *CDROMCreateRequest) SetIconID(v types.ID) {
 type CDROMUpdateRequest struct {
 	Name        string `validate:"required"`
 	Description string `validate:"min=0,max=512"`
-	Tags        []string
+	Tags        types.Tags
 	IconID      types.ID `mapconv:"Icon.ID"`
 }
 
@@ -2871,7 +2871,7 @@ func (o *CDROMUpdateRequest) setDefaults() interface{} {
 	return &struct {
 		Name        string `validate:"required"`
 		Description string `validate:"min=0,max=512"`
-		Tags        []string
+		Tags        types.Tags
 		IconID      types.ID `mapconv:"Icon.ID"`
 	}{
 		Name:        o.Name,
@@ -2902,12 +2902,12 @@ func (o *CDROMUpdateRequest) SetDescription(v string) {
 }
 
 // GetTags returns value of Tags
-func (o *CDROMUpdateRequest) GetTags() []string {
+func (o *CDROMUpdateRequest) GetTags() types.Tags {
 	return o.Tags
 }
 
 // SetTags sets value to Tags
-func (o *CDROMUpdateRequest) SetTags(v []string) {
+func (o *CDROMUpdateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
@@ -3062,7 +3062,7 @@ type Database struct {
 	Class                   string
 	Name                    string `validate:"required"`
 	Description             string `validate:"min=0,max=512"`
-	Tags                    []string
+	Tags                    types.Tags
 	Availability            types.EAvailability
 	IconID                  types.ID `mapconv:"Icon.ID"`
 	CreatedAt               time.Time
@@ -3097,7 +3097,7 @@ func (o *Database) setDefaults() interface{} {
 		Class                   string
 		Name                    string `validate:"required"`
 		Description             string `validate:"min=0,max=512"`
-		Tags                    []string
+		Tags                    types.Tags
 		Availability            types.EAvailability
 		IconID                  types.ID `mapconv:"Icon.ID"`
 		CreatedAt               time.Time
@@ -3208,12 +3208,12 @@ func (o *Database) SetDescription(v string) {
 }
 
 // GetTags returns value of Tags
-func (o *Database) GetTags() []string {
+func (o *Database) GetTags() types.Tags {
 	return o.Tags
 }
 
 // SetTags sets value to Tags
-func (o *Database) SetTags(v []string) {
+func (o *Database) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
@@ -4023,7 +4023,7 @@ type DatabaseCreateRequest struct {
 	ReplicationSetting *DatabaseReplicationSetting `mapconv:"Settings.DBConf.Replication,recursive"`
 	Name               string                      `validate:"required"`
 	Description        string                      `validate:"min=0,max=512"`
-	Tags               []string
+	Tags               types.Tags
 	IconID             types.ID `mapconv:"Icon.ID"`
 }
 
@@ -4047,7 +4047,7 @@ func (o *DatabaseCreateRequest) setDefaults() interface{} {
 		ReplicationSetting *DatabaseReplicationSetting `mapconv:"Settings.DBConf.Replication,recursive"`
 		Name               string                      `validate:"required"`
 		Description        string                      `validate:"min=0,max=512"`
-		Tags               []string
+		Tags               types.Tags
 		IconID             types.ID `mapconv:"Icon.ID"`
 		Class              string
 	}{
@@ -4190,12 +4190,12 @@ func (o *DatabaseCreateRequest) SetDescription(v string) {
 }
 
 // GetTags returns value of Tags
-func (o *DatabaseCreateRequest) GetTags() []string {
+func (o *DatabaseCreateRequest) GetTags() types.Tags {
 	return o.Tags
 }
 
 // SetTags sets value to Tags
-func (o *DatabaseCreateRequest) SetTags(v []string) {
+func (o *DatabaseCreateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
@@ -4220,7 +4220,7 @@ type DatabaseUpdateRequest struct {
 	ReplicationSetting *DatabaseReplicationSetting  `mapconv:"Settings.DBConf.Replication,recursive"`
 	Name               string                       `validate:"required"`
 	Description        string                       `validate:"min=0,max=512"`
-	Tags               []string
+	Tags               types.Tags
 	IconID             types.ID `mapconv:"Icon.ID"`
 }
 
@@ -4237,7 +4237,7 @@ func (o *DatabaseUpdateRequest) setDefaults() interface{} {
 		ReplicationSetting *DatabaseReplicationSetting  `mapconv:"Settings.DBConf.Replication,recursive"`
 		Name               string                       `validate:"required"`
 		Description        string                       `validate:"min=0,max=512"`
-		Tags               []string
+		Tags               types.Tags
 		IconID             types.ID `mapconv:"Icon.ID"`
 	}{
 		CommonSetting:      o.CommonSetting,
@@ -4301,12 +4301,12 @@ func (o *DatabaseUpdateRequest) SetDescription(v string) {
 }
 
 // GetTags returns value of Tags
-func (o *DatabaseUpdateRequest) GetTags() []string {
+func (o *DatabaseUpdateRequest) GetTags() types.Tags {
 	return o.Tags
 }
 
 // SetTags sets value to Tags
-func (o *DatabaseUpdateRequest) SetTags(v []string) {
+func (o *DatabaseUpdateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
@@ -5227,7 +5227,7 @@ type Disk struct {
 	ID                        types.ID
 	Name                      string `validate:"required"`
 	Description               string `validate:"min=0,max=512"`
-	Tags                      []string
+	Tags                      types.Tags
 	Availability              types.EAvailability
 	Connection                types.EDiskConnection `json:",omitempty" mapconv:",omitempty"`
 	ConnectionOrder           int
@@ -5260,7 +5260,7 @@ func (o *Disk) setDefaults() interface{} {
 		ID                        types.ID
 		Name                      string `validate:"required"`
 		Description               string `validate:"min=0,max=512"`
-		Tags                      []string
+		Tags                      types.Tags
 		Availability              types.EAvailability
 		Connection                types.EDiskConnection `json:",omitempty" mapconv:",omitempty"`
 		ConnectionOrder           int
@@ -5358,12 +5358,12 @@ func (o *Disk) SetDescription(v string) {
 }
 
 // GetTags returns value of Tags
-func (o *Disk) GetTags() []string {
+func (o *Disk) GetTags() types.Tags {
 	return o.Tags
 }
 
 // SetTags sets value to Tags
-func (o *Disk) SetTags(v []string) {
+func (o *Disk) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
@@ -5591,7 +5591,7 @@ type DiskCreateRequest struct {
 	SizeMB          int
 	Name            string `validate:"required"`
 	Description     string `validate:"min=0,max=512"`
-	Tags            []string
+	Tags            types.Tags
 	IconID          types.ID `mapconv:"Icon.ID"`
 }
 
@@ -5611,7 +5611,7 @@ func (o *DiskCreateRequest) setDefaults() interface{} {
 		SizeMB          int
 		Name            string `validate:"required"`
 		Description     string `validate:"min=0,max=512"`
-		Tags            []string
+		Tags            types.Tags
 		IconID          types.ID `mapconv:"Icon.ID"`
 	}{
 		DiskPlanID:      o.DiskPlanID,
@@ -5718,12 +5718,12 @@ func (o *DiskCreateRequest) SetDescription(v string) {
 }
 
 // GetTags returns value of Tags
-func (o *DiskCreateRequest) GetTags() []string {
+func (o *DiskCreateRequest) GetTags() types.Tags {
 	return o.Tags
 }
 
 // SetTags sets value to Tags
-func (o *DiskCreateRequest) SetTags(v []string) {
+func (o *DiskCreateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
@@ -6102,7 +6102,7 @@ func (o *DiskInstallRequest) SetSizeGB(v int) {
 type DiskUpdateRequest struct {
 	Name        string `validate:"required"`
 	Description string `validate:"min=0,max=512"`
-	Tags        []string
+	Tags        types.Tags
 	IconID      types.ID              `mapconv:"Icon.ID"`
 	Connection  types.EDiskConnection `json:",omitempty" mapconv:",omitempty"`
 }
@@ -6117,7 +6117,7 @@ func (o *DiskUpdateRequest) setDefaults() interface{} {
 	return &struct {
 		Name        string `validate:"required"`
 		Description string `validate:"min=0,max=512"`
-		Tags        []string
+		Tags        types.Tags
 		IconID      types.ID              `mapconv:"Icon.ID"`
 		Connection  types.EDiskConnection `json:",omitempty" mapconv:",omitempty"`
 	}{
@@ -6150,12 +6150,12 @@ func (o *DiskUpdateRequest) SetDescription(v string) {
 }
 
 // GetTags returns value of Tags
-func (o *DiskUpdateRequest) GetTags() []string {
+func (o *DiskUpdateRequest) GetTags() types.Tags {
 	return o.Tags
 }
 
 // SetTags sets value to Tags
-func (o *DiskUpdateRequest) SetTags(v []string) {
+func (o *DiskUpdateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
@@ -6375,7 +6375,7 @@ type DNS struct {
 	ID             types.ID
 	Name           string `validate:"required"`
 	Description    string `validate:"min=0,max=512"`
-	Tags           []string
+	Tags           types.Tags
 	Availability   types.EAvailability
 	IconID         types.ID `mapconv:"Icon.ID"`
 	CreatedAt      time.Time
@@ -6397,7 +6397,7 @@ func (o *DNS) setDefaults() interface{} {
 		ID             types.ID
 		Name           string `validate:"required"`
 		Description    string `validate:"min=0,max=512"`
-		Tags           []string
+		Tags           types.Tags
 		Availability   types.EAvailability
 		IconID         types.ID `mapconv:"Icon.ID"`
 		CreatedAt      time.Time
@@ -6473,12 +6473,12 @@ func (o *DNS) SetDescription(v string) {
 }
 
 // GetTags returns value of Tags
-func (o *DNS) GetTags() []string {
+func (o *DNS) GetTags() types.Tags {
 	return o.Tags
 }
 
 // SetTags sets value to Tags
-func (o *DNS) SetTags(v []string) {
+func (o *DNS) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
@@ -6643,7 +6643,7 @@ type DNSCreateRequest struct {
 	Name        string       `mapconv:"Name/Status.Zone" validate:"required"`
 	Records     []*DNSRecord `mapconv:"Settings.DNS.[]ResourceRecordSets,recursive" validate:"min=0,max=1000"`
 	Description string       `validate:"min=0,max=512"`
-	Tags        []string
+	Tags        types.Tags
 	IconID      types.ID `mapconv:"Icon.ID"`
 }
 
@@ -6658,7 +6658,7 @@ func (o *DNSCreateRequest) setDefaults() interface{} {
 		Name        string       `mapconv:"Name/Status.Zone" validate:"required"`
 		Records     []*DNSRecord `mapconv:"Settings.DNS.[]ResourceRecordSets,recursive" validate:"min=0,max=1000"`
 		Description string       `validate:"min=0,max=512"`
-		Tags        []string
+		Tags        types.Tags
 		IconID      types.ID `mapconv:"Icon.ID"`
 		Class       string   `mapconv:"Provider.Class"`
 	}{
@@ -6702,12 +6702,12 @@ func (o *DNSCreateRequest) SetDescription(v string) {
 }
 
 // GetTags returns value of Tags
-func (o *DNSCreateRequest) GetTags() []string {
+func (o *DNSCreateRequest) GetTags() types.Tags {
 	return o.Tags
 }
 
 // SetTags sets value to Tags
-func (o *DNSCreateRequest) SetTags(v []string) {
+func (o *DNSCreateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
@@ -6729,7 +6729,7 @@ func (o *DNSCreateRequest) SetIconID(v types.ID) {
 type DNSUpdateRequest struct {
 	Records     []*DNSRecord `mapconv:"Settings.DNS.[]ResourceRecordSets,recursive" validate:"min=0,max=1000"`
 	Description string       `validate:"min=0,max=512"`
-	Tags        []string
+	Tags        types.Tags
 	IconID      types.ID `mapconv:"Icon.ID"`
 }
 
@@ -6743,7 +6743,7 @@ func (o *DNSUpdateRequest) setDefaults() interface{} {
 	return &struct {
 		Records     []*DNSRecord `mapconv:"Settings.DNS.[]ResourceRecordSets,recursive" validate:"min=0,max=1000"`
 		Description string       `validate:"min=0,max=512"`
-		Tags        []string
+		Tags        types.Tags
 		IconID      types.ID `mapconv:"Icon.ID"`
 	}{
 		Records:     o.Records,
@@ -6774,12 +6774,12 @@ func (o *DNSUpdateRequest) SetDescription(v string) {
 }
 
 // GetTags returns value of Tags
-func (o *DNSUpdateRequest) GetTags() []string {
+func (o *DNSUpdateRequest) GetTags() types.Tags {
 	return o.Tags
 }
 
 // SetTags sets value to Tags
-func (o *DNSUpdateRequest) SetTags(v []string) {
+func (o *DNSUpdateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
@@ -6802,7 +6802,7 @@ type GSLB struct {
 	ID                 types.ID
 	Name               string `validate:"required"`
 	Description        string `validate:"min=0,max=512"`
-	Tags               []string
+	Tags               types.Tags
 	Availability       types.EAvailability
 	IconID             types.ID `mapconv:"Icon.ID"`
 	CreatedAt          time.Time
@@ -6827,7 +6827,7 @@ func (o *GSLB) setDefaults() interface{} {
 		ID                 types.ID
 		Name               string `validate:"required"`
 		Description        string `validate:"min=0,max=512"`
-		Tags               []string
+		Tags               types.Tags
 		Availability       types.EAvailability
 		IconID             types.ID `mapconv:"Icon.ID"`
 		CreatedAt          time.Time
@@ -6909,12 +6909,12 @@ func (o *GSLB) SetDescription(v string) {
 }
 
 // GetTags returns value of Tags
-func (o *GSLB) GetTags() []string {
+func (o *GSLB) GetTags() types.Tags {
 	return o.Tags
 }
 
 // SetTags sets value to Tags
-func (o *GSLB) SetTags(v []string) {
+func (o *GSLB) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
@@ -7185,7 +7185,7 @@ type GSLBCreateRequest struct {
 	DestinationServers []*GSLBServer    `mapconv:"Settings.GSLB.[]Servers,recursive" validate:"min=0,max=12"`
 	Name               string           `validate:"required"`
 	Description        string           `validate:"min=0,max=512"`
-	Tags               []string
+	Tags               types.Tags
 	IconID             types.ID `mapconv:"Icon.ID"`
 }
 
@@ -7204,7 +7204,7 @@ func (o *GSLBCreateRequest) setDefaults() interface{} {
 		DestinationServers []*GSLBServer    `mapconv:"Settings.GSLB.[]Servers,recursive" validate:"min=0,max=12"`
 		Name               string           `validate:"required"`
 		Description        string           `validate:"min=0,max=512"`
-		Tags               []string
+		Tags               types.Tags
 		IconID             types.ID `mapconv:"Icon.ID"`
 		Class              string   `mapconv:"Provider.Class"`
 	}{
@@ -7292,12 +7292,12 @@ func (o *GSLBCreateRequest) SetDescription(v string) {
 }
 
 // GetTags returns value of Tags
-func (o *GSLBCreateRequest) GetTags() []string {
+func (o *GSLBCreateRequest) GetTags() types.Tags {
 	return o.Tags
 }
 
 // SetTags sets value to Tags
-func (o *GSLBCreateRequest) SetTags(v []string) {
+func (o *GSLBCreateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
@@ -7324,7 +7324,7 @@ type GSLBUpdateRequest struct {
 	DestinationServers []*GSLBServer    `mapconv:"Settings.GSLB.[]Servers,recursive" validate:"min=0,max=12"`
 	Name               string           `validate:"required"`
 	Description        string           `validate:"min=0,max=512"`
-	Tags               []string
+	Tags               types.Tags
 	IconID             types.ID `mapconv:"Icon.ID"`
 }
 
@@ -7343,7 +7343,7 @@ func (o *GSLBUpdateRequest) setDefaults() interface{} {
 		DestinationServers []*GSLBServer    `mapconv:"Settings.GSLB.[]Servers,recursive" validate:"min=0,max=12"`
 		Name               string           `validate:"required"`
 		Description        string           `validate:"min=0,max=512"`
-		Tags               []string
+		Tags               types.Tags
 		IconID             types.ID `mapconv:"Icon.ID"`
 	}{
 		HealthCheck:        o.HealthCheck,
@@ -7429,12 +7429,12 @@ func (o *GSLBUpdateRequest) SetDescription(v string) {
 }
 
 // GetTags returns value of Tags
-func (o *GSLBUpdateRequest) GetTags() []string {
+func (o *GSLBUpdateRequest) GetTags() types.Tags {
 	return o.Tags
 }
 
 // SetTags sets value to Tags
-func (o *GSLBUpdateRequest) SetTags(v []string) {
+func (o *GSLBUpdateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
@@ -7456,7 +7456,7 @@ func (o *GSLBUpdateRequest) SetIconID(v types.ID) {
 type Icon struct {
 	ID           types.ID
 	Name         string `validate:"required"`
-	Tags         []string
+	Tags         types.Tags
 	Availability types.EAvailability
 	Scope        types.EScope
 	URL          string
@@ -7474,7 +7474,7 @@ func (o *Icon) setDefaults() interface{} {
 	return &struct {
 		ID           types.ID
 		Name         string `validate:"required"`
-		Tags         []string
+		Tags         types.Tags
 		Availability types.EAvailability
 		Scope        types.EScope
 		URL          string
@@ -7533,12 +7533,12 @@ func (o *Icon) SetName(v string) {
 }
 
 // GetTags returns value of Tags
-func (o *Icon) GetTags() []string {
+func (o *Icon) GetTags() types.Tags {
 	return o.Tags
 }
 
 // SetTags sets value to Tags
-func (o *Icon) SetTags(v []string) {
+func (o *Icon) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
@@ -7599,7 +7599,7 @@ func (o *Icon) SetModifiedAt(v time.Time) {
 // IconCreateRequest represents API parameter/response structure
 type IconCreateRequest struct {
 	Name  string `validate:"required"`
-	Tags  []string
+	Tags  types.Tags
 	Image string
 }
 
@@ -7612,7 +7612,7 @@ func (o *IconCreateRequest) Validate() error {
 func (o *IconCreateRequest) setDefaults() interface{} {
 	return &struct {
 		Name  string `validate:"required"`
-		Tags  []string
+		Tags  types.Tags
 		Image string
 	}{
 		Name:  o.Name,
@@ -7632,12 +7632,12 @@ func (o *IconCreateRequest) SetName(v string) {
 }
 
 // GetTags returns value of Tags
-func (o *IconCreateRequest) GetTags() []string {
+func (o *IconCreateRequest) GetTags() types.Tags {
 	return o.Tags
 }
 
 // SetTags sets value to Tags
-func (o *IconCreateRequest) SetTags(v []string) {
+func (o *IconCreateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
@@ -7658,7 +7658,7 @@ func (o *IconCreateRequest) SetImage(v string) {
 // IconUpdateRequest represents API parameter/response structure
 type IconUpdateRequest struct {
 	Name string `validate:"required"`
-	Tags []string
+	Tags types.Tags
 }
 
 // Validate validates by field tags
@@ -7670,7 +7670,7 @@ func (o *IconUpdateRequest) Validate() error {
 func (o *IconUpdateRequest) setDefaults() interface{} {
 	return &struct {
 		Name string `validate:"required"`
-		Tags []string
+		Tags types.Tags
 	}{
 		Name: o.Name,
 		Tags: o.Tags,
@@ -7688,12 +7688,12 @@ func (o *IconUpdateRequest) SetName(v string) {
 }
 
 // GetTags returns value of Tags
-func (o *IconUpdateRequest) GetTags() []string {
+func (o *IconUpdateRequest) GetTags() types.Tags {
 	return o.Tags
 }
 
 // SetTags sets value to Tags
-func (o *IconUpdateRequest) SetTags(v []string) {
+func (o *IconUpdateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
@@ -7929,7 +7929,7 @@ type Internet struct {
 	ID             types.ID
 	Name           string `validate:"required"`
 	Description    string `validate:"min=0,max=512"`
-	Tags           []string
+	Tags           types.Tags
 	IconID         types.ID `mapconv:"Icon.ID"`
 	CreatedAt      time.Time
 	BandWidthMbps  int
@@ -7948,7 +7948,7 @@ func (o *Internet) setDefaults() interface{} {
 		ID             types.ID
 		Name           string `validate:"required"`
 		Description    string `validate:"min=0,max=512"`
-		Tags           []string
+		Tags           types.Tags
 		IconID         types.ID `mapconv:"Icon.ID"`
 		CreatedAt      time.Time
 		BandWidthMbps  int
@@ -8018,12 +8018,12 @@ func (o *Internet) SetDescription(v string) {
 }
 
 // GetTags returns value of Tags
-func (o *Internet) GetTags() []string {
+func (o *Internet) GetTags() types.Tags {
 	return o.Tags
 }
 
 // SetTags sets value to Tags
-func (o *Internet) SetTags(v []string) {
+func (o *Internet) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
@@ -8086,7 +8086,7 @@ type SwitchInfo struct {
 	ID          types.ID
 	Name        string `validate:"required"`
 	Description string `validate:"min=0,max=512"`
-	Tags        []string
+	Tags        types.Tags
 	Scope       types.EScope
 	Subnets     []*InternetSubnet `mapconv:"[]Subnets,recursive"`
 	IPv6Nets    []*IPv6NetInfo    `mapconv:"[]IPv6Nets,recursive,omitempty"`
@@ -8103,7 +8103,7 @@ func (o *SwitchInfo) setDefaults() interface{} {
 		ID          types.ID
 		Name        string `validate:"required"`
 		Description string `validate:"min=0,max=512"`
-		Tags        []string
+		Tags        types.Tags
 		Scope       types.EScope
 		Subnets     []*InternetSubnet `mapconv:"[]Subnets,recursive"`
 		IPv6Nets    []*IPv6NetInfo    `mapconv:"[]IPv6Nets,recursive,omitempty"`
@@ -8169,12 +8169,12 @@ func (o *SwitchInfo) SetDescription(v string) {
 }
 
 // GetTags returns value of Tags
-func (o *SwitchInfo) GetTags() []string {
+func (o *SwitchInfo) GetTags() types.Tags {
 	return o.Tags
 }
 
 // SetTags sets value to Tags
-func (o *SwitchInfo) SetTags(v []string) {
+func (o *SwitchInfo) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
@@ -8413,7 +8413,7 @@ func (o *IPv6NetInfo) SetIPv6PrefixLen(v int) {
 type InternetCreateRequest struct {
 	Name           string `validate:"required"`
 	Description    string `validate:"min=0,max=512"`
-	Tags           []string
+	Tags           types.Tags
 	IconID         types.ID `mapconv:"Icon.ID"`
 	NetworkMaskLen int      `validate:"min=24,max=28"`
 	BandWidthMbps  int
@@ -8429,7 +8429,7 @@ func (o *InternetCreateRequest) setDefaults() interface{} {
 	return &struct {
 		Name           string `validate:"required"`
 		Description    string `validate:"min=0,max=512"`
-		Tags           []string
+		Tags           types.Tags
 		IconID         types.ID `mapconv:"Icon.ID"`
 		NetworkMaskLen int      `validate:"min=24,max=28"`
 		BandWidthMbps  int
@@ -8464,12 +8464,12 @@ func (o *InternetCreateRequest) SetDescription(v string) {
 }
 
 // GetTags returns value of Tags
-func (o *InternetCreateRequest) GetTags() []string {
+func (o *InternetCreateRequest) GetTags() types.Tags {
 	return o.Tags
 }
 
 // SetTags sets value to Tags
-func (o *InternetCreateRequest) SetTags(v []string) {
+func (o *InternetCreateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
@@ -8511,7 +8511,7 @@ func (o *InternetCreateRequest) SetBandWidthMbps(v int) {
 type InternetUpdateRequest struct {
 	Name        string `validate:"required"`
 	Description string `validate:"min=0,max=512"`
-	Tags        []string
+	Tags        types.Tags
 	IconID      types.ID `mapconv:"Icon.ID"`
 }
 
@@ -8525,7 +8525,7 @@ func (o *InternetUpdateRequest) setDefaults() interface{} {
 	return &struct {
 		Name        string `validate:"required"`
 		Description string `validate:"min=0,max=512"`
-		Tags        []string
+		Tags        types.Tags
 		IconID      types.ID `mapconv:"Icon.ID"`
 	}{
 		Name:        o.Name,
@@ -8556,12 +8556,12 @@ func (o *InternetUpdateRequest) SetDescription(v string) {
 }
 
 // GetTags returns value of Tags
-func (o *InternetUpdateRequest) GetTags() []string {
+func (o *InternetUpdateRequest) GetTags() types.Tags {
 	return o.Tags
 }
 
 // SetTags sets value to Tags
-func (o *InternetUpdateRequest) SetTags(v []string) {
+func (o *InternetUpdateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
@@ -9719,7 +9719,7 @@ type LoadBalancer struct {
 	ID                      types.ID
 	Name                    string `validate:"required"`
 	Description             string `validate:"min=0,max=512"`
-	Tags                    []string
+	Tags                    types.Tags
 	Availability            types.EAvailability
 	Class                   string
 	IconID                  types.ID `mapconv:"Icon.ID"`
@@ -9752,7 +9752,7 @@ func (o *LoadBalancer) setDefaults() interface{} {
 		ID                      types.ID
 		Name                    string `validate:"required"`
 		Description             string `validate:"min=0,max=512"`
-		Tags                    []string
+		Tags                    types.Tags
 		Availability            types.EAvailability
 		Class                   string
 		IconID                  types.ID `mapconv:"Icon.ID"`
@@ -9850,12 +9850,12 @@ func (o *LoadBalancer) SetDescription(v string) {
 }
 
 // GetTags returns value of Tags
-func (o *LoadBalancer) GetTags() []string {
+func (o *LoadBalancer) GetTags() types.Tags {
 	return o.Tags
 }
 
 // SetTags sets value to Tags
-func (o *LoadBalancer) SetTags(v []string) {
+func (o *LoadBalancer) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
@@ -10259,7 +10259,7 @@ type LoadBalancerCreateRequest struct {
 	DefaultRoute       string   `mapconv:"Remark.Network.DefaultRoute" validate:"ipv4"`
 	Name               string   `validate:"required"`
 	Description        string   `validate:"min=0,max=512"`
-	Tags               []string
+	Tags               types.Tags
 	IconID             types.ID                        `mapconv:"Icon.ID"`
 	VirtualIPAddresses []*LoadBalancerVirtualIPAddress `mapconv:"Settings.[]LoadBalancer,recursive" validate:"min=0,max=10"`
 }
@@ -10280,7 +10280,7 @@ func (o *LoadBalancerCreateRequest) setDefaults() interface{} {
 		DefaultRoute       string   `mapconv:"Remark.Network.DefaultRoute" validate:"ipv4"`
 		Name               string   `validate:"required"`
 		Description        string   `validate:"min=0,max=512"`
-		Tags               []string
+		Tags               types.Tags
 		IconID             types.ID                        `mapconv:"Icon.ID"`
 		VirtualIPAddresses []*LoadBalancerVirtualIPAddress `mapconv:"Settings.[]LoadBalancer,recursive" validate:"min=0,max=10"`
 		Class              string
@@ -10381,12 +10381,12 @@ func (o *LoadBalancerCreateRequest) SetDescription(v string) {
 }
 
 // GetTags returns value of Tags
-func (o *LoadBalancerCreateRequest) GetTags() []string {
+func (o *LoadBalancerCreateRequest) GetTags() types.Tags {
 	return o.Tags
 }
 
 // SetTags sets value to Tags
-func (o *LoadBalancerCreateRequest) SetTags(v []string) {
+func (o *LoadBalancerCreateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
@@ -10418,7 +10418,7 @@ func (o *LoadBalancerCreateRequest) SetVirtualIPAddresses(v []*LoadBalancerVirtu
 type LoadBalancerUpdateRequest struct {
 	Name               string `validate:"required"`
 	Description        string `validate:"min=0,max=512"`
-	Tags               []string
+	Tags               types.Tags
 	IconID             types.ID                        `mapconv:"Icon.ID"`
 	VirtualIPAddresses []*LoadBalancerVirtualIPAddress `mapconv:"Settings.[]LoadBalancer,recursive" validate:"min=0,max=10"`
 }
@@ -10433,7 +10433,7 @@ func (o *LoadBalancerUpdateRequest) setDefaults() interface{} {
 	return &struct {
 		Name               string `validate:"required"`
 		Description        string `validate:"min=0,max=512"`
-		Tags               []string
+		Tags               types.Tags
 		IconID             types.ID                        `mapconv:"Icon.ID"`
 		VirtualIPAddresses []*LoadBalancerVirtualIPAddress `mapconv:"Settings.[]LoadBalancer,recursive" validate:"min=0,max=10"`
 	}{
@@ -10466,12 +10466,12 @@ func (o *LoadBalancerUpdateRequest) SetDescription(v string) {
 }
 
 // GetTags returns value of Tags
-func (o *LoadBalancerUpdateRequest) GetTags() []string {
+func (o *LoadBalancerUpdateRequest) GetTags() types.Tags {
 	return o.Tags
 }
 
 // SetTags sets value to Tags
-func (o *LoadBalancerUpdateRequest) SetTags(v []string) {
+func (o *LoadBalancerUpdateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
@@ -10661,7 +10661,7 @@ type MobileGateway struct {
 	ID                      types.ID
 	Name                    string `validate:"required"`
 	Description             string `validate:"min=0,max=512"`
-	Tags                    []string
+	Tags                    types.Tags
 	Availability            types.EAvailability
 	Class                   string
 	IconID                  types.ID `mapconv:"Icon.ID"`
@@ -10687,7 +10687,7 @@ func (o *MobileGateway) setDefaults() interface{} {
 		ID                      types.ID
 		Name                    string `validate:"required"`
 		Description             string `validate:"min=0,max=512"`
-		Tags                    []string
+		Tags                    types.Tags
 		Availability            types.EAvailability
 		Class                   string
 		IconID                  types.ID `mapconv:"Icon.ID"`
@@ -10771,12 +10771,12 @@ func (o *MobileGateway) SetDescription(v string) {
 }
 
 // GetTags returns value of Tags
-func (o *MobileGateway) GetTags() []string {
+func (o *MobileGateway) GetTags() types.Tags {
 	return o.Tags
 }
 
 // SetTags sets value to Tags
-func (o *MobileGateway) SetTags(v []string) {
+func (o *MobileGateway) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
@@ -11359,7 +11359,7 @@ func (o *MobileGatewayStaticRoute) SetNextHop(v string) {
 type MobileGatewayCreateRequest struct {
 	Name        string `validate:"required"`
 	Description string `validate:"min=0,max=512"`
-	Tags        []string
+	Tags        types.Tags
 	IconID      types.ID                    `mapconv:"Icon.ID"`
 	Settings    *MobileGatewaySettingCreate `json:",omitempty" mapconv:",omitempty,recursive"`
 }
@@ -11374,7 +11374,7 @@ func (o *MobileGatewayCreateRequest) setDefaults() interface{} {
 	return &struct {
 		Name        string `validate:"required"`
 		Description string `validate:"min=0,max=512"`
-		Tags        []string
+		Tags        types.Tags
 		IconID      types.ID                    `mapconv:"Icon.ID"`
 		Settings    *MobileGatewaySettingCreate `json:",omitempty" mapconv:",omitempty,recursive"`
 		Class       string
@@ -11413,12 +11413,12 @@ func (o *MobileGatewayCreateRequest) SetDescription(v string) {
 }
 
 // GetTags returns value of Tags
-func (o *MobileGatewayCreateRequest) GetTags() []string {
+func (o *MobileGatewayCreateRequest) GetTags() types.Tags {
 	return o.Tags
 }
 
 // SetTags sets value to Tags
-func (o *MobileGatewayCreateRequest) SetTags(v []string) {
+func (o *MobileGatewayCreateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
@@ -11509,7 +11509,7 @@ func (o *MobileGatewaySettingCreate) SetInterDeviceCommunicationEnabled(v types.
 type MobileGatewayUpdateRequest struct {
 	Name        string `validate:"required"`
 	Description string `validate:"min=0,max=512"`
-	Tags        []string
+	Tags        types.Tags
 	IconID      types.ID              `mapconv:"Icon.ID"`
 	Settings    *MobileGatewaySetting `json:",omitempty" mapconv:",omitempty,recursive"`
 }
@@ -11524,7 +11524,7 @@ func (o *MobileGatewayUpdateRequest) setDefaults() interface{} {
 	return &struct {
 		Name        string `validate:"required"`
 		Description string `validate:"min=0,max=512"`
-		Tags        []string
+		Tags        types.Tags
 		IconID      types.ID              `mapconv:"Icon.ID"`
 		Settings    *MobileGatewaySetting `json:",omitempty" mapconv:",omitempty,recursive"`
 	}{
@@ -11557,12 +11557,12 @@ func (o *MobileGatewayUpdateRequest) SetDescription(v string) {
 }
 
 // GetTags returns value of Tags
-func (o *MobileGatewayUpdateRequest) GetTags() []string {
+func (o *MobileGatewayUpdateRequest) GetTags() types.Tags {
 	return o.Tags
 }
 
 // SetTags sets value to Tags
-func (o *MobileGatewayUpdateRequest) SetTags(v []string) {
+func (o *MobileGatewayUpdateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
@@ -12269,7 +12269,7 @@ type NFS struct {
 	ID                      types.ID
 	Name                    string `validate:"required"`
 	Description             string `validate:"min=0,max=512"`
-	Tags                    []string
+	Tags                    types.Tags
 	Availability            types.EAvailability
 	Class                   string
 	InstanceHostName        string                      `mapconv:"Instance.Host.Name"`
@@ -12299,7 +12299,7 @@ func (o *NFS) setDefaults() interface{} {
 		ID                      types.ID
 		Name                    string `validate:"required"`
 		Description             string `validate:"min=0,max=512"`
-		Tags                    []string
+		Tags                    types.Tags
 		Availability            types.EAvailability
 		Class                   string
 		InstanceHostName        string                      `mapconv:"Instance.Host.Name"`
@@ -12391,12 +12391,12 @@ func (o *NFS) SetDescription(v string) {
 }
 
 // GetTags returns value of Tags
-func (o *NFS) GetTags() []string {
+func (o *NFS) GetTags() types.Tags {
 	return o.Tags
 }
 
 // SetTags sets value to Tags
-func (o *NFS) SetTags(v []string) {
+func (o *NFS) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
@@ -12573,7 +12573,7 @@ type NFSCreateRequest struct {
 	DefaultRoute   string   `mapconv:"Remark.Network.DefaultRoute" validate:"ipv4"`
 	Name           string   `validate:"required"`
 	Description    string   `validate:"min=0,max=512"`
-	Tags           []string
+	Tags           types.Tags
 	IconID         types.ID `mapconv:"Icon.ID"`
 }
 
@@ -12592,7 +12592,7 @@ func (o *NFSCreateRequest) setDefaults() interface{} {
 		DefaultRoute   string   `mapconv:"Remark.Network.DefaultRoute" validate:"ipv4"`
 		Name           string   `validate:"required"`
 		Description    string   `validate:"min=0,max=512"`
-		Tags           []string
+		Tags           types.Tags
 		IconID         types.ID `mapconv:"Icon.ID"`
 		Class          string
 	}{
@@ -12680,12 +12680,12 @@ func (o *NFSCreateRequest) SetDescription(v string) {
 }
 
 // GetTags returns value of Tags
-func (o *NFSCreateRequest) GetTags() []string {
+func (o *NFSCreateRequest) GetTags() types.Tags {
 	return o.Tags
 }
 
 // SetTags sets value to Tags
-func (o *NFSCreateRequest) SetTags(v []string) {
+func (o *NFSCreateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
@@ -12707,7 +12707,7 @@ func (o *NFSCreateRequest) SetIconID(v types.ID) {
 type NFSUpdateRequest struct {
 	Name        string `validate:"required"`
 	Description string `validate:"min=0,max=512"`
-	Tags        []string
+	Tags        types.Tags
 	IconID      types.ID `mapconv:"Icon.ID"`
 }
 
@@ -12721,7 +12721,7 @@ func (o *NFSUpdateRequest) setDefaults() interface{} {
 	return &struct {
 		Name        string `validate:"required"`
 		Description string `validate:"min=0,max=512"`
-		Tags        []string
+		Tags        types.Tags
 		IconID      types.ID `mapconv:"Icon.ID"`
 	}{
 		Name:        o.Name,
@@ -12752,12 +12752,12 @@ func (o *NFSUpdateRequest) SetDescription(v string) {
 }
 
 // GetTags returns value of Tags
-func (o *NFSUpdateRequest) GetTags() []string {
+func (o *NFSUpdateRequest) GetTags() types.Tags {
 	return o.Tags
 }
 
 // SetTags sets value to Tags
-func (o *NFSUpdateRequest) SetTags(v []string) {
+func (o *NFSUpdateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
@@ -12859,7 +12859,7 @@ type Note struct {
 	ID           types.ID
 	Name         string `validate:"required"`
 	Description  string `validate:"min=0,max=512"`
-	Tags         []string
+	Tags         types.Tags
 	Availability types.EAvailability
 	Scope        types.EScope
 	Class        string
@@ -12880,7 +12880,7 @@ func (o *Note) setDefaults() interface{} {
 		ID           types.ID
 		Name         string `validate:"required"`
 		Description  string `validate:"min=0,max=512"`
-		Tags         []string
+		Tags         types.Tags
 		Availability types.EAvailability
 		Scope        types.EScope
 		Class        string
@@ -12954,12 +12954,12 @@ func (o *Note) SetDescription(v string) {
 }
 
 // GetTags returns value of Tags
-func (o *Note) GetTags() []string {
+func (o *Note) GetTags() types.Tags {
 	return o.Tags
 }
 
 // SetTags sets value to Tags
-func (o *Note) SetTags(v []string) {
+func (o *Note) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
@@ -13040,7 +13040,7 @@ func (o *Note) SetModifiedAt(v time.Time) {
 // NoteCreateRequest represents API parameter/response structure
 type NoteCreateRequest struct {
 	Name    string `validate:"required"`
-	Tags    []string
+	Tags    types.Tags
 	IconID  types.ID `mapconv:"Icon.ID"`
 	Class   string
 	Content string
@@ -13055,7 +13055,7 @@ func (o *NoteCreateRequest) Validate() error {
 func (o *NoteCreateRequest) setDefaults() interface{} {
 	return &struct {
 		Name    string `validate:"required"`
-		Tags    []string
+		Tags    types.Tags
 		IconID  types.ID `mapconv:"Icon.ID"`
 		Class   string
 		Content string
@@ -13079,12 +13079,12 @@ func (o *NoteCreateRequest) SetName(v string) {
 }
 
 // GetTags returns value of Tags
-func (o *NoteCreateRequest) GetTags() []string {
+func (o *NoteCreateRequest) GetTags() types.Tags {
 	return o.Tags
 }
 
 // SetTags sets value to Tags
-func (o *NoteCreateRequest) SetTags(v []string) {
+func (o *NoteCreateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
@@ -13125,7 +13125,7 @@ func (o *NoteCreateRequest) SetContent(v string) {
 // NoteUpdateRequest represents API parameter/response structure
 type NoteUpdateRequest struct {
 	Name    string `validate:"required"`
-	Tags    []string
+	Tags    types.Tags
 	IconID  types.ID `mapconv:"Icon.ID"`
 	Class   string
 	Content string
@@ -13140,7 +13140,7 @@ func (o *NoteUpdateRequest) Validate() error {
 func (o *NoteUpdateRequest) setDefaults() interface{} {
 	return &struct {
 		Name    string `validate:"required"`
-		Tags    []string
+		Tags    types.Tags
 		IconID  types.ID `mapconv:"Icon.ID"`
 		Class   string
 		Content string
@@ -13164,12 +13164,12 @@ func (o *NoteUpdateRequest) SetName(v string) {
 }
 
 // GetTags returns value of Tags
-func (o *NoteUpdateRequest) GetTags() []string {
+func (o *NoteUpdateRequest) GetTags() types.Tags {
 	return o.Tags
 }
 
 // SetTags sets value to Tags
-func (o *NoteUpdateRequest) SetTags(v []string) {
+func (o *NoteUpdateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
@@ -13546,7 +13546,7 @@ type PrivateHost struct {
 	ID               types.ID
 	Name             string `validate:"required"`
 	Description      string `validate:"min=0,max=512"`
-	Tags             []string
+	Tags             types.Tags
 	IconID           types.ID `mapconv:"Icon.ID"`
 	CreatedAt        time.Time
 	PlanID           types.ID `mapconv:"Plan.ID,omitempty"`
@@ -13570,7 +13570,7 @@ func (o *PrivateHost) setDefaults() interface{} {
 		ID               types.ID
 		Name             string `validate:"required"`
 		Description      string `validate:"min=0,max=512"`
-		Tags             []string
+		Tags             types.Tags
 		IconID           types.ID `mapconv:"Icon.ID"`
 		CreatedAt        time.Time
 		PlanID           types.ID `mapconv:"Plan.ID,omitempty"`
@@ -13650,12 +13650,12 @@ func (o *PrivateHost) SetDescription(v string) {
 }
 
 // GetTags returns value of Tags
-func (o *PrivateHost) GetTags() []string {
+func (o *PrivateHost) GetTags() types.Tags {
 	return o.Tags
 }
 
 // SetTags sets value to Tags
-func (o *PrivateHost) SetTags(v []string) {
+func (o *PrivateHost) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
@@ -13777,7 +13777,7 @@ func (o *PrivateHost) SetHostName(v string) {
 type PrivateHostCreateRequest struct {
 	Name        string `validate:"required"`
 	Description string `validate:"min=0,max=512"`
-	Tags        []string
+	Tags        types.Tags
 	IconID      types.ID `mapconv:"Icon.ID"`
 	PlanID      types.ID `mapconv:"Plan.ID,omitempty"`
 }
@@ -13792,7 +13792,7 @@ func (o *PrivateHostCreateRequest) setDefaults() interface{} {
 	return &struct {
 		Name        string `validate:"required"`
 		Description string `validate:"min=0,max=512"`
-		Tags        []string
+		Tags        types.Tags
 		IconID      types.ID `mapconv:"Icon.ID"`
 		PlanID      types.ID `mapconv:"Plan.ID,omitempty"`
 	}{
@@ -13825,12 +13825,12 @@ func (o *PrivateHostCreateRequest) SetDescription(v string) {
 }
 
 // GetTags returns value of Tags
-func (o *PrivateHostCreateRequest) GetTags() []string {
+func (o *PrivateHostCreateRequest) GetTags() types.Tags {
 	return o.Tags
 }
 
 // SetTags sets value to Tags
-func (o *PrivateHostCreateRequest) SetTags(v []string) {
+func (o *PrivateHostCreateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
@@ -13862,7 +13862,7 @@ func (o *PrivateHostCreateRequest) SetPlanID(v types.ID) {
 type PrivateHostUpdateRequest struct {
 	Name        string `validate:"required"`
 	Description string `validate:"min=0,max=512"`
-	Tags        []string
+	Tags        types.Tags
 	IconID      types.ID `mapconv:"Icon.ID"`
 }
 
@@ -13876,7 +13876,7 @@ func (o *PrivateHostUpdateRequest) setDefaults() interface{} {
 	return &struct {
 		Name        string `validate:"required"`
 		Description string `validate:"min=0,max=512"`
-		Tags        []string
+		Tags        types.Tags
 		IconID      types.ID `mapconv:"Icon.ID"`
 	}{
 		Name:        o.Name,
@@ -13907,12 +13907,12 @@ func (o *PrivateHostUpdateRequest) SetDescription(v string) {
 }
 
 // GetTags returns value of Tags
-func (o *PrivateHostUpdateRequest) GetTags() []string {
+func (o *PrivateHostUpdateRequest) GetTags() types.Tags {
 	return o.Tags
 }
 
 // SetTags sets value to Tags
-func (o *PrivateHostUpdateRequest) SetTags(v []string) {
+func (o *PrivateHostUpdateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
@@ -14063,7 +14063,7 @@ type ProxyLB struct {
 	ID             types.ID
 	Name           string `validate:"required"`
 	Description    string `validate:"min=0,max=512"`
-	Tags           []string
+	Tags           types.Tags
 	Availability   types.EAvailability
 	IconID         types.ID `mapconv:"Icon.ID"`
 	CreatedAt      time.Time
@@ -14093,7 +14093,7 @@ func (o *ProxyLB) setDefaults() interface{} {
 		ID             types.ID
 		Name           string `validate:"required"`
 		Description    string `validate:"min=0,max=512"`
-		Tags           []string
+		Tags           types.Tags
 		Availability   types.EAvailability
 		IconID         types.ID `mapconv:"Icon.ID"`
 		CreatedAt      time.Time
@@ -14185,12 +14185,12 @@ func (o *ProxyLB) SetDescription(v string) {
 }
 
 // GetTags returns value of Tags
-func (o *ProxyLB) GetTags() []string {
+func (o *ProxyLB) GetTags() types.Tags {
 	return o.Tags
 }
 
 // SetTags sets value to Tags
-func (o *ProxyLB) SetTags(v []string) {
+func (o *ProxyLB) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
@@ -14699,7 +14699,7 @@ type ProxyLBCreateRequest struct {
 	Region         types.EProxyLBRegion  `mapconv:"Status.Region"`
 	Name           string                `validate:"required"`
 	Description    string                `validate:"min=0,max=512"`
-	Tags           []string
+	Tags           types.Tags
 	IconID         types.ID `mapconv:"Icon.ID"`
 }
 
@@ -14722,7 +14722,7 @@ func (o *ProxyLBCreateRequest) setDefaults() interface{} {
 		Region         types.EProxyLBRegion  `mapconv:"Status.Region"`
 		Name           string                `validate:"required"`
 		Description    string                `validate:"min=0,max=512"`
-		Tags           []string
+		Tags           types.Tags
 		IconID         types.ID `mapconv:"Icon.ID"`
 		Class          string   `mapconv:"Provider.Class"`
 	}{
@@ -14854,12 +14854,12 @@ func (o *ProxyLBCreateRequest) SetDescription(v string) {
 }
 
 // GetTags returns value of Tags
-func (o *ProxyLBCreateRequest) GetTags() []string {
+func (o *ProxyLBCreateRequest) GetTags() types.Tags {
 	return o.Tags
 }
 
 // SetTags sets value to Tags
-func (o *ProxyLBCreateRequest) SetTags(v []string) {
+func (o *ProxyLBCreateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
@@ -14887,7 +14887,7 @@ type ProxyLBUpdateRequest struct {
 	StickySession *ProxyLBStickySession `mapconv:"Settings.ProxyLB.StickySession,recursive"`
 	Name          string                `validate:"required"`
 	Description   string                `validate:"min=0,max=512"`
-	Tags          []string
+	Tags          types.Tags
 	IconID        types.ID `mapconv:"Icon.ID"`
 }
 
@@ -14907,7 +14907,7 @@ func (o *ProxyLBUpdateRequest) setDefaults() interface{} {
 		StickySession *ProxyLBStickySession `mapconv:"Settings.ProxyLB.StickySession,recursive"`
 		Name          string                `validate:"required"`
 		Description   string                `validate:"min=0,max=512"`
-		Tags          []string
+		Tags          types.Tags
 		IconID        types.ID `mapconv:"Icon.ID"`
 	}{
 		HealthCheck:   o.HealthCheck,
@@ -15004,12 +15004,12 @@ func (o *ProxyLBUpdateRequest) SetDescription(v string) {
 }
 
 // GetTags returns value of Tags
-func (o *ProxyLBUpdateRequest) GetTags() []string {
+func (o *ProxyLBUpdateRequest) GetTags() types.Tags {
 	return o.Tags
 }
 
 // SetTags sets value to Tags
-func (o *ProxyLBUpdateRequest) SetTags(v []string) {
+func (o *ProxyLBUpdateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
@@ -15392,7 +15392,7 @@ type Server struct {
 	ID                      types.ID
 	Name                    string `validate:"required"`
 	Description             string `validate:"min=0,max=512"`
-	Tags                    []string
+	Tags                    types.Tags
 	Availability            types.EAvailability
 	HostName                string
 	InterfaceDriver         types.EInterfaceDriver      `mapconv:",default=virtio"`
@@ -15432,7 +15432,7 @@ func (o *Server) setDefaults() interface{} {
 		ID                      types.ID
 		Name                    string `validate:"required"`
 		Description             string `validate:"min=0,max=512"`
-		Tags                    []string
+		Tags                    types.Tags
 		Availability            types.EAvailability
 		HostName                string
 		InterfaceDriver         types.EInterfaceDriver      `mapconv:",default=virtio"`
@@ -15544,12 +15544,12 @@ func (o *Server) SetDescription(v string) {
 }
 
 // GetTags returns value of Tags
-func (o *Server) GetTags() []string {
+func (o *Server) GetTags() types.Tags {
 	return o.Tags
 }
 
 // SetTags sets value to Tags
-func (o *Server) SetTags(v []string) {
+func (o *Server) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
@@ -16061,7 +16061,7 @@ type ServerCreateRequest struct {
 	HostName             string
 	Name                 string `validate:"required"`
 	Description          string `validate:"min=0,max=512"`
-	Tags                 []string
+	Tags                 types.Tags
 	IconID               types.ID `mapconv:"Icon.ID"`
 	WaitDiskMigration    bool     `json:",omitempty" mapconv:",omitempty"`
 }
@@ -16083,7 +16083,7 @@ func (o *ServerCreateRequest) setDefaults() interface{} {
 		HostName             string
 		Name                 string `validate:"required"`
 		Description          string `validate:"min=0,max=512"`
-		Tags                 []string
+		Tags                 types.Tags
 		IconID               types.ID `mapconv:"Icon.ID"`
 		WaitDiskMigration    bool     `json:",omitempty" mapconv:",omitempty"`
 	}{
@@ -16203,12 +16203,12 @@ func (o *ServerCreateRequest) SetDescription(v string) {
 }
 
 // GetTags returns value of Tags
-func (o *ServerCreateRequest) GetTags() []string {
+func (o *ServerCreateRequest) GetTags() types.Tags {
 	return o.Tags
 }
 
 // SetTags sets value to Tags
-func (o *ServerCreateRequest) SetTags(v []string) {
+func (o *ServerCreateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
@@ -16306,7 +16306,7 @@ func (o *ConnectedSwitch) SetScope(v types.EScope) {
 type ServerUpdateRequest struct {
 	Name        string `validate:"required"`
 	Description string `validate:"min=0,max=512"`
-	Tags        []string
+	Tags        types.Tags
 	IconID      types.ID `mapconv:"Icon.ID"`
 }
 
@@ -16320,7 +16320,7 @@ func (o *ServerUpdateRequest) setDefaults() interface{} {
 	return &struct {
 		Name        string `validate:"required"`
 		Description string `validate:"min=0,max=512"`
-		Tags        []string
+		Tags        types.Tags
 		IconID      types.ID `mapconv:"Icon.ID"`
 	}{
 		Name:        o.Name,
@@ -16351,12 +16351,12 @@ func (o *ServerUpdateRequest) SetDescription(v string) {
 }
 
 // GetTags returns value of Tags
-func (o *ServerUpdateRequest) GetTags() []string {
+func (o *ServerUpdateRequest) GetTags() types.Tags {
 	return o.Tags
 }
 
 // SetTags sets value to Tags
-func (o *ServerUpdateRequest) SetTags(v []string) {
+func (o *ServerUpdateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
@@ -16911,7 +16911,7 @@ type SIM struct {
 	ID           types.ID
 	Name         string `validate:"required"`
 	Description  string `validate:"min=0,max=512"`
-	Tags         []string
+	Tags         types.Tags
 	Availability types.EAvailability
 	Class        string
 	ICCID        string   `mapconv:"Status.ICCID" validate:"numeric"`
@@ -16932,7 +16932,7 @@ func (o *SIM) setDefaults() interface{} {
 		ID           types.ID
 		Name         string `validate:"required"`
 		Description  string `validate:"min=0,max=512"`
-		Tags         []string
+		Tags         types.Tags
 		Availability types.EAvailability
 		Class        string
 		ICCID        string   `mapconv:"Status.ICCID" validate:"numeric"`
@@ -17006,12 +17006,12 @@ func (o *SIM) SetDescription(v string) {
 }
 
 // GetTags returns value of Tags
-func (o *SIM) GetTags() []string {
+func (o *SIM) GetTags() types.Tags {
 	return o.Tags
 }
 
 // SetTags sets value to Tags
-func (o *SIM) SetTags(v []string) {
+func (o *SIM) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
@@ -17295,7 +17295,7 @@ func (o *SIMInfo) SetConnectedIMEI(v string) {
 type SIMCreateRequest struct {
 	Name        string `validate:"required"`
 	Description string `validate:"min=0,max=512"`
-	Tags        []string
+	Tags        types.Tags
 	IconID      types.ID `mapconv:"Icon.ID"`
 	ICCID       string   `mapconv:"Status.ICCID" validate:"numeric"`
 	PassCode    string   `mapconv:"Remark.PassCode"`
@@ -17311,7 +17311,7 @@ func (o *SIMCreateRequest) setDefaults() interface{} {
 	return &struct {
 		Name        string `validate:"required"`
 		Description string `validate:"min=0,max=512"`
-		Tags        []string
+		Tags        types.Tags
 		IconID      types.ID `mapconv:"Icon.ID"`
 		ICCID       string   `mapconv:"Status.ICCID" validate:"numeric"`
 		PassCode    string   `mapconv:"Remark.PassCode"`
@@ -17348,12 +17348,12 @@ func (o *SIMCreateRequest) SetDescription(v string) {
 }
 
 // GetTags returns value of Tags
-func (o *SIMCreateRequest) GetTags() []string {
+func (o *SIMCreateRequest) GetTags() types.Tags {
 	return o.Tags
 }
 
 // SetTags sets value to Tags
-func (o *SIMCreateRequest) SetTags(v []string) {
+func (o *SIMCreateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
@@ -17395,7 +17395,7 @@ func (o *SIMCreateRequest) SetPassCode(v string) {
 type SIMUpdateRequest struct {
 	Name        string `validate:"required"`
 	Description string `validate:"min=0,max=512"`
-	Tags        []string
+	Tags        types.Tags
 	IconID      types.ID `mapconv:"Icon.ID"`
 }
 
@@ -17409,7 +17409,7 @@ func (o *SIMUpdateRequest) setDefaults() interface{} {
 	return &struct {
 		Name        string `validate:"required"`
 		Description string `validate:"min=0,max=512"`
-		Tags        []string
+		Tags        types.Tags
 		IconID      types.ID `mapconv:"Icon.ID"`
 	}{
 		Name:        o.Name,
@@ -17440,12 +17440,12 @@ func (o *SIMUpdateRequest) SetDescription(v string) {
 }
 
 // GetTags returns value of Tags
-func (o *SIMUpdateRequest) GetTags() []string {
+func (o *SIMUpdateRequest) GetTags() types.Tags {
 	return o.Tags
 }
 
 // SetTags sets value to Tags
-func (o *SIMUpdateRequest) SetTags(v []string) {
+func (o *SIMUpdateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
@@ -17770,7 +17770,7 @@ type SimpleMonitor struct {
 	ID                 types.ID
 	Name               string `validate:"required"`
 	Description        string `validate:"min=0,max=512"`
-	Tags               []string
+	Tags               types.Tags
 	Availability       types.EAvailability
 	IconID             types.ID `mapconv:"Icon.ID"`
 	CreatedAt          time.Time
@@ -17798,7 +17798,7 @@ func (o *SimpleMonitor) setDefaults() interface{} {
 		ID                 types.ID
 		Name               string `validate:"required"`
 		Description        string `validate:"min=0,max=512"`
-		Tags               []string
+		Tags               types.Tags
 		Availability       types.EAvailability
 		IconID             types.ID `mapconv:"Icon.ID"`
 		CreatedAt          time.Time
@@ -17886,12 +17886,12 @@ func (o *SimpleMonitor) SetDescription(v string) {
 }
 
 // GetTags returns value of Tags
-func (o *SimpleMonitor) GetTags() []string {
+func (o *SimpleMonitor) GetTags() types.Tags {
 	return o.Tags
 }
 
 // SetTags sets value to Tags
-func (o *SimpleMonitor) SetTags(v []string) {
+func (o *SimpleMonitor) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
@@ -18252,7 +18252,7 @@ type SimpleMonitorCreateRequest struct {
 	NotifySlackEnabled types.StringFlag          `mapconv:"Settings.SimpleMonitor.NotifySlack.Enabled"`
 	SlackWebhooksURL   string                    `mapconv:"Settings.SimpleMonitor.NotifySlack.IncomingWebhooksURL"`
 	Description        string                    `validate:"min=0,max=512"`
-	Tags               []string
+	Tags               types.Tags
 	IconID             types.ID `mapconv:"Icon.ID"`
 }
 
@@ -18273,7 +18273,7 @@ func (o *SimpleMonitorCreateRequest) setDefaults() interface{} {
 		NotifySlackEnabled types.StringFlag          `mapconv:"Settings.SimpleMonitor.NotifySlack.Enabled"`
 		SlackWebhooksURL   string                    `mapconv:"Settings.SimpleMonitor.NotifySlack.IncomingWebhooksURL"`
 		Description        string                    `validate:"min=0,max=512"`
-		Tags               []string
+		Tags               types.Tags
 		IconID             types.ID `mapconv:"Icon.ID"`
 		Class              string   `mapconv:"Provider.Class"`
 	}{
@@ -18383,12 +18383,12 @@ func (o *SimpleMonitorCreateRequest) SetDescription(v string) {
 }
 
 // GetTags returns value of Tags
-func (o *SimpleMonitorCreateRequest) GetTags() []string {
+func (o *SimpleMonitorCreateRequest) GetTags() types.Tags {
 	return o.Tags
 }
 
 // SetTags sets value to Tags
-func (o *SimpleMonitorCreateRequest) SetTags(v []string) {
+func (o *SimpleMonitorCreateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
@@ -18416,7 +18416,7 @@ type SimpleMonitorUpdateRequest struct {
 	NotifySlackEnabled types.StringFlag          `mapconv:"Settings.SimpleMonitor.NotifySlack.Enabled"`
 	SlackWebhooksURL   string                    `mapconv:"Settings.SimpleMonitor.NotifySlack.IncomingWebhooksURL"`
 	Description        string                    `validate:"min=0,max=512"`
-	Tags               []string
+	Tags               types.Tags
 	IconID             types.ID `mapconv:"Icon.ID"`
 }
 
@@ -18436,7 +18436,7 @@ func (o *SimpleMonitorUpdateRequest) setDefaults() interface{} {
 		NotifySlackEnabled types.StringFlag          `mapconv:"Settings.SimpleMonitor.NotifySlack.Enabled"`
 		SlackWebhooksURL   string                    `mapconv:"Settings.SimpleMonitor.NotifySlack.IncomingWebhooksURL"`
 		Description        string                    `validate:"min=0,max=512"`
-		Tags               []string
+		Tags               types.Tags
 		IconID             types.ID `mapconv:"Icon.ID"`
 	}{
 		DelayLoop:          o.DelayLoop,
@@ -18533,12 +18533,12 @@ func (o *SimpleMonitorUpdateRequest) SetDescription(v string) {
 }
 
 // GetTags returns value of Tags
-func (o *SimpleMonitorUpdateRequest) GetTags() []string {
+func (o *SimpleMonitorUpdateRequest) GetTags() types.Tags {
 	return o.Tags
 }
 
 // SetTags sets value to Tags
-func (o *SimpleMonitorUpdateRequest) SetTags(v []string) {
+func (o *SimpleMonitorUpdateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
@@ -19125,7 +19125,7 @@ type Switch struct {
 	ID             types.ID
 	Name           string `validate:"required"`
 	Description    string `validate:"min=0,max=512"`
-	Tags           []string
+	Tags           types.Tags
 	IconID         types.ID `mapconv:"Icon.ID"`
 	CreatedAt      time.Time
 	ModifiedAt     time.Time
@@ -19147,7 +19147,7 @@ func (o *Switch) setDefaults() interface{} {
 		ID             types.ID
 		Name           string `validate:"required"`
 		Description    string `validate:"min=0,max=512"`
-		Tags           []string
+		Tags           types.Tags
 		IconID         types.ID `mapconv:"Icon.ID"`
 		CreatedAt      time.Time
 		ModifiedAt     time.Time
@@ -19223,12 +19223,12 @@ func (o *Switch) SetDescription(v string) {
 }
 
 // GetTags returns value of Tags
-func (o *Switch) GetTags() []string {
+func (o *Switch) GetTags() types.Tags {
 	return o.Tags
 }
 
 // SetTags sets value to Tags
-func (o *Switch) SetTags(v []string) {
+func (o *Switch) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
@@ -19484,7 +19484,7 @@ type SwitchCreateRequest struct {
 	NetworkMaskLen int    `mapconv:"UserSubnet.NetworkMaskLen" validate:"min=1,max=32"`
 	DefaultRoute   string `mapconv:"UserSubnet.DefaultRoute" validate:"ipv4"`
 	Description    string `validate:"min=0,max=512"`
-	Tags           []string
+	Tags           types.Tags
 	IconID         types.ID `mapconv:"Icon.ID"`
 }
 
@@ -19500,7 +19500,7 @@ func (o *SwitchCreateRequest) setDefaults() interface{} {
 		NetworkMaskLen int    `mapconv:"UserSubnet.NetworkMaskLen" validate:"min=1,max=32"`
 		DefaultRoute   string `mapconv:"UserSubnet.DefaultRoute" validate:"ipv4"`
 		Description    string `validate:"min=0,max=512"`
-		Tags           []string
+		Tags           types.Tags
 		IconID         types.ID `mapconv:"Icon.ID"`
 	}{
 		Name:           o.Name,
@@ -19553,12 +19553,12 @@ func (o *SwitchCreateRequest) SetDescription(v string) {
 }
 
 // GetTags returns value of Tags
-func (o *SwitchCreateRequest) GetTags() []string {
+func (o *SwitchCreateRequest) GetTags() types.Tags {
 	return o.Tags
 }
 
 // SetTags sets value to Tags
-func (o *SwitchCreateRequest) SetTags(v []string) {
+func (o *SwitchCreateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
@@ -19582,7 +19582,7 @@ type SwitchUpdateRequest struct {
 	NetworkMaskLen int    `mapconv:"UserSubnet.NetworkMaskLen" validate:"min=1,max=32"`
 	DefaultRoute   string `mapconv:"UserSubnet.DefaultRoute" validate:"ipv4"`
 	Description    string `validate:"min=0,max=512"`
-	Tags           []string
+	Tags           types.Tags
 	IconID         types.ID `mapconv:"Icon.ID"`
 }
 
@@ -19598,7 +19598,7 @@ func (o *SwitchUpdateRequest) setDefaults() interface{} {
 		NetworkMaskLen int    `mapconv:"UserSubnet.NetworkMaskLen" validate:"min=1,max=32"`
 		DefaultRoute   string `mapconv:"UserSubnet.DefaultRoute" validate:"ipv4"`
 		Description    string `validate:"min=0,max=512"`
-		Tags           []string
+		Tags           types.Tags
 		IconID         types.ID `mapconv:"Icon.ID"`
 	}{
 		Name:           o.Name,
@@ -19651,12 +19651,12 @@ func (o *SwitchUpdateRequest) SetDescription(v string) {
 }
 
 // GetTags returns value of Tags
-func (o *SwitchUpdateRequest) GetTags() []string {
+func (o *SwitchUpdateRequest) GetTags() types.Tags {
 	return o.Tags
 }
 
 // SetTags sets value to Tags
-func (o *SwitchUpdateRequest) SetTags(v []string) {
+func (o *SwitchUpdateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
@@ -19679,7 +19679,7 @@ type VPCRouter struct {
 	ID                      types.ID
 	Name                    string `validate:"required"`
 	Description             string `validate:"min=0,max=512"`
-	Tags                    []string
+	Tags                    types.Tags
 	Availability            types.EAvailability
 	Class                   string
 	IconID                  types.ID `mapconv:"Icon.ID"`
@@ -19708,7 +19708,7 @@ func (o *VPCRouter) setDefaults() interface{} {
 		ID                      types.ID
 		Name                    string `validate:"required"`
 		Description             string `validate:"min=0,max=512"`
-		Tags                    []string
+		Tags                    types.Tags
 		Availability            types.EAvailability
 		Class                   string
 		IconID                  types.ID `mapconv:"Icon.ID"`
@@ -19798,12 +19798,12 @@ func (o *VPCRouter) SetDescription(v string) {
 }
 
 // GetTags returns value of Tags
-func (o *VPCRouter) GetTags() []string {
+func (o *VPCRouter) GetTags() types.Tags {
 	return o.Tags
 }
 
 // SetTags sets value to Tags
-func (o *VPCRouter) SetTags(v []string) {
+func (o *VPCRouter) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
@@ -21168,7 +21168,7 @@ func (o *VPCRouterInterface) SetIndex(v int) {
 type VPCRouterCreateRequest struct {
 	Name        string `validate:"required"`
 	Description string `validate:"min=0,max=512"`
-	Tags        []string
+	Tags        types.Tags
 	IconID      types.ID                  `mapconv:"Icon.ID"`
 	PlanID      types.ID                  `mapconv:"Plan.ID"`
 	Switch      *ApplianceConnectedSwitch `json:",omitempty" mapconv:"Remark.Switch,recursive"`
@@ -21186,7 +21186,7 @@ func (o *VPCRouterCreateRequest) setDefaults() interface{} {
 	return &struct {
 		Name        string `validate:"required"`
 		Description string `validate:"min=0,max=512"`
-		Tags        []string
+		Tags        types.Tags
 		IconID      types.ID                  `mapconv:"Icon.ID"`
 		PlanID      types.ID                  `mapconv:"Plan.ID"`
 		Switch      *ApplianceConnectedSwitch `json:",omitempty" mapconv:"Remark.Switch,recursive"`
@@ -21227,12 +21227,12 @@ func (o *VPCRouterCreateRequest) SetDescription(v string) {
 }
 
 // GetTags returns value of Tags
-func (o *VPCRouterCreateRequest) GetTags() []string {
+func (o *VPCRouterCreateRequest) GetTags() types.Tags {
 	return o.Tags
 }
 
 // SetTags sets value to Tags
-func (o *VPCRouterCreateRequest) SetTags(v []string) {
+func (o *VPCRouterCreateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
@@ -21360,7 +21360,7 @@ func (o *ApplianceConnectedSwitch) SetScope(v types.EScope) {
 type VPCRouterUpdateRequest struct {
 	Name        string `validate:"required"`
 	Description string `validate:"min=0,max=512"`
-	Tags        []string
+	Tags        types.Tags
 	IconID      types.ID          `mapconv:"Icon.ID"`
 	Settings    *VPCRouterSetting `mapconv:",omitempty,recursive"`
 }
@@ -21375,7 +21375,7 @@ func (o *VPCRouterUpdateRequest) setDefaults() interface{} {
 	return &struct {
 		Name        string `validate:"required"`
 		Description string `validate:"min=0,max=512"`
-		Tags        []string
+		Tags        types.Tags
 		IconID      types.ID          `mapconv:"Icon.ID"`
 		Settings    *VPCRouterSetting `mapconv:",omitempty,recursive"`
 	}{
@@ -21408,12 +21408,12 @@ func (o *VPCRouterUpdateRequest) SetDescription(v string) {
 }
 
 // GetTags returns value of Tags
-func (o *VPCRouterUpdateRequest) GetTags() []string {
+func (o *VPCRouterUpdateRequest) GetTags() types.Tags {
 	return o.Tags
 }
 
 // SetTags sets value to Tags
-func (o *VPCRouterUpdateRequest) SetTags(v []string) {
+func (o *VPCRouterUpdateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 

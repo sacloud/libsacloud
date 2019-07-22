@@ -8,9 +8,9 @@ import (
 
 // Icon アイコン
 type Icon struct {
-	ID           types.ID            `json:",omitempty" yaml:"id,omitempty" structs:",omitempty"`
+	ID           types.ID            `yaml:"id"`
 	Name         string              `json:",omitempty" yaml:"name,omitempty" structs:",omitempty"`
-	Tags         []string            `yaml:"tags"`
+	Tags         types.Tags          `yaml:"tags"`
 	Availability types.EAvailability `json:",omitempty" yaml:"availability,omitempty" structs:",omitempty"`
 	Scope        types.EScope        `json:",omitempty" yaml:"scope,omitempty" structs:",omitempty"`
 	URL          string              `json:",omitempty" yaml:"url,omitempty" structs:",omitempty"`

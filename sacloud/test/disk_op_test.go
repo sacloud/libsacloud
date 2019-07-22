@@ -10,7 +10,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestDiskOpBlankDiskCRUD(t *testing.T) {
+func TestDiskOp_BlankDiskCRUD(t *testing.T) {
 	Run(t, &CRUDTestCase{
 		Parallel: true,
 
@@ -40,6 +40,13 @@ func TestDiskOpBlankDiskCRUD(t *testing.T) {
 					IgnoreFields: ignoreDiskFields,
 				}),
 			},
+			{
+				Func: testDiskUpdateToMin,
+				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+					ExpectValue:  updateDiskToMinExpected,
+					IgnoreFields: ignoreDiskFields,
+				}),
+			},
 		},
 
 		Delete: &CRUDTestDeleteFunc{
@@ -64,7 +71,6 @@ var (
 		"BundleInfo",
 		"Server",
 		"Storage",
-		"IconID",
 		"CreatedAt",
 		"ModifiedAt",
 	}
@@ -88,6 +94,7 @@ var (
 		Name:        "libsacloud-disk-upd",
 		Description: "desc-upd",
 		Tags:        []string{"tag1-upd", "tag2-upd"},
+		IconID:      testIconID,
 	}
 	updateDiskExpected = &sacloud.Disk{
 		Name:        updateDiskParam.Name,
@@ -95,6 +102,15 @@ var (
 		Tags:        updateDiskParam.Tags,
 		DiskPlanID:  createDiskParam.DiskPlanID,
 		Connection:  createDiskParam.Connection,
+		IconID:      updateDiskParam.IconID,
+	}
+	updateDiskToMinParam = &sacloud.DiskUpdateRequest{
+		Name: "libsacloud-disk-to-min",
+	}
+	updateDiskToMinExpected = &sacloud.Disk{
+		Name:       updateDiskToMinParam.Name,
+		DiskPlanID: createDiskParam.DiskPlanID,
+		Connection: createDiskParam.Connection,
 	}
 )
 
@@ -111,6 +127,11 @@ func testDiskRead(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, 
 func testDiskUpdate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewDiskOp(caller)
 	return client.Update(ctx, testZone, ctx.ID, updateDiskParam)
+}
+
+func testDiskUpdateToMin(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+	client := sacloud.NewDiskOp(caller)
+	return client.Update(ctx, testZone, ctx.ID, updateDiskToMinParam)
 }
 
 func testDiskDelete(ctx *CRUDTestContext, caller sacloud.APICaller) error {

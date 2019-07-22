@@ -7,7 +7,7 @@ import (
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
-func TestPacketFilterOpCRUD(t *testing.T) {
+func TestPacketFilterOp_CRUD(t *testing.T) {
 	Run(t, &CRUDTestCase{
 		Parallel:           true,
 		IgnoreStartupWait:  true,
@@ -31,6 +31,13 @@ func TestPacketFilterOpCRUD(t *testing.T) {
 				Func: testPacketFilterUpdate,
 				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
 					ExpectValue:  updatePacketFilterExpected,
+					IgnoreFields: packetFilterIgnoreFields,
+				}),
+			},
+			{
+				Func: testPacketFilterUpdateToMin,
+				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+					ExpectValue:  updatePacketFilterToMinExpected,
 					IgnoreFields: packetFilterIgnoreFields,
 				}),
 			},
@@ -97,6 +104,13 @@ var (
 		Description: updatePacketFilterParam.Description,
 		Expression:  updatePacketFilterParam.Expression,
 	}
+
+	updatePacketFilterToMinParam = &sacloud.PacketFilterUpdateRequest{
+		Name: "libsacloud-packet-filter-to-min",
+	}
+	updatePacketFilterToMinExpected = &sacloud.PacketFilter{
+		Name: updatePacketFilterToMinParam.Name,
+	}
 )
 
 func testPacketFilterCreate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
@@ -112,6 +126,11 @@ func testPacketFilterRead(ctx *CRUDTestContext, caller sacloud.APICaller) (inter
 func testPacketFilterUpdate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewPacketFilterOp(caller)
 	return client.Update(ctx, testZone, ctx.ID, updatePacketFilterParam)
+}
+
+func testPacketFilterUpdateToMin(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+	client := sacloud.NewPacketFilterOp(caller)
+	return client.Update(ctx, testZone, ctx.ID, updatePacketFilterToMinParam)
 }
 
 func testPacketFilterDelete(ctx *CRUDTestContext, caller sacloud.APICaller) error {

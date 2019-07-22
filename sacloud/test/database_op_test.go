@@ -12,7 +12,13 @@ func TestDatabaseOpCRUD(t *testing.T) {
 		Parallel: true,
 
 		SetupAPICallerFunc: singletonAPICaller,
-		Setup:              setupSwitchFunc("db", createDatabaseParam, createDatabaseExpected, updateDatabaseExpected),
+		Setup: setupSwitchFunc("db",
+			createDatabaseParam,
+			createDatabaseExpected,
+			updateDatabaseExpected,
+			updateDatabaseToFullExpected,
+			updateDatabaseToMinExpected,
+		),
 		Create: &CRUDTestFunc{
 			Func: testDatabaseCreate,
 			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
@@ -32,6 +38,20 @@ func TestDatabaseOpCRUD(t *testing.T) {
 				Func: testDatabaseUpdate,
 				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
 					ExpectValue:  updateDatabaseExpected,
+					IgnoreFields: ignoreDatabaseFields,
+				}),
+			},
+			{
+				Func: testDatabaseUpdateToFull,
+				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+					ExpectValue:  updateDatabaseToFullExpected,
+					IgnoreFields: ignoreDatabaseFields,
+				}),
+			},
+			{
+				Func: testDatabaseUpdateToMin,
+				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+					ExpectValue:  updateDatabaseToMinExpected,
 					IgnoreFields: ignoreDatabaseFields,
 				}),
 			},
@@ -60,9 +80,7 @@ var (
 		"InstanceHostInfoURL",
 		"InstanceStatusChangedAt",
 		"Interfaces",
-		"Switch",
 		"ZoneID",
-		"IconID",
 		"CreatedAt",
 		"ModifiedAt",
 		"SettingsHash",
@@ -94,7 +112,6 @@ var (
 		Name:           createDatabaseParam.Name,
 		Description:    createDatabaseParam.Description,
 		Availability:   types.Availabilities.Available,
-		InstanceStatus: types.ServerInstanceStatuses.Up,
 		PlanID:         createDatabaseParam.PlanID,
 		DefaultRoute:   createDatabaseParam.DefaultRoute,
 		NetworkMaskLen: createDatabaseParam.NetworkMaskLen,
@@ -109,7 +126,7 @@ var (
 		CommonSetting: &sacloud.DatabaseSettingCommonUpdate{
 			ServicePort:  5432,
 			DefaultUser:  "exa.mple",
-			UserPassword: "LibsacloudExamplePassword01",
+			UserPassword: "LibsacloudExamplePassword02",
 		},
 	}
 	updateDatabaseExpected = &sacloud.Database{
@@ -122,7 +139,71 @@ var (
 		NetworkMaskLen: createDatabaseParam.NetworkMaskLen,
 		IPAddresses:    createDatabaseParam.IPAddresses,
 		Conf:           createDatabaseParam.Conf,
-		CommonSetting:  createDatabaseParam.CommonSetting,
+		CommonSetting: &sacloud.DatabaseSettingCommon{
+			ServicePort:  5432,
+			DefaultUser:  "exa.mple",
+			UserPassword: "LibsacloudExamplePassword02",
+		},
+	}
+	updateDatabaseToFullParam = &sacloud.DatabaseUpdateRequest{
+		Name:        "libsacloud-db-to-full",
+		Tags:        []string{"tag1-upd", "tag2-upd"},
+		Description: "desc-upd",
+		BackupSetting: &sacloud.DatabaseSettingBackup{
+			Rotate: 3,
+			Time:   "00:00",
+			DayOfWeek: []types.EBackupSpanWeekday{
+				types.BackupSpanWeekdays.Sunday,
+				types.BackupSpanWeekdays.Monday,
+			},
+		},
+		CommonSetting: &sacloud.DatabaseSettingCommonUpdate{
+			ServicePort:   54321,
+			DefaultUser:   "exa.mple",
+			UserPassword:  "LibsacloudExamplePassword03",
+			SourceNetwork: []string{"192.168.11.0/24", "192.168.12.0/24"},
+		},
+		IconID: testIconID,
+	}
+	updateDatabaseToFullExpected = &sacloud.Database{
+		Name:           updateDatabaseToFullParam.Name,
+		Description:    updateDatabaseToFullParam.Description,
+		Availability:   types.Availabilities.Available,
+		PlanID:         createDatabaseParam.PlanID,
+		InstanceStatus: types.ServerInstanceStatuses.Up,
+		DefaultRoute:   createDatabaseParam.DefaultRoute,
+		NetworkMaskLen: createDatabaseParam.NetworkMaskLen,
+		IPAddresses:    createDatabaseParam.IPAddresses,
+		Conf:           createDatabaseParam.Conf,
+		CommonSetting: &sacloud.DatabaseSettingCommon{
+			ServicePort:   54321,
+			DefaultUser:   "exa.mple",
+			UserPassword:  "LibsacloudExamplePassword03",
+			SourceNetwork: []string{"192.168.11.0/24", "192.168.12.0/24"},
+		},
+		BackupSetting: updateDatabaseToFullParam.BackupSetting,
+		IconID:        updateDatabaseToFullParam.IconID,
+	}
+	updateDatabaseToMinParam = &sacloud.DatabaseUpdateRequest{
+		Name: "libsacloud-db-to-min",
+		CommonSetting: &sacloud.DatabaseSettingCommonUpdate{
+			DefaultUser:  "exa.mple",
+			UserPassword: "LibsacloudExamplePassword04",
+		},
+	}
+	updateDatabaseToMinExpected = &sacloud.Database{
+		Name:           updateDatabaseToMinParam.Name,
+		Availability:   types.Availabilities.Available,
+		PlanID:         createDatabaseParam.PlanID,
+		InstanceStatus: types.ServerInstanceStatuses.Up,
+		DefaultRoute:   createDatabaseParam.DefaultRoute,
+		NetworkMaskLen: createDatabaseParam.NetworkMaskLen,
+		IPAddresses:    createDatabaseParam.IPAddresses,
+		Conf:           createDatabaseParam.Conf,
+		CommonSetting: &sacloud.DatabaseSettingCommon{
+			DefaultUser:  "exa.mple",
+			UserPassword: "LibsacloudExamplePassword04",
+		},
 	}
 )
 
@@ -139,6 +220,16 @@ func testDatabaseRead(ctx *CRUDTestContext, caller sacloud.APICaller) (interface
 func testDatabaseUpdate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewDatabaseOp(caller)
 	return client.Update(ctx, testZone, ctx.ID, updateDatabaseParam)
+}
+
+func testDatabaseUpdateToFull(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+	client := sacloud.NewDatabaseOp(caller)
+	return client.Update(ctx, testZone, ctx.ID, updateDatabaseToFullParam)
+}
+
+func testDatabaseUpdateToMin(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+	client := sacloud.NewDatabaseOp(caller)
+	return client.Update(ctx, testZone, ctx.ID, updateDatabaseToMinParam)
 }
 
 func testDatabaseDelete(ctx *CRUDTestContext, caller sacloud.APICaller) error {

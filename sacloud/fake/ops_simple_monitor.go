@@ -35,6 +35,9 @@ func (o *SimpleMonitorOp) Create(ctx context.Context, param *sacloud.SimpleMonit
 	result.Class = "simplemon"
 	result.Availability = types.Availabilities.Available
 	result.SettingsHash = "settingshash"
+	if result.DelayLoop == 0 {
+		result.DelayLoop = 60
+	}
 
 	s.setSimpleMonitor(sacloud.APIDefaultZone, result)
 	return result, nil
@@ -59,6 +62,10 @@ func (o *SimpleMonitorOp) Update(ctx context.Context, id types.ID, param *saclou
 	}
 	copySameNameField(param, value)
 	fill(value, fillModifiedAt)
+	if value.DelayLoop == 0 {
+		value.DelayLoop = 60
+	}
+	s.setSimpleMonitor(sacloud.APIDefaultZone, value)
 
 	return value, nil
 }

@@ -7,7 +7,7 @@ import (
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
-func TestIconOpCRUD(t *testing.T) {
+func TestIconOp_CRUD(t *testing.T) {
 	Run(t, &CRUDTestCase{
 		Parallel:           true,
 		IgnoreStartupWait:  true,
@@ -31,6 +31,13 @@ func TestIconOpCRUD(t *testing.T) {
 				Func: testIconUpdate,
 				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
 					ExpectValue:  updateIconExpected,
+					IgnoreFields: ignoreIconFields,
+				}),
+			},
+			{
+				Func: testIconUpdateToMin,
+				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+					ExpectValue:  updateIconToMinExpected,
 					IgnoreFields: ignoreIconFields,
 				}),
 			},
@@ -69,6 +76,14 @@ var (
 		Scope:        types.Scopes.User,
 		Availability: types.Availabilities.Available,
 	}
+	updateIconToMinParam = &sacloud.IconUpdateRequest{
+		Name: "libsacloud-icon-to-min",
+	}
+	updateIconToMinExpected = &sacloud.Icon{
+		Name:         updateIconToMinParam.Name,
+		Scope:        types.Scopes.User,
+		Availability: types.Availabilities.Available,
+	}
 )
 
 func testIconCreate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
@@ -84,6 +99,11 @@ func testIconRead(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, 
 func testIconUpdate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewIconOp(caller)
 	return client.Update(ctx, ctx.ID, updateIconParam)
+}
+
+func testIconUpdateToMin(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+	client := sacloud.NewIconOp(caller)
+	return client.Update(ctx, ctx.ID, updateIconToMinParam)
 }
 
 func testIconDelete(ctx *CRUDTestContext, caller sacloud.APICaller) error {

@@ -1,6 +1,7 @@
 package naked
 
 import (
+	"encoding/json"
 	"time"
 
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
@@ -8,14 +9,27 @@ import (
 
 // PacketFilter パケットフィルタ
 type PacketFilter struct {
-	ID                  types.ID                  `json:",omitempty" yaml:"id,omitempty" structs:",omitempty"`
-	Name                string                    `json:",omitempty" yaml:"name,omitempty" structs:",omitempty"`
-	Description         string                    `json:",omitempty" yaml:"description,omitempty" structs:",omitempty"`
-	RequiredHostVersion types.StringNumber        `json:",omitempty" yaml:"require_host_version,omitempty" structs:",omitempty"`
-	Expression          []*PacketFilterExpression `yaml:"expression"`
-	ExpressionHash      string                    `json:",omitempty" yaml:"expression_hash,omitempty" structs:",omitempty"`
-	CreatedAt           time.Time                 `json:",omitempty" yaml:"created_at,omitempty" structs:",omitempty"`
+	ID                  types.ID                `json:",omitempty" yaml:"id,omitempty" structs:",omitempty"`
+	Name                string                  `json:",omitempty" yaml:"name,omitempty" structs:",omitempty"`
+	Description         string                  `yaml:"description"`
+	RequiredHostVersion types.StringNumber      `json:",omitempty" yaml:"require_host_version,omitempty" structs:",omitempty"`
+	Expression          PacketFilterExpressions `yaml:"expression"`
+	ExpressionHash      string                  `json:",omitempty" yaml:"expression_hash,omitempty" structs:",omitempty"`
+	CreatedAt           time.Time               `json:",omitempty" yaml:"created_at,omitempty" structs:",omitempty"`
 	//Notice              interface{}               `json:"Notice"`
+}
+
+// PacketFilterExpressions パケットフィルターのルール
+type PacketFilterExpressions []*PacketFilterExpression
+
+// MarshalJSON nullの場合に空配列を出力するための実装
+func (p *PacketFilterExpressions) MarshalJSON() ([]byte, error) {
+	if *p == nil {
+		*p = make([]*PacketFilterExpression, 0)
+	}
+	type alias PacketFilterExpressions
+	tmp := alias(*p)
+	return json.Marshal(&tmp)
 }
 
 // PacketFilterExpression パケットフィルタのルール

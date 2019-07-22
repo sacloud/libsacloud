@@ -30,6 +30,8 @@ func TestArchiveOpCRUD(t *testing.T) {
 					createArchiveExpected.SourceArchiveAvailability = a.Availability
 					updateArchiveExpected.SourceArchiveID = a.ID
 					updateArchiveExpected.SourceArchiveAvailability = a.Availability
+					updateArchiveToMinExpected.SourceArchiveID = a.ID
+					updateArchiveToMinExpected.SourceArchiveAvailability = a.Availability
 
 					return nil
 				}
@@ -61,6 +63,13 @@ func TestArchiveOpCRUD(t *testing.T) {
 					IgnoreFields: ignoreArchiveFields,
 				}),
 			},
+			{
+				Func: testArchiveUpdateToMin,
+				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+					ExpectValue:  updateArchiveToMinExpected,
+					IgnoreFields: ignoreArchiveFields,
+				}),
+			},
 		},
 
 		Delete: &CRUDTestDeleteFunc{
@@ -82,7 +91,6 @@ var (
 		"SourceDiskAvailability",
 		"BundleInfo",
 		"Storage",
-		"IconID",
 		"CreatedAt",
 		"ModifiedAt",
 		"OriginalArchiveID",
@@ -105,11 +113,23 @@ var (
 		Name:        "libsacloud-archive-upd",
 		Description: "desc-upd",
 		Tags:        []string{"tag1-upd", "tag2-upd"},
+		IconID:      testIconID,
 	}
 	updateArchiveExpected = &sacloud.Archive{
 		Name:        updateArchiveParam.Name,
 		Description: updateArchiveParam.Description,
 		Tags:        updateArchiveParam.Tags,
+		Scope:       types.Scopes.User,
+		DiskPlanID:  types.ID(2),
+		IconID:      updateArchiveParam.IconID,
+	}
+	updateArchiveToMinParam = &sacloud.ArchiveUpdateRequest{
+		Name:        "libsacloud-archive-min",
+		Description: "",
+	}
+	updateArchiveToMinExpected = &sacloud.Archive{
+		Name:        updateArchiveToMinParam.Name,
+		Description: updateArchiveToMinParam.Description,
 		Scope:       types.Scopes.User,
 		DiskPlanID:  types.ID(2),
 	}
@@ -128,6 +148,11 @@ func testArchiveRead(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{
 func testArchiveUpdate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewArchiveOp(caller)
 	return client.Update(ctx, testZone, ctx.ID, updateArchiveParam)
+}
+
+func testArchiveUpdateToMin(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+	client := sacloud.NewArchiveOp(caller)
+	return client.Update(ctx, testZone, ctx.ID, updateArchiveToMinParam)
 }
 
 func testArchiveDelete(ctx *CRUDTestContext, caller sacloud.APICaller) error {

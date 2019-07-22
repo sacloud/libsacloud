@@ -1,6 +1,7 @@
 package naked
 
 import (
+	"encoding/json"
 	"time"
 
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
@@ -10,8 +11,8 @@ import (
 type LoadBalancer struct {
 	ID           types.ID              `json:",omitempty" yaml:"id,omitempty" structs:",omitempty"`
 	Name         string                `json:",omitempty" yaml:"name,omitempty" structs:",omitempty"`
-	Description  string                `json:",omitempty" yaml:"description,omitempty" structs:",omitempty"`
-	Tags         []string              `json:"" yaml:"tags"`
+	Description  string                `yaml:"description"`
+	Tags         types.Tags            `yaml:"tags"`
 	Icon         *Icon                 `json:",omitempty" yaml:"icon,omitempty" structs:",omitempty"`
 	CreatedAt    *time.Time            `json:",omitempty" yaml:"created_at,omitempty" structs:",omitempty"`
 	ModifiedAt   *time.Time            `json:",omitempty" yaml:"modified_at,omitempty" structs:",omitempty"`
@@ -29,7 +30,17 @@ type LoadBalancer struct {
 
 // LoadBalancerSettings ロードバランサの設定
 type LoadBalancerSettings struct {
-	LoadBalancer []*LoadBalancerSetting `json:",omitempty" yaml:"load_balancer,omitempty" structs:",omitempty"`
+	LoadBalancer []*LoadBalancerSetting `yaml:"load_balancer"`
+}
+
+// MarshalJSON nullの場合に空配列を出力するための実装
+func (s LoadBalancerSettings) MarshalJSON() ([]byte, error) {
+	if s.LoadBalancer == nil {
+		s.LoadBalancer = make([]*LoadBalancerSetting, 0)
+	}
+	type alias LoadBalancerSettings
+	tmp := alias(s)
+	return json.Marshal(&tmp)
 }
 
 // LoadBalancerSetting ロードバランサの設定
@@ -38,7 +49,7 @@ type LoadBalancerSetting struct {
 	Port             types.StringNumber               `json:",omitempty" yaml:"port,omitempty" structs:",omitempty"`
 	DelayLoop        types.StringNumber               `json:",omitempty" yaml:"delay_loop,omitempty" structs:",omitempty"`
 	SorryServer      string                           `json:",omitempty" yaml:"sorry_server,omitempty" structs:",omitempty"`
-	Description      string                           `json:",omitempty" yaml:"description,omitempty" structs:",omitempty"`
+	Description      string                           `yaml:"description"`
 	Servers          []*LoadBalancerDestinationServer `json:",omitempty" yaml:"servers,omitempty" structs:",omitempty"`
 }
 

@@ -10,8 +10,8 @@ import (
 type Internet struct {
 	ID             types.ID     `json:",omitempty" yaml:"id,omitempty" structs:",omitempty"`
 	Name           string       `json:",omitempty" yaml:"name,omitempty" structs:",omitempty"`
-	Description    string       `json:",omitempty" yaml:"description,omitempty" structs:",omitempty"`
-	Tags           []string     `json:"" yaml:"tags"`
+	Description    string       `yaml:"description"`
+	Tags           types.Tags   `yaml:"tags"`
 	Icon           *Icon        `json:",omitempty" yaml:"icon,omitempty" structs:",omitempty"`
 	CreatedAt      *time.Time   `json:",omitempty" yaml:"created_at,omitempty" structs:",omitempty"`
 	Scope          types.EScope `json:",omitempty" yaml:"scope,omitempty" structs:",omitempty"`

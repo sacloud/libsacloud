@@ -12,7 +12,7 @@ type VPCRouter struct {
 	ID           types.ID            `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
 	Class        string              `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
 	Name         string              `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
-	Description  string              `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
+	Description  string              `yaml:"description"`
 	Plan         *AppliancePlan      `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
 	Settings     *VPCRouterSettings  `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
 	SettingsHash string              `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
@@ -24,7 +24,7 @@ type VPCRouter struct {
 	Icon         *Icon               `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
 	Switch       *Switch             `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
 	Interfaces   Interfaces          `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
-	Tags         []string            `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
+	Tags         types.Tags          `yaml:"tags"`
 }
 
 // VPCRouterSettings VPCルータ 設定
@@ -150,7 +150,7 @@ func (f *VPCRouterStaticNAT) MarshalJSON() ([]byte, error) {
 type VPCRouterStaticNATConfig struct {
 	GlobalAddress  string `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
 	PrivateAddress string `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
-	Description    string `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
+	Description    string `yaml:"description"`
 }
 
 // VPCRouterFirewall ファイアウォール
@@ -187,7 +187,7 @@ type VPCRouterFirewallRule struct {
 	DestinationPort    types.VPCFirewallPort    `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
 	Action             types.Action             `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
 	Logging            types.StringFlag         `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
-	Description        string                   `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
+	Description        string                   `yaml:"description"`
 }
 
 // VPCRouterDHCPServer DHCPサーバ
