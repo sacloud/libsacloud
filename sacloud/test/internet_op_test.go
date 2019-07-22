@@ -3,9 +3,7 @@ package test
 import (
 	"context"
 	"errors"
-	"fmt"
 	"testing"
-	"time"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
@@ -79,7 +77,6 @@ var (
 		NetworkMaskLen: createInternetParam.NetworkMaskLen,
 		BandWidthMbps:  createInternetParam.BandWidthMbps,
 	}
-	vpcRouterDeleted = false
 )
 
 func testInternetCreate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
@@ -88,7 +85,8 @@ func testInternetCreate(testContext *CRUDTestContext, caller sacloud.APICaller) 
 }
 
 func testInternetRead(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
-	return readInternet(testContext.ID, caller)
+	client := sacloud.NewInternetOp(caller)
+	return client.Read(context.Background(), testZone, testContext.ID)
 }
 
 func testInternetUpdate(testContext *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
@@ -98,33 +96,7 @@ func testInternetUpdate(testContext *CRUDTestContext, caller sacloud.APICaller) 
 
 func testInternetDelete(testContext *CRUDTestContext, caller sacloud.APICaller) error {
 	client := sacloud.NewInternetOp(caller)
-	err := client.Delete(context.Background(), testZone, testContext.ID)
-	if err == nil {
-		vpcRouterDeleted = true
-	}
-	return err
-}
-
-func readInternet(id types.ID, caller sacloud.APICaller) (*sacloud.Internet, error) {
-	client := sacloud.NewInternetOp(caller)
-	if vpcRouterDeleted {
-		return client.Read(context.Background(), testZone, id)
-	}
-	// TODO スイッチ+ルータ作成後しばらくは404が返ってくる問題にどう対応するか?
-	max := 100
-	for {
-		if max == 0 {
-			break
-		}
-		res, err := client.Read(context.Background(), testZone, id)
-		if err != nil || sacloud.IsNotFoundError(err) {
-			max--
-			time.Sleep(5 * time.Second)
-			continue
-		}
-		return res, err
-	}
-	return nil, fmt.Errorf("internet[%s] is not found", id)
+	return client.Delete(context.Background(), testZone, testContext.ID)
 }
 
 func TestInternetOp_Subnet(t *testing.T) {
@@ -145,8 +117,15 @@ func TestInternetOp_Subnet(t *testing.T) {
 				if err != nil {
 					return nil, err
 				}
+				waiter := sacloud.WaiterForApplianceUp(func() (interface{}, error) {
+					return client.Read(ctx, testZone, internet.ID)
+				}, 100)
+				if _, err := waiter.WaitForState(context.TODO()); err != nil {
+					t.Error("WaitForUp is failed: ", err)
+					return nil, err
+				}
 
-				internet, err = readInternet(internet.ID, singletonAPICaller())
+				internet, err = client.Read(ctx, testZone, internet.ID)
 				if err != nil {
 					return nil, err
 				}
