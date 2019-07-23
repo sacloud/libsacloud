@@ -64,10 +64,19 @@ var (
 				Tags: &dsl.FieldTags{
 					MapConv: "Plan.MemoryMB",
 				},
-				ExtendAccessors: []*dsl.ExtendAccessor{
+				Methods: []*dsl.MethodDesc{
 					{
-						Name: "MemoryGB",
-						Type: meta.TypeInt,
+						Name:        "GetMemoryGB",
+						ResultTypes: []meta.Type{meta.TypeInt},
+					},
+					{
+						Name: "SetMemoryGB",
+						Arguments: dsl.Arguments{
+							{
+								Name: "memory",
+								Type: meta.TypeInt,
+							},
+						},
 					},
 				},
 			},
