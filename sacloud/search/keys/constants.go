@@ -55,6 +55,8 @@ const (
 	SourceArchiveID = "SourceArchive.ID"
 	// SourceDiskID .
 	SourceDiskID = "SourceDisk.ID"
+	// Tags .
+	Tags = "Tags.Name"
 	// UserSubnetDefaultRoute .
 	UserSubnetDefaultRoute = "UserSubnet.DefaultRoute"
 	// UserSubnetNetworkMaskLen .
