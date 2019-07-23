@@ -53,6 +53,31 @@ const (
 	Custom
 )
 
+// ArchiveOSTypes アーカイブ種別のリスト
+var ArchiveOSTypes = []ArchiveOSType{
+	CentOS,
+	CentOS6,
+	Ubuntu,
+	Debian,
+	CoreOS,
+	RancherOS,
+	K3OS,
+	Kusanagi,
+	SophosUTM,
+	FreeBSD,
+	Netwiser,
+	OPNsense,
+	Windows2016,
+	Windows2016RDS,
+	Windows2016RDSOffice,
+	Windows2016SQLServerWeb,
+	Windows2016SQLServerStandard,
+	Windows2016SQLServer2017Standard,
+	Windows2016SQLServerStandardAll,
+	Windows2016SQLServer2017StandardAll,
+	Windows2019,
+}
+
 // OSTypeShortNames OSTypeとして利用できる文字列のリスト
 var OSTypeShortNames = []string{
 	"centos", "centos6", "ubuntu", "debian", "coreos",
