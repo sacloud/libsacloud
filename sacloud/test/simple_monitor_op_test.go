@@ -10,7 +10,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestSimpleMonitorOpCRUD(t *testing.T) {
+func TestSimpleMonitorOp_CRUD(t *testing.T) {
 	Run(t, &CRUDTestCase{
 		Parallel: true,
 
@@ -40,6 +40,13 @@ func TestSimpleMonitorOpCRUD(t *testing.T) {
 					IgnoreFields: ignoreSimpleMonitorFields,
 				}),
 			},
+			{
+				Func: testSimpleMonitorUpdateToMin,
+				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+					ExpectValue:  updateSimpleMonitorToMinExpected,
+					IgnoreFields: ignoreSimpleMonitorFields,
+				}),
+			},
 		},
 
 		Delete: &CRUDTestDeleteFunc{
@@ -51,7 +58,6 @@ func TestSimpleMonitorOpCRUD(t *testing.T) {
 var (
 	ignoreSimpleMonitorFields = []string{
 		"ID",
-		"IconID",
 		"CreatedAt",
 		"ModifiedAt",
 		"Class",
@@ -110,6 +116,7 @@ var (
 		NotifyEmailHTML:    types.StringFalse,
 		NotifySlackEnabled: types.StringTrue,
 		SlackWebhooksURL:   "https://hooks.slack.com/services/XXXXXXXXX/XXXXXXXXX/XXXXXXXXXXXXXXXXXXXXXXXX",
+		IconID:             testIconID,
 	}
 	updateSimpleMonitorExpected = &sacloud.SimpleMonitor{
 		Name:               createSimpleMonitorParam.Target,
@@ -123,6 +130,25 @@ var (
 		NotifyEmailHTML:    updateSimpleMonitorParam.NotifyEmailHTML,
 		NotifySlackEnabled: updateSimpleMonitorParam.NotifySlackEnabled,
 		SlackWebhooksURL:   updateSimpleMonitorParam.SlackWebhooksURL,
+		Availability:       types.Availabilities.Available,
+		IconID:             testIconID,
+	}
+
+	updateSimpleMonitorToMinParam = &sacloud.SimpleMonitorUpdateRequest{
+		HealthCheck: &sacloud.SimpleMonitorHealthCheck{
+			Protocol: types.SimpleMonitorProtocols.Ping,
+			Host:     "libsacloud-test-upd.usacloud.jp",
+		},
+		NotifyEmailEnabled: types.StringTrue,
+		Enabled:            true,
+	}
+	updateSimpleMonitorToMinExpected = &sacloud.SimpleMonitor{
+		Name:               createSimpleMonitorParam.Target,
+		Target:             createSimpleMonitorParam.Target,
+		DelayLoop:          60, // default value
+		Enabled:            updateSimpleMonitorToMinParam.Enabled,
+		HealthCheck:        updateSimpleMonitorToMinParam.HealthCheck,
+		NotifyEmailEnabled: updateSimpleMonitorToMinParam.NotifyEmailEnabled,
 		Availability:       types.Availabilities.Available,
 	}
 )
@@ -140,6 +166,11 @@ func testSimpleMonitorRead(ctx *CRUDTestContext, caller sacloud.APICaller) (inte
 func testSimpleMonitorUpdate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewSimpleMonitorOp(caller)
 	return client.Update(ctx, ctx.ID, updateSimpleMonitorParam)
+}
+
+func testSimpleMonitorUpdateToMin(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+	client := sacloud.NewSimpleMonitorOp(caller)
+	return client.Update(ctx, ctx.ID, updateSimpleMonitorToMinParam)
 }
 
 func testSimpleMonitorDelete(ctx *CRUDTestContext, caller sacloud.APICaller) error {

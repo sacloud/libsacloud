@@ -7,7 +7,7 @@ import (
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
-func TestNoteOpCRUD(t *testing.T) {
+func TestNoteOp_CRUD(t *testing.T) {
 	Run(t, &CRUDTestCase{
 		Parallel:           true,
 		IgnoreStartupWait:  true,
@@ -16,14 +16,14 @@ func TestNoteOpCRUD(t *testing.T) {
 			Func: testNoteCreate,
 			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
 				ExpectValue:  createNoteExpected,
-				IgnoreFields: []string{"ID", "CreatedAt", "ModifiedAt"},
+				IgnoreFields: ignoreNoteFields,
 			}),
 		},
 		Read: &CRUDTestFunc{
 			Func: testNoteRead,
 			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
 				ExpectValue:  createNoteExpected,
-				IgnoreFields: []string{"ID", "CreatedAt", "ModifiedAt"},
+				IgnoreFields: ignoreNoteFields,
 			}),
 		},
 		Updates: []*CRUDTestFunc{
@@ -31,7 +31,14 @@ func TestNoteOpCRUD(t *testing.T) {
 				Func: testNoteUpdate,
 				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
 					ExpectValue:  updateNoteExpected,
-					IgnoreFields: []string{"ID", "CreatedAt", "ModifiedAt"},
+					IgnoreFields: ignoreNoteFields,
+				}),
+			},
+			{
+				Func: testNoteUpdateToMin,
+				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+					ExpectValue:  updateNoteToMinExpected,
+					IgnoreFields: ignoreNoteFields,
 				}),
 			},
 		},
@@ -42,7 +49,8 @@ func TestNoteOpCRUD(t *testing.T) {
 }
 
 var (
-	createNoteParam = &sacloud.NoteCreateRequest{
+	ignoreNoteFields = []string{"ID", "CreatedAt", "ModifiedAt"}
+	createNoteParam  = &sacloud.NoteCreateRequest{
 		Name:    "libsacloud-note",
 		Tags:    []string{"tag1", "tag2"},
 		Class:   "shell",
@@ -61,12 +69,26 @@ var (
 		Tags:    []string{"tag1-upd", "tag2-upd"},
 		Class:   "shell",
 		Content: "test-content-upd",
+		IconID:  testIconID,
 	}
 	updateNoteExpected = &sacloud.Note{
 		Name:         updateNoteParam.Name,
 		Tags:         updateNoteParam.Tags,
 		Class:        updateNoteParam.Class,
 		Content:      updateNoteParam.Content,
+		Scope:        types.Scopes.User,
+		Availability: types.Availabilities.Available,
+		IconID:       updateNoteParam.IconID,
+	}
+	updateNoteToMinParam = &sacloud.NoteUpdateRequest{
+		Name:    "libsacloud-note-to-min",
+		Class:   "shell",
+		Content: "test-content-upd",
+	}
+	updateNoteToMinExpected = &sacloud.Note{
+		Name:         updateNoteToMinParam.Name,
+		Class:        updateNoteToMinParam.Class,
+		Content:      updateNoteToMinParam.Content,
 		Scope:        types.Scopes.User,
 		Availability: types.Availabilities.Available,
 	}
@@ -85,6 +107,11 @@ func testNoteRead(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, 
 func testNoteUpdate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewNoteOp(caller)
 	return client.Update(ctx, ctx.ID, updateNoteParam)
+}
+
+func testNoteUpdateToMin(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+	client := sacloud.NewNoteOp(caller)
+	return client.Update(ctx, ctx.ID, updateNoteToMinParam)
 }
 
 func testNoteDelete(ctx *CRUDTestContext, caller sacloud.APICaller) error {

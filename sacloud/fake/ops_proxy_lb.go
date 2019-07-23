@@ -40,6 +40,9 @@ func (o *ProxyLBOp) Create(ctx context.Context, param *sacloud.ProxyLBCreateRequ
 	if param.UseVIPFailover {
 		result.FQDN = "fake.proxylb.sakura.ne.jp"
 	}
+	if result.SorryServer == nil {
+		result.SorryServer = &sacloud.ProxyLBSorryServer{}
+	}
 
 	status := &sacloud.ProxyLBHealth{
 		ActiveConn: 10,
@@ -80,6 +83,10 @@ func (o *ProxyLBOp) Update(ctx context.Context, id types.ID, param *sacloud.Prox
 	}
 	copySameNameField(param, value)
 	fill(value, fillModifiedAt)
+	if value.SorryServer == nil {
+		value.SorryServer = &sacloud.ProxyLBSorryServer{}
+	}
+	s.setProxyLB(sacloud.APIDefaultZone, value)
 
 	status := s.getByID(ResourceProxyLB+"Status", sacloud.APIDefaultZone, id).(*sacloud.ProxyLBHealth)
 	status.Servers = []*sacloud.LoadBalancerServerStatus{}

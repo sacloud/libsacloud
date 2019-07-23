@@ -35,6 +35,11 @@ func (o *LoadBalancerOp) Create(ctx context.Context, zone string, param *sacloud
 	result.Availability = types.Availabilities.Migrating
 	result.ZoneID = zoneIDs[zone]
 	result.SettingsHash = ""
+	for _, vip := range result.VirtualIPAddresses {
+		if vip.DelayLoop == 0 {
+			vip.DelayLoop = 10 // default value
+		}
+	}
 
 	s.setLoadBalancer(zone, result)
 
@@ -66,6 +71,12 @@ func (o *LoadBalancerOp) Update(ctx context.Context, zone string, id types.ID, p
 
 	copySameNameField(param, value)
 	fill(value, fillModifiedAt)
+	for _, vip := range value.VirtualIPAddresses {
+		if vip.DelayLoop == 0 {
+			vip.DelayLoop = 10 // default value
+		}
+	}
+	s.setLoadBalancer(zone, value)
 	return value, nil
 }
 

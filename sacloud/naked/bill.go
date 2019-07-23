@@ -21,7 +21,7 @@ type Bill struct {
 type BillDetail struct {
 	ID             types.ID   `json:"ContractID,omitempty" yaml:"contract_id,omitempty" structs:",omitempty"` // 契約ID
 	Amount         int64      `json:",omitempty" yaml:"amount,omitempty" structs:",omitempty"`                // 金額
-	Description    string     `json:",omitempty" yaml:"description,omitempty" structs:",omitempty"`           // 説明
+	Description    string     `yaml:"description"`                                                            // 説明
 	Index          int        `json:",omitempty" yaml:"index,omitempty" structs:",omitempty"`                 // インデックス
 	ServiceClassID types.ID   `json:",omitempty" yaml:"service_class_id,omitempty" structs:",omitempty"`      // サービスクラスID
 	Usage          int64      `json:",omitempty" yaml:"usage,omitempty" structs:",omitempty"`                 // 秒数

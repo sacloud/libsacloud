@@ -36,6 +36,13 @@ func TestBridgeOpCRUD(t *testing.T) {
 					IgnoreFields: ignoreBridgeFields,
 				}),
 			},
+			{
+				Func: testBridgeUpdateToMin,
+				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+					ExpectValue:  updateBridgeToMinExpected,
+					IgnoreFields: ignoreBridgeFields,
+				}),
+			},
 		},
 
 		Delete: &CRUDTestDeleteFunc{
@@ -69,6 +76,12 @@ var (
 		Name:        updateBridgeParam.Name,
 		Description: updateBridgeParam.Description,
 	}
+	updateBridgeToMinParam = &sacloud.BridgeUpdateRequest{
+		Name: "libsacloud-bridge-to-min",
+	}
+	updateBridgeToMinExpected = &sacloud.Bridge{
+		Name: updateBridgeToMinParam.Name,
+	}
 )
 
 func testBridgeCreate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
@@ -84,6 +97,11 @@ func testBridgeRead(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}
 func testBridgeUpdate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewBridgeOp(caller)
 	return client.Update(ctx, testZone, ctx.ID, updateBridgeParam)
+}
+
+func testBridgeUpdateToMin(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+	client := sacloud.NewBridgeOp(caller)
+	return client.Update(ctx, testZone, ctx.ID, updateBridgeToMinParam)
 }
 
 func testBridgeDelete(ctx *CRUDTestContext, caller sacloud.APICaller) error {

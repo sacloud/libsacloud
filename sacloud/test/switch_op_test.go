@@ -7,7 +7,7 @@ import (
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
-func TestSwitchOpCRUD(t *testing.T) {
+func TestSwitchOp_CRUD(t *testing.T) {
 	Run(t, &CRUDTestCase{
 		Parallel: true,
 
@@ -34,6 +34,13 @@ func TestSwitchOpCRUD(t *testing.T) {
 					IgnoreFields: ignoreSwitchFields,
 				}),
 			},
+			{
+				Func: testSwitchUpdateToMin,
+				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+					ExpectValue:  updateSwitchToMinExpected,
+					IgnoreFields: ignoreSwitchFields,
+				}),
+			},
 		},
 		Delete: &CRUDTestDeleteFunc{
 			Func: testSwitchDelete,
@@ -44,7 +51,6 @@ func TestSwitchOpCRUD(t *testing.T) {
 var (
 	ignoreSwitchFields = []string{
 		"ID",
-		"IconID",
 		"CreatedAt",
 		"ModifiedAt",
 	}
@@ -69,6 +75,7 @@ var (
 		Description:    "desc-upd",
 		DefaultRoute:   "192.168.0.2",
 		NetworkMaskLen: 28,
+		IconID:         testIconID,
 	}
 	updateSwitchExpected = &sacloud.Switch{
 		Name:           updateSwitchParam.Name,
@@ -77,6 +84,14 @@ var (
 		DefaultRoute:   updateSwitchParam.DefaultRoute,
 		NetworkMaskLen: updateSwitchParam.NetworkMaskLen,
 		Scope:          createSwitchExpected.Scope,
+		IconID:         testIconID,
+	}
+	updateSwitchToMinParam = &sacloud.SwitchUpdateRequest{
+		Name: "libsacloud-switch-to-min",
+	}
+	updateSwitchToMinExpected = &sacloud.Switch{
+		Name:  updateSwitchToMinParam.Name,
+		Scope: createSwitchExpected.Scope,
 	}
 )
 
@@ -93,6 +108,11 @@ func testSwitchRead(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}
 func testSwitchUpdate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewSwitchOp(caller)
 	return client.Update(ctx, testZone, ctx.ID, updateSwitchParam)
+}
+
+func testSwitchUpdateToMin(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+	client := sacloud.NewSwitchOp(caller)
+	return client.Update(ctx, testZone, ctx.ID, updateSwitchToMinParam)
 }
 
 func testSwitchDelete(ctx *CRUDTestContext, caller sacloud.APICaller) error {

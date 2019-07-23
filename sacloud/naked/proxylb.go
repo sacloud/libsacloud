@@ -12,8 +12,8 @@ import (
 type ProxyLB struct {
 	ID           types.ID            `json:",omitempty" yaml:"id,omitempty" structs:",omitempty"`
 	Name         string              `json:",omitempty" yaml:"name,omitempty" structs:",omitempty"`
-	Description  string              `json:",omitempty" yaml:"description,omitempty" structs:",omitempty"`
-	Tags         []string            `json:"" yaml:"tags"`
+	Description  string              `yaml:"description"`
+	Tags         types.Tags          `yaml:"tags"`
 	Icon         *Icon               `json:",omitempty" yaml:"icon,omitempty" structs:",omitempty"`
 	CreatedAt    *time.Time          `json:",omitempty" yaml:"created_at,omitempty" structs:",omitempty"`
 	ModifiedAt   *time.Time          `json:",omitempty" yaml:"modified_at,omitempty" structs:",omitempty"`
@@ -34,12 +34,26 @@ type ProxyLBSettings struct {
 
 // ProxyLBSetting エンハンスドロードバランサ設定
 type ProxyLBSetting struct {
-	HealthCheck   ProxyLBHealthCheck   `yaml:"health_check,omitempty"`   // ヘルスチェック
-	SorryServer   ProxyLBSorryServer   `yaml:"sorry_server,omitempty"`   // ソーリーサーバー
-	BindPorts     []*ProxyLBBindPorts  `yaml:"bind_ports,omitempty"`     // プロキシ方式(プロトコル&ポート)
-	Servers       []ProxyLBServer      `yaml:"servers,omitempty"`        // サーバー
-	LetsEncrypt   ProxyLBACMESetting   `yaml:"lets_encrypt,omitempty"`   // Let's encryptでの証明書取得設定
-	StickySession ProxyLBStickySession `yaml:"sticky_session,omitempty"` // StickySession
+	HealthCheck   ProxyLBHealthCheck   `yaml:"health_check"`   // ヘルスチェック
+	SorryServer   ProxyLBSorryServer   `yaml:"sorry_server"`   // ソーリーサーバー
+	BindPorts     []*ProxyLBBindPorts  `yaml:"bind_ports"`     // プロキシ方式(プロトコル&ポート)
+	Servers       []ProxyLBServer      `yaml:"servers"`        // サーバー
+	LetsEncrypt   ProxyLBACMESetting   `yaml:"lets_encrypt"`   // Let's encryptでの証明書取得設定
+	StickySession ProxyLBStickySession `yaml:"sticky_session"` // StickySession
+}
+
+// MarshalJSON nullの場合に空配列を出力するための実装
+func (s ProxyLBSetting) MarshalJSON() ([]byte, error) {
+	if s.BindPorts == nil {
+		s.BindPorts = make([]*ProxyLBBindPorts, 0)
+	}
+	if s.Servers == nil {
+		s.Servers = make([]ProxyLBServer, 0)
+	}
+
+	type alias ProxyLBSetting
+	tmp := alias(s)
+	return json.Marshal(&tmp)
 }
 
 // ProxyLBHealthCheck ヘルスチェック

@@ -25,6 +25,8 @@ var httpTrace bool
 var accTestOnce sync.Once
 var accTestMu sync.Mutex
 
+var testIconID = types.ID(112901627749) // テスト用のアイコンID(shared icon)
+
 func singletonAPICaller() sacloud.APICaller {
 	accTestMu.Lock()
 	defer accTestMu.Unlock()

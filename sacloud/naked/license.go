@@ -10,7 +10,7 @@ import (
 type License struct {
 	ID          types.ID     `json:",omitempty" yaml:"id,omitempty" structs:",omitempty"`
 	Name        string       `json:",omitempty" yaml:"name,omitempty" structs:",omitempty"`
-	Description string       `json:",omitempty" yaml:"description,omitempty" structs:",omitempty"`
+	Description string       `yaml:"description"`
 	CreatedAt   *time.Time   `json:",omitempty" yaml:"created_at,omitempty" structs:",omitempty"`
 	ModifiedAt  *time.Time   `json:",omitempty" yaml:"modified_at,omitempty" structs:",omitempty"`
 	LicenseInfo *LicenseInfo `json:",omitempty" yaml:"license_info,omitempty" structs:",omitempty"` // ライセンス情報

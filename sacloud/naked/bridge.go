@@ -10,7 +10,7 @@ import (
 type Bridge struct {
 	ID           types.ID          `json:",omitempty" yaml:"id,omitempty" structs:",omitempty"`
 	Name         string            `json:",omitempty" yaml:"name,omitempty" structs:",omitempty"`
-	Description  string            `json:",omitempty" yaml:"description,omitempty" structs:",omitempty"`
+	Description  string            `yaml:"description"`
 	ServiceClass string            `json:",omitempty" yaml:"service_class,omitempty" structs:",omitempty"`
 	CreatedAt    *time.Time        `json:",omitempty" yaml:"created_at,omitempty" structs:",omitempty"`
 	Region       *Region           `json:",omitempty" yaml:"region,omitempty" structs:",omitempty"`

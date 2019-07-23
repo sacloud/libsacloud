@@ -1,6 +1,7 @@
 package naked
 
 import (
+	"encoding/json"
 	"time"
 
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
@@ -10,8 +11,8 @@ import (
 type DNS struct {
 	ID           types.ID            `json:",omitempty" yaml:"id,omitempty" structs:",omitempty"`
 	Name         string              `json:",omitempty" yaml:"name,omitempty" structs:",omitempty"`
-	Description  string              `json:",omitempty" yaml:"description,omitempty" structs:",omitempty"`
-	Tags         []string            `json:"" yaml:"tags"`
+	Description  string              `yaml:"description"`
+	Tags         types.Tags          `yaml:"tags"`
 	Icon         *Icon               `json:",omitempty" yaml:"icon,omitempty" structs:",omitempty"`
 	CreatedAt    *time.Time          `json:",omitempty" yaml:"created_at,omitempty" structs:",omitempty"`
 	ModifiedAt   *time.Time          `json:",omitempty" yaml:"modified_at,omitempty" structs:",omitempty"`
@@ -36,7 +37,17 @@ type DNSSettings struct {
 
 // DNSSetting DNSセッティング
 type DNSSetting struct {
-	ResourceRecordSets []*DNSRecord `json:",omitempty" yaml:"resource_record_sets,omitempty" structs:",omitempty"`
+	ResourceRecordSets []*DNSRecord `yaml:"resource_record_sets"`
+}
+
+// MarshalJSON nullの場合に空配列を出力するための実装
+func (ds DNSSetting) MarshalJSON() ([]byte, error) {
+	if ds.ResourceRecordSets == nil {
+		ds.ResourceRecordSets = make([]*DNSRecord, 0)
+	}
+	type alias DNSSetting
+	tmp := alias(ds)
+	return json.Marshal(&tmp)
 }
 
 // DNSRecord DNSレコード

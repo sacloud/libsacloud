@@ -114,6 +114,7 @@ func (c *CRUDTestContext) Err() error {
 
 // Value context.Context実装
 func (c *CRUDTestContext) Value(key interface{}) interface{} {
+	c.initInnerContext()
 	return c.ctx.Value(key)
 }
 
