@@ -110,24 +110,24 @@ func (o *Archive) SetID(v types.ID) {
 	o.ID = v
 }
 
-// GetStringID gets value to StringID
+// SetStringID .
+func (o *Archive) SetStringID(id string) {
+	accessor.SetStringID(o, id)
+}
+
+// GetStringID .
 func (o *Archive) GetStringID() string {
 	return accessor.GetStringID(o)
 }
 
-// SetStringID sets value to StringID
-func (o *Archive) SetStringID(v string) {
-	accessor.SetStringID(o, v)
+// SetInt64ID .
+func (o *Archive) SetInt64ID(id int64) {
+	accessor.SetInt64ID(o, id)
 }
 
-// GetInt64ID gets value to Int64ID
+// GetInt64ID .
 func (o *Archive) GetInt64ID() int64 {
 	return accessor.GetInt64ID(o)
-}
-
-// SetInt64ID sets value to Int64ID
-func (o *Archive) SetInt64ID(v int64) {
-	accessor.SetInt64ID(o, v)
 }
 
 // GetName returns value of Name
@@ -158,6 +158,26 @@ func (o *Archive) GetTags() types.Tags {
 // SetTags sets value to Tags
 func (o *Archive) SetTags(v types.Tags) {
 	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *Archive) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *Archive) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *Archive) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *Archive) ClearTags() {
+	accessor.ClearTags(o)
 }
 
 // GetDisplayOrder returns value of DisplayOrder
@@ -200,14 +220,14 @@ func (o *Archive) SetSizeMB(v int) {
 	o.SizeMB = v
 }
 
-// GetSizeGB gets value to SizeGB
+// GetSizeGB .
 func (o *Archive) GetSizeGB() int {
 	return accessor.GetSizeGB(o)
 }
 
-// SetSizeGB sets value to SizeGB
-func (o *Archive) SetSizeGB(v int) {
-	accessor.SetSizeGB(o, v)
+// SetSizeGB .
+func (o *Archive) SetSizeGB(size int) {
+	accessor.SetSizeGB(o, size)
 }
 
 // GetMigratedMB returns value of MigratedMB
@@ -220,14 +240,9 @@ func (o *Archive) SetMigratedMB(v int) {
 	o.MigratedMB = v
 }
 
-// GetMigratedGB gets value to MigratedGB
+// GetMigratedGB .
 func (o *Archive) GetMigratedGB() int {
 	return accessor.GetMigratedGB(o)
-}
-
-// SetMigratedGB sets value to MigratedGB
-func (o *Archive) SetMigratedGB(v int) {
-	accessor.SetMigratedGB(o, v)
 }
 
 // GetDiskPlanID returns value of DiskPlanID
@@ -409,24 +424,24 @@ func (o *BundleInfo) SetID(v types.ID) {
 	o.ID = v
 }
 
-// GetStringID gets value to StringID
+// SetStringID .
+func (o *BundleInfo) SetStringID(id string) {
+	accessor.SetStringID(o, id)
+}
+
+// GetStringID .
 func (o *BundleInfo) GetStringID() string {
 	return accessor.GetStringID(o)
 }
 
-// SetStringID sets value to StringID
-func (o *BundleInfo) SetStringID(v string) {
-	accessor.SetStringID(o, v)
+// SetInt64ID .
+func (o *BundleInfo) SetInt64ID(id int64) {
+	accessor.SetInt64ID(o, id)
 }
 
-// GetInt64ID gets value to Int64ID
+// GetInt64ID .
 func (o *BundleInfo) GetInt64ID() int64 {
 	return accessor.GetInt64ID(o)
-}
-
-// SetInt64ID sets value to Int64ID
-func (o *BundleInfo) SetInt64ID(v int64) {
-	accessor.SetInt64ID(o, v)
 }
 
 // GetHostClass returns value of HostClass
@@ -491,24 +506,24 @@ func (o *Storage) SetID(v types.ID) {
 	o.ID = v
 }
 
-// GetStringID gets value to StringID
+// SetStringID .
+func (o *Storage) SetStringID(id string) {
+	accessor.SetStringID(o, id)
+}
+
+// GetStringID .
 func (o *Storage) GetStringID() string {
 	return accessor.GetStringID(o)
 }
 
-// SetStringID sets value to StringID
-func (o *Storage) SetStringID(v string) {
-	accessor.SetStringID(o, v)
+// SetInt64ID .
+func (o *Storage) SetInt64ID(id int64) {
+	accessor.SetInt64ID(o, id)
 }
 
-// GetInt64ID gets value to Int64ID
+// GetInt64ID .
 func (o *Storage) GetInt64ID() int64 {
 	return accessor.GetInt64ID(o)
-}
-
-// SetInt64ID sets value to Int64ID
-func (o *Storage) SetInt64ID(v int64) {
-	accessor.SetInt64ID(o, v)
 }
 
 // GetName returns value of Name
@@ -804,6 +819,26 @@ func (o *ArchiveCreateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *ArchiveCreateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *ArchiveCreateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *ArchiveCreateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *ArchiveCreateRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
 // GetIconID returns value of IconID
 func (o *ArchiveCreateRequest) GetIconID() types.ID {
 	return o.IconID
@@ -931,14 +966,14 @@ func (o *ArchiveCreateBlankRequest) SetSizeMB(v int) {
 	o.SizeMB = v
 }
 
-// GetSizeGB gets value to SizeGB
+// GetSizeGB .
 func (o *ArchiveCreateBlankRequest) GetSizeGB() int {
 	return accessor.GetSizeGB(o)
 }
 
-// SetSizeGB sets value to SizeGB
-func (o *ArchiveCreateBlankRequest) SetSizeGB(v int) {
-	accessor.SetSizeGB(o, v)
+// SetSizeGB .
+func (o *ArchiveCreateBlankRequest) SetSizeGB(size int) {
+	accessor.SetSizeGB(o, size)
 }
 
 // GetName returns value of Name
@@ -969,6 +1004,26 @@ func (o *ArchiveCreateBlankRequest) GetTags() types.Tags {
 // SetTags sets value to Tags
 func (o *ArchiveCreateBlankRequest) SetTags(v types.Tags) {
 	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *ArchiveCreateBlankRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *ArchiveCreateBlankRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *ArchiveCreateBlankRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *ArchiveCreateBlankRequest) ClearTags() {
+	accessor.ClearTags(o)
 }
 
 // GetIconID returns value of IconID
@@ -1041,6 +1096,26 @@ func (o *ArchiveUpdateRequest) GetTags() types.Tags {
 // SetTags sets value to Tags
 func (o *ArchiveUpdateRequest) SetTags(v types.Tags) {
 	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *ArchiveUpdateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *ArchiveUpdateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *ArchiveUpdateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *ArchiveUpdateRequest) ClearTags() {
+	accessor.ClearTags(o)
 }
 
 // GetIconID returns value of IconID
@@ -1337,24 +1412,24 @@ func (o *AutoBackup) SetID(v types.ID) {
 	o.ID = v
 }
 
-// GetStringID gets value to StringID
+// SetStringID .
+func (o *AutoBackup) SetStringID(id string) {
+	accessor.SetStringID(o, id)
+}
+
+// GetStringID .
 func (o *AutoBackup) GetStringID() string {
 	return accessor.GetStringID(o)
 }
 
-// SetStringID sets value to StringID
-func (o *AutoBackup) SetStringID(v string) {
-	accessor.SetStringID(o, v)
+// SetInt64ID .
+func (o *AutoBackup) SetInt64ID(id int64) {
+	accessor.SetInt64ID(o, id)
 }
 
-// GetInt64ID gets value to Int64ID
+// GetInt64ID .
 func (o *AutoBackup) GetInt64ID() int64 {
 	return accessor.GetInt64ID(o)
-}
-
-// SetInt64ID sets value to Int64ID
-func (o *AutoBackup) SetInt64ID(v int64) {
-	accessor.SetInt64ID(o, v)
 }
 
 // GetName returns value of Name
@@ -1385,6 +1460,26 @@ func (o *AutoBackup) GetTags() types.Tags {
 // SetTags sets value to Tags
 func (o *AutoBackup) SetTags(v types.Tags) {
 	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *AutoBackup) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *AutoBackup) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *AutoBackup) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *AutoBackup) ClearTags() {
+	accessor.ClearTags(o)
 }
 
 // GetAvailability returns value of Availability
@@ -1602,6 +1697,26 @@ func (o *AutoBackupCreateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *AutoBackupCreateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *AutoBackupCreateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *AutoBackupCreateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *AutoBackupCreateRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
 // GetIconID returns value of IconID
 func (o *AutoBackupCreateRequest) GetIconID() types.ID {
 	return o.IconID
@@ -1702,6 +1817,26 @@ func (o *AutoBackupUpdateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *AutoBackupUpdateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *AutoBackupUpdateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *AutoBackupUpdateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *AutoBackupUpdateRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
 // GetIconID returns value of IconID
 func (o *AutoBackupUpdateRequest) GetIconID() types.ID {
 	return o.IconID
@@ -1763,24 +1898,24 @@ func (o *Bill) SetID(v types.ID) {
 	o.ID = v
 }
 
-// GetStringID gets value to StringID
+// SetStringID .
+func (o *Bill) SetStringID(id string) {
+	accessor.SetStringID(o, id)
+}
+
+// GetStringID .
 func (o *Bill) GetStringID() string {
 	return accessor.GetStringID(o)
 }
 
-// SetStringID sets value to StringID
-func (o *Bill) SetStringID(v string) {
-	accessor.SetStringID(o, v)
+// SetInt64ID .
+func (o *Bill) SetInt64ID(id int64) {
+	accessor.SetInt64ID(o, id)
 }
 
-// GetInt64ID gets value to Int64ID
+// GetInt64ID .
 func (o *Bill) GetInt64ID() int64 {
 	return accessor.GetInt64ID(o)
-}
-
-// SetInt64ID sets value to Int64ID
-func (o *Bill) SetInt64ID(v int64) {
-	accessor.SetInt64ID(o, v)
 }
 
 // GetAmount returns value of Amount
@@ -1894,24 +2029,24 @@ func (o *BillDetail) SetID(v types.ID) {
 	o.ID = v
 }
 
-// GetStringID gets value to StringID
+// SetStringID .
+func (o *BillDetail) SetStringID(id string) {
+	accessor.SetStringID(o, id)
+}
+
+// GetStringID .
 func (o *BillDetail) GetStringID() string {
 	return accessor.GetStringID(o)
 }
 
-// SetStringID sets value to StringID
-func (o *BillDetail) SetStringID(v string) {
-	accessor.SetStringID(o, v)
+// SetInt64ID .
+func (o *BillDetail) SetInt64ID(id int64) {
+	accessor.SetInt64ID(o, id)
 }
 
-// GetInt64ID gets value to Int64ID
+// GetInt64ID .
 func (o *BillDetail) GetInt64ID() int64 {
 	return accessor.GetInt64ID(o)
-}
-
-// SetInt64ID sets value to Int64ID
-func (o *BillDetail) SetInt64ID(v int64) {
-	accessor.SetInt64ID(o, v)
 }
 
 // GetAmount returns value of Amount
@@ -2123,24 +2258,24 @@ func (o *Bridge) SetID(v types.ID) {
 	o.ID = v
 }
 
-// GetStringID gets value to StringID
+// SetStringID .
+func (o *Bridge) SetStringID(id string) {
+	accessor.SetStringID(o, id)
+}
+
+// GetStringID .
 func (o *Bridge) GetStringID() string {
 	return accessor.GetStringID(o)
 }
 
-// SetStringID sets value to StringID
-func (o *Bridge) SetStringID(v string) {
-	accessor.SetStringID(o, v)
+// SetInt64ID .
+func (o *Bridge) SetInt64ID(id int64) {
+	accessor.SetInt64ID(o, id)
 }
 
-// GetInt64ID gets value to Int64ID
+// GetInt64ID .
 func (o *Bridge) GetInt64ID() int64 {
 	return accessor.GetInt64ID(o)
-}
-
-// SetInt64ID sets value to Int64ID
-func (o *Bridge) SetInt64ID(v int64) {
-	accessor.SetInt64ID(o, v)
 }
 
 // GetName returns value of Name
@@ -2245,24 +2380,24 @@ func (o *Region) SetID(v types.ID) {
 	o.ID = v
 }
 
-// GetStringID gets value to StringID
+// SetStringID .
+func (o *Region) SetStringID(id string) {
+	accessor.SetStringID(o, id)
+}
+
+// GetStringID .
 func (o *Region) GetStringID() string {
 	return accessor.GetStringID(o)
 }
 
-// SetStringID sets value to StringID
-func (o *Region) SetStringID(v string) {
-	accessor.SetStringID(o, v)
+// SetInt64ID .
+func (o *Region) SetInt64ID(id int64) {
+	accessor.SetInt64ID(o, id)
 }
 
-// GetInt64ID gets value to Int64ID
+// GetInt64ID .
 func (o *Region) GetInt64ID() int64 {
 	return accessor.GetInt64ID(o)
-}
-
-// SetInt64ID sets value to Int64ID
-func (o *Region) SetInt64ID(v int64) {
-	accessor.SetInt64ID(o, v)
 }
 
 // GetName returns value of Name
@@ -2334,24 +2469,24 @@ func (o *BridgeInfo) SetID(v types.ID) {
 	o.ID = v
 }
 
-// GetStringID gets value to StringID
+// SetStringID .
+func (o *BridgeInfo) SetStringID(id string) {
+	accessor.SetStringID(o, id)
+}
+
+// GetStringID .
 func (o *BridgeInfo) GetStringID() string {
 	return accessor.GetStringID(o)
 }
 
-// SetStringID sets value to StringID
-func (o *BridgeInfo) SetStringID(v string) {
-	accessor.SetStringID(o, v)
+// SetInt64ID .
+func (o *BridgeInfo) SetInt64ID(id int64) {
+	accessor.SetInt64ID(o, id)
 }
 
-// GetInt64ID gets value to Int64ID
+// GetInt64ID .
 func (o *BridgeInfo) GetInt64ID() int64 {
 	return accessor.GetInt64ID(o)
-}
-
-// SetInt64ID sets value to Int64ID
-func (o *BridgeInfo) SetInt64ID(v int64) {
-	accessor.SetInt64ID(o, v)
 }
 
 // GetName returns value of Name
@@ -2419,24 +2554,24 @@ func (o *BridgeSwitchInfo) SetID(v types.ID) {
 	o.ID = v
 }
 
-// GetStringID gets value to StringID
+// SetStringID .
+func (o *BridgeSwitchInfo) SetStringID(id string) {
+	accessor.SetStringID(o, id)
+}
+
+// GetStringID .
 func (o *BridgeSwitchInfo) GetStringID() string {
 	return accessor.GetStringID(o)
 }
 
-// SetStringID sets value to StringID
-func (o *BridgeSwitchInfo) SetStringID(v string) {
-	accessor.SetStringID(o, v)
+// SetInt64ID .
+func (o *BridgeSwitchInfo) SetInt64ID(id int64) {
+	accessor.SetInt64ID(o, id)
 }
 
-// GetInt64ID gets value to Int64ID
+// GetInt64ID .
 func (o *BridgeSwitchInfo) GetInt64ID() int64 {
 	return accessor.GetInt64ID(o)
-}
-
-// SetInt64ID sets value to Int64ID
-func (o *BridgeSwitchInfo) SetInt64ID(v int64) {
-	accessor.SetInt64ID(o, v)
 }
 
 // GetName returns value of Name
@@ -2634,24 +2769,24 @@ func (o *CDROM) SetID(v types.ID) {
 	o.ID = v
 }
 
-// GetStringID gets value to StringID
+// SetStringID .
+func (o *CDROM) SetStringID(id string) {
+	accessor.SetStringID(o, id)
+}
+
+// GetStringID .
 func (o *CDROM) GetStringID() string {
 	return accessor.GetStringID(o)
 }
 
-// SetStringID sets value to StringID
-func (o *CDROM) SetStringID(v string) {
-	accessor.SetStringID(o, v)
+// SetInt64ID .
+func (o *CDROM) SetInt64ID(id int64) {
+	accessor.SetInt64ID(o, id)
 }
 
-// GetInt64ID gets value to Int64ID
+// GetInt64ID .
 func (o *CDROM) GetInt64ID() int64 {
 	return accessor.GetInt64ID(o)
-}
-
-// SetInt64ID sets value to Int64ID
-func (o *CDROM) SetInt64ID(v int64) {
-	accessor.SetInt64ID(o, v)
 }
 
 // GetName returns value of Name
@@ -2692,6 +2827,26 @@ func (o *CDROM) GetTags() types.Tags {
 // SetTags sets value to Tags
 func (o *CDROM) SetTags(v types.Tags) {
 	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *CDROM) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *CDROM) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *CDROM) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *CDROM) ClearTags() {
+	accessor.ClearTags(o)
 }
 
 // GetAvailability returns value of Availability
@@ -2799,14 +2954,14 @@ func (o *CDROMCreateRequest) SetSizeMB(v int) {
 	o.SizeMB = v
 }
 
-// GetSizeGB gets value to SizeGB
+// GetSizeGB .
 func (o *CDROMCreateRequest) GetSizeGB() int {
 	return accessor.GetSizeGB(o)
 }
 
-// SetSizeGB sets value to SizeGB
-func (o *CDROMCreateRequest) SetSizeGB(v int) {
-	accessor.SetSizeGB(o, v)
+// SetSizeGB .
+func (o *CDROMCreateRequest) SetSizeGB(size int) {
+	accessor.SetSizeGB(o, size)
 }
 
 // GetName returns value of Name
@@ -2837,6 +2992,26 @@ func (o *CDROMCreateRequest) GetTags() types.Tags {
 // SetTags sets value to Tags
 func (o *CDROMCreateRequest) SetTags(v types.Tags) {
 	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *CDROMCreateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *CDROMCreateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *CDROMCreateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *CDROMCreateRequest) ClearTags() {
+	accessor.ClearTags(o)
 }
 
 // GetIconID returns value of IconID
@@ -2911,6 +3086,26 @@ func (o *CDROMUpdateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *CDROMUpdateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *CDROMUpdateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *CDROMUpdateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *CDROMUpdateRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
 // GetIconID returns value of IconID
 func (o *CDROMUpdateRequest) GetIconID() types.ID {
 	return o.IconID
@@ -2972,24 +3167,24 @@ func (o *Coupon) SetID(v types.ID) {
 	o.ID = v
 }
 
-// GetStringID gets value to StringID
+// SetStringID .
+func (o *Coupon) SetStringID(id string) {
+	accessor.SetStringID(o, id)
+}
+
+// GetStringID .
 func (o *Coupon) GetStringID() string {
 	return accessor.GetStringID(o)
 }
 
-// SetStringID sets value to StringID
-func (o *Coupon) SetStringID(v string) {
-	accessor.SetStringID(o, v)
+// SetInt64ID .
+func (o *Coupon) SetInt64ID(id int64) {
+	accessor.SetInt64ID(o, id)
 }
 
-// GetInt64ID gets value to Int64ID
+// GetInt64ID .
 func (o *Coupon) GetInt64ID() int64 {
 	return accessor.GetInt64ID(o)
-}
-
-// SetInt64ID sets value to Int64ID
-func (o *Coupon) SetInt64ID(v int64) {
-	accessor.SetInt64ID(o, v)
 }
 
 // GetMemberID returns value of MemberID
@@ -3157,24 +3352,24 @@ func (o *Database) SetID(v types.ID) {
 	o.ID = v
 }
 
-// GetStringID gets value to StringID
+// SetStringID .
+func (o *Database) SetStringID(id string) {
+	accessor.SetStringID(o, id)
+}
+
+// GetStringID .
 func (o *Database) GetStringID() string {
 	return accessor.GetStringID(o)
 }
 
-// SetStringID sets value to StringID
-func (o *Database) SetStringID(v string) {
-	accessor.SetStringID(o, v)
+// SetInt64ID .
+func (o *Database) SetInt64ID(id int64) {
+	accessor.SetInt64ID(o, id)
 }
 
-// GetInt64ID gets value to Int64ID
+// GetInt64ID .
 func (o *Database) GetInt64ID() int64 {
 	return accessor.GetInt64ID(o)
-}
-
-// SetInt64ID sets value to Int64ID
-func (o *Database) SetInt64ID(v int64) {
-	accessor.SetInt64ID(o, v)
 }
 
 // GetClass returns value of Class
@@ -3215,6 +3410,26 @@ func (o *Database) GetTags() types.Tags {
 // SetTags sets value to Tags
 func (o *Database) SetTags(v types.Tags) {
 	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *Database) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *Database) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *Database) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *Database) ClearTags() {
+	accessor.ClearTags(o)
 }
 
 // GetAvailability returns value of Availability
@@ -3825,24 +4040,24 @@ func (o *InterfaceView) SetID(v types.ID) {
 	o.ID = v
 }
 
-// GetStringID gets value to StringID
+// SetStringID .
+func (o *InterfaceView) SetStringID(id string) {
+	accessor.SetStringID(o, id)
+}
+
+// GetStringID .
 func (o *InterfaceView) GetStringID() string {
 	return accessor.GetStringID(o)
 }
 
-// SetStringID sets value to StringID
-func (o *InterfaceView) SetStringID(v string) {
-	accessor.SetStringID(o, v)
+// SetInt64ID .
+func (o *InterfaceView) SetInt64ID(id int64) {
+	accessor.SetInt64ID(o, id)
 }
 
-// GetInt64ID gets value to Int64ID
+// GetInt64ID .
 func (o *InterfaceView) GetInt64ID() int64 {
 	return accessor.GetInt64ID(o)
-}
-
-// SetInt64ID sets value to Int64ID
-func (o *InterfaceView) SetInt64ID(v int64) {
-	accessor.SetInt64ID(o, v)
 }
 
 // GetMACAddress returns value of MACAddress
@@ -4199,6 +4414,26 @@ func (o *DatabaseCreateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *DatabaseCreateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *DatabaseCreateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *DatabaseCreateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *DatabaseCreateRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
 // GetIconID returns value of IconID
 func (o *DatabaseCreateRequest) GetIconID() types.ID {
 	return o.IconID
@@ -4308,6 +4543,26 @@ func (o *DatabaseUpdateRequest) GetTags() types.Tags {
 // SetTags sets value to Tags
 func (o *DatabaseUpdateRequest) SetTags(v types.Tags) {
 	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *DatabaseUpdateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *DatabaseUpdateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *DatabaseUpdateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *DatabaseUpdateRequest) ClearTags() {
+	accessor.ClearTags(o)
 }
 
 // GetIconID returns value of IconID
@@ -5317,24 +5572,24 @@ func (o *Disk) SetID(v types.ID) {
 	o.ID = v
 }
 
-// GetStringID gets value to StringID
+// SetStringID .
+func (o *Disk) SetStringID(id string) {
+	accessor.SetStringID(o, id)
+}
+
+// GetStringID .
 func (o *Disk) GetStringID() string {
 	return accessor.GetStringID(o)
 }
 
-// SetStringID sets value to StringID
-func (o *Disk) SetStringID(v string) {
-	accessor.SetStringID(o, v)
+// SetInt64ID .
+func (o *Disk) SetInt64ID(id int64) {
+	accessor.SetInt64ID(o, id)
 }
 
-// GetInt64ID gets value to Int64ID
+// GetInt64ID .
 func (o *Disk) GetInt64ID() int64 {
 	return accessor.GetInt64ID(o)
-}
-
-// SetInt64ID sets value to Int64ID
-func (o *Disk) SetInt64ID(v int64) {
-	accessor.SetInt64ID(o, v)
 }
 
 // GetName returns value of Name
@@ -5365,6 +5620,26 @@ func (o *Disk) GetTags() types.Tags {
 // SetTags sets value to Tags
 func (o *Disk) SetTags(v types.Tags) {
 	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *Disk) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *Disk) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *Disk) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *Disk) ClearTags() {
+	accessor.ClearTags(o)
 }
 
 // GetAvailability returns value of Availability
@@ -5417,14 +5692,14 @@ func (o *Disk) SetSizeMB(v int) {
 	o.SizeMB = v
 }
 
-// GetSizeGB gets value to SizeGB
+// GetSizeGB .
 func (o *Disk) GetSizeGB() int {
 	return accessor.GetSizeGB(o)
 }
 
-// SetSizeGB sets value to SizeGB
-func (o *Disk) SetSizeGB(v int) {
-	accessor.SetSizeGB(o, v)
+// SetSizeGB .
+func (o *Disk) SetSizeGB(size int) {
+	accessor.SetSizeGB(o, size)
 }
 
 // GetMigratedMB returns value of MigratedMB
@@ -5437,14 +5712,9 @@ func (o *Disk) SetMigratedMB(v int) {
 	o.MigratedMB = v
 }
 
-// GetMigratedGB gets value to MigratedGB
+// GetMigratedGB .
 func (o *Disk) GetMigratedGB() int {
 	return accessor.GetMigratedGB(o)
-}
-
-// SetMigratedGB sets value to MigratedGB
-func (o *Disk) SetMigratedGB(v int) {
-	accessor.SetMigratedGB(o, v)
 }
 
 // GetDiskPlanID returns value of DiskPlanID
@@ -5687,14 +5957,14 @@ func (o *DiskCreateRequest) SetSizeMB(v int) {
 	o.SizeMB = v
 }
 
-// GetSizeGB gets value to SizeGB
+// GetSizeGB .
 func (o *DiskCreateRequest) GetSizeGB() int {
 	return accessor.GetSizeGB(o)
 }
 
-// SetSizeGB sets value to SizeGB
-func (o *DiskCreateRequest) SetSizeGB(v int) {
-	accessor.SetSizeGB(o, v)
+// SetSizeGB .
+func (o *DiskCreateRequest) SetSizeGB(size int) {
+	accessor.SetSizeGB(o, size)
 }
 
 // GetName returns value of Name
@@ -5725,6 +5995,26 @@ func (o *DiskCreateRequest) GetTags() types.Tags {
 // SetTags sets value to Tags
 func (o *DiskCreateRequest) SetTags(v types.Tags) {
 	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *DiskCreateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *DiskCreateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *DiskCreateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *DiskCreateRequest) ClearTags() {
+	accessor.ClearTags(o)
 }
 
 // GetIconID returns value of IconID
@@ -6084,14 +6374,14 @@ func (o *DiskInstallRequest) SetSizeMB(v int) {
 	o.SizeMB = v
 }
 
-// GetSizeGB gets value to SizeGB
+// GetSizeGB .
 func (o *DiskInstallRequest) GetSizeGB() int {
 	return accessor.GetSizeGB(o)
 }
 
-// SetSizeGB sets value to SizeGB
-func (o *DiskInstallRequest) SetSizeGB(v int) {
-	accessor.SetSizeGB(o, v)
+// SetSizeGB .
+func (o *DiskInstallRequest) SetSizeGB(size int) {
+	accessor.SetSizeGB(o, size)
 }
 
 /*************************************************
@@ -6159,6 +6449,26 @@ func (o *DiskUpdateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *DiskUpdateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *DiskUpdateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *DiskUpdateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *DiskUpdateRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
 // GetIconID returns value of IconID
 func (o *DiskUpdateRequest) GetIconID() types.ID {
 	return o.IconID
@@ -6224,24 +6534,24 @@ func (o *DiskPlan) SetID(v types.ID) {
 	o.ID = v
 }
 
-// GetStringID gets value to StringID
+// SetStringID .
+func (o *DiskPlan) SetStringID(id string) {
+	accessor.SetStringID(o, id)
+}
+
+// GetStringID .
 func (o *DiskPlan) GetStringID() string {
 	return accessor.GetStringID(o)
 }
 
-// SetStringID sets value to StringID
-func (o *DiskPlan) SetStringID(v string) {
-	accessor.SetStringID(o, v)
+// SetInt64ID .
+func (o *DiskPlan) SetInt64ID(id int64) {
+	accessor.SetInt64ID(o, id)
 }
 
-// GetInt64ID gets value to Int64ID
+// GetInt64ID .
 func (o *DiskPlan) GetInt64ID() int64 {
 	return accessor.GetInt64ID(o)
-}
-
-// SetInt64ID sets value to Int64ID
-func (o *DiskPlan) SetInt64ID(v int64) {
-	accessor.SetInt64ID(o, v)
 }
 
 // GetName returns value of Name
@@ -6356,14 +6666,14 @@ func (o *DiskPlanSizeInfo) SetSizeMB(v int) {
 	o.SizeMB = v
 }
 
-// GetSizeGB gets value to SizeGB
+// GetSizeGB .
 func (o *DiskPlanSizeInfo) GetSizeGB() int {
 	return accessor.GetSizeGB(o)
 }
 
-// SetSizeGB sets value to SizeGB
-func (o *DiskPlanSizeInfo) SetSizeGB(v int) {
-	accessor.SetSizeGB(o, v)
+// SetSizeGB .
+func (o *DiskPlanSizeInfo) SetSizeGB(size int) {
+	accessor.SetSizeGB(o, size)
 }
 
 /*************************************************
@@ -6432,24 +6742,24 @@ func (o *DNS) SetID(v types.ID) {
 	o.ID = v
 }
 
-// GetStringID gets value to StringID
+// SetStringID .
+func (o *DNS) SetStringID(id string) {
+	accessor.SetStringID(o, id)
+}
+
+// GetStringID .
 func (o *DNS) GetStringID() string {
 	return accessor.GetStringID(o)
 }
 
-// SetStringID sets value to StringID
-func (o *DNS) SetStringID(v string) {
-	accessor.SetStringID(o, v)
+// SetInt64ID .
+func (o *DNS) SetInt64ID(id int64) {
+	accessor.SetInt64ID(o, id)
 }
 
-// GetInt64ID gets value to Int64ID
+// GetInt64ID .
 func (o *DNS) GetInt64ID() int64 {
 	return accessor.GetInt64ID(o)
-}
-
-// SetInt64ID sets value to Int64ID
-func (o *DNS) SetInt64ID(v int64) {
-	accessor.SetInt64ID(o, v)
 }
 
 // GetName returns value of Name
@@ -6480,6 +6790,26 @@ func (o *DNS) GetTags() types.Tags {
 // SetTags sets value to Tags
 func (o *DNS) SetTags(v types.Tags) {
 	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *DNS) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *DNS) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *DNS) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *DNS) ClearTags() {
+	accessor.ClearTags(o)
 }
 
 // GetAvailability returns value of Availability
@@ -6711,6 +7041,26 @@ func (o *DNSCreateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *DNSCreateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *DNSCreateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *DNSCreateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *DNSCreateRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
 // GetIconID returns value of IconID
 func (o *DNSCreateRequest) GetIconID() types.ID {
 	return o.IconID
@@ -6781,6 +7131,26 @@ func (o *DNSUpdateRequest) GetTags() types.Tags {
 // SetTags sets value to Tags
 func (o *DNSUpdateRequest) SetTags(v types.Tags) {
 	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *DNSUpdateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *DNSUpdateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *DNSUpdateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *DNSUpdateRequest) ClearTags() {
+	accessor.ClearTags(o)
 }
 
 // GetIconID returns value of IconID
@@ -6868,24 +7238,24 @@ func (o *GSLB) SetID(v types.ID) {
 	o.ID = v
 }
 
-// GetStringID gets value to StringID
+// SetStringID .
+func (o *GSLB) SetStringID(id string) {
+	accessor.SetStringID(o, id)
+}
+
+// GetStringID .
 func (o *GSLB) GetStringID() string {
 	return accessor.GetStringID(o)
 }
 
-// SetStringID sets value to StringID
-func (o *GSLB) SetStringID(v string) {
-	accessor.SetStringID(o, v)
+// SetInt64ID .
+func (o *GSLB) SetInt64ID(id int64) {
+	accessor.SetInt64ID(o, id)
 }
 
-// GetInt64ID gets value to Int64ID
+// GetInt64ID .
 func (o *GSLB) GetInt64ID() int64 {
 	return accessor.GetInt64ID(o)
-}
-
-// SetInt64ID sets value to Int64ID
-func (o *GSLB) SetInt64ID(v int64) {
-	accessor.SetInt64ID(o, v)
 }
 
 // GetName returns value of Name
@@ -6916,6 +7286,26 @@ func (o *GSLB) GetTags() types.Tags {
 // SetTags sets value to Tags
 func (o *GSLB) SetTags(v types.Tags) {
 	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *GSLB) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *GSLB) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *GSLB) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *GSLB) ClearTags() {
+	accessor.ClearTags(o)
 }
 
 // GetAvailability returns value of Availability
@@ -7301,6 +7691,26 @@ func (o *GSLBCreateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *GSLBCreateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *GSLBCreateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *GSLBCreateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *GSLBCreateRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
 // GetIconID returns value of IconID
 func (o *GSLBCreateRequest) GetIconID() types.ID {
 	return o.IconID
@@ -7438,6 +7848,26 @@ func (o *GSLBUpdateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *GSLBUpdateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *GSLBUpdateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *GSLBUpdateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *GSLBUpdateRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
 // GetIconID returns value of IconID
 func (o *GSLBUpdateRequest) GetIconID() types.ID {
 	return o.IconID
@@ -7502,24 +7932,24 @@ func (o *Icon) SetID(v types.ID) {
 	o.ID = v
 }
 
-// GetStringID gets value to StringID
+// SetStringID .
+func (o *Icon) SetStringID(id string) {
+	accessor.SetStringID(o, id)
+}
+
+// GetStringID .
 func (o *Icon) GetStringID() string {
 	return accessor.GetStringID(o)
 }
 
-// SetStringID sets value to StringID
-func (o *Icon) SetStringID(v string) {
-	accessor.SetStringID(o, v)
+// SetInt64ID .
+func (o *Icon) SetInt64ID(id int64) {
+	accessor.SetInt64ID(o, id)
 }
 
-// GetInt64ID gets value to Int64ID
+// GetInt64ID .
 func (o *Icon) GetInt64ID() int64 {
 	return accessor.GetInt64ID(o)
-}
-
-// SetInt64ID sets value to Int64ID
-func (o *Icon) SetInt64ID(v int64) {
-	accessor.SetInt64ID(o, v)
 }
 
 // GetName returns value of Name
@@ -7540,6 +7970,26 @@ func (o *Icon) GetTags() types.Tags {
 // SetTags sets value to Tags
 func (o *Icon) SetTags(v types.Tags) {
 	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *Icon) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *Icon) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *Icon) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *Icon) ClearTags() {
+	accessor.ClearTags(o)
 }
 
 // GetAvailability returns value of Availability
@@ -7641,6 +8091,26 @@ func (o *IconCreateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *IconCreateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *IconCreateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *IconCreateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *IconCreateRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
 // GetImage returns value of Image
 func (o *IconCreateRequest) GetImage() string {
 	return o.Image
@@ -7695,6 +8165,26 @@ func (o *IconUpdateRequest) GetTags() types.Tags {
 // SetTags sets value to Tags
 func (o *IconUpdateRequest) SetTags(v types.Tags) {
 	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *IconUpdateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *IconUpdateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *IconUpdateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *IconUpdateRequest) ClearTags() {
+	accessor.ClearTags(o)
 }
 
 /*************************************************
@@ -7754,24 +8244,24 @@ func (o *Interface) SetID(v types.ID) {
 	o.ID = v
 }
 
-// GetStringID gets value to StringID
+// SetStringID .
+func (o *Interface) SetStringID(id string) {
+	accessor.SetStringID(o, id)
+}
+
+// GetStringID .
 func (o *Interface) GetStringID() string {
 	return accessor.GetStringID(o)
 }
 
-// SetStringID sets value to StringID
-func (o *Interface) SetStringID(v string) {
-	accessor.SetStringID(o, v)
+// SetInt64ID .
+func (o *Interface) SetInt64ID(id int64) {
+	accessor.SetInt64ID(o, id)
 }
 
-// GetInt64ID gets value to Int64ID
+// GetInt64ID .
 func (o *Interface) GetInt64ID() int64 {
 	return accessor.GetInt64ID(o)
-}
-
-// SetInt64ID sets value to Int64ID
-func (o *Interface) SetInt64ID(v int64) {
-	accessor.SetInt64ID(o, v)
 }
 
 // GetMACAddress returns value of MACAddress
@@ -7977,24 +8467,24 @@ func (o *Internet) SetID(v types.ID) {
 	o.ID = v
 }
 
-// GetStringID gets value to StringID
+// SetStringID .
+func (o *Internet) SetStringID(id string) {
+	accessor.SetStringID(o, id)
+}
+
+// GetStringID .
 func (o *Internet) GetStringID() string {
 	return accessor.GetStringID(o)
 }
 
-// SetStringID sets value to StringID
-func (o *Internet) SetStringID(v string) {
-	accessor.SetStringID(o, v)
+// SetInt64ID .
+func (o *Internet) SetInt64ID(id int64) {
+	accessor.SetInt64ID(o, id)
 }
 
-// GetInt64ID gets value to Int64ID
+// GetInt64ID .
 func (o *Internet) GetInt64ID() int64 {
 	return accessor.GetInt64ID(o)
-}
-
-// SetInt64ID sets value to Int64ID
-func (o *Internet) SetInt64ID(v int64) {
-	accessor.SetInt64ID(o, v)
 }
 
 // GetName returns value of Name
@@ -8025,6 +8515,26 @@ func (o *Internet) GetTags() types.Tags {
 // SetTags sets value to Tags
 func (o *Internet) SetTags(v types.Tags) {
 	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *Internet) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *Internet) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *Internet) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *Internet) ClearTags() {
+	accessor.ClearTags(o)
 }
 
 // GetIconID returns value of IconID
@@ -8128,24 +8638,24 @@ func (o *SwitchInfo) SetID(v types.ID) {
 	o.ID = v
 }
 
-// GetStringID gets value to StringID
+// SetStringID .
+func (o *SwitchInfo) SetStringID(id string) {
+	accessor.SetStringID(o, id)
+}
+
+// GetStringID .
 func (o *SwitchInfo) GetStringID() string {
 	return accessor.GetStringID(o)
 }
 
-// SetStringID sets value to StringID
-func (o *SwitchInfo) SetStringID(v string) {
-	accessor.SetStringID(o, v)
+// SetInt64ID .
+func (o *SwitchInfo) SetInt64ID(id int64) {
+	accessor.SetInt64ID(o, id)
 }
 
-// GetInt64ID gets value to Int64ID
+// GetInt64ID .
 func (o *SwitchInfo) GetInt64ID() int64 {
 	return accessor.GetInt64ID(o)
-}
-
-// SetInt64ID sets value to Int64ID
-func (o *SwitchInfo) SetInt64ID(v int64) {
-	accessor.SetInt64ID(o, v)
 }
 
 // GetName returns value of Name
@@ -8176,6 +8686,26 @@ func (o *SwitchInfo) GetTags() types.Tags {
 // SetTags sets value to Tags
 func (o *SwitchInfo) SetTags(v types.Tags) {
 	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *SwitchInfo) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *SwitchInfo) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *SwitchInfo) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *SwitchInfo) ClearTags() {
+	accessor.ClearTags(o)
 }
 
 // GetScope returns value of Scope
@@ -8256,24 +8786,24 @@ func (o *InternetSubnet) SetID(v types.ID) {
 	o.ID = v
 }
 
-// GetStringID gets value to StringID
+// SetStringID .
+func (o *InternetSubnet) SetStringID(id string) {
+	accessor.SetStringID(o, id)
+}
+
+// GetStringID .
 func (o *InternetSubnet) GetStringID() string {
 	return accessor.GetStringID(o)
 }
 
-// SetStringID sets value to StringID
-func (o *InternetSubnet) SetStringID(v string) {
-	accessor.SetStringID(o, v)
+// SetInt64ID .
+func (o *InternetSubnet) SetInt64ID(id int64) {
+	accessor.SetInt64ID(o, id)
 }
 
-// GetInt64ID gets value to Int64ID
+// GetInt64ID .
 func (o *InternetSubnet) GetInt64ID() int64 {
 	return accessor.GetInt64ID(o)
-}
-
-// SetInt64ID sets value to Int64ID
-func (o *InternetSubnet) SetInt64ID(v int64) {
-	accessor.SetInt64ID(o, v)
 }
 
 // GetDefaultRoute returns value of DefaultRoute
@@ -8365,24 +8895,24 @@ func (o *IPv6NetInfo) SetID(v types.ID) {
 	o.ID = v
 }
 
-// GetStringID gets value to StringID
+// SetStringID .
+func (o *IPv6NetInfo) SetStringID(id string) {
+	accessor.SetStringID(o, id)
+}
+
+// GetStringID .
 func (o *IPv6NetInfo) GetStringID() string {
 	return accessor.GetStringID(o)
 }
 
-// SetStringID sets value to StringID
-func (o *IPv6NetInfo) SetStringID(v string) {
-	accessor.SetStringID(o, v)
+// SetInt64ID .
+func (o *IPv6NetInfo) SetInt64ID(id int64) {
+	accessor.SetInt64ID(o, id)
 }
 
-// GetInt64ID gets value to Int64ID
+// GetInt64ID .
 func (o *IPv6NetInfo) GetInt64ID() int64 {
 	return accessor.GetInt64ID(o)
-}
-
-// SetInt64ID sets value to Int64ID
-func (o *IPv6NetInfo) SetInt64ID(v int64) {
-	accessor.SetInt64ID(o, v)
 }
 
 // GetIPv6Prefix returns value of IPv6Prefix
@@ -8471,6 +9001,26 @@ func (o *InternetCreateRequest) GetTags() types.Tags {
 // SetTags sets value to Tags
 func (o *InternetCreateRequest) SetTags(v types.Tags) {
 	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *InternetCreateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *InternetCreateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *InternetCreateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *InternetCreateRequest) ClearTags() {
+	accessor.ClearTags(o)
 }
 
 // GetIconID returns value of IconID
@@ -8563,6 +9113,26 @@ func (o *InternetUpdateRequest) GetTags() types.Tags {
 // SetTags sets value to Tags
 func (o *InternetUpdateRequest) SetTags(v types.Tags) {
 	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *InternetUpdateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *InternetUpdateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *InternetUpdateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *InternetUpdateRequest) ClearTags() {
+	accessor.ClearTags(o)
 }
 
 // GetIconID returns value of IconID
@@ -8659,24 +9229,24 @@ func (o *InternetSubnetOperationResult) SetID(v types.ID) {
 	o.ID = v
 }
 
-// GetStringID gets value to StringID
+// SetStringID .
+func (o *InternetSubnetOperationResult) SetStringID(id string) {
+	accessor.SetStringID(o, id)
+}
+
+// GetStringID .
 func (o *InternetSubnetOperationResult) GetStringID() string {
 	return accessor.GetStringID(o)
 }
 
-// SetStringID sets value to StringID
-func (o *InternetSubnetOperationResult) SetStringID(v string) {
-	accessor.SetStringID(o, v)
+// SetInt64ID .
+func (o *InternetSubnetOperationResult) SetInt64ID(id int64) {
+	accessor.SetInt64ID(o, id)
 }
 
-// GetInt64ID gets value to Int64ID
+// GetInt64ID .
 func (o *InternetSubnetOperationResult) GetInt64ID() int64 {
 	return accessor.GetInt64ID(o)
-}
-
-// SetInt64ID sets value to Int64ID
-func (o *InternetSubnetOperationResult) SetInt64ID(v int64) {
-	accessor.SetInt64ID(o, v)
 }
 
 // GetDefaultRoute returns value of DefaultRoute
@@ -8952,24 +9522,24 @@ func (o *InternetPlan) SetID(v types.ID) {
 	o.ID = v
 }
 
-// GetStringID gets value to StringID
+// SetStringID .
+func (o *InternetPlan) SetStringID(id string) {
+	accessor.SetStringID(o, id)
+}
+
+// GetStringID .
 func (o *InternetPlan) GetStringID() string {
 	return accessor.GetStringID(o)
 }
 
-// SetStringID sets value to StringID
-func (o *InternetPlan) SetStringID(v string) {
-	accessor.SetStringID(o, v)
+// SetInt64ID .
+func (o *InternetPlan) SetInt64ID(id int64) {
+	accessor.SetInt64ID(o, id)
 }
 
-// GetInt64ID gets value to Int64ID
+// GetInt64ID .
 func (o *InternetPlan) GetInt64ID() int64 {
 	return accessor.GetInt64ID(o)
-}
-
-// SetInt64ID sets value to Int64ID
-func (o *InternetPlan) SetInt64ID(v int64) {
-	accessor.SetInt64ID(o, v)
 }
 
 // GetName returns value of Name
@@ -9134,24 +9704,24 @@ func (o *IPv6Net) SetID(v types.ID) {
 	o.ID = v
 }
 
-// GetStringID gets value to StringID
+// SetStringID .
+func (o *IPv6Net) SetStringID(id string) {
+	accessor.SetStringID(o, id)
+}
+
+// GetStringID .
 func (o *IPv6Net) GetStringID() string {
 	return accessor.GetStringID(o)
 }
 
-// SetStringID sets value to StringID
-func (o *IPv6Net) SetStringID(v string) {
-	accessor.SetStringID(o, v)
+// SetInt64ID .
+func (o *IPv6Net) SetInt64ID(id int64) {
+	accessor.SetInt64ID(o, id)
 }
 
-// GetInt64ID gets value to Int64ID
+// GetInt64ID .
 func (o *IPv6Net) GetInt64ID() int64 {
 	return accessor.GetInt64ID(o)
-}
-
-// SetInt64ID sets value to Int64ID
-func (o *IPv6Net) SetInt64ID(v int64) {
-	accessor.SetInt64ID(o, v)
 }
 
 // GetServiceID returns value of ServiceID
@@ -9456,24 +10026,24 @@ func (o *License) SetID(v types.ID) {
 	o.ID = v
 }
 
-// GetStringID gets value to StringID
+// SetStringID .
+func (o *License) SetStringID(id string) {
+	accessor.SetStringID(o, id)
+}
+
+// GetStringID .
 func (o *License) GetStringID() string {
 	return accessor.GetStringID(o)
 }
 
-// SetStringID sets value to StringID
-func (o *License) SetStringID(v string) {
-	accessor.SetStringID(o, v)
+// SetInt64ID .
+func (o *License) SetInt64ID(id int64) {
+	accessor.SetInt64ID(o, id)
 }
 
-// GetInt64ID gets value to Int64ID
+// GetInt64ID .
 func (o *License) GetInt64ID() int64 {
 	return accessor.GetInt64ID(o)
-}
-
-// SetInt64ID sets value to Int64ID
-func (o *License) SetInt64ID(v int64) {
-	accessor.SetInt64ID(o, v)
 }
 
 // GetName returns value of Name
@@ -9650,24 +10220,24 @@ func (o *LicenseInfo) SetID(v types.ID) {
 	o.ID = v
 }
 
-// GetStringID gets value to StringID
+// SetStringID .
+func (o *LicenseInfo) SetStringID(id string) {
+	accessor.SetStringID(o, id)
+}
+
+// GetStringID .
 func (o *LicenseInfo) GetStringID() string {
 	return accessor.GetStringID(o)
 }
 
-// SetStringID sets value to StringID
-func (o *LicenseInfo) SetStringID(v string) {
-	accessor.SetStringID(o, v)
+// SetInt64ID .
+func (o *LicenseInfo) SetInt64ID(id int64) {
+	accessor.SetInt64ID(o, id)
 }
 
-// GetInt64ID gets value to Int64ID
+// GetInt64ID .
 func (o *LicenseInfo) GetInt64ID() int64 {
 	return accessor.GetInt64ID(o)
-}
-
-// SetInt64ID sets value to Int64ID
-func (o *LicenseInfo) SetInt64ID(v int64) {
-	accessor.SetInt64ID(o, v)
 }
 
 // GetName returns value of Name
@@ -9809,24 +10379,24 @@ func (o *LoadBalancer) SetID(v types.ID) {
 	o.ID = v
 }
 
-// GetStringID gets value to StringID
+// SetStringID .
+func (o *LoadBalancer) SetStringID(id string) {
+	accessor.SetStringID(o, id)
+}
+
+// GetStringID .
 func (o *LoadBalancer) GetStringID() string {
 	return accessor.GetStringID(o)
 }
 
-// SetStringID sets value to StringID
-func (o *LoadBalancer) SetStringID(v string) {
-	accessor.SetStringID(o, v)
+// SetInt64ID .
+func (o *LoadBalancer) SetInt64ID(id int64) {
+	accessor.SetInt64ID(o, id)
 }
 
-// GetInt64ID gets value to Int64ID
+// GetInt64ID .
 func (o *LoadBalancer) GetInt64ID() int64 {
 	return accessor.GetInt64ID(o)
-}
-
-// SetInt64ID sets value to Int64ID
-func (o *LoadBalancer) SetInt64ID(v int64) {
-	accessor.SetInt64ID(o, v)
 }
 
 // GetName returns value of Name
@@ -9857,6 +10427,26 @@ func (o *LoadBalancer) GetTags() types.Tags {
 // SetTags sets value to Tags
 func (o *LoadBalancer) SetTags(v types.Tags) {
 	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *LoadBalancer) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *LoadBalancer) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *LoadBalancer) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *LoadBalancer) ClearTags() {
+	accessor.ClearTags(o)
 }
 
 // GetAvailability returns value of Availability
@@ -10390,6 +10980,26 @@ func (o *LoadBalancerCreateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *LoadBalancerCreateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *LoadBalancerCreateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *LoadBalancerCreateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *LoadBalancerCreateRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
 // GetIconID returns value of IconID
 func (o *LoadBalancerCreateRequest) GetIconID() types.ID {
 	return o.IconID
@@ -10473,6 +11083,26 @@ func (o *LoadBalancerUpdateRequest) GetTags() types.Tags {
 // SetTags sets value to Tags
 func (o *LoadBalancerUpdateRequest) SetTags(v types.Tags) {
 	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *LoadBalancerUpdateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *LoadBalancerUpdateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *LoadBalancerUpdateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *LoadBalancerUpdateRequest) ClearTags() {
+	accessor.ClearTags(o)
 }
 
 // GetIconID returns value of IconID
@@ -10730,24 +11360,24 @@ func (o *MobileGateway) SetID(v types.ID) {
 	o.ID = v
 }
 
-// GetStringID gets value to StringID
+// SetStringID .
+func (o *MobileGateway) SetStringID(id string) {
+	accessor.SetStringID(o, id)
+}
+
+// GetStringID .
 func (o *MobileGateway) GetStringID() string {
 	return accessor.GetStringID(o)
 }
 
-// SetStringID sets value to StringID
-func (o *MobileGateway) SetStringID(v string) {
-	accessor.SetStringID(o, v)
+// SetInt64ID .
+func (o *MobileGateway) SetInt64ID(id int64) {
+	accessor.SetInt64ID(o, id)
 }
 
-// GetInt64ID gets value to Int64ID
+// GetInt64ID .
 func (o *MobileGateway) GetInt64ID() int64 {
 	return accessor.GetInt64ID(o)
-}
-
-// SetInt64ID sets value to Int64ID
-func (o *MobileGateway) SetInt64ID(v int64) {
-	accessor.SetInt64ID(o, v)
 }
 
 // GetName returns value of Name
@@ -10778,6 +11408,26 @@ func (o *MobileGateway) GetTags() types.Tags {
 // SetTags sets value to Tags
 func (o *MobileGateway) SetTags(v types.Tags) {
 	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *MobileGateway) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *MobileGateway) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *MobileGateway) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *MobileGateway) ClearTags() {
+	accessor.ClearTags(o)
 }
 
 // GetAvailability returns value of Availability
@@ -10984,24 +11634,24 @@ func (o *MobileGatewayInterface) SetID(v types.ID) {
 	o.ID = v
 }
 
-// GetStringID gets value to StringID
+// SetStringID .
+func (o *MobileGatewayInterface) SetStringID(id string) {
+	accessor.SetStringID(o, id)
+}
+
+// GetStringID .
 func (o *MobileGatewayInterface) GetStringID() string {
 	return accessor.GetStringID(o)
 }
 
-// SetStringID sets value to StringID
-func (o *MobileGatewayInterface) SetStringID(v string) {
-	accessor.SetStringID(o, v)
+// SetInt64ID .
+func (o *MobileGatewayInterface) SetInt64ID(id int64) {
+	accessor.SetInt64ID(o, id)
 }
 
-// GetInt64ID gets value to Int64ID
+// GetInt64ID .
 func (o *MobileGatewayInterface) GetInt64ID() int64 {
 	return accessor.GetInt64ID(o)
-}
-
-// SetInt64ID sets value to Int64ID
-func (o *MobileGatewayInterface) SetInt64ID(v int64) {
-	accessor.SetInt64ID(o, v)
 }
 
 // GetMACAddress returns value of MACAddress
@@ -11422,6 +12072,26 @@ func (o *MobileGatewayCreateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *MobileGatewayCreateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *MobileGatewayCreateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *MobileGatewayCreateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *MobileGatewayCreateRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
 // GetIconID returns value of IconID
 func (o *MobileGatewayCreateRequest) GetIconID() types.ID {
 	return o.IconID
@@ -11564,6 +12234,26 @@ func (o *MobileGatewayUpdateRequest) GetTags() types.Tags {
 // SetTags sets value to Tags
 func (o *MobileGatewayUpdateRequest) SetTags(v types.Tags) {
 	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *MobileGatewayUpdateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *MobileGatewayUpdateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *MobileGatewayUpdateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *MobileGatewayUpdateRequest) ClearTags() {
+	accessor.ClearTags(o)
 }
 
 // GetIconID returns value of IconID
@@ -12350,24 +13040,24 @@ func (o *NFS) SetID(v types.ID) {
 	o.ID = v
 }
 
-// GetStringID gets value to StringID
+// SetStringID .
+func (o *NFS) SetStringID(id string) {
+	accessor.SetStringID(o, id)
+}
+
+// GetStringID .
 func (o *NFS) GetStringID() string {
 	return accessor.GetStringID(o)
 }
 
-// SetStringID sets value to StringID
-func (o *NFS) SetStringID(v string) {
-	accessor.SetStringID(o, v)
+// SetInt64ID .
+func (o *NFS) SetInt64ID(id int64) {
+	accessor.SetInt64ID(o, id)
 }
 
-// GetInt64ID gets value to Int64ID
+// GetInt64ID .
 func (o *NFS) GetInt64ID() int64 {
 	return accessor.GetInt64ID(o)
-}
-
-// SetInt64ID sets value to Int64ID
-func (o *NFS) SetInt64ID(v int64) {
-	accessor.SetInt64ID(o, v)
 }
 
 // GetName returns value of Name
@@ -12398,6 +13088,26 @@ func (o *NFS) GetTags() types.Tags {
 // SetTags sets value to Tags
 func (o *NFS) SetTags(v types.Tags) {
 	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *NFS) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *NFS) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *NFS) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *NFS) ClearTags() {
+	accessor.ClearTags(o)
 }
 
 // GetAvailability returns value of Availability
@@ -12689,6 +13399,26 @@ func (o *NFSCreateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *NFSCreateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *NFSCreateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *NFSCreateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *NFSCreateRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
 // GetIconID returns value of IconID
 func (o *NFSCreateRequest) GetIconID() types.ID {
 	return o.IconID
@@ -12759,6 +13489,26 @@ func (o *NFSUpdateRequest) GetTags() types.Tags {
 // SetTags sets value to Tags
 func (o *NFSUpdateRequest) SetTags(v types.Tags) {
 	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *NFSUpdateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *NFSUpdateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *NFSUpdateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *NFSUpdateRequest) ClearTags() {
+	accessor.ClearTags(o)
 }
 
 // GetIconID returns value of IconID
@@ -12913,24 +13663,24 @@ func (o *Note) SetID(v types.ID) {
 	o.ID = v
 }
 
-// GetStringID gets value to StringID
+// SetStringID .
+func (o *Note) SetStringID(id string) {
+	accessor.SetStringID(o, id)
+}
+
+// GetStringID .
 func (o *Note) GetStringID() string {
 	return accessor.GetStringID(o)
 }
 
-// SetStringID sets value to StringID
-func (o *Note) SetStringID(v string) {
-	accessor.SetStringID(o, v)
+// SetInt64ID .
+func (o *Note) SetInt64ID(id int64) {
+	accessor.SetInt64ID(o, id)
 }
 
-// GetInt64ID gets value to Int64ID
+// GetInt64ID .
 func (o *Note) GetInt64ID() int64 {
 	return accessor.GetInt64ID(o)
-}
-
-// SetInt64ID sets value to Int64ID
-func (o *Note) SetInt64ID(v int64) {
-	accessor.SetInt64ID(o, v)
 }
 
 // GetName returns value of Name
@@ -12961,6 +13711,26 @@ func (o *Note) GetTags() types.Tags {
 // SetTags sets value to Tags
 func (o *Note) SetTags(v types.Tags) {
 	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *Note) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *Note) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *Note) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *Note) ClearTags() {
+	accessor.ClearTags(o)
 }
 
 // GetAvailability returns value of Availability
@@ -13088,6 +13858,26 @@ func (o *NoteCreateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *NoteCreateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *NoteCreateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *NoteCreateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *NoteCreateRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
 // GetIconID returns value of IconID
 func (o *NoteCreateRequest) GetIconID() types.ID {
 	return o.IconID
@@ -13173,6 +13963,26 @@ func (o *NoteUpdateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *NoteUpdateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *NoteUpdateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *NoteUpdateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *NoteUpdateRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
 // GetIconID returns value of IconID
 func (o *NoteUpdateRequest) GetIconID() types.ID {
 	return o.IconID
@@ -13254,24 +14064,24 @@ func (o *PacketFilter) SetID(v types.ID) {
 	o.ID = v
 }
 
-// GetStringID gets value to StringID
+// SetStringID .
+func (o *PacketFilter) SetStringID(id string) {
+	accessor.SetStringID(o, id)
+}
+
+// GetStringID .
 func (o *PacketFilter) GetStringID() string {
 	return accessor.GetStringID(o)
 }
 
-// SetStringID sets value to StringID
-func (o *PacketFilter) SetStringID(v string) {
-	accessor.SetStringID(o, v)
+// SetInt64ID .
+func (o *PacketFilter) SetInt64ID(id int64) {
+	accessor.SetInt64ID(o, id)
 }
 
-// GetInt64ID gets value to Int64ID
+// GetInt64ID .
 func (o *PacketFilter) GetInt64ID() int64 {
 	return accessor.GetInt64ID(o)
-}
-
-// SetInt64ID sets value to Int64ID
-func (o *PacketFilter) SetInt64ID(v int64) {
-	accessor.SetInt64ID(o, v)
 }
 
 // GetName returns value of Name
@@ -13609,24 +14419,24 @@ func (o *PrivateHost) SetID(v types.ID) {
 	o.ID = v
 }
 
-// GetStringID gets value to StringID
+// SetStringID .
+func (o *PrivateHost) SetStringID(id string) {
+	accessor.SetStringID(o, id)
+}
+
+// GetStringID .
 func (o *PrivateHost) GetStringID() string {
 	return accessor.GetStringID(o)
 }
 
-// SetStringID sets value to StringID
-func (o *PrivateHost) SetStringID(v string) {
-	accessor.SetStringID(o, v)
+// SetInt64ID .
+func (o *PrivateHost) SetInt64ID(id int64) {
+	accessor.SetInt64ID(o, id)
 }
 
-// GetInt64ID gets value to Int64ID
+// GetInt64ID .
 func (o *PrivateHost) GetInt64ID() int64 {
 	return accessor.GetInt64ID(o)
-}
-
-// SetInt64ID sets value to Int64ID
-func (o *PrivateHost) SetInt64ID(v int64) {
-	accessor.SetInt64ID(o, v)
 }
 
 // GetName returns value of Name
@@ -13657,6 +14467,26 @@ func (o *PrivateHost) GetTags() types.Tags {
 // SetTags sets value to Tags
 func (o *PrivateHost) SetTags(v types.Tags) {
 	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *PrivateHost) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *PrivateHost) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *PrivateHost) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *PrivateHost) ClearTags() {
+	accessor.ClearTags(o)
 }
 
 // GetIconID returns value of IconID
@@ -13729,14 +14559,14 @@ func (o *PrivateHost) SetMemoryMB(v int) {
 	o.MemoryMB = v
 }
 
-// GetMemoryGB gets value to MemoryGB
+// GetMemoryGB .
 func (o *PrivateHost) GetMemoryGB() int {
 	return accessor.GetMemoryGB(o)
 }
 
-// SetMemoryGB sets value to MemoryGB
-func (o *PrivateHost) SetMemoryGB(v int) {
-	accessor.SetMemoryGB(o, v)
+// SetMemoryGB .
+func (o *PrivateHost) SetMemoryGB(memory int) {
+	accessor.SetMemoryGB(o, memory)
 }
 
 // GetAssignedCPU returns value of AssignedCPU
@@ -13834,6 +14664,26 @@ func (o *PrivateHostCreateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *PrivateHostCreateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *PrivateHostCreateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *PrivateHostCreateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *PrivateHostCreateRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
 // GetIconID returns value of IconID
 func (o *PrivateHostCreateRequest) GetIconID() types.ID {
 	return o.IconID
@@ -13916,6 +14766,26 @@ func (o *PrivateHostUpdateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *PrivateHostUpdateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *PrivateHostUpdateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *PrivateHostUpdateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *PrivateHostUpdateRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
 // GetIconID returns value of IconID
 func (o *PrivateHostUpdateRequest) GetIconID() types.ID {
 	return o.IconID
@@ -13974,24 +14844,24 @@ func (o *PrivateHostPlan) SetID(v types.ID) {
 	o.ID = v
 }
 
-// GetStringID gets value to StringID
+// SetStringID .
+func (o *PrivateHostPlan) SetStringID(id string) {
+	accessor.SetStringID(o, id)
+}
+
+// GetStringID .
 func (o *PrivateHostPlan) GetStringID() string {
 	return accessor.GetStringID(o)
 }
 
-// SetStringID sets value to StringID
-func (o *PrivateHostPlan) SetStringID(v string) {
-	accessor.SetStringID(o, v)
+// SetInt64ID .
+func (o *PrivateHostPlan) SetInt64ID(id int64) {
+	accessor.SetInt64ID(o, id)
 }
 
-// GetInt64ID gets value to Int64ID
+// GetInt64ID .
 func (o *PrivateHostPlan) GetInt64ID() int64 {
 	return accessor.GetInt64ID(o)
-}
-
-// SetInt64ID sets value to Int64ID
-func (o *PrivateHostPlan) SetInt64ID(v int64) {
-	accessor.SetInt64ID(o, v)
 }
 
 // GetName returns value of Name
@@ -14034,14 +14904,14 @@ func (o *PrivateHostPlan) SetMemoryMB(v int) {
 	o.MemoryMB = v
 }
 
-// GetMemoryGB gets value to MemoryGB
+// GetMemoryGB .
 func (o *PrivateHostPlan) GetMemoryGB() int {
 	return accessor.GetMemoryGB(o)
 }
 
-// SetMemoryGB sets value to MemoryGB
-func (o *PrivateHostPlan) SetMemoryGB(v int) {
-	accessor.SetMemoryGB(o, v)
+// SetMemoryGB .
+func (o *PrivateHostPlan) SetMemoryGB(memory int) {
+	accessor.SetMemoryGB(o, memory)
 }
 
 // GetAvailability returns value of Availability
@@ -14144,24 +15014,24 @@ func (o *ProxyLB) SetID(v types.ID) {
 	o.ID = v
 }
 
-// GetStringID gets value to StringID
+// SetStringID .
+func (o *ProxyLB) SetStringID(id string) {
+	accessor.SetStringID(o, id)
+}
+
+// GetStringID .
 func (o *ProxyLB) GetStringID() string {
 	return accessor.GetStringID(o)
 }
 
-// SetStringID sets value to StringID
-func (o *ProxyLB) SetStringID(v string) {
-	accessor.SetStringID(o, v)
+// SetInt64ID .
+func (o *ProxyLB) SetInt64ID(id int64) {
+	accessor.SetInt64ID(o, id)
 }
 
-// GetInt64ID gets value to Int64ID
+// GetInt64ID .
 func (o *ProxyLB) GetInt64ID() int64 {
 	return accessor.GetInt64ID(o)
-}
-
-// SetInt64ID sets value to Int64ID
-func (o *ProxyLB) SetInt64ID(v int64) {
-	accessor.SetInt64ID(o, v)
 }
 
 // GetName returns value of Name
@@ -14192,6 +15062,26 @@ func (o *ProxyLB) GetTags() types.Tags {
 // SetTags sets value to Tags
 func (o *ProxyLB) SetTags(v types.Tags) {
 	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *ProxyLB) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *ProxyLB) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *ProxyLB) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *ProxyLB) ClearTags() {
+	accessor.ClearTags(o)
 }
 
 // GetAvailability returns value of Availability
@@ -14863,6 +15753,26 @@ func (o *ProxyLBCreateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *ProxyLBCreateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *ProxyLBCreateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *ProxyLBCreateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *ProxyLBCreateRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
 // GetIconID returns value of IconID
 func (o *ProxyLBCreateRequest) GetIconID() types.ID {
 	return o.IconID
@@ -15011,6 +15921,26 @@ func (o *ProxyLBUpdateRequest) GetTags() types.Tags {
 // SetTags sets value to Tags
 func (o *ProxyLBUpdateRequest) SetTags(v types.Tags) {
 	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *ProxyLBUpdateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *ProxyLBUpdateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *ProxyLBUpdateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *ProxyLBUpdateRequest) ClearTags() {
+	accessor.ClearTags(o)
 }
 
 // GetIconID returns value of IconID
@@ -15503,24 +16433,24 @@ func (o *Server) SetID(v types.ID) {
 	o.ID = v
 }
 
-// GetStringID gets value to StringID
+// SetStringID .
+func (o *Server) SetStringID(id string) {
+	accessor.SetStringID(o, id)
+}
+
+// GetStringID .
 func (o *Server) GetStringID() string {
 	return accessor.GetStringID(o)
 }
 
-// SetStringID sets value to StringID
-func (o *Server) SetStringID(v string) {
-	accessor.SetStringID(o, v)
+// SetInt64ID .
+func (o *Server) SetInt64ID(id int64) {
+	accessor.SetInt64ID(o, id)
 }
 
-// GetInt64ID gets value to Int64ID
+// GetInt64ID .
 func (o *Server) GetInt64ID() int64 {
 	return accessor.GetInt64ID(o)
-}
-
-// SetInt64ID sets value to Int64ID
-func (o *Server) SetInt64ID(v int64) {
-	accessor.SetInt64ID(o, v)
 }
 
 // GetName returns value of Name
@@ -15551,6 +16481,26 @@ func (o *Server) GetTags() types.Tags {
 // SetTags sets value to Tags
 func (o *Server) SetTags(v types.Tags) {
 	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *Server) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *Server) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *Server) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *Server) ClearTags() {
+	accessor.ClearTags(o)
 }
 
 // GetAvailability returns value of Availability
@@ -15623,14 +16573,9 @@ func (o *Server) SetMemoryMB(v int) {
 	o.MemoryMB = v
 }
 
-// GetMemoryGB gets value to MemoryGB
+// GetMemoryGB .
 func (o *Server) GetMemoryGB() int {
 	return accessor.GetMemoryGB(o)
-}
-
-// SetMemoryGB sets value to MemoryGB
-func (o *Server) SetMemoryGB(v int) {
-	accessor.SetMemoryGB(o, v)
 }
 
 // GetServerPlanCommitment returns value of ServerPlanCommitment
@@ -15874,24 +16819,24 @@ func (o *ZoneInfo) SetID(v types.ID) {
 	o.ID = v
 }
 
-// GetStringID gets value to StringID
+// SetStringID .
+func (o *ZoneInfo) SetStringID(id string) {
+	accessor.SetStringID(o, id)
+}
+
+// GetStringID .
 func (o *ZoneInfo) GetStringID() string {
 	return accessor.GetStringID(o)
 }
 
-// SetStringID sets value to StringID
-func (o *ZoneInfo) SetStringID(v string) {
-	accessor.SetStringID(o, v)
+// SetInt64ID .
+func (o *ZoneInfo) SetInt64ID(id int64) {
+	accessor.SetInt64ID(o, id)
 }
 
-// GetInt64ID gets value to Int64ID
+// GetInt64ID .
 func (o *ZoneInfo) GetInt64ID() int64 {
 	return accessor.GetInt64ID(o)
-}
-
-// SetInt64ID sets value to Int64ID
-func (o *ZoneInfo) SetInt64ID(v int64) {
-	accessor.SetInt64ID(o, v)
 }
 
 // GetName returns value of Name
@@ -16122,14 +17067,9 @@ func (o *ServerCreateRequest) SetMemoryMB(v int) {
 	o.MemoryMB = v
 }
 
-// GetMemoryGB gets value to MemoryGB
+// GetMemoryGB .
 func (o *ServerCreateRequest) GetMemoryGB() int {
 	return accessor.GetMemoryGB(o)
-}
-
-// SetMemoryGB sets value to MemoryGB
-func (o *ServerCreateRequest) SetMemoryGB(v int) {
-	accessor.SetMemoryGB(o, v)
 }
 
 // GetServerPlanCommitment returns value of ServerPlanCommitment
@@ -16212,6 +17152,26 @@ func (o *ServerCreateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *ServerCreateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *ServerCreateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *ServerCreateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *ServerCreateRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
 // GetIconID returns value of IconID
 func (o *ServerCreateRequest) GetIconID() types.ID {
 	return o.IconID
@@ -16268,24 +17228,24 @@ func (o *ConnectedSwitch) SetID(v types.ID) {
 	o.ID = v
 }
 
-// GetStringID gets value to StringID
+// SetStringID .
+func (o *ConnectedSwitch) SetStringID(id string) {
+	accessor.SetStringID(o, id)
+}
+
+// GetStringID .
 func (o *ConnectedSwitch) GetStringID() string {
 	return accessor.GetStringID(o)
 }
 
-// SetStringID sets value to StringID
-func (o *ConnectedSwitch) SetStringID(v string) {
-	accessor.SetStringID(o, v)
+// SetInt64ID .
+func (o *ConnectedSwitch) SetInt64ID(id int64) {
+	accessor.SetInt64ID(o, id)
 }
 
-// GetInt64ID gets value to Int64ID
+// GetInt64ID .
 func (o *ConnectedSwitch) GetInt64ID() int64 {
 	return accessor.GetInt64ID(o)
-}
-
-// SetInt64ID sets value to Int64ID
-func (o *ConnectedSwitch) SetInt64ID(v int64) {
-	accessor.SetInt64ID(o, v)
 }
 
 // GetScope returns value of Scope
@@ -16360,6 +17320,26 @@ func (o *ServerUpdateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *ServerUpdateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *ServerUpdateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *ServerUpdateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *ServerUpdateRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
 // GetIconID returns value of IconID
 func (o *ServerUpdateRequest) GetIconID() types.ID {
 	return o.IconID
@@ -16422,14 +17402,14 @@ func (o *ServerChangePlanRequest) SetMemoryMB(v int) {
 	o.MemoryMB = v
 }
 
-// GetMemoryGB gets value to MemoryGB
+// GetMemoryGB .
 func (o *ServerChangePlanRequest) GetMemoryGB() int {
 	return accessor.GetMemoryGB(o)
 }
 
-// SetMemoryGB sets value to MemoryGB
-func (o *ServerChangePlanRequest) SetMemoryGB(v int) {
-	accessor.SetMemoryGB(o, v)
+// SetMemoryGB .
+func (o *ServerChangePlanRequest) SetMemoryGB(memory int) {
+	accessor.SetMemoryGB(o, memory)
 }
 
 // GetServerPlanGeneration returns value of ServerPlanGeneration
@@ -16485,24 +17465,24 @@ func (o *InsertCDROMRequest) SetID(v types.ID) {
 	o.ID = v
 }
 
-// GetStringID gets value to StringID
+// SetStringID .
+func (o *InsertCDROMRequest) SetStringID(id string) {
+	accessor.SetStringID(o, id)
+}
+
+// GetStringID .
 func (o *InsertCDROMRequest) GetStringID() string {
 	return accessor.GetStringID(o)
 }
 
-// SetStringID sets value to StringID
-func (o *InsertCDROMRequest) SetStringID(v string) {
-	accessor.SetStringID(o, v)
+// SetInt64ID .
+func (o *InsertCDROMRequest) SetInt64ID(id int64) {
+	accessor.SetInt64ID(o, id)
 }
 
-// GetInt64ID gets value to Int64ID
+// GetInt64ID .
 func (o *InsertCDROMRequest) GetInt64ID() int64 {
 	return accessor.GetInt64ID(o)
-}
-
-// SetInt64ID sets value to Int64ID
-func (o *InsertCDROMRequest) SetInt64ID(v int64) {
-	accessor.SetInt64ID(o, v)
 }
 
 /*************************************************
@@ -16538,24 +17518,24 @@ func (o *EjectCDROMRequest) SetID(v types.ID) {
 	o.ID = v
 }
 
-// GetStringID gets value to StringID
+// SetStringID .
+func (o *EjectCDROMRequest) SetStringID(id string) {
+	accessor.SetStringID(o, id)
+}
+
+// GetStringID .
 func (o *EjectCDROMRequest) GetStringID() string {
 	return accessor.GetStringID(o)
 }
 
-// SetStringID sets value to StringID
-func (o *EjectCDROMRequest) SetStringID(v string) {
-	accessor.SetStringID(o, v)
+// SetInt64ID .
+func (o *EjectCDROMRequest) SetInt64ID(id int64) {
+	accessor.SetInt64ID(o, id)
 }
 
-// GetInt64ID gets value to Int64ID
+// GetInt64ID .
 func (o *EjectCDROMRequest) GetInt64ID() int64 {
 	return accessor.GetInt64ID(o)
-}
-
-// SetInt64ID sets value to Int64ID
-func (o *EjectCDROMRequest) SetInt64ID(v int64) {
-	accessor.SetInt64ID(o, v)
 }
 
 /*************************************************
@@ -16609,24 +17589,24 @@ func (o *ServerPlan) SetID(v types.ID) {
 	o.ID = v
 }
 
-// GetStringID gets value to StringID
+// SetStringID .
+func (o *ServerPlan) SetStringID(id string) {
+	accessor.SetStringID(o, id)
+}
+
+// GetStringID .
 func (o *ServerPlan) GetStringID() string {
 	return accessor.GetStringID(o)
 }
 
-// SetStringID sets value to StringID
-func (o *ServerPlan) SetStringID(v string) {
-	accessor.SetStringID(o, v)
+// SetInt64ID .
+func (o *ServerPlan) SetInt64ID(id int64) {
+	accessor.SetInt64ID(o, id)
 }
 
-// GetInt64ID gets value to Int64ID
+// GetInt64ID .
 func (o *ServerPlan) GetInt64ID() int64 {
 	return accessor.GetInt64ID(o)
-}
-
-// SetInt64ID sets value to Int64ID
-func (o *ServerPlan) SetInt64ID(v int64) {
-	accessor.SetInt64ID(o, v)
 }
 
 // GetName returns value of Name
@@ -16659,14 +17639,14 @@ func (o *ServerPlan) SetMemoryMB(v int) {
 	o.MemoryMB = v
 }
 
-// GetMemoryGB gets value to MemoryGB
+// GetMemoryGB .
 func (o *ServerPlan) GetMemoryGB() int {
 	return accessor.GetMemoryGB(o)
 }
 
-// SetMemoryGB sets value to MemoryGB
-func (o *ServerPlan) SetMemoryGB(v int) {
-	accessor.SetMemoryGB(o, v)
+// SetMemoryGB .
+func (o *ServerPlan) SetMemoryGB(memory int) {
+	accessor.SetMemoryGB(o, memory)
 }
 
 // GetCommitment returns value of Commitment
@@ -16747,24 +17727,24 @@ func (o *ServiceClass) SetID(v types.ID) {
 	o.ID = v
 }
 
-// GetStringID gets value to StringID
+// SetStringID .
+func (o *ServiceClass) SetStringID(id string) {
+	accessor.SetStringID(o, id)
+}
+
+// GetStringID .
 func (o *ServiceClass) GetStringID() string {
 	return accessor.GetStringID(o)
 }
 
-// SetStringID sets value to StringID
-func (o *ServiceClass) SetStringID(v string) {
-	accessor.SetStringID(o, v)
+// SetInt64ID .
+func (o *ServiceClass) SetInt64ID(id int64) {
+	accessor.SetInt64ID(o, id)
 }
 
-// GetInt64ID gets value to Int64ID
+// GetInt64ID .
 func (o *ServiceClass) GetInt64ID() int64 {
 	return accessor.GetInt64ID(o)
-}
-
-// SetInt64ID sets value to Int64ID
-func (o *ServiceClass) SetInt64ID(v int64) {
-	accessor.SetInt64ID(o, v)
 }
 
 // GetServiceClassName returns value of ServiceClassName
@@ -16965,24 +17945,24 @@ func (o *SIM) SetID(v types.ID) {
 	o.ID = v
 }
 
-// GetStringID gets value to StringID
+// SetStringID .
+func (o *SIM) SetStringID(id string) {
+	accessor.SetStringID(o, id)
+}
+
+// GetStringID .
 func (o *SIM) GetStringID() string {
 	return accessor.GetStringID(o)
 }
 
-// SetStringID sets value to StringID
-func (o *SIM) SetStringID(v string) {
-	accessor.SetStringID(o, v)
+// SetInt64ID .
+func (o *SIM) SetInt64ID(id int64) {
+	accessor.SetInt64ID(o, id)
 }
 
-// GetInt64ID gets value to Int64ID
+// GetInt64ID .
 func (o *SIM) GetInt64ID() int64 {
 	return accessor.GetInt64ID(o)
-}
-
-// SetInt64ID sets value to Int64ID
-func (o *SIM) SetInt64ID(v int64) {
-	accessor.SetInt64ID(o, v)
 }
 
 // GetName returns value of Name
@@ -17013,6 +17993,26 @@ func (o *SIM) GetTags() types.Tags {
 // SetTags sets value to Tags
 func (o *SIM) SetTags(v types.Tags) {
 	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *SIM) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *SIM) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *SIM) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *SIM) ClearTags() {
+	accessor.ClearTags(o)
 }
 
 // GetAvailability returns value of Availability
@@ -17357,6 +18357,26 @@ func (o *SIMCreateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *SIMCreateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *SIMCreateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *SIMCreateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *SIMCreateRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
 // GetIconID returns value of IconID
 func (o *SIMCreateRequest) GetIconID() types.ID {
 	return o.IconID
@@ -17447,6 +18467,26 @@ func (o *SIMUpdateRequest) GetTags() types.Tags {
 // SetTags sets value to Tags
 func (o *SIMUpdateRequest) SetTags(v types.Tags) {
 	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *SIMUpdateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *SIMUpdateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *SIMUpdateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *SIMUpdateRequest) ClearTags() {
+	accessor.ClearTags(o)
 }
 
 // GetIconID returns value of IconID
@@ -17845,24 +18885,24 @@ func (o *SimpleMonitor) SetID(v types.ID) {
 	o.ID = v
 }
 
-// GetStringID gets value to StringID
+// SetStringID .
+func (o *SimpleMonitor) SetStringID(id string) {
+	accessor.SetStringID(o, id)
+}
+
+// GetStringID .
 func (o *SimpleMonitor) GetStringID() string {
 	return accessor.GetStringID(o)
 }
 
-// SetStringID sets value to StringID
-func (o *SimpleMonitor) SetStringID(v string) {
-	accessor.SetStringID(o, v)
+// SetInt64ID .
+func (o *SimpleMonitor) SetInt64ID(id int64) {
+	accessor.SetInt64ID(o, id)
 }
 
-// GetInt64ID gets value to Int64ID
+// GetInt64ID .
 func (o *SimpleMonitor) GetInt64ID() int64 {
 	return accessor.GetInt64ID(o)
-}
-
-// SetInt64ID sets value to Int64ID
-func (o *SimpleMonitor) SetInt64ID(v int64) {
-	accessor.SetInt64ID(o, v)
 }
 
 // GetName returns value of Name
@@ -17893,6 +18933,26 @@ func (o *SimpleMonitor) GetTags() types.Tags {
 // SetTags sets value to Tags
 func (o *SimpleMonitor) SetTags(v types.Tags) {
 	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *SimpleMonitor) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *SimpleMonitor) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *SimpleMonitor) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *SimpleMonitor) ClearTags() {
+	accessor.ClearTags(o)
 }
 
 // GetAvailability returns value of Availability
@@ -18392,6 +19452,26 @@ func (o *SimpleMonitorCreateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *SimpleMonitorCreateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *SimpleMonitorCreateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *SimpleMonitorCreateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *SimpleMonitorCreateRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
 // GetIconID returns value of IconID
 func (o *SimpleMonitorCreateRequest) GetIconID() types.ID {
 	return o.IconID
@@ -18540,6 +19620,26 @@ func (o *SimpleMonitorUpdateRequest) GetTags() types.Tags {
 // SetTags sets value to Tags
 func (o *SimpleMonitorUpdateRequest) SetTags(v types.Tags) {
 	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *SimpleMonitorUpdateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *SimpleMonitorUpdateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *SimpleMonitorUpdateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *SimpleMonitorUpdateRequest) ClearTags() {
+	accessor.ClearTags(o)
 }
 
 // GetIconID returns value of IconID
@@ -18738,24 +19838,24 @@ func (o *SSHKey) SetID(v types.ID) {
 	o.ID = v
 }
 
-// GetStringID gets value to StringID
+// SetStringID .
+func (o *SSHKey) SetStringID(id string) {
+	accessor.SetStringID(o, id)
+}
+
+// GetStringID .
 func (o *SSHKey) GetStringID() string {
 	return accessor.GetStringID(o)
 }
 
-// SetStringID sets value to StringID
-func (o *SSHKey) SetStringID(v string) {
-	accessor.SetStringID(o, v)
+// SetInt64ID .
+func (o *SSHKey) SetInt64ID(id int64) {
+	accessor.SetInt64ID(o, id)
 }
 
-// GetInt64ID gets value to Int64ID
+// GetInt64ID .
 func (o *SSHKey) GetInt64ID() int64 {
 	return accessor.GetInt64ID(o)
-}
-
-// SetInt64ID sets value to Int64ID
-func (o *SSHKey) SetInt64ID(v int64) {
-	accessor.SetInt64ID(o, v)
 }
 
 // GetName returns value of Name
@@ -18918,24 +20018,24 @@ func (o *SSHKeyGenerated) SetID(v types.ID) {
 	o.ID = v
 }
 
-// GetStringID gets value to StringID
+// SetStringID .
+func (o *SSHKeyGenerated) SetStringID(id string) {
+	accessor.SetStringID(o, id)
+}
+
+// GetStringID .
 func (o *SSHKeyGenerated) GetStringID() string {
 	return accessor.GetStringID(o)
 }
 
-// SetStringID sets value to StringID
-func (o *SSHKeyGenerated) SetStringID(v string) {
-	accessor.SetStringID(o, v)
+// SetInt64ID .
+func (o *SSHKeyGenerated) SetInt64ID(id int64) {
+	accessor.SetInt64ID(o, id)
 }
 
-// GetInt64ID gets value to Int64ID
+// GetInt64ID .
 func (o *SSHKeyGenerated) GetInt64ID() int64 {
 	return accessor.GetInt64ID(o)
-}
-
-// SetInt64ID sets value to Int64ID
-func (o *SSHKeyGenerated) SetInt64ID(v int64) {
-	accessor.SetInt64ID(o, v)
 }
 
 // GetName returns value of Name
@@ -19182,24 +20282,24 @@ func (o *Switch) SetID(v types.ID) {
 	o.ID = v
 }
 
-// GetStringID gets value to StringID
+// SetStringID .
+func (o *Switch) SetStringID(id string) {
+	accessor.SetStringID(o, id)
+}
+
+// GetStringID .
 func (o *Switch) GetStringID() string {
 	return accessor.GetStringID(o)
 }
 
-// SetStringID sets value to StringID
-func (o *Switch) SetStringID(v string) {
-	accessor.SetStringID(o, v)
+// SetInt64ID .
+func (o *Switch) SetInt64ID(id int64) {
+	accessor.SetInt64ID(o, id)
 }
 
-// GetInt64ID gets value to Int64ID
+// GetInt64ID .
 func (o *Switch) GetInt64ID() int64 {
 	return accessor.GetInt64ID(o)
-}
-
-// SetInt64ID sets value to Int64ID
-func (o *Switch) SetInt64ID(v int64) {
-	accessor.SetInt64ID(o, v)
 }
 
 // GetName returns value of Name
@@ -19230,6 +20330,26 @@ func (o *Switch) GetTags() types.Tags {
 // SetTags sets value to Tags
 func (o *Switch) SetTags(v types.Tags) {
 	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *Switch) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *Switch) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *Switch) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *Switch) ClearTags() {
+	accessor.ClearTags(o)
 }
 
 // GetIconID returns value of IconID
@@ -19374,24 +20494,24 @@ func (o *SwitchSubnet) SetID(v types.ID) {
 	o.ID = v
 }
 
-// GetStringID gets value to StringID
+// SetStringID .
+func (o *SwitchSubnet) SetStringID(id string) {
+	accessor.SetStringID(o, id)
+}
+
+// GetStringID .
 func (o *SwitchSubnet) GetStringID() string {
 	return accessor.GetStringID(o)
 }
 
-// SetStringID sets value to StringID
-func (o *SwitchSubnet) SetStringID(v string) {
-	accessor.SetStringID(o, v)
+// SetInt64ID .
+func (o *SwitchSubnet) SetInt64ID(id int64) {
+	accessor.SetInt64ID(o, id)
 }
 
-// GetInt64ID gets value to Int64ID
+// GetInt64ID .
 func (o *SwitchSubnet) GetInt64ID() int64 {
 	return accessor.GetInt64ID(o)
-}
-
-// SetInt64ID sets value to Int64ID
-func (o *SwitchSubnet) SetInt64ID(v int64) {
-	accessor.SetInt64ID(o, v)
 }
 
 // GetDefaultRoute returns value of DefaultRoute
@@ -19562,6 +20682,26 @@ func (o *SwitchCreateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *SwitchCreateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *SwitchCreateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *SwitchCreateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *SwitchCreateRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
 // GetIconID returns value of IconID
 func (o *SwitchCreateRequest) GetIconID() types.ID {
 	return o.IconID
@@ -19658,6 +20798,26 @@ func (o *SwitchUpdateRequest) GetTags() types.Tags {
 // SetTags sets value to Tags
 func (o *SwitchUpdateRequest) SetTags(v types.Tags) {
 	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *SwitchUpdateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *SwitchUpdateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *SwitchUpdateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *SwitchUpdateRequest) ClearTags() {
+	accessor.ClearTags(o)
 }
 
 // GetIconID returns value of IconID
@@ -19757,24 +20917,24 @@ func (o *VPCRouter) SetID(v types.ID) {
 	o.ID = v
 }
 
-// GetStringID gets value to StringID
+// SetStringID .
+func (o *VPCRouter) SetStringID(id string) {
+	accessor.SetStringID(o, id)
+}
+
+// GetStringID .
 func (o *VPCRouter) GetStringID() string {
 	return accessor.GetStringID(o)
 }
 
-// SetStringID sets value to StringID
-func (o *VPCRouter) SetStringID(v string) {
-	accessor.SetStringID(o, v)
+// SetInt64ID .
+func (o *VPCRouter) SetInt64ID(id int64) {
+	accessor.SetInt64ID(o, id)
 }
 
-// GetInt64ID gets value to Int64ID
+// GetInt64ID .
 func (o *VPCRouter) GetInt64ID() int64 {
 	return accessor.GetInt64ID(o)
-}
-
-// SetInt64ID sets value to Int64ID
-func (o *VPCRouter) SetInt64ID(v int64) {
-	accessor.SetInt64ID(o, v)
 }
 
 // GetName returns value of Name
@@ -19805,6 +20965,26 @@ func (o *VPCRouter) GetTags() types.Tags {
 // SetTags sets value to Tags
 func (o *VPCRouter) SetTags(v types.Tags) {
 	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *VPCRouter) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *VPCRouter) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *VPCRouter) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *VPCRouter) ClearTags() {
+	accessor.ClearTags(o)
 }
 
 // GetAvailability returns value of Availability
@@ -20970,24 +22150,24 @@ func (o *VPCRouterInterface) SetID(v types.ID) {
 	o.ID = v
 }
 
-// GetStringID gets value to StringID
+// SetStringID .
+func (o *VPCRouterInterface) SetStringID(id string) {
+	accessor.SetStringID(o, id)
+}
+
+// GetStringID .
 func (o *VPCRouterInterface) GetStringID() string {
 	return accessor.GetStringID(o)
 }
 
-// SetStringID sets value to StringID
-func (o *VPCRouterInterface) SetStringID(v string) {
-	accessor.SetStringID(o, v)
+// SetInt64ID .
+func (o *VPCRouterInterface) SetInt64ID(id int64) {
+	accessor.SetInt64ID(o, id)
 }
 
-// GetInt64ID gets value to Int64ID
+// GetInt64ID .
 func (o *VPCRouterInterface) GetInt64ID() int64 {
 	return accessor.GetInt64ID(o)
-}
-
-// SetInt64ID sets value to Int64ID
-func (o *VPCRouterInterface) SetInt64ID(v int64) {
-	accessor.SetInt64ID(o, v)
 }
 
 // GetMACAddress returns value of MACAddress
@@ -21236,6 +22416,26 @@ func (o *VPCRouterCreateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *VPCRouterCreateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *VPCRouterCreateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *VPCRouterCreateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *VPCRouterCreateRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
 // GetIconID returns value of IconID
 func (o *VPCRouterCreateRequest) GetIconID() types.ID {
 	return o.IconID
@@ -21322,24 +22522,24 @@ func (o *ApplianceConnectedSwitch) SetID(v types.ID) {
 	o.ID = v
 }
 
-// GetStringID gets value to StringID
+// SetStringID .
+func (o *ApplianceConnectedSwitch) SetStringID(id string) {
+	accessor.SetStringID(o, id)
+}
+
+// GetStringID .
 func (o *ApplianceConnectedSwitch) GetStringID() string {
 	return accessor.GetStringID(o)
 }
 
-// SetStringID sets value to StringID
-func (o *ApplianceConnectedSwitch) SetStringID(v string) {
-	accessor.SetStringID(o, v)
+// SetInt64ID .
+func (o *ApplianceConnectedSwitch) SetInt64ID(id int64) {
+	accessor.SetInt64ID(o, id)
 }
 
-// GetInt64ID gets value to Int64ID
+// GetInt64ID .
 func (o *ApplianceConnectedSwitch) GetInt64ID() int64 {
 	return accessor.GetInt64ID(o)
-}
-
-// SetInt64ID sets value to Int64ID
-func (o *ApplianceConnectedSwitch) SetInt64ID(v int64) {
-	accessor.SetInt64ID(o, v)
 }
 
 // GetScope returns value of Scope
@@ -21415,6 +22615,26 @@ func (o *VPCRouterUpdateRequest) GetTags() types.Tags {
 // SetTags sets value to Tags
 func (o *VPCRouterUpdateRequest) SetTags(v types.Tags) {
 	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *VPCRouterUpdateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *VPCRouterUpdateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *VPCRouterUpdateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *VPCRouterUpdateRequest) ClearTags() {
+	accessor.ClearTags(o)
 }
 
 // GetIconID returns value of IconID
@@ -21512,24 +22732,24 @@ func (o *WebAccel) SetID(v types.ID) {
 	o.ID = v
 }
 
-// GetStringID gets value to StringID
+// SetStringID .
+func (o *WebAccel) SetStringID(id string) {
+	accessor.SetStringID(o, id)
+}
+
+// GetStringID .
 func (o *WebAccel) GetStringID() string {
 	return accessor.GetStringID(o)
 }
 
-// SetStringID sets value to StringID
-func (o *WebAccel) SetStringID(v string) {
-	accessor.SetStringID(o, v)
+// SetInt64ID .
+func (o *WebAccel) SetInt64ID(id int64) {
+	accessor.SetInt64ID(o, id)
 }
 
-// GetInt64ID gets value to Int64ID
+// GetInt64ID .
 func (o *WebAccel) GetInt64ID() int64 {
 	return accessor.GetInt64ID(o)
-}
-
-// SetInt64ID sets value to Int64ID
-func (o *WebAccel) SetInt64ID(v int64) {
-	accessor.SetInt64ID(o, v)
 }
 
 // GetName returns value of Name
@@ -21787,24 +23007,24 @@ func (o *WebAccelCurrentCert) SetID(v types.ID) {
 	o.ID = v
 }
 
-// GetStringID gets value to StringID
+// SetStringID .
+func (o *WebAccelCurrentCert) SetStringID(id string) {
+	accessor.SetStringID(o, id)
+}
+
+// GetStringID .
 func (o *WebAccelCurrentCert) GetStringID() string {
 	return accessor.GetStringID(o)
 }
 
-// SetStringID sets value to StringID
-func (o *WebAccelCurrentCert) SetStringID(v string) {
-	accessor.SetStringID(o, v)
+// SetInt64ID .
+func (o *WebAccelCurrentCert) SetInt64ID(id int64) {
+	accessor.SetInt64ID(o, id)
 }
 
-// GetInt64ID gets value to Int64ID
+// GetInt64ID .
 func (o *WebAccelCurrentCert) GetInt64ID() int64 {
 	return accessor.GetInt64ID(o)
-}
-
-// SetInt64ID sets value to Int64ID
-func (o *WebAccelCurrentCert) SetInt64ID(v int64) {
-	accessor.SetInt64ID(o, v)
 }
 
 // GetSiteID returns value of SiteID
@@ -22205,24 +23425,24 @@ func (o *WebAccelOldCerts) SetID(v types.ID) {
 	o.ID = v
 }
 
-// GetStringID gets value to StringID
+// SetStringID .
+func (o *WebAccelOldCerts) SetStringID(id string) {
+	accessor.SetStringID(o, id)
+}
+
+// GetStringID .
 func (o *WebAccelOldCerts) GetStringID() string {
 	return accessor.GetStringID(o)
 }
 
-// SetStringID sets value to StringID
-func (o *WebAccelOldCerts) SetStringID(v string) {
-	accessor.SetStringID(o, v)
+// SetInt64ID .
+func (o *WebAccelOldCerts) SetInt64ID(id int64) {
+	accessor.SetInt64ID(o, id)
 }
 
-// GetInt64ID gets value to Int64ID
+// GetInt64ID .
 func (o *WebAccelOldCerts) GetInt64ID() int64 {
 	return accessor.GetInt64ID(o)
-}
-
-// SetInt64ID sets value to Int64ID
-func (o *WebAccelOldCerts) SetInt64ID(v int64) {
-	accessor.SetInt64ID(o, v)
 }
 
 // GetSiteID returns value of SiteID
@@ -22570,24 +23790,24 @@ func (o *Zone) SetID(v types.ID) {
 	o.ID = v
 }
 
-// GetStringID gets value to StringID
+// SetStringID .
+func (o *Zone) SetStringID(id string) {
+	accessor.SetStringID(o, id)
+}
+
+// GetStringID .
 func (o *Zone) GetStringID() string {
 	return accessor.GetStringID(o)
 }
 
-// SetStringID sets value to StringID
-func (o *Zone) SetStringID(v string) {
-	accessor.SetStringID(o, v)
+// SetInt64ID .
+func (o *Zone) SetInt64ID(id int64) {
+	accessor.SetInt64ID(o, id)
 }
 
-// GetInt64ID gets value to Int64ID
+// GetInt64ID .
 func (o *Zone) GetInt64ID() int64 {
 	return accessor.GetInt64ID(o)
-}
-
-// SetInt64ID sets value to Int64ID
-func (o *Zone) SetInt64ID(v int64) {
-	accessor.SetInt64ID(o, v)
 }
 
 // GetName returns value of Name
