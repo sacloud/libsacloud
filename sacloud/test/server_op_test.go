@@ -108,7 +108,7 @@ var (
 		MemoryMB:        createServerParam.MemoryMB,
 	}
 	updateServerParam = &sacloud.ServerUpdateRequest{
-		Name:        "libsacloud-nfs-upd",
+		Name:        "libsacloud-server-upd",
 		Tags:        []string{"tag1-upd", "tag2-upd"},
 		Description: "desc-upd",
 		IconID:      testIconID,
@@ -124,7 +124,7 @@ var (
 		IconID:          testIconID,
 	}
 	updateServerToMinParam = &sacloud.ServerUpdateRequest{
-		Name: "libsacloud-nfs-to-min",
+		Name: "libsacloud-server-to-min",
 	}
 	updateServerToMinExpected = &sacloud.Server{
 		Name:            updateServerToMinParam.Name,
