@@ -95,14 +95,27 @@ func TestFilter(t *testing.T) {
 					condition: time.Date(2011, 9, 1, 0, 0, 0, 0, loc),
 				},
 			},
-			expect: `{"CreatedAt\u003c":"2011-09-01T00:00:00+09:00","Name":"test%20example","Zone.Name":["is1a","is1b"]}`,
+			expect: `{"Name":"test%20example","Zone.Name":["is1a","is1b"],"CreatedAt\u003c":"2011-09-01T00:00:00+09:00"}`,
+		},
+		{
+			conditions: []*inputKeyValue{
+				{
+					key:       Key("Tags.Name"),
+					condition: "value1",
+				},
+				{
+					key:       Key("Tags.Name"),
+					condition: "value2",
+				},
+			},
+			expect: `{"Tags.Name":["value1"],"Tags.Name":["value2"]}`,
 		},
 	}
 
 	for _, tc := range cases {
 		filter := Filter{}
 		for _, kv := range tc.conditions {
-			filter[kv.key] = kv.condition
+			filter.AddNew(kv.key, kv.condition)
 		}
 
 		data, err := json.Marshal(filter)
