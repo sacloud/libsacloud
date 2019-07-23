@@ -66,11 +66,13 @@ func TestMobileGatewayOpCRUD(t *testing.T) {
 					// prepare switch
 					swOp := sacloud.NewSwitchOp(caller)
 					sw, err := swOp.Create(ctx, testZone, &sacloud.SwitchCreateRequest{
-						Name: "libsacloud-test-mobile-gateway",
+						Name: "libsacloud-switch-for-mobile-gateway",
 					})
 					if err != nil {
 						return nil, err
 					}
+
+					ctx.Values["mobile-gateway/switch"] = sw.ID
 
 					// connect
 					mgwOp := sacloud.NewMobileGatewayOp(caller)
@@ -337,6 +339,13 @@ func TestMobileGatewayOpCRUD(t *testing.T) {
 					if err := mgwOp.DisconnectFromSwitch(ctx, testZone, ctx.ID); err != nil {
 						return nil, err
 					}
+
+					swID := ctx.Values["mobile-gateway/switch"].(types.ID)
+					swOp := sacloud.NewSwitchOp(caller)
+					if err := swOp.Delete(ctx, testZone, swID); err != nil {
+						return nil, err
+					}
+
 					return mgwOp.Read(ctx, testZone, ctx.ID)
 				},
 				CheckFunc: func(t TestT, ctx *CRUDTestContext, i interface{}) error {
