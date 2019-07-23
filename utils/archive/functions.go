@@ -71,24 +71,43 @@ func isSophosUTM(archive *sacloud.Archive) bool {
 
 // CanEditDisk ディスクの修正が可能か判定
 func CanEditDisk(ctx context.Context, zone string, reader *SourceInfoReader, id types.ID) (bool, error) {
+	archive, err := getPublicArchiveFromAncestors(ctx, zone, reader, id)
+	if err != nil {
+		return false, err
+	}
+	return archive != nil, nil
+}
 
+// GetPublicArchiveIDFromAncestors ソースアーカイブ/ディスクを辿りパブリックアーカイブのIDを検索
+func GetPublicArchiveIDFromAncestors(ctx context.Context, zone string, reader *SourceInfoReader, id types.ID) (types.ID, error) {
+	archive, err := getPublicArchiveFromAncestors(ctx, zone, reader, id)
+	if err != nil {
+		return 0, err
+	}
+	if archive == nil {
+		return 0, nil
+	}
+	return archive.ID, nil
+}
+
+func getPublicArchiveFromAncestors(ctx context.Context, zone string, reader *SourceInfoReader, id types.ID) (*sacloud.Archive, error) {
 	disk, err := reader.DiskReader.Read(ctx, zone, id)
 	if err != nil {
 		if !sacloud.IsNotFoundError(err) {
-			return false, err
+			return nil, err
 		}
 	}
 	if disk != nil {
 		// 無限ループ予防
 		if disk.ID == disk.SourceDiskID || disk.ID == disk.SourceArchiveID {
-			return false, errors.New("invalid state: disk has invalid ID or SourceDiskID or SourceArchiveID")
+			return nil, errors.New("invalid state: disk has invalid ID or SourceDiskID or SourceArchiveID")
 		}
 
 		if disk.SourceDiskID.IsEmpty() && disk.SourceArchiveID.IsEmpty() {
-			return false, nil
+			return nil, nil
 		}
 		if !disk.SourceDiskID.IsEmpty() {
-			return CanEditDisk(ctx, zone, reader, disk.SourceDiskID)
+			return getPublicArchiveFromAncestors(ctx, zone, reader, disk.SourceDiskID)
 		}
 		if !disk.SourceArchiveID.IsEmpty() {
 			id = disk.SourceArchiveID
@@ -97,47 +116,46 @@ func CanEditDisk(ctx context.Context, zone string, reader *SourceInfoReader, id 
 
 	archive, err := reader.ArchiveReader.Read(ctx, zone, id)
 	if err != nil {
-		return false, err
+		return nil, err
 	}
 
 	// 無限ループ予防
 	if archive.ID == archive.SourceDiskID || archive.ID == archive.SourceArchiveID {
-		return false, errors.New("invalid state: archive has invalid ID or SourceDiskID or SourceArchiveID")
+		return nil, errors.New("invalid state: archive has invalid ID or SourceDiskID or SourceArchiveID")
 	}
 
 	// BundleInfoがあれば編集不可
 	if archive.BundleInfo != nil && archive.BundleInfo.HostClass == bundleInfoWindowsHostClass {
 		// Windows
-		return false, nil
+		return nil, nil
 	}
 
 	// SophosUTMであれば編集不可
 	if archive.HasTag("pkg-sophosutm") || isSophosUTM(archive) {
-		return false, nil
+		return nil, nil
 	}
 	// OPNsenseであれば編集不可
 	if archive.HasTag("distro-opnsense") {
-		return false, nil
+		return nil, nil
 	}
 	// Netwiser VEであれば編集不可
 	if archive.HasTag("pkg-netwiserve") {
-		return false, nil
+		return nil, nil
 	}
 
 	for _, t := range allowDiskEditTags {
 		if archive.HasTag(t) {
 			// 対応OSインストール済みディスク
-			return true, nil
+			return archive, nil
 		}
 	}
 
 	// ここまできても判定できないならソースに投げる
 	if !archive.SourceDiskID.IsEmpty() && archive.SourceDiskAvailability != types.Availabilities.Discontinued {
-		return CanEditDisk(ctx, zone, reader, archive.SourceDiskID)
+		return getPublicArchiveFromAncestors(ctx, zone, reader, archive.SourceDiskID)
 	}
 	if !archive.SourceArchiveID.IsEmpty() && archive.SourceArchiveAvailability != types.Availabilities.Discontinued {
-		return CanEditDisk(ctx, zone, reader, archive.SourceArchiveID)
+		return getPublicArchiveFromAncestors(ctx, zone, reader, archive.SourceArchiveID)
 	}
-	return false, nil
-
+	return nil, nil
 }
