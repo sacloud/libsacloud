@@ -13,7 +13,7 @@ func lookupDNSByName(caller sacloud.APICaller, zoneName string) (*sacloud.DNS, e
 	searched, err := dnsOp.Find(context.Background(), &sacloud.FindCondition{
 		Count: 1,
 		Filter: search.Filter{
-			search.Criterion{Key: search.Key("Name"), Value: zoneName},
+			search.Key("Name"): zoneName,
 		},
 	})
 	if err != nil {
