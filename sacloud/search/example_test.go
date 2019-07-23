@@ -28,7 +28,7 @@ func Example() {
 	// 名称に"Example"を含むサーバを検索
 	condition := &sacloud.FindCondition{
 		Filter: search.Filter{
-			search.Key("Name"): search.PartialMatch("Example"),
+			search.Criterion{Key: search.Key("Name"), Value: search.PartialMatch("Example")},
 		},
 	}
 	searched, err := serverOp.Find(context.Background(), zone, condition)
@@ -44,9 +44,12 @@ func Example() {
 	//   - 作成日時が1週間以上前
 	condition = &sacloud.FindCondition{
 		Filter: search.Filter{
-			search.Key("Name"):                               search.AndEqual("test", "example"),
-			search.Key("Zone.Name"):                          search.OrEqual("is1a", "is1b"),
-			search.KeyWithOp("CreatedAt", search.OpLessThan): time.Now().Add(-7 * 24 * time.Hour),
+			search.Criterion{Key: search.Key("Name"), Value: search.AndEqual("test", "example")},
+			search.Criterion{Key: search.Key("Zone.Name"), Value: search.OrEqual("is1a", "is1b")},
+			search.Criterion{
+				Key:   search.KeyWithOp("CreatedAt", search.OpLessThan),
+				Value: time.Now().Add(-7 * 24 * time.Hour),
+			},
 		},
 	}
 	searched, err = serverOp.Find(context.Background(), zone, condition)

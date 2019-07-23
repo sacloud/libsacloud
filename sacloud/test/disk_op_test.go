@@ -148,11 +148,11 @@ func TestDiskOp_Config(t *testing.T) {
 		Parallel:           true,
 		SetupAPICallerFunc: singletonAPICaller,
 		Setup: func(ctx *CRUDTestContext, caller sacloud.APICaller) error {
-			archiveName := "CentOS"
 			client := sacloud.NewArchiveOp(singletonAPICaller())
 			searched, err := client.Find(ctx, testZone, &sacloud.FindCondition{
 				Filter: search.Filter{
-					search.Key("Name"): search.PartialMatch(archiveName),
+					search.Criterion{Key: search.Key("Tags.Name"), Value: "current-stable"},
+					search.Criterion{Key: search.Key("Tags.Name"), Value: "distro-centos"},
 				},
 			})
 			if !assert.NoError(t, err) {
