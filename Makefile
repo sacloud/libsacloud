@@ -3,7 +3,7 @@ VETARGS?=-all
 GOFMT_FILES?=$$(find . -name '*.go' | grep -v vendor)
 export GO111MODULE=on
 
-default: clean gen fmt goimports golint vet test
+default: gen fmt goimports golint vet test
 
 test:
 	TESTACC= go test ./... $(TESTARGS) -v -timeout=120m -parallel=8 ;
@@ -20,7 +20,7 @@ clean:
 	rm -f sacloud/trace/zz_*.go
 
 .PHONY: gen
-gen: clean
+gen:
 	go generate ./...; gofmt -s -l -w $(GOFMT_FILES); goimports -l -w $(GOFMT_FILES)
 
 vet: golint
