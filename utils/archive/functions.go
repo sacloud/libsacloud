@@ -79,7 +79,7 @@ func CanEditDisk(ctx context.Context, zone string, reader *SourceInfoReader, id 
 		}
 	}
 	if disk != nil {
-		// 無限ルール予防
+		// 無限ループ予防
 		if disk.ID == disk.SourceDiskID || disk.ID == disk.SourceArchiveID {
 			return false, errors.New("invalid state: disk has invalid ID or SourceDiskID or SourceArchiveID")
 		}
@@ -100,7 +100,7 @@ func CanEditDisk(ctx context.Context, zone string, reader *SourceInfoReader, id 
 		return false, err
 	}
 
-	// 無限ルール予防
+	// 無限ループ予防
 	if archive.ID == archive.SourceDiskID || archive.ID == archive.SourceArchiveID {
 		return false, errors.New("invalid state: archive has invalid ID or SourceDiskID or SourceArchiveID")
 	}
