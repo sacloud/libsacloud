@@ -38,9 +38,8 @@ var findParameter = &dsl.Model{
 	},
 	Methods: []*dsl.MethodDesc{
 		{
-			Name:             "ClearFilter",
-			Description:      "フィルタのクリア",
-			AccessorTypeName: "Filter",
+			Name:        "ClearFilter",
+			Description: "フィルタのクリア",
 		},
 	},
 }

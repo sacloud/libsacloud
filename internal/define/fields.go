@@ -32,14 +32,32 @@ func (f *fieldsDef) ID() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "ID",
 		Type: meta.TypeID,
-		ExtendAccessors: []*dsl.ExtendAccessor{
+		Methods: []*dsl.MethodDesc{
 			{
-				Name: "StringID",
-				Type: meta.TypeString,
+				Name: "SetStringID",
+				Arguments: dsl.Arguments{
+					{
+						Name: "id",
+						Type: meta.TypeString,
+					},
+				},
 			},
 			{
-				Name: "Int64ID",
-				Type: meta.TypeInt64,
+				Name:        "GetStringID",
+				ResultTypes: []meta.Type{meta.TypeString},
+			},
+			{
+				Name: "SetInt64ID",
+				Arguments: dsl.Arguments{
+					{
+						Name: "id",
+						Type: meta.TypeInt64,
+					},
+				},
+			},
+			{
+				Name:        "GetInt64ID",
+				ResultTypes: []meta.Type{meta.TypeInt64},
 			},
 		},
 	}
@@ -135,10 +153,19 @@ func (f *fieldsDef) MemoryMB() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "MemoryMB",
 		Type: meta.TypeInt,
-		ExtendAccessors: []*dsl.ExtendAccessor{
+		Methods: []*dsl.MethodDesc{
 			{
-				Name: "MemoryGB",
-				Type: meta.TypeInt,
+				Name:        "GetMemoryGB",
+				ResultTypes: []meta.Type{meta.TypeInt},
+			},
+			{
+				Name: "SetMemoryGB",
+				Arguments: dsl.Arguments{
+					{
+						Name: "memory",
+						Type: meta.TypeInt,
+					},
+				},
 			},
 		},
 	}
@@ -198,10 +225,10 @@ func (f *fieldsDef) ServerPlanMemoryMB() *dsl.FieldDesc {
 			MapConv: "ServerPlan.MemoryMB",
 		},
 		Type: meta.TypeInt,
-		ExtendAccessors: []*dsl.ExtendAccessor{
+		Methods: []*dsl.MethodDesc{
 			{
-				Name: "MemoryGB",
-				Type: meta.TypeInt,
+				Name:        "GetMemoryGB",
+				ResultTypes: []meta.Type{meta.TypeInt},
 			},
 		},
 	}
@@ -1445,8 +1472,20 @@ func (f *fieldsDef) SizeMB() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "SizeMB",
 		Type: meta.TypeInt,
-		ExtendAccessors: []*dsl.ExtendAccessor{
-			{Name: "SizeGB"},
+		Methods: []*dsl.MethodDesc{
+			{
+				Name:        "GetSizeGB",
+				ResultTypes: []meta.Type{meta.TypeInt},
+			},
+			{
+				Name: "SetSizeGB",
+				Arguments: dsl.Arguments{
+					{
+						Name: "size",
+						Type: meta.TypeInt,
+					},
+				},
+			},
 		},
 	}
 }
@@ -1455,8 +1494,11 @@ func (f *fieldsDef) MigratedMB() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "MigratedMB",
 		Type: meta.TypeInt,
-		ExtendAccessors: []*dsl.ExtendAccessor{
-			{Name: "MigratedGB"},
+		Methods: []*dsl.MethodDesc{
+			{
+				Name:        "GetMigratedGB",
+				ResultTypes: []meta.Type{meta.TypeInt},
+			},
 		},
 	}
 }

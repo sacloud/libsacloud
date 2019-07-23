@@ -74,7 +74,7 @@ func (o *{{.Name}}) setDefaults() interface{} {
 
 {{- $struct := .Name -}}
 {{- range .Methods }}
-// {{.Name}} {{.Description}} 
+// {{.Name}} {{if .Description}}{{.Description}}{{else}}.{{end}}
 func (o *{{ $struct }}) {{ .Name }}({{ range .Arguments }}{{ .ArgName }} {{ .TypeName }},{{ end }}) ({{ range .ResultTypes }}{{.GoTypeSourceCode}},{{end}}) {
 	{{ if .ResultTypes }}return {{ end }}accessor.{{if eq .AccessorFuncName ""}}{{.Name}}{{else}}{{.AccessorFuncName}}{{end}}(o,{{ range .Arguments }}{{ .ArgName }},{{ end }})
 }
@@ -91,21 +91,12 @@ func (o *{{ $struct }}) Set{{$name}}(v {{$typeName}}) {
 	o.{{$name}} = v
 }
 
-{{ range .ExtendAccessors }}
-{{ if not .AvoidGetter }}
-// Get{{.Name}} gets value to {{.Name}} 
-func (o *{{ $struct }}) Get{{.Name}}() {{ if .HasType }}{{ .TypeName }}{{ else }}{{ $typeName }}{{ end }} {
-	return accessor.Get{{.Name}}(o) 
+{{- range .Methods }}
+// {{.Name}} {{if .Description}}{{.Description}}{{else}}.{{end}}
+func (o *{{ $struct }}) {{ .Name }}({{ range .Arguments }}{{ .ArgName }} {{ .TypeName }},{{ end }}) ({{ range .ResultTypes }}{{.GoTypeSourceCode}},{{end}}) {
+	{{ if .ResultTypes }}return {{ end }}accessor.{{if eq .AccessorFuncName ""}}{{.Name}}{{else}}{{.AccessorFuncName}}{{end}}(o,{{ range .Arguments }}{{ .ArgName }},{{ end }})
 }
-{{- end }} {{/* end of if not .AvoidGetter */}}
-
-{{ if not .AvoidSetter }}
-// Set{{.Name}} sets value to {{.Name}} 
-func (o *{{ $struct }}) Set{{.Name}}(v {{ if .HasType }}{{ .TypeName }}{{ else }}{{ $typeName }}{{ end }}) {
-	accessor.Set{{.Name}}(o, v) 
-}
-{{- end }} {{/* end of if not .AvoidSetter */}}
-{{- end }} {{/* end of range .ExtendAccessors */}}
+{{- end }}
 {{- end }} {{/* end of range .Fields */}}
 
 {{- end }} {{/* end of range .Models */}}
