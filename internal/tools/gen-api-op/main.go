@@ -71,6 +71,7 @@ func New{{ $typeName}}Op(caller APICaller) {{ $typeName}}API {
 {{ range .Operations }}{{$returnErrStatement := .ReturnErrorStatement}}{{ $operationName := .MethodName }}
 // {{ .MethodName }} is API call
 func (o *{{ $typeName }}Op) {{ .MethodName }}(ctx context.Context{{if not $resource.IsGlobal}}, zone string{{end}}{{ range .Arguments }}, {{ .ArgName }} {{ .TypeName }}{{ end }}) {{.ResultsStatement}} {
+	// build request URL
 	url, err := buildURL("{{.GetPathFormat}}", map[string]interface{}{
 		"rootURL": SakuraCloudAPIRoot,
 		"pathSuffix": o.PathSuffix,
@@ -88,35 +89,17 @@ func (o *{{ $typeName }}Op) {{ .MethodName }}(ctx context.Context{{if not $resou
 		return {{ $returnErrStatement }}
 	}
 
+	// build request body
 	var body interface{}
-{{ if .HasRequestEnvelope }}
-	{{- range $i, $v := .Arguments }}
-	if {{.ArgName}} == {{.ZeroValueOnSource}} {
-		{{.ArgName}} = {{.ZeroInitializer}}	
-	}
-	var arg{{$i}} interface{} = {{.ArgName}}
-	if v , ok := arg{{$i}}.(argumentDefaulter); ok {
-		arg{{$i}} = v.setDefaults()
-	}
-
-	{{- end }}
-	args := &struct {
-		{{- range $i, $v := .Arguments }}
-		Arg{{ $i }} interface{} {{.MapConvTagSrc}}
-		{{- end }}
-	}{
-		{{- range $i, $v := .Arguments }}
-		Arg{{ $i }}: arg{{ $i }},
-		{{- end }}
-	}
-
-	v := &{{.RequestEnvelopeStructName}}{}
-	if err := mapconv.ConvertTo(args, v); err != nil {
+{{ if .HasRequestEnvelope -}}
+	v, err := o.transform{{.MethodName}}Args({{ range .Arguments }}{{ .ArgName }},{{ end }})
+	if err != nil {
 		return {{ $returnErrStatement }}
 	}
 	body = v
 {{ end }}
 
+	// do request
 	{{ if .HasResponseEnvelope -}}
 	data, err := o.Client.Do(ctx, "{{.Method}}", url, body)
 	{{ else -}}
@@ -126,14 +109,10 @@ func (o *{{ $typeName }}Op) {{ .MethodName }}(ctx context.Context{{if not $resou
 		return {{ $returnErrStatement }}
 	}
 
+	// build results
 	{{ if .HasResponseEnvelope -}}
-	nakedResponse := &{{.ResponseEnvelopeStructName}}{}
-	if err := json.Unmarshal(data, nakedResponse); err != nil {
-		return {{ $returnErrStatement }}
-	}
-	
-	results := &{{.ResultTypeName}}{}
-	if err :=  mapconv.ConvertFrom(nakedResponse, results); err != nil {
+	results, err := o.transform{{.MethodName}}Results(data)
+	if err != nil {
 		return {{ $returnErrStatement }}
 	}	
 	return {{ .ReturnStatement }}
