@@ -32,7 +32,11 @@ func (f Filter) MarshalJSON() ([]byte, error) {
 				exp = OrEqual(expression)
 			}
 		default:
-			exp = convertToValidFilterCondition(exp)
+			v, err := convertToValidFilterCondition(exp)
+			if err != nil {
+				return nil, err
+			}
+			exp = v
 		}
 
 		result[key.String()] = exp
@@ -41,14 +45,22 @@ func (f Filter) MarshalJSON() ([]byte, error) {
 	return json.Marshal(result)
 }
 
-func convertToValidFilterCondition(v interface{}) string {
+func convertToValidFilterCondition(v interface{}) (string, error) {
 	switch v := v.(type) {
 	case time.Time:
-		return v.Format(time.RFC3339)
+		return v.Format(time.RFC3339), nil
 	case string:
-		return escapeFilterString(v)
+		return escapeFilterString(v), nil
+	case int, int8, int16, int32, int64,
+		uint, uint8, uint16, uint32, uint64,
+		float32, float64:
+		return fmt.Sprintf("%v", v), nil
 	}
-	return fmt.Sprintf("%v", v)
+	data, err := json.Marshal(v)
+	if err != nil {
+		return "", err
+	}
+	return string(data), nil
 }
 
 func escapeFilterString(s string) string {

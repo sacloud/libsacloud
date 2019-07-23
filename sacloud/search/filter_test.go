@@ -65,6 +65,16 @@ func TestFilter(t *testing.T) {
 			},
 			expect: `{"field1":["value1"],"field2":["value2"]}`,
 		},
+		// array values(AND)
+		{
+			conditions: []*inputKeyValue{
+				{
+					key:       Key("field1"),
+					condition: []string{"value1", "value2"},
+				},
+			},
+			expect: `{"field1":[["value1","value2"]]}`,
+		},
 		// multiple keys with same key, different operator
 		{
 			conditions: []*inputKeyValue{
