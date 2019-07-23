@@ -647,6 +647,43 @@ func (f *fieldsDef) Tags() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "Tags",
 		Type: meta.Static(types.Tags{}),
+		Methods: []*dsl.MethodDesc{
+			{
+				Name:        "HasTag",
+				Description: "指定のタグが存在する場合trueを返す",
+				Arguments: dsl.Arguments{
+					{
+						Name: "tag",
+						Type: meta.TypeString,
+					},
+				},
+				ResultTypes: []meta.Type{meta.TypeFlag},
+			},
+			{
+				Name:        "AppendTag",
+				Description: "指定のタグを追加",
+				Arguments: dsl.Arguments{
+					{
+						Name: "tag",
+						Type: meta.TypeString,
+					},
+				},
+			},
+			{
+				Name:        "RemoveTag",
+				Description: "指定のタグを削除",
+				Arguments: dsl.Arguments{
+					{
+						Name: "tag",
+						Type: meta.TypeString,
+					},
+				},
+			},
+			{
+				Name:        "ClearTags",
+				Description: "タグを全クリア",
+			},
+		},
 	}
 }
 

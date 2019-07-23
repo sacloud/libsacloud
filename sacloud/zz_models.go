@@ -160,6 +160,26 @@ func (o *Archive) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *Archive) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *Archive) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *Archive) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *Archive) ClearTags() {
+	accessor.ClearTags(o)
+}
+
 // GetDisplayOrder returns value of DisplayOrder
 func (o *Archive) GetDisplayOrder() int64 {
 	return o.DisplayOrder
@@ -799,6 +819,26 @@ func (o *ArchiveCreateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *ArchiveCreateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *ArchiveCreateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *ArchiveCreateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *ArchiveCreateRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
 // GetIconID returns value of IconID
 func (o *ArchiveCreateRequest) GetIconID() types.ID {
 	return o.IconID
@@ -966,6 +1006,26 @@ func (o *ArchiveCreateBlankRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *ArchiveCreateBlankRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *ArchiveCreateBlankRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *ArchiveCreateBlankRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *ArchiveCreateBlankRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
 // GetIconID returns value of IconID
 func (o *ArchiveCreateBlankRequest) GetIconID() types.ID {
 	return o.IconID
@@ -1036,6 +1096,26 @@ func (o *ArchiveUpdateRequest) GetTags() types.Tags {
 // SetTags sets value to Tags
 func (o *ArchiveUpdateRequest) SetTags(v types.Tags) {
 	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *ArchiveUpdateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *ArchiveUpdateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *ArchiveUpdateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *ArchiveUpdateRequest) ClearTags() {
+	accessor.ClearTags(o)
 }
 
 // GetIconID returns value of IconID
@@ -1382,6 +1462,26 @@ func (o *AutoBackup) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *AutoBackup) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *AutoBackup) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *AutoBackup) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *AutoBackup) ClearTags() {
+	accessor.ClearTags(o)
+}
+
 // GetAvailability returns value of Availability
 func (o *AutoBackup) GetAvailability() types.EAvailability {
 	return o.Availability
@@ -1597,6 +1697,26 @@ func (o *AutoBackupCreateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *AutoBackupCreateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *AutoBackupCreateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *AutoBackupCreateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *AutoBackupCreateRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
 // GetIconID returns value of IconID
 func (o *AutoBackupCreateRequest) GetIconID() types.ID {
 	return o.IconID
@@ -1695,6 +1815,26 @@ func (o *AutoBackupUpdateRequest) GetTags() types.Tags {
 // SetTags sets value to Tags
 func (o *AutoBackupUpdateRequest) SetTags(v types.Tags) {
 	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *AutoBackupUpdateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *AutoBackupUpdateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *AutoBackupUpdateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *AutoBackupUpdateRequest) ClearTags() {
+	accessor.ClearTags(o)
 }
 
 // GetIconID returns value of IconID
@@ -2689,6 +2829,26 @@ func (o *CDROM) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *CDROM) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *CDROM) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *CDROM) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *CDROM) ClearTags() {
+	accessor.ClearTags(o)
+}
+
 // GetAvailability returns value of Availability
 func (o *CDROM) GetAvailability() types.EAvailability {
 	return o.Availability
@@ -2834,6 +2994,26 @@ func (o *CDROMCreateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *CDROMCreateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *CDROMCreateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *CDROMCreateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *CDROMCreateRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
 // GetIconID returns value of IconID
 func (o *CDROMCreateRequest) GetIconID() types.ID {
 	return o.IconID
@@ -2904,6 +3084,26 @@ func (o *CDROMUpdateRequest) GetTags() types.Tags {
 // SetTags sets value to Tags
 func (o *CDROMUpdateRequest) SetTags(v types.Tags) {
 	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *CDROMUpdateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *CDROMUpdateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *CDROMUpdateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *CDROMUpdateRequest) ClearTags() {
+	accessor.ClearTags(o)
 }
 
 // GetIconID returns value of IconID
@@ -3210,6 +3410,26 @@ func (o *Database) GetTags() types.Tags {
 // SetTags sets value to Tags
 func (o *Database) SetTags(v types.Tags) {
 	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *Database) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *Database) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *Database) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *Database) ClearTags() {
+	accessor.ClearTags(o)
 }
 
 // GetAvailability returns value of Availability
@@ -4194,6 +4414,26 @@ func (o *DatabaseCreateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *DatabaseCreateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *DatabaseCreateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *DatabaseCreateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *DatabaseCreateRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
 // GetIconID returns value of IconID
 func (o *DatabaseCreateRequest) GetIconID() types.ID {
 	return o.IconID
@@ -4303,6 +4543,26 @@ func (o *DatabaseUpdateRequest) GetTags() types.Tags {
 // SetTags sets value to Tags
 func (o *DatabaseUpdateRequest) SetTags(v types.Tags) {
 	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *DatabaseUpdateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *DatabaseUpdateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *DatabaseUpdateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *DatabaseUpdateRequest) ClearTags() {
+	accessor.ClearTags(o)
 }
 
 // GetIconID returns value of IconID
@@ -5362,6 +5622,26 @@ func (o *Disk) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *Disk) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *Disk) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *Disk) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *Disk) ClearTags() {
+	accessor.ClearTags(o)
+}
+
 // GetAvailability returns value of Availability
 func (o *Disk) GetAvailability() types.EAvailability {
 	return o.Availability
@@ -5715,6 +5995,26 @@ func (o *DiskCreateRequest) GetTags() types.Tags {
 // SetTags sets value to Tags
 func (o *DiskCreateRequest) SetTags(v types.Tags) {
 	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *DiskCreateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *DiskCreateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *DiskCreateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *DiskCreateRequest) ClearTags() {
+	accessor.ClearTags(o)
 }
 
 // GetIconID returns value of IconID
@@ -6149,6 +6449,26 @@ func (o *DiskUpdateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *DiskUpdateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *DiskUpdateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *DiskUpdateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *DiskUpdateRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
 // GetIconID returns value of IconID
 func (o *DiskUpdateRequest) GetIconID() types.ID {
 	return o.IconID
@@ -6472,6 +6792,26 @@ func (o *DNS) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *DNS) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *DNS) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *DNS) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *DNS) ClearTags() {
+	accessor.ClearTags(o)
+}
+
 // GetAvailability returns value of Availability
 func (o *DNS) GetAvailability() types.EAvailability {
 	return o.Availability
@@ -6701,6 +7041,26 @@ func (o *DNSCreateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *DNSCreateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *DNSCreateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *DNSCreateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *DNSCreateRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
 // GetIconID returns value of IconID
 func (o *DNSCreateRequest) GetIconID() types.ID {
 	return o.IconID
@@ -6771,6 +7131,26 @@ func (o *DNSUpdateRequest) GetTags() types.Tags {
 // SetTags sets value to Tags
 func (o *DNSUpdateRequest) SetTags(v types.Tags) {
 	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *DNSUpdateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *DNSUpdateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *DNSUpdateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *DNSUpdateRequest) ClearTags() {
+	accessor.ClearTags(o)
 }
 
 // GetIconID returns value of IconID
@@ -6906,6 +7286,26 @@ func (o *GSLB) GetTags() types.Tags {
 // SetTags sets value to Tags
 func (o *GSLB) SetTags(v types.Tags) {
 	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *GSLB) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *GSLB) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *GSLB) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *GSLB) ClearTags() {
+	accessor.ClearTags(o)
 }
 
 // GetAvailability returns value of Availability
@@ -7291,6 +7691,26 @@ func (o *GSLBCreateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *GSLBCreateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *GSLBCreateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *GSLBCreateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *GSLBCreateRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
 // GetIconID returns value of IconID
 func (o *GSLBCreateRequest) GetIconID() types.ID {
 	return o.IconID
@@ -7428,6 +7848,26 @@ func (o *GSLBUpdateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *GSLBUpdateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *GSLBUpdateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *GSLBUpdateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *GSLBUpdateRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
 // GetIconID returns value of IconID
 func (o *GSLBUpdateRequest) GetIconID() types.ID {
 	return o.IconID
@@ -7532,6 +7972,26 @@ func (o *Icon) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *Icon) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *Icon) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *Icon) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *Icon) ClearTags() {
+	accessor.ClearTags(o)
+}
+
 // GetAvailability returns value of Availability
 func (o *Icon) GetAvailability() types.EAvailability {
 	return o.Availability
@@ -7631,6 +8091,26 @@ func (o *IconCreateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *IconCreateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *IconCreateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *IconCreateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *IconCreateRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
 // GetImage returns value of Image
 func (o *IconCreateRequest) GetImage() string {
 	return o.Image
@@ -7685,6 +8165,26 @@ func (o *IconUpdateRequest) GetTags() types.Tags {
 // SetTags sets value to Tags
 func (o *IconUpdateRequest) SetTags(v types.Tags) {
 	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *IconUpdateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *IconUpdateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *IconUpdateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *IconUpdateRequest) ClearTags() {
+	accessor.ClearTags(o)
 }
 
 /*************************************************
@@ -8017,6 +8517,26 @@ func (o *Internet) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *Internet) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *Internet) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *Internet) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *Internet) ClearTags() {
+	accessor.ClearTags(o)
+}
+
 // GetIconID returns value of IconID
 func (o *Internet) GetIconID() types.ID {
 	return o.IconID
@@ -8166,6 +8686,26 @@ func (o *SwitchInfo) GetTags() types.Tags {
 // SetTags sets value to Tags
 func (o *SwitchInfo) SetTags(v types.Tags) {
 	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *SwitchInfo) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *SwitchInfo) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *SwitchInfo) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *SwitchInfo) ClearTags() {
+	accessor.ClearTags(o)
 }
 
 // GetScope returns value of Scope
@@ -8463,6 +9003,26 @@ func (o *InternetCreateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *InternetCreateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *InternetCreateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *InternetCreateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *InternetCreateRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
 // GetIconID returns value of IconID
 func (o *InternetCreateRequest) GetIconID() types.ID {
 	return o.IconID
@@ -8553,6 +9113,26 @@ func (o *InternetUpdateRequest) GetTags() types.Tags {
 // SetTags sets value to Tags
 func (o *InternetUpdateRequest) SetTags(v types.Tags) {
 	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *InternetUpdateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *InternetUpdateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *InternetUpdateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *InternetUpdateRequest) ClearTags() {
+	accessor.ClearTags(o)
 }
 
 // GetIconID returns value of IconID
@@ -9849,6 +10429,26 @@ func (o *LoadBalancer) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *LoadBalancer) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *LoadBalancer) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *LoadBalancer) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *LoadBalancer) ClearTags() {
+	accessor.ClearTags(o)
+}
+
 // GetAvailability returns value of Availability
 func (o *LoadBalancer) GetAvailability() types.EAvailability {
 	return o.Availability
@@ -10380,6 +10980,26 @@ func (o *LoadBalancerCreateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *LoadBalancerCreateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *LoadBalancerCreateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *LoadBalancerCreateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *LoadBalancerCreateRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
 // GetIconID returns value of IconID
 func (o *LoadBalancerCreateRequest) GetIconID() types.ID {
 	return o.IconID
@@ -10463,6 +11083,26 @@ func (o *LoadBalancerUpdateRequest) GetTags() types.Tags {
 // SetTags sets value to Tags
 func (o *LoadBalancerUpdateRequest) SetTags(v types.Tags) {
 	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *LoadBalancerUpdateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *LoadBalancerUpdateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *LoadBalancerUpdateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *LoadBalancerUpdateRequest) ClearTags() {
+	accessor.ClearTags(o)
 }
 
 // GetIconID returns value of IconID
@@ -10768,6 +11408,26 @@ func (o *MobileGateway) GetTags() types.Tags {
 // SetTags sets value to Tags
 func (o *MobileGateway) SetTags(v types.Tags) {
 	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *MobileGateway) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *MobileGateway) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *MobileGateway) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *MobileGateway) ClearTags() {
+	accessor.ClearTags(o)
 }
 
 // GetAvailability returns value of Availability
@@ -11412,6 +12072,26 @@ func (o *MobileGatewayCreateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *MobileGatewayCreateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *MobileGatewayCreateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *MobileGatewayCreateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *MobileGatewayCreateRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
 // GetIconID returns value of IconID
 func (o *MobileGatewayCreateRequest) GetIconID() types.ID {
 	return o.IconID
@@ -11554,6 +12234,26 @@ func (o *MobileGatewayUpdateRequest) GetTags() types.Tags {
 // SetTags sets value to Tags
 func (o *MobileGatewayUpdateRequest) SetTags(v types.Tags) {
 	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *MobileGatewayUpdateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *MobileGatewayUpdateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *MobileGatewayUpdateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *MobileGatewayUpdateRequest) ClearTags() {
+	accessor.ClearTags(o)
 }
 
 // GetIconID returns value of IconID
@@ -12390,6 +13090,26 @@ func (o *NFS) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *NFS) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *NFS) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *NFS) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *NFS) ClearTags() {
+	accessor.ClearTags(o)
+}
+
 // GetAvailability returns value of Availability
 func (o *NFS) GetAvailability() types.EAvailability {
 	return o.Availability
@@ -12679,6 +13399,26 @@ func (o *NFSCreateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *NFSCreateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *NFSCreateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *NFSCreateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *NFSCreateRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
 // GetIconID returns value of IconID
 func (o *NFSCreateRequest) GetIconID() types.ID {
 	return o.IconID
@@ -12749,6 +13489,26 @@ func (o *NFSUpdateRequest) GetTags() types.Tags {
 // SetTags sets value to Tags
 func (o *NFSUpdateRequest) SetTags(v types.Tags) {
 	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *NFSUpdateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *NFSUpdateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *NFSUpdateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *NFSUpdateRequest) ClearTags() {
+	accessor.ClearTags(o)
 }
 
 // GetIconID returns value of IconID
@@ -12953,6 +13713,26 @@ func (o *Note) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *Note) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *Note) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *Note) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *Note) ClearTags() {
+	accessor.ClearTags(o)
+}
+
 // GetAvailability returns value of Availability
 func (o *Note) GetAvailability() types.EAvailability {
 	return o.Availability
@@ -13078,6 +13858,26 @@ func (o *NoteCreateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *NoteCreateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *NoteCreateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *NoteCreateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *NoteCreateRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
 // GetIconID returns value of IconID
 func (o *NoteCreateRequest) GetIconID() types.ID {
 	return o.IconID
@@ -13161,6 +13961,26 @@ func (o *NoteUpdateRequest) GetTags() types.Tags {
 // SetTags sets value to Tags
 func (o *NoteUpdateRequest) SetTags(v types.Tags) {
 	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *NoteUpdateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *NoteUpdateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *NoteUpdateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *NoteUpdateRequest) ClearTags() {
+	accessor.ClearTags(o)
 }
 
 // GetIconID returns value of IconID
@@ -13649,6 +14469,26 @@ func (o *PrivateHost) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *PrivateHost) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *PrivateHost) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *PrivateHost) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *PrivateHost) ClearTags() {
+	accessor.ClearTags(o)
+}
+
 // GetIconID returns value of IconID
 func (o *PrivateHost) GetIconID() types.ID {
 	return o.IconID
@@ -13824,6 +14664,26 @@ func (o *PrivateHostCreateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *PrivateHostCreateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *PrivateHostCreateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *PrivateHostCreateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *PrivateHostCreateRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
 // GetIconID returns value of IconID
 func (o *PrivateHostCreateRequest) GetIconID() types.ID {
 	return o.IconID
@@ -13904,6 +14764,26 @@ func (o *PrivateHostUpdateRequest) GetTags() types.Tags {
 // SetTags sets value to Tags
 func (o *PrivateHostUpdateRequest) SetTags(v types.Tags) {
 	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *PrivateHostUpdateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *PrivateHostUpdateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *PrivateHostUpdateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *PrivateHostUpdateRequest) ClearTags() {
+	accessor.ClearTags(o)
 }
 
 // GetIconID returns value of IconID
@@ -14182,6 +15062,26 @@ func (o *ProxyLB) GetTags() types.Tags {
 // SetTags sets value to Tags
 func (o *ProxyLB) SetTags(v types.Tags) {
 	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *ProxyLB) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *ProxyLB) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *ProxyLB) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *ProxyLB) ClearTags() {
+	accessor.ClearTags(o)
 }
 
 // GetAvailability returns value of Availability
@@ -14853,6 +15753,26 @@ func (o *ProxyLBCreateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *ProxyLBCreateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *ProxyLBCreateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *ProxyLBCreateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *ProxyLBCreateRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
 // GetIconID returns value of IconID
 func (o *ProxyLBCreateRequest) GetIconID() types.ID {
 	return o.IconID
@@ -15001,6 +15921,26 @@ func (o *ProxyLBUpdateRequest) GetTags() types.Tags {
 // SetTags sets value to Tags
 func (o *ProxyLBUpdateRequest) SetTags(v types.Tags) {
 	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *ProxyLBUpdateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *ProxyLBUpdateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *ProxyLBUpdateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *ProxyLBUpdateRequest) ClearTags() {
+	accessor.ClearTags(o)
 }
 
 // GetIconID returns value of IconID
@@ -15541,6 +16481,26 @@ func (o *Server) GetTags() types.Tags {
 // SetTags sets value to Tags
 func (o *Server) SetTags(v types.Tags) {
 	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *Server) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *Server) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *Server) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *Server) ClearTags() {
+	accessor.ClearTags(o)
 }
 
 // GetAvailability returns value of Availability
@@ -16192,6 +17152,26 @@ func (o *ServerCreateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *ServerCreateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *ServerCreateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *ServerCreateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *ServerCreateRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
 // GetIconID returns value of IconID
 func (o *ServerCreateRequest) GetIconID() types.ID {
 	return o.IconID
@@ -16338,6 +17318,26 @@ func (o *ServerUpdateRequest) GetTags() types.Tags {
 // SetTags sets value to Tags
 func (o *ServerUpdateRequest) SetTags(v types.Tags) {
 	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *ServerUpdateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *ServerUpdateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *ServerUpdateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *ServerUpdateRequest) ClearTags() {
+	accessor.ClearTags(o)
 }
 
 // GetIconID returns value of IconID
@@ -16995,6 +17995,26 @@ func (o *SIM) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *SIM) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *SIM) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *SIM) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *SIM) ClearTags() {
+	accessor.ClearTags(o)
+}
+
 // GetAvailability returns value of Availability
 func (o *SIM) GetAvailability() types.EAvailability {
 	return o.Availability
@@ -17337,6 +18357,26 @@ func (o *SIMCreateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *SIMCreateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *SIMCreateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *SIMCreateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *SIMCreateRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
 // GetIconID returns value of IconID
 func (o *SIMCreateRequest) GetIconID() types.ID {
 	return o.IconID
@@ -17427,6 +18467,26 @@ func (o *SIMUpdateRequest) GetTags() types.Tags {
 // SetTags sets value to Tags
 func (o *SIMUpdateRequest) SetTags(v types.Tags) {
 	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *SIMUpdateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *SIMUpdateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *SIMUpdateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *SIMUpdateRequest) ClearTags() {
+	accessor.ClearTags(o)
 }
 
 // GetIconID returns value of IconID
@@ -17873,6 +18933,26 @@ func (o *SimpleMonitor) GetTags() types.Tags {
 // SetTags sets value to Tags
 func (o *SimpleMonitor) SetTags(v types.Tags) {
 	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *SimpleMonitor) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *SimpleMonitor) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *SimpleMonitor) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *SimpleMonitor) ClearTags() {
+	accessor.ClearTags(o)
 }
 
 // GetAvailability returns value of Availability
@@ -18372,6 +19452,26 @@ func (o *SimpleMonitorCreateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *SimpleMonitorCreateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *SimpleMonitorCreateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *SimpleMonitorCreateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *SimpleMonitorCreateRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
 // GetIconID returns value of IconID
 func (o *SimpleMonitorCreateRequest) GetIconID() types.ID {
 	return o.IconID
@@ -18520,6 +19620,26 @@ func (o *SimpleMonitorUpdateRequest) GetTags() types.Tags {
 // SetTags sets value to Tags
 func (o *SimpleMonitorUpdateRequest) SetTags(v types.Tags) {
 	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *SimpleMonitorUpdateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *SimpleMonitorUpdateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *SimpleMonitorUpdateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *SimpleMonitorUpdateRequest) ClearTags() {
+	accessor.ClearTags(o)
 }
 
 // GetIconID returns value of IconID
@@ -19212,6 +20332,26 @@ func (o *Switch) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *Switch) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *Switch) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *Switch) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *Switch) ClearTags() {
+	accessor.ClearTags(o)
+}
+
 // GetIconID returns value of IconID
 func (o *Switch) GetIconID() types.ID {
 	return o.IconID
@@ -19542,6 +20682,26 @@ func (o *SwitchCreateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *SwitchCreateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *SwitchCreateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *SwitchCreateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *SwitchCreateRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
 // GetIconID returns value of IconID
 func (o *SwitchCreateRequest) GetIconID() types.ID {
 	return o.IconID
@@ -19638,6 +20798,26 @@ func (o *SwitchUpdateRequest) GetTags() types.Tags {
 // SetTags sets value to Tags
 func (o *SwitchUpdateRequest) SetTags(v types.Tags) {
 	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *SwitchUpdateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *SwitchUpdateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *SwitchUpdateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *SwitchUpdateRequest) ClearTags() {
+	accessor.ClearTags(o)
 }
 
 // GetIconID returns value of IconID
@@ -19785,6 +20965,26 @@ func (o *VPCRouter) GetTags() types.Tags {
 // SetTags sets value to Tags
 func (o *VPCRouter) SetTags(v types.Tags) {
 	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *VPCRouter) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *VPCRouter) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *VPCRouter) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *VPCRouter) ClearTags() {
+	accessor.ClearTags(o)
 }
 
 // GetAvailability returns value of Availability
@@ -21216,6 +22416,26 @@ func (o *VPCRouterCreateRequest) SetTags(v types.Tags) {
 	o.Tags = v
 }
 
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *VPCRouterCreateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *VPCRouterCreateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *VPCRouterCreateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *VPCRouterCreateRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
 // GetIconID returns value of IconID
 func (o *VPCRouterCreateRequest) GetIconID() types.ID {
 	return o.IconID
@@ -21395,6 +22615,26 @@ func (o *VPCRouterUpdateRequest) GetTags() types.Tags {
 // SetTags sets value to Tags
 func (o *VPCRouterUpdateRequest) SetTags(v types.Tags) {
 	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *VPCRouterUpdateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *VPCRouterUpdateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *VPCRouterUpdateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *VPCRouterUpdateRequest) ClearTags() {
+	accessor.ClearTags(o)
 }
 
 // GetIconID returns value of IconID

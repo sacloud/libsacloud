@@ -9,6 +9,12 @@ import (
 func TestAccessor(t *testing.T) {
 
 	var v interface{}
+
+	v = &Archive{}
+	if _, ok := v.(accessor.Tags); !ok {
+		t.Fatal("target is not implements accessor.Tags")
+	}
+
 	v = &Server{}
 	if _, ok := v.(accessor.ID); !ok {
 		t.Fatal("target is not implements accessor.ID")
