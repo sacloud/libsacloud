@@ -103,7 +103,7 @@ var serverAPI = &dsl.Resource{
 			Arguments: dsl.Arguments{
 				dsl.ArgumentID,
 				{
-					Name: "insertParam",
+					Name: "ejectParam",
 					Type: &dsl.Model{
 						Name: "EjectCDROMRequest",
 						Fields: []*dsl.FieldDesc{
@@ -120,6 +120,44 @@ var serverAPI = &dsl.Resource{
 		ops.Boot(serverAPIName),
 		ops.Shutdown(serverAPIName),
 		ops.Reset(serverAPIName),
+
+		// send key
+		{
+			ResourceName: serverAPIName,
+			Name:         "SendKey",
+			PathFormat:   dsl.IDAndSuffixPathFormat("keyboard"),
+			Method:       http.MethodPut,
+			Arguments: dsl.Arguments{
+				dsl.ArgumentID,
+				dsl.PassthroughModelArgument("keyboardParam", serverSendKeyParam),
+			},
+			RequestEnvelope: dsl.RequestEnvelopeFromModel(serverSendKeyParam),
+		},
+
+		// get vnc proxy
+		{
+			ResourceName: serverAPIName,
+			Name:         "GetVNCProxy",
+			PathFormat:   dsl.IDAndSuffixPathFormat("vnc/proxy"),
+			Method:       http.MethodGet,
+			Arguments: dsl.Arguments{
+				dsl.ArgumentID,
+			},
+			ResponseEnvelope: dsl.ResponseEnvelope(
+				&dsl.EnvelopePayloadDesc{
+					Name: "VNCProxyInfo",
+					Type: meta.Static(naked.VNCProxyInfo{}),
+				},
+			),
+			Results: dsl.Results{
+				{
+					SourceField: "VNCProxyInfo",
+					DestField:   serverVNCProxyView.Name,
+					IsPlural:    false,
+					Model:       serverVNCProxyView,
+				},
+			},
+		},
 
 		// monitor
 		ops.Monitor(serverAPIName, monitorParameter, monitors.cpuTimeModel()),
@@ -249,5 +287,26 @@ var (
 			fields.ServerPlanCommitment(),
 		},
 		NakedType: meta.Static(naked.ServerPlan{}),
+	}
+
+	serverSendKeyParam = &dsl.Model{
+		Name: "SendKeyRequest",
+		Fields: []*dsl.FieldDesc{
+			fields.Def("Key", meta.TypeString),
+			fields.Def("Keys", meta.TypeStringSlice),
+		},
+	}
+
+	serverVNCProxyView = &dsl.Model{
+		Name:      "VNCProxyInfo",
+		NakedType: meta.Static(naked.VNCProxyInfo{}),
+		Fields: []*dsl.FieldDesc{
+			fields.Def("Status", meta.TypeString),
+			fields.Def("Host", meta.TypeString),
+			fields.Def("IOServerHost", meta.TypeString),
+			fields.Def("Port", meta.TypeStringNumber),
+			fields.Def("Password", meta.TypeString),
+			fields.Def("VNCFile", meta.TypeString),
+		},
 	}
 )

@@ -1054,6 +1054,13 @@ type serverChangePlanResult struct {
 	Server *Server `json:",omitempty" mapconv:"Server,omitempty,recursive"`
 }
 
+// serverGetVNCProxyResult represents the Result of API
+type serverGetVNCProxyResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	VNCProxyInfo *VNCProxyInfo `json:",omitempty" mapconv:"VNCProxyInfo,omitempty,recursive"`
+}
+
 // serverMonitorResult represents the Result of API
 type serverMonitorResult struct {
 	IsOk bool `json:",omitempty"` // is_ok

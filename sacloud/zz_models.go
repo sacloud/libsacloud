@@ -16342,7 +16342,7 @@ type Server struct {
 	InstanceWarningsValue   int                         `mapconv:"Instance.WarningsValue"`
 	Disks                   []*Disk                     `json:",omitempty" mapconv:",recursive"`
 	Interfaces              []*InterfaceView            `json:",omitempty" mapconv:"[]Interfaces,recursive,omitempty"`
-	CDROMID                 types.ID                    `mapconv:"CDROM.ID"`
+	CDROMID                 types.ID                    `mapconv:"Instance.CDROM.ID"`
 	PrivateHostID           types.ID                    `mapconv:"PrivateHost.ID"`
 	PrivateHostName         string                      `mapconv:"PrivateHost.Name"`
 	BundleInfo              *BundleInfo                 `json:",omitempty" mapconv:",omitempty,recursive"`
@@ -16382,7 +16382,7 @@ func (o *Server) setDefaults() interface{} {
 		InstanceWarningsValue   int                         `mapconv:"Instance.WarningsValue"`
 		Disks                   []*Disk                     `json:",omitempty" mapconv:",recursive"`
 		Interfaces              []*InterfaceView            `json:",omitempty" mapconv:"[]Interfaces,recursive,omitempty"`
-		CDROMID                 types.ID                    `mapconv:"CDROM.ID"`
+		CDROMID                 types.ID                    `mapconv:"Instance.CDROM.ID"`
 		PrivateHostID           types.ID                    `mapconv:"PrivateHost.ID"`
 		PrivateHostName         string                      `mapconv:"PrivateHost.Name"`
 		BundleInfo              *BundleInfo                 `json:",omitempty" mapconv:",omitempty,recursive"`
@@ -17536,6 +17536,150 @@ func (o *EjectCDROMRequest) SetInt64ID(id int64) {
 // GetInt64ID .
 func (o *EjectCDROMRequest) GetInt64ID() int64 {
 	return accessor.GetInt64ID(o)
+}
+
+/*************************************************
+* SendKeyRequest
+*************************************************/
+
+// SendKeyRequest represents API parameter/response structure
+type SendKeyRequest struct {
+	Key  string
+	Keys []string
+}
+
+// Validate validates by field tags
+func (o *SendKeyRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *SendKeyRequest) setDefaults() interface{} {
+	return &struct {
+		Key  string
+		Keys []string
+	}{
+		Key:  o.Key,
+		Keys: o.Keys,
+	}
+}
+
+// GetKey returns value of Key
+func (o *SendKeyRequest) GetKey() string {
+	return o.Key
+}
+
+// SetKey sets value to Key
+func (o *SendKeyRequest) SetKey(v string) {
+	o.Key = v
+}
+
+// GetKeys returns value of Keys
+func (o *SendKeyRequest) GetKeys() []string {
+	return o.Keys
+}
+
+// SetKeys sets value to Keys
+func (o *SendKeyRequest) SetKeys(v []string) {
+	o.Keys = v
+}
+
+/*************************************************
+* VNCProxyInfo
+*************************************************/
+
+// VNCProxyInfo represents API parameter/response structure
+type VNCProxyInfo struct {
+	Status       string
+	Host         string
+	IOServerHost string
+	Port         types.StringNumber
+	Password     string
+	VNCFile      string
+}
+
+// Validate validates by field tags
+func (o *VNCProxyInfo) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *VNCProxyInfo) setDefaults() interface{} {
+	return &struct {
+		Status       string
+		Host         string
+		IOServerHost string
+		Port         types.StringNumber
+		Password     string
+		VNCFile      string
+	}{
+		Status:       o.Status,
+		Host:         o.Host,
+		IOServerHost: o.IOServerHost,
+		Port:         o.Port,
+		Password:     o.Password,
+		VNCFile:      o.VNCFile,
+	}
+}
+
+// GetStatus returns value of Status
+func (o *VNCProxyInfo) GetStatus() string {
+	return o.Status
+}
+
+// SetStatus sets value to Status
+func (o *VNCProxyInfo) SetStatus(v string) {
+	o.Status = v
+}
+
+// GetHost returns value of Host
+func (o *VNCProxyInfo) GetHost() string {
+	return o.Host
+}
+
+// SetHost sets value to Host
+func (o *VNCProxyInfo) SetHost(v string) {
+	o.Host = v
+}
+
+// GetIOServerHost returns value of IOServerHost
+func (o *VNCProxyInfo) GetIOServerHost() string {
+	return o.IOServerHost
+}
+
+// SetIOServerHost sets value to IOServerHost
+func (o *VNCProxyInfo) SetIOServerHost(v string) {
+	o.IOServerHost = v
+}
+
+// GetPort returns value of Port
+func (o *VNCProxyInfo) GetPort() types.StringNumber {
+	return o.Port
+}
+
+// SetPort sets value to Port
+func (o *VNCProxyInfo) SetPort(v types.StringNumber) {
+	o.Port = v
+}
+
+// GetPassword returns value of Password
+func (o *VNCProxyInfo) GetPassword() string {
+	return o.Password
+}
+
+// SetPassword sets value to Password
+func (o *VNCProxyInfo) SetPassword(v string) {
+	o.Password = v
+}
+
+// GetVNCFile returns value of VNCFile
+func (o *VNCProxyInfo) GetVNCFile() string {
+	return o.VNCFile
+}
+
+// SetVNCFile sets value to VNCFile
+func (o *VNCProxyInfo) SetVNCFile(v string) {
+	o.VNCFile = v
 }
 
 /*************************************************

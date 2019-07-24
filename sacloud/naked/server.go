@@ -34,3 +34,10 @@ type ConnectedSwitch struct {
 	ID    types.ID     `json:",omitempty" yaml:"id,omitempty" structs:",omitempty"`
 	Scope types.EScope `json:",omitempty" yaml:"scope,omitempty" structs:",omitempty"`
 }
+
+// MouseRequestButtons マウスボタン
+type MouseRequestButtons struct {
+	L bool // 左ボタン
+	R bool // 右ボタン
+	M bool // 中ボタン
+}
