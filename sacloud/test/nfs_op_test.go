@@ -5,6 +5,7 @@ import (
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
+	"github.com/sacloud/libsacloud/v2/utils/nfs"
 )
 
 func TestNFSOp_CRUD(t *testing.T) {
@@ -12,12 +13,25 @@ func TestNFSOp_CRUD(t *testing.T) {
 		Parallel: true,
 
 		SetupAPICallerFunc: singletonAPICaller,
-		Setup: setupSwitchFunc("nfs",
-			createNFSParam,
-			createNFSExpected,
-			updateNFSExpected,
-			updateNFSToMinExpected,
-		),
+		Setup: func(ctx *CRUDTestContext, caller sacloud.APICaller) error {
+			setupSwitchFunc("nfs",
+				createNFSParam,
+				createNFSExpected,
+				updateNFSExpected,
+				updateNFSToMinExpected,
+			)(ctx, caller)
+
+			// find plan id
+			planID, err := nfs.FindNFSPlanID(ctx, sacloud.NewNoteOp(caller), types.NFSPlans.HDD, types.NFSHDDSizes.Size100GB)
+			if err != nil {
+				return err
+			}
+			createNFSParam.PlanID = planID
+			createNFSExpected.PlanID = planID
+			updateNFSExpected.PlanID = planID
+			updateNFSToMinExpected.PlanID = planID
+			return nil
+		},
 
 		Create: &CRUDTestFunc{
 			Func: testNFSCreate,
@@ -81,7 +95,7 @@ var (
 		"ModifiedAt",
 	}
 	createNFSParam = &sacloud.NFSCreateRequest{
-		PlanID:         types.ID(1001012001), // TODO プラン検索をutilsに実装後に修正
+		// PlanID:      type.ID(0), // プランIDはSetUpで設定する
 		IPAddresses:    []string{"192.168.0.11"},
 		NetworkMaskLen: 24,
 		DefaultRoute:   "192.168.0.1",
@@ -108,7 +122,6 @@ var (
 		Name:           updateNFSParam.Name,
 		Description:    updateNFSParam.Description,
 		Tags:           updateNFSParam.Tags,
-		PlanID:         createNFSParam.PlanID,
 		DefaultRoute:   createNFSParam.DefaultRoute,
 		NetworkMaskLen: createNFSParam.NetworkMaskLen,
 		IPAddresses:    createNFSParam.IPAddresses,
@@ -119,7 +132,6 @@ var (
 	}
 	updateNFSToMinExpected = &sacloud.NFS{
 		Name:           updateNFSToMinParam.Name,
-		PlanID:         createNFSParam.PlanID,
 		DefaultRoute:   createNFSParam.DefaultRoute,
 		NetworkMaskLen: createNFSParam.NetworkMaskLen,
 		IPAddresses:    createNFSParam.IPAddresses,

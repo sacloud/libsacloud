@@ -170,11 +170,10 @@ func initCoupons() {
 func initNotes() {
 	notes := []*sacloud.Note{
 		{
-			ID:           1,
-			Name:         "fake",
-			Availability: types.Availabilities.Available,
-			Scope:        types.Scopes.Shared,
-			Class:        "shell",
+			ID:      1,
+			Name:    "sys-nfs",
+			Class:   "json",
+			Content: `{"plans":{"HDD":[{"size": 100,"availability":"available","planId":1}]}}`,
 		},
 	}
 	for _, note := range notes {
