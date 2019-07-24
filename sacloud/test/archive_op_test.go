@@ -107,7 +107,7 @@ var (
 		Description: createArchiveParam.Description,
 		Tags:        createArchiveParam.Tags,
 		Scope:       types.Scopes.User,
-		DiskPlanID:  types.ID(2),
+		DiskPlanID:  types.DiskPlans.HDD,
 	}
 	updateArchiveParam = &sacloud.ArchiveUpdateRequest{
 		Name:        "libsacloud-archive-upd",
@@ -120,7 +120,7 @@ var (
 		Description: updateArchiveParam.Description,
 		Tags:        updateArchiveParam.Tags,
 		Scope:       types.Scopes.User,
-		DiskPlanID:  types.ID(2),
+		DiskPlanID:  types.DiskPlans.HDD,
 		IconID:      updateArchiveParam.IconID,
 	}
 	updateArchiveToMinParam = &sacloud.ArchiveUpdateRequest{
@@ -131,7 +131,7 @@ var (
 		Name:        updateArchiveToMinParam.Name,
 		Description: updateArchiveToMinParam.Description,
 		Scope:       types.Scopes.User,
-		DiskPlanID:  types.ID(2),
+		DiskPlanID:  types.DiskPlans.HDD,
 	}
 )
 

@@ -68,7 +68,7 @@ var (
 	}
 
 	createVPCRouterParam = &sacloud.VPCRouterCreateRequest{
-		PlanID: types.ID(1), // standard  TODO プランIDをどこかで定義する
+		PlanID: types.VPCRouterPlans.Standard,
 		Switch: &sacloud.ApplianceConnectedSwitch{
 			Scope: types.Scopes.Shared,
 		},
@@ -392,7 +392,7 @@ func TestVPCRouterOp_WithRouterCRUD(t *testing.T) {
 
 var (
 	withRouterCreateVPCRouterParam = &sacloud.VPCRouterCreateRequest{
-		PlanID:      types.ID(1), // standard  TODO プランIDをどこかで定義する
+		PlanID:      types.VPCRouterPlans.Standard,
 		Name:        "libsacloud-vpc-router",
 		Description: "desc",
 		Tags:        []string{"tag1", "tag2"},

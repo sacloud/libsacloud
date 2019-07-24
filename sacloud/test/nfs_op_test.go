@@ -81,7 +81,7 @@ var (
 		"ModifiedAt",
 	}
 	createNFSParam = &sacloud.NFSCreateRequest{
-		PlanID:         types.ID(1001012001),
+		PlanID:         types.ID(1001012001), // TODO プラン検索をutilsに実装後に修正
 		IPAddresses:    []string{"192.168.0.11"},
 		NetworkMaskLen: 24,
 		DefaultRoute:   "192.168.0.1",

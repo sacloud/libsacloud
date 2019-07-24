@@ -76,7 +76,7 @@ var (
 	}
 
 	createDiskParam = &sacloud.DiskCreateRequest{
-		DiskPlanID:  types.ID(4), //SSD
+		DiskPlanID:  types.DiskPlans.SSD,
 		Connection:  types.DiskConnections.VirtIO,
 		Name:        "libsacloud-disk",
 		Description: "desc",
@@ -168,7 +168,7 @@ func TestDiskOp_Config(t *testing.T) {
 				client := sacloud.NewDiskOp(singletonAPICaller())
 				disk, err := client.Create(ctx, testZone, &sacloud.DiskCreateRequest{
 					Name:            "libsacloud-disk-edit",
-					DiskPlanID:      types.ID(4),
+					DiskPlanID:      types.DiskPlans.SSD,
 					SizeMB:          20 * 1024,
 					SourceArchiveID: archiveID,
 				}, nil)
