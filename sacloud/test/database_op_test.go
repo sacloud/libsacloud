@@ -87,7 +87,7 @@ var (
 	}
 
 	createDatabaseParam = &sacloud.DatabaseCreateRequest{
-		PlanID:         types.ID(10),
+		PlanID:         types.DatabasePlans.DB10GB,
 		IPAddresses:    []string{"192.168.0.11"},
 		NetworkMaskLen: 24,
 		DefaultRoute:   "192.168.0.1",
