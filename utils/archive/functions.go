@@ -40,6 +40,14 @@ type SourceInfoReader struct {
 	DiskReader    SourceDiskReader
 }
 
+// NewSourceInfoReader デフォルトのリーダーを返す
+func NewSourceInfoReader(caller sacloud.APICaller) *SourceInfoReader {
+	return &SourceInfoReader{
+		ArchiveReader: sacloud.NewArchiveOp(caller),
+		DiskReader:    sacloud.NewDiskOp(caller),
+	}
+}
+
 // SourceArchiveReader アーカイブ参照インターフェース
 type SourceArchiveReader interface {
 	Read(ctx context.Context, zone string, id types.ID) (*sacloud.Archive, error)
