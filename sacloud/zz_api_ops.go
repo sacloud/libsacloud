@@ -7542,15 +7542,15 @@ func (o *ServerOp) InsertCDROM(ctx context.Context, zone string, id types.ID, in
 }
 
 // EjectCDROM is API call
-func (o *ServerOp) EjectCDROM(ctx context.Context, zone string, id types.ID, insertParam *EjectCDROMRequest) error {
+func (o *ServerOp) EjectCDROM(ctx context.Context, zone string, id types.ID, ejectParam *EjectCDROMRequest) error {
 	// build request URL
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/cdrom", map[string]interface{}{
-		"rootURL":     SakuraCloudAPIRoot,
-		"pathSuffix":  o.PathSuffix,
-		"pathName":    o.PathName,
-		"zone":        zone,
-		"id":          id,
-		"insertParam": insertParam,
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+		"ejectParam": ejectParam,
 	})
 	if err != nil {
 		return err
@@ -7558,7 +7558,7 @@ func (o *ServerOp) EjectCDROM(ctx context.Context, zone string, id types.ID, ins
 
 	// build request body
 	var body interface{}
-	v, err := o.transformEjectCDROMArgs(id, insertParam)
+	v, err := o.transformEjectCDROMArgs(id, ejectParam)
 	if err != nil {
 		return err
 	}
@@ -7663,6 +7663,71 @@ func (o *ServerOp) Reset(ctx context.Context, zone string, id types.ID) error {
 	// build results
 
 	return nil
+}
+
+// SendKey is API call
+func (o *ServerOp) SendKey(ctx context.Context, zone string, id types.ID, keyboardParam *SendKeyRequest) error {
+	// build request URL
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/keyboard", map[string]interface{}{
+		"rootURL":       SakuraCloudAPIRoot,
+		"pathSuffix":    o.PathSuffix,
+		"pathName":      o.PathName,
+		"zone":          zone,
+		"id":            id,
+		"keyboardParam": keyboardParam,
+	})
+	if err != nil {
+		return err
+	}
+
+	// build request body
+	var body interface{}
+	v, err := o.transformSendKeyArgs(id, keyboardParam)
+	if err != nil {
+		return err
+	}
+	body = v
+
+	// do request
+	_, err = o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return err
+	}
+
+	// build results
+
+	return nil
+}
+
+// GetVNCProxy is API call
+func (o *ServerOp) GetVNCProxy(ctx context.Context, zone string, id types.ID) (*VNCProxyInfo, error) {
+	// build request URL
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/vnc/proxy", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	// build request body
+	var body interface{}
+
+	// do request
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	// build results
+	results, err := o.transformGetVNCProxyResults(data)
+	if err != nil {
+		return nil, err
+	}
+	return results.VNCProxyInfo, nil
 }
 
 // Monitor is API call

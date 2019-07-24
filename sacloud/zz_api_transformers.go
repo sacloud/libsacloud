@@ -4481,7 +4481,7 @@ func (o *ServerOp) transformInsertCDROMArgs(id types.ID, insertParam *InsertCDRO
 	return v, nil
 }
 
-func (o *ServerOp) transformEjectCDROMArgs(id types.ID, insertParam *EjectCDROMRequest) (*serverEjectCDROMRequestEnvelope, error) {
+func (o *ServerOp) transformEjectCDROMArgs(id types.ID, ejectParam *EjectCDROMRequest) (*serverEjectCDROMRequestEnvelope, error) {
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -4489,10 +4489,10 @@ func (o *ServerOp) transformEjectCDROMArgs(id types.ID, insertParam *EjectCDROMR
 	if v, ok := arg0.(argumentDefaulter); ok {
 		arg0 = v.setDefaults()
 	}
-	if insertParam == nil {
-		insertParam = &EjectCDROMRequest{}
+	if ejectParam == nil {
+		ejectParam = &EjectCDROMRequest{}
 	}
-	var arg1 interface{} = insertParam
+	var arg1 interface{} = ejectParam
 	if v, ok := arg1.(argumentDefaulter); ok {
 		arg1 = v.setDefaults()
 	}
@@ -4539,6 +4539,49 @@ func (o *ServerOp) transformShutdownArgs(id types.ID, shutdownOption *ShutdownOp
 		return nil, err
 	}
 	return v, nil
+}
+
+func (o *ServerOp) transformSendKeyArgs(id types.ID, keyboardParam *SendKeyRequest) (*serverSendKeyRequestEnvelope, error) {
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	var arg0 interface{} = id
+	if v, ok := arg0.(argumentDefaulter); ok {
+		arg0 = v.setDefaults()
+	}
+	if keyboardParam == nil {
+		keyboardParam = &SendKeyRequest{}
+	}
+	var arg1 interface{} = keyboardParam
+	if v, ok := arg1.(argumentDefaulter); ok {
+		arg1 = v.setDefaults()
+	}
+	args := &struct {
+		Arg0 interface{}
+		Arg1 interface{} `mapconv:",squash"`
+	}{
+		Arg0: arg0,
+		Arg1: arg1,
+	}
+
+	v := &serverSendKeyRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	return v, nil
+}
+
+func (o *ServerOp) transformGetVNCProxyResults(data []byte) (*serverGetVNCProxyResult, error) {
+	nakedResponse := &serverGetVNCProxyResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &serverGetVNCProxyResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
 }
 
 func (o *ServerOp) transformMonitorArgs(id types.ID, condition *MonitorCondition) (*serverMonitorRequestEnvelope, error) {

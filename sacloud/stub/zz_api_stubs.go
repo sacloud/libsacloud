@@ -3317,6 +3317,17 @@ type ServerResetStubResult struct {
 	Err error
 }
 
+// ServerSendKeyStubResult is expected values of the SendKey operation
+type ServerSendKeyStubResult struct {
+	Err error
+}
+
+// ServerGetVNCProxyStubResult is expected values of the GetVNCProxy operation
+type ServerGetVNCProxyStubResult struct {
+	VNCProxyInfo *sacloud.VNCProxyInfo
+	Err          error
+}
+
 // ServerMonitorStubResult is expected values of the Monitor operation
 type ServerMonitorStubResult struct {
 	CPUTimeActivity *sacloud.CPUTimeActivity
@@ -3336,6 +3347,8 @@ type ServerStub struct {
 	BootStubResult        *ServerBootStubResult
 	ShutdownStubResult    *ServerShutdownStubResult
 	ResetStubResult       *ServerResetStubResult
+	SendKeyStubResult     *ServerSendKeyStubResult
+	GetVNCProxyStubResult *ServerGetVNCProxyStubResult
 	MonitorStubResult     *ServerMonitorStubResult
 }
 
@@ -3401,7 +3414,7 @@ func (s *ServerStub) InsertCDROM(ctx context.Context, zone string, id types.ID, 
 }
 
 // EjectCDROM is API call with trace log
-func (s *ServerStub) EjectCDROM(ctx context.Context, zone string, id types.ID, insertParam *sacloud.EjectCDROMRequest) error {
+func (s *ServerStub) EjectCDROM(ctx context.Context, zone string, id types.ID, ejectParam *sacloud.EjectCDROMRequest) error {
 	if s.EjectCDROMStubResult == nil {
 		log.Fatal("ServerStub.EjectCDROMStubResult is not set")
 	}
@@ -3430,6 +3443,22 @@ func (s *ServerStub) Reset(ctx context.Context, zone string, id types.ID) error 
 		log.Fatal("ServerStub.ResetStubResult is not set")
 	}
 	return s.ResetStubResult.Err
+}
+
+// SendKey is API call with trace log
+func (s *ServerStub) SendKey(ctx context.Context, zone string, id types.ID, keyboardParam *sacloud.SendKeyRequest) error {
+	if s.SendKeyStubResult == nil {
+		log.Fatal("ServerStub.SendKeyStubResult is not set")
+	}
+	return s.SendKeyStubResult.Err
+}
+
+// GetVNCProxy is API call with trace log
+func (s *ServerStub) GetVNCProxy(ctx context.Context, zone string, id types.ID) (*sacloud.VNCProxyInfo, error) {
+	if s.GetVNCProxyStubResult == nil {
+		log.Fatal("ServerStub.GetVNCProxyStubResult is not set")
+	}
+	return s.GetVNCProxyStubResult.VNCProxyInfo, s.GetVNCProxyStubResult.Err
 }
 
 // Monitor is API call with trace log

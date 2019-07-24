@@ -54,6 +54,7 @@ func init() {
 	initArchives()
 	initBills()
 	initCoupons()
+	initCDROMs()
 	initNotes()
 	initSwitch()
 	initZones()
@@ -131,6 +132,27 @@ func initBillDetails(billID types.ID) {
 		},
 	}
 	s.setWithID(ResourceBill+"Details", sacloud.APIDefaultZone, details, billID)
+}
+
+func initCDROMs() {
+	cdroms := []*sacloud.CDROM{
+		{
+			ID:           pool.generateID(),
+			Name:         "dummy",
+			Description:  "dummy",
+			DisplayOrder: 999,
+			Tags:         types.Tags{"current-stable", "os-linux"},
+			Availability: types.Availabilities.Available,
+			Scope:        types.Scopes.Shared,
+			CreatedAt:    time.Now(),
+			ModifiedAt:   time.Now(),
+		},
+	}
+	for _, zone := range zones {
+		for _, c := range cdroms {
+			s.setCDROM(zone, c)
+		}
+	}
 }
 
 func initCoupons() {

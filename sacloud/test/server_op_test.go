@@ -5,6 +5,8 @@ import (
 	"testing"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
+	"github.com/sacloud/libsacloud/v2/sacloud/search"
+	"github.com/sacloud/libsacloud/v2/sacloud/search/keys"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 	"github.com/stretchr/testify/assert"
 )
@@ -45,6 +47,74 @@ func TestServerOp_CRUD(t *testing.T) {
 					ExpectValue:  updateServerToMinExpected,
 					IgnoreFields: ignoreServerFields,
 				}),
+			},
+			// Insert CDROM
+			{
+				Func: func(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+					cdOp := sacloud.NewCDROMOp(caller)
+					serverOp := sacloud.NewServerOp(caller)
+
+					// find cdrom
+					searched, err := cdOp.Find(ctx, testZone, &sacloud.FindCondition{
+						Filter: search.Filter{
+							search.Key(keys.Scope): types.Scopes.Shared,
+						},
+						Count: 1,
+					})
+					if err != nil {
+						return nil, err
+					}
+					cdromID := searched.CDROMs[0].ID
+					ctx.Values["server/cdrom"] = cdromID
+
+					// insert
+					if err := serverOp.InsertCDROM(ctx, testZone, ctx.ID, &sacloud.InsertCDROMRequest{ID: cdromID}); err != nil {
+						return nil, err
+					}
+					return serverOp.Read(ctx, testZone, ctx.ID)
+				},
+				CheckFunc: func(t TestT, ctx *CRUDTestContext, v interface{}) error {
+					server := v.(*sacloud.Server)
+					return AssertFalse(t, server.CDROMID.IsEmpty(), "Server.CDROMID")
+				},
+				SkipExtractID: true,
+			},
+			// Eject CDROM
+			{
+				Func: func(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+					serverOp := sacloud.NewServerOp(caller)
+					cdromID := ctx.Values["server/cdrom"].(types.ID)
+
+					if err := serverOp.EjectCDROM(ctx, testZone, ctx.ID, &sacloud.EjectCDROMRequest{ID: cdromID}); err != nil {
+						return nil, err
+					}
+					return serverOp.Read(ctx, testZone, ctx.ID)
+				},
+				CheckFunc: func(t TestT, ctx *CRUDTestContext, v interface{}) error {
+					server := v.(*sacloud.Server)
+					return AssertTrue(t, server.CDROMID.IsEmpty(), "Server.CDROMID")
+				},
+				SkipExtractID: true,
+			},
+			// VNC Info
+			{
+				Func: func(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+					serverOp := sacloud.NewServerOp(caller)
+					return serverOp.GetVNCProxy(ctx, testZone, ctx.ID)
+				},
+				CheckFunc: func(t TestT, ctx *CRUDTestContext, v interface{}) error {
+					vnc := v.(*sacloud.VNCProxyInfo)
+					return DoAsserts(
+						AssertNotNilFunc(t, vnc, "VNCProxyInfo"),
+						AssertNotEmptyFunc(t, vnc.Status, "VNCProxyInfo.Status"),
+						AssertNotEmptyFunc(t, vnc.Host, "VNCProxyInfo.Host"),
+						AssertNotEmptyFunc(t, vnc.IOServerHost, "VNCProxyInfo.IOServerHost"),
+						AssertNotEmptyFunc(t, vnc.Port, "VNCProxyInfo.Port"),
+						AssertNotEmptyFunc(t, vnc.Password, "VNCProxyInfo.Password"),
+						AssertNotEmptyFunc(t, vnc.VNCFile, "VNCProxyInfo.VNCFile"),
+					)
+				},
+				SkipExtractID: true,
 			},
 		},
 
