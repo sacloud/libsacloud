@@ -128,9 +128,9 @@ func fillDiskPlan(target interface{}) {
 	if v, ok := target.(accessor.DiskPlan); ok {
 		id := v.GetDiskPlanID()
 		switch id {
-		case types.ID(2):
+		case types.DiskPlans.HDD:
 			v.SetDiskPlanName("標準プラン")
-		case types.ID(4):
+		case types.DiskPlans.SSD:
 			v.SetDiskPlanName("SSDプラン")
 		}
 		v.SetDiskPlanStorageClass("iscsi9999")

@@ -50,7 +50,7 @@ func (o *ArchiveOp) Create(ctx context.Context, zone string, param *sacloud.Arch
 
 	result.DisplayOrder = int64(random(100))
 	result.Availability = types.Availabilities.Migrating
-	result.DiskPlanID = types.ID(2)
+	result.DiskPlanID = types.DiskPlans.HDD
 	result.DiskPlanName = "標準プラン"
 	result.DiskPlanStorageClass = "iscsi9999"
 

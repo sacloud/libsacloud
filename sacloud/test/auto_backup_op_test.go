@@ -19,7 +19,7 @@ func TestAutoBackupOpCRUD(t *testing.T) {
 			disk, err := diskOp.Create(ctx, testZone, &sacloud.DiskCreateRequest{
 				Name:       "libsacloud-disk-with-autobackup",
 				SizeMB:     20 * 1024,
-				DiskPlanID: types.ID(4), //SSD
+				DiskPlanID: types.DiskPlans.SSD,
 			}, nil)
 			if !assert.NoError(t, err) {
 				return err

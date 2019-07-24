@@ -32,14 +32,9 @@ var authStatus = &sacloud.AuthStatus{
 	Permission:         types.Permissions.Create,
 }
 
-var zones = []string{"tk1a", "is1a", "is1b", "tk1v"}
+var zones = types.ZoneNames
 
-var zoneIDs = map[string]types.ID{
-	"tk1a": types.ID(21001),
-	"is1a": types.ID(31001),
-	"is1b": types.ID(31002),
-	"tk1v": types.ID(29001),
-}
+var zoneIDs = types.ZoneIDs
 
 var sharedSegmentSwitch = &sacloud.Switch{
 	ID:             pool.generateID(),
@@ -77,7 +72,7 @@ func initArchives() {
 			Scope:                types.Scopes.Shared,
 			Availability:         types.Availabilities.Available,
 			SizeMB:               20480,
-			DiskPlanID:           types.ID(2),
+			DiskPlanID:           types.DiskPlans.HDD,
 			DiskPlanName:         "標準プラン",
 			DiskPlanStorageClass: "iscsi9999",
 		},
@@ -89,7 +84,7 @@ func initArchives() {
 			Scope:                types.Scopes.Shared,
 			Availability:         types.Availabilities.Available,
 			SizeMB:               20480,
-			DiskPlanID:           types.ID(2),
+			DiskPlanID:           types.DiskPlans.HDD,
 			DiskPlanName:         "標準プラン",
 			DiskPlanStorageClass: "iscsi9999",
 		},
@@ -302,7 +297,7 @@ func initServerPlan() {
 }
 
 func initInternetPlan() {
-	bandWidthList := []int{100, 250500, 1000, 1500, 2000, 2500, 3000, 5000}
+	bandWidthList := []int{100, 250, 500, 1000, 1500, 2000, 2500, 3000, 5000}
 
 	var plans []*sacloud.InternetPlan
 
