@@ -250,6 +250,36 @@ func (o *ServerOp) Reset(ctx context.Context, zone string, id types.ID) error {
 	return nil
 }
 
+// SendKey is fake implementation
+func (o *ServerOp) SendKey(ctx context.Context, zone string, id types.ID, keyboardParam *sacloud.SendKeyRequest) error {
+	_, err := o.Read(ctx, zone, id)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// GetVNCProxy is fake implementation
+func (o *ServerOp) GetVNCProxy(ctx context.Context, zone string, id types.ID) (*sacloud.VNCProxyInfo, error) {
+	_, err := o.Read(ctx, zone, id)
+	if err != nil {
+		return nil, err
+	}
+	vncFileTemplate := `[connection]
+host=sac-%s-vnc.cloud.sakura.ad.jp
+port=51234
+password=aaabababababa`
+
+	return &sacloud.VNCProxyInfo{
+		Status:       "OK",
+		Host:         "localhost",
+		IOServerHost: fmt.Sprintf("sac-%s-vnc.cloud.sakura.ad.jp", zone),
+		Port:         51234,
+		Password:     "dummy",
+		VNCFile:      fmt.Sprintf(vncFileTemplate, zone),
+	}, nil
+}
+
 // Monitor is fake implementation
 func (o *ServerOp) Monitor(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.CPUTimeActivity, error) {
 	value, err := o.Read(ctx, zone, id)

@@ -481,7 +481,7 @@ func (f *fieldsDef) CDROMID() *dsl.FieldDesc {
 		Name: "CDROMID",
 		Type: meta.TypeID,
 		Tags: &dsl.FieldTags{
-			MapConv: "CDROM.ID",
+			MapConv: "Instance.CDROM.ID",
 		},
 	}
 }

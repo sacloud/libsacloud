@@ -1841,6 +1841,20 @@ type serverShutdownRequestEnvelope struct {
 	Force bool `json:",omitempty"`
 }
 
+// serverSendKeyRequestEnvelope is envelop of API request
+type serverSendKeyRequestEnvelope struct {
+	Key  string   `json:",omitempty"`
+	Keys []string `json:",omitempty"`
+}
+
+// serverGetVNCProxyResponseEnvelope is envelop of API response
+type serverGetVNCProxyResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	VNCProxyInfo *naked.VNCProxyInfo `json:",omitempty"`
+}
+
 // serverMonitorRequestEnvelope is envelop of API request
 type serverMonitorRequestEnvelope struct {
 	Start time.Time `json:",omitempty"`

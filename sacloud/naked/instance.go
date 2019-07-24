@@ -15,4 +15,5 @@ type Instance struct {
 	ModifiedAt      *time.Time                  `json:",omitempty" yaml:"modified_at,omitempty" structs:",omitempty"`
 	Warnings        string                      `json:",omitempty" yaml:"warnings,omitempty" structs:",omitempty"`
 	WarningsValue   int                         `json:",omitempty" yaml:"warnings_value,omitempty" structs:",omitempty"`
+	CDROM           *CDROM                      `json:",omitempty" yaml:"cdrom,omitempty" structs:",omitempty"`
 }

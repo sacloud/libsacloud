@@ -455,10 +455,12 @@ type ServerAPI interface {
 	Delete(ctx context.Context, zone string, id types.ID) error
 	ChangePlan(ctx context.Context, zone string, id types.ID, plan *ServerChangePlanRequest) (*Server, error)
 	InsertCDROM(ctx context.Context, zone string, id types.ID, insertParam *InsertCDROMRequest) error
-	EjectCDROM(ctx context.Context, zone string, id types.ID, insertParam *EjectCDROMRequest) error
+	EjectCDROM(ctx context.Context, zone string, id types.ID, ejectParam *EjectCDROMRequest) error
 	Boot(ctx context.Context, zone string, id types.ID) error
 	Shutdown(ctx context.Context, zone string, id types.ID, shutdownOption *ShutdownOption) error
 	Reset(ctx context.Context, zone string, id types.ID) error
+	SendKey(ctx context.Context, zone string, id types.ID, keyboardParam *SendKeyRequest) error
+	GetVNCProxy(ctx context.Context, zone string, id types.ID) (*VNCProxyInfo, error)
 	Monitor(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*CPUTimeActivity, error)
 }
 

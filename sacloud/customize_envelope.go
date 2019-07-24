@@ -55,3 +55,22 @@ func (m *mobileGatewaySetSIMRoutesRequestEnvelope) MarshalJSON() ([]byte, error)
 	}
 	return json.Marshal(tmp)
 }
+
+// UnmarshalJSON APIからの戻り値でレスポンスボディ直下にデータを持つことへの対応
+func (s *serverGetVNCProxyResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type alias serverGetVNCProxyResponseEnvelope
+
+	var tmp alias
+	if err := json.Unmarshal(data, &tmp); err != nil {
+		return err
+	}
+
+	var nakedVNCProxy naked.VNCProxyInfo
+	if err := json.Unmarshal(data, &nakedVNCProxy); err != nil {
+		return err
+	}
+	tmp.VNCProxyInfo = &nakedVNCProxy
+
+	*s = serverGetVNCProxyResponseEnvelope(tmp)
+	return nil
+}

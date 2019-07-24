@@ -7186,16 +7186,16 @@ func (t *ServerTracer) InsertCDROM(ctx context.Context, zone string, id types.ID
 }
 
 // EjectCDROM is API call with trace log
-func (t *ServerTracer) EjectCDROM(ctx context.Context, zone string, id types.ID, insertParam *sacloud.EjectCDROMRequest) error {
+func (t *ServerTracer) EjectCDROM(ctx context.Context, zone string, id types.ID, ejectParam *sacloud.EjectCDROMRequest) error {
 	log.Println("[TRACE] ServerAPI.EjectCDROM start")
 	targetArguments := struct {
-		Argzone        string
-		Argid          types.ID                   `json:"id"`
-		ArginsertParam *sacloud.EjectCDROMRequest `json:"insertParam"`
+		Argzone       string
+		Argid         types.ID                   `json:"id"`
+		ArgejectParam *sacloud.EjectCDROMRequest `json:"ejectParam"`
 	}{
-		Argzone:        zone,
-		Argid:          id,
-		ArginsertParam: insertParam,
+		Argzone:       zone,
+		Argid:         id,
+		ArgejectParam: ejectParam,
 	}
 	if d, err := json.Marshal(targetArguments); err == nil {
 		log.Printf("[TRACE] \targs: %s\n", string(d))
@@ -7205,7 +7205,7 @@ func (t *ServerTracer) EjectCDROM(ctx context.Context, zone string, id types.ID,
 		log.Println("[TRACE] ServerAPI.EjectCDROM end")
 	}()
 
-	err := t.Internal.EjectCDROM(ctx, zone, id, insertParam)
+	err := t.Internal.EjectCDROM(ctx, zone, id, ejectParam)
 	targetResults := struct {
 		Error error
 	}{
@@ -7311,6 +7311,72 @@ func (t *ServerTracer) Reset(ctx context.Context, zone string, id types.ID) erro
 	}
 
 	return err
+}
+
+// SendKey is API call with trace log
+func (t *ServerTracer) SendKey(ctx context.Context, zone string, id types.ID, keyboardParam *sacloud.SendKeyRequest) error {
+	log.Println("[TRACE] ServerAPI.SendKey start")
+	targetArguments := struct {
+		Argzone          string
+		Argid            types.ID                `json:"id"`
+		ArgkeyboardParam *sacloud.SendKeyRequest `json:"keyboardParam"`
+	}{
+		Argzone:          zone,
+		Argid:            id,
+		ArgkeyboardParam: keyboardParam,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] ServerAPI.SendKey end")
+	}()
+
+	err := t.Internal.SendKey(ctx, zone, id, keyboardParam)
+	targetResults := struct {
+		Error error
+	}{
+		Error: err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return err
+}
+
+// GetVNCProxy is API call with trace log
+func (t *ServerTracer) GetVNCProxy(ctx context.Context, zone string, id types.ID) (*sacloud.VNCProxyInfo, error) {
+	log.Println("[TRACE] ServerAPI.GetVNCProxy start")
+	targetArguments := struct {
+		Argzone string
+		Argid   types.ID `json:"id"`
+	}{
+		Argzone: zone,
+		Argid:   id,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] ServerAPI.GetVNCProxy end")
+	}()
+
+	resultVNCProxyInfo, err := t.Internal.GetVNCProxy(ctx, zone, id)
+	targetResults := struct {
+		VNCProxyInfo *sacloud.VNCProxyInfo
+		Error        error
+	}{
+		VNCProxyInfo: resultVNCProxyInfo,
+		Error:        err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultVNCProxyInfo, err
 }
 
 // Monitor is API call with trace log
