@@ -12,12 +12,12 @@ import (
 
 // archiveFindRequestEnvelope is envelop of API request
 type archiveFindRequestEnvelope struct {
-	Count   int           `json:",omitempty"`
-	From    int           `json:",omitempty"`
-	Sort    []string      `json:",omitempty"`
-	Filter  search.Filter `json:",omitempty"`
-	Include []string      `json:",omitempty"`
-	Exclude []string      `json:",omitempty"`
+	Count   int             `json:",omitempty"`
+	From    int             `json:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty"`
+	Filter  search.Filter   `json:",omitempty"`
+	Include []string        `json:",omitempty"`
+	Exclude []string        `json:",omitempty"`
 }
 
 // archiveFindResponseEnvelope is envelop of API response
@@ -100,12 +100,12 @@ type authStatusReadResponseEnvelope struct {
 
 // autoBackupFindRequestEnvelope is envelop of API request
 type autoBackupFindRequestEnvelope struct {
-	Count   int           `json:",omitempty"`
-	From    int           `json:",omitempty"`
-	Sort    []string      `json:",omitempty"`
-	Filter  search.Filter `json:",omitempty"`
-	Include []string      `json:",omitempty"`
-	Exclude []string      `json:",omitempty"`
+	Count   int             `json:",omitempty"`
+	From    int             `json:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty"`
+	Filter  search.Filter   `json:",omitempty"`
+	Include []string        `json:",omitempty"`
+	Exclude []string        `json:",omitempty"`
 }
 
 // autoBackupFindResponseEnvelope is envelop of API response
@@ -206,12 +206,12 @@ type billDetailsCSVResponseEnvelope struct {
 
 // bridgeFindRequestEnvelope is envelop of API request
 type bridgeFindRequestEnvelope struct {
-	Count   int           `json:",omitempty"`
-	From    int           `json:",omitempty"`
-	Sort    []string      `json:",omitempty"`
-	Filter  search.Filter `json:",omitempty"`
-	Include []string      `json:",omitempty"`
-	Exclude []string      `json:",omitempty"`
+	Count   int             `json:",omitempty"`
+	From    int             `json:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty"`
+	Filter  search.Filter   `json:",omitempty"`
+	Include []string        `json:",omitempty"`
+	Exclude []string        `json:",omitempty"`
 }
 
 // bridgeFindResponseEnvelope is envelop of API response
@@ -259,12 +259,12 @@ type bridgeUpdateResponseEnvelope struct {
 
 // cDROMFindRequestEnvelope is envelop of API request
 type cDROMFindRequestEnvelope struct {
-	Count   int           `json:",omitempty"`
-	From    int           `json:",omitempty"`
-	Sort    []string      `json:",omitempty"`
-	Filter  search.Filter `json:",omitempty"`
-	Include []string      `json:",omitempty"`
-	Exclude []string      `json:",omitempty"`
+	Count   int             `json:",omitempty"`
+	From    int             `json:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty"`
+	Filter  search.Filter   `json:",omitempty"`
+	Include []string        `json:",omitempty"`
+	Exclude []string        `json:",omitempty"`
 }
 
 // cDROMFindResponseEnvelope is envelop of API response
@@ -335,12 +335,12 @@ type couponFindResponseEnvelope struct {
 
 // databaseFindRequestEnvelope is envelop of API request
 type databaseFindRequestEnvelope struct {
-	Count   int           `json:",omitempty"`
-	From    int           `json:",omitempty"`
-	Sort    []string      `json:",omitempty"`
-	Filter  search.Filter `json:",omitempty"`
-	Include []string      `json:",omitempty"`
-	Exclude []string      `json:",omitempty"`
+	Count   int             `json:",omitempty"`
+	From    int             `json:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty"`
+	Filter  search.Filter   `json:",omitempty"`
+	Include []string        `json:",omitempty"`
+	Exclude []string        `json:",omitempty"`
 }
 
 // databaseFindResponseEnvelope is envelop of API response
@@ -457,12 +457,12 @@ type databaseStatusResponseEnvelope struct {
 
 // diskFindRequestEnvelope is envelop of API request
 type diskFindRequestEnvelope struct {
-	Count   int           `json:",omitempty"`
-	From    int           `json:",omitempty"`
-	Sort    []string      `json:",omitempty"`
-	Filter  search.Filter `json:",omitempty"`
-	Include []string      `json:",omitempty"`
-	Exclude []string      `json:",omitempty"`
+	Count   int             `json:",omitempty"`
+	From    int             `json:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty"`
+	Filter  search.Filter   `json:",omitempty"`
+	Include []string        `json:",omitempty"`
+	Exclude []string        `json:",omitempty"`
 }
 
 // diskFindResponseEnvelope is envelop of API response
@@ -569,12 +569,12 @@ type diskMonitorResponseEnvelope struct {
 
 // diskPlanFindRequestEnvelope is envelop of API request
 type diskPlanFindRequestEnvelope struct {
-	Count   int           `json:",omitempty"`
-	From    int           `json:",omitempty"`
-	Sort    []string      `json:",omitempty"`
-	Filter  search.Filter `json:",omitempty"`
-	Include []string      `json:",omitempty"`
-	Exclude []string      `json:",omitempty"`
+	Count   int             `json:",omitempty"`
+	From    int             `json:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty"`
+	Filter  search.Filter   `json:",omitempty"`
+	Include []string        `json:",omitempty"`
+	Exclude []string        `json:",omitempty"`
 }
 
 // diskPlanFindResponseEnvelope is envelop of API response
@@ -596,12 +596,12 @@ type diskPlanReadResponseEnvelope struct {
 
 // dNSFindRequestEnvelope is envelop of API request
 type dNSFindRequestEnvelope struct {
-	Count   int           `json:",omitempty"`
-	From    int           `json:",omitempty"`
-	Sort    []string      `json:",omitempty"`
-	Filter  search.Filter `json:",omitempty"`
-	Include []string      `json:",omitempty"`
-	Exclude []string      `json:",omitempty"`
+	Count   int             `json:",omitempty"`
+	From    int             `json:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty"`
+	Filter  search.Filter   `json:",omitempty"`
+	Include []string        `json:",omitempty"`
+	Exclude []string        `json:",omitempty"`
 }
 
 // dNSFindResponseEnvelope is envelop of API response
@@ -649,12 +649,12 @@ type dNSUpdateResponseEnvelope struct {
 
 // gSLBFindRequestEnvelope is envelop of API request
 type gSLBFindRequestEnvelope struct {
-	Count   int           `json:",omitempty"`
-	From    int           `json:",omitempty"`
-	Sort    []string      `json:",omitempty"`
-	Filter  search.Filter `json:",omitempty"`
-	Include []string      `json:",omitempty"`
-	Exclude []string      `json:",omitempty"`
+	Count   int             `json:",omitempty"`
+	From    int             `json:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty"`
+	Filter  search.Filter   `json:",omitempty"`
+	Include []string        `json:",omitempty"`
+	Exclude []string        `json:",omitempty"`
 }
 
 // gSLBFindResponseEnvelope is envelop of API response
@@ -702,12 +702,12 @@ type gSLBUpdateResponseEnvelope struct {
 
 // iconFindRequestEnvelope is envelop of API request
 type iconFindRequestEnvelope struct {
-	Count   int           `json:",omitempty"`
-	From    int           `json:",omitempty"`
-	Sort    []string      `json:",omitempty"`
-	Filter  search.Filter `json:",omitempty"`
-	Include []string      `json:",omitempty"`
-	Exclude []string      `json:",omitempty"`
+	Count   int             `json:",omitempty"`
+	From    int             `json:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty"`
+	Filter  search.Filter   `json:",omitempty"`
+	Include []string        `json:",omitempty"`
+	Exclude []string        `json:",omitempty"`
 }
 
 // iconFindResponseEnvelope is envelop of API response
@@ -755,12 +755,12 @@ type iconUpdateResponseEnvelope struct {
 
 // interfaceFindRequestEnvelope is envelop of API request
 type interfaceFindRequestEnvelope struct {
-	Count   int           `json:",omitempty"`
-	From    int           `json:",omitempty"`
-	Sort    []string      `json:",omitempty"`
-	Filter  search.Filter `json:",omitempty"`
-	Include []string      `json:",omitempty"`
-	Exclude []string      `json:",omitempty"`
+	Count   int             `json:",omitempty"`
+	From    int             `json:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty"`
+	Filter  search.Filter   `json:",omitempty"`
+	Include []string        `json:",omitempty"`
+	Exclude []string        `json:",omitempty"`
 }
 
 // interfaceFindResponseEnvelope is envelop of API response
@@ -822,12 +822,12 @@ type interfaceMonitorResponseEnvelope struct {
 
 // internetFindRequestEnvelope is envelop of API request
 type internetFindRequestEnvelope struct {
-	Count   int           `json:",omitempty"`
-	From    int           `json:",omitempty"`
-	Sort    []string      `json:",omitempty"`
-	Filter  search.Filter `json:",omitempty"`
-	Include []string      `json:",omitempty"`
-	Exclude []string      `json:",omitempty"`
+	Count   int             `json:",omitempty"`
+	From    int             `json:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty"`
+	Filter  search.Filter   `json:",omitempty"`
+	Include []string        `json:",omitempty"`
+	Exclude []string        `json:",omitempty"`
 }
 
 // internetFindResponseEnvelope is envelop of API response
@@ -937,12 +937,12 @@ type internetEnableIPv6ResponseEnvelope struct {
 
 // internetPlanFindRequestEnvelope is envelop of API request
 type internetPlanFindRequestEnvelope struct {
-	Count   int           `json:",omitempty"`
-	From    int           `json:",omitempty"`
-	Sort    []string      `json:",omitempty"`
-	Filter  search.Filter `json:",omitempty"`
-	Include []string      `json:",omitempty"`
-	Exclude []string      `json:",omitempty"`
+	Count   int             `json:",omitempty"`
+	From    int             `json:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty"`
+	Filter  search.Filter   `json:",omitempty"`
+	Include []string        `json:",omitempty"`
+	Exclude []string        `json:",omitempty"`
 }
 
 // internetPlanFindResponseEnvelope is envelop of API response
@@ -1011,12 +1011,12 @@ type iPv6NetReadResponseEnvelope struct {
 
 // iPv6AddrFindRequestEnvelope is envelop of API request
 type iPv6AddrFindRequestEnvelope struct {
-	Count   int           `json:",omitempty"`
-	From    int           `json:",omitempty"`
-	Sort    []string      `json:",omitempty"`
-	Filter  search.Filter `json:",omitempty"`
-	Include []string      `json:",omitempty"`
-	Exclude []string      `json:",omitempty"`
+	Count   int             `json:",omitempty"`
+	From    int             `json:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty"`
+	Filter  search.Filter   `json:",omitempty"`
+	Include []string        `json:",omitempty"`
+	Exclude []string        `json:",omitempty"`
 }
 
 // iPv6AddrFindResponseEnvelope is envelop of API response
@@ -1064,12 +1064,12 @@ type iPv6AddrUpdateResponseEnvelope struct {
 
 // licenseFindRequestEnvelope is envelop of API request
 type licenseFindRequestEnvelope struct {
-	Count   int           `json:",omitempty"`
-	From    int           `json:",omitempty"`
-	Sort    []string      `json:",omitempty"`
-	Filter  search.Filter `json:",omitempty"`
-	Include []string      `json:",omitempty"`
-	Exclude []string      `json:",omitempty"`
+	Count   int             `json:",omitempty"`
+	From    int             `json:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty"`
+	Filter  search.Filter   `json:",omitempty"`
+	Include []string        `json:",omitempty"`
+	Exclude []string        `json:",omitempty"`
 }
 
 // licenseFindResponseEnvelope is envelop of API response
@@ -1117,12 +1117,12 @@ type licenseUpdateResponseEnvelope struct {
 
 // licenseInfoFindRequestEnvelope is envelop of API request
 type licenseInfoFindRequestEnvelope struct {
-	Count   int           `json:",omitempty"`
-	From    int           `json:",omitempty"`
-	Sort    []string      `json:",omitempty"`
-	Filter  search.Filter `json:",omitempty"`
-	Include []string      `json:",omitempty"`
-	Exclude []string      `json:",omitempty"`
+	Count   int             `json:",omitempty"`
+	From    int             `json:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty"`
+	Filter  search.Filter   `json:",omitempty"`
+	Include []string        `json:",omitempty"`
+	Exclude []string        `json:",omitempty"`
 }
 
 // licenseInfoFindResponseEnvelope is envelop of API response
@@ -1144,12 +1144,12 @@ type licenseInfoReadResponseEnvelope struct {
 
 // loadBalancerFindRequestEnvelope is envelop of API request
 type loadBalancerFindRequestEnvelope struct {
-	Count   int           `json:",omitempty"`
-	From    int           `json:",omitempty"`
-	Sort    []string      `json:",omitempty"`
-	Filter  search.Filter `json:",omitempty"`
-	Include []string      `json:",omitempty"`
-	Exclude []string      `json:",omitempty"`
+	Count   int             `json:",omitempty"`
+	From    int             `json:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty"`
+	Filter  search.Filter   `json:",omitempty"`
+	Include []string        `json:",omitempty"`
+	Exclude []string        `json:",omitempty"`
 }
 
 // loadBalancerFindResponseEnvelope is envelop of API response
@@ -1225,12 +1225,12 @@ type loadBalancerStatusResponseEnvelope struct {
 
 // mobileGatewayFindRequestEnvelope is envelop of API request
 type mobileGatewayFindRequestEnvelope struct {
-	Count   int           `json:",omitempty"`
-	From    int           `json:",omitempty"`
-	Sort    []string      `json:",omitempty"`
-	Filter  search.Filter `json:",omitempty"`
-	Include []string      `json:",omitempty"`
-	Exclude []string      `json:",omitempty"`
+	Count   int             `json:",omitempty"`
+	From    int             `json:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty"`
+	Filter  search.Filter   `json:",omitempty"`
+	Include []string        `json:",omitempty"`
+	Exclude []string        `json:",omitempty"`
 }
 
 // mobileGatewayFindResponseEnvelope is envelop of API response
@@ -1365,12 +1365,12 @@ type mobileGatewayMonitorInterfaceResponseEnvelope struct {
 
 // nFSFindRequestEnvelope is envelop of API request
 type nFSFindRequestEnvelope struct {
-	Count   int           `json:",omitempty"`
-	From    int           `json:",omitempty"`
-	Sort    []string      `json:",omitempty"`
-	Filter  search.Filter `json:",omitempty"`
-	Include []string      `json:",omitempty"`
-	Exclude []string      `json:",omitempty"`
+	Count   int             `json:",omitempty"`
+	From    int             `json:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty"`
+	Filter  search.Filter   `json:",omitempty"`
+	Include []string        `json:",omitempty"`
+	Exclude []string        `json:",omitempty"`
 }
 
 // nFSFindResponseEnvelope is envelop of API response
@@ -1451,12 +1451,12 @@ type nFSMonitorInterfaceResponseEnvelope struct {
 
 // noteFindRequestEnvelope is envelop of API request
 type noteFindRequestEnvelope struct {
-	Count   int           `json:",omitempty"`
-	From    int           `json:",omitempty"`
-	Sort    []string      `json:",omitempty"`
-	Filter  search.Filter `json:",omitempty"`
-	Include []string      `json:",omitempty"`
-	Exclude []string      `json:",omitempty"`
+	Count   int             `json:",omitempty"`
+	From    int             `json:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty"`
+	Filter  search.Filter   `json:",omitempty"`
+	Include []string        `json:",omitempty"`
+	Exclude []string        `json:",omitempty"`
 }
 
 // noteFindResponseEnvelope is envelop of API response
@@ -1504,12 +1504,12 @@ type noteUpdateResponseEnvelope struct {
 
 // packetFilterFindRequestEnvelope is envelop of API request
 type packetFilterFindRequestEnvelope struct {
-	Count   int           `json:",omitempty"`
-	From    int           `json:",omitempty"`
-	Sort    []string      `json:",omitempty"`
-	Filter  search.Filter `json:",omitempty"`
-	Include []string      `json:",omitempty"`
-	Exclude []string      `json:",omitempty"`
+	Count   int             `json:",omitempty"`
+	From    int             `json:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty"`
+	Filter  search.Filter   `json:",omitempty"`
+	Include []string        `json:",omitempty"`
+	Exclude []string        `json:",omitempty"`
 }
 
 // packetFilterFindResponseEnvelope is envelop of API response
@@ -1557,12 +1557,12 @@ type packetFilterUpdateResponseEnvelope struct {
 
 // privateHostFindRequestEnvelope is envelop of API request
 type privateHostFindRequestEnvelope struct {
-	Count   int           `json:",omitempty"`
-	From    int           `json:",omitempty"`
-	Sort    []string      `json:",omitempty"`
-	Filter  search.Filter `json:",omitempty"`
-	Include []string      `json:",omitempty"`
-	Exclude []string      `json:",omitempty"`
+	Count   int             `json:",omitempty"`
+	From    int             `json:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty"`
+	Filter  search.Filter   `json:",omitempty"`
+	Include []string        `json:",omitempty"`
+	Exclude []string        `json:",omitempty"`
 }
 
 // privateHostFindResponseEnvelope is envelop of API response
@@ -1610,12 +1610,12 @@ type privateHostUpdateResponseEnvelope struct {
 
 // privateHostPlanFindRequestEnvelope is envelop of API request
 type privateHostPlanFindRequestEnvelope struct {
-	Count   int           `json:",omitempty"`
-	From    int           `json:",omitempty"`
-	Sort    []string      `json:",omitempty"`
-	Filter  search.Filter `json:",omitempty"`
-	Include []string      `json:",omitempty"`
-	Exclude []string      `json:",omitempty"`
+	Count   int             `json:",omitempty"`
+	From    int             `json:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty"`
+	Filter  search.Filter   `json:",omitempty"`
+	Include []string        `json:",omitempty"`
+	Exclude []string        `json:",omitempty"`
 }
 
 // privateHostPlanFindResponseEnvelope is envelop of API response
@@ -1637,12 +1637,12 @@ type privateHostPlanReadResponseEnvelope struct {
 
 // proxyLBFindRequestEnvelope is envelop of API request
 type proxyLBFindRequestEnvelope struct {
-	Count   int           `json:",omitempty"`
-	From    int           `json:",omitempty"`
-	Sort    []string      `json:",omitempty"`
-	Filter  search.Filter `json:",omitempty"`
-	Include []string      `json:",omitempty"`
-	Exclude []string      `json:",omitempty"`
+	Count   int             `json:",omitempty"`
+	From    int             `json:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty"`
+	Filter  search.Filter   `json:",omitempty"`
+	Include []string        `json:",omitempty"`
+	Exclude []string        `json:",omitempty"`
 }
 
 // proxyLBFindResponseEnvelope is envelop of API response
@@ -1732,12 +1732,12 @@ type proxyLBHealthStatusResponseEnvelope struct {
 
 // regionFindRequestEnvelope is envelop of API request
 type regionFindRequestEnvelope struct {
-	Count   int           `json:",omitempty"`
-	From    int           `json:",omitempty"`
-	Sort    []string      `json:",omitempty"`
-	Filter  search.Filter `json:",omitempty"`
-	Include []string      `json:",omitempty"`
-	Exclude []string      `json:",omitempty"`
+	Count   int             `json:",omitempty"`
+	From    int             `json:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty"`
+	Filter  search.Filter   `json:",omitempty"`
+	Include []string        `json:",omitempty"`
+	Exclude []string        `json:",omitempty"`
 }
 
 // regionFindResponseEnvelope is envelop of API response
@@ -1759,12 +1759,12 @@ type regionReadResponseEnvelope struct {
 
 // serverFindRequestEnvelope is envelop of API request
 type serverFindRequestEnvelope struct {
-	Count   int           `json:",omitempty"`
-	From    int           `json:",omitempty"`
-	Sort    []string      `json:",omitempty"`
-	Filter  search.Filter `json:",omitempty"`
-	Include []string      `json:",omitempty"`
-	Exclude []string      `json:",omitempty"`
+	Count   int             `json:",omitempty"`
+	From    int             `json:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty"`
+	Filter  search.Filter   `json:",omitempty"`
+	Include []string        `json:",omitempty"`
+	Exclude []string        `json:",omitempty"`
 }
 
 // serverFindResponseEnvelope is envelop of API response
@@ -1871,12 +1871,12 @@ type serverMonitorResponseEnvelope struct {
 
 // serverPlanFindRequestEnvelope is envelop of API request
 type serverPlanFindRequestEnvelope struct {
-	Count   int           `json:",omitempty"`
-	From    int           `json:",omitempty"`
-	Sort    []string      `json:",omitempty"`
-	Filter  search.Filter `json:",omitempty"`
-	Include []string      `json:",omitempty"`
-	Exclude []string      `json:",omitempty"`
+	Count   int             `json:",omitempty"`
+	From    int             `json:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty"`
+	Filter  search.Filter   `json:",omitempty"`
+	Include []string        `json:",omitempty"`
+	Exclude []string        `json:",omitempty"`
 }
 
 // serverPlanFindResponseEnvelope is envelop of API response
@@ -1898,12 +1898,12 @@ type serverPlanReadResponseEnvelope struct {
 
 // serviceClassFindRequestEnvelope is envelop of API request
 type serviceClassFindRequestEnvelope struct {
-	Count   int           `json:",omitempty"`
-	From    int           `json:",omitempty"`
-	Sort    []string      `json:",omitempty"`
-	Filter  search.Filter `json:",omitempty"`
-	Include []string      `json:",omitempty"`
-	Exclude []string      `json:",omitempty"`
+	Count   int             `json:",omitempty"`
+	From    int             `json:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty"`
+	Filter  search.Filter   `json:",omitempty"`
+	Include []string        `json:",omitempty"`
+	Exclude []string        `json:",omitempty"`
 }
 
 // serviceClassFindResponseEnvelope is envelop of API response
@@ -1917,12 +1917,12 @@ type serviceClassFindResponseEnvelope struct {
 
 // sIMFindRequestEnvelope is envelop of API request
 type sIMFindRequestEnvelope struct {
-	Count   int           `json:",omitempty"`
-	From    int           `json:",omitempty"`
-	Sort    []string      `json:",omitempty"`
-	Filter  search.Filter `json:",omitempty"`
-	Include []string      `json:",omitempty"`
-	Exclude []string      `json:",omitempty"`
+	Count   int             `json:",omitempty"`
+	From    int             `json:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty"`
+	Filter  search.Filter   `json:",omitempty"`
+	Include []string        `json:",omitempty"`
+	Exclude []string        `json:",omitempty"`
 }
 
 // sIMFindResponseEnvelope is envelop of API response
@@ -2024,12 +2024,12 @@ type sIMStatusResponseEnvelope struct {
 
 // simpleMonitorFindRequestEnvelope is envelop of API request
 type simpleMonitorFindRequestEnvelope struct {
-	Count   int           `json:",omitempty"`
-	From    int           `json:",omitempty"`
-	Sort    []string      `json:",omitempty"`
-	Filter  search.Filter `json:",omitempty"`
-	Include []string      `json:",omitempty"`
-	Exclude []string      `json:",omitempty"`
+	Count   int             `json:",omitempty"`
+	From    int             `json:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty"`
+	Filter  search.Filter   `json:",omitempty"`
+	Include []string        `json:",omitempty"`
+	Exclude []string        `json:",omitempty"`
 }
 
 // simpleMonitorFindResponseEnvelope is envelop of API response
@@ -2099,12 +2099,12 @@ type simpleMonitorHealthStatusResponseEnvelope struct {
 
 // sSHKeyFindRequestEnvelope is envelop of API request
 type sSHKeyFindRequestEnvelope struct {
-	Count   int           `json:",omitempty"`
-	From    int           `json:",omitempty"`
-	Sort    []string      `json:",omitempty"`
-	Filter  search.Filter `json:",omitempty"`
-	Include []string      `json:",omitempty"`
-	Exclude []string      `json:",omitempty"`
+	Count   int             `json:",omitempty"`
+	From    int             `json:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty"`
+	Filter  search.Filter   `json:",omitempty"`
+	Include []string        `json:",omitempty"`
+	Exclude []string        `json:",omitempty"`
 }
 
 // sSHKeyFindResponseEnvelope is envelop of API response
@@ -2165,12 +2165,12 @@ type sSHKeyUpdateResponseEnvelope struct {
 
 // switchFindRequestEnvelope is envelop of API request
 type switchFindRequestEnvelope struct {
-	Count   int           `json:",omitempty"`
-	From    int           `json:",omitempty"`
-	Sort    []string      `json:",omitempty"`
-	Filter  search.Filter `json:",omitempty"`
-	Include []string      `json:",omitempty"`
-	Exclude []string      `json:",omitempty"`
+	Count   int             `json:",omitempty"`
+	From    int             `json:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty"`
+	Filter  search.Filter   `json:",omitempty"`
+	Include []string        `json:",omitempty"`
+	Exclude []string        `json:",omitempty"`
 }
 
 // switchFindResponseEnvelope is envelop of API response
@@ -2218,12 +2218,12 @@ type switchUpdateResponseEnvelope struct {
 
 // vPCRouterFindRequestEnvelope is envelop of API request
 type vPCRouterFindRequestEnvelope struct {
-	Count   int           `json:",omitempty"`
-	From    int           `json:",omitempty"`
-	Sort    []string      `json:",omitempty"`
-	Filter  search.Filter `json:",omitempty"`
-	Include []string      `json:",omitempty"`
-	Exclude []string      `json:",omitempty"`
+	Count   int             `json:",omitempty"`
+	From    int             `json:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty"`
+	Filter  search.Filter   `json:",omitempty"`
+	Include []string        `json:",omitempty"`
+	Exclude []string        `json:",omitempty"`
 }
 
 // vPCRouterFindResponseEnvelope is envelop of API response
@@ -2346,12 +2346,12 @@ type webAccelDeleteCacheResponseEnvelope struct {
 
 // zoneFindRequestEnvelope is envelop of API request
 type zoneFindRequestEnvelope struct {
-	Count   int           `json:",omitempty"`
-	From    int           `json:",omitempty"`
-	Sort    []string      `json:",omitempty"`
-	Filter  search.Filter `json:",omitempty"`
-	Include []string      `json:",omitempty"`
-	Exclude []string      `json:",omitempty"`
+	Count   int             `json:",omitempty"`
+	From    int             `json:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty"`
+	Filter  search.Filter   `json:",omitempty"`
+	Include []string        `json:",omitempty"`
+	Exclude []string        `json:",omitempty"`
 }
 
 // zoneFindResponseEnvelope is envelop of API response

@@ -634,12 +634,12 @@ func (o *SourceArchiveInfo) SetZoneName(v string) {
 
 // FindCondition represents API parameter/response structure
 type FindCondition struct {
-	Count   int           `mapconv:",omitempty"`
-	From    int           `mapconv:",omitempty"`
-	Sort    []string      `mapconv:",omitempty"`
-	Filter  search.Filter `mapconv:",omitempty"`
-	Include []string      `mapconv:",omitempty"`
-	Exclude []string      `mapconv:",omitempty"`
+	Count   int             `mapconv:",omitempty"`
+	From    int             `mapconv:",omitempty"`
+	Sort    search.SortKeys `mapconv:",omitempty"`
+	Filter  search.Filter   `mapconv:",omitempty"`
+	Include []string        `mapconv:",omitempty"`
+	Exclude []string        `mapconv:",omitempty"`
 }
 
 // Validate validates by field tags
@@ -650,12 +650,12 @@ func (o *FindCondition) Validate() error {
 // setDefaults implements sacloud.argumentDefaulter
 func (o *FindCondition) setDefaults() interface{} {
 	return &struct {
-		Count   int           `mapconv:",omitempty"`
-		From    int           `mapconv:",omitempty"`
-		Sort    []string      `mapconv:",omitempty"`
-		Filter  search.Filter `mapconv:",omitempty"`
-		Include []string      `mapconv:",omitempty"`
-		Exclude []string      `mapconv:",omitempty"`
+		Count   int             `mapconv:",omitempty"`
+		From    int             `mapconv:",omitempty"`
+		Sort    search.SortKeys `mapconv:",omitempty"`
+		Filter  search.Filter   `mapconv:",omitempty"`
+		Include []string        `mapconv:",omitempty"`
+		Exclude []string        `mapconv:",omitempty"`
 	}{
 		Count:   o.Count,
 		From:    o.From,
@@ -692,12 +692,12 @@ func (o *FindCondition) SetFrom(v int) {
 }
 
 // GetSort returns value of Sort
-func (o *FindCondition) GetSort() []string {
+func (o *FindCondition) GetSort() search.SortKeys {
 	return o.Sort
 }
 
 // SetSort sets value to Sort
-func (o *FindCondition) SetSort(v []string) {
+func (o *FindCondition) SetSort(v search.SortKeys) {
 	o.Sort = v
 }
 
