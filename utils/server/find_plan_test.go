@@ -46,7 +46,7 @@ func TestFindPlan(t *testing.T) {
 		{
 			msg: "finder returns multiple result",
 			in: &FindPlanRequest{
-				Core: 1,
+				CPU: 1,
 			},
 			finder: &dummyPlanFinder{
 				plans: []*sacloud.ServerPlan{
@@ -60,7 +60,7 @@ func TestFindPlan(t *testing.T) {
 		{
 			msg: "with nil find parameter",
 			in: &FindPlanRequest{
-				Core: 1,
+				CPU: 1,
 			},
 			finder: &dummyPlanFinder{
 				plans: []*sacloud.ServerPlan{
@@ -73,7 +73,7 @@ func TestFindPlan(t *testing.T) {
 		{
 			msg: "with nil find parameter",
 			in: &FindPlanRequest{
-				Core: 1,
+				CPU: 1,
 			},
 			finder: &dummyPlanFinder{
 				plans: []*sacloud.ServerPlan{

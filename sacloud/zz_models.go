@@ -17003,9 +17003,8 @@ type ServerCreateRequest struct {
 	ServerPlanGeneration types.EPlanGeneration  `mapconv:"ServerPlan.Generation"`
 	ConnectedSwitches    []*ConnectedSwitch     `json:",omitempty" mapconv:"[]ConnectedSwitches,recursive"`
 	InterfaceDriver      types.EInterfaceDriver `mapconv:",default=virtio"`
-	HostName             string
-	Name                 string `validate:"required"`
-	Description          string `validate:"min=0,max=512"`
+	Name                 string                 `validate:"required"`
+	Description          string                 `validate:"min=0,max=512"`
 	Tags                 types.Tags
 	IconID               types.ID `mapconv:"Icon.ID"`
 	WaitDiskMigration    bool     `json:",omitempty" mapconv:",omitempty"`
@@ -17025,9 +17024,8 @@ func (o *ServerCreateRequest) setDefaults() interface{} {
 		ServerPlanGeneration types.EPlanGeneration  `mapconv:"ServerPlan.Generation"`
 		ConnectedSwitches    []*ConnectedSwitch     `json:",omitempty" mapconv:"[]ConnectedSwitches,recursive"`
 		InterfaceDriver      types.EInterfaceDriver `mapconv:",default=virtio"`
-		HostName             string
-		Name                 string `validate:"required"`
-		Description          string `validate:"min=0,max=512"`
+		Name                 string                 `validate:"required"`
+		Description          string                 `validate:"min=0,max=512"`
 		Tags                 types.Tags
 		IconID               types.ID `mapconv:"Icon.ID"`
 		WaitDiskMigration    bool     `json:",omitempty" mapconv:",omitempty"`
@@ -17038,7 +17036,6 @@ func (o *ServerCreateRequest) setDefaults() interface{} {
 		ServerPlanGeneration: o.ServerPlanGeneration,
 		ConnectedSwitches:    o.ConnectedSwitches,
 		InterfaceDriver:      o.InterfaceDriver,
-		HostName:             o.HostName,
 		Name:                 o.Name,
 		Description:          o.Description,
 		Tags:                 o.Tags,
@@ -17110,16 +17107,6 @@ func (o *ServerCreateRequest) GetInterfaceDriver() types.EInterfaceDriver {
 // SetInterfaceDriver sets value to InterfaceDriver
 func (o *ServerCreateRequest) SetInterfaceDriver(v types.EInterfaceDriver) {
 	o.InterfaceDriver = v
-}
-
-// GetHostName returns value of HostName
-func (o *ServerCreateRequest) GetHostName() string {
-	return o.HostName
-}
-
-// SetHostName sets value to HostName
-func (o *ServerCreateRequest) SetHostName(v string) {
-	o.HostName = v
 }
 
 // GetName returns value of Name
@@ -17693,7 +17680,7 @@ type ServerPlan struct {
 	CPU          int
 	MemoryMB     int
 	Commitment   types.ECommitment
-	Generation   int
+	Generation   types.EPlanGeneration
 	Availability types.EAvailability
 }
 
@@ -17710,7 +17697,7 @@ func (o *ServerPlan) setDefaults() interface{} {
 		CPU          int
 		MemoryMB     int
 		Commitment   types.ECommitment
-		Generation   int
+		Generation   types.EPlanGeneration
 		Availability types.EAvailability
 	}{
 		ID:           o.ID,
@@ -17804,12 +17791,12 @@ func (o *ServerPlan) SetCommitment(v types.ECommitment) {
 }
 
 // GetGeneration returns value of Generation
-func (o *ServerPlan) GetGeneration() int {
+func (o *ServerPlan) GetGeneration() types.EPlanGeneration {
 	return o.Generation
 }
 
 // SetGeneration sets value to Generation
-func (o *ServerPlan) SetGeneration(v int) {
+func (o *ServerPlan) SetGeneration(v types.EPlanGeneration) {
 	o.Generation = v
 }
 
@@ -20248,10 +20235,9 @@ func (o *SSHKeyGenerated) SetPrivateKey(v string) {
 
 // SSHKeyGenerateRequest represents API parameter/response structure
 type SSHKeyGenerateRequest struct {
-	Name           string `validate:"required"`
-	Description    string `validate:"min=0,max=512"`
-	PassPhrase     string
-	GenerateFormat string `mapconv:",default=openssh"`
+	Name        string `validate:"required"`
+	Description string `validate:"min=0,max=512"`
+	PassPhrase  string
 }
 
 // Validate validates by field tags
@@ -20265,12 +20251,12 @@ func (o *SSHKeyGenerateRequest) setDefaults() interface{} {
 		Name           string `validate:"required"`
 		Description    string `validate:"min=0,max=512"`
 		PassPhrase     string
-		GenerateFormat string `mapconv:",default=openssh"`
+		GenerateFormat string
 	}{
 		Name:           o.Name,
 		Description:    o.Description,
 		PassPhrase:     o.PassPhrase,
-		GenerateFormat: o.GenerateFormat,
+		GenerateFormat: "openssh",
 	}
 }
 
@@ -20302,16 +20288,6 @@ func (o *SSHKeyGenerateRequest) GetPassPhrase() string {
 // SetPassPhrase sets value to PassPhrase
 func (o *SSHKeyGenerateRequest) SetPassPhrase(v string) {
 	o.PassPhrase = v
-}
-
-// GetGenerateFormat returns value of GenerateFormat
-func (o *SSHKeyGenerateRequest) GetGenerateFormat() string {
-	return o.GenerateFormat
-}
-
-// SetGenerateFormat sets value to GenerateFormat
-func (o *SSHKeyGenerateRequest) SetGenerateFormat(v string) {
-	o.GenerateFormat = v
 }
 
 /*************************************************
