@@ -71,7 +71,7 @@ func (f *findCondtionsDef) Count() *dsl.FieldDesc {
 func (f *findCondtionsDef) Sort() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "Sort",
-		Type: meta.Static([]string{}),
+		Type: meta.Static(search.SortKeys{}),
 		Tags: &dsl.FieldTags{
 			MapConv: ",omitempty",
 		},
