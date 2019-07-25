@@ -16,7 +16,7 @@ type PlanFinder interface {
 
 // FindPlanRequest サーバプラン検索パラメータ
 type FindPlanRequest struct {
-	Core       int
+	CPU        int
 	MemoryGB   int
 	Commitment types.ECommitment
 	Generation types.EPlanGeneration
@@ -30,9 +30,10 @@ func (f *FindPlanRequest) findCondition() *sacloud.FindCondition {
 		Filter: search.Filter{
 			search.Key("Commitment"): types.Commitments.Standard,
 		},
+		Count: 1000,
 	}
-	if f.Core > 0 {
-		cond.Filter[search.Key("CPU")] = f.Core
+	if f.CPU > 0 {
+		cond.Filter[search.Key("CPU")] = f.CPU
 	}
 	if f.MemoryGB > 0 {
 		cond.Filter[search.Key("MemoryMB")] = f.MemoryGB * 1024

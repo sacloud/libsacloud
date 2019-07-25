@@ -162,7 +162,6 @@ var (
 			},
 		},
 		InterfaceDriver:   types.InterfaceDrivers.VirtIO,
-		HostName:          "libsacloud-server",
 		Name:              "libsacloud-server",
 		Description:       "desc",
 		Tags:              []string{"tag1", "tag2"},
@@ -172,7 +171,6 @@ var (
 		Name:            createServerParam.Name,
 		Description:     createServerParam.Description,
 		Tags:            createServerParam.Tags,
-		HostName:        createServerParam.HostName,
 		InterfaceDriver: createServerParam.InterfaceDriver,
 		CPU:             createServerParam.CPU,
 		MemoryMB:        createServerParam.MemoryMB,
@@ -187,7 +185,6 @@ var (
 		Name:            updateServerParam.Name,
 		Description:     updateServerParam.Description,
 		Tags:            updateServerParam.Tags,
-		HostName:        createServerParam.HostName,
 		InterfaceDriver: createServerParam.InterfaceDriver,
 		CPU:             createServerParam.CPU,
 		MemoryMB:        createServerParam.MemoryMB,
@@ -198,7 +195,6 @@ var (
 	}
 	updateServerToMinExpected = &sacloud.Server{
 		Name:            updateServerToMinParam.Name,
-		HostName:        createServerParam.HostName,
 		InterfaceDriver: createServerParam.InterfaceDriver,
 		CPU:             createServerParam.CPU,
 		MemoryMB:        createServerParam.MemoryMB,
@@ -254,7 +250,6 @@ func TestServerOp_ChangePlan(t *testing.T) {
 						},
 					},
 					InterfaceDriver:   types.InterfaceDrivers.VirtIO,
-					HostName:          "libsacloud-server",
 					Name:              "libsacloud-server",
 					Description:       "desc",
 					Tags:              []string{"tag1", "tag2"},
@@ -303,6 +298,78 @@ func TestServerOp_ChangePlan(t *testing.T) {
 		},
 		Delete: &CRUDTestDeleteFunc{
 			Func: testServerDelete,
+		},
+	})
+}
+
+func TestServerOp_Interfaces(t *testing.T) {
+	var serverID, switchID types.ID
+
+	Run(t, &CRUDTestCase{
+		Parallel:           true,
+		SetupAPICallerFunc: singletonAPICaller,
+		IgnoreStartupWait:  true,
+
+		Create: &CRUDTestFunc{
+			Func: func(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+				// create server with interfaces[ disconnected, disconnected, switch ]
+				switchOp := sacloud.NewSwitchOp(caller)
+				sw, err := switchOp.Create(ctx, testZone, &sacloud.SwitchCreateRequest{Name: "libsacloud-switch-for-server"})
+				if err != nil {
+					return nil, err
+				}
+
+				serverOp := sacloud.NewServerOp(caller)
+				server, err := serverOp.Create(ctx, testZone, &sacloud.ServerCreateRequest{
+					Name:     "libsacloud-server-disconnected-nics",
+					CPU:      1,
+					MemoryMB: 1024,
+					ConnectedSwitches: []*sacloud.ConnectedSwitch{
+						nil,
+						nil,
+						{ID: sw.ID},
+					},
+				})
+				if err != nil {
+					return nil, err
+				}
+
+				serverID = server.ID
+				switchID = sw.ID
+
+				return server, err
+			},
+			CheckFunc: func(t TestT, ctx *CRUDTestContext, v interface{}) error {
+				server := v.(*sacloud.Server)
+				return DoAsserts(
+					AssertLenFunc(t, server.Interfaces, 3, "Server.Interfaces"),
+				)
+			},
+		},
+
+		Read: &CRUDTestFunc{
+			Func: testServerRead,
+		},
+
+		Delete: &CRUDTestDeleteFunc{
+			Func: func(ctx *CRUDTestContext, caller sacloud.APICaller) error {
+				switchOp := sacloud.NewSwitchOp(caller)
+				serverOp := sacloud.NewServerOp(caller)
+
+				server, _ := serverOp.Read(ctx, testZone, serverID)
+				if server != nil {
+					serverOp.Shutdown(ctx, testZone, server.ID, &sacloud.ShutdownOption{Force: true})
+					sacloud.WaiterForDown(func() (interface{}, error) {
+						return serverOp.Read(ctx, testZone, server.ID)
+					}).WaitForState(ctx)
+					serverOp.Delete(ctx, testZone, server.ID)
+				}
+				sw, _ := switchOp.Read(ctx, testZone, switchID)
+				if sw != nil {
+					switchOp.Delete(ctx, testZone, sw.ID)
+				}
+				return nil
+			},
 		},
 	})
 }

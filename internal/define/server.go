@@ -251,7 +251,6 @@ var (
 				},
 			},
 			fields.InterfaceDriver(),
-			fields.HostName(),
 			fields.Name(),
 			fields.Description(),
 			fields.Tags(),
