@@ -4,45 +4,46 @@ import (
 	"testing"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
+	"github.com/sacloud/libsacloud/v2/sacloud/testutil"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
 func TestNoteOp_CRUD(t *testing.T) {
-	Run(t, &CRUDTestCase{
+	testutil.Run(t, &testutil.CRUDTestCase{
 		Parallel:           true,
 		IgnoreStartupWait:  true,
 		SetupAPICallerFunc: singletonAPICaller,
-		Create: &CRUDTestFunc{
+		Create: &testutil.CRUDTestFunc{
 			Func: testNoteCreate,
-			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+			CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 				ExpectValue:  createNoteExpected,
 				IgnoreFields: ignoreNoteFields,
 			}),
 		},
-		Read: &CRUDTestFunc{
+		Read: &testutil.CRUDTestFunc{
 			Func: testNoteRead,
-			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+			CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 				ExpectValue:  createNoteExpected,
 				IgnoreFields: ignoreNoteFields,
 			}),
 		},
-		Updates: []*CRUDTestFunc{
+		Updates: []*testutil.CRUDTestFunc{
 			{
 				Func: testNoteUpdate,
-				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 					ExpectValue:  updateNoteExpected,
 					IgnoreFields: ignoreNoteFields,
 				}),
 			},
 			{
 				Func: testNoteUpdateToMin,
-				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 					ExpectValue:  updateNoteToMinExpected,
 					IgnoreFields: ignoreNoteFields,
 				}),
 			},
 		},
-		Delete: &CRUDTestDeleteFunc{
+		Delete: &testutil.CRUDTestDeleteFunc{
 			Func: testNoteDelete,
 		},
 	})
@@ -94,27 +95,27 @@ var (
 	}
 )
 
-func testNoteCreate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testNoteCreate(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewNoteOp(caller)
 	return client.Create(ctx, createNoteParam)
 }
 
-func testNoteRead(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testNoteRead(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewNoteOp(caller)
 	return client.Read(ctx, ctx.ID)
 }
 
-func testNoteUpdate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testNoteUpdate(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewNoteOp(caller)
 	return client.Update(ctx, ctx.ID, updateNoteParam)
 }
 
-func testNoteUpdateToMin(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testNoteUpdateToMin(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewNoteOp(caller)
 	return client.Update(ctx, ctx.ID, updateNoteToMinParam)
 }
 
-func testNoteDelete(ctx *CRUDTestContext, caller sacloud.APICaller) error {
+func testNoteDelete(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {
 	client := sacloud.NewNoteOp(caller)
 	return client.Delete(ctx, ctx.ID)
 }

@@ -4,48 +4,49 @@ import (
 	"testing"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
+	"github.com/sacloud/libsacloud/v2/sacloud/testutil"
 )
 
 func TestBridgeOpCRUD(t *testing.T) {
-	Run(t, &CRUDTestCase{
+	testutil.Run(t, &testutil.CRUDTestCase{
 		Parallel: true,
 
 		SetupAPICallerFunc: singletonAPICaller,
 
-		Create: &CRUDTestFunc{
+		Create: &testutil.CRUDTestFunc{
 			Func: testBridgeCreate,
-			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+			CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 				ExpectValue:  createBridgeExpected,
 				IgnoreFields: ignoreBridgeFields,
 			}),
 		},
 
-		Read: &CRUDTestFunc{
+		Read: &testutil.CRUDTestFunc{
 			Func: testBridgeRead,
-			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+			CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 				ExpectValue:  createBridgeExpected,
 				IgnoreFields: ignoreBridgeFields,
 			}),
 		},
 
-		Updates: []*CRUDTestFunc{
+		Updates: []*testutil.CRUDTestFunc{
 			{
 				Func: testBridgeUpdate,
-				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 					ExpectValue:  updateBridgeExpected,
 					IgnoreFields: ignoreBridgeFields,
 				}),
 			},
 			{
 				Func: testBridgeUpdateToMin,
-				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 					ExpectValue:  updateBridgeToMinExpected,
 					IgnoreFields: ignoreBridgeFields,
 				}),
 			},
 		},
 
-		Delete: &CRUDTestDeleteFunc{
+		Delete: &testutil.CRUDTestDeleteFunc{
 			Func: testBridgeDelete,
 		},
 	})
@@ -84,27 +85,27 @@ var (
 	}
 )
 
-func testBridgeCreate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testBridgeCreate(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewBridgeOp(caller)
 	return client.Create(ctx, testZone, createBridgeParam)
 }
 
-func testBridgeRead(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testBridgeRead(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewBridgeOp(caller)
 	return client.Read(ctx, testZone, ctx.ID)
 }
 
-func testBridgeUpdate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testBridgeUpdate(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewBridgeOp(caller)
 	return client.Update(ctx, testZone, ctx.ID, updateBridgeParam)
 }
 
-func testBridgeUpdateToMin(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testBridgeUpdateToMin(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewBridgeOp(caller)
 	return client.Update(ctx, testZone, ctx.ID, updateBridgeToMinParam)
 }
 
-func testBridgeDelete(ctx *CRUDTestContext, caller sacloud.APICaller) error {
+func testBridgeDelete(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {
 	client := sacloud.NewBridgeOp(caller)
 	return client.Delete(ctx, testZone, ctx.ID)
 }

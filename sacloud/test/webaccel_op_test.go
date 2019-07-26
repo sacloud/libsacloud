@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
+	"github.com/sacloud/libsacloud/v2/sacloud/testutil"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 	"github.com/stretchr/testify/assert"
 )
@@ -31,22 +32,22 @@ func TestWebAccelOp_Find(t *testing.T) {
 		t.Skip("webaccel doesn't have any sites")
 	}
 	site := searched.WebAccels[0]
-	err = DoAsserts(
-		AssertNotEmptyFunc(t, site.ID, "WebAccel.ID"),
-		AssertNotEmptyFunc(t, site.Name, "WebAccel.Name"),
-		AssertNotEmptyFunc(t, site.DomainType, "WebAccel.DomainType"),
-		AssertNotEmptyFunc(t, site.Domain, "WebAccel.Domain"),
-		AssertNotEmptyFunc(t, site.Subdomain, "WebAccel.Subdomain"),
-		AssertNotEmptyFunc(t, site.ASCIIDomain, "WebAccel.ASCIIDomain"),
-		AssertNotEmptyFunc(t, site.Origin, "WebAccel.Origin"),
-		//AssertNotEmptyFunc(t, site.HostHeader, "WebAccel.HostHeader"),
-		AssertNotEmptyFunc(t, site.Status, "WebAccel.Status"),
-		//AssertNotEmptyFunc(t, site.HasCertificate, "WebAccel.HasCertificate"),
-		//AssertNotEmptyFunc(t, site.HasOldCertificate, "WebAccel.HasOldCertificate"),
-		//AssertNotEmptyFunc(t, site.GibSentInLastWeek, "WebAccel.GibSentInLastWeek"),
-		//AssertNotEmptyFunc(t, site.CertValidNotBefore, "WebAccel.CertValidNotBefore"),
-		//AssertNotEmptyFunc(t, site.CertValidNotAfter, "WebAccel.CertValidNotAfter"),
-		AssertNotEmptyFunc(t, site.CreatedAt, "WebAccel.CreatedAt"),
+	err = testutil.DoAsserts(
+		testutil.AssertNotEmptyFunc(t, site.ID, "WebAccel.ID"),
+		testutil.AssertNotEmptyFunc(t, site.Name, "WebAccel.Name"),
+		testutil.AssertNotEmptyFunc(t, site.DomainType, "WebAccel.DomainType"),
+		testutil.AssertNotEmptyFunc(t, site.Domain, "WebAccel.Domain"),
+		testutil.AssertNotEmptyFunc(t, site.Subdomain, "WebAccel.Subdomain"),
+		testutil.AssertNotEmptyFunc(t, site.ASCIIDomain, "WebAccel.ASCIIDomain"),
+		testutil.AssertNotEmptyFunc(t, site.Origin, "WebAccel.Origin"),
+		//testutil.AssertNotEmptyFunc(t, site.HostHeader, "WebAccel.HostHeader"),
+		testutil.AssertNotEmptyFunc(t, site.Status, "WebAccel.Status"),
+		//testutil.AssertNotEmptyFunc(t, site.HasCertificate, "WebAccel.HasCertificate"),
+		//testutil.AssertNotEmptyFunc(t, site.HasOldCertificate, "WebAccel.HasOldCertificate"),
+		//testutil.AssertNotEmptyFunc(t, site.GibSentInLastWeek, "WebAccel.GibSentInLastWeek"),
+		//testutil.AssertNotEmptyFunc(t, site.CertValidNotBefore, "WebAccel.CertValidNotBefore"),
+		//testutil.AssertNotEmptyFunc(t, site.CertValidNotAfter, "WebAccel.CertValidNotAfter"),
+		testutil.AssertNotEmptyFunc(t, site.CreatedAt, "WebAccel.CreatedAt"),
 	)
 	assert.NoError(t, err)
 
@@ -64,7 +65,7 @@ func TestWebAccelOp_Cert(t *testing.T) {
 
 	t.Parallel()
 
-	PreCheckEnvsFunc("SAKURACLOUD_WEBACCEL_SITE_ID", "SAKURACLOUD_WEBACCEL_CERT", "SAKURACLOUD_WEBACCEL_KEY")(t)
+	testutil.PreCheckEnvsFunc("SAKURACLOUD_WEBACCEL_SITE_ID", "SAKURACLOUD_WEBACCEL_CERT", "SAKURACLOUD_WEBACCEL_KEY")(t)
 
 	hasPermission, err := hasWebAccelPermission()
 	if !assert.NoError(t, err) {
@@ -101,7 +102,7 @@ func TestWebAccelOp_Cert(t *testing.T) {
 func TestWebAccelOp_DeleteAllCache(t *testing.T) {
 	t.Parallel()
 
-	PreCheckEnvsFunc("SAKURACLOUD_WEBACCEL_DOMAIN")(t)
+	testutil.PreCheckEnvsFunc("SAKURACLOUD_WEBACCEL_DOMAIN")(t)
 
 	hasPermission, err := hasWebAccelPermission()
 	if !assert.NoError(t, err) {
@@ -128,7 +129,7 @@ func TestWebAccelOp_DeleteAllCache(t *testing.T) {
 func TestWebAccelOp_DeleteCache(t *testing.T) {
 	t.Parallel()
 
-	PreCheckEnvsFunc("SAKURACLOUD_WEBACCEL_URLS")(t)
+	testutil.PreCheckEnvsFunc("SAKURACLOUD_WEBACCEL_URLS")(t)
 
 	hasPermission, err := hasWebAccelPermission()
 	if !assert.NoError(t, err) {

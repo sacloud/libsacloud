@@ -4,11 +4,12 @@ import (
 	"testing"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
+	"github.com/sacloud/libsacloud/v2/sacloud/testutil"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
 func TestDatabaseOpCRUD(t *testing.T) {
-	Run(t, &CRUDTestCase{
+	testutil.Run(t, &testutil.CRUDTestCase{
 		Parallel: true,
 
 		SetupAPICallerFunc: singletonAPICaller,
@@ -19,49 +20,49 @@ func TestDatabaseOpCRUD(t *testing.T) {
 			updateDatabaseToFullExpected,
 			updateDatabaseToMinExpected,
 		),
-		Create: &CRUDTestFunc{
+		Create: &testutil.CRUDTestFunc{
 			Func: testDatabaseCreate,
-			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+			CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 				ExpectValue:  createDatabaseExpected,
 				IgnoreFields: ignoreDatabaseFields,
 			}),
 		},
-		Read: &CRUDTestFunc{
+		Read: &testutil.CRUDTestFunc{
 			Func: testDatabaseRead,
-			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+			CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 				ExpectValue:  createDatabaseExpected,
 				IgnoreFields: ignoreDatabaseFields,
 			}),
 		},
-		Updates: []*CRUDTestFunc{
+		Updates: []*testutil.CRUDTestFunc{
 			{
 				Func: testDatabaseUpdate,
-				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 					ExpectValue:  updateDatabaseExpected,
 					IgnoreFields: ignoreDatabaseFields,
 				}),
 			},
 			{
 				Func: testDatabaseUpdateToFull,
-				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 					ExpectValue:  updateDatabaseToFullExpected,
 					IgnoreFields: ignoreDatabaseFields,
 				}),
 			},
 			{
 				Func: testDatabaseUpdateToMin,
-				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 					ExpectValue:  updateDatabaseToMinExpected,
 					IgnoreFields: ignoreDatabaseFields,
 				}),
 			},
 		},
-		Shutdown: func(ctx *CRUDTestContext, caller sacloud.APICaller) error {
+		Shutdown: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {
 			client := sacloud.NewDatabaseOp(caller)
 			return client.Shutdown(ctx, testZone, ctx.ID, &sacloud.ShutdownOption{Force: true})
 		},
 
-		Delete: &CRUDTestDeleteFunc{
+		Delete: &testutil.CRUDTestDeleteFunc{
 			Func: testDatabaseDelete,
 		},
 
@@ -207,32 +208,32 @@ var (
 	}
 )
 
-func testDatabaseCreate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testDatabaseCreate(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewDatabaseOp(caller)
 	return client.Create(ctx, testZone, createDatabaseParam)
 }
 
-func testDatabaseRead(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testDatabaseRead(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewDatabaseOp(caller)
 	return client.Read(ctx, testZone, ctx.ID)
 }
 
-func testDatabaseUpdate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testDatabaseUpdate(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewDatabaseOp(caller)
 	return client.Update(ctx, testZone, ctx.ID, updateDatabaseParam)
 }
 
-func testDatabaseUpdateToFull(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testDatabaseUpdateToFull(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewDatabaseOp(caller)
 	return client.Update(ctx, testZone, ctx.ID, updateDatabaseToFullParam)
 }
 
-func testDatabaseUpdateToMin(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testDatabaseUpdateToMin(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewDatabaseOp(caller)
 	return client.Update(ctx, testZone, ctx.ID, updateDatabaseToMinParam)
 }
 
-func testDatabaseDelete(ctx *CRUDTestContext, caller sacloud.APICaller) error {
+func testDatabaseDelete(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {
 	client := sacloud.NewDatabaseOp(caller)
 	return client.Delete(ctx, testZone, ctx.ID)
 }

@@ -4,19 +4,20 @@ import (
 	"testing"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
+	"github.com/sacloud/libsacloud/v2/sacloud/testutil"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestInterface_Operations(t *testing.T) {
 
-	Run(t, &CRUDTestCase{
+	testutil.Run(t, &testutil.CRUDTestCase{
 		Parallel:          true,
 		IgnoreStartupWait: true,
 
 		SetupAPICallerFunc: singletonAPICaller,
 
-		Setup: func(ctx *CRUDTestContext, caller sacloud.APICaller) error {
+		Setup: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {
 			serverClient := sacloud.NewServerOp(caller)
 			server, err := serverClient.Create(ctx, testZone, &sacloud.ServerCreateRequest{
 				CPU:      1,
@@ -38,34 +39,34 @@ func TestInterface_Operations(t *testing.T) {
 			return nil
 		},
 
-		Create: &CRUDTestFunc{
+		Create: &testutil.CRUDTestFunc{
 			Func: testInterfaceCreate,
-			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+			CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 				ExpectValue:  createInterfaceExpected,
 				IgnoreFields: ignoreInterfaceFields,
 			}),
 		},
-		Read: &CRUDTestFunc{
+		Read: &testutil.CRUDTestFunc{
 			Func: testInterfaceRead,
-			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+			CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 				ExpectValue:  createInterfaceExpected,
 				IgnoreFields: ignoreInterfaceFields,
 			}),
 		},
-		Updates: []*CRUDTestFunc{
+		Updates: []*testutil.CRUDTestFunc{
 			{
 				Func: testInterfaceUpdate,
-				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 					ExpectValue:  updateInterfaceExpected,
 					IgnoreFields: ignoreInterfaceFields,
 				}),
 			},
 		},
-		Delete: &CRUDTestDeleteFunc{
+		Delete: &testutil.CRUDTestDeleteFunc{
 			Func: testInterfaceDelete,
 		},
 
-		Cleanup: func(ctx *CRUDTestContext, caller sacloud.APICaller) error {
+		Cleanup: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {
 			serverID, ok := ctx.Values["interface/server"]
 			if !ok {
 				return nil
@@ -105,22 +106,22 @@ var (
 	}
 )
 
-func testInterfaceCreate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testInterfaceCreate(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewInterfaceOp(caller)
 	return client.Create(ctx, testZone, createInterfaceParam)
 }
 
-func testInterfaceRead(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testInterfaceRead(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewInterfaceOp(caller)
 	return client.Read(ctx, testZone, ctx.ID)
 }
 
-func testInterfaceUpdate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testInterfaceUpdate(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewInterfaceOp(caller)
 	return client.Update(ctx, testZone, ctx.ID, updateInterfaceParam)
 }
 
-func testInterfaceDelete(ctx *CRUDTestContext, caller sacloud.APICaller) error {
+func testInterfaceDelete(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {
 	client := sacloud.NewInterfaceOp(caller)
 	return client.Delete(ctx, testZone, ctx.ID)
 }

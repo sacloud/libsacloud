@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
+	"github.com/sacloud/libsacloud/v2/sacloud/testutil"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 	"github.com/stretchr/testify/assert"
 )
@@ -16,47 +17,47 @@ import (
 func TestProxyLBOp_CRUD(t *testing.T) {
 	initProxyLBVariables()
 
-	Run(t, &CRUDTestCase{
+	testutil.Run(t, &testutil.CRUDTestCase{
 		Parallel: true,
 
-		PreCheck: PreCheckEnvsFunc("SAKURACLOUD_PROXYLB_SERVER0", "SAKURACLOUD_PROXYLB_SERVER1", "SAKURACLOUD_PROXYLB_SERVER2"),
+		PreCheck: testutil.PreCheckEnvsFunc("SAKURACLOUD_PROXYLB_SERVER0", "SAKURACLOUD_PROXYLB_SERVER1", "SAKURACLOUD_PROXYLB_SERVER2"),
 
 		SetupAPICallerFunc: singletonAPICaller,
 
-		Create: &CRUDTestFunc{
+		Create: &testutil.CRUDTestFunc{
 			Func: testProxyLBCreate,
-			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+			CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 				ExpectValue:  createProxyLBExpected,
 				IgnoreFields: ignoreProxyLBFields,
 			}),
 		},
 
-		Read: &CRUDTestFunc{
+		Read: &testutil.CRUDTestFunc{
 			Func: testProxyLBRead,
-			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+			CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 				ExpectValue:  createProxyLBExpected,
 				IgnoreFields: ignoreProxyLBFields,
 			}),
 		},
 
-		Updates: []*CRUDTestFunc{
+		Updates: []*testutil.CRUDTestFunc{
 			{
 				Func: testProxyLBUpdate,
-				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 					ExpectValue:  updateProxyLBExpected,
 					IgnoreFields: ignoreProxyLBFields,
 				}),
 			},
 			{
 				Func: testProxyLBUpdateToMin,
-				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 					ExpectValue:  updateProxyLBToMinExpected,
 					IgnoreFields: ignoreProxyLBFields,
 				}),
 			},
 		},
 
-		Delete: &CRUDTestDeleteFunc{
+		Delete: &testutil.CRUDTestDeleteFunc{
 			Func: testProxyLBDelete,
 		},
 	})
@@ -319,27 +320,27 @@ func initProxyLBVariables() {
 	}
 }
 
-func testProxyLBCreate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testProxyLBCreate(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewProxyLBOp(caller)
 	return client.Create(ctx, createProxyLBParam)
 }
 
-func testProxyLBRead(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testProxyLBRead(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewProxyLBOp(caller)
 	return client.Read(ctx, ctx.ID)
 }
 
-func testProxyLBUpdate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testProxyLBUpdate(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewProxyLBOp(caller)
 	return client.Update(ctx, ctx.ID, updateProxyLBParam)
 }
 
-func testProxyLBUpdateToMin(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testProxyLBUpdateToMin(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewProxyLBOp(caller)
 	return client.Update(ctx, ctx.ID, updateProxyLBToMinParam)
 }
 
-func testProxyLBDelete(ctx *CRUDTestContext, caller sacloud.APICaller) error {
+func testProxyLBDelete(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {
 	client := sacloud.NewProxyLBOp(caller)
 	return client.Delete(ctx, ctx.ID)
 }
@@ -351,7 +352,7 @@ func TestProxyLBOpLetsEncryptAndHealth(t *testing.T) {
 
 	t.Parallel()
 	initProxyLBVariables()
-	PreCheckEnvsFunc(
+	testutil.PreCheckEnvsFunc(
 		"SAKURACLOUD_PROXYLB_SERVER0",
 		"SAKURACLOUD_PROXYLB_SERVER1",
 		"SAKURACLOUD_PROXYLB_COMMON_NAME",

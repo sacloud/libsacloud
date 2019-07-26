@@ -7,50 +7,51 @@ import (
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/search"
 	"github.com/sacloud/libsacloud/v2/sacloud/search/keys"
+	"github.com/sacloud/libsacloud/v2/sacloud/testutil"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestServerOp_CRUD(t *testing.T) {
-	Run(t, &CRUDTestCase{
+	testutil.Run(t, &testutil.CRUDTestCase{
 		Parallel: true,
 
 		SetupAPICallerFunc: singletonAPICaller,
 
-		Create: &CRUDTestFunc{
+		Create: &testutil.CRUDTestFunc{
 			Func: testServerCreate,
-			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+			CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 				ExpectValue:  createServerExpected,
 				IgnoreFields: ignoreServerFields,
 			}),
 		},
 
-		Read: &CRUDTestFunc{
+		Read: &testutil.CRUDTestFunc{
 			Func: testServerRead,
-			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+			CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 				ExpectValue:  createServerExpected,
 				IgnoreFields: ignoreServerFields,
 			}),
 		},
 
-		Updates: []*CRUDTestFunc{
+		Updates: []*testutil.CRUDTestFunc{
 			{
 				Func: testServerUpdate,
-				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 					ExpectValue:  updateServerExpected,
 					IgnoreFields: ignoreServerFields,
 				}),
 			},
 			{
 				Func: testServerUpdateToMin,
-				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 					ExpectValue:  updateServerToMinExpected,
 					IgnoreFields: ignoreServerFields,
 				}),
 			},
 			// Insert CDROM
 			{
-				Func: func(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+				Func: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 					cdOp := sacloud.NewCDROMOp(caller)
 					serverOp := sacloud.NewServerOp(caller)
 
@@ -73,15 +74,15 @@ func TestServerOp_CRUD(t *testing.T) {
 					}
 					return serverOp.Read(ctx, testZone, ctx.ID)
 				},
-				CheckFunc: func(t TestT, ctx *CRUDTestContext, v interface{}) error {
+				CheckFunc: func(t testutil.TestT, ctx *testutil.CRUDTestContext, v interface{}) error {
 					server := v.(*sacloud.Server)
-					return AssertFalse(t, server.CDROMID.IsEmpty(), "Server.CDROMID")
+					return testutil.AssertFalse(t, server.CDROMID.IsEmpty(), "Server.CDROMID")
 				},
 				SkipExtractID: true,
 			},
 			// Eject CDROM
 			{
-				Func: func(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+				Func: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 					serverOp := sacloud.NewServerOp(caller)
 					cdromID := ctx.Values["server/cdrom"].(types.ID)
 
@@ -90,40 +91,40 @@ func TestServerOp_CRUD(t *testing.T) {
 					}
 					return serverOp.Read(ctx, testZone, ctx.ID)
 				},
-				CheckFunc: func(t TestT, ctx *CRUDTestContext, v interface{}) error {
+				CheckFunc: func(t testutil.TestT, ctx *testutil.CRUDTestContext, v interface{}) error {
 					server := v.(*sacloud.Server)
-					return AssertTrue(t, server.CDROMID.IsEmpty(), "Server.CDROMID")
+					return testutil.AssertTrue(t, server.CDROMID.IsEmpty(), "Server.CDROMID")
 				},
 				SkipExtractID: true,
 			},
 			// VNC Info
 			{
-				Func: func(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+				Func: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 					serverOp := sacloud.NewServerOp(caller)
 					return serverOp.GetVNCProxy(ctx, testZone, ctx.ID)
 				},
-				CheckFunc: func(t TestT, ctx *CRUDTestContext, v interface{}) error {
+				CheckFunc: func(t testutil.TestT, ctx *testutil.CRUDTestContext, v interface{}) error {
 					vnc := v.(*sacloud.VNCProxyInfo)
-					return DoAsserts(
-						AssertNotNilFunc(t, vnc, "VNCProxyInfo"),
-						AssertNotEmptyFunc(t, vnc.Status, "VNCProxyInfo.Status"),
-						AssertNotEmptyFunc(t, vnc.Host, "VNCProxyInfo.Host"),
-						AssertNotEmptyFunc(t, vnc.IOServerHost, "VNCProxyInfo.IOServerHost"),
-						AssertNotEmptyFunc(t, vnc.Port, "VNCProxyInfo.Port"),
-						AssertNotEmptyFunc(t, vnc.Password, "VNCProxyInfo.Password"),
-						AssertNotEmptyFunc(t, vnc.VNCFile, "VNCProxyInfo.VNCFile"),
+					return testutil.DoAsserts(
+						testutil.AssertNotNilFunc(t, vnc, "VNCProxyInfo"),
+						testutil.AssertNotEmptyFunc(t, vnc.Status, "VNCProxyInfo.Status"),
+						testutil.AssertNotEmptyFunc(t, vnc.Host, "VNCProxyInfo.Host"),
+						testutil.AssertNotEmptyFunc(t, vnc.IOServerHost, "VNCProxyInfo.IOServerHost"),
+						testutil.AssertNotEmptyFunc(t, vnc.Port, "VNCProxyInfo.Port"),
+						testutil.AssertNotEmptyFunc(t, vnc.Password, "VNCProxyInfo.Password"),
+						testutil.AssertNotEmptyFunc(t, vnc.VNCFile, "VNCProxyInfo.VNCFile"),
 					)
 				},
 				SkipExtractID: true,
 			},
 		},
 
-		Shutdown: func(ctx *CRUDTestContext, caller sacloud.APICaller) error {
+		Shutdown: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {
 			client := sacloud.NewServerOp(caller)
 			return client.Shutdown(ctx, testZone, ctx.ID, &sacloud.ShutdownOption{Force: true})
 		},
 
-		Delete: &CRUDTestDeleteFunc{
+		Delete: &testutil.CRUDTestDeleteFunc{
 			Func: testServerDelete,
 		},
 	})
@@ -201,7 +202,7 @@ var (
 	}
 )
 
-func testServerCreate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testServerCreate(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewServerOp(caller)
 	server, err := client.Create(ctx, testZone, createServerParam)
 	if err != nil {
@@ -213,34 +214,34 @@ func testServerCreate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface
 	return server, nil
 }
 
-func testServerRead(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testServerRead(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewServerOp(caller)
 	return client.Read(ctx, testZone, ctx.ID)
 }
 
-func testServerUpdate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testServerUpdate(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewServerOp(caller)
 	return client.Update(ctx, testZone, ctx.ID, updateServerParam)
 }
 
-func testServerUpdateToMin(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testServerUpdateToMin(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewServerOp(caller)
 	return client.Update(ctx, testZone, ctx.ID, updateServerToMinParam)
 }
 
-func testServerDelete(ctx *CRUDTestContext, caller sacloud.APICaller) error {
+func testServerDelete(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {
 	client := sacloud.NewServerOp(caller)
 	return client.Delete(ctx, testZone, ctx.ID)
 }
 
 func TestServerOp_ChangePlan(t *testing.T) {
 	client := sacloud.NewServerOp(singletonAPICaller())
-	Run(t, &CRUDTestCase{
+	testutil.Run(t, &testutil.CRUDTestCase{
 		Parallel:           true,
 		SetupAPICallerFunc: singletonAPICaller,
 		IgnoreStartupWait:  true,
-		Create: &CRUDTestFunc{
-			Func: func(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+		Create: &testutil.CRUDTestFunc{
+			Func: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 				return client.Create(ctx, testZone, &sacloud.ServerCreateRequest{
 					CPU:      1,
 					MemoryMB: 1 * 1024,
@@ -256,7 +257,7 @@ func TestServerOp_ChangePlan(t *testing.T) {
 					WaitDiskMigration: false,
 				})
 			},
-			CheckFunc: func(t TestT, _ *CRUDTestContext, v interface{}) error {
+			CheckFunc: func(t testutil.TestT, _ *testutil.CRUDTestContext, v interface{}) error {
 				server := v.(*sacloud.Server)
 
 				if !assert.Equal(t, server.CPU, 1) {
@@ -268,20 +269,20 @@ func TestServerOp_ChangePlan(t *testing.T) {
 				return nil
 			},
 		},
-		Read: &CRUDTestFunc{
+		Read: &testutil.CRUDTestFunc{
 			Func: testServerRead,
 		},
-		Updates: []*CRUDTestFunc{
+		Updates: []*testutil.CRUDTestFunc{
 			// change plan
 			{
-				Func: func(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+				Func: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 					return client.ChangePlan(ctx, testZone, ctx.ID, &sacloud.ServerChangePlanRequest{
 						CPU:      2,
 						MemoryMB: 4 * 1024,
 					})
 
 				},
-				CheckFunc: func(t TestT, ctx *CRUDTestContext, v interface{}) error {
+				CheckFunc: func(t testutil.TestT, ctx *testutil.CRUDTestContext, v interface{}) error {
 					newServer := v.(*sacloud.Server)
 					if !assert.Equal(t, newServer.CPU, 2) {
 						return errors.New("unexpected state: Server.CPU")
@@ -296,7 +297,7 @@ func TestServerOp_ChangePlan(t *testing.T) {
 				},
 			},
 		},
-		Delete: &CRUDTestDeleteFunc{
+		Delete: &testutil.CRUDTestDeleteFunc{
 			Func: testServerDelete,
 		},
 	})
@@ -305,13 +306,13 @@ func TestServerOp_ChangePlan(t *testing.T) {
 func TestServerOp_Interfaces(t *testing.T) {
 	var serverID, switchID types.ID
 
-	Run(t, &CRUDTestCase{
+	testutil.Run(t, &testutil.CRUDTestCase{
 		Parallel:           true,
 		SetupAPICallerFunc: singletonAPICaller,
 		IgnoreStartupWait:  true,
 
-		Create: &CRUDTestFunc{
-			Func: func(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+		Create: &testutil.CRUDTestFunc{
+			Func: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 				// create server with interfaces[ disconnected, disconnected, switch ]
 				switchOp := sacloud.NewSwitchOp(caller)
 				sw, err := switchOp.Create(ctx, testZone, &sacloud.SwitchCreateRequest{Name: "libsacloud-switch-for-server"})
@@ -339,20 +340,20 @@ func TestServerOp_Interfaces(t *testing.T) {
 
 				return server, err
 			},
-			CheckFunc: func(t TestT, ctx *CRUDTestContext, v interface{}) error {
+			CheckFunc: func(t testutil.TestT, ctx *testutil.CRUDTestContext, v interface{}) error {
 				server := v.(*sacloud.Server)
-				return DoAsserts(
-					AssertLenFunc(t, server.Interfaces, 3, "Server.Interfaces"),
+				return testutil.DoAsserts(
+					testutil.AssertLenFunc(t, server.Interfaces, 3, "Server.Interfaces"),
 				)
 			},
 		},
 
-		Read: &CRUDTestFunc{
+		Read: &testutil.CRUDTestFunc{
 			Func: testServerRead,
 		},
 
-		Delete: &CRUDTestDeleteFunc{
-			Func: func(ctx *CRUDTestContext, caller sacloud.APICaller) error {
+		Delete: &testutil.CRUDTestDeleteFunc{
+			Func: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {
 				switchOp := sacloud.NewSwitchOp(caller)
 				serverOp := sacloud.NewServerOp(caller)
 

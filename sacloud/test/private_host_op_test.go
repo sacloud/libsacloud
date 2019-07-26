@@ -4,14 +4,15 @@ import (
 	"testing"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
+	"github.com/sacloud/libsacloud/v2/sacloud/testutil"
 )
 
 func TestPrivateHostOp_CRUD(t *testing.T) {
-	Run(t, &CRUDTestCase{
+	testutil.Run(t, &testutil.CRUDTestCase{
 		Parallel:           true,
 		IgnoreStartupWait:  true,
 		SetupAPICallerFunc: singletonAPICaller,
-		Setup: func(ctx *CRUDTestContext, caller sacloud.APICaller) error {
+		Setup: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {
 			planOp := sacloud.NewPrivateHostPlanOp(caller)
 			searched, err := planOp.Find(ctx, privateHostTestZone, nil)
 			if err != nil {
@@ -24,37 +25,37 @@ func TestPrivateHostOp_CRUD(t *testing.T) {
 			updatePrivateHostToMinExpected.PlanID = planID
 			return nil
 		},
-		Create: &CRUDTestFunc{
+		Create: &testutil.CRUDTestFunc{
 			Func: testPrivateHostCreate,
-			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+			CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 				ExpectValue:  createPrivateHostExpected,
 				IgnoreFields: ignorePrivateHostFields,
 			}),
 		},
-		Read: &CRUDTestFunc{
+		Read: &testutil.CRUDTestFunc{
 			Func: testPrivateHostRead,
-			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+			CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 				ExpectValue:  createPrivateHostExpected,
 				IgnoreFields: ignorePrivateHostFields,
 			}),
 		},
-		Updates: []*CRUDTestFunc{
+		Updates: []*testutil.CRUDTestFunc{
 			{
 				Func: testPrivateHostUpdate,
-				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 					ExpectValue:  updatePrivateHostExpected,
 					IgnoreFields: ignorePrivateHostFields,
 				}),
 			},
 			{
 				Func: testPrivateHostUpdateToMin,
-				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 					ExpectValue:  updatePrivateHostToMinExpected,
 					IgnoreFields: ignorePrivateHostFields,
 				}),
 			},
 		},
-		Delete: &CRUDTestDeleteFunc{
+		Delete: &testutil.CRUDTestDeleteFunc{
 			Func: testPrivateHostDelete,
 		},
 	})
@@ -112,27 +113,27 @@ var (
 	}
 )
 
-func testPrivateHostCreate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testPrivateHostCreate(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewPrivateHostOp(caller)
 	return client.Create(ctx, privateHostTestZone, createPrivateHostParam)
 }
 
-func testPrivateHostRead(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testPrivateHostRead(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewPrivateHostOp(caller)
 	return client.Read(ctx, privateHostTestZone, ctx.ID)
 }
 
-func testPrivateHostUpdate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testPrivateHostUpdate(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewPrivateHostOp(caller)
 	return client.Update(ctx, privateHostTestZone, ctx.ID, updatePrivateHostParam)
 }
 
-func testPrivateHostUpdateToMin(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testPrivateHostUpdateToMin(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewPrivateHostOp(caller)
 	return client.Update(ctx, privateHostTestZone, ctx.ID, updatePrivateHostToMinParam)
 }
 
-func testPrivateHostDelete(ctx *CRUDTestContext, caller sacloud.APICaller) error {
+func testPrivateHostDelete(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {
 	client := sacloud.NewPrivateHostOp(caller)
 	return client.Delete(ctx, privateHostTestZone, ctx.ID)
 }

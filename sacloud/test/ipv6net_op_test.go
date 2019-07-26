@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
+	"github.com/sacloud/libsacloud/v2/sacloud/testutil"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -38,10 +39,10 @@ func TestIPv6NetOp_List_Read(t *testing.T) {
 	ipv6Net, err := internetOp.EnableIPv6(ctx, testZone, internet.ID)
 	assert.NoError(t, err)
 
-	err = DoAsserts(
-		AssertNotEmptyFunc(t, ipv6Net.ID, "IPv6Net.ID"),
-		AssertNotEmptyFunc(t, ipv6Net.IPv6Prefix, "IPv6Net.IPv6Prefix"),
-		AssertNotEmptyFunc(t, ipv6Net.IPv6PrefixLen, "IPv6Net.IPv6PrefixLen"),
+	err = testutil.DoAsserts(
+		testutil.AssertNotEmptyFunc(t, ipv6Net.ID, "IPv6Net.ID"),
+		testutil.AssertNotEmptyFunc(t, ipv6Net.IPv6Prefix, "IPv6Net.IPv6Prefix"),
+		testutil.AssertNotEmptyFunc(t, ipv6Net.IPv6PrefixLen, "IPv6Net.IPv6PrefixLen"),
 	)
 	assert.NoError(t, err)
 
@@ -53,10 +54,10 @@ func TestIPv6NetOp_List_Read(t *testing.T) {
 	// read
 	read, err := ipv6NetOp.Read(ctx, testZone, ipv6Net.ID)
 	assert.NoError(t, err)
-	err = DoAsserts(
-		AssertEqualFunc(t, ipv6Net.ID, read.ID, "IPv6Net.ID"),
-		AssertEqualFunc(t, ipv6Net.IPv6Prefix, read.IPv6Prefix, "IPv6Net.IPv6Prefix"),
-		AssertEqualFunc(t, ipv6Net.IPv6PrefixLen, read.IPv6PrefixLen, "IPv6Net.IPv6PrefixLen"),
+	err = testutil.DoAsserts(
+		testutil.AssertEqualFunc(t, ipv6Net.ID, read.ID, "IPv6Net.ID"),
+		testutil.AssertEqualFunc(t, ipv6Net.IPv6Prefix, read.IPv6Prefix, "IPv6Net.IPv6Prefix"),
+		testutil.AssertEqualFunc(t, ipv6Net.IPv6PrefixLen, read.IPv6PrefixLen, "IPv6Net.IPv6PrefixLen"),
 	)
 	assert.NoError(t, err)
 

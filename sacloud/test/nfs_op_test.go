@@ -4,16 +4,17 @@ import (
 	"testing"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
+	"github.com/sacloud/libsacloud/v2/sacloud/testutil"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 	"github.com/sacloud/libsacloud/v2/utils/nfs"
 )
 
 func TestNFSOp_CRUD(t *testing.T) {
-	Run(t, &CRUDTestCase{
+	testutil.Run(t, &testutil.CRUDTestCase{
 		Parallel: true,
 
 		SetupAPICallerFunc: singletonAPICaller,
-		Setup: func(ctx *CRUDTestContext, caller sacloud.APICaller) error {
+		Setup: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {
 			setupSwitchFunc("nfs",
 				createNFSParam,
 				createNFSExpected,
@@ -33,45 +34,45 @@ func TestNFSOp_CRUD(t *testing.T) {
 			return nil
 		},
 
-		Create: &CRUDTestFunc{
+		Create: &testutil.CRUDTestFunc{
 			Func: testNFSCreate,
-			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+			CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 				ExpectValue:  createNFSExpected,
 				IgnoreFields: ignoreNFSFields,
 			}),
 		},
 
-		Read: &CRUDTestFunc{
+		Read: &testutil.CRUDTestFunc{
 			Func: testNFSRead,
-			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+			CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 				ExpectValue:  createNFSExpected,
 				IgnoreFields: ignoreNFSFields,
 			}),
 		},
 
-		Updates: []*CRUDTestFunc{
+		Updates: []*testutil.CRUDTestFunc{
 			{
 				Func: testNFSUpdate,
-				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 					ExpectValue:  updateNFSExpected,
 					IgnoreFields: ignoreNFSFields,
 				}),
 			},
 			{
 				Func: testNFSUpdateToMin,
-				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 					ExpectValue:  updateNFSToMinExpected,
 					IgnoreFields: ignoreNFSFields,
 				}),
 			},
 		},
 
-		Shutdown: func(ctx *CRUDTestContext, caller sacloud.APICaller) error {
+		Shutdown: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {
 			client := sacloud.NewNFSOp(caller)
 			return client.Shutdown(ctx, testZone, ctx.ID, &sacloud.ShutdownOption{Force: true})
 		},
 
-		Delete: &CRUDTestDeleteFunc{
+		Delete: &testutil.CRUDTestDeleteFunc{
 			Func: testNFSDelete,
 		},
 
@@ -138,27 +139,27 @@ var (
 	}
 )
 
-func testNFSCreate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testNFSCreate(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewNFSOp(caller)
 	return client.Create(ctx, testZone, createNFSParam)
 }
 
-func testNFSRead(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testNFSRead(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewNFSOp(caller)
 	return client.Read(ctx, testZone, ctx.ID)
 }
 
-func testNFSUpdate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testNFSUpdate(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewNFSOp(caller)
 	return client.Update(ctx, testZone, ctx.ID, updateNFSParam)
 }
 
-func testNFSUpdateToMin(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testNFSUpdateToMin(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewNFSOp(caller)
 	return client.Update(ctx, testZone, ctx.ID, updateNFSToMinParam)
 }
 
-func testNFSDelete(ctx *CRUDTestContext, caller sacloud.APICaller) error {
+func testNFSDelete(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {
 	client := sacloud.NewNFSOp(caller)
 	return client.Delete(ctx, testZone, ctx.ID)
 }

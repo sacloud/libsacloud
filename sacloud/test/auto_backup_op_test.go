@@ -4,17 +4,18 @@ import (
 	"testing"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
+	"github.com/sacloud/libsacloud/v2/sacloud/testutil"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestAutoBackupOpCRUD(t *testing.T) {
-	Run(t, &CRUDTestCase{
+	testutil.Run(t, &testutil.CRUDTestCase{
 		Parallel: true,
 
 		SetupAPICallerFunc: singletonAPICaller,
 
-		Setup: func(ctx *CRUDTestContext, caller sacloud.APICaller) error {
+		Setup: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {
 			diskOp := sacloud.NewDiskOp(caller)
 			disk, err := diskOp.Create(ctx, testZone, &sacloud.DiskCreateRequest{
 				Name:       "libsacloud-disk-with-autobackup",
@@ -40,44 +41,44 @@ func TestAutoBackupOpCRUD(t *testing.T) {
 			return err
 		},
 
-		Create: &CRUDTestFunc{
+		Create: &testutil.CRUDTestFunc{
 			Func: testAutoBackupCreate,
-			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+			CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 				ExpectValue:  createAutoBackupExpected,
 				IgnoreFields: ignoreAutoBackupFields,
 			}),
 		},
 
-		Read: &CRUDTestFunc{
+		Read: &testutil.CRUDTestFunc{
 			Func: testAutoBackupRead,
-			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+			CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 				ExpectValue:  createAutoBackupExpected,
 				IgnoreFields: ignoreAutoBackupFields,
 			}),
 		},
 
-		Updates: []*CRUDTestFunc{
+		Updates: []*testutil.CRUDTestFunc{
 			{
 				Func: testAutoBackupUpdate,
-				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 					ExpectValue:  updateAutoBackupExpected,
 					IgnoreFields: ignoreAutoBackupFields,
 				}),
 			},
 			{
 				Func: testAutoBackupUpdateToMin,
-				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 					ExpectValue:  updateAutoBackupToMinExpected,
 					IgnoreFields: ignoreAutoBackupFields,
 				}),
 			},
 		},
 
-		Delete: &CRUDTestDeleteFunc{
+		Delete: &testutil.CRUDTestDeleteFunc{
 			Func: testAutoBackupDelete,
 		},
 
-		Cleanup: func(ctx *CRUDTestContext, caller sacloud.APICaller) error {
+		Cleanup: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {
 			diskID, ok := ctx.Values["autobackup/disk"]
 			if !ok {
 				return nil
@@ -156,27 +157,27 @@ var (
 	}
 )
 
-func testAutoBackupCreate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testAutoBackupCreate(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewAutoBackupOp(caller)
 	return client.Create(ctx, testZone, createAutoBackupParam)
 }
 
-func testAutoBackupRead(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testAutoBackupRead(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewAutoBackupOp(caller)
 	return client.Read(ctx, testZone, ctx.ID)
 }
 
-func testAutoBackupUpdate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testAutoBackupUpdate(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewAutoBackupOp(caller)
 	return client.Update(ctx, testZone, ctx.ID, updateAutoBackupParam)
 }
 
-func testAutoBackupUpdateToMin(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testAutoBackupUpdateToMin(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewAutoBackupOp(caller)
 	return client.Update(ctx, testZone, ctx.ID, updateAutoBackupToMinParam)
 }
 
-func testAutoBackupDelete(ctx *CRUDTestContext, caller sacloud.APICaller) error {
+func testAutoBackupDelete(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {
 	client := sacloud.NewAutoBackupOp(caller)
 	return client.Delete(ctx, testZone, ctx.ID)
 }

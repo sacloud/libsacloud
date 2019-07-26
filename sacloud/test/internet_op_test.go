@@ -5,46 +5,47 @@ import (
 	"testing"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
+	"github.com/sacloud/libsacloud/v2/sacloud/testutil"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestInternetOp_CRUD(t *testing.T) {
-	Run(t, &CRUDTestCase{
+	testutil.Run(t, &testutil.CRUDTestCase{
 		Parallel: true,
 
 		SetupAPICallerFunc: singletonAPICaller,
-		Create: &CRUDTestFunc{
+		Create: &testutil.CRUDTestFunc{
 			Func: testInternetCreate,
-			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+			CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 				ExpectValue:  createInternetExpected,
 				IgnoreFields: ignoreInternetFields,
 			}),
 		},
-		Read: &CRUDTestFunc{
+		Read: &testutil.CRUDTestFunc{
 			Func: testInternetRead,
-			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+			CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 				ExpectValue:  createInternetExpected,
 				IgnoreFields: ignoreInternetFields,
 			}),
 		},
-		Updates: []*CRUDTestFunc{
+		Updates: []*testutil.CRUDTestFunc{
 			{
 				Func: testInternetUpdate,
-				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 					ExpectValue:  updateInternetExpected,
 					IgnoreFields: ignoreInternetFields,
 				}),
 			},
 			{
 				Func: testInternetUpdateToMin,
-				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 					ExpectValue:  updateInternetToMinExpected,
 					IgnoreFields: ignoreInternetFields,
 				}),
 			},
 		},
-		Delete: &CRUDTestDeleteFunc{
+		Delete: &testutil.CRUDTestDeleteFunc{
 			Func: testInternetDelete,
 		},
 	})
@@ -94,27 +95,27 @@ var (
 	}
 )
 
-func testInternetCreate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testInternetCreate(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewInternetOp(caller)
 	return client.Create(ctx, testZone, createInternetParam)
 }
 
-func testInternetRead(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testInternetRead(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewInternetOp(caller)
 	return client.Read(ctx, testZone, ctx.ID)
 }
 
-func testInternetUpdate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testInternetUpdate(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewInternetOp(caller)
 	return client.Update(ctx, testZone, ctx.ID, updateInternetParam)
 }
 
-func testInternetUpdateToMin(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testInternetUpdateToMin(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewInternetOp(caller)
 	return client.Update(ctx, testZone, ctx.ID, updateInternetToMinParam)
 }
 
-func testInternetDelete(ctx *CRUDTestContext, caller sacloud.APICaller) error {
+func testInternetDelete(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {
 	client := sacloud.NewInternetOp(caller)
 	return client.Delete(ctx, testZone, ctx.ID)
 }
@@ -124,12 +125,12 @@ func TestInternetOp_Subnet(t *testing.T) {
 	var minIP, maxIP string
 	var subnetID types.ID
 
-	Run(t, &CRUDTestCase{
+	testutil.Run(t, &testutil.CRUDTestCase{
 		Parallel:           true,
 		IgnoreStartupWait:  true,
 		SetupAPICallerFunc: singletonAPICaller,
-		Create: &CRUDTestFunc{
-			Func: func(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+		Create: &testutil.CRUDTestFunc{
+			Func: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 				var internet *sacloud.Internet
 				internet, err := client.Create(ctx, testZone, createInternetParam)
 				if err != nil {
@@ -159,13 +160,13 @@ func TestInternetOp_Subnet(t *testing.T) {
 				return internet, nil
 			},
 		},
-		Read: &CRUDTestFunc{
+		Read: &testutil.CRUDTestFunc{
 			Func: testInternetRead,
 		},
-		Updates: []*CRUDTestFunc{
+		Updates: []*testutil.CRUDTestFunc{
 			// add subnet
 			{
-				Func: func(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+				Func: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 					// add subnet
 					subnet, err := client.AddSubnet(ctx, testZone, ctx.ID, &sacloud.InternetAddSubnetRequest{
 						NetworkMaskLen: 28,
@@ -188,7 +189,7 @@ func TestInternetOp_Subnet(t *testing.T) {
 			},
 			// update subnet
 			{
-				Func: func(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+				Func: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 					subnet, err := client.UpdateSubnet(ctx, testZone, ctx.ID, subnetID, &sacloud.InternetUpdateSubnetRequest{
 						NextHop: maxIP,
 					})
@@ -208,13 +209,13 @@ func TestInternetOp_Subnet(t *testing.T) {
 			},
 			// delete subnet
 			{
-				Func: func(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+				Func: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 					return nil, client.DeleteSubnet(ctx, testZone, ctx.ID, subnetID)
 				},
 				SkipExtractID: true,
 			},
 		},
-		Delete: &CRUDTestDeleteFunc{
+		Delete: &testutil.CRUDTestDeleteFunc{
 			Func: testInternetDelete,
 		},
 	})

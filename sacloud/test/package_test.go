@@ -35,8 +35,8 @@ func isAccTest() bool {
 	return testutil.IsAccTest()
 }
 
-func setupSwitchFunc(targetResource string, dests ...accessor.SwitchID) func(*CRUDTestContext, sacloud.APICaller) error {
-	return func(testContext *CRUDTestContext, caller sacloud.APICaller) error {
+func setupSwitchFunc(targetResource string, dests ...accessor.SwitchID) func(*testutil.CRUDTestContext, sacloud.APICaller) error {
+	return func(testContext *testutil.CRUDTestContext, caller sacloud.APICaller) error {
 		swClient := sacloud.NewSwitchOp(caller)
 		sw, err := swClient.Create(context.Background(), testZone, &sacloud.SwitchCreateRequest{
 			Name: "libsacloud-switch-for-" + targetResource,
@@ -53,8 +53,8 @@ func setupSwitchFunc(targetResource string, dests ...accessor.SwitchID) func(*CR
 	}
 }
 
-func cleanupSwitchFunc(targetResource string) func(*CRUDTestContext, sacloud.APICaller) error {
-	return func(testContext *CRUDTestContext, caller sacloud.APICaller) error {
+func cleanupSwitchFunc(targetResource string) func(*testutil.CRUDTestContext, sacloud.APICaller) error {
+	return func(testContext *testutil.CRUDTestContext, caller sacloud.APICaller) error {
 		switchID, ok := testContext.Values[targetResource+"/switch"]
 		if !ok {
 			return nil

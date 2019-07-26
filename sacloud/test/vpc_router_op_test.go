@@ -5,45 +5,46 @@ import (
 	"time"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
+	"github.com/sacloud/libsacloud/v2/sacloud/testutil"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
 func TestVPCRouterOp_CRUD(t *testing.T) {
-	Run(t, &CRUDTestCase{
+	testutil.Run(t, &testutil.CRUDTestCase{
 		Parallel:           true,
 		SetupAPICallerFunc: singletonAPICaller,
-		Create: &CRUDTestFunc{
+		Create: &testutil.CRUDTestFunc{
 			Func: testVPCRouterCreate(createVPCRouterParam),
-			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+			CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 				ExpectValue:  createVPCRouterExpected,
 				IgnoreFields: ignoreVPCRouterFields,
 			}),
 		},
 
-		Read: &CRUDTestFunc{
+		Read: &testutil.CRUDTestFunc{
 			Func: testVPCRouterRead,
-			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+			CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 				ExpectValue:  createVPCRouterExpected,
 				IgnoreFields: ignoreVPCRouterFields,
 			}),
 		},
 
-		Updates: []*CRUDTestFunc{
+		Updates: []*testutil.CRUDTestFunc{
 			{
 				Func: testVPCRouterUpdate(updateVPCRouterParam),
-				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 					ExpectValue:  updateVPCRouterExpected,
 					IgnoreFields: ignoreVPCRouterFields,
 				}),
 			},
 		},
 
-		Shutdown: func(ctx *CRUDTestContext, caller sacloud.APICaller) error {
+		Shutdown: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {
 			client := sacloud.NewVPCRouterOp(caller)
 			return client.Shutdown(ctx, testZone, ctx.ID, &sacloud.ShutdownOption{Force: true})
 		},
 
-		Delete: &CRUDTestDeleteFunc{
+		Delete: &testutil.CRUDTestDeleteFunc{
 			Func: testVPCRouterDelete,
 		},
 	})
@@ -116,8 +117,8 @@ var (
 	}
 )
 
-func testVPCRouterCreate(createParam *sacloud.VPCRouterCreateRequest) func(*CRUDTestContext, sacloud.APICaller) (interface{}, error) {
-	return func(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testVPCRouterCreate(createParam *sacloud.VPCRouterCreateRequest) func(*testutil.CRUDTestContext, sacloud.APICaller) (interface{}, error) {
+	return func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 		client := sacloud.NewVPCRouterOp(caller)
 		vpcRouter, err := client.Create(ctx, testZone, createParam)
 		if err != nil {
@@ -139,29 +140,29 @@ func testVPCRouterCreate(createParam *sacloud.VPCRouterCreateRequest) func(*CRUD
 	}
 }
 
-func testVPCRouterRead(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testVPCRouterRead(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewVPCRouterOp(caller)
 	return client.Read(ctx, testZone, ctx.ID)
 }
 
-func testVPCRouterUpdate(updateParam *sacloud.VPCRouterUpdateRequest) func(*CRUDTestContext, sacloud.APICaller) (interface{}, error) {
-	return func(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testVPCRouterUpdate(updateParam *sacloud.VPCRouterUpdateRequest) func(*testutil.CRUDTestContext, sacloud.APICaller) (interface{}, error) {
+	return func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 		client := sacloud.NewVPCRouterOp(caller)
 		return client.Update(ctx, testZone, ctx.ID, updateParam)
 	}
 }
 
-func testVPCRouterDelete(ctx *CRUDTestContext, caller sacloud.APICaller) error {
+func testVPCRouterDelete(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {
 	client := sacloud.NewVPCRouterOp(caller)
 	return client.Delete(ctx, testZone, ctx.ID)
 }
 
 func TestVPCRouterOp_WithRouterCRUD(t *testing.T) {
-	Run(t, &CRUDTestCase{
+	testutil.Run(t, &testutil.CRUDTestCase{
 		Parallel:           true,
 		SetupAPICallerFunc: singletonAPICaller,
 
-		Setup: func(ctx *CRUDTestContext, caller sacloud.APICaller) error {
+		Setup: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {
 			routerOp := sacloud.NewInternetOp(caller)
 			created, err := routerOp.Create(ctx, testZone, &sacloud.InternetCreateRequest{
 				Name:           "libsacloud-internet-for-vpc-router",
@@ -215,25 +216,25 @@ func TestVPCRouterOp_WithRouterCRUD(t *testing.T) {
 			withRouterCreateVPCRouterExpected.Settings = p.Settings
 			return nil
 		},
-		Create: &CRUDTestFunc{
+		Create: &testutil.CRUDTestFunc{
 			Func: testVPCRouterCreate(createVPCRouterParam),
-			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+			CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 				ExpectValue:  createVPCRouterExpected,
 				IgnoreFields: ignoreVPCRouterFields,
 			}),
 		},
 
-		Read: &CRUDTestFunc{
+		Read: &testutil.CRUDTestFunc{
 			Func: testVPCRouterRead,
-			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+			CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 				ExpectValue:  createVPCRouterExpected,
 				IgnoreFields: ignoreVPCRouterFields,
 			}),
 		},
 
-		Updates: []*CRUDTestFunc{
+		Updates: []*testutil.CRUDTestFunc{
 			{
-				Func: func(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+				Func: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 					if isAccTest() {
 						// 起動直後だとシャットダウンできない場合があるため10秒ほど待つ
 						time.Sleep(10 * time.Second)
@@ -334,13 +335,13 @@ func TestVPCRouterOp_WithRouterCRUD(t *testing.T) {
 					withRouterUpdateVPCRouterExpected.Settings = p.Settings
 					return testVPCRouterUpdate(updateVPCRouterParam)(ctx, caller)
 				},
-				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 					ExpectValue:  updateVPCRouterExpected,
 					IgnoreFields: ignoreVPCRouterFields,
 				}),
 			},
 			{
-				Func: func(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+				Func: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 					// setup update param
 					p := withRouterUpdateVPCRouterToMinParam
 					p.Settings = &sacloud.VPCRouterSetting{
@@ -353,23 +354,23 @@ func TestVPCRouterOp_WithRouterCRUD(t *testing.T) {
 					withRouterUpdateVPCRouterToMinExpected.Settings = p.Settings
 					return testVPCRouterUpdate(updateVPCRouterParam)(ctx, caller)
 				},
-				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 					ExpectValue:  updateVPCRouterExpected,
 					IgnoreFields: ignoreVPCRouterFields,
 				}),
 			},
 		},
 
-		Shutdown: func(ctx *CRUDTestContext, caller sacloud.APICaller) error {
+		Shutdown: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {
 			client := sacloud.NewVPCRouterOp(caller)
 			return client.Shutdown(ctx, testZone, ctx.ID, &sacloud.ShutdownOption{Force: true})
 		},
 
-		Delete: &CRUDTestDeleteFunc{
+		Delete: &testutil.CRUDTestDeleteFunc{
 			Func: testVPCRouterDelete,
 		},
 
-		Cleanup: func(ctx *CRUDTestContext, caller sacloud.APICaller) error {
+		Cleanup: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {
 			routerOp := sacloud.NewInternetOp(caller)
 			routerID, ok := ctx.Values["vpcrouter/internet"]
 			if ok {

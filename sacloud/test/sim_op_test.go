@@ -6,85 +6,86 @@ import (
 	"testing"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
+	"github.com/sacloud/libsacloud/v2/sacloud/testutil"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestSIMOpCRUD(t *testing.T) {
 
-	PreCheckEnvsFunc("SAKURACLOUD_SIM_ICCID", "SAKURACLOUD_SIM_PASSCODE")(t)
+	testutil.PreCheckEnvsFunc("SAKURACLOUD_SIM_ICCID", "SAKURACLOUD_SIM_PASSCODE")(t)
 
 	initSIMVariables()
 
-	Run(t, &CRUDTestCase{
+	testutil.Run(t, &testutil.CRUDTestCase{
 		Parallel:          true,
 		IgnoreStartupWait: true,
 
 		SetupAPICallerFunc: singletonAPICaller,
 
-		Create: &CRUDTestFunc{
+		Create: &testutil.CRUDTestFunc{
 			Func: testSIMCreate,
-			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+			CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 				ExpectValue:  createSIMExpected,
 				IgnoreFields: ignoreSIMFields,
 			}),
 		},
 
-		Read: &CRUDTestFunc{
+		Read: &testutil.CRUDTestFunc{
 			Func: testSIMRead,
-			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+			CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 				ExpectValue:  createSIMExpected,
 				IgnoreFields: ignoreSIMFields,
 			}),
 		},
 
-		Updates: []*CRUDTestFunc{
+		Updates: []*testutil.CRUDTestFunc{
 			{
 				Func: testSIMUpdate,
-				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 					ExpectValue:  updateSIMExpected,
 					IgnoreFields: ignoreSIMFields,
 				}),
 			},
 			// activate
 			{
-				Func: func(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+				Func: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 					client := sacloud.NewSIMOp(caller)
 					if err := client.Activate(ctx, ctx.ID); err != nil {
 						return nil, err
 					}
 					return client.Status(ctx, ctx.ID)
 				},
-				CheckFunc: func(t TestT, ctx *CRUDTestContext, v interface{}) error {
+				CheckFunc: func(t testutil.TestT, ctx *testutil.CRUDTestContext, v interface{}) error {
 					simInfo := v.(*sacloud.SIMInfo)
-					return DoAsserts(
-						AssertNotNilFunc(t, simInfo, "SIMInfo"),
-						AssertTrueFunc(t, simInfo.Activated, "SIMInfo.Activated"),
+					return testutil.DoAsserts(
+						testutil.AssertNotNilFunc(t, simInfo, "SIMInfo"),
+						testutil.AssertTrueFunc(t, simInfo.Activated, "SIMInfo.Activated"),
 					)
 				},
 				SkipExtractID: true,
 			},
 			// deactivate
 			{
-				Func: func(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+				Func: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 					client := sacloud.NewSIMOp(caller)
 					if err := client.Deactivate(ctx, ctx.ID); err != nil {
 						return nil, err
 					}
 					return client.Status(ctx, ctx.ID)
 				},
-				CheckFunc: func(t TestT, ctx *CRUDTestContext, v interface{}) error {
+				CheckFunc: func(t testutil.TestT, ctx *testutil.CRUDTestContext, v interface{}) error {
 					simInfo := v.(*sacloud.SIMInfo)
-					return DoAsserts(
-						AssertNotNilFunc(t, simInfo, "SIMInfo"),
-						AssertFalseFunc(t, simInfo.Activated, "SIMInfo.Activated"),
+					return testutil.DoAsserts(
+						testutil.AssertNotNilFunc(t, simInfo, "SIMInfo"),
+						testutil.AssertFalseFunc(t, simInfo.Activated, "SIMInfo.Activated"),
 					)
 				},
 				SkipExtractID: true,
 			},
 			// IMEI lock
 			{
-				Func: func(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+				Func: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 					client := sacloud.NewSIMOp(caller)
 					if err := client.IMEILock(ctx, ctx.ID, &sacloud.SIMIMEILockRequest{
 						IMEI: "123456789012345",
@@ -93,34 +94,34 @@ func TestSIMOpCRUD(t *testing.T) {
 					}
 					return client.Status(ctx, ctx.ID)
 				},
-				CheckFunc: func(t TestT, ctx *CRUDTestContext, v interface{}) error {
+				CheckFunc: func(t testutil.TestT, ctx *testutil.CRUDTestContext, v interface{}) error {
 					simInfo := v.(*sacloud.SIMInfo)
-					return DoAsserts(
-						AssertTrueFunc(t, simInfo.IMEILock, "SIMInfo.IMEILock"),
+					return testutil.DoAsserts(
+						testutil.AssertTrueFunc(t, simInfo.IMEILock, "SIMInfo.IMEILock"),
 					)
 				},
 				SkipExtractID: true,
 			},
 			// IMEI unlock
 			{
-				Func: func(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+				Func: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 					client := sacloud.NewSIMOp(caller)
 					if err := client.IMEIUnlock(ctx, ctx.ID); err != nil {
 						return nil, err
 					}
 					return client.Status(ctx, ctx.ID)
 				},
-				CheckFunc: func(t TestT, ctx *CRUDTestContext, v interface{}) error {
+				CheckFunc: func(t testutil.TestT, ctx *testutil.CRUDTestContext, v interface{}) error {
 					simInfo := v.(*sacloud.SIMInfo)
-					return DoAsserts(
-						AssertFalseFunc(t, simInfo.IMEILock, "SIMInfo.IMEILock"),
+					return testutil.DoAsserts(
+						testutil.AssertFalseFunc(t, simInfo.IMEILock, "SIMInfo.IMEILock"),
 					)
 				},
 				SkipExtractID: true,
 			},
 			// network operator
 			{
-				Func: func(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+				Func: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 					client := sacloud.NewSIMOp(caller)
 					configs := []*sacloud.SIMNetworkOperatorConfig{
 						{
@@ -133,17 +134,17 @@ func TestSIMOpCRUD(t *testing.T) {
 					}
 					return client.GetNetworkOperator(ctx, ctx.ID)
 				},
-				CheckFunc: func(t TestT, ctx *CRUDTestContext, v interface{}) error {
+				CheckFunc: func(t testutil.TestT, ctx *testutil.CRUDTestContext, v interface{}) error {
 					config := v.([]*sacloud.SIMNetworkOperatorConfig)
-					return DoAsserts(
-						AssertNotEmptyFunc(t, config, "NetworkOperatorConfig"),
+					return testutil.DoAsserts(
+						testutil.AssertNotEmptyFunc(t, config, "NetworkOperatorConfig"),
 					)
 				},
 				SkipExtractID: true,
 			},
 		},
 
-		Delete: &CRUDTestDeleteFunc{
+		Delete: &testutil.CRUDTestDeleteFunc{
 			Func: testSIMDelete,
 		},
 	})
@@ -153,7 +154,7 @@ func TestSIMOp_Logs(t *testing.T) {
 	if !isAccTest() {
 		t.Skip("TestSIMOp_Logs only exec at Acceptance Test")
 	}
-	PreCheckEnvsFunc("SAKURACLOUD_SIM_ID")(t)
+	testutil.PreCheckEnvsFunc("SAKURACLOUD_SIM_ID")(t)
 	id := types.StringID(os.Getenv("SAKURACLOUD_SIM_ID"))
 
 	client := sacloud.NewSIMOp(singletonAPICaller())
@@ -211,22 +212,22 @@ var (
 	updateSIMExpected *sacloud.SIM
 )
 
-func testSIMCreate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testSIMCreate(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewSIMOp(caller)
 	return client.Create(ctx, createSIMParam)
 }
 
-func testSIMRead(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testSIMRead(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewSIMOp(caller)
 	return client.Read(ctx, ctx.ID)
 }
 
-func testSIMUpdate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testSIMUpdate(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewSIMOp(caller)
 	return client.Update(ctx, ctx.ID, updateSIMParam)
 }
 
-func testSIMDelete(ctx *CRUDTestContext, caller sacloud.APICaller) error {
+func testSIMDelete(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {
 	client := sacloud.NewSIMOp(caller)
 	return client.Delete(ctx, ctx.ID)
 }
