@@ -21,6 +21,7 @@ type BuildersAPIClient struct {
 	SSHKey       SSHKeyHandler
 }
 
+// ArchiveFinder アーカイブ検索のためのインターフェース
 type ArchiveFinder interface {
 	Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.ArchiveFindResult, error)
 	Read(ctx context.Context, zone string, id types.ID) (*sacloud.Archive, error)
@@ -45,17 +46,18 @@ type DiskPlanReader interface {
 	Read(ctx context.Context, zone string, id types.ID) (*sacloud.DiskPlan, error)
 }
 
-// SwitchReader .
+// SwitchReader スイッチ参照のためのインターフェース
 type SwitchReader interface {
 	Read(ctx context.Context, zone string, id types.ID) (*sacloud.Switch, error)
 }
 
-// InterfaceHandler .
+// InterfaceHandler NIC操作のためのインターフェース
 type InterfaceHandler interface {
 	ConnectToPacketFilter(ctx context.Context, zone string, id types.ID, packetFilterID types.ID) error
+	Update(ctx context.Context, zone string, id types.ID, param *sacloud.InterfaceUpdateRequest) (*sacloud.Interface, error)
 }
 
-// PacketFilterReader .
+// PacketFilterReader パケットフィルタ参照のためのインターフェース
 type PacketFilterReader interface {
 	Read(ctx context.Context, zone string, id types.ID) (*sacloud.PacketFilter, error)
 }
@@ -82,7 +84,7 @@ type SSHKeyHandler interface {
 	Delete(ctx context.Context, id types.ID) error
 }
 
-// NewBuildersAPIClient .
+// NewBuildersAPIClient APIクライアントの作成
 func NewBuildersAPIClient(caller sacloud.APICaller) *BuildersAPIClient {
 	return &BuildersAPIClient{
 		Archive:      sacloud.NewArchiveOp(caller),

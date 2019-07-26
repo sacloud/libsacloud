@@ -28,6 +28,7 @@ const (
 	Windows2019
 )
 
+// WindowsPublicArchives WindowsPublicArchiveTypeとsacloud/ostype/ArchiveOSTypeの対応マップ
 var WindowsPublicArchives = map[WindowsPublicArchiveType]ostype.ArchiveOSType{
 	Windows2016:                         ostype.Windows2016,
 	Windows2016RDS:                      ostype.Windows2016RDS,
