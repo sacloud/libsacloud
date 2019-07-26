@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
+	"github.com/sacloud/libsacloud/v2/sacloud/testutil"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -30,11 +31,11 @@ func TestBillOp_ByContract(t *testing.T) {
 		return
 	}
 
-	err = DoAsserts(
-		AssertTrueFunc(t, len(searched.Bills) > 0, "len(Bills)"),
-		AssertNotEmptyFunc(t, searched.Bills[0].ID, "Bill.ID"),
-		AssertNotEmptyFunc(t, searched.Bills[0].Date, "Bill.Date"),
-		AssertNotEmptyFunc(t, searched.Bills[0].MemberID, "Bill.MemberID"),
+	err = testutil.DoAsserts(
+		testutil.AssertTrueFunc(t, len(searched.Bills) > 0, "len(Bills)"),
+		testutil.AssertNotEmptyFunc(t, searched.Bills[0].ID, "Bill.ID"),
+		testutil.AssertNotEmptyFunc(t, searched.Bills[0].Date, "Bill.Date"),
+		testutil.AssertNotEmptyFunc(t, searched.Bills[0].MemberID, "Bill.MemberID"),
 	)
 	assert.NoError(t, err)
 
@@ -43,9 +44,9 @@ func TestBillOp_ByContract(t *testing.T) {
 	if !assert.NoError(t, err) {
 		return
 	}
-	err = DoAsserts(
-		AssertTrueFunc(t, len(details.BillDetails) > 0, "len(Bills)"),
-		AssertNotEmptyFunc(t, details.BillDetails[0].ServiceClassID, "BillDetails.ServiceClassID"),
+	err = testutil.DoAsserts(
+		testutil.AssertTrueFunc(t, len(details.BillDetails) > 0, "len(Bills)"),
+		testutil.AssertNotEmptyFunc(t, details.BillDetails[0].ServiceClassID, "BillDetails.ServiceClassID"),
 	)
 	assert.NoError(t, err)
 }

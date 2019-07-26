@@ -4,38 +4,39 @@ import (
 	"testing"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
+	"github.com/sacloud/libsacloud/v2/sacloud/testutil"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
 func TestLicenseOpCRUD(t *testing.T) {
-	Run(t, &CRUDTestCase{
+	testutil.Run(t, &testutil.CRUDTestCase{
 		Parallel:           true,
 		IgnoreStartupWait:  true,
 		SetupAPICallerFunc: singletonAPICaller,
-		Create: &CRUDTestFunc{
+		Create: &testutil.CRUDTestFunc{
 			Func: testLicenseCreate,
-			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+			CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 				ExpectValue:  createLicenseExpected,
 				IgnoreFields: ignoreLicenseFields,
 			}),
 		},
-		Read: &CRUDTestFunc{
+		Read: &testutil.CRUDTestFunc{
 			Func: testLicenseRead,
-			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+			CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 				ExpectValue:  createLicenseExpected,
 				IgnoreFields: ignoreLicenseFields,
 			}),
 		},
-		Updates: []*CRUDTestFunc{
+		Updates: []*testutil.CRUDTestFunc{
 			{
 				Func: testLicenseUpdate,
-				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 					ExpectValue:  updateLicenseExpected,
 					IgnoreFields: ignoreLicenseFields,
 				}),
 			},
 		},
-		Delete: &CRUDTestDeleteFunc{
+		Delete: &testutil.CRUDTestDeleteFunc{
 			Func: testLicenseDelete,
 		},
 	})
@@ -67,22 +68,22 @@ var (
 	}
 )
 
-func testLicenseCreate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testLicenseCreate(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewLicenseOp(caller)
 	return client.Create(ctx, createLicenseParam)
 }
 
-func testLicenseRead(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testLicenseRead(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewLicenseOp(caller)
 	return client.Read(ctx, ctx.ID)
 }
 
-func testLicenseUpdate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testLicenseUpdate(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewLicenseOp(caller)
 	return client.Update(ctx, ctx.ID, updateLicenseParam)
 }
 
-func testLicenseDelete(ctx *CRUDTestContext, caller sacloud.APICaller) error {
+func testLicenseDelete(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {
 	client := sacloud.NewLicenseOp(caller)
 	return client.Delete(ctx, ctx.ID)
 }

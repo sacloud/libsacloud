@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
+	"github.com/sacloud/libsacloud/v2/sacloud/testutil"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -28,11 +29,11 @@ func TestCouponOp_Find(t *testing.T) {
 	assert.NoError(t, err)
 
 	if searched.Count > 0 {
-		err = DoAsserts(
-			AssertNotEmptyFunc(t, searched.Coupons[0].ID, "Coupon.ID"),
-			AssertNotEmptyFunc(t, searched.Coupons[0].MemberID, "Coupon.MemberID"),
-			AssertNotEmptyFunc(t, searched.Coupons[0].ContractID, "Coupon.ContractID"),
-			AssertNotEmptyFunc(t, searched.Coupons[0].ServiceClassID, "Coupon.ServiceClassID"),
+		err = testutil.DoAsserts(
+			testutil.AssertNotEmptyFunc(t, searched.Coupons[0].ID, "Coupon.ID"),
+			testutil.AssertNotEmptyFunc(t, searched.Coupons[0].MemberID, "Coupon.MemberID"),
+			testutil.AssertNotEmptyFunc(t, searched.Coupons[0].ContractID, "Coupon.ContractID"),
+			testutil.AssertNotEmptyFunc(t, searched.Coupons[0].ServiceClassID, "Coupon.ServiceClassID"),
 		)
 		assert.NoError(t, err)
 	}

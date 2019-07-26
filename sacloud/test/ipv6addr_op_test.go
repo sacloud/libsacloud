@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
+	"github.com/sacloud/libsacloud/v2/sacloud/testutil"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -16,7 +17,7 @@ func TestIPv6AddrOp_CRUD(t *testing.T) {
 
 	t.Parallel()
 
-	PreCheckEnvsFunc("SAKURACLOUD_IPV6ADDRESS", "SAKURACLOUD_IPV6HOSTNAME")(t)
+	testutil.PreCheckEnvsFunc("SAKURACLOUD_IPV6ADDRESS", "SAKURACLOUD_IPV6HOSTNAME")(t)
 
 	client := sacloud.NewIPv6AddrOp(singletonAPICaller())
 	ip := os.Getenv("SAKURACLOUD_IPV6ADDRESS")

@@ -5,17 +5,18 @@ import (
 	"testing"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
+	"github.com/sacloud/libsacloud/v2/sacloud/testutil"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestArchiveOpCRUD(t *testing.T) {
-	Run(t, &CRUDTestCase{
+	testutil.Run(t, &testutil.CRUDTestCase{
 		Parallel: true,
 
 		SetupAPICallerFunc: singletonAPICaller,
 
-		Setup: func(ctx *CRUDTestContext, caller sacloud.APICaller) error {
+		Setup: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {
 			client := sacloud.NewArchiveOp(caller)
 			findResult, err := client.Find(ctx, testZone, nil)
 			if err != nil {
@@ -39,40 +40,40 @@ func TestArchiveOpCRUD(t *testing.T) {
 			return errors.New("valid archive is not found")
 		},
 
-		Create: &CRUDTestFunc{
+		Create: &testutil.CRUDTestFunc{
 			Func: testArchiveCreate,
-			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+			CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 				ExpectValue:  createArchiveExpected,
 				IgnoreFields: ignoreArchiveFields,
 			}),
 		},
 
-		Read: &CRUDTestFunc{
+		Read: &testutil.CRUDTestFunc{
 			Func: testArchiveRead,
-			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+			CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 				ExpectValue:  createArchiveExpected,
 				IgnoreFields: ignoreArchiveFields,
 			}),
 		},
 
-		Updates: []*CRUDTestFunc{
+		Updates: []*testutil.CRUDTestFunc{
 			{
 				Func: testArchiveUpdate,
-				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 					ExpectValue:  updateArchiveExpected,
 					IgnoreFields: ignoreArchiveFields,
 				}),
 			},
 			{
 				Func: testArchiveUpdateToMin,
-				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 					ExpectValue:  updateArchiveToMinExpected,
 					IgnoreFields: ignoreArchiveFields,
 				}),
 			},
 		},
 
-		Delete: &CRUDTestDeleteFunc{
+		Delete: &testutil.CRUDTestDeleteFunc{
 			Func: testArchiveDelete,
 		},
 	})
@@ -135,38 +136,38 @@ var (
 	}
 )
 
-func testArchiveCreate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testArchiveCreate(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewArchiveOp(caller)
 	return client.Create(ctx, testZone, createArchiveParam)
 }
 
-func testArchiveRead(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testArchiveRead(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewArchiveOp(caller)
 	return client.Read(ctx, testZone, ctx.ID)
 }
 
-func testArchiveUpdate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testArchiveUpdate(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewArchiveOp(caller)
 	return client.Update(ctx, testZone, ctx.ID, updateArchiveParam)
 }
 
-func testArchiveUpdateToMin(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testArchiveUpdateToMin(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewArchiveOp(caller)
 	return client.Update(ctx, testZone, ctx.ID, updateArchiveToMinParam)
 }
 
-func testArchiveDelete(ctx *CRUDTestContext, caller sacloud.APICaller) error {
+func testArchiveDelete(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {
 	client := sacloud.NewArchiveOp(caller)
 	return client.Delete(ctx, testZone, ctx.ID)
 }
 
 func TestArchiveOp_CreateBlank(t *testing.T) {
-	Run(t, &CRUDTestCase{
+	testutil.Run(t, &testutil.CRUDTestCase{
 		Parallel:           true,
 		IgnoreStartupWait:  true,
 		SetupAPICallerFunc: singletonAPICaller,
-		Create: &CRUDTestFunc{
-			Func: func(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+		Create: &testutil.CRUDTestFunc{
+			Func: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 				client := sacloud.NewArchiveOp(singletonAPICaller())
 				archive, ftpServer, err := client.CreateBlank(ctx, testZone, &sacloud.ArchiveCreateBlankRequest{
 					SizeMB: 20 * 1024,
@@ -183,8 +184,8 @@ func TestArchiveOp_CreateBlank(t *testing.T) {
 				return archive, err
 			},
 		},
-		Delete: &CRUDTestDeleteFunc{
-			Func: func(ctx *CRUDTestContext, caller sacloud.APICaller) error {
+		Delete: &testutil.CRUDTestDeleteFunc{
+			Func: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {
 				client := sacloud.NewArchiveOp(singletonAPICaller())
 				return client.Delete(ctx, testZone, ctx.ID)
 			},

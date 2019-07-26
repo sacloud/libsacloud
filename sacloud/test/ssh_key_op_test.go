@@ -4,49 +4,50 @@ import (
 	"testing"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
+	"github.com/sacloud/libsacloud/v2/sacloud/testutil"
 )
 
 func TestSSHKeyOpCRUD(t *testing.T) {
-	Run(t, &CRUDTestCase{
+	testutil.Run(t, &testutil.CRUDTestCase{
 		Parallel:           true,
 		IgnoreStartupWait:  true,
 		SetupAPICallerFunc: singletonAPICaller,
-		Create: &CRUDTestFunc{
+		Create: &testutil.CRUDTestFunc{
 			Func: testSSHKeyCreate,
-			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+			CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 				ExpectValue:  createSSHKeyExpected,
 				IgnoreFields: ignoreSSHKeyFields,
 			}),
 		},
-		Read: &CRUDTestFunc{
+		Read: &testutil.CRUDTestFunc{
 			Func: testSSHKeyRead,
-			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+			CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 				ExpectValue:  createSSHKeyExpected,
 				IgnoreFields: ignoreSSHKeyFields,
 			}),
 		},
-		Updates: []*CRUDTestFunc{
+		Updates: []*testutil.CRUDTestFunc{
 			{
 				Func: testSSHKeyUpdate,
-				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 					ExpectValue:  updateSSHKeyExpected,
 					IgnoreFields: ignoreSSHKeyFields,
 				}),
 			},
 		},
-		Delete: &CRUDTestDeleteFunc{
+		Delete: &testutil.CRUDTestDeleteFunc{
 			Func: testSSHKeyDelete,
 		},
 	})
 }
 
 func TestSSHKeyOp_Generate(t *testing.T) {
-	Run(t, &CRUDTestCase{
+	testutil.Run(t, &testutil.CRUDTestCase{
 		Parallel:           true,
 		IgnoreStartupWait:  true,
 		SetupAPICallerFunc: singletonAPICaller,
-		Create: &CRUDTestFunc{
-			Func: func(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+		Create: &testutil.CRUDTestFunc{
+			Func: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 				client := sacloud.NewSSHKeyOp(caller)
 				return client.Generate(ctx, &sacloud.SSHKeyGenerateRequest{
 					Name:        "libsacloud-sshKey-generate",
@@ -54,20 +55,20 @@ func TestSSHKeyOp_Generate(t *testing.T) {
 					PassPhrase:  "libsacloud-sshKey-passphrase",
 				})
 			},
-			CheckFunc: func(t TestT, ctx *CRUDTestContext, v interface{}) error {
+			CheckFunc: func(t testutil.TestT, ctx *testutil.CRUDTestContext, v interface{}) error {
 				sshKey := v.(*sacloud.SSHKeyGenerated)
-				return DoAsserts(
-					AssertNotNilFunc(t, sshKey, "SSHKeyGenerated"),
-					AssertNotEmptyFunc(t, sshKey.PublicKey, "SSHKeyGenerated.PublicKey"),
-					AssertNotEmptyFunc(t, sshKey.PrivateKey, "SSHKeyGenerated.PrivateKey"),
-					AssertNotEmptyFunc(t, sshKey.Fingerprint, "SSHKeyGenerated.Fingerprint"),
+				return testutil.DoAsserts(
+					testutil.AssertNotNilFunc(t, sshKey, "SSHKeyGenerated"),
+					testutil.AssertNotEmptyFunc(t, sshKey.PublicKey, "SSHKeyGenerated.PublicKey"),
+					testutil.AssertNotEmptyFunc(t, sshKey.PrivateKey, "SSHKeyGenerated.PrivateKey"),
+					testutil.AssertNotEmptyFunc(t, sshKey.Fingerprint, "SSHKeyGenerated.Fingerprint"),
 				)
 			},
 		},
-		Read: &CRUDTestFunc{
+		Read: &testutil.CRUDTestFunc{
 			Func: testSSHKeyRead,
 		},
-		Delete: &CRUDTestDeleteFunc{
+		Delete: &testutil.CRUDTestDeleteFunc{
 			Func: testSSHKeyDelete,
 		},
 	})
@@ -104,22 +105,22 @@ var (
 	}
 )
 
-func testSSHKeyCreate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testSSHKeyCreate(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewSSHKeyOp(caller)
 	return client.Create(ctx, createSSHKeyParam)
 }
 
-func testSSHKeyRead(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testSSHKeyRead(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewSSHKeyOp(caller)
 	return client.Read(ctx, ctx.ID)
 }
 
-func testSSHKeyUpdate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testSSHKeyUpdate(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewSSHKeyOp(caller)
 	return client.Update(ctx, ctx.ID, updateSSHKeyParam)
 }
 
-func testSSHKeyDelete(ctx *CRUDTestContext, caller sacloud.APICaller) error {
+func testSSHKeyDelete(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {
 	client := sacloud.NewSSHKeyOp(caller)
 	return client.Delete(ctx, ctx.ID)
 }
