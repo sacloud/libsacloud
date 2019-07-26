@@ -15,6 +15,7 @@ require (
 	github.com/uber-go/atomic v1.4.0 // indirect
 	go.uber.org/atomic v1.4.0 // indirect
 	go.uber.org/ratelimit v0.0.0-20180316092928-c15da0234277
+	golang.org/x/crypto v0.0.0-20190701094942-4def268fd1a4
 	gopkg.in/go-playground/assert.v1 v1.2.1 // indirect
 	gopkg.in/go-playground/validator.v9 v9.29.0
 )

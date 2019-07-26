@@ -29,6 +29,7 @@ const (
 	FreeBSD
 )
 
+// UnixPublicArchives UnixPublicArchiveTypeとsacloud/ostype/ArchiveOSTypeの対応マップ
 var UnixPublicArchives = map[UnixPublicArchiveType]ostype.ArchiveOSType{
 	CentOS:    ostype.CentOS,
 	CentOS6:   ostype.CentOS6,

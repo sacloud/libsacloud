@@ -82,11 +82,19 @@ func (d *dummySwitchReader) Read(ctx context.Context, zone string, id types.ID) 
 }
 
 type dummyInterfaceHandler struct {
-	err error
+	iface *sacloud.Interface
+	err   error
 }
 
 func (d *dummyInterfaceHandler) ConnectToPacketFilter(ctx context.Context, zone string, id types.ID, packetFilterID types.ID) error {
 	return d.err
+}
+
+func (d *dummyInterfaceHandler) Update(ctx context.Context, zone string, id types.ID, param *sacloud.InterfaceUpdateRequest) (*sacloud.Interface, error) {
+	if d.err != nil {
+		return nil, d.err
+	}
+	return d.iface, nil
 }
 
 type dummyPacketFilterReader struct {
@@ -102,8 +110,10 @@ func (d *dummyPacketFilterReader) Read(ctx context.Context, zone string, id type
 }
 
 type dummyCreateServerHandler struct {
-	server *sacloud.Server
-	err    error
+	server   *sacloud.Server
+	err      error
+	cdromErr error
+	bootErr  error
 }
 
 func (d *dummyCreateServerHandler) Create(ctx context.Context, zone string, param *sacloud.ServerCreateRequest) (*sacloud.Server, error) {
@@ -121,11 +131,11 @@ func (d *dummyCreateServerHandler) Read(ctx context.Context, zone string, id typ
 }
 
 func (d *dummyCreateServerHandler) InsertCDROM(ctx context.Context, zone string, id types.ID, insertParam *sacloud.InsertCDROMRequest) error {
-	return d.err
+	return d.cdromErr
 }
 
 func (d *dummyCreateServerHandler) Boot(ctx context.Context, zone string, id types.ID) error {
-	return d.err
+	return d.bootErr
 }
 
 type dummyNoteHandler struct {

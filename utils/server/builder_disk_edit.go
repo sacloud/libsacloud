@@ -37,6 +37,7 @@ type UnixDiskEditRequest struct {
 	NoteIDs          []types.ID
 }
 
+// Validate 設定値の検証
 func (u *UnixDiskEditRequest) Validate(ctx context.Context, client *BuildersAPIClient) error {
 	for _, id := range u.SSHKeyIDs {
 		if _, err := client.SSHKey.Read(ctx, id); err != nil {

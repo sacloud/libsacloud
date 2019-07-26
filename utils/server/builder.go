@@ -63,7 +63,9 @@ func (b *Builder) setDefaults() {
 	}
 }
 
-// Validate .
+// Validate 入力値の検証
+//
+// 各種IDの存在確認のためにAPIリクエストが行われます。
 func (b *Builder) Validate(ctx context.Context, zone string) error {
 	b.setDefaults()
 
@@ -108,7 +110,7 @@ func (b *Builder) Validate(ctx context.Context, zone string) error {
 	return nil
 }
 
-// Build .
+// Build サーバ構築を行う
 func (b *Builder) Build(ctx context.Context, zone string) (*BuildResult, error) {
 	// validate
 	if err := b.Validate(ctx, zone); err != nil {
@@ -139,7 +141,7 @@ func (b *Builder) Build(ctx context.Context, zone string) (*BuildResult, error) 
 	}
 
 	// connect packet filter
-	if err := b.connectPacketFilter(ctx, zone, server); err != nil {
+	if err := b.updateInterfaces(ctx, zone, server); err != nil {
 		return nil, err
 	}
 
@@ -171,6 +173,7 @@ func (b *Builder) Build(ctx context.Context, zone string) (*BuildResult, error) 
 	return result, nil
 }
 
+// createServer サーバ作成
 func (b *Builder) createServer(ctx context.Context, zone string) (*sacloud.Server, error) {
 	param := &sacloud.ServerCreateRequest{
 		CPU:                  b.CPU,
@@ -206,38 +209,47 @@ func (b *Builder) createServer(ctx context.Context, zone string) (*sacloud.Serve
 	return b.Client.Server.Create(ctx, zone, param)
 }
 
-type packetFilterRequest struct {
+type updateInterfaceRequest struct {
 	index          int
 	packetFilterID types.ID
+	displayIP      string
 }
 
-func (b *Builder) collectPacketFilterIDs() []*packetFilterRequest {
-	var pfs []*packetFilterRequest
+func (b *Builder) collectInterfaceParameters() []*updateInterfaceRequest {
+	var reqs []*updateInterfaceRequest
 	if b.NIC != nil {
-		pfs = append(pfs, &packetFilterRequest{
+		reqs = append(reqs, &updateInterfaceRequest{
 			index:          0,
 			packetFilterID: b.NIC.GetPacketFilterID(),
 		})
 	}
 	for i, nic := range b.AdditionalNICs {
-		pfs = append(pfs, &packetFilterRequest{
+		reqs = append(reqs, &updateInterfaceRequest{
 			index:          i + 1,
 			packetFilterID: nic.GetPacketFilterID(),
 		})
 	}
-	return pfs
+	return reqs
 }
 
-func (b *Builder) connectPacketFilter(ctx context.Context, zone string, server *sacloud.Server) error {
-	requests := b.collectPacketFilterIDs()
-	for _, pfr := range requests {
-		if pfr.packetFilterID.IsEmpty() {
-			continue
-		}
-		if pfr.index < len(server.Interfaces) {
-			iface := server.Interfaces[pfr.index]
-			if err := b.Client.Interface.ConnectToPacketFilter(ctx, zone, iface.ID, pfr.packetFilterID); err != nil {
-				return err
+func (b *Builder) updateInterfaces(ctx context.Context, zone string, server *sacloud.Server) error {
+	requests := b.collectInterfaceParameters()
+	for _, req := range requests {
+		if req.index < len(server.Interfaces) {
+			iface := server.Interfaces[req.index]
+
+			if !req.packetFilterID.IsEmpty() {
+				if err := b.Client.Interface.ConnectToPacketFilter(ctx, zone, iface.ID, req.packetFilterID); err != nil {
+					return err
+				}
+			}
+
+			if req.displayIP != "" {
+				if _, err := b.Client.Interface.Update(ctx, zone, iface.ID, &sacloud.InterfaceUpdateRequest{
+					UserIPAddress: req.displayIP,
+				}); err != nil {
+					return err
+				}
 			}
 		}
 	}
