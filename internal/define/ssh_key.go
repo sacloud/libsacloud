@@ -106,12 +106,12 @@ var (
 			fields.Name(),
 			fields.Description(),
 			fields.PassPhrase(),
+		},
+		ConstFields: []*dsl.ConstFieldDesc{
 			{
-				Name: "GenerateFormat",
-				Type: meta.TypeString,
-				Tags: &dsl.FieldTags{
-					MapConv: ",default=openssh",
-				},
+				Name:  "GenerateFormat",
+				Type:  meta.TypeString,
+				Value: `"openssh"`,
 			},
 		},
 	}

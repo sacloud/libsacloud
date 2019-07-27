@@ -6,50 +6,51 @@ import (
 	"time"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
+	"github.com/sacloud/libsacloud/v2/sacloud/testutil"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestSimpleMonitorOp_CRUD(t *testing.T) {
-	Run(t, &CRUDTestCase{
+	testutil.Run(t, &testutil.CRUDTestCase{
 		Parallel: true,
 
 		SetupAPICallerFunc: singletonAPICaller,
 
-		Create: &CRUDTestFunc{
+		Create: &testutil.CRUDTestFunc{
 			Func: testSimpleMonitorCreate,
-			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+			CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 				ExpectValue:  createSimpleMonitorExpected,
 				IgnoreFields: ignoreSimpleMonitorFields,
 			}),
 		},
 
-		Read: &CRUDTestFunc{
+		Read: &testutil.CRUDTestFunc{
 			Func: testSimpleMonitorRead,
-			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+			CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 				ExpectValue:  createSimpleMonitorExpected,
 				IgnoreFields: ignoreSimpleMonitorFields,
 			}),
 		},
 
-		Updates: []*CRUDTestFunc{
+		Updates: []*testutil.CRUDTestFunc{
 			{
 				Func: testSimpleMonitorUpdate,
-				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 					ExpectValue:  updateSimpleMonitorExpected,
 					IgnoreFields: ignoreSimpleMonitorFields,
 				}),
 			},
 			{
 				Func: testSimpleMonitorUpdateToMin,
-				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 					ExpectValue:  updateSimpleMonitorToMinExpected,
 					IgnoreFields: ignoreSimpleMonitorFields,
 				}),
 			},
 		},
 
-		Delete: &CRUDTestDeleteFunc{
+		Delete: &testutil.CRUDTestDeleteFunc{
 			Func: testSimpleMonitorDelete,
 		},
 	})
@@ -153,40 +154,40 @@ var (
 	}
 )
 
-func testSimpleMonitorCreate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testSimpleMonitorCreate(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewSimpleMonitorOp(caller)
 	return client.Create(ctx, createSimpleMonitorParam)
 }
 
-func testSimpleMonitorRead(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testSimpleMonitorRead(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewSimpleMonitorOp(caller)
 	return client.Read(ctx, ctx.ID)
 }
 
-func testSimpleMonitorUpdate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testSimpleMonitorUpdate(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewSimpleMonitorOp(caller)
 	return client.Update(ctx, ctx.ID, updateSimpleMonitorParam)
 }
 
-func testSimpleMonitorUpdateToMin(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testSimpleMonitorUpdateToMin(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewSimpleMonitorOp(caller)
 	return client.Update(ctx, ctx.ID, updateSimpleMonitorToMinParam)
 }
 
-func testSimpleMonitorDelete(ctx *CRUDTestContext, caller sacloud.APICaller) error {
+func testSimpleMonitorDelete(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {
 	client := sacloud.NewSimpleMonitorOp(caller)
 	return client.Delete(ctx, ctx.ID)
 }
 
 func TestSimpleMonitorOp_StatusAndHealth(t *testing.T) {
 	client := sacloud.NewSimpleMonitorOp(singletonAPICaller())
-	Run(t, &CRUDTestCase{
+	testutil.Run(t, &testutil.CRUDTestCase{
 		Parallel: true,
 
 		SetupAPICallerFunc: singletonAPICaller,
 
-		Create: &CRUDTestFunc{
-			Func: func(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+		Create: &testutil.CRUDTestFunc{
+			Func: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 				sm, err := client.Create(ctx, simpleMonitorStatusAndHealthTargetParam)
 				if err != nil {
 					return nil, err
@@ -198,16 +199,16 @@ func TestSimpleMonitorOp_StatusAndHealth(t *testing.T) {
 			},
 		},
 
-		Read: &CRUDTestFunc{
+		Read: &testutil.CRUDTestFunc{
 			Func: testSimpleMonitorRead,
 		},
 
-		Updates: []*CRUDTestFunc{
+		Updates: []*testutil.CRUDTestFunc{
 			{
-				Func: func(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+				Func: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 					return client.HealthStatus(ctx, ctx.ID)
 				},
-				CheckFunc: func(t TestT, ctx *CRUDTestContext, v interface{}) error {
+				CheckFunc: func(t testutil.TestT, ctx *testutil.CRUDTestContext, v interface{}) error {
 					healthStatus := v.(*sacloud.SimpleMonitorHealthStatus)
 					if !assert.NotNil(t, healthStatus) {
 						return errors.New("unexpected state: SimpleMonitorHealthStatus")
@@ -216,10 +217,10 @@ func TestSimpleMonitorOp_StatusAndHealth(t *testing.T) {
 				},
 			},
 			{
-				Func: func(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+				Func: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 					return client.MonitorResponseTime(ctx, ctx.ID, &sacloud.MonitorCondition{})
 				},
-				CheckFunc: func(t TestT, ctx *CRUDTestContext, v interface{}) error {
+				CheckFunc: func(t testutil.TestT, ctx *testutil.CRUDTestContext, v interface{}) error {
 					monitor := v.(*sacloud.ResponseTimeSecActivity)
 					if !assert.NotNil(t, monitor) {
 						return errors.New("unexpected state: ResponseTimeSecActivity")
@@ -229,7 +230,7 @@ func TestSimpleMonitorOp_StatusAndHealth(t *testing.T) {
 			},
 		},
 
-		Delete: &CRUDTestDeleteFunc{
+		Delete: &testutil.CRUDTestDeleteFunc{
 			Func: testSimpleMonitorDelete,
 		},
 	})

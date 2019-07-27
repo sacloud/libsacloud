@@ -33,7 +33,7 @@ var (
 			fields.CPU(),
 			fields.MemoryMB(),
 			fields.Def("Commitment", meta.TypeCommitment),
-			fields.Def("Generation", meta.TypeInt),
+			fields.Def("Generation", meta.TypePlanGeneration),
 			fields.Availability(),
 		},
 	}

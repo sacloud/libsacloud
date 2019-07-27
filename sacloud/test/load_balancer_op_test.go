@@ -4,11 +4,12 @@ import (
 	"testing"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
+	"github.com/sacloud/libsacloud/v2/sacloud/testutil"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
 func TestLoadBalancerOp_CRUD(t *testing.T) {
-	Run(t, &CRUDTestCase{
+	testutil.Run(t, &testutil.CRUDTestCase{
 		Parallel: true,
 
 		SetupAPICallerFunc: singletonAPICaller,
@@ -19,52 +20,52 @@ func TestLoadBalancerOp_CRUD(t *testing.T) {
 			updateLoadBalancerToMin1Expected,
 			updateLoadBalancerToMin2Expected,
 		),
-		Create: &CRUDTestFunc{
+		Create: &testutil.CRUDTestFunc{
 			Func: testLoadBalancerCreate,
-			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+			CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 				ExpectValue:  createLoadBalancerExpected,
 				IgnoreFields: ignoreLoadBalancerFields,
 			}),
 		},
 
-		Read: &CRUDTestFunc{
+		Read: &testutil.CRUDTestFunc{
 			Func: testLoadBalancerRead,
-			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+			CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 				ExpectValue:  createLoadBalancerExpected,
 				IgnoreFields: ignoreLoadBalancerFields,
 			}),
 		},
 
-		Updates: []*CRUDTestFunc{
+		Updates: []*testutil.CRUDTestFunc{
 			{
 				Func: testLoadBalancerUpdate,
-				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 					ExpectValue:  updateLoadBalancerExpected,
 					IgnoreFields: ignoreLoadBalancerFields,
 				}),
 			},
 			{
 				Func: testLoadBalancerUpdateToMin1,
-				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 					ExpectValue:  updateLoadBalancerToMin1Expected,
 					IgnoreFields: ignoreLoadBalancerFields,
 				}),
 			},
 			{
 				Func: testLoadBalancerUpdateToMin2,
-				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 					ExpectValue:  updateLoadBalancerToMin2Expected,
 					IgnoreFields: ignoreLoadBalancerFields,
 				}),
 			},
 		},
 
-		Shutdown: func(ctx *CRUDTestContext, caller sacloud.APICaller) error {
+		Shutdown: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {
 			client := sacloud.NewLoadBalancerOp(caller)
 			return client.Shutdown(ctx, testZone, ctx.ID, &sacloud.ShutdownOption{Force: true})
 		},
 
-		Delete: &CRUDTestDeleteFunc{
+		Delete: &testutil.CRUDTestDeleteFunc{
 			Func: testLoadBalancerDelete,
 		},
 
@@ -293,32 +294,32 @@ var (
 	}
 )
 
-func testLoadBalancerCreate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testLoadBalancerCreate(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewLoadBalancerOp(caller)
 	return client.Create(ctx, testZone, createLoadBalancerParam)
 }
 
-func testLoadBalancerRead(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testLoadBalancerRead(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewLoadBalancerOp(caller)
 	return client.Read(ctx, testZone, ctx.ID)
 }
 
-func testLoadBalancerUpdate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testLoadBalancerUpdate(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewLoadBalancerOp(caller)
 	return client.Update(ctx, testZone, ctx.ID, updateLoadBalancerParam)
 }
 
-func testLoadBalancerUpdateToMin1(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testLoadBalancerUpdateToMin1(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewLoadBalancerOp(caller)
 	return client.Update(ctx, testZone, ctx.ID, updateLoadBalancerToMin1Param)
 }
 
-func testLoadBalancerUpdateToMin2(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testLoadBalancerUpdateToMin2(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewLoadBalancerOp(caller)
 	return client.Update(ctx, testZone, ctx.ID, updateLoadBalancerToMin2Param)
 }
 
-func testLoadBalancerDelete(ctx *CRUDTestContext, caller sacloud.APICaller) error {
+func testLoadBalancerDelete(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {
 	client := sacloud.NewLoadBalancerOp(caller)
 	return client.Delete(ctx, testZone, ctx.ID)
 }

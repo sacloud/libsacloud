@@ -4,49 +4,50 @@ import (
 	"testing"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
+	"github.com/sacloud/libsacloud/v2/sacloud/testutil"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
 func TestGSLBOp_CRUD(t *testing.T) {
-	Run(t, &CRUDTestCase{
+	testutil.Run(t, &testutil.CRUDTestCase{
 		Parallel: true,
 
 		SetupAPICallerFunc: singletonAPICaller,
 
-		Create: &CRUDTestFunc{
+		Create: &testutil.CRUDTestFunc{
 			Func: testGSLBCreate,
-			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+			CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 				ExpectValue:  createGSLBExpected,
 				IgnoreFields: ignoreGSLBFields,
 			}),
 		},
 
-		Read: &CRUDTestFunc{
+		Read: &testutil.CRUDTestFunc{
 			Func: testGSLBRead,
-			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+			CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 				ExpectValue:  createGSLBExpected,
 				IgnoreFields: ignoreGSLBFields,
 			}),
 		},
 
-		Updates: []*CRUDTestFunc{
+		Updates: []*testutil.CRUDTestFunc{
 			{
 				Func: testGSLBUpdate,
-				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 					ExpectValue:  updateGSLBExpected,
 					IgnoreFields: ignoreGSLBFields,
 				}),
 			},
 			{
 				Func: testGSLBUpdateToMin,
-				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 					ExpectValue:  updateGSLBToMinExpected,
 					IgnoreFields: ignoreGSLBFields,
 				}),
 			},
 		},
 
-		Delete: &CRUDTestDeleteFunc{
+		Delete: &testutil.CRUDTestDeleteFunc{
 			Func: testGSLBDelete,
 		},
 	})
@@ -158,27 +159,27 @@ var (
 	}
 )
 
-func testGSLBCreate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testGSLBCreate(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewGSLBOp(caller)
 	return client.Create(ctx, createGSLBParam)
 }
 
-func testGSLBRead(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testGSLBRead(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewGSLBOp(caller)
 	return client.Read(ctx, ctx.ID)
 }
 
-func testGSLBUpdate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testGSLBUpdate(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewGSLBOp(caller)
 	return client.Update(ctx, ctx.ID, updateGSLBParam)
 }
 
-func testGSLBUpdateToMin(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testGSLBUpdateToMin(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewGSLBOp(caller)
 	return client.Update(ctx, ctx.ID, updateGSLBToMinParam)
 }
 
-func testGSLBDelete(ctx *CRUDTestContext, caller sacloud.APICaller) error {
+func testGSLBDelete(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {
 	client := sacloud.NewGSLBOp(caller)
 	return client.Delete(ctx, ctx.ID)
 }

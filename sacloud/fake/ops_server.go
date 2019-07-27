@@ -50,12 +50,14 @@ func (o *ServerOp) Create(ctx context.Context, zone string, param *sacloud.Serve
 		swOp := NewSwitchOp()
 
 		ifCreateParam := &sacloud.InterfaceCreateRequest{}
-		if cs.Scope == types.Scopes.Shared {
-			ifCreateParam.ServerID = result.ID
-		} else {
-			_, err := swOp.Read(ctx, zone, cs.ID)
-			if err != nil {
-				return nil, newErrorConflict(o.key, types.ID(0), err.Error())
+		if cs != nil {
+			if cs.Scope == types.Scopes.Shared {
+				ifCreateParam.ServerID = result.ID
+			} else {
+				_, err := swOp.Read(ctx, zone, cs.ID)
+				if err != nil {
+					return nil, newErrorConflict(o.key, types.ID(0), err.Error())
+				}
 			}
 		}
 
@@ -64,13 +66,15 @@ func (o *ServerOp) Create(ctx context.Context, zone string, param *sacloud.Serve
 			return nil, newErrorConflict(o.key, types.ID(0), err.Error())
 		}
 
-		if cs.Scope == types.Scopes.Shared {
-			if err := ifOp.ConnectToSharedSegment(ctx, zone, iface.ID); err != nil {
-				return nil, newErrorConflict(o.key, types.ID(0), err.Error())
-			}
-		} else {
-			if err := ifOp.ConnectToSwitch(ctx, zone, iface.ID, cs.ID); err != nil {
-				return nil, newErrorConflict(o.key, types.ID(0), err.Error())
+		if cs != nil {
+			if cs.Scope == types.Scopes.Shared {
+				if err := ifOp.ConnectToSharedSegment(ctx, zone, iface.ID); err != nil {
+					return nil, newErrorConflict(o.key, types.ID(0), err.Error())
+				}
+			} else {
+				if err := ifOp.ConnectToSwitch(ctx, zone, iface.ID, cs.ID); err != nil {
+					return nil, newErrorConflict(o.key, types.ID(0), err.Error())
+				}
 			}
 		}
 

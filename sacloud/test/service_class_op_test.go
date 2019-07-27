@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
+	"github.com/sacloud/libsacloud/v2/sacloud/testutil"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -24,16 +25,16 @@ func TestServiceClassOp_Find(t *testing.T) {
 		}
 	}
 
-	err = DoAsserts(
-		AssertNotNilFunc(t, class, "ServiceClasses is not nil"),
-		AssertNotEmptyFunc(t, class.ID, "ServiceClasses.ID"),
-		AssertNotEmptyFunc(t, class.ServiceClassName, "ServiceClasses.ServiceClassName"),
-		AssertNotEmptyFunc(t, class.ServiceClassPath, "ServiceClasses.ServiceClassPath"),
-		AssertNotEmptyFunc(t, class.DisplayName, "ServiceClasses.DisplayName"),
-		AssertNotEmptyFunc(t, class.Price, "ServiceClasses.Price"),
-		AssertNotEmptyFunc(t, class.Price.Daily, "ServiceClasses.Price.Daily"),
-		AssertNotEmptyFunc(t, class.Price.Hourly, "ServiceClasses.Price.Hourly"),
-		AssertNotEmptyFunc(t, class.Price.Monthly, "ServiceClasses.Price.Monthly"),
+	err = testutil.DoAsserts(
+		testutil.AssertNotNilFunc(t, class, "ServiceClasses is not nil"),
+		testutil.AssertNotEmptyFunc(t, class.ID, "ServiceClasses.ID"),
+		testutil.AssertNotEmptyFunc(t, class.ServiceClassName, "ServiceClasses.ServiceClassName"),
+		testutil.AssertNotEmptyFunc(t, class.ServiceClassPath, "ServiceClasses.ServiceClassPath"),
+		testutil.AssertNotEmptyFunc(t, class.DisplayName, "ServiceClasses.DisplayName"),
+		testutil.AssertNotEmptyFunc(t, class.Price, "ServiceClasses.Price"),
+		testutil.AssertNotEmptyFunc(t, class.Price.Daily, "ServiceClasses.Price.Daily"),
+		testutil.AssertNotEmptyFunc(t, class.Price.Hourly, "ServiceClasses.Price.Hourly"),
+		testutil.AssertNotEmptyFunc(t, class.Price.Monthly, "ServiceClasses.Price.Monthly"),
 	)
 	assert.NoError(t, err)
 }

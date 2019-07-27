@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
+	"github.com/sacloud/libsacloud/v2/sacloud/testutil"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -16,17 +17,17 @@ func TestDiskPlanOp_Find(t *testing.T) {
 	searched, err := client.Find(context.Background(), sacloud.APIDefaultZone, &sacloud.FindCondition{Count: 1})
 	assert.NoError(t, err)
 
-	err = DoAsserts(
-		AssertLenFunc(t, searched.DiskPlans, 1, "DiskPlans"),
-		AssertNotEmptyFunc(t, searched.DiskPlans[0].ID, "DiskPlans.ID"),
-		AssertNotEmptyFunc(t, searched.DiskPlans[0].Name, "DiskPlans.Name"),
-		AssertNotEmptyFunc(t, searched.DiskPlans[0].Availability, "DiskPlans.Availability"),
-		AssertNotEmptyFunc(t, searched.DiskPlans[0].StorageClass, "DiskPlans.StorageClass"),
-		AssertNotEmptyFunc(t, searched.DiskPlans[0].Size, "DiskPlans.Size"),
-		AssertNotEmptyFunc(t, searched.DiskPlans[0].Size[0].Availability, "DiskPlans.Size.Availability"),
-		AssertNotEmptyFunc(t, searched.DiskPlans[0].Size[0].DisplaySize, "DiskPlans.Size.DisplaySize"),
-		AssertNotEmptyFunc(t, searched.DiskPlans[0].Size[0].DisplaySuffix, "DiskPlans.Size.DisplaySuffix"),
-		AssertNotEmptyFunc(t, searched.DiskPlans[0].Size[0].SizeMB, "DiskPlans.Size.SizeMB"),
+	err = testutil.DoAsserts(
+		testutil.AssertLenFunc(t, searched.DiskPlans, 1, "DiskPlans"),
+		testutil.AssertNotEmptyFunc(t, searched.DiskPlans[0].ID, "DiskPlans.ID"),
+		testutil.AssertNotEmptyFunc(t, searched.DiskPlans[0].Name, "DiskPlans.Name"),
+		testutil.AssertNotEmptyFunc(t, searched.DiskPlans[0].Availability, "DiskPlans.Availability"),
+		testutil.AssertNotEmptyFunc(t, searched.DiskPlans[0].StorageClass, "DiskPlans.StorageClass"),
+		testutil.AssertNotEmptyFunc(t, searched.DiskPlans[0].Size, "DiskPlans.Size"),
+		testutil.AssertNotEmptyFunc(t, searched.DiskPlans[0].Size[0].Availability, "DiskPlans.Size.Availability"),
+		testutil.AssertNotEmptyFunc(t, searched.DiskPlans[0].Size[0].DisplaySize, "DiskPlans.Size.DisplaySize"),
+		testutil.AssertNotEmptyFunc(t, searched.DiskPlans[0].Size[0].DisplaySuffix, "DiskPlans.Size.DisplaySuffix"),
+		testutil.AssertNotEmptyFunc(t, searched.DiskPlans[0].Size[0].SizeMB, "DiskPlans.Size.SizeMB"),
 	)
 	assert.NoError(t, err)
 }

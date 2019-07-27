@@ -4,49 +4,50 @@ import (
 	"testing"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
+	"github.com/sacloud/libsacloud/v2/sacloud/testutil"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
 func TestDNSOp_CRUD(t *testing.T) {
-	Run(t, &CRUDTestCase{
+	testutil.Run(t, &testutil.CRUDTestCase{
 		Parallel: true,
 
 		SetupAPICallerFunc: singletonAPICaller,
 
-		Create: &CRUDTestFunc{
+		Create: &testutil.CRUDTestFunc{
 			Func: testDNSCreate,
-			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+			CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 				ExpectValue:  createDNSExpected,
 				IgnoreFields: ignoreDNSFields,
 			}),
 		},
 
-		Read: &CRUDTestFunc{
+		Read: &testutil.CRUDTestFunc{
 			Func: testDNSRead,
-			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+			CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 				ExpectValue:  createDNSExpected,
 				IgnoreFields: ignoreDNSFields,
 			}),
 		},
 
-		Updates: []*CRUDTestFunc{
+		Updates: []*testutil.CRUDTestFunc{
 			{
 				Func: testDNSUpdate,
-				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 					ExpectValue:  updateDNSExpected,
 					IgnoreFields: ignoreDNSFields,
 				}),
 			},
 			{
 				Func: testDNSUpdateToMin,
-				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 					ExpectValue:  updateDNSToMinExpected,
 					IgnoreFields: ignoreDNSFields,
 				}),
 			},
 		},
 
-		Delete: &CRUDTestDeleteFunc{
+		Delete: &testutil.CRUDTestDeleteFunc{
 			Func: testDNSDelete,
 		},
 	})
@@ -126,27 +127,27 @@ var (
 	}
 )
 
-func testDNSCreate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testDNSCreate(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewDNSOp(caller)
 	return client.Create(ctx, createDNSParam)
 }
 
-func testDNSRead(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testDNSRead(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewDNSOp(caller)
 	return client.Read(ctx, ctx.ID)
 }
 
-func testDNSUpdate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testDNSUpdate(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewDNSOp(caller)
 	return client.Update(ctx, ctx.ID, updateDNSParam)
 }
 
-func testDNSUpdateToMin(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testDNSUpdateToMin(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewDNSOp(caller)
 	return client.Update(ctx, ctx.ID, updateDNSToMinParam)
 }
 
-func testDNSDelete(ctx *CRUDTestContext, caller sacloud.APICaller) error {
+func testDNSDelete(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {
 	client := sacloud.NewDNSOp(caller)
 	return client.Delete(ctx, ctx.ID)
 }

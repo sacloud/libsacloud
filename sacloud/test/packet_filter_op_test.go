@@ -4,45 +4,46 @@ import (
 	"testing"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
+	"github.com/sacloud/libsacloud/v2/sacloud/testutil"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
 func TestPacketFilterOp_CRUD(t *testing.T) {
-	Run(t, &CRUDTestCase{
+	testutil.Run(t, &testutil.CRUDTestCase{
 		Parallel:           true,
 		IgnoreStartupWait:  true,
 		SetupAPICallerFunc: singletonAPICaller,
-		Create: &CRUDTestFunc{
+		Create: &testutil.CRUDTestFunc{
 			Func: testPacketFilterCreate,
-			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+			CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 				ExpectValue:  createPacketFilterExpected,
 				IgnoreFields: packetFilterIgnoreFields,
 			}),
 		},
-		Read: &CRUDTestFunc{
+		Read: &testutil.CRUDTestFunc{
 			Func: testPacketFilterRead,
-			CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+			CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 				ExpectValue:  createPacketFilterExpected,
 				IgnoreFields: packetFilterIgnoreFields,
 			}),
 		},
-		Updates: []*CRUDTestFunc{
+		Updates: []*testutil.CRUDTestFunc{
 			{
 				Func: testPacketFilterUpdate,
-				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 					ExpectValue:  updatePacketFilterExpected,
 					IgnoreFields: packetFilterIgnoreFields,
 				}),
 			},
 			{
 				Func: testPacketFilterUpdateToMin,
-				CheckFunc: AssertEqualWithExpected(&CRUDTestExpect{
+				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 					ExpectValue:  updatePacketFilterToMinExpected,
 					IgnoreFields: packetFilterIgnoreFields,
 				}),
 			},
 		},
-		Delete: &CRUDTestDeleteFunc{
+		Delete: &testutil.CRUDTestDeleteFunc{
 			Func: testPacketFilterDelete,
 		},
 	})
@@ -113,27 +114,27 @@ var (
 	}
 )
 
-func testPacketFilterCreate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testPacketFilterCreate(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewPacketFilterOp(caller)
 	return client.Create(ctx, testZone, createPacketFilterParam)
 }
 
-func testPacketFilterRead(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testPacketFilterRead(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewPacketFilterOp(caller)
 	return client.Read(ctx, testZone, ctx.ID)
 }
 
-func testPacketFilterUpdate(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testPacketFilterUpdate(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewPacketFilterOp(caller)
 	return client.Update(ctx, testZone, ctx.ID, updatePacketFilterParam)
 }
 
-func testPacketFilterUpdateToMin(ctx *CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+func testPacketFilterUpdateToMin(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewPacketFilterOp(caller)
 	return client.Update(ctx, testZone, ctx.ID, updatePacketFilterToMinParam)
 }
 
-func testPacketFilterDelete(ctx *CRUDTestContext, caller sacloud.APICaller) error {
+func testPacketFilterDelete(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {
 	client := sacloud.NewPacketFilterOp(caller)
 	return client.Delete(ctx, testZone, ctx.ID)
 }
