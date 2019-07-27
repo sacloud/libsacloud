@@ -3286,6 +3286,11 @@ type ServerDeleteStubResult struct {
 	Err error
 }
 
+// ServerDeleteWithDisksStubResult is expected values of the DeleteWithDisks operation
+type ServerDeleteWithDisksStubResult struct {
+	Err error
+}
+
 // ServerChangePlanStubResult is expected values of the ChangePlan operation
 type ServerChangePlanStubResult struct {
 	Server *sacloud.Server
@@ -3336,20 +3341,21 @@ type ServerMonitorStubResult struct {
 
 // ServerStub is for trace ServerOp operations
 type ServerStub struct {
-	FindStubResult        *ServerFindStubResult
-	CreateStubResult      *ServerCreateStubResult
-	ReadStubResult        *ServerReadStubResult
-	UpdateStubResult      *ServerUpdateStubResult
-	DeleteStubResult      *ServerDeleteStubResult
-	ChangePlanStubResult  *ServerChangePlanStubResult
-	InsertCDROMStubResult *ServerInsertCDROMStubResult
-	EjectCDROMStubResult  *ServerEjectCDROMStubResult
-	BootStubResult        *ServerBootStubResult
-	ShutdownStubResult    *ServerShutdownStubResult
-	ResetStubResult       *ServerResetStubResult
-	SendKeyStubResult     *ServerSendKeyStubResult
-	GetVNCProxyStubResult *ServerGetVNCProxyStubResult
-	MonitorStubResult     *ServerMonitorStubResult
+	FindStubResult            *ServerFindStubResult
+	CreateStubResult          *ServerCreateStubResult
+	ReadStubResult            *ServerReadStubResult
+	UpdateStubResult          *ServerUpdateStubResult
+	DeleteStubResult          *ServerDeleteStubResult
+	DeleteWithDisksStubResult *ServerDeleteWithDisksStubResult
+	ChangePlanStubResult      *ServerChangePlanStubResult
+	InsertCDROMStubResult     *ServerInsertCDROMStubResult
+	EjectCDROMStubResult      *ServerEjectCDROMStubResult
+	BootStubResult            *ServerBootStubResult
+	ShutdownStubResult        *ServerShutdownStubResult
+	ResetStubResult           *ServerResetStubResult
+	SendKeyStubResult         *ServerSendKeyStubResult
+	GetVNCProxyStubResult     *ServerGetVNCProxyStubResult
+	MonitorStubResult         *ServerMonitorStubResult
 }
 
 // NewServerStub creates new ServerStub instance
@@ -3395,6 +3401,14 @@ func (s *ServerStub) Delete(ctx context.Context, zone string, id types.ID) error
 		log.Fatal("ServerStub.DeleteStubResult is not set")
 	}
 	return s.DeleteStubResult.Err
+}
+
+// DeleteWithDisks is API call with trace log
+func (s *ServerStub) DeleteWithDisks(ctx context.Context, zone string, id types.ID, disks *sacloud.ServerDeleteWithDisksRequest) error {
+	if s.DeleteWithDisksStubResult == nil {
+		log.Fatal("ServerStub.DeleteWithDisksStubResult is not set")
+	}
+	return s.DeleteWithDisksStubResult.Err
 }
 
 // ChangePlan is API call with trace log

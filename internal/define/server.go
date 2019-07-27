@@ -8,6 +8,7 @@ import (
 	"github.com/sacloud/libsacloud/v2/internal/dsl"
 	"github.com/sacloud/libsacloud/v2/internal/dsl/meta"
 	"github.com/sacloud/libsacloud/v2/sacloud/naked"
+	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
 const (
@@ -34,6 +35,24 @@ var serverAPI = &dsl.Resource{
 
 		// delete
 		ops.Delete(serverAPIName),
+
+		// delete with disks
+		{
+			ResourceName: serverAPIName,
+			Name:         "DeleteWithDisks",
+			PathFormat:   dsl.DefaultPathFormatWithID,
+			Method:       http.MethodDelete,
+			RequestEnvelope: dsl.RequestEnvelope(
+				&dsl.EnvelopePayloadDesc{
+					Type: meta.Static([]types.ID{}),
+					Name: "WithDisk",
+				},
+			),
+			Arguments: dsl.Arguments{
+				dsl.ArgumentID,
+				dsl.PassthroughModelArgument("disks", serverDeleteParam),
+			},
+		},
 
 		// change plan
 		{
@@ -275,6 +294,16 @@ var (
 			fields.Tags(),
 			fields.IconID(),
 		},
+	}
+
+	serverDeleteParam = &dsl.Model{
+		Name: "ServerDeleteWithDisksRequest",
+		Fields: []*dsl.FieldDesc{
+			fields.Def("IDs", meta.Static([]types.ID{}), &dsl.FieldTags{
+				MapConv: "WithDisk",
+			}),
+		},
+		NakedType: meta.Static(naked.DeleteServerWithDiskParameter{}),
 	}
 
 	serverChangePlanParam = &dsl.Model{

@@ -144,6 +144,20 @@ func (o *ServerOp) Delete(ctx context.Context, zone string, id types.ID) error {
 	return nil
 }
 
+// DeleteWithDisks is fake implementation
+func (o *ServerOp) DeleteWithDisks(ctx context.Context, zone string, id types.ID, disks *sacloud.ServerDeleteWithDisksRequest) error {
+	if err := o.Delete(ctx, zone, id); err != nil {
+		return err
+	}
+	diskOp := NewDiskOp()
+	for _, diskID := range disks.IDs {
+		if err := diskOp.Delete(ctx, zone, diskID); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 // ChangePlan is fake implementation
 func (o *ServerOp) ChangePlan(ctx context.Context, zone string, id types.ID, plan *sacloud.ServerChangePlanRequest) (*sacloud.Server, error) {
 	value, err := o.Read(ctx, zone, id)

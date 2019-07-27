@@ -7470,6 +7470,40 @@ func (o *ServerOp) Delete(ctx context.Context, zone string, id types.ID) error {
 	return nil
 }
 
+// DeleteWithDisks is API call
+func (o *ServerOp) DeleteWithDisks(ctx context.Context, zone string, id types.ID, disks *ServerDeleteWithDisksRequest) error {
+	// build request URL
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+		"disks":      disks,
+	})
+	if err != nil {
+		return err
+	}
+
+	// build request body
+	var body interface{}
+	v, err := o.transformDeleteWithDisksArgs(id, disks)
+	if err != nil {
+		return err
+	}
+	body = v
+
+	// do request
+	_, err = o.Client.Do(ctx, "DELETE", url, body)
+	if err != nil {
+		return err
+	}
+
+	// build results
+
+	return nil
+}
+
 // ChangePlan is API call
 func (o *ServerOp) ChangePlan(ctx context.Context, zone string, id types.ID, plan *ServerChangePlanRequest) (*Server, error) {
 	// build request URL

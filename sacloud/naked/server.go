@@ -41,3 +41,8 @@ type MouseRequestButtons struct {
 	R bool // 右ボタン
 	M bool // 中ボタン
 }
+
+// DeleteServerWithDiskParameter サーバ削除時に接続されているディスクを削除するためのパラメータ
+type DeleteServerWithDiskParameter struct {
+	WithDisk []types.ID
+}
