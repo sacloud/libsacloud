@@ -21,6 +21,9 @@ type Interface struct {
 	//
 	// Findした際のAPIからの応答にも同名のフィールドが含まれるが無関係。
 	Index int
+
+	// UpstreamType 上流ネットワーク種別 UnmarshalJSONの中で算出される
+	UpstreamType types.EUpstreamNetworkType
 }
 
 // Interfaces Interface配列
@@ -67,7 +70,7 @@ func (i Interfaces) MarshalJSON() ([]byte, error) {
 	return json.Marshal(dest)
 }
 
-// MarshalJSON JSON
+// MarshalJSON Indexフィールドを出力しないための実装
 func (i *Interface) MarshalJSON() ([]byte, error) {
 	type alias struct {
 		ID            types.ID          `json:",omitempty" yaml:"id,omitempty" structs:",omitempty"`
@@ -91,4 +94,31 @@ func (i *Interface) MarshalJSON() ([]byte, error) {
 		Server:        i.Server,
 	}
 	return json.Marshal(tmp)
+}
+
+// UnmarshalJSON 仮想フィールド UpstreamType を表現するための実装
+func (i *Interface) UnmarshalJSON(b []byte) error {
+	type alias Interface
+	var tmp alias
+	if err := json.Unmarshal(b, &tmp); err != nil {
+		return err
+	}
+
+	// calculate UpstreamType
+	var upstreamType = types.UpstreamNetworkTypes.Unknown
+	sw := tmp.Switch
+	switch {
+	case sw == nil:
+		upstreamType = types.UpstreamNetworkTypes.None
+	case sw.Subnet == nil:
+		upstreamType = types.UpstreamNetworkTypes.Switch
+	case sw.Scope == types.Scopes.Shared:
+		upstreamType = types.UpstreamNetworkTypes.Shared
+	default:
+		upstreamType = types.UpstreamNetworkTypes.Router
+	}
+	tmp.UpstreamType = upstreamType
+
+	*i = Interface(tmp)
+	return nil
 }
