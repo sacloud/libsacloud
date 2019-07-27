@@ -1810,6 +1810,11 @@ type serverUpdateResponseEnvelope struct {
 	Server *naked.Server `json:",omitempty"`
 }
 
+// serverDeleteWithDisksRequestEnvelope is envelop of API request
+type serverDeleteWithDisksRequestEnvelope struct {
+	WithDisk []types.ID `json:",omitempty"`
+}
+
 // serverChangePlanRequestEnvelope is envelop of API request
 type serverChangePlanRequestEnvelope struct {
 	CPU                  int                   `json:",omitempty"`

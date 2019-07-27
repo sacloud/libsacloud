@@ -276,6 +276,7 @@ func (d *dummyDiskBuilder) BuildDisk(ctx context.Context, client *BuildersAPICli
 
 func TestBuilder_Build_BlackBox(t *testing.T) {
 	var switchID types.ID
+	var diskIDs []types.ID
 	var buildResult *BuildResult
 	var testZone = testutil.TestZone()
 
@@ -322,7 +323,14 @@ func TestBuilder_Build_BlackBox(t *testing.T) {
 		Read: &testutil.CRUDTestFunc{
 			Func: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 				serverOp := sacloud.NewServerOp(caller)
-				return serverOp.Read(ctx, testZone, ctx.ID)
+				server, err := serverOp.Read(ctx, testZone, ctx.ID)
+				if err != nil {
+					return nil, err
+				}
+				for _, disk := range server.Disks {
+					diskIDs = append(diskIDs, disk.ID)
+				}
+				return server, nil
 			},
 			CheckFunc: func(t testutil.TestT, ctx *testutil.CRUDTestContext, i interface{}) error {
 				if testutil.IsAccTest() && testZone != "tk1v" { // サンドボックス以外
@@ -344,7 +352,7 @@ func TestBuilder_Build_BlackBox(t *testing.T) {
 		Delete: &testutil.CRUDTestDeleteFunc{
 			Func: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {
 				serverOp := sacloud.NewServerOp(caller)
-				if err := serverOp.Delete(ctx, testZone, ctx.ID); err != nil {
+				if err := serverOp.DeleteWithDisks(ctx, testZone, ctx.ID, &sacloud.ServerDeleteWithDisksRequest{IDs: diskIDs}); err != nil {
 					return err
 				}
 

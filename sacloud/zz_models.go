@@ -17338,6 +17338,39 @@ func (o *ServerUpdateRequest) SetIconID(v types.ID) {
 }
 
 /*************************************************
+* ServerDeleteWithDisksRequest
+*************************************************/
+
+// ServerDeleteWithDisksRequest represents API parameter/response structure
+type ServerDeleteWithDisksRequest struct {
+	IDs []types.ID `mapconv:"WithDisk"`
+}
+
+// Validate validates by field tags
+func (o *ServerDeleteWithDisksRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *ServerDeleteWithDisksRequest) setDefaults() interface{} {
+	return &struct {
+		IDs []types.ID `mapconv:"WithDisk"`
+	}{
+		IDs: o.IDs,
+	}
+}
+
+// GetIDs returns value of IDs
+func (o *ServerDeleteWithDisksRequest) GetIDs() []types.ID {
+	return o.IDs
+}
+
+// SetIDs sets value to IDs
+func (o *ServerDeleteWithDisksRequest) SetIDs(v []types.ID) {
+	o.IDs = v
+}
+
+/*************************************************
 * ServerChangePlanRequest
 *************************************************/
 
