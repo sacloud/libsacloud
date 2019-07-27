@@ -3982,6 +3982,7 @@ type InterfaceView struct {
 	PacketFilterID                  string             `mapconv:"PacketFilter.ID"`
 	PacketFilterName                string             `mapconv:"PacketFilter.Name"`
 	PacketFilterRequiredHostVersion types.StringNumber `mapconv:"PacketFilter.RequiredHostVersionn"`
+	UpstreamType                    types.EUpstreamNetworkType
 }
 
 // Validate validates by field tags
@@ -4009,6 +4010,7 @@ func (o *InterfaceView) setDefaults() interface{} {
 		PacketFilterID                  string             `mapconv:"PacketFilter.ID"`
 		PacketFilterName                string             `mapconv:"PacketFilter.Name"`
 		PacketFilterRequiredHostVersion types.StringNumber `mapconv:"PacketFilter.RequiredHostVersionn"`
+		UpstreamType                    types.EUpstreamNetworkType
 	}{
 		ID:                              o.ID,
 		MACAddress:                      o.MACAddress,
@@ -4027,6 +4029,7 @@ func (o *InterfaceView) setDefaults() interface{} {
 		PacketFilterID:                  o.PacketFilterID,
 		PacketFilterName:                o.PacketFilterName,
 		PacketFilterRequiredHostVersion: o.PacketFilterRequiredHostVersion,
+		UpstreamType:                    o.UpstreamType,
 	}
 }
 
@@ -4218,6 +4221,16 @@ func (o *InterfaceView) GetPacketFilterRequiredHostVersion() types.StringNumber 
 // SetPacketFilterRequiredHostVersion sets value to PacketFilterRequiredHostVersion
 func (o *InterfaceView) SetPacketFilterRequiredHostVersion(v types.StringNumber) {
 	o.PacketFilterRequiredHostVersion = v
+}
+
+// GetUpstreamType returns value of UpstreamType
+func (o *InterfaceView) GetUpstreamType() types.EUpstreamNetworkType {
+	return o.UpstreamType
+}
+
+// SetUpstreamType sets value to UpstreamType
+func (o *InterfaceView) SetUpstreamType(v types.EUpstreamNetworkType) {
+	o.UpstreamType = v
 }
 
 /*************************************************
@@ -11573,7 +11586,8 @@ type MobileGatewayInterface struct {
 	PacketFilterID                  string             `mapconv:"PacketFilter.ID"`
 	PacketFilterName                string             `mapconv:"PacketFilter.Name"`
 	PacketFilterRequiredHostVersion types.StringNumber `mapconv:"PacketFilter.RequiredHostVersionn"`
-	Index                           int                `mapconv:",omitempty"`
+	UpstreamType                    types.EUpstreamNetworkType
+	Index                           int `mapconv:",omitempty"`
 }
 
 // Validate validates by field tags
@@ -11601,7 +11615,8 @@ func (o *MobileGatewayInterface) setDefaults() interface{} {
 		PacketFilterID                  string             `mapconv:"PacketFilter.ID"`
 		PacketFilterName                string             `mapconv:"PacketFilter.Name"`
 		PacketFilterRequiredHostVersion types.StringNumber `mapconv:"PacketFilter.RequiredHostVersionn"`
-		Index                           int                `mapconv:",omitempty"`
+		UpstreamType                    types.EUpstreamNetworkType
+		Index                           int `mapconv:",omitempty"`
 	}{
 		ID:                              o.ID,
 		MACAddress:                      o.MACAddress,
@@ -11620,6 +11635,7 @@ func (o *MobileGatewayInterface) setDefaults() interface{} {
 		PacketFilterID:                  o.PacketFilterID,
 		PacketFilterName:                o.PacketFilterName,
 		PacketFilterRequiredHostVersion: o.PacketFilterRequiredHostVersion,
+		UpstreamType:                    o.UpstreamType,
 		Index:                           o.Index,
 	}
 }
@@ -11812,6 +11828,16 @@ func (o *MobileGatewayInterface) GetPacketFilterRequiredHostVersion() types.Stri
 // SetPacketFilterRequiredHostVersion sets value to PacketFilterRequiredHostVersion
 func (o *MobileGatewayInterface) SetPacketFilterRequiredHostVersion(v types.StringNumber) {
 	o.PacketFilterRequiredHostVersion = v
+}
+
+// GetUpstreamType returns value of UpstreamType
+func (o *MobileGatewayInterface) GetUpstreamType() types.EUpstreamNetworkType {
+	return o.UpstreamType
+}
+
+// SetUpstreamType sets value to UpstreamType
+func (o *MobileGatewayInterface) SetUpstreamType(v types.EUpstreamNetworkType) {
+	o.UpstreamType = v
 }
 
 // GetIndex returns value of Index
@@ -22242,7 +22268,8 @@ type VPCRouterInterface struct {
 	PacketFilterID                  string             `mapconv:"PacketFilter.ID"`
 	PacketFilterName                string             `mapconv:"PacketFilter.Name"`
 	PacketFilterRequiredHostVersion types.StringNumber `mapconv:"PacketFilter.RequiredHostVersionn"`
-	Index                           int                `mapconv:",omitempty"`
+	UpstreamType                    types.EUpstreamNetworkType
+	Index                           int `mapconv:",omitempty"`
 }
 
 // Validate validates by field tags
@@ -22270,7 +22297,8 @@ func (o *VPCRouterInterface) setDefaults() interface{} {
 		PacketFilterID                  string             `mapconv:"PacketFilter.ID"`
 		PacketFilterName                string             `mapconv:"PacketFilter.Name"`
 		PacketFilterRequiredHostVersion types.StringNumber `mapconv:"PacketFilter.RequiredHostVersionn"`
-		Index                           int                `mapconv:",omitempty"`
+		UpstreamType                    types.EUpstreamNetworkType
+		Index                           int `mapconv:",omitempty"`
 	}{
 		ID:                              o.ID,
 		MACAddress:                      o.MACAddress,
@@ -22289,6 +22317,7 @@ func (o *VPCRouterInterface) setDefaults() interface{} {
 		PacketFilterID:                  o.PacketFilterID,
 		PacketFilterName:                o.PacketFilterName,
 		PacketFilterRequiredHostVersion: o.PacketFilterRequiredHostVersion,
+		UpstreamType:                    o.UpstreamType,
 		Index:                           o.Index,
 	}
 }
@@ -22481,6 +22510,16 @@ func (o *VPCRouterInterface) GetPacketFilterRequiredHostVersion() types.StringNu
 // SetPacketFilterRequiredHostVersion sets value to PacketFilterRequiredHostVersion
 func (o *VPCRouterInterface) SetPacketFilterRequiredHostVersion(v types.StringNumber) {
 	o.PacketFilterRequiredHostVersion = v
+}
+
+// GetUpstreamType returns value of UpstreamType
+func (o *VPCRouterInterface) GetUpstreamType() types.EUpstreamNetworkType {
+	return o.UpstreamType
+}
+
+// SetUpstreamType sets value to UpstreamType
+func (o *VPCRouterInterface) SetUpstreamType(v types.EUpstreamNetworkType) {
+	o.UpstreamType = v
 }
 
 // GetIndex returns value of Index

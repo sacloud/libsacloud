@@ -4,6 +4,7 @@ import (
 	"github.com/sacloud/libsacloud/v2/internal/dsl"
 	"github.com/sacloud/libsacloud/v2/internal/dsl/meta"
 	"github.com/sacloud/libsacloud/v2/sacloud/naked"
+	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
 type modelsDef struct{}
@@ -304,6 +305,10 @@ func (m *modelsDef) interfaceModel() *dsl.Model {
 				Tags: &dsl.FieldTags{
 					MapConv: "PacketFilter.RequiredHostVersionn",
 				},
+			},
+			{
+				Name: "UpstreamType",
+				Type: meta.Static(types.EUpstreamNetworkType("")),
 			},
 		},
 	}
