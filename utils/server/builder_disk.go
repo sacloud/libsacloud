@@ -23,8 +23,8 @@ type BuildDiskResult struct {
 	GeneratedSSHKey *sacloud.SSHKeyGenerated
 }
 
-// DiskFromUnixRequest Unix系パブリックアーカイブからディスクを作成するリクエスト
-type DiskFromUnixRequest struct {
+// FromUnixDiskBuilder Unix系パブリックアーカイブからディスクを作成するリクエスト
+type FromUnixDiskBuilder struct {
 	OSType ostype.UnixPublicArchiveType
 
 	Name        string
@@ -43,7 +43,7 @@ type DiskFromUnixRequest struct {
 }
 
 // Validate 設定値の検証
-func (d *DiskFromUnixRequest) Validate(ctx context.Context, client *BuildersAPIClient, zone string) error {
+func (d *FromUnixDiskBuilder) Validate(ctx context.Context, client *BuildersAPIClient, zone string) error {
 	if _, ok := ostype.UnixPublicArchives[d.OSType]; !ok {
 		return fmt.Errorf("invalid OSType: %s", d.OSType.String())
 	}
@@ -58,7 +58,7 @@ func (d *DiskFromUnixRequest) Validate(ctx context.Context, client *BuildersAPIC
 }
 
 // BuildDisk ディスクの構築
-func (d *DiskFromUnixRequest) BuildDisk(ctx context.Context, client *BuildersAPIClient, zone string, serverID types.ID) (*BuildDiskResult, error) {
+func (d *FromUnixDiskBuilder) BuildDisk(ctx context.Context, client *BuildersAPIClient, zone string, serverID types.ID) (*BuildDiskResult, error) {
 	res, err := buildDisk(ctx, client, zone, serverID, d.DistantFrom, d)
 	if err != nil {
 		return nil, err
@@ -84,7 +84,7 @@ func (d *DiskFromUnixRequest) BuildDisk(ctx context.Context, client *BuildersAPI
 	return res, nil
 }
 
-func (d *DiskFromUnixRequest) createDiskParameter(ctx context.Context, client *BuildersAPIClient, zone string, serverID types.ID) (*sacloud.DiskCreateRequest, *sacloud.DiskEditRequest, error) {
+func (d *FromUnixDiskBuilder) createDiskParameter(ctx context.Context, client *BuildersAPIClient, zone string, serverID types.ID) (*sacloud.DiskCreateRequest, *sacloud.DiskEditRequest, error) {
 	archive, err := archive.FindByOSType(ctx, client.Archive, zone, ostype.UnixPublicArchives[d.OSType])
 	if err != nil {
 		return nil, nil, err
@@ -120,8 +120,8 @@ func (d *DiskFromUnixRequest) createDiskParameter(ctx context.Context, client *B
 	return createReq, editReq, nil
 }
 
-// DiskFromWindowsRequest Windows系パブリックアーカイブからディスクを作成するリクエスト
-type DiskFromWindowsRequest struct {
+// FromWindowsDiskBuilder Windows系パブリックアーカイブからディスクを作成するリクエスト
+type FromWindowsDiskBuilder struct {
 	OSType ostype.WindowsPublicArchiveType
 
 	Name        string
@@ -137,7 +137,7 @@ type DiskFromWindowsRequest struct {
 }
 
 // Validate 設定値の検証
-func (d *DiskFromWindowsRequest) Validate(ctx context.Context, client *BuildersAPIClient, zone string) error {
+func (d *FromWindowsDiskBuilder) Validate(ctx context.Context, client *BuildersAPIClient, zone string) error {
 	if _, ok := ostype.WindowsPublicArchives[d.OSType]; !ok {
 		return fmt.Errorf("invalid OSType: %s", d.OSType.String())
 	}
@@ -148,7 +148,7 @@ func (d *DiskFromWindowsRequest) Validate(ctx context.Context, client *BuildersA
 }
 
 // BuildDisk ディスクの構築
-func (d *DiskFromWindowsRequest) BuildDisk(ctx context.Context, client *BuildersAPIClient, zone string, serverID types.ID) (*BuildDiskResult, error) {
+func (d *FromWindowsDiskBuilder) BuildDisk(ctx context.Context, client *BuildersAPIClient, zone string, serverID types.ID) (*BuildDiskResult, error) {
 	res, err := buildDisk(ctx, client, zone, serverID, d.DistantFrom, d)
 	if err != nil {
 		return nil, err
@@ -156,7 +156,7 @@ func (d *DiskFromWindowsRequest) BuildDisk(ctx context.Context, client *Builders
 	return res, nil
 }
 
-func (d *DiskFromWindowsRequest) createDiskParameter(ctx context.Context, client *BuildersAPIClient, zone string, serverID types.ID) (*sacloud.DiskCreateRequest, *sacloud.DiskEditRequest, error) {
+func (d *FromWindowsDiskBuilder) createDiskParameter(ctx context.Context, client *BuildersAPIClient, zone string, serverID types.ID) (*sacloud.DiskCreateRequest, *sacloud.DiskEditRequest, error) {
 	archive, err := archive.FindByOSType(ctx, client.Archive, zone, ostype.WindowsPublicArchives[d.OSType])
 	if err != nil {
 		return nil, nil, err
@@ -182,10 +182,10 @@ func (d *DiskFromWindowsRequest) createDiskParameter(ctx context.Context, client
 	return createReq, editReq, nil
 }
 
-// DiskFromDiskOrArchiveRequest ディスクorアーカイブからディスクを作成するリクエスト
+// FromDiskOrArchiveDiskBuilder ディスクorアーカイブからディスクを作成するリクエスト
 //
 // ディスクの修正が可能かは実行時にさくらのクラウドAPI側にて判定される
-type DiskFromDiskOrArchiveRequest struct {
+type FromDiskOrArchiveDiskBuilder struct {
 	SourceDiskID    types.ID
 	SourceArchiveID types.ID
 
@@ -205,7 +205,7 @@ type DiskFromDiskOrArchiveRequest struct {
 }
 
 // Validate 設定値の検証
-func (d *DiskFromDiskOrArchiveRequest) Validate(ctx context.Context, client *BuildersAPIClient, zone string) error {
+func (d *FromDiskOrArchiveDiskBuilder) Validate(ctx context.Context, client *BuildersAPIClient, zone string) error {
 	if d.SourceArchiveID.IsEmpty() && d.SourceDiskID.IsEmpty() {
 		return errors.New("SourceArchiveID or SourceDiskID is required")
 	}
@@ -227,7 +227,7 @@ func (d *DiskFromDiskOrArchiveRequest) Validate(ctx context.Context, client *Bui
 }
 
 // BuildDisk ディスクの構築
-func (d *DiskFromDiskOrArchiveRequest) BuildDisk(ctx context.Context, client *BuildersAPIClient, zone string, serverID types.ID) (*BuildDiskResult, error) {
+func (d *FromDiskOrArchiveDiskBuilder) BuildDisk(ctx context.Context, client *BuildersAPIClient, zone string, serverID types.ID) (*BuildDiskResult, error) {
 	res, err := buildDisk(ctx, client, zone, serverID, d.DistantFrom, d)
 	if err != nil {
 		return nil, err
@@ -253,7 +253,7 @@ func (d *DiskFromDiskOrArchiveRequest) BuildDisk(ctx context.Context, client *Bu
 	return res, nil
 }
 
-func (d *DiskFromDiskOrArchiveRequest) createDiskParameter(ctx context.Context, client *BuildersAPIClient, zone string, serverID types.ID) (*sacloud.DiskCreateRequest, *sacloud.DiskEditRequest, error) {
+func (d *FromDiskOrArchiveDiskBuilder) createDiskParameter(ctx context.Context, client *BuildersAPIClient, zone string, serverID types.ID) (*sacloud.DiskCreateRequest, *sacloud.DiskEditRequest, error) {
 	createReq := &sacloud.DiskCreateRequest{
 		DiskPlanID:      d.PlanID,
 		SizeMB:          d.SizeGB * 1024,
@@ -285,8 +285,8 @@ func (d *DiskFromDiskOrArchiveRequest) createDiskParameter(ctx context.Context, 
 	return createReq, editReq, nil
 }
 
-// DiskFromBlankRequest ブランクディスクを作成する場合のリクエスト
-type DiskFromBlankRequest struct {
+// BlankDiskBuilder ブランクディスクを作成する場合のリクエスト
+type BlankDiskBuilder struct {
 	Name        string
 	SizeGB      int
 	DistantFrom []types.ID
@@ -298,7 +298,7 @@ type DiskFromBlankRequest struct {
 }
 
 // Validate 設定値の検証
-func (d *DiskFromBlankRequest) Validate(ctx context.Context, client *BuildersAPIClient, zone string) error {
+func (d *BlankDiskBuilder) Validate(ctx context.Context, client *BuildersAPIClient, zone string) error {
 	if err := validateDiskPlan(ctx, client, zone, d.PlanID, d.SizeGB); err != nil {
 		return err
 	}
@@ -306,11 +306,11 @@ func (d *DiskFromBlankRequest) Validate(ctx context.Context, client *BuildersAPI
 }
 
 // BuildDisk ディスクの構築
-func (d *DiskFromBlankRequest) BuildDisk(ctx context.Context, client *BuildersAPIClient, zone string, serverID types.ID) (*BuildDiskResult, error) {
+func (d *BlankDiskBuilder) BuildDisk(ctx context.Context, client *BuildersAPIClient, zone string, serverID types.ID) (*BuildDiskResult, error) {
 	return buildDisk(ctx, client, zone, serverID, d.DistantFrom, d)
 }
 
-func (d *DiskFromBlankRequest) createDiskParameter(ctx context.Context, client *BuildersAPIClient, zone string, serverID types.ID) (*sacloud.DiskCreateRequest, *sacloud.DiskEditRequest, error) {
+func (d *BlankDiskBuilder) createDiskParameter(ctx context.Context, client *BuildersAPIClient, zone string, serverID types.ID) (*sacloud.DiskCreateRequest, *sacloud.DiskEditRequest, error) {
 	createReq := &sacloud.DiskCreateRequest{
 		DiskPlanID:  d.PlanID,
 		SizeMB:      d.SizeGB * 1024,
@@ -324,14 +324,14 @@ func (d *DiskFromBlankRequest) createDiskParameter(ctx context.Context, client *
 	return createReq, nil, nil
 }
 
-// DiskConnectRequest 既存ディスクを接続する場合のリクエスト
-type DiskConnectRequest struct {
+// ConnectedDiskBuilder 既存ディスクを接続する場合のリクエスト
+type ConnectedDiskBuilder struct {
 	DiskID        types.ID
 	EditParameter *UnixDiskEditRequest
 }
 
 // Validate 設定値の検証
-func (d *DiskConnectRequest) Validate(ctx context.Context, client *BuildersAPIClient, zone string) error {
+func (d *ConnectedDiskBuilder) Validate(ctx context.Context, client *BuildersAPIClient, zone string) error {
 	if d.DiskID.IsEmpty() {
 		return errors.New("DiskID is required")
 	}
@@ -343,7 +343,7 @@ func (d *DiskConnectRequest) Validate(ctx context.Context, client *BuildersAPICl
 }
 
 // BuildDisk ディスクの構築
-func (d *DiskConnectRequest) BuildDisk(ctx context.Context, client *BuildersAPIClient, zone string, serverID types.ID) (*BuildDiskResult, error) {
+func (d *ConnectedDiskBuilder) BuildDisk(ctx context.Context, client *BuildersAPIClient, zone string, serverID types.ID) (*BuildDiskResult, error) {
 	return &BuildDiskResult{
 		DiskID: d.DiskID,
 	}, nil

@@ -47,7 +47,7 @@ func TestBuilder_Validate(t *testing.T) {
 			in: &Builder{
 				NIC: nil,
 				AdditionalNICs: []AdditionalNICSettingHolder{
-					&DisconnectedNICRequest{},
+					&DisconnectedNICSetting{},
 				},
 			},
 			client: &BuildersAPIClient{
@@ -58,12 +58,12 @@ func TestBuilder_Validate(t *testing.T) {
 		{
 			msg: "Additional NICs over 4",
 			in: &Builder{
-				NIC: &SharedNICRequest{},
+				NIC: &SharedNICSetting{},
 				AdditionalNICs: []AdditionalNICSettingHolder{
-					&DisconnectedNICRequest{},
-					&DisconnectedNICRequest{},
-					&DisconnectedNICRequest{},
-					&DisconnectedNICRequest{},
+					&DisconnectedNICSetting{},
+					&DisconnectedNICSetting{},
+					&DisconnectedNICSetting{},
+					&DisconnectedNICSetting{},
 				},
 			},
 			client: &BuildersAPIClient{
@@ -74,7 +74,7 @@ func TestBuilder_Validate(t *testing.T) {
 		{
 			msg: "invalid InterfaceDriver",
 			in: &Builder{
-				NIC:             &SharedNICRequest{},
+				NIC:             &SharedNICSetting{},
 				InterfaceDriver: types.EInterfaceDriver("invalid"),
 			},
 			client: &BuildersAPIClient{
@@ -181,7 +181,7 @@ func TestBuilder_Build(t *testing.T) {
 		{
 			msg: "updating NIC returns error",
 			in: &Builder{
-				NIC: &SharedNICRequest{
+				NIC: &SharedNICSetting{
 					PacketFilterID: 2,
 				},
 			},
@@ -363,13 +363,13 @@ func getBalckBoxTestBuilder(switchID types.ID) *Builder {
 		Description:     "libsacloud-server-builder-description",
 		Tags:            types.Tags{"tag1", "tag2"},
 		BootAfterCreate: true,
-		NIC:             &SharedNICRequest{},
+		NIC:             &SharedNICSetting{},
 		AdditionalNICs: []AdditionalNICSettingHolder{
-			&DisconnectedNICRequest{},
-			&ConnectedNICRequest{SwitchID: switchID},
+			&DisconnectedNICSetting{},
+			&ConnectedNICSetting{SwitchID: switchID},
 		},
 		DiskBuilders: []DiskBuilder{
-			&DiskFromUnixRequest{
+			&FromUnixDiskBuilder{
 				OSType:      ostype.CentOS,
 				Name:        "libsacloud-disk-builder",
 				SizeGB:      20,
