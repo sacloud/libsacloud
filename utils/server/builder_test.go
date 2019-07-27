@@ -32,34 +32,32 @@ func TestBuilder_setDefaults(t *testing.T) {
 
 func TestBuilder_Validate(t *testing.T) {
 	cases := []struct {
-		msg string
-		in  *Builder
-		err error
+		msg    string
+		in     *Builder
+		client *BuildersAPIClient
+		err    error
 	}{
 		{
 			msg: "Client is not set",
 			in:  &Builder{},
-			err: errors.New("field 'Client' is not set"),
+			err: errors.New("client is empty"),
 		},
 		{
 			msg: "invalid NICs",
 			in: &Builder{
-				Client: &BuildersAPIClient{
-					ServerPlan: &dummyPlanFinder{},
-				},
 				NIC: nil,
 				AdditionalNICs: []AdditionalNICSettingHolder{
 					&DisconnectedNICRequest{},
 				},
+			},
+			client: &BuildersAPIClient{
+				ServerPlan: &dummyPlanFinder{},
 			},
 			err: errors.New("NIC is required when AdditionalNICs is specified"),
 		},
 		{
 			msg: "Additional NICs over 4",
 			in: &Builder{
-				Client: &BuildersAPIClient{
-					ServerPlan: &dummyPlanFinder{},
-				},
 				NIC: &SharedNICRequest{},
 				AdditionalNICs: []AdditionalNICSettingHolder{
 					&DisconnectedNICRequest{},
@@ -68,26 +66,28 @@ func TestBuilder_Validate(t *testing.T) {
 					&DisconnectedNICRequest{},
 				},
 			},
+			client: &BuildersAPIClient{
+				ServerPlan: &dummyPlanFinder{},
+			},
 			err: errors.New("AdditionalNICs must be less than 4"),
 		},
 		{
 			msg: "invalid InterfaceDriver",
 			in: &Builder{
-				Client: &BuildersAPIClient{
-					ServerPlan: &dummyPlanFinder{},
-				},
 				NIC:             &SharedNICRequest{},
 				InterfaceDriver: types.EInterfaceDriver("invalid"),
+			},
+			client: &BuildersAPIClient{
+				ServerPlan: &dummyPlanFinder{},
 			},
 			err: errors.New("invalid InterfaceDriver: invalid"),
 		},
 		{
 			msg: "finding plan returns unexpected error",
-			in: &Builder{
-				Client: &BuildersAPIClient{
-					ServerPlan: &dummyPlanFinder{
-						err: errors.New("dummy"),
-					},
+			in:  &Builder{},
+			client: &BuildersAPIClient{
+				ServerPlan: &dummyPlanFinder{
+					err: errors.New("dummy"),
 				},
 			},
 			err: errors.New("dummy"),
@@ -97,40 +97,40 @@ func TestBuilder_Validate(t *testing.T) {
 			in: &Builder{
 				CPU:      1000,
 				MemoryGB: 1024,
-				Client: &BuildersAPIClient{
-					ServerPlan: &dummyPlanFinder{},
-				},
+			},
+			client: &BuildersAPIClient{
+				ServerPlan: &dummyPlanFinder{},
 			},
 			err: errors.New("server plan not found"),
 		},
 	}
 
 	for _, tc := range cases {
-		err := tc.in.Validate(context.Background(), "tk1v")
+		err := tc.in.Validate(context.Background(), tc.client, "tk1v")
 		require.Equal(t, tc.err, err, tc.msg)
 	}
 }
 
 func TestBuilder_Build(t *testing.T) {
 	cases := []struct {
-		msg string
-		in  *Builder
-		out *BuildResult
-		err error
+		msg    string
+		in     *Builder
+		client *BuildersAPIClient
+		out    *BuildResult
+		err    error
 	}{
 		{
 			msg: "Validate func is called",
 			in:  &Builder{},
 			out: nil,
-			err: errors.New("field 'Client' is not set"),
+			err: errors.New("client is empty"),
 		},
 		{
 			msg: "finding server plan API returns error",
-			in: &Builder{
-				Client: &BuildersAPIClient{
-					ServerPlan: &dummyPlanFinder{
-						err: errors.New("dummy"),
-					},
+			in:  &Builder{},
+			client: &BuildersAPIClient{
+				ServerPlan: &dummyPlanFinder{
+					err: errors.New("dummy"),
 				},
 			},
 			out: nil,
@@ -138,18 +138,17 @@ func TestBuilder_Build(t *testing.T) {
 		},
 		{
 			msg: "creating server returns error",
-			in: &Builder{
-				Client: &BuildersAPIClient{
-					ServerPlan: &dummyPlanFinder{
-						plans: []*sacloud.ServerPlan{
-							{
-								ID: 1,
-							},
+			in:  &Builder{},
+			client: &BuildersAPIClient{
+				ServerPlan: &dummyPlanFinder{
+					plans: []*sacloud.ServerPlan{
+						{
+							ID: 1,
 						},
 					},
-					Server: &dummyCreateServerHandler{
-						err: errors.New("dummy"),
-					},
+				},
+				Server: &dummyCreateServerHandler{
+					err: errors.New("dummy"),
 				},
 			},
 			out: nil,
@@ -158,22 +157,22 @@ func TestBuilder_Build(t *testing.T) {
 		{
 			msg: "building disk returns error",
 			in: &Builder{
-				Client: &BuildersAPIClient{
-					ServerPlan: &dummyPlanFinder{
-						plans: []*sacloud.ServerPlan{
-							{
-								ID: 1,
-							},
-						},
-					},
-					Server: &dummyCreateServerHandler{
-						server: &sacloud.Server{ID: 1},
-					},
-				},
 				DiskBuilders: []DiskBuilder{
 					&dummyDiskBuilder{
 						err: errors.New("dummy"),
 					},
+				},
+			},
+			client: &BuildersAPIClient{
+				ServerPlan: &dummyPlanFinder{
+					plans: []*sacloud.ServerPlan{
+						{
+							ID: 1,
+						},
+					},
+				},
+				Server: &dummyCreateServerHandler{
+					server: &sacloud.Server{ID: 1},
 				},
 			},
 			out: nil,
@@ -182,28 +181,28 @@ func TestBuilder_Build(t *testing.T) {
 		{
 			msg: "updating NIC returns error",
 			in: &Builder{
-				Client: &BuildersAPIClient{
-					ServerPlan: &dummyPlanFinder{
-						plans: []*sacloud.ServerPlan{
-							{
-								ID: 1,
-							},
-						},
-					},
-					Server: &dummyCreateServerHandler{
-						server: &sacloud.Server{
-							ID: 1,
-							Interfaces: []*sacloud.InterfaceView{
-								{ID: 1},
-							},
-						},
-					},
-					Interface: &dummyInterfaceHandler{
-						err: errors.New("dummy"),
-					},
-				},
 				NIC: &SharedNICRequest{
 					PacketFilterID: 2,
+				},
+			},
+			client: &BuildersAPIClient{
+				ServerPlan: &dummyPlanFinder{
+					plans: []*sacloud.ServerPlan{
+						{
+							ID: 1,
+						},
+					},
+				},
+				Server: &dummyCreateServerHandler{
+					server: &sacloud.Server{
+						ID: 1,
+						Interfaces: []*sacloud.InterfaceView{
+							{ID: 1},
+						},
+					},
+				},
+				Interface: &dummyInterfaceHandler{
+					err: errors.New("dummy"),
 				},
 			},
 			out: nil,
@@ -212,20 +211,20 @@ func TestBuilder_Build(t *testing.T) {
 		{
 			msg: "inserting CD-ROM returns error",
 			in: &Builder{
-				Client: &BuildersAPIClient{
-					ServerPlan: &dummyPlanFinder{
-						plans: []*sacloud.ServerPlan{
-							{
-								ID: 1,
-							},
+				CDROMID: 1,
+			},
+			client: &BuildersAPIClient{
+				ServerPlan: &dummyPlanFinder{
+					plans: []*sacloud.ServerPlan{
+						{
+							ID: 1,
 						},
 					},
-					Server: &dummyCreateServerHandler{
-						server:   &sacloud.Server{ID: 1},
-						cdromErr: errors.New("dummy"),
-					},
 				},
-				CDROMID: 1,
+				Server: &dummyCreateServerHandler{
+					server:   &sacloud.Server{ID: 1},
+					cdromErr: errors.New("dummy"),
+				},
 			},
 			out: nil,
 			err: errors.New("dummy"),
@@ -233,27 +232,27 @@ func TestBuilder_Build(t *testing.T) {
 		{
 			msg: "booting server returns error",
 			in: &Builder{
-				Client: &BuildersAPIClient{
-					ServerPlan: &dummyPlanFinder{
-						plans: []*sacloud.ServerPlan{
-							{
-								ID: 1,
-							},
+				BootAfterCreate: true,
+			},
+			client: &BuildersAPIClient{
+				ServerPlan: &dummyPlanFinder{
+					plans: []*sacloud.ServerPlan{
+						{
+							ID: 1,
 						},
 					},
-					Server: &dummyCreateServerHandler{
-						server:  &sacloud.Server{ID: 1},
-						bootErr: errors.New("dummy"),
-					},
 				},
-				BootAfterCreate: true,
+				Server: &dummyCreateServerHandler{
+					server:  &sacloud.Server{ID: 1},
+					bootErr: errors.New("dummy"),
+				},
 			},
 			out: nil,
 			err: errors.New("dummy"),
 		},
 	}
 	for _, tc := range cases {
-		res, err := tc.in.Build(context.Background(), "tk1v")
+		res, err := tc.in.Build(context.Background(), tc.client, "tk1v")
 		require.Equal(t, tc.err, err, tc.msg)
 		require.Equal(t, tc.out, res, tc.msg)
 	}
@@ -301,7 +300,8 @@ func TestBuilder_Build_BlackBox(t *testing.T) {
 
 		Create: &testutil.CRUDTestFunc{
 			Func: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
-				return getBalckBoxTestBuilder(caller, switchID).Build(ctx, testZone)
+				client := NewBuildersAPIClient(caller)
+				return getBalckBoxTestBuilder(switchID).Build(ctx, client, testZone)
 			},
 			SkipExtractID: true,
 			CheckFunc: func(t testutil.TestT, ctx *testutil.CRUDTestContext, v interface{}) error {
@@ -355,10 +355,8 @@ func TestBuilder_Build_BlackBox(t *testing.T) {
 	})
 }
 
-func getBalckBoxTestBuilder(caller sacloud.APICaller, switchID types.ID) *Builder {
-	client := NewBuildersAPIClient(caller)
+func getBalckBoxTestBuilder(switchID types.ID) *Builder {
 	return &Builder{
-		Client:          client,
 		Name:            "libsacloud-server-builder",
 		CPU:             1,
 		MemoryGB:        1,
