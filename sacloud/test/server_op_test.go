@@ -139,6 +139,7 @@ var (
 		"ServerPlanGeneration",
 		"ServerPlanCommitment",
 		"Zone",
+		"HostName",
 		"InstanceHostName",
 		"InstanceHostInfoURL",
 		"InstanceStatus",

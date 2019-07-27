@@ -26,25 +26,25 @@ type AdditionalNICSettingHolder interface {
 	Validate(ctx context.Context, client *BuildersAPIClient, zone string) error
 }
 
-// SharedNICRequest サーバ作成時に共有セグメントに接続するためのパラメータ
+// SharedNICSetting サーバ作成時に共有セグメントに接続するためのパラメータ
 //
 // NICSettingHolderを実装し、Builder.NICに利用できる。
-type SharedNICRequest struct {
+type SharedNICSetting struct {
 	PacketFilterID types.ID
 }
 
 // GetConnectedSwitchParam サーバ作成時の接続先指定パラメータを作成して返す
-func (c *SharedNICRequest) GetConnectedSwitchParam() *sacloud.ConnectedSwitch {
+func (c *SharedNICSetting) GetConnectedSwitchParam() *sacloud.ConnectedSwitch {
 	return &sacloud.ConnectedSwitch{Scope: types.Scopes.Shared}
 }
 
 // GetPacketFilterID このNICに接続するパケットフィルタのIDを返す
-func (c *SharedNICRequest) GetPacketFilterID() types.ID {
+func (c *SharedNICSetting) GetPacketFilterID() types.ID {
 	return c.PacketFilterID
 }
 
 // Validate 設定値の検証
-func (c *SharedNICRequest) Validate(ctx context.Context, client *BuildersAPIClient, zone string) error {
+func (c *SharedNICSetting) Validate(ctx context.Context, client *BuildersAPIClient, zone string) error {
 	if !c.PacketFilterID.IsEmpty() {
 		if _, err := client.PacketFilter.Read(ctx, zone, c.PacketFilterID); err != nil {
 			return fmt.Errorf("reading packet filter info(id:%d) is failed: %s", c.PacketFilterID, err)
@@ -53,39 +53,39 @@ func (c *SharedNICRequest) Validate(ctx context.Context, client *BuildersAPIClie
 	return nil
 }
 
-// ConnectedNICRequest サーバ作成時にスイッチに接続するためのパラメータ
+// ConnectedNICSetting サーバ作成時にスイッチに接続するためのパラメータ
 //
 // NICSettingHolderとAdditionalNICSettingHolderを実装し、Builder.NIC/Builder.AdditionalNICsに利用できる。
-type ConnectedNICRequest struct {
+type ConnectedNICSetting struct {
 	SwitchID         types.ID
 	DisplayIPAddress string
 	PacketFilterID   types.ID
 }
 
 // GetConnectedSwitchParam サーバ作成時の接続先指定パラメータを作成して返す
-func (c *ConnectedNICRequest) GetConnectedSwitchParam() *sacloud.ConnectedSwitch {
+func (c *ConnectedNICSetting) GetConnectedSwitchParam() *sacloud.ConnectedSwitch {
 	return &sacloud.ConnectedSwitch{ID: c.SwitchID}
 }
 
 // GetSwitchID このNICが接続するスイッチのIDを返す
-func (c *ConnectedNICRequest) GetSwitchID() types.ID {
+func (c *ConnectedNICSetting) GetSwitchID() types.ID {
 	return c.SwitchID
 }
 
 // GetDisplayIPAddress 表示用IPアドレスを返す
-func (c *ConnectedNICRequest) GetDisplayIPAddress() string {
+func (c *ConnectedNICSetting) GetDisplayIPAddress() string {
 	return c.DisplayIPAddress
 }
 
 // GetPacketFilterID このNICに接続するパケットフィルタのIDを返す
-func (c *ConnectedNICRequest) GetPacketFilterID() types.ID {
+func (c *ConnectedNICSetting) GetPacketFilterID() types.ID {
 	return c.PacketFilterID
 }
 
 // Validate 設定値の検証
-func (c *ConnectedNICRequest) Validate(ctx context.Context, client *BuildersAPIClient, zone string) error {
+func (c *ConnectedNICSetting) Validate(ctx context.Context, client *BuildersAPIClient, zone string) error {
 	if c.SwitchID.IsEmpty() {
-		return errors.New("ConnectedNICRequest: SwitchID is required")
+		return errors.New("ConnectedNICSetting: SwitchID is required")
 	}
 
 	if _, err := client.Switch.Read(ctx, zone, c.SwitchID); err != nil {
@@ -101,32 +101,32 @@ func (c *ConnectedNICRequest) Validate(ctx context.Context, client *BuildersAPIC
 	return nil
 }
 
-// DisconnectedNICRequest 切断状態のNICを作成するためのパラメータ
+// DisconnectedNICSetting 切断状態のNICを作成するためのパラメータ
 //
 // NICSettingHolderとAdditionalNICSettingHolderを実装し、Builder.NIC/Builder.AdditionalNICsに利用できる。
-type DisconnectedNICRequest struct{}
+type DisconnectedNICSetting struct{}
 
 // GetConnectedSwitchParam サーバ作成時の接続先指定パラメータを作成して返す
-func (d *DisconnectedNICRequest) GetConnectedSwitchParam() *sacloud.ConnectedSwitch {
+func (d *DisconnectedNICSetting) GetConnectedSwitchParam() *sacloud.ConnectedSwitch {
 	return nil
 }
 
 // GetSwitchID このNICが接続するスイッチのIDを返す
-func (d *DisconnectedNICRequest) GetSwitchID() types.ID {
+func (d *DisconnectedNICSetting) GetSwitchID() types.ID {
 	return types.ID(0)
 }
 
 // GetDisplayIPAddress 表示用IPアドレスを返す
-func (d *DisconnectedNICRequest) GetDisplayIPAddress() string {
+func (d *DisconnectedNICSetting) GetDisplayIPAddress() string {
 	return ""
 }
 
 // GetPacketFilterID このNICに接続するパケットフィルタのIDを返す
-func (d *DisconnectedNICRequest) GetPacketFilterID() types.ID {
+func (d *DisconnectedNICSetting) GetPacketFilterID() types.ID {
 	return types.ID(0)
 }
 
 // Validate 設定値の検証
-func (d *DisconnectedNICRequest) Validate(ctx context.Context, client *BuildersAPIClient, zone string) error {
+func (d *DisconnectedNICSetting) Validate(ctx context.Context, client *BuildersAPIClient, zone string) error {
 	return nil
 }
