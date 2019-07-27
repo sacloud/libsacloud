@@ -453,6 +453,7 @@ type ServerAPI interface {
 	Read(ctx context.Context, zone string, id types.ID) (*Server, error)
 	Update(ctx context.Context, zone string, id types.ID, param *ServerUpdateRequest) (*Server, error)
 	Delete(ctx context.Context, zone string, id types.ID) error
+	DeleteWithDisks(ctx context.Context, zone string, id types.ID, disks *ServerDeleteWithDisksRequest) error
 	ChangePlan(ctx context.Context, zone string, id types.ID, plan *ServerChangePlanRequest) (*Server, error)
 	InsertCDROM(ctx context.Context, zone string, id types.ID, insertParam *InsertCDROMRequest) error
 	EjectCDROM(ctx context.Context, zone string, id types.ID, ejectParam *EjectCDROMRequest) error

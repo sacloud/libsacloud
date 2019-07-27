@@ -4408,6 +4408,36 @@ func (o *ServerOp) transformUpdateResults(data []byte) (*serverUpdateResult, err
 	return results, nil
 }
 
+func (o *ServerOp) transformDeleteWithDisksArgs(id types.ID, disks *ServerDeleteWithDisksRequest) (*serverDeleteWithDisksRequestEnvelope, error) {
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	var arg0 interface{} = id
+	if v, ok := arg0.(argumentDefaulter); ok {
+		arg0 = v.setDefaults()
+	}
+	if disks == nil {
+		disks = &ServerDeleteWithDisksRequest{}
+	}
+	var arg1 interface{} = disks
+	if v, ok := arg1.(argumentDefaulter); ok {
+		arg1 = v.setDefaults()
+	}
+	args := &struct {
+		Arg0 interface{}
+		Arg1 interface{} `mapconv:",squash"`
+	}{
+		Arg0: arg0,
+		Arg1: arg1,
+	}
+
+	v := &serverDeleteWithDisksRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	return v, nil
+}
+
 func (o *ServerOp) transformChangePlanArgs(id types.ID, plan *ServerChangePlanRequest) (*serverChangePlanRequestEnvelope, error) {
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))

@@ -7117,6 +7117,39 @@ func (t *ServerTracer) Delete(ctx context.Context, zone string, id types.ID) err
 	return err
 }
 
+// DeleteWithDisks is API call with trace log
+func (t *ServerTracer) DeleteWithDisks(ctx context.Context, zone string, id types.ID, disks *sacloud.ServerDeleteWithDisksRequest) error {
+	log.Println("[TRACE] ServerAPI.DeleteWithDisks start")
+	targetArguments := struct {
+		Argzone  string
+		Argid    types.ID                              `json:"id"`
+		Argdisks *sacloud.ServerDeleteWithDisksRequest `json:"disks"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argdisks: disks,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] ServerAPI.DeleteWithDisks end")
+	}()
+
+	err := t.Internal.DeleteWithDisks(ctx, zone, id, disks)
+	targetResults := struct {
+		Error error
+	}{
+		Error: err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return err
+}
+
 // ChangePlan is API call with trace log
 func (t *ServerTracer) ChangePlan(ctx context.Context, zone string, id types.ID, plan *sacloud.ServerChangePlanRequest) (*sacloud.Server, error) {
 	log.Println("[TRACE] ServerAPI.ChangePlan start")
