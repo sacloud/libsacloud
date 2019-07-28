@@ -75,11 +75,9 @@ func (f *fieldsDef) Name() *dsl.FieldDesc {
 
 func (f *fieldsDef) InterfaceDriver() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
-		Name: "InterfaceDriver",
-		Type: meta.TypeInterfaceDriver,
-		Tags: &dsl.FieldTags{
-			MapConv: ",default=virtio",
-		},
+		Name:         "InterfaceDriver",
+		Type:         meta.TypeInterfaceDriver,
+		DefaultValue: `types.InterfaceDrivers.VirtIO`,
 	}
 }
 
@@ -182,9 +180,10 @@ func (f *fieldsDef) Commitment() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "ServerPlanCommitment",
 		Tags: &dsl.FieldTags{
-			MapConv: "Commitment,default=standard",
+			MapConv: "Commitment",
 		},
-		Type: meta.TypeCommitment,
+		Type:         meta.TypeCommitment,
+		DefaultValue: "types.Commitments.Standard",
 	}
 }
 
@@ -248,9 +247,10 @@ func (f *fieldsDef) ServerPlanCommitment() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "ServerPlanCommitment",
 		Tags: &dsl.FieldTags{
-			MapConv: "ServerPlan.Commitment,default=standard",
+			MapConv: "ServerPlan.Commitment",
 		},
-		Type: meta.TypeCommitment,
+		Type:         meta.TypeCommitment,
+		DefaultValue: "types.Commitments.Standard",
 	}
 }
 
@@ -569,9 +569,9 @@ func (f *fieldsDef) LoadBalancerVIP() *dsl.FieldDesc {
 					Name: "DelayLoop",
 					Type: meta.TypeStringNumber,
 					Tags: &dsl.FieldTags{
-						MapConv:  ",default=10",
 						Validate: "min=0,max=60", // TODO 最大値確認
 					},
+					DefaultValue: "10",
 				},
 				{
 					Name: "SorryServer",
@@ -781,8 +781,9 @@ func (f *fieldsDef) GSLBDelayLoop() *dsl.FieldDesc {
 		Type: meta.TypeInt,
 		Tags: &dsl.FieldTags{
 			Validate: "min=10,max=60",
-			MapConv:  "Settings.GSLB.DelayLoop,default=10",
+			MapConv:  "Settings.GSLB.DelayLoop",
 		},
+		DefaultValue: "10",
 	}
 }
 
@@ -965,8 +966,9 @@ func (f *fieldsDef) SimpleMonitorDelayLoop() *dsl.FieldDesc {
 		Type: meta.TypeInt,
 		Tags: &dsl.FieldTags{
 			Validate: "min=60,max=3600",
-			MapConv:  "Settings.SimpleMonitor.DelayLoop,default=60",
+			MapConv:  "Settings.SimpleMonitor.DelayLoop",
 		},
+		DefaultValue: "60",
 	}
 }
 

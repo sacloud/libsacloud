@@ -64,7 +64,7 @@ func (o *{{.Name}}) setDefaults() interface{} {
 	{{- end }}
 	} {
 	{{- range .Fields }}
-	{{.Name}}: o.{{.Name}},
+	{{.Name}}: o.Get{{.Name}}(),
 	{{- end }}
 	{{- range .ConstFields }}
 	{{.Name}}: {{.Value}},
@@ -83,6 +83,11 @@ func (o *{{ $struct }}) {{ .Name }}({{ range .Arguments }}{{ .ArgName }} {{ .Typ
 {{- range .Fields }} {{ $name := .Name }}{{ $typeName := .TypeName }}
 // Get{{$name}} returns value of {{$name}} 
 func (o *{{ $struct }}) Get{{$name}}() {{$typeName}} {
+	{{ if .DefaultValue -}}
+	if o.{{$name}} == {{.Type.ZeroInitializeSourceCode}}{
+		return {{.DefaultValue}}
+	}
+	{{ end -}}
 	return o.{{$name}}
 }
 
