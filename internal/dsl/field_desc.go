@@ -9,11 +9,12 @@ import (
 
 // FieldDesc フィールド記述
 type FieldDesc struct {
-	Name        string
-	Tags        *FieldTags
-	Type        meta.Type
-	Description string // TODO 現在は未使用
-	Methods     []*MethodDesc
+	Name         string
+	Tags         *FieldTags
+	Type         meta.Type
+	Description  string // TODO 現在は未使用
+	Methods      []*MethodDesc
+	DefaultValue string // デフォルト値、コード生成時にソースコードに直接転記される
 }
 
 // HasTag タグの定義がなされているか

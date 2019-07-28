@@ -74,29 +74,29 @@ func (o *Archive) setDefaults() interface{} {
 		OriginalArchiveID         types.ID           `mapconv:"OriginalArchive.ID,omitempty"`
 		SourceInfo                *SourceArchiveInfo `mapconv:",omitempty,recursive"`
 	}{
-		ID:                        o.ID,
-		Name:                      o.Name,
-		Description:               o.Description,
-		Tags:                      o.Tags,
-		DisplayOrder:              o.DisplayOrder,
-		Availability:              o.Availability,
-		Scope:                     o.Scope,
-		SizeMB:                    o.SizeMB,
-		MigratedMB:                o.MigratedMB,
-		DiskPlanID:                o.DiskPlanID,
-		DiskPlanName:              o.DiskPlanName,
-		DiskPlanStorageClass:      o.DiskPlanStorageClass,
-		SourceDiskID:              o.SourceDiskID,
-		SourceDiskAvailability:    o.SourceDiskAvailability,
-		SourceArchiveID:           o.SourceArchiveID,
-		SourceArchiveAvailability: o.SourceArchiveAvailability,
-		BundleInfo:                o.BundleInfo,
-		Storage:                   o.Storage,
-		IconID:                    o.IconID,
-		CreatedAt:                 o.CreatedAt,
-		ModifiedAt:                o.ModifiedAt,
-		OriginalArchiveID:         o.OriginalArchiveID,
-		SourceInfo:                o.SourceInfo,
+		ID:                        o.GetID(),
+		Name:                      o.GetName(),
+		Description:               o.GetDescription(),
+		Tags:                      o.GetTags(),
+		DisplayOrder:              o.GetDisplayOrder(),
+		Availability:              o.GetAvailability(),
+		Scope:                     o.GetScope(),
+		SizeMB:                    o.GetSizeMB(),
+		MigratedMB:                o.GetMigratedMB(),
+		DiskPlanID:                o.GetDiskPlanID(),
+		DiskPlanName:              o.GetDiskPlanName(),
+		DiskPlanStorageClass:      o.GetDiskPlanStorageClass(),
+		SourceDiskID:              o.GetSourceDiskID(),
+		SourceDiskAvailability:    o.GetSourceDiskAvailability(),
+		SourceArchiveID:           o.GetSourceArchiveID(),
+		SourceArchiveAvailability: o.GetSourceArchiveAvailability(),
+		BundleInfo:                o.GetBundleInfo(),
+		Storage:                   o.GetStorage(),
+		IconID:                    o.GetIconID(),
+		CreatedAt:                 o.GetCreatedAt(),
+		ModifiedAt:                o.GetModifiedAt(),
+		OriginalArchiveID:         o.GetOriginalArchiveID(),
+		SourceInfo:                o.GetSourceInfo(),
 	}
 }
 
@@ -408,9 +408,9 @@ func (o *BundleInfo) setDefaults() interface{} {
 		HostClass    string `json:",omitempty" mapconv:",omitempty"`
 		ServiceClass string `json:",omitempty" mapconv:",omitempty"`
 	}{
-		ID:           o.ID,
-		HostClass:    o.HostClass,
-		ServiceClass: o.ServiceClass,
+		ID:           o.GetID(),
+		HostClass:    o.GetHostClass(),
+		ServiceClass: o.GetServiceClass(),
 	}
 }
 
@@ -489,10 +489,10 @@ func (o *Storage) setDefaults() interface{} {
 		Class      string `json:",omitempty" mapconv:",omitempty"`
 		Generation int    `json:",omitempty" mapconv:",omitempty"`
 	}{
-		ID:         o.ID,
-		Name:       o.Name,
-		Class:      o.Class,
-		Generation: o.Generation,
+		ID:         o.GetID(),
+		Name:       o.GetName(),
+		Class:      o.GetClass(),
+		Generation: o.GetGeneration(),
 	}
 }
 
@@ -581,10 +581,10 @@ func (o *SourceArchiveInfo) setDefaults() interface{} {
 		ZoneID    types.ID `mapconv:"ArchiveUnderZone.Zone.ID"`
 		ZoneName  string   `mapconv:"ArchiveUnderZone.Zone.Name"`
 	}{
-		ID:        o.ID,
-		AccountID: o.AccountID,
-		ZoneID:    o.ZoneID,
-		ZoneName:  o.ZoneName,
+		ID:        o.GetID(),
+		AccountID: o.GetAccountID(),
+		ZoneID:    o.GetZoneID(),
+		ZoneName:  o.GetZoneName(),
 	}
 }
 
@@ -657,12 +657,12 @@ func (o *FindCondition) setDefaults() interface{} {
 		Include []string        `mapconv:",omitempty"`
 		Exclude []string        `mapconv:",omitempty"`
 	}{
-		Count:   o.Count,
-		From:    o.From,
-		Sort:    o.Sort,
-		Filter:  o.Filter,
-		Include: o.Include,
-		Exclude: o.Exclude,
+		Count:   o.GetCount(),
+		From:    o.GetFrom(),
+		Sort:    o.GetSort(),
+		Filter:  o.GetFilter(),
+		Include: o.GetInclude(),
+		Exclude: o.GetExclude(),
 	}
 }
 
@@ -760,12 +760,12 @@ func (o *ArchiveCreateRequest) setDefaults() interface{} {
 		Tags            types.Tags
 		IconID          types.ID `mapconv:"Icon.ID"`
 	}{
-		SourceDiskID:    o.SourceDiskID,
-		SourceArchiveID: o.SourceArchiveID,
-		Name:            o.Name,
-		Description:     o.Description,
-		Tags:            o.Tags,
-		IconID:          o.IconID,
+		SourceDiskID:    o.GetSourceDiskID(),
+		SourceArchiveID: o.GetSourceArchiveID(),
+		Name:            o.GetName(),
+		Description:     o.GetDescription(),
+		Tags:            o.GetTags(),
+		IconID:          o.GetIconID(),
 	}
 }
 
@@ -874,10 +874,10 @@ func (o *FTPServer) setDefaults() interface{} {
 		User      string
 		Password  string
 	}{
-		HostName:  o.HostName,
-		IPAddress: o.IPAddress,
-		User:      o.User,
-		Password:  o.Password,
+		HostName:  o.GetHostName(),
+		IPAddress: o.GetIPAddress(),
+		User:      o.GetUser(),
+		Password:  o.GetPassword(),
 	}
 }
 
@@ -948,11 +948,11 @@ func (o *ArchiveCreateBlankRequest) setDefaults() interface{} {
 		Tags        types.Tags
 		IconID      types.ID `mapconv:"Icon.ID"`
 	}{
-		SizeMB:      o.SizeMB,
-		Name:        o.Name,
-		Description: o.Description,
-		Tags:        o.Tags,
-		IconID:      o.IconID,
+		SizeMB:      o.GetSizeMB(),
+		Name:        o.GetName(),
+		Description: o.GetDescription(),
+		Tags:        o.GetTags(),
+		IconID:      o.GetIconID(),
 	}
 }
 
@@ -1061,10 +1061,10 @@ func (o *ArchiveUpdateRequest) setDefaults() interface{} {
 		Tags        types.Tags
 		IconID      types.ID `mapconv:"Icon.ID"`
 	}{
-		Name:        o.Name,
-		Description: o.Description,
-		Tags:        o.Tags,
-		IconID:      o.IconID,
+		Name:        o.GetName(),
+		Description: o.GetDescription(),
+		Tags:        o.GetTags(),
+		IconID:      o.GetIconID(),
 	}
 }
 
@@ -1147,7 +1147,7 @@ func (o *OpenFTPRequest) setDefaults() interface{} {
 	return &struct {
 		ChangePassword bool
 	}{
-		ChangePassword: o.ChangePassword,
+		ChangePassword: o.GetChangePassword(),
 	}
 }
 
@@ -1202,18 +1202,18 @@ func (o *AuthStatus) setDefaults() interface{} {
 		OperationPenalty   types.EOperationPenalty
 		Permission         types.EPermission
 	}{
-		AccountID:          o.AccountID,
-		AccountName:        o.AccountName,
-		AccountCode:        o.AccountCode,
-		AccountClass:       o.AccountClass,
-		MemberCode:         o.MemberCode,
-		MemberClass:        o.MemberClass,
-		AuthClass:          o.AuthClass,
-		AuthMethod:         o.AuthMethod,
-		IsAPIKey:           o.IsAPIKey,
-		ExternalPermission: o.ExternalPermission,
-		OperationPenalty:   o.OperationPenalty,
-		Permission:         o.Permission,
+		AccountID:          o.GetAccountID(),
+		AccountName:        o.GetAccountName(),
+		AccountCode:        o.GetAccountCode(),
+		AccountClass:       o.GetAccountClass(),
+		MemberCode:         o.GetMemberCode(),
+		MemberClass:        o.GetMemberClass(),
+		AuthClass:          o.GetAuthClass(),
+		AuthMethod:         o.GetAuthMethod(),
+		IsAPIKey:           o.GetIsAPIKey(),
+		ExternalPermission: o.GetExternalPermission(),
+		OperationPenalty:   o.GetOperationPenalty(),
+		Permission:         o.GetPermission(),
 	}
 }
 
@@ -1384,21 +1384,21 @@ func (o *AutoBackup) setDefaults() interface{} {
 		ZoneID                  types.ID `mapconv:"Status.ZoneId"`
 		ZoneName                string   `mapconv:"Status.ZoneName"`
 	}{
-		ID:                      o.ID,
-		Name:                    o.Name,
-		Description:             o.Description,
-		Tags:                    o.Tags,
-		Availability:            o.Availability,
-		IconID:                  o.IconID,
-		CreatedAt:               o.CreatedAt,
-		ModifiedAt:              o.ModifiedAt,
-		BackupSpanWeekdays:      o.BackupSpanWeekdays,
-		MaximumNumberOfArchives: o.MaximumNumberOfArchives,
-		SettingsHash:            o.SettingsHash,
-		DiskID:                  o.DiskID,
-		AccountID:               o.AccountID,
-		ZoneID:                  o.ZoneID,
-		ZoneName:                o.ZoneName,
+		ID:                      o.GetID(),
+		Name:                    o.GetName(),
+		Description:             o.GetDescription(),
+		Tags:                    o.GetTags(),
+		Availability:            o.GetAvailability(),
+		IconID:                  o.GetIconID(),
+		CreatedAt:               o.GetCreatedAt(),
+		ModifiedAt:              o.GetModifiedAt(),
+		BackupSpanWeekdays:      o.GetBackupSpanWeekdays(),
+		MaximumNumberOfArchives: o.GetMaximumNumberOfArchives(),
+		SettingsHash:            o.GetSettingsHash(),
+		DiskID:                  o.GetDiskID(),
+		AccountID:               o.GetAccountID(),
+		ZoneID:                  o.GetZoneID(),
+		ZoneName:                o.GetZoneName(),
 	}
 }
 
@@ -1625,13 +1625,13 @@ func (o *AutoBackupCreateRequest) setDefaults() interface{} {
 		Class                   string                `mapconv:"Provider.Class"`
 		BackupSpanType          types.EBackupSpanType `mapconv:"Settings.Autobackup.BackupSpanType"`
 	}{
-		DiskID:                  o.DiskID,
-		BackupSpanWeekdays:      o.BackupSpanWeekdays,
-		MaximumNumberOfArchives: o.MaximumNumberOfArchives,
-		Name:                    o.Name,
-		Description:             o.Description,
-		Tags:                    o.Tags,
-		IconID:                  o.IconID,
+		DiskID:                  o.GetDiskID(),
+		BackupSpanWeekdays:      o.GetBackupSpanWeekdays(),
+		MaximumNumberOfArchives: o.GetMaximumNumberOfArchives(),
+		Name:                    o.GetName(),
+		Description:             o.GetDescription(),
+		Tags:                    o.GetTags(),
+		IconID:                  o.GetIconID(),
 		Class:                   "autobackup",
 		BackupSpanType:          types.BackupSpanTypes.Weekdays,
 	}
@@ -1757,12 +1757,12 @@ func (o *AutoBackupUpdateRequest) setDefaults() interface{} {
 		IconID                  types.ID              `mapconv:"Icon.ID"`
 		BackupSpanType          types.EBackupSpanType `mapconv:"Settings.Autobackup.BackupSpanType"`
 	}{
-		BackupSpanWeekdays:      o.BackupSpanWeekdays,
-		MaximumNumberOfArchives: o.MaximumNumberOfArchives,
-		Name:                    o.Name,
-		Description:             o.Description,
-		Tags:                    o.Tags,
-		IconID:                  o.IconID,
+		BackupSpanWeekdays:      o.GetBackupSpanWeekdays(),
+		MaximumNumberOfArchives: o.GetMaximumNumberOfArchives(),
+		Name:                    o.GetName(),
+		Description:             o.GetDescription(),
+		Tags:                    o.GetTags(),
+		IconID:                  o.GetIconID(),
 		BackupSpanType:          types.BackupSpanTypes.Weekdays,
 	}
 }
@@ -1878,13 +1878,13 @@ func (o *Bill) setDefaults() interface{} {
 		PayLimit       time.Time
 		PaymentClassID types.ID
 	}{
-		ID:             o.ID,
-		Amount:         o.Amount,
-		Date:           o.Date,
-		MemberID:       o.MemberID,
-		Paid:           o.Paid,
-		PayLimit:       o.PayLimit,
-		PaymentClassID: o.PaymentClassID,
+		ID:             o.GetID(),
+		Amount:         o.GetAmount(),
+		Date:           o.GetDate(),
+		MemberID:       o.GetMemberID(),
+		Paid:           o.GetPaid(),
+		PayLimit:       o.GetPayLimit(),
+		PaymentClassID: o.GetPaymentClassID(),
 	}
 }
 
@@ -2009,13 +2009,13 @@ func (o *BillDetail) setDefaults() interface{} {
 		Zone           string
 		ContractEndAt  time.Time
 	}{
-		ID:             o.ID,
-		Amount:         o.Amount,
-		Description:    o.Description,
-		ServiceClassID: o.ServiceClassID,
-		Usage:          o.Usage,
-		Zone:           o.Zone,
-		ContractEndAt:  o.ContractEndAt,
+		ID:             o.GetID(),
+		Amount:         o.GetAmount(),
+		Description:    o.GetDescription(),
+		ServiceClassID: o.GetServiceClassID(),
+		Usage:          o.GetUsage(),
+		Zone:           o.GetZone(),
+		ContractEndAt:  o.GetContractEndAt(),
 	}
 }
 
@@ -2138,12 +2138,12 @@ func (o *BillDetailCSV) setDefaults() interface{} {
 		HeaderRow   []string
 		BodyRows    [][]string
 	}{
-		Count:       o.Count,
-		ResponsedAt: o.ResponsedAt,
-		Filename:    o.Filename,
-		RawBody:     o.RawBody,
-		HeaderRow:   o.HeaderRow,
-		BodyRows:    o.BodyRows,
+		Count:       o.GetCount(),
+		ResponsedAt: o.GetResponsedAt(),
+		Filename:    o.GetFilename(),
+		RawBody:     o.GetRawBody(),
+		HeaderRow:   o.GetHeaderRow(),
+		BodyRows:    o.GetBodyRows(),
 	}
 }
 
@@ -2238,13 +2238,13 @@ func (o *Bridge) setDefaults() interface{} {
 		BridgeInfo   []*BridgeInfo `mapconv:"[]Switches,recursive"`
 		SwitchInZone *BridgeSwitchInfo
 	}{
-		ID:           o.ID,
-		Name:         o.Name,
-		Description:  o.Description,
-		CreatedAt:    o.CreatedAt,
-		Region:       o.Region,
-		BridgeInfo:   o.BridgeInfo,
-		SwitchInZone: o.SwitchInZone,
+		ID:           o.GetID(),
+		Name:         o.GetName(),
+		Description:  o.GetDescription(),
+		CreatedAt:    o.GetCreatedAt(),
+		Region:       o.GetRegion(),
+		BridgeInfo:   o.GetBridgeInfo(),
+		SwitchInZone: o.GetSwitchInZone(),
 	}
 }
 
@@ -2363,10 +2363,10 @@ func (o *Region) setDefaults() interface{} {
 		Description string   `validate:"min=0,max=512"`
 		NameServers []string `json:",omitempty" mapconv:",omitempty"`
 	}{
-		ID:          o.ID,
-		Name:        o.Name,
-		Description: o.Description,
-		NameServers: o.NameServers,
+		ID:          o.GetID(),
+		Name:        o.GetName(),
+		Description: o.GetDescription(),
+		NameServers: o.GetNameServers(),
 	}
 }
 
@@ -2453,9 +2453,9 @@ func (o *BridgeInfo) setDefaults() interface{} {
 		Name   string   `validate:"required"`
 		ZoneID types.ID `mapconv:"Zone.ID"`
 	}{
-		ID:     o.ID,
-		Name:   o.Name,
-		ZoneID: o.ZoneID,
+		ID:     o.GetID(),
+		Name:   o.GetName(),
+		ZoneID: o.GetZoneID(),
 	}
 }
 
@@ -2536,11 +2536,11 @@ func (o *BridgeSwitchInfo) setDefaults() interface{} {
 		ServerCount    int
 		ApplianceCount int
 	}{
-		ID:             o.ID,
-		Name:           o.Name,
-		Scope:          o.Scope,
-		ServerCount:    o.ServerCount,
-		ApplianceCount: o.ApplianceCount,
+		ID:             o.GetID(),
+		Name:           o.GetName(),
+		Scope:          o.GetScope(),
+		ServerCount:    o.GetServerCount(),
+		ApplianceCount: o.GetApplianceCount(),
 	}
 }
 
@@ -2635,8 +2635,8 @@ func (o *BridgeCreateRequest) setDefaults() interface{} {
 		Name        string `validate:"required"`
 		Description string `validate:"min=0,max=512"`
 	}{
-		Name:        o.Name,
-		Description: o.Description,
+		Name:        o.GetName(),
+		Description: o.GetDescription(),
 	}
 }
 
@@ -2681,8 +2681,8 @@ func (o *BridgeUpdateRequest) setDefaults() interface{} {
 		Name        string `validate:"required"`
 		Description string `validate:"min=0,max=512"`
 	}{
-		Name:        o.Name,
-		Description: o.Description,
+		Name:        o.GetName(),
+		Description: o.GetDescription(),
 	}
 }
 
@@ -2745,17 +2745,17 @@ func (o *CDROM) setDefaults() interface{} {
 		CreatedAt    time.Time
 		ModifiedAt   time.Time
 	}{
-		ID:           o.ID,
-		Name:         o.Name,
-		Description:  o.Description,
-		DisplayOrder: o.DisplayOrder,
-		Tags:         o.Tags,
-		Availability: o.Availability,
-		Scope:        o.Scope,
-		Storage:      o.Storage,
-		IconID:       o.IconID,
-		CreatedAt:    o.CreatedAt,
-		ModifiedAt:   o.ModifiedAt,
+		ID:           o.GetID(),
+		Name:         o.GetName(),
+		Description:  o.GetDescription(),
+		DisplayOrder: o.GetDisplayOrder(),
+		Tags:         o.GetTags(),
+		Availability: o.GetAvailability(),
+		Scope:        o.GetScope(),
+		Storage:      o.GetStorage(),
+		IconID:       o.GetIconID(),
+		CreatedAt:    o.GetCreatedAt(),
+		ModifiedAt:   o.GetModifiedAt(),
 	}
 }
 
@@ -2936,11 +2936,11 @@ func (o *CDROMCreateRequest) setDefaults() interface{} {
 		Tags        types.Tags
 		IconID      types.ID `mapconv:"Icon.ID"`
 	}{
-		SizeMB:      o.SizeMB,
-		Name:        o.Name,
-		Description: o.Description,
-		Tags:        o.Tags,
-		IconID:      o.IconID,
+		SizeMB:      o.GetSizeMB(),
+		Name:        o.GetName(),
+		Description: o.GetDescription(),
+		Tags:        o.GetTags(),
+		IconID:      o.GetIconID(),
 	}
 }
 
@@ -3049,10 +3049,10 @@ func (o *CDROMUpdateRequest) setDefaults() interface{} {
 		Tags        types.Tags
 		IconID      types.ID `mapconv:"Icon.ID"`
 	}{
-		Name:        o.Name,
-		Description: o.Description,
-		Tags:        o.Tags,
-		IconID:      o.IconID,
+		Name:        o.GetName(),
+		Description: o.GetDescription(),
+		Tags:        o.GetTags(),
+		IconID:      o.GetIconID(),
 	}
 }
 
@@ -3147,13 +3147,13 @@ func (o *Coupon) setDefaults() interface{} {
 		AppliedAt      time.Time
 		UntilAt        time.Time
 	}{
-		ID:             o.ID,
-		MemberID:       o.MemberID,
-		ContractID:     o.ContractID,
-		ServiceClassID: o.ServiceClassID,
-		Discount:       o.Discount,
-		AppliedAt:      o.AppliedAt,
-		UntilAt:        o.UntilAt,
+		ID:             o.GetID(),
+		MemberID:       o.GetMemberID(),
+		ContractID:     o.GetContractID(),
+		ServiceClassID: o.GetServiceClassID(),
+		Discount:       o.GetDiscount(),
+		AppliedAt:      o.GetAppliedAt(),
+		UntilAt:        o.GetUntilAt(),
 	}
 }
 
@@ -3314,31 +3314,31 @@ func (o *Database) setDefaults() interface{} {
 		ZoneID                  types.ID                    `mapconv:"Remark.Zone.ID"`
 		Interfaces              []*InterfaceView            `json:",omitempty" mapconv:"[]Interfaces,recursive,omitempty"`
 	}{
-		ID:                      o.ID,
-		Class:                   o.Class,
-		Name:                    o.Name,
-		Description:             o.Description,
-		Tags:                    o.Tags,
-		Availability:            o.Availability,
-		IconID:                  o.IconID,
-		CreatedAt:               o.CreatedAt,
-		ModifiedAt:              o.ModifiedAt,
-		CommonSetting:           o.CommonSetting,
-		BackupSetting:           o.BackupSetting,
-		ReplicationSetting:      o.ReplicationSetting,
-		SettingsHash:            o.SettingsHash,
-		InstanceHostName:        o.InstanceHostName,
-		InstanceHostInfoURL:     o.InstanceHostInfoURL,
-		InstanceStatus:          o.InstanceStatus,
-		InstanceStatusChangedAt: o.InstanceStatusChangedAt,
-		PlanID:                  o.PlanID,
-		SwitchID:                o.SwitchID,
-		Conf:                    o.Conf,
-		DefaultRoute:            o.DefaultRoute,
-		NetworkMaskLen:          o.NetworkMaskLen,
-		IPAddresses:             o.IPAddresses,
-		ZoneID:                  o.ZoneID,
-		Interfaces:              o.Interfaces,
+		ID:                      o.GetID(),
+		Class:                   o.GetClass(),
+		Name:                    o.GetName(),
+		Description:             o.GetDescription(),
+		Tags:                    o.GetTags(),
+		Availability:            o.GetAvailability(),
+		IconID:                  o.GetIconID(),
+		CreatedAt:               o.GetCreatedAt(),
+		ModifiedAt:              o.GetModifiedAt(),
+		CommonSetting:           o.GetCommonSetting(),
+		BackupSetting:           o.GetBackupSetting(),
+		ReplicationSetting:      o.GetReplicationSetting(),
+		SettingsHash:            o.GetSettingsHash(),
+		InstanceHostName:        o.GetInstanceHostName(),
+		InstanceHostInfoURL:     o.GetInstanceHostInfoURL(),
+		InstanceStatus:          o.GetInstanceStatus(),
+		InstanceStatusChangedAt: o.GetInstanceStatusChangedAt(),
+		PlanID:                  o.GetPlanID(),
+		SwitchID:                o.GetSwitchID(),
+		Conf:                    o.GetConf(),
+		DefaultRoute:            o.GetDefaultRoute(),
+		NetworkMaskLen:          o.GetNetworkMaskLen(),
+		IPAddresses:             o.GetIPAddresses(),
+		ZoneID:                  o.GetZoneID(),
+		Interfaces:              o.GetInterfaces(),
 	}
 }
 
@@ -3659,11 +3659,11 @@ func (o *DatabaseSettingCommon) setDefaults() interface{} {
 		DefaultUser   string
 		UserPassword  string
 	}{
-		WebUI:         o.WebUI,
-		ServicePort:   o.ServicePort,
-		SourceNetwork: o.SourceNetwork,
-		DefaultUser:   o.DefaultUser,
-		UserPassword:  o.UserPassword,
+		WebUI:         o.GetWebUI(),
+		ServicePort:   o.GetServicePort(),
+		SourceNetwork: o.GetSourceNetwork(),
+		DefaultUser:   o.GetDefaultUser(),
+		UserPassword:  o.GetUserPassword(),
 	}
 }
 
@@ -3740,9 +3740,9 @@ func (o *DatabaseSettingBackup) setDefaults() interface{} {
 		Time      string
 		DayOfWeek []types.EBackupSpanWeekday
 	}{
-		Rotate:    o.Rotate,
-		Time:      o.Time,
-		DayOfWeek: o.DayOfWeek,
+		Rotate:    o.GetRotate(),
+		Time:      o.GetTime(),
+		DayOfWeek: o.GetDayOfWeek(),
 	}
 }
 
@@ -3805,12 +3805,12 @@ func (o *DatabaseReplicationSetting) setDefaults() interface{} {
 		Password    string
 		ApplianceID types.ID `mapconv:"Appliance.ID"`
 	}{
-		Model:       o.Model,
-		IPAddress:   o.IPAddress,
-		Port:        o.Port,
-		User:        o.User,
-		Password:    o.Password,
-		ApplianceID: o.ApplianceID,
+		Model:       o.GetModel(),
+		IPAddress:   o.GetIPAddress(),
+		Port:        o.GetPort(),
+		User:        o.GetUser(),
+		Password:    o.GetPassword(),
+		ApplianceID: o.GetApplianceID(),
 	}
 }
 
@@ -3901,11 +3901,11 @@ func (o *DatabaseRemarkDBConfCommon) setDefaults() interface{} {
 		DefaultUser      string
 		UserPassword     string
 	}{
-		DatabaseName:     o.DatabaseName,
-		DatabaseVersion:  o.DatabaseVersion,
-		DatabaseRevision: o.DatabaseRevision,
-		DefaultUser:      o.DefaultUser,
-		UserPassword:     o.UserPassword,
+		DatabaseName:     o.GetDatabaseName(),
+		DatabaseVersion:  o.GetDatabaseVersion(),
+		DatabaseRevision: o.GetDatabaseRevision(),
+		DefaultUser:      o.GetDefaultUser(),
+		UserPassword:     o.GetUserPassword(),
 	}
 }
 
@@ -4012,24 +4012,24 @@ func (o *InterfaceView) setDefaults() interface{} {
 		PacketFilterRequiredHostVersion types.StringNumber `mapconv:"PacketFilter.RequiredHostVersionn"`
 		UpstreamType                    types.EUpstreamNetworkType
 	}{
-		ID:                              o.ID,
-		MACAddress:                      o.MACAddress,
-		IPAddress:                       o.IPAddress,
-		UserIPAddress:                   o.UserIPAddress,
-		HostName:                        o.HostName,
-		SwitchID:                        o.SwitchID,
-		SwitchName:                      o.SwitchName,
-		SwitchScope:                     o.SwitchScope,
-		UserSubnetDefaultRoute:          o.UserSubnetDefaultRoute,
-		UserSubnetNetworkMaskLen:        o.UserSubnetNetworkMaskLen,
-		SubnetDefaultRoute:              o.SubnetDefaultRoute,
-		SubnetNetworkMaskLen:            o.SubnetNetworkMaskLen,
-		SubnetNetworkAddress:            o.SubnetNetworkAddress,
-		SubnetBandWidthMbps:             o.SubnetBandWidthMbps,
-		PacketFilterID:                  o.PacketFilterID,
-		PacketFilterName:                o.PacketFilterName,
-		PacketFilterRequiredHostVersion: o.PacketFilterRequiredHostVersion,
-		UpstreamType:                    o.UpstreamType,
+		ID:                              o.GetID(),
+		MACAddress:                      o.GetMACAddress(),
+		IPAddress:                       o.GetIPAddress(),
+		UserIPAddress:                   o.GetUserIPAddress(),
+		HostName:                        o.GetHostName(),
+		SwitchID:                        o.GetSwitchID(),
+		SwitchName:                      o.GetSwitchName(),
+		SwitchScope:                     o.GetSwitchScope(),
+		UserSubnetDefaultRoute:          o.GetUserSubnetDefaultRoute(),
+		UserSubnetNetworkMaskLen:        o.GetUserSubnetNetworkMaskLen(),
+		SubnetDefaultRoute:              o.GetSubnetDefaultRoute(),
+		SubnetNetworkMaskLen:            o.GetSubnetNetworkMaskLen(),
+		SubnetNetworkAddress:            o.GetSubnetNetworkAddress(),
+		SubnetBandWidthMbps:             o.GetSubnetBandWidthMbps(),
+		PacketFilterID:                  o.GetPacketFilterID(),
+		PacketFilterName:                o.GetPacketFilterName(),
+		PacketFilterRequiredHostVersion: o.GetPacketFilterRequiredHostVersion(),
+		UpstreamType:                    o.GetUpstreamType(),
 	}
 }
 
@@ -4279,20 +4279,20 @@ func (o *DatabaseCreateRequest) setDefaults() interface{} {
 		IconID             types.ID `mapconv:"Icon.ID"`
 		Class              string
 	}{
-		PlanID:             o.PlanID,
-		SwitchID:           o.SwitchID,
-		IPAddresses:        o.IPAddresses,
-		NetworkMaskLen:     o.NetworkMaskLen,
-		DefaultRoute:       o.DefaultRoute,
-		Conf:               o.Conf,
-		SourceID:           o.SourceID,
-		CommonSetting:      o.CommonSetting,
-		BackupSetting:      o.BackupSetting,
-		ReplicationSetting: o.ReplicationSetting,
-		Name:               o.Name,
-		Description:        o.Description,
-		Tags:               o.Tags,
-		IconID:             o.IconID,
+		PlanID:             o.GetPlanID(),
+		SwitchID:           o.GetSwitchID(),
+		IPAddresses:        o.GetIPAddresses(),
+		NetworkMaskLen:     o.GetNetworkMaskLen(),
+		DefaultRoute:       o.GetDefaultRoute(),
+		Conf:               o.GetConf(),
+		SourceID:           o.GetSourceID(),
+		CommonSetting:      o.GetCommonSetting(),
+		BackupSetting:      o.GetBackupSetting(),
+		ReplicationSetting: o.GetReplicationSetting(),
+		Name:               o.GetName(),
+		Description:        o.GetDescription(),
+		Tags:               o.GetTags(),
+		IconID:             o.GetIconID(),
 		Class:              "database",
 	}
 }
@@ -4488,13 +4488,13 @@ func (o *DatabaseUpdateRequest) setDefaults() interface{} {
 		Tags               types.Tags
 		IconID             types.ID `mapconv:"Icon.ID"`
 	}{
-		CommonSetting:      o.CommonSetting,
-		BackupSetting:      o.BackupSetting,
-		ReplicationSetting: o.ReplicationSetting,
-		Name:               o.Name,
-		Description:        o.Description,
-		Tags:               o.Tags,
-		IconID:             o.IconID,
+		CommonSetting:      o.GetCommonSetting(),
+		BackupSetting:      o.GetBackupSetting(),
+		ReplicationSetting: o.GetReplicationSetting(),
+		Name:               o.GetName(),
+		Description:        o.GetDescription(),
+		Tags:               o.GetTags(),
+		IconID:             o.GetIconID(),
 	}
 }
 
@@ -4615,11 +4615,11 @@ func (o *DatabaseSettingCommonUpdate) setDefaults() interface{} {
 		DefaultUser   string
 		UserPassword  string
 	}{
-		WebUI:         o.WebUI,
-		ServicePort:   o.ServicePort,
-		SourceNetwork: o.SourceNetwork,
-		DefaultUser:   o.DefaultUser,
-		UserPassword:  o.UserPassword,
+		WebUI:         o.GetWebUI(),
+		ServicePort:   o.GetServicePort(),
+		SourceNetwork: o.GetSourceNetwork(),
+		DefaultUser:   o.GetDefaultUser(),
+		UserPassword:  o.GetUserPassword(),
 	}
 }
 
@@ -4692,7 +4692,7 @@ func (o *ShutdownOption) setDefaults() interface{} {
 	return &struct {
 		Force bool
 	}{
-		Force: o.Force,
+		Force: o.GetForce(),
 	}
 }
 
@@ -4725,7 +4725,7 @@ func (o *CPUTimeActivity) setDefaults() interface{} {
 	return &struct {
 		Values []*MonitorCPUTimeValue `mapconv:"[]CPU"`
 	}{
-		Values: o.Values,
+		Values: o.GetValues(),
 	}
 }
 
@@ -4760,8 +4760,8 @@ func (o *MonitorCPUTimeValue) setDefaults() interface{} {
 		Time    time.Time `json:",omitempty" mapconv:",omitempty"`
 		CPUTime float64   `json:",omitempty" mapconv:",omitempty"`
 	}{
-		Time:    o.Time,
-		CPUTime: o.CPUTime,
+		Time:    o.GetTime(),
+		CPUTime: o.GetCPUTime(),
 	}
 }
 
@@ -4806,8 +4806,8 @@ func (o *MonitorCondition) setDefaults() interface{} {
 		Start time.Time `json:",omitempty"`
 		End   time.Time `json:",omitempty"`
 	}{
-		Start: o.Start,
-		End:   o.End,
+		Start: o.GetStart(),
+		End:   o.GetEnd(),
 	}
 }
 
@@ -4850,7 +4850,7 @@ func (o *DiskActivity) setDefaults() interface{} {
 	return &struct {
 		Values []*MonitorDiskValue `mapconv:"[]Disk"`
 	}{
-		Values: o.Values,
+		Values: o.GetValues(),
 	}
 }
 
@@ -4887,9 +4887,9 @@ func (o *MonitorDiskValue) setDefaults() interface{} {
 		Read  float64   `json:",omitempty" mapconv:",omitempty"`
 		Write float64   `json:",omitempty" mapconv:",omitempty"`
 	}{
-		Time:  o.Time,
-		Read:  o.Read,
-		Write: o.Write,
+		Time:  o.GetTime(),
+		Read:  o.GetRead(),
+		Write: o.GetWrite(),
 	}
 }
 
@@ -4942,7 +4942,7 @@ func (o *InterfaceActivity) setDefaults() interface{} {
 	return &struct {
 		Values []*MonitorInterfaceValue `mapconv:"[]Interface"`
 	}{
-		Values: o.Values,
+		Values: o.GetValues(),
 	}
 }
 
@@ -4979,9 +4979,9 @@ func (o *MonitorInterfaceValue) setDefaults() interface{} {
 		Receive float64   `json:",omitempty" mapconv:",omitempty"`
 		Send    float64   `json:",omitempty" mapconv:",omitempty"`
 	}{
-		Time:    o.Time,
-		Receive: o.Receive,
-		Send:    o.Send,
+		Time:    o.GetTime(),
+		Receive: o.GetReceive(),
+		Send:    o.GetSend(),
 	}
 }
 
@@ -5034,7 +5034,7 @@ func (o *DatabaseActivity) setDefaults() interface{} {
 	return &struct {
 		Values []*MonitorDatabaseValue `mapconv:"[]Database"`
 	}{
-		Values: o.Values,
+		Values: o.GetValues(),
 	}
 }
 
@@ -5083,15 +5083,15 @@ func (o *MonitorDatabaseValue) setDefaults() interface{} {
 		BinlogUsedSizeKiB float64   `json:",omitempty" mapconv:",omitempty"`
 		DelayTimeSec      float64   `json:",omitempty" mapconv:",omitempty"`
 	}{
-		Time:              o.Time,
-		TotalMemorySize:   o.TotalMemorySize,
-		UsedMemorySize:    o.UsedMemorySize,
-		TotalDisk1Size:    o.TotalDisk1Size,
-		UsedDisk1Size:     o.UsedDisk1Size,
-		TotalDisk2Size:    o.TotalDisk2Size,
-		UsedDisk2Size:     o.UsedDisk2Size,
-		BinlogUsedSizeKiB: o.BinlogUsedSizeKiB,
-		DelayTimeSec:      o.DelayTimeSec,
+		Time:              o.GetTime(),
+		TotalMemorySize:   o.GetTotalMemorySize(),
+		UsedMemorySize:    o.GetUsedMemorySize(),
+		TotalDisk1Size:    o.GetTotalDisk1Size(),
+		UsedDisk1Size:     o.GetUsedDisk1Size(),
+		TotalDisk2Size:    o.GetTotalDisk2Size(),
+		UsedDisk2Size:     o.GetUsedDisk2Size(),
+		BinlogUsedSizeKiB: o.GetBinlogUsedSizeKiB(),
+		DelayTimeSec:      o.GetDelayTimeSec(),
 	}
 }
 
@@ -5212,11 +5212,11 @@ func (o *DatabaseStatus) setDefaults() interface{} {
 		Logs    []*DatabaseLog              `mapconv:"SettingsResponse.DBConf.[]Log,recursive"`
 		Backups []*DatabaseBackupHistory    `mapconv:"SettingsResponse.DBConf.Backup.[]History,recursive"`
 	}{
-		Status:  o.Status,
-		IsFatal: o.IsFatal,
-		Version: o.Version,
-		Logs:    o.Logs,
-		Backups: o.Backups,
+		Status:  o.GetStatus(),
+		IsFatal: o.GetIsFatal(),
+		Version: o.GetVersion(),
+		Logs:    o.GetLogs(),
+		Backups: o.GetBackups(),
 	}
 }
 
@@ -5297,11 +5297,11 @@ func (o *DatabaseVersionInfo) setDefaults() interface{} {
 		Tag          string
 		Expire       string
 	}{
-		LastModified: o.LastModified,
-		CommitHash:   o.CommitHash,
-		Status:       o.Status,
-		Tag:          o.Tag,
-		Expire:       o.Expire,
+		LastModified: o.GetLastModified(),
+		CommitHash:   o.GetCommitHash(),
+		Status:       o.GetStatus(),
+		Tag:          o.GetTag(),
+		Expire:       o.GetExpire(),
 	}
 }
 
@@ -5378,9 +5378,9 @@ func (o *DatabaseLog) setDefaults() interface{} {
 		Data string
 		Size int
 	}{
-		Name: o.Name,
-		Data: o.Data,
-		Size: o.Size,
+		Name: o.GetName(),
+		Data: o.GetData(),
+		Size: o.GetSize(),
 	}
 }
 
@@ -5439,10 +5439,10 @@ func (o *DatabaseBackupHistory) setDefaults() interface{} {
 		RecoveredAt  time.Time
 		Size         int64
 	}{
-		CreatedAt:    o.CreatedAt,
-		Availability: o.Availability,
-		RecoveredAt:  o.RecoveredAt,
-		Size:         o.Size,
+		CreatedAt:    o.GetCreatedAt(),
+		Availability: o.GetAvailability(),
+		RecoveredAt:  o.GetRecoveredAt(),
+		Size:         o.GetSize(),
 	}
 }
 
@@ -5549,29 +5549,29 @@ func (o *Disk) setDefaults() interface{} {
 		CreatedAt                 time.Time
 		ModifiedAt                time.Time
 	}{
-		ID:                        o.ID,
-		Name:                      o.Name,
-		Description:               o.Description,
-		Tags:                      o.Tags,
-		Availability:              o.Availability,
-		Connection:                o.Connection,
-		ConnectionOrder:           o.ConnectionOrder,
-		ReinstallCount:            o.ReinstallCount,
-		SizeMB:                    o.SizeMB,
-		MigratedMB:                o.MigratedMB,
-		DiskPlanID:                o.DiskPlanID,
-		DiskPlanName:              o.DiskPlanName,
-		DiskPlanStorageClass:      o.DiskPlanStorageClass,
-		SourceDiskID:              o.SourceDiskID,
-		SourceDiskAvailability:    o.SourceDiskAvailability,
-		SourceArchiveID:           o.SourceArchiveID,
-		SourceArchiveAvailability: o.SourceArchiveAvailability,
-		BundleInfo:                o.BundleInfo,
-		Storage:                   o.Storage,
-		ServerID:                  o.ServerID,
-		IconID:                    o.IconID,
-		CreatedAt:                 o.CreatedAt,
-		ModifiedAt:                o.ModifiedAt,
+		ID:                        o.GetID(),
+		Name:                      o.GetName(),
+		Description:               o.GetDescription(),
+		Tags:                      o.GetTags(),
+		Availability:              o.GetAvailability(),
+		Connection:                o.GetConnection(),
+		ConnectionOrder:           o.GetConnectionOrder(),
+		ReinstallCount:            o.GetReinstallCount(),
+		SizeMB:                    o.GetSizeMB(),
+		MigratedMB:                o.GetMigratedMB(),
+		DiskPlanID:                o.GetDiskPlanID(),
+		DiskPlanName:              o.GetDiskPlanName(),
+		DiskPlanStorageClass:      o.GetDiskPlanStorageClass(),
+		SourceDiskID:              o.GetSourceDiskID(),
+		SourceDiskAvailability:    o.GetSourceDiskAvailability(),
+		SourceArchiveID:           o.GetSourceArchiveID(),
+		SourceArchiveAvailability: o.GetSourceArchiveAvailability(),
+		BundleInfo:                o.GetBundleInfo(),
+		Storage:                   o.GetStorage(),
+		ServerID:                  o.GetServerID(),
+		IconID:                    o.GetIconID(),
+		CreatedAt:                 o.GetCreatedAt(),
+		ModifiedAt:                o.GetModifiedAt(),
 	}
 }
 
@@ -5897,16 +5897,16 @@ func (o *DiskCreateRequest) setDefaults() interface{} {
 		Tags            types.Tags
 		IconID          types.ID `mapconv:"Icon.ID"`
 	}{
-		DiskPlanID:      o.DiskPlanID,
-		Connection:      o.Connection,
-		SourceDiskID:    o.SourceDiskID,
-		SourceArchiveID: o.SourceArchiveID,
-		ServerID:        o.ServerID,
-		SizeMB:          o.SizeMB,
-		Name:            o.Name,
-		Description:     o.Description,
-		Tags:            o.Tags,
-		IconID:          o.IconID,
+		DiskPlanID:      o.GetDiskPlanID(),
+		Connection:      o.GetConnection(),
+		SourceDiskID:    o.GetSourceDiskID(),
+		SourceArchiveID: o.GetSourceArchiveID(),
+		ServerID:        o.GetServerID(),
+		SizeMB:          o.GetSizeMB(),
+		Name:            o.GetName(),
+		Description:     o.GetDescription(),
+		Tags:            o.GetTags(),
+		IconID:          o.GetIconID(),
 	}
 }
 
@@ -6077,16 +6077,16 @@ func (o *DiskEditRequest) setDefaults() interface{} {
 		UserIPAddress       string              `json:",omitempty" mapconv:",omitempty"`
 		UserSubnet          *DiskEditUserSubnet `json:",omitempty" mapconv:",omitempty"`
 	}{
-		Password:            o.Password,
-		SSHKey:              o.SSHKey,
-		SSHKeys:             o.SSHKeys,
-		DisablePWAuth:       o.DisablePWAuth,
-		EnableDHCP:          o.EnableDHCP,
-		ChangePartitionUUID: o.ChangePartitionUUID,
-		HostName:            o.HostName,
-		Notes:               o.Notes,
-		UserIPAddress:       o.UserIPAddress,
-		UserSubnet:          o.UserSubnet,
+		Password:            o.GetPassword(),
+		SSHKey:              o.GetSSHKey(),
+		SSHKeys:             o.GetSSHKeys(),
+		DisablePWAuth:       o.GetDisablePWAuth(),
+		EnableDHCP:          o.GetEnableDHCP(),
+		ChangePartitionUUID: o.GetChangePartitionUUID(),
+		HostName:            o.GetHostName(),
+		Notes:               o.GetNotes(),
+		UserIPAddress:       o.GetUserIPAddress(),
+		UserSubnet:          o.GetUserSubnet(),
 	}
 }
 
@@ -6211,8 +6211,8 @@ func (o *DiskEditSSHKey) setDefaults() interface{} {
 		ID        types.ID `json:",omitempty" mapconv:",omitempty"`
 		PublicKey string   `json:",omitempty" mapconv:",omitempty"`
 	}{
-		ID:        o.ID,
-		PublicKey: o.PublicKey,
+		ID:        o.GetID(),
+		PublicKey: o.GetPublicKey(),
 	}
 }
 
@@ -6257,8 +6257,8 @@ func (o *DiskEditNote) setDefaults() interface{} {
 		ID        types.ID               `json:",omitempty" mapconv:",omitempty"`
 		Variables map[string]interface{} `json:",omitempty" mapconv:",omitempty"`
 	}{
-		ID:        o.ID,
-		Variables: o.Variables,
+		ID:        o.GetID(),
+		Variables: o.GetVariables(),
 	}
 }
 
@@ -6303,8 +6303,8 @@ func (o *DiskEditUserSubnet) setDefaults() interface{} {
 		DefaultRoute   string `json:",omitempty" mapconv:",omitempty"`
 		NetworkMaskLen int    `json:",omitempty" mapconv:",omitempty" validate:"min=0,max=32"`
 	}{
-		DefaultRoute:   o.DefaultRoute,
-		NetworkMaskLen: o.NetworkMaskLen,
+		DefaultRoute:   o.GetDefaultRoute(),
+		NetworkMaskLen: o.GetNetworkMaskLen(),
 	}
 }
 
@@ -6351,9 +6351,9 @@ func (o *DiskInstallRequest) setDefaults() interface{} {
 		SourceArchiveID types.ID `mapconv:"SourceArchive.ID,omitempty"`
 		SizeMB          int
 	}{
-		SourceDiskID:    o.SourceDiskID,
-		SourceArchiveID: o.SourceArchiveID,
-		SizeMB:          o.SizeMB,
+		SourceDiskID:    o.GetSourceDiskID(),
+		SourceArchiveID: o.GetSourceArchiveID(),
+		SizeMB:          o.GetSizeMB(),
 	}
 }
 
@@ -6424,11 +6424,11 @@ func (o *DiskUpdateRequest) setDefaults() interface{} {
 		IconID      types.ID              `mapconv:"Icon.ID"`
 		Connection  types.EDiskConnection `json:",omitempty" mapconv:",omitempty"`
 	}{
-		Name:        o.Name,
-		Description: o.Description,
-		Tags:        o.Tags,
-		IconID:      o.IconID,
-		Connection:  o.Connection,
+		Name:        o.GetName(),
+		Description: o.GetDescription(),
+		Tags:        o.GetTags(),
+		IconID:      o.GetIconID(),
+		Connection:  o.GetConnection(),
 	}
 }
 
@@ -6529,11 +6529,11 @@ func (o *DiskPlan) setDefaults() interface{} {
 		Availability types.EAvailability
 		Size         []*DiskPlanSizeInfo `mapconv:"[]Size,recursive"`
 	}{
-		ID:           o.ID,
-		Name:         o.Name,
-		StorageClass: o.StorageClass,
-		Availability: o.Availability,
-		Size:         o.Size,
+		ID:           o.GetID(),
+		Name:         o.GetName(),
+		StorageClass: o.GetStorageClass(),
+		Availability: o.GetAvailability(),
+		Size:         o.GetSize(),
 	}
 }
 
@@ -6632,10 +6632,10 @@ func (o *DiskPlanSizeInfo) setDefaults() interface{} {
 		DisplaySuffix string
 		SizeMB        int
 	}{
-		Availability:  o.Availability,
-		DisplaySize:   o.DisplaySize,
-		DisplaySuffix: o.DisplaySuffix,
-		SizeMB:        o.SizeMB,
+		Availability:  o.GetAvailability(),
+		DisplaySize:   o.GetDisplaySize(),
+		DisplaySuffix: o.GetDisplaySuffix(),
+		SizeMB:        o.GetSizeMB(),
 	}
 }
 
@@ -6730,18 +6730,18 @@ func (o *DNS) setDefaults() interface{} {
 		DNSZone        string   `mapconv:"Status.Zone"`
 		DNSNameServers []string `mapconv:"Status.NS"`
 	}{
-		ID:             o.ID,
-		Name:           o.Name,
-		Description:    o.Description,
-		Tags:           o.Tags,
-		Availability:   o.Availability,
-		IconID:         o.IconID,
-		CreatedAt:      o.CreatedAt,
-		ModifiedAt:     o.ModifiedAt,
-		Records:        o.Records,
-		SettingsHash:   o.SettingsHash,
-		DNSZone:        o.DNSZone,
-		DNSNameServers: o.DNSNameServers,
+		ID:             o.GetID(),
+		Name:           o.GetName(),
+		Description:    o.GetDescription(),
+		Tags:           o.GetTags(),
+		Availability:   o.GetAvailability(),
+		IconID:         o.GetIconID(),
+		CreatedAt:      o.GetCreatedAt(),
+		ModifiedAt:     o.GetModifiedAt(),
+		Records:        o.GetRecords(),
+		SettingsHash:   o.GetSettingsHash(),
+		DNSZone:        o.GetDNSZone(),
+		DNSNameServers: o.GetDNSNameServers(),
 	}
 }
 
@@ -6930,10 +6930,10 @@ func (o *DNSRecord) setDefaults() interface{} {
 		RData string
 		TTL   int
 	}{
-		Name:  o.Name,
-		Type:  o.Type,
-		RData: o.RData,
-		TTL:   o.TTL,
+		Name:  o.GetName(),
+		Type:  o.GetType(),
+		RData: o.GetRData(),
+		TTL:   o.GetTTL(),
 	}
 }
 
@@ -7005,11 +7005,11 @@ func (o *DNSCreateRequest) setDefaults() interface{} {
 		IconID      types.ID `mapconv:"Icon.ID"`
 		Class       string   `mapconv:"Provider.Class"`
 	}{
-		Name:        o.Name,
-		Records:     o.Records,
-		Description: o.Description,
-		Tags:        o.Tags,
-		IconID:      o.IconID,
+		Name:        o.GetName(),
+		Records:     o.GetRecords(),
+		Description: o.GetDescription(),
+		Tags:        o.GetTags(),
+		IconID:      o.GetIconID(),
 		Class:       "dns",
 	}
 }
@@ -7109,10 +7109,10 @@ func (o *DNSUpdateRequest) setDefaults() interface{} {
 		Tags        types.Tags
 		IconID      types.ID `mapconv:"Icon.ID"`
 	}{
-		Records:     o.Records,
-		Description: o.Description,
-		Tags:        o.Tags,
-		IconID:      o.IconID,
+		Records:     o.GetRecords(),
+		Description: o.GetDescription(),
+		Tags:        o.GetTags(),
+		IconID:      o.GetIconID(),
 	}
 }
 
@@ -7192,7 +7192,7 @@ type GSLB struct {
 	ModifiedAt         time.Time
 	SettingsHash       string
 	FQDN               string           `mapconv:"Status.FQDN"`
-	DelayLoop          int              `mapconv:"Settings.GSLB.DelayLoop,default=10" validate:"min=10,max=60"`
+	DelayLoop          int              `mapconv:"Settings.GSLB.DelayLoop" validate:"min=10,max=60"`
 	Weighted           types.StringFlag `mapconv:"Settings.GSLB.Weighted"`
 	HealthCheck        *GSLBHealthCheck `mapconv:"Settings.GSLB.HealthCheck,recursive"`
 	SorryServer        string           `mapconv:"Settings.GSLB.SorryServer"`
@@ -7217,27 +7217,27 @@ func (o *GSLB) setDefaults() interface{} {
 		ModifiedAt         time.Time
 		SettingsHash       string
 		FQDN               string           `mapconv:"Status.FQDN"`
-		DelayLoop          int              `mapconv:"Settings.GSLB.DelayLoop,default=10" validate:"min=10,max=60"`
+		DelayLoop          int              `mapconv:"Settings.GSLB.DelayLoop" validate:"min=10,max=60"`
 		Weighted           types.StringFlag `mapconv:"Settings.GSLB.Weighted"`
 		HealthCheck        *GSLBHealthCheck `mapconv:"Settings.GSLB.HealthCheck,recursive"`
 		SorryServer        string           `mapconv:"Settings.GSLB.SorryServer"`
 		DestinationServers []*GSLBServer    `mapconv:"Settings.GSLB.[]Servers,recursive" validate:"min=0,max=12"`
 	}{
-		ID:                 o.ID,
-		Name:               o.Name,
-		Description:        o.Description,
-		Tags:               o.Tags,
-		Availability:       o.Availability,
-		IconID:             o.IconID,
-		CreatedAt:          o.CreatedAt,
-		ModifiedAt:         o.ModifiedAt,
-		SettingsHash:       o.SettingsHash,
-		FQDN:               o.FQDN,
-		DelayLoop:          o.DelayLoop,
-		Weighted:           o.Weighted,
-		HealthCheck:        o.HealthCheck,
-		SorryServer:        o.SorryServer,
-		DestinationServers: o.DestinationServers,
+		ID:                 o.GetID(),
+		Name:               o.GetName(),
+		Description:        o.GetDescription(),
+		Tags:               o.GetTags(),
+		Availability:       o.GetAvailability(),
+		IconID:             o.GetIconID(),
+		CreatedAt:          o.GetCreatedAt(),
+		ModifiedAt:         o.GetModifiedAt(),
+		SettingsHash:       o.GetSettingsHash(),
+		FQDN:               o.GetFQDN(),
+		DelayLoop:          o.GetDelayLoop(),
+		Weighted:           o.GetWeighted(),
+		HealthCheck:        o.GetHealthCheck(),
+		SorryServer:        o.GetSorryServer(),
+		DestinationServers: o.GetDestinationServers(),
 	}
 }
 
@@ -7383,6 +7383,9 @@ func (o *GSLB) SetFQDN(v string) {
 
 // GetDelayLoop returns value of DelayLoop
 func (o *GSLB) GetDelayLoop() int {
+	if o.DelayLoop == 0 {
+		return 10
+	}
 	return o.DelayLoop
 }
 
@@ -7458,11 +7461,11 @@ func (o *GSLBHealthCheck) setDefaults() interface{} {
 		ResponseCode types.StringNumber `mapconv:"Status"`
 		Port         types.StringNumber `mapconv:"Port"`
 	}{
-		Protocol:     o.Protocol,
-		HostHeader:   o.HostHeader,
-		Path:         o.Path,
-		ResponseCode: o.ResponseCode,
-		Port:         o.Port,
+		Protocol:     o.GetProtocol(),
+		HostHeader:   o.GetHostHeader(),
+		Path:         o.GetPath(),
+		ResponseCode: o.GetResponseCode(),
+		Port:         o.GetPort(),
 	}
 }
 
@@ -7539,9 +7542,9 @@ func (o *GSLBServer) setDefaults() interface{} {
 		Enabled   types.StringFlag
 		Weight    types.StringNumber
 	}{
-		IPAddress: o.IPAddress,
-		Enabled:   o.Enabled,
-		Weight:    o.Weight,
+		IPAddress: o.GetIPAddress(),
+		Enabled:   o.GetEnabled(),
+		Weight:    o.GetWeight(),
 	}
 }
 
@@ -7582,7 +7585,7 @@ func (o *GSLBServer) SetWeight(v types.StringNumber) {
 // GSLBCreateRequest represents API parameter/response structure
 type GSLBCreateRequest struct {
 	HealthCheck        *GSLBHealthCheck `mapconv:"Settings.GSLB.HealthCheck,recursive"`
-	DelayLoop          int              `mapconv:"Settings.GSLB.DelayLoop,default=10" validate:"min=10,max=60"`
+	DelayLoop          int              `mapconv:"Settings.GSLB.DelayLoop" validate:"min=10,max=60"`
 	Weighted           types.StringFlag `mapconv:"Settings.GSLB.Weighted"`
 	SorryServer        string           `mapconv:"Settings.GSLB.SorryServer"`
 	DestinationServers []*GSLBServer    `mapconv:"Settings.GSLB.[]Servers,recursive" validate:"min=0,max=12"`
@@ -7601,7 +7604,7 @@ func (o *GSLBCreateRequest) Validate() error {
 func (o *GSLBCreateRequest) setDefaults() interface{} {
 	return &struct {
 		HealthCheck        *GSLBHealthCheck `mapconv:"Settings.GSLB.HealthCheck,recursive"`
-		DelayLoop          int              `mapconv:"Settings.GSLB.DelayLoop,default=10" validate:"min=10,max=60"`
+		DelayLoop          int              `mapconv:"Settings.GSLB.DelayLoop" validate:"min=10,max=60"`
 		Weighted           types.StringFlag `mapconv:"Settings.GSLB.Weighted"`
 		SorryServer        string           `mapconv:"Settings.GSLB.SorryServer"`
 		DestinationServers []*GSLBServer    `mapconv:"Settings.GSLB.[]Servers,recursive" validate:"min=0,max=12"`
@@ -7611,15 +7614,15 @@ func (o *GSLBCreateRequest) setDefaults() interface{} {
 		IconID             types.ID `mapconv:"Icon.ID"`
 		Class              string   `mapconv:"Provider.Class"`
 	}{
-		HealthCheck:        o.HealthCheck,
-		DelayLoop:          o.DelayLoop,
-		Weighted:           o.Weighted,
-		SorryServer:        o.SorryServer,
-		DestinationServers: o.DestinationServers,
-		Name:               o.Name,
-		Description:        o.Description,
-		Tags:               o.Tags,
-		IconID:             o.IconID,
+		HealthCheck:        o.GetHealthCheck(),
+		DelayLoop:          o.GetDelayLoop(),
+		Weighted:           o.GetWeighted(),
+		SorryServer:        o.GetSorryServer(),
+		DestinationServers: o.GetDestinationServers(),
+		Name:               o.GetName(),
+		Description:        o.GetDescription(),
+		Tags:               o.GetTags(),
+		IconID:             o.GetIconID(),
 		Class:              "gslb",
 	}
 }
@@ -7636,6 +7639,9 @@ func (o *GSLBCreateRequest) SetHealthCheck(v *GSLBHealthCheck) {
 
 // GetDelayLoop returns value of DelayLoop
 func (o *GSLBCreateRequest) GetDelayLoop() int {
+	if o.DelayLoop == 0 {
+		return 10
+	}
 	return o.DelayLoop
 }
 
@@ -7741,7 +7747,7 @@ func (o *GSLBCreateRequest) SetIconID(v types.ID) {
 // GSLBUpdateRequest represents API parameter/response structure
 type GSLBUpdateRequest struct {
 	HealthCheck        *GSLBHealthCheck `mapconv:"Settings.GSLB.HealthCheck,recursive"`
-	DelayLoop          int              `mapconv:"Settings.GSLB.DelayLoop,default=10" validate:"min=10,max=60"`
+	DelayLoop          int              `mapconv:"Settings.GSLB.DelayLoop" validate:"min=10,max=60"`
 	Weighted           types.StringFlag `mapconv:"Settings.GSLB.Weighted"`
 	SorryServer        string           `mapconv:"Settings.GSLB.SorryServer"`
 	DestinationServers []*GSLBServer    `mapconv:"Settings.GSLB.[]Servers,recursive" validate:"min=0,max=12"`
@@ -7760,7 +7766,7 @@ func (o *GSLBUpdateRequest) Validate() error {
 func (o *GSLBUpdateRequest) setDefaults() interface{} {
 	return &struct {
 		HealthCheck        *GSLBHealthCheck `mapconv:"Settings.GSLB.HealthCheck,recursive"`
-		DelayLoop          int              `mapconv:"Settings.GSLB.DelayLoop,default=10" validate:"min=10,max=60"`
+		DelayLoop          int              `mapconv:"Settings.GSLB.DelayLoop" validate:"min=10,max=60"`
 		Weighted           types.StringFlag `mapconv:"Settings.GSLB.Weighted"`
 		SorryServer        string           `mapconv:"Settings.GSLB.SorryServer"`
 		DestinationServers []*GSLBServer    `mapconv:"Settings.GSLB.[]Servers,recursive" validate:"min=0,max=12"`
@@ -7769,15 +7775,15 @@ func (o *GSLBUpdateRequest) setDefaults() interface{} {
 		Tags               types.Tags
 		IconID             types.ID `mapconv:"Icon.ID"`
 	}{
-		HealthCheck:        o.HealthCheck,
-		DelayLoop:          o.DelayLoop,
-		Weighted:           o.Weighted,
-		SorryServer:        o.SorryServer,
-		DestinationServers: o.DestinationServers,
-		Name:               o.Name,
-		Description:        o.Description,
-		Tags:               o.Tags,
-		IconID:             o.IconID,
+		HealthCheck:        o.GetHealthCheck(),
+		DelayLoop:          o.GetDelayLoop(),
+		Weighted:           o.GetWeighted(),
+		SorryServer:        o.GetSorryServer(),
+		DestinationServers: o.GetDestinationServers(),
+		Name:               o.GetName(),
+		Description:        o.GetDescription(),
+		Tags:               o.GetTags(),
+		IconID:             o.GetIconID(),
 	}
 }
 
@@ -7793,6 +7799,9 @@ func (o *GSLBUpdateRequest) SetHealthCheck(v *GSLBHealthCheck) {
 
 // GetDelayLoop returns value of DelayLoop
 func (o *GSLBUpdateRequest) GetDelayLoop() int {
+	if o.DelayLoop == 0 {
+		return 10
+	}
 	return o.DelayLoop
 }
 
@@ -7924,14 +7933,14 @@ func (o *Icon) setDefaults() interface{} {
 		CreatedAt    time.Time
 		ModifiedAt   time.Time
 	}{
-		ID:           o.ID,
-		Name:         o.Name,
-		Tags:         o.Tags,
-		Availability: o.Availability,
-		Scope:        o.Scope,
-		URL:          o.URL,
-		CreatedAt:    o.CreatedAt,
-		ModifiedAt:   o.ModifiedAt,
+		ID:           o.GetID(),
+		Name:         o.GetName(),
+		Tags:         o.GetTags(),
+		Availability: o.GetAvailability(),
+		Scope:        o.GetScope(),
+		URL:          o.GetURL(),
+		CreatedAt:    o.GetCreatedAt(),
+		ModifiedAt:   o.GetModifiedAt(),
 	}
 }
 
@@ -8078,9 +8087,9 @@ func (o *IconCreateRequest) setDefaults() interface{} {
 		Tags  types.Tags
 		Image string
 	}{
-		Name:  o.Name,
-		Tags:  o.Tags,
-		Image: o.Image,
+		Name:  o.GetName(),
+		Tags:  o.GetTags(),
+		Image: o.GetImage(),
 	}
 }
 
@@ -8155,8 +8164,8 @@ func (o *IconUpdateRequest) setDefaults() interface{} {
 		Name string `validate:"required"`
 		Tags types.Tags
 	}{
-		Name: o.Name,
-		Tags: o.Tags,
+		Name: o.GetName(),
+		Tags: o.GetTags(),
 	}
 }
 
@@ -8235,15 +8244,15 @@ func (o *Interface) setDefaults() interface{} {
 		ServerID       types.ID `mapconv:"Server.ID,omitempty"`
 		CreatedAt      time.Time
 	}{
-		ID:             o.ID,
-		MACAddress:     o.MACAddress,
-		IPAddress:      o.IPAddress,
-		UserIPAddress:  o.UserIPAddress,
-		HostName:       o.HostName,
-		SwitchID:       o.SwitchID,
-		PacketFilterID: o.PacketFilterID,
-		ServerID:       o.ServerID,
-		CreatedAt:      o.CreatedAt,
+		ID:             o.GetID(),
+		MACAddress:     o.GetMACAddress(),
+		IPAddress:      o.GetIPAddress(),
+		UserIPAddress:  o.GetUserIPAddress(),
+		HostName:       o.GetHostName(),
+		SwitchID:       o.GetSwitchID(),
+		PacketFilterID: o.GetPacketFilterID(),
+		ServerID:       o.GetServerID(),
+		CreatedAt:      o.GetCreatedAt(),
 	}
 }
 
@@ -8376,7 +8385,7 @@ func (o *InterfaceCreateRequest) setDefaults() interface{} {
 	return &struct {
 		ServerID types.ID `mapconv:"Server.ID,omitempty"`
 	}{
-		ServerID: o.ServerID,
+		ServerID: o.GetServerID(),
 	}
 }
 
@@ -8409,7 +8418,7 @@ func (o *InterfaceUpdateRequest) setDefaults() interface{} {
 	return &struct {
 		UserIPAddress string
 	}{
-		UserIPAddress: o.UserIPAddress,
+		UserIPAddress: o.GetUserIPAddress(),
 	}
 }
 
@@ -8458,15 +8467,15 @@ func (o *Internet) setDefaults() interface{} {
 		NetworkMaskLen int         `validate:"min=24,max=28"`
 		Switch         *SwitchInfo `mapconv:",recursive"`
 	}{
-		ID:             o.ID,
-		Name:           o.Name,
-		Description:    o.Description,
-		Tags:           o.Tags,
-		IconID:         o.IconID,
-		CreatedAt:      o.CreatedAt,
-		BandWidthMbps:  o.BandWidthMbps,
-		NetworkMaskLen: o.NetworkMaskLen,
-		Switch:         o.Switch,
+		ID:             o.GetID(),
+		Name:           o.GetName(),
+		Description:    o.GetDescription(),
+		Tags:           o.GetTags(),
+		IconID:         o.GetIconID(),
+		CreatedAt:      o.GetCreatedAt(),
+		BandWidthMbps:  o.GetBandWidthMbps(),
+		NetworkMaskLen: o.GetNetworkMaskLen(),
+		Switch:         o.GetSwitch(),
 	}
 }
 
@@ -8631,13 +8640,13 @@ func (o *SwitchInfo) setDefaults() interface{} {
 		Subnets     []*InternetSubnet `mapconv:"[]Subnets,recursive"`
 		IPv6Nets    []*IPv6NetInfo    `mapconv:"[]IPv6Nets,recursive,omitempty"`
 	}{
-		ID:          o.ID,
-		Name:        o.Name,
-		Description: o.Description,
-		Tags:        o.Tags,
-		Scope:       o.Scope,
-		Subnets:     o.Subnets,
-		IPv6Nets:    o.IPv6Nets,
+		ID:          o.GetID(),
+		Name:        o.GetName(),
+		Description: o.GetDescription(),
+		Tags:        o.GetTags(),
+		Scope:       o.GetScope(),
+		Subnets:     o.GetSubnets(),
+		IPv6Nets:    o.GetIPv6Nets(),
 	}
 }
 
@@ -8780,12 +8789,12 @@ func (o *InternetSubnet) setDefaults() interface{} {
 		NetworkAddress string `validate:"ipv4"`
 		NetworkMaskLen int    `validate:"min=24,max=28"`
 	}{
-		ID:             o.ID,
-		DefaultRoute:   o.DefaultRoute,
-		NextHop:        o.NextHop,
-		StaticRoute:    o.StaticRoute,
-		NetworkAddress: o.NetworkAddress,
-		NetworkMaskLen: o.NetworkMaskLen,
+		ID:             o.GetID(),
+		DefaultRoute:   o.GetDefaultRoute(),
+		NextHop:        o.GetNextHop(),
+		StaticRoute:    o.GetStaticRoute(),
+		NetworkAddress: o.GetNetworkAddress(),
+		NetworkMaskLen: o.GetNetworkMaskLen(),
 	}
 }
 
@@ -8892,9 +8901,9 @@ func (o *IPv6NetInfo) setDefaults() interface{} {
 		IPv6Prefix    string
 		IPv6PrefixLen int
 	}{
-		ID:            o.ID,
-		IPv6Prefix:    o.IPv6Prefix,
-		IPv6PrefixLen: o.IPv6PrefixLen,
+		ID:            o.GetID(),
+		IPv6Prefix:    o.GetIPv6Prefix(),
+		IPv6PrefixLen: o.GetIPv6PrefixLen(),
 	}
 }
 
@@ -8977,12 +8986,12 @@ func (o *InternetCreateRequest) setDefaults() interface{} {
 		NetworkMaskLen int      `validate:"min=24,max=28"`
 		BandWidthMbps  int
 	}{
-		Name:           o.Name,
-		Description:    o.Description,
-		Tags:           o.Tags,
-		IconID:         o.IconID,
-		NetworkMaskLen: o.NetworkMaskLen,
-		BandWidthMbps:  o.BandWidthMbps,
+		Name:           o.GetName(),
+		Description:    o.GetDescription(),
+		Tags:           o.GetTags(),
+		IconID:         o.GetIconID(),
+		NetworkMaskLen: o.GetNetworkMaskLen(),
+		BandWidthMbps:  o.GetBandWidthMbps(),
 	}
 }
 
@@ -9091,10 +9100,10 @@ func (o *InternetUpdateRequest) setDefaults() interface{} {
 		Tags        types.Tags
 		IconID      types.ID `mapconv:"Icon.ID"`
 	}{
-		Name:        o.Name,
-		Description: o.Description,
-		Tags:        o.Tags,
-		IconID:      o.IconID,
+		Name:        o.GetName(),
+		Description: o.GetDescription(),
+		Tags:        o.GetTags(),
+		IconID:      o.GetIconID(),
 	}
 }
 
@@ -9177,7 +9186,7 @@ func (o *InternetUpdateBandWidthRequest) setDefaults() interface{} {
 	return &struct {
 		BandWidthMbps int
 	}{
-		BandWidthMbps: o.BandWidthMbps,
+		BandWidthMbps: o.GetBandWidthMbps(),
 	}
 }
 
@@ -9222,13 +9231,13 @@ func (o *InternetSubnetOperationResult) setDefaults() interface{} {
 		NetworkMaskLen int      `validate:"min=24,max=28"`
 		IPAddresses    []string `mapconv:"[]IPAddresses.IPAddress"`
 	}{
-		ID:             o.ID,
-		DefaultRoute:   o.DefaultRoute,
-		NextHop:        o.NextHop,
-		StaticRoute:    o.StaticRoute,
-		NetworkAddress: o.NetworkAddress,
-		NetworkMaskLen: o.NetworkMaskLen,
-		IPAddresses:    o.IPAddresses,
+		ID:             o.GetID(),
+		DefaultRoute:   o.GetDefaultRoute(),
+		NextHop:        o.GetNextHop(),
+		StaticRoute:    o.GetStaticRoute(),
+		NetworkAddress: o.GetNetworkAddress(),
+		NetworkMaskLen: o.GetNetworkMaskLen(),
+		IPAddresses:    o.GetIPAddresses(),
 	}
 }
 
@@ -9343,8 +9352,8 @@ func (o *InternetAddSubnetRequest) setDefaults() interface{} {
 		NetworkMaskLen int    `validate:"min=24,max=28"`
 		NextHop        string `validate:"ipv4"`
 	}{
-		NetworkMaskLen: o.NetworkMaskLen,
-		NextHop:        o.NextHop,
+		NetworkMaskLen: o.GetNetworkMaskLen(),
+		NextHop:        o.GetNextHop(),
 	}
 }
 
@@ -9387,7 +9396,7 @@ func (o *InternetUpdateSubnetRequest) setDefaults() interface{} {
 	return &struct {
 		NextHop string `validate:"ipv4"`
 	}{
-		NextHop: o.NextHop,
+		NextHop: o.GetNextHop(),
 	}
 }
 
@@ -9420,7 +9429,7 @@ func (o *RouterActivity) setDefaults() interface{} {
 	return &struct {
 		Values []*MonitorRouterValue `mapconv:"[]Router"`
 	}{
-		Values: o.Values,
+		Values: o.GetValues(),
 	}
 }
 
@@ -9457,9 +9466,9 @@ func (o *MonitorRouterValue) setDefaults() interface{} {
 		In   float64   `json:",omitempty" mapconv:",omitempty"`
 		Out  float64   `json:",omitempty" mapconv:",omitempty"`
 	}{
-		Time: o.Time,
-		In:   o.In,
-		Out:  o.Out,
+		Time: o.GetTime(),
+		In:   o.GetIn(),
+		Out:  o.GetOut(),
 	}
 }
 
@@ -9518,10 +9527,10 @@ func (o *InternetPlan) setDefaults() interface{} {
 		BandWidthMbps int
 		Availability  types.EAvailability
 	}{
-		ID:            o.ID,
-		Name:          o.Name,
-		BandWidthMbps: o.BandWidthMbps,
-		Availability:  o.Availability,
+		ID:            o.GetID(),
+		Name:          o.GetName(),
+		BandWidthMbps: o.GetBandWidthMbps(),
+		Availability:  o.GetAvailability(),
 	}
 }
 
@@ -9610,10 +9619,10 @@ func (o *IPAddress) setDefaults() interface{} {
 		InterfaceID types.ID `mapconv:"Interface.ID,omitempty"`
 		SubnetID    types.ID `mapconv:"Subnet.ID,omitempty"`
 	}{
-		HostName:    o.HostName,
-		IPAddress:   o.IPAddress,
-		InterfaceID: o.InterfaceID,
-		SubnetID:    o.SubnetID,
+		HostName:    o.GetHostName(),
+		IPAddress:   o.GetIPAddress(),
+		InterfaceID: o.GetInterfaceID(),
+		SubnetID:    o.GetSubnetID(),
 	}
 }
 
@@ -9694,16 +9703,16 @@ func (o *IPv6Net) setDefaults() interface{} {
 		CreatedAt          time.Time
 		SwitchID           types.ID `mapconv:"Switch.ID,omitempty"`
 	}{
-		ID:                 o.ID,
-		ServiceID:          o.ServiceID,
-		IPv6Prefix:         o.IPv6Prefix,
-		IPv6PrefixLen:      o.IPv6PrefixLen,
-		IPv6PrefixTail:     o.IPv6PrefixTail,
-		ServiceClass:       o.ServiceClass,
-		IPv6TableID:        o.IPv6TableID,
-		NamedIPv6AddrCount: o.NamedIPv6AddrCount,
-		CreatedAt:          o.CreatedAt,
-		SwitchID:           o.SwitchID,
+		ID:                 o.GetID(),
+		ServiceID:          o.GetServiceID(),
+		IPv6Prefix:         o.GetIPv6Prefix(),
+		IPv6PrefixLen:      o.GetIPv6PrefixLen(),
+		IPv6PrefixTail:     o.GetIPv6PrefixTail(),
+		ServiceClass:       o.GetServiceClass(),
+		IPv6TableID:        o.GetIPv6TableID(),
+		NamedIPv6AddrCount: o.GetNamedIPv6AddrCount(),
+		CreatedAt:          o.GetCreatedAt(),
+		SwitchID:           o.GetSwitchID(),
 	}
 }
 
@@ -9854,11 +9863,11 @@ func (o *IPv6Addr) setDefaults() interface{} {
 		SwitchID    types.ID `mapconv:"IPv6Net.Switch.ID"`
 		InterfaceID types.ID `mapconv:"Interface.ID,omitempty"`
 	}{
-		IPv6Addr:    o.IPv6Addr,
-		HostName:    o.HostName,
-		IPv6NetID:   o.IPv6NetID,
-		SwitchID:    o.SwitchID,
-		InterfaceID: o.InterfaceID,
+		IPv6Addr:    o.GetIPv6Addr(),
+		HostName:    o.GetHostName(),
+		IPv6NetID:   o.GetIPv6NetID(),
+		SwitchID:    o.GetSwitchID(),
+		InterfaceID: o.GetInterfaceID(),
 	}
 }
 
@@ -9933,8 +9942,8 @@ func (o *IPv6AddrCreateRequest) setDefaults() interface{} {
 		IPv6Addr string
 		HostName string
 	}{
-		IPv6Addr: o.IPv6Addr,
-		HostName: o.HostName,
+		IPv6Addr: o.GetIPv6Addr(),
+		HostName: o.GetHostName(),
 	}
 }
 
@@ -9977,7 +9986,7 @@ func (o *IPv6AddrUpdateRequest) setDefaults() interface{} {
 	return &struct {
 		HostName string
 	}{
-		HostName: o.HostName,
+		HostName: o.GetHostName(),
 	}
 }
 
@@ -10020,12 +10029,12 @@ func (o *License) setDefaults() interface{} {
 		CreatedAt       time.Time
 		ModifiedAt      time.Time
 	}{
-		ID:              o.ID,
-		Name:            o.Name,
-		LicenseInfoID:   o.LicenseInfoID,
-		LicenseInfoName: o.LicenseInfoName,
-		CreatedAt:       o.CreatedAt,
-		ModifiedAt:      o.ModifiedAt,
+		ID:              o.GetID(),
+		Name:            o.GetName(),
+		LicenseInfoID:   o.GetLicenseInfoID(),
+		LicenseInfoName: o.GetLicenseInfoName(),
+		CreatedAt:       o.GetCreatedAt(),
+		ModifiedAt:      o.GetModifiedAt(),
 	}
 }
 
@@ -10130,8 +10139,8 @@ func (o *LicenseCreateRequest) setDefaults() interface{} {
 		Name          string   `validate:"required"`
 		LicenseInfoID types.ID `mapconv:"LicenseInfo.ID"`
 	}{
-		Name:          o.Name,
-		LicenseInfoID: o.LicenseInfoID,
+		Name:          o.GetName(),
+		LicenseInfoID: o.GetLicenseInfoID(),
 	}
 }
 
@@ -10174,7 +10183,7 @@ func (o *LicenseUpdateRequest) setDefaults() interface{} {
 	return &struct {
 		Name string `validate:"required"`
 	}{
-		Name: o.Name,
+		Name: o.GetName(),
 	}
 }
 
@@ -10215,11 +10224,11 @@ func (o *LicenseInfo) setDefaults() interface{} {
 		ModifiedAt time.Time
 		TermsOfUse string
 	}{
-		ID:         o.ID,
-		Name:       o.Name,
-		CreatedAt:  o.CreatedAt,
-		ModifiedAt: o.ModifiedAt,
-		TermsOfUse: o.TermsOfUse,
+		ID:         o.GetID(),
+		Name:       o.GetName(),
+		CreatedAt:  o.GetCreatedAt(),
+		ModifiedAt: o.GetModifiedAt(),
+		TermsOfUse: o.GetTermsOfUse(),
 	}
 }
 
@@ -10356,29 +10365,29 @@ func (o *LoadBalancer) setDefaults() interface{} {
 		SettingsHash            string
 		Interfaces              []*InterfaceView `json:",omitempty" mapconv:"[]Interfaces,recursive,omitempty"`
 	}{
-		ID:                      o.ID,
-		Name:                    o.Name,
-		Description:             o.Description,
-		Tags:                    o.Tags,
-		Availability:            o.Availability,
-		Class:                   o.Class,
-		IconID:                  o.IconID,
-		CreatedAt:               o.CreatedAt,
-		ModifiedAt:              o.ModifiedAt,
-		InstanceHostName:        o.InstanceHostName,
-		InstanceHostInfoURL:     o.InstanceHostInfoURL,
-		InstanceStatus:          o.InstanceStatus,
-		InstanceStatusChangedAt: o.InstanceStatusChangedAt,
-		PlanID:                  o.PlanID,
-		SwitchID:                o.SwitchID,
-		DefaultRoute:            o.DefaultRoute,
-		NetworkMaskLen:          o.NetworkMaskLen,
-		IPAddresses:             o.IPAddresses,
-		ZoneID:                  o.ZoneID,
-		VRID:                    o.VRID,
-		VirtualIPAddresses:      o.VirtualIPAddresses,
-		SettingsHash:            o.SettingsHash,
-		Interfaces:              o.Interfaces,
+		ID:                      o.GetID(),
+		Name:                    o.GetName(),
+		Description:             o.GetDescription(),
+		Tags:                    o.GetTags(),
+		Availability:            o.GetAvailability(),
+		Class:                   o.GetClass(),
+		IconID:                  o.GetIconID(),
+		CreatedAt:               o.GetCreatedAt(),
+		ModifiedAt:              o.GetModifiedAt(),
+		InstanceHostName:        o.GetInstanceHostName(),
+		InstanceHostInfoURL:     o.GetInstanceHostInfoURL(),
+		InstanceStatus:          o.GetInstanceStatus(),
+		InstanceStatusChangedAt: o.GetInstanceStatusChangedAt(),
+		PlanID:                  o.GetPlanID(),
+		SwitchID:                o.GetSwitchID(),
+		DefaultRoute:            o.GetDefaultRoute(),
+		NetworkMaskLen:          o.GetNetworkMaskLen(),
+		IPAddresses:             o.GetIPAddresses(),
+		ZoneID:                  o.GetZoneID(),
+		VRID:                    o.GetVRID(),
+		VirtualIPAddresses:      o.GetVirtualIPAddresses(),
+		SettingsHash:            o.GetSettingsHash(),
+		Interfaces:              o.GetInterfaces(),
 	}
 }
 
@@ -10660,7 +10669,7 @@ func (o *LoadBalancer) SetInterfaces(v []*InterfaceView) {
 type LoadBalancerVirtualIPAddress struct {
 	VirtualIPAddress string `validate:"ipv4"`
 	Port             types.StringNumber
-	DelayLoop        types.StringNumber    `mapconv:",default=10" validate:"min=0,max=60"`
+	DelayLoop        types.StringNumber    `validate:"min=0,max=60"`
 	SorryServer      string                `validate:"ipv4"`
 	Description      string                `validate:"min=0,max=512"`
 	Servers          []*LoadBalancerServer `mapconv:",recursive" validate:"min=0,max=40"`
@@ -10676,17 +10685,17 @@ func (o *LoadBalancerVirtualIPAddress) setDefaults() interface{} {
 	return &struct {
 		VirtualIPAddress string `validate:"ipv4"`
 		Port             types.StringNumber
-		DelayLoop        types.StringNumber    `mapconv:",default=10" validate:"min=0,max=60"`
+		DelayLoop        types.StringNumber    `validate:"min=0,max=60"`
 		SorryServer      string                `validate:"ipv4"`
 		Description      string                `validate:"min=0,max=512"`
 		Servers          []*LoadBalancerServer `mapconv:",recursive" validate:"min=0,max=40"`
 	}{
-		VirtualIPAddress: o.VirtualIPAddress,
-		Port:             o.Port,
-		DelayLoop:        o.DelayLoop,
-		SorryServer:      o.SorryServer,
-		Description:      o.Description,
-		Servers:          o.Servers,
+		VirtualIPAddress: o.GetVirtualIPAddress(),
+		Port:             o.GetPort(),
+		DelayLoop:        o.GetDelayLoop(),
+		SorryServer:      o.GetSorryServer(),
+		Description:      o.GetDescription(),
+		Servers:          o.GetServers(),
 	}
 }
 
@@ -10712,6 +10721,9 @@ func (o *LoadBalancerVirtualIPAddress) SetPort(v types.StringNumber) {
 
 // GetDelayLoop returns value of DelayLoop
 func (o *LoadBalancerVirtualIPAddress) GetDelayLoop() types.StringNumber {
+	if o.DelayLoop == types.StringNumber(int64(0)) {
+		return 10
+	}
 	return o.DelayLoop
 }
 
@@ -10779,12 +10791,12 @@ func (o *LoadBalancerServer) setDefaults() interface{} {
 		HealthCheckPath         string             `mapconv:"HealthCheck.Path"`
 		HealthCheckResponseCode types.StringNumber `mapconv:"HealthCheck.Status"`
 	}{
-		IPAddress:               o.IPAddress,
-		Port:                    o.Port,
-		Enabled:                 o.Enabled,
-		HealthCheckProtocol:     o.HealthCheckProtocol,
-		HealthCheckPath:         o.HealthCheckPath,
-		HealthCheckResponseCode: o.HealthCheckResponseCode,
+		IPAddress:               o.GetIPAddress(),
+		Port:                    o.GetPort(),
+		Enabled:                 o.GetEnabled(),
+		HealthCheckProtocol:     o.GetHealthCheckProtocol(),
+		HealthCheckPath:         o.GetHealthCheckPath(),
+		HealthCheckResponseCode: o.GetHealthCheckResponseCode(),
 	}
 }
 
@@ -10888,17 +10900,17 @@ func (o *LoadBalancerCreateRequest) setDefaults() interface{} {
 		VirtualIPAddresses []*LoadBalancerVirtualIPAddress `mapconv:"Settings.[]LoadBalancer,recursive" validate:"min=0,max=10"`
 		Class              string
 	}{
-		SwitchID:           o.SwitchID,
-		PlanID:             o.PlanID,
-		VRID:               o.VRID,
-		IPAddresses:        o.IPAddresses,
-		NetworkMaskLen:     o.NetworkMaskLen,
-		DefaultRoute:       o.DefaultRoute,
-		Name:               o.Name,
-		Description:        o.Description,
-		Tags:               o.Tags,
-		IconID:             o.IconID,
-		VirtualIPAddresses: o.VirtualIPAddresses,
+		SwitchID:           o.GetSwitchID(),
+		PlanID:             o.GetPlanID(),
+		VRID:               o.GetVRID(),
+		IPAddresses:        o.GetIPAddresses(),
+		NetworkMaskLen:     o.GetNetworkMaskLen(),
+		DefaultRoute:       o.GetDefaultRoute(),
+		Name:               o.GetName(),
+		Description:        o.GetDescription(),
+		Tags:               o.GetTags(),
+		IconID:             o.GetIconID(),
+		VirtualIPAddresses: o.GetVirtualIPAddresses(),
 		Class:              "loadbalancer",
 	}
 }
@@ -11060,11 +11072,11 @@ func (o *LoadBalancerUpdateRequest) setDefaults() interface{} {
 		IconID             types.ID                        `mapconv:"Icon.ID"`
 		VirtualIPAddresses []*LoadBalancerVirtualIPAddress `mapconv:"Settings.[]LoadBalancer,recursive" validate:"min=0,max=10"`
 	}{
-		Name:               o.Name,
-		Description:        o.Description,
-		Tags:               o.Tags,
-		IconID:             o.IconID,
-		VirtualIPAddresses: o.VirtualIPAddresses,
+		Name:               o.GetName(),
+		Description:        o.GetDescription(),
+		Tags:               o.GetTags(),
+		IconID:             o.GetIconID(),
+		VirtualIPAddresses: o.GetVirtualIPAddresses(),
 	}
 }
 
@@ -11163,10 +11175,10 @@ func (o *LoadBalancerStatus) setDefaults() interface{} {
 		CPS              types.StringNumber
 		Servers          []*LoadBalancerServerStatus `mapconv:",recursive"`
 	}{
-		VirtualIPAddress: o.VirtualIPAddress,
-		Port:             o.Port,
-		CPS:              o.CPS,
-		Servers:          o.Servers,
+		VirtualIPAddress: o.GetVirtualIPAddress(),
+		Port:             o.GetPort(),
+		CPS:              o.GetCPS(),
+		Servers:          o.GetServers(),
 	}
 }
 
@@ -11237,11 +11249,11 @@ func (o *LoadBalancerServerStatus) setDefaults() interface{} {
 		Port       types.StringNumber
 		CPS        types.StringNumber
 	}{
-		ActiveConn: o.ActiveConn,
-		Status:     o.Status,
-		IPAddress:  o.IPAddress,
-		Port:       o.Port,
-		CPS:        o.CPS,
+		ActiveConn: o.GetActiveConn(),
+		Status:     o.GetStatus(),
+		IPAddress:  o.GetIPAddress(),
+		Port:       o.GetPort(),
+		CPS:        o.GetCPS(),
 	}
 }
 
@@ -11344,22 +11356,22 @@ func (o *MobileGateway) setDefaults() interface{} {
 		Settings                *MobileGatewaySetting       `mapconv:",omitempty,recursive"`
 		SettingsHash            string
 	}{
-		ID:                      o.ID,
-		Name:                    o.Name,
-		Description:             o.Description,
-		Tags:                    o.Tags,
-		Availability:            o.Availability,
-		Class:                   o.Class,
-		IconID:                  o.IconID,
-		CreatedAt:               o.CreatedAt,
-		InstanceHostName:        o.InstanceHostName,
-		InstanceHostInfoURL:     o.InstanceHostInfoURL,
-		InstanceStatus:          o.InstanceStatus,
-		InstanceStatusChangedAt: o.InstanceStatusChangedAt,
-		Interfaces:              o.Interfaces,
-		ZoneID:                  o.ZoneID,
-		Settings:                o.Settings,
-		SettingsHash:            o.SettingsHash,
+		ID:                      o.GetID(),
+		Name:                    o.GetName(),
+		Description:             o.GetDescription(),
+		Tags:                    o.GetTags(),
+		Availability:            o.GetAvailability(),
+		Class:                   o.GetClass(),
+		IconID:                  o.GetIconID(),
+		CreatedAt:               o.GetCreatedAt(),
+		InstanceHostName:        o.GetInstanceHostName(),
+		InstanceHostInfoURL:     o.GetInstanceHostInfoURL(),
+		InstanceStatus:          o.GetInstanceStatus(),
+		InstanceStatusChangedAt: o.GetInstanceStatusChangedAt(),
+		Interfaces:              o.GetInterfaces(),
+		ZoneID:                  o.GetZoneID(),
+		Settings:                o.GetSettings(),
+		SettingsHash:            o.GetSettingsHash(),
 	}
 }
 
@@ -11618,25 +11630,25 @@ func (o *MobileGatewayInterface) setDefaults() interface{} {
 		UpstreamType                    types.EUpstreamNetworkType
 		Index                           int `mapconv:",omitempty"`
 	}{
-		ID:                              o.ID,
-		MACAddress:                      o.MACAddress,
-		IPAddress:                       o.IPAddress,
-		UserIPAddress:                   o.UserIPAddress,
-		HostName:                        o.HostName,
-		SwitchID:                        o.SwitchID,
-		SwitchName:                      o.SwitchName,
-		SwitchScope:                     o.SwitchScope,
-		UserSubnetDefaultRoute:          o.UserSubnetDefaultRoute,
-		UserSubnetNetworkMaskLen:        o.UserSubnetNetworkMaskLen,
-		SubnetDefaultRoute:              o.SubnetDefaultRoute,
-		SubnetNetworkMaskLen:            o.SubnetNetworkMaskLen,
-		SubnetNetworkAddress:            o.SubnetNetworkAddress,
-		SubnetBandWidthMbps:             o.SubnetBandWidthMbps,
-		PacketFilterID:                  o.PacketFilterID,
-		PacketFilterName:                o.PacketFilterName,
-		PacketFilterRequiredHostVersion: o.PacketFilterRequiredHostVersion,
-		UpstreamType:                    o.UpstreamType,
-		Index:                           o.Index,
+		ID:                              o.GetID(),
+		MACAddress:                      o.GetMACAddress(),
+		IPAddress:                       o.GetIPAddress(),
+		UserIPAddress:                   o.GetUserIPAddress(),
+		HostName:                        o.GetHostName(),
+		SwitchID:                        o.GetSwitchID(),
+		SwitchName:                      o.GetSwitchName(),
+		SwitchScope:                     o.GetSwitchScope(),
+		UserSubnetDefaultRoute:          o.GetUserSubnetDefaultRoute(),
+		UserSubnetNetworkMaskLen:        o.GetUserSubnetNetworkMaskLen(),
+		SubnetDefaultRoute:              o.GetSubnetDefaultRoute(),
+		SubnetNetworkMaskLen:            o.GetSubnetNetworkMaskLen(),
+		SubnetNetworkAddress:            o.GetSubnetNetworkAddress(),
+		SubnetBandWidthMbps:             o.GetSubnetBandWidthMbps(),
+		PacketFilterID:                  o.GetPacketFilterID(),
+		PacketFilterName:                o.GetPacketFilterName(),
+		PacketFilterRequiredHostVersion: o.GetPacketFilterRequiredHostVersion(),
+		UpstreamType:                    o.GetUpstreamType(),
+		Index:                           o.GetIndex(),
 	}
 }
 
@@ -11875,10 +11887,10 @@ func (o *MobileGatewaySetting) setDefaults() interface{} {
 		InternetConnectionEnabled       types.StringFlag                 `mapconv:"MobileGateway.InternetConnection.Enabled"`
 		InterDeviceCommunicationEnabled types.StringFlag                 `mapconv:"MobileGateway.InterDeviceCommunication.Enabled"`
 	}{
-		Interfaces:                      o.Interfaces,
-		StaticRoute:                     o.StaticRoute,
-		InternetConnectionEnabled:       o.InternetConnectionEnabled,
-		InterDeviceCommunicationEnabled: o.InterDeviceCommunicationEnabled,
+		Interfaces:                      o.GetInterfaces(),
+		StaticRoute:                     o.GetStaticRoute(),
+		InternetConnectionEnabled:       o.GetInternetConnectionEnabled(),
+		InterDeviceCommunicationEnabled: o.GetInterDeviceCommunicationEnabled(),
 	}
 }
 
@@ -11945,9 +11957,9 @@ func (o *MobileGatewayInterfaceSetting) setDefaults() interface{} {
 		NetworkMaskLen int
 		Index          int
 	}{
-		IPAddress:      o.IPAddress,
-		NetworkMaskLen: o.NetworkMaskLen,
-		Index:          o.Index,
+		IPAddress:      o.GetIPAddress(),
+		NetworkMaskLen: o.GetNetworkMaskLen(),
+		Index:          o.GetIndex(),
 	}
 }
 
@@ -12002,8 +12014,8 @@ func (o *MobileGatewayStaticRoute) setDefaults() interface{} {
 		Prefix  string
 		NextHop string
 	}{
-		Prefix:  o.Prefix,
-		NextHop: o.NextHop,
+		Prefix:  o.GetPrefix(),
+		NextHop: o.GetNextHop(),
 	}
 }
 
@@ -12057,11 +12069,11 @@ func (o *MobileGatewayCreateRequest) setDefaults() interface{} {
 		PlanID      types.ID `mapconv:"Remark.Plan.ID/Plan.ID"`
 		SwitchID    string   `mapconv:"Remark.Switch.Scope"`
 	}{
-		Name:        o.Name,
-		Description: o.Description,
-		Tags:        o.Tags,
-		IconID:      o.IconID,
-		Settings:    o.Settings,
+		Name:        o.GetName(),
+		Description: o.GetDescription(),
+		Tags:        o.GetTags(),
+		IconID:      o.GetIconID(),
+		Settings:    o.GetSettings(),
 		Class:       "mobilegateway",
 		PlanID:      types.ID(1),
 		SwitchID:    "shared",
@@ -12161,9 +12173,9 @@ func (o *MobileGatewaySettingCreate) setDefaults() interface{} {
 		InternetConnectionEnabled       types.StringFlag            `mapconv:"MobileGateway.InternetConnection.Enabled"`
 		InterDeviceCommunicationEnabled types.StringFlag            `mapconv:"MobileGateway.InterDeviceCommunication.Enabled"`
 	}{
-		StaticRoute:                     o.StaticRoute,
-		InternetConnectionEnabled:       o.InternetConnectionEnabled,
-		InterDeviceCommunicationEnabled: o.InterDeviceCommunicationEnabled,
+		StaticRoute:                     o.GetStaticRoute(),
+		InternetConnectionEnabled:       o.GetInternetConnectionEnabled(),
+		InterDeviceCommunicationEnabled: o.GetInterDeviceCommunicationEnabled(),
 	}
 }
 
@@ -12224,11 +12236,11 @@ func (o *MobileGatewayUpdateRequest) setDefaults() interface{} {
 		IconID      types.ID              `mapconv:"Icon.ID"`
 		Settings    *MobileGatewaySetting `json:",omitempty" mapconv:",omitempty,recursive"`
 	}{
-		Name:        o.Name,
-		Description: o.Description,
-		Tags:        o.Tags,
-		IconID:      o.IconID,
-		Settings:    o.Settings,
+		Name:        o.GetName(),
+		Description: o.GetDescription(),
+		Tags:        o.GetTags(),
+		IconID:      o.GetIconID(),
+		Settings:    o.GetSettings(),
 	}
 }
 
@@ -12323,8 +12335,8 @@ func (o *MobileGatewayDNSSetting) setDefaults() interface{} {
 		DNS1 string
 		DNS2 string
 	}{
-		DNS1: o.DNS1,
-		DNS2: o.DNS2,
+		DNS1: o.GetDNS1(),
+		DNS2: o.GetDNS2(),
 	}
 }
 
@@ -12371,9 +12383,9 @@ func (o *MobileGatewaySIMRoute) setDefaults() interface{} {
 		Prefix     string
 		ICCID      string
 	}{
-		ResourceID: o.ResourceID,
-		Prefix:     o.Prefix,
-		ICCID:      o.ICCID,
+		ResourceID: o.GetResourceID(),
+		Prefix:     o.GetPrefix(),
+		ICCID:      o.GetICCID(),
 	}
 }
 
@@ -12428,8 +12440,8 @@ func (o *MobileGatewaySIMRouteParam) setDefaults() interface{} {
 		ResourceID string
 		Prefix     string
 	}{
-		ResourceID: o.ResourceID,
-		Prefix:     o.Prefix,
+		ResourceID: o.GetResourceID(),
+		Prefix:     o.GetPrefix(),
 	}
 }
 
@@ -12498,20 +12510,20 @@ func (o *MobileGatewaySIMInfo) setDefaults() interface{} {
 		TrafficBytesOfCurrentMonth *SIMTrafficBytes `mapconv:",recursive"`
 		ConnectedIMEI              string
 	}{
-		ICCID:                      o.ICCID,
-		IMSI:                       o.IMSI,
-		IP:                         o.IP,
-		SessionStatus:              o.SessionStatus,
-		IMEILock:                   o.IMEILock,
-		Registered:                 o.Registered,
-		Activated:                  o.Activated,
-		ResourceID:                 o.ResourceID,
-		RegisteredDate:             o.RegisteredDate,
-		ActivatedDate:              o.ActivatedDate,
-		DeactivatedDate:            o.DeactivatedDate,
-		SIMGroupID:                 o.SIMGroupID,
-		TrafficBytesOfCurrentMonth: o.TrafficBytesOfCurrentMonth,
-		ConnectedIMEI:              o.ConnectedIMEI,
+		ICCID:                      o.GetICCID(),
+		IMSI:                       o.GetIMSI(),
+		IP:                         o.GetIP(),
+		SessionStatus:              o.GetSessionStatus(),
+		IMEILock:                   o.GetIMEILock(),
+		Registered:                 o.GetRegistered(),
+		Activated:                  o.GetActivated(),
+		ResourceID:                 o.GetResourceID(),
+		RegisteredDate:             o.GetRegisteredDate(),
+		ActivatedDate:              o.GetActivatedDate(),
+		DeactivatedDate:            o.GetDeactivatedDate(),
+		SIMGroupID:                 o.GetSIMGroupID(),
+		TrafficBytesOfCurrentMonth: o.GetTrafficBytesOfCurrentMonth(),
+		ConnectedIMEI:              o.GetConnectedIMEI(),
 	}
 }
 
@@ -12676,8 +12688,8 @@ func (o *SIMTrafficBytes) setDefaults() interface{} {
 		UplinkBytes   int64
 		DownlinkBytes int64
 	}{
-		UplinkBytes:   o.UplinkBytes,
-		DownlinkBytes: o.DownlinkBytes,
+		UplinkBytes:   o.GetUplinkBytes(),
+		DownlinkBytes: o.GetDownlinkBytes(),
 	}
 }
 
@@ -12720,7 +12732,7 @@ func (o *MobileGatewayAddSIMRequest) setDefaults() interface{} {
 	return &struct {
 		SIMID string `json:"resource_id" mapconv:"ResourceID"`
 	}{
-		SIMID: o.SIMID,
+		SIMID: o.GetSIMID(),
 	}
 }
 
@@ -12761,11 +12773,11 @@ func (o *MobileGatewaySIMLogs) setDefaults() interface{} {
 		IMEI          string
 		IMSI          string
 	}{
-		Date:          o.Date,
-		SessionStatus: o.SessionStatus,
-		ResourceID:    o.ResourceID,
-		IMEI:          o.IMEI,
-		IMSI:          o.IMSI,
+		Date:          o.GetDate(),
+		SessionStatus: o.GetSessionStatus(),
+		ResourceID:    o.GetResourceID(),
+		IMEI:          o.GetIMEI(),
+		IMSI:          o.GetIMSI(),
 	}
 }
 
@@ -12848,12 +12860,12 @@ func (o *MobileGatewayTrafficControl) setDefaults() interface{} {
 		SlackNotifyWebhooksURL string `mapconv:"SlackConfig.IncomingWebhooksURL"`
 		AutoTrafficShaping     bool
 	}{
-		TrafficQuotaInMB:       o.TrafficQuotaInMB,
-		BandWidthLimitInKbps:   o.BandWidthLimitInKbps,
-		EmailNotifyEnabled:     o.EmailNotifyEnabled,
-		SlackNotifyEnabled:     o.SlackNotifyEnabled,
-		SlackNotifyWebhooksURL: o.SlackNotifyWebhooksURL,
-		AutoTrafficShaping:     o.AutoTrafficShaping,
+		TrafficQuotaInMB:       o.GetTrafficQuotaInMB(),
+		BandWidthLimitInKbps:   o.GetBandWidthLimitInKbps(),
+		EmailNotifyEnabled:     o.GetEmailNotifyEnabled(),
+		SlackNotifyEnabled:     o.GetSlackNotifyEnabled(),
+		SlackNotifyWebhooksURL: o.GetSlackNotifyWebhooksURL(),
+		AutoTrafficShaping:     o.GetAutoTrafficShaping(),
 	}
 }
 
@@ -12940,9 +12952,9 @@ func (o *MobileGatewayTrafficStatus) setDefaults() interface{} {
 		DownlinkBytes  types.StringNumber
 		TrafficShaping bool
 	}{
-		UplinkBytes:    o.UplinkBytes,
-		DownlinkBytes:  o.DownlinkBytes,
-		TrafficShaping: o.TrafficShaping,
+		UplinkBytes:    o.GetUplinkBytes(),
+		DownlinkBytes:  o.GetDownlinkBytes(),
+		TrafficShaping: o.GetTrafficShaping(),
 	}
 }
 
@@ -13033,26 +13045,26 @@ func (o *NFS) setDefaults() interface{} {
 		CreatedAt               time.Time
 		ModifiedAt              time.Time
 	}{
-		ID:                      o.ID,
-		Name:                    o.Name,
-		Description:             o.Description,
-		Tags:                    o.Tags,
-		Availability:            o.Availability,
-		Class:                   o.Class,
-		InstanceHostName:        o.InstanceHostName,
-		InstanceHostInfoURL:     o.InstanceHostInfoURL,
-		InstanceStatus:          o.InstanceStatus,
-		InstanceStatusChangedAt: o.InstanceStatusChangedAt,
-		Interfaces:              o.Interfaces,
-		PlanID:                  o.PlanID,
-		SwitchID:                o.SwitchID,
-		DefaultRoute:            o.DefaultRoute,
-		NetworkMaskLen:          o.NetworkMaskLen,
-		IPAddresses:             o.IPAddresses,
-		ZoneID:                  o.ZoneID,
-		IconID:                  o.IconID,
-		CreatedAt:               o.CreatedAt,
-		ModifiedAt:              o.ModifiedAt,
+		ID:                      o.GetID(),
+		Name:                    o.GetName(),
+		Description:             o.GetDescription(),
+		Tags:                    o.GetTags(),
+		Availability:            o.GetAvailability(),
+		Class:                   o.GetClass(),
+		InstanceHostName:        o.GetInstanceHostName(),
+		InstanceHostInfoURL:     o.GetInstanceHostInfoURL(),
+		InstanceStatus:          o.GetInstanceStatus(),
+		InstanceStatusChangedAt: o.GetInstanceStatusChangedAt(),
+		Interfaces:              o.GetInterfaces(),
+		PlanID:                  o.GetPlanID(),
+		SwitchID:                o.GetSwitchID(),
+		DefaultRoute:            o.GetDefaultRoute(),
+		NetworkMaskLen:          o.GetNetworkMaskLen(),
+		IPAddresses:             o.GetIPAddresses(),
+		ZoneID:                  o.GetZoneID(),
+		IconID:                  o.GetIconID(),
+		CreatedAt:               o.GetCreatedAt(),
+		ModifiedAt:              o.GetModifiedAt(),
 	}
 }
 
@@ -13332,15 +13344,15 @@ func (o *NFSCreateRequest) setDefaults() interface{} {
 		IconID         types.ID `mapconv:"Icon.ID"`
 		Class          string
 	}{
-		SwitchID:       o.SwitchID,
-		PlanID:         o.PlanID,
-		IPAddresses:    o.IPAddresses,
-		NetworkMaskLen: o.NetworkMaskLen,
-		DefaultRoute:   o.DefaultRoute,
-		Name:           o.Name,
-		Description:    o.Description,
-		Tags:           o.Tags,
-		IconID:         o.IconID,
+		SwitchID:       o.GetSwitchID(),
+		PlanID:         o.GetPlanID(),
+		IPAddresses:    o.GetIPAddresses(),
+		NetworkMaskLen: o.GetNetworkMaskLen(),
+		DefaultRoute:   o.GetDefaultRoute(),
+		Name:           o.GetName(),
+		Description:    o.GetDescription(),
+		Tags:           o.GetTags(),
+		IconID:         o.GetIconID(),
 		Class:          "nfs",
 	}
 }
@@ -13480,10 +13492,10 @@ func (o *NFSUpdateRequest) setDefaults() interface{} {
 		Tags        types.Tags
 		IconID      types.ID `mapconv:"Icon.ID"`
 	}{
-		Name:        o.Name,
-		Description: o.Description,
-		Tags:        o.Tags,
-		IconID:      o.IconID,
+		Name:        o.GetName(),
+		Description: o.GetDescription(),
+		Tags:        o.GetTags(),
+		IconID:      o.GetIconID(),
 	}
 }
 
@@ -13566,7 +13578,7 @@ func (o *FreeDiskSizeActivity) setDefaults() interface{} {
 	return &struct {
 		Values []*MonitorFreeDiskSizeValue `mapconv:"[]FreeDiskSize"`
 	}{
-		Values: o.Values,
+		Values: o.GetValues(),
 	}
 }
 
@@ -13601,8 +13613,8 @@ func (o *MonitorFreeDiskSizeValue) setDefaults() interface{} {
 		Time         time.Time `json:",omitempty" mapconv:",omitempty"`
 		FreeDiskSize float64   `json:",omitempty" mapconv:",omitempty"`
 	}{
-		Time:         o.Time,
-		FreeDiskSize: o.FreeDiskSize,
+		Time:         o.GetTime(),
+		FreeDiskSize: o.GetFreeDiskSize(),
 	}
 }
 
@@ -13665,17 +13677,17 @@ func (o *Note) setDefaults() interface{} {
 		CreatedAt    time.Time
 		ModifiedAt   time.Time
 	}{
-		ID:           o.ID,
-		Name:         o.Name,
-		Description:  o.Description,
-		Tags:         o.Tags,
-		Availability: o.Availability,
-		Scope:        o.Scope,
-		Class:        o.Class,
-		Content:      o.Content,
-		IconID:       o.IconID,
-		CreatedAt:    o.CreatedAt,
-		ModifiedAt:   o.ModifiedAt,
+		ID:           o.GetID(),
+		Name:         o.GetName(),
+		Description:  o.GetDescription(),
+		Tags:         o.GetTags(),
+		Availability: o.GetAvailability(),
+		Scope:        o.GetScope(),
+		Class:        o.GetClass(),
+		Content:      o.GetContent(),
+		IconID:       o.GetIconID(),
+		CreatedAt:    o.GetCreatedAt(),
+		ModifiedAt:   o.GetModifiedAt(),
 	}
 }
 
@@ -13856,11 +13868,11 @@ func (o *NoteCreateRequest) setDefaults() interface{} {
 		Class   string
 		Content string
 	}{
-		Name:    o.Name,
-		Tags:    o.Tags,
-		IconID:  o.IconID,
-		Class:   o.Class,
-		Content: o.Content,
+		Name:    o.GetName(),
+		Tags:    o.GetTags(),
+		IconID:  o.GetIconID(),
+		Class:   o.GetClass(),
+		Content: o.GetContent(),
 	}
 }
 
@@ -13961,11 +13973,11 @@ func (o *NoteUpdateRequest) setDefaults() interface{} {
 		Class   string
 		Content string
 	}{
-		Name:    o.Name,
-		Tags:    o.Tags,
-		IconID:  o.IconID,
-		Class:   o.Class,
-		Content: o.Content,
+		Name:    o.GetName(),
+		Tags:    o.GetTags(),
+		IconID:  o.GetIconID(),
+		Class:   o.GetClass(),
+		Content: o.GetContent(),
 	}
 }
 
@@ -14070,13 +14082,13 @@ func (o *PacketFilter) setDefaults() interface{} {
 		ExpressionHash      string
 		CreatedAt           time.Time
 	}{
-		ID:                  o.ID,
-		Name:                o.Name,
-		Description:         o.Description,
-		RequiredHostVersion: o.RequiredHostVersion,
-		Expression:          o.Expression,
-		ExpressionHash:      o.ExpressionHash,
-		CreatedAt:           o.CreatedAt,
+		ID:                  o.GetID(),
+		Name:                o.GetName(),
+		Description:         o.GetDescription(),
+		RequiredHostVersion: o.GetRequiredHostVersion(),
+		Expression:          o.GetExpression(),
+		ExpressionHash:      o.GetExpressionHash(),
+		CreatedAt:           o.GetCreatedAt(),
 	}
 }
 
@@ -14197,11 +14209,11 @@ func (o *PacketFilterExpression) setDefaults() interface{} {
 		DestinationPort types.PacketFilterPort
 		Action          types.Action
 	}{
-		Protocol:        o.Protocol,
-		SourceNetwork:   o.SourceNetwork,
-		SourcePort:      o.SourcePort,
-		DestinationPort: o.DestinationPort,
-		Action:          o.Action,
+		Protocol:        o.GetProtocol(),
+		SourceNetwork:   o.GetSourceNetwork(),
+		SourcePort:      o.GetSourcePort(),
+		DestinationPort: o.GetDestinationPort(),
+		Action:          o.GetAction(),
 	}
 }
 
@@ -14278,9 +14290,9 @@ func (o *PacketFilterCreateRequest) setDefaults() interface{} {
 		Description string                    `validate:"min=0,max=512"`
 		Expression  []*PacketFilterExpression `mapconv:"[]Expression,recursive"`
 	}{
-		Name:        o.Name,
-		Description: o.Description,
-		Expression:  o.Expression,
+		Name:        o.GetName(),
+		Description: o.GetDescription(),
+		Expression:  o.GetExpression(),
 	}
 }
 
@@ -14337,9 +14349,9 @@ func (o *PacketFilterUpdateRequest) setDefaults() interface{} {
 		Description string                    `validate:"min=0,max=512"`
 		Expression  []*PacketFilterExpression `mapconv:"[]Expression,recursive"`
 	}{
-		Name:        o.Name,
-		Description: o.Description,
-		Expression:  o.Expression,
+		Name:        o.GetName(),
+		Description: o.GetDescription(),
+		Expression:  o.GetExpression(),
 	}
 }
 
@@ -14418,20 +14430,20 @@ func (o *PrivateHost) setDefaults() interface{} {
 		AssignedMemoryMB int
 		HostName         string `mapconv:"Host.Name"`
 	}{
-		ID:               o.ID,
-		Name:             o.Name,
-		Description:      o.Description,
-		Tags:             o.Tags,
-		IconID:           o.IconID,
-		CreatedAt:        o.CreatedAt,
-		PlanID:           o.PlanID,
-		PlanName:         o.PlanName,
-		PlanClass:        o.PlanClass,
-		CPU:              o.CPU,
-		MemoryMB:         o.MemoryMB,
-		AssignedCPU:      o.AssignedCPU,
-		AssignedMemoryMB: o.AssignedMemoryMB,
-		HostName:         o.HostName,
+		ID:               o.GetID(),
+		Name:             o.GetName(),
+		Description:      o.GetDescription(),
+		Tags:             o.GetTags(),
+		IconID:           o.GetIconID(),
+		CreatedAt:        o.GetCreatedAt(),
+		PlanID:           o.GetPlanID(),
+		PlanName:         o.GetPlanName(),
+		PlanClass:        o.GetPlanClass(),
+		CPU:              o.GetCPU(),
+		MemoryMB:         o.GetMemoryMB(),
+		AssignedCPU:      o.GetAssignedCPU(),
+		AssignedMemoryMB: o.GetAssignedMemoryMB(),
+		HostName:         o.GetHostName(),
 	}
 }
 
@@ -14652,11 +14664,11 @@ func (o *PrivateHostCreateRequest) setDefaults() interface{} {
 		IconID      types.ID `mapconv:"Icon.ID"`
 		PlanID      types.ID `mapconv:"Plan.ID,omitempty"`
 	}{
-		Name:        o.Name,
-		Description: o.Description,
-		Tags:        o.Tags,
-		IconID:      o.IconID,
-		PlanID:      o.PlanID,
+		Name:        o.GetName(),
+		Description: o.GetDescription(),
+		Tags:        o.GetTags(),
+		IconID:      o.GetIconID(),
+		PlanID:      o.GetPlanID(),
 	}
 }
 
@@ -14755,10 +14767,10 @@ func (o *PrivateHostUpdateRequest) setDefaults() interface{} {
 		Tags        types.Tags
 		IconID      types.ID `mapconv:"Icon.ID"`
 	}{
-		Name:        o.Name,
-		Description: o.Description,
-		Tags:        o.Tags,
-		IconID:      o.IconID,
+		Name:        o.GetName(),
+		Description: o.GetDescription(),
+		Tags:        o.GetTags(),
+		IconID:      o.GetIconID(),
 	}
 }
 
@@ -14851,12 +14863,12 @@ func (o *PrivateHostPlan) setDefaults() interface{} {
 		MemoryMB     int
 		Availability types.EAvailability
 	}{
-		ID:           o.ID,
-		Name:         o.Name,
-		Class:        o.Class,
-		CPU:          o.CPU,
-		MemoryMB:     o.MemoryMB,
-		Availability: o.Availability,
+		ID:           o.GetID(),
+		Name:         o.GetName(),
+		Class:        o.GetClass(),
+		CPU:          o.GetCPU(),
+		MemoryMB:     o.GetMemoryMB(),
+		Availability: o.GetAvailability(),
 	}
 }
 
@@ -15007,26 +15019,26 @@ func (o *ProxyLB) setDefaults() interface{} {
 		ProxyNetworks  []string             `mapconv:"Status.ProxyNetworks"`
 		FQDN           string               `mapconv:"Status.FQDN"`
 	}{
-		ID:             o.ID,
-		Name:           o.Name,
-		Description:    o.Description,
-		Tags:           o.Tags,
-		Availability:   o.Availability,
-		IconID:         o.IconID,
-		CreatedAt:      o.CreatedAt,
-		ModifiedAt:     o.ModifiedAt,
-		Plan:           o.Plan,
-		HealthCheck:    o.HealthCheck,
-		SorryServer:    o.SorryServer,
-		BindPorts:      o.BindPorts,
-		Servers:        o.Servers,
-		LetsEncrypt:    o.LetsEncrypt,
-		StickySession:  o.StickySession,
-		SettingsHash:   o.SettingsHash,
-		UseVIPFailover: o.UseVIPFailover,
-		Region:         o.Region,
-		ProxyNetworks:  o.ProxyNetworks,
-		FQDN:           o.FQDN,
+		ID:             o.GetID(),
+		Name:           o.GetName(),
+		Description:    o.GetDescription(),
+		Tags:           o.GetTags(),
+		Availability:   o.GetAvailability(),
+		IconID:         o.GetIconID(),
+		CreatedAt:      o.GetCreatedAt(),
+		ModifiedAt:     o.GetModifiedAt(),
+		Plan:           o.GetPlan(),
+		HealthCheck:    o.GetHealthCheck(),
+		SorryServer:    o.GetSorryServer(),
+		BindPorts:      o.GetBindPorts(),
+		Servers:        o.GetServers(),
+		LetsEncrypt:    o.GetLetsEncrypt(),
+		StickySession:  o.GetStickySession(),
+		SettingsHash:   o.GetSettingsHash(),
+		UseVIPFailover: o.GetUseVIPFailover(),
+		Region:         o.GetRegion(),
+		ProxyNetworks:  o.GetProxyNetworks(),
+		FQDN:           o.GetFQDN(),
 	}
 }
 
@@ -15293,9 +15305,9 @@ func (o *ProxyLBHealthCheck) setDefaults() interface{} {
 		Path      string
 		DelayLoop int
 	}{
-		Protocol:  o.Protocol,
-		Path:      o.Path,
-		DelayLoop: o.DelayLoop,
+		Protocol:  o.GetProtocol(),
+		Path:      o.GetPath(),
+		DelayLoop: o.GetDelayLoop(),
 	}
 }
 
@@ -15350,8 +15362,8 @@ func (o *ProxyLBSorryServer) setDefaults() interface{} {
 		IPAddress string `validate:"ipv4"`
 		Port      int    `validate:"min=0,max=65535"`
 	}{
-		IPAddress: o.IPAddress,
-		Port:      o.Port,
+		IPAddress: o.GetIPAddress(),
+		Port:      o.GetPort(),
 	}
 }
 
@@ -15400,10 +15412,10 @@ func (o *ProxyLBBindPort) setDefaults() interface{} {
 		RedirectToHTTPS bool
 		SupportHTTP2    bool
 	}{
-		ProxyMode:       o.ProxyMode,
-		Port:            o.Port,
-		RedirectToHTTPS: o.RedirectToHTTPS,
-		SupportHTTP2:    o.SupportHTTP2,
+		ProxyMode:       o.GetProxyMode(),
+		Port:            o.GetPort(),
+		RedirectToHTTPS: o.GetRedirectToHTTPS(),
+		SupportHTTP2:    o.GetSupportHTTP2(),
 	}
 }
 
@@ -15470,9 +15482,9 @@ func (o *ProxyLBServer) setDefaults() interface{} {
 		Port      int    `validate:"min=0,max=65535"`
 		Enabled   bool
 	}{
-		IPAddress: o.IPAddress,
-		Port:      o.Port,
-		Enabled:   o.Enabled,
+		IPAddress: o.GetIPAddress(),
+		Port:      o.GetPort(),
+		Enabled:   o.GetEnabled(),
 	}
 }
 
@@ -15527,8 +15539,8 @@ func (o *ProxyLBACMESetting) setDefaults() interface{} {
 		CommonName string
 		Enabled    bool
 	}{
-		CommonName: o.CommonName,
-		Enabled:    o.Enabled,
+		CommonName: o.GetCommonName(),
+		Enabled:    o.GetEnabled(),
 	}
 }
 
@@ -15573,8 +15585,8 @@ func (o *ProxyLBStickySession) setDefaults() interface{} {
 		Method  string
 		Enabled bool
 	}{
-		Method:  o.Method,
-		Enabled: o.Enabled,
+		Method:  o.GetMethod(),
+		Enabled: o.GetEnabled(),
 	}
 }
 
@@ -15642,19 +15654,19 @@ func (o *ProxyLBCreateRequest) setDefaults() interface{} {
 		IconID         types.ID `mapconv:"Icon.ID"`
 		Class          string   `mapconv:"Provider.Class"`
 	}{
-		Plan:           o.Plan,
-		HealthCheck:    o.HealthCheck,
-		SorryServer:    o.SorryServer,
-		BindPorts:      o.BindPorts,
-		Servers:        o.Servers,
-		LetsEncrypt:    o.LetsEncrypt,
-		StickySession:  o.StickySession,
-		UseVIPFailover: o.UseVIPFailover,
-		Region:         o.Region,
-		Name:           o.Name,
-		Description:    o.Description,
-		Tags:           o.Tags,
-		IconID:         o.IconID,
+		Plan:           o.GetPlan(),
+		HealthCheck:    o.GetHealthCheck(),
+		SorryServer:    o.GetSorryServer(),
+		BindPorts:      o.GetBindPorts(),
+		Servers:        o.GetServers(),
+		LetsEncrypt:    o.GetLetsEncrypt(),
+		StickySession:  o.GetStickySession(),
+		UseVIPFailover: o.GetUseVIPFailover(),
+		Region:         o.GetRegion(),
+		Name:           o.GetName(),
+		Description:    o.GetDescription(),
+		Tags:           o.GetTags(),
+		IconID:         o.GetIconID(),
 		Class:          "proxylb",
 	}
 }
@@ -15846,16 +15858,16 @@ func (o *ProxyLBUpdateRequest) setDefaults() interface{} {
 		Tags          types.Tags
 		IconID        types.ID `mapconv:"Icon.ID"`
 	}{
-		HealthCheck:   o.HealthCheck,
-		SorryServer:   o.SorryServer,
-		BindPorts:     o.BindPorts,
-		Servers:       o.Servers,
-		LetsEncrypt:   o.LetsEncrypt,
-		StickySession: o.StickySession,
-		Name:          o.Name,
-		Description:   o.Description,
-		Tags:          o.Tags,
-		IconID:        o.IconID,
+		HealthCheck:   o.GetHealthCheck(),
+		SorryServer:   o.GetSorryServer(),
+		BindPorts:     o.GetBindPorts(),
+		Servers:       o.GetServers(),
+		LetsEncrypt:   o.GetLetsEncrypt(),
+		StickySession: o.GetStickySession(),
+		Name:          o.GetName(),
+		Description:   o.GetDescription(),
+		Tags:          o.GetTags(),
+		IconID:        o.GetIconID(),
 	}
 }
 
@@ -15998,7 +16010,7 @@ func (o *ProxyLBChangePlanRequest) setDefaults() interface{} {
 	return &struct {
 		Plan types.EProxyLBPlan `mapconv:"ServiceClass"`
 	}{
-		Plan: o.Plan,
+		Plan: o.GetPlan(),
 	}
 }
 
@@ -16041,12 +16053,12 @@ func (o *ProxyLBCertificates) setDefaults() interface{} {
 		CertificateCommonName   string
 		AdditionalCerts         []*ProxyLBAdditionalCert `mapconv:"[]AdditionalCerts, recursive"`
 	}{
-		ServerCertificate:       o.ServerCertificate,
-		IntermediateCertificate: o.IntermediateCertificate,
-		PrivateKey:              o.PrivateKey,
-		CertificateEndDate:      o.CertificateEndDate,
-		CertificateCommonName:   o.CertificateCommonName,
-		AdditionalCerts:         o.AdditionalCerts,
+		ServerCertificate:       o.GetServerCertificate(),
+		IntermediateCertificate: o.GetIntermediateCertificate(),
+		PrivateKey:              o.GetPrivateKey(),
+		CertificateEndDate:      o.GetCertificateEndDate(),
+		CertificateCommonName:   o.GetCertificateCommonName(),
+		AdditionalCerts:         o.GetAdditionalCerts(),
 	}
 }
 
@@ -16137,11 +16149,11 @@ func (o *ProxyLBAdditionalCert) setDefaults() interface{} {
 		CertificateEndDate      time.Time
 		CertificateCommonName   string
 	}{
-		ServerCertificate:       o.ServerCertificate,
-		IntermediateCertificate: o.IntermediateCertificate,
-		PrivateKey:              o.PrivateKey,
-		CertificateEndDate:      o.CertificateEndDate,
-		CertificateCommonName:   o.CertificateCommonName,
+		ServerCertificate:       o.GetServerCertificate(),
+		IntermediateCertificate: o.GetIntermediateCertificate(),
+		PrivateKey:              o.GetPrivateKey(),
+		CertificateEndDate:      o.GetCertificateEndDate(),
+		CertificateCommonName:   o.GetCertificateCommonName(),
 	}
 }
 
@@ -16220,10 +16232,10 @@ func (o *ProxyLBSetCertificatesRequest) setDefaults() interface{} {
 		PrivateKey              string
 		AdditionalCerts         []*ProxyLBAdditionalCert `mapconv:"[]AdditionalCerts, recursive"`
 	}{
-		ServerCertificate:       o.ServerCertificate,
-		IntermediateCertificate: o.IntermediateCertificate,
-		PrivateKey:              o.PrivateKey,
-		AdditionalCerts:         o.AdditionalCerts,
+		ServerCertificate:       o.GetServerCertificate(),
+		IntermediateCertificate: o.GetIntermediateCertificate(),
+		PrivateKey:              o.GetPrivateKey(),
+		AdditionalCerts:         o.GetAdditionalCerts(),
 	}
 }
 
@@ -16292,10 +16304,10 @@ func (o *ProxyLBHealth) setDefaults() interface{} {
 		CurrentVIP string
 		Servers    []*LoadBalancerServerStatus `mapconv:"[]Servers,recursive"`
 	}{
-		ActiveConn: o.ActiveConn,
-		CPS:        o.CPS,
-		CurrentVIP: o.CurrentVIP,
-		Servers:    o.Servers,
+		ActiveConn: o.GetActiveConn(),
+		CPS:        o.GetCPS(),
+		CurrentVIP: o.GetCurrentVIP(),
+		Servers:    o.GetServers(),
 	}
 }
 
@@ -16351,12 +16363,12 @@ type Server struct {
 	Tags                    types.Tags
 	Availability            types.EAvailability
 	HostName                string
-	InterfaceDriver         types.EInterfaceDriver      `mapconv:",default=virtio"`
+	InterfaceDriver         types.EInterfaceDriver
 	ServerPlanID            types.ID                    `mapconv:"ServerPlan.ID"`
 	ServerPlanName          string                      `mapconv:"ServerPlan.Name"`
 	CPU                     int                         `mapconv:"ServerPlan.CPU"`
 	MemoryMB                int                         `mapconv:"ServerPlan.MemoryMB"`
-	ServerPlanCommitment    types.ECommitment           `mapconv:"ServerPlan.Commitment,default=standard"`
+	ServerPlanCommitment    types.ECommitment           `mapconv:"ServerPlan.Commitment"`
 	ServerPlanGeneration    types.EPlanGeneration       `mapconv:"ServerPlan.Generation"`
 	Zone                    *ZoneInfo                   `json:",omitempty" mapconv:",omitempty,recursive"`
 	InstanceHostName        string                      `mapconv:"Instance.Host.Name"`
@@ -16391,12 +16403,12 @@ func (o *Server) setDefaults() interface{} {
 		Tags                    types.Tags
 		Availability            types.EAvailability
 		HostName                string
-		InterfaceDriver         types.EInterfaceDriver      `mapconv:",default=virtio"`
+		InterfaceDriver         types.EInterfaceDriver
 		ServerPlanID            types.ID                    `mapconv:"ServerPlan.ID"`
 		ServerPlanName          string                      `mapconv:"ServerPlan.Name"`
 		CPU                     int                         `mapconv:"ServerPlan.CPU"`
 		MemoryMB                int                         `mapconv:"ServerPlan.MemoryMB"`
-		ServerPlanCommitment    types.ECommitment           `mapconv:"ServerPlan.Commitment,default=standard"`
+		ServerPlanCommitment    types.ECommitment           `mapconv:"ServerPlan.Commitment"`
 		ServerPlanGeneration    types.EPlanGeneration       `mapconv:"ServerPlan.Generation"`
 		Zone                    *ZoneInfo                   `json:",omitempty" mapconv:",omitempty,recursive"`
 		InstanceHostName        string                      `mapconv:"Instance.Host.Name"`
@@ -16416,36 +16428,36 @@ func (o *Server) setDefaults() interface{} {
 		CreatedAt               time.Time
 		ModifiedAt              time.Time
 	}{
-		ID:                      o.ID,
-		Name:                    o.Name,
-		Description:             o.Description,
-		Tags:                    o.Tags,
-		Availability:            o.Availability,
-		HostName:                o.HostName,
-		InterfaceDriver:         o.InterfaceDriver,
-		ServerPlanID:            o.ServerPlanID,
-		ServerPlanName:          o.ServerPlanName,
-		CPU:                     o.CPU,
-		MemoryMB:                o.MemoryMB,
-		ServerPlanCommitment:    o.ServerPlanCommitment,
-		ServerPlanGeneration:    o.ServerPlanGeneration,
-		Zone:                    o.Zone,
-		InstanceHostName:        o.InstanceHostName,
-		InstanceHostInfoURL:     o.InstanceHostInfoURL,
-		InstanceStatus:          o.InstanceStatus,
-		InstanceBeforeStatus:    o.InstanceBeforeStatus,
-		InstanceStatusChangedAt: o.InstanceStatusChangedAt,
-		InstanceWarnings:        o.InstanceWarnings,
-		InstanceWarningsValue:   o.InstanceWarningsValue,
-		Disks:                   o.Disks,
-		Interfaces:              o.Interfaces,
-		CDROMID:                 o.CDROMID,
-		PrivateHostID:           o.PrivateHostID,
-		PrivateHostName:         o.PrivateHostName,
-		BundleInfo:              o.BundleInfo,
-		IconID:                  o.IconID,
-		CreatedAt:               o.CreatedAt,
-		ModifiedAt:              o.ModifiedAt,
+		ID:                      o.GetID(),
+		Name:                    o.GetName(),
+		Description:             o.GetDescription(),
+		Tags:                    o.GetTags(),
+		Availability:            o.GetAvailability(),
+		HostName:                o.GetHostName(),
+		InterfaceDriver:         o.GetInterfaceDriver(),
+		ServerPlanID:            o.GetServerPlanID(),
+		ServerPlanName:          o.GetServerPlanName(),
+		CPU:                     o.GetCPU(),
+		MemoryMB:                o.GetMemoryMB(),
+		ServerPlanCommitment:    o.GetServerPlanCommitment(),
+		ServerPlanGeneration:    o.GetServerPlanGeneration(),
+		Zone:                    o.GetZone(),
+		InstanceHostName:        o.GetInstanceHostName(),
+		InstanceHostInfoURL:     o.GetInstanceHostInfoURL(),
+		InstanceStatus:          o.GetInstanceStatus(),
+		InstanceBeforeStatus:    o.GetInstanceBeforeStatus(),
+		InstanceStatusChangedAt: o.GetInstanceStatusChangedAt(),
+		InstanceWarnings:        o.GetInstanceWarnings(),
+		InstanceWarningsValue:   o.GetInstanceWarningsValue(),
+		Disks:                   o.GetDisks(),
+		Interfaces:              o.GetInterfaces(),
+		CDROMID:                 o.GetCDROMID(),
+		PrivateHostID:           o.GetPrivateHostID(),
+		PrivateHostName:         o.GetPrivateHostName(),
+		BundleInfo:              o.GetBundleInfo(),
+		IconID:                  o.GetIconID(),
+		CreatedAt:               o.GetCreatedAt(),
+		ModifiedAt:              o.GetModifiedAt(),
 	}
 }
 
@@ -16551,6 +16563,9 @@ func (o *Server) SetHostName(v string) {
 
 // GetInterfaceDriver returns value of InterfaceDriver
 func (o *Server) GetInterfaceDriver() types.EInterfaceDriver {
+	if o.InterfaceDriver == types.EInterfaceDriver("") {
+		return types.InterfaceDrivers.VirtIO
+	}
 	return o.InterfaceDriver
 }
 
@@ -16606,6 +16621,9 @@ func (o *Server) GetMemoryGB() int {
 
 // GetServerPlanCommitment returns value of ServerPlanCommitment
 func (o *Server) GetServerPlanCommitment() types.ECommitment {
+	if o.ServerPlanCommitment == types.ECommitment("") {
+		return types.Commitments.Standard
+	}
 	return o.ServerPlanCommitment
 }
 
@@ -16825,13 +16843,13 @@ func (o *ZoneInfo) setDefaults() interface{} {
 		FTPServer   *FTPServerInfo `json:",omitempty" mapconv:",omitempty,recursive"`
 		Region      *Region        `json:",omitempty" mapconv:",omitempty,recursive"`
 	}{
-		ID:          o.ID,
-		Name:        o.Name,
-		DisplayName: o.DisplayName,
-		IsDummy:     o.IsDummy,
-		VNCProxy:    o.VNCProxy,
-		FTPServer:   o.FTPServer,
-		Region:      o.Region,
+		ID:          o.GetID(),
+		Name:        o.GetName(),
+		DisplayName: o.GetDisplayName(),
+		IsDummy:     o.GetIsDummy(),
+		VNCProxy:    o.GetVNCProxy(),
+		FTPServer:   o.GetFTPServer(),
+		Region:      o.GetRegion(),
 	}
 }
 
@@ -16946,8 +16964,8 @@ func (o *VNCProxy) setDefaults() interface{} {
 		HostName  string `json:",omitempty" mapconv:",omitempty"`
 		IPAddress string `json:",omitempty" mapconv:",omitempty"`
 	}{
-		HostName:  o.HostName,
-		IPAddress: o.IPAddress,
+		HostName:  o.GetHostName(),
+		IPAddress: o.GetIPAddress(),
 	}
 }
 
@@ -16992,8 +17010,8 @@ func (o *FTPServerInfo) setDefaults() interface{} {
 		HostName  string
 		IPAddress string
 	}{
-		HostName:  o.HostName,
-		IPAddress: o.IPAddress,
+		HostName:  o.GetHostName(),
+		IPAddress: o.GetIPAddress(),
 	}
 }
 
@@ -17023,14 +17041,14 @@ func (o *FTPServerInfo) SetIPAddress(v string) {
 
 // ServerCreateRequest represents API parameter/response structure
 type ServerCreateRequest struct {
-	CPU                  int                    `mapconv:"ServerPlan.CPU"`
-	MemoryMB             int                    `mapconv:"ServerPlan.MemoryMB"`
-	ServerPlanCommitment types.ECommitment      `mapconv:"ServerPlan.Commitment,default=standard"`
-	ServerPlanGeneration types.EPlanGeneration  `mapconv:"ServerPlan.Generation"`
-	ConnectedSwitches    []*ConnectedSwitch     `json:",omitempty" mapconv:"[]ConnectedSwitches,recursive"`
-	InterfaceDriver      types.EInterfaceDriver `mapconv:",default=virtio"`
-	Name                 string                 `validate:"required"`
-	Description          string                 `validate:"min=0,max=512"`
+	CPU                  int                   `mapconv:"ServerPlan.CPU"`
+	MemoryMB             int                   `mapconv:"ServerPlan.MemoryMB"`
+	ServerPlanCommitment types.ECommitment     `mapconv:"ServerPlan.Commitment"`
+	ServerPlanGeneration types.EPlanGeneration `mapconv:"ServerPlan.Generation"`
+	ConnectedSwitches    []*ConnectedSwitch    `json:",omitempty" mapconv:"[]ConnectedSwitches,recursive"`
+	InterfaceDriver      types.EInterfaceDriver
+	Name                 string `validate:"required"`
+	Description          string `validate:"min=0,max=512"`
 	Tags                 types.Tags
 	IconID               types.ID `mapconv:"Icon.ID"`
 	WaitDiskMigration    bool     `json:",omitempty" mapconv:",omitempty"`
@@ -17044,29 +17062,29 @@ func (o *ServerCreateRequest) Validate() error {
 // setDefaults implements sacloud.argumentDefaulter
 func (o *ServerCreateRequest) setDefaults() interface{} {
 	return &struct {
-		CPU                  int                    `mapconv:"ServerPlan.CPU"`
-		MemoryMB             int                    `mapconv:"ServerPlan.MemoryMB"`
-		ServerPlanCommitment types.ECommitment      `mapconv:"ServerPlan.Commitment,default=standard"`
-		ServerPlanGeneration types.EPlanGeneration  `mapconv:"ServerPlan.Generation"`
-		ConnectedSwitches    []*ConnectedSwitch     `json:",omitempty" mapconv:"[]ConnectedSwitches,recursive"`
-		InterfaceDriver      types.EInterfaceDriver `mapconv:",default=virtio"`
-		Name                 string                 `validate:"required"`
-		Description          string                 `validate:"min=0,max=512"`
+		CPU                  int                   `mapconv:"ServerPlan.CPU"`
+		MemoryMB             int                   `mapconv:"ServerPlan.MemoryMB"`
+		ServerPlanCommitment types.ECommitment     `mapconv:"ServerPlan.Commitment"`
+		ServerPlanGeneration types.EPlanGeneration `mapconv:"ServerPlan.Generation"`
+		ConnectedSwitches    []*ConnectedSwitch    `json:",omitempty" mapconv:"[]ConnectedSwitches,recursive"`
+		InterfaceDriver      types.EInterfaceDriver
+		Name                 string `validate:"required"`
+		Description          string `validate:"min=0,max=512"`
 		Tags                 types.Tags
 		IconID               types.ID `mapconv:"Icon.ID"`
 		WaitDiskMigration    bool     `json:",omitempty" mapconv:",omitempty"`
 	}{
-		CPU:                  o.CPU,
-		MemoryMB:             o.MemoryMB,
-		ServerPlanCommitment: o.ServerPlanCommitment,
-		ServerPlanGeneration: o.ServerPlanGeneration,
-		ConnectedSwitches:    o.ConnectedSwitches,
-		InterfaceDriver:      o.InterfaceDriver,
-		Name:                 o.Name,
-		Description:          o.Description,
-		Tags:                 o.Tags,
-		IconID:               o.IconID,
-		WaitDiskMigration:    o.WaitDiskMigration,
+		CPU:                  o.GetCPU(),
+		MemoryMB:             o.GetMemoryMB(),
+		ServerPlanCommitment: o.GetServerPlanCommitment(),
+		ServerPlanGeneration: o.GetServerPlanGeneration(),
+		ConnectedSwitches:    o.GetConnectedSwitches(),
+		InterfaceDriver:      o.GetInterfaceDriver(),
+		Name:                 o.GetName(),
+		Description:          o.GetDescription(),
+		Tags:                 o.GetTags(),
+		IconID:               o.GetIconID(),
+		WaitDiskMigration:    o.GetWaitDiskMigration(),
 	}
 }
 
@@ -17097,6 +17115,9 @@ func (o *ServerCreateRequest) GetMemoryGB() int {
 
 // GetServerPlanCommitment returns value of ServerPlanCommitment
 func (o *ServerCreateRequest) GetServerPlanCommitment() types.ECommitment {
+	if o.ServerPlanCommitment == types.ECommitment("") {
+		return types.Commitments.Standard
+	}
 	return o.ServerPlanCommitment
 }
 
@@ -17127,6 +17148,9 @@ func (o *ServerCreateRequest) SetConnectedSwitches(v []*ConnectedSwitch) {
 
 // GetInterfaceDriver returns value of InterfaceDriver
 func (o *ServerCreateRequest) GetInterfaceDriver() types.EInterfaceDriver {
+	if o.InterfaceDriver == types.EInterfaceDriver("") {
+		return types.InterfaceDrivers.VirtIO
+	}
 	return o.InterfaceDriver
 }
 
@@ -17226,8 +17250,8 @@ func (o *ConnectedSwitch) setDefaults() interface{} {
 		ID    types.ID
 		Scope types.EScope
 	}{
-		ID:    o.ID,
-		Scope: o.Scope,
+		ID:    o.GetID(),
+		Scope: o.GetScope(),
 	}
 }
 
@@ -17296,10 +17320,10 @@ func (o *ServerUpdateRequest) setDefaults() interface{} {
 		Tags        types.Tags
 		IconID      types.ID `mapconv:"Icon.ID"`
 	}{
-		Name:        o.Name,
-		Description: o.Description,
-		Tags:        o.Tags,
-		IconID:      o.IconID,
+		Name:        o.GetName(),
+		Description: o.GetDescription(),
+		Tags:        o.GetTags(),
+		IconID:      o.GetIconID(),
 	}
 }
 
@@ -17382,7 +17406,7 @@ func (o *ServerDeleteWithDisksRequest) setDefaults() interface{} {
 	return &struct {
 		IDs []types.ID `mapconv:"WithDisk"`
 	}{
-		IDs: o.IDs,
+		IDs: o.GetIDs(),
 	}
 }
 
@@ -17405,7 +17429,7 @@ type ServerChangePlanRequest struct {
 	CPU                  int
 	MemoryMB             int
 	ServerPlanGeneration types.EPlanGeneration
-	ServerPlanCommitment types.ECommitment `mapconv:"ServerPlan.Commitment,default=standard"`
+	ServerPlanCommitment types.ECommitment `mapconv:"ServerPlan.Commitment"`
 }
 
 // Validate validates by field tags
@@ -17419,12 +17443,12 @@ func (o *ServerChangePlanRequest) setDefaults() interface{} {
 		CPU                  int
 		MemoryMB             int
 		ServerPlanGeneration types.EPlanGeneration
-		ServerPlanCommitment types.ECommitment `mapconv:"ServerPlan.Commitment,default=standard"`
+		ServerPlanCommitment types.ECommitment `mapconv:"ServerPlan.Commitment"`
 	}{
-		CPU:                  o.CPU,
-		MemoryMB:             o.MemoryMB,
-		ServerPlanGeneration: o.ServerPlanGeneration,
-		ServerPlanCommitment: o.ServerPlanCommitment,
+		CPU:                  o.GetCPU(),
+		MemoryMB:             o.GetMemoryMB(),
+		ServerPlanGeneration: o.GetServerPlanGeneration(),
+		ServerPlanCommitment: o.GetServerPlanCommitment(),
 	}
 }
 
@@ -17470,6 +17494,9 @@ func (o *ServerChangePlanRequest) SetServerPlanGeneration(v types.EPlanGeneratio
 
 // GetServerPlanCommitment returns value of ServerPlanCommitment
 func (o *ServerChangePlanRequest) GetServerPlanCommitment() types.ECommitment {
+	if o.ServerPlanCommitment == types.ECommitment("") {
+		return types.Commitments.Standard
+	}
 	return o.ServerPlanCommitment
 }
 
@@ -17497,7 +17524,7 @@ func (o *InsertCDROMRequest) setDefaults() interface{} {
 	return &struct {
 		ID types.ID
 	}{
-		ID: o.ID,
+		ID: o.GetID(),
 	}
 }
 
@@ -17550,7 +17577,7 @@ func (o *EjectCDROMRequest) setDefaults() interface{} {
 	return &struct {
 		ID types.ID
 	}{
-		ID: o.ID,
+		ID: o.GetID(),
 	}
 }
 
@@ -17605,8 +17632,8 @@ func (o *SendKeyRequest) setDefaults() interface{} {
 		Key  string
 		Keys []string
 	}{
-		Key:  o.Key,
-		Keys: o.Keys,
+		Key:  o.GetKey(),
+		Keys: o.GetKeys(),
 	}
 }
 
@@ -17659,12 +17686,12 @@ func (o *VNCProxyInfo) setDefaults() interface{} {
 		Password     string
 		VNCFile      string
 	}{
-		Status:       o.Status,
-		Host:         o.Host,
-		IOServerHost: o.IOServerHost,
-		Port:         o.Port,
-		Password:     o.Password,
-		VNCFile:      o.VNCFile,
+		Status:       o.GetStatus(),
+		Host:         o.GetHost(),
+		IOServerHost: o.GetIOServerHost(),
+		Port:         o.GetPort(),
+		Password:     o.GetPassword(),
+		VNCFile:      o.GetVNCFile(),
 	}
 }
 
@@ -17759,13 +17786,13 @@ func (o *ServerPlan) setDefaults() interface{} {
 		Generation   types.EPlanGeneration
 		Availability types.EAvailability
 	}{
-		ID:           o.ID,
-		Name:         o.Name,
-		CPU:          o.CPU,
-		MemoryMB:     o.MemoryMB,
-		Commitment:   o.Commitment,
-		Generation:   o.Generation,
-		Availability: o.Availability,
+		ID:           o.GetID(),
+		Name:         o.GetName(),
+		CPU:          o.GetCPU(),
+		MemoryMB:     o.GetMemoryMB(),
+		Commitment:   o.GetCommitment(),
+		Generation:   o.GetGeneration(),
+		Availability: o.GetAvailability(),
 	}
 }
 
@@ -17898,12 +17925,12 @@ func (o *ServiceClass) setDefaults() interface{} {
 		IsPublic         bool
 		Price            *Price `mapconv:",recursive"`
 	}{
-		ID:               o.ID,
-		ServiceClassName: o.ServiceClassName,
-		ServiceClassPath: o.ServiceClassPath,
-		DisplayName:      o.DisplayName,
-		IsPublic:         o.IsPublic,
-		Price:            o.Price,
+		ID:               o.GetID(),
+		ServiceClassName: o.GetServiceClassName(),
+		ServiceClassPath: o.GetServiceClassPath(),
+		DisplayName:      o.GetDisplayName(),
+		IsPublic:         o.GetIsPublic(),
+		Price:            o.GetPrice(),
 	}
 }
 
@@ -18014,11 +18041,11 @@ func (o *Price) setDefaults() interface{} {
 		Monthly int
 		Zone    string
 	}{
-		Base:    o.Base,
-		Daily:   o.Daily,
-		Hourly:  o.Hourly,
-		Monthly: o.Monthly,
-		Zone:    o.Zone,
+		Base:    o.GetBase(),
+		Daily:   o.GetDaily(),
+		Hourly:  o.GetHourly(),
+		Monthly: o.GetMonthly(),
+		Zone:    o.GetZone(),
 	}
 }
 
@@ -18111,17 +18138,17 @@ func (o *SIM) setDefaults() interface{} {
 		CreatedAt    time.Time
 		ModifiedAt   time.Time
 	}{
-		ID:           o.ID,
-		Name:         o.Name,
-		Description:  o.Description,
-		Tags:         o.Tags,
-		Availability: o.Availability,
-		Class:        o.Class,
-		ICCID:        o.ICCID,
-		Info:         o.Info,
-		IconID:       o.IconID,
-		CreatedAt:    o.CreatedAt,
-		ModifiedAt:   o.ModifiedAt,
+		ID:           o.GetID(),
+		Name:         o.GetName(),
+		Description:  o.GetDescription(),
+		Tags:         o.GetTags(),
+		Availability: o.GetAvailability(),
+		Class:        o.GetClass(),
+		ICCID:        o.GetICCID(),
+		Info:         o.GetInfo(),
+		IconID:       o.GetIconID(),
+		CreatedAt:    o.GetCreatedAt(),
+		ModifiedAt:   o.GetModifiedAt(),
 	}
 }
 
@@ -18320,20 +18347,20 @@ func (o *SIMInfo) setDefaults() interface{} {
 		TrafficBytesOfCurrentMonth *SIMTrafficBytes `mapconv:",recursive"`
 		ConnectedIMEI              string
 	}{
-		ICCID:                      o.ICCID,
-		IMSI:                       o.IMSI,
-		IP:                         o.IP,
-		SessionStatus:              o.SessionStatus,
-		IMEILock:                   o.IMEILock,
-		Registered:                 o.Registered,
-		Activated:                  o.Activated,
-		ResourceID:                 o.ResourceID,
-		RegisteredDate:             o.RegisteredDate,
-		ActivatedDate:              o.ActivatedDate,
-		DeactivatedDate:            o.DeactivatedDate,
-		SIMGroupID:                 o.SIMGroupID,
-		TrafficBytesOfCurrentMonth: o.TrafficBytesOfCurrentMonth,
-		ConnectedIMEI:              o.ConnectedIMEI,
+		ICCID:                      o.GetICCID(),
+		IMSI:                       o.GetIMSI(),
+		IP:                         o.GetIP(),
+		SessionStatus:              o.GetSessionStatus(),
+		IMEILock:                   o.GetIMEILock(),
+		Registered:                 o.GetRegistered(),
+		Activated:                  o.GetActivated(),
+		ResourceID:                 o.GetResourceID(),
+		RegisteredDate:             o.GetRegisteredDate(),
+		ActivatedDate:              o.GetActivatedDate(),
+		DeactivatedDate:            o.GetDeactivatedDate(),
+		SIMGroupID:                 o.GetSIMGroupID(),
+		TrafficBytesOfCurrentMonth: o.GetTrafficBytesOfCurrentMonth(),
+		ConnectedIMEI:              o.GetConnectedIMEI(),
 	}
 }
 
@@ -18507,12 +18534,12 @@ func (o *SIMCreateRequest) setDefaults() interface{} {
 		PassCode    string   `mapconv:"Remark.PassCode"`
 		Class       string   `mapconv:"Provider.Class"`
 	}{
-		Name:        o.Name,
-		Description: o.Description,
-		Tags:        o.Tags,
-		IconID:      o.IconID,
-		ICCID:       o.ICCID,
-		PassCode:    o.PassCode,
+		Name:        o.GetName(),
+		Description: o.GetDescription(),
+		Tags:        o.GetTags(),
+		IconID:      o.GetIconID(),
+		ICCID:       o.GetICCID(),
+		PassCode:    o.GetPassCode(),
 		Class:       "sim",
 	}
 }
@@ -18622,10 +18649,10 @@ func (o *SIMUpdateRequest) setDefaults() interface{} {
 		Tags        types.Tags
 		IconID      types.ID `mapconv:"Icon.ID"`
 	}{
-		Name:        o.Name,
-		Description: o.Description,
-		Tags:        o.Tags,
-		IconID:      o.IconID,
+		Name:        o.GetName(),
+		Description: o.GetDescription(),
+		Tags:        o.GetTags(),
+		IconID:      o.GetIconID(),
 	}
 }
 
@@ -18708,7 +18735,7 @@ func (o *SIMAssignIPRequest) setDefaults() interface{} {
 	return &struct {
 		IP string
 	}{
-		IP: o.IP,
+		IP: o.GetIP(),
 	}
 }
 
@@ -18741,7 +18768,7 @@ func (o *SIMIMEILockRequest) setDefaults() interface{} {
 	return &struct {
 		IMEI string
 	}{
-		IMEI: o.IMEI,
+		IMEI: o.GetIMEI(),
 	}
 }
 
@@ -18782,11 +18809,11 @@ func (o *SIMLog) setDefaults() interface{} {
 		IMEI          string
 		IMSI          string
 	}{
-		Date:          o.Date,
-		SessionStatus: o.SessionStatus,
-		ResourceID:    o.ResourceID,
-		IMEI:          o.IMEI,
-		IMSI:          o.IMSI,
+		Date:          o.GetDate(),
+		SessionStatus: o.GetSessionStatus(),
+		ResourceID:    o.GetResourceID(),
+		IMEI:          o.GetIMEI(),
+		IMSI:          o.GetIMSI(),
 	}
 }
 
@@ -18863,9 +18890,9 @@ func (o *SIMNetworkOperatorConfig) setDefaults() interface{} {
 		CountryCode string
 		Name        string
 	}{
-		Allow:       o.Allow,
-		CountryCode: o.CountryCode,
-		Name:        o.Name,
+		Allow:       o.GetAllow(),
+		CountryCode: o.GetCountryCode(),
+		Name:        o.GetName(),
 	}
 }
 
@@ -18918,7 +18945,7 @@ func (o *LinkActivity) setDefaults() interface{} {
 	return &struct {
 		Values []*MonitorLinkValue `mapconv:"[]Link"`
 	}{
-		Values: o.Values,
+		Values: o.GetValues(),
 	}
 }
 
@@ -18955,9 +18982,9 @@ func (o *MonitorLinkValue) setDefaults() interface{} {
 		UplinkBPS   float64   `json:",omitempty" mapconv:",omitempty"`
 		DownlinkBPS float64   `json:",omitempty" mapconv:",omitempty"`
 	}{
-		Time:        o.Time,
-		UplinkBPS:   o.UplinkBPS,
-		DownlinkBPS: o.DownlinkBPS,
+		Time:        o.GetTime(),
+		UplinkBPS:   o.GetUplinkBPS(),
+		DownlinkBPS: o.GetDownlinkBPS(),
 	}
 }
 
@@ -19008,7 +19035,7 @@ type SimpleMonitor struct {
 	Class              string
 	Target             string `mapconv:"Status.Target"`
 	SettingsHash       string
-	DelayLoop          int                       `mapconv:"Settings.SimpleMonitor.DelayLoop,default=60" validate:"min=60,max=3600"`
+	DelayLoop          int                       `mapconv:"Settings.SimpleMonitor.DelayLoop" validate:"min=60,max=3600"`
 	Enabled            types.StringFlag          `mapconv:"Settings.SimpleMonitor.Enabled"`
 	HealthCheck        *SimpleMonitorHealthCheck `mapconv:"Settings.SimpleMonitor.HealthCheck,recursive"`
 	NotifyEmailEnabled types.StringFlag          `mapconv:"Settings.SimpleMonitor.NotifyEmail.Enabled"`
@@ -19036,7 +19063,7 @@ func (o *SimpleMonitor) setDefaults() interface{} {
 		Class              string
 		Target             string `mapconv:"Status.Target"`
 		SettingsHash       string
-		DelayLoop          int                       `mapconv:"Settings.SimpleMonitor.DelayLoop,default=60" validate:"min=60,max=3600"`
+		DelayLoop          int                       `mapconv:"Settings.SimpleMonitor.DelayLoop" validate:"min=60,max=3600"`
 		Enabled            types.StringFlag          `mapconv:"Settings.SimpleMonitor.Enabled"`
 		HealthCheck        *SimpleMonitorHealthCheck `mapconv:"Settings.SimpleMonitor.HealthCheck,recursive"`
 		NotifyEmailEnabled types.StringFlag          `mapconv:"Settings.SimpleMonitor.NotifyEmail.Enabled"`
@@ -19044,24 +19071,24 @@ func (o *SimpleMonitor) setDefaults() interface{} {
 		NotifySlackEnabled types.StringFlag          `mapconv:"Settings.SimpleMonitor.NotifySlack.Enabled"`
 		SlackWebhooksURL   string                    `mapconv:"Settings.SimpleMonitor.NotifySlack.IncomingWebhooksURL"`
 	}{
-		ID:                 o.ID,
-		Name:               o.Name,
-		Description:        o.Description,
-		Tags:               o.Tags,
-		Availability:       o.Availability,
-		IconID:             o.IconID,
-		CreatedAt:          o.CreatedAt,
-		ModifiedAt:         o.ModifiedAt,
-		Class:              o.Class,
-		Target:             o.Target,
-		SettingsHash:       o.SettingsHash,
-		DelayLoop:          o.DelayLoop,
-		Enabled:            o.Enabled,
-		HealthCheck:        o.HealthCheck,
-		NotifyEmailEnabled: o.NotifyEmailEnabled,
-		NotifyEmailHTML:    o.NotifyEmailHTML,
-		NotifySlackEnabled: o.NotifySlackEnabled,
-		SlackWebhooksURL:   o.SlackWebhooksURL,
+		ID:                 o.GetID(),
+		Name:               o.GetName(),
+		Description:        o.GetDescription(),
+		Tags:               o.GetTags(),
+		Availability:       o.GetAvailability(),
+		IconID:             o.GetIconID(),
+		CreatedAt:          o.GetCreatedAt(),
+		ModifiedAt:         o.GetModifiedAt(),
+		Class:              o.GetClass(),
+		Target:             o.GetTarget(),
+		SettingsHash:       o.GetSettingsHash(),
+		DelayLoop:          o.GetDelayLoop(),
+		Enabled:            o.GetEnabled(),
+		HealthCheck:        o.GetHealthCheck(),
+		NotifyEmailEnabled: o.GetNotifyEmailEnabled(),
+		NotifyEmailHTML:    o.GetNotifyEmailHTML(),
+		NotifySlackEnabled: o.GetNotifySlackEnabled(),
+		SlackWebhooksURL:   o.GetSlackWebhooksURL(),
 	}
 }
 
@@ -19217,6 +19244,9 @@ func (o *SimpleMonitor) SetSettingsHash(v string) {
 
 // GetDelayLoop returns value of DelayLoop
 func (o *SimpleMonitor) GetDelayLoop() int {
+	if o.DelayLoop == 0 {
+		return 60
+	}
 	return o.DelayLoop
 }
 
@@ -19330,20 +19360,20 @@ func (o *SimpleMonitorHealthCheck) setDefaults() interface{} {
 		OID               string
 		RemainingDays     int
 	}{
-		Protocol:          o.Protocol,
-		Port:              o.Port,
-		Path:              o.Path,
-		Status:            o.Status,
-		SNI:               o.SNI,
-		Host:              o.Host,
-		BasicAuthUsername: o.BasicAuthUsername,
-		BasicAuthPassword: o.BasicAuthPassword,
-		QName:             o.QName,
-		ExpectedData:      o.ExpectedData,
-		Community:         o.Community,
-		SNMPVersion:       o.SNMPVersion,
-		OID:               o.OID,
-		RemainingDays:     o.RemainingDays,
+		Protocol:          o.GetProtocol(),
+		Port:              o.GetPort(),
+		Path:              o.GetPath(),
+		Status:            o.GetStatus(),
+		SNI:               o.GetSNI(),
+		Host:              o.GetHost(),
+		BasicAuthUsername: o.GetBasicAuthUsername(),
+		BasicAuthPassword: o.GetBasicAuthPassword(),
+		QName:             o.GetQName(),
+		ExpectedData:      o.GetExpectedData(),
+		Community:         o.GetCommunity(),
+		SNMPVersion:       o.GetSNMPVersion(),
+		OID:               o.GetOID(),
+		RemainingDays:     o.GetRemainingDays(),
 	}
 }
 
@@ -19494,7 +19524,7 @@ func (o *SimpleMonitorHealthCheck) SetRemainingDays(v int) {
 // SimpleMonitorCreateRequest represents API parameter/response structure
 type SimpleMonitorCreateRequest struct {
 	Target             string                    `mapconv:"Name/Status.Target" validate:"required"`
-	DelayLoop          int                       `mapconv:"Settings.SimpleMonitor.DelayLoop,default=60" validate:"min=60,max=3600"`
+	DelayLoop          int                       `mapconv:"Settings.SimpleMonitor.DelayLoop" validate:"min=60,max=3600"`
 	Enabled            types.StringFlag          `mapconv:"Settings.SimpleMonitor.Enabled"`
 	HealthCheck        *SimpleMonitorHealthCheck `mapconv:"Settings.SimpleMonitor.HealthCheck,recursive"`
 	NotifyEmailEnabled types.StringFlag          `mapconv:"Settings.SimpleMonitor.NotifyEmail.Enabled"`
@@ -19515,7 +19545,7 @@ func (o *SimpleMonitorCreateRequest) Validate() error {
 func (o *SimpleMonitorCreateRequest) setDefaults() interface{} {
 	return &struct {
 		Target             string                    `mapconv:"Name/Status.Target" validate:"required"`
-		DelayLoop          int                       `mapconv:"Settings.SimpleMonitor.DelayLoop,default=60" validate:"min=60,max=3600"`
+		DelayLoop          int                       `mapconv:"Settings.SimpleMonitor.DelayLoop" validate:"min=60,max=3600"`
 		Enabled            types.StringFlag          `mapconv:"Settings.SimpleMonitor.Enabled"`
 		HealthCheck        *SimpleMonitorHealthCheck `mapconv:"Settings.SimpleMonitor.HealthCheck,recursive"`
 		NotifyEmailEnabled types.StringFlag          `mapconv:"Settings.SimpleMonitor.NotifyEmail.Enabled"`
@@ -19527,17 +19557,17 @@ func (o *SimpleMonitorCreateRequest) setDefaults() interface{} {
 		IconID             types.ID `mapconv:"Icon.ID"`
 		Class              string   `mapconv:"Provider.Class"`
 	}{
-		Target:             o.Target,
-		DelayLoop:          o.DelayLoop,
-		Enabled:            o.Enabled,
-		HealthCheck:        o.HealthCheck,
-		NotifyEmailEnabled: o.NotifyEmailEnabled,
-		NotifyEmailHTML:    o.NotifyEmailHTML,
-		NotifySlackEnabled: o.NotifySlackEnabled,
-		SlackWebhooksURL:   o.SlackWebhooksURL,
-		Description:        o.Description,
-		Tags:               o.Tags,
-		IconID:             o.IconID,
+		Target:             o.GetTarget(),
+		DelayLoop:          o.GetDelayLoop(),
+		Enabled:            o.GetEnabled(),
+		HealthCheck:        o.GetHealthCheck(),
+		NotifyEmailEnabled: o.GetNotifyEmailEnabled(),
+		NotifyEmailHTML:    o.GetNotifyEmailHTML(),
+		NotifySlackEnabled: o.GetNotifySlackEnabled(),
+		SlackWebhooksURL:   o.GetSlackWebhooksURL(),
+		Description:        o.GetDescription(),
+		Tags:               o.GetTags(),
+		IconID:             o.GetIconID(),
 		Class:              "simplemon",
 	}
 }
@@ -19554,6 +19584,9 @@ func (o *SimpleMonitorCreateRequest) SetTarget(v string) {
 
 // GetDelayLoop returns value of DelayLoop
 func (o *SimpleMonitorCreateRequest) GetDelayLoop() int {
+	if o.DelayLoop == 0 {
+		return 60
+	}
 	return o.DelayLoop
 }
 
@@ -19678,7 +19711,7 @@ func (o *SimpleMonitorCreateRequest) SetIconID(v types.ID) {
 
 // SimpleMonitorUpdateRequest represents API parameter/response structure
 type SimpleMonitorUpdateRequest struct {
-	DelayLoop          int                       `mapconv:"Settings.SimpleMonitor.DelayLoop,default=60" validate:"min=60,max=3600"`
+	DelayLoop          int                       `mapconv:"Settings.SimpleMonitor.DelayLoop" validate:"min=60,max=3600"`
 	Enabled            types.StringFlag          `mapconv:"Settings.SimpleMonitor.Enabled"`
 	HealthCheck        *SimpleMonitorHealthCheck `mapconv:"Settings.SimpleMonitor.HealthCheck,recursive"`
 	NotifyEmailEnabled types.StringFlag          `mapconv:"Settings.SimpleMonitor.NotifyEmail.Enabled"`
@@ -19698,7 +19731,7 @@ func (o *SimpleMonitorUpdateRequest) Validate() error {
 // setDefaults implements sacloud.argumentDefaulter
 func (o *SimpleMonitorUpdateRequest) setDefaults() interface{} {
 	return &struct {
-		DelayLoop          int                       `mapconv:"Settings.SimpleMonitor.DelayLoop,default=60" validate:"min=60,max=3600"`
+		DelayLoop          int                       `mapconv:"Settings.SimpleMonitor.DelayLoop" validate:"min=60,max=3600"`
 		Enabled            types.StringFlag          `mapconv:"Settings.SimpleMonitor.Enabled"`
 		HealthCheck        *SimpleMonitorHealthCheck `mapconv:"Settings.SimpleMonitor.HealthCheck,recursive"`
 		NotifyEmailEnabled types.StringFlag          `mapconv:"Settings.SimpleMonitor.NotifyEmail.Enabled"`
@@ -19709,21 +19742,24 @@ func (o *SimpleMonitorUpdateRequest) setDefaults() interface{} {
 		Tags               types.Tags
 		IconID             types.ID `mapconv:"Icon.ID"`
 	}{
-		DelayLoop:          o.DelayLoop,
-		Enabled:            o.Enabled,
-		HealthCheck:        o.HealthCheck,
-		NotifyEmailEnabled: o.NotifyEmailEnabled,
-		NotifyEmailHTML:    o.NotifyEmailHTML,
-		NotifySlackEnabled: o.NotifySlackEnabled,
-		SlackWebhooksURL:   o.SlackWebhooksURL,
-		Description:        o.Description,
-		Tags:               o.Tags,
-		IconID:             o.IconID,
+		DelayLoop:          o.GetDelayLoop(),
+		Enabled:            o.GetEnabled(),
+		HealthCheck:        o.GetHealthCheck(),
+		NotifyEmailEnabled: o.GetNotifyEmailEnabled(),
+		NotifyEmailHTML:    o.GetNotifyEmailHTML(),
+		NotifySlackEnabled: o.GetNotifySlackEnabled(),
+		SlackWebhooksURL:   o.GetSlackWebhooksURL(),
+		Description:        o.GetDescription(),
+		Tags:               o.GetTags(),
+		IconID:             o.GetIconID(),
 	}
 }
 
 // GetDelayLoop returns value of DelayLoop
 func (o *SimpleMonitorUpdateRequest) GetDelayLoop() int {
+	if o.DelayLoop == 0 {
+		return 60
+	}
 	return o.DelayLoop
 }
 
@@ -19861,7 +19897,7 @@ func (o *ResponseTimeSecActivity) setDefaults() interface{} {
 	return &struct {
 		Values []*MonitorResponseTimeSecValue `mapconv:"[]ResponseTimeSec"`
 	}{
-		Values: o.Values,
+		Values: o.GetValues(),
 	}
 }
 
@@ -19896,8 +19932,8 @@ func (o *MonitorResponseTimeSecValue) setDefaults() interface{} {
 		Time            time.Time `json:",omitempty" mapconv:",omitempty"`
 		ResponseTimeSec float64   `json:",omitempty" mapconv:",omitempty"`
 	}{
-		Time:            o.Time,
-		ResponseTimeSec: o.ResponseTimeSec,
+		Time:            o.GetTime(),
+		ResponseTimeSec: o.GetResponseTimeSec(),
 	}
 }
 
@@ -19944,9 +19980,9 @@ func (o *SimpleMonitorHealthStatus) setDefaults() interface{} {
 		LastHealthChangedAt time.Time
 		Health              types.ESimpleMonitorHealth
 	}{
-		LastCheckedAt:       o.LastCheckedAt,
-		LastHealthChangedAt: o.LastHealthChangedAt,
-		Health:              o.Health,
+		LastCheckedAt:       o.GetLastCheckedAt(),
+		LastHealthChangedAt: o.GetLastHealthChangedAt(),
+		Health:              o.GetHealth(),
 	}
 }
 
@@ -20009,12 +20045,12 @@ func (o *SSHKey) setDefaults() interface{} {
 		PublicKey   string
 		Fingerprint string
 	}{
-		ID:          o.ID,
-		Name:        o.Name,
-		Description: o.Description,
-		CreatedAt:   o.CreatedAt,
-		PublicKey:   o.PublicKey,
-		Fingerprint: o.Fingerprint,
+		ID:          o.GetID(),
+		Name:        o.GetName(),
+		Description: o.GetDescription(),
+		CreatedAt:   o.GetCreatedAt(),
+		PublicKey:   o.GetPublicKey(),
+		Fingerprint: o.GetFingerprint(),
 	}
 }
 
@@ -20121,9 +20157,9 @@ func (o *SSHKeyCreateRequest) setDefaults() interface{} {
 		Description string `validate:"min=0,max=512"`
 		PublicKey   string
 	}{
-		Name:        o.Name,
-		Description: o.Description,
-		PublicKey:   o.PublicKey,
+		Name:        o.GetName(),
+		Description: o.GetDescription(),
+		PublicKey:   o.GetPublicKey(),
 	}
 }
 
@@ -20188,13 +20224,13 @@ func (o *SSHKeyGenerated) setDefaults() interface{} {
 		Fingerprint string
 		PrivateKey  string
 	}{
-		ID:          o.ID,
-		Name:        o.Name,
-		Description: o.Description,
-		CreatedAt:   o.CreatedAt,
-		PublicKey:   o.PublicKey,
-		Fingerprint: o.Fingerprint,
-		PrivateKey:  o.PrivateKey,
+		ID:          o.GetID(),
+		Name:        o.GetName(),
+		Description: o.GetDescription(),
+		CreatedAt:   o.GetCreatedAt(),
+		PublicKey:   o.GetPublicKey(),
+		Fingerprint: o.GetFingerprint(),
+		PrivateKey:  o.GetPrivateKey(),
 	}
 }
 
@@ -20312,9 +20348,9 @@ func (o *SSHKeyGenerateRequest) setDefaults() interface{} {
 		PassPhrase     string
 		GenerateFormat string
 	}{
-		Name:           o.Name,
-		Description:    o.Description,
-		PassPhrase:     o.PassPhrase,
+		Name:           o.GetName(),
+		Description:    o.GetDescription(),
+		PassPhrase:     o.GetPassPhrase(),
 		GenerateFormat: "openssh",
 	}
 }
@@ -20370,8 +20406,8 @@ func (o *SSHKeyUpdateRequest) setDefaults() interface{} {
 		Name        string `validate:"required"`
 		Description string `validate:"min=0,max=512"`
 	}{
-		Name:        o.Name,
-		Description: o.Description,
+		Name:        o.GetName(),
+		Description: o.GetDescription(),
 	}
 }
 
@@ -20436,18 +20472,18 @@ func (o *Switch) setDefaults() interface{} {
 		Subnets        []*SwitchSubnet `json:",omitempty" mapconv:"[]Subnets,omitempty,recursive"`
 		BridgeID       types.ID        `mapconv:"Bridge.ID,omitempty"`
 	}{
-		ID:             o.ID,
-		Name:           o.Name,
-		Description:    o.Description,
-		Tags:           o.Tags,
-		IconID:         o.IconID,
-		CreatedAt:      o.CreatedAt,
-		ModifiedAt:     o.ModifiedAt,
-		Scope:          o.Scope,
-		NetworkMaskLen: o.NetworkMaskLen,
-		DefaultRoute:   o.DefaultRoute,
-		Subnets:        o.Subnets,
-		BridgeID:       o.BridgeID,
+		ID:             o.GetID(),
+		Name:           o.GetName(),
+		Description:    o.GetDescription(),
+		Tags:           o.GetTags(),
+		IconID:         o.GetIconID(),
+		CreatedAt:      o.GetCreatedAt(),
+		ModifiedAt:     o.GetModifiedAt(),
+		Scope:          o.GetScope(),
+		NetworkMaskLen: o.GetNetworkMaskLen(),
+		DefaultRoute:   o.GetDefaultRoute(),
+		Subnets:        o.GetSubnets(),
+		BridgeID:       o.GetBridgeID(),
 	}
 }
 
@@ -20646,15 +20682,15 @@ func (o *SwitchSubnet) setDefaults() interface{} {
 		AssignedIPAddressMax string `mapconv:"IPAddresses.Max"`
 		AssignedIPAddressMin string `mapconv:"IPAddresses.Min"`
 	}{
-		ID:                   o.ID,
-		DefaultRoute:         o.DefaultRoute,
-		NextHop:              o.NextHop,
-		StaticRoute:          o.StaticRoute,
-		NetworkAddress:       o.NetworkAddress,
-		NetworkMaskLen:       o.NetworkMaskLen,
-		Internet:             o.Internet,
-		AssignedIPAddressMax: o.AssignedIPAddressMax,
-		AssignedIPAddressMin: o.AssignedIPAddressMin,
+		ID:                   o.GetID(),
+		DefaultRoute:         o.GetDefaultRoute(),
+		NextHop:              o.GetNextHop(),
+		StaticRoute:          o.GetStaticRoute(),
+		NetworkAddress:       o.GetNetworkAddress(),
+		NetworkMaskLen:       o.GetNetworkMaskLen(),
+		Internet:             o.GetInternet(),
+		AssignedIPAddressMax: o.GetAssignedIPAddressMax(),
+		AssignedIPAddressMin: o.GetAssignedIPAddressMin(),
 	}
 }
 
@@ -20802,12 +20838,12 @@ func (o *SwitchCreateRequest) setDefaults() interface{} {
 		Tags           types.Tags
 		IconID         types.ID `mapconv:"Icon.ID"`
 	}{
-		Name:           o.Name,
-		NetworkMaskLen: o.NetworkMaskLen,
-		DefaultRoute:   o.DefaultRoute,
-		Description:    o.Description,
-		Tags:           o.Tags,
-		IconID:         o.IconID,
+		Name:           o.GetName(),
+		NetworkMaskLen: o.GetNetworkMaskLen(),
+		DefaultRoute:   o.GetDefaultRoute(),
+		Description:    o.GetDescription(),
+		Tags:           o.GetTags(),
+		IconID:         o.GetIconID(),
 	}
 }
 
@@ -20920,12 +20956,12 @@ func (o *SwitchUpdateRequest) setDefaults() interface{} {
 		Tags           types.Tags
 		IconID         types.ID `mapconv:"Icon.ID"`
 	}{
-		Name:           o.Name,
-		NetworkMaskLen: o.NetworkMaskLen,
-		DefaultRoute:   o.DefaultRoute,
-		Description:    o.Description,
-		Tags:           o.Tags,
-		IconID:         o.IconID,
+		Name:           o.GetName(),
+		NetworkMaskLen: o.GetNetworkMaskLen(),
+		DefaultRoute:   o.GetDefaultRoute(),
+		Description:    o.GetDescription(),
+		Tags:           o.GetTags(),
+		IconID:         o.GetIconID(),
 	}
 }
 
@@ -21064,25 +21100,25 @@ func (o *VPCRouter) setDefaults() interface{} {
 		IPAddresses             []string                    `mapconv:"Remark.[]Servers.IPAddress"`
 		ZoneID                  types.ID                    `mapconv:"Remark.Zone.ID"`
 	}{
-		ID:                      o.ID,
-		Name:                    o.Name,
-		Description:             o.Description,
-		Tags:                    o.Tags,
-		Availability:            o.Availability,
-		Class:                   o.Class,
-		IconID:                  o.IconID,
-		CreatedAt:               o.CreatedAt,
-		PlanID:                  o.PlanID,
-		SettingsHash:            o.SettingsHash,
-		Settings:                o.Settings,
-		InstanceHostName:        o.InstanceHostName,
-		InstanceHostInfoURL:     o.InstanceHostInfoURL,
-		InstanceStatus:          o.InstanceStatus,
-		InstanceStatusChangedAt: o.InstanceStatusChangedAt,
-		Interfaces:              o.Interfaces,
-		SwitchID:                o.SwitchID,
-		IPAddresses:             o.IPAddresses,
-		ZoneID:                  o.ZoneID,
+		ID:                      o.GetID(),
+		Name:                    o.GetName(),
+		Description:             o.GetDescription(),
+		Tags:                    o.GetTags(),
+		Availability:            o.GetAvailability(),
+		Class:                   o.GetClass(),
+		IconID:                  o.GetIconID(),
+		CreatedAt:               o.GetCreatedAt(),
+		PlanID:                  o.GetPlanID(),
+		SettingsHash:            o.GetSettingsHash(),
+		Settings:                o.GetSettings(),
+		InstanceHostName:        o.GetInstanceHostName(),
+		InstanceHostInfoURL:     o.GetInstanceHostInfoURL(),
+		InstanceStatus:          o.GetInstanceStatus(),
+		InstanceStatusChangedAt: o.GetInstanceStatusChangedAt(),
+		Interfaces:              o.GetInterfaces(),
+		SwitchID:                o.GetSwitchID(),
+		IPAddresses:             o.GetIPAddresses(),
+		ZoneID:                  o.GetZoneID(),
 	}
 }
 
@@ -21361,20 +21397,20 @@ func (o *VPCRouterSetting) setDefaults() interface{} {
 		SiteToSiteIPsecVPN        []*VPCRouterSiteToSiteIPsecVPN `json:",omitempty" mapconv:"Router.SiteToSiteIPsecVPN.[]Config,omitempty,recursive"`
 		StaticRoute               []*VPCRouterStaticRoute        `json:",omitempty" mapconv:"Router.StaticRoutes.[]Config,omitempty,recursive"`
 	}{
-		VRID:                      o.VRID,
-		InternetConnectionEnabled: o.InternetConnectionEnabled,
-		Interfaces:                o.Interfaces,
-		StaticNAT:                 o.StaticNAT,
-		Firewall:                  o.Firewall,
-		DHCPServer:                o.DHCPServer,
-		DHCPStaticMapping:         o.DHCPStaticMapping,
-		PPTPServer:                o.PPTPServer,
-		PPTPServerEnabled:         o.PPTPServerEnabled,
-		L2TPIPsecServer:           o.L2TPIPsecServer,
-		L2TPIPsecServerEnabled:    o.L2TPIPsecServerEnabled,
-		RemoteAccessUsers:         o.RemoteAccessUsers,
-		SiteToSiteIPsecVPN:        o.SiteToSiteIPsecVPN,
-		StaticRoute:               o.StaticRoute,
+		VRID:                      o.GetVRID(),
+		InternetConnectionEnabled: o.GetInternetConnectionEnabled(),
+		Interfaces:                o.GetInterfaces(),
+		StaticNAT:                 o.GetStaticNAT(),
+		Firewall:                  o.GetFirewall(),
+		DHCPServer:                o.GetDHCPServer(),
+		DHCPStaticMapping:         o.GetDHCPStaticMapping(),
+		PPTPServer:                o.GetPPTPServer(),
+		PPTPServerEnabled:         o.GetPPTPServerEnabled(),
+		L2TPIPsecServer:           o.GetL2TPIPsecServer(),
+		L2TPIPsecServerEnabled:    o.GetL2TPIPsecServerEnabled(),
+		RemoteAccessUsers:         o.GetRemoteAccessUsers(),
+		SiteToSiteIPsecVPN:        o.GetSiteToSiteIPsecVPN(),
+		StaticRoute:               o.GetStaticRoute(),
 	}
 }
 
@@ -21547,12 +21583,12 @@ func (o *VPCRouterInterfaceSetting) setDefaults() interface{} {
 		NetworkMaskLen   int
 		Index            int
 	}{
-		Enabled:          o.Enabled,
-		IPAddress:        o.IPAddress,
-		VirtualIPAddress: o.VirtualIPAddress,
-		IPAliases:        o.IPAliases,
-		NetworkMaskLen:   o.NetworkMaskLen,
-		Index:            o.Index,
+		Enabled:          o.GetEnabled(),
+		IPAddress:        o.GetIPAddress(),
+		VirtualIPAddress: o.GetVirtualIPAddress(),
+		IPAliases:        o.GetIPAliases(),
+		NetworkMaskLen:   o.GetNetworkMaskLen(),
+		Index:            o.GetIndex(),
 	}
 }
 
@@ -21639,9 +21675,9 @@ func (o *VPCRouterStaticNAT) setDefaults() interface{} {
 		PrivateAddress string `mapconv:"PrivateAddress" validate:"ipv4"`
 		Description    string
 	}{
-		GlobalAddress:  o.GlobalAddress,
-		PrivateAddress: o.PrivateAddress,
-		Description:    o.Description,
+		GlobalAddress:  o.GetGlobalAddress(),
+		PrivateAddress: o.GetPrivateAddress(),
+		Description:    o.GetDescription(),
 	}
 }
 
@@ -21696,8 +21732,8 @@ func (o *VPCRouterFirewall) setDefaults() interface{} {
 		Send    []*VPCRouterFirewallRule
 		Receive []*VPCRouterFirewallRule
 	}{
-		Send:    o.Send,
-		Receive: o.Receive,
+		Send:    o.GetSend(),
+		Receive: o.GetReceive(),
 	}
 }
 
@@ -21754,14 +21790,14 @@ func (o *VPCRouterFirewallRule) setDefaults() interface{} {
 		Logging            types.StringFlag
 		Description        string
 	}{
-		Protocol:           o.Protocol,
-		SourceNetwork:      o.SourceNetwork,
-		SourcePort:         o.SourcePort,
-		DestinationNetwork: o.DestinationNetwork,
-		DestinationPort:    o.DestinationPort,
-		Action:             o.Action,
-		Logging:            o.Logging,
-		Description:        o.Description,
+		Protocol:           o.GetProtocol(),
+		SourceNetwork:      o.GetSourceNetwork(),
+		SourcePort:         o.GetSourcePort(),
+		DestinationNetwork: o.GetDestinationNetwork(),
+		DestinationPort:    o.GetDestinationPort(),
+		Action:             o.GetAction(),
+		Logging:            o.GetLogging(),
+		Description:        o.GetDescription(),
 	}
 }
 
@@ -21870,10 +21906,10 @@ func (o *VPCRouterDHCPServer) setDefaults() interface{} {
 		RangeStop  string   `validate:"ipv4"`
 		DNSServers []string `validate:"dive,ipv4"`
 	}{
-		Interface:  o.Interface,
-		RangeStart: o.RangeStart,
-		RangeStop:  o.RangeStop,
-		DNSServers: o.DNSServers,
+		Interface:  o.GetInterface(),
+		RangeStart: o.GetRangeStart(),
+		RangeStop:  o.GetRangeStop(),
+		DNSServers: o.GetDNSServers(),
 	}
 }
 
@@ -21938,8 +21974,8 @@ func (o *VPCRouterDHCPStaticMapping) setDefaults() interface{} {
 		MACAddress string
 		IPAddress  string `validate:"ipv4"`
 	}{
-		MACAddress: o.MACAddress,
-		IPAddress:  o.IPAddress,
+		MACAddress: o.GetMACAddress(),
+		IPAddress:  o.GetIPAddress(),
 	}
 }
 
@@ -21984,8 +22020,8 @@ func (o *VPCRouterPPTPServer) setDefaults() interface{} {
 		RangeStart string `validate:"ipv4"`
 		RangeStop  string `validate:"ipv4"`
 	}{
-		RangeStart: o.RangeStart,
-		RangeStop:  o.RangeStop,
+		RangeStart: o.GetRangeStart(),
+		RangeStop:  o.GetRangeStop(),
 	}
 }
 
@@ -22032,9 +22068,9 @@ func (o *VPCRouterL2TPIPsecServer) setDefaults() interface{} {
 		RangeStop       string `validate:"ipv4"`
 		PreSharedSecret string
 	}{
-		RangeStart:      o.RangeStart,
-		RangeStop:       o.RangeStop,
-		PreSharedSecret: o.PreSharedSecret,
+		RangeStart:      o.GetRangeStart(),
+		RangeStop:       o.GetRangeStop(),
+		PreSharedSecret: o.GetPreSharedSecret(),
 	}
 }
 
@@ -22089,8 +22125,8 @@ func (o *VPCRouterRemoteAccessUser) setDefaults() interface{} {
 		UserName string
 		Password string
 	}{
-		UserName: o.UserName,
-		Password: o.Password,
+		UserName: o.GetUserName(),
+		Password: o.GetPassword(),
 	}
 }
 
@@ -22141,11 +22177,11 @@ func (o *VPCRouterSiteToSiteIPsecVPN) setDefaults() interface{} {
 		Routes          []string
 		LocalPrefix     []string
 	}{
-		Peer:            o.Peer,
-		PreSharedSecret: o.PreSharedSecret,
-		RemoteID:        o.RemoteID,
-		Routes:          o.Routes,
-		LocalPrefix:     o.LocalPrefix,
+		Peer:            o.GetPeer(),
+		PreSharedSecret: o.GetPreSharedSecret(),
+		RemoteID:        o.GetRemoteID(),
+		Routes:          o.GetRoutes(),
+		LocalPrefix:     o.GetLocalPrefix(),
 	}
 }
 
@@ -22220,8 +22256,8 @@ func (o *VPCRouterStaticRoute) setDefaults() interface{} {
 		Prefix  string
 		NextHop string
 	}{
-		Prefix:  o.Prefix,
-		NextHop: o.NextHop,
+		Prefix:  o.GetPrefix(),
+		NextHop: o.GetNextHop(),
 	}
 }
 
@@ -22300,25 +22336,25 @@ func (o *VPCRouterInterface) setDefaults() interface{} {
 		UpstreamType                    types.EUpstreamNetworkType
 		Index                           int `mapconv:",omitempty"`
 	}{
-		ID:                              o.ID,
-		MACAddress:                      o.MACAddress,
-		IPAddress:                       o.IPAddress,
-		UserIPAddress:                   o.UserIPAddress,
-		HostName:                        o.HostName,
-		SwitchID:                        o.SwitchID,
-		SwitchName:                      o.SwitchName,
-		SwitchScope:                     o.SwitchScope,
-		UserSubnetDefaultRoute:          o.UserSubnetDefaultRoute,
-		UserSubnetNetworkMaskLen:        o.UserSubnetNetworkMaskLen,
-		SubnetDefaultRoute:              o.SubnetDefaultRoute,
-		SubnetNetworkMaskLen:            o.SubnetNetworkMaskLen,
-		SubnetNetworkAddress:            o.SubnetNetworkAddress,
-		SubnetBandWidthMbps:             o.SubnetBandWidthMbps,
-		PacketFilterID:                  o.PacketFilterID,
-		PacketFilterName:                o.PacketFilterName,
-		PacketFilterRequiredHostVersion: o.PacketFilterRequiredHostVersion,
-		UpstreamType:                    o.UpstreamType,
-		Index:                           o.Index,
+		ID:                              o.GetID(),
+		MACAddress:                      o.GetMACAddress(),
+		IPAddress:                       o.GetIPAddress(),
+		UserIPAddress:                   o.GetUserIPAddress(),
+		HostName:                        o.GetHostName(),
+		SwitchID:                        o.GetSwitchID(),
+		SwitchName:                      o.GetSwitchName(),
+		SwitchScope:                     o.GetSwitchScope(),
+		UserSubnetDefaultRoute:          o.GetUserSubnetDefaultRoute(),
+		UserSubnetNetworkMaskLen:        o.GetUserSubnetNetworkMaskLen(),
+		SubnetDefaultRoute:              o.GetSubnetDefaultRoute(),
+		SubnetNetworkMaskLen:            o.GetSubnetNetworkMaskLen(),
+		SubnetNetworkAddress:            o.GetSubnetNetworkAddress(),
+		SubnetBandWidthMbps:             o.GetSubnetBandWidthMbps(),
+		PacketFilterID:                  o.GetPacketFilterID(),
+		PacketFilterName:                o.GetPacketFilterName(),
+		PacketFilterRequiredHostVersion: o.GetPacketFilterRequiredHostVersion(),
+		UpstreamType:                    o.GetUpstreamType(),
+		Index:                           o.GetIndex(),
 	}
 }
 
@@ -22566,14 +22602,14 @@ func (o *VPCRouterCreateRequest) setDefaults() interface{} {
 		Settings    *VPCRouterSetting         `mapconv:",omitempty,recursive"`
 		Class       string
 	}{
-		Name:        o.Name,
-		Description: o.Description,
-		Tags:        o.Tags,
-		IconID:      o.IconID,
-		PlanID:      o.PlanID,
-		Switch:      o.Switch,
-		IPAddresses: o.IPAddresses,
-		Settings:    o.Settings,
+		Name:        o.GetName(),
+		Description: o.GetDescription(),
+		Tags:        o.GetTags(),
+		IconID:      o.GetIconID(),
+		PlanID:      o.GetPlanID(),
+		Switch:      o.GetSwitch(),
+		IPAddresses: o.GetIPAddresses(),
+		Settings:    o.GetSettings(),
 		Class:       "vpcrouter",
 	}
 }
@@ -22699,8 +22735,8 @@ func (o *ApplianceConnectedSwitch) setDefaults() interface{} {
 		ID    types.ID
 		Scope types.EScope
 	}{
-		ID:    o.ID,
-		Scope: o.Scope,
+		ID:    o.GetID(),
+		Scope: o.GetScope(),
 	}
 }
 
@@ -22771,11 +22807,11 @@ func (o *VPCRouterUpdateRequest) setDefaults() interface{} {
 		IconID      types.ID          `mapconv:"Icon.ID"`
 		Settings    *VPCRouterSetting `mapconv:",omitempty,recursive"`
 	}{
-		Name:        o.Name,
-		Description: o.Description,
-		Tags:        o.Tags,
-		IconID:      o.IconID,
-		Settings:    o.Settings,
+		Name:        o.GetName(),
+		Description: o.GetDescription(),
+		Tags:        o.GetTags(),
+		IconID:      o.GetIconID(),
+		Settings:    o.GetSettings(),
 	}
 }
 
@@ -22896,21 +22932,21 @@ func (o *WebAccel) setDefaults() interface{} {
 		CertValidNotAfter  int64
 		CreatedAt          time.Time
 	}{
-		ID:                 o.ID,
-		Name:               o.Name,
-		DomainType:         o.DomainType,
-		Domain:             o.Domain,
-		Subdomain:          o.Subdomain,
-		ASCIIDomain:        o.ASCIIDomain,
-		Origin:             o.Origin,
-		HostHeader:         o.HostHeader,
-		Status:             o.Status,
-		HasCertificate:     o.HasCertificate,
-		HasOldCertificate:  o.HasOldCertificate,
-		GibSentInLastWeek:  o.GibSentInLastWeek,
-		CertValidNotBefore: o.CertValidNotBefore,
-		CertValidNotAfter:  o.CertValidNotAfter,
-		CreatedAt:          o.CreatedAt,
+		ID:                 o.GetID(),
+		Name:               o.GetName(),
+		DomainType:         o.GetDomainType(),
+		Domain:             o.GetDomain(),
+		Subdomain:          o.GetSubdomain(),
+		ASCIIDomain:        o.GetASCIIDomain(),
+		Origin:             o.GetOrigin(),
+		HostHeader:         o.GetHostHeader(),
+		Status:             o.GetStatus(),
+		HasCertificate:     o.GetHasCertificate(),
+		HasOldCertificate:  o.GetHasOldCertificate(),
+		GibSentInLastWeek:  o.GetGibSentInLastWeek(),
+		CertValidNotBefore: o.GetCertValidNotBefore(),
+		CertValidNotAfter:  o.GetCertValidNotAfter(),
+		CreatedAt:          o.GetCreatedAt(),
 	}
 }
 
@@ -23105,8 +23141,8 @@ func (o *WebAccelCerts) setDefaults() interface{} {
 		Current *WebAccelCurrentCert
 		Old     []*WebAccelOldCerts
 	}{
-		Current: o.Current,
-		Old:     o.Old,
+		Current: o.GetCurrent(),
+		Old:     o.GetOld(),
 	}
 }
 
@@ -23173,19 +23209,19 @@ func (o *WebAccelCurrentCert) setDefaults() interface{} {
 		DNSNames          []string
 		SHA256Fingerprint string
 	}{
-		ID:                o.ID,
-		SiteID:            o.SiteID,
-		CertificateChain:  o.CertificateChain,
-		Key:               o.Key,
-		CreatedAt:         o.CreatedAt,
-		UpdatedAt:         o.UpdatedAt,
-		SerialNumber:      o.SerialNumber,
-		NotBefore:         o.NotBefore,
-		NotAfter:          o.NotAfter,
-		Issuer:            o.Issuer,
-		Subject:           o.Subject,
-		DNSNames:          o.DNSNames,
-		SHA256Fingerprint: o.SHA256Fingerprint,
+		ID:                o.GetID(),
+		SiteID:            o.GetSiteID(),
+		CertificateChain:  o.GetCertificateChain(),
+		Key:               o.GetKey(),
+		CreatedAt:         o.GetCreatedAt(),
+		UpdatedAt:         o.GetUpdatedAt(),
+		SerialNumber:      o.GetSerialNumber(),
+		NotBefore:         o.GetNotBefore(),
+		NotAfter:          o.GetNotAfter(),
+		Issuer:            o.GetIssuer(),
+		Subject:           o.GetSubject(),
+		DNSNames:          o.GetDNSNames(),
+		SHA256Fingerprint: o.GetSHA256Fingerprint(),
 	}
 }
 
@@ -23364,10 +23400,10 @@ func (o *WebAccelCertIssuer) setDefaults() interface{} {
 		OrganizationalUnit string
 		CommonName         string
 	}{
-		Country:            o.Country,
-		Organization:       o.Organization,
-		OrganizationalUnit: o.OrganizationalUnit,
-		CommonName:         o.CommonName,
+		Country:            o.GetCountry(),
+		Organization:       o.GetOrganization(),
+		OrganizationalUnit: o.GetOrganizationalUnit(),
+		CommonName:         o.GetCommonName(),
 	}
 }
 
@@ -23446,15 +23482,15 @@ func (o *WebAccelCertSubject) setDefaults() interface{} {
 		SerialNumber       string
 		CommonName         string
 	}{
-		Country:            o.Country,
-		Organization:       o.Organization,
-		OrganizationalUnit: o.OrganizationalUnit,
-		Locality:           o.Locality,
-		Province:           o.Province,
-		StreetAddress:      o.StreetAddress,
-		PostalCode:         o.PostalCode,
-		SerialNumber:       o.SerialNumber,
-		CommonName:         o.CommonName,
+		Country:            o.GetCountry(),
+		Organization:       o.GetOrganization(),
+		OrganizationalUnit: o.GetOrganizationalUnit(),
+		Locality:           o.GetLocality(),
+		Province:           o.GetProvince(),
+		StreetAddress:      o.GetStreetAddress(),
+		PostalCode:         o.GetPostalCode(),
+		SerialNumber:       o.GetSerialNumber(),
+		CommonName:         o.GetCommonName(),
 	}
 }
 
@@ -23591,19 +23627,19 @@ func (o *WebAccelOldCerts) setDefaults() interface{} {
 		DNSNames          []string
 		SHA256Fingerprint string
 	}{
-		ID:                o.ID,
-		SiteID:            o.SiteID,
-		CertificateChain:  o.CertificateChain,
-		Key:               o.Key,
-		CreatedAt:         o.CreatedAt,
-		UpdatedAt:         o.UpdatedAt,
-		SerialNumber:      o.SerialNumber,
-		NotBefore:         o.NotBefore,
-		NotAfter:          o.NotAfter,
-		Issuer:            o.Issuer,
-		Subject:           o.Subject,
-		DNSNames:          o.DNSNames,
-		SHA256Fingerprint: o.SHA256Fingerprint,
+		ID:                o.GetID(),
+		SiteID:            o.GetSiteID(),
+		CertificateChain:  o.GetCertificateChain(),
+		Key:               o.GetKey(),
+		CreatedAt:         o.GetCreatedAt(),
+		UpdatedAt:         o.GetUpdatedAt(),
+		SerialNumber:      o.GetSerialNumber(),
+		NotBefore:         o.GetNotBefore(),
+		NotAfter:          o.GetNotAfter(),
+		Issuer:            o.GetIssuer(),
+		Subject:           o.GetSubject(),
+		DNSNames:          o.GetDNSNames(),
+		SHA256Fingerprint: o.GetSHA256Fingerprint(),
 	}
 }
 
@@ -23778,8 +23814,8 @@ func (o *WebAccelCertUpdateRequest) setDefaults() interface{} {
 		CertificateChain string
 		Key              string
 	}{
-		CertificateChain: o.CertificateChain,
-		Key:              o.Key,
+		CertificateChain: o.GetCertificateChain(),
+		Key:              o.GetKey(),
 	}
 }
 
@@ -23822,7 +23858,7 @@ func (o *WebAccelDeleteAllCacheRequest) setDefaults() interface{} {
 	return &struct {
 		Domain string
 	}{
-		Domain: o.Domain,
+		Domain: o.GetDomain(),
 	}
 }
 
@@ -23859,9 +23895,9 @@ func (o *WebAccelDeleteCacheResult) setDefaults() interface{} {
 		Status int
 		Result string
 	}{
-		URL:    o.URL,
-		Status: o.Status,
-		Result: o.Result,
+		URL:    o.GetURL(),
+		Status: o.GetStatus(),
+		Result: o.GetResult(),
 	}
 }
 
@@ -23914,7 +23950,7 @@ func (o *WebAccelDeleteCacheRequest) setDefaults() interface{} {
 	return &struct {
 		URL []string
 	}{
-		URL: o.URL,
+		URL: o.GetURL(),
 	}
 }
 
@@ -23961,14 +23997,14 @@ func (o *Zone) setDefaults() interface{} {
 		FTPServer    *FTPServerInfo `json:",omitempty"`
 		Region       *Region        `json:",omitempty"`
 	}{
-		ID:           o.ID,
-		Name:         o.Name,
-		Description:  o.Description,
-		DisplayOrder: o.DisplayOrder,
-		IsDummy:      o.IsDummy,
-		VNCProxy:     o.VNCProxy,
-		FTPServer:    o.FTPServer,
-		Region:       o.Region,
+		ID:           o.GetID(),
+		Name:         o.GetName(),
+		Description:  o.GetDescription(),
+		DisplayOrder: o.GetDisplayOrder(),
+		IsDummy:      o.GetIsDummy(),
+		VNCProxy:     o.GetVNCProxy(),
+		FTPServer:    o.GetFTPServer(),
+		Region:       o.GetRegion(),
 	}
 }
 
