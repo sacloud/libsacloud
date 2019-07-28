@@ -569,7 +569,7 @@ func (f *fieldsDef) LoadBalancerVIP() *dsl.FieldDesc {
 					Name: "DelayLoop",
 					Type: meta.TypeStringNumber,
 					Tags: &dsl.FieldTags{
-						Validate: "min=0,max=60", // TODO 最大値確認
+						Validate: "min=0,max=10000",
 					},
 					DefaultValue: "10",
 				},
@@ -700,7 +700,7 @@ func (f *fieldsDef) SIMICCID() *dsl.FieldDesc {
 		Type: meta.TypeString,
 		Tags: &dsl.FieldTags{
 			MapConv:  "Status.ICCID",
-			Validate: "numeric", // TODO 数値のみ15桁固定
+			Validate: "numeric",
 		},
 	}
 }
@@ -1605,7 +1605,7 @@ func (f *fieldsDef) UserSubnetNetworkMaskLen() *dsl.FieldDesc {
 		Name: "NetworkMaskLen",
 		Type: meta.TypeInt,
 		Tags: &dsl.FieldTags{
-			Validate: "min=1,max=32", // TODO
+			Validate: "min=1,max=32",
 			MapConv:  "UserSubnet.NetworkMaskLen",
 		},
 	}
@@ -1616,7 +1616,7 @@ func (f *fieldsDef) UserSubnetDefaultRoute() *dsl.FieldDesc {
 		Name: "DefaultRoute",
 		Type: meta.TypeString,
 		Tags: &dsl.FieldTags{
-			Validate: "ipv4", // TODO
+			Validate: "ipv4",
 			MapConv:  "UserSubnet.DefaultRoute",
 		},
 	}
@@ -1627,7 +1627,7 @@ func (f *fieldsDef) RemarkNetworkMaskLen() *dsl.FieldDesc {
 		Name: "NetworkMaskLen",
 		Type: meta.TypeInt,
 		Tags: &dsl.FieldTags{
-			Validate: "min=1,max=32", // TODO
+			Validate: "min=1,max=32",
 			MapConv:  "Remark.Network.NetworkMaskLen",
 		},
 	}
@@ -1648,7 +1648,7 @@ func (f *fieldsDef) RemarkDefaultRoute() *dsl.FieldDesc {
 		Name: "DefaultRoute",
 		Type: meta.TypeString,
 		Tags: &dsl.FieldTags{
-			Validate: "ipv4", // TODO
+			Validate: "ipv4",
 			MapConv:  "Remark.Network.DefaultRoute",
 		},
 	}
