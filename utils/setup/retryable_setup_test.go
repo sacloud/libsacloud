@@ -50,6 +50,9 @@ func TestRetryableSetup_Setup(t *testing.T) {
 				Read: func(ctx context.Context, zone string, id types.ID) (interface{}, error) {
 					return &dummyIDAccessor{id: 1}, nil
 				},
+				ProvisioningRetryInterval: time.Millisecond,
+				DeleteRetryInterval:       time.Millisecond,
+				PollInterval:              time.Millisecond,
 			}
 			res, err := retryable.Setup(ctx, zone)
 
@@ -67,6 +70,9 @@ func TestRetryableSetup_Setup(t *testing.T) {
 				Read: func(ctx context.Context, zone string, id types.ID) (interface{}, error) {
 					return &dummyIDAccessor{id: 1}, nil
 				},
+				ProvisioningRetryInterval: time.Millisecond,
+				DeleteRetryInterval:       time.Millisecond,
+				PollInterval:              time.Millisecond,
 			}
 			res, err := retryable.Setup(ctx, zone)
 
@@ -75,7 +81,7 @@ func TestRetryableSetup_Setup(t *testing.T) {
 		})
 
 	})
-
+	//
 	t.Run("Retry", func(t *testing.T) {
 
 		t.Run("retry under max count", func(t *testing.T) {
