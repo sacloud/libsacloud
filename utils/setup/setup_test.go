@@ -3,6 +3,7 @@ package setup
 import (
 	"context"
 	"testing"
+	"time"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/accessor"
@@ -56,6 +57,11 @@ func TestRetryableSetup(t *testing.T) {
 					IsWaitForCopy: true,
 					IsWaitForUp:   true,
 					RetryCount:    3,
+				}
+				if !testutil.IsAccTest() {
+					nfsSetup.ProvisioningRetryInterval = time.Millisecond
+					nfsSetup.DeleteRetryInterval = time.Millisecond
+					nfsSetup.PollInterval = time.Millisecond
 				}
 
 				return nfsSetup.Setup(ctx, testZone)
