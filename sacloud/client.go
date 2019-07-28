@@ -8,6 +8,7 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/sacloud/libsacloud/v2"
@@ -31,6 +32,13 @@ var (
 	APIDefaultRetryMax = 0
 	// APIDefaultRetryInterval デフォルトのリトライ間隔
 	APIDefaultRetryInterval = 5 * time.Second
+)
+
+const (
+	// APIAccessTokenEnvKey APIアクセストークンの環境変数名
+	APIAccessTokenEnvKey = "SAKURACLOUD_ACCESS_TOKEN"
+	// APIAccessSecretEnvKey APIアクセスシークレットの環境変数名
+	APIAccessSecretEnvKey = "SAKURACLOUD_ACCESS_TOKEN_SECRET"
 )
 
 // APICaller API呼び出し時に利用するトランスポートのインターフェース
@@ -61,10 +69,10 @@ type Client struct {
 }
 
 // NewClient APIクライアント作成
-func NewClient(token, tokenSecret string) *Client {
+func NewClient(token, secret string) *Client {
 	c := &Client{
 		AccessToken:            token,
-		AccessTokenSecret:      tokenSecret,
+		AccessTokenSecret:      secret,
 		DefaultTimeoutDuration: APIDefaultTimeoutDuration,
 		UserAgent:              APIDefaultUserAgent,
 		AcceptLanguage:         APIDefaultAcceptLanguage,
@@ -74,44 +82,28 @@ func NewClient(token, tokenSecret string) *Client {
 	return c
 }
 
-// Clone APIクライアント クローン作成
-func (c *Client) Clone() *Client {
-	n := &Client{
-		AccessToken:            c.AccessToken,
-		AccessTokenSecret:      c.AccessTokenSecret,
-		DefaultTimeoutDuration: c.DefaultTimeoutDuration,
-		UserAgent:              c.UserAgent,
-		AcceptLanguage:         c.AcceptLanguage,
-		RetryMax:               c.RetryMax,
-		RetryInterval:          c.RetryInterval,
-		HTTPClient:             c.HTTPClient,
+// NewClientFromEnv 環境変数からAPIキーを取得してAPIクライアントを作成する
+func NewClientFromEnv() (*Client, error) {
+	token := os.Getenv(APIAccessTokenEnvKey)
+	if token == "" {
+		return nil, fmt.Errorf("environment variable %q is required", APIAccessTokenEnvKey)
 	}
-	return n
+	secret := os.Getenv(APIAccessSecretEnvKey)
+	if secret == "" {
+		return nil, fmt.Errorf("environment variable %q is required", APIAccessSecretEnvKey)
+	}
+	return NewClient(token, secret), nil
 }
 
 func (c *Client) isOkStatus(code int) bool {
 	codes := map[int]bool{
-		200: true,
-		201: true,
-		202: true,
-		204: true,
-		305: false,
-		400: false,
-		401: false,
-		403: false,
-		404: false,
-		405: false,
-		406: false,
-		408: false,
-		409: false,
-		411: false,
-		413: false,
-		415: false,
-		423: false,
-		500: false,
-		503: false,
+		http.StatusOK:        true,
+		http.StatusCreated:   true,
+		http.StatusAccepted:  true,
+		http.StatusNoContent: true,
 	}
-	return codes[code]
+	_, ok := codes[code]
+	return ok
 }
 
 // Do APIコール実施
