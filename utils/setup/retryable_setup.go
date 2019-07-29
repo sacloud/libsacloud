@@ -1,10 +1,14 @@
 package setup
 
 import (
+	"context"
+	"errors"
 	"fmt"
 	"time"
 
-	"github.com/sacloud/libsacloud/sacloud"
+	"github.com/sacloud/libsacloud/v2/sacloud"
+	"github.com/sacloud/libsacloud/v2/sacloud/accessor"
+	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
 // MaxRetryCountExceededError リトライ最大数超過エラー
@@ -25,27 +29,25 @@ const DefaultDeleteRetryCount = 10
 // DefaultDeleteWaitInterval リソースごとの削除API呼び出しのリトライ間隔
 const DefaultDeleteWaitInterval = 10 * time.Second
 
-// CreateFunc リソース作成関数
-type CreateFunc func() (sacloud.ResourceIDHolder, error)
+// DefaultPoolInterval ポーリング処理の間隔
+const DefaultPoolInterval = 5 * time.Second
 
-// AsyncWaitForCopyFunc リソース作成時のコピー待ち(非同期)関数
-type AsyncWaitForCopyFunc func(id int64) (
-	chan interface{}, chan interface{}, chan error,
-)
+// CreateFunc リソース作成関数
+type CreateFunc func(ctx context.Context, zone string) (accessor.ID, error)
 
 // ProvisionBeforeUpFunc リソース作成後、起動前のプロビジョニング関数
 //
 // リソース作成後に起動が行われないリソース(VPCルータなど)向け。
 // 必要であればこの中でリソース起動処理を行う。
-type ProvisionBeforeUpFunc func(id int64, target interface{}) error
+type ProvisionBeforeUpFunc func(ctx context.Context, zone string, id types.ID, target interface{}) error
 
 // DeleteFunc リソース削除関数。
 //
 // リソース作成時のコピー待ちの間にリソースのAvailabilityがFailedになった場合に利用される。
-type DeleteFunc func(id int64) error
+type DeleteFunc func(ctx context.Context, zone string, id types.ID) error
 
-// WaitForUpFunc リソース起動待ち関数
-type WaitForUpFunc func(id int64) error
+// ReadFunc リソース起動待ちなどで利用するリソースのRead用Func
+type ReadFunc func(ctx context.Context, zone string, id types.ID) (interface{}, error)
 
 // RetryableSetup リソース作成時にコピー待ちや起動待ちが必要なリソースのビルダー。
 //
@@ -53,14 +55,16 @@ type WaitForUpFunc func(id int64) error
 type RetryableSetup struct {
 	// Create リソース作成用関数
 	Create CreateFunc
-	// AsyncWaitForCopy コピー待ち用関数
-	AsyncWaitForCopy AsyncWaitForCopyFunc
+	// IsWaitForCopy コピー待ちを行うか
+	IsWaitForCopy bool
+	// IsWaitForUp 起動待ちを行うか
+	IsWaitForUp bool
 	// ProvisionBeforeUp リソース起動前のプロビジョニング関数
 	ProvisionBeforeUp ProvisionBeforeUpFunc
 	// Delete リソース削除用関数
 	Delete DeleteFunc
 	// WaitForUp リソース起動待ち関数
-	WaitForUp WaitForUpFunc
+	Read ReadFunc
 	// RetryCount リトライ回数
 	RetryCount int
 	// ProvisioningRetryCount プロビジョニングリトライ回数
@@ -71,30 +75,33 @@ type RetryableSetup struct {
 	DeleteRetryCount int
 	// DeleteRetryInterval 削除リトライ間隔
 	DeleteRetryInterval time.Duration
-}
-
-type hasFailed interface {
-	IsFailed() bool
+	// sacloud.StateWaiterによるステート待ちの間隔
+	PollInterval time.Duration
 }
 
 // Setup リソースのビルドを行う。必要に応じてリトライ(リソースの削除&再作成)を行う。
-func (r *RetryableSetup) Setup() (interface{}, error) {
+func (r *RetryableSetup) Setup(ctx context.Context, zone string) (interface{}, error) {
+	if (r.IsWaitForCopy || r.IsWaitForUp) && r.Read == nil {
+		return nil, errors.New("failed: Read is required when IsWaitForCopy or IsWaitForUp is true")
+	}
+
 	r.init()
 
 	var created interface{}
-	for cur := 0; cur < r.RetryCount; cur++ {
+	for r.RetryCount+1 > 0 {
+		r.RetryCount--
 
 		// リソース作成
-		target, err := r.createResource()
+		target, err := r.createResource(ctx, zone)
 		if err != nil {
 			return nil, err
 		}
 		id := target.GetID()
 
 		// コピー待ち
-		if r.AsyncWaitForCopy != nil {
+		if r.IsWaitForCopy {
 			// コピー待ち、Failedになった場合はリソース削除
-			state, err := r.waitForCopyWithCleanup(id)
+			state, err := r.waitForCopyWithCleanup(ctx, zone, id)
 			if err != nil {
 				return nil, err
 			}
@@ -106,12 +113,12 @@ func (r *RetryableSetup) Setup() (interface{}, error) {
 		}
 
 		// 起動前の設定など
-		if err := r.provisionBeforeUp(id, created); err != nil {
+		if err := r.provisionBeforeUp(ctx, zone, id, created); err != nil {
 			return nil, err
 		}
 
 		// 起動待ち
-		if err := r.waitForUp(id, created); err != nil {
+		if err := r.waitForUp(ctx, zone, id, created); err != nil {
 			return nil, err
 		}
 
@@ -142,19 +149,40 @@ func (r *RetryableSetup) init() {
 	if r.ProvisioningRetryInterval <= 0 {
 		r.ProvisioningRetryInterval = DefaultProvisioningWaitInterval
 	}
+	if r.PollInterval <= 0 {
+		r.PollInterval = DefaultPoolInterval
+	}
 }
 
-func (r *RetryableSetup) createResource() (sacloud.ResourceIDHolder, error) {
+func (r *RetryableSetup) createResource(ctx context.Context, zone string) (accessor.ID, error) {
 	if r.Create == nil {
 		return nil, fmt.Errorf("create func is required")
 	}
-	return r.Create()
+	return r.Create(ctx, zone)
 }
 
-func (r *RetryableSetup) waitForCopyWithCleanup(resourceID int64) (interface{}, error) {
+func (r *RetryableSetup) waitForCopyWithCleanup(ctx context.Context, zone string, id types.ID) (interface{}, error) {
+
+	waiter := &sacloud.StatePollWaiter{
+		ReadFunc: func() (interface{}, error) {
+			return r.Read(ctx, zone, id)
+		},
+		TargetAvailability: []types.EAvailability{
+			types.Availabilities.Available,
+			types.Availabilities.Failed,
+		},
+		PendingAvailability: []types.EAvailability{
+			types.Availabilities.Unknown,
+			types.Availabilities.Migrating,
+			types.Availabilities.Uploading,
+			types.Availabilities.Transfering,
+			types.Availabilities.Discontinued,
+		},
+		PollInterval: r.PollInterval,
+	}
 
 	//wait
-	compChan, progChan, errChan := r.AsyncWaitForCopy(resourceID)
+	compChan, progChan, errChan := waiter.AsyncWaitForState(ctx)
 	var state interface{}
 	var err error
 
@@ -174,18 +202,19 @@ loop:
 
 	if state != nil {
 		// Availabilityを持ち、Failedになっていた場合はリソースを削除してリトライ
-		if f, ok := state.(hasFailed); ok && f.IsFailed() {
-
-			// FailedになったばかりだとDelete APIが失敗する(コピー進行中など)場合があるため、
-			// 任意の回数リトライ&待機を行う
-			for i := 0; i < r.DeleteRetryCount; i++ {
-				time.Sleep(r.DeleteRetryInterval)
-				if err = r.Delete(resourceID); err == nil {
-					break
+		if f, ok := state.(accessor.Availability); ok && f != nil {
+			if f.GetAvailability().IsFailed() {
+				// FailedになったばかりだとDelete APIが失敗する(コピー進行中など)場合があるため、
+				// 任意の回数リトライ&待機を行う
+				for i := 0; i < r.DeleteRetryCount; i++ {
+					time.Sleep(r.DeleteRetryInterval)
+					if err = r.Delete(ctx, zone, id); err == nil {
+						break
+					}
 				}
-			}
 
-			return nil, nil
+				return nil, nil
+			}
 		}
 
 		return state, nil
@@ -197,12 +226,12 @@ loop:
 	return nil, nil
 }
 
-func (r *RetryableSetup) provisionBeforeUp(id int64, created interface{}) error {
+func (r *RetryableSetup) provisionBeforeUp(ctx context.Context, zone string, id types.ID, created interface{}) error {
 	if r.ProvisionBeforeUp != nil && created != nil {
 		var err error
 		for i := 0; i < r.ProvisioningRetryCount; i++ {
 			time.Sleep(r.ProvisioningRetryInterval)
-			if err = r.ProvisionBeforeUp(id, created); err == nil {
+			if err = r.ProvisionBeforeUp(ctx, zone, id, created); err == nil {
 				break
 			}
 		}
@@ -211,11 +240,34 @@ func (r *RetryableSetup) provisionBeforeUp(id int64, created interface{}) error 
 	return nil
 }
 
-func (r *RetryableSetup) waitForUp(id int64, created interface{}) error {
-	if r.WaitForUp != nil && created != nil {
-		if err := r.WaitForUp(id); err != nil {
-			return err
+func (r *RetryableSetup) waitForUp(ctx context.Context, zone string, id types.ID, created interface{}) error {
+	if r.IsWaitForUp && created != nil {
+		waiter := &sacloud.StatePollWaiter{
+			ReadFunc: func() (interface{}, error) {
+				return r.Read(ctx, zone, id)
+			},
+			TargetAvailability: []types.EAvailability{
+				types.Availabilities.Available,
+			},
+			PendingAvailability: []types.EAvailability{
+				types.Availabilities.Unknown,
+				types.Availabilities.Migrating,
+				types.Availabilities.Uploading,
+				types.Availabilities.Transfering,
+				types.Availabilities.Discontinued,
+			},
+			TargetInstanceStatus: []types.EServerInstanceStatus{
+				types.ServerInstanceStatuses.Up,
+			},
+			PendingInstanceStatus: []types.EServerInstanceStatus{
+				types.ServerInstanceStatuses.Unknown,
+				types.ServerInstanceStatuses.Cleaning,
+				types.ServerInstanceStatuses.Down,
+			},
+			PollInterval: r.PollInterval,
 		}
+		_, err := waiter.WaitForState(ctx)
+		return err
 	}
 	return nil
 }

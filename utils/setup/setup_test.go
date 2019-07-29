@@ -1,117 +1,103 @@
 package setup
 
 import (
-	"fmt"
-	"log"
-	"os"
-	"sync"
+	"context"
 	"testing"
 	"time"
 
-	"github.com/sacloud/libsacloud"
-	"github.com/sacloud/libsacloud/api"
-	"github.com/sacloud/libsacloud/sacloud"
-	"github.com/stretchr/testify/assert"
+	"github.com/sacloud/libsacloud/v2/sacloud"
+	"github.com/sacloud/libsacloud/v2/sacloud/accessor"
+	"github.com/sacloud/libsacloud/v2/sacloud/testutil"
+	"github.com/sacloud/libsacloud/v2/sacloud/types"
+	"github.com/sacloud/libsacloud/v2/utils/nfs"
 )
 
-var client *api.Client
-var testResourceName = "retryable-setup-test"
+func TestRetryableSetup(t *testing.T) {
+	var switchID types.ID
+	testZone := testutil.TestZone()
 
-func TestMain(m *testing.M) {
-	//環境変数にトークン/シークレットがある場合のみテスト実施
-	accessToken := os.Getenv("SAKURACLOUD_ACCESS_TOKEN")
-	accessTokenSecret := os.Getenv("SAKURACLOUD_ACCESS_TOKEN_SECRET")
+	testutil.Run(t, &testutil.CRUDTestCase{
+		Parallel:           true,
+		SetupAPICallerFunc: testutil.SingletonAPICaller,
 
-	if accessToken == "" || accessTokenSecret == "" {
-		log.Println("Please Set ENV 'SAKURACLOUD_ACCESS_TOKEN' and 'SAKURACLOUD_ACCESS_TOKEN_SECRET'")
-		os.Exit(0) // exit normal
-	}
-	region := os.Getenv("SAKURACLOUD_REGION")
-	if region == "" {
-		region = "tk1v"
-	}
-	client = api.NewClient(accessToken, accessTokenSecret, region)
-	client.DefaultTimeoutDuration = 30 * time.Minute
-	client.UserAgent = fmt.Sprintf("test-libsacloud/%s", libsacloud.Version)
-	client.AcceptLanguage = "en-US,en;q=0.9"
-
-	ret := m.Run()
-	os.Exit(ret)
-}
-
-func TestAccRetryAbleSetUp(t *testing.T) {
-
-	defer initResources()
-
-	swParam := client.Switch.New()
-	swParam.Name = testResourceName
-	sw, err := client.Switch.Create(swParam)
-	assert.NoError(t, err)
-	assert.NotNil(t, sw)
-
-	param := &sacloud.CreateNFSValue{
-		SwitchID:  sw.GetStrID(),
-		IPAddress: "192.2.0.1",
-		MaskLen:   24,
-		Name:      testResourceName,
-	}
-
-	nfsBuilder := &RetryableSetup{
-		Create: func() (sacloud.ResourceIDHolder, error) {
-			return client.NFS.CreateWithPlan(param, sacloud.NFSPlanSSD, sacloud.NFSSize100G)
+		Setup: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {
+			switchOp := sacloud.NewSwitchOp(caller)
+			sw, err := switchOp.Create(ctx, testZone, &sacloud.SwitchCreateRequest{Name: "libsacloud-switch-for-util-setup"})
+			if err != nil {
+				return err
+			}
+			switchID = sw.ID
+			return nil
 		},
-		AsyncWaitForCopy: func(id int64) (chan interface{}, chan interface{}, chan error) {
-			c, p, e := client.NFS.AsyncSleepWhileCopying(id, client.DefaultTimeoutDuration, 5)
-			return c, p, e
-		},
-		Delete: func(id int64) error {
-			_, err := client.NFS.Delete(id)
-			return err
-		},
-		WaitForUp: func(id int64) error {
-			return client.NFS.SleepUntilUp(id, client.DefaultTimeoutDuration)
-		},
-		RetryCount: 3,
-	}
 
-	res, err := nfsBuilder.Setup()
-	assert.NoError(t, err)
-	assert.NotNil(t, res)
-
-	nfs, ok := res.(*sacloud.NFS)
-	assert.True(t, ok)
-	assert.NotNil(t, nfs)
-
-}
-
-func initResources() func() {
-	cleanupResources()
-	return cleanupResources
-}
-
-func cleanupResources() {
-	{
-		items, _ := client.NFS.Reset().WithNameLike(testResourceName).Find()
-		wg := sync.WaitGroup{}
-		wg.Add(len(items.NFS))
-
-		for _, item := range items.NFS {
-			nfs := item
-			go func() {
-				if nfs.IsUp() {
-					client.NFS.Stop(nfs.ID)
-					client.NFS.SleepUntilDown(nfs.ID, client.DefaultTimeoutDuration)
+		Create: &testutil.CRUDTestFunc{
+			Func: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+				nfsOp := sacloud.NewNFSOp(caller)
+				nfsSetup := &RetryableSetup{
+					Create: func(ctx context.Context, zone string) (accessor.ID, error) {
+						nfsPlanID, err := nfs.FindNFSPlanID(ctx, sacloud.NewNoteOp(caller), types.NFSPlans.HDD, types.NFSHDDSizes.Size100GB)
+						if err != nil {
+							return nil, err
+						}
+						return nfsOp.Create(ctx, zone, &sacloud.NFSCreateRequest{
+							Name:           "libsacloud-nfs-for-util-setup",
+							SwitchID:       switchID,
+							PlanID:         nfsPlanID,
+							IPAddresses:    []string{"192.168.0.11"},
+							NetworkMaskLen: 24,
+							DefaultRoute:   "192.168.0.1",
+						})
+					},
+					Read: func(ctx context.Context, zone string, id types.ID) (interface{}, error) {
+						return nfsOp.Read(ctx, zone, id)
+					},
+					Delete: func(ctx context.Context, zone string, id types.ID) error {
+						return nfsOp.Delete(ctx, zone, id)
+					},
+					IsWaitForCopy: true,
+					IsWaitForUp:   true,
+					RetryCount:    3,
 				}
-				client.NFS.Delete(nfs.ID)
-				wg.Done()
-			}()
-		}
-		wg.Wait()
-	}
-	{
-		items, _ := client.Switch.Reset().WithNameLike(testResourceName).Find()
-		for _, item := range items.Switches {
-			client.Switch.Delete(item.ID)
-		}
-	}
+				if !testutil.IsAccTest() {
+					nfsSetup.ProvisioningRetryInterval = time.Millisecond
+					nfsSetup.DeleteRetryInterval = time.Millisecond
+					nfsSetup.PollInterval = time.Millisecond
+				}
+
+				return nfsSetup.Setup(ctx, testZone)
+			},
+		},
+		Read: &testutil.CRUDTestFunc{
+			Func: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+				nfsOp := sacloud.NewNFSOp(caller)
+				return nfsOp.Read(ctx, testZone, ctx.ID)
+			},
+			CheckFunc: func(t testutil.TestT, ctx *testutil.CRUDTestContext, i interface{}) error {
+				nfs := i.(*sacloud.NFS)
+				return testutil.DoAsserts(
+					testutil.AssertEqualFunc(t, types.Availabilities.Available, nfs.Availability, "NFS.Availability"),
+				)
+			},
+		},
+
+		Shutdown: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {
+			nfsOp := sacloud.NewNFSOp(caller)
+			return nfsOp.Shutdown(ctx, testZone, ctx.ID, &sacloud.ShutdownOption{Force: true})
+		},
+
+		Delete: &testutil.CRUDTestDeleteFunc{
+			Func: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {
+				nfsOp := sacloud.NewNFSOp(caller)
+				if err := nfsOp.Delete(ctx, testZone, ctx.ID); err != nil {
+					return err
+				}
+
+				switchOp := sacloud.NewSwitchOp(caller)
+				if err := switchOp.Delete(ctx, testZone, switchID); err != nil {
+					return err
+				}
+				return nil
+			},
+		},
+	})
 }

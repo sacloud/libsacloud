@@ -1,15 +1,47 @@
 package server
 
 import (
-	"github.com/sacloud/libsacloud/api"
-	"github.com/sacloud/libsacloud/sacloud"
+	"context"
+
+	"github.com/sacloud/libsacloud/v2/sacloud"
+	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
-// GetDefaultUserName returns default admin user name from source archives/disks
-func GetDefaultUserName(client *api.Client, serverID int64) (string, error) {
+// SourceInfoReader サーバのコピー元情報を参照するためのリーダー
+type SourceInfoReader struct {
+	ServerReader  SourceServerReader
+	ArchiveReader SourceArchiveReader
+	DiskReader    SourceDiskReader
+}
 
+// NewSourceInfoReader デフォルトのリーダーを返す
+func NewSourceInfoReader(caller sacloud.APICaller) *SourceInfoReader {
+	return &SourceInfoReader{
+		ServerReader:  sacloud.NewServerOp(caller),
+		ArchiveReader: sacloud.NewArchiveOp(caller),
+		DiskReader:    sacloud.NewDiskOp(caller),
+	}
+}
+
+// SourceServerReader サーバ参照インターフェース
+type SourceServerReader interface {
+	Read(ctx context.Context, zone string, id types.ID) (*sacloud.Server, error)
+}
+
+// SourceArchiveReader アーカイブ参照インターフェース
+type SourceArchiveReader interface {
+	Read(ctx context.Context, zone string, id types.ID) (*sacloud.Archive, error)
+}
+
+// SourceDiskReader ディスク参照インターフェース
+type SourceDiskReader interface {
+	Read(ctx context.Context, zone string, id types.ID) (*sacloud.Disk, error)
+}
+
+// GetDefaultUserName returns default admin user name from source archives/disks
+func GetDefaultUserName(ctx context.Context, zone string, reader *SourceInfoReader, serverID types.ID) (string, error) {
 	// read server
-	server, err := client.GetServerAPI().Read(serverID)
+	server, err := reader.ServerReader.Read(ctx, zone, serverID)
 	if err != nil {
 		return "", err
 	}
@@ -18,37 +50,32 @@ func GetDefaultUserName(client *api.Client, serverID int64) (string, error) {
 		return "", nil
 	}
 
-	return getSSHDefaultUserNameDiskRec(client, server.Disks[0].ID)
+	return getSSHDefaultUserNameDiskRec(ctx, zone, reader, server.Disks[0].ID)
 }
 
-func getSSHDefaultUserNameDiskRec(client *api.Client, diskID int64) (string, error) {
-
-	disk, err := client.GetDiskAPI().Read(diskID)
+func getSSHDefaultUserNameDiskRec(ctx context.Context, zone string, reader *SourceInfoReader, diskID types.ID) (string, error) {
+	disk, err := reader.DiskReader.Read(ctx, zone, diskID)
 	if err != nil {
 		return "", err
 	}
-
-	if disk.SourceDisk != nil {
-		return getSSHDefaultUserNameDiskRec(client, disk.SourceDisk.ID)
+	if !disk.SourceDiskID.IsEmpty() {
+		return getSSHDefaultUserNameDiskRec(ctx, zone, reader, disk.SourceDiskID)
 	}
 
-	if disk.SourceArchive != nil {
-		return getSSHDefaultUserNameArchiveRec(client, disk.SourceArchive.ID)
-
+	if !disk.SourceArchiveID.IsEmpty() {
+		return getSSHDefaultUserNameArchiveRec(ctx, zone, reader, disk.SourceArchiveID)
 	}
-
 	return "", nil
 }
 
-func getSSHDefaultUserNameArchiveRec(client *api.Client, archiveID int64) (string, error) {
+func getSSHDefaultUserNameArchiveRec(ctx context.Context, zone string, reader *SourceInfoReader, archiveID types.ID) (string, error) {
 	// read archive
-	archive, err := client.GetArchiveAPI().Read(archiveID)
+	archive, err := reader.ArchiveReader.Read(ctx, zone, archiveID)
 	if err != nil {
 		return "", err
 	}
 
-	if archive.Scope == string(sacloud.ESCopeShared) {
-
+	if archive.Scope == types.Scopes.Shared {
 		// has ubuntu/coreos tag?
 		if archive.HasTag("distro-ubuntu") {
 			return "ubuntu", nil
@@ -66,12 +93,12 @@ func getSSHDefaultUserNameArchiveRec(client *api.Client, archiveID int64) (strin
 			return "rancher", nil
 		}
 	}
-	if archive.SourceDisk != nil {
-		return getSSHDefaultUserNameDiskRec(client, archive.SourceDisk.ID)
+	if !archive.SourceDiskID.IsEmpty() {
+		return getSSHDefaultUserNameDiskRec(ctx, zone, reader, archive.SourceDiskID)
 	}
 
-	if archive.SourceArchive != nil {
-		return getSSHDefaultUserNameArchiveRec(client, archive.SourceArchive.ID)
+	if !archive.SourceArchiveID.IsEmpty() {
+		return getSSHDefaultUserNameArchiveRec(ctx, zone, reader, archive.SourceArchiveID)
 	}
 	return "", nil
 

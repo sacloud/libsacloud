@@ -1,14 +1,14 @@
 // Package ostype is define OS type of SakuraCloud public archive
 package ostype
 
-//go:generate stringer -type=ArchiveOSTypes
+//go:generate stringer -type=ArchiveOSType
 
-// ArchiveOSTypes パブリックアーカイブOS種別
-type ArchiveOSTypes int
+// ArchiveOSType パブリックアーカイブOS種別
+type ArchiveOSType int
 
 const (
 	// CentOS OS種別:CentOS
-	CentOS ArchiveOSTypes = iota
+	CentOS ArchiveOSType = iota
 	// CentOS6 OS種別:CentOS6
 	CentOS6
 	// Ubuntu OS種別:Ubuntu
@@ -53,6 +53,31 @@ const (
 	Custom
 )
 
+// ArchiveOSTypes アーカイブ種別のリスト
+var ArchiveOSTypes = []ArchiveOSType{
+	CentOS,
+	CentOS6,
+	Ubuntu,
+	Debian,
+	CoreOS,
+	RancherOS,
+	K3OS,
+	Kusanagi,
+	SophosUTM,
+	FreeBSD,
+	Netwiser,
+	OPNsense,
+	Windows2016,
+	Windows2016RDS,
+	Windows2016RDSOffice,
+	Windows2016SQLServerWeb,
+	Windows2016SQLServerStandard,
+	Windows2016SQLServer2017Standard,
+	Windows2016SQLServerStandardAll,
+	Windows2016SQLServer2017StandardAll,
+	Windows2019,
+}
+
 // OSTypeShortNames OSTypeとして利用できる文字列のリスト
 var OSTypeShortNames = []string{
 	"centos", "centos6", "ubuntu", "debian", "coreos",
@@ -65,7 +90,7 @@ var OSTypeShortNames = []string{
 }
 
 // IsWindows Windowsか
-func (o ArchiveOSTypes) IsWindows() bool {
+func (o ArchiveOSType) IsWindows() bool {
 	switch o {
 	case Windows2016, Windows2016RDS, Windows2016RDSOffice,
 		Windows2016SQLServerWeb, Windows2016SQLServerStandard, Windows2016SQLServerStandardAll,
@@ -78,7 +103,7 @@ func (o ArchiveOSTypes) IsWindows() bool {
 }
 
 // IsSupportDiskEdit ディスクの修正機能をフルサポートしているか(Windowsは一部サポートのためfalseを返す)
-func (o ArchiveOSTypes) IsSupportDiskEdit() bool {
+func (o ArchiveOSType) IsSupportDiskEdit() bool {
 	switch o {
 	case CentOS, CentOS6, Ubuntu, Debian, CoreOS, RancherOS, K3OS, Kusanagi, FreeBSD:
 		return true
@@ -88,7 +113,7 @@ func (o ArchiveOSTypes) IsSupportDiskEdit() bool {
 }
 
 // StrToOSType 文字列からArchiveOSTypesへの変換
-func StrToOSType(osType string) ArchiveOSTypes {
+func StrToOSType(osType string) ArchiveOSType {
 	switch osType {
 	case "centos":
 		return CentOS

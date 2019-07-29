@@ -1,3 +1,2 @@
-// Package sacloud is define models for SakuraCloud.
-//
+// Package sacloud さくらのクラウド API ライブラリ
 package sacloud

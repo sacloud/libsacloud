@@ -3,30 +3,31 @@ VETARGS?=-all
 GOFMT_FILES?=$$(find . -name '*.go' | grep -v vendor)
 export GO111MODULE=on
 
-default: test vet
-
-run:
-	go run $(CURDIR)/main.go --disable-healthcheck $(ARGS)
+default: gen fmt goimports golint vet test
 
 test:
-	go test ./sacloud $(TESTARGS) -v -timeout=120m -parallel=4 ;
+	TESTACC= go test ./... $(TESTARGS) -v -timeout=120m -parallel=8 ;
 
-test-api: 
-	go test ./api $(TESTARGS) -v -timeout=120m -parallel=4 ;
+testacc:
+	TESTACC=1 go test ./... $(TESTARGS) -v -timeout=120m -parallel=8 ;
 
-test-builder:
-	go test ./builder $(TESTARGS) -v -timeout=120m -parallel=4 ;
+.PHONY: clean
+clean:
+	rm -f sacloud/zz_*.go; \
+	rm -f sacloud/fake/zz_*.go \
+	rm -f sacloud/naked/zz_*.go \
+	rm -f sacloud/stub/zz_*.go \
+	rm -f sacloud/trace/zz_*.go
 
-test-utils: 
-	go test ./utils/* $(TESTARGS) -v -timeout=120m -parallel=4 ;
-
-test-all: goimports vet test test-api test-builder test-utils
+.PHONY: gen
+gen:
+	go generate ./...; gofmt -s -l -w $(GOFMT_FILES); goimports -l -w $(GOFMT_FILES)
 
 vet: golint
 	go vet ./...
 
 golint: 
-	test -z "$$(golint ./... | grep -v 'vendor/' | grep -v '_string.go' | tee /dev/stderr )"
+	test -z "$$(golint ./... | grep -v 'tools/' | grep -v 'vendor/' | grep -v '_string.go' | tee /dev/stderr )"
 
 goimports: fmt
 	goimports -l -w $(GOFMT_FILES)
@@ -34,30 +35,28 @@ goimports: fmt
 fmt:
 	gofmt -s -l -w $(GOFMT_FILES)
 
-
 godoc:
-	docker-compose up godoc
-
-.PHONY: default test vet fmt golint test-api test-builder test-all run goimports
+	@echo "URL: http://localhost:6060/pkg/github.com/sacloud/libsacloud/"; \
+	docker run -it --rm -v $$PWD:/go/src/github.com/sacloud/libsacloud -p 6060:6060 golang:1.12 godoc -http=:6060
 
 .PHONY: tools
 tools:
-	go get golang.org/x/tools/cmd/goimports
-	go get golang.org/x/lint/golint
-	go get github.com/motemen/gobump
+	GO111MODULE=off go get golang.org/x/tools/cmd/goimports
+	GO111MODULE=off go get golang.org/x/lint/golint
+	GO111MODULE=off go get github.com/motemen/gobump
 
 .PHONY: bump-patch bump-minor bump-major version
 bump-patch:
-	gobump patch -w
+	@gobump patch -w ; echo "next version is v`gobump show -r`"
 
 bump-minor:
-	gobump minor -w
+	@gobump minor -w ; echo "next version is v`gobump show -r`"
 
 bump-major:
-	gobump major -w
+	@gobump major -w ; echo "next version is v`gobump show -r`"
 
 version:
-	gobump show
+	@gobump show -r
 
 git-tag:
 	git tag v`gobump show -r`
