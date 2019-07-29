@@ -18,7 +18,7 @@ func TestAutoBackupOpCRUD(t *testing.T) {
 		Setup: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {
 			diskOp := sacloud.NewDiskOp(caller)
 			disk, err := diskOp.Create(ctx, testZone, &sacloud.DiskCreateRequest{
-				Name:       "libsacloud-disk-with-autobackup",
+				Name:       testutil.ResourceName("-disk-for-autobackup"),
 				SizeMB:     20 * 1024,
 				DiskPlanID: types.DiskPlans.SSD,
 			}, nil)
@@ -103,7 +103,7 @@ var (
 		"ZoneName",
 	}
 	createAutoBackupParam = &sacloud.AutoBackupCreateRequest{
-		Name:        "libsacloud-auto-backup",
+		Name:        testutil.ResourceName("auto-backup"),
 		Description: "desc",
 		Tags:        []string{"tag1", "tag2"},
 		BackupSpanWeekdays: []types.EBackupSpanWeekday{
@@ -121,7 +121,7 @@ var (
 		MaximumNumberOfArchives: createAutoBackupParam.MaximumNumberOfArchives,
 	}
 	updateAutoBackupParam = &sacloud.AutoBackupUpdateRequest{
-		Name:        "libsacloud-auto-backup-upd",
+		Name:        testutil.ResourceName("auto-backup-upd"),
 		Description: "desc-upd",
 		Tags:        []string{"tag1-upd", "tag2-upd"},
 		BackupSpanWeekdays: []types.EBackupSpanWeekday{
@@ -143,7 +143,7 @@ var (
 		IconID:                  testIconID,
 	}
 	updateAutoBackupToMinParam = &sacloud.AutoBackupUpdateRequest{
-		Name: "libsacloud-auto-to-min",
+		Name: testutil.ResourceName("auto-backup-to-min"),
 		BackupSpanWeekdays: []types.EBackupSpanWeekday{
 			types.BackupSpanWeekdays.Sunday,
 		},

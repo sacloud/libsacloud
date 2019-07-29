@@ -52,7 +52,7 @@ func TestNoteOp_CRUD(t *testing.T) {
 var (
 	ignoreNoteFields = []string{"ID", "CreatedAt", "ModifiedAt"}
 	createNoteParam  = &sacloud.NoteCreateRequest{
-		Name:    "libsacloud-note",
+		Name:    testutil.ResourceName("note"),
 		Tags:    []string{"tag1", "tag2"},
 		Class:   "shell",
 		Content: "test-content",
@@ -66,7 +66,7 @@ var (
 		Availability: types.Availabilities.Available,
 	}
 	updateNoteParam = &sacloud.NoteUpdateRequest{
-		Name:    "libsacloud-note-upd",
+		Name:    testutil.ResourceName("note-upd"),
 		Tags:    []string{"tag1-upd", "tag2-upd"},
 		Class:   "shell",
 		Content: "test-content-upd",
@@ -82,7 +82,7 @@ var (
 		IconID:       updateNoteParam.IconID,
 	}
 	updateNoteToMinParam = &sacloud.NoteUpdateRequest{
-		Name:    "libsacloud-note-to-min",
+		Name:    testutil.ResourceName("note-to-min"),
 		Class:   "shell",
 		Content: "test-content-upd",
 	}

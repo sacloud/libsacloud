@@ -58,7 +58,7 @@ var (
 	}
 
 	createPacketFilterParam = &sacloud.PacketFilterCreateRequest{
-		Name:        "libsacloud-packet-filter",
+		Name:        testutil.ResourceName("packet-filter"),
 		Description: "desc",
 		Expression: []*sacloud.PacketFilterExpression{
 			{
@@ -79,7 +79,7 @@ var (
 		Expression:  createPacketFilterParam.Expression,
 	}
 	updatePacketFilterParam = &sacloud.PacketFilterUpdateRequest{
-		Name:        "libsacloud-packet-filter-upd",
+		Name:        testutil.ResourceName("packet-filter-upd"),
 		Description: "desc-upd",
 		Expression: []*sacloud.PacketFilterExpression{
 			{
@@ -107,7 +107,7 @@ var (
 	}
 
 	updatePacketFilterToMinParam = &sacloud.PacketFilterUpdateRequest{
-		Name: "libsacloud-packet-filter-to-min",
+		Name: testutil.ResourceName("packet-filter-to-min"),
 	}
 	updatePacketFilterToMinExpected = &sacloud.PacketFilter{
 		Name: updatePacketFilterToMinParam.Name,

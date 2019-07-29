@@ -62,7 +62,7 @@ var (
 	}
 
 	createBridgeParam = &sacloud.BridgeCreateRequest{
-		Name:        "libsacloud-bridge",
+		Name:        testutil.ResourceName("bridge"),
 		Description: "desc",
 	}
 	createBridgeExpected = &sacloud.Bridge{
@@ -70,7 +70,7 @@ var (
 		Description: createBridgeParam.Description,
 	}
 	updateBridgeParam = &sacloud.BridgeUpdateRequest{
-		Name:        "libsacloud-bridge-upd",
+		Name:        testutil.ResourceName("bridge-upd"),
 		Description: "desc-upd",
 	}
 	updateBridgeExpected = &sacloud.Bridge{
@@ -78,7 +78,7 @@ var (
 		Description: updateBridgeParam.Description,
 	}
 	updateBridgeToMinParam = &sacloud.BridgeUpdateRequest{
-		Name: "libsacloud-bridge-to-min",
+		Name: testutil.ResourceName("bridge-to-min"),
 	}
 	updateBridgeToMinExpected = &sacloud.Bridge{
 		Name: updateBridgeToMinParam.Name,

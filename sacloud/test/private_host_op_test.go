@@ -75,7 +75,7 @@ var (
 	}
 
 	createPrivateHostParam = &sacloud.PrivateHostCreateRequest{
-		Name:        "libsacloud-private-host",
+		Name:        testutil.ResourceName("private-host"),
 		Description: "libsacloud-private-host",
 		Tags:        []string{"tag1", "tag2"},
 	}
@@ -88,7 +88,7 @@ var (
 		AssignedMemoryMB: 0,
 	}
 	updatePrivateHostParam = &sacloud.PrivateHostUpdateRequest{
-		Name:        "libsacloud-private-host-upd",
+		Name:        testutil.ResourceName("private-host-upd"),
 		Description: "libsacloud-private-host-upd",
 		Tags:        []string{"tag1-upd", "tag2-upd"},
 		IconID:      testIconID,
@@ -103,7 +103,7 @@ var (
 		IconID:           testIconID,
 	}
 	updatePrivateHostToMinParam = &sacloud.PrivateHostUpdateRequest{
-		Name: "libsacloud-private-host-to-min",
+		Name: testutil.ResourceName("private-host-to-min"),
 	}
 	updatePrivateHostToMinExpected = &sacloud.PrivateHost{
 		Name:             updatePrivateHostToMinParam.Name,

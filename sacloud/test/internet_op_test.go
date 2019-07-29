@@ -58,7 +58,7 @@ var (
 		"Switch",
 	}
 	createInternetParam = &sacloud.InternetCreateRequest{
-		Name:           "libsacloud-internet",
+		Name:           testutil.ResourceName("internet"),
 		Description:    "desc",
 		Tags:           []string{"tag1", "tag2"},
 		NetworkMaskLen: 28,
@@ -72,7 +72,7 @@ var (
 		BandWidthMbps:  createInternetParam.BandWidthMbps,
 	}
 	updateInternetParam = &sacloud.InternetUpdateRequest{
-		Name:        "libsacloud-internet-upd",
+		Name:        testutil.ResourceName("internet-upd"),
 		Tags:        []string{"tag1-upd", "tag2-upd"},
 		Description: "desc-upd",
 		IconID:      testIconID,
@@ -86,7 +86,7 @@ var (
 		IconID:         testIconID,
 	}
 	updateInternetToMinParam = &sacloud.InternetUpdateRequest{
-		Name: "libsacloud-internet-to-min",
+		Name: testutil.ResourceName("internet-to-min"),
 	}
 	updateInternetToMinExpected = &sacloud.Internet{
 		Name:           updateInternetToMinParam.Name,

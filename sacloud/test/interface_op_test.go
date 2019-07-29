@@ -26,7 +26,7 @@ func TestInterface_Operations(t *testing.T) {
 				//	{Scope: types.Scopes.Shared},
 				//},
 				ServerPlanCommitment: types.Commitments.Standard,
-				Name:                 "libsacloud-server-with-interface",
+				Name:                 testutil.ResourceName("server-with-interface"),
 			})
 			if !assert.NoError(t, err) {
 				return err

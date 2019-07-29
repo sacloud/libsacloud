@@ -65,7 +65,7 @@ var (
 		"SettingsHash",
 	}
 	createSimpleMonitorParam = &sacloud.SimpleMonitorCreateRequest{
-		Target:      "libsacloud-test.usacloud.jp",
+		Target:      testutil.ResourceName("simple-monitor.usacloud.jp"),
 		Description: "desc",
 		Tags:        []string{"tag1", "tag2"},
 		DelayLoop:   60,
@@ -237,7 +237,7 @@ func TestSimpleMonitorOp_StatusAndHealth(t *testing.T) {
 }
 
 var simpleMonitorStatusAndHealthTargetParam = &sacloud.SimpleMonitorCreateRequest{
-	Target:    "cloud.sakura.ad.jp",
+	Target:    testutil.ResourceName("simple-monitor.usacloud.jp"),
 	DelayLoop: 60,
 	Enabled:   true,
 	HealthCheck: &sacloud.SimpleMonitorHealthCheck{

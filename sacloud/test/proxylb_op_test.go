@@ -89,7 +89,7 @@ func initProxyLBVariables() {
 	}
 
 	createProxyLBParam = &sacloud.ProxyLBCreateRequest{
-		Name:        "libsacloud-proxyLB",
+		Name:        testutil.ResourceName("proxylb"),
 		Description: "desc",
 		Tags:        []string{"tag1", "tag2"},
 		Plan:        types.ProxyLBPlans.CPS500,
@@ -153,7 +153,7 @@ func initProxyLBVariables() {
 		Region:         createProxyLBParam.Region,
 	}
 	updateProxyLBParam = &sacloud.ProxyLBUpdateRequest{
-		Name:        "libsacloud-proxyLB-upd",
+		Name:        testutil.ResourceName("proxylb-upd"),
 		Description: "desc-upd",
 		Tags:        []string{"tag1-upd", "tag2-upd"},
 		IconID:      testIconID,
@@ -216,7 +216,7 @@ func initProxyLBVariables() {
 	}
 
 	updateProxyLBToMinParam = &sacloud.ProxyLBUpdateRequest{
-		Name: "libsacloud-proxyLB-to-min",
+		Name: testutil.ResourceName("proxylb-to-min"),
 		HealthCheck: &sacloud.ProxyLBHealthCheck{
 			Protocol:  types.ProxyLBProtocols.TCP,
 			DelayLoop: 10,
@@ -245,7 +245,7 @@ func initProxyLBVariables() {
 	}
 
 	createProxyLBForACMEParam = &sacloud.ProxyLBCreateRequest{
-		Name: "libsacloud-proxyLB-acme",
+		Name: testutil.ResourceName("proxylb-acme"),
 		Plan: types.ProxyLBPlans.CPS100,
 		HealthCheck: &sacloud.ProxyLBHealthCheck{
 			Protocol:  types.ProxyLBProtocols.HTTP,
@@ -283,7 +283,7 @@ func initProxyLBVariables() {
 	}
 
 	updateProxyLBForACMEParam = &sacloud.ProxyLBUpdateRequest{
-		Name: "libsacloud-proxyLB-acme",
+		Name: testutil.ResourceName("proxylb-acme"),
 		HealthCheck: &sacloud.ProxyLBHealthCheck{
 			Protocol:  types.ProxyLBProtocols.HTTP,
 			Path:      "/",
