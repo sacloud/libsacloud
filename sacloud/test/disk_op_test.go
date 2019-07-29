@@ -79,7 +79,7 @@ var (
 	createDiskParam = &sacloud.DiskCreateRequest{
 		DiskPlanID:  types.DiskPlans.SSD,
 		Connection:  types.DiskConnections.VirtIO,
-		Name:        "libsacloud-disk",
+		Name:        testutil.ResourceName("disk"),
 		Description: "desc",
 		Tags:        []string{"tag1", "tag2"},
 		SizeMB:      20 * 1024,
@@ -92,7 +92,7 @@ var (
 		Connection:  createDiskParam.Connection,
 	}
 	updateDiskParam = &sacloud.DiskUpdateRequest{
-		Name:        "libsacloud-disk-upd",
+		Name:        testutil.ResourceName("disk-upd"),
 		Description: "desc-upd",
 		Tags:        []string{"tag1-upd", "tag2-upd"},
 		IconID:      testIconID,
@@ -106,7 +106,7 @@ var (
 		IconID:      updateDiskParam.IconID,
 	}
 	updateDiskToMinParam = &sacloud.DiskUpdateRequest{
-		Name: "libsacloud-disk-to-min",
+		Name: testutil.ResourceName("disk-to-min"),
 	}
 	updateDiskToMinExpected = &sacloud.Disk{
 		Name:       updateDiskToMinParam.Name,
@@ -168,7 +168,7 @@ func TestDiskOp_Config(t *testing.T) {
 			Func: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 				client := sacloud.NewDiskOp(singletonAPICaller())
 				disk, err := client.Create(ctx, testZone, &sacloud.DiskCreateRequest{
-					Name:            "libsacloud-disk-edit",
+					Name:            testutil.ResourceName("disk-edit"),
 					DiskPlanID:      types.DiskPlans.SSD,
 					SizeMB:          20 * 1024,
 					SourceArchiveID: archiveID,

@@ -73,7 +73,7 @@ var (
 		Switch: &sacloud.ApplianceConnectedSwitch{
 			Scope: types.Scopes.Shared,
 		},
-		Name:        "libsacloud-vpc-router",
+		Name:        testutil.ResourceName("vpc-router"),
 		Description: "desc",
 		Tags:        []string{"tag1", "tag2"},
 		Settings: &sacloud.VPCRouterSetting{
@@ -102,7 +102,7 @@ var (
 		Settings:       createVPCRouterParam.Settings,
 	}
 	updateVPCRouterParam = &sacloud.VPCRouterUpdateRequest{
-		Name:        "libsacloud-vpc-router-upd",
+		Name:        testutil.ResourceName("vpc-router-upd"),
 		Tags:        []string{"tag1-upd", "tag2-upd"},
 		Description: "desc-upd",
 	}
@@ -165,7 +165,7 @@ func TestVPCRouterOp_WithRouterCRUD(t *testing.T) {
 		Setup: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {
 			routerOp := sacloud.NewInternetOp(caller)
 			created, err := routerOp.Create(ctx, testZone, &sacloud.InternetCreateRequest{
-				Name:           "libsacloud-internet-for-vpc-router",
+				Name:           testutil.ResourceName("internet-for-vpc-router"),
 				BandWidthMbps:  100,
 				NetworkMaskLen: 28,
 			})
@@ -254,7 +254,7 @@ func TestVPCRouterOp_WithRouterCRUD(t *testing.T) {
 
 					swOp := sacloud.NewSwitchOp(caller)
 					sw, err := swOp.Create(ctx, testZone, &sacloud.SwitchCreateRequest{
-						Name: "libsacloud-switch-for-vpc-router",
+						Name: testutil.ResourceName("switch-for-vpc-router"),
 					})
 					if err != nil {
 						return nil, err
@@ -394,7 +394,7 @@ func TestVPCRouterOp_WithRouterCRUD(t *testing.T) {
 var (
 	withRouterCreateVPCRouterParam = &sacloud.VPCRouterCreateRequest{
 		PlanID:      types.VPCRouterPlans.Standard,
-		Name:        "libsacloud-vpc-router",
+		Name:        testutil.ResourceName("vpc-router"),
 		Description: "desc",
 		Tags:        []string{"tag1", "tag2"},
 	}
@@ -410,7 +410,7 @@ var (
 		Settings:       createVPCRouterParam.Settings,
 	}
 	withRouterUpdateVPCRouterParam = &sacloud.VPCRouterUpdateRequest{
-		Name:        "libsacloud-vpc-router-upd",
+		Name:        testutil.ResourceName("vpc-router-upd"),
 		Tags:        []string{"tag1-upd", "tag2-upd"},
 		Description: "desc-upd",
 		IconID:      testIconID,
@@ -427,7 +427,7 @@ var (
 		IconID:         testIconID,
 	}
 	withRouterUpdateVPCRouterToMinParam = &sacloud.VPCRouterUpdateRequest{
-		Name: "libsacloud-vpc-router-to-min",
+		Name: testutil.ResourceName("vpc-router-to-min"),
 	}
 	withRouterUpdateVPCRouterToMinExpected = &sacloud.VPCRouter{
 		Class:          "vpcrouter",

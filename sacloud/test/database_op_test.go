@@ -92,7 +92,7 @@ var (
 		IPAddresses:    []string{"192.168.0.11"},
 		NetworkMaskLen: 24,
 		DefaultRoute:   "192.168.0.1",
-		Name:           "libsacloud-db",
+		Name:           testutil.ResourceName("db"),
 		Description:    "desc",
 		Tags:           []string{"tag1", "tag2"},
 
@@ -121,7 +121,7 @@ var (
 		CommonSetting:  createDatabaseParam.CommonSetting,
 	}
 	updateDatabaseParam = &sacloud.DatabaseUpdateRequest{
-		Name:        "libsacloud-db-upd",
+		Name:        testutil.ResourceName("db-upd"),
 		Tags:        []string{"tag1-upd", "tag2-upd"},
 		Description: "desc-upd",
 		CommonSetting: &sacloud.DatabaseSettingCommonUpdate{
@@ -147,7 +147,7 @@ var (
 		},
 	}
 	updateDatabaseToFullParam = &sacloud.DatabaseUpdateRequest{
-		Name:        "libsacloud-db-to-full",
+		Name:        testutil.ResourceName("db-to-full"),
 		Tags:        []string{"tag1-upd", "tag2-upd"},
 		Description: "desc-upd",
 		BackupSetting: &sacloud.DatabaseSettingBackup{
@@ -186,7 +186,7 @@ var (
 		IconID:        updateDatabaseToFullParam.IconID,
 	}
 	updateDatabaseToMinParam = &sacloud.DatabaseUpdateRequest{
-		Name: "libsacloud-db-to-min",
+		Name: testutil.ResourceName("db-to-min"),
 		CommonSetting: &sacloud.DatabaseSettingCommonUpdate{
 			DefaultUser:  "exa.mple",
 			UserPassword: "LibsacloudExamplePassword04",

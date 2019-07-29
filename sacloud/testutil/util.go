@@ -23,6 +23,7 @@ import (
 // このプレフィックスを持つリソースは受入テスト実行後に削除される
 const TestResourcePrefix = "libsacloud-test-"
 
+// ResourceName テスト時に作成するリソースの名称
 func ResourceName(name string) string {
 	return fmt.Sprintf("%s%s", TestResourcePrefix, name)
 }

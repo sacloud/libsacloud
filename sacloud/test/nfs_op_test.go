@@ -100,7 +100,7 @@ var (
 		IPAddresses:    []string{"192.168.0.11"},
 		NetworkMaskLen: 24,
 		DefaultRoute:   "192.168.0.1",
-		Name:           "libsacloud-nfs",
+		Name:           testutil.ResourceName("nfs"),
 		Description:    "desc",
 		Tags:           []string{"tag1", "tag2"},
 	}
@@ -114,7 +114,7 @@ var (
 		IPAddresses:    createNFSParam.IPAddresses,
 	}
 	updateNFSParam = &sacloud.NFSUpdateRequest{
-		Name:        "libsacloud-nfs-upd",
+		Name:        testutil.ResourceName("nfs-upd"),
 		Tags:        []string{"tag1-upd", "tag2-upd"},
 		Description: "desc-upd",
 		IconID:      testIconID,
@@ -129,7 +129,7 @@ var (
 		IconID:         testIconID,
 	}
 	updateNFSToMinParam = &sacloud.NFSUpdateRequest{
-		Name: "libsacloud-nfs-to-min",
+		Name: testutil.ResourceName("nfs-to-min"),
 	}
 	updateNFSToMinExpected = &sacloud.NFS{
 		Name:           updateNFSToMinParam.Name,

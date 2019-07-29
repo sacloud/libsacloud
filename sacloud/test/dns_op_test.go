@@ -64,7 +64,7 @@ var (
 		"DNSNameServers",
 	}
 	createDNSParam = &sacloud.DNSCreateRequest{
-		Name:        "libsacloud-test.com",
+		Name:        testutil.ResourceName("dns.com"),
 		Description: "desc",
 		Tags:        []string{"tag1", "tag2"},
 		Records: []*sacloud.DNSRecord{
