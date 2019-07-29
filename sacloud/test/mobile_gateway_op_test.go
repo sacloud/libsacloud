@@ -67,7 +67,7 @@ func TestMobileGatewayOpCRUD(t *testing.T) {
 					// prepare switch
 					swOp := sacloud.NewSwitchOp(caller)
 					sw, err := swOp.Create(ctx, testZone, &sacloud.SwitchCreateRequest{
-						Name: "libsacloud-switch-for-mobile-gateway",
+						Name: testutil.ResourceName("switch-for-mobile-gateway"),
 					})
 					if err != nil {
 						return nil, err
@@ -145,7 +145,7 @@ func TestMobileGatewayOpCRUD(t *testing.T) {
 				Func: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 					simOp := sacloud.NewSIMOp(caller)
 					sim, err := simOp.Create(ctx, &sacloud.SIMCreateRequest{
-						Name:     "libsacloud-switch-for-mobile-gateway",
+						Name:     testutil.ResourceName("switch-for-mobile-gateway"),
 						ICCID:    iccid,
 						PassCode: passcode,
 					})
@@ -374,7 +374,7 @@ func initMobileGatewayVariables() {
 	passcode = os.Getenv("SAKURACLOUD_SIM_PASSCODE")
 
 	createMobileGatewayParam = &sacloud.MobileGatewayCreateRequest{
-		Name:        "libsacloud-mobile-gateway",
+		Name:        testutil.ResourceName("mobile-gateway"),
 		Description: "desc",
 		Tags:        []string{"tag1", "tag2"},
 		Settings: &sacloud.MobileGatewaySettingCreate{
@@ -393,7 +393,7 @@ func initMobileGatewayVariables() {
 		},
 	}
 	updateMobileGatewayParam = &sacloud.MobileGatewayUpdateRequest{
-		Name:        "libsacloud-mobile-gateway-upd",
+		Name:        testutil.ResourceName("mobile-gateway-upd"),
 		Description: "desc-upd",
 		Tags:        []string{"tag1-upd", "tag2-upd"},
 		Settings: &sacloud.MobileGatewaySetting{

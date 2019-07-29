@@ -99,7 +99,7 @@ var (
 	}
 
 	createArchiveParam = &sacloud.ArchiveCreateRequest{
-		Name:        "libsacloud-archive",
+		Name:        testutil.ResourceName("archive"),
 		Description: "desc",
 		Tags:        []string{"tag1", "tag2"},
 	}
@@ -111,7 +111,7 @@ var (
 		DiskPlanID:  types.DiskPlans.HDD,
 	}
 	updateArchiveParam = &sacloud.ArchiveUpdateRequest{
-		Name:        "libsacloud-archive-upd",
+		Name:        testutil.ResourceName("archive-upd"),
 		Description: "desc-upd",
 		Tags:        []string{"tag1-upd", "tag2-upd"},
 		IconID:      testIconID,
@@ -125,7 +125,7 @@ var (
 		IconID:      updateArchiveParam.IconID,
 	}
 	updateArchiveToMinParam = &sacloud.ArchiveUpdateRequest{
-		Name:        "libsacloud-archive-min",
+		Name:        testutil.ResourceName("archive-min"),
 		Description: "",
 	}
 	updateArchiveToMinExpected = &sacloud.Archive{
@@ -171,7 +171,7 @@ func TestArchiveOp_CreateBlank(t *testing.T) {
 				client := sacloud.NewArchiveOp(singletonAPICaller())
 				archive, ftpServer, err := client.CreateBlank(ctx, testZone, &sacloud.ArchiveCreateBlankRequest{
 					SizeMB: 20 * 1024,
-					Name:   "libsacloud-archive-blank",
+					Name:   testutil.ResourceName("archive-blank"),
 				})
 
 				if err != nil {

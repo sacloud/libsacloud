@@ -17,8 +17,8 @@ func TestMain(m *testing.M) {
 	ret := m.Run()
 
 	skipCleanup := os.Getenv("SKIP_CLEANUP")
-	if skipCleanup != "" {
-		// TODO クリーンアップ処理
+	if skipCleanup == "" {
+		testutil.CleanupTestResources(context.TODO(), singletonAPICaller(), testutil.TestResourcePrefix)
 	}
 
 	os.Exit(ret)
@@ -39,7 +39,7 @@ func setupSwitchFunc(targetResource string, dests ...accessor.SwitchID) func(*te
 	return func(testContext *testutil.CRUDTestContext, caller sacloud.APICaller) error {
 		swClient := sacloud.NewSwitchOp(caller)
 		sw, err := swClient.Create(context.Background(), testZone, &sacloud.SwitchCreateRequest{
-			Name: "libsacloud-switch-for-" + targetResource,
+			Name: testutil.ResourceName("switch-for-" + targetResource),
 		})
 		if err != nil {
 			return err

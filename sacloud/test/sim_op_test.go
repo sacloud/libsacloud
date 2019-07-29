@@ -170,7 +170,7 @@ func initSIMVariables() {
 	passcode := os.Getenv("SAKURACLOUD_SIM_PASSCODE")
 
 	createSIMParam = &sacloud.SIMCreateRequest{
-		Name:        "libsacloud-sim",
+		Name:        testutil.ResourceName("sim"),
 		Description: "desc",
 		Tags:        []string{"tag1", "tag2"},
 		ICCID:       iccid,
@@ -184,7 +184,7 @@ func initSIMVariables() {
 		ICCID:        createSIMParam.ICCID,
 	}
 	updateSIMParam = &sacloud.SIMUpdateRequest{
-		Name:        "libsacloud-sim-upd",
+		Name:        testutil.ResourceName("sim-upd"),
 		Description: "desc-upd",
 		Tags:        []string{"tag1-upd", "tag2-upd"},
 	}

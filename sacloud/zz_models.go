@@ -10669,7 +10669,7 @@ func (o *LoadBalancer) SetInterfaces(v []*InterfaceView) {
 type LoadBalancerVirtualIPAddress struct {
 	VirtualIPAddress string `validate:"ipv4"`
 	Port             types.StringNumber
-	DelayLoop        types.StringNumber    `validate:"min=0,max=10000"`
+	DelayLoop        types.StringNumber    `mapconv:",default=10" validate:"min=0,max=10000"`
 	SorryServer      string                `validate:"ipv4"`
 	Description      string                `validate:"min=0,max=512"`
 	Servers          []*LoadBalancerServer `mapconv:",recursive" validate:"min=0,max=40"`
@@ -10685,7 +10685,7 @@ func (o *LoadBalancerVirtualIPAddress) setDefaults() interface{} {
 	return &struct {
 		VirtualIPAddress string `validate:"ipv4"`
 		Port             types.StringNumber
-		DelayLoop        types.StringNumber    `validate:"min=0,max=10000"`
+		DelayLoop        types.StringNumber    `mapconv:",default=10" validate:"min=0,max=10000"`
 		SorryServer      string                `validate:"ipv4"`
 		Description      string                `validate:"min=0,max=512"`
 		Servers          []*LoadBalancerServer `mapconv:",recursive" validate:"min=0,max=40"`

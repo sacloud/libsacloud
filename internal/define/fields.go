@@ -570,6 +570,7 @@ func (f *fieldsDef) LoadBalancerVIP() *dsl.FieldDesc {
 					Type: meta.TypeStringNumber,
 					Tags: &dsl.FieldTags{
 						Validate: "min=0,max=10000",
+						MapConv:  ",default=10",
 					},
 					DefaultValue: "10",
 				},

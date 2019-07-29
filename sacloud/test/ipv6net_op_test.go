@@ -17,7 +17,7 @@ func TestIPv6NetOp_List_Read(t *testing.T) {
 	ctx := context.Background()
 
 	internet, err := internetOp.Create(ctx, testZone, &sacloud.InternetCreateRequest{
-		Name:           "libsacloud-internet-ipv6",
+		Name:           testutil.ResourceName("internet-ipv6"),
 		NetworkMaskLen: 28,
 		BandWidthMbps:  100,
 	})

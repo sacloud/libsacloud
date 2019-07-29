@@ -56,7 +56,7 @@ var (
 		"ModifiedAt",
 	}
 	createSwitchParam = &sacloud.SwitchCreateRequest{
-		Name:           "libsacloud-switch",
+		Name:           testutil.ResourceName("switch"),
 		Description:    "desc",
 		Tags:           []string{"tag1", "tag2"},
 		DefaultRoute:   "192.168.0.1",
@@ -71,7 +71,7 @@ var (
 		Scope:          types.Scopes.User,
 	}
 	updateSwitchParam = &sacloud.SwitchUpdateRequest{
-		Name:           "libsacloud-switch-upd",
+		Name:           testutil.ResourceName("switch-upd"),
 		Tags:           []string{"tag1-upd", "tag2-upd"},
 		Description:    "desc-upd",
 		DefaultRoute:   "192.168.0.2",
@@ -88,7 +88,7 @@ var (
 		IconID:         testIconID,
 	}
 	updateSwitchToMinParam = &sacloud.SwitchUpdateRequest{
-		Name: "libsacloud-switch-to-min",
+		Name: testutil.ResourceName("switch-to-min"),
 	}
 	updateSwitchToMinExpected = &sacloud.Switch{
 		Name:  updateSwitchToMinParam.Name,
@@ -135,7 +135,7 @@ func TestSwitchOp_BridgeConnection(t *testing.T) {
 		Create: &testutil.CRUDTestFunc{
 			Func: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (i interface{}, e error) {
 				return swOp.Create(ctx, testZone, &sacloud.SwitchCreateRequest{
-					Name: "libsacloud-switch-for-bridge",
+					Name: testutil.ResourceName("switch-for-bridge"),
 				})
 			},
 		},
@@ -147,7 +147,7 @@ func TestSwitchOp_BridgeConnection(t *testing.T) {
 			{
 				Func: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (i interface{}, e error) {
 					bridge, err := bridgeOp.Create(ctx, testZone, &sacloud.BridgeCreateRequest{
-						Name: "libsacloud-bridge",
+						Name: testutil.ResourceName("bridge"),
 					})
 					if err != nil {
 						return nil, err

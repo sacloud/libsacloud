@@ -63,7 +63,7 @@ var (
 		"ModifiedAt",
 	}
 	createGSLBParam = &sacloud.GSLBCreateRequest{
-		Name:        "libsacloud-gslb",
+		Name:        testutil.ResourceName("gslb"),
 		Description: "desc",
 		Tags:        []string{"tag1", "tag2"},
 		HealthCheck: &sacloud.GSLBHealthCheck{
@@ -107,7 +107,7 @@ var (
 		},
 	}
 	updateGSLBParam = &sacloud.GSLBUpdateRequest{
-		Name:        "libsacloud-gslb-upd",
+		Name:        testutil.ResourceName("gslb-upd"),
 		Description: "desc-upd",
 		Tags:        []string{"tag1-upd", "tag2-upd"},
 		HealthCheck: &sacloud.GSLBHealthCheck{
@@ -146,7 +146,7 @@ var (
 		IconID:             testIconID,
 	}
 	updateGSLBToMinParam = &sacloud.GSLBUpdateRequest{
-		Name: "libsacloud-gslb-to-min",
+		Name: testutil.ResourceName("gslb-to-min"),
 		HealthCheck: &sacloud.GSLBHealthCheck{
 			Protocol: "ping",
 		},

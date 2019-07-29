@@ -50,7 +50,7 @@ func TestSSHKeyOp_Generate(t *testing.T) {
 			Func: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 				client := sacloud.NewSSHKeyOp(caller)
 				return client.Generate(ctx, &sacloud.SSHKeyGenerateRequest{
-					Name:        "libsacloud-sshKey-generate",
+					Name:        testutil.ResourceName("sshkey-generate"),
 					Description: "libsacloud-sshKey-generate",
 					PassPhrase:  "libsacloud-sshKey-passphrase",
 				})
@@ -83,7 +83,7 @@ var (
 		"CreatedAt",
 	}
 	createSSHKeyParam = &sacloud.SSHKeyCreateRequest{
-		Name:        "libsacloud-sshKey",
+		Name:        testutil.ResourceName("sshkey"),
 		Description: "libsacloud-sshKey",
 		PublicKey:   fakePublicKey,
 	}
@@ -94,7 +94,7 @@ var (
 		Fingerprint: fakeFingerprint,
 	}
 	updateSSHKeyParam = &sacloud.SSHKeyUpdateRequest{
-		Name:        "libsacloud-sshKey-upd",
+		Name:        testutil.ResourceName("sshkey-upd"),
 		Description: "libsacloud-sshKey-upd",
 	}
 	updateSSHKeyExpected = &sacloud.SSHKey{

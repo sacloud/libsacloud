@@ -164,7 +164,7 @@ var (
 			},
 		},
 		InterfaceDriver:   types.InterfaceDrivers.VirtIO,
-		Name:              "libsacloud-server",
+		Name:              testutil.ResourceName("server"),
 		Description:       "desc",
 		Tags:              []string{"tag1", "tag2"},
 		WaitDiskMigration: false,
@@ -178,7 +178,7 @@ var (
 		MemoryMB:        createServerParam.MemoryMB,
 	}
 	updateServerParam = &sacloud.ServerUpdateRequest{
-		Name:        "libsacloud-server-upd",
+		Name:        testutil.ResourceName("server-upd"),
 		Tags:        []string{"tag1-upd", "tag2-upd"},
 		Description: "desc-upd",
 		IconID:      testIconID,
@@ -193,7 +193,7 @@ var (
 		IconID:          testIconID,
 	}
 	updateServerToMinParam = &sacloud.ServerUpdateRequest{
-		Name: "libsacloud-server-to-min",
+		Name: testutil.ResourceName("server-to-min"),
 	}
 	updateServerToMinExpected = &sacloud.Server{
 		Name:            updateServerToMinParam.Name,
@@ -252,7 +252,7 @@ func TestServerOp_ChangePlan(t *testing.T) {
 						},
 					},
 					InterfaceDriver:   types.InterfaceDrivers.VirtIO,
-					Name:              "libsacloud-server",
+					Name:              testutil.ResourceName("server"),
 					Description:       "desc",
 					Tags:              []string{"tag1", "tag2"},
 					WaitDiskMigration: false,
@@ -323,7 +323,7 @@ func TestServerOp_Interfaces(t *testing.T) {
 
 				serverOp := sacloud.NewServerOp(caller)
 				server, err := serverOp.Create(ctx, testZone, &sacloud.ServerCreateRequest{
-					Name:     "libsacloud-server-disconnected-nics",
+					Name:     testutil.ResourceName("server-disconnected-nics"),
 					CPU:      1,
 					MemoryMB: 1024,
 					ConnectedSwitches: []*sacloud.ConnectedSwitch{

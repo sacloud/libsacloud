@@ -50,7 +50,7 @@ var (
 	}
 
 	createLicenseParam = &sacloud.LicenseCreateRequest{
-		Name:          "libsacloud-license",
+		Name:          testutil.ResourceName("license"),
 		LicenseInfoID: types.ID(10001),
 	}
 	createLicenseExpected = &sacloud.License{
@@ -59,7 +59,7 @@ var (
 		LicenseInfoName: "Windows RDS SAL",
 	}
 	updateLicenseParam = &sacloud.LicenseUpdateRequest{
-		Name: "libsacloud-license-upd",
+		Name: testutil.ResourceName("license-upd"),
 	}
 	updateLicenseExpected = &sacloud.License{
 		Name:            updateLicenseParam.Name,

@@ -96,7 +96,7 @@ var (
 		IPAddresses:    []string{"192.168.0.11", "192.168.0.12"},
 		NetworkMaskLen: 24,
 		DefaultRoute:   "192.168.0.1",
-		Name:           "libsacloud-lb",
+		Name:           testutil.ResourceName("lb"),
 		Description:    "desc",
 		Tags:           []string{"tag1", "tag2"},
 		VirtualIPAddresses: []*sacloud.LoadBalancerVirtualIPAddress{
@@ -166,7 +166,7 @@ var (
 		VirtualIPAddresses: createLoadBalancerParam.VirtualIPAddresses,
 	}
 	updateLoadBalancerParam = &sacloud.LoadBalancerUpdateRequest{
-		Name:        "libsacloud-lb-upd",
+		Name:        testutil.ResourceName("lb-upd"),
 		Tags:        []string{"tag1-upd", "tag2-upd"},
 		Description: "desc-upd",
 		IconID:      testIconID,
@@ -238,7 +238,7 @@ var (
 		VirtualIPAddresses: updateLoadBalancerParam.VirtualIPAddresses,
 	}
 	updateLoadBalancerToMin1Param = &sacloud.LoadBalancerUpdateRequest{
-		Name: "libsacloud-lb-to-min1",
+		Name: testutil.ResourceName("lb-to-min1"),
 		VirtualIPAddresses: []*sacloud.LoadBalancerVirtualIPAddress{
 			{
 				VirtualIPAddress: "192.168.0.111",
@@ -280,7 +280,7 @@ var (
 		},
 	}
 	updateLoadBalancerToMin2Param = &sacloud.LoadBalancerUpdateRequest{
-		Name: "libsacloud-lb-to-min2",
+		Name: testutil.ResourceName("lb-to-min2"),
 	}
 	updateLoadBalancerToMin2Expected = &sacloud.LoadBalancer{
 		Name:           updateLoadBalancerToMin2Param.Name,
