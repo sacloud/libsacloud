@@ -97,9 +97,9 @@ var (
 		Tags:           []string{"tag1", "tag2"},
 
 		Conf: &sacloud.DatabaseRemarkDBConfCommon{
-			DatabaseName:     "MariaDB",
-			DatabaseVersion:  "10.3",
-			DatabaseRevision: "10.3.15",
+			DatabaseName:     types.RDBMSVersions[types.RDBMSTypesMariaDB].Name,
+			DatabaseVersion:  types.RDBMSVersions[types.RDBMSTypesMariaDB].Version,
+			DatabaseRevision: types.RDBMSVersions[types.RDBMSTypesMariaDB].Revision,
 			DefaultUser:      "exa.mple",
 			UserPassword:     "LibsacloudExamplePassword01",
 		},
