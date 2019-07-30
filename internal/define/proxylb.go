@@ -171,6 +171,7 @@ var (
 			fields.ProxyLBRegion(),
 			fields.ProxyLBProxyNetworks(),
 			fields.ProxyLBFQDN(),
+			fields.ProxyLBVIP(),
 		},
 	}
 

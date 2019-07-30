@@ -14987,26 +14987,27 @@ func (o *PrivateHostPlan) SetAvailability(v types.EAvailability) {
 
 // ProxyLB represents API parameter/response structure
 type ProxyLB struct {
-	ID             types.ID
-	Name           string `validate:"required"`
-	Description    string `validate:"min=0,max=512"`
-	Tags           types.Tags
-	Availability   types.EAvailability
-	IconID         types.ID `mapconv:"Icon.ID"`
-	CreatedAt      time.Time
-	ModifiedAt     time.Time
-	Plan           types.EProxyLBPlan    `mapconv:"ServiceClass"`
-	HealthCheck    *ProxyLBHealthCheck   `mapconv:"Settings.ProxyLB.HealthCheck,recursive"`
-	SorryServer    *ProxyLBSorryServer   `mapconv:"Settings.ProxyLB.SorryServer,recursive"`
-	BindPorts      []*ProxyLBBindPort    `mapconv:"Settings.ProxyLB.[]BindPorts,recursive"`
-	Servers        []*ProxyLBServer      `mapconv:"Settings.ProxyLB.[]Servers,recursive"`
-	LetsEncrypt    *ProxyLBACMESetting   `mapconv:"Settings.ProxyLB.LetsEncrypt,recursive"`
-	StickySession  *ProxyLBStickySession `mapconv:"Settings.ProxyLB.StickySession,recursive"`
-	SettingsHash   string
-	UseVIPFailover bool                 `mapconv:"Status.UseVIPFailover"`
-	Region         types.EProxyLBRegion `mapconv:"Status.Region"`
-	ProxyNetworks  []string             `mapconv:"Status.ProxyNetworks"`
-	FQDN           string               `mapconv:"Status.FQDN"`
+	ID               types.ID
+	Name             string `validate:"required"`
+	Description      string `validate:"min=0,max=512"`
+	Tags             types.Tags
+	Availability     types.EAvailability
+	IconID           types.ID `mapconv:"Icon.ID"`
+	CreatedAt        time.Time
+	ModifiedAt       time.Time
+	Plan             types.EProxyLBPlan    `mapconv:"ServiceClass"`
+	HealthCheck      *ProxyLBHealthCheck   `mapconv:"Settings.ProxyLB.HealthCheck,recursive"`
+	SorryServer      *ProxyLBSorryServer   `mapconv:"Settings.ProxyLB.SorryServer,recursive"`
+	BindPorts        []*ProxyLBBindPort    `mapconv:"Settings.ProxyLB.[]BindPorts,recursive"`
+	Servers          []*ProxyLBServer      `mapconv:"Settings.ProxyLB.[]Servers,recursive"`
+	LetsEncrypt      *ProxyLBACMESetting   `mapconv:"Settings.ProxyLB.LetsEncrypt,recursive"`
+	StickySession    *ProxyLBStickySession `mapconv:"Settings.ProxyLB.StickySession,recursive"`
+	SettingsHash     string
+	UseVIPFailover   bool                 `mapconv:"Status.UseVIPFailover"`
+	Region           types.EProxyLBRegion `mapconv:"Status.Region"`
+	ProxyNetworks    []string             `mapconv:"Status.ProxyNetworks"`
+	FQDN             string               `mapconv:"Status.FQDN"`
+	VirtualIPAddress string               `mapconv:"Status.VirtualIPAddress"`
 }
 
 // Validate validates by field tags
@@ -15017,47 +15018,49 @@ func (o *ProxyLB) Validate() error {
 // setDefaults implements sacloud.argumentDefaulter
 func (o *ProxyLB) setDefaults() interface{} {
 	return &struct {
-		ID             types.ID
-		Name           string `validate:"required"`
-		Description    string `validate:"min=0,max=512"`
-		Tags           types.Tags
-		Availability   types.EAvailability
-		IconID         types.ID `mapconv:"Icon.ID"`
-		CreatedAt      time.Time
-		ModifiedAt     time.Time
-		Plan           types.EProxyLBPlan    `mapconv:"ServiceClass"`
-		HealthCheck    *ProxyLBHealthCheck   `mapconv:"Settings.ProxyLB.HealthCheck,recursive"`
-		SorryServer    *ProxyLBSorryServer   `mapconv:"Settings.ProxyLB.SorryServer,recursive"`
-		BindPorts      []*ProxyLBBindPort    `mapconv:"Settings.ProxyLB.[]BindPorts,recursive"`
-		Servers        []*ProxyLBServer      `mapconv:"Settings.ProxyLB.[]Servers,recursive"`
-		LetsEncrypt    *ProxyLBACMESetting   `mapconv:"Settings.ProxyLB.LetsEncrypt,recursive"`
-		StickySession  *ProxyLBStickySession `mapconv:"Settings.ProxyLB.StickySession,recursive"`
-		SettingsHash   string
-		UseVIPFailover bool                 `mapconv:"Status.UseVIPFailover"`
-		Region         types.EProxyLBRegion `mapconv:"Status.Region"`
-		ProxyNetworks  []string             `mapconv:"Status.ProxyNetworks"`
-		FQDN           string               `mapconv:"Status.FQDN"`
+		ID               types.ID
+		Name             string `validate:"required"`
+		Description      string `validate:"min=0,max=512"`
+		Tags             types.Tags
+		Availability     types.EAvailability
+		IconID           types.ID `mapconv:"Icon.ID"`
+		CreatedAt        time.Time
+		ModifiedAt       time.Time
+		Plan             types.EProxyLBPlan    `mapconv:"ServiceClass"`
+		HealthCheck      *ProxyLBHealthCheck   `mapconv:"Settings.ProxyLB.HealthCheck,recursive"`
+		SorryServer      *ProxyLBSorryServer   `mapconv:"Settings.ProxyLB.SorryServer,recursive"`
+		BindPorts        []*ProxyLBBindPort    `mapconv:"Settings.ProxyLB.[]BindPorts,recursive"`
+		Servers          []*ProxyLBServer      `mapconv:"Settings.ProxyLB.[]Servers,recursive"`
+		LetsEncrypt      *ProxyLBACMESetting   `mapconv:"Settings.ProxyLB.LetsEncrypt,recursive"`
+		StickySession    *ProxyLBStickySession `mapconv:"Settings.ProxyLB.StickySession,recursive"`
+		SettingsHash     string
+		UseVIPFailover   bool                 `mapconv:"Status.UseVIPFailover"`
+		Region           types.EProxyLBRegion `mapconv:"Status.Region"`
+		ProxyNetworks    []string             `mapconv:"Status.ProxyNetworks"`
+		FQDN             string               `mapconv:"Status.FQDN"`
+		VirtualIPAddress string               `mapconv:"Status.VirtualIPAddress"`
 	}{
-		ID:             o.GetID(),
-		Name:           o.GetName(),
-		Description:    o.GetDescription(),
-		Tags:           o.GetTags(),
-		Availability:   o.GetAvailability(),
-		IconID:         o.GetIconID(),
-		CreatedAt:      o.GetCreatedAt(),
-		ModifiedAt:     o.GetModifiedAt(),
-		Plan:           o.GetPlan(),
-		HealthCheck:    o.GetHealthCheck(),
-		SorryServer:    o.GetSorryServer(),
-		BindPorts:      o.GetBindPorts(),
-		Servers:        o.GetServers(),
-		LetsEncrypt:    o.GetLetsEncrypt(),
-		StickySession:  o.GetStickySession(),
-		SettingsHash:   o.GetSettingsHash(),
-		UseVIPFailover: o.GetUseVIPFailover(),
-		Region:         o.GetRegion(),
-		ProxyNetworks:  o.GetProxyNetworks(),
-		FQDN:           o.GetFQDN(),
+		ID:               o.GetID(),
+		Name:             o.GetName(),
+		Description:      o.GetDescription(),
+		Tags:             o.GetTags(),
+		Availability:     o.GetAvailability(),
+		IconID:           o.GetIconID(),
+		CreatedAt:        o.GetCreatedAt(),
+		ModifiedAt:       o.GetModifiedAt(),
+		Plan:             o.GetPlan(),
+		HealthCheck:      o.GetHealthCheck(),
+		SorryServer:      o.GetSorryServer(),
+		BindPorts:        o.GetBindPorts(),
+		Servers:          o.GetServers(),
+		LetsEncrypt:      o.GetLetsEncrypt(),
+		StickySession:    o.GetStickySession(),
+		SettingsHash:     o.GetSettingsHash(),
+		UseVIPFailover:   o.GetUseVIPFailover(),
+		Region:           o.GetRegion(),
+		ProxyNetworks:    o.GetProxyNetworks(),
+		FQDN:             o.GetFQDN(),
+		VirtualIPAddress: o.GetVirtualIPAddress(),
 	}
 }
 
@@ -15299,6 +15302,16 @@ func (o *ProxyLB) GetFQDN() string {
 // SetFQDN sets value to FQDN
 func (o *ProxyLB) SetFQDN(v string) {
 	o.FQDN = v
+}
+
+// GetVirtualIPAddress returns value of VirtualIPAddress
+func (o *ProxyLB) GetVirtualIPAddress() string {
+	return o.VirtualIPAddress
+}
+
+// SetVirtualIPAddress sets value to VirtualIPAddress
+func (o *ProxyLB) SetVirtualIPAddress(v string) {
+	o.VirtualIPAddress = v
 }
 
 /*************************************************

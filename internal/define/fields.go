@@ -1143,6 +1143,16 @@ func (f *fieldsDef) ProxyLBFQDN() *dsl.FieldDesc {
 	}
 }
 
+func (f *fieldsDef) ProxyLBVIP() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "VirtualIPAddress",
+		Type: meta.TypeString,
+		Tags: &dsl.FieldTags{
+			MapConv: "Status.VirtualIPAddress",
+		},
+	}
+}
+
 func (f *fieldsDef) ProxyLBHealthCheck() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "HealthCheck",
