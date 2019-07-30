@@ -571,6 +571,7 @@ type VPCRouterAPI interface {
 	ConnectToSwitch(ctx context.Context, zone string, id types.ID, nicIndex int, switchID types.ID) error
 	DisconnectFromSwitch(ctx context.Context, zone string, id types.ID, nicIndex int) error
 	MonitorInterface(ctx context.Context, zone string, id types.ID, index int, condition *MonitorCondition) (*InterfaceActivity, error)
+	Status(ctx context.Context, zone string, id types.ID) (*VPCRouterStatus, error)
 }
 
 /*************************************************

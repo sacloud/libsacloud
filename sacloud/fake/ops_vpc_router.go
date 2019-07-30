@@ -272,3 +272,13 @@ func (o *VPCRouterOp) MonitorInterface(ctx context.Context, zone string, id type
 
 	return res, nil
 }
+
+// Status is fake implementation
+func (o *VPCRouterOp) Status(ctx context.Context, zone string, id types.ID) (*sacloud.VPCRouterStatus, error) {
+	_, err := o.Read(ctx, zone, id)
+	if err != nil {
+		return nil, err
+	}
+
+	return &sacloud.VPCRouterStatus{}, nil
+}

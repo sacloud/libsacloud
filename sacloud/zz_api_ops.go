@@ -9634,6 +9634,37 @@ func (o *VPCRouterOp) MonitorInterface(ctx context.Context, zone string, id type
 	return results.InterfaceActivity, nil
 }
 
+// Status is API call
+func (o *VPCRouterOp) Status(ctx context.Context, zone string, id types.ID) (*VPCRouterStatus, error) {
+	// build request URL
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/status", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	// build request body
+	var body interface{}
+
+	// do request
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	// build results
+	results, err := o.transformStatusResults(data)
+	if err != nil {
+		return nil, err
+	}
+	return results.VPCRouterStatus, nil
+}
+
 /*************************************************
 * WebAccelOp
 *************************************************/

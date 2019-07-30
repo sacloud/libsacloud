@@ -1308,6 +1308,13 @@ type vPCRouterMonitorInterfaceResult struct {
 	InterfaceActivity *InterfaceActivity `json:",omitempty" mapconv:"Data,omitempty,recursive"`
 }
 
+// vPCRouterStatusResult represents the Result of API
+type vPCRouterStatusResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	VPCRouterStatus *VPCRouterStatus `json:",omitempty" mapconv:"Router,omitempty,recursive"`
+}
+
 // WebAccelListResult represents the Result of API
 type WebAccelListResult struct {
 	Total int `json:",omitempty"` // Total count of target resources
