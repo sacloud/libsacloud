@@ -13020,6 +13020,7 @@ type NFS struct {
 	IconID                  types.ID                    `mapconv:"Icon.ID"`
 	CreatedAt               time.Time
 	ModifiedAt              time.Time
+	SwitchName              string `mapconv:"Switch.Name"`
 }
 
 // Validate validates by field tags
@@ -13050,6 +13051,7 @@ func (o *NFS) setDefaults() interface{} {
 		IconID                  types.ID                    `mapconv:"Icon.ID"`
 		CreatedAt               time.Time
 		ModifiedAt              time.Time
+		SwitchName              string `mapconv:"Switch.Name"`
 	}{
 		ID:                      o.GetID(),
 		Name:                    o.GetName(),
@@ -13071,6 +13073,7 @@ func (o *NFS) setDefaults() interface{} {
 		IconID:                  o.GetIconID(),
 		CreatedAt:               o.GetCreatedAt(),
 		ModifiedAt:              o.GetModifiedAt(),
+		SwitchName:              o.GetSwitchName(),
 	}
 }
 
@@ -13312,6 +13315,16 @@ func (o *NFS) GetModifiedAt() time.Time {
 // SetModifiedAt sets value to ModifiedAt
 func (o *NFS) SetModifiedAt(v time.Time) {
 	o.ModifiedAt = v
+}
+
+// GetSwitchName returns value of SwitchName
+func (o *NFS) GetSwitchName() string {
+	return o.SwitchName
+}
+
+// SetSwitchName sets value to SwitchName
+func (o *NFS) SetSwitchName(v string) {
+	o.SwitchName = v
 }
 
 /*************************************************

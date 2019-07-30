@@ -80,6 +80,7 @@ var (
 			fields.IconID(),
 			fields.CreatedAt(),
 			fields.ModifiedAt(),
+			fields.Def("SwitchName", meta.TypeString, mapConvTag("Switch.Name")),
 		},
 	}
 
