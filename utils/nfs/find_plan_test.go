@@ -3,6 +3,7 @@ package nfs
 import (
 	"context"
 	"errors"
+	"fmt"
 	"testing"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
@@ -90,6 +91,79 @@ func TestFindNFSPlanID(t *testing.T) {
 
 	for _, tc := range cases {
 		actual, err := FindNFSPlanID(context.Background(), tc.finder, tc.inputDiskPlanID, tc.inputDiskSize)
+		if tc.expectedErr != nil {
+			require.Equal(t, tc.expectedErr, err, tc.msg)
+		} else {
+			require.NoError(t, err, tc.msg)
+		}
+		require.Equal(t, tc.expectedValue, actual, tc.msg)
+	}
+}
+
+func TestGetPlanInfo(t *testing.T) {
+
+	cases := []struct {
+		msg           string
+		finder        NoteFinder
+		input         types.ID
+		expectedValue *PlanInfo
+		expectedErr   error
+	}{
+		{
+			msg: "finder returns error",
+			finder: &dummyNoteFinder{
+				notes: []*sacloud.Note{},
+				err:   errors.New("dummy"),
+			},
+			expectedErr: errors.New("dummy"),
+		},
+		{
+			msg: "finder returns zero",
+			finder: &dummyNoteFinder{
+				notes: []*sacloud.Note{},
+			},
+			expectedErr: errors.New("note[sys-nfs] not found"),
+		},
+		{
+			msg: "not found",
+			finder: &dummyNoteFinder{
+				notes: []*sacloud.Note{
+					{
+						Name:    "sys-nfs",
+						Class:   "json",
+						Content: `{"plans":{"HDD":[{"size": 100,"availability":"available","planId":1}]}}`,
+					},
+				},
+				err: nil,
+			},
+			input:         2,
+			expectedValue: nil,
+			expectedErr:   fmt.Errorf("nfs plan [id:%d] not found", 2),
+		},
+		{
+			msg: "normal",
+			finder: &dummyNoteFinder{
+				notes: []*sacloud.Note{
+					{
+						Name:    "sys-nfs",
+						Class:   "json",
+						Content: `{"plans":{"HDD":[{"size": 100,"availability":"available","planId":1}]}}`,
+					},
+				},
+				err: nil,
+			},
+			input: 1,
+			expectedValue: &PlanInfo{
+				NFSPlanID:  1,
+				DiskPlanID: types.NFSPlans.HDD,
+				Size:       types.NFSHDDSizes.Size100GB,
+			},
+			expectedErr: nil,
+		},
+	}
+
+	for _, tc := range cases {
+		actual, err := GetPlanInfo(context.Background(), tc.finder, tc.input)
 		if tc.expectedErr != nil {
 			require.Equal(t, tc.expectedErr, err, tc.msg)
 		} else {
