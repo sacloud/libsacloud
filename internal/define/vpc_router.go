@@ -68,6 +68,28 @@ var vpcRouterAPI = &dsl.Resource{
 		// monitor
 		ops.MonitorChildBy(vpcRouterAPIName, "Interface", "interface",
 			monitorParameter, monitors.interfaceModel()),
+
+		// status
+		{
+			ResourceName: vpcRouterAPIName,
+			Name:         "Status",
+			Arguments: dsl.Arguments{
+				dsl.ArgumentID,
+			},
+			PathFormat: dsl.IDAndSuffixPathFormat("status"),
+			Method:     http.MethodGet,
+			ResponseEnvelope: dsl.ResponseEnvelope(&dsl.EnvelopePayloadDesc{
+				Type: meta.Static(naked.VPCRouterStatus{}),
+				Name: "Router",
+			}),
+			Results: dsl.Results{
+				{
+					SourceField: "Router",
+					DestField:   vpcRouterStatusView.Name,
+					Model:       vpcRouterStatusView,
+				},
+			},
+		},
 	},
 }
 
@@ -172,6 +194,75 @@ var (
 				Type: models.vpcRouterSetting(),
 				Tags: &dsl.FieldTags{
 					MapConv: ",omitempty,recursive",
+				},
+			},
+		},
+	}
+
+	vpcRouterStatusView = &dsl.Model{
+		Name:      "VPCRouterStatus",
+		NakedType: meta.Static(naked.VPCRouterStatus{}),
+		Fields: []*dsl.FieldDesc{
+			fields.Def("FirewallReceiveLogs", meta.TypeStringSlice),
+			fields.Def("FirewallSendLogs", meta.TypeStringSlice),
+			fields.Def("VPNLogs", meta.TypeStringSlice),
+			fields.Def("SessionCount", meta.TypeInt),
+			{
+				Name: "DHCPServerLeases",
+				Type: &dsl.Model{
+					Name:    "VPCRouterDHCPServerLease",
+					IsArray: true,
+					Fields: []*dsl.FieldDesc{
+						fields.Def("IPAddress", meta.TypeString),
+						fields.Def("MACAddress", meta.TypeString),
+					},
+				},
+				Tags: &dsl.FieldTags{
+					MapConv: "[]DHCPServerLeases,recursive",
+				},
+			},
+			{
+				Name: "L2TPIPsecServerSessions",
+				Type: &dsl.Model{
+					Name:    "VPCRouterL2TPIPsecServerSession",
+					IsArray: true,
+					Fields: []*dsl.FieldDesc{
+						fields.Def("User", meta.TypeString),
+						fields.Def("IPAddress", meta.TypeString),
+						fields.Def("TimeSec", meta.TypeInt),
+					},
+				},
+				Tags: &dsl.FieldTags{
+					MapConv: "[]L2TPIPsecServerSessions,recursive",
+				},
+			},
+			{
+				Name: "PPTPServerSessions",
+				Type: &dsl.Model{
+					Name:    "VPCRouterPPTPServerSession",
+					IsArray: true,
+					Fields: []*dsl.FieldDesc{
+						fields.Def("User", meta.TypeString),
+						fields.Def("IPAddress", meta.TypeString),
+						fields.Def("TimeSec", meta.TypeInt),
+					},
+				},
+				Tags: &dsl.FieldTags{
+					MapConv: "[]PPTPServerSessions,recursive",
+				},
+			},
+			{
+				Name: "SiteToSiteIPsecVPNPeers",
+				Type: &dsl.Model{
+					Name:    "VPCRouterSiteToSiteIPsecVPNPeer",
+					IsArray: true,
+					Fields: []*dsl.FieldDesc{
+						fields.Def("Status", meta.TypeString),
+						fields.Def("Peer", meta.TypeString),
+					},
+				},
+				Tags: &dsl.FieldTags{
+					MapConv: "[]SiteToSiteIPsecVPNPeers,recursive",
 				},
 			},
 		},

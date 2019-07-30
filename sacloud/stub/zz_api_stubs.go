@@ -4217,6 +4217,12 @@ type VPCRouterMonitorInterfaceStubResult struct {
 	Err               error
 }
 
+// VPCRouterStatusStubResult is expected values of the Status operation
+type VPCRouterStatusStubResult struct {
+	VPCRouterStatus *sacloud.VPCRouterStatus
+	Err             error
+}
+
 // VPCRouterStub is for trace VPCRouterOp operations
 type VPCRouterStub struct {
 	FindStubResult                 *VPCRouterFindStubResult
@@ -4231,6 +4237,7 @@ type VPCRouterStub struct {
 	ConnectToSwitchStubResult      *VPCRouterConnectToSwitchStubResult
 	DisconnectFromSwitchStubResult *VPCRouterDisconnectFromSwitchStubResult
 	MonitorInterfaceStubResult     *VPCRouterMonitorInterfaceStubResult
+	StatusStubResult               *VPCRouterStatusStubResult
 }
 
 // NewVPCRouterStub creates new VPCRouterStub instance
@@ -4332,6 +4339,14 @@ func (s *VPCRouterStub) MonitorInterface(ctx context.Context, zone string, id ty
 		log.Fatal("VPCRouterStub.MonitorInterfaceStubResult is not set")
 	}
 	return s.MonitorInterfaceStubResult.InterfaceActivity, s.MonitorInterfaceStubResult.Err
+}
+
+// Status is API call with trace log
+func (s *VPCRouterStub) Status(ctx context.Context, zone string, id types.ID) (*sacloud.VPCRouterStatus, error) {
+	if s.StatusStubResult == nil {
+		log.Fatal("VPCRouterStub.StatusStubResult is not set")
+	}
+	return s.StatusStubResult.VPCRouterStatus, s.StatusStubResult.Err
 }
 
 /*************************************************

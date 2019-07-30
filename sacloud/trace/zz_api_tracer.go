@@ -9211,6 +9211,39 @@ func (t *VPCRouterTracer) MonitorInterface(ctx context.Context, zone string, id 
 	return resultInterfaceActivity, err
 }
 
+// Status is API call with trace log
+func (t *VPCRouterTracer) Status(ctx context.Context, zone string, id types.ID) (*sacloud.VPCRouterStatus, error) {
+	log.Println("[TRACE] VPCRouterAPI.Status start")
+	targetArguments := struct {
+		Argzone string
+		Argid   types.ID `json:"id"`
+	}{
+		Argzone: zone,
+		Argid:   id,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] VPCRouterAPI.Status end")
+	}()
+
+	resultVPCRouterStatus, err := t.Internal.Status(ctx, zone, id)
+	targetResults := struct {
+		VPCRouterStatus *sacloud.VPCRouterStatus
+		Error           error
+	}{
+		VPCRouterStatus: resultVPCRouterStatus,
+		Error:           err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultVPCRouterStatus, err
+}
+
 /*************************************************
 * WebAccelTracer
 *************************************************/

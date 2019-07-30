@@ -22984,6 +22984,340 @@ func (o *VPCRouterUpdateRequest) SetSettings(v *VPCRouterSetting) {
 }
 
 /*************************************************
+* VPCRouterStatus
+*************************************************/
+
+// VPCRouterStatus represents API parameter/response structure
+type VPCRouterStatus struct {
+	FirewallReceiveLogs     []string
+	FirewallSendLogs        []string
+	VPNLogs                 []string
+	SessionCount            int
+	DHCPServerLeases        []*VPCRouterDHCPServerLease        `mapconv:"[]DHCPServerLeases,recursive"`
+	L2TPIPsecServerSessions []*VPCRouterL2TPIPsecServerSession `mapconv:"[]L2TPIPsecServerSessions,recursive"`
+	PPTPServerSessions      []*VPCRouterPPTPServerSession      `mapconv:"[]PPTPServerSessions,recursive"`
+	SiteToSiteIPsecVPNPeers []*VPCRouterSiteToSiteIPsecVPNPeer `mapconv:"[]SiteToSiteIPsecVPNPeers,recursive"`
+}
+
+// Validate validates by field tags
+func (o *VPCRouterStatus) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *VPCRouterStatus) setDefaults() interface{} {
+	return &struct {
+		FirewallReceiveLogs     []string
+		FirewallSendLogs        []string
+		VPNLogs                 []string
+		SessionCount            int
+		DHCPServerLeases        []*VPCRouterDHCPServerLease        `mapconv:"[]DHCPServerLeases,recursive"`
+		L2TPIPsecServerSessions []*VPCRouterL2TPIPsecServerSession `mapconv:"[]L2TPIPsecServerSessions,recursive"`
+		PPTPServerSessions      []*VPCRouterPPTPServerSession      `mapconv:"[]PPTPServerSessions,recursive"`
+		SiteToSiteIPsecVPNPeers []*VPCRouterSiteToSiteIPsecVPNPeer `mapconv:"[]SiteToSiteIPsecVPNPeers,recursive"`
+	}{
+		FirewallReceiveLogs:     o.GetFirewallReceiveLogs(),
+		FirewallSendLogs:        o.GetFirewallSendLogs(),
+		VPNLogs:                 o.GetVPNLogs(),
+		SessionCount:            o.GetSessionCount(),
+		DHCPServerLeases:        o.GetDHCPServerLeases(),
+		L2TPIPsecServerSessions: o.GetL2TPIPsecServerSessions(),
+		PPTPServerSessions:      o.GetPPTPServerSessions(),
+		SiteToSiteIPsecVPNPeers: o.GetSiteToSiteIPsecVPNPeers(),
+	}
+}
+
+// GetFirewallReceiveLogs returns value of FirewallReceiveLogs
+func (o *VPCRouterStatus) GetFirewallReceiveLogs() []string {
+	return o.FirewallReceiveLogs
+}
+
+// SetFirewallReceiveLogs sets value to FirewallReceiveLogs
+func (o *VPCRouterStatus) SetFirewallReceiveLogs(v []string) {
+	o.FirewallReceiveLogs = v
+}
+
+// GetFirewallSendLogs returns value of FirewallSendLogs
+func (o *VPCRouterStatus) GetFirewallSendLogs() []string {
+	return o.FirewallSendLogs
+}
+
+// SetFirewallSendLogs sets value to FirewallSendLogs
+func (o *VPCRouterStatus) SetFirewallSendLogs(v []string) {
+	o.FirewallSendLogs = v
+}
+
+// GetVPNLogs returns value of VPNLogs
+func (o *VPCRouterStatus) GetVPNLogs() []string {
+	return o.VPNLogs
+}
+
+// SetVPNLogs sets value to VPNLogs
+func (o *VPCRouterStatus) SetVPNLogs(v []string) {
+	o.VPNLogs = v
+}
+
+// GetSessionCount returns value of SessionCount
+func (o *VPCRouterStatus) GetSessionCount() int {
+	return o.SessionCount
+}
+
+// SetSessionCount sets value to SessionCount
+func (o *VPCRouterStatus) SetSessionCount(v int) {
+	o.SessionCount = v
+}
+
+// GetDHCPServerLeases returns value of DHCPServerLeases
+func (o *VPCRouterStatus) GetDHCPServerLeases() []*VPCRouterDHCPServerLease {
+	return o.DHCPServerLeases
+}
+
+// SetDHCPServerLeases sets value to DHCPServerLeases
+func (o *VPCRouterStatus) SetDHCPServerLeases(v []*VPCRouterDHCPServerLease) {
+	o.DHCPServerLeases = v
+}
+
+// GetL2TPIPsecServerSessions returns value of L2TPIPsecServerSessions
+func (o *VPCRouterStatus) GetL2TPIPsecServerSessions() []*VPCRouterL2TPIPsecServerSession {
+	return o.L2TPIPsecServerSessions
+}
+
+// SetL2TPIPsecServerSessions sets value to L2TPIPsecServerSessions
+func (o *VPCRouterStatus) SetL2TPIPsecServerSessions(v []*VPCRouterL2TPIPsecServerSession) {
+	o.L2TPIPsecServerSessions = v
+}
+
+// GetPPTPServerSessions returns value of PPTPServerSessions
+func (o *VPCRouterStatus) GetPPTPServerSessions() []*VPCRouterPPTPServerSession {
+	return o.PPTPServerSessions
+}
+
+// SetPPTPServerSessions sets value to PPTPServerSessions
+func (o *VPCRouterStatus) SetPPTPServerSessions(v []*VPCRouterPPTPServerSession) {
+	o.PPTPServerSessions = v
+}
+
+// GetSiteToSiteIPsecVPNPeers returns value of SiteToSiteIPsecVPNPeers
+func (o *VPCRouterStatus) GetSiteToSiteIPsecVPNPeers() []*VPCRouterSiteToSiteIPsecVPNPeer {
+	return o.SiteToSiteIPsecVPNPeers
+}
+
+// SetSiteToSiteIPsecVPNPeers sets value to SiteToSiteIPsecVPNPeers
+func (o *VPCRouterStatus) SetSiteToSiteIPsecVPNPeers(v []*VPCRouterSiteToSiteIPsecVPNPeer) {
+	o.SiteToSiteIPsecVPNPeers = v
+}
+
+/*************************************************
+* VPCRouterDHCPServerLease
+*************************************************/
+
+// VPCRouterDHCPServerLease represents API parameter/response structure
+type VPCRouterDHCPServerLease struct {
+	IPAddress  string
+	MACAddress string
+}
+
+// Validate validates by field tags
+func (o *VPCRouterDHCPServerLease) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *VPCRouterDHCPServerLease) setDefaults() interface{} {
+	return &struct {
+		IPAddress  string
+		MACAddress string
+	}{
+		IPAddress:  o.GetIPAddress(),
+		MACAddress: o.GetMACAddress(),
+	}
+}
+
+// GetIPAddress returns value of IPAddress
+func (o *VPCRouterDHCPServerLease) GetIPAddress() string {
+	return o.IPAddress
+}
+
+// SetIPAddress sets value to IPAddress
+func (o *VPCRouterDHCPServerLease) SetIPAddress(v string) {
+	o.IPAddress = v
+}
+
+// GetMACAddress returns value of MACAddress
+func (o *VPCRouterDHCPServerLease) GetMACAddress() string {
+	return o.MACAddress
+}
+
+// SetMACAddress sets value to MACAddress
+func (o *VPCRouterDHCPServerLease) SetMACAddress(v string) {
+	o.MACAddress = v
+}
+
+/*************************************************
+* VPCRouterL2TPIPsecServerSession
+*************************************************/
+
+// VPCRouterL2TPIPsecServerSession represents API parameter/response structure
+type VPCRouterL2TPIPsecServerSession struct {
+	User      string
+	IPAddress string
+	TimeSec   int
+}
+
+// Validate validates by field tags
+func (o *VPCRouterL2TPIPsecServerSession) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *VPCRouterL2TPIPsecServerSession) setDefaults() interface{} {
+	return &struct {
+		User      string
+		IPAddress string
+		TimeSec   int
+	}{
+		User:      o.GetUser(),
+		IPAddress: o.GetIPAddress(),
+		TimeSec:   o.GetTimeSec(),
+	}
+}
+
+// GetUser returns value of User
+func (o *VPCRouterL2TPIPsecServerSession) GetUser() string {
+	return o.User
+}
+
+// SetUser sets value to User
+func (o *VPCRouterL2TPIPsecServerSession) SetUser(v string) {
+	o.User = v
+}
+
+// GetIPAddress returns value of IPAddress
+func (o *VPCRouterL2TPIPsecServerSession) GetIPAddress() string {
+	return o.IPAddress
+}
+
+// SetIPAddress sets value to IPAddress
+func (o *VPCRouterL2TPIPsecServerSession) SetIPAddress(v string) {
+	o.IPAddress = v
+}
+
+// GetTimeSec returns value of TimeSec
+func (o *VPCRouterL2TPIPsecServerSession) GetTimeSec() int {
+	return o.TimeSec
+}
+
+// SetTimeSec sets value to TimeSec
+func (o *VPCRouterL2TPIPsecServerSession) SetTimeSec(v int) {
+	o.TimeSec = v
+}
+
+/*************************************************
+* VPCRouterPPTPServerSession
+*************************************************/
+
+// VPCRouterPPTPServerSession represents API parameter/response structure
+type VPCRouterPPTPServerSession struct {
+	User      string
+	IPAddress string
+	TimeSec   int
+}
+
+// Validate validates by field tags
+func (o *VPCRouterPPTPServerSession) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *VPCRouterPPTPServerSession) setDefaults() interface{} {
+	return &struct {
+		User      string
+		IPAddress string
+		TimeSec   int
+	}{
+		User:      o.GetUser(),
+		IPAddress: o.GetIPAddress(),
+		TimeSec:   o.GetTimeSec(),
+	}
+}
+
+// GetUser returns value of User
+func (o *VPCRouterPPTPServerSession) GetUser() string {
+	return o.User
+}
+
+// SetUser sets value to User
+func (o *VPCRouterPPTPServerSession) SetUser(v string) {
+	o.User = v
+}
+
+// GetIPAddress returns value of IPAddress
+func (o *VPCRouterPPTPServerSession) GetIPAddress() string {
+	return o.IPAddress
+}
+
+// SetIPAddress sets value to IPAddress
+func (o *VPCRouterPPTPServerSession) SetIPAddress(v string) {
+	o.IPAddress = v
+}
+
+// GetTimeSec returns value of TimeSec
+func (o *VPCRouterPPTPServerSession) GetTimeSec() int {
+	return o.TimeSec
+}
+
+// SetTimeSec sets value to TimeSec
+func (o *VPCRouterPPTPServerSession) SetTimeSec(v int) {
+	o.TimeSec = v
+}
+
+/*************************************************
+* VPCRouterSiteToSiteIPsecVPNPeer
+*************************************************/
+
+// VPCRouterSiteToSiteIPsecVPNPeer represents API parameter/response structure
+type VPCRouterSiteToSiteIPsecVPNPeer struct {
+	Status string
+	Peer   string
+}
+
+// Validate validates by field tags
+func (o *VPCRouterSiteToSiteIPsecVPNPeer) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *VPCRouterSiteToSiteIPsecVPNPeer) setDefaults() interface{} {
+	return &struct {
+		Status string
+		Peer   string
+	}{
+		Status: o.GetStatus(),
+		Peer:   o.GetPeer(),
+	}
+}
+
+// GetStatus returns value of Status
+func (o *VPCRouterSiteToSiteIPsecVPNPeer) GetStatus() string {
+	return o.Status
+}
+
+// SetStatus sets value to Status
+func (o *VPCRouterSiteToSiteIPsecVPNPeer) SetStatus(v string) {
+	o.Status = v
+}
+
+// GetPeer returns value of Peer
+func (o *VPCRouterSiteToSiteIPsecVPNPeer) GetPeer() string {
+	return o.Peer
+}
+
+// SetPeer sets value to Peer
+func (o *VPCRouterSiteToSiteIPsecVPNPeer) SetPeer(v string) {
+	o.Peer = v
+}
+
+/*************************************************
 * WebAccel
 *************************************************/
 

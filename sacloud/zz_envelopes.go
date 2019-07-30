@@ -2307,6 +2307,14 @@ type vPCRouterMonitorInterfaceResponseEnvelope struct {
 	Data *naked.MonitorValues `json:",omitempty"`
 }
 
+// vPCRouterStatusResponseEnvelope is envelop of API response
+type vPCRouterStatusResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Router *naked.VPCRouterStatus `json:",omitempty"`
+}
+
 // webAccelListResponseEnvelope is envelop of API response
 type webAccelListResponseEnvelope struct {
 	Total int `json:",omitempty"` // トータル件数
