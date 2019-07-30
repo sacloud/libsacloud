@@ -84,9 +84,15 @@ func (o *{{ $struct }}) {{ .Name }}({{ range .Arguments }}{{ .ArgName }} {{ .Typ
 // Get{{$name}} returns value of {{$name}} 
 func (o *{{ $struct }}) Get{{$name}}() {{$typeName}} {
 	{{ if .DefaultValue -}}
+	{{ if eq .Type.GoType "time.Time" -}}
+	if o.{{$name}}.IsZero() {
+		return {{.DefaultValue}}
+	}
+	{{ else -}}
 	if o.{{$name}} == {{.Type.ZeroInitializeSourceCode}}{
 		return {{.DefaultValue}}
 	}
+	{{ end -}}
 	{{ end -}}
 	return o.{{$name}}
 }

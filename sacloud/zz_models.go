@@ -4813,6 +4813,9 @@ func (o *MonitorCondition) setDefaults() interface{} {
 
 // GetStart returns value of Start
 func (o *MonitorCondition) GetStart() time.Time {
+	if o.Start.IsZero() {
+		return time.Now().Truncate(time.Second).Add(-time.Hour)
+	}
 	return o.Start
 }
 
@@ -4823,6 +4826,9 @@ func (o *MonitorCondition) SetStart(v time.Time) {
 
 // GetEnd returns value of End
 func (o *MonitorCondition) GetEnd() time.Time {
+	if o.End.IsZero() {
+		return time.Now().Truncate(time.Second)
+	}
 	return o.End
 }
 
@@ -16349,6 +16355,98 @@ func (o *ProxyLBHealth) GetServers() []*LoadBalancerServerStatus {
 // SetServers sets value to Servers
 func (o *ProxyLBHealth) SetServers(v []*LoadBalancerServerStatus) {
 	o.Servers = v
+}
+
+/*************************************************
+* ConnectionActivity
+*************************************************/
+
+// ConnectionActivity represents API parameter/response structure
+type ConnectionActivity struct {
+	Values []*MonitorConnectionValue `mapconv:"[]Connection"`
+}
+
+// Validate validates by field tags
+func (o *ConnectionActivity) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *ConnectionActivity) setDefaults() interface{} {
+	return &struct {
+		Values []*MonitorConnectionValue `mapconv:"[]Connection"`
+	}{
+		Values: o.GetValues(),
+	}
+}
+
+// GetValues returns value of Values
+func (o *ConnectionActivity) GetValues() []*MonitorConnectionValue {
+	return o.Values
+}
+
+// SetValues sets value to Values
+func (o *ConnectionActivity) SetValues(v []*MonitorConnectionValue) {
+	o.Values = v
+}
+
+/*************************************************
+* MonitorConnectionValue
+*************************************************/
+
+// MonitorConnectionValue represents API parameter/response structure
+type MonitorConnectionValue struct {
+	Time              time.Time `json:",omitempty" mapconv:",omitempty"`
+	ActiveConnections float64   `json:",omitempty" mapconv:",omitempty"`
+	ConnectionsPerSec float64   `json:",omitempty" mapconv:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *MonitorConnectionValue) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *MonitorConnectionValue) setDefaults() interface{} {
+	return &struct {
+		Time              time.Time `json:",omitempty" mapconv:",omitempty"`
+		ActiveConnections float64   `json:",omitempty" mapconv:",omitempty"`
+		ConnectionsPerSec float64   `json:",omitempty" mapconv:",omitempty"`
+	}{
+		Time:              o.GetTime(),
+		ActiveConnections: o.GetActiveConnections(),
+		ConnectionsPerSec: o.GetConnectionsPerSec(),
+	}
+}
+
+// GetTime returns value of Time
+func (o *MonitorConnectionValue) GetTime() time.Time {
+	return o.Time
+}
+
+// SetTime sets value to Time
+func (o *MonitorConnectionValue) SetTime(v time.Time) {
+	o.Time = v
+}
+
+// GetActiveConnections returns value of ActiveConnections
+func (o *MonitorConnectionValue) GetActiveConnections() float64 {
+	return o.ActiveConnections
+}
+
+// SetActiveConnections sets value to ActiveConnections
+func (o *MonitorConnectionValue) SetActiveConnections(v float64) {
+	o.ActiveConnections = v
+}
+
+// GetConnectionsPerSec returns value of ConnectionsPerSec
+func (o *MonitorConnectionValue) GetConnectionsPerSec() float64 {
+	return o.ConnectionsPerSec
+}
+
+// SetConnectionsPerSec sets value to ConnectionsPerSec
+func (o *MonitorConnectionValue) SetConnectionsPerSec(v float64) {
+	o.ConnectionsPerSec = v
 }
 
 /*************************************************

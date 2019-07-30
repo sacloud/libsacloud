@@ -430,6 +430,7 @@ type ProxyLBAPI interface {
 	DeleteCertificates(ctx context.Context, id types.ID) error
 	RenewLetsEncryptCert(ctx context.Context, id types.ID) error
 	HealthStatus(ctx context.Context, id types.ID) (*ProxyLBHealth, error)
+	MonitorConnection(ctx context.Context, id types.ID, condition *MonitorCondition) (*ConnectionActivity, error)
 }
 
 /*************************************************

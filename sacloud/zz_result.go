@@ -1001,6 +1001,13 @@ type proxyLBHealthStatusResult struct {
 	ProxyLBHealth *ProxyLBHealth `json:",omitempty" mapconv:"ProxyLB,omitempty,recursive"`
 }
 
+// proxyLBMonitorConnectionResult represents the Result of API
+type proxyLBMonitorConnectionResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	ConnectionActivity *ConnectionActivity `json:",omitempty" mapconv:"Data,omitempty,recursive"`
+}
+
 // RegionFindResult represents the Result of API
 type RegionFindResult struct {
 	Total int `json:",omitempty"` // Total count of target resources
