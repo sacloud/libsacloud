@@ -131,6 +131,10 @@ var proxyLBAPI = &dsl.Resource{
 
 		// Health
 		ops.HealthStatus(proxyLBAPIName, meta.Static(naked.ProxyLBHealth{}), proxyLBHealth),
+
+		// Monitor
+		ops.MonitorChild(proxyLBAPIName, "Connection", "activity/proxylb",
+			monitorParameter, monitors.connectionModel()),
 	},
 }
 

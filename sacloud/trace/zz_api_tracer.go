@@ -6858,6 +6858,39 @@ func (t *ProxyLBTracer) HealthStatus(ctx context.Context, id types.ID) (*sacloud
 	return resultProxyLBHealth, err
 }
 
+// MonitorConnection is API call with trace log
+func (t *ProxyLBTracer) MonitorConnection(ctx context.Context, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.ConnectionActivity, error) {
+	log.Println("[TRACE] ProxyLBAPI.MonitorConnection start")
+	targetArguments := struct {
+		Argid        types.ID                  `json:"id"`
+		Argcondition *sacloud.MonitorCondition `json:"condition"`
+	}{
+		Argid:        id,
+		Argcondition: condition,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] ProxyLBAPI.MonitorConnection end")
+	}()
+
+	resultConnectionActivity, err := t.Internal.MonitorConnection(ctx, id, condition)
+	targetResults := struct {
+		ConnectionActivity *sacloud.ConnectionActivity
+		Error              error
+	}{
+		ConnectionActivity: resultConnectionActivity,
+		Error:              err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultConnectionActivity, err
+}
+
 /*************************************************
 * RegionTracer
 *************************************************/

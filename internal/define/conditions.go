@@ -15,6 +15,7 @@ var monitorParameter = &dsl.Model{
 			Tags: &dsl.FieldTags{
 				JSON: ",omitempty",
 			},
+			DefaultValue: `time.Now().Truncate(time.Second).Add(-time.Hour)`,
 		},
 		{
 			Name: "End",
@@ -22,6 +23,7 @@ var monitorParameter = &dsl.Model{
 			Tags: &dsl.FieldTags{
 				JSON: ",omitempty",
 			},
+			DefaultValue: `time.Now().Truncate(time.Second)`,
 		},
 	},
 }

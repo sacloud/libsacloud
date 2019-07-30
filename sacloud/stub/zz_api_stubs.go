@@ -3102,6 +3102,12 @@ type ProxyLBHealthStatusStubResult struct {
 	Err           error
 }
 
+// ProxyLBMonitorConnectionStubResult is expected values of the MonitorConnection operation
+type ProxyLBMonitorConnectionStubResult struct {
+	ConnectionActivity *sacloud.ConnectionActivity
+	Err                error
+}
+
 // ProxyLBStub is for trace ProxyLBOp operations
 type ProxyLBStub struct {
 	FindStubResult                 *ProxyLBFindStubResult
@@ -3115,6 +3121,7 @@ type ProxyLBStub struct {
 	DeleteCertificatesStubResult   *ProxyLBDeleteCertificatesStubResult
 	RenewLetsEncryptCertStubResult *ProxyLBRenewLetsEncryptCertStubResult
 	HealthStatusStubResult         *ProxyLBHealthStatusStubResult
+	MonitorConnectionStubResult    *ProxyLBMonitorConnectionStubResult
 }
 
 // NewProxyLBStub creates new ProxyLBStub instance
@@ -3208,6 +3215,14 @@ func (s *ProxyLBStub) HealthStatus(ctx context.Context, id types.ID) (*sacloud.P
 		log.Fatal("ProxyLBStub.HealthStatusStubResult is not set")
 	}
 	return s.HealthStatusStubResult.ProxyLBHealth, s.HealthStatusStubResult.Err
+}
+
+// MonitorConnection is API call with trace log
+func (s *ProxyLBStub) MonitorConnection(ctx context.Context, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.ConnectionActivity, error) {
+	if s.MonitorConnectionStubResult == nil {
+		log.Fatal("ProxyLBStub.MonitorConnectionStubResult is not set")
+	}
+	return s.MonitorConnectionStubResult.ConnectionActivity, s.MonitorConnectionStubResult.Err
 }
 
 /*************************************************

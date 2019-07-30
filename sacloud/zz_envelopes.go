@@ -1730,6 +1730,20 @@ type proxyLBHealthStatusResponseEnvelope struct {
 	ProxyLB *naked.ProxyLBHealth `json:",omitempty"`
 }
 
+// proxyLBMonitorConnectionRequestEnvelope is envelop of API request
+type proxyLBMonitorConnectionRequestEnvelope struct {
+	Start time.Time `json:",omitempty"`
+	End   time.Time `json:",omitempty"`
+}
+
+// proxyLBMonitorConnectionResponseEnvelope is envelop of API response
+type proxyLBMonitorConnectionResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Data *naked.MonitorValues `json:",omitempty"`
+}
+
 // regionFindRequestEnvelope is envelop of API request
 type regionFindRequestEnvelope struct {
 	Count   int             `json:",omitempty"`

@@ -7197,6 +7197,43 @@ func (o *ProxyLBOp) HealthStatus(ctx context.Context, id types.ID) (*ProxyLBHeal
 	return results.ProxyLBHealth, nil
 }
 
+// MonitorConnection is API call
+func (o *ProxyLBOp) MonitorConnection(ctx context.Context, id types.ID, condition *MonitorCondition) (*ConnectionActivity, error) {
+	// build request URL
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/activity/proxylb/monitor", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       APIDefaultZone,
+		"id":         id,
+		"condition":  condition,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	// build request body
+	var body interface{}
+	v, err := o.transformMonitorConnectionArgs(id, condition)
+	if err != nil {
+		return nil, err
+	}
+	body = v
+
+	// do request
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	// build results
+	results, err := o.transformMonitorConnectionResults(data)
+	if err != nil {
+		return nil, err
+	}
+	return results.ConnectionActivity, nil
+}
+
 /*************************************************
 * RegionOp
 *************************************************/

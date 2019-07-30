@@ -4237,6 +4237,49 @@ func (o *ProxyLBOp) transformHealthStatusResults(data []byte) (*proxyLBHealthSta
 	return results, nil
 }
 
+func (o *ProxyLBOp) transformMonitorConnectionArgs(id types.ID, condition *MonitorCondition) (*proxyLBMonitorConnectionRequestEnvelope, error) {
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	var arg0 interface{} = id
+	if v, ok := arg0.(argumentDefaulter); ok {
+		arg0 = v.setDefaults()
+	}
+	if condition == nil {
+		condition = &MonitorCondition{}
+	}
+	var arg1 interface{} = condition
+	if v, ok := arg1.(argumentDefaulter); ok {
+		arg1 = v.setDefaults()
+	}
+	args := &struct {
+		Arg0 interface{}
+		Arg1 interface{} `mapconv:",squash"`
+	}{
+		Arg0: arg0,
+		Arg1: arg1,
+	}
+
+	v := &proxyLBMonitorConnectionRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	return v, nil
+}
+
+func (o *ProxyLBOp) transformMonitorConnectionResults(data []byte) (*proxyLBMonitorConnectionResult, error) {
+	nakedResponse := &proxyLBMonitorConnectionResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &proxyLBMonitorConnectionResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
+}
+
 func (o *RegionOp) transformFindArgs(conditions *FindCondition) (*regionFindRequestEnvelope, error) {
 	if conditions == nil {
 		conditions = &FindCondition{}

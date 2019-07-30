@@ -188,3 +188,28 @@ func (o *ProxyLBOp) HealthStatus(ctx context.Context, id types.ID) (*sacloud.Pro
 
 	return s.getByID(ResourceProxyLB+"Status", sacloud.APIDefaultZone, id).(*sacloud.ProxyLBHealth), nil
 }
+
+// MonitorConnection is fake implementation
+func (o *ProxyLBOp) MonitorConnection(ctx context.Context, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.ConnectionActivity, error) {
+	_, err := o.Read(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+
+	now := time.Now().Truncate(time.Second)
+	m := now.Minute() % 5
+	if m != 0 {
+		now.Add(time.Duration(m) * time.Minute)
+	}
+
+	res := &sacloud.ConnectionActivity{}
+	for i := 0; i < 5; i++ {
+		res.Values = append(res.Values, &sacloud.MonitorConnectionValue{
+			Time:              now.Add(time.Duration(i*-5) * time.Minute),
+			ConnectionsPerSec: float64(random(1000)),
+			ActiveConnections: float64(random(1000)),
+		})
+	}
+
+	return res, nil
+}
