@@ -61,3 +61,19 @@ func TestVPCRouterUnmarshalInterfaceJSON(t *testing.T) {
 	require.Equal(t, 0, ifs[0].Index)
 	require.Equal(t, 2, ifs[1].Index)
 }
+
+const (
+	vpcRouterRemarkServersEmptyJSON    = `[""]`
+	vpcRouterRemarkServersNotEmptyJSON = `[{"IPAddress":"192.168.0.1"}]`
+)
+
+func TestVPCRouterRemarkServers_UnmarshalJSON(t *testing.T) {
+	var remarkServers ApplianceRemarkServers
+	err := json.Unmarshal([]byte(vpcRouterRemarkServersEmptyJSON), &remarkServers)
+	require.NoError(t, err)
+	require.Len(t, remarkServers, 0)
+
+	err = json.Unmarshal([]byte(vpcRouterRemarkServersNotEmptyJSON), &remarkServers)
+	require.NoError(t, err)
+	require.Len(t, remarkServers, 1)
+}
