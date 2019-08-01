@@ -281,9 +281,11 @@ func TestBuilder_Build_BlackBox(t *testing.T) {
 	var testZone = testutil.TestZone()
 
 	testutil.Run(t, &testutil.CRUDTestCase{
-		SetupAPICallerFunc: testutil.SingletonAPICaller,
-		Parallel:           true,
-		IgnoreStartupWait:  true,
+		SetupAPICallerFunc: func() sacloud.APICaller {
+			return testutil.SingletonAPICaller()
+		},
+		Parallel:          true,
+		IgnoreStartupWait: true,
 
 		Setup: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {
 			switchOp := sacloud.NewSwitchOp(caller)

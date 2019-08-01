@@ -29,14 +29,14 @@ func ResourceName(name string) string {
 }
 
 var testZone string
-var apiCaller sacloud.APICaller
+var apiCaller *sacloud.Client
 var httpTrace bool
 
 var accTestOnce sync.Once
 var accTestMu sync.Mutex
 
 // SingletonAPICaller 環境変数からシングルトンAPICallerを作成する
-func SingletonAPICaller() sacloud.APICaller {
+func SingletonAPICaller() *sacloud.Client {
 
 	accTestMu.Lock()
 	defer accTestMu.Unlock()

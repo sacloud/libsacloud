@@ -17,8 +17,10 @@ func TestRetryableSetup(t *testing.T) {
 	testZone := testutil.TestZone()
 
 	testutil.Run(t, &testutil.CRUDTestCase{
-		Parallel:           true,
-		SetupAPICallerFunc: testutil.SingletonAPICaller,
+		Parallel: true,
+		SetupAPICallerFunc: func() sacloud.APICaller {
+			return testutil.SingletonAPICaller()
+		},
 
 		Setup: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {
 			switchOp := sacloud.NewSwitchOp(caller)
