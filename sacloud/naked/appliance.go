@@ -110,6 +110,9 @@ func (s *ApplianceRemarkServers) UnmarshalJSON(b []byte) error {
 	if string(b) == "[[]]" {
 		return nil
 	}
+	if string(b) == `[""]` {
+		return nil
+	}
 	type alias ApplianceRemarkServers
 
 	var a alias
