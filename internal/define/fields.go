@@ -607,25 +607,32 @@ func (f *fieldsDef) LoadBalancerVIP() *dsl.FieldDesc {
 								Type: meta.TypeStringFlag,
 							},
 							{
-								Name: "HealthCheckProtocol",
-								Type: meta.TypeProtocol,
-								Tags: &dsl.FieldTags{
-									MapConv:  "HealthCheck.Protocol",
-									Validate: "oneof=http https ping tcp",
+								Name: "HealthCheck",
+								Type: &dsl.Model{
+									Name: "LoadBalancerServerHealthCheck",
+									Fields: []*dsl.FieldDesc{
+										{
+											Name: "Protocol",
+											Type: meta.Static(types.ELoadBalancerHealthCheckProtocol("")),
+											Tags: &dsl.FieldTags{
+												Validate: "oneof=http https ping tcp",
+											},
+										},
+										{
+											Name: "Path",
+											Type: meta.TypeString,
+										},
+										{
+											Name: "ResponseCode",
+											Type: meta.TypeStringNumber,
+											Tags: &dsl.FieldTags{
+												MapConv: "Status",
+											},
+										},
+									},
 								},
-							},
-							{
-								Name: "HealthCheckPath",
-								Type: meta.TypeString,
 								Tags: &dsl.FieldTags{
-									MapConv: "HealthCheck.Path",
-								},
-							},
-							{
-								Name: "HealthCheckResponseCode",
-								Type: meta.TypeStringNumber,
-								Tags: &dsl.FieldTags{
-									MapConv: "HealthCheck.Status",
+									MapConv: "HealthCheck,recursive",
 								},
 							},
 						},
