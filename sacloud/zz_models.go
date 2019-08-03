@@ -7446,11 +7446,11 @@ func (o *GSLB) SetDestinationServers(v []*GSLBServer) {
 
 // GSLBHealthCheck represents API parameter/response structure
 type GSLBHealthCheck struct {
-	Protocol     types.Protocol     `validate:"oneof=http https ping tcp"`
-	HostHeader   string             `mapconv:"Host"`
-	Path         string             `mapconv:"Path"`
-	ResponseCode types.StringNumber `mapconv:"Status"`
-	Port         types.StringNumber `mapconv:"Port"`
+	Protocol     types.EGSLBHealthCheckProtocol `validate:"oneof=http https ping tcp"`
+	HostHeader   string                         `mapconv:"Host"`
+	Path         string                         `mapconv:"Path"`
+	ResponseCode types.StringNumber             `mapconv:"Status"`
+	Port         types.StringNumber             `mapconv:"Port"`
 }
 
 // Validate validates by field tags
@@ -7461,11 +7461,11 @@ func (o *GSLBHealthCheck) Validate() error {
 // setDefaults implements sacloud.argumentDefaulter
 func (o *GSLBHealthCheck) setDefaults() interface{} {
 	return &struct {
-		Protocol     types.Protocol     `validate:"oneof=http https ping tcp"`
-		HostHeader   string             `mapconv:"Host"`
-		Path         string             `mapconv:"Path"`
-		ResponseCode types.StringNumber `mapconv:"Status"`
-		Port         types.StringNumber `mapconv:"Port"`
+		Protocol     types.EGSLBHealthCheckProtocol `validate:"oneof=http https ping tcp"`
+		HostHeader   string                         `mapconv:"Host"`
+		Path         string                         `mapconv:"Path"`
+		ResponseCode types.StringNumber             `mapconv:"Status"`
+		Port         types.StringNumber             `mapconv:"Port"`
 	}{
 		Protocol:     o.GetProtocol(),
 		HostHeader:   o.GetHostHeader(),
@@ -7476,12 +7476,12 @@ func (o *GSLBHealthCheck) setDefaults() interface{} {
 }
 
 // GetProtocol returns value of Protocol
-func (o *GSLBHealthCheck) GetProtocol() types.Protocol {
+func (o *GSLBHealthCheck) GetProtocol() types.EGSLBHealthCheckProtocol {
 	return o.Protocol
 }
 
 // SetProtocol sets value to Protocol
-func (o *GSLBHealthCheck) SetProtocol(v types.Protocol) {
+func (o *GSLBHealthCheck) SetProtocol(v types.EGSLBHealthCheckProtocol) {
 	o.Protocol = v
 }
 
@@ -10774,12 +10774,10 @@ func (o *LoadBalancerVirtualIPAddress) SetServers(v []*LoadBalancerServer) {
 
 // LoadBalancerServer represents API parameter/response structure
 type LoadBalancerServer struct {
-	IPAddress               string             `validate:"ipv4"`
-	Port                    types.StringNumber `validate:"min=1,max=65535"`
-	Enabled                 types.StringFlag
-	HealthCheckProtocol     types.Protocol     `mapconv:"HealthCheck.Protocol" validate:"oneof=http https ping tcp"`
-	HealthCheckPath         string             `mapconv:"HealthCheck.Path"`
-	HealthCheckResponseCode types.StringNumber `mapconv:"HealthCheck.Status"`
+	IPAddress   string             `validate:"ipv4"`
+	Port        types.StringNumber `validate:"min=1,max=65535"`
+	Enabled     types.StringFlag
+	HealthCheck *LoadBalancerServerHealthCheck `mapconv:"HealthCheck,recursive"`
 }
 
 // Validate validates by field tags
@@ -10790,19 +10788,15 @@ func (o *LoadBalancerServer) Validate() error {
 // setDefaults implements sacloud.argumentDefaulter
 func (o *LoadBalancerServer) setDefaults() interface{} {
 	return &struct {
-		IPAddress               string             `validate:"ipv4"`
-		Port                    types.StringNumber `validate:"min=1,max=65535"`
-		Enabled                 types.StringFlag
-		HealthCheckProtocol     types.Protocol     `mapconv:"HealthCheck.Protocol" validate:"oneof=http https ping tcp"`
-		HealthCheckPath         string             `mapconv:"HealthCheck.Path"`
-		HealthCheckResponseCode types.StringNumber `mapconv:"HealthCheck.Status"`
+		IPAddress   string             `validate:"ipv4"`
+		Port        types.StringNumber `validate:"min=1,max=65535"`
+		Enabled     types.StringFlag
+		HealthCheck *LoadBalancerServerHealthCheck `mapconv:"HealthCheck,recursive"`
 	}{
-		IPAddress:               o.GetIPAddress(),
-		Port:                    o.GetPort(),
-		Enabled:                 o.GetEnabled(),
-		HealthCheckProtocol:     o.GetHealthCheckProtocol(),
-		HealthCheckPath:         o.GetHealthCheckPath(),
-		HealthCheckResponseCode: o.GetHealthCheckResponseCode(),
+		IPAddress:   o.GetIPAddress(),
+		Port:        o.GetPort(),
+		Enabled:     o.GetEnabled(),
+		HealthCheck: o.GetHealthCheck(),
 	}
 }
 
@@ -10836,34 +10830,73 @@ func (o *LoadBalancerServer) SetEnabled(v types.StringFlag) {
 	o.Enabled = v
 }
 
-// GetHealthCheckProtocol returns value of HealthCheckProtocol
-func (o *LoadBalancerServer) GetHealthCheckProtocol() types.Protocol {
-	return o.HealthCheckProtocol
+// GetHealthCheck returns value of HealthCheck
+func (o *LoadBalancerServer) GetHealthCheck() *LoadBalancerServerHealthCheck {
+	return o.HealthCheck
 }
 
-// SetHealthCheckProtocol sets value to HealthCheckProtocol
-func (o *LoadBalancerServer) SetHealthCheckProtocol(v types.Protocol) {
-	o.HealthCheckProtocol = v
+// SetHealthCheck sets value to HealthCheck
+func (o *LoadBalancerServer) SetHealthCheck(v *LoadBalancerServerHealthCheck) {
+	o.HealthCheck = v
 }
 
-// GetHealthCheckPath returns value of HealthCheckPath
-func (o *LoadBalancerServer) GetHealthCheckPath() string {
-	return o.HealthCheckPath
+/*************************************************
+* LoadBalancerServerHealthCheck
+*************************************************/
+
+// LoadBalancerServerHealthCheck represents API parameter/response structure
+type LoadBalancerServerHealthCheck struct {
+	Protocol     types.ELoadBalancerHealthCheckProtocol `validate:"oneof=http https ping tcp"`
+	Path         string
+	ResponseCode types.StringNumber `mapconv:"Status"`
 }
 
-// SetHealthCheckPath sets value to HealthCheckPath
-func (o *LoadBalancerServer) SetHealthCheckPath(v string) {
-	o.HealthCheckPath = v
+// Validate validates by field tags
+func (o *LoadBalancerServerHealthCheck) Validate() error {
+	return validator.New().Struct(o)
 }
 
-// GetHealthCheckResponseCode returns value of HealthCheckResponseCode
-func (o *LoadBalancerServer) GetHealthCheckResponseCode() types.StringNumber {
-	return o.HealthCheckResponseCode
+// setDefaults implements sacloud.argumentDefaulter
+func (o *LoadBalancerServerHealthCheck) setDefaults() interface{} {
+	return &struct {
+		Protocol     types.ELoadBalancerHealthCheckProtocol `validate:"oneof=http https ping tcp"`
+		Path         string
+		ResponseCode types.StringNumber `mapconv:"Status"`
+	}{
+		Protocol:     o.GetProtocol(),
+		Path:         o.GetPath(),
+		ResponseCode: o.GetResponseCode(),
+	}
 }
 
-// SetHealthCheckResponseCode sets value to HealthCheckResponseCode
-func (o *LoadBalancerServer) SetHealthCheckResponseCode(v types.StringNumber) {
-	o.HealthCheckResponseCode = v
+// GetProtocol returns value of Protocol
+func (o *LoadBalancerServerHealthCheck) GetProtocol() types.ELoadBalancerHealthCheckProtocol {
+	return o.Protocol
+}
+
+// SetProtocol sets value to Protocol
+func (o *LoadBalancerServerHealthCheck) SetProtocol(v types.ELoadBalancerHealthCheckProtocol) {
+	o.Protocol = v
+}
+
+// GetPath returns value of Path
+func (o *LoadBalancerServerHealthCheck) GetPath() string {
+	return o.Path
+}
+
+// SetPath sets value to Path
+func (o *LoadBalancerServerHealthCheck) SetPath(v string) {
+	o.Path = v
+}
+
+// GetResponseCode returns value of ResponseCode
+func (o *LoadBalancerServerHealthCheck) GetResponseCode() types.StringNumber {
+	return o.ResponseCode
+}
+
+// SetResponseCode sets value to ResponseCode
+func (o *LoadBalancerServerHealthCheck) SetResponseCode(v types.StringNumber) {
+	o.ResponseCode = v
 }
 
 /*************************************************
@@ -21191,8 +21224,6 @@ type VPCRouter struct {
 	InstanceStatus          types.EServerInstanceStatus `mapconv:"Instance.Status"`
 	InstanceStatusChangedAt time.Time                   `mapconv:"Instance.StatusChangedAt"`
 	Interfaces              []*VPCRouterInterface       `json:",omitempty" mapconv:"[]Interfaces,recursive,omitempty"`
-	SwitchID                types.ID                    `mapconv:"Remark.Switch.ID"`
-	IPAddresses             []string                    `mapconv:"Remark.[]Servers.IPAddress"`
 	ZoneID                  types.ID                    `mapconv:"Remark.Zone.ID"`
 }
 
@@ -21220,8 +21251,6 @@ func (o *VPCRouter) setDefaults() interface{} {
 		InstanceStatus          types.EServerInstanceStatus `mapconv:"Instance.Status"`
 		InstanceStatusChangedAt time.Time                   `mapconv:"Instance.StatusChangedAt"`
 		Interfaces              []*VPCRouterInterface       `json:",omitempty" mapconv:"[]Interfaces,recursive,omitempty"`
-		SwitchID                types.ID                    `mapconv:"Remark.Switch.ID"`
-		IPAddresses             []string                    `mapconv:"Remark.[]Servers.IPAddress"`
 		ZoneID                  types.ID                    `mapconv:"Remark.Zone.ID"`
 	}{
 		ID:                      o.GetID(),
@@ -21240,8 +21269,6 @@ func (o *VPCRouter) setDefaults() interface{} {
 		InstanceStatus:          o.GetInstanceStatus(),
 		InstanceStatusChangedAt: o.GetInstanceStatusChangedAt(),
 		Interfaces:              o.GetInterfaces(),
-		SwitchID:                o.GetSwitchID(),
-		IPAddresses:             o.GetIPAddresses(),
 		ZoneID:                  o.GetZoneID(),
 	}
 }
@@ -21444,26 +21471,6 @@ func (o *VPCRouter) GetInterfaces() []*VPCRouterInterface {
 // SetInterfaces sets value to Interfaces
 func (o *VPCRouter) SetInterfaces(v []*VPCRouterInterface) {
 	o.Interfaces = v
-}
-
-// GetSwitchID returns value of SwitchID
-func (o *VPCRouter) GetSwitchID() types.ID {
-	return o.SwitchID
-}
-
-// SetSwitchID sets value to SwitchID
-func (o *VPCRouter) SetSwitchID(v types.ID) {
-	o.SwitchID = v
-}
-
-// GetIPAddresses returns value of IPAddresses
-func (o *VPCRouter) GetIPAddresses() []string {
-	return o.IPAddresses
-}
-
-// SetIPAddresses sets value to IPAddresses
-func (o *VPCRouter) SetIPAddresses(v []string) {
-	o.IPAddresses = v
 }
 
 // GetZoneID returns value of ZoneID

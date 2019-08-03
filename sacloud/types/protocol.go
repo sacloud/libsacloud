@@ -17,7 +17,7 @@ var Protocols = &struct {
 	HTTPS:    "https",
 	TCP:      "tcp",
 	UDP:      "udp",
-	Ping:     "pint",
+	Ping:     "ping",
 	Fragment: "fragment",
 	IP:       "ip",
 }
