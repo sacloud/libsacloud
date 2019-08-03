@@ -742,7 +742,7 @@ func (f *fieldsDef) GSLBHealthCheck() *dsl.FieldDesc {
 			Fields: []*dsl.FieldDesc{
 				{
 					Name: "Protocol",
-					Type: meta.TypeProtocol,
+					Type: meta.Static(types.EGSLBHealthCheckProtocol("")),
 					Tags: &dsl.FieldTags{
 						Validate: "oneof=http https ping tcp",
 					},

@@ -67,7 +67,7 @@ var (
 		Description: "desc",
 		Tags:        []string{"tag1", "tag2"},
 		HealthCheck: &sacloud.GSLBHealthCheck{
-			Protocol:     "http",
+			Protocol:     types.GSLBHealthCheckProtocols.HTTP,
 			HostHeader:   "usacloud.jp",
 			Path:         "/index.html",
 			ResponseCode: types.StringNumber(200),
@@ -111,7 +111,7 @@ var (
 		Description: "desc-upd",
 		Tags:        []string{"tag1-upd", "tag2-upd"},
 		HealthCheck: &sacloud.GSLBHealthCheck{
-			Protocol:     "https",
+			Protocol:     types.GSLBHealthCheckProtocols.HTTPS,
 			HostHeader:   "upd.usacloud.jp",
 			Path:         "/index-upd.html",
 			ResponseCode: types.StringNumber(201),
@@ -148,7 +148,7 @@ var (
 	updateGSLBToMinParam = &sacloud.GSLBUpdateRequest{
 		Name: testutil.ResourceName("gslb-to-min"),
 		HealthCheck: &sacloud.GSLBHealthCheck{
-			Protocol: "ping",
+			Protocol: types.GSLBHealthCheckProtocols.Ping,
 		},
 	}
 	updateGSLBToMinExpected = &sacloud.GSLB{

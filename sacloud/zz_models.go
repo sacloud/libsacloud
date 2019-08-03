@@ -7446,11 +7446,11 @@ func (o *GSLB) SetDestinationServers(v []*GSLBServer) {
 
 // GSLBHealthCheck represents API parameter/response structure
 type GSLBHealthCheck struct {
-	Protocol     types.Protocol     `validate:"oneof=http https ping tcp"`
-	HostHeader   string             `mapconv:"Host"`
-	Path         string             `mapconv:"Path"`
-	ResponseCode types.StringNumber `mapconv:"Status"`
-	Port         types.StringNumber `mapconv:"Port"`
+	Protocol     types.EGSLBHealthCheckProtocol `validate:"oneof=http https ping tcp"`
+	HostHeader   string                         `mapconv:"Host"`
+	Path         string                         `mapconv:"Path"`
+	ResponseCode types.StringNumber             `mapconv:"Status"`
+	Port         types.StringNumber             `mapconv:"Port"`
 }
 
 // Validate validates by field tags
@@ -7461,11 +7461,11 @@ func (o *GSLBHealthCheck) Validate() error {
 // setDefaults implements sacloud.argumentDefaulter
 func (o *GSLBHealthCheck) setDefaults() interface{} {
 	return &struct {
-		Protocol     types.Protocol     `validate:"oneof=http https ping tcp"`
-		HostHeader   string             `mapconv:"Host"`
-		Path         string             `mapconv:"Path"`
-		ResponseCode types.StringNumber `mapconv:"Status"`
-		Port         types.StringNumber `mapconv:"Port"`
+		Protocol     types.EGSLBHealthCheckProtocol `validate:"oneof=http https ping tcp"`
+		HostHeader   string                         `mapconv:"Host"`
+		Path         string                         `mapconv:"Path"`
+		ResponseCode types.StringNumber             `mapconv:"Status"`
+		Port         types.StringNumber             `mapconv:"Port"`
 	}{
 		Protocol:     o.GetProtocol(),
 		HostHeader:   o.GetHostHeader(),
@@ -7476,12 +7476,12 @@ func (o *GSLBHealthCheck) setDefaults() interface{} {
 }
 
 // GetProtocol returns value of Protocol
-func (o *GSLBHealthCheck) GetProtocol() types.Protocol {
+func (o *GSLBHealthCheck) GetProtocol() types.EGSLBHealthCheckProtocol {
 	return o.Protocol
 }
 
 // SetProtocol sets value to Protocol
-func (o *GSLBHealthCheck) SetProtocol(v types.Protocol) {
+func (o *GSLBHealthCheck) SetProtocol(v types.EGSLBHealthCheckProtocol) {
 	o.Protocol = v
 }
 
