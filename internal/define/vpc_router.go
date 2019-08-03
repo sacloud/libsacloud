@@ -126,10 +126,6 @@ var (
 			fields.InstanceStatusChangedAt(),
 			// interfaces
 			fields.VPCRouterInterfaces(),
-			// switch
-			fields.ApplianceSwitchID(),
-			// remark
-			fields.RemarkServerIPAddress(),
 			fields.RemarkZoneID(),
 		},
 	}

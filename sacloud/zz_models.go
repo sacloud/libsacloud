@@ -21191,8 +21191,6 @@ type VPCRouter struct {
 	InstanceStatus          types.EServerInstanceStatus `mapconv:"Instance.Status"`
 	InstanceStatusChangedAt time.Time                   `mapconv:"Instance.StatusChangedAt"`
 	Interfaces              []*VPCRouterInterface       `json:",omitempty" mapconv:"[]Interfaces,recursive,omitempty"`
-	SwitchID                types.ID                    `mapconv:"Remark.Switch.ID"`
-	IPAddresses             []string                    `mapconv:"Remark.[]Servers.IPAddress"`
 	ZoneID                  types.ID                    `mapconv:"Remark.Zone.ID"`
 }
 
@@ -21220,8 +21218,6 @@ func (o *VPCRouter) setDefaults() interface{} {
 		InstanceStatus          types.EServerInstanceStatus `mapconv:"Instance.Status"`
 		InstanceStatusChangedAt time.Time                   `mapconv:"Instance.StatusChangedAt"`
 		Interfaces              []*VPCRouterInterface       `json:",omitempty" mapconv:"[]Interfaces,recursive,omitempty"`
-		SwitchID                types.ID                    `mapconv:"Remark.Switch.ID"`
-		IPAddresses             []string                    `mapconv:"Remark.[]Servers.IPAddress"`
 		ZoneID                  types.ID                    `mapconv:"Remark.Zone.ID"`
 	}{
 		ID:                      o.GetID(),
@@ -21240,8 +21236,6 @@ func (o *VPCRouter) setDefaults() interface{} {
 		InstanceStatus:          o.GetInstanceStatus(),
 		InstanceStatusChangedAt: o.GetInstanceStatusChangedAt(),
 		Interfaces:              o.GetInterfaces(),
-		SwitchID:                o.GetSwitchID(),
-		IPAddresses:             o.GetIPAddresses(),
 		ZoneID:                  o.GetZoneID(),
 	}
 }
@@ -21444,26 +21438,6 @@ func (o *VPCRouter) GetInterfaces() []*VPCRouterInterface {
 // SetInterfaces sets value to Interfaces
 func (o *VPCRouter) SetInterfaces(v []*VPCRouterInterface) {
 	o.Interfaces = v
-}
-
-// GetSwitchID returns value of SwitchID
-func (o *VPCRouter) GetSwitchID() types.ID {
-	return o.SwitchID
-}
-
-// SetSwitchID sets value to SwitchID
-func (o *VPCRouter) SetSwitchID(v types.ID) {
-	o.SwitchID = v
-}
-
-// GetIPAddresses returns value of IPAddresses
-func (o *VPCRouter) GetIPAddresses() []string {
-	return o.IPAddresses
-}
-
-// SetIPAddresses sets value to IPAddresses
-func (o *VPCRouter) SetIPAddresses(v []string) {
-	o.IPAddresses = v
 }
 
 // GetZoneID returns value of ZoneID

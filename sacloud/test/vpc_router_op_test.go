@@ -63,8 +63,6 @@ var (
 		"InstanceStatus",
 		"InstanceStatusChangedAt",
 		"Interfaces",
-		"SwitchID",
-		"IPAddresses",
 		"ZoneID",
 	}
 
@@ -98,7 +96,6 @@ var (
 		Availability:   types.Availabilities.Available,
 		InstanceStatus: types.ServerInstanceStatuses.Up,
 		PlanID:         createVPCRouterParam.PlanID,
-		IPAddresses:    createVPCRouterParam.IPAddresses,
 		Settings:       createVPCRouterParam.Settings,
 	}
 	updateVPCRouterParam = &sacloud.VPCRouterUpdateRequest{
@@ -406,7 +403,6 @@ var (
 		Availability:   types.Availabilities.Available,
 		InstanceStatus: types.ServerInstanceStatuses.Up,
 		PlanID:         createVPCRouterParam.PlanID,
-		IPAddresses:    createVPCRouterParam.IPAddresses,
 		Settings:       createVPCRouterParam.Settings,
 	}
 	withRouterUpdateVPCRouterParam = &sacloud.VPCRouterUpdateRequest{
