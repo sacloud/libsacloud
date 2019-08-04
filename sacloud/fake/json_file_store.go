@@ -7,8 +7,12 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"reflect"
+	"sort"
 	"strings"
 	"sync"
+
+	"github.com/fatih/structs"
 
 	"github.com/fsnotify/fsnotify"
 
@@ -25,7 +29,118 @@ type JSONFileStore struct {
 	NoInitData bool
 
 	mu    sync.Mutex
-	cache map[string]map[string]interface{}
+	cache JSONFileStoreData
+}
+
+// JSONFileStoreData .
+type JSONFileStoreData map[string]map[string]interface{}
+
+// MarshalJSON .
+func (d JSONFileStoreData) MarshalJSON() ([]byte, error) {
+
+	var transformed []map[string]interface{}
+	for cacheKey, resources := range d {
+		resourceKey, zone := d.parseKey(cacheKey)
+		for id, value := range resources {
+			var mapValue map[string]interface{}
+			if d.isArrayOrSlice(value) {
+				mapValue = map[string]interface{}{
+					"Values": value,
+				}
+			} else {
+				mapValue = structs.Map(value)
+			}
+
+			mapValue["ID"] = id
+			mapValue["ZoneName"] = zone
+			mapValue["ResourceType"] = resourceKey
+
+			transformed = append(transformed, mapValue)
+		}
+	}
+
+	sort.Slice(transformed, func(i, j int) bool {
+		rt1 := transformed[i]["ResourceType"].(string)
+		rt2 := transformed[j]["ResourceType"].(string)
+		if rt1 == rt2 {
+			id1 := types.StringID(transformed[i]["ID"].(string))
+			id2 := types.StringID(transformed[j]["ID"].(string))
+			return id1 < id2
+		}
+		return rt1 < rt2
+	})
+
+	return json.MarshalIndent(transformed, "", "\t")
+}
+
+// UnmarshalJSON .
+func (d *JSONFileStoreData) UnmarshalJSON(data []byte) error {
+	var transformed []map[string]interface{}
+	if err := json.Unmarshal(data, &transformed); err != nil {
+		return err
+	}
+
+	dest := JSONFileStoreData{}
+	for _, mapValue := range transformed {
+		rawID, ok := mapValue["ID"]
+		if !ok {
+			return fmt.Errorf("invalid JSON: 'ID' field is missing: %v", mapValue)
+		}
+		id := rawID.(string)
+
+		rawZone, ok := mapValue["ZoneName"]
+		if !ok {
+			return fmt.Errorf("invalid JSON: 'ZoneName' field is missing: %v", mapValue)
+		}
+		zone := rawZone.(string)
+
+		rawRt, ok := mapValue["ResourceType"]
+		if !ok {
+			return fmt.Errorf("invalid JSON: 'ResourceType' field is missing: %v", mapValue)
+		}
+		rt := rawRt.(string)
+
+		var resources map[string]interface{}
+		r, ok := dest[d.key(rt, zone)]
+		if ok {
+			resources = r
+		} else {
+			resources = map[string]interface{}{}
+		}
+		if v, ok := mapValue["Values"]; ok {
+			resources[id] = v
+		} else {
+			resources[id] = mapValue
+		}
+
+		dest[d.key(rt, zone)] = resources
+	}
+
+	*d = dest
+	return nil
+}
+
+func (d *JSONFileStoreData) isArrayOrSlice(v interface{}) bool {
+	rt := reflect.TypeOf(v)
+	switch rt.Kind() {
+	case reflect.Slice, reflect.Array:
+		return true
+	case reflect.Ptr:
+		return d.isArrayOrSlice(reflect.ValueOf(v).Elem().Interface())
+	}
+	return false
+}
+
+func (d *JSONFileStoreData) key(resourceKey, zone string) string {
+	return fmt.Sprintf("%s/%s", resourceKey, zone)
+}
+
+func (d *JSONFileStoreData) parseKey(k string) (string, string) {
+	ss := strings.Split(k, "/")
+	if len(ss) == 2 {
+		return ss[0], ss[1]
+	}
+	return "", ""
 }
 
 // NewJSONFileStore .
@@ -106,7 +221,10 @@ func (s *JSONFileStore) startWatcher() {
 
 // NeedInitData .
 func (s *JSONFileStore) NeedInitData() bool {
-	return !s.NoInitData && len(s.cache[sacloud.APIDefaultZone]) < 2
+	if s.NoInitData {
+		return false
+	}
+	return len(s.cache) < 2
 }
 
 // Put .
@@ -245,7 +363,7 @@ func (s *JSONFileStore) load() error {
 		return nil
 	}
 
-	var cache = make(map[string]map[string]interface{})
+	var cache = JSONFileStoreData{}
 	if err := json.Unmarshal(data, &cache); err != nil {
 		return err
 	}
