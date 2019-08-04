@@ -36,7 +36,7 @@ func (o *NFSOp) Create(ctx context.Context, zone string, param *sacloud.NFSCreat
 	result.Availability = types.Availabilities.Migrating
 	result.ZoneID = zoneIDs[zone]
 
-	s.setNFS(zone, result)
+	putNFS(zone, result)
 
 	id := result.ID
 	startPowerOn(o.key, zone, func() (interface{}, error) {
@@ -47,7 +47,7 @@ func (o *NFSOp) Create(ctx context.Context, zone string, param *sacloud.NFSCreat
 
 // Read is fake implementation
 func (o *NFSOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.NFS, error) {
-	value := s.getNFSByID(zone, id)
+	value := getNFSByID(zone, id)
 	if value == nil {
 		return nil, newErrorNotFound(o.key, id)
 	}
@@ -78,7 +78,7 @@ func (o *NFSOp) Delete(ctx context.Context, zone string, id types.ID) error {
 		return newErrorConflict(o.key, id, fmt.Sprintf("NFS[%s] is still running", id))
 	}
 
-	s.delete(o.key, zone, id)
+	ds().Delete(o.key, zone, id)
 	return nil
 }
 

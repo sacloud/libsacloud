@@ -29,13 +29,13 @@ func (o *NoteOp) Create(ctx context.Context, param *sacloud.NoteCreateRequest) (
 	result := &sacloud.Note{}
 	copySameNameField(param, result)
 	fill(result, fillID, fillCreatedAt, fillAvailability, fillScope)
-	s.setNote(sacloud.APIDefaultZone, result)
+	putNote(sacloud.APIDefaultZone, result)
 	return result, nil
 }
 
 // Read is fake implementation
 func (o *NoteOp) Read(ctx context.Context, id types.ID) (*sacloud.Note, error) {
-	value := s.getNoteByID(sacloud.APIDefaultZone, id)
+	value := getNoteByID(sacloud.APIDefaultZone, id)
 	if value == nil {
 		return nil, newErrorNotFound(o.key, id)
 	}
@@ -63,6 +63,6 @@ func (o *NoteOp) Delete(ctx context.Context, id types.ID) error {
 	if err != nil {
 		return err
 	}
-	s.delete(o.key, sacloud.APIDefaultZone, id)
+	ds().Delete(o.key, sacloud.APIDefaultZone, id)
 	return nil
 }

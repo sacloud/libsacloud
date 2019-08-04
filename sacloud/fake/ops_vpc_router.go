@@ -74,7 +74,7 @@ func (o *VPCRouterOp) Create(ctx context.Context, zone string, param *sacloud.VP
 	copySameNameField(iface, vpcRouterInterface)
 	result.Interfaces = append(result.Interfaces, vpcRouterInterface)
 
-	s.setVPCRouter(zone, result)
+	putVPCRouter(zone, result)
 
 	id := result.ID
 	startMigration(o.key, zone, func() (interface{}, error) {
@@ -85,7 +85,7 @@ func (o *VPCRouterOp) Create(ctx context.Context, zone string, param *sacloud.VP
 
 // Read is fake implementation
 func (o *VPCRouterOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.VPCRouter, error) {
-	value := s.getVPCRouterByID(zone, id)
+	value := getVPCRouterByID(zone, id)
 	if value == nil {
 		return nil, newErrorNotFound(o.key, id)
 	}
@@ -111,7 +111,7 @@ func (o *VPCRouterOp) Delete(ctx context.Context, zone string, id types.ID) erro
 	if err != nil {
 		return err
 	}
-	s.delete(o.key, zone, id)
+	ds().Delete(o.key, zone, id)
 	return nil
 }
 
@@ -211,7 +211,7 @@ func (o *VPCRouterOp) ConnectToSwitch(ctx context.Context, zone string, id types
 	copySameNameField(iface, vpcRouterInterface)
 	value.Interfaces = append(value.Interfaces, vpcRouterInterface)
 
-	s.setVPCRouter(zone, value)
+	putVPCRouter(zone, value)
 	return nil
 }
 
@@ -244,7 +244,7 @@ func (o *VPCRouterOp) DisconnectFromSwitch(ctx context.Context, zone string, id 
 	}
 
 	value.Interfaces = interfaces
-	s.setVPCRouter(zone, value)
+	putVPCRouter(zone, value)
 	return nil
 }
 

@@ -41,13 +41,13 @@ func (o *PrivateHostOp) Create(ctx context.Context, zone string, param *sacloud.
 	result.CPU = plan.CPU
 	result.MemoryMB = plan.MemoryMB
 	result.HostName = "sac-zone-svNNN"
-	s.setPrivateHost(sacloud.APIDefaultZone, result)
+	putPrivateHost(sacloud.APIDefaultZone, result)
 	return result, nil
 }
 
 // Read is fake implementation
 func (o *PrivateHostOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.PrivateHost, error) {
-	value := s.getPrivateHostByID(sacloud.APIDefaultZone, id)
+	value := getPrivateHostByID(sacloud.APIDefaultZone, id)
 	if value == nil {
 		return nil, newErrorNotFound(o.key, id)
 	}
@@ -75,6 +75,6 @@ func (o *PrivateHostOp) Delete(ctx context.Context, zone string, id types.ID) er
 		return err
 	}
 
-	s.delete(o.key, sacloud.APIDefaultZone, id)
+	ds().Delete(o.key, sacloud.APIDefaultZone, id)
 	return nil
 }

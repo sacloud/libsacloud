@@ -36,13 +36,13 @@ func (o *AutoBackupOp) Create(ctx context.Context, zone string, param *sacloud.A
 	result.ZoneID = zoneIDs[zone]
 	result.ZoneName = zone
 
-	s.setAutoBackup(zone, result)
+	putAutoBackup(zone, result)
 	return result, nil
 }
 
 // Read is fake implementation
 func (o *AutoBackupOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.AutoBackup, error) {
-	value := s.getAutoBackupByID(zone, id)
+	value := getAutoBackupByID(zone, id)
 	if value == nil {
 		return nil, newErrorNotFound(o.key, id)
 	}
@@ -70,6 +70,6 @@ func (o *AutoBackupOp) Delete(ctx context.Context, zone string, id types.ID) err
 		return err
 	}
 
-	s.delete(o.key, zone, id)
+	ds().Delete(o.key, zone, id)
 	return nil
 }

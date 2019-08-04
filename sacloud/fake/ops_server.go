@@ -87,13 +87,13 @@ func (o *ServerOp) Create(ctx context.Context, zone string, param *sacloud.Serve
 		result.Interfaces = append(result.Interfaces, ifaceView)
 	}
 
-	s.setServer(zone, result)
+	putServer(zone, result)
 	return result, nil
 }
 
 // Read is fake implementation
 func (o *ServerOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Server, error) {
-	value := s.getServerByID(zone, id)
+	value := getServerByID(zone, id)
 	if value == nil {
 		return nil, newErrorNotFound(o.key, id)
 	}
@@ -140,7 +140,7 @@ func (o *ServerOp) Delete(ctx context.Context, zone string, id types.ID) error {
 		}
 	}
 
-	s.delete(o.key, zone, id)
+	ds().Delete(o.key, zone, id)
 	return nil
 }
 
@@ -174,11 +174,11 @@ func (o *ServerOp) ChangePlan(ctx context.Context, zone string, id types.ID, pla
 	value.ServerPlanName = fmt.Sprintf("世代:%03d メモリ:%03d CPU:%03d", value.ServerPlanGeneration, value.GetMemoryGB(), value.CPU)
 
 	// ID変更
-	s.delete(o.key, zone, value.ID)
+	ds().Delete(o.key, zone, value.ID)
 	newServer := &sacloud.Server{}
 	copySameNameField(value, newServer)
-	newServer.ID = pool.generateID()
-	s.setServer(zone, newServer)
+	newServer.ID = pool().generateID()
+	putServer(zone, newServer)
 
 	return newServer, nil
 }
@@ -196,7 +196,7 @@ func (o *ServerOp) InsertCDROM(ctx context.Context, zone string, id types.ID, in
 	}
 
 	value.CDROMID = insertParam.ID
-	s.setServer(zone, value)
+	putServer(zone, value)
 	return nil
 }
 
@@ -213,7 +213,7 @@ func (o *ServerOp) EjectCDROM(ctx context.Context, zone string, id types.ID, ins
 	}
 
 	value.CDROMID = types.ID(0)
-	s.setServer(zone, value)
+	putServer(zone, value)
 	return nil
 }
 

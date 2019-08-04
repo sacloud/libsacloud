@@ -26,7 +26,7 @@ func (o *PrivateHostPlanOp) Find(ctx context.Context, zone string, conditions *s
 
 // Read is fake implementation
 func (o *PrivateHostPlanOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.PrivateHostPlan, error) {
-	value := s.getPrivateHostPlanByID(zone, id)
+	value := getPrivateHostPlanByID(zone, id)
 	if value == nil {
 		return nil, newErrorNotFound(o.key, id)
 	}

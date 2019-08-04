@@ -1,68 +1,92 @@
 package fake
 
 import (
+	"math"
 	"net"
 	"sync"
 
 	"github.com/sacloud/libsacloud/v2/pkg/cidr"
+	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
-type valuePool struct {
-	currentID            int64
-	currentSharedIP      net.IP
-	sharedNetMaskLen     int
-	sharedDefaultGateway net.IP
-	currentMACAddress    net.HardwareAddr
-	mu                   sync.Mutex
-	currentSubnets       map[int]*net.IPNet
+const (
+	valuePoolMagicID     = types.ID(math.MaxInt64)
+	valuePoolResourceKey = "meta"
+)
+
+func pool() *valuePool {
+	InitDataStore()
+	return vp
 }
 
-var pool = &valuePool{
-	currentID:            int64(100000000000),
-	currentSharedIP:      net.IP{192, 0, 2, 2},
-	sharedNetMaskLen:     24,
-	sharedDefaultGateway: net.IP{192, 0, 2, 1},
-	currentMACAddress:    net.HardwareAddr{0x00, 0x00, 0x5E, 0x00, 0x53, 0x00},
-	currentSubnets: map[int]*net.IPNet{
-		24: {
-			IP:   net.IP{24, 0, 0, 0},
-			Mask: net.IPMask{255, 255, 255, 0},
+var vp *valuePool
+
+type valuePool struct {
+	CurrentID            int64
+	CurrentSharedIP      net.IP
+	SharedNetMaskLen     int
+	SharedDefaultGateway net.IP
+	CurrentMACAddress    net.HardwareAddr
+	CurrentSubnets       map[int]string
+	dataStore            Store
+	mu                   sync.Mutex
+}
+
+func initValuePool(s Store) *valuePool {
+	var mu sync.Mutex
+
+	mu.Lock()
+	defer mu.Unlock()
+
+	v := s.Get(valuePoolResourceKey, sacloud.APIDefaultZone, valuePoolMagicID)
+	if v != nil {
+		vp = v.(*valuePool)
+		vp.dataStore = s
+		return vp
+	}
+
+	vp = &valuePool{
+		CurrentID:            int64(100000000000),
+		CurrentSharedIP:      net.IP{192, 0, 2, 2},
+		SharedNetMaskLen:     24,
+		SharedDefaultGateway: net.IP{192, 0, 2, 1},
+		CurrentMACAddress:    net.HardwareAddr{0x00, 0x00, 0x5E, 0x00, 0x53, 0x00},
+		CurrentSubnets: map[int]string{
+			24: "24.0.0.0/24",
+			25: "25.0.0.0/25",
+			26: "26.0.0.0/26",
+			27: "27.0.0.0/27",
+			28: "28.0.0.0/28",
 		},
-		25: {
-			IP:   net.IP{25, 0, 0, 0},
-			Mask: net.IPMask{255, 255, 255, 128},
-		},
-		26: {
-			IP:   net.IP{26, 0, 0, 0},
-			Mask: net.IPMask{255, 255, 255, 192},
-		},
-		27: {
-			IP:   net.IP{27, 0, 0, 0},
-			Mask: net.IPMask{255, 255, 255, 224},
-		},
-		28: {
-			IP:   net.IP{28, 0, 0, 0},
-			Mask: net.IPMask{255, 255, 255, 240},
-		},
-	},
+		dataStore: s,
+	}
+	return vp
+}
+
+func (p *valuePool) store() {
+	p.dataStore.Put(valuePoolResourceKey, sacloud.APIDefaultZone, valuePoolMagicID, p)
 }
 
 func (p *valuePool) generateID() types.ID {
 	p.mu.Lock()
 	defer p.mu.Unlock()
 
-	p.currentID++
-	return types.ID(p.currentID)
+	p.CurrentID++
+
+	p.store()
+	return types.ID(p.CurrentID)
 }
 
 func (p *valuePool) nextSharedIP() net.IP {
 	p.mu.Lock()
 	defer p.mu.Unlock()
 
-	ip := p.currentSharedIP.To4()
+	ip := p.CurrentSharedIP.To4()
 	ip[3]++
-	p.currentSharedIP = ip
+	p.CurrentSharedIP = ip
+
+	p.store()
 	return ip
 }
 
@@ -70,18 +94,21 @@ func (p *valuePool) nextMACAddress() net.HardwareAddr {
 	p.mu.Lock()
 	defer p.mu.Unlock()
 
-	mac := []byte(p.currentMACAddress)
+	mac := []byte(p.CurrentMACAddress)
 	mac[5]++
-	p.currentMACAddress = net.HardwareAddr(mac)
-	return p.currentMACAddress
+	p.CurrentMACAddress = net.HardwareAddr(mac)
+
+	p.store()
+	return p.CurrentMACAddress
 }
 
 func (p *valuePool) nextSubnet(maskLen int) *assignedSubnet {
 	p.mu.Lock()
 	defer p.mu.Unlock()
 
-	next, _ := cidr.NextSubnet(p.currentSubnets[maskLen], maskLen) // ignore result
-	p.currentSubnets[maskLen] = next
+	_, currentSubnet, _ := net.ParseCIDR(p.CurrentSubnets[maskLen])
+	next, _ := cidr.NextSubnet(currentSubnet, maskLen) // ignore result
+	p.CurrentSubnets[maskLen] = next.String()
 
 	count := cidr.AddressCount(next)
 	current := next.IP
@@ -106,6 +133,7 @@ func (p *valuePool) nextSubnet(maskLen int) *assignedSubnet {
 		current = cidr.Inc(current)
 	}
 
+	p.store()
 	return &assignedSubnet{
 		defaultRoute:   defaultGateway,
 		networkAddress: networkAddr,
@@ -118,8 +146,9 @@ func (p *valuePool) nextSubnetFull(maskLen int, defaultRoute string) *assignedSu
 	p.mu.Lock()
 	defer p.mu.Unlock()
 
-	next, _ := cidr.NextSubnet(p.currentSubnets[maskLen], maskLen) // ignore result
-	p.currentSubnets[maskLen] = next
+	_, currentSubnet, _ := net.ParseCIDR(p.CurrentSubnets[maskLen])
+	next, _ := cidr.NextSubnet(currentSubnet, maskLen) // ignore result
+	p.CurrentSubnets[maskLen] = next.String()
 
 	count := cidr.AddressCount(next)
 	current := next.IP
@@ -131,6 +160,7 @@ func (p *valuePool) nextSubnetFull(maskLen int, defaultRoute string) *assignedSu
 		current = cidr.Inc(current)
 	}
 
+	p.store()
 	return &assignedSubnet{
 		defaultRoute:   defaultRoute,
 		networkAddress: networkAddr,

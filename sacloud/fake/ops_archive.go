@@ -54,7 +54,7 @@ func (o *ArchiveOp) Create(ctx context.Context, zone string, param *sacloud.Arch
 	result.DiskPlanName = "標準プラン"
 	result.DiskPlanStorageClass = "iscsi9999"
 
-	s.setArchive(zone, result)
+	putArchive(zone, result)
 
 	id := result.ID
 	startDiskCopy(o.key, zone, func() (interface{}, error) {
@@ -72,7 +72,7 @@ func (o *ArchiveOp) CreateBlank(ctx context.Context, zone string, param *sacloud
 
 	result.Availability = types.Availabilities.Uploading
 
-	s.setArchive(zone, result)
+	putArchive(zone, result)
 
 	return result, &sacloud.FTPServer{
 		HostName:  fmt.Sprintf("sac-%s-ftp.example.jp", zone),
@@ -84,7 +84,7 @@ func (o *ArchiveOp) CreateBlank(ctx context.Context, zone string, param *sacloud
 
 // Read is fake implementation
 func (o *ArchiveOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Archive, error) {
-	value := s.getArchiveByID(zone, id)
+	value := getArchiveByID(zone, id)
 	if value == nil {
 		return nil, newErrorNotFound(o.key, id)
 	}
@@ -110,7 +110,7 @@ func (o *ArchiveOp) Delete(ctx context.Context, zone string, id types.ID) error 
 	if err != nil {
 		return err
 	}
-	s.delete(o.key, zone, id)
+	ds().Delete(o.key, zone, id)
 	return nil
 }
 
@@ -122,7 +122,7 @@ func (o *ArchiveOp) OpenFTP(ctx context.Context, zone string, id types.ID, openO
 	}
 
 	value.SetAvailability(types.Availabilities.Uploading)
-	s.setArchive(zone, value)
+	putArchive(zone, value)
 
 	return &sacloud.FTPServer{
 		HostName:  fmt.Sprintf("sac-%s-ftp.example.jp", zone),
@@ -142,6 +142,6 @@ func (o *ArchiveOp) CloseFTP(ctx context.Context, zone string, id types.ID) erro
 	if !value.Availability.IsUploading() {
 		value.SetAvailability(types.Availabilities.Available)
 	}
-	s.setArchive(zone, value)
+	putArchive(zone, value)
 	return nil
 }

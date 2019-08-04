@@ -26,7 +26,7 @@ func (o *ServerPlanOp) Find(ctx context.Context, zone string, conditions *saclou
 
 // Read is fake implementation
 func (o *ServerPlanOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.ServerPlan, error) {
-	value := s.getServerPlanByID(sacloud.APIDefaultZone, id)
+	value := getServerPlanByID(sacloud.APIDefaultZone, id)
 	if value == nil {
 		return nil, newErrorNotFound(o.key, id)
 	}

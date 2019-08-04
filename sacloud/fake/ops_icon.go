@@ -35,13 +35,13 @@ func (o *IconOp) Create(ctx context.Context, param *sacloud.IconCreateRequest) (
 	result.Scope = types.Scopes.User
 	result.URL = fmt.Sprintf("https://secure.sakura.ad.jp/cloud/zone/is1a/api/cloud/1.1/icon/%d.png", result.ID)
 
-	s.setIcon(sacloud.APIDefaultZone, result)
+	putIcon(sacloud.APIDefaultZone, result)
 	return result, nil
 }
 
 // Read is fake implementation
 func (o *IconOp) Read(ctx context.Context, id types.ID) (*sacloud.Icon, error) {
-	value := s.getIconByID(sacloud.APIDefaultZone, id)
+	value := getIconByID(sacloud.APIDefaultZone, id)
 	if value == nil {
 		return nil, newErrorNotFound(o.key, id)
 	}
@@ -68,6 +68,6 @@ func (o *IconOp) Delete(ctx context.Context, id types.ID) error {
 		return err
 	}
 
-	s.delete(o.key, sacloud.APIDefaultZone, id)
+	ds().Delete(o.key, sacloud.APIDefaultZone, id)
 	return nil
 }

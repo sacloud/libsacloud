@@ -26,7 +26,7 @@ func (o *ZoneOp) Find(ctx context.Context, conditions *sacloud.FindCondition) (*
 
 // Read is fake implementation
 func (o *ZoneOp) Read(ctx context.Context, id types.ID) (*sacloud.Zone, error) {
-	value := s.getZoneByID(sacloud.APIDefaultZone, id)
+	value := getZoneByID(sacloud.APIDefaultZone, id)
 	if value == nil {
 		return nil, newErrorNotFound(o.key, id)
 	}

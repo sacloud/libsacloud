@@ -39,13 +39,13 @@ func (o *SimpleMonitorOp) Create(ctx context.Context, param *sacloud.SimpleMonit
 		result.DelayLoop = 60
 	}
 
-	s.setSimpleMonitor(sacloud.APIDefaultZone, result)
+	putSimpleMonitor(sacloud.APIDefaultZone, result)
 	return result, nil
 }
 
 // Read is fake implementation
 func (o *SimpleMonitorOp) Read(ctx context.Context, id types.ID) (*sacloud.SimpleMonitor, error) {
-	value := s.getSimpleMonitorByID(sacloud.APIDefaultZone, id)
+	value := getSimpleMonitorByID(sacloud.APIDefaultZone, id)
 	if value == nil {
 		return nil, newErrorNotFound(o.key, id)
 	}
@@ -65,7 +65,7 @@ func (o *SimpleMonitorOp) Update(ctx context.Context, id types.ID, param *saclou
 	if value.DelayLoop == 0 {
 		value.DelayLoop = 60
 	}
-	s.setSimpleMonitor(sacloud.APIDefaultZone, value)
+	putSimpleMonitor(sacloud.APIDefaultZone, value)
 
 	return value, nil
 }
@@ -77,7 +77,7 @@ func (o *SimpleMonitorOp) Delete(ctx context.Context, id types.ID) error {
 		return err
 	}
 
-	s.delete(o.key, sacloud.APIDefaultZone, id)
+	ds().Delete(o.key, sacloud.APIDefaultZone, id)
 	return nil
 }
 

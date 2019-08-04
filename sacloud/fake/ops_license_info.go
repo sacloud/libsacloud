@@ -26,7 +26,7 @@ func (o *LicenseInfoOp) Find(ctx context.Context, conditions *sacloud.FindCondit
 
 // Read is fake implementation
 func (o *LicenseInfoOp) Read(ctx context.Context, id types.ID) (*sacloud.LicenseInfo, error) {
-	value := s.getLicenseInfoByID(sacloud.APIDefaultZone, id)
+	value := getLicenseInfoByID(sacloud.APIDefaultZone, id)
 	if value == nil {
 		return nil, newErrorNotFound(o.key, id)
 	}

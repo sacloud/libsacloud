@@ -37,13 +37,13 @@ func (o *MobileGatewayOp) Create(ctx context.Context, zone string, param *saclou
 	result.ZoneID = zoneIDs[zone]
 	result.SettingsHash = ""
 
-	s.setMobileGateway(zone, result)
+	putMobileGateway(zone, result)
 	return result, nil
 }
 
 // Read is fake implementation
 func (o *MobileGatewayOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.MobileGateway, error) {
-	value := s.getMobileGatewayByID(zone, id)
+	value := getMobileGatewayByID(zone, id)
 	if value == nil {
 		return nil, newErrorNotFound(o.key, id)
 	}
@@ -71,7 +71,7 @@ func (o *MobileGatewayOp) Delete(ctx context.Context, zone string, id types.ID) 
 		return err
 	}
 
-	s.delete(o.key, zone, id)
+	ds().Delete(o.key, zone, id)
 	return nil
 }
 
@@ -173,7 +173,7 @@ func (o *MobileGatewayOp) ConnectToSwitch(ctx context.Context, zone string, id t
 	mobileGatewayInterface.Index = 1 // 1固定
 	value.Interfaces = []*sacloud.MobileGatewayInterface{nil, mobileGatewayInterface}
 
-	s.setMobileGateway(zone, value)
+	putMobileGateway(zone, value)
 	return nil
 }
 
@@ -206,7 +206,7 @@ func (o *MobileGatewayOp) DisconnectFromSwitch(ctx context.Context, zone string,
 	}
 
 	value.Interfaces = interfaces
-	s.setMobileGateway(zone, value)
+	putMobileGateway(zone, value)
 	return nil
 }
 
@@ -217,7 +217,7 @@ func (o *MobileGatewayOp) GetDNS(ctx context.Context, zone string, id types.ID) 
 		return nil, err
 	}
 
-	dns := s.getByID(o.dnsStoreKey(), zone, id)
+	dns := ds().Get(o.dnsStoreKey(), zone, id)
 	if dns == nil {
 		return &sacloud.MobileGatewayDNSSetting{
 			DNS1: "133.242.0.1",
@@ -234,7 +234,7 @@ func (o *MobileGatewayOp) SetDNS(ctx context.Context, zone string, id types.ID, 
 		return err
 	}
 
-	s.setWithID(o.dnsStoreKey(), zone, param, id)
+	ds().Put(o.dnsStoreKey(), zone, id, param)
 	return nil
 }
 
@@ -245,11 +245,17 @@ func (o *MobileGatewayOp) GetSIMRoutes(ctx context.Context, zone string, id type
 		return nil, err
 	}
 
-	routes := s.getByID(o.simRoutesStoreKey(), zone, id)
+	routes := ds().Get(o.simRoutesStoreKey(), zone, id)
 	if routes == nil {
 		return nil, nil
 	}
-	return routes.([]*sacloud.MobileGatewaySIMRoute), nil
+
+	rs := routes.(*[]*sacloud.MobileGatewaySIMRoute)
+	var res []*sacloud.MobileGatewaySIMRoute
+	for _, r := range *rs {
+		res = append(res, r)
+	}
+	return res, nil
 }
 
 // SetSIMRoutes is fake implementation
@@ -273,7 +279,7 @@ func (o *MobileGatewayOp) SetSIMRoutes(ctx context.Context, zone string, id type
 		})
 	}
 
-	s.setWithID(o.simRoutesStoreKey(), zone, values, id)
+	ds().Put(o.simRoutesStoreKey(), zone, id, &values)
 	return nil
 }
 
@@ -284,11 +290,17 @@ func (o *MobileGatewayOp) ListSIM(ctx context.Context, zone string, id types.ID)
 		return nil, err
 	}
 
-	sims := s.getByID(o.simsStoreKey(), zone, id)
+	sims := ds().Get(o.simsStoreKey(), zone, id)
 	if sims == nil {
 		return nil, nil
 	}
-	return sims.([]*sacloud.MobileGatewaySIMInfo), nil
+
+	ss := sims.(*[]*sacloud.MobileGatewaySIMInfo)
+	var res []*sacloud.MobileGatewaySIMInfo
+	for _, info := range *ss {
+		res = append(res, info)
+	}
+	return res, nil
 }
 
 // AddSIM is fake implementation
@@ -299,7 +311,7 @@ func (o *MobileGatewayOp) AddSIM(ctx context.Context, zone string, id types.ID, 
 	}
 
 	var sims []*sacloud.MobileGatewaySIMInfo
-	rawSIMs := s.getByID(o.simsStoreKey(), zone, id)
+	rawSIMs := ds().Get(o.simsStoreKey(), zone, id)
 	if rawSIMs != nil {
 		sims = rawSIMs.([]*sacloud.MobileGatewaySIMInfo)
 		for _, sim := range sims {
@@ -319,7 +331,7 @@ func (o *MobileGatewayOp) AddSIM(ctx context.Context, zone string, id types.ID, 
 
 	sims = append(sims, sim)
 
-	s.setWithID(o.simsStoreKey(), zone, sims, id)
+	ds().Put(o.simsStoreKey(), zone, id, &sims)
 	return nil
 }
 
@@ -330,17 +342,17 @@ func (o *MobileGatewayOp) DeleteSIM(ctx context.Context, zone string, id types.I
 		return err
 	}
 
-	var sims, updSIMs []*sacloud.MobileGatewaySIMInfo
-	rawSIMs := s.getByID(o.simsStoreKey(), zone, id)
+	var updSIMs []*sacloud.MobileGatewaySIMInfo
+	rawSIMs := ds().Get(o.simsStoreKey(), zone, id)
 	if rawSIMs != nil {
-		sims = rawSIMs.([]*sacloud.MobileGatewaySIMInfo)
-		for _, sim := range sims {
+		ss := rawSIMs.(*[]*sacloud.MobileGatewaySIMInfo)
+		for _, sim := range *ss {
 			if sim.ResourceID != simID.String() {
 				updSIMs = append(updSIMs, sim)
 			}
 		}
-		if len(sims) != len(updSIMs) {
-			s.setWithID(o.simsStoreKey(), zone, updSIMs, id)
+		if len(*ss) != len(updSIMs) {
+			ds().Put(o.simsStoreKey(), zone, id, &updSIMs)
 			return nil
 		}
 	}
@@ -370,7 +382,7 @@ func (o *MobileGatewayOp) GetTrafficConfig(ctx context.Context, zone string, id 
 		return nil, err
 	}
 
-	config := s.getByID(o.trafficConfigStoreKey(), zone, id)
+	config := ds().Get(o.trafficConfigStoreKey(), zone, id)
 	if config == nil {
 		return nil, nil
 	}
@@ -384,7 +396,7 @@ func (o *MobileGatewayOp) SetTrafficConfig(ctx context.Context, zone string, id 
 		return err
 	}
 
-	s.setWithID(o.trafficConfigStoreKey(), zone, param, id)
+	ds().Put(o.trafficConfigStoreKey(), zone, id, param)
 	return nil
 }
 
@@ -395,7 +407,7 @@ func (o *MobileGatewayOp) DeleteTrafficConfig(ctx context.Context, zone string, 
 		return err
 	}
 
-	s.delete(o.trafficConfigStoreKey(), zone, id)
+	ds().Delete(o.trafficConfigStoreKey(), zone, id)
 	return nil
 }
 

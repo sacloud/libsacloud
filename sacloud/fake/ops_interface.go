@@ -32,15 +32,15 @@ func (o *InterfaceOp) Create(ctx context.Context, zone string, param *sacloud.In
 	copySameNameField(param, result)
 	fill(result, fillID, fillCreatedAt)
 
-	result.MACAddress = pool.nextMACAddress().String()
+	result.MACAddress = pool().nextMACAddress().String()
 
-	s.setInterface(zone, result)
+	putInterface(zone, result)
 	return result, nil
 }
 
 // Read is fake implementation
 func (o *InterfaceOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Interface, error) {
-	value := s.getInterfaceByID(zone, id)
+	value := getInterfaceByID(zone, id)
 	if value == nil {
 		return nil, newErrorNotFound(o.key, id)
 	}
@@ -68,7 +68,7 @@ func (o *InterfaceOp) Delete(ctx context.Context, zone string, id types.ID) erro
 	if err != nil {
 		return err
 	}
-	s.delete(o.key, zone, id)
+	ds().Delete(o.key, zone, id)
 	return nil
 }
 
@@ -110,7 +110,7 @@ func (o *InterfaceOp) ConnectToSharedSegment(ctx context.Context, zone string, i
 	}
 
 	value.SwitchID = sharedSegmentSwitch.ID
-	s.setInterface(zone, value)
+	putInterface(zone, value)
 	return nil
 }
 
@@ -126,7 +126,7 @@ func (o *InterfaceOp) ConnectToSwitch(ctx context.Context, zone string, id types
 	}
 
 	value.SwitchID = switchID
-	s.setInterface(zone, value)
+	putInterface(zone, value)
 	return nil
 }
 
@@ -142,7 +142,7 @@ func (o *InterfaceOp) DisconnectFromSwitch(ctx context.Context, zone string, id 
 	}
 
 	value.SwitchID = types.ID(0)
-	s.setInterface(zone, value)
+	putInterface(zone, value)
 	return nil
 }
 
@@ -158,7 +158,7 @@ func (o *InterfaceOp) ConnectToPacketFilter(ctx context.Context, zone string, id
 	}
 
 	value.PacketFilterID = packetFilterID
-	s.setInterface(zone, value)
+	putInterface(zone, value)
 	return nil
 }
 
@@ -174,6 +174,6 @@ func (o *InterfaceOp) DisconnectFromPacketFilter(ctx context.Context, zone strin
 	}
 
 	value.PacketFilterID = types.ID(0)
-	s.setInterface(zone, value)
+	putInterface(zone, value)
 	return nil
 }

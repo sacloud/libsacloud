@@ -26,7 +26,7 @@ func (o *InternetPlanOp) Find(ctx context.Context, zone string, conditions *sacl
 
 // Read is fake implementation
 func (o *InternetPlanOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.InternetPlan, error) {
-	value := s.getInternetPlanByID(zone, id)
+	value := getInternetPlanByID(zone, id)
 	if value == nil {
 		return nil, newErrorNotFound(o.key, id)
 	}

@@ -44,10 +44,10 @@ func startDiskCopy(resourceKey, zone string, readFunc func() (interface{}, error
 			} else {
 				target.SetAvailability(types.Availabilities.Available)
 				target.SetMigratedMB(target.GetSizeMB())
-				s.set(resourceKey, zone, target)
+				ds().Put(resourceKey, zone, target.(accessor.ID).GetID(), target)
 				return
 			}
-			s.set(resourceKey, zone, target)
+			ds().Put(resourceKey, zone, target.(accessor.ID).GetID(), target)
 			counter++
 		}
 	}()
@@ -74,10 +74,10 @@ func startMigration(resourceKey, zone string, readFunc func() (interface{}, erro
 				target.SetAvailability(types.Availabilities.Migrating)
 			} else {
 				target.SetAvailability(types.Availabilities.Available)
-				s.set(resourceKey, zone, target)
+				ds().Put(resourceKey, zone, target.(accessor.ID).GetID(), target)
 				return
 			}
-			s.set(resourceKey, zone, target)
+			ds().Put(resourceKey, zone, target.(accessor.ID).GetID(), target)
 			counter++
 		}
 	}()
@@ -112,10 +112,10 @@ func startPowerOn(resourceKey, zone string, readFunc func() (interface{}, error)
 				if available, ok := target.(accessor.Availability); ok {
 					available.SetAvailability(types.Availabilities.Available)
 				}
-				s.set(resourceKey, zone, target)
+				ds().Put(resourceKey, zone, target.(accessor.ID).GetID(), target)
 				return
 			}
-			s.set(resourceKey, zone, target)
+			ds().Put(resourceKey, zone, target.(accessor.ID).GetID(), target)
 			counter++
 		}
 	}()
@@ -148,11 +148,11 @@ func startPowerOff(resourceKey, zone string, readFunc func() (interface{}, error
 				target.SetInstanceStatus(types.ServerInstanceStatuses.Cleaning)
 			} else {
 				target.SetInstanceStatus(types.ServerInstanceStatuses.Down)
-				s.set(resourceKey, zone, target)
+				ds().Put(resourceKey, zone, target.(accessor.ID).GetID(), target)
 				return
 			}
 
-			s.set(resourceKey, zone, target)
+			ds().Put(resourceKey, zone, target.(accessor.ID).GetID(), target)
 			counter++
 		}
 	}()

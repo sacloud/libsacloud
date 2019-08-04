@@ -84,22 +84,22 @@ func (o *BillOp) Read(ctx context.Context, id types.ID) (*sacloud.BillReadResult
 
 // Details is fake implementation
 func (o *BillOp) Details(ctx context.Context, MemberCode string, id types.ID) (*sacloud.BillDetailsResult, error) {
-	rawResults := s.getByID(o.key+"Details", sacloud.APIDefaultZone, id)
+	rawResults := ds().Get(o.key+"Details", sacloud.APIDefaultZone, id)
 	if rawResults == nil {
 		return nil, newErrorNotFound(o.key+"Details", id)
 	}
 
-	results := rawResults.([]*sacloud.BillDetail)
+	results := rawResults.(*[]*sacloud.BillDetail)
 	var values []*sacloud.BillDetail
-	for _, res := range results {
+	for _, res := range *results {
 		dest := &sacloud.BillDetail{}
 		copySameNameField(res, dest)
 		values = append(values, dest)
 	}
 
 	return &sacloud.BillDetailsResult{
-		Total:       len(results),
-		Count:       len(results),
+		Total:       len(*results),
+		Count:       len(*results),
 		From:        0,
 		BillDetails: values,
 	}, nil
@@ -107,21 +107,21 @@ func (o *BillOp) Details(ctx context.Context, MemberCode string, id types.ID) (*
 
 // DetailsCSV is fake implementation
 func (o *BillOp) DetailsCSV(ctx context.Context, MemberCode string, id types.ID) (*sacloud.BillDetailCSV, error) {
-	rawResults := s.getByID(o.key+"Details", sacloud.APIDefaultZone, id)
+	rawResults := ds().Get(o.key+"Details", sacloud.APIDefaultZone, id)
 	if rawResults == nil {
 		return nil, newErrorNotFound(o.key+"Details", id)
 	}
 
-	results := rawResults.([]*sacloud.BillDetail)
+	results := rawResults.(*[]*sacloud.BillDetail)
 	var values []*sacloud.BillDetail
-	for _, res := range results {
+	for _, res := range *results {
 		dest := &sacloud.BillDetail{}
 		copySameNameField(res, dest)
 		values = append(values, dest)
 	}
 
 	return &sacloud.BillDetailCSV{
-		Count:       len(results),
+		Count:       len(*results),
 		ResponsedAt: time.Now(),
 		Filename:    "sakura_cloud_20yy_mm.csv",
 		RawBody:     "this,is,dummy,header\r\nthis,is,dummy,body",
