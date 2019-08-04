@@ -67,7 +67,7 @@ func find(resourceKey, zone string, conditions *sacloud.FindCondition) ([]interf
 		conditions = &sacloud.FindCondition{}
 	}
 
-	targets := s.get(resourceKey, zone)
+	targets := ds().List(resourceKey, zone)
 	for i, target := range targets {
 		// count
 		if conditions.Count != 0 && len(results) >= conditions.Count {
@@ -101,7 +101,7 @@ func fillID(target interface{}) {
 	if v, ok := target.(accessor.ID); ok {
 		id := v.GetID()
 		if id.IsEmpty() {
-			v.SetID(pool.generateID())
+			v.SetID(pool().generateID())
 		}
 	}
 }

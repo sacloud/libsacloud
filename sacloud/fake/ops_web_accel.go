@@ -27,7 +27,7 @@ func (o *WebAccelOp) List(ctx context.Context) (*sacloud.WebAccelListResult, err
 
 // Read is fake implementation
 func (o *WebAccelOp) Read(ctx context.Context, id types.ID) (*sacloud.WebAccel, error) {
-	value := s.getWebAccelByID(sacloud.APIDefaultZone, id)
+	value := getWebAccelByID(sacloud.APIDefaultZone, id)
 	if value == nil {
 		return nil, newErrorNotFound(o.key, id)
 	}

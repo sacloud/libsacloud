@@ -26,7 +26,7 @@ func (o *DiskPlanOp) Find(ctx context.Context, zone string, conditions *sacloud.
 
 // Read is fake implementation
 func (o *DiskPlanOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.DiskPlan, error) {
-	value := s.getDiskPlanByID(zone, id)
+	value := getDiskPlanByID(zone, id)
 	if value == nil {
 		return nil, newErrorNotFound(o.key, id)
 	}

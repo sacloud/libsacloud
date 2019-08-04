@@ -40,7 +40,7 @@ func (o *InternetOp) Create(ctx context.Context, zone string, param *sacloud.Int
 	fill(result, fillID, fillCreatedAt)
 
 	// assign global address
-	subnet := pool.nextSubnet(result.NetworkMaskLen)
+	subnet := pool().nextSubnet(result.NetworkMaskLen)
 
 	// create switch
 	swOp := NewSwitchOp()
@@ -54,7 +54,7 @@ func (o *InternetOp) Create(ctx context.Context, zone string, param *sacloud.Int
 	}
 
 	sSubnet := &sacloud.SwitchSubnet{
-		ID:                   pool.generateID(),
+		ID:                   pool().generateID(),
 		DefaultRoute:         subnet.defaultRoute,
 		NetworkAddress:       subnet.networkAddress,
 		NetworkMaskLen:       subnet.networkMaskLen,
@@ -77,14 +77,14 @@ func (o *InternetOp) Create(ctx context.Context, zone string, param *sacloud.Int
 	switchInfo.Subnets = []*sacloud.InternetSubnet{iSubnet}
 	result.Switch = switchInfo
 
-	s.setSwitch(zone, sw)
-	s.setInternet(zone, result)
+	putSwitch(zone, sw)
+	putInternet(zone, result)
 	return result, nil
 }
 
 // Read is fake implementation
 func (o *InternetOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Internet, error) {
-	value := s.getInternetByID(zone, id)
+	value := getInternetByID(zone, id)
 	if value == nil {
 		return nil, newErrorNotFound(o.key, id)
 	}
@@ -124,7 +124,7 @@ func (o *InternetOp) Delete(ctx context.Context, zone string, id types.ID) error
 		return err
 	}
 
-	s.delete(o.key, zone, id)
+	ds().Delete(o.key, zone, id)
 	return nil
 }
 
@@ -136,7 +136,7 @@ func (o *InternetOp) UpdateBandWidth(ctx context.Context, zone string, id types.
 	}
 
 	value.BandWidthMbps = param.BandWidthMbps
-	s.setInternet(zone, value)
+	putInternet(zone, value)
 	return value, nil
 }
 
@@ -148,7 +148,7 @@ func (o *InternetOp) AddSubnet(ctx context.Context, zone string, id types.ID, pa
 	}
 
 	// assign global address
-	subnet := pool.nextSubnetFull(param.NetworkMaskLen, param.NextHop)
+	subnet := pool().nextSubnetFull(param.NetworkMaskLen, param.NextHop)
 
 	// create switch
 	swOp := NewSwitchOp()
@@ -158,7 +158,7 @@ func (o *InternetOp) AddSubnet(ctx context.Context, zone string, id types.ID, pa
 	}
 
 	sSubnet := &sacloud.SwitchSubnet{
-		ID:                   pool.generateID(),
+		ID:                   pool().generateID(),
 		NetworkAddress:       subnet.networkAddress,
 		NetworkMaskLen:       subnet.networkMaskLen,
 		NextHop:              param.NextHop,
@@ -178,8 +178,8 @@ func (o *InternetOp) AddSubnet(ctx context.Context, zone string, id types.ID, pa
 	}
 	value.Switch.Subnets = append(value.Switch.Subnets, iSubnet)
 
-	s.setSwitch(zone, sw)
-	s.setInternet(zone, value)
+	putSwitch(zone, sw)
+	putInternet(zone, value)
 
 	return &sacloud.InternetSubnetOperationResult{
 		ID:             sSubnet.ID,
@@ -238,8 +238,8 @@ func (o *InternetOp) UpdateSubnet(ctx context.Context, zone string, id types.ID,
 		i++
 	}
 
-	s.setSwitch(zone, sw)
-	s.setInternet(zone, value)
+	putSwitch(zone, sw)
+	putInternet(zone, value)
 	return &sacloud.InternetSubnetOperationResult{
 		ID:             subnetID,
 		NextHop:        param.NextHop,
@@ -280,8 +280,8 @@ func (o *InternetOp) DeleteSubnet(ctx context.Context, zone string, id types.ID,
 	}
 	value.Switch.Subnets = iSubnets
 
-	s.setSwitch(zone, sw)
-	s.setInternet(zone, value)
+	putSwitch(zone, sw)
+	putInternet(zone, value)
 	return nil
 }
 
@@ -318,17 +318,17 @@ func (o *InternetOp) EnableIPv6(ctx context.Context, zone string, id types.ID) (
 	}
 
 	ipv6net := &sacloud.IPv6Net{
-		ID:            pool.generateID(),
+		ID:            pool().generateID(),
 		IPv6Prefix:    "2001:db8:11aa:22bb::/64",
 		IPv6PrefixLen: 64,
 	}
-	s.setIPv6Net(zone, ipv6net)
+	putIPv6Net(zone, ipv6net)
 
 	ipv6netInfo := &sacloud.IPv6NetInfo{}
 	copySameNameField(ipv6net, ipv6netInfo)
 
 	value.Switch.IPv6Nets = []*sacloud.IPv6NetInfo{ipv6netInfo}
-	s.setInternet(zone, value)
+	putInternet(zone, value)
 	return ipv6netInfo, nil
 }
 
@@ -343,8 +343,8 @@ func (o *InternetOp) DisableIPv6(ctx context.Context, zone string, id types.ID, 
 		return nil
 	}
 
-	s.delete(ResourceIPv6Net, zone, value.Switch.IPv6Nets[0].ID)
+	ds().Delete(ResourceIPv6Net, zone, value.Switch.IPv6Nets[0].ID)
 	value.Switch.IPv6Nets = []*sacloud.IPv6NetInfo{}
-	s.setInternet(zone, value)
+	putInternet(zone, value)
 	return nil
 }

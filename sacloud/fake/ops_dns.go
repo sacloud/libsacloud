@@ -34,13 +34,13 @@ func (o *DNSOp) Create(ctx context.Context, param *sacloud.DNSCreateRequest) (*s
 	result.SettingsHash = "settingshash"
 	result.DNSZone = param.Name
 
-	s.setDNS(sacloud.APIDefaultZone, result)
+	putDNS(sacloud.APIDefaultZone, result)
 	return result, nil
 }
 
 // Read is fake implementation
 func (o *DNSOp) Read(ctx context.Context, id types.ID) (*sacloud.DNS, error) {
-	value := s.getDNSByID(sacloud.APIDefaultZone, id)
+	value := getDNSByID(sacloud.APIDefaultZone, id)
 	if value == nil {
 		return nil, newErrorNotFound(o.key, id)
 	}
@@ -68,6 +68,6 @@ func (o *DNSOp) Delete(ctx context.Context, id types.ID) error {
 		return err
 	}
 
-	s.delete(o.key, sacloud.APIDefaultZone, id)
+	ds().Delete(o.key, sacloud.APIDefaultZone, id)
 	return nil
 }

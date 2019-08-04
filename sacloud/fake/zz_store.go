@@ -4,11 +4,12 @@ package fake
 
 import (
 	"github.com/sacloud/libsacloud/v2/sacloud"
+	"github.com/sacloud/libsacloud/v2/sacloud/accessor"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
-func (s *store) getArchive(zone string) []*sacloud.Archive {
-	values := s.get(ResourceArchive, zone)
+func getArchive(zone string) []*sacloud.Archive {
+	values := ds().List(ResourceArchive, zone)
 	var ret []*sacloud.Archive
 	for _, v := range values {
 		if v, ok := v.(*sacloud.Archive); ok {
@@ -18,20 +19,25 @@ func (s *store) getArchive(zone string) []*sacloud.Archive {
 	return ret
 }
 
-func (s *store) getArchiveByID(zone string, id types.ID) *sacloud.Archive {
-	v := s.getByID(ResourceArchive, zone, id)
+func getArchiveByID(zone string, id types.ID) *sacloud.Archive {
+	v := ds().Get(ResourceArchive, zone, id)
 	if v, ok := v.(*sacloud.Archive); ok {
 		return v
 	}
 	return nil
 }
 
-func (s *store) setArchive(zone string, value *sacloud.Archive) {
-	s.set(ResourceArchive, zone, value)
+func putArchive(zone string, value *sacloud.Archive) {
+	var v interface{} = value
+	if id, ok := v.(accessor.ID); ok {
+		ds().Put(ResourceArchive, zone, id.GetID(), value)
+		return
+	}
+	ds().Put(ResourceArchive, zone, 0, value)
 }
 
-func (s *store) getAuthStatus(zone string) []*sacloud.AuthStatus {
-	values := s.get(ResourceAuthStatus, zone)
+func getAuthStatus(zone string) []*sacloud.AuthStatus {
+	values := ds().List(ResourceAuthStatus, zone)
 	var ret []*sacloud.AuthStatus
 	for _, v := range values {
 		if v, ok := v.(*sacloud.AuthStatus); ok {
@@ -41,20 +47,25 @@ func (s *store) getAuthStatus(zone string) []*sacloud.AuthStatus {
 	return ret
 }
 
-func (s *store) getAuthStatusByID(zone string, id types.ID) *sacloud.AuthStatus {
-	v := s.getByID(ResourceAuthStatus, zone, id)
+func getAuthStatusByID(zone string, id types.ID) *sacloud.AuthStatus {
+	v := ds().Get(ResourceAuthStatus, zone, id)
 	if v, ok := v.(*sacloud.AuthStatus); ok {
 		return v
 	}
 	return nil
 }
 
-func (s *store) setAuthStatus(zone string, value *sacloud.AuthStatus) {
-	s.set(ResourceAuthStatus, zone, value)
+func putAuthStatus(zone string, value *sacloud.AuthStatus) {
+	var v interface{} = value
+	if id, ok := v.(accessor.ID); ok {
+		ds().Put(ResourceAuthStatus, zone, id.GetID(), value)
+		return
+	}
+	ds().Put(ResourceAuthStatus, zone, 0, value)
 }
 
-func (s *store) getAutoBackup(zone string) []*sacloud.AutoBackup {
-	values := s.get(ResourceAutoBackup, zone)
+func getAutoBackup(zone string) []*sacloud.AutoBackup {
+	values := ds().List(ResourceAutoBackup, zone)
 	var ret []*sacloud.AutoBackup
 	for _, v := range values {
 		if v, ok := v.(*sacloud.AutoBackup); ok {
@@ -64,20 +75,25 @@ func (s *store) getAutoBackup(zone string) []*sacloud.AutoBackup {
 	return ret
 }
 
-func (s *store) getAutoBackupByID(zone string, id types.ID) *sacloud.AutoBackup {
-	v := s.getByID(ResourceAutoBackup, zone, id)
+func getAutoBackupByID(zone string, id types.ID) *sacloud.AutoBackup {
+	v := ds().Get(ResourceAutoBackup, zone, id)
 	if v, ok := v.(*sacloud.AutoBackup); ok {
 		return v
 	}
 	return nil
 }
 
-func (s *store) setAutoBackup(zone string, value *sacloud.AutoBackup) {
-	s.set(ResourceAutoBackup, zone, value)
+func putAutoBackup(zone string, value *sacloud.AutoBackup) {
+	var v interface{} = value
+	if id, ok := v.(accessor.ID); ok {
+		ds().Put(ResourceAutoBackup, zone, id.GetID(), value)
+		return
+	}
+	ds().Put(ResourceAutoBackup, zone, 0, value)
 }
 
-func (s *store) getBill(zone string) []*sacloud.Bill {
-	values := s.get(ResourceBill, zone)
+func getBill(zone string) []*sacloud.Bill {
+	values := ds().List(ResourceBill, zone)
 	var ret []*sacloud.Bill
 	for _, v := range values {
 		if v, ok := v.(*sacloud.Bill); ok {
@@ -87,20 +103,25 @@ func (s *store) getBill(zone string) []*sacloud.Bill {
 	return ret
 }
 
-func (s *store) getBillByID(zone string, id types.ID) *sacloud.Bill {
-	v := s.getByID(ResourceBill, zone, id)
+func getBillByID(zone string, id types.ID) *sacloud.Bill {
+	v := ds().Get(ResourceBill, zone, id)
 	if v, ok := v.(*sacloud.Bill); ok {
 		return v
 	}
 	return nil
 }
 
-func (s *store) setBill(zone string, value *sacloud.Bill) {
-	s.set(ResourceBill, zone, value)
+func putBill(zone string, value *sacloud.Bill) {
+	var v interface{} = value
+	if id, ok := v.(accessor.ID); ok {
+		ds().Put(ResourceBill, zone, id.GetID(), value)
+		return
+	}
+	ds().Put(ResourceBill, zone, 0, value)
 }
 
-func (s *store) getBridge(zone string) []*sacloud.Bridge {
-	values := s.get(ResourceBridge, zone)
+func getBridge(zone string) []*sacloud.Bridge {
+	values := ds().List(ResourceBridge, zone)
 	var ret []*sacloud.Bridge
 	for _, v := range values {
 		if v, ok := v.(*sacloud.Bridge); ok {
@@ -110,20 +131,25 @@ func (s *store) getBridge(zone string) []*sacloud.Bridge {
 	return ret
 }
 
-func (s *store) getBridgeByID(zone string, id types.ID) *sacloud.Bridge {
-	v := s.getByID(ResourceBridge, zone, id)
+func getBridgeByID(zone string, id types.ID) *sacloud.Bridge {
+	v := ds().Get(ResourceBridge, zone, id)
 	if v, ok := v.(*sacloud.Bridge); ok {
 		return v
 	}
 	return nil
 }
 
-func (s *store) setBridge(zone string, value *sacloud.Bridge) {
-	s.set(ResourceBridge, zone, value)
+func putBridge(zone string, value *sacloud.Bridge) {
+	var v interface{} = value
+	if id, ok := v.(accessor.ID); ok {
+		ds().Put(ResourceBridge, zone, id.GetID(), value)
+		return
+	}
+	ds().Put(ResourceBridge, zone, 0, value)
 }
 
-func (s *store) getCDROM(zone string) []*sacloud.CDROM {
-	values := s.get(ResourceCDROM, zone)
+func getCDROM(zone string) []*sacloud.CDROM {
+	values := ds().List(ResourceCDROM, zone)
 	var ret []*sacloud.CDROM
 	for _, v := range values {
 		if v, ok := v.(*sacloud.CDROM); ok {
@@ -133,20 +159,25 @@ func (s *store) getCDROM(zone string) []*sacloud.CDROM {
 	return ret
 }
 
-func (s *store) getCDROMByID(zone string, id types.ID) *sacloud.CDROM {
-	v := s.getByID(ResourceCDROM, zone, id)
+func getCDROMByID(zone string, id types.ID) *sacloud.CDROM {
+	v := ds().Get(ResourceCDROM, zone, id)
 	if v, ok := v.(*sacloud.CDROM); ok {
 		return v
 	}
 	return nil
 }
 
-func (s *store) setCDROM(zone string, value *sacloud.CDROM) {
-	s.set(ResourceCDROM, zone, value)
+func putCDROM(zone string, value *sacloud.CDROM) {
+	var v interface{} = value
+	if id, ok := v.(accessor.ID); ok {
+		ds().Put(ResourceCDROM, zone, id.GetID(), value)
+		return
+	}
+	ds().Put(ResourceCDROM, zone, 0, value)
 }
 
-func (s *store) getCoupon(zone string) []*sacloud.Coupon {
-	values := s.get(ResourceCoupon, zone)
+func getCoupon(zone string) []*sacloud.Coupon {
+	values := ds().List(ResourceCoupon, zone)
 	var ret []*sacloud.Coupon
 	for _, v := range values {
 		if v, ok := v.(*sacloud.Coupon); ok {
@@ -156,20 +187,25 @@ func (s *store) getCoupon(zone string) []*sacloud.Coupon {
 	return ret
 }
 
-func (s *store) getCouponByID(zone string, id types.ID) *sacloud.Coupon {
-	v := s.getByID(ResourceCoupon, zone, id)
+func getCouponByID(zone string, id types.ID) *sacloud.Coupon {
+	v := ds().Get(ResourceCoupon, zone, id)
 	if v, ok := v.(*sacloud.Coupon); ok {
 		return v
 	}
 	return nil
 }
 
-func (s *store) setCoupon(zone string, value *sacloud.Coupon) {
-	s.set(ResourceCoupon, zone, value)
+func putCoupon(zone string, value *sacloud.Coupon) {
+	var v interface{} = value
+	if id, ok := v.(accessor.ID); ok {
+		ds().Put(ResourceCoupon, zone, id.GetID(), value)
+		return
+	}
+	ds().Put(ResourceCoupon, zone, 0, value)
 }
 
-func (s *store) getDatabase(zone string) []*sacloud.Database {
-	values := s.get(ResourceDatabase, zone)
+func getDatabase(zone string) []*sacloud.Database {
+	values := ds().List(ResourceDatabase, zone)
 	var ret []*sacloud.Database
 	for _, v := range values {
 		if v, ok := v.(*sacloud.Database); ok {
@@ -179,20 +215,25 @@ func (s *store) getDatabase(zone string) []*sacloud.Database {
 	return ret
 }
 
-func (s *store) getDatabaseByID(zone string, id types.ID) *sacloud.Database {
-	v := s.getByID(ResourceDatabase, zone, id)
+func getDatabaseByID(zone string, id types.ID) *sacloud.Database {
+	v := ds().Get(ResourceDatabase, zone, id)
 	if v, ok := v.(*sacloud.Database); ok {
 		return v
 	}
 	return nil
 }
 
-func (s *store) setDatabase(zone string, value *sacloud.Database) {
-	s.set(ResourceDatabase, zone, value)
+func putDatabase(zone string, value *sacloud.Database) {
+	var v interface{} = value
+	if id, ok := v.(accessor.ID); ok {
+		ds().Put(ResourceDatabase, zone, id.GetID(), value)
+		return
+	}
+	ds().Put(ResourceDatabase, zone, 0, value)
 }
 
-func (s *store) getDisk(zone string) []*sacloud.Disk {
-	values := s.get(ResourceDisk, zone)
+func getDisk(zone string) []*sacloud.Disk {
+	values := ds().List(ResourceDisk, zone)
 	var ret []*sacloud.Disk
 	for _, v := range values {
 		if v, ok := v.(*sacloud.Disk); ok {
@@ -202,20 +243,25 @@ func (s *store) getDisk(zone string) []*sacloud.Disk {
 	return ret
 }
 
-func (s *store) getDiskByID(zone string, id types.ID) *sacloud.Disk {
-	v := s.getByID(ResourceDisk, zone, id)
+func getDiskByID(zone string, id types.ID) *sacloud.Disk {
+	v := ds().Get(ResourceDisk, zone, id)
 	if v, ok := v.(*sacloud.Disk); ok {
 		return v
 	}
 	return nil
 }
 
-func (s *store) setDisk(zone string, value *sacloud.Disk) {
-	s.set(ResourceDisk, zone, value)
+func putDisk(zone string, value *sacloud.Disk) {
+	var v interface{} = value
+	if id, ok := v.(accessor.ID); ok {
+		ds().Put(ResourceDisk, zone, id.GetID(), value)
+		return
+	}
+	ds().Put(ResourceDisk, zone, 0, value)
 }
 
-func (s *store) getDiskPlan(zone string) []*sacloud.DiskPlan {
-	values := s.get(ResourceDiskPlan, zone)
+func getDiskPlan(zone string) []*sacloud.DiskPlan {
+	values := ds().List(ResourceDiskPlan, zone)
 	var ret []*sacloud.DiskPlan
 	for _, v := range values {
 		if v, ok := v.(*sacloud.DiskPlan); ok {
@@ -225,20 +271,25 @@ func (s *store) getDiskPlan(zone string) []*sacloud.DiskPlan {
 	return ret
 }
 
-func (s *store) getDiskPlanByID(zone string, id types.ID) *sacloud.DiskPlan {
-	v := s.getByID(ResourceDiskPlan, zone, id)
+func getDiskPlanByID(zone string, id types.ID) *sacloud.DiskPlan {
+	v := ds().Get(ResourceDiskPlan, zone, id)
 	if v, ok := v.(*sacloud.DiskPlan); ok {
 		return v
 	}
 	return nil
 }
 
-func (s *store) setDiskPlan(zone string, value *sacloud.DiskPlan) {
-	s.set(ResourceDiskPlan, zone, value)
+func putDiskPlan(zone string, value *sacloud.DiskPlan) {
+	var v interface{} = value
+	if id, ok := v.(accessor.ID); ok {
+		ds().Put(ResourceDiskPlan, zone, id.GetID(), value)
+		return
+	}
+	ds().Put(ResourceDiskPlan, zone, 0, value)
 }
 
-func (s *store) getDNS(zone string) []*sacloud.DNS {
-	values := s.get(ResourceDNS, zone)
+func getDNS(zone string) []*sacloud.DNS {
+	values := ds().List(ResourceDNS, zone)
 	var ret []*sacloud.DNS
 	for _, v := range values {
 		if v, ok := v.(*sacloud.DNS); ok {
@@ -248,20 +299,25 @@ func (s *store) getDNS(zone string) []*sacloud.DNS {
 	return ret
 }
 
-func (s *store) getDNSByID(zone string, id types.ID) *sacloud.DNS {
-	v := s.getByID(ResourceDNS, zone, id)
+func getDNSByID(zone string, id types.ID) *sacloud.DNS {
+	v := ds().Get(ResourceDNS, zone, id)
 	if v, ok := v.(*sacloud.DNS); ok {
 		return v
 	}
 	return nil
 }
 
-func (s *store) setDNS(zone string, value *sacloud.DNS) {
-	s.set(ResourceDNS, zone, value)
+func putDNS(zone string, value *sacloud.DNS) {
+	var v interface{} = value
+	if id, ok := v.(accessor.ID); ok {
+		ds().Put(ResourceDNS, zone, id.GetID(), value)
+		return
+	}
+	ds().Put(ResourceDNS, zone, 0, value)
 }
 
-func (s *store) getGSLB(zone string) []*sacloud.GSLB {
-	values := s.get(ResourceGSLB, zone)
+func getGSLB(zone string) []*sacloud.GSLB {
+	values := ds().List(ResourceGSLB, zone)
 	var ret []*sacloud.GSLB
 	for _, v := range values {
 		if v, ok := v.(*sacloud.GSLB); ok {
@@ -271,20 +327,25 @@ func (s *store) getGSLB(zone string) []*sacloud.GSLB {
 	return ret
 }
 
-func (s *store) getGSLBByID(zone string, id types.ID) *sacloud.GSLB {
-	v := s.getByID(ResourceGSLB, zone, id)
+func getGSLBByID(zone string, id types.ID) *sacloud.GSLB {
+	v := ds().Get(ResourceGSLB, zone, id)
 	if v, ok := v.(*sacloud.GSLB); ok {
 		return v
 	}
 	return nil
 }
 
-func (s *store) setGSLB(zone string, value *sacloud.GSLB) {
-	s.set(ResourceGSLB, zone, value)
+func putGSLB(zone string, value *sacloud.GSLB) {
+	var v interface{} = value
+	if id, ok := v.(accessor.ID); ok {
+		ds().Put(ResourceGSLB, zone, id.GetID(), value)
+		return
+	}
+	ds().Put(ResourceGSLB, zone, 0, value)
 }
 
-func (s *store) getIcon(zone string) []*sacloud.Icon {
-	values := s.get(ResourceIcon, zone)
+func getIcon(zone string) []*sacloud.Icon {
+	values := ds().List(ResourceIcon, zone)
 	var ret []*sacloud.Icon
 	for _, v := range values {
 		if v, ok := v.(*sacloud.Icon); ok {
@@ -294,20 +355,25 @@ func (s *store) getIcon(zone string) []*sacloud.Icon {
 	return ret
 }
 
-func (s *store) getIconByID(zone string, id types.ID) *sacloud.Icon {
-	v := s.getByID(ResourceIcon, zone, id)
+func getIconByID(zone string, id types.ID) *sacloud.Icon {
+	v := ds().Get(ResourceIcon, zone, id)
 	if v, ok := v.(*sacloud.Icon); ok {
 		return v
 	}
 	return nil
 }
 
-func (s *store) setIcon(zone string, value *sacloud.Icon) {
-	s.set(ResourceIcon, zone, value)
+func putIcon(zone string, value *sacloud.Icon) {
+	var v interface{} = value
+	if id, ok := v.(accessor.ID); ok {
+		ds().Put(ResourceIcon, zone, id.GetID(), value)
+		return
+	}
+	ds().Put(ResourceIcon, zone, 0, value)
 }
 
-func (s *store) getInterface(zone string) []*sacloud.Interface {
-	values := s.get(ResourceInterface, zone)
+func getInterface(zone string) []*sacloud.Interface {
+	values := ds().List(ResourceInterface, zone)
 	var ret []*sacloud.Interface
 	for _, v := range values {
 		if v, ok := v.(*sacloud.Interface); ok {
@@ -317,20 +383,25 @@ func (s *store) getInterface(zone string) []*sacloud.Interface {
 	return ret
 }
 
-func (s *store) getInterfaceByID(zone string, id types.ID) *sacloud.Interface {
-	v := s.getByID(ResourceInterface, zone, id)
+func getInterfaceByID(zone string, id types.ID) *sacloud.Interface {
+	v := ds().Get(ResourceInterface, zone, id)
 	if v, ok := v.(*sacloud.Interface); ok {
 		return v
 	}
 	return nil
 }
 
-func (s *store) setInterface(zone string, value *sacloud.Interface) {
-	s.set(ResourceInterface, zone, value)
+func putInterface(zone string, value *sacloud.Interface) {
+	var v interface{} = value
+	if id, ok := v.(accessor.ID); ok {
+		ds().Put(ResourceInterface, zone, id.GetID(), value)
+		return
+	}
+	ds().Put(ResourceInterface, zone, 0, value)
 }
 
-func (s *store) getInternet(zone string) []*sacloud.Internet {
-	values := s.get(ResourceInternet, zone)
+func getInternet(zone string) []*sacloud.Internet {
+	values := ds().List(ResourceInternet, zone)
 	var ret []*sacloud.Internet
 	for _, v := range values {
 		if v, ok := v.(*sacloud.Internet); ok {
@@ -340,20 +411,25 @@ func (s *store) getInternet(zone string) []*sacloud.Internet {
 	return ret
 }
 
-func (s *store) getInternetByID(zone string, id types.ID) *sacloud.Internet {
-	v := s.getByID(ResourceInternet, zone, id)
+func getInternetByID(zone string, id types.ID) *sacloud.Internet {
+	v := ds().Get(ResourceInternet, zone, id)
 	if v, ok := v.(*sacloud.Internet); ok {
 		return v
 	}
 	return nil
 }
 
-func (s *store) setInternet(zone string, value *sacloud.Internet) {
-	s.set(ResourceInternet, zone, value)
+func putInternet(zone string, value *sacloud.Internet) {
+	var v interface{} = value
+	if id, ok := v.(accessor.ID); ok {
+		ds().Put(ResourceInternet, zone, id.GetID(), value)
+		return
+	}
+	ds().Put(ResourceInternet, zone, 0, value)
 }
 
-func (s *store) getInternetPlan(zone string) []*sacloud.InternetPlan {
-	values := s.get(ResourceInternetPlan, zone)
+func getInternetPlan(zone string) []*sacloud.InternetPlan {
+	values := ds().List(ResourceInternetPlan, zone)
 	var ret []*sacloud.InternetPlan
 	for _, v := range values {
 		if v, ok := v.(*sacloud.InternetPlan); ok {
@@ -363,20 +439,25 @@ func (s *store) getInternetPlan(zone string) []*sacloud.InternetPlan {
 	return ret
 }
 
-func (s *store) getInternetPlanByID(zone string, id types.ID) *sacloud.InternetPlan {
-	v := s.getByID(ResourceInternetPlan, zone, id)
+func getInternetPlanByID(zone string, id types.ID) *sacloud.InternetPlan {
+	v := ds().Get(ResourceInternetPlan, zone, id)
 	if v, ok := v.(*sacloud.InternetPlan); ok {
 		return v
 	}
 	return nil
 }
 
-func (s *store) setInternetPlan(zone string, value *sacloud.InternetPlan) {
-	s.set(ResourceInternetPlan, zone, value)
+func putInternetPlan(zone string, value *sacloud.InternetPlan) {
+	var v interface{} = value
+	if id, ok := v.(accessor.ID); ok {
+		ds().Put(ResourceInternetPlan, zone, id.GetID(), value)
+		return
+	}
+	ds().Put(ResourceInternetPlan, zone, 0, value)
 }
 
-func (s *store) getIPAddress(zone string) []*sacloud.IPAddress {
-	values := s.get(ResourceIPAddress, zone)
+func getIPAddress(zone string) []*sacloud.IPAddress {
+	values := ds().List(ResourceIPAddress, zone)
 	var ret []*sacloud.IPAddress
 	for _, v := range values {
 		if v, ok := v.(*sacloud.IPAddress); ok {
@@ -386,20 +467,25 @@ func (s *store) getIPAddress(zone string) []*sacloud.IPAddress {
 	return ret
 }
 
-func (s *store) getIPAddressByID(zone string, id types.ID) *sacloud.IPAddress {
-	v := s.getByID(ResourceIPAddress, zone, id)
+func getIPAddressByID(zone string, id types.ID) *sacloud.IPAddress {
+	v := ds().Get(ResourceIPAddress, zone, id)
 	if v, ok := v.(*sacloud.IPAddress); ok {
 		return v
 	}
 	return nil
 }
 
-func (s *store) setIPAddress(zone string, value *sacloud.IPAddress) {
-	s.set(ResourceIPAddress, zone, value)
+func putIPAddress(zone string, value *sacloud.IPAddress) {
+	var v interface{} = value
+	if id, ok := v.(accessor.ID); ok {
+		ds().Put(ResourceIPAddress, zone, id.GetID(), value)
+		return
+	}
+	ds().Put(ResourceIPAddress, zone, 0, value)
 }
 
-func (s *store) getIPv6Net(zone string) []*sacloud.IPv6Net {
-	values := s.get(ResourceIPv6Net, zone)
+func getIPv6Net(zone string) []*sacloud.IPv6Net {
+	values := ds().List(ResourceIPv6Net, zone)
 	var ret []*sacloud.IPv6Net
 	for _, v := range values {
 		if v, ok := v.(*sacloud.IPv6Net); ok {
@@ -409,20 +495,25 @@ func (s *store) getIPv6Net(zone string) []*sacloud.IPv6Net {
 	return ret
 }
 
-func (s *store) getIPv6NetByID(zone string, id types.ID) *sacloud.IPv6Net {
-	v := s.getByID(ResourceIPv6Net, zone, id)
+func getIPv6NetByID(zone string, id types.ID) *sacloud.IPv6Net {
+	v := ds().Get(ResourceIPv6Net, zone, id)
 	if v, ok := v.(*sacloud.IPv6Net); ok {
 		return v
 	}
 	return nil
 }
 
-func (s *store) setIPv6Net(zone string, value *sacloud.IPv6Net) {
-	s.set(ResourceIPv6Net, zone, value)
+func putIPv6Net(zone string, value *sacloud.IPv6Net) {
+	var v interface{} = value
+	if id, ok := v.(accessor.ID); ok {
+		ds().Put(ResourceIPv6Net, zone, id.GetID(), value)
+		return
+	}
+	ds().Put(ResourceIPv6Net, zone, 0, value)
 }
 
-func (s *store) getIPv6Addr(zone string) []*sacloud.IPv6Addr {
-	values := s.get(ResourceIPv6Addr, zone)
+func getIPv6Addr(zone string) []*sacloud.IPv6Addr {
+	values := ds().List(ResourceIPv6Addr, zone)
 	var ret []*sacloud.IPv6Addr
 	for _, v := range values {
 		if v, ok := v.(*sacloud.IPv6Addr); ok {
@@ -432,20 +523,25 @@ func (s *store) getIPv6Addr(zone string) []*sacloud.IPv6Addr {
 	return ret
 }
 
-func (s *store) getIPv6AddrByID(zone string, id types.ID) *sacloud.IPv6Addr {
-	v := s.getByID(ResourceIPv6Addr, zone, id)
+func getIPv6AddrByID(zone string, id types.ID) *sacloud.IPv6Addr {
+	v := ds().Get(ResourceIPv6Addr, zone, id)
 	if v, ok := v.(*sacloud.IPv6Addr); ok {
 		return v
 	}
 	return nil
 }
 
-func (s *store) setIPv6Addr(zone string, value *sacloud.IPv6Addr) {
-	s.set(ResourceIPv6Addr, zone, value)
+func putIPv6Addr(zone string, value *sacloud.IPv6Addr) {
+	var v interface{} = value
+	if id, ok := v.(accessor.ID); ok {
+		ds().Put(ResourceIPv6Addr, zone, id.GetID(), value)
+		return
+	}
+	ds().Put(ResourceIPv6Addr, zone, 0, value)
 }
 
-func (s *store) getLicense(zone string) []*sacloud.License {
-	values := s.get(ResourceLicense, zone)
+func getLicense(zone string) []*sacloud.License {
+	values := ds().List(ResourceLicense, zone)
 	var ret []*sacloud.License
 	for _, v := range values {
 		if v, ok := v.(*sacloud.License); ok {
@@ -455,20 +551,25 @@ func (s *store) getLicense(zone string) []*sacloud.License {
 	return ret
 }
 
-func (s *store) getLicenseByID(zone string, id types.ID) *sacloud.License {
-	v := s.getByID(ResourceLicense, zone, id)
+func getLicenseByID(zone string, id types.ID) *sacloud.License {
+	v := ds().Get(ResourceLicense, zone, id)
 	if v, ok := v.(*sacloud.License); ok {
 		return v
 	}
 	return nil
 }
 
-func (s *store) setLicense(zone string, value *sacloud.License) {
-	s.set(ResourceLicense, zone, value)
+func putLicense(zone string, value *sacloud.License) {
+	var v interface{} = value
+	if id, ok := v.(accessor.ID); ok {
+		ds().Put(ResourceLicense, zone, id.GetID(), value)
+		return
+	}
+	ds().Put(ResourceLicense, zone, 0, value)
 }
 
-func (s *store) getLicenseInfo(zone string) []*sacloud.LicenseInfo {
-	values := s.get(ResourceLicenseInfo, zone)
+func getLicenseInfo(zone string) []*sacloud.LicenseInfo {
+	values := ds().List(ResourceLicenseInfo, zone)
 	var ret []*sacloud.LicenseInfo
 	for _, v := range values {
 		if v, ok := v.(*sacloud.LicenseInfo); ok {
@@ -478,20 +579,25 @@ func (s *store) getLicenseInfo(zone string) []*sacloud.LicenseInfo {
 	return ret
 }
 
-func (s *store) getLicenseInfoByID(zone string, id types.ID) *sacloud.LicenseInfo {
-	v := s.getByID(ResourceLicenseInfo, zone, id)
+func getLicenseInfoByID(zone string, id types.ID) *sacloud.LicenseInfo {
+	v := ds().Get(ResourceLicenseInfo, zone, id)
 	if v, ok := v.(*sacloud.LicenseInfo); ok {
 		return v
 	}
 	return nil
 }
 
-func (s *store) setLicenseInfo(zone string, value *sacloud.LicenseInfo) {
-	s.set(ResourceLicenseInfo, zone, value)
+func putLicenseInfo(zone string, value *sacloud.LicenseInfo) {
+	var v interface{} = value
+	if id, ok := v.(accessor.ID); ok {
+		ds().Put(ResourceLicenseInfo, zone, id.GetID(), value)
+		return
+	}
+	ds().Put(ResourceLicenseInfo, zone, 0, value)
 }
 
-func (s *store) getLoadBalancer(zone string) []*sacloud.LoadBalancer {
-	values := s.get(ResourceLoadBalancer, zone)
+func getLoadBalancer(zone string) []*sacloud.LoadBalancer {
+	values := ds().List(ResourceLoadBalancer, zone)
 	var ret []*sacloud.LoadBalancer
 	for _, v := range values {
 		if v, ok := v.(*sacloud.LoadBalancer); ok {
@@ -501,20 +607,25 @@ func (s *store) getLoadBalancer(zone string) []*sacloud.LoadBalancer {
 	return ret
 }
 
-func (s *store) getLoadBalancerByID(zone string, id types.ID) *sacloud.LoadBalancer {
-	v := s.getByID(ResourceLoadBalancer, zone, id)
+func getLoadBalancerByID(zone string, id types.ID) *sacloud.LoadBalancer {
+	v := ds().Get(ResourceLoadBalancer, zone, id)
 	if v, ok := v.(*sacloud.LoadBalancer); ok {
 		return v
 	}
 	return nil
 }
 
-func (s *store) setLoadBalancer(zone string, value *sacloud.LoadBalancer) {
-	s.set(ResourceLoadBalancer, zone, value)
+func putLoadBalancer(zone string, value *sacloud.LoadBalancer) {
+	var v interface{} = value
+	if id, ok := v.(accessor.ID); ok {
+		ds().Put(ResourceLoadBalancer, zone, id.GetID(), value)
+		return
+	}
+	ds().Put(ResourceLoadBalancer, zone, 0, value)
 }
 
-func (s *store) getMobileGateway(zone string) []*sacloud.MobileGateway {
-	values := s.get(ResourceMobileGateway, zone)
+func getMobileGateway(zone string) []*sacloud.MobileGateway {
+	values := ds().List(ResourceMobileGateway, zone)
 	var ret []*sacloud.MobileGateway
 	for _, v := range values {
 		if v, ok := v.(*sacloud.MobileGateway); ok {
@@ -524,20 +635,25 @@ func (s *store) getMobileGateway(zone string) []*sacloud.MobileGateway {
 	return ret
 }
 
-func (s *store) getMobileGatewayByID(zone string, id types.ID) *sacloud.MobileGateway {
-	v := s.getByID(ResourceMobileGateway, zone, id)
+func getMobileGatewayByID(zone string, id types.ID) *sacloud.MobileGateway {
+	v := ds().Get(ResourceMobileGateway, zone, id)
 	if v, ok := v.(*sacloud.MobileGateway); ok {
 		return v
 	}
 	return nil
 }
 
-func (s *store) setMobileGateway(zone string, value *sacloud.MobileGateway) {
-	s.set(ResourceMobileGateway, zone, value)
+func putMobileGateway(zone string, value *sacloud.MobileGateway) {
+	var v interface{} = value
+	if id, ok := v.(accessor.ID); ok {
+		ds().Put(ResourceMobileGateway, zone, id.GetID(), value)
+		return
+	}
+	ds().Put(ResourceMobileGateway, zone, 0, value)
 }
 
-func (s *store) getNFS(zone string) []*sacloud.NFS {
-	values := s.get(ResourceNFS, zone)
+func getNFS(zone string) []*sacloud.NFS {
+	values := ds().List(ResourceNFS, zone)
 	var ret []*sacloud.NFS
 	for _, v := range values {
 		if v, ok := v.(*sacloud.NFS); ok {
@@ -547,20 +663,25 @@ func (s *store) getNFS(zone string) []*sacloud.NFS {
 	return ret
 }
 
-func (s *store) getNFSByID(zone string, id types.ID) *sacloud.NFS {
-	v := s.getByID(ResourceNFS, zone, id)
+func getNFSByID(zone string, id types.ID) *sacloud.NFS {
+	v := ds().Get(ResourceNFS, zone, id)
 	if v, ok := v.(*sacloud.NFS); ok {
 		return v
 	}
 	return nil
 }
 
-func (s *store) setNFS(zone string, value *sacloud.NFS) {
-	s.set(ResourceNFS, zone, value)
+func putNFS(zone string, value *sacloud.NFS) {
+	var v interface{} = value
+	if id, ok := v.(accessor.ID); ok {
+		ds().Put(ResourceNFS, zone, id.GetID(), value)
+		return
+	}
+	ds().Put(ResourceNFS, zone, 0, value)
 }
 
-func (s *store) getNote(zone string) []*sacloud.Note {
-	values := s.get(ResourceNote, zone)
+func getNote(zone string) []*sacloud.Note {
+	values := ds().List(ResourceNote, zone)
 	var ret []*sacloud.Note
 	for _, v := range values {
 		if v, ok := v.(*sacloud.Note); ok {
@@ -570,20 +691,25 @@ func (s *store) getNote(zone string) []*sacloud.Note {
 	return ret
 }
 
-func (s *store) getNoteByID(zone string, id types.ID) *sacloud.Note {
-	v := s.getByID(ResourceNote, zone, id)
+func getNoteByID(zone string, id types.ID) *sacloud.Note {
+	v := ds().Get(ResourceNote, zone, id)
 	if v, ok := v.(*sacloud.Note); ok {
 		return v
 	}
 	return nil
 }
 
-func (s *store) setNote(zone string, value *sacloud.Note) {
-	s.set(ResourceNote, zone, value)
+func putNote(zone string, value *sacloud.Note) {
+	var v interface{} = value
+	if id, ok := v.(accessor.ID); ok {
+		ds().Put(ResourceNote, zone, id.GetID(), value)
+		return
+	}
+	ds().Put(ResourceNote, zone, 0, value)
 }
 
-func (s *store) getPacketFilter(zone string) []*sacloud.PacketFilter {
-	values := s.get(ResourcePacketFilter, zone)
+func getPacketFilter(zone string) []*sacloud.PacketFilter {
+	values := ds().List(ResourcePacketFilter, zone)
 	var ret []*sacloud.PacketFilter
 	for _, v := range values {
 		if v, ok := v.(*sacloud.PacketFilter); ok {
@@ -593,20 +719,25 @@ func (s *store) getPacketFilter(zone string) []*sacloud.PacketFilter {
 	return ret
 }
 
-func (s *store) getPacketFilterByID(zone string, id types.ID) *sacloud.PacketFilter {
-	v := s.getByID(ResourcePacketFilter, zone, id)
+func getPacketFilterByID(zone string, id types.ID) *sacloud.PacketFilter {
+	v := ds().Get(ResourcePacketFilter, zone, id)
 	if v, ok := v.(*sacloud.PacketFilter); ok {
 		return v
 	}
 	return nil
 }
 
-func (s *store) setPacketFilter(zone string, value *sacloud.PacketFilter) {
-	s.set(ResourcePacketFilter, zone, value)
+func putPacketFilter(zone string, value *sacloud.PacketFilter) {
+	var v interface{} = value
+	if id, ok := v.(accessor.ID); ok {
+		ds().Put(ResourcePacketFilter, zone, id.GetID(), value)
+		return
+	}
+	ds().Put(ResourcePacketFilter, zone, 0, value)
 }
 
-func (s *store) getPrivateHost(zone string) []*sacloud.PrivateHost {
-	values := s.get(ResourcePrivateHost, zone)
+func getPrivateHost(zone string) []*sacloud.PrivateHost {
+	values := ds().List(ResourcePrivateHost, zone)
 	var ret []*sacloud.PrivateHost
 	for _, v := range values {
 		if v, ok := v.(*sacloud.PrivateHost); ok {
@@ -616,20 +747,25 @@ func (s *store) getPrivateHost(zone string) []*sacloud.PrivateHost {
 	return ret
 }
 
-func (s *store) getPrivateHostByID(zone string, id types.ID) *sacloud.PrivateHost {
-	v := s.getByID(ResourcePrivateHost, zone, id)
+func getPrivateHostByID(zone string, id types.ID) *sacloud.PrivateHost {
+	v := ds().Get(ResourcePrivateHost, zone, id)
 	if v, ok := v.(*sacloud.PrivateHost); ok {
 		return v
 	}
 	return nil
 }
 
-func (s *store) setPrivateHost(zone string, value *sacloud.PrivateHost) {
-	s.set(ResourcePrivateHost, zone, value)
+func putPrivateHost(zone string, value *sacloud.PrivateHost) {
+	var v interface{} = value
+	if id, ok := v.(accessor.ID); ok {
+		ds().Put(ResourcePrivateHost, zone, id.GetID(), value)
+		return
+	}
+	ds().Put(ResourcePrivateHost, zone, 0, value)
 }
 
-func (s *store) getPrivateHostPlan(zone string) []*sacloud.PrivateHostPlan {
-	values := s.get(ResourcePrivateHostPlan, zone)
+func getPrivateHostPlan(zone string) []*sacloud.PrivateHostPlan {
+	values := ds().List(ResourcePrivateHostPlan, zone)
 	var ret []*sacloud.PrivateHostPlan
 	for _, v := range values {
 		if v, ok := v.(*sacloud.PrivateHostPlan); ok {
@@ -639,20 +775,25 @@ func (s *store) getPrivateHostPlan(zone string) []*sacloud.PrivateHostPlan {
 	return ret
 }
 
-func (s *store) getPrivateHostPlanByID(zone string, id types.ID) *sacloud.PrivateHostPlan {
-	v := s.getByID(ResourcePrivateHostPlan, zone, id)
+func getPrivateHostPlanByID(zone string, id types.ID) *sacloud.PrivateHostPlan {
+	v := ds().Get(ResourcePrivateHostPlan, zone, id)
 	if v, ok := v.(*sacloud.PrivateHostPlan); ok {
 		return v
 	}
 	return nil
 }
 
-func (s *store) setPrivateHostPlan(zone string, value *sacloud.PrivateHostPlan) {
-	s.set(ResourcePrivateHostPlan, zone, value)
+func putPrivateHostPlan(zone string, value *sacloud.PrivateHostPlan) {
+	var v interface{} = value
+	if id, ok := v.(accessor.ID); ok {
+		ds().Put(ResourcePrivateHostPlan, zone, id.GetID(), value)
+		return
+	}
+	ds().Put(ResourcePrivateHostPlan, zone, 0, value)
 }
 
-func (s *store) getProxyLB(zone string) []*sacloud.ProxyLB {
-	values := s.get(ResourceProxyLB, zone)
+func getProxyLB(zone string) []*sacloud.ProxyLB {
+	values := ds().List(ResourceProxyLB, zone)
 	var ret []*sacloud.ProxyLB
 	for _, v := range values {
 		if v, ok := v.(*sacloud.ProxyLB); ok {
@@ -662,20 +803,25 @@ func (s *store) getProxyLB(zone string) []*sacloud.ProxyLB {
 	return ret
 }
 
-func (s *store) getProxyLBByID(zone string, id types.ID) *sacloud.ProxyLB {
-	v := s.getByID(ResourceProxyLB, zone, id)
+func getProxyLBByID(zone string, id types.ID) *sacloud.ProxyLB {
+	v := ds().Get(ResourceProxyLB, zone, id)
 	if v, ok := v.(*sacloud.ProxyLB); ok {
 		return v
 	}
 	return nil
 }
 
-func (s *store) setProxyLB(zone string, value *sacloud.ProxyLB) {
-	s.set(ResourceProxyLB, zone, value)
+func putProxyLB(zone string, value *sacloud.ProxyLB) {
+	var v interface{} = value
+	if id, ok := v.(accessor.ID); ok {
+		ds().Put(ResourceProxyLB, zone, id.GetID(), value)
+		return
+	}
+	ds().Put(ResourceProxyLB, zone, 0, value)
 }
 
-func (s *store) getRegion(zone string) []*sacloud.Region {
-	values := s.get(ResourceRegion, zone)
+func getRegion(zone string) []*sacloud.Region {
+	values := ds().List(ResourceRegion, zone)
 	var ret []*sacloud.Region
 	for _, v := range values {
 		if v, ok := v.(*sacloud.Region); ok {
@@ -685,20 +831,25 @@ func (s *store) getRegion(zone string) []*sacloud.Region {
 	return ret
 }
 
-func (s *store) getRegionByID(zone string, id types.ID) *sacloud.Region {
-	v := s.getByID(ResourceRegion, zone, id)
+func getRegionByID(zone string, id types.ID) *sacloud.Region {
+	v := ds().Get(ResourceRegion, zone, id)
 	if v, ok := v.(*sacloud.Region); ok {
 		return v
 	}
 	return nil
 }
 
-func (s *store) setRegion(zone string, value *sacloud.Region) {
-	s.set(ResourceRegion, zone, value)
+func putRegion(zone string, value *sacloud.Region) {
+	var v interface{} = value
+	if id, ok := v.(accessor.ID); ok {
+		ds().Put(ResourceRegion, zone, id.GetID(), value)
+		return
+	}
+	ds().Put(ResourceRegion, zone, 0, value)
 }
 
-func (s *store) getServer(zone string) []*sacloud.Server {
-	values := s.get(ResourceServer, zone)
+func getServer(zone string) []*sacloud.Server {
+	values := ds().List(ResourceServer, zone)
 	var ret []*sacloud.Server
 	for _, v := range values {
 		if v, ok := v.(*sacloud.Server); ok {
@@ -708,20 +859,25 @@ func (s *store) getServer(zone string) []*sacloud.Server {
 	return ret
 }
 
-func (s *store) getServerByID(zone string, id types.ID) *sacloud.Server {
-	v := s.getByID(ResourceServer, zone, id)
+func getServerByID(zone string, id types.ID) *sacloud.Server {
+	v := ds().Get(ResourceServer, zone, id)
 	if v, ok := v.(*sacloud.Server); ok {
 		return v
 	}
 	return nil
 }
 
-func (s *store) setServer(zone string, value *sacloud.Server) {
-	s.set(ResourceServer, zone, value)
+func putServer(zone string, value *sacloud.Server) {
+	var v interface{} = value
+	if id, ok := v.(accessor.ID); ok {
+		ds().Put(ResourceServer, zone, id.GetID(), value)
+		return
+	}
+	ds().Put(ResourceServer, zone, 0, value)
 }
 
-func (s *store) getServerPlan(zone string) []*sacloud.ServerPlan {
-	values := s.get(ResourceServerPlan, zone)
+func getServerPlan(zone string) []*sacloud.ServerPlan {
+	values := ds().List(ResourceServerPlan, zone)
 	var ret []*sacloud.ServerPlan
 	for _, v := range values {
 		if v, ok := v.(*sacloud.ServerPlan); ok {
@@ -731,20 +887,25 @@ func (s *store) getServerPlan(zone string) []*sacloud.ServerPlan {
 	return ret
 }
 
-func (s *store) getServerPlanByID(zone string, id types.ID) *sacloud.ServerPlan {
-	v := s.getByID(ResourceServerPlan, zone, id)
+func getServerPlanByID(zone string, id types.ID) *sacloud.ServerPlan {
+	v := ds().Get(ResourceServerPlan, zone, id)
 	if v, ok := v.(*sacloud.ServerPlan); ok {
 		return v
 	}
 	return nil
 }
 
-func (s *store) setServerPlan(zone string, value *sacloud.ServerPlan) {
-	s.set(ResourceServerPlan, zone, value)
+func putServerPlan(zone string, value *sacloud.ServerPlan) {
+	var v interface{} = value
+	if id, ok := v.(accessor.ID); ok {
+		ds().Put(ResourceServerPlan, zone, id.GetID(), value)
+		return
+	}
+	ds().Put(ResourceServerPlan, zone, 0, value)
 }
 
-func (s *store) getServiceClass(zone string) []*sacloud.ServiceClass {
-	values := s.get(ResourceServiceClass, zone)
+func getServiceClass(zone string) []*sacloud.ServiceClass {
+	values := ds().List(ResourceServiceClass, zone)
 	var ret []*sacloud.ServiceClass
 	for _, v := range values {
 		if v, ok := v.(*sacloud.ServiceClass); ok {
@@ -754,20 +915,25 @@ func (s *store) getServiceClass(zone string) []*sacloud.ServiceClass {
 	return ret
 }
 
-func (s *store) getServiceClassByID(zone string, id types.ID) *sacloud.ServiceClass {
-	v := s.getByID(ResourceServiceClass, zone, id)
+func getServiceClassByID(zone string, id types.ID) *sacloud.ServiceClass {
+	v := ds().Get(ResourceServiceClass, zone, id)
 	if v, ok := v.(*sacloud.ServiceClass); ok {
 		return v
 	}
 	return nil
 }
 
-func (s *store) setServiceClass(zone string, value *sacloud.ServiceClass) {
-	s.set(ResourceServiceClass, zone, value)
+func putServiceClass(zone string, value *sacloud.ServiceClass) {
+	var v interface{} = value
+	if id, ok := v.(accessor.ID); ok {
+		ds().Put(ResourceServiceClass, zone, id.GetID(), value)
+		return
+	}
+	ds().Put(ResourceServiceClass, zone, 0, value)
 }
 
-func (s *store) getSIM(zone string) []*sacloud.SIM {
-	values := s.get(ResourceSIM, zone)
+func getSIM(zone string) []*sacloud.SIM {
+	values := ds().List(ResourceSIM, zone)
 	var ret []*sacloud.SIM
 	for _, v := range values {
 		if v, ok := v.(*sacloud.SIM); ok {
@@ -777,20 +943,25 @@ func (s *store) getSIM(zone string) []*sacloud.SIM {
 	return ret
 }
 
-func (s *store) getSIMByID(zone string, id types.ID) *sacloud.SIM {
-	v := s.getByID(ResourceSIM, zone, id)
+func getSIMByID(zone string, id types.ID) *sacloud.SIM {
+	v := ds().Get(ResourceSIM, zone, id)
 	if v, ok := v.(*sacloud.SIM); ok {
 		return v
 	}
 	return nil
 }
 
-func (s *store) setSIM(zone string, value *sacloud.SIM) {
-	s.set(ResourceSIM, zone, value)
+func putSIM(zone string, value *sacloud.SIM) {
+	var v interface{} = value
+	if id, ok := v.(accessor.ID); ok {
+		ds().Put(ResourceSIM, zone, id.GetID(), value)
+		return
+	}
+	ds().Put(ResourceSIM, zone, 0, value)
 }
 
-func (s *store) getSimpleMonitor(zone string) []*sacloud.SimpleMonitor {
-	values := s.get(ResourceSimpleMonitor, zone)
+func getSimpleMonitor(zone string) []*sacloud.SimpleMonitor {
+	values := ds().List(ResourceSimpleMonitor, zone)
 	var ret []*sacloud.SimpleMonitor
 	for _, v := range values {
 		if v, ok := v.(*sacloud.SimpleMonitor); ok {
@@ -800,20 +971,25 @@ func (s *store) getSimpleMonitor(zone string) []*sacloud.SimpleMonitor {
 	return ret
 }
 
-func (s *store) getSimpleMonitorByID(zone string, id types.ID) *sacloud.SimpleMonitor {
-	v := s.getByID(ResourceSimpleMonitor, zone, id)
+func getSimpleMonitorByID(zone string, id types.ID) *sacloud.SimpleMonitor {
+	v := ds().Get(ResourceSimpleMonitor, zone, id)
 	if v, ok := v.(*sacloud.SimpleMonitor); ok {
 		return v
 	}
 	return nil
 }
 
-func (s *store) setSimpleMonitor(zone string, value *sacloud.SimpleMonitor) {
-	s.set(ResourceSimpleMonitor, zone, value)
+func putSimpleMonitor(zone string, value *sacloud.SimpleMonitor) {
+	var v interface{} = value
+	if id, ok := v.(accessor.ID); ok {
+		ds().Put(ResourceSimpleMonitor, zone, id.GetID(), value)
+		return
+	}
+	ds().Put(ResourceSimpleMonitor, zone, 0, value)
 }
 
-func (s *store) getSSHKey(zone string) []*sacloud.SSHKey {
-	values := s.get(ResourceSSHKey, zone)
+func getSSHKey(zone string) []*sacloud.SSHKey {
+	values := ds().List(ResourceSSHKey, zone)
 	var ret []*sacloud.SSHKey
 	for _, v := range values {
 		if v, ok := v.(*sacloud.SSHKey); ok {
@@ -823,20 +999,25 @@ func (s *store) getSSHKey(zone string) []*sacloud.SSHKey {
 	return ret
 }
 
-func (s *store) getSSHKeyByID(zone string, id types.ID) *sacloud.SSHKey {
-	v := s.getByID(ResourceSSHKey, zone, id)
+func getSSHKeyByID(zone string, id types.ID) *sacloud.SSHKey {
+	v := ds().Get(ResourceSSHKey, zone, id)
 	if v, ok := v.(*sacloud.SSHKey); ok {
 		return v
 	}
 	return nil
 }
 
-func (s *store) setSSHKey(zone string, value *sacloud.SSHKey) {
-	s.set(ResourceSSHKey, zone, value)
+func putSSHKey(zone string, value *sacloud.SSHKey) {
+	var v interface{} = value
+	if id, ok := v.(accessor.ID); ok {
+		ds().Put(ResourceSSHKey, zone, id.GetID(), value)
+		return
+	}
+	ds().Put(ResourceSSHKey, zone, 0, value)
 }
 
-func (s *store) getSwitch(zone string) []*sacloud.Switch {
-	values := s.get(ResourceSwitch, zone)
+func getSwitch(zone string) []*sacloud.Switch {
+	values := ds().List(ResourceSwitch, zone)
 	var ret []*sacloud.Switch
 	for _, v := range values {
 		if v, ok := v.(*sacloud.Switch); ok {
@@ -846,20 +1027,25 @@ func (s *store) getSwitch(zone string) []*sacloud.Switch {
 	return ret
 }
 
-func (s *store) getSwitchByID(zone string, id types.ID) *sacloud.Switch {
-	v := s.getByID(ResourceSwitch, zone, id)
+func getSwitchByID(zone string, id types.ID) *sacloud.Switch {
+	v := ds().Get(ResourceSwitch, zone, id)
 	if v, ok := v.(*sacloud.Switch); ok {
 		return v
 	}
 	return nil
 }
 
-func (s *store) setSwitch(zone string, value *sacloud.Switch) {
-	s.set(ResourceSwitch, zone, value)
+func putSwitch(zone string, value *sacloud.Switch) {
+	var v interface{} = value
+	if id, ok := v.(accessor.ID); ok {
+		ds().Put(ResourceSwitch, zone, id.GetID(), value)
+		return
+	}
+	ds().Put(ResourceSwitch, zone, 0, value)
 }
 
-func (s *store) getVPCRouter(zone string) []*sacloud.VPCRouter {
-	values := s.get(ResourceVPCRouter, zone)
+func getVPCRouter(zone string) []*sacloud.VPCRouter {
+	values := ds().List(ResourceVPCRouter, zone)
 	var ret []*sacloud.VPCRouter
 	for _, v := range values {
 		if v, ok := v.(*sacloud.VPCRouter); ok {
@@ -869,20 +1055,25 @@ func (s *store) getVPCRouter(zone string) []*sacloud.VPCRouter {
 	return ret
 }
 
-func (s *store) getVPCRouterByID(zone string, id types.ID) *sacloud.VPCRouter {
-	v := s.getByID(ResourceVPCRouter, zone, id)
+func getVPCRouterByID(zone string, id types.ID) *sacloud.VPCRouter {
+	v := ds().Get(ResourceVPCRouter, zone, id)
 	if v, ok := v.(*sacloud.VPCRouter); ok {
 		return v
 	}
 	return nil
 }
 
-func (s *store) setVPCRouter(zone string, value *sacloud.VPCRouter) {
-	s.set(ResourceVPCRouter, zone, value)
+func putVPCRouter(zone string, value *sacloud.VPCRouter) {
+	var v interface{} = value
+	if id, ok := v.(accessor.ID); ok {
+		ds().Put(ResourceVPCRouter, zone, id.GetID(), value)
+		return
+	}
+	ds().Put(ResourceVPCRouter, zone, 0, value)
 }
 
-func (s *store) getWebAccel(zone string) []*sacloud.WebAccel {
-	values := s.get(ResourceWebAccel, zone)
+func getWebAccel(zone string) []*sacloud.WebAccel {
+	values := ds().List(ResourceWebAccel, zone)
 	var ret []*sacloud.WebAccel
 	for _, v := range values {
 		if v, ok := v.(*sacloud.WebAccel); ok {
@@ -892,20 +1083,25 @@ func (s *store) getWebAccel(zone string) []*sacloud.WebAccel {
 	return ret
 }
 
-func (s *store) getWebAccelByID(zone string, id types.ID) *sacloud.WebAccel {
-	v := s.getByID(ResourceWebAccel, zone, id)
+func getWebAccelByID(zone string, id types.ID) *sacloud.WebAccel {
+	v := ds().Get(ResourceWebAccel, zone, id)
 	if v, ok := v.(*sacloud.WebAccel); ok {
 		return v
 	}
 	return nil
 }
 
-func (s *store) setWebAccel(zone string, value *sacloud.WebAccel) {
-	s.set(ResourceWebAccel, zone, value)
+func putWebAccel(zone string, value *sacloud.WebAccel) {
+	var v interface{} = value
+	if id, ok := v.(accessor.ID); ok {
+		ds().Put(ResourceWebAccel, zone, id.GetID(), value)
+		return
+	}
+	ds().Put(ResourceWebAccel, zone, 0, value)
 }
 
-func (s *store) getZone(zone string) []*sacloud.Zone {
-	values := s.get(ResourceZone, zone)
+func getZone(zone string) []*sacloud.Zone {
+	values := ds().List(ResourceZone, zone)
 	var ret []*sacloud.Zone
 	for _, v := range values {
 		if v, ok := v.(*sacloud.Zone); ok {
@@ -915,14 +1111,19 @@ func (s *store) getZone(zone string) []*sacloud.Zone {
 	return ret
 }
 
-func (s *store) getZoneByID(zone string, id types.ID) *sacloud.Zone {
-	v := s.getByID(ResourceZone, zone, id)
+func getZoneByID(zone string, id types.ID) *sacloud.Zone {
+	v := ds().Get(ResourceZone, zone, id)
 	if v, ok := v.(*sacloud.Zone); ok {
 		return v
 	}
 	return nil
 }
 
-func (s *store) setZone(zone string, value *sacloud.Zone) {
-	s.set(ResourceZone, zone, value)
+func putZone(zone string, value *sacloud.Zone) {
+	var v interface{} = value
+	if id, ok := v.(accessor.ID); ok {
+		ds().Put(ResourceZone, zone, id.GetID(), value)
+		return
+	}
+	ds().Put(ResourceZone, zone, 0, value)
 }

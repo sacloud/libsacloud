@@ -34,7 +34,7 @@ func (o *ProxyLBOp) Create(ctx context.Context, param *sacloud.ProxyLBCreateRequ
 
 	result.Availability = types.Availabilities.Available
 
-	vip := pool.nextSharedIP()
+	vip := pool().nextSharedIP()
 	vipNet := net.IPNet{IP: vip, Mask: []byte{255, 255, 255, 0}}
 	result.ProxyNetworks = []string{vipNet.String()}
 	if param.UseVIPFailover {
@@ -58,15 +58,15 @@ func (o *ProxyLBOp) Create(ctx context.Context, param *sacloud.ProxyLBCreateRequ
 			CPS:        10,
 		})
 	}
-	s.setWithID(ResourceProxyLB+"Status", sacloud.APIDefaultZone, status, result.ID)
+	ds().Put(ResourceProxyLB+"Status", sacloud.APIDefaultZone, result.ID, status)
 
-	s.setProxyLB(sacloud.APIDefaultZone, result)
+	putProxyLB(sacloud.APIDefaultZone, result)
 	return result, nil
 }
 
 // Read is fake implementation
 func (o *ProxyLBOp) Read(ctx context.Context, id types.ID) (*sacloud.ProxyLB, error) {
-	value := s.getProxyLBByID(sacloud.APIDefaultZone, id)
+	value := getProxyLBByID(sacloud.APIDefaultZone, id)
 	if value == nil {
 		return nil, newErrorNotFound(o.key, id)
 	}
@@ -86,9 +86,9 @@ func (o *ProxyLBOp) Update(ctx context.Context, id types.ID, param *sacloud.Prox
 	if value.SorryServer == nil {
 		value.SorryServer = &sacloud.ProxyLBSorryServer{}
 	}
-	s.setProxyLB(sacloud.APIDefaultZone, value)
+	putProxyLB(sacloud.APIDefaultZone, value)
 
-	status := s.getByID(ResourceProxyLB+"Status", sacloud.APIDefaultZone, id).(*sacloud.ProxyLBHealth)
+	status := ds().Get(ResourceProxyLB+"Status", sacloud.APIDefaultZone, id).(*sacloud.ProxyLBHealth)
 	status.Servers = []*sacloud.LoadBalancerServerStatus{}
 	for _, server := range param.Servers {
 		status.Servers = append(status.Servers, &sacloud.LoadBalancerServerStatus{
@@ -99,7 +99,7 @@ func (o *ProxyLBOp) Update(ctx context.Context, id types.ID, param *sacloud.Prox
 			CPS:        10,
 		})
 	}
-	s.setWithID(ResourceProxyLB+"Status", sacloud.APIDefaultZone, status, id)
+	ds().Put(ResourceProxyLB+"Status", sacloud.APIDefaultZone, id, status)
 
 	return value, nil
 }
@@ -111,9 +111,9 @@ func (o *ProxyLBOp) Delete(ctx context.Context, id types.ID) error {
 		return err
 	}
 
-	s.delete(ResourceProxyLB+"Status", sacloud.APIDefaultZone, id)
-	s.delete(ResourceProxyLB+"Certs", sacloud.APIDefaultZone, id)
-	s.delete(o.key, sacloud.APIDefaultZone, id)
+	ds().Delete(ResourceProxyLB+"Status", sacloud.APIDefaultZone, id)
+	ds().Delete(ResourceProxyLB+"Certs", sacloud.APIDefaultZone, id)
+	ds().Delete(o.key, sacloud.APIDefaultZone, id)
 
 	return nil
 }
@@ -136,7 +136,7 @@ func (o *ProxyLBOp) GetCertificates(ctx context.Context, id types.ID) (*sacloud.
 		return nil, err
 	}
 
-	v := s.getByID(ResourceProxyLB+"Certs", sacloud.APIDefaultZone, id)
+	v := ds().Get(ResourceProxyLB+"Certs", sacloud.APIDefaultZone, id)
 	if v != nil {
 		return v.(*sacloud.ProxyLBCertificates), nil
 	}
@@ -156,7 +156,7 @@ func (o *ProxyLBOp) SetCertificates(ctx context.Context, id types.ID, param *sac
 	cert.CertificateCommonName = "dummy-common-name.org"
 	cert.CertificateEndDate = time.Now().Add(365 * 24 * time.Hour)
 
-	s.set(ResourceProxyLB+"Certs", sacloud.APIDefaultZone, cert)
+	ds().Put(ResourceProxyLB+"Certs", sacloud.APIDefaultZone, id, cert)
 	return cert, nil
 }
 
@@ -167,9 +167,9 @@ func (o *ProxyLBOp) DeleteCertificates(ctx context.Context, id types.ID) error {
 		return err
 	}
 
-	v := s.getByID(ResourceProxyLB+"Certs", sacloud.APIDefaultZone, id)
+	v := ds().Get(ResourceProxyLB+"Certs", sacloud.APIDefaultZone, id)
 	if v != nil {
-		s.delete(ResourceProxyLB+"Certs", sacloud.APIDefaultZone, id)
+		ds().Delete(ResourceProxyLB+"Certs", sacloud.APIDefaultZone, id)
 	}
 	return nil
 }
@@ -186,7 +186,7 @@ func (o *ProxyLBOp) HealthStatus(ctx context.Context, id types.ID) (*sacloud.Pro
 		return nil, err
 	}
 
-	return s.getByID(ResourceProxyLB+"Status", sacloud.APIDefaultZone, id).(*sacloud.ProxyLBHealth), nil
+	return ds().Get(ResourceProxyLB+"Status", sacloud.APIDefaultZone, id).(*sacloud.ProxyLBHealth), nil
 }
 
 // MonitorConnection is fake implementation

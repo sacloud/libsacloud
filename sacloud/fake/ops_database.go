@@ -34,7 +34,7 @@ func (o *DatabaseOp) Create(ctx context.Context, zone string, param *sacloud.Dat
 	result.Class = "database"
 	result.Availability = types.Availabilities.Available
 
-	s.setDatabase(zone, result)
+	putDatabase(zone, result)
 
 	id := result.ID
 	startPowerOn(o.key, zone, func() (interface{}, error) {
@@ -45,7 +45,7 @@ func (o *DatabaseOp) Create(ctx context.Context, zone string, param *sacloud.Dat
 
 // Read is fake implementation
 func (o *DatabaseOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Database, error) {
-	value := s.getDatabaseByID(zone, id)
+	value := getDatabaseByID(zone, id)
 	if value == nil {
 		return nil, newErrorNotFound(o.key, id)
 	}
@@ -73,7 +73,7 @@ func (o *DatabaseOp) Delete(ctx context.Context, zone string, id types.ID) error
 		return err
 	}
 
-	s.delete(o.key, zone, id)
+	ds().Delete(o.key, zone, id)
 	return nil
 }
 

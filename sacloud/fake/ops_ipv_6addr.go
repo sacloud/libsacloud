@@ -7,6 +7,11 @@ import (
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
+type ipv6Addr struct {
+	ID types.ID
+	*sacloud.IPv6Addr
+}
+
 // Find is fake implementation
 func (o *IPv6AddrOp) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.IPv6AddrFindResult, error) {
 	results, _ := find(o.key, zone, conditions)
@@ -29,7 +34,7 @@ func (o *IPv6AddrOp) Create(ctx context.Context, zone string, param *sacloud.IPv
 	result := &sacloud.IPv6Addr{}
 	copySameNameField(param, result)
 
-	s.setWithID(ResourceIPv6Addr, zone, result, pool.generateID())
+	ds().Put(ResourceIPv6Addr, zone, pool().generateID(), &ipv6Addr{IPv6Addr: result})
 	return result, nil
 }
 
@@ -37,11 +42,11 @@ func (o *IPv6AddrOp) Create(ctx context.Context, zone string, param *sacloud.IPv
 func (o *IPv6AddrOp) Read(ctx context.Context, zone string, ipv6addr string) (*sacloud.IPv6Addr, error) {
 	var value *sacloud.IPv6Addr
 
-	results, _ := find(o.key, zone, nil)
+	results := ds().List(o.key, zone)
 	for _, res := range results {
-		v := res.(*sacloud.IPv6Addr)
-		if v.IPv6Addr == ipv6addr {
-			value = v
+		v := res.(*ipv6Addr)
+		if v.IPv6Addr.IPv6Addr == ipv6addr {
+			value = v.IPv6Addr
 			break
 		}
 	}
@@ -55,15 +60,15 @@ func (o *IPv6AddrOp) Read(ctx context.Context, zone string, ipv6addr string) (*s
 // Update is fake implementation
 func (o *IPv6AddrOp) Update(ctx context.Context, zone string, ipv6addr string, param *sacloud.IPv6AddrUpdateRequest) (*sacloud.IPv6Addr, error) {
 	found := false
-	results := s.values(o.key, zone)
+	results := ds().List(o.key, zone)
 	var value *sacloud.IPv6Addr
-	for key, res := range results {
-		v := res.(*sacloud.IPv6Addr)
-		if v.IPv6Addr == ipv6addr {
-			copySameNameField(param, v)
+	for _, res := range results {
+		v := res.(*ipv6Addr)
+		if v.IPv6Addr.IPv6Addr == ipv6addr {
+			copySameNameField(param, v.IPv6Addr)
 			found = true
-			s.setWithID(o.key, zone, v, types.StringID(key))
-			value = v
+			ds().Put(o.key, zone, v.ID, v)
+			value = v.IPv6Addr
 		}
 	}
 
@@ -77,12 +82,12 @@ func (o *IPv6AddrOp) Update(ctx context.Context, zone string, ipv6addr string, p
 // Delete is fake implementation
 func (o *IPv6AddrOp) Delete(ctx context.Context, zone string, ipv6addr string) error {
 	found := false
-	results := s.values(o.key, zone)
-	for key, res := range results {
-		v := res.(*sacloud.IPv6Addr)
-		if v.IPv6Addr == ipv6addr {
+	results := ds().List(o.key, zone)
+	for _, res := range results {
+		v := res.(*ipv6Addr)
+		if v.IPv6Addr.IPv6Addr == ipv6addr {
 			found = true
-			s.delete(o.key, zone, types.StringID(key))
+			ds().Delete(o.key, zone, v.ID)
 		}
 	}
 

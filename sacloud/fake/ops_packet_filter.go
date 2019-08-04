@@ -30,13 +30,13 @@ func (o *PacketFilterOp) Create(ctx context.Context, zone string, param *sacloud
 	copySameNameField(param, result)
 	fill(result, fillID, fillCreatedAt)
 
-	s.setPacketFilter(zone, result)
+	putPacketFilter(zone, result)
 	return result, nil
 }
 
 // Read is fake implementation
 func (o *PacketFilterOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.PacketFilter, error) {
-	value := s.getPacketFilterByID(zone, id)
+	value := getPacketFilterByID(zone, id)
 	if value == nil {
 		return nil, newErrorNotFound(o.key, id)
 	}
@@ -64,6 +64,6 @@ func (o *PacketFilterOp) Delete(ctx context.Context, zone string, id types.ID) e
 		return err
 	}
 
-	s.delete(o.key, zone, id)
+	ds().Delete(o.key, zone, id)
 	return nil
 }

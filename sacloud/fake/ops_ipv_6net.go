@@ -26,7 +26,7 @@ func (o *IPv6NetOp) List(ctx context.Context, zone string) (*sacloud.IPv6NetList
 
 // Read is fake implementation
 func (o *IPv6NetOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.IPv6Net, error) {
-	value := s.getIPv6NetByID(zone, id)
+	value := getIPv6NetByID(zone, id)
 	if value == nil {
 		return nil, newErrorNotFound(o.key, id)
 	}

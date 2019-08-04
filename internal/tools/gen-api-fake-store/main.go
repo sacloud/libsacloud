@@ -34,11 +34,12 @@ package fake
 import (
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
+	"github.com/sacloud/libsacloud/v2/sacloud/accessor"
 )
 
 {{ range . }} 
-func (s *store) get{{.TypeName}}(zone string) []*sacloud.{{.TypeName}} {
-	values := s.get(Resource{{.TypeName}}, zone)
+func get{{.TypeName}}(zone string) []*sacloud.{{.TypeName}} {
+	values := ds().List(Resource{{.TypeName}}, zone)
 	var ret []*sacloud.{{.TypeName}}
 	for _ , v := range values {
 		if v, ok := v.(*sacloud.{{.TypeName}}); ok {
@@ -48,16 +49,21 @@ func (s *store) get{{.TypeName}}(zone string) []*sacloud.{{.TypeName}} {
 	return ret
 }
 
-func (s *store) get{{.TypeName}}ByID(zone string, id types.ID) *sacloud.{{.TypeName}} {
-	v := s.getByID(Resource{{.TypeName}}, zone, id)
+func get{{.TypeName}}ByID(zone string, id types.ID) *sacloud.{{.TypeName}} {
+	v := ds().Get(Resource{{.TypeName}}, zone, id)
 	if v, ok := v.(*sacloud.{{.TypeName}}); ok {
 		return v
 	}
 	return nil
 }
 
-func (s *store) set{{.TypeName}}(zone string, value *sacloud.{{.TypeName}}) {
-	s.set(Resource{{.TypeName}}, zone, value)
+func put{{.TypeName}}(zone string, value *sacloud.{{.TypeName}}) {
+	var v interface{} = value
+	if id, ok := v.(accessor.ID); ok {
+		ds().Put(Resource{{.TypeName}}, zone, id.GetID(), value)
+		return
+	}
+	ds().Put(Resource{{.TypeName}}, zone, 0, value)
 }
 {{ end }}
 `

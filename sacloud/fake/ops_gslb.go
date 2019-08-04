@@ -34,13 +34,13 @@ func (o *GSLBOp) Create(ctx context.Context, param *sacloud.GSLBCreateRequest) (
 	result.FQDN = fmt.Sprintf("site-%d.gslb7.example.ne.jp", result.ID)
 	result.SettingsHash = "settingshash"
 
-	s.setGSLB(sacloud.APIDefaultZone, result)
+	putGSLB(sacloud.APIDefaultZone, result)
 	return result, nil
 }
 
 // Read is fake implementation
 func (o *GSLBOp) Read(ctx context.Context, id types.ID) (*sacloud.GSLB, error) {
-	value := s.getGSLBByID(sacloud.APIDefaultZone, id)
+	value := getGSLBByID(sacloud.APIDefaultZone, id)
 	if value == nil {
 		return nil, newErrorNotFound(o.key, id)
 	}
@@ -70,6 +70,6 @@ func (o *GSLBOp) Delete(ctx context.Context, id types.ID) error {
 	if err != nil {
 		return err
 	}
-	s.delete(o.key, sacloud.APIDefaultZone, id)
+	ds().Delete(o.key, sacloud.APIDefaultZone, id)
 	return nil
 }

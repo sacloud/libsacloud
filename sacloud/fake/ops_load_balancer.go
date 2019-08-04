@@ -41,7 +41,7 @@ func (o *LoadBalancerOp) Create(ctx context.Context, zone string, param *sacloud
 		}
 	}
 
-	s.setLoadBalancer(zone, result)
+	putLoadBalancer(zone, result)
 
 	id := result.ID
 	startPowerOn(o.key, zone, func() (interface{}, error) {
@@ -52,7 +52,7 @@ func (o *LoadBalancerOp) Create(ctx context.Context, zone string, param *sacloud
 
 // Read is fake implementation
 func (o *LoadBalancerOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.LoadBalancer, error) {
-	value := s.getLoadBalancerByID(zone, id)
+	value := getLoadBalancerByID(zone, id)
 	if value == nil {
 		return nil, newErrorNotFound(o.key, id)
 	}
@@ -76,7 +76,7 @@ func (o *LoadBalancerOp) Update(ctx context.Context, zone string, id types.ID, p
 			vip.DelayLoop = 10 // default value
 		}
 	}
-	s.setLoadBalancer(zone, value)
+	putLoadBalancer(zone, value)
 	return value, nil
 }
 
@@ -86,7 +86,7 @@ func (o *LoadBalancerOp) Delete(ctx context.Context, zone string, id types.ID) e
 	if err != nil {
 		return err
 	}
-	s.delete(o.key, zone, id)
+	ds().Delete(o.key, zone, id)
 	return nil
 }
 

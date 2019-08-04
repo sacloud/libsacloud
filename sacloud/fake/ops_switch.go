@@ -31,13 +31,13 @@ func (o *SwitchOp) Create(ctx context.Context, zone string, param *sacloud.Switc
 	copySameNameField(param, result)
 	fill(result, fillID, fillCreatedAt, fillAvailability, fillScope)
 	result.Scope = types.Scopes.User
-	s.setSwitch(zone, result)
+	putSwitch(zone, result)
 	return result, nil
 }
 
 // Read is fake implementation
 func (o *SwitchOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Switch, error) {
-	value := s.getSwitchByID(zone, id)
+	value := getSwitchByID(zone, id)
 	if value == nil {
 		return nil, newErrorNotFound(o.key, id)
 	}
@@ -64,7 +64,7 @@ func (o *SwitchOp) Delete(ctx context.Context, zone string, id types.ID) error {
 	if err != nil {
 		return err
 	}
-	s.delete(o.key, zone, id)
+	ds().Delete(o.key, zone, id)
 	return nil
 }
 
@@ -97,8 +97,8 @@ func (o *SwitchOp) ConnectToBridge(ctx context.Context, zone string, id types.ID
 	//	ZoneID: zoneIDs[zone],
 	//})
 
-	s.setBridge(zone, bridge)
-	s.setSwitch(zone, value)
+	putBridge(zone, bridge)
+	putSwitch(zone, value)
 	return nil
 }
 
@@ -131,7 +131,7 @@ func (o *SwitchOp) DisconnectFromBridge(ctx context.Context, zone string, id typ
 	// fakeドライバーではBridgeInfoに非対応
 	//bridge.BridgeInfo = bridgeInfo
 
-	s.setBridge(zone, bridge)
-	s.setSwitch(zone, value)
+	putBridge(zone, bridge)
+	putSwitch(zone, value)
 	return nil
 }

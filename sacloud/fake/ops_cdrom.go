@@ -32,7 +32,7 @@ func (o *CDROMOp) Create(ctx context.Context, zone string, param *sacloud.CDROMC
 	fill(result, fillID, fillCreatedAt, fillAvailability, fillScope)
 	result.Availability = types.Availabilities.Uploading
 
-	s.setCDROM(zone, result)
+	putCDROM(zone, result)
 	return result, &sacloud.FTPServer{
 		HostName:  fmt.Sprintf("sac-%s-ftp.example.jp", zone),
 		IPAddress: "192.0.2.1",
@@ -43,7 +43,7 @@ func (o *CDROMOp) Create(ctx context.Context, zone string, param *sacloud.CDROMC
 
 // Read is fake implementation
 func (o *CDROMOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.CDROM, error) {
-	value := s.getCDROMByID(zone, id)
+	value := getCDROMByID(zone, id)
 	if value == nil {
 		return nil, newErrorNotFound(o.key, id)
 	}
@@ -69,7 +69,7 @@ func (o *CDROMOp) Delete(ctx context.Context, zone string, id types.ID) error {
 	if err != nil {
 		return err
 	}
-	s.delete(o.key, zone, id)
+	ds().Delete(o.key, zone, id)
 	return nil
 }
 
@@ -81,7 +81,7 @@ func (o *CDROMOp) OpenFTP(ctx context.Context, zone string, id types.ID, openOpt
 	}
 
 	value.SetAvailability(types.Availabilities.Uploading)
-	s.setCDROM(zone, value)
+	putCDROM(zone, value)
 
 	return &sacloud.FTPServer{
 		HostName:  fmt.Sprintf("sac-%s-ftp.example.jp", zone),
@@ -100,6 +100,6 @@ func (o *CDROMOp) CloseFTP(ctx context.Context, zone string, id types.ID) error 
 	if !value.Availability.IsUploading() {
 		value.SetAvailability(types.Availabilities.Available)
 	}
-	s.setCDROM(zone, value)
+	putCDROM(zone, value)
 	return nil
 }

@@ -30,13 +30,13 @@ func (o *LicenseOp) Create(ctx context.Context, param *sacloud.LicenseCreateRequ
 	copySameNameField(param, result)
 	fill(result, fillID, fillCreatedAt, fillModifiedAt)
 	result.LicenseInfoName = "Windows RDS SAL"
-	s.setLicense(sacloud.APIDefaultZone, result)
+	putLicense(sacloud.APIDefaultZone, result)
 	return result, nil
 }
 
 // Read is fake implementation
 func (o *LicenseOp) Read(ctx context.Context, id types.ID) (*sacloud.License, error) {
-	value := s.getLicenseByID(sacloud.APIDefaultZone, id)
+	value := getLicenseByID(sacloud.APIDefaultZone, id)
 	if value == nil {
 		return nil, newErrorNotFound(o.key, id)
 	}
@@ -62,6 +62,6 @@ func (o *LicenseOp) Delete(ctx context.Context, id types.ID) error {
 	if err != nil {
 		return err
 	}
-	s.delete(o.key, sacloud.APIDefaultZone, id)
+	ds().Delete(o.key, sacloud.APIDefaultZone, id)
 	return nil
 }

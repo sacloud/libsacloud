@@ -51,7 +51,7 @@ func (o *DiskOp) Create(ctx context.Context, zone string, param *sacloud.DiskCre
 		result.SourceDiskAvailability = source.Availability
 	}
 
-	s.setDisk(zone, result)
+	putDisk(zone, result)
 
 	id := result.ID
 	startDiskCopy(o.key, zone, func() (interface{}, error) {
@@ -122,7 +122,7 @@ func (o *DiskOp) ToBlank(ctx context.Context, zone string, id types.ID) error {
 	value.SourceDiskID = types.ID(0)
 	value.SourceDiskAvailability = types.Availabilities.Unknown
 
-	s.setDisk(zone, value)
+	putDisk(zone, value)
 	return nil
 }
 
@@ -157,9 +157,9 @@ func (o *DiskOp) ConnectToServer(ctx context.Context, zone string, id types.ID, 
 	// TODO とりあえず同時実行制御は考慮しない。更新対象リソースが増えるようであれば実装方法を考える
 
 	server.Disks = append(server.Disks, value)
-	s.setServer(zone, server)
+	putServer(zone, server)
 	value.ServerID = serverID
-	s.setDisk(zone, value)
+	putDisk(zone, value)
 
 	return nil
 }
@@ -192,9 +192,9 @@ func (o *DiskOp) DisconnectFromServer(ctx context.Context, zone string, id types
 	}
 
 	server.Disks = disks
-	s.setServer(zone, server)
+	putServer(zone, server)
 	value.ServerID = types.ID(0)
-	s.setDisk(zone, value)
+	putDisk(zone, value)
 
 	return nil
 }
@@ -207,13 +207,13 @@ func (o *DiskOp) Install(ctx context.Context, zone string, id types.ID, installP
 	}
 
 	fill(value, fillDiskPlan)
-	s.setDisk(zone, value)
+	putDisk(zone, value)
 	return value, nil
 }
 
 // Read is fake implementation
 func (o *DiskOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Disk, error) {
-	value := s.getDiskByID(zone, id)
+	value := getDiskByID(zone, id)
 	if value == nil {
 		return nil, newErrorNotFound(o.key, id)
 	}
@@ -240,7 +240,7 @@ func (o *DiskOp) Delete(ctx context.Context, zone string, id types.ID) error {
 	if err != nil {
 		return err
 	}
-	s.delete(o.key, zone, id)
+	ds().Delete(o.key, zone, id)
 	return nil
 }
 

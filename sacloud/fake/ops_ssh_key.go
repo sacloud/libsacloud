@@ -41,7 +41,7 @@ func (o *SSHKeyOp) Create(ctx context.Context, param *sacloud.SSHKeyCreateReques
 
 	result.Fingerprint = GeneratedFingerprint
 
-	s.setSSHKey(sacloud.APIDefaultZone, result)
+	putSSHKey(sacloud.APIDefaultZone, result)
 	return result, nil
 }
 
@@ -58,13 +58,13 @@ func (o *SSHKeyOp) Generate(ctx context.Context, param *sacloud.SSHKeyGenerateRe
 	result.PrivateKey = GeneratedPrivateKey
 	result.Fingerprint = GeneratedFingerprint
 
-	s.setSSHKey(sacloud.APIDefaultZone, key)
+	putSSHKey(sacloud.APIDefaultZone, key)
 	return result, nil
 }
 
 // Read is fake implementation
 func (o *SSHKeyOp) Read(ctx context.Context, id types.ID) (*sacloud.SSHKey, error) {
-	value := s.getSSHKeyByID(sacloud.APIDefaultZone, id)
+	value := getSSHKeyByID(sacloud.APIDefaultZone, id)
 	if value == nil {
 		return nil, newErrorNotFound(o.key, id)
 	}
@@ -90,6 +90,6 @@ func (o *SSHKeyOp) Delete(ctx context.Context, id types.ID) error {
 		return err
 	}
 
-	s.delete(o.key, sacloud.APIDefaultZone, id)
+	ds().Delete(o.key, sacloud.APIDefaultZone, id)
 	return nil
 }

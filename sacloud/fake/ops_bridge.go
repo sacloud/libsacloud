@@ -30,13 +30,13 @@ func (o *BridgeOp) Create(ctx context.Context, zone string, param *sacloud.Bridg
 	copySameNameField(param, result)
 	fill(result, fillID, fillCreatedAt)
 
-	s.setBridge(zone, result)
+	putBridge(zone, result)
 	return result, nil
 }
 
 // Read is fake implementation
 func (o *BridgeOp) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Bridge, error) {
-	value := s.getBridgeByID(zone, id)
+	value := getBridgeByID(zone, id)
 	if value == nil {
 		return nil, newErrorNotFound(o.key, id)
 	}
@@ -63,6 +63,6 @@ func (o *BridgeOp) Delete(ctx context.Context, zone string, id types.ID) error {
 		return err
 	}
 
-	s.delete(o.key, zone, id)
+	ds().Delete(o.key, zone, id)
 	return nil
 }
