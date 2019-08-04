@@ -5,6 +5,7 @@ go 1.12
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/fatih/structs v1.1.0
+	github.com/fsnotify/fsnotify v1.4.7
 	github.com/go-playground/locales v0.12.1 // indirect
 	github.com/go-playground/universal-translator v0.16.0 // indirect
 	github.com/hashicorp/go-multierror v1.0.1-0.20190722213833-bdca7bb83f60

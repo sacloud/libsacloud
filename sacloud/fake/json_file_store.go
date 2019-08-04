@@ -1,12 +1,16 @@
 package fake
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"os"
 	"strings"
 	"sync"
+
+	"github.com/fsnotify/fsnotify"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
@@ -16,7 +20,9 @@ const defaultJSONFilePath = "libsacloud-fake-store.json"
 
 // JSONFileStore .
 type JSONFileStore struct {
-	Path string
+	Path       string
+	Ctx        context.Context
+	NoInitData bool
 
 	mu    sync.Mutex
 	cache map[string]map[string]interface{}
@@ -32,6 +38,9 @@ func NewJSONFileStore(path string) *JSONFileStore {
 
 // Init .
 func (s *JSONFileStore) Init() error {
+	if s.Ctx == nil {
+		s.Ctx = context.Background()
+	}
 	if s.Path == "" {
 		s.Path = defaultJSONFilePath
 	}
@@ -39,14 +48,65 @@ func (s *JSONFileStore) Init() error {
 		if stat.IsDir() {
 			return fmt.Errorf("path %q is directory", s.Path)
 		}
-		return s.load()
+	} else {
+		if _, err := os.Create(s.Path); err != nil {
+			return err
+		}
 	}
+
+	if err := s.load(); err != nil {
+		return err
+	}
+	s.startWatcher()
 	return nil
+}
+
+func (s *JSONFileStore) startWatcher() {
+	ctx := s.Ctx
+	watcher, err := fsnotify.NewWatcher()
+	if err != nil {
+		panic(err)
+	}
+	log.Printf("file watch start: %q", s.Path)
+
+	go func() {
+		defer watcher.Close()
+		for {
+			select {
+			case event, ok := <-watcher.Events:
+				if !ok {
+					return
+				}
+				switch {
+				case event.Op&fsnotify.Write == fsnotify.Write,
+					event.Op&fsnotify.Create == fsnotify.Create,
+					event.Op&fsnotify.Rename == fsnotify.Rename:
+
+					if err := s.load(); err != nil {
+						log.Printf("reloading %q is failed: %s\n", s.Path, err)
+					}
+
+					if event.Op&fsnotify.Rename == fsnotify.Rename {
+						watcher.Add(s.Path)
+					}
+					log.Printf("reloaded: %q\n", s.Path)
+				}
+			case err, ok := <-watcher.Errors:
+				if !ok {
+					return
+				}
+				panic(err)
+			case <-ctx.Done():
+				return
+			}
+		}
+	}()
+	watcher.Add(s.Path)
 }
 
 // NeedInitData .
 func (s *JSONFileStore) NeedInitData() bool {
-	return len(s.cache[sacloud.APIDefaultZone]) < 2
+	return !s.NoInitData && len(s.cache[sacloud.APIDefaultZone]) < 2
 }
 
 // Put .
@@ -174,6 +234,9 @@ func (s *JSONFileStore) store() error {
 }
 
 func (s *JSONFileStore) load() error {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+
 	data, err := ioutil.ReadFile(s.Path)
 	if err != nil {
 		return err
