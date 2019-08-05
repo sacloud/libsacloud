@@ -164,10 +164,30 @@ func initCoupons(s Store, p *valuePool) {
 func initNotes(s Store, p *valuePool) {
 	notes := []*sacloud.Note{
 		{
-			ID:      1,
-			Name:    "sys-nfs",
-			Class:   "json",
-			Content: `{"plans":{"HDD":[{"size": 100,"availability":"available","planId":1}]}}`,
+			ID:    1,
+			Name:  "sys-nfs",
+			Class: "json",
+			Content: `
+{
+	"plans":{
+		"HDD":[
+			{"size": 100,"availability":"available","planId":101},
+			{"size": 500,"availability":"available","planId":102},
+			{"size": 1024,"availability":"available","planId":103},
+			{"size": 2048,"availability":"available","planId":104},
+			{"size": 4096,"availability":"available","planId":105},
+			{"size": 8192,"availability":"available","planId":106},
+			{"size": 12288,"availability":"available","planId":107}
+		],
+		"SSD":[
+			{"size": 100,"availability":"available","planId":201},
+			{"size": 500,"availability":"available","planId":202},
+			{"size": 1024,"availability":"available","planId":203},
+			{"size": 2048,"availability":"available","planId":204},
+			{"size": 4096,"availability":"available","planId":205}
+		]
+	}
+}`,
 		},
 	}
 	for _, note := range notes {
@@ -197,18 +217,45 @@ func initZones(s Store, p *valuePool) {
 			Name:         "tk1a",
 			Description:  "東京第1ゾーン",
 			DisplayOrder: 1,
+			Region: &sacloud.Region{
+				ID:          210,
+				Name:        "東京",
+				Description: "東京",
+				NameServers: []string{
+					"210.188.224.10",
+					"210.188.224.11",
+				},
+			},
 		},
 		{
 			ID:           31001,
 			Name:         "is1a",
 			Description:  "石狩第1ゾーン",
 			DisplayOrder: 2,
+			Region: &sacloud.Region{
+				ID:          310,
+				Name:        "石狩",
+				Description: "石狩",
+				NameServers: []string{
+					"133.242.0.3",
+					"133.242.0.4",
+				},
+			},
 		},
 		{
 			ID:           31002,
 			Name:         "is1b",
 			Description:  "石狩第2ゾーン",
 			DisplayOrder: 3,
+			Region: &sacloud.Region{
+				ID:          310,
+				Name:        "石狩",
+				Description: "石狩",
+				NameServers: []string{
+					"133.242.0.3",
+					"133.242.0.4",
+				},
+			},
 		},
 		{
 			ID:           29001,
@@ -216,6 +263,15 @@ func initZones(s Store, p *valuePool) {
 			Description:  "Sandbox",
 			DisplayOrder: 4,
 			IsDummy:      true,
+			Region: &sacloud.Region{
+				ID:          210,
+				Name:        "東京",
+				Description: "東京",
+				NameServers: []string{
+					"210.188.224.10",
+					"210.188.224.11",
+				},
+			},
 		},
 	}
 
