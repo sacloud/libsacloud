@@ -116,15 +116,17 @@ var (
 			},
 		},
 		Fields: []*dsl.FieldDesc{
-			// backup setting
-			fields.AutoBackupBackupSpanWeekDays(),
-			fields.AutoBackupMaximumNumberOfArchives(),
-
 			// common fields
 			fields.Name(),
 			fields.Description(),
 			fields.Tags(),
 			fields.IconID(),
+
+			// backup setting
+			fields.AutoBackupBackupSpanWeekDays(),
+			fields.AutoBackupMaximumNumberOfArchives(),
+			// settings hash
+			fields.SettingsHash(),
 		},
 	}
 )

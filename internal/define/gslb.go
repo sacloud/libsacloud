@@ -93,16 +93,19 @@ var (
 		Name:      names.UpdateParameterName(gslbAPIName),
 		NakedType: gslbNakedType,
 		Fields: []*dsl.FieldDesc{
+			fields.Name(),
+			fields.Description(),
+			fields.Tags(),
+			fields.IconID(),
+
+			// settings
 			fields.GSLBHealthCheck(),
 			fields.GSLBDelayLoop(),
 			fields.GSLBWeighted(),
 			fields.GSLBSorryServer(),
 			fields.GSLBDestinationServers(),
-
-			fields.Name(),
-			fields.Description(),
-			fields.Tags(),
-			fields.IconID(),
+			// settings hash
+			fields.SettingsHash(),
 		},
 	}
 )

@@ -120,11 +120,16 @@ var (
 		Name:      names.UpdateParameterName(loadBalancerAPIName),
 		NakedType: loadBalancerNakedType,
 		Fields: []*dsl.FieldDesc{
+			// common fields
 			fields.Name(),
 			fields.Description(),
 			fields.Tags(),
 			fields.IconID(),
+
+			// settings
 			fields.LoadBalancerVIP(),
+			// settings hash
+			fields.SettingsHash(),
 		},
 	}
 

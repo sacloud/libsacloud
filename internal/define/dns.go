@@ -100,13 +100,15 @@ var (
 		Name:      names.UpdateParameterName(dnsAPIName),
 		NakedType: dnsNakedType,
 		Fields: []*dsl.FieldDesc{
-			// setting
-			fields.DNSRecords(),
-
 			// common fields
 			fields.Description(),
 			fields.Tags(),
 			fields.IconID(),
+
+			// setting
+			fields.DNSRecords(),
+			// settings hash
+			fields.SettingsHash(),
 		},
 	}
 )

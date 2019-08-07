@@ -157,14 +157,18 @@ var (
 		Name:      names.UpdateParameterName(databaseAPIName),
 		NakedType: databaseNakedType,
 		Fields: []*dsl.FieldDesc{
-			fields.DatabaseSettingsCommonUpdate(),
-			fields.DatabaseSettingsBackup(),
-			fields.DatabaseSettingsReplication(),
-
+			// common fields
 			fields.Name(),
 			fields.Description(),
 			fields.Tags(),
 			fields.IconID(),
+
+			// settings
+			fields.DatabaseSettingsCommonUpdate(),
+			fields.DatabaseSettingsBackup(),
+			fields.DatabaseSettingsReplication(),
+			// settings hash
+			fields.SettingsHash(),
 		},
 	}
 

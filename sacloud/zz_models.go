@@ -1353,11 +1353,11 @@ type AutoBackup struct {
 	ModifiedAt              time.Time
 	BackupSpanWeekdays      []types.EBackupSpanWeekday `mapconv:"Settings.Autobackup.BackupSpanWeekdays"`
 	MaximumNumberOfArchives int                        `mapconv:"Settings.Autobackup.MaximumNumberOfArchives"`
-	SettingsHash            string
-	DiskID                  types.ID `mapconv:"Status.DiskId"`
-	AccountID               types.ID `mapconv:"Status.AccountId"`
-	ZoneID                  types.ID `mapconv:"Status.ZoneId"`
-	ZoneName                string   `mapconv:"Status.ZoneName"`
+	SettingsHash            string                     `json:",omitempty" mapconv:",omitempty"`
+	DiskID                  types.ID                   `mapconv:"Status.DiskId"`
+	AccountID               types.ID                   `mapconv:"Status.AccountId"`
+	ZoneID                  types.ID                   `mapconv:"Status.ZoneId"`
+	ZoneName                string                     `mapconv:"Status.ZoneName"`
 }
 
 // Validate validates by field tags
@@ -1378,11 +1378,11 @@ func (o *AutoBackup) setDefaults() interface{} {
 		ModifiedAt              time.Time
 		BackupSpanWeekdays      []types.EBackupSpanWeekday `mapconv:"Settings.Autobackup.BackupSpanWeekdays"`
 		MaximumNumberOfArchives int                        `mapconv:"Settings.Autobackup.MaximumNumberOfArchives"`
-		SettingsHash            string
-		DiskID                  types.ID `mapconv:"Status.DiskId"`
-		AccountID               types.ID `mapconv:"Status.AccountId"`
-		ZoneID                  types.ID `mapconv:"Status.ZoneId"`
-		ZoneName                string   `mapconv:"Status.ZoneName"`
+		SettingsHash            string                     `json:",omitempty" mapconv:",omitempty"`
+		DiskID                  types.ID                   `mapconv:"Status.DiskId"`
+		AccountID               types.ID                   `mapconv:"Status.AccountId"`
+		ZoneID                  types.ID                   `mapconv:"Status.ZoneId"`
+		ZoneName                string                     `mapconv:"Status.ZoneName"`
 	}{
 		ID:                      o.GetID(),
 		Name:                    o.GetName(),
@@ -1733,12 +1733,13 @@ func (o *AutoBackupCreateRequest) SetIconID(v types.ID) {
 
 // AutoBackupUpdateRequest represents API parameter/response structure
 type AutoBackupUpdateRequest struct {
+	Name                    string `validate:"required"`
+	Description             string `validate:"min=0,max=512"`
+	Tags                    types.Tags
+	IconID                  types.ID                   `mapconv:"Icon.ID"`
 	BackupSpanWeekdays      []types.EBackupSpanWeekday `mapconv:"Settings.Autobackup.BackupSpanWeekdays"`
 	MaximumNumberOfArchives int                        `mapconv:"Settings.Autobackup.MaximumNumberOfArchives"`
-	Name                    string                     `validate:"required"`
-	Description             string                     `validate:"min=0,max=512"`
-	Tags                    types.Tags
-	IconID                  types.ID `mapconv:"Icon.ID"`
+	SettingsHash            string                     `json:",omitempty" mapconv:",omitempty"`
 }
 
 // Validate validates by field tags
@@ -1749,42 +1750,24 @@ func (o *AutoBackupUpdateRequest) Validate() error {
 // setDefaults implements sacloud.argumentDefaulter
 func (o *AutoBackupUpdateRequest) setDefaults() interface{} {
 	return &struct {
+		Name                    string `validate:"required"`
+		Description             string `validate:"min=0,max=512"`
+		Tags                    types.Tags
+		IconID                  types.ID                   `mapconv:"Icon.ID"`
 		BackupSpanWeekdays      []types.EBackupSpanWeekday `mapconv:"Settings.Autobackup.BackupSpanWeekdays"`
 		MaximumNumberOfArchives int                        `mapconv:"Settings.Autobackup.MaximumNumberOfArchives"`
-		Name                    string                     `validate:"required"`
-		Description             string                     `validate:"min=0,max=512"`
-		Tags                    types.Tags
-		IconID                  types.ID              `mapconv:"Icon.ID"`
-		BackupSpanType          types.EBackupSpanType `mapconv:"Settings.Autobackup.BackupSpanType"`
+		SettingsHash            string                     `json:",omitempty" mapconv:",omitempty"`
+		BackupSpanType          types.EBackupSpanType      `mapconv:"Settings.Autobackup.BackupSpanType"`
 	}{
-		BackupSpanWeekdays:      o.GetBackupSpanWeekdays(),
-		MaximumNumberOfArchives: o.GetMaximumNumberOfArchives(),
 		Name:                    o.GetName(),
 		Description:             o.GetDescription(),
 		Tags:                    o.GetTags(),
 		IconID:                  o.GetIconID(),
+		BackupSpanWeekdays:      o.GetBackupSpanWeekdays(),
+		MaximumNumberOfArchives: o.GetMaximumNumberOfArchives(),
+		SettingsHash:            o.GetSettingsHash(),
 		BackupSpanType:          types.BackupSpanTypes.Weekdays,
 	}
-}
-
-// GetBackupSpanWeekdays returns value of BackupSpanWeekdays
-func (o *AutoBackupUpdateRequest) GetBackupSpanWeekdays() []types.EBackupSpanWeekday {
-	return o.BackupSpanWeekdays
-}
-
-// SetBackupSpanWeekdays sets value to BackupSpanWeekdays
-func (o *AutoBackupUpdateRequest) SetBackupSpanWeekdays(v []types.EBackupSpanWeekday) {
-	o.BackupSpanWeekdays = v
-}
-
-// GetMaximumNumberOfArchives returns value of MaximumNumberOfArchives
-func (o *AutoBackupUpdateRequest) GetMaximumNumberOfArchives() int {
-	return o.MaximumNumberOfArchives
-}
-
-// SetMaximumNumberOfArchives sets value to MaximumNumberOfArchives
-func (o *AutoBackupUpdateRequest) SetMaximumNumberOfArchives(v int) {
-	o.MaximumNumberOfArchives = v
 }
 
 // GetName returns value of Name
@@ -1845,6 +1828,36 @@ func (o *AutoBackupUpdateRequest) GetIconID() types.ID {
 // SetIconID sets value to IconID
 func (o *AutoBackupUpdateRequest) SetIconID(v types.ID) {
 	o.IconID = v
+}
+
+// GetBackupSpanWeekdays returns value of BackupSpanWeekdays
+func (o *AutoBackupUpdateRequest) GetBackupSpanWeekdays() []types.EBackupSpanWeekday {
+	return o.BackupSpanWeekdays
+}
+
+// SetBackupSpanWeekdays sets value to BackupSpanWeekdays
+func (o *AutoBackupUpdateRequest) SetBackupSpanWeekdays(v []types.EBackupSpanWeekday) {
+	o.BackupSpanWeekdays = v
+}
+
+// GetMaximumNumberOfArchives returns value of MaximumNumberOfArchives
+func (o *AutoBackupUpdateRequest) GetMaximumNumberOfArchives() int {
+	return o.MaximumNumberOfArchives
+}
+
+// SetMaximumNumberOfArchives sets value to MaximumNumberOfArchives
+func (o *AutoBackupUpdateRequest) SetMaximumNumberOfArchives(v int) {
+	o.MaximumNumberOfArchives = v
+}
+
+// GetSettingsHash returns value of SettingsHash
+func (o *AutoBackupUpdateRequest) GetSettingsHash() string {
+	return o.SettingsHash
+}
+
+// SetSettingsHash sets value to SettingsHash
+func (o *AutoBackupUpdateRequest) SetSettingsHash(v string) {
+	o.SettingsHash = v
 }
 
 /*************************************************
@@ -3265,7 +3278,7 @@ type Database struct {
 	CommonSetting           *DatabaseSettingCommon      `mapconv:"Settings.DBConf.Common,recursive"`
 	BackupSetting           *DatabaseSettingBackup      `mapconv:"Settings.DBConf.Backup,recursive"`
 	ReplicationSetting      *DatabaseReplicationSetting `mapconv:"Settings.DBConf.Replication,recursive"`
-	SettingsHash            string
+	SettingsHash            string                      `json:",omitempty" mapconv:",omitempty"`
 	InstanceHostName        string                      `mapconv:"Instance.Host.Name"`
 	InstanceHostInfoURL     string                      `mapconv:"Instance.Host.InfoURL"`
 	InstanceStatus          types.EServerInstanceStatus `mapconv:"Instance.Status"`
@@ -3300,7 +3313,7 @@ func (o *Database) setDefaults() interface{} {
 		CommonSetting           *DatabaseSettingCommon      `mapconv:"Settings.DBConf.Common,recursive"`
 		BackupSetting           *DatabaseSettingBackup      `mapconv:"Settings.DBConf.Backup,recursive"`
 		ReplicationSetting      *DatabaseReplicationSetting `mapconv:"Settings.DBConf.Replication,recursive"`
-		SettingsHash            string
+		SettingsHash            string                      `json:",omitempty" mapconv:",omitempty"`
 		InstanceHostName        string                      `mapconv:"Instance.Host.Name"`
 		InstanceHostInfoURL     string                      `mapconv:"Instance.Host.InfoURL"`
 		InstanceStatus          types.EServerInstanceStatus `mapconv:"Instance.Status"`
@@ -4463,13 +4476,14 @@ func (o *DatabaseCreateRequest) SetIconID(v types.ID) {
 
 // DatabaseUpdateRequest represents API parameter/response structure
 type DatabaseUpdateRequest struct {
+	Name               string `validate:"required"`
+	Description        string `validate:"min=0,max=512"`
+	Tags               types.Tags
+	IconID             types.ID                     `mapconv:"Icon.ID"`
 	CommonSetting      *DatabaseSettingCommonUpdate `mapconv:"Settings.DBConf.Common,recursive"`
 	BackupSetting      *DatabaseSettingBackup       `mapconv:"Settings.DBConf.Backup,recursive"`
 	ReplicationSetting *DatabaseReplicationSetting  `mapconv:"Settings.DBConf.Replication,recursive"`
-	Name               string                       `validate:"required"`
-	Description        string                       `validate:"min=0,max=512"`
-	Tags               types.Tags
-	IconID             types.ID `mapconv:"Icon.ID"`
+	SettingsHash       string                       `json:",omitempty" mapconv:",omitempty"`
 }
 
 // Validate validates by field tags
@@ -4480,52 +4494,24 @@ func (o *DatabaseUpdateRequest) Validate() error {
 // setDefaults implements sacloud.argumentDefaulter
 func (o *DatabaseUpdateRequest) setDefaults() interface{} {
 	return &struct {
+		Name               string `validate:"required"`
+		Description        string `validate:"min=0,max=512"`
+		Tags               types.Tags
+		IconID             types.ID                     `mapconv:"Icon.ID"`
 		CommonSetting      *DatabaseSettingCommonUpdate `mapconv:"Settings.DBConf.Common,recursive"`
 		BackupSetting      *DatabaseSettingBackup       `mapconv:"Settings.DBConf.Backup,recursive"`
 		ReplicationSetting *DatabaseReplicationSetting  `mapconv:"Settings.DBConf.Replication,recursive"`
-		Name               string                       `validate:"required"`
-		Description        string                       `validate:"min=0,max=512"`
-		Tags               types.Tags
-		IconID             types.ID `mapconv:"Icon.ID"`
+		SettingsHash       string                       `json:",omitempty" mapconv:",omitempty"`
 	}{
-		CommonSetting:      o.GetCommonSetting(),
-		BackupSetting:      o.GetBackupSetting(),
-		ReplicationSetting: o.GetReplicationSetting(),
 		Name:               o.GetName(),
 		Description:        o.GetDescription(),
 		Tags:               o.GetTags(),
 		IconID:             o.GetIconID(),
+		CommonSetting:      o.GetCommonSetting(),
+		BackupSetting:      o.GetBackupSetting(),
+		ReplicationSetting: o.GetReplicationSetting(),
+		SettingsHash:       o.GetSettingsHash(),
 	}
-}
-
-// GetCommonSetting returns value of CommonSetting
-func (o *DatabaseUpdateRequest) GetCommonSetting() *DatabaseSettingCommonUpdate {
-	return o.CommonSetting
-}
-
-// SetCommonSetting sets value to CommonSetting
-func (o *DatabaseUpdateRequest) SetCommonSetting(v *DatabaseSettingCommonUpdate) {
-	o.CommonSetting = v
-}
-
-// GetBackupSetting returns value of BackupSetting
-func (o *DatabaseUpdateRequest) GetBackupSetting() *DatabaseSettingBackup {
-	return o.BackupSetting
-}
-
-// SetBackupSetting sets value to BackupSetting
-func (o *DatabaseUpdateRequest) SetBackupSetting(v *DatabaseSettingBackup) {
-	o.BackupSetting = v
-}
-
-// GetReplicationSetting returns value of ReplicationSetting
-func (o *DatabaseUpdateRequest) GetReplicationSetting() *DatabaseReplicationSetting {
-	return o.ReplicationSetting
-}
-
-// SetReplicationSetting sets value to ReplicationSetting
-func (o *DatabaseUpdateRequest) SetReplicationSetting(v *DatabaseReplicationSetting) {
-	o.ReplicationSetting = v
 }
 
 // GetName returns value of Name
@@ -4586,6 +4572,46 @@ func (o *DatabaseUpdateRequest) GetIconID() types.ID {
 // SetIconID sets value to IconID
 func (o *DatabaseUpdateRequest) SetIconID(v types.ID) {
 	o.IconID = v
+}
+
+// GetCommonSetting returns value of CommonSetting
+func (o *DatabaseUpdateRequest) GetCommonSetting() *DatabaseSettingCommonUpdate {
+	return o.CommonSetting
+}
+
+// SetCommonSetting sets value to CommonSetting
+func (o *DatabaseUpdateRequest) SetCommonSetting(v *DatabaseSettingCommonUpdate) {
+	o.CommonSetting = v
+}
+
+// GetBackupSetting returns value of BackupSetting
+func (o *DatabaseUpdateRequest) GetBackupSetting() *DatabaseSettingBackup {
+	return o.BackupSetting
+}
+
+// SetBackupSetting sets value to BackupSetting
+func (o *DatabaseUpdateRequest) SetBackupSetting(v *DatabaseSettingBackup) {
+	o.BackupSetting = v
+}
+
+// GetReplicationSetting returns value of ReplicationSetting
+func (o *DatabaseUpdateRequest) GetReplicationSetting() *DatabaseReplicationSetting {
+	return o.ReplicationSetting
+}
+
+// SetReplicationSetting sets value to ReplicationSetting
+func (o *DatabaseUpdateRequest) SetReplicationSetting(v *DatabaseReplicationSetting) {
+	o.ReplicationSetting = v
+}
+
+// GetSettingsHash returns value of SettingsHash
+func (o *DatabaseUpdateRequest) GetSettingsHash() string {
+	return o.SettingsHash
+}
+
+// SetSettingsHash sets value to SettingsHash
+func (o *DatabaseUpdateRequest) SetSettingsHash(v string) {
+	o.SettingsHash = v
 }
 
 /*************************************************
@@ -6710,9 +6736,9 @@ type DNS struct {
 	CreatedAt      time.Time
 	ModifiedAt     time.Time
 	Records        []*DNSRecord `mapconv:"Settings.DNS.[]ResourceRecordSets,recursive" validate:"min=0,max=1000"`
-	SettingsHash   string
-	DNSZone        string   `mapconv:"Status.Zone"`
-	DNSNameServers []string `mapconv:"Status.NS"`
+	SettingsHash   string       `json:",omitempty" mapconv:",omitempty"`
+	DNSZone        string       `mapconv:"Status.Zone"`
+	DNSNameServers []string     `mapconv:"Status.NS"`
 }
 
 // Validate validates by field tags
@@ -6732,9 +6758,9 @@ func (o *DNS) setDefaults() interface{} {
 		CreatedAt      time.Time
 		ModifiedAt     time.Time
 		Records        []*DNSRecord `mapconv:"Settings.DNS.[]ResourceRecordSets,recursive" validate:"min=0,max=1000"`
-		SettingsHash   string
-		DNSZone        string   `mapconv:"Status.Zone"`
-		DNSNameServers []string `mapconv:"Status.NS"`
+		SettingsHash   string       `json:",omitempty" mapconv:",omitempty"`
+		DNSZone        string       `mapconv:"Status.Zone"`
+		DNSNameServers []string     `mapconv:"Status.NS"`
 	}{
 		ID:             o.GetID(),
 		Name:           o.GetName(),
@@ -7096,10 +7122,11 @@ func (o *DNSCreateRequest) SetIconID(v types.ID) {
 
 // DNSUpdateRequest represents API parameter/response structure
 type DNSUpdateRequest struct {
-	Records     []*DNSRecord `mapconv:"Settings.DNS.[]ResourceRecordSets,recursive" validate:"min=0,max=1000"`
-	Description string       `validate:"min=0,max=512"`
-	Tags        types.Tags
-	IconID      types.ID `mapconv:"Icon.ID"`
+	Description  string `validate:"min=0,max=512"`
+	Tags         types.Tags
+	IconID       types.ID     `mapconv:"Icon.ID"`
+	Records      []*DNSRecord `mapconv:"Settings.DNS.[]ResourceRecordSets,recursive" validate:"min=0,max=1000"`
+	SettingsHash string       `json:",omitempty" mapconv:",omitempty"`
 }
 
 // Validate validates by field tags
@@ -7110,26 +7137,18 @@ func (o *DNSUpdateRequest) Validate() error {
 // setDefaults implements sacloud.argumentDefaulter
 func (o *DNSUpdateRequest) setDefaults() interface{} {
 	return &struct {
-		Records     []*DNSRecord `mapconv:"Settings.DNS.[]ResourceRecordSets,recursive" validate:"min=0,max=1000"`
-		Description string       `validate:"min=0,max=512"`
-		Tags        types.Tags
-		IconID      types.ID `mapconv:"Icon.ID"`
+		Description  string `validate:"min=0,max=512"`
+		Tags         types.Tags
+		IconID       types.ID     `mapconv:"Icon.ID"`
+		Records      []*DNSRecord `mapconv:"Settings.DNS.[]ResourceRecordSets,recursive" validate:"min=0,max=1000"`
+		SettingsHash string       `json:",omitempty" mapconv:",omitempty"`
 	}{
-		Records:     o.GetRecords(),
-		Description: o.GetDescription(),
-		Tags:        o.GetTags(),
-		IconID:      o.GetIconID(),
+		Description:  o.GetDescription(),
+		Tags:         o.GetTags(),
+		IconID:       o.GetIconID(),
+		Records:      o.GetRecords(),
+		SettingsHash: o.GetSettingsHash(),
 	}
-}
-
-// GetRecords returns value of Records
-func (o *DNSUpdateRequest) GetRecords() []*DNSRecord {
-	return o.Records
-}
-
-// SetRecords sets value to Records
-func (o *DNSUpdateRequest) SetRecords(v []*DNSRecord) {
-	o.Records = v
 }
 
 // GetDescription returns value of Description
@@ -7182,6 +7201,26 @@ func (o *DNSUpdateRequest) SetIconID(v types.ID) {
 	o.IconID = v
 }
 
+// GetRecords returns value of Records
+func (o *DNSUpdateRequest) GetRecords() []*DNSRecord {
+	return o.Records
+}
+
+// SetRecords sets value to Records
+func (o *DNSUpdateRequest) SetRecords(v []*DNSRecord) {
+	o.Records = v
+}
+
+// GetSettingsHash returns value of SettingsHash
+func (o *DNSUpdateRequest) GetSettingsHash() string {
+	return o.SettingsHash
+}
+
+// SetSettingsHash sets value to SettingsHash
+func (o *DNSUpdateRequest) SetSettingsHash(v string) {
+	o.SettingsHash = v
+}
+
 /*************************************************
 * GSLB
 *************************************************/
@@ -7196,7 +7235,7 @@ type GSLB struct {
 	IconID             types.ID `mapconv:"Icon.ID"`
 	CreatedAt          time.Time
 	ModifiedAt         time.Time
-	SettingsHash       string
+	SettingsHash       string           `json:",omitempty" mapconv:",omitempty"`
 	FQDN               string           `mapconv:"Status.FQDN"`
 	DelayLoop          int              `mapconv:"Settings.GSLB.DelayLoop" validate:"min=10,max=60"`
 	Weighted           types.StringFlag `mapconv:"Settings.GSLB.Weighted"`
@@ -7221,7 +7260,7 @@ func (o *GSLB) setDefaults() interface{} {
 		IconID             types.ID `mapconv:"Icon.ID"`
 		CreatedAt          time.Time
 		ModifiedAt         time.Time
-		SettingsHash       string
+		SettingsHash       string           `json:",omitempty" mapconv:",omitempty"`
 		FQDN               string           `mapconv:"Status.FQDN"`
 		DelayLoop          int              `mapconv:"Settings.GSLB.DelayLoop" validate:"min=10,max=60"`
 		Weighted           types.StringFlag `mapconv:"Settings.GSLB.Weighted"`
@@ -7752,15 +7791,16 @@ func (o *GSLBCreateRequest) SetIconID(v types.ID) {
 
 // GSLBUpdateRequest represents API parameter/response structure
 type GSLBUpdateRequest struct {
+	Name               string `validate:"required"`
+	Description        string `validate:"min=0,max=512"`
+	Tags               types.Tags
+	IconID             types.ID         `mapconv:"Icon.ID"`
 	HealthCheck        *GSLBHealthCheck `mapconv:"Settings.GSLB.HealthCheck,recursive"`
 	DelayLoop          int              `mapconv:"Settings.GSLB.DelayLoop" validate:"min=10,max=60"`
 	Weighted           types.StringFlag `mapconv:"Settings.GSLB.Weighted"`
 	SorryServer        string           `mapconv:"Settings.GSLB.SorryServer"`
 	DestinationServers []*GSLBServer    `mapconv:"Settings.GSLB.[]Servers,recursive" validate:"min=0,max=12"`
-	Name               string           `validate:"required"`
-	Description        string           `validate:"min=0,max=512"`
-	Tags               types.Tags
-	IconID             types.ID `mapconv:"Icon.ID"`
+	SettingsHash       string           `json:",omitempty" mapconv:",omitempty"`
 }
 
 // Validate validates by field tags
@@ -7771,79 +7811,28 @@ func (o *GSLBUpdateRequest) Validate() error {
 // setDefaults implements sacloud.argumentDefaulter
 func (o *GSLBUpdateRequest) setDefaults() interface{} {
 	return &struct {
+		Name               string `validate:"required"`
+		Description        string `validate:"min=0,max=512"`
+		Tags               types.Tags
+		IconID             types.ID         `mapconv:"Icon.ID"`
 		HealthCheck        *GSLBHealthCheck `mapconv:"Settings.GSLB.HealthCheck,recursive"`
 		DelayLoop          int              `mapconv:"Settings.GSLB.DelayLoop" validate:"min=10,max=60"`
 		Weighted           types.StringFlag `mapconv:"Settings.GSLB.Weighted"`
 		SorryServer        string           `mapconv:"Settings.GSLB.SorryServer"`
 		DestinationServers []*GSLBServer    `mapconv:"Settings.GSLB.[]Servers,recursive" validate:"min=0,max=12"`
-		Name               string           `validate:"required"`
-		Description        string           `validate:"min=0,max=512"`
-		Tags               types.Tags
-		IconID             types.ID `mapconv:"Icon.ID"`
+		SettingsHash       string           `json:",omitempty" mapconv:",omitempty"`
 	}{
+		Name:               o.GetName(),
+		Description:        o.GetDescription(),
+		Tags:               o.GetTags(),
+		IconID:             o.GetIconID(),
 		HealthCheck:        o.GetHealthCheck(),
 		DelayLoop:          o.GetDelayLoop(),
 		Weighted:           o.GetWeighted(),
 		SorryServer:        o.GetSorryServer(),
 		DestinationServers: o.GetDestinationServers(),
-		Name:               o.GetName(),
-		Description:        o.GetDescription(),
-		Tags:               o.GetTags(),
-		IconID:             o.GetIconID(),
+		SettingsHash:       o.GetSettingsHash(),
 	}
-}
-
-// GetHealthCheck returns value of HealthCheck
-func (o *GSLBUpdateRequest) GetHealthCheck() *GSLBHealthCheck {
-	return o.HealthCheck
-}
-
-// SetHealthCheck sets value to HealthCheck
-func (o *GSLBUpdateRequest) SetHealthCheck(v *GSLBHealthCheck) {
-	o.HealthCheck = v
-}
-
-// GetDelayLoop returns value of DelayLoop
-func (o *GSLBUpdateRequest) GetDelayLoop() int {
-	if o.DelayLoop == 0 {
-		return 10
-	}
-	return o.DelayLoop
-}
-
-// SetDelayLoop sets value to DelayLoop
-func (o *GSLBUpdateRequest) SetDelayLoop(v int) {
-	o.DelayLoop = v
-}
-
-// GetWeighted returns value of Weighted
-func (o *GSLBUpdateRequest) GetWeighted() types.StringFlag {
-	return o.Weighted
-}
-
-// SetWeighted sets value to Weighted
-func (o *GSLBUpdateRequest) SetWeighted(v types.StringFlag) {
-	o.Weighted = v
-}
-
-// GetSorryServer returns value of SorryServer
-func (o *GSLBUpdateRequest) GetSorryServer() string {
-	return o.SorryServer
-}
-
-// SetSorryServer sets value to SorryServer
-func (o *GSLBUpdateRequest) SetSorryServer(v string) {
-	o.SorryServer = v
-}
-
-// GetDestinationServers returns value of DestinationServers
-func (o *GSLBUpdateRequest) GetDestinationServers() []*GSLBServer {
-	return o.DestinationServers
-}
-
-// SetDestinationServers sets value to DestinationServers
-func (o *GSLBUpdateRequest) SetDestinationServers(v []*GSLBServer) {
-	o.DestinationServers = v
 }
 
 // GetName returns value of Name
@@ -7904,6 +7893,69 @@ func (o *GSLBUpdateRequest) GetIconID() types.ID {
 // SetIconID sets value to IconID
 func (o *GSLBUpdateRequest) SetIconID(v types.ID) {
 	o.IconID = v
+}
+
+// GetHealthCheck returns value of HealthCheck
+func (o *GSLBUpdateRequest) GetHealthCheck() *GSLBHealthCheck {
+	return o.HealthCheck
+}
+
+// SetHealthCheck sets value to HealthCheck
+func (o *GSLBUpdateRequest) SetHealthCheck(v *GSLBHealthCheck) {
+	o.HealthCheck = v
+}
+
+// GetDelayLoop returns value of DelayLoop
+func (o *GSLBUpdateRequest) GetDelayLoop() int {
+	if o.DelayLoop == 0 {
+		return 10
+	}
+	return o.DelayLoop
+}
+
+// SetDelayLoop sets value to DelayLoop
+func (o *GSLBUpdateRequest) SetDelayLoop(v int) {
+	o.DelayLoop = v
+}
+
+// GetWeighted returns value of Weighted
+func (o *GSLBUpdateRequest) GetWeighted() types.StringFlag {
+	return o.Weighted
+}
+
+// SetWeighted sets value to Weighted
+func (o *GSLBUpdateRequest) SetWeighted(v types.StringFlag) {
+	o.Weighted = v
+}
+
+// GetSorryServer returns value of SorryServer
+func (o *GSLBUpdateRequest) GetSorryServer() string {
+	return o.SorryServer
+}
+
+// SetSorryServer sets value to SorryServer
+func (o *GSLBUpdateRequest) SetSorryServer(v string) {
+	o.SorryServer = v
+}
+
+// GetDestinationServers returns value of DestinationServers
+func (o *GSLBUpdateRequest) GetDestinationServers() []*GSLBServer {
+	return o.DestinationServers
+}
+
+// SetDestinationServers sets value to DestinationServers
+func (o *GSLBUpdateRequest) SetDestinationServers(v []*GSLBServer) {
+	o.DestinationServers = v
+}
+
+// GetSettingsHash returns value of SettingsHash
+func (o *GSLBUpdateRequest) GetSettingsHash() string {
+	return o.SettingsHash
+}
+
+// SetSettingsHash sets value to SettingsHash
+func (o *GSLBUpdateRequest) SetSettingsHash(v string) {
+	o.SettingsHash = v
 }
 
 /*************************************************
@@ -10335,8 +10387,8 @@ type LoadBalancer struct {
 	ZoneID                  types.ID                        `mapconv:"Remark.Zone.ID"`
 	VRID                    int                             `mapconv:"Remark.VRRP.VRID"`
 	VirtualIPAddresses      []*LoadBalancerVirtualIPAddress `mapconv:"Settings.[]LoadBalancer,recursive" validate:"min=0,max=10"`
-	SettingsHash            string
-	Interfaces              []*InterfaceView `json:",omitempty" mapconv:"[]Interfaces,recursive,omitempty"`
+	SettingsHash            string                          `json:",omitempty" mapconv:",omitempty"`
+	Interfaces              []*InterfaceView                `json:",omitempty" mapconv:"[]Interfaces,recursive,omitempty"`
 }
 
 // Validate validates by field tags
@@ -10368,8 +10420,8 @@ func (o *LoadBalancer) setDefaults() interface{} {
 		ZoneID                  types.ID                        `mapconv:"Remark.Zone.ID"`
 		VRID                    int                             `mapconv:"Remark.VRRP.VRID"`
 		VirtualIPAddresses      []*LoadBalancerVirtualIPAddress `mapconv:"Settings.[]LoadBalancer,recursive" validate:"min=0,max=10"`
-		SettingsHash            string
-		Interfaces              []*InterfaceView `json:",omitempty" mapconv:"[]Interfaces,recursive,omitempty"`
+		SettingsHash            string                          `json:",omitempty" mapconv:",omitempty"`
+		Interfaces              []*InterfaceView                `json:",omitempty" mapconv:"[]Interfaces,recursive,omitempty"`
 	}{
 		ID:                      o.GetID(),
 		Name:                    o.GetName(),
@@ -11095,6 +11147,7 @@ type LoadBalancerUpdateRequest struct {
 	Tags               types.Tags
 	IconID             types.ID                        `mapconv:"Icon.ID"`
 	VirtualIPAddresses []*LoadBalancerVirtualIPAddress `mapconv:"Settings.[]LoadBalancer,recursive" validate:"min=0,max=10"`
+	SettingsHash       string                          `json:",omitempty" mapconv:",omitempty"`
 }
 
 // Validate validates by field tags
@@ -11110,12 +11163,14 @@ func (o *LoadBalancerUpdateRequest) setDefaults() interface{} {
 		Tags               types.Tags
 		IconID             types.ID                        `mapconv:"Icon.ID"`
 		VirtualIPAddresses []*LoadBalancerVirtualIPAddress `mapconv:"Settings.[]LoadBalancer,recursive" validate:"min=0,max=10"`
+		SettingsHash       string                          `json:",omitempty" mapconv:",omitempty"`
 	}{
 		Name:               o.GetName(),
 		Description:        o.GetDescription(),
 		Tags:               o.GetTags(),
 		IconID:             o.GetIconID(),
 		VirtualIPAddresses: o.GetVirtualIPAddresses(),
+		SettingsHash:       o.GetSettingsHash(),
 	}
 }
 
@@ -11187,6 +11242,16 @@ func (o *LoadBalancerUpdateRequest) GetVirtualIPAddresses() []*LoadBalancerVirtu
 // SetVirtualIPAddresses sets value to VirtualIPAddresses
 func (o *LoadBalancerUpdateRequest) SetVirtualIPAddresses(v []*LoadBalancerVirtualIPAddress) {
 	o.VirtualIPAddresses = v
+}
+
+// GetSettingsHash returns value of SettingsHash
+func (o *LoadBalancerUpdateRequest) GetSettingsHash() string {
+	return o.SettingsHash
+}
+
+// SetSettingsHash sets value to SettingsHash
+func (o *LoadBalancerUpdateRequest) SetSettingsHash(v string) {
+	o.SettingsHash = v
 }
 
 /*************************************************
@@ -11367,7 +11432,7 @@ type MobileGateway struct {
 	Interfaces              []*MobileGatewayInterface   `json:",omitempty" mapconv:"[]Interfaces,recursive,omitempty"`
 	ZoneID                  types.ID                    `mapconv:"Remark.Zone.ID"`
 	Settings                *MobileGatewaySetting       `mapconv:",omitempty,recursive"`
-	SettingsHash            string
+	SettingsHash            string                      `json:",omitempty" mapconv:",omitempty"`
 }
 
 // Validate validates by field tags
@@ -11393,7 +11458,7 @@ func (o *MobileGateway) setDefaults() interface{} {
 		Interfaces              []*MobileGatewayInterface   `json:",omitempty" mapconv:"[]Interfaces,recursive,omitempty"`
 		ZoneID                  types.ID                    `mapconv:"Remark.Zone.ID"`
 		Settings                *MobileGatewaySetting       `mapconv:",omitempty,recursive"`
-		SettingsHash            string
+		SettingsHash            string                      `json:",omitempty" mapconv:",omitempty"`
 	}{
 		ID:                      o.GetID(),
 		Name:                    o.GetName(),
@@ -12254,11 +12319,12 @@ func (o *MobileGatewaySettingCreate) SetInterDeviceCommunicationEnabled(v types.
 
 // MobileGatewayUpdateRequest represents API parameter/response structure
 type MobileGatewayUpdateRequest struct {
-	Name        string `validate:"required"`
-	Description string `validate:"min=0,max=512"`
-	Tags        types.Tags
-	IconID      types.ID              `mapconv:"Icon.ID"`
-	Settings    *MobileGatewaySetting `json:",omitempty" mapconv:",omitempty,recursive"`
+	Name         string `validate:"required"`
+	Description  string `validate:"min=0,max=512"`
+	Tags         types.Tags
+	IconID       types.ID              `mapconv:"Icon.ID"`
+	Settings     *MobileGatewaySetting `json:",omitempty" mapconv:",omitempty,recursive"`
+	SettingsHash string                `json:",omitempty" mapconv:",omitempty"`
 }
 
 // Validate validates by field tags
@@ -12269,17 +12335,19 @@ func (o *MobileGatewayUpdateRequest) Validate() error {
 // setDefaults implements sacloud.argumentDefaulter
 func (o *MobileGatewayUpdateRequest) setDefaults() interface{} {
 	return &struct {
-		Name        string `validate:"required"`
-		Description string `validate:"min=0,max=512"`
-		Tags        types.Tags
-		IconID      types.ID              `mapconv:"Icon.ID"`
-		Settings    *MobileGatewaySetting `json:",omitempty" mapconv:",omitempty,recursive"`
+		Name         string `validate:"required"`
+		Description  string `validate:"min=0,max=512"`
+		Tags         types.Tags
+		IconID       types.ID              `mapconv:"Icon.ID"`
+		Settings     *MobileGatewaySetting `json:",omitempty" mapconv:",omitempty,recursive"`
+		SettingsHash string                `json:",omitempty" mapconv:",omitempty"`
 	}{
-		Name:        o.GetName(),
-		Description: o.GetDescription(),
-		Tags:        o.GetTags(),
-		IconID:      o.GetIconID(),
-		Settings:    o.GetSettings(),
+		Name:         o.GetName(),
+		Description:  o.GetDescription(),
+		Tags:         o.GetTags(),
+		IconID:       o.GetIconID(),
+		Settings:     o.GetSettings(),
+		SettingsHash: o.GetSettingsHash(),
 	}
 }
 
@@ -12351,6 +12419,16 @@ func (o *MobileGatewayUpdateRequest) GetSettings() *MobileGatewaySetting {
 // SetSettings sets value to Settings
 func (o *MobileGatewayUpdateRequest) SetSettings(v *MobileGatewaySetting) {
 	o.Settings = v
+}
+
+// GetSettingsHash returns value of SettingsHash
+func (o *MobileGatewayUpdateRequest) GetSettingsHash() string {
+	return o.SettingsHash
+}
+
+// SetSettingsHash sets value to SettingsHash
+func (o *MobileGatewayUpdateRequest) SetSettingsHash(v string) {
+	o.SettingsHash = v
 }
 
 /*************************************************
@@ -15035,12 +15113,12 @@ type ProxyLB struct {
 	Servers          []*ProxyLBServer      `mapconv:"Settings.ProxyLB.[]Servers,recursive"`
 	LetsEncrypt      *ProxyLBACMESetting   `mapconv:"Settings.ProxyLB.LetsEncrypt,recursive"`
 	StickySession    *ProxyLBStickySession `mapconv:"Settings.ProxyLB.StickySession,recursive"`
-	SettingsHash     string
-	UseVIPFailover   bool                 `mapconv:"Status.UseVIPFailover"`
-	Region           types.EProxyLBRegion `mapconv:"Status.Region"`
-	ProxyNetworks    []string             `mapconv:"Status.ProxyNetworks"`
-	FQDN             string               `mapconv:"Status.FQDN"`
-	VirtualIPAddress string               `mapconv:"Status.VirtualIPAddress"`
+	SettingsHash     string                `json:",omitempty" mapconv:",omitempty"`
+	UseVIPFailover   bool                  `mapconv:"Status.UseVIPFailover"`
+	Region           types.EProxyLBRegion  `mapconv:"Status.Region"`
+	ProxyNetworks    []string              `mapconv:"Status.ProxyNetworks"`
+	FQDN             string                `mapconv:"Status.FQDN"`
+	VirtualIPAddress string                `mapconv:"Status.VirtualIPAddress"`
 }
 
 // Validate validates by field tags
@@ -15066,12 +15144,12 @@ func (o *ProxyLB) setDefaults() interface{} {
 		Servers          []*ProxyLBServer      `mapconv:"Settings.ProxyLB.[]Servers,recursive"`
 		LetsEncrypt      *ProxyLBACMESetting   `mapconv:"Settings.ProxyLB.LetsEncrypt,recursive"`
 		StickySession    *ProxyLBStickySession `mapconv:"Settings.ProxyLB.StickySession,recursive"`
-		SettingsHash     string
-		UseVIPFailover   bool                 `mapconv:"Status.UseVIPFailover"`
-		Region           types.EProxyLBRegion `mapconv:"Status.Region"`
-		ProxyNetworks    []string             `mapconv:"Status.ProxyNetworks"`
-		FQDN             string               `mapconv:"Status.FQDN"`
-		VirtualIPAddress string               `mapconv:"Status.VirtualIPAddress"`
+		SettingsHash     string                `json:",omitempty" mapconv:",omitempty"`
+		UseVIPFailover   bool                  `mapconv:"Status.UseVIPFailover"`
+		Region           types.EProxyLBRegion  `mapconv:"Status.Region"`
+		ProxyNetworks    []string              `mapconv:"Status.ProxyNetworks"`
+		FQDN             string                `mapconv:"Status.FQDN"`
+		VirtualIPAddress string                `mapconv:"Status.VirtualIPAddress"`
 	}{
 		ID:               o.GetID(),
 		Name:             o.GetName(),
@@ -15898,6 +15976,7 @@ type ProxyLBUpdateRequest struct {
 	Servers       []*ProxyLBServer      `mapconv:"Settings.ProxyLB.[]Servers,recursive"`
 	LetsEncrypt   *ProxyLBACMESetting   `mapconv:"Settings.ProxyLB.LetsEncrypt,recursive"`
 	StickySession *ProxyLBStickySession `mapconv:"Settings.ProxyLB.StickySession,recursive"`
+	SettingsHash  string                `json:",omitempty" mapconv:",omitempty"`
 	Name          string                `validate:"required"`
 	Description   string                `validate:"min=0,max=512"`
 	Tags          types.Tags
@@ -15918,6 +15997,7 @@ func (o *ProxyLBUpdateRequest) setDefaults() interface{} {
 		Servers       []*ProxyLBServer      `mapconv:"Settings.ProxyLB.[]Servers,recursive"`
 		LetsEncrypt   *ProxyLBACMESetting   `mapconv:"Settings.ProxyLB.LetsEncrypt,recursive"`
 		StickySession *ProxyLBStickySession `mapconv:"Settings.ProxyLB.StickySession,recursive"`
+		SettingsHash  string                `json:",omitempty" mapconv:",omitempty"`
 		Name          string                `validate:"required"`
 		Description   string                `validate:"min=0,max=512"`
 		Tags          types.Tags
@@ -15929,6 +16009,7 @@ func (o *ProxyLBUpdateRequest) setDefaults() interface{} {
 		Servers:       o.GetServers(),
 		LetsEncrypt:   o.GetLetsEncrypt(),
 		StickySession: o.GetStickySession(),
+		SettingsHash:  o.GetSettingsHash(),
 		Name:          o.GetName(),
 		Description:   o.GetDescription(),
 		Tags:          o.GetTags(),
@@ -15994,6 +16075,16 @@ func (o *ProxyLBUpdateRequest) GetStickySession() *ProxyLBStickySession {
 // SetStickySession sets value to StickySession
 func (o *ProxyLBUpdateRequest) SetStickySession(v *ProxyLBStickySession) {
 	o.StickySession = v
+}
+
+// GetSettingsHash returns value of SettingsHash
+func (o *ProxyLBUpdateRequest) GetSettingsHash() string {
+	return o.SettingsHash
+}
+
+// SetSettingsHash sets value to SettingsHash
+func (o *ProxyLBUpdateRequest) SetSettingsHash(v string) {
+	o.SettingsHash = v
 }
 
 // GetName returns value of Name
@@ -19190,8 +19281,7 @@ type SimpleMonitor struct {
 	CreatedAt          time.Time
 	ModifiedAt         time.Time
 	Class              string
-	Target             string `mapconv:"Status.Target"`
-	SettingsHash       string
+	Target             string                    `mapconv:"Status.Target"`
 	DelayLoop          int                       `mapconv:"Settings.SimpleMonitor.DelayLoop" validate:"min=60,max=3600"`
 	Enabled            types.StringFlag          `mapconv:"Settings.SimpleMonitor.Enabled"`
 	HealthCheck        *SimpleMonitorHealthCheck `mapconv:"Settings.SimpleMonitor.HealthCheck,recursive"`
@@ -19199,6 +19289,7 @@ type SimpleMonitor struct {
 	NotifyEmailHTML    types.StringFlag          `mapconv:"Settings.SimpleMonitor.NotifyEmail.HTML"`
 	NotifySlackEnabled types.StringFlag          `mapconv:"Settings.SimpleMonitor.NotifySlack.Enabled"`
 	SlackWebhooksURL   string                    `mapconv:"Settings.SimpleMonitor.NotifySlack.IncomingWebhooksURL"`
+	SettingsHash       string                    `json:",omitempty" mapconv:",omitempty"`
 }
 
 // Validate validates by field tags
@@ -19218,8 +19309,7 @@ func (o *SimpleMonitor) setDefaults() interface{} {
 		CreatedAt          time.Time
 		ModifiedAt         time.Time
 		Class              string
-		Target             string `mapconv:"Status.Target"`
-		SettingsHash       string
+		Target             string                    `mapconv:"Status.Target"`
 		DelayLoop          int                       `mapconv:"Settings.SimpleMonitor.DelayLoop" validate:"min=60,max=3600"`
 		Enabled            types.StringFlag          `mapconv:"Settings.SimpleMonitor.Enabled"`
 		HealthCheck        *SimpleMonitorHealthCheck `mapconv:"Settings.SimpleMonitor.HealthCheck,recursive"`
@@ -19227,6 +19317,7 @@ func (o *SimpleMonitor) setDefaults() interface{} {
 		NotifyEmailHTML    types.StringFlag          `mapconv:"Settings.SimpleMonitor.NotifyEmail.HTML"`
 		NotifySlackEnabled types.StringFlag          `mapconv:"Settings.SimpleMonitor.NotifySlack.Enabled"`
 		SlackWebhooksURL   string                    `mapconv:"Settings.SimpleMonitor.NotifySlack.IncomingWebhooksURL"`
+		SettingsHash       string                    `json:",omitempty" mapconv:",omitempty"`
 	}{
 		ID:                 o.GetID(),
 		Name:               o.GetName(),
@@ -19238,7 +19329,6 @@ func (o *SimpleMonitor) setDefaults() interface{} {
 		ModifiedAt:         o.GetModifiedAt(),
 		Class:              o.GetClass(),
 		Target:             o.GetTarget(),
-		SettingsHash:       o.GetSettingsHash(),
 		DelayLoop:          o.GetDelayLoop(),
 		Enabled:            o.GetEnabled(),
 		HealthCheck:        o.GetHealthCheck(),
@@ -19246,6 +19336,7 @@ func (o *SimpleMonitor) setDefaults() interface{} {
 		NotifyEmailHTML:    o.GetNotifyEmailHTML(),
 		NotifySlackEnabled: o.GetNotifySlackEnabled(),
 		SlackWebhooksURL:   o.GetSlackWebhooksURL(),
+		SettingsHash:       o.GetSettingsHash(),
 	}
 }
 
@@ -19389,16 +19480,6 @@ func (o *SimpleMonitor) SetTarget(v string) {
 	o.Target = v
 }
 
-// GetSettingsHash returns value of SettingsHash
-func (o *SimpleMonitor) GetSettingsHash() string {
-	return o.SettingsHash
-}
-
-// SetSettingsHash sets value to SettingsHash
-func (o *SimpleMonitor) SetSettingsHash(v string) {
-	o.SettingsHash = v
-}
-
 // GetDelayLoop returns value of DelayLoop
 func (o *SimpleMonitor) GetDelayLoop() int {
 	if o.DelayLoop == 0 {
@@ -19470,6 +19551,16 @@ func (o *SimpleMonitor) GetSlackWebhooksURL() string {
 // SetSlackWebhooksURL sets value to SlackWebhooksURL
 func (o *SimpleMonitor) SetSlackWebhooksURL(v string) {
 	o.SlackWebhooksURL = v
+}
+
+// GetSettingsHash returns value of SettingsHash
+func (o *SimpleMonitor) GetSettingsHash() string {
+	return o.SettingsHash
+}
+
+// SetSettingsHash sets value to SettingsHash
+func (o *SimpleMonitor) SetSettingsHash(v string) {
+	o.SettingsHash = v
 }
 
 /*************************************************
@@ -19868,6 +19959,9 @@ func (o *SimpleMonitorCreateRequest) SetIconID(v types.ID) {
 
 // SimpleMonitorUpdateRequest represents API parameter/response structure
 type SimpleMonitorUpdateRequest struct {
+	Description        string `validate:"min=0,max=512"`
+	Tags               types.Tags
+	IconID             types.ID                  `mapconv:"Icon.ID"`
 	DelayLoop          int                       `mapconv:"Settings.SimpleMonitor.DelayLoop" validate:"min=60,max=3600"`
 	Enabled            types.StringFlag          `mapconv:"Settings.SimpleMonitor.Enabled"`
 	HealthCheck        *SimpleMonitorHealthCheck `mapconv:"Settings.SimpleMonitor.HealthCheck,recursive"`
@@ -19875,9 +19969,7 @@ type SimpleMonitorUpdateRequest struct {
 	NotifyEmailHTML    types.StringFlag          `mapconv:"Settings.SimpleMonitor.NotifyEmail.HTML"`
 	NotifySlackEnabled types.StringFlag          `mapconv:"Settings.SimpleMonitor.NotifySlack.Enabled"`
 	SlackWebhooksURL   string                    `mapconv:"Settings.SimpleMonitor.NotifySlack.IncomingWebhooksURL"`
-	Description        string                    `validate:"min=0,max=512"`
-	Tags               types.Tags
-	IconID             types.ID `mapconv:"Icon.ID"`
+	SettingsHash       string                    `json:",omitempty" mapconv:",omitempty"`
 }
 
 // Validate validates by field tags
@@ -19888,6 +19980,9 @@ func (o *SimpleMonitorUpdateRequest) Validate() error {
 // setDefaults implements sacloud.argumentDefaulter
 func (o *SimpleMonitorUpdateRequest) setDefaults() interface{} {
 	return &struct {
+		Description        string `validate:"min=0,max=512"`
+		Tags               types.Tags
+		IconID             types.ID                  `mapconv:"Icon.ID"`
 		DelayLoop          int                       `mapconv:"Settings.SimpleMonitor.DelayLoop" validate:"min=60,max=3600"`
 		Enabled            types.StringFlag          `mapconv:"Settings.SimpleMonitor.Enabled"`
 		HealthCheck        *SimpleMonitorHealthCheck `mapconv:"Settings.SimpleMonitor.HealthCheck,recursive"`
@@ -19895,10 +19990,11 @@ func (o *SimpleMonitorUpdateRequest) setDefaults() interface{} {
 		NotifyEmailHTML    types.StringFlag          `mapconv:"Settings.SimpleMonitor.NotifyEmail.HTML"`
 		NotifySlackEnabled types.StringFlag          `mapconv:"Settings.SimpleMonitor.NotifySlack.Enabled"`
 		SlackWebhooksURL   string                    `mapconv:"Settings.SimpleMonitor.NotifySlack.IncomingWebhooksURL"`
-		Description        string                    `validate:"min=0,max=512"`
-		Tags               types.Tags
-		IconID             types.ID `mapconv:"Icon.ID"`
+		SettingsHash       string                    `json:",omitempty" mapconv:",omitempty"`
 	}{
+		Description:        o.GetDescription(),
+		Tags:               o.GetTags(),
+		IconID:             o.GetIconID(),
 		DelayLoop:          o.GetDelayLoop(),
 		Enabled:            o.GetEnabled(),
 		HealthCheck:        o.GetHealthCheck(),
@@ -19906,10 +20002,58 @@ func (o *SimpleMonitorUpdateRequest) setDefaults() interface{} {
 		NotifyEmailHTML:    o.GetNotifyEmailHTML(),
 		NotifySlackEnabled: o.GetNotifySlackEnabled(),
 		SlackWebhooksURL:   o.GetSlackWebhooksURL(),
-		Description:        o.GetDescription(),
-		Tags:               o.GetTags(),
-		IconID:             o.GetIconID(),
+		SettingsHash:       o.GetSettingsHash(),
 	}
+}
+
+// GetDescription returns value of Description
+func (o *SimpleMonitorUpdateRequest) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *SimpleMonitorUpdateRequest) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetTags returns value of Tags
+func (o *SimpleMonitorUpdateRequest) GetTags() types.Tags {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *SimpleMonitorUpdateRequest) SetTags(v types.Tags) {
+	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *SimpleMonitorUpdateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *SimpleMonitorUpdateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *SimpleMonitorUpdateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *SimpleMonitorUpdateRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
+// GetIconID returns value of IconID
+func (o *SimpleMonitorUpdateRequest) GetIconID() types.ID {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *SimpleMonitorUpdateRequest) SetIconID(v types.ID) {
+	o.IconID = v
 }
 
 // GetDelayLoop returns value of DelayLoop
@@ -19985,54 +20129,14 @@ func (o *SimpleMonitorUpdateRequest) SetSlackWebhooksURL(v string) {
 	o.SlackWebhooksURL = v
 }
 
-// GetDescription returns value of Description
-func (o *SimpleMonitorUpdateRequest) GetDescription() string {
-	return o.Description
+// GetSettingsHash returns value of SettingsHash
+func (o *SimpleMonitorUpdateRequest) GetSettingsHash() string {
+	return o.SettingsHash
 }
 
-// SetDescription sets value to Description
-func (o *SimpleMonitorUpdateRequest) SetDescription(v string) {
-	o.Description = v
-}
-
-// GetTags returns value of Tags
-func (o *SimpleMonitorUpdateRequest) GetTags() types.Tags {
-	return o.Tags
-}
-
-// SetTags sets value to Tags
-func (o *SimpleMonitorUpdateRequest) SetTags(v types.Tags) {
-	o.Tags = v
-}
-
-// HasTag 指定のタグが存在する場合trueを返す
-func (o *SimpleMonitorUpdateRequest) HasTag(tag string) bool {
-	return accessor.HasTag(o, tag)
-}
-
-// AppendTag 指定のタグを追加
-func (o *SimpleMonitorUpdateRequest) AppendTag(tag string) {
-	accessor.AppendTag(o, tag)
-}
-
-// RemoveTag 指定のタグを削除
-func (o *SimpleMonitorUpdateRequest) RemoveTag(tag string) {
-	accessor.RemoveTag(o, tag)
-}
-
-// ClearTags タグを全クリア
-func (o *SimpleMonitorUpdateRequest) ClearTags() {
-	accessor.ClearTags(o)
-}
-
-// GetIconID returns value of IconID
-func (o *SimpleMonitorUpdateRequest) GetIconID() types.ID {
-	return o.IconID
-}
-
-// SetIconID sets value to IconID
-func (o *SimpleMonitorUpdateRequest) SetIconID(v types.ID) {
-	o.IconID = v
+// SetSettingsHash sets value to SettingsHash
+func (o *SimpleMonitorUpdateRequest) SetSettingsHash(v string) {
+	o.SettingsHash = v
 }
 
 /*************************************************
@@ -21216,9 +21320,9 @@ type VPCRouter struct {
 	Class                   string
 	IconID                  types.ID `mapconv:"Icon.ID"`
 	CreatedAt               time.Time
-	PlanID                  types.ID `mapconv:"Remark.Plan.ID/Plan.ID"`
-	SettingsHash            string
+	PlanID                  types.ID                    `mapconv:"Remark.Plan.ID/Plan.ID"`
 	Settings                *VPCRouterSetting           `mapconv:",omitempty,recursive"`
+	SettingsHash            string                      `json:",omitempty" mapconv:",omitempty"`
 	InstanceHostName        string                      `mapconv:"Instance.Host.Name"`
 	InstanceHostInfoURL     string                      `mapconv:"Instance.Host.InfoURL"`
 	InstanceStatus          types.EServerInstanceStatus `mapconv:"Instance.Status"`
@@ -21243,9 +21347,9 @@ func (o *VPCRouter) setDefaults() interface{} {
 		Class                   string
 		IconID                  types.ID `mapconv:"Icon.ID"`
 		CreatedAt               time.Time
-		PlanID                  types.ID `mapconv:"Remark.Plan.ID/Plan.ID"`
-		SettingsHash            string
+		PlanID                  types.ID                    `mapconv:"Remark.Plan.ID/Plan.ID"`
 		Settings                *VPCRouterSetting           `mapconv:",omitempty,recursive"`
+		SettingsHash            string                      `json:",omitempty" mapconv:",omitempty"`
 		InstanceHostName        string                      `mapconv:"Instance.Host.Name"`
 		InstanceHostInfoURL     string                      `mapconv:"Instance.Host.InfoURL"`
 		InstanceStatus          types.EServerInstanceStatus `mapconv:"Instance.Status"`
@@ -21262,8 +21366,8 @@ func (o *VPCRouter) setDefaults() interface{} {
 		IconID:                  o.GetIconID(),
 		CreatedAt:               o.GetCreatedAt(),
 		PlanID:                  o.GetPlanID(),
-		SettingsHash:            o.GetSettingsHash(),
 		Settings:                o.GetSettings(),
+		SettingsHash:            o.GetSettingsHash(),
 		InstanceHostName:        o.GetInstanceHostName(),
 		InstanceHostInfoURL:     o.GetInstanceHostInfoURL(),
 		InstanceStatus:          o.GetInstanceStatus(),
@@ -21403,16 +21507,6 @@ func (o *VPCRouter) SetPlanID(v types.ID) {
 	o.PlanID = v
 }
 
-// GetSettingsHash returns value of SettingsHash
-func (o *VPCRouter) GetSettingsHash() string {
-	return o.SettingsHash
-}
-
-// SetSettingsHash sets value to SettingsHash
-func (o *VPCRouter) SetSettingsHash(v string) {
-	o.SettingsHash = v
-}
-
 // GetSettings returns value of Settings
 func (o *VPCRouter) GetSettings() *VPCRouterSetting {
 	return o.Settings
@@ -21421,6 +21515,16 @@ func (o *VPCRouter) GetSettings() *VPCRouterSetting {
 // SetSettings sets value to Settings
 func (o *VPCRouter) SetSettings(v *VPCRouterSetting) {
 	o.Settings = v
+}
+
+// GetSettingsHash returns value of SettingsHash
+func (o *VPCRouter) GetSettingsHash() string {
+	return o.SettingsHash
+}
+
+// SetSettingsHash sets value to SettingsHash
+func (o *VPCRouter) SetSettingsHash(v string) {
+	o.SettingsHash = v
 }
 
 // GetInstanceHostName returns value of InstanceHostName
@@ -22917,11 +23021,12 @@ func (o *ApplianceConnectedSwitch) SetScope(v types.EScope) {
 
 // VPCRouterUpdateRequest represents API parameter/response structure
 type VPCRouterUpdateRequest struct {
-	Name        string `validate:"required"`
-	Description string `validate:"min=0,max=512"`
-	Tags        types.Tags
-	IconID      types.ID          `mapconv:"Icon.ID"`
-	Settings    *VPCRouterSetting `mapconv:",omitempty,recursive"`
+	Name         string `validate:"required"`
+	Description  string `validate:"min=0,max=512"`
+	Tags         types.Tags
+	IconID       types.ID          `mapconv:"Icon.ID"`
+	Settings     *VPCRouterSetting `mapconv:",omitempty,recursive"`
+	SettingsHash string            `json:",omitempty" mapconv:",omitempty"`
 }
 
 // Validate validates by field tags
@@ -22932,17 +23037,19 @@ func (o *VPCRouterUpdateRequest) Validate() error {
 // setDefaults implements sacloud.argumentDefaulter
 func (o *VPCRouterUpdateRequest) setDefaults() interface{} {
 	return &struct {
-		Name        string `validate:"required"`
-		Description string `validate:"min=0,max=512"`
-		Tags        types.Tags
-		IconID      types.ID          `mapconv:"Icon.ID"`
-		Settings    *VPCRouterSetting `mapconv:",omitempty,recursive"`
+		Name         string `validate:"required"`
+		Description  string `validate:"min=0,max=512"`
+		Tags         types.Tags
+		IconID       types.ID          `mapconv:"Icon.ID"`
+		Settings     *VPCRouterSetting `mapconv:",omitempty,recursive"`
+		SettingsHash string            `json:",omitempty" mapconv:",omitempty"`
 	}{
-		Name:        o.GetName(),
-		Description: o.GetDescription(),
-		Tags:        o.GetTags(),
-		IconID:      o.GetIconID(),
-		Settings:    o.GetSettings(),
+		Name:         o.GetName(),
+		Description:  o.GetDescription(),
+		Tags:         o.GetTags(),
+		IconID:       o.GetIconID(),
+		Settings:     o.GetSettings(),
+		SettingsHash: o.GetSettingsHash(),
 	}
 }
 
@@ -23014,6 +23121,16 @@ func (o *VPCRouterUpdateRequest) GetSettings() *VPCRouterSetting {
 // SetSettings sets value to Settings
 func (o *VPCRouterUpdateRequest) SetSettings(v *VPCRouterSetting) {
 	o.Settings = v
+}
+
+// GetSettingsHash returns value of SettingsHash
+func (o *VPCRouterUpdateRequest) GetSettingsHash() string {
+	return o.SettingsHash
+}
+
+// SetSettingsHash sets value to SettingsHash
+func (o *VPCRouterUpdateRequest) SetSettingsHash(v string) {
+	o.SettingsHash = v
 }
 
 /*************************************************

@@ -111,7 +111,6 @@ var (
 			// plan
 			fields.AppliancePlanID(),
 			// settings
-			fields.SettingsHash(),
 			{
 				Name: "Settings",
 				Type: models.vpcRouterSetting(),
@@ -119,6 +118,8 @@ var (
 					MapConv: ",omitempty,recursive",
 				},
 			},
+			fields.SettingsHash(),
+
 			// instance
 			fields.InstanceHostName(),
 			fields.InstanceHostInfoURL(),
@@ -192,6 +193,8 @@ var (
 					MapConv: ",omitempty,recursive",
 				},
 			},
+			// settings hash
+			fields.SettingsHash(),
 		},
 	}
 
