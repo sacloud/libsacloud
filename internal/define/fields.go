@@ -1329,6 +1329,10 @@ func (f *fieldsDef) SettingsHash() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "SettingsHash",
 		Type: meta.TypeString,
+		Tags: &dsl.FieldTags{
+			MapConv: ",omitempty",
+			JSON:    ",omitempty",
+		},
 	}
 }
 

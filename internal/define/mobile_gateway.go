@@ -401,6 +401,8 @@ var (
 					MapConv: ",omitempty,recursive",
 				},
 			},
+			// settings hash
+			fields.SettingsHash(),
 		},
 	}
 

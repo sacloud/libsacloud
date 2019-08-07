@@ -66,19 +66,18 @@ var (
 			fields.SimpleMonitorTarget(),
 
 			// settings
-			fields.SettingsHash(),
 			fields.SimpleMonitorDelayLoop(),
 			fields.SimpleMonitorEnabled(),
 			// settings - health check
 			fields.SimpleMonitorHealthCheck(),
-
 			// settings - email
 			fields.SimpleMonitorNotifyEmailEnabled(),
 			fields.SimpleMonitorNotifyEmailHTML(),
-
 			// settings - slack
 			fields.SimpleMonitorNotifySlackEnabled(),
 			fields.SimpleMonitorSlackWebhooksURL(),
+			// settings hash
+			fields.SettingsHash(),
 		},
 	}
 
@@ -130,23 +129,23 @@ var (
 		Name:      names.UpdateParameterName(simpleMonitorAPIName),
 		NakedType: simpleMonitorNakedType,
 		Fields: []*dsl.FieldDesc{
+			fields.Description(),
+			fields.Tags(),
+			fields.IconID(),
+
 			// settings
 			fields.SimpleMonitorDelayLoop(),
 			fields.SimpleMonitorEnabled(),
 			// settings - health check
 			fields.SimpleMonitorHealthCheck(),
-
 			// settings - email
 			fields.SimpleMonitorNotifyEmailEnabled(),
 			fields.SimpleMonitorNotifyEmailHTML(),
-
 			// settings - slack
 			fields.SimpleMonitorNotifySlackEnabled(),
 			fields.SimpleMonitorSlackWebhooksURL(),
-
-			fields.Description(),
-			fields.Tags(),
-			fields.IconID(),
+			// settings hash
+			fields.SettingsHash(),
 		},
 	}
 

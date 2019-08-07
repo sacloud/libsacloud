@@ -224,6 +224,8 @@ var (
 			fields.ProxyLBServers(),
 			fields.ProxyLBLetsEncrypt(),
 			fields.ProxyLBStickySession(),
+			// settings hash
+			fields.SettingsHash(),
 
 			// common fields
 			fields.Name(),
