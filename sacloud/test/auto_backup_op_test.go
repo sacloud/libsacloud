@@ -66,6 +66,13 @@ func TestAutoBackupOpCRUD(t *testing.T) {
 				}),
 			},
 			{
+				Func: testAutoBackupPatch,
+				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
+					ExpectValue:  patchAutoBackupExpected,
+					IgnoreFields: ignoreAutoBackupFields,
+				}),
+			},
+			{
 				Func: testAutoBackupUpdateToMin,
 				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 					ExpectValue:  updateAutoBackupToMinExpected,
@@ -142,6 +149,19 @@ var (
 		MaximumNumberOfArchives: updateAutoBackupParam.MaximumNumberOfArchives,
 		IconID:                  testIconID,
 	}
+	patchAutoBackupParam = &sacloud.AutoBackupPatchRequest{
+		Description:      "desc-pached",
+		PatchEmptyToTags: true,
+	}
+	patchAutoBackupExpected = &sacloud.AutoBackup{
+		Name:        updateAutoBackupParam.Name,
+		Description: patchAutoBackupParam.Description,
+		//Tags:                    updateAutoBackupParam.Tags,
+		Availability:            types.Availabilities.Available,
+		BackupSpanWeekdays:      updateAutoBackupParam.BackupSpanWeekdays,
+		MaximumNumberOfArchives: updateAutoBackupParam.MaximumNumberOfArchives,
+		IconID:                  testIconID,
+	}
 	updateAutoBackupToMinParam = &sacloud.AutoBackupUpdateRequest{
 		Name: testutil.ResourceName("auto-backup-to-min"),
 		BackupSpanWeekdays: []types.EBackupSpanWeekday{
@@ -170,6 +190,11 @@ func testAutoBackupRead(ctx *testutil.CRUDTestContext, caller sacloud.APICaller)
 func testAutoBackupUpdate(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewAutoBackupOp(caller)
 	return client.Update(ctx, testZone, ctx.ID, updateAutoBackupParam)
+}
+
+func testAutoBackupPatch(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+	client := sacloud.NewAutoBackupOp(caller)
+	return client.Patch(ctx, testZone, ctx.ID, patchAutoBackupParam)
 }
 
 func testAutoBackupUpdateToMin(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {

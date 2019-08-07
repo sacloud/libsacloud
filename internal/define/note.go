@@ -31,6 +31,9 @@ var noteAPI = &dsl.Resource{
 		// update
 		ops.Update(noteAPIName, noteNakedType, noteUpdateParam, noteView),
 
+		// patch
+		ops.Patch(noteAPIName, noteNakedType, patchModel(noteUpdateParam), noteView),
+
 		// delete
 		ops.Delete(noteAPIName),
 	},

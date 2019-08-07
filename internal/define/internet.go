@@ -33,6 +33,9 @@ var internetAPI = &dsl.Resource{
 		// update
 		ops.Update(internetAPIName, internetNakedType, internetUpdateParam, internetView),
 
+		// patch
+		ops.Patch(internetAPIName, internetNakedType, patchModel(internetUpdateParam), internetView),
+
 		// delete
 		ops.Delete(internetAPIName),
 

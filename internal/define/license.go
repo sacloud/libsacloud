@@ -31,6 +31,9 @@ var licenseAPI = &dsl.Resource{
 		// update
 		ops.Update(licenseAPIName, licenseNakedType, licenseUpdateParam, licenseView),
 
+		// patch
+		ops.Patch(licenseAPIName, licenseNakedType, patchModel(licenseUpdateParam), licenseView),
+
 		// delete
 		ops.Delete(licenseAPIName),
 	},

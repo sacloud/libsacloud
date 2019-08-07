@@ -1333,6 +1333,7 @@ func (f *fieldsDef) SettingsHash() *dsl.FieldDesc {
 			MapConv: ",omitempty",
 			JSON:    ",omitempty",
 		},
+		IgnorePatch: true,
 	}
 }
 
