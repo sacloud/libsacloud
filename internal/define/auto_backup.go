@@ -30,6 +30,9 @@ var autoBackupAPI = &dsl.Resource{
 		// update
 		ops.UpdateCommonServiceItem(autoBackupAPIName, autoBackupNakedType, autoBackupUpdateParam, autoBackupView),
 
+		// patch
+		ops.PatchCommonServiceItem(autoBackupAPIName, autoBackupNakedType, patchModel(autoBackupUpdateParam), autoBackupView),
+
 		// delete
 		ops.Delete(autoBackupAPIName),
 	},

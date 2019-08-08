@@ -215,6 +215,28 @@ func UpdateCommonServiceItem(resourceName string, nakedType meta.Type, updatePar
 	return update(resourceName, nakedType, updateParam, result, "CommonServiceItem")
 }
 
+func patch(resourceName string, nakedType meta.Type, updateParam, result *dsl.Model, payloadName string) *dsl.Operation {
+	op := update(resourceName, nakedType, updateParam, result, payloadName)
+	op.Name = "Patch"
+	op.IsPatch = true
+	return op
+}
+
+// Patch Patch操作を定義
+func Patch(resourceName string, nakedType meta.Type, updateParam, result *dsl.Model) *dsl.Operation {
+	return patch(resourceName, nakedType, updateParam, result, "")
+}
+
+// PatchAppliance Patch操作を定義
+func PatchAppliance(resourceName string, nakedType meta.Type, updateParam, result *dsl.Model) *dsl.Operation {
+	return patch(resourceName, nakedType, updateParam, result, "Appliance")
+}
+
+// PatchCommonServiceItem Patch操作を定義
+func PatchCommonServiceItem(resourceName string, nakedType meta.Type, updateParam, result *dsl.Model) *dsl.Operation {
+	return patch(resourceName, nakedType, updateParam, result, "CommonServiceItem")
+}
+
 // Delete Delete操作を定義
 func Delete(resourceName string) *dsl.Operation {
 	return &dsl.Operation{

@@ -167,6 +167,49 @@ func (o *ArchiveOp) transformUpdateResults(data []byte) (*archiveUpdateResult, e
 	return results, nil
 }
 
+func (o *ArchiveOp) transformPatchArgs(id types.ID, param *ArchivePatchRequest) (*archivePatchRequestEnvelope, error) {
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	var arg0 interface{} = id
+	if v, ok := arg0.(argumentDefaulter); ok {
+		arg0 = v.setDefaults()
+	}
+	if param == nil {
+		param = &ArchivePatchRequest{}
+	}
+	var arg1 interface{} = param
+	if v, ok := arg1.(argumentDefaulter); ok {
+		arg1 = v.setDefaults()
+	}
+	args := &struct {
+		Arg0 interface{}
+		Arg1 interface{} `mapconv:"Archive,recursive"`
+	}{
+		Arg0: arg0,
+		Arg1: arg1,
+	}
+
+	v := &archivePatchRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	return v, nil
+}
+
+func (o *ArchiveOp) transformPatchResults(data []byte) (*archivePatchResult, error) {
+	nakedResponse := &archivePatchResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &archivePatchResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
+}
+
 func (o *ArchiveOp) transformOpenFTPArgs(id types.ID, openOption *OpenFTPRequest) (*archiveOpenFTPRequestEnvelope, error) {
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
@@ -341,6 +384,49 @@ func (o *AutoBackupOp) transformUpdateResults(data []byte) (*autoBackupUpdateRes
 	}
 
 	results := &autoBackupUpdateResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
+}
+
+func (o *AutoBackupOp) transformPatchArgs(id types.ID, param *AutoBackupPatchRequest) (*autoBackupPatchRequestEnvelope, error) {
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	var arg0 interface{} = id
+	if v, ok := arg0.(argumentDefaulter); ok {
+		arg0 = v.setDefaults()
+	}
+	if param == nil {
+		param = &AutoBackupPatchRequest{}
+	}
+	var arg1 interface{} = param
+	if v, ok := arg1.(argumentDefaulter); ok {
+		arg1 = v.setDefaults()
+	}
+	args := &struct {
+		Arg0 interface{}
+		Arg1 interface{} `mapconv:"CommonServiceItem,recursive"`
+	}{
+		Arg0: arg0,
+		Arg1: arg1,
+	}
+
+	v := &autoBackupPatchRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	return v, nil
+}
+
+func (o *AutoBackupOp) transformPatchResults(data []byte) (*autoBackupPatchResult, error) {
+	nakedResponse := &autoBackupPatchResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &autoBackupPatchResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
@@ -549,6 +635,49 @@ func (o *BridgeOp) transformUpdateResults(data []byte) (*bridgeUpdateResult, err
 	return results, nil
 }
 
+func (o *BridgeOp) transformPatchArgs(id types.ID, param *BridgePatchRequest) (*bridgePatchRequestEnvelope, error) {
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	var arg0 interface{} = id
+	if v, ok := arg0.(argumentDefaulter); ok {
+		arg0 = v.setDefaults()
+	}
+	if param == nil {
+		param = &BridgePatchRequest{}
+	}
+	var arg1 interface{} = param
+	if v, ok := arg1.(argumentDefaulter); ok {
+		arg1 = v.setDefaults()
+	}
+	args := &struct {
+		Arg0 interface{}
+		Arg1 interface{} `mapconv:"Bridge,recursive"`
+	}{
+		Arg0: arg0,
+		Arg1: arg1,
+	}
+
+	v := &bridgePatchRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	return v, nil
+}
+
+func (o *BridgeOp) transformPatchResults(data []byte) (*bridgePatchResult, error) {
+	nakedResponse := &bridgePatchResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &bridgePatchResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
+}
+
 func (o *CDROMOp) transformFindArgs(conditions *FindCondition) (*cDROMFindRequestEnvelope, error) {
 	if conditions == nil {
 		conditions = &FindCondition{}
@@ -667,6 +796,49 @@ func (o *CDROMOp) transformUpdateResults(data []byte) (*cDROMUpdateResult, error
 	}
 
 	results := &cDROMUpdateResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
+}
+
+func (o *CDROMOp) transformPatchArgs(id types.ID, param *CDROMPatchRequest) (*cDROMPatchRequestEnvelope, error) {
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	var arg0 interface{} = id
+	if v, ok := arg0.(argumentDefaulter); ok {
+		arg0 = v.setDefaults()
+	}
+	if param == nil {
+		param = &CDROMPatchRequest{}
+	}
+	var arg1 interface{} = param
+	if v, ok := arg1.(argumentDefaulter); ok {
+		arg1 = v.setDefaults()
+	}
+	args := &struct {
+		Arg0 interface{}
+		Arg1 interface{} `mapconv:"CDROM,recursive"`
+	}{
+		Arg0: arg0,
+		Arg1: arg1,
+	}
+
+	v := &cDROMPatchRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	return v, nil
+}
+
+func (o *CDROMOp) transformPatchResults(data []byte) (*cDROMPatchResult, error) {
+	nakedResponse := &cDROMPatchResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &cDROMPatchResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
@@ -847,6 +1019,49 @@ func (o *DatabaseOp) transformUpdateResults(data []byte) (*databaseUpdateResult,
 	}
 
 	results := &databaseUpdateResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
+}
+
+func (o *DatabaseOp) transformPatchArgs(id types.ID, param *DatabasePatchRequest) (*databasePatchRequestEnvelope, error) {
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	var arg0 interface{} = id
+	if v, ok := arg0.(argumentDefaulter); ok {
+		arg0 = v.setDefaults()
+	}
+	if param == nil {
+		param = &DatabasePatchRequest{}
+	}
+	var arg1 interface{} = param
+	if v, ok := arg1.(argumentDefaulter); ok {
+		arg1 = v.setDefaults()
+	}
+	args := &struct {
+		Arg0 interface{}
+		Arg1 interface{} `mapconv:"Appliance,recursive"`
+	}{
+		Arg0: arg0,
+		Arg1: arg1,
+	}
+
+	v := &databasePatchRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	return v, nil
+}
+
+func (o *DatabaseOp) transformPatchResults(data []byte) (*databasePatchResult, error) {
+	nakedResponse := &databasePatchResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &databasePatchResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
@@ -1344,6 +1559,49 @@ func (o *DiskOp) transformUpdateResults(data []byte) (*diskUpdateResult, error) 
 	return results, nil
 }
 
+func (o *DiskOp) transformPatchArgs(id types.ID, param *DiskPatchRequest) (*diskPatchRequestEnvelope, error) {
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	var arg0 interface{} = id
+	if v, ok := arg0.(argumentDefaulter); ok {
+		arg0 = v.setDefaults()
+	}
+	if param == nil {
+		param = &DiskPatchRequest{}
+	}
+	var arg1 interface{} = param
+	if v, ok := arg1.(argumentDefaulter); ok {
+		arg1 = v.setDefaults()
+	}
+	args := &struct {
+		Arg0 interface{}
+		Arg1 interface{} `mapconv:"Disk,recursive"`
+	}{
+		Arg0: arg0,
+		Arg1: arg1,
+	}
+
+	v := &diskPatchRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	return v, nil
+}
+
+func (o *DiskOp) transformPatchResults(data []byte) (*diskPatchResult, error) {
+	nakedResponse := &diskPatchResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &diskPatchResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
+}
+
 func (o *DiskOp) transformMonitorArgs(id types.ID, condition *MonitorCondition) (*diskMonitorRequestEnvelope, error) {
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
@@ -1558,6 +1816,49 @@ func (o *DNSOp) transformUpdateResults(data []byte) (*dNSUpdateResult, error) {
 	return results, nil
 }
 
+func (o *DNSOp) transformPatchArgs(id types.ID, param *DNSPatchRequest) (*dNSPatchRequestEnvelope, error) {
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	var arg0 interface{} = id
+	if v, ok := arg0.(argumentDefaulter); ok {
+		arg0 = v.setDefaults()
+	}
+	if param == nil {
+		param = &DNSPatchRequest{}
+	}
+	var arg1 interface{} = param
+	if v, ok := arg1.(argumentDefaulter); ok {
+		arg1 = v.setDefaults()
+	}
+	args := &struct {
+		Arg0 interface{}
+		Arg1 interface{} `mapconv:"CommonServiceItem,recursive"`
+	}{
+		Arg0: arg0,
+		Arg1: arg1,
+	}
+
+	v := &dNSPatchRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	return v, nil
+}
+
+func (o *DNSOp) transformPatchResults(data []byte) (*dNSPatchResult, error) {
+	nakedResponse := &dNSPatchResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &dNSPatchResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
+}
+
 func (o *GSLBOp) transformFindArgs(conditions *FindCondition) (*gSLBFindRequestEnvelope, error) {
 	if conditions == nil {
 		conditions = &FindCondition{}
@@ -1676,6 +1977,49 @@ func (o *GSLBOp) transformUpdateResults(data []byte) (*gSLBUpdateResult, error) 
 	}
 
 	results := &gSLBUpdateResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
+}
+
+func (o *GSLBOp) transformPatchArgs(id types.ID, param *GSLBPatchRequest) (*gSLBPatchRequestEnvelope, error) {
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	var arg0 interface{} = id
+	if v, ok := arg0.(argumentDefaulter); ok {
+		arg0 = v.setDefaults()
+	}
+	if param == nil {
+		param = &GSLBPatchRequest{}
+	}
+	var arg1 interface{} = param
+	if v, ok := arg1.(argumentDefaulter); ok {
+		arg1 = v.setDefaults()
+	}
+	args := &struct {
+		Arg0 interface{}
+		Arg1 interface{} `mapconv:"CommonServiceItem,recursive"`
+	}{
+		Arg0: arg0,
+		Arg1: arg1,
+	}
+
+	v := &gSLBPatchRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	return v, nil
+}
+
+func (o *GSLBOp) transformPatchResults(data []byte) (*gSLBPatchResult, error) {
+	nakedResponse := &gSLBPatchResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &gSLBPatchResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
@@ -1806,6 +2150,49 @@ func (o *IconOp) transformUpdateResults(data []byte) (*iconUpdateResult, error) 
 	return results, nil
 }
 
+func (o *IconOp) transformPatchArgs(id types.ID, param *IconPatchRequest) (*iconPatchRequestEnvelope, error) {
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	var arg0 interface{} = id
+	if v, ok := arg0.(argumentDefaulter); ok {
+		arg0 = v.setDefaults()
+	}
+	if param == nil {
+		param = &IconPatchRequest{}
+	}
+	var arg1 interface{} = param
+	if v, ok := arg1.(argumentDefaulter); ok {
+		arg1 = v.setDefaults()
+	}
+	args := &struct {
+		Arg0 interface{}
+		Arg1 interface{} `mapconv:"Icon,recursive"`
+	}{
+		Arg0: arg0,
+		Arg1: arg1,
+	}
+
+	v := &iconPatchRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	return v, nil
+}
+
+func (o *IconOp) transformPatchResults(data []byte) (*iconPatchResult, error) {
+	nakedResponse := &iconPatchResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &iconPatchResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
+}
+
 func (o *InterfaceOp) transformFindArgs(conditions *FindCondition) (*interfaceFindRequestEnvelope, error) {
 	if conditions == nil {
 		conditions = &FindCondition{}
@@ -1924,6 +2311,49 @@ func (o *InterfaceOp) transformUpdateResults(data []byte) (*interfaceUpdateResul
 	}
 
 	results := &interfaceUpdateResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
+}
+
+func (o *InterfaceOp) transformPatchArgs(id types.ID, param *InterfacePatchRequest) (*interfacePatchRequestEnvelope, error) {
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	var arg0 interface{} = id
+	if v, ok := arg0.(argumentDefaulter); ok {
+		arg0 = v.setDefaults()
+	}
+	if param == nil {
+		param = &InterfacePatchRequest{}
+	}
+	var arg1 interface{} = param
+	if v, ok := arg1.(argumentDefaulter); ok {
+		arg1 = v.setDefaults()
+	}
+	args := &struct {
+		Arg0 interface{}
+		Arg1 interface{} `mapconv:"Interface,recursive"`
+	}{
+		Arg0: arg0,
+		Arg1: arg1,
+	}
+
+	v := &interfacePatchRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	return v, nil
+}
+
+func (o *InterfaceOp) transformPatchResults(data []byte) (*interfacePatchResult, error) {
+	nakedResponse := &interfacePatchResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &interfacePatchResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
@@ -2091,6 +2521,49 @@ func (o *InternetOp) transformUpdateResults(data []byte) (*internetUpdateResult,
 	}
 
 	results := &internetUpdateResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
+}
+
+func (o *InternetOp) transformPatchArgs(id types.ID, param *InternetPatchRequest) (*internetPatchRequestEnvelope, error) {
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	var arg0 interface{} = id
+	if v, ok := arg0.(argumentDefaulter); ok {
+		arg0 = v.setDefaults()
+	}
+	if param == nil {
+		param = &InternetPatchRequest{}
+	}
+	var arg1 interface{} = param
+	if v, ok := arg1.(argumentDefaulter); ok {
+		arg1 = v.setDefaults()
+	}
+	args := &struct {
+		Arg0 interface{}
+		Arg1 interface{} `mapconv:"Internet,recursive"`
+	}{
+		Arg0: arg0,
+		Arg1: arg1,
+	}
+
+	v := &internetPatchRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	return v, nil
+}
+
+func (o *InternetOp) transformPatchResults(data []byte) (*internetPatchResult, error) {
+	nakedResponse := &internetPatchResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &internetPatchResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
@@ -2681,6 +3154,49 @@ func (o *LicenseOp) transformUpdateResults(data []byte) (*licenseUpdateResult, e
 	return results, nil
 }
 
+func (o *LicenseOp) transformPatchArgs(id types.ID, param *LicensePatchRequest) (*licensePatchRequestEnvelope, error) {
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	var arg0 interface{} = id
+	if v, ok := arg0.(argumentDefaulter); ok {
+		arg0 = v.setDefaults()
+	}
+	if param == nil {
+		param = &LicensePatchRequest{}
+	}
+	var arg1 interface{} = param
+	if v, ok := arg1.(argumentDefaulter); ok {
+		arg1 = v.setDefaults()
+	}
+	args := &struct {
+		Arg0 interface{}
+		Arg1 interface{} `mapconv:"License,recursive"`
+	}{
+		Arg0: arg0,
+		Arg1: arg1,
+	}
+
+	v := &licensePatchRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	return v, nil
+}
+
+func (o *LicenseOp) transformPatchResults(data []byte) (*licensePatchResult, error) {
+	nakedResponse := &licensePatchResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &licensePatchResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
+}
+
 func (o *LicenseInfoOp) transformFindArgs(conditions *FindCondition) (*licenseInfoFindRequestEnvelope, error) {
 	if conditions == nil {
 		conditions = &FindCondition{}
@@ -2846,6 +3362,49 @@ func (o *LoadBalancerOp) transformUpdateResults(data []byte) (*loadBalancerUpdat
 	}
 
 	results := &loadBalancerUpdateResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
+}
+
+func (o *LoadBalancerOp) transformPatchArgs(id types.ID, param *LoadBalancerPatchRequest) (*loadBalancerPatchRequestEnvelope, error) {
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	var arg0 interface{} = id
+	if v, ok := arg0.(argumentDefaulter); ok {
+		arg0 = v.setDefaults()
+	}
+	if param == nil {
+		param = &LoadBalancerPatchRequest{}
+	}
+	var arg1 interface{} = param
+	if v, ok := arg1.(argumentDefaulter); ok {
+		arg1 = v.setDefaults()
+	}
+	args := &struct {
+		Arg0 interface{}
+		Arg1 interface{} `mapconv:"Appliance,recursive"`
+	}{
+		Arg0: arg0,
+		Arg1: arg1,
+	}
+
+	v := &loadBalancerPatchRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	return v, nil
+}
+
+func (o *LoadBalancerOp) transformPatchResults(data []byte) (*loadBalancerPatchResult, error) {
+	nakedResponse := &loadBalancerPatchResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &loadBalancerPatchResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
@@ -3056,6 +3615,49 @@ func (o *MobileGatewayOp) transformUpdateResults(data []byte) (*mobileGatewayUpd
 	}
 
 	results := &mobileGatewayUpdateResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
+}
+
+func (o *MobileGatewayOp) transformPatchArgs(id types.ID, param *MobileGatewayPatchRequest) (*mobileGatewayPatchRequestEnvelope, error) {
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	var arg0 interface{} = id
+	if v, ok := arg0.(argumentDefaulter); ok {
+		arg0 = v.setDefaults()
+	}
+	if param == nil {
+		param = &MobileGatewayPatchRequest{}
+	}
+	var arg1 interface{} = param
+	if v, ok := arg1.(argumentDefaulter); ok {
+		arg1 = v.setDefaults()
+	}
+	args := &struct {
+		Arg0 interface{}
+		Arg1 interface{} `mapconv:"Appliance,recursive"`
+	}{
+		Arg0: arg0,
+		Arg1: arg1,
+	}
+
+	v := &mobileGatewayPatchRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	return v, nil
+}
+
+func (o *MobileGatewayOp) transformPatchResults(data []byte) (*mobileGatewayPatchResult, error) {
+	nakedResponse := &mobileGatewayPatchResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &mobileGatewayPatchResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
@@ -3466,6 +4068,49 @@ func (o *NFSOp) transformUpdateResults(data []byte) (*nFSUpdateResult, error) {
 	return results, nil
 }
 
+func (o *NFSOp) transformPatchArgs(id types.ID, param *NFSPatchRequest) (*nFSPatchRequestEnvelope, error) {
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	var arg0 interface{} = id
+	if v, ok := arg0.(argumentDefaulter); ok {
+		arg0 = v.setDefaults()
+	}
+	if param == nil {
+		param = &NFSPatchRequest{}
+	}
+	var arg1 interface{} = param
+	if v, ok := arg1.(argumentDefaulter); ok {
+		arg1 = v.setDefaults()
+	}
+	args := &struct {
+		Arg0 interface{}
+		Arg1 interface{} `mapconv:"Appliance,recursive"`
+	}{
+		Arg0: arg0,
+		Arg1: arg1,
+	}
+
+	v := &nFSPatchRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	return v, nil
+}
+
+func (o *NFSOp) transformPatchResults(data []byte) (*nFSPatchResult, error) {
+	nakedResponse := &nFSPatchResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &nFSPatchResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
+}
+
 func (o *NFSOp) transformShutdownArgs(id types.ID, shutdownOption *ShutdownOption) (*nFSShutdownRequestEnvelope, error) {
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
@@ -3706,6 +4351,49 @@ func (o *NoteOp) transformUpdateResults(data []byte) (*noteUpdateResult, error) 
 	return results, nil
 }
 
+func (o *NoteOp) transformPatchArgs(id types.ID, param *NotePatchRequest) (*notePatchRequestEnvelope, error) {
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	var arg0 interface{} = id
+	if v, ok := arg0.(argumentDefaulter); ok {
+		arg0 = v.setDefaults()
+	}
+	if param == nil {
+		param = &NotePatchRequest{}
+	}
+	var arg1 interface{} = param
+	if v, ok := arg1.(argumentDefaulter); ok {
+		arg1 = v.setDefaults()
+	}
+	args := &struct {
+		Arg0 interface{}
+		Arg1 interface{} `mapconv:"Note,recursive"`
+	}{
+		Arg0: arg0,
+		Arg1: arg1,
+	}
+
+	v := &notePatchRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	return v, nil
+}
+
+func (o *NoteOp) transformPatchResults(data []byte) (*notePatchResult, error) {
+	nakedResponse := &notePatchResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &notePatchResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
+}
+
 func (o *PacketFilterOp) transformFindArgs(conditions *FindCondition) (*packetFilterFindRequestEnvelope, error) {
 	if conditions == nil {
 		conditions = &FindCondition{}
@@ -3830,6 +4518,49 @@ func (o *PacketFilterOp) transformUpdateResults(data []byte) (*packetFilterUpdat
 	return results, nil
 }
 
+func (o *PacketFilterOp) transformPatchArgs(id types.ID, param *PacketFilterPatchRequest) (*packetFilterPatchRequestEnvelope, error) {
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	var arg0 interface{} = id
+	if v, ok := arg0.(argumentDefaulter); ok {
+		arg0 = v.setDefaults()
+	}
+	if param == nil {
+		param = &PacketFilterPatchRequest{}
+	}
+	var arg1 interface{} = param
+	if v, ok := arg1.(argumentDefaulter); ok {
+		arg1 = v.setDefaults()
+	}
+	args := &struct {
+		Arg0 interface{}
+		Arg1 interface{} `mapconv:"PacketFilter,recursive"`
+	}{
+		Arg0: arg0,
+		Arg1: arg1,
+	}
+
+	v := &packetFilterPatchRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	return v, nil
+}
+
+func (o *PacketFilterOp) transformPatchResults(data []byte) (*packetFilterPatchResult, error) {
+	nakedResponse := &packetFilterPatchResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &packetFilterPatchResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
+}
+
 func (o *PrivateHostOp) transformFindArgs(conditions *FindCondition) (*privateHostFindRequestEnvelope, error) {
 	if conditions == nil {
 		conditions = &FindCondition{}
@@ -3948,6 +4679,49 @@ func (o *PrivateHostOp) transformUpdateResults(data []byte) (*privateHostUpdateR
 	}
 
 	results := &privateHostUpdateResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
+}
+
+func (o *PrivateHostOp) transformPatchArgs(id types.ID, param *PrivateHostPatchRequest) (*privateHostPatchRequestEnvelope, error) {
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	var arg0 interface{} = id
+	if v, ok := arg0.(argumentDefaulter); ok {
+		arg0 = v.setDefaults()
+	}
+	if param == nil {
+		param = &PrivateHostPatchRequest{}
+	}
+	var arg1 interface{} = param
+	if v, ok := arg1.(argumentDefaulter); ok {
+		arg1 = v.setDefaults()
+	}
+	args := &struct {
+		Arg0 interface{}
+		Arg1 interface{} `mapconv:"PrivateHost,recursive"`
+	}{
+		Arg0: arg0,
+		Arg1: arg1,
+	}
+
+	v := &privateHostPatchRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	return v, nil
+}
+
+func (o *PrivateHostOp) transformPatchResults(data []byte) (*privateHostPatchResult, error) {
+	nakedResponse := &privateHostPatchResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &privateHostPatchResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
@@ -4119,6 +4893,49 @@ func (o *ProxyLBOp) transformUpdateResults(data []byte) (*proxyLBUpdateResult, e
 	}
 
 	results := &proxyLBUpdateResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
+}
+
+func (o *ProxyLBOp) transformPatchArgs(id types.ID, param *ProxyLBPatchRequest) (*proxyLBPatchRequestEnvelope, error) {
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	var arg0 interface{} = id
+	if v, ok := arg0.(argumentDefaulter); ok {
+		arg0 = v.setDefaults()
+	}
+	if param == nil {
+		param = &ProxyLBPatchRequest{}
+	}
+	var arg1 interface{} = param
+	if v, ok := arg1.(argumentDefaulter); ok {
+		arg1 = v.setDefaults()
+	}
+	args := &struct {
+		Arg0 interface{}
+		Arg1 interface{} `mapconv:"CommonServiceItem,recursive"`
+	}{
+		Arg0: arg0,
+		Arg1: arg1,
+	}
+
+	v := &proxyLBPatchRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	return v, nil
+}
+
+func (o *ProxyLBOp) transformPatchResults(data []byte) (*proxyLBPatchResult, error) {
+	nakedResponse := &proxyLBPatchResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &proxyLBPatchResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
@@ -4445,6 +5262,49 @@ func (o *ServerOp) transformUpdateResults(data []byte) (*serverUpdateResult, err
 	}
 
 	results := &serverUpdateResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
+}
+
+func (o *ServerOp) transformPatchArgs(id types.ID, param *ServerPatchRequest) (*serverPatchRequestEnvelope, error) {
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	var arg0 interface{} = id
+	if v, ok := arg0.(argumentDefaulter); ok {
+		arg0 = v.setDefaults()
+	}
+	if param == nil {
+		param = &ServerPatchRequest{}
+	}
+	var arg1 interface{} = param
+	if v, ok := arg1.(argumentDefaulter); ok {
+		arg1 = v.setDefaults()
+	}
+	args := &struct {
+		Arg0 interface{}
+		Arg1 interface{} `mapconv:"Server,recursive"`
+	}{
+		Arg0: arg0,
+		Arg1: arg1,
+	}
+
+	v := &serverPatchRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	return v, nil
+}
+
+func (o *ServerOp) transformPatchResults(data []byte) (*serverPatchResult, error) {
+	nakedResponse := &serverPatchResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &serverPatchResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
@@ -4905,6 +5765,49 @@ func (o *SIMOp) transformUpdateResults(data []byte) (*sIMUpdateResult, error) {
 	return results, nil
 }
 
+func (o *SIMOp) transformPatchArgs(id types.ID, param *SIMPatchRequest) (*sIMPatchRequestEnvelope, error) {
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	var arg0 interface{} = id
+	if v, ok := arg0.(argumentDefaulter); ok {
+		arg0 = v.setDefaults()
+	}
+	if param == nil {
+		param = &SIMPatchRequest{}
+	}
+	var arg1 interface{} = param
+	if v, ok := arg1.(argumentDefaulter); ok {
+		arg1 = v.setDefaults()
+	}
+	args := &struct {
+		Arg0 interface{}
+		Arg1 interface{} `mapconv:"CommonServiceItem,recursive"`
+	}{
+		Arg0: arg0,
+		Arg1: arg1,
+	}
+
+	v := &sIMPatchRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	return v, nil
+}
+
+func (o *SIMOp) transformPatchResults(data []byte) (*sIMPatchResult, error) {
+	nakedResponse := &sIMPatchResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &sIMPatchResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
+}
+
 func (o *SIMOp) transformAssignIPArgs(id types.ID, param *SIMAssignIPRequest) (*sIMAssignIPRequestEnvelope, error) {
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
@@ -5201,6 +6104,49 @@ func (o *SimpleMonitorOp) transformUpdateResults(data []byte) (*simpleMonitorUpd
 	return results, nil
 }
 
+func (o *SimpleMonitorOp) transformPatchArgs(id types.ID, param *SimpleMonitorPatchRequest) (*simpleMonitorPatchRequestEnvelope, error) {
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	var arg0 interface{} = id
+	if v, ok := arg0.(argumentDefaulter); ok {
+		arg0 = v.setDefaults()
+	}
+	if param == nil {
+		param = &SimpleMonitorPatchRequest{}
+	}
+	var arg1 interface{} = param
+	if v, ok := arg1.(argumentDefaulter); ok {
+		arg1 = v.setDefaults()
+	}
+	args := &struct {
+		Arg0 interface{}
+		Arg1 interface{} `mapconv:"CommonServiceItem,recursive"`
+	}{
+		Arg0: arg0,
+		Arg1: arg1,
+	}
+
+	v := &simpleMonitorPatchRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	return v, nil
+}
+
+func (o *SimpleMonitorOp) transformPatchResults(data []byte) (*simpleMonitorPatchResult, error) {
+	nakedResponse := &simpleMonitorPatchResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &simpleMonitorPatchResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
+}
+
 func (o *SimpleMonitorOp) transformMonitorResponseTimeArgs(id types.ID, condition *MonitorCondition) (*simpleMonitorMonitorResponseTimeRequestEnvelope, error) {
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
@@ -5415,6 +6361,49 @@ func (o *SSHKeyOp) transformUpdateResults(data []byte) (*sSHKeyUpdateResult, err
 	return results, nil
 }
 
+func (o *SSHKeyOp) transformPatchArgs(id types.ID, param *SSHKeyPatchRequest) (*sSHKeyPatchRequestEnvelope, error) {
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	var arg0 interface{} = id
+	if v, ok := arg0.(argumentDefaulter); ok {
+		arg0 = v.setDefaults()
+	}
+	if param == nil {
+		param = &SSHKeyPatchRequest{}
+	}
+	var arg1 interface{} = param
+	if v, ok := arg1.(argumentDefaulter); ok {
+		arg1 = v.setDefaults()
+	}
+	args := &struct {
+		Arg0 interface{}
+		Arg1 interface{} `mapconv:"SSHKey,recursive"`
+	}{
+		Arg0: arg0,
+		Arg1: arg1,
+	}
+
+	v := &sSHKeyPatchRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	return v, nil
+}
+
+func (o *SSHKeyOp) transformPatchResults(data []byte) (*sSHKeyPatchResult, error) {
+	nakedResponse := &sSHKeyPatchResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &sSHKeyPatchResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
+}
+
 func (o *SwitchOp) transformFindArgs(conditions *FindCondition) (*switchFindRequestEnvelope, error) {
 	if conditions == nil {
 		conditions = &FindCondition{}
@@ -5539,6 +6528,49 @@ func (o *SwitchOp) transformUpdateResults(data []byte) (*switchUpdateResult, err
 	return results, nil
 }
 
+func (o *SwitchOp) transformPatchArgs(id types.ID, param *SwitchPatchRequest) (*switchPatchRequestEnvelope, error) {
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	var arg0 interface{} = id
+	if v, ok := arg0.(argumentDefaulter); ok {
+		arg0 = v.setDefaults()
+	}
+	if param == nil {
+		param = &SwitchPatchRequest{}
+	}
+	var arg1 interface{} = param
+	if v, ok := arg1.(argumentDefaulter); ok {
+		arg1 = v.setDefaults()
+	}
+	args := &struct {
+		Arg0 interface{}
+		Arg1 interface{} `mapconv:"Switch,recursive"`
+	}{
+		Arg0: arg0,
+		Arg1: arg1,
+	}
+
+	v := &switchPatchRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	return v, nil
+}
+
+func (o *SwitchOp) transformPatchResults(data []byte) (*switchPatchResult, error) {
+	nakedResponse := &switchPatchResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &switchPatchResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
+}
+
 func (o *VPCRouterOp) transformFindArgs(conditions *FindCondition) (*vPCRouterFindRequestEnvelope, error) {
 	if conditions == nil {
 		conditions = &FindCondition{}
@@ -5657,6 +6689,49 @@ func (o *VPCRouterOp) transformUpdateResults(data []byte) (*vPCRouterUpdateResul
 	}
 
 	results := &vPCRouterUpdateResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
+}
+
+func (o *VPCRouterOp) transformPatchArgs(id types.ID, param *VPCRouterPatchRequest) (*vPCRouterPatchRequestEnvelope, error) {
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	var arg0 interface{} = id
+	if v, ok := arg0.(argumentDefaulter); ok {
+		arg0 = v.setDefaults()
+	}
+	if param == nil {
+		param = &VPCRouterPatchRequest{}
+	}
+	var arg1 interface{} = param
+	if v, ok := arg1.(argumentDefaulter); ok {
+		arg1 = v.setDefaults()
+	}
+	args := &struct {
+		Arg0 interface{}
+		Arg1 interface{} `mapconv:"Appliance,recursive"`
+	}{
+		Arg0: arg0,
+		Arg1: arg1,
+	}
+
+	v := &vPCRouterPatchRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	return v, nil
+}
+
+func (o *VPCRouterOp) transformPatchResults(data []byte) (*vPCRouterPatchResult, error) {
+	nakedResponse := &vPCRouterPatchResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &vPCRouterPatchResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}

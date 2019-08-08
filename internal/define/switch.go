@@ -32,6 +32,9 @@ var switchAPI = &dsl.Resource{
 		// update
 		ops.Update(switchAPIName, switchNakedType, switchUpdateParam, switchView),
 
+		// patch
+		ops.Patch(switchAPIName, switchNakedType, patchModel(switchUpdateParam), switchView),
+
 		// delete
 		ops.Delete(switchAPIName),
 

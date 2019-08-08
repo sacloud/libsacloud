@@ -1129,6 +1129,137 @@ func (o *ArchiveUpdateRequest) SetIconID(v types.ID) {
 }
 
 /*************************************************
+* ArchivePatchRequest
+*************************************************/
+
+// ArchivePatchRequest represents API parameter/response structure
+type ArchivePatchRequest struct {
+	Name                    string `validate:"required"`
+	Description             string `validate:"min=0,max=512"`
+	PatchEmptyToDescription bool
+	Tags                    types.Tags
+	PatchEmptyToTags        bool
+	IconID                  types.ID `mapconv:"Icon.ID"`
+	PatchEmptyToIconID      bool
+}
+
+// Validate validates by field tags
+func (o *ArchivePatchRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *ArchivePatchRequest) setDefaults() interface{} {
+	return &struct {
+		Name                    string `validate:"required"`
+		Description             string `validate:"min=0,max=512"`
+		PatchEmptyToDescription bool
+		Tags                    types.Tags
+		PatchEmptyToTags        bool
+		IconID                  types.ID `mapconv:"Icon.ID"`
+		PatchEmptyToIconID      bool
+	}{
+		Name:                    o.GetName(),
+		Description:             o.GetDescription(),
+		PatchEmptyToDescription: o.GetPatchEmptyToDescription(),
+		Tags:                    o.GetTags(),
+		PatchEmptyToTags:        o.GetPatchEmptyToTags(),
+		IconID:                  o.GetIconID(),
+		PatchEmptyToIconID:      o.GetPatchEmptyToIconID(),
+	}
+}
+
+// GetName returns value of Name
+func (o *ArchivePatchRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *ArchivePatchRequest) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *ArchivePatchRequest) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *ArchivePatchRequest) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetPatchEmptyToDescription returns value of PatchEmptyToDescription
+func (o *ArchivePatchRequest) GetPatchEmptyToDescription() bool {
+	return o.PatchEmptyToDescription
+}
+
+// SetPatchEmptyToDescription sets value to PatchEmptyToDescription
+func (o *ArchivePatchRequest) SetPatchEmptyToDescription(v bool) {
+	o.PatchEmptyToDescription = v
+}
+
+// GetTags returns value of Tags
+func (o *ArchivePatchRequest) GetTags() types.Tags {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *ArchivePatchRequest) SetTags(v types.Tags) {
+	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *ArchivePatchRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *ArchivePatchRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *ArchivePatchRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *ArchivePatchRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
+// GetPatchEmptyToTags returns value of PatchEmptyToTags
+func (o *ArchivePatchRequest) GetPatchEmptyToTags() bool {
+	return o.PatchEmptyToTags
+}
+
+// SetPatchEmptyToTags sets value to PatchEmptyToTags
+func (o *ArchivePatchRequest) SetPatchEmptyToTags(v bool) {
+	o.PatchEmptyToTags = v
+}
+
+// GetIconID returns value of IconID
+func (o *ArchivePatchRequest) GetIconID() types.ID {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *ArchivePatchRequest) SetIconID(v types.ID) {
+	o.IconID = v
+}
+
+// GetPatchEmptyToIconID returns value of PatchEmptyToIconID
+func (o *ArchivePatchRequest) GetPatchEmptyToIconID() bool {
+	return o.PatchEmptyToIconID
+}
+
+// SetPatchEmptyToIconID sets value to PatchEmptyToIconID
+func (o *ArchivePatchRequest) SetPatchEmptyToIconID(v bool) {
+	o.PatchEmptyToIconID = v
+}
+
+/*************************************************
 * OpenFTPRequest
 *************************************************/
 
@@ -1857,6 +1988,204 @@ func (o *AutoBackupUpdateRequest) GetSettingsHash() string {
 
 // SetSettingsHash sets value to SettingsHash
 func (o *AutoBackupUpdateRequest) SetSettingsHash(v string) {
+	o.SettingsHash = v
+}
+
+/*************************************************
+* AutoBackupPatchRequest
+*************************************************/
+
+// AutoBackupPatchRequest represents API parameter/response structure
+type AutoBackupPatchRequest struct {
+	Name                                string `validate:"required"`
+	Description                         string `validate:"min=0,max=512"`
+	PatchEmptyToDescription             bool
+	Tags                                types.Tags
+	PatchEmptyToTags                    bool
+	IconID                              types.ID `mapconv:"Icon.ID"`
+	PatchEmptyToIconID                  bool
+	BackupSpanWeekdays                  []types.EBackupSpanWeekday `mapconv:"Settings.Autobackup.BackupSpanWeekdays"`
+	PatchEmptyToBackupSpanWeekdays      bool
+	MaximumNumberOfArchives             int `mapconv:"Settings.Autobackup.MaximumNumberOfArchives"`
+	PatchEmptyToMaximumNumberOfArchives bool
+	SettingsHash                        string `json:",omitempty" mapconv:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *AutoBackupPatchRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *AutoBackupPatchRequest) setDefaults() interface{} {
+	return &struct {
+		Name                                string `validate:"required"`
+		Description                         string `validate:"min=0,max=512"`
+		PatchEmptyToDescription             bool
+		Tags                                types.Tags
+		PatchEmptyToTags                    bool
+		IconID                              types.ID `mapconv:"Icon.ID"`
+		PatchEmptyToIconID                  bool
+		BackupSpanWeekdays                  []types.EBackupSpanWeekday `mapconv:"Settings.Autobackup.BackupSpanWeekdays"`
+		PatchEmptyToBackupSpanWeekdays      bool
+		MaximumNumberOfArchives             int `mapconv:"Settings.Autobackup.MaximumNumberOfArchives"`
+		PatchEmptyToMaximumNumberOfArchives bool
+		SettingsHash                        string                `json:",omitempty" mapconv:",omitempty"`
+		BackupSpanType                      types.EBackupSpanType `mapconv:"Settings.Autobackup.BackupSpanType"`
+	}{
+		Name:                                o.GetName(),
+		Description:                         o.GetDescription(),
+		PatchEmptyToDescription:             o.GetPatchEmptyToDescription(),
+		Tags:                                o.GetTags(),
+		PatchEmptyToTags:                    o.GetPatchEmptyToTags(),
+		IconID:                              o.GetIconID(),
+		PatchEmptyToIconID:                  o.GetPatchEmptyToIconID(),
+		BackupSpanWeekdays:                  o.GetBackupSpanWeekdays(),
+		PatchEmptyToBackupSpanWeekdays:      o.GetPatchEmptyToBackupSpanWeekdays(),
+		MaximumNumberOfArchives:             o.GetMaximumNumberOfArchives(),
+		PatchEmptyToMaximumNumberOfArchives: o.GetPatchEmptyToMaximumNumberOfArchives(),
+		SettingsHash:                        o.GetSettingsHash(),
+		BackupSpanType:                      types.BackupSpanTypes.Weekdays,
+	}
+}
+
+// GetName returns value of Name
+func (o *AutoBackupPatchRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *AutoBackupPatchRequest) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *AutoBackupPatchRequest) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *AutoBackupPatchRequest) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetPatchEmptyToDescription returns value of PatchEmptyToDescription
+func (o *AutoBackupPatchRequest) GetPatchEmptyToDescription() bool {
+	return o.PatchEmptyToDescription
+}
+
+// SetPatchEmptyToDescription sets value to PatchEmptyToDescription
+func (o *AutoBackupPatchRequest) SetPatchEmptyToDescription(v bool) {
+	o.PatchEmptyToDescription = v
+}
+
+// GetTags returns value of Tags
+func (o *AutoBackupPatchRequest) GetTags() types.Tags {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *AutoBackupPatchRequest) SetTags(v types.Tags) {
+	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *AutoBackupPatchRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *AutoBackupPatchRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *AutoBackupPatchRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *AutoBackupPatchRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
+// GetPatchEmptyToTags returns value of PatchEmptyToTags
+func (o *AutoBackupPatchRequest) GetPatchEmptyToTags() bool {
+	return o.PatchEmptyToTags
+}
+
+// SetPatchEmptyToTags sets value to PatchEmptyToTags
+func (o *AutoBackupPatchRequest) SetPatchEmptyToTags(v bool) {
+	o.PatchEmptyToTags = v
+}
+
+// GetIconID returns value of IconID
+func (o *AutoBackupPatchRequest) GetIconID() types.ID {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *AutoBackupPatchRequest) SetIconID(v types.ID) {
+	o.IconID = v
+}
+
+// GetPatchEmptyToIconID returns value of PatchEmptyToIconID
+func (o *AutoBackupPatchRequest) GetPatchEmptyToIconID() bool {
+	return o.PatchEmptyToIconID
+}
+
+// SetPatchEmptyToIconID sets value to PatchEmptyToIconID
+func (o *AutoBackupPatchRequest) SetPatchEmptyToIconID(v bool) {
+	o.PatchEmptyToIconID = v
+}
+
+// GetBackupSpanWeekdays returns value of BackupSpanWeekdays
+func (o *AutoBackupPatchRequest) GetBackupSpanWeekdays() []types.EBackupSpanWeekday {
+	return o.BackupSpanWeekdays
+}
+
+// SetBackupSpanWeekdays sets value to BackupSpanWeekdays
+func (o *AutoBackupPatchRequest) SetBackupSpanWeekdays(v []types.EBackupSpanWeekday) {
+	o.BackupSpanWeekdays = v
+}
+
+// GetPatchEmptyToBackupSpanWeekdays returns value of PatchEmptyToBackupSpanWeekdays
+func (o *AutoBackupPatchRequest) GetPatchEmptyToBackupSpanWeekdays() bool {
+	return o.PatchEmptyToBackupSpanWeekdays
+}
+
+// SetPatchEmptyToBackupSpanWeekdays sets value to PatchEmptyToBackupSpanWeekdays
+func (o *AutoBackupPatchRequest) SetPatchEmptyToBackupSpanWeekdays(v bool) {
+	o.PatchEmptyToBackupSpanWeekdays = v
+}
+
+// GetMaximumNumberOfArchives returns value of MaximumNumberOfArchives
+func (o *AutoBackupPatchRequest) GetMaximumNumberOfArchives() int {
+	return o.MaximumNumberOfArchives
+}
+
+// SetMaximumNumberOfArchives sets value to MaximumNumberOfArchives
+func (o *AutoBackupPatchRequest) SetMaximumNumberOfArchives(v int) {
+	o.MaximumNumberOfArchives = v
+}
+
+// GetPatchEmptyToMaximumNumberOfArchives returns value of PatchEmptyToMaximumNumberOfArchives
+func (o *AutoBackupPatchRequest) GetPatchEmptyToMaximumNumberOfArchives() bool {
+	return o.PatchEmptyToMaximumNumberOfArchives
+}
+
+// SetPatchEmptyToMaximumNumberOfArchives sets value to PatchEmptyToMaximumNumberOfArchives
+func (o *AutoBackupPatchRequest) SetPatchEmptyToMaximumNumberOfArchives(v bool) {
+	o.PatchEmptyToMaximumNumberOfArchives = v
+}
+
+// GetSettingsHash returns value of SettingsHash
+func (o *AutoBackupPatchRequest) GetSettingsHash() string {
+	return o.SettingsHash
+}
+
+// SetSettingsHash sets value to SettingsHash
+func (o *AutoBackupPatchRequest) SetSettingsHash(v string) {
 	o.SettingsHash = v
 }
 
@@ -2720,6 +3049,65 @@ func (o *BridgeUpdateRequest) SetDescription(v string) {
 }
 
 /*************************************************
+* BridgePatchRequest
+*************************************************/
+
+// BridgePatchRequest represents API parameter/response structure
+type BridgePatchRequest struct {
+	Name                    string `validate:"required"`
+	Description             string `validate:"min=0,max=512"`
+	PatchEmptyToDescription bool
+}
+
+// Validate validates by field tags
+func (o *BridgePatchRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *BridgePatchRequest) setDefaults() interface{} {
+	return &struct {
+		Name                    string `validate:"required"`
+		Description             string `validate:"min=0,max=512"`
+		PatchEmptyToDescription bool
+	}{
+		Name:                    o.GetName(),
+		Description:             o.GetDescription(),
+		PatchEmptyToDescription: o.GetPatchEmptyToDescription(),
+	}
+}
+
+// GetName returns value of Name
+func (o *BridgePatchRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *BridgePatchRequest) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *BridgePatchRequest) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *BridgePatchRequest) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetPatchEmptyToDescription returns value of PatchEmptyToDescription
+func (o *BridgePatchRequest) GetPatchEmptyToDescription() bool {
+	return o.PatchEmptyToDescription
+}
+
+// SetPatchEmptyToDescription sets value to PatchEmptyToDescription
+func (o *BridgePatchRequest) SetPatchEmptyToDescription(v bool) {
+	o.PatchEmptyToDescription = v
+}
+
+/*************************************************
 * CDROM
 *************************************************/
 
@@ -3127,6 +3515,137 @@ func (o *CDROMUpdateRequest) GetIconID() types.ID {
 // SetIconID sets value to IconID
 func (o *CDROMUpdateRequest) SetIconID(v types.ID) {
 	o.IconID = v
+}
+
+/*************************************************
+* CDROMPatchRequest
+*************************************************/
+
+// CDROMPatchRequest represents API parameter/response structure
+type CDROMPatchRequest struct {
+	Name                    string `validate:"required"`
+	Description             string `validate:"min=0,max=512"`
+	PatchEmptyToDescription bool
+	Tags                    types.Tags
+	PatchEmptyToTags        bool
+	IconID                  types.ID `mapconv:"Icon.ID"`
+	PatchEmptyToIconID      bool
+}
+
+// Validate validates by field tags
+func (o *CDROMPatchRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *CDROMPatchRequest) setDefaults() interface{} {
+	return &struct {
+		Name                    string `validate:"required"`
+		Description             string `validate:"min=0,max=512"`
+		PatchEmptyToDescription bool
+		Tags                    types.Tags
+		PatchEmptyToTags        bool
+		IconID                  types.ID `mapconv:"Icon.ID"`
+		PatchEmptyToIconID      bool
+	}{
+		Name:                    o.GetName(),
+		Description:             o.GetDescription(),
+		PatchEmptyToDescription: o.GetPatchEmptyToDescription(),
+		Tags:                    o.GetTags(),
+		PatchEmptyToTags:        o.GetPatchEmptyToTags(),
+		IconID:                  o.GetIconID(),
+		PatchEmptyToIconID:      o.GetPatchEmptyToIconID(),
+	}
+}
+
+// GetName returns value of Name
+func (o *CDROMPatchRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *CDROMPatchRequest) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *CDROMPatchRequest) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *CDROMPatchRequest) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetPatchEmptyToDescription returns value of PatchEmptyToDescription
+func (o *CDROMPatchRequest) GetPatchEmptyToDescription() bool {
+	return o.PatchEmptyToDescription
+}
+
+// SetPatchEmptyToDescription sets value to PatchEmptyToDescription
+func (o *CDROMPatchRequest) SetPatchEmptyToDescription(v bool) {
+	o.PatchEmptyToDescription = v
+}
+
+// GetTags returns value of Tags
+func (o *CDROMPatchRequest) GetTags() types.Tags {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *CDROMPatchRequest) SetTags(v types.Tags) {
+	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *CDROMPatchRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *CDROMPatchRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *CDROMPatchRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *CDROMPatchRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
+// GetPatchEmptyToTags returns value of PatchEmptyToTags
+func (o *CDROMPatchRequest) GetPatchEmptyToTags() bool {
+	return o.PatchEmptyToTags
+}
+
+// SetPatchEmptyToTags sets value to PatchEmptyToTags
+func (o *CDROMPatchRequest) SetPatchEmptyToTags(v bool) {
+	o.PatchEmptyToTags = v
+}
+
+// GetIconID returns value of IconID
+func (o *CDROMPatchRequest) GetIconID() types.ID {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *CDROMPatchRequest) SetIconID(v types.ID) {
+	o.IconID = v
+}
+
+// GetPatchEmptyToIconID returns value of PatchEmptyToIconID
+func (o *CDROMPatchRequest) GetPatchEmptyToIconID() bool {
+	return o.PatchEmptyToIconID
+}
+
+// SetPatchEmptyToIconID sets value to PatchEmptyToIconID
+func (o *CDROMPatchRequest) SetPatchEmptyToIconID(v bool) {
+	o.PatchEmptyToIconID = v
 }
 
 /*************************************************
@@ -4697,6 +5216,228 @@ func (o *DatabaseSettingCommonUpdate) GetUserPassword() string {
 // SetUserPassword sets value to UserPassword
 func (o *DatabaseSettingCommonUpdate) SetUserPassword(v string) {
 	o.UserPassword = v
+}
+
+/*************************************************
+* DatabasePatchRequest
+*************************************************/
+
+// DatabasePatchRequest represents API parameter/response structure
+type DatabasePatchRequest struct {
+	Name                           string `validate:"required"`
+	Description                    string `validate:"min=0,max=512"`
+	PatchEmptyToDescription        bool
+	Tags                           types.Tags
+	PatchEmptyToTags               bool
+	IconID                         types.ID `mapconv:"Icon.ID"`
+	PatchEmptyToIconID             bool
+	CommonSetting                  *DatabaseSettingCommonUpdate `mapconv:"Settings.DBConf.Common,recursive"`
+	PatchEmptyToCommonSetting      bool
+	BackupSetting                  *DatabaseSettingBackup `mapconv:"Settings.DBConf.Backup,recursive"`
+	PatchEmptyToBackupSetting      bool
+	ReplicationSetting             *DatabaseReplicationSetting `mapconv:"Settings.DBConf.Replication,recursive"`
+	PatchEmptyToReplicationSetting bool
+	SettingsHash                   string `json:",omitempty" mapconv:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *DatabasePatchRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *DatabasePatchRequest) setDefaults() interface{} {
+	return &struct {
+		Name                           string `validate:"required"`
+		Description                    string `validate:"min=0,max=512"`
+		PatchEmptyToDescription        bool
+		Tags                           types.Tags
+		PatchEmptyToTags               bool
+		IconID                         types.ID `mapconv:"Icon.ID"`
+		PatchEmptyToIconID             bool
+		CommonSetting                  *DatabaseSettingCommonUpdate `mapconv:"Settings.DBConf.Common,recursive"`
+		PatchEmptyToCommonSetting      bool
+		BackupSetting                  *DatabaseSettingBackup `mapconv:"Settings.DBConf.Backup,recursive"`
+		PatchEmptyToBackupSetting      bool
+		ReplicationSetting             *DatabaseReplicationSetting `mapconv:"Settings.DBConf.Replication,recursive"`
+		PatchEmptyToReplicationSetting bool
+		SettingsHash                   string `json:",omitempty" mapconv:",omitempty"`
+	}{
+		Name:                           o.GetName(),
+		Description:                    o.GetDescription(),
+		PatchEmptyToDescription:        o.GetPatchEmptyToDescription(),
+		Tags:                           o.GetTags(),
+		PatchEmptyToTags:               o.GetPatchEmptyToTags(),
+		IconID:                         o.GetIconID(),
+		PatchEmptyToIconID:             o.GetPatchEmptyToIconID(),
+		CommonSetting:                  o.GetCommonSetting(),
+		PatchEmptyToCommonSetting:      o.GetPatchEmptyToCommonSetting(),
+		BackupSetting:                  o.GetBackupSetting(),
+		PatchEmptyToBackupSetting:      o.GetPatchEmptyToBackupSetting(),
+		ReplicationSetting:             o.GetReplicationSetting(),
+		PatchEmptyToReplicationSetting: o.GetPatchEmptyToReplicationSetting(),
+		SettingsHash:                   o.GetSettingsHash(),
+	}
+}
+
+// GetName returns value of Name
+func (o *DatabasePatchRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *DatabasePatchRequest) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *DatabasePatchRequest) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *DatabasePatchRequest) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetPatchEmptyToDescription returns value of PatchEmptyToDescription
+func (o *DatabasePatchRequest) GetPatchEmptyToDescription() bool {
+	return o.PatchEmptyToDescription
+}
+
+// SetPatchEmptyToDescription sets value to PatchEmptyToDescription
+func (o *DatabasePatchRequest) SetPatchEmptyToDescription(v bool) {
+	o.PatchEmptyToDescription = v
+}
+
+// GetTags returns value of Tags
+func (o *DatabasePatchRequest) GetTags() types.Tags {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *DatabasePatchRequest) SetTags(v types.Tags) {
+	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *DatabasePatchRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *DatabasePatchRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *DatabasePatchRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *DatabasePatchRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
+// GetPatchEmptyToTags returns value of PatchEmptyToTags
+func (o *DatabasePatchRequest) GetPatchEmptyToTags() bool {
+	return o.PatchEmptyToTags
+}
+
+// SetPatchEmptyToTags sets value to PatchEmptyToTags
+func (o *DatabasePatchRequest) SetPatchEmptyToTags(v bool) {
+	o.PatchEmptyToTags = v
+}
+
+// GetIconID returns value of IconID
+func (o *DatabasePatchRequest) GetIconID() types.ID {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *DatabasePatchRequest) SetIconID(v types.ID) {
+	o.IconID = v
+}
+
+// GetPatchEmptyToIconID returns value of PatchEmptyToIconID
+func (o *DatabasePatchRequest) GetPatchEmptyToIconID() bool {
+	return o.PatchEmptyToIconID
+}
+
+// SetPatchEmptyToIconID sets value to PatchEmptyToIconID
+func (o *DatabasePatchRequest) SetPatchEmptyToIconID(v bool) {
+	o.PatchEmptyToIconID = v
+}
+
+// GetCommonSetting returns value of CommonSetting
+func (o *DatabasePatchRequest) GetCommonSetting() *DatabaseSettingCommonUpdate {
+	return o.CommonSetting
+}
+
+// SetCommonSetting sets value to CommonSetting
+func (o *DatabasePatchRequest) SetCommonSetting(v *DatabaseSettingCommonUpdate) {
+	o.CommonSetting = v
+}
+
+// GetPatchEmptyToCommonSetting returns value of PatchEmptyToCommonSetting
+func (o *DatabasePatchRequest) GetPatchEmptyToCommonSetting() bool {
+	return o.PatchEmptyToCommonSetting
+}
+
+// SetPatchEmptyToCommonSetting sets value to PatchEmptyToCommonSetting
+func (o *DatabasePatchRequest) SetPatchEmptyToCommonSetting(v bool) {
+	o.PatchEmptyToCommonSetting = v
+}
+
+// GetBackupSetting returns value of BackupSetting
+func (o *DatabasePatchRequest) GetBackupSetting() *DatabaseSettingBackup {
+	return o.BackupSetting
+}
+
+// SetBackupSetting sets value to BackupSetting
+func (o *DatabasePatchRequest) SetBackupSetting(v *DatabaseSettingBackup) {
+	o.BackupSetting = v
+}
+
+// GetPatchEmptyToBackupSetting returns value of PatchEmptyToBackupSetting
+func (o *DatabasePatchRequest) GetPatchEmptyToBackupSetting() bool {
+	return o.PatchEmptyToBackupSetting
+}
+
+// SetPatchEmptyToBackupSetting sets value to PatchEmptyToBackupSetting
+func (o *DatabasePatchRequest) SetPatchEmptyToBackupSetting(v bool) {
+	o.PatchEmptyToBackupSetting = v
+}
+
+// GetReplicationSetting returns value of ReplicationSetting
+func (o *DatabasePatchRequest) GetReplicationSetting() *DatabaseReplicationSetting {
+	return o.ReplicationSetting
+}
+
+// SetReplicationSetting sets value to ReplicationSetting
+func (o *DatabasePatchRequest) SetReplicationSetting(v *DatabaseReplicationSetting) {
+	o.ReplicationSetting = v
+}
+
+// GetPatchEmptyToReplicationSetting returns value of PatchEmptyToReplicationSetting
+func (o *DatabasePatchRequest) GetPatchEmptyToReplicationSetting() bool {
+	return o.PatchEmptyToReplicationSetting
+}
+
+// SetPatchEmptyToReplicationSetting sets value to PatchEmptyToReplicationSetting
+func (o *DatabasePatchRequest) SetPatchEmptyToReplicationSetting(v bool) {
+	o.PatchEmptyToReplicationSetting = v
+}
+
+// GetSettingsHash returns value of SettingsHash
+func (o *DatabasePatchRequest) GetSettingsHash() string {
+	return o.SettingsHash
+}
+
+// SetSettingsHash sets value to SettingsHash
+func (o *DatabasePatchRequest) SetSettingsHash(v string) {
+	o.SettingsHash = v
 }
 
 /*************************************************
@@ -6535,6 +7276,163 @@ func (o *DiskUpdateRequest) SetConnection(v types.EDiskConnection) {
 }
 
 /*************************************************
+* DiskPatchRequest
+*************************************************/
+
+// DiskPatchRequest represents API parameter/response structure
+type DiskPatchRequest struct {
+	Name                    string `validate:"required"`
+	Description             string `validate:"min=0,max=512"`
+	PatchEmptyToDescription bool
+	Tags                    types.Tags
+	PatchEmptyToTags        bool
+	IconID                  types.ID `mapconv:"Icon.ID"`
+	PatchEmptyToIconID      bool
+	Connection              types.EDiskConnection `json:",omitempty" mapconv:",omitempty"`
+	PatchEmptyToConnection  bool
+}
+
+// Validate validates by field tags
+func (o *DiskPatchRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *DiskPatchRequest) setDefaults() interface{} {
+	return &struct {
+		Name                    string `validate:"required"`
+		Description             string `validate:"min=0,max=512"`
+		PatchEmptyToDescription bool
+		Tags                    types.Tags
+		PatchEmptyToTags        bool
+		IconID                  types.ID `mapconv:"Icon.ID"`
+		PatchEmptyToIconID      bool
+		Connection              types.EDiskConnection `json:",omitempty" mapconv:",omitempty"`
+		PatchEmptyToConnection  bool
+	}{
+		Name:                    o.GetName(),
+		Description:             o.GetDescription(),
+		PatchEmptyToDescription: o.GetPatchEmptyToDescription(),
+		Tags:                    o.GetTags(),
+		PatchEmptyToTags:        o.GetPatchEmptyToTags(),
+		IconID:                  o.GetIconID(),
+		PatchEmptyToIconID:      o.GetPatchEmptyToIconID(),
+		Connection:              o.GetConnection(),
+		PatchEmptyToConnection:  o.GetPatchEmptyToConnection(),
+	}
+}
+
+// GetName returns value of Name
+func (o *DiskPatchRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *DiskPatchRequest) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *DiskPatchRequest) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *DiskPatchRequest) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetPatchEmptyToDescription returns value of PatchEmptyToDescription
+func (o *DiskPatchRequest) GetPatchEmptyToDescription() bool {
+	return o.PatchEmptyToDescription
+}
+
+// SetPatchEmptyToDescription sets value to PatchEmptyToDescription
+func (o *DiskPatchRequest) SetPatchEmptyToDescription(v bool) {
+	o.PatchEmptyToDescription = v
+}
+
+// GetTags returns value of Tags
+func (o *DiskPatchRequest) GetTags() types.Tags {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *DiskPatchRequest) SetTags(v types.Tags) {
+	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *DiskPatchRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *DiskPatchRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *DiskPatchRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *DiskPatchRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
+// GetPatchEmptyToTags returns value of PatchEmptyToTags
+func (o *DiskPatchRequest) GetPatchEmptyToTags() bool {
+	return o.PatchEmptyToTags
+}
+
+// SetPatchEmptyToTags sets value to PatchEmptyToTags
+func (o *DiskPatchRequest) SetPatchEmptyToTags(v bool) {
+	o.PatchEmptyToTags = v
+}
+
+// GetIconID returns value of IconID
+func (o *DiskPatchRequest) GetIconID() types.ID {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *DiskPatchRequest) SetIconID(v types.ID) {
+	o.IconID = v
+}
+
+// GetPatchEmptyToIconID returns value of PatchEmptyToIconID
+func (o *DiskPatchRequest) GetPatchEmptyToIconID() bool {
+	return o.PatchEmptyToIconID
+}
+
+// SetPatchEmptyToIconID sets value to PatchEmptyToIconID
+func (o *DiskPatchRequest) SetPatchEmptyToIconID(v bool) {
+	o.PatchEmptyToIconID = v
+}
+
+// GetConnection returns value of Connection
+func (o *DiskPatchRequest) GetConnection() types.EDiskConnection {
+	return o.Connection
+}
+
+// SetConnection sets value to Connection
+func (o *DiskPatchRequest) SetConnection(v types.EDiskConnection) {
+	o.Connection = v
+}
+
+// GetPatchEmptyToConnection returns value of PatchEmptyToConnection
+func (o *DiskPatchRequest) GetPatchEmptyToConnection() bool {
+	return o.PatchEmptyToConnection
+}
+
+// SetPatchEmptyToConnection sets value to PatchEmptyToConnection
+func (o *DiskPatchRequest) SetPatchEmptyToConnection(v bool) {
+	o.PatchEmptyToConnection = v
+}
+
+/*************************************************
 * DiskPlan
 *************************************************/
 
@@ -7218,6 +8116,163 @@ func (o *DNSUpdateRequest) GetSettingsHash() string {
 
 // SetSettingsHash sets value to SettingsHash
 func (o *DNSUpdateRequest) SetSettingsHash(v string) {
+	o.SettingsHash = v
+}
+
+/*************************************************
+* DNSPatchRequest
+*************************************************/
+
+// DNSPatchRequest represents API parameter/response structure
+type DNSPatchRequest struct {
+	Description             string `validate:"min=0,max=512"`
+	PatchEmptyToDescription bool
+	Tags                    types.Tags
+	PatchEmptyToTags        bool
+	IconID                  types.ID `mapconv:"Icon.ID"`
+	PatchEmptyToIconID      bool
+	Records                 []*DNSRecord `mapconv:"Settings.DNS.[]ResourceRecordSets,recursive" validate:"min=0,max=1000"`
+	PatchEmptyToRecords     bool
+	SettingsHash            string `json:",omitempty" mapconv:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *DNSPatchRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *DNSPatchRequest) setDefaults() interface{} {
+	return &struct {
+		Description             string `validate:"min=0,max=512"`
+		PatchEmptyToDescription bool
+		Tags                    types.Tags
+		PatchEmptyToTags        bool
+		IconID                  types.ID `mapconv:"Icon.ID"`
+		PatchEmptyToIconID      bool
+		Records                 []*DNSRecord `mapconv:"Settings.DNS.[]ResourceRecordSets,recursive" validate:"min=0,max=1000"`
+		PatchEmptyToRecords     bool
+		SettingsHash            string `json:",omitempty" mapconv:",omitempty"`
+	}{
+		Description:             o.GetDescription(),
+		PatchEmptyToDescription: o.GetPatchEmptyToDescription(),
+		Tags:                    o.GetTags(),
+		PatchEmptyToTags:        o.GetPatchEmptyToTags(),
+		IconID:                  o.GetIconID(),
+		PatchEmptyToIconID:      o.GetPatchEmptyToIconID(),
+		Records:                 o.GetRecords(),
+		PatchEmptyToRecords:     o.GetPatchEmptyToRecords(),
+		SettingsHash:            o.GetSettingsHash(),
+	}
+}
+
+// GetDescription returns value of Description
+func (o *DNSPatchRequest) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *DNSPatchRequest) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetPatchEmptyToDescription returns value of PatchEmptyToDescription
+func (o *DNSPatchRequest) GetPatchEmptyToDescription() bool {
+	return o.PatchEmptyToDescription
+}
+
+// SetPatchEmptyToDescription sets value to PatchEmptyToDescription
+func (o *DNSPatchRequest) SetPatchEmptyToDescription(v bool) {
+	o.PatchEmptyToDescription = v
+}
+
+// GetTags returns value of Tags
+func (o *DNSPatchRequest) GetTags() types.Tags {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *DNSPatchRequest) SetTags(v types.Tags) {
+	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *DNSPatchRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *DNSPatchRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *DNSPatchRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *DNSPatchRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
+// GetPatchEmptyToTags returns value of PatchEmptyToTags
+func (o *DNSPatchRequest) GetPatchEmptyToTags() bool {
+	return o.PatchEmptyToTags
+}
+
+// SetPatchEmptyToTags sets value to PatchEmptyToTags
+func (o *DNSPatchRequest) SetPatchEmptyToTags(v bool) {
+	o.PatchEmptyToTags = v
+}
+
+// GetIconID returns value of IconID
+func (o *DNSPatchRequest) GetIconID() types.ID {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *DNSPatchRequest) SetIconID(v types.ID) {
+	o.IconID = v
+}
+
+// GetPatchEmptyToIconID returns value of PatchEmptyToIconID
+func (o *DNSPatchRequest) GetPatchEmptyToIconID() bool {
+	return o.PatchEmptyToIconID
+}
+
+// SetPatchEmptyToIconID sets value to PatchEmptyToIconID
+func (o *DNSPatchRequest) SetPatchEmptyToIconID(v bool) {
+	o.PatchEmptyToIconID = v
+}
+
+// GetRecords returns value of Records
+func (o *DNSPatchRequest) GetRecords() []*DNSRecord {
+	return o.Records
+}
+
+// SetRecords sets value to Records
+func (o *DNSPatchRequest) SetRecords(v []*DNSRecord) {
+	o.Records = v
+}
+
+// GetPatchEmptyToRecords returns value of PatchEmptyToRecords
+func (o *DNSPatchRequest) GetPatchEmptyToRecords() bool {
+	return o.PatchEmptyToRecords
+}
+
+// SetPatchEmptyToRecords sets value to PatchEmptyToRecords
+func (o *DNSPatchRequest) SetPatchEmptyToRecords(v bool) {
+	o.PatchEmptyToRecords = v
+}
+
+// GetSettingsHash returns value of SettingsHash
+func (o *DNSPatchRequest) GetSettingsHash() string {
+	return o.SettingsHash
+}
+
+// SetSettingsHash sets value to SettingsHash
+func (o *DNSPatchRequest) SetSettingsHash(v string) {
 	o.SettingsHash = v
 }
 
@@ -7959,6 +9014,283 @@ func (o *GSLBUpdateRequest) SetSettingsHash(v string) {
 }
 
 /*************************************************
+* GSLBPatchRequest
+*************************************************/
+
+// GSLBPatchRequest represents API parameter/response structure
+type GSLBPatchRequest struct {
+	Name                           string `validate:"required"`
+	Description                    string `validate:"min=0,max=512"`
+	PatchEmptyToDescription        bool
+	Tags                           types.Tags
+	PatchEmptyToTags               bool
+	IconID                         types.ID `mapconv:"Icon.ID"`
+	PatchEmptyToIconID             bool
+	HealthCheck                    *GSLBHealthCheck `mapconv:"Settings.GSLB.HealthCheck,recursive"`
+	PatchEmptyToHealthCheck        bool
+	DelayLoop                      int `mapconv:"Settings.GSLB.DelayLoop" validate:"min=10,max=60"`
+	PatchEmptyToDelayLoop          bool
+	Weighted                       types.StringFlag `mapconv:"Settings.GSLB.Weighted"`
+	PatchEmptyToWeighted           bool
+	SorryServer                    string `mapconv:"Settings.GSLB.SorryServer"`
+	PatchEmptyToSorryServer        bool
+	DestinationServers             []*GSLBServer `mapconv:"Settings.GSLB.[]Servers,recursive" validate:"min=0,max=12"`
+	PatchEmptyToDestinationServers bool
+	SettingsHash                   string `json:",omitempty" mapconv:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *GSLBPatchRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *GSLBPatchRequest) setDefaults() interface{} {
+	return &struct {
+		Name                           string `validate:"required"`
+		Description                    string `validate:"min=0,max=512"`
+		PatchEmptyToDescription        bool
+		Tags                           types.Tags
+		PatchEmptyToTags               bool
+		IconID                         types.ID `mapconv:"Icon.ID"`
+		PatchEmptyToIconID             bool
+		HealthCheck                    *GSLBHealthCheck `mapconv:"Settings.GSLB.HealthCheck,recursive"`
+		PatchEmptyToHealthCheck        bool
+		DelayLoop                      int `mapconv:"Settings.GSLB.DelayLoop" validate:"min=10,max=60"`
+		PatchEmptyToDelayLoop          bool
+		Weighted                       types.StringFlag `mapconv:"Settings.GSLB.Weighted"`
+		PatchEmptyToWeighted           bool
+		SorryServer                    string `mapconv:"Settings.GSLB.SorryServer"`
+		PatchEmptyToSorryServer        bool
+		DestinationServers             []*GSLBServer `mapconv:"Settings.GSLB.[]Servers,recursive" validate:"min=0,max=12"`
+		PatchEmptyToDestinationServers bool
+		SettingsHash                   string `json:",omitempty" mapconv:",omitempty"`
+	}{
+		Name:                           o.GetName(),
+		Description:                    o.GetDescription(),
+		PatchEmptyToDescription:        o.GetPatchEmptyToDescription(),
+		Tags:                           o.GetTags(),
+		PatchEmptyToTags:               o.GetPatchEmptyToTags(),
+		IconID:                         o.GetIconID(),
+		PatchEmptyToIconID:             o.GetPatchEmptyToIconID(),
+		HealthCheck:                    o.GetHealthCheck(),
+		PatchEmptyToHealthCheck:        o.GetPatchEmptyToHealthCheck(),
+		DelayLoop:                      o.GetDelayLoop(),
+		PatchEmptyToDelayLoop:          o.GetPatchEmptyToDelayLoop(),
+		Weighted:                       o.GetWeighted(),
+		PatchEmptyToWeighted:           o.GetPatchEmptyToWeighted(),
+		SorryServer:                    o.GetSorryServer(),
+		PatchEmptyToSorryServer:        o.GetPatchEmptyToSorryServer(),
+		DestinationServers:             o.GetDestinationServers(),
+		PatchEmptyToDestinationServers: o.GetPatchEmptyToDestinationServers(),
+		SettingsHash:                   o.GetSettingsHash(),
+	}
+}
+
+// GetName returns value of Name
+func (o *GSLBPatchRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *GSLBPatchRequest) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *GSLBPatchRequest) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *GSLBPatchRequest) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetPatchEmptyToDescription returns value of PatchEmptyToDescription
+func (o *GSLBPatchRequest) GetPatchEmptyToDescription() bool {
+	return o.PatchEmptyToDescription
+}
+
+// SetPatchEmptyToDescription sets value to PatchEmptyToDescription
+func (o *GSLBPatchRequest) SetPatchEmptyToDescription(v bool) {
+	o.PatchEmptyToDescription = v
+}
+
+// GetTags returns value of Tags
+func (o *GSLBPatchRequest) GetTags() types.Tags {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *GSLBPatchRequest) SetTags(v types.Tags) {
+	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *GSLBPatchRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *GSLBPatchRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *GSLBPatchRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *GSLBPatchRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
+// GetPatchEmptyToTags returns value of PatchEmptyToTags
+func (o *GSLBPatchRequest) GetPatchEmptyToTags() bool {
+	return o.PatchEmptyToTags
+}
+
+// SetPatchEmptyToTags sets value to PatchEmptyToTags
+func (o *GSLBPatchRequest) SetPatchEmptyToTags(v bool) {
+	o.PatchEmptyToTags = v
+}
+
+// GetIconID returns value of IconID
+func (o *GSLBPatchRequest) GetIconID() types.ID {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *GSLBPatchRequest) SetIconID(v types.ID) {
+	o.IconID = v
+}
+
+// GetPatchEmptyToIconID returns value of PatchEmptyToIconID
+func (o *GSLBPatchRequest) GetPatchEmptyToIconID() bool {
+	return o.PatchEmptyToIconID
+}
+
+// SetPatchEmptyToIconID sets value to PatchEmptyToIconID
+func (o *GSLBPatchRequest) SetPatchEmptyToIconID(v bool) {
+	o.PatchEmptyToIconID = v
+}
+
+// GetHealthCheck returns value of HealthCheck
+func (o *GSLBPatchRequest) GetHealthCheck() *GSLBHealthCheck {
+	return o.HealthCheck
+}
+
+// SetHealthCheck sets value to HealthCheck
+func (o *GSLBPatchRequest) SetHealthCheck(v *GSLBHealthCheck) {
+	o.HealthCheck = v
+}
+
+// GetPatchEmptyToHealthCheck returns value of PatchEmptyToHealthCheck
+func (o *GSLBPatchRequest) GetPatchEmptyToHealthCheck() bool {
+	return o.PatchEmptyToHealthCheck
+}
+
+// SetPatchEmptyToHealthCheck sets value to PatchEmptyToHealthCheck
+func (o *GSLBPatchRequest) SetPatchEmptyToHealthCheck(v bool) {
+	o.PatchEmptyToHealthCheck = v
+}
+
+// GetDelayLoop returns value of DelayLoop
+func (o *GSLBPatchRequest) GetDelayLoop() int {
+	if o.DelayLoop == 0 {
+		return 10
+	}
+	return o.DelayLoop
+}
+
+// SetDelayLoop sets value to DelayLoop
+func (o *GSLBPatchRequest) SetDelayLoop(v int) {
+	o.DelayLoop = v
+}
+
+// GetPatchEmptyToDelayLoop returns value of PatchEmptyToDelayLoop
+func (o *GSLBPatchRequest) GetPatchEmptyToDelayLoop() bool {
+	return o.PatchEmptyToDelayLoop
+}
+
+// SetPatchEmptyToDelayLoop sets value to PatchEmptyToDelayLoop
+func (o *GSLBPatchRequest) SetPatchEmptyToDelayLoop(v bool) {
+	o.PatchEmptyToDelayLoop = v
+}
+
+// GetWeighted returns value of Weighted
+func (o *GSLBPatchRequest) GetWeighted() types.StringFlag {
+	return o.Weighted
+}
+
+// SetWeighted sets value to Weighted
+func (o *GSLBPatchRequest) SetWeighted(v types.StringFlag) {
+	o.Weighted = v
+}
+
+// GetPatchEmptyToWeighted returns value of PatchEmptyToWeighted
+func (o *GSLBPatchRequest) GetPatchEmptyToWeighted() bool {
+	return o.PatchEmptyToWeighted
+}
+
+// SetPatchEmptyToWeighted sets value to PatchEmptyToWeighted
+func (o *GSLBPatchRequest) SetPatchEmptyToWeighted(v bool) {
+	o.PatchEmptyToWeighted = v
+}
+
+// GetSorryServer returns value of SorryServer
+func (o *GSLBPatchRequest) GetSorryServer() string {
+	return o.SorryServer
+}
+
+// SetSorryServer sets value to SorryServer
+func (o *GSLBPatchRequest) SetSorryServer(v string) {
+	o.SorryServer = v
+}
+
+// GetPatchEmptyToSorryServer returns value of PatchEmptyToSorryServer
+func (o *GSLBPatchRequest) GetPatchEmptyToSorryServer() bool {
+	return o.PatchEmptyToSorryServer
+}
+
+// SetPatchEmptyToSorryServer sets value to PatchEmptyToSorryServer
+func (o *GSLBPatchRequest) SetPatchEmptyToSorryServer(v bool) {
+	o.PatchEmptyToSorryServer = v
+}
+
+// GetDestinationServers returns value of DestinationServers
+func (o *GSLBPatchRequest) GetDestinationServers() []*GSLBServer {
+	return o.DestinationServers
+}
+
+// SetDestinationServers sets value to DestinationServers
+func (o *GSLBPatchRequest) SetDestinationServers(v []*GSLBServer) {
+	o.DestinationServers = v
+}
+
+// GetPatchEmptyToDestinationServers returns value of PatchEmptyToDestinationServers
+func (o *GSLBPatchRequest) GetPatchEmptyToDestinationServers() bool {
+	return o.PatchEmptyToDestinationServers
+}
+
+// SetPatchEmptyToDestinationServers sets value to PatchEmptyToDestinationServers
+func (o *GSLBPatchRequest) SetPatchEmptyToDestinationServers(v bool) {
+	o.PatchEmptyToDestinationServers = v
+}
+
+// GetSettingsHash returns value of SettingsHash
+func (o *GSLBPatchRequest) GetSettingsHash() string {
+	return o.SettingsHash
+}
+
+// SetSettingsHash sets value to SettingsHash
+func (o *GSLBPatchRequest) SetSettingsHash(v string) {
+	o.SettingsHash = v
+}
+
+/*************************************************
 * Icon
 *************************************************/
 
@@ -8268,6 +9600,85 @@ func (o *IconUpdateRequest) ClearTags() {
 }
 
 /*************************************************
+* IconPatchRequest
+*************************************************/
+
+// IconPatchRequest represents API parameter/response structure
+type IconPatchRequest struct {
+	Name             string `validate:"required"`
+	Tags             types.Tags
+	PatchEmptyToTags bool
+}
+
+// Validate validates by field tags
+func (o *IconPatchRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *IconPatchRequest) setDefaults() interface{} {
+	return &struct {
+		Name             string `validate:"required"`
+		Tags             types.Tags
+		PatchEmptyToTags bool
+	}{
+		Name:             o.GetName(),
+		Tags:             o.GetTags(),
+		PatchEmptyToTags: o.GetPatchEmptyToTags(),
+	}
+}
+
+// GetName returns value of Name
+func (o *IconPatchRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *IconPatchRequest) SetName(v string) {
+	o.Name = v
+}
+
+// GetTags returns value of Tags
+func (o *IconPatchRequest) GetTags() types.Tags {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *IconPatchRequest) SetTags(v types.Tags) {
+	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *IconPatchRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *IconPatchRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *IconPatchRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *IconPatchRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
+// GetPatchEmptyToTags returns value of PatchEmptyToTags
+func (o *IconPatchRequest) GetPatchEmptyToTags() bool {
+	return o.PatchEmptyToTags
+}
+
+// SetPatchEmptyToTags sets value to PatchEmptyToTags
+func (o *IconPatchRequest) SetPatchEmptyToTags(v bool) {
+	o.PatchEmptyToTags = v
+}
+
+/*************************************************
 * Interface
 *************************************************/
 
@@ -8488,6 +9899,52 @@ func (o *InterfaceUpdateRequest) GetUserIPAddress() string {
 // SetUserIPAddress sets value to UserIPAddress
 func (o *InterfaceUpdateRequest) SetUserIPAddress(v string) {
 	o.UserIPAddress = v
+}
+
+/*************************************************
+* InterfacePatchRequest
+*************************************************/
+
+// InterfacePatchRequest represents API parameter/response structure
+type InterfacePatchRequest struct {
+	UserIPAddress             string
+	PatchEmptyToUserIPAddress bool
+}
+
+// Validate validates by field tags
+func (o *InterfacePatchRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *InterfacePatchRequest) setDefaults() interface{} {
+	return &struct {
+		UserIPAddress             string
+		PatchEmptyToUserIPAddress bool
+	}{
+		UserIPAddress:             o.GetUserIPAddress(),
+		PatchEmptyToUserIPAddress: o.GetPatchEmptyToUserIPAddress(),
+	}
+}
+
+// GetUserIPAddress returns value of UserIPAddress
+func (o *InterfacePatchRequest) GetUserIPAddress() string {
+	return o.UserIPAddress
+}
+
+// SetUserIPAddress sets value to UserIPAddress
+func (o *InterfacePatchRequest) SetUserIPAddress(v string) {
+	o.UserIPAddress = v
+}
+
+// GetPatchEmptyToUserIPAddress returns value of PatchEmptyToUserIPAddress
+func (o *InterfacePatchRequest) GetPatchEmptyToUserIPAddress() bool {
+	return o.PatchEmptyToUserIPAddress
+}
+
+// SetPatchEmptyToUserIPAddress sets value to PatchEmptyToUserIPAddress
+func (o *InterfacePatchRequest) SetPatchEmptyToUserIPAddress(v bool) {
+	o.PatchEmptyToUserIPAddress = v
 }
 
 /*************************************************
@@ -9223,6 +10680,137 @@ func (o *InternetUpdateRequest) GetIconID() types.ID {
 // SetIconID sets value to IconID
 func (o *InternetUpdateRequest) SetIconID(v types.ID) {
 	o.IconID = v
+}
+
+/*************************************************
+* InternetPatchRequest
+*************************************************/
+
+// InternetPatchRequest represents API parameter/response structure
+type InternetPatchRequest struct {
+	Name                    string `validate:"required"`
+	Description             string `validate:"min=0,max=512"`
+	PatchEmptyToDescription bool
+	Tags                    types.Tags
+	PatchEmptyToTags        bool
+	IconID                  types.ID `mapconv:"Icon.ID"`
+	PatchEmptyToIconID      bool
+}
+
+// Validate validates by field tags
+func (o *InternetPatchRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *InternetPatchRequest) setDefaults() interface{} {
+	return &struct {
+		Name                    string `validate:"required"`
+		Description             string `validate:"min=0,max=512"`
+		PatchEmptyToDescription bool
+		Tags                    types.Tags
+		PatchEmptyToTags        bool
+		IconID                  types.ID `mapconv:"Icon.ID"`
+		PatchEmptyToIconID      bool
+	}{
+		Name:                    o.GetName(),
+		Description:             o.GetDescription(),
+		PatchEmptyToDescription: o.GetPatchEmptyToDescription(),
+		Tags:                    o.GetTags(),
+		PatchEmptyToTags:        o.GetPatchEmptyToTags(),
+		IconID:                  o.GetIconID(),
+		PatchEmptyToIconID:      o.GetPatchEmptyToIconID(),
+	}
+}
+
+// GetName returns value of Name
+func (o *InternetPatchRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *InternetPatchRequest) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *InternetPatchRequest) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *InternetPatchRequest) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetPatchEmptyToDescription returns value of PatchEmptyToDescription
+func (o *InternetPatchRequest) GetPatchEmptyToDescription() bool {
+	return o.PatchEmptyToDescription
+}
+
+// SetPatchEmptyToDescription sets value to PatchEmptyToDescription
+func (o *InternetPatchRequest) SetPatchEmptyToDescription(v bool) {
+	o.PatchEmptyToDescription = v
+}
+
+// GetTags returns value of Tags
+func (o *InternetPatchRequest) GetTags() types.Tags {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *InternetPatchRequest) SetTags(v types.Tags) {
+	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *InternetPatchRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *InternetPatchRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *InternetPatchRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *InternetPatchRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
+// GetPatchEmptyToTags returns value of PatchEmptyToTags
+func (o *InternetPatchRequest) GetPatchEmptyToTags() bool {
+	return o.PatchEmptyToTags
+}
+
+// SetPatchEmptyToTags sets value to PatchEmptyToTags
+func (o *InternetPatchRequest) SetPatchEmptyToTags(v bool) {
+	o.PatchEmptyToTags = v
+}
+
+// GetIconID returns value of IconID
+func (o *InternetPatchRequest) GetIconID() types.ID {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *InternetPatchRequest) SetIconID(v types.ID) {
+	o.IconID = v
+}
+
+// GetPatchEmptyToIconID returns value of PatchEmptyToIconID
+func (o *InternetPatchRequest) GetPatchEmptyToIconID() bool {
+	return o.PatchEmptyToIconID
+}
+
+// SetPatchEmptyToIconID sets value to PatchEmptyToIconID
+func (o *InternetPatchRequest) SetPatchEmptyToIconID(v bool) {
+	o.PatchEmptyToIconID = v
 }
 
 /*************************************************
@@ -10256,6 +11844,39 @@ func (o *LicenseUpdateRequest) SetName(v string) {
 }
 
 /*************************************************
+* LicensePatchRequest
+*************************************************/
+
+// LicensePatchRequest represents API parameter/response structure
+type LicensePatchRequest struct {
+	Name string `validate:"required"`
+}
+
+// Validate validates by field tags
+func (o *LicensePatchRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *LicensePatchRequest) setDefaults() interface{} {
+	return &struct {
+		Name string `validate:"required"`
+	}{
+		Name: o.GetName(),
+	}
+}
+
+// GetName returns value of Name
+func (o *LicensePatchRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *LicensePatchRequest) SetName(v string) {
+	o.Name = v
+}
+
+/*************************************************
 * LicenseInfo
 *************************************************/
 
@@ -11251,6 +12872,176 @@ func (o *LoadBalancerUpdateRequest) GetSettingsHash() string {
 
 // SetSettingsHash sets value to SettingsHash
 func (o *LoadBalancerUpdateRequest) SetSettingsHash(v string) {
+	o.SettingsHash = v
+}
+
+/*************************************************
+* LoadBalancerPatchRequest
+*************************************************/
+
+// LoadBalancerPatchRequest represents API parameter/response structure
+type LoadBalancerPatchRequest struct {
+	Name                           string `validate:"required"`
+	Description                    string `validate:"min=0,max=512"`
+	PatchEmptyToDescription        bool
+	Tags                           types.Tags
+	PatchEmptyToTags               bool
+	IconID                         types.ID `mapconv:"Icon.ID"`
+	PatchEmptyToIconID             bool
+	VirtualIPAddresses             []*LoadBalancerVirtualIPAddress `mapconv:"Settings.[]LoadBalancer,recursive" validate:"min=0,max=10"`
+	PatchEmptyToVirtualIPAddresses bool
+	SettingsHash                   string `json:",omitempty" mapconv:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *LoadBalancerPatchRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *LoadBalancerPatchRequest) setDefaults() interface{} {
+	return &struct {
+		Name                           string `validate:"required"`
+		Description                    string `validate:"min=0,max=512"`
+		PatchEmptyToDescription        bool
+		Tags                           types.Tags
+		PatchEmptyToTags               bool
+		IconID                         types.ID `mapconv:"Icon.ID"`
+		PatchEmptyToIconID             bool
+		VirtualIPAddresses             []*LoadBalancerVirtualIPAddress `mapconv:"Settings.[]LoadBalancer,recursive" validate:"min=0,max=10"`
+		PatchEmptyToVirtualIPAddresses bool
+		SettingsHash                   string `json:",omitempty" mapconv:",omitempty"`
+	}{
+		Name:                           o.GetName(),
+		Description:                    o.GetDescription(),
+		PatchEmptyToDescription:        o.GetPatchEmptyToDescription(),
+		Tags:                           o.GetTags(),
+		PatchEmptyToTags:               o.GetPatchEmptyToTags(),
+		IconID:                         o.GetIconID(),
+		PatchEmptyToIconID:             o.GetPatchEmptyToIconID(),
+		VirtualIPAddresses:             o.GetVirtualIPAddresses(),
+		PatchEmptyToVirtualIPAddresses: o.GetPatchEmptyToVirtualIPAddresses(),
+		SettingsHash:                   o.GetSettingsHash(),
+	}
+}
+
+// GetName returns value of Name
+func (o *LoadBalancerPatchRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *LoadBalancerPatchRequest) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *LoadBalancerPatchRequest) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *LoadBalancerPatchRequest) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetPatchEmptyToDescription returns value of PatchEmptyToDescription
+func (o *LoadBalancerPatchRequest) GetPatchEmptyToDescription() bool {
+	return o.PatchEmptyToDescription
+}
+
+// SetPatchEmptyToDescription sets value to PatchEmptyToDescription
+func (o *LoadBalancerPatchRequest) SetPatchEmptyToDescription(v bool) {
+	o.PatchEmptyToDescription = v
+}
+
+// GetTags returns value of Tags
+func (o *LoadBalancerPatchRequest) GetTags() types.Tags {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *LoadBalancerPatchRequest) SetTags(v types.Tags) {
+	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *LoadBalancerPatchRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *LoadBalancerPatchRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *LoadBalancerPatchRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *LoadBalancerPatchRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
+// GetPatchEmptyToTags returns value of PatchEmptyToTags
+func (o *LoadBalancerPatchRequest) GetPatchEmptyToTags() bool {
+	return o.PatchEmptyToTags
+}
+
+// SetPatchEmptyToTags sets value to PatchEmptyToTags
+func (o *LoadBalancerPatchRequest) SetPatchEmptyToTags(v bool) {
+	o.PatchEmptyToTags = v
+}
+
+// GetIconID returns value of IconID
+func (o *LoadBalancerPatchRequest) GetIconID() types.ID {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *LoadBalancerPatchRequest) SetIconID(v types.ID) {
+	o.IconID = v
+}
+
+// GetPatchEmptyToIconID returns value of PatchEmptyToIconID
+func (o *LoadBalancerPatchRequest) GetPatchEmptyToIconID() bool {
+	return o.PatchEmptyToIconID
+}
+
+// SetPatchEmptyToIconID sets value to PatchEmptyToIconID
+func (o *LoadBalancerPatchRequest) SetPatchEmptyToIconID(v bool) {
+	o.PatchEmptyToIconID = v
+}
+
+// GetVirtualIPAddresses returns value of VirtualIPAddresses
+func (o *LoadBalancerPatchRequest) GetVirtualIPAddresses() []*LoadBalancerVirtualIPAddress {
+	return o.VirtualIPAddresses
+}
+
+// SetVirtualIPAddresses sets value to VirtualIPAddresses
+func (o *LoadBalancerPatchRequest) SetVirtualIPAddresses(v []*LoadBalancerVirtualIPAddress) {
+	o.VirtualIPAddresses = v
+}
+
+// GetPatchEmptyToVirtualIPAddresses returns value of PatchEmptyToVirtualIPAddresses
+func (o *LoadBalancerPatchRequest) GetPatchEmptyToVirtualIPAddresses() bool {
+	return o.PatchEmptyToVirtualIPAddresses
+}
+
+// SetPatchEmptyToVirtualIPAddresses sets value to PatchEmptyToVirtualIPAddresses
+func (o *LoadBalancerPatchRequest) SetPatchEmptyToVirtualIPAddresses(v bool) {
+	o.PatchEmptyToVirtualIPAddresses = v
+}
+
+// GetSettingsHash returns value of SettingsHash
+func (o *LoadBalancerPatchRequest) GetSettingsHash() string {
+	return o.SettingsHash
+}
+
+// SetSettingsHash sets value to SettingsHash
+func (o *LoadBalancerPatchRequest) SetSettingsHash(v string) {
 	o.SettingsHash = v
 }
 
@@ -12428,6 +14219,176 @@ func (o *MobileGatewayUpdateRequest) GetSettingsHash() string {
 
 // SetSettingsHash sets value to SettingsHash
 func (o *MobileGatewayUpdateRequest) SetSettingsHash(v string) {
+	o.SettingsHash = v
+}
+
+/*************************************************
+* MobileGatewayPatchRequest
+*************************************************/
+
+// MobileGatewayPatchRequest represents API parameter/response structure
+type MobileGatewayPatchRequest struct {
+	Name                    string `validate:"required"`
+	Description             string `validate:"min=0,max=512"`
+	PatchEmptyToDescription bool
+	Tags                    types.Tags
+	PatchEmptyToTags        bool
+	IconID                  types.ID `mapconv:"Icon.ID"`
+	PatchEmptyToIconID      bool
+	Settings                *MobileGatewaySetting `json:",omitempty" mapconv:",omitempty,recursive"`
+	PatchEmptyToSettings    bool
+	SettingsHash            string `json:",omitempty" mapconv:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *MobileGatewayPatchRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *MobileGatewayPatchRequest) setDefaults() interface{} {
+	return &struct {
+		Name                    string `validate:"required"`
+		Description             string `validate:"min=0,max=512"`
+		PatchEmptyToDescription bool
+		Tags                    types.Tags
+		PatchEmptyToTags        bool
+		IconID                  types.ID `mapconv:"Icon.ID"`
+		PatchEmptyToIconID      bool
+		Settings                *MobileGatewaySetting `json:",omitempty" mapconv:",omitempty,recursive"`
+		PatchEmptyToSettings    bool
+		SettingsHash            string `json:",omitempty" mapconv:",omitempty"`
+	}{
+		Name:                    o.GetName(),
+		Description:             o.GetDescription(),
+		PatchEmptyToDescription: o.GetPatchEmptyToDescription(),
+		Tags:                    o.GetTags(),
+		PatchEmptyToTags:        o.GetPatchEmptyToTags(),
+		IconID:                  o.GetIconID(),
+		PatchEmptyToIconID:      o.GetPatchEmptyToIconID(),
+		Settings:                o.GetSettings(),
+		PatchEmptyToSettings:    o.GetPatchEmptyToSettings(),
+		SettingsHash:            o.GetSettingsHash(),
+	}
+}
+
+// GetName returns value of Name
+func (o *MobileGatewayPatchRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *MobileGatewayPatchRequest) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *MobileGatewayPatchRequest) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *MobileGatewayPatchRequest) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetPatchEmptyToDescription returns value of PatchEmptyToDescription
+func (o *MobileGatewayPatchRequest) GetPatchEmptyToDescription() bool {
+	return o.PatchEmptyToDescription
+}
+
+// SetPatchEmptyToDescription sets value to PatchEmptyToDescription
+func (o *MobileGatewayPatchRequest) SetPatchEmptyToDescription(v bool) {
+	o.PatchEmptyToDescription = v
+}
+
+// GetTags returns value of Tags
+func (o *MobileGatewayPatchRequest) GetTags() types.Tags {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *MobileGatewayPatchRequest) SetTags(v types.Tags) {
+	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *MobileGatewayPatchRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *MobileGatewayPatchRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *MobileGatewayPatchRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *MobileGatewayPatchRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
+// GetPatchEmptyToTags returns value of PatchEmptyToTags
+func (o *MobileGatewayPatchRequest) GetPatchEmptyToTags() bool {
+	return o.PatchEmptyToTags
+}
+
+// SetPatchEmptyToTags sets value to PatchEmptyToTags
+func (o *MobileGatewayPatchRequest) SetPatchEmptyToTags(v bool) {
+	o.PatchEmptyToTags = v
+}
+
+// GetIconID returns value of IconID
+func (o *MobileGatewayPatchRequest) GetIconID() types.ID {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *MobileGatewayPatchRequest) SetIconID(v types.ID) {
+	o.IconID = v
+}
+
+// GetPatchEmptyToIconID returns value of PatchEmptyToIconID
+func (o *MobileGatewayPatchRequest) GetPatchEmptyToIconID() bool {
+	return o.PatchEmptyToIconID
+}
+
+// SetPatchEmptyToIconID sets value to PatchEmptyToIconID
+func (o *MobileGatewayPatchRequest) SetPatchEmptyToIconID(v bool) {
+	o.PatchEmptyToIconID = v
+}
+
+// GetSettings returns value of Settings
+func (o *MobileGatewayPatchRequest) GetSettings() *MobileGatewaySetting {
+	return o.Settings
+}
+
+// SetSettings sets value to Settings
+func (o *MobileGatewayPatchRequest) SetSettings(v *MobileGatewaySetting) {
+	o.Settings = v
+}
+
+// GetPatchEmptyToSettings returns value of PatchEmptyToSettings
+func (o *MobileGatewayPatchRequest) GetPatchEmptyToSettings() bool {
+	return o.PatchEmptyToSettings
+}
+
+// SetPatchEmptyToSettings sets value to PatchEmptyToSettings
+func (o *MobileGatewayPatchRequest) SetPatchEmptyToSettings(v bool) {
+	o.PatchEmptyToSettings = v
+}
+
+// GetSettingsHash returns value of SettingsHash
+func (o *MobileGatewayPatchRequest) GetSettingsHash() string {
+	return o.SettingsHash
+}
+
+// SetSettingsHash sets value to SettingsHash
+func (o *MobileGatewayPatchRequest) SetSettingsHash(v string) {
 	o.SettingsHash = v
 }
 
@@ -13690,6 +15651,137 @@ func (o *NFSUpdateRequest) SetIconID(v types.ID) {
 }
 
 /*************************************************
+* NFSPatchRequest
+*************************************************/
+
+// NFSPatchRequest represents API parameter/response structure
+type NFSPatchRequest struct {
+	Name                    string `validate:"required"`
+	Description             string `validate:"min=0,max=512"`
+	PatchEmptyToDescription bool
+	Tags                    types.Tags
+	PatchEmptyToTags        bool
+	IconID                  types.ID `mapconv:"Icon.ID"`
+	PatchEmptyToIconID      bool
+}
+
+// Validate validates by field tags
+func (o *NFSPatchRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *NFSPatchRequest) setDefaults() interface{} {
+	return &struct {
+		Name                    string `validate:"required"`
+		Description             string `validate:"min=0,max=512"`
+		PatchEmptyToDescription bool
+		Tags                    types.Tags
+		PatchEmptyToTags        bool
+		IconID                  types.ID `mapconv:"Icon.ID"`
+		PatchEmptyToIconID      bool
+	}{
+		Name:                    o.GetName(),
+		Description:             o.GetDescription(),
+		PatchEmptyToDescription: o.GetPatchEmptyToDescription(),
+		Tags:                    o.GetTags(),
+		PatchEmptyToTags:        o.GetPatchEmptyToTags(),
+		IconID:                  o.GetIconID(),
+		PatchEmptyToIconID:      o.GetPatchEmptyToIconID(),
+	}
+}
+
+// GetName returns value of Name
+func (o *NFSPatchRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *NFSPatchRequest) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *NFSPatchRequest) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *NFSPatchRequest) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetPatchEmptyToDescription returns value of PatchEmptyToDescription
+func (o *NFSPatchRequest) GetPatchEmptyToDescription() bool {
+	return o.PatchEmptyToDescription
+}
+
+// SetPatchEmptyToDescription sets value to PatchEmptyToDescription
+func (o *NFSPatchRequest) SetPatchEmptyToDescription(v bool) {
+	o.PatchEmptyToDescription = v
+}
+
+// GetTags returns value of Tags
+func (o *NFSPatchRequest) GetTags() types.Tags {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *NFSPatchRequest) SetTags(v types.Tags) {
+	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *NFSPatchRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *NFSPatchRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *NFSPatchRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *NFSPatchRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
+// GetPatchEmptyToTags returns value of PatchEmptyToTags
+func (o *NFSPatchRequest) GetPatchEmptyToTags() bool {
+	return o.PatchEmptyToTags
+}
+
+// SetPatchEmptyToTags sets value to PatchEmptyToTags
+func (o *NFSPatchRequest) SetPatchEmptyToTags(v bool) {
+	o.PatchEmptyToTags = v
+}
+
+// GetIconID returns value of IconID
+func (o *NFSPatchRequest) GetIconID() types.ID {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *NFSPatchRequest) SetIconID(v types.ID) {
+	o.IconID = v
+}
+
+// GetPatchEmptyToIconID returns value of PatchEmptyToIconID
+func (o *NFSPatchRequest) GetPatchEmptyToIconID() bool {
+	return o.PatchEmptyToIconID
+}
+
+// SetPatchEmptyToIconID sets value to PatchEmptyToIconID
+func (o *NFSPatchRequest) SetPatchEmptyToIconID(v bool) {
+	o.PatchEmptyToIconID = v
+}
+
+/*************************************************
 * FreeDiskSizeActivity
 *************************************************/
 
@@ -14182,6 +16274,163 @@ func (o *NoteUpdateRequest) SetContent(v string) {
 }
 
 /*************************************************
+* NotePatchRequest
+*************************************************/
+
+// NotePatchRequest represents API parameter/response structure
+type NotePatchRequest struct {
+	Name                string `validate:"required"`
+	Tags                types.Tags
+	PatchEmptyToTags    bool
+	IconID              types.ID `mapconv:"Icon.ID"`
+	PatchEmptyToIconID  bool
+	Class               string
+	PatchEmptyToClass   bool
+	Content             string
+	PatchEmptyToContent bool
+}
+
+// Validate validates by field tags
+func (o *NotePatchRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *NotePatchRequest) setDefaults() interface{} {
+	return &struct {
+		Name                string `validate:"required"`
+		Tags                types.Tags
+		PatchEmptyToTags    bool
+		IconID              types.ID `mapconv:"Icon.ID"`
+		PatchEmptyToIconID  bool
+		Class               string
+		PatchEmptyToClass   bool
+		Content             string
+		PatchEmptyToContent bool
+	}{
+		Name:                o.GetName(),
+		Tags:                o.GetTags(),
+		PatchEmptyToTags:    o.GetPatchEmptyToTags(),
+		IconID:              o.GetIconID(),
+		PatchEmptyToIconID:  o.GetPatchEmptyToIconID(),
+		Class:               o.GetClass(),
+		PatchEmptyToClass:   o.GetPatchEmptyToClass(),
+		Content:             o.GetContent(),
+		PatchEmptyToContent: o.GetPatchEmptyToContent(),
+	}
+}
+
+// GetName returns value of Name
+func (o *NotePatchRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *NotePatchRequest) SetName(v string) {
+	o.Name = v
+}
+
+// GetTags returns value of Tags
+func (o *NotePatchRequest) GetTags() types.Tags {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *NotePatchRequest) SetTags(v types.Tags) {
+	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *NotePatchRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *NotePatchRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *NotePatchRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *NotePatchRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
+// GetPatchEmptyToTags returns value of PatchEmptyToTags
+func (o *NotePatchRequest) GetPatchEmptyToTags() bool {
+	return o.PatchEmptyToTags
+}
+
+// SetPatchEmptyToTags sets value to PatchEmptyToTags
+func (o *NotePatchRequest) SetPatchEmptyToTags(v bool) {
+	o.PatchEmptyToTags = v
+}
+
+// GetIconID returns value of IconID
+func (o *NotePatchRequest) GetIconID() types.ID {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *NotePatchRequest) SetIconID(v types.ID) {
+	o.IconID = v
+}
+
+// GetPatchEmptyToIconID returns value of PatchEmptyToIconID
+func (o *NotePatchRequest) GetPatchEmptyToIconID() bool {
+	return o.PatchEmptyToIconID
+}
+
+// SetPatchEmptyToIconID sets value to PatchEmptyToIconID
+func (o *NotePatchRequest) SetPatchEmptyToIconID(v bool) {
+	o.PatchEmptyToIconID = v
+}
+
+// GetClass returns value of Class
+func (o *NotePatchRequest) GetClass() string {
+	return o.Class
+}
+
+// SetClass sets value to Class
+func (o *NotePatchRequest) SetClass(v string) {
+	o.Class = v
+}
+
+// GetPatchEmptyToClass returns value of PatchEmptyToClass
+func (o *NotePatchRequest) GetPatchEmptyToClass() bool {
+	return o.PatchEmptyToClass
+}
+
+// SetPatchEmptyToClass sets value to PatchEmptyToClass
+func (o *NotePatchRequest) SetPatchEmptyToClass(v bool) {
+	o.PatchEmptyToClass = v
+}
+
+// GetContent returns value of Content
+func (o *NotePatchRequest) GetContent() string {
+	return o.Content
+}
+
+// SetContent sets value to Content
+func (o *NotePatchRequest) SetContent(v string) {
+	o.Content = v
+}
+
+// GetPatchEmptyToContent returns value of PatchEmptyToContent
+func (o *NotePatchRequest) GetPatchEmptyToContent() bool {
+	return o.PatchEmptyToContent
+}
+
+// SetPatchEmptyToContent sets value to PatchEmptyToContent
+func (o *NotePatchRequest) SetPatchEmptyToContent(v bool) {
+	o.PatchEmptyToContent = v
+}
+
+/*************************************************
 * PacketFilter
 *************************************************/
 
@@ -14513,6 +16762,91 @@ func (o *PacketFilterUpdateRequest) GetExpression() []*PacketFilterExpression {
 // SetExpression sets value to Expression
 func (o *PacketFilterUpdateRequest) SetExpression(v []*PacketFilterExpression) {
 	o.Expression = v
+}
+
+/*************************************************
+* PacketFilterPatchRequest
+*************************************************/
+
+// PacketFilterPatchRequest represents API parameter/response structure
+type PacketFilterPatchRequest struct {
+	Name                    string `validate:"required"`
+	Description             string `validate:"min=0,max=512"`
+	PatchEmptyToDescription bool
+	Expression              []*PacketFilterExpression `mapconv:"[]Expression,recursive"`
+	PatchEmptyToExpression  bool
+}
+
+// Validate validates by field tags
+func (o *PacketFilterPatchRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *PacketFilterPatchRequest) setDefaults() interface{} {
+	return &struct {
+		Name                    string `validate:"required"`
+		Description             string `validate:"min=0,max=512"`
+		PatchEmptyToDescription bool
+		Expression              []*PacketFilterExpression `mapconv:"[]Expression,recursive"`
+		PatchEmptyToExpression  bool
+	}{
+		Name:                    o.GetName(),
+		Description:             o.GetDescription(),
+		PatchEmptyToDescription: o.GetPatchEmptyToDescription(),
+		Expression:              o.GetExpression(),
+		PatchEmptyToExpression:  o.GetPatchEmptyToExpression(),
+	}
+}
+
+// GetName returns value of Name
+func (o *PacketFilterPatchRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *PacketFilterPatchRequest) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *PacketFilterPatchRequest) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *PacketFilterPatchRequest) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetPatchEmptyToDescription returns value of PatchEmptyToDescription
+func (o *PacketFilterPatchRequest) GetPatchEmptyToDescription() bool {
+	return o.PatchEmptyToDescription
+}
+
+// SetPatchEmptyToDescription sets value to PatchEmptyToDescription
+func (o *PacketFilterPatchRequest) SetPatchEmptyToDescription(v bool) {
+	o.PatchEmptyToDescription = v
+}
+
+// GetExpression returns value of Expression
+func (o *PacketFilterPatchRequest) GetExpression() []*PacketFilterExpression {
+	return o.Expression
+}
+
+// SetExpression sets value to Expression
+func (o *PacketFilterPatchRequest) SetExpression(v []*PacketFilterExpression) {
+	o.Expression = v
+}
+
+// GetPatchEmptyToExpression returns value of PatchEmptyToExpression
+func (o *PacketFilterPatchRequest) GetPatchEmptyToExpression() bool {
+	return o.PatchEmptyToExpression
+}
+
+// SetPatchEmptyToExpression sets value to PatchEmptyToExpression
+func (o *PacketFilterPatchRequest) SetPatchEmptyToExpression(v bool) {
+	o.PatchEmptyToExpression = v
 }
 
 /*************************************************
@@ -14962,6 +17296,137 @@ func (o *PrivateHostUpdateRequest) GetIconID() types.ID {
 // SetIconID sets value to IconID
 func (o *PrivateHostUpdateRequest) SetIconID(v types.ID) {
 	o.IconID = v
+}
+
+/*************************************************
+* PrivateHostPatchRequest
+*************************************************/
+
+// PrivateHostPatchRequest represents API parameter/response structure
+type PrivateHostPatchRequest struct {
+	Name                    string `validate:"required"`
+	Description             string `validate:"min=0,max=512"`
+	PatchEmptyToDescription bool
+	Tags                    types.Tags
+	PatchEmptyToTags        bool
+	IconID                  types.ID `mapconv:"Icon.ID"`
+	PatchEmptyToIconID      bool
+}
+
+// Validate validates by field tags
+func (o *PrivateHostPatchRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *PrivateHostPatchRequest) setDefaults() interface{} {
+	return &struct {
+		Name                    string `validate:"required"`
+		Description             string `validate:"min=0,max=512"`
+		PatchEmptyToDescription bool
+		Tags                    types.Tags
+		PatchEmptyToTags        bool
+		IconID                  types.ID `mapconv:"Icon.ID"`
+		PatchEmptyToIconID      bool
+	}{
+		Name:                    o.GetName(),
+		Description:             o.GetDescription(),
+		PatchEmptyToDescription: o.GetPatchEmptyToDescription(),
+		Tags:                    o.GetTags(),
+		PatchEmptyToTags:        o.GetPatchEmptyToTags(),
+		IconID:                  o.GetIconID(),
+		PatchEmptyToIconID:      o.GetPatchEmptyToIconID(),
+	}
+}
+
+// GetName returns value of Name
+func (o *PrivateHostPatchRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *PrivateHostPatchRequest) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *PrivateHostPatchRequest) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *PrivateHostPatchRequest) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetPatchEmptyToDescription returns value of PatchEmptyToDescription
+func (o *PrivateHostPatchRequest) GetPatchEmptyToDescription() bool {
+	return o.PatchEmptyToDescription
+}
+
+// SetPatchEmptyToDescription sets value to PatchEmptyToDescription
+func (o *PrivateHostPatchRequest) SetPatchEmptyToDescription(v bool) {
+	o.PatchEmptyToDescription = v
+}
+
+// GetTags returns value of Tags
+func (o *PrivateHostPatchRequest) GetTags() types.Tags {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *PrivateHostPatchRequest) SetTags(v types.Tags) {
+	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *PrivateHostPatchRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *PrivateHostPatchRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *PrivateHostPatchRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *PrivateHostPatchRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
+// GetPatchEmptyToTags returns value of PatchEmptyToTags
+func (o *PrivateHostPatchRequest) GetPatchEmptyToTags() bool {
+	return o.PatchEmptyToTags
+}
+
+// SetPatchEmptyToTags sets value to PatchEmptyToTags
+func (o *PrivateHostPatchRequest) SetPatchEmptyToTags(v bool) {
+	o.PatchEmptyToTags = v
+}
+
+// GetIconID returns value of IconID
+func (o *PrivateHostPatchRequest) GetIconID() types.ID {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *PrivateHostPatchRequest) SetIconID(v types.ID) {
+	o.IconID = v
+}
+
+// GetPatchEmptyToIconID returns value of PatchEmptyToIconID
+func (o *PrivateHostPatchRequest) GetPatchEmptyToIconID() bool {
+	return o.PatchEmptyToIconID
+}
+
+// SetPatchEmptyToIconID sets value to PatchEmptyToIconID
+func (o *PrivateHostPatchRequest) SetPatchEmptyToIconID(v bool) {
+	o.PatchEmptyToIconID = v
 }
 
 /*************************************************
@@ -16145,6 +18610,306 @@ func (o *ProxyLBUpdateRequest) GetIconID() types.ID {
 // SetIconID sets value to IconID
 func (o *ProxyLBUpdateRequest) SetIconID(v types.ID) {
 	o.IconID = v
+}
+
+/*************************************************
+* ProxyLBPatchRequest
+*************************************************/
+
+// ProxyLBPatchRequest represents API parameter/response structure
+type ProxyLBPatchRequest struct {
+	HealthCheck               *ProxyLBHealthCheck `mapconv:"Settings.ProxyLB.HealthCheck,recursive"`
+	PatchEmptyToHealthCheck   bool
+	SorryServer               *ProxyLBSorryServer `mapconv:"Settings.ProxyLB.SorryServer,recursive"`
+	PatchEmptyToSorryServer   bool
+	BindPorts                 []*ProxyLBBindPort `mapconv:"Settings.ProxyLB.[]BindPorts,recursive"`
+	PatchEmptyToBindPorts     bool
+	Servers                   []*ProxyLBServer `mapconv:"Settings.ProxyLB.[]Servers,recursive"`
+	PatchEmptyToServers       bool
+	LetsEncrypt               *ProxyLBACMESetting `mapconv:"Settings.ProxyLB.LetsEncrypt,recursive"`
+	PatchEmptyToLetsEncrypt   bool
+	StickySession             *ProxyLBStickySession `mapconv:"Settings.ProxyLB.StickySession,recursive"`
+	PatchEmptyToStickySession bool
+	SettingsHash              string `json:",omitempty" mapconv:",omitempty"`
+	Name                      string `validate:"required"`
+	Description               string `validate:"min=0,max=512"`
+	PatchEmptyToDescription   bool
+	Tags                      types.Tags
+	PatchEmptyToTags          bool
+	IconID                    types.ID `mapconv:"Icon.ID"`
+	PatchEmptyToIconID        bool
+}
+
+// Validate validates by field tags
+func (o *ProxyLBPatchRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *ProxyLBPatchRequest) setDefaults() interface{} {
+	return &struct {
+		HealthCheck               *ProxyLBHealthCheck `mapconv:"Settings.ProxyLB.HealthCheck,recursive"`
+		PatchEmptyToHealthCheck   bool
+		SorryServer               *ProxyLBSorryServer `mapconv:"Settings.ProxyLB.SorryServer,recursive"`
+		PatchEmptyToSorryServer   bool
+		BindPorts                 []*ProxyLBBindPort `mapconv:"Settings.ProxyLB.[]BindPorts,recursive"`
+		PatchEmptyToBindPorts     bool
+		Servers                   []*ProxyLBServer `mapconv:"Settings.ProxyLB.[]Servers,recursive"`
+		PatchEmptyToServers       bool
+		LetsEncrypt               *ProxyLBACMESetting `mapconv:"Settings.ProxyLB.LetsEncrypt,recursive"`
+		PatchEmptyToLetsEncrypt   bool
+		StickySession             *ProxyLBStickySession `mapconv:"Settings.ProxyLB.StickySession,recursive"`
+		PatchEmptyToStickySession bool
+		SettingsHash              string `json:",omitempty" mapconv:",omitempty"`
+		Name                      string `validate:"required"`
+		Description               string `validate:"min=0,max=512"`
+		PatchEmptyToDescription   bool
+		Tags                      types.Tags
+		PatchEmptyToTags          bool
+		IconID                    types.ID `mapconv:"Icon.ID"`
+		PatchEmptyToIconID        bool
+	}{
+		HealthCheck:               o.GetHealthCheck(),
+		PatchEmptyToHealthCheck:   o.GetPatchEmptyToHealthCheck(),
+		SorryServer:               o.GetSorryServer(),
+		PatchEmptyToSorryServer:   o.GetPatchEmptyToSorryServer(),
+		BindPorts:                 o.GetBindPorts(),
+		PatchEmptyToBindPorts:     o.GetPatchEmptyToBindPorts(),
+		Servers:                   o.GetServers(),
+		PatchEmptyToServers:       o.GetPatchEmptyToServers(),
+		LetsEncrypt:               o.GetLetsEncrypt(),
+		PatchEmptyToLetsEncrypt:   o.GetPatchEmptyToLetsEncrypt(),
+		StickySession:             o.GetStickySession(),
+		PatchEmptyToStickySession: o.GetPatchEmptyToStickySession(),
+		SettingsHash:              o.GetSettingsHash(),
+		Name:                      o.GetName(),
+		Description:               o.GetDescription(),
+		PatchEmptyToDescription:   o.GetPatchEmptyToDescription(),
+		Tags:                      o.GetTags(),
+		PatchEmptyToTags:          o.GetPatchEmptyToTags(),
+		IconID:                    o.GetIconID(),
+		PatchEmptyToIconID:        o.GetPatchEmptyToIconID(),
+	}
+}
+
+// GetHealthCheck returns value of HealthCheck
+func (o *ProxyLBPatchRequest) GetHealthCheck() *ProxyLBHealthCheck {
+	return o.HealthCheck
+}
+
+// SetHealthCheck sets value to HealthCheck
+func (o *ProxyLBPatchRequest) SetHealthCheck(v *ProxyLBHealthCheck) {
+	o.HealthCheck = v
+}
+
+// GetPatchEmptyToHealthCheck returns value of PatchEmptyToHealthCheck
+func (o *ProxyLBPatchRequest) GetPatchEmptyToHealthCheck() bool {
+	return o.PatchEmptyToHealthCheck
+}
+
+// SetPatchEmptyToHealthCheck sets value to PatchEmptyToHealthCheck
+func (o *ProxyLBPatchRequest) SetPatchEmptyToHealthCheck(v bool) {
+	o.PatchEmptyToHealthCheck = v
+}
+
+// GetSorryServer returns value of SorryServer
+func (o *ProxyLBPatchRequest) GetSorryServer() *ProxyLBSorryServer {
+	return o.SorryServer
+}
+
+// SetSorryServer sets value to SorryServer
+func (o *ProxyLBPatchRequest) SetSorryServer(v *ProxyLBSorryServer) {
+	o.SorryServer = v
+}
+
+// GetPatchEmptyToSorryServer returns value of PatchEmptyToSorryServer
+func (o *ProxyLBPatchRequest) GetPatchEmptyToSorryServer() bool {
+	return o.PatchEmptyToSorryServer
+}
+
+// SetPatchEmptyToSorryServer sets value to PatchEmptyToSorryServer
+func (o *ProxyLBPatchRequest) SetPatchEmptyToSorryServer(v bool) {
+	o.PatchEmptyToSorryServer = v
+}
+
+// GetBindPorts returns value of BindPorts
+func (o *ProxyLBPatchRequest) GetBindPorts() []*ProxyLBBindPort {
+	return o.BindPorts
+}
+
+// SetBindPorts sets value to BindPorts
+func (o *ProxyLBPatchRequest) SetBindPorts(v []*ProxyLBBindPort) {
+	o.BindPorts = v
+}
+
+// GetPatchEmptyToBindPorts returns value of PatchEmptyToBindPorts
+func (o *ProxyLBPatchRequest) GetPatchEmptyToBindPorts() bool {
+	return o.PatchEmptyToBindPorts
+}
+
+// SetPatchEmptyToBindPorts sets value to PatchEmptyToBindPorts
+func (o *ProxyLBPatchRequest) SetPatchEmptyToBindPorts(v bool) {
+	o.PatchEmptyToBindPorts = v
+}
+
+// GetServers returns value of Servers
+func (o *ProxyLBPatchRequest) GetServers() []*ProxyLBServer {
+	return o.Servers
+}
+
+// SetServers sets value to Servers
+func (o *ProxyLBPatchRequest) SetServers(v []*ProxyLBServer) {
+	o.Servers = v
+}
+
+// GetPatchEmptyToServers returns value of PatchEmptyToServers
+func (o *ProxyLBPatchRequest) GetPatchEmptyToServers() bool {
+	return o.PatchEmptyToServers
+}
+
+// SetPatchEmptyToServers sets value to PatchEmptyToServers
+func (o *ProxyLBPatchRequest) SetPatchEmptyToServers(v bool) {
+	o.PatchEmptyToServers = v
+}
+
+// GetLetsEncrypt returns value of LetsEncrypt
+func (o *ProxyLBPatchRequest) GetLetsEncrypt() *ProxyLBACMESetting {
+	return o.LetsEncrypt
+}
+
+// SetLetsEncrypt sets value to LetsEncrypt
+func (o *ProxyLBPatchRequest) SetLetsEncrypt(v *ProxyLBACMESetting) {
+	o.LetsEncrypt = v
+}
+
+// GetPatchEmptyToLetsEncrypt returns value of PatchEmptyToLetsEncrypt
+func (o *ProxyLBPatchRequest) GetPatchEmptyToLetsEncrypt() bool {
+	return o.PatchEmptyToLetsEncrypt
+}
+
+// SetPatchEmptyToLetsEncrypt sets value to PatchEmptyToLetsEncrypt
+func (o *ProxyLBPatchRequest) SetPatchEmptyToLetsEncrypt(v bool) {
+	o.PatchEmptyToLetsEncrypt = v
+}
+
+// GetStickySession returns value of StickySession
+func (o *ProxyLBPatchRequest) GetStickySession() *ProxyLBStickySession {
+	return o.StickySession
+}
+
+// SetStickySession sets value to StickySession
+func (o *ProxyLBPatchRequest) SetStickySession(v *ProxyLBStickySession) {
+	o.StickySession = v
+}
+
+// GetPatchEmptyToStickySession returns value of PatchEmptyToStickySession
+func (o *ProxyLBPatchRequest) GetPatchEmptyToStickySession() bool {
+	return o.PatchEmptyToStickySession
+}
+
+// SetPatchEmptyToStickySession sets value to PatchEmptyToStickySession
+func (o *ProxyLBPatchRequest) SetPatchEmptyToStickySession(v bool) {
+	o.PatchEmptyToStickySession = v
+}
+
+// GetSettingsHash returns value of SettingsHash
+func (o *ProxyLBPatchRequest) GetSettingsHash() string {
+	return o.SettingsHash
+}
+
+// SetSettingsHash sets value to SettingsHash
+func (o *ProxyLBPatchRequest) SetSettingsHash(v string) {
+	o.SettingsHash = v
+}
+
+// GetName returns value of Name
+func (o *ProxyLBPatchRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *ProxyLBPatchRequest) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *ProxyLBPatchRequest) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *ProxyLBPatchRequest) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetPatchEmptyToDescription returns value of PatchEmptyToDescription
+func (o *ProxyLBPatchRequest) GetPatchEmptyToDescription() bool {
+	return o.PatchEmptyToDescription
+}
+
+// SetPatchEmptyToDescription sets value to PatchEmptyToDescription
+func (o *ProxyLBPatchRequest) SetPatchEmptyToDescription(v bool) {
+	o.PatchEmptyToDescription = v
+}
+
+// GetTags returns value of Tags
+func (o *ProxyLBPatchRequest) GetTags() types.Tags {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *ProxyLBPatchRequest) SetTags(v types.Tags) {
+	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *ProxyLBPatchRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *ProxyLBPatchRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *ProxyLBPatchRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *ProxyLBPatchRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
+// GetPatchEmptyToTags returns value of PatchEmptyToTags
+func (o *ProxyLBPatchRequest) GetPatchEmptyToTags() bool {
+	return o.PatchEmptyToTags
+}
+
+// SetPatchEmptyToTags sets value to PatchEmptyToTags
+func (o *ProxyLBPatchRequest) SetPatchEmptyToTags(v bool) {
+	o.PatchEmptyToTags = v
+}
+
+// GetIconID returns value of IconID
+func (o *ProxyLBPatchRequest) GetIconID() types.ID {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *ProxyLBPatchRequest) SetIconID(v types.ID) {
+	o.IconID = v
+}
+
+// GetPatchEmptyToIconID returns value of PatchEmptyToIconID
+func (o *ProxyLBPatchRequest) GetPatchEmptyToIconID() bool {
+	return o.PatchEmptyToIconID
+}
+
+// SetPatchEmptyToIconID sets value to PatchEmptyToIconID
+func (o *ProxyLBPatchRequest) SetPatchEmptyToIconID(v bool) {
+	o.PatchEmptyToIconID = v
 }
 
 /*************************************************
@@ -17636,6 +20401,137 @@ func (o *ServerUpdateRequest) SetIconID(v types.ID) {
 }
 
 /*************************************************
+* ServerPatchRequest
+*************************************************/
+
+// ServerPatchRequest represents API parameter/response structure
+type ServerPatchRequest struct {
+	Name                    string `validate:"required"`
+	Description             string `validate:"min=0,max=512"`
+	PatchEmptyToDescription bool
+	Tags                    types.Tags
+	PatchEmptyToTags        bool
+	IconID                  types.ID `mapconv:"Icon.ID"`
+	PatchEmptyToIconID      bool
+}
+
+// Validate validates by field tags
+func (o *ServerPatchRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *ServerPatchRequest) setDefaults() interface{} {
+	return &struct {
+		Name                    string `validate:"required"`
+		Description             string `validate:"min=0,max=512"`
+		PatchEmptyToDescription bool
+		Tags                    types.Tags
+		PatchEmptyToTags        bool
+		IconID                  types.ID `mapconv:"Icon.ID"`
+		PatchEmptyToIconID      bool
+	}{
+		Name:                    o.GetName(),
+		Description:             o.GetDescription(),
+		PatchEmptyToDescription: o.GetPatchEmptyToDescription(),
+		Tags:                    o.GetTags(),
+		PatchEmptyToTags:        o.GetPatchEmptyToTags(),
+		IconID:                  o.GetIconID(),
+		PatchEmptyToIconID:      o.GetPatchEmptyToIconID(),
+	}
+}
+
+// GetName returns value of Name
+func (o *ServerPatchRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *ServerPatchRequest) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *ServerPatchRequest) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *ServerPatchRequest) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetPatchEmptyToDescription returns value of PatchEmptyToDescription
+func (o *ServerPatchRequest) GetPatchEmptyToDescription() bool {
+	return o.PatchEmptyToDescription
+}
+
+// SetPatchEmptyToDescription sets value to PatchEmptyToDescription
+func (o *ServerPatchRequest) SetPatchEmptyToDescription(v bool) {
+	o.PatchEmptyToDescription = v
+}
+
+// GetTags returns value of Tags
+func (o *ServerPatchRequest) GetTags() types.Tags {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *ServerPatchRequest) SetTags(v types.Tags) {
+	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *ServerPatchRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *ServerPatchRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *ServerPatchRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *ServerPatchRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
+// GetPatchEmptyToTags returns value of PatchEmptyToTags
+func (o *ServerPatchRequest) GetPatchEmptyToTags() bool {
+	return o.PatchEmptyToTags
+}
+
+// SetPatchEmptyToTags sets value to PatchEmptyToTags
+func (o *ServerPatchRequest) SetPatchEmptyToTags(v bool) {
+	o.PatchEmptyToTags = v
+}
+
+// GetIconID returns value of IconID
+func (o *ServerPatchRequest) GetIconID() types.ID {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *ServerPatchRequest) SetIconID(v types.ID) {
+	o.IconID = v
+}
+
+// GetPatchEmptyToIconID returns value of PatchEmptyToIconID
+func (o *ServerPatchRequest) GetPatchEmptyToIconID() bool {
+	return o.PatchEmptyToIconID
+}
+
+// SetPatchEmptyToIconID sets value to PatchEmptyToIconID
+func (o *ServerPatchRequest) SetPatchEmptyToIconID(v bool) {
+	o.PatchEmptyToIconID = v
+}
+
+/*************************************************
 * ServerDeleteWithDisksRequest
 *************************************************/
 
@@ -18965,6 +21861,137 @@ func (o *SIMUpdateRequest) SetIconID(v types.ID) {
 }
 
 /*************************************************
+* SIMPatchRequest
+*************************************************/
+
+// SIMPatchRequest represents API parameter/response structure
+type SIMPatchRequest struct {
+	Name                    string `validate:"required"`
+	Description             string `validate:"min=0,max=512"`
+	PatchEmptyToDescription bool
+	Tags                    types.Tags
+	PatchEmptyToTags        bool
+	IconID                  types.ID `mapconv:"Icon.ID"`
+	PatchEmptyToIconID      bool
+}
+
+// Validate validates by field tags
+func (o *SIMPatchRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *SIMPatchRequest) setDefaults() interface{} {
+	return &struct {
+		Name                    string `validate:"required"`
+		Description             string `validate:"min=0,max=512"`
+		PatchEmptyToDescription bool
+		Tags                    types.Tags
+		PatchEmptyToTags        bool
+		IconID                  types.ID `mapconv:"Icon.ID"`
+		PatchEmptyToIconID      bool
+	}{
+		Name:                    o.GetName(),
+		Description:             o.GetDescription(),
+		PatchEmptyToDescription: o.GetPatchEmptyToDescription(),
+		Tags:                    o.GetTags(),
+		PatchEmptyToTags:        o.GetPatchEmptyToTags(),
+		IconID:                  o.GetIconID(),
+		PatchEmptyToIconID:      o.GetPatchEmptyToIconID(),
+	}
+}
+
+// GetName returns value of Name
+func (o *SIMPatchRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *SIMPatchRequest) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *SIMPatchRequest) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *SIMPatchRequest) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetPatchEmptyToDescription returns value of PatchEmptyToDescription
+func (o *SIMPatchRequest) GetPatchEmptyToDescription() bool {
+	return o.PatchEmptyToDescription
+}
+
+// SetPatchEmptyToDescription sets value to PatchEmptyToDescription
+func (o *SIMPatchRequest) SetPatchEmptyToDescription(v bool) {
+	o.PatchEmptyToDescription = v
+}
+
+// GetTags returns value of Tags
+func (o *SIMPatchRequest) GetTags() types.Tags {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *SIMPatchRequest) SetTags(v types.Tags) {
+	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *SIMPatchRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *SIMPatchRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *SIMPatchRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *SIMPatchRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
+// GetPatchEmptyToTags returns value of PatchEmptyToTags
+func (o *SIMPatchRequest) GetPatchEmptyToTags() bool {
+	return o.PatchEmptyToTags
+}
+
+// SetPatchEmptyToTags sets value to PatchEmptyToTags
+func (o *SIMPatchRequest) SetPatchEmptyToTags(v bool) {
+	o.PatchEmptyToTags = v
+}
+
+// GetIconID returns value of IconID
+func (o *SIMPatchRequest) GetIconID() types.ID {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *SIMPatchRequest) SetIconID(v types.ID) {
+	o.IconID = v
+}
+
+// GetPatchEmptyToIconID returns value of PatchEmptyToIconID
+func (o *SIMPatchRequest) GetPatchEmptyToIconID() bool {
+	return o.PatchEmptyToIconID
+}
+
+// SetPatchEmptyToIconID sets value to PatchEmptyToIconID
+func (o *SIMPatchRequest) SetPatchEmptyToIconID(v bool) {
+	o.PatchEmptyToIconID = v
+}
+
+/*************************************************
 * SIMAssignIPRequest
 *************************************************/
 
@@ -20140,6 +23167,322 @@ func (o *SimpleMonitorUpdateRequest) SetSettingsHash(v string) {
 }
 
 /*************************************************
+* SimpleMonitorPatchRequest
+*************************************************/
+
+// SimpleMonitorPatchRequest represents API parameter/response structure
+type SimpleMonitorPatchRequest struct {
+	Description                    string `validate:"min=0,max=512"`
+	PatchEmptyToDescription        bool
+	Tags                           types.Tags
+	PatchEmptyToTags               bool
+	IconID                         types.ID `mapconv:"Icon.ID"`
+	PatchEmptyToIconID             bool
+	DelayLoop                      int `mapconv:"Settings.SimpleMonitor.DelayLoop" validate:"min=60,max=3600"`
+	PatchEmptyToDelayLoop          bool
+	Enabled                        types.StringFlag `mapconv:"Settings.SimpleMonitor.Enabled"`
+	PatchEmptyToEnabled            bool
+	HealthCheck                    *SimpleMonitorHealthCheck `mapconv:"Settings.SimpleMonitor.HealthCheck,recursive"`
+	PatchEmptyToHealthCheck        bool
+	NotifyEmailEnabled             types.StringFlag `mapconv:"Settings.SimpleMonitor.NotifyEmail.Enabled"`
+	PatchEmptyToNotifyEmailEnabled bool
+	NotifyEmailHTML                types.StringFlag `mapconv:"Settings.SimpleMonitor.NotifyEmail.HTML"`
+	PatchEmptyToNotifyEmailHTML    bool
+	NotifySlackEnabled             types.StringFlag `mapconv:"Settings.SimpleMonitor.NotifySlack.Enabled"`
+	PatchEmptyToNotifySlackEnabled bool
+	SlackWebhooksURL               string `mapconv:"Settings.SimpleMonitor.NotifySlack.IncomingWebhooksURL"`
+	PatchEmptyToSlackWebhooksURL   bool
+	SettingsHash                   string `json:",omitempty" mapconv:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *SimpleMonitorPatchRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *SimpleMonitorPatchRequest) setDefaults() interface{} {
+	return &struct {
+		Description                    string `validate:"min=0,max=512"`
+		PatchEmptyToDescription        bool
+		Tags                           types.Tags
+		PatchEmptyToTags               bool
+		IconID                         types.ID `mapconv:"Icon.ID"`
+		PatchEmptyToIconID             bool
+		DelayLoop                      int `mapconv:"Settings.SimpleMonitor.DelayLoop" validate:"min=60,max=3600"`
+		PatchEmptyToDelayLoop          bool
+		Enabled                        types.StringFlag `mapconv:"Settings.SimpleMonitor.Enabled"`
+		PatchEmptyToEnabled            bool
+		HealthCheck                    *SimpleMonitorHealthCheck `mapconv:"Settings.SimpleMonitor.HealthCheck,recursive"`
+		PatchEmptyToHealthCheck        bool
+		NotifyEmailEnabled             types.StringFlag `mapconv:"Settings.SimpleMonitor.NotifyEmail.Enabled"`
+		PatchEmptyToNotifyEmailEnabled bool
+		NotifyEmailHTML                types.StringFlag `mapconv:"Settings.SimpleMonitor.NotifyEmail.HTML"`
+		PatchEmptyToNotifyEmailHTML    bool
+		NotifySlackEnabled             types.StringFlag `mapconv:"Settings.SimpleMonitor.NotifySlack.Enabled"`
+		PatchEmptyToNotifySlackEnabled bool
+		SlackWebhooksURL               string `mapconv:"Settings.SimpleMonitor.NotifySlack.IncomingWebhooksURL"`
+		PatchEmptyToSlackWebhooksURL   bool
+		SettingsHash                   string `json:",omitempty" mapconv:",omitempty"`
+	}{
+		Description:                    o.GetDescription(),
+		PatchEmptyToDescription:        o.GetPatchEmptyToDescription(),
+		Tags:                           o.GetTags(),
+		PatchEmptyToTags:               o.GetPatchEmptyToTags(),
+		IconID:                         o.GetIconID(),
+		PatchEmptyToIconID:             o.GetPatchEmptyToIconID(),
+		DelayLoop:                      o.GetDelayLoop(),
+		PatchEmptyToDelayLoop:          o.GetPatchEmptyToDelayLoop(),
+		Enabled:                        o.GetEnabled(),
+		PatchEmptyToEnabled:            o.GetPatchEmptyToEnabled(),
+		HealthCheck:                    o.GetHealthCheck(),
+		PatchEmptyToHealthCheck:        o.GetPatchEmptyToHealthCheck(),
+		NotifyEmailEnabled:             o.GetNotifyEmailEnabled(),
+		PatchEmptyToNotifyEmailEnabled: o.GetPatchEmptyToNotifyEmailEnabled(),
+		NotifyEmailHTML:                o.GetNotifyEmailHTML(),
+		PatchEmptyToNotifyEmailHTML:    o.GetPatchEmptyToNotifyEmailHTML(),
+		NotifySlackEnabled:             o.GetNotifySlackEnabled(),
+		PatchEmptyToNotifySlackEnabled: o.GetPatchEmptyToNotifySlackEnabled(),
+		SlackWebhooksURL:               o.GetSlackWebhooksURL(),
+		PatchEmptyToSlackWebhooksURL:   o.GetPatchEmptyToSlackWebhooksURL(),
+		SettingsHash:                   o.GetSettingsHash(),
+	}
+}
+
+// GetDescription returns value of Description
+func (o *SimpleMonitorPatchRequest) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *SimpleMonitorPatchRequest) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetPatchEmptyToDescription returns value of PatchEmptyToDescription
+func (o *SimpleMonitorPatchRequest) GetPatchEmptyToDescription() bool {
+	return o.PatchEmptyToDescription
+}
+
+// SetPatchEmptyToDescription sets value to PatchEmptyToDescription
+func (o *SimpleMonitorPatchRequest) SetPatchEmptyToDescription(v bool) {
+	o.PatchEmptyToDescription = v
+}
+
+// GetTags returns value of Tags
+func (o *SimpleMonitorPatchRequest) GetTags() types.Tags {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *SimpleMonitorPatchRequest) SetTags(v types.Tags) {
+	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *SimpleMonitorPatchRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *SimpleMonitorPatchRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *SimpleMonitorPatchRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *SimpleMonitorPatchRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
+// GetPatchEmptyToTags returns value of PatchEmptyToTags
+func (o *SimpleMonitorPatchRequest) GetPatchEmptyToTags() bool {
+	return o.PatchEmptyToTags
+}
+
+// SetPatchEmptyToTags sets value to PatchEmptyToTags
+func (o *SimpleMonitorPatchRequest) SetPatchEmptyToTags(v bool) {
+	o.PatchEmptyToTags = v
+}
+
+// GetIconID returns value of IconID
+func (o *SimpleMonitorPatchRequest) GetIconID() types.ID {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *SimpleMonitorPatchRequest) SetIconID(v types.ID) {
+	o.IconID = v
+}
+
+// GetPatchEmptyToIconID returns value of PatchEmptyToIconID
+func (o *SimpleMonitorPatchRequest) GetPatchEmptyToIconID() bool {
+	return o.PatchEmptyToIconID
+}
+
+// SetPatchEmptyToIconID sets value to PatchEmptyToIconID
+func (o *SimpleMonitorPatchRequest) SetPatchEmptyToIconID(v bool) {
+	o.PatchEmptyToIconID = v
+}
+
+// GetDelayLoop returns value of DelayLoop
+func (o *SimpleMonitorPatchRequest) GetDelayLoop() int {
+	if o.DelayLoop == 0 {
+		return 60
+	}
+	return o.DelayLoop
+}
+
+// SetDelayLoop sets value to DelayLoop
+func (o *SimpleMonitorPatchRequest) SetDelayLoop(v int) {
+	o.DelayLoop = v
+}
+
+// GetPatchEmptyToDelayLoop returns value of PatchEmptyToDelayLoop
+func (o *SimpleMonitorPatchRequest) GetPatchEmptyToDelayLoop() bool {
+	return o.PatchEmptyToDelayLoop
+}
+
+// SetPatchEmptyToDelayLoop sets value to PatchEmptyToDelayLoop
+func (o *SimpleMonitorPatchRequest) SetPatchEmptyToDelayLoop(v bool) {
+	o.PatchEmptyToDelayLoop = v
+}
+
+// GetEnabled returns value of Enabled
+func (o *SimpleMonitorPatchRequest) GetEnabled() types.StringFlag {
+	return o.Enabled
+}
+
+// SetEnabled sets value to Enabled
+func (o *SimpleMonitorPatchRequest) SetEnabled(v types.StringFlag) {
+	o.Enabled = v
+}
+
+// GetPatchEmptyToEnabled returns value of PatchEmptyToEnabled
+func (o *SimpleMonitorPatchRequest) GetPatchEmptyToEnabled() bool {
+	return o.PatchEmptyToEnabled
+}
+
+// SetPatchEmptyToEnabled sets value to PatchEmptyToEnabled
+func (o *SimpleMonitorPatchRequest) SetPatchEmptyToEnabled(v bool) {
+	o.PatchEmptyToEnabled = v
+}
+
+// GetHealthCheck returns value of HealthCheck
+func (o *SimpleMonitorPatchRequest) GetHealthCheck() *SimpleMonitorHealthCheck {
+	return o.HealthCheck
+}
+
+// SetHealthCheck sets value to HealthCheck
+func (o *SimpleMonitorPatchRequest) SetHealthCheck(v *SimpleMonitorHealthCheck) {
+	o.HealthCheck = v
+}
+
+// GetPatchEmptyToHealthCheck returns value of PatchEmptyToHealthCheck
+func (o *SimpleMonitorPatchRequest) GetPatchEmptyToHealthCheck() bool {
+	return o.PatchEmptyToHealthCheck
+}
+
+// SetPatchEmptyToHealthCheck sets value to PatchEmptyToHealthCheck
+func (o *SimpleMonitorPatchRequest) SetPatchEmptyToHealthCheck(v bool) {
+	o.PatchEmptyToHealthCheck = v
+}
+
+// GetNotifyEmailEnabled returns value of NotifyEmailEnabled
+func (o *SimpleMonitorPatchRequest) GetNotifyEmailEnabled() types.StringFlag {
+	return o.NotifyEmailEnabled
+}
+
+// SetNotifyEmailEnabled sets value to NotifyEmailEnabled
+func (o *SimpleMonitorPatchRequest) SetNotifyEmailEnabled(v types.StringFlag) {
+	o.NotifyEmailEnabled = v
+}
+
+// GetPatchEmptyToNotifyEmailEnabled returns value of PatchEmptyToNotifyEmailEnabled
+func (o *SimpleMonitorPatchRequest) GetPatchEmptyToNotifyEmailEnabled() bool {
+	return o.PatchEmptyToNotifyEmailEnabled
+}
+
+// SetPatchEmptyToNotifyEmailEnabled sets value to PatchEmptyToNotifyEmailEnabled
+func (o *SimpleMonitorPatchRequest) SetPatchEmptyToNotifyEmailEnabled(v bool) {
+	o.PatchEmptyToNotifyEmailEnabled = v
+}
+
+// GetNotifyEmailHTML returns value of NotifyEmailHTML
+func (o *SimpleMonitorPatchRequest) GetNotifyEmailHTML() types.StringFlag {
+	return o.NotifyEmailHTML
+}
+
+// SetNotifyEmailHTML sets value to NotifyEmailHTML
+func (o *SimpleMonitorPatchRequest) SetNotifyEmailHTML(v types.StringFlag) {
+	o.NotifyEmailHTML = v
+}
+
+// GetPatchEmptyToNotifyEmailHTML returns value of PatchEmptyToNotifyEmailHTML
+func (o *SimpleMonitorPatchRequest) GetPatchEmptyToNotifyEmailHTML() bool {
+	return o.PatchEmptyToNotifyEmailHTML
+}
+
+// SetPatchEmptyToNotifyEmailHTML sets value to PatchEmptyToNotifyEmailHTML
+func (o *SimpleMonitorPatchRequest) SetPatchEmptyToNotifyEmailHTML(v bool) {
+	o.PatchEmptyToNotifyEmailHTML = v
+}
+
+// GetNotifySlackEnabled returns value of NotifySlackEnabled
+func (o *SimpleMonitorPatchRequest) GetNotifySlackEnabled() types.StringFlag {
+	return o.NotifySlackEnabled
+}
+
+// SetNotifySlackEnabled sets value to NotifySlackEnabled
+func (o *SimpleMonitorPatchRequest) SetNotifySlackEnabled(v types.StringFlag) {
+	o.NotifySlackEnabled = v
+}
+
+// GetPatchEmptyToNotifySlackEnabled returns value of PatchEmptyToNotifySlackEnabled
+func (o *SimpleMonitorPatchRequest) GetPatchEmptyToNotifySlackEnabled() bool {
+	return o.PatchEmptyToNotifySlackEnabled
+}
+
+// SetPatchEmptyToNotifySlackEnabled sets value to PatchEmptyToNotifySlackEnabled
+func (o *SimpleMonitorPatchRequest) SetPatchEmptyToNotifySlackEnabled(v bool) {
+	o.PatchEmptyToNotifySlackEnabled = v
+}
+
+// GetSlackWebhooksURL returns value of SlackWebhooksURL
+func (o *SimpleMonitorPatchRequest) GetSlackWebhooksURL() string {
+	return o.SlackWebhooksURL
+}
+
+// SetSlackWebhooksURL sets value to SlackWebhooksURL
+func (o *SimpleMonitorPatchRequest) SetSlackWebhooksURL(v string) {
+	o.SlackWebhooksURL = v
+}
+
+// GetPatchEmptyToSlackWebhooksURL returns value of PatchEmptyToSlackWebhooksURL
+func (o *SimpleMonitorPatchRequest) GetPatchEmptyToSlackWebhooksURL() bool {
+	return o.PatchEmptyToSlackWebhooksURL
+}
+
+// SetPatchEmptyToSlackWebhooksURL sets value to PatchEmptyToSlackWebhooksURL
+func (o *SimpleMonitorPatchRequest) SetPatchEmptyToSlackWebhooksURL(v bool) {
+	o.PatchEmptyToSlackWebhooksURL = v
+}
+
+// GetSettingsHash returns value of SettingsHash
+func (o *SimpleMonitorPatchRequest) GetSettingsHash() string {
+	return o.SettingsHash
+}
+
+// SetSettingsHash sets value to SettingsHash
+func (o *SimpleMonitorPatchRequest) SetSettingsHash(v string) {
+	o.SettingsHash = v
+}
+
+/*************************************************
 * ResponseTimeSecActivity
 *************************************************/
 
@@ -20690,6 +24033,65 @@ func (o *SSHKeyUpdateRequest) GetDescription() string {
 // SetDescription sets value to Description
 func (o *SSHKeyUpdateRequest) SetDescription(v string) {
 	o.Description = v
+}
+
+/*************************************************
+* SSHKeyPatchRequest
+*************************************************/
+
+// SSHKeyPatchRequest represents API parameter/response structure
+type SSHKeyPatchRequest struct {
+	Name                    string `validate:"required"`
+	Description             string `validate:"min=0,max=512"`
+	PatchEmptyToDescription bool
+}
+
+// Validate validates by field tags
+func (o *SSHKeyPatchRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *SSHKeyPatchRequest) setDefaults() interface{} {
+	return &struct {
+		Name                    string `validate:"required"`
+		Description             string `validate:"min=0,max=512"`
+		PatchEmptyToDescription bool
+	}{
+		Name:                    o.GetName(),
+		Description:             o.GetDescription(),
+		PatchEmptyToDescription: o.GetPatchEmptyToDescription(),
+	}
+}
+
+// GetName returns value of Name
+func (o *SSHKeyPatchRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *SSHKeyPatchRequest) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *SSHKeyPatchRequest) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *SSHKeyPatchRequest) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetPatchEmptyToDescription returns value of PatchEmptyToDescription
+func (o *SSHKeyPatchRequest) GetPatchEmptyToDescription() bool {
+	return o.PatchEmptyToDescription
+}
+
+// SetPatchEmptyToDescription sets value to PatchEmptyToDescription
+func (o *SSHKeyPatchRequest) SetPatchEmptyToDescription(v bool) {
+	o.PatchEmptyToDescription = v
 }
 
 /*************************************************
@@ -21304,6 +24706,189 @@ func (o *SwitchUpdateRequest) GetIconID() types.ID {
 // SetIconID sets value to IconID
 func (o *SwitchUpdateRequest) SetIconID(v types.ID) {
 	o.IconID = v
+}
+
+/*************************************************
+* SwitchPatchRequest
+*************************************************/
+
+// SwitchPatchRequest represents API parameter/response structure
+type SwitchPatchRequest struct {
+	Name                       string `validate:"required"`
+	NetworkMaskLen             int    `mapconv:"UserSubnet.NetworkMaskLen" validate:"min=1,max=32"`
+	PatchEmptyToNetworkMaskLen bool
+	DefaultRoute               string `mapconv:"UserSubnet.DefaultRoute" validate:"ipv4"`
+	PatchEmptyToDefaultRoute   bool
+	Description                string `validate:"min=0,max=512"`
+	PatchEmptyToDescription    bool
+	Tags                       types.Tags
+	PatchEmptyToTags           bool
+	IconID                     types.ID `mapconv:"Icon.ID"`
+	PatchEmptyToIconID         bool
+}
+
+// Validate validates by field tags
+func (o *SwitchPatchRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *SwitchPatchRequest) setDefaults() interface{} {
+	return &struct {
+		Name                       string `validate:"required"`
+		NetworkMaskLen             int    `mapconv:"UserSubnet.NetworkMaskLen" validate:"min=1,max=32"`
+		PatchEmptyToNetworkMaskLen bool
+		DefaultRoute               string `mapconv:"UserSubnet.DefaultRoute" validate:"ipv4"`
+		PatchEmptyToDefaultRoute   bool
+		Description                string `validate:"min=0,max=512"`
+		PatchEmptyToDescription    bool
+		Tags                       types.Tags
+		PatchEmptyToTags           bool
+		IconID                     types.ID `mapconv:"Icon.ID"`
+		PatchEmptyToIconID         bool
+	}{
+		Name:                       o.GetName(),
+		NetworkMaskLen:             o.GetNetworkMaskLen(),
+		PatchEmptyToNetworkMaskLen: o.GetPatchEmptyToNetworkMaskLen(),
+		DefaultRoute:               o.GetDefaultRoute(),
+		PatchEmptyToDefaultRoute:   o.GetPatchEmptyToDefaultRoute(),
+		Description:                o.GetDescription(),
+		PatchEmptyToDescription:    o.GetPatchEmptyToDescription(),
+		Tags:                       o.GetTags(),
+		PatchEmptyToTags:           o.GetPatchEmptyToTags(),
+		IconID:                     o.GetIconID(),
+		PatchEmptyToIconID:         o.GetPatchEmptyToIconID(),
+	}
+}
+
+// GetName returns value of Name
+func (o *SwitchPatchRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *SwitchPatchRequest) SetName(v string) {
+	o.Name = v
+}
+
+// GetNetworkMaskLen returns value of NetworkMaskLen
+func (o *SwitchPatchRequest) GetNetworkMaskLen() int {
+	return o.NetworkMaskLen
+}
+
+// SetNetworkMaskLen sets value to NetworkMaskLen
+func (o *SwitchPatchRequest) SetNetworkMaskLen(v int) {
+	o.NetworkMaskLen = v
+}
+
+// GetPatchEmptyToNetworkMaskLen returns value of PatchEmptyToNetworkMaskLen
+func (o *SwitchPatchRequest) GetPatchEmptyToNetworkMaskLen() bool {
+	return o.PatchEmptyToNetworkMaskLen
+}
+
+// SetPatchEmptyToNetworkMaskLen sets value to PatchEmptyToNetworkMaskLen
+func (o *SwitchPatchRequest) SetPatchEmptyToNetworkMaskLen(v bool) {
+	o.PatchEmptyToNetworkMaskLen = v
+}
+
+// GetDefaultRoute returns value of DefaultRoute
+func (o *SwitchPatchRequest) GetDefaultRoute() string {
+	return o.DefaultRoute
+}
+
+// SetDefaultRoute sets value to DefaultRoute
+func (o *SwitchPatchRequest) SetDefaultRoute(v string) {
+	o.DefaultRoute = v
+}
+
+// GetPatchEmptyToDefaultRoute returns value of PatchEmptyToDefaultRoute
+func (o *SwitchPatchRequest) GetPatchEmptyToDefaultRoute() bool {
+	return o.PatchEmptyToDefaultRoute
+}
+
+// SetPatchEmptyToDefaultRoute sets value to PatchEmptyToDefaultRoute
+func (o *SwitchPatchRequest) SetPatchEmptyToDefaultRoute(v bool) {
+	o.PatchEmptyToDefaultRoute = v
+}
+
+// GetDescription returns value of Description
+func (o *SwitchPatchRequest) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *SwitchPatchRequest) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetPatchEmptyToDescription returns value of PatchEmptyToDescription
+func (o *SwitchPatchRequest) GetPatchEmptyToDescription() bool {
+	return o.PatchEmptyToDescription
+}
+
+// SetPatchEmptyToDescription sets value to PatchEmptyToDescription
+func (o *SwitchPatchRequest) SetPatchEmptyToDescription(v bool) {
+	o.PatchEmptyToDescription = v
+}
+
+// GetTags returns value of Tags
+func (o *SwitchPatchRequest) GetTags() types.Tags {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *SwitchPatchRequest) SetTags(v types.Tags) {
+	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *SwitchPatchRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *SwitchPatchRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *SwitchPatchRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *SwitchPatchRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
+// GetPatchEmptyToTags returns value of PatchEmptyToTags
+func (o *SwitchPatchRequest) GetPatchEmptyToTags() bool {
+	return o.PatchEmptyToTags
+}
+
+// SetPatchEmptyToTags sets value to PatchEmptyToTags
+func (o *SwitchPatchRequest) SetPatchEmptyToTags(v bool) {
+	o.PatchEmptyToTags = v
+}
+
+// GetIconID returns value of IconID
+func (o *SwitchPatchRequest) GetIconID() types.ID {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *SwitchPatchRequest) SetIconID(v types.ID) {
+	o.IconID = v
+}
+
+// GetPatchEmptyToIconID returns value of PatchEmptyToIconID
+func (o *SwitchPatchRequest) GetPatchEmptyToIconID() bool {
+	return o.PatchEmptyToIconID
+}
+
+// SetPatchEmptyToIconID sets value to PatchEmptyToIconID
+func (o *SwitchPatchRequest) SetPatchEmptyToIconID(v bool) {
+	o.PatchEmptyToIconID = v
 }
 
 /*************************************************
@@ -23130,6 +26715,176 @@ func (o *VPCRouterUpdateRequest) GetSettingsHash() string {
 
 // SetSettingsHash sets value to SettingsHash
 func (o *VPCRouterUpdateRequest) SetSettingsHash(v string) {
+	o.SettingsHash = v
+}
+
+/*************************************************
+* VPCRouterPatchRequest
+*************************************************/
+
+// VPCRouterPatchRequest represents API parameter/response structure
+type VPCRouterPatchRequest struct {
+	Name                    string `validate:"required"`
+	Description             string `validate:"min=0,max=512"`
+	PatchEmptyToDescription bool
+	Tags                    types.Tags
+	PatchEmptyToTags        bool
+	IconID                  types.ID `mapconv:"Icon.ID"`
+	PatchEmptyToIconID      bool
+	Settings                *VPCRouterSetting `mapconv:",omitempty,recursive"`
+	PatchEmptyToSettings    bool
+	SettingsHash            string `json:",omitempty" mapconv:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *VPCRouterPatchRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *VPCRouterPatchRequest) setDefaults() interface{} {
+	return &struct {
+		Name                    string `validate:"required"`
+		Description             string `validate:"min=0,max=512"`
+		PatchEmptyToDescription bool
+		Tags                    types.Tags
+		PatchEmptyToTags        bool
+		IconID                  types.ID `mapconv:"Icon.ID"`
+		PatchEmptyToIconID      bool
+		Settings                *VPCRouterSetting `mapconv:",omitempty,recursive"`
+		PatchEmptyToSettings    bool
+		SettingsHash            string `json:",omitempty" mapconv:",omitempty"`
+	}{
+		Name:                    o.GetName(),
+		Description:             o.GetDescription(),
+		PatchEmptyToDescription: o.GetPatchEmptyToDescription(),
+		Tags:                    o.GetTags(),
+		PatchEmptyToTags:        o.GetPatchEmptyToTags(),
+		IconID:                  o.GetIconID(),
+		PatchEmptyToIconID:      o.GetPatchEmptyToIconID(),
+		Settings:                o.GetSettings(),
+		PatchEmptyToSettings:    o.GetPatchEmptyToSettings(),
+		SettingsHash:            o.GetSettingsHash(),
+	}
+}
+
+// GetName returns value of Name
+func (o *VPCRouterPatchRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *VPCRouterPatchRequest) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *VPCRouterPatchRequest) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *VPCRouterPatchRequest) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetPatchEmptyToDescription returns value of PatchEmptyToDescription
+func (o *VPCRouterPatchRequest) GetPatchEmptyToDescription() bool {
+	return o.PatchEmptyToDescription
+}
+
+// SetPatchEmptyToDescription sets value to PatchEmptyToDescription
+func (o *VPCRouterPatchRequest) SetPatchEmptyToDescription(v bool) {
+	o.PatchEmptyToDescription = v
+}
+
+// GetTags returns value of Tags
+func (o *VPCRouterPatchRequest) GetTags() types.Tags {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *VPCRouterPatchRequest) SetTags(v types.Tags) {
+	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *VPCRouterPatchRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *VPCRouterPatchRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *VPCRouterPatchRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *VPCRouterPatchRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
+// GetPatchEmptyToTags returns value of PatchEmptyToTags
+func (o *VPCRouterPatchRequest) GetPatchEmptyToTags() bool {
+	return o.PatchEmptyToTags
+}
+
+// SetPatchEmptyToTags sets value to PatchEmptyToTags
+func (o *VPCRouterPatchRequest) SetPatchEmptyToTags(v bool) {
+	o.PatchEmptyToTags = v
+}
+
+// GetIconID returns value of IconID
+func (o *VPCRouterPatchRequest) GetIconID() types.ID {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *VPCRouterPatchRequest) SetIconID(v types.ID) {
+	o.IconID = v
+}
+
+// GetPatchEmptyToIconID returns value of PatchEmptyToIconID
+func (o *VPCRouterPatchRequest) GetPatchEmptyToIconID() bool {
+	return o.PatchEmptyToIconID
+}
+
+// SetPatchEmptyToIconID sets value to PatchEmptyToIconID
+func (o *VPCRouterPatchRequest) SetPatchEmptyToIconID(v bool) {
+	o.PatchEmptyToIconID = v
+}
+
+// GetSettings returns value of Settings
+func (o *VPCRouterPatchRequest) GetSettings() *VPCRouterSetting {
+	return o.Settings
+}
+
+// SetSettings sets value to Settings
+func (o *VPCRouterPatchRequest) SetSettings(v *VPCRouterSetting) {
+	o.Settings = v
+}
+
+// GetPatchEmptyToSettings returns value of PatchEmptyToSettings
+func (o *VPCRouterPatchRequest) GetPatchEmptyToSettings() bool {
+	return o.PatchEmptyToSettings
+}
+
+// SetPatchEmptyToSettings sets value to PatchEmptyToSettings
+func (o *VPCRouterPatchRequest) SetPatchEmptyToSettings(v bool) {
+	o.PatchEmptyToSettings = v
+}
+
+// GetSettingsHash returns value of SettingsHash
+func (o *VPCRouterPatchRequest) GetSettingsHash() string {
+	return o.SettingsHash
+}
+
+// SetSettingsHash sets value to SettingsHash
+func (o *VPCRouterPatchRequest) SetSettingsHash(v string) {
 	o.SettingsHash = v
 }
 

@@ -2,8 +2,10 @@ package fake
 
 import (
 	"context"
+	"fmt"
 	"time"
 
+	"github.com/imdario/mergo"
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
@@ -66,7 +68,60 @@ func (o *SimpleMonitorOp) Update(ctx context.Context, id types.ID, param *saclou
 		value.DelayLoop = 60
 	}
 	putSimpleMonitor(sacloud.APIDefaultZone, value)
+	return value, nil
+}
 
+// Patch is fake implementation
+func (o *SimpleMonitorOp) Patch(ctx context.Context, id types.ID, param *sacloud.SimpleMonitorPatchRequest) (*sacloud.SimpleMonitor, error) {
+	value, err := o.Read(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+
+	patchParam := make(map[string]interface{})
+	if err := mergo.Map(&patchParam, value); err != nil {
+		return nil, fmt.Errorf("patch is failed: %s", err)
+	}
+	if err := mergo.Map(&patchParam, param); err != nil {
+		return nil, fmt.Errorf("patch is failed: %s", err)
+	}
+	if err := mergo.Map(param, &patchParam); err != nil {
+		return nil, fmt.Errorf("patch is failed: %s", err)
+	}
+	copySameNameField(param, value)
+
+	if param.PatchEmptyToDescription {
+		value.Description = ""
+	}
+	if param.PatchEmptyToTags {
+		value.Tags = nil
+	}
+	if param.PatchEmptyToIconID {
+		value.IconID = types.ID(int64(0))
+	}
+	if param.PatchEmptyToDelayLoop {
+		value.DelayLoop = 0
+	}
+	if param.PatchEmptyToEnabled {
+		value.Enabled = types.StringFlag(false)
+	}
+	if param.PatchEmptyToHealthCheck {
+		value.HealthCheck = nil
+	}
+	if param.PatchEmptyToNotifyEmailEnabled {
+		value.NotifyEmailEnabled = types.StringFlag(false)
+	}
+	if param.PatchEmptyToNotifyEmailHTML {
+		value.NotifyEmailHTML = types.StringFlag(false)
+	}
+	if param.PatchEmptyToNotifySlackEnabled {
+		value.NotifySlackEnabled = types.StringFlag(false)
+	}
+	if param.PatchEmptyToSlackWebhooksURL {
+		value.SlackWebhooksURL = ""
+	}
+
+	putSimpleMonitor(sacloud.APIDefaultZone, value)
 	return value, nil
 }
 

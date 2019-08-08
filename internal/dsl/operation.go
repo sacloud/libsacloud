@@ -19,6 +19,11 @@ type Operation struct {
 	RequestEnvelope  *EnvelopeType // リクエスト時のエンベロープ
 	ResponseEnvelope *EnvelopeType // レスポンス時のエンベロープ
 	UseWrappedResult bool          // trueの場合APIからの戻り値としてラッパー型(xxxResult)を返す
+	// IsPatch Patchメソッドであるかのフラグ
+	//
+	// この値に応じてコード生成の挙動を切り替える
+	// [REMARK] 他にもコード生成のカスタマイズが必要になったらこの項目の持ち方を再考する
+	IsPatch bool
 }
 
 // GetPathFormat パスのフォーマット
@@ -270,4 +275,31 @@ func (o *Operation) resultType() *ResultType {
 		operation:    o,
 		results:      o.Results,
 	}
+}
+
+// PatchArgument Patchメソッドで操作の対象とする引数
+//
+// ID以外で最初に現れた引数を対象とする。
+// (Patchメソッドは複数の引数を取らない前提での実装)
+func (o *Operation) PatchArgument() *Argument {
+	for _, arg := range o.Arguments {
+		if arg != ArgumentID {
+			if _, ok := arg.Type.(*Model); ok {
+				return arg
+			}
+		}
+	}
+	panic(fmt.Errorf("operation %q doesn't have the Patch Argument", o.Name))
+}
+
+// PatchArgumentModel Patchメソッドで操作の対象とする引数のモデル
+//
+// PatchArgumentのコメントも参照すること
+func (o *Operation) PatchArgumentModel() *Model {
+	arg := o.PatchArgument()
+	m, ok := arg.Type.(*Model)
+	if !ok {
+		panic(fmt.Errorf("operation %q doesn't have the Patch Argument", o.Name))
+	}
+	return m
 }

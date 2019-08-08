@@ -16,6 +16,7 @@ func TestDatabaseOpCRUD(t *testing.T) {
 		Setup: setupSwitchFunc("db",
 			createDatabaseParam,
 			createDatabaseExpected,
+			patchDatabaseExpected,
 			updateDatabaseExpected,
 			updateDatabaseToFullExpected,
 			updateDatabaseToMinExpected,
@@ -35,6 +36,13 @@ func TestDatabaseOpCRUD(t *testing.T) {
 			}),
 		},
 		Updates: []*testutil.CRUDTestFunc{
+			{
+				Func: testDatabasePatch,
+				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
+					ExpectValue:  patchDatabaseExpected,
+					IgnoreFields: ignoreDatabaseFields,
+				}),
+			},
 			{
 				Func: testDatabaseUpdate,
 				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
@@ -119,6 +127,28 @@ var (
 		IPAddresses:    createDatabaseParam.IPAddresses,
 		Conf:           createDatabaseParam.Conf,
 		CommonSetting:  createDatabaseParam.CommonSetting,
+	}
+	patchDatabaseParam = &sacloud.DatabasePatchRequest{
+		PatchEmptyToDescription: true,
+		CommonSetting: &sacloud.DatabaseSettingCommonUpdate{
+			ServicePort: 54321,
+		},
+	}
+	patchDatabaseExpected = &sacloud.Database{
+		Name:           createDatabaseParam.Name,
+		Description:    "",
+		Availability:   types.Availabilities.Available,
+		PlanID:         createDatabaseParam.PlanID,
+		InstanceStatus: types.ServerInstanceStatuses.Up,
+		DefaultRoute:   createDatabaseParam.DefaultRoute,
+		NetworkMaskLen: createDatabaseParam.NetworkMaskLen,
+		IPAddresses:    createDatabaseParam.IPAddresses,
+		Conf:           createDatabaseParam.Conf,
+		CommonSetting: &sacloud.DatabaseSettingCommon{
+			ServicePort:  54321,
+			DefaultUser:  "exa.mple",
+			UserPassword: "LibsacloudExamplePassword01",
+		},
 	}
 	updateDatabaseParam = &sacloud.DatabaseUpdateRequest{
 		Name:        testutil.ResourceName("db-upd"),
@@ -216,6 +246,11 @@ func testDatabaseCreate(ctx *testutil.CRUDTestContext, caller sacloud.APICaller)
 func testDatabaseRead(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewDatabaseOp(caller)
 	return client.Read(ctx, testZone, ctx.ID)
+}
+
+func testDatabasePatch(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+	client := sacloud.NewDatabaseOp(caller)
+	return client.Patch(ctx, testZone, ctx.ID, patchDatabaseParam)
 }
 
 func testDatabaseUpdate(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {

@@ -30,6 +30,9 @@ var privateHostAPI = &dsl.Resource{
 		// update
 		ops.Update(privateHostAPIName, privateHostNakedType, privateHostUpdateParam, privateHostView),
 
+		// patch
+		ops.Patch(privateHostAPIName, privateHostNakedType, patchModel(privateHostUpdateParam), privateHostView),
+
 		// delete
 		ops.Delete(privateHostAPIName),
 	},

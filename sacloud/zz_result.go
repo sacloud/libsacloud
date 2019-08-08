@@ -40,6 +40,13 @@ type archiveUpdateResult struct {
 	Archive *Archive `json:",omitempty" mapconv:"Archive,omitempty,recursive"`
 }
 
+// archivePatchResult represents the Result of API
+type archivePatchResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	Archive *Archive `json:",omitempty" mapconv:"Archive,omitempty,recursive"`
+}
+
 // archiveOpenFTPResult represents the Result of API
 type archiveOpenFTPResult struct {
 	IsOk bool `json:",omitempty"` // is_ok
@@ -79,6 +86,13 @@ type autoBackupReadResult struct {
 
 // autoBackupUpdateResult represents the Result of API
 type autoBackupUpdateResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	AutoBackup *AutoBackup `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
+}
+
+// autoBackupPatchResult represents the Result of API
+type autoBackupPatchResult struct {
 	IsOk bool `json:",omitempty"` // is_ok
 
 	AutoBackup *AutoBackup `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
@@ -166,6 +180,13 @@ type bridgeUpdateResult struct {
 	Bridge *Bridge `json:",omitempty" mapconv:"Bridge,omitempty,recursive"`
 }
 
+// bridgePatchResult represents the Result of API
+type bridgePatchResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	Bridge *Bridge `json:",omitempty" mapconv:"Bridge,omitempty,recursive"`
+}
+
 // CDROMFindResult represents the Result of API
 type CDROMFindResult struct {
 	Total int `json:",omitempty"` // Total count of target resources
@@ -192,6 +213,13 @@ type cDROMReadResult struct {
 
 // cDROMUpdateResult represents the Result of API
 type cDROMUpdateResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	CDROM *CDROM `json:",omitempty" mapconv:"CDROM,omitempty,recursive"`
+}
+
+// cDROMPatchResult represents the Result of API
+type cDROMPatchResult struct {
 	IsOk bool `json:",omitempty"` // is_ok
 
 	CDROM *CDROM `json:",omitempty" mapconv:"CDROM,omitempty,recursive"`
@@ -238,6 +266,13 @@ type databaseReadResult struct {
 
 // databaseUpdateResult represents the Result of API
 type databaseUpdateResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	Database *Database `json:",omitempty" mapconv:"Appliance,omitempty,recursive"`
+}
+
+// databasePatchResult represents the Result of API
+type databasePatchResult struct {
 	IsOk bool `json:",omitempty"` // is_ok
 
 	Database *Database `json:",omitempty" mapconv:"Appliance,omitempty,recursive"`
@@ -322,6 +357,13 @@ type diskUpdateResult struct {
 	Disk *Disk `json:",omitempty" mapconv:"Disk,omitempty,recursive"`
 }
 
+// diskPatchResult represents the Result of API
+type diskPatchResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	Disk *Disk `json:",omitempty" mapconv:"Disk,omitempty,recursive"`
+}
+
 // diskMonitorResult represents the Result of API
 type diskMonitorResult struct {
 	IsOk bool `json:",omitempty"` // is_ok
@@ -375,6 +417,13 @@ type dNSUpdateResult struct {
 	DNS *DNS `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
 }
 
+// dNSPatchResult represents the Result of API
+type dNSPatchResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	DNS *DNS `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
+}
+
 // GSLBFindResult represents the Result of API
 type GSLBFindResult struct {
 	Total int `json:",omitempty"` // Total count of target resources
@@ -400,6 +449,13 @@ type gSLBReadResult struct {
 
 // gSLBUpdateResult represents the Result of API
 type gSLBUpdateResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	GSLB *GSLB `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
+}
+
+// gSLBPatchResult represents the Result of API
+type gSLBPatchResult struct {
 	IsOk bool `json:",omitempty"` // is_ok
 
 	GSLB *GSLB `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
@@ -435,6 +491,13 @@ type iconUpdateResult struct {
 	Icon *Icon `json:",omitempty" mapconv:"Icon,omitempty,recursive"`
 }
 
+// iconPatchResult represents the Result of API
+type iconPatchResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	Icon *Icon `json:",omitempty" mapconv:"Icon,omitempty,recursive"`
+}
+
 // InterfaceFindResult represents the Result of API
 type InterfaceFindResult struct {
 	Total int `json:",omitempty"` // Total count of target resources
@@ -460,6 +523,13 @@ type interfaceReadResult struct {
 
 // interfaceUpdateResult represents the Result of API
 type interfaceUpdateResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	Interface *Interface `json:",omitempty" mapconv:"Interface,omitempty,recursive"`
+}
+
+// interfacePatchResult represents the Result of API
+type interfacePatchResult struct {
 	IsOk bool `json:",omitempty"` // is_ok
 
 	Interface *Interface `json:",omitempty" mapconv:"Interface,omitempty,recursive"`
@@ -497,6 +567,13 @@ type internetReadResult struct {
 
 // internetUpdateResult represents the Result of API
 type internetUpdateResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	Internet *Internet `json:",omitempty" mapconv:"Internet,omitempty,recursive"`
+}
+
+// internetPatchResult represents the Result of API
+type internetPatchResult struct {
 	IsOk bool `json:",omitempty"` // is_ok
 
 	Internet *Internet `json:",omitempty" mapconv:"Internet,omitempty,recursive"`
@@ -652,6 +729,13 @@ type licenseUpdateResult struct {
 	License *License `json:",omitempty" mapconv:"License,omitempty,recursive"`
 }
 
+// licensePatchResult represents the Result of API
+type licensePatchResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	License *License `json:",omitempty" mapconv:"License,omitempty,recursive"`
+}
+
 // LicenseInfoFindResult represents the Result of API
 type LicenseInfoFindResult struct {
 	Total int `json:",omitempty"` // Total count of target resources
@@ -698,6 +782,13 @@ type loadBalancerUpdateResult struct {
 	LoadBalancer *LoadBalancer `json:",omitempty" mapconv:"Appliance,omitempty,recursive"`
 }
 
+// loadBalancerPatchResult represents the Result of API
+type loadBalancerPatchResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	LoadBalancer *LoadBalancer `json:",omitempty" mapconv:"Appliance,omitempty,recursive"`
+}
+
 // loadBalancerMonitorInterfaceResult represents the Result of API
 type loadBalancerMonitorInterfaceResult struct {
 	IsOk bool `json:",omitempty"` // is_ok
@@ -739,6 +830,13 @@ type mobileGatewayReadResult struct {
 
 // mobileGatewayUpdateResult represents the Result of API
 type mobileGatewayUpdateResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	MobileGateway *MobileGateway `json:",omitempty" mapconv:"Appliance,omitempty,recursive"`
+}
+
+// mobileGatewayPatchResult represents the Result of API
+type mobileGatewayPatchResult struct {
 	IsOk bool `json:",omitempty"` // is_ok
 
 	MobileGateway *MobileGateway `json:",omitempty" mapconv:"Appliance,omitempty,recursive"`
@@ -823,6 +921,13 @@ type nFSUpdateResult struct {
 	NFS *NFS `json:",omitempty" mapconv:"Appliance,omitempty,recursive"`
 }
 
+// nFSPatchResult represents the Result of API
+type nFSPatchResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	NFS *NFS `json:",omitempty" mapconv:"Appliance,omitempty,recursive"`
+}
+
 // nFSMonitorFreeDiskSizeResult represents the Result of API
 type nFSMonitorFreeDiskSizeResult struct {
 	IsOk bool `json:",omitempty"` // is_ok
@@ -867,6 +972,13 @@ type noteUpdateResult struct {
 	Note *Note `json:",omitempty" mapconv:"Note,omitempty,recursive"`
 }
 
+// notePatchResult represents the Result of API
+type notePatchResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	Note *Note `json:",omitempty" mapconv:"Note,omitempty,recursive"`
+}
+
 // PacketFilterFindResult represents the Result of API
 type PacketFilterFindResult struct {
 	Total int `json:",omitempty"` // Total count of target resources
@@ -897,6 +1009,13 @@ type packetFilterUpdateResult struct {
 	PacketFilter *PacketFilter `json:",omitempty" mapconv:"PacketFilter,omitempty,recursive"`
 }
 
+// packetFilterPatchResult represents the Result of API
+type packetFilterPatchResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	PacketFilter *PacketFilter `json:",omitempty" mapconv:"PacketFilter,omitempty,recursive"`
+}
+
 // PrivateHostFindResult represents the Result of API
 type PrivateHostFindResult struct {
 	Total int `json:",omitempty"` // Total count of target resources
@@ -922,6 +1041,13 @@ type privateHostReadResult struct {
 
 // privateHostUpdateResult represents the Result of API
 type privateHostUpdateResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	PrivateHost *PrivateHost `json:",omitempty" mapconv:"PrivateHost,omitempty,recursive"`
+}
+
+// privateHostPatchResult represents the Result of API
+type privateHostPatchResult struct {
 	IsOk bool `json:",omitempty"` // is_ok
 
 	PrivateHost *PrivateHost `json:",omitempty" mapconv:"PrivateHost,omitempty,recursive"`
@@ -968,6 +1094,13 @@ type proxyLBReadResult struct {
 
 // proxyLBUpdateResult represents the Result of API
 type proxyLBUpdateResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	ProxyLB *ProxyLB `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
+}
+
+// proxyLBPatchResult represents the Result of API
+type proxyLBPatchResult struct {
 	IsOk bool `json:",omitempty"` // is_ok
 
 	ProxyLB *ProxyLB `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
@@ -1054,6 +1187,13 @@ type serverUpdateResult struct {
 	Server *Server `json:",omitempty" mapconv:"Server,omitempty,recursive"`
 }
 
+// serverPatchResult represents the Result of API
+type serverPatchResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	Server *Server `json:",omitempty" mapconv:"Server,omitempty,recursive"`
+}
+
 // serverChangePlanResult represents the Result of API
 type serverChangePlanResult struct {
 	IsOk bool `json:",omitempty"` // is_ok
@@ -1130,6 +1270,13 @@ type sIMUpdateResult struct {
 	SIM *SIM `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
 }
 
+// sIMPatchResult represents the Result of API
+type sIMPatchResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	SIM *SIM `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
+}
+
 // SIMLogsResult represents the Result of API
 type SIMLogsResult struct {
 	Total int `json:",omitempty"` // Total count of target resources
@@ -1190,6 +1337,13 @@ type simpleMonitorUpdateResult struct {
 	SimpleMonitor *SimpleMonitor `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
 }
 
+// simpleMonitorPatchResult represents the Result of API
+type simpleMonitorPatchResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	SimpleMonitor *SimpleMonitor `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
+}
+
 // simpleMonitorMonitorResponseTimeResult represents the Result of API
 type simpleMonitorMonitorResponseTimeResult struct {
 	IsOk bool `json:",omitempty"` // is_ok
@@ -1241,6 +1395,13 @@ type sSHKeyUpdateResult struct {
 	SSHKey *SSHKey `json:",omitempty" mapconv:"SSHKey,omitempty,recursive"`
 }
 
+// sSHKeyPatchResult represents the Result of API
+type sSHKeyPatchResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	SSHKey *SSHKey `json:",omitempty" mapconv:"SSHKey,omitempty,recursive"`
+}
+
 // SwitchFindResult represents the Result of API
 type SwitchFindResult struct {
 	Total int `json:",omitempty"` // Total count of target resources
@@ -1271,6 +1432,13 @@ type switchUpdateResult struct {
 	Switch *Switch `json:",omitempty" mapconv:"Switch,omitempty,recursive"`
 }
 
+// switchPatchResult represents the Result of API
+type switchPatchResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	Switch *Switch `json:",omitempty" mapconv:"Switch,omitempty,recursive"`
+}
+
 // VPCRouterFindResult represents the Result of API
 type VPCRouterFindResult struct {
 	Total int `json:",omitempty"` // Total count of target resources
@@ -1296,6 +1464,13 @@ type vPCRouterReadResult struct {
 
 // vPCRouterUpdateResult represents the Result of API
 type vPCRouterUpdateResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	VPCRouter *VPCRouter `json:",omitempty" mapconv:"Appliance,omitempty,recursive"`
+}
+
+// vPCRouterPatchResult represents the Result of API
+type vPCRouterPatchResult struct {
 	IsOk bool `json:",omitempty"` // is_ok
 
 	VPCRouter *VPCRouter `json:",omitempty" mapconv:"Appliance,omitempty,recursive"`

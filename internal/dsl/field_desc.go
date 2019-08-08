@@ -15,6 +15,7 @@ type FieldDesc struct {
 	Description  string // TODO 現在は未使用
 	Methods      []*MethodDesc
 	DefaultValue string // デフォルト値、コード生成時にソースコードに直接転記される
+	IgnorePatch  bool   // trueの場合patch時の値のクリアを行えないようにする
 }
 
 // HasTag タグの定義がなされているか
@@ -33,6 +34,24 @@ func (f *FieldDesc) TagString() string {
 		return ""
 	}
 	return f.Tags.String()
+}
+
+// IsPatchEmptyParam クリアパラメータか判定
+func (f *FieldDesc) IsPatchEmptyParam() bool {
+	return strings.HasPrefix(f.Name, "PatchEmptyTo")
+}
+
+// IsRequired 必須項目であるかを判定
+func (f *FieldDesc) IsRequired() bool {
+	if f.Tags == nil {
+		return false
+	}
+	return strings.Contains(f.Tags.Validate, "required")
+}
+
+// IsNeedPatchEmpty Patch時の値のクリアが必要な項目かを判定
+func (f *FieldDesc) IsNeedPatchEmpty() bool {
+	return !f.IsPatchEmptyParam() && !f.IsRequired() && !f.IgnorePatch
 }
 
 // FieldTags フィールドに付与するタグ

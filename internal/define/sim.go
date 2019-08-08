@@ -33,6 +33,9 @@ var simAPI = &dsl.Resource{
 		// update
 		ops.UpdateCommonServiceItem(simAPIName, simNakedType, simUpdateParam, simView),
 
+		// patch
+		ops.PatchCommonServiceItem(simAPIName, simNakedType, patchModel(simUpdateParam), simView),
+
 		// delete
 		ops.Delete(simAPIName),
 
