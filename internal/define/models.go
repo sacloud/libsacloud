@@ -556,6 +556,7 @@ func (m *modelsDef) bridgeInfoModel() *dsl.Model {
 			fields.ID(),
 			fields.Name(),
 			fields.ZoneID(),
+			fields.ZoneName(),
 		},
 	}
 }
