@@ -2560,7 +2560,7 @@ type Bridge struct {
 	Description  string `validate:"min=0,max=512"`
 	CreatedAt    time.Time
 	Region       *Region       `json:",omitempty"`
-	BridgeInfo   []*BridgeInfo `mapconv:"[]Switches,recursive"`
+	BridgeInfo   []*BridgeInfo `mapconv:"Info.[]Switches,recursive"`
 	SwitchInZone *BridgeSwitchInfo
 }
 
@@ -2577,7 +2577,7 @@ func (o *Bridge) setDefaults() interface{} {
 		Description  string `validate:"min=0,max=512"`
 		CreatedAt    time.Time
 		Region       *Region       `json:",omitempty"`
-		BridgeInfo   []*BridgeInfo `mapconv:"[]Switches,recursive"`
+		BridgeInfo   []*BridgeInfo `mapconv:"Info.[]Switches,recursive"`
 		SwitchInZone *BridgeSwitchInfo
 	}{
 		ID:           o.GetID(),
@@ -2778,9 +2778,10 @@ func (o *Region) SetNameServers(v []string) {
 
 // BridgeInfo represents API parameter/response structure
 type BridgeInfo struct {
-	ID     types.ID
-	Name   string   `validate:"required"`
-	ZoneID types.ID `mapconv:"Zone.ID"`
+	ID       types.ID
+	Name     string   `validate:"required"`
+	ZoneID   types.ID `mapconv:"Zone.ID"`
+	ZoneName string   `mapconv:"Zone.Name"`
 }
 
 // Validate validates by field tags
@@ -2791,13 +2792,15 @@ func (o *BridgeInfo) Validate() error {
 // setDefaults implements sacloud.argumentDefaulter
 func (o *BridgeInfo) setDefaults() interface{} {
 	return &struct {
-		ID     types.ID
-		Name   string   `validate:"required"`
-		ZoneID types.ID `mapconv:"Zone.ID"`
+		ID       types.ID
+		Name     string   `validate:"required"`
+		ZoneID   types.ID `mapconv:"Zone.ID"`
+		ZoneName string   `mapconv:"Zone.Name"`
 	}{
-		ID:     o.GetID(),
-		Name:   o.GetName(),
-		ZoneID: o.GetZoneID(),
+		ID:       o.GetID(),
+		Name:     o.GetName(),
+		ZoneID:   o.GetZoneID(),
+		ZoneName: o.GetZoneName(),
 	}
 }
 
@@ -2849,6 +2852,16 @@ func (o *BridgeInfo) GetZoneID() types.ID {
 // SetZoneID sets value to ZoneID
 func (o *BridgeInfo) SetZoneID(v types.ID) {
 	o.ZoneID = v
+}
+
+// GetZoneName returns value of ZoneName
+func (o *BridgeInfo) GetZoneName() string {
+	return o.ZoneName
+}
+
+// SetZoneName sets value to ZoneName
+func (o *BridgeInfo) SetZoneName(v string) {
+	o.ZoneName = v
 }
 
 /*************************************************

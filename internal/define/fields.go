@@ -86,7 +86,7 @@ func (f *fieldsDef) BridgeInfo() *dsl.FieldDesc {
 		Name: "BridgeInfo",
 		Type: models.bridgeInfoModel(),
 		Tags: &dsl.FieldTags{
-			MapConv: "[]Switches,recursive",
+			MapConv: "Info.[]Switches,recursive",
 		},
 	}
 }
@@ -472,6 +472,16 @@ func (f *fieldsDef) ZoneID() *dsl.FieldDesc {
 		Type: meta.TypeID,
 		Tags: &dsl.FieldTags{
 			MapConv: "Zone.ID",
+		},
+	}
+}
+
+func (f *fieldsDef) ZoneName() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "ZoneName",
+		Type: meta.TypeString,
+		Tags: &dsl.FieldTags{
+			MapConv: "Zone.Name",
 		},
 	}
 }

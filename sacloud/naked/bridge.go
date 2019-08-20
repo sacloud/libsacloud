@@ -14,6 +14,7 @@ type Bridge struct {
 	ServiceClass string            `json:",omitempty" yaml:"service_class,omitempty" structs:",omitempty"`
 	CreatedAt    *time.Time        `json:",omitempty" yaml:"created_at,omitempty" structs:",omitempty"`
 	Region       *Region           `json:",omitempty" yaml:"region,omitempty" structs:",omitempty"`
+	Info         *BridgeInfo       `json:",omitempty" yaml:"info,omitempty" structs:",omitempty"`
 	SwitchInZone *BridgeSwitchInfo `json:",omitempty" yaml:"switch_in_zone,omitempty" structs:",omitempty"`
 }
 
