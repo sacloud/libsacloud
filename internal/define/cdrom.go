@@ -96,6 +96,7 @@ var (
 			fields.Availability(),
 			fields.Scope(),
 			fields.Storage(),
+			fields.SizeMB(),
 			fields.IconID(),
 			fields.CreatedAt(),
 			fields.ModifiedAt(),

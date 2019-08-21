@@ -3134,6 +3134,7 @@ type CDROM struct {
 	Availability types.EAvailability
 	Scope        types.EScope
 	Storage      *Storage `json:",omitempty" mapconv:",omitempty,recursive"`
+	SizeMB       int
 	IconID       types.ID `mapconv:"Icon.ID"`
 	CreatedAt    time.Time
 	ModifiedAt   time.Time
@@ -3155,6 +3156,7 @@ func (o *CDROM) setDefaults() interface{} {
 		Availability types.EAvailability
 		Scope        types.EScope
 		Storage      *Storage `json:",omitempty" mapconv:",omitempty,recursive"`
+		SizeMB       int
 		IconID       types.ID `mapconv:"Icon.ID"`
 		CreatedAt    time.Time
 		ModifiedAt   time.Time
@@ -3167,6 +3169,7 @@ func (o *CDROM) setDefaults() interface{} {
 		Availability: o.GetAvailability(),
 		Scope:        o.GetScope(),
 		Storage:      o.GetStorage(),
+		SizeMB:       o.GetSizeMB(),
 		IconID:       o.GetIconID(),
 		CreatedAt:    o.GetCreatedAt(),
 		ModifiedAt:   o.GetModifiedAt(),
@@ -3291,6 +3294,26 @@ func (o *CDROM) GetStorage() *Storage {
 // SetStorage sets value to Storage
 func (o *CDROM) SetStorage(v *Storage) {
 	o.Storage = v
+}
+
+// GetSizeMB returns value of SizeMB
+func (o *CDROM) GetSizeMB() int {
+	return o.SizeMB
+}
+
+// SetSizeMB sets value to SizeMB
+func (o *CDROM) SetSizeMB(v int) {
+	o.SizeMB = v
+}
+
+// GetSizeGB .
+func (o *CDROM) GetSizeGB() int {
+	return accessor.GetSizeGB(o)
+}
+
+// SetSizeGB .
+func (o *CDROM) SetSizeGB(size int) {
+	accessor.SetSizeGB(o, size)
 }
 
 // GetIconID returns value of IconID
