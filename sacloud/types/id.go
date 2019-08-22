@@ -36,6 +36,9 @@ func (i ID) IsEmpty() bool {
 
 // String returns the literal text of the number.
 func (i ID) String() string {
+	if i.IsEmpty() {
+		return ""
+	}
 	return fmt.Sprintf("%d", i)
 }
 
