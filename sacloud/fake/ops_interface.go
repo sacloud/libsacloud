@@ -151,8 +151,15 @@ func (o *InterfaceOp) ConnectToSwitch(ctx context.Context, zone string, id types
 	}
 	if !value.SwitchID.IsEmpty() {
 		return newErrorConflict(o.key, id,
-			fmt.Sprintf("Interface[%d] is already connected to switch[%d]", value.ID, value.SwitchID))
+			fmt.Sprintf("Interface[%d] is already connected to switch[%d]", value.ID, switchID))
 	}
+
+	sw, err := NewSwitchOp().Read(ctx, zone, switchID)
+	if err != nil {
+		return err
+	}
+	sw.ServerCount++
+	putSwitch(zone, sw)
 
 	value.SwitchID = switchID
 	putInterface(zone, value)

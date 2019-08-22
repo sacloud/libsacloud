@@ -2547,6 +2547,15 @@ type switchPatchResponseEnvelope struct {
 	Switch *naked.Switch `json:",omitempty"`
 }
 
+// switchGetServersResponseEnvelope is envelop of API response
+type switchGetServersResponseEnvelope struct {
+	Total int `json:",omitempty"` // トータル件数
+	From  int `json:",omitempty"` // ページング開始ページ
+	Count int `json:",omitempty"` // 件数
+
+	Servers []*naked.Server `json:",omitempty"`
+}
+
 // vPCRouterFindRequestEnvelope is envelop of API request
 type vPCRouterFindRequestEnvelope struct {
 	Count   int             `json:",omitempty"`

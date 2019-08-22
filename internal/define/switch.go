@@ -48,6 +48,30 @@ var switchAPI = &dsl.Resource{
 
 		// disconnect from bridge
 		ops.WithIDAction(switchAPIName, "DisconnectFromBridge", http.MethodDelete, "to/bridge/"),
+
+		// find connected servers
+		{
+			ResourceName:     switchAPIName,
+			Name:             "GetServers",
+			PathFormat:       dsl.IDAndSuffixPathFormat("server"),
+			Method:           http.MethodGet,
+			UseWrappedResult: true,
+			Arguments: dsl.Arguments{
+				dsl.ArgumentID,
+			},
+			ResponseEnvelope: dsl.ResponseEnvelopePlural(&dsl.EnvelopePayloadDesc{
+				Type: serverNakedType,
+				Name: names.ResourceFieldName(serverAPIName, dsl.PayloadForms.Plural),
+			}),
+			Results: dsl.Results{
+				{
+					SourceField: names.ResourceFieldName(serverAPIName, dsl.PayloadForms.Plural),
+					DestField:   names.ResourceFieldName(serverAPIName, dsl.PayloadForms.Plural),
+					IsPlural:    true,
+					Model:       serverView,
+				},
+			},
+		},
 	},
 }
 
@@ -66,6 +90,7 @@ var (
 			fields.CreatedAt(),
 			fields.ModifiedAt(),
 			fields.Scope(),
+			fields.Def("ServerCount", meta.TypeInt),
 			fields.UserSubnetNetworkMaskLen(),
 			fields.UserSubnetDefaultRoute(),
 			{
