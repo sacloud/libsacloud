@@ -23,4 +23,5 @@ type Switch struct {
 	Subnets     []*Subnet    `json:",omitempty" yaml:"subnets,omitempty" structs:",omitempty"`
 	IPv6Nets    []*IPv6Net   `json:",omitempty" yaml:"ipv6nets,omitempty" structs:",omitempty"`
 	Bridge      *Bridge      `json:",omitempty" yaml:"bridge,omitempty" structs:",omitempty"`
+	ServerCount int          `json:",omitempty" yaml:"server_count,omitempty" structs:",omitempty"`
 }

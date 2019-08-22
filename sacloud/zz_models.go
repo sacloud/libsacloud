@@ -24144,6 +24144,7 @@ type Switch struct {
 	CreatedAt      time.Time
 	ModifiedAt     time.Time
 	Scope          types.EScope
+	ServerCount    int
 	NetworkMaskLen int             `mapconv:"UserSubnet.NetworkMaskLen" validate:"min=1,max=32"`
 	DefaultRoute   string          `mapconv:"UserSubnet.DefaultRoute" validate:"ipv4"`
 	Subnets        []*SwitchSubnet `json:",omitempty" mapconv:"[]Subnets,omitempty,recursive"`
@@ -24166,6 +24167,7 @@ func (o *Switch) setDefaults() interface{} {
 		CreatedAt      time.Time
 		ModifiedAt     time.Time
 		Scope          types.EScope
+		ServerCount    int
 		NetworkMaskLen int             `mapconv:"UserSubnet.NetworkMaskLen" validate:"min=1,max=32"`
 		DefaultRoute   string          `mapconv:"UserSubnet.DefaultRoute" validate:"ipv4"`
 		Subnets        []*SwitchSubnet `json:",omitempty" mapconv:"[]Subnets,omitempty,recursive"`
@@ -24179,6 +24181,7 @@ func (o *Switch) setDefaults() interface{} {
 		CreatedAt:      o.GetCreatedAt(),
 		ModifiedAt:     o.GetModifiedAt(),
 		Scope:          o.GetScope(),
+		ServerCount:    o.GetServerCount(),
 		NetworkMaskLen: o.GetNetworkMaskLen(),
 		DefaultRoute:   o.GetDefaultRoute(),
 		Subnets:        o.GetSubnets(),
@@ -24304,6 +24307,16 @@ func (o *Switch) GetScope() types.EScope {
 // SetScope sets value to Scope
 func (o *Switch) SetScope(v types.EScope) {
 	o.Scope = v
+}
+
+// GetServerCount returns value of ServerCount
+func (o *Switch) GetServerCount() int {
+	return o.ServerCount
+}
+
+// SetServerCount sets value to ServerCount
+func (o *Switch) SetServerCount(v int) {
+	o.ServerCount = v
 }
 
 // GetNetworkMaskLen returns value of NetworkMaskLen

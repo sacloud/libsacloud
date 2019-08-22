@@ -66,6 +66,7 @@ var (
 			fields.CreatedAt(),
 			fields.ModifiedAt(),
 			fields.Scope(),
+			fields.Def("ServerCount", meta.TypeInt),
 			fields.UserSubnetNetworkMaskLen(),
 			fields.UserSubnetDefaultRoute(),
 			{
