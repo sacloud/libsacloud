@@ -9621,6 +9621,39 @@ func (t *SwitchTracer) DisconnectFromBridge(ctx context.Context, zone string, id
 	return err
 }
 
+// GetServers is API call with trace log
+func (t *SwitchTracer) GetServers(ctx context.Context, zone string, id types.ID) (*sacloud.SwitchGetServersResult, error) {
+	log.Println("[TRACE] SwitchAPI.GetServers start")
+	targetArguments := struct {
+		Argzone string
+		Argid   types.ID `json:"id"`
+	}{
+		Argzone: zone,
+		Argid:   id,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] SwitchAPI.GetServers end")
+	}()
+
+	result, err := t.Internal.GetServers(ctx, zone, id)
+	targetResults := struct {
+		Result *sacloud.SwitchGetServersResult
+		Error  error
+	}{
+		Result: result,
+		Error:  err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return result, err
+}
+
 /*************************************************
 * VPCRouterTracer
 *************************************************/

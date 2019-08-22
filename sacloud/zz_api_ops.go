@@ -10752,6 +10752,37 @@ func (o *SwitchOp) DisconnectFromBridge(ctx context.Context, zone string, id typ
 	return nil
 }
 
+// GetServers is API call
+func (o *SwitchOp) GetServers(ctx context.Context, zone string, id types.ID) (*SwitchGetServersResult, error) {
+	// build request URL
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/server", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	// build request body
+	var body interface{}
+
+	// do request
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	// build results
+	results, err := o.transformGetServersResults(data)
+	if err != nil {
+		return nil, err
+	}
+	return results, err
+}
+
 /*************************************************
 * VPCRouterOp
 *************************************************/

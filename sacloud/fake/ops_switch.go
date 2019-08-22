@@ -177,3 +177,28 @@ func (o *SwitchOp) DisconnectFromBridge(ctx context.Context, zone string, id typ
 	putSwitch(zone, value)
 	return nil
 }
+
+// GetServers is fake implementation
+func (o *SwitchOp) GetServers(ctx context.Context, zone string, id types.ID) (*sacloud.SwitchGetServersResult, error) {
+	value, err := o.Read(ctx, zone, id)
+	if err != nil {
+		return nil, err
+	}
+	res := &sacloud.SwitchGetServersResult{}
+	if value.ServerCount == 0 {
+		return res, nil
+	}
+
+	searched, err := NewServerOp().Find(ctx, zone, nil)
+	for _, server := range searched.Servers {
+		for _, nic := range server.Interfaces {
+			if nic.SwitchID == id {
+				res.Servers = append(res.Servers, server)
+				res.Count++
+				res.Total++
+				break
+			}
+		}
+	}
+	return res, nil
+}

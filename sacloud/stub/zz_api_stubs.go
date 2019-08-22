@@ -4427,6 +4427,12 @@ type SwitchDisconnectFromBridgeStubResult struct {
 	Err error
 }
 
+// SwitchGetServersStubResult is expected values of the GetServers operation
+type SwitchGetServersStubResult struct {
+	Values *sacloud.SwitchGetServersResult
+	Err    error
+}
+
 // SwitchStub is for trace SwitchOp operations
 type SwitchStub struct {
 	FindStubResult                 *SwitchFindStubResult
@@ -4437,6 +4443,7 @@ type SwitchStub struct {
 	DeleteStubResult               *SwitchDeleteStubResult
 	ConnectToBridgeStubResult      *SwitchConnectToBridgeStubResult
 	DisconnectFromBridgeStubResult *SwitchDisconnectFromBridgeStubResult
+	GetServersStubResult           *SwitchGetServersStubResult
 }
 
 // NewSwitchStub creates new SwitchStub instance
@@ -4506,6 +4513,14 @@ func (s *SwitchStub) DisconnectFromBridge(ctx context.Context, zone string, id t
 		log.Fatal("SwitchStub.DisconnectFromBridgeStubResult is not set")
 	}
 	return s.DisconnectFromBridgeStubResult.Err
+}
+
+// GetServers is API call with trace log
+func (s *SwitchStub) GetServers(ctx context.Context, zone string, id types.ID) (*sacloud.SwitchGetServersResult, error) {
+	if s.GetServersStubResult == nil {
+		log.Fatal("SwitchStub.GetServersStubResult is not set")
+	}
+	return s.GetServersStubResult.Values, s.GetServersStubResult.Err
 }
 
 /*************************************************

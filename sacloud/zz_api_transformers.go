@@ -6571,6 +6571,19 @@ func (o *SwitchOp) transformPatchResults(data []byte) (*switchPatchResult, error
 	return results, nil
 }
 
+func (o *SwitchOp) transformGetServersResults(data []byte) (*SwitchGetServersResult, error) {
+	nakedResponse := &switchGetServersResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &SwitchGetServersResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
+}
+
 func (o *VPCRouterOp) transformFindArgs(conditions *FindCondition) (*vPCRouterFindRequestEnvelope, error) {
 	if conditions == nil {
 		conditions = &FindCondition{}

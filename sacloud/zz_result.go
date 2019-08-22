@@ -1439,6 +1439,15 @@ type switchPatchResult struct {
 	Switch *Switch `json:",omitempty" mapconv:"Switch,omitempty,recursive"`
 }
 
+// SwitchGetServersResult represents the Result of API
+type SwitchGetServersResult struct {
+	Total int `json:",omitempty"` // Total count of target resources
+	From  int `json:",omitempty"` // Current page number
+	Count int `json:",omitempty"` // Count of current page
+
+	Servers []*Server `json:",omitempty" mapconv:"[]Server,omitempty,recursive"`
+}
+
 // VPCRouterFindResult represents the Result of API
 type VPCRouterFindResult struct {
 	Total int `json:",omitempty"` // Total count of target resources

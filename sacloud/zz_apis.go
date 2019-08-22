@@ -575,6 +575,7 @@ type SwitchAPI interface {
 	Delete(ctx context.Context, zone string, id types.ID) error
 	ConnectToBridge(ctx context.Context, zone string, id types.ID, bridgeID types.ID) error
 	DisconnectFromBridge(ctx context.Context, zone string, id types.ID) error
+	GetServers(ctx context.Context, zone string, id types.ID) (*SwitchGetServersResult, error)
 }
 
 /*************************************************
