@@ -966,7 +966,7 @@ type internetFindResponseEnvelope struct {
 	From  int `json:",omitempty"` // ページング開始ページ
 	Count int `json:",omitempty"` // 件数
 
-	Internets []*naked.Internet `json:",omitempty"`
+	Internet []*naked.Internet `json:",omitempty"`
 }
 
 // internetCreateRequestEnvelope is envelop of API request
