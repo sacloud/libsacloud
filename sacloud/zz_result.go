@@ -548,7 +548,7 @@ type InternetFindResult struct {
 	From  int `json:",omitempty"` // Current page number
 	Count int `json:",omitempty"` // Count of current page
 
-	Internets []*Internet `json:",omitempty" mapconv:"[]Internets,omitempty,recursive"`
+	Internet []*Internet `json:",omitempty" mapconv:"[]Internet,omitempty,recursive"`
 }
 
 // internetCreateResult represents the Result of API

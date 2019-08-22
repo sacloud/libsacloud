@@ -276,8 +276,8 @@ func findInternet(ctx context.Context, caller sacloud.APICaller) ([]*cleanupTarg
 		if err != nil {
 			return nil, err
 		}
-		for j := range searched.Internets {
-			v := searched.Internets[j]
+		for j := range searched.Internet {
+			v := searched.Internet[j]
 			res = append(res, &cleanupTarget{
 				resource: v,
 				deleteFunc: func(ctx context.Context) error {

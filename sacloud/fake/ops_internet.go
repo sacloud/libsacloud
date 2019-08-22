@@ -21,10 +21,10 @@ func (o *InternetOp) Find(ctx context.Context, zone string, conditions *sacloud.
 		values = append(values, dest)
 	}
 	return &sacloud.InternetFindResult{
-		Total:     len(results),
-		Count:     len(results),
-		From:      0,
-		Internets: values,
+		Total:    len(results),
+		Count:    len(results),
+		From:     0,
+		Internet: values,
 	}, nil
 }
 

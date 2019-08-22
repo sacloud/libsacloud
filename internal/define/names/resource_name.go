@@ -17,6 +17,7 @@ func ResourceFieldName(resourceName string, form dsl.PayloadForm) string {
 		case
 			resourceName == "NFS",
 			resourceName == "DNS",
+			resourceName == "Internet",
 			resourceName == "IPAddress",
 			strings.HasSuffix(resourceName, "Info"):
 			return resourceName
