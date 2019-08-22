@@ -65,7 +65,7 @@ var switchAPI = &dsl.Resource{
 			}),
 			Results: dsl.Results{
 				{
-					SourceField: serverAPIName,
+					SourceField: names.ResourceFieldName(serverAPIName, dsl.PayloadForms.Plural),
 					DestField:   names.ResourceFieldName(serverAPIName, dsl.PayloadForms.Plural),
 					IsPlural:    true,
 					Model:       serverView,

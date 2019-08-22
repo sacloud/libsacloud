@@ -1445,7 +1445,7 @@ type SwitchGetServersResult struct {
 	From  int `json:",omitempty"` // Current page number
 	Count int `json:",omitempty"` // Count of current page
 
-	Servers []*Server `json:",omitempty" mapconv:"[]Server,omitempty,recursive"`
+	Servers []*Server `json:",omitempty" mapconv:"[]Servers,omitempty,recursive"`
 }
 
 // VPCRouterFindResult represents the Result of API
