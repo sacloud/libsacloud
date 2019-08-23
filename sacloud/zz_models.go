@@ -17957,6 +17957,7 @@ func (o *ProxyLB) SetVirtualIPAddress(v string) {
 type ProxyLBHealthCheck struct {
 	Protocol  types.EProxyLBHealthCheckProtocol
 	Path      string
+	Host      string
 	DelayLoop int
 }
 
@@ -17970,10 +17971,12 @@ func (o *ProxyLBHealthCheck) setDefaults() interface{} {
 	return &struct {
 		Protocol  types.EProxyLBHealthCheckProtocol
 		Path      string
+		Host      string
 		DelayLoop int
 	}{
 		Protocol:  o.GetProtocol(),
 		Path:      o.GetPath(),
+		Host:      o.GetHost(),
 		DelayLoop: o.GetDelayLoop(),
 	}
 }
@@ -17996,6 +17999,16 @@ func (o *ProxyLBHealthCheck) GetPath() string {
 // SetPath sets value to Path
 func (o *ProxyLBHealthCheck) SetPath(v string) {
 	o.Path = v
+}
+
+// GetHost returns value of Host
+func (o *ProxyLBHealthCheck) GetHost() string {
+	return o.Host
+}
+
+// SetHost sets value to Host
+func (o *ProxyLBHealthCheck) SetHost(v string) {
+	o.Host = v
 }
 
 // GetDelayLoop returns value of DelayLoop
@@ -18060,10 +18073,11 @@ func (o *ProxyLBSorryServer) SetPort(v int) {
 
 // ProxyLBBindPort represents API parameter/response structure
 type ProxyLBBindPort struct {
-	ProxyMode       types.EProxyLBProxyMode
-	Port            int `validate:"min=0,max=65535"`
-	RedirectToHTTPS bool
-	SupportHTTP2    bool
+	ProxyMode         types.EProxyLBProxyMode
+	Port              int `validate:"min=0,max=65535"`
+	RedirectToHTTPS   bool
+	SupportHTTP2      bool
+	AddResponseHeader []*ProxyLBResponseHeader `mapconv:"[]AddResponseHeader,recursive"`
 }
 
 // Validate validates by field tags
@@ -18074,15 +18088,17 @@ func (o *ProxyLBBindPort) Validate() error {
 // setDefaults implements sacloud.argumentDefaulter
 func (o *ProxyLBBindPort) setDefaults() interface{} {
 	return &struct {
-		ProxyMode       types.EProxyLBProxyMode
-		Port            int `validate:"min=0,max=65535"`
-		RedirectToHTTPS bool
-		SupportHTTP2    bool
+		ProxyMode         types.EProxyLBProxyMode
+		Port              int `validate:"min=0,max=65535"`
+		RedirectToHTTPS   bool
+		SupportHTTP2      bool
+		AddResponseHeader []*ProxyLBResponseHeader `mapconv:"[]AddResponseHeader,recursive"`
 	}{
-		ProxyMode:       o.GetProxyMode(),
-		Port:            o.GetPort(),
-		RedirectToHTTPS: o.GetRedirectToHTTPS(),
-		SupportHTTP2:    o.GetSupportHTTP2(),
+		ProxyMode:         o.GetProxyMode(),
+		Port:              o.GetPort(),
+		RedirectToHTTPS:   o.GetRedirectToHTTPS(),
+		SupportHTTP2:      o.GetSupportHTTP2(),
+		AddResponseHeader: o.GetAddResponseHeader(),
 	}
 }
 
@@ -18124,6 +18140,62 @@ func (o *ProxyLBBindPort) GetSupportHTTP2() bool {
 // SetSupportHTTP2 sets value to SupportHTTP2
 func (o *ProxyLBBindPort) SetSupportHTTP2(v bool) {
 	o.SupportHTTP2 = v
+}
+
+// GetAddResponseHeader returns value of AddResponseHeader
+func (o *ProxyLBBindPort) GetAddResponseHeader() []*ProxyLBResponseHeader {
+	return o.AddResponseHeader
+}
+
+// SetAddResponseHeader sets value to AddResponseHeader
+func (o *ProxyLBBindPort) SetAddResponseHeader(v []*ProxyLBResponseHeader) {
+	o.AddResponseHeader = v
+}
+
+/*************************************************
+* ProxyLBResponseHeader
+*************************************************/
+
+// ProxyLBResponseHeader represents API parameter/response structure
+type ProxyLBResponseHeader struct {
+	Header string
+	Value  string
+}
+
+// Validate validates by field tags
+func (o *ProxyLBResponseHeader) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *ProxyLBResponseHeader) setDefaults() interface{} {
+	return &struct {
+		Header string
+		Value  string
+	}{
+		Header: o.GetHeader(),
+		Value:  o.GetValue(),
+	}
+}
+
+// GetHeader returns value of Header
+func (o *ProxyLBResponseHeader) GetHeader() string {
+	return o.Header
+}
+
+// SetHeader sets value to Header
+func (o *ProxyLBResponseHeader) SetHeader(v string) {
+	o.Header = v
+}
+
+// GetValue returns value of Value
+func (o *ProxyLBResponseHeader) GetValue() string {
+	return o.Value
+}
+
+// SetValue sets value to Value
+func (o *ProxyLBResponseHeader) SetValue(v string) {
+	o.Value = v
 }
 
 /*************************************************
