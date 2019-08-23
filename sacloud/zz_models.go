@@ -16608,6 +16608,7 @@ type PacketFilterExpression struct {
 	SourcePort      types.PacketFilterPort
 	DestinationPort types.PacketFilterPort
 	Action          types.Action
+	Description     string
 }
 
 // Validate validates by field tags
@@ -16623,12 +16624,14 @@ func (o *PacketFilterExpression) setDefaults() interface{} {
 		SourcePort      types.PacketFilterPort
 		DestinationPort types.PacketFilterPort
 		Action          types.Action
+		Description     string
 	}{
 		Protocol:        o.GetProtocol(),
 		SourceNetwork:   o.GetSourceNetwork(),
 		SourcePort:      o.GetSourcePort(),
 		DestinationPort: o.GetDestinationPort(),
 		Action:          o.GetAction(),
+		Description:     o.GetDescription(),
 	}
 }
 
@@ -16680,6 +16683,16 @@ func (o *PacketFilterExpression) GetAction() types.Action {
 // SetAction sets value to Action
 func (o *PacketFilterExpression) SetAction(v types.Action) {
 	o.Action = v
+}
+
+// GetDescription returns value of Description
+func (o *PacketFilterExpression) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *PacketFilterExpression) SetDescription(v string) {
+	o.Description = v
 }
 
 /*************************************************
