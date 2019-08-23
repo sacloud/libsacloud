@@ -107,6 +107,12 @@ func initProxyLBVariables() {
 				ProxyMode:       types.ProxyLBProxyModes.HTTP,
 				Port:            80,
 				RedirectToHTTPS: true,
+				AddResponseHeader: []*sacloud.ProxyLBResponseHeader{
+					{
+						Header: "Cache-Control",
+						Value:  "public, max-age=60",
+					},
+				},
 			},
 			{
 				ProxyMode:    types.ProxyLBProxyModes.HTTPS,

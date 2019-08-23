@@ -1254,6 +1254,20 @@ func (f *fieldsDef) ProxyLBBindPorts() *dsl.FieldDesc {
 					Name: "SupportHTTP2",
 					Type: meta.TypeFlag,
 				},
+				{
+					Name: "AddResponseHeader",
+					Type: &dsl.Model{
+						Name:    "ProxyLBResponseHeader",
+						IsArray: true,
+						Fields: []*dsl.FieldDesc{
+							fields.Def("Header", meta.TypeString),
+							fields.Def("Value", meta.TypeString),
+						},
+					},
+					Tags: &dsl.FieldTags{
+						MapConv: "[]AddResponseHeader,recursive",
+					},
+				},
 			},
 		},
 		Tags: &dsl.FieldTags{

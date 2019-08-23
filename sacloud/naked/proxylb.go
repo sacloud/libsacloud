@@ -72,10 +72,17 @@ type ProxyLBSorryServer struct {
 
 // ProxyLBBindPorts プロキシ方式
 type ProxyLBBindPorts struct {
-	ProxyMode       types.EProxyLBProxyMode `json:",omitempty" yaml:"proxy_mode,omitempty" structs:",omitempty"` // モード(プロトコル)
-	Port            int                     `json:",omitempty" yaml:"port,omitempty" structs:",omitempty"`       // ポート
-	RedirectToHTTPS bool                    `json:"RedirectToHttps" yaml:"redirect_to_https"`                    // HTTPSへのリダイレクト(モードがhttpの場合のみ)
-	SupportHTTP2    bool                    `json:"SupportHttp2" yaml:"support_http2"`                           // HTTP/2のサポート(モードがhttpsの場合のみ)
+	ProxyMode         types.EProxyLBProxyMode  `json:",omitempty" yaml:"proxy_mode,omitempty" structs:",omitempty"`          // モード(プロトコル)
+	Port              int                      `json:",omitempty" yaml:"port,omitempty" structs:",omitempty"`                // ポート
+	RedirectToHTTPS   bool                     `json:"RedirectToHttps" yaml:"redirect_to_https"`                             // HTTPSへのリダイレクト(モードがhttpの場合のみ)
+	SupportHTTP2      bool                     `json:"SupportHttp2" yaml:"support_http2"`                                    // HTTP/2のサポート(モードがhttpsの場合のみ)
+	AddResponseHeader []*ProxyLBResponseHeader `json:",omitempty" yaml:"add_response_header,omitempty" structs:",omitempty"` // レスポンスヘッダ
+}
+
+// ProxyLBResponseHeader ポートごとの追加レスポンスヘッダ
+type ProxyLBResponseHeader struct {
+	Header string // ヘッダ名称(英字, 数字, ハイフン)
+	Value  string // 値(英字, 数字, 半角スペース, 一部記号（!#$%&'()*+,-./:;<=>?@[]^_`{|}~）)
 }
 
 // ProxyLBServer ProxyLB配下のサーバー
