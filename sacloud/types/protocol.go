@@ -9,7 +9,7 @@ var Protocols = &struct {
 	HTTPS    Protocol
 	TCP      Protocol
 	UDP      Protocol
-	Ping     Protocol
+	ICMP     Protocol
 	Fragment Protocol
 	IP       Protocol
 }{
@@ -17,7 +17,12 @@ var Protocols = &struct {
 	HTTPS:    "https",
 	TCP:      "tcp",
 	UDP:      "udp",
-	Ping:     "ping",
+	ICMP:     "icmp",
 	Fragment: "fragment",
 	IP:       "ip",
+}
+
+// String Protocolの文字列表現
+func (p Protocol) String() string {
+	return string(p)
 }
