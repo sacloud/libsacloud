@@ -4547,7 +4547,7 @@ type InterfaceView struct {
 	SubnetNetworkMaskLen            int                `mapconv:"Switch.Subnet.NetworkMaskLen"`
 	SubnetNetworkAddress            string             `mapconv:"Switch.Subnet.NetworkAddress"`
 	SubnetBandWidthMbps             int                `mapconv:"Switch.Subnet.Internet.BandWidthMbps"`
-	PacketFilterID                  string             `mapconv:"PacketFilter.ID"`
+	PacketFilterID                  types.ID           `mapconv:"PacketFilter.ID"`
 	PacketFilterName                string             `mapconv:"PacketFilter.Name"`
 	PacketFilterRequiredHostVersion types.StringNumber `mapconv:"PacketFilter.RequiredHostVersionn"`
 	UpstreamType                    types.EUpstreamNetworkType
@@ -4575,7 +4575,7 @@ func (o *InterfaceView) setDefaults() interface{} {
 		SubnetNetworkMaskLen            int                `mapconv:"Switch.Subnet.NetworkMaskLen"`
 		SubnetNetworkAddress            string             `mapconv:"Switch.Subnet.NetworkAddress"`
 		SubnetBandWidthMbps             int                `mapconv:"Switch.Subnet.Internet.BandWidthMbps"`
-		PacketFilterID                  string             `mapconv:"PacketFilter.ID"`
+		PacketFilterID                  types.ID           `mapconv:"PacketFilter.ID"`
 		PacketFilterName                string             `mapconv:"PacketFilter.Name"`
 		PacketFilterRequiredHostVersion types.StringNumber `mapconv:"PacketFilter.RequiredHostVersionn"`
 		UpstreamType                    types.EUpstreamNetworkType
@@ -4762,12 +4762,12 @@ func (o *InterfaceView) SetSubnetBandWidthMbps(v int) {
 }
 
 // GetPacketFilterID returns value of PacketFilterID
-func (o *InterfaceView) GetPacketFilterID() string {
+func (o *InterfaceView) GetPacketFilterID() types.ID {
 	return o.PacketFilterID
 }
 
 // SetPacketFilterID sets value to PacketFilterID
-func (o *InterfaceView) SetPacketFilterID(v string) {
+func (o *InterfaceView) SetPacketFilterID(v types.ID) {
 	o.PacketFilterID = v
 }
 
@@ -13526,7 +13526,7 @@ type MobileGatewayInterface struct {
 	SubnetNetworkMaskLen            int                `mapconv:"Switch.Subnet.NetworkMaskLen"`
 	SubnetNetworkAddress            string             `mapconv:"Switch.Subnet.NetworkAddress"`
 	SubnetBandWidthMbps             int                `mapconv:"Switch.Subnet.Internet.BandWidthMbps"`
-	PacketFilterID                  string             `mapconv:"PacketFilter.ID"`
+	PacketFilterID                  types.ID           `mapconv:"PacketFilter.ID"`
 	PacketFilterName                string             `mapconv:"PacketFilter.Name"`
 	PacketFilterRequiredHostVersion types.StringNumber `mapconv:"PacketFilter.RequiredHostVersionn"`
 	UpstreamType                    types.EUpstreamNetworkType
@@ -13555,7 +13555,7 @@ func (o *MobileGatewayInterface) setDefaults() interface{} {
 		SubnetNetworkMaskLen            int                `mapconv:"Switch.Subnet.NetworkMaskLen"`
 		SubnetNetworkAddress            string             `mapconv:"Switch.Subnet.NetworkAddress"`
 		SubnetBandWidthMbps             int                `mapconv:"Switch.Subnet.Internet.BandWidthMbps"`
-		PacketFilterID                  string             `mapconv:"PacketFilter.ID"`
+		PacketFilterID                  types.ID           `mapconv:"PacketFilter.ID"`
 		PacketFilterName                string             `mapconv:"PacketFilter.Name"`
 		PacketFilterRequiredHostVersion types.StringNumber `mapconv:"PacketFilter.RequiredHostVersionn"`
 		UpstreamType                    types.EUpstreamNetworkType
@@ -13744,12 +13744,12 @@ func (o *MobileGatewayInterface) SetSubnetBandWidthMbps(v int) {
 }
 
 // GetPacketFilterID returns value of PacketFilterID
-func (o *MobileGatewayInterface) GetPacketFilterID() string {
+func (o *MobileGatewayInterface) GetPacketFilterID() types.ID {
 	return o.PacketFilterID
 }
 
 // SetPacketFilterID sets value to PacketFilterID
-func (o *MobileGatewayInterface) SetPacketFilterID(v string) {
+func (o *MobileGatewayInterface) SetPacketFilterID(v types.ID) {
 	o.PacketFilterID = v
 }
 
@@ -26265,7 +26265,7 @@ type VPCRouterInterface struct {
 	SubnetNetworkMaskLen            int                `mapconv:"Switch.Subnet.NetworkMaskLen"`
 	SubnetNetworkAddress            string             `mapconv:"Switch.Subnet.NetworkAddress"`
 	SubnetBandWidthMbps             int                `mapconv:"Switch.Subnet.Internet.BandWidthMbps"`
-	PacketFilterID                  string             `mapconv:"PacketFilter.ID"`
+	PacketFilterID                  types.ID           `mapconv:"PacketFilter.ID"`
 	PacketFilterName                string             `mapconv:"PacketFilter.Name"`
 	PacketFilterRequiredHostVersion types.StringNumber `mapconv:"PacketFilter.RequiredHostVersionn"`
 	UpstreamType                    types.EUpstreamNetworkType
@@ -26294,7 +26294,7 @@ func (o *VPCRouterInterface) setDefaults() interface{} {
 		SubnetNetworkMaskLen            int                `mapconv:"Switch.Subnet.NetworkMaskLen"`
 		SubnetNetworkAddress            string             `mapconv:"Switch.Subnet.NetworkAddress"`
 		SubnetBandWidthMbps             int                `mapconv:"Switch.Subnet.Internet.BandWidthMbps"`
-		PacketFilterID                  string             `mapconv:"PacketFilter.ID"`
+		PacketFilterID                  types.ID           `mapconv:"PacketFilter.ID"`
 		PacketFilterName                string             `mapconv:"PacketFilter.Name"`
 		PacketFilterRequiredHostVersion types.StringNumber `mapconv:"PacketFilter.RequiredHostVersionn"`
 		UpstreamType                    types.EUpstreamNetworkType
@@ -26483,12 +26483,12 @@ func (o *VPCRouterInterface) SetSubnetBandWidthMbps(v int) {
 }
 
 // GetPacketFilterID returns value of PacketFilterID
-func (o *VPCRouterInterface) GetPacketFilterID() string {
+func (o *VPCRouterInterface) GetPacketFilterID() types.ID {
 	return o.PacketFilterID
 }
 
 // SetPacketFilterID sets value to PacketFilterID
-func (o *VPCRouterInterface) SetPacketFilterID(v string) {
+func (o *VPCRouterInterface) SetPacketFilterID(v types.ID) {
 	o.PacketFilterID = v
 }
 
