@@ -84,7 +84,25 @@ var (
 				},
 			},
 			fields.Def("AssignedCPU", meta.TypeInt),
-			fields.Def("AssignedMemoryMB", meta.TypeInt),
+			{
+				Name: "AssignedMemoryMB",
+				Type: meta.TypeInt,
+				Methods: []*dsl.MethodDesc{
+					{
+						Name:        "GetAssignedMemoryGB",
+						ResultTypes: []meta.Type{meta.TypeInt},
+					},
+					{
+						Name: "SetAssignedMemoryGB",
+						Arguments: dsl.Arguments{
+							{
+								Name: "memory",
+								Type: meta.TypeInt,
+							},
+						},
+					},
+				},
+			},
 			fields.PrivateHostHostName(),
 		},
 	}
