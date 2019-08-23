@@ -17140,6 +17140,16 @@ func (o *PrivateHost) SetAssignedMemoryMB(v int) {
 	o.AssignedMemoryMB = v
 }
 
+// GetAssignedMemoryGB .
+func (o *PrivateHost) GetAssignedMemoryGB() int {
+	return accessor.GetAssignedMemoryGB(o)
+}
+
+// SetAssignedMemoryGB .
+func (o *PrivateHost) SetAssignedMemoryGB(memory int) {
+	accessor.SetAssignedMemoryGB(o, memory)
+}
+
 // GetHostName returns value of HostName
 func (o *PrivateHost) GetHostName() string {
 	return o.HostName
