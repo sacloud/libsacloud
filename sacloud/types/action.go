@@ -11,3 +11,13 @@ var Actions = &struct {
 	Allow: Action("allow"),
 	Deny:  Action("deny"),
 }
+
+// IsAllow Allowであるか判定
+func (a Action) IsAllow() bool {
+	return a == Actions.Allow
+}
+
+// IsDeny Denyであるか判定
+func (a Action) IsDeny() bool {
+	return a == Actions.Deny
+}

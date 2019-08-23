@@ -544,6 +544,10 @@ func (m *modelsDef) packetFilterExpressions() *dsl.Model {
 				Name: "Action",
 				Type: meta.TypeAction,
 			},
+			{
+				Name: "Description",
+				Type: meta.TypeString,
+			},
 		},
 	}
 }
