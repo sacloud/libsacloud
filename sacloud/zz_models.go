@@ -17957,6 +17957,7 @@ func (o *ProxyLB) SetVirtualIPAddress(v string) {
 type ProxyLBHealthCheck struct {
 	Protocol  types.EProxyLBHealthCheckProtocol
 	Path      string
+	Host      string
 	DelayLoop int
 }
 
@@ -17970,10 +17971,12 @@ func (o *ProxyLBHealthCheck) setDefaults() interface{} {
 	return &struct {
 		Protocol  types.EProxyLBHealthCheckProtocol
 		Path      string
+		Host      string
 		DelayLoop int
 	}{
 		Protocol:  o.GetProtocol(),
 		Path:      o.GetPath(),
+		Host:      o.GetHost(),
 		DelayLoop: o.GetDelayLoop(),
 	}
 }
@@ -17996,6 +17999,16 @@ func (o *ProxyLBHealthCheck) GetPath() string {
 // SetPath sets value to Path
 func (o *ProxyLBHealthCheck) SetPath(v string) {
 	o.Path = v
+}
+
+// GetHost returns value of Host
+func (o *ProxyLBHealthCheck) GetHost() string {
+	return o.Host
+}
+
+// SetHost sets value to Host
+func (o *ProxyLBHealthCheck) SetHost(v string) {
+	o.Host = v
 }
 
 // GetDelayLoop returns value of DelayLoop

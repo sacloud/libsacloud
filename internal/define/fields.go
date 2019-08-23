@@ -1185,6 +1185,10 @@ func (f *fieldsDef) ProxyLBHealthCheck() *dsl.FieldDesc {
 					Type: meta.TypeString,
 				},
 				{
+					Name: "Host",
+					Type: meta.TypeString,
+				},
+				{
 					Name: "DelayLoop",
 					Type: meta.TypeInt,
 				},
