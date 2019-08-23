@@ -287,7 +287,7 @@ func (m *modelsDef) interfaceModel() *dsl.Model {
 			// packet filter
 			{
 				Name: "PacketFilterID",
-				Type: meta.TypeString,
+				Type: meta.TypeID,
 				Tags: &dsl.FieldTags{
 					MapConv: "PacketFilter.ID",
 				},

@@ -28,3 +28,8 @@ func (c ECommitment) IsStandard() bool {
 func (c ECommitment) IsDedicatedCPU() bool {
 	return c == Commitments.DedicatedCPU
 }
+
+// String ECommitmentの文字列表現
+func (c ECommitment) String() string {
+	return string(c)
+}
