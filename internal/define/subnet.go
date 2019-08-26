@@ -31,6 +31,8 @@ var (
 		NakedType: subnetNakedType,
 		Fields: []*dsl.FieldDesc{
 			fields.ID(),
+			fields.SwitchID(),
+			fields.Def("InternetID", meta.TypeID, mapConvTag("Switch.Internet.ID,omitempty")),
 			fields.DefaultRoute(),
 			fields.NextHop(),
 			fields.StaticRoute(),

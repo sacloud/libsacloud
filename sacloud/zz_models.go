@@ -24399,6 +24399,8 @@ func (o *SSHKeyPatchRequest) SetPatchEmptyToDescription(v bool) {
 // Subnet represents API parameter/response structure
 type Subnet struct {
 	ID             types.ID
+	SwitchID       types.ID           `mapconv:"Switch.ID,omitempty"`
+	InternetID     types.ID           `mapconv:"Switch.Internet.ID,omitempty"`
 	DefaultRoute   string             `validate:"ipv4"`
 	NextHop        string             `validate:"ipv4"`
 	StaticRoute    string             `validate:"ipv4"`
@@ -24416,6 +24418,8 @@ func (o *Subnet) Validate() error {
 func (o *Subnet) setDefaults() interface{} {
 	return &struct {
 		ID             types.ID
+		SwitchID       types.ID           `mapconv:"Switch.ID,omitempty"`
+		InternetID     types.ID           `mapconv:"Switch.Internet.ID,omitempty"`
 		DefaultRoute   string             `validate:"ipv4"`
 		NextHop        string             `validate:"ipv4"`
 		StaticRoute    string             `validate:"ipv4"`
@@ -24424,6 +24428,8 @@ func (o *Subnet) setDefaults() interface{} {
 		IPAddresses    []*SubnetIPAddress `mapconv:"[]IPAddresses,recursive"`
 	}{
 		ID:             o.GetID(),
+		SwitchID:       o.GetSwitchID(),
+		InternetID:     o.GetInternetID(),
 		DefaultRoute:   o.GetDefaultRoute(),
 		NextHop:        o.GetNextHop(),
 		StaticRoute:    o.GetStaticRoute(),
@@ -24461,6 +24467,26 @@ func (o *Subnet) SetInt64ID(id int64) {
 // GetInt64ID .
 func (o *Subnet) GetInt64ID() int64 {
 	return accessor.GetInt64ID(o)
+}
+
+// GetSwitchID returns value of SwitchID
+func (o *Subnet) GetSwitchID() types.ID {
+	return o.SwitchID
+}
+
+// SetSwitchID sets value to SwitchID
+func (o *Subnet) SetSwitchID(v types.ID) {
+	o.SwitchID = v
+}
+
+// GetInternetID returns value of InternetID
+func (o *Subnet) GetInternetID() types.ID {
+	return o.InternetID
+}
+
+// SetInternetID sets value to InternetID
+func (o *Subnet) SetInternetID(v types.ID) {
+	o.InternetID = v
 }
 
 // GetDefaultRoute returns value of DefaultRoute

@@ -85,6 +85,8 @@ func (o *InternetOp) Create(ctx context.Context, zone string, param *sacloud.Int
 	for _, ip := range subnet.addresses {
 		rSubnet.IPAddresses = append(rSubnet.IPAddresses, &sacloud.SubnetIPAddress{IPAddress: ip})
 	}
+	rSubnet.SwitchID = sw.ID
+	rSubnet.InternetID = result.ID
 
 	putSwitch(zone, sw)
 	putInternet(zone, result)
@@ -228,6 +230,8 @@ func (o *InternetOp) AddSubnet(ctx context.Context, zone string, id types.ID, pa
 	for _, ip := range subnet.addresses {
 		rSubnet.IPAddresses = append(rSubnet.IPAddresses, &sacloud.SubnetIPAddress{IPAddress: ip})
 	}
+	rSubnet.SwitchID = sw.ID
+	rSubnet.InternetID = value.ID
 
 	putSwitch(zone, sw)
 	putInternet(zone, value)
