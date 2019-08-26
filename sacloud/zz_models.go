@@ -19522,7 +19522,7 @@ type Server struct {
 	InstanceStatusChangedAt time.Time                   `mapconv:"Instance.StatusChangedAt"`
 	InstanceWarnings        string                      `mapconv:"Instance.Warnings"`
 	InstanceWarningsValue   int                         `mapconv:"Instance.WarningsValue"`
-	Disks                   []*Disk                     `json:",omitempty" mapconv:",recursive"`
+	Disks                   []*ServerConnectedDisk      `json:",omitempty" mapconv:",recursive"`
 	Interfaces              []*InterfaceView            `json:",omitempty" mapconv:"[]Interfaces,recursive,omitempty"`
 	CDROMID                 types.ID                    `mapconv:"Instance.CDROM.ID"`
 	PrivateHostID           types.ID                    `mapconv:"PrivateHost.ID"`
@@ -19562,7 +19562,7 @@ func (o *Server) setDefaults() interface{} {
 		InstanceStatusChangedAt time.Time                   `mapconv:"Instance.StatusChangedAt"`
 		InstanceWarnings        string                      `mapconv:"Instance.Warnings"`
 		InstanceWarningsValue   int                         `mapconv:"Instance.WarningsValue"`
-		Disks                   []*Disk                     `json:",omitempty" mapconv:",recursive"`
+		Disks                   []*ServerConnectedDisk      `json:",omitempty" mapconv:",recursive"`
 		Interfaces              []*InterfaceView            `json:",omitempty" mapconv:"[]Interfaces,recursive,omitempty"`
 		CDROMID                 types.ID                    `mapconv:"Instance.CDROM.ID"`
 		PrivateHostID           types.ID                    `mapconv:"PrivateHost.ID"`
@@ -19867,12 +19867,12 @@ func (o *Server) SetInstanceWarningsValue(v int) {
 }
 
 // GetDisks returns value of Disks
-func (o *Server) GetDisks() []*Disk {
+func (o *Server) GetDisks() []*ServerConnectedDisk {
 	return o.Disks
 }
 
 // SetDisks sets value to Disks
-func (o *Server) SetDisks(v []*Disk) {
+func (o *Server) SetDisks(v []*ServerConnectedDisk) {
 	o.Disks = v
 }
 
@@ -20177,6 +20177,173 @@ func (o *FTPServerInfo) GetIPAddress() string {
 // SetIPAddress sets value to IPAddress
 func (o *FTPServerInfo) SetIPAddress(v string) {
 	o.IPAddress = v
+}
+
+/*************************************************
+* ServerConnectedDisk
+*************************************************/
+
+// ServerConnectedDisk represents API parameter/response structure
+type ServerConnectedDisk struct {
+	ID              types.ID
+	Name            string `validate:"required"`
+	Availability    types.EAvailability
+	Connection      types.EDiskConnection `json:",omitempty" mapconv:",omitempty"`
+	ConnectionOrder int
+	ReinstallCount  int
+	SizeMB          int
+	DiskPlanID      types.ID `mapconv:"Plan.ID"`
+	Storage         *Storage `json:",omitempty" mapconv:",omitempty,recursive"`
+}
+
+// Validate validates by field tags
+func (o *ServerConnectedDisk) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *ServerConnectedDisk) setDefaults() interface{} {
+	return &struct {
+		ID              types.ID
+		Name            string `validate:"required"`
+		Availability    types.EAvailability
+		Connection      types.EDiskConnection `json:",omitempty" mapconv:",omitempty"`
+		ConnectionOrder int
+		ReinstallCount  int
+		SizeMB          int
+		DiskPlanID      types.ID `mapconv:"Plan.ID"`
+		Storage         *Storage `json:",omitempty" mapconv:",omitempty,recursive"`
+	}{
+		ID:              o.GetID(),
+		Name:            o.GetName(),
+		Availability:    o.GetAvailability(),
+		Connection:      o.GetConnection(),
+		ConnectionOrder: o.GetConnectionOrder(),
+		ReinstallCount:  o.GetReinstallCount(),
+		SizeMB:          o.GetSizeMB(),
+		DiskPlanID:      o.GetDiskPlanID(),
+		Storage:         o.GetStorage(),
+	}
+}
+
+// GetID returns value of ID
+func (o *ServerConnectedDisk) GetID() types.ID {
+	return o.ID
+}
+
+// SetID sets value to ID
+func (o *ServerConnectedDisk) SetID(v types.ID) {
+	o.ID = v
+}
+
+// SetStringID .
+func (o *ServerConnectedDisk) SetStringID(id string) {
+	accessor.SetStringID(o, id)
+}
+
+// GetStringID .
+func (o *ServerConnectedDisk) GetStringID() string {
+	return accessor.GetStringID(o)
+}
+
+// SetInt64ID .
+func (o *ServerConnectedDisk) SetInt64ID(id int64) {
+	accessor.SetInt64ID(o, id)
+}
+
+// GetInt64ID .
+func (o *ServerConnectedDisk) GetInt64ID() int64 {
+	return accessor.GetInt64ID(o)
+}
+
+// GetName returns value of Name
+func (o *ServerConnectedDisk) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *ServerConnectedDisk) SetName(v string) {
+	o.Name = v
+}
+
+// GetAvailability returns value of Availability
+func (o *ServerConnectedDisk) GetAvailability() types.EAvailability {
+	return o.Availability
+}
+
+// SetAvailability sets value to Availability
+func (o *ServerConnectedDisk) SetAvailability(v types.EAvailability) {
+	o.Availability = v
+}
+
+// GetConnection returns value of Connection
+func (o *ServerConnectedDisk) GetConnection() types.EDiskConnection {
+	return o.Connection
+}
+
+// SetConnection sets value to Connection
+func (o *ServerConnectedDisk) SetConnection(v types.EDiskConnection) {
+	o.Connection = v
+}
+
+// GetConnectionOrder returns value of ConnectionOrder
+func (o *ServerConnectedDisk) GetConnectionOrder() int {
+	return o.ConnectionOrder
+}
+
+// SetConnectionOrder sets value to ConnectionOrder
+func (o *ServerConnectedDisk) SetConnectionOrder(v int) {
+	o.ConnectionOrder = v
+}
+
+// GetReinstallCount returns value of ReinstallCount
+func (o *ServerConnectedDisk) GetReinstallCount() int {
+	return o.ReinstallCount
+}
+
+// SetReinstallCount sets value to ReinstallCount
+func (o *ServerConnectedDisk) SetReinstallCount(v int) {
+	o.ReinstallCount = v
+}
+
+// GetSizeMB returns value of SizeMB
+func (o *ServerConnectedDisk) GetSizeMB() int {
+	return o.SizeMB
+}
+
+// SetSizeMB sets value to SizeMB
+func (o *ServerConnectedDisk) SetSizeMB(v int) {
+	o.SizeMB = v
+}
+
+// GetSizeGB .
+func (o *ServerConnectedDisk) GetSizeGB() int {
+	return accessor.GetSizeGB(o)
+}
+
+// SetSizeGB .
+func (o *ServerConnectedDisk) SetSizeGB(size int) {
+	accessor.SetSizeGB(o, size)
+}
+
+// GetDiskPlanID returns value of DiskPlanID
+func (o *ServerConnectedDisk) GetDiskPlanID() types.ID {
+	return o.DiskPlanID
+}
+
+// SetDiskPlanID sets value to DiskPlanID
+func (o *ServerConnectedDisk) SetDiskPlanID(v types.ID) {
+	o.DiskPlanID = v
+}
+
+// GetStorage returns value of Storage
+func (o *ServerConnectedDisk) GetStorage() *Storage {
+	return o.Storage
+}
+
+// SetStorage sets value to Storage
+func (o *ServerConnectedDisk) SetStorage(v *Storage) {
+	o.Storage = v
 }
 
 /*************************************************

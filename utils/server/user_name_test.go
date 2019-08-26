@@ -106,7 +106,7 @@ func TestGetDefaultUserName(t *testing.T) {
 					servers: []*sacloud.Server{
 						{
 							ID: 1,
-							Disks: []*sacloud.Disk{
+							Disks: []*sacloud.ServerConnectedDisk{
 								{ID: 2},
 							},
 						},
@@ -128,7 +128,7 @@ func TestGetDefaultUserName(t *testing.T) {
 					servers: []*sacloud.Server{
 						{
 							ID: 1,
-							Disks: []*sacloud.Disk{
+							Disks: []*sacloud.ServerConnectedDisk{
 								{ID: 2},
 							},
 						},
@@ -156,7 +156,7 @@ func TestGetDefaultUserName(t *testing.T) {
 					servers: []*sacloud.Server{
 						{
 							ID: 1,
-							Disks: []*sacloud.Disk{
+							Disks: []*sacloud.ServerConnectedDisk{
 								{ID: 2},
 							},
 						},
@@ -185,7 +185,7 @@ func TestGetDefaultUserName(t *testing.T) {
 					servers: []*sacloud.Server{
 						{
 							ID: 1,
-							Disks: []*sacloud.Disk{
+							Disks: []*sacloud.ServerConnectedDisk{
 								{ID: 2},
 							},
 						},
@@ -220,7 +220,7 @@ func TestGetDefaultUserName(t *testing.T) {
 					servers: []*sacloud.Server{
 						{
 							ID: 1,
-							Disks: []*sacloud.Disk{
+							Disks: []*sacloud.ServerConnectedDisk{
 								{ID: 2},
 							},
 						},
@@ -255,7 +255,7 @@ func TestGetDefaultUserName(t *testing.T) {
 					servers: []*sacloud.Server{
 						{
 							ID: 1,
-							Disks: []*sacloud.Disk{
+							Disks: []*sacloud.ServerConnectedDisk{
 								{ID: 2},
 							},
 						},
@@ -290,7 +290,7 @@ func TestGetDefaultUserName(t *testing.T) {
 					servers: []*sacloud.Server{
 						{
 							ID: 1,
-							Disks: []*sacloud.Disk{
+							Disks: []*sacloud.ServerConnectedDisk{
 								{ID: 2},
 							},
 						},
@@ -325,7 +325,7 @@ func TestGetDefaultUserName(t *testing.T) {
 					servers: []*sacloud.Server{
 						{
 							ID: 1,
-							Disks: []*sacloud.Disk{
+							Disks: []*sacloud.ServerConnectedDisk{
 								{ID: 2},
 							},
 						},
