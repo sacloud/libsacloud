@@ -214,9 +214,9 @@ func TestVPCRouterOp_WithRouterCRUD(t *testing.T) {
 			return nil
 		},
 		Create: &testutil.CRUDTestFunc{
-			Func: testVPCRouterCreate(createVPCRouterParam),
+			Func: testVPCRouterCreate(withRouterCreateVPCRouterParam),
 			CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
-				ExpectValue:  createVPCRouterExpected,
+				ExpectValue:  withRouterCreateVPCRouterExpected,
 				IgnoreFields: ignoreVPCRouterFields,
 			}),
 		},
@@ -224,7 +224,7 @@ func TestVPCRouterOp_WithRouterCRUD(t *testing.T) {
 		Read: &testutil.CRUDTestFunc{
 			Func: testVPCRouterRead,
 			CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
-				ExpectValue:  createVPCRouterExpected,
+				ExpectValue:  withRouterCreateVPCRouterExpected,
 				IgnoreFields: ignoreVPCRouterFields,
 			}),
 		},
@@ -233,8 +233,8 @@ func TestVPCRouterOp_WithRouterCRUD(t *testing.T) {
 			{
 				Func: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 					if isAccTest() {
-						// 起動直後だとシャットダウンできない場合があるため10秒ほど待つ
-						time.Sleep(10 * time.Second)
+						// 起動直後だとシャットダウンできない場合があるため20秒ほど待つ
+						time.Sleep(20 * time.Second)
 					}
 
 					vpcOp := sacloud.NewVPCRouterOp(caller)
@@ -266,12 +266,14 @@ func TestVPCRouterOp_WithRouterCRUD(t *testing.T) {
 					// setup update param
 					p := withRouterUpdateVPCRouterParam
 					p.Settings = &sacloud.VPCRouterSetting{
+						VRID:                      10,
+						SyslogHost:                "192.168.2.199",
 						InternetConnectionEnabled: true,
 						Interfaces: []*sacloud.VPCRouterInterfaceSetting{
 							withRouterCreateVPCRouterParam.Settings.Interfaces[0],
 							{
-								VirtualIPAddress: "192.0.2.1",
-								IPAddress:        []string{"192.0.2.11", "192.0.2.12"},
+								VirtualIPAddress: "192.168.2.1",
+								IPAddress:        []string{"192.168.2.11", "192.168.2.12"},
 								NetworkMaskLen:   24,
 								Index:            2,
 							},
@@ -279,30 +281,30 @@ func TestVPCRouterOp_WithRouterCRUD(t *testing.T) {
 						StaticNAT: []*sacloud.VPCRouterStaticNAT{
 							{
 								GlobalAddress:  withRouterCreateVPCRouterParam.Settings.Interfaces[0].IPAliases[0],
-								PrivateAddress: "192.0.2.1",
+								PrivateAddress: "192.168.2.1",
 							},
 						},
 						DHCPServer: []*sacloud.VPCRouterDHCPServer{
 							{
 								Interface:  "eth2",
-								RangeStart: "192.0.2.51",
-								RangeStop:  "192.0.2.60",
+								RangeStart: "192.168.2.51",
+								RangeStop:  "192.168.2.60",
 							},
 						},
 						DHCPStaticMapping: []*sacloud.VPCRouterDHCPStaticMapping{
 							{
 								MACAddress: "aa:bb:cc:dd:ee:ff",
-								IPAddress:  "192.0.2.21",
+								IPAddress:  "192.168.2.21",
 							},
 						},
 						PPTPServer: &sacloud.VPCRouterPPTPServer{
-							RangeStart: "192.0.2.61",
-							RangeStop:  "192.0.2.70",
+							RangeStart: "192.168.2.61",
+							RangeStop:  "192.168.2.70",
 						},
 						PPTPServerEnabled: true,
 						L2TPIPsecServer: &sacloud.VPCRouterL2TPIPsecServer{
-							RangeStart:      "192.0.2.71",
-							RangeStop:       "192.0.2.80",
+							RangeStart:      "192.168.2.71",
+							RangeStop:       "192.168.2.80",
 							PreSharedSecret: "presharedsecret",
 						},
 						L2TPIPsecServerEnabled: true,
@@ -314,26 +316,26 @@ func TestVPCRouterOp_WithRouterCRUD(t *testing.T) {
 						},
 						SiteToSiteIPsecVPN: []*sacloud.VPCRouterSiteToSiteIPsecVPN{
 							{
-								Peer:            "10.0.0.1",
+								Peer:            "1.2.3.4",
 								PreSharedSecret: "presharedsecret",
-								RemoteID:        "10.0.0.1",
-								Routes:          []string{"192.0.2.248/28"},
-								LocalPrefix:     []string{"192.0.2.0/24"},
+								RemoteID:        "1.2.3.4",
+								Routes:          []string{"10.0.0.0/24"},
+								LocalPrefix:     []string{"192.168.2.0/24"},
 							},
 						},
 						StaticRoute: []*sacloud.VPCRouterStaticRoute{
 							{
 								Prefix:  "172.16.0.0/16",
-								NextHop: "192.0.2.11",
+								NextHop: "192.168.2.11",
 							},
 						},
 					}
 
 					withRouterUpdateVPCRouterExpected.Settings = p.Settings
-					return testVPCRouterUpdate(updateVPCRouterParam)(ctx, caller)
+					return testVPCRouterUpdate(withRouterUpdateVPCRouterParam)(ctx, caller)
 				},
 				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
-					ExpectValue:  updateVPCRouterExpected,
+					ExpectValue:  withRouterUpdateVPCRouterExpected,
 					IgnoreFields: ignoreVPCRouterFields,
 				}),
 			},
@@ -342,6 +344,7 @@ func TestVPCRouterOp_WithRouterCRUD(t *testing.T) {
 					// setup update param
 					p := withRouterUpdateVPCRouterToMinParam
 					p.Settings = &sacloud.VPCRouterSetting{
+						VRID:                      10,
 						InternetConnectionEnabled: false,
 						Interfaces: []*sacloud.VPCRouterInterfaceSetting{
 							withRouterCreateVPCRouterParam.Settings.Interfaces[0],
@@ -349,10 +352,10 @@ func TestVPCRouterOp_WithRouterCRUD(t *testing.T) {
 					}
 
 					withRouterUpdateVPCRouterToMinExpected.Settings = p.Settings
-					return testVPCRouterUpdate(updateVPCRouterParam)(ctx, caller)
+					return testVPCRouterUpdate(withRouterUpdateVPCRouterToMinParam)(ctx, caller)
 				},
 				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
-					ExpectValue:  updateVPCRouterExpected,
+					ExpectValue:  withRouterUpdateVPCRouterToMinExpected,
 					IgnoreFields: ignoreVPCRouterFields,
 				}),
 			},
@@ -390,20 +393,20 @@ func TestVPCRouterOp_WithRouterCRUD(t *testing.T) {
 
 var (
 	withRouterCreateVPCRouterParam = &sacloud.VPCRouterCreateRequest{
-		PlanID:      types.VPCRouterPlans.Standard,
+		PlanID:      types.VPCRouterPlans.Premium,
 		Name:        testutil.ResourceName("vpc-router"),
 		Description: "desc",
 		Tags:        []string{"tag1", "tag2"},
 	}
 	withRouterCreateVPCRouterExpected = &sacloud.VPCRouter{
 		Class:          "vpcrouter",
-		Name:           createVPCRouterParam.Name,
-		Description:    createVPCRouterParam.Description,
-		Tags:           createVPCRouterParam.Tags,
+		Name:           withRouterCreateVPCRouterParam.Name,
+		Description:    withRouterCreateVPCRouterParam.Description,
+		Tags:           withRouterCreateVPCRouterParam.Tags,
 		Availability:   types.Availabilities.Available,
 		InstanceStatus: types.ServerInstanceStatuses.Up,
-		PlanID:         createVPCRouterParam.PlanID,
-		Settings:       createVPCRouterParam.Settings,
+		PlanID:         withRouterCreateVPCRouterParam.PlanID,
+		Settings:       withRouterCreateVPCRouterParam.Settings,
 	}
 	withRouterUpdateVPCRouterParam = &sacloud.VPCRouterUpdateRequest{
 		Name:        testutil.ResourceName("vpc-router-upd"),
@@ -413,12 +416,12 @@ var (
 	}
 	withRouterUpdateVPCRouterExpected = &sacloud.VPCRouter{
 		Class:          "vpcrouter",
-		Name:           updateVPCRouterParam.Name,
-		Description:    updateVPCRouterParam.Description,
-		Tags:           updateVPCRouterParam.Tags,
+		Name:           withRouterUpdateVPCRouterParam.Name,
+		Description:    withRouterUpdateVPCRouterParam.Description,
+		Tags:           withRouterUpdateVPCRouterParam.Tags,
 		Availability:   types.Availabilities.Available,
 		InstanceStatus: types.ServerInstanceStatuses.Up,
-		PlanID:         createVPCRouterParam.PlanID,
+		PlanID:         withRouterCreateVPCRouterParam.PlanID,
 		Settings:       withRouterUpdateVPCRouterParam.Settings,
 		IconID:         testIconID,
 	}
@@ -427,10 +430,10 @@ var (
 	}
 	withRouterUpdateVPCRouterToMinExpected = &sacloud.VPCRouter{
 		Class:          "vpcrouter",
-		Name:           updateVPCRouterParam.Name,
+		Name:           withRouterUpdateVPCRouterToMinParam.Name,
 		Availability:   types.Availabilities.Available,
 		InstanceStatus: types.ServerInstanceStatuses.Up,
-		PlanID:         createVPCRouterParam.PlanID,
+		PlanID:         withRouterCreateVPCRouterParam.PlanID,
 		Settings:       withRouterUpdateVPCRouterToMinParam.Settings,
 	}
 )

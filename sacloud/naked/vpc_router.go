@@ -35,7 +35,7 @@ type VPCRouterSettings struct {
 // VPCRouterSetting VPCルータ 設定
 type VPCRouterSetting struct {
 	InternetConnection *VPCRouterInternetConnection `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
-	Interfaces         []*VPCRouterInterface        `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
+	Interfaces         VPCRouterInterfaces          `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
 	VRID               int                          `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
 	StaticNAT          *VPCRouterStaticNAT          `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
 	Firewall           *VPCRouterFirewall           `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
@@ -46,6 +46,7 @@ type VPCRouterSetting struct {
 	RemoteAccessUsers  *VPCRouterRemoteAccessUsers  `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
 	SiteToSiteIPsecVPN *VPCRouterSiteToSiteIPsecVPN `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
 	StaticRoutes       *VPCRouterStaticRoutes       `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
+	SyslogHost         string                       `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
 }
 
 // VPCRouterInternetConnection インターフェース

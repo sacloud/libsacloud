@@ -768,7 +768,7 @@ func (m *modelsDef) vpcRouterSetting() *dsl.Model {
 				Type: m.vpcRouterInterface(),
 				Tags: &dsl.FieldTags{
 					JSON:    ",omitempty",
-					MapConv: "Router.[]Interface,omitempty,recursive",
+					MapConv: "Router.[]Interfaces,omitempty,recursive",
 				},
 			},
 			{
@@ -859,6 +859,13 @@ func (m *modelsDef) vpcRouterSetting() *dsl.Model {
 					MapConv: "Router.StaticRoutes.[]Config,omitempty,recursive",
 				},
 			},
+			{
+				Name: "SyslogHost",
+				Type: meta.TypeString,
+				Tags: &dsl.FieldTags{
+					MapConv: "Router.SyslogHost",
+				},
+			},
 		},
 	}
 }
@@ -869,7 +876,6 @@ func (m *modelsDef) vpcRouterInterface() *dsl.Model {
 		NakedType: meta.Static(naked.VPCRouterInterface{}),
 		IsArray:   true,
 		Fields: []*dsl.FieldDesc{
-			fields.stringEnabled(),
 			{
 				Name: "IPAddress",
 				Type: meta.TypeStringSlice,
