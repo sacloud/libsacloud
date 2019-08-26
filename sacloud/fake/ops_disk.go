@@ -157,7 +157,9 @@ func (o *DiskOp) ConnectToServer(ctx context.Context, zone string, id types.ID, 
 
 	// TODO とりあえず同時実行制御は考慮しない。更新対象リソースが増えるようであれば実装方法を考える
 
-	server.Disks = append(server.Disks, value)
+	connectedDisk := &sacloud.ServerConnectedDisk{}
+	copySameNameField(value, connectedDisk)
+	server.Disks = append(server.Disks, connectedDisk)
 	putServer(zone, server)
 	value.ServerID = serverID
 	putDisk(zone, value)
@@ -182,9 +184,12 @@ func (o *DiskOp) DisconnectFromServer(ctx context.Context, zone string, id types
 		return newErrorBadRequest(o.key, id, fmt.Sprintf("Server[%d] is not exists", value.ServerID))
 	}
 
-	var disks []*sacloud.Disk
+	var disks []*sacloud.ServerConnectedDisk
 	for _, connected := range server.Disks {
 		if connected.ID != value.ID {
+			connectedDisk := &sacloud.ServerConnectedDisk{}
+			copySameNameField(value, connectedDisk)
+			server.Disks = append(server.Disks, connectedDisk)
 			disks = append(disks, connected)
 		}
 	}

@@ -221,12 +221,7 @@ var (
 			// disks
 			{
 				Name: "Disks",
-				Type: &dsl.Model{
-					Name:      diskModel.Name,
-					Fields:    diskModel.Fields,
-					NakedType: meta.Static(naked.Disk{}),
-					IsArray:   true,
-				},
+				Type: serverConnectedDiskView,
 				Tags: &dsl.FieldTags{
 					JSON:    ",omitempty",
 					MapConv: ",recursive",
@@ -244,6 +239,54 @@ var (
 			fields.IconID(),
 			fields.CreatedAt(),
 			fields.ModifiedAt(),
+		},
+	}
+
+	serverConnectedDiskView = &dsl.Model{
+		Name:      "ServerConnectedDisk",
+		NakedType: meta.Static(naked.Disk{}),
+		IsArray:   true,
+		Fields: []*dsl.FieldDesc{
+			fields.ID(),
+			fields.Name(),
+			fields.Availability(),
+			fields.DiskConnection(),
+			fields.DiskConnectionOrder(),
+			fields.DiskReinstallCount(),
+			fields.SizeMB(),
+			fields.DiskPlanID(),
+			{
+				Name: "Storage",
+				Type: serverConnectedStorage,
+				Tags: &dsl.FieldTags{
+					MapConv: ",omitempty,recursive",
+					JSON:    ",omitempty",
+				},
+			},
+		},
+	}
+
+	serverConnectedStorage = &dsl.Model{
+		Name:      "Storage",
+		NakedType: meta.Static(naked.Storage{}),
+		Fields: []*dsl.FieldDesc{
+			fields.ID(),
+			{
+				Name: "Class",
+				Type: meta.TypeString,
+				Tags: &dsl.FieldTags{
+					MapConv: ",omitempty",
+					JSON:    ",omitempty",
+				},
+			},
+			{
+				Name: "Generation",
+				Type: meta.TypeInt,
+				Tags: &dsl.FieldTags{
+					MapConv: ",omitempty",
+					JSON:    ",omitempty",
+				},
+			},
 		},
 	}
 
