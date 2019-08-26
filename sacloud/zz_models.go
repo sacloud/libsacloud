@@ -24393,6 +24393,209 @@ func (o *SSHKeyPatchRequest) SetPatchEmptyToDescription(v bool) {
 }
 
 /*************************************************
+* Subnet
+*************************************************/
+
+// Subnet represents API parameter/response structure
+type Subnet struct {
+	ID             types.ID
+	SwitchID       types.ID           `mapconv:"Switch.ID,omitempty"`
+	InternetID     types.ID           `mapconv:"Switch.Internet.ID,omitempty"`
+	DefaultRoute   string             `validate:"ipv4"`
+	NextHop        string             `validate:"ipv4"`
+	StaticRoute    string             `validate:"ipv4"`
+	NetworkAddress string             `validate:"ipv4"`
+	NetworkMaskLen int                `validate:"min=24,max=28"`
+	IPAddresses    []*SubnetIPAddress `mapconv:"[]IPAddresses,recursive"`
+}
+
+// Validate validates by field tags
+func (o *Subnet) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *Subnet) setDefaults() interface{} {
+	return &struct {
+		ID             types.ID
+		SwitchID       types.ID           `mapconv:"Switch.ID,omitempty"`
+		InternetID     types.ID           `mapconv:"Switch.Internet.ID,omitempty"`
+		DefaultRoute   string             `validate:"ipv4"`
+		NextHop        string             `validate:"ipv4"`
+		StaticRoute    string             `validate:"ipv4"`
+		NetworkAddress string             `validate:"ipv4"`
+		NetworkMaskLen int                `validate:"min=24,max=28"`
+		IPAddresses    []*SubnetIPAddress `mapconv:"[]IPAddresses,recursive"`
+	}{
+		ID:             o.GetID(),
+		SwitchID:       o.GetSwitchID(),
+		InternetID:     o.GetInternetID(),
+		DefaultRoute:   o.GetDefaultRoute(),
+		NextHop:        o.GetNextHop(),
+		StaticRoute:    o.GetStaticRoute(),
+		NetworkAddress: o.GetNetworkAddress(),
+		NetworkMaskLen: o.GetNetworkMaskLen(),
+		IPAddresses:    o.GetIPAddresses(),
+	}
+}
+
+// GetID returns value of ID
+func (o *Subnet) GetID() types.ID {
+	return o.ID
+}
+
+// SetID sets value to ID
+func (o *Subnet) SetID(v types.ID) {
+	o.ID = v
+}
+
+// SetStringID .
+func (o *Subnet) SetStringID(id string) {
+	accessor.SetStringID(o, id)
+}
+
+// GetStringID .
+func (o *Subnet) GetStringID() string {
+	return accessor.GetStringID(o)
+}
+
+// SetInt64ID .
+func (o *Subnet) SetInt64ID(id int64) {
+	accessor.SetInt64ID(o, id)
+}
+
+// GetInt64ID .
+func (o *Subnet) GetInt64ID() int64 {
+	return accessor.GetInt64ID(o)
+}
+
+// GetSwitchID returns value of SwitchID
+func (o *Subnet) GetSwitchID() types.ID {
+	return o.SwitchID
+}
+
+// SetSwitchID sets value to SwitchID
+func (o *Subnet) SetSwitchID(v types.ID) {
+	o.SwitchID = v
+}
+
+// GetInternetID returns value of InternetID
+func (o *Subnet) GetInternetID() types.ID {
+	return o.InternetID
+}
+
+// SetInternetID sets value to InternetID
+func (o *Subnet) SetInternetID(v types.ID) {
+	o.InternetID = v
+}
+
+// GetDefaultRoute returns value of DefaultRoute
+func (o *Subnet) GetDefaultRoute() string {
+	return o.DefaultRoute
+}
+
+// SetDefaultRoute sets value to DefaultRoute
+func (o *Subnet) SetDefaultRoute(v string) {
+	o.DefaultRoute = v
+}
+
+// GetNextHop returns value of NextHop
+func (o *Subnet) GetNextHop() string {
+	return o.NextHop
+}
+
+// SetNextHop sets value to NextHop
+func (o *Subnet) SetNextHop(v string) {
+	o.NextHop = v
+}
+
+// GetStaticRoute returns value of StaticRoute
+func (o *Subnet) GetStaticRoute() string {
+	return o.StaticRoute
+}
+
+// SetStaticRoute sets value to StaticRoute
+func (o *Subnet) SetStaticRoute(v string) {
+	o.StaticRoute = v
+}
+
+// GetNetworkAddress returns value of NetworkAddress
+func (o *Subnet) GetNetworkAddress() string {
+	return o.NetworkAddress
+}
+
+// SetNetworkAddress sets value to NetworkAddress
+func (o *Subnet) SetNetworkAddress(v string) {
+	o.NetworkAddress = v
+}
+
+// GetNetworkMaskLen returns value of NetworkMaskLen
+func (o *Subnet) GetNetworkMaskLen() int {
+	return o.NetworkMaskLen
+}
+
+// SetNetworkMaskLen sets value to NetworkMaskLen
+func (o *Subnet) SetNetworkMaskLen(v int) {
+	o.NetworkMaskLen = v
+}
+
+// GetIPAddresses returns value of IPAddresses
+func (o *Subnet) GetIPAddresses() []*SubnetIPAddress {
+	return o.IPAddresses
+}
+
+// SetIPAddresses sets value to IPAddresses
+func (o *Subnet) SetIPAddresses(v []*SubnetIPAddress) {
+	o.IPAddresses = v
+}
+
+/*************************************************
+* SubnetIPAddress
+*************************************************/
+
+// SubnetIPAddress represents API parameter/response structure
+type SubnetIPAddress struct {
+	HostName  string
+	IPAddress string
+}
+
+// Validate validates by field tags
+func (o *SubnetIPAddress) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *SubnetIPAddress) setDefaults() interface{} {
+	return &struct {
+		HostName  string
+		IPAddress string
+	}{
+		HostName:  o.GetHostName(),
+		IPAddress: o.GetIPAddress(),
+	}
+}
+
+// GetHostName returns value of HostName
+func (o *SubnetIPAddress) GetHostName() string {
+	return o.HostName
+}
+
+// SetHostName sets value to HostName
+func (o *SubnetIPAddress) SetHostName(v string) {
+	o.HostName = v
+}
+
+// GetIPAddress returns value of IPAddress
+func (o *SubnetIPAddress) GetIPAddress() string {
+	return o.IPAddress
+}
+
+// SetIPAddress sets value to IPAddress
+func (o *SubnetIPAddress) SetIPAddress(v string) {
+	o.IPAddress = v
+}
+
+/*************************************************
 * Switch
 *************************************************/
 

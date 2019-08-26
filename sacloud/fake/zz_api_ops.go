@@ -116,6 +116,9 @@ func SwitchFactoryFuncToFake() {
 	sacloud.SetClientFactoryFunc(ResourceSSHKey, func(caller sacloud.APICaller) interface{} {
 		return NewSSHKeyOp()
 	})
+	sacloud.SetClientFactoryFunc(ResourceSubnet, func(caller sacloud.APICaller) interface{} {
+		return NewSubnetOp()
+	})
 	sacloud.SetClientFactoryFunc(ResourceSwitch, func(caller sacloud.APICaller) interface{} {
 		return NewSwitchOp()
 	})
@@ -703,6 +706,22 @@ type SSHKeyOp struct {
 func NewSSHKeyOp() sacloud.SSHKeyAPI {
 	return &SSHKeyOp{
 		key: ResourceSSHKey,
+	}
+}
+
+/*************************************************
+* SubnetOp
+*************************************************/
+
+// SubnetOp is fake implementation of SubnetAPI interface
+type SubnetOp struct {
+	key string
+}
+
+// NewSubnetOp creates new SubnetOp instance
+func NewSubnetOp() sacloud.SubnetAPI {
+	return &SubnetOp{
+		key: ResourceSubnet,
 	}
 }
 

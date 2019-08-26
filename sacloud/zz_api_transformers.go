@@ -6404,6 +6404,53 @@ func (o *SSHKeyOp) transformPatchResults(data []byte) (*sSHKeyPatchResult, error
 	return results, nil
 }
 
+func (o *SubnetOp) transformFindArgs(conditions *FindCondition) (*subnetFindRequestEnvelope, error) {
+	if conditions == nil {
+		conditions = &FindCondition{}
+	}
+	var arg0 interface{} = conditions
+	if v, ok := arg0.(argumentDefaulter); ok {
+		arg0 = v.setDefaults()
+	}
+	args := &struct {
+		Arg0 interface{} `mapconv:",squash"`
+	}{
+		Arg0: arg0,
+	}
+
+	v := &subnetFindRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	return v, nil
+}
+
+func (o *SubnetOp) transformFindResults(data []byte) (*SubnetFindResult, error) {
+	nakedResponse := &subnetFindResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &SubnetFindResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
+}
+
+func (o *SubnetOp) transformReadResults(data []byte) (*subnetReadResult, error) {
+	nakedResponse := &subnetReadResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &subnetReadResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
+}
+
 func (o *SwitchOp) transformFindArgs(conditions *FindCondition) (*switchFindRequestEnvelope, error) {
 	if conditions == nil {
 		conditions = &FindCondition{}

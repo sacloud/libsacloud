@@ -154,6 +154,10 @@ func TestResourceOps(t *testing.T) {
 		t.Fatalf("%s is not sacloud.SSHKey", op)
 	}
 
+	if op, ok := NewSubnetOp().(sacloud.SubnetAPI); !ok {
+		t.Fatalf("%s is not sacloud.Subnet", op)
+	}
+
 	if op, ok := NewSwitchOp().(sacloud.SwitchAPI); !ok {
 		t.Fatalf("%s is not sacloud.Switch", op)
 	}

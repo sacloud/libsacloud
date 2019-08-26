@@ -300,6 +300,14 @@ func init() {
 		}
 	})
 
+	SetClientFactoryFunc("Subnet", func(caller APICaller) interface{} {
+		return &SubnetOp{
+			Client:     caller,
+			PathSuffix: "api/cloud/1.1",
+			PathName:   "subnet",
+		}
+	})
+
 	SetClientFactoryFunc("Switch", func(caller APICaller) interface{} {
 		return &SwitchOp{
 			Client:     caller,
@@ -10439,6 +10447,92 @@ func (o *SSHKeyOp) Delete(ctx context.Context, id types.ID) error {
 	// build results
 
 	return nil
+}
+
+/*************************************************
+* SubnetOp
+*************************************************/
+
+// SubnetOp implements SubnetAPI interface
+type SubnetOp struct {
+	// Client APICaller
+	Client APICaller
+	// PathSuffix is used when building URL
+	PathSuffix string
+	// PathName is used when building URL
+	PathName string
+}
+
+// NewSubnetOp creates new SubnetOp instance
+func NewSubnetOp(caller APICaller) SubnetAPI {
+	return GetClientFactoryFunc("Subnet")(caller).(SubnetAPI)
+}
+
+// Find is API call
+func (o *SubnetOp) Find(ctx context.Context, zone string, conditions *FindCondition) (*SubnetFindResult, error) {
+	// build request URL
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"conditions": conditions,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	// build request body
+	var body interface{}
+	v, err := o.transformFindArgs(conditions)
+	if err != nil {
+		return nil, err
+	}
+	body = v
+
+	// do request
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	// build results
+	results, err := o.transformFindResults(data)
+	if err != nil {
+		return nil, err
+	}
+	return results, err
+}
+
+// Read is API call
+func (o *SubnetOp) Read(ctx context.Context, zone string, id types.ID) (*Subnet, error) {
+	// build request URL
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	// build request body
+	var body interface{}
+
+	// do request
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	// build results
+	results, err := o.transformReadResults(data)
+	if err != nil {
+		return nil, err
+	}
+	return results.Subnet, nil
 }
 
 /*************************************************

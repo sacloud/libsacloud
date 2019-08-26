@@ -4379,6 +4379,49 @@ func (s *SSHKeyStub) Delete(ctx context.Context, id types.ID) error {
 }
 
 /*************************************************
+* SubnetStub
+*************************************************/
+
+// SubnetFindStubResult is expected values of the Find operation
+type SubnetFindStubResult struct {
+	Values *sacloud.SubnetFindResult
+	Err    error
+}
+
+// SubnetReadStubResult is expected values of the Read operation
+type SubnetReadStubResult struct {
+	Subnet *sacloud.Subnet
+	Err    error
+}
+
+// SubnetStub is for trace SubnetOp operations
+type SubnetStub struct {
+	FindStubResult *SubnetFindStubResult
+	ReadStubResult *SubnetReadStubResult
+}
+
+// NewSubnetStub creates new SubnetStub instance
+func NewSubnetStub(caller sacloud.APICaller) sacloud.SubnetAPI {
+	return &SubnetStub{}
+}
+
+// Find is API call with trace log
+func (s *SubnetStub) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.SubnetFindResult, error) {
+	if s.FindStubResult == nil {
+		log.Fatal("SubnetStub.FindStubResult is not set")
+	}
+	return s.FindStubResult.Values, s.FindStubResult.Err
+}
+
+// Read is API call with trace log
+func (s *SubnetStub) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Subnet, error) {
+	if s.ReadStubResult == nil {
+		log.Fatal("SubnetStub.ReadStubResult is not set")
+	}
+	return s.ReadStubResult.Subnet, s.ReadStubResult.Err
+}
+
+/*************************************************
 * SwitchStub
 *************************************************/
 

@@ -2481,6 +2481,33 @@ type sSHKeyPatchResponseEnvelope struct {
 	SSHKey *naked.SSHKey `json:",omitempty"`
 }
 
+// subnetFindRequestEnvelope is envelop of API request
+type subnetFindRequestEnvelope struct {
+	Count   int             `json:",omitempty"`
+	From    int             `json:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty"`
+	Filter  search.Filter   `json:",omitempty"`
+	Include []string        `json:",omitempty"`
+	Exclude []string        `json:",omitempty"`
+}
+
+// subnetFindResponseEnvelope is envelop of API response
+type subnetFindResponseEnvelope struct {
+	Total int `json:",omitempty"` // トータル件数
+	From  int `json:",omitempty"` // ページング開始ページ
+	Count int `json:",omitempty"` // 件数
+
+	Subnets []*naked.Subnet `json:",omitempty"`
+}
+
+// subnetReadResponseEnvelope is envelop of API response
+type subnetReadResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Subnet *naked.Subnet `json:",omitempty"`
+}
+
 // switchFindRequestEnvelope is envelop of API request
 type switchFindRequestEnvelope struct {
 	Count   int             `json:",omitempty"`

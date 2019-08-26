@@ -54,6 +54,7 @@ func init() {
 	APIs.Define(simAPI)             // SIM
 	APIs.Define(simpleMonitorAPI)   // シンプル監視
 	APIs.Define(sshKeyAPI)          // 公開鍵
+	APIs.Define(subnetAPI)          // サブネット
 	APIs.Define(switchAPI)          // スイッチ
 	APIs.Define(vpcRouterAPI)       // VPCルータ
 	APIs.Define(webaccelAPI)        // ウェブアクセラレータ

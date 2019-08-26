@@ -1016,6 +1016,34 @@ func putSSHKey(zone string, value *sacloud.SSHKey) {
 	ds().Put(ResourceSSHKey, zone, 0, value)
 }
 
+func getSubnet(zone string) []*sacloud.Subnet {
+	values := ds().List(ResourceSubnet, zone)
+	var ret []*sacloud.Subnet
+	for _, v := range values {
+		if v, ok := v.(*sacloud.Subnet); ok {
+			ret = append(ret, v)
+		}
+	}
+	return ret
+}
+
+func getSubnetByID(zone string, id types.ID) *sacloud.Subnet {
+	v := ds().Get(ResourceSubnet, zone, id)
+	if v, ok := v.(*sacloud.Subnet); ok {
+		return v
+	}
+	return nil
+}
+
+func putSubnet(zone string, value *sacloud.Subnet) {
+	var v interface{} = value
+	if id, ok := v.(accessor.ID); ok {
+		ds().Put(ResourceSubnet, zone, id.GetID(), value)
+		return
+	}
+	ds().Put(ResourceSubnet, zone, 0, value)
+}
+
 func getSwitch(zone string) []*sacloud.Switch {
 	values := ds().List(ResourceSwitch, zone)
 	var ret []*sacloud.Switch

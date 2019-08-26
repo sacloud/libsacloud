@@ -75,6 +75,8 @@ const (
 	ResourceSimpleMonitor = "SimpleMonitor"
 	// ResourceSSHKey is resource key of fake store
 	ResourceSSHKey = "SSHKey"
+	// ResourceSubnet is resource key of fake store
+	ResourceSubnet = "Subnet"
 	// ResourceSwitch is resource key of fake store
 	ResourceSwitch = "Switch"
 	// ResourceVPCRouter is resource key of fake store
