@@ -1402,6 +1402,22 @@ type sSHKeyPatchResult struct {
 	SSHKey *SSHKey `json:",omitempty" mapconv:"SSHKey,omitempty,recursive"`
 }
 
+// SubnetFindResult represents the Result of API
+type SubnetFindResult struct {
+	Total int `json:",omitempty"` // Total count of target resources
+	From  int `json:",omitempty"` // Current page number
+	Count int `json:",omitempty"` // Count of current page
+
+	Subnets []*Subnet `json:",omitempty" mapconv:"[]Subnets,omitempty,recursive"`
+}
+
+// subnetReadResult represents the Result of API
+type subnetReadResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	Subnet *Subnet `json:",omitempty" mapconv:"Subnet,omitempty,recursive"`
+}
+
 // SwitchFindResult represents the Result of API
 type SwitchFindResult struct {
 	Total int `json:",omitempty"` // Total count of target resources

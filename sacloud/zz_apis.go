@@ -562,6 +562,16 @@ type SSHKeyAPI interface {
 }
 
 /*************************************************
+* SubnetAPI
+*************************************************/
+
+// SubnetAPI is interface for operate Subnet resource
+type SubnetAPI interface {
+	Find(ctx context.Context, zone string, conditions *FindCondition) (*SubnetFindResult, error)
+	Read(ctx context.Context, zone string, id types.ID) (*Subnet, error)
+}
+
+/*************************************************
 * SwitchAPI
 *************************************************/
 

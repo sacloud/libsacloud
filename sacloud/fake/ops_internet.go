@@ -79,8 +79,16 @@ func (o *InternetOp) Create(ctx context.Context, zone string, param *sacloud.Int
 	switchInfo.Subnets = []*sacloud.InternetSubnet{iSubnet}
 	result.Switch = switchInfo
 
+	// for raw subnet
+	rSubnet := &sacloud.Subnet{}
+	copySameNameField(sSubnet, rSubnet)
+	for _, ip := range subnet.addresses {
+		rSubnet.IPAddresses = append(rSubnet.IPAddresses, &sacloud.SubnetIPAddress{IPAddress: ip})
+	}
+
 	putSwitch(zone, sw)
 	putInternet(zone, result)
+	putSubnet(zone, rSubnet)
 	return result, nil
 }
 
@@ -214,8 +222,16 @@ func (o *InternetOp) AddSubnet(ctx context.Context, zone string, id types.ID, pa
 	}
 	value.Switch.Subnets = append(value.Switch.Subnets, iSubnet)
 
+	// for raw subnet
+	rSubnet := &sacloud.Subnet{}
+	copySameNameField(sSubnet, rSubnet)
+	for _, ip := range subnet.addresses {
+		rSubnet.IPAddresses = append(rSubnet.IPAddresses, &sacloud.SubnetIPAddress{IPAddress: ip})
+	}
+
 	putSwitch(zone, sw)
 	putInternet(zone, value)
+	putSubnet(zone, rSubnet)
 
 	return &sacloud.InternetSubnetOperationResult{
 		ID:             sSubnet.ID,

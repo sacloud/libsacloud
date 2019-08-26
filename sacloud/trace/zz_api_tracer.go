@@ -121,6 +121,9 @@ func AddClientFactoryHooks() {
 	sacloud.AddClientFacotyHookFunc("SSHKey", func(in interface{}) interface{} {
 		return NewSSHKeyTracer(in.(sacloud.SSHKeyAPI))
 	})
+	sacloud.AddClientFacotyHookFunc("Subnet", func(in interface{}) interface{} {
+		return NewSubnetTracer(in.(sacloud.SubnetAPI))
+	})
 	sacloud.AddClientFacotyHookFunc("Switch", func(in interface{}) interface{} {
 		return NewSwitchTracer(in.(sacloud.SwitchAPI))
 	})
@@ -9339,6 +9342,88 @@ func (t *SSHKeyTracer) Delete(ctx context.Context, id types.ID) error {
 	}
 
 	return err
+}
+
+/*************************************************
+* SubnetTracer
+*************************************************/
+
+// SubnetTracer is for trace SubnetOp operations
+type SubnetTracer struct {
+	Internal sacloud.SubnetAPI
+}
+
+// NewSubnetTracer creates new SubnetTracer instance
+func NewSubnetTracer(in sacloud.SubnetAPI) sacloud.SubnetAPI {
+	return &SubnetTracer{
+		Internal: in,
+	}
+}
+
+// Find is API call with trace log
+func (t *SubnetTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.SubnetFindResult, error) {
+	log.Println("[TRACE] SubnetAPI.Find start")
+	targetArguments := struct {
+		Argzone       string
+		Argconditions *sacloud.FindCondition `json:"conditions"`
+	}{
+		Argzone:       zone,
+		Argconditions: conditions,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] SubnetAPI.Find end")
+	}()
+
+	result, err := t.Internal.Find(ctx, zone, conditions)
+	targetResults := struct {
+		Result *sacloud.SubnetFindResult
+		Error  error
+	}{
+		Result: result,
+		Error:  err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return result, err
+}
+
+// Read is API call with trace log
+func (t *SubnetTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Subnet, error) {
+	log.Println("[TRACE] SubnetAPI.Read start")
+	targetArguments := struct {
+		Argzone string
+		Argid   types.ID `json:"id"`
+	}{
+		Argzone: zone,
+		Argid:   id,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] SubnetAPI.Read end")
+	}()
+
+	resultSubnet, err := t.Internal.Read(ctx, zone, id)
+	targetResults := struct {
+		Subnet *sacloud.Subnet
+		Error  error
+	}{
+		Subnet: resultSubnet,
+		Error:  err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultSubnet, err
 }
 
 /*************************************************
