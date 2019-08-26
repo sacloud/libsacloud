@@ -25694,7 +25694,7 @@ func (o *VPCRouter) SetZoneID(v types.ID) {
 type VPCRouterSetting struct {
 	VRID                      int                            `json:",omitempty" mapconv:"Router.VRID"`
 	InternetConnectionEnabled types.StringFlag               `json:",omitempty" mapconv:"Router.InternetConnection.Enabled,omitempty"`
-	Interfaces                []*VPCRouterInterfaceSetting   `json:",omitempty" mapconv:"Router.[]Interface,omitempty,recursive"`
+	Interfaces                []*VPCRouterInterfaceSetting   `json:",omitempty" mapconv:"Router.[]Interfaces,omitempty,recursive"`
 	StaticNAT                 []*VPCRouterStaticNAT          `json:",omitempty" mapconv:"Router.StaticNAT.[]Config,omitempty,recursive"`
 	Firewall                  []*VPCRouterFirewall           `json:",omitempty" mapconv:"Router.Firewall.[]Config,omitempty,recursive"`
 	DHCPServer                []*VPCRouterDHCPServer         `json:",omitempty" mapconv:"Router.DHCPServer.[]Config,omitempty,recursive"`
@@ -25706,6 +25706,7 @@ type VPCRouterSetting struct {
 	RemoteAccessUsers         []*VPCRouterRemoteAccessUser   `json:",omitempty" mapconv:"Router.RemoteAccessUsers.[]Config,omitempty,recursive"`
 	SiteToSiteIPsecVPN        []*VPCRouterSiteToSiteIPsecVPN `json:",omitempty" mapconv:"Router.SiteToSiteIPsecVPN.[]Config,omitempty,recursive"`
 	StaticRoute               []*VPCRouterStaticRoute        `json:",omitempty" mapconv:"Router.StaticRoutes.[]Config,omitempty,recursive"`
+	SyslogHost                string                         `mapconv:"Router.SyslogHost"`
 }
 
 // Validate validates by field tags
@@ -25718,7 +25719,7 @@ func (o *VPCRouterSetting) setDefaults() interface{} {
 	return &struct {
 		VRID                      int                            `json:",omitempty" mapconv:"Router.VRID"`
 		InternetConnectionEnabled types.StringFlag               `json:",omitempty" mapconv:"Router.InternetConnection.Enabled,omitempty"`
-		Interfaces                []*VPCRouterInterfaceSetting   `json:",omitempty" mapconv:"Router.[]Interface,omitempty,recursive"`
+		Interfaces                []*VPCRouterInterfaceSetting   `json:",omitempty" mapconv:"Router.[]Interfaces,omitempty,recursive"`
 		StaticNAT                 []*VPCRouterStaticNAT          `json:",omitempty" mapconv:"Router.StaticNAT.[]Config,omitempty,recursive"`
 		Firewall                  []*VPCRouterFirewall           `json:",omitempty" mapconv:"Router.Firewall.[]Config,omitempty,recursive"`
 		DHCPServer                []*VPCRouterDHCPServer         `json:",omitempty" mapconv:"Router.DHCPServer.[]Config,omitempty,recursive"`
@@ -25730,6 +25731,7 @@ func (o *VPCRouterSetting) setDefaults() interface{} {
 		RemoteAccessUsers         []*VPCRouterRemoteAccessUser   `json:",omitempty" mapconv:"Router.RemoteAccessUsers.[]Config,omitempty,recursive"`
 		SiteToSiteIPsecVPN        []*VPCRouterSiteToSiteIPsecVPN `json:",omitempty" mapconv:"Router.SiteToSiteIPsecVPN.[]Config,omitempty,recursive"`
 		StaticRoute               []*VPCRouterStaticRoute        `json:",omitempty" mapconv:"Router.StaticRoutes.[]Config,omitempty,recursive"`
+		SyslogHost                string                         `mapconv:"Router.SyslogHost"`
 	}{
 		VRID:                      o.GetVRID(),
 		InternetConnectionEnabled: o.GetInternetConnectionEnabled(),
@@ -25745,6 +25747,7 @@ func (o *VPCRouterSetting) setDefaults() interface{} {
 		RemoteAccessUsers:         o.GetRemoteAccessUsers(),
 		SiteToSiteIPsecVPN:        o.GetSiteToSiteIPsecVPN(),
 		StaticRoute:               o.GetStaticRoute(),
+		SyslogHost:                o.GetSyslogHost(),
 	}
 }
 
@@ -25888,13 +25891,22 @@ func (o *VPCRouterSetting) SetStaticRoute(v []*VPCRouterStaticRoute) {
 	o.StaticRoute = v
 }
 
+// GetSyslogHost returns value of SyslogHost
+func (o *VPCRouterSetting) GetSyslogHost() string {
+	return o.SyslogHost
+}
+
+// SetSyslogHost sets value to SyslogHost
+func (o *VPCRouterSetting) SetSyslogHost(v string) {
+	o.SyslogHost = v
+}
+
 /*************************************************
 * VPCRouterInterfaceSetting
 *************************************************/
 
 // VPCRouterInterfaceSetting represents API parameter/response structure
 type VPCRouterInterfaceSetting struct {
-	Enabled          types.StringFlag `mapconv:",omitempty"`
 	IPAddress        []string
 	VirtualIPAddress string
 	IPAliases        []string
@@ -25910,30 +25922,18 @@ func (o *VPCRouterInterfaceSetting) Validate() error {
 // setDefaults implements sacloud.argumentDefaulter
 func (o *VPCRouterInterfaceSetting) setDefaults() interface{} {
 	return &struct {
-		Enabled          types.StringFlag `mapconv:",omitempty"`
 		IPAddress        []string
 		VirtualIPAddress string
 		IPAliases        []string
 		NetworkMaskLen   int
 		Index            int
 	}{
-		Enabled:          o.GetEnabled(),
 		IPAddress:        o.GetIPAddress(),
 		VirtualIPAddress: o.GetVirtualIPAddress(),
 		IPAliases:        o.GetIPAliases(),
 		NetworkMaskLen:   o.GetNetworkMaskLen(),
 		Index:            o.GetIndex(),
 	}
-}
-
-// GetEnabled returns value of Enabled
-func (o *VPCRouterInterfaceSetting) GetEnabled() types.StringFlag {
-	return o.Enabled
-}
-
-// SetEnabled sets value to Enabled
-func (o *VPCRouterInterfaceSetting) SetEnabled(v types.StringFlag) {
-	o.Enabled = v
 }
 
 // GetIPAddress returns value of IPAddress
