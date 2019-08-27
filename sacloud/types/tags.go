@@ -9,15 +9,20 @@ import (
 type Tags []string
 
 // Sort 昇順でソートする
-func (t *Tags) Sort() {
-	sort.Strings([]string(*t))
+func (t Tags) Sort() {
+	sort.Strings([]string(t))
 }
 
 // MarshalJSON タグを空にする場合への対応
 func (t Tags) MarshalJSON() ([]byte, error) {
-	t.Sort()
+	tags := t
+	if tags == nil {
+		tags = make([]string, 0)
+	}
+
+	tags.Sort()
 	type alias Tags
-	tmp := alias(t)
+	tmp := alias(tags)
 	return json.Marshal(tmp)
 }
 
