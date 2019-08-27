@@ -1,18 +1,28 @@
 package types
 
-import "encoding/json"
+import (
+	"encoding/json"
+	"sort"
+)
 
 // Tags タグ
 type Tags []string
 
+// Sort 昇順でソートする
+func (t Tags) Sort() {
+	sort.Strings([]string(t))
+}
+
 // MarshalJSON タグを空にする場合への対応
-func (t *Tags) MarshalJSON() ([]byte, error) {
-	if *t == nil {
-		*t = make([]string, 0)
+func (t Tags) MarshalJSON() ([]byte, error) {
+	tags := t
+	if tags == nil {
+		tags = make([]string, 0)
 	}
 
+	tags.Sort()
 	type alias Tags
-	tmp := alias(*t)
+	tmp := alias(tags)
 	return json.Marshal(tmp)
 }
 
@@ -28,5 +38,6 @@ func (t *Tags) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*t = Tags(tmp)
+	t.Sort()
 	return nil
 }
