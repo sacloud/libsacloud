@@ -90,7 +90,7 @@ var (
 		"InstanceHostInfoURL",
 		"InstanceStatusChangedAt",
 		"Interfaces",
-		"Switch",
+		"SwitchName",
 		"ZoneID",
 		"CreatedAt",
 		"ModifiedAt",
