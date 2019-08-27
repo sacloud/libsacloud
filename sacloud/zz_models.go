@@ -25696,6 +25696,7 @@ type VPCRouterSetting struct {
 	InternetConnectionEnabled types.StringFlag               `json:",omitempty" mapconv:"Router.InternetConnection.Enabled,omitempty"`
 	Interfaces                []*VPCRouterInterfaceSetting   `json:",omitempty" mapconv:"Router.[]Interfaces,omitempty,recursive"`
 	StaticNAT                 []*VPCRouterStaticNAT          `json:",omitempty" mapconv:"Router.StaticNAT.[]Config,omitempty,recursive"`
+	PortForwarding            []*VPCRouterPortForwarding     `json:",omitempty" mapconv:"Router.PortForwarding.[]Config,omitempty,recursive"`
 	Firewall                  []*VPCRouterFirewall           `json:",omitempty" mapconv:"Router.Firewall.[]Config,omitempty,recursive"`
 	DHCPServer                []*VPCRouterDHCPServer         `json:",omitempty" mapconv:"Router.DHCPServer.[]Config,omitempty,recursive"`
 	DHCPStaticMapping         []*VPCRouterDHCPStaticMapping  `json:",omitempty" mapconv:"Router.DHCPStaticMapping.[]Config,omitempty,recursive"`
@@ -25721,6 +25722,7 @@ func (o *VPCRouterSetting) setDefaults() interface{} {
 		InternetConnectionEnabled types.StringFlag               `json:",omitempty" mapconv:"Router.InternetConnection.Enabled,omitempty"`
 		Interfaces                []*VPCRouterInterfaceSetting   `json:",omitempty" mapconv:"Router.[]Interfaces,omitempty,recursive"`
 		StaticNAT                 []*VPCRouterStaticNAT          `json:",omitempty" mapconv:"Router.StaticNAT.[]Config,omitempty,recursive"`
+		PortForwarding            []*VPCRouterPortForwarding     `json:",omitempty" mapconv:"Router.PortForwarding.[]Config,omitempty,recursive"`
 		Firewall                  []*VPCRouterFirewall           `json:",omitempty" mapconv:"Router.Firewall.[]Config,omitempty,recursive"`
 		DHCPServer                []*VPCRouterDHCPServer         `json:",omitempty" mapconv:"Router.DHCPServer.[]Config,omitempty,recursive"`
 		DHCPStaticMapping         []*VPCRouterDHCPStaticMapping  `json:",omitempty" mapconv:"Router.DHCPStaticMapping.[]Config,omitempty,recursive"`
@@ -25737,6 +25739,7 @@ func (o *VPCRouterSetting) setDefaults() interface{} {
 		InternetConnectionEnabled: o.GetInternetConnectionEnabled(),
 		Interfaces:                o.GetInterfaces(),
 		StaticNAT:                 o.GetStaticNAT(),
+		PortForwarding:            o.GetPortForwarding(),
 		Firewall:                  o.GetFirewall(),
 		DHCPServer:                o.GetDHCPServer(),
 		DHCPStaticMapping:         o.GetDHCPStaticMapping(),
@@ -25789,6 +25792,16 @@ func (o *VPCRouterSetting) GetStaticNAT() []*VPCRouterStaticNAT {
 // SetStaticNAT sets value to StaticNAT
 func (o *VPCRouterSetting) SetStaticNAT(v []*VPCRouterStaticNAT) {
 	o.StaticNAT = v
+}
+
+// GetPortForwarding returns value of PortForwarding
+func (o *VPCRouterSetting) GetPortForwarding() []*VPCRouterPortForwarding {
+	return o.PortForwarding
+}
+
+// SetPortForwarding sets value to PortForwarding
+func (o *VPCRouterSetting) SetPortForwarding(v []*VPCRouterPortForwarding) {
+	o.PortForwarding = v
 }
 
 // GetFirewall returns value of Firewall
@@ -26042,6 +26055,91 @@ func (o *VPCRouterStaticNAT) GetDescription() string {
 
 // SetDescription sets value to Description
 func (o *VPCRouterStaticNAT) SetDescription(v string) {
+	o.Description = v
+}
+
+/*************************************************
+* VPCRouterPortForwarding
+*************************************************/
+
+// VPCRouterPortForwarding represents API parameter/response structure
+type VPCRouterPortForwarding struct {
+	Protocol       types.EVPCRouterPortForwardingProtocol
+	GlobalPort     types.StringNumber
+	PrivateAddress string `mapconv:"PrivateAddress" validate:"ipv4"`
+	PrivatePort    types.StringNumber
+	Description    string
+}
+
+// Validate validates by field tags
+func (o *VPCRouterPortForwarding) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *VPCRouterPortForwarding) setDefaults() interface{} {
+	return &struct {
+		Protocol       types.EVPCRouterPortForwardingProtocol
+		GlobalPort     types.StringNumber
+		PrivateAddress string `mapconv:"PrivateAddress" validate:"ipv4"`
+		PrivatePort    types.StringNumber
+		Description    string
+	}{
+		Protocol:       o.GetProtocol(),
+		GlobalPort:     o.GetGlobalPort(),
+		PrivateAddress: o.GetPrivateAddress(),
+		PrivatePort:    o.GetPrivatePort(),
+		Description:    o.GetDescription(),
+	}
+}
+
+// GetProtocol returns value of Protocol
+func (o *VPCRouterPortForwarding) GetProtocol() types.EVPCRouterPortForwardingProtocol {
+	return o.Protocol
+}
+
+// SetProtocol sets value to Protocol
+func (o *VPCRouterPortForwarding) SetProtocol(v types.EVPCRouterPortForwardingProtocol) {
+	o.Protocol = v
+}
+
+// GetGlobalPort returns value of GlobalPort
+func (o *VPCRouterPortForwarding) GetGlobalPort() types.StringNumber {
+	return o.GlobalPort
+}
+
+// SetGlobalPort sets value to GlobalPort
+func (o *VPCRouterPortForwarding) SetGlobalPort(v types.StringNumber) {
+	o.GlobalPort = v
+}
+
+// GetPrivateAddress returns value of PrivateAddress
+func (o *VPCRouterPortForwarding) GetPrivateAddress() string {
+	return o.PrivateAddress
+}
+
+// SetPrivateAddress sets value to PrivateAddress
+func (o *VPCRouterPortForwarding) SetPrivateAddress(v string) {
+	o.PrivateAddress = v
+}
+
+// GetPrivatePort returns value of PrivatePort
+func (o *VPCRouterPortForwarding) GetPrivatePort() types.StringNumber {
+	return o.PrivatePort
+}
+
+// SetPrivatePort sets value to PrivatePort
+func (o *VPCRouterPortForwarding) SetPrivatePort(v types.StringNumber) {
+	o.PrivatePort = v
+}
+
+// GetDescription returns value of Description
+func (o *VPCRouterPortForwarding) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *VPCRouterPortForwarding) SetDescription(v string) {
 	o.Description = v
 }
 

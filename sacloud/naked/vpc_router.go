@@ -38,6 +38,7 @@ type VPCRouterSetting struct {
 	Interfaces         VPCRouterInterfaces          `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
 	VRID               int                          `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
 	StaticNAT          *VPCRouterStaticNAT          `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
+	PortForwarding     *VPCRouterPortForwarding     `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
 	Firewall           *VPCRouterFirewall           `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
 	DHCPServer         *VPCRouterDHCPServer         `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
 	DHCPStaticMapping  *VPCRouterDHCPStaticMappings `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
@@ -152,6 +153,34 @@ type VPCRouterStaticNATConfig struct {
 	GlobalAddress  string `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
 	PrivateAddress string `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
 	Description    string `yaml:"description"`
+}
+
+// VPCRouterPortForwarding ポートフォワーディング設定
+type VPCRouterPortForwarding struct {
+	Config  []*VPCRouterPortForwardingConfig `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
+	Enabled types.StringFlag                 `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
+}
+
+// MarshalJSON Configが一つ以上ある場合にEnabledをtrueに設定する
+func (f *VPCRouterPortForwarding) MarshalJSON() ([]byte, error) {
+	if f == nil || f.Config == nil {
+		return nil, nil
+	}
+	if len(f.Config) > 0 {
+		f.Enabled = types.StringTrue
+	}
+	type alias VPCRouterPortForwarding
+	a := alias(*f)
+	return json.Marshal(&a)
+}
+
+// VPCRouterPortForwardingConfig ポートフォワーディング設定
+type VPCRouterPortForwardingConfig struct {
+	Protocol       types.EVPCRouterPortForwardingProtocol `json:",omitempty"` // プロトコル(tcp/udp)
+	GlobalPort     types.StringNumber                     `json:",omitempty"` // グローバル側ポート
+	PrivateAddress string                                 `json:",omitempty"` // プライベートIPアドレス
+	PrivatePort    types.StringNumber                     `json:",omitempty"` // プライベート側ポート
+	Description    string                                 `json:",omitempty"` // 説明
 }
 
 // VPCRouterFirewall ファイアウォール
