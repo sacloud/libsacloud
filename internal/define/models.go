@@ -780,6 +780,14 @@ func (m *modelsDef) vpcRouterSetting() *dsl.Model {
 				},
 			},
 			{
+				Name: "PortForwarding",
+				Type: m.vpcRouterPortForwarding(),
+				Tags: &dsl.FieldTags{
+					JSON:    ",omitempty",
+					MapConv: "Router.PortForwarding.[]Config,omitempty,recursive",
+				},
+			},
+			{
 				Name: "Firewall",
 				Type: m.vpcRouterFirewall(),
 				Tags: &dsl.FieldTags{
@@ -921,6 +929,40 @@ func (m *modelsDef) vpcRouterStaticNAT() *dsl.Model {
 					MapConv:  "PrivateAddress",
 					Validate: "ipv4",
 				},
+			},
+			{
+				Name: "Description",
+				Type: meta.TypeString,
+			},
+		},
+	}
+}
+
+func (m *modelsDef) vpcRouterPortForwarding() *dsl.Model {
+	return &dsl.Model{
+		Name:      "VPCRouterPortForwarding",
+		NakedType: meta.Static(naked.VPCRouterPortForwardingConfig{}),
+		IsArray:   true,
+		Fields: []*dsl.FieldDesc{
+			{
+				Name: "Protocol",
+				Type: meta.Static(types.EVPCRouterPortForwardingProtocol("")),
+			},
+			{
+				Name: "GlobalPort",
+				Type: meta.TypeStringNumber,
+			},
+			{
+				Name: "PrivateAddress",
+				Type: meta.TypeString,
+				Tags: &dsl.FieldTags{
+					MapConv:  "PrivateAddress",
+					Validate: "ipv4",
+				},
+			},
+			{
+				Name: "PrivatePort",
+				Type: meta.TypeStringNumber,
 			},
 			{
 				Name: "Description",

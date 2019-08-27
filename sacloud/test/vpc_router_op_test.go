@@ -284,6 +284,15 @@ func TestVPCRouterOp_WithRouterCRUD(t *testing.T) {
 								PrivateAddress: "192.168.2.1",
 							},
 						},
+						PortForwarding: []*sacloud.VPCRouterPortForwarding{
+							{
+								Protocol:       types.VPCRouterPortForwardingProtocols.TCP,
+								GlobalPort:     22,
+								PrivateAddress: "192.168.2.2",
+								PrivatePort:    10022,
+								Description:    "port forwarding",
+							},
+						},
 						DHCPServer: []*sacloud.VPCRouterDHCPServer{
 							{
 								Interface:  "eth2",
