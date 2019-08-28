@@ -1485,9 +1485,9 @@ type AutoBackup struct {
 	BackupSpanWeekdays      []types.EBackupSpanWeekday `mapconv:"Settings.Autobackup.BackupSpanWeekdays"`
 	MaximumNumberOfArchives int                        `mapconv:"Settings.Autobackup.MaximumNumberOfArchives"`
 	SettingsHash            string                     `json:",omitempty" mapconv:",omitempty"`
-	DiskID                  types.ID                   `mapconv:"Status.DiskId"`
-	AccountID               types.ID                   `mapconv:"Status.AccountId"`
-	ZoneID                  types.ID                   `mapconv:"Status.ZoneId"`
+	DiskID                  types.ID                   `mapconv:"Status.DiskID"`
+	AccountID               types.ID                   `mapconv:"Status.AccountID"`
+	ZoneID                  types.ID                   `mapconv:"Status.ZoneID"`
 	ZoneName                string                     `mapconv:"Status.ZoneName"`
 }
 
@@ -1510,9 +1510,9 @@ func (o *AutoBackup) setDefaults() interface{} {
 		BackupSpanWeekdays      []types.EBackupSpanWeekday `mapconv:"Settings.Autobackup.BackupSpanWeekdays"`
 		MaximumNumberOfArchives int                        `mapconv:"Settings.Autobackup.MaximumNumberOfArchives"`
 		SettingsHash            string                     `json:",omitempty" mapconv:",omitempty"`
-		DiskID                  types.ID                   `mapconv:"Status.DiskId"`
-		AccountID               types.ID                   `mapconv:"Status.AccountId"`
-		ZoneID                  types.ID                   `mapconv:"Status.ZoneId"`
+		DiskID                  types.ID                   `mapconv:"Status.DiskID"`
+		AccountID               types.ID                   `mapconv:"Status.AccountID"`
+		ZoneID                  types.ID                   `mapconv:"Status.ZoneID"`
 		ZoneName                string                     `mapconv:"Status.ZoneName"`
 	}{
 		ID:                      o.GetID(),
@@ -1729,7 +1729,7 @@ func (o *AutoBackup) SetZoneName(v string) {
 
 // AutoBackupCreateRequest represents API parameter/response structure
 type AutoBackupCreateRequest struct {
-	DiskID                  types.ID                   `mapconv:"Status.DiskId"`
+	DiskID                  types.ID                   `mapconv:"Status.DiskID"`
 	BackupSpanWeekdays      []types.EBackupSpanWeekday `mapconv:"Settings.Autobackup.BackupSpanWeekdays"`
 	MaximumNumberOfArchives int                        `mapconv:"Settings.Autobackup.MaximumNumberOfArchives"`
 	Name                    string                     `validate:"required"`
@@ -1746,7 +1746,7 @@ func (o *AutoBackupCreateRequest) Validate() error {
 // setDefaults implements sacloud.argumentDefaulter
 func (o *AutoBackupCreateRequest) setDefaults() interface{} {
 	return &struct {
-		DiskID                  types.ID                   `mapconv:"Status.DiskId"`
+		DiskID                  types.ID                   `mapconv:"Status.DiskID"`
 		BackupSpanWeekdays      []types.EBackupSpanWeekday `mapconv:"Settings.Autobackup.BackupSpanWeekdays"`
 		MaximumNumberOfArchives int                        `mapconv:"Settings.Autobackup.MaximumNumberOfArchives"`
 		Name                    string                     `validate:"required"`

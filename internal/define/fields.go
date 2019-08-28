@@ -881,7 +881,7 @@ func (f *fieldsDef) AutoBackupDiskID() *dsl.FieldDesc {
 		Name: "DiskID",
 		Type: meta.TypeID,
 		Tags: &dsl.FieldTags{
-			MapConv: "Status.DiskId",
+			MapConv: "Status.DiskID",
 		},
 	}
 }
@@ -891,7 +891,7 @@ func (f *fieldsDef) AutoBackupAccountID() *dsl.FieldDesc {
 		Name: "AccountID",
 		Type: meta.TypeID,
 		Tags: &dsl.FieldTags{
-			MapConv: "Status.AccountId",
+			MapConv: "Status.AccountID",
 		},
 	}
 }
@@ -901,7 +901,7 @@ func (f *fieldsDef) AutoBackupZoneID() *dsl.FieldDesc {
 		Name: "ZoneID",
 		Type: meta.TypeID,
 		Tags: &dsl.FieldTags{
-			MapConv: "Status.ZoneId",
+			MapConv: "Status.ZoneID",
 		},
 	}
 }
