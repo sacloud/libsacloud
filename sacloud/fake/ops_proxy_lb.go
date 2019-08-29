@@ -45,6 +45,12 @@ func (o *ProxyLBOp) Create(ctx context.Context, param *sacloud.ProxyLBCreateRequ
 	if result.SorryServer == nil {
 		result.SorryServer = &sacloud.ProxyLBSorryServer{}
 	}
+	if result.Timeout == nil {
+		result.Timeout = &sacloud.ProxyLBTimeout{}
+	}
+	if result.Timeout.InactiveSec == 0 {
+		result.Timeout.InactiveSec = 10
+	}
 
 	status := &sacloud.ProxyLBHealth{
 		ActiveConn: 10,
@@ -87,6 +93,12 @@ func (o *ProxyLBOp) Update(ctx context.Context, id types.ID, param *sacloud.Prox
 	fill(value, fillModifiedAt)
 	if value.SorryServer == nil {
 		value.SorryServer = &sacloud.ProxyLBSorryServer{}
+	}
+	if value.Timeout == nil {
+		value.Timeout = &sacloud.ProxyLBTimeout{}
+	}
+	if value.Timeout.InactiveSec == 0 {
+		value.Timeout.InactiveSec = 10
 	}
 	putProxyLB(sacloud.APIDefaultZone, value)
 

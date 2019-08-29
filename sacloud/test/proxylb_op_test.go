@@ -139,6 +139,9 @@ func initProxyLBVariables() {
 			Method:  "cookie",
 			Enabled: true,
 		},
+		Timeout: &sacloud.ProxyLBTimeout{
+			InactiveSec: 30,
+		},
 		UseVIPFailover: true,
 		Region:         types.ProxyLBRegions.IS1,
 	}
@@ -155,6 +158,7 @@ func initProxyLBVariables() {
 		Servers:        createProxyLBParam.Servers,
 		LetsEncrypt:    createProxyLBParam.LetsEncrypt,
 		StickySession:  createProxyLBParam.StickySession,
+		Timeout:        createProxyLBParam.Timeout,
 		UseVIPFailover: createProxyLBParam.UseVIPFailover,
 		Region:         createProxyLBParam.Region,
 	}
@@ -203,20 +207,26 @@ func initProxyLBVariables() {
 		StickySession: &sacloud.ProxyLBStickySession{
 			Enabled: false,
 		},
+		Timeout: &sacloud.ProxyLBTimeout{
+			InactiveSec: 10,
+		},
 	}
 	updateProxyLBExpected = &sacloud.ProxyLB{
-		Name:           updateProxyLBParam.Name,
-		Description:    updateProxyLBParam.Description,
-		Tags:           updateProxyLBParam.Tags,
-		IconID:         testIconID,
-		Availability:   types.Availabilities.Available,
-		Plan:           createProxyLBParam.Plan,
-		HealthCheck:    updateProxyLBParam.HealthCheck,
-		SorryServer:    updateProxyLBParam.SorryServer,
-		BindPorts:      updateProxyLBParam.BindPorts,
-		Servers:        updateProxyLBParam.Servers,
-		LetsEncrypt:    updateProxyLBParam.LetsEncrypt,
-		StickySession:  updateProxyLBParam.StickySession,
+		Name:          updateProxyLBParam.Name,
+		Description:   updateProxyLBParam.Description,
+		Tags:          updateProxyLBParam.Tags,
+		IconID:        testIconID,
+		Availability:  types.Availabilities.Available,
+		Plan:          createProxyLBParam.Plan,
+		HealthCheck:   updateProxyLBParam.HealthCheck,
+		SorryServer:   updateProxyLBParam.SorryServer,
+		BindPorts:     updateProxyLBParam.BindPorts,
+		Servers:       updateProxyLBParam.Servers,
+		LetsEncrypt:   updateProxyLBParam.LetsEncrypt,
+		StickySession: updateProxyLBParam.StickySession,
+		Timeout: &sacloud.ProxyLBTimeout{
+			InactiveSec: 10,
+		},
 		UseVIPFailover: createProxyLBParam.UseVIPFailover,
 		Region:         createProxyLBParam.Region,
 	}
@@ -233,6 +243,9 @@ func initProxyLBVariables() {
 		StickySession: &sacloud.ProxyLBStickySession{
 			Enabled: false,
 		},
+		Timeout: &sacloud.ProxyLBTimeout{
+			InactiveSec: 10,
+		},
 	}
 	updateProxyLBToMinExpected = &sacloud.ProxyLB{
 		Name:         updateProxyLBToMinParam.Name,
@@ -245,6 +258,9 @@ func initProxyLBVariables() {
 		},
 		StickySession: &sacloud.ProxyLBStickySession{
 			Enabled: false,
+		},
+		Timeout: &sacloud.ProxyLBTimeout{
+			InactiveSec: 10,
 		},
 		UseVIPFailover: createProxyLBParam.UseVIPFailover,
 		Region:         createProxyLBParam.Region,
@@ -285,6 +301,9 @@ func initProxyLBVariables() {
 		LetsEncrypt: &sacloud.ProxyLBACMESetting{
 			Enabled: false,
 		},
+		Timeout: &sacloud.ProxyLBTimeout{
+			InactiveSec: 10,
+		},
 		UseVIPFailover: true,
 	}
 
@@ -322,6 +341,9 @@ func initProxyLBVariables() {
 		LetsEncrypt: &sacloud.ProxyLBACMESetting{
 			CommonName: os.Getenv("SAKURACLOUD_PROXYLB_COMMON_NAME"),
 			Enabled:    true,
+		},
+		Timeout: &sacloud.ProxyLBTimeout{
+			InactiveSec: 10,
 		},
 	}
 }

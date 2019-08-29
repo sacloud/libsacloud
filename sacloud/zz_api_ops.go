@@ -8148,6 +8148,9 @@ func (o *ProxyLBOp) Patch(ctx context.Context, id types.ID, param *ProxyLBPatchR
 	if param.PatchEmptyToStickySession {
 		param.StickySession = nil
 	}
+	if param.PatchEmptyToTimeout {
+		param.Timeout = nil
+	}
 	if param.PatchEmptyToDescription {
 		param.Description = ""
 	}

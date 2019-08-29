@@ -17637,6 +17637,7 @@ type ProxyLB struct {
 	Servers          []*ProxyLBServer      `mapconv:"Settings.ProxyLB.[]Servers,recursive"`
 	LetsEncrypt      *ProxyLBACMESetting   `mapconv:"Settings.ProxyLB.LetsEncrypt,recursive"`
 	StickySession    *ProxyLBStickySession `mapconv:"Settings.ProxyLB.StickySession,recursive"`
+	Timeout          *ProxyLBTimeout       `json:",omitempty" mapconv:"Settings.ProxyLB.Timeout,recursive,omitempty"`
 	SettingsHash     string                `json:",omitempty" mapconv:",omitempty"`
 	UseVIPFailover   bool                  `mapconv:"Status.UseVIPFailover"`
 	Region           types.EProxyLBRegion  `mapconv:"Status.Region"`
@@ -17668,6 +17669,7 @@ func (o *ProxyLB) setDefaults() interface{} {
 		Servers          []*ProxyLBServer      `mapconv:"Settings.ProxyLB.[]Servers,recursive"`
 		LetsEncrypt      *ProxyLBACMESetting   `mapconv:"Settings.ProxyLB.LetsEncrypt,recursive"`
 		StickySession    *ProxyLBStickySession `mapconv:"Settings.ProxyLB.StickySession,recursive"`
+		Timeout          *ProxyLBTimeout       `json:",omitempty" mapconv:"Settings.ProxyLB.Timeout,recursive,omitempty"`
 		SettingsHash     string                `json:",omitempty" mapconv:",omitempty"`
 		UseVIPFailover   bool                  `mapconv:"Status.UseVIPFailover"`
 		Region           types.EProxyLBRegion  `mapconv:"Status.Region"`
@@ -17690,6 +17692,7 @@ func (o *ProxyLB) setDefaults() interface{} {
 		Servers:          o.GetServers(),
 		LetsEncrypt:      o.GetLetsEncrypt(),
 		StickySession:    o.GetStickySession(),
+		Timeout:          o.GetTimeout(),
 		SettingsHash:     o.GetSettingsHash(),
 		UseVIPFailover:   o.GetUseVIPFailover(),
 		Region:           o.GetRegion(),
@@ -17887,6 +17890,16 @@ func (o *ProxyLB) GetStickySession() *ProxyLBStickySession {
 // SetStickySession sets value to StickySession
 func (o *ProxyLB) SetStickySession(v *ProxyLBStickySession) {
 	o.StickySession = v
+}
+
+// GetTimeout returns value of Timeout
+func (o *ProxyLB) GetTimeout() *ProxyLBTimeout {
+	return o.Timeout
+}
+
+// SetTimeout sets value to Timeout
+func (o *ProxyLB) SetTimeout(v *ProxyLBTimeout) {
+	o.Timeout = v
 }
 
 // GetSettingsHash returns value of SettingsHash
@@ -18350,6 +18363,42 @@ func (o *ProxyLBStickySession) SetEnabled(v bool) {
 }
 
 /*************************************************
+* ProxyLBTimeout
+*************************************************/
+
+// ProxyLBTimeout represents API parameter/response structure
+type ProxyLBTimeout struct {
+	InactiveSec int `validate:"min=10,max=600"`
+}
+
+// Validate validates by field tags
+func (o *ProxyLBTimeout) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *ProxyLBTimeout) setDefaults() interface{} {
+	return &struct {
+		InactiveSec int `validate:"min=10,max=600"`
+	}{
+		InactiveSec: o.GetInactiveSec(),
+	}
+}
+
+// GetInactiveSec returns value of InactiveSec
+func (o *ProxyLBTimeout) GetInactiveSec() int {
+	if o.InactiveSec == 0 {
+		return 10
+	}
+	return o.InactiveSec
+}
+
+// SetInactiveSec sets value to InactiveSec
+func (o *ProxyLBTimeout) SetInactiveSec(v int) {
+	o.InactiveSec = v
+}
+
+/*************************************************
 * ProxyLBCreateRequest
 *************************************************/
 
@@ -18362,6 +18411,7 @@ type ProxyLBCreateRequest struct {
 	Servers        []*ProxyLBServer      `mapconv:"Settings.ProxyLB.[]Servers,recursive"`
 	LetsEncrypt    *ProxyLBACMESetting   `mapconv:"Settings.ProxyLB.LetsEncrypt,recursive"`
 	StickySession  *ProxyLBStickySession `mapconv:"Settings.ProxyLB.StickySession,recursive"`
+	Timeout        *ProxyLBTimeout       `json:",omitempty" mapconv:"Settings.ProxyLB.Timeout,recursive,omitempty"`
 	UseVIPFailover bool                  `mapconv:"Status.UseVIPFailover"`
 	Region         types.EProxyLBRegion  `mapconv:"Status.Region"`
 	Name           string                `validate:"required"`
@@ -18385,6 +18435,7 @@ func (o *ProxyLBCreateRequest) setDefaults() interface{} {
 		Servers        []*ProxyLBServer      `mapconv:"Settings.ProxyLB.[]Servers,recursive"`
 		LetsEncrypt    *ProxyLBACMESetting   `mapconv:"Settings.ProxyLB.LetsEncrypt,recursive"`
 		StickySession  *ProxyLBStickySession `mapconv:"Settings.ProxyLB.StickySession,recursive"`
+		Timeout        *ProxyLBTimeout       `json:",omitempty" mapconv:"Settings.ProxyLB.Timeout,recursive,omitempty"`
 		UseVIPFailover bool                  `mapconv:"Status.UseVIPFailover"`
 		Region         types.EProxyLBRegion  `mapconv:"Status.Region"`
 		Name           string                `validate:"required"`
@@ -18400,6 +18451,7 @@ func (o *ProxyLBCreateRequest) setDefaults() interface{} {
 		Servers:        o.GetServers(),
 		LetsEncrypt:    o.GetLetsEncrypt(),
 		StickySession:  o.GetStickySession(),
+		Timeout:        o.GetTimeout(),
 		UseVIPFailover: o.GetUseVIPFailover(),
 		Region:         o.GetRegion(),
 		Name:           o.GetName(),
@@ -18478,6 +18530,16 @@ func (o *ProxyLBCreateRequest) GetStickySession() *ProxyLBStickySession {
 // SetStickySession sets value to StickySession
 func (o *ProxyLBCreateRequest) SetStickySession(v *ProxyLBStickySession) {
 	o.StickySession = v
+}
+
+// GetTimeout returns value of Timeout
+func (o *ProxyLBCreateRequest) GetTimeout() *ProxyLBTimeout {
+	return o.Timeout
+}
+
+// SetTimeout sets value to Timeout
+func (o *ProxyLBCreateRequest) SetTimeout(v *ProxyLBTimeout) {
+	o.Timeout = v
 }
 
 // GetUseVIPFailover returns value of UseVIPFailover
@@ -18572,6 +18634,7 @@ type ProxyLBUpdateRequest struct {
 	Servers       []*ProxyLBServer      `mapconv:"Settings.ProxyLB.[]Servers,recursive"`
 	LetsEncrypt   *ProxyLBACMESetting   `mapconv:"Settings.ProxyLB.LetsEncrypt,recursive"`
 	StickySession *ProxyLBStickySession `mapconv:"Settings.ProxyLB.StickySession,recursive"`
+	Timeout       *ProxyLBTimeout       `json:",omitempty" mapconv:"Settings.ProxyLB.Timeout,recursive,omitempty"`
 	SettingsHash  string                `json:",omitempty" mapconv:",omitempty"`
 	Name          string                `validate:"required"`
 	Description   string                `validate:"min=0,max=512"`
@@ -18593,6 +18656,7 @@ func (o *ProxyLBUpdateRequest) setDefaults() interface{} {
 		Servers       []*ProxyLBServer      `mapconv:"Settings.ProxyLB.[]Servers,recursive"`
 		LetsEncrypt   *ProxyLBACMESetting   `mapconv:"Settings.ProxyLB.LetsEncrypt,recursive"`
 		StickySession *ProxyLBStickySession `mapconv:"Settings.ProxyLB.StickySession,recursive"`
+		Timeout       *ProxyLBTimeout       `json:",omitempty" mapconv:"Settings.ProxyLB.Timeout,recursive,omitempty"`
 		SettingsHash  string                `json:",omitempty" mapconv:",omitempty"`
 		Name          string                `validate:"required"`
 		Description   string                `validate:"min=0,max=512"`
@@ -18605,6 +18669,7 @@ func (o *ProxyLBUpdateRequest) setDefaults() interface{} {
 		Servers:       o.GetServers(),
 		LetsEncrypt:   o.GetLetsEncrypt(),
 		StickySession: o.GetStickySession(),
+		Timeout:       o.GetTimeout(),
 		SettingsHash:  o.GetSettingsHash(),
 		Name:          o.GetName(),
 		Description:   o.GetDescription(),
@@ -18671,6 +18736,16 @@ func (o *ProxyLBUpdateRequest) GetStickySession() *ProxyLBStickySession {
 // SetStickySession sets value to StickySession
 func (o *ProxyLBUpdateRequest) SetStickySession(v *ProxyLBStickySession) {
 	o.StickySession = v
+}
+
+// GetTimeout returns value of Timeout
+func (o *ProxyLBUpdateRequest) GetTimeout() *ProxyLBTimeout {
+	return o.Timeout
+}
+
+// SetTimeout sets value to Timeout
+func (o *ProxyLBUpdateRequest) SetTimeout(v *ProxyLBTimeout) {
+	o.Timeout = v
 }
 
 // GetSettingsHash returns value of SettingsHash
@@ -18761,6 +18836,8 @@ type ProxyLBPatchRequest struct {
 	PatchEmptyToLetsEncrypt   bool
 	StickySession             *ProxyLBStickySession `mapconv:"Settings.ProxyLB.StickySession,recursive"`
 	PatchEmptyToStickySession bool
+	Timeout                   *ProxyLBTimeout `json:",omitempty" mapconv:"Settings.ProxyLB.Timeout,recursive,omitempty"`
+	PatchEmptyToTimeout       bool
 	SettingsHash              string `json:",omitempty" mapconv:",omitempty"`
 	Name                      string `validate:"required"`
 	Description               string `validate:"min=0,max=512"`
@@ -18791,6 +18868,8 @@ func (o *ProxyLBPatchRequest) setDefaults() interface{} {
 		PatchEmptyToLetsEncrypt   bool
 		StickySession             *ProxyLBStickySession `mapconv:"Settings.ProxyLB.StickySession,recursive"`
 		PatchEmptyToStickySession bool
+		Timeout                   *ProxyLBTimeout `json:",omitempty" mapconv:"Settings.ProxyLB.Timeout,recursive,omitempty"`
+		PatchEmptyToTimeout       bool
 		SettingsHash              string `json:",omitempty" mapconv:",omitempty"`
 		Name                      string `validate:"required"`
 		Description               string `validate:"min=0,max=512"`
@@ -18812,6 +18891,8 @@ func (o *ProxyLBPatchRequest) setDefaults() interface{} {
 		PatchEmptyToLetsEncrypt:   o.GetPatchEmptyToLetsEncrypt(),
 		StickySession:             o.GetStickySession(),
 		PatchEmptyToStickySession: o.GetPatchEmptyToStickySession(),
+		Timeout:                   o.GetTimeout(),
+		PatchEmptyToTimeout:       o.GetPatchEmptyToTimeout(),
 		SettingsHash:              o.GetSettingsHash(),
 		Name:                      o.GetName(),
 		Description:               o.GetDescription(),
@@ -18941,6 +19022,26 @@ func (o *ProxyLBPatchRequest) GetPatchEmptyToStickySession() bool {
 // SetPatchEmptyToStickySession sets value to PatchEmptyToStickySession
 func (o *ProxyLBPatchRequest) SetPatchEmptyToStickySession(v bool) {
 	o.PatchEmptyToStickySession = v
+}
+
+// GetTimeout returns value of Timeout
+func (o *ProxyLBPatchRequest) GetTimeout() *ProxyLBTimeout {
+	return o.Timeout
+}
+
+// SetTimeout sets value to Timeout
+func (o *ProxyLBPatchRequest) SetTimeout(v *ProxyLBTimeout) {
+	o.Timeout = v
+}
+
+// GetPatchEmptyToTimeout returns value of PatchEmptyToTimeout
+func (o *ProxyLBPatchRequest) GetPatchEmptyToTimeout() bool {
+	return o.PatchEmptyToTimeout
+}
+
+// SetPatchEmptyToTimeout sets value to PatchEmptyToTimeout
+func (o *ProxyLBPatchRequest) SetPatchEmptyToTimeout(v bool) {
+	o.PatchEmptyToTimeout = v
 }
 
 // GetSettingsHash returns value of SettingsHash
