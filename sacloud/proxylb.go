@@ -196,6 +196,7 @@ type ProxyLBSetting struct {
 	Servers       []ProxyLBServer       `json:",omitempty"` // サーバー
 	LetsEncrypt   ProxyLBACMESetting    `json:",omitempty"` // Let's encryptでの証明書取得設定
 	StickySession ProxyLBSessionSetting `json:",omitempty"`
+	Timeout       *ProxyLBTimeout       `json:",omitempty"` // タイムアウト
 }
 
 // ProxyLBSorryServer ソーリーサーバ
@@ -312,6 +313,11 @@ type ProxyLBACMESetting struct {
 type ProxyLBSessionSetting struct {
 	Enabled bool
 	Method  string `json:",omitempty"`
+}
+
+// ProxyLBTimeout 実サーバの通信タイムアウト
+type ProxyLBTimeout struct {
+	InactiveSec int `json:",omitempty"` // 10から600まで1秒刻みで設定可
 }
 
 // ProxyLBStickySessionDefaultMethod セッション維持のデフォルトメソッド(クッキー)
