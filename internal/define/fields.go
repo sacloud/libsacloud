@@ -1353,6 +1353,29 @@ func (f *fieldsDef) ProxyLBStickySession() *dsl.FieldDesc {
 	}
 }
 
+func (f *fieldsDef) ProxyLBTimeout() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "Timeout",
+		Type: &dsl.Model{
+			Name: "ProxyLBTimeout",
+			Fields: []*dsl.FieldDesc{
+				{
+					Name: "InactiveSec",
+					Type: meta.TypeInt,
+					Tags: &dsl.FieldTags{
+						Validate: "min=10,max=600",
+					},
+					DefaultValue: `10`,
+				},
+			},
+		},
+		Tags: &dsl.FieldTags{
+			MapConv: "Settings.ProxyLB.Timeout,recursive,omitempty",
+			JSON:    ",omitempty",
+		},
+	}
+}
+
 func (f *fieldsDef) SettingsHash() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "SettingsHash",

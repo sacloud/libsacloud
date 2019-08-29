@@ -34,12 +34,13 @@ type ProxyLBSettings struct {
 
 // ProxyLBSetting エンハンスドロードバランサ設定
 type ProxyLBSetting struct {
-	HealthCheck   ProxyLBHealthCheck   `yaml:"health_check"`   // ヘルスチェック
-	SorryServer   ProxyLBSorryServer   `yaml:"sorry_server"`   // ソーリーサーバー
-	BindPorts     []*ProxyLBBindPorts  `yaml:"bind_ports"`     // プロキシ方式(プロトコル&ポート)
-	Servers       []ProxyLBServer      `yaml:"servers"`        // サーバー
-	LetsEncrypt   ProxyLBACMESetting   `yaml:"lets_encrypt"`   // Let's encryptでの証明書取得設定
-	StickySession ProxyLBStickySession `yaml:"sticky_session"` // StickySession
+	HealthCheck   ProxyLBHealthCheck   `yaml:"health_check"`                                             // ヘルスチェック
+	SorryServer   ProxyLBSorryServer   `yaml:"sorry_server"`                                             // ソーリーサーバー
+	BindPorts     []*ProxyLBBindPorts  `yaml:"bind_ports"`                                               // プロキシ方式(プロトコル&ポート)
+	Servers       []ProxyLBServer      `yaml:"servers"`                                                  // サーバー
+	LetsEncrypt   ProxyLBACMESetting   `yaml:"lets_encrypt"`                                             // Let's encryptでの証明書取得設定
+	StickySession ProxyLBStickySession `yaml:"sticky_session"`                                           // StickySession
+	Timeout       ProxyLBTimeout       `json:",omitempty" yaml:"timeout,omitempty" structs:",omitempty"` // タイムアウト
 }
 
 // MarshalJSON nullの場合に空配列を出力するための実装
@@ -102,6 +103,11 @@ type ProxyLBACMESetting struct {
 type ProxyLBStickySession struct {
 	Enabled bool
 	Method  string `json:",omitempty" yaml:"method,omitempty" structs:",omitempty"`
+}
+
+// ProxyLBTimeout 実サーバの通信タイムアウト
+type ProxyLBTimeout struct {
+	InactiveSec int `json:",omitempty" yaml:"inactive_sec" structs:",omitempty"` // 10から600まで1秒刻みで設定可
 }
 
 // ProxyLBStatus ステータス

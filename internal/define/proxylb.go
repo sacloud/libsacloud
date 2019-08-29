@@ -167,6 +167,7 @@ var (
 			fields.ProxyLBServers(),
 			fields.ProxyLBLetsEncrypt(),
 			fields.ProxyLBStickySession(),
+			fields.ProxyLBTimeout(),
 			fields.SettingsHash(),
 
 			// status
@@ -202,6 +203,7 @@ var (
 			fields.ProxyLBServers(),
 			fields.ProxyLBLetsEncrypt(),
 			fields.ProxyLBStickySession(),
+			fields.ProxyLBTimeout(),
 
 			// status
 			fields.ProxyLBUseVIPFailover(),
@@ -227,6 +229,7 @@ var (
 			fields.ProxyLBServers(),
 			fields.ProxyLBLetsEncrypt(),
 			fields.ProxyLBStickySession(),
+			fields.ProxyLBTimeout(),
 			// settings hash
 			fields.SettingsHash(),
 
