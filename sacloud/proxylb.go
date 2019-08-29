@@ -84,6 +84,8 @@ var (
 	ProxyLBPlan50000 = ProxyLBPlan(50000)
 	// ProxyLBPlan100000 100,000cpsプラン
 	ProxyLBPlan100000 = ProxyLBPlan(100000)
+	// ProxyLBPlan400000 400,000cpsプラン
+	ProxyLBPlan400000 = ProxyLBPlan(400000)
 )
 
 // AllowProxyLBPlans 有効なプランIDリスト
@@ -95,6 +97,7 @@ var AllowProxyLBPlans = []int{
 	int(ProxyLBPlan10000),
 	int(ProxyLBPlan50000),
 	int(ProxyLBPlan100000),
+	int(ProxyLBPlan400000),
 }
 
 // GetPlan プラン取得(デフォルト: 1000cps)
