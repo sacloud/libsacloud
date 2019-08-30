@@ -4206,11 +4206,13 @@ func (o *Database) SetInterfaces(v []*InterfaceView) {
 
 // DatabaseSettingCommon represents API parameter/response structure
 type DatabaseSettingCommon struct {
-	WebUI         bool
-	ServicePort   int
-	SourceNetwork []string
-	DefaultUser   string
-	UserPassword  string
+	WebUI           bool
+	ServicePort     int
+	SourceNetwork   []string
+	DefaultUser     string
+	UserPassword    string
+	ReplicaUser     string
+	ReplicaPassword string
 }
 
 // Validate validates by field tags
@@ -4221,17 +4223,21 @@ func (o *DatabaseSettingCommon) Validate() error {
 // setDefaults implements sacloud.argumentDefaulter
 func (o *DatabaseSettingCommon) setDefaults() interface{} {
 	return &struct {
-		WebUI         bool
-		ServicePort   int
-		SourceNetwork []string
-		DefaultUser   string
-		UserPassword  string
+		WebUI           bool
+		ServicePort     int
+		SourceNetwork   []string
+		DefaultUser     string
+		UserPassword    string
+		ReplicaUser     string
+		ReplicaPassword string
 	}{
-		WebUI:         o.GetWebUI(),
-		ServicePort:   o.GetServicePort(),
-		SourceNetwork: o.GetSourceNetwork(),
-		DefaultUser:   o.GetDefaultUser(),
-		UserPassword:  o.GetUserPassword(),
+		WebUI:           o.GetWebUI(),
+		ServicePort:     o.GetServicePort(),
+		SourceNetwork:   o.GetSourceNetwork(),
+		DefaultUser:     o.GetDefaultUser(),
+		UserPassword:    o.GetUserPassword(),
+		ReplicaUser:     o.GetReplicaUser(),
+		ReplicaPassword: o.GetReplicaPassword(),
 	}
 }
 
@@ -4283,6 +4289,26 @@ func (o *DatabaseSettingCommon) GetUserPassword() string {
 // SetUserPassword sets value to UserPassword
 func (o *DatabaseSettingCommon) SetUserPassword(v string) {
 	o.UserPassword = v
+}
+
+// GetReplicaUser returns value of ReplicaUser
+func (o *DatabaseSettingCommon) GetReplicaUser() string {
+	return o.ReplicaUser
+}
+
+// SetReplicaUser sets value to ReplicaUser
+func (o *DatabaseSettingCommon) SetReplicaUser(v string) {
+	o.ReplicaUser = v
+}
+
+// GetReplicaPassword returns value of ReplicaPassword
+func (o *DatabaseSettingCommon) GetReplicaPassword() string {
+	return o.ReplicaPassword
+}
+
+// SetReplicaPassword sets value to ReplicaPassword
+func (o *DatabaseSettingCommon) SetReplicaPassword(v string) {
+	o.ReplicaPassword = v
 }
 
 /*************************************************
@@ -5175,11 +5201,13 @@ func (o *DatabaseUpdateRequest) SetSettingsHash(v string) {
 
 // DatabaseSettingCommonUpdate represents API parameter/response structure
 type DatabaseSettingCommonUpdate struct {
-	WebUI         bool
-	ServicePort   int
-	SourceNetwork []string
-	DefaultUser   string
-	UserPassword  string
+	WebUI           bool
+	ServicePort     int
+	SourceNetwork   []string
+	DefaultUser     string
+	UserPassword    string
+	ReplicaUser     string
+	ReplicaPassword string
 }
 
 // Validate validates by field tags
@@ -5190,17 +5218,21 @@ func (o *DatabaseSettingCommonUpdate) Validate() error {
 // setDefaults implements sacloud.argumentDefaulter
 func (o *DatabaseSettingCommonUpdate) setDefaults() interface{} {
 	return &struct {
-		WebUI         bool
-		ServicePort   int
-		SourceNetwork []string
-		DefaultUser   string
-		UserPassword  string
+		WebUI           bool
+		ServicePort     int
+		SourceNetwork   []string
+		DefaultUser     string
+		UserPassword    string
+		ReplicaUser     string
+		ReplicaPassword string
 	}{
-		WebUI:         o.GetWebUI(),
-		ServicePort:   o.GetServicePort(),
-		SourceNetwork: o.GetSourceNetwork(),
-		DefaultUser:   o.GetDefaultUser(),
-		UserPassword:  o.GetUserPassword(),
+		WebUI:           o.GetWebUI(),
+		ServicePort:     o.GetServicePort(),
+		SourceNetwork:   o.GetSourceNetwork(),
+		DefaultUser:     o.GetDefaultUser(),
+		UserPassword:    o.GetUserPassword(),
+		ReplicaUser:     o.GetReplicaUser(),
+		ReplicaPassword: o.GetReplicaPassword(),
 	}
 }
 
@@ -5252,6 +5284,26 @@ func (o *DatabaseSettingCommonUpdate) GetUserPassword() string {
 // SetUserPassword sets value to UserPassword
 func (o *DatabaseSettingCommonUpdate) SetUserPassword(v string) {
 	o.UserPassword = v
+}
+
+// GetReplicaUser returns value of ReplicaUser
+func (o *DatabaseSettingCommonUpdate) GetReplicaUser() string {
+	return o.ReplicaUser
+}
+
+// SetReplicaUser sets value to ReplicaUser
+func (o *DatabaseSettingCommonUpdate) SetReplicaUser(v string) {
+	o.ReplicaUser = v
+}
+
+// GetReplicaPassword returns value of ReplicaPassword
+func (o *DatabaseSettingCommonUpdate) GetReplicaPassword() string {
+	return o.ReplicaPassword
+}
+
+// SetReplicaPassword sets value to ReplicaPassword
+func (o *DatabaseSettingCommonUpdate) SetReplicaPassword(v string) {
+	o.ReplicaPassword = v
 }
 
 /*************************************************

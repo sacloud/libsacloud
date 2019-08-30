@@ -112,21 +112,27 @@ var (
 			UserPassword:     "LibsacloudExamplePassword01",
 		},
 		CommonSetting: &sacloud.DatabaseSettingCommon{
-			ServicePort:  5432,
-			DefaultUser:  "exa.mple",
-			UserPassword: "LibsacloudExamplePassword01",
+			ServicePort:     5432,
+			DefaultUser:     "exa.mple",
+			UserPassword:    "LibsacloudExamplePassword01",
+			ReplicaUser:     "replica",
+			ReplicaPassword: "replica-user-password",
+		},
+		ReplicationSetting: &sacloud.DatabaseReplicationSetting{
+			Model: types.DatabaseReplicationModels.MasterSlave,
 		},
 	}
 	createDatabaseExpected = &sacloud.Database{
-		Name:           createDatabaseParam.Name,
-		Description:    createDatabaseParam.Description,
-		Availability:   types.Availabilities.Available,
-		PlanID:         createDatabaseParam.PlanID,
-		DefaultRoute:   createDatabaseParam.DefaultRoute,
-		NetworkMaskLen: createDatabaseParam.NetworkMaskLen,
-		IPAddresses:    createDatabaseParam.IPAddresses,
-		Conf:           createDatabaseParam.Conf,
-		CommonSetting:  createDatabaseParam.CommonSetting,
+		Name:               createDatabaseParam.Name,
+		Description:        createDatabaseParam.Description,
+		Availability:       types.Availabilities.Available,
+		PlanID:             createDatabaseParam.PlanID,
+		DefaultRoute:       createDatabaseParam.DefaultRoute,
+		NetworkMaskLen:     createDatabaseParam.NetworkMaskLen,
+		IPAddresses:        createDatabaseParam.IPAddresses,
+		Conf:               createDatabaseParam.Conf,
+		CommonSetting:      createDatabaseParam.CommonSetting,
+		ReplicationSetting: createDatabaseParam.ReplicationSetting,
 	}
 	patchDatabaseParam = &sacloud.DatabasePatchRequest{
 		PatchEmptyToDescription: true,
@@ -145,19 +151,27 @@ var (
 		IPAddresses:    createDatabaseParam.IPAddresses,
 		Conf:           createDatabaseParam.Conf,
 		CommonSetting: &sacloud.DatabaseSettingCommon{
-			ServicePort:  54321,
-			DefaultUser:  "exa.mple",
-			UserPassword: "LibsacloudExamplePassword01",
+			ServicePort:     54321,
+			DefaultUser:     "exa.mple",
+			UserPassword:    "LibsacloudExamplePassword01",
+			ReplicaUser:     "replica",
+			ReplicaPassword: "replica-user-password",
 		},
+		ReplicationSetting: createDatabaseParam.ReplicationSetting,
 	}
 	updateDatabaseParam = &sacloud.DatabaseUpdateRequest{
 		Name:        testutil.ResourceName("db-upd"),
 		Tags:        []string{"tag1-upd", "tag2-upd"},
 		Description: "desc-upd",
 		CommonSetting: &sacloud.DatabaseSettingCommonUpdate{
-			ServicePort:  5432,
-			DefaultUser:  "exa.mple",
-			UserPassword: "LibsacloudExamplePassword02",
+			ServicePort:     5432,
+			DefaultUser:     "exa.mple",
+			UserPassword:    "LibsacloudExamplePassword02",
+			ReplicaUser:     "replica",
+			ReplicaPassword: "replica-user-password",
+		},
+		ReplicationSetting: &sacloud.DatabaseReplicationSetting{
+			Model: types.DatabaseReplicationModels.MasterSlave,
 		},
 	}
 	updateDatabaseExpected = &sacloud.Database{
@@ -171,10 +185,13 @@ var (
 		IPAddresses:    createDatabaseParam.IPAddresses,
 		Conf:           createDatabaseParam.Conf,
 		CommonSetting: &sacloud.DatabaseSettingCommon{
-			ServicePort:  5432,
-			DefaultUser:  "exa.mple",
-			UserPassword: "LibsacloudExamplePassword02",
+			ServicePort:     5432,
+			DefaultUser:     "exa.mple",
+			UserPassword:    "LibsacloudExamplePassword02",
+			ReplicaUser:     "replica",
+			ReplicaPassword: "replica-user-password",
 		},
+		ReplicationSetting: createDatabaseParam.ReplicationSetting,
 	}
 	updateDatabaseToFullParam = &sacloud.DatabaseUpdateRequest{
 		Name:        testutil.ResourceName("db-to-full"),
@@ -189,10 +206,15 @@ var (
 			},
 		},
 		CommonSetting: &sacloud.DatabaseSettingCommonUpdate{
-			ServicePort:   54321,
-			DefaultUser:   "exa.mple",
-			UserPassword:  "LibsacloudExamplePassword03",
-			SourceNetwork: []string{"192.168.11.0/24", "192.168.12.0/24"},
+			ServicePort:     54321,
+			DefaultUser:     "exa.mple",
+			UserPassword:    "LibsacloudExamplePassword03",
+			SourceNetwork:   []string{"192.168.11.0/24", "192.168.12.0/24"},
+			ReplicaUser:     "replica",
+			ReplicaPassword: "replica-user-password",
+		},
+		ReplicationSetting: &sacloud.DatabaseReplicationSetting{
+			Model: types.DatabaseReplicationModels.MasterSlave,
 		},
 		IconID: testIconID,
 	}
@@ -207,19 +229,27 @@ var (
 		IPAddresses:    createDatabaseParam.IPAddresses,
 		Conf:           createDatabaseParam.Conf,
 		CommonSetting: &sacloud.DatabaseSettingCommon{
-			ServicePort:   54321,
-			DefaultUser:   "exa.mple",
-			UserPassword:  "LibsacloudExamplePassword03",
-			SourceNetwork: []string{"192.168.11.0/24", "192.168.12.0/24"},
+			ServicePort:     54321,
+			DefaultUser:     "exa.mple",
+			UserPassword:    "LibsacloudExamplePassword03",
+			SourceNetwork:   []string{"192.168.11.0/24", "192.168.12.0/24"},
+			ReplicaUser:     "replica",
+			ReplicaPassword: "replica-user-password",
 		},
-		BackupSetting: updateDatabaseToFullParam.BackupSetting,
-		IconID:        updateDatabaseToFullParam.IconID,
+		BackupSetting:      updateDatabaseToFullParam.BackupSetting,
+		ReplicationSetting: createDatabaseParam.ReplicationSetting,
+		IconID:             updateDatabaseToFullParam.IconID,
 	}
 	updateDatabaseToMinParam = &sacloud.DatabaseUpdateRequest{
 		Name: testutil.ResourceName("db-to-min"),
 		CommonSetting: &sacloud.DatabaseSettingCommonUpdate{
-			DefaultUser:  "exa.mple",
-			UserPassword: "LibsacloudExamplePassword04",
+			DefaultUser:     "exa.mple",
+			UserPassword:    "LibsacloudExamplePassword04",
+			ReplicaUser:     "replica",
+			ReplicaPassword: "replica-user-password",
+		},
+		ReplicationSetting: &sacloud.DatabaseReplicationSetting{
+			Model: types.DatabaseReplicationModels.MasterSlave,
 		},
 	}
 	updateDatabaseToMinExpected = &sacloud.Database{
@@ -232,9 +262,12 @@ var (
 		IPAddresses:    createDatabaseParam.IPAddresses,
 		Conf:           createDatabaseParam.Conf,
 		CommonSetting: &sacloud.DatabaseSettingCommon{
-			DefaultUser:  "exa.mple",
-			UserPassword: "LibsacloudExamplePassword04",
+			DefaultUser:     "exa.mple",
+			UserPassword:    "LibsacloudExamplePassword04",
+			ReplicaUser:     "replica",
+			ReplicaPassword: "replica-user-password",
 		},
+		ReplicationSetting: createDatabaseParam.ReplicationSetting,
 	}
 )
 

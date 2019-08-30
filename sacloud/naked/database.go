@@ -50,11 +50,13 @@ type DatabaseSettingCommon struct {
 	//
 	// [HACK] Create時はbool型、Read/Update時は文字列(FQDN or IP)となる。
 	// また、無効にするにはJSONで要素自体を指定しないことで行う。
-	WebUI         interface{} `yaml:"web_ui"`
-	ServicePort   int         `json:",omitempty" yaml:"service_port,omitempty" structs:",omitempty"`
-	SourceNetwork []string    `yaml:"source_network"`
-	DefaultUser   string      `json:",omitempty" yaml:"default_user,omitempty" structs:",omitempty"`
-	UserPassword  string      `json:",omitempty" yaml:"user_password,omitempty" structs:",omitempty"`
+	WebUI           interface{} `yaml:"web_ui"`
+	ServicePort     int         `json:",omitempty" yaml:"service_port,omitempty" structs:",omitempty"`
+	SourceNetwork   []string    `yaml:"source_network"`
+	DefaultUser     string      `json:",omitempty" yaml:"default_user,omitempty" structs:",omitempty"`
+	UserPassword    string      `json:",omitempty" yaml:"user_password,omitempty" structs:",omitempty"`
+	ReplicaUser     string      `json:",omitempty" yaml:"replica_user,omitempty" structs:",omitempty"`
+	ReplicaPassword string      `json:",omitempty" yaml:"replica_password,omitempty" structs:",omitempty"`
 }
 
 // DatabaseSettingBackup データベース設定 バックアップ設定
