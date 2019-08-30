@@ -1790,6 +1790,8 @@ func (f *fieldsDef) DatabaseSettingsCommon() *dsl.FieldDesc {
 				fields.Def("SourceNetwork", meta.TypeStringSlice),
 				fields.Def("DefaultUser", meta.TypeString),
 				fields.Def("UserPassword", meta.TypeString),
+				fields.Def("ReplicaUser", meta.TypeString),
+				fields.Def("ReplicaPassword", meta.TypeString),
 			},
 		},
 		Tags: &dsl.FieldTags{
@@ -1810,6 +1812,8 @@ func (f *fieldsDef) DatabaseSettingsCommonUpdate() *dsl.FieldDesc {
 				fields.Def("SourceNetwork", meta.TypeStringSlice),
 				fields.Def("DefaultUser", meta.TypeString),
 				fields.Def("UserPassword", meta.TypeString),
+				fields.Def("ReplicaUser", meta.TypeString),
+				fields.Def("ReplicaPassword", meta.TypeString),
 			},
 		},
 		Tags: &dsl.FieldTags{
@@ -1843,6 +1847,7 @@ func (f *fieldsDef) DatabaseSettingsReplication() *dsl.FieldDesc {
 			Name:      "DatabaseReplicationSetting",
 			NakedType: meta.Static(naked.DatabaseSettingReplication{}),
 			Fields: []*dsl.FieldDesc{
+				// Model以外はスレーブを作成する際のみ設定する
 				fields.Def("Model", meta.Static(types.EDatabaseReplicationModel(""))),
 				fields.Def("IPAddress", meta.TypeString),
 				fields.Def("Port", meta.TypeInt),
