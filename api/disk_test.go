@@ -119,6 +119,7 @@ func TestCreateDiskWithConfig(t *testing.T) {
 	disk.SetSourceArchive(archiveID) //ソースアーカイブはIDだけ指定する
 
 	config := diskAPI.NewCondig()
+	config.SetBackground(true)
 	config.SetPassword("p@ssw0rd")
 	config.SetHostName(testDiskName)
 
