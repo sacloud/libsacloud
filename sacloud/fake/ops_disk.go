@@ -128,7 +128,7 @@ func (o *DiskOp) ToBlank(ctx context.Context, zone string, id types.ID) error {
 }
 
 // ResizePartition is fake implementation
-func (o *DiskOp) ResizePartition(ctx context.Context, zone string, id types.ID) error {
+func (o *DiskOp) ResizePartition(ctx context.Context, zone string, id types.ID, param *sacloud.DiskResizePartitionRequest) error {
 	_, err := o.Read(ctx, zone, id)
 	if err != nil {
 		return err

@@ -135,7 +135,7 @@ type DiskAPI interface {
 	Config(ctx context.Context, zone string, id types.ID, edit *DiskEditRequest) error
 	CreateWithConfig(ctx context.Context, zone string, createParam *DiskCreateRequest, editParam *DiskEditRequest, bootAtAvailable bool, distantFrom []types.ID) (*Disk, error)
 	ToBlank(ctx context.Context, zone string, id types.ID) error
-	ResizePartition(ctx context.Context, zone string, id types.ID) error
+	ResizePartition(ctx context.Context, zone string, id types.ID, param *DiskResizePartitionRequest) error
 	ConnectToServer(ctx context.Context, zone string, id types.ID, serverID types.ID) error
 	DisconnectFromServer(ctx context.Context, zone string, id types.ID) error
 	Install(ctx context.Context, zone string, id types.ID, installParam *DiskInstallRequest, distantFrom []types.ID) (*Disk, error)

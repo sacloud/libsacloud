@@ -2177,14 +2177,16 @@ func (t *DiskTracer) ToBlank(ctx context.Context, zone string, id types.ID) erro
 }
 
 // ResizePartition is API call with trace log
-func (t *DiskTracer) ResizePartition(ctx context.Context, zone string, id types.ID) error {
+func (t *DiskTracer) ResizePartition(ctx context.Context, zone string, id types.ID, param *sacloud.DiskResizePartitionRequest) error {
 	log.Println("[TRACE] DiskAPI.ResizePartition start")
 	targetArguments := struct {
-		Argzone string
-		Argid   types.ID `json:"id"`
+		Argzone  string
+		Argid    types.ID                            `json:"id"`
+		Argparam *sacloud.DiskResizePartitionRequest `json:"param"`
 	}{
-		Argzone: zone,
-		Argid:   id,
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
 	}
 	if d, err := json.Marshal(targetArguments); err == nil {
 		log.Printf("[TRACE] \targs: %s\n", string(d))
@@ -2194,7 +2196,7 @@ func (t *DiskTracer) ResizePartition(ctx context.Context, zone string, id types.
 		log.Println("[TRACE] DiskAPI.ResizePartition end")
 	}()
 
-	err := t.Internal.ResizePartition(ctx, zone, id)
+	err := t.Internal.ResizePartition(ctx, zone, id, param)
 	targetResults := struct {
 		Error error
 	}{

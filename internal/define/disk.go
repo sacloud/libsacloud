@@ -143,7 +143,28 @@ var diskAPI = &dsl.Resource{
 		ops.WithIDAction(diskAPIName, "ToBlank", http.MethodPut, "to/blank"),
 
 		// resize partition
-		ops.WithIDAction(diskAPIName, "ResizePartition", http.MethodPut, "resize-partition"),
+		{
+			ResourceName: diskAPIName,
+			Name:         "ResizePartition",
+			PathFormat:   dsl.IDAndSuffixPathFormat("resize-partition"),
+			Method:       http.MethodPut,
+			RequestEnvelope: dsl.RequestEnvelope(
+				&dsl.EnvelopePayloadDesc{
+					Type: meta.TypeFlag,
+					Name: "Background",
+				},
+			),
+			Arguments: dsl.Arguments{
+				dsl.ArgumentID,
+				dsl.PassthroughModelArgument("param", &dsl.Model{
+					Name: "DiskResizePartitionRequest",
+					Fields: []*dsl.FieldDesc{
+						fields.Def("Background", meta.TypeFlag),
+					},
+					NakedType: meta.Static(naked.ResizePartitionRequest{}),
+				}),
+			},
+		},
 
 		// connect to server
 		ops.WithIDAction(diskAPIName, "ConnectToServer", http.MethodPut, "to/server/{{.serverID}}",
@@ -233,6 +254,7 @@ var (
 			fields.DiskConnection(),
 			fields.DiskConnectionOrder(),
 			fields.DiskReinstallCount(),
+			fields.Def("JobStatus", models.migrationJobStatus()),
 			fields.SizeMB(),
 			fields.MigratedMB(),
 			fields.DiskPlanID(),

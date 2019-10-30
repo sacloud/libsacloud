@@ -6361,6 +6361,7 @@ type Disk struct {
 	Connection                types.EDiskConnection `json:",omitempty" mapconv:",omitempty"`
 	ConnectionOrder           int
 	ReinstallCount            int
+	JobStatus                 *JobStatus
 	SizeMB                    int
 	MigratedMB                int
 	DiskPlanID                types.ID            `mapconv:"Plan.ID"`
@@ -6394,6 +6395,7 @@ func (o *Disk) setDefaults() interface{} {
 		Connection                types.EDiskConnection `json:",omitempty" mapconv:",omitempty"`
 		ConnectionOrder           int
 		ReinstallCount            int
+		JobStatus                 *JobStatus
 		SizeMB                    int
 		MigratedMB                int
 		DiskPlanID                types.ID            `mapconv:"Plan.ID"`
@@ -6418,6 +6420,7 @@ func (o *Disk) setDefaults() interface{} {
 		Connection:                o.GetConnection(),
 		ConnectionOrder:           o.GetConnectionOrder(),
 		ReinstallCount:            o.GetReinstallCount(),
+		JobStatus:                 o.GetJobStatus(),
 		SizeMB:                    o.GetSizeMB(),
 		MigratedMB:                o.GetMigratedMB(),
 		DiskPlanID:                o.GetDiskPlanID(),
@@ -6554,6 +6557,16 @@ func (o *Disk) GetReinstallCount() int {
 // SetReinstallCount sets value to ReinstallCount
 func (o *Disk) SetReinstallCount(v int) {
 	o.ReinstallCount = v
+}
+
+// GetJobStatus returns value of JobStatus
+func (o *Disk) GetJobStatus() *JobStatus {
+	return o.JobStatus
+}
+
+// SetJobStatus sets value to JobStatus
+func (o *Disk) SetJobStatus(v *JobStatus) {
+	o.JobStatus = v
 }
 
 // GetSizeMB returns value of SizeMB
@@ -6719,6 +6732,111 @@ func (o *Disk) GetModifiedAt() time.Time {
 // SetModifiedAt sets value to ModifiedAt
 func (o *Disk) SetModifiedAt(v time.Time) {
 	o.ModifiedAt = v
+}
+
+/*************************************************
+* JobStatus
+*************************************************/
+
+// JobStatus represents API parameter/response structure
+type JobStatus struct {
+	Status      string
+	ConfigError *JobConfigError
+}
+
+// Validate validates by field tags
+func (o *JobStatus) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *JobStatus) setDefaults() interface{} {
+	return &struct {
+		Status      string
+		ConfigError *JobConfigError
+	}{
+		Status:      o.GetStatus(),
+		ConfigError: o.GetConfigError(),
+	}
+}
+
+// GetStatus returns value of Status
+func (o *JobStatus) GetStatus() string {
+	return o.Status
+}
+
+// SetStatus sets value to Status
+func (o *JobStatus) SetStatus(v string) {
+	o.Status = v
+}
+
+// GetConfigError returns value of ConfigError
+func (o *JobStatus) GetConfigError() *JobConfigError {
+	return o.ConfigError
+}
+
+// SetConfigError sets value to ConfigError
+func (o *JobStatus) SetConfigError(v *JobConfigError) {
+	o.ConfigError = v
+}
+
+/*************************************************
+* JobConfigError
+*************************************************/
+
+// JobConfigError represents API parameter/response structure
+type JobConfigError struct {
+	ErrorCode string
+	ErrorMsg  string
+	Status    string
+}
+
+// Validate validates by field tags
+func (o *JobConfigError) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *JobConfigError) setDefaults() interface{} {
+	return &struct {
+		ErrorCode string
+		ErrorMsg  string
+		Status    string
+	}{
+		ErrorCode: o.GetErrorCode(),
+		ErrorMsg:  o.GetErrorMsg(),
+		Status:    o.GetStatus(),
+	}
+}
+
+// GetErrorCode returns value of ErrorCode
+func (o *JobConfigError) GetErrorCode() string {
+	return o.ErrorCode
+}
+
+// SetErrorCode sets value to ErrorCode
+func (o *JobConfigError) SetErrorCode(v string) {
+	o.ErrorCode = v
+}
+
+// GetErrorMsg returns value of ErrorMsg
+func (o *JobConfigError) GetErrorMsg() string {
+	return o.ErrorMsg
+}
+
+// SetErrorMsg sets value to ErrorMsg
+func (o *JobConfigError) SetErrorMsg(v string) {
+	o.ErrorMsg = v
+}
+
+// GetStatus returns value of Status
+func (o *JobConfigError) GetStatus() string {
+	return o.Status
+}
+
+// SetStatus sets value to Status
+func (o *JobConfigError) SetStatus(v string) {
+	o.Status = v
 }
 
 /*************************************************
@@ -7200,6 +7318,39 @@ func (o *DiskEditUserSubnet) GetNetworkMaskLen() int {
 // SetNetworkMaskLen sets value to NetworkMaskLen
 func (o *DiskEditUserSubnet) SetNetworkMaskLen(v int) {
 	o.NetworkMaskLen = v
+}
+
+/*************************************************
+* DiskResizePartitionRequest
+*************************************************/
+
+// DiskResizePartitionRequest represents API parameter/response structure
+type DiskResizePartitionRequest struct {
+	Background bool
+}
+
+// Validate validates by field tags
+func (o *DiskResizePartitionRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *DiskResizePartitionRequest) setDefaults() interface{} {
+	return &struct {
+		Background bool
+	}{
+		Background: o.GetBackground(),
+	}
+}
+
+// GetBackground returns value of Background
+func (o *DiskResizePartitionRequest) GetBackground() bool {
+	return o.Background
+}
+
+// SetBackground sets value to Background
+func (o *DiskResizePartitionRequest) SetBackground(v bool) {
+	o.Background = v
 }
 
 /*************************************************

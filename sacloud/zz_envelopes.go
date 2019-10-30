@@ -584,6 +584,11 @@ type diskCreateWithConfigResponseEnvelope struct {
 	Disk *naked.Disk `json:",omitempty"`
 }
 
+// diskResizePartitionRequestEnvelope is envelop of API request
+type diskResizePartitionRequestEnvelope struct {
+	Background bool `json:",omitempty"`
+}
+
 // diskInstallRequestEnvelope is envelop of API request
 type diskInstallRequestEnvelope struct {
 	Disk        *naked.Disk `json:",omitempty"`

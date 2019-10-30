@@ -1031,7 +1031,7 @@ func (s *DiskStub) ToBlank(ctx context.Context, zone string, id types.ID) error 
 }
 
 // ResizePartition is API call with trace log
-func (s *DiskStub) ResizePartition(ctx context.Context, zone string, id types.ID) error {
+func (s *DiskStub) ResizePartition(ctx context.Context, zone string, id types.ID, param *sacloud.DiskResizePartitionRequest) error {
 	if s.ResizePartitionStubResult == nil {
 		log.Fatal("DiskStub.ResizePartitionStubResult is not set")
 	}
