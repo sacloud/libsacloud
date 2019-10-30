@@ -2556,7 +2556,7 @@ func (o *DiskOp) ToBlank(ctx context.Context, zone string, id types.ID) error {
 }
 
 // ResizePartition is API call
-func (o *DiskOp) ResizePartition(ctx context.Context, zone string, id types.ID) error {
+func (o *DiskOp) ResizePartition(ctx context.Context, zone string, id types.ID, param *DiskResizePartitionRequest) error {
 	// build request URL
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/resize-partition", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
@@ -2564,6 +2564,7 @@ func (o *DiskOp) ResizePartition(ctx context.Context, zone string, id types.ID) 
 		"pathName":   o.PathName,
 		"zone":       zone,
 		"id":         id,
+		"param":      param,
 	})
 	if err != nil {
 		return err
@@ -2571,6 +2572,11 @@ func (o *DiskOp) ResizePartition(ctx context.Context, zone string, id types.ID) 
 
 	// build request body
 	var body interface{}
+	v, err := o.transformResizePartitionArgs(id, param)
+	if err != nil {
+		return err
+	}
+	body = v
 
 	// do request
 	_, err = o.Client.Do(ctx, "PUT", url, body)

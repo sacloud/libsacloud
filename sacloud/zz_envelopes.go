@@ -555,6 +555,7 @@ type diskCreateResponseEnvelope struct {
 
 // diskConfigRequestEnvelope is envelop of API request
 type diskConfigRequestEnvelope struct {
+	Background          bool                `json:",omitempty"`
 	Password            string              `json:",omitempty"`
 	SSHKey              *DiskEditSSHKey     `json:",omitempty"`
 	SSHKeys             []*DiskEditSSHKey   `json:",omitempty"`
@@ -581,6 +582,11 @@ type diskCreateWithConfigResponseEnvelope struct {
 	Success types.APIResult `json:",omitempty"`      // success項目
 
 	Disk *naked.Disk `json:",omitempty"`
+}
+
+// diskResizePartitionRequestEnvelope is envelop of API request
+type diskResizePartitionRequestEnvelope struct {
+	Background bool `json:",omitempty"`
 }
 
 // diskInstallRequestEnvelope is envelop of API request

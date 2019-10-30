@@ -1,6 +1,7 @@
 package naked
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
@@ -33,8 +34,9 @@ type Disk struct {
 
 // MigrationJobStatus マイグレーションジョブステータス
 type MigrationJobStatus struct {
-	Status string    `json:",omitempty" yaml:"status,omitempty" structs:",omitempty"` // ステータス
-	Delays *struct { // Delays
+	Status      string          `json:",omitempty" yaml:"status,omitempty" structs:",omitempty"` // ステータス
+	ConfigError *JobConfigError `json:",omitempty" yaml:"config_error,omitempty" structs:",omitempty"`
+	Delays      *struct {       // Delays
 		Start *struct { // 開始
 			Max int `json:",omitempty" yaml:"max,omitempty" structs:",omitempty"` // 最大
 			Min int `json:",omitempty" yaml:"min,omitempty" structs:",omitempty"` // 最小
@@ -45,4 +47,21 @@ type MigrationJobStatus struct {
 			Min int `json:",omitempty" yaml:"min,omitempty" structs:",omitempty"` // 最小
 		} `json:",omitempty" yaml:"finish,omitempty" structs:",omitempty"`
 	}
+}
+
+// JobConfigError マイグレーションジョブのエラー
+type JobConfigError struct {
+	ErrorCode string `json:",omitempty" yaml:"error_code,omitempty" structs:",omitempty"`
+	ErrorMsg  string `json:",omitempty" yaml:"error_msg,omitempty" structs:",omitempty"`
+	Status    string `json:",omitempty" yaml:"status,omitempty" structs:",omitempty"`
+}
+
+// String マイグレーションジョブエラーの文字列表現
+func (e *JobConfigError) String() string {
+	return fmt.Sprintf("%s: %s", e.ErrorCode, e.ErrorMsg)
+}
+
+// ResizePartitionRequest リサイズ時のオプション
+type ResizePartitionRequest struct {
+	Background bool `json:",omitempty" yaml:"background,omitempty" structs:",omitempty"`
 }

@@ -112,6 +112,14 @@ func (m *modelsDef) diskEdit() *dsl.Model {
 		NakedType: meta.Static(naked.DiskEdit{}),
 		Fields: []*dsl.FieldDesc{
 			{
+				Name: "Background",
+				Type: meta.TypeFlag,
+				Tags: &dsl.FieldTags{
+					MapConv: ",omitempty",
+					JSON:    ",omitempty",
+				},
+			},
+			{
 				Name: "Password",
 				Type: meta.TypeString,
 				Tags: &dsl.FieldTags{
@@ -1352,5 +1360,24 @@ func (m *modelsDef) simInfoFields() []*dsl.FieldDesc {
 			},
 		},
 		fields.Def("ConnectedIMEI", meta.TypeString),
+	}
+}
+
+func (m *modelsDef) migrationJobStatus() *dsl.Model {
+	return &dsl.Model{
+		Name:      "JobStatus",
+		NakedType: meta.Static(naked.MigrationJobStatus{}),
+		Fields: []*dsl.FieldDesc{
+			fields.Def("Status", meta.TypeString),
+			fields.Def("ConfigError", &dsl.Model{
+				Name:      "JobConfigError",
+				NakedType: meta.Static(naked.JobConfigError{}),
+				Fields: []*dsl.FieldDesc{
+					fields.Def("ErrorCode", meta.TypeString),
+					fields.Def("ErrorMsg", meta.TypeString),
+					fields.Def("Status", meta.TypeString),
+				},
+			}),
+		},
 	}
 }
