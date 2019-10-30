@@ -79,6 +79,8 @@ var (
 			// settings - slack
 			fields.SimpleMonitorNotifySlackEnabled(),
 			fields.SimpleMonitorSlackWebhooksURL(),
+			// settings - notify interval
+			fields.SimpleMonitorNotifyInterval(),
 			// settings hash
 			fields.SettingsHash(),
 		},
@@ -121,6 +123,7 @@ var (
 			// settings - slack
 			fields.SimpleMonitorNotifySlackEnabled(),
 			fields.SimpleMonitorSlackWebhooksURL(),
+			fields.SimpleMonitorNotifyInterval(),
 
 			fields.Description(),
 			fields.Tags(),
@@ -147,6 +150,8 @@ var (
 			// settings - slack
 			fields.SimpleMonitorNotifySlackEnabled(),
 			fields.SimpleMonitorSlackWebhooksURL(),
+
+			fields.SimpleMonitorNotifyInterval(),
 			// settings hash
 			fields.SettingsHash(),
 		},

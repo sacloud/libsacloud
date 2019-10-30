@@ -10056,6 +10056,9 @@ func (o *SimpleMonitorOp) Patch(ctx context.Context, id types.ID, param *SimpleM
 	if param.PatchEmptyToSlackWebhooksURL {
 		param.SlackWebhooksURL = ""
 	}
+	if param.PatchEmptyToNotifyInterval {
+		param.NotifyInterval = 0
+	}
 	// build request body
 	var body interface{}
 	v, err := o.transformPatchArgs(id, param)
