@@ -83,6 +83,7 @@ var (
 		NotifyEmailEnabled: types.StringTrue,
 		NotifyEmailHTML:    types.StringTrue,
 		NotifySlackEnabled: types.StringFalse,
+		NotifyInterval:     2 * 60 * 60,
 		SlackWebhooksURL:   "",
 	}
 	createSimpleMonitorExpected = &sacloud.SimpleMonitor{
@@ -96,6 +97,7 @@ var (
 		NotifyEmailEnabled: createSimpleMonitorParam.NotifyEmailEnabled,
 		NotifyEmailHTML:    createSimpleMonitorParam.NotifyEmailHTML,
 		NotifySlackEnabled: createSimpleMonitorParam.NotifySlackEnabled,
+		NotifyInterval:     createSimpleMonitorParam.NotifyInterval,
 		SlackWebhooksURL:   createSimpleMonitorParam.SlackWebhooksURL,
 		Availability:       types.Availabilities.Available,
 	}
@@ -117,6 +119,7 @@ var (
 		NotifyEmailHTML:    types.StringFalse,
 		NotifySlackEnabled: types.StringTrue,
 		SlackWebhooksURL:   "https://hooks.slack.com/services/XXXXXXXXX/XXXXXXXXX/XXXXXXXXXXXXXXXXXXXXXXXX",
+		NotifyInterval:     3 * 60 * 60,
 		IconID:             testIconID,
 	}
 	updateSimpleMonitorExpected = &sacloud.SimpleMonitor{
@@ -130,6 +133,7 @@ var (
 		NotifyEmailEnabled: updateSimpleMonitorParam.NotifyEmailEnabled,
 		NotifyEmailHTML:    updateSimpleMonitorParam.NotifyEmailHTML,
 		NotifySlackEnabled: updateSimpleMonitorParam.NotifySlackEnabled,
+		NotifyInterval:     updateSimpleMonitorParam.NotifyInterval,
 		SlackWebhooksURL:   updateSimpleMonitorParam.SlackWebhooksURL,
 		Availability:       types.Availabilities.Available,
 		IconID:             testIconID,
@@ -151,6 +155,7 @@ var (
 		HealthCheck:        updateSimpleMonitorToMinParam.HealthCheck,
 		NotifyEmailEnabled: updateSimpleMonitorToMinParam.NotifyEmailEnabled,
 		Availability:       types.Availabilities.Available,
+		NotifyInterval:     2 * 60 * 60, // default value
 	}
 )
 

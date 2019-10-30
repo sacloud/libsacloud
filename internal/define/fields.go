@@ -990,6 +990,18 @@ func (f *fieldsDef) SimpleMonitorDelayLoop() *dsl.FieldDesc {
 	}
 }
 
+func (f *fieldsDef) SimpleMonitorNotifyInterval() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "NotifyInterval",
+		Type: meta.TypeInt,
+		Tags: &dsl.FieldTags{
+			Validate: "min=3600,max=259200", // 1-72時間
+			MapConv:  "Settings.SimpleMonitor.NotifyInterval",
+		},
+		DefaultValue: "7200",
+	}
+}
+
 func (f *fieldsDef) SimpleMonitorEnabled() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "Enabled",

@@ -30,11 +30,12 @@ type SimpleMonitorSettings struct {
 
 // SimpleMonitorSetting シンプル監視セッティング
 type SimpleMonitorSetting struct {
-	DelayLoop   int                       `json:",omitempty" yaml:"delay_loop,omitempty" structs:",omitempty"`
-	HealthCheck *SimpleMonitorHealthCheck `json:",omitempty" yaml:"health_check,omitempty" structs:",omitempty"`
-	Enabled     types.StringFlag          `yaml:"enabled"`
-	NotifyEmail *SimpleMonitorNotifyEmail `json:",omitempty" yaml:"notify_email,omitempty" structs:",omitempty"`
-	NotifySlack *SimpleMonitorNotifySlack `json:",omitempty" yaml:"notify_slack,omitempty" structs:",omitempty"`
+	DelayLoop      int                       `json:",omitempty" yaml:"delay_loop,omitempty" structs:",omitempty"`
+	HealthCheck    *SimpleMonitorHealthCheck `json:",omitempty" yaml:"health_check,omitempty" structs:",omitempty"`
+	Enabled        types.StringFlag          `yaml:"enabled"`
+	NotifyEmail    *SimpleMonitorNotifyEmail `json:",omitempty" yaml:"notify_email,omitempty" structs:",omitempty"`
+	NotifySlack    *SimpleMonitorNotifySlack `json:",omitempty" yaml:"notify_slack,omitempty" structs:",omitempty"`
+	NotifyInterval int                       `json:",omitempty" yaml:"notify_interval,omitempty" structs:",omitempty"` // 再通知間隔(秒単位)
 }
 
 // SimpleMonitorHealthCheck シンプル監視 ヘルスチェック
