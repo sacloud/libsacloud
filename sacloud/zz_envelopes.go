@@ -2707,6 +2707,19 @@ type webAccelReadCertificateResponseEnvelope struct {
 	Certificate *naked.WebAccelCerts `json:",omitempty"`
 }
 
+// webAccelCreateCertificateRequestEnvelope is envelop of API request
+type webAccelCreateCertificateRequestEnvelope struct {
+	Certificate *naked.WebAccelCert `json:",omitempty"`
+}
+
+// webAccelCreateCertificateResponseEnvelope is envelop of API response
+type webAccelCreateCertificateResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Certificate *naked.WebAccelCerts `json:",omitempty"`
+}
+
 // webAccelUpdateCertificateRequestEnvelope is envelop of API request
 type webAccelUpdateCertificateRequestEnvelope struct {
 	Certificate *naked.WebAccelCert `json:",omitempty"`

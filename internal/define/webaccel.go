@@ -84,6 +84,33 @@ var webaccelAPI = &dsl.Resource{
 				},
 			},
 		},
+		// create certificate
+		{
+			ResourceName: webAccelAPIName,
+			Name:         "CreateCertificate",
+			PathFormat:   "{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/site/{{.id}}/certificate",
+			Method:       http.MethodPost,
+			RequestEnvelope: dsl.RequestEnvelope(&dsl.EnvelopePayloadDesc{
+				Type: webAccelCertNakedType,
+				Name: "Certificate",
+			}),
+			Arguments: dsl.Arguments{
+				dsl.ArgumentID,
+				dsl.MappableArgument("param", webAccelCertParam, "Certificate"),
+			},
+			ResponseEnvelope: dsl.ResponseEnvelope(&dsl.EnvelopePayloadDesc{
+				Type: webAccelCertsNakedType,
+				Name: "Certificate",
+			}),
+			Results: dsl.Results{
+				{
+					SourceField: "Certificate",
+					DestField:   "Certificate",
+					IsPlural:    false,
+					Model:       webAccelCertsView,
+				},
+			},
+		},
 		// update certificate
 		{
 			ResourceName: webAccelAPIName,
@@ -96,7 +123,7 @@ var webaccelAPI = &dsl.Resource{
 			}),
 			Arguments: dsl.Arguments{
 				dsl.ArgumentID,
-				dsl.MappableArgument("param", webAccelCertUpdateParam, "Certificate"),
+				dsl.MappableArgument("param", webAccelCertParam, "Certificate"),
 			},
 			ResponseEnvelope: dsl.ResponseEnvelope(&dsl.EnvelopePayloadDesc{
 				Type: webAccelCertsNakedType,
@@ -253,8 +280,8 @@ var (
 		fields.Def("SHA256Fingerprint", meta.TypeString),
 	}
 
-	webAccelCertUpdateParam = &dsl.Model{
-		Name:      names.UpdateParameterName(webAccelAPIName + "Cert"),
+	webAccelCertParam = &dsl.Model{
+		Name:      webAccelAPIName + "CertRequest",
 		NakedType: webAccelCertNakedType,
 		Fields: []*dsl.FieldDesc{
 			fields.Def("CertificateChain", meta.TypeString),

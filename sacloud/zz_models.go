@@ -29137,22 +29137,22 @@ func (o *WebAccelOldCerts) SetSHA256Fingerprint(v string) {
 }
 
 /*************************************************
-* WebAccelCertUpdateRequest
+* WebAccelCertRequest
 *************************************************/
 
-// WebAccelCertUpdateRequest represents API parameter/response structure
-type WebAccelCertUpdateRequest struct {
+// WebAccelCertRequest represents API parameter/response structure
+type WebAccelCertRequest struct {
 	CertificateChain string
 	Key              string
 }
 
 // Validate validates by field tags
-func (o *WebAccelCertUpdateRequest) Validate() error {
+func (o *WebAccelCertRequest) Validate() error {
 	return validator.New().Struct(o)
 }
 
 // setDefaults implements sacloud.argumentDefaulter
-func (o *WebAccelCertUpdateRequest) setDefaults() interface{} {
+func (o *WebAccelCertRequest) setDefaults() interface{} {
 	return &struct {
 		CertificateChain string
 		Key              string
@@ -29163,22 +29163,22 @@ func (o *WebAccelCertUpdateRequest) setDefaults() interface{} {
 }
 
 // GetCertificateChain returns value of CertificateChain
-func (o *WebAccelCertUpdateRequest) GetCertificateChain() string {
+func (o *WebAccelCertRequest) GetCertificateChain() string {
 	return o.CertificateChain
 }
 
 // SetCertificateChain sets value to CertificateChain
-func (o *WebAccelCertUpdateRequest) SetCertificateChain(v string) {
+func (o *WebAccelCertRequest) SetCertificateChain(v string) {
 	o.CertificateChain = v
 }
 
 // GetKey returns value of Key
-func (o *WebAccelCertUpdateRequest) GetKey() string {
+func (o *WebAccelCertRequest) GetKey() string {
 	return o.Key
 }
 
 // SetKey sets value to Key
-func (o *WebAccelCertUpdateRequest) SetKey(v string) {
+func (o *WebAccelCertRequest) SetKey(v string) {
 	o.Key = v
 }
 

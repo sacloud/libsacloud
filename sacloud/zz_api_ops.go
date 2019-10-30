@@ -11497,8 +11497,45 @@ func (o *WebAccelOp) ReadCertificate(ctx context.Context, id types.ID) (*WebAcce
 	return results.Certificate, nil
 }
 
+// CreateCertificate is API call
+func (o *WebAccelOp) CreateCertificate(ctx context.Context, id types.ID, param *WebAccelCertRequest) (*WebAccelCerts, error) {
+	// build request URL
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/site/{{.id}}/certificate", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       APIDefaultZone,
+		"id":         id,
+		"param":      param,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	// build request body
+	var body interface{}
+	v, err := o.transformCreateCertificateArgs(id, param)
+	if err != nil {
+		return nil, err
+	}
+	body = v
+
+	// do request
+	data, err := o.Client.Do(ctx, "POST", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	// build results
+	results, err := o.transformCreateCertificateResults(data)
+	if err != nil {
+		return nil, err
+	}
+	return results.Certificate, nil
+}
+
 // UpdateCertificate is API call
-func (o *WebAccelOp) UpdateCertificate(ctx context.Context, id types.ID, param *WebAccelCertUpdateRequest) (*WebAccelCerts, error) {
+func (o *WebAccelOp) UpdateCertificate(ctx context.Context, id types.ID, param *WebAccelCertRequest) (*WebAccelCerts, error) {
 	// build request URL
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/site/{{.id}}/certificate", map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,

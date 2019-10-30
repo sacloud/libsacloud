@@ -4804,6 +4804,12 @@ type WebAccelReadCertificateStubResult struct {
 	Err         error
 }
 
+// WebAccelCreateCertificateStubResult is expected values of the CreateCertificate operation
+type WebAccelCreateCertificateStubResult struct {
+	Certificate *sacloud.WebAccelCerts
+	Err         error
+}
+
 // WebAccelUpdateCertificateStubResult is expected values of the UpdateCertificate operation
 type WebAccelUpdateCertificateStubResult struct {
 	Certificate *sacloud.WebAccelCerts
@@ -4826,6 +4832,7 @@ type WebAccelStub struct {
 	ListStubResult              *WebAccelListStubResult
 	ReadStubResult              *WebAccelReadStubResult
 	ReadCertificateStubResult   *WebAccelReadCertificateStubResult
+	CreateCertificateStubResult *WebAccelCreateCertificateStubResult
 	UpdateCertificateStubResult *WebAccelUpdateCertificateStubResult
 	DeleteAllCacheStubResult    *WebAccelDeleteAllCacheStubResult
 	DeleteCacheStubResult       *WebAccelDeleteCacheStubResult
@@ -4860,8 +4867,16 @@ func (s *WebAccelStub) ReadCertificate(ctx context.Context, id types.ID) (*saclo
 	return s.ReadCertificateStubResult.Certificate, s.ReadCertificateStubResult.Err
 }
 
+// CreateCertificate is API call with trace log
+func (s *WebAccelStub) CreateCertificate(ctx context.Context, id types.ID, param *sacloud.WebAccelCertRequest) (*sacloud.WebAccelCerts, error) {
+	if s.CreateCertificateStubResult == nil {
+		log.Fatal("WebAccelStub.CreateCertificateStubResult is not set")
+	}
+	return s.CreateCertificateStubResult.Certificate, s.CreateCertificateStubResult.Err
+}
+
 // UpdateCertificate is API call with trace log
-func (s *WebAccelStub) UpdateCertificate(ctx context.Context, id types.ID, param *sacloud.WebAccelCertUpdateRequest) (*sacloud.WebAccelCerts, error) {
+func (s *WebAccelStub) UpdateCertificate(ctx context.Context, id types.ID, param *sacloud.WebAccelCertRequest) (*sacloud.WebAccelCerts, error) {
 	if s.UpdateCertificateStubResult == nil {
 		log.Fatal("WebAccelStub.UpdateCertificateStubResult is not set")
 	}
