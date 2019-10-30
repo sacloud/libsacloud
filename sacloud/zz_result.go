@@ -1538,6 +1538,13 @@ type webAccelReadCertificateResult struct {
 	Certificate *WebAccelCerts `json:",omitempty" mapconv:"Certificate,omitempty,recursive"`
 }
 
+// webAccelCreateCertificateResult represents the Result of API
+type webAccelCreateCertificateResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	Certificate *WebAccelCerts `json:",omitempty" mapconv:"Certificate,omitempty,recursive"`
+}
+
 // webAccelUpdateCertificateResult represents the Result of API
 type webAccelUpdateCertificateResult struct {
 	IsOk bool `json:",omitempty"` // is_ok

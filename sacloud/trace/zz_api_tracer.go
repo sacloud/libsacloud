@@ -10327,12 +10327,45 @@ func (t *WebAccelTracer) ReadCertificate(ctx context.Context, id types.ID) (*sac
 	return resultCertificate, err
 }
 
+// CreateCertificate is API call with trace log
+func (t *WebAccelTracer) CreateCertificate(ctx context.Context, id types.ID, param *sacloud.WebAccelCertRequest) (*sacloud.WebAccelCerts, error) {
+	log.Println("[TRACE] WebAccelAPI.CreateCertificate start")
+	targetArguments := struct {
+		Argid    types.ID                     `json:"id"`
+		Argparam *sacloud.WebAccelCertRequest `json:"param"`
+	}{
+		Argid:    id,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] WebAccelAPI.CreateCertificate end")
+	}()
+
+	resultCertificate, err := t.Internal.CreateCertificate(ctx, id, param)
+	targetResults := struct {
+		Certificate *sacloud.WebAccelCerts
+		Error       error
+	}{
+		Certificate: resultCertificate,
+		Error:       err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultCertificate, err
+}
+
 // UpdateCertificate is API call with trace log
-func (t *WebAccelTracer) UpdateCertificate(ctx context.Context, id types.ID, param *sacloud.WebAccelCertUpdateRequest) (*sacloud.WebAccelCerts, error) {
+func (t *WebAccelTracer) UpdateCertificate(ctx context.Context, id types.ID, param *sacloud.WebAccelCertRequest) (*sacloud.WebAccelCerts, error) {
 	log.Println("[TRACE] WebAccelAPI.UpdateCertificate start")
 	targetArguments := struct {
-		Argid    types.ID                           `json:"id"`
-		Argparam *sacloud.WebAccelCertUpdateRequest `json:"param"`
+		Argid    types.ID                     `json:"id"`
+		Argparam *sacloud.WebAccelCertRequest `json:"param"`
 	}{
 		Argid:    id,
 		Argparam: param,

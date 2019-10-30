@@ -6962,7 +6962,7 @@ func (o *WebAccelOp) transformReadCertificateResults(data []byte) (*webAccelRead
 	return results, nil
 }
 
-func (o *WebAccelOp) transformUpdateCertificateArgs(id types.ID, param *WebAccelCertUpdateRequest) (*webAccelUpdateCertificateRequestEnvelope, error) {
+func (o *WebAccelOp) transformCreateCertificateArgs(id types.ID, param *WebAccelCertRequest) (*webAccelCreateCertificateRequestEnvelope, error) {
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -6971,7 +6971,50 @@ func (o *WebAccelOp) transformUpdateCertificateArgs(id types.ID, param *WebAccel
 		arg0 = v.setDefaults()
 	}
 	if param == nil {
-		param = &WebAccelCertUpdateRequest{}
+		param = &WebAccelCertRequest{}
+	}
+	var arg1 interface{} = param
+	if v, ok := arg1.(argumentDefaulter); ok {
+		arg1 = v.setDefaults()
+	}
+	args := &struct {
+		Arg0 interface{}
+		Arg1 interface{} `mapconv:"Certificate,recursive"`
+	}{
+		Arg0: arg0,
+		Arg1: arg1,
+	}
+
+	v := &webAccelCreateCertificateRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	return v, nil
+}
+
+func (o *WebAccelOp) transformCreateCertificateResults(data []byte) (*webAccelCreateCertificateResult, error) {
+	nakedResponse := &webAccelCreateCertificateResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &webAccelCreateCertificateResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
+}
+
+func (o *WebAccelOp) transformUpdateCertificateArgs(id types.ID, param *WebAccelCertRequest) (*webAccelUpdateCertificateRequestEnvelope, error) {
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	var arg0 interface{} = id
+	if v, ok := arg0.(argumentDefaulter); ok {
+		arg0 = v.setDefaults()
+	}
+	if param == nil {
+		param = &WebAccelCertRequest{}
 	}
 	var arg1 interface{} = param
 	if v, ok := arg1.(argumentDefaulter); ok {

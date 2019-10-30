@@ -43,8 +43,15 @@ func (o *WebAccelOp) ReadCertificate(ctx context.Context, id types.ID) (*sacloud
 	return nil, err
 }
 
+// CreateCertificate is fake implementation
+func (o *WebAccelOp) CreateCertificate(ctx context.Context, id types.ID, param *sacloud.WebAccelCertRequest) (*sacloud.WebAccelCerts, error) {
+	// valid only when running acc test
+	err := errors.New("not implements")
+	return nil, err
+}
+
 // UpdateCertificate is fake implementation
-func (o *WebAccelOp) UpdateCertificate(ctx context.Context, id types.ID, param *sacloud.WebAccelCertUpdateRequest) (*sacloud.WebAccelCerts, error) {
+func (o *WebAccelOp) UpdateCertificate(ctx context.Context, id types.ID, param *sacloud.WebAccelCertRequest) (*sacloud.WebAccelCerts, error) {
 	// valid only when running acc test
 	err := errors.New("not implements")
 	return nil, err

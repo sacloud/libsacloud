@@ -65,7 +65,14 @@ func TestWebAccelOp_Cert(t *testing.T) {
 
 	t.Parallel()
 
-	testutil.PreCheckEnvsFunc("SAKURACLOUD_WEBACCEL_SITE_ID", "SAKURACLOUD_WEBACCEL_CERT", "SAKURACLOUD_WEBACCEL_KEY")(t)
+	envKeys := []string{
+		"SAKURACLOUD_WEBACCEL_SITE_ID",
+		"SAKURACLOUD_WEBACCEL_CERT",
+		"SAKURACLOUD_WEBACCEL_KEY",
+		"SAKURACLOUD_WEBACCEL_CERT_UPD",
+		"SAKURACLOUD_WEBACCEL_KEY_UPD",
+	}
+	testutil.PreCheckEnvsFunc(envKeys...)(t)
 
 	hasPermission, err := hasWebAccelPermission()
 	if !assert.NoError(t, err) {
@@ -81,11 +88,22 @@ func TestWebAccelOp_Cert(t *testing.T) {
 	id := types.StringID(os.Getenv("SAKURACLOUD_WEBACCEL_SITE_ID"))
 	crt := os.Getenv("SAKURACLOUD_WEBACCEL_CERT")
 	key := os.Getenv("SAKURACLOUD_WEBACCEL_KEY")
+	crtUpd := os.Getenv("SAKURACLOUD_WEBACCEL_CERT_UPD")
+	keyUpd := os.Getenv("SAKURACLOUD_WEBACCEL_KEY_UPD")
 
-	// update certs
-	certs, err := client.UpdateCertificate(ctx, id, &sacloud.WebAccelCertUpdateRequest{
+	// create certs
+	certs, err := client.CreateCertificate(ctx, id, &sacloud.WebAccelCertRequest{
 		CertificateChain: crt,
 		Key:              key,
+	})
+	if !assert.NoError(t, err) {
+		return
+	}
+
+	// update certs
+	certs, err = client.UpdateCertificate(ctx, id, &sacloud.WebAccelCertRequest{
+		CertificateChain: crtUpd,
+		Key:              keyUpd,
 	})
 	if !assert.NoError(t, err) {
 		return
