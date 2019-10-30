@@ -117,6 +117,22 @@ func (api *WebAccelAPI) UpdateCertificate(id string, request *sacloud.WebAccelCe
 	return &res, nil
 }
 
+// DeleteCertificate 証明書 削除
+func (api *WebAccelAPI) DeleteCertificate(id string) (*sacloud.WebAccelCertResponse, error) {
+	uri := fmt.Sprintf("%s/site/%s/certificate", api.getResourceURL(), id)
+
+	data, err := api.client.newRequest("DELETE", uri, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	var res sacloud.WebAccelCertResponse
+	if err := json.Unmarshal(data, &res); err != nil {
+		return nil, err
+	}
+	return &res, nil
+}
+
 // DeleteCache キャッシュ削除
 func (api *WebAccelAPI) DeleteCache(urls ...string) (*WebAccelDeleteCacheResponse, error) {
 
