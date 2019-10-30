@@ -6907,6 +6907,7 @@ func (o *DiskCreateRequest) SetIconID(v types.ID) {
 
 // DiskEditRequest represents API parameter/response structure
 type DiskEditRequest struct {
+	Background          bool                `json:",omitempty" mapconv:",omitempty"`
 	Password            string              `json:",omitempty" mapconv:",omitempty"`
 	SSHKey              *DiskEditSSHKey     `json:",omitempty" mapconv:",omitempty,recursive"`
 	SSHKeys             []*DiskEditSSHKey   `json:",omitempty" mapconv:"[]SSHKeys,omitempty,recursive"`
@@ -6927,6 +6928,7 @@ func (o *DiskEditRequest) Validate() error {
 // setDefaults implements sacloud.argumentDefaulter
 func (o *DiskEditRequest) setDefaults() interface{} {
 	return &struct {
+		Background          bool                `json:",omitempty" mapconv:",omitempty"`
 		Password            string              `json:",omitempty" mapconv:",omitempty"`
 		SSHKey              *DiskEditSSHKey     `json:",omitempty" mapconv:",omitempty,recursive"`
 		SSHKeys             []*DiskEditSSHKey   `json:",omitempty" mapconv:"[]SSHKeys,omitempty,recursive"`
@@ -6938,6 +6940,7 @@ func (o *DiskEditRequest) setDefaults() interface{} {
 		UserIPAddress       string              `json:",omitempty" mapconv:",omitempty"`
 		UserSubnet          *DiskEditUserSubnet `json:",omitempty" mapconv:",omitempty"`
 	}{
+		Background:          o.GetBackground(),
 		Password:            o.GetPassword(),
 		SSHKey:              o.GetSSHKey(),
 		SSHKeys:             o.GetSSHKeys(),
@@ -6949,6 +6952,16 @@ func (o *DiskEditRequest) setDefaults() interface{} {
 		UserIPAddress:       o.GetUserIPAddress(),
 		UserSubnet:          o.GetUserSubnet(),
 	}
+}
+
+// GetBackground returns value of Background
+func (o *DiskEditRequest) GetBackground() bool {
+	return o.Background
+}
+
+// SetBackground sets value to Background
+func (o *DiskEditRequest) SetBackground(v bool) {
+	o.Background = v
 }
 
 // GetPassword returns value of Password

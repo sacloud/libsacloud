@@ -112,6 +112,14 @@ func (m *modelsDef) diskEdit() *dsl.Model {
 		NakedType: meta.Static(naked.DiskEdit{}),
 		Fields: []*dsl.FieldDesc{
 			{
+				Name: "Background",
+				Type: meta.TypeFlag,
+				Tags: &dsl.FieldTags{
+					MapConv: ",omitempty",
+					JSON:    ",omitempty",
+				},
+			},
+			{
 				Name: "Password",
 				Type: meta.TypeString,
 				Tags: &dsl.FieldTags{

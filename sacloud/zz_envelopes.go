@@ -555,6 +555,7 @@ type diskCreateResponseEnvelope struct {
 
 // diskConfigRequestEnvelope is envelop of API request
 type diskConfigRequestEnvelope struct {
+	Background          bool                `json:",omitempty"`
 	Password            string              `json:",omitempty"`
 	SSHKey              *DiskEditSSHKey     `json:",omitempty"`
 	SSHKeys             []*DiskEditSSHKey   `json:",omitempty"`

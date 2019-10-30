@@ -14,6 +14,7 @@ type DiskEdit struct {
 	Notes               []DiskEditNote    `json:",omitempty" yaml:",omitempty" structs:",omitempty"` // スタートアップスクリプト
 	UserIPAddress       string            `json:",omitempty" yaml:",omitempty" structs:",omitempty"` // IPアドレス
 	UserSubnet          *UserSubnet       `json:",omitempty" yaml:",omitempty" structs:",omitempty"` // デフォルトルート/サブネットマスク長
+	Background          bool              `json:",omitempty" yaml:",omitempty" structs:",omitempty"` // バックグラウンド実行
 }
 
 // DiskEditSSHKey ディスク修正時のSSHキー

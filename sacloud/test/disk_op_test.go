@@ -194,7 +194,8 @@ func TestDiskOp_Config(t *testing.T) {
 					// edit disk
 					client := sacloud.NewDiskOp(singletonAPICaller())
 					err := client.Config(ctx, testZone, ctx.ID, &sacloud.DiskEditRequest{
-						Password: "password",
+						Background: true,
+						Password:   "password",
 						SSHKeys: []*sacloud.DiskEditSSHKey{
 							{
 								PublicKey: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC4LDQuDiKecOJDPY9InS7EswZ2fPnoRZXc48T1EqyRLyJhgEYGSDWaBiMDs2R/lWgA81Hp37qhrNqZPjFHUkBr93FOXxt9W0m1TNlkNepK0Uyi+14B2n0pdoeqsKEkb3sTevWF0ztxxWrwUd7Mems2hf+wFODITHYye9RlDAKLKPCFRvlQ9xQj4bBWOogQwoaXMSK1znMPjudcm1tRry4KIifLdXmwVKU4qDPGxoXfqs44Dgsikk43UVBStQ7IFoqPgAqcJFSGHLoMS7tPKdTvY9+GME5QidWK84gl69piAkgIdwd+JTMUOc/J+9DXAt220HqZ6l3yhWG5nIgi0x8n",
@@ -209,6 +210,13 @@ func TestDiskOp_Config(t *testing.T) {
 							NetworkMaskLen: 24,
 						},
 					})
+					if err != nil {
+						return nil, err
+					}
+					// wait
+					_, err = sacloud.WaiterForReady(func() (interface{}, error) {
+						return client.Read(ctx, testZone, ctx.ID)
+					}).WaitForState(ctx)
 					return nil, err
 				},
 			},
