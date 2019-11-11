@@ -138,6 +138,16 @@ var webaccelAPI = &dsl.Resource{
 				},
 			},
 		},
+		// delete certificate
+		{
+			ResourceName: webAccelAPIName,
+			Name:         "DeleteCertificate",
+			PathFormat:   "{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/site/{{.id}}/certificate",
+			Method:       http.MethodDelete,
+			Arguments: dsl.Arguments{
+				dsl.ArgumentID,
+			},
+		},
 		// delete all cache
 		{
 			ResourceName: webAccelAPIName,

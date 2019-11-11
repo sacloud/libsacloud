@@ -621,6 +621,7 @@ type WebAccelAPI interface {
 	ReadCertificate(ctx context.Context, id types.ID) (*WebAccelCerts, error)
 	CreateCertificate(ctx context.Context, id types.ID, param *WebAccelCertRequest) (*WebAccelCerts, error)
 	UpdateCertificate(ctx context.Context, id types.ID, param *WebAccelCertRequest) (*WebAccelCerts, error)
+	DeleteCertificate(ctx context.Context, id types.ID) error
 	DeleteAllCache(ctx context.Context, param *WebAccelDeleteAllCacheRequest) error
 	DeleteCache(ctx context.Context, param *WebAccelDeleteCacheRequest) ([]*WebAccelDeleteCacheResult, error)
 }
