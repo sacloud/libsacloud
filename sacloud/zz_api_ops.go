@@ -11571,6 +11571,34 @@ func (o *WebAccelOp) UpdateCertificate(ctx context.Context, id types.ID, param *
 	return results.Certificate, nil
 }
 
+// DeleteCertificate is API call
+func (o *WebAccelOp) DeleteCertificate(ctx context.Context, id types.ID) error {
+	// build request URL
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/site/{{.id}}/certificate", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       APIDefaultZone,
+		"id":         id,
+	})
+	if err != nil {
+		return err
+	}
+
+	// build request body
+	var body interface{}
+
+	// do request
+	_, err = o.Client.Do(ctx, "DELETE", url, body)
+	if err != nil {
+		return err
+	}
+
+	// build results
+
+	return nil
+}
+
 // DeleteAllCache is API call
 func (o *WebAccelOp) DeleteAllCache(ctx context.Context, param *WebAccelDeleteAllCacheRequest) error {
 	// build request URL

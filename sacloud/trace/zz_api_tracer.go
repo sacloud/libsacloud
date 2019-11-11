@@ -10393,6 +10393,35 @@ func (t *WebAccelTracer) UpdateCertificate(ctx context.Context, id types.ID, par
 	return resultCertificate, err
 }
 
+// DeleteCertificate is API call with trace log
+func (t *WebAccelTracer) DeleteCertificate(ctx context.Context, id types.ID) error {
+	log.Println("[TRACE] WebAccelAPI.DeleteCertificate start")
+	targetArguments := struct {
+		Argid types.ID `json:"id"`
+	}{
+		Argid: id,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] WebAccelAPI.DeleteCertificate end")
+	}()
+
+	err := t.Internal.DeleteCertificate(ctx, id)
+	targetResults := struct {
+		Error error
+	}{
+		Error: err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return err
+}
+
 // DeleteAllCache is API call with trace log
 func (t *WebAccelTracer) DeleteAllCache(ctx context.Context, param *sacloud.WebAccelDeleteAllCacheRequest) error {
 	log.Println("[TRACE] WebAccelAPI.DeleteAllCache start")

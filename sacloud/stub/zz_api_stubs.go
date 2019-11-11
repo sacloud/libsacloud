@@ -4816,6 +4816,11 @@ type WebAccelUpdateCertificateStubResult struct {
 	Err         error
 }
 
+// WebAccelDeleteCertificateStubResult is expected values of the DeleteCertificate operation
+type WebAccelDeleteCertificateStubResult struct {
+	Err error
+}
+
 // WebAccelDeleteAllCacheStubResult is expected values of the DeleteAllCache operation
 type WebAccelDeleteAllCacheStubResult struct {
 	Err error
@@ -4834,6 +4839,7 @@ type WebAccelStub struct {
 	ReadCertificateStubResult   *WebAccelReadCertificateStubResult
 	CreateCertificateStubResult *WebAccelCreateCertificateStubResult
 	UpdateCertificateStubResult *WebAccelUpdateCertificateStubResult
+	DeleteCertificateStubResult *WebAccelDeleteCertificateStubResult
 	DeleteAllCacheStubResult    *WebAccelDeleteAllCacheStubResult
 	DeleteCacheStubResult       *WebAccelDeleteCacheStubResult
 }
@@ -4881,6 +4887,14 @@ func (s *WebAccelStub) UpdateCertificate(ctx context.Context, id types.ID, param
 		log.Fatal("WebAccelStub.UpdateCertificateStubResult is not set")
 	}
 	return s.UpdateCertificateStubResult.Certificate, s.UpdateCertificateStubResult.Err
+}
+
+// DeleteCertificate is API call with trace log
+func (s *WebAccelStub) DeleteCertificate(ctx context.Context, id types.ID) error {
+	if s.DeleteCertificateStubResult == nil {
+		log.Fatal("WebAccelStub.DeleteCertificateStubResult is not set")
+	}
+	return s.DeleteCertificateStubResult.Err
 }
 
 // DeleteAllCache is API call with trace log

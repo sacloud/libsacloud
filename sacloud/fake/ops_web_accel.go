@@ -57,6 +57,11 @@ func (o *WebAccelOp) UpdateCertificate(ctx context.Context, id types.ID, param *
 	return nil, err
 }
 
+// DeleteCertificate is fake implementation
+func (o *WebAccelOp) DeleteCertificate(ctx context.Context, id types.ID) error {
+	return errors.New("not implements")
+}
+
 // DeleteAllCache is fake implementation
 func (o *WebAccelOp) DeleteAllCache(ctx context.Context, param *sacloud.WebAccelDeleteAllCacheRequest) error {
 	return nil
