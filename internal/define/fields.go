@@ -1811,29 +1811,7 @@ func (f *fieldsDef) DatabaseSettingsCommon() *dsl.FieldDesc {
 			Name:      "DatabaseSettingCommon",
 			NakedType: meta.Static(naked.DatabaseSettingCommon{}),
 			Fields: []*dsl.FieldDesc{
-				fields.Def("WebUI", meta.TypeFlag),
-				fields.Def("ServicePort", meta.TypeInt),
-				fields.Def("SourceNetwork", meta.TypeStringSlice),
-				fields.Def("DefaultUser", meta.TypeString),
-				fields.Def("UserPassword", meta.TypeString),
-				fields.Def("ReplicaUser", meta.TypeString),
-				fields.Def("ReplicaPassword", meta.TypeString),
-			},
-		},
-		Tags: &dsl.FieldTags{
-			MapConv: "Settings.DBConf.Common,recursive",
-		},
-	}
-}
-
-func (f *fieldsDef) DatabaseSettingsCommonUpdate() *dsl.FieldDesc {
-	return &dsl.FieldDesc{
-		Name: "CommonSetting",
-		Type: &dsl.Model{
-			Name:      "DatabaseSettingCommonUpdate",
-			NakedType: meta.Static(naked.DatabaseSettingCommon{}),
-			Fields: []*dsl.FieldDesc{
-				fields.Def("WebUI", meta.TypeFlag), // TODO trueにした場合、文字列が返ってくるが未対応
+				fields.Def("WebUI", meta.Static(types.WebUI(""))),
 				fields.Def("ServicePort", meta.TypeInt),
 				fields.Def("SourceNetwork", meta.TypeStringSlice),
 				fields.Def("DefaultUser", meta.TypeString),
