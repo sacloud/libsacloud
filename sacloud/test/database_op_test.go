@@ -150,7 +150,7 @@ var (
 	}
 	patchDatabaseParam = &sacloud.DatabasePatchRequest{
 		PatchEmptyToDescription: true,
-		CommonSetting: &sacloud.DatabaseSettingCommonUpdate{
+		CommonSetting: &sacloud.DatabaseSettingCommon{
 			ServicePort: 54321,
 		},
 	}
@@ -177,7 +177,7 @@ var (
 		Name:        testutil.ResourceName("db-upd"),
 		Tags:        []string{"tag1-upd", "tag2-upd"},
 		Description: "desc-upd",
-		CommonSetting: &sacloud.DatabaseSettingCommonUpdate{
+		CommonSetting: &sacloud.DatabaseSettingCommon{
 			ServicePort:     5432,
 			DefaultUser:     "exa.mple",
 			UserPassword:    "LibsacloudExamplePassword02",
@@ -219,7 +219,7 @@ var (
 				types.BackupSpanWeekdays.Monday,
 			},
 		},
-		CommonSetting: &sacloud.DatabaseSettingCommonUpdate{
+		CommonSetting: &sacloud.DatabaseSettingCommon{
 			ServicePort:     54321,
 			DefaultUser:     "exa.mple",
 			UserPassword:    "LibsacloudExamplePassword03",
@@ -256,7 +256,7 @@ var (
 	}
 	updateDatabaseToMinParam = &sacloud.DatabaseUpdateRequest{
 		Name: testutil.ResourceName("db-to-min"),
-		CommonSetting: &sacloud.DatabaseSettingCommonUpdate{
+		CommonSetting: &sacloud.DatabaseSettingCommon{
 			DefaultUser:     "exa.mple",
 			UserPassword:    "LibsacloudExamplePassword04",
 			ReplicaUser:     "replica",

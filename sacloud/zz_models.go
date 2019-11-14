@@ -4220,7 +4220,7 @@ func (o *Database) SetInterfaces(v []*InterfaceView) {
 
 // DatabaseSettingCommon represents API parameter/response structure
 type DatabaseSettingCommon struct {
-	WebUI           bool
+	WebUI           types.WebUI
 	ServicePort     int
 	SourceNetwork   []string
 	DefaultUser     string
@@ -4237,7 +4237,7 @@ func (o *DatabaseSettingCommon) Validate() error {
 // setDefaults implements sacloud.argumentDefaulter
 func (o *DatabaseSettingCommon) setDefaults() interface{} {
 	return &struct {
-		WebUI           bool
+		WebUI           types.WebUI
 		ServicePort     int
 		SourceNetwork   []string
 		DefaultUser     string
@@ -4256,12 +4256,12 @@ func (o *DatabaseSettingCommon) setDefaults() interface{} {
 }
 
 // GetWebUI returns value of WebUI
-func (o *DatabaseSettingCommon) GetWebUI() bool {
+func (o *DatabaseSettingCommon) GetWebUI() types.WebUI {
 	return o.WebUI
 }
 
 // SetWebUI sets value to WebUI
-func (o *DatabaseSettingCommon) SetWebUI(v bool) {
+func (o *DatabaseSettingCommon) SetWebUI(v types.WebUI) {
 	o.WebUI = v
 }
 
@@ -5074,11 +5074,11 @@ type DatabaseUpdateRequest struct {
 	Name               string `validate:"required"`
 	Description        string `validate:"min=0,max=512"`
 	Tags               types.Tags
-	IconID             types.ID                     `mapconv:"Icon.ID"`
-	CommonSetting      *DatabaseSettingCommonUpdate `mapconv:"Settings.DBConf.Common,recursive"`
-	BackupSetting      *DatabaseSettingBackup       `mapconv:"Settings.DBConf.Backup,recursive"`
-	ReplicationSetting *DatabaseReplicationSetting  `mapconv:"Settings.DBConf.Replication,recursive"`
-	SettingsHash       string                       `json:",omitempty" mapconv:",omitempty"`
+	IconID             types.ID                    `mapconv:"Icon.ID"`
+	CommonSetting      *DatabaseSettingCommon      `mapconv:"Settings.DBConf.Common,recursive"`
+	BackupSetting      *DatabaseSettingBackup      `mapconv:"Settings.DBConf.Backup,recursive"`
+	ReplicationSetting *DatabaseReplicationSetting `mapconv:"Settings.DBConf.Replication,recursive"`
+	SettingsHash       string                      `json:",omitempty" mapconv:",omitempty"`
 }
 
 // Validate validates by field tags
@@ -5092,11 +5092,11 @@ func (o *DatabaseUpdateRequest) setDefaults() interface{} {
 		Name               string `validate:"required"`
 		Description        string `validate:"min=0,max=512"`
 		Tags               types.Tags
-		IconID             types.ID                     `mapconv:"Icon.ID"`
-		CommonSetting      *DatabaseSettingCommonUpdate `mapconv:"Settings.DBConf.Common,recursive"`
-		BackupSetting      *DatabaseSettingBackup       `mapconv:"Settings.DBConf.Backup,recursive"`
-		ReplicationSetting *DatabaseReplicationSetting  `mapconv:"Settings.DBConf.Replication,recursive"`
-		SettingsHash       string                       `json:",omitempty" mapconv:",omitempty"`
+		IconID             types.ID                    `mapconv:"Icon.ID"`
+		CommonSetting      *DatabaseSettingCommon      `mapconv:"Settings.DBConf.Common,recursive"`
+		BackupSetting      *DatabaseSettingBackup      `mapconv:"Settings.DBConf.Backup,recursive"`
+		ReplicationSetting *DatabaseReplicationSetting `mapconv:"Settings.DBConf.Replication,recursive"`
+		SettingsHash       string                      `json:",omitempty" mapconv:",omitempty"`
 	}{
 		Name:               o.GetName(),
 		Description:        o.GetDescription(),
@@ -5170,12 +5170,12 @@ func (o *DatabaseUpdateRequest) SetIconID(v types.ID) {
 }
 
 // GetCommonSetting returns value of CommonSetting
-func (o *DatabaseUpdateRequest) GetCommonSetting() *DatabaseSettingCommonUpdate {
+func (o *DatabaseUpdateRequest) GetCommonSetting() *DatabaseSettingCommon {
 	return o.CommonSetting
 }
 
 // SetCommonSetting sets value to CommonSetting
-func (o *DatabaseUpdateRequest) SetCommonSetting(v *DatabaseSettingCommonUpdate) {
+func (o *DatabaseUpdateRequest) SetCommonSetting(v *DatabaseSettingCommon) {
 	o.CommonSetting = v
 }
 
@@ -5210,117 +5210,6 @@ func (o *DatabaseUpdateRequest) SetSettingsHash(v string) {
 }
 
 /*************************************************
-* DatabaseSettingCommonUpdate
-*************************************************/
-
-// DatabaseSettingCommonUpdate represents API parameter/response structure
-type DatabaseSettingCommonUpdate struct {
-	WebUI           bool
-	ServicePort     int
-	SourceNetwork   []string
-	DefaultUser     string
-	UserPassword    string
-	ReplicaUser     string
-	ReplicaPassword string
-}
-
-// Validate validates by field tags
-func (o *DatabaseSettingCommonUpdate) Validate() error {
-	return validator.New().Struct(o)
-}
-
-// setDefaults implements sacloud.argumentDefaulter
-func (o *DatabaseSettingCommonUpdate) setDefaults() interface{} {
-	return &struct {
-		WebUI           bool
-		ServicePort     int
-		SourceNetwork   []string
-		DefaultUser     string
-		UserPassword    string
-		ReplicaUser     string
-		ReplicaPassword string
-	}{
-		WebUI:           o.GetWebUI(),
-		ServicePort:     o.GetServicePort(),
-		SourceNetwork:   o.GetSourceNetwork(),
-		DefaultUser:     o.GetDefaultUser(),
-		UserPassword:    o.GetUserPassword(),
-		ReplicaUser:     o.GetReplicaUser(),
-		ReplicaPassword: o.GetReplicaPassword(),
-	}
-}
-
-// GetWebUI returns value of WebUI
-func (o *DatabaseSettingCommonUpdate) GetWebUI() bool {
-	return o.WebUI
-}
-
-// SetWebUI sets value to WebUI
-func (o *DatabaseSettingCommonUpdate) SetWebUI(v bool) {
-	o.WebUI = v
-}
-
-// GetServicePort returns value of ServicePort
-func (o *DatabaseSettingCommonUpdate) GetServicePort() int {
-	return o.ServicePort
-}
-
-// SetServicePort sets value to ServicePort
-func (o *DatabaseSettingCommonUpdate) SetServicePort(v int) {
-	o.ServicePort = v
-}
-
-// GetSourceNetwork returns value of SourceNetwork
-func (o *DatabaseSettingCommonUpdate) GetSourceNetwork() []string {
-	return o.SourceNetwork
-}
-
-// SetSourceNetwork sets value to SourceNetwork
-func (o *DatabaseSettingCommonUpdate) SetSourceNetwork(v []string) {
-	o.SourceNetwork = v
-}
-
-// GetDefaultUser returns value of DefaultUser
-func (o *DatabaseSettingCommonUpdate) GetDefaultUser() string {
-	return o.DefaultUser
-}
-
-// SetDefaultUser sets value to DefaultUser
-func (o *DatabaseSettingCommonUpdate) SetDefaultUser(v string) {
-	o.DefaultUser = v
-}
-
-// GetUserPassword returns value of UserPassword
-func (o *DatabaseSettingCommonUpdate) GetUserPassword() string {
-	return o.UserPassword
-}
-
-// SetUserPassword sets value to UserPassword
-func (o *DatabaseSettingCommonUpdate) SetUserPassword(v string) {
-	o.UserPassword = v
-}
-
-// GetReplicaUser returns value of ReplicaUser
-func (o *DatabaseSettingCommonUpdate) GetReplicaUser() string {
-	return o.ReplicaUser
-}
-
-// SetReplicaUser sets value to ReplicaUser
-func (o *DatabaseSettingCommonUpdate) SetReplicaUser(v string) {
-	o.ReplicaUser = v
-}
-
-// GetReplicaPassword returns value of ReplicaPassword
-func (o *DatabaseSettingCommonUpdate) GetReplicaPassword() string {
-	return o.ReplicaPassword
-}
-
-// SetReplicaPassword sets value to ReplicaPassword
-func (o *DatabaseSettingCommonUpdate) SetReplicaPassword(v string) {
-	o.ReplicaPassword = v
-}
-
-/*************************************************
 * DatabasePatchRequest
 *************************************************/
 
@@ -5333,7 +5222,7 @@ type DatabasePatchRequest struct {
 	PatchEmptyToTags               bool
 	IconID                         types.ID `mapconv:"Icon.ID"`
 	PatchEmptyToIconID             bool
-	CommonSetting                  *DatabaseSettingCommonUpdate `mapconv:"Settings.DBConf.Common,recursive"`
+	CommonSetting                  *DatabaseSettingCommon `mapconv:"Settings.DBConf.Common,recursive"`
 	PatchEmptyToCommonSetting      bool
 	BackupSetting                  *DatabaseSettingBackup `mapconv:"Settings.DBConf.Backup,recursive"`
 	PatchEmptyToBackupSetting      bool
@@ -5357,7 +5246,7 @@ func (o *DatabasePatchRequest) setDefaults() interface{} {
 		PatchEmptyToTags               bool
 		IconID                         types.ID `mapconv:"Icon.ID"`
 		PatchEmptyToIconID             bool
-		CommonSetting                  *DatabaseSettingCommonUpdate `mapconv:"Settings.DBConf.Common,recursive"`
+		CommonSetting                  *DatabaseSettingCommon `mapconv:"Settings.DBConf.Common,recursive"`
 		PatchEmptyToCommonSetting      bool
 		BackupSetting                  *DatabaseSettingBackup `mapconv:"Settings.DBConf.Backup,recursive"`
 		PatchEmptyToBackupSetting      bool
@@ -5473,12 +5362,12 @@ func (o *DatabasePatchRequest) SetPatchEmptyToIconID(v bool) {
 }
 
 // GetCommonSetting returns value of CommonSetting
-func (o *DatabasePatchRequest) GetCommonSetting() *DatabaseSettingCommonUpdate {
+func (o *DatabasePatchRequest) GetCommonSetting() *DatabaseSettingCommon {
 	return o.CommonSetting
 }
 
 // SetCommonSetting sets value to CommonSetting
-func (o *DatabasePatchRequest) SetCommonSetting(v *DatabaseSettingCommonUpdate) {
+func (o *DatabasePatchRequest) SetCommonSetting(v *DatabaseSettingCommon) {
 	o.CommonSetting = v
 }
 

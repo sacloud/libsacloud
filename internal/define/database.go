@@ -181,7 +181,7 @@ var (
 			fields.IconID(),
 
 			// settings
-			fields.DatabaseSettingsCommonUpdate(),
+			fields.DatabaseSettingsCommon(),
 			fields.DatabaseSettingsBackup(),
 			fields.DatabaseSettingsReplication(),
 			// settings hash
