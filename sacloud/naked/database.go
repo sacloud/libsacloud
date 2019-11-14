@@ -80,6 +80,21 @@ type DatabaseSettingBackup struct {
 	DayOfWeek []types.EBackupSpanWeekday `json:",omitempty" yaml:"day_of_week,omitempty" structs:",omitempty"`
 }
 
+// UnmarshalJSON 配列/オブジェクトが混在することへの対応
+func (d *DatabaseSettingBackup) UnmarshalJSON(b []byte) error {
+	if string(b) == "[]" {
+		return nil
+	}
+	type alias DatabaseSettingBackup
+
+	var a alias
+	if err := json.Unmarshal(b, &a); err != nil {
+		return err
+	}
+	*d = DatabaseSettingBackup(a)
+	return nil
+}
+
 // DatabaseSettingReplication レプリケーション設定
 type DatabaseSettingReplication struct {
 	Model     types.EDatabaseReplicationModel `json:",omitempty" yaml:"model,omitempty" structs:",omitempty"`
