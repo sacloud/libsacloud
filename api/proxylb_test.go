@@ -32,7 +32,7 @@ func TestProxyLBCreate(t *testing.T) {
 		t.Skipf("environment variable LIBSACLOUD_PROXYLB_SERVER is empty. skip")
 	}
 	sorryIP := os.Getenv("LIBSACLOUD_PROXYLB_SORRY_SERVER")
-	if serverIP == "" {
+	if sorryIP == "" {
 		t.Skipf("environment variable LIBSACLOUD_PROXYLB_SORRY_SERVER is empty. skip")
 	}
 
@@ -83,6 +83,55 @@ func TestProxyLBCreate(t *testing.T) {
 	assert.NotEqual(t, newPlan.ID, item.ID)
 
 	client.ProxyLB.Delete(newPlan.ID)
+}
+
+func TestProxyLBCreateWithTCP(t *testing.T) {
+	defer initProxyLB()()
+
+	serverIP := os.Getenv("LIBSACLOUD_PROXYLB_SERVER")
+	if serverIP == "" {
+		t.Skipf("environment variable LIBSACLOUD_PROXYLB_SERVER is empty. skip")
+	}
+	sorryIP := os.Getenv("LIBSACLOUD_PROXYLB_SORRY_SERVER")
+	if sorryIP == "" {
+		t.Skipf("environment variable LIBSACLOUD_PROXYLB_SORRY_SERVER is empty. skip")
+	}
+
+	currentRegion := client.Zone
+	defer func() { client.Zone = currentRegion }()
+	client.Zone = "is1a"
+
+	item := client.ProxyLB.New(testProxyLBName)
+	assert.Equal(t, item.Name, testProxyLBName)
+
+	item.SetPlan(sacloud.ProxyLBPlan1000)
+	item.SetSorryServer(sorryIP, 80)
+	item.SetTCPHealthCheck(10)
+	item.AddBindPort("tcp", 80, false, false, nil)
+	item.AddServer(serverIP, 80, true)
+
+	item, err := client.ProxyLB.Create(item)
+	assert.NoError(t, err)
+
+	assert.Equal(t, item.GetPlan(), sacloud.ProxyLBPlan1000)
+
+	assert.Equal(t, item.Settings.ProxyLB.SorryServer.IPAddress, sorryIP)
+	assert.Equal(t, *item.Settings.ProxyLB.SorryServer.Port, 80)
+
+	assert.Equal(t, item.Settings.ProxyLB.HealthCheck.Protocol, "tcp")
+	assert.Equal(t, item.Settings.ProxyLB.HealthCheck.DelayLoop, 10)
+
+	assert.Len(t, item.Settings.ProxyLB.BindPorts, 1)
+	assert.Len(t, item.Settings.ProxyLB.Servers, 1)
+
+	assert.Equal(t, item.Settings.ProxyLB.BindPorts[0].ProxyMode, "tcp")
+	assert.Equal(t, item.Settings.ProxyLB.BindPorts[0].Port, 80)
+
+	assert.Equal(t, item.Settings.ProxyLB.Servers[0].IPAddress, serverIP)
+	assert.Equal(t, item.Settings.ProxyLB.Servers[0].Port, 80)
+	assert.Equal(t, item.Settings.ProxyLB.Servers[0].Enabled, true)
+
+	client.ProxyLB.Delete(item.ID)
 }
 
 func initProxyLB() func() {
