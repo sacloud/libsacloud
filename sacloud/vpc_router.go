@@ -89,6 +89,11 @@ func (v *VPCRouter) IsHighSpecPlan() bool {
 	return v.Plan.ID == 3
 }
 
+// IsHighSpec4000MbpsPlan ハイスペック4000Mbpsプランか判定
+func (v *VPCRouter) IsHighSpec4000MbpsPlan() bool {
+	return v.Plan.ID == 4
+}
+
 // SetStandardPlan スタンダードプランへ設定
 func (v *VPCRouter) SetStandardPlan() {
 	v.Plan.SetID(1)
@@ -108,6 +113,12 @@ func (v *VPCRouter) SetPremiumPlan(switchID string, virtualIPAddress string, ipA
 // SetHighSpecPlan ハイスペックプランへ設定
 func (v *VPCRouter) SetHighSpecPlan(switchID string, virtualIPAddress string, ipAddress1 string, ipAddress2 string, vrid int, ipAliases []string) {
 	v.Plan.SetID(3)
+	v.setPremiumServices(switchID, virtualIPAddress, ipAddress1, ipAddress2, vrid, ipAliases)
+}
+
+// SetHighSpec4000MbpsPlan ハイスペックプランへ設定
+func (v *VPCRouter) SetHighSpec4000MbpsPlan(switchID string, virtualIPAddress string, ipAddress1 string, ipAddress2 string, vrid int, ipAliases []string) {
+	v.Plan.SetID(4)
 	v.setPremiumServices(switchID, virtualIPAddress, ipAddress1, ipAddress2, vrid, ipAliases)
 }
 
