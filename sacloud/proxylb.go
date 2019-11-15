@@ -70,10 +70,10 @@ func CreateNewProxyLB(name string) *ProxyLB {
 		},
 		Settings: ProxyLBSettings{
 			ProxyLB: ProxyLBSetting{
-				HealthCheck:   defaultProxyLBHealthCheck,
-				SorryServer:   ProxyLBSorryServer{},
-				Servers:       []ProxyLBServer{},
-				LetsEncrypt:   ProxyLBACMESetting{},
+				HealthCheck: defaultProxyLBHealthCheck,
+				SorryServer: ProxyLBSorryServer{},
+				Servers:     []ProxyLBServer{},
+				//LetsEncrypt:   ProxyLBACMESetting{},
 				StickySession: ProxyLBSessionSetting{},
 			},
 		},
@@ -211,7 +211,7 @@ type ProxyLBSetting struct {
 	SorryServer   ProxyLBSorryServer    `json:",omitempty"` // ソーリーサーバー
 	BindPorts     []*ProxyLBBindPorts   `json:",omitempty"` // プロキシ方式(プロトコル&ポート)
 	Servers       []ProxyLBServer       `json:",omitempty"` // サーバー
-	LetsEncrypt   ProxyLBACMESetting    `json:",omitempty"` // Let's encryptでの証明書取得設定
+	LetsEncrypt   *ProxyLBACMESetting   `json:",omitempty"` // Let's encryptでの証明書取得設定
 	StickySession ProxyLBSessionSetting `json:",omitempty"`
 	Timeout       *ProxyLBTimeout       `json:",omitempty"` // タイムアウト
 }
@@ -287,7 +287,7 @@ func (s *ProxyLBSetting) DeleteServer(ip string, port int) {
 }
 
 // AllowProxyLBBindModes プロキシ方式
-var AllowProxyLBBindModes = []string{"http", "https"}
+var AllowProxyLBBindModes = []string{"http", "https", "tcp"}
 
 // ProxyLBBindPorts プロキシ方式
 type ProxyLBBindPorts struct {
@@ -295,7 +295,7 @@ type ProxyLBBindPorts struct {
 	Port              int                      `json:",omitempty"`      // ポート
 	RedirectToHTTPS   bool                     `json:"RedirectToHttps"` // HTTPSへのリダイレクト(モードがhttpの場合のみ)
 	SupportHTTP2      bool                     `json:"SupportHttp2"`    // HTTP/2のサポート(モードがhttpsの場合のみ)
-	AddResponseHeader []*ProxyLBResponseHeader // レスポンスヘッダ
+	AddResponseHeader []*ProxyLBResponseHeader `json:",omitempty"`      // レスポンスヘッダ
 }
 
 // ProxyLBResponseHeader ポートごとの追加レスポンスヘッダ
