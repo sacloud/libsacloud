@@ -289,10 +289,15 @@ func TestArchiveAPI_FindStableOSs(t *testing.T) {
 
 	targets := []target{
 		{label: "CentOS", f: api.FindLatestStableCentOS},
+		{label: "CentOS8", f: api.FindLatestStableCentOS8},
 		{label: "CentOS7", f: api.FindLatestStableCentOS7},
 		{label: "CentOS6", f: api.FindLatestStableCentOS6},
 		{label: "Debian", f: api.FindLatestStableDebian},
+		{label: "Debian10", f: api.FindLatestStableDebian10},
+		{label: "Debian9", f: api.FindLatestStableDebian9},
 		{label: "Ubuntu", f: api.FindLatestStableUbuntu},
+		{label: "Ubuntu1804", f: api.FindLatestStableUbuntu1804},
+		{label: "Ubuntu1604", f: api.FindLatestStableUbuntu1604},
 		{label: "CoreOS", f: api.FindLatestStableCoreOS},
 		{label: "RancherOS", f: api.FindLatestStableRancherOS},
 		{label: "k3OS", f: api.FindLatestStableK3OS},
@@ -333,10 +338,15 @@ func TestArchiveAPI_CanDiskEdit(t *testing.T) {
 
 	targets := []target{
 		{label: "CentOS", expect: true, f: api.FindLatestStableCentOS},
+		{label: "CentOS8", expect: true, f: api.FindLatestStableCentOS8},
 		{label: "CentOS7", expect: true, f: api.FindLatestStableCentOS7},
 		{label: "CentOS6", expect: true, f: api.FindLatestStableCentOS6},
 		{label: "Debian", expect: true, f: api.FindLatestStableDebian},
+		{label: "Debian10", expect: true, f: api.FindLatestStableDebian10},
+		{label: "Debian9", expect: true, f: api.FindLatestStableDebian9},
 		{label: "Ubuntu", expect: true, f: api.FindLatestStableUbuntu},
+		{label: "Ubuntu1804", expect: true, f: api.FindLatestStableUbuntu1804},
+		{label: "Ubuntu1604", expect: true, f: api.FindLatestStableUbuntu1604},
 		{label: "CoreOS", expect: true, f: api.FindLatestStableCoreOS},
 		{label: "RancherOS", expect: true, f: api.FindLatestStableRancherOS},
 		{label: "k3OS", expect: true, f: api.FindLatestStableK3OS},
