@@ -17,6 +17,11 @@ package types
 // ELoadBalancerHealthCheckProtocol ロードバランサ 監視プロトコル
 type ELoadBalancerHealthCheckProtocol string
 
+// String ロードバランサ 監視プロトコルの文字列表現
+func (p ELoadBalancerHealthCheckProtocol) String() string {
+	return string(p)
+}
+
 // LoadBalancerHealthCheckProtocols ロードバランサ 監視プロトコル
 var LoadBalancerHealthCheckProtocols = struct {
 	// Unknown 不明
@@ -35,4 +40,16 @@ var LoadBalancerHealthCheckProtocols = struct {
 	HTTPS:   ELoadBalancerHealthCheckProtocol("https"),
 	TCP:     ELoadBalancerHealthCheckProtocol("tcp"),
 	Ping:    ELoadBalancerHealthCheckProtocol("ping"),
+}
+
+// LoadBalancerHealthCheckProtocolsStrings 有効なロードバランサ監視プロトコルを示す文字列のリスト
+//
+// Unknown(空文字)は含まない
+func LoadBalancerHealthCheckProtocolsStrings() []string {
+	return []string{
+		LoadBalancerHealthCheckProtocols.HTTP.String(),
+		LoadBalancerHealthCheckProtocols.HTTPS.String(),
+		LoadBalancerHealthCheckProtocols.TCP.String(),
+		LoadBalancerHealthCheckProtocols.Ping.String(),
+	}
 }
