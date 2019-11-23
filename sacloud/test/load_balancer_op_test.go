@@ -273,16 +273,6 @@ var (
 			{
 				VirtualIPAddress: "192.168.0.111",
 				Port:             80,
-				Servers: []*sacloud.LoadBalancerServer{
-					{
-						IPAddress: "192.168.0.211",
-						Enabled:   types.StringTrue,
-						Port:      80,
-						HealthCheck: &sacloud.LoadBalancerServerHealthCheck{
-							Protocol: types.LoadBalancerHealthCheckProtocols.Ping,
-						},
-					},
-				},
 			},
 		},
 	}
@@ -300,16 +290,6 @@ var (
 				VirtualIPAddress: "192.168.0.111",
 				Port:             80,
 				DelayLoop:        10, // default value
-				Servers: []*sacloud.LoadBalancerServer{
-					{
-						IPAddress: "192.168.0.211",
-						Enabled:   types.StringTrue,
-						Port:      80,
-						HealthCheck: &sacloud.LoadBalancerServerHealthCheck{
-							Protocol: types.LoadBalancerHealthCheckProtocols.Ping,
-						},
-					},
-				},
 			},
 		},
 	}
