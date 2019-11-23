@@ -64,7 +64,18 @@ type LoadBalancerSetting struct {
 	DelayLoop        types.StringNumber               `json:",omitempty" yaml:"delay_loop,omitempty" structs:",omitempty"`
 	SorryServer      string                           `json:",omitempty" yaml:"sorry_server,omitempty" structs:",omitempty"`
 	Description      string                           `yaml:"description"`
-	Servers          []*LoadBalancerDestinationServer `json:",omitempty" yaml:"servers,omitempty" structs:",omitempty"`
+	Servers          []*LoadBalancerDestinationServer `yaml:"servers"`
+}
+
+// MarshalJSON nullの場合に空配列を出力するための実装
+func (s LoadBalancerSetting) MarshalJSON() ([]byte, error) {
+	if s.Servers == nil {
+		s.Servers = make([]*LoadBalancerDestinationServer, 0)
+	}
+
+	type alias LoadBalancerSetting
+	tmp := alias(s)
+	return json.Marshal(&tmp)
 }
 
 // LoadBalancerDestinationServer ロードバランサ配下の実サーバ
