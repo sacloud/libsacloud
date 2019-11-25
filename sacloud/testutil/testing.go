@@ -178,7 +178,7 @@ func (c *CRUDTestExpect) Prepare(actual interface{}) (interface{}, interface{}) 
 		return m
 	}
 
-	return toMap(actual), toMap(c.ExpectValue)
+	return toMap(c.ExpectValue), toMap(actual)
 }
 
 // PreCheckEnvsFunc 指定の環境変数が指定されていなかった場合にテストをスキップするためのFuncを返す

@@ -112,6 +112,20 @@ type autoBackupPatchResult struct {
 	AutoBackup *AutoBackup `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
 }
 
+// autoBackupUpdateSettingsResult represents the Result of API
+type autoBackupUpdateSettingsResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	AutoBackup *AutoBackup `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
+}
+
+// autoBackupPatchSettingsResult represents the Result of API
+type autoBackupPatchSettingsResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	AutoBackup *AutoBackup `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
+}
+
 // BillByContractResult represents the Result of API
 type BillByContractResult struct {
 	Total int `json:",omitempty"` // Total count of target resources

@@ -233,6 +233,18 @@ type AutoBackupPatchStubResult struct {
 	Err        error
 }
 
+// AutoBackupUpdateSettingsStubResult is expected values of the UpdateSettings operation
+type AutoBackupUpdateSettingsStubResult struct {
+	AutoBackup *sacloud.AutoBackup
+	Err        error
+}
+
+// AutoBackupPatchSettingsStubResult is expected values of the PatchSettings operation
+type AutoBackupPatchSettingsStubResult struct {
+	AutoBackup *sacloud.AutoBackup
+	Err        error
+}
+
 // AutoBackupDeleteStubResult is expected values of the Delete operation
 type AutoBackupDeleteStubResult struct {
 	Err error
@@ -240,12 +252,14 @@ type AutoBackupDeleteStubResult struct {
 
 // AutoBackupStub is for trace AutoBackupOp operations
 type AutoBackupStub struct {
-	FindStubResult   *AutoBackupFindStubResult
-	CreateStubResult *AutoBackupCreateStubResult
-	ReadStubResult   *AutoBackupReadStubResult
-	UpdateStubResult *AutoBackupUpdateStubResult
-	PatchStubResult  *AutoBackupPatchStubResult
-	DeleteStubResult *AutoBackupDeleteStubResult
+	FindStubResult           *AutoBackupFindStubResult
+	CreateStubResult         *AutoBackupCreateStubResult
+	ReadStubResult           *AutoBackupReadStubResult
+	UpdateStubResult         *AutoBackupUpdateStubResult
+	PatchStubResult          *AutoBackupPatchStubResult
+	UpdateSettingsStubResult *AutoBackupUpdateSettingsStubResult
+	PatchSettingsStubResult  *AutoBackupPatchSettingsStubResult
+	DeleteStubResult         *AutoBackupDeleteStubResult
 }
 
 // NewAutoBackupStub creates new AutoBackupStub instance
@@ -291,6 +305,22 @@ func (s *AutoBackupStub) Patch(ctx context.Context, zone string, id types.ID, pa
 		log.Fatal("AutoBackupStub.PatchStubResult is not set")
 	}
 	return s.PatchStubResult.AutoBackup, s.PatchStubResult.Err
+}
+
+// UpdateSettings is API call with trace log
+func (s *AutoBackupStub) UpdateSettings(ctx context.Context, zone string, id types.ID, param *sacloud.AutoBackupUpdateSettingsRequest) (*sacloud.AutoBackup, error) {
+	if s.UpdateSettingsStubResult == nil {
+		log.Fatal("AutoBackupStub.UpdateSettingsStubResult is not set")
+	}
+	return s.UpdateSettingsStubResult.AutoBackup, s.UpdateSettingsStubResult.Err
+}
+
+// PatchSettings is API call with trace log
+func (s *AutoBackupStub) PatchSettings(ctx context.Context, zone string, id types.ID, param *sacloud.AutoBackupPatchSettingsRequest) (*sacloud.AutoBackup, error) {
+	if s.PatchSettingsStubResult == nil {
+		log.Fatal("AutoBackupStub.PatchSettingsStubResult is not set")
+	}
+	return s.PatchSettingsStubResult.AutoBackup, s.PatchSettingsStubResult.Err
 }
 
 // Delete is API call with trace log

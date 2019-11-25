@@ -698,6 +698,76 @@ func (t *AutoBackupTracer) Patch(ctx context.Context, zone string, id types.ID, 
 	return resultAutoBackup, err
 }
 
+// UpdateSettings is API call with trace log
+func (t *AutoBackupTracer) UpdateSettings(ctx context.Context, zone string, id types.ID, param *sacloud.AutoBackupUpdateSettingsRequest) (*sacloud.AutoBackup, error) {
+	log.Println("[TRACE] AutoBackupAPI.UpdateSettings start")
+	targetArguments := struct {
+		Argzone  string
+		Argid    types.ID                                 `json:"id"`
+		Argparam *sacloud.AutoBackupUpdateSettingsRequest `json:"param"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] AutoBackupAPI.UpdateSettings end")
+	}()
+
+	resultAutoBackup, err := t.Internal.UpdateSettings(ctx, zone, id, param)
+	targetResults := struct {
+		AutoBackup *sacloud.AutoBackup
+		Error      error
+	}{
+		AutoBackup: resultAutoBackup,
+		Error:      err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultAutoBackup, err
+}
+
+// PatchSettings is API call with trace log
+func (t *AutoBackupTracer) PatchSettings(ctx context.Context, zone string, id types.ID, param *sacloud.AutoBackupPatchSettingsRequest) (*sacloud.AutoBackup, error) {
+	log.Println("[TRACE] AutoBackupAPI.PatchSettings start")
+	targetArguments := struct {
+		Argzone  string
+		Argid    types.ID                                `json:"id"`
+		Argparam *sacloud.AutoBackupPatchSettingsRequest `json:"param"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] AutoBackupAPI.PatchSettings end")
+	}()
+
+	resultAutoBackup, err := t.Internal.PatchSettings(ctx, zone, id, param)
+	targetResults := struct {
+		AutoBackup *sacloud.AutoBackup
+		Error      error
+	}{
+		AutoBackup: resultAutoBackup,
+		Error:      err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultAutoBackup, err
+}
+
 // Delete is API call with trace log
 func (t *AutoBackupTracer) Delete(ctx context.Context, zone string, id types.ID) error {
 	log.Println("[TRACE] AutoBackupAPI.Delete start")

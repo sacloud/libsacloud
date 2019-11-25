@@ -447,6 +447,92 @@ func (o *AutoBackupOp) transformPatchResults(data []byte) (*autoBackupPatchResul
 	return results, nil
 }
 
+func (o *AutoBackupOp) transformUpdateSettingsArgs(id types.ID, param *AutoBackupUpdateSettingsRequest) (*autoBackupUpdateSettingsRequestEnvelope, error) {
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	var arg0 interface{} = id
+	if v, ok := arg0.(argumentDefaulter); ok {
+		arg0 = v.setDefaults()
+	}
+	if param == nil {
+		param = &AutoBackupUpdateSettingsRequest{}
+	}
+	var arg1 interface{} = param
+	if v, ok := arg1.(argumentDefaulter); ok {
+		arg1 = v.setDefaults()
+	}
+	args := &struct {
+		Arg0 interface{}
+		Arg1 interface{} `mapconv:"CommonServiceItem,recursive"`
+	}{
+		Arg0: arg0,
+		Arg1: arg1,
+	}
+
+	v := &autoBackupUpdateSettingsRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	return v, nil
+}
+
+func (o *AutoBackupOp) transformUpdateSettingsResults(data []byte) (*autoBackupUpdateSettingsResult, error) {
+	nakedResponse := &autoBackupUpdateSettingsResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &autoBackupUpdateSettingsResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
+}
+
+func (o *AutoBackupOp) transformPatchSettingsArgs(id types.ID, param *AutoBackupPatchSettingsRequest) (*autoBackupPatchSettingsRequestEnvelope, error) {
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	var arg0 interface{} = id
+	if v, ok := arg0.(argumentDefaulter); ok {
+		arg0 = v.setDefaults()
+	}
+	if param == nil {
+		param = &AutoBackupPatchSettingsRequest{}
+	}
+	var arg1 interface{} = param
+	if v, ok := arg1.(argumentDefaulter); ok {
+		arg1 = v.setDefaults()
+	}
+	args := &struct {
+		Arg0 interface{}
+		Arg1 interface{} `mapconv:"CommonServiceItem,recursive"`
+	}{
+		Arg0: arg0,
+		Arg1: arg1,
+	}
+
+	v := &autoBackupPatchSettingsRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	return v, nil
+}
+
+func (o *AutoBackupOp) transformPatchSettingsResults(data []byte) (*autoBackupPatchSettingsResult, error) {
+	nakedResponse := &autoBackupPatchSettingsResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &autoBackupPatchSettingsResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
+}
+
 func (o *BillOp) transformByContractResults(data []byte) (*BillByContractResult, error) {
 	nakedResponse := &billByContractResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {

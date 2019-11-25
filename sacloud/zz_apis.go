@@ -59,6 +59,8 @@ type AutoBackupAPI interface {
 	Read(ctx context.Context, zone string, id types.ID) (*AutoBackup, error)
 	Update(ctx context.Context, zone string, id types.ID, param *AutoBackupUpdateRequest) (*AutoBackup, error)
 	Patch(ctx context.Context, zone string, id types.ID, param *AutoBackupPatchRequest) (*AutoBackup, error)
+	UpdateSettings(ctx context.Context, zone string, id types.ID, param *AutoBackupUpdateSettingsRequest) (*AutoBackup, error)
+	PatchSettings(ctx context.Context, zone string, id types.ID, param *AutoBackupPatchSettingsRequest) (*AutoBackup, error)
 	Delete(ctx context.Context, zone string, id types.ID) error
 }
 

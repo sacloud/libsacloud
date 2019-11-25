@@ -2204,6 +2204,154 @@ func (o *AutoBackupPatchRequest) SetSettingsHash(v string) {
 }
 
 /*************************************************
+* AutoBackupUpdateSettingsRequest
+*************************************************/
+
+// AutoBackupUpdateSettingsRequest represents API parameter/response structure
+type AutoBackupUpdateSettingsRequest struct {
+	BackupSpanWeekdays      []types.EBackupSpanWeekday `mapconv:"Settings.Autobackup.BackupSpanWeekdays"`
+	MaximumNumberOfArchives int                        `mapconv:"Settings.Autobackup.MaximumNumberOfArchives"`
+	SettingsHash            string                     `json:",omitempty" mapconv:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *AutoBackupUpdateSettingsRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *AutoBackupUpdateSettingsRequest) setDefaults() interface{} {
+	return &struct {
+		BackupSpanWeekdays      []types.EBackupSpanWeekday `mapconv:"Settings.Autobackup.BackupSpanWeekdays"`
+		MaximumNumberOfArchives int                        `mapconv:"Settings.Autobackup.MaximumNumberOfArchives"`
+		SettingsHash            string                     `json:",omitempty" mapconv:",omitempty"`
+		BackupSpanType          types.EBackupSpanType      `mapconv:"Settings.Autobackup.BackupSpanType"`
+	}{
+		BackupSpanWeekdays:      o.GetBackupSpanWeekdays(),
+		MaximumNumberOfArchives: o.GetMaximumNumberOfArchives(),
+		SettingsHash:            o.GetSettingsHash(),
+		BackupSpanType:          types.BackupSpanTypes.Weekdays,
+	}
+}
+
+// GetBackupSpanWeekdays returns value of BackupSpanWeekdays
+func (o *AutoBackupUpdateSettingsRequest) GetBackupSpanWeekdays() []types.EBackupSpanWeekday {
+	return o.BackupSpanWeekdays
+}
+
+// SetBackupSpanWeekdays sets value to BackupSpanWeekdays
+func (o *AutoBackupUpdateSettingsRequest) SetBackupSpanWeekdays(v []types.EBackupSpanWeekday) {
+	o.BackupSpanWeekdays = v
+}
+
+// GetMaximumNumberOfArchives returns value of MaximumNumberOfArchives
+func (o *AutoBackupUpdateSettingsRequest) GetMaximumNumberOfArchives() int {
+	return o.MaximumNumberOfArchives
+}
+
+// SetMaximumNumberOfArchives sets value to MaximumNumberOfArchives
+func (o *AutoBackupUpdateSettingsRequest) SetMaximumNumberOfArchives(v int) {
+	o.MaximumNumberOfArchives = v
+}
+
+// GetSettingsHash returns value of SettingsHash
+func (o *AutoBackupUpdateSettingsRequest) GetSettingsHash() string {
+	return o.SettingsHash
+}
+
+// SetSettingsHash sets value to SettingsHash
+func (o *AutoBackupUpdateSettingsRequest) SetSettingsHash(v string) {
+	o.SettingsHash = v
+}
+
+/*************************************************
+* AutoBackupPatchSettingsRequest
+*************************************************/
+
+// AutoBackupPatchSettingsRequest represents API parameter/response structure
+type AutoBackupPatchSettingsRequest struct {
+	BackupSpanWeekdays                  []types.EBackupSpanWeekday `mapconv:"Settings.Autobackup.BackupSpanWeekdays"`
+	PatchEmptyToBackupSpanWeekdays      bool
+	MaximumNumberOfArchives             int `mapconv:"Settings.Autobackup.MaximumNumberOfArchives"`
+	PatchEmptyToMaximumNumberOfArchives bool
+	SettingsHash                        string `json:",omitempty" mapconv:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *AutoBackupPatchSettingsRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *AutoBackupPatchSettingsRequest) setDefaults() interface{} {
+	return &struct {
+		BackupSpanWeekdays                  []types.EBackupSpanWeekday `mapconv:"Settings.Autobackup.BackupSpanWeekdays"`
+		PatchEmptyToBackupSpanWeekdays      bool
+		MaximumNumberOfArchives             int `mapconv:"Settings.Autobackup.MaximumNumberOfArchives"`
+		PatchEmptyToMaximumNumberOfArchives bool
+		SettingsHash                        string                `json:",omitempty" mapconv:",omitempty"`
+		BackupSpanType                      types.EBackupSpanType `mapconv:"Settings.Autobackup.BackupSpanType"`
+	}{
+		BackupSpanWeekdays:                  o.GetBackupSpanWeekdays(),
+		PatchEmptyToBackupSpanWeekdays:      o.GetPatchEmptyToBackupSpanWeekdays(),
+		MaximumNumberOfArchives:             o.GetMaximumNumberOfArchives(),
+		PatchEmptyToMaximumNumberOfArchives: o.GetPatchEmptyToMaximumNumberOfArchives(),
+		SettingsHash:                        o.GetSettingsHash(),
+		BackupSpanType:                      types.BackupSpanTypes.Weekdays,
+	}
+}
+
+// GetBackupSpanWeekdays returns value of BackupSpanWeekdays
+func (o *AutoBackupPatchSettingsRequest) GetBackupSpanWeekdays() []types.EBackupSpanWeekday {
+	return o.BackupSpanWeekdays
+}
+
+// SetBackupSpanWeekdays sets value to BackupSpanWeekdays
+func (o *AutoBackupPatchSettingsRequest) SetBackupSpanWeekdays(v []types.EBackupSpanWeekday) {
+	o.BackupSpanWeekdays = v
+}
+
+// GetPatchEmptyToBackupSpanWeekdays returns value of PatchEmptyToBackupSpanWeekdays
+func (o *AutoBackupPatchSettingsRequest) GetPatchEmptyToBackupSpanWeekdays() bool {
+	return o.PatchEmptyToBackupSpanWeekdays
+}
+
+// SetPatchEmptyToBackupSpanWeekdays sets value to PatchEmptyToBackupSpanWeekdays
+func (o *AutoBackupPatchSettingsRequest) SetPatchEmptyToBackupSpanWeekdays(v bool) {
+	o.PatchEmptyToBackupSpanWeekdays = v
+}
+
+// GetMaximumNumberOfArchives returns value of MaximumNumberOfArchives
+func (o *AutoBackupPatchSettingsRequest) GetMaximumNumberOfArchives() int {
+	return o.MaximumNumberOfArchives
+}
+
+// SetMaximumNumberOfArchives sets value to MaximumNumberOfArchives
+func (o *AutoBackupPatchSettingsRequest) SetMaximumNumberOfArchives(v int) {
+	o.MaximumNumberOfArchives = v
+}
+
+// GetPatchEmptyToMaximumNumberOfArchives returns value of PatchEmptyToMaximumNumberOfArchives
+func (o *AutoBackupPatchSettingsRequest) GetPatchEmptyToMaximumNumberOfArchives() bool {
+	return o.PatchEmptyToMaximumNumberOfArchives
+}
+
+// SetPatchEmptyToMaximumNumberOfArchives sets value to PatchEmptyToMaximumNumberOfArchives
+func (o *AutoBackupPatchSettingsRequest) SetPatchEmptyToMaximumNumberOfArchives(v bool) {
+	o.PatchEmptyToMaximumNumberOfArchives = v
+}
+
+// GetSettingsHash returns value of SettingsHash
+func (o *AutoBackupPatchSettingsRequest) GetSettingsHash() string {
+	return o.SettingsHash
+}
+
+// SetSettingsHash sets value to SettingsHash
+func (o *AutoBackupPatchSettingsRequest) SetSettingsHash(v string) {
+	o.SettingsHash = v
+}
+
+/*************************************************
 * Bill
 *************************************************/
 

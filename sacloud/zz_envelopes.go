@@ -191,6 +191,32 @@ type autoBackupPatchResponseEnvelope struct {
 	CommonServiceItem *naked.AutoBackup `json:",omitempty"`
 }
 
+// autoBackupUpdateSettingsRequestEnvelope is envelop of API request
+type autoBackupUpdateSettingsRequestEnvelope struct {
+	CommonServiceItem *naked.AutoBackupSettingsUpdate `json:",omitempty"`
+}
+
+// autoBackupUpdateSettingsResponseEnvelope is envelop of API response
+type autoBackupUpdateSettingsResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	CommonServiceItem *naked.AutoBackupSettingsUpdate `json:",omitempty"`
+}
+
+// autoBackupPatchSettingsRequestEnvelope is envelop of API request
+type autoBackupPatchSettingsRequestEnvelope struct {
+	CommonServiceItem *naked.AutoBackupSettingsUpdate `json:",omitempty"`
+}
+
+// autoBackupPatchSettingsResponseEnvelope is envelop of API response
+type autoBackupPatchSettingsResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	CommonServiceItem *naked.AutoBackupSettingsUpdate `json:",omitempty"`
+}
+
 // billByContractResponseEnvelope is envelop of API response
 type billByContractResponseEnvelope struct {
 	Total int `json:",omitempty"` // トータル件数

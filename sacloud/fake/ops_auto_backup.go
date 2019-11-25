@@ -119,6 +119,26 @@ func (o *AutoBackupOp) Patch(ctx context.Context, zone string, id types.ID, para
 	return value, nil
 }
 
+// UpdateSettings is fake implementation
+func (o *AutoBackupOp) UpdateSettings(ctx context.Context, zone string, id types.ID, param *sacloud.AutoBackupUpdateSettingsRequest) (*sacloud.AutoBackup, error) {
+	value, err := o.Read(ctx, zone, id)
+	if err != nil {
+		return nil, err
+	}
+	copySameNameField(param, value)
+	fill(value, fillModifiedAt)
+
+	putAutoBackup(zone, value)
+	return value, nil
+}
+
+// PatchSettings is fake implementation
+func (o *AutoBackupOp) PatchSettings(ctx context.Context, zone string, id types.ID, param *sacloud.AutoBackupPatchSettingsRequest) (*sacloud.AutoBackup, error) {
+	patchParam := &sacloud.AutoBackupPatchRequest{}
+	copySameNameField(param, patchParam)
+	return o.Patch(ctx, zone, id, patchParam)
+}
+
 // Delete is fake implementation
 func (o *AutoBackupOp) Delete(ctx context.Context, zone string, id types.ID) error {
 	_, err := o.Read(ctx, zone, id)

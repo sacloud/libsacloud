@@ -47,13 +47,20 @@ var autoBackupAPI = &dsl.Resource{
 		// patch
 		ops.PatchCommonServiceItem(autoBackupAPIName, autoBackupNakedType, patchModel(autoBackupUpdateParam), autoBackupView),
 
+		// updateSettings
+		ops.UpdateCommonServiceItemSettings(autoBackupAPIName, autoBackupSettingsUpdateNakedType, autoBackupUpdateSettingsParam, autoBackupView),
+
+		// patchSettings
+		ops.PatchCommonServiceItemSettings(autoBackupAPIName, autoBackupSettingsUpdateNakedType, patchModel(autoBackupUpdateSettingsParam), autoBackupView),
+
 		// delete
 		ops.Delete(autoBackupAPIName),
 	},
 }
 
 var (
-	autoBackupNakedType = meta.Static(naked.AutoBackup{})
+	autoBackupNakedType               = meta.Static(naked.AutoBackup{})
+	autoBackupSettingsUpdateNakedType = meta.Static(naked.AutoBackupSettingsUpdate{})
 
 	autoBackupView = &dsl.Model{
 		Name:      autoBackupAPIName,
@@ -139,6 +146,28 @@ var (
 			fields.Tags(),
 			fields.IconID(),
 
+			// backup setting
+			fields.AutoBackupBackupSpanWeekDays(),
+			fields.AutoBackupMaximumNumberOfArchives(),
+			// settings hash
+			fields.SettingsHash(),
+		},
+	}
+
+	autoBackupUpdateSettingsParam = &dsl.Model{
+		Name:      names.UpdateSettingsParameterName(autoBackupAPIName),
+		NakedType: autoBackupNakedType,
+		ConstFields: []*dsl.ConstFieldDesc{
+			{
+				Name: "BackupSpanType",
+				Type: meta.TypeBackupSpanType,
+				Tags: &dsl.FieldTags{
+					MapConv: "Settings.Autobackup.BackupSpanType",
+				},
+				Value: `types.BackupSpanTypes.Weekdays`,
+			},
+		},
+		Fields: []*dsl.FieldDesc{
 			// backup setting
 			fields.AutoBackupBackupSpanWeekDays(),
 			fields.AutoBackupMaximumNumberOfArchives(),
