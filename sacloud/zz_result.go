@@ -299,8 +299,22 @@ type databaseUpdateResult struct {
 	Database *Database `json:",omitempty" mapconv:"Appliance,omitempty,recursive"`
 }
 
+// databaseUpdateSettingsResult represents the Result of API
+type databaseUpdateSettingsResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	Database *Database `json:",omitempty" mapconv:"Appliance,omitempty,recursive"`
+}
+
 // databasePatchResult represents the Result of API
 type databasePatchResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	Database *Database `json:",omitempty" mapconv:"Appliance,omitempty,recursive"`
+}
+
+// databasePatchSettingsResult represents the Result of API
+type databasePatchSettingsResult struct {
 	IsOk bool `json:",omitempty"` // is_ok
 
 	Database *Database `json:",omitempty" mapconv:"Appliance,omitempty,recursive"`

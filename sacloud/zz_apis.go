@@ -127,7 +127,9 @@ type DatabaseAPI interface {
 	Create(ctx context.Context, zone string, param *DatabaseCreateRequest) (*Database, error)
 	Read(ctx context.Context, zone string, id types.ID) (*Database, error)
 	Update(ctx context.Context, zone string, id types.ID, param *DatabaseUpdateRequest) (*Database, error)
+	UpdateSettings(ctx context.Context, zone string, id types.ID, param *DatabaseUpdateSettingsRequest) (*Database, error)
 	Patch(ctx context.Context, zone string, id types.ID, param *DatabasePatchRequest) (*Database, error)
+	PatchSettings(ctx context.Context, zone string, id types.ID, param *DatabasePatchSettingsRequest) (*Database, error)
 	Delete(ctx context.Context, zone string, id types.ID) error
 	Config(ctx context.Context, zone string, id types.ID) error
 	Boot(ctx context.Context, zone string, id types.ID) error

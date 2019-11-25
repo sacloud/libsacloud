@@ -201,7 +201,7 @@ type autoBackupUpdateSettingsResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	CommonServiceItem *naked.AutoBackupSettingsUpdate `json:",omitempty"`
+	CommonServiceItem *naked.AutoBackup `json:",omitempty"`
 }
 
 // autoBackupPatchSettingsRequestEnvelope is envelop of API request
@@ -214,7 +214,7 @@ type autoBackupPatchSettingsResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
-	CommonServiceItem *naked.AutoBackupSettingsUpdate `json:",omitempty"`
+	CommonServiceItem *naked.AutoBackup `json:",omitempty"`
 }
 
 // billByContractResponseEnvelope is envelop of API response
@@ -478,6 +478,19 @@ type databaseUpdateResponseEnvelope struct {
 	Appliance *naked.Database `json:",omitempty"`
 }
 
+// databaseUpdateSettingsRequestEnvelope is envelop of API request
+type databaseUpdateSettingsRequestEnvelope struct {
+	Appliance *naked.DatabaseSettingsUpdate `json:",omitempty"`
+}
+
+// databaseUpdateSettingsResponseEnvelope is envelop of API response
+type databaseUpdateSettingsResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Appliance *naked.Database `json:",omitempty"`
+}
+
 // databasePatchRequestEnvelope is envelop of API request
 type databasePatchRequestEnvelope struct {
 	Appliance *naked.Database `json:",omitempty"`
@@ -485,6 +498,19 @@ type databasePatchRequestEnvelope struct {
 
 // databasePatchResponseEnvelope is envelop of API response
 type databasePatchResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Appliance *naked.Database `json:",omitempty"`
+}
+
+// databasePatchSettingsRequestEnvelope is envelop of API request
+type databasePatchSettingsRequestEnvelope struct {
+	Appliance *naked.DatabaseSettingsUpdate `json:",omitempty"`
+}
+
+// databasePatchSettingsResponseEnvelope is envelop of API response
+type databasePatchSettingsResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 

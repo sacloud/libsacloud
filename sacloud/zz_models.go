@@ -5358,6 +5358,78 @@ func (o *DatabaseUpdateRequest) SetSettingsHash(v string) {
 }
 
 /*************************************************
+* DatabaseUpdateSettingsRequest
+*************************************************/
+
+// DatabaseUpdateSettingsRequest represents API parameter/response structure
+type DatabaseUpdateSettingsRequest struct {
+	CommonSetting      *DatabaseSettingCommon      `mapconv:"Settings.DBConf.Common,recursive"`
+	BackupSetting      *DatabaseSettingBackup      `mapconv:"Settings.DBConf.Backup,recursive"`
+	ReplicationSetting *DatabaseReplicationSetting `mapconv:"Settings.DBConf.Replication,recursive"`
+	SettingsHash       string                      `json:",omitempty" mapconv:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *DatabaseUpdateSettingsRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *DatabaseUpdateSettingsRequest) setDefaults() interface{} {
+	return &struct {
+		CommonSetting      *DatabaseSettingCommon      `mapconv:"Settings.DBConf.Common,recursive"`
+		BackupSetting      *DatabaseSettingBackup      `mapconv:"Settings.DBConf.Backup,recursive"`
+		ReplicationSetting *DatabaseReplicationSetting `mapconv:"Settings.DBConf.Replication,recursive"`
+		SettingsHash       string                      `json:",omitempty" mapconv:",omitempty"`
+	}{
+		CommonSetting:      o.GetCommonSetting(),
+		BackupSetting:      o.GetBackupSetting(),
+		ReplicationSetting: o.GetReplicationSetting(),
+		SettingsHash:       o.GetSettingsHash(),
+	}
+}
+
+// GetCommonSetting returns value of CommonSetting
+func (o *DatabaseUpdateSettingsRequest) GetCommonSetting() *DatabaseSettingCommon {
+	return o.CommonSetting
+}
+
+// SetCommonSetting sets value to CommonSetting
+func (o *DatabaseUpdateSettingsRequest) SetCommonSetting(v *DatabaseSettingCommon) {
+	o.CommonSetting = v
+}
+
+// GetBackupSetting returns value of BackupSetting
+func (o *DatabaseUpdateSettingsRequest) GetBackupSetting() *DatabaseSettingBackup {
+	return o.BackupSetting
+}
+
+// SetBackupSetting sets value to BackupSetting
+func (o *DatabaseUpdateSettingsRequest) SetBackupSetting(v *DatabaseSettingBackup) {
+	o.BackupSetting = v
+}
+
+// GetReplicationSetting returns value of ReplicationSetting
+func (o *DatabaseUpdateSettingsRequest) GetReplicationSetting() *DatabaseReplicationSetting {
+	return o.ReplicationSetting
+}
+
+// SetReplicationSetting sets value to ReplicationSetting
+func (o *DatabaseUpdateSettingsRequest) SetReplicationSetting(v *DatabaseReplicationSetting) {
+	o.ReplicationSetting = v
+}
+
+// GetSettingsHash returns value of SettingsHash
+func (o *DatabaseUpdateSettingsRequest) GetSettingsHash() string {
+	return o.SettingsHash
+}
+
+// SetSettingsHash sets value to SettingsHash
+func (o *DatabaseUpdateSettingsRequest) SetSettingsHash(v string) {
+	o.SettingsHash = v
+}
+
+/*************************************************
 * DatabasePatchRequest
 *************************************************/
 
@@ -5576,6 +5648,117 @@ func (o *DatabasePatchRequest) GetSettingsHash() string {
 
 // SetSettingsHash sets value to SettingsHash
 func (o *DatabasePatchRequest) SetSettingsHash(v string) {
+	o.SettingsHash = v
+}
+
+/*************************************************
+* DatabasePatchSettingsRequest
+*************************************************/
+
+// DatabasePatchSettingsRequest represents API parameter/response structure
+type DatabasePatchSettingsRequest struct {
+	CommonSetting                  *DatabaseSettingCommon `mapconv:"Settings.DBConf.Common,recursive"`
+	PatchEmptyToCommonSetting      bool
+	BackupSetting                  *DatabaseSettingBackup `mapconv:"Settings.DBConf.Backup,recursive"`
+	PatchEmptyToBackupSetting      bool
+	ReplicationSetting             *DatabaseReplicationSetting `mapconv:"Settings.DBConf.Replication,recursive"`
+	PatchEmptyToReplicationSetting bool
+	SettingsHash                   string `json:",omitempty" mapconv:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *DatabasePatchSettingsRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *DatabasePatchSettingsRequest) setDefaults() interface{} {
+	return &struct {
+		CommonSetting                  *DatabaseSettingCommon `mapconv:"Settings.DBConf.Common,recursive"`
+		PatchEmptyToCommonSetting      bool
+		BackupSetting                  *DatabaseSettingBackup `mapconv:"Settings.DBConf.Backup,recursive"`
+		PatchEmptyToBackupSetting      bool
+		ReplicationSetting             *DatabaseReplicationSetting `mapconv:"Settings.DBConf.Replication,recursive"`
+		PatchEmptyToReplicationSetting bool
+		SettingsHash                   string `json:",omitempty" mapconv:",omitempty"`
+	}{
+		CommonSetting:                  o.GetCommonSetting(),
+		PatchEmptyToCommonSetting:      o.GetPatchEmptyToCommonSetting(),
+		BackupSetting:                  o.GetBackupSetting(),
+		PatchEmptyToBackupSetting:      o.GetPatchEmptyToBackupSetting(),
+		ReplicationSetting:             o.GetReplicationSetting(),
+		PatchEmptyToReplicationSetting: o.GetPatchEmptyToReplicationSetting(),
+		SettingsHash:                   o.GetSettingsHash(),
+	}
+}
+
+// GetCommonSetting returns value of CommonSetting
+func (o *DatabasePatchSettingsRequest) GetCommonSetting() *DatabaseSettingCommon {
+	return o.CommonSetting
+}
+
+// SetCommonSetting sets value to CommonSetting
+func (o *DatabasePatchSettingsRequest) SetCommonSetting(v *DatabaseSettingCommon) {
+	o.CommonSetting = v
+}
+
+// GetPatchEmptyToCommonSetting returns value of PatchEmptyToCommonSetting
+func (o *DatabasePatchSettingsRequest) GetPatchEmptyToCommonSetting() bool {
+	return o.PatchEmptyToCommonSetting
+}
+
+// SetPatchEmptyToCommonSetting sets value to PatchEmptyToCommonSetting
+func (o *DatabasePatchSettingsRequest) SetPatchEmptyToCommonSetting(v bool) {
+	o.PatchEmptyToCommonSetting = v
+}
+
+// GetBackupSetting returns value of BackupSetting
+func (o *DatabasePatchSettingsRequest) GetBackupSetting() *DatabaseSettingBackup {
+	return o.BackupSetting
+}
+
+// SetBackupSetting sets value to BackupSetting
+func (o *DatabasePatchSettingsRequest) SetBackupSetting(v *DatabaseSettingBackup) {
+	o.BackupSetting = v
+}
+
+// GetPatchEmptyToBackupSetting returns value of PatchEmptyToBackupSetting
+func (o *DatabasePatchSettingsRequest) GetPatchEmptyToBackupSetting() bool {
+	return o.PatchEmptyToBackupSetting
+}
+
+// SetPatchEmptyToBackupSetting sets value to PatchEmptyToBackupSetting
+func (o *DatabasePatchSettingsRequest) SetPatchEmptyToBackupSetting(v bool) {
+	o.PatchEmptyToBackupSetting = v
+}
+
+// GetReplicationSetting returns value of ReplicationSetting
+func (o *DatabasePatchSettingsRequest) GetReplicationSetting() *DatabaseReplicationSetting {
+	return o.ReplicationSetting
+}
+
+// SetReplicationSetting sets value to ReplicationSetting
+func (o *DatabasePatchSettingsRequest) SetReplicationSetting(v *DatabaseReplicationSetting) {
+	o.ReplicationSetting = v
+}
+
+// GetPatchEmptyToReplicationSetting returns value of PatchEmptyToReplicationSetting
+func (o *DatabasePatchSettingsRequest) GetPatchEmptyToReplicationSetting() bool {
+	return o.PatchEmptyToReplicationSetting
+}
+
+// SetPatchEmptyToReplicationSetting sets value to PatchEmptyToReplicationSetting
+func (o *DatabasePatchSettingsRequest) SetPatchEmptyToReplicationSetting(v bool) {
+	o.PatchEmptyToReplicationSetting = v
+}
+
+// GetSettingsHash returns value of SettingsHash
+func (o *DatabasePatchSettingsRequest) GetSettingsHash() string {
+	return o.SettingsHash
+}
+
+// SetSettingsHash sets value to SettingsHash
+func (o *DatabasePatchSettingsRequest) SetSettingsHash(v string) {
 	o.SettingsHash = v
 }
 

@@ -1708,6 +1708,41 @@ func (t *DatabaseTracer) Update(ctx context.Context, zone string, id types.ID, p
 	return resultDatabase, err
 }
 
+// UpdateSettings is API call with trace log
+func (t *DatabaseTracer) UpdateSettings(ctx context.Context, zone string, id types.ID, param *sacloud.DatabaseUpdateSettingsRequest) (*sacloud.Database, error) {
+	log.Println("[TRACE] DatabaseAPI.UpdateSettings start")
+	targetArguments := struct {
+		Argzone  string
+		Argid    types.ID                               `json:"id"`
+		Argparam *sacloud.DatabaseUpdateSettingsRequest `json:"param"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] DatabaseAPI.UpdateSettings end")
+	}()
+
+	resultDatabase, err := t.Internal.UpdateSettings(ctx, zone, id, param)
+	targetResults := struct {
+		Database *sacloud.Database
+		Error    error
+	}{
+		Database: resultDatabase,
+		Error:    err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultDatabase, err
+}
+
 // Patch is API call with trace log
 func (t *DatabaseTracer) Patch(ctx context.Context, zone string, id types.ID, param *sacloud.DatabasePatchRequest) (*sacloud.Database, error) {
 	log.Println("[TRACE] DatabaseAPI.Patch start")
@@ -1729,6 +1764,41 @@ func (t *DatabaseTracer) Patch(ctx context.Context, zone string, id types.ID, pa
 	}()
 
 	resultDatabase, err := t.Internal.Patch(ctx, zone, id, param)
+	targetResults := struct {
+		Database *sacloud.Database
+		Error    error
+	}{
+		Database: resultDatabase,
+		Error:    err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultDatabase, err
+}
+
+// PatchSettings is API call with trace log
+func (t *DatabaseTracer) PatchSettings(ctx context.Context, zone string, id types.ID, param *sacloud.DatabasePatchSettingsRequest) (*sacloud.Database, error) {
+	log.Println("[TRACE] DatabaseAPI.PatchSettings start")
+	targetArguments := struct {
+		Argzone  string
+		Argid    types.ID                              `json:"id"`
+		Argparam *sacloud.DatabasePatchSettingsRequest `json:"param"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] DatabaseAPI.PatchSettings end")
+	}()
+
+	resultDatabase, err := t.Internal.PatchSettings(ctx, zone, id, param)
 	targetResults := struct {
 		Database *sacloud.Database
 		Error    error

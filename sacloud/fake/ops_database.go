@@ -125,6 +125,26 @@ func (o *DatabaseOp) Patch(ctx context.Context, zone string, id types.ID, param 
 	return value, nil
 }
 
+// UpdateSettings is fake implementation
+func (o *DatabaseOp) UpdateSettings(ctx context.Context, zone string, id types.ID, param *sacloud.DatabaseUpdateSettingsRequest) (*sacloud.Database, error) {
+	value, err := o.Read(ctx, zone, id)
+	if err != nil {
+		return nil, err
+	}
+	copySameNameField(param, value)
+	fill(value, fillModifiedAt)
+
+	putDatabase(zone, value)
+	return value, nil
+}
+
+// PatchSettings is fake implementation
+func (o *DatabaseOp) PatchSettings(ctx context.Context, zone string, id types.ID, param *sacloud.DatabasePatchSettingsRequest) (*sacloud.Database, error) {
+	patchParam := &sacloud.DatabasePatchRequest{}
+	copySameNameField(param, patchParam)
+	return o.Patch(ctx, zone, id, patchParam)
+}
+
 // Delete is fake implementation
 func (o *DatabaseOp) Delete(ctx context.Context, zone string, id types.ID) error {
 	_, err := o.Read(ctx, zone, id)

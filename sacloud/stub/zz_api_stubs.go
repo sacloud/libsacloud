@@ -724,8 +724,20 @@ type DatabaseUpdateStubResult struct {
 	Err      error
 }
 
+// DatabaseUpdateSettingsStubResult is expected values of the UpdateSettings operation
+type DatabaseUpdateSettingsStubResult struct {
+	Database *sacloud.Database
+	Err      error
+}
+
 // DatabasePatchStubResult is expected values of the Patch operation
 type DatabasePatchStubResult struct {
+	Database *sacloud.Database
+	Err      error
+}
+
+// DatabasePatchSettingsStubResult is expected values of the PatchSettings operation
+type DatabasePatchSettingsStubResult struct {
 	Database *sacloud.Database
 	Err      error
 }
@@ -791,7 +803,9 @@ type DatabaseStub struct {
 	CreateStubResult           *DatabaseCreateStubResult
 	ReadStubResult             *DatabaseReadStubResult
 	UpdateStubResult           *DatabaseUpdateStubResult
+	UpdateSettingsStubResult   *DatabaseUpdateSettingsStubResult
 	PatchStubResult            *DatabasePatchStubResult
+	PatchSettingsStubResult    *DatabasePatchSettingsStubResult
 	DeleteStubResult           *DatabaseDeleteStubResult
 	ConfigStubResult           *DatabaseConfigStubResult
 	BootStubResult             *DatabaseBootStubResult
@@ -841,12 +855,28 @@ func (s *DatabaseStub) Update(ctx context.Context, zone string, id types.ID, par
 	return s.UpdateStubResult.Database, s.UpdateStubResult.Err
 }
 
+// UpdateSettings is API call with trace log
+func (s *DatabaseStub) UpdateSettings(ctx context.Context, zone string, id types.ID, param *sacloud.DatabaseUpdateSettingsRequest) (*sacloud.Database, error) {
+	if s.UpdateSettingsStubResult == nil {
+		log.Fatal("DatabaseStub.UpdateSettingsStubResult is not set")
+	}
+	return s.UpdateSettingsStubResult.Database, s.UpdateSettingsStubResult.Err
+}
+
 // Patch is API call with trace log
 func (s *DatabaseStub) Patch(ctx context.Context, zone string, id types.ID, param *sacloud.DatabasePatchRequest) (*sacloud.Database, error) {
 	if s.PatchStubResult == nil {
 		log.Fatal("DatabaseStub.PatchStubResult is not set")
 	}
 	return s.PatchStubResult.Database, s.PatchStubResult.Err
+}
+
+// PatchSettings is API call with trace log
+func (s *DatabaseStub) PatchSettings(ctx context.Context, zone string, id types.ID, param *sacloud.DatabasePatchSettingsRequest) (*sacloud.Database, error) {
+	if s.PatchSettingsStubResult == nil {
+		log.Fatal("DatabaseStub.PatchSettingsStubResult is not set")
+	}
+	return s.PatchSettingsStubResult.Database, s.PatchSettingsStubResult.Err
 }
 
 // Delete is API call with trace log
