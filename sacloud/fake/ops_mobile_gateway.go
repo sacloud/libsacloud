@@ -52,6 +52,23 @@ func (o *MobileGatewayOp) Create(ctx context.Context, zone string, param *saclou
 	result.ZoneID = zoneIDs[zone]
 	result.SettingsHash = ""
 
+	// set interface
+	ifOp := NewInterfaceOp()
+	iface, err := ifOp.Create(ctx, zone, &sacloud.InterfaceCreateRequest{ServerID: result.ID})
+	if err != nil {
+		return nil, newErrorConflict(o.key, types.ID(0), err.Error())
+	}
+	if err := ifOp.ConnectToSharedSegment(ctx, zone, iface.ID); err != nil {
+		return nil, newErrorConflict(o.key, types.ID(0), err.Error())
+	}
+	iface, err = ifOp.Read(ctx, zone, iface.ID)
+	if err != nil {
+		return nil, newErrorConflict(o.key, types.ID(0), err.Error())
+	}
+	ifaceView := &sacloud.MobileGatewayInterface{}
+	copySameNameField(iface, ifaceView)
+	result.Interfaces = append(result.Interfaces, ifaceView)
+
 	putMobileGateway(zone, result)
 	return result, nil
 }
@@ -223,7 +240,7 @@ func (o *MobileGatewayOp) ConnectToSwitch(ctx context.Context, zone string, id t
 	mobileGatewayInterface := &sacloud.MobileGatewayInterface{}
 	copySameNameField(iface, mobileGatewayInterface)
 	mobileGatewayInterface.Index = 1 // 1固定
-	value.Interfaces = []*sacloud.MobileGatewayInterface{nil, mobileGatewayInterface}
+	value.Interfaces = append(value.Interfaces, mobileGatewayInterface)
 
 	putMobileGateway(zone, value)
 	return nil
