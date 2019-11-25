@@ -109,7 +109,7 @@ func create(resourceName string, nakedType meta.Type, createParam, result *dsl.M
 			dsl.MappableArgument("param", createParam, payloadName),
 		},
 		ResponseEnvelope: dsl.ResponseEnvelope(&dsl.EnvelopePayloadDesc{
-			Type: nakedType,
+			Type: result.NakedType,
 			Name: payloadName,
 		}),
 		Results: dsl.Results{
@@ -208,7 +208,7 @@ func updateInternal(resourceName string, nakedType meta.Type, updateParam, resul
 			dsl.MappableArgument("param", updateParam, payloadName),
 		},
 		ResponseEnvelope: dsl.ResponseEnvelope(&dsl.EnvelopePayloadDesc{
-			Type: nakedType,
+			Type: result.NakedType,
 			Name: payloadName,
 		}),
 		Results: dsl.Results{
