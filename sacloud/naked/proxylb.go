@@ -41,6 +41,12 @@ type ProxyLB struct {
 	ServiceClass types.EProxyLBPlan `json:",omitempty" yaml:"service_class,omitempty" structs:",omitempty"`
 }
 
+// ProxyLBSettingsUpdate エンハンスドロードバランサ
+type ProxyLBSettingsUpdate struct {
+	Settings     *ProxyLBSettings `json:",omitempty" yaml:"settings,omitempty" structs:",omitempty"`
+	SettingsHash string           `json:",omitempty" yaml:"settings_hash,omitempty" structs:",omitempty"`
+}
+
 // ProxyLBSettings エンハンスドロードバランサ設定
 type ProxyLBSettings struct {
 	ProxyLB *ProxyLBSetting `json:",omitempty" yaml:"proxy_lb,omitempty" structs:",omitempty"`

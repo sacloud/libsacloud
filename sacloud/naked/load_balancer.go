@@ -42,6 +42,12 @@ type LoadBalancer struct {
 	Remark       *ApplianceRemark      `json:",omitempty" yaml:"remark,omitempty" structs:",omitempty"`
 }
 
+// LoadBalancerSettingsUpdate ロードバランサ
+type LoadBalancerSettingsUpdate struct {
+	Settings     *LoadBalancerSettings `json:",omitempty" yaml:"settings,omitempty" structs:",omitempty"`
+	SettingsHash string                `json:",omitempty" yaml:"settings_hash,omitempty" structs:",omitempty"`
+}
+
 // LoadBalancerSettings ロードバランサの設定
 type LoadBalancerSettings struct {
 	LoadBalancer []*LoadBalancerSetting `yaml:"load_balancer"`

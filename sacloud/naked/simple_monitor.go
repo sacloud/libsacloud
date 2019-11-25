@@ -37,6 +37,12 @@ type SimpleMonitor struct {
 	Status       *SimpleMonitorStatus   `json:",omitempty" yaml:"status,omitempty" structs:",omitempty"`
 }
 
+// SimpleMonitorSettingsUpdate シンプル監視
+type SimpleMonitorSettingsUpdate struct {
+	Settings     *SimpleMonitorSettings `json:",omitempty" yaml:"settings,omitempty" structs:",omitempty"`
+	SettingsHash string                 `json:",omitempty" yaml:"settings_hash,omitempty" structs:",omitempty"`
+}
+
 // SimpleMonitorSettings シンプル監視セッティング
 type SimpleMonitorSettings struct {
 	SimpleMonitor *SimpleMonitorSetting `json:",omitempty" yaml:"simple_monitor,omitempty" structs:",omitempty"`

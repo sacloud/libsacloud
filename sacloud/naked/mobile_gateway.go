@@ -42,6 +42,12 @@ type MobileGateway struct {
 	Interfaces   MobileGatewayInterfaces `json:",omitempty" yaml:"interfaces,omitempty" structs:",omitempty"`
 }
 
+// MobileGatewaySettingsUpdate モバイルゲートウェイ
+type MobileGatewaySettingsUpdate struct {
+	Settings     *MobileGatewaySettings `json:",omitempty" yaml:"settings,omitempty" structs:",omitempty"`
+	SettingsHash string                 `json:",omitempty" yaml:"settings_hash,omitempty" structs:",omitempty"`
+}
+
 // MobileGatewayInterfaces 要素がnullにことがある場合に対応するためのtype
 //
 // 例: モバイルゲートウェイ 作成時、eth0/eth1の2要素が返ってくるがeth1の分はnullとなっている。
