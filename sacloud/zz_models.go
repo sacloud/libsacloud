@@ -8606,6 +8606,52 @@ func (o *DNSUpdateRequest) SetSettingsHash(v string) {
 }
 
 /*************************************************
+* DNSUpdateSettingsRequest
+*************************************************/
+
+// DNSUpdateSettingsRequest represents API parameter/response structure
+type DNSUpdateSettingsRequest struct {
+	Records      []*DNSRecord `mapconv:"Settings.DNS.[]ResourceRecordSets,recursive" validate:"min=0,max=1000"`
+	SettingsHash string       `json:",omitempty" mapconv:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *DNSUpdateSettingsRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *DNSUpdateSettingsRequest) setDefaults() interface{} {
+	return &struct {
+		Records      []*DNSRecord `mapconv:"Settings.DNS.[]ResourceRecordSets,recursive" validate:"min=0,max=1000"`
+		SettingsHash string       `json:",omitempty" mapconv:",omitempty"`
+	}{
+		Records:      o.GetRecords(),
+		SettingsHash: o.GetSettingsHash(),
+	}
+}
+
+// GetRecords returns value of Records
+func (o *DNSUpdateSettingsRequest) GetRecords() []*DNSRecord {
+	return o.Records
+}
+
+// SetRecords sets value to Records
+func (o *DNSUpdateSettingsRequest) SetRecords(v []*DNSRecord) {
+	o.Records = v
+}
+
+// GetSettingsHash returns value of SettingsHash
+func (o *DNSUpdateSettingsRequest) GetSettingsHash() string {
+	return o.SettingsHash
+}
+
+// SetSettingsHash sets value to SettingsHash
+func (o *DNSUpdateSettingsRequest) SetSettingsHash(v string) {
+	o.SettingsHash = v
+}
+
+/*************************************************
 * DNSPatchRequest
 *************************************************/
 
@@ -8759,6 +8805,65 @@ func (o *DNSPatchRequest) GetSettingsHash() string {
 
 // SetSettingsHash sets value to SettingsHash
 func (o *DNSPatchRequest) SetSettingsHash(v string) {
+	o.SettingsHash = v
+}
+
+/*************************************************
+* DNSPatchSettingsRequest
+*************************************************/
+
+// DNSPatchSettingsRequest represents API parameter/response structure
+type DNSPatchSettingsRequest struct {
+	Records             []*DNSRecord `mapconv:"Settings.DNS.[]ResourceRecordSets,recursive" validate:"min=0,max=1000"`
+	PatchEmptyToRecords bool
+	SettingsHash        string `json:",omitempty" mapconv:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *DNSPatchSettingsRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *DNSPatchSettingsRequest) setDefaults() interface{} {
+	return &struct {
+		Records             []*DNSRecord `mapconv:"Settings.DNS.[]ResourceRecordSets,recursive" validate:"min=0,max=1000"`
+		PatchEmptyToRecords bool
+		SettingsHash        string `json:",omitempty" mapconv:",omitempty"`
+	}{
+		Records:             o.GetRecords(),
+		PatchEmptyToRecords: o.GetPatchEmptyToRecords(),
+		SettingsHash:        o.GetSettingsHash(),
+	}
+}
+
+// GetRecords returns value of Records
+func (o *DNSPatchSettingsRequest) GetRecords() []*DNSRecord {
+	return o.Records
+}
+
+// SetRecords sets value to Records
+func (o *DNSPatchSettingsRequest) SetRecords(v []*DNSRecord) {
+	o.Records = v
+}
+
+// GetPatchEmptyToRecords returns value of PatchEmptyToRecords
+func (o *DNSPatchSettingsRequest) GetPatchEmptyToRecords() bool {
+	return o.PatchEmptyToRecords
+}
+
+// SetPatchEmptyToRecords sets value to PatchEmptyToRecords
+func (o *DNSPatchSettingsRequest) SetPatchEmptyToRecords(v bool) {
+	o.PatchEmptyToRecords = v
+}
+
+// GetSettingsHash returns value of SettingsHash
+func (o *DNSPatchSettingsRequest) GetSettingsHash() string {
+	return o.SettingsHash
+}
+
+// SetSettingsHash sets value to SettingsHash
+func (o *DNSPatchSettingsRequest) SetSettingsHash(v string) {
 	o.SettingsHash = v
 }
 

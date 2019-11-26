@@ -45,8 +45,14 @@ var dnsAPI = &dsl.Resource{
 		// update
 		ops.UpdateCommonServiceItem(dnsAPIName, dnsNakedType, dnsUpdateParam, dnsView),
 
+		// updateSettings
+		ops.UpdateCommonServiceItemSettings(dnsAPIName, dnsUpdateSettingsNakedType, dnsUpdateSettingsParam, dnsView),
+
 		// patch
 		ops.PatchCommonServiceItem(dnsAPIName, dnsNakedType, patchModel(dnsUpdateParam), dnsView),
+
+		// patchSettings
+		ops.PatchCommonServiceItemSettings(dnsAPIName, dnsUpdateSettingsNakedType, patchModel(dnsUpdateSettingsParam), dnsView),
 
 		// delete
 		ops.Delete(dnsAPIName),
@@ -54,7 +60,8 @@ var dnsAPI = &dsl.Resource{
 }
 
 var (
-	dnsNakedType = meta.Static(naked.DNS{})
+	dnsNakedType               = meta.Static(naked.DNS{})
+	dnsUpdateSettingsNakedType = meta.Static(naked.DNSSettingsUpdate{})
 
 	dnsView = &dsl.Model{
 		Name:      dnsAPIName,
@@ -122,6 +129,17 @@ var (
 			fields.Tags(),
 			fields.IconID(),
 
+			// setting
+			fields.DNSRecords(),
+			// settings hash
+			fields.SettingsHash(),
+		},
+	}
+
+	dnsUpdateSettingsParam = &dsl.Model{
+		Name:      names.UpdateSettingsParameterName(dnsAPIName),
+		NakedType: dnsNakedType,
+		Fields: []*dsl.FieldDesc{
 			// setting
 			fields.DNSRecords(),
 			// settings hash

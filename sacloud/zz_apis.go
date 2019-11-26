@@ -184,7 +184,9 @@ type DNSAPI interface {
 	Create(ctx context.Context, param *DNSCreateRequest) (*DNS, error)
 	Read(ctx context.Context, id types.ID) (*DNS, error)
 	Update(ctx context.Context, id types.ID, param *DNSUpdateRequest) (*DNS, error)
+	UpdateSettings(ctx context.Context, id types.ID, param *DNSUpdateSettingsRequest) (*DNS, error)
 	Patch(ctx context.Context, id types.ID, param *DNSPatchRequest) (*DNS, error)
+	PatchSettings(ctx context.Context, id types.ID, param *DNSPatchSettingsRequest) (*DNS, error)
 	Delete(ctx context.Context, id types.ID) error
 }
 

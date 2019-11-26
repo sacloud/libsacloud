@@ -797,6 +797,19 @@ type dNSUpdateResponseEnvelope struct {
 	CommonServiceItem *naked.DNS `json:",omitempty"`
 }
 
+// dNSUpdateSettingsRequestEnvelope is envelop of API request
+type dNSUpdateSettingsRequestEnvelope struct {
+	CommonServiceItem *naked.DNSSettingsUpdate `json:",omitempty"`
+}
+
+// dNSUpdateSettingsResponseEnvelope is envelop of API response
+type dNSUpdateSettingsResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	CommonServiceItem *naked.DNS `json:",omitempty"`
+}
+
 // dNSPatchRequestEnvelope is envelop of API request
 type dNSPatchRequestEnvelope struct {
 	CommonServiceItem *naked.DNS `json:",omitempty"`
@@ -804,6 +817,19 @@ type dNSPatchRequestEnvelope struct {
 
 // dNSPatchResponseEnvelope is envelop of API response
 type dNSPatchResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	CommonServiceItem *naked.DNS `json:",omitempty"`
+}
+
+// dNSPatchSettingsRequestEnvelope is envelop of API request
+type dNSPatchSettingsRequestEnvelope struct {
+	CommonServiceItem *naked.DNSSettingsUpdate `json:",omitempty"`
+}
+
+// dNSPatchSettingsResponseEnvelope is envelop of API response
+type dNSPatchSettingsResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 

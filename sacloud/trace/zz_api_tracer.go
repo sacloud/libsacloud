@@ -2857,6 +2857,39 @@ func (t *DNSTracer) Update(ctx context.Context, id types.ID, param *sacloud.DNSU
 	return resultDNS, err
 }
 
+// UpdateSettings is API call with trace log
+func (t *DNSTracer) UpdateSettings(ctx context.Context, id types.ID, param *sacloud.DNSUpdateSettingsRequest) (*sacloud.DNS, error) {
+	log.Println("[TRACE] DNSAPI.UpdateSettings start")
+	targetArguments := struct {
+		Argid    types.ID                          `json:"id"`
+		Argparam *sacloud.DNSUpdateSettingsRequest `json:"param"`
+	}{
+		Argid:    id,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] DNSAPI.UpdateSettings end")
+	}()
+
+	resultDNS, err := t.Internal.UpdateSettings(ctx, id, param)
+	targetResults := struct {
+		DNS   *sacloud.DNS
+		Error error
+	}{
+		DNS:   resultDNS,
+		Error: err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultDNS, err
+}
+
 // Patch is API call with trace log
 func (t *DNSTracer) Patch(ctx context.Context, id types.ID, param *sacloud.DNSPatchRequest) (*sacloud.DNS, error) {
 	log.Println("[TRACE] DNSAPI.Patch start")
@@ -2876,6 +2909,39 @@ func (t *DNSTracer) Patch(ctx context.Context, id types.ID, param *sacloud.DNSPa
 	}()
 
 	resultDNS, err := t.Internal.Patch(ctx, id, param)
+	targetResults := struct {
+		DNS   *sacloud.DNS
+		Error error
+	}{
+		DNS:   resultDNS,
+		Error: err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultDNS, err
+}
+
+// PatchSettings is API call with trace log
+func (t *DNSTracer) PatchSettings(ctx context.Context, id types.ID, param *sacloud.DNSPatchSettingsRequest) (*sacloud.DNS, error) {
+	log.Println("[TRACE] DNSAPI.PatchSettings start")
+	targetArguments := struct {
+		Argid    types.ID                         `json:"id"`
+		Argparam *sacloud.DNSPatchSettingsRequest `json:"param"`
+	}{
+		Argid:    id,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] DNSAPI.PatchSettings end")
+	}()
+
+	resultDNS, err := t.Internal.PatchSettings(ctx, id, param)
 	targetResults := struct {
 		DNS   *sacloud.DNS
 		Error error

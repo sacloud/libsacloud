@@ -1247,8 +1247,20 @@ type DNSUpdateStubResult struct {
 	Err error
 }
 
+// DNSUpdateSettingsStubResult is expected values of the UpdateSettings operation
+type DNSUpdateSettingsStubResult struct {
+	DNS *sacloud.DNS
+	Err error
+}
+
 // DNSPatchStubResult is expected values of the Patch operation
 type DNSPatchStubResult struct {
+	DNS *sacloud.DNS
+	Err error
+}
+
+// DNSPatchSettingsStubResult is expected values of the PatchSettings operation
+type DNSPatchSettingsStubResult struct {
 	DNS *sacloud.DNS
 	Err error
 }
@@ -1260,12 +1272,14 @@ type DNSDeleteStubResult struct {
 
 // DNSStub is for trace DNSOp operations
 type DNSStub struct {
-	FindStubResult   *DNSFindStubResult
-	CreateStubResult *DNSCreateStubResult
-	ReadStubResult   *DNSReadStubResult
-	UpdateStubResult *DNSUpdateStubResult
-	PatchStubResult  *DNSPatchStubResult
-	DeleteStubResult *DNSDeleteStubResult
+	FindStubResult           *DNSFindStubResult
+	CreateStubResult         *DNSCreateStubResult
+	ReadStubResult           *DNSReadStubResult
+	UpdateStubResult         *DNSUpdateStubResult
+	UpdateSettingsStubResult *DNSUpdateSettingsStubResult
+	PatchStubResult          *DNSPatchStubResult
+	PatchSettingsStubResult  *DNSPatchSettingsStubResult
+	DeleteStubResult         *DNSDeleteStubResult
 }
 
 // NewDNSStub creates new DNSStub instance
@@ -1305,12 +1319,28 @@ func (s *DNSStub) Update(ctx context.Context, id types.ID, param *sacloud.DNSUpd
 	return s.UpdateStubResult.DNS, s.UpdateStubResult.Err
 }
 
+// UpdateSettings is API call with trace log
+func (s *DNSStub) UpdateSettings(ctx context.Context, id types.ID, param *sacloud.DNSUpdateSettingsRequest) (*sacloud.DNS, error) {
+	if s.UpdateSettingsStubResult == nil {
+		log.Fatal("DNSStub.UpdateSettingsStubResult is not set")
+	}
+	return s.UpdateSettingsStubResult.DNS, s.UpdateSettingsStubResult.Err
+}
+
 // Patch is API call with trace log
 func (s *DNSStub) Patch(ctx context.Context, id types.ID, param *sacloud.DNSPatchRequest) (*sacloud.DNS, error) {
 	if s.PatchStubResult == nil {
 		log.Fatal("DNSStub.PatchStubResult is not set")
 	}
 	return s.PatchStubResult.DNS, s.PatchStubResult.Err
+}
+
+// PatchSettings is API call with trace log
+func (s *DNSStub) PatchSettings(ctx context.Context, id types.ID, param *sacloud.DNSPatchSettingsRequest) (*sacloud.DNS, error) {
+	if s.PatchSettingsStubResult == nil {
+		log.Fatal("DNSStub.PatchSettingsStubResult is not set")
+	}
+	return s.PatchSettingsStubResult.DNS, s.PatchSettingsStubResult.Err
 }
 
 // Delete is API call with trace log

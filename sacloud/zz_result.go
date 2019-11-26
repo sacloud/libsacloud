@@ -459,8 +459,22 @@ type dNSUpdateResult struct {
 	DNS *DNS `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
 }
 
+// dNSUpdateSettingsResult represents the Result of API
+type dNSUpdateSettingsResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	DNS *DNS `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
+}
+
 // dNSPatchResult represents the Result of API
 type dNSPatchResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	DNS *DNS `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
+}
+
+// dNSPatchSettingsResult represents the Result of API
+type dNSPatchSettingsResult struct {
 	IsOk bool `json:",omitempty"` // is_ok
 
 	DNS *DNS `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`

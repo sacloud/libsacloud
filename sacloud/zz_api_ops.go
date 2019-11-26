@@ -3333,6 +3333,43 @@ func (o *DNSOp) Update(ctx context.Context, id types.ID, param *DNSUpdateRequest
 	return results.DNS, nil
 }
 
+// UpdateSettings is API call
+func (o *DNSOp) UpdateSettings(ctx context.Context, id types.ID, param *DNSUpdateSettingsRequest) (*DNS, error) {
+	// build request URL
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       APIDefaultZone,
+		"id":         id,
+		"param":      param,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	// build request body
+	var body interface{}
+	v, err := o.transformUpdateSettingsArgs(id, param)
+	if err != nil {
+		return nil, err
+	}
+	body = v
+
+	// do request
+	data, err := o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	// build results
+	results, err := o.transformUpdateSettingsResults(data)
+	if err != nil {
+		return nil, err
+	}
+	return results.DNS, nil
+}
+
 // Patch is API call
 func (o *DNSOp) Patch(ctx context.Context, id types.ID, param *DNSPatchRequest) (*DNS, error) {
 	// build request URL
@@ -3391,6 +3428,61 @@ func (o *DNSOp) Patch(ctx context.Context, id types.ID, param *DNSPatchRequest) 
 
 	// build results
 	results, err := o.transformPatchResults(data)
+	if err != nil {
+		return nil, err
+	}
+	return results.DNS, nil
+}
+
+// PatchSettings is API call
+func (o *DNSOp) PatchSettings(ctx context.Context, id types.ID, param *DNSPatchSettingsRequest) (*DNS, error) {
+	// build request URL
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       APIDefaultZone,
+		"id":         id,
+		"param":      param,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	original, err := o.Read(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+	patchParam := make(map[string]interface{})
+	if err := mergo.Map(&patchParam, original); err != nil {
+		return nil, fmt.Errorf("patch is failed: %s", err)
+	}
+	if err := mergo.Map(&patchParam, param); err != nil {
+		return nil, fmt.Errorf("patch is failed: %s", err)
+	}
+	if err := mergo.Map(param, &patchParam); err != nil {
+		return nil, fmt.Errorf("patch is failed: %s", err)
+	}
+
+	if param.PatchEmptyToRecords {
+		param.Records = nil
+	}
+	// build request body
+	var body interface{}
+	v, err := o.transformPatchSettingsArgs(id, param)
+	if err != nil {
+		return nil, err
+	}
+	body = v
+
+	// do request
+	data, err := o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	// build results
+	results, err := o.transformPatchSettingsResults(data)
 	if err != nil {
 		return nil, err
 	}
