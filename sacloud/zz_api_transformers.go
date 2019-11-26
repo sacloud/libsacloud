@@ -3756,6 +3756,49 @@ func (o *LoadBalancerOp) transformUpdateResults(data []byte) (*loadBalancerUpdat
 	return results, nil
 }
 
+func (o *LoadBalancerOp) transformUpdateSettingsArgs(id types.ID, param *LoadBalancerUpdateSettingsRequest) (*loadBalancerUpdateSettingsRequestEnvelope, error) {
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	var arg0 interface{} = id
+	if v, ok := arg0.(argumentDefaulter); ok {
+		arg0 = v.setDefaults()
+	}
+	if param == nil {
+		param = &LoadBalancerUpdateSettingsRequest{}
+	}
+	var arg1 interface{} = param
+	if v, ok := arg1.(argumentDefaulter); ok {
+		arg1 = v.setDefaults()
+	}
+	args := &struct {
+		Arg0 interface{}
+		Arg1 interface{} `mapconv:"Appliance,recursive"`
+	}{
+		Arg0: arg0,
+		Arg1: arg1,
+	}
+
+	v := &loadBalancerUpdateSettingsRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	return v, nil
+}
+
+func (o *LoadBalancerOp) transformUpdateSettingsResults(data []byte) (*loadBalancerUpdateSettingsResult, error) {
+	nakedResponse := &loadBalancerUpdateSettingsResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &loadBalancerUpdateSettingsResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
+}
+
 func (o *LoadBalancerOp) transformPatchArgs(id types.ID, param *LoadBalancerPatchRequest) (*loadBalancerPatchRequestEnvelope, error) {
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
@@ -3793,6 +3836,49 @@ func (o *LoadBalancerOp) transformPatchResults(data []byte) (*loadBalancerPatchR
 	}
 
 	results := &loadBalancerPatchResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
+}
+
+func (o *LoadBalancerOp) transformPatchSettingsArgs(id types.ID, param *LoadBalancerPatchSettingsRequest) (*loadBalancerPatchSettingsRequestEnvelope, error) {
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	var arg0 interface{} = id
+	if v, ok := arg0.(argumentDefaulter); ok {
+		arg0 = v.setDefaults()
+	}
+	if param == nil {
+		param = &LoadBalancerPatchSettingsRequest{}
+	}
+	var arg1 interface{} = param
+	if v, ok := arg1.(argumentDefaulter); ok {
+		arg1 = v.setDefaults()
+	}
+	args := &struct {
+		Arg0 interface{}
+		Arg1 interface{} `mapconv:"Appliance,recursive"`
+	}{
+		Arg0: arg0,
+		Arg1: arg1,
+	}
+
+	v := &loadBalancerPatchSettingsRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	return v, nil
+}
+
+func (o *LoadBalancerOp) transformPatchSettingsResults(data []byte) (*loadBalancerPatchSettingsResult, error) {
+	nakedResponse := &loadBalancerPatchSettingsResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &loadBalancerPatchSettingsResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}

@@ -5987,6 +5987,43 @@ func (o *LoadBalancerOp) Update(ctx context.Context, zone string, id types.ID, p
 	return results.LoadBalancer, nil
 }
 
+// UpdateSettings is API call
+func (o *LoadBalancerOp) UpdateSettings(ctx context.Context, zone string, id types.ID, param *LoadBalancerUpdateSettingsRequest) (*LoadBalancer, error) {
+	// build request URL
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+		"param":      param,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	// build request body
+	var body interface{}
+	v, err := o.transformUpdateSettingsArgs(id, param)
+	if err != nil {
+		return nil, err
+	}
+	body = v
+
+	// do request
+	data, err := o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	// build results
+	results, err := o.transformUpdateSettingsResults(data)
+	if err != nil {
+		return nil, err
+	}
+	return results.LoadBalancer, nil
+}
+
 // Patch is API call
 func (o *LoadBalancerOp) Patch(ctx context.Context, zone string, id types.ID, param *LoadBalancerPatchRequest) (*LoadBalancer, error) {
 	// build request URL
@@ -6045,6 +6082,61 @@ func (o *LoadBalancerOp) Patch(ctx context.Context, zone string, id types.ID, pa
 
 	// build results
 	results, err := o.transformPatchResults(data)
+	if err != nil {
+		return nil, err
+	}
+	return results.LoadBalancer, nil
+}
+
+// PatchSettings is API call
+func (o *LoadBalancerOp) PatchSettings(ctx context.Context, zone string, id types.ID, param *LoadBalancerPatchSettingsRequest) (*LoadBalancer, error) {
+	// build request URL
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+		"param":      param,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	original, err := o.Read(ctx, zone, id)
+	if err != nil {
+		return nil, err
+	}
+	patchParam := make(map[string]interface{})
+	if err := mergo.Map(&patchParam, original); err != nil {
+		return nil, fmt.Errorf("patch is failed: %s", err)
+	}
+	if err := mergo.Map(&patchParam, param); err != nil {
+		return nil, fmt.Errorf("patch is failed: %s", err)
+	}
+	if err := mergo.Map(param, &patchParam); err != nil {
+		return nil, fmt.Errorf("patch is failed: %s", err)
+	}
+
+	if param.PatchEmptyToVirtualIPAddresses {
+		param.VirtualIPAddresses = nil
+	}
+	// build request body
+	var body interface{}
+	v, err := o.transformPatchSettingsArgs(id, param)
+	if err != nil {
+		return nil, err
+	}
+	body = v
+
+	// do request
+	data, err := o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	// build results
+	results, err := o.transformPatchSettingsResults(data)
 	if err != nil {
 		return nil, err
 	}

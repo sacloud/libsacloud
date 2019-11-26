@@ -339,7 +339,9 @@ type LoadBalancerAPI interface {
 	Create(ctx context.Context, zone string, param *LoadBalancerCreateRequest) (*LoadBalancer, error)
 	Read(ctx context.Context, zone string, id types.ID) (*LoadBalancer, error)
 	Update(ctx context.Context, zone string, id types.ID, param *LoadBalancerUpdateRequest) (*LoadBalancer, error)
+	UpdateSettings(ctx context.Context, zone string, id types.ID, param *LoadBalancerUpdateSettingsRequest) (*LoadBalancer, error)
 	Patch(ctx context.Context, zone string, id types.ID, param *LoadBalancerPatchRequest) (*LoadBalancer, error)
+	PatchSettings(ctx context.Context, zone string, id types.ID, param *LoadBalancerPatchSettingsRequest) (*LoadBalancer, error)
 	Delete(ctx context.Context, zone string, id types.ID) error
 	Config(ctx context.Context, zone string, id types.ID) error
 	Boot(ctx context.Context, zone string, id types.ID) error

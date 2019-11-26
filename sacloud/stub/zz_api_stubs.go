@@ -2381,8 +2381,20 @@ type LoadBalancerUpdateStubResult struct {
 	Err          error
 }
 
+// LoadBalancerUpdateSettingsStubResult is expected values of the UpdateSettings operation
+type LoadBalancerUpdateSettingsStubResult struct {
+	LoadBalancer *sacloud.LoadBalancer
+	Err          error
+}
+
 // LoadBalancerPatchStubResult is expected values of the Patch operation
 type LoadBalancerPatchStubResult struct {
+	LoadBalancer *sacloud.LoadBalancer
+	Err          error
+}
+
+// LoadBalancerPatchSettingsStubResult is expected values of the PatchSettings operation
+type LoadBalancerPatchSettingsStubResult struct {
 	LoadBalancer *sacloud.LoadBalancer
 	Err          error
 }
@@ -2430,7 +2442,9 @@ type LoadBalancerStub struct {
 	CreateStubResult           *LoadBalancerCreateStubResult
 	ReadStubResult             *LoadBalancerReadStubResult
 	UpdateStubResult           *LoadBalancerUpdateStubResult
+	UpdateSettingsStubResult   *LoadBalancerUpdateSettingsStubResult
 	PatchStubResult            *LoadBalancerPatchStubResult
+	PatchSettingsStubResult    *LoadBalancerPatchSettingsStubResult
 	DeleteStubResult           *LoadBalancerDeleteStubResult
 	ConfigStubResult           *LoadBalancerConfigStubResult
 	BootStubResult             *LoadBalancerBootStubResult
@@ -2477,12 +2491,28 @@ func (s *LoadBalancerStub) Update(ctx context.Context, zone string, id types.ID,
 	return s.UpdateStubResult.LoadBalancer, s.UpdateStubResult.Err
 }
 
+// UpdateSettings is API call with trace log
+func (s *LoadBalancerStub) UpdateSettings(ctx context.Context, zone string, id types.ID, param *sacloud.LoadBalancerUpdateSettingsRequest) (*sacloud.LoadBalancer, error) {
+	if s.UpdateSettingsStubResult == nil {
+		log.Fatal("LoadBalancerStub.UpdateSettingsStubResult is not set")
+	}
+	return s.UpdateSettingsStubResult.LoadBalancer, s.UpdateSettingsStubResult.Err
+}
+
 // Patch is API call with trace log
 func (s *LoadBalancerStub) Patch(ctx context.Context, zone string, id types.ID, param *sacloud.LoadBalancerPatchRequest) (*sacloud.LoadBalancer, error) {
 	if s.PatchStubResult == nil {
 		log.Fatal("LoadBalancerStub.PatchStubResult is not set")
 	}
 	return s.PatchStubResult.LoadBalancer, s.PatchStubResult.Err
+}
+
+// PatchSettings is API call with trace log
+func (s *LoadBalancerStub) PatchSettings(ctx context.Context, zone string, id types.ID, param *sacloud.LoadBalancerPatchSettingsRequest) (*sacloud.LoadBalancer, error) {
+	if s.PatchSettingsStubResult == nil {
+		log.Fatal("LoadBalancerStub.PatchSettingsStubResult is not set")
+	}
+	return s.PatchSettingsStubResult.LoadBalancer, s.PatchSettingsStubResult.Err
 }
 
 // Delete is API call with trace log

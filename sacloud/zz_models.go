@@ -13734,6 +13734,52 @@ func (o *LoadBalancerUpdateRequest) SetSettingsHash(v string) {
 }
 
 /*************************************************
+* LoadBalancerUpdateSettingsRequest
+*************************************************/
+
+// LoadBalancerUpdateSettingsRequest represents API parameter/response structure
+type LoadBalancerUpdateSettingsRequest struct {
+	VirtualIPAddresses []*LoadBalancerVirtualIPAddress `mapconv:"Settings.[]LoadBalancer,recursive" validate:"min=0,max=10"`
+	SettingsHash       string                          `json:",omitempty" mapconv:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *LoadBalancerUpdateSettingsRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *LoadBalancerUpdateSettingsRequest) setDefaults() interface{} {
+	return &struct {
+		VirtualIPAddresses []*LoadBalancerVirtualIPAddress `mapconv:"Settings.[]LoadBalancer,recursive" validate:"min=0,max=10"`
+		SettingsHash       string                          `json:",omitempty" mapconv:",omitempty"`
+	}{
+		VirtualIPAddresses: o.GetVirtualIPAddresses(),
+		SettingsHash:       o.GetSettingsHash(),
+	}
+}
+
+// GetVirtualIPAddresses returns value of VirtualIPAddresses
+func (o *LoadBalancerUpdateSettingsRequest) GetVirtualIPAddresses() []*LoadBalancerVirtualIPAddress {
+	return o.VirtualIPAddresses
+}
+
+// SetVirtualIPAddresses sets value to VirtualIPAddresses
+func (o *LoadBalancerUpdateSettingsRequest) SetVirtualIPAddresses(v []*LoadBalancerVirtualIPAddress) {
+	o.VirtualIPAddresses = v
+}
+
+// GetSettingsHash returns value of SettingsHash
+func (o *LoadBalancerUpdateSettingsRequest) GetSettingsHash() string {
+	return o.SettingsHash
+}
+
+// SetSettingsHash sets value to SettingsHash
+func (o *LoadBalancerUpdateSettingsRequest) SetSettingsHash(v string) {
+	o.SettingsHash = v
+}
+
+/*************************************************
 * LoadBalancerPatchRequest
 *************************************************/
 
@@ -13900,6 +13946,65 @@ func (o *LoadBalancerPatchRequest) GetSettingsHash() string {
 
 // SetSettingsHash sets value to SettingsHash
 func (o *LoadBalancerPatchRequest) SetSettingsHash(v string) {
+	o.SettingsHash = v
+}
+
+/*************************************************
+* LoadBalancerPatchSettingsRequest
+*************************************************/
+
+// LoadBalancerPatchSettingsRequest represents API parameter/response structure
+type LoadBalancerPatchSettingsRequest struct {
+	VirtualIPAddresses             []*LoadBalancerVirtualIPAddress `mapconv:"Settings.[]LoadBalancer,recursive" validate:"min=0,max=10"`
+	PatchEmptyToVirtualIPAddresses bool
+	SettingsHash                   string `json:",omitempty" mapconv:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *LoadBalancerPatchSettingsRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *LoadBalancerPatchSettingsRequest) setDefaults() interface{} {
+	return &struct {
+		VirtualIPAddresses             []*LoadBalancerVirtualIPAddress `mapconv:"Settings.[]LoadBalancer,recursive" validate:"min=0,max=10"`
+		PatchEmptyToVirtualIPAddresses bool
+		SettingsHash                   string `json:",omitempty" mapconv:",omitempty"`
+	}{
+		VirtualIPAddresses:             o.GetVirtualIPAddresses(),
+		PatchEmptyToVirtualIPAddresses: o.GetPatchEmptyToVirtualIPAddresses(),
+		SettingsHash:                   o.GetSettingsHash(),
+	}
+}
+
+// GetVirtualIPAddresses returns value of VirtualIPAddresses
+func (o *LoadBalancerPatchSettingsRequest) GetVirtualIPAddresses() []*LoadBalancerVirtualIPAddress {
+	return o.VirtualIPAddresses
+}
+
+// SetVirtualIPAddresses sets value to VirtualIPAddresses
+func (o *LoadBalancerPatchSettingsRequest) SetVirtualIPAddresses(v []*LoadBalancerVirtualIPAddress) {
+	o.VirtualIPAddresses = v
+}
+
+// GetPatchEmptyToVirtualIPAddresses returns value of PatchEmptyToVirtualIPAddresses
+func (o *LoadBalancerPatchSettingsRequest) GetPatchEmptyToVirtualIPAddresses() bool {
+	return o.PatchEmptyToVirtualIPAddresses
+}
+
+// SetPatchEmptyToVirtualIPAddresses sets value to PatchEmptyToVirtualIPAddresses
+func (o *LoadBalancerPatchSettingsRequest) SetPatchEmptyToVirtualIPAddresses(v bool) {
+	o.PatchEmptyToVirtualIPAddresses = v
+}
+
+// GetSettingsHash returns value of SettingsHash
+func (o *LoadBalancerPatchSettingsRequest) GetSettingsHash() string {
+	return o.SettingsHash
+}
+
+// SetSettingsHash sets value to SettingsHash
+func (o *LoadBalancerPatchSettingsRequest) SetSettingsHash(v string) {
 	o.SettingsHash = v
 }
 

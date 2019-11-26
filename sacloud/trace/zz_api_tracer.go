@@ -5216,6 +5216,41 @@ func (t *LoadBalancerTracer) Update(ctx context.Context, zone string, id types.I
 	return resultLoadBalancer, err
 }
 
+// UpdateSettings is API call with trace log
+func (t *LoadBalancerTracer) UpdateSettings(ctx context.Context, zone string, id types.ID, param *sacloud.LoadBalancerUpdateSettingsRequest) (*sacloud.LoadBalancer, error) {
+	log.Println("[TRACE] LoadBalancerAPI.UpdateSettings start")
+	targetArguments := struct {
+		Argzone  string
+		Argid    types.ID                                   `json:"id"`
+		Argparam *sacloud.LoadBalancerUpdateSettingsRequest `json:"param"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] LoadBalancerAPI.UpdateSettings end")
+	}()
+
+	resultLoadBalancer, err := t.Internal.UpdateSettings(ctx, zone, id, param)
+	targetResults := struct {
+		LoadBalancer *sacloud.LoadBalancer
+		Error        error
+	}{
+		LoadBalancer: resultLoadBalancer,
+		Error:        err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultLoadBalancer, err
+}
+
 // Patch is API call with trace log
 func (t *LoadBalancerTracer) Patch(ctx context.Context, zone string, id types.ID, param *sacloud.LoadBalancerPatchRequest) (*sacloud.LoadBalancer, error) {
 	log.Println("[TRACE] LoadBalancerAPI.Patch start")
@@ -5237,6 +5272,41 @@ func (t *LoadBalancerTracer) Patch(ctx context.Context, zone string, id types.ID
 	}()
 
 	resultLoadBalancer, err := t.Internal.Patch(ctx, zone, id, param)
+	targetResults := struct {
+		LoadBalancer *sacloud.LoadBalancer
+		Error        error
+	}{
+		LoadBalancer: resultLoadBalancer,
+		Error:        err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultLoadBalancer, err
+}
+
+// PatchSettings is API call with trace log
+func (t *LoadBalancerTracer) PatchSettings(ctx context.Context, zone string, id types.ID, param *sacloud.LoadBalancerPatchSettingsRequest) (*sacloud.LoadBalancer, error) {
+	log.Println("[TRACE] LoadBalancerAPI.PatchSettings start")
+	targetArguments := struct {
+		Argzone  string
+		Argid    types.ID                                  `json:"id"`
+		Argparam *sacloud.LoadBalancerPatchSettingsRequest `json:"param"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] LoadBalancerAPI.PatchSettings end")
+	}()
+
+	resultLoadBalancer, err := t.Internal.PatchSettings(ctx, zone, id, param)
 	targetResults := struct {
 		LoadBalancer *sacloud.LoadBalancer
 		Error        error

@@ -1475,6 +1475,19 @@ type loadBalancerUpdateResponseEnvelope struct {
 	Appliance *naked.LoadBalancer `json:",omitempty"`
 }
 
+// loadBalancerUpdateSettingsRequestEnvelope is envelop of API request
+type loadBalancerUpdateSettingsRequestEnvelope struct {
+	Appliance *naked.LoadBalancerSettingsUpdate `json:",omitempty"`
+}
+
+// loadBalancerUpdateSettingsResponseEnvelope is envelop of API response
+type loadBalancerUpdateSettingsResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Appliance *naked.LoadBalancer `json:",omitempty"`
+}
+
 // loadBalancerPatchRequestEnvelope is envelop of API request
 type loadBalancerPatchRequestEnvelope struct {
 	Appliance *naked.LoadBalancer `json:",omitempty"`
@@ -1482,6 +1495,19 @@ type loadBalancerPatchRequestEnvelope struct {
 
 // loadBalancerPatchResponseEnvelope is envelop of API response
 type loadBalancerPatchResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Appliance *naked.LoadBalancer `json:",omitempty"`
+}
+
+// loadBalancerPatchSettingsRequestEnvelope is envelop of API request
+type loadBalancerPatchSettingsRequestEnvelope struct {
+	Appliance *naked.LoadBalancerSettingsUpdate `json:",omitempty"`
+}
+
+// loadBalancerPatchSettingsResponseEnvelope is envelop of API response
+type loadBalancerPatchSettingsResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 

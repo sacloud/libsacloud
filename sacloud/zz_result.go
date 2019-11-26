@@ -852,8 +852,22 @@ type loadBalancerUpdateResult struct {
 	LoadBalancer *LoadBalancer `json:",omitempty" mapconv:"Appliance,omitempty,recursive"`
 }
 
+// loadBalancerUpdateSettingsResult represents the Result of API
+type loadBalancerUpdateSettingsResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	LoadBalancer *LoadBalancer `json:",omitempty" mapconv:"Appliance,omitempty,recursive"`
+}
+
 // loadBalancerPatchResult represents the Result of API
 type loadBalancerPatchResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	LoadBalancer *LoadBalancer `json:",omitempty" mapconv:"Appliance,omitempty,recursive"`
+}
+
+// loadBalancerPatchSettingsResult represents the Result of API
+type loadBalancerPatchSettingsResult struct {
 	IsOk bool `json:",omitempty"` // is_ok
 
 	LoadBalancer *LoadBalancer `json:",omitempty" mapconv:"Appliance,omitempty,recursive"`
