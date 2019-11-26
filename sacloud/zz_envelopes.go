@@ -2864,6 +2864,19 @@ type vPCRouterUpdateResponseEnvelope struct {
 	Appliance *naked.VPCRouter `json:",omitempty"`
 }
 
+// vPCRouterUpdateSettingsRequestEnvelope is envelop of API request
+type vPCRouterUpdateSettingsRequestEnvelope struct {
+	Appliance *naked.VPCRouterSettingsUpdate `json:",omitempty"`
+}
+
+// vPCRouterUpdateSettingsResponseEnvelope is envelop of API response
+type vPCRouterUpdateSettingsResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Appliance *naked.VPCRouter `json:",omitempty"`
+}
+
 // vPCRouterPatchRequestEnvelope is envelop of API request
 type vPCRouterPatchRequestEnvelope struct {
 	Appliance *naked.VPCRouter `json:",omitempty"`
@@ -2871,6 +2884,19 @@ type vPCRouterPatchRequestEnvelope struct {
 
 // vPCRouterPatchResponseEnvelope is envelop of API response
 type vPCRouterPatchResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Appliance *naked.VPCRouter `json:",omitempty"`
+}
+
+// vPCRouterPatchSettingsRequestEnvelope is envelop of API request
+type vPCRouterPatchSettingsRequestEnvelope struct {
+	Appliance *naked.VPCRouterSettingsUpdate `json:",omitempty"`
+}
+
+// vPCRouterPatchSettingsResponseEnvelope is envelop of API response
+type vPCRouterPatchSettingsResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 

@@ -29270,6 +29270,52 @@ func (o *VPCRouterUpdateRequest) SetSettingsHash(v string) {
 }
 
 /*************************************************
+* VPCRouterUpdateSettingsRequest
+*************************************************/
+
+// VPCRouterUpdateSettingsRequest represents API parameter/response structure
+type VPCRouterUpdateSettingsRequest struct {
+	Settings     *VPCRouterSetting `mapconv:",omitempty,recursive"`
+	SettingsHash string            `json:",omitempty" mapconv:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *VPCRouterUpdateSettingsRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *VPCRouterUpdateSettingsRequest) setDefaults() interface{} {
+	return &struct {
+		Settings     *VPCRouterSetting `mapconv:",omitempty,recursive"`
+		SettingsHash string            `json:",omitempty" mapconv:",omitempty"`
+	}{
+		Settings:     o.GetSettings(),
+		SettingsHash: o.GetSettingsHash(),
+	}
+}
+
+// GetSettings returns value of Settings
+func (o *VPCRouterUpdateSettingsRequest) GetSettings() *VPCRouterSetting {
+	return o.Settings
+}
+
+// SetSettings sets value to Settings
+func (o *VPCRouterUpdateSettingsRequest) SetSettings(v *VPCRouterSetting) {
+	o.Settings = v
+}
+
+// GetSettingsHash returns value of SettingsHash
+func (o *VPCRouterUpdateSettingsRequest) GetSettingsHash() string {
+	return o.SettingsHash
+}
+
+// SetSettingsHash sets value to SettingsHash
+func (o *VPCRouterUpdateSettingsRequest) SetSettingsHash(v string) {
+	o.SettingsHash = v
+}
+
+/*************************************************
 * VPCRouterPatchRequest
 *************************************************/
 
@@ -29436,6 +29482,65 @@ func (o *VPCRouterPatchRequest) GetSettingsHash() string {
 
 // SetSettingsHash sets value to SettingsHash
 func (o *VPCRouterPatchRequest) SetSettingsHash(v string) {
+	o.SettingsHash = v
+}
+
+/*************************************************
+* VPCRouterPatchSettingsRequest
+*************************************************/
+
+// VPCRouterPatchSettingsRequest represents API parameter/response structure
+type VPCRouterPatchSettingsRequest struct {
+	Settings             *VPCRouterSetting `mapconv:",omitempty,recursive"`
+	PatchEmptyToSettings bool
+	SettingsHash         string `json:",omitempty" mapconv:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *VPCRouterPatchSettingsRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *VPCRouterPatchSettingsRequest) setDefaults() interface{} {
+	return &struct {
+		Settings             *VPCRouterSetting `mapconv:",omitempty,recursive"`
+		PatchEmptyToSettings bool
+		SettingsHash         string `json:",omitempty" mapconv:",omitempty"`
+	}{
+		Settings:             o.GetSettings(),
+		PatchEmptyToSettings: o.GetPatchEmptyToSettings(),
+		SettingsHash:         o.GetSettingsHash(),
+	}
+}
+
+// GetSettings returns value of Settings
+func (o *VPCRouterPatchSettingsRequest) GetSettings() *VPCRouterSetting {
+	return o.Settings
+}
+
+// SetSettings sets value to Settings
+func (o *VPCRouterPatchSettingsRequest) SetSettings(v *VPCRouterSetting) {
+	o.Settings = v
+}
+
+// GetPatchEmptyToSettings returns value of PatchEmptyToSettings
+func (o *VPCRouterPatchSettingsRequest) GetPatchEmptyToSettings() bool {
+	return o.PatchEmptyToSettings
+}
+
+// SetPatchEmptyToSettings sets value to PatchEmptyToSettings
+func (o *VPCRouterPatchSettingsRequest) SetPatchEmptyToSettings(v bool) {
+	o.PatchEmptyToSettings = v
+}
+
+// GetSettingsHash returns value of SettingsHash
+func (o *VPCRouterPatchSettingsRequest) GetSettingsHash() string {
+	return o.SettingsHash
+}
+
+// SetSettingsHash sets value to SettingsHash
+func (o *VPCRouterPatchSettingsRequest) SetSettingsHash(v string) {
 	o.SettingsHash = v
 }
 

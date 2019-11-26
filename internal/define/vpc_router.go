@@ -45,9 +45,13 @@ var vpcRouterAPI = &dsl.Resource{
 
 		// update
 		ops.UpdateAppliance(vpcRouterAPIName, vpcRouterNakedType, vpcRouterUpdateParam, vpcRouterView),
+		// updateSettings
+		ops.UpdateApplianceSettings(vpcRouterAPIName, vpcRouterUpdateSettingsNakedType, vpcRouterUpdateSettingsParam, vpcRouterView),
 
 		// patch
 		ops.PatchAppliance(vpcRouterAPIName, vpcRouterNakedType, patchModel(vpcRouterUpdateParam), vpcRouterView),
+		// patchSettings
+		ops.PatchApplianceSettings(vpcRouterAPIName, vpcRouterUpdateSettingsNakedType, patchModel(vpcRouterUpdateSettingsParam), vpcRouterView),
 
 		// delete
 		ops.Delete(vpcRouterAPIName),
@@ -111,7 +115,8 @@ var vpcRouterAPI = &dsl.Resource{
 }
 
 var (
-	vpcRouterNakedType = meta.Static(naked.VPCRouter{})
+	vpcRouterNakedType               = meta.Static(naked.VPCRouter{})
+	vpcRouterUpdateSettingsNakedType = meta.Static(naked.VPCRouterSettingsUpdate{})
 
 	vpcRouterView = &dsl.Model{
 		Name:      vpcRouterAPIName,
@@ -203,6 +208,22 @@ var (
 			fields.Description(),
 			fields.Tags(),
 			fields.IconID(),
+			{
+				Name: "Settings",
+				Type: models.vpcRouterSetting(),
+				Tags: &dsl.FieldTags{
+					MapConv: ",omitempty,recursive",
+				},
+			},
+			// settings hash
+			fields.SettingsHash(),
+		},
+	}
+
+	vpcRouterUpdateSettingsParam = &dsl.Model{
+		Name:      names.UpdateSettingsParameterName(vpcRouterAPIName),
+		NakedType: vpcRouterNakedType,
+		Fields: []*dsl.FieldDesc{
 			{
 				Name: "Settings",
 				Type: models.vpcRouterSetting(),

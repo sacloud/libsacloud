@@ -628,7 +628,9 @@ type VPCRouterAPI interface {
 	Create(ctx context.Context, zone string, param *VPCRouterCreateRequest) (*VPCRouter, error)
 	Read(ctx context.Context, zone string, id types.ID) (*VPCRouter, error)
 	Update(ctx context.Context, zone string, id types.ID, param *VPCRouterUpdateRequest) (*VPCRouter, error)
+	UpdateSettings(ctx context.Context, zone string, id types.ID, param *VPCRouterUpdateSettingsRequest) (*VPCRouter, error)
 	Patch(ctx context.Context, zone string, id types.ID, param *VPCRouterPatchRequest) (*VPCRouter, error)
+	PatchSettings(ctx context.Context, zone string, id types.ID, param *VPCRouterPatchSettingsRequest) (*VPCRouter, error)
 	Delete(ctx context.Context, zone string, id types.ID) error
 	Config(ctx context.Context, zone string, id types.ID) error
 	Boot(ctx context.Context, zone string, id types.ID) error

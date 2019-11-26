@@ -1620,8 +1620,22 @@ type vPCRouterUpdateResult struct {
 	VPCRouter *VPCRouter `json:",omitempty" mapconv:"Appliance,omitempty,recursive"`
 }
 
+// vPCRouterUpdateSettingsResult represents the Result of API
+type vPCRouterUpdateSettingsResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	VPCRouter *VPCRouter `json:",omitempty" mapconv:"Appliance,omitempty,recursive"`
+}
+
 // vPCRouterPatchResult represents the Result of API
 type vPCRouterPatchResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	VPCRouter *VPCRouter `json:",omitempty" mapconv:"Appliance,omitempty,recursive"`
+}
+
+// vPCRouterPatchSettingsResult represents the Result of API
+type vPCRouterPatchSettingsResult struct {
 	IsOk bool `json:",omitempty"` // is_ok
 
 	VPCRouter *VPCRouter `json:",omitempty" mapconv:"Appliance,omitempty,recursive"`

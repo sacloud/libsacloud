@@ -10449,6 +10449,41 @@ func (t *VPCRouterTracer) Update(ctx context.Context, zone string, id types.ID, 
 	return resultVPCRouter, err
 }
 
+// UpdateSettings is API call with trace log
+func (t *VPCRouterTracer) UpdateSettings(ctx context.Context, zone string, id types.ID, param *sacloud.VPCRouterUpdateSettingsRequest) (*sacloud.VPCRouter, error) {
+	log.Println("[TRACE] VPCRouterAPI.UpdateSettings start")
+	targetArguments := struct {
+		Argzone  string
+		Argid    types.ID                                `json:"id"`
+		Argparam *sacloud.VPCRouterUpdateSettingsRequest `json:"param"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] VPCRouterAPI.UpdateSettings end")
+	}()
+
+	resultVPCRouter, err := t.Internal.UpdateSettings(ctx, zone, id, param)
+	targetResults := struct {
+		VPCRouter *sacloud.VPCRouter
+		Error     error
+	}{
+		VPCRouter: resultVPCRouter,
+		Error:     err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultVPCRouter, err
+}
+
 // Patch is API call with trace log
 func (t *VPCRouterTracer) Patch(ctx context.Context, zone string, id types.ID, param *sacloud.VPCRouterPatchRequest) (*sacloud.VPCRouter, error) {
 	log.Println("[TRACE] VPCRouterAPI.Patch start")
@@ -10470,6 +10505,41 @@ func (t *VPCRouterTracer) Patch(ctx context.Context, zone string, id types.ID, p
 	}()
 
 	resultVPCRouter, err := t.Internal.Patch(ctx, zone, id, param)
+	targetResults := struct {
+		VPCRouter *sacloud.VPCRouter
+		Error     error
+	}{
+		VPCRouter: resultVPCRouter,
+		Error:     err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultVPCRouter, err
+}
+
+// PatchSettings is API call with trace log
+func (t *VPCRouterTracer) PatchSettings(ctx context.Context, zone string, id types.ID, param *sacloud.VPCRouterPatchSettingsRequest) (*sacloud.VPCRouter, error) {
+	log.Println("[TRACE] VPCRouterAPI.PatchSettings start")
+	targetArguments := struct {
+		Argzone  string
+		Argid    types.ID                               `json:"id"`
+		Argparam *sacloud.VPCRouterPatchSettingsRequest `json:"param"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] VPCRouterAPI.PatchSettings end")
+	}()
+
+	resultVPCRouter, err := t.Internal.PatchSettings(ctx, zone, id, param)
 	targetResults := struct {
 		VPCRouter *sacloud.VPCRouter
 		Error     error

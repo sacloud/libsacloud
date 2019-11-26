@@ -7487,6 +7487,49 @@ func (o *VPCRouterOp) transformUpdateResults(data []byte) (*vPCRouterUpdateResul
 	return results, nil
 }
 
+func (o *VPCRouterOp) transformUpdateSettingsArgs(id types.ID, param *VPCRouterUpdateSettingsRequest) (*vPCRouterUpdateSettingsRequestEnvelope, error) {
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	var arg0 interface{} = id
+	if v, ok := arg0.(argumentDefaulter); ok {
+		arg0 = v.setDefaults()
+	}
+	if param == nil {
+		param = &VPCRouterUpdateSettingsRequest{}
+	}
+	var arg1 interface{} = param
+	if v, ok := arg1.(argumentDefaulter); ok {
+		arg1 = v.setDefaults()
+	}
+	args := &struct {
+		Arg0 interface{}
+		Arg1 interface{} `mapconv:"Appliance,recursive"`
+	}{
+		Arg0: arg0,
+		Arg1: arg1,
+	}
+
+	v := &vPCRouterUpdateSettingsRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	return v, nil
+}
+
+func (o *VPCRouterOp) transformUpdateSettingsResults(data []byte) (*vPCRouterUpdateSettingsResult, error) {
+	nakedResponse := &vPCRouterUpdateSettingsResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &vPCRouterUpdateSettingsResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
+}
+
 func (o *VPCRouterOp) transformPatchArgs(id types.ID, param *VPCRouterPatchRequest) (*vPCRouterPatchRequestEnvelope, error) {
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
@@ -7524,6 +7567,49 @@ func (o *VPCRouterOp) transformPatchResults(data []byte) (*vPCRouterPatchResult,
 	}
 
 	results := &vPCRouterPatchResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
+}
+
+func (o *VPCRouterOp) transformPatchSettingsArgs(id types.ID, param *VPCRouterPatchSettingsRequest) (*vPCRouterPatchSettingsRequestEnvelope, error) {
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	var arg0 interface{} = id
+	if v, ok := arg0.(argumentDefaulter); ok {
+		arg0 = v.setDefaults()
+	}
+	if param == nil {
+		param = &VPCRouterPatchSettingsRequest{}
+	}
+	var arg1 interface{} = param
+	if v, ok := arg1.(argumentDefaulter); ok {
+		arg1 = v.setDefaults()
+	}
+	args := &struct {
+		Arg0 interface{}
+		Arg1 interface{} `mapconv:"Appliance,recursive"`
+	}{
+		Arg0: arg0,
+		Arg1: arg1,
+	}
+
+	v := &vPCRouterPatchSettingsRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	return v, nil
+}
+
+func (o *VPCRouterOp) transformPatchSettingsResults(data []byte) (*vPCRouterPatchSettingsResult, error) {
+	nakedResponse := &vPCRouterPatchSettingsResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &vPCRouterPatchSettingsResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}

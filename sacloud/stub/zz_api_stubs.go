@@ -4848,8 +4848,20 @@ type VPCRouterUpdateStubResult struct {
 	Err       error
 }
 
+// VPCRouterUpdateSettingsStubResult is expected values of the UpdateSettings operation
+type VPCRouterUpdateSettingsStubResult struct {
+	VPCRouter *sacloud.VPCRouter
+	Err       error
+}
+
 // VPCRouterPatchStubResult is expected values of the Patch operation
 type VPCRouterPatchStubResult struct {
+	VPCRouter *sacloud.VPCRouter
+	Err       error
+}
+
+// VPCRouterPatchSettingsStubResult is expected values of the PatchSettings operation
+type VPCRouterPatchSettingsStubResult struct {
 	VPCRouter *sacloud.VPCRouter
 	Err       error
 }
@@ -4907,7 +4919,9 @@ type VPCRouterStub struct {
 	CreateStubResult               *VPCRouterCreateStubResult
 	ReadStubResult                 *VPCRouterReadStubResult
 	UpdateStubResult               *VPCRouterUpdateStubResult
+	UpdateSettingsStubResult       *VPCRouterUpdateSettingsStubResult
 	PatchStubResult                *VPCRouterPatchStubResult
+	PatchSettingsStubResult        *VPCRouterPatchSettingsStubResult
 	DeleteStubResult               *VPCRouterDeleteStubResult
 	ConfigStubResult               *VPCRouterConfigStubResult
 	BootStubResult                 *VPCRouterBootStubResult
@@ -4956,12 +4970,28 @@ func (s *VPCRouterStub) Update(ctx context.Context, zone string, id types.ID, pa
 	return s.UpdateStubResult.VPCRouter, s.UpdateStubResult.Err
 }
 
+// UpdateSettings is API call with trace log
+func (s *VPCRouterStub) UpdateSettings(ctx context.Context, zone string, id types.ID, param *sacloud.VPCRouterUpdateSettingsRequest) (*sacloud.VPCRouter, error) {
+	if s.UpdateSettingsStubResult == nil {
+		log.Fatal("VPCRouterStub.UpdateSettingsStubResult is not set")
+	}
+	return s.UpdateSettingsStubResult.VPCRouter, s.UpdateSettingsStubResult.Err
+}
+
 // Patch is API call with trace log
 func (s *VPCRouterStub) Patch(ctx context.Context, zone string, id types.ID, param *sacloud.VPCRouterPatchRequest) (*sacloud.VPCRouter, error) {
 	if s.PatchStubResult == nil {
 		log.Fatal("VPCRouterStub.PatchStubResult is not set")
 	}
 	return s.PatchStubResult.VPCRouter, s.PatchStubResult.Err
+}
+
+// PatchSettings is API call with trace log
+func (s *VPCRouterStub) PatchSettings(ctx context.Context, zone string, id types.ID, param *sacloud.VPCRouterPatchSettingsRequest) (*sacloud.VPCRouter, error) {
+	if s.PatchSettingsStubResult == nil {
+		log.Fatal("VPCRouterStub.PatchSettingsStubResult is not set")
+	}
+	return s.PatchSettingsStubResult.VPCRouter, s.PatchSettingsStubResult.Err
 }
 
 // Delete is API call with trace log
