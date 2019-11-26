@@ -3127,6 +3127,39 @@ func (t *GSLBTracer) Update(ctx context.Context, id types.ID, param *sacloud.GSL
 	return resultGSLB, err
 }
 
+// UpdateSettings is API call with trace log
+func (t *GSLBTracer) UpdateSettings(ctx context.Context, id types.ID, param *sacloud.GSLBUpdateSettingsRequest) (*sacloud.GSLB, error) {
+	log.Println("[TRACE] GSLBAPI.UpdateSettings start")
+	targetArguments := struct {
+		Argid    types.ID                           `json:"id"`
+		Argparam *sacloud.GSLBUpdateSettingsRequest `json:"param"`
+	}{
+		Argid:    id,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] GSLBAPI.UpdateSettings end")
+	}()
+
+	resultGSLB, err := t.Internal.UpdateSettings(ctx, id, param)
+	targetResults := struct {
+		GSLB  *sacloud.GSLB
+		Error error
+	}{
+		GSLB:  resultGSLB,
+		Error: err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultGSLB, err
+}
+
 // Patch is API call with trace log
 func (t *GSLBTracer) Patch(ctx context.Context, id types.ID, param *sacloud.GSLBPatchRequest) (*sacloud.GSLB, error) {
 	log.Println("[TRACE] GSLBAPI.Patch start")
@@ -3146,6 +3179,39 @@ func (t *GSLBTracer) Patch(ctx context.Context, id types.ID, param *sacloud.GSLB
 	}()
 
 	resultGSLB, err := t.Internal.Patch(ctx, id, param)
+	targetResults := struct {
+		GSLB  *sacloud.GSLB
+		Error error
+	}{
+		GSLB:  resultGSLB,
+		Error: err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultGSLB, err
+}
+
+// PatchSettings is API call with trace log
+func (t *GSLBTracer) PatchSettings(ctx context.Context, id types.ID, param *sacloud.GSLBPatchSettingsRequest) (*sacloud.GSLB, error) {
+	log.Println("[TRACE] GSLBAPI.PatchSettings start")
+	targetArguments := struct {
+		Argid    types.ID                          `json:"id"`
+		Argparam *sacloud.GSLBPatchSettingsRequest `json:"param"`
+	}{
+		Argid:    id,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] GSLBAPI.PatchSettings end")
+	}()
+
+	resultGSLB, err := t.Internal.PatchSettings(ctx, id, param)
 	targetResults := struct {
 		GSLB  *sacloud.GSLB
 		Error error

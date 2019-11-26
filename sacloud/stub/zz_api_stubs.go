@@ -1379,8 +1379,20 @@ type GSLBUpdateStubResult struct {
 	Err  error
 }
 
+// GSLBUpdateSettingsStubResult is expected values of the UpdateSettings operation
+type GSLBUpdateSettingsStubResult struct {
+	GSLB *sacloud.GSLB
+	Err  error
+}
+
 // GSLBPatchStubResult is expected values of the Patch operation
 type GSLBPatchStubResult struct {
+	GSLB *sacloud.GSLB
+	Err  error
+}
+
+// GSLBPatchSettingsStubResult is expected values of the PatchSettings operation
+type GSLBPatchSettingsStubResult struct {
 	GSLB *sacloud.GSLB
 	Err  error
 }
@@ -1392,12 +1404,14 @@ type GSLBDeleteStubResult struct {
 
 // GSLBStub is for trace GSLBOp operations
 type GSLBStub struct {
-	FindStubResult   *GSLBFindStubResult
-	CreateStubResult *GSLBCreateStubResult
-	ReadStubResult   *GSLBReadStubResult
-	UpdateStubResult *GSLBUpdateStubResult
-	PatchStubResult  *GSLBPatchStubResult
-	DeleteStubResult *GSLBDeleteStubResult
+	FindStubResult           *GSLBFindStubResult
+	CreateStubResult         *GSLBCreateStubResult
+	ReadStubResult           *GSLBReadStubResult
+	UpdateStubResult         *GSLBUpdateStubResult
+	UpdateSettingsStubResult *GSLBUpdateSettingsStubResult
+	PatchStubResult          *GSLBPatchStubResult
+	PatchSettingsStubResult  *GSLBPatchSettingsStubResult
+	DeleteStubResult         *GSLBDeleteStubResult
 }
 
 // NewGSLBStub creates new GSLBStub instance
@@ -1437,12 +1451,28 @@ func (s *GSLBStub) Update(ctx context.Context, id types.ID, param *sacloud.GSLBU
 	return s.UpdateStubResult.GSLB, s.UpdateStubResult.Err
 }
 
+// UpdateSettings is API call with trace log
+func (s *GSLBStub) UpdateSettings(ctx context.Context, id types.ID, param *sacloud.GSLBUpdateSettingsRequest) (*sacloud.GSLB, error) {
+	if s.UpdateSettingsStubResult == nil {
+		log.Fatal("GSLBStub.UpdateSettingsStubResult is not set")
+	}
+	return s.UpdateSettingsStubResult.GSLB, s.UpdateSettingsStubResult.Err
+}
+
 // Patch is API call with trace log
 func (s *GSLBStub) Patch(ctx context.Context, id types.ID, param *sacloud.GSLBPatchRequest) (*sacloud.GSLB, error) {
 	if s.PatchStubResult == nil {
 		log.Fatal("GSLBStub.PatchStubResult is not set")
 	}
 	return s.PatchStubResult.GSLB, s.PatchStubResult.Err
+}
+
+// PatchSettings is API call with trace log
+func (s *GSLBStub) PatchSettings(ctx context.Context, id types.ID, param *sacloud.GSLBPatchSettingsRequest) (*sacloud.GSLB, error) {
+	if s.PatchSettingsStubResult == nil {
+		log.Fatal("GSLBStub.PatchSettingsStubResult is not set")
+	}
+	return s.PatchSettingsStubResult.GSLB, s.PatchSettingsStubResult.Err
 }
 
 // Delete is API call with trace log

@@ -9605,6 +9605,107 @@ func (o *GSLBUpdateRequest) SetSettingsHash(v string) {
 }
 
 /*************************************************
+* GSLBUpdateSettingsRequest
+*************************************************/
+
+// GSLBUpdateSettingsRequest represents API parameter/response structure
+type GSLBUpdateSettingsRequest struct {
+	HealthCheck        *GSLBHealthCheck `mapconv:"Settings.GSLB.HealthCheck,recursive"`
+	DelayLoop          int              `mapconv:"Settings.GSLB.DelayLoop" validate:"min=10,max=60"`
+	Weighted           types.StringFlag `mapconv:"Settings.GSLB.Weighted"`
+	SorryServer        string           `mapconv:"Settings.GSLB.SorryServer"`
+	DestinationServers []*GSLBServer    `mapconv:"Settings.GSLB.[]Servers,recursive" validate:"min=0,max=12"`
+	SettingsHash       string           `json:",omitempty" mapconv:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *GSLBUpdateSettingsRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *GSLBUpdateSettingsRequest) setDefaults() interface{} {
+	return &struct {
+		HealthCheck        *GSLBHealthCheck `mapconv:"Settings.GSLB.HealthCheck,recursive"`
+		DelayLoop          int              `mapconv:"Settings.GSLB.DelayLoop" validate:"min=10,max=60"`
+		Weighted           types.StringFlag `mapconv:"Settings.GSLB.Weighted"`
+		SorryServer        string           `mapconv:"Settings.GSLB.SorryServer"`
+		DestinationServers []*GSLBServer    `mapconv:"Settings.GSLB.[]Servers,recursive" validate:"min=0,max=12"`
+		SettingsHash       string           `json:",omitempty" mapconv:",omitempty"`
+	}{
+		HealthCheck:        o.GetHealthCheck(),
+		DelayLoop:          o.GetDelayLoop(),
+		Weighted:           o.GetWeighted(),
+		SorryServer:        o.GetSorryServer(),
+		DestinationServers: o.GetDestinationServers(),
+		SettingsHash:       o.GetSettingsHash(),
+	}
+}
+
+// GetHealthCheck returns value of HealthCheck
+func (o *GSLBUpdateSettingsRequest) GetHealthCheck() *GSLBHealthCheck {
+	return o.HealthCheck
+}
+
+// SetHealthCheck sets value to HealthCheck
+func (o *GSLBUpdateSettingsRequest) SetHealthCheck(v *GSLBHealthCheck) {
+	o.HealthCheck = v
+}
+
+// GetDelayLoop returns value of DelayLoop
+func (o *GSLBUpdateSettingsRequest) GetDelayLoop() int {
+	if o.DelayLoop == 0 {
+		return 10
+	}
+	return o.DelayLoop
+}
+
+// SetDelayLoop sets value to DelayLoop
+func (o *GSLBUpdateSettingsRequest) SetDelayLoop(v int) {
+	o.DelayLoop = v
+}
+
+// GetWeighted returns value of Weighted
+func (o *GSLBUpdateSettingsRequest) GetWeighted() types.StringFlag {
+	return o.Weighted
+}
+
+// SetWeighted sets value to Weighted
+func (o *GSLBUpdateSettingsRequest) SetWeighted(v types.StringFlag) {
+	o.Weighted = v
+}
+
+// GetSorryServer returns value of SorryServer
+func (o *GSLBUpdateSettingsRequest) GetSorryServer() string {
+	return o.SorryServer
+}
+
+// SetSorryServer sets value to SorryServer
+func (o *GSLBUpdateSettingsRequest) SetSorryServer(v string) {
+	o.SorryServer = v
+}
+
+// GetDestinationServers returns value of DestinationServers
+func (o *GSLBUpdateSettingsRequest) GetDestinationServers() []*GSLBServer {
+	return o.DestinationServers
+}
+
+// SetDestinationServers sets value to DestinationServers
+func (o *GSLBUpdateSettingsRequest) SetDestinationServers(v []*GSLBServer) {
+	o.DestinationServers = v
+}
+
+// GetSettingsHash returns value of SettingsHash
+func (o *GSLBUpdateSettingsRequest) GetSettingsHash() string {
+	return o.SettingsHash
+}
+
+// SetSettingsHash sets value to SettingsHash
+func (o *GSLBUpdateSettingsRequest) SetSettingsHash(v string) {
+	o.SettingsHash = v
+}
+
+/*************************************************
 * GSLBPatchRequest
 *************************************************/
 
@@ -9878,6 +9979,172 @@ func (o *GSLBPatchRequest) GetSettingsHash() string {
 
 // SetSettingsHash sets value to SettingsHash
 func (o *GSLBPatchRequest) SetSettingsHash(v string) {
+	o.SettingsHash = v
+}
+
+/*************************************************
+* GSLBPatchSettingsRequest
+*************************************************/
+
+// GSLBPatchSettingsRequest represents API parameter/response structure
+type GSLBPatchSettingsRequest struct {
+	HealthCheck                    *GSLBHealthCheck `mapconv:"Settings.GSLB.HealthCheck,recursive"`
+	PatchEmptyToHealthCheck        bool
+	DelayLoop                      int `mapconv:"Settings.GSLB.DelayLoop" validate:"min=10,max=60"`
+	PatchEmptyToDelayLoop          bool
+	Weighted                       types.StringFlag `mapconv:"Settings.GSLB.Weighted"`
+	PatchEmptyToWeighted           bool
+	SorryServer                    string `mapconv:"Settings.GSLB.SorryServer"`
+	PatchEmptyToSorryServer        bool
+	DestinationServers             []*GSLBServer `mapconv:"Settings.GSLB.[]Servers,recursive" validate:"min=0,max=12"`
+	PatchEmptyToDestinationServers bool
+	SettingsHash                   string `json:",omitempty" mapconv:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *GSLBPatchSettingsRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *GSLBPatchSettingsRequest) setDefaults() interface{} {
+	return &struct {
+		HealthCheck                    *GSLBHealthCheck `mapconv:"Settings.GSLB.HealthCheck,recursive"`
+		PatchEmptyToHealthCheck        bool
+		DelayLoop                      int `mapconv:"Settings.GSLB.DelayLoop" validate:"min=10,max=60"`
+		PatchEmptyToDelayLoop          bool
+		Weighted                       types.StringFlag `mapconv:"Settings.GSLB.Weighted"`
+		PatchEmptyToWeighted           bool
+		SorryServer                    string `mapconv:"Settings.GSLB.SorryServer"`
+		PatchEmptyToSorryServer        bool
+		DestinationServers             []*GSLBServer `mapconv:"Settings.GSLB.[]Servers,recursive" validate:"min=0,max=12"`
+		PatchEmptyToDestinationServers bool
+		SettingsHash                   string `json:",omitempty" mapconv:",omitempty"`
+	}{
+		HealthCheck:                    o.GetHealthCheck(),
+		PatchEmptyToHealthCheck:        o.GetPatchEmptyToHealthCheck(),
+		DelayLoop:                      o.GetDelayLoop(),
+		PatchEmptyToDelayLoop:          o.GetPatchEmptyToDelayLoop(),
+		Weighted:                       o.GetWeighted(),
+		PatchEmptyToWeighted:           o.GetPatchEmptyToWeighted(),
+		SorryServer:                    o.GetSorryServer(),
+		PatchEmptyToSorryServer:        o.GetPatchEmptyToSorryServer(),
+		DestinationServers:             o.GetDestinationServers(),
+		PatchEmptyToDestinationServers: o.GetPatchEmptyToDestinationServers(),
+		SettingsHash:                   o.GetSettingsHash(),
+	}
+}
+
+// GetHealthCheck returns value of HealthCheck
+func (o *GSLBPatchSettingsRequest) GetHealthCheck() *GSLBHealthCheck {
+	return o.HealthCheck
+}
+
+// SetHealthCheck sets value to HealthCheck
+func (o *GSLBPatchSettingsRequest) SetHealthCheck(v *GSLBHealthCheck) {
+	o.HealthCheck = v
+}
+
+// GetPatchEmptyToHealthCheck returns value of PatchEmptyToHealthCheck
+func (o *GSLBPatchSettingsRequest) GetPatchEmptyToHealthCheck() bool {
+	return o.PatchEmptyToHealthCheck
+}
+
+// SetPatchEmptyToHealthCheck sets value to PatchEmptyToHealthCheck
+func (o *GSLBPatchSettingsRequest) SetPatchEmptyToHealthCheck(v bool) {
+	o.PatchEmptyToHealthCheck = v
+}
+
+// GetDelayLoop returns value of DelayLoop
+func (o *GSLBPatchSettingsRequest) GetDelayLoop() int {
+	if o.DelayLoop == 0 {
+		return 10
+	}
+	return o.DelayLoop
+}
+
+// SetDelayLoop sets value to DelayLoop
+func (o *GSLBPatchSettingsRequest) SetDelayLoop(v int) {
+	o.DelayLoop = v
+}
+
+// GetPatchEmptyToDelayLoop returns value of PatchEmptyToDelayLoop
+func (o *GSLBPatchSettingsRequest) GetPatchEmptyToDelayLoop() bool {
+	return o.PatchEmptyToDelayLoop
+}
+
+// SetPatchEmptyToDelayLoop sets value to PatchEmptyToDelayLoop
+func (o *GSLBPatchSettingsRequest) SetPatchEmptyToDelayLoop(v bool) {
+	o.PatchEmptyToDelayLoop = v
+}
+
+// GetWeighted returns value of Weighted
+func (o *GSLBPatchSettingsRequest) GetWeighted() types.StringFlag {
+	return o.Weighted
+}
+
+// SetWeighted sets value to Weighted
+func (o *GSLBPatchSettingsRequest) SetWeighted(v types.StringFlag) {
+	o.Weighted = v
+}
+
+// GetPatchEmptyToWeighted returns value of PatchEmptyToWeighted
+func (o *GSLBPatchSettingsRequest) GetPatchEmptyToWeighted() bool {
+	return o.PatchEmptyToWeighted
+}
+
+// SetPatchEmptyToWeighted sets value to PatchEmptyToWeighted
+func (o *GSLBPatchSettingsRequest) SetPatchEmptyToWeighted(v bool) {
+	o.PatchEmptyToWeighted = v
+}
+
+// GetSorryServer returns value of SorryServer
+func (o *GSLBPatchSettingsRequest) GetSorryServer() string {
+	return o.SorryServer
+}
+
+// SetSorryServer sets value to SorryServer
+func (o *GSLBPatchSettingsRequest) SetSorryServer(v string) {
+	o.SorryServer = v
+}
+
+// GetPatchEmptyToSorryServer returns value of PatchEmptyToSorryServer
+func (o *GSLBPatchSettingsRequest) GetPatchEmptyToSorryServer() bool {
+	return o.PatchEmptyToSorryServer
+}
+
+// SetPatchEmptyToSorryServer sets value to PatchEmptyToSorryServer
+func (o *GSLBPatchSettingsRequest) SetPatchEmptyToSorryServer(v bool) {
+	o.PatchEmptyToSorryServer = v
+}
+
+// GetDestinationServers returns value of DestinationServers
+func (o *GSLBPatchSettingsRequest) GetDestinationServers() []*GSLBServer {
+	return o.DestinationServers
+}
+
+// SetDestinationServers sets value to DestinationServers
+func (o *GSLBPatchSettingsRequest) SetDestinationServers(v []*GSLBServer) {
+	o.DestinationServers = v
+}
+
+// GetPatchEmptyToDestinationServers returns value of PatchEmptyToDestinationServers
+func (o *GSLBPatchSettingsRequest) GetPatchEmptyToDestinationServers() bool {
+	return o.PatchEmptyToDestinationServers
+}
+
+// SetPatchEmptyToDestinationServers sets value to PatchEmptyToDestinationServers
+func (o *GSLBPatchSettingsRequest) SetPatchEmptyToDestinationServers(v bool) {
+	o.PatchEmptyToDestinationServers = v
+}
+
+// GetSettingsHash returns value of SettingsHash
+func (o *GSLBPatchSettingsRequest) GetSettingsHash() string {
+	return o.SettingsHash
+}
+
+// SetSettingsHash sets value to SettingsHash
+func (o *GSLBPatchSettingsRequest) SetSettingsHash(v string) {
 	o.SettingsHash = v
 }
 

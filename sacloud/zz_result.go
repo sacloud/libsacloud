@@ -510,8 +510,22 @@ type gSLBUpdateResult struct {
 	GSLB *GSLB `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
 }
 
+// gSLBUpdateSettingsResult represents the Result of API
+type gSLBUpdateSettingsResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	GSLB *GSLB `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
+}
+
 // gSLBPatchResult represents the Result of API
 type gSLBPatchResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	GSLB *GSLB `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
+}
+
+// gSLBPatchSettingsResult represents the Result of API
+type gSLBPatchSettingsResult struct {
 	IsOk bool `json:",omitempty"` // is_ok
 
 	GSLB *GSLB `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`

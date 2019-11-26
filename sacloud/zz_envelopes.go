@@ -889,6 +889,19 @@ type gSLBUpdateResponseEnvelope struct {
 	CommonServiceItem *naked.GSLB `json:",omitempty"`
 }
 
+// gSLBUpdateSettingsRequestEnvelope is envelop of API request
+type gSLBUpdateSettingsRequestEnvelope struct {
+	CommonServiceItem *naked.GSLBSettingsUpdate `json:",omitempty"`
+}
+
+// gSLBUpdateSettingsResponseEnvelope is envelop of API response
+type gSLBUpdateSettingsResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	CommonServiceItem *naked.GSLB `json:",omitempty"`
+}
+
 // gSLBPatchRequestEnvelope is envelop of API request
 type gSLBPatchRequestEnvelope struct {
 	CommonServiceItem *naked.GSLB `json:",omitempty"`
@@ -896,6 +909,19 @@ type gSLBPatchRequestEnvelope struct {
 
 // gSLBPatchResponseEnvelope is envelop of API response
 type gSLBPatchResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	CommonServiceItem *naked.GSLB `json:",omitempty"`
+}
+
+// gSLBPatchSettingsRequestEnvelope is envelop of API request
+type gSLBPatchSettingsRequestEnvelope struct {
+	CommonServiceItem *naked.GSLBSettingsUpdate `json:",omitempty"`
+}
+
+// gSLBPatchSettingsResponseEnvelope is envelop of API response
+type gSLBPatchSettingsResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 

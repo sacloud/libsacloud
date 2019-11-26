@@ -200,7 +200,9 @@ type GSLBAPI interface {
 	Create(ctx context.Context, param *GSLBCreateRequest) (*GSLB, error)
 	Read(ctx context.Context, id types.ID) (*GSLB, error)
 	Update(ctx context.Context, id types.ID, param *GSLBUpdateRequest) (*GSLB, error)
+	UpdateSettings(ctx context.Context, id types.ID, param *GSLBUpdateSettingsRequest) (*GSLB, error)
 	Patch(ctx context.Context, id types.ID, param *GSLBPatchRequest) (*GSLB, error)
+	PatchSettings(ctx context.Context, id types.ID, param *GSLBPatchSettingsRequest) (*GSLB, error)
 	Delete(ctx context.Context, id types.ID) error
 }
 
