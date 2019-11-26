@@ -41,6 +41,12 @@ type VPCRouter struct {
 	Tags         types.Tags          `yaml:"tags"`
 }
 
+// VPCRouterSettingsUpdate VPCルータ
+type VPCRouterSettingsUpdate struct {
+	Settings     *VPCRouterSettings `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
+	SettingsHash string             `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
+}
+
 // VPCRouterSettings VPCルータ 設定
 type VPCRouterSettings struct {
 	Router *VPCRouterSetting `json:",omitempty" yaml:",omitempty" structs:",omitempty"`

@@ -57,6 +57,11 @@ func UpdateParameterName(resourceName string) string {
 	return RequestParameterName(resourceName, "Update")
 }
 
+// UpdateSettingsParameterName UpdateSettings操作に渡すパラメータの名称
+func UpdateSettingsParameterName(resourceName string) string {
+	return RequestParameterName(resourceName, "UpdateSettings")
+}
+
 // RequestParameterName 任意の操作に渡すパラメータの名称
 func RequestParameterName(resourceName, funcName string) string {
 	return fmt.Sprintf("%s%sRequest", resourceName, funcName)

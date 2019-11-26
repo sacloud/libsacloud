@@ -109,7 +109,7 @@ func create(resourceName string, nakedType meta.Type, createParam, result *dsl.M
 			dsl.MappableArgument("param", createParam, payloadName),
 		},
 		ResponseEnvelope: dsl.ResponseEnvelope(&dsl.EnvelopePayloadDesc{
-			Type: nakedType,
+			Type: result.NakedType,
 			Name: payloadName,
 		}),
 		Results: dsl.Results{
@@ -182,13 +182,21 @@ func ReadCommonServiceItem(resourceName string, nakedType meta.Type, result *dsl
 }
 
 func update(resourceName string, nakedType meta.Type, updateParam, result *dsl.Model, payloadName string) *dsl.Operation {
+	return updateInternal(resourceName, nakedType, updateParam, result, payloadName, "Update")
+}
+
+func updateSettings(resourceName string, nakedType meta.Type, updateParam, result *dsl.Model, payloadName string) *dsl.Operation {
+	return updateInternal(resourceName, nakedType, updateParam, result, payloadName, "UpdateSettings")
+}
+
+func updateInternal(resourceName string, nakedType meta.Type, updateParam, result *dsl.Model, payloadName, opName string) *dsl.Operation {
 	if payloadName == "" {
 		payloadName = names.ResourceFieldName(resourceName, dsl.PayloadForms.Singular)
 	}
 
 	return &dsl.Operation{
 		ResourceName: resourceName,
-		Name:         "Update",
+		Name:         opName,
 		PathFormat:   dsl.DefaultPathFormatWithID,
 		Method:       http.MethodPut,
 		RequestEnvelope: dsl.RequestEnvelope(&dsl.EnvelopePayloadDesc{
@@ -200,7 +208,7 @@ func update(resourceName string, nakedType meta.Type, updateParam, result *dsl.M
 			dsl.MappableArgument("param", updateParam, payloadName),
 		},
 		ResponseEnvelope: dsl.ResponseEnvelope(&dsl.EnvelopePayloadDesc{
-			Type: nakedType,
+			Type: result.NakedType,
 			Name: payloadName,
 		}),
 		Results: dsl.Results{
@@ -229,9 +237,27 @@ func UpdateCommonServiceItem(resourceName string, nakedType meta.Type, updatePar
 	return update(resourceName, nakedType, updateParam, result, "CommonServiceItem")
 }
 
+// UpdateApplianceSettings UpdateSettings操作を定義
+func UpdateApplianceSettings(resourceName string, nakedType meta.Type, updateParam, result *dsl.Model) *dsl.Operation {
+	return updateSettings(resourceName, nakedType, updateParam, result, "Appliance")
+}
+
+// UpdateCommonServiceItemSettings UpdateSettings操作を定義
+func UpdateCommonServiceItemSettings(resourceName string, nakedType meta.Type, updateParam, result *dsl.Model) *dsl.Operation {
+	return updateSettings(resourceName, nakedType, updateParam, result, "CommonServiceItem")
+}
+
 func patch(resourceName string, nakedType meta.Type, updateParam, result *dsl.Model, payloadName string) *dsl.Operation {
+	return patchInternal(resourceName, nakedType, updateParam, result, payloadName, "Patch")
+}
+
+func patchSettings(resourceName string, nakedType meta.Type, updateParam, result *dsl.Model, payloadName string) *dsl.Operation {
+	return patchInternal(resourceName, nakedType, updateParam, result, payloadName, "PatchSettings")
+}
+
+func patchInternal(resourceName string, nakedType meta.Type, updateParam, result *dsl.Model, payloadName, opName string) *dsl.Operation {
 	op := update(resourceName, nakedType, updateParam, result, payloadName)
-	op.Name = "Patch"
+	op.Name = opName
 	op.IsPatch = true
 	return op
 }
@@ -249,6 +275,16 @@ func PatchAppliance(resourceName string, nakedType meta.Type, updateParam, resul
 // PatchCommonServiceItem Patch操作を定義
 func PatchCommonServiceItem(resourceName string, nakedType meta.Type, updateParam, result *dsl.Model) *dsl.Operation {
 	return patch(resourceName, nakedType, updateParam, result, "CommonServiceItem")
+}
+
+// PatchApplianceSettings PatchSettings操作を定義
+func PatchApplianceSettings(resourceName string, nakedType meta.Type, updateParam, result *dsl.Model) *dsl.Operation {
+	return patchSettings(resourceName, nakedType, updateParam, result, "Appliance")
+}
+
+// PatchCommonServiceItemSettings PatchSettings操作を定義
+func PatchCommonServiceItemSettings(resourceName string, nakedType meta.Type, updateParam, result *dsl.Model) *dsl.Operation {
+	return patchSettings(resourceName, nakedType, updateParam, result, "CommonServiceItem")
 }
 
 // Delete Delete操作を定義

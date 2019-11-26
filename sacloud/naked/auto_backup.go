@@ -37,6 +37,12 @@ type AutoBackup struct {
 	Status       *AutoBackupStatus   `json:",omitempty" yaml:"status,omitempty" structs:",omitempty"`
 }
 
+// AutoBackupSettingsUpdate 自動バックアップ
+type AutoBackupSettingsUpdate struct {
+	Settings     *AutoBackupSettings `json:",omitempty" yaml:"settings,omitempty" structs:",omitempty"`
+	SettingsHash string              `json:",omitempty" yaml:"setting_hash,omitempty" structs:",omitempty"`
+}
+
 // AutoBackupSettings 自動バックアップ設定
 type AutoBackupSettings struct {
 	Autobackup *AutoBackupSetting `json:",omitempty" yaml:"autobackup,omitempty" structs:",omitempty"` // HACK: 注: API側がキャメルケースになっていない

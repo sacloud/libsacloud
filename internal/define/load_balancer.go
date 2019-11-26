@@ -43,9 +43,13 @@ var loadBalancerAPI = &dsl.Resource{
 
 		// update
 		ops.UpdateAppliance(loadBalancerAPIName, loadBalancerNakedType, loadBalancerUpdateParam, loadBalancerView),
+		// updateSettings
+		ops.UpdateApplianceSettings(loadBalancerAPIName, loadBalancerUpdateSettingsNakedType, loadBalancerUpdateSettingsParam, loadBalancerView),
 
 		// patch
 		ops.PatchAppliance(loadBalancerAPIName, loadBalancerNakedType, patchModel(loadBalancerUpdateParam), loadBalancerView),
+		// patchSettings
+		ops.PatchApplianceSettings(loadBalancerAPIName, loadBalancerUpdateSettingsNakedType, patchModel(loadBalancerUpdateSettingsParam), loadBalancerView),
 
 		// delete
 		ops.Delete(loadBalancerAPIName),
@@ -68,7 +72,8 @@ var loadBalancerAPI = &dsl.Resource{
 }
 
 var (
-	loadBalancerNakedType = meta.Static(naked.LoadBalancer{})
+	loadBalancerNakedType               = meta.Static(naked.LoadBalancer{})
+	loadBalancerUpdateSettingsNakedType = meta.Static(naked.LoadBalancerSettingsUpdate{})
 
 	loadBalancerView = &dsl.Model{
 		Name:      loadBalancerAPIName,
@@ -143,6 +148,17 @@ var (
 			fields.Tags(),
 			fields.IconID(),
 
+			// settings
+			fields.LoadBalancerVIP(),
+			// settings hash
+			fields.SettingsHash(),
+		},
+	}
+
+	loadBalancerUpdateSettingsParam = &dsl.Model{
+		Name:      names.UpdateSettingsParameterName(loadBalancerAPIName),
+		NakedType: loadBalancerNakedType,
+		Fields: []*dsl.FieldDesc{
 			// settings
 			fields.LoadBalancerVIP(),
 			// settings hash

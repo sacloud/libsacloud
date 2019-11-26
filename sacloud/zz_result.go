@@ -112,6 +112,20 @@ type autoBackupPatchResult struct {
 	AutoBackup *AutoBackup `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
 }
 
+// autoBackupUpdateSettingsResult represents the Result of API
+type autoBackupUpdateSettingsResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	AutoBackup *AutoBackup `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
+}
+
+// autoBackupPatchSettingsResult represents the Result of API
+type autoBackupPatchSettingsResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	AutoBackup *AutoBackup `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
+}
+
 // BillByContractResult represents the Result of API
 type BillByContractResult struct {
 	Total int `json:",omitempty"` // Total count of target resources
@@ -285,8 +299,22 @@ type databaseUpdateResult struct {
 	Database *Database `json:",omitempty" mapconv:"Appliance,omitempty,recursive"`
 }
 
+// databaseUpdateSettingsResult represents the Result of API
+type databaseUpdateSettingsResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	Database *Database `json:",omitempty" mapconv:"Appliance,omitempty,recursive"`
+}
+
 // databasePatchResult represents the Result of API
 type databasePatchResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	Database *Database `json:",omitempty" mapconv:"Appliance,omitempty,recursive"`
+}
+
+// databasePatchSettingsResult represents the Result of API
+type databasePatchSettingsResult struct {
 	IsOk bool `json:",omitempty"` // is_ok
 
 	Database *Database `json:",omitempty" mapconv:"Appliance,omitempty,recursive"`
@@ -431,8 +459,22 @@ type dNSUpdateResult struct {
 	DNS *DNS `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
 }
 
+// dNSUpdateSettingsResult represents the Result of API
+type dNSUpdateSettingsResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	DNS *DNS `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
+}
+
 // dNSPatchResult represents the Result of API
 type dNSPatchResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	DNS *DNS `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
+}
+
+// dNSPatchSettingsResult represents the Result of API
+type dNSPatchSettingsResult struct {
 	IsOk bool `json:",omitempty"` // is_ok
 
 	DNS *DNS `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
@@ -468,8 +510,22 @@ type gSLBUpdateResult struct {
 	GSLB *GSLB `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
 }
 
+// gSLBUpdateSettingsResult represents the Result of API
+type gSLBUpdateSettingsResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	GSLB *GSLB `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
+}
+
 // gSLBPatchResult represents the Result of API
 type gSLBPatchResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	GSLB *GSLB `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
+}
+
+// gSLBPatchSettingsResult represents the Result of API
+type gSLBPatchSettingsResult struct {
 	IsOk bool `json:",omitempty"` // is_ok
 
 	GSLB *GSLB `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
@@ -796,8 +852,22 @@ type loadBalancerUpdateResult struct {
 	LoadBalancer *LoadBalancer `json:",omitempty" mapconv:"Appliance,omitempty,recursive"`
 }
 
+// loadBalancerUpdateSettingsResult represents the Result of API
+type loadBalancerUpdateSettingsResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	LoadBalancer *LoadBalancer `json:",omitempty" mapconv:"Appliance,omitempty,recursive"`
+}
+
 // loadBalancerPatchResult represents the Result of API
 type loadBalancerPatchResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	LoadBalancer *LoadBalancer `json:",omitempty" mapconv:"Appliance,omitempty,recursive"`
+}
+
+// loadBalancerPatchSettingsResult represents the Result of API
+type loadBalancerPatchSettingsResult struct {
 	IsOk bool `json:",omitempty"` // is_ok
 
 	LoadBalancer *LoadBalancer `json:",omitempty" mapconv:"Appliance,omitempty,recursive"`
@@ -849,8 +919,22 @@ type mobileGatewayUpdateResult struct {
 	MobileGateway *MobileGateway `json:",omitempty" mapconv:"Appliance,omitempty,recursive"`
 }
 
+// mobileGatewayUpdateSettingsResult represents the Result of API
+type mobileGatewayUpdateSettingsResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	MobileGateway *MobileGateway `json:",omitempty" mapconv:"Appliance,omitempty,recursive"`
+}
+
 // mobileGatewayPatchResult represents the Result of API
 type mobileGatewayPatchResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	MobileGateway *MobileGateway `json:",omitempty" mapconv:"Appliance,omitempty,recursive"`
+}
+
+// mobileGatewayPatchSettingsResult represents the Result of API
+type mobileGatewayPatchSettingsResult struct {
 	IsOk bool `json:",omitempty"` // is_ok
 
 	MobileGateway *MobileGateway `json:",omitempty" mapconv:"Appliance,omitempty,recursive"`
@@ -1113,8 +1197,22 @@ type proxyLBUpdateResult struct {
 	ProxyLB *ProxyLB `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
 }
 
+// proxyLBUpdateSettingsResult represents the Result of API
+type proxyLBUpdateSettingsResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	ProxyLB *ProxyLB `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
+}
+
 // proxyLBPatchResult represents the Result of API
 type proxyLBPatchResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	ProxyLB *ProxyLB `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
+}
+
+// proxyLBPatchSettingsResult represents the Result of API
+type proxyLBPatchSettingsResult struct {
 	IsOk bool `json:",omitempty"` // is_ok
 
 	ProxyLB *ProxyLB `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
@@ -1351,8 +1449,22 @@ type simpleMonitorUpdateResult struct {
 	SimpleMonitor *SimpleMonitor `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
 }
 
+// simpleMonitorUpdateSettingsResult represents the Result of API
+type simpleMonitorUpdateSettingsResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	SimpleMonitor *SimpleMonitor `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
+}
+
 // simpleMonitorPatchResult represents the Result of API
 type simpleMonitorPatchResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	SimpleMonitor *SimpleMonitor `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
+}
+
+// simpleMonitorPatchSettingsResult represents the Result of API
+type simpleMonitorPatchSettingsResult struct {
 	IsOk bool `json:",omitempty"` // is_ok
 
 	SimpleMonitor *SimpleMonitor `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
@@ -1508,8 +1620,22 @@ type vPCRouterUpdateResult struct {
 	VPCRouter *VPCRouter `json:",omitempty" mapconv:"Appliance,omitempty,recursive"`
 }
 
+// vPCRouterUpdateSettingsResult represents the Result of API
+type vPCRouterUpdateSettingsResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	VPCRouter *VPCRouter `json:",omitempty" mapconv:"Appliance,omitempty,recursive"`
+}
+
 // vPCRouterPatchResult represents the Result of API
 type vPCRouterPatchResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	VPCRouter *VPCRouter `json:",omitempty" mapconv:"Appliance,omitempty,recursive"`
+}
+
+// vPCRouterPatchSettingsResult represents the Result of API
+type vPCRouterPatchSettingsResult struct {
 	IsOk bool `json:",omitempty"` // is_ok
 
 	VPCRouter *VPCRouter `json:",omitempty" mapconv:"Appliance,omitempty,recursive"`

@@ -56,6 +56,20 @@ func TestSimpleMonitorOp_CRUD(t *testing.T) {
 				}),
 			},
 			{
+				Func: testSimpleMonitorPatch,
+				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
+					ExpectValue:  patchSimpleMonitorExpected,
+					IgnoreFields: ignoreSimpleMonitorFields,
+				}),
+			},
+			{
+				Func: testSimpleMonitorUpdateSettings,
+				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
+					ExpectValue:  updateSimpleMonitorSettingsExpected,
+					IgnoreFields: ignoreSimpleMonitorFields,
+				}),
+			},
+			{
 				Func: testSimpleMonitorUpdateToMin,
 				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 					ExpectValue:  updateSimpleMonitorToMinExpected,
@@ -152,6 +166,59 @@ var (
 		Availability:       types.Availabilities.Available,
 		IconID:             testIconID,
 	}
+	patchSimpleMonitorParam = &sacloud.SimpleMonitorPatchRequest{
+		DelayLoop: 180,
+	}
+	patchSimpleMonitorExpected = &sacloud.SimpleMonitor{
+		Name:               createSimpleMonitorParam.Target,
+		Description:        updateSimpleMonitorParam.Description,
+		Tags:               updateSimpleMonitorParam.Tags,
+		Target:             createSimpleMonitorParam.Target,
+		DelayLoop:          patchSimpleMonitorParam.DelayLoop,
+		Enabled:            updateSimpleMonitorParam.Enabled,
+		HealthCheck:        updateSimpleMonitorParam.HealthCheck,
+		NotifyEmailEnabled: updateSimpleMonitorParam.NotifyEmailEnabled,
+		NotifyEmailHTML:    updateSimpleMonitorParam.NotifyEmailHTML,
+		NotifySlackEnabled: updateSimpleMonitorParam.NotifySlackEnabled,
+		NotifyInterval:     updateSimpleMonitorParam.NotifyInterval,
+		SlackWebhooksURL:   updateSimpleMonitorParam.SlackWebhooksURL,
+		Availability:       types.Availabilities.Available,
+		IconID:             testIconID,
+	}
+	updateSimpleMonitorSettingsParam = &sacloud.SimpleMonitorUpdateSettingsRequest{
+		DelayLoop: 120,
+		HealthCheck: &sacloud.SimpleMonitorHealthCheck{
+			Protocol:          types.SimpleMonitorProtocols.HTTP,
+			Port:              types.StringNumber(80),
+			Path:              "/index3.html",
+			Status:            types.StringNumber(202),
+			SNI:               types.StringFalse,
+			Host:              "libsacloud-test-patch.usacloud.jp",
+			BasicAuthUsername: "username-upd2",
+			BasicAuthPassword: "password-upd2",
+		},
+		NotifyEmailEnabled: types.StringFalse,
+		NotifyEmailHTML:    types.StringFalse,
+		NotifySlackEnabled: types.StringTrue,
+		SlackWebhooksURL:   "https://hooks.slack.com/services/XXXXXXXXX/XXXXXXXXX/XXXXXXXXXXXXXXXXXXXXXXXX",
+		NotifyInterval:     3 * 60 * 60,
+	}
+	updateSimpleMonitorSettingsExpected = &sacloud.SimpleMonitor{
+		Name:               createSimpleMonitorParam.Target,
+		Description:        updateSimpleMonitorParam.Description,
+		Tags:               updateSimpleMonitorParam.Tags,
+		Target:             createSimpleMonitorParam.Target,
+		DelayLoop:          updateSimpleMonitorSettingsParam.DelayLoop,
+		Enabled:            updateSimpleMonitorSettingsParam.Enabled,
+		HealthCheck:        updateSimpleMonitorSettingsParam.HealthCheck,
+		NotifyEmailEnabled: updateSimpleMonitorSettingsParam.NotifyEmailEnabled,
+		NotifyEmailHTML:    updateSimpleMonitorSettingsParam.NotifyEmailHTML,
+		NotifySlackEnabled: updateSimpleMonitorSettingsParam.NotifySlackEnabled,
+		NotifyInterval:     updateSimpleMonitorSettingsParam.NotifyInterval,
+		SlackWebhooksURL:   updateSimpleMonitorSettingsParam.SlackWebhooksURL,
+		Availability:       types.Availabilities.Available,
+		IconID:             testIconID,
+	}
 
 	updateSimpleMonitorToMinParam = &sacloud.SimpleMonitorUpdateRequest{
 		HealthCheck: &sacloud.SimpleMonitorHealthCheck{
@@ -186,6 +253,16 @@ func testSimpleMonitorRead(ctx *testutil.CRUDTestContext, caller sacloud.APICall
 func testSimpleMonitorUpdate(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewSimpleMonitorOp(caller)
 	return client.Update(ctx, ctx.ID, updateSimpleMonitorParam)
+}
+
+func testSimpleMonitorUpdateSettings(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+	client := sacloud.NewSimpleMonitorOp(caller)
+	return client.UpdateSettings(ctx, ctx.ID, updateSimpleMonitorSettingsParam)
+}
+
+func testSimpleMonitorPatch(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+	client := sacloud.NewSimpleMonitorOp(caller)
+	return client.Patch(ctx, ctx.ID, patchSimpleMonitorParam)
 }
 
 func testSimpleMonitorUpdateToMin(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {

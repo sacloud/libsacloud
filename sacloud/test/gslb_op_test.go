@@ -53,6 +53,27 @@ func TestGSLBOp_CRUD(t *testing.T) {
 				}),
 			},
 			{
+				Func: testGSLBUpdateSettings,
+				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
+					ExpectValue:  updateGSLBSettingsExpected,
+					IgnoreFields: ignoreGSLBFields,
+				}),
+			},
+			{
+				Func: testGSLBPatch,
+				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
+					ExpectValue:  patchGSLBExpected,
+					IgnoreFields: ignoreGSLBFields,
+				}),
+			},
+			{
+				Func: testGSLBPatchSettings,
+				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
+					ExpectValue:  patchGSLBSettingsExpected,
+					IgnoreFields: ignoreGSLBFields,
+				}),
+			},
+			{
 				Func: testGSLBUpdateToMin,
 				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 					ExpectValue:  updateGSLBToMinExpected,
@@ -159,6 +180,98 @@ var (
 		DestinationServers: updateGSLBParam.DestinationServers,
 		IconID:             testIconID,
 	}
+	updateGSLBSettingsParam = &sacloud.GSLBUpdateSettingsRequest{
+		HealthCheck: &sacloud.GSLBHealthCheck{
+			Protocol:     types.GSLBHealthCheckProtocols.HTTP,
+			HostHeader:   "upd2.usacloud.jp",
+			Path:         "/index-upd2.html",
+			ResponseCode: types.StringNumber(202),
+		},
+		DelayLoop:   22,
+		Weighted:    types.StringFalse,
+		SorryServer: "1.1.1.1",
+		DestinationServers: []*sacloud.GSLBServer{
+			{
+				IPAddress: "192.2.0.12",
+				Enabled:   types.StringFalse,
+				Weight:    types.StringNumber(100),
+			},
+			{
+				IPAddress: "192.2.0.22",
+				Enabled:   types.StringFalse,
+				Weight:    types.StringNumber(200),
+			},
+		},
+	}
+	updateGSLBSettingsExpected = &sacloud.GSLB{
+		Name:               updateGSLBParam.Name,
+		Description:        updateGSLBParam.Description,
+		Tags:               updateGSLBParam.Tags,
+		Availability:       types.Availabilities.Available,
+		DelayLoop:          updateGSLBSettingsParam.DelayLoop,
+		Weighted:           updateGSLBSettingsParam.Weighted,
+		HealthCheck:        updateGSLBSettingsParam.HealthCheck,
+		SorryServer:        updateGSLBSettingsParam.SorryServer,
+		DestinationServers: updateGSLBSettingsParam.DestinationServers,
+		IconID:             testIconID,
+	}
+	patchGSLBParam = &sacloud.GSLBPatchRequest{
+		Name:      testutil.ResourceName("gslb-patch"),
+		DelayLoop: 23,
+		Weighted:  types.StringTrue,
+		DestinationServers: []*sacloud.GSLBServer{
+			{
+				IPAddress: "192.2.0.13",
+				Enabled:   types.StringFalse,
+				Weight:    types.StringNumber(100),
+			},
+			{
+				IPAddress: "192.2.0.23",
+				Enabled:   types.StringFalse,
+				Weight:    types.StringNumber(200),
+			},
+		},
+	}
+	patchGSLBExpected = &sacloud.GSLB{
+		Name:               patchGSLBParam.Name,
+		Description:        updateGSLBParam.Description,
+		Tags:               updateGSLBParam.Tags,
+		Availability:       types.Availabilities.Available,
+		DelayLoop:          patchGSLBParam.DelayLoop,
+		Weighted:           patchGSLBParam.Weighted,
+		HealthCheck:        updateGSLBSettingsParam.HealthCheck,
+		SorryServer:        updateGSLBSettingsParam.SorryServer,
+		DestinationServers: patchGSLBParam.DestinationServers,
+		IconID:             testIconID,
+	}
+	patchGSLBSettingsParam = &sacloud.GSLBPatchSettingsRequest{
+		DelayLoop: 24,
+		Weighted:  types.StringTrue,
+		DestinationServers: []*sacloud.GSLBServer{
+			{
+				IPAddress: "192.2.0.14",
+				Enabled:   types.StringFalse,
+				Weight:    types.StringNumber(100),
+			},
+			{
+				IPAddress: "192.2.0.24",
+				Enabled:   types.StringFalse,
+				Weight:    types.StringNumber(200),
+			},
+		},
+	}
+	patchGSLBSettingsExpected = &sacloud.GSLB{
+		Name:               patchGSLBParam.Name,
+		Description:        updateGSLBParam.Description,
+		Tags:               updateGSLBParam.Tags,
+		Availability:       types.Availabilities.Available,
+		DelayLoop:          patchGSLBSettingsParam.DelayLoop,
+		Weighted:           patchGSLBSettingsParam.Weighted,
+		HealthCheck:        updateGSLBSettingsParam.HealthCheck,
+		SorryServer:        updateGSLBSettingsParam.SorryServer,
+		DestinationServers: patchGSLBSettingsParam.DestinationServers,
+		IconID:             testIconID,
+	}
 	updateGSLBToMinParam = &sacloud.GSLBUpdateRequest{
 		Name: testutil.ResourceName("gslb-to-min"),
 		HealthCheck: &sacloud.GSLBHealthCheck{
@@ -186,6 +299,21 @@ func testGSLBRead(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (inte
 func testGSLBUpdate(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewGSLBOp(caller)
 	return client.Update(ctx, ctx.ID, updateGSLBParam)
+}
+
+func testGSLBUpdateSettings(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+	client := sacloud.NewGSLBOp(caller)
+	return client.UpdateSettings(ctx, ctx.ID, updateGSLBSettingsParam)
+}
+
+func testGSLBPatch(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+	client := sacloud.NewGSLBOp(caller)
+	return client.Patch(ctx, ctx.ID, patchGSLBParam)
+}
+
+func testGSLBPatchSettings(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+	client := sacloud.NewGSLBOp(caller)
+	return client.PatchSettings(ctx, ctx.ID, patchGSLBSettingsParam)
 }
 
 func testGSLBUpdateToMin(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {

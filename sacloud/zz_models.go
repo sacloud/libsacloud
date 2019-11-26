@@ -2204,6 +2204,154 @@ func (o *AutoBackupPatchRequest) SetSettingsHash(v string) {
 }
 
 /*************************************************
+* AutoBackupUpdateSettingsRequest
+*************************************************/
+
+// AutoBackupUpdateSettingsRequest represents API parameter/response structure
+type AutoBackupUpdateSettingsRequest struct {
+	BackupSpanWeekdays      []types.EBackupSpanWeekday `mapconv:"Settings.Autobackup.BackupSpanWeekdays"`
+	MaximumNumberOfArchives int                        `mapconv:"Settings.Autobackup.MaximumNumberOfArchives"`
+	SettingsHash            string                     `json:",omitempty" mapconv:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *AutoBackupUpdateSettingsRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *AutoBackupUpdateSettingsRequest) setDefaults() interface{} {
+	return &struct {
+		BackupSpanWeekdays      []types.EBackupSpanWeekday `mapconv:"Settings.Autobackup.BackupSpanWeekdays"`
+		MaximumNumberOfArchives int                        `mapconv:"Settings.Autobackup.MaximumNumberOfArchives"`
+		SettingsHash            string                     `json:",omitempty" mapconv:",omitempty"`
+		BackupSpanType          types.EBackupSpanType      `mapconv:"Settings.Autobackup.BackupSpanType"`
+	}{
+		BackupSpanWeekdays:      o.GetBackupSpanWeekdays(),
+		MaximumNumberOfArchives: o.GetMaximumNumberOfArchives(),
+		SettingsHash:            o.GetSettingsHash(),
+		BackupSpanType:          types.BackupSpanTypes.Weekdays,
+	}
+}
+
+// GetBackupSpanWeekdays returns value of BackupSpanWeekdays
+func (o *AutoBackupUpdateSettingsRequest) GetBackupSpanWeekdays() []types.EBackupSpanWeekday {
+	return o.BackupSpanWeekdays
+}
+
+// SetBackupSpanWeekdays sets value to BackupSpanWeekdays
+func (o *AutoBackupUpdateSettingsRequest) SetBackupSpanWeekdays(v []types.EBackupSpanWeekday) {
+	o.BackupSpanWeekdays = v
+}
+
+// GetMaximumNumberOfArchives returns value of MaximumNumberOfArchives
+func (o *AutoBackupUpdateSettingsRequest) GetMaximumNumberOfArchives() int {
+	return o.MaximumNumberOfArchives
+}
+
+// SetMaximumNumberOfArchives sets value to MaximumNumberOfArchives
+func (o *AutoBackupUpdateSettingsRequest) SetMaximumNumberOfArchives(v int) {
+	o.MaximumNumberOfArchives = v
+}
+
+// GetSettingsHash returns value of SettingsHash
+func (o *AutoBackupUpdateSettingsRequest) GetSettingsHash() string {
+	return o.SettingsHash
+}
+
+// SetSettingsHash sets value to SettingsHash
+func (o *AutoBackupUpdateSettingsRequest) SetSettingsHash(v string) {
+	o.SettingsHash = v
+}
+
+/*************************************************
+* AutoBackupPatchSettingsRequest
+*************************************************/
+
+// AutoBackupPatchSettingsRequest represents API parameter/response structure
+type AutoBackupPatchSettingsRequest struct {
+	BackupSpanWeekdays                  []types.EBackupSpanWeekday `mapconv:"Settings.Autobackup.BackupSpanWeekdays"`
+	PatchEmptyToBackupSpanWeekdays      bool
+	MaximumNumberOfArchives             int `mapconv:"Settings.Autobackup.MaximumNumberOfArchives"`
+	PatchEmptyToMaximumNumberOfArchives bool
+	SettingsHash                        string `json:",omitempty" mapconv:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *AutoBackupPatchSettingsRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *AutoBackupPatchSettingsRequest) setDefaults() interface{} {
+	return &struct {
+		BackupSpanWeekdays                  []types.EBackupSpanWeekday `mapconv:"Settings.Autobackup.BackupSpanWeekdays"`
+		PatchEmptyToBackupSpanWeekdays      bool
+		MaximumNumberOfArchives             int `mapconv:"Settings.Autobackup.MaximumNumberOfArchives"`
+		PatchEmptyToMaximumNumberOfArchives bool
+		SettingsHash                        string                `json:",omitempty" mapconv:",omitempty"`
+		BackupSpanType                      types.EBackupSpanType `mapconv:"Settings.Autobackup.BackupSpanType"`
+	}{
+		BackupSpanWeekdays:                  o.GetBackupSpanWeekdays(),
+		PatchEmptyToBackupSpanWeekdays:      o.GetPatchEmptyToBackupSpanWeekdays(),
+		MaximumNumberOfArchives:             o.GetMaximumNumberOfArchives(),
+		PatchEmptyToMaximumNumberOfArchives: o.GetPatchEmptyToMaximumNumberOfArchives(),
+		SettingsHash:                        o.GetSettingsHash(),
+		BackupSpanType:                      types.BackupSpanTypes.Weekdays,
+	}
+}
+
+// GetBackupSpanWeekdays returns value of BackupSpanWeekdays
+func (o *AutoBackupPatchSettingsRequest) GetBackupSpanWeekdays() []types.EBackupSpanWeekday {
+	return o.BackupSpanWeekdays
+}
+
+// SetBackupSpanWeekdays sets value to BackupSpanWeekdays
+func (o *AutoBackupPatchSettingsRequest) SetBackupSpanWeekdays(v []types.EBackupSpanWeekday) {
+	o.BackupSpanWeekdays = v
+}
+
+// GetPatchEmptyToBackupSpanWeekdays returns value of PatchEmptyToBackupSpanWeekdays
+func (o *AutoBackupPatchSettingsRequest) GetPatchEmptyToBackupSpanWeekdays() bool {
+	return o.PatchEmptyToBackupSpanWeekdays
+}
+
+// SetPatchEmptyToBackupSpanWeekdays sets value to PatchEmptyToBackupSpanWeekdays
+func (o *AutoBackupPatchSettingsRequest) SetPatchEmptyToBackupSpanWeekdays(v bool) {
+	o.PatchEmptyToBackupSpanWeekdays = v
+}
+
+// GetMaximumNumberOfArchives returns value of MaximumNumberOfArchives
+func (o *AutoBackupPatchSettingsRequest) GetMaximumNumberOfArchives() int {
+	return o.MaximumNumberOfArchives
+}
+
+// SetMaximumNumberOfArchives sets value to MaximumNumberOfArchives
+func (o *AutoBackupPatchSettingsRequest) SetMaximumNumberOfArchives(v int) {
+	o.MaximumNumberOfArchives = v
+}
+
+// GetPatchEmptyToMaximumNumberOfArchives returns value of PatchEmptyToMaximumNumberOfArchives
+func (o *AutoBackupPatchSettingsRequest) GetPatchEmptyToMaximumNumberOfArchives() bool {
+	return o.PatchEmptyToMaximumNumberOfArchives
+}
+
+// SetPatchEmptyToMaximumNumberOfArchives sets value to PatchEmptyToMaximumNumberOfArchives
+func (o *AutoBackupPatchSettingsRequest) SetPatchEmptyToMaximumNumberOfArchives(v bool) {
+	o.PatchEmptyToMaximumNumberOfArchives = v
+}
+
+// GetSettingsHash returns value of SettingsHash
+func (o *AutoBackupPatchSettingsRequest) GetSettingsHash() string {
+	return o.SettingsHash
+}
+
+// SetSettingsHash sets value to SettingsHash
+func (o *AutoBackupPatchSettingsRequest) SetSettingsHash(v string) {
+	o.SettingsHash = v
+}
+
+/*************************************************
 * Bill
 *************************************************/
 
@@ -5210,6 +5358,78 @@ func (o *DatabaseUpdateRequest) SetSettingsHash(v string) {
 }
 
 /*************************************************
+* DatabaseUpdateSettingsRequest
+*************************************************/
+
+// DatabaseUpdateSettingsRequest represents API parameter/response structure
+type DatabaseUpdateSettingsRequest struct {
+	CommonSetting      *DatabaseSettingCommon      `mapconv:"Settings.DBConf.Common,recursive"`
+	BackupSetting      *DatabaseSettingBackup      `mapconv:"Settings.DBConf.Backup,recursive"`
+	ReplicationSetting *DatabaseReplicationSetting `mapconv:"Settings.DBConf.Replication,recursive"`
+	SettingsHash       string                      `json:",omitempty" mapconv:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *DatabaseUpdateSettingsRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *DatabaseUpdateSettingsRequest) setDefaults() interface{} {
+	return &struct {
+		CommonSetting      *DatabaseSettingCommon      `mapconv:"Settings.DBConf.Common,recursive"`
+		BackupSetting      *DatabaseSettingBackup      `mapconv:"Settings.DBConf.Backup,recursive"`
+		ReplicationSetting *DatabaseReplicationSetting `mapconv:"Settings.DBConf.Replication,recursive"`
+		SettingsHash       string                      `json:",omitempty" mapconv:",omitempty"`
+	}{
+		CommonSetting:      o.GetCommonSetting(),
+		BackupSetting:      o.GetBackupSetting(),
+		ReplicationSetting: o.GetReplicationSetting(),
+		SettingsHash:       o.GetSettingsHash(),
+	}
+}
+
+// GetCommonSetting returns value of CommonSetting
+func (o *DatabaseUpdateSettingsRequest) GetCommonSetting() *DatabaseSettingCommon {
+	return o.CommonSetting
+}
+
+// SetCommonSetting sets value to CommonSetting
+func (o *DatabaseUpdateSettingsRequest) SetCommonSetting(v *DatabaseSettingCommon) {
+	o.CommonSetting = v
+}
+
+// GetBackupSetting returns value of BackupSetting
+func (o *DatabaseUpdateSettingsRequest) GetBackupSetting() *DatabaseSettingBackup {
+	return o.BackupSetting
+}
+
+// SetBackupSetting sets value to BackupSetting
+func (o *DatabaseUpdateSettingsRequest) SetBackupSetting(v *DatabaseSettingBackup) {
+	o.BackupSetting = v
+}
+
+// GetReplicationSetting returns value of ReplicationSetting
+func (o *DatabaseUpdateSettingsRequest) GetReplicationSetting() *DatabaseReplicationSetting {
+	return o.ReplicationSetting
+}
+
+// SetReplicationSetting sets value to ReplicationSetting
+func (o *DatabaseUpdateSettingsRequest) SetReplicationSetting(v *DatabaseReplicationSetting) {
+	o.ReplicationSetting = v
+}
+
+// GetSettingsHash returns value of SettingsHash
+func (o *DatabaseUpdateSettingsRequest) GetSettingsHash() string {
+	return o.SettingsHash
+}
+
+// SetSettingsHash sets value to SettingsHash
+func (o *DatabaseUpdateSettingsRequest) SetSettingsHash(v string) {
+	o.SettingsHash = v
+}
+
+/*************************************************
 * DatabasePatchRequest
 *************************************************/
 
@@ -5428,6 +5648,117 @@ func (o *DatabasePatchRequest) GetSettingsHash() string {
 
 // SetSettingsHash sets value to SettingsHash
 func (o *DatabasePatchRequest) SetSettingsHash(v string) {
+	o.SettingsHash = v
+}
+
+/*************************************************
+* DatabasePatchSettingsRequest
+*************************************************/
+
+// DatabasePatchSettingsRequest represents API parameter/response structure
+type DatabasePatchSettingsRequest struct {
+	CommonSetting                  *DatabaseSettingCommon `mapconv:"Settings.DBConf.Common,recursive"`
+	PatchEmptyToCommonSetting      bool
+	BackupSetting                  *DatabaseSettingBackup `mapconv:"Settings.DBConf.Backup,recursive"`
+	PatchEmptyToBackupSetting      bool
+	ReplicationSetting             *DatabaseReplicationSetting `mapconv:"Settings.DBConf.Replication,recursive"`
+	PatchEmptyToReplicationSetting bool
+	SettingsHash                   string `json:",omitempty" mapconv:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *DatabasePatchSettingsRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *DatabasePatchSettingsRequest) setDefaults() interface{} {
+	return &struct {
+		CommonSetting                  *DatabaseSettingCommon `mapconv:"Settings.DBConf.Common,recursive"`
+		PatchEmptyToCommonSetting      bool
+		BackupSetting                  *DatabaseSettingBackup `mapconv:"Settings.DBConf.Backup,recursive"`
+		PatchEmptyToBackupSetting      bool
+		ReplicationSetting             *DatabaseReplicationSetting `mapconv:"Settings.DBConf.Replication,recursive"`
+		PatchEmptyToReplicationSetting bool
+		SettingsHash                   string `json:",omitempty" mapconv:",omitempty"`
+	}{
+		CommonSetting:                  o.GetCommonSetting(),
+		PatchEmptyToCommonSetting:      o.GetPatchEmptyToCommonSetting(),
+		BackupSetting:                  o.GetBackupSetting(),
+		PatchEmptyToBackupSetting:      o.GetPatchEmptyToBackupSetting(),
+		ReplicationSetting:             o.GetReplicationSetting(),
+		PatchEmptyToReplicationSetting: o.GetPatchEmptyToReplicationSetting(),
+		SettingsHash:                   o.GetSettingsHash(),
+	}
+}
+
+// GetCommonSetting returns value of CommonSetting
+func (o *DatabasePatchSettingsRequest) GetCommonSetting() *DatabaseSettingCommon {
+	return o.CommonSetting
+}
+
+// SetCommonSetting sets value to CommonSetting
+func (o *DatabasePatchSettingsRequest) SetCommonSetting(v *DatabaseSettingCommon) {
+	o.CommonSetting = v
+}
+
+// GetPatchEmptyToCommonSetting returns value of PatchEmptyToCommonSetting
+func (o *DatabasePatchSettingsRequest) GetPatchEmptyToCommonSetting() bool {
+	return o.PatchEmptyToCommonSetting
+}
+
+// SetPatchEmptyToCommonSetting sets value to PatchEmptyToCommonSetting
+func (o *DatabasePatchSettingsRequest) SetPatchEmptyToCommonSetting(v bool) {
+	o.PatchEmptyToCommonSetting = v
+}
+
+// GetBackupSetting returns value of BackupSetting
+func (o *DatabasePatchSettingsRequest) GetBackupSetting() *DatabaseSettingBackup {
+	return o.BackupSetting
+}
+
+// SetBackupSetting sets value to BackupSetting
+func (o *DatabasePatchSettingsRequest) SetBackupSetting(v *DatabaseSettingBackup) {
+	o.BackupSetting = v
+}
+
+// GetPatchEmptyToBackupSetting returns value of PatchEmptyToBackupSetting
+func (o *DatabasePatchSettingsRequest) GetPatchEmptyToBackupSetting() bool {
+	return o.PatchEmptyToBackupSetting
+}
+
+// SetPatchEmptyToBackupSetting sets value to PatchEmptyToBackupSetting
+func (o *DatabasePatchSettingsRequest) SetPatchEmptyToBackupSetting(v bool) {
+	o.PatchEmptyToBackupSetting = v
+}
+
+// GetReplicationSetting returns value of ReplicationSetting
+func (o *DatabasePatchSettingsRequest) GetReplicationSetting() *DatabaseReplicationSetting {
+	return o.ReplicationSetting
+}
+
+// SetReplicationSetting sets value to ReplicationSetting
+func (o *DatabasePatchSettingsRequest) SetReplicationSetting(v *DatabaseReplicationSetting) {
+	o.ReplicationSetting = v
+}
+
+// GetPatchEmptyToReplicationSetting returns value of PatchEmptyToReplicationSetting
+func (o *DatabasePatchSettingsRequest) GetPatchEmptyToReplicationSetting() bool {
+	return o.PatchEmptyToReplicationSetting
+}
+
+// SetPatchEmptyToReplicationSetting sets value to PatchEmptyToReplicationSetting
+func (o *DatabasePatchSettingsRequest) SetPatchEmptyToReplicationSetting(v bool) {
+	o.PatchEmptyToReplicationSetting = v
+}
+
+// GetSettingsHash returns value of SettingsHash
+func (o *DatabasePatchSettingsRequest) GetSettingsHash() string {
+	return o.SettingsHash
+}
+
+// SetSettingsHash sets value to SettingsHash
+func (o *DatabasePatchSettingsRequest) SetSettingsHash(v string) {
 	o.SettingsHash = v
 }
 
@@ -8275,6 +8606,52 @@ func (o *DNSUpdateRequest) SetSettingsHash(v string) {
 }
 
 /*************************************************
+* DNSUpdateSettingsRequest
+*************************************************/
+
+// DNSUpdateSettingsRequest represents API parameter/response structure
+type DNSUpdateSettingsRequest struct {
+	Records      []*DNSRecord `mapconv:"Settings.DNS.[]ResourceRecordSets,recursive" validate:"min=0,max=1000"`
+	SettingsHash string       `json:",omitempty" mapconv:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *DNSUpdateSettingsRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *DNSUpdateSettingsRequest) setDefaults() interface{} {
+	return &struct {
+		Records      []*DNSRecord `mapconv:"Settings.DNS.[]ResourceRecordSets,recursive" validate:"min=0,max=1000"`
+		SettingsHash string       `json:",omitempty" mapconv:",omitempty"`
+	}{
+		Records:      o.GetRecords(),
+		SettingsHash: o.GetSettingsHash(),
+	}
+}
+
+// GetRecords returns value of Records
+func (o *DNSUpdateSettingsRequest) GetRecords() []*DNSRecord {
+	return o.Records
+}
+
+// SetRecords sets value to Records
+func (o *DNSUpdateSettingsRequest) SetRecords(v []*DNSRecord) {
+	o.Records = v
+}
+
+// GetSettingsHash returns value of SettingsHash
+func (o *DNSUpdateSettingsRequest) GetSettingsHash() string {
+	return o.SettingsHash
+}
+
+// SetSettingsHash sets value to SettingsHash
+func (o *DNSUpdateSettingsRequest) SetSettingsHash(v string) {
+	o.SettingsHash = v
+}
+
+/*************************************************
 * DNSPatchRequest
 *************************************************/
 
@@ -8428,6 +8805,65 @@ func (o *DNSPatchRequest) GetSettingsHash() string {
 
 // SetSettingsHash sets value to SettingsHash
 func (o *DNSPatchRequest) SetSettingsHash(v string) {
+	o.SettingsHash = v
+}
+
+/*************************************************
+* DNSPatchSettingsRequest
+*************************************************/
+
+// DNSPatchSettingsRequest represents API parameter/response structure
+type DNSPatchSettingsRequest struct {
+	Records             []*DNSRecord `mapconv:"Settings.DNS.[]ResourceRecordSets,recursive" validate:"min=0,max=1000"`
+	PatchEmptyToRecords bool
+	SettingsHash        string `json:",omitempty" mapconv:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *DNSPatchSettingsRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *DNSPatchSettingsRequest) setDefaults() interface{} {
+	return &struct {
+		Records             []*DNSRecord `mapconv:"Settings.DNS.[]ResourceRecordSets,recursive" validate:"min=0,max=1000"`
+		PatchEmptyToRecords bool
+		SettingsHash        string `json:",omitempty" mapconv:",omitempty"`
+	}{
+		Records:             o.GetRecords(),
+		PatchEmptyToRecords: o.GetPatchEmptyToRecords(),
+		SettingsHash:        o.GetSettingsHash(),
+	}
+}
+
+// GetRecords returns value of Records
+func (o *DNSPatchSettingsRequest) GetRecords() []*DNSRecord {
+	return o.Records
+}
+
+// SetRecords sets value to Records
+func (o *DNSPatchSettingsRequest) SetRecords(v []*DNSRecord) {
+	o.Records = v
+}
+
+// GetPatchEmptyToRecords returns value of PatchEmptyToRecords
+func (o *DNSPatchSettingsRequest) GetPatchEmptyToRecords() bool {
+	return o.PatchEmptyToRecords
+}
+
+// SetPatchEmptyToRecords sets value to PatchEmptyToRecords
+func (o *DNSPatchSettingsRequest) SetPatchEmptyToRecords(v bool) {
+	o.PatchEmptyToRecords = v
+}
+
+// GetSettingsHash returns value of SettingsHash
+func (o *DNSPatchSettingsRequest) GetSettingsHash() string {
+	return o.SettingsHash
+}
+
+// SetSettingsHash sets value to SettingsHash
+func (o *DNSPatchSettingsRequest) SetSettingsHash(v string) {
 	o.SettingsHash = v
 }
 
@@ -9169,6 +9605,107 @@ func (o *GSLBUpdateRequest) SetSettingsHash(v string) {
 }
 
 /*************************************************
+* GSLBUpdateSettingsRequest
+*************************************************/
+
+// GSLBUpdateSettingsRequest represents API parameter/response structure
+type GSLBUpdateSettingsRequest struct {
+	HealthCheck        *GSLBHealthCheck `mapconv:"Settings.GSLB.HealthCheck,recursive"`
+	DelayLoop          int              `mapconv:"Settings.GSLB.DelayLoop" validate:"min=10,max=60"`
+	Weighted           types.StringFlag `mapconv:"Settings.GSLB.Weighted"`
+	SorryServer        string           `mapconv:"Settings.GSLB.SorryServer"`
+	DestinationServers []*GSLBServer    `mapconv:"Settings.GSLB.[]Servers,recursive" validate:"min=0,max=12"`
+	SettingsHash       string           `json:",omitempty" mapconv:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *GSLBUpdateSettingsRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *GSLBUpdateSettingsRequest) setDefaults() interface{} {
+	return &struct {
+		HealthCheck        *GSLBHealthCheck `mapconv:"Settings.GSLB.HealthCheck,recursive"`
+		DelayLoop          int              `mapconv:"Settings.GSLB.DelayLoop" validate:"min=10,max=60"`
+		Weighted           types.StringFlag `mapconv:"Settings.GSLB.Weighted"`
+		SorryServer        string           `mapconv:"Settings.GSLB.SorryServer"`
+		DestinationServers []*GSLBServer    `mapconv:"Settings.GSLB.[]Servers,recursive" validate:"min=0,max=12"`
+		SettingsHash       string           `json:",omitempty" mapconv:",omitempty"`
+	}{
+		HealthCheck:        o.GetHealthCheck(),
+		DelayLoop:          o.GetDelayLoop(),
+		Weighted:           o.GetWeighted(),
+		SorryServer:        o.GetSorryServer(),
+		DestinationServers: o.GetDestinationServers(),
+		SettingsHash:       o.GetSettingsHash(),
+	}
+}
+
+// GetHealthCheck returns value of HealthCheck
+func (o *GSLBUpdateSettingsRequest) GetHealthCheck() *GSLBHealthCheck {
+	return o.HealthCheck
+}
+
+// SetHealthCheck sets value to HealthCheck
+func (o *GSLBUpdateSettingsRequest) SetHealthCheck(v *GSLBHealthCheck) {
+	o.HealthCheck = v
+}
+
+// GetDelayLoop returns value of DelayLoop
+func (o *GSLBUpdateSettingsRequest) GetDelayLoop() int {
+	if o.DelayLoop == 0 {
+		return 10
+	}
+	return o.DelayLoop
+}
+
+// SetDelayLoop sets value to DelayLoop
+func (o *GSLBUpdateSettingsRequest) SetDelayLoop(v int) {
+	o.DelayLoop = v
+}
+
+// GetWeighted returns value of Weighted
+func (o *GSLBUpdateSettingsRequest) GetWeighted() types.StringFlag {
+	return o.Weighted
+}
+
+// SetWeighted sets value to Weighted
+func (o *GSLBUpdateSettingsRequest) SetWeighted(v types.StringFlag) {
+	o.Weighted = v
+}
+
+// GetSorryServer returns value of SorryServer
+func (o *GSLBUpdateSettingsRequest) GetSorryServer() string {
+	return o.SorryServer
+}
+
+// SetSorryServer sets value to SorryServer
+func (o *GSLBUpdateSettingsRequest) SetSorryServer(v string) {
+	o.SorryServer = v
+}
+
+// GetDestinationServers returns value of DestinationServers
+func (o *GSLBUpdateSettingsRequest) GetDestinationServers() []*GSLBServer {
+	return o.DestinationServers
+}
+
+// SetDestinationServers sets value to DestinationServers
+func (o *GSLBUpdateSettingsRequest) SetDestinationServers(v []*GSLBServer) {
+	o.DestinationServers = v
+}
+
+// GetSettingsHash returns value of SettingsHash
+func (o *GSLBUpdateSettingsRequest) GetSettingsHash() string {
+	return o.SettingsHash
+}
+
+// SetSettingsHash sets value to SettingsHash
+func (o *GSLBUpdateSettingsRequest) SetSettingsHash(v string) {
+	o.SettingsHash = v
+}
+
+/*************************************************
 * GSLBPatchRequest
 *************************************************/
 
@@ -9442,6 +9979,172 @@ func (o *GSLBPatchRequest) GetSettingsHash() string {
 
 // SetSettingsHash sets value to SettingsHash
 func (o *GSLBPatchRequest) SetSettingsHash(v string) {
+	o.SettingsHash = v
+}
+
+/*************************************************
+* GSLBPatchSettingsRequest
+*************************************************/
+
+// GSLBPatchSettingsRequest represents API parameter/response structure
+type GSLBPatchSettingsRequest struct {
+	HealthCheck                    *GSLBHealthCheck `mapconv:"Settings.GSLB.HealthCheck,recursive"`
+	PatchEmptyToHealthCheck        bool
+	DelayLoop                      int `mapconv:"Settings.GSLB.DelayLoop" validate:"min=10,max=60"`
+	PatchEmptyToDelayLoop          bool
+	Weighted                       types.StringFlag `mapconv:"Settings.GSLB.Weighted"`
+	PatchEmptyToWeighted           bool
+	SorryServer                    string `mapconv:"Settings.GSLB.SorryServer"`
+	PatchEmptyToSorryServer        bool
+	DestinationServers             []*GSLBServer `mapconv:"Settings.GSLB.[]Servers,recursive" validate:"min=0,max=12"`
+	PatchEmptyToDestinationServers bool
+	SettingsHash                   string `json:",omitempty" mapconv:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *GSLBPatchSettingsRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *GSLBPatchSettingsRequest) setDefaults() interface{} {
+	return &struct {
+		HealthCheck                    *GSLBHealthCheck `mapconv:"Settings.GSLB.HealthCheck,recursive"`
+		PatchEmptyToHealthCheck        bool
+		DelayLoop                      int `mapconv:"Settings.GSLB.DelayLoop" validate:"min=10,max=60"`
+		PatchEmptyToDelayLoop          bool
+		Weighted                       types.StringFlag `mapconv:"Settings.GSLB.Weighted"`
+		PatchEmptyToWeighted           bool
+		SorryServer                    string `mapconv:"Settings.GSLB.SorryServer"`
+		PatchEmptyToSorryServer        bool
+		DestinationServers             []*GSLBServer `mapconv:"Settings.GSLB.[]Servers,recursive" validate:"min=0,max=12"`
+		PatchEmptyToDestinationServers bool
+		SettingsHash                   string `json:",omitempty" mapconv:",omitempty"`
+	}{
+		HealthCheck:                    o.GetHealthCheck(),
+		PatchEmptyToHealthCheck:        o.GetPatchEmptyToHealthCheck(),
+		DelayLoop:                      o.GetDelayLoop(),
+		PatchEmptyToDelayLoop:          o.GetPatchEmptyToDelayLoop(),
+		Weighted:                       o.GetWeighted(),
+		PatchEmptyToWeighted:           o.GetPatchEmptyToWeighted(),
+		SorryServer:                    o.GetSorryServer(),
+		PatchEmptyToSorryServer:        o.GetPatchEmptyToSorryServer(),
+		DestinationServers:             o.GetDestinationServers(),
+		PatchEmptyToDestinationServers: o.GetPatchEmptyToDestinationServers(),
+		SettingsHash:                   o.GetSettingsHash(),
+	}
+}
+
+// GetHealthCheck returns value of HealthCheck
+func (o *GSLBPatchSettingsRequest) GetHealthCheck() *GSLBHealthCheck {
+	return o.HealthCheck
+}
+
+// SetHealthCheck sets value to HealthCheck
+func (o *GSLBPatchSettingsRequest) SetHealthCheck(v *GSLBHealthCheck) {
+	o.HealthCheck = v
+}
+
+// GetPatchEmptyToHealthCheck returns value of PatchEmptyToHealthCheck
+func (o *GSLBPatchSettingsRequest) GetPatchEmptyToHealthCheck() bool {
+	return o.PatchEmptyToHealthCheck
+}
+
+// SetPatchEmptyToHealthCheck sets value to PatchEmptyToHealthCheck
+func (o *GSLBPatchSettingsRequest) SetPatchEmptyToHealthCheck(v bool) {
+	o.PatchEmptyToHealthCheck = v
+}
+
+// GetDelayLoop returns value of DelayLoop
+func (o *GSLBPatchSettingsRequest) GetDelayLoop() int {
+	if o.DelayLoop == 0 {
+		return 10
+	}
+	return o.DelayLoop
+}
+
+// SetDelayLoop sets value to DelayLoop
+func (o *GSLBPatchSettingsRequest) SetDelayLoop(v int) {
+	o.DelayLoop = v
+}
+
+// GetPatchEmptyToDelayLoop returns value of PatchEmptyToDelayLoop
+func (o *GSLBPatchSettingsRequest) GetPatchEmptyToDelayLoop() bool {
+	return o.PatchEmptyToDelayLoop
+}
+
+// SetPatchEmptyToDelayLoop sets value to PatchEmptyToDelayLoop
+func (o *GSLBPatchSettingsRequest) SetPatchEmptyToDelayLoop(v bool) {
+	o.PatchEmptyToDelayLoop = v
+}
+
+// GetWeighted returns value of Weighted
+func (o *GSLBPatchSettingsRequest) GetWeighted() types.StringFlag {
+	return o.Weighted
+}
+
+// SetWeighted sets value to Weighted
+func (o *GSLBPatchSettingsRequest) SetWeighted(v types.StringFlag) {
+	o.Weighted = v
+}
+
+// GetPatchEmptyToWeighted returns value of PatchEmptyToWeighted
+func (o *GSLBPatchSettingsRequest) GetPatchEmptyToWeighted() bool {
+	return o.PatchEmptyToWeighted
+}
+
+// SetPatchEmptyToWeighted sets value to PatchEmptyToWeighted
+func (o *GSLBPatchSettingsRequest) SetPatchEmptyToWeighted(v bool) {
+	o.PatchEmptyToWeighted = v
+}
+
+// GetSorryServer returns value of SorryServer
+func (o *GSLBPatchSettingsRequest) GetSorryServer() string {
+	return o.SorryServer
+}
+
+// SetSorryServer sets value to SorryServer
+func (o *GSLBPatchSettingsRequest) SetSorryServer(v string) {
+	o.SorryServer = v
+}
+
+// GetPatchEmptyToSorryServer returns value of PatchEmptyToSorryServer
+func (o *GSLBPatchSettingsRequest) GetPatchEmptyToSorryServer() bool {
+	return o.PatchEmptyToSorryServer
+}
+
+// SetPatchEmptyToSorryServer sets value to PatchEmptyToSorryServer
+func (o *GSLBPatchSettingsRequest) SetPatchEmptyToSorryServer(v bool) {
+	o.PatchEmptyToSorryServer = v
+}
+
+// GetDestinationServers returns value of DestinationServers
+func (o *GSLBPatchSettingsRequest) GetDestinationServers() []*GSLBServer {
+	return o.DestinationServers
+}
+
+// SetDestinationServers sets value to DestinationServers
+func (o *GSLBPatchSettingsRequest) SetDestinationServers(v []*GSLBServer) {
+	o.DestinationServers = v
+}
+
+// GetPatchEmptyToDestinationServers returns value of PatchEmptyToDestinationServers
+func (o *GSLBPatchSettingsRequest) GetPatchEmptyToDestinationServers() bool {
+	return o.PatchEmptyToDestinationServers
+}
+
+// SetPatchEmptyToDestinationServers sets value to PatchEmptyToDestinationServers
+func (o *GSLBPatchSettingsRequest) SetPatchEmptyToDestinationServers(v bool) {
+	o.PatchEmptyToDestinationServers = v
+}
+
+// GetSettingsHash returns value of SettingsHash
+func (o *GSLBPatchSettingsRequest) GetSettingsHash() string {
+	return o.SettingsHash
+}
+
+// SetSettingsHash sets value to SettingsHash
+func (o *GSLBPatchSettingsRequest) SetSettingsHash(v string) {
 	o.SettingsHash = v
 }
 
@@ -13031,6 +13734,52 @@ func (o *LoadBalancerUpdateRequest) SetSettingsHash(v string) {
 }
 
 /*************************************************
+* LoadBalancerUpdateSettingsRequest
+*************************************************/
+
+// LoadBalancerUpdateSettingsRequest represents API parameter/response structure
+type LoadBalancerUpdateSettingsRequest struct {
+	VirtualIPAddresses []*LoadBalancerVirtualIPAddress `mapconv:"Settings.[]LoadBalancer,recursive" validate:"min=0,max=10"`
+	SettingsHash       string                          `json:",omitempty" mapconv:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *LoadBalancerUpdateSettingsRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *LoadBalancerUpdateSettingsRequest) setDefaults() interface{} {
+	return &struct {
+		VirtualIPAddresses []*LoadBalancerVirtualIPAddress `mapconv:"Settings.[]LoadBalancer,recursive" validate:"min=0,max=10"`
+		SettingsHash       string                          `json:",omitempty" mapconv:",omitempty"`
+	}{
+		VirtualIPAddresses: o.GetVirtualIPAddresses(),
+		SettingsHash:       o.GetSettingsHash(),
+	}
+}
+
+// GetVirtualIPAddresses returns value of VirtualIPAddresses
+func (o *LoadBalancerUpdateSettingsRequest) GetVirtualIPAddresses() []*LoadBalancerVirtualIPAddress {
+	return o.VirtualIPAddresses
+}
+
+// SetVirtualIPAddresses sets value to VirtualIPAddresses
+func (o *LoadBalancerUpdateSettingsRequest) SetVirtualIPAddresses(v []*LoadBalancerVirtualIPAddress) {
+	o.VirtualIPAddresses = v
+}
+
+// GetSettingsHash returns value of SettingsHash
+func (o *LoadBalancerUpdateSettingsRequest) GetSettingsHash() string {
+	return o.SettingsHash
+}
+
+// SetSettingsHash sets value to SettingsHash
+func (o *LoadBalancerUpdateSettingsRequest) SetSettingsHash(v string) {
+	o.SettingsHash = v
+}
+
+/*************************************************
 * LoadBalancerPatchRequest
 *************************************************/
 
@@ -13197,6 +13946,65 @@ func (o *LoadBalancerPatchRequest) GetSettingsHash() string {
 
 // SetSettingsHash sets value to SettingsHash
 func (o *LoadBalancerPatchRequest) SetSettingsHash(v string) {
+	o.SettingsHash = v
+}
+
+/*************************************************
+* LoadBalancerPatchSettingsRequest
+*************************************************/
+
+// LoadBalancerPatchSettingsRequest represents API parameter/response structure
+type LoadBalancerPatchSettingsRequest struct {
+	VirtualIPAddresses             []*LoadBalancerVirtualIPAddress `mapconv:"Settings.[]LoadBalancer,recursive" validate:"min=0,max=10"`
+	PatchEmptyToVirtualIPAddresses bool
+	SettingsHash                   string `json:",omitempty" mapconv:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *LoadBalancerPatchSettingsRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *LoadBalancerPatchSettingsRequest) setDefaults() interface{} {
+	return &struct {
+		VirtualIPAddresses             []*LoadBalancerVirtualIPAddress `mapconv:"Settings.[]LoadBalancer,recursive" validate:"min=0,max=10"`
+		PatchEmptyToVirtualIPAddresses bool
+		SettingsHash                   string `json:",omitempty" mapconv:",omitempty"`
+	}{
+		VirtualIPAddresses:             o.GetVirtualIPAddresses(),
+		PatchEmptyToVirtualIPAddresses: o.GetPatchEmptyToVirtualIPAddresses(),
+		SettingsHash:                   o.GetSettingsHash(),
+	}
+}
+
+// GetVirtualIPAddresses returns value of VirtualIPAddresses
+func (o *LoadBalancerPatchSettingsRequest) GetVirtualIPAddresses() []*LoadBalancerVirtualIPAddress {
+	return o.VirtualIPAddresses
+}
+
+// SetVirtualIPAddresses sets value to VirtualIPAddresses
+func (o *LoadBalancerPatchSettingsRequest) SetVirtualIPAddresses(v []*LoadBalancerVirtualIPAddress) {
+	o.VirtualIPAddresses = v
+}
+
+// GetPatchEmptyToVirtualIPAddresses returns value of PatchEmptyToVirtualIPAddresses
+func (o *LoadBalancerPatchSettingsRequest) GetPatchEmptyToVirtualIPAddresses() bool {
+	return o.PatchEmptyToVirtualIPAddresses
+}
+
+// SetPatchEmptyToVirtualIPAddresses sets value to PatchEmptyToVirtualIPAddresses
+func (o *LoadBalancerPatchSettingsRequest) SetPatchEmptyToVirtualIPAddresses(v bool) {
+	o.PatchEmptyToVirtualIPAddresses = v
+}
+
+// GetSettingsHash returns value of SettingsHash
+func (o *LoadBalancerPatchSettingsRequest) GetSettingsHash() string {
+	return o.SettingsHash
+}
+
+// SetSettingsHash sets value to SettingsHash
+func (o *LoadBalancerPatchSettingsRequest) SetSettingsHash(v string) {
 	o.SettingsHash = v
 }
 
@@ -14378,6 +15186,52 @@ func (o *MobileGatewayUpdateRequest) SetSettingsHash(v string) {
 }
 
 /*************************************************
+* MobileGatewayUpdateSettingsRequest
+*************************************************/
+
+// MobileGatewayUpdateSettingsRequest represents API parameter/response structure
+type MobileGatewayUpdateSettingsRequest struct {
+	Settings     *MobileGatewaySetting `json:",omitempty" mapconv:",omitempty,recursive"`
+	SettingsHash string                `json:",omitempty" mapconv:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *MobileGatewayUpdateSettingsRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *MobileGatewayUpdateSettingsRequest) setDefaults() interface{} {
+	return &struct {
+		Settings     *MobileGatewaySetting `json:",omitempty" mapconv:",omitempty,recursive"`
+		SettingsHash string                `json:",omitempty" mapconv:",omitempty"`
+	}{
+		Settings:     o.GetSettings(),
+		SettingsHash: o.GetSettingsHash(),
+	}
+}
+
+// GetSettings returns value of Settings
+func (o *MobileGatewayUpdateSettingsRequest) GetSettings() *MobileGatewaySetting {
+	return o.Settings
+}
+
+// SetSettings sets value to Settings
+func (o *MobileGatewayUpdateSettingsRequest) SetSettings(v *MobileGatewaySetting) {
+	o.Settings = v
+}
+
+// GetSettingsHash returns value of SettingsHash
+func (o *MobileGatewayUpdateSettingsRequest) GetSettingsHash() string {
+	return o.SettingsHash
+}
+
+// SetSettingsHash sets value to SettingsHash
+func (o *MobileGatewayUpdateSettingsRequest) SetSettingsHash(v string) {
+	o.SettingsHash = v
+}
+
+/*************************************************
 * MobileGatewayPatchRequest
 *************************************************/
 
@@ -14544,6 +15398,65 @@ func (o *MobileGatewayPatchRequest) GetSettingsHash() string {
 
 // SetSettingsHash sets value to SettingsHash
 func (o *MobileGatewayPatchRequest) SetSettingsHash(v string) {
+	o.SettingsHash = v
+}
+
+/*************************************************
+* MobileGatewayPatchSettingsRequest
+*************************************************/
+
+// MobileGatewayPatchSettingsRequest represents API parameter/response structure
+type MobileGatewayPatchSettingsRequest struct {
+	Settings             *MobileGatewaySetting `json:",omitempty" mapconv:",omitempty,recursive"`
+	PatchEmptyToSettings bool
+	SettingsHash         string `json:",omitempty" mapconv:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *MobileGatewayPatchSettingsRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *MobileGatewayPatchSettingsRequest) setDefaults() interface{} {
+	return &struct {
+		Settings             *MobileGatewaySetting `json:",omitempty" mapconv:",omitempty,recursive"`
+		PatchEmptyToSettings bool
+		SettingsHash         string `json:",omitempty" mapconv:",omitempty"`
+	}{
+		Settings:             o.GetSettings(),
+		PatchEmptyToSettings: o.GetPatchEmptyToSettings(),
+		SettingsHash:         o.GetSettingsHash(),
+	}
+}
+
+// GetSettings returns value of Settings
+func (o *MobileGatewayPatchSettingsRequest) GetSettings() *MobileGatewaySetting {
+	return o.Settings
+}
+
+// SetSettings sets value to Settings
+func (o *MobileGatewayPatchSettingsRequest) SetSettings(v *MobileGatewaySetting) {
+	o.Settings = v
+}
+
+// GetPatchEmptyToSettings returns value of PatchEmptyToSettings
+func (o *MobileGatewayPatchSettingsRequest) GetPatchEmptyToSettings() bool {
+	return o.PatchEmptyToSettings
+}
+
+// SetPatchEmptyToSettings sets value to PatchEmptyToSettings
+func (o *MobileGatewayPatchSettingsRequest) SetPatchEmptyToSettings(v bool) {
+	o.PatchEmptyToSettings = v
+}
+
+// GetSettingsHash returns value of SettingsHash
+func (o *MobileGatewayPatchSettingsRequest) GetSettingsHash() string {
+	return o.SettingsHash
+}
+
+// SetSettingsHash sets value to SettingsHash
+func (o *MobileGatewayPatchSettingsRequest) SetSettingsHash(v string) {
 	o.SettingsHash = v
 }
 
@@ -18938,6 +19851,130 @@ func (o *ProxyLBUpdateRequest) SetIconID(v types.ID) {
 }
 
 /*************************************************
+* ProxyLBUpdateSettingsRequest
+*************************************************/
+
+// ProxyLBUpdateSettingsRequest represents API parameter/response structure
+type ProxyLBUpdateSettingsRequest struct {
+	HealthCheck   *ProxyLBHealthCheck   `mapconv:"Settings.ProxyLB.HealthCheck,recursive"`
+	SorryServer   *ProxyLBSorryServer   `mapconv:"Settings.ProxyLB.SorryServer,recursive"`
+	BindPorts     []*ProxyLBBindPort    `mapconv:"Settings.ProxyLB.[]BindPorts,recursive"`
+	Servers       []*ProxyLBServer      `mapconv:"Settings.ProxyLB.[]Servers,recursive"`
+	LetsEncrypt   *ProxyLBACMESetting   `mapconv:"Settings.ProxyLB.LetsEncrypt,recursive"`
+	StickySession *ProxyLBStickySession `mapconv:"Settings.ProxyLB.StickySession,recursive"`
+	Timeout       *ProxyLBTimeout       `json:",omitempty" mapconv:"Settings.ProxyLB.Timeout,recursive,omitempty"`
+	SettingsHash  string                `json:",omitempty" mapconv:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *ProxyLBUpdateSettingsRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *ProxyLBUpdateSettingsRequest) setDefaults() interface{} {
+	return &struct {
+		HealthCheck   *ProxyLBHealthCheck   `mapconv:"Settings.ProxyLB.HealthCheck,recursive"`
+		SorryServer   *ProxyLBSorryServer   `mapconv:"Settings.ProxyLB.SorryServer,recursive"`
+		BindPorts     []*ProxyLBBindPort    `mapconv:"Settings.ProxyLB.[]BindPorts,recursive"`
+		Servers       []*ProxyLBServer      `mapconv:"Settings.ProxyLB.[]Servers,recursive"`
+		LetsEncrypt   *ProxyLBACMESetting   `mapconv:"Settings.ProxyLB.LetsEncrypt,recursive"`
+		StickySession *ProxyLBStickySession `mapconv:"Settings.ProxyLB.StickySession,recursive"`
+		Timeout       *ProxyLBTimeout       `json:",omitempty" mapconv:"Settings.ProxyLB.Timeout,recursive,omitempty"`
+		SettingsHash  string                `json:",omitempty" mapconv:",omitempty"`
+	}{
+		HealthCheck:   o.GetHealthCheck(),
+		SorryServer:   o.GetSorryServer(),
+		BindPorts:     o.GetBindPorts(),
+		Servers:       o.GetServers(),
+		LetsEncrypt:   o.GetLetsEncrypt(),
+		StickySession: o.GetStickySession(),
+		Timeout:       o.GetTimeout(),
+		SettingsHash:  o.GetSettingsHash(),
+	}
+}
+
+// GetHealthCheck returns value of HealthCheck
+func (o *ProxyLBUpdateSettingsRequest) GetHealthCheck() *ProxyLBHealthCheck {
+	return o.HealthCheck
+}
+
+// SetHealthCheck sets value to HealthCheck
+func (o *ProxyLBUpdateSettingsRequest) SetHealthCheck(v *ProxyLBHealthCheck) {
+	o.HealthCheck = v
+}
+
+// GetSorryServer returns value of SorryServer
+func (o *ProxyLBUpdateSettingsRequest) GetSorryServer() *ProxyLBSorryServer {
+	return o.SorryServer
+}
+
+// SetSorryServer sets value to SorryServer
+func (o *ProxyLBUpdateSettingsRequest) SetSorryServer(v *ProxyLBSorryServer) {
+	o.SorryServer = v
+}
+
+// GetBindPorts returns value of BindPorts
+func (o *ProxyLBUpdateSettingsRequest) GetBindPorts() []*ProxyLBBindPort {
+	return o.BindPorts
+}
+
+// SetBindPorts sets value to BindPorts
+func (o *ProxyLBUpdateSettingsRequest) SetBindPorts(v []*ProxyLBBindPort) {
+	o.BindPorts = v
+}
+
+// GetServers returns value of Servers
+func (o *ProxyLBUpdateSettingsRequest) GetServers() []*ProxyLBServer {
+	return o.Servers
+}
+
+// SetServers sets value to Servers
+func (o *ProxyLBUpdateSettingsRequest) SetServers(v []*ProxyLBServer) {
+	o.Servers = v
+}
+
+// GetLetsEncrypt returns value of LetsEncrypt
+func (o *ProxyLBUpdateSettingsRequest) GetLetsEncrypt() *ProxyLBACMESetting {
+	return o.LetsEncrypt
+}
+
+// SetLetsEncrypt sets value to LetsEncrypt
+func (o *ProxyLBUpdateSettingsRequest) SetLetsEncrypt(v *ProxyLBACMESetting) {
+	o.LetsEncrypt = v
+}
+
+// GetStickySession returns value of StickySession
+func (o *ProxyLBUpdateSettingsRequest) GetStickySession() *ProxyLBStickySession {
+	return o.StickySession
+}
+
+// SetStickySession sets value to StickySession
+func (o *ProxyLBUpdateSettingsRequest) SetStickySession(v *ProxyLBStickySession) {
+	o.StickySession = v
+}
+
+// GetTimeout returns value of Timeout
+func (o *ProxyLBUpdateSettingsRequest) GetTimeout() *ProxyLBTimeout {
+	return o.Timeout
+}
+
+// SetTimeout sets value to Timeout
+func (o *ProxyLBUpdateSettingsRequest) SetTimeout(v *ProxyLBTimeout) {
+	o.Timeout = v
+}
+
+// GetSettingsHash returns value of SettingsHash
+func (o *ProxyLBUpdateSettingsRequest) GetSettingsHash() string {
+	return o.SettingsHash
+}
+
+// SetSettingsHash sets value to SettingsHash
+func (o *ProxyLBUpdateSettingsRequest) SetSettingsHash(v string) {
+	o.SettingsHash = v
+}
+
+/*************************************************
 * ProxyLBPatchRequest
 *************************************************/
 
@@ -19261,6 +20298,221 @@ func (o *ProxyLBPatchRequest) GetPatchEmptyToIconID() bool {
 // SetPatchEmptyToIconID sets value to PatchEmptyToIconID
 func (o *ProxyLBPatchRequest) SetPatchEmptyToIconID(v bool) {
 	o.PatchEmptyToIconID = v
+}
+
+/*************************************************
+* ProxyLBPatchSettingsRequest
+*************************************************/
+
+// ProxyLBPatchSettingsRequest represents API parameter/response structure
+type ProxyLBPatchSettingsRequest struct {
+	HealthCheck               *ProxyLBHealthCheck `mapconv:"Settings.ProxyLB.HealthCheck,recursive"`
+	PatchEmptyToHealthCheck   bool
+	SorryServer               *ProxyLBSorryServer `mapconv:"Settings.ProxyLB.SorryServer,recursive"`
+	PatchEmptyToSorryServer   bool
+	BindPorts                 []*ProxyLBBindPort `mapconv:"Settings.ProxyLB.[]BindPorts,recursive"`
+	PatchEmptyToBindPorts     bool
+	Servers                   []*ProxyLBServer `mapconv:"Settings.ProxyLB.[]Servers,recursive"`
+	PatchEmptyToServers       bool
+	LetsEncrypt               *ProxyLBACMESetting `mapconv:"Settings.ProxyLB.LetsEncrypt,recursive"`
+	PatchEmptyToLetsEncrypt   bool
+	StickySession             *ProxyLBStickySession `mapconv:"Settings.ProxyLB.StickySession,recursive"`
+	PatchEmptyToStickySession bool
+	Timeout                   *ProxyLBTimeout `json:",omitempty" mapconv:"Settings.ProxyLB.Timeout,recursive,omitempty"`
+	PatchEmptyToTimeout       bool
+	SettingsHash              string `json:",omitempty" mapconv:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *ProxyLBPatchSettingsRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *ProxyLBPatchSettingsRequest) setDefaults() interface{} {
+	return &struct {
+		HealthCheck               *ProxyLBHealthCheck `mapconv:"Settings.ProxyLB.HealthCheck,recursive"`
+		PatchEmptyToHealthCheck   bool
+		SorryServer               *ProxyLBSorryServer `mapconv:"Settings.ProxyLB.SorryServer,recursive"`
+		PatchEmptyToSorryServer   bool
+		BindPorts                 []*ProxyLBBindPort `mapconv:"Settings.ProxyLB.[]BindPorts,recursive"`
+		PatchEmptyToBindPorts     bool
+		Servers                   []*ProxyLBServer `mapconv:"Settings.ProxyLB.[]Servers,recursive"`
+		PatchEmptyToServers       bool
+		LetsEncrypt               *ProxyLBACMESetting `mapconv:"Settings.ProxyLB.LetsEncrypt,recursive"`
+		PatchEmptyToLetsEncrypt   bool
+		StickySession             *ProxyLBStickySession `mapconv:"Settings.ProxyLB.StickySession,recursive"`
+		PatchEmptyToStickySession bool
+		Timeout                   *ProxyLBTimeout `json:",omitempty" mapconv:"Settings.ProxyLB.Timeout,recursive,omitempty"`
+		PatchEmptyToTimeout       bool
+		SettingsHash              string `json:",omitempty" mapconv:",omitempty"`
+	}{
+		HealthCheck:               o.GetHealthCheck(),
+		PatchEmptyToHealthCheck:   o.GetPatchEmptyToHealthCheck(),
+		SorryServer:               o.GetSorryServer(),
+		PatchEmptyToSorryServer:   o.GetPatchEmptyToSorryServer(),
+		BindPorts:                 o.GetBindPorts(),
+		PatchEmptyToBindPorts:     o.GetPatchEmptyToBindPorts(),
+		Servers:                   o.GetServers(),
+		PatchEmptyToServers:       o.GetPatchEmptyToServers(),
+		LetsEncrypt:               o.GetLetsEncrypt(),
+		PatchEmptyToLetsEncrypt:   o.GetPatchEmptyToLetsEncrypt(),
+		StickySession:             o.GetStickySession(),
+		PatchEmptyToStickySession: o.GetPatchEmptyToStickySession(),
+		Timeout:                   o.GetTimeout(),
+		PatchEmptyToTimeout:       o.GetPatchEmptyToTimeout(),
+		SettingsHash:              o.GetSettingsHash(),
+	}
+}
+
+// GetHealthCheck returns value of HealthCheck
+func (o *ProxyLBPatchSettingsRequest) GetHealthCheck() *ProxyLBHealthCheck {
+	return o.HealthCheck
+}
+
+// SetHealthCheck sets value to HealthCheck
+func (o *ProxyLBPatchSettingsRequest) SetHealthCheck(v *ProxyLBHealthCheck) {
+	o.HealthCheck = v
+}
+
+// GetPatchEmptyToHealthCheck returns value of PatchEmptyToHealthCheck
+func (o *ProxyLBPatchSettingsRequest) GetPatchEmptyToHealthCheck() bool {
+	return o.PatchEmptyToHealthCheck
+}
+
+// SetPatchEmptyToHealthCheck sets value to PatchEmptyToHealthCheck
+func (o *ProxyLBPatchSettingsRequest) SetPatchEmptyToHealthCheck(v bool) {
+	o.PatchEmptyToHealthCheck = v
+}
+
+// GetSorryServer returns value of SorryServer
+func (o *ProxyLBPatchSettingsRequest) GetSorryServer() *ProxyLBSorryServer {
+	return o.SorryServer
+}
+
+// SetSorryServer sets value to SorryServer
+func (o *ProxyLBPatchSettingsRequest) SetSorryServer(v *ProxyLBSorryServer) {
+	o.SorryServer = v
+}
+
+// GetPatchEmptyToSorryServer returns value of PatchEmptyToSorryServer
+func (o *ProxyLBPatchSettingsRequest) GetPatchEmptyToSorryServer() bool {
+	return o.PatchEmptyToSorryServer
+}
+
+// SetPatchEmptyToSorryServer sets value to PatchEmptyToSorryServer
+func (o *ProxyLBPatchSettingsRequest) SetPatchEmptyToSorryServer(v bool) {
+	o.PatchEmptyToSorryServer = v
+}
+
+// GetBindPorts returns value of BindPorts
+func (o *ProxyLBPatchSettingsRequest) GetBindPorts() []*ProxyLBBindPort {
+	return o.BindPorts
+}
+
+// SetBindPorts sets value to BindPorts
+func (o *ProxyLBPatchSettingsRequest) SetBindPorts(v []*ProxyLBBindPort) {
+	o.BindPorts = v
+}
+
+// GetPatchEmptyToBindPorts returns value of PatchEmptyToBindPorts
+func (o *ProxyLBPatchSettingsRequest) GetPatchEmptyToBindPorts() bool {
+	return o.PatchEmptyToBindPorts
+}
+
+// SetPatchEmptyToBindPorts sets value to PatchEmptyToBindPorts
+func (o *ProxyLBPatchSettingsRequest) SetPatchEmptyToBindPorts(v bool) {
+	o.PatchEmptyToBindPorts = v
+}
+
+// GetServers returns value of Servers
+func (o *ProxyLBPatchSettingsRequest) GetServers() []*ProxyLBServer {
+	return o.Servers
+}
+
+// SetServers sets value to Servers
+func (o *ProxyLBPatchSettingsRequest) SetServers(v []*ProxyLBServer) {
+	o.Servers = v
+}
+
+// GetPatchEmptyToServers returns value of PatchEmptyToServers
+func (o *ProxyLBPatchSettingsRequest) GetPatchEmptyToServers() bool {
+	return o.PatchEmptyToServers
+}
+
+// SetPatchEmptyToServers sets value to PatchEmptyToServers
+func (o *ProxyLBPatchSettingsRequest) SetPatchEmptyToServers(v bool) {
+	o.PatchEmptyToServers = v
+}
+
+// GetLetsEncrypt returns value of LetsEncrypt
+func (o *ProxyLBPatchSettingsRequest) GetLetsEncrypt() *ProxyLBACMESetting {
+	return o.LetsEncrypt
+}
+
+// SetLetsEncrypt sets value to LetsEncrypt
+func (o *ProxyLBPatchSettingsRequest) SetLetsEncrypt(v *ProxyLBACMESetting) {
+	o.LetsEncrypt = v
+}
+
+// GetPatchEmptyToLetsEncrypt returns value of PatchEmptyToLetsEncrypt
+func (o *ProxyLBPatchSettingsRequest) GetPatchEmptyToLetsEncrypt() bool {
+	return o.PatchEmptyToLetsEncrypt
+}
+
+// SetPatchEmptyToLetsEncrypt sets value to PatchEmptyToLetsEncrypt
+func (o *ProxyLBPatchSettingsRequest) SetPatchEmptyToLetsEncrypt(v bool) {
+	o.PatchEmptyToLetsEncrypt = v
+}
+
+// GetStickySession returns value of StickySession
+func (o *ProxyLBPatchSettingsRequest) GetStickySession() *ProxyLBStickySession {
+	return o.StickySession
+}
+
+// SetStickySession sets value to StickySession
+func (o *ProxyLBPatchSettingsRequest) SetStickySession(v *ProxyLBStickySession) {
+	o.StickySession = v
+}
+
+// GetPatchEmptyToStickySession returns value of PatchEmptyToStickySession
+func (o *ProxyLBPatchSettingsRequest) GetPatchEmptyToStickySession() bool {
+	return o.PatchEmptyToStickySession
+}
+
+// SetPatchEmptyToStickySession sets value to PatchEmptyToStickySession
+func (o *ProxyLBPatchSettingsRequest) SetPatchEmptyToStickySession(v bool) {
+	o.PatchEmptyToStickySession = v
+}
+
+// GetTimeout returns value of Timeout
+func (o *ProxyLBPatchSettingsRequest) GetTimeout() *ProxyLBTimeout {
+	return o.Timeout
+}
+
+// SetTimeout sets value to Timeout
+func (o *ProxyLBPatchSettingsRequest) SetTimeout(v *ProxyLBTimeout) {
+	o.Timeout = v
+}
+
+// GetPatchEmptyToTimeout returns value of PatchEmptyToTimeout
+func (o *ProxyLBPatchSettingsRequest) GetPatchEmptyToTimeout() bool {
+	return o.PatchEmptyToTimeout
+}
+
+// SetPatchEmptyToTimeout sets value to PatchEmptyToTimeout
+func (o *ProxyLBPatchSettingsRequest) SetPatchEmptyToTimeout(v bool) {
+	o.PatchEmptyToTimeout = v
+}
+
+// GetSettingsHash returns value of SettingsHash
+func (o *ProxyLBPatchSettingsRequest) GetSettingsHash() string {
+	return o.SettingsHash
+}
+
+// SetSettingsHash sets value to SettingsHash
+func (o *ProxyLBPatchSettingsRequest) SetSettingsHash(v string) {
+	o.SettingsHash = v
 }
 
 /*************************************************
@@ -23733,6 +24985,149 @@ func (o *SimpleMonitorUpdateRequest) SetSettingsHash(v string) {
 }
 
 /*************************************************
+* SimpleMonitorUpdateSettingsRequest
+*************************************************/
+
+// SimpleMonitorUpdateSettingsRequest represents API parameter/response structure
+type SimpleMonitorUpdateSettingsRequest struct {
+	DelayLoop          int                       `mapconv:"Settings.SimpleMonitor.DelayLoop" validate:"min=60,max=3600"`
+	Enabled            types.StringFlag          `mapconv:"Settings.SimpleMonitor.Enabled"`
+	HealthCheck        *SimpleMonitorHealthCheck `mapconv:"Settings.SimpleMonitor.HealthCheck,recursive"`
+	NotifyEmailEnabled types.StringFlag          `mapconv:"Settings.SimpleMonitor.NotifyEmail.Enabled"`
+	NotifyEmailHTML    types.StringFlag          `mapconv:"Settings.SimpleMonitor.NotifyEmail.HTML"`
+	NotifySlackEnabled types.StringFlag          `mapconv:"Settings.SimpleMonitor.NotifySlack.Enabled"`
+	SlackWebhooksURL   string                    `mapconv:"Settings.SimpleMonitor.NotifySlack.IncomingWebhooksURL"`
+	NotifyInterval     int                       `mapconv:"Settings.SimpleMonitor.NotifyInterval" validate:"min=3600,max=259200"`
+	SettingsHash       string                    `json:",omitempty" mapconv:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *SimpleMonitorUpdateSettingsRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *SimpleMonitorUpdateSettingsRequest) setDefaults() interface{} {
+	return &struct {
+		DelayLoop          int                       `mapconv:"Settings.SimpleMonitor.DelayLoop" validate:"min=60,max=3600"`
+		Enabled            types.StringFlag          `mapconv:"Settings.SimpleMonitor.Enabled"`
+		HealthCheck        *SimpleMonitorHealthCheck `mapconv:"Settings.SimpleMonitor.HealthCheck,recursive"`
+		NotifyEmailEnabled types.StringFlag          `mapconv:"Settings.SimpleMonitor.NotifyEmail.Enabled"`
+		NotifyEmailHTML    types.StringFlag          `mapconv:"Settings.SimpleMonitor.NotifyEmail.HTML"`
+		NotifySlackEnabled types.StringFlag          `mapconv:"Settings.SimpleMonitor.NotifySlack.Enabled"`
+		SlackWebhooksURL   string                    `mapconv:"Settings.SimpleMonitor.NotifySlack.IncomingWebhooksURL"`
+		NotifyInterval     int                       `mapconv:"Settings.SimpleMonitor.NotifyInterval" validate:"min=3600,max=259200"`
+		SettingsHash       string                    `json:",omitempty" mapconv:",omitempty"`
+	}{
+		DelayLoop:          o.GetDelayLoop(),
+		Enabled:            o.GetEnabled(),
+		HealthCheck:        o.GetHealthCheck(),
+		NotifyEmailEnabled: o.GetNotifyEmailEnabled(),
+		NotifyEmailHTML:    o.GetNotifyEmailHTML(),
+		NotifySlackEnabled: o.GetNotifySlackEnabled(),
+		SlackWebhooksURL:   o.GetSlackWebhooksURL(),
+		NotifyInterval:     o.GetNotifyInterval(),
+		SettingsHash:       o.GetSettingsHash(),
+	}
+}
+
+// GetDelayLoop returns value of DelayLoop
+func (o *SimpleMonitorUpdateSettingsRequest) GetDelayLoop() int {
+	if o.DelayLoop == 0 {
+		return 60
+	}
+	return o.DelayLoop
+}
+
+// SetDelayLoop sets value to DelayLoop
+func (o *SimpleMonitorUpdateSettingsRequest) SetDelayLoop(v int) {
+	o.DelayLoop = v
+}
+
+// GetEnabled returns value of Enabled
+func (o *SimpleMonitorUpdateSettingsRequest) GetEnabled() types.StringFlag {
+	return o.Enabled
+}
+
+// SetEnabled sets value to Enabled
+func (o *SimpleMonitorUpdateSettingsRequest) SetEnabled(v types.StringFlag) {
+	o.Enabled = v
+}
+
+// GetHealthCheck returns value of HealthCheck
+func (o *SimpleMonitorUpdateSettingsRequest) GetHealthCheck() *SimpleMonitorHealthCheck {
+	return o.HealthCheck
+}
+
+// SetHealthCheck sets value to HealthCheck
+func (o *SimpleMonitorUpdateSettingsRequest) SetHealthCheck(v *SimpleMonitorHealthCheck) {
+	o.HealthCheck = v
+}
+
+// GetNotifyEmailEnabled returns value of NotifyEmailEnabled
+func (o *SimpleMonitorUpdateSettingsRequest) GetNotifyEmailEnabled() types.StringFlag {
+	return o.NotifyEmailEnabled
+}
+
+// SetNotifyEmailEnabled sets value to NotifyEmailEnabled
+func (o *SimpleMonitorUpdateSettingsRequest) SetNotifyEmailEnabled(v types.StringFlag) {
+	o.NotifyEmailEnabled = v
+}
+
+// GetNotifyEmailHTML returns value of NotifyEmailHTML
+func (o *SimpleMonitorUpdateSettingsRequest) GetNotifyEmailHTML() types.StringFlag {
+	return o.NotifyEmailHTML
+}
+
+// SetNotifyEmailHTML sets value to NotifyEmailHTML
+func (o *SimpleMonitorUpdateSettingsRequest) SetNotifyEmailHTML(v types.StringFlag) {
+	o.NotifyEmailHTML = v
+}
+
+// GetNotifySlackEnabled returns value of NotifySlackEnabled
+func (o *SimpleMonitorUpdateSettingsRequest) GetNotifySlackEnabled() types.StringFlag {
+	return o.NotifySlackEnabled
+}
+
+// SetNotifySlackEnabled sets value to NotifySlackEnabled
+func (o *SimpleMonitorUpdateSettingsRequest) SetNotifySlackEnabled(v types.StringFlag) {
+	o.NotifySlackEnabled = v
+}
+
+// GetSlackWebhooksURL returns value of SlackWebhooksURL
+func (o *SimpleMonitorUpdateSettingsRequest) GetSlackWebhooksURL() string {
+	return o.SlackWebhooksURL
+}
+
+// SetSlackWebhooksURL sets value to SlackWebhooksURL
+func (o *SimpleMonitorUpdateSettingsRequest) SetSlackWebhooksURL(v string) {
+	o.SlackWebhooksURL = v
+}
+
+// GetNotifyInterval returns value of NotifyInterval
+func (o *SimpleMonitorUpdateSettingsRequest) GetNotifyInterval() int {
+	if o.NotifyInterval == 0 {
+		return 7200
+	}
+	return o.NotifyInterval
+}
+
+// SetNotifyInterval sets value to NotifyInterval
+func (o *SimpleMonitorUpdateSettingsRequest) SetNotifyInterval(v int) {
+	o.NotifyInterval = v
+}
+
+// GetSettingsHash returns value of SettingsHash
+func (o *SimpleMonitorUpdateSettingsRequest) GetSettingsHash() string {
+	return o.SettingsHash
+}
+
+// SetSettingsHash sets value to SettingsHash
+func (o *SimpleMonitorUpdateSettingsRequest) SetSettingsHash(v string) {
+	o.SettingsHash = v
+}
+
+/*************************************************
 * SimpleMonitorPatchRequest
 *************************************************/
 
@@ -24074,6 +25469,253 @@ func (o *SimpleMonitorPatchRequest) GetSettingsHash() string {
 
 // SetSettingsHash sets value to SettingsHash
 func (o *SimpleMonitorPatchRequest) SetSettingsHash(v string) {
+	o.SettingsHash = v
+}
+
+/*************************************************
+* SimpleMonitorPatchSettingsRequest
+*************************************************/
+
+// SimpleMonitorPatchSettingsRequest represents API parameter/response structure
+type SimpleMonitorPatchSettingsRequest struct {
+	DelayLoop                      int `mapconv:"Settings.SimpleMonitor.DelayLoop" validate:"min=60,max=3600"`
+	PatchEmptyToDelayLoop          bool
+	Enabled                        types.StringFlag `mapconv:"Settings.SimpleMonitor.Enabled"`
+	PatchEmptyToEnabled            bool
+	HealthCheck                    *SimpleMonitorHealthCheck `mapconv:"Settings.SimpleMonitor.HealthCheck,recursive"`
+	PatchEmptyToHealthCheck        bool
+	NotifyEmailEnabled             types.StringFlag `mapconv:"Settings.SimpleMonitor.NotifyEmail.Enabled"`
+	PatchEmptyToNotifyEmailEnabled bool
+	NotifyEmailHTML                types.StringFlag `mapconv:"Settings.SimpleMonitor.NotifyEmail.HTML"`
+	PatchEmptyToNotifyEmailHTML    bool
+	NotifySlackEnabled             types.StringFlag `mapconv:"Settings.SimpleMonitor.NotifySlack.Enabled"`
+	PatchEmptyToNotifySlackEnabled bool
+	SlackWebhooksURL               string `mapconv:"Settings.SimpleMonitor.NotifySlack.IncomingWebhooksURL"`
+	PatchEmptyToSlackWebhooksURL   bool
+	NotifyInterval                 int `mapconv:"Settings.SimpleMonitor.NotifyInterval" validate:"min=3600,max=259200"`
+	PatchEmptyToNotifyInterval     bool
+	SettingsHash                   string `json:",omitempty" mapconv:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *SimpleMonitorPatchSettingsRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *SimpleMonitorPatchSettingsRequest) setDefaults() interface{} {
+	return &struct {
+		DelayLoop                      int `mapconv:"Settings.SimpleMonitor.DelayLoop" validate:"min=60,max=3600"`
+		PatchEmptyToDelayLoop          bool
+		Enabled                        types.StringFlag `mapconv:"Settings.SimpleMonitor.Enabled"`
+		PatchEmptyToEnabled            bool
+		HealthCheck                    *SimpleMonitorHealthCheck `mapconv:"Settings.SimpleMonitor.HealthCheck,recursive"`
+		PatchEmptyToHealthCheck        bool
+		NotifyEmailEnabled             types.StringFlag `mapconv:"Settings.SimpleMonitor.NotifyEmail.Enabled"`
+		PatchEmptyToNotifyEmailEnabled bool
+		NotifyEmailHTML                types.StringFlag `mapconv:"Settings.SimpleMonitor.NotifyEmail.HTML"`
+		PatchEmptyToNotifyEmailHTML    bool
+		NotifySlackEnabled             types.StringFlag `mapconv:"Settings.SimpleMonitor.NotifySlack.Enabled"`
+		PatchEmptyToNotifySlackEnabled bool
+		SlackWebhooksURL               string `mapconv:"Settings.SimpleMonitor.NotifySlack.IncomingWebhooksURL"`
+		PatchEmptyToSlackWebhooksURL   bool
+		NotifyInterval                 int `mapconv:"Settings.SimpleMonitor.NotifyInterval" validate:"min=3600,max=259200"`
+		PatchEmptyToNotifyInterval     bool
+		SettingsHash                   string `json:",omitempty" mapconv:",omitempty"`
+	}{
+		DelayLoop:                      o.GetDelayLoop(),
+		PatchEmptyToDelayLoop:          o.GetPatchEmptyToDelayLoop(),
+		Enabled:                        o.GetEnabled(),
+		PatchEmptyToEnabled:            o.GetPatchEmptyToEnabled(),
+		HealthCheck:                    o.GetHealthCheck(),
+		PatchEmptyToHealthCheck:        o.GetPatchEmptyToHealthCheck(),
+		NotifyEmailEnabled:             o.GetNotifyEmailEnabled(),
+		PatchEmptyToNotifyEmailEnabled: o.GetPatchEmptyToNotifyEmailEnabled(),
+		NotifyEmailHTML:                o.GetNotifyEmailHTML(),
+		PatchEmptyToNotifyEmailHTML:    o.GetPatchEmptyToNotifyEmailHTML(),
+		NotifySlackEnabled:             o.GetNotifySlackEnabled(),
+		PatchEmptyToNotifySlackEnabled: o.GetPatchEmptyToNotifySlackEnabled(),
+		SlackWebhooksURL:               o.GetSlackWebhooksURL(),
+		PatchEmptyToSlackWebhooksURL:   o.GetPatchEmptyToSlackWebhooksURL(),
+		NotifyInterval:                 o.GetNotifyInterval(),
+		PatchEmptyToNotifyInterval:     o.GetPatchEmptyToNotifyInterval(),
+		SettingsHash:                   o.GetSettingsHash(),
+	}
+}
+
+// GetDelayLoop returns value of DelayLoop
+func (o *SimpleMonitorPatchSettingsRequest) GetDelayLoop() int {
+	if o.DelayLoop == 0 {
+		return 60
+	}
+	return o.DelayLoop
+}
+
+// SetDelayLoop sets value to DelayLoop
+func (o *SimpleMonitorPatchSettingsRequest) SetDelayLoop(v int) {
+	o.DelayLoop = v
+}
+
+// GetPatchEmptyToDelayLoop returns value of PatchEmptyToDelayLoop
+func (o *SimpleMonitorPatchSettingsRequest) GetPatchEmptyToDelayLoop() bool {
+	return o.PatchEmptyToDelayLoop
+}
+
+// SetPatchEmptyToDelayLoop sets value to PatchEmptyToDelayLoop
+func (o *SimpleMonitorPatchSettingsRequest) SetPatchEmptyToDelayLoop(v bool) {
+	o.PatchEmptyToDelayLoop = v
+}
+
+// GetEnabled returns value of Enabled
+func (o *SimpleMonitorPatchSettingsRequest) GetEnabled() types.StringFlag {
+	return o.Enabled
+}
+
+// SetEnabled sets value to Enabled
+func (o *SimpleMonitorPatchSettingsRequest) SetEnabled(v types.StringFlag) {
+	o.Enabled = v
+}
+
+// GetPatchEmptyToEnabled returns value of PatchEmptyToEnabled
+func (o *SimpleMonitorPatchSettingsRequest) GetPatchEmptyToEnabled() bool {
+	return o.PatchEmptyToEnabled
+}
+
+// SetPatchEmptyToEnabled sets value to PatchEmptyToEnabled
+func (o *SimpleMonitorPatchSettingsRequest) SetPatchEmptyToEnabled(v bool) {
+	o.PatchEmptyToEnabled = v
+}
+
+// GetHealthCheck returns value of HealthCheck
+func (o *SimpleMonitorPatchSettingsRequest) GetHealthCheck() *SimpleMonitorHealthCheck {
+	return o.HealthCheck
+}
+
+// SetHealthCheck sets value to HealthCheck
+func (o *SimpleMonitorPatchSettingsRequest) SetHealthCheck(v *SimpleMonitorHealthCheck) {
+	o.HealthCheck = v
+}
+
+// GetPatchEmptyToHealthCheck returns value of PatchEmptyToHealthCheck
+func (o *SimpleMonitorPatchSettingsRequest) GetPatchEmptyToHealthCheck() bool {
+	return o.PatchEmptyToHealthCheck
+}
+
+// SetPatchEmptyToHealthCheck sets value to PatchEmptyToHealthCheck
+func (o *SimpleMonitorPatchSettingsRequest) SetPatchEmptyToHealthCheck(v bool) {
+	o.PatchEmptyToHealthCheck = v
+}
+
+// GetNotifyEmailEnabled returns value of NotifyEmailEnabled
+func (o *SimpleMonitorPatchSettingsRequest) GetNotifyEmailEnabled() types.StringFlag {
+	return o.NotifyEmailEnabled
+}
+
+// SetNotifyEmailEnabled sets value to NotifyEmailEnabled
+func (o *SimpleMonitorPatchSettingsRequest) SetNotifyEmailEnabled(v types.StringFlag) {
+	o.NotifyEmailEnabled = v
+}
+
+// GetPatchEmptyToNotifyEmailEnabled returns value of PatchEmptyToNotifyEmailEnabled
+func (o *SimpleMonitorPatchSettingsRequest) GetPatchEmptyToNotifyEmailEnabled() bool {
+	return o.PatchEmptyToNotifyEmailEnabled
+}
+
+// SetPatchEmptyToNotifyEmailEnabled sets value to PatchEmptyToNotifyEmailEnabled
+func (o *SimpleMonitorPatchSettingsRequest) SetPatchEmptyToNotifyEmailEnabled(v bool) {
+	o.PatchEmptyToNotifyEmailEnabled = v
+}
+
+// GetNotifyEmailHTML returns value of NotifyEmailHTML
+func (o *SimpleMonitorPatchSettingsRequest) GetNotifyEmailHTML() types.StringFlag {
+	return o.NotifyEmailHTML
+}
+
+// SetNotifyEmailHTML sets value to NotifyEmailHTML
+func (o *SimpleMonitorPatchSettingsRequest) SetNotifyEmailHTML(v types.StringFlag) {
+	o.NotifyEmailHTML = v
+}
+
+// GetPatchEmptyToNotifyEmailHTML returns value of PatchEmptyToNotifyEmailHTML
+func (o *SimpleMonitorPatchSettingsRequest) GetPatchEmptyToNotifyEmailHTML() bool {
+	return o.PatchEmptyToNotifyEmailHTML
+}
+
+// SetPatchEmptyToNotifyEmailHTML sets value to PatchEmptyToNotifyEmailHTML
+func (o *SimpleMonitorPatchSettingsRequest) SetPatchEmptyToNotifyEmailHTML(v bool) {
+	o.PatchEmptyToNotifyEmailHTML = v
+}
+
+// GetNotifySlackEnabled returns value of NotifySlackEnabled
+func (o *SimpleMonitorPatchSettingsRequest) GetNotifySlackEnabled() types.StringFlag {
+	return o.NotifySlackEnabled
+}
+
+// SetNotifySlackEnabled sets value to NotifySlackEnabled
+func (o *SimpleMonitorPatchSettingsRequest) SetNotifySlackEnabled(v types.StringFlag) {
+	o.NotifySlackEnabled = v
+}
+
+// GetPatchEmptyToNotifySlackEnabled returns value of PatchEmptyToNotifySlackEnabled
+func (o *SimpleMonitorPatchSettingsRequest) GetPatchEmptyToNotifySlackEnabled() bool {
+	return o.PatchEmptyToNotifySlackEnabled
+}
+
+// SetPatchEmptyToNotifySlackEnabled sets value to PatchEmptyToNotifySlackEnabled
+func (o *SimpleMonitorPatchSettingsRequest) SetPatchEmptyToNotifySlackEnabled(v bool) {
+	o.PatchEmptyToNotifySlackEnabled = v
+}
+
+// GetSlackWebhooksURL returns value of SlackWebhooksURL
+func (o *SimpleMonitorPatchSettingsRequest) GetSlackWebhooksURL() string {
+	return o.SlackWebhooksURL
+}
+
+// SetSlackWebhooksURL sets value to SlackWebhooksURL
+func (o *SimpleMonitorPatchSettingsRequest) SetSlackWebhooksURL(v string) {
+	o.SlackWebhooksURL = v
+}
+
+// GetPatchEmptyToSlackWebhooksURL returns value of PatchEmptyToSlackWebhooksURL
+func (o *SimpleMonitorPatchSettingsRequest) GetPatchEmptyToSlackWebhooksURL() bool {
+	return o.PatchEmptyToSlackWebhooksURL
+}
+
+// SetPatchEmptyToSlackWebhooksURL sets value to PatchEmptyToSlackWebhooksURL
+func (o *SimpleMonitorPatchSettingsRequest) SetPatchEmptyToSlackWebhooksURL(v bool) {
+	o.PatchEmptyToSlackWebhooksURL = v
+}
+
+// GetNotifyInterval returns value of NotifyInterval
+func (o *SimpleMonitorPatchSettingsRequest) GetNotifyInterval() int {
+	if o.NotifyInterval == 0 {
+		return 7200
+	}
+	return o.NotifyInterval
+}
+
+// SetNotifyInterval sets value to NotifyInterval
+func (o *SimpleMonitorPatchSettingsRequest) SetNotifyInterval(v int) {
+	o.NotifyInterval = v
+}
+
+// GetPatchEmptyToNotifyInterval returns value of PatchEmptyToNotifyInterval
+func (o *SimpleMonitorPatchSettingsRequest) GetPatchEmptyToNotifyInterval() bool {
+	return o.PatchEmptyToNotifyInterval
+}
+
+// SetPatchEmptyToNotifyInterval sets value to PatchEmptyToNotifyInterval
+func (o *SimpleMonitorPatchSettingsRequest) SetPatchEmptyToNotifyInterval(v bool) {
+	o.PatchEmptyToNotifyInterval = v
+}
+
+// GetSettingsHash returns value of SettingsHash
+func (o *SimpleMonitorPatchSettingsRequest) GetSettingsHash() string {
+	return o.SettingsHash
+}
+
+// SetSettingsHash sets value to SettingsHash
+func (o *SimpleMonitorPatchSettingsRequest) SetSettingsHash(v string) {
 	o.SettingsHash = v
 }
 
@@ -27628,6 +29270,52 @@ func (o *VPCRouterUpdateRequest) SetSettingsHash(v string) {
 }
 
 /*************************************************
+* VPCRouterUpdateSettingsRequest
+*************************************************/
+
+// VPCRouterUpdateSettingsRequest represents API parameter/response structure
+type VPCRouterUpdateSettingsRequest struct {
+	Settings     *VPCRouterSetting `mapconv:",omitempty,recursive"`
+	SettingsHash string            `json:",omitempty" mapconv:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *VPCRouterUpdateSettingsRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *VPCRouterUpdateSettingsRequest) setDefaults() interface{} {
+	return &struct {
+		Settings     *VPCRouterSetting `mapconv:",omitempty,recursive"`
+		SettingsHash string            `json:",omitempty" mapconv:",omitempty"`
+	}{
+		Settings:     o.GetSettings(),
+		SettingsHash: o.GetSettingsHash(),
+	}
+}
+
+// GetSettings returns value of Settings
+func (o *VPCRouterUpdateSettingsRequest) GetSettings() *VPCRouterSetting {
+	return o.Settings
+}
+
+// SetSettings sets value to Settings
+func (o *VPCRouterUpdateSettingsRequest) SetSettings(v *VPCRouterSetting) {
+	o.Settings = v
+}
+
+// GetSettingsHash returns value of SettingsHash
+func (o *VPCRouterUpdateSettingsRequest) GetSettingsHash() string {
+	return o.SettingsHash
+}
+
+// SetSettingsHash sets value to SettingsHash
+func (o *VPCRouterUpdateSettingsRequest) SetSettingsHash(v string) {
+	o.SettingsHash = v
+}
+
+/*************************************************
 * VPCRouterPatchRequest
 *************************************************/
 
@@ -27794,6 +29482,65 @@ func (o *VPCRouterPatchRequest) GetSettingsHash() string {
 
 // SetSettingsHash sets value to SettingsHash
 func (o *VPCRouterPatchRequest) SetSettingsHash(v string) {
+	o.SettingsHash = v
+}
+
+/*************************************************
+* VPCRouterPatchSettingsRequest
+*************************************************/
+
+// VPCRouterPatchSettingsRequest represents API parameter/response structure
+type VPCRouterPatchSettingsRequest struct {
+	Settings             *VPCRouterSetting `mapconv:",omitempty,recursive"`
+	PatchEmptyToSettings bool
+	SettingsHash         string `json:",omitempty" mapconv:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *VPCRouterPatchSettingsRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *VPCRouterPatchSettingsRequest) setDefaults() interface{} {
+	return &struct {
+		Settings             *VPCRouterSetting `mapconv:",omitempty,recursive"`
+		PatchEmptyToSettings bool
+		SettingsHash         string `json:",omitempty" mapconv:",omitempty"`
+	}{
+		Settings:             o.GetSettings(),
+		PatchEmptyToSettings: o.GetPatchEmptyToSettings(),
+		SettingsHash:         o.GetSettingsHash(),
+	}
+}
+
+// GetSettings returns value of Settings
+func (o *VPCRouterPatchSettingsRequest) GetSettings() *VPCRouterSetting {
+	return o.Settings
+}
+
+// SetSettings sets value to Settings
+func (o *VPCRouterPatchSettingsRequest) SetSettings(v *VPCRouterSetting) {
+	o.Settings = v
+}
+
+// GetPatchEmptyToSettings returns value of PatchEmptyToSettings
+func (o *VPCRouterPatchSettingsRequest) GetPatchEmptyToSettings() bool {
+	return o.PatchEmptyToSettings
+}
+
+// SetPatchEmptyToSettings sets value to PatchEmptyToSettings
+func (o *VPCRouterPatchSettingsRequest) SetPatchEmptyToSettings(v bool) {
+	o.PatchEmptyToSettings = v
+}
+
+// GetSettingsHash returns value of SettingsHash
+func (o *VPCRouterPatchSettingsRequest) GetSettingsHash() string {
+	return o.SettingsHash
+}
+
+// SetSettingsHash sets value to SettingsHash
+func (o *VPCRouterPatchSettingsRequest) SetSettingsHash(v string) {
 	o.SettingsHash = v
 }
 

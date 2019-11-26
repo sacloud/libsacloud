@@ -46,8 +46,14 @@ var databaseAPI = &dsl.Resource{
 		// update
 		ops.UpdateAppliance(databaseAPIName, databaseNakedType, databaseUpdateParam, databaseView),
 
+		// updateSettings
+		ops.UpdateApplianceSettings(databaseAPIName, databaseUpdateSettingsNakedType, databaseUpdateSettingsParam, databaseView),
+
 		// patch
 		ops.PatchAppliance(databaseAPIName, databaseNakedType, patchModel(databaseUpdateParam), databaseView),
+
+		// patchSettings
+		ops.PatchApplianceSettings(databaseAPIName, databaseUpdateSettingsNakedType, patchModel(databaseUpdateSettingsParam), databaseView),
 
 		// delete
 		ops.Delete(databaseAPIName),
@@ -98,8 +104,9 @@ var databaseAPI = &dsl.Resource{
 }
 
 var (
-	databaseNakedType       = meta.Static(naked.Database{})
-	databaseStatusNakedType = meta.Static(naked.DatabaseStatus{})
+	databaseNakedType               = meta.Static(naked.Database{})
+	databaseUpdateSettingsNakedType = meta.Static(naked.DatabaseSettingsUpdate{})
+	databaseStatusNakedType         = meta.Static(naked.DatabaseStatus{})
 
 	databaseView = &dsl.Model{
 		Name:      databaseAPIName,
@@ -180,6 +187,19 @@ var (
 			fields.Tags(),
 			fields.IconID(),
 
+			// settings
+			fields.DatabaseSettingsCommon(),
+			fields.DatabaseSettingsBackup(),
+			fields.DatabaseSettingsReplication(),
+			// settings hash
+			fields.SettingsHash(),
+		},
+	}
+
+	databaseUpdateSettingsParam = &dsl.Model{
+		Name:      names.UpdateSettingsParameterName(databaseAPIName),
+		NakedType: databaseNakedType,
+		Fields: []*dsl.FieldDesc{
 			// settings
 			fields.DatabaseSettingsCommon(),
 			fields.DatabaseSettingsBackup(),

@@ -133,6 +133,26 @@ func (o *MobileGatewayOp) Patch(ctx context.Context, zone string, id types.ID, p
 	return value, nil
 }
 
+// UpdateSettings is fake implementation
+func (o *MobileGatewayOp) UpdateSettings(ctx context.Context, zone string, id types.ID, param *sacloud.MobileGatewayUpdateSettingsRequest) (*sacloud.MobileGateway, error) {
+	value, err := o.Read(ctx, zone, id)
+	if err != nil {
+		return nil, err
+	}
+	copySameNameField(param, value)
+	fill(value, fillModifiedAt)
+
+	putMobileGateway(zone, value)
+	return value, nil
+}
+
+// PatchSettings is fake implementation
+func (o *MobileGatewayOp) PatchSettings(ctx context.Context, zone string, id types.ID, param *sacloud.MobileGatewayPatchSettingsRequest) (*sacloud.MobileGateway, error) {
+	patchParam := &sacloud.MobileGatewayPatchRequest{}
+	copySameNameField(param, patchParam)
+	return o.Patch(ctx, zone, id, patchParam)
+}
+
 // Delete is fake implementation
 func (o *MobileGatewayOp) Delete(ctx context.Context, zone string, id types.ID) error {
 	_, err := o.Read(ctx, zone, id)

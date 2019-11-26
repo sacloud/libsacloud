@@ -698,6 +698,76 @@ func (t *AutoBackupTracer) Patch(ctx context.Context, zone string, id types.ID, 
 	return resultAutoBackup, err
 }
 
+// UpdateSettings is API call with trace log
+func (t *AutoBackupTracer) UpdateSettings(ctx context.Context, zone string, id types.ID, param *sacloud.AutoBackupUpdateSettingsRequest) (*sacloud.AutoBackup, error) {
+	log.Println("[TRACE] AutoBackupAPI.UpdateSettings start")
+	targetArguments := struct {
+		Argzone  string
+		Argid    types.ID                                 `json:"id"`
+		Argparam *sacloud.AutoBackupUpdateSettingsRequest `json:"param"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] AutoBackupAPI.UpdateSettings end")
+	}()
+
+	resultAutoBackup, err := t.Internal.UpdateSettings(ctx, zone, id, param)
+	targetResults := struct {
+		AutoBackup *sacloud.AutoBackup
+		Error      error
+	}{
+		AutoBackup: resultAutoBackup,
+		Error:      err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultAutoBackup, err
+}
+
+// PatchSettings is API call with trace log
+func (t *AutoBackupTracer) PatchSettings(ctx context.Context, zone string, id types.ID, param *sacloud.AutoBackupPatchSettingsRequest) (*sacloud.AutoBackup, error) {
+	log.Println("[TRACE] AutoBackupAPI.PatchSettings start")
+	targetArguments := struct {
+		Argzone  string
+		Argid    types.ID                                `json:"id"`
+		Argparam *sacloud.AutoBackupPatchSettingsRequest `json:"param"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] AutoBackupAPI.PatchSettings end")
+	}()
+
+	resultAutoBackup, err := t.Internal.PatchSettings(ctx, zone, id, param)
+	targetResults := struct {
+		AutoBackup *sacloud.AutoBackup
+		Error      error
+	}{
+		AutoBackup: resultAutoBackup,
+		Error:      err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultAutoBackup, err
+}
+
 // Delete is API call with trace log
 func (t *AutoBackupTracer) Delete(ctx context.Context, zone string, id types.ID) error {
 	log.Println("[TRACE] AutoBackupAPI.Delete start")
@@ -1638,6 +1708,41 @@ func (t *DatabaseTracer) Update(ctx context.Context, zone string, id types.ID, p
 	return resultDatabase, err
 }
 
+// UpdateSettings is API call with trace log
+func (t *DatabaseTracer) UpdateSettings(ctx context.Context, zone string, id types.ID, param *sacloud.DatabaseUpdateSettingsRequest) (*sacloud.Database, error) {
+	log.Println("[TRACE] DatabaseAPI.UpdateSettings start")
+	targetArguments := struct {
+		Argzone  string
+		Argid    types.ID                               `json:"id"`
+		Argparam *sacloud.DatabaseUpdateSettingsRequest `json:"param"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] DatabaseAPI.UpdateSettings end")
+	}()
+
+	resultDatabase, err := t.Internal.UpdateSettings(ctx, zone, id, param)
+	targetResults := struct {
+		Database *sacloud.Database
+		Error    error
+	}{
+		Database: resultDatabase,
+		Error:    err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultDatabase, err
+}
+
 // Patch is API call with trace log
 func (t *DatabaseTracer) Patch(ctx context.Context, zone string, id types.ID, param *sacloud.DatabasePatchRequest) (*sacloud.Database, error) {
 	log.Println("[TRACE] DatabaseAPI.Patch start")
@@ -1659,6 +1764,41 @@ func (t *DatabaseTracer) Patch(ctx context.Context, zone string, id types.ID, pa
 	}()
 
 	resultDatabase, err := t.Internal.Patch(ctx, zone, id, param)
+	targetResults := struct {
+		Database *sacloud.Database
+		Error    error
+	}{
+		Database: resultDatabase,
+		Error:    err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultDatabase, err
+}
+
+// PatchSettings is API call with trace log
+func (t *DatabaseTracer) PatchSettings(ctx context.Context, zone string, id types.ID, param *sacloud.DatabasePatchSettingsRequest) (*sacloud.Database, error) {
+	log.Println("[TRACE] DatabaseAPI.PatchSettings start")
+	targetArguments := struct {
+		Argzone  string
+		Argid    types.ID                              `json:"id"`
+		Argparam *sacloud.DatabasePatchSettingsRequest `json:"param"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] DatabaseAPI.PatchSettings end")
+	}()
+
+	resultDatabase, err := t.Internal.PatchSettings(ctx, zone, id, param)
 	targetResults := struct {
 		Database *sacloud.Database
 		Error    error
@@ -2717,6 +2857,39 @@ func (t *DNSTracer) Update(ctx context.Context, id types.ID, param *sacloud.DNSU
 	return resultDNS, err
 }
 
+// UpdateSettings is API call with trace log
+func (t *DNSTracer) UpdateSettings(ctx context.Context, id types.ID, param *sacloud.DNSUpdateSettingsRequest) (*sacloud.DNS, error) {
+	log.Println("[TRACE] DNSAPI.UpdateSettings start")
+	targetArguments := struct {
+		Argid    types.ID                          `json:"id"`
+		Argparam *sacloud.DNSUpdateSettingsRequest `json:"param"`
+	}{
+		Argid:    id,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] DNSAPI.UpdateSettings end")
+	}()
+
+	resultDNS, err := t.Internal.UpdateSettings(ctx, id, param)
+	targetResults := struct {
+		DNS   *sacloud.DNS
+		Error error
+	}{
+		DNS:   resultDNS,
+		Error: err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultDNS, err
+}
+
 // Patch is API call with trace log
 func (t *DNSTracer) Patch(ctx context.Context, id types.ID, param *sacloud.DNSPatchRequest) (*sacloud.DNS, error) {
 	log.Println("[TRACE] DNSAPI.Patch start")
@@ -2736,6 +2909,39 @@ func (t *DNSTracer) Patch(ctx context.Context, id types.ID, param *sacloud.DNSPa
 	}()
 
 	resultDNS, err := t.Internal.Patch(ctx, id, param)
+	targetResults := struct {
+		DNS   *sacloud.DNS
+		Error error
+	}{
+		DNS:   resultDNS,
+		Error: err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultDNS, err
+}
+
+// PatchSettings is API call with trace log
+func (t *DNSTracer) PatchSettings(ctx context.Context, id types.ID, param *sacloud.DNSPatchSettingsRequest) (*sacloud.DNS, error) {
+	log.Println("[TRACE] DNSAPI.PatchSettings start")
+	targetArguments := struct {
+		Argid    types.ID                         `json:"id"`
+		Argparam *sacloud.DNSPatchSettingsRequest `json:"param"`
+	}{
+		Argid:    id,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] DNSAPI.PatchSettings end")
+	}()
+
+	resultDNS, err := t.Internal.PatchSettings(ctx, id, param)
 	targetResults := struct {
 		DNS   *sacloud.DNS
 		Error error
@@ -2921,6 +3127,39 @@ func (t *GSLBTracer) Update(ctx context.Context, id types.ID, param *sacloud.GSL
 	return resultGSLB, err
 }
 
+// UpdateSettings is API call with trace log
+func (t *GSLBTracer) UpdateSettings(ctx context.Context, id types.ID, param *sacloud.GSLBUpdateSettingsRequest) (*sacloud.GSLB, error) {
+	log.Println("[TRACE] GSLBAPI.UpdateSettings start")
+	targetArguments := struct {
+		Argid    types.ID                           `json:"id"`
+		Argparam *sacloud.GSLBUpdateSettingsRequest `json:"param"`
+	}{
+		Argid:    id,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] GSLBAPI.UpdateSettings end")
+	}()
+
+	resultGSLB, err := t.Internal.UpdateSettings(ctx, id, param)
+	targetResults := struct {
+		GSLB  *sacloud.GSLB
+		Error error
+	}{
+		GSLB:  resultGSLB,
+		Error: err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultGSLB, err
+}
+
 // Patch is API call with trace log
 func (t *GSLBTracer) Patch(ctx context.Context, id types.ID, param *sacloud.GSLBPatchRequest) (*sacloud.GSLB, error) {
 	log.Println("[TRACE] GSLBAPI.Patch start")
@@ -2940,6 +3179,39 @@ func (t *GSLBTracer) Patch(ctx context.Context, id types.ID, param *sacloud.GSLB
 	}()
 
 	resultGSLB, err := t.Internal.Patch(ctx, id, param)
+	targetResults := struct {
+		GSLB  *sacloud.GSLB
+		Error error
+	}{
+		GSLB:  resultGSLB,
+		Error: err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultGSLB, err
+}
+
+// PatchSettings is API call with trace log
+func (t *GSLBTracer) PatchSettings(ctx context.Context, id types.ID, param *sacloud.GSLBPatchSettingsRequest) (*sacloud.GSLB, error) {
+	log.Println("[TRACE] GSLBAPI.PatchSettings start")
+	targetArguments := struct {
+		Argid    types.ID                          `json:"id"`
+		Argparam *sacloud.GSLBPatchSettingsRequest `json:"param"`
+	}{
+		Argid:    id,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] GSLBAPI.PatchSettings end")
+	}()
+
+	resultGSLB, err := t.Internal.PatchSettings(ctx, id, param)
 	targetResults := struct {
 		GSLB  *sacloud.GSLB
 		Error error
@@ -4944,6 +5216,41 @@ func (t *LoadBalancerTracer) Update(ctx context.Context, zone string, id types.I
 	return resultLoadBalancer, err
 }
 
+// UpdateSettings is API call with trace log
+func (t *LoadBalancerTracer) UpdateSettings(ctx context.Context, zone string, id types.ID, param *sacloud.LoadBalancerUpdateSettingsRequest) (*sacloud.LoadBalancer, error) {
+	log.Println("[TRACE] LoadBalancerAPI.UpdateSettings start")
+	targetArguments := struct {
+		Argzone  string
+		Argid    types.ID                                   `json:"id"`
+		Argparam *sacloud.LoadBalancerUpdateSettingsRequest `json:"param"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] LoadBalancerAPI.UpdateSettings end")
+	}()
+
+	resultLoadBalancer, err := t.Internal.UpdateSettings(ctx, zone, id, param)
+	targetResults := struct {
+		LoadBalancer *sacloud.LoadBalancer
+		Error        error
+	}{
+		LoadBalancer: resultLoadBalancer,
+		Error:        err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultLoadBalancer, err
+}
+
 // Patch is API call with trace log
 func (t *LoadBalancerTracer) Patch(ctx context.Context, zone string, id types.ID, param *sacloud.LoadBalancerPatchRequest) (*sacloud.LoadBalancer, error) {
 	log.Println("[TRACE] LoadBalancerAPI.Patch start")
@@ -4965,6 +5272,41 @@ func (t *LoadBalancerTracer) Patch(ctx context.Context, zone string, id types.ID
 	}()
 
 	resultLoadBalancer, err := t.Internal.Patch(ctx, zone, id, param)
+	targetResults := struct {
+		LoadBalancer *sacloud.LoadBalancer
+		Error        error
+	}{
+		LoadBalancer: resultLoadBalancer,
+		Error:        err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultLoadBalancer, err
+}
+
+// PatchSettings is API call with trace log
+func (t *LoadBalancerTracer) PatchSettings(ctx context.Context, zone string, id types.ID, param *sacloud.LoadBalancerPatchSettingsRequest) (*sacloud.LoadBalancer, error) {
+	log.Println("[TRACE] LoadBalancerAPI.PatchSettings start")
+	targetArguments := struct {
+		Argzone  string
+		Argid    types.ID                                  `json:"id"`
+		Argparam *sacloud.LoadBalancerPatchSettingsRequest `json:"param"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] LoadBalancerAPI.PatchSettings end")
+	}()
+
+	resultLoadBalancer, err := t.Internal.PatchSettings(ctx, zone, id, param)
 	targetResults := struct {
 		LoadBalancer *sacloud.LoadBalancer
 		Error        error
@@ -5354,6 +5696,41 @@ func (t *MobileGatewayTracer) Update(ctx context.Context, zone string, id types.
 	return resultMobileGateway, err
 }
 
+// UpdateSettings is API call with trace log
+func (t *MobileGatewayTracer) UpdateSettings(ctx context.Context, zone string, id types.ID, param *sacloud.MobileGatewayUpdateSettingsRequest) (*sacloud.MobileGateway, error) {
+	log.Println("[TRACE] MobileGatewayAPI.UpdateSettings start")
+	targetArguments := struct {
+		Argzone  string
+		Argid    types.ID                                    `json:"id"`
+		Argparam *sacloud.MobileGatewayUpdateSettingsRequest `json:"param"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] MobileGatewayAPI.UpdateSettings end")
+	}()
+
+	resultMobileGateway, err := t.Internal.UpdateSettings(ctx, zone, id, param)
+	targetResults := struct {
+		MobileGateway *sacloud.MobileGateway
+		Error         error
+	}{
+		MobileGateway: resultMobileGateway,
+		Error:         err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultMobileGateway, err
+}
+
 // Patch is API call with trace log
 func (t *MobileGatewayTracer) Patch(ctx context.Context, zone string, id types.ID, param *sacloud.MobileGatewayPatchRequest) (*sacloud.MobileGateway, error) {
 	log.Println("[TRACE] MobileGatewayAPI.Patch start")
@@ -5375,6 +5752,41 @@ func (t *MobileGatewayTracer) Patch(ctx context.Context, zone string, id types.I
 	}()
 
 	resultMobileGateway, err := t.Internal.Patch(ctx, zone, id, param)
+	targetResults := struct {
+		MobileGateway *sacloud.MobileGateway
+		Error         error
+	}{
+		MobileGateway: resultMobileGateway,
+		Error:         err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultMobileGateway, err
+}
+
+// PatchSettings is API call with trace log
+func (t *MobileGatewayTracer) PatchSettings(ctx context.Context, zone string, id types.ID, param *sacloud.MobileGatewayPatchSettingsRequest) (*sacloud.MobileGateway, error) {
+	log.Println("[TRACE] MobileGatewayAPI.PatchSettings start")
+	targetArguments := struct {
+		Argzone  string
+		Argid    types.ID                                   `json:"id"`
+		Argparam *sacloud.MobileGatewayPatchSettingsRequest `json:"param"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] MobileGatewayAPI.PatchSettings end")
+	}()
+
+	resultMobileGateway, err := t.Internal.PatchSettings(ctx, zone, id, param)
 	targetResults := struct {
 		MobileGateway *sacloud.MobileGateway
 		Error         error
@@ -7282,6 +7694,39 @@ func (t *ProxyLBTracer) Update(ctx context.Context, id types.ID, param *sacloud.
 	return resultProxyLB, err
 }
 
+// UpdateSettings is API call with trace log
+func (t *ProxyLBTracer) UpdateSettings(ctx context.Context, id types.ID, param *sacloud.ProxyLBUpdateSettingsRequest) (*sacloud.ProxyLB, error) {
+	log.Println("[TRACE] ProxyLBAPI.UpdateSettings start")
+	targetArguments := struct {
+		Argid    types.ID                              `json:"id"`
+		Argparam *sacloud.ProxyLBUpdateSettingsRequest `json:"param"`
+	}{
+		Argid:    id,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] ProxyLBAPI.UpdateSettings end")
+	}()
+
+	resultProxyLB, err := t.Internal.UpdateSettings(ctx, id, param)
+	targetResults := struct {
+		ProxyLB *sacloud.ProxyLB
+		Error   error
+	}{
+		ProxyLB: resultProxyLB,
+		Error:   err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultProxyLB, err
+}
+
 // Patch is API call with trace log
 func (t *ProxyLBTracer) Patch(ctx context.Context, id types.ID, param *sacloud.ProxyLBPatchRequest) (*sacloud.ProxyLB, error) {
 	log.Println("[TRACE] ProxyLBAPI.Patch start")
@@ -7301,6 +7746,39 @@ func (t *ProxyLBTracer) Patch(ctx context.Context, id types.ID, param *sacloud.P
 	}()
 
 	resultProxyLB, err := t.Internal.Patch(ctx, id, param)
+	targetResults := struct {
+		ProxyLB *sacloud.ProxyLB
+		Error   error
+	}{
+		ProxyLB: resultProxyLB,
+		Error:   err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultProxyLB, err
+}
+
+// PatchSettings is API call with trace log
+func (t *ProxyLBTracer) PatchSettings(ctx context.Context, id types.ID, param *sacloud.ProxyLBPatchSettingsRequest) (*sacloud.ProxyLB, error) {
+	log.Println("[TRACE] ProxyLBAPI.PatchSettings start")
+	targetArguments := struct {
+		Argid    types.ID                             `json:"id"`
+		Argparam *sacloud.ProxyLBPatchSettingsRequest `json:"param"`
+	}{
+		Argid:    id,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] ProxyLBAPI.PatchSettings end")
+	}()
+
+	resultProxyLB, err := t.Internal.PatchSettings(ctx, id, param)
 	targetResults := struct {
 		ProxyLB *sacloud.ProxyLB
 		Error   error
@@ -8999,6 +9477,39 @@ func (t *SimpleMonitorTracer) Update(ctx context.Context, id types.ID, param *sa
 	return resultSimpleMonitor, err
 }
 
+// UpdateSettings is API call with trace log
+func (t *SimpleMonitorTracer) UpdateSettings(ctx context.Context, id types.ID, param *sacloud.SimpleMonitorUpdateSettingsRequest) (*sacloud.SimpleMonitor, error) {
+	log.Println("[TRACE] SimpleMonitorAPI.UpdateSettings start")
+	targetArguments := struct {
+		Argid    types.ID                                    `json:"id"`
+		Argparam *sacloud.SimpleMonitorUpdateSettingsRequest `json:"param"`
+	}{
+		Argid:    id,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] SimpleMonitorAPI.UpdateSettings end")
+	}()
+
+	resultSimpleMonitor, err := t.Internal.UpdateSettings(ctx, id, param)
+	targetResults := struct {
+		SimpleMonitor *sacloud.SimpleMonitor
+		Error         error
+	}{
+		SimpleMonitor: resultSimpleMonitor,
+		Error:         err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultSimpleMonitor, err
+}
+
 // Patch is API call with trace log
 func (t *SimpleMonitorTracer) Patch(ctx context.Context, id types.ID, param *sacloud.SimpleMonitorPatchRequest) (*sacloud.SimpleMonitor, error) {
 	log.Println("[TRACE] SimpleMonitorAPI.Patch start")
@@ -9018,6 +9529,39 @@ func (t *SimpleMonitorTracer) Patch(ctx context.Context, id types.ID, param *sac
 	}()
 
 	resultSimpleMonitor, err := t.Internal.Patch(ctx, id, param)
+	targetResults := struct {
+		SimpleMonitor *sacloud.SimpleMonitor
+		Error         error
+	}{
+		SimpleMonitor: resultSimpleMonitor,
+		Error:         err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultSimpleMonitor, err
+}
+
+// PatchSettings is API call with trace log
+func (t *SimpleMonitorTracer) PatchSettings(ctx context.Context, id types.ID, param *sacloud.SimpleMonitorPatchSettingsRequest) (*sacloud.SimpleMonitor, error) {
+	log.Println("[TRACE] SimpleMonitorAPI.PatchSettings start")
+	targetArguments := struct {
+		Argid    types.ID                                   `json:"id"`
+		Argparam *sacloud.SimpleMonitorPatchSettingsRequest `json:"param"`
+	}{
+		Argid:    id,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] SimpleMonitorAPI.PatchSettings end")
+	}()
+
+	resultSimpleMonitor, err := t.Internal.PatchSettings(ctx, id, param)
 	targetResults := struct {
 		SimpleMonitor *sacloud.SimpleMonitor
 		Error         error
@@ -9905,6 +10449,41 @@ func (t *VPCRouterTracer) Update(ctx context.Context, zone string, id types.ID, 
 	return resultVPCRouter, err
 }
 
+// UpdateSettings is API call with trace log
+func (t *VPCRouterTracer) UpdateSettings(ctx context.Context, zone string, id types.ID, param *sacloud.VPCRouterUpdateSettingsRequest) (*sacloud.VPCRouter, error) {
+	log.Println("[TRACE] VPCRouterAPI.UpdateSettings start")
+	targetArguments := struct {
+		Argzone  string
+		Argid    types.ID                                `json:"id"`
+		Argparam *sacloud.VPCRouterUpdateSettingsRequest `json:"param"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] VPCRouterAPI.UpdateSettings end")
+	}()
+
+	resultVPCRouter, err := t.Internal.UpdateSettings(ctx, zone, id, param)
+	targetResults := struct {
+		VPCRouter *sacloud.VPCRouter
+		Error     error
+	}{
+		VPCRouter: resultVPCRouter,
+		Error:     err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultVPCRouter, err
+}
+
 // Patch is API call with trace log
 func (t *VPCRouterTracer) Patch(ctx context.Context, zone string, id types.ID, param *sacloud.VPCRouterPatchRequest) (*sacloud.VPCRouter, error) {
 	log.Println("[TRACE] VPCRouterAPI.Patch start")
@@ -9926,6 +10505,41 @@ func (t *VPCRouterTracer) Patch(ctx context.Context, zone string, id types.ID, p
 	}()
 
 	resultVPCRouter, err := t.Internal.Patch(ctx, zone, id, param)
+	targetResults := struct {
+		VPCRouter *sacloud.VPCRouter
+		Error     error
+	}{
+		VPCRouter: resultVPCRouter,
+		Error:     err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultVPCRouter, err
+}
+
+// PatchSettings is API call with trace log
+func (t *VPCRouterTracer) PatchSettings(ctx context.Context, zone string, id types.ID, param *sacloud.VPCRouterPatchSettingsRequest) (*sacloud.VPCRouter, error) {
+	log.Println("[TRACE] VPCRouterAPI.PatchSettings start")
+	targetArguments := struct {
+		Argzone  string
+		Argid    types.ID                               `json:"id"`
+		Argparam *sacloud.VPCRouterPatchSettingsRequest `json:"param"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] VPCRouterAPI.PatchSettings end")
+	}()
+
+	resultVPCRouter, err := t.Internal.PatchSettings(ctx, zone, id, param)
 	targetResults := struct {
 		VPCRouter *sacloud.VPCRouter
 		Error     error

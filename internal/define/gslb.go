@@ -45,8 +45,14 @@ var gslbAPI = &dsl.Resource{
 		// update
 		ops.UpdateCommonServiceItem(gslbAPIName, gslbNakedType, gslbUpdateParam, gslbView),
 
+		// updateSettings
+		ops.UpdateCommonServiceItemSettings(gslbAPIName, gslbUpdateSettingsNakedType, gslbUpdateSettingsParam, gslbView),
+
 		// patch
 		ops.PatchCommonServiceItem(gslbAPIName, gslbNakedType, patchModel(gslbUpdateParam), gslbView),
+
+		// patchSettings
+		ops.PatchCommonServiceItemSettings(gslbAPIName, gslbUpdateSettingsNakedType, patchModel(gslbUpdateSettingsParam), gslbView),
 
 		// delete
 		ops.Delete(gslbAPIName),
@@ -54,7 +60,8 @@ var gslbAPI = &dsl.Resource{
 }
 
 var (
-	gslbNakedType = meta.Static(naked.GSLB{})
+	gslbNakedType               = meta.Static(naked.GSLB{})
+	gslbUpdateSettingsNakedType = meta.Static(naked.GSLBSettingsUpdate{})
 
 	gslbView = &dsl.Model{
 		Name:      gslbAPIName,
@@ -115,6 +122,21 @@ var (
 			fields.Tags(),
 			fields.IconID(),
 
+			// settings
+			fields.GSLBHealthCheck(),
+			fields.GSLBDelayLoop(),
+			fields.GSLBWeighted(),
+			fields.GSLBSorryServer(),
+			fields.GSLBDestinationServers(),
+			// settings hash
+			fields.SettingsHash(),
+		},
+	}
+
+	gslbUpdateSettingsParam = &dsl.Model{
+		Name:      names.UpdateSettingsParameterName(gslbAPIName),
+		NakedType: gslbNakedType,
+		Fields: []*dsl.FieldDesc{
 			// settings
 			fields.GSLBHealthCheck(),
 			fields.GSLBDelayLoop(),

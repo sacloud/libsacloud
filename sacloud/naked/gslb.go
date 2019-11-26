@@ -37,6 +37,12 @@ type GSLB struct {
 	Status       *GSLBStatus         `json:",omitempty" yaml:"status,omitempty" structs:",omitempty"`
 }
 
+// GSLBSettingsUpdate GSLB
+type GSLBSettingsUpdate struct {
+	Settings     *GSLBSettings `json:",omitempty" yaml:"settings,omitempty" structs:",omitempty"`
+	SettingsHash string        `json:",omitempty" yaml:"settings_hash,omitempty" structs:",omitempty"`
+}
+
 // GSLBSettings GSLBの設定
 type GSLBSettings struct {
 	GSLB *GSLBSetting `json:",omitempty" yaml:"gslb,omitempty" structs:",omitempty"`

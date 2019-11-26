@@ -59,6 +59,8 @@ type AutoBackupAPI interface {
 	Read(ctx context.Context, zone string, id types.ID) (*AutoBackup, error)
 	Update(ctx context.Context, zone string, id types.ID, param *AutoBackupUpdateRequest) (*AutoBackup, error)
 	Patch(ctx context.Context, zone string, id types.ID, param *AutoBackupPatchRequest) (*AutoBackup, error)
+	UpdateSettings(ctx context.Context, zone string, id types.ID, param *AutoBackupUpdateSettingsRequest) (*AutoBackup, error)
+	PatchSettings(ctx context.Context, zone string, id types.ID, param *AutoBackupPatchSettingsRequest) (*AutoBackup, error)
 	Delete(ctx context.Context, zone string, id types.ID) error
 }
 
@@ -125,7 +127,9 @@ type DatabaseAPI interface {
 	Create(ctx context.Context, zone string, param *DatabaseCreateRequest) (*Database, error)
 	Read(ctx context.Context, zone string, id types.ID) (*Database, error)
 	Update(ctx context.Context, zone string, id types.ID, param *DatabaseUpdateRequest) (*Database, error)
+	UpdateSettings(ctx context.Context, zone string, id types.ID, param *DatabaseUpdateSettingsRequest) (*Database, error)
 	Patch(ctx context.Context, zone string, id types.ID, param *DatabasePatchRequest) (*Database, error)
+	PatchSettings(ctx context.Context, zone string, id types.ID, param *DatabasePatchSettingsRequest) (*Database, error)
 	Delete(ctx context.Context, zone string, id types.ID) error
 	Config(ctx context.Context, zone string, id types.ID) error
 	Boot(ctx context.Context, zone string, id types.ID) error
@@ -180,7 +184,9 @@ type DNSAPI interface {
 	Create(ctx context.Context, param *DNSCreateRequest) (*DNS, error)
 	Read(ctx context.Context, id types.ID) (*DNS, error)
 	Update(ctx context.Context, id types.ID, param *DNSUpdateRequest) (*DNS, error)
+	UpdateSettings(ctx context.Context, id types.ID, param *DNSUpdateSettingsRequest) (*DNS, error)
 	Patch(ctx context.Context, id types.ID, param *DNSPatchRequest) (*DNS, error)
+	PatchSettings(ctx context.Context, id types.ID, param *DNSPatchSettingsRequest) (*DNS, error)
 	Delete(ctx context.Context, id types.ID) error
 }
 
@@ -194,7 +200,9 @@ type GSLBAPI interface {
 	Create(ctx context.Context, param *GSLBCreateRequest) (*GSLB, error)
 	Read(ctx context.Context, id types.ID) (*GSLB, error)
 	Update(ctx context.Context, id types.ID, param *GSLBUpdateRequest) (*GSLB, error)
+	UpdateSettings(ctx context.Context, id types.ID, param *GSLBUpdateSettingsRequest) (*GSLB, error)
 	Patch(ctx context.Context, id types.ID, param *GSLBPatchRequest) (*GSLB, error)
+	PatchSettings(ctx context.Context, id types.ID, param *GSLBPatchSettingsRequest) (*GSLB, error)
 	Delete(ctx context.Context, id types.ID) error
 }
 
@@ -331,7 +339,9 @@ type LoadBalancerAPI interface {
 	Create(ctx context.Context, zone string, param *LoadBalancerCreateRequest) (*LoadBalancer, error)
 	Read(ctx context.Context, zone string, id types.ID) (*LoadBalancer, error)
 	Update(ctx context.Context, zone string, id types.ID, param *LoadBalancerUpdateRequest) (*LoadBalancer, error)
+	UpdateSettings(ctx context.Context, zone string, id types.ID, param *LoadBalancerUpdateSettingsRequest) (*LoadBalancer, error)
 	Patch(ctx context.Context, zone string, id types.ID, param *LoadBalancerPatchRequest) (*LoadBalancer, error)
+	PatchSettings(ctx context.Context, zone string, id types.ID, param *LoadBalancerPatchSettingsRequest) (*LoadBalancer, error)
 	Delete(ctx context.Context, zone string, id types.ID) error
 	Config(ctx context.Context, zone string, id types.ID) error
 	Boot(ctx context.Context, zone string, id types.ID) error
@@ -351,7 +361,9 @@ type MobileGatewayAPI interface {
 	Create(ctx context.Context, zone string, param *MobileGatewayCreateRequest) (*MobileGateway, error)
 	Read(ctx context.Context, zone string, id types.ID) (*MobileGateway, error)
 	Update(ctx context.Context, zone string, id types.ID, param *MobileGatewayUpdateRequest) (*MobileGateway, error)
+	UpdateSettings(ctx context.Context, zone string, id types.ID, param *MobileGatewayUpdateSettingsRequest) (*MobileGateway, error)
 	Patch(ctx context.Context, zone string, id types.ID, param *MobileGatewayPatchRequest) (*MobileGateway, error)
+	PatchSettings(ctx context.Context, zone string, id types.ID, param *MobileGatewayPatchSettingsRequest) (*MobileGateway, error)
 	Delete(ctx context.Context, zone string, id types.ID) error
 	Config(ctx context.Context, zone string, id types.ID) error
 	Boot(ctx context.Context, zone string, id types.ID) error
@@ -455,7 +467,9 @@ type ProxyLBAPI interface {
 	Create(ctx context.Context, param *ProxyLBCreateRequest) (*ProxyLB, error)
 	Read(ctx context.Context, id types.ID) (*ProxyLB, error)
 	Update(ctx context.Context, id types.ID, param *ProxyLBUpdateRequest) (*ProxyLB, error)
+	UpdateSettings(ctx context.Context, id types.ID, param *ProxyLBUpdateSettingsRequest) (*ProxyLB, error)
 	Patch(ctx context.Context, id types.ID, param *ProxyLBPatchRequest) (*ProxyLB, error)
+	PatchSettings(ctx context.Context, id types.ID, param *ProxyLBPatchSettingsRequest) (*ProxyLB, error)
 	Delete(ctx context.Context, id types.ID) error
 	ChangePlan(ctx context.Context, id types.ID, param *ProxyLBChangePlanRequest) (*ProxyLB, error)
 	GetCertificates(ctx context.Context, id types.ID) (*ProxyLBCertificates, error)
@@ -554,7 +568,9 @@ type SimpleMonitorAPI interface {
 	Create(ctx context.Context, param *SimpleMonitorCreateRequest) (*SimpleMonitor, error)
 	Read(ctx context.Context, id types.ID) (*SimpleMonitor, error)
 	Update(ctx context.Context, id types.ID, param *SimpleMonitorUpdateRequest) (*SimpleMonitor, error)
+	UpdateSettings(ctx context.Context, id types.ID, param *SimpleMonitorUpdateSettingsRequest) (*SimpleMonitor, error)
 	Patch(ctx context.Context, id types.ID, param *SimpleMonitorPatchRequest) (*SimpleMonitor, error)
+	PatchSettings(ctx context.Context, id types.ID, param *SimpleMonitorPatchSettingsRequest) (*SimpleMonitor, error)
 	Delete(ctx context.Context, id types.ID) error
 	MonitorResponseTime(ctx context.Context, id types.ID, condition *MonitorCondition) (*ResponseTimeSecActivity, error)
 	HealthStatus(ctx context.Context, id types.ID) (*SimpleMonitorHealthStatus, error)
@@ -612,7 +628,9 @@ type VPCRouterAPI interface {
 	Create(ctx context.Context, zone string, param *VPCRouterCreateRequest) (*VPCRouter, error)
 	Read(ctx context.Context, zone string, id types.ID) (*VPCRouter, error)
 	Update(ctx context.Context, zone string, id types.ID, param *VPCRouterUpdateRequest) (*VPCRouter, error)
+	UpdateSettings(ctx context.Context, zone string, id types.ID, param *VPCRouterUpdateSettingsRequest) (*VPCRouter, error)
 	Patch(ctx context.Context, zone string, id types.ID, param *VPCRouterPatchRequest) (*VPCRouter, error)
+	PatchSettings(ctx context.Context, zone string, id types.ID, param *VPCRouterPatchSettingsRequest) (*VPCRouter, error)
 	Delete(ctx context.Context, zone string, id types.ID) error
 	Config(ctx context.Context, zone string, id types.ID) error
 	Boot(ctx context.Context, zone string, id types.ID) error

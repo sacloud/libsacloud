@@ -132,6 +132,31 @@ func (o *LoadBalancerOp) Patch(ctx context.Context, zone string, id types.ID, pa
 	return value, nil
 }
 
+// UpdateSettings is fake implementation
+func (o *LoadBalancerOp) UpdateSettings(ctx context.Context, zone string, id types.ID, param *sacloud.LoadBalancerUpdateSettingsRequest) (*sacloud.LoadBalancer, error) {
+	value, err := o.Read(ctx, zone, id)
+	if err != nil {
+		return nil, err
+	}
+
+	copySameNameField(param, value)
+	fill(value, fillModifiedAt)
+	for _, vip := range value.VirtualIPAddresses {
+		if vip.DelayLoop == 0 {
+			vip.DelayLoop = 10 // default value
+		}
+	}
+	putLoadBalancer(zone, value)
+	return value, nil
+}
+
+// PatchSettings is fake implementation
+func (o *LoadBalancerOp) PatchSettings(ctx context.Context, zone string, id types.ID, param *sacloud.LoadBalancerPatchSettingsRequest) (*sacloud.LoadBalancer, error) {
+	patchParam := &sacloud.LoadBalancerPatchRequest{}
+	copySameNameField(param, patchParam)
+	return o.Patch(ctx, zone, id, patchParam)
+}
+
 // Delete is fake implementation
 func (o *LoadBalancerOp) Delete(ctx context.Context, zone string, id types.ID) error {
 	_, err := o.Read(ctx, zone, id)

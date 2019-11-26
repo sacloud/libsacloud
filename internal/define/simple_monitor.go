@@ -45,9 +45,13 @@ var simpleMonitorAPI = &dsl.Resource{
 
 		// update
 		ops.UpdateCommonServiceItem(simpleMonitorAPIName, simpleMonitorNakedType, simpleMonitorUpdateParam, simpleMonitorView),
+		// updateSettings
+		ops.UpdateCommonServiceItemSettings(simpleMonitorAPIName, simpleMonitorUpdateSettingsNakedType, simpleMonitorUpdateSettingsParam, simpleMonitorView),
 
 		// patch
 		ops.PatchCommonServiceItem(simpleMonitorAPIName, simpleMonitorNakedType, patchModel(simpleMonitorUpdateParam), simpleMonitorView),
+		// patchSettings
+		ops.PatchCommonServiceItemSettings(simpleMonitorAPIName, simpleMonitorUpdateSettingsNakedType, patchModel(simpleMonitorUpdateSettingsParam), simpleMonitorView),
 
 		// delete
 		ops.Delete(simpleMonitorAPIName),
@@ -62,8 +66,9 @@ var simpleMonitorAPI = &dsl.Resource{
 }
 
 var (
-	simpleMonitorNakedType             = meta.Static(naked.SimpleMonitor{})
-	simpleMonitorHealthStatusNakedType = meta.Static(naked.SimpleMonitorHealthCheckStatus{})
+	simpleMonitorNakedType               = meta.Static(naked.SimpleMonitor{})
+	simpleMonitorUpdateSettingsNakedType = meta.Static(naked.SimpleMonitorSettingsUpdate{})
+	simpleMonitorHealthStatusNakedType   = meta.Static(naked.SimpleMonitorHealthCheckStatus{})
 
 	simpleMonitorView = &dsl.Model{
 		Name:      simpleMonitorAPIName,
@@ -142,6 +147,28 @@ var (
 			fields.Description(),
 			fields.Tags(),
 			fields.IconID(),
+		},
+	}
+
+	simpleMonitorUpdateSettingsParam = &dsl.Model{
+		Name:      names.UpdateSettingsParameterName(simpleMonitorAPIName),
+		NakedType: simpleMonitorNakedType,
+		Fields: []*dsl.FieldDesc{
+			// settings
+			fields.SimpleMonitorDelayLoop(),
+			fields.SimpleMonitorEnabled(),
+			// settings - health check
+			fields.SimpleMonitorHealthCheck(),
+			// settings - email
+			fields.SimpleMonitorNotifyEmailEnabled(),
+			fields.SimpleMonitorNotifyEmailHTML(),
+			// settings - slack
+			fields.SimpleMonitorNotifySlackEnabled(),
+			fields.SimpleMonitorSlackWebhooksURL(),
+
+			fields.SimpleMonitorNotifyInterval(),
+			// settings hash
+			fields.SettingsHash(),
 		},
 	}
 

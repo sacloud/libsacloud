@@ -191,6 +191,32 @@ type autoBackupPatchResponseEnvelope struct {
 	CommonServiceItem *naked.AutoBackup `json:",omitempty"`
 }
 
+// autoBackupUpdateSettingsRequestEnvelope is envelop of API request
+type autoBackupUpdateSettingsRequestEnvelope struct {
+	CommonServiceItem *naked.AutoBackupSettingsUpdate `json:",omitempty"`
+}
+
+// autoBackupUpdateSettingsResponseEnvelope is envelop of API response
+type autoBackupUpdateSettingsResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	CommonServiceItem *naked.AutoBackup `json:",omitempty"`
+}
+
+// autoBackupPatchSettingsRequestEnvelope is envelop of API request
+type autoBackupPatchSettingsRequestEnvelope struct {
+	CommonServiceItem *naked.AutoBackupSettingsUpdate `json:",omitempty"`
+}
+
+// autoBackupPatchSettingsResponseEnvelope is envelop of API response
+type autoBackupPatchSettingsResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	CommonServiceItem *naked.AutoBackup `json:",omitempty"`
+}
+
 // billByContractResponseEnvelope is envelop of API response
 type billByContractResponseEnvelope struct {
 	Total int `json:",omitempty"` // トータル件数
@@ -452,6 +478,19 @@ type databaseUpdateResponseEnvelope struct {
 	Appliance *naked.Database `json:",omitempty"`
 }
 
+// databaseUpdateSettingsRequestEnvelope is envelop of API request
+type databaseUpdateSettingsRequestEnvelope struct {
+	Appliance *naked.DatabaseSettingsUpdate `json:",omitempty"`
+}
+
+// databaseUpdateSettingsResponseEnvelope is envelop of API response
+type databaseUpdateSettingsResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Appliance *naked.Database `json:",omitempty"`
+}
+
 // databasePatchRequestEnvelope is envelop of API request
 type databasePatchRequestEnvelope struct {
 	Appliance *naked.Database `json:",omitempty"`
@@ -459,6 +498,19 @@ type databasePatchRequestEnvelope struct {
 
 // databasePatchResponseEnvelope is envelop of API response
 type databasePatchResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Appliance *naked.Database `json:",omitempty"`
+}
+
+// databasePatchSettingsRequestEnvelope is envelop of API request
+type databasePatchSettingsRequestEnvelope struct {
+	Appliance *naked.DatabaseSettingsUpdate `json:",omitempty"`
+}
+
+// databasePatchSettingsResponseEnvelope is envelop of API response
+type databasePatchSettingsResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
@@ -745,6 +797,19 @@ type dNSUpdateResponseEnvelope struct {
 	CommonServiceItem *naked.DNS `json:",omitempty"`
 }
 
+// dNSUpdateSettingsRequestEnvelope is envelop of API request
+type dNSUpdateSettingsRequestEnvelope struct {
+	CommonServiceItem *naked.DNSSettingsUpdate `json:",omitempty"`
+}
+
+// dNSUpdateSettingsResponseEnvelope is envelop of API response
+type dNSUpdateSettingsResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	CommonServiceItem *naked.DNS `json:",omitempty"`
+}
+
 // dNSPatchRequestEnvelope is envelop of API request
 type dNSPatchRequestEnvelope struct {
 	CommonServiceItem *naked.DNS `json:",omitempty"`
@@ -752,6 +817,19 @@ type dNSPatchRequestEnvelope struct {
 
 // dNSPatchResponseEnvelope is envelop of API response
 type dNSPatchResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	CommonServiceItem *naked.DNS `json:",omitempty"`
+}
+
+// dNSPatchSettingsRequestEnvelope is envelop of API request
+type dNSPatchSettingsRequestEnvelope struct {
+	CommonServiceItem *naked.DNSSettingsUpdate `json:",omitempty"`
+}
+
+// dNSPatchSettingsResponseEnvelope is envelop of API response
+type dNSPatchSettingsResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
@@ -811,6 +889,19 @@ type gSLBUpdateResponseEnvelope struct {
 	CommonServiceItem *naked.GSLB `json:",omitempty"`
 }
 
+// gSLBUpdateSettingsRequestEnvelope is envelop of API request
+type gSLBUpdateSettingsRequestEnvelope struct {
+	CommonServiceItem *naked.GSLBSettingsUpdate `json:",omitempty"`
+}
+
+// gSLBUpdateSettingsResponseEnvelope is envelop of API response
+type gSLBUpdateSettingsResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	CommonServiceItem *naked.GSLB `json:",omitempty"`
+}
+
 // gSLBPatchRequestEnvelope is envelop of API request
 type gSLBPatchRequestEnvelope struct {
 	CommonServiceItem *naked.GSLB `json:",omitempty"`
@@ -818,6 +909,19 @@ type gSLBPatchRequestEnvelope struct {
 
 // gSLBPatchResponseEnvelope is envelop of API response
 type gSLBPatchResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	CommonServiceItem *naked.GSLB `json:",omitempty"`
+}
+
+// gSLBPatchSettingsRequestEnvelope is envelop of API request
+type gSLBPatchSettingsRequestEnvelope struct {
+	CommonServiceItem *naked.GSLBSettingsUpdate `json:",omitempty"`
+}
+
+// gSLBPatchSettingsResponseEnvelope is envelop of API response
+type gSLBPatchSettingsResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
@@ -1371,6 +1475,19 @@ type loadBalancerUpdateResponseEnvelope struct {
 	Appliance *naked.LoadBalancer `json:",omitempty"`
 }
 
+// loadBalancerUpdateSettingsRequestEnvelope is envelop of API request
+type loadBalancerUpdateSettingsRequestEnvelope struct {
+	Appliance *naked.LoadBalancerSettingsUpdate `json:",omitempty"`
+}
+
+// loadBalancerUpdateSettingsResponseEnvelope is envelop of API response
+type loadBalancerUpdateSettingsResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Appliance *naked.LoadBalancer `json:",omitempty"`
+}
+
 // loadBalancerPatchRequestEnvelope is envelop of API request
 type loadBalancerPatchRequestEnvelope struct {
 	Appliance *naked.LoadBalancer `json:",omitempty"`
@@ -1378,6 +1495,19 @@ type loadBalancerPatchRequestEnvelope struct {
 
 // loadBalancerPatchResponseEnvelope is envelop of API response
 type loadBalancerPatchResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Appliance *naked.LoadBalancer `json:",omitempty"`
+}
+
+// loadBalancerPatchSettingsRequestEnvelope is envelop of API request
+type loadBalancerPatchSettingsRequestEnvelope struct {
+	Appliance *naked.LoadBalancerSettingsUpdate `json:",omitempty"`
+}
+
+// loadBalancerPatchSettingsResponseEnvelope is envelop of API response
+type loadBalancerPatchSettingsResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
@@ -1465,6 +1595,19 @@ type mobileGatewayUpdateResponseEnvelope struct {
 	Appliance *naked.MobileGateway `json:",omitempty"`
 }
 
+// mobileGatewayUpdateSettingsRequestEnvelope is envelop of API request
+type mobileGatewayUpdateSettingsRequestEnvelope struct {
+	Appliance *naked.MobileGatewaySettingsUpdate `json:",omitempty"`
+}
+
+// mobileGatewayUpdateSettingsResponseEnvelope is envelop of API response
+type mobileGatewayUpdateSettingsResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Appliance *naked.MobileGateway `json:",omitempty"`
+}
+
 // mobileGatewayPatchRequestEnvelope is envelop of API request
 type mobileGatewayPatchRequestEnvelope struct {
 	Appliance *naked.MobileGateway `json:",omitempty"`
@@ -1472,6 +1615,19 @@ type mobileGatewayPatchRequestEnvelope struct {
 
 // mobileGatewayPatchResponseEnvelope is envelop of API response
 type mobileGatewayPatchResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Appliance *naked.MobileGateway `json:",omitempty"`
+}
+
+// mobileGatewayPatchSettingsRequestEnvelope is envelop of API request
+type mobileGatewayPatchSettingsRequestEnvelope struct {
+	Appliance *naked.MobileGatewaySettingsUpdate `json:",omitempty"`
+}
+
+// mobileGatewayPatchSettingsResponseEnvelope is envelop of API response
+type mobileGatewayPatchSettingsResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
@@ -1942,6 +2098,19 @@ type proxyLBUpdateResponseEnvelope struct {
 	CommonServiceItem *naked.ProxyLB `json:",omitempty"`
 }
 
+// proxyLBUpdateSettingsRequestEnvelope is envelop of API request
+type proxyLBUpdateSettingsRequestEnvelope struct {
+	CommonServiceItem *naked.ProxyLBSettingsUpdate `json:",omitempty"`
+}
+
+// proxyLBUpdateSettingsResponseEnvelope is envelop of API response
+type proxyLBUpdateSettingsResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	CommonServiceItem *naked.ProxyLB `json:",omitempty"`
+}
+
 // proxyLBPatchRequestEnvelope is envelop of API request
 type proxyLBPatchRequestEnvelope struct {
 	CommonServiceItem *naked.ProxyLB `json:",omitempty"`
@@ -1949,6 +2118,19 @@ type proxyLBPatchRequestEnvelope struct {
 
 // proxyLBPatchResponseEnvelope is envelop of API response
 type proxyLBPatchResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	CommonServiceItem *naked.ProxyLB `json:",omitempty"`
+}
+
+// proxyLBPatchSettingsRequestEnvelope is envelop of API request
+type proxyLBPatchSettingsRequestEnvelope struct {
+	CommonServiceItem *naked.ProxyLBSettingsUpdate `json:",omitempty"`
+}
+
+// proxyLBPatchSettingsResponseEnvelope is envelop of API response
+type proxyLBPatchSettingsResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
@@ -2387,6 +2569,19 @@ type simpleMonitorUpdateResponseEnvelope struct {
 	CommonServiceItem *naked.SimpleMonitor `json:",omitempty"`
 }
 
+// simpleMonitorUpdateSettingsRequestEnvelope is envelop of API request
+type simpleMonitorUpdateSettingsRequestEnvelope struct {
+	CommonServiceItem *naked.SimpleMonitorSettingsUpdate `json:",omitempty"`
+}
+
+// simpleMonitorUpdateSettingsResponseEnvelope is envelop of API response
+type simpleMonitorUpdateSettingsResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	CommonServiceItem *naked.SimpleMonitor `json:",omitempty"`
+}
+
 // simpleMonitorPatchRequestEnvelope is envelop of API request
 type simpleMonitorPatchRequestEnvelope struct {
 	CommonServiceItem *naked.SimpleMonitor `json:",omitempty"`
@@ -2394,6 +2589,19 @@ type simpleMonitorPatchRequestEnvelope struct {
 
 // simpleMonitorPatchResponseEnvelope is envelop of API response
 type simpleMonitorPatchResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	CommonServiceItem *naked.SimpleMonitor `json:",omitempty"`
+}
+
+// simpleMonitorPatchSettingsRequestEnvelope is envelop of API request
+type simpleMonitorPatchSettingsRequestEnvelope struct {
+	CommonServiceItem *naked.SimpleMonitorSettingsUpdate `json:",omitempty"`
+}
+
+// simpleMonitorPatchSettingsResponseEnvelope is envelop of API response
+type simpleMonitorPatchSettingsResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 
@@ -2656,6 +2864,19 @@ type vPCRouterUpdateResponseEnvelope struct {
 	Appliance *naked.VPCRouter `json:",omitempty"`
 }
 
+// vPCRouterUpdateSettingsRequestEnvelope is envelop of API request
+type vPCRouterUpdateSettingsRequestEnvelope struct {
+	Appliance *naked.VPCRouterSettingsUpdate `json:",omitempty"`
+}
+
+// vPCRouterUpdateSettingsResponseEnvelope is envelop of API response
+type vPCRouterUpdateSettingsResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Appliance *naked.VPCRouter `json:",omitempty"`
+}
+
 // vPCRouterPatchRequestEnvelope is envelop of API request
 type vPCRouterPatchRequestEnvelope struct {
 	Appliance *naked.VPCRouter `json:",omitempty"`
@@ -2663,6 +2884,19 @@ type vPCRouterPatchRequestEnvelope struct {
 
 // vPCRouterPatchResponseEnvelope is envelop of API response
 type vPCRouterPatchResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Appliance *naked.VPCRouter `json:",omitempty"`
+}
+
+// vPCRouterPatchSettingsRequestEnvelope is envelop of API request
+type vPCRouterPatchSettingsRequestEnvelope struct {
+	Appliance *naked.VPCRouterSettingsUpdate `json:",omitempty"`
+}
+
+// vPCRouterPatchSettingsResponseEnvelope is envelop of API response
+type vPCRouterPatchSettingsResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 

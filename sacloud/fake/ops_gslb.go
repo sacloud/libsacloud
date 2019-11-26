@@ -129,6 +129,26 @@ func (o *GSLBOp) Patch(ctx context.Context, id types.ID, param *sacloud.GSLBPatc
 	return value, nil
 }
 
+// UpdateSettings is fake implementation
+func (o *GSLBOp) UpdateSettings(ctx context.Context, id types.ID, param *sacloud.GSLBUpdateSettingsRequest) (*sacloud.GSLB, error) {
+	value, err := o.Read(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+	copySameNameField(param, value)
+	fill(value, fillModifiedAt)
+
+	putGSLB(sacloud.APIDefaultZone, value)
+	return value, nil
+}
+
+// PatchSettings is fake implementation
+func (o *GSLBOp) PatchSettings(ctx context.Context, id types.ID, param *sacloud.GSLBPatchSettingsRequest) (*sacloud.GSLB, error) {
+	patchParam := &sacloud.GSLBPatchRequest{}
+	copySameNameField(param, patchParam)
+	return o.Patch(ctx, id, patchParam)
+}
+
 // Delete is fake implementation
 func (o *GSLBOp) Delete(ctx context.Context, id types.ID) error {
 	_, err := o.Read(ctx, id)

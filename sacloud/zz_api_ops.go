@@ -979,6 +979,101 @@ func (o *AutoBackupOp) Patch(ctx context.Context, zone string, id types.ID, para
 	return results.AutoBackup, nil
 }
 
+// UpdateSettings is API call
+func (o *AutoBackupOp) UpdateSettings(ctx context.Context, zone string, id types.ID, param *AutoBackupUpdateSettingsRequest) (*AutoBackup, error) {
+	// build request URL
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+		"param":      param,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	// build request body
+	var body interface{}
+	v, err := o.transformUpdateSettingsArgs(id, param)
+	if err != nil {
+		return nil, err
+	}
+	body = v
+
+	// do request
+	data, err := o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	// build results
+	results, err := o.transformUpdateSettingsResults(data)
+	if err != nil {
+		return nil, err
+	}
+	return results.AutoBackup, nil
+}
+
+// PatchSettings is API call
+func (o *AutoBackupOp) PatchSettings(ctx context.Context, zone string, id types.ID, param *AutoBackupPatchSettingsRequest) (*AutoBackup, error) {
+	// build request URL
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+		"param":      param,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	original, err := o.Read(ctx, zone, id)
+	if err != nil {
+		return nil, err
+	}
+	patchParam := make(map[string]interface{})
+	if err := mergo.Map(&patchParam, original); err != nil {
+		return nil, fmt.Errorf("patch is failed: %s", err)
+	}
+	if err := mergo.Map(&patchParam, param); err != nil {
+		return nil, fmt.Errorf("patch is failed: %s", err)
+	}
+	if err := mergo.Map(param, &patchParam); err != nil {
+		return nil, fmt.Errorf("patch is failed: %s", err)
+	}
+
+	if param.PatchEmptyToBackupSpanWeekdays {
+		param.BackupSpanWeekdays = nil
+	}
+	if param.PatchEmptyToMaximumNumberOfArchives {
+		param.MaximumNumberOfArchives = 0
+	}
+	// build request body
+	var body interface{}
+	v, err := o.transformPatchSettingsArgs(id, param)
+	if err != nil {
+		return nil, err
+	}
+	body = v
+
+	// do request
+	data, err := o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	// build results
+	results, err := o.transformPatchSettingsResults(data)
+	if err != nil {
+		return nil, err
+	}
+	return results.AutoBackup, nil
+}
+
 // Delete is API call
 func (o *AutoBackupOp) Delete(ctx context.Context, zone string, id types.ID) error {
 	// build request URL
@@ -1981,6 +2076,43 @@ func (o *DatabaseOp) Update(ctx context.Context, zone string, id types.ID, param
 	return results.Database, nil
 }
 
+// UpdateSettings is API call
+func (o *DatabaseOp) UpdateSettings(ctx context.Context, zone string, id types.ID, param *DatabaseUpdateSettingsRequest) (*Database, error) {
+	// build request URL
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+		"param":      param,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	// build request body
+	var body interface{}
+	v, err := o.transformUpdateSettingsArgs(id, param)
+	if err != nil {
+		return nil, err
+	}
+	body = v
+
+	// do request
+	data, err := o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	// build results
+	results, err := o.transformUpdateSettingsResults(data)
+	if err != nil {
+		return nil, err
+	}
+	return results.Database, nil
+}
+
 // Patch is API call
 func (o *DatabaseOp) Patch(ctx context.Context, zone string, id types.ID, param *DatabasePatchRequest) (*Database, error) {
 	// build request URL
@@ -2045,6 +2177,67 @@ func (o *DatabaseOp) Patch(ctx context.Context, zone string, id types.ID, param 
 
 	// build results
 	results, err := o.transformPatchResults(data)
+	if err != nil {
+		return nil, err
+	}
+	return results.Database, nil
+}
+
+// PatchSettings is API call
+func (o *DatabaseOp) PatchSettings(ctx context.Context, zone string, id types.ID, param *DatabasePatchSettingsRequest) (*Database, error) {
+	// build request URL
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+		"param":      param,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	original, err := o.Read(ctx, zone, id)
+	if err != nil {
+		return nil, err
+	}
+	patchParam := make(map[string]interface{})
+	if err := mergo.Map(&patchParam, original); err != nil {
+		return nil, fmt.Errorf("patch is failed: %s", err)
+	}
+	if err := mergo.Map(&patchParam, param); err != nil {
+		return nil, fmt.Errorf("patch is failed: %s", err)
+	}
+	if err := mergo.Map(param, &patchParam); err != nil {
+		return nil, fmt.Errorf("patch is failed: %s", err)
+	}
+
+	if param.PatchEmptyToCommonSetting {
+		param.CommonSetting = nil
+	}
+	if param.PatchEmptyToBackupSetting {
+		param.BackupSetting = nil
+	}
+	if param.PatchEmptyToReplicationSetting {
+		param.ReplicationSetting = nil
+	}
+	// build request body
+	var body interface{}
+	v, err := o.transformPatchSettingsArgs(id, param)
+	if err != nil {
+		return nil, err
+	}
+	body = v
+
+	// do request
+	data, err := o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	// build results
+	results, err := o.transformPatchSettingsResults(data)
 	if err != nil {
 		return nil, err
 	}
@@ -3140,6 +3333,43 @@ func (o *DNSOp) Update(ctx context.Context, id types.ID, param *DNSUpdateRequest
 	return results.DNS, nil
 }
 
+// UpdateSettings is API call
+func (o *DNSOp) UpdateSettings(ctx context.Context, id types.ID, param *DNSUpdateSettingsRequest) (*DNS, error) {
+	// build request URL
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       APIDefaultZone,
+		"id":         id,
+		"param":      param,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	// build request body
+	var body interface{}
+	v, err := o.transformUpdateSettingsArgs(id, param)
+	if err != nil {
+		return nil, err
+	}
+	body = v
+
+	// do request
+	data, err := o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	// build results
+	results, err := o.transformUpdateSettingsResults(data)
+	if err != nil {
+		return nil, err
+	}
+	return results.DNS, nil
+}
+
 // Patch is API call
 func (o *DNSOp) Patch(ctx context.Context, id types.ID, param *DNSPatchRequest) (*DNS, error) {
 	// build request URL
@@ -3198,6 +3428,61 @@ func (o *DNSOp) Patch(ctx context.Context, id types.ID, param *DNSPatchRequest) 
 
 	// build results
 	results, err := o.transformPatchResults(data)
+	if err != nil {
+		return nil, err
+	}
+	return results.DNS, nil
+}
+
+// PatchSettings is API call
+func (o *DNSOp) PatchSettings(ctx context.Context, id types.ID, param *DNSPatchSettingsRequest) (*DNS, error) {
+	// build request URL
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       APIDefaultZone,
+		"id":         id,
+		"param":      param,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	original, err := o.Read(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+	patchParam := make(map[string]interface{})
+	if err := mergo.Map(&patchParam, original); err != nil {
+		return nil, fmt.Errorf("patch is failed: %s", err)
+	}
+	if err := mergo.Map(&patchParam, param); err != nil {
+		return nil, fmt.Errorf("patch is failed: %s", err)
+	}
+	if err := mergo.Map(param, &patchParam); err != nil {
+		return nil, fmt.Errorf("patch is failed: %s", err)
+	}
+
+	if param.PatchEmptyToRecords {
+		param.Records = nil
+	}
+	// build request body
+	var body interface{}
+	v, err := o.transformPatchSettingsArgs(id, param)
+	if err != nil {
+		return nil, err
+	}
+	body = v
+
+	// do request
+	data, err := o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	// build results
+	results, err := o.transformPatchSettingsResults(data)
 	if err != nil {
 		return nil, err
 	}
@@ -3391,6 +3676,43 @@ func (o *GSLBOp) Update(ctx context.Context, id types.ID, param *GSLBUpdateReque
 	return results.GSLB, nil
 }
 
+// UpdateSettings is API call
+func (o *GSLBOp) UpdateSettings(ctx context.Context, id types.ID, param *GSLBUpdateSettingsRequest) (*GSLB, error) {
+	// build request URL
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       APIDefaultZone,
+		"id":         id,
+		"param":      param,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	// build request body
+	var body interface{}
+	v, err := o.transformUpdateSettingsArgs(id, param)
+	if err != nil {
+		return nil, err
+	}
+	body = v
+
+	// do request
+	data, err := o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	// build results
+	results, err := o.transformUpdateSettingsResults(data)
+	if err != nil {
+		return nil, err
+	}
+	return results.GSLB, nil
+}
+
 // Patch is API call
 func (o *GSLBOp) Patch(ctx context.Context, id types.ID, param *GSLBPatchRequest) (*GSLB, error) {
 	// build request URL
@@ -3461,6 +3783,73 @@ func (o *GSLBOp) Patch(ctx context.Context, id types.ID, param *GSLBPatchRequest
 
 	// build results
 	results, err := o.transformPatchResults(data)
+	if err != nil {
+		return nil, err
+	}
+	return results.GSLB, nil
+}
+
+// PatchSettings is API call
+func (o *GSLBOp) PatchSettings(ctx context.Context, id types.ID, param *GSLBPatchSettingsRequest) (*GSLB, error) {
+	// build request URL
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       APIDefaultZone,
+		"id":         id,
+		"param":      param,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	original, err := o.Read(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+	patchParam := make(map[string]interface{})
+	if err := mergo.Map(&patchParam, original); err != nil {
+		return nil, fmt.Errorf("patch is failed: %s", err)
+	}
+	if err := mergo.Map(&patchParam, param); err != nil {
+		return nil, fmt.Errorf("patch is failed: %s", err)
+	}
+	if err := mergo.Map(param, &patchParam); err != nil {
+		return nil, fmt.Errorf("patch is failed: %s", err)
+	}
+
+	if param.PatchEmptyToHealthCheck {
+		param.HealthCheck = nil
+	}
+	if param.PatchEmptyToDelayLoop {
+		param.DelayLoop = 0
+	}
+	if param.PatchEmptyToWeighted {
+		param.Weighted = types.StringFlag(false)
+	}
+	if param.PatchEmptyToSorryServer {
+		param.SorryServer = ""
+	}
+	if param.PatchEmptyToDestinationServers {
+		param.DestinationServers = nil
+	}
+	// build request body
+	var body interface{}
+	v, err := o.transformPatchSettingsArgs(id, param)
+	if err != nil {
+		return nil, err
+	}
+	body = v
+
+	// do request
+	data, err := o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	// build results
+	results, err := o.transformPatchSettingsResults(data)
 	if err != nil {
 		return nil, err
 	}
@@ -5598,6 +5987,43 @@ func (o *LoadBalancerOp) Update(ctx context.Context, zone string, id types.ID, p
 	return results.LoadBalancer, nil
 }
 
+// UpdateSettings is API call
+func (o *LoadBalancerOp) UpdateSettings(ctx context.Context, zone string, id types.ID, param *LoadBalancerUpdateSettingsRequest) (*LoadBalancer, error) {
+	// build request URL
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+		"param":      param,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	// build request body
+	var body interface{}
+	v, err := o.transformUpdateSettingsArgs(id, param)
+	if err != nil {
+		return nil, err
+	}
+	body = v
+
+	// do request
+	data, err := o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	// build results
+	results, err := o.transformUpdateSettingsResults(data)
+	if err != nil {
+		return nil, err
+	}
+	return results.LoadBalancer, nil
+}
+
 // Patch is API call
 func (o *LoadBalancerOp) Patch(ctx context.Context, zone string, id types.ID, param *LoadBalancerPatchRequest) (*LoadBalancer, error) {
 	// build request URL
@@ -5656,6 +6082,61 @@ func (o *LoadBalancerOp) Patch(ctx context.Context, zone string, id types.ID, pa
 
 	// build results
 	results, err := o.transformPatchResults(data)
+	if err != nil {
+		return nil, err
+	}
+	return results.LoadBalancer, nil
+}
+
+// PatchSettings is API call
+func (o *LoadBalancerOp) PatchSettings(ctx context.Context, zone string, id types.ID, param *LoadBalancerPatchSettingsRequest) (*LoadBalancer, error) {
+	// build request URL
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+		"param":      param,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	original, err := o.Read(ctx, zone, id)
+	if err != nil {
+		return nil, err
+	}
+	patchParam := make(map[string]interface{})
+	if err := mergo.Map(&patchParam, original); err != nil {
+		return nil, fmt.Errorf("patch is failed: %s", err)
+	}
+	if err := mergo.Map(&patchParam, param); err != nil {
+		return nil, fmt.Errorf("patch is failed: %s", err)
+	}
+	if err := mergo.Map(param, &patchParam); err != nil {
+		return nil, fmt.Errorf("patch is failed: %s", err)
+	}
+
+	if param.PatchEmptyToVirtualIPAddresses {
+		param.VirtualIPAddresses = nil
+	}
+	// build request body
+	var body interface{}
+	v, err := o.transformPatchSettingsArgs(id, param)
+	if err != nil {
+		return nil, err
+	}
+	body = v
+
+	// do request
+	data, err := o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	// build results
+	results, err := o.transformPatchSettingsResults(data)
 	if err != nil {
 		return nil, err
 	}
@@ -6035,6 +6516,43 @@ func (o *MobileGatewayOp) Update(ctx context.Context, zone string, id types.ID, 
 	return results.MobileGateway, nil
 }
 
+// UpdateSettings is API call
+func (o *MobileGatewayOp) UpdateSettings(ctx context.Context, zone string, id types.ID, param *MobileGatewayUpdateSettingsRequest) (*MobileGateway, error) {
+	// build request URL
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+		"param":      param,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	// build request body
+	var body interface{}
+	v, err := o.transformUpdateSettingsArgs(id, param)
+	if err != nil {
+		return nil, err
+	}
+	body = v
+
+	// do request
+	data, err := o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	// build results
+	results, err := o.transformUpdateSettingsResults(data)
+	if err != nil {
+		return nil, err
+	}
+	return results.MobileGateway, nil
+}
+
 // Patch is API call
 func (o *MobileGatewayOp) Patch(ctx context.Context, zone string, id types.ID, param *MobileGatewayPatchRequest) (*MobileGateway, error) {
 	// build request URL
@@ -6093,6 +6611,61 @@ func (o *MobileGatewayOp) Patch(ctx context.Context, zone string, id types.ID, p
 
 	// build results
 	results, err := o.transformPatchResults(data)
+	if err != nil {
+		return nil, err
+	}
+	return results.MobileGateway, nil
+}
+
+// PatchSettings is API call
+func (o *MobileGatewayOp) PatchSettings(ctx context.Context, zone string, id types.ID, param *MobileGatewayPatchSettingsRequest) (*MobileGateway, error) {
+	// build request URL
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+		"param":      param,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	original, err := o.Read(ctx, zone, id)
+	if err != nil {
+		return nil, err
+	}
+	patchParam := make(map[string]interface{})
+	if err := mergo.Map(&patchParam, original); err != nil {
+		return nil, fmt.Errorf("patch is failed: %s", err)
+	}
+	if err := mergo.Map(&patchParam, param); err != nil {
+		return nil, fmt.Errorf("patch is failed: %s", err)
+	}
+	if err := mergo.Map(param, &patchParam); err != nil {
+		return nil, fmt.Errorf("patch is failed: %s", err)
+	}
+
+	if param.PatchEmptyToSettings {
+		param.Settings = nil
+	}
+	// build request body
+	var body interface{}
+	v, err := o.transformPatchSettingsArgs(id, param)
+	if err != nil {
+		return nil, err
+	}
+	body = v
+
+	// do request
+	data, err := o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	// build results
+	results, err := o.transformPatchSettingsResults(data)
 	if err != nil {
 		return nil, err
 	}
@@ -8120,6 +8693,43 @@ func (o *ProxyLBOp) Update(ctx context.Context, id types.ID, param *ProxyLBUpdat
 	return results.ProxyLB, nil
 }
 
+// UpdateSettings is API call
+func (o *ProxyLBOp) UpdateSettings(ctx context.Context, id types.ID, param *ProxyLBUpdateSettingsRequest) (*ProxyLB, error) {
+	// build request URL
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       APIDefaultZone,
+		"id":         id,
+		"param":      param,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	// build request body
+	var body interface{}
+	v, err := o.transformUpdateSettingsArgs(id, param)
+	if err != nil {
+		return nil, err
+	}
+	body = v
+
+	// do request
+	data, err := o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	// build results
+	results, err := o.transformUpdateSettingsResults(data)
+	if err != nil {
+		return nil, err
+	}
+	return results.ProxyLB, nil
+}
+
 // Patch is API call
 func (o *ProxyLBOp) Patch(ctx context.Context, id types.ID, param *ProxyLBPatchRequest) (*ProxyLB, error) {
 	// build request URL
@@ -8196,6 +8806,79 @@ func (o *ProxyLBOp) Patch(ctx context.Context, id types.ID, param *ProxyLBPatchR
 
 	// build results
 	results, err := o.transformPatchResults(data)
+	if err != nil {
+		return nil, err
+	}
+	return results.ProxyLB, nil
+}
+
+// PatchSettings is API call
+func (o *ProxyLBOp) PatchSettings(ctx context.Context, id types.ID, param *ProxyLBPatchSettingsRequest) (*ProxyLB, error) {
+	// build request URL
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       APIDefaultZone,
+		"id":         id,
+		"param":      param,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	original, err := o.Read(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+	patchParam := make(map[string]interface{})
+	if err := mergo.Map(&patchParam, original); err != nil {
+		return nil, fmt.Errorf("patch is failed: %s", err)
+	}
+	if err := mergo.Map(&patchParam, param); err != nil {
+		return nil, fmt.Errorf("patch is failed: %s", err)
+	}
+	if err := mergo.Map(param, &patchParam); err != nil {
+		return nil, fmt.Errorf("patch is failed: %s", err)
+	}
+
+	if param.PatchEmptyToHealthCheck {
+		param.HealthCheck = nil
+	}
+	if param.PatchEmptyToSorryServer {
+		param.SorryServer = nil
+	}
+	if param.PatchEmptyToBindPorts {
+		param.BindPorts = nil
+	}
+	if param.PatchEmptyToServers {
+		param.Servers = nil
+	}
+	if param.PatchEmptyToLetsEncrypt {
+		param.LetsEncrypt = nil
+	}
+	if param.PatchEmptyToStickySession {
+		param.StickySession = nil
+	}
+	if param.PatchEmptyToTimeout {
+		param.Timeout = nil
+	}
+	// build request body
+	var body interface{}
+	v, err := o.transformPatchSettingsArgs(id, param)
+	if err != nil {
+		return nil, err
+	}
+	body = v
+
+	// do request
+	data, err := o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	// build results
+	results, err := o.transformPatchSettingsResults(data)
 	if err != nil {
 		return nil, err
 	}
@@ -10016,6 +10699,43 @@ func (o *SimpleMonitorOp) Update(ctx context.Context, id types.ID, param *Simple
 	return results.SimpleMonitor, nil
 }
 
+// UpdateSettings is API call
+func (o *SimpleMonitorOp) UpdateSettings(ctx context.Context, id types.ID, param *SimpleMonitorUpdateSettingsRequest) (*SimpleMonitor, error) {
+	// build request URL
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       APIDefaultZone,
+		"id":         id,
+		"param":      param,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	// build request body
+	var body interface{}
+	v, err := o.transformUpdateSettingsArgs(id, param)
+	if err != nil {
+		return nil, err
+	}
+	body = v
+
+	// do request
+	data, err := o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	// build results
+	results, err := o.transformUpdateSettingsResults(data)
+	if err != nil {
+		return nil, err
+	}
+	return results.SimpleMonitor, nil
+}
+
 // Patch is API call
 func (o *SimpleMonitorOp) Patch(ctx context.Context, id types.ID, param *SimpleMonitorPatchRequest) (*SimpleMonitor, error) {
 	// build request URL
@@ -10095,6 +10815,82 @@ func (o *SimpleMonitorOp) Patch(ctx context.Context, id types.ID, param *SimpleM
 
 	// build results
 	results, err := o.transformPatchResults(data)
+	if err != nil {
+		return nil, err
+	}
+	return results.SimpleMonitor, nil
+}
+
+// PatchSettings is API call
+func (o *SimpleMonitorOp) PatchSettings(ctx context.Context, id types.ID, param *SimpleMonitorPatchSettingsRequest) (*SimpleMonitor, error) {
+	// build request URL
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       APIDefaultZone,
+		"id":         id,
+		"param":      param,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	original, err := o.Read(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+	patchParam := make(map[string]interface{})
+	if err := mergo.Map(&patchParam, original); err != nil {
+		return nil, fmt.Errorf("patch is failed: %s", err)
+	}
+	if err := mergo.Map(&patchParam, param); err != nil {
+		return nil, fmt.Errorf("patch is failed: %s", err)
+	}
+	if err := mergo.Map(param, &patchParam); err != nil {
+		return nil, fmt.Errorf("patch is failed: %s", err)
+	}
+
+	if param.PatchEmptyToDelayLoop {
+		param.DelayLoop = 0
+	}
+	if param.PatchEmptyToEnabled {
+		param.Enabled = types.StringFlag(false)
+	}
+	if param.PatchEmptyToHealthCheck {
+		param.HealthCheck = nil
+	}
+	if param.PatchEmptyToNotifyEmailEnabled {
+		param.NotifyEmailEnabled = types.StringFlag(false)
+	}
+	if param.PatchEmptyToNotifyEmailHTML {
+		param.NotifyEmailHTML = types.StringFlag(false)
+	}
+	if param.PatchEmptyToNotifySlackEnabled {
+		param.NotifySlackEnabled = types.StringFlag(false)
+	}
+	if param.PatchEmptyToSlackWebhooksURL {
+		param.SlackWebhooksURL = ""
+	}
+	if param.PatchEmptyToNotifyInterval {
+		param.NotifyInterval = 0
+	}
+	// build request body
+	var body interface{}
+	v, err := o.transformPatchSettingsArgs(id, param)
+	if err != nil {
+		return nil, err
+	}
+	body = v
+
+	// do request
+	data, err := o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	// build results
+	results, err := o.transformPatchSettingsResults(data)
 	if err != nil {
 		return nil, err
 	}
@@ -11062,6 +11858,43 @@ func (o *VPCRouterOp) Update(ctx context.Context, zone string, id types.ID, para
 	return results.VPCRouter, nil
 }
 
+// UpdateSettings is API call
+func (o *VPCRouterOp) UpdateSettings(ctx context.Context, zone string, id types.ID, param *VPCRouterUpdateSettingsRequest) (*VPCRouter, error) {
+	// build request URL
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+		"param":      param,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	// build request body
+	var body interface{}
+	v, err := o.transformUpdateSettingsArgs(id, param)
+	if err != nil {
+		return nil, err
+	}
+	body = v
+
+	// do request
+	data, err := o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	// build results
+	results, err := o.transformUpdateSettingsResults(data)
+	if err != nil {
+		return nil, err
+	}
+	return results.VPCRouter, nil
+}
+
 // Patch is API call
 func (o *VPCRouterOp) Patch(ctx context.Context, zone string, id types.ID, param *VPCRouterPatchRequest) (*VPCRouter, error) {
 	// build request URL
@@ -11120,6 +11953,61 @@ func (o *VPCRouterOp) Patch(ctx context.Context, zone string, id types.ID, param
 
 	// build results
 	results, err := o.transformPatchResults(data)
+	if err != nil {
+		return nil, err
+	}
+	return results.VPCRouter, nil
+}
+
+// PatchSettings is API call
+func (o *VPCRouterOp) PatchSettings(ctx context.Context, zone string, id types.ID, param *VPCRouterPatchSettingsRequest) (*VPCRouter, error) {
+	// build request URL
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+		"param":      param,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	original, err := o.Read(ctx, zone, id)
+	if err != nil {
+		return nil, err
+	}
+	patchParam := make(map[string]interface{})
+	if err := mergo.Map(&patchParam, original); err != nil {
+		return nil, fmt.Errorf("patch is failed: %s", err)
+	}
+	if err := mergo.Map(&patchParam, param); err != nil {
+		return nil, fmt.Errorf("patch is failed: %s", err)
+	}
+	if err := mergo.Map(param, &patchParam); err != nil {
+		return nil, fmt.Errorf("patch is failed: %s", err)
+	}
+
+	if param.PatchEmptyToSettings {
+		param.Settings = nil
+	}
+	// build request body
+	var body interface{}
+	v, err := o.transformPatchSettingsArgs(id, param)
+	if err != nil {
+		return nil, err
+	}
+	body = v
+
+	// do request
+	data, err := o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	// build results
+	results, err := o.transformPatchSettingsResults(data)
 	if err != nil {
 		return nil, err
 	}

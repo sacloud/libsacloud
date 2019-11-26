@@ -80,9 +80,23 @@ func TestAutoBackupOpCRUD(t *testing.T) {
 				}),
 			},
 			{
+				Func: testAutoBackupUpdateSettings,
+				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
+					ExpectValue:  updateAutoBackupSettingsExpected,
+					IgnoreFields: ignoreAutoBackupFields,
+				}),
+			},
+			{
 				Func: testAutoBackupPatch,
 				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 					ExpectValue:  patchAutoBackupExpected,
+					IgnoreFields: ignoreAutoBackupFields,
+				}),
+			},
+			{
+				Func: testAutoBackupPatchSettings,
+				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
+					ExpectValue:  patchAutoBackupSettingsExpected,
 					IgnoreFields: ignoreAutoBackupFields,
 				}),
 			},
@@ -163,6 +177,25 @@ var (
 		MaximumNumberOfArchives: updateAutoBackupParam.MaximumNumberOfArchives,
 		IconID:                  testIconID,
 	}
+
+	updateAutoBackupSettingsParam = &sacloud.AutoBackupUpdateSettingsRequest{
+		BackupSpanWeekdays: []types.EBackupSpanWeekday{
+			types.BackupSpanWeekdays.Monday,
+			types.BackupSpanWeekdays.Tuesday,
+			types.BackupSpanWeekdays.Wednesday,
+		},
+		MaximumNumberOfArchives: 4,
+	}
+	updateAutoBackupSettingsExpected = &sacloud.AutoBackup{
+		Name:                    updateAutoBackupParam.Name,
+		Description:             updateAutoBackupParam.Description,
+		Tags:                    updateAutoBackupParam.Tags,
+		Availability:            types.Availabilities.Available,
+		BackupSpanWeekdays:      updateAutoBackupSettingsParam.BackupSpanWeekdays,
+		MaximumNumberOfArchives: updateAutoBackupSettingsParam.MaximumNumberOfArchives,
+		IconID:                  testIconID,
+	}
+
 	patchAutoBackupParam = &sacloud.AutoBackupPatchRequest{
 		Description:      "desc-pached",
 		PatchEmptyToTags: true,
@@ -172,8 +205,23 @@ var (
 		Description: patchAutoBackupParam.Description,
 		//Tags:                    updateAutoBackupParam.Tags,
 		Availability:            types.Availabilities.Available,
-		BackupSpanWeekdays:      updateAutoBackupParam.BackupSpanWeekdays,
-		MaximumNumberOfArchives: updateAutoBackupParam.MaximumNumberOfArchives,
+		BackupSpanWeekdays:      updateAutoBackupSettingsParam.BackupSpanWeekdays,
+		MaximumNumberOfArchives: updateAutoBackupSettingsParam.MaximumNumberOfArchives,
+		IconID:                  testIconID,
+	}
+	patchAutoBackupSettingsParam = &sacloud.AutoBackupPatchSettingsRequest{
+		BackupSpanWeekdays: []types.EBackupSpanWeekday{
+			types.BackupSpanWeekdays.Monday,
+			types.BackupSpanWeekdays.Tuesday,
+		},
+	}
+	patchAutoBackupSettingsExpected = &sacloud.AutoBackup{
+		Name:        updateAutoBackupParam.Name,
+		Description: patchAutoBackupParam.Description,
+		//Tags:                    updateAutoBackupParam.Tags,
+		Availability:            types.Availabilities.Available,
+		BackupSpanWeekdays:      patchAutoBackupSettingsParam.BackupSpanWeekdays,
+		MaximumNumberOfArchives: updateAutoBackupSettingsParam.MaximumNumberOfArchives,
 		IconID:                  testIconID,
 	}
 	updateAutoBackupToMinParam = &sacloud.AutoBackupUpdateRequest{
@@ -206,9 +254,19 @@ func testAutoBackupUpdate(ctx *testutil.CRUDTestContext, caller sacloud.APICalle
 	return client.Update(ctx, testZone, ctx.ID, updateAutoBackupParam)
 }
 
+func testAutoBackupUpdateSettings(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+	client := sacloud.NewAutoBackupOp(caller)
+	return client.UpdateSettings(ctx, testZone, ctx.ID, updateAutoBackupSettingsParam)
+}
+
 func testAutoBackupPatch(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewAutoBackupOp(caller)
 	return client.Patch(ctx, testZone, ctx.ID, patchAutoBackupParam)
+}
+
+func testAutoBackupPatchSettings(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+	client := sacloud.NewAutoBackupOp(caller)
+	return client.PatchSettings(ctx, testZone, ctx.ID, patchAutoBackupSettingsParam)
 }
 
 func testAutoBackupUpdateToMin(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {

@@ -46,9 +46,13 @@ var proxyLBAPI = &dsl.Resource{
 
 		// update
 		ops.UpdateCommonServiceItem(proxyLBAPIName, proxyLBNakedType, proxyLBUpdateParam, proxyLBView),
+		// updateSettings
+		ops.UpdateCommonServiceItemSettings(proxyLBAPIName, proxyLBUpdateSettingsNakedType, proxyLBUpdateSettingsParam, proxyLBView),
 
 		// patch
 		ops.PatchCommonServiceItem(proxyLBAPIName, proxyLBNakedType, patchModel(proxyLBUpdateParam), proxyLBView),
+		// updateSettings
+		ops.PatchCommonServiceItemSettings(proxyLBAPIName, proxyLBUpdateSettingsNakedType, patchModel(proxyLBUpdateSettingsParam), proxyLBView),
 
 		// delete
 		ops.Delete(proxyLBAPIName),
@@ -156,8 +160,9 @@ var proxyLBAPI = &dsl.Resource{
 }
 
 var (
-	proxyLBNakedType             = meta.Static(naked.ProxyLB{})
-	proxyLBCertificatesNakedType = meta.Static(naked.ProxyLBCertificates{})
+	proxyLBNakedType               = meta.Static(naked.ProxyLB{})
+	proxyLBUpdateSettingsNakedType = meta.Static(naked.ProxyLBSettingsUpdate{})
+	proxyLBCertificatesNakedType   = meta.Static(naked.ProxyLBCertificates{})
 
 	proxyLBView = &dsl.Model{
 		Name:      proxyLBAPIName,
@@ -252,6 +257,23 @@ var (
 			fields.Description(),
 			fields.Tags(),
 			fields.IconID(),
+		},
+	}
+
+	proxyLBUpdateSettingsParam = &dsl.Model{
+		Name:      names.UpdateSettingsParameterName(proxyLBAPIName),
+		NakedType: proxyLBNakedType,
+		Fields: []*dsl.FieldDesc{
+			// settings
+			fields.ProxyLBHealthCheck(),
+			fields.ProxyLBSorryServer(),
+			fields.ProxyLBBindPorts(),
+			fields.ProxyLBServers(),
+			fields.ProxyLBLetsEncrypt(),
+			fields.ProxyLBStickySession(),
+			fields.ProxyLBTimeout(),
+			// settings hash
+			fields.SettingsHash(),
 		},
 	}
 

@@ -38,6 +38,12 @@ type DNS struct {
 	Status       *DNSStatus          `json:",omitempty" yaml:"status,omitempty" structs:",omitempty"`
 }
 
+// DNSSettingsUpdate DNSゾーン
+type DNSSettingsUpdate struct {
+	Settings     *DNSSettings `json:",omitempty" yaml:"settings,omitempty" structs:",omitempty"`
+	SettingsHash string       `json:",omitempty" yaml:"settings_hash,omitempty" structs:",omitempty"`
+}
+
 // DNSStatus DNSステータス
 type DNSStatus struct {
 	Zone string   `json:",omitempty" yaml:"zone,omitempty" structs:",omitempty"`

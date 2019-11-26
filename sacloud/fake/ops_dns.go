@@ -114,6 +114,26 @@ func (o *DNSOp) Patch(ctx context.Context, id types.ID, param *sacloud.DNSPatchR
 	return value, nil
 }
 
+// UpdateSettings is fake implementation
+func (o *DNSOp) UpdateSettings(ctx context.Context, id types.ID, param *sacloud.DNSUpdateSettingsRequest) (*sacloud.DNS, error) {
+	value, err := o.Read(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+	copySameNameField(param, value)
+	fill(value, fillModifiedAt)
+
+	putDNS(sacloud.APIDefaultZone, value)
+	return value, nil
+}
+
+// PatchSettings is fake implementation
+func (o *DNSOp) PatchSettings(ctx context.Context, id types.ID, param *sacloud.DNSPatchSettingsRequest) (*sacloud.DNS, error) {
+	patchParam := &sacloud.DNSPatchRequest{}
+	copySameNameField(param, patchParam)
+	return o.Patch(ctx, id, patchParam)
+}
+
 // Delete is fake implementation
 func (o *DNSOp) Delete(ctx context.Context, id types.ID) error {
 	_, err := o.Read(ctx, id)

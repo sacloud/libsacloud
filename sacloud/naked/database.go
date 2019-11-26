@@ -46,6 +46,12 @@ type Database struct {
 	Generation interface{}
 }
 
+// DatabaseSettingsUpdate データベース
+type DatabaseSettingsUpdate struct {
+	Settings     *DatabaseSettings `json:",omitempty" yaml:"settings,omitempty" structs:",omitempty"`
+	SettingsHash string            `json:",omitempty" yaml:"settings_hash,omitempty" structs:",omitempty"`
+}
+
 // DatabaseSettings データベース設定
 type DatabaseSettings struct {
 	DBConf *DatabaseSetting `json:",omitempty" yaml:"db_conf,omitempty" structs:",omitempty"`
