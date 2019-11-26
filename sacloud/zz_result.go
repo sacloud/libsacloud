@@ -1449,8 +1449,22 @@ type simpleMonitorUpdateResult struct {
 	SimpleMonitor *SimpleMonitor `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
 }
 
+// simpleMonitorUpdateSettingsResult represents the Result of API
+type simpleMonitorUpdateSettingsResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	SimpleMonitor *SimpleMonitor `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
+}
+
 // simpleMonitorPatchResult represents the Result of API
 type simpleMonitorPatchResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	SimpleMonitor *SimpleMonitor `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
+}
+
+// simpleMonitorPatchSettingsResult represents the Result of API
+type simpleMonitorPatchSettingsResult struct {
 	IsOk bool `json:",omitempty"` // is_ok
 
 	SimpleMonitor *SimpleMonitor `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`

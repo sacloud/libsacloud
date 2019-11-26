@@ -24985,6 +24985,149 @@ func (o *SimpleMonitorUpdateRequest) SetSettingsHash(v string) {
 }
 
 /*************************************************
+* SimpleMonitorUpdateSettingsRequest
+*************************************************/
+
+// SimpleMonitorUpdateSettingsRequest represents API parameter/response structure
+type SimpleMonitorUpdateSettingsRequest struct {
+	DelayLoop          int                       `mapconv:"Settings.SimpleMonitor.DelayLoop" validate:"min=60,max=3600"`
+	Enabled            types.StringFlag          `mapconv:"Settings.SimpleMonitor.Enabled"`
+	HealthCheck        *SimpleMonitorHealthCheck `mapconv:"Settings.SimpleMonitor.HealthCheck,recursive"`
+	NotifyEmailEnabled types.StringFlag          `mapconv:"Settings.SimpleMonitor.NotifyEmail.Enabled"`
+	NotifyEmailHTML    types.StringFlag          `mapconv:"Settings.SimpleMonitor.NotifyEmail.HTML"`
+	NotifySlackEnabled types.StringFlag          `mapconv:"Settings.SimpleMonitor.NotifySlack.Enabled"`
+	SlackWebhooksURL   string                    `mapconv:"Settings.SimpleMonitor.NotifySlack.IncomingWebhooksURL"`
+	NotifyInterval     int                       `mapconv:"Settings.SimpleMonitor.NotifyInterval" validate:"min=3600,max=259200"`
+	SettingsHash       string                    `json:",omitempty" mapconv:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *SimpleMonitorUpdateSettingsRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *SimpleMonitorUpdateSettingsRequest) setDefaults() interface{} {
+	return &struct {
+		DelayLoop          int                       `mapconv:"Settings.SimpleMonitor.DelayLoop" validate:"min=60,max=3600"`
+		Enabled            types.StringFlag          `mapconv:"Settings.SimpleMonitor.Enabled"`
+		HealthCheck        *SimpleMonitorHealthCheck `mapconv:"Settings.SimpleMonitor.HealthCheck,recursive"`
+		NotifyEmailEnabled types.StringFlag          `mapconv:"Settings.SimpleMonitor.NotifyEmail.Enabled"`
+		NotifyEmailHTML    types.StringFlag          `mapconv:"Settings.SimpleMonitor.NotifyEmail.HTML"`
+		NotifySlackEnabled types.StringFlag          `mapconv:"Settings.SimpleMonitor.NotifySlack.Enabled"`
+		SlackWebhooksURL   string                    `mapconv:"Settings.SimpleMonitor.NotifySlack.IncomingWebhooksURL"`
+		NotifyInterval     int                       `mapconv:"Settings.SimpleMonitor.NotifyInterval" validate:"min=3600,max=259200"`
+		SettingsHash       string                    `json:",omitempty" mapconv:",omitempty"`
+	}{
+		DelayLoop:          o.GetDelayLoop(),
+		Enabled:            o.GetEnabled(),
+		HealthCheck:        o.GetHealthCheck(),
+		NotifyEmailEnabled: o.GetNotifyEmailEnabled(),
+		NotifyEmailHTML:    o.GetNotifyEmailHTML(),
+		NotifySlackEnabled: o.GetNotifySlackEnabled(),
+		SlackWebhooksURL:   o.GetSlackWebhooksURL(),
+		NotifyInterval:     o.GetNotifyInterval(),
+		SettingsHash:       o.GetSettingsHash(),
+	}
+}
+
+// GetDelayLoop returns value of DelayLoop
+func (o *SimpleMonitorUpdateSettingsRequest) GetDelayLoop() int {
+	if o.DelayLoop == 0 {
+		return 60
+	}
+	return o.DelayLoop
+}
+
+// SetDelayLoop sets value to DelayLoop
+func (o *SimpleMonitorUpdateSettingsRequest) SetDelayLoop(v int) {
+	o.DelayLoop = v
+}
+
+// GetEnabled returns value of Enabled
+func (o *SimpleMonitorUpdateSettingsRequest) GetEnabled() types.StringFlag {
+	return o.Enabled
+}
+
+// SetEnabled sets value to Enabled
+func (o *SimpleMonitorUpdateSettingsRequest) SetEnabled(v types.StringFlag) {
+	o.Enabled = v
+}
+
+// GetHealthCheck returns value of HealthCheck
+func (o *SimpleMonitorUpdateSettingsRequest) GetHealthCheck() *SimpleMonitorHealthCheck {
+	return o.HealthCheck
+}
+
+// SetHealthCheck sets value to HealthCheck
+func (o *SimpleMonitorUpdateSettingsRequest) SetHealthCheck(v *SimpleMonitorHealthCheck) {
+	o.HealthCheck = v
+}
+
+// GetNotifyEmailEnabled returns value of NotifyEmailEnabled
+func (o *SimpleMonitorUpdateSettingsRequest) GetNotifyEmailEnabled() types.StringFlag {
+	return o.NotifyEmailEnabled
+}
+
+// SetNotifyEmailEnabled sets value to NotifyEmailEnabled
+func (o *SimpleMonitorUpdateSettingsRequest) SetNotifyEmailEnabled(v types.StringFlag) {
+	o.NotifyEmailEnabled = v
+}
+
+// GetNotifyEmailHTML returns value of NotifyEmailHTML
+func (o *SimpleMonitorUpdateSettingsRequest) GetNotifyEmailHTML() types.StringFlag {
+	return o.NotifyEmailHTML
+}
+
+// SetNotifyEmailHTML sets value to NotifyEmailHTML
+func (o *SimpleMonitorUpdateSettingsRequest) SetNotifyEmailHTML(v types.StringFlag) {
+	o.NotifyEmailHTML = v
+}
+
+// GetNotifySlackEnabled returns value of NotifySlackEnabled
+func (o *SimpleMonitorUpdateSettingsRequest) GetNotifySlackEnabled() types.StringFlag {
+	return o.NotifySlackEnabled
+}
+
+// SetNotifySlackEnabled sets value to NotifySlackEnabled
+func (o *SimpleMonitorUpdateSettingsRequest) SetNotifySlackEnabled(v types.StringFlag) {
+	o.NotifySlackEnabled = v
+}
+
+// GetSlackWebhooksURL returns value of SlackWebhooksURL
+func (o *SimpleMonitorUpdateSettingsRequest) GetSlackWebhooksURL() string {
+	return o.SlackWebhooksURL
+}
+
+// SetSlackWebhooksURL sets value to SlackWebhooksURL
+func (o *SimpleMonitorUpdateSettingsRequest) SetSlackWebhooksURL(v string) {
+	o.SlackWebhooksURL = v
+}
+
+// GetNotifyInterval returns value of NotifyInterval
+func (o *SimpleMonitorUpdateSettingsRequest) GetNotifyInterval() int {
+	if o.NotifyInterval == 0 {
+		return 7200
+	}
+	return o.NotifyInterval
+}
+
+// SetNotifyInterval sets value to NotifyInterval
+func (o *SimpleMonitorUpdateSettingsRequest) SetNotifyInterval(v int) {
+	o.NotifyInterval = v
+}
+
+// GetSettingsHash returns value of SettingsHash
+func (o *SimpleMonitorUpdateSettingsRequest) GetSettingsHash() string {
+	return o.SettingsHash
+}
+
+// SetSettingsHash sets value to SettingsHash
+func (o *SimpleMonitorUpdateSettingsRequest) SetSettingsHash(v string) {
+	o.SettingsHash = v
+}
+
+/*************************************************
 * SimpleMonitorPatchRequest
 *************************************************/
 
@@ -25326,6 +25469,253 @@ func (o *SimpleMonitorPatchRequest) GetSettingsHash() string {
 
 // SetSettingsHash sets value to SettingsHash
 func (o *SimpleMonitorPatchRequest) SetSettingsHash(v string) {
+	o.SettingsHash = v
+}
+
+/*************************************************
+* SimpleMonitorPatchSettingsRequest
+*************************************************/
+
+// SimpleMonitorPatchSettingsRequest represents API parameter/response structure
+type SimpleMonitorPatchSettingsRequest struct {
+	DelayLoop                      int `mapconv:"Settings.SimpleMonitor.DelayLoop" validate:"min=60,max=3600"`
+	PatchEmptyToDelayLoop          bool
+	Enabled                        types.StringFlag `mapconv:"Settings.SimpleMonitor.Enabled"`
+	PatchEmptyToEnabled            bool
+	HealthCheck                    *SimpleMonitorHealthCheck `mapconv:"Settings.SimpleMonitor.HealthCheck,recursive"`
+	PatchEmptyToHealthCheck        bool
+	NotifyEmailEnabled             types.StringFlag `mapconv:"Settings.SimpleMonitor.NotifyEmail.Enabled"`
+	PatchEmptyToNotifyEmailEnabled bool
+	NotifyEmailHTML                types.StringFlag `mapconv:"Settings.SimpleMonitor.NotifyEmail.HTML"`
+	PatchEmptyToNotifyEmailHTML    bool
+	NotifySlackEnabled             types.StringFlag `mapconv:"Settings.SimpleMonitor.NotifySlack.Enabled"`
+	PatchEmptyToNotifySlackEnabled bool
+	SlackWebhooksURL               string `mapconv:"Settings.SimpleMonitor.NotifySlack.IncomingWebhooksURL"`
+	PatchEmptyToSlackWebhooksURL   bool
+	NotifyInterval                 int `mapconv:"Settings.SimpleMonitor.NotifyInterval" validate:"min=3600,max=259200"`
+	PatchEmptyToNotifyInterval     bool
+	SettingsHash                   string `json:",omitempty" mapconv:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *SimpleMonitorPatchSettingsRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *SimpleMonitorPatchSettingsRequest) setDefaults() interface{} {
+	return &struct {
+		DelayLoop                      int `mapconv:"Settings.SimpleMonitor.DelayLoop" validate:"min=60,max=3600"`
+		PatchEmptyToDelayLoop          bool
+		Enabled                        types.StringFlag `mapconv:"Settings.SimpleMonitor.Enabled"`
+		PatchEmptyToEnabled            bool
+		HealthCheck                    *SimpleMonitorHealthCheck `mapconv:"Settings.SimpleMonitor.HealthCheck,recursive"`
+		PatchEmptyToHealthCheck        bool
+		NotifyEmailEnabled             types.StringFlag `mapconv:"Settings.SimpleMonitor.NotifyEmail.Enabled"`
+		PatchEmptyToNotifyEmailEnabled bool
+		NotifyEmailHTML                types.StringFlag `mapconv:"Settings.SimpleMonitor.NotifyEmail.HTML"`
+		PatchEmptyToNotifyEmailHTML    bool
+		NotifySlackEnabled             types.StringFlag `mapconv:"Settings.SimpleMonitor.NotifySlack.Enabled"`
+		PatchEmptyToNotifySlackEnabled bool
+		SlackWebhooksURL               string `mapconv:"Settings.SimpleMonitor.NotifySlack.IncomingWebhooksURL"`
+		PatchEmptyToSlackWebhooksURL   bool
+		NotifyInterval                 int `mapconv:"Settings.SimpleMonitor.NotifyInterval" validate:"min=3600,max=259200"`
+		PatchEmptyToNotifyInterval     bool
+		SettingsHash                   string `json:",omitempty" mapconv:",omitempty"`
+	}{
+		DelayLoop:                      o.GetDelayLoop(),
+		PatchEmptyToDelayLoop:          o.GetPatchEmptyToDelayLoop(),
+		Enabled:                        o.GetEnabled(),
+		PatchEmptyToEnabled:            o.GetPatchEmptyToEnabled(),
+		HealthCheck:                    o.GetHealthCheck(),
+		PatchEmptyToHealthCheck:        o.GetPatchEmptyToHealthCheck(),
+		NotifyEmailEnabled:             o.GetNotifyEmailEnabled(),
+		PatchEmptyToNotifyEmailEnabled: o.GetPatchEmptyToNotifyEmailEnabled(),
+		NotifyEmailHTML:                o.GetNotifyEmailHTML(),
+		PatchEmptyToNotifyEmailHTML:    o.GetPatchEmptyToNotifyEmailHTML(),
+		NotifySlackEnabled:             o.GetNotifySlackEnabled(),
+		PatchEmptyToNotifySlackEnabled: o.GetPatchEmptyToNotifySlackEnabled(),
+		SlackWebhooksURL:               o.GetSlackWebhooksURL(),
+		PatchEmptyToSlackWebhooksURL:   o.GetPatchEmptyToSlackWebhooksURL(),
+		NotifyInterval:                 o.GetNotifyInterval(),
+		PatchEmptyToNotifyInterval:     o.GetPatchEmptyToNotifyInterval(),
+		SettingsHash:                   o.GetSettingsHash(),
+	}
+}
+
+// GetDelayLoop returns value of DelayLoop
+func (o *SimpleMonitorPatchSettingsRequest) GetDelayLoop() int {
+	if o.DelayLoop == 0 {
+		return 60
+	}
+	return o.DelayLoop
+}
+
+// SetDelayLoop sets value to DelayLoop
+func (o *SimpleMonitorPatchSettingsRequest) SetDelayLoop(v int) {
+	o.DelayLoop = v
+}
+
+// GetPatchEmptyToDelayLoop returns value of PatchEmptyToDelayLoop
+func (o *SimpleMonitorPatchSettingsRequest) GetPatchEmptyToDelayLoop() bool {
+	return o.PatchEmptyToDelayLoop
+}
+
+// SetPatchEmptyToDelayLoop sets value to PatchEmptyToDelayLoop
+func (o *SimpleMonitorPatchSettingsRequest) SetPatchEmptyToDelayLoop(v bool) {
+	o.PatchEmptyToDelayLoop = v
+}
+
+// GetEnabled returns value of Enabled
+func (o *SimpleMonitorPatchSettingsRequest) GetEnabled() types.StringFlag {
+	return o.Enabled
+}
+
+// SetEnabled sets value to Enabled
+func (o *SimpleMonitorPatchSettingsRequest) SetEnabled(v types.StringFlag) {
+	o.Enabled = v
+}
+
+// GetPatchEmptyToEnabled returns value of PatchEmptyToEnabled
+func (o *SimpleMonitorPatchSettingsRequest) GetPatchEmptyToEnabled() bool {
+	return o.PatchEmptyToEnabled
+}
+
+// SetPatchEmptyToEnabled sets value to PatchEmptyToEnabled
+func (o *SimpleMonitorPatchSettingsRequest) SetPatchEmptyToEnabled(v bool) {
+	o.PatchEmptyToEnabled = v
+}
+
+// GetHealthCheck returns value of HealthCheck
+func (o *SimpleMonitorPatchSettingsRequest) GetHealthCheck() *SimpleMonitorHealthCheck {
+	return o.HealthCheck
+}
+
+// SetHealthCheck sets value to HealthCheck
+func (o *SimpleMonitorPatchSettingsRequest) SetHealthCheck(v *SimpleMonitorHealthCheck) {
+	o.HealthCheck = v
+}
+
+// GetPatchEmptyToHealthCheck returns value of PatchEmptyToHealthCheck
+func (o *SimpleMonitorPatchSettingsRequest) GetPatchEmptyToHealthCheck() bool {
+	return o.PatchEmptyToHealthCheck
+}
+
+// SetPatchEmptyToHealthCheck sets value to PatchEmptyToHealthCheck
+func (o *SimpleMonitorPatchSettingsRequest) SetPatchEmptyToHealthCheck(v bool) {
+	o.PatchEmptyToHealthCheck = v
+}
+
+// GetNotifyEmailEnabled returns value of NotifyEmailEnabled
+func (o *SimpleMonitorPatchSettingsRequest) GetNotifyEmailEnabled() types.StringFlag {
+	return o.NotifyEmailEnabled
+}
+
+// SetNotifyEmailEnabled sets value to NotifyEmailEnabled
+func (o *SimpleMonitorPatchSettingsRequest) SetNotifyEmailEnabled(v types.StringFlag) {
+	o.NotifyEmailEnabled = v
+}
+
+// GetPatchEmptyToNotifyEmailEnabled returns value of PatchEmptyToNotifyEmailEnabled
+func (o *SimpleMonitorPatchSettingsRequest) GetPatchEmptyToNotifyEmailEnabled() bool {
+	return o.PatchEmptyToNotifyEmailEnabled
+}
+
+// SetPatchEmptyToNotifyEmailEnabled sets value to PatchEmptyToNotifyEmailEnabled
+func (o *SimpleMonitorPatchSettingsRequest) SetPatchEmptyToNotifyEmailEnabled(v bool) {
+	o.PatchEmptyToNotifyEmailEnabled = v
+}
+
+// GetNotifyEmailHTML returns value of NotifyEmailHTML
+func (o *SimpleMonitorPatchSettingsRequest) GetNotifyEmailHTML() types.StringFlag {
+	return o.NotifyEmailHTML
+}
+
+// SetNotifyEmailHTML sets value to NotifyEmailHTML
+func (o *SimpleMonitorPatchSettingsRequest) SetNotifyEmailHTML(v types.StringFlag) {
+	o.NotifyEmailHTML = v
+}
+
+// GetPatchEmptyToNotifyEmailHTML returns value of PatchEmptyToNotifyEmailHTML
+func (o *SimpleMonitorPatchSettingsRequest) GetPatchEmptyToNotifyEmailHTML() bool {
+	return o.PatchEmptyToNotifyEmailHTML
+}
+
+// SetPatchEmptyToNotifyEmailHTML sets value to PatchEmptyToNotifyEmailHTML
+func (o *SimpleMonitorPatchSettingsRequest) SetPatchEmptyToNotifyEmailHTML(v bool) {
+	o.PatchEmptyToNotifyEmailHTML = v
+}
+
+// GetNotifySlackEnabled returns value of NotifySlackEnabled
+func (o *SimpleMonitorPatchSettingsRequest) GetNotifySlackEnabled() types.StringFlag {
+	return o.NotifySlackEnabled
+}
+
+// SetNotifySlackEnabled sets value to NotifySlackEnabled
+func (o *SimpleMonitorPatchSettingsRequest) SetNotifySlackEnabled(v types.StringFlag) {
+	o.NotifySlackEnabled = v
+}
+
+// GetPatchEmptyToNotifySlackEnabled returns value of PatchEmptyToNotifySlackEnabled
+func (o *SimpleMonitorPatchSettingsRequest) GetPatchEmptyToNotifySlackEnabled() bool {
+	return o.PatchEmptyToNotifySlackEnabled
+}
+
+// SetPatchEmptyToNotifySlackEnabled sets value to PatchEmptyToNotifySlackEnabled
+func (o *SimpleMonitorPatchSettingsRequest) SetPatchEmptyToNotifySlackEnabled(v bool) {
+	o.PatchEmptyToNotifySlackEnabled = v
+}
+
+// GetSlackWebhooksURL returns value of SlackWebhooksURL
+func (o *SimpleMonitorPatchSettingsRequest) GetSlackWebhooksURL() string {
+	return o.SlackWebhooksURL
+}
+
+// SetSlackWebhooksURL sets value to SlackWebhooksURL
+func (o *SimpleMonitorPatchSettingsRequest) SetSlackWebhooksURL(v string) {
+	o.SlackWebhooksURL = v
+}
+
+// GetPatchEmptyToSlackWebhooksURL returns value of PatchEmptyToSlackWebhooksURL
+func (o *SimpleMonitorPatchSettingsRequest) GetPatchEmptyToSlackWebhooksURL() bool {
+	return o.PatchEmptyToSlackWebhooksURL
+}
+
+// SetPatchEmptyToSlackWebhooksURL sets value to PatchEmptyToSlackWebhooksURL
+func (o *SimpleMonitorPatchSettingsRequest) SetPatchEmptyToSlackWebhooksURL(v bool) {
+	o.PatchEmptyToSlackWebhooksURL = v
+}
+
+// GetNotifyInterval returns value of NotifyInterval
+func (o *SimpleMonitorPatchSettingsRequest) GetNotifyInterval() int {
+	if o.NotifyInterval == 0 {
+		return 7200
+	}
+	return o.NotifyInterval
+}
+
+// SetNotifyInterval sets value to NotifyInterval
+func (o *SimpleMonitorPatchSettingsRequest) SetNotifyInterval(v int) {
+	o.NotifyInterval = v
+}
+
+// GetPatchEmptyToNotifyInterval returns value of PatchEmptyToNotifyInterval
+func (o *SimpleMonitorPatchSettingsRequest) GetPatchEmptyToNotifyInterval() bool {
+	return o.PatchEmptyToNotifyInterval
+}
+
+// SetPatchEmptyToNotifyInterval sets value to PatchEmptyToNotifyInterval
+func (o *SimpleMonitorPatchSettingsRequest) SetPatchEmptyToNotifyInterval(v bool) {
+	o.PatchEmptyToNotifyInterval = v
+}
+
+// GetSettingsHash returns value of SettingsHash
+func (o *SimpleMonitorPatchSettingsRequest) GetSettingsHash() string {
+	return o.SettingsHash
+}
+
+// SetSettingsHash sets value to SettingsHash
+func (o *SimpleMonitorPatchSettingsRequest) SetSettingsHash(v string) {
 	o.SettingsHash = v
 }
 

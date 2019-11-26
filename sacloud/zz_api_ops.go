@@ -10699,6 +10699,43 @@ func (o *SimpleMonitorOp) Update(ctx context.Context, id types.ID, param *Simple
 	return results.SimpleMonitor, nil
 }
 
+// UpdateSettings is API call
+func (o *SimpleMonitorOp) UpdateSettings(ctx context.Context, id types.ID, param *SimpleMonitorUpdateSettingsRequest) (*SimpleMonitor, error) {
+	// build request URL
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       APIDefaultZone,
+		"id":         id,
+		"param":      param,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	// build request body
+	var body interface{}
+	v, err := o.transformUpdateSettingsArgs(id, param)
+	if err != nil {
+		return nil, err
+	}
+	body = v
+
+	// do request
+	data, err := o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	// build results
+	results, err := o.transformUpdateSettingsResults(data)
+	if err != nil {
+		return nil, err
+	}
+	return results.SimpleMonitor, nil
+}
+
 // Patch is API call
 func (o *SimpleMonitorOp) Patch(ctx context.Context, id types.ID, param *SimpleMonitorPatchRequest) (*SimpleMonitor, error) {
 	// build request URL
@@ -10778,6 +10815,82 @@ func (o *SimpleMonitorOp) Patch(ctx context.Context, id types.ID, param *SimpleM
 
 	// build results
 	results, err := o.transformPatchResults(data)
+	if err != nil {
+		return nil, err
+	}
+	return results.SimpleMonitor, nil
+}
+
+// PatchSettings is API call
+func (o *SimpleMonitorOp) PatchSettings(ctx context.Context, id types.ID, param *SimpleMonitorPatchSettingsRequest) (*SimpleMonitor, error) {
+	// build request URL
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       APIDefaultZone,
+		"id":         id,
+		"param":      param,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	original, err := o.Read(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+	patchParam := make(map[string]interface{})
+	if err := mergo.Map(&patchParam, original); err != nil {
+		return nil, fmt.Errorf("patch is failed: %s", err)
+	}
+	if err := mergo.Map(&patchParam, param); err != nil {
+		return nil, fmt.Errorf("patch is failed: %s", err)
+	}
+	if err := mergo.Map(param, &patchParam); err != nil {
+		return nil, fmt.Errorf("patch is failed: %s", err)
+	}
+
+	if param.PatchEmptyToDelayLoop {
+		param.DelayLoop = 0
+	}
+	if param.PatchEmptyToEnabled {
+		param.Enabled = types.StringFlag(false)
+	}
+	if param.PatchEmptyToHealthCheck {
+		param.HealthCheck = nil
+	}
+	if param.PatchEmptyToNotifyEmailEnabled {
+		param.NotifyEmailEnabled = types.StringFlag(false)
+	}
+	if param.PatchEmptyToNotifyEmailHTML {
+		param.NotifyEmailHTML = types.StringFlag(false)
+	}
+	if param.PatchEmptyToNotifySlackEnabled {
+		param.NotifySlackEnabled = types.StringFlag(false)
+	}
+	if param.PatchEmptyToSlackWebhooksURL {
+		param.SlackWebhooksURL = ""
+	}
+	if param.PatchEmptyToNotifyInterval {
+		param.NotifyInterval = 0
+	}
+	// build request body
+	var body interface{}
+	v, err := o.transformPatchSettingsArgs(id, param)
+	if err != nil {
+		return nil, err
+	}
+	body = v
+
+	// do request
+	data, err := o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	// build results
+	results, err := o.transformPatchSettingsResults(data)
 	if err != nil {
 		return nil, err
 	}

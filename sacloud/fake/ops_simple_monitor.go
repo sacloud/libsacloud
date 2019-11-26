@@ -148,6 +148,31 @@ func (o *SimpleMonitorOp) Patch(ctx context.Context, id types.ID, param *sacloud
 	return value, nil
 }
 
+// UpdateSettings is fake implementation
+func (o *SimpleMonitorOp) UpdateSettings(ctx context.Context, id types.ID, param *sacloud.SimpleMonitorUpdateSettingsRequest) (*sacloud.SimpleMonitor, error) {
+	value, err := o.Read(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+	copySameNameField(param, value)
+	fill(value, fillModifiedAt)
+	if value.DelayLoop == 0 {
+		value.DelayLoop = 60
+	}
+	if value.NotifyInterval == 0 {
+		value.NotifyInterval = 7200
+	}
+	putSimpleMonitor(sacloud.APIDefaultZone, value)
+	return value, nil
+}
+
+// PatchSettings is fake implementation
+func (o *SimpleMonitorOp) PatchSettings(ctx context.Context, id types.ID, param *sacloud.SimpleMonitorPatchSettingsRequest) (*sacloud.SimpleMonitor, error) {
+	patchParam := &sacloud.SimpleMonitorPatchRequest{}
+	copySameNameField(param, patchParam)
+	return o.Patch(ctx, id, patchParam)
+}
+
 // Delete is fake implementation
 func (o *SimpleMonitorOp) Delete(ctx context.Context, id types.ID) error {
 	_, err := o.Read(ctx, id)

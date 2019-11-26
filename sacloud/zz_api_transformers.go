@@ -6750,6 +6750,49 @@ func (o *SimpleMonitorOp) transformUpdateResults(data []byte) (*simpleMonitorUpd
 	return results, nil
 }
 
+func (o *SimpleMonitorOp) transformUpdateSettingsArgs(id types.ID, param *SimpleMonitorUpdateSettingsRequest) (*simpleMonitorUpdateSettingsRequestEnvelope, error) {
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	var arg0 interface{} = id
+	if v, ok := arg0.(argumentDefaulter); ok {
+		arg0 = v.setDefaults()
+	}
+	if param == nil {
+		param = &SimpleMonitorUpdateSettingsRequest{}
+	}
+	var arg1 interface{} = param
+	if v, ok := arg1.(argumentDefaulter); ok {
+		arg1 = v.setDefaults()
+	}
+	args := &struct {
+		Arg0 interface{}
+		Arg1 interface{} `mapconv:"CommonServiceItem,recursive"`
+	}{
+		Arg0: arg0,
+		Arg1: arg1,
+	}
+
+	v := &simpleMonitorUpdateSettingsRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	return v, nil
+}
+
+func (o *SimpleMonitorOp) transformUpdateSettingsResults(data []byte) (*simpleMonitorUpdateSettingsResult, error) {
+	nakedResponse := &simpleMonitorUpdateSettingsResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &simpleMonitorUpdateSettingsResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
+}
+
 func (o *SimpleMonitorOp) transformPatchArgs(id types.ID, param *SimpleMonitorPatchRequest) (*simpleMonitorPatchRequestEnvelope, error) {
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
@@ -6787,6 +6830,49 @@ func (o *SimpleMonitorOp) transformPatchResults(data []byte) (*simpleMonitorPatc
 	}
 
 	results := &simpleMonitorPatchResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
+}
+
+func (o *SimpleMonitorOp) transformPatchSettingsArgs(id types.ID, param *SimpleMonitorPatchSettingsRequest) (*simpleMonitorPatchSettingsRequestEnvelope, error) {
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	var arg0 interface{} = id
+	if v, ok := arg0.(argumentDefaulter); ok {
+		arg0 = v.setDefaults()
+	}
+	if param == nil {
+		param = &SimpleMonitorPatchSettingsRequest{}
+	}
+	var arg1 interface{} = param
+	if v, ok := arg1.(argumentDefaulter); ok {
+		arg1 = v.setDefaults()
+	}
+	args := &struct {
+		Arg0 interface{}
+		Arg1 interface{} `mapconv:"CommonServiceItem,recursive"`
+	}{
+		Arg0: arg0,
+		Arg1: arg1,
+	}
+
+	v := &simpleMonitorPatchSettingsRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	return v, nil
+}
+
+func (o *SimpleMonitorOp) transformPatchSettingsResults(data []byte) (*simpleMonitorPatchSettingsResult, error) {
+	nakedResponse := &simpleMonitorPatchSettingsResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &simpleMonitorPatchSettingsResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}

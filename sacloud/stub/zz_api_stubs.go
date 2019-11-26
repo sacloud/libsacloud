@@ -4381,8 +4381,20 @@ type SimpleMonitorUpdateStubResult struct {
 	Err           error
 }
 
+// SimpleMonitorUpdateSettingsStubResult is expected values of the UpdateSettings operation
+type SimpleMonitorUpdateSettingsStubResult struct {
+	SimpleMonitor *sacloud.SimpleMonitor
+	Err           error
+}
+
 // SimpleMonitorPatchStubResult is expected values of the Patch operation
 type SimpleMonitorPatchStubResult struct {
+	SimpleMonitor *sacloud.SimpleMonitor
+	Err           error
+}
+
+// SimpleMonitorPatchSettingsStubResult is expected values of the PatchSettings operation
+type SimpleMonitorPatchSettingsStubResult struct {
 	SimpleMonitor *sacloud.SimpleMonitor
 	Err           error
 }
@@ -4410,7 +4422,9 @@ type SimpleMonitorStub struct {
 	CreateStubResult              *SimpleMonitorCreateStubResult
 	ReadStubResult                *SimpleMonitorReadStubResult
 	UpdateStubResult              *SimpleMonitorUpdateStubResult
+	UpdateSettingsStubResult      *SimpleMonitorUpdateSettingsStubResult
 	PatchStubResult               *SimpleMonitorPatchStubResult
+	PatchSettingsStubResult       *SimpleMonitorPatchSettingsStubResult
 	DeleteStubResult              *SimpleMonitorDeleteStubResult
 	MonitorResponseTimeStubResult *SimpleMonitorMonitorResponseTimeStubResult
 	HealthStatusStubResult        *SimpleMonitorHealthStatusStubResult
@@ -4453,12 +4467,28 @@ func (s *SimpleMonitorStub) Update(ctx context.Context, id types.ID, param *sacl
 	return s.UpdateStubResult.SimpleMonitor, s.UpdateStubResult.Err
 }
 
+// UpdateSettings is API call with trace log
+func (s *SimpleMonitorStub) UpdateSettings(ctx context.Context, id types.ID, param *sacloud.SimpleMonitorUpdateSettingsRequest) (*sacloud.SimpleMonitor, error) {
+	if s.UpdateSettingsStubResult == nil {
+		log.Fatal("SimpleMonitorStub.UpdateSettingsStubResult is not set")
+	}
+	return s.UpdateSettingsStubResult.SimpleMonitor, s.UpdateSettingsStubResult.Err
+}
+
 // Patch is API call with trace log
 func (s *SimpleMonitorStub) Patch(ctx context.Context, id types.ID, param *sacloud.SimpleMonitorPatchRequest) (*sacloud.SimpleMonitor, error) {
 	if s.PatchStubResult == nil {
 		log.Fatal("SimpleMonitorStub.PatchStubResult is not set")
 	}
 	return s.PatchStubResult.SimpleMonitor, s.PatchStubResult.Err
+}
+
+// PatchSettings is API call with trace log
+func (s *SimpleMonitorStub) PatchSettings(ctx context.Context, id types.ID, param *sacloud.SimpleMonitorPatchSettingsRequest) (*sacloud.SimpleMonitor, error) {
+	if s.PatchSettingsStubResult == nil {
+		log.Fatal("SimpleMonitorStub.PatchSettingsStubResult is not set")
+	}
+	return s.PatchSettingsStubResult.SimpleMonitor, s.PatchSettingsStubResult.Err
 }
 
 // Delete is API call with trace log

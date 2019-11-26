@@ -2569,6 +2569,19 @@ type simpleMonitorUpdateResponseEnvelope struct {
 	CommonServiceItem *naked.SimpleMonitor `json:",omitempty"`
 }
 
+// simpleMonitorUpdateSettingsRequestEnvelope is envelop of API request
+type simpleMonitorUpdateSettingsRequestEnvelope struct {
+	CommonServiceItem *naked.SimpleMonitorSettingsUpdate `json:",omitempty"`
+}
+
+// simpleMonitorUpdateSettingsResponseEnvelope is envelop of API response
+type simpleMonitorUpdateSettingsResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	CommonServiceItem *naked.SimpleMonitor `json:",omitempty"`
+}
+
 // simpleMonitorPatchRequestEnvelope is envelop of API request
 type simpleMonitorPatchRequestEnvelope struct {
 	CommonServiceItem *naked.SimpleMonitor `json:",omitempty"`
@@ -2576,6 +2589,19 @@ type simpleMonitorPatchRequestEnvelope struct {
 
 // simpleMonitorPatchResponseEnvelope is envelop of API response
 type simpleMonitorPatchResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	CommonServiceItem *naked.SimpleMonitor `json:",omitempty"`
+}
+
+// simpleMonitorPatchSettingsRequestEnvelope is envelop of API request
+type simpleMonitorPatchSettingsRequestEnvelope struct {
+	CommonServiceItem *naked.SimpleMonitorSettingsUpdate `json:",omitempty"`
+}
+
+// simpleMonitorPatchSettingsResponseEnvelope is envelop of API response
+type simpleMonitorPatchSettingsResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 

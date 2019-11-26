@@ -9477,6 +9477,39 @@ func (t *SimpleMonitorTracer) Update(ctx context.Context, id types.ID, param *sa
 	return resultSimpleMonitor, err
 }
 
+// UpdateSettings is API call with trace log
+func (t *SimpleMonitorTracer) UpdateSettings(ctx context.Context, id types.ID, param *sacloud.SimpleMonitorUpdateSettingsRequest) (*sacloud.SimpleMonitor, error) {
+	log.Println("[TRACE] SimpleMonitorAPI.UpdateSettings start")
+	targetArguments := struct {
+		Argid    types.ID                                    `json:"id"`
+		Argparam *sacloud.SimpleMonitorUpdateSettingsRequest `json:"param"`
+	}{
+		Argid:    id,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] SimpleMonitorAPI.UpdateSettings end")
+	}()
+
+	resultSimpleMonitor, err := t.Internal.UpdateSettings(ctx, id, param)
+	targetResults := struct {
+		SimpleMonitor *sacloud.SimpleMonitor
+		Error         error
+	}{
+		SimpleMonitor: resultSimpleMonitor,
+		Error:         err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultSimpleMonitor, err
+}
+
 // Patch is API call with trace log
 func (t *SimpleMonitorTracer) Patch(ctx context.Context, id types.ID, param *sacloud.SimpleMonitorPatchRequest) (*sacloud.SimpleMonitor, error) {
 	log.Println("[TRACE] SimpleMonitorAPI.Patch start")
@@ -9496,6 +9529,39 @@ func (t *SimpleMonitorTracer) Patch(ctx context.Context, id types.ID, param *sac
 	}()
 
 	resultSimpleMonitor, err := t.Internal.Patch(ctx, id, param)
+	targetResults := struct {
+		SimpleMonitor *sacloud.SimpleMonitor
+		Error         error
+	}{
+		SimpleMonitor: resultSimpleMonitor,
+		Error:         err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultSimpleMonitor, err
+}
+
+// PatchSettings is API call with trace log
+func (t *SimpleMonitorTracer) PatchSettings(ctx context.Context, id types.ID, param *sacloud.SimpleMonitorPatchSettingsRequest) (*sacloud.SimpleMonitor, error) {
+	log.Println("[TRACE] SimpleMonitorAPI.PatchSettings start")
+	targetArguments := struct {
+		Argid    types.ID                                   `json:"id"`
+		Argparam *sacloud.SimpleMonitorPatchSettingsRequest `json:"param"`
+	}{
+		Argid:    id,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] SimpleMonitorAPI.PatchSettings end")
+	}()
+
+	resultSimpleMonitor, err := t.Internal.PatchSettings(ctx, id, param)
 	targetResults := struct {
 		SimpleMonitor *sacloud.SimpleMonitor
 		Error         error

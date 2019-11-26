@@ -568,7 +568,9 @@ type SimpleMonitorAPI interface {
 	Create(ctx context.Context, param *SimpleMonitorCreateRequest) (*SimpleMonitor, error)
 	Read(ctx context.Context, id types.ID) (*SimpleMonitor, error)
 	Update(ctx context.Context, id types.ID, param *SimpleMonitorUpdateRequest) (*SimpleMonitor, error)
+	UpdateSettings(ctx context.Context, id types.ID, param *SimpleMonitorUpdateSettingsRequest) (*SimpleMonitor, error)
 	Patch(ctx context.Context, id types.ID, param *SimpleMonitorPatchRequest) (*SimpleMonitor, error)
+	PatchSettings(ctx context.Context, id types.ID, param *SimpleMonitorPatchSettingsRequest) (*SimpleMonitor, error)
 	Delete(ctx context.Context, id types.ID) error
 	MonitorResponseTime(ctx context.Context, id types.ID, condition *MonitorCondition) (*ResponseTimeSecActivity, error)
 	HealthStatus(ctx context.Context, id types.ID) (*SimpleMonitorHealthStatus, error)
