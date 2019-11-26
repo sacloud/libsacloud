@@ -45,9 +45,13 @@ var mobileGatewayAPI = &dsl.Resource{
 
 		// update
 		ops.UpdateAppliance(mobileGatewayAPIName, mobileGatewayNakedType, mobileGatewayUpdateParam, mobileGatewayView),
+		// updateSettings
+		ops.UpdateApplianceSettings(mobileGatewayAPIName, mobileGatewayUpdateSettingsNakedType, mobileGatewayUpdateSettingsParam, mobileGatewayView),
 
 		// patch
 		ops.PatchAppliance(mobileGatewayAPIName, mobileGatewayNakedType, patchModel(mobileGatewayUpdateParam), mobileGatewayView),
+		// patchSettings
+		ops.PatchApplianceSettings(mobileGatewayAPIName, mobileGatewayUpdateSettingsNakedType, patchModel(mobileGatewayUpdateSettingsParam), mobileGatewayView),
 
 		// delete
 		ops.Delete(mobileGatewayAPIName),
@@ -331,7 +335,8 @@ var mobileGatewayAPI = &dsl.Resource{
 }
 
 var (
-	mobileGatewayNakedType = meta.Static(naked.MobileGateway{})
+	mobileGatewayNakedType               = meta.Static(naked.MobileGateway{})
+	mobileGatewayUpdateSettingsNakedType = meta.Static(naked.MobileGatewaySettingsUpdate{})
 
 	mobileGatewayView = &dsl.Model{
 		Name:      mobileGatewayAPIName,
@@ -410,6 +415,22 @@ var (
 			fields.Description(),
 			fields.Tags(),
 			fields.IconID(),
+			{
+				Name: "Settings",
+				Type: models.mobileGatewaySetting(),
+				Tags: &dsl.FieldTags{
+					JSON:    ",omitempty",
+					MapConv: ",omitempty,recursive",
+				},
+			},
+			// settings hash
+			fields.SettingsHash(),
+		},
+	}
+	mobileGatewayUpdateSettingsParam = &dsl.Model{
+		Name:      names.UpdateSettingsParameterName(mobileGatewayAPIName),
+		NakedType: mobileGatewayNakedType,
+		Fields: []*dsl.FieldDesc{
 			{
 				Name: "Settings",
 				Type: models.mobileGatewaySetting(),

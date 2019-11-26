@@ -15186,6 +15186,52 @@ func (o *MobileGatewayUpdateRequest) SetSettingsHash(v string) {
 }
 
 /*************************************************
+* MobileGatewayUpdateSettingsRequest
+*************************************************/
+
+// MobileGatewayUpdateSettingsRequest represents API parameter/response structure
+type MobileGatewayUpdateSettingsRequest struct {
+	Settings     *MobileGatewaySetting `json:",omitempty" mapconv:",omitempty,recursive"`
+	SettingsHash string                `json:",omitempty" mapconv:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *MobileGatewayUpdateSettingsRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *MobileGatewayUpdateSettingsRequest) setDefaults() interface{} {
+	return &struct {
+		Settings     *MobileGatewaySetting `json:",omitempty" mapconv:",omitempty,recursive"`
+		SettingsHash string                `json:",omitempty" mapconv:",omitempty"`
+	}{
+		Settings:     o.GetSettings(),
+		SettingsHash: o.GetSettingsHash(),
+	}
+}
+
+// GetSettings returns value of Settings
+func (o *MobileGatewayUpdateSettingsRequest) GetSettings() *MobileGatewaySetting {
+	return o.Settings
+}
+
+// SetSettings sets value to Settings
+func (o *MobileGatewayUpdateSettingsRequest) SetSettings(v *MobileGatewaySetting) {
+	o.Settings = v
+}
+
+// GetSettingsHash returns value of SettingsHash
+func (o *MobileGatewayUpdateSettingsRequest) GetSettingsHash() string {
+	return o.SettingsHash
+}
+
+// SetSettingsHash sets value to SettingsHash
+func (o *MobileGatewayUpdateSettingsRequest) SetSettingsHash(v string) {
+	o.SettingsHash = v
+}
+
+/*************************************************
 * MobileGatewayPatchRequest
 *************************************************/
 
@@ -15352,6 +15398,65 @@ func (o *MobileGatewayPatchRequest) GetSettingsHash() string {
 
 // SetSettingsHash sets value to SettingsHash
 func (o *MobileGatewayPatchRequest) SetSettingsHash(v string) {
+	o.SettingsHash = v
+}
+
+/*************************************************
+* MobileGatewayPatchSettingsRequest
+*************************************************/
+
+// MobileGatewayPatchSettingsRequest represents API parameter/response structure
+type MobileGatewayPatchSettingsRequest struct {
+	Settings             *MobileGatewaySetting `json:",omitempty" mapconv:",omitempty,recursive"`
+	PatchEmptyToSettings bool
+	SettingsHash         string `json:",omitempty" mapconv:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *MobileGatewayPatchSettingsRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *MobileGatewayPatchSettingsRequest) setDefaults() interface{} {
+	return &struct {
+		Settings             *MobileGatewaySetting `json:",omitempty" mapconv:",omitempty,recursive"`
+		PatchEmptyToSettings bool
+		SettingsHash         string `json:",omitempty" mapconv:",omitempty"`
+	}{
+		Settings:             o.GetSettings(),
+		PatchEmptyToSettings: o.GetPatchEmptyToSettings(),
+		SettingsHash:         o.GetSettingsHash(),
+	}
+}
+
+// GetSettings returns value of Settings
+func (o *MobileGatewayPatchSettingsRequest) GetSettings() *MobileGatewaySetting {
+	return o.Settings
+}
+
+// SetSettings sets value to Settings
+func (o *MobileGatewayPatchSettingsRequest) SetSettings(v *MobileGatewaySetting) {
+	o.Settings = v
+}
+
+// GetPatchEmptyToSettings returns value of PatchEmptyToSettings
+func (o *MobileGatewayPatchSettingsRequest) GetPatchEmptyToSettings() bool {
+	return o.PatchEmptyToSettings
+}
+
+// SetPatchEmptyToSettings sets value to PatchEmptyToSettings
+func (o *MobileGatewayPatchSettingsRequest) SetPatchEmptyToSettings(v bool) {
+	o.PatchEmptyToSettings = v
+}
+
+// GetSettingsHash returns value of SettingsHash
+func (o *MobileGatewayPatchSettingsRequest) GetSettingsHash() string {
+	return o.SettingsHash
+}
+
+// SetSettingsHash sets value to SettingsHash
+func (o *MobileGatewayPatchSettingsRequest) SetSettingsHash(v string) {
 	o.SettingsHash = v
 }
 

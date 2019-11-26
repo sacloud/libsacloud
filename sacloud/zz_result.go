@@ -919,8 +919,22 @@ type mobileGatewayUpdateResult struct {
 	MobileGateway *MobileGateway `json:",omitempty" mapconv:"Appliance,omitempty,recursive"`
 }
 
+// mobileGatewayUpdateSettingsResult represents the Result of API
+type mobileGatewayUpdateSettingsResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	MobileGateway *MobileGateway `json:",omitempty" mapconv:"Appliance,omitempty,recursive"`
+}
+
 // mobileGatewayPatchResult represents the Result of API
 type mobileGatewayPatchResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	MobileGateway *MobileGateway `json:",omitempty" mapconv:"Appliance,omitempty,recursive"`
+}
+
+// mobileGatewayPatchSettingsResult represents the Result of API
+type mobileGatewayPatchSettingsResult struct {
 	IsOk bool `json:",omitempty"` // is_ok
 
 	MobileGateway *MobileGateway `json:",omitempty" mapconv:"Appliance,omitempty,recursive"`

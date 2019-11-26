@@ -5696,6 +5696,41 @@ func (t *MobileGatewayTracer) Update(ctx context.Context, zone string, id types.
 	return resultMobileGateway, err
 }
 
+// UpdateSettings is API call with trace log
+func (t *MobileGatewayTracer) UpdateSettings(ctx context.Context, zone string, id types.ID, param *sacloud.MobileGatewayUpdateSettingsRequest) (*sacloud.MobileGateway, error) {
+	log.Println("[TRACE] MobileGatewayAPI.UpdateSettings start")
+	targetArguments := struct {
+		Argzone  string
+		Argid    types.ID                                    `json:"id"`
+		Argparam *sacloud.MobileGatewayUpdateSettingsRequest `json:"param"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] MobileGatewayAPI.UpdateSettings end")
+	}()
+
+	resultMobileGateway, err := t.Internal.UpdateSettings(ctx, zone, id, param)
+	targetResults := struct {
+		MobileGateway *sacloud.MobileGateway
+		Error         error
+	}{
+		MobileGateway: resultMobileGateway,
+		Error:         err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultMobileGateway, err
+}
+
 // Patch is API call with trace log
 func (t *MobileGatewayTracer) Patch(ctx context.Context, zone string, id types.ID, param *sacloud.MobileGatewayPatchRequest) (*sacloud.MobileGateway, error) {
 	log.Println("[TRACE] MobileGatewayAPI.Patch start")
@@ -5717,6 +5752,41 @@ func (t *MobileGatewayTracer) Patch(ctx context.Context, zone string, id types.I
 	}()
 
 	resultMobileGateway, err := t.Internal.Patch(ctx, zone, id, param)
+	targetResults := struct {
+		MobileGateway *sacloud.MobileGateway
+		Error         error
+	}{
+		MobileGateway: resultMobileGateway,
+		Error:         err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultMobileGateway, err
+}
+
+// PatchSettings is API call with trace log
+func (t *MobileGatewayTracer) PatchSettings(ctx context.Context, zone string, id types.ID, param *sacloud.MobileGatewayPatchSettingsRequest) (*sacloud.MobileGateway, error) {
+	log.Println("[TRACE] MobileGatewayAPI.PatchSettings start")
+	targetArguments := struct {
+		Argzone  string
+		Argid    types.ID                                   `json:"id"`
+		Argparam *sacloud.MobileGatewayPatchSettingsRequest `json:"param"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] MobileGatewayAPI.PatchSettings end")
+	}()
+
+	resultMobileGateway, err := t.Internal.PatchSettings(ctx, zone, id, param)
 	targetResults := struct {
 		MobileGateway *sacloud.MobileGateway
 		Error         error

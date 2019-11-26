@@ -361,7 +361,9 @@ type MobileGatewayAPI interface {
 	Create(ctx context.Context, zone string, param *MobileGatewayCreateRequest) (*MobileGateway, error)
 	Read(ctx context.Context, zone string, id types.ID) (*MobileGateway, error)
 	Update(ctx context.Context, zone string, id types.ID, param *MobileGatewayUpdateRequest) (*MobileGateway, error)
+	UpdateSettings(ctx context.Context, zone string, id types.ID, param *MobileGatewayUpdateSettingsRequest) (*MobileGateway, error)
 	Patch(ctx context.Context, zone string, id types.ID, param *MobileGatewayPatchRequest) (*MobileGateway, error)
+	PatchSettings(ctx context.Context, zone string, id types.ID, param *MobileGatewayPatchSettingsRequest) (*MobileGateway, error)
 	Delete(ctx context.Context, zone string, id types.ID) error
 	Config(ctx context.Context, zone string, id types.ID) error
 	Boot(ctx context.Context, zone string, id types.ID) error

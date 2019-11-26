@@ -4095,6 +4095,49 @@ func (o *MobileGatewayOp) transformUpdateResults(data []byte) (*mobileGatewayUpd
 	return results, nil
 }
 
+func (o *MobileGatewayOp) transformUpdateSettingsArgs(id types.ID, param *MobileGatewayUpdateSettingsRequest) (*mobileGatewayUpdateSettingsRequestEnvelope, error) {
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	var arg0 interface{} = id
+	if v, ok := arg0.(argumentDefaulter); ok {
+		arg0 = v.setDefaults()
+	}
+	if param == nil {
+		param = &MobileGatewayUpdateSettingsRequest{}
+	}
+	var arg1 interface{} = param
+	if v, ok := arg1.(argumentDefaulter); ok {
+		arg1 = v.setDefaults()
+	}
+	args := &struct {
+		Arg0 interface{}
+		Arg1 interface{} `mapconv:"Appliance,recursive"`
+	}{
+		Arg0: arg0,
+		Arg1: arg1,
+	}
+
+	v := &mobileGatewayUpdateSettingsRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	return v, nil
+}
+
+func (o *MobileGatewayOp) transformUpdateSettingsResults(data []byte) (*mobileGatewayUpdateSettingsResult, error) {
+	nakedResponse := &mobileGatewayUpdateSettingsResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &mobileGatewayUpdateSettingsResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
+}
+
 func (o *MobileGatewayOp) transformPatchArgs(id types.ID, param *MobileGatewayPatchRequest) (*mobileGatewayPatchRequestEnvelope, error) {
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
@@ -4132,6 +4175,49 @@ func (o *MobileGatewayOp) transformPatchResults(data []byte) (*mobileGatewayPatc
 	}
 
 	results := &mobileGatewayPatchResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
+}
+
+func (o *MobileGatewayOp) transformPatchSettingsArgs(id types.ID, param *MobileGatewayPatchSettingsRequest) (*mobileGatewayPatchSettingsRequestEnvelope, error) {
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	var arg0 interface{} = id
+	if v, ok := arg0.(argumentDefaulter); ok {
+		arg0 = v.setDefaults()
+	}
+	if param == nil {
+		param = &MobileGatewayPatchSettingsRequest{}
+	}
+	var arg1 interface{} = param
+	if v, ok := arg1.(argumentDefaulter); ok {
+		arg1 = v.setDefaults()
+	}
+	args := &struct {
+		Arg0 interface{}
+		Arg1 interface{} `mapconv:"Appliance,recursive"`
+	}{
+		Arg0: arg0,
+		Arg1: arg1,
+	}
+
+	v := &mobileGatewayPatchSettingsRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	return v, nil
+}
+
+func (o *MobileGatewayOp) transformPatchSettingsResults(data []byte) (*mobileGatewayPatchSettingsResult, error) {
+	nakedResponse := &mobileGatewayPatchSettingsResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &mobileGatewayPatchSettingsResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}

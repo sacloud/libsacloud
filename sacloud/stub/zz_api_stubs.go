@@ -2599,8 +2599,20 @@ type MobileGatewayUpdateStubResult struct {
 	Err           error
 }
 
+// MobileGatewayUpdateSettingsStubResult is expected values of the UpdateSettings operation
+type MobileGatewayUpdateSettingsStubResult struct {
+	MobileGateway *sacloud.MobileGateway
+	Err           error
+}
+
 // MobileGatewayPatchStubResult is expected values of the Patch operation
 type MobileGatewayPatchStubResult struct {
+	MobileGateway *sacloud.MobileGateway
+	Err           error
+}
+
+// MobileGatewayPatchSettingsStubResult is expected values of the PatchSettings operation
+type MobileGatewayPatchSettingsStubResult struct {
 	MobileGateway *sacloud.MobileGateway
 	Err           error
 }
@@ -2718,7 +2730,9 @@ type MobileGatewayStub struct {
 	CreateStubResult               *MobileGatewayCreateStubResult
 	ReadStubResult                 *MobileGatewayReadStubResult
 	UpdateStubResult               *MobileGatewayUpdateStubResult
+	UpdateSettingsStubResult       *MobileGatewayUpdateSettingsStubResult
 	PatchStubResult                *MobileGatewayPatchStubResult
+	PatchSettingsStubResult        *MobileGatewayPatchSettingsStubResult
 	DeleteStubResult               *MobileGatewayDeleteStubResult
 	ConfigStubResult               *MobileGatewayConfigStubResult
 	BootStubResult                 *MobileGatewayBootStubResult
@@ -2778,12 +2792,28 @@ func (s *MobileGatewayStub) Update(ctx context.Context, zone string, id types.ID
 	return s.UpdateStubResult.MobileGateway, s.UpdateStubResult.Err
 }
 
+// UpdateSettings is API call with trace log
+func (s *MobileGatewayStub) UpdateSettings(ctx context.Context, zone string, id types.ID, param *sacloud.MobileGatewayUpdateSettingsRequest) (*sacloud.MobileGateway, error) {
+	if s.UpdateSettingsStubResult == nil {
+		log.Fatal("MobileGatewayStub.UpdateSettingsStubResult is not set")
+	}
+	return s.UpdateSettingsStubResult.MobileGateway, s.UpdateSettingsStubResult.Err
+}
+
 // Patch is API call with trace log
 func (s *MobileGatewayStub) Patch(ctx context.Context, zone string, id types.ID, param *sacloud.MobileGatewayPatchRequest) (*sacloud.MobileGateway, error) {
 	if s.PatchStubResult == nil {
 		log.Fatal("MobileGatewayStub.PatchStubResult is not set")
 	}
 	return s.PatchStubResult.MobileGateway, s.PatchStubResult.Err
+}
+
+// PatchSettings is API call with trace log
+func (s *MobileGatewayStub) PatchSettings(ctx context.Context, zone string, id types.ID, param *sacloud.MobileGatewayPatchSettingsRequest) (*sacloud.MobileGateway, error) {
+	if s.PatchSettingsStubResult == nil {
+		log.Fatal("MobileGatewayStub.PatchSettingsStubResult is not set")
+	}
+	return s.PatchSettingsStubResult.MobileGateway, s.PatchSettingsStubResult.Err
 }
 
 // Delete is API call with trace log
