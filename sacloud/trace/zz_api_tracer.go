@@ -7694,6 +7694,39 @@ func (t *ProxyLBTracer) Update(ctx context.Context, id types.ID, param *sacloud.
 	return resultProxyLB, err
 }
 
+// UpdateSettings is API call with trace log
+func (t *ProxyLBTracer) UpdateSettings(ctx context.Context, id types.ID, param *sacloud.ProxyLBUpdateSettingsRequest) (*sacloud.ProxyLB, error) {
+	log.Println("[TRACE] ProxyLBAPI.UpdateSettings start")
+	targetArguments := struct {
+		Argid    types.ID                              `json:"id"`
+		Argparam *sacloud.ProxyLBUpdateSettingsRequest `json:"param"`
+	}{
+		Argid:    id,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] ProxyLBAPI.UpdateSettings end")
+	}()
+
+	resultProxyLB, err := t.Internal.UpdateSettings(ctx, id, param)
+	targetResults := struct {
+		ProxyLB *sacloud.ProxyLB
+		Error   error
+	}{
+		ProxyLB: resultProxyLB,
+		Error:   err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultProxyLB, err
+}
+
 // Patch is API call with trace log
 func (t *ProxyLBTracer) Patch(ctx context.Context, id types.ID, param *sacloud.ProxyLBPatchRequest) (*sacloud.ProxyLB, error) {
 	log.Println("[TRACE] ProxyLBAPI.Patch start")
@@ -7713,6 +7746,39 @@ func (t *ProxyLBTracer) Patch(ctx context.Context, id types.ID, param *sacloud.P
 	}()
 
 	resultProxyLB, err := t.Internal.Patch(ctx, id, param)
+	targetResults := struct {
+		ProxyLB *sacloud.ProxyLB
+		Error   error
+	}{
+		ProxyLB: resultProxyLB,
+		Error:   err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultProxyLB, err
+}
+
+// PatchSettings is API call with trace log
+func (t *ProxyLBTracer) PatchSettings(ctx context.Context, id types.ID, param *sacloud.ProxyLBPatchSettingsRequest) (*sacloud.ProxyLB, error) {
+	log.Println("[TRACE] ProxyLBAPI.PatchSettings start")
+	targetArguments := struct {
+		Argid    types.ID                             `json:"id"`
+		Argparam *sacloud.ProxyLBPatchSettingsRequest `json:"param"`
+	}{
+		Argid:    id,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] ProxyLBAPI.PatchSettings end")
+	}()
+
+	resultProxyLB, err := t.Internal.PatchSettings(ctx, id, param)
 	targetResults := struct {
 		ProxyLB *sacloud.ProxyLB
 		Error   error

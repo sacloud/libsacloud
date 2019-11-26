@@ -2098,6 +2098,19 @@ type proxyLBUpdateResponseEnvelope struct {
 	CommonServiceItem *naked.ProxyLB `json:",omitempty"`
 }
 
+// proxyLBUpdateSettingsRequestEnvelope is envelop of API request
+type proxyLBUpdateSettingsRequestEnvelope struct {
+	CommonServiceItem *naked.ProxyLBSettingsUpdate `json:",omitempty"`
+}
+
+// proxyLBUpdateSettingsResponseEnvelope is envelop of API response
+type proxyLBUpdateSettingsResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	CommonServiceItem *naked.ProxyLB `json:",omitempty"`
+}
+
 // proxyLBPatchRequestEnvelope is envelop of API request
 type proxyLBPatchRequestEnvelope struct {
 	CommonServiceItem *naked.ProxyLB `json:",omitempty"`
@@ -2105,6 +2118,19 @@ type proxyLBPatchRequestEnvelope struct {
 
 // proxyLBPatchResponseEnvelope is envelop of API response
 type proxyLBPatchResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	CommonServiceItem *naked.ProxyLB `json:",omitempty"`
+}
+
+// proxyLBPatchSettingsRequestEnvelope is envelop of API request
+type proxyLBPatchSettingsRequestEnvelope struct {
+	CommonServiceItem *naked.ProxyLBSettingsUpdate `json:",omitempty"`
+}
+
+// proxyLBPatchSettingsResponseEnvelope is envelop of API response
+type proxyLBPatchSettingsResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 

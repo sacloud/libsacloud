@@ -3527,8 +3527,20 @@ type ProxyLBUpdateStubResult struct {
 	Err     error
 }
 
+// ProxyLBUpdateSettingsStubResult is expected values of the UpdateSettings operation
+type ProxyLBUpdateSettingsStubResult struct {
+	ProxyLB *sacloud.ProxyLB
+	Err     error
+}
+
 // ProxyLBPatchStubResult is expected values of the Patch operation
 type ProxyLBPatchStubResult struct {
+	ProxyLB *sacloud.ProxyLB
+	Err     error
+}
+
+// ProxyLBPatchSettingsStubResult is expected values of the PatchSettings operation
+type ProxyLBPatchSettingsStubResult struct {
 	ProxyLB *sacloud.ProxyLB
 	Err     error
 }
@@ -3584,7 +3596,9 @@ type ProxyLBStub struct {
 	CreateStubResult               *ProxyLBCreateStubResult
 	ReadStubResult                 *ProxyLBReadStubResult
 	UpdateStubResult               *ProxyLBUpdateStubResult
+	UpdateSettingsStubResult       *ProxyLBUpdateSettingsStubResult
 	PatchStubResult                *ProxyLBPatchStubResult
+	PatchSettingsStubResult        *ProxyLBPatchSettingsStubResult
 	DeleteStubResult               *ProxyLBDeleteStubResult
 	ChangePlanStubResult           *ProxyLBChangePlanStubResult
 	GetCertificatesStubResult      *ProxyLBGetCertificatesStubResult
@@ -3632,12 +3646,28 @@ func (s *ProxyLBStub) Update(ctx context.Context, id types.ID, param *sacloud.Pr
 	return s.UpdateStubResult.ProxyLB, s.UpdateStubResult.Err
 }
 
+// UpdateSettings is API call with trace log
+func (s *ProxyLBStub) UpdateSettings(ctx context.Context, id types.ID, param *sacloud.ProxyLBUpdateSettingsRequest) (*sacloud.ProxyLB, error) {
+	if s.UpdateSettingsStubResult == nil {
+		log.Fatal("ProxyLBStub.UpdateSettingsStubResult is not set")
+	}
+	return s.UpdateSettingsStubResult.ProxyLB, s.UpdateSettingsStubResult.Err
+}
+
 // Patch is API call with trace log
 func (s *ProxyLBStub) Patch(ctx context.Context, id types.ID, param *sacloud.ProxyLBPatchRequest) (*sacloud.ProxyLB, error) {
 	if s.PatchStubResult == nil {
 		log.Fatal("ProxyLBStub.PatchStubResult is not set")
 	}
 	return s.PatchStubResult.ProxyLB, s.PatchStubResult.Err
+}
+
+// PatchSettings is API call with trace log
+func (s *ProxyLBStub) PatchSettings(ctx context.Context, id types.ID, param *sacloud.ProxyLBPatchSettingsRequest) (*sacloud.ProxyLB, error) {
+	if s.PatchSettingsStubResult == nil {
+		log.Fatal("ProxyLBStub.PatchSettingsStubResult is not set")
+	}
+	return s.PatchSettingsStubResult.ProxyLB, s.PatchSettingsStubResult.Err
 }
 
 // Delete is API call with trace log

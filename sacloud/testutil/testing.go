@@ -335,7 +335,7 @@ func Run(t TestT, testCase *CRUDTestCase) {
 // AssertEqualWithExpected 項目ごとに除外設定のできる期待値との比較
 func AssertEqualWithExpected(testExpect *CRUDTestExpect) func(TestT, *CRUDTestContext, interface{}) error {
 	return func(t TestT, testContext *CRUDTestContext, v interface{}) error {
-		actual, expect := testExpect.Prepare(v)
+		expect, actual := testExpect.Prepare(v)
 		if !assert.Equal(t, expect, actual) {
 			return errors.New("assert.Equal is failed")
 		}

@@ -63,6 +63,13 @@ func TestProxyLBOp_CRUD(t *testing.T) {
 				}),
 			},
 			{
+				Func: testProxyLBUpdateSettings,
+				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
+					ExpectValue:  updateProxyLBSettingsExpected,
+					IgnoreFields: ignoreProxyLBFields,
+				}),
+			},
+			{
 				Func: testProxyLBUpdateToMin,
 				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 					ExpectValue:  updateProxyLBToMinExpected,
@@ -78,13 +85,15 @@ func TestProxyLBOp_CRUD(t *testing.T) {
 }
 
 var (
-	ignoreProxyLBFields        []string
-	createProxyLBParam         *sacloud.ProxyLBCreateRequest
-	createProxyLBExpected      *sacloud.ProxyLB
-	updateProxyLBParam         *sacloud.ProxyLBUpdateRequest
-	updateProxyLBExpected      *sacloud.ProxyLB
-	updateProxyLBToMinParam    *sacloud.ProxyLBUpdateRequest
-	updateProxyLBToMinExpected *sacloud.ProxyLB
+	ignoreProxyLBFields           []string
+	createProxyLBParam            *sacloud.ProxyLBCreateRequest
+	createProxyLBExpected         *sacloud.ProxyLB
+	updateProxyLBParam            *sacloud.ProxyLBUpdateRequest
+	updateProxyLBExpected         *sacloud.ProxyLB
+	updateProxyLBSettingsParam    *sacloud.ProxyLBUpdateSettingsRequest
+	updateProxyLBSettingsExpected *sacloud.ProxyLB
+	updateProxyLBToMinParam       *sacloud.ProxyLBUpdateRequest
+	updateProxyLBToMinExpected    *sacloud.ProxyLB
 
 	createProxyLBForACMEParam *sacloud.ProxyLBCreateRequest
 	updateProxyLBForACMEParam *sacloud.ProxyLBUpdateRequest
@@ -244,6 +253,69 @@ func initProxyLBVariables() {
 		UseVIPFailover: createProxyLBParam.UseVIPFailover,
 		Region:         createProxyLBParam.Region,
 	}
+	updateProxyLBSettingsParam = &sacloud.ProxyLBUpdateSettingsRequest{
+		HealthCheck: &sacloud.ProxyLBHealthCheck{
+			Protocol:  types.ProxyLBProtocols.TCP,
+			DelayLoop: 20,
+		},
+		SorryServer: &sacloud.ProxyLBSorryServer{
+			IPAddress: os.Getenv("SAKURACLOUD_PROXYLB_SERVER0"),
+			Port:      8080,
+		},
+		BindPorts: []*sacloud.ProxyLBBindPort{
+			{
+				ProxyMode: types.ProxyLBProxyModes.HTTP, Port: 8081,
+				RedirectToHTTPS: true,
+			},
+			{
+				ProxyMode:    types.ProxyLBProxyModes.HTTPS,
+				Port:         8443,
+				SupportHTTP2: true,
+			},
+		},
+		Servers: []*sacloud.ProxyLBServer{
+			{
+				IPAddress: os.Getenv("SAKURACLOUD_PROXYLB_SERVER1"),
+				Port:      8081,
+				Enabled:   true,
+			},
+			{
+				IPAddress: os.Getenv("SAKURACLOUD_PROXYLB_SERVER2"),
+				Port:      8081,
+				Enabled:   true,
+			},
+		},
+		// LetsEncryptのテストはA or CNAMEレコードの登録が必要なため別ケースで行う
+		LetsEncrypt: &sacloud.ProxyLBACMESetting{
+			Enabled: false,
+		},
+		StickySession: &sacloud.ProxyLBStickySession{
+			Method:  "cookie",
+			Enabled: true,
+		},
+		Timeout: &sacloud.ProxyLBTimeout{
+			InactiveSec: 10,
+		},
+	}
+	updateProxyLBSettingsExpected = &sacloud.ProxyLB{
+		Name:          updateProxyLBParam.Name,
+		Description:   updateProxyLBParam.Description,
+		Tags:          updateProxyLBParam.Tags,
+		IconID:        testIconID,
+		Availability:  types.Availabilities.Available,
+		Plan:          createProxyLBParam.Plan,
+		HealthCheck:   updateProxyLBSettingsParam.HealthCheck,
+		SorryServer:   updateProxyLBSettingsParam.SorryServer,
+		BindPorts:     updateProxyLBSettingsParam.BindPorts,
+		Servers:       updateProxyLBSettingsParam.Servers,
+		LetsEncrypt:   updateProxyLBSettingsParam.LetsEncrypt,
+		StickySession: updateProxyLBSettingsParam.StickySession,
+		Timeout: &sacloud.ProxyLBTimeout{
+			InactiveSec: 10,
+		},
+		UseVIPFailover: createProxyLBParam.UseVIPFailover,
+		Region:         createProxyLBParam.Region,
+	}
 
 	updateProxyLBToMinParam = &sacloud.ProxyLBUpdateRequest{
 		Name: testutil.ResourceName("proxylb-to-min"),
@@ -375,6 +447,11 @@ func testProxyLBRead(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (i
 func testProxyLBUpdate(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewProxyLBOp(caller)
 	return client.Update(ctx, ctx.ID, updateProxyLBParam)
+}
+
+func testProxyLBUpdateSettings(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+	client := sacloud.NewProxyLBOp(caller)
+	return client.UpdateSettings(ctx, ctx.ID, updateProxyLBSettingsParam)
 }
 
 func testProxyLBUpdateToMin(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {

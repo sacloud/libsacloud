@@ -1197,8 +1197,22 @@ type proxyLBUpdateResult struct {
 	ProxyLB *ProxyLB `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
 }
 
+// proxyLBUpdateSettingsResult represents the Result of API
+type proxyLBUpdateSettingsResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	ProxyLB *ProxyLB `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
+}
+
 // proxyLBPatchResult represents the Result of API
 type proxyLBPatchResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	ProxyLB *ProxyLB `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
+}
+
+// proxyLBPatchSettingsResult represents the Result of API
+type proxyLBPatchSettingsResult struct {
 	IsOk bool `json:",omitempty"` // is_ok
 
 	ProxyLB *ProxyLB `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`

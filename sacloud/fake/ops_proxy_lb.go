@@ -197,6 +197,48 @@ func (o *ProxyLBOp) Patch(ctx context.Context, id types.ID, param *sacloud.Proxy
 	return value, nil
 }
 
+// UpdateSettings is fake implementation
+func (o *ProxyLBOp) UpdateSettings(ctx context.Context, id types.ID, param *sacloud.ProxyLBUpdateSettingsRequest) (*sacloud.ProxyLB, error) {
+	value, err := o.Read(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+	copySameNameField(param, value)
+	fill(value, fillModifiedAt)
+	if value.SorryServer == nil {
+		value.SorryServer = &sacloud.ProxyLBSorryServer{}
+	}
+	if value.Timeout == nil {
+		value.Timeout = &sacloud.ProxyLBTimeout{}
+	}
+	if value.Timeout.InactiveSec == 0 {
+		value.Timeout.InactiveSec = 10
+	}
+	putProxyLB(sacloud.APIDefaultZone, value)
+
+	status := ds().Get(ResourceProxyLB+"Status", sacloud.APIDefaultZone, id).(*sacloud.ProxyLBHealth)
+	status.Servers = []*sacloud.LoadBalancerServerStatus{}
+	for _, server := range param.Servers {
+		status.Servers = append(status.Servers, &sacloud.LoadBalancerServerStatus{
+			ActiveConn: 10,
+			Status:     types.ServerInstanceStatuses.Up,
+			IPAddress:  server.IPAddress,
+			Port:       types.StringNumber(server.Port),
+			CPS:        10,
+		})
+	}
+	ds().Put(ResourceProxyLB+"Status", sacloud.APIDefaultZone, id, status)
+
+	return value, nil
+}
+
+// PatchSettings is fake implementation
+func (o *ProxyLBOp) PatchSettings(ctx context.Context, id types.ID, param *sacloud.ProxyLBPatchSettingsRequest) (*sacloud.ProxyLB, error) {
+	patchParam := &sacloud.ProxyLBPatchRequest{}
+	copySameNameField(param, patchParam)
+	return o.Patch(ctx, id, patchParam)
+}
+
 // Delete is fake implementation
 func (o *ProxyLBOp) Delete(ctx context.Context, id types.ID) error {
 	_, err := o.Read(ctx, id)

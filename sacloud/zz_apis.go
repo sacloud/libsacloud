@@ -467,7 +467,9 @@ type ProxyLBAPI interface {
 	Create(ctx context.Context, param *ProxyLBCreateRequest) (*ProxyLB, error)
 	Read(ctx context.Context, id types.ID) (*ProxyLB, error)
 	Update(ctx context.Context, id types.ID, param *ProxyLBUpdateRequest) (*ProxyLB, error)
+	UpdateSettings(ctx context.Context, id types.ID, param *ProxyLBUpdateSettingsRequest) (*ProxyLB, error)
 	Patch(ctx context.Context, id types.ID, param *ProxyLBPatchRequest) (*ProxyLB, error)
+	PatchSettings(ctx context.Context, id types.ID, param *ProxyLBPatchSettingsRequest) (*ProxyLB, error)
 	Delete(ctx context.Context, id types.ID) error
 	ChangePlan(ctx context.Context, id types.ID, param *ProxyLBChangePlanRequest) (*ProxyLB, error)
 	GetCertificates(ctx context.Context, id types.ID) (*ProxyLBCertificates, error)

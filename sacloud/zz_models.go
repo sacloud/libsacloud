@@ -19851,6 +19851,130 @@ func (o *ProxyLBUpdateRequest) SetIconID(v types.ID) {
 }
 
 /*************************************************
+* ProxyLBUpdateSettingsRequest
+*************************************************/
+
+// ProxyLBUpdateSettingsRequest represents API parameter/response structure
+type ProxyLBUpdateSettingsRequest struct {
+	HealthCheck   *ProxyLBHealthCheck   `mapconv:"Settings.ProxyLB.HealthCheck,recursive"`
+	SorryServer   *ProxyLBSorryServer   `mapconv:"Settings.ProxyLB.SorryServer,recursive"`
+	BindPorts     []*ProxyLBBindPort    `mapconv:"Settings.ProxyLB.[]BindPorts,recursive"`
+	Servers       []*ProxyLBServer      `mapconv:"Settings.ProxyLB.[]Servers,recursive"`
+	LetsEncrypt   *ProxyLBACMESetting   `mapconv:"Settings.ProxyLB.LetsEncrypt,recursive"`
+	StickySession *ProxyLBStickySession `mapconv:"Settings.ProxyLB.StickySession,recursive"`
+	Timeout       *ProxyLBTimeout       `json:",omitempty" mapconv:"Settings.ProxyLB.Timeout,recursive,omitempty"`
+	SettingsHash  string                `json:",omitempty" mapconv:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *ProxyLBUpdateSettingsRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *ProxyLBUpdateSettingsRequest) setDefaults() interface{} {
+	return &struct {
+		HealthCheck   *ProxyLBHealthCheck   `mapconv:"Settings.ProxyLB.HealthCheck,recursive"`
+		SorryServer   *ProxyLBSorryServer   `mapconv:"Settings.ProxyLB.SorryServer,recursive"`
+		BindPorts     []*ProxyLBBindPort    `mapconv:"Settings.ProxyLB.[]BindPorts,recursive"`
+		Servers       []*ProxyLBServer      `mapconv:"Settings.ProxyLB.[]Servers,recursive"`
+		LetsEncrypt   *ProxyLBACMESetting   `mapconv:"Settings.ProxyLB.LetsEncrypt,recursive"`
+		StickySession *ProxyLBStickySession `mapconv:"Settings.ProxyLB.StickySession,recursive"`
+		Timeout       *ProxyLBTimeout       `json:",omitempty" mapconv:"Settings.ProxyLB.Timeout,recursive,omitempty"`
+		SettingsHash  string                `json:",omitempty" mapconv:",omitempty"`
+	}{
+		HealthCheck:   o.GetHealthCheck(),
+		SorryServer:   o.GetSorryServer(),
+		BindPorts:     o.GetBindPorts(),
+		Servers:       o.GetServers(),
+		LetsEncrypt:   o.GetLetsEncrypt(),
+		StickySession: o.GetStickySession(),
+		Timeout:       o.GetTimeout(),
+		SettingsHash:  o.GetSettingsHash(),
+	}
+}
+
+// GetHealthCheck returns value of HealthCheck
+func (o *ProxyLBUpdateSettingsRequest) GetHealthCheck() *ProxyLBHealthCheck {
+	return o.HealthCheck
+}
+
+// SetHealthCheck sets value to HealthCheck
+func (o *ProxyLBUpdateSettingsRequest) SetHealthCheck(v *ProxyLBHealthCheck) {
+	o.HealthCheck = v
+}
+
+// GetSorryServer returns value of SorryServer
+func (o *ProxyLBUpdateSettingsRequest) GetSorryServer() *ProxyLBSorryServer {
+	return o.SorryServer
+}
+
+// SetSorryServer sets value to SorryServer
+func (o *ProxyLBUpdateSettingsRequest) SetSorryServer(v *ProxyLBSorryServer) {
+	o.SorryServer = v
+}
+
+// GetBindPorts returns value of BindPorts
+func (o *ProxyLBUpdateSettingsRequest) GetBindPorts() []*ProxyLBBindPort {
+	return o.BindPorts
+}
+
+// SetBindPorts sets value to BindPorts
+func (o *ProxyLBUpdateSettingsRequest) SetBindPorts(v []*ProxyLBBindPort) {
+	o.BindPorts = v
+}
+
+// GetServers returns value of Servers
+func (o *ProxyLBUpdateSettingsRequest) GetServers() []*ProxyLBServer {
+	return o.Servers
+}
+
+// SetServers sets value to Servers
+func (o *ProxyLBUpdateSettingsRequest) SetServers(v []*ProxyLBServer) {
+	o.Servers = v
+}
+
+// GetLetsEncrypt returns value of LetsEncrypt
+func (o *ProxyLBUpdateSettingsRequest) GetLetsEncrypt() *ProxyLBACMESetting {
+	return o.LetsEncrypt
+}
+
+// SetLetsEncrypt sets value to LetsEncrypt
+func (o *ProxyLBUpdateSettingsRequest) SetLetsEncrypt(v *ProxyLBACMESetting) {
+	o.LetsEncrypt = v
+}
+
+// GetStickySession returns value of StickySession
+func (o *ProxyLBUpdateSettingsRequest) GetStickySession() *ProxyLBStickySession {
+	return o.StickySession
+}
+
+// SetStickySession sets value to StickySession
+func (o *ProxyLBUpdateSettingsRequest) SetStickySession(v *ProxyLBStickySession) {
+	o.StickySession = v
+}
+
+// GetTimeout returns value of Timeout
+func (o *ProxyLBUpdateSettingsRequest) GetTimeout() *ProxyLBTimeout {
+	return o.Timeout
+}
+
+// SetTimeout sets value to Timeout
+func (o *ProxyLBUpdateSettingsRequest) SetTimeout(v *ProxyLBTimeout) {
+	o.Timeout = v
+}
+
+// GetSettingsHash returns value of SettingsHash
+func (o *ProxyLBUpdateSettingsRequest) GetSettingsHash() string {
+	return o.SettingsHash
+}
+
+// SetSettingsHash sets value to SettingsHash
+func (o *ProxyLBUpdateSettingsRequest) SetSettingsHash(v string) {
+	o.SettingsHash = v
+}
+
+/*************************************************
 * ProxyLBPatchRequest
 *************************************************/
 
@@ -20174,6 +20298,221 @@ func (o *ProxyLBPatchRequest) GetPatchEmptyToIconID() bool {
 // SetPatchEmptyToIconID sets value to PatchEmptyToIconID
 func (o *ProxyLBPatchRequest) SetPatchEmptyToIconID(v bool) {
 	o.PatchEmptyToIconID = v
+}
+
+/*************************************************
+* ProxyLBPatchSettingsRequest
+*************************************************/
+
+// ProxyLBPatchSettingsRequest represents API parameter/response structure
+type ProxyLBPatchSettingsRequest struct {
+	HealthCheck               *ProxyLBHealthCheck `mapconv:"Settings.ProxyLB.HealthCheck,recursive"`
+	PatchEmptyToHealthCheck   bool
+	SorryServer               *ProxyLBSorryServer `mapconv:"Settings.ProxyLB.SorryServer,recursive"`
+	PatchEmptyToSorryServer   bool
+	BindPorts                 []*ProxyLBBindPort `mapconv:"Settings.ProxyLB.[]BindPorts,recursive"`
+	PatchEmptyToBindPorts     bool
+	Servers                   []*ProxyLBServer `mapconv:"Settings.ProxyLB.[]Servers,recursive"`
+	PatchEmptyToServers       bool
+	LetsEncrypt               *ProxyLBACMESetting `mapconv:"Settings.ProxyLB.LetsEncrypt,recursive"`
+	PatchEmptyToLetsEncrypt   bool
+	StickySession             *ProxyLBStickySession `mapconv:"Settings.ProxyLB.StickySession,recursive"`
+	PatchEmptyToStickySession bool
+	Timeout                   *ProxyLBTimeout `json:",omitempty" mapconv:"Settings.ProxyLB.Timeout,recursive,omitempty"`
+	PatchEmptyToTimeout       bool
+	SettingsHash              string `json:",omitempty" mapconv:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *ProxyLBPatchSettingsRequest) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *ProxyLBPatchSettingsRequest) setDefaults() interface{} {
+	return &struct {
+		HealthCheck               *ProxyLBHealthCheck `mapconv:"Settings.ProxyLB.HealthCheck,recursive"`
+		PatchEmptyToHealthCheck   bool
+		SorryServer               *ProxyLBSorryServer `mapconv:"Settings.ProxyLB.SorryServer,recursive"`
+		PatchEmptyToSorryServer   bool
+		BindPorts                 []*ProxyLBBindPort `mapconv:"Settings.ProxyLB.[]BindPorts,recursive"`
+		PatchEmptyToBindPorts     bool
+		Servers                   []*ProxyLBServer `mapconv:"Settings.ProxyLB.[]Servers,recursive"`
+		PatchEmptyToServers       bool
+		LetsEncrypt               *ProxyLBACMESetting `mapconv:"Settings.ProxyLB.LetsEncrypt,recursive"`
+		PatchEmptyToLetsEncrypt   bool
+		StickySession             *ProxyLBStickySession `mapconv:"Settings.ProxyLB.StickySession,recursive"`
+		PatchEmptyToStickySession bool
+		Timeout                   *ProxyLBTimeout `json:",omitempty" mapconv:"Settings.ProxyLB.Timeout,recursive,omitempty"`
+		PatchEmptyToTimeout       bool
+		SettingsHash              string `json:",omitempty" mapconv:",omitempty"`
+	}{
+		HealthCheck:               o.GetHealthCheck(),
+		PatchEmptyToHealthCheck:   o.GetPatchEmptyToHealthCheck(),
+		SorryServer:               o.GetSorryServer(),
+		PatchEmptyToSorryServer:   o.GetPatchEmptyToSorryServer(),
+		BindPorts:                 o.GetBindPorts(),
+		PatchEmptyToBindPorts:     o.GetPatchEmptyToBindPorts(),
+		Servers:                   o.GetServers(),
+		PatchEmptyToServers:       o.GetPatchEmptyToServers(),
+		LetsEncrypt:               o.GetLetsEncrypt(),
+		PatchEmptyToLetsEncrypt:   o.GetPatchEmptyToLetsEncrypt(),
+		StickySession:             o.GetStickySession(),
+		PatchEmptyToStickySession: o.GetPatchEmptyToStickySession(),
+		Timeout:                   o.GetTimeout(),
+		PatchEmptyToTimeout:       o.GetPatchEmptyToTimeout(),
+		SettingsHash:              o.GetSettingsHash(),
+	}
+}
+
+// GetHealthCheck returns value of HealthCheck
+func (o *ProxyLBPatchSettingsRequest) GetHealthCheck() *ProxyLBHealthCheck {
+	return o.HealthCheck
+}
+
+// SetHealthCheck sets value to HealthCheck
+func (o *ProxyLBPatchSettingsRequest) SetHealthCheck(v *ProxyLBHealthCheck) {
+	o.HealthCheck = v
+}
+
+// GetPatchEmptyToHealthCheck returns value of PatchEmptyToHealthCheck
+func (o *ProxyLBPatchSettingsRequest) GetPatchEmptyToHealthCheck() bool {
+	return o.PatchEmptyToHealthCheck
+}
+
+// SetPatchEmptyToHealthCheck sets value to PatchEmptyToHealthCheck
+func (o *ProxyLBPatchSettingsRequest) SetPatchEmptyToHealthCheck(v bool) {
+	o.PatchEmptyToHealthCheck = v
+}
+
+// GetSorryServer returns value of SorryServer
+func (o *ProxyLBPatchSettingsRequest) GetSorryServer() *ProxyLBSorryServer {
+	return o.SorryServer
+}
+
+// SetSorryServer sets value to SorryServer
+func (o *ProxyLBPatchSettingsRequest) SetSorryServer(v *ProxyLBSorryServer) {
+	o.SorryServer = v
+}
+
+// GetPatchEmptyToSorryServer returns value of PatchEmptyToSorryServer
+func (o *ProxyLBPatchSettingsRequest) GetPatchEmptyToSorryServer() bool {
+	return o.PatchEmptyToSorryServer
+}
+
+// SetPatchEmptyToSorryServer sets value to PatchEmptyToSorryServer
+func (o *ProxyLBPatchSettingsRequest) SetPatchEmptyToSorryServer(v bool) {
+	o.PatchEmptyToSorryServer = v
+}
+
+// GetBindPorts returns value of BindPorts
+func (o *ProxyLBPatchSettingsRequest) GetBindPorts() []*ProxyLBBindPort {
+	return o.BindPorts
+}
+
+// SetBindPorts sets value to BindPorts
+func (o *ProxyLBPatchSettingsRequest) SetBindPorts(v []*ProxyLBBindPort) {
+	o.BindPorts = v
+}
+
+// GetPatchEmptyToBindPorts returns value of PatchEmptyToBindPorts
+func (o *ProxyLBPatchSettingsRequest) GetPatchEmptyToBindPorts() bool {
+	return o.PatchEmptyToBindPorts
+}
+
+// SetPatchEmptyToBindPorts sets value to PatchEmptyToBindPorts
+func (o *ProxyLBPatchSettingsRequest) SetPatchEmptyToBindPorts(v bool) {
+	o.PatchEmptyToBindPorts = v
+}
+
+// GetServers returns value of Servers
+func (o *ProxyLBPatchSettingsRequest) GetServers() []*ProxyLBServer {
+	return o.Servers
+}
+
+// SetServers sets value to Servers
+func (o *ProxyLBPatchSettingsRequest) SetServers(v []*ProxyLBServer) {
+	o.Servers = v
+}
+
+// GetPatchEmptyToServers returns value of PatchEmptyToServers
+func (o *ProxyLBPatchSettingsRequest) GetPatchEmptyToServers() bool {
+	return o.PatchEmptyToServers
+}
+
+// SetPatchEmptyToServers sets value to PatchEmptyToServers
+func (o *ProxyLBPatchSettingsRequest) SetPatchEmptyToServers(v bool) {
+	o.PatchEmptyToServers = v
+}
+
+// GetLetsEncrypt returns value of LetsEncrypt
+func (o *ProxyLBPatchSettingsRequest) GetLetsEncrypt() *ProxyLBACMESetting {
+	return o.LetsEncrypt
+}
+
+// SetLetsEncrypt sets value to LetsEncrypt
+func (o *ProxyLBPatchSettingsRequest) SetLetsEncrypt(v *ProxyLBACMESetting) {
+	o.LetsEncrypt = v
+}
+
+// GetPatchEmptyToLetsEncrypt returns value of PatchEmptyToLetsEncrypt
+func (o *ProxyLBPatchSettingsRequest) GetPatchEmptyToLetsEncrypt() bool {
+	return o.PatchEmptyToLetsEncrypt
+}
+
+// SetPatchEmptyToLetsEncrypt sets value to PatchEmptyToLetsEncrypt
+func (o *ProxyLBPatchSettingsRequest) SetPatchEmptyToLetsEncrypt(v bool) {
+	o.PatchEmptyToLetsEncrypt = v
+}
+
+// GetStickySession returns value of StickySession
+func (o *ProxyLBPatchSettingsRequest) GetStickySession() *ProxyLBStickySession {
+	return o.StickySession
+}
+
+// SetStickySession sets value to StickySession
+func (o *ProxyLBPatchSettingsRequest) SetStickySession(v *ProxyLBStickySession) {
+	o.StickySession = v
+}
+
+// GetPatchEmptyToStickySession returns value of PatchEmptyToStickySession
+func (o *ProxyLBPatchSettingsRequest) GetPatchEmptyToStickySession() bool {
+	return o.PatchEmptyToStickySession
+}
+
+// SetPatchEmptyToStickySession sets value to PatchEmptyToStickySession
+func (o *ProxyLBPatchSettingsRequest) SetPatchEmptyToStickySession(v bool) {
+	o.PatchEmptyToStickySession = v
+}
+
+// GetTimeout returns value of Timeout
+func (o *ProxyLBPatchSettingsRequest) GetTimeout() *ProxyLBTimeout {
+	return o.Timeout
+}
+
+// SetTimeout sets value to Timeout
+func (o *ProxyLBPatchSettingsRequest) SetTimeout(v *ProxyLBTimeout) {
+	o.Timeout = v
+}
+
+// GetPatchEmptyToTimeout returns value of PatchEmptyToTimeout
+func (o *ProxyLBPatchSettingsRequest) GetPatchEmptyToTimeout() bool {
+	return o.PatchEmptyToTimeout
+}
+
+// SetPatchEmptyToTimeout sets value to PatchEmptyToTimeout
+func (o *ProxyLBPatchSettingsRequest) SetPatchEmptyToTimeout(v bool) {
+	o.PatchEmptyToTimeout = v
+}
+
+// GetSettingsHash returns value of SettingsHash
+func (o *ProxyLBPatchSettingsRequest) GetSettingsHash() string {
+	return o.SettingsHash
+}
+
+// SetSettingsHash sets value to SettingsHash
+func (o *ProxyLBPatchSettingsRequest) SetSettingsHash(v string) {
+	o.SettingsHash = v
 }
 
 /*************************************************
