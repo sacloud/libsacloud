@@ -25,8 +25,16 @@ var ProxyLBProxyModes = struct {
 	HTTP EProxyLBProxyMode
 	// HTTPS .
 	HTTPS EProxyLBProxyMode
+	// TCP .
+	TCP EProxyLBProxyMode
 }{
 	Unknown: EProxyLBProxyMode(""),
 	HTTP:    EProxyLBProxyMode("http"),
 	HTTPS:   EProxyLBProxyMode("https"),
+	TCP:     EProxyLBProxyMode("tcp"),
+}
+
+// String EProxyLBProxyModeの文字列表現
+func (m EProxyLBProxyMode) String() string {
+	return string(m)
 }
