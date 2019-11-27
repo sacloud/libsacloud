@@ -55,6 +55,10 @@ func (d *EnvelopePayloadDesc) TagString() string {
 			JSON: ",omitempty",
 		}
 	}
+	tags := d.Tags.String()
+	if tags == "" {
+		return tags
+	}
 	return fmt.Sprintf("`%s`", d.Tags.String())
 }
 
@@ -100,6 +104,7 @@ func RequestEnvelopeFromModel(model *Model) *EnvelopeType {
 		descs = append(descs, &EnvelopePayloadDesc{
 			Name: field.Name,
 			Type: field.Type,
+			Tags: field.Tags,
 		})
 	}
 	ret := &EnvelopeType{

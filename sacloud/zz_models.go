@@ -650,10 +650,10 @@ func (o *SourceArchiveInfo) SetZoneName(v string) {
 type FindCondition struct {
 	Count   int             `mapconv:",omitempty"`
 	From    int             `mapconv:",omitempty"`
-	Sort    search.SortKeys `mapconv:",omitempty"`
-	Filter  search.Filter   `mapconv:",omitempty"`
-	Include []string        `mapconv:",omitempty"`
-	Exclude []string        `mapconv:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty" mapconv:",omitempty"`
+	Filter  search.Filter   `json:",omitempty" mapconv:",omitempty"`
+	Include []string        `json:",omitempty" mapconv:",omitempty"`
+	Exclude []string        `json:",omitempty" mapconv:",omitempty"`
 }
 
 // Validate validates by field tags
@@ -666,10 +666,10 @@ func (o *FindCondition) setDefaults() interface{} {
 	return &struct {
 		Count   int             `mapconv:",omitempty"`
 		From    int             `mapconv:",omitempty"`
-		Sort    search.SortKeys `mapconv:",omitempty"`
-		Filter  search.Filter   `mapconv:",omitempty"`
-		Include []string        `mapconv:",omitempty"`
-		Exclude []string        `mapconv:",omitempty"`
+		Sort    search.SortKeys `json:",omitempty" mapconv:",omitempty"`
+		Filter  search.Filter   `json:",omitempty" mapconv:",omitempty"`
+		Include []string        `json:",omitempty" mapconv:",omitempty"`
+		Exclude []string        `json:",omitempty" mapconv:",omitempty"`
 	}{
 		Count:   o.GetCount(),
 		From:    o.GetFrom(),
@@ -20984,7 +20984,7 @@ type Server struct {
 	ServerPlanName          string                      `mapconv:"ServerPlan.Name"`
 	CPU                     int                         `mapconv:"ServerPlan.CPU"`
 	MemoryMB                int                         `mapconv:"ServerPlan.MemoryMB"`
-	ServerPlanCommitment    types.ECommitment           `mapconv:"ServerPlan.Commitment"`
+	ServerPlanCommitment    types.ECommitment           `json:",omitempty" mapconv:"ServerPlan.Commitment"`
 	ServerPlanGeneration    types.EPlanGeneration       `mapconv:"ServerPlan.Generation"`
 	Zone                    *ZoneInfo                   `json:",omitempty" mapconv:",omitempty,recursive"`
 	InstanceHostName        string                      `mapconv:"Instance.Host.Name"`
@@ -21024,7 +21024,7 @@ func (o *Server) setDefaults() interface{} {
 		ServerPlanName          string                      `mapconv:"ServerPlan.Name"`
 		CPU                     int                         `mapconv:"ServerPlan.CPU"`
 		MemoryMB                int                         `mapconv:"ServerPlan.MemoryMB"`
-		ServerPlanCommitment    types.ECommitment           `mapconv:"ServerPlan.Commitment"`
+		ServerPlanCommitment    types.ECommitment           `json:",omitempty" mapconv:"ServerPlan.Commitment"`
 		ServerPlanGeneration    types.EPlanGeneration       `mapconv:"ServerPlan.Generation"`
 		Zone                    *ZoneInfo                   `json:",omitempty" mapconv:",omitempty,recursive"`
 		InstanceHostName        string                      `mapconv:"Instance.Host.Name"`
@@ -21826,7 +21826,7 @@ func (o *ServerConnectedDisk) SetStorage(v *Storage) {
 type ServerCreateRequest struct {
 	CPU                  int                   `mapconv:"ServerPlan.CPU"`
 	MemoryMB             int                   `mapconv:"ServerPlan.MemoryMB"`
-	ServerPlanCommitment types.ECommitment     `mapconv:"ServerPlan.Commitment"`
+	ServerPlanCommitment types.ECommitment     `json:",omitempty" mapconv:"ServerPlan.Commitment"`
 	ServerPlanGeneration types.EPlanGeneration `mapconv:"ServerPlan.Generation"`
 	ConnectedSwitches    []*ConnectedSwitch    `json:",omitempty" mapconv:"[]ConnectedSwitches,recursive"`
 	InterfaceDriver      types.EInterfaceDriver
@@ -21847,7 +21847,7 @@ func (o *ServerCreateRequest) setDefaults() interface{} {
 	return &struct {
 		CPU                  int                   `mapconv:"ServerPlan.CPU"`
 		MemoryMB             int                   `mapconv:"ServerPlan.MemoryMB"`
-		ServerPlanCommitment types.ECommitment     `mapconv:"ServerPlan.Commitment"`
+		ServerPlanCommitment types.ECommitment     `json:",omitempty" mapconv:"ServerPlan.Commitment"`
 		ServerPlanGeneration types.EPlanGeneration `mapconv:"ServerPlan.Generation"`
 		ConnectedSwitches    []*ConnectedSwitch    `json:",omitempty" mapconv:"[]ConnectedSwitches,recursive"`
 		InterfaceDriver      types.EInterfaceDriver
@@ -22343,7 +22343,7 @@ type ServerChangePlanRequest struct {
 	CPU                  int
 	MemoryMB             int
 	ServerPlanGeneration types.EPlanGeneration
-	ServerPlanCommitment types.ECommitment `mapconv:"ServerPlan.Commitment"`
+	ServerPlanCommitment types.ECommitment `json:",omitempty" mapconv:"ServerPlan.Commitment"`
 }
 
 // Validate validates by field tags
@@ -22357,7 +22357,7 @@ func (o *ServerChangePlanRequest) setDefaults() interface{} {
 		CPU                  int
 		MemoryMB             int
 		ServerPlanGeneration types.EPlanGeneration
-		ServerPlanCommitment types.ECommitment `mapconv:"ServerPlan.Commitment"`
+		ServerPlanCommitment types.ECommitment `json:",omitempty" mapconv:"ServerPlan.Commitment"`
 	}{
 		CPU:                  o.GetCPU(),
 		MemoryMB:             o.GetMemoryMB(),

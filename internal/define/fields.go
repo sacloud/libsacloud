@@ -262,6 +262,7 @@ func (f *fieldsDef) ServerPlanCommitment() *dsl.FieldDesc {
 		Name: "ServerPlanCommitment",
 		Tags: &dsl.FieldTags{
 			MapConv: "ServerPlan.Commitment",
+			JSON:    ",omitempty",
 		},
 		Type:         meta.TypeCommitment,
 		DefaultValue: "types.Commitments.Standard",
