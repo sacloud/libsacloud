@@ -24,14 +24,32 @@ var ArchiveCriteria = map[ArchiveOSType]search.Filter{
 	CentOS: {
 		search.Key(keys.Tags): search.TagsAndEqual("current-stable", "distro-centos"),
 	},
+	CentOS8: {
+		search.Key(keys.Tags): search.TagsAndEqual("centos-8-latest"),
+	},
+	CentOS7: {
+		search.Key(keys.Tags): search.TagsAndEqual("centos-7-latest"),
+	},
 	CentOS6: {
-		search.Key(keys.Tags): search.TagsAndEqual("distro-centos", "distro-ver-6.10"),
+		search.Key(keys.Tags): search.TagsAndEqual("centos-6-latest"),
 	},
 	Ubuntu: {
 		search.Key(keys.Tags): search.TagsAndEqual("current-stable", "distro-ubuntu"),
 	},
+	Ubuntu1804: {
+		search.Key(keys.Tags): search.TagsAndEqual("ubuntu-18.04-latest"),
+	},
+	Ubuntu1604: {
+		search.Key(keys.Tags): search.TagsAndEqual("ubuntu-16.04-latest"),
+	},
 	Debian: {
 		search.Key(keys.Tags): search.TagsAndEqual("current-stable", "distro-debian"),
+	},
+	Debian10: {
+		search.Key(keys.Tags): search.TagsAndEqual("debian-10-latest"),
+	},
+	Debian9: {
+		search.Key(keys.Tags): search.TagsAndEqual("debian-9-latest"),
 	},
 	CoreOS: {
 		search.Key(keys.Tags): search.TagsAndEqual("current-stable", "distro-coreos"),

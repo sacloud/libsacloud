@@ -23,19 +23,25 @@ func _() {
 	// Re-run the stringer command to generate them again.
 	var x [1]struct{}
 	_ = x[CentOS-0]
-	_ = x[CentOS6-1]
-	_ = x[Ubuntu-2]
-	_ = x[Debian-3]
-	_ = x[CoreOS-4]
-	_ = x[RancherOS-5]
-	_ = x[K3OS-6]
-	_ = x[Kusanagi-7]
-	_ = x[FreeBSD-8]
+	_ = x[CentOS8-1]
+	_ = x[CentOS7-2]
+	_ = x[CentOS6-3]
+	_ = x[Ubuntu-4]
+	_ = x[Ubuntu1804-5]
+	_ = x[Ubuntu1604-6]
+	_ = x[Debian-7]
+	_ = x[Debian10-8]
+	_ = x[Debian9-9]
+	_ = x[CoreOS-10]
+	_ = x[RancherOS-11]
+	_ = x[K3OS-12]
+	_ = x[Kusanagi-13]
+	_ = x[FreeBSD-14]
 }
 
-const _UnixPublicArchiveType_name = "CentOSCentOS6UbuntuDebianCoreOSRancherOSK3OSKusanagiFreeBSD"
+const _UnixPublicArchiveType_name = "CentOSCentOS8CentOS7CentOS6UbuntuUbuntu1804Ubuntu1604DebianDebian10Debian9CoreOSRancherOSK3OSKusanagiFreeBSD"
 
-var _UnixPublicArchiveType_index = [...]uint8{0, 6, 13, 19, 25, 31, 40, 44, 52, 59}
+var _UnixPublicArchiveType_index = [...]uint8{0, 6, 13, 20, 27, 33, 43, 53, 59, 67, 74, 80, 89, 93, 101, 108}
 
 func (i UnixPublicArchiveType) String() string {
 	if i < 0 || i >= UnixPublicArchiveType(len(_UnixPublicArchiveType_index)-1) {
