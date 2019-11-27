@@ -54,13 +54,13 @@ type ProxyLBSettings struct {
 
 // ProxyLBSetting エンハンスドロードバランサ設定
 type ProxyLBSetting struct {
-	HealthCheck   ProxyLBHealthCheck   `yaml:"health_check"`                                             // ヘルスチェック
-	SorryServer   ProxyLBSorryServer   `yaml:"sorry_server"`                                             // ソーリーサーバー
-	BindPorts     []*ProxyLBBindPorts  `yaml:"bind_ports"`                                               // プロキシ方式(プロトコル&ポート)
-	Servers       []ProxyLBServer      `yaml:"servers"`                                                  // サーバー
-	LetsEncrypt   ProxyLBACMESetting   `yaml:"lets_encrypt"`                                             // Let's encryptでの証明書取得設定
-	StickySession ProxyLBStickySession `yaml:"sticky_session"`                                           // StickySession
-	Timeout       ProxyLBTimeout       `json:",omitempty" yaml:"timeout,omitempty" structs:",omitempty"` // タイムアウト
+	HealthCheck   ProxyLBHealthCheck   `yaml:"health_check"`                                                  // ヘルスチェック
+	SorryServer   ProxyLBSorryServer   `yaml:"sorry_server"`                                                  // ソーリーサーバー
+	BindPorts     []*ProxyLBBindPorts  `yaml:"bind_ports"`                                                    // プロキシ方式(プロトコル&ポート)
+	Servers       []ProxyLBServer      `yaml:"servers"`                                                       // サーバー
+	LetsEncrypt   *ProxyLBACMESetting  `json:",omitempty" yaml:"lets_encrypt,omitempty" structs:",omitempty"` // Let's encryptでの証明書取得設定
+	StickySession ProxyLBStickySession `yaml:"sticky_session"`                                                // StickySession
+	Timeout       ProxyLBTimeout       `json:",omitempty" yaml:"timeout,omitempty" structs:",omitempty"`      // タイムアウト
 }
 
 // MarshalJSON nullの場合に空配列を出力するための実装
