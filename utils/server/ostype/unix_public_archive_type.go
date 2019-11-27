@@ -17,7 +17,6 @@ package ostype
 import "github.com/sacloud/libsacloud/v2/sacloud/ostype"
 
 //go:generate stringer -type=UnixPublicArchiveType
-//go:generate stringer -type=WindowsPublicArchiveType
 
 // UnixPublicArchiveType Unix系パブリックアーカイブ種別
 type UnixPublicArchiveType int
@@ -25,12 +24,24 @@ type UnixPublicArchiveType int
 const (
 	// CentOS OS種別:CentOS
 	CentOS UnixPublicArchiveType = iota
+	// CentOS8 OS種別:CentOS8
+	CentOS8
+	// CentOS7 OS種別:CentOS7
+	CentOS7
 	// CentOS6 OS種別:CentOS6
 	CentOS6
 	// Ubuntu OS種別:Ubuntu
 	Ubuntu
+	// Ubuntu1804 OS種別:Ubuntu
+	Ubuntu1804
+	// Ubuntu1604 OS種別:Ubuntu
+	Ubuntu1604
 	// Debian OS種別:Debian
 	Debian
+	// Debian10 OS種別:Debian
+	Debian10
+	// Debian9 OS種別:Debian
+	Debian9
 	// CoreOS OS種別:CoreOS
 	CoreOS
 	// RancherOS OS種別:RancherOS
@@ -45,13 +56,19 @@ const (
 
 // UnixPublicArchives UnixPublicArchiveTypeとsacloud/ostype/ArchiveOSTypeの対応マップ
 var UnixPublicArchives = map[UnixPublicArchiveType]ostype.ArchiveOSType{
-	CentOS:    ostype.CentOS,
-	CentOS6:   ostype.CentOS6,
-	Ubuntu:    ostype.Ubuntu,
-	Debian:    ostype.Debian,
-	CoreOS:    ostype.CoreOS,
-	RancherOS: ostype.RancherOS,
-	K3OS:      ostype.K3OS,
-	Kusanagi:  ostype.Kusanagi,
-	FreeBSD:   ostype.FreeBSD,
+	CentOS:     ostype.CentOS,
+	CentOS8:    ostype.CentOS8,
+	CentOS7:    ostype.CentOS7,
+	CentOS6:    ostype.CentOS6,
+	Ubuntu:     ostype.Ubuntu,
+	Ubuntu1804: ostype.Ubuntu1804,
+	Ubuntu1604: ostype.Ubuntu1604,
+	Debian:     ostype.Debian,
+	Debian10:   ostype.Debian10,
+	Debian9:    ostype.Debian9,
+	CoreOS:     ostype.CoreOS,
+	RancherOS:  ostype.RancherOS,
+	K3OS:       ostype.K3OS,
+	Kusanagi:   ostype.Kusanagi,
+	FreeBSD:    ostype.FreeBSD,
 }
