@@ -26,12 +26,12 @@ import (
 
 // archiveFindRequestEnvelope is envelop of API request
 type archiveFindRequestEnvelope struct {
-	Count   int             `json:",omitempty"`
-	From    int             `json:",omitempty"`
-	Sort    search.SortKeys `json:",omitempty"`
-	Filter  search.Filter   `json:",omitempty"`
-	Include []string        `json:",omitempty"`
-	Exclude []string        `json:",omitempty"`
+	Count   int             `mapconv:",omitempty"`
+	From    int             `mapconv:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty" mapconv:",omitempty"`
+	Filter  search.Filter   `json:",omitempty" mapconv:",omitempty"`
+	Include []string        `json:",omitempty" mapconv:",omitempty"`
+	Exclude []string        `json:",omitempty" mapconv:",omitempty"`
 }
 
 // archiveFindResponseEnvelope is envelop of API response
@@ -127,12 +127,12 @@ type authStatusReadResponseEnvelope struct {
 
 // autoBackupFindRequestEnvelope is envelop of API request
 type autoBackupFindRequestEnvelope struct {
-	Count   int             `json:",omitempty"`
-	From    int             `json:",omitempty"`
-	Sort    search.SortKeys `json:",omitempty"`
-	Filter  search.Filter   `json:",omitempty"`
-	Include []string        `json:",omitempty"`
-	Exclude []string        `json:",omitempty"`
+	Count   int             `mapconv:",omitempty"`
+	From    int             `mapconv:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty" mapconv:",omitempty"`
+	Filter  search.Filter   `json:",omitempty" mapconv:",omitempty"`
+	Include []string        `json:",omitempty" mapconv:",omitempty"`
+	Exclude []string        `json:",omitempty" mapconv:",omitempty"`
 }
 
 // autoBackupFindResponseEnvelope is envelop of API response
@@ -272,12 +272,12 @@ type billDetailsCSVResponseEnvelope struct {
 
 // bridgeFindRequestEnvelope is envelop of API request
 type bridgeFindRequestEnvelope struct {
-	Count   int             `json:",omitempty"`
-	From    int             `json:",omitempty"`
-	Sort    search.SortKeys `json:",omitempty"`
-	Filter  search.Filter   `json:",omitempty"`
-	Include []string        `json:",omitempty"`
-	Exclude []string        `json:",omitempty"`
+	Count   int             `mapconv:",omitempty"`
+	From    int             `mapconv:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty" mapconv:",omitempty"`
+	Filter  search.Filter   `json:",omitempty" mapconv:",omitempty"`
+	Include []string        `json:",omitempty" mapconv:",omitempty"`
+	Exclude []string        `json:",omitempty" mapconv:",omitempty"`
 }
 
 // bridgeFindResponseEnvelope is envelop of API response
@@ -338,12 +338,12 @@ type bridgePatchResponseEnvelope struct {
 
 // cDROMFindRequestEnvelope is envelop of API request
 type cDROMFindRequestEnvelope struct {
-	Count   int             `json:",omitempty"`
-	From    int             `json:",omitempty"`
-	Sort    search.SortKeys `json:",omitempty"`
-	Filter  search.Filter   `json:",omitempty"`
-	Include []string        `json:",omitempty"`
-	Exclude []string        `json:",omitempty"`
+	Count   int             `mapconv:",omitempty"`
+	From    int             `mapconv:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty" mapconv:",omitempty"`
+	Filter  search.Filter   `json:",omitempty" mapconv:",omitempty"`
+	Include []string        `json:",omitempty" mapconv:",omitempty"`
+	Exclude []string        `json:",omitempty" mapconv:",omitempty"`
 }
 
 // cDROMFindResponseEnvelope is envelop of API response
@@ -427,12 +427,12 @@ type couponFindResponseEnvelope struct {
 
 // databaseFindRequestEnvelope is envelop of API request
 type databaseFindRequestEnvelope struct {
-	Count   int             `json:",omitempty"`
-	From    int             `json:",omitempty"`
-	Sort    search.SortKeys `json:",omitempty"`
-	Filter  search.Filter   `json:",omitempty"`
-	Include []string        `json:",omitempty"`
-	Exclude []string        `json:",omitempty"`
+	Count   int             `mapconv:",omitempty"`
+	From    int             `mapconv:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty" mapconv:",omitempty"`
+	Filter  search.Filter   `json:",omitempty" mapconv:",omitempty"`
+	Include []string        `json:",omitempty" mapconv:",omitempty"`
+	Exclude []string        `json:",omitempty" mapconv:",omitempty"`
 }
 
 // databaseFindResponseEnvelope is envelop of API response
@@ -588,12 +588,12 @@ type databaseStatusResponseEnvelope struct {
 
 // diskFindRequestEnvelope is envelop of API request
 type diskFindRequestEnvelope struct {
-	Count   int             `json:",omitempty"`
-	From    int             `json:",omitempty"`
-	Sort    search.SortKeys `json:",omitempty"`
-	Filter  search.Filter   `json:",omitempty"`
-	Include []string        `json:",omitempty"`
-	Exclude []string        `json:",omitempty"`
+	Count   int             `mapconv:",omitempty"`
+	From    int             `mapconv:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty" mapconv:",omitempty"`
+	Filter  search.Filter   `json:",omitempty" mapconv:",omitempty"`
+	Include []string        `json:",omitempty" mapconv:",omitempty"`
+	Exclude []string        `json:",omitempty" mapconv:",omitempty"`
 }
 
 // diskFindResponseEnvelope is envelop of API response
@@ -621,17 +621,17 @@ type diskCreateResponseEnvelope struct {
 
 // diskConfigRequestEnvelope is envelop of API request
 type diskConfigRequestEnvelope struct {
-	Background          bool                `json:",omitempty"`
-	Password            string              `json:",omitempty"`
-	SSHKey              *DiskEditSSHKey     `json:",omitempty"`
-	SSHKeys             []*DiskEditSSHKey   `json:",omitempty"`
-	DisablePWAuth       bool                `json:",omitempty"`
-	EnableDHCP          bool                `json:",omitempty"`
-	ChangePartitionUUID bool                `json:",omitempty"`
-	HostName            string              `json:",omitempty"`
-	Notes               []*DiskEditNote     `json:",omitempty"`
-	UserIPAddress       string              `json:",omitempty"`
-	UserSubnet          *DiskEditUserSubnet `json:",omitempty"`
+	Background          bool                `json:",omitempty" mapconv:",omitempty"`
+	Password            string              `json:",omitempty" mapconv:",omitempty"`
+	SSHKey              *DiskEditSSHKey     `json:",omitempty" mapconv:",omitempty,recursive"`
+	SSHKeys             []*DiskEditSSHKey   `json:",omitempty" mapconv:"[]SSHKeys,omitempty,recursive"`
+	DisablePWAuth       bool                `json:",omitempty" mapconv:",omitempty"`
+	EnableDHCP          bool                `json:",omitempty" mapconv:",omitempty"`
+	ChangePartitionUUID bool                `json:",omitempty" mapconv:",omitempty"`
+	HostName            string              `json:",omitempty" mapconv:",omitempty"`
+	Notes               []*DiskEditNote     `json:",omitempty" mapconv:",omitempty,recursive"`
+	UserIPAddress       string              `json:",omitempty" mapconv:",omitempty"`
+	UserSubnet          *DiskEditUserSubnet `json:",omitempty" mapconv:",omitempty"`
 }
 
 // diskCreateWithConfigRequestEnvelope is envelop of API request
@@ -719,12 +719,12 @@ type diskMonitorResponseEnvelope struct {
 
 // diskPlanFindRequestEnvelope is envelop of API request
 type diskPlanFindRequestEnvelope struct {
-	Count   int             `json:",omitempty"`
-	From    int             `json:",omitempty"`
-	Sort    search.SortKeys `json:",omitempty"`
-	Filter  search.Filter   `json:",omitempty"`
-	Include []string        `json:",omitempty"`
-	Exclude []string        `json:",omitempty"`
+	Count   int             `mapconv:",omitempty"`
+	From    int             `mapconv:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty" mapconv:",omitempty"`
+	Filter  search.Filter   `json:",omitempty" mapconv:",omitempty"`
+	Include []string        `json:",omitempty" mapconv:",omitempty"`
+	Exclude []string        `json:",omitempty" mapconv:",omitempty"`
 }
 
 // diskPlanFindResponseEnvelope is envelop of API response
@@ -746,12 +746,12 @@ type diskPlanReadResponseEnvelope struct {
 
 // dNSFindRequestEnvelope is envelop of API request
 type dNSFindRequestEnvelope struct {
-	Count   int             `json:",omitempty"`
-	From    int             `json:",omitempty"`
-	Sort    search.SortKeys `json:",omitempty"`
-	Filter  search.Filter   `json:",omitempty"`
-	Include []string        `json:",omitempty"`
-	Exclude []string        `json:",omitempty"`
+	Count   int             `mapconv:",omitempty"`
+	From    int             `mapconv:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty" mapconv:",omitempty"`
+	Filter  search.Filter   `json:",omitempty" mapconv:",omitempty"`
+	Include []string        `json:",omitempty" mapconv:",omitempty"`
+	Exclude []string        `json:",omitempty" mapconv:",omitempty"`
 }
 
 // dNSFindResponseEnvelope is envelop of API response
@@ -838,12 +838,12 @@ type dNSPatchSettingsResponseEnvelope struct {
 
 // gSLBFindRequestEnvelope is envelop of API request
 type gSLBFindRequestEnvelope struct {
-	Count   int             `json:",omitempty"`
-	From    int             `json:",omitempty"`
-	Sort    search.SortKeys `json:",omitempty"`
-	Filter  search.Filter   `json:",omitempty"`
-	Include []string        `json:",omitempty"`
-	Exclude []string        `json:",omitempty"`
+	Count   int             `mapconv:",omitempty"`
+	From    int             `mapconv:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty" mapconv:",omitempty"`
+	Filter  search.Filter   `json:",omitempty" mapconv:",omitempty"`
+	Include []string        `json:",omitempty" mapconv:",omitempty"`
+	Exclude []string        `json:",omitempty" mapconv:",omitempty"`
 }
 
 // gSLBFindResponseEnvelope is envelop of API response
@@ -930,12 +930,12 @@ type gSLBPatchSettingsResponseEnvelope struct {
 
 // iconFindRequestEnvelope is envelop of API request
 type iconFindRequestEnvelope struct {
-	Count   int             `json:",omitempty"`
-	From    int             `json:",omitempty"`
-	Sort    search.SortKeys `json:",omitempty"`
-	Filter  search.Filter   `json:",omitempty"`
-	Include []string        `json:",omitempty"`
-	Exclude []string        `json:",omitempty"`
+	Count   int             `mapconv:",omitempty"`
+	From    int             `mapconv:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty" mapconv:",omitempty"`
+	Filter  search.Filter   `json:",omitempty" mapconv:",omitempty"`
+	Include []string        `json:",omitempty" mapconv:",omitempty"`
+	Exclude []string        `json:",omitempty" mapconv:",omitempty"`
 }
 
 // iconFindResponseEnvelope is envelop of API response
@@ -996,12 +996,12 @@ type iconPatchResponseEnvelope struct {
 
 // interfaceFindRequestEnvelope is envelop of API request
 type interfaceFindRequestEnvelope struct {
-	Count   int             `json:",omitempty"`
-	From    int             `json:",omitempty"`
-	Sort    search.SortKeys `json:",omitempty"`
-	Filter  search.Filter   `json:",omitempty"`
-	Include []string        `json:",omitempty"`
-	Exclude []string        `json:",omitempty"`
+	Count   int             `mapconv:",omitempty"`
+	From    int             `mapconv:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty" mapconv:",omitempty"`
+	Filter  search.Filter   `json:",omitempty" mapconv:",omitempty"`
+	Include []string        `json:",omitempty" mapconv:",omitempty"`
+	Exclude []string        `json:",omitempty" mapconv:",omitempty"`
 }
 
 // interfaceFindResponseEnvelope is envelop of API response
@@ -1076,12 +1076,12 @@ type interfaceMonitorResponseEnvelope struct {
 
 // internetFindRequestEnvelope is envelop of API request
 type internetFindRequestEnvelope struct {
-	Count   int             `json:",omitempty"`
-	From    int             `json:",omitempty"`
-	Sort    search.SortKeys `json:",omitempty"`
-	Filter  search.Filter   `json:",omitempty"`
-	Include []string        `json:",omitempty"`
-	Exclude []string        `json:",omitempty"`
+	Count   int             `mapconv:",omitempty"`
+	From    int             `mapconv:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty" mapconv:",omitempty"`
+	Filter  search.Filter   `json:",omitempty" mapconv:",omitempty"`
+	Include []string        `json:",omitempty" mapconv:",omitempty"`
+	Exclude []string        `json:",omitempty" mapconv:",omitempty"`
 }
 
 // internetFindResponseEnvelope is envelop of API response
@@ -1155,8 +1155,8 @@ type internetUpdateBandWidthResponseEnvelope struct {
 
 // internetAddSubnetRequestEnvelope is envelop of API request
 type internetAddSubnetRequestEnvelope struct {
-	NetworkMaskLen int    `json:",omitempty"`
-	NextHop        string `json:",omitempty"`
+	NetworkMaskLen int    `validate:"min=24,max=28"`
+	NextHop        string `validate:"ipv4"`
 }
 
 // internetAddSubnetResponseEnvelope is envelop of API response
@@ -1169,7 +1169,7 @@ type internetAddSubnetResponseEnvelope struct {
 
 // internetUpdateSubnetRequestEnvelope is envelop of API request
 type internetUpdateSubnetRequestEnvelope struct {
-	NextHop string `json:",omitempty"`
+	NextHop string `validate:"ipv4"`
 }
 
 // internetUpdateSubnetResponseEnvelope is envelop of API response
@@ -1204,12 +1204,12 @@ type internetEnableIPv6ResponseEnvelope struct {
 
 // internetPlanFindRequestEnvelope is envelop of API request
 type internetPlanFindRequestEnvelope struct {
-	Count   int             `json:",omitempty"`
-	From    int             `json:",omitempty"`
-	Sort    search.SortKeys `json:",omitempty"`
-	Filter  search.Filter   `json:",omitempty"`
-	Include []string        `json:",omitempty"`
-	Exclude []string        `json:",omitempty"`
+	Count   int             `mapconv:",omitempty"`
+	From    int             `mapconv:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty" mapconv:",omitempty"`
+	Filter  search.Filter   `json:",omitempty" mapconv:",omitempty"`
+	Include []string        `json:",omitempty" mapconv:",omitempty"`
+	Exclude []string        `json:",omitempty" mapconv:",omitempty"`
 }
 
 // internetPlanFindResponseEnvelope is envelop of API response
@@ -1278,12 +1278,12 @@ type iPv6NetReadResponseEnvelope struct {
 
 // iPv6AddrFindRequestEnvelope is envelop of API request
 type iPv6AddrFindRequestEnvelope struct {
-	Count   int             `json:",omitempty"`
-	From    int             `json:",omitempty"`
-	Sort    search.SortKeys `json:",omitempty"`
-	Filter  search.Filter   `json:",omitempty"`
-	Include []string        `json:",omitempty"`
-	Exclude []string        `json:",omitempty"`
+	Count   int             `mapconv:",omitempty"`
+	From    int             `mapconv:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty" mapconv:",omitempty"`
+	Filter  search.Filter   `json:",omitempty" mapconv:",omitempty"`
+	Include []string        `json:",omitempty" mapconv:",omitempty"`
+	Exclude []string        `json:",omitempty" mapconv:",omitempty"`
 }
 
 // iPv6AddrFindResponseEnvelope is envelop of API response
@@ -1331,12 +1331,12 @@ type iPv6AddrUpdateResponseEnvelope struct {
 
 // licenseFindRequestEnvelope is envelop of API request
 type licenseFindRequestEnvelope struct {
-	Count   int             `json:",omitempty"`
-	From    int             `json:",omitempty"`
-	Sort    search.SortKeys `json:",omitempty"`
-	Filter  search.Filter   `json:",omitempty"`
-	Include []string        `json:",omitempty"`
-	Exclude []string        `json:",omitempty"`
+	Count   int             `mapconv:",omitempty"`
+	From    int             `mapconv:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty" mapconv:",omitempty"`
+	Filter  search.Filter   `json:",omitempty" mapconv:",omitempty"`
+	Include []string        `json:",omitempty" mapconv:",omitempty"`
+	Exclude []string        `json:",omitempty" mapconv:",omitempty"`
 }
 
 // licenseFindResponseEnvelope is envelop of API response
@@ -1397,12 +1397,12 @@ type licensePatchResponseEnvelope struct {
 
 // licenseInfoFindRequestEnvelope is envelop of API request
 type licenseInfoFindRequestEnvelope struct {
-	Count   int             `json:",omitempty"`
-	From    int             `json:",omitempty"`
-	Sort    search.SortKeys `json:",omitempty"`
-	Filter  search.Filter   `json:",omitempty"`
-	Include []string        `json:",omitempty"`
-	Exclude []string        `json:",omitempty"`
+	Count   int             `mapconv:",omitempty"`
+	From    int             `mapconv:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty" mapconv:",omitempty"`
+	Filter  search.Filter   `json:",omitempty" mapconv:",omitempty"`
+	Include []string        `json:",omitempty" mapconv:",omitempty"`
+	Exclude []string        `json:",omitempty" mapconv:",omitempty"`
 }
 
 // licenseInfoFindResponseEnvelope is envelop of API response
@@ -1424,12 +1424,12 @@ type licenseInfoReadResponseEnvelope struct {
 
 // loadBalancerFindRequestEnvelope is envelop of API request
 type loadBalancerFindRequestEnvelope struct {
-	Count   int             `json:",omitempty"`
-	From    int             `json:",omitempty"`
-	Sort    search.SortKeys `json:",omitempty"`
-	Filter  search.Filter   `json:",omitempty"`
-	Include []string        `json:",omitempty"`
-	Exclude []string        `json:",omitempty"`
+	Count   int             `mapconv:",omitempty"`
+	From    int             `mapconv:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty" mapconv:",omitempty"`
+	Filter  search.Filter   `json:",omitempty" mapconv:",omitempty"`
+	Include []string        `json:",omitempty" mapconv:",omitempty"`
+	Exclude []string        `json:",omitempty" mapconv:",omitempty"`
 }
 
 // loadBalancerFindResponseEnvelope is envelop of API response
@@ -1544,12 +1544,12 @@ type loadBalancerStatusResponseEnvelope struct {
 
 // mobileGatewayFindRequestEnvelope is envelop of API request
 type mobileGatewayFindRequestEnvelope struct {
-	Count   int             `json:",omitempty"`
-	From    int             `json:",omitempty"`
-	Sort    search.SortKeys `json:",omitempty"`
-	Filter  search.Filter   `json:",omitempty"`
-	Include []string        `json:",omitempty"`
-	Exclude []string        `json:",omitempty"`
+	Count   int             `mapconv:",omitempty"`
+	From    int             `mapconv:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty" mapconv:",omitempty"`
+	Filter  search.Filter   `json:",omitempty" mapconv:",omitempty"`
+	Include []string        `json:",omitempty" mapconv:",omitempty"`
+	Exclude []string        `json:",omitempty" mapconv:",omitempty"`
 }
 
 // mobileGatewayFindResponseEnvelope is envelop of API response
@@ -1723,12 +1723,12 @@ type mobileGatewayMonitorInterfaceResponseEnvelope struct {
 
 // nFSFindRequestEnvelope is envelop of API request
 type nFSFindRequestEnvelope struct {
-	Count   int             `json:",omitempty"`
-	From    int             `json:",omitempty"`
-	Sort    search.SortKeys `json:",omitempty"`
-	Filter  search.Filter   `json:",omitempty"`
-	Include []string        `json:",omitempty"`
-	Exclude []string        `json:",omitempty"`
+	Count   int             `mapconv:",omitempty"`
+	From    int             `mapconv:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty" mapconv:",omitempty"`
+	Filter  search.Filter   `json:",omitempty" mapconv:",omitempty"`
+	Include []string        `json:",omitempty" mapconv:",omitempty"`
+	Exclude []string        `json:",omitempty" mapconv:",omitempty"`
 }
 
 // nFSFindResponseEnvelope is envelop of API response
@@ -1822,12 +1822,12 @@ type nFSMonitorInterfaceResponseEnvelope struct {
 
 // noteFindRequestEnvelope is envelop of API request
 type noteFindRequestEnvelope struct {
-	Count   int             `json:",omitempty"`
-	From    int             `json:",omitempty"`
-	Sort    search.SortKeys `json:",omitempty"`
-	Filter  search.Filter   `json:",omitempty"`
-	Include []string        `json:",omitempty"`
-	Exclude []string        `json:",omitempty"`
+	Count   int             `mapconv:",omitempty"`
+	From    int             `mapconv:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty" mapconv:",omitempty"`
+	Filter  search.Filter   `json:",omitempty" mapconv:",omitempty"`
+	Include []string        `json:",omitempty" mapconv:",omitempty"`
+	Exclude []string        `json:",omitempty" mapconv:",omitempty"`
 }
 
 // noteFindResponseEnvelope is envelop of API response
@@ -1888,12 +1888,12 @@ type notePatchResponseEnvelope struct {
 
 // packetFilterFindRequestEnvelope is envelop of API request
 type packetFilterFindRequestEnvelope struct {
-	Count   int             `json:",omitempty"`
-	From    int             `json:",omitempty"`
-	Sort    search.SortKeys `json:",omitempty"`
-	Filter  search.Filter   `json:",omitempty"`
-	Include []string        `json:",omitempty"`
-	Exclude []string        `json:",omitempty"`
+	Count   int             `mapconv:",omitempty"`
+	From    int             `mapconv:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty" mapconv:",omitempty"`
+	Filter  search.Filter   `json:",omitempty" mapconv:",omitempty"`
+	Include []string        `json:",omitempty" mapconv:",omitempty"`
+	Exclude []string        `json:",omitempty" mapconv:",omitempty"`
 }
 
 // packetFilterFindResponseEnvelope is envelop of API response
@@ -1954,12 +1954,12 @@ type packetFilterPatchResponseEnvelope struct {
 
 // privateHostFindRequestEnvelope is envelop of API request
 type privateHostFindRequestEnvelope struct {
-	Count   int             `json:",omitempty"`
-	From    int             `json:",omitempty"`
-	Sort    search.SortKeys `json:",omitempty"`
-	Filter  search.Filter   `json:",omitempty"`
-	Include []string        `json:",omitempty"`
-	Exclude []string        `json:",omitempty"`
+	Count   int             `mapconv:",omitempty"`
+	From    int             `mapconv:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty" mapconv:",omitempty"`
+	Filter  search.Filter   `json:",omitempty" mapconv:",omitempty"`
+	Include []string        `json:",omitempty" mapconv:",omitempty"`
+	Exclude []string        `json:",omitempty" mapconv:",omitempty"`
 }
 
 // privateHostFindResponseEnvelope is envelop of API response
@@ -2020,12 +2020,12 @@ type privateHostPatchResponseEnvelope struct {
 
 // privateHostPlanFindRequestEnvelope is envelop of API request
 type privateHostPlanFindRequestEnvelope struct {
-	Count   int             `json:",omitempty"`
-	From    int             `json:",omitempty"`
-	Sort    search.SortKeys `json:",omitempty"`
-	Filter  search.Filter   `json:",omitempty"`
-	Include []string        `json:",omitempty"`
-	Exclude []string        `json:",omitempty"`
+	Count   int             `mapconv:",omitempty"`
+	From    int             `mapconv:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty" mapconv:",omitempty"`
+	Filter  search.Filter   `json:",omitempty" mapconv:",omitempty"`
+	Include []string        `json:",omitempty" mapconv:",omitempty"`
+	Exclude []string        `json:",omitempty" mapconv:",omitempty"`
 }
 
 // privateHostPlanFindResponseEnvelope is envelop of API response
@@ -2047,12 +2047,12 @@ type privateHostPlanReadResponseEnvelope struct {
 
 // proxyLBFindRequestEnvelope is envelop of API request
 type proxyLBFindRequestEnvelope struct {
-	Count   int             `json:",omitempty"`
-	From    int             `json:",omitempty"`
-	Sort    search.SortKeys `json:",omitempty"`
-	Filter  search.Filter   `json:",omitempty"`
-	Include []string        `json:",omitempty"`
-	Exclude []string        `json:",omitempty"`
+	Count   int             `mapconv:",omitempty"`
+	From    int             `mapconv:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty" mapconv:",omitempty"`
+	Filter  search.Filter   `json:",omitempty" mapconv:",omitempty"`
+	Include []string        `json:",omitempty" mapconv:",omitempty"`
+	Exclude []string        `json:",omitempty" mapconv:",omitempty"`
 }
 
 // proxyLBFindResponseEnvelope is envelop of API response
@@ -2195,12 +2195,12 @@ type proxyLBMonitorConnectionResponseEnvelope struct {
 
 // regionFindRequestEnvelope is envelop of API request
 type regionFindRequestEnvelope struct {
-	Count   int             `json:",omitempty"`
-	From    int             `json:",omitempty"`
-	Sort    search.SortKeys `json:",omitempty"`
-	Filter  search.Filter   `json:",omitempty"`
-	Include []string        `json:",omitempty"`
-	Exclude []string        `json:",omitempty"`
+	Count   int             `mapconv:",omitempty"`
+	From    int             `mapconv:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty" mapconv:",omitempty"`
+	Filter  search.Filter   `json:",omitempty" mapconv:",omitempty"`
+	Include []string        `json:",omitempty" mapconv:",omitempty"`
+	Exclude []string        `json:",omitempty" mapconv:",omitempty"`
 }
 
 // regionFindResponseEnvelope is envelop of API response
@@ -2222,12 +2222,12 @@ type regionReadResponseEnvelope struct {
 
 // serverFindRequestEnvelope is envelop of API request
 type serverFindRequestEnvelope struct {
-	Count   int             `json:",omitempty"`
-	From    int             `json:",omitempty"`
-	Sort    search.SortKeys `json:",omitempty"`
-	Filter  search.Filter   `json:",omitempty"`
-	Include []string        `json:",omitempty"`
-	Exclude []string        `json:",omitempty"`
+	Count   int             `mapconv:",omitempty"`
+	From    int             `mapconv:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty" mapconv:",omitempty"`
+	Filter  search.Filter   `json:",omitempty" mapconv:",omitempty"`
+	Include []string        `json:",omitempty" mapconv:",omitempty"`
+	Exclude []string        `json:",omitempty" mapconv:",omitempty"`
 }
 
 // serverFindResponseEnvelope is envelop of API response
@@ -2296,7 +2296,7 @@ type serverChangePlanRequestEnvelope struct {
 	CPU                  int                   `json:",omitempty"`
 	MemoryMB             int                   `json:",omitempty"`
 	ServerPlanGeneration types.EPlanGeneration `json:",omitempty"`
-	ServerPlanCommitment types.ECommitment     `json:",omitempty"`
+	ServerPlanCommitment types.ECommitment     `json:",omitempty" mapconv:"ServerPlan.Commitment"`
 }
 
 // serverChangePlanResponseEnvelope is envelop of API response
@@ -2352,12 +2352,12 @@ type serverMonitorResponseEnvelope struct {
 
 // serverPlanFindRequestEnvelope is envelop of API request
 type serverPlanFindRequestEnvelope struct {
-	Count   int             `json:",omitempty"`
-	From    int             `json:",omitempty"`
-	Sort    search.SortKeys `json:",omitempty"`
-	Filter  search.Filter   `json:",omitempty"`
-	Include []string        `json:",omitempty"`
-	Exclude []string        `json:",omitempty"`
+	Count   int             `mapconv:",omitempty"`
+	From    int             `mapconv:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty" mapconv:",omitempty"`
+	Filter  search.Filter   `json:",omitempty" mapconv:",omitempty"`
+	Include []string        `json:",omitempty" mapconv:",omitempty"`
+	Exclude []string        `json:",omitempty" mapconv:",omitempty"`
 }
 
 // serverPlanFindResponseEnvelope is envelop of API response
@@ -2379,12 +2379,12 @@ type serverPlanReadResponseEnvelope struct {
 
 // serviceClassFindRequestEnvelope is envelop of API request
 type serviceClassFindRequestEnvelope struct {
-	Count   int             `json:",omitempty"`
-	From    int             `json:",omitempty"`
-	Sort    search.SortKeys `json:",omitempty"`
-	Filter  search.Filter   `json:",omitempty"`
-	Include []string        `json:",omitempty"`
-	Exclude []string        `json:",omitempty"`
+	Count   int             `mapconv:",omitempty"`
+	From    int             `mapconv:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty" mapconv:",omitempty"`
+	Filter  search.Filter   `json:",omitempty" mapconv:",omitempty"`
+	Include []string        `json:",omitempty" mapconv:",omitempty"`
+	Exclude []string        `json:",omitempty" mapconv:",omitempty"`
 }
 
 // serviceClassFindResponseEnvelope is envelop of API response
@@ -2398,12 +2398,12 @@ type serviceClassFindResponseEnvelope struct {
 
 // sIMFindRequestEnvelope is envelop of API request
 type sIMFindRequestEnvelope struct {
-	Count   int             `json:",omitempty"`
-	From    int             `json:",omitempty"`
-	Sort    search.SortKeys `json:",omitempty"`
-	Filter  search.Filter   `json:",omitempty"`
-	Include []string        `json:",omitempty"`
-	Exclude []string        `json:",omitempty"`
+	Count   int             `mapconv:",omitempty"`
+	From    int             `mapconv:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty" mapconv:",omitempty"`
+	Filter  search.Filter   `json:",omitempty" mapconv:",omitempty"`
+	Include []string        `json:",omitempty" mapconv:",omitempty"`
+	Exclude []string        `json:",omitempty" mapconv:",omitempty"`
 }
 
 // sIMFindResponseEnvelope is envelop of API response
@@ -2518,12 +2518,12 @@ type sIMStatusResponseEnvelope struct {
 
 // simpleMonitorFindRequestEnvelope is envelop of API request
 type simpleMonitorFindRequestEnvelope struct {
-	Count   int             `json:",omitempty"`
-	From    int             `json:",omitempty"`
-	Sort    search.SortKeys `json:",omitempty"`
-	Filter  search.Filter   `json:",omitempty"`
-	Include []string        `json:",omitempty"`
-	Exclude []string        `json:",omitempty"`
+	Count   int             `mapconv:",omitempty"`
+	From    int             `mapconv:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty" mapconv:",omitempty"`
+	Filter  search.Filter   `json:",omitempty" mapconv:",omitempty"`
+	Include []string        `json:",omitempty" mapconv:",omitempty"`
+	Exclude []string        `json:",omitempty" mapconv:",omitempty"`
 }
 
 // simpleMonitorFindResponseEnvelope is envelop of API response
@@ -2632,12 +2632,12 @@ type simpleMonitorHealthStatusResponseEnvelope struct {
 
 // sSHKeyFindRequestEnvelope is envelop of API request
 type sSHKeyFindRequestEnvelope struct {
-	Count   int             `json:",omitempty"`
-	From    int             `json:",omitempty"`
-	Sort    search.SortKeys `json:",omitempty"`
-	Filter  search.Filter   `json:",omitempty"`
-	Include []string        `json:",omitempty"`
-	Exclude []string        `json:",omitempty"`
+	Count   int             `mapconv:",omitempty"`
+	From    int             `mapconv:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty" mapconv:",omitempty"`
+	Filter  search.Filter   `json:",omitempty" mapconv:",omitempty"`
+	Include []string        `json:",omitempty" mapconv:",omitempty"`
+	Exclude []string        `json:",omitempty" mapconv:",omitempty"`
 }
 
 // sSHKeyFindResponseEnvelope is envelop of API response
@@ -2711,12 +2711,12 @@ type sSHKeyPatchResponseEnvelope struct {
 
 // subnetFindRequestEnvelope is envelop of API request
 type subnetFindRequestEnvelope struct {
-	Count   int             `json:",omitempty"`
-	From    int             `json:",omitempty"`
-	Sort    search.SortKeys `json:",omitempty"`
-	Filter  search.Filter   `json:",omitempty"`
-	Include []string        `json:",omitempty"`
-	Exclude []string        `json:",omitempty"`
+	Count   int             `mapconv:",omitempty"`
+	From    int             `mapconv:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty" mapconv:",omitempty"`
+	Filter  search.Filter   `json:",omitempty" mapconv:",omitempty"`
+	Include []string        `json:",omitempty" mapconv:",omitempty"`
+	Exclude []string        `json:",omitempty" mapconv:",omitempty"`
 }
 
 // subnetFindResponseEnvelope is envelop of API response
@@ -2738,12 +2738,12 @@ type subnetReadResponseEnvelope struct {
 
 // switchFindRequestEnvelope is envelop of API request
 type switchFindRequestEnvelope struct {
-	Count   int             `json:",omitempty"`
-	From    int             `json:",omitempty"`
-	Sort    search.SortKeys `json:",omitempty"`
-	Filter  search.Filter   `json:",omitempty"`
-	Include []string        `json:",omitempty"`
-	Exclude []string        `json:",omitempty"`
+	Count   int             `mapconv:",omitempty"`
+	From    int             `mapconv:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty" mapconv:",omitempty"`
+	Filter  search.Filter   `json:",omitempty" mapconv:",omitempty"`
+	Include []string        `json:",omitempty" mapconv:",omitempty"`
+	Exclude []string        `json:",omitempty" mapconv:",omitempty"`
 }
 
 // switchFindResponseEnvelope is envelop of API response
@@ -2813,12 +2813,12 @@ type switchGetServersResponseEnvelope struct {
 
 // vPCRouterFindRequestEnvelope is envelop of API request
 type vPCRouterFindRequestEnvelope struct {
-	Count   int             `json:",omitempty"`
-	From    int             `json:",omitempty"`
-	Sort    search.SortKeys `json:",omitempty"`
-	Filter  search.Filter   `json:",omitempty"`
-	Include []string        `json:",omitempty"`
-	Exclude []string        `json:",omitempty"`
+	Count   int             `mapconv:",omitempty"`
+	From    int             `mapconv:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty" mapconv:",omitempty"`
+	Filter  search.Filter   `json:",omitempty" mapconv:",omitempty"`
+	Include []string        `json:",omitempty" mapconv:",omitempty"`
+	Exclude []string        `json:",omitempty" mapconv:",omitempty"`
 }
 
 // vPCRouterFindResponseEnvelope is envelop of API response
@@ -3001,12 +3001,12 @@ type webAccelDeleteCacheResponseEnvelope struct {
 
 // zoneFindRequestEnvelope is envelop of API request
 type zoneFindRequestEnvelope struct {
-	Count   int             `json:",omitempty"`
-	From    int             `json:",omitempty"`
-	Sort    search.SortKeys `json:",omitempty"`
-	Filter  search.Filter   `json:",omitempty"`
-	Include []string        `json:",omitempty"`
-	Exclude []string        `json:",omitempty"`
+	Count   int             `mapconv:",omitempty"`
+	From    int             `mapconv:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty" mapconv:",omitempty"`
+	Filter  search.Filter   `json:",omitempty" mapconv:",omitempty"`
+	Include []string        `json:",omitempty" mapconv:",omitempty"`
+	Exclude []string        `json:",omitempty" mapconv:",omitempty"`
 }
 
 // zoneFindResponseEnvelope is envelop of API response

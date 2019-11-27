@@ -90,6 +90,7 @@ func (f *findCondtionsDef) Sort() *dsl.FieldDesc {
 		Type: meta.Static(search.SortKeys{}),
 		Tags: &dsl.FieldTags{
 			MapConv: ",omitempty",
+			JSON:    ",omitempty",
 		},
 	}
 }
@@ -100,6 +101,7 @@ func (f *findCondtionsDef) Filter() *dsl.FieldDesc {
 		Type: meta.Static(search.Filter{}),
 		Tags: &dsl.FieldTags{
 			MapConv: ",omitempty",
+			JSON:    ",omitempty",
 		},
 	}
 }
@@ -110,6 +112,7 @@ func (f *findCondtionsDef) Include() *dsl.FieldDesc {
 		Type: meta.Static([]string{}),
 		Tags: &dsl.FieldTags{
 			MapConv: ",omitempty",
+			JSON:    ",omitempty",
 		},
 	}
 }
@@ -120,6 +123,7 @@ func (f *findCondtionsDef) Exclude() *dsl.FieldDesc {
 		Type: meta.Static([]string{}),
 		Tags: &dsl.FieldTags{
 			MapConv: ",omitempty",
+			JSON:    ",omitempty",
 		},
 	}
 }
