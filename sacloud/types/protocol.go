@@ -40,3 +40,18 @@ var Protocols = &struct {
 func (p Protocol) String() string {
 	return string(p)
 }
+
+// PacketFilterProtocolsStrings 有効なパケットフィルタプロトコルを示す文字列のリスト
+//
+// Unknown(空文字)は含まない
+func PacketFilterProtocolsStrings() []string {
+	return []string{
+		Protocols.HTTP.String(),
+		Protocols.HTTPS.String(),
+		Protocols.TCP.String(),
+		Protocols.UDP.String(),
+		Protocols.ICMP.String(),
+		Protocols.Fragment.String(),
+		Protocols.IP.String(),
+	}
+}
