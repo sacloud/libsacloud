@@ -59,8 +59,9 @@ godoc:
 
 .PHONY: tools
 tools:
-	GO111MODULE=off go get golang.org/x/tools/cmd/goimports
 	GO111MODULE=off go get golang.org/x/lint/golint
+	GO111MODULE=off go get golang.org/x/tools/cmd/goimports
+	GO111MODULE=off go get golang.org/x/tools/cmd/stringer
 	GO111MODULE=off go get github.com/motemen/gobump
 	GO111MODULE=off go get github.com/sacloud/addlicense
 
