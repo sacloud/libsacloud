@@ -39,6 +39,8 @@ var DNSRecordTypes = struct {
 	SRV EDNSRecordType
 	// CAA CAAレコード
 	CAA EDNSRecordType
+	// PTR PTRレコード
+	PTR EDNSRecordType
 }{
 	Unknown: EDNSRecordType(""),
 	A:       EDNSRecordType("A"),
@@ -50,6 +52,7 @@ var DNSRecordTypes = struct {
 	TXT:     EDNSRecordType("TXT"),
 	SRV:     EDNSRecordType("SRV"),
 	CAA:     EDNSRecordType("CAA"),
+	PTR:     EDNSRecordType("PTR"),
 }
 
 // String EDNSRecordTypeの文字列表現
@@ -71,5 +74,6 @@ func DNSRecordTypesStrings() []string {
 		DNSRecordTypes.TXT.String(),
 		DNSRecordTypes.SRV.String(),
 		DNSRecordTypes.CAA.String(),
+		DNSRecordTypes.PTR.String(),
 	}
 }
