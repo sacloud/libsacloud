@@ -1255,6 +1255,7 @@ func (f *fieldsDef) ProxyLBSorryServer() *dsl.FieldDesc {
 					Type: meta.TypeInt,
 					Tags: &dsl.FieldTags{
 						Validate: "min=0,max=65535",
+						MapConv:  ",omitempty",
 					},
 				},
 			},
