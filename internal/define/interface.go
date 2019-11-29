@@ -89,6 +89,7 @@ var (
 			fields.UserIPAddress(),
 			fields.HostName(),
 			fields.SwitchID(),
+			fields.SwitchScope(),
 			fields.PacketFilterID(),
 			fields.ServerID(),
 			fields.CreatedAt(),

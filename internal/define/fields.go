@@ -411,6 +411,16 @@ func (f *fieldsDef) SwitchID() *dsl.FieldDesc {
 	}
 }
 
+func (f *fieldsDef) SwitchScope() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "SwitchScope",
+		Type: meta.TypeScope,
+		Tags: &dsl.FieldTags{
+			MapConv: "Switch.Scope,omitempty",
+		},
+	}
+}
+
 func (f *fieldsDef) PacketFilterID() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "PacketFilterID",

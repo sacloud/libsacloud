@@ -342,6 +342,7 @@ var (
 					JSON:    ",omitempty",
 				},
 			},
+			fields.PrivateHostID(),
 		},
 	}
 
@@ -353,6 +354,8 @@ var (
 			fields.Description(),
 			fields.Tags(),
 			fields.IconID(),
+			fields.PrivateHostID(),
+			fields.InterfaceDriver(),
 		},
 	}
 

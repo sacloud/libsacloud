@@ -22,7 +22,7 @@ import (
 
 // PrivateHost 専有ホスト
 type PrivateHost struct {
-	ID               types.ID         `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
+	ID               types.ID         `yaml:"id"`
 	Name             string           `json:",omitempty" yaml:"name,omitempty" structs:",omitempty"`
 	Description      string           `yaml:"description"`
 	Tags             types.Tags       `yaml:"tags"`

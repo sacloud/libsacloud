@@ -49,6 +49,18 @@ func (o *InterfaceOp) Create(ctx context.Context, zone string, param *sacloud.In
 
 	result.MACAddress = pool().nextMACAddress().String()
 
+	// connect to server
+	if param != nil && !param.ServerID.IsEmpty() {
+		serverOp := NewServerOp()
+		server, err := serverOp.Read(ctx, zone, param.ServerID)
+		if err == nil {
+			ifaceView := &sacloud.InterfaceView{}
+			copySameNameField(result, ifaceView)
+			server.Interfaces = append(server.Interfaces, ifaceView)
+			putServer(zone, server)
+		}
+	}
+
 	putInterface(zone, result)
 	return result, nil
 }
@@ -107,11 +119,26 @@ func (o *InterfaceOp) Patch(ctx context.Context, zone string, id types.ID, param
 
 // Delete is fake implementation
 func (o *InterfaceOp) Delete(ctx context.Context, zone string, id types.ID) error {
-	_, err := o.Read(ctx, zone, id)
+	value, err := o.Read(ctx, zone, id)
 	if err != nil {
 		return err
 	}
 	ds().Delete(o.key, zone, id)
+
+	if !value.ServerID.IsEmpty() {
+		server, err := NewServerOp().Read(ctx, zone, value.ServerID)
+		if err == nil {
+			var deleted []*sacloud.InterfaceView
+			for _, iface := range server.Interfaces {
+				if iface.ID != id {
+					deleted = append(deleted, iface)
+				}
+			}
+			server.Interfaces = deleted
+			putServer(zone, server)
+		}
+	}
+
 	return nil
 }
 
@@ -154,6 +181,21 @@ func (o *InterfaceOp) ConnectToSharedSegment(ctx context.Context, zone string, i
 
 	value.SwitchID = sharedSegmentSwitch.ID
 	putInterface(zone, value)
+
+	if !value.ServerID.IsEmpty() {
+		server, err := NewServerOp().Read(ctx, zone, value.ServerID)
+		if err == nil {
+			for _, iface := range server.Interfaces {
+				if iface.ID == id {
+					iface.SwitchScope = types.Scopes.Shared
+					iface.SwitchID = sharedSegmentSwitch.ID
+					iface.SwitchName = sharedSegmentSwitch.Name
+				}
+			}
+			putServer(zone, server)
+		}
+	}
+
 	return nil
 }
 
@@ -177,6 +219,21 @@ func (o *InterfaceOp) ConnectToSwitch(ctx context.Context, zone string, id types
 
 	value.SwitchID = switchID
 	putInterface(zone, value)
+
+	if !value.ServerID.IsEmpty() {
+		server, err := NewServerOp().Read(ctx, zone, value.ServerID)
+		if err == nil {
+			for _, iface := range server.Interfaces {
+				if iface.ID == id {
+					iface.SwitchScope = types.Scopes.User
+					iface.SwitchID = sw.ID
+					iface.SwitchName = sw.Name
+				}
+			}
+			putServer(zone, server)
+		}
+	}
+
 	return nil
 }
 
@@ -193,6 +250,20 @@ func (o *InterfaceOp) DisconnectFromSwitch(ctx context.Context, zone string, id 
 
 	value.SwitchID = types.ID(0)
 	putInterface(zone, value)
+
+	if !value.ServerID.IsEmpty() {
+		server, err := NewServerOp().Read(ctx, zone, value.ServerID)
+		if err == nil {
+			for _, iface := range server.Interfaces {
+				if iface.ID == id {
+					iface.SwitchScope = types.EScope("")
+					iface.SwitchID = types.ID(0)
+					iface.SwitchName = ""
+				}
+			}
+			putServer(zone, server)
+		}
+	}
 	return nil
 }
 

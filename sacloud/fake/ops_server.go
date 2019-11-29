@@ -60,6 +60,9 @@ func (o *ServerOp) Create(ctx context.Context, zone string, param *sacloud.Serve
 	result.ServerPlanID = types.StringID(fmt.Sprintf("%03d%03d%03d", result.ServerPlanGeneration, result.GetMemoryGB(), result.CPU))
 	result.ServerPlanName = fmt.Sprintf("世代:%03d メモリ:%03d CPU:%03d", result.ServerPlanGeneration, result.GetMemoryGB(), result.CPU)
 
+	// NIC操作のためにあらかじめ登録しておく
+	putServer(zone, result)
+
 	for _, cs := range param.ConnectedSwitches {
 		ifOp := NewInterfaceOp()
 		swOp := NewSwitchOp()
@@ -99,7 +102,28 @@ func (o *ServerOp) Create(ctx context.Context, zone string, param *sacloud.Serve
 		}
 		ifaceView := &sacloud.InterfaceView{}
 		copySameNameField(iface, ifaceView)
+
+		if cs != nil {
+			if cs.Scope == types.Scopes.Shared {
+				ifaceView.SwitchScope = sharedSegmentSwitch.Scope
+				ifaceView.SwitchID = sharedSegmentSwitch.ID
+				ifaceView.SwitchName = sharedSegmentSwitch.Name
+			} else {
+				ifaceView.SwitchScope = types.Scopes.User
+				ifaceView.SwitchID = cs.ID
+			}
+		}
+
 		result.Interfaces = append(result.Interfaces, ifaceView)
+	}
+	zoneOp := NewZoneOp()
+	zones, _ := zoneOp.Find(ctx, nil)
+	for _, z := range zones.Zones {
+		if z.Name == z.Name {
+			zoneInfo := &sacloud.ZoneInfo{}
+			copySameNameField(z, zoneInfo)
+			result.Zone = zoneInfo
+		}
 	}
 
 	putServer(zone, result)

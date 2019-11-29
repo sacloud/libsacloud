@@ -10547,9 +10547,10 @@ type Interface struct {
 	IPAddress      string
 	UserIPAddress  string
 	HostName       string
-	SwitchID       types.ID `mapconv:"Switch.ID,omitempty"`
-	PacketFilterID types.ID `mapconv:"PacketFilter.ID,omitempty"`
-	ServerID       types.ID `mapconv:"Server.ID,omitempty"`
+	SwitchID       types.ID     `mapconv:"Switch.ID,omitempty"`
+	SwitchScope    types.EScope `mapconv:"Switch.Scope,omitempty"`
+	PacketFilterID types.ID     `mapconv:"PacketFilter.ID,omitempty"`
+	ServerID       types.ID     `mapconv:"Server.ID,omitempty"`
 	CreatedAt      time.Time
 }
 
@@ -10566,9 +10567,10 @@ func (o *Interface) setDefaults() interface{} {
 		IPAddress      string
 		UserIPAddress  string
 		HostName       string
-		SwitchID       types.ID `mapconv:"Switch.ID,omitempty"`
-		PacketFilterID types.ID `mapconv:"PacketFilter.ID,omitempty"`
-		ServerID       types.ID `mapconv:"Server.ID,omitempty"`
+		SwitchID       types.ID     `mapconv:"Switch.ID,omitempty"`
+		SwitchScope    types.EScope `mapconv:"Switch.Scope,omitempty"`
+		PacketFilterID types.ID     `mapconv:"PacketFilter.ID,omitempty"`
+		ServerID       types.ID     `mapconv:"Server.ID,omitempty"`
 		CreatedAt      time.Time
 	}{
 		ID:             o.GetID(),
@@ -10577,6 +10579,7 @@ func (o *Interface) setDefaults() interface{} {
 		UserIPAddress:  o.GetUserIPAddress(),
 		HostName:       o.GetHostName(),
 		SwitchID:       o.GetSwitchID(),
+		SwitchScope:    o.GetSwitchScope(),
 		PacketFilterID: o.GetPacketFilterID(),
 		ServerID:       o.GetServerID(),
 		CreatedAt:      o.GetCreatedAt(),
@@ -10661,6 +10664,16 @@ func (o *Interface) GetSwitchID() types.ID {
 // SetSwitchID sets value to SwitchID
 func (o *Interface) SetSwitchID(v types.ID) {
 	o.SwitchID = v
+}
+
+// GetSwitchScope returns value of SwitchScope
+func (o *Interface) GetSwitchScope() types.EScope {
+	return o.SwitchScope
+}
+
+// SetSwitchScope sets value to SwitchScope
+func (o *Interface) SetSwitchScope(v types.EScope) {
+	o.SwitchScope = v
 }
 
 // GetPacketFilterID returns value of PacketFilterID
@@ -21835,6 +21848,7 @@ type ServerCreateRequest struct {
 	Tags                 types.Tags
 	IconID               types.ID `mapconv:"Icon.ID"`
 	WaitDiskMigration    bool     `json:",omitempty" mapconv:",omitempty"`
+	PrivateHostID        types.ID `mapconv:"PrivateHost.ID"`
 }
 
 // Validate validates by field tags
@@ -21856,6 +21870,7 @@ func (o *ServerCreateRequest) setDefaults() interface{} {
 		Tags                 types.Tags
 		IconID               types.ID `mapconv:"Icon.ID"`
 		WaitDiskMigration    bool     `json:",omitempty" mapconv:",omitempty"`
+		PrivateHostID        types.ID `mapconv:"PrivateHost.ID"`
 	}{
 		CPU:                  o.GetCPU(),
 		MemoryMB:             o.GetMemoryMB(),
@@ -21868,6 +21883,7 @@ func (o *ServerCreateRequest) setDefaults() interface{} {
 		Tags:                 o.GetTags(),
 		IconID:               o.GetIconID(),
 		WaitDiskMigration:    o.GetWaitDiskMigration(),
+		PrivateHostID:        o.GetPrivateHostID(),
 	}
 }
 
@@ -22012,6 +22028,16 @@ func (o *ServerCreateRequest) SetWaitDiskMigration(v bool) {
 	o.WaitDiskMigration = v
 }
 
+// GetPrivateHostID returns value of PrivateHostID
+func (o *ServerCreateRequest) GetPrivateHostID() types.ID {
+	return o.PrivateHostID
+}
+
+// SetPrivateHostID sets value to PrivateHostID
+func (o *ServerCreateRequest) SetPrivateHostID(v types.ID) {
+	o.PrivateHostID = v
+}
+
 /*************************************************
 * ConnectedSwitch
 *************************************************/
@@ -22084,10 +22110,12 @@ func (o *ConnectedSwitch) SetScope(v types.EScope) {
 
 // ServerUpdateRequest represents API parameter/response structure
 type ServerUpdateRequest struct {
-	Name        string `validate:"required"`
-	Description string `validate:"min=0,max=512"`
-	Tags        types.Tags
-	IconID      types.ID `mapconv:"Icon.ID"`
+	Name            string `validate:"required"`
+	Description     string `validate:"min=0,max=512"`
+	Tags            types.Tags
+	IconID          types.ID `mapconv:"Icon.ID"`
+	PrivateHostID   types.ID `mapconv:"PrivateHost.ID"`
+	InterfaceDriver types.EInterfaceDriver
 }
 
 // Validate validates by field tags
@@ -22098,15 +22126,19 @@ func (o *ServerUpdateRequest) Validate() error {
 // setDefaults implements sacloud.argumentDefaulter
 func (o *ServerUpdateRequest) setDefaults() interface{} {
 	return &struct {
-		Name        string `validate:"required"`
-		Description string `validate:"min=0,max=512"`
-		Tags        types.Tags
-		IconID      types.ID `mapconv:"Icon.ID"`
+		Name            string `validate:"required"`
+		Description     string `validate:"min=0,max=512"`
+		Tags            types.Tags
+		IconID          types.ID `mapconv:"Icon.ID"`
+		PrivateHostID   types.ID `mapconv:"PrivateHost.ID"`
+		InterfaceDriver types.EInterfaceDriver
 	}{
-		Name:        o.GetName(),
-		Description: o.GetDescription(),
-		Tags:        o.GetTags(),
-		IconID:      o.GetIconID(),
+		Name:            o.GetName(),
+		Description:     o.GetDescription(),
+		Tags:            o.GetTags(),
+		IconID:          o.GetIconID(),
+		PrivateHostID:   o.GetPrivateHostID(),
+		InterfaceDriver: o.GetInterfaceDriver(),
 	}
 }
 
@@ -22170,19 +22202,46 @@ func (o *ServerUpdateRequest) SetIconID(v types.ID) {
 	o.IconID = v
 }
 
+// GetPrivateHostID returns value of PrivateHostID
+func (o *ServerUpdateRequest) GetPrivateHostID() types.ID {
+	return o.PrivateHostID
+}
+
+// SetPrivateHostID sets value to PrivateHostID
+func (o *ServerUpdateRequest) SetPrivateHostID(v types.ID) {
+	o.PrivateHostID = v
+}
+
+// GetInterfaceDriver returns value of InterfaceDriver
+func (o *ServerUpdateRequest) GetInterfaceDriver() types.EInterfaceDriver {
+	if o.InterfaceDriver == types.EInterfaceDriver("") {
+		return types.InterfaceDrivers.VirtIO
+	}
+	return o.InterfaceDriver
+}
+
+// SetInterfaceDriver sets value to InterfaceDriver
+func (o *ServerUpdateRequest) SetInterfaceDriver(v types.EInterfaceDriver) {
+	o.InterfaceDriver = v
+}
+
 /*************************************************
 * ServerPatchRequest
 *************************************************/
 
 // ServerPatchRequest represents API parameter/response structure
 type ServerPatchRequest struct {
-	Name                    string `validate:"required"`
-	Description             string `validate:"min=0,max=512"`
-	PatchEmptyToDescription bool
-	Tags                    types.Tags
-	PatchEmptyToTags        bool
-	IconID                  types.ID `mapconv:"Icon.ID"`
-	PatchEmptyToIconID      bool
+	Name                        string `validate:"required"`
+	Description                 string `validate:"min=0,max=512"`
+	PatchEmptyToDescription     bool
+	Tags                        types.Tags
+	PatchEmptyToTags            bool
+	IconID                      types.ID `mapconv:"Icon.ID"`
+	PatchEmptyToIconID          bool
+	PrivateHostID               types.ID `mapconv:"PrivateHost.ID"`
+	PatchEmptyToPrivateHostID   bool
+	InterfaceDriver             types.EInterfaceDriver
+	PatchEmptyToInterfaceDriver bool
 }
 
 // Validate validates by field tags
@@ -22193,21 +22252,29 @@ func (o *ServerPatchRequest) Validate() error {
 // setDefaults implements sacloud.argumentDefaulter
 func (o *ServerPatchRequest) setDefaults() interface{} {
 	return &struct {
-		Name                    string `validate:"required"`
-		Description             string `validate:"min=0,max=512"`
-		PatchEmptyToDescription bool
-		Tags                    types.Tags
-		PatchEmptyToTags        bool
-		IconID                  types.ID `mapconv:"Icon.ID"`
-		PatchEmptyToIconID      bool
+		Name                        string `validate:"required"`
+		Description                 string `validate:"min=0,max=512"`
+		PatchEmptyToDescription     bool
+		Tags                        types.Tags
+		PatchEmptyToTags            bool
+		IconID                      types.ID `mapconv:"Icon.ID"`
+		PatchEmptyToIconID          bool
+		PrivateHostID               types.ID `mapconv:"PrivateHost.ID"`
+		PatchEmptyToPrivateHostID   bool
+		InterfaceDriver             types.EInterfaceDriver
+		PatchEmptyToInterfaceDriver bool
 	}{
-		Name:                    o.GetName(),
-		Description:             o.GetDescription(),
-		PatchEmptyToDescription: o.GetPatchEmptyToDescription(),
-		Tags:                    o.GetTags(),
-		PatchEmptyToTags:        o.GetPatchEmptyToTags(),
-		IconID:                  o.GetIconID(),
-		PatchEmptyToIconID:      o.GetPatchEmptyToIconID(),
+		Name:                        o.GetName(),
+		Description:                 o.GetDescription(),
+		PatchEmptyToDescription:     o.GetPatchEmptyToDescription(),
+		Tags:                        o.GetTags(),
+		PatchEmptyToTags:            o.GetPatchEmptyToTags(),
+		IconID:                      o.GetIconID(),
+		PatchEmptyToIconID:          o.GetPatchEmptyToIconID(),
+		PrivateHostID:               o.GetPrivateHostID(),
+		PatchEmptyToPrivateHostID:   o.GetPatchEmptyToPrivateHostID(),
+		InterfaceDriver:             o.GetInterfaceDriver(),
+		PatchEmptyToInterfaceDriver: o.GetPatchEmptyToInterfaceDriver(),
 	}
 }
 
@@ -22299,6 +22366,49 @@ func (o *ServerPatchRequest) GetPatchEmptyToIconID() bool {
 // SetPatchEmptyToIconID sets value to PatchEmptyToIconID
 func (o *ServerPatchRequest) SetPatchEmptyToIconID(v bool) {
 	o.PatchEmptyToIconID = v
+}
+
+// GetPrivateHostID returns value of PrivateHostID
+func (o *ServerPatchRequest) GetPrivateHostID() types.ID {
+	return o.PrivateHostID
+}
+
+// SetPrivateHostID sets value to PrivateHostID
+func (o *ServerPatchRequest) SetPrivateHostID(v types.ID) {
+	o.PrivateHostID = v
+}
+
+// GetPatchEmptyToPrivateHostID returns value of PatchEmptyToPrivateHostID
+func (o *ServerPatchRequest) GetPatchEmptyToPrivateHostID() bool {
+	return o.PatchEmptyToPrivateHostID
+}
+
+// SetPatchEmptyToPrivateHostID sets value to PatchEmptyToPrivateHostID
+func (o *ServerPatchRequest) SetPatchEmptyToPrivateHostID(v bool) {
+	o.PatchEmptyToPrivateHostID = v
+}
+
+// GetInterfaceDriver returns value of InterfaceDriver
+func (o *ServerPatchRequest) GetInterfaceDriver() types.EInterfaceDriver {
+	if o.InterfaceDriver == types.EInterfaceDriver("") {
+		return types.InterfaceDrivers.VirtIO
+	}
+	return o.InterfaceDriver
+}
+
+// SetInterfaceDriver sets value to InterfaceDriver
+func (o *ServerPatchRequest) SetInterfaceDriver(v types.EInterfaceDriver) {
+	o.InterfaceDriver = v
+}
+
+// GetPatchEmptyToInterfaceDriver returns value of PatchEmptyToInterfaceDriver
+func (o *ServerPatchRequest) GetPatchEmptyToInterfaceDriver() bool {
+	return o.PatchEmptyToInterfaceDriver
+}
+
+// SetPatchEmptyToInterfaceDriver sets value to PatchEmptyToInterfaceDriver
+func (o *ServerPatchRequest) SetPatchEmptyToInterfaceDriver(v bool) {
+	o.PatchEmptyToInterfaceDriver = v
 }
 
 /*************************************************
