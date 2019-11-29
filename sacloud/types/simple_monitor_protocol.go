@@ -17,6 +17,11 @@ package types
 // ESimpleMonitorProtocol シンプル監視 プロトコル
 type ESimpleMonitorProtocol string
 
+// String ESimpleMonitorProtocolの文字列表現
+func (p ESimpleMonitorProtocol) String() string {
+	return string(p)
+}
+
 // SimpleMonitorProtocols シンプル監視 プロトコル
 var SimpleMonitorProtocols = struct {
 	// Unknown 不明
@@ -53,4 +58,18 @@ var SimpleMonitorProtocols = struct {
 	POP3:           ESimpleMonitorProtocol("pop3"),
 	SNMP:           ESimpleMonitorProtocol("snmp"),
 	SSLCertificate: ESimpleMonitorProtocol("sslcertificate"),
+}
+
+// SimpleMonitorProtocolsStrings シンプル監視プロトコルの文字列リスト
+var SimpleMonitorProtocolsStrings = []string{
+	SimpleMonitorProtocols.HTTP.String(),
+	SimpleMonitorProtocols.HTTPS.String(),
+	SimpleMonitorProtocols.Ping.String(),
+	SimpleMonitorProtocols.TCP.String(),
+	SimpleMonitorProtocols.DNS.String(),
+	SimpleMonitorProtocols.SSH.String(),
+	SimpleMonitorProtocols.SMTP.String(),
+	SimpleMonitorProtocols.POP3.String(),
+	SimpleMonitorProtocols.SNMP.String(),
+	SimpleMonitorProtocols.SSLCertificate.String(),
 }
