@@ -17,6 +17,11 @@ package types
 // EProxyLBHealthCheckProtocol エンハンスドロードバランサ 監視プロトコル
 type EProxyLBHealthCheckProtocol string
 
+// String EProxyLBHealthCheckProtocolの文字列表現
+func (p EProxyLBHealthCheckProtocol) String() string {
+	return string(p)
+}
+
 // ProxyLBProtocols エンハンスドロードバランサ 監視プロトコル
 var ProxyLBProtocols = struct {
 	// Unknown 不明

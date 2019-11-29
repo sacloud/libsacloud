@@ -17,6 +17,11 @@ package types
 // EProxyLBRegion エンハンスドロードバランサ 設置先リージョン
 type EProxyLBRegion string
 
+// String EProxyLBRegionの文字列表現
+func (r EProxyLBRegion) String() string {
+	return string(r)
+}
+
 // ProxyLBRegions エンハンスドロードバランサ 設置先リージョン
 var ProxyLBRegions = struct {
 	// Unknown 不明
