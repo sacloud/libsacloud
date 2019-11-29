@@ -9426,6 +9426,12 @@ func (o *ServerOp) Patch(ctx context.Context, zone string, id types.ID, param *S
 	if param.PatchEmptyToIconID {
 		param.IconID = types.ID(int64(0))
 	}
+	if param.PatchEmptyToPrivateHostID {
+		param.PrivateHostID = types.ID(int64(0))
+	}
+	if param.PatchEmptyToInterfaceDriver {
+		param.InterfaceDriver = types.EInterfaceDriver("")
+	}
 	// build request body
 	var body interface{}
 	v, err := o.transformPatchArgs(id, param)

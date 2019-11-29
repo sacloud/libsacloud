@@ -192,26 +192,28 @@ var (
 		MemoryMB:        createServerParam.MemoryMB,
 	}
 	updateServerParam = &sacloud.ServerUpdateRequest{
-		Name:        testutil.ResourceName("server-upd"),
-		Tags:        []string{"tag1-upd", "tag2-upd"},
-		Description: "desc-upd",
-		IconID:      testIconID,
+		Name:            testutil.ResourceName("server-upd"),
+		Tags:            []string{"tag1-upd", "tag2-upd"},
+		Description:     "desc-upd",
+		IconID:          testIconID,
+		InterfaceDriver: types.InterfaceDrivers.E1000,
 	}
 	updateServerExpected = &sacloud.Server{
 		Name:            updateServerParam.Name,
 		Description:     updateServerParam.Description,
 		Tags:            updateServerParam.Tags,
-		InterfaceDriver: createServerParam.InterfaceDriver,
+		InterfaceDriver: updateServerParam.InterfaceDriver,
 		CPU:             createServerParam.CPU,
 		MemoryMB:        createServerParam.MemoryMB,
 		IconID:          testIconID,
 	}
 	updateServerToMinParam = &sacloud.ServerUpdateRequest{
-		Name: testutil.ResourceName("server-to-min"),
+		Name:            testutil.ResourceName("server-to-min"),
+		InterfaceDriver: types.InterfaceDrivers.E1000,
 	}
 	updateServerToMinExpected = &sacloud.Server{
 		Name:            updateServerToMinParam.Name,
-		InterfaceDriver: createServerParam.InterfaceDriver,
+		InterfaceDriver: updateServerToMinParam.InterfaceDriver,
 		CPU:             createServerParam.CPU,
 		MemoryMB:        createServerParam.MemoryMB,
 	}
