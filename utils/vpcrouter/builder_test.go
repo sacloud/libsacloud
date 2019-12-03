@@ -23,6 +23,18 @@ import (
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
+func getSetupOption() *RetryableSetupParameter {
+	if testutil.IsAccTest() {
+		return nil
+	}
+	return &RetryableSetupParameter{
+		DeleteRetryInterval:       10 * time.Millisecond,
+		ProvisioningRetryInterval: 10 * time.Millisecond,
+		PollInterval:              10 * time.Millisecond,
+		NICUpdateWaitDuration:     10 * time.Millisecond,
+	}
+}
+
 func TestBuilder_Build(t *testing.T) {
 	var switchID types.ID
 	var testZone = testutil.TestZone()
@@ -64,6 +76,7 @@ func TestBuilder_Build(t *testing.T) {
 					RouterSetting: &RouterSetting{
 						InternetConnectionEnabled: types.StringTrue,
 					},
+					SetupOptions: getSetupOption(),
 				}
 				return builder.Build(ctx, sacloud.NewVPCRouterOp(caller), testZone)
 			},
@@ -97,7 +110,7 @@ func TestBuilder_Build(t *testing.T) {
 }
 
 func TestBuilder_BuildWithRouter(t *testing.T) {
-	var routerID, routerSwitchID, switchID types.ID
+	var routerID, routerSwitchID, switchID, updSwitchID types.ID
 	var addresses []string
 	var testZone = testutil.TestZone()
 
@@ -144,6 +157,14 @@ func TestBuilder_BuildWithRouter(t *testing.T) {
 			}
 			switchID = sw.ID
 
+			updSwitch, err := swOp.Create(ctx, testZone, &sacloud.SwitchCreateRequest{
+				Name: testutil.ResourceName("vpc-router-builder-upd"),
+			})
+			if err != nil {
+				return err
+			}
+			updSwitchID = updSwitch.ID
+
 			routerSwitch, err := swOp.Read(ctx, testZone, created.Switch.ID)
 			if err != nil {
 				return err
@@ -180,10 +201,22 @@ func TestBuilder_BuildWithRouter(t *testing.T) {
 						VRID:                      1,
 						InternetConnectionEnabled: types.StringTrue,
 					},
-					BootAfterBuild: false,
-					SetupOptions:   nil,
+					SetupOptions: getSetupOption(),
 				}
 				return builder.Build(ctx, sacloud.NewVPCRouterOp(caller), testZone)
+			},
+			CheckFunc: func(t testutil.TestT, ctx *testutil.CRUDTestContext, value interface{}) error {
+				vpcRouter := value.(*sacloud.VPCRouter)
+				found := false
+				for _, iface := range vpcRouter.Interfaces {
+					if iface.Index == 2 {
+						found = true
+						if err := testutil.AssertEqual(t, switchID, iface.SwitchID, "VPCRouter.Interfaces[index=2].SwitchID"); err != nil {
+							return err
+						}
+					}
+				}
+				return testutil.AssertTrue(t, found, "VPCRouter.Interfaces[index=2]")
 			},
 		},
 		Read: &testutil.CRUDTestFunc{
@@ -200,6 +233,73 @@ func TestBuilder_BuildWithRouter(t *testing.T) {
 				)
 			},
 		},
+		Updates: []*testutil.CRUDTestFunc{
+			{
+				Func: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+					builder := &Builder{
+						Name:        testutil.ResourceName("vpc-router-builder"),
+						Description: "description",
+						Tags:        types.Tags{"tag1", "tag2"},
+						PlanID:      types.VPCRouterPlans.Premium,
+						NICSetting: &PremiumNICSetting{
+							SwitchID:         routerSwitchID,
+							VirtualIPAddress: addresses[0],
+							IPAddress1:       addresses[1],
+							IPAddress2:       addresses[2],
+							IPAliases:        []string{addresses[3], addresses[4]},
+							NetworkMaskLen:   28,
+						},
+						AdditionalNICSettings: []AdditionalNICSettingHolder{
+							&AdditionalPremiumNICSetting{
+								SwitchID:         updSwitchID,
+								VirtualIPAddress: "192.168.0.5",
+								IPAddress1:       "192.168.0.6",
+								IPAddress2:       "192.168.0.7",
+								NetworkMaskLen:   28,
+								Index:            3,
+							},
+						},
+						RouterSetting: &RouterSetting{
+							VRID:                      1,
+							InternetConnectionEnabled: types.StringTrue,
+						},
+						SetupOptions: getSetupOption(),
+					}
+					return builder.Update(ctx, sacloud.NewVPCRouterOp(caller), testZone, ctx.ID)
+				},
+				CheckFunc: func(t testutil.TestT, ctx *testutil.CRUDTestContext, value interface{}) error {
+					vpcRouter := value.(*sacloud.VPCRouter)
+					found := false
+					for _, iface := range vpcRouter.Interfaces {
+						if iface.Index == 3 {
+							found = true
+							if err := testutil.AssertEqual(t, updSwitchID, iface.SwitchID, "VPCRouter.Interfaces[index=2].SwitchID"); err != nil {
+								return err
+							}
+						}
+					}
+					if err := testutil.AssertTrue(t, found, "VPCRouter.Interfaces[index=2]"); err != nil {
+						return err
+					}
+
+					found = false
+					for _, nicSetting := range vpcRouter.Settings.Interfaces {
+						if nicSetting.Index == 3 {
+							found = true
+							err := testutil.DoAsserts(
+								testutil.AssertEqualFunc(t, "192.168.0.5", nicSetting.VirtualIPAddress, "VPCRouter.Settings.Interfaces.VirtualIPAddress"),
+								testutil.AssertEqualFunc(t, []string{"192.168.0.6", "192.168.0.7"}, nicSetting.IPAddress, "VPCRouter.Settings.Interfaces.IPAddress"),
+								testutil.AssertEqualFunc(t, 28, nicSetting.NetworkMaskLen, "VPCRouter.Settings.Interfaces.NetworkMaskLen"),
+							)
+							if err != nil {
+								return err
+							}
+						}
+					}
+					return testutil.AssertTrue(t, found, "VPCRouter.Setting.Interfaces[index=2]")
+				},
+			},
+		},
 		Delete: &testutil.CRUDTestDeleteFunc{
 			Func: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {
 				vpcRouterOp := sacloud.NewVPCRouterOp(caller)
@@ -212,7 +312,10 @@ func TestBuilder_BuildWithRouter(t *testing.T) {
 					return err
 				}
 				swOp := sacloud.NewSwitchOp(caller)
-				return swOp.Delete(ctx, testZone, switchID)
+				if err := swOp.Delete(ctx, testZone, switchID); err != nil {
+					return err
+				}
+				return swOp.Delete(ctx, testZone, updSwitchID)
 			},
 		},
 	})
