@@ -282,6 +282,7 @@ func (o *VPCRouterOp) ConnectToSwitch(ctx context.Context, zone string, id types
 
 	vpcRouterInterface := &sacloud.VPCRouterInterface{}
 	copySameNameField(iface, vpcRouterInterface)
+	vpcRouterInterface.Index = nicIndex
 	value.Interfaces = append(value.Interfaces, vpcRouterInterface)
 
 	putVPCRouter(zone, value)
