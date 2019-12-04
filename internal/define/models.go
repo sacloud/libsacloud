@@ -788,7 +788,6 @@ func (m *modelsDef) vpcRouterSetting() *dsl.Model {
 				Name: "Interfaces",
 				Type: m.vpcRouterInterface(),
 				Tags: &dsl.FieldTags{
-					JSON:    ",omitempty",
 					MapConv: "Router.[]Interfaces,omitempty,recursive",
 				},
 			},
@@ -796,7 +795,6 @@ func (m *modelsDef) vpcRouterSetting() *dsl.Model {
 				Name: "StaticNAT",
 				Type: m.vpcRouterStaticNAT(),
 				Tags: &dsl.FieldTags{
-					JSON:    ",omitempty",
 					MapConv: "Router.StaticNAT.[]Config,omitempty,recursive",
 				},
 			},
@@ -804,7 +802,6 @@ func (m *modelsDef) vpcRouterSetting() *dsl.Model {
 				Name: "PortForwarding",
 				Type: m.vpcRouterPortForwarding(),
 				Tags: &dsl.FieldTags{
-					JSON:    ",omitempty",
 					MapConv: "Router.PortForwarding.[]Config,omitempty,recursive",
 				},
 			},
@@ -812,7 +809,6 @@ func (m *modelsDef) vpcRouterSetting() *dsl.Model {
 				Name: "Firewall",
 				Type: m.vpcRouterFirewall(),
 				Tags: &dsl.FieldTags{
-					JSON:    ",omitempty",
 					MapConv: "Router.Firewall.[]Config,omitempty,recursive",
 				},
 			},
@@ -820,7 +816,6 @@ func (m *modelsDef) vpcRouterSetting() *dsl.Model {
 				Name: "DHCPServer",
 				Type: m.vpcRouterDHCPServer(),
 				Tags: &dsl.FieldTags{
-					JSON:    ",omitempty",
 					MapConv: "Router.DHCPServer.[]Config,omitempty,recursive",
 				},
 			},
@@ -828,7 +823,6 @@ func (m *modelsDef) vpcRouterSetting() *dsl.Model {
 				Name: "DHCPStaticMapping",
 				Type: m.vpcRouterDHCPStaticMapping(),
 				Tags: &dsl.FieldTags{
-					JSON:    ",omitempty",
 					MapConv: "Router.DHCPStaticMapping.[]Config,omitempty,recursive",
 				},
 			},
@@ -836,7 +830,6 @@ func (m *modelsDef) vpcRouterSetting() *dsl.Model {
 				Name: "PPTPServer",
 				Type: m.vpcRouterPPTPServer(),
 				Tags: &dsl.FieldTags{
-					JSON:    ",omitempty",
 					MapConv: "Router.PPTPServer.Config,omitempty,recursive",
 				},
 			},
@@ -851,7 +844,6 @@ func (m *modelsDef) vpcRouterSetting() *dsl.Model {
 				Name: "L2TPIPsecServer",
 				Type: m.vpcRouterL2TPIPsecServer(),
 				Tags: &dsl.FieldTags{
-					JSON:    ",omitempty",
 					MapConv: "Router.L2TPIPsecServer.Config,omitempty,recursive",
 				},
 			},
@@ -866,7 +858,6 @@ func (m *modelsDef) vpcRouterSetting() *dsl.Model {
 				Name: "RemoteAccessUsers",
 				Type: m.vpcRouterRemoteAccessUser(),
 				Tags: &dsl.FieldTags{
-					JSON:    ",omitempty",
 					MapConv: "Router.RemoteAccessUsers.[]Config,omitempty,recursive",
 				},
 			},
@@ -874,7 +865,6 @@ func (m *modelsDef) vpcRouterSetting() *dsl.Model {
 				Name: "SiteToSiteIPsecVPN",
 				Type: m.vpcRouterSiteToSiteIPsecVPN(),
 				Tags: &dsl.FieldTags{
-					JSON:    ",omitempty",
 					MapConv: "Router.SiteToSiteIPsecVPN.[]Config,omitempty,recursive",
 				},
 			},
@@ -882,7 +872,6 @@ func (m *modelsDef) vpcRouterSetting() *dsl.Model {
 				Name: "StaticRoute",
 				Type: m.vpcRouterStaticRoute(),
 				Tags: &dsl.FieldTags{
-					JSON:    ",omitempty",
 					MapConv: "Router.StaticRoutes.[]Config,omitempty,recursive",
 				},
 			},

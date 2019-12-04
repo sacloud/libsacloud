@@ -27743,19 +27743,19 @@ func (o *VPCRouter) SetZoneID(v types.ID) {
 type VPCRouterSetting struct {
 	VRID                      int                            `json:",omitempty" mapconv:"Router.VRID"`
 	InternetConnectionEnabled types.StringFlag               `mapconv:"Router.InternetConnection.Enabled,omitempty"`
-	Interfaces                []*VPCRouterInterfaceSetting   `json:",omitempty" mapconv:"Router.[]Interfaces,omitempty,recursive"`
-	StaticNAT                 []*VPCRouterStaticNAT          `json:",omitempty" mapconv:"Router.StaticNAT.[]Config,omitempty,recursive"`
-	PortForwarding            []*VPCRouterPortForwarding     `json:",omitempty" mapconv:"Router.PortForwarding.[]Config,omitempty,recursive"`
-	Firewall                  []*VPCRouterFirewall           `json:",omitempty" mapconv:"Router.Firewall.[]Config,omitempty,recursive"`
-	DHCPServer                []*VPCRouterDHCPServer         `json:",omitempty" mapconv:"Router.DHCPServer.[]Config,omitempty,recursive"`
-	DHCPStaticMapping         []*VPCRouterDHCPStaticMapping  `json:",omitempty" mapconv:"Router.DHCPStaticMapping.[]Config,omitempty,recursive"`
-	PPTPServer                *VPCRouterPPTPServer           `json:",omitempty" mapconv:"Router.PPTPServer.Config,omitempty,recursive"`
+	Interfaces                []*VPCRouterInterfaceSetting   `mapconv:"Router.[]Interfaces,omitempty,recursive"`
+	StaticNAT                 []*VPCRouterStaticNAT          `mapconv:"Router.StaticNAT.[]Config,omitempty,recursive"`
+	PortForwarding            []*VPCRouterPortForwarding     `mapconv:"Router.PortForwarding.[]Config,omitempty,recursive"`
+	Firewall                  []*VPCRouterFirewall           `mapconv:"Router.Firewall.[]Config,omitempty,recursive"`
+	DHCPServer                []*VPCRouterDHCPServer         `mapconv:"Router.DHCPServer.[]Config,omitempty,recursive"`
+	DHCPStaticMapping         []*VPCRouterDHCPStaticMapping  `mapconv:"Router.DHCPStaticMapping.[]Config,omitempty,recursive"`
+	PPTPServer                *VPCRouterPPTPServer           `mapconv:"Router.PPTPServer.Config,omitempty,recursive"`
 	PPTPServerEnabled         types.StringFlag               `mapconv:"Router.PPTPServer.Enabled,omitempty"`
-	L2TPIPsecServer           *VPCRouterL2TPIPsecServer      `json:",omitempty" mapconv:"Router.L2TPIPsecServer.Config,omitempty,recursive"`
+	L2TPIPsecServer           *VPCRouterL2TPIPsecServer      `mapconv:"Router.L2TPIPsecServer.Config,omitempty,recursive"`
 	L2TPIPsecServerEnabled    types.StringFlag               `mapconv:"Router.L2TPIPsecServer.Enabled,omitempty"`
-	RemoteAccessUsers         []*VPCRouterRemoteAccessUser   `json:",omitempty" mapconv:"Router.RemoteAccessUsers.[]Config,omitempty,recursive"`
-	SiteToSiteIPsecVPN        []*VPCRouterSiteToSiteIPsecVPN `json:",omitempty" mapconv:"Router.SiteToSiteIPsecVPN.[]Config,omitempty,recursive"`
-	StaticRoute               []*VPCRouterStaticRoute        `json:",omitempty" mapconv:"Router.StaticRoutes.[]Config,omitempty,recursive"`
+	RemoteAccessUsers         []*VPCRouterRemoteAccessUser   `mapconv:"Router.RemoteAccessUsers.[]Config,omitempty,recursive"`
+	SiteToSiteIPsecVPN        []*VPCRouterSiteToSiteIPsecVPN `mapconv:"Router.SiteToSiteIPsecVPN.[]Config,omitempty,recursive"`
+	StaticRoute               []*VPCRouterStaticRoute        `mapconv:"Router.StaticRoutes.[]Config,omitempty,recursive"`
 	SyslogHost                string                         `mapconv:"Router.SyslogHost"`
 }
 
@@ -27769,19 +27769,19 @@ func (o *VPCRouterSetting) setDefaults() interface{} {
 	return &struct {
 		VRID                      int                            `json:",omitempty" mapconv:"Router.VRID"`
 		InternetConnectionEnabled types.StringFlag               `mapconv:"Router.InternetConnection.Enabled,omitempty"`
-		Interfaces                []*VPCRouterInterfaceSetting   `json:",omitempty" mapconv:"Router.[]Interfaces,omitempty,recursive"`
-		StaticNAT                 []*VPCRouterStaticNAT          `json:",omitempty" mapconv:"Router.StaticNAT.[]Config,omitempty,recursive"`
-		PortForwarding            []*VPCRouterPortForwarding     `json:",omitempty" mapconv:"Router.PortForwarding.[]Config,omitempty,recursive"`
-		Firewall                  []*VPCRouterFirewall           `json:",omitempty" mapconv:"Router.Firewall.[]Config,omitempty,recursive"`
-		DHCPServer                []*VPCRouterDHCPServer         `json:",omitempty" mapconv:"Router.DHCPServer.[]Config,omitempty,recursive"`
-		DHCPStaticMapping         []*VPCRouterDHCPStaticMapping  `json:",omitempty" mapconv:"Router.DHCPStaticMapping.[]Config,omitempty,recursive"`
-		PPTPServer                *VPCRouterPPTPServer           `json:",omitempty" mapconv:"Router.PPTPServer.Config,omitempty,recursive"`
+		Interfaces                []*VPCRouterInterfaceSetting   `mapconv:"Router.[]Interfaces,omitempty,recursive"`
+		StaticNAT                 []*VPCRouterStaticNAT          `mapconv:"Router.StaticNAT.[]Config,omitempty,recursive"`
+		PortForwarding            []*VPCRouterPortForwarding     `mapconv:"Router.PortForwarding.[]Config,omitempty,recursive"`
+		Firewall                  []*VPCRouterFirewall           `mapconv:"Router.Firewall.[]Config,omitempty,recursive"`
+		DHCPServer                []*VPCRouterDHCPServer         `mapconv:"Router.DHCPServer.[]Config,omitempty,recursive"`
+		DHCPStaticMapping         []*VPCRouterDHCPStaticMapping  `mapconv:"Router.DHCPStaticMapping.[]Config,omitempty,recursive"`
+		PPTPServer                *VPCRouterPPTPServer           `mapconv:"Router.PPTPServer.Config,omitempty,recursive"`
 		PPTPServerEnabled         types.StringFlag               `mapconv:"Router.PPTPServer.Enabled,omitempty"`
-		L2TPIPsecServer           *VPCRouterL2TPIPsecServer      `json:",omitempty" mapconv:"Router.L2TPIPsecServer.Config,omitempty,recursive"`
+		L2TPIPsecServer           *VPCRouterL2TPIPsecServer      `mapconv:"Router.L2TPIPsecServer.Config,omitempty,recursive"`
 		L2TPIPsecServerEnabled    types.StringFlag               `mapconv:"Router.L2TPIPsecServer.Enabled,omitempty"`
-		RemoteAccessUsers         []*VPCRouterRemoteAccessUser   `json:",omitempty" mapconv:"Router.RemoteAccessUsers.[]Config,omitempty,recursive"`
-		SiteToSiteIPsecVPN        []*VPCRouterSiteToSiteIPsecVPN `json:",omitempty" mapconv:"Router.SiteToSiteIPsecVPN.[]Config,omitempty,recursive"`
-		StaticRoute               []*VPCRouterStaticRoute        `json:",omitempty" mapconv:"Router.StaticRoutes.[]Config,omitempty,recursive"`
+		RemoteAccessUsers         []*VPCRouterRemoteAccessUser   `mapconv:"Router.RemoteAccessUsers.[]Config,omitempty,recursive"`
+		SiteToSiteIPsecVPN        []*VPCRouterSiteToSiteIPsecVPN `mapconv:"Router.SiteToSiteIPsecVPN.[]Config,omitempty,recursive"`
+		StaticRoute               []*VPCRouterStaticRoute        `mapconv:"Router.StaticRoutes.[]Config,omitempty,recursive"`
 		SyslogHost                string                         `mapconv:"Router.SyslogHost"`
 	}{
 		VRID:                      o.GetVRID(),
