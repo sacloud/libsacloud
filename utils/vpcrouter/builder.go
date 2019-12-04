@@ -26,8 +26,14 @@ import (
 	"github.com/sacloud/libsacloud/v2/utils/setup"
 )
 
-// DefaultNICUpdateWaitDuration NIC切断/削除後の待ち時間デフォルト値
-var DefaultNICUpdateWaitDuration = 5 * time.Second
+var (
+	// DefaultNICUpdateWaitDuration NIC切断/削除後の待ち時間デフォルト値
+	DefaultNICUpdateWaitDuration = 5 * time.Second
+	// DefaultSetupOptions RetryableSetupのデフォルトオプション
+	DefaultSetupOptions = &RetryableSetupParameter{
+		NICUpdateWaitDuration: DefaultNICUpdateWaitDuration,
+	}
+)
 
 // Builder VPCルータの構築を行う
 type Builder struct {
@@ -80,9 +86,7 @@ type RetryableSetupParameter struct {
 
 func (b *Builder) init() {
 	if b.SetupOptions == nil {
-		b.SetupOptions = &RetryableSetupParameter{
-			NICUpdateWaitDuration: DefaultNICUpdateWaitDuration,
-		}
+		b.SetupOptions = DefaultSetupOptions
 	}
 	if b.RouterSetting == nil {
 		b.RouterSetting = &RouterSetting{

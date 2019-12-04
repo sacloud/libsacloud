@@ -18,6 +18,7 @@ import (
 	"encoding/json"
 	"testing"
 
+	"github.com/sacloud/libsacloud/v2/sacloud/types"
 	"github.com/stretchr/testify/require"
 )
 
@@ -90,4 +91,88 @@ func TestVPCRouterRemarkServers_UnmarshalJSON(t *testing.T) {
 	err = json.Unmarshal([]byte(vpcRouterRemarkServersNotEmptyJSON), &remarkServers)
 	require.NoError(t, err)
 	require.Len(t, remarkServers, 1)
+}
+
+const vpcRouterMultipleFirewallJSON = `
+{
+	"Config": [
+      {
+		"Receive": [],
+		"Send": []
+      },
+      {
+		"Receive": [],
+		"Send": []
+      },
+      {
+		"Receive": [],
+		"Send": [
+			{
+                  "Protocol": "ip",
+                  "SourceNetwork": null,
+                  "SourcePort": null,
+                  "DestinationNetwork": null,
+                  "DestinationPort": null,
+                  "Action": "deny",
+                  "Logging": "False",
+                  "Description": ""
+            }
+		]
+      },
+      {
+		"Receive": [],
+		"Send": []
+      },
+      {
+		"Receive": [],
+		"Send": []
+      },
+      {
+		"Receive": [],
+		"Send": []
+      },
+      {
+		"Receive": [],
+		"Send": []
+      },
+      {
+		"Receive": [],
+		"Send": []
+      }
+	],
+	"Enabled": "True"
+}
+`
+
+var vpcRouterFirewallMarshaled = `{"Config":[{"Receive":[],"Send":[]},{"Receive":[],"Send":[]},{"Receive":[],"Send":[{"Protocol":"ip","Action":"deny","Description":""}]},{"Receive":[],"Send":[]},{"Receive":[],"Send":[]},{"Receive":[],"Send":[]},{"Receive":[],"Send":[]},{"Receive":[],"Send":[]}],"Enabled":"True"}`
+
+func TestVPCRouterFirewall_UnmarshalJSON(t *testing.T) {
+	var firewallConfig VPCRouterFirewall
+	err := json.Unmarshal([]byte(vpcRouterMultipleFirewallJSON), &firewallConfig)
+	require.NoError(t, err)
+	for i, v := range firewallConfig.Config {
+		require.Equal(t, i, v.Index)
+	}
+
+}
+
+func TestVPCRouterFirewall_MarshalJSON(t *testing.T) {
+	firewallConfig := &VPCRouterFirewall{
+		Config: VPCRouterFirewallConfigs{
+			{
+				Send: []*VPCRouterFirewallRule{
+					{
+						Protocol: "ip",
+						Action:   types.Actions.Deny,
+					},
+				},
+				Index: 2,
+			},
+		},
+		Enabled: types.StringFlag(true),
+	}
+
+	data, err := json.Marshal(firewallConfig)
+	require.NoError(t, err)
+	require.Equal(t, vpcRouterFirewallMarshaled, string(data))
 }

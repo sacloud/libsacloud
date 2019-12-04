@@ -185,7 +185,6 @@ func TestBuilder_BuildWithRouter(t *testing.T) {
 						IPAddress1:       addresses[1],
 						IPAddress2:       addresses[2],
 						IPAliases:        []string{addresses[3], addresses[4]},
-						NetworkMaskLen:   28,
 					},
 					AdditionalNICSettings: []AdditionalNICSettingHolder{
 						&AdditionalPremiumNICSetting{
@@ -247,7 +246,6 @@ func TestBuilder_BuildWithRouter(t *testing.T) {
 							IPAddress1:       addresses[1],
 							IPAddress2:       addresses[2],
 							IPAliases:        []string{addresses[3], addresses[4]},
-							NetworkMaskLen:   28,
 						},
 						AdditionalNICSettings: []AdditionalNICSettingHolder{
 							&AdditionalPremiumNICSetting{
