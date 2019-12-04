@@ -781,7 +781,6 @@ func (m *modelsDef) vpcRouterSetting() *dsl.Model {
 				Name: "InternetConnectionEnabled",
 				Type: meta.TypeStringFlag,
 				Tags: &dsl.FieldTags{
-					JSON:    ",omitempty",
 					MapConv: "Router.InternetConnection.Enabled,omitempty",
 				},
 			},
@@ -845,7 +844,6 @@ func (m *modelsDef) vpcRouterSetting() *dsl.Model {
 				Name: "PPTPServerEnabled",
 				Type: meta.TypeStringFlag,
 				Tags: &dsl.FieldTags{
-					JSON:    ",omitempty",
 					MapConv: "Router.PPTPServer.Enabled,omitempty",
 				},
 			},
@@ -861,7 +859,6 @@ func (m *modelsDef) vpcRouterSetting() *dsl.Model {
 				Name: "L2TPIPsecServerEnabled",
 				Type: meta.TypeStringFlag,
 				Tags: &dsl.FieldTags{
-					JSON:    ",omitempty",
 					MapConv: "Router.L2TPIPsecServer.Enabled,omitempty",
 				},
 			},
@@ -1007,6 +1004,10 @@ func (m *modelsDef) vpcRouterFirewall() *dsl.Model {
 			{
 				Name: "Receive",
 				Type: m.vpcRouterFirewallRule(),
+			},
+			{
+				Name: "Index",
+				Type: meta.TypeInt,
 			},
 		},
 	}

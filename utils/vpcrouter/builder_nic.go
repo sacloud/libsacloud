@@ -48,7 +48,6 @@ type PremiumNICSetting struct {
 	IPAddress2       string
 	VirtualIPAddress string
 	IPAliases        []string
-	NetworkMaskLen   int
 }
 
 func (s *PremiumNICSetting) getConnectedSwitch() *sacloud.ApplianceConnectedSwitch {
@@ -64,7 +63,6 @@ func (s *PremiumNICSetting) getInterfaceSetting() *sacloud.VPCRouterInterfaceSet
 		IPAddress:        []string{s.IPAddress1, s.IPAddress2},
 		VirtualIPAddress: s.VirtualIPAddress,
 		IPAliases:        s.IPAliases,
-		NetworkMaskLen:   s.NetworkMaskLen,
 		Index:            0,
 	}
 }

@@ -27742,7 +27742,7 @@ func (o *VPCRouter) SetZoneID(v types.ID) {
 // VPCRouterSetting represents API parameter/response structure
 type VPCRouterSetting struct {
 	VRID                      int                            `json:",omitempty" mapconv:"Router.VRID"`
-	InternetConnectionEnabled types.StringFlag               `json:",omitempty" mapconv:"Router.InternetConnection.Enabled,omitempty"`
+	InternetConnectionEnabled types.StringFlag               `mapconv:"Router.InternetConnection.Enabled,omitempty"`
 	Interfaces                []*VPCRouterInterfaceSetting   `json:",omitempty" mapconv:"Router.[]Interfaces,omitempty,recursive"`
 	StaticNAT                 []*VPCRouterStaticNAT          `json:",omitempty" mapconv:"Router.StaticNAT.[]Config,omitempty,recursive"`
 	PortForwarding            []*VPCRouterPortForwarding     `json:",omitempty" mapconv:"Router.PortForwarding.[]Config,omitempty,recursive"`
@@ -27750,9 +27750,9 @@ type VPCRouterSetting struct {
 	DHCPServer                []*VPCRouterDHCPServer         `json:",omitempty" mapconv:"Router.DHCPServer.[]Config,omitempty,recursive"`
 	DHCPStaticMapping         []*VPCRouterDHCPStaticMapping  `json:",omitempty" mapconv:"Router.DHCPStaticMapping.[]Config,omitempty,recursive"`
 	PPTPServer                *VPCRouterPPTPServer           `json:",omitempty" mapconv:"Router.PPTPServer.Config,omitempty,recursive"`
-	PPTPServerEnabled         types.StringFlag               `json:",omitempty" mapconv:"Router.PPTPServer.Enabled,omitempty"`
+	PPTPServerEnabled         types.StringFlag               `mapconv:"Router.PPTPServer.Enabled,omitempty"`
 	L2TPIPsecServer           *VPCRouterL2TPIPsecServer      `json:",omitempty" mapconv:"Router.L2TPIPsecServer.Config,omitempty,recursive"`
-	L2TPIPsecServerEnabled    types.StringFlag               `json:",omitempty" mapconv:"Router.L2TPIPsecServer.Enabled,omitempty"`
+	L2TPIPsecServerEnabled    types.StringFlag               `mapconv:"Router.L2TPIPsecServer.Enabled,omitempty"`
 	RemoteAccessUsers         []*VPCRouterRemoteAccessUser   `json:",omitempty" mapconv:"Router.RemoteAccessUsers.[]Config,omitempty,recursive"`
 	SiteToSiteIPsecVPN        []*VPCRouterSiteToSiteIPsecVPN `json:",omitempty" mapconv:"Router.SiteToSiteIPsecVPN.[]Config,omitempty,recursive"`
 	StaticRoute               []*VPCRouterStaticRoute        `json:",omitempty" mapconv:"Router.StaticRoutes.[]Config,omitempty,recursive"`
@@ -27768,7 +27768,7 @@ func (o *VPCRouterSetting) Validate() error {
 func (o *VPCRouterSetting) setDefaults() interface{} {
 	return &struct {
 		VRID                      int                            `json:",omitempty" mapconv:"Router.VRID"`
-		InternetConnectionEnabled types.StringFlag               `json:",omitempty" mapconv:"Router.InternetConnection.Enabled,omitempty"`
+		InternetConnectionEnabled types.StringFlag               `mapconv:"Router.InternetConnection.Enabled,omitempty"`
 		Interfaces                []*VPCRouterInterfaceSetting   `json:",omitempty" mapconv:"Router.[]Interfaces,omitempty,recursive"`
 		StaticNAT                 []*VPCRouterStaticNAT          `json:",omitempty" mapconv:"Router.StaticNAT.[]Config,omitempty,recursive"`
 		PortForwarding            []*VPCRouterPortForwarding     `json:",omitempty" mapconv:"Router.PortForwarding.[]Config,omitempty,recursive"`
@@ -27776,9 +27776,9 @@ func (o *VPCRouterSetting) setDefaults() interface{} {
 		DHCPServer                []*VPCRouterDHCPServer         `json:",omitempty" mapconv:"Router.DHCPServer.[]Config,omitempty,recursive"`
 		DHCPStaticMapping         []*VPCRouterDHCPStaticMapping  `json:",omitempty" mapconv:"Router.DHCPStaticMapping.[]Config,omitempty,recursive"`
 		PPTPServer                *VPCRouterPPTPServer           `json:",omitempty" mapconv:"Router.PPTPServer.Config,omitempty,recursive"`
-		PPTPServerEnabled         types.StringFlag               `json:",omitempty" mapconv:"Router.PPTPServer.Enabled,omitempty"`
+		PPTPServerEnabled         types.StringFlag               `mapconv:"Router.PPTPServer.Enabled,omitempty"`
 		L2TPIPsecServer           *VPCRouterL2TPIPsecServer      `json:",omitempty" mapconv:"Router.L2TPIPsecServer.Config,omitempty,recursive"`
-		L2TPIPsecServerEnabled    types.StringFlag               `json:",omitempty" mapconv:"Router.L2TPIPsecServer.Enabled,omitempty"`
+		L2TPIPsecServerEnabled    types.StringFlag               `mapconv:"Router.L2TPIPsecServer.Enabled,omitempty"`
 		RemoteAccessUsers         []*VPCRouterRemoteAccessUser   `json:",omitempty" mapconv:"Router.RemoteAccessUsers.[]Config,omitempty,recursive"`
 		SiteToSiteIPsecVPN        []*VPCRouterSiteToSiteIPsecVPN `json:",omitempty" mapconv:"Router.SiteToSiteIPsecVPN.[]Config,omitempty,recursive"`
 		StaticRoute               []*VPCRouterStaticRoute        `json:",omitempty" mapconv:"Router.StaticRoutes.[]Config,omitempty,recursive"`
@@ -28200,6 +28200,7 @@ func (o *VPCRouterPortForwarding) SetDescription(v string) {
 type VPCRouterFirewall struct {
 	Send    []*VPCRouterFirewallRule
 	Receive []*VPCRouterFirewallRule
+	Index   int
 }
 
 // Validate validates by field tags
@@ -28212,9 +28213,11 @@ func (o *VPCRouterFirewall) setDefaults() interface{} {
 	return &struct {
 		Send    []*VPCRouterFirewallRule
 		Receive []*VPCRouterFirewallRule
+		Index   int
 	}{
 		Send:    o.GetSend(),
 		Receive: o.GetReceive(),
+		Index:   o.GetIndex(),
 	}
 }
 
@@ -28236,6 +28239,16 @@ func (o *VPCRouterFirewall) GetReceive() []*VPCRouterFirewallRule {
 // SetReceive sets value to Receive
 func (o *VPCRouterFirewall) SetReceive(v []*VPCRouterFirewallRule) {
 	o.Receive = v
+}
+
+// GetIndex returns value of Index
+func (o *VPCRouterFirewall) GetIndex() int {
+	return o.Index
+}
+
+// SetIndex sets value to Index
+func (o *VPCRouterFirewall) SetIndex(v int) {
+	o.Index = v
 }
 
 /*************************************************
