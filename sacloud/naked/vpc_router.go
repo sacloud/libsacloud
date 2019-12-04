@@ -84,7 +84,7 @@ type VPCRouterInterface struct {
 	// Index 仮想フィールド、VPCルータなどでInterfaces(実体は[]*Interface)を扱う場合にUnmarshalJSONの中で設定される
 	//
 	// Findした際のAPIからの応答にも同名のフィールドが含まれるが無関係。
-	Index int
+	Index int `json:"-"`
 }
 
 // VPCRouterInterfaces Interface配列
@@ -282,7 +282,7 @@ type VPCRouterFirewallConfig struct {
 	Send    []*VPCRouterFirewallRule `yaml:"send"`
 
 	// Index 仮想フィールド UnmarshalJSONの中で設定される
-	Index int
+	Index int `json:"-"`
 }
 
 // VPCRouterFirewallRule ファイアウォール ルール
