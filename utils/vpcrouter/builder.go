@@ -29,11 +29,14 @@ import (
 var (
 	// DefaultNICUpdateWaitDuration NIC切断/削除後の待ち時間デフォルト値
 	DefaultNICUpdateWaitDuration = 5 * time.Second
-	// DefaultSetupOptions RetryableSetupのデフォルトオプション
-	DefaultSetupOptions = &RetryableSetupParameter{
+)
+
+// DefaultSetupOptions RetryableSetupのデフォルトオプション
+func DefaultSetupOptions() *RetryableSetupParameter {
+	return &RetryableSetupParameter{
 		NICUpdateWaitDuration: DefaultNICUpdateWaitDuration,
 	}
-)
+}
 
 // Builder VPCルータの構築を行う
 type Builder struct {
@@ -86,7 +89,7 @@ type RetryableSetupParameter struct {
 
 func (b *Builder) init() {
 	if b.SetupOptions == nil {
-		b.SetupOptions = DefaultSetupOptions
+		b.SetupOptions = DefaultSetupOptions()
 	}
 	if b.RouterSetting == nil {
 		b.RouterSetting = &RouterSetting{

@@ -28,23 +28,24 @@ import (
 // MaxRetryCountExceededError リトライ最大数超過エラー
 type MaxRetryCountExceededError error
 
-// DefaultMaxRetryCount デフォルトリトライ最大数
-const DefaultMaxRetryCount = 3
+var (
+	// DefaultMaxRetryCount デフォルトリトライ最大数
+	DefaultMaxRetryCount = 3
+	// DefaultProvisioningRetryCount リソースごとのプロビジョニングAPI呼び出しのリトライ最大数
+	DefaultProvisioningRetryCount = 10
 
-// DefaultProvisioningRetryCount リソースごとのプロビジョニングAPI呼び出しのリトライ最大数
-const DefaultProvisioningRetryCount = 10
+	// DefaultProvisioningWaitInterval リソースごとのプロビジョニングAPI呼び出しのリトライ間隔
+	DefaultProvisioningWaitInterval = 5 * time.Second
 
-// DefaultProvisioningWaitInterval リソースごとのプロビジョニングAPI呼び出しのリトライ間隔
-const DefaultProvisioningWaitInterval = 5 * time.Second
+	// DefaultDeleteRetryCount リソースごとの削除API呼び出しのリトライ最大数
+	DefaultDeleteRetryCount = 10
 
-// DefaultDeleteRetryCount リソースごとの削除API呼び出しのリトライ最大数
-const DefaultDeleteRetryCount = 10
+	// DefaultDeleteWaitInterval リソースごとの削除API呼び出しのリトライ間隔
+	DefaultDeleteWaitInterval = 10 * time.Second
 
-// DefaultDeleteWaitInterval リソースごとの削除API呼び出しのリトライ間隔
-const DefaultDeleteWaitInterval = 10 * time.Second
-
-// DefaultPoolInterval ポーリング処理の間隔
-const DefaultPoolInterval = 5 * time.Second
+	// DefaultPoolInterval ポーリング処理の間隔
+	DefaultPoolInterval = 5 * time.Second
+)
 
 // CreateFunc リソース作成関数
 type CreateFunc func(ctx context.Context, zone string) (accessor.ID, error)
