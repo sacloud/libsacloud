@@ -43,8 +43,8 @@ var (
 	// DefaultDeleteWaitInterval リソースごとの削除API呼び出しのリトライ間隔
 	DefaultDeleteWaitInterval = 10 * time.Second
 
-	// DefaultPoolInterval ポーリング処理の間隔
-	DefaultPoolInterval = 5 * time.Second
+	// DefaultPollingInterval ポーリング処理の間隔
+	DefaultPollingInterval = 5 * time.Second
 )
 
 // CreateFunc リソース作成関数
@@ -91,7 +91,7 @@ type RetryableSetup struct {
 	// DeleteRetryInterval 削除リトライ間隔
 	DeleteRetryInterval time.Duration
 	// sacloud.StateWaiterによるステート待ちの間隔
-	PollInterval time.Duration
+	PollingInterval time.Duration
 }
 
 // Setup リソースのビルドを行う。必要に応じてリトライ(リソースの削除&再作成)を行う。
@@ -164,8 +164,8 @@ func (r *RetryableSetup) init() {
 	if r.ProvisioningRetryInterval <= 0 {
 		r.ProvisioningRetryInterval = DefaultProvisioningWaitInterval
 	}
-	if r.PollInterval <= 0 {
-		r.PollInterval = DefaultPoolInterval
+	if r.PollingInterval <= 0 {
+		r.PollingInterval = DefaultPollingInterval
 	}
 }
 
@@ -178,7 +178,7 @@ func (r *RetryableSetup) createResource(ctx context.Context, zone string) (acces
 
 func (r *RetryableSetup) waitForCopyWithCleanup(ctx context.Context, zone string, id types.ID) (interface{}, error) {
 
-	waiter := &sacloud.StatePollWaiter{
+	waiter := &sacloud.StatePollingWaiter{
 		ReadFunc: func() (interface{}, error) {
 			return r.Read(ctx, zone, id)
 		},
@@ -193,7 +193,7 @@ func (r *RetryableSetup) waitForCopyWithCleanup(ctx context.Context, zone string
 			types.Availabilities.Transfering,
 			types.Availabilities.Discontinued,
 		},
-		PollInterval: r.PollInterval,
+		PollingInterval: r.PollingInterval,
 	}
 
 	//wait
@@ -257,7 +257,7 @@ func (r *RetryableSetup) provisionBeforeUp(ctx context.Context, zone string, id 
 
 func (r *RetryableSetup) waitForUp(ctx context.Context, zone string, id types.ID, created interface{}) error {
 	if r.IsWaitForUp && created != nil {
-		waiter := &sacloud.StatePollWaiter{
+		waiter := &sacloud.StatePollingWaiter{
 			ReadFunc: func() (interface{}, error) {
 				return r.Read(ctx, zone, id)
 			},
@@ -279,7 +279,7 @@ func (r *RetryableSetup) waitForUp(ctx context.Context, zone string, id types.ID
 				types.ServerInstanceStatuses.Cleaning,
 				types.ServerInstanceStatuses.Down,
 			},
-			PollInterval: r.PollInterval,
+			PollingInterval: r.PollingInterval,
 		}
 		_, err := waiter.WaitForState(ctx)
 		return err

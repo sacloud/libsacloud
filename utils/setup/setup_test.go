@@ -77,7 +77,7 @@ func TestRetryableSetup(t *testing.T) {
 				if !testutil.IsAccTest() {
 					nfsSetup.ProvisioningRetryInterval = time.Millisecond
 					nfsSetup.DeleteRetryInterval = time.Millisecond
-					nfsSetup.PollInterval = time.Millisecond
+					nfsSetup.PollingInterval = time.Millisecond
 				}
 
 				return nfsSetup.Setup(ctx, testZone)
