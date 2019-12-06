@@ -16,6 +16,7 @@ package fake
 
 import (
 	"fmt"
+	"net"
 	"sync"
 	"time"
 
@@ -171,6 +172,9 @@ func initNotes(s Store, p *valuePool) {
 }
 
 func initSwitch(s Store, p *valuePool) {
+	sharedNetMask := net.CIDRMask(p.SharedNetMaskLen, 32)
+	sharedNet := p.CurrentSharedIP.Mask(sharedNetMask)
+
 	sharedSegmentSwitch = &sacloud.Switch{
 		ID:             p.generateID(),
 		Name:           "スイッチ",
@@ -178,6 +182,16 @@ func initSwitch(s Store, p *valuePool) {
 		Description:    "共有セグメント用スイッチ",
 		NetworkMaskLen: p.SharedNetMaskLen,
 		DefaultRoute:   p.SharedDefaultGateway.String(),
+		Subnets: []*sacloud.SwitchSubnet{
+			{
+				ID:             1,
+				DefaultRoute:   p.SharedDefaultGateway.String(),
+				NextHop:        p.SharedDefaultGateway.String(),
+				StaticRoute:    p.SharedDefaultGateway.String(),
+				NetworkAddress: sharedNet.String(),
+				NetworkMaskLen: p.SharedNetMaskLen,
+			},
+		},
 	}
 	for _, zone := range zones {
 		s.Put(ResourceSwitch, zone, sharedSegmentSwitch.ID, sharedSegmentSwitch)
