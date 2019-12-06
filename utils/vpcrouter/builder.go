@@ -84,7 +84,7 @@ type RetryableSetupParameter struct {
 	// DeleteRetryInterval 削除リトライ間隔
 	DeleteRetryInterval time.Duration
 	// sacloud.StateWaiterによるステート待ちの間隔
-	PollInterval time.Duration
+	PollingInterval time.Duration
 }
 
 func (b *Builder) init() {
@@ -268,7 +268,7 @@ func (b *Builder) Build(ctx context.Context, client sacloud.VPCRouterAPI, zone s
 		ProvisioningRetryInterval: b.SetupOptions.ProvisioningRetryInterval,
 		DeleteRetryCount:          b.SetupOptions.DeleteRetryCount,
 		DeleteRetryInterval:       b.SetupOptions.DeleteRetryInterval,
-		PollInterval:              b.SetupOptions.PollInterval,
+		PollingInterval:           b.SetupOptions.PollingInterval,
 	}
 
 	result, err := builder.Setup(ctx, zone)

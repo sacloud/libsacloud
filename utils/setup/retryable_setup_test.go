@@ -66,7 +66,7 @@ func TestRetryableSetup_Setup(t *testing.T) {
 				},
 				ProvisioningRetryInterval: time.Millisecond,
 				DeleteRetryInterval:       time.Millisecond,
-				PollInterval:              time.Millisecond,
+				PollingInterval:           time.Millisecond,
 			}
 			res, err := retryable.Setup(ctx, zone)
 
@@ -86,7 +86,7 @@ func TestRetryableSetup_Setup(t *testing.T) {
 				},
 				ProvisioningRetryInterval: time.Millisecond,
 				DeleteRetryInterval:       time.Millisecond,
-				PollInterval:              time.Millisecond,
+				PollingInterval:           time.Millisecond,
 			}
 			res, err := retryable.Setup(ctx, zone)
 
@@ -114,7 +114,7 @@ func TestRetryableSetup_Setup(t *testing.T) {
 				}, 3),
 				ProvisioningRetryInterval: time.Millisecond,
 				DeleteRetryInterval:       time.Millisecond,
-				PollInterval:              time.Millisecond,
+				PollingInterval:           time.Millisecond,
 			}
 
 			res, err := retryable.Setup(ctx, zone)
@@ -139,7 +139,7 @@ func TestRetryableSetup_Setup(t *testing.T) {
 				}, 5),
 				ProvisioningRetryInterval: time.Millisecond,
 				DeleteRetryInterval:       time.Millisecond,
-				PollInterval:              time.Millisecond,
+				PollingInterval:           time.Millisecond,
 			}
 
 			res, err := retryable.Setup(ctx, zone)

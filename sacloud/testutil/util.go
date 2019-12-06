@@ -56,7 +56,7 @@ func SingletonAPICaller() *sacloud.Client {
 	defer accTestMu.Unlock()
 	accTestOnce.Do(func() {
 		if !IsAccTest() {
-			sacloud.DefaultStatePollInterval = 100 * time.Millisecond
+			sacloud.DefaultStatePollingInterval = 100 * time.Millisecond
 			fake.SwitchFactoryFuncToFake()
 		}
 

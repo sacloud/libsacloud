@@ -30,7 +30,7 @@ func getSetupOption() *RetryableSetupParameter {
 	return &RetryableSetupParameter{
 		DeleteRetryInterval:       10 * time.Millisecond,
 		ProvisioningRetryInterval: 10 * time.Millisecond,
-		PollInterval:              10 * time.Millisecond,
+		PollingInterval:           10 * time.Millisecond,
 		NICUpdateWaitDuration:     10 * time.Millisecond,
 	}
 }
