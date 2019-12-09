@@ -29,12 +29,18 @@ import (
 type Builder interface {
 	Validate(ctx context.Context, zone string) error
 	Build(ctx context.Context, zone string, serverID types.ID) (*BuildResult, error)
+	Update(ctx context.Context, zone string, diskID types.ID) (*UpdateResult, error)
 }
 
 // BuildResult ディスク構築結果
 type BuildResult struct {
 	DiskID          types.ID
 	GeneratedSSHKey *sacloud.SSHKeyGenerated
+}
+
+// UpdateResult ディスク更新結果
+type UpdateResult struct {
+	Disk *sacloud.Disk
 }
 
 // FromUnixBuilder Unix系パブリックアーカイブからディスクを作成するリクエスト
@@ -98,6 +104,11 @@ func (d *FromUnixBuilder) Build(ctx context.Context, zone string, serverID types
 		}
 	}
 	return res, nil
+}
+
+// Update ディスクの更新
+func (d *FromUnixBuilder) Update(ctx context.Context, zone string, diskID types.ID) (*UpdateResult, error) {
+	return update(ctx, d.Client, zone, diskID, d)
 }
 
 func (d *FromUnixBuilder) createDiskParameter(ctx context.Context, client *APIClient, zone string, serverID types.ID) (*sacloud.DiskCreateRequest, *sacloud.DiskEditRequest, error) {
@@ -179,6 +190,11 @@ func (d *FromFixedArchiveBuilder) Build(ctx context.Context, zone string, server
 	return res, nil
 }
 
+// Update ディスクの更新
+func (d *FromFixedArchiveBuilder) Update(ctx context.Context, zone string, diskID types.ID) (*UpdateResult, error) {
+	return update(ctx, d.Client, zone, diskID, d)
+}
+
 func (d *FromFixedArchiveBuilder) createDiskParameter(ctx context.Context, client *APIClient, zone string, serverID types.ID) (*sacloud.DiskCreateRequest, *sacloud.DiskEditRequest, error) {
 	archive, err := archiveUtil.FindByOSType(ctx, client.Archive, zone, d.OSType)
 	if err != nil {
@@ -235,6 +251,11 @@ func (d *FromWindowsBuilder) Build(ctx context.Context, zone string, serverID ty
 		return nil, err
 	}
 	return res, nil
+}
+
+// Update ディスクの更新
+func (d *FromWindowsBuilder) Update(ctx context.Context, zone string, diskID types.ID) (*UpdateResult, error) {
+	return update(ctx, d.Client, zone, diskID, d)
 }
 
 func (d *FromWindowsBuilder) createDiskParameter(ctx context.Context, client *APIClient, zone string, serverID types.ID) (*sacloud.DiskCreateRequest, *sacloud.DiskEditRequest, error) {
@@ -336,6 +357,11 @@ func (d *FromDiskOrArchiveBuilder) Build(ctx context.Context, zone string, serve
 	return res, nil
 }
 
+// Update ディスクの更新
+func (d *FromDiskOrArchiveBuilder) Update(ctx context.Context, zone string, diskID types.ID) (*UpdateResult, error) {
+	return update(ctx, d.Client, zone, diskID, d)
+}
+
 func (d *FromDiskOrArchiveBuilder) createDiskParameter(ctx context.Context, client *APIClient, zone string, serverID types.ID) (*sacloud.DiskCreateRequest, *sacloud.DiskEditRequest, error) {
 	createReq := &sacloud.DiskCreateRequest{
 		DiskPlanID:      d.PlanID,
@@ -395,6 +421,11 @@ func (d *BlankBuilder) Build(ctx context.Context, zone string, serverID types.ID
 	return build(ctx, d.Client, zone, serverID, d.DistantFrom, d)
 }
 
+// Update ディスクの更新
+func (d *BlankBuilder) Update(ctx context.Context, zone string, diskID types.ID) (*UpdateResult, error) {
+	return update(ctx, d.Client, zone, diskID, d)
+}
+
 func (d *BlankBuilder) createDiskParameter(ctx context.Context, client *APIClient, zone string, serverID types.ID) (*sacloud.DiskCreateRequest, *sacloud.DiskEditRequest, error) {
 	createReq := &sacloud.DiskCreateRequest{
 		DiskPlanID:  d.PlanID,
@@ -433,6 +464,15 @@ func (d *ConnectedDiskBuilder) Build(ctx context.Context, zone string, serverID 
 	return &BuildResult{
 		DiskID: d.DiskID,
 	}, nil
+}
+
+// Update ディスクの更新
+func (d *ConnectedDiskBuilder) Update(ctx context.Context, zone string, diskID types.ID) (*UpdateResult, error) {
+	disk, err := d.Client.Disk.Read(ctx, zone, d.DiskID)
+	if err != nil {
+		return nil, err
+	}
+	return &UpdateResult{Disk: disk}, nil
 }
 
 type diskBuilder interface {
@@ -477,6 +517,46 @@ func build(ctx context.Context, client *APIClient, zone string, serverID types.I
 	disk = lastState.(*sacloud.Disk)
 
 	return &BuildResult{DiskID: disk.ID}, nil
+}
+
+func update(ctx context.Context, client *APIClient, zone string, diskID types.ID, builder diskBuilder) (*UpdateResult, error) {
+	var err error
+
+	diskReq, editReq, err := builder.createDiskParameter(ctx, client, zone, types.ID(0))
+	if err != nil {
+		return nil, err
+	}
+	if diskReq == nil {
+		return nil, fmt.Errorf("disk update request is nil")
+	}
+
+	disk, err := client.Disk.Update(ctx, zone, diskID, &sacloud.DiskUpdateRequest{
+		Name:        diskReq.Name,
+		Description: diskReq.Description,
+		Tags:        diskReq.Tags,
+		IconID:      diskReq.IconID,
+		Connection:  diskReq.Connection,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	if editReq != nil {
+		if err := client.Disk.Config(ctx, zone, disk.ID, editReq); err != nil {
+			return nil, err
+		}
+	}
+
+	waiter := sacloud.WaiterForReady(func() (interface{}, error) {
+		return client.Disk.Read(ctx, zone, disk.ID)
+	})
+	lastState, err := waiter.WaitForState(ctx)
+	if err != nil {
+		return nil, err
+	}
+	disk = lastState.(*sacloud.Disk)
+
+	return &UpdateResult{Disk: disk}, nil
 }
 
 func validateDiskPlan(ctx context.Context, client *APIClient, zone string, diskPlanID types.ID, sizeGB int) error {

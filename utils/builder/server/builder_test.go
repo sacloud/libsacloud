@@ -276,8 +276,9 @@ func TestBuilder_Build(t *testing.T) {
 }
 
 type dummyDiskBuilder struct {
-	result *disk.BuildResult
-	err    error
+	result       *disk.BuildResult
+	updateResult *disk.UpdateResult
+	err          error
 }
 
 func (d *dummyDiskBuilder) Validate(ctx context.Context, zone string) error {
@@ -289,6 +290,14 @@ func (d *dummyDiskBuilder) Build(ctx context.Context, zone string, serverID type
 		return nil, d.err
 	}
 	return d.result, nil
+}
+
+// Update ディスクの更新
+func (d *dummyDiskBuilder) Update(ctx context.Context, zone string, diskID types.ID) (*disk.UpdateResult, error) {
+	if d.err != nil {
+		return nil, d.err
+	}
+	return d.updateResult, nil
 }
 
 func TestBuilder_Build_BlackBox(t *testing.T) {
