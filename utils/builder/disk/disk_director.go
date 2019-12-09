@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package server
+package disk
 
 import (
 	"github.com/sacloud/libsacloud/v2/sacloud/ostype"
@@ -37,6 +37,7 @@ type DiskDirector struct {
 	SourceArchiveID types.ID
 
 	EditParameter *DiskEditRequest
+	Client        *BuildersAPIClient
 }
 
 // Builder パラメータに応じて適切なDiskBuilderを返す
@@ -48,6 +49,7 @@ func (d *DiskDirector) Builder() DiskBuilder {
 			return &ConnectedDiskBuilder{
 				DiskID:        d.DiskID,
 				EditParameter: d.EditParameter.ToUnixDiskEditRequest(),
+				Client:        d.Client,
 			}
 		case !d.SourceDiskID.IsEmpty(), !d.SourceArchiveID.IsEmpty():
 			return &FromDiskOrArchiveDiskBuilder{
@@ -62,6 +64,7 @@ func (d *DiskDirector) Builder() DiskBuilder {
 				Tags:            d.Tags,
 				IconID:          d.IconID,
 				EditParameter:   d.EditParameter.ToUnixDiskEditRequest(),
+				Client:          d.Client,
 			}
 		default:
 			return &BlankDiskBuilder{
@@ -73,6 +76,7 @@ func (d *DiskDirector) Builder() DiskBuilder {
 				Description: d.Description,
 				Tags:        d.Tags,
 				IconID:      d.IconID,
+				Client:      d.Client,
 			}
 		}
 	case d.OSType.IsSupportDiskEdit():
@@ -87,6 +91,7 @@ func (d *DiskDirector) Builder() DiskBuilder {
 			Tags:          d.Tags,
 			IconID:        d.IconID,
 			EditParameter: d.EditParameter.ToUnixDiskEditRequest(),
+			Client:        d.Client,
 		}
 	case d.OSType.IsWindows():
 		return &FromWindowsDiskBuilder{
@@ -100,6 +105,7 @@ func (d *DiskDirector) Builder() DiskBuilder {
 			Tags:          d.Tags,
 			IconID:        d.IconID,
 			EditParameter: d.EditParameter.ToWindowsDiskEditRequest(),
+			Client:        d.Client,
 		}
 	default:
 		// ディスクの修正をサポートしないものが指定された場合
@@ -113,6 +119,7 @@ func (d *DiskDirector) Builder() DiskBuilder {
 			Description: d.Description,
 			Tags:        d.Tags,
 			IconID:      d.IconID,
+			Client:      d.Client,
 		}
 	}
 }

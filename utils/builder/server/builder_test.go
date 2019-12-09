@@ -18,6 +18,7 @@ import (
 	"bytes"
 	"context"
 	"errors"
+	"github.com/sacloud/libsacloud/v2/utils/builder/disk"
 	"testing"
 	"time"
 
@@ -46,10 +47,9 @@ func TestBuilder_setDefaults(t *testing.T) {
 
 func TestBuilder_Validate(t *testing.T) {
 	cases := []struct {
-		msg    string
-		in     *Builder
-		client *BuildersAPIClient
-		err    error
+		msg string
+		in  *Builder
+		err error
 	}{
 		{
 			msg: "Client is not set",
@@ -63,9 +63,9 @@ func TestBuilder_Validate(t *testing.T) {
 				AdditionalNICs: []AdditionalNICSettingHolder{
 					&DisconnectedNICSetting{},
 				},
-			},
-			client: &BuildersAPIClient{
-				ServerPlan: &dummyPlanFinder{},
+				Client: &BuildersAPIClient{
+					ServerPlan: &dummyPlanFinder{},
+				},
 			},
 			err: errors.New("NIC is required when AdditionalNICs is specified"),
 		},
@@ -79,9 +79,9 @@ func TestBuilder_Validate(t *testing.T) {
 					&DisconnectedNICSetting{},
 					&DisconnectedNICSetting{},
 				},
-			},
-			client: &BuildersAPIClient{
-				ServerPlan: &dummyPlanFinder{},
+				Client: &BuildersAPIClient{
+					ServerPlan: &dummyPlanFinder{},
+				},
 			},
 			err: errors.New("AdditionalNICs must be less than 4"),
 		},
@@ -90,18 +90,19 @@ func TestBuilder_Validate(t *testing.T) {
 			in: &Builder{
 				NIC:             &SharedNICSetting{},
 				InterfaceDriver: types.EInterfaceDriver("invalid"),
-			},
-			client: &BuildersAPIClient{
-				ServerPlan: &dummyPlanFinder{},
+				Client: &BuildersAPIClient{
+					ServerPlan: &dummyPlanFinder{},
+				},
 			},
 			err: errors.New("invalid InterfaceDriver: invalid"),
 		},
 		{
 			msg: "finding plan returns unexpected error",
-			in:  &Builder{},
-			client: &BuildersAPIClient{
-				ServerPlan: &dummyPlanFinder{
-					err: errors.New("dummy"),
+			in: &Builder{
+				Client: &BuildersAPIClient{
+					ServerPlan: &dummyPlanFinder{
+						err: errors.New("dummy"),
+					},
 				},
 			},
 			err: errors.New("dummy"),
@@ -111,27 +112,26 @@ func TestBuilder_Validate(t *testing.T) {
 			in: &Builder{
 				CPU:      1000,
 				MemoryGB: 1024,
-			},
-			client: &BuildersAPIClient{
-				ServerPlan: &dummyPlanFinder{},
+				Client: &BuildersAPIClient{
+					ServerPlan: &dummyPlanFinder{},
+				},
 			},
 			err: errors.New("server plan not found"),
 		},
 	}
 
 	for _, tc := range cases {
-		err := tc.in.Validate(context.Background(), tc.client, "tk1v")
+		err := tc.in.Validate(context.Background(), "tk1v")
 		require.Equal(t, tc.err, err, tc.msg)
 	}
 }
 
 func TestBuilder_Build(t *testing.T) {
 	cases := []struct {
-		msg    string
-		in     *Builder
-		client *BuildersAPIClient
-		out    *BuildResult
-		err    error
+		msg string
+		in  *Builder
+		out *BuildResult
+		err error
 	}{
 		{
 			msg: "Validate func is called",
@@ -141,10 +141,11 @@ func TestBuilder_Build(t *testing.T) {
 		},
 		{
 			msg: "finding server plan API returns error",
-			in:  &Builder{},
-			client: &BuildersAPIClient{
-				ServerPlan: &dummyPlanFinder{
-					err: errors.New("dummy"),
+			in: &Builder{
+				Client: &BuildersAPIClient{
+					ServerPlan: &dummyPlanFinder{
+						err: errors.New("dummy"),
+					},
 				},
 			},
 			out: nil,
@@ -152,17 +153,18 @@ func TestBuilder_Build(t *testing.T) {
 		},
 		{
 			msg: "creating server returns error",
-			in:  &Builder{},
-			client: &BuildersAPIClient{
-				ServerPlan: &dummyPlanFinder{
-					plans: []*sacloud.ServerPlan{
-						{
-							ID: 1,
+			in: &Builder{
+				Client: &BuildersAPIClient{
+					ServerPlan: &dummyPlanFinder{
+						plans: []*sacloud.ServerPlan{
+							{
+								ID: 1,
+							},
 						},
 					},
-				},
-				Server: &dummyCreateServerHandler{
-					err: errors.New("dummy"),
+					Server: &dummyCreateServerHandler{
+						err: errors.New("dummy"),
+					},
 				},
 			},
 			out: nil,
@@ -171,22 +173,22 @@ func TestBuilder_Build(t *testing.T) {
 		{
 			msg: "building disk returns error",
 			in: &Builder{
-				DiskBuilders: []DiskBuilder{
+				DiskBuilders: []disk.DiskBuilder{
 					&dummyDiskBuilder{
 						err: errors.New("dummy"),
 					},
 				},
-			},
-			client: &BuildersAPIClient{
-				ServerPlan: &dummyPlanFinder{
-					plans: []*sacloud.ServerPlan{
-						{
-							ID: 1,
+				Client: &BuildersAPIClient{
+					ServerPlan: &dummyPlanFinder{
+						plans: []*sacloud.ServerPlan{
+							{
+								ID: 1,
+							},
 						},
 					},
-				},
-				Server: &dummyCreateServerHandler{
-					server: &sacloud.Server{ID: 1},
+					Server: &dummyCreateServerHandler{
+						server: &sacloud.Server{ID: 1},
+					},
 				},
 			},
 			out: nil,
@@ -198,25 +200,25 @@ func TestBuilder_Build(t *testing.T) {
 				NIC: &SharedNICSetting{
 					PacketFilterID: 2,
 				},
-			},
-			client: &BuildersAPIClient{
-				ServerPlan: &dummyPlanFinder{
-					plans: []*sacloud.ServerPlan{
-						{
+				Client: &BuildersAPIClient{
+					ServerPlan: &dummyPlanFinder{
+						plans: []*sacloud.ServerPlan{
+							{
+								ID: 1,
+							},
+						},
+					},
+					Server: &dummyCreateServerHandler{
+						server: &sacloud.Server{
 							ID: 1,
+							Interfaces: []*sacloud.InterfaceView{
+								{ID: 1},
+							},
 						},
 					},
-				},
-				Server: &dummyCreateServerHandler{
-					server: &sacloud.Server{
-						ID: 1,
-						Interfaces: []*sacloud.InterfaceView{
-							{ID: 1},
-						},
+					Interface: &dummyInterfaceHandler{
+						err: errors.New("dummy"),
 					},
-				},
-				Interface: &dummyInterfaceHandler{
-					err: errors.New("dummy"),
 				},
 			},
 			out: nil,
@@ -226,18 +228,18 @@ func TestBuilder_Build(t *testing.T) {
 			msg: "inserting CD-ROM returns error",
 			in: &Builder{
 				CDROMID: 1,
-			},
-			client: &BuildersAPIClient{
-				ServerPlan: &dummyPlanFinder{
-					plans: []*sacloud.ServerPlan{
-						{
-							ID: 1,
+				Client: &BuildersAPIClient{
+					ServerPlan: &dummyPlanFinder{
+						plans: []*sacloud.ServerPlan{
+							{
+								ID: 1,
+							},
 						},
 					},
-				},
-				Server: &dummyCreateServerHandler{
-					server:   &sacloud.Server{ID: 1},
-					cdromErr: errors.New("dummy"),
+					Server: &dummyCreateServerHandler{
+						server:   &sacloud.Server{ID: 1},
+						cdromErr: errors.New("dummy"),
+					},
 				},
 			},
 			out: nil,
@@ -247,18 +249,18 @@ func TestBuilder_Build(t *testing.T) {
 			msg: "booting server returns error",
 			in: &Builder{
 				BootAfterCreate: true,
-			},
-			client: &BuildersAPIClient{
-				ServerPlan: &dummyPlanFinder{
-					plans: []*sacloud.ServerPlan{
-						{
-							ID: 1,
+				Client: &BuildersAPIClient{
+					ServerPlan: &dummyPlanFinder{
+						plans: []*sacloud.ServerPlan{
+							{
+								ID: 1,
+							},
 						},
 					},
-				},
-				Server: &dummyCreateServerHandler{
-					server:  &sacloud.Server{ID: 1},
-					bootErr: errors.New("dummy"),
+					Server: &dummyCreateServerHandler{
+						server:  &sacloud.Server{ID: 1},
+						bootErr: errors.New("dummy"),
+					},
 				},
 			},
 			out: nil,
@@ -266,22 +268,22 @@ func TestBuilder_Build(t *testing.T) {
 		},
 	}
 	for _, tc := range cases {
-		res, err := tc.in.Build(context.Background(), tc.client, "tk1v")
+		res, err := tc.in.Build(context.Background(), "tk1v")
 		require.Equal(t, tc.err, err, tc.msg)
 		require.Equal(t, tc.out, res, tc.msg)
 	}
 }
 
 type dummyDiskBuilder struct {
-	result *BuildDiskResult
+	result *disk.BuildDiskResult
 	err    error
 }
 
-func (d *dummyDiskBuilder) Validate(ctx context.Context, client *BuildersAPIClient, zone string) error {
+func (d *dummyDiskBuilder) Validate(ctx context.Context, zone string) error {
 	return d.err
 }
 
-func (d *dummyDiskBuilder) BuildDisk(ctx context.Context, client *BuildersAPIClient, zone string, serverID types.ID) (*BuildDiskResult, error) {
+func (d *dummyDiskBuilder) BuildDisk(ctx context.Context, zone string, serverID types.ID) (*disk.BuildDiskResult, error) {
 	if d.err != nil {
 		return nil, d.err
 	}
@@ -317,8 +319,7 @@ func TestBuilder_Build_BlackBox(t *testing.T) {
 
 		Create: &testutil.CRUDTestFunc{
 			Func: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
-				client := NewBuildersAPIClient(caller)
-				return getBalckBoxTestBuilder(switchID).Build(ctx, client, testZone)
+				return getBalckBoxTestBuilder(switchID).Build(ctx, testZone)
 			},
 			SkipExtractID: true,
 			CheckFunc: func(t testutil.TestT, ctx *testutil.CRUDTestContext, v interface{}) error {
@@ -392,8 +393,8 @@ func getBalckBoxTestBuilder(switchID types.ID) *Builder {
 			&DisconnectedNICSetting{},
 			&ConnectedNICSetting{SwitchID: switchID},
 		},
-		DiskBuilders: []DiskBuilder{
-			&FromUnixDiskBuilder{
+		DiskBuilders: []disk.DiskBuilder{
+			&disk.FromUnixDiskBuilder{
 				OSType:      ostype.CentOS,
 				Name:        "libsacloud-disk-builder",
 				SizeGB:      20,
@@ -401,7 +402,7 @@ func getBalckBoxTestBuilder(switchID types.ID) *Builder {
 				Connection:  types.DiskConnections.VirtIO,
 				Description: "libsacloud-disk-builder-description",
 				Tags:        types.Tags{"tag1", "tag2"},
-				EditParameter: &UnixDiskEditRequest{
+				EditParameter: &disk.UnixDiskEditRequest{
 					HostName:                  "libsacloud-disk-builder",
 					Password:                  "libsacloud-test-password",
 					DisablePWAuth:             true,
@@ -422,8 +423,10 @@ func getBalckBoxTestBuilder(switchID types.ID) *Builder {
 					},
 					//NoteIDs          []types.ID
 				},
+				Client: disk.NewBuildersAPIClient(testutil.SingletonAPICaller()),
 			},
 		},
+		Client: NewBuildersAPIClient(testutil.SingletonAPICaller()),
 	}
 }
 

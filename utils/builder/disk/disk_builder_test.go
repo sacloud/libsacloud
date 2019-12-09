@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package server
+package disk
 
 import (
 	"context"
@@ -28,10 +28,9 @@ import (
 
 func TestDiskFromUnixRequest_Validate(t *testing.T) {
 	cases := []struct {
-		msg    string
-		in     *FromUnixDiskBuilder
-		client *BuildersAPIClient
-		err    error
+		msg string
+		in  *FromUnixDiskBuilder
+		err error
 	}{
 		{
 			msg: "invalid ostype",
@@ -46,16 +45,16 @@ func TestDiskFromUnixRequest_Validate(t *testing.T) {
 				OSType: ostype.CentOS,
 				PlanID: types.DiskPlans.SSD,
 				SizeGB: 1,
-			},
-			client: &BuildersAPIClient{
-				DiskPlan: &dummyDiskPlanReader{
-					diskPlan: &sacloud.DiskPlan{
-						ID:   types.DiskPlans.SSD,
-						Name: "SSDプラン",
-						Size: []*sacloud.DiskPlanSizeInfo{
-							{
-								Availability: types.Availabilities.Available,
-								SizeMB:       0,
+				Client: &BuildersAPIClient{
+					DiskPlan: &dummyDiskPlanReader{
+						diskPlan: &sacloud.DiskPlan{
+							ID:   types.DiskPlans.SSD,
+							Name: "SSDプラン",
+							Size: []*sacloud.DiskPlanSizeInfo{
+								{
+									Availability: types.Availabilities.Available,
+									SizeMB:       0,
+								},
 							},
 						},
 					},
@@ -72,22 +71,22 @@ func TestDiskFromUnixRequest_Validate(t *testing.T) {
 				EditParameter: &UnixDiskEditRequest{
 					NoteIDs: []types.ID{1},
 				},
-			},
-			client: &BuildersAPIClient{
-				DiskPlan: &dummyDiskPlanReader{
-					diskPlan: &sacloud.DiskPlan{
-						ID:   types.DiskPlans.SSD,
-						Name: "SSDプラン",
-						Size: []*sacloud.DiskPlanSizeInfo{
-							{
-								Availability: types.Availabilities.Available,
-								SizeMB:       1024,
+				Client: &BuildersAPIClient{
+					DiskPlan: &dummyDiskPlanReader{
+						diskPlan: &sacloud.DiskPlan{
+							ID:   types.DiskPlans.SSD,
+							Name: "SSDプラン",
+							Size: []*sacloud.DiskPlanSizeInfo{
+								{
+									Availability: types.Availabilities.Available,
+									SizeMB:       1024,
+								},
 							},
 						},
 					},
-				},
-				Note: &dummyNoteHandler{
-					err: errors.New("dummy"),
+					Note: &dummyNoteHandler{
+						err: errors.New("dummy"),
+					},
 				},
 			},
 			err: errors.New("dummy"),
@@ -95,7 +94,7 @@ func TestDiskFromUnixRequest_Validate(t *testing.T) {
 	}
 
 	for _, tc := range cases {
-		err := tc.in.Validate(context.Background(), tc.client, "tk1v")
+		err := tc.in.Validate(context.Background(), "tk1v")
 		require.Equal(t, tc.err, err)
 	}
 }

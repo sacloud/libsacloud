@@ -17,6 +17,7 @@ package server_test
 import (
 	"context"
 	"fmt"
+	"github.com/sacloud/libsacloud/v2/utils/builder/disk"
 	"log"
 	"os"
 
@@ -37,6 +38,7 @@ func Example_builder() {
 
 	// ビルダーの準備
 	builder := &server.Builder{
+		Client:   server.NewBuildersAPIClient(client),
 		Name:     "libsacloud-example",
 		CPU:      2,
 		MemoryGB: 4,
@@ -61,8 +63,9 @@ func Example_builder() {
 		// CDROMID:         types.ID(123456789012),
 		// PrivateHostID:   types.ID(123456789012),
 
-		DiskBuilders: []server.DiskBuilder{
-			&server.FromUnixDiskBuilder{
+		DiskBuilders: []disk.DiskBuilder{
+			&disk.FromUnixDiskBuilder{
+				Client:     disk.NewBuildersAPIClient(client),
 				OSType:     ostype.CentOS,
 				Name:       "libsacloud-example",
 				SizeGB:     20,
@@ -71,7 +74,7 @@ func Example_builder() {
 				//DistantFrom:     []types.ID{types.ID(123456789012)},
 				Description: "description",
 				Tags:        types.Tags{"tag1", "tag2"},
-				EditParameter: &server.UnixDiskEditRequest{
+				EditParameter: &disk.UnixDiskEditRequest{
 					HostName:            "libsacloud-example", // ホスト名
 					Password:            "P@ssW0rd",           // パスワード
 					DisablePWAuth:       false,                // パスワード認証の無効化
@@ -96,7 +99,7 @@ func Example_builder() {
 		},
 	}
 
-	result, err := builder.Build(context.Background(), server.NewBuildersAPIClient(client), "is1a")
+	result, err := builder.Build(context.Background(), "is1a")
 	if err != nil {
 		log.Fatal(err)
 	}
