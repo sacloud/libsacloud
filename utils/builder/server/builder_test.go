@@ -22,9 +22,9 @@ import (
 	"time"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
+	"github.com/sacloud/libsacloud/v2/sacloud/ostype"
 	"github.com/sacloud/libsacloud/v2/sacloud/testutil"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
-	"github.com/sacloud/libsacloud/v2/utils/builder/server/ostype"
 	"golang.org/x/crypto/ssh"
 
 	"github.com/stretchr/testify/require"

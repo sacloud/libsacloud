@@ -20,9 +20,9 @@ import (
 	"fmt"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
+	"github.com/sacloud/libsacloud/v2/sacloud/ostype"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 	"github.com/sacloud/libsacloud/v2/utils/archive"
-	"github.com/sacloud/libsacloud/v2/utils/builder/server/ostype"
 )
 
 // DiskBuilder ディスクの構築インターフェース
@@ -39,7 +39,7 @@ type BuildDiskResult struct {
 
 // FromUnixDiskBuilder Unix系パブリックアーカイブからディスクを作成するリクエスト
 type FromUnixDiskBuilder struct {
-	OSType ostype.UnixPublicArchiveType
+	OSType ostype.ArchiveOSType
 
 	Name        string
 	SizeGB      int
@@ -58,7 +58,7 @@ type FromUnixDiskBuilder struct {
 
 // Validate 設定値の検証
 func (d *FromUnixDiskBuilder) Validate(ctx context.Context, client *BuildersAPIClient, zone string) error {
-	if _, ok := ostype.UnixPublicArchives[d.OSType]; !ok {
+	if !d.OSType.IsSupportDiskEdit() {
 		return fmt.Errorf("invalid OSType: %s", d.OSType.String())
 	}
 	if err := validateDiskPlan(ctx, client, zone, d.PlanID, d.SizeGB); err != nil {
@@ -99,7 +99,7 @@ func (d *FromUnixDiskBuilder) BuildDisk(ctx context.Context, client *BuildersAPI
 }
 
 func (d *FromUnixDiskBuilder) createDiskParameter(ctx context.Context, client *BuildersAPIClient, zone string, serverID types.ID) (*sacloud.DiskCreateRequest, *sacloud.DiskEditRequest, error) {
-	archive, err := archive.FindByOSType(ctx, client.Archive, zone, ostype.UnixPublicArchives[d.OSType])
+	archive, err := archive.FindByOSType(ctx, client.Archive, zone, d.OSType)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -136,7 +136,7 @@ func (d *FromUnixDiskBuilder) createDiskParameter(ctx context.Context, client *B
 
 // FromWindowsDiskBuilder Windows系パブリックアーカイブからディスクを作成するリクエスト
 type FromWindowsDiskBuilder struct {
-	OSType ostype.WindowsPublicArchiveType
+	OSType ostype.ArchiveOSType
 
 	Name        string
 	SizeGB      int
@@ -152,7 +152,7 @@ type FromWindowsDiskBuilder struct {
 
 // Validate 設定値の検証
 func (d *FromWindowsDiskBuilder) Validate(ctx context.Context, client *BuildersAPIClient, zone string) error {
-	if _, ok := ostype.WindowsPublicArchives[d.OSType]; !ok {
+	if !d.OSType.IsWindows() {
 		return fmt.Errorf("invalid OSType: %s", d.OSType.String())
 	}
 	if err := validateDiskPlan(ctx, client, zone, d.PlanID, d.SizeGB); err != nil {
@@ -171,7 +171,7 @@ func (d *FromWindowsDiskBuilder) BuildDisk(ctx context.Context, client *Builders
 }
 
 func (d *FromWindowsDiskBuilder) createDiskParameter(ctx context.Context, client *BuildersAPIClient, zone string, serverID types.ID) (*sacloud.DiskCreateRequest, *sacloud.DiskEditRequest, error) {
-	archive, err := archive.FindByOSType(ctx, client.Archive, zone, ostype.WindowsPublicArchives[d.OSType])
+	archive, err := archive.FindByOSType(ctx, client.Archive, zone, d.OSType)
 	if err != nil {
 		return nil, nil, err
 	}

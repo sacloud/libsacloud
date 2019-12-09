@@ -21,8 +21,8 @@ import (
 	"testing"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
+	"github.com/sacloud/libsacloud/v2/sacloud/ostype"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
-	"github.com/sacloud/libsacloud/v2/utils/builder/server/ostype"
 	"github.com/stretchr/testify/require"
 )
 
@@ -36,9 +36,9 @@ func TestDiskFromUnixRequest_Validate(t *testing.T) {
 		{
 			msg: "invalid ostype",
 			in: &FromUnixDiskBuilder{
-				OSType: ostype.UnixPublicArchiveType(-1),
+				OSType: ostype.ArchiveOSType(-1),
 			},
-			err: fmt.Errorf("invalid OSType: %s", ostype.UnixPublicArchiveType(-1)),
+			err: fmt.Errorf("invalid OSType: %s", ostype.ArchiveOSType(-1)),
 		},
 		{
 			msg: "size not found",

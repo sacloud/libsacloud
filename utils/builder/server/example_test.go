@@ -21,9 +21,9 @@ import (
 	"os"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
+	"github.com/sacloud/libsacloud/v2/sacloud/ostype"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 	"github.com/sacloud/libsacloud/v2/utils/builder/server"
-	"github.com/sacloud/libsacloud/v2/utils/builder/server/ostype"
 )
 
 func Example_builder() {
