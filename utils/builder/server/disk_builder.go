@@ -134,6 +134,67 @@ func (d *FromUnixDiskBuilder) createDiskParameter(ctx context.Context, client *B
 	return createReq, editReq, nil
 }
 
+// FromFixedArchiveDiskBuilder ディスクの修正をサポートしないパブリックアーカイブからディスクを作成するリクエスト
+type FromFixedArchiveDiskBuilder struct {
+	OSType ostype.ArchiveOSType
+
+	Name        string
+	SizeGB      int
+	DistantFrom []types.ID
+	PlanID      types.ID
+	Connection  types.EDiskConnection
+	Description string
+	Tags        types.Tags
+	IconID      types.ID
+
+	generatedSSHKey *sacloud.SSHKeyGenerated
+	generatedNotes  []*sacloud.Note
+}
+
+// Validate 設定値の検証
+func (d *FromFixedArchiveDiskBuilder) Validate(ctx context.Context, client *BuildersAPIClient, zone string) error {
+	if d.OSType.IsSupportDiskEdit() || d.OSType.IsWindows() {
+		return fmt.Errorf("invalid OSType: %s", d.OSType.String())
+	}
+	if err := validateDiskPlan(ctx, client, zone, d.PlanID, d.SizeGB); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// BuildDisk ディスクの構築
+func (d *FromFixedArchiveDiskBuilder) BuildDisk(ctx context.Context, client *BuildersAPIClient, zone string, serverID types.ID) (*BuildDiskResult, error) {
+	res, err := buildDisk(ctx, client, zone, serverID, d.DistantFrom, d)
+	if err != nil {
+		return nil, err
+	}
+	if d.generatedSSHKey != nil {
+		res.GeneratedSSHKey = d.generatedSSHKey
+	}
+	return res, nil
+}
+
+func (d *FromFixedArchiveDiskBuilder) createDiskParameter(ctx context.Context, client *BuildersAPIClient, zone string, serverID types.ID) (*sacloud.DiskCreateRequest, *sacloud.DiskEditRequest, error) {
+	archive, err := archive.FindByOSType(ctx, client.Archive, zone, d.OSType)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	createReq := &sacloud.DiskCreateRequest{
+		DiskPlanID:      d.PlanID,
+		SizeMB:          d.SizeGB * 1024,
+		Connection:      d.Connection,
+		SourceArchiveID: archive.ID,
+		ServerID:        serverID,
+		Name:            d.Name,
+		Description:     d.Description,
+		Tags:            d.Tags,
+		IconID:          d.IconID,
+	}
+	return createReq, nil, nil
+}
+
 // FromWindowsDiskBuilder Windows系パブリックアーカイブからディスクを作成するリクエスト
 type FromWindowsDiskBuilder struct {
 	OSType ostype.ArchiveOSType

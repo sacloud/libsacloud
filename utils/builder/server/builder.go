@@ -19,6 +19,8 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/sacloud/libsacloud/v2/utils/server"
+
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
@@ -98,7 +100,7 @@ func (b *Builder) Validate(ctx context.Context, client *BuildersAPIClient, zone 
 	}
 
 	// Field values
-	plan, err := FindPlan(ctx, client.ServerPlan, zone, &FindPlanRequest{
+	plan, err := server.FindPlan(ctx, client.ServerPlan, zone, &server.FindPlanRequest{
 		CPU:        b.CPU,
 		MemoryGB:   b.MemoryGB,
 		Commitment: b.Commitment,

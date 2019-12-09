@@ -23,6 +23,30 @@ import (
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
+// DiskEditRequest 汎用ディスクの修正リクエストパラメータ DiskDirectorが利用する
+type DiskEditRequest UnixDiskEditRequest
+
+// ToUnixDiskEditRequest Unix系パラメータへの変換
+func (d *DiskEditRequest) ToUnixDiskEditRequest() *UnixDiskEditRequest {
+	if d == nil {
+		return nil
+	}
+	req := UnixDiskEditRequest(*d)
+	return &req
+}
+
+// ToWindowsDiskEditRequest Windows系パラメータへの変換
+func (d *DiskEditRequest) ToWindowsDiskEditRequest() *WindowsDiskEditRequest {
+	if d == nil {
+		return nil
+	}
+	return &WindowsDiskEditRequest{
+		IPAddress:      d.IPAddress,
+		NetworkMaskLen: d.NetworkMaskLen,
+		DefaultRoute:   d.DefaultRoute,
+	}
+}
+
 // UnixDiskEditRequest Unix系の場合のディスクの修正リクエスト
 type UnixDiskEditRequest struct {
 	HostName string

@@ -17,6 +17,8 @@ package server
 import (
 	"context"
 
+	"github.com/sacloud/libsacloud/v2/utils/server"
+
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
@@ -29,7 +31,7 @@ type BuildersAPIClient struct {
 	Interface    InterfaceHandler
 	PacketFilter PacketFilterReader
 	Server       CreateServerHandler
-	ServerPlan   PlanFinder
+	ServerPlan   server.PlanFinder
 	Switch       SwitchReader
 	Note         NoteHandler
 	SSHKey       SSHKeyHandler

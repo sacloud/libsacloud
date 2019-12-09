@@ -21,6 +21,23 @@ import (
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
+type dummyPlanFinder struct {
+	plans []*sacloud.ServerPlan
+	err   error
+}
+
+func (f *dummyPlanFinder) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.ServerPlanFindResult, error) {
+	if f.err != nil {
+		return nil, f.err
+	}
+
+	return &sacloud.ServerPlanFindResult{
+		Total:       len(f.plans),
+		Count:       len(f.plans),
+		ServerPlans: f.plans,
+	}, nil
+}
+
 type dummyArchiveFinder struct {
 	archive *sacloud.Archive
 	err     error
