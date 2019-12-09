@@ -22,7 +22,7 @@ import (
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 	"github.com/sacloud/libsacloud/v2/utils/archive"
-	"github.com/sacloud/libsacloud/v2/utils/server/ostype"
+	"github.com/sacloud/libsacloud/v2/utils/builder/server/ostype"
 )
 
 // DiskBuilder ディスクの構築インターフェース
