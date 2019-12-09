@@ -17,47 +17,19 @@ package server
 import (
 	"context"
 
+	"github.com/sacloud/libsacloud/v2/utils/server"
+
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
-// BuildersAPIClient builderが利用するAPIクライアント群
-type BuildersAPIClient struct {
-	Archive      ArchiveFinder
-	Disk         DiskHandler
-	DiskPlan     DiskPlanReader
+// APIClient builderが利用するAPIクライアント群
+type APIClient struct {
 	Interface    InterfaceHandler
 	PacketFilter PacketFilterReader
 	Server       CreateServerHandler
-	ServerPlan   PlanFinder
+	ServerPlan   server.PlanFinder
 	Switch       SwitchReader
-	Note         NoteHandler
-	SSHKey       SSHKeyHandler
-}
-
-// ArchiveFinder アーカイブ検索のためのインターフェース
-type ArchiveFinder interface {
-	Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.ArchiveFindResult, error)
-	Read(ctx context.Context, zone string, id types.ID) (*sacloud.Archive, error)
-}
-
-// DiskHandler ディスク操作のためのインターフェース
-type DiskHandler interface {
-	Create(ctx context.Context, zone string, createParam *sacloud.DiskCreateRequest, distantFrom []types.ID) (*sacloud.Disk, error)
-	CreateWithConfig(
-		ctx context.Context,
-		zone string,
-		createParam *sacloud.DiskCreateRequest,
-		editParam *sacloud.DiskEditRequest,
-		bootAtAvailable bool,
-		distantFrom []types.ID,
-	) (*sacloud.Disk, error)
-	Read(ctx context.Context, zone string, id types.ID) (*sacloud.Disk, error)
-}
-
-// DiskPlanReader ディスクプラン取得のためのインターフェース
-type DiskPlanReader interface {
-	Read(ctx context.Context, zone string, id types.ID) (*sacloud.DiskPlan, error)
 }
 
 // SwitchReader スイッチ参照のためのインターフェース
@@ -84,32 +56,13 @@ type CreateServerHandler interface {
 	Boot(ctx context.Context, zone string, id types.ID) error
 }
 
-// NoteHandler スタートアップスクリプト参照のためのインターフェース
-type NoteHandler interface {
-	Read(ctx context.Context, id types.ID) (*sacloud.Note, error)
-	Create(ctx context.Context, param *sacloud.NoteCreateRequest) (*sacloud.Note, error)
-	Delete(ctx context.Context, id types.ID) error
-}
-
-// SSHKeyHandler SSHKey参照のためのインターフェース
-type SSHKeyHandler interface {
-	Read(ctx context.Context, id types.ID) (*sacloud.SSHKey, error)
-	Generate(ctx context.Context, param *sacloud.SSHKeyGenerateRequest) (*sacloud.SSHKeyGenerated, error)
-	Delete(ctx context.Context, id types.ID) error
-}
-
 // NewBuildersAPIClient APIクライアントの作成
-func NewBuildersAPIClient(caller sacloud.APICaller) *BuildersAPIClient {
-	return &BuildersAPIClient{
-		Archive:      sacloud.NewArchiveOp(caller),
-		Disk:         sacloud.NewDiskOp(caller),
-		DiskPlan:     sacloud.NewDiskPlanOp(caller),
+func NewBuildersAPIClient(caller sacloud.APICaller) *APIClient {
+	return &APIClient{
 		Interface:    sacloud.NewInterfaceOp(caller),
 		PacketFilter: sacloud.NewPacketFilterOp(caller),
 		Server:       sacloud.NewServerOp(caller),
 		ServerPlan:   sacloud.NewServerPlanOp(caller),
 		Switch:       sacloud.NewSwitchOp(caller),
-		Note:         sacloud.NewNoteOp(caller),
-		SSHKey:       sacloud.NewSSHKeyOp(caller),
 	}
 }

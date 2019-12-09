@@ -19,6 +19,10 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/sacloud/libsacloud/v2/utils/builder/disk"
+
+	"github.com/sacloud/libsacloud/v2/utils/server"
+
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
@@ -39,7 +43,9 @@ type Builder struct {
 	PrivateHostID   types.ID
 	NIC             NICSettingHolder
 	AdditionalNICs  []AdditionalNICSettingHolder
-	DiskBuilders    []DiskBuilder
+	DiskBuilders    []disk.Builder
+
+	Client *APIClient
 }
 
 // BuildResult サーバ構築結果
@@ -77,11 +83,11 @@ func (b *Builder) setDefaults() {
 // Validate 入力値の検証
 //
 // 各種IDの存在確認のためにAPIリクエストが行われます。
-func (b *Builder) Validate(ctx context.Context, client *BuildersAPIClient, zone string) error {
+func (b *Builder) Validate(ctx context.Context, zone string) error {
 	b.setDefaults()
 
 	// Fields
-	if client == nil {
+	if b.Client == nil {
 		return errors.New("client is empty")
 	}
 
@@ -98,7 +104,7 @@ func (b *Builder) Validate(ctx context.Context, client *BuildersAPIClient, zone 
 	}
 
 	// Field values
-	plan, err := FindPlan(ctx, client.ServerPlan, zone, &FindPlanRequest{
+	plan, err := server.FindPlan(ctx, b.Client.ServerPlan, zone, &server.FindPlanRequest{
 		CPU:        b.CPU,
 		MemoryGB:   b.MemoryGB,
 		Commitment: b.Commitment,
@@ -113,7 +119,7 @@ func (b *Builder) Validate(ctx context.Context, client *BuildersAPIClient, zone 
 	b.Generation = plan.Generation
 
 	for _, diskBuilder := range b.DiskBuilders {
-		if err := diskBuilder.Validate(ctx, client, zone); err != nil {
+		if err := diskBuilder.Validate(ctx, zone); err != nil {
 			return err
 		}
 	}
@@ -122,14 +128,14 @@ func (b *Builder) Validate(ctx context.Context, client *BuildersAPIClient, zone 
 }
 
 // Build サーバ構築を行う
-func (b *Builder) Build(ctx context.Context, client *BuildersAPIClient, zone string) (*BuildResult, error) {
+func (b *Builder) Build(ctx context.Context, zone string) (*BuildResult, error) {
 	// validate
-	if err := b.Validate(ctx, client, zone); err != nil {
+	if err := b.Validate(ctx, zone); err != nil {
 		return nil, err
 	}
 
 	// create server
-	server, err := b.createServer(ctx, client, zone)
+	server, err := b.createServer(ctx, zone)
 	if err != nil {
 		return nil, err
 	}
@@ -139,10 +145,10 @@ func (b *Builder) Build(ctx context.Context, client *BuildersAPIClient, zone str
 
 	// create&connect disk(s)
 	for _, diskReq := range b.DiskBuilders {
-		if err := diskReq.Validate(ctx, client, zone); err != nil {
+		if err := diskReq.Validate(ctx, zone); err != nil {
 			return nil, err
 		}
-		builtDisk, err := diskReq.BuildDisk(ctx, client, zone, server.ID)
+		builtDisk, err := diskReq.BuildDisk(ctx, zone, server.ID)
 		if err != nil {
 			return nil, err
 		}
@@ -152,26 +158,26 @@ func (b *Builder) Build(ctx context.Context, client *BuildersAPIClient, zone str
 	}
 
 	// connect packet filter
-	if err := b.updateInterfaces(ctx, client, zone, server); err != nil {
+	if err := b.updateInterfaces(ctx, zone, server); err != nil {
 		return nil, err
 	}
 
 	// insert CD-ROM
 	if !b.CDROMID.IsEmpty() {
 		req := &sacloud.InsertCDROMRequest{ID: b.CDROMID}
-		if err := client.Server.InsertCDROM(ctx, zone, server.ID, req); err != nil {
+		if err := b.Client.Server.InsertCDROM(ctx, zone, server.ID, req); err != nil {
 			return nil, err
 		}
 	}
 
 	// bool
 	if b.BootAfterCreate {
-		if err := client.Server.Boot(ctx, zone, server.ID); err != nil {
+		if err := b.Client.Server.Boot(ctx, zone, server.ID); err != nil {
 			return nil, err
 		}
 		// wait
 		waiter := sacloud.WaiterForUp(func() (interface{}, error) {
-			return client.Server.Read(ctx, zone, server.ID)
+			return b.Client.Server.Read(ctx, zone, server.ID)
 		})
 
 		lastState, err := waiter.WaitForState(ctx)
@@ -185,7 +191,7 @@ func (b *Builder) Build(ctx context.Context, client *BuildersAPIClient, zone str
 }
 
 // createServer サーバ作成
-func (b *Builder) createServer(ctx context.Context, client *BuildersAPIClient, zone string) (*sacloud.Server, error) {
+func (b *Builder) createServer(ctx context.Context, zone string) (*sacloud.Server, error) {
 	param := &sacloud.ServerCreateRequest{
 		CPU:                  b.CPU,
 		MemoryMB:             b.MemoryGB * 1024,
@@ -217,7 +223,7 @@ func (b *Builder) createServer(ctx context.Context, client *BuildersAPIClient, z
 			}
 		}
 	}
-	return client.Server.Create(ctx, zone, param)
+	return b.Client.Server.Create(ctx, zone, param)
 }
 
 type updateInterfaceRequest struct {
@@ -243,20 +249,20 @@ func (b *Builder) collectInterfaceParameters() []*updateInterfaceRequest {
 	return reqs
 }
 
-func (b *Builder) updateInterfaces(ctx context.Context, client *BuildersAPIClient, zone string, server *sacloud.Server) error {
+func (b *Builder) updateInterfaces(ctx context.Context, zone string, server *sacloud.Server) error {
 	requests := b.collectInterfaceParameters()
 	for _, req := range requests {
 		if req.index < len(server.Interfaces) {
 			iface := server.Interfaces[req.index]
 
 			if !req.packetFilterID.IsEmpty() {
-				if err := client.Interface.ConnectToPacketFilter(ctx, zone, iface.ID, req.packetFilterID); err != nil {
+				if err := b.Client.Interface.ConnectToPacketFilter(ctx, zone, iface.ID, req.packetFilterID); err != nil {
 					return err
 				}
 			}
 
 			if req.displayIP != "" {
-				if _, err := client.Interface.Update(ctx, zone, iface.ID, &sacloud.InterfaceUpdateRequest{
+				if _, err := b.Client.Interface.Update(ctx, zone, iface.ID, &sacloud.InterfaceUpdateRequest{
 					UserIPAddress: req.displayIP,
 				}); err != nil {
 					return err

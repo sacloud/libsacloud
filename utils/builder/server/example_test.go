@@ -20,10 +20,12 @@ import (
 	"log"
 	"os"
 
+	"github.com/sacloud/libsacloud/v2/utils/builder/disk"
+
 	"github.com/sacloud/libsacloud/v2/sacloud"
+	"github.com/sacloud/libsacloud/v2/sacloud/ostype"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
-	"github.com/sacloud/libsacloud/v2/utils/server"
-	"github.com/sacloud/libsacloud/v2/utils/server/ostype"
+	"github.com/sacloud/libsacloud/v2/utils/builder/server"
 )
 
 func Example_builder() {
@@ -37,6 +39,7 @@ func Example_builder() {
 
 	// ビルダーの準備
 	builder := &server.Builder{
+		Client:   server.NewBuildersAPIClient(client),
 		Name:     "libsacloud-example",
 		CPU:      2,
 		MemoryGB: 4,
@@ -61,8 +64,9 @@ func Example_builder() {
 		// CDROMID:         types.ID(123456789012),
 		// PrivateHostID:   types.ID(123456789012),
 
-		DiskBuilders: []server.DiskBuilder{
-			&server.FromUnixDiskBuilder{
+		DiskBuilders: []disk.Builder{
+			&disk.FromUnixBuilder{
+				Client:     disk.NewBuildersAPIClient(client),
 				OSType:     ostype.CentOS,
 				Name:       "libsacloud-example",
 				SizeGB:     20,
@@ -71,7 +75,7 @@ func Example_builder() {
 				//DistantFrom:     []types.ID{types.ID(123456789012)},
 				Description: "description",
 				Tags:        types.Tags{"tag1", "tag2"},
-				EditParameter: &server.UnixDiskEditRequest{
+				EditParameter: &disk.UnixEditRequest{
 					HostName:            "libsacloud-example", // ホスト名
 					Password:            "P@ssW0rd",           // パスワード
 					DisablePWAuth:       false,                // パスワード認証の無効化
@@ -96,7 +100,7 @@ func Example_builder() {
 		},
 	}
 
-	result, err := builder.Build(context.Background(), server.NewBuildersAPIClient(client), "is1a")
+	result, err := builder.Build(context.Background(), "is1a")
 	if err != nil {
 		log.Fatal(err)
 	}

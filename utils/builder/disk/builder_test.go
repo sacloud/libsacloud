@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package server
+package disk
 
 import (
 	"context"
@@ -21,41 +21,40 @@ import (
 	"testing"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
+	"github.com/sacloud/libsacloud/v2/sacloud/ostype"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
-	"github.com/sacloud/libsacloud/v2/utils/server/ostype"
 	"github.com/stretchr/testify/require"
 )
 
 func TestDiskFromUnixRequest_Validate(t *testing.T) {
 	cases := []struct {
-		msg    string
-		in     *FromUnixDiskBuilder
-		client *BuildersAPIClient
-		err    error
+		msg string
+		in  *FromUnixBuilder
+		err error
 	}{
 		{
 			msg: "invalid ostype",
-			in: &FromUnixDiskBuilder{
-				OSType: ostype.UnixPublicArchiveType(-1),
+			in: &FromUnixBuilder{
+				OSType: ostype.ArchiveOSType(-1),
 			},
-			err: fmt.Errorf("invalid OSType: %s", ostype.UnixPublicArchiveType(-1)),
+			err: fmt.Errorf("invalid OSType: %s", ostype.ArchiveOSType(-1)),
 		},
 		{
 			msg: "size not found",
-			in: &FromUnixDiskBuilder{
+			in: &FromUnixBuilder{
 				OSType: ostype.CentOS,
 				PlanID: types.DiskPlans.SSD,
 				SizeGB: 1,
-			},
-			client: &BuildersAPIClient{
-				DiskPlan: &dummyDiskPlanReader{
-					diskPlan: &sacloud.DiskPlan{
-						ID:   types.DiskPlans.SSD,
-						Name: "SSDプラン",
-						Size: []*sacloud.DiskPlanSizeInfo{
-							{
-								Availability: types.Availabilities.Available,
-								SizeMB:       0,
+				Client: &APIClient{
+					DiskPlan: &dummyDiskPlanReader{
+						diskPlan: &sacloud.DiskPlan{
+							ID:   types.DiskPlans.SSD,
+							Name: "SSDプラン",
+							Size: []*sacloud.DiskPlanSizeInfo{
+								{
+									Availability: types.Availabilities.Available,
+									SizeMB:       0,
+								},
 							},
 						},
 					},
@@ -65,29 +64,29 @@ func TestDiskFromUnixRequest_Validate(t *testing.T) {
 		},
 		{
 			msg: "invalid disk edit parameter",
-			in: &FromUnixDiskBuilder{
+			in: &FromUnixBuilder{
 				OSType: ostype.CentOS,
 				PlanID: types.DiskPlans.SSD,
 				SizeGB: 1,
-				EditParameter: &UnixDiskEditRequest{
+				EditParameter: &UnixEditRequest{
 					NoteIDs: []types.ID{1},
 				},
-			},
-			client: &BuildersAPIClient{
-				DiskPlan: &dummyDiskPlanReader{
-					diskPlan: &sacloud.DiskPlan{
-						ID:   types.DiskPlans.SSD,
-						Name: "SSDプラン",
-						Size: []*sacloud.DiskPlanSizeInfo{
-							{
-								Availability: types.Availabilities.Available,
-								SizeMB:       1024,
+				Client: &APIClient{
+					DiskPlan: &dummyDiskPlanReader{
+						diskPlan: &sacloud.DiskPlan{
+							ID:   types.DiskPlans.SSD,
+							Name: "SSDプラン",
+							Size: []*sacloud.DiskPlanSizeInfo{
+								{
+									Availability: types.Availabilities.Available,
+									SizeMB:       1024,
+								},
 							},
 						},
 					},
-				},
-				Note: &dummyNoteHandler{
-					err: errors.New("dummy"),
+					Note: &dummyNoteHandler{
+						err: errors.New("dummy"),
+					},
 				},
 			},
 			err: errors.New("dummy"),
@@ -95,7 +94,7 @@ func TestDiskFromUnixRequest_Validate(t *testing.T) {
 	}
 
 	for _, tc := range cases {
-		err := tc.in.Validate(context.Background(), tc.client, "tk1v")
+		err := tc.in.Validate(context.Background(), "tk1v")
 		require.Equal(t, tc.err, err)
 	}
 }

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package server
+package disk
 
 import (
 	"context"
@@ -20,6 +20,23 @@ import (
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
+
+type dummyPlanFinder struct {
+	plans []*sacloud.ServerPlan
+	err   error
+}
+
+func (f *dummyPlanFinder) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.ServerPlanFindResult, error) {
+	if f.err != nil {
+		return nil, f.err
+	}
+
+	return &sacloud.ServerPlanFindResult{
+		Total:       len(f.plans),
+		Count:       len(f.plans),
+		ServerPlans: f.plans,
+	}, nil
+}
 
 type dummyArchiveFinder struct {
 	archive *sacloud.Archive
@@ -81,75 +98,6 @@ func (d *dummyDiskPlanReader) Read(ctx context.Context, zone string, id types.ID
 		return nil, d.err
 	}
 	return d.diskPlan, nil
-}
-
-type dummySwitchReader struct {
-	sw  *sacloud.Switch
-	err error
-}
-
-func (d *dummySwitchReader) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Switch, error) {
-	if d.err != nil {
-		return nil, d.err
-	}
-	return d.sw, nil
-}
-
-type dummyInterfaceHandler struct {
-	iface *sacloud.Interface
-	err   error
-}
-
-func (d *dummyInterfaceHandler) ConnectToPacketFilter(ctx context.Context, zone string, id types.ID, packetFilterID types.ID) error {
-	return d.err
-}
-
-func (d *dummyInterfaceHandler) Update(ctx context.Context, zone string, id types.ID, param *sacloud.InterfaceUpdateRequest) (*sacloud.Interface, error) {
-	if d.err != nil {
-		return nil, d.err
-	}
-	return d.iface, nil
-}
-
-type dummyPacketFilterReader struct {
-	packetFilter *sacloud.PacketFilter
-	err          error
-}
-
-func (d *dummyPacketFilterReader) Read(ctx context.Context, zone string, id types.ID) (*sacloud.PacketFilter, error) {
-	if d.err != nil {
-		return nil, d.err
-	}
-	return d.packetFilter, nil
-}
-
-type dummyCreateServerHandler struct {
-	server   *sacloud.Server
-	err      error
-	cdromErr error
-	bootErr  error
-}
-
-func (d *dummyCreateServerHandler) Create(ctx context.Context, zone string, param *sacloud.ServerCreateRequest) (*sacloud.Server, error) {
-	if d.err != nil {
-		return nil, d.err
-	}
-	return d.server, nil
-}
-
-func (d *dummyCreateServerHandler) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Server, error) {
-	if d.err != nil {
-		return nil, d.err
-	}
-	return d.server, nil
-}
-
-func (d *dummyCreateServerHandler) InsertCDROM(ctx context.Context, zone string, id types.ID, insertParam *sacloud.InsertCDROMRequest) error {
-	return d.cdromErr
-}
-
-func (d *dummyCreateServerHandler) Boot(ctx context.Context, zone string, id types.ID) error {
-	return d.bootErr
 }
 
 type dummyNoteHandler struct {

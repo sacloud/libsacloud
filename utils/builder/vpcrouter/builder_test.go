@@ -77,8 +77,9 @@ func TestBuilder_Build(t *testing.T) {
 						InternetConnectionEnabled: types.StringTrue,
 					},
 					SetupOptions: getSetupOption(),
+					Client:       sacloud.NewVPCRouterOp(caller),
 				}
-				return builder.Build(ctx, sacloud.NewVPCRouterOp(caller), testZone)
+				return builder.Build(ctx, testZone)
 			},
 		},
 		Read: &testutil.CRUDTestFunc{
@@ -201,8 +202,9 @@ func TestBuilder_BuildWithRouter(t *testing.T) {
 						InternetConnectionEnabled: types.StringTrue,
 					},
 					SetupOptions: getSetupOption(),
+					Client:       sacloud.NewVPCRouterOp(caller),
 				}
-				return builder.Build(ctx, sacloud.NewVPCRouterOp(caller), testZone)
+				return builder.Build(ctx, testZone)
 			},
 			CheckFunc: func(t testutil.TestT, ctx *testutil.CRUDTestContext, value interface{}) error {
 				vpcRouter := value.(*sacloud.VPCRouter)
@@ -262,8 +264,9 @@ func TestBuilder_BuildWithRouter(t *testing.T) {
 							InternetConnectionEnabled: types.StringTrue,
 						},
 						SetupOptions: getSetupOption(),
+						Client:       sacloud.NewVPCRouterOp(caller),
 					}
-					return builder.Update(ctx, sacloud.NewVPCRouterOp(caller), testZone, ctx.ID)
+					return builder.Update(ctx, testZone, ctx.ID)
 				},
 				CheckFunc: func(t testutil.TestT, ctx *testutil.CRUDTestContext, value interface{}) error {
 					vpcRouter := value.(*sacloud.VPCRouter)
