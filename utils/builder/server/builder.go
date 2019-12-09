@@ -148,7 +148,7 @@ func (b *Builder) Build(ctx context.Context, zone string) (*BuildResult, error) 
 		if err := diskReq.Validate(ctx, zone); err != nil {
 			return nil, err
 		}
-		builtDisk, err := diskReq.BuildDisk(ctx, zone, server.ID)
+		builtDisk, err := diskReq.Build(ctx, zone, server.ID)
 		if err != nil {
 			return nil, err
 		}

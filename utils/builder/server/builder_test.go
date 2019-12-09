@@ -284,7 +284,7 @@ func (d *dummyDiskBuilder) Validate(ctx context.Context, zone string) error {
 	return d.err
 }
 
-func (d *dummyDiskBuilder) BuildDisk(ctx context.Context, zone string, serverID types.ID) (*disk.BuildResult, error) {
+func (d *dummyDiskBuilder) Build(ctx context.Context, zone string, serverID types.ID) (*disk.BuildResult, error) {
 	if d.err != nil {
 		return nil, d.err
 	}

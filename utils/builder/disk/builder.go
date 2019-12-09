@@ -28,7 +28,7 @@ import (
 // Builder ディスクの構築インターフェース
 type Builder interface {
 	Validate(ctx context.Context, zone string) error
-	BuildDisk(ctx context.Context, zone string, serverID types.ID) (*BuildResult, error)
+	Build(ctx context.Context, zone string, serverID types.ID) (*BuildResult, error)
 }
 
 // BuildResult ディスク構築結果
@@ -73,8 +73,8 @@ func (d *FromUnixBuilder) Validate(ctx context.Context, zone string) error {
 	return nil
 }
 
-// BuildDisk ディスクの構築
-func (d *FromUnixBuilder) BuildDisk(ctx context.Context, zone string, serverID types.ID) (*BuildResult, error) {
+// Build ディスクの構築
+func (d *FromUnixBuilder) Build(ctx context.Context, zone string, serverID types.ID) (*BuildResult, error) {
 	res, err := build(ctx, d.Client, zone, serverID, d.DistantFrom, d)
 	if err != nil {
 		return nil, err
@@ -167,8 +167,8 @@ func (d *FromFixedArchiveBuilder) Validate(ctx context.Context, zone string) err
 	return nil
 }
 
-// BuildDisk ディスクの構築
-func (d *FromFixedArchiveBuilder) BuildDisk(ctx context.Context, zone string, serverID types.ID) (*BuildResult, error) {
+// Build ディスクの構築
+func (d *FromFixedArchiveBuilder) Build(ctx context.Context, zone string, serverID types.ID) (*BuildResult, error) {
 	res, err := build(ctx, d.Client, zone, serverID, d.DistantFrom, d)
 	if err != nil {
 		return nil, err
@@ -228,8 +228,8 @@ func (d *FromWindowsBuilder) Validate(ctx context.Context, zone string) error {
 	return nil
 }
 
-// BuildDisk ディスクの構築
-func (d *FromWindowsBuilder) BuildDisk(ctx context.Context, zone string, serverID types.ID) (*BuildResult, error) {
+// Build ディスクの構築
+func (d *FromWindowsBuilder) Build(ctx context.Context, zone string, serverID types.ID) (*BuildResult, error) {
 	res, err := build(ctx, d.Client, zone, serverID, d.DistantFrom, d)
 	if err != nil {
 		return nil, err
@@ -309,8 +309,8 @@ func (d *FromDiskOrArchiveBuilder) Validate(ctx context.Context, zone string) er
 	return nil
 }
 
-// BuildDisk ディスクの構築
-func (d *FromDiskOrArchiveBuilder) BuildDisk(ctx context.Context, zone string, serverID types.ID) (*BuildResult, error) {
+// Build ディスクの構築
+func (d *FromDiskOrArchiveBuilder) Build(ctx context.Context, zone string, serverID types.ID) (*BuildResult, error) {
 	res, err := build(ctx, d.Client, zone, serverID, d.DistantFrom, d)
 	if err != nil {
 		return nil, err
@@ -390,8 +390,8 @@ func (d *BlankBuilder) Validate(ctx context.Context, zone string) error {
 	return nil
 }
 
-// BuildDisk ディスクの構築
-func (d *BlankBuilder) BuildDisk(ctx context.Context, zone string, serverID types.ID) (*BuildResult, error) {
+// Build ディスクの構築
+func (d *BlankBuilder) Build(ctx context.Context, zone string, serverID types.ID) (*BuildResult, error) {
 	return build(ctx, d.Client, zone, serverID, d.DistantFrom, d)
 }
 
@@ -428,8 +428,8 @@ func (d *ConnectedDiskBuilder) Validate(ctx context.Context, zone string) error 
 	return nil
 }
 
-// BuildDisk ディスクの構築
-func (d *ConnectedDiskBuilder) BuildDisk(ctx context.Context, zone string, serverID types.ID) (*BuildResult, error) {
+// Build ディスクの構築
+func (d *ConnectedDiskBuilder) Build(ctx context.Context, zone string, serverID types.ID) (*BuildResult, error) {
 	return &BuildResult{
 		DiskID: d.DiskID,
 	}, nil
