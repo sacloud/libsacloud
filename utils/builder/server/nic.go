@@ -28,7 +28,7 @@ type NICSettingHolder interface {
 	GetConnectedSwitchParam() *sacloud.ConnectedSwitch
 
 	GetPacketFilterID() types.ID
-	Validate(ctx context.Context, client *BuildersAPIClient, zone string) error
+	Validate(ctx context.Context, client *APIClient, zone string) error
 }
 
 // AdditionalNICSettingHolder 追加NIC設定を保持するためのインターフェース
@@ -37,7 +37,7 @@ type AdditionalNICSettingHolder interface {
 
 	GetDisplayIPAddress() string
 	GetPacketFilterID() types.ID
-	Validate(ctx context.Context, client *BuildersAPIClient, zone string) error
+	Validate(ctx context.Context, client *APIClient, zone string) error
 }
 
 // SharedNICSetting サーバ作成時に共有セグメントに接続するためのパラメータ
@@ -58,7 +58,7 @@ func (c *SharedNICSetting) GetPacketFilterID() types.ID {
 }
 
 // Validate 設定値の検証
-func (c *SharedNICSetting) Validate(ctx context.Context, client *BuildersAPIClient, zone string) error {
+func (c *SharedNICSetting) Validate(ctx context.Context, client *APIClient, zone string) error {
 	if !c.PacketFilterID.IsEmpty() {
 		if _, err := client.PacketFilter.Read(ctx, zone, c.PacketFilterID); err != nil {
 			return fmt.Errorf("reading packet filter info(id:%d) is failed: %s", c.PacketFilterID, err)
@@ -97,7 +97,7 @@ func (c *ConnectedNICSetting) GetPacketFilterID() types.ID {
 }
 
 // Validate 設定値の検証
-func (c *ConnectedNICSetting) Validate(ctx context.Context, client *BuildersAPIClient, zone string) error {
+func (c *ConnectedNICSetting) Validate(ctx context.Context, client *APIClient, zone string) error {
 	if c.SwitchID.IsEmpty() {
 		return errors.New("ConnectedNICSetting: SwitchID is required")
 	}
@@ -141,6 +141,6 @@ func (d *DisconnectedNICSetting) GetPacketFilterID() types.ID {
 }
 
 // Validate 設定値の検証
-func (d *DisconnectedNICSetting) Validate(ctx context.Context, client *BuildersAPIClient, zone string) error {
+func (d *DisconnectedNICSetting) Validate(ctx context.Context, client *APIClient, zone string) error {
 	return nil
 }

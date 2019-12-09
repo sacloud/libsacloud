@@ -23,32 +23,32 @@ import (
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
-// DiskEditRequest 汎用ディスクの修正リクエストパラメータ DiskDirectorが利用する
-type DiskEditRequest UnixDiskEditRequest
+// EditRequest 汎用ディスクの修正リクエストパラメータ DiskDirectorが利用する
+type EditRequest UnixEditRequest
 
 // ToUnixDiskEditRequest Unix系パラメータへの変換
-func (d *DiskEditRequest) ToUnixDiskEditRequest() *UnixDiskEditRequest {
+func (d *EditRequest) ToUnixDiskEditRequest() *UnixEditRequest {
 	if d == nil {
 		return nil
 	}
-	req := UnixDiskEditRequest(*d)
+	req := UnixEditRequest(*d)
 	return &req
 }
 
 // ToWindowsDiskEditRequest Windows系パラメータへの変換
-func (d *DiskEditRequest) ToWindowsDiskEditRequest() *WindowsDiskEditRequest {
+func (d *EditRequest) ToWindowsDiskEditRequest() *WindowsEditRequest {
 	if d == nil {
 		return nil
 	}
-	return &WindowsDiskEditRequest{
+	return &WindowsEditRequest{
 		IPAddress:      d.IPAddress,
 		NetworkMaskLen: d.NetworkMaskLen,
 		DefaultRoute:   d.DefaultRoute,
 	}
 }
 
-// UnixDiskEditRequest Unix系の場合のディスクの修正リクエスト
-type UnixDiskEditRequest struct {
+// UnixEditRequest Unix系の場合のディスクの修正リクエスト
+type UnixEditRequest struct {
 	HostName string
 	Password string
 
@@ -76,7 +76,7 @@ type UnixDiskEditRequest struct {
 }
 
 // Validate 設定値の検証
-func (u *UnixDiskEditRequest) Validate(ctx context.Context, client *BuildersAPIClient) error {
+func (u *UnixEditRequest) Validate(ctx context.Context, client *APIClient) error {
 	for _, id := range u.SSHKeyIDs {
 		if _, err := client.SSHKey.Read(ctx, id); err != nil {
 			return err
@@ -90,7 +90,7 @@ func (u *UnixDiskEditRequest) Validate(ctx context.Context, client *BuildersAPIC
 	return nil
 }
 
-func (u *UnixDiskEditRequest) prepareDiskEditParameter(ctx context.Context, client *BuildersAPIClient) (*sacloud.DiskEditRequest, *sacloud.SSHKeyGenerated, []*sacloud.Note, error) {
+func (u *UnixEditRequest) prepareDiskEditParameter(ctx context.Context, client *APIClient) (*sacloud.DiskEditRequest, *sacloud.SSHKeyGenerated, []*sacloud.Note, error) {
 
 	editReq := &sacloud.DiskEditRequest{
 		HostName:            u.HostName,
@@ -168,14 +168,14 @@ func (u *UnixDiskEditRequest) prepareDiskEditParameter(ctx context.Context, clie
 	return editReq, generatedSSHKey, generatedNotes, nil
 }
 
-// WindowsDiskEditRequest Windows系の場合のディスクの修正リクエスト
-type WindowsDiskEditRequest struct {
+// WindowsEditRequest Windows系の場合のディスクの修正リクエスト
+type WindowsEditRequest struct {
 	IPAddress      string
 	NetworkMaskLen int
 	DefaultRoute   string
 }
 
-func (w *WindowsDiskEditRequest) prepareDiskEditParameter() *sacloud.DiskEditRequest {
+func (w *WindowsEditRequest) prepareDiskEditParameter() *sacloud.DiskEditRequest {
 	editReq := &sacloud.DiskEditRequest{}
 
 	if w.IPAddress != "" {

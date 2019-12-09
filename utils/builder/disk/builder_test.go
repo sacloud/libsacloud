@@ -29,23 +29,23 @@ import (
 func TestDiskFromUnixRequest_Validate(t *testing.T) {
 	cases := []struct {
 		msg string
-		in  *FromUnixDiskBuilder
+		in  *FromUnixBuilder
 		err error
 	}{
 		{
 			msg: "invalid ostype",
-			in: &FromUnixDiskBuilder{
+			in: &FromUnixBuilder{
 				OSType: ostype.ArchiveOSType(-1),
 			},
 			err: fmt.Errorf("invalid OSType: %s", ostype.ArchiveOSType(-1)),
 		},
 		{
 			msg: "size not found",
-			in: &FromUnixDiskBuilder{
+			in: &FromUnixBuilder{
 				OSType: ostype.CentOS,
 				PlanID: types.DiskPlans.SSD,
 				SizeGB: 1,
-				Client: &BuildersAPIClient{
+				Client: &APIClient{
 					DiskPlan: &dummyDiskPlanReader{
 						diskPlan: &sacloud.DiskPlan{
 							ID:   types.DiskPlans.SSD,
@@ -64,14 +64,14 @@ func TestDiskFromUnixRequest_Validate(t *testing.T) {
 		},
 		{
 			msg: "invalid disk edit parameter",
-			in: &FromUnixDiskBuilder{
+			in: &FromUnixBuilder{
 				OSType: ostype.CentOS,
 				PlanID: types.DiskPlans.SSD,
 				SizeGB: 1,
-				EditParameter: &UnixDiskEditRequest{
+				EditParameter: &UnixEditRequest{
 					NoteIDs: []types.ID{1},
 				},
-				Client: &BuildersAPIClient{
+				Client: &APIClient{
 					DiskPlan: &dummyDiskPlanReader{
 						diskPlan: &sacloud.DiskPlan{
 							ID:   types.DiskPlans.SSD,

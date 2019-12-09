@@ -23,8 +23,8 @@ import (
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
-// BuildersAPIClient builderが利用するAPIクライアント群
-type BuildersAPIClient struct {
+// APIClient builderが利用するAPIクライアント群
+type APIClient struct {
 	Interface    InterfaceHandler
 	PacketFilter PacketFilterReader
 	Server       CreateServerHandler
@@ -57,8 +57,8 @@ type CreateServerHandler interface {
 }
 
 // NewBuildersAPIClient APIクライアントの作成
-func NewBuildersAPIClient(caller sacloud.APICaller) *BuildersAPIClient {
-	return &BuildersAPIClient{
+func NewBuildersAPIClient(caller sacloud.APICaller) *APIClient {
+	return &APIClient{
 		Interface:    sacloud.NewInterfaceOp(caller),
 		PacketFilter: sacloud.NewPacketFilterOp(caller),
 		Server:       sacloud.NewServerOp(caller),

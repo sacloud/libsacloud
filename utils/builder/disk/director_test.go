@@ -25,17 +25,17 @@ import (
 func TestDiskDirector_Builder(t *testing.T) {
 	cases := []struct {
 		name string
-		in   *DiskDirector
-		out  DiskBuilder
+		in   *Director
+		out  Builder
 	}{
 		{
 			name: "blank disk",
-			in:   &DiskDirector{},
-			out:  &BlankDiskBuilder{},
+			in:   &Director{},
+			out:  &BlankBuilder{},
 		},
 		{
 			name: "connect disk",
-			in: &DiskDirector{
+			in: &Director{
 				DiskID: types.ID(1),
 			},
 			out: &ConnectedDiskBuilder{
@@ -44,58 +44,58 @@ func TestDiskDirector_Builder(t *testing.T) {
 		},
 		{
 			name: "from archive",
-			in: &DiskDirector{
+			in: &Director{
 				SourceArchiveID: types.ID(1),
 			},
-			out: &FromDiskOrArchiveDiskBuilder{
+			out: &FromDiskOrArchiveBuilder{
 				SourceArchiveID: types.ID(1),
 			},
 		},
 		{
 			name: "from disk",
-			in: &DiskDirector{
+			in: &Director{
 				SourceDiskID: types.ID(1),
 			},
-			out: &FromDiskOrArchiveDiskBuilder{
+			out: &FromDiskOrArchiveBuilder{
 				SourceDiskID: types.ID(1),
 			},
 		},
 		{
 			name: "unix",
-			in: &DiskDirector{
+			in: &Director{
 				OSType: ostype.CentOS,
-				EditParameter: &DiskEditRequest{
+				EditParameter: &EditRequest{
 					HostName: "example",
 				},
 			},
-			out: &FromUnixDiskBuilder{
+			out: &FromUnixBuilder{
 				OSType: ostype.CentOS,
-				EditParameter: &UnixDiskEditRequest{
+				EditParameter: &UnixEditRequest{
 					HostName: "example",
 				},
 			},
 		},
 		{
 			name: "windows",
-			in: &DiskDirector{
+			in: &Director{
 				OSType: ostype.Windows2019,
-				EditParameter: &DiskEditRequest{
+				EditParameter: &EditRequest{
 					IPAddress: "192.2.0.1",
 				},
 			},
-			out: &FromWindowsDiskBuilder{
+			out: &FromWindowsBuilder{
 				OSType: ostype.Windows2019,
-				EditParameter: &WindowsDiskEditRequest{
+				EditParameter: &WindowsEditRequest{
 					IPAddress: "192.2.0.1",
 				},
 			},
 		},
 		{
 			name: "other",
-			in: &DiskDirector{
+			in: &Director{
 				OSType: ostype.OPNsense,
 			},
-			out: &FromFixedArchiveDiskBuilder{
+			out: &FromFixedArchiveBuilder{
 				OSType: ostype.OPNsense,
 			},
 		},

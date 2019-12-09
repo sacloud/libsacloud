@@ -18,6 +18,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+
 	"github.com/sacloud/libsacloud/v2/utils/builder/disk"
 
 	"github.com/sacloud/libsacloud/v2/utils/server"
@@ -42,9 +43,9 @@ type Builder struct {
 	PrivateHostID   types.ID
 	NIC             NICSettingHolder
 	AdditionalNICs  []AdditionalNICSettingHolder
-	DiskBuilders    []disk.DiskBuilder
+	DiskBuilders    []disk.Builder
 
-	Client *BuildersAPIClient
+	Client *APIClient
 }
 
 // BuildResult サーバ構築結果

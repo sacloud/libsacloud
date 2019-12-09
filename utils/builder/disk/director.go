@@ -19,8 +19,8 @@ import (
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
-// DiskDirector パラメータに応じて適切なDiskBuilderを構築する
-type DiskDirector struct {
+// Director パラメータに応じて適切なDiskBuilderを構築する
+type Director struct {
 	OSType ostype.ArchiveOSType
 
 	Name        string
@@ -36,12 +36,12 @@ type DiskDirector struct {
 	SourceDiskID    types.ID
 	SourceArchiveID types.ID
 
-	EditParameter *DiskEditRequest
-	Client        *BuildersAPIClient
+	EditParameter *EditRequest
+	Client        *APIClient
 }
 
 // Builder パラメータに応じて適切なDiskBuilderを返す
-func (d *DiskDirector) Builder() DiskBuilder {
+func (d *Director) Builder() Builder {
 	switch {
 	case d.OSType == ostype.Custom:
 		switch {
@@ -52,7 +52,7 @@ func (d *DiskDirector) Builder() DiskBuilder {
 				Client:        d.Client,
 			}
 		case !d.SourceDiskID.IsEmpty(), !d.SourceArchiveID.IsEmpty():
-			return &FromDiskOrArchiveDiskBuilder{
+			return &FromDiskOrArchiveBuilder{
 				SourceDiskID:    d.SourceDiskID,
 				SourceArchiveID: d.SourceArchiveID,
 				Name:            d.Name,
@@ -67,7 +67,7 @@ func (d *DiskDirector) Builder() DiskBuilder {
 				Client:          d.Client,
 			}
 		default:
-			return &BlankDiskBuilder{
+			return &BlankBuilder{
 				Name:        d.Name,
 				SizeGB:      d.SizeGB,
 				DistantFrom: d.DistantFrom,
@@ -80,7 +80,7 @@ func (d *DiskDirector) Builder() DiskBuilder {
 			}
 		}
 	case d.OSType.IsSupportDiskEdit():
-		return &FromUnixDiskBuilder{
+		return &FromUnixBuilder{
 			OSType:        d.OSType,
 			Name:          d.Name,
 			SizeGB:        d.SizeGB,
@@ -94,7 +94,7 @@ func (d *DiskDirector) Builder() DiskBuilder {
 			Client:        d.Client,
 		}
 	case d.OSType.IsWindows():
-		return &FromWindowsDiskBuilder{
+		return &FromWindowsBuilder{
 			OSType:        d.OSType,
 			Name:          d.Name,
 			SizeGB:        d.SizeGB,
@@ -109,7 +109,7 @@ func (d *DiskDirector) Builder() DiskBuilder {
 		}
 	default:
 		// ディスクの修正をサポートしないものが指定された場合
-		return &FromFixedArchiveDiskBuilder{
+		return &FromFixedArchiveBuilder{
 			OSType:      d.OSType,
 			Name:        d.Name,
 			SizeGB:      d.SizeGB,

@@ -21,11 +21,11 @@ import (
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
-// BuildersAPIClient builderが利用するAPIクライアント群
-type BuildersAPIClient struct {
+// APIClient builderが利用するAPIクライアント群
+type APIClient struct {
 	Archive  ArchiveFinder
-	Disk     DiskHandler
-	DiskPlan DiskPlanReader
+	Disk     CreateDiskHandler
+	DiskPlan PlanReader
 	Note     NoteHandler
 	SSHKey   SSHKeyHandler
 }
@@ -36,8 +36,8 @@ type ArchiveFinder interface {
 	Read(ctx context.Context, zone string, id types.ID) (*sacloud.Archive, error)
 }
 
-// DiskHandler ディスク操作のためのインターフェース
-type DiskHandler interface {
+// CreateDiskHandler ディスク操作のためのインターフェース
+type CreateDiskHandler interface {
 	Create(ctx context.Context, zone string, createParam *sacloud.DiskCreateRequest, distantFrom []types.ID) (*sacloud.Disk, error)
 	CreateWithConfig(
 		ctx context.Context,
@@ -50,8 +50,8 @@ type DiskHandler interface {
 	Read(ctx context.Context, zone string, id types.ID) (*sacloud.Disk, error)
 }
 
-// DiskPlanReader ディスクプラン取得のためのインターフェース
-type DiskPlanReader interface {
+// PlanReader ディスクプラン取得のためのインターフェース
+type PlanReader interface {
 	Read(ctx context.Context, zone string, id types.ID) (*sacloud.DiskPlan, error)
 }
 
@@ -70,8 +70,8 @@ type SSHKeyHandler interface {
 }
 
 // NewBuildersAPIClient APIクライアントの作成
-func NewBuildersAPIClient(caller sacloud.APICaller) *BuildersAPIClient {
-	return &BuildersAPIClient{
+func NewBuildersAPIClient(caller sacloud.APICaller) *APIClient {
+	return &APIClient{
 		Archive:  sacloud.NewArchiveOp(caller),
 		Disk:     sacloud.NewDiskOp(caller),
 		DiskPlan: sacloud.NewDiskPlanOp(caller),
