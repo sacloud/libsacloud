@@ -21,6 +21,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/sacloud/libsacloud/v2/utils/builder"
+
 	"github.com/sacloud/libsacloud/v2/utils/builder/disk"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
@@ -276,24 +278,44 @@ func TestBuilder_Build(t *testing.T) {
 }
 
 type dummyDiskBuilder struct {
-	result *disk.BuildResult
-	err    error
+	result       *disk.BuildResult
+	updateResult *disk.UpdateResult
+	diskID       types.ID
+	updateLevel  builder.UpdateLevel
+	err          error
 }
 
 func (d *dummyDiskBuilder) Validate(ctx context.Context, zone string) error {
 	return d.err
 }
 
-func (d *dummyDiskBuilder) BuildDisk(ctx context.Context, zone string, serverID types.ID) (*disk.BuildResult, error) {
+func (d *dummyDiskBuilder) Build(ctx context.Context, zone string, serverID types.ID) (*disk.BuildResult, error) {
 	if d.err != nil {
 		return nil, d.err
 	}
 	return d.result, nil
 }
 
+// Update ディスクの更新
+func (d *dummyDiskBuilder) Update(ctx context.Context, zone string) (*disk.UpdateResult, error) {
+	if d.err != nil {
+		return nil, d.err
+	}
+	return d.updateResult, nil
+}
+
+func (d *dummyDiskBuilder) DiskID() types.ID {
+	return d.diskID
+}
+
+func (d *dummyDiskBuilder) UpdateLevel(ctx context.Context, zone string, disk *sacloud.Disk) builder.UpdateLevel {
+	return d.updateLevel
+}
+
 func TestBuilder_Build_BlackBox(t *testing.T) {
 	var switchID types.ID
 	var diskIDs []types.ID
+	var blackboxBuilder *Builder
 	var buildResult *BuildResult
 	var testZone = testutil.TestZone()
 
@@ -315,12 +337,13 @@ func TestBuilder_Build_BlackBox(t *testing.T) {
 				return err
 			}
 			switchID = sw.ID
+			blackboxBuilder = getBalckBoxTestBuilder(switchID)
 			return nil
 		},
 
 		Create: &testutil.CRUDTestFunc{
 			Func: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
-				return getBalckBoxTestBuilder(switchID).Build(ctx, testZone)
+				return blackboxBuilder.Build(ctx, testZone)
 			},
 			SkipExtractID: true,
 			CheckFunc: func(t testutil.TestT, ctx *testutil.CRUDTestContext, v interface{}) error {
@@ -345,6 +368,7 @@ func TestBuilder_Build_BlackBox(t *testing.T) {
 				if err != nil {
 					return nil, err
 				}
+				diskIDs = []types.ID{}
 				for _, disk := range server.Disks {
 					diskIDs = append(diskIDs, disk.ID)
 				}
@@ -361,12 +385,34 @@ func TestBuilder_Build_BlackBox(t *testing.T) {
 			},
 			SkipExtractID: true,
 		},
-
+		Updates: []*testutil.CRUDTestFunc{
+			{
+				Func: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+					blackboxBuilder.AdditionalNICs = []AdditionalNICSettingHolder{blackboxBuilder.AdditionalNICs[1]}
+					blackboxBuilder.DiskBuilders = append(blackboxBuilder.DiskBuilders, &disk.BlankBuilder{
+						Name:        "libsacloud-disk-builder",
+						SizeGB:      20,
+						PlanID:      types.DiskPlans.SSD,
+						Connection:  types.DiskConnections.VirtIO,
+						Description: "libsacloud-disk-builder-description",
+						Tags:        types.Tags{"tag1", "tag2"},
+						Client:      disk.NewBuildersAPIClient(testutil.SingletonAPICaller()),
+					})
+					return blackboxBuilder.Update(ctx, testZone)
+				},
+				SkipExtractID: true,
+				CheckFunc: func(t testutil.TestT, ctx *testutil.CRUDTestContext, v interface{}) error {
+					result := v.(*BuildResult)
+					buildResult = result
+					ctx.ID = result.ServerID
+					return nil
+				},
+			},
+		},
 		Shutdown: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {
 			serverOp := sacloud.NewServerOp(caller)
 			return serverOp.Shutdown(ctx, testZone, ctx.ID, &sacloud.ShutdownOption{Force: true})
 		},
-
 		Delete: &testutil.CRUDTestDeleteFunc{
 			Func: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {
 				serverOp := sacloud.NewServerOp(caller)

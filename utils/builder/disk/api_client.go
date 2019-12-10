@@ -47,6 +47,8 @@ type CreateDiskHandler interface {
 		bootAtAvailable bool,
 		distantFrom []types.ID,
 	) (*sacloud.Disk, error)
+	Update(ctx context.Context, zone string, id types.ID, updateParam *sacloud.DiskUpdateRequest) (*sacloud.Disk, error)
+	Config(ctx context.Context, zone string, id types.ID, editParam *sacloud.DiskEditRequest) error
 	Read(ctx context.Context, zone string, id types.ID) (*sacloud.Disk, error)
 }
 

@@ -47,7 +47,7 @@ func (d *Director) Builder() Builder {
 		switch {
 		case !d.DiskID.IsEmpty():
 			return &ConnectedDiskBuilder{
-				DiskID:        d.DiskID,
+				ID:            d.DiskID,
 				EditParameter: d.EditParameter.ToUnixDiskEditRequest(),
 				Client:        d.Client,
 			}

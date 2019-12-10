@@ -39,7 +39,7 @@ func TestDiskDirector_Builder(t *testing.T) {
 				DiskID: types.ID(1),
 			},
 			out: &ConnectedDiskBuilder{
-				DiskID: types.ID(1),
+				ID: types.ID(1),
 			},
 		},
 		{

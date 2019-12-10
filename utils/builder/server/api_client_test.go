@@ -55,15 +55,35 @@ type dummyInterfaceHandler struct {
 	err   error
 }
 
-func (d *dummyInterfaceHandler) ConnectToPacketFilter(ctx context.Context, zone string, id types.ID, packetFilterID types.ID) error {
-	return d.err
+func (d *dummyInterfaceHandler) Create(ctx context.Context, zone string, param *sacloud.InterfaceCreateRequest) (*sacloud.Interface, error) {
+	if d.err != nil {
+		return nil, d.err
+	}
+	return d.iface, nil
 }
-
 func (d *dummyInterfaceHandler) Update(ctx context.Context, zone string, id types.ID, param *sacloud.InterfaceUpdateRequest) (*sacloud.Interface, error) {
 	if d.err != nil {
 		return nil, d.err
 	}
 	return d.iface, nil
+}
+func (d *dummyInterfaceHandler) Delete(ctx context.Context, zone string, id types.ID) error {
+	return d.err
+}
+func (d *dummyInterfaceHandler) ConnectToSharedSegment(ctx context.Context, zone string, id types.ID) error {
+	return d.err
+}
+func (d *dummyInterfaceHandler) ConnectToSwitch(ctx context.Context, zone string, id types.ID, switchID types.ID) error {
+	return d.err
+}
+func (d *dummyInterfaceHandler) DisconnectFromSwitch(ctx context.Context, zone string, id types.ID) error {
+	return d.err
+}
+func (d *dummyInterfaceHandler) ConnectToPacketFilter(ctx context.Context, zone string, id types.ID, packetFilterID types.ID) error {
+	return d.err
+}
+func (d *dummyInterfaceHandler) DisconnectFromPacketFilter(ctx context.Context, zone string, id types.ID) error {
+	return d.err
 }
 
 type dummyPacketFilterReader struct {
@@ -79,10 +99,11 @@ func (d *dummyPacketFilterReader) Read(ctx context.Context, zone string, id type
 }
 
 type dummyCreateServerHandler struct {
-	server   *sacloud.Server
-	err      error
-	cdromErr error
-	bootErr  error
+	server      *sacloud.Server
+	err         error
+	cdromErr    error
+	bootErr     error
+	shutdownErr error
 }
 
 func (d *dummyCreateServerHandler) Create(ctx context.Context, zone string, param *sacloud.ServerCreateRequest) (*sacloud.Server, error) {
@@ -99,10 +120,32 @@ func (d *dummyCreateServerHandler) Read(ctx context.Context, zone string, id typ
 	return d.server, nil
 }
 
+func (d *dummyCreateServerHandler) Update(ctx context.Context, zone string, id types.ID, param *sacloud.ServerUpdateRequest) (*sacloud.Server, error) {
+	if d.err != nil {
+		return nil, d.err
+	}
+	return d.server, nil
+}
+
 func (d *dummyCreateServerHandler) InsertCDROM(ctx context.Context, zone string, id types.ID, insertParam *sacloud.InsertCDROMRequest) error {
+	return d.cdromErr
+}
+
+func (d *dummyCreateServerHandler) EjectCDROM(ctx context.Context, zone string, id types.ID, ejectParam *sacloud.EjectCDROMRequest) error {
 	return d.cdromErr
 }
 
 func (d *dummyCreateServerHandler) Boot(ctx context.Context, zone string, id types.ID) error {
 	return d.bootErr
+}
+
+func (d *dummyCreateServerHandler) Shutdown(ctx context.Context, zone string, id types.ID, shutdownOption *sacloud.ShutdownOption) error {
+	return d.shutdownErr
+}
+
+func (d *dummyCreateServerHandler) ChangePlan(ctx context.Context, zone string, id types.ID, plan *sacloud.ServerChangePlanRequest) (*sacloud.Server, error) {
+	if d.err != nil {
+		return nil, d.err
+	}
+	return d.server, nil
 }

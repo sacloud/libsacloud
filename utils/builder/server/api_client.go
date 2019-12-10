@@ -25,11 +25,18 @@ import (
 
 // APIClient builderが利用するAPIクライアント群
 type APIClient struct {
+	Disk         DiskHandler
 	Interface    InterfaceHandler
 	PacketFilter PacketFilterReader
 	Server       CreateServerHandler
 	ServerPlan   server.PlanFinder
 	Switch       SwitchReader
+}
+
+// DiskHandler ディスクの接続/切断のためのインターフェース
+type DiskHandler interface {
+	ConnectToServer(ctx context.Context, zone string, id types.ID, serverID types.ID) error
+	DisconnectFromServer(ctx context.Context, zone string, id types.ID) error
 }
 
 // SwitchReader スイッチ参照のためのインターフェース
@@ -39,8 +46,14 @@ type SwitchReader interface {
 
 // InterfaceHandler NIC操作のためのインターフェース
 type InterfaceHandler interface {
-	ConnectToPacketFilter(ctx context.Context, zone string, id types.ID, packetFilterID types.ID) error
+	Create(ctx context.Context, zone string, param *sacloud.InterfaceCreateRequest) (*sacloud.Interface, error)
 	Update(ctx context.Context, zone string, id types.ID, param *sacloud.InterfaceUpdateRequest) (*sacloud.Interface, error)
+	Delete(ctx context.Context, zone string, id types.ID) error
+	ConnectToSharedSegment(ctx context.Context, zone string, id types.ID) error
+	ConnectToSwitch(ctx context.Context, zone string, id types.ID, switchID types.ID) error
+	DisconnectFromSwitch(ctx context.Context, zone string, id types.ID) error
+	ConnectToPacketFilter(ctx context.Context, zone string, id types.ID, packetFilterID types.ID) error
+	DisconnectFromPacketFilter(ctx context.Context, zone string, id types.ID) error
 }
 
 // PacketFilterReader パケットフィルタ参照のためのインターフェース
@@ -51,14 +64,19 @@ type PacketFilterReader interface {
 // CreateServerHandler サーバ操作のためのインターフェース
 type CreateServerHandler interface {
 	Create(ctx context.Context, zone string, param *sacloud.ServerCreateRequest) (*sacloud.Server, error)
+	Update(ctx context.Context, zone string, id types.ID, param *sacloud.ServerUpdateRequest) (*sacloud.Server, error)
 	Read(ctx context.Context, zone string, id types.ID) (*sacloud.Server, error)
 	InsertCDROM(ctx context.Context, zone string, id types.ID, insertParam *sacloud.InsertCDROMRequest) error
+	EjectCDROM(ctx context.Context, zone string, id types.ID, ejectParam *sacloud.EjectCDROMRequest) error
 	Boot(ctx context.Context, zone string, id types.ID) error
+	Shutdown(ctx context.Context, zone string, id types.ID, shutdownOption *sacloud.ShutdownOption) error
+	ChangePlan(ctx context.Context, zone string, id types.ID, plan *sacloud.ServerChangePlanRequest) (*sacloud.Server, error)
 }
 
 // NewBuildersAPIClient APIクライアントの作成
 func NewBuildersAPIClient(caller sacloud.APICaller) *APIClient {
 	return &APIClient{
+		Disk:         sacloud.NewDiskOp(caller),
 		Interface:    sacloud.NewInterfaceOp(caller),
 		PacketFilter: sacloud.NewPacketFilterOp(caller),
 		Server:       sacloud.NewServerOp(caller),
