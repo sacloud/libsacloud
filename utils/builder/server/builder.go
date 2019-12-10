@@ -82,8 +82,8 @@ func (b *Builder) Validate(ctx context.Context, zone string) error {
 		return errors.New("NIC is required when AdditionalNICs is specified")
 	}
 
-	if len(b.AdditionalNICs) > 3 {
-		return errors.New("AdditionalNICs must be less than 4")
+	if len(b.AdditionalNICs) > 9 {
+		return errors.New("AdditionalNICs must be less than 9")
 	}
 
 	if b.InterfaceDriver != types.InterfaceDrivers.E1000 && b.InterfaceDriver != types.InterfaceDrivers.VirtIO {
@@ -91,7 +91,7 @@ func (b *Builder) Validate(ctx context.Context, zone string) error {
 	}
 
 	// Field values
-	plan, err := server.FindPlan(ctx, b.Client.ServerPlan, zone, &server.FindPlanRequest{
+	_, err := server.FindPlan(ctx, b.Client.ServerPlan, zone, &server.FindPlanRequest{
 		CPU:        b.CPU,
 		MemoryGB:   b.MemoryGB,
 		Commitment: b.Commitment,
@@ -100,10 +100,6 @@ func (b *Builder) Validate(ctx context.Context, zone string) error {
 	if err != nil {
 		return err
 	}
-	b.CPU = plan.CPU
-	b.MemoryGB = plan.GetMemoryGB()
-	b.Commitment = plan.Commitment
-	b.Generation = plan.Generation
 
 	for _, diskBuilder := range b.DiskBuilders {
 		if err := diskBuilder.Validate(ctx, zone); err != nil {
@@ -367,15 +363,15 @@ func (b *Builder) desiredState() *serverState {
 func (b *Builder) currentNICState(nic *sacloud.InterfaceView) *nicState {
 	var state *nicState
 
-	switch nic.UpstreamType {
-	case types.UpstreamNetworkTypes.Shared:
+	switch {
+	case nic.SwitchScope == types.Scopes.Shared:
 		state = &nicState{
 			upstreamType:   types.UpstreamNetworkTypes.Shared,
 			switchID:       types.ID(0),
 			packetFilterID: nic.PacketFilterID,
 			displayIP:      "",
 		}
-	case types.UpstreamNetworkTypes.None:
+	case nic.SwitchID.IsEmpty():
 		state = &nicState{
 			upstreamType:   types.UpstreamNetworkTypes.None,
 			switchID:       types.ID(0),

@@ -50,6 +50,7 @@ type CreateDiskHandler interface {
 	Update(ctx context.Context, zone string, id types.ID, updateParam *sacloud.DiskUpdateRequest) (*sacloud.Disk, error)
 	Config(ctx context.Context, zone string, id types.ID, editParam *sacloud.DiskEditRequest) error
 	Read(ctx context.Context, zone string, id types.ID) (*sacloud.Disk, error)
+	ConnectToServer(ctx context.Context, zone string, id types.ID, serverID types.ID) error
 }
 
 // PlanReader ディスクプラン取得のためのインターフェース
