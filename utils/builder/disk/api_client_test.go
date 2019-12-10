@@ -88,6 +88,21 @@ func (d *dummyDiskHandler) Read(ctx context.Context, zone string, id types.ID) (
 	return d.disk, nil
 }
 
+func (d *dummyDiskHandler) Update(ctx context.Context, zone string, id types.ID, updateParam *sacloud.DiskUpdateRequest) (*sacloud.Disk, error) {
+	if d.err != nil {
+		return nil, d.err
+	}
+	return d.disk, nil
+}
+
+func (d *dummyDiskHandler) Config(ctx context.Context, zone string, id types.ID, editParam *sacloud.DiskEditRequest) error {
+	return d.err
+}
+
+func (d *dummyDiskHandler) ConnectToServer(ctx context.Context, zone string, id types.ID, serverID types.ID) error {
+	return d.err
+}
+
 type dummyDiskPlanReader struct {
 	diskPlan *sacloud.DiskPlan
 	err      error

@@ -73,10 +73,16 @@ func TestBuilder_Validate(t *testing.T) {
 			err: errors.New("NIC is required when AdditionalNICs is specified"),
 		},
 		{
-			msg: "Additional NICs over 4",
+			msg: "Additional NICs over 9",
 			in: &Builder{
 				NIC: &SharedNICSetting{},
 				AdditionalNICs: []AdditionalNICSettingHolder{
+					&DisconnectedNICSetting{},
+					&DisconnectedNICSetting{},
+					&DisconnectedNICSetting{},
+					&DisconnectedNICSetting{},
+					&DisconnectedNICSetting{},
+					&DisconnectedNICSetting{},
 					&DisconnectedNICSetting{},
 					&DisconnectedNICSetting{},
 					&DisconnectedNICSetting{},
@@ -86,7 +92,7 @@ func TestBuilder_Validate(t *testing.T) {
 					ServerPlan: &dummyPlanFinder{},
 				},
 			},
-			err: errors.New("AdditionalNICs must be less than 4"),
+			err: errors.New("AdditionalNICs must be less than 9"),
 		},
 		{
 			msg: "invalid InterfaceDriver",

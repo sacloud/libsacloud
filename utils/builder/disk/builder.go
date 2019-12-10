@@ -569,7 +569,8 @@ func (d *BlankBuilder) createDiskParameter(ctx context.Context, client *APIClien
 type ConnectedDiskBuilder struct {
 	ID            types.ID
 	EditParameter *UnixEditRequest
-	Client        *APIClient
+
+	Client *APIClient
 }
 
 // Validate 設定値の検証
@@ -586,9 +587,26 @@ func (d *ConnectedDiskBuilder) Validate(ctx context.Context, zone string) error 
 
 // Build ディスクの構築
 func (d *ConnectedDiskBuilder) Build(ctx context.Context, zone string, serverID types.ID) (*BuildResult, error) {
-	return &BuildResult{
+	res := &BuildResult{
 		DiskID: d.ID,
-	}, nil
+	}
+	if !serverID.IsEmpty() {
+		if err := d.Client.Disk.ConnectToServer(ctx, zone, d.ID, serverID); err != nil {
+			return nil, err
+		}
+	}
+
+	if d.EditParameter != nil {
+		req, sshKey, _, err := d.EditParameter.prepareDiskEditParameter(ctx, d.Client)
+		if err != nil {
+			return nil, err
+		}
+		res.GeneratedSSHKey = sshKey
+		if err := d.Client.Disk.Config(ctx, zone, d.ID, req); err != nil {
+			return nil, err
+		}
+	}
+	return res, nil
 }
 
 // Update ディスクの更新
@@ -597,6 +615,17 @@ func (d *ConnectedDiskBuilder) Update(ctx context.Context, zone string) (*Update
 	if err != nil {
 		return nil, err
 	}
+
+	if d.EditParameter != nil {
+		req, _, _, err := d.EditParameter.prepareDiskEditParameter(ctx, d.Client)
+		if err != nil {
+			return nil, err
+		}
+		if err := d.Client.Disk.Config(ctx, zone, d.ID, req); err != nil {
+			return nil, err
+		}
+	}
+
 	return &UpdateResult{Disk: disk}, nil
 }
 
