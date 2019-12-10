@@ -425,6 +425,7 @@ func (b *Builder) createServer(ctx context.Context, zone string) (*sacloud.Serve
 		Tags:                 b.Tags,
 		IconID:               b.IconID,
 		WaitDiskMigration:    false,
+		PrivateHostID:        b.PrivateHostID,
 		ConnectedSwitches:    []*sacloud.ConnectedSwitch{},
 	}
 	if b.NIC != nil {
