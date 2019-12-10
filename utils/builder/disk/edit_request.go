@@ -93,11 +93,12 @@ func (u *UnixEditRequest) Validate(ctx context.Context, client *APIClient) error
 func (u *UnixEditRequest) prepareDiskEditParameter(ctx context.Context, client *APIClient) (*sacloud.DiskEditRequest, *sacloud.SSHKeyGenerated, []*sacloud.Note, error) {
 
 	editReq := &sacloud.DiskEditRequest{
-		HostName:            u.HostName,
+		Background:          true,
 		Password:            u.Password,
 		DisablePWAuth:       u.DisablePWAuth,
 		EnableDHCP:          u.EnableDHCP,
 		ChangePartitionUUID: u.ChangePartitionUUID,
+		HostName:            u.HostName,
 	}
 
 	if u.IPAddress != "" {
@@ -176,7 +177,7 @@ type WindowsEditRequest struct {
 }
 
 func (w *WindowsEditRequest) prepareDiskEditParameter() *sacloud.DiskEditRequest {
-	editReq := &sacloud.DiskEditRequest{}
+	editReq := &sacloud.DiskEditRequest{Background: true}
 
 	if w.IPAddress != "" {
 		editReq.UserIPAddress = w.IPAddress

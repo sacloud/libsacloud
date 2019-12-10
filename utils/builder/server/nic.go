@@ -23,12 +23,20 @@ import (
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
+type nicState struct {
+	upstreamType   types.EUpstreamNetworkType
+	switchID       types.ID
+	packetFilterID types.ID
+	displayIP      string
+}
+
 // NICSettingHolder NIC設定を保持するためのインターフェース
 type NICSettingHolder interface {
 	GetConnectedSwitchParam() *sacloud.ConnectedSwitch
 
 	GetPacketFilterID() types.ID
 	Validate(ctx context.Context, client *APIClient, zone string) error
+	state() *nicState
 }
 
 // AdditionalNICSettingHolder 追加NIC設定を保持するためのインターフェース
@@ -38,6 +46,7 @@ type AdditionalNICSettingHolder interface {
 	GetDisplayIPAddress() string
 	GetPacketFilterID() types.ID
 	Validate(ctx context.Context, client *APIClient, zone string) error
+	state() *nicState
 }
 
 // SharedNICSetting サーバ作成時に共有セグメントに接続するためのパラメータ
@@ -65,6 +74,15 @@ func (c *SharedNICSetting) Validate(ctx context.Context, client *APIClient, zone
 		}
 	}
 	return nil
+}
+
+func (c *SharedNICSetting) state() *nicState {
+	return &nicState{
+		upstreamType:   types.UpstreamNetworkTypes.Shared,
+		switchID:       types.ID(0),
+		packetFilterID: c.PacketFilterID,
+		displayIP:      "",
+	}
 }
 
 // ConnectedNICSetting サーバ作成時にスイッチに接続するためのパラメータ
@@ -115,6 +133,15 @@ func (c *ConnectedNICSetting) Validate(ctx context.Context, client *APIClient, z
 	return nil
 }
 
+func (c *ConnectedNICSetting) state() *nicState {
+	return &nicState{
+		upstreamType:   types.UpstreamNetworkTypes.Switch,
+		switchID:       c.SwitchID,
+		packetFilterID: c.PacketFilterID,
+		displayIP:      c.DisplayIPAddress,
+	}
+}
+
 // DisconnectedNICSetting 切断状態のNICを作成するためのパラメータ
 //
 // NICSettingHolderとAdditionalNICSettingHolderを実装し、Builder.NIC/Builder.AdditionalNICsに利用できる。
@@ -143,4 +170,13 @@ func (d *DisconnectedNICSetting) GetPacketFilterID() types.ID {
 // Validate 設定値の検証
 func (d *DisconnectedNICSetting) Validate(ctx context.Context, client *APIClient, zone string) error {
 	return nil
+}
+
+func (d *DisconnectedNICSetting) state() *nicState {
+	return &nicState{
+		upstreamType:   types.UpstreamNetworkTypes.None,
+		switchID:       types.ID(0),
+		packetFilterID: types.ID(0),
+		displayIP:      "",
+	}
 }
