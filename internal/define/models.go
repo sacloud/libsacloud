@@ -1229,16 +1229,14 @@ func (m *modelsDef) mobileGatewaySetting() *dsl.Model {
 				Name: "Interfaces",
 				Type: m.mobileGatewayInterface(),
 				Tags: &dsl.FieldTags{
-					JSON:    ",omitempty",
-					MapConv: "MobileGateway.[]Interfaces,omitempty,recursive",
+					MapConv: "MobileGateway.[]Interfaces,recursive",
 				},
 			},
 			{
 				Name: "StaticRoute",
 				Type: m.mobileGatewayStaticRoute(),
 				Tags: &dsl.FieldTags{
-					JSON:    ",omitempty",
-					MapConv: "MobileGateway.[]StaticRoutes,omitempty,recursive",
+					MapConv: "MobileGateway.[]StaticRoutes,recursive",
 				},
 			},
 			{

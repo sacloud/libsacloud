@@ -20,23 +20,13 @@ import (
 	"reflect"
 	"time"
 
+	"github.com/sacloud/libsacloud/v2/utils/builder"
+
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/accessor"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 	"github.com/sacloud/libsacloud/v2/utils/setup"
 )
-
-var (
-	// DefaultNICUpdateWaitDuration NIC切断/削除後の待ち時間デフォルト値
-	DefaultNICUpdateWaitDuration = 5 * time.Second
-)
-
-// DefaultSetupOptions RetryableSetupのデフォルトオプション
-func DefaultSetupOptions() *RetryableSetupParameter {
-	return &RetryableSetupParameter{
-		NICUpdateWaitDuration: DefaultNICUpdateWaitDuration,
-	}
-}
 
 // Builder モバイルゲートウェイの構築を行う
 type Builder struct {
@@ -53,7 +43,7 @@ type Builder struct {
 	SIMs                            []*SIMSetting
 	TrafficConfig                   *sacloud.MobileGatewayTrafficControl
 
-	SetupOptions *RetryableSetupParameter
+	SetupOptions *builder.RetryableSetupParameter
 	Client       *APIClient
 }
 
@@ -76,29 +66,9 @@ type SIMRouteSetting struct {
 	Prefix string
 }
 
-// RetryableSetupParameter モバイルゲートウェイ作成時に利用するsetup.RetryableSetupのパラメータ
-//
-// 後でbuilder配下に移す
-type RetryableSetupParameter struct {
-	// BootAfterBuild Buildの後に再起動を行うか
-	BootAfterBuild bool
-	// NICUpdateWaitDuration NIC接続切断操作の後の待ち時間
-	NICUpdateWaitDuration time.Duration
-	// RetryCount リトライ回数
-	RetryCount int
-	// ProvisioningRetryInterval
-	ProvisioningRetryInterval time.Duration
-	// DeleteRetryCount 削除リトライ回数
-	DeleteRetryCount int
-	// DeleteRetryInterval 削除リトライ間隔
-	DeleteRetryInterval time.Duration
-	// sacloud.StateWaiterによるステート待ちの間隔
-	PollingInterval time.Duration
-}
-
 func (b *Builder) init() {
 	if b.SetupOptions == nil {
-		b.SetupOptions = DefaultSetupOptions()
+		b.SetupOptions = builder.DefaultSetupOptions()
 	}
 }
 
@@ -276,7 +246,7 @@ func (b *Builder) Update(ctx context.Context, zone string, id types.ID) (*saclou
 	isNeedRestart := false
 	if mgw.InstanceStatus.IsUp() && isNeedShutdown {
 		isNeedRestart = true
-		if err := b.shutdown(ctx, zone, id); err != nil {
+		if err := b.shutdown(ctx, zone, id, false); err != nil {
 			return nil, err
 		}
 	}
@@ -595,8 +565,8 @@ func (b *Builder) boot(ctx context.Context, zone string, id types.ID) error {
 	return nil
 }
 
-func (b *Builder) shutdown(ctx context.Context, zone string, id types.ID) error {
-	if err := b.Client.MobileGateway.Shutdown(ctx, zone, id, &sacloud.ShutdownOption{Force: false}); err != nil {
+func (b *Builder) shutdown(ctx context.Context, zone string, id types.ID, force bool) error {
+	if err := b.Client.MobileGateway.Shutdown(ctx, zone, id, &sacloud.ShutdownOption{Force: force}); err != nil {
 		return err
 	}
 	// wait for down

@@ -18,16 +18,18 @@ import (
 	"testing"
 	"time"
 
+	"github.com/sacloud/libsacloud/v2/utils/builder"
+
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/testutil"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
-func getSetupOption() *RetryableSetupParameter {
+func getSetupOption() *builder.RetryableSetupParameter {
 	if testutil.IsAccTest() {
 		return nil
 	}
-	return &RetryableSetupParameter{
+	return &builder.RetryableSetupParameter{
 		DeleteRetryInterval:       10 * time.Millisecond,
 		ProvisioningRetryInterval: 10 * time.Millisecond,
 		PollingInterval:           10 * time.Millisecond,
