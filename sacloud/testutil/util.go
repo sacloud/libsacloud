@@ -58,6 +58,8 @@ func SingletonAPICaller() *sacloud.Client {
 		if !IsAccTest() {
 			sacloud.DefaultStatePollingInterval = 100 * time.Millisecond
 			fake.SwitchFactoryFuncToFake()
+			os.Setenv("SAKURACLOUD_ACCESS_TOKEN", "dummy")
+			os.Setenv("SAKURACLOUD_ACCESS_TOKEN_SECRET", "dummy")
 		}
 
 		if IsEnableTrace() || IsEnableAPITrace() {

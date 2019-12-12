@@ -24,20 +24,42 @@ type Operations []*Operation
 
 // Operation リソースへの操作
 type Operation struct {
-	ResourceName     string
-	Name             string        // 操作名、メソッド名となる
-	Method           string        // HTTPリクエストメソッド GET/POST/PUT/DELETE
-	PathFormat       string        // パスのフォーマット、省略した場合はDefaultPathFormatが設定される
-	Arguments        Arguments     // 引数の定義
-	Results          Results       // レスポンス
-	RequestEnvelope  *EnvelopeType // リクエスト時のエンベロープ
-	ResponseEnvelope *EnvelopeType // レスポンス時のエンベロープ
-	UseWrappedResult bool          // trueの場合APIからの戻り値としてラッパー型(xxxResult)を返す
+	ResourceName        string
+	Name                string        // 操作名、メソッド名となる
+	Method              string        // HTTPリクエストメソッド GET/POST/PUT/DELETE
+	PathFormat          string        // パスのフォーマット、省略した場合はDefaultPathFormatが設定される
+	Arguments           Arguments     // 引数の定義
+	Results             Results       // レスポンス
+	RequestEnvelope     *EnvelopeType // リクエスト時のエンベロープ
+	ResponseEnvelope    *EnvelopeType // レスポンス時のエンベロープ
+	UseWrappedResult    bool          // trueの場合APIからの戻り値としてラッパー型(xxxResult)を返す
+	LockLevel           LockLevel     // APIコール時のロックレベル
+	LockKeyCustomFormat string        // ロックキーのgoテンプレートフォーマット(PathFormatと同じパラメータが利用可能)
 	// IsPatch Patchメソッドであるかのフラグ
 	//
 	// この値に応じてコード生成の挙動を切り替える
 	// [REMARK] 他にもコード生成のカスタマイズが必要になったらこの項目の持ち方を再考する
 	IsPatch bool
+}
+
+// LockKeyFormat ロックキーのフォーマット、ロックなしの場合空になる
+func (o *Operation) LockKeyFormat() string {
+	if o.LockLevel == LockLevelNone {
+		return ""
+	}
+	if o.LockKeyCustomFormat != "" {
+		return o.LockKeyCustomFormat
+	}
+	switch o.LockLevel {
+	case LockLevelResource:
+		return o.GetPathFormat()
+	case LockLevelAPI:
+		return fmt.Sprintf("%s.%s.%s", o.ResourceName, o.Name, o.Method)
+	case LockLevelGlobal:
+		return "GlobalLock"
+	default:
+		return ""
+	}
 }
 
 // GetPathFormat パスのフォーマット

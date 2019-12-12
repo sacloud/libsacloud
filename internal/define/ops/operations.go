@@ -320,6 +320,7 @@ func Boot(resourceName string) *dsl.Operation {
 		Name:         "Boot",
 		PathFormat:   dsl.IDAndSuffixPathFormat("power"),
 		Method:       http.MethodPut,
+		LockLevel:    dsl.LockLevelGlobal,
 		Arguments: dsl.Arguments{
 			dsl.ArgumentID,
 		},
@@ -342,6 +343,7 @@ func Shutdown(resourceName string) *dsl.Operation {
 		Name:            "Shutdown",
 		PathFormat:      dsl.IDAndSuffixPathFormat("power"),
 		Method:          http.MethodDelete,
+		LockLevel:       dsl.LockLevelGlobal,
 		RequestEnvelope: dsl.RequestEnvelopeFromModel(param),
 		Arguments: dsl.Arguments{
 			dsl.ArgumentID,
@@ -356,6 +358,7 @@ func Reset(resourceName string) *dsl.Operation {
 		ResourceName: resourceName,
 		Name:         "Reset",
 		PathFormat:   dsl.IDAndSuffixPathFormat("reset"),
+		LockLevel:    dsl.LockLevelGlobal,
 		Method:       http.MethodPut,
 		Arguments: dsl.Arguments{
 			dsl.ArgumentID,

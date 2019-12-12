@@ -196,7 +196,7 @@ var (
 		Tags:            []string{"tag1-upd", "tag2-upd"},
 		Description:     "desc-upd",
 		IconID:          testIconID,
-		InterfaceDriver: types.InterfaceDrivers.E1000,
+		InterfaceDriver: types.InterfaceDrivers.VirtIO,
 	}
 	updateServerExpected = &sacloud.Server{
 		Name:            updateServerParam.Name,
@@ -209,7 +209,7 @@ var (
 	}
 	updateServerToMinParam = &sacloud.ServerUpdateRequest{
 		Name:            testutil.ResourceName("server-to-min"),
-		InterfaceDriver: types.InterfaceDrivers.E1000,
+		InterfaceDriver: types.InterfaceDrivers.VirtIO,
 	}
 	updateServerToMinExpected = &sacloud.Server{
 		Name:            updateServerToMinParam.Name,
