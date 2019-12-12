@@ -40,7 +40,6 @@ func Delete(ctx context.Context, mgwAPI sacloud.MobileGatewayAPI, simAPI sacloud
 		if _, err := waiter.WaitForState(ctx); err != nil {
 			return err
 		}
-		return nil
 	}
 
 	// sim route
