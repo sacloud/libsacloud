@@ -21,14 +21,13 @@ import (
 	"testing"
 	"time"
 
-	"github.com/sacloud/libsacloud/v2/utils/builder"
-
-	"github.com/sacloud/libsacloud/v2/utils/builder/disk"
-
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/ostype"
 	"github.com/sacloud/libsacloud/v2/sacloud/testutil"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
+	"github.com/sacloud/libsacloud/v2/utils/builder"
+	"github.com/sacloud/libsacloud/v2/utils/builder/disk"
+	"github.com/sacloud/libsacloud/v2/utils/power"
 	"golang.org/x/crypto/ssh"
 
 	"github.com/stretchr/testify/require"
@@ -416,8 +415,7 @@ func TestBuilder_Build_BlackBox(t *testing.T) {
 			},
 		},
 		Shutdown: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {
-			serverOp := sacloud.NewServerOp(caller)
-			return serverOp.Shutdown(ctx, testZone, ctx.ID, &sacloud.ShutdownOption{Force: true})
+			return power.ShutdownServer(ctx, sacloud.NewServerOp(caller), testZone, ctx.ID, true)
 		},
 		Delete: &testutil.CRUDTestDeleteFunc{
 			Func: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {
