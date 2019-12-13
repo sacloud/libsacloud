@@ -18,11 +18,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/sacloud/libsacloud/v2/utils/builder"
-
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/testutil"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
+	"github.com/sacloud/libsacloud/v2/utils/builder"
 )
 
 func getSetupOption() *builder.RetryableSetupParameter {

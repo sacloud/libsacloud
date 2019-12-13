@@ -25,12 +25,19 @@ import (
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
+const (
+	// DefaultBootRetrySpan BootRetrySpanのデフォルト値
+	DefaultBootRetrySpan = 20 * time.Second
+	// DefaultShutdownRetrySpan ShutdownRetrySpanのデフォルト値
+	DefaultShutdownRetrySpan = 20 * time.Second
+)
+
 var (
 	// BootRetrySpan 起動APIをコールしてからリトライするまでの待機時間
-	BootRetrySpan = 20 * time.Second
+	BootRetrySpan = DefaultBootRetrySpan
 
 	// ShutdownRetrySpan シャットダウンAPIをコールしてからリトライするまでの待機時間
-	ShutdownRetrySpan = 20 * time.Second
+	ShutdownRetrySpan = DefaultShutdownRetrySpan
 )
 
 /************************************************
@@ -195,23 +202,22 @@ func boot(ctx context.Context, h handler) error {
 
 	waiter := sacloud.WaiterForUp(h.read)
 	compCh, progressCh, errCh := waiter.AsyncWaitForState(ctx)
+
+	var state interface{}
+
 	for {
 		select {
 		case <-ctx.Done():
 			return errors.New("canceled")
 		case <-compCh:
 			return nil
-		case <-progressCh:
-		// noop
+		case s := <-progressCh:
+			state = s
 		case <-retryTimer.C:
 			if inProcess {
 				continue
 			}
-			state, err := h.read()
-			if err != nil {
-				return err
-			}
-			if state.(accessor.InstanceStatus).GetInstanceStatus().IsDown() {
+			if state != nil && state.(accessor.InstanceStatus).GetInstanceStatus().IsDown() {
 				if err := h.boot(); err != nil {
 					if err, ok := err.(sacloud.APIError); ok {
 						if err.ResponseCode() == http.StatusConflict {
@@ -240,21 +246,20 @@ func shutdown(ctx context.Context, h handler, force bool) error {
 
 	waiter := sacloud.WaiterForDown(h.read)
 	compCh, progressCh, errCh := waiter.AsyncWaitForState(ctx)
+
+	var state interface{}
+
 	for {
 		select {
 		case <-compCh:
 			return nil
-		case <-progressCh:
-		// noop
+		case s := <-progressCh:
+			state = s
 		case <-retryTimer.C:
 			if inProcess {
 				continue
 			}
-			state, err := h.read()
-			if err != nil {
-				return err
-			}
-			if state.(accessor.InstanceStatus).GetInstanceStatus().IsUp() {
+			if state != nil && state.(accessor.InstanceStatus).GetInstanceStatus().IsUp() {
 				if err := h.shutdown(force); err != nil {
 					if err, ok := err.(sacloud.APIError); ok {
 						if err.ResponseCode() == http.StatusConflict {
