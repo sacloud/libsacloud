@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package archive
+package query
 
 import (
 	"context"
@@ -25,33 +25,24 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-type dummyFinder struct {
-	archive *sacloud.ArchiveFindResult
-	err     error
-}
-
-func (f *dummyFinder) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.ArchiveFindResult, error) {
-	return f.archive, f.err
-}
-
-func TestFindByOSType(t *testing.T) {
+func TestFindArchiveByOSType(t *testing.T) {
 	t.Parallel()
 
 	cases := []struct {
 		input         ostype.ArchiveOSType
-		finder        Finder
+		finder        ArchiveFinder
 		expectedValue *sacloud.Archive
 		expectedError error
 	}{
 		{
 			input:         ostype.Custom,
-			finder:        &dummyFinder{},
+			finder:        &dummyArchiveFinder{},
 			expectedValue: nil,
 			expectedError: errors.New("unsupported ostype.ArchiveOSType: Custom"),
 		},
 		{
 			input: ostype.CentOS,
-			finder: &dummyFinder{
+			finder: &dummyArchiveFinder{
 				archive: &sacloud.ArchiveFindResult{}, // count: 0
 			},
 			expectedValue: nil,
@@ -59,7 +50,7 @@ func TestFindByOSType(t *testing.T) {
 		},
 		{
 			input: ostype.CentOS,
-			finder: &dummyFinder{
+			finder: &dummyArchiveFinder{
 				archive: &sacloud.ArchiveFindResult{
 					Count: 2,
 					Total: 2,
@@ -79,7 +70,7 @@ func TestFindByOSType(t *testing.T) {
 	}
 
 	for _, tc := range cases {
-		actual, err := FindByOSType(context.Background(), tc.finder, "tk1v", tc.input)
+		actual, err := FindArchiveByOSType(context.Background(), tc.finder, "tk1v", tc.input)
 		if tc.expectedError != nil {
 			require.Equal(t, tc.expectedError, err)
 		} else {
@@ -94,7 +85,7 @@ func TestFindByOSType(t *testing.T) {
 	}
 }
 
-func TestAccFindByOSType(t *testing.T) {
+func TestAccFindArchiveByOSType(t *testing.T) {
 	if !testutil.IsAccTest() {
 		t.Skip("TestAccFindByOSType only exec at Acceptance Test")
 	}
@@ -109,7 +100,7 @@ func TestAccFindByOSType(t *testing.T) {
 
 	for _, zone := range zones {
 		for _, os := range ostype.ArchiveOSTypes {
-			archive, err := FindByOSType(ctx, archiveOp, zone, os)
+			archive, err := FindArchiveByOSType(ctx, archiveOp, zone, os)
 			require.NoError(t, err)
 			t.Logf("zone: %s ostype[%s] => {ID: %d, Name: %s}", zone, os, archive.ID, archive.Name)
 		}

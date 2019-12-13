@@ -12,12 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package archive
+package query
 
 import (
 	"context"
 	"errors"
-	"net/http"
 	"testing"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
@@ -25,53 +24,19 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-type dummyArchiveReader struct {
-	archives []*sacloud.Archive
-	err      error
-}
-
-func (r *dummyArchiveReader) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Archive, error) {
-	if r.err != nil {
-		return nil, r.err
-	}
-	for _, a := range r.archives {
-		if a.ID == id {
-			return a, nil
-		}
-	}
-	return nil, sacloud.NewAPIError(http.MethodGet, nil, "", http.StatusNotFound, nil)
-}
-
-type dummyDiskReader struct {
-	disks []*sacloud.Disk
-	err   error
-}
-
-func (r *dummyDiskReader) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Disk, error) {
-	if r.err != nil {
-		return nil, r.err
-	}
-	for _, d := range r.disks {
-		if d.ID == id {
-			return d, nil
-		}
-	}
-	return nil, sacloud.NewAPIError(http.MethodGet, nil, "", http.StatusNotFound, nil)
-}
-
 func TestCanEditDisk(t *testing.T) {
 
 	cases := []struct {
 		msg            string
 		id             types.ID
-		readers        *SourceInfoReader
+		readers        *ArchiveSourceReader
 		expectedResult bool
 		expectedErr    error
 	}{
 		{
 			msg: "disk reader returns unexpected error",
 			id:  1,
-			readers: &SourceInfoReader{
+			readers: &ArchiveSourceReader{
 				ArchiveReader: &dummyArchiveReader{},
 				DiskReader: &dummyDiskReader{
 					err: errors.New("dummy"),
@@ -82,7 +47,7 @@ func TestCanEditDisk(t *testing.T) {
 		{
 			msg: "from empty disk",
 			id:  2,
-			readers: &SourceInfoReader{
+			readers: &ArchiveSourceReader{
 				ArchiveReader: &dummyArchiveReader{},
 				DiskReader: &dummyDiskReader{
 					disks: []*sacloud.Disk{
@@ -95,7 +60,7 @@ func TestCanEditDisk(t *testing.T) {
 		{
 			msg: "disk copied from disk",
 			id:  2,
-			readers: &SourceInfoReader{
+			readers: &ArchiveSourceReader{
 				ArchiveReader: &dummyArchiveReader{
 					archives: []*sacloud.Archive{
 						{
@@ -116,7 +81,7 @@ func TestCanEditDisk(t *testing.T) {
 		{
 			msg: "archive reader returns error",
 			id:  1,
-			readers: &SourceInfoReader{
+			readers: &ArchiveSourceReader{
 				ArchiveReader: &dummyArchiveReader{
 					err: errors.New("dummy"),
 				},
@@ -127,7 +92,7 @@ func TestCanEditDisk(t *testing.T) {
 		{
 			msg: "archive with bundle info",
 			id:  1,
-			readers: &SourceInfoReader{
+			readers: &ArchiveSourceReader{
 				ArchiveReader: &dummyArchiveReader{
 					archives: []*sacloud.Archive{
 						{
@@ -146,7 +111,7 @@ func TestCanEditDisk(t *testing.T) {
 		{
 			msg: "sophos UTM: service class",
 			id:  1,
-			readers: &SourceInfoReader{
+			readers: &ArchiveSourceReader{
 				ArchiveReader: &dummyArchiveReader{
 					archives: []*sacloud.Archive{
 						{
@@ -165,7 +130,7 @@ func TestCanEditDisk(t *testing.T) {
 		{
 			msg: "sophos UTM: tag",
 			id:  1,
-			readers: &SourceInfoReader{
+			readers: &ArchiveSourceReader{
 				ArchiveReader: &dummyArchiveReader{
 					archives: []*sacloud.Archive{
 						{
@@ -181,7 +146,7 @@ func TestCanEditDisk(t *testing.T) {
 		{
 			msg: "OPNsense",
 			id:  1,
-			readers: &SourceInfoReader{
+			readers: &ArchiveSourceReader{
 				ArchiveReader: &dummyArchiveReader{
 					archives: []*sacloud.Archive{
 						{
@@ -197,7 +162,7 @@ func TestCanEditDisk(t *testing.T) {
 		{
 			msg: "Netwiser VE",
 			id:  1,
-			readers: &SourceInfoReader{
+			readers: &ArchiveSourceReader{
 				ArchiveReader: &dummyArchiveReader{
 					archives: []*sacloud.Archive{
 						{
@@ -213,7 +178,7 @@ func TestCanEditDisk(t *testing.T) {
 		{
 			msg: "Nested",
 			id:  4,
-			readers: &SourceInfoReader{
+			readers: &ArchiveSourceReader{
 				ArchiveReader: &dummyArchiveReader{
 					archives: []*sacloud.Archive{
 						{

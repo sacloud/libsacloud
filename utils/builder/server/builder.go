@@ -20,13 +20,13 @@ import (
 	"fmt"
 	"reflect"
 
+	"github.com/sacloud/libsacloud/v2/sacloud"
+	"github.com/sacloud/libsacloud/v2/sacloud/types"
+
 	"github.com/sacloud/libsacloud/v2/utils/builder"
 	"github.com/sacloud/libsacloud/v2/utils/builder/disk"
 
-	"github.com/sacloud/libsacloud/v2/utils/server"
-
-	"github.com/sacloud/libsacloud/v2/sacloud"
-	"github.com/sacloud/libsacloud/v2/sacloud/types"
+	"github.com/sacloud/libsacloud/v2/utils/query"
 )
 
 // Builder サーバ作成時のパラメータ
@@ -91,7 +91,7 @@ func (b *Builder) Validate(ctx context.Context, zone string) error {
 	}
 
 	// Field values
-	_, err := server.FindPlan(ctx, b.Client.ServerPlan, zone, &server.FindPlanRequest{
+	_, err := query.FindServerPlan(ctx, b.Client.ServerPlan, zone, &query.FindServerPlanRequest{
 		CPU:        b.CPU,
 		MemoryGB:   b.MemoryGB,
 		Commitment: b.Commitment,

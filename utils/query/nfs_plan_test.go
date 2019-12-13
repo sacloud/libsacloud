@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package nfs
+package query
 
 import (
 	"context"
@@ -24,23 +24,6 @@ import (
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 	"github.com/stretchr/testify/require"
 )
-
-type dummyNoteFinder struct {
-	notes []*sacloud.Note
-	err   error
-}
-
-func (f *dummyNoteFinder) Find(ctx context.Context, conditions *sacloud.FindCondition) (*sacloud.NoteFindResult, error) {
-	if f.err != nil {
-		return nil, f.err
-	}
-
-	return &sacloud.NoteFindResult{
-		Total: len(f.notes),
-		Count: len(f.notes),
-		Notes: f.notes,
-	}, nil
-}
 
 func TestFindNFSPlanID(t *testing.T) {
 
@@ -120,7 +103,7 @@ func TestGetPlanInfo(t *testing.T) {
 		msg           string
 		finder        NoteFinder
 		input         types.ID
-		expectedValue *PlanInfo
+		expectedValue *NFSPlanInfo
 		expectedErr   error
 	}{
 		{
@@ -167,7 +150,7 @@ func TestGetPlanInfo(t *testing.T) {
 				err: nil,
 			},
 			input: 1,
-			expectedValue: &PlanInfo{
+			expectedValue: &NFSPlanInfo{
 				NFSPlanID:  1,
 				DiskPlanID: types.NFSPlans.HDD,
 				Size:       types.NFSHDDSizes.Size100GB,
@@ -177,7 +160,7 @@ func TestGetPlanInfo(t *testing.T) {
 	}
 
 	for _, tc := range cases {
-		actual, err := GetPlanInfo(context.Background(), tc.finder, tc.input)
+		actual, err := GetNFSPlanInfo(context.Background(), tc.finder, tc.input)
 		if tc.expectedErr != nil {
 			require.Equal(t, tc.expectedErr, err, tc.msg)
 		} else {

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package server
+package query
 
 import (
 	"context"
@@ -23,35 +23,18 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-type dummyPlanFinder struct {
-	plans []*sacloud.ServerPlan
-	err   error
-}
-
-func (f *dummyPlanFinder) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.ServerPlanFindResult, error) {
-	if f.err != nil {
-		return nil, f.err
-	}
-
-	return &sacloud.ServerPlanFindResult{
-		Total:       len(f.plans),
-		Count:       len(f.plans),
-		ServerPlans: f.plans,
-	}, nil
-}
-
-func TestFindPlan(t *testing.T) {
+func TestFindServerPlan(t *testing.T) {
 	cases := []struct {
 		msg    string
-		in     *FindPlanRequest
-		finder PlanFinder
+		in     *FindServerPlanRequest
+		finder ServerPlanFinder
 		out    *sacloud.ServerPlan
 		err    error
 	}{
 		{
 			msg: "finder returns unexpected error",
 			in:  nil,
-			finder: &dummyPlanFinder{
+			finder: &dummyServerPlanFinder{
 				err: errors.New("dummy"),
 			},
 			out: nil,
@@ -59,10 +42,10 @@ func TestFindPlan(t *testing.T) {
 		},
 		{
 			msg: "finder returns multiple result",
-			in: &FindPlanRequest{
+			in: &FindServerPlanRequest{
 				CPU: 1,
 			},
-			finder: &dummyPlanFinder{
+			finder: &dummyServerPlanFinder{
 				plans: []*sacloud.ServerPlan{
 					{ID: 1},
 					{ID: 2},
@@ -73,10 +56,10 @@ func TestFindPlan(t *testing.T) {
 		},
 		{
 			msg: "with nil find parameter",
-			in: &FindPlanRequest{
+			in: &FindServerPlanRequest{
 				CPU: 1,
 			},
-			finder: &dummyPlanFinder{
+			finder: &dummyServerPlanFinder{
 				plans: []*sacloud.ServerPlan{
 					{ID: 1},
 				},
@@ -86,10 +69,10 @@ func TestFindPlan(t *testing.T) {
 		},
 		{
 			msg: "with nil find parameter",
-			in: &FindPlanRequest{
+			in: &FindServerPlanRequest{
 				CPU: 1,
 			},
-			finder: &dummyPlanFinder{
+			finder: &dummyServerPlanFinder{
 				plans: []*sacloud.ServerPlan{
 					{ID: 1},
 				},
@@ -100,7 +83,7 @@ func TestFindPlan(t *testing.T) {
 		{
 			msg: "plan not found",
 			in:  nil,
-			finder: &dummyPlanFinder{
+			finder: &dummyServerPlanFinder{
 				plans: []*sacloud.ServerPlan{},
 			},
 			out: nil,
@@ -109,7 +92,7 @@ func TestFindPlan(t *testing.T) {
 	}
 
 	for _, tc := range cases {
-		res, err := FindPlan(context.Background(), tc.finder, "tk1v", tc.in)
+		res, err := FindServerPlan(context.Background(), tc.finder, "tk1v", tc.in)
 		require.Equal(t, tc.err, err, tc.msg)
 		require.Equal(t, tc.out, res, tc.msg)
 	}
