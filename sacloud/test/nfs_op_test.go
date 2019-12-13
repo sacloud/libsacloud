@@ -20,7 +20,7 @@ import (
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/testutil"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
-	"github.com/sacloud/libsacloud/v2/utils/nfs"
+	"github.com/sacloud/libsacloud/v2/utils/query"
 )
 
 func TestNFSOp_CRUD(t *testing.T) {
@@ -37,7 +37,7 @@ func TestNFSOp_CRUD(t *testing.T) {
 			)(ctx, caller)
 
 			// find plan id
-			planID, err := nfs.FindNFSPlanID(ctx, sacloud.NewNoteOp(caller), types.NFSPlans.HDD, types.NFSHDDSizes.Size100GB)
+			planID, err := query.FindNFSPlanID(ctx, sacloud.NewNoteOp(caller), types.NFSPlans.HDD, types.NFSHDDSizes.Size100GB)
 			if err != nil {
 				return err
 			}

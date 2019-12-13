@@ -23,7 +23,7 @@ import (
 	"github.com/sacloud/libsacloud/v2/sacloud/accessor"
 	"github.com/sacloud/libsacloud/v2/sacloud/testutil"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
-	"github.com/sacloud/libsacloud/v2/utils/nfs"
+	"github.com/sacloud/libsacloud/v2/utils/query"
 )
 
 func TestRetryableSetup(t *testing.T) {
@@ -51,7 +51,7 @@ func TestRetryableSetup(t *testing.T) {
 				nfsOp := sacloud.NewNFSOp(caller)
 				nfsSetup := &RetryableSetup{
 					Create: func(ctx context.Context, zone string) (accessor.ID, error) {
-						nfsPlanID, err := nfs.FindNFSPlanID(ctx, sacloud.NewNoteOp(caller), types.NFSPlans.HDD, types.NFSHDDSizes.Size100GB)
+						nfsPlanID, err := query.FindNFSPlanID(ctx, sacloud.NewNoteOp(caller), types.NFSPlans.HDD, types.NFSHDDSizes.Size100GB)
 						if err != nil {
 							return nil, err
 						}

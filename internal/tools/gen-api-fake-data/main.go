@@ -25,7 +25,7 @@ import (
 	"github.com/sacloud/libsacloud/v2/sacloud/search"
 	"github.com/sacloud/libsacloud/v2/sacloud/search/keys"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
-	"github.com/sacloud/libsacloud/v2/utils/archive"
+	"github.com/sacloud/libsacloud/v2/utils/query"
 )
 
 const destination = "sacloud/fake/zz_init_archive.go"
@@ -78,7 +78,7 @@ func collectArchives() interface{} {
 	for _, zone := range zones {
 		var archives []*sacloud.Archive
 		for _, ost := range ostype.ArchiveOSTypes {
-			archive, err := archive.FindByOSType(ctx, archiveOp, zone, ost)
+			archive, err := query.FindArchiveByOSType(ctx, archiveOp, zone, ost)
 			if err != nil {
 				log.Fatal(err)
 			}

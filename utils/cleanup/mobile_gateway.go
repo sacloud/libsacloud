@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package mobilegateway
+package cleanup
 
 import (
 	"context"
@@ -21,8 +21,8 @@ import (
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
-// Delete 削除
-func Delete(ctx context.Context, mgwAPI sacloud.MobileGatewayAPI, simAPI sacloud.SIMAPI, zone string, id types.ID) error {
+// DeleteMobileGateway 削除
+func DeleteMobileGateway(ctx context.Context, mgwAPI sacloud.MobileGatewayAPI, simAPI sacloud.SIMAPI, zone string, id types.ID) error {
 	// check MobileGateway is exists
 	mgw, err := mgwAPI.Read(ctx, zone, id)
 	if err != nil {

@@ -18,10 +18,12 @@ import (
 	"os"
 	"testing"
 
+	"github.com/sacloud/libsacloud/v2/utils/query"
+
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/testutil"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
-	simUtil "github.com/sacloud/libsacloud/v2/utils/sim"
+	"github.com/sacloud/libsacloud/v2/utils/cleanup"
 )
 
 func TestBuilder_Build(t *testing.T) {
@@ -61,7 +63,7 @@ func TestBuilder_Build(t *testing.T) {
 		Read: &testutil.CRUDTestFunc{
 			Func: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 				simOp := sacloud.NewSIMOp(caller)
-				return simUtil.FindByID(ctx, simOp, ctx.ID)
+				return query.FindSIMByID(ctx, simOp, ctx.ID)
 			},
 			CheckFunc: func(t testutil.TestT, ctx *testutil.CRUDTestContext, value interface{}) error {
 				sim := value.(*sacloud.SIM)
@@ -76,7 +78,7 @@ func TestBuilder_Build(t *testing.T) {
 		Delete: &testutil.CRUDTestDeleteFunc{
 			Func: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {
 				simOp := sacloud.NewSIMOp(caller)
-				return simUtil.Delete(ctx, simOp, ctx.ID)
+				return cleanup.DeleteSIM(ctx, simOp, ctx.ID)
 			},
 		},
 	})

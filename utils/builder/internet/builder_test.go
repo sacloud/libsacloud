@@ -20,7 +20,7 @@ import (
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/testutil"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
-	internetUtil "github.com/sacloud/libsacloud/v2/utils/internet"
+	"github.com/sacloud/libsacloud/v2/utils/cleanup"
 )
 
 func TestBuilder_Build(t *testing.T) {
@@ -116,7 +116,7 @@ func TestBuilder_Build(t *testing.T) {
 		},
 		Delete: &testutil.CRUDTestDeleteFunc{
 			Func: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {
-				return internetUtil.Delete(ctx, sacloud.NewInternetOp(caller), testZone, ctx.ID)
+				return cleanup.DeleteInternet(ctx, sacloud.NewInternetOp(caller), testZone, ctx.ID)
 			},
 		},
 	})
