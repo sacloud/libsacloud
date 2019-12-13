@@ -19,6 +19,7 @@ import (
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
+	"github.com/sacloud/libsacloud/v2/utils/power"
 )
 
 // DeleteMobileGateway 削除
@@ -30,14 +31,7 @@ func DeleteMobileGateway(ctx context.Context, mgwAPI sacloud.MobileGatewayAPI, s
 	}
 
 	if mgw.InstanceStatus.IsUp() {
-		if err := mgwAPI.Shutdown(ctx, zone, id, &sacloud.ShutdownOption{Force: true}); err != nil {
-			return err
-		}
-		// wait for down
-		waiter := sacloud.WaiterForDown(func() (state interface{}, err error) {
-			return mgwAPI.Read(ctx, zone, id)
-		})
-		if _, err := waiter.WaitForState(ctx); err != nil {
+		if err := power.ShutdownMobileGateway(ctx, mgwAPI, zone, id, true); err != nil {
 			return err
 		}
 	}
