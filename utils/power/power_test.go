@@ -17,6 +17,7 @@ package power
 import (
 	"context"
 	"net/http"
+	"sync"
 	"testing"
 	"time"
 
@@ -66,6 +67,8 @@ type dummyPowerHandler struct {
 	ignoreBootCount     int
 	ignoreShutdownCount int
 	instanceStatus      types.EServerInstanceStatus
+
+	mu sync.Mutex
 }
 
 func (d *dummyPowerHandler) boot() error {
@@ -91,6 +94,10 @@ func (d *dummyPowerHandler) read() (interface{}, error) {
 
 func (d *dummyPowerHandler) toggleInstanceStatus() {
 	time.Sleep(100 * time.Millisecond)
+
+	d.mu.Lock()
+	defer d.mu.Unlock()
+
 	switch d.instanceStatus {
 	case types.ServerInstanceStatuses.Up:
 		d.instanceStatus = types.ServerInstanceStatuses.Down
@@ -101,6 +108,9 @@ func (d *dummyPowerHandler) toggleInstanceStatus() {
 
 // GetInstanceStatus .
 func (d *dummyPowerHandler) GetInstanceStatus() types.EServerInstanceStatus {
+	d.mu.Lock()
+	defer d.mu.Unlock()
+
 	return d.instanceStatus
 }
 
