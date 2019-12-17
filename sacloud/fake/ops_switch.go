@@ -204,6 +204,9 @@ func (o *SwitchOp) GetServers(ctx context.Context, zone string, id types.ID) (*s
 	}
 
 	searched, err := NewServerOp().Find(ctx, zone, nil)
+	if err != nil {
+		return nil, err
+	}
 	for _, server := range searched.Servers {
 		for _, nic := range server.Interfaces {
 			if nic.SwitchID == id {
