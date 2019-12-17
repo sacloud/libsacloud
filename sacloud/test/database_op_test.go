@@ -30,8 +30,6 @@ func TestDatabaseOpCRUD(t *testing.T) {
 		Setup: setupSwitchFunc("db",
 			createDatabaseParam,
 			createDatabaseExpected,
-			patchDatabaseExpected,
-			patchDatabaseSettingsExpected,
 			updateDatabaseSettingsExpected,
 			updateDatabaseExpected,
 			updateDatabaseToFullExpected,
@@ -53,23 +51,9 @@ func TestDatabaseOpCRUD(t *testing.T) {
 		},
 		Updates: []*testutil.CRUDTestFunc{
 			{
-				Func: testDatabasePatch,
-				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
-					ExpectValue:  patchDatabaseExpected,
-					IgnoreFields: ignoreDatabaseFields,
-				}),
-			},
-			{
 				Func: testDatabaseUpdateSettings,
 				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 					ExpectValue:  updateDatabaseSettingsExpected,
-					IgnoreFields: ignoreDatabaseFields,
-				}),
-			},
-			{
-				Func: testDatabasePatchSettings,
-				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
-					ExpectValue:  patchDatabaseSettingsExpected,
 					IgnoreFields: ignoreDatabaseFields,
 				}),
 			},
@@ -171,31 +155,6 @@ var (
 		CommonSetting:      createDatabaseParam.CommonSetting,
 		ReplicationSetting: createDatabaseParam.ReplicationSetting,
 	}
-	patchDatabaseParam = &sacloud.DatabasePatchRequest{
-		PatchEmptyToDescription: true,
-		CommonSetting: &sacloud.DatabaseSettingCommon{
-			ServicePort: 54321,
-		},
-	}
-	patchDatabaseExpected = &sacloud.Database{
-		Name:           createDatabaseParam.Name,
-		Description:    "",
-		Availability:   types.Availabilities.Available,
-		PlanID:         createDatabaseParam.PlanID,
-		InstanceStatus: types.ServerInstanceStatuses.Up,
-		DefaultRoute:   createDatabaseParam.DefaultRoute,
-		NetworkMaskLen: createDatabaseParam.NetworkMaskLen,
-		IPAddresses:    createDatabaseParam.IPAddresses,
-		Conf:           createDatabaseParam.Conf,
-		CommonSetting: &sacloud.DatabaseSettingCommon{
-			ServicePort:     54321,
-			DefaultUser:     "exa.mple",
-			UserPassword:    "LibsacloudExamplePassword01",
-			ReplicaUser:     "replica",
-			ReplicaPassword: "replica-user-password",
-		},
-		ReplicationSetting: createDatabaseParam.ReplicationSetting,
-	}
 	updateDatabaseSettingsParam = &sacloud.DatabaseUpdateSettingsRequest{
 		CommonSetting: &sacloud.DatabaseSettingCommon{
 			ServicePort:     54322,
@@ -208,7 +167,7 @@ var (
 	}
 	updateDatabaseSettingsExpected = &sacloud.Database{
 		Name:           createDatabaseParam.Name,
-		Description:    "",
+		Description:    createDatabaseParam.Description,
 		Availability:   types.Availabilities.Available,
 		PlanID:         createDatabaseParam.PlanID,
 		InstanceStatus: types.ServerInstanceStatuses.Up,
@@ -222,35 +181,6 @@ var (
 			UserPassword:    "LibsacloudExamplePassword01up1",
 			ReplicaUser:     "replica-upd",
 			ReplicaPassword: "replica-user-password-upd",
-		},
-		ReplicationSetting: createDatabaseParam.ReplicationSetting,
-	}
-	patchDatabaseSettingsParam = &sacloud.DatabasePatchSettingsRequest{
-		CommonSetting: &sacloud.DatabaseSettingCommon{
-			ServicePort:     54323,
-			DefaultUser:     "exa.mple.upd2",
-			UserPassword:    "LibsacloudExamplePassword01up2",
-			ReplicaUser:     "replica-upd2",
-			ReplicaPassword: "replica-user-password-upd2",
-		},
-		ReplicationSetting: createDatabaseParam.ReplicationSetting,
-	}
-	patchDatabaseSettingsExpected = &sacloud.Database{
-		Name:           createDatabaseParam.Name,
-		Description:    "",
-		Availability:   types.Availabilities.Available,
-		PlanID:         createDatabaseParam.PlanID,
-		InstanceStatus: types.ServerInstanceStatuses.Up,
-		DefaultRoute:   createDatabaseParam.DefaultRoute,
-		NetworkMaskLen: createDatabaseParam.NetworkMaskLen,
-		IPAddresses:    createDatabaseParam.IPAddresses,
-		Conf:           createDatabaseParam.Conf,
-		CommonSetting: &sacloud.DatabaseSettingCommon{
-			ServicePort:     54323,
-			DefaultUser:     "exa.mple.upd2",
-			UserPassword:    "LibsacloudExamplePassword01up2",
-			ReplicaUser:     "replica-upd2",
-			ReplicaPassword: "replica-user-password-upd2",
 		},
 		ReplicationSetting: createDatabaseParam.ReplicationSetting,
 	}
@@ -374,16 +304,6 @@ func testDatabaseCreate(ctx *testutil.CRUDTestContext, caller sacloud.APICaller)
 func testDatabaseRead(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewDatabaseOp(caller)
 	return client.Read(ctx, testZone, ctx.ID)
-}
-
-func testDatabasePatch(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
-	client := sacloud.NewDatabaseOp(caller)
-	return client.Patch(ctx, testZone, ctx.ID, patchDatabaseParam)
-}
-
-func testDatabasePatchSettings(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
-	client := sacloud.NewDatabaseOp(caller)
-	return client.PatchSettings(ctx, testZone, ctx.ID, patchDatabaseSettingsParam)
 }
 
 func testDatabaseUpdateSettings(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {

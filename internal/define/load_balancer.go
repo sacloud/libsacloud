@@ -46,11 +46,6 @@ var loadBalancerAPI = &dsl.Resource{
 		// updateSettings
 		ops.UpdateApplianceSettings(loadBalancerAPIName, loadBalancerUpdateSettingsNakedType, loadBalancerUpdateSettingsParam, loadBalancerView),
 
-		// patch
-		ops.PatchAppliance(loadBalancerAPIName, loadBalancerNakedType, patchModel(loadBalancerUpdateParam), loadBalancerView),
-		// patchSettings
-		ops.PatchApplianceSettings(loadBalancerAPIName, loadBalancerUpdateSettingsNakedType, patchModel(loadBalancerUpdateSettingsParam), loadBalancerView),
-
 		// delete
 		ops.Delete(loadBalancerAPIName),
 

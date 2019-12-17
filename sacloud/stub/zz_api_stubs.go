@@ -59,12 +59,6 @@ type ArchiveUpdateStubResult struct {
 	Err     error
 }
 
-// ArchivePatchStubResult is expected values of the Patch operation
-type ArchivePatchStubResult struct {
-	Archive *sacloud.Archive
-	Err     error
-}
-
 // ArchiveDeleteStubResult is expected values of the Delete operation
 type ArchiveDeleteStubResult struct {
 	Err error
@@ -88,7 +82,6 @@ type ArchiveStub struct {
 	CreateBlankStubResult *ArchiveCreateBlankStubResult
 	ReadStubResult        *ArchiveReadStubResult
 	UpdateStubResult      *ArchiveUpdateStubResult
-	PatchStubResult       *ArchivePatchStubResult
 	DeleteStubResult      *ArchiveDeleteStubResult
 	OpenFTPStubResult     *ArchiveOpenFTPStubResult
 	CloseFTPStubResult    *ArchiveCloseFTPStubResult
@@ -137,14 +130,6 @@ func (s *ArchiveStub) Update(ctx context.Context, zone string, id types.ID, para
 		log.Fatal("ArchiveStub.UpdateStubResult is not set")
 	}
 	return s.UpdateStubResult.Archive, s.UpdateStubResult.Err
-}
-
-// Patch is API call with trace log
-func (s *ArchiveStub) Patch(ctx context.Context, zone string, id types.ID, param *sacloud.ArchivePatchRequest) (*sacloud.Archive, error) {
-	if s.PatchStubResult == nil {
-		log.Fatal("ArchiveStub.PatchStubResult is not set")
-	}
-	return s.PatchStubResult.Archive, s.PatchStubResult.Err
 }
 
 // Delete is API call with trace log
@@ -227,20 +212,8 @@ type AutoBackupUpdateStubResult struct {
 	Err        error
 }
 
-// AutoBackupPatchStubResult is expected values of the Patch operation
-type AutoBackupPatchStubResult struct {
-	AutoBackup *sacloud.AutoBackup
-	Err        error
-}
-
 // AutoBackupUpdateSettingsStubResult is expected values of the UpdateSettings operation
 type AutoBackupUpdateSettingsStubResult struct {
-	AutoBackup *sacloud.AutoBackup
-	Err        error
-}
-
-// AutoBackupPatchSettingsStubResult is expected values of the PatchSettings operation
-type AutoBackupPatchSettingsStubResult struct {
 	AutoBackup *sacloud.AutoBackup
 	Err        error
 }
@@ -256,9 +229,7 @@ type AutoBackupStub struct {
 	CreateStubResult         *AutoBackupCreateStubResult
 	ReadStubResult           *AutoBackupReadStubResult
 	UpdateStubResult         *AutoBackupUpdateStubResult
-	PatchStubResult          *AutoBackupPatchStubResult
 	UpdateSettingsStubResult *AutoBackupUpdateSettingsStubResult
-	PatchSettingsStubResult  *AutoBackupPatchSettingsStubResult
 	DeleteStubResult         *AutoBackupDeleteStubResult
 }
 
@@ -299,28 +270,12 @@ func (s *AutoBackupStub) Update(ctx context.Context, zone string, id types.ID, p
 	return s.UpdateStubResult.AutoBackup, s.UpdateStubResult.Err
 }
 
-// Patch is API call with trace log
-func (s *AutoBackupStub) Patch(ctx context.Context, zone string, id types.ID, param *sacloud.AutoBackupPatchRequest) (*sacloud.AutoBackup, error) {
-	if s.PatchStubResult == nil {
-		log.Fatal("AutoBackupStub.PatchStubResult is not set")
-	}
-	return s.PatchStubResult.AutoBackup, s.PatchStubResult.Err
-}
-
 // UpdateSettings is API call with trace log
 func (s *AutoBackupStub) UpdateSettings(ctx context.Context, zone string, id types.ID, param *sacloud.AutoBackupUpdateSettingsRequest) (*sacloud.AutoBackup, error) {
 	if s.UpdateSettingsStubResult == nil {
 		log.Fatal("AutoBackupStub.UpdateSettingsStubResult is not set")
 	}
 	return s.UpdateSettingsStubResult.AutoBackup, s.UpdateSettingsStubResult.Err
-}
-
-// PatchSettings is API call with trace log
-func (s *AutoBackupStub) PatchSettings(ctx context.Context, zone string, id types.ID, param *sacloud.AutoBackupPatchSettingsRequest) (*sacloud.AutoBackup, error) {
-	if s.PatchSettingsStubResult == nil {
-		log.Fatal("AutoBackupStub.PatchSettingsStubResult is not set")
-	}
-	return s.PatchSettingsStubResult.AutoBackup, s.PatchSettingsStubResult.Err
 }
 
 // Delete is API call with trace log
@@ -462,12 +417,6 @@ type BridgeUpdateStubResult struct {
 	Err    error
 }
 
-// BridgePatchStubResult is expected values of the Patch operation
-type BridgePatchStubResult struct {
-	Bridge *sacloud.Bridge
-	Err    error
-}
-
 // BridgeDeleteStubResult is expected values of the Delete operation
 type BridgeDeleteStubResult struct {
 	Err error
@@ -479,7 +428,6 @@ type BridgeStub struct {
 	CreateStubResult *BridgeCreateStubResult
 	ReadStubResult   *BridgeReadStubResult
 	UpdateStubResult *BridgeUpdateStubResult
-	PatchStubResult  *BridgePatchStubResult
 	DeleteStubResult *BridgeDeleteStubResult
 }
 
@@ -520,14 +468,6 @@ func (s *BridgeStub) Update(ctx context.Context, zone string, id types.ID, param
 	return s.UpdateStubResult.Bridge, s.UpdateStubResult.Err
 }
 
-// Patch is API call with trace log
-func (s *BridgeStub) Patch(ctx context.Context, zone string, id types.ID, param *sacloud.BridgePatchRequest) (*sacloud.Bridge, error) {
-	if s.PatchStubResult == nil {
-		log.Fatal("BridgeStub.PatchStubResult is not set")
-	}
-	return s.PatchStubResult.Bridge, s.PatchStubResult.Err
-}
-
 // Delete is API call with trace log
 func (s *BridgeStub) Delete(ctx context.Context, zone string, id types.ID) error {
 	if s.DeleteStubResult == nil {
@@ -565,12 +505,6 @@ type CDROMUpdateStubResult struct {
 	Err   error
 }
 
-// CDROMPatchStubResult is expected values of the Patch operation
-type CDROMPatchStubResult struct {
-	CDROM *sacloud.CDROM
-	Err   error
-}
-
 // CDROMDeleteStubResult is expected values of the Delete operation
 type CDROMDeleteStubResult struct {
 	Err error
@@ -593,7 +527,6 @@ type CDROMStub struct {
 	CreateStubResult   *CDROMCreateStubResult
 	ReadStubResult     *CDROMReadStubResult
 	UpdateStubResult   *CDROMUpdateStubResult
-	PatchStubResult    *CDROMPatchStubResult
 	DeleteStubResult   *CDROMDeleteStubResult
 	OpenFTPStubResult  *CDROMOpenFTPStubResult
 	CloseFTPStubResult *CDROMCloseFTPStubResult
@@ -634,14 +567,6 @@ func (s *CDROMStub) Update(ctx context.Context, zone string, id types.ID, param 
 		log.Fatal("CDROMStub.UpdateStubResult is not set")
 	}
 	return s.UpdateStubResult.CDROM, s.UpdateStubResult.Err
-}
-
-// Patch is API call with trace log
-func (s *CDROMStub) Patch(ctx context.Context, zone string, id types.ID, param *sacloud.CDROMPatchRequest) (*sacloud.CDROM, error) {
-	if s.PatchStubResult == nil {
-		log.Fatal("CDROMStub.PatchStubResult is not set")
-	}
-	return s.PatchStubResult.CDROM, s.PatchStubResult.Err
 }
 
 // Delete is API call with trace log
@@ -730,18 +655,6 @@ type DatabaseUpdateSettingsStubResult struct {
 	Err      error
 }
 
-// DatabasePatchStubResult is expected values of the Patch operation
-type DatabasePatchStubResult struct {
-	Database *sacloud.Database
-	Err      error
-}
-
-// DatabasePatchSettingsStubResult is expected values of the PatchSettings operation
-type DatabasePatchSettingsStubResult struct {
-	Database *sacloud.Database
-	Err      error
-}
-
 // DatabaseDeleteStubResult is expected values of the Delete operation
 type DatabaseDeleteStubResult struct {
 	Err error
@@ -804,8 +717,6 @@ type DatabaseStub struct {
 	ReadStubResult             *DatabaseReadStubResult
 	UpdateStubResult           *DatabaseUpdateStubResult
 	UpdateSettingsStubResult   *DatabaseUpdateSettingsStubResult
-	PatchStubResult            *DatabasePatchStubResult
-	PatchSettingsStubResult    *DatabasePatchSettingsStubResult
 	DeleteStubResult           *DatabaseDeleteStubResult
 	ConfigStubResult           *DatabaseConfigStubResult
 	BootStubResult             *DatabaseBootStubResult
@@ -861,22 +772,6 @@ func (s *DatabaseStub) UpdateSettings(ctx context.Context, zone string, id types
 		log.Fatal("DatabaseStub.UpdateSettingsStubResult is not set")
 	}
 	return s.UpdateSettingsStubResult.Database, s.UpdateSettingsStubResult.Err
-}
-
-// Patch is API call with trace log
-func (s *DatabaseStub) Patch(ctx context.Context, zone string, id types.ID, param *sacloud.DatabasePatchRequest) (*sacloud.Database, error) {
-	if s.PatchStubResult == nil {
-		log.Fatal("DatabaseStub.PatchStubResult is not set")
-	}
-	return s.PatchStubResult.Database, s.PatchStubResult.Err
-}
-
-// PatchSettings is API call with trace log
-func (s *DatabaseStub) PatchSettings(ctx context.Context, zone string, id types.ID, param *sacloud.DatabasePatchSettingsRequest) (*sacloud.Database, error) {
-	if s.PatchSettingsStubResult == nil {
-		log.Fatal("DatabaseStub.PatchSettingsStubResult is not set")
-	}
-	return s.PatchSettingsStubResult.Database, s.PatchSettingsStubResult.Err
 }
 
 // Delete is API call with trace log
@@ -1024,12 +919,6 @@ type DiskUpdateStubResult struct {
 	Err  error
 }
 
-// DiskPatchStubResult is expected values of the Patch operation
-type DiskPatchStubResult struct {
-	Disk *sacloud.Disk
-	Err  error
-}
-
 // DiskDeleteStubResult is expected values of the Delete operation
 type DiskDeleteStubResult struct {
 	Err error
@@ -1054,7 +943,6 @@ type DiskStub struct {
 	InstallStubResult              *DiskInstallStubResult
 	ReadStubResult                 *DiskReadStubResult
 	UpdateStubResult               *DiskUpdateStubResult
-	PatchStubResult                *DiskPatchStubResult
 	DeleteStubResult               *DiskDeleteStubResult
 	MonitorStubResult              *DiskMonitorStubResult
 }
@@ -1152,14 +1040,6 @@ func (s *DiskStub) Update(ctx context.Context, zone string, id types.ID, param *
 	return s.UpdateStubResult.Disk, s.UpdateStubResult.Err
 }
 
-// Patch is API call with trace log
-func (s *DiskStub) Patch(ctx context.Context, zone string, id types.ID, param *sacloud.DiskPatchRequest) (*sacloud.Disk, error) {
-	if s.PatchStubResult == nil {
-		log.Fatal("DiskStub.PatchStubResult is not set")
-	}
-	return s.PatchStubResult.Disk, s.PatchStubResult.Err
-}
-
 // Delete is API call with trace log
 func (s *DiskStub) Delete(ctx context.Context, zone string, id types.ID) error {
 	if s.DeleteStubResult == nil {
@@ -1253,18 +1133,6 @@ type DNSUpdateSettingsStubResult struct {
 	Err error
 }
 
-// DNSPatchStubResult is expected values of the Patch operation
-type DNSPatchStubResult struct {
-	DNS *sacloud.DNS
-	Err error
-}
-
-// DNSPatchSettingsStubResult is expected values of the PatchSettings operation
-type DNSPatchSettingsStubResult struct {
-	DNS *sacloud.DNS
-	Err error
-}
-
 // DNSDeleteStubResult is expected values of the Delete operation
 type DNSDeleteStubResult struct {
 	Err error
@@ -1277,8 +1145,6 @@ type DNSStub struct {
 	ReadStubResult           *DNSReadStubResult
 	UpdateStubResult         *DNSUpdateStubResult
 	UpdateSettingsStubResult *DNSUpdateSettingsStubResult
-	PatchStubResult          *DNSPatchStubResult
-	PatchSettingsStubResult  *DNSPatchSettingsStubResult
 	DeleteStubResult         *DNSDeleteStubResult
 }
 
@@ -1327,22 +1193,6 @@ func (s *DNSStub) UpdateSettings(ctx context.Context, id types.ID, param *saclou
 	return s.UpdateSettingsStubResult.DNS, s.UpdateSettingsStubResult.Err
 }
 
-// Patch is API call with trace log
-func (s *DNSStub) Patch(ctx context.Context, id types.ID, param *sacloud.DNSPatchRequest) (*sacloud.DNS, error) {
-	if s.PatchStubResult == nil {
-		log.Fatal("DNSStub.PatchStubResult is not set")
-	}
-	return s.PatchStubResult.DNS, s.PatchStubResult.Err
-}
-
-// PatchSettings is API call with trace log
-func (s *DNSStub) PatchSettings(ctx context.Context, id types.ID, param *sacloud.DNSPatchSettingsRequest) (*sacloud.DNS, error) {
-	if s.PatchSettingsStubResult == nil {
-		log.Fatal("DNSStub.PatchSettingsStubResult is not set")
-	}
-	return s.PatchSettingsStubResult.DNS, s.PatchSettingsStubResult.Err
-}
-
 // Delete is API call with trace log
 func (s *DNSStub) Delete(ctx context.Context, id types.ID) error {
 	if s.DeleteStubResult == nil {
@@ -1385,18 +1235,6 @@ type GSLBUpdateSettingsStubResult struct {
 	Err  error
 }
 
-// GSLBPatchStubResult is expected values of the Patch operation
-type GSLBPatchStubResult struct {
-	GSLB *sacloud.GSLB
-	Err  error
-}
-
-// GSLBPatchSettingsStubResult is expected values of the PatchSettings operation
-type GSLBPatchSettingsStubResult struct {
-	GSLB *sacloud.GSLB
-	Err  error
-}
-
 // GSLBDeleteStubResult is expected values of the Delete operation
 type GSLBDeleteStubResult struct {
 	Err error
@@ -1409,8 +1247,6 @@ type GSLBStub struct {
 	ReadStubResult           *GSLBReadStubResult
 	UpdateStubResult         *GSLBUpdateStubResult
 	UpdateSettingsStubResult *GSLBUpdateSettingsStubResult
-	PatchStubResult          *GSLBPatchStubResult
-	PatchSettingsStubResult  *GSLBPatchSettingsStubResult
 	DeleteStubResult         *GSLBDeleteStubResult
 }
 
@@ -1459,22 +1295,6 @@ func (s *GSLBStub) UpdateSettings(ctx context.Context, id types.ID, param *saclo
 	return s.UpdateSettingsStubResult.GSLB, s.UpdateSettingsStubResult.Err
 }
 
-// Patch is API call with trace log
-func (s *GSLBStub) Patch(ctx context.Context, id types.ID, param *sacloud.GSLBPatchRequest) (*sacloud.GSLB, error) {
-	if s.PatchStubResult == nil {
-		log.Fatal("GSLBStub.PatchStubResult is not set")
-	}
-	return s.PatchStubResult.GSLB, s.PatchStubResult.Err
-}
-
-// PatchSettings is API call with trace log
-func (s *GSLBStub) PatchSettings(ctx context.Context, id types.ID, param *sacloud.GSLBPatchSettingsRequest) (*sacloud.GSLB, error) {
-	if s.PatchSettingsStubResult == nil {
-		log.Fatal("GSLBStub.PatchSettingsStubResult is not set")
-	}
-	return s.PatchSettingsStubResult.GSLB, s.PatchSettingsStubResult.Err
-}
-
 // Delete is API call with trace log
 func (s *GSLBStub) Delete(ctx context.Context, id types.ID) error {
 	if s.DeleteStubResult == nil {
@@ -1511,12 +1331,6 @@ type IconUpdateStubResult struct {
 	Err  error
 }
 
-// IconPatchStubResult is expected values of the Patch operation
-type IconPatchStubResult struct {
-	Icon *sacloud.Icon
-	Err  error
-}
-
 // IconDeleteStubResult is expected values of the Delete operation
 type IconDeleteStubResult struct {
 	Err error
@@ -1528,7 +1342,6 @@ type IconStub struct {
 	CreateStubResult *IconCreateStubResult
 	ReadStubResult   *IconReadStubResult
 	UpdateStubResult *IconUpdateStubResult
-	PatchStubResult  *IconPatchStubResult
 	DeleteStubResult *IconDeleteStubResult
 }
 
@@ -1569,14 +1382,6 @@ func (s *IconStub) Update(ctx context.Context, id types.ID, param *sacloud.IconU
 	return s.UpdateStubResult.Icon, s.UpdateStubResult.Err
 }
 
-// Patch is API call with trace log
-func (s *IconStub) Patch(ctx context.Context, id types.ID, param *sacloud.IconPatchRequest) (*sacloud.Icon, error) {
-	if s.PatchStubResult == nil {
-		log.Fatal("IconStub.PatchStubResult is not set")
-	}
-	return s.PatchStubResult.Icon, s.PatchStubResult.Err
-}
-
 // Delete is API call with trace log
 func (s *IconStub) Delete(ctx context.Context, id types.ID) error {
 	if s.DeleteStubResult == nil {
@@ -1609,12 +1414,6 @@ type InterfaceReadStubResult struct {
 
 // InterfaceUpdateStubResult is expected values of the Update operation
 type InterfaceUpdateStubResult struct {
-	Interface *sacloud.Interface
-	Err       error
-}
-
-// InterfacePatchStubResult is expected values of the Patch operation
-type InterfacePatchStubResult struct {
 	Interface *sacloud.Interface
 	Err       error
 }
@@ -1661,7 +1460,6 @@ type InterfaceStub struct {
 	CreateStubResult                     *InterfaceCreateStubResult
 	ReadStubResult                       *InterfaceReadStubResult
 	UpdateStubResult                     *InterfaceUpdateStubResult
-	PatchStubResult                      *InterfacePatchStubResult
 	DeleteStubResult                     *InterfaceDeleteStubResult
 	MonitorStubResult                    *InterfaceMonitorStubResult
 	ConnectToSharedSegmentStubResult     *InterfaceConnectToSharedSegmentStubResult
@@ -1706,14 +1504,6 @@ func (s *InterfaceStub) Update(ctx context.Context, zone string, id types.ID, pa
 		log.Fatal("InterfaceStub.UpdateStubResult is not set")
 	}
 	return s.UpdateStubResult.Interface, s.UpdateStubResult.Err
-}
-
-// Patch is API call with trace log
-func (s *InterfaceStub) Patch(ctx context.Context, zone string, id types.ID, param *sacloud.InterfacePatchRequest) (*sacloud.Interface, error) {
-	if s.PatchStubResult == nil {
-		log.Fatal("InterfaceStub.PatchStubResult is not set")
-	}
-	return s.PatchStubResult.Interface, s.PatchStubResult.Err
 }
 
 // Delete is API call with trace log
@@ -1800,12 +1590,6 @@ type InternetUpdateStubResult struct {
 	Err      error
 }
 
-// InternetPatchStubResult is expected values of the Patch operation
-type InternetPatchStubResult struct {
-	Internet *sacloud.Internet
-	Err      error
-}
-
 // InternetDeleteStubResult is expected values of the Delete operation
 type InternetDeleteStubResult struct {
 	Err error
@@ -1857,7 +1641,6 @@ type InternetStub struct {
 	CreateStubResult          *InternetCreateStubResult
 	ReadStubResult            *InternetReadStubResult
 	UpdateStubResult          *InternetUpdateStubResult
-	PatchStubResult           *InternetPatchStubResult
 	DeleteStubResult          *InternetDeleteStubResult
 	UpdateBandWidthStubResult *InternetUpdateBandWidthStubResult
 	AddSubnetStubResult       *InternetAddSubnetStubResult
@@ -1903,14 +1686,6 @@ func (s *InternetStub) Update(ctx context.Context, zone string, id types.ID, par
 		log.Fatal("InternetStub.UpdateStubResult is not set")
 	}
 	return s.UpdateStubResult.Internet, s.UpdateStubResult.Err
-}
-
-// Patch is API call with trace log
-func (s *InternetStub) Patch(ctx context.Context, zone string, id types.ID, param *sacloud.InternetPatchRequest) (*sacloud.Internet, error) {
-	if s.PatchStubResult == nil {
-		log.Fatal("InternetStub.PatchStubResult is not set")
-	}
-	return s.PatchStubResult.Internet, s.PatchStubResult.Err
 }
 
 // Delete is API call with trace log
@@ -2236,12 +2011,6 @@ type LicenseUpdateStubResult struct {
 	Err     error
 }
 
-// LicensePatchStubResult is expected values of the Patch operation
-type LicensePatchStubResult struct {
-	License *sacloud.License
-	Err     error
-}
-
 // LicenseDeleteStubResult is expected values of the Delete operation
 type LicenseDeleteStubResult struct {
 	Err error
@@ -2253,7 +2022,6 @@ type LicenseStub struct {
 	CreateStubResult *LicenseCreateStubResult
 	ReadStubResult   *LicenseReadStubResult
 	UpdateStubResult *LicenseUpdateStubResult
-	PatchStubResult  *LicensePatchStubResult
 	DeleteStubResult *LicenseDeleteStubResult
 }
 
@@ -2292,14 +2060,6 @@ func (s *LicenseStub) Update(ctx context.Context, id types.ID, param *sacloud.Li
 		log.Fatal("LicenseStub.UpdateStubResult is not set")
 	}
 	return s.UpdateStubResult.License, s.UpdateStubResult.Err
-}
-
-// Patch is API call with trace log
-func (s *LicenseStub) Patch(ctx context.Context, id types.ID, param *sacloud.LicensePatchRequest) (*sacloud.License, error) {
-	if s.PatchStubResult == nil {
-		log.Fatal("LicenseStub.PatchStubResult is not set")
-	}
-	return s.PatchStubResult.License, s.PatchStubResult.Err
 }
 
 // Delete is API call with trace log
@@ -2387,18 +2147,6 @@ type LoadBalancerUpdateSettingsStubResult struct {
 	Err          error
 }
 
-// LoadBalancerPatchStubResult is expected values of the Patch operation
-type LoadBalancerPatchStubResult struct {
-	LoadBalancer *sacloud.LoadBalancer
-	Err          error
-}
-
-// LoadBalancerPatchSettingsStubResult is expected values of the PatchSettings operation
-type LoadBalancerPatchSettingsStubResult struct {
-	LoadBalancer *sacloud.LoadBalancer
-	Err          error
-}
-
 // LoadBalancerDeleteStubResult is expected values of the Delete operation
 type LoadBalancerDeleteStubResult struct {
 	Err error
@@ -2443,8 +2191,6 @@ type LoadBalancerStub struct {
 	ReadStubResult             *LoadBalancerReadStubResult
 	UpdateStubResult           *LoadBalancerUpdateStubResult
 	UpdateSettingsStubResult   *LoadBalancerUpdateSettingsStubResult
-	PatchStubResult            *LoadBalancerPatchStubResult
-	PatchSettingsStubResult    *LoadBalancerPatchSettingsStubResult
 	DeleteStubResult           *LoadBalancerDeleteStubResult
 	ConfigStubResult           *LoadBalancerConfigStubResult
 	BootStubResult             *LoadBalancerBootStubResult
@@ -2497,22 +2243,6 @@ func (s *LoadBalancerStub) UpdateSettings(ctx context.Context, zone string, id t
 		log.Fatal("LoadBalancerStub.UpdateSettingsStubResult is not set")
 	}
 	return s.UpdateSettingsStubResult.LoadBalancer, s.UpdateSettingsStubResult.Err
-}
-
-// Patch is API call with trace log
-func (s *LoadBalancerStub) Patch(ctx context.Context, zone string, id types.ID, param *sacloud.LoadBalancerPatchRequest) (*sacloud.LoadBalancer, error) {
-	if s.PatchStubResult == nil {
-		log.Fatal("LoadBalancerStub.PatchStubResult is not set")
-	}
-	return s.PatchStubResult.LoadBalancer, s.PatchStubResult.Err
-}
-
-// PatchSettings is API call with trace log
-func (s *LoadBalancerStub) PatchSettings(ctx context.Context, zone string, id types.ID, param *sacloud.LoadBalancerPatchSettingsRequest) (*sacloud.LoadBalancer, error) {
-	if s.PatchSettingsStubResult == nil {
-		log.Fatal("LoadBalancerStub.PatchSettingsStubResult is not set")
-	}
-	return s.PatchSettingsStubResult.LoadBalancer, s.PatchSettingsStubResult.Err
 }
 
 // Delete is API call with trace log
@@ -2601,18 +2331,6 @@ type MobileGatewayUpdateStubResult struct {
 
 // MobileGatewayUpdateSettingsStubResult is expected values of the UpdateSettings operation
 type MobileGatewayUpdateSettingsStubResult struct {
-	MobileGateway *sacloud.MobileGateway
-	Err           error
-}
-
-// MobileGatewayPatchStubResult is expected values of the Patch operation
-type MobileGatewayPatchStubResult struct {
-	MobileGateway *sacloud.MobileGateway
-	Err           error
-}
-
-// MobileGatewayPatchSettingsStubResult is expected values of the PatchSettings operation
-type MobileGatewayPatchSettingsStubResult struct {
 	MobileGateway *sacloud.MobileGateway
 	Err           error
 }
@@ -2731,8 +2449,6 @@ type MobileGatewayStub struct {
 	ReadStubResult                 *MobileGatewayReadStubResult
 	UpdateStubResult               *MobileGatewayUpdateStubResult
 	UpdateSettingsStubResult       *MobileGatewayUpdateSettingsStubResult
-	PatchStubResult                *MobileGatewayPatchStubResult
-	PatchSettingsStubResult        *MobileGatewayPatchSettingsStubResult
 	DeleteStubResult               *MobileGatewayDeleteStubResult
 	ConfigStubResult               *MobileGatewayConfigStubResult
 	BootStubResult                 *MobileGatewayBootStubResult
@@ -2798,22 +2514,6 @@ func (s *MobileGatewayStub) UpdateSettings(ctx context.Context, zone string, id 
 		log.Fatal("MobileGatewayStub.UpdateSettingsStubResult is not set")
 	}
 	return s.UpdateSettingsStubResult.MobileGateway, s.UpdateSettingsStubResult.Err
-}
-
-// Patch is API call with trace log
-func (s *MobileGatewayStub) Patch(ctx context.Context, zone string, id types.ID, param *sacloud.MobileGatewayPatchRequest) (*sacloud.MobileGateway, error) {
-	if s.PatchStubResult == nil {
-		log.Fatal("MobileGatewayStub.PatchStubResult is not set")
-	}
-	return s.PatchStubResult.MobileGateway, s.PatchStubResult.Err
-}
-
-// PatchSettings is API call with trace log
-func (s *MobileGatewayStub) PatchSettings(ctx context.Context, zone string, id types.ID, param *sacloud.MobileGatewayPatchSettingsRequest) (*sacloud.MobileGateway, error) {
-	if s.PatchSettingsStubResult == nil {
-		log.Fatal("MobileGatewayStub.PatchSettingsStubResult is not set")
-	}
-	return s.PatchSettingsStubResult.MobileGateway, s.PatchSettingsStubResult.Err
 }
 
 // Delete is API call with trace log
@@ -3004,12 +2704,6 @@ type NFSUpdateStubResult struct {
 	Err error
 }
 
-// NFSPatchStubResult is expected values of the Patch operation
-type NFSPatchStubResult struct {
-	NFS *sacloud.NFS
-	Err error
-}
-
 // NFSDeleteStubResult is expected values of the Delete operation
 type NFSDeleteStubResult struct {
 	Err error
@@ -3048,7 +2742,6 @@ type NFSStub struct {
 	CreateStubResult              *NFSCreateStubResult
 	ReadStubResult                *NFSReadStubResult
 	UpdateStubResult              *NFSUpdateStubResult
-	PatchStubResult               *NFSPatchStubResult
 	DeleteStubResult              *NFSDeleteStubResult
 	BootStubResult                *NFSBootStubResult
 	ShutdownStubResult            *NFSShutdownStubResult
@@ -3092,14 +2785,6 @@ func (s *NFSStub) Update(ctx context.Context, zone string, id types.ID, param *s
 		log.Fatal("NFSStub.UpdateStubResult is not set")
 	}
 	return s.UpdateStubResult.NFS, s.UpdateStubResult.Err
-}
-
-// Patch is API call with trace log
-func (s *NFSStub) Patch(ctx context.Context, zone string, id types.ID, param *sacloud.NFSPatchRequest) (*sacloud.NFS, error) {
-	if s.PatchStubResult == nil {
-		log.Fatal("NFSStub.PatchStubResult is not set")
-	}
-	return s.PatchStubResult.NFS, s.PatchStubResult.Err
 }
 
 // Delete is API call with trace log
@@ -3178,12 +2863,6 @@ type NoteUpdateStubResult struct {
 	Err  error
 }
 
-// NotePatchStubResult is expected values of the Patch operation
-type NotePatchStubResult struct {
-	Note *sacloud.Note
-	Err  error
-}
-
 // NoteDeleteStubResult is expected values of the Delete operation
 type NoteDeleteStubResult struct {
 	Err error
@@ -3195,7 +2874,6 @@ type NoteStub struct {
 	CreateStubResult *NoteCreateStubResult
 	ReadStubResult   *NoteReadStubResult
 	UpdateStubResult *NoteUpdateStubResult
-	PatchStubResult  *NotePatchStubResult
 	DeleteStubResult *NoteDeleteStubResult
 }
 
@@ -3236,14 +2914,6 @@ func (s *NoteStub) Update(ctx context.Context, id types.ID, param *sacloud.NoteU
 	return s.UpdateStubResult.Note, s.UpdateStubResult.Err
 }
 
-// Patch is API call with trace log
-func (s *NoteStub) Patch(ctx context.Context, id types.ID, param *sacloud.NotePatchRequest) (*sacloud.Note, error) {
-	if s.PatchStubResult == nil {
-		log.Fatal("NoteStub.PatchStubResult is not set")
-	}
-	return s.PatchStubResult.Note, s.PatchStubResult.Err
-}
-
 // Delete is API call with trace log
 func (s *NoteStub) Delete(ctx context.Context, id types.ID) error {
 	if s.DeleteStubResult == nil {
@@ -3280,12 +2950,6 @@ type PacketFilterUpdateStubResult struct {
 	Err          error
 }
 
-// PacketFilterPatchStubResult is expected values of the Patch operation
-type PacketFilterPatchStubResult struct {
-	PacketFilter *sacloud.PacketFilter
-	Err          error
-}
-
 // PacketFilterDeleteStubResult is expected values of the Delete operation
 type PacketFilterDeleteStubResult struct {
 	Err error
@@ -3297,7 +2961,6 @@ type PacketFilterStub struct {
 	CreateStubResult *PacketFilterCreateStubResult
 	ReadStubResult   *PacketFilterReadStubResult
 	UpdateStubResult *PacketFilterUpdateStubResult
-	PatchStubResult  *PacketFilterPatchStubResult
 	DeleteStubResult *PacketFilterDeleteStubResult
 }
 
@@ -3338,14 +3001,6 @@ func (s *PacketFilterStub) Update(ctx context.Context, zone string, id types.ID,
 	return s.UpdateStubResult.PacketFilter, s.UpdateStubResult.Err
 }
 
-// Patch is API call with trace log
-func (s *PacketFilterStub) Patch(ctx context.Context, zone string, id types.ID, param *sacloud.PacketFilterPatchRequest) (*sacloud.PacketFilter, error) {
-	if s.PatchStubResult == nil {
-		log.Fatal("PacketFilterStub.PatchStubResult is not set")
-	}
-	return s.PatchStubResult.PacketFilter, s.PatchStubResult.Err
-}
-
 // Delete is API call with trace log
 func (s *PacketFilterStub) Delete(ctx context.Context, zone string, id types.ID) error {
 	if s.DeleteStubResult == nil {
@@ -3382,12 +3037,6 @@ type PrivateHostUpdateStubResult struct {
 	Err         error
 }
 
-// PrivateHostPatchStubResult is expected values of the Patch operation
-type PrivateHostPatchStubResult struct {
-	PrivateHost *sacloud.PrivateHost
-	Err         error
-}
-
 // PrivateHostDeleteStubResult is expected values of the Delete operation
 type PrivateHostDeleteStubResult struct {
 	Err error
@@ -3399,7 +3048,6 @@ type PrivateHostStub struct {
 	CreateStubResult *PrivateHostCreateStubResult
 	ReadStubResult   *PrivateHostReadStubResult
 	UpdateStubResult *PrivateHostUpdateStubResult
-	PatchStubResult  *PrivateHostPatchStubResult
 	DeleteStubResult *PrivateHostDeleteStubResult
 }
 
@@ -3438,14 +3086,6 @@ func (s *PrivateHostStub) Update(ctx context.Context, zone string, id types.ID, 
 		log.Fatal("PrivateHostStub.UpdateStubResult is not set")
 	}
 	return s.UpdateStubResult.PrivateHost, s.UpdateStubResult.Err
-}
-
-// Patch is API call with trace log
-func (s *PrivateHostStub) Patch(ctx context.Context, zone string, id types.ID, param *sacloud.PrivateHostPatchRequest) (*sacloud.PrivateHost, error) {
-	if s.PatchStubResult == nil {
-		log.Fatal("PrivateHostStub.PatchStubResult is not set")
-	}
-	return s.PatchStubResult.PrivateHost, s.PatchStubResult.Err
 }
 
 // Delete is API call with trace log
@@ -3533,18 +3173,6 @@ type ProxyLBUpdateSettingsStubResult struct {
 	Err     error
 }
 
-// ProxyLBPatchStubResult is expected values of the Patch operation
-type ProxyLBPatchStubResult struct {
-	ProxyLB *sacloud.ProxyLB
-	Err     error
-}
-
-// ProxyLBPatchSettingsStubResult is expected values of the PatchSettings operation
-type ProxyLBPatchSettingsStubResult struct {
-	ProxyLB *sacloud.ProxyLB
-	Err     error
-}
-
 // ProxyLBDeleteStubResult is expected values of the Delete operation
 type ProxyLBDeleteStubResult struct {
 	Err error
@@ -3597,8 +3225,6 @@ type ProxyLBStub struct {
 	ReadStubResult                 *ProxyLBReadStubResult
 	UpdateStubResult               *ProxyLBUpdateStubResult
 	UpdateSettingsStubResult       *ProxyLBUpdateSettingsStubResult
-	PatchStubResult                *ProxyLBPatchStubResult
-	PatchSettingsStubResult        *ProxyLBPatchSettingsStubResult
 	DeleteStubResult               *ProxyLBDeleteStubResult
 	ChangePlanStubResult           *ProxyLBChangePlanStubResult
 	GetCertificatesStubResult      *ProxyLBGetCertificatesStubResult
@@ -3652,22 +3278,6 @@ func (s *ProxyLBStub) UpdateSettings(ctx context.Context, id types.ID, param *sa
 		log.Fatal("ProxyLBStub.UpdateSettingsStubResult is not set")
 	}
 	return s.UpdateSettingsStubResult.ProxyLB, s.UpdateSettingsStubResult.Err
-}
-
-// Patch is API call with trace log
-func (s *ProxyLBStub) Patch(ctx context.Context, id types.ID, param *sacloud.ProxyLBPatchRequest) (*sacloud.ProxyLB, error) {
-	if s.PatchStubResult == nil {
-		log.Fatal("ProxyLBStub.PatchStubResult is not set")
-	}
-	return s.PatchStubResult.ProxyLB, s.PatchStubResult.Err
-}
-
-// PatchSettings is API call with trace log
-func (s *ProxyLBStub) PatchSettings(ctx context.Context, id types.ID, param *sacloud.ProxyLBPatchSettingsRequest) (*sacloud.ProxyLB, error) {
-	if s.PatchSettingsStubResult == nil {
-		log.Fatal("ProxyLBStub.PatchSettingsStubResult is not set")
-	}
-	return s.PatchSettingsStubResult.ProxyLB, s.PatchSettingsStubResult.Err
 }
 
 // Delete is API call with trace log
@@ -3805,12 +3415,6 @@ type ServerUpdateStubResult struct {
 	Err    error
 }
 
-// ServerPatchStubResult is expected values of the Patch operation
-type ServerPatchStubResult struct {
-	Server *sacloud.Server
-	Err    error
-}
-
 // ServerDeleteStubResult is expected values of the Delete operation
 type ServerDeleteStubResult struct {
 	Err error
@@ -3875,7 +3479,6 @@ type ServerStub struct {
 	CreateStubResult          *ServerCreateStubResult
 	ReadStubResult            *ServerReadStubResult
 	UpdateStubResult          *ServerUpdateStubResult
-	PatchStubResult           *ServerPatchStubResult
 	DeleteStubResult          *ServerDeleteStubResult
 	DeleteWithDisksStubResult *ServerDeleteWithDisksStubResult
 	ChangePlanStubResult      *ServerChangePlanStubResult
@@ -3924,14 +3527,6 @@ func (s *ServerStub) Update(ctx context.Context, zone string, id types.ID, param
 		log.Fatal("ServerStub.UpdateStubResult is not set")
 	}
 	return s.UpdateStubResult.Server, s.UpdateStubResult.Err
-}
-
-// Patch is API call with trace log
-func (s *ServerStub) Patch(ctx context.Context, zone string, id types.ID, param *sacloud.ServerPatchRequest) (*sacloud.Server, error) {
-	if s.PatchStubResult == nil {
-		log.Fatal("ServerStub.PatchStubResult is not set")
-	}
-	return s.PatchStubResult.Server, s.PatchStubResult.Err
 }
 
 // Delete is API call with trace log
@@ -4121,12 +3716,6 @@ type SIMUpdateStubResult struct {
 	Err error
 }
 
-// SIMPatchStubResult is expected values of the Patch operation
-type SIMPatchStubResult struct {
-	SIM *sacloud.SIM
-	Err error
-}
-
 // SIMDeleteStubResult is expected values of the Delete operation
 type SIMDeleteStubResult struct {
 	Err error
@@ -4197,7 +3786,6 @@ type SIMStub struct {
 	CreateStubResult             *SIMCreateStubResult
 	ReadStubResult               *SIMReadStubResult
 	UpdateStubResult             *SIMUpdateStubResult
-	PatchStubResult              *SIMPatchStubResult
 	DeleteStubResult             *SIMDeleteStubResult
 	ActivateStubResult           *SIMActivateStubResult
 	DeactivateStubResult         *SIMDeactivateStubResult
@@ -4247,14 +3835,6 @@ func (s *SIMStub) Update(ctx context.Context, id types.ID, param *sacloud.SIMUpd
 		log.Fatal("SIMStub.UpdateStubResult is not set")
 	}
 	return s.UpdateStubResult.SIM, s.UpdateStubResult.Err
-}
-
-// Patch is API call with trace log
-func (s *SIMStub) Patch(ctx context.Context, id types.ID, param *sacloud.SIMPatchRequest) (*sacloud.SIM, error) {
-	if s.PatchStubResult == nil {
-		log.Fatal("SIMStub.PatchStubResult is not set")
-	}
-	return s.PatchStubResult.SIM, s.PatchStubResult.Err
 }
 
 // Delete is API call with trace log
@@ -4387,18 +3967,6 @@ type SimpleMonitorUpdateSettingsStubResult struct {
 	Err           error
 }
 
-// SimpleMonitorPatchStubResult is expected values of the Patch operation
-type SimpleMonitorPatchStubResult struct {
-	SimpleMonitor *sacloud.SimpleMonitor
-	Err           error
-}
-
-// SimpleMonitorPatchSettingsStubResult is expected values of the PatchSettings operation
-type SimpleMonitorPatchSettingsStubResult struct {
-	SimpleMonitor *sacloud.SimpleMonitor
-	Err           error
-}
-
 // SimpleMonitorDeleteStubResult is expected values of the Delete operation
 type SimpleMonitorDeleteStubResult struct {
 	Err error
@@ -4423,8 +3991,6 @@ type SimpleMonitorStub struct {
 	ReadStubResult                *SimpleMonitorReadStubResult
 	UpdateStubResult              *SimpleMonitorUpdateStubResult
 	UpdateSettingsStubResult      *SimpleMonitorUpdateSettingsStubResult
-	PatchStubResult               *SimpleMonitorPatchStubResult
-	PatchSettingsStubResult       *SimpleMonitorPatchSettingsStubResult
 	DeleteStubResult              *SimpleMonitorDeleteStubResult
 	MonitorResponseTimeStubResult *SimpleMonitorMonitorResponseTimeStubResult
 	HealthStatusStubResult        *SimpleMonitorHealthStatusStubResult
@@ -4473,22 +4039,6 @@ func (s *SimpleMonitorStub) UpdateSettings(ctx context.Context, id types.ID, par
 		log.Fatal("SimpleMonitorStub.UpdateSettingsStubResult is not set")
 	}
 	return s.UpdateSettingsStubResult.SimpleMonitor, s.UpdateSettingsStubResult.Err
-}
-
-// Patch is API call with trace log
-func (s *SimpleMonitorStub) Patch(ctx context.Context, id types.ID, param *sacloud.SimpleMonitorPatchRequest) (*sacloud.SimpleMonitor, error) {
-	if s.PatchStubResult == nil {
-		log.Fatal("SimpleMonitorStub.PatchStubResult is not set")
-	}
-	return s.PatchStubResult.SimpleMonitor, s.PatchStubResult.Err
-}
-
-// PatchSettings is API call with trace log
-func (s *SimpleMonitorStub) PatchSettings(ctx context.Context, id types.ID, param *sacloud.SimpleMonitorPatchSettingsRequest) (*sacloud.SimpleMonitor, error) {
-	if s.PatchSettingsStubResult == nil {
-		log.Fatal("SimpleMonitorStub.PatchSettingsStubResult is not set")
-	}
-	return s.PatchSettingsStubResult.SimpleMonitor, s.PatchSettingsStubResult.Err
 }
 
 // Delete is API call with trace log
@@ -4549,12 +4099,6 @@ type SSHKeyUpdateStubResult struct {
 	Err    error
 }
 
-// SSHKeyPatchStubResult is expected values of the Patch operation
-type SSHKeyPatchStubResult struct {
-	SSHKey *sacloud.SSHKey
-	Err    error
-}
-
 // SSHKeyDeleteStubResult is expected values of the Delete operation
 type SSHKeyDeleteStubResult struct {
 	Err error
@@ -4567,7 +4111,6 @@ type SSHKeyStub struct {
 	GenerateStubResult *SSHKeyGenerateStubResult
 	ReadStubResult     *SSHKeyReadStubResult
 	UpdateStubResult   *SSHKeyUpdateStubResult
-	PatchStubResult    *SSHKeyPatchStubResult
 	DeleteStubResult   *SSHKeyDeleteStubResult
 }
 
@@ -4614,14 +4157,6 @@ func (s *SSHKeyStub) Update(ctx context.Context, id types.ID, param *sacloud.SSH
 		log.Fatal("SSHKeyStub.UpdateStubResult is not set")
 	}
 	return s.UpdateStubResult.SSHKey, s.UpdateStubResult.Err
-}
-
-// Patch is API call with trace log
-func (s *SSHKeyStub) Patch(ctx context.Context, id types.ID, param *sacloud.SSHKeyPatchRequest) (*sacloud.SSHKey, error) {
-	if s.PatchStubResult == nil {
-		log.Fatal("SSHKeyStub.PatchStubResult is not set")
-	}
-	return s.PatchStubResult.SSHKey, s.PatchStubResult.Err
 }
 
 // Delete is API call with trace log
@@ -4703,12 +4238,6 @@ type SwitchUpdateStubResult struct {
 	Err    error
 }
 
-// SwitchPatchStubResult is expected values of the Patch operation
-type SwitchPatchStubResult struct {
-	Switch *sacloud.Switch
-	Err    error
-}
-
 // SwitchDeleteStubResult is expected values of the Delete operation
 type SwitchDeleteStubResult struct {
 	Err error
@@ -4736,7 +4265,6 @@ type SwitchStub struct {
 	CreateStubResult               *SwitchCreateStubResult
 	ReadStubResult                 *SwitchReadStubResult
 	UpdateStubResult               *SwitchUpdateStubResult
-	PatchStubResult                *SwitchPatchStubResult
 	DeleteStubResult               *SwitchDeleteStubResult
 	ConnectToBridgeStubResult      *SwitchConnectToBridgeStubResult
 	DisconnectFromBridgeStubResult *SwitchDisconnectFromBridgeStubResult
@@ -4778,14 +4306,6 @@ func (s *SwitchStub) Update(ctx context.Context, zone string, id types.ID, param
 		log.Fatal("SwitchStub.UpdateStubResult is not set")
 	}
 	return s.UpdateStubResult.Switch, s.UpdateStubResult.Err
-}
-
-// Patch is API call with trace log
-func (s *SwitchStub) Patch(ctx context.Context, zone string, id types.ID, param *sacloud.SwitchPatchRequest) (*sacloud.Switch, error) {
-	if s.PatchStubResult == nil {
-		log.Fatal("SwitchStub.PatchStubResult is not set")
-	}
-	return s.PatchStubResult.Switch, s.PatchStubResult.Err
 }
 
 // Delete is API call with trace log
@@ -4854,18 +4374,6 @@ type VPCRouterUpdateSettingsStubResult struct {
 	Err       error
 }
 
-// VPCRouterPatchStubResult is expected values of the Patch operation
-type VPCRouterPatchStubResult struct {
-	VPCRouter *sacloud.VPCRouter
-	Err       error
-}
-
-// VPCRouterPatchSettingsStubResult is expected values of the PatchSettings operation
-type VPCRouterPatchSettingsStubResult struct {
-	VPCRouter *sacloud.VPCRouter
-	Err       error
-}
-
 // VPCRouterDeleteStubResult is expected values of the Delete operation
 type VPCRouterDeleteStubResult struct {
 	Err error
@@ -4920,8 +4428,6 @@ type VPCRouterStub struct {
 	ReadStubResult                 *VPCRouterReadStubResult
 	UpdateStubResult               *VPCRouterUpdateStubResult
 	UpdateSettingsStubResult       *VPCRouterUpdateSettingsStubResult
-	PatchStubResult                *VPCRouterPatchStubResult
-	PatchSettingsStubResult        *VPCRouterPatchSettingsStubResult
 	DeleteStubResult               *VPCRouterDeleteStubResult
 	ConfigStubResult               *VPCRouterConfigStubResult
 	BootStubResult                 *VPCRouterBootStubResult
@@ -4976,22 +4482,6 @@ func (s *VPCRouterStub) UpdateSettings(ctx context.Context, zone string, id type
 		log.Fatal("VPCRouterStub.UpdateSettingsStubResult is not set")
 	}
 	return s.UpdateSettingsStubResult.VPCRouter, s.UpdateSettingsStubResult.Err
-}
-
-// Patch is API call with trace log
-func (s *VPCRouterStub) Patch(ctx context.Context, zone string, id types.ID, param *sacloud.VPCRouterPatchRequest) (*sacloud.VPCRouter, error) {
-	if s.PatchStubResult == nil {
-		log.Fatal("VPCRouterStub.PatchStubResult is not set")
-	}
-	return s.PatchStubResult.VPCRouter, s.PatchStubResult.Err
-}
-
-// PatchSettings is API call with trace log
-func (s *VPCRouterStub) PatchSettings(ctx context.Context, zone string, id types.ID, param *sacloud.VPCRouterPatchSettingsRequest) (*sacloud.VPCRouter, error) {
-	if s.PatchSettingsStubResult == nil {
-		log.Fatal("VPCRouterStub.PatchSettingsStubResult is not set")
-	}
-	return s.PatchSettingsStubResult.VPCRouter, s.PatchSettingsStubResult.Err
 }
 
 // Delete is API call with trace log

@@ -48,12 +48,6 @@ var gslbAPI = &dsl.Resource{
 		// updateSettings
 		ops.UpdateCommonServiceItemSettings(gslbAPIName, gslbUpdateSettingsNakedType, gslbUpdateSettingsParam, gslbView),
 
-		// patch
-		ops.PatchCommonServiceItem(gslbAPIName, gslbNakedType, patchModel(gslbUpdateParam), gslbView),
-
-		// patchSettings
-		ops.PatchCommonServiceItemSettings(gslbAPIName, gslbUpdateSettingsNakedType, patchModel(gslbUpdateSettingsParam), gslbView),
-
 		// delete
 		ops.Delete(gslbAPIName),
 	},

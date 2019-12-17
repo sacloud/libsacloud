@@ -46,9 +46,6 @@ var interfaceAPI = &dsl.Resource{
 		// update
 		ops.Update(interfaceAPIName, interfaceNakedType, interfaceUpdateParam, interfaceView),
 
-		// patch
-		ops.Patch(interfaceAPIName, interfaceNakedType, patchModel(interfaceUpdateParam), interfaceView),
-
 		// delete
 		ops.Delete(interfaceAPIName),
 

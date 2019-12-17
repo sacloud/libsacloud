@@ -247,46 +247,6 @@ func UpdateCommonServiceItemSettings(resourceName string, nakedType meta.Type, u
 	return updateSettings(resourceName, nakedType, updateParam, result, "CommonServiceItem")
 }
 
-func patch(resourceName string, nakedType meta.Type, updateParam, result *dsl.Model, payloadName string) *dsl.Operation {
-	return patchInternal(resourceName, nakedType, updateParam, result, payloadName, "Patch")
-}
-
-func patchSettings(resourceName string, nakedType meta.Type, updateParam, result *dsl.Model, payloadName string) *dsl.Operation {
-	return patchInternal(resourceName, nakedType, updateParam, result, payloadName, "PatchSettings")
-}
-
-func patchInternal(resourceName string, nakedType meta.Type, updateParam, result *dsl.Model, payloadName, opName string) *dsl.Operation {
-	op := update(resourceName, nakedType, updateParam, result, payloadName)
-	op.Name = opName
-	op.IsPatch = true
-	return op
-}
-
-// Patch Patch操作を定義
-func Patch(resourceName string, nakedType meta.Type, updateParam, result *dsl.Model) *dsl.Operation {
-	return patch(resourceName, nakedType, updateParam, result, "")
-}
-
-// PatchAppliance Patch操作を定義
-func PatchAppliance(resourceName string, nakedType meta.Type, updateParam, result *dsl.Model) *dsl.Operation {
-	return patch(resourceName, nakedType, updateParam, result, "Appliance")
-}
-
-// PatchCommonServiceItem Patch操作を定義
-func PatchCommonServiceItem(resourceName string, nakedType meta.Type, updateParam, result *dsl.Model) *dsl.Operation {
-	return patch(resourceName, nakedType, updateParam, result, "CommonServiceItem")
-}
-
-// PatchApplianceSettings PatchSettings操作を定義
-func PatchApplianceSettings(resourceName string, nakedType meta.Type, updateParam, result *dsl.Model) *dsl.Operation {
-	return patchSettings(resourceName, nakedType, updateParam, result, "Appliance")
-}
-
-// PatchCommonServiceItemSettings PatchSettings操作を定義
-func PatchCommonServiceItemSettings(resourceName string, nakedType meta.Type, updateParam, result *dsl.Model) *dsl.Operation {
-	return patchSettings(resourceName, nakedType, updateParam, result, "CommonServiceItem")
-}
-
 // Delete Delete操作を定義
 func Delete(resourceName string) *dsl.Operation {
 	return &dsl.Operation{

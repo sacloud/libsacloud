@@ -49,12 +49,6 @@ var databaseAPI = &dsl.Resource{
 		// updateSettings
 		ops.UpdateApplianceSettings(databaseAPIName, databaseUpdateSettingsNakedType, databaseUpdateSettingsParam, databaseView),
 
-		// patch
-		ops.PatchAppliance(databaseAPIName, databaseNakedType, patchModel(databaseUpdateParam), databaseView),
-
-		// patchSettings
-		ops.PatchApplianceSettings(databaseAPIName, databaseUpdateSettingsNakedType, patchModel(databaseUpdateSettingsParam), databaseView),
-
 		// delete
 		ops.Delete(databaseAPIName),
 

@@ -87,9 +87,6 @@ var archiveAPI = &dsl.Resource{
 		// update
 		ops.Update(archiveAPIName, archiveNakedType, archiveUpdateParam, archiveView),
 
-		// patch
-		ops.Patch(archiveAPIName, archiveNakedType, patchModel(archiveUpdateParam), archiveView),
-
 		// delete
 		ops.Delete(archiveAPIName),
 

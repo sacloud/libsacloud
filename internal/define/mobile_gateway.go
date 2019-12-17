@@ -48,11 +48,6 @@ var mobileGatewayAPI = &dsl.Resource{
 		// updateSettings
 		ops.UpdateApplianceSettings(mobileGatewayAPIName, mobileGatewayUpdateSettingsNakedType, mobileGatewayUpdateSettingsParam, mobileGatewayView),
 
-		// patch
-		ops.PatchAppliance(mobileGatewayAPIName, mobileGatewayNakedType, patchModel(mobileGatewayUpdateParam), mobileGatewayView),
-		// patchSettings
-		ops.PatchApplianceSettings(mobileGatewayAPIName, mobileGatewayUpdateSettingsNakedType, patchModel(mobileGatewayUpdateSettingsParam), mobileGatewayView),
-
 		// delete
 		ops.Delete(mobileGatewayAPIName),
 

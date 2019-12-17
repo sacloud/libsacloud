@@ -48,12 +48,6 @@ var dnsAPI = &dsl.Resource{
 		// updateSettings
 		ops.UpdateCommonServiceItemSettings(dnsAPIName, dnsUpdateSettingsNakedType, dnsUpdateSettingsParam, dnsView),
 
-		// patch
-		ops.PatchCommonServiceItem(dnsAPIName, dnsNakedType, patchModel(dnsUpdateParam), dnsView),
-
-		// patchSettings
-		ops.PatchCommonServiceItemSettings(dnsAPIName, dnsUpdateSettingsNakedType, patchModel(dnsUpdateSettingsParam), dnsView),
-
 		// delete
 		ops.Delete(dnsAPIName),
 	},

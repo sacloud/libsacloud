@@ -49,11 +49,6 @@ var proxyLBAPI = &dsl.Resource{
 		// updateSettings
 		ops.UpdateCommonServiceItemSettings(proxyLBAPIName, proxyLBUpdateSettingsNakedType, proxyLBUpdateSettingsParam, proxyLBView),
 
-		// patch
-		ops.PatchCommonServiceItem(proxyLBAPIName, proxyLBNakedType, patchModel(proxyLBUpdateParam), proxyLBView),
-		// updateSettings
-		ops.PatchCommonServiceItemSettings(proxyLBAPIName, proxyLBUpdateSettingsNakedType, patchModel(proxyLBUpdateSettingsParam), proxyLBView),
-
 		// delete
 		ops.Delete(proxyLBAPIName),
 

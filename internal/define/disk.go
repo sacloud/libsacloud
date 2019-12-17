@@ -240,9 +240,6 @@ var diskAPI = &dsl.Resource{
 		// update
 		ops.Update(diskAPIName, diskNakedType, diskUpdateParam, diskModel),
 
-		// patch
-		ops.Patch(diskAPIName, diskNakedType, patchModel(diskUpdateParam), diskModel),
-
 		// delete
 		ops.Delete(diskAPIName),
 

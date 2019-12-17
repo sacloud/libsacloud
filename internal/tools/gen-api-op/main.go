@@ -115,29 +115,6 @@ func (o *{{ $typeName }}Op) {{ .MethodName }}(ctx context.Context{{if not $resou
 	defer apiLocker.Unlock(lockKey)
 	{{ end -}}
 
-	{{if .IsPatch -}}
-	original, err := o.Read(ctx{{if not $resource.IsGlobal}}, zone{{ end }}, id)
-	if err != nil {
-		return nil, err
-	}
-	patchParam := make(map[string]interface{})
-	if err := mergo.Map(&patchParam, original); err != nil {
-		return nil, fmt.Errorf("patch is failed: %s", err)
-	}
-	if err := mergo.Map(&patchParam, param); err != nil {
-		return nil, fmt.Errorf("patch is failed: %s", err)
-	}
-	if err := mergo.Map(param, &patchParam); err != nil {
-		return nil, fmt.Errorf("patch is failed: %s", err)
-	}
-
-	{{ range .PatchArgumentModel.Fields -}}
-	{{ if .IsNeedPatchEmpty}}if param.PatchEmptyTo{{.Name}} {
-		param.{{.Name}} = {{.Type.ZeroValueSourceCode}}	
-	}
-	{{ end }}{{ end -}}
-	{{ end -}}
-
 	// build request body
 	var body interface{}
 {{ if .HasRequestEnvelope -}}
