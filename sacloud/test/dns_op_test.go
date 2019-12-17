@@ -46,23 +46,9 @@ func TestDNSOp_CRUD(t *testing.T) {
 
 		Updates: []*testutil.CRUDTestFunc{
 			{
-				Func: testDNSPatch,
-				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
-					ExpectValue:  patchDNSExpected,
-					IgnoreFields: ignoreDNSFields,
-				}),
-			},
-			{
 				Func: testDNSUpdateSettings,
 				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 					ExpectValue:  updateDNSSettingsExpected,
-					IgnoreFields: ignoreDNSFields,
-				}),
-			},
-			{
-				Func: testDNSPatchSettings,
-				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
-					ExpectValue:  patchDNSSettingsExpected,
 					IgnoreFields: ignoreDNSFields,
 				}),
 			},
@@ -123,33 +109,6 @@ var (
 		DNSZone:      createDNSParam.Name,
 		Records:      createDNSParam.Records,
 	}
-	patchDNSParam = &sacloud.DNSPatchRequest{
-		Records: []*sacloud.DNSRecord{
-			{
-				Name:  "host1",
-				Type:  types.DNSRecordTypes.A,
-				RData: "192.0.2.11",
-			},
-			{
-				Name:  "host2",
-				Type:  types.DNSRecordTypes.A,
-				RData: "192.0.2.12",
-			},
-			{
-				Name:  "host3",
-				Type:  types.DNSRecordTypes.A,
-				RData: "192.0.2.13",
-			},
-		},
-	}
-	patchDNSExpected = &sacloud.DNS{
-		Name:         createDNSParam.Name,
-		Description:  createDNSParam.Description,
-		Tags:         createDNSParam.Tags,
-		Availability: types.Availabilities.Available,
-		DNSZone:      createDNSParam.Name,
-		Records:      patchDNSParam.Records,
-	}
 	updateDNSSettingsParam = &sacloud.DNSUpdateSettingsRequest{
 		Records: []*sacloud.DNSRecord{
 			{
@@ -181,43 +140,6 @@ var (
 		Availability: types.Availabilities.Available,
 		DNSZone:      createDNSParam.Name,
 		Records:      updateDNSSettingsParam.Records,
-	}
-	patchDNSSettingsParam = &sacloud.DNSPatchSettingsRequest{
-		Records: []*sacloud.DNSRecord{
-			{
-				Name:  "host1",
-				Type:  types.DNSRecordTypes.A,
-				RData: "192.0.2.11",
-			},
-			{
-				Name:  "host2",
-				Type:  types.DNSRecordTypes.A,
-				RData: "192.0.2.12",
-			},
-			{
-				Name:  "host3",
-				Type:  types.DNSRecordTypes.A,
-				RData: "192.0.2.13",
-			},
-			{
-				Name:  "host4",
-				Type:  types.DNSRecordTypes.A,
-				RData: "192.0.2.14",
-			},
-			{
-				Name:  "host5",
-				Type:  types.DNSRecordTypes.A,
-				RData: "192.0.2.15",
-			},
-		},
-	}
-	patchDNSSettingsExpected = &sacloud.DNS{
-		Name:         createDNSParam.Name,
-		Description:  createDNSParam.Description,
-		Tags:         createDNSParam.Tags,
-		Availability: types.Availabilities.Available,
-		DNSZone:      createDNSParam.Name,
-		Records:      patchDNSSettingsParam.Records,
 	}
 	updateDNSParam = &sacloud.DNSUpdateRequest{
 		Description: "desc-upd",
@@ -266,16 +188,6 @@ func testDNSCreate(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (int
 func testDNSRead(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewDNSOp(caller)
 	return client.Read(ctx, ctx.ID)
-}
-
-func testDNSPatch(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
-	client := sacloud.NewDNSOp(caller)
-	return client.Patch(ctx, ctx.ID, patchDNSParam)
-}
-
-func testDNSPatchSettings(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
-	client := sacloud.NewDNSOp(caller)
-	return client.PatchSettings(ctx, ctx.ID, patchDNSSettingsParam)
 }
 
 func testDNSUpdate(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {

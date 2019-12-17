@@ -74,9 +74,6 @@ var sshKeyAPI = &dsl.Resource{
 		// update
 		ops.Update(sshKeyAPIName, sshKeyNakedType, sshKeyUpdateParam, sshKeyView),
 
-		// patch
-		ops.Patch(sshKeyAPIName, sshKeyNakedType, patchModel(sshKeyUpdateParam), sshKeyView),
-
 		// delete
 		ops.Delete(sshKeyAPIName),
 	},

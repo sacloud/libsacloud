@@ -44,9 +44,6 @@ var bridgeAPI = &dsl.Resource{
 		// update
 		ops.Update(bridgeAPIName, bridgeNakedType, bridgeUpdateParam, bridgeView),
 
-		// patch
-		ops.Patch(bridgeAPIName, bridgeNakedType, patchModel(bridgeUpdateParam), bridgeView),
-
 		// delete
 		ops.Delete(bridgeAPIName),
 	},

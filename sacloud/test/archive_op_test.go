@@ -43,8 +43,6 @@ func TestArchiveOpCRUD(t *testing.T) {
 					createArchiveParam.SourceArchiveID = a.ID
 					createArchiveExpected.SourceArchiveID = a.ID
 					createArchiveExpected.SourceArchiveAvailability = a.Availability
-					patchArchiveExpected.SourceArchiveID = a.ID
-					patchArchiveExpected.SourceArchiveAvailability = a.Availability
 					updateArchiveExpected.SourceArchiveID = a.ID
 					updateArchiveExpected.SourceArchiveAvailability = a.Availability
 					updateArchiveToMinExpected.SourceArchiveID = a.ID
@@ -73,13 +71,6 @@ func TestArchiveOpCRUD(t *testing.T) {
 		},
 
 		Updates: []*testutil.CRUDTestFunc{
-			{
-				Func: testArchivePatch,
-				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
-					ExpectValue:  patchArchiveExpected,
-					IgnoreFields: ignoreArchiveFields,
-				}),
-			},
 			{
 				Func: testArchiveUpdate,
 				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
@@ -134,16 +125,6 @@ var (
 		DiskPlanID:  types.DiskPlans.HDD,
 	}
 
-	patchArchiveParam = &sacloud.ArchivePatchRequest{
-		Description: "desc-patched",
-	}
-	patchArchiveExpected = &sacloud.Archive{
-		Name:        createArchiveParam.Name,
-		Description: patchArchiveParam.Description,
-		Tags:        createArchiveParam.Tags,
-		Scope:       types.Scopes.User,
-		DiskPlanID:  types.DiskPlans.HDD,
-	}
 	updateArchiveParam = &sacloud.ArchiveUpdateRequest{
 		Name:        testutil.ResourceName("archive-upd"),
 		Description: "desc-upd",
@@ -178,11 +159,6 @@ func testArchiveCreate(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) 
 func testArchiveRead(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewArchiveOp(caller)
 	return client.Read(ctx, testZone, ctx.ID)
-}
-
-func testArchivePatch(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
-	client := sacloud.NewArchiveOp(caller)
-	return client.Patch(ctx, testZone, ctx.ID, patchArchiveParam)
 }
 
 func testArchiveUpdate(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {

@@ -44,9 +44,6 @@ var nfsAPI = &dsl.Resource{
 		// update
 		ops.UpdateAppliance(nfsAPIName, nfsNakedType, nfsUpdateParam, nfsView),
 
-		// patch
-		ops.PatchAppliance(nfsAPIName, nfsNakedType, patchModel(nfsUpdateParam), nfsView),
-
 		// delete
 		ops.Delete(nfsAPIName),
 

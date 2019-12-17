@@ -47,9 +47,6 @@ var serverAPI = &dsl.Resource{
 		// update
 		ops.Update(serverAPIName, serverNakedType, serverUpdateParam, serverView),
 
-		// patch
-		ops.Patch(serverAPIName, serverNakedType, patchModel(serverUpdateParam), serverView),
-
 		// delete
 		ops.Delete(serverAPIName),
 

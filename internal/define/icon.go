@@ -48,9 +48,6 @@ var iconAPI = &dsl.Resource{
 		// update
 		ops.Update(iconAPIName, iconNakedType, iconUpdateParam, iconView),
 
-		// patch
-		ops.Patch(iconAPIName, iconNakedType, patchModel(iconUpdateParam), iconView),
-
 		// delete
 		ops.Delete(iconAPIName),
 	},

@@ -48,11 +48,6 @@ var vpcRouterAPI = &dsl.Resource{
 		// updateSettings
 		ops.UpdateApplianceSettings(vpcRouterAPIName, vpcRouterUpdateSettingsNakedType, vpcRouterUpdateSettingsParam, vpcRouterView),
 
-		// patch
-		ops.PatchAppliance(vpcRouterAPIName, vpcRouterNakedType, patchModel(vpcRouterUpdateParam), vpcRouterView),
-		// patchSettings
-		ops.PatchApplianceSettings(vpcRouterAPIName, vpcRouterUpdateSettingsNakedType, patchModel(vpcRouterUpdateSettingsParam), vpcRouterView),
-
 		// delete
 		ops.Delete(vpcRouterAPIName),
 

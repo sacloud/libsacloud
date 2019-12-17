@@ -58,13 +58,6 @@ func TestMobileGatewayOpCRUD(t *testing.T) {
 				}),
 			},
 			{
-				Func: testMobileGatewayPatch,
-				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
-					ExpectValue:  patchMobileGatewayExpected,
-					IgnoreFields: ignoreMobileGatewayFields,
-				}),
-			},
-			{
 				Func: testMobileGatewayUpdateSettings,
 				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 					ExpectValue:  updateMobileGatewaySettingsExpected,
@@ -437,25 +430,6 @@ func initMobileGatewayVariables() {
 			InterDeviceCommunicationEnabled: false,
 		},
 	}
-	patchMobileGatewayParam = &sacloud.MobileGatewayPatchRequest{
-		Name:        testutil.ResourceName("mobile-gateway-patch"),
-		Description: "desc-upd",
-		Tags:        []string{"tag1-upd", "tag2-upd"},
-		Settings: &sacloud.MobileGatewaySetting{
-			InternetConnectionEnabled:       true,
-			InterDeviceCommunicationEnabled: true,
-		},
-	}
-	patchMobileGatewayExpected = &sacloud.MobileGateway{
-		Name:         patchMobileGatewayParam.Name,
-		Description:  updateMobileGatewayParam.Description,
-		Tags:         updateMobileGatewayParam.Tags,
-		Availability: types.Availabilities.Available,
-		Settings: &sacloud.MobileGatewaySetting{
-			InternetConnectionEnabled:       true,
-			InterDeviceCommunicationEnabled: true,
-		},
-	}
 	updateMobileGatewaySettingsParam = &sacloud.MobileGatewayUpdateSettingsRequest{
 		Settings: &sacloud.MobileGatewaySetting{
 			InternetConnectionEnabled:       true,
@@ -463,7 +437,7 @@ func initMobileGatewayVariables() {
 		},
 	}
 	updateMobileGatewaySettingsExpected = &sacloud.MobileGateway{
-		Name:         patchMobileGatewayParam.Name,
+		Name:         updateMobileGatewayParam.Name,
 		Description:  updateMobileGatewayParam.Description,
 		Tags:         updateMobileGatewayParam.Tags,
 		Availability: types.Availabilities.Available,
@@ -495,8 +469,6 @@ var (
 	createMobileGatewayExpected         *sacloud.MobileGateway
 	updateMobileGatewayParam            *sacloud.MobileGatewayUpdateRequest
 	updateMobileGatewayExpected         *sacloud.MobileGateway
-	patchMobileGatewayParam             *sacloud.MobileGatewayPatchRequest
-	patchMobileGatewayExpected          *sacloud.MobileGateway
 	updateMobileGatewaySettingsParam    *sacloud.MobileGatewayUpdateSettingsRequest
 	updateMobileGatewaySettingsExpected *sacloud.MobileGateway
 )
@@ -532,11 +504,6 @@ func testMobileGatewayUpdate(ctx *testutil.CRUDTestContext, caller sacloud.APICa
 func testMobileGatewayUpdateSettings(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewMobileGatewayOp(caller)
 	return client.UpdateSettings(ctx, testZone, ctx.ID, updateMobileGatewaySettingsParam)
-}
-
-func testMobileGatewayPatch(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
-	client := sacloud.NewMobileGatewayOp(caller)
-	return client.Patch(ctx, testZone, ctx.ID, patchMobileGatewayParam)
 }
 
 func testMobileGatewayDelete(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {

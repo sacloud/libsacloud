@@ -82,9 +82,6 @@ var cdromAPI = &dsl.Resource{
 		// update
 		ops.Update(cdromAPIName, cdromNakedType, cdromUpdateParam, cdromView),
 
-		// patch
-		ops.Patch(cdromAPIName, cdromNakedType, patchModel(cdromUpdateParam), cdromView),
-
 		// delete
 		ops.Delete(cdromAPIName),
 

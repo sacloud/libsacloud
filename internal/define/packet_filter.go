@@ -44,9 +44,6 @@ var packetFilterAPI = &dsl.Resource{
 		// update
 		ops.Update(packetFilterAPIName, packetFilterNakedType, packetFilterUpdateParam, packetFilterView),
 
-		// update
-		ops.Patch(packetFilterAPIName, packetFilterNakedType, patchModel(packetFilterUpdateParam), packetFilterView),
-
 		// delete
 		ops.Delete(packetFilterAPIName),
 	},

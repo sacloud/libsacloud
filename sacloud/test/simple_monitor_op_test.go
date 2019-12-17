@@ -56,13 +56,6 @@ func TestSimpleMonitorOp_CRUD(t *testing.T) {
 				}),
 			},
 			{
-				Func: testSimpleMonitorPatch,
-				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
-					ExpectValue:  patchSimpleMonitorExpected,
-					IgnoreFields: ignoreSimpleMonitorFields,
-				}),
-			},
-			{
 				Func: testSimpleMonitorUpdateSettings,
 				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 					ExpectValue:  updateSimpleMonitorSettingsExpected,
@@ -166,25 +159,6 @@ var (
 		Availability:       types.Availabilities.Available,
 		IconID:             testIconID,
 	}
-	patchSimpleMonitorParam = &sacloud.SimpleMonitorPatchRequest{
-		DelayLoop: 180,
-	}
-	patchSimpleMonitorExpected = &sacloud.SimpleMonitor{
-		Name:               createSimpleMonitorParam.Target,
-		Description:        updateSimpleMonitorParam.Description,
-		Tags:               updateSimpleMonitorParam.Tags,
-		Target:             createSimpleMonitorParam.Target,
-		DelayLoop:          patchSimpleMonitorParam.DelayLoop,
-		Enabled:            updateSimpleMonitorParam.Enabled,
-		HealthCheck:        updateSimpleMonitorParam.HealthCheck,
-		NotifyEmailEnabled: updateSimpleMonitorParam.NotifyEmailEnabled,
-		NotifyEmailHTML:    updateSimpleMonitorParam.NotifyEmailHTML,
-		NotifySlackEnabled: updateSimpleMonitorParam.NotifySlackEnabled,
-		NotifyInterval:     updateSimpleMonitorParam.NotifyInterval,
-		SlackWebhooksURL:   updateSimpleMonitorParam.SlackWebhooksURL,
-		Availability:       types.Availabilities.Available,
-		IconID:             testIconID,
-	}
 	updateSimpleMonitorSettingsParam = &sacloud.SimpleMonitorUpdateSettingsRequest{
 		DelayLoop: 120,
 		HealthCheck: &sacloud.SimpleMonitorHealthCheck{
@@ -193,7 +167,7 @@ var (
 			Path:              "/index3.html",
 			Status:            types.StringNumber(202),
 			SNI:               types.StringFalse,
-			Host:              "libsacloud-test-patch.usacloud.jp",
+			Host:              "libsacloud-test.usacloud.jp",
 			BasicAuthUsername: "username-upd2",
 			BasicAuthPassword: "password-upd2",
 		},
@@ -258,11 +232,6 @@ func testSimpleMonitorUpdate(ctx *testutil.CRUDTestContext, caller sacloud.APICa
 func testSimpleMonitorUpdateSettings(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewSimpleMonitorOp(caller)
 	return client.UpdateSettings(ctx, ctx.ID, updateSimpleMonitorSettingsParam)
-}
-
-func testSimpleMonitorPatch(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
-	client := sacloud.NewSimpleMonitorOp(caller)
-	return client.Patch(ctx, ctx.ID, patchSimpleMonitorParam)
 }
 
 func testSimpleMonitorUpdateToMin(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {

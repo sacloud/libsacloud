@@ -48,11 +48,6 @@ var simpleMonitorAPI = &dsl.Resource{
 		// updateSettings
 		ops.UpdateCommonServiceItemSettings(simpleMonitorAPIName, simpleMonitorUpdateSettingsNakedType, simpleMonitorUpdateSettingsParam, simpleMonitorView),
 
-		// patch
-		ops.PatchCommonServiceItem(simpleMonitorAPIName, simpleMonitorNakedType, patchModel(simpleMonitorUpdateParam), simpleMonitorView),
-		// patchSettings
-		ops.PatchCommonServiceItemSettings(simpleMonitorAPIName, simpleMonitorUpdateSettingsNakedType, patchModel(simpleMonitorUpdateSettingsParam), simpleMonitorView),
-
 		// delete
 		ops.Delete(simpleMonitorAPIName),
 
