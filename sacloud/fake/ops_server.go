@@ -137,7 +137,7 @@ func (o *ServerOp) Create(ctx context.Context, zone string, param *sacloud.Serve
 	zoneOp := NewZoneOp()
 	zones, _ := zoneOp.Find(ctx, nil)
 	for _, z := range zones.Zones {
-		if z.Name == z.Name {
+		if zone == z.Name {
 			zoneInfo := &sacloud.ZoneInfo{}
 			copySameNameField(z, zoneInfo)
 			result.Zone = zoneInfo

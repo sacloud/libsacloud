@@ -360,7 +360,7 @@ func (b *Builder) Update(ctx context.Context, zone string, id types.ID) (*saclou
 
 	// static route(
 	if len(b.StaticRoutes) > 0 {
-		updated, err := b.Client.MobileGateway.UpdateSettings(ctx, zone, id, &sacloud.MobileGatewayUpdateSettingsRequest{
+		_, err := b.Client.MobileGateway.UpdateSettings(ctx, zone, id, &sacloud.MobileGatewayUpdateSettingsRequest{
 			Settings: &sacloud.MobileGatewaySetting{
 				Interfaces:                      b.getInterfaceSettings(),
 				StaticRoute:                     b.StaticRoutes,
@@ -372,7 +372,6 @@ func (b *Builder) Update(ctx context.Context, zone string, id types.ID) (*saclou
 		if err != nil {
 			return nil, err
 		}
-		mgw = updated
 	}
 
 	// SIMs and SIMRoutes
