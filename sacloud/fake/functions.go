@@ -185,7 +185,7 @@ FILTER_APPLY_LOOP:
 
 func copySameNameField(source interface{}, dest interface{}) {
 	data, _ := json.Marshal(source)
-	json.Unmarshal(data, dest)
+	json.Unmarshal(data, dest) // nolint
 }
 
 func fill(target interface{}, fillFuncs ...func(interface{})) {

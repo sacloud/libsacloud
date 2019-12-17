@@ -159,13 +159,13 @@ func doCleanup(ctx context.Context, targets []*cleanupTarget, errs *multierror.E
 			defer wg.Done()
 			if target.prepareFunc != nil {
 				if err := target.prepareFunc(ctx); err != nil {
-					multierror.Append(errs, err)
+					multierror.Append(errs, err) // nolint
 					return
 				}
 			}
 			if target.deleteFunc != nil {
 				if err := target.deleteFunc(ctx); err != nil {
-					multierror.Append(errs, err)
+					multierror.Append(errs, err) // nolint
 					return
 				}
 			}
@@ -184,7 +184,7 @@ func correctCleanupTargets(ctx context.Context, caller sacloud.APICaller, finder
 
 			res, err := finder(ctx, caller)
 			if err != nil {
-				multierror.Append(errs, err)
+				multierror.Append(errs, err) // nolint
 				return
 			}
 			for _, v := range res {

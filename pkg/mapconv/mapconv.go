@@ -54,7 +54,10 @@ func ConvertTo(source interface{}, dest interface{}) error {
 
 			if tags.Squash {
 				d := Map(make(map[string]interface{}))
-				ConvertTo(value, &d)
+				err := ConvertTo(value, &d)
+				if err != nil {
+					return err
+				}
 				for k, v := range d {
 					destMap.Set(k, v)
 				}

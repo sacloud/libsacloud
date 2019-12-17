@@ -526,9 +526,7 @@ func TestProxyLBOpLetsEncryptAndHealth(t *testing.T) {
 				records = append(records, dns.Records[i])
 			}
 		}
-		dnsOp.Update(ctx, dns.ID, &sacloud.DNSUpdateRequest{
-			Records: records,
-		}) // nolint - ignore error
+		dnsOp.Update(ctx, dns.ID, &sacloud.DNSUpdateRequest{Records: records}) // nolint - ignore error
 	}()
 
 	time.Sleep(time.Minute)

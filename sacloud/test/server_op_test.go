@@ -375,18 +375,25 @@ func TestServerOp_Interfaces(t *testing.T) {
 				serverOp := sacloud.NewServerOp(caller)
 
 				server, _ := serverOp.Read(ctx, testZone, serverID)
-				if server != nil {
-					serverOp.Shutdown(ctx, testZone, server.ID, &sacloud.ShutdownOption{Force: true})
-					sacloud.WaiterForDown(func() (interface{}, error) {
+				if server != nil && server.InstanceStatus.IsUp() {
+					if err := serverOp.Shutdown(ctx, testZone, server.ID, &sacloud.ShutdownOption{Force: true}); err != nil {
+						return err
+					}
+					_, err := sacloud.WaiterForDown(func() (interface{}, error) {
 						return serverOp.Read(ctx, testZone, server.ID)
 					}).WaitForState(ctx)
-					serverOp.Delete(ctx, testZone, server.ID)
+					if err != nil {
+						return err
+					}
 				}
-				sw, _ := switchOp.Read(ctx, testZone, switchID)
+				if err := serverOp.Delete(ctx, testZone, server.ID); err != nil {
+					return err
+				}
+				sw, err := switchOp.Read(ctx, testZone, switchID)
 				if sw != nil {
-					switchOp.Delete(ctx, testZone, sw.ID)
+					return switchOp.Delete(ctx, testZone, sw.ID)
 				}
-				return nil
+				return err
 			},
 		},
 	})
