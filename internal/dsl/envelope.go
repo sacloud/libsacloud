@@ -90,9 +90,7 @@ func RequestEnvelope(descs ...*EnvelopePayloadDesc) *EnvelopeType {
 		Form: PayloadForms.Singular,
 	}
 
-	for _, desc := range descs {
-		ret.Payloads = append(ret.Payloads, desc)
-	}
+	ret.Payloads = append(ret.Payloads, descs...)
 
 	return ret
 }
@@ -111,9 +109,7 @@ func RequestEnvelopeFromModel(model *Model) *EnvelopeType {
 		Form: PayloadForms.Singular,
 	}
 
-	for _, desc := range descs {
-		ret.Payloads = append(ret.Payloads, desc)
-	}
+	ret.Payloads = append(ret.Payloads, descs...)
 
 	return ret
 }

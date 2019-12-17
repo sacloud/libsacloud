@@ -187,9 +187,7 @@ func correctCleanupTargets(ctx context.Context, caller sacloud.APICaller, finder
 				multierror.Append(errs, err) // nolint
 				return
 			}
-			for _, v := range res {
-				targets = append(targets, v)
-			}
+			targets = append(targets, res...)
 		}(finders[i])
 	}
 	wg.Wait()

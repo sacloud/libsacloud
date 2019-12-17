@@ -253,9 +253,7 @@ func (o *SIMOp) GetNetworkOperator(ctx context.Context, id types.ID) ([]*sacloud
 	if v != nil {
 		var res []*sacloud.SIMNetworkOperatorConfig
 		configs := v.(*[]*sacloud.SIMNetworkOperatorConfig)
-		for _, c := range *configs {
-			res = append(res, c)
-		}
+		res = append(res, *configs...)
 		return res, nil
 	}
 

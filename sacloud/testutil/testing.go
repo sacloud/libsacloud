@@ -171,9 +171,7 @@ func (c *CRUDTestExpect) Prepare(actual interface{}) (interface{}, interface{}) 
 			log.Fatalf("prepare is failed: json.Unmarshal returned error: %s", err)
 		}
 		for _, key := range c.IgnoreFields {
-			if _, ok := m[key]; ok {
-				delete(m, key)
-			}
+			delete(m, key)
 		}
 		return m
 	}

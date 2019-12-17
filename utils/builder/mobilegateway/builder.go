@@ -471,10 +471,7 @@ func (b *Builder) collectUpdateInfo(mgw *sacloud.MobileGateway) (isNeedShutdown 
 
 func (b *Builder) isPrivateInterfaceChanged(mgw *sacloud.MobileGateway) bool {
 	current := b.currentPrivateInterfaceState(mgw)
-	if !reflect.DeepEqual(current, b.PrivateInterface) {
-		return true
-	}
-	return false
+	return !reflect.DeepEqual(current, b.PrivateInterface)
 }
 
 func (b *Builder) currentPrivateInterfaceState(mgw *sacloud.MobileGateway) *PrivateInterfaceSetting {

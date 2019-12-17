@@ -341,9 +341,7 @@ func (o *MobileGatewayOp) GetSIMRoutes(ctx context.Context, zone string, id type
 
 	rs := routes.(*[]*sacloud.MobileGatewaySIMRoute)
 	var res []*sacloud.MobileGatewaySIMRoute
-	for _, r := range *rs {
-		res = append(res, r)
-	}
+	res = append(res, *rs...)
 	return res, nil
 }
 
@@ -386,9 +384,7 @@ func (o *MobileGatewayOp) ListSIM(ctx context.Context, zone string, id types.ID)
 
 	ss := sims.(*[]*sacloud.MobileGatewaySIMInfo)
 	var res []*sacloud.MobileGatewaySIMInfo
-	for _, info := range *ss {
-		res = append(res, info)
-	}
+	res = append(res, *ss...)
 	return res, nil
 }
 
