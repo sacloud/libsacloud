@@ -42,7 +42,6 @@ func ResourceName(name string) string {
 	return fmt.Sprintf("%s%s", TestResourcePrefix, name)
 }
 
-var testZone string
 var apiCaller *sacloud.Client
 var httpTrace bool
 
@@ -51,7 +50,6 @@ var accTestMu sync.Mutex
 
 // SingletonAPICaller 環境変数からシングルトンAPICallerを作成する
 func SingletonAPICaller() *sacloud.Client {
-
 	accTestMu.Lock()
 	defer accTestMu.Unlock()
 	accTestOnce.Do(func() {
@@ -160,13 +158,13 @@ func doCleanup(ctx context.Context, targets []*cleanupTarget, errs *multierror.E
 			defer wg.Done()
 			if target.prepareFunc != nil {
 				if err := target.prepareFunc(ctx); err != nil {
-					multierror.Append(errs, err)
+					multierror.Append(errs, err) // nolint
 					return
 				}
 			}
 			if target.deleteFunc != nil {
 				if err := target.deleteFunc(ctx); err != nil {
-					multierror.Append(errs, err)
+					multierror.Append(errs, err) // nolint
 					return
 				}
 			}
@@ -185,12 +183,10 @@ func correctCleanupTargets(ctx context.Context, caller sacloud.APICaller, finder
 
 			res, err := finder(ctx, caller)
 			if err != nil {
-				multierror.Append(errs, err)
+				multierror.Append(errs, err) // nolint
 				return
 			}
-			for _, v := range res {
-				targets = append(targets, v)
-			}
+			targets = append(targets, res...)
 		}(finders[i])
 	}
 	wg.Wait()

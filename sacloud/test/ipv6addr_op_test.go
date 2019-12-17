@@ -28,7 +28,6 @@ import (
 //
 // Note: IDが特殊(数値でなくIPv6アドレス)なため、CRUDTestCaseを利用しない
 func TestIPv6AddrOp_CRUD(t *testing.T) {
-
 	t.Parallel()
 
 	testutil.PreCheckEnvsFunc("SAKURACLOUD_IPV6ADDRESS", "SAKURACLOUD_IPV6HOSTNAME")(t)

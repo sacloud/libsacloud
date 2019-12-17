@@ -25,7 +25,6 @@ import (
 )
 
 func Example() {
-
 	// API Keys
 	token := os.Getenv("SAKURACLOUD_ACCESS_TOKEN")
 	secret := os.Getenv("SAKURACLOUD_ACCESS_TOKEN_SECRET")

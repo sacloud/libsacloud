@@ -22,7 +22,6 @@ import (
 )
 
 func TestTags_SortWhenUnmarshal(t *testing.T) {
-
 	cases := []struct {
 		input  string
 		output Tags
@@ -42,7 +41,6 @@ func TestTags_SortWhenUnmarshal(t *testing.T) {
 }
 
 func TestTags_SortWhenMarshal(t *testing.T) {
-
 	cases := []struct {
 		input  Tags
 		output string

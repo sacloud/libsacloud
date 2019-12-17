@@ -289,16 +289,6 @@ func (f *fieldsDef) PlanName() *dsl.FieldDesc {
 	}
 }
 
-func (f *fieldsDef) stringEnabled() *dsl.FieldDesc {
-	return &dsl.FieldDesc{
-		Name: "Enabled",
-		Tags: &dsl.FieldTags{
-			MapConv: ",omitempty",
-		},
-		Type: meta.TypeStringFlag,
-	}
-}
-
 func (f *fieldsDef) IconURL() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "URL",

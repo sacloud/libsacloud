@@ -22,7 +22,6 @@ import (
 )
 
 func TestMap_Set(t *testing.T) {
-
 	expects := []struct {
 		caseName string
 		source   map[string]interface{}
@@ -168,7 +167,6 @@ func TestMap_Set(t *testing.T) {
 }
 
 func TestMap_Get(t *testing.T) {
-
 	expects := []struct {
 		caseName  string
 		keyValues map[string]interface{}

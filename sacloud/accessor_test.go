@@ -21,7 +21,6 @@ import (
 )
 
 func TestAccessor(t *testing.T) {
-
 	var v interface{}
 
 	v = &Archive{}

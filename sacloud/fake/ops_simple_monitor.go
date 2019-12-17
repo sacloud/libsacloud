@@ -219,5 +219,4 @@ func (o *SimpleMonitorOp) HealthStatus(ctx context.Context, id types.ID) (*saclo
 		LastHealthChangedAt: time.Now(),
 		Health:              types.SimpleMonitorHealth.Up,
 	}, nil
-
 }

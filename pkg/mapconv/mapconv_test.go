@@ -42,11 +42,10 @@ type dummyTo struct {
 			}
 		}
 	}
-	Pointer    *time.Time
-	Slice      []string
-	NoTag      string
-	Bool       bool
-	unexported string
+	Pointer *time.Time
+	Slice   []string
+	NoTag   string
+	Bool    bool
 }
 
 func TestConvertTo(t *testing.T) {
@@ -111,11 +110,9 @@ func TestConvertTo(t *testing.T) {
 			require.EqualValues(t, tt.output.NoTag, output.NoTag)
 		}
 	}
-
 }
 
 func TestConvertFrom(t *testing.T) {
-
 	tests := []struct {
 		output *dummyFrom
 		input  *dummyTo
@@ -168,7 +165,6 @@ func TestConvertFrom(t *testing.T) {
 			require.Equal(t, tt.output, output)
 		}
 	}
-
 }
 
 type dummySlice struct {

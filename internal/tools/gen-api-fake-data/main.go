@@ -28,8 +28,6 @@ import (
 	"github.com/sacloud/libsacloud/v2/utils/query"
 )
 
-const destination = "sacloud/fake/zz_init_archive.go"
-
 func init() {
 	log.SetFlags(0)
 	log.SetPrefix("gen-api-fake-data: ")
@@ -62,7 +60,6 @@ func main() {
 		})
 		log.Printf("generated: %s\n", filepath.Join(generator.destination))
 	}
-
 }
 
 func collectArchives() interface{} {

@@ -72,7 +72,6 @@ func TestWebAccelOp_Find(t *testing.T) {
 }
 
 func TestWebAccelOp_Cert(t *testing.T) {
-
 	if !isAccTest() {
 		t.Skip("TestWebAccelOp_Cert only exec at Acceptance Test")
 	}
@@ -106,7 +105,7 @@ func TestWebAccelOp_Cert(t *testing.T) {
 	keyUpd := os.Getenv("SAKURACLOUD_WEBACCEL_KEY_UPD")
 
 	// create certs
-	certs, err := client.CreateCertificate(ctx, id, &sacloud.WebAccelCertRequest{
+	_, err = client.CreateCertificate(ctx, id, &sacloud.WebAccelCertRequest{
 		CertificateChain: crt,
 		Key:              key,
 	})
@@ -115,7 +114,7 @@ func TestWebAccelOp_Cert(t *testing.T) {
 	}
 
 	// update certs
-	certs, err = client.UpdateCertificate(ctx, id, &sacloud.WebAccelCertRequest{
+	certs, err := client.UpdateCertificate(ctx, id, &sacloud.WebAccelCertRequest{
 		CertificateChain: crtUpd,
 		Key:              keyUpd,
 	})

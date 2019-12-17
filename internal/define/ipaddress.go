@@ -129,12 +129,4 @@ var (
 			// Note: InterfaceとSubnetはIDにのみ対応。その他のフィールドは今後必要になったら対応を検討する。
 		},
 	}
-
-	ipUpdateParam = &dsl.Model{
-		Name:      names.UpdateParameterName(ipAPIName),
-		NakedType: ipNakedType,
-		Fields: []*dsl.FieldDesc{
-			fields.UserIPAddress(),
-		},
-	}
 )

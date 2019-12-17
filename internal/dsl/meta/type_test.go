@@ -23,7 +23,6 @@ import (
 )
 
 func TestStaticType_TypeImplements(t *testing.T) {
-
 	expects := []struct {
 		caseName                 string
 		instance                 interface{}
@@ -137,5 +136,4 @@ func TestStaticType_TypeImplements(t *testing.T) {
 			require.Equal(t, expect.zeroValueSourceCode, tp.ZeroValueSourceCode())
 		})
 	}
-
 }

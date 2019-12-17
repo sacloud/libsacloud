@@ -32,7 +32,6 @@ func patchModel(updateModel *dsl.Model) *dsl.Model {
 
 	var fields []*dsl.FieldDesc
 	for _, f := range updateModel.Fields {
-
 		fields = append(fields, f)
 		if f.IsNeedPatchEmpty() {
 			fields = append(fields, &dsl.FieldDesc{

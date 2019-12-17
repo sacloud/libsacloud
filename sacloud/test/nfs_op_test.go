@@ -29,12 +29,15 @@ func TestNFSOp_CRUD(t *testing.T) {
 
 		SetupAPICallerFunc: singletonAPICaller,
 		Setup: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {
-			setupSwitchFunc("nfs",
+			err := setupSwitchFunc("nfs",
 				createNFSParam,
 				createNFSExpected,
 				updateNFSExpected,
 				updateNFSToMinExpected,
 			)(ctx, caller)
+			if err != nil {
+				return err
+			}
 
 			// find plan id
 			planID, err := query.FindNFSPlanID(ctx, sacloud.NewNoteOp(caller), types.NFSPlans.HDD, types.NFSHDDSizes.Size100GB)

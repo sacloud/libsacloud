@@ -38,18 +38,6 @@ func (f *dummyPlanFinder) Find(ctx context.Context, zone string, conditions *sac
 	}, nil
 }
 
-type dummySwitchReader struct {
-	sw  *sacloud.Switch
-	err error
-}
-
-func (d *dummySwitchReader) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Switch, error) {
-	if d.err != nil {
-		return nil, d.err
-	}
-	return d.sw, nil
-}
-
 type dummyInterfaceHandler struct {
 	iface *sacloud.Interface
 	err   error
@@ -84,18 +72,6 @@ func (d *dummyInterfaceHandler) ConnectToPacketFilter(ctx context.Context, zone 
 }
 func (d *dummyInterfaceHandler) DisconnectFromPacketFilter(ctx context.Context, zone string, id types.ID) error {
 	return d.err
-}
-
-type dummyPacketFilterReader struct {
-	packetFilter *sacloud.PacketFilter
-	err          error
-}
-
-func (d *dummyPacketFilterReader) Read(ctx context.Context, zone string, id types.ID) (*sacloud.PacketFilter, error) {
-	if d.err != nil {
-		return nil, d.err
-	}
-	return d.packetFilter, nil
 }
 
 type dummyCreateServerHandler struct {

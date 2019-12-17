@@ -32,7 +32,9 @@ func TestMain(m *testing.M) {
 
 	skipCleanup := os.Getenv("SKIP_CLEANUP")
 	if skipCleanup == "" {
-		testutil.CleanupTestResources(context.TODO(), singletonAPICaller(), testutil.TestResourcePrefix)
+		if err := testutil.CleanupTestResources(context.Background(), singletonAPICaller(), testutil.TestResourcePrefix); err != nil {
+			panic(err)
+		}
 	}
 
 	os.Exit(ret)

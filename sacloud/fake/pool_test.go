@@ -21,7 +21,6 @@ import (
 )
 
 func TestNextSubnet(t *testing.T) {
-
 	DataStore = NewInMemoryStore()
 
 	first := pool().nextSubnet(24)
@@ -37,5 +36,4 @@ func TestNextSubnet(t *testing.T) {
 	require.Len(t, next.addresses, 251)
 	require.Equal(t, "24.0.2.4", next.addresses[0])
 	require.Equal(t, "24.0.2.254", next.addresses[len(next.addresses)-1])
-
 }

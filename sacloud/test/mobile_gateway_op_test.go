@@ -24,7 +24,6 @@ import (
 )
 
 func TestMobileGatewayOpCRUD(t *testing.T) {
-
 	testutil.PreCheckEnvsFunc("SAKURACLOUD_SIM_ICCID", "SAKURACLOUD_SIM_PASSCODE")(t)
 
 	initMobileGatewayVariables()
@@ -397,7 +396,6 @@ func TestMobileGatewayOpCRUD(t *testing.T) {
 }
 
 func initMobileGatewayVariables() {
-
 	iccid = os.Getenv("SAKURACLOUD_SIM_ICCID")
 	passcode = os.Getenv("SAKURACLOUD_SIM_PASSCODE")
 

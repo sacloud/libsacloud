@@ -155,7 +155,6 @@ func testDiskDelete(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) err
 }
 
 func TestDiskOp_Config(t *testing.T) {
-
 	// source archive
 	var archiveID types.ID
 
@@ -239,5 +238,4 @@ func TestDiskOp_Config(t *testing.T) {
 			Func: testDiskDelete,
 		},
 	})
-
 }
