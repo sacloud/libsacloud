@@ -42,7 +42,6 @@ func ResourceName(name string) string {
 	return fmt.Sprintf("%s%s", TestResourcePrefix, name)
 }
 
-var testZone string
 var apiCaller *sacloud.Client
 var httpTrace bool
 

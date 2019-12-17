@@ -42,11 +42,10 @@ type dummyTo struct {
 			}
 		}
 	}
-	Pointer    *time.Time
-	Slice      []string
-	NoTag      string
-	Bool       bool
-	unexported string
+	Pointer *time.Time
+	Slice   []string
+	NoTag   string
+	Bool    bool
 }
 
 func TestConvertTo(t *testing.T) {
