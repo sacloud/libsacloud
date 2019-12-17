@@ -227,7 +227,7 @@ func (w *StatePollingWaiter) AsyncWaitForState(ctx context.Context) (compCh <-ch
 	compCh = compChan
 	progressCh = progChan
 	errorCh = errChan
-	return
+	return compCh, progressCh, errorCh
 }
 
 func (w *StatePollingWaiter) handleState(state interface{}) (bool, error) {
