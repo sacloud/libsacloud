@@ -51,7 +51,6 @@ type JSONFileStoreData map[string]map[string]interface{}
 
 // MarshalJSON .
 func (d JSONFileStoreData) MarshalJSON() ([]byte, error) {
-
 	var transformed []map[string]interface{}
 	for cacheKey, resources := range d {
 		resourceKey, zone := d.parseKey(cacheKey)

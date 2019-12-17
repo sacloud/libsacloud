@@ -178,7 +178,6 @@ func (c *Client) Do(ctx context.Context, method, uri string, body interface{}) (
 			return nil, fmt.Errorf("error in response: %s", string(data))
 		}
 		return nil, NewAPIError(req.Method, req.URL, strBody, resp.StatusCode, errResponse)
-
 	}
 
 	return data, nil
@@ -227,7 +226,6 @@ func (c *retryableHTTPClient) Do(req *request) (*http.Response, error) {
 		c.Client = http.DefaultClient
 	}
 	for i := 0; ; i++ {
-
 		if req.body != nil {
 			if _, err := req.body.Seek(0, 0); err != nil {
 				return nil, fmt.Errorf("failed to seek body: %v", err)

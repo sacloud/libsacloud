@@ -50,7 +50,6 @@ var accTestMu sync.Mutex
 
 // SingletonAPICaller 環境変数からシングルトンAPICallerを作成する
 func SingletonAPICaller() *sacloud.Client {
-
 	accTestMu.Lock()
 	defer accTestMu.Unlock()
 	accTestOnce.Do(func() {

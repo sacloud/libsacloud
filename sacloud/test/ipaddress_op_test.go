@@ -62,5 +62,4 @@ func TestIPAddressOp_UpdateHostName(t *testing.T) {
 	updated, err = client.UpdateHostName(context.Background(), testZone, ip, "")
 	assert.NoError(t, err)
 	assert.Empty(t, updated.HostName, hostName)
-
 }

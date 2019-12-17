@@ -133,7 +133,6 @@ FILTER_APPLY_LOOP:
 								}
 							}
 						}
-
 					} else {
 						var value interface{}
 						switch fieldName {

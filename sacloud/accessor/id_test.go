@@ -63,5 +63,4 @@ func TestIDAccessor(t *testing.T) {
 
 		require.Equal(t, tc.expect, target.GetID())
 	}
-
 }

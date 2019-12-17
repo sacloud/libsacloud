@@ -62,7 +62,6 @@ func (m *modelsDef) ftpServerInfo() *dsl.Model {
 }
 
 func (m *modelsDef) diskEdit() *dsl.Model {
-
 	sshKeyFields := []*dsl.FieldDesc{
 		{
 			Name: "ID",

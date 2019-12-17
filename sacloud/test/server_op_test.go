@@ -297,7 +297,6 @@ func TestServerOp_ChangePlan(t *testing.T) {
 						CPU:      2,
 						MemoryMB: 4 * 1024,
 					})
-
 				},
 				CheckFunc: func(t testutil.TestT, ctx *testutil.CRUDTestContext, v interface{}) error {
 					newServer := v.(*sacloud.Server)

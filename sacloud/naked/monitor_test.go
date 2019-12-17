@@ -217,7 +217,6 @@ const (
 )
 
 func TestMonitorValues_UnmarshalJSON(t *testing.T) {
-
 	expects := []struct {
 		input  string
 		expect MonitorValues
@@ -437,5 +436,4 @@ func TestMonitorValues_UnmarshalJSON(t *testing.T) {
 		require.NoError(t, err)
 		require.Equal(t, tc.expect, dest)
 	}
-
 }

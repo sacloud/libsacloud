@@ -108,7 +108,6 @@ func TestBuilder_Build(t *testing.T) {
 			return swOp.Delete(ctx, testZone, switchID)
 		},
 	})
-
 }
 
 func TestBuilder_BuildWithRouter(t *testing.T) {
@@ -321,5 +320,4 @@ func TestBuilder_BuildWithRouter(t *testing.T) {
 			},
 		},
 	})
-
 }

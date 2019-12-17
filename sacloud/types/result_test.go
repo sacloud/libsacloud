@@ -22,7 +22,6 @@ import (
 )
 
 func TestResult_UnmarshalJSON(t *testing.T) {
-
 	expects := []struct {
 		input    string
 		expect   APIResult
@@ -66,5 +65,4 @@ func TestResult_UnmarshalJSON(t *testing.T) {
 		}
 		require.Equal(t, tc.expect, res)
 	}
-
 }

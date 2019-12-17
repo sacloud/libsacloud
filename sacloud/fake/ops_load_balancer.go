@@ -281,5 +281,4 @@ func (o *LoadBalancerOp) Status(ctx context.Context, zone string, id types.ID) (
 	return &sacloud.LoadBalancerStatusResult{
 		Status: results,
 	}, nil
-
 }

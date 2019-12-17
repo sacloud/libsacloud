@@ -50,12 +50,10 @@ func (d *dummyAvailabilityAccessor) SetAvailability(a types.EAvailability) {
 }
 
 func TestRetryableSetup_Setup(t *testing.T) {
-
 	ctx := context.Background()
 	zone := "tk1v"
 
 	t.Run("create", func(t *testing.T) {
-
 		t.Run("no error", func(t *testing.T) {
 			retryable := &RetryableSetup{
 				Create: func(context.Context, string) (id accessor.ID, e error) {
@@ -93,11 +91,9 @@ func TestRetryableSetup_Setup(t *testing.T) {
 			require.Nil(t, res)
 			require.Error(t, err)
 		})
-
 	})
 	//
 	t.Run("Retry", func(t *testing.T) {
-
 		t.Run("retry under max count", func(t *testing.T) {
 			// リトライ3回、ReadFuncは3回呼ばれるまではFailedが返る(4回目以降はAvailable)
 			retryable := &RetryableSetup{
@@ -121,7 +117,6 @@ func TestRetryableSetup_Setup(t *testing.T) {
 
 			require.NotNil(t, res)
 			require.NoError(t, err)
-
 		})
 
 		t.Run("max retry count exceeded", func(t *testing.T) {
@@ -149,7 +144,6 @@ func TestRetryableSetup_Setup(t *testing.T) {
 			_, ok := err.(MaxRetryCountExceededError)
 			require.True(t, ok)
 		})
-
 	})
 }
 

@@ -72,7 +72,6 @@ func TestWebAccelOp_Find(t *testing.T) {
 }
 
 func TestWebAccelOp_Cert(t *testing.T) {
-
 	if !isAccTest() {
 		t.Skip("TestWebAccelOp_Cert only exec at Acceptance Test")
 	}

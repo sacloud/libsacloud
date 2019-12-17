@@ -23,7 +23,6 @@ import (
 )
 
 func TestResource_LowerName(t *testing.T) {
-
 	expects := []struct {
 		resourceName string
 		lowerName    string
@@ -56,11 +55,9 @@ func TestResource_LowerName(t *testing.T) {
 		}
 		require.Equal(t, expect.lowerName, r.FileSafeName())
 	}
-
 }
 
 func TestResource_ImportStatements(t *testing.T) {
-
 	var emptyList []string
 
 	expects := []struct {

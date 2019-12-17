@@ -138,7 +138,6 @@ func (w *StatePollingWaiter) validateFields() {
 }
 
 func (w *StatePollingWaiter) defaults() {
-
 	if w.Timeout == time.Duration(0) {
 		w.Timeout = DefaultStatePollingTimeout
 	}
@@ -166,7 +165,6 @@ func (w *StatePollingWaiter) WaitForState(ctx context.Context) (interface{}, err
 
 // AsyncWaitForState リソースが指定の状態になるまで待つ
 func (w *StatePollingWaiter) AsyncWaitForState(ctx context.Context) (compCh <-chan interface{}, progressCh <-chan interface{}, errorCh <-chan error) {
-
 	w.validateFields()
 	w.defaults()
 

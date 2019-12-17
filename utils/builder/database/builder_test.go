@@ -119,5 +119,4 @@ func TestBuilder_Build(t *testing.T) {
 			return swOp.Delete(ctx, testZone, switchID)
 		},
 	})
-
 }

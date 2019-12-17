@@ -153,7 +153,6 @@ func TestVPCRouterFirewall_UnmarshalJSON(t *testing.T) {
 	for i, v := range firewallConfig.Config {
 		require.Equal(t, i, v.Index)
 	}
-
 }
 
 func TestVPCRouterFirewall_MarshalJSON(t *testing.T) {

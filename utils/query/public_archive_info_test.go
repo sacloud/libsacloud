@@ -25,7 +25,6 @@ import (
 )
 
 func TestCanEditDisk(t *testing.T) {
-
 	cases := []struct {
 		msg            string
 		id             types.ID
@@ -210,5 +209,4 @@ func TestCanEditDisk(t *testing.T) {
 		}
 		require.Equal(t, tc.expectedResult, res, tc.msg)
 	}
-
 }

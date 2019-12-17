@@ -22,7 +22,6 @@ import (
 )
 
 func TestStringNumber(t *testing.T) {
-
 	expects := []struct {
 		input  string
 		expect StringNumber
@@ -41,5 +40,4 @@ func TestStringNumber(t *testing.T) {
 		require.NoError(t, err, "expect: %#v", tc)
 		require.Equal(t, tc.expect, n)
 	}
-
 }

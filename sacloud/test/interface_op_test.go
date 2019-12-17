@@ -24,7 +24,6 @@ import (
 )
 
 func TestInterface_Operations(t *testing.T) {
-
 	testutil.Run(t, &testutil.CRUDTestCase{
 		Parallel:          true,
 		IgnoreStartupWait: true,
@@ -90,7 +89,6 @@ func TestInterface_Operations(t *testing.T) {
 			return serverClient.Delete(ctx, testZone, serverID.(types.ID))
 		},
 	})
-
 }
 
 var (

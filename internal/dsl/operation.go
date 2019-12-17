@@ -192,7 +192,6 @@ func (o *Operation) ResultTypeName() string {
 		return o.resultType().GoType()
 	}
 	return firstRuneToLower(o.resultType().GoType())
-
 }
 
 // HasResults 戻り値が定義されているかを取得
@@ -242,7 +241,6 @@ func (o *Operation) Models() Models {
 			ms = append(ms, m)
 			ms = append(ms, m.FieldModels()...)
 		}
-
 	}
 	return ms.UniqByName()
 }

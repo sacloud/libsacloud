@@ -60,7 +60,6 @@ func main() {
 		})
 		log.Printf("generated: %s\n", filepath.Join(generator.destination))
 	}
-
 }
 
 func collectArchives() interface{} {

@@ -23,7 +23,6 @@ import (
 )
 
 func TestInterface_UnmarshalJSON(t *testing.T) {
-
 	cases := []struct {
 		in  string
 		out types.EUpstreamNetworkType
@@ -52,5 +51,4 @@ func TestInterface_UnmarshalJSON(t *testing.T) {
 		require.NoError(t, err)
 		require.Equal(t, tc.out.String(), iface.UpstreamType.String())
 	}
-
 }

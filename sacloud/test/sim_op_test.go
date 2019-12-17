@@ -26,7 +26,6 @@ import (
 )
 
 func TestSIMOpCRUD(t *testing.T) {
-
 	testutil.PreCheckEnvsFunc("SAKURACLOUD_SIM_ICCID", "SAKURACLOUD_SIM_PASSCODE")(t)
 
 	initSIMVariables()
@@ -175,11 +174,9 @@ func TestSIMOp_Logs(t *testing.T) {
 	logs, err := client.Logs(context.Background(), id)
 	assert.NoError(t, err)
 	assert.NotEmpty(t, logs)
-
 }
 
 func initSIMVariables() {
-
 	iccid := os.Getenv("SAKURACLOUD_SIM_ICCID")
 	passcode := os.Getenv("SAKURACLOUD_SIM_PASSCODE")
 

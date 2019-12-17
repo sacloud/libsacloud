@@ -157,5 +157,4 @@ func TestServer_BandWidthAt(t *testing.T) {
 		actual := tc.in.BandWidthAt(tc.index)
 		require.Equal(t, tc.expect, actual, tc.msg)
 	}
-
 }

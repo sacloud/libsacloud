@@ -168,7 +168,6 @@ func ConvertFrom(source interface{}, dest interface{}) error {
 
 			destMap.Set(f.Name(), value)
 		}
-
 	}
 	config := &mapstructure.DecoderConfig{
 		WeaklyTypedInput: true,
@@ -224,7 +223,6 @@ func ParseMapConvTag(tagBody string) TagInfo {
 				defaultValue = strings.Join(keyValue[1:], "")
 			}
 		}
-
 	}
 	return TagInfo{
 		SourceFields: keys,

@@ -28,7 +28,6 @@ type inputKeyValue struct {
 }
 
 func TestFilter(t *testing.T) {
-
 	loc := time.FixedZone("Asia/Tokyo", 9*60*60)
 
 	cases := []struct {
@@ -133,5 +132,4 @@ func TestFilter(t *testing.T) {
 		require.NoError(t, err)
 		require.Equal(t, tc.expect, string(data))
 	}
-
 }

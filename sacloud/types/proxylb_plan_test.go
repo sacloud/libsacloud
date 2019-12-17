@@ -22,7 +22,6 @@ import (
 )
 
 func TestProxyLBPlan(t *testing.T) {
-
 	expects := []struct {
 		strPlan    string
 		actualPlan EProxyLBPlan
@@ -44,5 +43,4 @@ func TestProxyLBPlan(t *testing.T) {
 		require.NoError(t, err, "expect: %#v", tc)
 		require.Equal(t, tc.strPlan, string(data), "expect: %#v", tc)
 	}
-
 }

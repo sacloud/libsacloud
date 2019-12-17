@@ -26,7 +26,6 @@ import (
 )
 
 func TestFindNFSPlanID(t *testing.T) {
-
 	cases := []struct {
 		msg             string
 		finder          NoteFinder
@@ -98,7 +97,6 @@ func TestFindNFSPlanID(t *testing.T) {
 }
 
 func TestGetPlanInfo(t *testing.T) {
-
 	cases := []struct {
 		msg           string
 		finder        NoteFinder
