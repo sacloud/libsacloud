@@ -244,7 +244,7 @@ func (o *Operation) Models() Models {
 		}
 
 	}
-	return Models(ms).UniqByName()
+	return ms.UniqByName()
 }
 
 // HasRequestEnvelope リクエストエンベロープが設定されているか
