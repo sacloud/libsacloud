@@ -68,8 +68,6 @@ type Client struct {
 	AccessToken string `validate:"required"`
 	// AccessTokenSecret アクセストークンシークレット
 	AccessTokenSecret string `validate:"required"`
-	// DefaultTimeoutDuration デフォルトタイムアウト間隔
-	DefaultTimeoutDuration time.Duration
 	// ユーザーエージェント
 	UserAgent string
 	// Accept-Language
@@ -85,13 +83,12 @@ type Client struct {
 // NewClient APIクライアント作成
 func NewClient(token, secret string) *Client {
 	c := &Client{
-		AccessToken:            token,
-		AccessTokenSecret:      secret,
-		DefaultTimeoutDuration: APIDefaultTimeoutDuration,
-		UserAgent:              APIDefaultUserAgent,
-		AcceptLanguage:         APIDefaultAcceptLanguage,
-		RetryMax:               APIDefaultRetryMax,
-		RetryInterval:          APIDefaultRetryInterval,
+		AccessToken:       token,
+		AccessTokenSecret: secret,
+		UserAgent:         APIDefaultUserAgent,
+		AcceptLanguage:    APIDefaultAcceptLanguage,
+		RetryMax:          APIDefaultRetryMax,
+		RetryInterval:     APIDefaultRetryInterval,
 	}
 	return c
 }

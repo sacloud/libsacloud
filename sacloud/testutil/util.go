@@ -79,7 +79,6 @@ func SingletonAPICaller() *sacloud.Client {
 			os.Exit(0) // exit normal
 		}
 		client := sacloud.NewClient(accessToken, accessTokenSecret)
-		client.DefaultTimeoutDuration = 30 * time.Minute
 		client.UserAgent = fmt.Sprintf("test-libsacloud/%s", libsacloud.Version)
 		client.AcceptLanguage = "en-US,en;q=0.9"
 
