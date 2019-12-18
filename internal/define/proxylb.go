@@ -284,11 +284,19 @@ var (
 		Name:      proxyLBAPIName + "Certificates",
 		NakedType: meta.Static(naked.ProxyLBCertificates{}),
 		Fields: []*dsl.FieldDesc{
-			fields.Def("ServerCertificate", meta.TypeString),
-			fields.Def("IntermediateCertificate", meta.TypeString),
-			fields.Def("PrivateKey", meta.TypeString),
-			fields.Def("CertificateEndDate", meta.TypeTime),
-			fields.Def("CertificateCommonName", meta.TypeString),
+			{
+				Name: "PrimaryCert",
+				Type: &dsl.Model{
+					Name: proxyLBAPIName + "PrimaryCert",
+					Fields: []*dsl.FieldDesc{
+						fields.Def("ServerCertificate", meta.TypeString),
+						fields.Def("IntermediateCertificate", meta.TypeString),
+						fields.Def("PrivateKey", meta.TypeString),
+						fields.Def("CertificateEndDate", meta.TypeTime),
+						fields.Def("CertificateCommonName", meta.TypeString),
+					},
+				},
+			},
 			{
 				Name: "AdditionalCerts",
 				Type: &dsl.Model{
@@ -313,9 +321,17 @@ var (
 		Name:      proxyLBAPIName + "SetCertificatesRequest",
 		NakedType: meta.Static(naked.ProxyLBCertificates{}),
 		Fields: []*dsl.FieldDesc{
-			fields.Def("ServerCertificate", meta.TypeString),
-			fields.Def("IntermediateCertificate", meta.TypeString),
-			fields.Def("PrivateKey", meta.TypeString),
+			{
+				Name: "PrimaryCerts",
+				Type: &dsl.Model{
+					Name: proxyLBAPIName + "PrimaryCert",
+					Fields: []*dsl.FieldDesc{
+						fields.Def("ServerCertificate", meta.TypeString),
+						fields.Def("IntermediateCertificate", meta.TypeString),
+						fields.Def("PrivateKey", meta.TypeString),
+					},
+				},
+			},
 			{
 				Name: "AdditionalCerts",
 				Type: &dsl.Model{
