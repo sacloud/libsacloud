@@ -565,11 +565,12 @@ func TestProxyLBOpLetsEncryptAndHealth(t *testing.T) {
 	if !assert.NoError(t, err) {
 		return
 	}
-	assert.NotEmpty(t, certs.ServerCertificate)
-	assert.NotEmpty(t, certs.IntermediateCertificate)
-	assert.NotEmpty(t, certs.PrivateKey)
-	assert.NotEmpty(t, certs.CertificateCommonName)
-	assert.NotEmpty(t, certs.CertificateEndDate)
+	assert.NotNil(t, certs.PrimaryCert)
+	assert.NotEmpty(t, certs.PrimaryCert.ServerCertificate)
+	assert.NotEmpty(t, certs.PrimaryCert.IntermediateCertificate)
+	assert.NotEmpty(t, certs.PrimaryCert.PrivateKey)
+	assert.NotEmpty(t, certs.PrimaryCert.CertificateCommonName)
+	assert.NotEmpty(t, certs.PrimaryCert.CertificateEndDate)
 
 	// check health status
 	status, err := proxyLBOp.HealthStatus(ctx, proxyLB.ID)
