@@ -51,14 +51,8 @@ const (
 	K3OS
 	// Kusanagi OS種別:Kusanagi(CentOS)
 	Kusanagi
-	// SophosUTM OS種別:Sophos UTM
-	SophosUTM
 	// FreeBSD OS種別:FreeBSD
 	FreeBSD
-	// Netwiser OS種別: Netwiser Virtual Edition
-	Netwiser
-	// OPNsense OS種別: OPNsense
-	OPNsense
 	// Windows2016 OS種別:Windows Server 2016 Datacenter Edition
 	Windows2016
 	// Windows2016RDS OS種別:Windows Server 2016 RDS
@@ -95,10 +89,7 @@ var ArchiveOSTypes = []ArchiveOSType{
 	RancherOS,
 	K3OS,
 	Kusanagi,
-	SophosUTM,
 	FreeBSD,
-	Netwiser,
-	OPNsense,
 	Windows2016,
 	Windows2016RDS,
 	Windows2016RDSOffice,
@@ -115,8 +106,7 @@ var OSTypeShortNames = []string{
 	"centos", "centos8", "centos7", "centos6",
 	"ubuntu", "ubuntu1804", "ubuntu1604",
 	"debian", "debian10", "debian9",
-	"coreos", "rancheros", "k3os", "kusanagi", "sophos-utm", "freebsd",
-	"netwiser", "opnsense",
+	"coreos", "rancheros", "k3os", "kusanagi", "freebsd",
 	"windows2016", "windows2016-rds", "windows2016-rds-office",
 	"windows2016-sql-web", "windows2016-sql-standard", "windows2016-sql-standard-all",
 	"windows2016-sql2017-standard", "windows2016-sql2017-standard-all",
@@ -180,14 +170,8 @@ func StrToOSType(osType string) ArchiveOSType {
 		return K3OS
 	case "kusanagi":
 		return Kusanagi
-	case "sophos-utm":
-		return SophosUTM
 	case "freebsd":
 		return FreeBSD
-	case "netwiser":
-		return Netwiser
-	case "opnsense":
-		return OPNsense
 	case "windows2016":
 		return Windows2016
 	case "windows2016-rds":
