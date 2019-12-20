@@ -81,7 +81,6 @@ func SingletonAPICaller() *sacloud.Client {
 		client.AcceptLanguage = "en-US,en;q=0.9"
 
 		client.RetryMax = 20
-		client.RetryInterval = 3 * time.Second
 		client.HTTPClient = &http.Client{
 			Transport: &sacloud.RateLimitRoundTripper{RateLimitPerSec: 1},
 		}
