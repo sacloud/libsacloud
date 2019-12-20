@@ -1326,6 +1326,10 @@ func (f *fieldsDef) ProxyLBServers() *dsl.FieldDesc {
 					},
 				},
 				{
+					Name: "ServerGroup",
+					Type: meta.TypeString,
+				},
+				{
 					Name: "Enabled",
 					Type: meta.TypeFlag,
 				},
@@ -1333,6 +1337,33 @@ func (f *fieldsDef) ProxyLBServers() *dsl.FieldDesc {
 		},
 		Tags: &dsl.FieldTags{
 			MapConv: "Settings.ProxyLB.[]Servers,recursive",
+		},
+	}
+}
+
+func (f *fieldsDef) ProxyLBRules() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "Rules",
+		Type: &dsl.Model{
+			Name:    "ProxyLBRule",
+			IsArray: true,
+			Fields: []*dsl.FieldDesc{
+				{
+					Name: "Host",
+					Type: meta.TypeString,
+				},
+				{
+					Name: "Path",
+					Type: meta.TypeString,
+				},
+				{
+					Name: "ServerGroup",
+					Type: meta.TypeString,
+				},
+			},
+		},
+		Tags: &dsl.FieldTags{
+			MapConv: "Settings.ProxyLB.[]Rules,recursive",
 		},
 	}
 }
