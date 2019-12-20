@@ -17,6 +17,7 @@ package sacloud
 import (
 	"testing"
 
+	"github.com/sacloud/libsacloud/v2/pkg/size"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 	"github.com/stretchr/testify/require"
 )
@@ -87,7 +88,7 @@ func TestServer_BandWidthAt(t *testing.T) {
 						UpstreamType: types.UpstreamNetworkTypes.Switch,
 					},
 				},
-				MemoryMB: 31 * 1024,
+				MemoryMB: 31 * size.GiB,
 			},
 			expect: 1000,
 		},
@@ -99,7 +100,7 @@ func TestServer_BandWidthAt(t *testing.T) {
 						UpstreamType: types.UpstreamNetworkTypes.Switch,
 					},
 				},
-				MemoryMB: 32 * 1024,
+				MemoryMB: 32 * size.GiB,
 			},
 			expect: 2000,
 		},
@@ -111,7 +112,7 @@ func TestServer_BandWidthAt(t *testing.T) {
 						UpstreamType: types.UpstreamNetworkTypes.Switch,
 					},
 				},
-				MemoryMB: 127 * 1024,
+				MemoryMB: 127 * size.GiB,
 			},
 			expect: 2000,
 		},
@@ -123,7 +124,7 @@ func TestServer_BandWidthAt(t *testing.T) {
 						UpstreamType: types.UpstreamNetworkTypes.Switch,
 					},
 				},
-				MemoryMB: 128 * 1024,
+				MemoryMB: 128 * size.GiB,
 			},
 			expect: 5000,
 		},
@@ -135,7 +136,7 @@ func TestServer_BandWidthAt(t *testing.T) {
 						UpstreamType: types.UpstreamNetworkTypes.Switch,
 					},
 				},
-				MemoryMB: 223 * 1024,
+				MemoryMB: 223 * size.GiB,
 			},
 			expect: 5000,
 		},
@@ -147,7 +148,7 @@ func TestServer_BandWidthAt(t *testing.T) {
 						UpstreamType: types.UpstreamNetworkTypes.Switch,
 					},
 				},
-				MemoryMB: 224 * 1024,
+				MemoryMB: 224 * size.GiB,
 			},
 			expect: 10000,
 		},

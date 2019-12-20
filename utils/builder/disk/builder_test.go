@@ -20,6 +20,7 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/sacloud/libsacloud/v2/pkg/size"
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/ostype"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
@@ -79,7 +80,7 @@ func TestDiskFromUnixRequest_Validate(t *testing.T) {
 							Size: []*sacloud.DiskPlanSizeInfo{
 								{
 									Availability: types.Availabilities.Available,
-									SizeMB:       1024,
+									SizeMB:       1 * size.GiB,
 								},
 							},
 						},

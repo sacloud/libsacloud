@@ -18,6 +18,7 @@ import (
 	"errors"
 	"testing"
 
+	"github.com/sacloud/libsacloud/v2/pkg/size"
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/search"
 	"github.com/sacloud/libsacloud/v2/sacloud/testutil"
@@ -96,7 +97,7 @@ var (
 		Name:        testutil.ResourceName("disk"),
 		Description: "desc",
 		Tags:        []string{"tag1", "tag2"},
-		SizeMB:      20 * 1024,
+		SizeMB:      20 * size.GiB,
 	}
 	createDiskExpected = &sacloud.Disk{
 		Name:        createDiskParam.Name,
@@ -183,7 +184,7 @@ func TestDiskOp_Config(t *testing.T) {
 				disk, err := client.Create(ctx, testZone, &sacloud.DiskCreateRequest{
 					Name:            testutil.ResourceName("disk-edit"),
 					DiskPlanID:      types.DiskPlans.SSD,
-					SizeMB:          20 * 1024,
+					SizeMB:          20 * size.GiB,
 					SourceArchiveID: archiveID,
 				}, nil)
 				if err != nil {

@@ -18,6 +18,7 @@ import (
 	"errors"
 	"testing"
 
+	"github.com/sacloud/libsacloud/v2/pkg/size"
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/search"
 	"github.com/sacloud/libsacloud/v2/sacloud/search/keys"
@@ -171,7 +172,7 @@ var (
 	}
 	createServerParam = &sacloud.ServerCreateRequest{
 		CPU:      1,
-		MemoryMB: 1 * 1024,
+		MemoryMB: 1 * size.GiB,
 		ConnectedSwitches: []*sacloud.ConnectedSwitch{
 			{
 				Scope: types.Scopes.Shared,
@@ -261,7 +262,7 @@ func TestServerOp_ChangePlan(t *testing.T) {
 			Func: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 				return client.Create(ctx, testZone, &sacloud.ServerCreateRequest{
 					CPU:      1,
-					MemoryMB: 1 * 1024,
+					MemoryMB: 1 * size.GiB,
 					ConnectedSwitches: []*sacloud.ConnectedSwitch{
 						{
 							Scope: types.Scopes.Shared,
@@ -295,7 +296,7 @@ func TestServerOp_ChangePlan(t *testing.T) {
 				Func: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 					return client.ChangePlan(ctx, testZone, ctx.ID, &sacloud.ServerChangePlanRequest{
 						CPU:      2,
-						MemoryMB: 4 * 1024,
+						MemoryMB: 4 * size.GiB,
 					})
 				},
 				CheckFunc: func(t testutil.TestT, ctx *testutil.CRUDTestContext, v interface{}) error {
@@ -340,7 +341,7 @@ func TestServerOp_Interfaces(t *testing.T) {
 				server, err := serverOp.Create(ctx, testZone, &sacloud.ServerCreateRequest{
 					Name:     testutil.ResourceName("server-disconnected-nics"),
 					CPU:      1,
-					MemoryMB: 1024,
+					MemoryMB: 1 * size.GiB,
 					ConnectedSwitches: []*sacloud.ConnectedSwitch{
 						nil,
 						nil,
