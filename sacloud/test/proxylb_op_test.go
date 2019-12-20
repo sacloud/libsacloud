@@ -145,14 +145,28 @@ func initProxyLBVariables() {
 		},
 		Servers: []*sacloud.ProxyLBServer{
 			{
-				IPAddress: os.Getenv("SAKURACLOUD_PROXYLB_SERVER1"),
-				Port:      80,
-				Enabled:   true,
+				IPAddress:   os.Getenv("SAKURACLOUD_PROXYLB_SERVER1"),
+				Port:        80,
+				ServerGroup: "group1",
+				Enabled:     true,
 			},
 			{
-				IPAddress: os.Getenv("SAKURACLOUD_PROXYLB_SERVER2"),
-				Port:      80,
-				Enabled:   true,
+				IPAddress:   os.Getenv("SAKURACLOUD_PROXYLB_SERVER2"),
+				Port:        80,
+				ServerGroup: "group2",
+				Enabled:     true,
+			},
+		},
+		Rules: []*sacloud.ProxyLBRule{
+			{
+				Host:        "www.usacloud.jp",
+				Path:        "/path1",
+				ServerGroup: "group1",
+			},
+			{
+				Host:        "www.usacloud.jp",
+				Path:        "/path2",
+				ServerGroup: "group2",
 			},
 		},
 		LetsEncrypt: &sacloud.ProxyLBACMESetting{
@@ -179,6 +193,7 @@ func initProxyLBVariables() {
 		SorryServer:    createProxyLBParam.SorryServer,
 		BindPorts:      createProxyLBParam.BindPorts,
 		Servers:        createProxyLBParam.Servers,
+		Rules:          createProxyLBParam.Rules,
 		LetsEncrypt:    createProxyLBParam.LetsEncrypt,
 		StickySession:  createProxyLBParam.StickySession,
 		Timeout:        createProxyLBParam.Timeout,
@@ -213,14 +228,28 @@ func initProxyLBVariables() {
 		},
 		Servers: []*sacloud.ProxyLBServer{
 			{
-				IPAddress: os.Getenv("SAKURACLOUD_PROXYLB_SERVER1"),
-				Port:      8080,
-				Enabled:   true,
+				IPAddress:   os.Getenv("SAKURACLOUD_PROXYLB_SERVER1"),
+				Port:        8080,
+				ServerGroup: "group1upd",
+				Enabled:     true,
 			},
 			{
-				IPAddress: os.Getenv("SAKURACLOUD_PROXYLB_SERVER2"),
-				Port:      8080,
-				Enabled:   true,
+				IPAddress:   os.Getenv("SAKURACLOUD_PROXYLB_SERVER2"),
+				Port:        8080,
+				ServerGroup: "group2upd",
+				Enabled:     true,
+			},
+		},
+		Rules: []*sacloud.ProxyLBRule{
+			{
+				Host:        "www-upd.usacloud.jp",
+				Path:        "/path1-upd",
+				ServerGroup: "group1upd",
+			},
+			{
+				Host:        "www-upd.usacloud.jp",
+				Path:        "/path2-upd",
+				ServerGroup: "group2upd",
 			},
 		},
 		// LetsEncryptのテストはA or CNAMEレコードの登録が必要なため別ケースで行う
@@ -245,6 +274,7 @@ func initProxyLBVariables() {
 		SorryServer:   updateProxyLBParam.SorryServer,
 		BindPorts:     updateProxyLBParam.BindPorts,
 		Servers:       updateProxyLBParam.Servers,
+		Rules:         updateProxyLBParam.Rules,
 		LetsEncrypt:   updateProxyLBParam.LetsEncrypt,
 		StickySession: updateProxyLBParam.StickySession,
 		Timeout: &sacloud.ProxyLBTimeout{
@@ -275,14 +305,28 @@ func initProxyLBVariables() {
 		},
 		Servers: []*sacloud.ProxyLBServer{
 			{
-				IPAddress: os.Getenv("SAKURACLOUD_PROXYLB_SERVER1"),
-				Port:      8081,
-				Enabled:   true,
+				IPAddress:   os.Getenv("SAKURACLOUD_PROXYLB_SERVER1"),
+				Port:        8081,
+				ServerGroup: "group1upd2",
+				Enabled:     true,
 			},
 			{
-				IPAddress: os.Getenv("SAKURACLOUD_PROXYLB_SERVER2"),
-				Port:      8081,
-				Enabled:   true,
+				IPAddress:   os.Getenv("SAKURACLOUD_PROXYLB_SERVER2"),
+				Port:        8081,
+				ServerGroup: "group2upd2",
+				Enabled:     true,
+			},
+		},
+		Rules: []*sacloud.ProxyLBRule{
+			{
+				Host:        "www-upd2.usacloud.jp",
+				Path:        "/path1-upd2",
+				ServerGroup: "group1upd2",
+			},
+			{
+				Host:        "www-upd2.usacloud.jp",
+				Path:        "/path2-upd2",
+				ServerGroup: "group2upd2",
 			},
 		},
 		// LetsEncryptのテストはA or CNAMEレコードの登録が必要なため別ケースで行う
@@ -308,6 +352,7 @@ func initProxyLBVariables() {
 		SorryServer:   updateProxyLBSettingsParam.SorryServer,
 		BindPorts:     updateProxyLBSettingsParam.BindPorts,
 		Servers:       updateProxyLBSettingsParam.Servers,
+		Rules:         updateProxyLBSettingsParam.Rules,
 		LetsEncrypt:   updateProxyLBSettingsParam.LetsEncrypt,
 		StickySession: updateProxyLBSettingsParam.StickySession,
 		Timeout: &sacloud.ProxyLBTimeout{
