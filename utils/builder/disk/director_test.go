@@ -90,15 +90,6 @@ func TestDiskDirector_Builder(t *testing.T) {
 				},
 			},
 		},
-		{
-			name: "other",
-			in: &Director{
-				OSType: ostype.OPNsense,
-			},
-			out: &FromFixedArchiveBuilder{
-				OSType: ostype.OPNsense,
-			},
-		},
 	}
 
 	for _, tt := range cases {

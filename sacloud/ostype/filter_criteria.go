@@ -63,17 +63,8 @@ var ArchiveCriteria = map[ArchiveOSType]search.Filter{
 	Kusanagi: {
 		search.Key(keys.Tags): search.TagsAndEqual("current-stable", "pkg-kusanagi"),
 	},
-	SophosUTM: {
-		search.Key(keys.Tags): search.TagsAndEqual("current-stable", "pkg-sophosutm"),
-	},
 	FreeBSD: {
 		search.Key(keys.Tags): search.TagsAndEqual("current-stable", "distro-freebsd"),
-	},
-	Netwiser: {
-		search.Key(keys.Tags): search.TagsAndEqual("current-stable", "pkg-netwiserve"),
-	},
-	OPNsense: {
-		search.Key(keys.Tags): search.TagsAndEqual("current-stable", "distro-opnsense"),
 	},
 	Windows2016: {
 		search.Key(keys.Tags): search.TagsAndEqual("os-windows", "distro-ver-2016"),
