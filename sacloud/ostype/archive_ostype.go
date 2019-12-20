@@ -65,6 +65,8 @@ const (
 	Windows2016SQLServerStandard
 	// Windows2016SQLServer2017Standard OS種別:Windows Server 2016 SQLServer 2017(Standard)
 	Windows2016SQLServer2017Standard
+	// Windows2016SQLServer2017Enterprise OS種別:Windows Server 2016 SQLServer 2017(Enterprise)
+	Windows2016SQLServer2017Enterprise
 	// Windows2016SQLServerStandardAll OS種別:Windows Server 2016 SQLServer(Standard) + RDS + Office
 	Windows2016SQLServerStandardAll
 	// Windows2016SQLServer2017StandardAll OS種別:Windows Server 2016 SQLServer 2017(Standard) + RDS + Office
@@ -96,6 +98,7 @@ var ArchiveOSTypes = []ArchiveOSType{
 	Windows2016SQLServerWeb,
 	Windows2016SQLServerStandard,
 	Windows2016SQLServer2017Standard,
+	Windows2016SQLServer2017Enterprise,
 	Windows2016SQLServerStandardAll,
 	Windows2016SQLServer2017StandardAll,
 	Windows2019,
@@ -109,7 +112,7 @@ var OSTypeShortNames = []string{
 	"coreos", "rancheros", "k3os", "kusanagi", "freebsd",
 	"windows2016", "windows2016-rds", "windows2016-rds-office",
 	"windows2016-sql-web", "windows2016-sql-standard", "windows2016-sql-standard-all",
-	"windows2016-sql2017-standard", "windows2016-sql2017-standard-all",
+	"windows2016-sql2017-standard", "windows2016-sql2017-enterprise", "windows2016-sql2017-standard-all",
 	"windows2019",
 }
 
@@ -118,7 +121,7 @@ func (o ArchiveOSType) IsWindows() bool {
 	switch o {
 	case Windows2016, Windows2016RDS, Windows2016RDSOffice,
 		Windows2016SQLServerWeb, Windows2016SQLServerStandard, Windows2016SQLServerStandardAll,
-		Windows2016SQLServer2017Standard, Windows2016SQLServer2017StandardAll,
+		Windows2016SQLServer2017Standard, Windows2016SQLServer2017Enterprise, Windows2016SQLServer2017StandardAll,
 		Windows2019:
 		return true
 	default:
@@ -184,6 +187,8 @@ func StrToOSType(osType string) ArchiveOSType {
 		return Windows2016SQLServerStandard
 	case "windows2016-sql2017-standard":
 		return Windows2016SQLServer2017Standard
+	case "windows2016-sql2017-enterprise":
+		return Windows2016SQLServer2017Enterprise
 	case "windows2016-sql-standard-all":
 		return Windows2016SQLServerStandardAll
 	case "windows2016-sql2017-standard-all":

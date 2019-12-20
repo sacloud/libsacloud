@@ -44,14 +44,15 @@ func _() {
 	_ = x[Windows2016SQLServerWeb-19]
 	_ = x[Windows2016SQLServerStandard-20]
 	_ = x[Windows2016SQLServer2017Standard-21]
-	_ = x[Windows2016SQLServerStandardAll-22]
-	_ = x[Windows2016SQLServer2017StandardAll-23]
-	_ = x[Windows2019-24]
+	_ = x[Windows2016SQLServer2017Enterprise-22]
+	_ = x[Windows2016SQLServerStandardAll-23]
+	_ = x[Windows2016SQLServer2017StandardAll-24]
+	_ = x[Windows2019-25]
 }
 
-const _ArchiveOSType_name = "CustomCentOSCentOS8CentOS7CentOS6UbuntuUbuntu1804Ubuntu1604DebianDebian10Debian9CoreOSRancherOSK3OSKusanagiFreeBSDWindows2016Windows2016RDSWindows2016RDSOfficeWindows2016SQLServerWebWindows2016SQLServerStandardWindows2016SQLServer2017StandardWindows2016SQLServerStandardAllWindows2016SQLServer2017StandardAllWindows2019"
+const _ArchiveOSType_name = "CustomCentOSCentOS8CentOS7CentOS6UbuntuUbuntu1804Ubuntu1604DebianDebian10Debian9CoreOSRancherOSK3OSKusanagiFreeBSDWindows2016Windows2016RDSWindows2016RDSOfficeWindows2016SQLServerWebWindows2016SQLServerStandardWindows2016SQLServer2017StandardWindows2016SQLServer2017EnterpriseWindows2016SQLServerStandardAllWindows2016SQLServer2017StandardAllWindows2019"
 
-var _ArchiveOSType_index = [...]uint16{0, 6, 12, 19, 26, 33, 39, 49, 59, 65, 73, 80, 86, 95, 99, 107, 114, 125, 139, 159, 182, 210, 242, 273, 308, 319}
+var _ArchiveOSType_index = [...]uint16{0, 6, 12, 19, 26, 33, 39, 49, 59, 65, 73, 80, 86, 95, 99, 107, 114, 125, 139, 159, 182, 210, 242, 276, 307, 342, 353}
 
 func (i ArchiveOSType) String() string {
 	if i < 0 || i >= ArchiveOSType(len(_ArchiveOSType_index)-1) {

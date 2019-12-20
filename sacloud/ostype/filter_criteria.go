@@ -90,6 +90,10 @@ var ArchiveCriteria = map[ArchiveOSType]search.Filter{
 		search.Key(keys.Tags): search.TagsAndEqual("os-windows", "distro-ver-2016", "windows-sqlserver", "sqlserver-2017", "edition-standard"),
 		search.Key(keys.Name): search.OrEqual("Windows Server 2016 for MS SQL 2017(Standard)"),
 	},
+	Windows2016SQLServer2017Enterprise: {
+		search.Key(keys.Tags): search.TagsAndEqual("os-windows", "distro-ver-2016", "windows-sqlserver", "sqlserver-2017", "edition-enterprise"),
+		search.Key(keys.Name): search.OrEqual("Windows Server 2016 for MS SQL 2017(Enterprise)"),
+	},
 	Windows2016SQLServerStandardAll: {
 		search.Key(keys.Tags): search.TagsAndEqual("os-windows", "distro-ver-2016", "windows-sqlserver", "sqlserver-2016", "edition-standard", "windows-rds", "with-office"),
 		search.Key(keys.Name): search.OrEqual("Windows Server 2016 for MS SQL 2016(Std) with RDS / MS Office"),
