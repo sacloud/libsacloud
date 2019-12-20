@@ -17,6 +17,7 @@ package test
 import (
 	"testing"
 
+	"github.com/sacloud/libsacloud/v2/pkg/size"
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/testutil"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
@@ -33,7 +34,7 @@ func TestAutoBackupOpCRUD(t *testing.T) {
 			diskOp := sacloud.NewDiskOp(caller)
 			disk, err := diskOp.Create(ctx, testZone, &sacloud.DiskCreateRequest{
 				Name:       testutil.ResourceName("-disk-for-autobackup"),
-				SizeMB:     20 * 1024,
+				SizeMB:     20 * size.GiB,
 				DiskPlanID: types.DiskPlans.SSD,
 			}, nil)
 			if !assert.NoError(t, err) {

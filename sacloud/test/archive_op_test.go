@@ -18,6 +18,7 @@ import (
 	"errors"
 	"testing"
 
+	"github.com/sacloud/libsacloud/v2/pkg/size"
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/testutil"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
@@ -185,7 +186,7 @@ func TestArchiveOp_CreateBlank(t *testing.T) {
 			Func: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 				client := sacloud.NewArchiveOp(singletonAPICaller())
 				archive, ftpServer, err := client.CreateBlank(ctx, testZone, &sacloud.ArchiveCreateBlankRequest{
-					SizeMB: 20 * 1024,
+					SizeMB: 20 * size.GiB,
 					Name:   testutil.ResourceName("archive-blank"),
 				})
 

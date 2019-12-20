@@ -17,6 +17,7 @@ package accessor
 import (
 	"testing"
 
+	"github.com/sacloud/libsacloud/v2/pkg/size"
 	"github.com/stretchr/testify/require"
 )
 
@@ -43,11 +44,11 @@ func TestSizeMBAccessor(t *testing.T) {
 		},
 		{
 			input:  1,
-			expect: 1024 * 1,
+			expect: 1 * size.GiB,
 		},
 		{
 			input:  2,
-			expect: 1024 * 2,
+			expect: 2 * size.GiB,
 		},
 	}
 

@@ -17,6 +17,7 @@ package test
 import (
 	"testing"
 
+	"github.com/sacloud/libsacloud/v2/pkg/size"
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/testutil"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
@@ -34,7 +35,7 @@ func TestInterface_Operations(t *testing.T) {
 			serverClient := sacloud.NewServerOp(caller)
 			server, err := serverClient.Create(ctx, testZone, &sacloud.ServerCreateRequest{
 				CPU:      1,
-				MemoryMB: 1 * 1024,
+				MemoryMB: 1 * size.GiB,
 				//ConnectedSwitches: []*ConnectedSwitch{
 				//	{Scope: types.Scopes.Shared},
 				//},

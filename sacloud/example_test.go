@@ -20,6 +20,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/sacloud/libsacloud/v2/pkg/size"
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
@@ -66,7 +67,7 @@ func Example_serverCRUD() {
 	serverOp := sacloud.NewServerOp(client)
 	server, err := serverOp.Create(ctx, "is1a", &sacloud.ServerCreateRequest{
 		CPU:                  1,
-		MemoryMB:             1024,
+		MemoryMB:             1 * size.GiB,
 		ServerPlanCommitment: types.Commitments.Standard,
 		ServerPlanGeneration: types.PlanGenerations.Default,
 		ConnectedSwitches:    []*sacloud.ConnectedSwitch{{Scope: "shared"}},
