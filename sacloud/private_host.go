@@ -30,3 +30,10 @@ type PrivateHost struct {
 	propCreatedAt // 作成日時
 
 }
+
+const (
+	// PrivateHostClassDynamic 専有ホストプラン(標準)
+	PrivateHostClassDynamic = "dynamic"
+	// PrivateHostClassWindows 専有ホストプラン(windows)
+	PrivateHostClassWindows = "ms_windows"
+)
