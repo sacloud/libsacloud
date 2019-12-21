@@ -383,6 +383,9 @@ var (
 	TagBootCDROM = "@boot-cdrom"
 	// TagBootNetwork 優先ブートデバイスをPXE bootに設定します
 	TagBootNetwork = "@boot-network"
+
+	// TagCPUTopology CPUソケット数を1と認識させる
+	TagCPUTopology = "@cpu-topology"
 )
 
 // DatetimeLayout さくらのクラウドAPIで利用される日付型のレイアウト(RFC3339)
