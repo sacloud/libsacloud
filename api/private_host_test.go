@@ -15,6 +15,7 @@
 package api
 
 import (
+	"github.com/sacloud/libsacloud/sacloud"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -32,7 +33,7 @@ func TestPrivateHostCRUD(t *testing.T) {
 	api := client.PrivateHost
 
 	// find plan
-	plans, err := client.Product.GetProductPrivateHostAPI().Find()
+	plans, err := client.Product.GetProductPrivateHostAPI().FilterBy("Class", sacloud.PrivateHostClassDynamic).Find()
 	if !assert.NoError(t, err) {
 		return
 	}
