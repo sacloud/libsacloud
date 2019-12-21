@@ -52,7 +52,15 @@ func TestProxyLBCreate(t *testing.T) {
 			Value:  "public, max-age=10",
 		},
 	})
-	item.AddServer(serverIP, 80, true)
+	item.AddServer(serverIP, 80, true, "group1")
+
+	item.Settings.ProxyLB.Rules = []sacloud.ProxyLBRule{
+		{
+			Host:        "www.usacloud.jp",
+			Path:        "/",
+			ServerGroup: "group1",
+		},
+	}
 
 	item, err := client.ProxyLB.Create(item)
 	assert.NoError(t, err)
@@ -69,6 +77,7 @@ func TestProxyLBCreate(t *testing.T) {
 
 	assert.Len(t, item.Settings.ProxyLB.BindPorts, 1)
 	assert.Len(t, item.Settings.ProxyLB.Servers, 1)
+	assert.Len(t, item.Settings.ProxyLB.Rules, 1)
 
 	assert.Equal(t, item.Settings.ProxyLB.BindPorts[0].ProxyMode, "http")
 	assert.Equal(t, item.Settings.ProxyLB.BindPorts[0].Port, 80)
@@ -108,7 +117,7 @@ func TestProxyLBCreateWithTCP(t *testing.T) {
 	item.SetSorryServer(sorryIP, 80)
 	item.SetTCPHealthCheck(10)
 	item.AddBindPort("tcp", 80, false, false, nil)
-	item.AddServer(serverIP, 80, true)
+	item.AddServer(serverIP, 80, true, "")
 
 	item, err := client.ProxyLB.Create(item)
 	assert.NoError(t, err)
