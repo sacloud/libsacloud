@@ -16,13 +16,17 @@ package sacloud_test
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"log"
+	"net/http"
 	"os"
 
 	"github.com/sacloud/libsacloud/v2/pkg/size"
 	"github.com/sacloud/libsacloud/v2/sacloud"
+	"github.com/sacloud/libsacloud/v2/sacloud/naked"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
+	"github.com/sacloud/libsacloud/v2/utils/power"
 )
 
 func Example_basic() {
@@ -94,30 +98,12 @@ func Example_serverCRUD() {
 	}
 
 	// 起動
-	if err := serverOp.Boot(ctx, "is1a", server.ID); err != nil {
+	if err := power.BootServer(ctx, serverOp, "is1a", server.ID); err != nil {
 		log.Fatal(err)
 	}
-
-	// runningになるまで待機(同期)
-	waiter := sacloud.WaiterForUp(func() (state interface{}, err error) {
-		return serverOp.Read(ctx, "is1a", server.ID)
-	})
-	if _, err := waiter.WaitForState(ctx); err != nil {
-		log.Fatal(err)
-	}
-	// 非同期の場合
-	// completeCh, progressCh, errCh := waiter.AsyncWaitForState(ctx)
 
 	// シャットダウン(force)
-	if err := serverOp.Shutdown(ctx, "is1a", server.ID, &sacloud.ShutdownOption{Force: true}); err != nil {
-		log.Fatal(err)
-	}
-
-	// Downになるまで待機
-	waiter = sacloud.WaiterForDown(func() (state interface{}, err error) {
-		return serverOp.Read(ctx, "is1a", server.ID)
-	})
-	if _, err := waiter.WaitForState(ctx); err != nil {
+	if err := power.ShutdownServer(ctx, serverOp, "is1a", server.ID, true); err != nil {
 		log.Fatal(err)
 	}
 
@@ -125,6 +111,63 @@ func Example_serverCRUD() {
 	if err := serverOp.Delete(ctx, "is1a", server.ID); err != nil {
 		log.Fatal(err)
 	}
+}
 
-	fmt.Println("hoge")
+func ExampleClient_Do_direct() {
+	// sacloud.Clientを直接利用する例
+	// Note: 通常はsacloud.xxxOpを通じて操作してください。
+
+	// クライアントの作成
+	client, err := sacloud.NewClientFromEnv()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// ゾーン一覧を取得する例
+	url := "https://secure.sakura.ad.jp/cloud/zone/is1a/api/cloud/1.1/zone"
+	data, err := client.Do(context.Background(), http.MethodGet, url, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	var zones map[string]interface{}
+	err = json.Unmarshal(data, &zones)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Print(zones)
+}
+
+func ExampleClient_Do_withNaked() {
+	// sacloud.Clientを直接利用する例
+	// レスポンスとしてnakedパッケージを利用する
+	// Note: 通常はsacloud.xxxOpを通じて操作してください。
+
+	// クライアントの作成
+	client, err := sacloud.NewClientFromEnv()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// ゾーン一覧を取得する例
+	url := "https://secure.sakura.ad.jp/cloud/zone/is1a/api/cloud/1.1/zone"
+	data, err := client.Do(context.Background(), http.MethodGet, url, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// レスポンスを受けるためのstruct
+	type searchResult struct {
+		Zones []*naked.Zone
+	}
+	result := &searchResult{}
+	err = json.Unmarshal(data, &result)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for _, zone := range result.Zones {
+		fmt.Printf("ID: %v Name: %v\n", zone.ID, zone.Name)
+	}
 }
