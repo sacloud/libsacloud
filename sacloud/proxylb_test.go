@@ -119,7 +119,7 @@ func TestMarshalProxyLBCertificate(t *testing.T) {
 	assert.Equal(t, "dummy2", certs.IntermediateCertificate)
 	assert.Equal(t, "dummy3", certs.PrivateKey)
 	loc, _ := time.LoadLocation("GMT")
-	assert.Equal(t, time.Date(2019, 5, 4, 1, 37, 47, 0, loc), certs.CertificateEndDate)
+	assert.Equal(t, time.Date(2019, 5, 4, 1, 37, 47, 0, loc).Unix(), certs.CertificateEndDate.Unix())
 }
 
 func TestMarshalProxyLBCertificates(t *testing.T) {
