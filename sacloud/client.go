@@ -33,6 +33,9 @@ import (
 var (
 	// SakuraCloudAPIRoot APIリクエスト送信先ルートURL(末尾にスラッシュを含まない)
 	SakuraCloudAPIRoot = "https://secure.sakura.ad.jp/cloud/zone"
+
+	// SakuraCloudZones 利用可能なゾーンのデフォルト値
+	SakuraCloudZones = []string{"is1a", "is1b", "tk1a", "tk1v"}
 )
 
 var (

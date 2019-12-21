@@ -11,6 +11,7 @@ require (
 	github.com/hashicorp/go-retryablehttp v0.6.4
 	github.com/huandu/xstrings v1.2.0
 	github.com/leodido/go-urn v1.1.0 // indirect
+	github.com/mitchellh/go-homedir v1.1.0
 	github.com/mitchellh/mapstructure v1.1.2
 	github.com/stretchr/testify v1.2.2
 	github.com/uber-go/atomic v1.4.0 // indirect
