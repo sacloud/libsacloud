@@ -1,27 +1,26 @@
-# libsacloud DSL for defination of API
+# libsacloud DSL for API definition
 
-(このドキュメントは古くなっています。v2リリース時に最新の内容を反映します)
-
-ここではlibsacloudでAPIを定義するために用いられているDSL`libsacloud DSL`について記します。
+ここではlibsacloudでAPIを定義するために用いられているDSL`libsacloud DSL`について扱います。
 
 ## libsacloudで利用されるDSLの主要概念/用語
 
 libsacloud DSLではコード生成用の定義を行うために以下のような概念を用います。
 
-- APIリソース
+- リソース
 - オペレーション
 - APIモデル
-- nakedモデルとmapconvでのデータ変換
+- nakedモデル
+- mapconv
 
 以下では擬似コードを用いて各概念の説明を行います。  
-実際のDSLの利用方法は[Quick Start Guide](quick_start.md)を参照してください。
+実際のDSLの利用方法は`internal/define`などのコードを参照してください。
 
-### APIリソース
+### リソース
 
-`APIリソース`とは、APIで操作する対象となるさくらのクラウド上のリソースの種別を指します。
+`リソース`とは、APIで操作する対象となるさくらのクラウド上のリソースの種別を指します。
 例: サーバ、ディスクなど
 
-ソース上は`internal/schema`の`Resource`structがAPIリソースを表現しています。
+ソース上は`internal/dsl`の`Resource`structがAPIリソースを表現しています。
 
 APIリソースは自身に定義されているフィールドの値からAPIコール時のURLプレフィックスを決定します。
 
@@ -29,7 +28,7 @@ APIリソースは自身に定義されているフィールドの値からAPI�
 
 ```go
 // 以下は例示のためのイメージで実際の実装とは異なります
-var serverResource = &schema.Resource {
+var serverResource = &dsl.Resource {
 	Name       : "Server",
 	PathName   : "server",
 	PathSuffix : "api/cloud/1.1",
@@ -49,7 +48,7 @@ var serverResource = &schema.Resource {
 `オペレーション`とはAPIリソースに対する操作を指します。  
 例: 検索(Find)やCRUD(Create/Read/Update/Delete)など
 
-ソース上は`innternal/schema`の`Operation`structがオペレーションを表現しています。
+ソース上は`innternal/dsl`の`Operation`structがオペレーションを表現しています。
 
 オペレーションは自身に定義されているフィールドの値から実際のAPIエンドポイントの決定やパラメータの処理、戻り値の処理などの詳細を決定します。  
 
@@ -57,8 +56,8 @@ var serverResource = &schema.Resource {
 
 ```go
 // 以下は例示のためのイメージで実際の実装とは異なります
-var serverReadOperation = &schema.Operation {
-	Resource         : serverResource, 
+var serverReadOperation = &dsl.Operation {
+	ResourceName     : "Server", 
 	Name             : "Read",
 	Method           : http.MethodGet,
 	PathFormat       : "{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}",
@@ -75,7 +74,7 @@ var serverReadOperation = &schema.Operation {
 
 となり、このエンドポイントに対しGETでリクエストを行うようなコードが生成されます。  
 
-#### オペレーションへの引数/戻り値
+#### オペレーションでの引数/戻り値の定義
 
 オペレーションは引数(Arguments)と戻り値(Results)を持ちます。  
 引数にはプリミティブなデータ型(IDやゾーンなど)や後述するAPIモデルを指定します。
@@ -84,23 +83,23 @@ var serverReadOperation = &schema.Operation {
 
 ```go
 // 以下は例示のためのイメージで実際の実装とは異なります
-var serverReadOperation = &schema.Operation {
+var serverReadOperation = &dsl.Operation {
     // ...
 	Name             : "Update",
-	Arguments        : []schema.Argument {
-	    &schema.SimpleArgument {
+	Arguments        : dsl.Arguments {
+	    &dsl.Argument {
 	        Name: "zone",
 	        Type: TypeString,
 	    },
-	    &schema.SimpleArgument {
+	    &dsl.Argument {
 	        Name: "id",
 	        Type: TypeInt64,
 	    },
-	    &schema.MappableArgument{
+	    &dsl.Argument{
 	        Name: "param",
-	        Type: &schema.Model{ // 引数の型情報としてAPIモデルを指定
+	        Type: &dsl.Model{ // 引数の型情報としてAPIモデルを指定
 	            Name: "ServerUpdateRequest",
-	            Fields: []*schema.Field{
+	            Fields: []*dsl.Field{
 	                // ...
 	            },
 	        }
@@ -120,14 +119,14 @@ var serverReadOperation = &schema.Operation {
 
 `APIモデル`とはlibsacloud利用者が利用するコードにおけるAPIコール時のリクエスト/レスポンスなどのデータ型を指します。  
 
-ソース上は`internal/schema`の`Model`structがAPIモデルを表現しています。
+ソース上は`internal/dsl`の`Model`structがAPIモデルを表現しています。
 
 例えばAPIモデルとしてスタートアップスクリプトの作成パラメータを定義する場合、以下のようなフィールド/値を持ちます。
 
 ```go
-var noteCreateRequest = &schema.Model {
+var noteCreateRequest = &dsl.Model {
 	Name      : "NoteCreateRequest",
-	Fields    : []*schema.Field {
+	Fields    : []*dsl.Field {
         {
             Name: "Name",
        		Type: meta.TypeString,
@@ -153,6 +152,7 @@ type NoteCreateRequest struct {
 ```
 
 APIモデルは後述するnakedモデルのフラットな表現となっており、実際のAPI呼び出し時に必要になる複雑な階層を持つパラメータをフラットでシンプルな形で提供します。
+
 
 ### nakedモデルとmapconvでのデータ変換
 
@@ -188,6 +188,8 @@ type Note struct {
 
 nakedモデルは手作業で実装する必要があります。さくらのクラウド APIドキュメントやコントロールパネルからAPI呼び出しログなどを参照してstructを実装しています。
 
+基本的にnakedモデルではロジックの実装は行いませんが、そのままではGoのコードから扱いにくいものをラップするためのjson.Marshal/json.Unmarshalなどについては例外的に実装します。
+
 #### mapconvでのデータ変換
 
 APIモデルで定義される各フィールドに`mapconv`タグを付与しておくことでAPIモデルとnakedモデル間でデータ変換が行えるようになっています。
@@ -205,5 +207,5 @@ type NoteCreateRequest struct {
 ```
 
 IconIDに`mapconv:"Icon.ID"`というタグが付与されています。
-これにより、IconIDは対応するnakedモデルの`Icon`フィールド配下の`ID`フィールドへと値がコピーされます。
+これにより、IconIDは対応するnakedモデルの`Icon`フィールド配下の`ID`フィールドへと値がマッピングされます。
 
