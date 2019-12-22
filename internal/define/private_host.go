@@ -63,8 +63,20 @@ var (
 			fields.IconID(),
 			fields.CreatedAt(),
 			fields.PrivateHostPlanID(),
-			fields.Def("PlanName", meta.TypeString),
-			fields.Def("PlanClass", meta.TypeString),
+			{
+				Name: "PlanName",
+				Type: meta.TypeString,
+				Tags: &dsl.FieldTags{
+					MapConv: "Plan.Name",
+				},
+			},
+			{
+				Name: "PlanClass",
+				Type: meta.TypeString,
+				Tags: &dsl.FieldTags{
+					MapConv: "Plan.Class",
+				},
+			},
 			{
 				Name: "CPU",
 				Type: meta.TypeInt,
