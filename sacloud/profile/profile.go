@@ -114,8 +114,8 @@ type ConfigValue struct {
 	// AccessTokenSecret アクセスシークレット
 	AccessTokenSecret string
 
-	// DefaultZone デフォルトゾーン
-	DefaultZone string
+	// Zone デフォルトゾーン
+	Zone string
 	// Zones 利用可能なゾーン
 	Zones []string
 
