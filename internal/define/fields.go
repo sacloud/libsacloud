@@ -1435,6 +1435,36 @@ func (f *fieldsDef) ProxyLBTimeout() *dsl.FieldDesc {
 	}
 }
 
+func (f *fieldsDef) ContainerRegistryNamePrefix() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "NamePrefix",
+		Type: meta.TypeString,
+		Tags: &dsl.FieldTags{
+			MapConv: "Status.RegistryName",
+		},
+	}
+}
+
+func (f *fieldsDef) ContainerRegistryFQDN() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "FQDN",
+		Type: meta.TypeString,
+		Tags: &dsl.FieldTags{
+			MapConv: "Status.FQDN",
+		},
+	}
+}
+
+func (f *fieldsDef) ContainerRegistryVisibility() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "Visibility",
+		Type: meta.Static(types.EContainerRegistryVisibility("")),
+		Tags: &dsl.FieldTags{
+			MapConv: "Settings.ContainerRegistry.Public",
+		},
+	}
+}
+
 func (f *fieldsDef) SettingsHash() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "SettingsHash",

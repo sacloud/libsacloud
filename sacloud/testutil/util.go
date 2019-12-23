@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"math/rand"
 	"net/http"
 	"os"
 	"sync"
@@ -32,6 +33,18 @@ import (
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
+func init() {
+	rand.Seed(time.Now().UTC().UnixNano())
+}
+
+const (
+	// CharSetAlphaNum アフファベット(小文字)+数値
+	CharSetAlphaNum = "abcdefghijklmnopqrstuvwxyz012346789"
+
+	// CharSetAlpha アフファベット(小文字)
+	CharSetAlpha = "abcdefghijklmnopqrstuvwxyz"
+)
+
 // TestResourcePrefix テスト時に作成するリソースの名称に付与するプレフィックス
 //
 // このプレフィックスを持つリソースは受入テスト実行後に削除される
@@ -40,6 +53,15 @@ const TestResourcePrefix = "libsacloud-test-"
 // ResourceName テスト時に作成するリソースの名称
 func ResourceName(name string) string {
 	return fmt.Sprintf("%s%s", TestResourcePrefix, name)
+}
+
+// RandomName ランダムな文字列を生成して返す
+func RandomName(strlen int, charSet string) string {
+	result := make([]byte, strlen)
+	for i := 0; i < strlen; i++ {
+		result[i] = charSet[rand.Intn(len(charSet))]
+	}
+	return string(result)
 }
 
 var apiCaller *sacloud.Client

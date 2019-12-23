@@ -594,6 +594,165 @@ func (s *CDROMStub) CloseFTP(ctx context.Context, zone string, id types.ID) erro
 }
 
 /*************************************************
+* ContainerRegistryStub
+*************************************************/
+
+// ContainerRegistryFindStubResult is expected values of the Find operation
+type ContainerRegistryFindStubResult struct {
+	Values *sacloud.ContainerRegistryFindResult
+	Err    error
+}
+
+// ContainerRegistryCreateStubResult is expected values of the Create operation
+type ContainerRegistryCreateStubResult struct {
+	ContainerRegistry *sacloud.ContainerRegistry
+	Err               error
+}
+
+// ContainerRegistryReadStubResult is expected values of the Read operation
+type ContainerRegistryReadStubResult struct {
+	ContainerRegistry *sacloud.ContainerRegistry
+	Err               error
+}
+
+// ContainerRegistryUpdateStubResult is expected values of the Update operation
+type ContainerRegistryUpdateStubResult struct {
+	ContainerRegistry *sacloud.ContainerRegistry
+	Err               error
+}
+
+// ContainerRegistryUpdateSettingsStubResult is expected values of the UpdateSettings operation
+type ContainerRegistryUpdateSettingsStubResult struct {
+	ContainerRegistry *sacloud.ContainerRegistry
+	Err               error
+}
+
+// ContainerRegistryDeleteStubResult is expected values of the Delete operation
+type ContainerRegistryDeleteStubResult struct {
+	Err error
+}
+
+// ContainerRegistryListUsersStubResult is expected values of the ListUsers operation
+type ContainerRegistryListUsersStubResult struct {
+	ContainerRegistryUsers *sacloud.ContainerRegistryUsers
+	Err                    error
+}
+
+// ContainerRegistryAddUserStubResult is expected values of the AddUser operation
+type ContainerRegistryAddUserStubResult struct {
+	Err error
+}
+
+// ContainerRegistryUpdateUserStubResult is expected values of the UpdateUser operation
+type ContainerRegistryUpdateUserStubResult struct {
+	Err error
+}
+
+// ContainerRegistryDeleteUserStubResult is expected values of the DeleteUser operation
+type ContainerRegistryDeleteUserStubResult struct {
+	Err error
+}
+
+// ContainerRegistryStub is for trace ContainerRegistryOp operations
+type ContainerRegistryStub struct {
+	FindStubResult           *ContainerRegistryFindStubResult
+	CreateStubResult         *ContainerRegistryCreateStubResult
+	ReadStubResult           *ContainerRegistryReadStubResult
+	UpdateStubResult         *ContainerRegistryUpdateStubResult
+	UpdateSettingsStubResult *ContainerRegistryUpdateSettingsStubResult
+	DeleteStubResult         *ContainerRegistryDeleteStubResult
+	ListUsersStubResult      *ContainerRegistryListUsersStubResult
+	AddUserStubResult        *ContainerRegistryAddUserStubResult
+	UpdateUserStubResult     *ContainerRegistryUpdateUserStubResult
+	DeleteUserStubResult     *ContainerRegistryDeleteUserStubResult
+}
+
+// NewContainerRegistryStub creates new ContainerRegistryStub instance
+func NewContainerRegistryStub(caller sacloud.APICaller) sacloud.ContainerRegistryAPI {
+	return &ContainerRegistryStub{}
+}
+
+// Find is API call with trace log
+func (s *ContainerRegistryStub) Find(ctx context.Context, conditions *sacloud.FindCondition) (*sacloud.ContainerRegistryFindResult, error) {
+	if s.FindStubResult == nil {
+		log.Fatal("ContainerRegistryStub.FindStubResult is not set")
+	}
+	return s.FindStubResult.Values, s.FindStubResult.Err
+}
+
+// Create is API call with trace log
+func (s *ContainerRegistryStub) Create(ctx context.Context, param *sacloud.ContainerRegistryCreateRequest) (*sacloud.ContainerRegistry, error) {
+	if s.CreateStubResult == nil {
+		log.Fatal("ContainerRegistryStub.CreateStubResult is not set")
+	}
+	return s.CreateStubResult.ContainerRegistry, s.CreateStubResult.Err
+}
+
+// Read is API call with trace log
+func (s *ContainerRegistryStub) Read(ctx context.Context, id types.ID) (*sacloud.ContainerRegistry, error) {
+	if s.ReadStubResult == nil {
+		log.Fatal("ContainerRegistryStub.ReadStubResult is not set")
+	}
+	return s.ReadStubResult.ContainerRegistry, s.ReadStubResult.Err
+}
+
+// Update is API call with trace log
+func (s *ContainerRegistryStub) Update(ctx context.Context, id types.ID, param *sacloud.ContainerRegistryUpdateRequest) (*sacloud.ContainerRegistry, error) {
+	if s.UpdateStubResult == nil {
+		log.Fatal("ContainerRegistryStub.UpdateStubResult is not set")
+	}
+	return s.UpdateStubResult.ContainerRegistry, s.UpdateStubResult.Err
+}
+
+// UpdateSettings is API call with trace log
+func (s *ContainerRegistryStub) UpdateSettings(ctx context.Context, id types.ID, param *sacloud.ContainerRegistryUpdateSettingsRequest) (*sacloud.ContainerRegistry, error) {
+	if s.UpdateSettingsStubResult == nil {
+		log.Fatal("ContainerRegistryStub.UpdateSettingsStubResult is not set")
+	}
+	return s.UpdateSettingsStubResult.ContainerRegistry, s.UpdateSettingsStubResult.Err
+}
+
+// Delete is API call with trace log
+func (s *ContainerRegistryStub) Delete(ctx context.Context, id types.ID) error {
+	if s.DeleteStubResult == nil {
+		log.Fatal("ContainerRegistryStub.DeleteStubResult is not set")
+	}
+	return s.DeleteStubResult.Err
+}
+
+// ListUsers is API call with trace log
+func (s *ContainerRegistryStub) ListUsers(ctx context.Context, id types.ID) (*sacloud.ContainerRegistryUsers, error) {
+	if s.ListUsersStubResult == nil {
+		log.Fatal("ContainerRegistryStub.ListUsersStubResult is not set")
+	}
+	return s.ListUsersStubResult.ContainerRegistryUsers, s.ListUsersStubResult.Err
+}
+
+// AddUser is API call with trace log
+func (s *ContainerRegistryStub) AddUser(ctx context.Context, id types.ID, param *sacloud.ContainerRegistryUserCreateRequest) error {
+	if s.AddUserStubResult == nil {
+		log.Fatal("ContainerRegistryStub.AddUserStubResult is not set")
+	}
+	return s.AddUserStubResult.Err
+}
+
+// UpdateUser is API call with trace log
+func (s *ContainerRegistryStub) UpdateUser(ctx context.Context, id types.ID, username string, param *sacloud.ContainerRegistryUserUpdateRequest) error {
+	if s.UpdateUserStubResult == nil {
+		log.Fatal("ContainerRegistryStub.UpdateUserStubResult is not set")
+	}
+	return s.UpdateUserStubResult.Err
+}
+
+// DeleteUser is API call with trace log
+func (s *ContainerRegistryStub) DeleteUser(ctx context.Context, id types.ID, username string) error {
+	if s.DeleteUserStubResult == nil {
+		log.Fatal("ContainerRegistryStub.DeleteUserStubResult is not set")
+	}
+	return s.DeleteUserStubResult.Err
+}
+
+/*************************************************
 * CouponStub
 *************************************************/
 

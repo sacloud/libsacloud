@@ -35,6 +35,8 @@ func ResourceFieldName(resourceName string, form dsl.PayloadForm) string {
 			resourceName == "IPAddress",
 			strings.HasSuffix(resourceName, "Info"):
 			return resourceName
+		case resourceName == "ContainerRegistry":
+			return "ContainerRegistries"
 		case
 			strings.HasSuffix(resourceName, "ch"),
 			strings.HasSuffix(resourceName, "ss"):
