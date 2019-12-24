@@ -147,7 +147,7 @@ var (
 			fields.SettingsHash(),
 
 			// status
-			fields.ContainerRegistryNamePrefix(),
+			fields.ContainerRegistrySubDomainLabel(),
 			fields.ContainerRegistryFQDN(),
 		},
 	}
@@ -175,7 +175,7 @@ var (
 			// settings
 			fields.ContainerRegistryAccessLevel(),
 			// status
-			fields.ContainerRegistryNamePrefix(),
+			fields.ContainerRegistrySubDomainLabel(),
 		},
 	}
 

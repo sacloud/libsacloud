@@ -3246,18 +3246,18 @@ func (o *CDROMUpdateRequest) SetIconID(v types.ID) {
 
 // ContainerRegistry represents API parameter/response structure
 type ContainerRegistry struct {
-	ID           types.ID
-	Name         string `validate:"required"`
-	Description  string `validate:"min=0,max=512"`
-	Tags         types.Tags
-	Availability types.EAvailability
-	IconID       types.ID `mapconv:"Icon.ID"`
-	CreatedAt    time.Time
-	ModifiedAt   time.Time
-	AccessLevel  types.EContainerRegistryAccessLevel `mapconv:"Settings.ContainerRegistry.Public"`
-	SettingsHash string                              `json:",omitempty" mapconv:",omitempty"`
-	NamePrefix   string                              `mapconv:"Status.RegistryName"`
-	FQDN         string                              `mapconv:"Status.FQDN"`
+	ID             types.ID
+	Name           string `validate:"required"`
+	Description    string `validate:"min=0,max=512"`
+	Tags           types.Tags
+	Availability   types.EAvailability
+	IconID         types.ID `mapconv:"Icon.ID"`
+	CreatedAt      time.Time
+	ModifiedAt     time.Time
+	AccessLevel    types.EContainerRegistryAccessLevel `mapconv:"Settings.ContainerRegistry.Public"`
+	SettingsHash   string                              `json:",omitempty" mapconv:",omitempty"`
+	SubDomainLabel string                              `mapconv:"Status.RegistryName"`
+	FQDN           string                              `mapconv:"Status.FQDN"`
 }
 
 // Validate validates by field tags
@@ -3268,31 +3268,31 @@ func (o *ContainerRegistry) Validate() error {
 // setDefaults implements sacloud.argumentDefaulter
 func (o *ContainerRegistry) setDefaults() interface{} {
 	return &struct {
-		ID           types.ID
-		Name         string `validate:"required"`
-		Description  string `validate:"min=0,max=512"`
-		Tags         types.Tags
-		Availability types.EAvailability
-		IconID       types.ID `mapconv:"Icon.ID"`
-		CreatedAt    time.Time
-		ModifiedAt   time.Time
-		AccessLevel  types.EContainerRegistryAccessLevel `mapconv:"Settings.ContainerRegistry.Public"`
-		SettingsHash string                              `json:",omitempty" mapconv:",omitempty"`
-		NamePrefix   string                              `mapconv:"Status.RegistryName"`
-		FQDN         string                              `mapconv:"Status.FQDN"`
+		ID             types.ID
+		Name           string `validate:"required"`
+		Description    string `validate:"min=0,max=512"`
+		Tags           types.Tags
+		Availability   types.EAvailability
+		IconID         types.ID `mapconv:"Icon.ID"`
+		CreatedAt      time.Time
+		ModifiedAt     time.Time
+		AccessLevel    types.EContainerRegistryAccessLevel `mapconv:"Settings.ContainerRegistry.Public"`
+		SettingsHash   string                              `json:",omitempty" mapconv:",omitempty"`
+		SubDomainLabel string                              `mapconv:"Status.RegistryName"`
+		FQDN           string                              `mapconv:"Status.FQDN"`
 	}{
-		ID:           o.GetID(),
-		Name:         o.GetName(),
-		Description:  o.GetDescription(),
-		Tags:         o.GetTags(),
-		Availability: o.GetAvailability(),
-		IconID:       o.GetIconID(),
-		CreatedAt:    o.GetCreatedAt(),
-		ModifiedAt:   o.GetModifiedAt(),
-		AccessLevel:  o.GetAccessLevel(),
-		SettingsHash: o.GetSettingsHash(),
-		NamePrefix:   o.GetNamePrefix(),
-		FQDN:         o.GetFQDN(),
+		ID:             o.GetID(),
+		Name:           o.GetName(),
+		Description:    o.GetDescription(),
+		Tags:           o.GetTags(),
+		Availability:   o.GetAvailability(),
+		IconID:         o.GetIconID(),
+		CreatedAt:      o.GetCreatedAt(),
+		ModifiedAt:     o.GetModifiedAt(),
+		AccessLevel:    o.GetAccessLevel(),
+		SettingsHash:   o.GetSettingsHash(),
+		SubDomainLabel: o.GetSubDomainLabel(),
+		FQDN:           o.GetFQDN(),
 	}
 }
 
@@ -3436,14 +3436,14 @@ func (o *ContainerRegistry) SetSettingsHash(v string) {
 	o.SettingsHash = v
 }
 
-// GetNamePrefix returns value of NamePrefix
-func (o *ContainerRegistry) GetNamePrefix() string {
-	return o.NamePrefix
+// GetSubDomainLabel returns value of SubDomainLabel
+func (o *ContainerRegistry) GetSubDomainLabel() string {
+	return o.SubDomainLabel
 }
 
-// SetNamePrefix sets value to NamePrefix
-func (o *ContainerRegistry) SetNamePrefix(v string) {
-	o.NamePrefix = v
+// SetSubDomainLabel sets value to SubDomainLabel
+func (o *ContainerRegistry) SetSubDomainLabel(v string) {
+	o.SubDomainLabel = v
 }
 
 // GetFQDN returns value of FQDN
@@ -3462,12 +3462,12 @@ func (o *ContainerRegistry) SetFQDN(v string) {
 
 // ContainerRegistryCreateRequest represents API parameter/response structure
 type ContainerRegistryCreateRequest struct {
-	Name        string `validate:"required"`
-	Description string `validate:"min=0,max=512"`
-	Tags        types.Tags
-	IconID      types.ID                            `mapconv:"Icon.ID"`
-	AccessLevel types.EContainerRegistryAccessLevel `mapconv:"Settings.ContainerRegistry.Public"`
-	NamePrefix  string                              `mapconv:"Status.RegistryName"`
+	Name           string `validate:"required"`
+	Description    string `validate:"min=0,max=512"`
+	Tags           types.Tags
+	IconID         types.ID                            `mapconv:"Icon.ID"`
+	AccessLevel    types.EContainerRegistryAccessLevel `mapconv:"Settings.ContainerRegistry.Public"`
+	SubDomainLabel string                              `mapconv:"Status.RegistryName"`
 }
 
 // Validate validates by field tags
@@ -3478,21 +3478,21 @@ func (o *ContainerRegistryCreateRequest) Validate() error {
 // setDefaults implements sacloud.argumentDefaulter
 func (o *ContainerRegistryCreateRequest) setDefaults() interface{} {
 	return &struct {
-		Name        string `validate:"required"`
-		Description string `validate:"min=0,max=512"`
-		Tags        types.Tags
-		IconID      types.ID                            `mapconv:"Icon.ID"`
-		AccessLevel types.EContainerRegistryAccessLevel `mapconv:"Settings.ContainerRegistry.Public"`
-		NamePrefix  string                              `mapconv:"Status.RegistryName"`
-		Class       string                              `mapconv:"Provider.Class"`
+		Name           string `validate:"required"`
+		Description    string `validate:"min=0,max=512"`
+		Tags           types.Tags
+		IconID         types.ID                            `mapconv:"Icon.ID"`
+		AccessLevel    types.EContainerRegistryAccessLevel `mapconv:"Settings.ContainerRegistry.Public"`
+		SubDomainLabel string                              `mapconv:"Status.RegistryName"`
+		Class          string                              `mapconv:"Provider.Class"`
 	}{
-		Name:        o.GetName(),
-		Description: o.GetDescription(),
-		Tags:        o.GetTags(),
-		IconID:      o.GetIconID(),
-		AccessLevel: o.GetAccessLevel(),
-		NamePrefix:  o.GetNamePrefix(),
-		Class:       "containerregistry",
+		Name:           o.GetName(),
+		Description:    o.GetDescription(),
+		Tags:           o.GetTags(),
+		IconID:         o.GetIconID(),
+		AccessLevel:    o.GetAccessLevel(),
+		SubDomainLabel: o.GetSubDomainLabel(),
+		Class:          "containerregistry",
 	}
 }
 
@@ -3566,14 +3566,14 @@ func (o *ContainerRegistryCreateRequest) SetAccessLevel(v types.EContainerRegist
 	o.AccessLevel = v
 }
 
-// GetNamePrefix returns value of NamePrefix
-func (o *ContainerRegistryCreateRequest) GetNamePrefix() string {
-	return o.NamePrefix
+// GetSubDomainLabel returns value of SubDomainLabel
+func (o *ContainerRegistryCreateRequest) GetSubDomainLabel() string {
+	return o.SubDomainLabel
 }
 
-// SetNamePrefix sets value to NamePrefix
-func (o *ContainerRegistryCreateRequest) SetNamePrefix(v string) {
-	o.NamePrefix = v
+// SetSubDomainLabel sets value to SubDomainLabel
+func (o *ContainerRegistryCreateRequest) SetSubDomainLabel(v string) {
+	o.SubDomainLabel = v
 }
 
 /*************************************************

@@ -1435,9 +1435,9 @@ func (f *fieldsDef) ProxyLBTimeout() *dsl.FieldDesc {
 	}
 }
 
-func (f *fieldsDef) ContainerRegistryNamePrefix() *dsl.FieldDesc {
+func (f *fieldsDef) ContainerRegistrySubDomainLabel() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
-		Name: "NamePrefix",
+		Name: "SubDomainLabel",
 		Type: meta.TypeString,
 		Tags: &dsl.FieldTags{
 			MapConv: "Status.RegistryName",

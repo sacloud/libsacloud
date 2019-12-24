@@ -119,20 +119,20 @@ var (
 		"ModifiedAt",
 	}
 	createContainerRegistryParam = &sacloud.ContainerRegistryCreateRequest{
-		Name:        testutil.ResourceName("container-registry"),
-		Description: "desc",
-		Tags:        []string{"tag1", "tag2"},
-		AccessLevel: types.ContainerRegistryAccessLevels.ReadWrite,
-		NamePrefix:  testutil.RandomName(60, testutil.CharSetAlpha), // note: ハイフンがあるとエラーになる
+		Name:           testutil.ResourceName("container-registry"),
+		Description:    "desc",
+		Tags:           []string{"tag1", "tag2"},
+		AccessLevel:    types.ContainerRegistryAccessLevels.ReadWrite,
+		SubDomainLabel: testutil.RandomName(60, testutil.CharSetAlpha),
 	}
 	createContainerRegistryExpected = &sacloud.ContainerRegistry{
-		Name:         createContainerRegistryParam.Name,
-		Description:  createContainerRegistryParam.Description,
-		Tags:         createContainerRegistryParam.Tags,
-		Availability: types.Availabilities.Available,
-		AccessLevel:  createContainerRegistryParam.AccessLevel,
-		NamePrefix:   createContainerRegistryParam.NamePrefix,
-		FQDN:         createContainerRegistryParam.NamePrefix + ".sakuracr.jp",
+		Name:           createContainerRegistryParam.Name,
+		Description:    createContainerRegistryParam.Description,
+		Tags:           createContainerRegistryParam.Tags,
+		Availability:   types.Availabilities.Available,
+		AccessLevel:    createContainerRegistryParam.AccessLevel,
+		SubDomainLabel: createContainerRegistryParam.SubDomainLabel,
+		FQDN:           createContainerRegistryParam.SubDomainLabel + ".sakuracr.jp",
 	}
 	updateContainerRegistryParam = &sacloud.ContainerRegistryUpdateRequest{
 		Name:        testutil.ResourceName("container-registry-upd"),
@@ -142,28 +142,28 @@ var (
 		AccessLevel: types.ContainerRegistryAccessLevels.ReadOnly,
 	}
 	updateContainerRegistryExpected = &sacloud.ContainerRegistry{
-		Name:         updateContainerRegistryParam.Name,
-		Description:  updateContainerRegistryParam.Description,
-		Tags:         updateContainerRegistryParam.Tags,
-		Availability: types.Availabilities.Available,
-		IconID:       testIconID,
-		AccessLevel:  updateContainerRegistryParam.AccessLevel,
-		NamePrefix:   createContainerRegistryParam.NamePrefix,
-		FQDN:         createContainerRegistryParam.NamePrefix + ".sakuracr.jp",
+		Name:           updateContainerRegistryParam.Name,
+		Description:    updateContainerRegistryParam.Description,
+		Tags:           updateContainerRegistryParam.Tags,
+		Availability:   types.Availabilities.Available,
+		IconID:         testIconID,
+		AccessLevel:    updateContainerRegistryParam.AccessLevel,
+		SubDomainLabel: createContainerRegistryParam.SubDomainLabel,
+		FQDN:           createContainerRegistryParam.SubDomainLabel + ".sakuracr.jp",
 	}
 
 	updateContainerRegistrySettingsParam = &sacloud.ContainerRegistryUpdateSettingsRequest{
 		AccessLevel: types.ContainerRegistryAccessLevels.None,
 	}
 	updateContainerRegistrySettingsExpected = &sacloud.ContainerRegistry{
-		Name:         updateContainerRegistryParam.Name,
-		Description:  updateContainerRegistryParam.Description,
-		Tags:         updateContainerRegistryParam.Tags,
-		Availability: types.Availabilities.Available,
-		IconID:       testIconID,
-		AccessLevel:  updateContainerRegistrySettingsParam.AccessLevel,
-		NamePrefix:   createContainerRegistryParam.NamePrefix,
-		FQDN:         createContainerRegistryParam.NamePrefix + ".sakuracr.jp",
+		Name:           updateContainerRegistryParam.Name,
+		Description:    updateContainerRegistryParam.Description,
+		Tags:           updateContainerRegistryParam.Tags,
+		Availability:   types.Availabilities.Available,
+		IconID:         testIconID,
+		AccessLevel:    updateContainerRegistrySettingsParam.AccessLevel,
+		SubDomainLabel: createContainerRegistryParam.SubDomainLabel,
+		FQDN:           createContainerRegistryParam.SubDomainLabel + ".sakuracr.jp",
 	}
 )
 

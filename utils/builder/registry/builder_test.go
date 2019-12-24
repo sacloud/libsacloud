@@ -32,11 +32,11 @@ func TestBuilder_Build(t *testing.T) {
 		Create: &testutil.CRUDTestFunc{
 			Func: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 				builder := &Builder{
-					Name:        testutil.ResourceName("container-registry-builder"),
-					Description: "description",
-					Tags:        types.Tags{"tag1", "tag2"},
-					AccessLevel: types.ContainerRegistryAccessLevels.None,
-					NamePrefix:  testutil.RandomName(60, testutil.CharSetAlpha),
+					Name:           testutil.ResourceName("container-registry-builder"),
+					Description:    "description",
+					Tags:           types.Tags{"tag1", "tag2"},
+					AccessLevel:    types.ContainerRegistryAccessLevels.None,
+					SubDomainLabel: testutil.RandomName(60, testutil.CharSetAlpha),
 					Users: []*User{
 						{
 							UserName: "user1",
