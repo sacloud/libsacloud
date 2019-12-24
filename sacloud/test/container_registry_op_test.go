@@ -119,51 +119,51 @@ var (
 		"ModifiedAt",
 	}
 	createContainerRegistryParam = &sacloud.ContainerRegistryCreateRequest{
-		Name:        testutil.ResourceName("container-registry"),
-		Description: "desc",
-		Tags:        []string{"tag1", "tag2"},
-		Visibility:  types.ContainerRegistryVisibilities.ReadWrite,
-		NamePrefix:  testutil.RandomName(60, testutil.CharSetAlpha), // note: ハイフンがあるとエラーになる
+		Name:           testutil.ResourceName("container-registry"),
+		Description:    "desc",
+		Tags:           []string{"tag1", "tag2"},
+		AccessLevel:    types.ContainerRegistryAccessLevels.ReadWrite,
+		SubDomainLabel: testutil.RandomName(60, testutil.CharSetAlpha),
 	}
 	createContainerRegistryExpected = &sacloud.ContainerRegistry{
-		Name:         createContainerRegistryParam.Name,
-		Description:  createContainerRegistryParam.Description,
-		Tags:         createContainerRegistryParam.Tags,
-		Availability: types.Availabilities.Available,
-		Visibility:   createContainerRegistryParam.Visibility,
-		NamePrefix:   createContainerRegistryParam.NamePrefix,
-		FQDN:         createContainerRegistryParam.NamePrefix + ".sakuracr.jp",
+		Name:           createContainerRegistryParam.Name,
+		Description:    createContainerRegistryParam.Description,
+		Tags:           createContainerRegistryParam.Tags,
+		Availability:   types.Availabilities.Available,
+		AccessLevel:    createContainerRegistryParam.AccessLevel,
+		SubDomainLabel: createContainerRegistryParam.SubDomainLabel,
+		FQDN:           createContainerRegistryParam.SubDomainLabel + ".sakuracr.jp",
 	}
 	updateContainerRegistryParam = &sacloud.ContainerRegistryUpdateRequest{
 		Name:        testutil.ResourceName("container-registry-upd"),
 		Description: "desc-upd",
 		Tags:        []string{"tag1-upd", "tag2-upd"},
 		IconID:      testIconID,
-		Visibility:  types.ContainerRegistryVisibilities.ReadOnly,
+		AccessLevel: types.ContainerRegistryAccessLevels.ReadOnly,
 	}
 	updateContainerRegistryExpected = &sacloud.ContainerRegistry{
-		Name:         updateContainerRegistryParam.Name,
-		Description:  updateContainerRegistryParam.Description,
-		Tags:         updateContainerRegistryParam.Tags,
-		Availability: types.Availabilities.Available,
-		IconID:       testIconID,
-		Visibility:   updateContainerRegistryParam.Visibility,
-		NamePrefix:   createContainerRegistryParam.NamePrefix,
-		FQDN:         createContainerRegistryParam.NamePrefix + ".sakuracr.jp",
+		Name:           updateContainerRegistryParam.Name,
+		Description:    updateContainerRegistryParam.Description,
+		Tags:           updateContainerRegistryParam.Tags,
+		Availability:   types.Availabilities.Available,
+		IconID:         testIconID,
+		AccessLevel:    updateContainerRegistryParam.AccessLevel,
+		SubDomainLabel: createContainerRegistryParam.SubDomainLabel,
+		FQDN:           createContainerRegistryParam.SubDomainLabel + ".sakuracr.jp",
 	}
 
 	updateContainerRegistrySettingsParam = &sacloud.ContainerRegistryUpdateSettingsRequest{
-		Visibility: types.ContainerRegistryVisibilities.None,
+		AccessLevel: types.ContainerRegistryAccessLevels.None,
 	}
 	updateContainerRegistrySettingsExpected = &sacloud.ContainerRegistry{
-		Name:         updateContainerRegistryParam.Name,
-		Description:  updateContainerRegistryParam.Description,
-		Tags:         updateContainerRegistryParam.Tags,
-		Availability: types.Availabilities.Available,
-		IconID:       testIconID,
-		Visibility:   updateContainerRegistrySettingsParam.Visibility,
-		NamePrefix:   createContainerRegistryParam.NamePrefix,
-		FQDN:         createContainerRegistryParam.NamePrefix + ".sakuracr.jp",
+		Name:           updateContainerRegistryParam.Name,
+		Description:    updateContainerRegistryParam.Description,
+		Tags:           updateContainerRegistryParam.Tags,
+		Availability:   types.Availabilities.Available,
+		IconID:         testIconID,
+		AccessLevel:    updateContainerRegistrySettingsParam.AccessLevel,
+		SubDomainLabel: createContainerRegistryParam.SubDomainLabel,
+		FQDN:           createContainerRegistryParam.SubDomainLabel + ".sakuracr.jp",
 	}
 )
 

@@ -143,11 +143,11 @@ var (
 			fields.ModifiedAt(),
 
 			// settings
-			fields.ContainerRegistryVisibility(),
+			fields.ContainerRegistryAccessLevel(),
 			fields.SettingsHash(),
 
 			// status
-			fields.ContainerRegistryNamePrefix(),
+			fields.ContainerRegistrySubDomainLabel(),
 			fields.ContainerRegistryFQDN(),
 		},
 	}
@@ -173,9 +173,9 @@ var (
 			fields.IconID(),
 
 			// settings
-			fields.ContainerRegistryVisibility(),
+			fields.ContainerRegistryAccessLevel(),
 			// status
-			fields.ContainerRegistryNamePrefix(),
+			fields.ContainerRegistrySubDomainLabel(),
 		},
 	}
 
@@ -190,7 +190,7 @@ var (
 			fields.IconID(),
 
 			// settings
-			fields.ContainerRegistryVisibility(),
+			fields.ContainerRegistryAccessLevel(),
 			// settings hash
 			fields.SettingsHash(),
 		},
@@ -201,7 +201,7 @@ var (
 		NakedType: containerRegistryNakedType,
 		Fields: []*dsl.FieldDesc{
 			// settings
-			fields.ContainerRegistryVisibility(),
+			fields.ContainerRegistryAccessLevel(),
 			// settings hash
 			fields.SettingsHash(),
 		},
