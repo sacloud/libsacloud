@@ -1455,10 +1455,10 @@ func (f *fieldsDef) ContainerRegistryFQDN() *dsl.FieldDesc {
 	}
 }
 
-func (f *fieldsDef) ContainerRegistryVisibility() *dsl.FieldDesc {
+func (f *fieldsDef) ContainerRegistryAccessLevel() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
-		Name: "Visibility",
-		Type: meta.Static(types.EContainerRegistryVisibility("")),
+		Name: "AccessLevel",
+		Type: meta.Static(types.EContainerRegistryAccessLevel("")),
 		Tags: &dsl.FieldTags{
 			MapConv: "Settings.ContainerRegistry.Public",
 		},

@@ -35,7 +35,7 @@ func TestBuilder_Build(t *testing.T) {
 					Name:        testutil.ResourceName("container-registry-builder"),
 					Description: "description",
 					Tags:        types.Tags{"tag1", "tag2"},
-					Visibility:  types.ContainerRegistryVisibilities.None,
+					AccessLevel: types.ContainerRegistryAccessLevels.None,
 					NamePrefix:  testutil.RandomName(60, testutil.CharSetAlpha),
 					Users: []*User{
 						{

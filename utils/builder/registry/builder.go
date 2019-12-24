@@ -28,7 +28,7 @@ type Builder struct {
 	Description string
 	Tags        types.Tags
 	IconID      types.ID
-	Visibility  types.EContainerRegistryVisibility
+	AccessLevel types.EContainerRegistryAccessLevel
 	NamePrefix  string
 	Users       []*User
 
@@ -61,7 +61,7 @@ func (b *Builder) Build(ctx context.Context) (*sacloud.ContainerRegistry, error)
 		Description: b.Description,
 		Tags:        b.Tags,
 		IconID:      b.IconID,
-		Visibility:  b.Visibility,
+		AccessLevel: b.AccessLevel,
 		NamePrefix:  b.NamePrefix,
 	})
 	if err != nil {
@@ -99,7 +99,7 @@ func (b *Builder) Update(ctx context.Context, id types.ID) (*sacloud.ContainerRe
 		Description:  b.Description,
 		Tags:         b.Tags,
 		IconID:       b.IconID,
-		Visibility:   b.Visibility,
+		AccessLevel:  b.AccessLevel,
 		SettingsHash: b.SettingsHash,
 	})
 	if err != nil {

@@ -3254,10 +3254,10 @@ type ContainerRegistry struct {
 	IconID       types.ID `mapconv:"Icon.ID"`
 	CreatedAt    time.Time
 	ModifiedAt   time.Time
-	Visibility   types.EContainerRegistryVisibility `mapconv:"Settings.ContainerRegistry.Public"`
-	SettingsHash string                             `json:",omitempty" mapconv:",omitempty"`
-	NamePrefix   string                             `mapconv:"Status.RegistryName"`
-	FQDN         string                             `mapconv:"Status.FQDN"`
+	AccessLevel  types.EContainerRegistryAccessLevel `mapconv:"Settings.ContainerRegistry.Public"`
+	SettingsHash string                              `json:",omitempty" mapconv:",omitempty"`
+	NamePrefix   string                              `mapconv:"Status.RegistryName"`
+	FQDN         string                              `mapconv:"Status.FQDN"`
 }
 
 // Validate validates by field tags
@@ -3276,10 +3276,10 @@ func (o *ContainerRegistry) setDefaults() interface{} {
 		IconID       types.ID `mapconv:"Icon.ID"`
 		CreatedAt    time.Time
 		ModifiedAt   time.Time
-		Visibility   types.EContainerRegistryVisibility `mapconv:"Settings.ContainerRegistry.Public"`
-		SettingsHash string                             `json:",omitempty" mapconv:",omitempty"`
-		NamePrefix   string                             `mapconv:"Status.RegistryName"`
-		FQDN         string                             `mapconv:"Status.FQDN"`
+		AccessLevel  types.EContainerRegistryAccessLevel `mapconv:"Settings.ContainerRegistry.Public"`
+		SettingsHash string                              `json:",omitempty" mapconv:",omitempty"`
+		NamePrefix   string                              `mapconv:"Status.RegistryName"`
+		FQDN         string                              `mapconv:"Status.FQDN"`
 	}{
 		ID:           o.GetID(),
 		Name:         o.GetName(),
@@ -3289,7 +3289,7 @@ func (o *ContainerRegistry) setDefaults() interface{} {
 		IconID:       o.GetIconID(),
 		CreatedAt:    o.GetCreatedAt(),
 		ModifiedAt:   o.GetModifiedAt(),
-		Visibility:   o.GetVisibility(),
+		AccessLevel:  o.GetAccessLevel(),
 		SettingsHash: o.GetSettingsHash(),
 		NamePrefix:   o.GetNamePrefix(),
 		FQDN:         o.GetFQDN(),
@@ -3416,14 +3416,14 @@ func (o *ContainerRegistry) SetModifiedAt(v time.Time) {
 	o.ModifiedAt = v
 }
 
-// GetVisibility returns value of Visibility
-func (o *ContainerRegistry) GetVisibility() types.EContainerRegistryVisibility {
-	return o.Visibility
+// GetAccessLevel returns value of AccessLevel
+func (o *ContainerRegistry) GetAccessLevel() types.EContainerRegistryAccessLevel {
+	return o.AccessLevel
 }
 
-// SetVisibility sets value to Visibility
-func (o *ContainerRegistry) SetVisibility(v types.EContainerRegistryVisibility) {
-	o.Visibility = v
+// SetAccessLevel sets value to AccessLevel
+func (o *ContainerRegistry) SetAccessLevel(v types.EContainerRegistryAccessLevel) {
+	o.AccessLevel = v
 }
 
 // GetSettingsHash returns value of SettingsHash
@@ -3465,9 +3465,9 @@ type ContainerRegistryCreateRequest struct {
 	Name        string `validate:"required"`
 	Description string `validate:"min=0,max=512"`
 	Tags        types.Tags
-	IconID      types.ID                           `mapconv:"Icon.ID"`
-	Visibility  types.EContainerRegistryVisibility `mapconv:"Settings.ContainerRegistry.Public"`
-	NamePrefix  string                             `mapconv:"Status.RegistryName"`
+	IconID      types.ID                            `mapconv:"Icon.ID"`
+	AccessLevel types.EContainerRegistryAccessLevel `mapconv:"Settings.ContainerRegistry.Public"`
+	NamePrefix  string                              `mapconv:"Status.RegistryName"`
 }
 
 // Validate validates by field tags
@@ -3481,16 +3481,16 @@ func (o *ContainerRegistryCreateRequest) setDefaults() interface{} {
 		Name        string `validate:"required"`
 		Description string `validate:"min=0,max=512"`
 		Tags        types.Tags
-		IconID      types.ID                           `mapconv:"Icon.ID"`
-		Visibility  types.EContainerRegistryVisibility `mapconv:"Settings.ContainerRegistry.Public"`
-		NamePrefix  string                             `mapconv:"Status.RegistryName"`
-		Class       string                             `mapconv:"Provider.Class"`
+		IconID      types.ID                            `mapconv:"Icon.ID"`
+		AccessLevel types.EContainerRegistryAccessLevel `mapconv:"Settings.ContainerRegistry.Public"`
+		NamePrefix  string                              `mapconv:"Status.RegistryName"`
+		Class       string                              `mapconv:"Provider.Class"`
 	}{
 		Name:        o.GetName(),
 		Description: o.GetDescription(),
 		Tags:        o.GetTags(),
 		IconID:      o.GetIconID(),
-		Visibility:  o.GetVisibility(),
+		AccessLevel: o.GetAccessLevel(),
 		NamePrefix:  o.GetNamePrefix(),
 		Class:       "containerregistry",
 	}
@@ -3556,14 +3556,14 @@ func (o *ContainerRegistryCreateRequest) SetIconID(v types.ID) {
 	o.IconID = v
 }
 
-// GetVisibility returns value of Visibility
-func (o *ContainerRegistryCreateRequest) GetVisibility() types.EContainerRegistryVisibility {
-	return o.Visibility
+// GetAccessLevel returns value of AccessLevel
+func (o *ContainerRegistryCreateRequest) GetAccessLevel() types.EContainerRegistryAccessLevel {
+	return o.AccessLevel
 }
 
-// SetVisibility sets value to Visibility
-func (o *ContainerRegistryCreateRequest) SetVisibility(v types.EContainerRegistryVisibility) {
-	o.Visibility = v
+// SetAccessLevel sets value to AccessLevel
+func (o *ContainerRegistryCreateRequest) SetAccessLevel(v types.EContainerRegistryAccessLevel) {
+	o.AccessLevel = v
 }
 
 // GetNamePrefix returns value of NamePrefix
@@ -3585,9 +3585,9 @@ type ContainerRegistryUpdateRequest struct {
 	Name         string `validate:"required"`
 	Description  string `validate:"min=0,max=512"`
 	Tags         types.Tags
-	IconID       types.ID                           `mapconv:"Icon.ID"`
-	Visibility   types.EContainerRegistryVisibility `mapconv:"Settings.ContainerRegistry.Public"`
-	SettingsHash string                             `json:",omitempty" mapconv:",omitempty"`
+	IconID       types.ID                            `mapconv:"Icon.ID"`
+	AccessLevel  types.EContainerRegistryAccessLevel `mapconv:"Settings.ContainerRegistry.Public"`
+	SettingsHash string                              `json:",omitempty" mapconv:",omitempty"`
 }
 
 // Validate validates by field tags
@@ -3601,15 +3601,15 @@ func (o *ContainerRegistryUpdateRequest) setDefaults() interface{} {
 		Name         string `validate:"required"`
 		Description  string `validate:"min=0,max=512"`
 		Tags         types.Tags
-		IconID       types.ID                           `mapconv:"Icon.ID"`
-		Visibility   types.EContainerRegistryVisibility `mapconv:"Settings.ContainerRegistry.Public"`
-		SettingsHash string                             `json:",omitempty" mapconv:",omitempty"`
+		IconID       types.ID                            `mapconv:"Icon.ID"`
+		AccessLevel  types.EContainerRegistryAccessLevel `mapconv:"Settings.ContainerRegistry.Public"`
+		SettingsHash string                              `json:",omitempty" mapconv:",omitempty"`
 	}{
 		Name:         o.GetName(),
 		Description:  o.GetDescription(),
 		Tags:         o.GetTags(),
 		IconID:       o.GetIconID(),
-		Visibility:   o.GetVisibility(),
+		AccessLevel:  o.GetAccessLevel(),
 		SettingsHash: o.GetSettingsHash(),
 	}
 }
@@ -3674,14 +3674,14 @@ func (o *ContainerRegistryUpdateRequest) SetIconID(v types.ID) {
 	o.IconID = v
 }
 
-// GetVisibility returns value of Visibility
-func (o *ContainerRegistryUpdateRequest) GetVisibility() types.EContainerRegistryVisibility {
-	return o.Visibility
+// GetAccessLevel returns value of AccessLevel
+func (o *ContainerRegistryUpdateRequest) GetAccessLevel() types.EContainerRegistryAccessLevel {
+	return o.AccessLevel
 }
 
-// SetVisibility sets value to Visibility
-func (o *ContainerRegistryUpdateRequest) SetVisibility(v types.EContainerRegistryVisibility) {
-	o.Visibility = v
+// SetAccessLevel sets value to AccessLevel
+func (o *ContainerRegistryUpdateRequest) SetAccessLevel(v types.EContainerRegistryAccessLevel) {
+	o.AccessLevel = v
 }
 
 // GetSettingsHash returns value of SettingsHash
@@ -3700,8 +3700,8 @@ func (o *ContainerRegistryUpdateRequest) SetSettingsHash(v string) {
 
 // ContainerRegistryUpdateSettingsRequest represents API parameter/response structure
 type ContainerRegistryUpdateSettingsRequest struct {
-	Visibility   types.EContainerRegistryVisibility `mapconv:"Settings.ContainerRegistry.Public"`
-	SettingsHash string                             `json:",omitempty" mapconv:",omitempty"`
+	AccessLevel  types.EContainerRegistryAccessLevel `mapconv:"Settings.ContainerRegistry.Public"`
+	SettingsHash string                              `json:",omitempty" mapconv:",omitempty"`
 }
 
 // Validate validates by field tags
@@ -3712,22 +3712,22 @@ func (o *ContainerRegistryUpdateSettingsRequest) Validate() error {
 // setDefaults implements sacloud.argumentDefaulter
 func (o *ContainerRegistryUpdateSettingsRequest) setDefaults() interface{} {
 	return &struct {
-		Visibility   types.EContainerRegistryVisibility `mapconv:"Settings.ContainerRegistry.Public"`
-		SettingsHash string                             `json:",omitempty" mapconv:",omitempty"`
+		AccessLevel  types.EContainerRegistryAccessLevel `mapconv:"Settings.ContainerRegistry.Public"`
+		SettingsHash string                              `json:",omitempty" mapconv:",omitempty"`
 	}{
-		Visibility:   o.GetVisibility(),
+		AccessLevel:  o.GetAccessLevel(),
 		SettingsHash: o.GetSettingsHash(),
 	}
 }
 
-// GetVisibility returns value of Visibility
-func (o *ContainerRegistryUpdateSettingsRequest) GetVisibility() types.EContainerRegistryVisibility {
-	return o.Visibility
+// GetAccessLevel returns value of AccessLevel
+func (o *ContainerRegistryUpdateSettingsRequest) GetAccessLevel() types.EContainerRegistryAccessLevel {
+	return o.AccessLevel
 }
 
-// SetVisibility sets value to Visibility
-func (o *ContainerRegistryUpdateSettingsRequest) SetVisibility(v types.EContainerRegistryVisibility) {
-	o.Visibility = v
+// SetAccessLevel sets value to AccessLevel
+func (o *ContainerRegistryUpdateSettingsRequest) SetAccessLevel(v types.EContainerRegistryAccessLevel) {
+	o.AccessLevel = v
 }
 
 // GetSettingsHash returns value of SettingsHash

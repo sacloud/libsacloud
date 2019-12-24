@@ -122,7 +122,7 @@ var (
 		Name:        testutil.ResourceName("container-registry"),
 		Description: "desc",
 		Tags:        []string{"tag1", "tag2"},
-		Visibility:  types.ContainerRegistryVisibilities.ReadWrite,
+		AccessLevel: types.ContainerRegistryAccessLevels.ReadWrite,
 		NamePrefix:  testutil.RandomName(60, testutil.CharSetAlpha), // note: ハイフンがあるとエラーになる
 	}
 	createContainerRegistryExpected = &sacloud.ContainerRegistry{
@@ -130,7 +130,7 @@ var (
 		Description:  createContainerRegistryParam.Description,
 		Tags:         createContainerRegistryParam.Tags,
 		Availability: types.Availabilities.Available,
-		Visibility:   createContainerRegistryParam.Visibility,
+		AccessLevel:  createContainerRegistryParam.AccessLevel,
 		NamePrefix:   createContainerRegistryParam.NamePrefix,
 		FQDN:         createContainerRegistryParam.NamePrefix + ".sakuracr.jp",
 	}
@@ -139,7 +139,7 @@ var (
 		Description: "desc-upd",
 		Tags:        []string{"tag1-upd", "tag2-upd"},
 		IconID:      testIconID,
-		Visibility:  types.ContainerRegistryVisibilities.ReadOnly,
+		AccessLevel: types.ContainerRegistryAccessLevels.ReadOnly,
 	}
 	updateContainerRegistryExpected = &sacloud.ContainerRegistry{
 		Name:         updateContainerRegistryParam.Name,
@@ -147,13 +147,13 @@ var (
 		Tags:         updateContainerRegistryParam.Tags,
 		Availability: types.Availabilities.Available,
 		IconID:       testIconID,
-		Visibility:   updateContainerRegistryParam.Visibility,
+		AccessLevel:  updateContainerRegistryParam.AccessLevel,
 		NamePrefix:   createContainerRegistryParam.NamePrefix,
 		FQDN:         createContainerRegistryParam.NamePrefix + ".sakuracr.jp",
 	}
 
 	updateContainerRegistrySettingsParam = &sacloud.ContainerRegistryUpdateSettingsRequest{
-		Visibility: types.ContainerRegistryVisibilities.None,
+		AccessLevel: types.ContainerRegistryAccessLevels.None,
 	}
 	updateContainerRegistrySettingsExpected = &sacloud.ContainerRegistry{
 		Name:         updateContainerRegistryParam.Name,
@@ -161,7 +161,7 @@ var (
 		Tags:         updateContainerRegistryParam.Tags,
 		Availability: types.Availabilities.Available,
 		IconID:       testIconID,
-		Visibility:   updateContainerRegistrySettingsParam.Visibility,
+		AccessLevel:  updateContainerRegistrySettingsParam.AccessLevel,
 		NamePrefix:   createContainerRegistryParam.NamePrefix,
 		FQDN:         createContainerRegistryParam.NamePrefix + ".sakuracr.jp",
 	}
