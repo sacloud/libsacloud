@@ -71,7 +71,7 @@ func (b *Builder) Validate(ctx context.Context, zone string) error {
 	return nil
 }
 
-// Build モバイルゲートウェイの作成や設定をまとめて行う
+// Build データベースの作成や設定をまとめて行う
 func (b *Builder) Build(ctx context.Context, zone string) (*sacloud.Database, error) {
 	b.init()
 
