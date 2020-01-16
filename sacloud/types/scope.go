@@ -30,3 +30,9 @@ var Scopes = &struct {
 	Shared: EScope("shared"),
 	User:   EScope("user"),
 }
+
+// ScopeStrings Scopeに指定できる有効な文字列
+var ScopeStrings = []string{
+	Scopes.Shared.String(),
+	Scopes.User.String(),
+}

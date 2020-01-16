@@ -60,8 +60,8 @@ var SimpleMonitorProtocols = struct {
 	SSLCertificate: ESimpleMonitorProtocol("sslcertificate"),
 }
 
-// SimpleMonitorProtocolsStrings シンプル監視プロトコルの文字列リスト
-var SimpleMonitorProtocolsStrings = []string{
+// SimpleMonitorProtocolStrings シンプル監視プロトコルの文字列リスト
+var SimpleMonitorProtocolStrings = []string{
 	SimpleMonitorProtocols.HTTP.String(),
 	SimpleMonitorProtocols.HTTPS.String(),
 	SimpleMonitorProtocols.Ping.String(),

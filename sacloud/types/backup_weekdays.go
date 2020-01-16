@@ -61,8 +61,8 @@ func SortBackupSpanWeekdays(weekdays []EBackupSpanWeekday) {
 	})
 }
 
-// ValidAutoBackupWeekdaysInString 有効なバックアップ取得曜日のリスト(文字列)
-var ValidAutoBackupWeekdaysInString = []string{
+// BackupWeekdayStrings 有効なバックアップ取得曜日のリスト(文字列)
+var BackupWeekdayStrings = []string{
 	BackupSpanWeekdays.Sunday.String(),
 	BackupSpanWeekdays.Monday.String(),
 	BackupSpanWeekdays.Tuesday.String(),
