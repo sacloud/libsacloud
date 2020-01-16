@@ -18,3 +18,6 @@ const (
 	PrivateHostClassDynamic = "dynamic"    // 標準
 	PrivateHostClassWindows = "ms_windows" // Windows
 )
+
+// PrivateHostClasses PrivateHost.Classに指定できる有効な文字列
+var PrivateHostClasses = []string{PrivateHostClassDynamic, PrivateHostClassWindows}

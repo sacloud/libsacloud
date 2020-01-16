@@ -42,14 +42,12 @@ var GSLBHealthCheckProtocols = struct {
 	Ping:    EGSLBHealthCheckProtocol("ping"),
 }
 
-// GSLBHealthCheckProtocolsStrings 有効なGSLB監視プロトコルを示す文字列のリスト
+// GSLBHealthCheckProtocolStrings 有効なGSLB監視プロトコルを示す文字列のリスト
 //
 // Unknown(空文字)は含まない
-func GSLBHealthCheckProtocolsStrings() []string {
-	return []string{
-		GSLBHealthCheckProtocols.HTTP.String(),
-		GSLBHealthCheckProtocols.HTTPS.String(),
-		GSLBHealthCheckProtocols.TCP.String(),
-		GSLBHealthCheckProtocols.Ping.String(),
-	}
+var GSLBHealthCheckProtocolStrings = []string{
+	GSLBHealthCheckProtocols.HTTP.String(),
+	GSLBHealthCheckProtocols.HTTPS.String(),
+	GSLBHealthCheckProtocols.TCP.String(),
+	GSLBHealthCheckProtocols.Ping.String(),
 }

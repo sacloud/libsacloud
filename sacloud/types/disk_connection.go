@@ -34,11 +34,13 @@ var (
 		IDE:    EDiskConnection("ide"),
 	}
 
+	// DiskConnectionMap 文字列とDiskConnectionのマップ
 	DiskConnectionMap = map[string]EDiskConnection{
 		DiskConnections.VirtIO.String(): DiskConnections.VirtIO,
 		DiskConnections.IDE.String():    DiskConnections.IDE,
 	}
 
+	// DiskConnectionStrings DiskConnectionに指定できる有効な文字列
 	DiskConnectionStrings = []string{
 		DiskConnections.VirtIO.String(),
 		DiskConnections.IDE.String(),
