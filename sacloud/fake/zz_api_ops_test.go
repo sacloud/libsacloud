@@ -116,6 +116,10 @@ func TestResourceOps(t *testing.T) {
 		t.Fatalf("%s is not sacloud.LoadBalancer", op)
 	}
 
+	if op, ok := NewLocalRouterOp().(sacloud.LocalRouterAPI); !ok {
+		t.Fatalf("%s is not sacloud.LocalRouter", op)
+	}
+
 	if op, ok := NewMobileGatewayOp().(sacloud.MobileGatewayAPI); !ok {
 		t.Fatalf("%s is not sacloud.MobileGateway", op)
 	}

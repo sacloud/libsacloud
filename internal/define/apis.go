@@ -55,6 +55,7 @@ func init() {
 	APIs.Define(licenseAPI)           // ライセンス
 	APIs.Define(licenseInfoAPI)       // ライセンスプラン
 	APIs.Define(loadBalancerAPI)      // ロードバランサ
+	APIs.Define(localRouterAPI)       // ローカルルータAPI
 	APIs.Define(mobileGatewayAPI)     // モバイルゲートウェイ
 	APIs.Define(nfsAPI)               // NFS
 	APIs.Define(noteAPI)              // スタートアップスクリプト

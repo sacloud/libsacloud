@@ -214,6 +214,26 @@ const (
             "connectionsPerSec": 22.0 
         }
     }`
+
+	testMonitorValuesLocalRouterJSON = `
+    {
+        "1970-01-01T00:00:01Z": {
+            "receiveBytesPerSec": 10.0, 
+            "sendBytesPerSec": 20.0 
+        },
+        "1970-01-01T00:00:02Z": {
+            "receiveBytesPerSec": 11.0, 
+            "sendBytesPerSec": 21.0 
+        },
+        "1970-01-01T00:00:03Z": {
+            "receiveBytesPerSec": null, 
+            "sendBytesPerSec": null 
+        },
+        "1970-01-01T00:00:04Z": {
+            "receiveBytesPerSec": 12.0, 
+            "sendBytesPerSec": 22.0 
+        }
+    }`
 )
 
 func TestMonitorValues_UnmarshalJSON(t *testing.T) {
@@ -424,6 +444,28 @@ func TestMonitorValues_UnmarshalJSON(t *testing.T) {
 						Time:              time.Unix(4, 0).UTC(),
 						ActiveConnections: float64(12.0),
 						ConnectionsPerSec: float64(22.0),
+					},
+				},
+			},
+		},
+		{
+			input: testMonitorValuesLocalRouterJSON,
+			expect: MonitorValues{
+				LocalRouter: MonitorLocalRouterValues{
+					{
+						Time:               time.Unix(1, 0).UTC(),
+						ReceiveBytesPerSec: float64(10.0),
+						SendBytesPerSec:    float64(20.0),
+					},
+					{
+						Time:               time.Unix(2, 0).UTC(),
+						ReceiveBytesPerSec: float64(11.0),
+						SendBytesPerSec:    float64(21.0),
+					},
+					{
+						Time:               time.Unix(4, 0).UTC(),
+						ReceiveBytesPerSec: float64(12.0),
+						SendBytesPerSec:    float64(22.0),
 					},
 				},
 			},
