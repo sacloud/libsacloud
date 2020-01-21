@@ -1435,6 +1435,126 @@ func (f *fieldsDef) ProxyLBTimeout() *dsl.FieldDesc {
 	}
 }
 
+func (f *fieldsDef) LocalRouterSecretKeys() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "SecretKeys",
+		Type: meta.TypeStringSlice,
+		Tags: &dsl.FieldTags{
+			MapConv: "Status.SecretKeys",
+		},
+	}
+}
+
+func (f *fieldsDef) LocalRouterSwitch() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "Switch",
+		Type: &dsl.Model{
+			Name: "LocalRouterSwitch",
+			Fields: []*dsl.FieldDesc{
+				{
+					Name: "Code",
+					Type: meta.TypeString,
+				},
+				{
+					Name: "Category",
+					Type: meta.TypeString,
+				},
+				{
+					Name: "ZoneID",
+					Type: meta.TypeString,
+				},
+			},
+		},
+		Tags: &dsl.FieldTags{
+			MapConv: "Settings.LocalRouter.Switch,recursive",
+		},
+	}
+}
+
+func (f *fieldsDef) LocalRouterInterface() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "Interface",
+		Type: &dsl.Model{
+			Name: "LocalRouterInterface",
+			Fields: []*dsl.FieldDesc{
+				{
+					Name: "VirtualIPAddress",
+					Type: meta.TypeString,
+				},
+				{
+					Name: "IPAddress",
+					Type: meta.TypeStringSlice,
+				},
+				{
+					Name: "NetworkMaskLen",
+					Type: meta.TypeInt,
+				},
+				{
+					Name: "VRID",
+					Type: meta.TypeInt,
+				},
+			},
+		},
+		Tags: &dsl.FieldTags{
+			MapConv: "Settings.LocalRouter.Interface,recursive",
+		},
+	}
+}
+
+func (f *fieldsDef) LocalRouterPeers() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "Peers",
+		Type: &dsl.Model{
+			Name:    "LocalRouterPeer",
+			IsArray: true,
+			Fields: []*dsl.FieldDesc{
+				{
+					Name: "ID",
+					Type: meta.TypeID,
+				},
+				{
+					Name: "SecretKey",
+					Type: meta.TypeString,
+				},
+				{
+					Name: "Enabled",
+					Type: meta.TypeFlag,
+				},
+				{
+					Name: "Description",
+					Type: meta.TypeString,
+				},
+			},
+		},
+		Tags: &dsl.FieldTags{
+			MapConv: "Settings.LocalRouter.[]Peers,recursive",
+		},
+	}
+}
+
+func (f *fieldsDef) LocalRouterStaticRoutes() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "StaticRoutes",
+		Type: &dsl.Model{
+			Name:    "LocalRouterStaticRoute",
+			IsArray: true,
+			Fields: []*dsl.FieldDesc{
+				{
+					Name: "Prefix",
+					Type: meta.TypeString,
+				},
+				{
+					Name: "NextHop",
+					Type: meta.TypeString,
+				},
+			},
+		},
+		Tags: &dsl.FieldTags{
+			MapConv: "Settings.LocalRouter.[]StaticRoutes,recursive",
+		},
+	}
+}
+
 func (f *fieldsDef) ContainerRegistrySubDomainLabel() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "SubDomainLabel",
@@ -2348,6 +2468,28 @@ func (f *fieldsDef) MonitorActiveConnections() *dsl.FieldDesc {
 func (f *fieldsDef) MonitorConnectionsPerSec() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "ConnectionsPerSec",
+		Type: meta.TypeFloat64,
+		Tags: &dsl.FieldTags{
+			MapConv: ",omitempty",
+			JSON:    ",omitempty",
+		},
+	}
+}
+
+func (f *fieldsDef) MonitorLocalRouterReceiveBytesPerSec() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "ReceiveBytesPerSec",
+		Type: meta.TypeFloat64,
+		Tags: &dsl.FieldTags{
+			MapConv: ",omitempty",
+			JSON:    ",omitempty",
+		},
+	}
+}
+
+func (f *fieldsDef) MonitorLocalRouterSendBytesPerSec() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "SendBytesPerSec",
 		Type: meta.TypeFloat64,
 		Tags: &dsl.FieldTags{
 			MapConv: ",omitempty",

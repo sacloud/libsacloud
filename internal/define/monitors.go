@@ -253,3 +253,28 @@ func (m *monitorsDef) connectionModel() *dsl.Model {
 		NakedType: meta.Static(naked.MonitorValues{}),
 	}
 }
+
+func (m *monitorsDef) localRouterModel() *dsl.Model {
+	return &dsl.Model{
+		Name: "LocalRouterActivity",
+		Fields: []*dsl.FieldDesc{
+			{
+				Name: "Values",
+				Type: &dsl.Model{
+					Name:      "MonitorLocalRouterValue",
+					NakedType: meta.Static(naked.MonitorLocalRouterValue{}),
+					IsArray:   true,
+					Fields: []*dsl.FieldDesc{
+						fields.MonitorTime(),
+						fields.MonitorLocalRouterReceiveBytesPerSec(),
+						fields.MonitorLocalRouterSendBytesPerSec(),
+					},
+				},
+				Tags: &dsl.FieldTags{
+					MapConv: "[]LocalRouter",
+				},
+			},
+		},
+		NakedType: meta.Static(naked.MonitorValues{}),
+	}
+}

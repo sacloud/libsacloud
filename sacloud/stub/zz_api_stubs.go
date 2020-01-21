@@ -2461,6 +2461,138 @@ func (s *LoadBalancerStub) Status(ctx context.Context, zone string, id types.ID)
 }
 
 /*************************************************
+* LocalRouterStub
+*************************************************/
+
+// LocalRouterFindStubResult is expected values of the Find operation
+type LocalRouterFindStubResult struct {
+	Values *sacloud.LocalRouterFindResult
+	Err    error
+}
+
+// LocalRouterCreateStubResult is expected values of the Create operation
+type LocalRouterCreateStubResult struct {
+	LocalRouter *sacloud.LocalRouter
+	Err         error
+}
+
+// LocalRouterReadStubResult is expected values of the Read operation
+type LocalRouterReadStubResult struct {
+	LocalRouter *sacloud.LocalRouter
+	Err         error
+}
+
+// LocalRouterUpdateStubResult is expected values of the Update operation
+type LocalRouterUpdateStubResult struct {
+	LocalRouter *sacloud.LocalRouter
+	Err         error
+}
+
+// LocalRouterUpdateSettingsStubResult is expected values of the UpdateSettings operation
+type LocalRouterUpdateSettingsStubResult struct {
+	LocalRouter *sacloud.LocalRouter
+	Err         error
+}
+
+// LocalRouterDeleteStubResult is expected values of the Delete operation
+type LocalRouterDeleteStubResult struct {
+	Err error
+}
+
+// LocalRouterHealthStatusStubResult is expected values of the HealthStatus operation
+type LocalRouterHealthStatusStubResult struct {
+	LocalRouterHealth *sacloud.LocalRouterHealth
+	Err               error
+}
+
+// LocalRouterMonitorLocalRouterStubResult is expected values of the MonitorLocalRouter operation
+type LocalRouterMonitorLocalRouterStubResult struct {
+	LocalRouterActivity *sacloud.LocalRouterActivity
+	Err                 error
+}
+
+// LocalRouterStub is for trace LocalRouterOp operations
+type LocalRouterStub struct {
+	FindStubResult               *LocalRouterFindStubResult
+	CreateStubResult             *LocalRouterCreateStubResult
+	ReadStubResult               *LocalRouterReadStubResult
+	UpdateStubResult             *LocalRouterUpdateStubResult
+	UpdateSettingsStubResult     *LocalRouterUpdateSettingsStubResult
+	DeleteStubResult             *LocalRouterDeleteStubResult
+	HealthStatusStubResult       *LocalRouterHealthStatusStubResult
+	MonitorLocalRouterStubResult *LocalRouterMonitorLocalRouterStubResult
+}
+
+// NewLocalRouterStub creates new LocalRouterStub instance
+func NewLocalRouterStub(caller sacloud.APICaller) sacloud.LocalRouterAPI {
+	return &LocalRouterStub{}
+}
+
+// Find is API call with trace log
+func (s *LocalRouterStub) Find(ctx context.Context, conditions *sacloud.FindCondition) (*sacloud.LocalRouterFindResult, error) {
+	if s.FindStubResult == nil {
+		log.Fatal("LocalRouterStub.FindStubResult is not set")
+	}
+	return s.FindStubResult.Values, s.FindStubResult.Err
+}
+
+// Create is API call with trace log
+func (s *LocalRouterStub) Create(ctx context.Context, param *sacloud.LocalRouterCreateRequest) (*sacloud.LocalRouter, error) {
+	if s.CreateStubResult == nil {
+		log.Fatal("LocalRouterStub.CreateStubResult is not set")
+	}
+	return s.CreateStubResult.LocalRouter, s.CreateStubResult.Err
+}
+
+// Read is API call with trace log
+func (s *LocalRouterStub) Read(ctx context.Context, id types.ID) (*sacloud.LocalRouter, error) {
+	if s.ReadStubResult == nil {
+		log.Fatal("LocalRouterStub.ReadStubResult is not set")
+	}
+	return s.ReadStubResult.LocalRouter, s.ReadStubResult.Err
+}
+
+// Update is API call with trace log
+func (s *LocalRouterStub) Update(ctx context.Context, id types.ID, param *sacloud.LocalRouterUpdateRequest) (*sacloud.LocalRouter, error) {
+	if s.UpdateStubResult == nil {
+		log.Fatal("LocalRouterStub.UpdateStubResult is not set")
+	}
+	return s.UpdateStubResult.LocalRouter, s.UpdateStubResult.Err
+}
+
+// UpdateSettings is API call with trace log
+func (s *LocalRouterStub) UpdateSettings(ctx context.Context, id types.ID, param *sacloud.LocalRouterUpdateSettingsRequest) (*sacloud.LocalRouter, error) {
+	if s.UpdateSettingsStubResult == nil {
+		log.Fatal("LocalRouterStub.UpdateSettingsStubResult is not set")
+	}
+	return s.UpdateSettingsStubResult.LocalRouter, s.UpdateSettingsStubResult.Err
+}
+
+// Delete is API call with trace log
+func (s *LocalRouterStub) Delete(ctx context.Context, id types.ID) error {
+	if s.DeleteStubResult == nil {
+		log.Fatal("LocalRouterStub.DeleteStubResult is not set")
+	}
+	return s.DeleteStubResult.Err
+}
+
+// HealthStatus is API call with trace log
+func (s *LocalRouterStub) HealthStatus(ctx context.Context, id types.ID) (*sacloud.LocalRouterHealth, error) {
+	if s.HealthStatusStubResult == nil {
+		log.Fatal("LocalRouterStub.HealthStatusStubResult is not set")
+	}
+	return s.HealthStatusStubResult.LocalRouterHealth, s.HealthStatusStubResult.Err
+}
+
+// MonitorLocalRouter is API call with trace log
+func (s *LocalRouterStub) MonitorLocalRouter(ctx context.Context, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.LocalRouterActivity, error) {
+	if s.MonitorLocalRouterStubResult == nil {
+		log.Fatal("LocalRouterStub.MonitorLocalRouterStubResult is not set")
+	}
+	return s.MonitorLocalRouterStubResult.LocalRouterActivity, s.MonitorLocalRouterStubResult.Err
+}
+
+/*************************************************
 * MobileGatewayStub
 *************************************************/
 
