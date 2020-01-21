@@ -23922,19 +23922,20 @@ func (o *SubnetIPAddress) SetIPAddress(v string) {
 
 // Switch represents API parameter/response structure
 type Switch struct {
-	ID             types.ID
-	Name           string `validate:"required"`
-	Description    string `validate:"min=0,max=512"`
-	Tags           types.Tags
-	IconID         types.ID `mapconv:"Icon.ID"`
-	CreatedAt      time.Time
-	ModifiedAt     time.Time
-	Scope          types.EScope
-	ServerCount    int
-	NetworkMaskLen int             `mapconv:"UserSubnet.NetworkMaskLen" validate:"min=1,max=32"`
-	DefaultRoute   string          `mapconv:"UserSubnet.DefaultRoute" validate:"ipv4"`
-	Subnets        []*SwitchSubnet `json:",omitempty" mapconv:"[]Subnets,omitempty,recursive"`
-	BridgeID       types.ID        `mapconv:"Bridge.ID,omitempty"`
+	ID                 types.ID
+	Name               string `validate:"required"`
+	Description        string `validate:"min=0,max=512"`
+	Tags               types.Tags
+	IconID             types.ID `mapconv:"Icon.ID"`
+	CreatedAt          time.Time
+	ModifiedAt         time.Time
+	Scope              types.EScope
+	ServerCount        int
+	NetworkMaskLen     int             `mapconv:"UserSubnet.NetworkMaskLen" validate:"min=1,max=32"`
+	DefaultRoute       string          `mapconv:"UserSubnet.DefaultRoute" validate:"ipv4"`
+	Subnets            []*SwitchSubnet `json:",omitempty" mapconv:"[]Subnets,omitempty,recursive"`
+	BridgeID           types.ID        `mapconv:"Bridge.ID,omitempty"`
+	HybridConnectionID types.ID        `mapconv:"HybridConnection.ID,omitempty"`
 }
 
 // Validate validates by field tags
@@ -23945,33 +23946,35 @@ func (o *Switch) Validate() error {
 // setDefaults implements sacloud.argumentDefaulter
 func (o *Switch) setDefaults() interface{} {
 	return &struct {
-		ID             types.ID
-		Name           string `validate:"required"`
-		Description    string `validate:"min=0,max=512"`
-		Tags           types.Tags
-		IconID         types.ID `mapconv:"Icon.ID"`
-		CreatedAt      time.Time
-		ModifiedAt     time.Time
-		Scope          types.EScope
-		ServerCount    int
-		NetworkMaskLen int             `mapconv:"UserSubnet.NetworkMaskLen" validate:"min=1,max=32"`
-		DefaultRoute   string          `mapconv:"UserSubnet.DefaultRoute" validate:"ipv4"`
-		Subnets        []*SwitchSubnet `json:",omitempty" mapconv:"[]Subnets,omitempty,recursive"`
-		BridgeID       types.ID        `mapconv:"Bridge.ID,omitempty"`
+		ID                 types.ID
+		Name               string `validate:"required"`
+		Description        string `validate:"min=0,max=512"`
+		Tags               types.Tags
+		IconID             types.ID `mapconv:"Icon.ID"`
+		CreatedAt          time.Time
+		ModifiedAt         time.Time
+		Scope              types.EScope
+		ServerCount        int
+		NetworkMaskLen     int             `mapconv:"UserSubnet.NetworkMaskLen" validate:"min=1,max=32"`
+		DefaultRoute       string          `mapconv:"UserSubnet.DefaultRoute" validate:"ipv4"`
+		Subnets            []*SwitchSubnet `json:",omitempty" mapconv:"[]Subnets,omitempty,recursive"`
+		BridgeID           types.ID        `mapconv:"Bridge.ID,omitempty"`
+		HybridConnectionID types.ID        `mapconv:"HybridConnection.ID,omitempty"`
 	}{
-		ID:             o.GetID(),
-		Name:           o.GetName(),
-		Description:    o.GetDescription(),
-		Tags:           o.GetTags(),
-		IconID:         o.GetIconID(),
-		CreatedAt:      o.GetCreatedAt(),
-		ModifiedAt:     o.GetModifiedAt(),
-		Scope:          o.GetScope(),
-		ServerCount:    o.GetServerCount(),
-		NetworkMaskLen: o.GetNetworkMaskLen(),
-		DefaultRoute:   o.GetDefaultRoute(),
-		Subnets:        o.GetSubnets(),
-		BridgeID:       o.GetBridgeID(),
+		ID:                 o.GetID(),
+		Name:               o.GetName(),
+		Description:        o.GetDescription(),
+		Tags:               o.GetTags(),
+		IconID:             o.GetIconID(),
+		CreatedAt:          o.GetCreatedAt(),
+		ModifiedAt:         o.GetModifiedAt(),
+		Scope:              o.GetScope(),
+		ServerCount:        o.GetServerCount(),
+		NetworkMaskLen:     o.GetNetworkMaskLen(),
+		DefaultRoute:       o.GetDefaultRoute(),
+		Subnets:            o.GetSubnets(),
+		BridgeID:           o.GetBridgeID(),
+		HybridConnectionID: o.GetHybridConnectionID(),
 	}
 }
 
@@ -24143,6 +24146,16 @@ func (o *Switch) GetBridgeID() types.ID {
 // SetBridgeID sets value to BridgeID
 func (o *Switch) SetBridgeID(v types.ID) {
 	o.BridgeID = v
+}
+
+// GetHybridConnectionID returns value of HybridConnectionID
+func (o *Switch) GetHybridConnectionID() types.ID {
+	return o.HybridConnectionID
+}
+
+// SetHybridConnectionID sets value to HybridConnectionID
+func (o *Switch) SetHybridConnectionID(v types.ID) {
+	o.HybridConnectionID = v
 }
 
 /*************************************************

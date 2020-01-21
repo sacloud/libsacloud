@@ -391,6 +391,16 @@ func (f *fieldsDef) BridgeID() *dsl.FieldDesc {
 	}
 }
 
+func (f *fieldsDef) HybridConnectionID() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "HybridConnectionID",
+		Type: meta.TypeID,
+		Tags: &dsl.FieldTags{
+			MapConv: "HybridConnection.ID,omitempty",
+		},
+	}
+}
+
 func (f *fieldsDef) SwitchID() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "SwitchID",

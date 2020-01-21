@@ -113,6 +113,7 @@ var (
 				},
 			},
 			fields.BridgeID(),
+			fields.HybridConnectionID(),
 		},
 	}
 
