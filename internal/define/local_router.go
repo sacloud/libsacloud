@@ -159,7 +159,7 @@ var (
 					},
 				},
 				Tags: &dsl.FieldTags{
-					MapConv: "LocalRouter.[]Peers,recursive",
+					MapConv: "[]Peers,recursive",
 				},
 			},
 		},
