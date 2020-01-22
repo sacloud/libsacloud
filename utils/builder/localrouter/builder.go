@@ -67,12 +67,22 @@ func (b *Builder) Build(ctx context.Context) (*sacloud.LocalRouter, error) {
 		return nil, err
 	}
 
-	if len(b.Peers) > 0 || len(b.StaticRoutes) > 0 {
+	localRouter, err = b.Client.LocalRouter.UpdateSettings(ctx, localRouter.ID, &sacloud.LocalRouterUpdateSettingsRequest{
+		Switch:       b.Switch,
+		Interface:    b.Interface,
+		StaticRoutes: b.StaticRoutes,
+		SettingsHash: localRouter.SettingsHash,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	if len(b.Peers) > 0 {
 		localRouter, err = b.Client.LocalRouter.UpdateSettings(ctx, localRouter.ID, &sacloud.LocalRouterUpdateSettingsRequest{
 			Switch:       localRouter.Switch,
 			Interface:    localRouter.Interface,
+			StaticRoutes: localRouter.StaticRoutes,
 			Peers:        b.Peers,
-			StaticRoutes: b.StaticRoutes,
 			SettingsHash: localRouter.SettingsHash,
 		})
 		if err != nil {
@@ -95,12 +105,16 @@ func (b *Builder) Update(ctx context.Context, id types.ID) (*sacloud.LocalRouter
 		return nil, err
 	}
 
-	localRouter, err = b.Client.LocalRouter.UpdateSettings(ctx, id, &sacloud.LocalRouterUpdateSettingsRequest{
+	localRouter, err = b.Client.LocalRouter.Update(ctx, id, &sacloud.LocalRouterUpdateRequest{
 		Switch:       b.Switch,
 		Interface:    b.Interface,
 		Peers:        b.Peers,
 		StaticRoutes: b.StaticRoutes,
 		SettingsHash: localRouter.SettingsHash,
+		Name:         b.Name,
+		Description:  b.Description,
+		Tags:         b.Tags,
+		IconID:       b.IconID,
 	})
 	if err != nil {
 		return nil, err
