@@ -59,7 +59,6 @@ func TestDatabaseCRUD(t *testing.T) {
 	//newItem.Remark.Zone = &sacloud.Resource{ID: 21001}
 
 	item, err := api.Create(newItem)
-
 	assert.NoError(t, err)
 	assert.NotEmpty(t, item)
 
