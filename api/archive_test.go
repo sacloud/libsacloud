@@ -380,6 +380,24 @@ func TestArchiveAPI_CanDiskEdit(t *testing.T) {
 
 }
 
+// TestArchiveAPI_CanEditDiskWithvSRX vSRXパブリックアーカイブでのディスクの修正API可否判定テスト
+//
+// vSRXはostypeに存在しないため別枠でテストする
+func TestArchiveAPI_CanEditDiskWithvSRX(t *testing.T) {
+	api := client.Archive
+	searched, err := api.Find()
+	assert.NoError(t, err)
+
+	for _, archive := range searched.Archives {
+		if archive.HasTag("pkg-vsrx") {
+			t.Logf("Target archive: ID:%d Name:%s", archive.ID, archive.Name)
+			editable, err := api.CanEditDisk(archive.ID)
+			assert.NoError(t, err)
+			assert.False(t, editable)
+		}
+	}
+}
+
 func initArchive() func() {
 	cleanupArchive()
 	return cleanupArchive
