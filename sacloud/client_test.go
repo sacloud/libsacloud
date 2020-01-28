@@ -18,6 +18,7 @@ import (
 	"context"
 	"net/http"
 	"net/http/httptest"
+	"sync"
 	"testing"
 	"time"
 
@@ -33,8 +34,8 @@ func TestClient_Do_Backoff(t *testing.T) {
 
 	client := &Client{
 		RetryMax:     7,
-		RetryWaitMin: 100 * time.Millisecond,
-		RetryWaitMax: 800 * time.Millisecond,
+		RetryWaitMin: 10 * time.Millisecond,
+		RetryWaitMax: 320 * time.Millisecond,
 	}
 	client.Do(context.Background(), http.MethodGet, dummyServer.URL, nil) // nolint
 
@@ -42,7 +43,7 @@ func TestClient_Do_Backoff(t *testing.T) {
 	var previous time.Time
 	for i, ct := range h.called {
 		if !previous.IsZero() {
-			diff := ct.Sub(previous).Truncate(100 * time.Millisecond)
+			diff := ct.Sub(previous).Truncate(10 * time.Millisecond)
 			t.Logf("backoff: retry-%d -> %0.2fs waited\n", i, diff.Seconds())
 			require.True(t, client.RetryWaitMin <= diff && diff <= client.RetryWaitMax)
 		}
@@ -53,9 +54,12 @@ func TestClient_Do_Backoff(t *testing.T) {
 type dummyHandler struct {
 	called       []time.Time
 	responseCode int
+	mu           sync.Mutex
 }
 
 func (s *dummyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
 	s.called = append(s.called, time.Now())
 	w.WriteHeader(s.responseCode)
 }
