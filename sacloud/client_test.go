@@ -18,48 +18,18 @@ import (
 	"context"
 	"net/http"
 	"net/http/httptest"
-	"sync"
 	"testing"
 	"time"
 
 	"github.com/stretchr/testify/require"
 )
 
-func TestClient_Do_Backoff(t *testing.T) {
-	h := &dummyHandler{
-		responseCode: http.StatusServiceUnavailable,
-	}
-	dummyServer := httptest.NewServer(h)
-	defer dummyServer.Close()
-
-	client := &Client{
-		RetryMax:     7,
-		RetryWaitMin: 20 * time.Millisecond,
-		RetryWaitMax: 640 * time.Millisecond,
-	}
-	client.Do(context.Background(), http.MethodGet, dummyServer.URL, nil) // nolint
-
-	require.Len(t, h.called, client.RetryMax+1) // initial call + RetryMax
-	var previous time.Time
-	for i, ct := range h.called {
-		if !previous.IsZero() {
-			diff := ct.Sub(previous).Truncate(10 * time.Millisecond)
-			t.Logf("backoff: retry-%d -> %0.2fs waited\n", i, diff.Seconds())
-			require.True(t, client.RetryWaitMin <= diff && diff <= client.RetryWaitMax)
-		}
-		previous = ct
-	}
-}
-
 type dummyHandler struct {
 	called       []time.Time
 	responseCode int
-	mu           sync.Mutex
 }
 
 func (s *dummyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	s.mu.Lock()
-	defer s.mu.Unlock()
 	s.called = append(s.called, time.Now())
 	w.WriteHeader(s.responseCode)
 }
