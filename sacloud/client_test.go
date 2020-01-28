@@ -18,6 +18,7 @@ import (
 	"context"
 	"net/http"
 	"net/http/httptest"
+	"sync"
 	"testing"
 	"time"
 
@@ -33,8 +34,8 @@ func TestClient_Do_Backoff(t *testing.T) {
 
 	client := &Client{
 		RetryMax:     7,
-		RetryWaitMin: 10 * time.Millisecond,
-		RetryWaitMax: 320 * time.Millisecond,
+		RetryWaitMin: 20 * time.Millisecond,
+		RetryWaitMax: 640 * time.Millisecond,
 	}
 	client.Do(context.Background(), http.MethodGet, dummyServer.URL, nil) // nolint
 
@@ -53,9 +54,12 @@ func TestClient_Do_Backoff(t *testing.T) {
 type dummyHandler struct {
 	called       []time.Time
 	responseCode int
+	mu           sync.Mutex
 }
 
 func (s *dummyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
 	s.called = append(s.called, time.Now())
 	w.WriteHeader(s.responseCode)
 }
