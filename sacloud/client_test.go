@@ -33,8 +33,8 @@ func TestClient_Do_Backoff(t *testing.T) {
 
 	client := &Client{
 		RetryMax:     7,
-		RetryWaitMin: 10 * time.Millisecond,
-		RetryWaitMax: 320 * time.Millisecond,
+		RetryWaitMin: 100 * time.Millisecond,
+		RetryWaitMax: 800 * time.Millisecond,
 	}
 	client.Do(context.Background(), http.MethodGet, dummyServer.URL, nil) // nolint
 
@@ -42,7 +42,7 @@ func TestClient_Do_Backoff(t *testing.T) {
 	var previous time.Time
 	for i, ct := range h.called {
 		if !previous.IsZero() {
-			diff := ct.Sub(previous).Truncate(10 * time.Millisecond)
+			diff := ct.Sub(previous).Truncate(100 * time.Millisecond)
 			t.Logf("backoff: retry-%d -> %0.2fs waited\n", i, diff.Seconds())
 			require.True(t, client.RetryWaitMin <= diff && diff <= client.RetryWaitMax)
 		}
