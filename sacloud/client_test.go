@@ -34,8 +34,8 @@ func TestClient_Do_Backoff(t *testing.T) {
 
 	client := &Client{
 		RetryMax:     7,
-		RetryWaitMin: 10 * time.Millisecond,
-		RetryWaitMax: 320 * time.Millisecond,
+		RetryWaitMin: 20 * time.Millisecond,
+		RetryWaitMax: 640 * time.Millisecond,
 	}
 	client.Do(context.Background(), http.MethodGet, dummyServer.URL, nil) // nolint
 
