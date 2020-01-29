@@ -30,8 +30,23 @@ type dummyHandler struct {
 }
 
 func (s *dummyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	s.called = append(s.called, time.Now())
+	if s.responseCode == http.StatusMovedPermanently {
+		w.Header().Set("Location", "/index.html")
+	}
 	w.WriteHeader(s.responseCode)
+	switch s.responseCode {
+	case http.StatusMultipleChoices,
+		http.StatusMovedPermanently,
+		http.StatusFound,
+		http.StatusSeeOther,
+		http.StatusNotModified,
+		http.StatusUseProxy,
+		http.StatusTemporaryRedirect,
+		http.StatusPermanentRedirect:
+		s.responseCode = http.StatusOK
+	default:
+		s.called = append(s.called, time.Now())
+	}
 }
 
 func (s *dummyHandler) isRetried() bool {
@@ -106,6 +121,6 @@ func TestClient_RetryByStatusCode(t *testing.T) {
 		dummyServer.Close()
 
 		require.Equal(t, tt.shouldRetry, h.isRetried(),
-			"got unexpected retry status with status[%d]: expected:%t got:%t", h.responseCode, tt.shouldRetry, h.isRetried())
+			"got unexpected retry status with status[%d]: expected:%t got:%t", tt.responseCode, tt.shouldRetry, h.isRetried())
 	}
 }
