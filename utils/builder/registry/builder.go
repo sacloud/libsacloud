@@ -41,7 +41,7 @@ type Builder struct {
 type User struct {
 	UserName   string
 	Password   string
-	Permission types.EContainerRegistryAccessLevel
+	Permission types.EContainerRegistryPermission
 }
 
 // Validate 値の検証

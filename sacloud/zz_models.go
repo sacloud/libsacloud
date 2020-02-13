@@ -3832,7 +3832,7 @@ func (o *ContainerRegistryUsers) SetUsers(v []*ContainerRegistryUser) {
 // ContainerRegistryUser represents API parameter/response structure
 type ContainerRegistryUser struct {
 	UserName   string
-	Permission types.EContainerRegistryAccessLevel
+	Permission types.EContainerRegistryPermission
 }
 
 // Validate validates by field tags
@@ -3844,7 +3844,7 @@ func (o *ContainerRegistryUser) Validate() error {
 func (o *ContainerRegistryUser) setDefaults() interface{} {
 	return &struct {
 		UserName   string
-		Permission types.EContainerRegistryAccessLevel
+		Permission types.EContainerRegistryPermission
 	}{
 		UserName:   o.GetUserName(),
 		Permission: o.GetPermission(),
@@ -3862,12 +3862,12 @@ func (o *ContainerRegistryUser) SetUserName(v string) {
 }
 
 // GetPermission returns value of Permission
-func (o *ContainerRegistryUser) GetPermission() types.EContainerRegistryAccessLevel {
+func (o *ContainerRegistryUser) GetPermission() types.EContainerRegistryPermission {
 	return o.Permission
 }
 
 // SetPermission sets value to Permission
-func (o *ContainerRegistryUser) SetPermission(v types.EContainerRegistryAccessLevel) {
+func (o *ContainerRegistryUser) SetPermission(v types.EContainerRegistryPermission) {
 	o.Permission = v
 }
 
@@ -3879,7 +3879,7 @@ func (o *ContainerRegistryUser) SetPermission(v types.EContainerRegistryAccessLe
 type ContainerRegistryUserCreateRequest struct {
 	UserName   string
 	Password   string
-	Permission types.EContainerRegistryAccessLevel
+	Permission types.EContainerRegistryPermission
 }
 
 // Validate validates by field tags
@@ -3892,7 +3892,7 @@ func (o *ContainerRegistryUserCreateRequest) setDefaults() interface{} {
 	return &struct {
 		UserName   string
 		Password   string
-		Permission types.EContainerRegistryAccessLevel
+		Permission types.EContainerRegistryPermission
 	}{
 		UserName:   o.GetUserName(),
 		Password:   o.GetPassword(),
@@ -3921,12 +3921,12 @@ func (o *ContainerRegistryUserCreateRequest) SetPassword(v string) {
 }
 
 // GetPermission returns value of Permission
-func (o *ContainerRegistryUserCreateRequest) GetPermission() types.EContainerRegistryAccessLevel {
+func (o *ContainerRegistryUserCreateRequest) GetPermission() types.EContainerRegistryPermission {
 	return o.Permission
 }
 
 // SetPermission sets value to Permission
-func (o *ContainerRegistryUserCreateRequest) SetPermission(v types.EContainerRegistryAccessLevel) {
+func (o *ContainerRegistryUserCreateRequest) SetPermission(v types.EContainerRegistryPermission) {
 	o.Permission = v
 }
 
@@ -3937,7 +3937,7 @@ func (o *ContainerRegistryUserCreateRequest) SetPermission(v types.EContainerReg
 // ContainerRegistryUserUpdateRequest represents API parameter/response structure
 type ContainerRegistryUserUpdateRequest struct {
 	Password   string
-	Permission types.EContainerRegistryAccessLevel
+	Permission types.EContainerRegistryPermission
 }
 
 // Validate validates by field tags
@@ -3949,7 +3949,7 @@ func (o *ContainerRegistryUserUpdateRequest) Validate() error {
 func (o *ContainerRegistryUserUpdateRequest) setDefaults() interface{} {
 	return &struct {
 		Password   string
-		Permission types.EContainerRegistryAccessLevel
+		Permission types.EContainerRegistryPermission
 	}{
 		Password:   o.GetPassword(),
 		Permission: o.GetPermission(),
@@ -3967,12 +3967,12 @@ func (o *ContainerRegistryUserUpdateRequest) SetPassword(v string) {
 }
 
 // GetPermission returns value of Permission
-func (o *ContainerRegistryUserUpdateRequest) GetPermission() types.EContainerRegistryAccessLevel {
+func (o *ContainerRegistryUserUpdateRequest) GetPermission() types.EContainerRegistryPermission {
 	return o.Permission
 }
 
 // SetPermission sets value to Permission
-func (o *ContainerRegistryUserUpdateRequest) SetPermission(v types.EContainerRegistryAccessLevel) {
+func (o *ContainerRegistryUserUpdateRequest) SetPermission(v types.EContainerRegistryPermission) {
 	o.Permission = v
 }
 

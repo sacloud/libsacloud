@@ -224,7 +224,7 @@ var (
 					IsArray:   true,
 					Fields: []*dsl.FieldDesc{
 						fields.Def("UserName", meta.TypeString),
-						fields.Def("Permission", meta.Static(types.EContainerRegistryAccessLevel(""))),
+						fields.Def("Permission", meta.Static(types.EContainerRegistryPermission(""))),
 					},
 				},
 			},
@@ -236,7 +236,7 @@ var (
 		Fields: []*dsl.FieldDesc{
 			fields.Def("UserName", meta.TypeString),
 			fields.Def("Password", meta.TypeString),
-			fields.Def("Permission", meta.Static(types.EContainerRegistryAccessLevel(""))),
+			fields.Def("Permission", meta.Static(types.EContainerRegistryPermission(""))),
 		},
 	}
 	containerRegistryUserUpdateParam = &dsl.Model{
@@ -244,7 +244,7 @@ var (
 		NakedType: meta.Static(naked.ContainerRegistryUser{}),
 		Fields: []*dsl.FieldDesc{
 			fields.Def("Password", meta.TypeString),
-			fields.Def("Permission", meta.Static(types.EContainerRegistryAccessLevel(""))),
+			fields.Def("Permission", meta.Static(types.EContainerRegistryPermission(""))),
 		},
 	}
 )
