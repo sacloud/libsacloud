@@ -61,15 +61,17 @@ func TestContainerRegistryOp_CRUD(t *testing.T) {
 				Func: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 					registryOp := sacloud.NewContainerRegistryOp(caller)
 					err := registryOp.AddUser(ctx, ctx.ID, &sacloud.ContainerRegistryUserCreateRequest{
-						UserName: "user1",
-						Password: "password",
+						UserName:   "user1",
+						Password:   "password",
+						Permission: types.ContainerRegistryAccessLevels.ReadWrite,
 					})
 					if err != nil {
 						return nil, err
 					}
 					err = registryOp.AddUser(ctx, ctx.ID, &sacloud.ContainerRegistryUserCreateRequest{
-						UserName: "user2",
-						Password: "password",
+						UserName:   "user2",
+						Password:   "password",
+						Permission: types.ContainerRegistryAccessLevels.ReadOnly,
 					})
 					if err != nil {
 						return nil, err
@@ -81,7 +83,9 @@ func TestContainerRegistryOp_CRUD(t *testing.T) {
 					return testutil.DoAsserts(
 						testutil.AssertLenFunc(t, users, 2, "ContainerRegistry.Users"),
 						testutil.AssertEqualFunc(t, "user1", users[0].UserName, "ContainerRegistry.Users"),
+						testutil.AssertEqualFunc(t, types.ContainerRegistryAccessLevels.ReadWrite, users[0].Permission, "ContainerRegistry.Permission"),
 						testutil.AssertEqualFunc(t, "user2", users[1].UserName, "ContainerRegistry.Users"),
+						testutil.AssertEqualFunc(t, types.ContainerRegistryAccessLevels.ReadOnly, users[1].Permission, "ContainerRegistry.Permission"),
 					)
 				},
 				SkipExtractID: true,

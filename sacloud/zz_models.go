@@ -3779,7 +3779,8 @@ func (o *ContainerRegistryUsers) SetUsers(v []*ContainerRegistryUser) {
 
 // ContainerRegistryUser represents API parameter/response structure
 type ContainerRegistryUser struct {
-	UserName string
+	UserName   string
+	Permission types.EContainerRegistryAccessLevel
 }
 
 // Validate validates by field tags
@@ -3790,9 +3791,11 @@ func (o *ContainerRegistryUser) Validate() error {
 // setDefaults implements sacloud.argumentDefaulter
 func (o *ContainerRegistryUser) setDefaults() interface{} {
 	return &struct {
-		UserName string
+		UserName   string
+		Permission types.EContainerRegistryAccessLevel
 	}{
-		UserName: o.GetUserName(),
+		UserName:   o.GetUserName(),
+		Permission: o.GetPermission(),
 	}
 }
 
@@ -3806,14 +3809,25 @@ func (o *ContainerRegistryUser) SetUserName(v string) {
 	o.UserName = v
 }
 
+// GetPermission returns value of Permission
+func (o *ContainerRegistryUser) GetPermission() types.EContainerRegistryAccessLevel {
+	return o.Permission
+}
+
+// SetPermission sets value to Permission
+func (o *ContainerRegistryUser) SetPermission(v types.EContainerRegistryAccessLevel) {
+	o.Permission = v
+}
+
 /*************************************************
 * ContainerRegistryUserCreateRequest
 *************************************************/
 
 // ContainerRegistryUserCreateRequest represents API parameter/response structure
 type ContainerRegistryUserCreateRequest struct {
-	UserName string
-	Password string
+	UserName   string
+	Password   string
+	Permission types.EContainerRegistryAccessLevel
 }
 
 // Validate validates by field tags
@@ -3824,11 +3838,13 @@ func (o *ContainerRegistryUserCreateRequest) Validate() error {
 // setDefaults implements sacloud.argumentDefaulter
 func (o *ContainerRegistryUserCreateRequest) setDefaults() interface{} {
 	return &struct {
-		UserName string
-		Password string
+		UserName   string
+		Password   string
+		Permission types.EContainerRegistryAccessLevel
 	}{
-		UserName: o.GetUserName(),
-		Password: o.GetPassword(),
+		UserName:   o.GetUserName(),
+		Password:   o.GetPassword(),
+		Permission: o.GetPermission(),
 	}
 }
 
@@ -3852,13 +3868,24 @@ func (o *ContainerRegistryUserCreateRequest) SetPassword(v string) {
 	o.Password = v
 }
 
+// GetPermission returns value of Permission
+func (o *ContainerRegistryUserCreateRequest) GetPermission() types.EContainerRegistryAccessLevel {
+	return o.Permission
+}
+
+// SetPermission sets value to Permission
+func (o *ContainerRegistryUserCreateRequest) SetPermission(v types.EContainerRegistryAccessLevel) {
+	o.Permission = v
+}
+
 /*************************************************
 * ContainerRegistryUserUpdateRequest
 *************************************************/
 
 // ContainerRegistryUserUpdateRequest represents API parameter/response structure
 type ContainerRegistryUserUpdateRequest struct {
-	Password string
+	Password   string
+	Permission types.EContainerRegistryAccessLevel
 }
 
 // Validate validates by field tags
@@ -3869,9 +3896,11 @@ func (o *ContainerRegistryUserUpdateRequest) Validate() error {
 // setDefaults implements sacloud.argumentDefaulter
 func (o *ContainerRegistryUserUpdateRequest) setDefaults() interface{} {
 	return &struct {
-		Password string
+		Password   string
+		Permission types.EContainerRegistryAccessLevel
 	}{
-		Password: o.GetPassword(),
+		Password:   o.GetPassword(),
+		Permission: o.GetPermission(),
 	}
 }
 
@@ -3883,6 +3912,16 @@ func (o *ContainerRegistryUserUpdateRequest) GetPassword() string {
 // SetPassword sets value to Password
 func (o *ContainerRegistryUserUpdateRequest) SetPassword(v string) {
 	o.Password = v
+}
+
+// GetPermission returns value of Permission
+func (o *ContainerRegistryUserUpdateRequest) GetPermission() types.EContainerRegistryAccessLevel {
+	return o.Permission
+}
+
+// SetPermission sets value to Permission
+func (o *ContainerRegistryUserUpdateRequest) SetPermission(v types.EContainerRegistryAccessLevel) {
+	o.Permission = v
 }
 
 /*************************************************
