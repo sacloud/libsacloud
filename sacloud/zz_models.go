@@ -3255,6 +3255,7 @@ type ContainerRegistry struct {
 	CreatedAt      time.Time
 	ModifiedAt     time.Time
 	AccessLevel    types.EContainerRegistryAccessLevel `mapconv:"Settings.ContainerRegistry.Public"`
+	VirtualDomain  string                              `mapconv:"Settings.ContainerRegistry.VirtualDomain"`
 	SettingsHash   string                              `json:",omitempty" mapconv:",omitempty"`
 	SubDomainLabel string                              `mapconv:"Status.RegistryName"`
 	FQDN           string                              `mapconv:"Status.FQDN"`
@@ -3277,6 +3278,7 @@ func (o *ContainerRegistry) setDefaults() interface{} {
 		CreatedAt      time.Time
 		ModifiedAt     time.Time
 		AccessLevel    types.EContainerRegistryAccessLevel `mapconv:"Settings.ContainerRegistry.Public"`
+		VirtualDomain  string                              `mapconv:"Settings.ContainerRegistry.VirtualDomain"`
 		SettingsHash   string                              `json:",omitempty" mapconv:",omitempty"`
 		SubDomainLabel string                              `mapconv:"Status.RegistryName"`
 		FQDN           string                              `mapconv:"Status.FQDN"`
@@ -3290,6 +3292,7 @@ func (o *ContainerRegistry) setDefaults() interface{} {
 		CreatedAt:      o.GetCreatedAt(),
 		ModifiedAt:     o.GetModifiedAt(),
 		AccessLevel:    o.GetAccessLevel(),
+		VirtualDomain:  o.GetVirtualDomain(),
 		SettingsHash:   o.GetSettingsHash(),
 		SubDomainLabel: o.GetSubDomainLabel(),
 		FQDN:           o.GetFQDN(),
@@ -3426,6 +3429,16 @@ func (o *ContainerRegistry) SetAccessLevel(v types.EContainerRegistryAccessLevel
 	o.AccessLevel = v
 }
 
+// GetVirtualDomain returns value of VirtualDomain
+func (o *ContainerRegistry) GetVirtualDomain() string {
+	return o.VirtualDomain
+}
+
+// SetVirtualDomain sets value to VirtualDomain
+func (o *ContainerRegistry) SetVirtualDomain(v string) {
+	o.VirtualDomain = v
+}
+
 // GetSettingsHash returns value of SettingsHash
 func (o *ContainerRegistry) GetSettingsHash() string {
 	return o.SettingsHash
@@ -3467,6 +3480,7 @@ type ContainerRegistryCreateRequest struct {
 	Tags           types.Tags
 	IconID         types.ID                            `mapconv:"Icon.ID"`
 	AccessLevel    types.EContainerRegistryAccessLevel `mapconv:"Settings.ContainerRegistry.Public"`
+	VirtualDomain  string                              `mapconv:"Settings.ContainerRegistry.VirtualDomain"`
 	SubDomainLabel string                              `mapconv:"Status.RegistryName"`
 }
 
@@ -3483,6 +3497,7 @@ func (o *ContainerRegistryCreateRequest) setDefaults() interface{} {
 		Tags           types.Tags
 		IconID         types.ID                            `mapconv:"Icon.ID"`
 		AccessLevel    types.EContainerRegistryAccessLevel `mapconv:"Settings.ContainerRegistry.Public"`
+		VirtualDomain  string                              `mapconv:"Settings.ContainerRegistry.VirtualDomain"`
 		SubDomainLabel string                              `mapconv:"Status.RegistryName"`
 		Class          string                              `mapconv:"Provider.Class"`
 	}{
@@ -3491,6 +3506,7 @@ func (o *ContainerRegistryCreateRequest) setDefaults() interface{} {
 		Tags:           o.GetTags(),
 		IconID:         o.GetIconID(),
 		AccessLevel:    o.GetAccessLevel(),
+		VirtualDomain:  o.GetVirtualDomain(),
 		SubDomainLabel: o.GetSubDomainLabel(),
 		Class:          "containerregistry",
 	}
@@ -3566,6 +3582,16 @@ func (o *ContainerRegistryCreateRequest) SetAccessLevel(v types.EContainerRegist
 	o.AccessLevel = v
 }
 
+// GetVirtualDomain returns value of VirtualDomain
+func (o *ContainerRegistryCreateRequest) GetVirtualDomain() string {
+	return o.VirtualDomain
+}
+
+// SetVirtualDomain sets value to VirtualDomain
+func (o *ContainerRegistryCreateRequest) SetVirtualDomain(v string) {
+	o.VirtualDomain = v
+}
+
 // GetSubDomainLabel returns value of SubDomainLabel
 func (o *ContainerRegistryCreateRequest) GetSubDomainLabel() string {
 	return o.SubDomainLabel
@@ -3582,12 +3608,13 @@ func (o *ContainerRegistryCreateRequest) SetSubDomainLabel(v string) {
 
 // ContainerRegistryUpdateRequest represents API parameter/response structure
 type ContainerRegistryUpdateRequest struct {
-	Name         string `validate:"required"`
-	Description  string `validate:"min=0,max=512"`
-	Tags         types.Tags
-	IconID       types.ID                            `mapconv:"Icon.ID"`
-	AccessLevel  types.EContainerRegistryAccessLevel `mapconv:"Settings.ContainerRegistry.Public"`
-	SettingsHash string                              `json:",omitempty" mapconv:",omitempty"`
+	Name          string `validate:"required"`
+	Description   string `validate:"min=0,max=512"`
+	Tags          types.Tags
+	IconID        types.ID                            `mapconv:"Icon.ID"`
+	AccessLevel   types.EContainerRegistryAccessLevel `mapconv:"Settings.ContainerRegistry.Public"`
+	VirtualDomain string                              `mapconv:"Settings.ContainerRegistry.VirtualDomain"`
+	SettingsHash  string                              `json:",omitempty" mapconv:",omitempty"`
 }
 
 // Validate validates by field tags
@@ -3598,19 +3625,21 @@ func (o *ContainerRegistryUpdateRequest) Validate() error {
 // setDefaults implements sacloud.argumentDefaulter
 func (o *ContainerRegistryUpdateRequest) setDefaults() interface{} {
 	return &struct {
-		Name         string `validate:"required"`
-		Description  string `validate:"min=0,max=512"`
-		Tags         types.Tags
-		IconID       types.ID                            `mapconv:"Icon.ID"`
-		AccessLevel  types.EContainerRegistryAccessLevel `mapconv:"Settings.ContainerRegistry.Public"`
-		SettingsHash string                              `json:",omitempty" mapconv:",omitempty"`
+		Name          string `validate:"required"`
+		Description   string `validate:"min=0,max=512"`
+		Tags          types.Tags
+		IconID        types.ID                            `mapconv:"Icon.ID"`
+		AccessLevel   types.EContainerRegistryAccessLevel `mapconv:"Settings.ContainerRegistry.Public"`
+		VirtualDomain string                              `mapconv:"Settings.ContainerRegistry.VirtualDomain"`
+		SettingsHash  string                              `json:",omitempty" mapconv:",omitempty"`
 	}{
-		Name:         o.GetName(),
-		Description:  o.GetDescription(),
-		Tags:         o.GetTags(),
-		IconID:       o.GetIconID(),
-		AccessLevel:  o.GetAccessLevel(),
-		SettingsHash: o.GetSettingsHash(),
+		Name:          o.GetName(),
+		Description:   o.GetDescription(),
+		Tags:          o.GetTags(),
+		IconID:        o.GetIconID(),
+		AccessLevel:   o.GetAccessLevel(),
+		VirtualDomain: o.GetVirtualDomain(),
+		SettingsHash:  o.GetSettingsHash(),
 	}
 }
 
@@ -3684,6 +3713,16 @@ func (o *ContainerRegistryUpdateRequest) SetAccessLevel(v types.EContainerRegist
 	o.AccessLevel = v
 }
 
+// GetVirtualDomain returns value of VirtualDomain
+func (o *ContainerRegistryUpdateRequest) GetVirtualDomain() string {
+	return o.VirtualDomain
+}
+
+// SetVirtualDomain sets value to VirtualDomain
+func (o *ContainerRegistryUpdateRequest) SetVirtualDomain(v string) {
+	o.VirtualDomain = v
+}
+
 // GetSettingsHash returns value of SettingsHash
 func (o *ContainerRegistryUpdateRequest) GetSettingsHash() string {
 	return o.SettingsHash
@@ -3700,8 +3739,9 @@ func (o *ContainerRegistryUpdateRequest) SetSettingsHash(v string) {
 
 // ContainerRegistryUpdateSettingsRequest represents API parameter/response structure
 type ContainerRegistryUpdateSettingsRequest struct {
-	AccessLevel  types.EContainerRegistryAccessLevel `mapconv:"Settings.ContainerRegistry.Public"`
-	SettingsHash string                              `json:",omitempty" mapconv:",omitempty"`
+	AccessLevel   types.EContainerRegistryAccessLevel `mapconv:"Settings.ContainerRegistry.Public"`
+	VirtualDomain string                              `mapconv:"Settings.ContainerRegistry.VirtualDomain"`
+	SettingsHash  string                              `json:",omitempty" mapconv:",omitempty"`
 }
 
 // Validate validates by field tags
@@ -3712,11 +3752,13 @@ func (o *ContainerRegistryUpdateSettingsRequest) Validate() error {
 // setDefaults implements sacloud.argumentDefaulter
 func (o *ContainerRegistryUpdateSettingsRequest) setDefaults() interface{} {
 	return &struct {
-		AccessLevel  types.EContainerRegistryAccessLevel `mapconv:"Settings.ContainerRegistry.Public"`
-		SettingsHash string                              `json:",omitempty" mapconv:",omitempty"`
+		AccessLevel   types.EContainerRegistryAccessLevel `mapconv:"Settings.ContainerRegistry.Public"`
+		VirtualDomain string                              `mapconv:"Settings.ContainerRegistry.VirtualDomain"`
+		SettingsHash  string                              `json:",omitempty" mapconv:",omitempty"`
 	}{
-		AccessLevel:  o.GetAccessLevel(),
-		SettingsHash: o.GetSettingsHash(),
+		AccessLevel:   o.GetAccessLevel(),
+		VirtualDomain: o.GetVirtualDomain(),
+		SettingsHash:  o.GetSettingsHash(),
 	}
 }
 
@@ -3728,6 +3770,16 @@ func (o *ContainerRegistryUpdateSettingsRequest) GetAccessLevel() types.EContain
 // SetAccessLevel sets value to AccessLevel
 func (o *ContainerRegistryUpdateSettingsRequest) SetAccessLevel(v types.EContainerRegistryAccessLevel) {
 	o.AccessLevel = v
+}
+
+// GetVirtualDomain returns value of VirtualDomain
+func (o *ContainerRegistryUpdateSettingsRequest) GetVirtualDomain() string {
+	return o.VirtualDomain
+}
+
+// SetVirtualDomain sets value to VirtualDomain
+func (o *ContainerRegistryUpdateSettingsRequest) SetVirtualDomain(v string) {
+	o.VirtualDomain = v
 }
 
 // GetSettingsHash returns value of SettingsHash

@@ -1595,6 +1595,16 @@ func (f *fieldsDef) ContainerRegistryAccessLevel() *dsl.FieldDesc {
 	}
 }
 
+func (f *fieldsDef) ContainerRegistryVirtualDomain() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "VirtualDomain",
+		Type: meta.TypeString,
+		Tags: &dsl.FieldTags{
+			MapConv: "Settings.ContainerRegistry.VirtualDomain",
+		},
+	}
+}
+
 func (f *fieldsDef) SettingsHash() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "SettingsHash",

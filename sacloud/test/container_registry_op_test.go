@@ -126,6 +126,7 @@ var (
 		Name:           testutil.ResourceName("container-registry"),
 		Description:    "desc",
 		Tags:           []string{"tag1", "tag2"},
+		VirtualDomain:  "libsacloud-test.usacloud.jp",
 		AccessLevel:    types.ContainerRegistryAccessLevels.ReadWrite,
 		SubDomainLabel: testutil.RandomName(60, testutil.CharSetAlpha),
 	}
@@ -135,15 +136,17 @@ var (
 		Tags:           createContainerRegistryParam.Tags,
 		Availability:   types.Availabilities.Available,
 		AccessLevel:    createContainerRegistryParam.AccessLevel,
+		VirtualDomain:  createContainerRegistryParam.VirtualDomain,
 		SubDomainLabel: createContainerRegistryParam.SubDomainLabel,
 		FQDN:           createContainerRegistryParam.SubDomainLabel + ".sakuracr.jp",
 	}
 	updateContainerRegistryParam = &sacloud.ContainerRegistryUpdateRequest{
-		Name:        testutil.ResourceName("container-registry-upd"),
-		Description: "desc-upd",
-		Tags:        []string{"tag1-upd", "tag2-upd"},
-		IconID:      testIconID,
-		AccessLevel: types.ContainerRegistryAccessLevels.ReadOnly,
+		Name:          testutil.ResourceName("container-registry-upd"),
+		Description:   "desc-upd",
+		Tags:          []string{"tag1-upd", "tag2-upd"},
+		IconID:        testIconID,
+		VirtualDomain: "libsacloud-test-upd.usacloud.jp",
+		AccessLevel:   types.ContainerRegistryAccessLevels.ReadOnly,
 	}
 	updateContainerRegistryExpected = &sacloud.ContainerRegistry{
 		Name:           updateContainerRegistryParam.Name,
@@ -151,6 +154,7 @@ var (
 		Tags:           updateContainerRegistryParam.Tags,
 		Availability:   types.Availabilities.Available,
 		IconID:         testIconID,
+		VirtualDomain:  updateContainerRegistryParam.VirtualDomain,
 		AccessLevel:    updateContainerRegistryParam.AccessLevel,
 		SubDomainLabel: createContainerRegistryParam.SubDomainLabel,
 		FQDN:           createContainerRegistryParam.SubDomainLabel + ".sakuracr.jp",
@@ -165,6 +169,7 @@ var (
 		Tags:           updateContainerRegistryParam.Tags,
 		Availability:   types.Availabilities.Available,
 		IconID:         testIconID,
+		VirtualDomain:  "",
 		AccessLevel:    updateContainerRegistrySettingsParam.AccessLevel,
 		SubDomainLabel: createContainerRegistryParam.SubDomainLabel,
 		FQDN:           createContainerRegistryParam.SubDomainLabel + ".sakuracr.jp",

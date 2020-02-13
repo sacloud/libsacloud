@@ -145,6 +145,7 @@ var (
 
 			// settings
 			fields.ContainerRegistryAccessLevel(),
+			fields.ContainerRegistryVirtualDomain(),
 			fields.SettingsHash(),
 
 			// status
@@ -175,6 +176,7 @@ var (
 
 			// settings
 			fields.ContainerRegistryAccessLevel(),
+			fields.ContainerRegistryVirtualDomain(),
 			// status
 			fields.ContainerRegistrySubDomainLabel(),
 		},
@@ -192,6 +194,7 @@ var (
 
 			// settings
 			fields.ContainerRegistryAccessLevel(),
+			fields.ContainerRegistryVirtualDomain(),
 			// settings hash
 			fields.SettingsHash(),
 		},
@@ -203,6 +206,7 @@ var (
 		Fields: []*dsl.FieldDesc{
 			// settings
 			fields.ContainerRegistryAccessLevel(),
+			fields.ContainerRegistryVirtualDomain(),
 			// settings hash
 			fields.SettingsHash(),
 		},
