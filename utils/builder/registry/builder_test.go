@@ -39,12 +39,14 @@ func TestBuilder_Build(t *testing.T) {
 					SubDomainLabel: testutil.RandomName(60, testutil.CharSetAlpha),
 					Users: []*User{
 						{
-							UserName: "user1",
-							Password: "password",
+							UserName:   "user1",
+							Password:   "password",
+							Permission: types.ContainerRegistryAccessLevels.ReadWrite,
 						},
 						{
-							UserName: "user2",
-							Password: "password",
+							UserName:   "user2",
+							Password:   "password",
+							Permission: types.ContainerRegistryAccessLevels.ReadOnly,
 						},
 					},
 					Client: NewAPIClient(caller),
