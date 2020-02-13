@@ -41,12 +41,12 @@ func TestBuilder_Build(t *testing.T) {
 						{
 							UserName:   "user1",
 							Password:   "password",
-							Permission: types.ContainerRegistryAccessLevels.ReadWrite,
+							Permission: types.ContainerRegistryPermissions.ReadWrite,
 						},
 						{
 							UserName:   "user2",
 							Password:   "password",
-							Permission: types.ContainerRegistryAccessLevels.ReadOnly,
+							Permission: types.ContainerRegistryPermissions.ReadOnly,
 						},
 					},
 					Client: NewAPIClient(caller),
