@@ -22,6 +22,7 @@ import (
 	"github.com/sacloud/libsacloud/v2/internal/dsl"
 	"github.com/sacloud/libsacloud/v2/internal/dsl/meta"
 	"github.com/sacloud/libsacloud/v2/sacloud/naked"
+	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
 const (
@@ -144,6 +145,7 @@ var (
 
 			// settings
 			fields.ContainerRegistryAccessLevel(),
+			fields.ContainerRegistryVirtualDomain(),
 			fields.SettingsHash(),
 
 			// status
@@ -174,6 +176,7 @@ var (
 
 			// settings
 			fields.ContainerRegistryAccessLevel(),
+			fields.ContainerRegistryVirtualDomain(),
 			// status
 			fields.ContainerRegistrySubDomainLabel(),
 		},
@@ -191,6 +194,7 @@ var (
 
 			// settings
 			fields.ContainerRegistryAccessLevel(),
+			fields.ContainerRegistryVirtualDomain(),
 			// settings hash
 			fields.SettingsHash(),
 		},
@@ -202,6 +206,7 @@ var (
 		Fields: []*dsl.FieldDesc{
 			// settings
 			fields.ContainerRegistryAccessLevel(),
+			fields.ContainerRegistryVirtualDomain(),
 			// settings hash
 			fields.SettingsHash(),
 		},
@@ -219,6 +224,7 @@ var (
 					IsArray:   true,
 					Fields: []*dsl.FieldDesc{
 						fields.Def("UserName", meta.TypeString),
+						fields.Def("Permission", meta.Static(types.EContainerRegistryAccessLevel(""))),
 					},
 				},
 			},
@@ -230,6 +236,7 @@ var (
 		Fields: []*dsl.FieldDesc{
 			fields.Def("UserName", meta.TypeString),
 			fields.Def("Password", meta.TypeString),
+			fields.Def("Permission", meta.Static(types.EContainerRegistryAccessLevel(""))),
 		},
 	}
 	containerRegistryUserUpdateParam = &dsl.Model{
@@ -237,6 +244,7 @@ var (
 		NakedType: meta.Static(naked.ContainerRegistryUser{}),
 		Fields: []*dsl.FieldDesc{
 			fields.Def("Password", meta.TypeString),
+			fields.Def("Permission", meta.Static(types.EContainerRegistryAccessLevel(""))),
 		},
 	}
 )

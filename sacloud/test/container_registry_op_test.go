@@ -61,15 +61,17 @@ func TestContainerRegistryOp_CRUD(t *testing.T) {
 				Func: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 					registryOp := sacloud.NewContainerRegistryOp(caller)
 					err := registryOp.AddUser(ctx, ctx.ID, &sacloud.ContainerRegistryUserCreateRequest{
-						UserName: "user1",
-						Password: "password",
+						UserName:   "user1",
+						Password:   "password",
+						Permission: types.ContainerRegistryAccessLevels.ReadWrite,
 					})
 					if err != nil {
 						return nil, err
 					}
 					err = registryOp.AddUser(ctx, ctx.ID, &sacloud.ContainerRegistryUserCreateRequest{
-						UserName: "user2",
-						Password: "password",
+						UserName:   "user2",
+						Password:   "password",
+						Permission: types.ContainerRegistryAccessLevels.ReadOnly,
 					})
 					if err != nil {
 						return nil, err
@@ -81,7 +83,9 @@ func TestContainerRegistryOp_CRUD(t *testing.T) {
 					return testutil.DoAsserts(
 						testutil.AssertLenFunc(t, users, 2, "ContainerRegistry.Users"),
 						testutil.AssertEqualFunc(t, "user1", users[0].UserName, "ContainerRegistry.Users"),
+						testutil.AssertEqualFunc(t, types.ContainerRegistryAccessLevels.ReadWrite, users[0].Permission, "ContainerRegistry.Permission"),
 						testutil.AssertEqualFunc(t, "user2", users[1].UserName, "ContainerRegistry.Users"),
+						testutil.AssertEqualFunc(t, types.ContainerRegistryAccessLevels.ReadOnly, users[1].Permission, "ContainerRegistry.Permission"),
 					)
 				},
 				SkipExtractID: true,
@@ -122,6 +126,7 @@ var (
 		Name:           testutil.ResourceName("container-registry"),
 		Description:    "desc",
 		Tags:           []string{"tag1", "tag2"},
+		VirtualDomain:  "libsacloud-test.usacloud.jp",
 		AccessLevel:    types.ContainerRegistryAccessLevels.ReadWrite,
 		SubDomainLabel: testutil.RandomName(60, testutil.CharSetAlpha),
 	}
@@ -131,15 +136,17 @@ var (
 		Tags:           createContainerRegistryParam.Tags,
 		Availability:   types.Availabilities.Available,
 		AccessLevel:    createContainerRegistryParam.AccessLevel,
+		VirtualDomain:  createContainerRegistryParam.VirtualDomain,
 		SubDomainLabel: createContainerRegistryParam.SubDomainLabel,
 		FQDN:           createContainerRegistryParam.SubDomainLabel + ".sakuracr.jp",
 	}
 	updateContainerRegistryParam = &sacloud.ContainerRegistryUpdateRequest{
-		Name:        testutil.ResourceName("container-registry-upd"),
-		Description: "desc-upd",
-		Tags:        []string{"tag1-upd", "tag2-upd"},
-		IconID:      testIconID,
-		AccessLevel: types.ContainerRegistryAccessLevels.ReadOnly,
+		Name:          testutil.ResourceName("container-registry-upd"),
+		Description:   "desc-upd",
+		Tags:          []string{"tag1-upd", "tag2-upd"},
+		IconID:        testIconID,
+		VirtualDomain: "libsacloud-test-upd.usacloud.jp",
+		AccessLevel:   types.ContainerRegistryAccessLevels.ReadOnly,
 	}
 	updateContainerRegistryExpected = &sacloud.ContainerRegistry{
 		Name:           updateContainerRegistryParam.Name,
@@ -147,6 +154,7 @@ var (
 		Tags:           updateContainerRegistryParam.Tags,
 		Availability:   types.Availabilities.Available,
 		IconID:         testIconID,
+		VirtualDomain:  updateContainerRegistryParam.VirtualDomain,
 		AccessLevel:    updateContainerRegistryParam.AccessLevel,
 		SubDomainLabel: createContainerRegistryParam.SubDomainLabel,
 		FQDN:           createContainerRegistryParam.SubDomainLabel + ".sakuracr.jp",
@@ -161,6 +169,7 @@ var (
 		Tags:           updateContainerRegistryParam.Tags,
 		Availability:   types.Availabilities.Available,
 		IconID:         testIconID,
+		VirtualDomain:  "",
 		AccessLevel:    updateContainerRegistrySettingsParam.AccessLevel,
 		SubDomainLabel: createContainerRegistryParam.SubDomainLabel,
 		FQDN:           createContainerRegistryParam.SubDomainLabel + ".sakuracr.jp",
