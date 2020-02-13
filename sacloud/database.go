@@ -277,7 +277,7 @@ type SlaveDatabaseValue struct {
 func NewCreatePostgreSQLDatabaseValue() *CreateDatabaseValue {
 	return &CreateDatabaseValue{
 		DatabaseName:    "postgres",
-		DatabaseVersion: "11",
+		DatabaseVersion: "12",
 	}
 }
 
