@@ -113,7 +113,7 @@ var (
 	}
 
 	createLoadBalancerParam = &sacloud.LoadBalancerCreateRequest{
-		PlanID:         types.LoadBalancerPlans.Premium,
+		PlanID:         types.LoadBalancerPlans.HighSpec,
 		VRID:           100,
 		IPAddresses:    []string{"192.168.0.11", "192.168.0.12"},
 		NetworkMaskLen: 24,
