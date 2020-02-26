@@ -25,7 +25,7 @@ var testCouponJSON = `
     {
       "AppliedAt": "2019-01-10T11:12:13+09:00",
       "ContractID": 111111111111,
-      "CouponID": "xxxxxxxxxxxxxxxx",
+      "CouponID": "123456789012",
       "Discount": 999999,
       "MemberID": "abc99999",
       "ServiceClassID": 50122,

@@ -15,7 +15,6 @@
 package api
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/sacloud/libsacloud/sacloud"
@@ -47,7 +46,7 @@ func TestNFSCRUD(t *testing.T) {
 	assert.NotEmpty(t, sw)
 
 	//CREATE
-	createNFSValues.SwitchID = fmt.Sprintf("%d", sw.ID)
+	createNFSValues.SwitchID = sw.ID
 	item, err := api.CreateWithPlan(createNFSValues, sacloud.NFSPlanHDD, sacloud.NFSSize100G)
 
 	assert.NoError(t, err)

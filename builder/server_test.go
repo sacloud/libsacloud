@@ -129,7 +129,7 @@ func TestServerBuilder_Build_WithPacketFilter(t *testing.T) {
 	assert.NoError(t, err)
 
 	builder.AddPublicNWConnectedNIC()
-	builder.SetPacketFilterIDs([]int64{pf.ID})
+	builder.SetPacketFilterIDs([]sacloud.ID{pf.ID})
 	res, err := builder.Build()
 
 	assert.NoError(t, err)

@@ -41,13 +41,13 @@ type DatabaseRemark struct {
 	Network         *DatabaseRemarkNetwork   // ネットワーク
 	SourceAppliance *DatabaseSourceAppliance `json:",omitempty"` // クローン元DB
 	Zone            struct {                 // ゾーン
-		ID json.Number `json:",omitempty"` // ゾーンID
+		ID ID `json:",omitempty"` // ゾーンID
 	}
 }
 
 // DatabaseSourceAppliance ソースアプライアンス(クローン元DB)
 type DatabaseSourceAppliance struct {
-	ID json.Number `json:",omitempty"`
+	ID ID `json:",omitempty"`
 }
 
 // DatabaseRemarkNetwork ネットワーク
@@ -233,7 +233,7 @@ type CreateDatabaseValue struct {
 	BackupRotate     int          // バックアップ世代数
 	BackupTime       string       // バックアップ開始時間
 	BackupDayOfWeek  []string     // バックアップ取得曜日
-	SwitchID         string       // 接続先スイッチ
+	SwitchID         ID           // 接続先スイッチ
 	IPAddress1       string       // IPアドレス1
 	MaskLen          int          // ネットワークマスク長
 	DefaultRoute     string       // デフォルトルート
@@ -256,7 +256,7 @@ type SlaveDatabaseValue struct {
 	Plan            DatabasePlan // プラン
 	DefaultUser     string       // ユーザー名
 	UserPassword    string       // パスワード
-	SwitchID        string       // 接続先スイッチ
+	SwitchID        ID           // 接続先スイッチ
 	IPAddress1      string       // IPアドレス1
 	MaskLen         int          // ネットワークマスク長
 	DefaultRoute    string       // デフォルトルート
@@ -268,7 +268,7 @@ type SlaveDatabaseValue struct {
 	DatabaseVersion string       // データベースバージョン
 	// ReplicaUser      string    // レプリケーションユーザー 現在はreplica固定
 	ReplicaPassword   string // レプリケーションパスワード
-	MasterApplianceID int64  // クローン元DB
+	MasterApplianceID ID     // クローン元DB
 	MasterIPAddress   string // マスターIPアドレス
 	MasterPort        int    // マスターポート
 }
@@ -347,7 +347,7 @@ func CreateNewDatabase(values *CreateDatabaseValue) *Database {
 				},
 			},
 			// Plan
-			propPlanID: propPlanID{Plan: &Resource{ID: int64(values.Plan)}},
+			propPlanID: propPlanID{Plan: &Resource{ID: ID(values.Plan)}},
 		},
 		// Settings
 		Settings: &DatabaseSettings{
@@ -376,8 +376,8 @@ func CreateNewDatabase(values *CreateDatabaseValue) *Database {
 		},
 	}
 
-	if values.SourceAppliance.GetStrID() != "" {
-		db.Remark.SourceAppliance = &DatabaseSourceAppliance{ID: json.Number(values.SourceAppliance.GetStrID())}
+	if !values.SourceAppliance.ID.IsEmpty() {
+		db.Remark.SourceAppliance = &DatabaseSourceAppliance{ID: values.SourceAppliance.ID}
 	}
 
 	if values.ServicePort > 0 {
@@ -462,7 +462,7 @@ func NewSlaveDatabaseValue(values *SlaveDatabaseValue) *Database {
 				},
 			},
 			// Plan
-			propPlanID: propPlanID{Plan: &Resource{ID: int64(values.Plan) + 1}},
+			propPlanID: propPlanID{Plan: &Resource{ID: ID(int64(values.Plan) + 1)}},
 		},
 		// Settings
 		Settings: &DatabaseSettings{
@@ -478,7 +478,7 @@ func NewSlaveDatabaseValue(values *SlaveDatabaseValue) *Database {
 				// Replication
 				Replication: &DatabaseReplicationSetting{
 					Model:     DatabaseReplicationModelAsyncReplica,
-					Appliance: &DatabaseSourceAppliance{ID: json.Number(fmt.Sprintf("%d", values.MasterApplianceID))},
+					Appliance: &DatabaseSourceAppliance{ID: values.MasterApplianceID},
 					IPAddress: values.MasterIPAddress,
 					Port:      values.MasterPort,
 					User:      "replica",

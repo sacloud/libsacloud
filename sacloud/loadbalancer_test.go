@@ -142,7 +142,7 @@ var (
     	`
 
 	createLoadBalancerValues = &CreateLoadBalancerValue{
-		SwitchID:     "9999999999",
+		SwitchID:     9999999999,
 		VRID:         1,
 		Plan:         LoadBalancerPlanStandard,
 		IPAddress1:   "192.168.11.11",
@@ -232,7 +232,7 @@ func TestCreateNewLoadBalancerSingle(t *testing.T) {
 
 	assert.Equal(t, lb.Class, "loadbalancer")
 
-	assert.Equal(t, lb.Remark.Switch.ID, "9999999999")
+	assert.Equal(t, lb.Remark.Switch.ID, ID(9999999999))
 	assert.Equal(t, lb.Remark.VRRP.VRID, 1)
 	plan := lb.Plan.ID
 	assert.NoError(t, err)
@@ -281,7 +281,7 @@ func TestCreateNewLoadBalancerDouble(t *testing.T) {
 
 	assert.Equal(t, lb.Class, "loadbalancer")
 
-	assert.Equal(t, lb.Remark.Switch.ID, "9999999999")
+	assert.Equal(t, lb.Remark.Switch.ID, ID(9999999999))
 	assert.Equal(t, lb.Remark.VRRP.VRID, 1)
 	plan := lb.Plan.ID
 	assert.NoError(t, err)

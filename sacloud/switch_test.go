@@ -238,7 +238,7 @@ func TestIPHandling(t *testing.T) {
 func TestSwitchProp(t *testing.T) {
 
 	type PropID interface {
-		GetID() int64
+		GetID() ID
 	}
 	type PropName interface {
 		GetName() string

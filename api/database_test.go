@@ -15,7 +15,6 @@
 package api
 
 import (
-	"fmt"
 	"testing"
 	"time"
 
@@ -49,7 +48,7 @@ func TestDatabaseCRUD(t *testing.T) {
 	v.ServicePort = 54321
 	v.EnableBackup = true
 	v.BackupTime = "00:30"
-	v.SwitchID = fmt.Sprintf("%d", sw.ID)
+	v.SwitchID = sw.ID
 	v.IPAddress1 = "192.168.11.100"
 	v.MaskLen = 24
 	v.DefaultRoute = "192.168.11.1"
@@ -236,7 +235,7 @@ func TestDatabaseMariaDBCRUD(t *testing.T) {
 	v.UserPassword = "defuserPassword01"
 	v.SourceNetwork = []string{"192.168.0.1", "192.168.1.1"}
 	v.ServicePort = 33061
-	v.SwitchID = fmt.Sprintf("%d", sw.ID)
+	v.SwitchID = sw.ID
 	v.IPAddress1 = "192.168.11.100"
 	v.MaskLen = 24
 	v.DefaultRoute = "192.168.11.1"
@@ -324,7 +323,7 @@ func TestDatabaseWaitForCopy(t *testing.T) {
 	v.UserPassword = "defuserPassword01"
 	v.SourceNetwork = []string{"192.168.0.1", "192.168.1.1"}
 	v.ServicePort = 33061
-	v.SwitchID = fmt.Sprintf("%d", sw.ID)
+	v.SwitchID = sw.ID
 	v.IPAddress1 = "192.168.11.100"
 	v.MaskLen = 24
 	v.DefaultRoute = "192.168.11.1"
@@ -397,7 +396,7 @@ func TestDatabaseReplication(t *testing.T) {
 	v.UserPassword = "defuserPassword01"
 	v.SourceNetwork = []string{"192.168.11.1", "192.168.11.101"}
 	v.ServicePort = 54321
-	v.SwitchID = fmt.Sprintf("%d", sw.ID)
+	v.SwitchID = sw.ID
 	v.IPAddress1 = "192.168.11.100"
 	v.MaskLen = 24
 	v.DefaultRoute = "192.168.11.1"

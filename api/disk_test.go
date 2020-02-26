@@ -35,7 +35,7 @@ func TestCRUDByDiskAPI(t *testing.T) {
 
 	// HACK 現状ではディスクの存在チェックが行われていないため、ここでテスト可能。
 	// 今後仕様変更などの際は切り出してテストする
-	disk.DistantFrom = []int64{111111111111}
+	disk.DistantFrom = []sacloud.ID{111111111111}
 
 	res, err := diskAPI.Create(disk)
 	assert.NoError(t, err)
@@ -169,7 +169,7 @@ func TestCreateDiskWithConfig(t *testing.T) {
 	err = client.Server.SleepUntilDown(serverID, client.DefaultTimeoutDuration)
 	assert.NoError(t, err)
 
-	_, err = client.Server.DeleteWithDisk(serverID, []int64{diskID})
+	_, err = client.Server.DeleteWithDisk(serverID, []sacloud.ID{diskID})
 	assert.NoError(t, err)
 }
 
@@ -208,7 +208,7 @@ func TestDiskAPI_FindByFilters(t *testing.T) {
 
 	api := client.Disk
 
-	ids := []int64{}
+	ids := []sacloud.ID{}
 	name1 := fmt.Sprintf("libsacloud_test_disk_name%d", 1)
 	name2 := fmt.Sprintf("libsacloud_test_disk_name%d", 2)
 	name3 := fmt.Sprintf("libsacloud_test_disk_name%d", 3)

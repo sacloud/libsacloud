@@ -23,7 +23,7 @@ import (
 
 var testWebAccelSiteJSON = `
 {
-      "ID": "000000000001",
+      "ID": "123456789012",
       "Name": "サイト1",
       "DomainType": "own_domain",
       "Domain": "cdn1.example.com",
@@ -46,7 +46,7 @@ var testWebAccelCertResponseValid = `
   "Certificate": {
     "Current":{
       "ID": "1",
-      "SiteID": "000000000001",
+      "SiteID": "123456789012",
       "CertificateChain": "-----BEGIN CERTIFICATE-----・・・・・",
       "Key": "-----BEGIN RSA PRIVATE KEY-----・・・・・",
       "CreatedAt": "2015-11-13T02:57:01+09:00",
@@ -55,7 +55,7 @@ var testWebAccelCertResponseValid = `
     "Old": [
       {
         "ID": "1",
-        "SiteID": "000000000001",
+        "SiteID": "123456789012",
         "CertificateChain": "-----BEGIN CERTIFICATE-----・・・・・",
         "CreatedAt": "2015-11-13T02:57:01+09:00",
         "UpdatedAt": "2015-11-14T02:57:01+09:00"
