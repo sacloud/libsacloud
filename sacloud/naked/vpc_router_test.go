@@ -144,7 +144,7 @@ const vpcRouterMultipleFirewallJSON = `
 }
 `
 
-var vpcRouterFirewallMarshaled = `{"Config":[{"Receive":[],"Send":[]},{"Receive":[],"Send":[]},{"Receive":[],"Send":[{"Protocol":"ip","Action":"deny","Description":""}]},{"Receive":[],"Send":[]},{"Receive":[],"Send":[]},{"Receive":[],"Send":[]},{"Receive":[],"Send":[]},{"Receive":[],"Send":[]}],"Enabled":"True"}`
+var vpcRouterFirewallMarshaled = `{"Config":[{"Receive":[],"Send":[]},{"Receive":[],"Send":[]},{"Receive":[],"Send":[{"Protocol":"ip","Action":"deny","Logging":"False","Description":""}]},{"Receive":[],"Send":[]},{"Receive":[],"Send":[]},{"Receive":[],"Send":[]},{"Receive":[],"Send":[]},{"Receive":[],"Send":[]}],"Enabled":"True"}`
 
 func TestVPCRouterFirewall_UnmarshalJSON(t *testing.T) {
 	var firewallConfig VPCRouterFirewall
