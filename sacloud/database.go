@@ -50,6 +50,23 @@ type DatabaseSourceAppliance struct {
 	ID ID `json:",omitempty"`
 }
 
+// UnmarshalJSON 配列/オブジェクトが混在することへの対応
+//
+// v2からのバックポート
+func (s *DatabaseSourceAppliance) UnmarshalJSON(b []byte) error {
+	if string(b) == "[]" {
+		return nil
+	}
+	type alias DatabaseSourceAppliance
+
+	var a alias
+	if err := json.Unmarshal(b, &a); err != nil {
+		return err
+	}
+	*s = DatabaseSourceAppliance(a)
+	return nil
+}
+
 // DatabaseRemarkNetwork ネットワーク
 type DatabaseRemarkNetwork struct {
 	NetworkMaskLen int    `json:",omitempty"` // ネットワークマスク長
