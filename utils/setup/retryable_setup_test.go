@@ -29,7 +29,7 @@ func TestRetryableSetup_Setup(t *testing.T) {
 		t.Run("no error", func(t *testing.T) {
 			retryable := &RetryableSetup{
 				Create: func() (sacloud.ResourceIDHolder, error) {
-					return sacloud.NewResource(1), nil
+					return sacloud.NewResource(sacloud.ID(1)), nil
 				},
 			}
 			res, err := retryable.Setup()
@@ -65,7 +65,7 @@ func TestRetryableSetup_Setup(t *testing.T) {
 					return sacloud.NewResource(1), nil
 				},
 				AsyncWaitForCopy: waiter.asyncWaitForCopy,
-				Delete: func(id int64) error {
+				Delete: func(id sacloud.ID) error {
 					return nil
 				},
 				RetryCount: 3,
@@ -87,7 +87,7 @@ func TestRetryableSetup_Setup(t *testing.T) {
 					return sacloud.NewResource(1), nil
 				},
 				AsyncWaitForCopy: waiter.asyncWaitForCopy,
-				Delete: func(id int64) error {
+				Delete: func(id sacloud.ID) error {
 					return nil
 				},
 				RetryCount: 3,
@@ -109,7 +109,7 @@ type dummyAsyncWaiter struct {
 	calledCount      int
 }
 
-func (d *dummyAsyncWaiter) asyncWaitForCopy(id int64) (chan interface{}, chan interface{}, chan error) {
+func (d *dummyAsyncWaiter) asyncWaitForCopy(id sacloud.ID) (chan interface{}, chan interface{}, chan error) {
 	d.calledCount++
 
 	compChan := make(chan interface{})

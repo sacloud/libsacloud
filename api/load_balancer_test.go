@@ -15,7 +15,6 @@
 package api
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/sacloud/libsacloud/sacloud"
@@ -79,7 +78,7 @@ func TestLoadBalancerCRUD(t *testing.T) {
 	assert.NotEmpty(t, sw)
 
 	//CREATE
-	createLoadBalancerValues.SwitchID = fmt.Sprintf("%d", sw.ID)
+	createLoadBalancerValues.SwitchID = sw.ID
 	newItem, err := sacloud.CreateNewLoadBalancerSingle(createLoadBalancerValues, loadBalancerSettings)
 	assert.NoError(t, err)
 
@@ -143,7 +142,7 @@ func _TestLoadBalancerCRUDWithoutVIP(t *testing.T) {
 	assert.NotEmpty(t, sw)
 
 	//CREATE
-	createLoadBalancerValues.SwitchID = fmt.Sprintf("%d", sw.ID)
+	createLoadBalancerValues.SwitchID = sw.ID
 	newItem, err := sacloud.CreateNewLoadBalancerSingle(createLoadBalancerValues, nil)
 	assert.NoError(t, err)
 

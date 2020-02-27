@@ -265,7 +265,7 @@ func TestVPCRouter_RealIPAddress(t *testing.T) {
 	for _, e := range expects {
 
 		vpcRouter.InitVPCRouterSetting()
-		vpcRouter.Plan.SetID(int64(e.plan))
+		vpcRouter.Plan.SetID(ID(e.plan))
 		vpcRouter.Settings.Router.Interfaces = e.interfaces
 
 		actual, _ := vpcRouter.RealIPAddress(e.index)
@@ -296,7 +296,7 @@ func TestVPCRouter_FindBelongsInterface(t *testing.T) {
 
 	vpcRouter := CreateNewVPCRouter()
 	vpcRouter.InitVPCRouterSetting()
-	vpcRouter.Plan.SetID(int64(1))
+	vpcRouter.Plan.SetID(ID(1))
 	vpcRouter.Settings.Router.Interfaces = []*VPCRouterInterface{
 		{IPAddress: []string{"192.168.0.1"}, NetworkMaskLen: 24},
 		{IPAddress: []string{"192.168.1.1"}, NetworkMaskLen: 24},

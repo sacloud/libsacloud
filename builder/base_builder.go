@@ -16,6 +16,7 @@ package builder
 
 import (
 	"fmt"
+	"github.com/sacloud/libsacloud/sacloud"
 	"strings"
 )
 
@@ -24,10 +25,10 @@ type baseBuilder struct {
 	errors []error
 }
 
-func (b *baseBuilder) toStringList(values []int64) []string {
-	keys := []string{}
+func (b *baseBuilder) toStringList(values []sacloud.ID) []string {
+	var keys []string
 	for _, k := range values {
-		keys = append(keys, fmt.Sprintf("%d", k))
+		keys = append(keys, k.String())
 	}
 	return keys
 }
