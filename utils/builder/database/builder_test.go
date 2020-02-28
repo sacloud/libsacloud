@@ -18,6 +18,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/sacloud/libsacloud/v2/utils/power"
+
 	"github.com/sacloud/libsacloud/v2/utils/builder"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
@@ -113,6 +115,10 @@ func TestBuilder_Build(t *testing.T) {
 				dbOp := sacloud.NewDatabaseOp(caller)
 				return dbOp.Delete(ctx, testZone, ctx.ID)
 			},
+		},
+		Shutdown: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {
+			dbOp := sacloud.NewDatabaseOp(caller)
+			return power.ShutdownDatabase(ctx, dbOp, testZone, ctx.ID, true)
 		},
 		Cleanup: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {
 			swOp := sacloud.NewSwitchOp(caller)
