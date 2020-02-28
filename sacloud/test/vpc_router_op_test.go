@@ -21,6 +21,7 @@ import (
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/testutil"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
+	"github.com/sacloud/libsacloud/v2/utils/power"
 )
 
 func TestVPCRouterOp_CRUD(t *testing.T) {
@@ -55,7 +56,7 @@ func TestVPCRouterOp_CRUD(t *testing.T) {
 
 		Shutdown: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {
 			client := sacloud.NewVPCRouterOp(caller)
-			return client.Shutdown(ctx, testZone, ctx.ID, &sacloud.ShutdownOption{Force: true})
+			return power.ShutdownVPCRouter(ctx, client, testZone, ctx.ID, true)
 		},
 
 		Delete: &testutil.CRUDTestDeleteFunc{
@@ -386,7 +387,7 @@ func TestVPCRouterOp_WithRouterCRUD(t *testing.T) {
 
 		Shutdown: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {
 			client := sacloud.NewVPCRouterOp(caller)
-			return client.Shutdown(ctx, testZone, ctx.ID, &sacloud.ShutdownOption{Force: true})
+			return power.ShutdownVPCRouter(ctx, client, testZone, ctx.ID, true)
 		},
 
 		Delete: &testutil.CRUDTestDeleteFunc{

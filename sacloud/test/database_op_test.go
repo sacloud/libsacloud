@@ -20,6 +20,7 @@ import (
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/testutil"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
+	"github.com/sacloud/libsacloud/v2/utils/power"
 )
 
 func TestDatabaseOpCRUD(t *testing.T) {
@@ -88,7 +89,7 @@ func TestDatabaseOpCRUD(t *testing.T) {
 		},
 		Shutdown: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {
 			client := sacloud.NewDatabaseOp(caller)
-			return client.Shutdown(ctx, testZone, ctx.ID, &sacloud.ShutdownOption{Force: true})
+			return power.ShutdownDatabase(ctx, client, testZone, ctx.ID, true)
 		},
 
 		Delete: &testutil.CRUDTestDeleteFunc{

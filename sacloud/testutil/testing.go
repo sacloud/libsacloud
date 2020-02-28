@@ -22,6 +22,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"runtime/debug"
 	"sync"
 	"time"
 
@@ -214,6 +215,9 @@ func Run(t TestT, testCase *CRUDTestCase) {
 			if err := testCase.Cleanup(testContext, testCase.SetupAPICallerFunc()); err != nil {
 				t.Logf("Cleanup is failed: ", err)
 			}
+		}
+		if err := recover(); err != nil {
+			t.Logf("Unexcepted error is occurred: %v, Trace: %s", err, string(debug.Stack()))
 		}
 	}()
 
