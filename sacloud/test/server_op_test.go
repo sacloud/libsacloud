@@ -24,6 +24,7 @@ import (
 	"github.com/sacloud/libsacloud/v2/sacloud/search/keys"
 	"github.com/sacloud/libsacloud/v2/sacloud/testutil"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
+	"github.com/sacloud/libsacloud/v2/utils/power"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -136,7 +137,7 @@ func TestServerOp_CRUD(t *testing.T) {
 
 		Shutdown: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {
 			client := sacloud.NewServerOp(caller)
-			return client.Shutdown(ctx, testZone, ctx.ID, &sacloud.ShutdownOption{Force: true})
+			return power.ShutdownServer(ctx, client, testZone, ctx.ID, true)
 		},
 
 		Delete: &testutil.CRUDTestDeleteFunc{

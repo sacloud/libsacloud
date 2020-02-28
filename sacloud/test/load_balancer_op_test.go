@@ -20,6 +20,7 @@ import (
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/testutil"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
+	"github.com/sacloud/libsacloud/v2/utils/power"
 )
 
 func TestLoadBalancerOp_CRUD(t *testing.T) {
@@ -84,7 +85,7 @@ func TestLoadBalancerOp_CRUD(t *testing.T) {
 
 		Shutdown: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {
 			client := sacloud.NewLoadBalancerOp(caller)
-			return client.Shutdown(ctx, testZone, ctx.ID, &sacloud.ShutdownOption{Force: true})
+			return power.ShutdownLoadBalancer(ctx, client, testZone, ctx.ID, true)
 		},
 
 		Delete: &testutil.CRUDTestDeleteFunc{

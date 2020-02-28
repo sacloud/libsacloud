@@ -20,6 +20,7 @@ import (
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/testutil"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
+	"github.com/sacloud/libsacloud/v2/utils/power"
 	"github.com/sacloud/libsacloud/v2/utils/query"
 )
 
@@ -86,7 +87,7 @@ func TestNFSOp_CRUD(t *testing.T) {
 
 		Shutdown: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {
 			client := sacloud.NewNFSOp(caller)
-			return client.Shutdown(ctx, testZone, ctx.ID, &sacloud.ShutdownOption{Force: true})
+			return power.ShutdownNFS(ctx, client, testZone, ctx.ID, true)
 		},
 
 		Delete: &testutil.CRUDTestDeleteFunc{
