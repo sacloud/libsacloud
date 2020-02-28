@@ -179,7 +179,7 @@ func TestBuilder_Build(t *testing.T) {
 			err: errors.New("dummy"),
 		},
 		{
-			msg: "building disk returns error",
+			msg: "validating disk returns error",
 			in: &Builder{
 				DiskBuilders: []disk.Builder{
 					&dummyDiskBuilder{
@@ -229,7 +229,7 @@ func TestBuilder_Build(t *testing.T) {
 					},
 				},
 			},
-			out: nil,
+			out: &BuildResult{ServerID: 1},
 			err: errors.New("dummy"),
 		},
 		{
@@ -250,7 +250,7 @@ func TestBuilder_Build(t *testing.T) {
 					},
 				},
 			},
-			out: nil,
+			out: &BuildResult{ServerID: 1},
 			err: errors.New("dummy"),
 		},
 		{
@@ -271,7 +271,7 @@ func TestBuilder_Build(t *testing.T) {
 					},
 				},
 			},
-			out: nil,
+			out: &BuildResult{ServerID: 1},
 			err: errors.New("dummy"),
 		},
 	}
