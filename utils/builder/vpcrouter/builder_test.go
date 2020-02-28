@@ -22,6 +22,7 @@ import (
 	"github.com/sacloud/libsacloud/v2/sacloud/testutil"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 	"github.com/sacloud/libsacloud/v2/utils/builder"
+	"github.com/sacloud/libsacloud/v2/utils/builder/internet"
 )
 
 func getSetupOption() *builder.RetryableSetupParameter {
@@ -122,32 +123,20 @@ func TestBuilder_BuildWithRouter(t *testing.T) {
 		Parallel:          true,
 		IgnoreStartupWait: true,
 		Setup: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {
-			internetOp := sacloud.NewInternetOp(caller)
-
-			created, err := internetOp.Create(ctx, testZone, &sacloud.InternetCreateRequest{
+			routerBuilder := &internet.Builder{
 				Name:           testutil.ResourceName("vpc-router-builder"),
 				NetworkMaskLen: 28,
 				BandWidthMbps:  100,
-			})
+				Client:         internet.NewAPIClient(caller),
+			}
+
+			created, err := routerBuilder.Build(ctx, testZone)
 			if err != nil {
 				return err
 			}
 
 			routerID = created.ID
 			routerSwitchID = created.Switch.ID
-			max := 30
-			for {
-				if max == 0 {
-					break
-				}
-				_, err := internetOp.Read(ctx, testZone, routerID)
-				if err != nil || sacloud.IsNotFoundError(err) {
-					max--
-					time.Sleep(3 * time.Second)
-					continue
-				}
-				break
-			}
 
 			swOp := sacloud.NewSwitchOp(caller)
 			sw, err := swOp.Create(ctx, testZone, &sacloud.SwitchCreateRequest{
