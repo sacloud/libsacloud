@@ -22,6 +22,8 @@ import (
 
 func TestNextSubnet(t *testing.T) {
 	DataStore = NewInMemoryStore()
+	// internal init
+	vp = initValuePool(DataStore)
 
 	first := pool().nextSubnet(24)
 	require.Equal(t, "24.0.1.0", first.networkAddress)
