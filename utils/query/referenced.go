@@ -142,7 +142,7 @@ func checkReferenced(ctx context.Context, caller sacloud.APICaller, zones []stri
 	defer close(compCh)
 
 	var wg sync.WaitGroup
-	wg.Add(len(finder))
+	wg.Add(len(zones) * len(finder))
 
 	for _, zone := range zones {
 		for _, f := range finder {
