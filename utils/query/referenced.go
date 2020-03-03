@@ -17,7 +17,6 @@ package query
 import (
 	"context"
 	"fmt"
-	"sync"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
@@ -136,42 +135,15 @@ func checkReferenced(ctx context.Context, caller sacloud.APICaller, zones []stri
 		zones = sacloud.SakuraCloudZones
 	}
 
-	errCh := make(chan error)
-	compCh := make(chan bool)
-	defer close(errCh)
-	defer close(compCh)
-
-	var wg sync.WaitGroup
-	wg.Add(len(zones) * len(finder))
-
 	for _, zone := range zones {
 		for _, f := range finder {
-			go func(zone string, f referenceFindFunc) {
-				exists, err := f(ctx, caller, zone, id)
-				if err != nil {
-					errCh <- err
-					return
-				}
-				if exists {
-					compCh <- true
-				}
-				wg.Done()
-			}(zone, f)
+			exists, err := f(ctx, caller, zone, id)
+			if exists || err != nil {
+				return exists, err
+			}
 		}
 	}
-	go func() {
-		wg.Wait()
-		compCh <- false
-	}()
-
-	for {
-		select {
-		case err := <-errCh:
-			return false, err
-		case result := <-compCh:
-			return result, nil
-		}
-	}
+	return false, nil
 }
 
 func switchHasHybridConnection(ctx context.Context, caller sacloud.APICaller, zone string, id types.ID) (bool, error) {
