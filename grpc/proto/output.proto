@@ -1,0 +1,24 @@
+syntax = "proto3";
+package proto;
+import "google/protobuf/empty.proto";
+option go_package="proto";
+
+message ShutdownOption {
+  bool force = 1;
+}
+
+message ServerBootRequest {
+  string zone = 1;
+  sint64 id = 2;
+}
+
+message ServerShutdownRequest {
+  string zone = 1;
+  sint64 id = 2;
+  ShutdownOption option = 3;
+}
+
+service ServerOp {
+  rpc Boot(ServerBootRequest) returns (google.protobuf.Empty);
+  rpc Shutdown(ServerShutdownRequest) returns (google.protobuf.Empty);
+}
