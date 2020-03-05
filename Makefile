@@ -16,11 +16,10 @@
 AUTHOR          ?="The Libsacloud Authors"
 COPYRIGHT_YEAR  ?="2016-2020"
 COPYRIGHT_FILES ?=$$(find . -name "*.go" -print | grep -v "/vendor/")
-export GO111MODULE=on
 
 default: gen fmt set-license goimports lint test
 
-.PHONY: tests
+.PHONY: test
 test:
 	TESTACC= go test ./... $(TESTARGS) -v -timeout=120m -parallel=8 -race;
 
@@ -38,11 +37,11 @@ tools:
 
 .PHONY: clean
 clean:
-	rm -f sacloud/zz_*.go; \
-	rm -f sacloud/fake/zz_*.go \
-	rm -f sacloud/naked/zz_*.go \
-	rm -f sacloud/stub/zz_*.go \
-	rm -f sacloud/trace/zz_*.go
+	rm -f v2/sacloud/zz_*.go; \
+	rm -f v2/sacloud/fake/zz_*.go \
+	rm -f v2/sacloud/naked/zz_*.go \
+	rm -f v2/sacloud/stub/zz_*.go \
+	rm -f v2/sacloud/trace/zz_*.go
 
 .PHONY: gen
 gen: _gen fmt goimports set-license
