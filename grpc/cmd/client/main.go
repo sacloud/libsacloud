@@ -18,7 +18,7 @@ func main() {
 	zone := os.Args[1]
 	id := os.Args[2]
 
-	serverOp := &client.ServerOp{Addr: "passthrough:///unix:///tmp/libsacloud.sock"}
+	serverOp := &client.ServerOp{Addr: "unix:////tmp/libsacloud.sock"}
 	if err := serverOp.Boot(context.Background(), zone, types.StringID(id)); err != nil {
 		log.Fatal(err)
 	}

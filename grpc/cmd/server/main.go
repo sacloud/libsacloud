@@ -15,7 +15,6 @@ import (
 const addr = "/tmp/libsacloud.sock"
 
 func main() {
-
 	listen, err := net.Listen("unix", addr)
 	if err != nil {
 		log.Fatal(err)

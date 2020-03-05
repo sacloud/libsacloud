@@ -22,7 +22,6 @@ func (s *ServerOpService) Boot(ctx context.Context, in *proto.ServerBootRequest)
 	}
 
 	return &empty.Empty{}, nil
-
 }
 
 func (s *ServerOpService) Shutdown(ctx context.Context, in *proto.ServerShutdownRequest) (*empty.Empty, error) {
