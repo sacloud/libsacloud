@@ -26,12 +26,12 @@ jobs:
 
       - name: Setup tools
         run: | 
-          cd $GOPATH/src/github.com/${{ github.repository }}
+          cd $GOPATH/src/github.com/${{ github.repository }}/v2
           make tools
 
       - name: make lint
         run:  |
-          cd $GOPATH/src/github.com/${{ github.repository }}
+          cd $GOPATH/src/github.com/${{ github.repository }}/v2
           make lint
 
   test:
@@ -60,10 +60,10 @@ jobs:
 
       - name: Setup tools
         run: | 
-          cd $GOPATH/src/github.com/${{ github.repository }}
+          cd $GOPATH/src/github.com/${{ github.repository }}/v2
           make tools
 
       - name: make test
         run:  |
-          cd $GOPATH/src/github.com/${{ github.repository }}
+          cd $GOPATH/src/github.com/${{ github.repository }}/v2
           make test

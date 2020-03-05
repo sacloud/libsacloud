@@ -37,11 +37,11 @@ tools:
 
 .PHONY: clean
 clean:
-	rm -f v2/sacloud/zz_*.go; \
-	rm -f v2/sacloud/fake/zz_*.go \
-	rm -f v2/sacloud/naked/zz_*.go \
-	rm -f v2/sacloud/stub/zz_*.go \
-	rm -f v2/sacloud/trace/zz_*.go
+	rm -f sacloud/zz_*.go; \
+	rm -f sacloud/fake/zz_*.go \
+	rm -f sacloud/naked/zz_*.go \
+	rm -f sacloud/stub/zz_*.go \
+	rm -f sacloud/trace/zz_*.go
 
 .PHONY: gen
 gen: _gen fmt goimports set-license
@@ -55,7 +55,7 @@ gen_fake_data: _gen_fake_data fmt goimports set-license
 
 .PHONY: _gen_fake_data
 _gen_fake_data:
-	go run v2/internal/tools/gen-api-fake-data/main.go
+	go run internal/tools/gen-api-fake-data/main.go
 
 .PHONY: goimports
 goimports: fmt
