@@ -55,7 +55,7 @@ gen_fake_data: _gen_fake_data fmt goimports set-license
 
 .PHONY: _gen_fake_data
 _gen_fake_data:
-	go run -mod=vendor internal/tools/gen-api-fake-data/main.go
+	go run v2/internal/tools/gen-api-fake-data/main.go
 
 .PHONY: goimports
 goimports: fmt
