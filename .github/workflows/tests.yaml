@@ -7,25 +7,33 @@ jobs:
     name: lint
     runs-on: ubuntu-latest
     steps:
-      - name: Set up Go 1.13
+      - name: Set up Go 1.14
         uses: actions/setup-go@v1
         with:
-          go-version: 1.13
+          go-version: 1.14
 
       - name: Set up Go environemnt variables
         run: |
-          echo "::set-env name=GOPATH::$(go env GOPATH)"
-          echo "::add-path::$(go env GOPATH)/bin"
+          echo "::set-env name=GOPATH::${{ github.workspace }}/go"
+          echo "::add-path::${{ github.workspace }}/go/bin"
         shell: bash
 
       - name: Check out code into the Go module directory
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+          path: go/src/github.com/${{ github.repository }}
 
       - name: Setup tools
-        run: make tools
+        run: | 
+          cd $GOPATH/src/github.com/${{ github.repository }}
+          make tools
 
       - name: make lint
-        run: make lint
+        run:  |
+          cd $GOPATH/src/github.com/${{ github.repository }}
+          make lint
+
   test:
     name: test
     runs-on: ${{ matrix.os }}
@@ -33,22 +41,29 @@ jobs:
       matrix:
         os: [macos-latest, windows-latest, ubuntu-18.04]
     steps:
-      - name: Set up Go 1.13
+      - name: Set up Go 1.14
         uses: actions/setup-go@v1
         with:
-          go-version: 1.13
+          go-version: 1.14
 
       - name: Set up Go environemnt variables
         run: |
-          echo "::set-env name=GOPATH::$(go env GOPATH)"
-          echo "::add-path::$(go env GOPATH)/bin"
+          echo "::set-env name=GOPATH::${{ github.workspace }}/go"
+          echo "::add-path::${{ github.workspace }}/go/bin"
+        shell: bash
 
       - name: Check out code into the Go module directory
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+          path: go/src/github.com/${{ github.repository }}
 
       - name: Setup tools
-        run: make tools
+        run: | 
+          cd $GOPATH/src/github.com/${{ github.repository }}
+          make tools
 
       - name: make test
-        run: make test
-
+        run:  |
+          cd $GOPATH/src/github.com/${{ github.repository }}
+          make test
