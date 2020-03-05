@@ -14,24 +14,20 @@ jobs:
 
       - name: Set up Go environemnt variables
         run: |
-          echo "::set-env name=GOPATH::${{ github.workspace }}/go"
-          echo "::add-path::${{ github.workspace }}/go/bin"
-        shell: bash
+          echo "::set-env name=GOPATH::$(go env GOPATH)"
+          echo "::add-path::$(go env GOPATH)/bin"
 
       - name: Check out code into the Go module directory
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 1
-          path: go/src/github.com/${{ github.repository }}
+        uses: actions/checkout@v1
 
       - name: Setup tools
         run: | 
-          cd $GOPATH/src/github.com/${{ github.repository }}/v2
+          cd v2
           make tools
 
       - name: make lint
         run:  |
-          cd $GOPATH/src/github.com/${{ github.repository }}/v2
+          cd v2
           make lint
 
   test:
@@ -48,22 +44,18 @@ jobs:
 
       - name: Set up Go environemnt variables
         run: |
-          echo "::set-env name=GOPATH::${{ github.workspace }}/go"
-          echo "::add-path::${{ github.workspace }}/go/bin"
-        shell: bash
+          echo "::set-env name=GOPATH::$(go env GOPATH)"
+          echo "::add-path::$(go env GOPATH)/bin"
 
       - name: Check out code into the Go module directory
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 1
-          path: go/src/github.com/${{ github.repository }}
+        uses: actions/checkout@v1
 
       - name: Setup tools
         run: | 
-          cd $GOPATH/src/github.com/${{ github.repository }}/v2
+          cd v2
           make tools
 
       - name: make test
-        run:  |
-          cd $GOPATH/src/github.com/${{ github.repository }}/v2
+        run: |
+          cd v2
           make test
