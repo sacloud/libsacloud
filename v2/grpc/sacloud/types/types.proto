@@ -155,9 +155,9 @@ enum NFSSSDSize {
   NFS_SSD_SIZE_4TB = 6;
 }
 
-enum OperationPenaltie {
-  OPERATION_PENALTIE_UNSPECIFIED = 0;
-  OPERATION_PENALTIE_NONE = 1;
+enum OperationPenalty {
+  OPERATION_PENALTY_UNSPECIFIED = 0;
+  OPERATION_PENALTY_NONE = 1;
 }
 
 enum APIKeyPermission {

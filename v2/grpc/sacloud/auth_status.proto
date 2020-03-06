@@ -1,0 +1,28 @@
+syntax = "proto3";
+package sacloud;
+import "github.com/sacloud/libsacloud/v2/grpc/sacloud/types/types.proto";
+option go_package = "github.com/sacloud/libsacloud/v2/grpc/sacloud";
+
+// AuthStatusAPI is interface for operate AuthStatus resource
+service AuthStatusAPI {
+  rpc Read(AuthStatusReadRequest) returns (AuthStatusReadResult);
+}
+
+message AuthStatus {
+  int64 accountID = 1;
+  string accountName = 2;
+  string accountCode = 3;
+  string accountClass = 4;
+  string memberCode = 5;
+  string memberClass = 6;
+  types.AuthClass authClass = 7;
+  types.AuthMethod authMethod = 8;
+  bool isAPIKey = 9;
+  string externalPermission = 10;
+  types.OperationPenalty operationPenalty = 11;
+  types.APIKeyPermission permission = 12;
+}
+
+message AuthStatusReadRequest {}
+message AuthStatusReadResult { AuthStatus authStatus = 1; }
+

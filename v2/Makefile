@@ -41,7 +41,9 @@ clean:
 	rm -f sacloud/fake/zz_*.go \
 	rm -f sacloud/naked/zz_*.go \
 	rm -f sacloud/stub/zz_*.go \
-	rm -f sacloud/trace/zz_*.go
+	rm -f sacloud/trace/zz_*.go \
+	rm -f grpc/sacloud/*.pb.go \
+	rm -f grpc/sacloud/types/*.pb.go 
 
 .PHONY: gen
 gen: _gen fmt goimports set-license
@@ -56,6 +58,14 @@ gen_fake_data: _gen_fake_data fmt goimports set-license
 .PHONY: _gen_fake_data
 _gen_fake_data:
 	go run internal/tools/gen-api-fake-data/main.go
+
+.PHONY: gen_proto
+gen_proto: _gen_proto fmt goimports set-license
+
+.PHONY: _gen_proto
+_gen_proto:
+	(cd $$(go env GOPATH)/src; protoc --go_out=plugins=grpc:./ github.com/sacloud/libsacloud/v2/grpc/sacloud/types/types.proto)
+	(cd $$(go env GOPATH)/src; protoc --go_out=plugins=grpc:./ github.com/sacloud/libsacloud/v2/grpc/sacloud/*.proto)
 
 .PHONY: goimports
 goimports: fmt
