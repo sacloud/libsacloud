@@ -342,7 +342,7 @@ func TestBuilder_Build_BlackBox(t *testing.T) {
 				return err
 			}
 			switchID = sw.ID
-			blackboxBuilder = getBalckBoxTestBuilder(switchID)
+			blackboxBuilder = getBlackBoxTestBuilder(switchID)
 			return nil
 		},
 
@@ -431,7 +431,7 @@ func TestBuilder_Build_BlackBox(t *testing.T) {
 	})
 }
 
-func getBalckBoxTestBuilder(switchID types.ID) *Builder {
+func getBlackBoxTestBuilder(switchID types.ID) *Builder {
 	return &Builder{
 		Name:            "libsacloud-server-builder",
 		CPU:             1,
@@ -515,4 +515,180 @@ func connectToServerViaSSH(t testutil.TestT, user, ip string, privateKey []byte,
 	}
 	t.Logf("Connect to the Server via SSH: `whoami`: %s\n", b.String())
 	return nil
+}
+
+func TestBuilder_IsNeedShutdown(t *testing.T) {
+	cases := []struct {
+		msg    string
+		in     *Builder
+		expect bool
+		err    error
+	}{
+		{
+			msg:    "server id is empty",
+			expect: false,
+			err:    errors.New("server id required"),
+			in:     &Builder{},
+		},
+		{
+			msg:    "in-place update",
+			expect: false,
+			err:    nil,
+			in: &Builder{
+				ServerID:    types.ID(1),
+				Name:        "update",
+				Description: "update",
+				Tags:        types.Tags{"update1", "update2"},
+				Client: &APIClient{
+					Server: &dummyCreateServerHandler{
+						server: &sacloud.Server{
+							ID:          types.ID(1),
+							Name:        "update",
+							Description: "update",
+							Tags:        types.Tags{"update1", "update2-upd"},
+						},
+					},
+				},
+			},
+		},
+		{
+			msg:    "changed: PrivateHostID",
+			expect: true,
+			err:    nil,
+			in: &Builder{
+				ServerID:      types.ID(1),
+				PrivateHostID: types.ID(2),
+				Client: &APIClient{
+					Server: &dummyCreateServerHandler{
+						server: &sacloud.Server{
+							ID:            types.ID(1),
+							PrivateHostID: types.ID(3),
+						},
+					},
+				},
+			},
+		},
+		{
+			msg:    "changed: InterfaceDriver",
+			expect: true,
+			err:    nil,
+			in: &Builder{
+				ServerID:        types.ID(1),
+				InterfaceDriver: types.InterfaceDrivers.E1000,
+				Client: &APIClient{
+					Server: &dummyCreateServerHandler{
+						server: &sacloud.Server{
+							ID:              types.ID(1),
+							InterfaceDriver: types.InterfaceDrivers.VirtIO,
+						},
+					},
+				},
+			},
+		},
+		{
+			msg:    "changed: Memory Size",
+			expect: true,
+			err:    nil,
+			in: &Builder{
+				ServerID: types.ID(1),
+				MemoryGB: 1,
+				Client: &APIClient{
+					Server: &dummyCreateServerHandler{
+						server: &sacloud.Server{
+							ID:       types.ID(1),
+							MemoryMB: 2,
+						},
+					},
+				},
+			},
+		},
+		{
+			msg:    "changed: CPU",
+			expect: true,
+			err:    nil,
+			in: &Builder{
+				ServerID: types.ID(1),
+				CPU:      1,
+				Client: &APIClient{
+					Server: &dummyCreateServerHandler{
+						server: &sacloud.Server{
+							ID:  types.ID(1),
+							CPU: 2,
+						},
+					},
+				},
+			},
+		},
+		{
+			msg:    "changed: add NIC",
+			expect: true,
+			err:    nil,
+			in: &Builder{
+				ServerID: types.ID(1),
+				NIC:      &SharedNICSetting{},
+				Client: &APIClient{
+					Server: &dummyCreateServerHandler{
+						server: &sacloud.Server{
+							ID: types.ID(1),
+						},
+					},
+				},
+			},
+		},
+		{
+			msg:    "changed: delete NIC",
+			expect: true,
+			err:    nil,
+			in: &Builder{
+				ServerID: types.ID(1),
+				Client: &APIClient{
+					Server: &dummyCreateServerHandler{
+						server: &sacloud.Server{
+							ID: types.ID(1),
+							Interfaces: []*sacloud.InterfaceView{
+								{
+									ID:             types.ID(2),
+									SwitchScope:    types.Scopes.Shared,
+									PacketFilterID: 0,
+									UpstreamType:   types.UpstreamNetworkTypes.Shared,
+								},
+							},
+						},
+					},
+				},
+			},
+		},
+		{
+			msg:    "changed: Packet Filter ID",
+			expect: false,
+			err:    nil,
+			in: &Builder{
+				ServerID: types.ID(1),
+				NIC: &SharedNICSetting{
+					PacketFilterID: types.ID(10),
+				},
+				Client: &APIClient{
+					Server: &dummyCreateServerHandler{
+						server: &sacloud.Server{
+							ID: types.ID(1),
+							Interfaces: []*sacloud.InterfaceView{
+								{
+									ID:             types.ID(2),
+									SwitchScope:    types.Scopes.Shared,
+									PacketFilterID: types.ID(11),
+									UpstreamType:   types.UpstreamNetworkTypes.Shared,
+								},
+							},
+						},
+					},
+				},
+			},
+		},
+	}
+
+	for _, tc := range cases {
+		got, err := tc.in.IsNeedShutdown(context.Background(), testutil.TestZone())
+		require.Equal(t, tc.err, err, tc.msg)
+		require.Equal(t, tc.expect, got, tc.msg)
+	}
 }
