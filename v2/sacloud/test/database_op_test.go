@@ -129,7 +129,7 @@ var (
 		Conf: &sacloud.DatabaseRemarkDBConfCommon{
 			DatabaseName:     types.RDBMSVersions[types.RDBMSTypesMariaDB].Name,
 			DatabaseVersion:  types.RDBMSVersions[types.RDBMSTypesMariaDB].Version,
-			DatabaseRevision: types.RDBMSVersions[types.RDBMSTypesMariaDB].Revision,
+			DatabaseRevision: "10.4.12",
 			DefaultUser:      "exa.mple",
 			UserPassword:     "LibsacloudExamplePassword01",
 		},
