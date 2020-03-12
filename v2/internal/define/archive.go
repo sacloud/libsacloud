@@ -17,6 +17,8 @@ package define
 import (
 	"net/http"
 
+	"github.com/sacloud/libsacloud/v2/sacloud/types"
+
 	"github.com/sacloud/libsacloud/v2/internal/define/names"
 	"github.com/sacloud/libsacloud/v2/internal/define/ops"
 	"github.com/sacloud/libsacloud/v2/internal/dsl"
@@ -95,6 +97,37 @@ var archiveAPI = &dsl.Resource{
 
 		// closeFTP
 		ops.CloseFTP(archiveAPIName),
+
+		// Share
+		&dsl.Operation{
+			ResourceName: archiveAPIName,
+			Name:         "Share",
+			PathFormat:   dsl.IDAndSuffixPathFormat("ftp"),
+			Method:       http.MethodPut,
+			RequestEnvelope: dsl.RequestEnvelope(
+				&dsl.EnvelopePayloadDesc{
+					Name: "Shared", // sacloudパッケージ内でMarshalJSON時に設定される
+					Type: meta.TypeFlag,
+				},
+			),
+			Arguments: dsl.Arguments{
+				dsl.ArgumentID,
+			},
+			ResponseEnvelope: dsl.ResponseEnvelope(
+				&dsl.EnvelopePayloadDesc{
+					Name: "ArchiveShareInfo",
+					Type: meta.Static(naked.ArchiveShareInfo{}),
+				},
+			),
+			Results: dsl.Results{
+				{
+					SourceField: "ArchiveShareInfo",
+					DestField:   "ArchiveShareInfo",
+					IsPlural:    false,
+					Model:       archiveShareInfo,
+				}, // sacloudパッケージ内のcustomized_envelopeで設定される
+			},
+		},
 	},
 }
 
@@ -164,6 +197,14 @@ var (
 			fields.Description(),
 			fields.Tags(),
 			fields.IconID(),
+		},
+	}
+
+	archiveShareInfo = &dsl.Model{
+		Name:      "ArchiveShareInfo",
+		NakedType: meta.Static(naked.ArchiveShareInfo{}),
+		Fields: []*dsl.FieldDesc{
+			fields.Def("SharedKey", meta.Static(types.ArchiveShareKey(""))),
 		},
 	}
 )

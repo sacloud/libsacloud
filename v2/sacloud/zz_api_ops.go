@@ -668,6 +668,43 @@ func (o *ArchiveOp) CloseFTP(ctx context.Context, zone string, id types.ID) erro
 	return nil
 }
 
+// Share is API call
+func (o *ArchiveOp) Share(ctx context.Context, zone string, id types.ID) (*ArchiveShareInfo, error) {
+	// build request URL
+	pathBuildParameter := map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+	}
+
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/ftp", pathBuildParameter)
+	if err != nil {
+		return nil, err
+	}
+	// build request body
+	var body interface{}
+	v, err := o.transformShareArgs(id)
+	if err != nil {
+		return nil, err
+	}
+	body = v
+
+	// do request
+	data, err := o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	// build results
+	results, err := o.transformShareResults(data)
+	if err != nil {
+		return nil, err
+	}
+	return results.ArchiveShareInfo, nil
+}
+
 /*************************************************
 * AuthStatusOp
 *************************************************/

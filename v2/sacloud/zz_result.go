@@ -61,6 +61,13 @@ type archiveOpenFTPResult struct {
 	FTPServer *FTPServer `json:",omitempty" mapconv:"FTPServer,omitempty,recursive"`
 }
 
+// archiveShareResult represents the Result of API
+type archiveShareResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	ArchiveShareInfo *ArchiveShareInfo `json:",omitempty" mapconv:"ArchiveShareInfo,omitempty,recursive"`
+}
+
 // authStatusReadResult represents the Result of API
 type authStatusReadResult struct {
 	IsOk bool `json:",omitempty"` // is_ok

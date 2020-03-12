@@ -1176,6 +1176,39 @@ func (o *OpenFTPRequest) SetChangePassword(v bool) {
 }
 
 /*************************************************
+* ArchiveShareInfo
+*************************************************/
+
+// ArchiveShareInfo represents API parameter/response structure
+type ArchiveShareInfo struct {
+	SharedKey types.ArchiveShareKey
+}
+
+// Validate validates by field tags
+func (o *ArchiveShareInfo) Validate() error {
+	return validator.New().Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *ArchiveShareInfo) setDefaults() interface{} {
+	return &struct {
+		SharedKey types.ArchiveShareKey
+	}{
+		SharedKey: o.GetSharedKey(),
+	}
+}
+
+// GetSharedKey returns value of SharedKey
+func (o *ArchiveShareInfo) GetSharedKey() types.ArchiveShareKey {
+	return o.SharedKey
+}
+
+// SetSharedKey sets value to SharedKey
+func (o *ArchiveShareInfo) SetSharedKey(v types.ArchiveShareKey) {
+	o.SharedKey = v
+}
+
+/*************************************************
 * AuthStatus
 *************************************************/
 

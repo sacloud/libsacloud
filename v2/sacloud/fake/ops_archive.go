@@ -159,3 +159,17 @@ func (o *ArchiveOp) CloseFTP(ctx context.Context, zone string, id types.ID) erro
 	putArchive(zone, value)
 	return nil
 }
+
+func (o *ArchiveOp) Share(ctx context.Context, zone string, id types.ID) (*sacloud.ArchiveShareInfo, error) {
+	value, err := o.Read(ctx, zone, id)
+	if err != nil {
+		return nil, err
+	}
+
+	value.SetAvailability(types.Availabilities.Uploading)
+	putArchive(zone, value)
+
+	return &sacloud.ArchiveShareInfo{
+		SharedKey: types.ArchiveShareKey(fmt.Sprintf("%s:%s:%s", zone, id.String(), "xxx")),
+	}, nil
+}

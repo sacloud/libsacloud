@@ -66,3 +66,13 @@ type SourceArchiveInfo struct {
 type OriginalArchive struct {
 	ID types.ID `json:",omitempty" yaml:"id,omitempty" structs:",omitempty"`
 }
+
+// SharedArchiveCreateRequest 共有アーカイブ作成リクエスト
+type SharedArchiveCreateRequest struct {
+	Shared bool `yaml:"shared"`
+}
+
+// ArchiveShareInfo 共有アーカイブ作成レスポンス
+type ArchiveShareInfo struct {
+	SharedKey types.ArchiveShareKey `yaml:"shared_key"`
+}

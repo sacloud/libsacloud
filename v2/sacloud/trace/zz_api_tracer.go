@@ -440,6 +440,39 @@ func (t *ArchiveTracer) CloseFTP(ctx context.Context, zone string, id types.ID) 
 	return err
 }
 
+// Share is API call with trace log
+func (t *ArchiveTracer) Share(ctx context.Context, zone string, id types.ID) (*sacloud.ArchiveShareInfo, error) {
+	log.Println("[TRACE] ArchiveAPI.Share start")
+	targetArguments := struct {
+		Argzone string
+		Argid   types.ID `json:"id"`
+	}{
+		Argzone: zone,
+		Argid:   id,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] ArchiveAPI.Share end")
+	}()
+
+	resultArchiveShareInfo, err := t.Internal.Share(ctx, zone, id)
+	targetResults := struct {
+		ArchiveShareInfo *sacloud.ArchiveShareInfo
+		Error            error
+	}{
+		ArchiveShareInfo: resultArchiveShareInfo,
+		Error:            err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultArchiveShareInfo, err
+}
+
 /*************************************************
 * AuthStatusTracer
 *************************************************/

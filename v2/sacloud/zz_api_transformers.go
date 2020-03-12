@@ -224,6 +224,40 @@ func (o *ArchiveOp) transformOpenFTPResults(data []byte) (*archiveOpenFTPResult,
 	return results, nil
 }
 
+func (o *ArchiveOp) transformShareArgs(id types.ID) (*archiveShareRequestEnvelope, error) {
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	var arg0 interface{} = id
+	if v, ok := arg0.(argumentDefaulter); ok {
+		arg0 = v.setDefaults()
+	}
+	args := &struct {
+		Arg0 interface{}
+	}{
+		Arg0: arg0,
+	}
+
+	v := &archiveShareRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	return v, nil
+}
+
+func (o *ArchiveOp) transformShareResults(data []byte) (*archiveShareResult, error) {
+	nakedResponse := &archiveShareResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &archiveShareResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
+}
+
 func (o *AuthStatusOp) transformReadResults(data []byte) (*authStatusReadResult, error) {
 	nakedResponse := &authStatusReadResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
