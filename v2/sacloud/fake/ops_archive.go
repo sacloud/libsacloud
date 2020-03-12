@@ -159,3 +159,41 @@ func (o *ArchiveOp) CloseFTP(ctx context.Context, zone string, id types.ID) erro
 	putArchive(zone, value)
 	return nil
 }
+
+// Share is fake implementation
+func (o *ArchiveOp) Share(ctx context.Context, zone string, id types.ID) (*sacloud.ArchiveShareInfo, error) {
+	value, err := o.Read(ctx, zone, id)
+	if err != nil {
+		return nil, err
+	}
+
+	value.SetAvailability(types.Availabilities.Uploading)
+	putArchive(zone, value)
+
+	return &sacloud.ArchiveShareInfo{
+		SharedKey: types.ArchiveShareKey(fmt.Sprintf("%s:%s:%s", zone, id.String(), "xxx")),
+	}, nil
+}
+
+// CreateFromShared is fake implementation
+func (o *ArchiveOp) CreateFromShared(ctx context.Context, zone string, sourceArchiveID types.ID, zoneID types.ID, param *sacloud.ArchiveCreateRequestFromShared) (*sacloud.Archive, error) {
+	result := &sacloud.Archive{}
+
+	copySameNameField(param, result)
+	fill(result, fillID, fillCreatedAt, fillScope)
+
+	result.DisplayOrder = int64(random(100))
+	result.Availability = types.Availabilities.Transferring
+	result.DiskPlanID = types.DiskPlans.HDD
+	result.DiskPlanName = "標準プラン"
+	result.DiskPlanStorageClass = "iscsi9999"
+
+	putArchive(zone, result)
+
+	id := result.ID
+	startDiskCopy(o.key, zone, func() (interface{}, error) {
+		return o.Read(context.Background(), zone, id)
+	})
+
+	return result, nil
+}

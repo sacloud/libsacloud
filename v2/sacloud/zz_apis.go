@@ -36,6 +36,8 @@ type ArchiveAPI interface {
 	Delete(ctx context.Context, zone string, id types.ID) error
 	OpenFTP(ctx context.Context, zone string, id types.ID, openOption *OpenFTPRequest) (*FTPServer, error)
 	CloseFTP(ctx context.Context, zone string, id types.ID) error
+	Share(ctx context.Context, zone string, id types.ID) (*ArchiveShareInfo, error)
+	CreateFromShared(ctx context.Context, zone string, sourceArchiveID types.ID, zoneID types.ID, param *ArchiveCreateRequestFromShared) (*Archive, error)
 }
 
 /*************************************************
