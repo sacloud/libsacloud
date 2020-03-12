@@ -128,6 +128,36 @@ var archiveAPI = &dsl.Resource{
 				}, // sacloudパッケージ内のcustomized_envelopeで設定される
 			},
 		},
+		// CreateFromShared
+		{
+			ResourceName: archiveAPIName,
+			Name:         "CreateFromShared",
+			PathFormat:   dsl.DefaultPathFormat + "/{{.sourceArchiveID}}/to/zone/{{.zoneID}}",
+			Method:       http.MethodPost,
+			RequestEnvelope: dsl.RequestEnvelope(&dsl.EnvelopePayloadDesc{
+				Name: names.ResourceFieldName(archiveAPIName, dsl.PayloadForms.Singular),
+				Type: archiveNakedType,
+			}),
+			ResponseEnvelope: dsl.ResponseEnvelope(
+				&dsl.EnvelopePayloadDesc{
+					Name: names.ResourceFieldName(archiveAPIName, dsl.PayloadForms.Singular),
+					Type: archiveNakedType,
+				},
+			),
+			Arguments: dsl.Arguments{
+				&dsl.Argument{Name: "sourceArchiveID", Type: meta.TypeID},
+				&dsl.Argument{Name: "zoneID", Type: meta.TypeID},
+				dsl.MappableArgument("param", archiveCreateFromSharedParam, names.ResourceFieldName(archiveAPIName, dsl.PayloadForms.Singular)),
+			},
+			Results: dsl.Results{
+				{
+					SourceField: names.ResourceFieldName(archiveAPIName, dsl.PayloadForms.Singular),
+					DestField:   archiveView.Name,
+					IsPlural:    false,
+					Model:       archiveView,
+				},
+			},
+		},
 	},
 }
 
@@ -205,6 +235,18 @@ var (
 		NakedType: meta.Static(naked.ArchiveShareInfo{}),
 		Fields: []*dsl.FieldDesc{
 			fields.Def("SharedKey", meta.Static(types.ArchiveShareKey(""))),
+		},
+	}
+
+	archiveCreateFromSharedParam = &dsl.Model{
+		Name:      names.CreateParameterName(archiveAPIName) + "FromShared",
+		NakedType: archiveNakedType,
+		Fields: []*dsl.FieldDesc{
+			fields.Name(),
+			fields.Description(),
+			fields.Tags(),
+			fields.IconID(),
+			fields.Def("SourceSharedKey", meta.Static(types.ArchiveShareKey(""))),
 		},
 	}
 )

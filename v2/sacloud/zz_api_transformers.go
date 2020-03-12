@@ -258,6 +258,58 @@ func (o *ArchiveOp) transformShareResults(data []byte) (*archiveShareResult, err
 	return results, nil
 }
 
+func (o *ArchiveOp) transformCreateFromSharedArgs(sourceArchiveID types.ID, zoneID types.ID, param *ArchiveCreateRequestFromShared) (*archiveCreateFromSharedRequestEnvelope, error) {
+	if sourceArchiveID == types.ID(int64(0)) {
+		sourceArchiveID = types.ID(int64(0))
+	}
+	var arg0 interface{} = sourceArchiveID
+	if v, ok := arg0.(argumentDefaulter); ok {
+		arg0 = v.setDefaults()
+	}
+	if zoneID == types.ID(int64(0)) {
+		zoneID = types.ID(int64(0))
+	}
+	var arg1 interface{} = zoneID
+	if v, ok := arg1.(argumentDefaulter); ok {
+		arg1 = v.setDefaults()
+	}
+	if param == nil {
+		param = &ArchiveCreateRequestFromShared{}
+	}
+	var arg2 interface{} = param
+	if v, ok := arg2.(argumentDefaulter); ok {
+		arg2 = v.setDefaults()
+	}
+	args := &struct {
+		Arg0 interface{}
+		Arg1 interface{}
+		Arg2 interface{} `mapconv:"Archive,recursive"`
+	}{
+		Arg0: arg0,
+		Arg1: arg1,
+		Arg2: arg2,
+	}
+
+	v := &archiveCreateFromSharedRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	return v, nil
+}
+
+func (o *ArchiveOp) transformCreateFromSharedResults(data []byte) (*archiveCreateFromSharedResult, error) {
+	nakedResponse := &archiveCreateFromSharedResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &archiveCreateFromSharedResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
+}
+
 func (o *AuthStatusOp) transformReadResults(data []byte) (*authStatusReadResult, error) {
 	nakedResponse := &authStatusReadResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {

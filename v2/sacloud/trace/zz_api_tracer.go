@@ -473,6 +473,43 @@ func (t *ArchiveTracer) Share(ctx context.Context, zone string, id types.ID) (*s
 	return resultArchiveShareInfo, err
 }
 
+// CreateFromShared is API call with trace log
+func (t *ArchiveTracer) CreateFromShared(ctx context.Context, zone string, sourceArchiveID types.ID, zoneID types.ID, param *sacloud.ArchiveCreateRequestFromShared) (*sacloud.Archive, error) {
+	log.Println("[TRACE] ArchiveAPI.CreateFromShared start")
+	targetArguments := struct {
+		Argzone            string
+		ArgsourceArchiveID types.ID                                `json:"sourceArchiveID"`
+		ArgzoneID          types.ID                                `json:"zoneID"`
+		Argparam           *sacloud.ArchiveCreateRequestFromShared `json:"param"`
+	}{
+		Argzone:            zone,
+		ArgsourceArchiveID: sourceArchiveID,
+		ArgzoneID:          zoneID,
+		Argparam:           param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] ArchiveAPI.CreateFromShared end")
+	}()
+
+	resultArchive, err := t.Internal.CreateFromShared(ctx, zone, sourceArchiveID, zoneID, param)
+	targetResults := struct {
+		Archive *sacloud.Archive
+		Error   error
+	}{
+		Archive: resultArchive,
+		Error:   err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultArchive, err
+}
+
 /*************************************************
 * AuthStatusTracer
 *************************************************/

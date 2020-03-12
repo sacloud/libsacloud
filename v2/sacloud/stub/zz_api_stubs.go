@@ -81,17 +81,24 @@ type ArchiveShareStubResult struct {
 	Err              error
 }
 
+// ArchiveCreateFromSharedStubResult is expected values of the CreateFromShared operation
+type ArchiveCreateFromSharedStubResult struct {
+	Archive *sacloud.Archive
+	Err     error
+}
+
 // ArchiveStub is for trace ArchiveOp operations
 type ArchiveStub struct {
-	FindStubResult        *ArchiveFindStubResult
-	CreateStubResult      *ArchiveCreateStubResult
-	CreateBlankStubResult *ArchiveCreateBlankStubResult
-	ReadStubResult        *ArchiveReadStubResult
-	UpdateStubResult      *ArchiveUpdateStubResult
-	DeleteStubResult      *ArchiveDeleteStubResult
-	OpenFTPStubResult     *ArchiveOpenFTPStubResult
-	CloseFTPStubResult    *ArchiveCloseFTPStubResult
-	ShareStubResult       *ArchiveShareStubResult
+	FindStubResult             *ArchiveFindStubResult
+	CreateStubResult           *ArchiveCreateStubResult
+	CreateBlankStubResult      *ArchiveCreateBlankStubResult
+	ReadStubResult             *ArchiveReadStubResult
+	UpdateStubResult           *ArchiveUpdateStubResult
+	DeleteStubResult           *ArchiveDeleteStubResult
+	OpenFTPStubResult          *ArchiveOpenFTPStubResult
+	CloseFTPStubResult         *ArchiveCloseFTPStubResult
+	ShareStubResult            *ArchiveShareStubResult
+	CreateFromSharedStubResult *ArchiveCreateFromSharedStubResult
 }
 
 // NewArchiveStub creates new ArchiveStub instance
@@ -169,6 +176,14 @@ func (s *ArchiveStub) Share(ctx context.Context, zone string, id types.ID) (*sac
 		log.Fatal("ArchiveStub.ShareStubResult is not set")
 	}
 	return s.ShareStubResult.ArchiveShareInfo, s.ShareStubResult.Err
+}
+
+// CreateFromShared is API call with trace log
+func (s *ArchiveStub) CreateFromShared(ctx context.Context, zone string, sourceArchiveID types.ID, zoneID types.ID, param *sacloud.ArchiveCreateRequestFromShared) (*sacloud.Archive, error) {
+	if s.CreateFromSharedStubResult == nil {
+		log.Fatal("ArchiveStub.CreateFromSharedStubResult is not set")
+	}
+	return s.CreateFromSharedStubResult.Archive, s.CreateFromSharedStubResult.Err
 }
 
 /*************************************************

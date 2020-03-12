@@ -68,6 +68,13 @@ type archiveShareResult struct {
 	ArchiveShareInfo *ArchiveShareInfo `json:",omitempty" mapconv:"ArchiveShareInfo,omitempty,recursive"`
 }
 
+// archiveCreateFromSharedResult represents the Result of API
+type archiveCreateFromSharedResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	Archive *Archive `json:",omitempty" mapconv:"Archive,omitempty,recursive"`
+}
+
 // authStatusReadResult represents the Result of API
 type authStatusReadResult struct {
 	IsOk bool `json:",omitempty"` // is_ok
