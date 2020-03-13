@@ -474,17 +474,17 @@ func (t *ArchiveTracer) Share(ctx context.Context, zone string, id types.ID) (*s
 }
 
 // CreateFromShared is API call with trace log
-func (t *ArchiveTracer) CreateFromShared(ctx context.Context, zone string, sourceArchiveID types.ID, zoneID types.ID, param *sacloud.ArchiveCreateRequestFromShared) (*sacloud.Archive, error) {
+func (t *ArchiveTracer) CreateFromShared(ctx context.Context, zone string, sourceArchiveID types.ID, destZoneID types.ID, param *sacloud.ArchiveCreateRequestFromShared) (*sacloud.Archive, error) {
 	log.Println("[TRACE] ArchiveAPI.CreateFromShared start")
 	targetArguments := struct {
 		Argzone            string
 		ArgsourceArchiveID types.ID                                `json:"sourceArchiveID"`
-		ArgzoneID          types.ID                                `json:"zoneID"`
+		ArgdestZoneID      types.ID                                `json:"destZoneID"`
 		Argparam           *sacloud.ArchiveCreateRequestFromShared `json:"param"`
 	}{
 		Argzone:            zone,
 		ArgsourceArchiveID: sourceArchiveID,
-		ArgzoneID:          zoneID,
+		ArgdestZoneID:      destZoneID,
 		Argparam:           param,
 	}
 	if d, err := json.Marshal(targetArguments); err == nil {
@@ -495,7 +495,7 @@ func (t *ArchiveTracer) CreateFromShared(ctx context.Context, zone string, sourc
 		log.Println("[TRACE] ArchiveAPI.CreateFromShared end")
 	}()
 
-	resultArchive, err := t.Internal.CreateFromShared(ctx, zone, sourceArchiveID, zoneID, param)
+	resultArchive, err := t.Internal.CreateFromShared(ctx, zone, sourceArchiveID, destZoneID, param)
 	targetResults := struct {
 		Archive *sacloud.Archive
 		Error   error

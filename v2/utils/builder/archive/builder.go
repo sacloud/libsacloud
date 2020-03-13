@@ -57,12 +57,12 @@ func (b *FromSharedArchiveBuilder) Build(ctx context.Context, zone string) (*sac
 		return nil, err
 	}
 
-	zoneID, err := query.ZoneIDFromArchiveShareKey(ctx, b.Client.Zone, b.SourceSharedKey)
+	zoneID, err := query.ZoneIDFromName(ctx, b.Client.Zone, zone)
 	if err != nil {
 		return nil, err
 	}
 
-	archive, err := b.Client.Archive.CreateFromShared(ctx, zone, b.SourceSharedKey.SourceArchiveID(), zoneID,
+	archive, err := b.Client.Archive.CreateFromShared(ctx, b.SourceSharedKey.Zone(), b.SourceSharedKey.SourceArchiveID(), zoneID,
 		&sacloud.ArchiveCreateRequestFromShared{
 			Name:            b.Name,
 			Description:     b.Description,

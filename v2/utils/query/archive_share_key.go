@@ -23,15 +23,11 @@ import (
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
-// ZoneIDFromArchiveShareKey アーカイブ共有キーから対応するゾーンIDを取得
-func ZoneIDFromArchiveShareKey(ctx context.Context, zoneAPI sacloud.ZoneAPI, key types.ArchiveShareKey) (types.ID, error) {
-	if !key.ValidFormat() {
-		return types.ID(0), fmt.Errorf("archive share key is invalid format: key:%q", key.String())
-	}
-
+// ZoneIDFromName ゾーン名からゾーンIDを取得
+func ZoneIDFromName(ctx context.Context, zoneAPI sacloud.ZoneAPI, name string) (types.ID, error) {
 	searched, err := zoneAPI.Find(ctx, &sacloud.FindCondition{
 		Filter: search.Filter{
-			search.Key("Name"): search.ExactMatch(key.Zone()),
+			search.Key("Name"): search.ExactMatch(name),
 		},
 		Include: []string{"ID"},
 	})
@@ -39,7 +35,7 @@ func ZoneIDFromArchiveShareKey(ctx context.Context, zoneAPI sacloud.ZoneAPI, key
 		return types.ID(0), err
 	}
 	if searched.Count == 0 {
-		return types.ID(0), fmt.Errorf("zone %q is not found", key.Zone())
+		return types.ID(0), fmt.Errorf("zone %q is not found", name)
 	}
 	return searched.Zones[0].ID, nil
 }

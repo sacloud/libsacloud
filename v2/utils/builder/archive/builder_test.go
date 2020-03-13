@@ -25,7 +25,8 @@ import (
 )
 
 func TestBuilder_Build(t *testing.T) {
-	var testZone = testutil.TestZone()
+	zoneFrom := "is1a"
+	zoneTo := "is1b"
 	var sourceArchive *sacloud.Archive
 	var shareInfo *sacloud.ArchiveShareInfo
 
@@ -37,12 +38,12 @@ func TestBuilder_Build(t *testing.T) {
 		IgnoreStartupWait: true,
 		Setup: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {
 			archiveOp := sacloud.NewArchiveOp(caller)
-			source, err := query.FindArchiveByOSType(ctx, archiveOp, testZone, ostype.CentOS)
+			source, err := query.FindArchiveByOSType(ctx, archiveOp, zoneFrom, ostype.CentOS)
 			if err != nil {
 				return err
 			}
 
-			created, err := archiveOp.Create(ctx, testZone, &sacloud.ArchiveCreateRequest{
+			created, err := archiveOp.Create(ctx, zoneFrom, &sacloud.ArchiveCreateRequest{
 				SourceArchiveID: source.ID,
 				Name:            testutil.ResourceName("source-archive"),
 			})
@@ -51,13 +52,13 @@ func TestBuilder_Build(t *testing.T) {
 			}
 			sourceArchive = created
 			_, err = sacloud.WaiterForReady(func() (interface{}, error) {
-				return archiveOp.Read(ctx, testZone, sourceArchive.ID)
+				return archiveOp.Read(ctx, zoneFrom, sourceArchive.ID)
 			}).WaitForState(ctx)
 			if err != nil {
 				return err
 			}
 
-			si, err := archiveOp.Share(ctx, testZone, sourceArchive.ID)
+			si, err := archiveOp.Share(ctx, zoneFrom, sourceArchive.ID)
 			if err != nil {
 				return err
 			}
@@ -73,12 +74,12 @@ func TestBuilder_Build(t *testing.T) {
 					SourceSharedKey: shareInfo.SharedKey,
 					Client:          NewAPIClient(caller),
 				}
-				return builder.Build(ctx, testZone)
+				return builder.Build(ctx, zoneTo)
 			},
 		},
 		Read: &testutil.CRUDTestFunc{
 			Func: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
-				return sacloud.NewArchiveOp(caller).Read(ctx, testZone, ctx.ID)
+				return sacloud.NewArchiveOp(caller).Read(ctx, zoneTo, ctx.ID)
 			},
 			CheckFunc: func(t testutil.TestT, ctx *testutil.CRUDTestContext, value interface{}) error {
 				archive := value.(*sacloud.Archive)
@@ -92,22 +93,22 @@ func TestBuilder_Build(t *testing.T) {
 				archiveOp := sacloud.NewArchiveOp(caller)
 
 				_, err := sacloud.WaiterForReady(func() (interface{}, error) {
-					return archiveOp.Read(ctx, testZone, ctx.ID)
+					return archiveOp.Read(ctx, zoneTo, ctx.ID)
 				}).WaitForState(ctx)
 				if err != nil {
 					return err
 				}
-				if err := archiveOp.Delete(ctx, testZone, ctx.ID); err != nil {
+				if err := archiveOp.Delete(ctx, zoneTo, ctx.ID); err != nil {
 					return err
 				}
 
 				if sourceArchive != nil {
 					if sourceArchive.Availability.IsUploading() {
-						if err := archiveOp.CloseFTP(ctx, testZone, sourceArchive.ID); err != nil {
+						if err := archiveOp.CloseFTP(ctx, zoneFrom, sourceArchive.ID); err != nil {
 							return err
 						}
 					}
-					if err := archiveOp.Delete(ctx, testZone, sourceArchive.ID); err != nil {
+					if err := archiveOp.Delete(ctx, zoneFrom, sourceArchive.ID); err != nil {
 						return err
 					}
 				}
