@@ -24,7 +24,7 @@ import (
 	"github.com/sacloud/libsacloud/v2/utils/query"
 )
 
-func TestBuilder_Build(t *testing.T) {
+func TestFromSharedArchiveBuilder_Build(t *testing.T) {
 	zoneFrom := "is1a"
 	zoneTo := "is1b"
 	var sourceArchive *sacloud.Archive

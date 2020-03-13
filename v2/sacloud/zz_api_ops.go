@@ -744,6 +744,45 @@ func (o *ArchiveOp) CreateFromShared(ctx context.Context, zone string, sourceArc
 	return results.Archive, nil
 }
 
+// Transfer is API call
+func (o *ArchiveOp) Transfer(ctx context.Context, zone string, sourceArchiveID types.ID, destZoneID types.ID, param *ArchiveTransferRequest) (*Archive, error) {
+	// build request URL
+	pathBuildParameter := map[string]interface{}{
+		"rootURL":         SakuraCloudAPIRoot,
+		"pathSuffix":      o.PathSuffix,
+		"pathName":        o.PathName,
+		"zone":            zone,
+		"sourceArchiveID": sourceArchiveID,
+		"destZoneID":      destZoneID,
+		"param":           param,
+	}
+
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.sourceArchiveID}}/to/zone/{{.destZoneID}}", pathBuildParameter)
+	if err != nil {
+		return nil, err
+	}
+	// build request body
+	var body interface{}
+	v, err := o.transformTransferArgs(sourceArchiveID, destZoneID, param)
+	if err != nil {
+		return nil, err
+	}
+	body = v
+
+	// do request
+	data, err := o.Client.Do(ctx, "POST", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	// build results
+	results, err := o.transformTransferResults(data)
+	if err != nil {
+		return nil, err
+	}
+	return results.Archive, nil
+}
+
 /*************************************************
 * AuthStatusOp
 *************************************************/

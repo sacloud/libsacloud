@@ -158,6 +158,36 @@ var archiveAPI = &dsl.Resource{
 				},
 			},
 		},
+		// Transfer
+		{
+			ResourceName: archiveAPIName,
+			Name:         "Transfer",
+			PathFormat:   dsl.DefaultPathFormat + "/{{.sourceArchiveID}}/to/zone/{{.destZoneID}}",
+			Method:       http.MethodPost,
+			RequestEnvelope: dsl.RequestEnvelope(&dsl.EnvelopePayloadDesc{
+				Name: names.ResourceFieldName(archiveAPIName, dsl.PayloadForms.Singular),
+				Type: archiveNakedType,
+			}),
+			ResponseEnvelope: dsl.ResponseEnvelope(
+				&dsl.EnvelopePayloadDesc{
+					Name: names.ResourceFieldName(archiveAPIName, dsl.PayloadForms.Singular),
+					Type: archiveNakedType,
+				},
+			),
+			Arguments: dsl.Arguments{
+				&dsl.Argument{Name: "sourceArchiveID", Type: meta.TypeID},
+				&dsl.Argument{Name: "destZoneID", Type: meta.TypeID},
+				dsl.MappableArgument("param", archiveTransferParam, names.ResourceFieldName(archiveAPIName, dsl.PayloadForms.Singular)),
+			},
+			Results: dsl.Results{
+				{
+					SourceField: names.ResourceFieldName(archiveAPIName, dsl.PayloadForms.Singular),
+					DestField:   archiveView.Name,
+					IsPlural:    false,
+					Model:       archiveView,
+				},
+			},
+		},
 	},
 }
 
@@ -247,6 +277,18 @@ var (
 			fields.Tags(),
 			fields.IconID(),
 			fields.Def("SourceSharedKey", meta.Static(types.ArchiveShareKey(""))),
+		},
+	}
+
+	archiveTransferParam = &dsl.Model{
+		Name:      "ArchiveTransferRequest",
+		NakedType: archiveNakedType,
+		Fields: []*dsl.FieldDesc{
+			fields.SizeMB(),
+			fields.Name(),
+			fields.Description(),
+			fields.Tags(),
+			fields.IconID(),
 		},
 	}
 )
