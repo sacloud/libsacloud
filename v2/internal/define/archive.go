@@ -132,7 +132,7 @@ var archiveAPI = &dsl.Resource{
 		{
 			ResourceName: archiveAPIName,
 			Name:         "CreateFromShared",
-			PathFormat:   dsl.DefaultPathFormat + "/{{.sourceArchiveID}}/to/zone/{{.zoneID}}",
+			PathFormat:   dsl.DefaultPathFormat + "/{{.sourceArchiveID}}/to/zone/{{.destZoneID}}",
 			Method:       http.MethodPost,
 			RequestEnvelope: dsl.RequestEnvelope(&dsl.EnvelopePayloadDesc{
 				Name: names.ResourceFieldName(archiveAPIName, dsl.PayloadForms.Singular),
@@ -146,7 +146,7 @@ var archiveAPI = &dsl.Resource{
 			),
 			Arguments: dsl.Arguments{
 				&dsl.Argument{Name: "sourceArchiveID", Type: meta.TypeID},
-				&dsl.Argument{Name: "zoneID", Type: meta.TypeID},
+				&dsl.Argument{Name: "destZoneID", Type: meta.TypeID},
 				dsl.MappableArgument("param", archiveCreateFromSharedParam, names.ResourceFieldName(archiveAPIName, dsl.PayloadForms.Singular)),
 			},
 			Results: dsl.Results{

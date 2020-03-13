@@ -258,7 +258,7 @@ func (o *ArchiveOp) transformShareResults(data []byte) (*archiveShareResult, err
 	return results, nil
 }
 
-func (o *ArchiveOp) transformCreateFromSharedArgs(sourceArchiveID types.ID, zoneID types.ID, param *ArchiveCreateRequestFromShared) (*archiveCreateFromSharedRequestEnvelope, error) {
+func (o *ArchiveOp) transformCreateFromSharedArgs(sourceArchiveID types.ID, destZoneID types.ID, param *ArchiveCreateRequestFromShared) (*archiveCreateFromSharedRequestEnvelope, error) {
 	if sourceArchiveID == types.ID(int64(0)) {
 		sourceArchiveID = types.ID(int64(0))
 	}
@@ -266,10 +266,10 @@ func (o *ArchiveOp) transformCreateFromSharedArgs(sourceArchiveID types.ID, zone
 	if v, ok := arg0.(argumentDefaulter); ok {
 		arg0 = v.setDefaults()
 	}
-	if zoneID == types.ID(int64(0)) {
-		zoneID = types.ID(int64(0))
+	if destZoneID == types.ID(int64(0)) {
+		destZoneID = types.ID(int64(0))
 	}
-	var arg1 interface{} = zoneID
+	var arg1 interface{} = destZoneID
 	if v, ok := arg1.(argumentDefaulter); ok {
 		arg1 = v.setDefaults()
 	}

@@ -179,7 +179,7 @@ func (s *ArchiveStub) Share(ctx context.Context, zone string, id types.ID) (*sac
 }
 
 // CreateFromShared is API call with trace log
-func (s *ArchiveStub) CreateFromShared(ctx context.Context, zone string, sourceArchiveID types.ID, zoneID types.ID, param *sacloud.ArchiveCreateRequestFromShared) (*sacloud.Archive, error) {
+func (s *ArchiveStub) CreateFromShared(ctx context.Context, zone string, sourceArchiveID types.ID, destZoneID types.ID, param *sacloud.ArchiveCreateRequestFromShared) (*sacloud.Archive, error) {
 	if s.CreateFromSharedStubResult == nil {
 		log.Fatal("ArchiveStub.CreateFromSharedStubResult is not set")
 	}

@@ -179,6 +179,14 @@ func (o *ArchiveOp) Share(ctx context.Context, zone string, id types.ID) (*saclo
 func (o *ArchiveOp) CreateFromShared(ctx context.Context, zone string, sourceArchiveID types.ID, zoneID types.ID, param *sacloud.ArchiveCreateRequestFromShared) (*sacloud.Archive, error) {
 	result := &sacloud.Archive{}
 
+	var destZone string
+	for name, id := range zoneIDs {
+		if id == zoneID {
+			destZone = name
+			break
+		}
+	}
+
 	copySameNameField(param, result)
 	fill(result, fillID, fillCreatedAt, fillScope)
 
@@ -188,11 +196,11 @@ func (o *ArchiveOp) CreateFromShared(ctx context.Context, zone string, sourceArc
 	result.DiskPlanName = "標準プラン"
 	result.DiskPlanStorageClass = "iscsi9999"
 
-	putArchive(zone, result)
+	putArchive(destZone, result)
 
 	id := result.ID
-	startDiskCopy(o.key, zone, func() (interface{}, error) {
-		return o.Read(context.Background(), zone, id)
+	startDiskCopy(o.key, destZone, func() (interface{}, error) {
+		return o.Read(context.Background(), destZone, id)
 	})
 
 	return result, nil

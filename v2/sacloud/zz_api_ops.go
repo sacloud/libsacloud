@@ -706,7 +706,7 @@ func (o *ArchiveOp) Share(ctx context.Context, zone string, id types.ID) (*Archi
 }
 
 // CreateFromShared is API call
-func (o *ArchiveOp) CreateFromShared(ctx context.Context, zone string, sourceArchiveID types.ID, zoneID types.ID, param *ArchiveCreateRequestFromShared) (*Archive, error) {
+func (o *ArchiveOp) CreateFromShared(ctx context.Context, zone string, sourceArchiveID types.ID, destZoneID types.ID, param *ArchiveCreateRequestFromShared) (*Archive, error) {
 	// build request URL
 	pathBuildParameter := map[string]interface{}{
 		"rootURL":         SakuraCloudAPIRoot,
@@ -714,17 +714,17 @@ func (o *ArchiveOp) CreateFromShared(ctx context.Context, zone string, sourceArc
 		"pathName":        o.PathName,
 		"zone":            zone,
 		"sourceArchiveID": sourceArchiveID,
-		"zoneID":          zoneID,
+		"destZoneID":      destZoneID,
 		"param":           param,
 	}
 
-	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.sourceArchiveID}}/to/zone/{{.zoneID}}", pathBuildParameter)
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.sourceArchiveID}}/to/zone/{{.destZoneID}}", pathBuildParameter)
 	if err != nil {
 		return nil, err
 	}
 	// build request body
 	var body interface{}
-	v, err := o.transformCreateFromSharedArgs(sourceArchiveID, zoneID, param)
+	v, err := o.transformCreateFromSharedArgs(sourceArchiveID, destZoneID, param)
 	if err != nil {
 		return nil, err
 	}
