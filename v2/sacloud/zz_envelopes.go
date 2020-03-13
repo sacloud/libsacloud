@@ -130,6 +130,19 @@ type archiveCreateFromSharedResponseEnvelope struct {
 	Archive *naked.Archive `json:",omitempty"`
 }
 
+// archiveTransferRequestEnvelope is envelop of API request
+type archiveTransferRequestEnvelope struct {
+	Archive *naked.Archive `json:",omitempty"`
+}
+
+// archiveTransferResponseEnvelope is envelop of API response
+type archiveTransferResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Archive *naked.Archive `json:",omitempty"`
+}
+
 // authStatusReadResponseEnvelope is envelop of API response
 type authStatusReadResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目

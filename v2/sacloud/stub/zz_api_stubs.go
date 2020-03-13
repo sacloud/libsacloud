@@ -87,6 +87,12 @@ type ArchiveCreateFromSharedStubResult struct {
 	Err     error
 }
 
+// ArchiveTransferStubResult is expected values of the Transfer operation
+type ArchiveTransferStubResult struct {
+	Archive *sacloud.Archive
+	Err     error
+}
+
 // ArchiveStub is for trace ArchiveOp operations
 type ArchiveStub struct {
 	FindStubResult             *ArchiveFindStubResult
@@ -99,6 +105,7 @@ type ArchiveStub struct {
 	CloseFTPStubResult         *ArchiveCloseFTPStubResult
 	ShareStubResult            *ArchiveShareStubResult
 	CreateFromSharedStubResult *ArchiveCreateFromSharedStubResult
+	TransferStubResult         *ArchiveTransferStubResult
 }
 
 // NewArchiveStub creates new ArchiveStub instance
@@ -184,6 +191,14 @@ func (s *ArchiveStub) CreateFromShared(ctx context.Context, zone string, sourceA
 		log.Fatal("ArchiveStub.CreateFromSharedStubResult is not set")
 	}
 	return s.CreateFromSharedStubResult.Archive, s.CreateFromSharedStubResult.Err
+}
+
+// Transfer is API call with trace log
+func (s *ArchiveStub) Transfer(ctx context.Context, zone string, sourceArchiveID types.ID, destZoneID types.ID, param *sacloud.ArchiveTransferRequest) (*sacloud.Archive, error) {
+	if s.TransferStubResult == nil {
+		log.Fatal("ArchiveStub.TransferStubResult is not set")
+	}
+	return s.TransferStubResult.Archive, s.TransferStubResult.Err
 }
 
 /*************************************************
