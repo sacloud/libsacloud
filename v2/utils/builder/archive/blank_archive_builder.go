@@ -77,6 +77,11 @@ func (b *BlankArchiveBuilder) Build(ctx context.Context, zone string) (*sacloud.
 		return archive, fmt.Errorf("uploading file via FTPS is failed: %s", err)
 	}
 
+	// close FTP
+	if err := b.Client.Archive.CloseFTP(ctx, zone, archive.ID); err != nil {
+		return archive, err
+	}
+
 	// reload
 	return b.Client.Archive.Read(ctx, zone, archive.ID)
 }

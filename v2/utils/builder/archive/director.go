@@ -90,7 +90,7 @@ func (d *Director) Builder() Builder {
 			IconID:            d.IconID,
 			SourceArchiveID:   d.SourceArchiveID,
 			SourceArchiveZone: d.SourceArchiveZone,
-			Client:            nil,
+			Client:            d.Client,
 		}
 	}
 

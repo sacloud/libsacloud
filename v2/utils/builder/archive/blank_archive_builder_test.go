@@ -58,6 +58,7 @@ func TestBlankArchiveBuilder_Build(t *testing.T) {
 				archive := value.(*sacloud.Archive)
 				return testutil.DoAsserts(
 					testutil.AssertNotNilFunc(t, archive, "Archive"),
+					testutil.AssertTrueFunc(t, archive.Availability.IsAvailable(), "Archive.Availability.IsAvailable"),
 				)
 			},
 		},
