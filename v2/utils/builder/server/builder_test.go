@@ -469,10 +469,10 @@ func getBlackBoxTestBuilder(switchID types.ID) *Builder {
 					//SSHKeys   []string
 					//SSHKeyIDs []types.ID
 					IsNotesEphemeral: true,
-					Notes: []string{
+					NoteContents: []string{
 						`libsacloud-startup-script-for-builder`,
 					},
-					//NoteIDs          []types.ID
+					//Notes          []*sacloud.DiskEditNote{},
 				},
 				Client: disk.NewBuildersAPIClient(testutil.SingletonAPICaller()),
 			},
