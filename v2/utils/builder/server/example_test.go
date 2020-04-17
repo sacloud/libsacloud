@@ -91,8 +91,8 @@ func Example_builder() {
 					//GenerateSSHKeyPassPhrase:  "",                                 // 生成する公開鍵のパスフレーズ
 					//GenerateSSHKeyDescription: "",                                 // 生成する公開鍵の説明
 					//IsNotesEphemeral:          false,                              // Notesで指定したスタートアップスクリプトをサーバ作成後に削除するか
-					//Notes:                     []string{note1, note2},             // スタートアップスクリプト(文字列で指定)
-					//NoteIDs:                   []types.ID{types.ID(123456789012)}, // スタートアップスクリプト(IDで指定)
+					//NoteContents:              []string{note1, note2},             // スタートアップスクリプト(文字列で指定)
+					//Notes:                     []*sacloud.DiskEditNote{ID:types.ID(123456789012)}, // スタートアップスクリプト(ID+パラメータで指定)
 				},
 				// IconID:          0,
 			},

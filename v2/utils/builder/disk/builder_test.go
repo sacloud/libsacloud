@@ -70,7 +70,9 @@ func TestDiskFromUnixRequest_Validate(t *testing.T) {
 				PlanID: types.DiskPlans.SSD,
 				SizeGB: 1,
 				EditParameter: &UnixEditRequest{
-					NoteIDs: []types.ID{1},
+					Notes: []*sacloud.DiskEditNote{
+						{ID: 1},
+					},
 				},
 				Client: &APIClient{
 					DiskPlan: &dummyDiskPlanReader{
