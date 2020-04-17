@@ -91,6 +91,14 @@ func (m *modelsDef) diskEdit() *dsl.Model {
 			},
 		},
 		{
+			Name: "APIKeyID",
+			Type: meta.TypeID,
+			Tags: &dsl.FieldTags{
+				MapConv: "APIKey.ID,omitempty",
+				JSON:    ",omitempty",
+			},
+		},
+		{
 			Name: "Variables",
 			Type: meta.Static(map[string]interface{}{}),
 			Tags: &dsl.FieldTags{
@@ -100,7 +108,7 @@ func (m *modelsDef) diskEdit() *dsl.Model {
 		},
 	}
 
-	userSubnetFdields := []*dsl.FieldDesc{
+	userSubnetFields := []*dsl.FieldDesc{
 		{
 			Name: "DefaultRoute",
 			Type: meta.TypeString,
@@ -219,7 +227,7 @@ func (m *modelsDef) diskEdit() *dsl.Model {
 				Name: "UserSubnet",
 				Type: &dsl.Model{
 					Name:   "DiskEditUserSubnet",
-					Fields: userSubnetFdields,
+					Fields: userSubnetFields,
 				},
 				Tags: &dsl.FieldTags{
 					MapConv: ",omitempty",
