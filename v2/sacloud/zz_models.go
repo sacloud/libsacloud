@@ -7317,7 +7317,7 @@ type DiskEditRequest struct {
 	EnableDHCP          bool                `json:",omitempty" mapconv:",omitempty"`
 	ChangePartitionUUID bool                `json:",omitempty" mapconv:",omitempty"`
 	HostName            string              `json:",omitempty" mapconv:",omitempty"`
-	Notes               []*DiskEditNote     `json:",omitempty" mapconv:",omitempty,recursive"`
+	Notes               []*DiskEditNote     `json:",omitempty" mapconv:"[]Notes,omitempty,recursive"`
 	UserIPAddress       string              `json:",omitempty" mapconv:",omitempty"`
 	UserSubnet          *DiskEditUserSubnet `json:",omitempty" mapconv:",omitempty"`
 }
@@ -7338,7 +7338,7 @@ func (o *DiskEditRequest) setDefaults() interface{} {
 		EnableDHCP          bool                `json:",omitempty" mapconv:",omitempty"`
 		ChangePartitionUUID bool                `json:",omitempty" mapconv:",omitempty"`
 		HostName            string              `json:",omitempty" mapconv:",omitempty"`
-		Notes               []*DiskEditNote     `json:",omitempty" mapconv:",omitempty,recursive"`
+		Notes               []*DiskEditNote     `json:",omitempty" mapconv:"[]Notes,omitempty,recursive"`
 		UserIPAddress       string              `json:",omitempty" mapconv:",omitempty"`
 		UserSubnet          *DiskEditUserSubnet `json:",omitempty" mapconv:",omitempty"`
 	}{

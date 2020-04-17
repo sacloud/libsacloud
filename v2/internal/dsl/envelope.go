@@ -99,9 +99,15 @@ func RequestEnvelope(descs ...*EnvelopePayloadDesc) *EnvelopeType {
 func RequestEnvelopeFromModel(model *Model) *EnvelopeType {
 	var descs []*EnvelopePayloadDesc
 	for _, field := range model.Fields {
+		t := field.Type
+		if m, ok := t.(*Model); ok {
+			if m.HasNakedType() {
+				t = m.NakedType
+			}
+		}
 		descs = append(descs, &EnvelopePayloadDesc{
 			Name: field.Name,
-			Type: field.Type,
+			Type: t,
 			Tags: field.Tags,
 		})
 	}
