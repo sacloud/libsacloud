@@ -206,12 +206,13 @@ func (m *modelsDef) diskEdit() *dsl.Model {
 			{
 				Name: "Notes",
 				Type: &dsl.Model{
-					Name:    "DiskEditNote",
-					IsArray: true,
-					Fields:  noteFields,
+					Name:      "DiskEditNote",
+					NakedType: meta.Static([]*naked.DiskEditNote{}),
+					IsArray:   true,
+					Fields:    noteFields,
 				},
 				Tags: &dsl.FieldTags{
-					MapConv: ",omitempty,recursive",
+					MapConv: "[]Notes,omitempty,recursive",
 					JSON:    ",omitempty",
 				},
 			},
