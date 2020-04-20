@@ -116,6 +116,37 @@ func TestBuilder_Validate(t *testing.T) {
 			err: errors.New("dummy"),
 		},
 		{
+			msg: "eth0: switch not found",
+			in: &Builder{
+				NIC: &ConnectedNICSetting{
+					SwitchID: 1111111,
+				},
+				Client: &APIClient{
+					Switch: &dummySwitchReader{
+						err: errors.New("not found"),
+					},
+				},
+			},
+			err: errors.New("invalid NIC: reading switch info(id:1111111) is failed: not found"),
+		},
+		{
+			msg: "eth1: switch not found",
+			in: &Builder{
+				NIC: &SharedNICSetting{},
+				AdditionalNICs: []AdditionalNICSettingHolder{
+					&ConnectedNICSetting{
+						SwitchID: 1111111,
+					},
+				},
+				Client: &APIClient{
+					Switch: &dummySwitchReader{
+						err: errors.New("not found"),
+					},
+				},
+			},
+			err: errors.New("invalid AdditionalNICs[0]: reading switch info(id:1111111) is failed: not found"),
+		},
+		{
 			msg: "plan not found",
 			in: &Builder{
 				CPU:      1000,
@@ -151,6 +182,8 @@ func TestBuilder_Build(t *testing.T) {
 			msg: "finding server plan API returns error",
 			in: &Builder{
 				Client: &APIClient{
+					Switch:       &dummySwitchReader{},
+					PacketFilter: &dummyPackerFilterReader{},
 					ServerPlan: &dummyPlanFinder{
 						err: errors.New("dummy"),
 					},
@@ -163,6 +196,8 @@ func TestBuilder_Build(t *testing.T) {
 			msg: "creating server returns error",
 			in: &Builder{
 				Client: &APIClient{
+					Switch:       &dummySwitchReader{},
+					PacketFilter: &dummyPackerFilterReader{},
 					ServerPlan: &dummyPlanFinder{
 						plans: []*sacloud.ServerPlan{
 							{
@@ -187,6 +222,8 @@ func TestBuilder_Build(t *testing.T) {
 					},
 				},
 				Client: &APIClient{
+					Switch:       &dummySwitchReader{},
+					PacketFilter: &dummyPackerFilterReader{},
 					ServerPlan: &dummyPlanFinder{
 						plans: []*sacloud.ServerPlan{
 							{
@@ -209,6 +246,8 @@ func TestBuilder_Build(t *testing.T) {
 					PacketFilterID: 2,
 				},
 				Client: &APIClient{
+					Switch:       &dummySwitchReader{},
+					PacketFilter: &dummyPackerFilterReader{},
 					ServerPlan: &dummyPlanFinder{
 						plans: []*sacloud.ServerPlan{
 							{
@@ -237,6 +276,8 @@ func TestBuilder_Build(t *testing.T) {
 			in: &Builder{
 				CDROMID: 1,
 				Client: &APIClient{
+					Switch:       &dummySwitchReader{},
+					PacketFilter: &dummyPackerFilterReader{},
 					ServerPlan: &dummyPlanFinder{
 						plans: []*sacloud.ServerPlan{
 							{
@@ -258,6 +299,8 @@ func TestBuilder_Build(t *testing.T) {
 			in: &Builder{
 				BootAfterCreate: true,
 				Client: &APIClient{
+					Switch:       &dummySwitchReader{},
+					PacketFilter: &dummyPackerFilterReader{},
 					ServerPlan: &dummyPlanFinder{
 						plans: []*sacloud.ServerPlan{
 							{
