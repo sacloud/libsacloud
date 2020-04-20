@@ -38,6 +38,24 @@ func (f *dummyPlanFinder) Find(ctx context.Context, zone string, conditions *sac
 	}, nil
 }
 
+type dummySwitchReader struct {
+	sw  *sacloud.Switch
+	err error
+}
+
+func (d *dummySwitchReader) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Switch, error) {
+	return d.sw, d.err
+}
+
+type dummyPackerFilterReader struct {
+	pf  *sacloud.PacketFilter
+	err error
+}
+
+func (d *dummyPackerFilterReader) Read(ctx context.Context, zone string, id types.ID) (*sacloud.PacketFilter, error) {
+	return d.pf, d.err
+}
+
 type dummyInterfaceHandler struct {
 	iface *sacloud.Interface
 	err   error
