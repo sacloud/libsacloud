@@ -14,8 +14,5 @@
 
 package types
 
-// InternetBandWidths 設定可能な帯域幅の値リスト
-var InternetBandWidths = []int{100, 250, 500, 1000, 1500, 2000, 2500, 3000, 5000}
-
-// InternetNetworkMaskLengths 設定可能なネットワークマスク長の値リスト
-var InternetNetworkMaskLengths = []int{26, 27, 28}
+// DatetimeLayout さくらのクラウドAPIで利用される日付型のレイアウト(RFC3339)
+var DatetimeLayout = "2006-01-02T15:04:05-07:00"
