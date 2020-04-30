@@ -144,10 +144,11 @@ type ProxyLBTimeout struct {
 
 // ProxyLBStatus ステータス
 type ProxyLBStatus struct {
-	UseVIPFailover bool                 `yaml:"use_vip_failover"`
-	Region         types.EProxyLBRegion `json:",omitempty" yaml:"region,omitempty" structs:",omitempty"`
-	ProxyNetworks  []string             `json:",omitempty" yaml:"proxy_networks,omitempty" structs:",omitempty"`
-	FQDN           string               `json:",omitempty" yaml:"fqdn,omitempty" structs:",omitempty"`
+	UseVIPFailover   bool                 `yaml:"use_vip_failover"`
+	Region           types.EProxyLBRegion `json:",omitempty" yaml:"region,omitempty" structs:",omitempty"`
+	ProxyNetworks    []string             `json:",omitempty" yaml:"proxy_networks,omitempty" structs:",omitempty"`
+	FQDN             string               `json:",omitempty" yaml:"fqdn,omitempty" structs:",omitempty"`
+	VirtualIPAddress string               `json:",omitempty" yaml:"virtual_ip_address,omitempty" structs:",omitempty"`
 }
 
 // ProxyLBAdditionalCerts additional certificates
