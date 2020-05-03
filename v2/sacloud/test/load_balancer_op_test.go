@@ -17,10 +17,10 @@ package test
 import (
 	"testing"
 
+	"github.com/sacloud/libsacloud/v2/helper/power"
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/testutil"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
-	"github.com/sacloud/libsacloud/v2/utils/power"
 )
 
 func TestLoadBalancerOp_CRUD(t *testing.T) {
