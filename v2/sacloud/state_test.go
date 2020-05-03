@@ -78,12 +78,12 @@ func TestStatePollingWaiter(t *testing.T) {
 
 	t.Run("ReadFunc got 404", func(t *testing.T) {
 		retry := 5
-		readed := 0
+		read := 0
 		waiter := &StatePollingWaiter{
 			NotFoundRetry: 10,
 			ReadFunc: func() (interface{}, error) {
-				readed++
-				if readed < retry {
+				read++
+				if read < retry {
 					return nil, &apiError{responseCode: http.StatusNotFound}
 				}
 				return &dummyState{state: "done"}, nil
@@ -96,17 +96,17 @@ func TestStatePollingWaiter(t *testing.T) {
 		_, err := waiter.WaitForState(ctx)
 
 		require.NoError(t, err)
-		require.Equal(t, retry, readed)
+		require.Equal(t, retry, read)
 	})
 
 	t.Run("404 errors exceeded maximum", func(t *testing.T) {
 		retry := 5
-		readed := 0
+		read := 0
 		waiter := &StatePollingWaiter{
 			NotFoundRetry: 2,
 			ReadFunc: func() (interface{}, error) {
-				readed++
-				if readed < retry {
+				read++
+				if read < retry {
 					return nil, &apiError{responseCode: http.StatusNotFound}
 				}
 				return &dummyState{state: "done"}, nil
@@ -120,7 +120,7 @@ func TestStatePollingWaiter(t *testing.T) {
 
 		require.Error(t, err)
 		require.True(t, IsNotFoundError(err))
-		require.Equal(t, waiter.NotFoundRetry+1, readed)
+		require.Equal(t, waiter.NotFoundRetry+1, read)
 	})
 
 	t.Run("ReadFunc got unexpected error", func(t *testing.T) {
