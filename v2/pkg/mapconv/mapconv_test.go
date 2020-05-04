@@ -25,6 +25,7 @@ type dummyFrom struct {
 	A          string `mapconv:"ValueA.A"`
 	B          string `mapconv:"ValueA.ValueB.B"`
 	C          string `mapconv:"ValueA.ValueB.ValueC.C"`
+	Ignore     string `mapconv:"-"`
 	Pointer    *time.Time
 	Slice      []string
 	NoTag      string
@@ -42,6 +43,7 @@ type dummyTo struct {
 			}
 		}
 	}
+	Ignore  string
 	Pointer *time.Time
 	Slice   []string
 	NoTag   string
@@ -60,6 +62,7 @@ func TestConvertTo(t *testing.T) {
 				A:          "A",
 				B:          "B",
 				C:          "C",
+				Ignore:     "ignored",
 				Pointer:    &zeroTime,
 				Slice:      []string{"a", "b", "c"},
 				NoTag:      "NoTag",
