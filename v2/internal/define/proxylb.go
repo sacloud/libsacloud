@@ -56,7 +56,7 @@ var proxyLBAPI = &dsl.Resource{
 		{
 			ResourceName: proxyLBAPIName,
 			Name:         "ChangePlan",
-			PathFormat:   dsl.DefaultPathFormatWithID,
+			PathFormat:   dsl.IDAndSuffixPathFormat("plan"),
 			Method:       http.MethodPut,
 			RequestEnvelope: dsl.RequestEnvelope(&dsl.EnvelopePayloadDesc{
 				Type: proxyLBNakedType,
