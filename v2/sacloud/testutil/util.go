@@ -53,7 +53,7 @@ func ResourceName(name string) string {
 
 // RandomPrefix テスト時に作成するリソースに付与するランダムなプレフィックスを生成する
 func RandomPrefix() string {
-	return fmt.Sprintf("%s-%s", RandomName(5,CharSetAlpha),TestResourcePrefix)
+	return fmt.Sprintf("%s%s-", TestResourcePrefix, RandomName(5, CharSetAlpha))
 }
 
 // WithRandomPrefix ランダムなプレフィックスをつけて返す
@@ -152,4 +152,3 @@ func IsEnableAPITrace() bool {
 func IsEnableHTTPTrace() bool {
 	return os.Getenv("SAKURACLOUD_TRACE_HTTP") != ""
 }
-

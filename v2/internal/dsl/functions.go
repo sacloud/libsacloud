@@ -44,17 +44,26 @@ func wrapByDoubleQuote(targets ...string) []string {
 }
 
 func toSnakeCaseName(name string) string {
-	return strings.Replace(xstrings.ToSnakeCase(normalizeResourceName(name)), "-", "_", -1)
+	return strings.Replace(normalizeResourceName(xstrings.ToSnakeCase(name)), "-", "_", -1)
+}
+
+func toLower(name string) string {
+	return strings.Replace(normalizeResourceName(xstrings.ToSnakeCase(name)), "_", "", -1)
 }
 
 var normalizationWords = map[string]string{
-	"IP": "ip",
+	"Ip":    "IP",
+	"i_pv_": "ipv",
+	"i-pv-": "ipv",
+	"Cpu":   "CPU",
+	"Ssd":   "SSD",
+	"Hdd":   "HDD",
 }
 
 func normalizeResourceName(name string) string {
 	n := name
 	for k, v := range normalizationWords {
-		if strings.HasPrefix(name, k) {
+		if strings.Contains(name, k) {
 			n = strings.Replace(name, k, v, -1)
 			break
 		}

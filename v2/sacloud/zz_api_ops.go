@@ -3166,6 +3166,44 @@ func (o *DiskOp) Monitor(ctx context.Context, zone string, id types.ID, conditio
 	return results.DiskActivity, nil
 }
 
+// MonitorDisk is API call
+func (o *DiskOp) MonitorDisk(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*DiskActivity, error) {
+	// build request URL
+	pathBuildParameter := map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+		"condition":  condition,
+	}
+
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/monitor", pathBuildParameter)
+	if err != nil {
+		return nil, err
+	}
+	// build request body
+	var body interface{}
+	v, err := o.transformMonitorDiskArgs(id, condition)
+	if err != nil {
+		return nil, err
+	}
+	body = v
+
+	// do request
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	// build results
+	results, err := o.transformMonitorDiskResults(data)
+	if err != nil {
+		return nil, err
+	}
+	return results.DiskActivity, nil
+}
+
 /*************************************************
 * DiskPlanOp
 *************************************************/
@@ -4658,6 +4696,44 @@ func (o *InternetOp) Monitor(ctx context.Context, zone string, id types.ID, cond
 	return results.RouterActivity, nil
 }
 
+// MonitorRouter is API call
+func (o *InternetOp) MonitorRouter(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*RouterActivity, error) {
+	// build request URL
+	pathBuildParameter := map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+		"condition":  condition,
+	}
+
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/monitor", pathBuildParameter)
+	if err != nil {
+		return nil, err
+	}
+	// build request body
+	var body interface{}
+	v, err := o.transformMonitorRouterArgs(id, condition)
+	if err != nil {
+		return nil, err
+	}
+	body = v
+
+	// do request
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	// build results
+	results, err := o.transformMonitorRouterResults(data)
+	if err != nil {
+		return nil, err
+	}
+	return results.RouterActivity, nil
+}
+
 // EnableIPv6 is API call
 func (o *InternetOp) EnableIPv6(ctx context.Context, zone string, id types.ID) (*IPv6NetInfo, error) {
 	// build request URL
@@ -4972,6 +5048,43 @@ func (o *IPv6NetOp) List(ctx context.Context, zone string) (*IPv6NetListResult, 
 
 	// build results
 	results, err := o.transformListResults(data)
+	if err != nil {
+		return nil, err
+	}
+	return results, err
+}
+
+// Find is API call
+func (o *IPv6NetOp) Find(ctx context.Context, zone string, conditions *FindCondition) (*IPv6NetFindResult, error) {
+	// build request URL
+	pathBuildParameter := map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"conditions": conditions,
+	}
+
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", pathBuildParameter)
+	if err != nil {
+		return nil, err
+	}
+	// build request body
+	var body interface{}
+	v, err := o.transformFindArgs(conditions)
+	if err != nil {
+		return nil, err
+	}
+	body = v
+
+	// do request
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	// build results
+	results, err := o.transformFindResults(data)
 	if err != nil {
 		return nil, err
 	}
@@ -6719,7 +6832,7 @@ func (o *MobileGatewayOp) SetDNS(ctx context.Context, zone string, id types.ID, 
 }
 
 // GetSIMRoutes is API call
-func (o *MobileGatewayOp) GetSIMRoutes(ctx context.Context, zone string, id types.ID) ([]*MobileGatewaySIMRoute, error) {
+func (o *MobileGatewayOp) GetSIMRoutes(ctx context.Context, zone string, id types.ID) (MobileGatewaySIMRoutes, error) {
 	// build request URL
 	pathBuildParameter := map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
@@ -6786,7 +6899,7 @@ func (o *MobileGatewayOp) SetSIMRoutes(ctx context.Context, zone string, id type
 }
 
 // ListSIM is API call
-func (o *MobileGatewayOp) ListSIM(ctx context.Context, zone string, id types.ID) ([]*MobileGatewaySIMInfo, error) {
+func (o *MobileGatewayOp) ListSIM(ctx context.Context, zone string, id types.ID) (MobileGatewaySIMs, error) {
 	// build request URL
 	pathBuildParameter := map[string]interface{}{
 		"rootURL":    SakuraCloudAPIRoot,
@@ -7778,15 +7891,16 @@ func (o *PacketFilterOp) Read(ctx context.Context, zone string, id types.ID) (*P
 }
 
 // Update is API call
-func (o *PacketFilterOp) Update(ctx context.Context, zone string, id types.ID, param *PacketFilterUpdateRequest) (*PacketFilter, error) {
+func (o *PacketFilterOp) Update(ctx context.Context, zone string, id types.ID, updateParam *PacketFilterUpdateRequest, originalExpressionHash string) (*PacketFilter, error) {
 	// build request URL
 	pathBuildParameter := map[string]interface{}{
-		"rootURL":    SakuraCloudAPIRoot,
-		"pathSuffix": o.PathSuffix,
-		"pathName":   o.PathName,
-		"zone":       zone,
-		"id":         id,
-		"param":      param,
+		"rootURL":                SakuraCloudAPIRoot,
+		"pathSuffix":             o.PathSuffix,
+		"pathName":               o.PathName,
+		"zone":                   zone,
+		"id":                     id,
+		"updateParam":            updateParam,
+		"originalExpressionHash": originalExpressionHash,
 	}
 
 	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", pathBuildParameter)
@@ -7795,7 +7909,7 @@ func (o *PacketFilterOp) Update(ctx context.Context, zone string, id types.ID, p
 	}
 	// build request body
 	var body interface{}
-	v, err := o.transformUpdateArgs(id, param)
+	v, err := o.transformUpdateArgs(id, updateParam, originalExpressionHash)
 	if err != nil {
 		return nil, err
 	}
@@ -9223,6 +9337,44 @@ func (o *ServerOp) Monitor(ctx context.Context, zone string, id types.ID, condit
 
 	// build results
 	results, err := o.transformMonitorResults(data)
+	if err != nil {
+		return nil, err
+	}
+	return results.CPUTimeActivity, nil
+}
+
+// MonitorCPU is API call
+func (o *ServerOp) MonitorCPU(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*CPUTimeActivity, error) {
+	// build request URL
+	pathBuildParameter := map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+		"condition":  condition,
+	}
+
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/monitor", pathBuildParameter)
+	if err != nil {
+		return nil, err
+	}
+	// build request body
+	var body interface{}
+	v, err := o.transformMonitorCPUArgs(id, condition)
+	if err != nil {
+		return nil, err
+	}
+	body = v
+
+	// do request
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	// build results
+	results, err := o.transformMonitorCPUResults(data)
 	if err != nil {
 		return nil, err
 	}

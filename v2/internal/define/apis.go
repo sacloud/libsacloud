@@ -13,17 +13,17 @@
 // limitations under the License.
 
 // Package define .
-//go:generate go run ../tools/gen-api-models/main.go
-//go:generate go run ../tools/gen-api-interfaces/main.go
-//go:generate go run ../tools/gen-api-envelope/main.go
-//go:generate go run ../tools/gen-api-result/main.go
-//go:generate go run ../tools/gen-api-op/main.go
-//go:generate go run ../tools/gen-api-transformer/main.go
-//go:generate go run ../tools/gen-api-tracer/main.go
-//go:generate go run ../tools/gen-api-stub/main.go
-//go:generate go run ../tools/gen-api-meta/main.go
-//go:generate go run ../tools/gen-api-fake-store/main.go
-//go:generate go run ../tools/gen-api-fake-op/main.go
+//go:generate go run ../tools/gen-api-models/
+//go:generate go run ../tools/gen-api-result/
+//go:generate go run ../tools/gen-api-interfaces/
+//go:generate go run ../tools/gen-api-envelope/
+//go:generate go run ../tools/gen-api-transformer/
+//go:generate go run ../tools/gen-api-op/
+//go:generate go run ../tools/gen-api-tracer/
+//go:generate go run ../tools/gen-api-stub/
+//go:generate go run ../tools/gen-api-meta/
+//go:generate go run ../tools/gen-api-fake-store/
+//go:generate go run ../tools/gen-api-fake-op/
 package define
 
 import "github.com/sacloud/libsacloud/v2/internal/dsl"

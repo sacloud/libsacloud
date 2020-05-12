@@ -736,6 +736,20 @@ type diskMonitorResponseEnvelope struct {
 	Data *naked.MonitorValues `json:",omitempty"`
 }
 
+// diskMonitorDiskRequestEnvelope is envelop of API request
+type diskMonitorDiskRequestEnvelope struct {
+	Start time.Time `json:",omitempty"`
+	End   time.Time `json:",omitempty"`
+}
+
+// diskMonitorDiskResponseEnvelope is envelop of API response
+type diskMonitorDiskResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Data *naked.MonitorValues `json:",omitempty"`
+}
+
 // diskPlanFindRequestEnvelope is envelop of API request
 type diskPlanFindRequestEnvelope struct {
 	Count   int             `mapconv:",omitempty"`
@@ -1122,6 +1136,20 @@ type internetMonitorResponseEnvelope struct {
 	Data *naked.MonitorValues `json:",omitempty"`
 }
 
+// internetMonitorRouterRequestEnvelope is envelop of API request
+type internetMonitorRouterRequestEnvelope struct {
+	Start time.Time `json:",omitempty"`
+	End   time.Time `json:",omitempty"`
+}
+
+// internetMonitorRouterResponseEnvelope is envelop of API response
+type internetMonitorRouterResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Data *naked.MonitorValues `json:",omitempty"`
+}
+
 // internetEnableIPv6ResponseEnvelope is envelop of API response
 type internetEnableIPv6ResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
@@ -1189,6 +1217,25 @@ type iPAddressUpdateHostNameResponseEnvelope struct {
 
 // iPv6NetListResponseEnvelope is envelop of API response
 type iPv6NetListResponseEnvelope struct {
+	Total int `json:",omitempty"` // トータル件数
+	From  int `json:",omitempty"` // ページング開始ページ
+	Count int `json:",omitempty"` // 件数
+
+	IPv6Nets []*naked.IPv6Net `json:",omitempty"`
+}
+
+// iPv6NetFindRequestEnvelope is envelop of API request
+type iPv6NetFindRequestEnvelope struct {
+	Count   int             `mapconv:",omitempty"`
+	From    int             `mapconv:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty" mapconv:",omitempty"`
+	Filter  search.Filter   `json:",omitempty" mapconv:",omitempty"`
+	Include []string        `json:",omitempty" mapconv:",omitempty"`
+	Exclude []string        `json:",omitempty" mapconv:",omitempty"`
+}
+
+// iPv6NetFindResponseEnvelope is envelop of API response
+type iPv6NetFindResponseEnvelope struct {
 	Total int `json:",omitempty"` // トータル件数
 	From  int `json:",omitempty"` // ページング開始ページ
 	Count int `json:",omitempty"` // 件数
@@ -1853,7 +1900,8 @@ type packetFilterReadResponseEnvelope struct {
 
 // packetFilterUpdateRequestEnvelope is envelop of API request
 type packetFilterUpdateRequestEnvelope struct {
-	PacketFilter *naked.PacketFilter `json:",omitempty"`
+	PacketFilter           *naked.PacketFilter `json:",omitempty"`
+	OriginalExpressionHash string              `json:",omitempty"`
 }
 
 // packetFilterUpdateResponseEnvelope is envelop of API response
@@ -2204,6 +2252,20 @@ type serverMonitorRequestEnvelope struct {
 
 // serverMonitorResponseEnvelope is envelop of API response
 type serverMonitorResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Data *naked.MonitorValues `json:",omitempty"`
+}
+
+// serverMonitorCPURequestEnvelope is envelop of API request
+type serverMonitorCPURequestEnvelope struct {
+	Start time.Time `json:",omitempty"`
+	End   time.Time `json:",omitempty"`
+}
+
+// serverMonitorCPUResponseEnvelope is envelop of API response
+type serverMonitorCPUResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
 	Success types.APIResult `json:",omitempty"`      // success項目
 

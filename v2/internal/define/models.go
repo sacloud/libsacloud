@@ -29,10 +29,7 @@ func (m *modelsDef) ftpServerOpenParameter() *dsl.Model {
 	return &dsl.Model{
 		Name: "OpenFTPRequest",
 		Fields: []*dsl.FieldDesc{
-			{
-				Name: "ChangePassword",
-				Type: meta.TypeFlag,
-			},
+			fields.FTPServerChangePassword(),
 		},
 	}
 }
@@ -1227,75 +1224,6 @@ func (m *modelsDef) vpcRouterStaticRoute() *dsl.Model {
 // Mobile Gateway
 //******************************************************************************
 
-func (m *modelsDef) mobileGatewaySetting() *dsl.Model {
-	return &dsl.Model{
-		Name:      "MobileGatewaySetting",
-		NakedType: meta.Static(naked.MobileGatewaySettings{}),
-		Fields: []*dsl.FieldDesc{
-
-			{
-				Name: "Interfaces",
-				Type: m.mobileGatewayInterface(),
-				Tags: &dsl.FieldTags{
-					MapConv: "MobileGateway.[]Interfaces,recursive",
-				},
-			},
-			{
-				Name: "StaticRoute",
-				Type: m.mobileGatewayStaticRoute(),
-				Tags: &dsl.FieldTags{
-					MapConv: "MobileGateway.[]StaticRoutes,recursive",
-				},
-			},
-			{
-				Name: "InternetConnectionEnabled",
-				Type: meta.TypeStringFlag,
-				Tags: &dsl.FieldTags{
-					MapConv: "MobileGateway.InternetConnection.Enabled",
-				},
-			},
-			{
-				Name: "InterDeviceCommunicationEnabled",
-				Type: meta.TypeStringFlag,
-				Tags: &dsl.FieldTags{
-					MapConv: "MobileGateway.InterDeviceCommunication.Enabled",
-				},
-			},
-		},
-	}
-}
-
-func (m *modelsDef) mobileGatewaySettingCreate() *dsl.Model {
-	return &dsl.Model{
-		Name:      "MobileGatewaySettingCreate",
-		NakedType: meta.Static(naked.MobileGatewaySettings{}),
-		Fields: []*dsl.FieldDesc{
-			{
-				Name: "StaticRoute",
-				Type: m.mobileGatewayStaticRoute(),
-				Tags: &dsl.FieldTags{
-					JSON:    ",omitempty",
-					MapConv: "MobileGateway.[]StaticRoutes,omitempty,recursive",
-				},
-			},
-			{
-				Name: "InternetConnectionEnabled",
-				Type: meta.TypeStringFlag,
-				Tags: &dsl.FieldTags{
-					MapConv: "MobileGateway.InternetConnection.Enabled",
-				},
-			},
-			{
-				Name: "InterDeviceCommunicationEnabled",
-				Type: meta.TypeStringFlag,
-				Tags: &dsl.FieldTags{
-					MapConv: "MobileGateway.InterDeviceCommunication.Enabled",
-				},
-			},
-		},
-	}
-}
-
 func (m *modelsDef) mobileGatewayInterface() *dsl.Model {
 	return &dsl.Model{
 		Name:      "MobileGatewayInterfaceSetting",
@@ -1336,8 +1264,8 @@ func (m *modelsDef) simInfo() *dsl.Model {
 func (m *modelsDef) simInfoList() *dsl.Model {
 	return &dsl.Model{
 		Name:      "MobileGatewaySIMInfo",
+		Alias:     "MobileGatewaySIMs",
 		NakedType: meta.Static(naked.SIMInfo{}),
-		IsArray:   true,
 		Fields:    m.simInfoFields(),
 	}
 }

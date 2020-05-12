@@ -76,3 +76,8 @@ func (r *ResultType) ZeroInitializeSourceCode() string {
 func (r *ResultType) ZeroValueSourceCode() string {
 	return "nil"
 }
+
+// ToPtrType ポインタ型への変換
+func (r *ResultType) ToPtrType() meta.Type {
+	return nil // not use
+}

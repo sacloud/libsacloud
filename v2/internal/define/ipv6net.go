@@ -31,8 +31,11 @@ var ipv6netAPI = &dsl.Resource{
 	PathName:   ipv6netAPIPathName,
 	PathSuffix: dsl.CloudAPISuffix,
 	Operations: dsl.Operations{
-		// List
+		// list Note: Findのパラメータなしと同等だが、後方互換のために残しておく
 		ops.List(ipv6netAPIName, ipv6netNakedType, ipv6netView),
+
+		// find
+		ops.Find(ipv6netAPIName, ipv6netNakedType, findParameter, ipv6netView),
 
 		// read
 		ops.Read(ipv6netAPIName, ipv6netNakedType, ipv6netView),

@@ -34,7 +34,6 @@ var internetAPI = &dsl.Resource{
 	PathName:   internetAPIPathName,
 	PathSuffix: dsl.CloudAPISuffix,
 	Operations: dsl.Operations{
-
 		// find
 		ops.Find(internetAPIName, internetNakedType, findParameter, internetView),
 
@@ -144,6 +143,7 @@ var internetAPI = &dsl.Resource{
 
 		// monitor
 		ops.Monitor(internetAPIName, monitorParameter, monitors.routerModel()),
+		ops.MonitorChild(internetAPIName, "Router", "", monitorParameter, monitors.routerModel()),
 
 		// ipv6
 		{
@@ -176,6 +176,7 @@ var internetAPI = &dsl.Resource{
 		),
 	},
 }
+
 var (
 	internetNakedType = meta.Static(naked.Internet{})
 

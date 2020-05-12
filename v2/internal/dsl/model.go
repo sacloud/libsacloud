@@ -59,11 +59,13 @@ func (m Models) UniqByName() Models {
 // Model APIのリクエスト/レスポンスなどのデータ型を示すモデル
 type Model struct {
 	Name        string            // 型名
+	Alias       string            // 型エイリアス(省略可)
 	Fields      []*FieldDesc      // フィールド定義
 	ConstFields []*ConstFieldDesc // 定数フィールド
 	Methods     []*MethodDesc     // アクセサ
 	NakedType   meta.Type         // 対応するnaked型の情報
 	IsArray     bool
+	isPointer   bool
 }
 
 // HasNakedType 対応するnaked型の情報が登録されているか
@@ -84,6 +86,10 @@ func (m *Model) GoType() string {
 	}
 
 	name := m.Name
+	if m.Alias != "" {
+		name = m.Alias
+	}
+
 	if IsOutOfSacloudPackage {
 		name = "sacloud." + name
 	}
@@ -110,11 +116,20 @@ func (m *Model) GoImportPath() string {
 // GoTypeSourceCode ソースコードでの型表現
 func (m *Model) GoTypeSourceCode() string {
 	name := m.Name
+	if m.Alias != "" {
+		name = m.Alias
+	}
 	if IsOutOfSacloudPackage {
 		name = "sacloud." + name
 	}
 	if m.IsArray {
+		if m.isPointer {
+			return fmt.Sprintf("*[]*%s", name)
+		}
 		return fmt.Sprintf("[]*%s", name)
+	}
+	if m.Alias != "" {
+		return name
 	}
 	return fmt.Sprintf("*%s", name)
 }
@@ -122,11 +137,21 @@ func (m *Model) GoTypeSourceCode() string {
 // ZeroInitializeSourceCode 型に応じたzero値での初期化コード
 func (m *Model) ZeroInitializeSourceCode() string {
 	name := m.Name
+	if m.Alias != "" {
+		name = m.Alias
+	}
+
 	if IsOutOfSacloudPackage {
 		name = "sacloud." + name
 	}
 	if m.IsArray {
+		if m.isPointer {
+			return fmt.Sprintf("&[]*%s{}", name)
+		}
 		return fmt.Sprintf("[]*%s{}", name)
+	}
+	if m.Alias != "" {
+		return fmt.Sprintf("%s{}", name)
 	}
 	return fmt.Sprintf("&%s{}", name)
 }
@@ -167,4 +192,18 @@ func (m *Model) FieldModels() []*Model {
 		}
 	}
 	return ms
+}
+
+// ToPtrType ポインタ型への変換
+func (m *Model) ToPtrType() meta.Type {
+	return &Model{
+		Name:        m.Name,
+		Alias:       m.Alias,
+		Fields:      m.Fields,
+		ConstFields: m.ConstFields,
+		Methods:     m.Methods,
+		NakedType:   m.NakedType,
+		IsArray:     m.IsArray,
+		isPointer:   true,
+	}
 }

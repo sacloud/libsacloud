@@ -31,9 +31,53 @@ type FieldDesc struct {
 	DefaultValue string // デフォルト値、コード生成時にソースコードに直接転記される
 }
 
+// CloneFieldWithTags 指定のフィールドをクローンし指定のタグを設定して返す
+func CloneFieldWithTags(f *FieldDesc, tags ...*FieldTags) *FieldDesc {
+	var tag *FieldTags
+	for _, t := range tags {
+		if t != nil {
+			tag = t
+			break
+		}
+	}
+	if tag == nil {
+		tag = &FieldTags{}
+	}
+	return &FieldDesc{
+		Name:         f.Name,
+		Tags:         tag,
+		Type:         f.Type,
+		Description:  f.Description,
+		Methods:      f.Methods,
+		DefaultValue: f.DefaultValue,
+	}
+}
+
+// CloneUpdateFieldWithTags 指定のフィールドのポインタ型をクローンし指定のタグを設定して返す
+func CloneUpdateFieldWithTags(f *FieldDesc, tags ...*FieldTags) *FieldDesc {
+	return CloneFieldWithTags(f.ToPtrType(), tags...)
+}
+
+// ToPtrType ポインタを受け取る型に変換したFieldDescを返す
+func (f *FieldDesc) ToPtrType() *FieldDesc {
+	return &FieldDesc{
+		Name:         f.Name,
+		Tags:         f.Tags,
+		Type:         f.Type.ToPtrType(),
+		Description:  f.Description,
+		Methods:      f.Methods,
+		DefaultValue: f.DefaultValue,
+	}
+}
+
 // HasTag タグの定義がなされているか
 func (f *FieldDesc) HasTag() bool {
-	return f.Tags != nil
+	return f.Tags != nil && !f.Tags.Empty()
+}
+
+// SetTags タグの設定
+func (f *FieldDesc) SetTags(t *FieldTags) {
+	f.Tags = t
 }
 
 // TypeName フィールドの型を返す、コード生成で利用される
@@ -69,6 +113,12 @@ type FieldTags struct {
 	MapConv string
 	// Validate validateタグ
 	Validate string
+	// Request requestタグ(service向けmapconvタグ)
+	Request string
+}
+
+func (f *FieldTags) Empty() bool {
+	return f.JSON == "" && f.YAML == "" && f.Structs == "" && f.MapConv == "" && f.Validate == "" && f.Request == ""
 }
 
 // String FieldTagsの文字列表現
@@ -86,8 +136,35 @@ func (f *FieldTags) String() string {
 	if f.MapConv != "" {
 		tags = append(tags, fmt.Sprintf(`mapconv:"%s"`, f.MapConv))
 	}
+	if f.Request != "" {
+		tags = append(tags, fmt.Sprintf(`request:"%s"`, f.Request))
+	}
 	if f.Validate != "" {
 		tags = append(tags, fmt.Sprintf(`validate:"%s"`, f.Validate))
 	}
 	return strings.Join(tags, " ")
+}
+
+func ValidateRequiredTag() *FieldTags {
+	return ValidateTag("required")
+}
+
+func ValidateTag(t string, args ...interface{}) *FieldTags {
+	tag := t
+	if len(args) > 0 {
+		tag = fmt.Sprintf(t, args...)
+	}
+	return &FieldTags{Validate: tag}
+}
+
+func RequestOmitEmptyTag() *FieldTags {
+	return RequestTag(",omitempty")
+}
+
+func RequestTag(t string, args ...interface{}) *FieldTags {
+	tag := t
+	if len(args) > 0 {
+		tag = fmt.Sprintf(t, args...)
+	}
+	return &FieldTags{Request: tag}
 }

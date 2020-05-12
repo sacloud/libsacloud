@@ -62,7 +62,7 @@ const (
 	APIAccessSecretEnvKey = "SAKURACLOUD_ACCESS_TOKEN_SECRET"
 )
 
-// APICaller API呼び出し時に利用するトランスポートのインターフェース
+// APICaller API呼び出し時に利用するトランスポートのインターフェース sacloud.Clientなどで実装される
 type APICaller interface {
 	Do(ctx context.Context, method, uri string, body interface{}) ([]byte, error)
 }

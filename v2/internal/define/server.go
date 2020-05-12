@@ -194,6 +194,7 @@ var serverAPI = &dsl.Resource{
 
 		// monitor
 		ops.Monitor(serverAPIName, monitorParameter, monitors.cpuTimeModel()),
+		ops.MonitorChild(serverAPIName, "CPU", "", monitorParameter, monitors.cpuTimeModel()),
 	},
 }
 
@@ -310,22 +311,7 @@ var (
 			fields.ServerPlanMemoryMB(),
 			fields.ServerPlanCommitment(),
 			fields.ServerPlanGeneration(),
-			{
-				Name: "ConnectedSwitches",
-				Type: &dsl.Model{
-					Name: "ConnectedSwitch",
-					Fields: []*dsl.FieldDesc{
-						fields.ID(),
-						fields.Scope(),
-					},
-					IsArray:   true,
-					NakedType: meta.Static(naked.ConnectedSwitch{}),
-				},
-				Tags: &dsl.FieldTags{
-					JSON:    ",omitempty",
-					MapConv: "[]ConnectedSwitches,recursive",
-				},
-			},
+			fields.ServerConnectedSwitch(),
 			fields.InterfaceDriver(),
 			fields.Name(),
 			fields.Description(),
