@@ -17,11 +17,11 @@ package test
 import (
 	"testing"
 
+	"github.com/sacloud/libsacloud/v2/helper/power"
+	"github.com/sacloud/libsacloud/v2/helper/query"
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/testutil"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
-	"github.com/sacloud/libsacloud/v2/utils/power"
-	"github.com/sacloud/libsacloud/v2/utils/query"
 )
 
 func TestNFSOp_CRUD(t *testing.T) {
