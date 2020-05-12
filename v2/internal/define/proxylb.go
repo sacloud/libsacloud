@@ -56,10 +56,10 @@ var proxyLBAPI = &dsl.Resource{
 		{
 			ResourceName: proxyLBAPIName,
 			Name:         "ChangePlan",
-			PathFormat:   dsl.DefaultPathFormatWithID,
+			PathFormat:   dsl.IDAndSuffixPathFormat("plan"),
 			Method:       http.MethodPut,
 			RequestEnvelope: dsl.RequestEnvelope(&dsl.EnvelopePayloadDesc{
-				Type: proxyLBNakedType,
+				Type: proxyLBChangePlanNakedType,
 				Name: "CommonServiceItem",
 			}),
 			Arguments: dsl.Arguments{
@@ -157,6 +157,7 @@ var proxyLBAPI = &dsl.Resource{
 var (
 	proxyLBNakedType               = meta.Static(naked.ProxyLB{})
 	proxyLBUpdateSettingsNakedType = meta.Static(naked.ProxyLBSettingsUpdate{})
+	proxyLBChangePlanNakedType     = meta.Static(naked.ProxyLBPlanChange{})
 	proxyLBCertificatesNakedType   = meta.Static(naked.ProxyLBCertificates{})
 
 	proxyLBView = &dsl.Model{
