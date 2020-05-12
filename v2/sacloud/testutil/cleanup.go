@@ -26,7 +26,7 @@ import (
 
 func ComposeCleanupFuncs(funcs ...func(context.Context, sacloud.APICaller) error) func(context.Context, sacloud.APICaller) error {
 	return func(ctx context.Context, caller sacloud.APICaller) error {
-		for _ , f := range funcs {
+		for _, f := range funcs {
 			if err := f(ctx, caller); err != nil {
 				return err
 			}
@@ -37,7 +37,7 @@ func ComposeCleanupFuncs(funcs ...func(context.Context, sacloud.APICaller) error
 
 func ComposeCleanupResourceFunc(prefix string, targets ...CleanupTarget) func(context.Context, sacloud.APICaller) error {
 	var funcs []func(context.Context, sacloud.APICaller) error
-	for _ , t := range targets {
+	for _, t := range targets {
 		funcs = append(funcs, func(ctx context.Context, caller sacloud.APICaller) error {
 			return CleanupResource(ctx, caller, prefix, t)
 		})

@@ -17,23 +17,24 @@ package disk
 import (
 	"context"
 	"errors"
+	"testing"
+
 	"github.com/sacloud/libsacloud/v2/helper/wait"
 	"github.com/sacloud/libsacloud/v2/pkg/size"
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/testutil"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
-	"testing"
 )
 
 func TestService_connectAndDisconnect(t *testing.T) {
 	prefix := testutil.RandomPrefix()
-	name := prefix+"disk-service"
+	name := prefix + "disk-service"
 	zone := testutil.TestZone()
 
 	var server *sacloud.Server
 	var disk *sacloud.Disk
 
-	testutil.RunResource(t,&testutil.ResourceTestCase{
+	testutil.RunResource(t, &testutil.ResourceTestCase{
 		PreCheck:           nil,
 		SetupAPICallerFunc: testutil.SingletonAPICaller,
 		Setup: func(ctx context.Context, caller sacloud.APICaller) error {
@@ -46,7 +47,7 @@ func TestService_connectAndDisconnect(t *testing.T) {
 			disk = d
 			return nil
 		},
-		Tests:              []testutil.ResourceTestFunc{
+		Tests: []testutil.ResourceTestFunc{
 			// connect
 			func(ctx context.Context, caller sacloud.APICaller) error {
 				return New(caller).ConnectToServer(&ConnectToServerRequest{
@@ -72,8 +73,8 @@ func TestService_connectAndDisconnect(t *testing.T) {
 			// disconnect
 			func(ctx context.Context, caller sacloud.APICaller) error {
 				return New(caller).DisconnectFromServer(&DisconnectFromServerRequest{
-					Zone:     zone,
-					ID:       disk.ID,
+					Zone: zone,
+					ID:   disk.ID,
 				})
 			},
 			// check
@@ -88,27 +89,27 @@ func TestService_connectAndDisconnect(t *testing.T) {
 				return nil
 			},
 		},
-		Cleanup:            testutil.ComposeCleanupResourceFunc(prefix,
+		Cleanup: testutil.ComposeCleanupResourceFunc(prefix,
 			testutil.CleanupTargets.Server,
 			testutil.CleanupTargets.Disk,
 		),
-		Parallel:           true,
+		Parallel: true,
 	})
 }
 
-func setupServerAndDisk(ctx context.Context, caller sacloud.APICaller,zone string, name string) (*sacloud.Server, *sacloud.Disk, error) {
+func setupServerAndDisk(ctx context.Context, caller sacloud.APICaller, zone string, name string) (*sacloud.Server, *sacloud.Disk, error) {
 	server, err := setupServer(ctx, caller, zone, name)
 	if err != nil {
 		return nil, nil, err
 	}
-	disk , err := setupDisk(ctx, caller, zone, name)
+	disk, err := setupDisk(ctx, caller, zone, name)
 	if err != nil {
 		return nil, nil, err
 	}
 	return server, disk, nil
 }
 
-func setupServer(ctx context.Context, caller sacloud.APICaller, zone string, name string) (*sacloud.Server,error) {
+func setupServer(ctx context.Context, caller sacloud.APICaller, zone string, name string) (*sacloud.Server, error) {
 	return sacloud.NewServerOp(caller).Create(ctx, zone, &sacloud.ServerCreateRequest{
 		CPU:                  1,
 		MemoryMB:             1 * size.GiB,
@@ -118,16 +119,16 @@ func setupServer(ctx context.Context, caller sacloud.APICaller, zone string, nam
 	})
 }
 
-func setupDisk(ctx context.Context, caller sacloud.APICaller, zone string, name string) (*sacloud.Disk,error) {
+func setupDisk(ctx context.Context, caller sacloud.APICaller, zone string, name string) (*sacloud.Disk, error) {
 	diskOp := sacloud.NewDiskOp(caller)
 	disk, err := diskOp.Create(ctx, zone, &sacloud.DiskCreateRequest{
-		DiskPlanID:      types.DiskPlans.SSD,
-		Connection:      types.DiskConnections.VirtIO,
-		SizeMB:          20 * size.GiB,
-		Name:            name,
+		DiskPlanID: types.DiskPlans.SSD,
+		Connection: types.DiskConnections.VirtIO,
+		SizeMB:     20 * size.GiB,
+		Name:       name,
 	}, nil)
 	if err != nil {
-		return nil , err
+		return nil, err
 	}
 	return wait.UntilDiskIsReady(ctx, diskOp, zone, disk.ID)
 }
