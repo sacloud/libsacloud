@@ -63,6 +63,13 @@ func TestProxyLBOp_CRUD(t *testing.T) {
 				}),
 			},
 			{
+				Func: testProxyLBUpdatePlan,
+				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
+					ExpectValue:  updateProxyLBPlanExpected,
+					IgnoreFields: ignoreProxyLBFields,
+				}),
+			},
+			{
 				Func: testProxyLBUpdateSettings,
 				CheckFunc: testutil.AssertEqualWithExpected(&testutil.CRUDTestExpect{
 					ExpectValue:  updateProxyLBSettingsExpected,
@@ -90,6 +97,7 @@ var (
 	createProxyLBExpected         *sacloud.ProxyLB
 	updateProxyLBParam            *sacloud.ProxyLBUpdateRequest
 	updateProxyLBExpected         *sacloud.ProxyLB
+	updateProxyLBPlanExpected     *sacloud.ProxyLB
 	updateProxyLBSettingsParam    *sacloud.ProxyLBUpdateSettingsRequest
 	updateProxyLBSettingsExpected *sacloud.ProxyLB
 	updateProxyLBToMinParam       *sacloud.ProxyLBUpdateRequest
@@ -115,7 +123,7 @@ func initProxyLBVariables() {
 		Name:        testutil.ResourceName("proxylb"),
 		Description: "desc",
 		Tags:        []string{"tag1", "tag2"},
-		Plan:        types.ProxyLBPlans.CPS500,
+		Plan:        types.ProxyLBPlans.CPS100,
 		HealthCheck: &sacloud.ProxyLBHealthCheck{
 			Protocol:  types.ProxyLBProtocols.HTTP,
 			Path:      "/",
@@ -283,6 +291,26 @@ func initProxyLBVariables() {
 		UseVIPFailover: createProxyLBParam.UseVIPFailover,
 		Region:         createProxyLBParam.Region,
 	}
+	updateProxyLBPlanExpected = &sacloud.ProxyLB{
+		Name:          updateProxyLBParam.Name,
+		Description:   updateProxyLBParam.Description,
+		Tags:          updateProxyLBParam.Tags,
+		IconID:        testIconID,
+		Availability:  types.Availabilities.Available,
+		Plan:          types.ProxyLBPlans.CPS500,
+		HealthCheck:   updateProxyLBParam.HealthCheck,
+		SorryServer:   updateProxyLBParam.SorryServer,
+		BindPorts:     updateProxyLBParam.BindPorts,
+		Servers:       updateProxyLBParam.Servers,
+		Rules:         updateProxyLBParam.Rules,
+		LetsEncrypt:   updateProxyLBParam.LetsEncrypt,
+		StickySession: updateProxyLBParam.StickySession,
+		Timeout: &sacloud.ProxyLBTimeout{
+			InactiveSec: 10,
+		},
+		UseVIPFailover: createProxyLBParam.UseVIPFailover,
+		Region:         createProxyLBParam.Region,
+	}
 	updateProxyLBSettingsParam = &sacloud.ProxyLBUpdateSettingsRequest{
 		HealthCheck: &sacloud.ProxyLBHealthCheck{
 			Protocol:  types.ProxyLBProtocols.TCP,
@@ -347,7 +375,7 @@ func initProxyLBVariables() {
 		Tags:          updateProxyLBParam.Tags,
 		IconID:        testIconID,
 		Availability:  types.Availabilities.Available,
-		Plan:          createProxyLBParam.Plan,
+		Plan:          updateProxyLBPlanExpected.Plan,
 		HealthCheck:   updateProxyLBSettingsParam.HealthCheck,
 		SorryServer:   updateProxyLBSettingsParam.SorryServer,
 		BindPorts:     updateProxyLBSettingsParam.BindPorts,
@@ -381,7 +409,7 @@ func initProxyLBVariables() {
 	updateProxyLBToMinExpected = &sacloud.ProxyLB{
 		Name:         updateProxyLBToMinParam.Name,
 		Availability: types.Availabilities.Available,
-		Plan:         createProxyLBParam.Plan,
+		Plan:         updateProxyLBPlanExpected.Plan,
 		HealthCheck:  updateProxyLBToMinParam.HealthCheck,
 		SorryServer:  &sacloud.ProxyLBSorryServer{},
 		LetsEncrypt: &sacloud.ProxyLBACMESetting{
@@ -492,6 +520,13 @@ func testProxyLBRead(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (i
 func testProxyLBUpdate(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewProxyLBOp(caller)
 	return client.Update(ctx, ctx.ID, updateProxyLBParam)
+}
+
+func testProxyLBUpdatePlan(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+	client := sacloud.NewProxyLBOp(caller)
+	return client.ChangePlan(ctx, ctx.ID, &sacloud.ProxyLBChangePlanRequest{
+		Plan: types.ProxyLBPlans.CPS500,
+	})
 }
 
 func testProxyLBUpdateSettings(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
