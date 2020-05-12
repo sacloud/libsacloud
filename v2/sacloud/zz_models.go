@@ -19,10 +19,10 @@ package sacloud
 import (
 	"time"
 
+	"github.com/go-playground/validator/v10"
 	"github.com/sacloud/libsacloud/v2/sacloud/accessor"
 	"github.com/sacloud/libsacloud/v2/sacloud/search"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
-	"gopkg.in/go-playground/validator.v9"
 )
 
 /*************************************************
