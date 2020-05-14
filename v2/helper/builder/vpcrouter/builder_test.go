@@ -41,7 +41,7 @@ func TestBuilder_Build(t *testing.T) {
 	var switchID types.ID
 	var testZone = testutil.TestZone()
 
-	testutil.Run(t, &testutil.CRUDTestCase{
+	testutil.RunCRUD(t, &testutil.CRUDTestCase{
 		SetupAPICallerFunc: func() sacloud.APICaller {
 			return testutil.SingletonAPICaller()
 		},
@@ -116,7 +116,7 @@ func TestBuilder_BuildWithRouter(t *testing.T) {
 	var addresses []string
 	var testZone = testutil.TestZone()
 
-	testutil.Run(t, &testutil.CRUDTestCase{
+	testutil.RunCRUD(t, &testutil.CRUDTestCase{
 		SetupAPICallerFunc: func() sacloud.APICaller {
 			return testutil.SingletonAPICaller()
 		},

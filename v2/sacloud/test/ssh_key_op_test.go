@@ -22,7 +22,7 @@ import (
 )
 
 func TestSSHKeyOpCRUD(t *testing.T) {
-	testutil.Run(t, &testutil.CRUDTestCase{
+	testutil.RunCRUD(t, &testutil.CRUDTestCase{
 		Parallel:           true,
 		IgnoreStartupWait:  true,
 		SetupAPICallerFunc: singletonAPICaller,
@@ -56,7 +56,7 @@ func TestSSHKeyOpCRUD(t *testing.T) {
 }
 
 func TestSSHKeyOp_Generate(t *testing.T) {
-	testutil.Run(t, &testutil.CRUDTestCase{
+	testutil.RunCRUD(t, &testutil.CRUDTestCase{
 		Parallel:           true,
 		IgnoreStartupWait:  true,
 		SetupAPICallerFunc: singletonAPICaller,

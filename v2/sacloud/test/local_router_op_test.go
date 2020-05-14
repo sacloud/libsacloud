@@ -23,7 +23,7 @@ import (
 )
 
 func TestLocalRouterOp_CRUD(t *testing.T) {
-	testutil.Run(t, &testutil.CRUDTestCase{
+	testutil.RunCRUD(t, &testutil.CRUDTestCase{
 		Parallel:           true,
 		SetupAPICallerFunc: singletonAPICaller,
 		Setup: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {
@@ -215,7 +215,7 @@ func TestLocalRouter_peering(t *testing.T) {
 	var sw1ID, sw2ID types.ID
 	var peerLocalRouter1, peerLocalRouter2 *sacloud.LocalRouter
 
-	testutil.Run(t, &testutil.CRUDTestCase{
+	testutil.RunCRUD(t, &testutil.CRUDTestCase{
 		Parallel:           true,
 		SetupAPICallerFunc: singletonAPICaller,
 		Setup: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {

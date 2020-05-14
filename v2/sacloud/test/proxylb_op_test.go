@@ -31,7 +31,7 @@ import (
 func TestProxyLBOp_CRUD(t *testing.T) {
 	initProxyLBVariables()
 
-	testutil.Run(t, &testutil.CRUDTestCase{
+	testutil.RunCRUD(t, &testutil.CRUDTestCase{
 		Parallel: true,
 
 		PreCheck: testutil.PreCheckEnvsFunc("SAKURACLOUD_PROXYLB_SERVER0", "SAKURACLOUD_PROXYLB_SERVER1", "SAKURACLOUD_PROXYLB_SERVER2"),

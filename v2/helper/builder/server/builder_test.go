@@ -367,7 +367,7 @@ func TestBuilder_Build_BlackBox(t *testing.T) {
 	var buildResult *BuildResult
 	var testZone = testutil.TestZone()
 
-	testutil.Run(t, &testutil.CRUDTestCase{
+	testutil.RunCRUD(t, &testutil.CRUDTestCase{
 		SetupAPICallerFunc: func() sacloud.APICaller {
 			return testutil.SingletonAPICaller()
 		},

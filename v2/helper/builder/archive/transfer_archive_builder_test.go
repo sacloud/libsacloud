@@ -29,7 +29,7 @@ func TestTransferArchiveBuilder_Build(t *testing.T) {
 	zoneTo := "is1b"
 	var sourceArchive *sacloud.Archive
 
-	testutil.Run(t, &testutil.CRUDTestCase{
+	testutil.RunCRUD(t, &testutil.CRUDTestCase{
 		SetupAPICallerFunc: func() sacloud.APICaller {
 			return testutil.SingletonAPICaller()
 		},

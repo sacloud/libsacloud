@@ -25,7 +25,7 @@ import (
 )
 
 func TestInternetOp_CRUD(t *testing.T) {
-	testutil.Run(t, &testutil.CRUDTestCase{
+	testutil.RunCRUD(t, &testutil.CRUDTestCase{
 		Parallel: true,
 
 		SetupAPICallerFunc: singletonAPICaller,
@@ -139,7 +139,7 @@ func TestInternetOp_Subnet(t *testing.T) {
 	var minIP, maxIP string
 	var subnetID types.ID
 
-	testutil.Run(t, &testutil.CRUDTestCase{
+	testutil.RunCRUD(t, &testutil.CRUDTestCase{
 		Parallel:           true,
 		IgnoreStartupWait:  true,
 		SetupAPICallerFunc: singletonAPICaller,

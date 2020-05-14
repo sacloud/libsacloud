@@ -30,7 +30,7 @@ func TestSIMOpCRUD(t *testing.T) {
 
 	initSIMVariables()
 
-	testutil.Run(t, &testutil.CRUDTestCase{
+	testutil.RunCRUD(t, &testutil.CRUDTestCase{
 		Parallel:          true,
 		IgnoreStartupWait: true,
 
