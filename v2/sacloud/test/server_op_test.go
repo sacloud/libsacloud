@@ -29,7 +29,7 @@ import (
 )
 
 func TestServerOp_CRUD(t *testing.T) {
-	testutil.Run(t, &testutil.CRUDTestCase{
+	testutil.RunCRUD(t, &testutil.CRUDTestCase{
 		Parallel: true,
 
 		SetupAPICallerFunc: singletonAPICaller,
@@ -255,7 +255,7 @@ func testServerDelete(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) e
 
 func TestServerOp_ChangePlan(t *testing.T) {
 	client := sacloud.NewServerOp(singletonAPICaller())
-	testutil.Run(t, &testutil.CRUDTestCase{
+	testutil.RunCRUD(t, &testutil.CRUDTestCase{
 		Parallel:           true,
 		SetupAPICallerFunc: singletonAPICaller,
 		IgnoreStartupWait:  true,
@@ -324,7 +324,7 @@ func TestServerOp_ChangePlan(t *testing.T) {
 func TestServerOp_Interfaces(t *testing.T) {
 	var serverID, switchID types.ID
 
-	testutil.Run(t, &testutil.CRUDTestCase{
+	testutil.RunCRUD(t, &testutil.CRUDTestCase{
 		Parallel:           true,
 		SetupAPICallerFunc: singletonAPICaller,
 		IgnoreStartupWait:  true,

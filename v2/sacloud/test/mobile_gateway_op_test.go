@@ -29,7 +29,7 @@ func TestMobileGatewayOpCRUD(t *testing.T) {
 
 	initMobileGatewayVariables()
 
-	testutil.Run(t, &testutil.CRUDTestCase{
+	testutil.RunCRUD(t, &testutil.CRUDTestCase{
 		Parallel: true,
 
 		SetupAPICallerFunc: singletonAPICaller,

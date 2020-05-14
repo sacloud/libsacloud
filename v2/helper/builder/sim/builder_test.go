@@ -33,7 +33,7 @@ func TestBuilder_Build(t *testing.T) {
 	passcode := os.Getenv("SAKURACLOUD_SIM_PASSCODE")
 	imei := "123456789012345"
 
-	testutil.Run(t, &testutil.CRUDTestCase{
+	testutil.RunCRUD(t, &testutil.CRUDTestCase{
 		SetupAPICallerFunc: func() sacloud.APICaller {
 			return testutil.SingletonAPICaller()
 		},
