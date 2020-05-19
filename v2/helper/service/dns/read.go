@@ -12,33 +12,33 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package validate
+package dns
 
 import (
-	"github.com/go-playground/validator/v10"
+	"context"
+
+	"github.com/sacloud/libsacloud/v2/helper/validate"
+	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
-var v *validator.Validate
-
-// Struct go-playground/validatorを利用してバリデーションを行う
-func Struct(s interface{}) error {
-	return v.Struct(s)
+type ReadRequest struct {
+	ID types.ID `validate:"required" mapconv:"-"`
 }
 
-func init() {
-	v = validator.New()
-	if err := v.RegisterValidation("dns_record_type", validateDNSRecord); err != nil {
-		panic(err)
-	}
+func (r *ReadRequest) Validate() error {
+	return validate.Struct(r)
 }
 
-func validateDNSRecord(fl validator.FieldLevel) bool {
-	t := fl.Field().String()
-	for _, ts := range types.DNSRecordTypeStrings {
-		if t == ts {
-			return true
-		}
+func (s *Service) Read(req *ReadRequest) (*sacloud.DNS, error) {
+	return s.ReadWithContext(context.Background(), req)
+}
+
+func (s *Service) ReadWithContext(ctx context.Context, req *ReadRequest) (*sacloud.DNS, error) {
+	if err := req.Validate(); err != nil {
+		return nil, err
 	}
-	return false
+
+	client := sacloud.NewDNSOp(s.caller)
+	return client.Read(ctx, req.ID)
 }

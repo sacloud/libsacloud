@@ -12,33 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package validate
+package pointer
 
-import (
-	"github.com/go-playground/validator/v10"
-	"github.com/sacloud/libsacloud/v2/sacloud/types"
-)
+import "github.com/sacloud/libsacloud/v2/sacloud/types"
 
-var v *validator.Validate
+// NewTags returns a pointer to the given tags value.
+func NewTags(tags types.Tags) *types.Tags { return &tags }
 
-// Struct go-playground/validatorを利用してバリデーションを行う
-func Struct(s interface{}) error {
-	return v.Struct(s)
-}
-
-func init() {
-	v = validator.New()
-	if err := v.RegisterValidation("dns_record_type", validateDNSRecord); err != nil {
-		panic(err)
-	}
-}
-
-func validateDNSRecord(fl validator.FieldLevel) bool {
-	t := fl.Field().String()
-	for _, ts := range types.DNSRecordTypeStrings {
-		if t == ts {
-			return true
-		}
-	}
-	return false
-}
+// NewDNSRecordType returns a pointer to the given type value.
+func NewDNSRecordType(t types.EDNSRecordType) *types.EDNSRecordType { return &t }

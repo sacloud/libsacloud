@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package autobackup
+package dns
 
 import (
 	"context"
@@ -25,24 +25,23 @@ import (
 )
 
 type UpdateRequest struct {
-	Zone string   `validate:"required" mapconv:"-"`
-	ID   types.ID `validate:"required" mapconv:"-"`
+	ID types.ID `validate:"required" mapconv:"-"`
 
-	Name                    *string `validate:"omitempty,min=1"`
-	Description             *string `validate:"omitempty,min=1,max=512"`
-	Tags                    *types.Tags
-	IconID                  *types.ID
-	BackupSpanWeekdays      *[]types.EBackupSpanWeekday
-	MaximumNumberOfArchives *int
-	SettingsHash            string
+	Description *string `validate:"omitempty,min=1,max=512"`
+	Tags        *types.Tags
+	IconID      *types.ID
+
+	Records *[]*sacloud.DNSRecord `validate:"omitempty,min=1,max=1000"`
+
+	SettingsHash string
 }
 
 func (r *UpdateRequest) Validate() error {
 	return validate.Struct(r)
 }
 
-func (r *UpdateRequest) toRequestParameter(current *sacloud.AutoBackup) (*sacloud.AutoBackupUpdateRequest, error) {
-	req := &sacloud.AutoBackupUpdateRequest{}
+func (r *UpdateRequest) toRequestParameter(current *sacloud.DNS) (*sacloud.DNSUpdateRequest, error) {
+	req := &sacloud.DNSUpdateRequest{}
 	if err := mapconv.ConvertFrom(current, req); err != nil {
 		return nil, err
 	}
@@ -52,24 +51,24 @@ func (r *UpdateRequest) toRequestParameter(current *sacloud.AutoBackup) (*saclou
 	return req, nil
 }
 
-func (s *Service) Update(req *UpdateRequest) (*sacloud.AutoBackup, error) {
+func (s *Service) Update(req *UpdateRequest) (*sacloud.DNS, error) {
 	return s.UpdateWithContext(context.Background(), req)
 }
 
-func (s *Service) UpdateWithContext(ctx context.Context, req *UpdateRequest) (*sacloud.AutoBackup, error) {
+func (s *Service) UpdateWithContext(ctx context.Context, req *UpdateRequest) (*sacloud.DNS, error) {
 	if err := req.Validate(); err != nil {
 		return nil, err
 	}
 
-	client := sacloud.NewAutoBackupOp(s.caller)
-	current, err := client.Read(ctx, req.Zone, req.ID)
+	client := sacloud.NewDNSOp(s.caller)
+	current, err := client.Read(ctx, req.ID)
 	if err != nil {
-		return nil, fmt.Errorf("reading auto backup[%s] failed: %s", req.ID, err)
+		return nil, fmt.Errorf("reading DNS[%s] failed: %s", req.ID, err)
 	}
 
 	params, err := req.toRequestParameter(current)
 	if err != nil {
 		return nil, fmt.Errorf("processing request parameter failed: %s", err)
 	}
-	return client.Update(ctx, req.Zone, req.ID, params)
+	return client.Update(ctx, req.ID, params)
 }
