@@ -844,8 +844,8 @@ func (f *fieldsDef) GSLBDestinationServers() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "DestinationServers",
 		Type: &dsl.Model{
-			Name:    "GSLBServer",
-			IsArray: true,
+			Name:  "GSLBServer",
+			Alias: "GSLBServers",
 			Fields: []*dsl.FieldDesc{
 				{
 					Name: "IPAddress",
@@ -945,8 +945,8 @@ func (f *fieldsDef) DNSRecords() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "Records",
 		Type: &dsl.Model{
-			Name:    "DNSRecord",
-			IsArray: true,
+			Name:  "DNSRecord",
+			Alias: "DNSRecords",
 			Fields: []*dsl.FieldDesc{
 				{
 					Name: "Name",

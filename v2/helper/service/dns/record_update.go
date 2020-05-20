@@ -53,7 +53,7 @@ func (s *Service) UpdateRecordWithContext(ctx context.Context, req *UpdateRecord
 		return err
 	}
 
-	current := dns.FindRecord(req.Current.Name, req.Current.Type, req.Current.RData)
+	current := dns.Records.Find(req.Current.Name, req.Current.Type, req.Current.RData)
 	if current == nil {
 		return fmt.Errorf("no target record: %v", current)
 	}

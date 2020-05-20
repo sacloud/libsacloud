@@ -51,10 +51,10 @@ func (s *Service) CreateRecordWithContext(ctx context.Context, req *CreateRecord
 	}
 
 	newRecord := sacloud.NewDNSRecord(req.Type, req.Name, req.RData, req.TTL)
-	if dns.IsExistRecord(newRecord) {
+	if dns.Records.Exist(newRecord) {
 		return nil // noop if already exists
 	}
-	dns.AddRecords(newRecord)
+	dns.Records.Add(newRecord)
 
 	_, err = client.UpdateSettings(ctx, dns.ID, &sacloud.DNSUpdateSettingsRequest{
 		Records:      dns.Records,

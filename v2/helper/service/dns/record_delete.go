@@ -46,12 +46,12 @@ func (s *Service) DeleteRecordWithContext(ctx context.Context, req *DeleteRecord
 		return err
 	}
 
-	current := dns.FindRecord(req.Current.Name, req.Current.Type, req.Current.RData)
+	current := dns.Records.Find(req.Current.Name, req.Current.Type, req.Current.RData)
 	if current == nil {
 		return nil // noop if not exists
 	}
 
-	dns.RemoveRecords(req.Current)
+	dns.Records.Delete(req.Current)
 	_, err = client.UpdateSettings(ctx, dns.ID, &sacloud.DNSUpdateSettingsRequest{
 		Records:      dns.Records,
 		SettingsHash: dns.SettingsHash,

@@ -8051,10 +8051,10 @@ type DNS struct {
 	IconID         types.ID `mapconv:"Icon.ID"`
 	CreatedAt      time.Time
 	ModifiedAt     time.Time
-	Records        []*DNSRecord `mapconv:"Settings.DNS.[]ResourceRecordSets,recursive" validate:"min=0,max=1000"`
-	SettingsHash   string       `json:",omitempty" mapconv:",omitempty"`
-	DNSZone        string       `mapconv:"Status.Zone"`
-	DNSNameServers []string     `mapconv:"Status.NS"`
+	Records        DNSRecords `mapconv:"Settings.DNS.[]ResourceRecordSets,recursive" validate:"min=0,max=1000"`
+	SettingsHash   string     `json:",omitempty" mapconv:",omitempty"`
+	DNSZone        string     `mapconv:"Status.Zone"`
+	DNSNameServers []string   `mapconv:"Status.NS"`
 }
 
 // Validate validates by field tags
@@ -8073,10 +8073,10 @@ func (o *DNS) setDefaults() interface{} {
 		IconID         types.ID `mapconv:"Icon.ID"`
 		CreatedAt      time.Time
 		ModifiedAt     time.Time
-		Records        []*DNSRecord `mapconv:"Settings.DNS.[]ResourceRecordSets,recursive" validate:"min=0,max=1000"`
-		SettingsHash   string       `json:",omitempty" mapconv:",omitempty"`
-		DNSZone        string       `mapconv:"Status.Zone"`
-		DNSNameServers []string     `mapconv:"Status.NS"`
+		Records        DNSRecords `mapconv:"Settings.DNS.[]ResourceRecordSets,recursive" validate:"min=0,max=1000"`
+		SettingsHash   string     `json:",omitempty" mapconv:",omitempty"`
+		DNSZone        string     `mapconv:"Status.Zone"`
+		DNSNameServers []string   `mapconv:"Status.NS"`
 	}{
 		ID:             o.GetID(),
 		Name:           o.GetName(),
@@ -8214,12 +8214,12 @@ func (o *DNS) SetModifiedAt(v time.Time) {
 }
 
 // GetRecords returns value of Records
-func (o *DNS) GetRecords() []*DNSRecord {
+func (o *DNS) GetRecords() DNSRecords {
 	return o.Records
 }
 
 // SetRecords sets value to Records
-func (o *DNS) SetRecords(v []*DNSRecord) {
+func (o *DNS) SetRecords(v DNSRecords) {
 	o.Records = v
 }
 
@@ -8331,9 +8331,9 @@ func (o *DNSRecord) SetTTL(v int) {
 
 // DNSCreateRequest represents API parameter/response structure
 type DNSCreateRequest struct {
-	Name        string       `mapconv:"Name/Status.Zone" validate:"required"`
-	Records     []*DNSRecord `mapconv:"Settings.DNS.[]ResourceRecordSets,recursive" validate:"min=0,max=1000"`
-	Description string       `validate:"min=0,max=512"`
+	Name        string     `mapconv:"Name/Status.Zone" validate:"required"`
+	Records     DNSRecords `mapconv:"Settings.DNS.[]ResourceRecordSets,recursive" validate:"min=0,max=1000"`
+	Description string     `validate:"min=0,max=512"`
 	Tags        types.Tags
 	IconID      types.ID `mapconv:"Icon.ID"`
 }
@@ -8346,9 +8346,9 @@ func (o *DNSCreateRequest) Validate() error {
 // setDefaults implements sacloud.argumentDefaulter
 func (o *DNSCreateRequest) setDefaults() interface{} {
 	return &struct {
-		Name        string       `mapconv:"Name/Status.Zone" validate:"required"`
-		Records     []*DNSRecord `mapconv:"Settings.DNS.[]ResourceRecordSets,recursive" validate:"min=0,max=1000"`
-		Description string       `validate:"min=0,max=512"`
+		Name        string     `mapconv:"Name/Status.Zone" validate:"required"`
+		Records     DNSRecords `mapconv:"Settings.DNS.[]ResourceRecordSets,recursive" validate:"min=0,max=1000"`
+		Description string     `validate:"min=0,max=512"`
 		Tags        types.Tags
 		IconID      types.ID `mapconv:"Icon.ID"`
 		Class       string   `mapconv:"Provider.Class"`
@@ -8373,12 +8373,12 @@ func (o *DNSCreateRequest) SetName(v string) {
 }
 
 // GetRecords returns value of Records
-func (o *DNSCreateRequest) GetRecords() []*DNSRecord {
+func (o *DNSCreateRequest) GetRecords() DNSRecords {
 	return o.Records
 }
 
 // SetRecords sets value to Records
-func (o *DNSCreateRequest) SetRecords(v []*DNSRecord) {
+func (o *DNSCreateRequest) SetRecords(v DNSRecords) {
 	o.Records = v
 }
 
@@ -8440,9 +8440,9 @@ func (o *DNSCreateRequest) SetIconID(v types.ID) {
 type DNSUpdateRequest struct {
 	Description  string `validate:"min=0,max=512"`
 	Tags         types.Tags
-	IconID       types.ID     `mapconv:"Icon.ID"`
-	Records      []*DNSRecord `mapconv:"Settings.DNS.[]ResourceRecordSets,recursive" validate:"min=0,max=1000"`
-	SettingsHash string       `json:",omitempty" mapconv:",omitempty"`
+	IconID       types.ID   `mapconv:"Icon.ID"`
+	Records      DNSRecords `mapconv:"Settings.DNS.[]ResourceRecordSets,recursive" validate:"min=0,max=1000"`
+	SettingsHash string     `json:",omitempty" mapconv:",omitempty"`
 }
 
 // Validate validates by field tags
@@ -8455,9 +8455,9 @@ func (o *DNSUpdateRequest) setDefaults() interface{} {
 	return &struct {
 		Description  string `validate:"min=0,max=512"`
 		Tags         types.Tags
-		IconID       types.ID     `mapconv:"Icon.ID"`
-		Records      []*DNSRecord `mapconv:"Settings.DNS.[]ResourceRecordSets,recursive" validate:"min=0,max=1000"`
-		SettingsHash string       `json:",omitempty" mapconv:",omitempty"`
+		IconID       types.ID   `mapconv:"Icon.ID"`
+		Records      DNSRecords `mapconv:"Settings.DNS.[]ResourceRecordSets,recursive" validate:"min=0,max=1000"`
+		SettingsHash string     `json:",omitempty" mapconv:",omitempty"`
 	}{
 		Description:  o.GetDescription(),
 		Tags:         o.GetTags(),
@@ -8518,12 +8518,12 @@ func (o *DNSUpdateRequest) SetIconID(v types.ID) {
 }
 
 // GetRecords returns value of Records
-func (o *DNSUpdateRequest) GetRecords() []*DNSRecord {
+func (o *DNSUpdateRequest) GetRecords() DNSRecords {
 	return o.Records
 }
 
 // SetRecords sets value to Records
-func (o *DNSUpdateRequest) SetRecords(v []*DNSRecord) {
+func (o *DNSUpdateRequest) SetRecords(v DNSRecords) {
 	o.Records = v
 }
 
@@ -8543,8 +8543,8 @@ func (o *DNSUpdateRequest) SetSettingsHash(v string) {
 
 // DNSUpdateSettingsRequest represents API parameter/response structure
 type DNSUpdateSettingsRequest struct {
-	Records      []*DNSRecord `mapconv:"Settings.DNS.[]ResourceRecordSets,recursive" validate:"min=0,max=1000"`
-	SettingsHash string       `json:",omitempty" mapconv:",omitempty"`
+	Records      DNSRecords `mapconv:"Settings.DNS.[]ResourceRecordSets,recursive" validate:"min=0,max=1000"`
+	SettingsHash string     `json:",omitempty" mapconv:",omitempty"`
 }
 
 // Validate validates by field tags
@@ -8555,8 +8555,8 @@ func (o *DNSUpdateSettingsRequest) Validate() error {
 // setDefaults implements sacloud.argumentDefaulter
 func (o *DNSUpdateSettingsRequest) setDefaults() interface{} {
 	return &struct {
-		Records      []*DNSRecord `mapconv:"Settings.DNS.[]ResourceRecordSets,recursive" validate:"min=0,max=1000"`
-		SettingsHash string       `json:",omitempty" mapconv:",omitempty"`
+		Records      DNSRecords `mapconv:"Settings.DNS.[]ResourceRecordSets,recursive" validate:"min=0,max=1000"`
+		SettingsHash string     `json:",omitempty" mapconv:",omitempty"`
 	}{
 		Records:      o.GetRecords(),
 		SettingsHash: o.GetSettingsHash(),
@@ -8564,12 +8564,12 @@ func (o *DNSUpdateSettingsRequest) setDefaults() interface{} {
 }
 
 // GetRecords returns value of Records
-func (o *DNSUpdateSettingsRequest) GetRecords() []*DNSRecord {
+func (o *DNSUpdateSettingsRequest) GetRecords() DNSRecords {
 	return o.Records
 }
 
 // SetRecords sets value to Records
-func (o *DNSUpdateSettingsRequest) SetRecords(v []*DNSRecord) {
+func (o *DNSUpdateSettingsRequest) SetRecords(v DNSRecords) {
 	o.Records = v
 }
 
@@ -8603,7 +8603,7 @@ type GSLB struct {
 	Weighted           types.StringFlag `mapconv:"Settings.GSLB.Weighted"`
 	HealthCheck        *GSLBHealthCheck `mapconv:"Settings.GSLB.HealthCheck,recursive"`
 	SorryServer        string           `mapconv:"Settings.GSLB.SorryServer"`
-	DestinationServers []*GSLBServer    `mapconv:"Settings.GSLB.[]Servers,recursive" validate:"min=0,max=12"`
+	DestinationServers GSLBServers      `mapconv:"Settings.GSLB.[]Servers,recursive" validate:"min=0,max=12"`
 }
 
 // Validate validates by field tags
@@ -8628,7 +8628,7 @@ func (o *GSLB) setDefaults() interface{} {
 		Weighted           types.StringFlag `mapconv:"Settings.GSLB.Weighted"`
 		HealthCheck        *GSLBHealthCheck `mapconv:"Settings.GSLB.HealthCheck,recursive"`
 		SorryServer        string           `mapconv:"Settings.GSLB.SorryServer"`
-		DestinationServers []*GSLBServer    `mapconv:"Settings.GSLB.[]Servers,recursive" validate:"min=0,max=12"`
+		DestinationServers GSLBServers      `mapconv:"Settings.GSLB.[]Servers,recursive" validate:"min=0,max=12"`
 	}{
 		ID:                 o.GetID(),
 		Name:               o.GetName(),
@@ -8832,12 +8832,12 @@ func (o *GSLB) SetSorryServer(v string) {
 }
 
 // GetDestinationServers returns value of DestinationServers
-func (o *GSLB) GetDestinationServers() []*GSLBServer {
+func (o *GSLB) GetDestinationServers() GSLBServers {
 	return o.DestinationServers
 }
 
 // SetDestinationServers sets value to DestinationServers
-func (o *GSLB) SetDestinationServers(v []*GSLBServer) {
+func (o *GSLB) SetDestinationServers(v GSLBServers) {
 	o.DestinationServers = v
 }
 
@@ -8995,7 +8995,7 @@ type GSLBCreateRequest struct {
 	DelayLoop          int              `mapconv:"Settings.GSLB.DelayLoop" validate:"min=10,max=60"`
 	Weighted           types.StringFlag `mapconv:"Settings.GSLB.Weighted"`
 	SorryServer        string           `mapconv:"Settings.GSLB.SorryServer"`
-	DestinationServers []*GSLBServer    `mapconv:"Settings.GSLB.[]Servers,recursive" validate:"min=0,max=12"`
+	DestinationServers GSLBServers      `mapconv:"Settings.GSLB.[]Servers,recursive" validate:"min=0,max=12"`
 	Name               string           `validate:"required"`
 	Description        string           `validate:"min=0,max=512"`
 	Tags               types.Tags
@@ -9014,7 +9014,7 @@ func (o *GSLBCreateRequest) setDefaults() interface{} {
 		DelayLoop          int              `mapconv:"Settings.GSLB.DelayLoop" validate:"min=10,max=60"`
 		Weighted           types.StringFlag `mapconv:"Settings.GSLB.Weighted"`
 		SorryServer        string           `mapconv:"Settings.GSLB.SorryServer"`
-		DestinationServers []*GSLBServer    `mapconv:"Settings.GSLB.[]Servers,recursive" validate:"min=0,max=12"`
+		DestinationServers GSLBServers      `mapconv:"Settings.GSLB.[]Servers,recursive" validate:"min=0,max=12"`
 		Name               string           `validate:"required"`
 		Description        string           `validate:"min=0,max=512"`
 		Tags               types.Tags
@@ -9078,12 +9078,12 @@ func (o *GSLBCreateRequest) SetSorryServer(v string) {
 }
 
 // GetDestinationServers returns value of DestinationServers
-func (o *GSLBCreateRequest) GetDestinationServers() []*GSLBServer {
+func (o *GSLBCreateRequest) GetDestinationServers() GSLBServers {
 	return o.DestinationServers
 }
 
 // SetDestinationServers sets value to DestinationServers
-func (o *GSLBCreateRequest) SetDestinationServers(v []*GSLBServer) {
+func (o *GSLBCreateRequest) SetDestinationServers(v GSLBServers) {
 	o.DestinationServers = v
 }
 
@@ -9161,7 +9161,7 @@ type GSLBUpdateRequest struct {
 	DelayLoop          int              `mapconv:"Settings.GSLB.DelayLoop" validate:"min=10,max=60"`
 	Weighted           types.StringFlag `mapconv:"Settings.GSLB.Weighted"`
 	SorryServer        string           `mapconv:"Settings.GSLB.SorryServer"`
-	DestinationServers []*GSLBServer    `mapconv:"Settings.GSLB.[]Servers,recursive" validate:"min=0,max=12"`
+	DestinationServers GSLBServers      `mapconv:"Settings.GSLB.[]Servers,recursive" validate:"min=0,max=12"`
 	SettingsHash       string           `json:",omitempty" mapconv:",omitempty"`
 }
 
@@ -9181,7 +9181,7 @@ func (o *GSLBUpdateRequest) setDefaults() interface{} {
 		DelayLoop          int              `mapconv:"Settings.GSLB.DelayLoop" validate:"min=10,max=60"`
 		Weighted           types.StringFlag `mapconv:"Settings.GSLB.Weighted"`
 		SorryServer        string           `mapconv:"Settings.GSLB.SorryServer"`
-		DestinationServers []*GSLBServer    `mapconv:"Settings.GSLB.[]Servers,recursive" validate:"min=0,max=12"`
+		DestinationServers GSLBServers      `mapconv:"Settings.GSLB.[]Servers,recursive" validate:"min=0,max=12"`
 		SettingsHash       string           `json:",omitempty" mapconv:",omitempty"`
 	}{
 		Name:               o.GetName(),
@@ -9301,12 +9301,12 @@ func (o *GSLBUpdateRequest) SetSorryServer(v string) {
 }
 
 // GetDestinationServers returns value of DestinationServers
-func (o *GSLBUpdateRequest) GetDestinationServers() []*GSLBServer {
+func (o *GSLBUpdateRequest) GetDestinationServers() GSLBServers {
 	return o.DestinationServers
 }
 
 // SetDestinationServers sets value to DestinationServers
-func (o *GSLBUpdateRequest) SetDestinationServers(v []*GSLBServer) {
+func (o *GSLBUpdateRequest) SetDestinationServers(v GSLBServers) {
 	o.DestinationServers = v
 }
 
@@ -9330,7 +9330,7 @@ type GSLBUpdateSettingsRequest struct {
 	DelayLoop          int              `mapconv:"Settings.GSLB.DelayLoop" validate:"min=10,max=60"`
 	Weighted           types.StringFlag `mapconv:"Settings.GSLB.Weighted"`
 	SorryServer        string           `mapconv:"Settings.GSLB.SorryServer"`
-	DestinationServers []*GSLBServer    `mapconv:"Settings.GSLB.[]Servers,recursive" validate:"min=0,max=12"`
+	DestinationServers GSLBServers      `mapconv:"Settings.GSLB.[]Servers,recursive" validate:"min=0,max=12"`
 	SettingsHash       string           `json:",omitempty" mapconv:",omitempty"`
 }
 
@@ -9346,7 +9346,7 @@ func (o *GSLBUpdateSettingsRequest) setDefaults() interface{} {
 		DelayLoop          int              `mapconv:"Settings.GSLB.DelayLoop" validate:"min=10,max=60"`
 		Weighted           types.StringFlag `mapconv:"Settings.GSLB.Weighted"`
 		SorryServer        string           `mapconv:"Settings.GSLB.SorryServer"`
-		DestinationServers []*GSLBServer    `mapconv:"Settings.GSLB.[]Servers,recursive" validate:"min=0,max=12"`
+		DestinationServers GSLBServers      `mapconv:"Settings.GSLB.[]Servers,recursive" validate:"min=0,max=12"`
 		SettingsHash       string           `json:",omitempty" mapconv:",omitempty"`
 	}{
 		HealthCheck:        o.GetHealthCheck(),
@@ -9402,12 +9402,12 @@ func (o *GSLBUpdateSettingsRequest) SetSorryServer(v string) {
 }
 
 // GetDestinationServers returns value of DestinationServers
-func (o *GSLBUpdateSettingsRequest) GetDestinationServers() []*GSLBServer {
+func (o *GSLBUpdateSettingsRequest) GetDestinationServers() GSLBServers {
 	return o.DestinationServers
 }
 
 // SetDestinationServers sets value to DestinationServers
-func (o *GSLBUpdateSettingsRequest) SetDestinationServers(v []*GSLBServer) {
+func (o *GSLBUpdateSettingsRequest) SetDestinationServers(v GSLBServers) {
 	o.DestinationServers = v
 }
 

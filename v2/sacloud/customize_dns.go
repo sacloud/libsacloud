@@ -16,20 +16,22 @@ package sacloud
 
 import "github.com/sacloud/libsacloud/v2/sacloud/types"
 
-// AddRecords レコードを追加します。名前/タイプ/値が同じレコードが存在する場合は何もしません
-func (o *DNS) AddRecords(rs ...*DNSRecord) {
+type DNSRecords []*DNSRecord
+
+// Add レコードを追加します。名前/タイプ/値が同じレコードが存在する場合は何もしません
+func (o *DNSRecords) Add(rs ...*DNSRecord) {
 	for _, r := range rs {
-		if o.IsExistRecord(r) {
+		if o.Exist(r) {
 			continue
 		}
-		o.Records = append(o.Records, r)
+		*o = append(*o, r)
 	}
 }
 
-// RemoveRecords 名前/タイプ/値が同じレコードを削除します
-func (o *DNS) RemoveRecords(rs ...*DNSRecord) {
+// Delete 名前/タイプ/値が同じレコードを削除します
+func (o *DNSRecords) Delete(rs ...*DNSRecord) {
 	var res []*DNSRecord
-	for _, cur := range o.Records {
+	for _, cur := range *o {
 		remove := false
 		for _, r := range rs {
 			if cur.Equal(r) {
@@ -41,12 +43,12 @@ func (o *DNS) RemoveRecords(rs ...*DNSRecord) {
 			res = append(res, cur)
 		}
 	}
-	o.Records = res
+	*o = res
 }
 
-// FindRecord 名前/タイプ/値が同じレコードを返す
-func (o *DNS) FindRecord(name string, tp types.EDNSRecordType, rdata string) *DNSRecord {
-	for _, r := range o.Records {
+// Find 名前/タイプ/値が同じレコードを返す
+func (o *DNSRecords) Find(name string, tp types.EDNSRecordType, rdata string) *DNSRecord {
+	for _, r := range *o {
 		if r.Equal(&DNSRecord{Name: name, Type: tp, RData: rdata}) {
 			return r
 		}
@@ -54,12 +56,12 @@ func (o *DNS) FindRecord(name string, tp types.EDNSRecordType, rdata string) *DN
 	return nil
 }
 
-// IsExistRecord 名前/タイプ/値が同じレコードが存在する場合にtrueを返す
-func (o *DNS) IsExistRecord(record *DNSRecord) bool {
+// Exist 名前/タイプ/値が同じレコードが存在する場合にtrueを返す
+func (o *DNSRecords) Exist(record *DNSRecord) bool {
 	if record == nil {
 		return false
 	}
-	for _, r := range o.Records {
+	for _, r := range *o {
 		if r.Equal(record) {
 			return true
 		}

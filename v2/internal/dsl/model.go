@@ -59,6 +59,7 @@ func (m Models) UniqByName() Models {
 // Model APIのリクエスト/レスポンスなどのデータ型を示すモデル
 type Model struct {
 	Name        string            // 型名
+	Alias       string            // 型エイリアス(省略可)
 	Fields      []*FieldDesc      // フィールド定義
 	ConstFields []*ConstFieldDesc // 定数フィールド
 	Methods     []*MethodDesc     // アクセサ
@@ -84,6 +85,10 @@ func (m *Model) GoType() string {
 	}
 
 	name := m.Name
+	if m.Alias != "" {
+		name = m.Alias
+	}
+
 	if IsOutOfSacloudPackage {
 		name = "sacloud." + name
 	}
@@ -110,11 +115,17 @@ func (m *Model) GoImportPath() string {
 // GoTypeSourceCode ソースコードでの型表現
 func (m *Model) GoTypeSourceCode() string {
 	name := m.Name
+	if m.Alias != "" {
+		name = m.Alias
+	}
 	if IsOutOfSacloudPackage {
 		name = "sacloud." + name
 	}
 	if m.IsArray {
 		return fmt.Sprintf("[]*%s", name)
+	}
+	if m.Alias != "" {
+		return name
 	}
 	return fmt.Sprintf("*%s", name)
 }
@@ -122,11 +133,18 @@ func (m *Model) GoTypeSourceCode() string {
 // ZeroInitializeSourceCode 型に応じたzero値での初期化コード
 func (m *Model) ZeroInitializeSourceCode() string {
 	name := m.Name
+	if m.Alias != "" {
+		name = m.Alias
+	}
+
 	if IsOutOfSacloudPackage {
 		name = "sacloud." + name
 	}
 	if m.IsArray {
 		return fmt.Sprintf("[]*%s{}", name)
+	}
+	if m.Alias != "" {
+		return fmt.Sprintf("%s{}", name)
 	}
 	return fmt.Sprintf("&%s{}", name)
 }
