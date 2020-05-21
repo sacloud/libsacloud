@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package archive
+package cdrom
 
 import (
 	"context"
@@ -47,14 +47,14 @@ func (s *Service) DownloadWithContext(ctx context.Context, req *DownloadRequest)
 		return err
 	}
 
-	client := sacloud.NewArchiveOp(s.caller)
+	client := sacloud.NewCDROMOp(s.caller)
 	archive, err := client.Read(ctx, req.Zone, req.ID)
 	if err != nil {
-		return fmt.Errorf("reading archive[%s] failed: %s", req.ID, err)
+		return fmt.Errorf("reading CD-ROM[%s] failed: %s", req.ID, err)
 	}
 
 	if archive.Scope != types.Scopes.User {
-		return fmt.Errorf("archive[%s] is not allowed to download", req.ID)
+		return fmt.Errorf("CD-ROM[%s] is not allowed to download", req.ID)
 	}
 
 	ftpServer, err := client.OpenFTP(ctx, req.Zone, req.ID, &sacloud.OpenFTPRequest{ChangePassword: true})

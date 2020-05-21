@@ -12,12 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package archive
+package cdrom
 
 import (
 	"context"
 	"fmt"
-	"io"
 	"os"
 
 	"github.com/sacloud/ftps"
@@ -26,62 +25,63 @@ import (
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
-type DownloadRequest struct {
+type UploadRequest struct {
 	Zone string   `validate:"required" mapconv:"-"`
 	ID   types.ID `validate:"required" mapconv:"-"`
 
-	Path   string
-	Writer io.Writer
+	Path string `validate:"omitempty,file"`
 }
 
-func (r *DownloadRequest) Validate() error {
+func (r *UploadRequest) Validate() error {
 	return validate.Struct(r)
 }
 
-func (s *Service) Download(req *DownloadRequest) error {
-	return s.DownloadWithContext(context.Background(), req)
+func (s *Service) Upload(req *UploadRequest) error {
+	return s.UploadWithContext(context.Background(), req)
 }
 
-func (s *Service) DownloadWithContext(ctx context.Context, req *DownloadRequest) error {
+func (s *Service) UploadWithContext(ctx context.Context, req *UploadRequest) error {
 	if err := req.Validate(); err != nil {
 		return err
 	}
 
-	client := sacloud.NewArchiveOp(s.caller)
+	client := sacloud.NewCDROMOp(s.caller)
 	archive, err := client.Read(ctx, req.Zone, req.ID)
 	if err != nil {
-		return fmt.Errorf("reading archive[%s] failed: %s", req.ID, err)
+		return fmt.Errorf("reading CD-ROM[%s] failed: %s", req.ID, err)
 	}
 
 	if archive.Scope != types.Scopes.User {
-		return fmt.Errorf("archive[%s] is not allowed to download", req.ID)
+		return fmt.Errorf("CD-ROM[%s] is not allowed to upload", req.ID)
 	}
 
-	ftpServer, err := client.OpenFTP(ctx, req.Zone, req.ID, &sacloud.OpenFTPRequest{ChangePassword: true})
+	ftpServer, err := client.OpenFTP(ctx, req.Zone, archive.ID, &sacloud.OpenFTPRequest{ChangePassword: true})
 	if err != nil {
 		return fmt.Errorf("requesting FTP server information failed: %s", err)
 	}
 
-	// download
+	// upload
 	ftpsClient := ftps.NewClient(ftpServer.User, ftpServer.Password, ftpServer.HostName)
 
+	var file *os.File
 	switch req.Path {
 	case "":
-		var out io.Writer = os.Stdout
-		if req.Writer != nil {
-			out = req.Writer
-		}
-		if err := ftpsClient.DownloadWriter(out); err != nil {
-			return fmt.Errorf("downloading via FTP failed: %s", err)
-		}
+		file = os.Stdin
 	default:
-		if err := ftpsClient.Download(req.Path); err != nil {
-			return fmt.Errorf("downloading via FTP failed: %s", err)
+		f, err := os.Open(req.Path)
+		if err != nil {
+			return fmt.Errorf("opening upload file failed: %s", err)
 		}
+		defer f.Close()
+		file = f
 	}
 
-	// close
-	if err := client.CloseFTP(ctx, req.Zone, req.ID); err != nil {
+	if err := ftpsClient.UploadFile("upload.raw", file); err != nil {
+		return fmt.Errorf("uploading file to CD-ROM[%s] failed: %s", archive.ID, err)
+	}
+
+	// close FTP
+	if err := client.CloseFTP(ctx, req.Zone, archive.ID); err != nil {
 		return fmt.Errorf("closing FTP server failed: %s", err)
 	}
 	return nil
