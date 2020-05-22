@@ -586,8 +586,8 @@ func (f *fieldsDef) LoadBalancerVIP() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "VirtualIPAddresses",
 		Type: &dsl.Model{
-			Name:    "LoadBalancerVirtualIPAddress",
-			IsArray: true,
+			Name:  "LoadBalancerVirtualIPAddress",
+			Alias: "LoadBalancerVirtualIPAddresses",
 			Fields: []*dsl.FieldDesc{
 				{
 					Name: "VirtualIPAddress",
@@ -620,8 +620,8 @@ func (f *fieldsDef) LoadBalancerVIP() *dsl.FieldDesc {
 				{
 					Name: "Servers",
 					Type: &dsl.Model{
-						Name:    "LoadBalancerServer",
-						IsArray: true,
+						Name:  "LoadBalancerServer",
+						Alias: "LoadBalancerServers",
 						Fields: []*dsl.FieldDesc{
 							{
 								Name: "IPAddress",

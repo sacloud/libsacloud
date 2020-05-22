@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package database
+package loadbalancer
 
 import (
 	"context"
@@ -24,23 +24,23 @@ import (
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
-type WaitForDownRequest struct {
+type WaitForBootRequest struct {
 	Zone string   `validate:"required" mapconv:"-"`
 	ID   types.ID `validate:"required" mapconv:"-"`
 }
 
-func (r *WaitForDownRequest) Validate() error {
+func (r *WaitForBootRequest) Validate() error {
 	return validate.Struct(r)
 }
 
-func (s *Service) WaitForDown(req *WaitForDownRequest) (*sacloud.Database, error) {
-	return s.WaitForDownWithContext(context.Background(), req)
+func (s *Service) WaitForBoot(req *WaitForBootRequest) (*sacloud.LoadBalancer, error) {
+	return s.WaitForBootWithContext(context.Background(), req)
 }
 
-func (s *Service) WaitForDownWithContext(ctx context.Context, req *WaitForDownRequest) (*sacloud.Database, error) {
+func (s *Service) WaitForBootWithContext(ctx context.Context, req *WaitForBootRequest) (*sacloud.LoadBalancer, error) {
 	if err := req.Validate(); err != nil {
 		return nil, err
 	}
-	client := sacloud.NewDatabaseOp(s.caller)
-	return wait.UntilDatabaseIsDown(ctx, client, req.Zone, req.ID)
+	client := sacloud.NewLoadBalancerOp(s.caller)
+	return wait.UntilLoadBalancerIsUp(ctx, client, req.Zone, req.ID)
 }

@@ -12,35 +12,41 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package database
+package loadbalancer
 
 import (
 	"context"
 
-	"github.com/sacloud/libsacloud/v2/helper/wait"
+	"github.com/sacloud/libsacloud/v2/helper/service"
 
 	"github.com/sacloud/libsacloud/v2/helper/validate"
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
-type WaitForDownRequest struct {
+type DeleteRequest struct {
 	Zone string   `validate:"required" mapconv:"-"`
 	ID   types.ID `validate:"required" mapconv:"-"`
+
+	FailIfNotFound bool
 }
 
-func (r *WaitForDownRequest) Validate() error {
+func (r *DeleteRequest) Validate() error {
 	return validate.Struct(r)
 }
 
-func (s *Service) WaitForDown(req *WaitForDownRequest) (*sacloud.Database, error) {
-	return s.WaitForDownWithContext(context.Background(), req)
+func (s *Service) Delete(req *DeleteRequest) error {
+	return s.DeleteWithContext(context.Background(), req)
 }
 
-func (s *Service) WaitForDownWithContext(ctx context.Context, req *WaitForDownRequest) (*sacloud.Database, error) {
+func (s *Service) DeleteWithContext(ctx context.Context, req *DeleteRequest) error {
 	if err := req.Validate(); err != nil {
-		return nil, err
+		return err
 	}
-	client := sacloud.NewDatabaseOp(s.caller)
-	return wait.UntilDatabaseIsDown(ctx, client, req.Zone, req.ID)
+	client := sacloud.NewLoadBalancerOp(s.caller)
+	err := client.Delete(ctx, req.Zone, req.ID)
+	if err != nil {
+		return service.HandleNotFoundError(err, !req.FailIfNotFound)
+	}
+	return nil
 }

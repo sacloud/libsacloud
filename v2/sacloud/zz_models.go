@@ -11851,20 +11851,20 @@ type LoadBalancer struct {
 	IconID                  types.ID `mapconv:"Icon.ID"`
 	CreatedAt               time.Time
 	ModifiedAt              time.Time
-	InstanceHostName        string                          `mapconv:"Instance.Host.Name"`
-	InstanceHostInfoURL     string                          `mapconv:"Instance.Host.InfoURL"`
-	InstanceStatus          types.EServerInstanceStatus     `mapconv:"Instance.Status"`
-	InstanceStatusChangedAt time.Time                       `mapconv:"Instance.StatusChangedAt"`
-	PlanID                  types.ID                        `mapconv:"Remark.Plan.ID/Plan.ID"`
-	SwitchID                types.ID                        `mapconv:"Remark.Switch.ID"`
-	DefaultRoute            string                          `mapconv:"Remark.Network.DefaultRoute" validate:"ipv4"`
-	NetworkMaskLen          int                             `mapconv:"Remark.Network.NetworkMaskLen" validate:"min=1,max=32"`
-	IPAddresses             []string                        `mapconv:"Remark.[]Servers.IPAddress"`
-	ZoneID                  types.ID                        `mapconv:"Remark.Zone.ID"`
-	VRID                    int                             `mapconv:"Remark.VRRP.VRID"`
-	VirtualIPAddresses      []*LoadBalancerVirtualIPAddress `mapconv:"Settings.[]LoadBalancer,recursive" validate:"min=0,max=10"`
-	SettingsHash            string                          `json:",omitempty" mapconv:",omitempty"`
-	Interfaces              []*InterfaceView                `json:",omitempty" mapconv:"[]Interfaces,recursive,omitempty"`
+	InstanceHostName        string                         `mapconv:"Instance.Host.Name"`
+	InstanceHostInfoURL     string                         `mapconv:"Instance.Host.InfoURL"`
+	InstanceStatus          types.EServerInstanceStatus    `mapconv:"Instance.Status"`
+	InstanceStatusChangedAt time.Time                      `mapconv:"Instance.StatusChangedAt"`
+	PlanID                  types.ID                       `mapconv:"Remark.Plan.ID/Plan.ID"`
+	SwitchID                types.ID                       `mapconv:"Remark.Switch.ID"`
+	DefaultRoute            string                         `mapconv:"Remark.Network.DefaultRoute" validate:"ipv4"`
+	NetworkMaskLen          int                            `mapconv:"Remark.Network.NetworkMaskLen" validate:"min=1,max=32"`
+	IPAddresses             []string                       `mapconv:"Remark.[]Servers.IPAddress"`
+	ZoneID                  types.ID                       `mapconv:"Remark.Zone.ID"`
+	VRID                    int                            `mapconv:"Remark.VRRP.VRID"`
+	VirtualIPAddresses      LoadBalancerVirtualIPAddresses `mapconv:"Settings.[]LoadBalancer,recursive" validate:"min=0,max=10"`
+	SettingsHash            string                         `json:",omitempty" mapconv:",omitempty"`
+	Interfaces              []*InterfaceView               `json:",omitempty" mapconv:"[]Interfaces,recursive,omitempty"`
 }
 
 // Validate validates by field tags
@@ -11884,20 +11884,20 @@ func (o *LoadBalancer) setDefaults() interface{} {
 		IconID                  types.ID `mapconv:"Icon.ID"`
 		CreatedAt               time.Time
 		ModifiedAt              time.Time
-		InstanceHostName        string                          `mapconv:"Instance.Host.Name"`
-		InstanceHostInfoURL     string                          `mapconv:"Instance.Host.InfoURL"`
-		InstanceStatus          types.EServerInstanceStatus     `mapconv:"Instance.Status"`
-		InstanceStatusChangedAt time.Time                       `mapconv:"Instance.StatusChangedAt"`
-		PlanID                  types.ID                        `mapconv:"Remark.Plan.ID/Plan.ID"`
-		SwitchID                types.ID                        `mapconv:"Remark.Switch.ID"`
-		DefaultRoute            string                          `mapconv:"Remark.Network.DefaultRoute" validate:"ipv4"`
-		NetworkMaskLen          int                             `mapconv:"Remark.Network.NetworkMaskLen" validate:"min=1,max=32"`
-		IPAddresses             []string                        `mapconv:"Remark.[]Servers.IPAddress"`
-		ZoneID                  types.ID                        `mapconv:"Remark.Zone.ID"`
-		VRID                    int                             `mapconv:"Remark.VRRP.VRID"`
-		VirtualIPAddresses      []*LoadBalancerVirtualIPAddress `mapconv:"Settings.[]LoadBalancer,recursive" validate:"min=0,max=10"`
-		SettingsHash            string                          `json:",omitempty" mapconv:",omitempty"`
-		Interfaces              []*InterfaceView                `json:",omitempty" mapconv:"[]Interfaces,recursive,omitempty"`
+		InstanceHostName        string                         `mapconv:"Instance.Host.Name"`
+		InstanceHostInfoURL     string                         `mapconv:"Instance.Host.InfoURL"`
+		InstanceStatus          types.EServerInstanceStatus    `mapconv:"Instance.Status"`
+		InstanceStatusChangedAt time.Time                      `mapconv:"Instance.StatusChangedAt"`
+		PlanID                  types.ID                       `mapconv:"Remark.Plan.ID/Plan.ID"`
+		SwitchID                types.ID                       `mapconv:"Remark.Switch.ID"`
+		DefaultRoute            string                         `mapconv:"Remark.Network.DefaultRoute" validate:"ipv4"`
+		NetworkMaskLen          int                            `mapconv:"Remark.Network.NetworkMaskLen" validate:"min=1,max=32"`
+		IPAddresses             []string                       `mapconv:"Remark.[]Servers.IPAddress"`
+		ZoneID                  types.ID                       `mapconv:"Remark.Zone.ID"`
+		VRID                    int                            `mapconv:"Remark.VRRP.VRID"`
+		VirtualIPAddresses      LoadBalancerVirtualIPAddresses `mapconv:"Settings.[]LoadBalancer,recursive" validate:"min=0,max=10"`
+		SettingsHash            string                         `json:",omitempty" mapconv:",omitempty"`
+		Interfaces              []*InterfaceView               `json:",omitempty" mapconv:"[]Interfaces,recursive,omitempty"`
 	}{
 		ID:                      o.GetID(),
 		Name:                    o.GetName(),
@@ -12166,12 +12166,12 @@ func (o *LoadBalancer) SetVRID(v int) {
 }
 
 // GetVirtualIPAddresses returns value of VirtualIPAddresses
-func (o *LoadBalancer) GetVirtualIPAddresses() []*LoadBalancerVirtualIPAddress {
+func (o *LoadBalancer) GetVirtualIPAddresses() LoadBalancerVirtualIPAddresses {
 	return o.VirtualIPAddresses
 }
 
 // SetVirtualIPAddresses sets value to VirtualIPAddresses
-func (o *LoadBalancer) SetVirtualIPAddresses(v []*LoadBalancerVirtualIPAddress) {
+func (o *LoadBalancer) SetVirtualIPAddresses(v LoadBalancerVirtualIPAddresses) {
 	o.VirtualIPAddresses = v
 }
 
@@ -12203,10 +12203,10 @@ func (o *LoadBalancer) SetInterfaces(v []*InterfaceView) {
 type LoadBalancerVirtualIPAddress struct {
 	VirtualIPAddress string `validate:"ipv4"`
 	Port             types.StringNumber
-	DelayLoop        types.StringNumber    `mapconv:",default=10" validate:"min=0,max=10000"`
-	SorryServer      string                `validate:"ipv4"`
-	Description      string                `validate:"min=0,max=512"`
-	Servers          []*LoadBalancerServer `mapconv:",recursive" validate:"min=0,max=40"`
+	DelayLoop        types.StringNumber  `mapconv:",default=10" validate:"min=0,max=10000"`
+	SorryServer      string              `validate:"ipv4"`
+	Description      string              `validate:"min=0,max=512"`
+	Servers          LoadBalancerServers `mapconv:",recursive" validate:"min=0,max=40"`
 }
 
 // Validate validates by field tags
@@ -12219,10 +12219,10 @@ func (o *LoadBalancerVirtualIPAddress) setDefaults() interface{} {
 	return &struct {
 		VirtualIPAddress string `validate:"ipv4"`
 		Port             types.StringNumber
-		DelayLoop        types.StringNumber    `mapconv:",default=10" validate:"min=0,max=10000"`
-		SorryServer      string                `validate:"ipv4"`
-		Description      string                `validate:"min=0,max=512"`
-		Servers          []*LoadBalancerServer `mapconv:",recursive" validate:"min=0,max=40"`
+		DelayLoop        types.StringNumber  `mapconv:",default=10" validate:"min=0,max=10000"`
+		SorryServer      string              `validate:"ipv4"`
+		Description      string              `validate:"min=0,max=512"`
+		Servers          LoadBalancerServers `mapconv:",recursive" validate:"min=0,max=40"`
 	}{
 		VirtualIPAddress: o.GetVirtualIPAddress(),
 		Port:             o.GetPort(),
@@ -12287,12 +12287,12 @@ func (o *LoadBalancerVirtualIPAddress) SetDescription(v string) {
 }
 
 // GetServers returns value of Servers
-func (o *LoadBalancerVirtualIPAddress) GetServers() []*LoadBalancerServer {
+func (o *LoadBalancerVirtualIPAddress) GetServers() LoadBalancerServers {
 	return o.Servers
 }
 
 // SetServers sets value to Servers
-func (o *LoadBalancerVirtualIPAddress) SetServers(v []*LoadBalancerServer) {
+func (o *LoadBalancerVirtualIPAddress) SetServers(v LoadBalancerServers) {
 	o.Servers = v
 }
 
@@ -12442,8 +12442,8 @@ type LoadBalancerCreateRequest struct {
 	Name               string   `validate:"required"`
 	Description        string   `validate:"min=0,max=512"`
 	Tags               types.Tags
-	IconID             types.ID                        `mapconv:"Icon.ID"`
-	VirtualIPAddresses []*LoadBalancerVirtualIPAddress `mapconv:"Settings.[]LoadBalancer,recursive" validate:"min=0,max=10"`
+	IconID             types.ID                       `mapconv:"Icon.ID"`
+	VirtualIPAddresses LoadBalancerVirtualIPAddresses `mapconv:"Settings.[]LoadBalancer,recursive" validate:"min=0,max=10"`
 }
 
 // Validate validates by field tags
@@ -12463,8 +12463,8 @@ func (o *LoadBalancerCreateRequest) setDefaults() interface{} {
 		Name               string   `validate:"required"`
 		Description        string   `validate:"min=0,max=512"`
 		Tags               types.Tags
-		IconID             types.ID                        `mapconv:"Icon.ID"`
-		VirtualIPAddresses []*LoadBalancerVirtualIPAddress `mapconv:"Settings.[]LoadBalancer,recursive" validate:"min=0,max=10"`
+		IconID             types.ID                       `mapconv:"Icon.ID"`
+		VirtualIPAddresses LoadBalancerVirtualIPAddresses `mapconv:"Settings.[]LoadBalancer,recursive" validate:"min=0,max=10"`
 		Class              string
 	}{
 		SwitchID:           o.GetSwitchID(),
@@ -12603,12 +12603,12 @@ func (o *LoadBalancerCreateRequest) SetIconID(v types.ID) {
 }
 
 // GetVirtualIPAddresses returns value of VirtualIPAddresses
-func (o *LoadBalancerCreateRequest) GetVirtualIPAddresses() []*LoadBalancerVirtualIPAddress {
+func (o *LoadBalancerCreateRequest) GetVirtualIPAddresses() LoadBalancerVirtualIPAddresses {
 	return o.VirtualIPAddresses
 }
 
 // SetVirtualIPAddresses sets value to VirtualIPAddresses
-func (o *LoadBalancerCreateRequest) SetVirtualIPAddresses(v []*LoadBalancerVirtualIPAddress) {
+func (o *LoadBalancerCreateRequest) SetVirtualIPAddresses(v LoadBalancerVirtualIPAddresses) {
 	o.VirtualIPAddresses = v
 }
 
@@ -12621,9 +12621,9 @@ type LoadBalancerUpdateRequest struct {
 	Name               string `validate:"required"`
 	Description        string `validate:"min=0,max=512"`
 	Tags               types.Tags
-	IconID             types.ID                        `mapconv:"Icon.ID"`
-	VirtualIPAddresses []*LoadBalancerVirtualIPAddress `mapconv:"Settings.[]LoadBalancer,recursive" validate:"min=0,max=10"`
-	SettingsHash       string                          `json:",omitempty" mapconv:",omitempty"`
+	IconID             types.ID                       `mapconv:"Icon.ID"`
+	VirtualIPAddresses LoadBalancerVirtualIPAddresses `mapconv:"Settings.[]LoadBalancer,recursive" validate:"min=0,max=10"`
+	SettingsHash       string                         `json:",omitempty" mapconv:",omitempty"`
 }
 
 // Validate validates by field tags
@@ -12637,9 +12637,9 @@ func (o *LoadBalancerUpdateRequest) setDefaults() interface{} {
 		Name               string `validate:"required"`
 		Description        string `validate:"min=0,max=512"`
 		Tags               types.Tags
-		IconID             types.ID                        `mapconv:"Icon.ID"`
-		VirtualIPAddresses []*LoadBalancerVirtualIPAddress `mapconv:"Settings.[]LoadBalancer,recursive" validate:"min=0,max=10"`
-		SettingsHash       string                          `json:",omitempty" mapconv:",omitempty"`
+		IconID             types.ID                       `mapconv:"Icon.ID"`
+		VirtualIPAddresses LoadBalancerVirtualIPAddresses `mapconv:"Settings.[]LoadBalancer,recursive" validate:"min=0,max=10"`
+		SettingsHash       string                         `json:",omitempty" mapconv:",omitempty"`
 	}{
 		Name:               o.GetName(),
 		Description:        o.GetDescription(),
@@ -12711,12 +12711,12 @@ func (o *LoadBalancerUpdateRequest) SetIconID(v types.ID) {
 }
 
 // GetVirtualIPAddresses returns value of VirtualIPAddresses
-func (o *LoadBalancerUpdateRequest) GetVirtualIPAddresses() []*LoadBalancerVirtualIPAddress {
+func (o *LoadBalancerUpdateRequest) GetVirtualIPAddresses() LoadBalancerVirtualIPAddresses {
 	return o.VirtualIPAddresses
 }
 
 // SetVirtualIPAddresses sets value to VirtualIPAddresses
-func (o *LoadBalancerUpdateRequest) SetVirtualIPAddresses(v []*LoadBalancerVirtualIPAddress) {
+func (o *LoadBalancerUpdateRequest) SetVirtualIPAddresses(v LoadBalancerVirtualIPAddresses) {
 	o.VirtualIPAddresses = v
 }
 
@@ -12736,8 +12736,8 @@ func (o *LoadBalancerUpdateRequest) SetSettingsHash(v string) {
 
 // LoadBalancerUpdateSettingsRequest represents API parameter/response structure
 type LoadBalancerUpdateSettingsRequest struct {
-	VirtualIPAddresses []*LoadBalancerVirtualIPAddress `mapconv:"Settings.[]LoadBalancer,recursive" validate:"min=0,max=10"`
-	SettingsHash       string                          `json:",omitempty" mapconv:",omitempty"`
+	VirtualIPAddresses LoadBalancerVirtualIPAddresses `mapconv:"Settings.[]LoadBalancer,recursive" validate:"min=0,max=10"`
+	SettingsHash       string                         `json:",omitempty" mapconv:",omitempty"`
 }
 
 // Validate validates by field tags
@@ -12748,8 +12748,8 @@ func (o *LoadBalancerUpdateSettingsRequest) Validate() error {
 // setDefaults implements sacloud.argumentDefaulter
 func (o *LoadBalancerUpdateSettingsRequest) setDefaults() interface{} {
 	return &struct {
-		VirtualIPAddresses []*LoadBalancerVirtualIPAddress `mapconv:"Settings.[]LoadBalancer,recursive" validate:"min=0,max=10"`
-		SettingsHash       string                          `json:",omitempty" mapconv:",omitempty"`
+		VirtualIPAddresses LoadBalancerVirtualIPAddresses `mapconv:"Settings.[]LoadBalancer,recursive" validate:"min=0,max=10"`
+		SettingsHash       string                         `json:",omitempty" mapconv:",omitempty"`
 	}{
 		VirtualIPAddresses: o.GetVirtualIPAddresses(),
 		SettingsHash:       o.GetSettingsHash(),
@@ -12757,12 +12757,12 @@ func (o *LoadBalancerUpdateSettingsRequest) setDefaults() interface{} {
 }
 
 // GetVirtualIPAddresses returns value of VirtualIPAddresses
-func (o *LoadBalancerUpdateSettingsRequest) GetVirtualIPAddresses() []*LoadBalancerVirtualIPAddress {
+func (o *LoadBalancerUpdateSettingsRequest) GetVirtualIPAddresses() LoadBalancerVirtualIPAddresses {
 	return o.VirtualIPAddresses
 }
 
 // SetVirtualIPAddresses sets value to VirtualIPAddresses
-func (o *LoadBalancerUpdateSettingsRequest) SetVirtualIPAddresses(v []*LoadBalancerVirtualIPAddress) {
+func (o *LoadBalancerUpdateSettingsRequest) SetVirtualIPAddresses(v LoadBalancerVirtualIPAddresses) {
 	o.VirtualIPAddresses = v
 }
 
