@@ -281,7 +281,7 @@ var (
 		Name:      proxyLBAPIName + "ChangePlanRequest",
 		NakedType: proxyLBNakedType,
 		Fields: []*dsl.FieldDesc{
-			fields.ProxyLBPlan(),
+			fields.Def("ServiceClass", meta.TypeString),
 		},
 	}
 
