@@ -1151,9 +1151,6 @@ func (f *fieldsDef) ProxyLBPlan() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "Plan",
 		Type: meta.Static(types.EProxyLBPlan(0)),
-		Tags: &dsl.FieldTags{
-			MapConv: "ServiceClass",
-		},
 	}
 }
 

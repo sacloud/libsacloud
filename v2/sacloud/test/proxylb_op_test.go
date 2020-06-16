@@ -188,7 +188,7 @@ func initProxyLBVariables() {
 			InactiveSec: 30,
 		},
 		UseVIPFailover: true,
-		Region:         types.ProxyLBRegions.IS1,
+		Region:         types.ProxyLBRegions.Anycast,
 	}
 	createProxyLBExpected = &sacloud.ProxyLB{
 		Name:         createProxyLBParam.Name,
@@ -525,7 +525,7 @@ func testProxyLBUpdate(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) 
 func testProxyLBUpdatePlan(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewProxyLBOp(caller)
 	return client.ChangePlan(ctx, ctx.ID, &sacloud.ProxyLBChangePlanRequest{
-		Plan: types.ProxyLBPlans.CPS500,
+		ServiceClass: types.ProxyLBServiceClass(types.ProxyLBPlans.CPS500, types.ProxyLBRegions.Anycast),
 	})
 }
 
