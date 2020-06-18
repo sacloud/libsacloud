@@ -215,6 +215,20 @@ var (
 				},
 			},
 			{
+				Name: "MariaDBStatus",
+				Type: meta.TypeString,
+				Tags: &dsl.FieldTags{
+					MapConv: "SettingsResponse.DBConf.MariaDB.Status",
+				},
+			},
+			{
+				Name: "PostgresStatus",
+				Type: meta.TypeString,
+				Tags: &dsl.FieldTags{
+					MapConv: "SettingsResponse.DBConf.Postgres.Status",
+				},
+			},
+			{
 				Name: "IsFatal",
 				Type: meta.TypeFlag,
 				Tags: &dsl.FieldTags{
@@ -264,7 +278,7 @@ var (
 		Fields: []*dsl.FieldDesc{
 			fields.Def("Name", meta.TypeString),
 			fields.Def("Data", meta.TypeString),
-			fields.Def("Size", meta.TypeInt),
+			fields.Def("Size", meta.TypeStringNumber),
 		},
 	}
 	databaseStatusBackupHistoryView = &dsl.Model{

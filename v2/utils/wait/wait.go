@@ -41,13 +41,24 @@ func UntilArchiveIsReady(ctx context.Context, client sacloud.ArchiveAPI, zone st
 
 // UntilDatabaseIsUp 起動まで待機
 func UntilDatabaseIsUp(ctx context.Context, client sacloud.DatabaseAPI, zone string, id types.ID) (*sacloud.Database, error) {
+	var database *sacloud.Database
 	lastState, err := sacloud.WaiterForApplianceUp(func() (interface{}, error) {
 		return client.Read(ctx, zone, id)
 	}, ApplianceNotFoundRetryCount).WaitForState(ctx)
 	if lastState != nil {
-		return lastState.(*sacloud.Database), err
+		database = lastState.(*sacloud.Database)
 	}
-	return nil, err
+	if err != nil {
+		return nil, err
+	}
+	// [HACK] データベースアプライアンス場合のみ/appliance/:id/statusも考慮する
+	waiter := sacloud.WaiterForUp(func() (interface{}, error) {
+		return client.Status(ctx, zone, id)
+	})
+	waiter.SetPollingInterval(sacloud.DefaultDBStatusPollingInterval) // HACK 現状は決め打ち、ユースケースが出たら修正する
+	_, err = waiter.WaitForState(ctx)
+
+	return database, err
 }
 
 // UntilDatabaseIsDown シャットダウンまで待機
