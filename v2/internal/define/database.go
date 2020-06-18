@@ -278,7 +278,7 @@ var (
 		Fields: []*dsl.FieldDesc{
 			fields.Def("Name", meta.TypeString),
 			fields.Def("Data", meta.TypeString),
-			fields.Def("Size", meta.TypeInt),
+			fields.Def("Size", meta.TypeStringNumber),
 		},
 	}
 	databaseStatusBackupHistoryView = &dsl.Model{

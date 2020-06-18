@@ -155,9 +155,9 @@ type DatabaseStatusVersion struct {
 
 // DatabaseLog データベースログ
 type DatabaseLog struct {
-	Name string `json:"name,omitempty" yaml:"name,omitempty" structs:",omitempty"`
-	Data string `json:"data,omitempty" yaml:"data,omitempty" structs:",omitempty"`
-	Size int    `json:"size,omitempty" yaml:"size,omitempty" structs:",omitempty"`
+	Name string             `json:"name,omitempty" yaml:"name,omitempty" structs:",omitempty"`
+	Data string             `json:"data,omitempty" yaml:"data,omitempty" structs:",omitempty"`
+	Size types.StringNumber `json:"size,omitempty" yaml:"size,omitempty" structs:",omitempty"`
 }
 
 // IsSystemdLog systemcltのログか判定

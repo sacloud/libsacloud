@@ -6534,7 +6534,7 @@ func (o *DatabaseVersionInfo) SetExpire(v string) {
 type DatabaseLog struct {
 	Name string
 	Data string
-	Size int
+	Size types.StringNumber
 }
 
 // Validate validates by field tags
@@ -6547,7 +6547,7 @@ func (o *DatabaseLog) setDefaults() interface{} {
 	return &struct {
 		Name string
 		Data string
-		Size int
+		Size types.StringNumber
 	}{
 		Name: o.GetName(),
 		Data: o.GetData(),
@@ -6576,12 +6576,12 @@ func (o *DatabaseLog) SetData(v string) {
 }
 
 // GetSize returns value of Size
-func (o *DatabaseLog) GetSize() int {
+func (o *DatabaseLog) GetSize() types.StringNumber {
 	return o.Size
 }
 
 // SetSize sets value to Size
-func (o *DatabaseLog) SetSize(v int) {
+func (o *DatabaseLog) SetSize(v types.StringNumber) {
 	o.Size = v
 }
 
