@@ -17,6 +17,8 @@ package test
 import (
 	"testing"
 
+	"github.com/sacloud/libsacloud/v2/utils/wait"
+
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/testutil"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
@@ -299,7 +301,11 @@ var (
 
 func testDatabaseCreate(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewDatabaseOp(caller)
-	return client.Create(ctx, testZone, createDatabaseParam)
+	db, err := client.Create(ctx, testZone, createDatabaseParam)
+	if err != nil {
+		return nil, err
+	}
+	return wait.UntilDatabaseIsUp(ctx, client, testZone, db.ID)
 }
 
 func testDatabaseRead(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {

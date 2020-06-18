@@ -127,14 +127,21 @@ type DatabaseStatus struct {
 
 // DatabaseStatusDBConf データベース設定
 type DatabaseStatusDBConf struct {
-	Version *DatabaseStatusVersion `json:"version,omitempty" yaml:"version,omitempty" structs:",omitempty"`
-	Log     []*DatabaseLog         `json:"log,omitempty" yaml:"log,omitempty" structs:",omitempty"`
-	Backup  *DatabaseBackupInfo    `json:"backup,omitempty" yaml:"backup,omitempty" structs:",omitempty"`
+	Version  *DatabaseStatusVersion    `json:"version,omitempty" yaml:"version,omitempty" structs:",omitempty"`
+	Log      []*DatabaseLog            `json:"log,omitempty" yaml:"log,omitempty" structs:",omitempty"`
+	Backup   *DatabaseBackupInfo       `json:"backup,omitempty" yaml:"backup,omitempty" structs:",omitempty"`
+	MariaDB  *DatabaseStatusMariaDB    `json:",omitempty" yaml:"maria_db,omitempty" structs:",omitempty"`
+	Postgres *DatabaseStatusPostgreSQL `json:"postgres,omitempty" yaml:"postgres,omitempty" structs:",omitempty"`
 
 	// 以下フィールドはサポートしない
 	// Replication
-	// MariaDB
-	// Postgress
+}
+
+type DatabaseStatusMariaDB struct {
+	Status string `json:"status,omitempty"`
+}
+type DatabaseStatusPostgreSQL struct {
+	Status string `json:"status,omitempty"`
 }
 
 // DatabaseStatusVersion データベース設定バージョン情報

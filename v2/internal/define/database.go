@@ -215,6 +215,20 @@ var (
 				},
 			},
 			{
+				Name: "MariaDBStatus",
+				Type: meta.TypeString,
+				Tags: &dsl.FieldTags{
+					MapConv: "SettingsResponse.DBConf.MariaDB.Status",
+				},
+			},
+			{
+				Name: "PostgresStatus",
+				Type: meta.TypeString,
+				Tags: &dsl.FieldTags{
+					MapConv: "SettingsResponse.DBConf.Postgres.Status",
+				},
+			},
+			{
 				Name: "IsFatal",
 				Type: meta.TypeFlag,
 				Tags: &dsl.FieldTags{
