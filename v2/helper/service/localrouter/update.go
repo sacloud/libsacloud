@@ -31,6 +31,12 @@ type UpdateRequest struct {
 	Description *string `validate:"omitempty,min=1,max=512"`
 	Tags        *types.Tags
 	IconID      *types.ID
+
+	Switch       *sacloud.LocalRouterSwitch
+	Interface    *sacloud.LocalRouterInterface
+	Peers        []*sacloud.LocalRouterPeer
+	StaticRoutes []*sacloud.LocalRouterStaticRoute
+	SettingsHash string
 }
 
 func (r *UpdateRequest) Validate() error {
