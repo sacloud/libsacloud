@@ -109,8 +109,7 @@ func TestBuilder_Build(t *testing.T) {
 				mgw := value.(*sacloud.MobileGateway)
 				return testutil.DoAsserts(
 					testutil.AssertNotNilFunc(t, mgw, "MobileGateway"),
-					testutil.AssertNotNilFunc(t, mgw.Settings, "MobileGateway.Settings"),
-					testutil.AssertLenFunc(t, mgw.Settings.Interfaces, 1, "MobileGateway.Settings.Interfaces"),
+					testutil.AssertLenFunc(t, mgw.InterfaceSettings, 1, "MobileGateway.InterfaceSettings"),
 				)
 			},
 		},

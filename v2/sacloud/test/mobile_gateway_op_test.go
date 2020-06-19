@@ -117,13 +117,11 @@ func TestMobileGatewayOpCRUD(t *testing.T) {
 				Func: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 					mgwOp := sacloud.NewMobileGatewayOp(caller)
 					return mgwOp.Update(ctx, testZone, ctx.ID, &sacloud.MobileGatewayUpdateRequest{
-						Settings: &sacloud.MobileGatewaySetting{
-							Interfaces: []*sacloud.MobileGatewayInterfaceSetting{
-								{
-									IPAddress:      []string{"192.168.2.11"},
-									NetworkMaskLen: 24,
-									Index:          1,
-								},
+						InterfaceSettings: []*sacloud.MobileGatewayInterfaceSetting{
+							{
+								IPAddress:      []string{"192.168.2.11"},
+								NetworkMaskLen: 24,
+								Index:          1,
 							},
 						},
 					})
@@ -131,10 +129,10 @@ func TestMobileGatewayOpCRUD(t *testing.T) {
 				CheckFunc: func(t testutil.TestT, ctx *testutil.CRUDTestContext, i interface{}) error {
 					mgw := i.(*sacloud.MobileGateway)
 					return testutil.DoAsserts(
-						testutil.AssertNotNilFunc(t, mgw.Settings.Interfaces, "MobileGateway.Settings.Interfaces"),
-						testutil.AssertEqualFunc(t, 1, mgw.Settings.Interfaces[0].Index, "MobileGateway.Settings.Interfaces.Index"),
-						testutil.AssertEqualFunc(t, "192.168.2.11", mgw.Settings.Interfaces[0].IPAddress[0], "MobileGateway.Settings.Interfaces.IPAddress"),
-						testutil.AssertEqualFunc(t, 24, mgw.Settings.Interfaces[0].NetworkMaskLen, "MobileGateway.Settings.Interfaces.NetworkMaskLen"),
+						testutil.AssertNotNilFunc(t, mgw.InterfaceSettings, "MobileGateway.InterfaceSettings"),
+						testutil.AssertEqualFunc(t, 1, mgw.InterfaceSettings[0].Index, "MobileGateway.InterfaceSettings.Index"),
+						testutil.AssertEqualFunc(t, "192.168.2.11", mgw.InterfaceSettings[0].IPAddress[0], "MobileGateway.InterfaceSettings.IPAddress"),
+						testutil.AssertEqualFunc(t, 24, mgw.InterfaceSettings[0].NetworkMaskLen, "MobileGateway.InterfaceSettings.NetworkMaskLen"),
 					)
 				},
 				SkipExtractID: true,
@@ -394,58 +392,46 @@ func initMobileGatewayVariables() {
 	passcode = os.Getenv("SAKURACLOUD_SIM_PASSCODE")
 
 	createMobileGatewayParam = &sacloud.MobileGatewayCreateRequest{
-		Name:        testutil.ResourceName("mobile-gateway"),
-		Description: "desc",
-		Tags:        []string{"tag1", "tag2"},
-		Settings: &sacloud.MobileGatewaySettingCreate{
-			InternetConnectionEnabled:       true,
-			InterDeviceCommunicationEnabled: true,
-		},
+		Name:                            testutil.ResourceName("mobile-gateway"),
+		Description:                     "desc",
+		Tags:                            []string{"tag1", "tag2"},
+		InternetConnectionEnabled:       true,
+		InterDeviceCommunicationEnabled: true,
 	}
 	createMobileGatewayExpected = &sacloud.MobileGateway{
-		Name:         createMobileGatewayParam.Name,
-		Description:  createMobileGatewayParam.Description,
-		Tags:         createMobileGatewayParam.Tags,
-		Availability: types.Availabilities.Available,
-		Settings: &sacloud.MobileGatewaySetting{
-			InternetConnectionEnabled:       true,
-			InterDeviceCommunicationEnabled: true,
-		},
+		Name:                            createMobileGatewayParam.Name,
+		Description:                     createMobileGatewayParam.Description,
+		Tags:                            createMobileGatewayParam.Tags,
+		Availability:                    types.Availabilities.Available,
+		InternetConnectionEnabled:       true,
+		InterDeviceCommunicationEnabled: true,
 	}
 	updateMobileGatewayParam = &sacloud.MobileGatewayUpdateRequest{
-		Name:        testutil.ResourceName("mobile-gateway-upd"),
-		Description: "desc-upd",
-		Tags:        []string{"tag1-upd", "tag2-upd"},
-		Settings: &sacloud.MobileGatewaySetting{
-			InternetConnectionEnabled:       false,
-			InterDeviceCommunicationEnabled: false,
-		},
+		Name:                            testutil.ResourceName("mobile-gateway-upd"),
+		Description:                     "desc-upd",
+		Tags:                            []string{"tag1-upd", "tag2-upd"},
+		InternetConnectionEnabled:       false,
+		InterDeviceCommunicationEnabled: false,
 	}
 	updateMobileGatewayExpected = &sacloud.MobileGateway{
-		Name:         updateMobileGatewayParam.Name,
-		Description:  updateMobileGatewayParam.Description,
-		Tags:         updateMobileGatewayParam.Tags,
-		Availability: types.Availabilities.Available,
-		Settings: &sacloud.MobileGatewaySetting{
-			InternetConnectionEnabled:       false,
-			InterDeviceCommunicationEnabled: false,
-		},
+		Name:                            updateMobileGatewayParam.Name,
+		Description:                     updateMobileGatewayParam.Description,
+		Tags:                            updateMobileGatewayParam.Tags,
+		Availability:                    types.Availabilities.Available,
+		InternetConnectionEnabled:       false,
+		InterDeviceCommunicationEnabled: false,
 	}
 	updateMobileGatewaySettingsParam = &sacloud.MobileGatewayUpdateSettingsRequest{
-		Settings: &sacloud.MobileGatewaySetting{
-			InternetConnectionEnabled:       true,
-			InterDeviceCommunicationEnabled: true,
-		},
+		InternetConnectionEnabled:       true,
+		InterDeviceCommunicationEnabled: true,
 	}
 	updateMobileGatewaySettingsExpected = &sacloud.MobileGateway{
-		Name:         updateMobileGatewayParam.Name,
-		Description:  updateMobileGatewayParam.Description,
-		Tags:         updateMobileGatewayParam.Tags,
-		Availability: types.Availabilities.Available,
-		Settings: &sacloud.MobileGatewaySetting{
-			InternetConnectionEnabled:       true,
-			InterDeviceCommunicationEnabled: true,
-		},
+		Name:                            updateMobileGatewayParam.Name,
+		Description:                     updateMobileGatewayParam.Description,
+		Tags:                            updateMobileGatewayParam.Tags,
+		Availability:                    types.Availabilities.Available,
+		InternetConnectionEnabled:       true,
+		InterDeviceCommunicationEnabled: true,
 	}
 }
 

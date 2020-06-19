@@ -13950,22 +13950,25 @@ func (o *MonitorLocalRouterValue) SetSendBytesPerSec(v float64) {
 
 // MobileGateway represents API parameter/response structure
 type MobileGateway struct {
-	ID                      types.ID
-	Name                    string `validate:"required"`
-	Description             string `validate:"min=0,max=512"`
-	Tags                    types.Tags
-	Availability            types.EAvailability
-	Class                   string
-	IconID                  types.ID `mapconv:"Icon.ID"`
-	CreatedAt               time.Time
-	InstanceHostName        string                      `mapconv:"Instance.Host.Name"`
-	InstanceHostInfoURL     string                      `mapconv:"Instance.Host.InfoURL"`
-	InstanceStatus          types.EServerInstanceStatus `mapconv:"Instance.Status"`
-	InstanceStatusChangedAt time.Time                   `mapconv:"Instance.StatusChangedAt"`
-	Interfaces              []*MobileGatewayInterface   `json:",omitempty" mapconv:"[]Interfaces,recursive,omitempty"`
-	ZoneID                  types.ID                    `mapconv:"Remark.Zone.ID"`
-	Settings                *MobileGatewaySetting       `mapconv:",omitempty,recursive"`
-	SettingsHash            string                      `json:",omitempty" mapconv:",omitempty"`
+	ID                              types.ID
+	Name                            string `validate:"required"`
+	Description                     string `validate:"min=0,max=512"`
+	Tags                            types.Tags
+	Availability                    types.EAvailability
+	Class                           string
+	IconID                          types.ID `mapconv:"Icon.ID"`
+	CreatedAt                       time.Time
+	InstanceHostName                string                           `mapconv:"Instance.Host.Name"`
+	InstanceHostInfoURL             string                           `mapconv:"Instance.Host.InfoURL"`
+	InstanceStatus                  types.EServerInstanceStatus      `mapconv:"Instance.Status"`
+	InstanceStatusChangedAt         time.Time                        `mapconv:"Instance.StatusChangedAt"`
+	Interfaces                      []*MobileGatewayInterface        `json:",omitempty" mapconv:"[]Interfaces,recursive,omitempty"`
+	ZoneID                          types.ID                         `mapconv:"Remark.Zone.ID"`
+	InterfaceSettings               []*MobileGatewayInterfaceSetting `mapconv:"Settings.MobileGateway.[]Interfaces,recursive"`
+	StaticRoute                     []*MobileGatewayStaticRoute      `mapconv:"Settings.MobileGateway.[]StaticRoutes,recursive"`
+	InternetConnectionEnabled       types.StringFlag                 `mapconv:"Settings.MobileGateway.InternetConnection.Enabled"`
+	InterDeviceCommunicationEnabled types.StringFlag                 `mapconv:"Settings.MobileGateway.InterDeviceCommunication.Enabled"`
+	SettingsHash                    string                           `json:",omitempty" mapconv:",omitempty"`
 }
 
 // Validate validates by field tags
@@ -13976,39 +13979,45 @@ func (o *MobileGateway) Validate() error {
 // setDefaults implements sacloud.argumentDefaulter
 func (o *MobileGateway) setDefaults() interface{} {
 	return &struct {
-		ID                      types.ID
-		Name                    string `validate:"required"`
-		Description             string `validate:"min=0,max=512"`
-		Tags                    types.Tags
-		Availability            types.EAvailability
-		Class                   string
-		IconID                  types.ID `mapconv:"Icon.ID"`
-		CreatedAt               time.Time
-		InstanceHostName        string                      `mapconv:"Instance.Host.Name"`
-		InstanceHostInfoURL     string                      `mapconv:"Instance.Host.InfoURL"`
-		InstanceStatus          types.EServerInstanceStatus `mapconv:"Instance.Status"`
-		InstanceStatusChangedAt time.Time                   `mapconv:"Instance.StatusChangedAt"`
-		Interfaces              []*MobileGatewayInterface   `json:",omitempty" mapconv:"[]Interfaces,recursive,omitempty"`
-		ZoneID                  types.ID                    `mapconv:"Remark.Zone.ID"`
-		Settings                *MobileGatewaySetting       `mapconv:",omitempty,recursive"`
-		SettingsHash            string                      `json:",omitempty" mapconv:",omitempty"`
+		ID                              types.ID
+		Name                            string `validate:"required"`
+		Description                     string `validate:"min=0,max=512"`
+		Tags                            types.Tags
+		Availability                    types.EAvailability
+		Class                           string
+		IconID                          types.ID `mapconv:"Icon.ID"`
+		CreatedAt                       time.Time
+		InstanceHostName                string                           `mapconv:"Instance.Host.Name"`
+		InstanceHostInfoURL             string                           `mapconv:"Instance.Host.InfoURL"`
+		InstanceStatus                  types.EServerInstanceStatus      `mapconv:"Instance.Status"`
+		InstanceStatusChangedAt         time.Time                        `mapconv:"Instance.StatusChangedAt"`
+		Interfaces                      []*MobileGatewayInterface        `json:",omitempty" mapconv:"[]Interfaces,recursive,omitempty"`
+		ZoneID                          types.ID                         `mapconv:"Remark.Zone.ID"`
+		InterfaceSettings               []*MobileGatewayInterfaceSetting `mapconv:"Settings.MobileGateway.[]Interfaces,recursive"`
+		StaticRoute                     []*MobileGatewayStaticRoute      `mapconv:"Settings.MobileGateway.[]StaticRoutes,recursive"`
+		InternetConnectionEnabled       types.StringFlag                 `mapconv:"Settings.MobileGateway.InternetConnection.Enabled"`
+		InterDeviceCommunicationEnabled types.StringFlag                 `mapconv:"Settings.MobileGateway.InterDeviceCommunication.Enabled"`
+		SettingsHash                    string                           `json:",omitempty" mapconv:",omitempty"`
 	}{
-		ID:                      o.GetID(),
-		Name:                    o.GetName(),
-		Description:             o.GetDescription(),
-		Tags:                    o.GetTags(),
-		Availability:            o.GetAvailability(),
-		Class:                   o.GetClass(),
-		IconID:                  o.GetIconID(),
-		CreatedAt:               o.GetCreatedAt(),
-		InstanceHostName:        o.GetInstanceHostName(),
-		InstanceHostInfoURL:     o.GetInstanceHostInfoURL(),
-		InstanceStatus:          o.GetInstanceStatus(),
-		InstanceStatusChangedAt: o.GetInstanceStatusChangedAt(),
-		Interfaces:              o.GetInterfaces(),
-		ZoneID:                  o.GetZoneID(),
-		Settings:                o.GetSettings(),
-		SettingsHash:            o.GetSettingsHash(),
+		ID:                              o.GetID(),
+		Name:                            o.GetName(),
+		Description:                     o.GetDescription(),
+		Tags:                            o.GetTags(),
+		Availability:                    o.GetAvailability(),
+		Class:                           o.GetClass(),
+		IconID:                          o.GetIconID(),
+		CreatedAt:                       o.GetCreatedAt(),
+		InstanceHostName:                o.GetInstanceHostName(),
+		InstanceHostInfoURL:             o.GetInstanceHostInfoURL(),
+		InstanceStatus:                  o.GetInstanceStatus(),
+		InstanceStatusChangedAt:         o.GetInstanceStatusChangedAt(),
+		Interfaces:                      o.GetInterfaces(),
+		ZoneID:                          o.GetZoneID(),
+		InterfaceSettings:               o.GetInterfaceSettings(),
+		StaticRoute:                     o.GetStaticRoute(),
+		InternetConnectionEnabled:       o.GetInternetConnectionEnabled(),
+		InterDeviceCommunicationEnabled: o.GetInterDeviceCommunicationEnabled(),
+		SettingsHash:                    o.GetSettingsHash(),
 	}
 }
 
@@ -14192,14 +14201,44 @@ func (o *MobileGateway) SetZoneID(v types.ID) {
 	o.ZoneID = v
 }
 
-// GetSettings returns value of Settings
-func (o *MobileGateway) GetSettings() *MobileGatewaySetting {
-	return o.Settings
+// GetInterfaceSettings returns value of InterfaceSettings
+func (o *MobileGateway) GetInterfaceSettings() []*MobileGatewayInterfaceSetting {
+	return o.InterfaceSettings
 }
 
-// SetSettings sets value to Settings
-func (o *MobileGateway) SetSettings(v *MobileGatewaySetting) {
-	o.Settings = v
+// SetInterfaceSettings sets value to InterfaceSettings
+func (o *MobileGateway) SetInterfaceSettings(v []*MobileGatewayInterfaceSetting) {
+	o.InterfaceSettings = v
+}
+
+// GetStaticRoute returns value of StaticRoute
+func (o *MobileGateway) GetStaticRoute() []*MobileGatewayStaticRoute {
+	return o.StaticRoute
+}
+
+// SetStaticRoute sets value to StaticRoute
+func (o *MobileGateway) SetStaticRoute(v []*MobileGatewayStaticRoute) {
+	o.StaticRoute = v
+}
+
+// GetInternetConnectionEnabled returns value of InternetConnectionEnabled
+func (o *MobileGateway) GetInternetConnectionEnabled() types.StringFlag {
+	return o.InternetConnectionEnabled
+}
+
+// SetInternetConnectionEnabled sets value to InternetConnectionEnabled
+func (o *MobileGateway) SetInternetConnectionEnabled(v types.StringFlag) {
+	o.InternetConnectionEnabled = v
+}
+
+// GetInterDeviceCommunicationEnabled returns value of InterDeviceCommunicationEnabled
+func (o *MobileGateway) GetInterDeviceCommunicationEnabled() types.StringFlag {
+	return o.InterDeviceCommunicationEnabled
+}
+
+// SetInterDeviceCommunicationEnabled sets value to InterDeviceCommunicationEnabled
+func (o *MobileGateway) SetInterDeviceCommunicationEnabled(v types.StringFlag) {
+	o.InterDeviceCommunicationEnabled = v
 }
 
 // GetSettingsHash returns value of SettingsHash
@@ -14500,78 +14539,6 @@ func (o *MobileGatewayInterface) SetIndex(v int) {
 }
 
 /*************************************************
-* MobileGatewaySetting
-*************************************************/
-
-// MobileGatewaySetting represents API parameter/response structure
-type MobileGatewaySetting struct {
-	Interfaces                      []*MobileGatewayInterfaceSetting `mapconv:"MobileGateway.[]Interfaces,recursive"`
-	StaticRoute                     []*MobileGatewayStaticRoute      `mapconv:"MobileGateway.[]StaticRoutes,recursive"`
-	InternetConnectionEnabled       types.StringFlag                 `mapconv:"MobileGateway.InternetConnection.Enabled"`
-	InterDeviceCommunicationEnabled types.StringFlag                 `mapconv:"MobileGateway.InterDeviceCommunication.Enabled"`
-}
-
-// Validate validates by field tags
-func (o *MobileGatewaySetting) Validate() error {
-	return validate.Struct(o)
-}
-
-// setDefaults implements sacloud.argumentDefaulter
-func (o *MobileGatewaySetting) setDefaults() interface{} {
-	return &struct {
-		Interfaces                      []*MobileGatewayInterfaceSetting `mapconv:"MobileGateway.[]Interfaces,recursive"`
-		StaticRoute                     []*MobileGatewayStaticRoute      `mapconv:"MobileGateway.[]StaticRoutes,recursive"`
-		InternetConnectionEnabled       types.StringFlag                 `mapconv:"MobileGateway.InternetConnection.Enabled"`
-		InterDeviceCommunicationEnabled types.StringFlag                 `mapconv:"MobileGateway.InterDeviceCommunication.Enabled"`
-	}{
-		Interfaces:                      o.GetInterfaces(),
-		StaticRoute:                     o.GetStaticRoute(),
-		InternetConnectionEnabled:       o.GetInternetConnectionEnabled(),
-		InterDeviceCommunicationEnabled: o.GetInterDeviceCommunicationEnabled(),
-	}
-}
-
-// GetInterfaces returns value of Interfaces
-func (o *MobileGatewaySetting) GetInterfaces() []*MobileGatewayInterfaceSetting {
-	return o.Interfaces
-}
-
-// SetInterfaces sets value to Interfaces
-func (o *MobileGatewaySetting) SetInterfaces(v []*MobileGatewayInterfaceSetting) {
-	o.Interfaces = v
-}
-
-// GetStaticRoute returns value of StaticRoute
-func (o *MobileGatewaySetting) GetStaticRoute() []*MobileGatewayStaticRoute {
-	return o.StaticRoute
-}
-
-// SetStaticRoute sets value to StaticRoute
-func (o *MobileGatewaySetting) SetStaticRoute(v []*MobileGatewayStaticRoute) {
-	o.StaticRoute = v
-}
-
-// GetInternetConnectionEnabled returns value of InternetConnectionEnabled
-func (o *MobileGatewaySetting) GetInternetConnectionEnabled() types.StringFlag {
-	return o.InternetConnectionEnabled
-}
-
-// SetInternetConnectionEnabled sets value to InternetConnectionEnabled
-func (o *MobileGatewaySetting) SetInternetConnectionEnabled(v types.StringFlag) {
-	o.InternetConnectionEnabled = v
-}
-
-// GetInterDeviceCommunicationEnabled returns value of InterDeviceCommunicationEnabled
-func (o *MobileGatewaySetting) GetInterDeviceCommunicationEnabled() types.StringFlag {
-	return o.InterDeviceCommunicationEnabled
-}
-
-// SetInterDeviceCommunicationEnabled sets value to InterDeviceCommunicationEnabled
-func (o *MobileGatewaySetting) SetInterDeviceCommunicationEnabled(v types.StringFlag) {
-	o.InterDeviceCommunicationEnabled = v
-}
-
-/*************************************************
 * MobileGatewayInterfaceSetting
 *************************************************/
 
@@ -14682,11 +14649,13 @@ func (o *MobileGatewayStaticRoute) SetNextHop(v string) {
 
 // MobileGatewayCreateRequest represents API parameter/response structure
 type MobileGatewayCreateRequest struct {
-	Name        string `validate:"required"`
-	Description string `validate:"min=0,max=512"`
-	Tags        types.Tags
-	IconID      types.ID                    `mapconv:"Icon.ID"`
-	Settings    *MobileGatewaySettingCreate `json:",omitempty" mapconv:",omitempty,recursive"`
+	Name                            string `validate:"required"`
+	Description                     string `validate:"min=0,max=512"`
+	Tags                            types.Tags
+	IconID                          types.ID                    `mapconv:"Icon.ID"`
+	StaticRoute                     []*MobileGatewayStaticRoute `json:",omitempty" mapconv:"Settings.MobileGateway.[]StaticRoutes,omitempty,recursive"`
+	InternetConnectionEnabled       types.StringFlag            `mapconv:"Settings.MobileGateway.InternetConnection.Enabled"`
+	InterDeviceCommunicationEnabled types.StringFlag            `mapconv:"Settings.MobileGateway.InterDeviceCommunication.Enabled"`
 }
 
 // Validate validates by field tags
@@ -14697,23 +14666,27 @@ func (o *MobileGatewayCreateRequest) Validate() error {
 // setDefaults implements sacloud.argumentDefaulter
 func (o *MobileGatewayCreateRequest) setDefaults() interface{} {
 	return &struct {
-		Name        string `validate:"required"`
-		Description string `validate:"min=0,max=512"`
-		Tags        types.Tags
-		IconID      types.ID                    `mapconv:"Icon.ID"`
-		Settings    *MobileGatewaySettingCreate `json:",omitempty" mapconv:",omitempty,recursive"`
-		Class       string
-		PlanID      types.ID `mapconv:"Remark.Plan.ID/Plan.ID"`
-		SwitchID    string   `mapconv:"Remark.Switch.Scope"`
+		Name                            string `validate:"required"`
+		Description                     string `validate:"min=0,max=512"`
+		Tags                            types.Tags
+		IconID                          types.ID                    `mapconv:"Icon.ID"`
+		StaticRoute                     []*MobileGatewayStaticRoute `json:",omitempty" mapconv:"Settings.MobileGateway.[]StaticRoutes,omitempty,recursive"`
+		InternetConnectionEnabled       types.StringFlag            `mapconv:"Settings.MobileGateway.InternetConnection.Enabled"`
+		InterDeviceCommunicationEnabled types.StringFlag            `mapconv:"Settings.MobileGateway.InterDeviceCommunication.Enabled"`
+		Class                           string
+		PlanID                          types.ID `mapconv:"Remark.Plan.ID/Plan.ID"`
+		SwitchID                        string   `mapconv:"Remark.Switch.Scope"`
 	}{
-		Name:        o.GetName(),
-		Description: o.GetDescription(),
-		Tags:        o.GetTags(),
-		IconID:      o.GetIconID(),
-		Settings:    o.GetSettings(),
-		Class:       "mobilegateway",
-		PlanID:      types.ID(1),
-		SwitchID:    "shared",
+		Name:                            o.GetName(),
+		Description:                     o.GetDescription(),
+		Tags:                            o.GetTags(),
+		IconID:                          o.GetIconID(),
+		StaticRoute:                     o.GetStaticRoute(),
+		InternetConnectionEnabled:       o.GetInternetConnectionEnabled(),
+		InterDeviceCommunicationEnabled: o.GetInterDeviceCommunicationEnabled(),
+		Class:                           "mobilegateway",
+		PlanID:                          types.ID(1),
+		SwitchID:                        "shared",
 	}
 }
 
@@ -14777,72 +14750,33 @@ func (o *MobileGatewayCreateRequest) SetIconID(v types.ID) {
 	o.IconID = v
 }
 
-// GetSettings returns value of Settings
-func (o *MobileGatewayCreateRequest) GetSettings() *MobileGatewaySettingCreate {
-	return o.Settings
-}
-
-// SetSettings sets value to Settings
-func (o *MobileGatewayCreateRequest) SetSettings(v *MobileGatewaySettingCreate) {
-	o.Settings = v
-}
-
-/*************************************************
-* MobileGatewaySettingCreate
-*************************************************/
-
-// MobileGatewaySettingCreate represents API parameter/response structure
-type MobileGatewaySettingCreate struct {
-	StaticRoute                     []*MobileGatewayStaticRoute `json:",omitempty" mapconv:"MobileGateway.[]StaticRoutes,omitempty,recursive"`
-	InternetConnectionEnabled       types.StringFlag            `mapconv:"MobileGateway.InternetConnection.Enabled"`
-	InterDeviceCommunicationEnabled types.StringFlag            `mapconv:"MobileGateway.InterDeviceCommunication.Enabled"`
-}
-
-// Validate validates by field tags
-func (o *MobileGatewaySettingCreate) Validate() error {
-	return validate.Struct(o)
-}
-
-// setDefaults implements sacloud.argumentDefaulter
-func (o *MobileGatewaySettingCreate) setDefaults() interface{} {
-	return &struct {
-		StaticRoute                     []*MobileGatewayStaticRoute `json:",omitempty" mapconv:"MobileGateway.[]StaticRoutes,omitempty,recursive"`
-		InternetConnectionEnabled       types.StringFlag            `mapconv:"MobileGateway.InternetConnection.Enabled"`
-		InterDeviceCommunicationEnabled types.StringFlag            `mapconv:"MobileGateway.InterDeviceCommunication.Enabled"`
-	}{
-		StaticRoute:                     o.GetStaticRoute(),
-		InternetConnectionEnabled:       o.GetInternetConnectionEnabled(),
-		InterDeviceCommunicationEnabled: o.GetInterDeviceCommunicationEnabled(),
-	}
-}
-
 // GetStaticRoute returns value of StaticRoute
-func (o *MobileGatewaySettingCreate) GetStaticRoute() []*MobileGatewayStaticRoute {
+func (o *MobileGatewayCreateRequest) GetStaticRoute() []*MobileGatewayStaticRoute {
 	return o.StaticRoute
 }
 
 // SetStaticRoute sets value to StaticRoute
-func (o *MobileGatewaySettingCreate) SetStaticRoute(v []*MobileGatewayStaticRoute) {
+func (o *MobileGatewayCreateRequest) SetStaticRoute(v []*MobileGatewayStaticRoute) {
 	o.StaticRoute = v
 }
 
 // GetInternetConnectionEnabled returns value of InternetConnectionEnabled
-func (o *MobileGatewaySettingCreate) GetInternetConnectionEnabled() types.StringFlag {
+func (o *MobileGatewayCreateRequest) GetInternetConnectionEnabled() types.StringFlag {
 	return o.InternetConnectionEnabled
 }
 
 // SetInternetConnectionEnabled sets value to InternetConnectionEnabled
-func (o *MobileGatewaySettingCreate) SetInternetConnectionEnabled(v types.StringFlag) {
+func (o *MobileGatewayCreateRequest) SetInternetConnectionEnabled(v types.StringFlag) {
 	o.InternetConnectionEnabled = v
 }
 
 // GetInterDeviceCommunicationEnabled returns value of InterDeviceCommunicationEnabled
-func (o *MobileGatewaySettingCreate) GetInterDeviceCommunicationEnabled() types.StringFlag {
+func (o *MobileGatewayCreateRequest) GetInterDeviceCommunicationEnabled() types.StringFlag {
 	return o.InterDeviceCommunicationEnabled
 }
 
 // SetInterDeviceCommunicationEnabled sets value to InterDeviceCommunicationEnabled
-func (o *MobileGatewaySettingCreate) SetInterDeviceCommunicationEnabled(v types.StringFlag) {
+func (o *MobileGatewayCreateRequest) SetInterDeviceCommunicationEnabled(v types.StringFlag) {
 	o.InterDeviceCommunicationEnabled = v
 }
 
@@ -14852,12 +14786,15 @@ func (o *MobileGatewaySettingCreate) SetInterDeviceCommunicationEnabled(v types.
 
 // MobileGatewayUpdateRequest represents API parameter/response structure
 type MobileGatewayUpdateRequest struct {
-	Name         string `validate:"required"`
-	Description  string `validate:"min=0,max=512"`
-	Tags         types.Tags
-	IconID       types.ID              `mapconv:"Icon.ID"`
-	Settings     *MobileGatewaySetting `json:",omitempty" mapconv:",omitempty,recursive"`
-	SettingsHash string                `json:",omitempty" mapconv:",omitempty"`
+	Name                            string `validate:"required"`
+	Description                     string `validate:"min=0,max=512"`
+	Tags                            types.Tags
+	IconID                          types.ID                         `mapconv:"Icon.ID"`
+	InterfaceSettings               []*MobileGatewayInterfaceSetting `mapconv:"Settings.MobileGateway.[]Interfaces,recursive"`
+	StaticRoute                     []*MobileGatewayStaticRoute      `mapconv:"Settings.MobileGateway.[]StaticRoutes,recursive"`
+	InternetConnectionEnabled       types.StringFlag                 `mapconv:"Settings.MobileGateway.InternetConnection.Enabled"`
+	InterDeviceCommunicationEnabled types.StringFlag                 `mapconv:"Settings.MobileGateway.InterDeviceCommunication.Enabled"`
+	SettingsHash                    string                           `json:",omitempty" mapconv:",omitempty"`
 }
 
 // Validate validates by field tags
@@ -14868,19 +14805,25 @@ func (o *MobileGatewayUpdateRequest) Validate() error {
 // setDefaults implements sacloud.argumentDefaulter
 func (o *MobileGatewayUpdateRequest) setDefaults() interface{} {
 	return &struct {
-		Name         string `validate:"required"`
-		Description  string `validate:"min=0,max=512"`
-		Tags         types.Tags
-		IconID       types.ID              `mapconv:"Icon.ID"`
-		Settings     *MobileGatewaySetting `json:",omitempty" mapconv:",omitempty,recursive"`
-		SettingsHash string                `json:",omitempty" mapconv:",omitempty"`
+		Name                            string `validate:"required"`
+		Description                     string `validate:"min=0,max=512"`
+		Tags                            types.Tags
+		IconID                          types.ID                         `mapconv:"Icon.ID"`
+		InterfaceSettings               []*MobileGatewayInterfaceSetting `mapconv:"Settings.MobileGateway.[]Interfaces,recursive"`
+		StaticRoute                     []*MobileGatewayStaticRoute      `mapconv:"Settings.MobileGateway.[]StaticRoutes,recursive"`
+		InternetConnectionEnabled       types.StringFlag                 `mapconv:"Settings.MobileGateway.InternetConnection.Enabled"`
+		InterDeviceCommunicationEnabled types.StringFlag                 `mapconv:"Settings.MobileGateway.InterDeviceCommunication.Enabled"`
+		SettingsHash                    string                           `json:",omitempty" mapconv:",omitempty"`
 	}{
-		Name:         o.GetName(),
-		Description:  o.GetDescription(),
-		Tags:         o.GetTags(),
-		IconID:       o.GetIconID(),
-		Settings:     o.GetSettings(),
-		SettingsHash: o.GetSettingsHash(),
+		Name:                            o.GetName(),
+		Description:                     o.GetDescription(),
+		Tags:                            o.GetTags(),
+		IconID:                          o.GetIconID(),
+		InterfaceSettings:               o.GetInterfaceSettings(),
+		StaticRoute:                     o.GetStaticRoute(),
+		InternetConnectionEnabled:       o.GetInternetConnectionEnabled(),
+		InterDeviceCommunicationEnabled: o.GetInterDeviceCommunicationEnabled(),
+		SettingsHash:                    o.GetSettingsHash(),
 	}
 }
 
@@ -14944,14 +14887,44 @@ func (o *MobileGatewayUpdateRequest) SetIconID(v types.ID) {
 	o.IconID = v
 }
 
-// GetSettings returns value of Settings
-func (o *MobileGatewayUpdateRequest) GetSettings() *MobileGatewaySetting {
-	return o.Settings
+// GetInterfaceSettings returns value of InterfaceSettings
+func (o *MobileGatewayUpdateRequest) GetInterfaceSettings() []*MobileGatewayInterfaceSetting {
+	return o.InterfaceSettings
 }
 
-// SetSettings sets value to Settings
-func (o *MobileGatewayUpdateRequest) SetSettings(v *MobileGatewaySetting) {
-	o.Settings = v
+// SetInterfaceSettings sets value to InterfaceSettings
+func (o *MobileGatewayUpdateRequest) SetInterfaceSettings(v []*MobileGatewayInterfaceSetting) {
+	o.InterfaceSettings = v
+}
+
+// GetStaticRoute returns value of StaticRoute
+func (o *MobileGatewayUpdateRequest) GetStaticRoute() []*MobileGatewayStaticRoute {
+	return o.StaticRoute
+}
+
+// SetStaticRoute sets value to StaticRoute
+func (o *MobileGatewayUpdateRequest) SetStaticRoute(v []*MobileGatewayStaticRoute) {
+	o.StaticRoute = v
+}
+
+// GetInternetConnectionEnabled returns value of InternetConnectionEnabled
+func (o *MobileGatewayUpdateRequest) GetInternetConnectionEnabled() types.StringFlag {
+	return o.InternetConnectionEnabled
+}
+
+// SetInternetConnectionEnabled sets value to InternetConnectionEnabled
+func (o *MobileGatewayUpdateRequest) SetInternetConnectionEnabled(v types.StringFlag) {
+	o.InternetConnectionEnabled = v
+}
+
+// GetInterDeviceCommunicationEnabled returns value of InterDeviceCommunicationEnabled
+func (o *MobileGatewayUpdateRequest) GetInterDeviceCommunicationEnabled() types.StringFlag {
+	return o.InterDeviceCommunicationEnabled
+}
+
+// SetInterDeviceCommunicationEnabled sets value to InterDeviceCommunicationEnabled
+func (o *MobileGatewayUpdateRequest) SetInterDeviceCommunicationEnabled(v types.StringFlag) {
+	o.InterDeviceCommunicationEnabled = v
 }
 
 // GetSettingsHash returns value of SettingsHash
@@ -14970,8 +14943,11 @@ func (o *MobileGatewayUpdateRequest) SetSettingsHash(v string) {
 
 // MobileGatewayUpdateSettingsRequest represents API parameter/response structure
 type MobileGatewayUpdateSettingsRequest struct {
-	Settings     *MobileGatewaySetting `json:",omitempty" mapconv:",omitempty,recursive"`
-	SettingsHash string                `json:",omitempty" mapconv:",omitempty"`
+	InterfaceSettings               []*MobileGatewayInterfaceSetting `mapconv:"Settings.MobileGateway.[]Interfaces,recursive"`
+	StaticRoute                     []*MobileGatewayStaticRoute      `mapconv:"Settings.MobileGateway.[]StaticRoutes,recursive"`
+	InternetConnectionEnabled       types.StringFlag                 `mapconv:"Settings.MobileGateway.InternetConnection.Enabled"`
+	InterDeviceCommunicationEnabled types.StringFlag                 `mapconv:"Settings.MobileGateway.InterDeviceCommunication.Enabled"`
+	SettingsHash                    string                           `json:",omitempty" mapconv:",omitempty"`
 }
 
 // Validate validates by field tags
@@ -14982,22 +14958,58 @@ func (o *MobileGatewayUpdateSettingsRequest) Validate() error {
 // setDefaults implements sacloud.argumentDefaulter
 func (o *MobileGatewayUpdateSettingsRequest) setDefaults() interface{} {
 	return &struct {
-		Settings     *MobileGatewaySetting `json:",omitempty" mapconv:",omitempty,recursive"`
-		SettingsHash string                `json:",omitempty" mapconv:",omitempty"`
+		InterfaceSettings               []*MobileGatewayInterfaceSetting `mapconv:"Settings.MobileGateway.[]Interfaces,recursive"`
+		StaticRoute                     []*MobileGatewayStaticRoute      `mapconv:"Settings.MobileGateway.[]StaticRoutes,recursive"`
+		InternetConnectionEnabled       types.StringFlag                 `mapconv:"Settings.MobileGateway.InternetConnection.Enabled"`
+		InterDeviceCommunicationEnabled types.StringFlag                 `mapconv:"Settings.MobileGateway.InterDeviceCommunication.Enabled"`
+		SettingsHash                    string                           `json:",omitempty" mapconv:",omitempty"`
 	}{
-		Settings:     o.GetSettings(),
-		SettingsHash: o.GetSettingsHash(),
+		InterfaceSettings:               o.GetInterfaceSettings(),
+		StaticRoute:                     o.GetStaticRoute(),
+		InternetConnectionEnabled:       o.GetInternetConnectionEnabled(),
+		InterDeviceCommunicationEnabled: o.GetInterDeviceCommunicationEnabled(),
+		SettingsHash:                    o.GetSettingsHash(),
 	}
 }
 
-// GetSettings returns value of Settings
-func (o *MobileGatewayUpdateSettingsRequest) GetSettings() *MobileGatewaySetting {
-	return o.Settings
+// GetInterfaceSettings returns value of InterfaceSettings
+func (o *MobileGatewayUpdateSettingsRequest) GetInterfaceSettings() []*MobileGatewayInterfaceSetting {
+	return o.InterfaceSettings
 }
 
-// SetSettings sets value to Settings
-func (o *MobileGatewayUpdateSettingsRequest) SetSettings(v *MobileGatewaySetting) {
-	o.Settings = v
+// SetInterfaceSettings sets value to InterfaceSettings
+func (o *MobileGatewayUpdateSettingsRequest) SetInterfaceSettings(v []*MobileGatewayInterfaceSetting) {
+	o.InterfaceSettings = v
+}
+
+// GetStaticRoute returns value of StaticRoute
+func (o *MobileGatewayUpdateSettingsRequest) GetStaticRoute() []*MobileGatewayStaticRoute {
+	return o.StaticRoute
+}
+
+// SetStaticRoute sets value to StaticRoute
+func (o *MobileGatewayUpdateSettingsRequest) SetStaticRoute(v []*MobileGatewayStaticRoute) {
+	o.StaticRoute = v
+}
+
+// GetInternetConnectionEnabled returns value of InternetConnectionEnabled
+func (o *MobileGatewayUpdateSettingsRequest) GetInternetConnectionEnabled() types.StringFlag {
+	return o.InternetConnectionEnabled
+}
+
+// SetInternetConnectionEnabled sets value to InternetConnectionEnabled
+func (o *MobileGatewayUpdateSettingsRequest) SetInternetConnectionEnabled(v types.StringFlag) {
+	o.InternetConnectionEnabled = v
+}
+
+// GetInterDeviceCommunicationEnabled returns value of InterDeviceCommunicationEnabled
+func (o *MobileGatewayUpdateSettingsRequest) GetInterDeviceCommunicationEnabled() types.StringFlag {
+	return o.InterDeviceCommunicationEnabled
+}
+
+// SetInterDeviceCommunicationEnabled sets value to InterDeviceCommunicationEnabled
+func (o *MobileGatewayUpdateSettingsRequest) SetInterDeviceCommunicationEnabled(v types.StringFlag) {
+	o.InterDeviceCommunicationEnabled = v
 }
 
 // GetSettingsHash returns value of SettingsHash

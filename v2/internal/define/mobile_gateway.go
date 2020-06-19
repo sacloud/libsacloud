@@ -355,7 +355,34 @@ var (
 			// remark
 			fields.RemarkZoneID(),
 			// settings
-			fields.Def("Settings", models.mobileGatewaySetting(), mapConvTag(",omitempty,recursive")),
+			{
+				Name: "InterfaceSettings",
+				Type: models.mobileGatewayInterface(),
+				Tags: &dsl.FieldTags{
+					MapConv: "Settings.MobileGateway.[]Interfaces,recursive",
+				},
+			},
+			{
+				Name: "StaticRoute",
+				Type: models.mobileGatewayStaticRoute(),
+				Tags: &dsl.FieldTags{
+					MapConv: "Settings.MobileGateway.[]StaticRoutes,recursive",
+				},
+			},
+			{
+				Name: "InternetConnectionEnabled",
+				Type: meta.TypeStringFlag,
+				Tags: &dsl.FieldTags{
+					MapConv: "Settings.MobileGateway.InternetConnection.Enabled",
+				},
+			},
+			{
+				Name: "InterDeviceCommunicationEnabled",
+				Type: meta.TypeStringFlag,
+				Tags: &dsl.FieldTags{
+					MapConv: "Settings.MobileGateway.InterDeviceCommunication.Enabled",
+				},
+			},
 			fields.SettingsHash(),
 		},
 	}
@@ -392,11 +419,25 @@ var (
 			fields.Tags(),
 			fields.IconID(),
 			{
-				Name: "Settings",
-				Type: models.mobileGatewaySettingCreate(),
+				Name: "StaticRoute",
+				Type: models.mobileGatewayStaticRoute(),
 				Tags: &dsl.FieldTags{
 					JSON:    ",omitempty",
-					MapConv: ",omitempty,recursive",
+					MapConv: "Settings.MobileGateway.[]StaticRoutes,omitempty,recursive",
+				},
+			},
+			{
+				Name: "InternetConnectionEnabled",
+				Type: meta.TypeStringFlag,
+				Tags: &dsl.FieldTags{
+					MapConv: "Settings.MobileGateway.InternetConnection.Enabled",
+				},
+			},
+			{
+				Name: "InterDeviceCommunicationEnabled",
+				Type: meta.TypeStringFlag,
+				Tags: &dsl.FieldTags{
+					MapConv: "Settings.MobileGateway.InterDeviceCommunication.Enabled",
 				},
 			},
 		},
@@ -411,11 +452,31 @@ var (
 			fields.Tags(),
 			fields.IconID(),
 			{
-				Name: "Settings",
-				Type: models.mobileGatewaySetting(),
+				Name: "InterfaceSettings",
+				Type: models.mobileGatewayInterface(),
 				Tags: &dsl.FieldTags{
-					JSON:    ",omitempty",
-					MapConv: ",omitempty,recursive",
+					MapConv: "Settings.MobileGateway.[]Interfaces,recursive",
+				},
+			},
+			{
+				Name: "StaticRoute",
+				Type: models.mobileGatewayStaticRoute(),
+				Tags: &dsl.FieldTags{
+					MapConv: "Settings.MobileGateway.[]StaticRoutes,recursive",
+				},
+			},
+			{
+				Name: "InternetConnectionEnabled",
+				Type: meta.TypeStringFlag,
+				Tags: &dsl.FieldTags{
+					MapConv: "Settings.MobileGateway.InternetConnection.Enabled",
+				},
+			},
+			{
+				Name: "InterDeviceCommunicationEnabled",
+				Type: meta.TypeStringFlag,
+				Tags: &dsl.FieldTags{
+					MapConv: "Settings.MobileGateway.InterDeviceCommunication.Enabled",
 				},
 			},
 			// settings hash
@@ -427,11 +488,31 @@ var (
 		NakedType: mobileGatewayNakedType,
 		Fields: []*dsl.FieldDesc{
 			{
-				Name: "Settings",
-				Type: models.mobileGatewaySetting(),
+				Name: "InterfaceSettings",
+				Type: models.mobileGatewayInterface(),
 				Tags: &dsl.FieldTags{
-					JSON:    ",omitempty",
-					MapConv: ",omitempty,recursive",
+					MapConv: "Settings.MobileGateway.[]Interfaces,recursive",
+				},
+			},
+			{
+				Name: "StaticRoute",
+				Type: models.mobileGatewayStaticRoute(),
+				Tags: &dsl.FieldTags{
+					MapConv: "Settings.MobileGateway.[]StaticRoutes,recursive",
+				},
+			},
+			{
+				Name: "InternetConnectionEnabled",
+				Type: meta.TypeStringFlag,
+				Tags: &dsl.FieldTags{
+					MapConv: "Settings.MobileGateway.InternetConnection.Enabled",
+				},
+			},
+			{
+				Name: "InterDeviceCommunicationEnabled",
+				Type: meta.TypeStringFlag,
+				Tags: &dsl.FieldTags{
+					MapConv: "Settings.MobileGateway.InterDeviceCommunication.Enabled",
 				},
 			},
 			// settings hash
