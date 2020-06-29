@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package mobilegateway
+package nfs
 
 import (
 	"testing"
 
-	"github.com/sacloud/libsacloud/v2/helper/wait"
+	"github.com/sacloud/libsacloud/v2/helper/query"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/pointer"
@@ -25,29 +25,45 @@ import (
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
-func TestMobileGatewayService_CRUD(t *testing.T) {
+func TestNFSService_CRUD(t *testing.T) {
 	svc := New(testutil.SingletonAPICaller())
-	name := testutil.ResourceName("mobile-gateway")
+	name := testutil.ResourceName("nfs")
 	zone := testutil.TestZone()
+	var sw *sacloud.Switch
+	var planID types.ID
 
 	testutil.RunCRUD(t, &testutil.CRUDTestCase{
 		Parallel:           true,
 		PreCheck:           nil,
 		SetupAPICallerFunc: testutil.SingletonAPICaller,
-		Setup:              nil,
-		IgnoreStartupWait:  true,
+		Setup: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {
+			s, err := sacloud.NewSwitchOp(caller).Create(ctx, zone, &sacloud.SwitchCreateRequest{Name: name})
+			if err != nil {
+				return err
+			}
+			sw = s
+
+			pid, err := query.FindNFSPlanID(ctx, sacloud.NewNoteOp(caller), types.NFSPlans.SSD, types.NFSSSDSizes.Size20GB)
+			if err != nil {
+				return err
+			}
+			planID = pid
+
+			return err
+		},
 		Create: &testutil.CRUDTestFunc{
 			Func: func(ctx *testutil.CRUDTestContext, _ sacloud.APICaller) (interface{}, error) {
-				created, err := svc.Create(&CreateRequest{
-					Name:        name,
-					Description: "test",
-					Tags:        types.Tags{"tag1", "tag2"},
-					Zone:        zone,
+				return svc.Create(&CreateRequest{
+					Name:           name,
+					Description:    "test",
+					Tags:           types.Tags{"tag1", "tag2"},
+					Zone:           zone,
+					SwitchID:       sw.ID,
+					PlanID:         planID,
+					IPAddresses:    []string{"192.168.0.11"},
+					NetworkMaskLen: 24,
+					DefaultRoute:   "192.168.0.1",
 				})
-				if err != nil {
-					return nil, err
-				}
-				return wait.UntilMobileGatewayIsReady(ctx, sacloud.NewMobileGatewayOp(svc.caller), zone, created.ID)
 			},
 		},
 		Read: &testutil.CRUDTestFunc{
@@ -71,6 +87,13 @@ func TestMobileGatewayService_CRUD(t *testing.T) {
 			Func: func(ctx *testutil.CRUDTestContext, _ sacloud.APICaller) error {
 				return svc.Delete(&DeleteRequest{ID: ctx.ID, Zone: zone})
 			},
+		},
+		Shutdown: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {
+			return svc.Shutdown(&ShutdownRequest{
+				Zone:  zone,
+				ID:    ctx.ID,
+				Force: true,
+			})
 		},
 		Cleanup: nil,
 	})
