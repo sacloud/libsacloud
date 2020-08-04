@@ -29,7 +29,7 @@ const testMobileGatewayJSON = `
     "Name": "example-mgw",
     "Description": "description",
     "Plan": {
-      "ID": 1
+      "ID": 2
     },
     "Settings": {
       "MobileGateway": {
