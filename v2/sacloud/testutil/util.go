@@ -77,6 +77,7 @@ func SingletonAPICaller() *sacloud.Client {
 	accTestOnce.Do(func() {
 		if !IsAccTest() {
 			sacloud.DefaultStatePollingInterval = 100 * time.Millisecond
+			sacloud.DefaultDBStatusPollingInterval = 10 * time.Millisecond
 			fake.SwitchFactoryFuncToFake()
 			os.Setenv("SAKURACLOUD_ACCESS_TOKEN", "dummy")
 			os.Setenv("SAKURACLOUD_ACCESS_TOKEN_SECRET", "dummy")
