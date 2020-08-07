@@ -14712,7 +14712,7 @@ func (o *MobileGatewayCreateRequest) setDefaults() interface{} {
 		IconID:      o.GetIconID(),
 		Settings:    o.GetSettings(),
 		Class:       "mobilegateway",
-		PlanID:      types.ID(1),
+		PlanID:      types.ID(2),
 		SwitchID:    "shared",
 	}
 }

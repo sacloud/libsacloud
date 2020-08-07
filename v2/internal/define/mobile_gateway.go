@@ -375,7 +375,7 @@ var (
 					MapConv: "Remark.Plan.ID/Plan.ID",
 				},
 				Type:  meta.TypeID,
-				Value: `types.ID(1)`,
+				Value: `types.ID(2)`,
 			},
 			{
 				Name: "SwitchID",
