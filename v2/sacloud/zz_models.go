@@ -21481,11 +21481,18 @@ func (o *ServiceClass) SetPrice(v *Price) {
 
 // Price represents API parameter/response structure
 type Price struct {
-	Base    int
-	Daily   int
-	Hourly  int
-	Monthly int
-	Zone    string
+	Base          int
+	Daily         int
+	Hourly        int
+	Monthly       int
+	PerUse        int
+	Basic         int
+	Traffic       int
+	DocomoTraffic int
+	KddiTraffic   int
+	SbTraffic     int
+	SimSheet      int
+	Zone          string
 }
 
 // Validate validates by field tags
@@ -21496,17 +21503,31 @@ func (o *Price) Validate() error {
 // setDefaults implements sacloud.argumentDefaulter
 func (o *Price) setDefaults() interface{} {
 	return &struct {
-		Base    int
-		Daily   int
-		Hourly  int
-		Monthly int
-		Zone    string
+		Base          int
+		Daily         int
+		Hourly        int
+		Monthly       int
+		PerUse        int
+		Basic         int
+		Traffic       int
+		DocomoTraffic int
+		KddiTraffic   int
+		SbTraffic     int
+		SimSheet      int
+		Zone          string
 	}{
-		Base:    o.GetBase(),
-		Daily:   o.GetDaily(),
-		Hourly:  o.GetHourly(),
-		Monthly: o.GetMonthly(),
-		Zone:    o.GetZone(),
+		Base:          o.GetBase(),
+		Daily:         o.GetDaily(),
+		Hourly:        o.GetHourly(),
+		Monthly:       o.GetMonthly(),
+		PerUse:        o.GetPerUse(),
+		Basic:         o.GetBasic(),
+		Traffic:       o.GetTraffic(),
+		DocomoTraffic: o.GetDocomoTraffic(),
+		KddiTraffic:   o.GetKddiTraffic(),
+		SbTraffic:     o.GetSbTraffic(),
+		SimSheet:      o.GetSimSheet(),
+		Zone:          o.GetZone(),
 	}
 }
 
@@ -21548,6 +21569,76 @@ func (o *Price) GetMonthly() int {
 // SetMonthly sets value to Monthly
 func (o *Price) SetMonthly(v int) {
 	o.Monthly = v
+}
+
+// GetPerUse returns value of PerUse
+func (o *Price) GetPerUse() int {
+	return o.PerUse
+}
+
+// SetPerUse sets value to PerUse
+func (o *Price) SetPerUse(v int) {
+	o.PerUse = v
+}
+
+// GetBasic returns value of Basic
+func (o *Price) GetBasic() int {
+	return o.Basic
+}
+
+// SetBasic sets value to Basic
+func (o *Price) SetBasic(v int) {
+	o.Basic = v
+}
+
+// GetTraffic returns value of Traffic
+func (o *Price) GetTraffic() int {
+	return o.Traffic
+}
+
+// SetTraffic sets value to Traffic
+func (o *Price) SetTraffic(v int) {
+	o.Traffic = v
+}
+
+// GetDocomoTraffic returns value of DocomoTraffic
+func (o *Price) GetDocomoTraffic() int {
+	return o.DocomoTraffic
+}
+
+// SetDocomoTraffic sets value to DocomoTraffic
+func (o *Price) SetDocomoTraffic(v int) {
+	o.DocomoTraffic = v
+}
+
+// GetKddiTraffic returns value of KddiTraffic
+func (o *Price) GetKddiTraffic() int {
+	return o.KddiTraffic
+}
+
+// SetKddiTraffic sets value to KddiTraffic
+func (o *Price) SetKddiTraffic(v int) {
+	o.KddiTraffic = v
+}
+
+// GetSbTraffic returns value of SbTraffic
+func (o *Price) GetSbTraffic() int {
+	return o.SbTraffic
+}
+
+// SetSbTraffic sets value to SbTraffic
+func (o *Price) SetSbTraffic(v int) {
+	o.SbTraffic = v
+}
+
+// GetSimSheet returns value of SimSheet
+func (o *Price) GetSimSheet() int {
+	return o.SimSheet
+}
+
+// SetSimSheet sets value to SimSheet
+func (o *Price) SetSimSheet(v int) {
+	o.SimSheet = v
 }
 
 // GetZone returns value of Zone
