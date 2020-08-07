@@ -126,7 +126,7 @@ func (b *Builder) Build(ctx context.Context, zone string) (*sacloud.MobileGatewa
 			time.Sleep(b.SetupOptions.NICUpdateWaitDuration)
 
 			// Interface設定
-			_, err := b.Client.MobileGateway.UpdateSettings(ctx, zone, id, &sacloud.MobileGatewayUpdateSettingsRequest{
+			updated, err := b.Client.MobileGateway.UpdateSettings(ctx, zone, id, &sacloud.MobileGatewayUpdateSettingsRequest{
 				Settings: &sacloud.MobileGatewaySetting{
 					Interfaces:                      b.getInterfaceSettings(),
 					InternetConnectionEnabled:       types.StringFlag(b.InternetConnectionEnabled),
@@ -137,6 +137,12 @@ func (b *Builder) Build(ctx context.Context, zone string) (*sacloud.MobileGatewa
 			if err != nil {
 				return err
 			}
+			// [HACK] インターフェースの設定をConfigで反映させておかないとエラーになることへの対応
+			// see: https://github.com/sacloud/libsacloud/issues/589
+			if err := b.Client.MobileGateway.Config(ctx, zone, id); err != nil {
+				return err
+			}
+			mgw = updated
 
 			// traffic config
 			if b.TrafficConfig != nil {
@@ -278,6 +284,11 @@ func (b *Builder) Update(ctx context.Context, zone string, id types.ID) (*saclou
 			if err != nil {
 				return nil, err
 			}
+			// [HACK] インターフェースの設定をConfigで反映させておかないとエラーになることへの対応
+			// see: https://github.com/sacloud/libsacloud/issues/589
+			if err := b.Client.MobileGateway.Config(ctx, zone, id); err != nil {
+				return nil, err
+			}
 			mgw = updated
 		}
 
@@ -301,6 +312,11 @@ func (b *Builder) Update(ctx context.Context, zone string, id types.ID) (*saclou
 				SettingsHash: mgw.SettingsHash,
 			})
 			if err != nil {
+				return nil, err
+			}
+			// [HACK] インターフェースの設定をConfigで反映させておかないとエラーになることへの対応
+			// see: https://github.com/sacloud/libsacloud/issues/589
+			if err := b.Client.MobileGateway.Config(ctx, zone, id); err != nil {
 				return nil, err
 			}
 			mgw = updated
