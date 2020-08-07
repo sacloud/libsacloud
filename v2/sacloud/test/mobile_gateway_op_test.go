@@ -116,17 +116,24 @@ func TestMobileGatewayOpCRUD(t *testing.T) {
 			{
 				Func: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 					mgwOp := sacloud.NewMobileGatewayOp(caller)
-					return mgwOp.Update(ctx, testZone, ctx.ID, &sacloud.MobileGatewayUpdateRequest{
+					mgs, err := mgwOp.UpdateSettings(ctx, testZone, ctx.ID, &sacloud.MobileGatewayUpdateSettingsRequest{
 						Settings: &sacloud.MobileGatewaySetting{
 							Interfaces: []*sacloud.MobileGatewayInterfaceSetting{
 								{
 									IPAddress:      []string{"192.168.2.11"},
-									NetworkMaskLen: 24,
+									NetworkMaskLen: 16,
 									Index:          1,
 								},
 							},
 						},
 					})
+					if err != nil {
+						return nil, err
+					}
+					if err := mgwOp.Config(ctx, testZone, ctx.ID); err != nil {
+						return nil, err
+					}
+					return mgs, nil
 				},
 				CheckFunc: func(t testutil.TestT, ctx *testutil.CRUDTestContext, i interface{}) error {
 					mgw := i.(*sacloud.MobileGateway)
@@ -134,7 +141,7 @@ func TestMobileGatewayOpCRUD(t *testing.T) {
 						testutil.AssertNotNilFunc(t, mgw.Settings.Interfaces, "MobileGateway.Settings.Interfaces"),
 						testutil.AssertEqualFunc(t, 1, mgw.Settings.Interfaces[0].Index, "MobileGateway.Settings.Interfaces.Index"),
 						testutil.AssertEqualFunc(t, "192.168.2.11", mgw.Settings.Interfaces[0].IPAddress[0], "MobileGateway.Settings.Interfaces.IPAddress"),
-						testutil.AssertEqualFunc(t, 24, mgw.Settings.Interfaces[0].NetworkMaskLen, "MobileGateway.Settings.Interfaces.NetworkMaskLen"),
+						testutil.AssertEqualFunc(t, 16, mgw.Settings.Interfaces[0].NetworkMaskLen, "MobileGateway.Settings.Interfaces.NetworkMaskLen"),
 					)
 				},
 				SkipExtractID: true,
