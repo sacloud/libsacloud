@@ -37,7 +37,7 @@ func getSetupOption() *builder.RetryableSetupParameter {
 	}
 }
 
-func TestBuilder_Build(t *testing.T) {
+func TestMobileGatewayBuilder_Build(t *testing.T) {
 	var switchID types.ID
 	var testZone = testutil.TestZone()
 
