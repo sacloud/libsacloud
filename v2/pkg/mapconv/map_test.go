@@ -15,9 +15,9 @@
 package mapconv
 
 import (
-	"errors"
 	"testing"
 
+	"github.com/fatih/structs"
 	"github.com/stretchr/testify/require"
 )
 
@@ -239,16 +239,15 @@ func TestMap_Get(t *testing.T) {
 			},
 		},
 		{
-			caseName: "with error",
+			caseName: "with invalid key",
 			keyValues: map[string]interface{}{
-				"test.A.B": "test",
+				"test.A.B": nil,
 			},
 			source: map[string]interface{}{
 				"test": map[string]interface{}{
 					"A": "test",
 				},
 			},
-			err: errors.New(`key "A"(part of "test.A.B") is not map[string]interface{} or []map[string]interface{}`),
 		},
 	}
 
@@ -263,5 +262,38 @@ func TestMap_Get(t *testing.T) {
 				}
 			}
 		})
+	}
+}
+
+type A struct {
+	Foo *B `structs:",omitempty"`
+}
+
+type B struct {
+	Bar *C `structs:",omitempty"`
+}
+
+type C struct {
+	Baz interface{} `structs:",omitempty"`
+}
+
+func TestMap_GetWithEmptyStruct(t *testing.T) {
+	cases := []struct {
+		in     interface{}
+		expect interface{}
+	}{
+		{in: &A{Foo: &B{Bar: &C{Baz: "FooBarBaz"}}}, expect: "FooBarBaz"},
+		{in: &A{Foo: &B{Bar: &C{}}}, expect: nil},
+		{in: &A{Foo: &B{}}, expect: nil},
+	}
+	for _, tc := range cases {
+		m := Map(structs.Map(tc.in))
+		got, err := m.Get("Foo.Bar.Baz")
+		if err != nil {
+			t.Fatal(err)
+		}
+		if got != tc.expect {
+			t.Fatalf("got unexpected value: expected: %v actual:%v", tc.expect, got)
+		}
 	}
 }
