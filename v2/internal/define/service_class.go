@@ -64,6 +64,13 @@ var (
 			fields.Def("Daily", meta.TypeInt),
 			fields.Def("Hourly", meta.TypeInt),
 			fields.Def("Monthly", meta.TypeInt),
+			fields.Def("PerUse", meta.TypeInt),
+			fields.Def("Basic", meta.TypeInt),
+			fields.Def("Traffic", meta.TypeInt),
+			fields.Def("DocomoTraffic", meta.TypeInt),
+			fields.Def("KddiTraffic", meta.TypeInt),
+			fields.Def("SbTraffic", meta.TypeInt),
+			fields.Def("SimSheet", meta.TypeInt),
 			fields.Def("Zone", meta.TypeString),
 		},
 	}
