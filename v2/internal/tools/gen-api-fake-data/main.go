@@ -68,11 +68,10 @@ func collectArchives() interface{} {
 		log.Fatal(err)
 	}
 	tmplParam := map[string][]*sacloud.Archive{}
-	zones := []string{"is1a", "is1b", "tk1a", "tk1v"}
 	archiveOp := sacloud.NewArchiveOp(caller)
 	ctx := context.Background()
 
-	for _, zone := range zones {
+	for _, zone := range sacloud.SakuraCloudZones {
 		var archives []*sacloud.Archive
 		for _, ost := range ostype.ArchiveOSTypes {
 			archive, err := query.FindArchiveByOSType(ctx, archiveOp, zone, ost)
@@ -124,11 +123,10 @@ func collectCDROMs() interface{} {
 		log.Fatal(err)
 	}
 	tmplParam := map[string][]*sacloud.CDROM{}
-	zones := []string{"is1a", "is1b", "tk1a", "tk1v"}
 	cdromOp := sacloud.NewCDROMOp(caller)
 	ctx := context.Background()
 
-	for _, zone := range zones {
+	for _, zone := range sacloud.SakuraCloudZones {
 		var cdroms []*sacloud.CDROM
 
 		searched, err := cdromOp.Find(ctx, zone, &sacloud.FindCondition{

@@ -85,8 +85,6 @@ const (
 	// Windows2019RDS OS種別:Windows Server 2019 RDS
 	Windows2019RDS
 
-	// Windows2019RDSOffice2016 OS種別:Windows Server 2019 RDS + Office 2016
-	Windows2019RDSOffice2016
 	// Windows2019RDSOffice2019 OS種別:Windows Server 2019 RDS + Office 2019
 	Windows2019RDSOffice2019
 
@@ -139,7 +137,6 @@ var ArchiveOSTypes = []ArchiveOSType{
 	Windows2016SQLServer2017StandardAll,
 	Windows2019,
 	Windows2019RDS,
-	Windows2019RDSOffice2016,
 	Windows2019RDSOffice2019,
 	Windows2019SQLServer2017Web,
 	Windows2019SQLServer2019Web,
@@ -174,7 +171,7 @@ func (o ArchiveOSType) IsWindows() bool {
 		Windows2016SQLServerWeb, Windows2016SQLServerStandard, Windows2016SQLServerStandardAll,
 		Windows2016SQLServer2017Standard, Windows2016SQLServer2017Enterprise, Windows2016SQLServer2017StandardAll,
 		Windows2019, Windows2019RDS,
-		Windows2019RDSOffice2016, Windows2019RDSOffice2019,
+		Windows2019RDSOffice2019,
 		Windows2019SQLServer2017Web, Windows2019SQLServer2019Web,
 		Windows2019SQLServer2017Standard, Windows2019SQLServer2019Standard,
 		Windows2019SQLServer2017Enterprise, Windows2019SQLServer2019Enterprise,
@@ -253,8 +250,6 @@ func StrToOSType(osType string) ArchiveOSType {
 		return Windows2019
 	case "windows2019-rds":
 		return Windows2019RDS
-	case "windows2019-rds-office2016":
-		return Windows2019RDSOffice2016
 	case "windows2019-rds-office2019":
 		return Windows2019RDSOffice2019
 	case "windows2019-sql2017-web":
