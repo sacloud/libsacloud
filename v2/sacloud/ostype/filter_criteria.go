@@ -110,10 +110,6 @@ var ArchiveCriteria = map[ArchiveOSType]search.Filter{
 		search.Key(keys.Tags): search.TagsAndEqual("os-windows", "distro-ver-2019", "windows-rds"),
 		search.Key(keys.Name): search.OrEqual("Windows Server 2019 for RDS"),
 	},
-	Windows2019RDSOffice2016: {
-		search.Key(keys.Tags): search.TagsAndEqual("os-windows", "distro-ver-2019", "windows-rds", "with-office"),
-		search.Key(keys.Name): search.OrEqual("Windows Server 2019 for RDS(MS Office付)"),
-	},
 	Windows2019RDSOffice2019: {
 		search.Key(keys.Tags): search.TagsAndEqual("os-windows", "distro-ver-2019", "windows-rds", "with-office"),
 		search.Key(keys.Name): search.OrEqual("Windows Server 2019 for RDS(MS Office2019付)"),

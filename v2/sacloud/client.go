@@ -26,8 +26,8 @@ import (
 	"time"
 
 	"github.com/hashicorp/go-retryablehttp"
-
 	"github.com/sacloud/libsacloud/v2"
+	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
 var (
@@ -35,7 +35,7 @@ var (
 	SakuraCloudAPIRoot = "https://secure.sakura.ad.jp/cloud/zone"
 
 	// SakuraCloudZones 利用可能なゾーンのデフォルト値
-	SakuraCloudZones = []string{"is1a", "is1b", "tk1a", "tk1b", "tk1v"}
+	SakuraCloudZones = types.ZoneNames
 )
 
 var (
