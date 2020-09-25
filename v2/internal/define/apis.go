@@ -44,6 +44,7 @@ func init() {
 	APIs.Define(diskAPI)              // ディスク
 	APIs.Define(diskPlanAPI)          // ディスクプラン
 	APIs.Define(dnsAPI)               // DNS
+	APIs.Define(esmeAPI)              // ESME(2要素認証SMS)
 	APIs.Define(gslbAPI)              // GSLB
 	APIs.Define(iconAPI)              // アイコン
 	APIs.Define(interfaceAPI)         // インターフェース(NIC)

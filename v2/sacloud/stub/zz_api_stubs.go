@@ -1421,6 +1421,138 @@ func (s *DNSStub) Delete(ctx context.Context, id types.ID) error {
 }
 
 /*************************************************
+* ESMEStub
+*************************************************/
+
+// ESMEFindStubResult is expected values of the Find operation
+type ESMEFindStubResult struct {
+	Values *sacloud.ESMEFindResult
+	Err    error
+}
+
+// ESMECreateStubResult is expected values of the Create operation
+type ESMECreateStubResult struct {
+	ESME *sacloud.ESME
+	Err  error
+}
+
+// ESMEReadStubResult is expected values of the Read operation
+type ESMEReadStubResult struct {
+	ESME *sacloud.ESME
+	Err  error
+}
+
+// ESMEUpdateStubResult is expected values of the Update operation
+type ESMEUpdateStubResult struct {
+	ESME *sacloud.ESME
+	Err  error
+}
+
+// ESMEDeleteStubResult is expected values of the Delete operation
+type ESMEDeleteStubResult struct {
+	Err error
+}
+
+// ESMESendMessageWithGeneratedOTPStubResult is expected values of the SendMessageWithGeneratedOTP operation
+type ESMESendMessageWithGeneratedOTPStubResult struct {
+	ESMESendMessageResult *sacloud.ESMESendMessageResult
+	Err                   error
+}
+
+// ESMESendMessageWithInputtedOTPStubResult is expected values of the SendMessageWithInputtedOTP operation
+type ESMESendMessageWithInputtedOTPStubResult struct {
+	ESMESendMessageResult *sacloud.ESMESendMessageResult
+	Err                   error
+}
+
+// ESMELogsStubResult is expected values of the Logs operation
+type ESMELogsStubResult struct {
+	Logs []*sacloud.ESMELogs
+	Err  error
+}
+
+// ESMEStub is for trace ESMEOp operations
+type ESMEStub struct {
+	FindStubResult                        *ESMEFindStubResult
+	CreateStubResult                      *ESMECreateStubResult
+	ReadStubResult                        *ESMEReadStubResult
+	UpdateStubResult                      *ESMEUpdateStubResult
+	DeleteStubResult                      *ESMEDeleteStubResult
+	SendMessageWithGeneratedOTPStubResult *ESMESendMessageWithGeneratedOTPStubResult
+	SendMessageWithInputtedOTPStubResult  *ESMESendMessageWithInputtedOTPStubResult
+	LogsStubResult                        *ESMELogsStubResult
+}
+
+// NewESMEStub creates new ESMEStub instance
+func NewESMEStub(caller sacloud.APICaller) sacloud.ESMEAPI {
+	return &ESMEStub{}
+}
+
+// Find is API call with trace log
+func (s *ESMEStub) Find(ctx context.Context, conditions *sacloud.FindCondition) (*sacloud.ESMEFindResult, error) {
+	if s.FindStubResult == nil {
+		log.Fatal("ESMEStub.FindStubResult is not set")
+	}
+	return s.FindStubResult.Values, s.FindStubResult.Err
+}
+
+// Create is API call with trace log
+func (s *ESMEStub) Create(ctx context.Context, param *sacloud.ESMECreateRequest) (*sacloud.ESME, error) {
+	if s.CreateStubResult == nil {
+		log.Fatal("ESMEStub.CreateStubResult is not set")
+	}
+	return s.CreateStubResult.ESME, s.CreateStubResult.Err
+}
+
+// Read is API call with trace log
+func (s *ESMEStub) Read(ctx context.Context, id types.ID) (*sacloud.ESME, error) {
+	if s.ReadStubResult == nil {
+		log.Fatal("ESMEStub.ReadStubResult is not set")
+	}
+	return s.ReadStubResult.ESME, s.ReadStubResult.Err
+}
+
+// Update is API call with trace log
+func (s *ESMEStub) Update(ctx context.Context, id types.ID, param *sacloud.ESMEUpdateRequest) (*sacloud.ESME, error) {
+	if s.UpdateStubResult == nil {
+		log.Fatal("ESMEStub.UpdateStubResult is not set")
+	}
+	return s.UpdateStubResult.ESME, s.UpdateStubResult.Err
+}
+
+// Delete is API call with trace log
+func (s *ESMEStub) Delete(ctx context.Context, id types.ID) error {
+	if s.DeleteStubResult == nil {
+		log.Fatal("ESMEStub.DeleteStubResult is not set")
+	}
+	return s.DeleteStubResult.Err
+}
+
+// SendMessageWithGeneratedOTP is API call with trace log
+func (s *ESMEStub) SendMessageWithGeneratedOTP(ctx context.Context, id types.ID, param *sacloud.ESMESendMessageWithGeneratedOTPRequest) (*sacloud.ESMESendMessageResult, error) {
+	if s.SendMessageWithGeneratedOTPStubResult == nil {
+		log.Fatal("ESMEStub.SendMessageWithGeneratedOTPStubResult is not set")
+	}
+	return s.SendMessageWithGeneratedOTPStubResult.ESMESendMessageResult, s.SendMessageWithGeneratedOTPStubResult.Err
+}
+
+// SendMessageWithInputtedOTP is API call with trace log
+func (s *ESMEStub) SendMessageWithInputtedOTP(ctx context.Context, id types.ID, param *sacloud.ESMESendMessageWithInputtedOTPRequest) (*sacloud.ESMESendMessageResult, error) {
+	if s.SendMessageWithInputtedOTPStubResult == nil {
+		log.Fatal("ESMEStub.SendMessageWithInputtedOTPStubResult is not set")
+	}
+	return s.SendMessageWithInputtedOTPStubResult.ESMESendMessageResult, s.SendMessageWithInputtedOTPStubResult.Err
+}
+
+// Logs is API call with trace log
+func (s *ESMEStub) Logs(ctx context.Context, id types.ID) ([]*sacloud.ESMELogs, error) {
+	if s.LogsStubResult == nil {
+		log.Fatal("ESMEStub.LogsStubResult is not set")
+	}
+	return s.LogsStubResult.Logs, s.LogsStubResult.Err
+}
+
+/*************************************************
 * GSLBStub
 *************************************************/
 

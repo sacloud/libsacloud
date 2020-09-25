@@ -482,6 +482,57 @@ type dNSUpdateSettingsResult struct {
 	DNS *DNS `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
 }
 
+// ESMEFindResult represents the Result of API
+type ESMEFindResult struct {
+	Total int `json:",omitempty"` // Total count of target resources
+	From  int `json:",omitempty"` // Current page number
+	Count int `json:",omitempty"` // Count of current page
+
+	ESME []*ESME `json:",omitempty" mapconv:"[]CommonServiceItems,omitempty,recursive"`
+}
+
+// eSMECreateResult represents the Result of API
+type eSMECreateResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	ESME *ESME `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
+}
+
+// eSMEReadResult represents the Result of API
+type eSMEReadResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	ESME *ESME `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
+}
+
+// eSMEUpdateResult represents the Result of API
+type eSMEUpdateResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	ESME *ESME `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
+}
+
+// eSMESendMessageWithGeneratedOTPResult represents the Result of API
+type eSMESendMessageWithGeneratedOTPResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	ESMESendMessageResult *ESMESendMessageResult `json:",omitempty" mapconv:"ESME,omitempty,recursive"`
+}
+
+// eSMESendMessageWithInputtedOTPResult represents the Result of API
+type eSMESendMessageWithInputtedOTPResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	ESMESendMessageResult *ESMESendMessageResult `json:",omitempty" mapconv:"ESME,omitempty,recursive"`
+}
+
+// eSMELogsResult represents the Result of API
+type eSMELogsResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	Logs []*ESMELogs `json:",omitempty" mapconv:"[]ESME.Logs,omitempty,recursive"`
+}
+
 // GSLBFindResult represents the Result of API
 type GSLBFindResult struct {
 	Total int `json:",omitempty"` // Total count of target resources

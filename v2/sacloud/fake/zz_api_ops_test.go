@@ -72,6 +72,10 @@ func TestResourceOps(t *testing.T) {
 		t.Fatalf("%s is not sacloud.DNS", op)
 	}
 
+	if op, ok := NewESMEOp().(sacloud.ESMEAPI); !ok {
+		t.Fatalf("%s is not sacloud.ESME", op)
+	}
+
 	if op, ok := NewGSLBOp().(sacloud.GSLBAPI); !ok {
 		t.Fatalf("%s is not sacloud.GSLB", op)
 	}

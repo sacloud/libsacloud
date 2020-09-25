@@ -39,6 +39,9 @@ const (
 
 	// CharSetAlpha アフファベット(小文字)
 	CharSetAlpha = "abcdefghijklmnopqrstuvwxyz"
+
+	// CharSetNumber 数値
+	CharSetNumber = "012346789"
 )
 
 // TestResourcePrefix テスト時に作成するリソースの名称に付与するプレフィックス
