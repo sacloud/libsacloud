@@ -29,7 +29,7 @@ func TestBlankArchiveBuilder_Build(t *testing.T) {
 	}
 
 	testZone := testutil.TestZone()
-	testutil.Run(t, &testutil.CRUDTestCase{
+	testutil.RunCRUD(t, &testutil.CRUDTestCase{
 		SetupAPICallerFunc: func() sacloud.APICaller {
 			return testutil.SingletonAPICaller()
 		},

@@ -157,7 +157,7 @@ var OSTypeShortNames = []string{
 	"windows2016", "windows2016-rds", "windows2016-rds-office",
 	"windows2016-sql-web", "windows2016-sql-standard", "windows2016-sql-standard-all",
 	"windows2016-sql2017-standard", "windows2016-sql2017-enterprise", "windows2016-sql2017-standard-all",
-	"windows2019", "windows2019-rds", "windows2019-rds-office2016", "windows2019-rds-office2019",
+	"windows2019", "windows2019-rds", "windows2019-rds-office2019",
 	"windows2019-sql2017-web", "windows2019-sql2019-web",
 	"windows2019-sql2017-standard", "windows2019-sql2019-standard",
 	"windows2019-sql2017-enterprise", "windows2019-sql2019-enterprise",

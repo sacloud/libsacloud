@@ -434,37 +434,19 @@ func WithIDAction(resourceName, opName, method, pathSuffix string, arguments ...
 
 // Monitor アクティビティモニタ取得操作を定義
 func Monitor(resourceName string, monitorParam, result *dsl.Model) *dsl.Operation {
-	return &dsl.Operation{
-		ResourceName:    resourceName,
-		Name:            "Monitor",
-		PathFormat:      dsl.IDAndSuffixPathFormat("monitor"),
-		Method:          http.MethodGet,
-		RequestEnvelope: dsl.RequestEnvelopeFromModel(monitorParam),
-		Arguments: dsl.Arguments{
-			dsl.ArgumentID,
-			dsl.PassthroughModelArgument("condition", monitorParam),
-		},
-		ResponseEnvelope: dsl.ResponseEnvelope(&dsl.EnvelopePayloadDesc{
-			Type: meta.Static(naked.MonitorValues{}),
-			Name: "Data",
-		}),
-		Results: dsl.Results{
-			{
-				SourceField: "Data",
-				DestField:   result.Name,
-				IsPlural:    false,
-				Model:       result,
-			},
-		},
-	}
+	return MonitorChild(resourceName, "", "", monitorParam, result)
 }
 
 // MonitorChild アクティビティモニタ取得操作を定義
 func MonitorChild(resourceName, funcNameSuffix, childResourceName string, monitorParam, result *dsl.Model) *dsl.Operation {
+	pathFormat := "monitor"
+	if childResourceName != "" {
+		pathFormat = childResourceName + "/monitor"
+	}
 	return &dsl.Operation{
 		ResourceName:    resourceName,
 		Name:            "Monitor" + funcNameSuffix,
-		PathFormat:      dsl.IDAndSuffixPathFormat(childResourceName + "/monitor"),
+		PathFormat:      dsl.IDAndSuffixPathFormat(pathFormat),
 		Method:          http.MethodGet,
 		RequestEnvelope: dsl.RequestEnvelopeFromModel(monitorParam),
 		Arguments: dsl.Arguments{

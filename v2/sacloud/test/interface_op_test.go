@@ -25,7 +25,7 @@ import (
 )
 
 func TestInterface_Operations(t *testing.T) {
-	testutil.Run(t, &testutil.CRUDTestCase{
+	testutil.RunCRUD(t, &testutil.CRUDTestCase{
 		Parallel:          true,
 		IgnoreStartupWait: true,
 

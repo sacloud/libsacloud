@@ -23,7 +23,7 @@ import (
 )
 
 func TestAuthStatusOp_Read(t *testing.T) {
-	testutil.Run(t, &testutil.CRUDTestCase{
+	testutil.RunCRUD(t, &testutil.CRUDTestCase{
 		Parallel:           true,
 		SetupAPICallerFunc: singletonAPICaller,
 		Read: &testutil.CRUDTestFunc{

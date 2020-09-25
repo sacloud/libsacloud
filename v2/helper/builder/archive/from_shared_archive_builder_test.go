@@ -30,7 +30,7 @@ func TestFromSharedArchiveBuilder_Build(t *testing.T) {
 	var sourceArchive *sacloud.Archive
 	var shareInfo *sacloud.ArchiveShareInfo
 
-	testutil.Run(t, &testutil.CRUDTestCase{
+	testutil.RunCRUD(t, &testutil.CRUDTestCase{
 		SetupAPICallerFunc: func() sacloud.APICaller {
 			return testutil.SingletonAPICaller()
 		},

@@ -26,7 +26,7 @@ import (
 )
 
 func TestSimpleMonitorOp_CRUD(t *testing.T) {
-	testutil.Run(t, &testutil.CRUDTestCase{
+	testutil.RunCRUD(t, &testutil.CRUDTestCase{
 		Parallel: true,
 
 		SetupAPICallerFunc: singletonAPICaller,
@@ -246,7 +246,7 @@ func testSimpleMonitorDelete(ctx *testutil.CRUDTestContext, caller sacloud.APICa
 
 func TestSimpleMonitorOp_StatusAndHealth(t *testing.T) {
 	client := sacloud.NewSimpleMonitorOp(singletonAPICaller())
-	testutil.Run(t, &testutil.CRUDTestCase{
+	testutil.RunCRUD(t, &testutil.CRUDTestCase{
 		Parallel: true,
 
 		SetupAPICallerFunc: singletonAPICaller,

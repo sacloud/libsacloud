@@ -42,6 +42,13 @@ func WriteFileWithTemplate(config *TemplateConfig) bool {
 		log.Fatalf("writing output: %s", err)
 	}
 
+	// create dir
+	if _, err := os.Stat(filepath.Dir(config.OutputPath)); err != nil && os.IsNotExist(err) {
+		if err := os.MkdirAll(filepath.Dir(config.OutputPath), 0755); err != nil {
+			log.Fatal(err)
+		}
+	}
+
 	if config.PreventOverwriting {
 		if _, err := os.Stat(config.OutputPath); err == nil {
 			return false

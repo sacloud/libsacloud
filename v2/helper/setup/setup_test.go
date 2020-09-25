@@ -31,7 +31,7 @@ func TestRetryableSetup(t *testing.T) {
 	var switchID types.ID
 	testZone := testutil.TestZone()
 
-	testutil.Run(t, &testutil.CRUDTestCase{
+	testutil.RunCRUD(t, &testutil.CRUDTestCase{
 		Parallel: true,
 		SetupAPICallerFunc: func() sacloud.APICaller {
 			return testutil.SingletonAPICaller()

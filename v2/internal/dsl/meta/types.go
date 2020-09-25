@@ -15,6 +15,7 @@
 package meta
 
 import (
+	"reflect"
 	"time"
 
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
@@ -45,6 +46,21 @@ var (
 	TypeFloat64 = Static(float64(0))
 	// TypeTime Time型
 	TypeTime = Static(time.Time{})
+
+	// TypeReader io.Reader
+	TypeReader = &StaticType{
+		goType:       "io.Reader",
+		goPkg:        "io",
+		goImportPath: "io",
+		reflectKind:  reflect.Interface,
+	}
+	// TypeWriter io.Writer
+	TypeWriter = &StaticType{
+		goType:       "io.Writer",
+		goPkg:        "io",
+		goImportPath: "io",
+		reflectKind:  reflect.Interface,
+	}
 
 	// TypeAvailability 有効状態
 	TypeAvailability = Static(types.EAvailability(""))

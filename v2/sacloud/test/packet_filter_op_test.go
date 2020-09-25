@@ -23,7 +23,7 @@ import (
 )
 
 func TestPacketFilterOp_CRUD(t *testing.T) {
-	testutil.Run(t, &testutil.CRUDTestCase{
+	testutil.RunCRUD(t, &testutil.CRUDTestCase{
 		Parallel:           true,
 		IgnoreStartupWait:  true,
 		SetupAPICallerFunc: singletonAPICaller,
@@ -140,12 +140,12 @@ func testPacketFilterRead(ctx *testutil.CRUDTestContext, caller sacloud.APICalle
 
 func testPacketFilterUpdate(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewPacketFilterOp(caller)
-	return client.Update(ctx, testZone, ctx.ID, updatePacketFilterParam)
+	return client.Update(ctx, testZone, ctx.ID, updatePacketFilterParam, "")
 }
 
 func testPacketFilterUpdateToMin(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
 	client := sacloud.NewPacketFilterOp(caller)
-	return client.Update(ctx, testZone, ctx.ID, updatePacketFilterToMinParam)
+	return client.Update(ctx, testZone, ctx.ID, updatePacketFilterToMinParam, "")
 }
 
 func testPacketFilterDelete(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {

@@ -15,6 +15,8 @@
 package define
 
 import (
+	"net/http"
+
 	"github.com/sacloud/libsacloud/v2/internal/define/names"
 	"github.com/sacloud/libsacloud/v2/internal/define/ops"
 	"github.com/sacloud/libsacloud/v2/internal/dsl"
@@ -42,7 +44,48 @@ var packetFilterAPI = &dsl.Resource{
 		ops.Read(packetFilterAPIName, packetFilterNakedType, packetFilterView),
 
 		// update
-		ops.Update(packetFilterAPIName, packetFilterNakedType, packetFilterUpdateParam, packetFilterView),
+		{
+			ResourceName: packetFilterAPIName,
+			Name:         "Update",
+			PathFormat:   dsl.DefaultPathFormatWithID,
+			Method:       http.MethodPut,
+			RequestEnvelope: dsl.RequestEnvelope(
+				&dsl.EnvelopePayloadDesc{
+					Type: packetFilterNakedType,
+					Name: "PacketFilter",
+				},
+				&dsl.EnvelopePayloadDesc{
+					Type: meta.TypeString,
+					Name: "OriginalExpressionHash",
+					Tags: &dsl.FieldTags{JSON: ",omitempty"},
+				},
+			),
+			Arguments: dsl.Arguments{
+				dsl.ArgumentID,
+				{
+					Name:       "updateParam",
+					MapConvTag: "PacketFilter,recursive",
+					Type:       packetFilterUpdateParam,
+				},
+				{
+					Name:       "originalExpressionHash",
+					MapConvTag: "OriginalExpressionHash",
+					Type:       meta.TypeString,
+				},
+			},
+			ResponseEnvelope: dsl.ResponseEnvelope(&dsl.EnvelopePayloadDesc{
+				Type: packetFilterNakedType,
+				Name: "PacketFilter",
+			}),
+			Results: dsl.Results{
+				{
+					SourceField: "PacketFilter",
+					DestField:   packetFilterView.Name,
+					IsPlural:    false,
+					Model:       packetFilterView,
+				},
+			},
+		},
 
 		// delete
 		ops.Delete(packetFilterAPIName),

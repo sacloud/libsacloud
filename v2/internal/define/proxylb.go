@@ -326,32 +326,36 @@ var (
 		Name:      proxyLBAPIName + "SetCertificatesRequest",
 		NakedType: meta.Static(naked.ProxyLBCertificates{}),
 		Fields: []*dsl.FieldDesc{
-			{
-				Name: "PrimaryCerts",
-				Type: &dsl.Model{
-					Name: proxyLBAPIName + "PrimaryCert",
-					Fields: []*dsl.FieldDesc{
-						fields.Def("ServerCertificate", meta.TypeString),
-						fields.Def("IntermediateCertificate", meta.TypeString),
-						fields.Def("PrivateKey", meta.TypeString),
-					},
-				},
+			proxyLBPrimaryCertsField,
+			proxyLBAdditionalCerts,
+		},
+	}
+
+	proxyLBPrimaryCertsField = &dsl.FieldDesc{
+		Name: "PrimaryCerts",
+		Type: &dsl.Model{
+			Name: proxyLBAPIName + "PrimaryCert",
+			Fields: []*dsl.FieldDesc{
+				fields.Def("ServerCertificate", meta.TypeString),
+				fields.Def("IntermediateCertificate", meta.TypeString),
+				fields.Def("PrivateKey", meta.TypeString),
 			},
-			{
-				Name: "AdditionalCerts",
-				Type: &dsl.Model{
-					Name:    proxyLBAPIName + "AdditionalCert",
-					IsArray: true,
-					Fields: []*dsl.FieldDesc{
-						fields.Def("ServerCertificate", meta.TypeString),
-						fields.Def("IntermediateCertificate", meta.TypeString),
-						fields.Def("PrivateKey", meta.TypeString),
-					},
-				},
-				Tags: &dsl.FieldTags{
-					MapConv: "[]AdditionalCerts, recursive",
-				},
+		},
+	}
+
+	proxyLBAdditionalCerts = &dsl.FieldDesc{
+		Name: "AdditionalCerts",
+		Type: &dsl.Model{
+			Name:    proxyLBAPIName + "AdditionalCert",
+			IsArray: true,
+			Fields: []*dsl.FieldDesc{
+				fields.Def("ServerCertificate", meta.TypeString),
+				fields.Def("IntermediateCertificate", meta.TypeString),
+				fields.Def("PrivateKey", meta.TypeString),
 			},
+		},
+		Tags: &dsl.FieldTags{
+			MapConv: "[]AdditionalCerts, recursive",
 		},
 	}
 

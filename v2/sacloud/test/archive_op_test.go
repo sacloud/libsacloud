@@ -26,7 +26,7 @@ import (
 )
 
 func TestArchiveOpCRUD(t *testing.T) {
-	testutil.Run(t, &testutil.CRUDTestCase{
+	testutil.RunCRUD(t, &testutil.CRUDTestCase{
 		Parallel: true,
 
 		SetupAPICallerFunc: singletonAPICaller,
@@ -178,7 +178,7 @@ func testArchiveDelete(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) 
 }
 
 func TestArchiveOp_CreateBlank(t *testing.T) {
-	testutil.Run(t, &testutil.CRUDTestCase{
+	testutil.RunCRUD(t, &testutil.CRUDTestCase{
 		Parallel:           true,
 		IgnoreStartupWait:  true,
 		SetupAPICallerFunc: singletonAPICaller,

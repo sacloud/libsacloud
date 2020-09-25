@@ -289,6 +289,25 @@ func (f *fieldsDef) PlanName() *dsl.FieldDesc {
 	}
 }
 
+func (f *fieldsDef) ServerConnectedSwitch() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "ConnectedSwitches",
+		Type: &dsl.Model{
+			Name: "ConnectedSwitch",
+			Fields: []*dsl.FieldDesc{
+				fields.ID(),
+				fields.Scope(),
+			},
+			IsArray:   true,
+			NakedType: meta.Static(naked.ConnectedSwitch{}),
+		},
+		Tags: &dsl.FieldTags{
+			JSON:    ",omitempty",
+			MapConv: "[]ConnectedSwitches,recursive",
+		},
+	}
+}
+
 func (f *fieldsDef) IconURL() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "URL",
@@ -582,101 +601,133 @@ func (f *fieldsDef) ApplianceIPAddresses() *dsl.FieldDesc {
 	}
 }
 
+func (f *fieldsDef) LoadBalancerVIPPort() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "Port",
+		Type: meta.TypeStringNumber,
+		Tags: &dsl.FieldTags{
+			Validate: "min=1,max=65535",
+		},
+	}
+}
+
+func (f *fieldsDef) LoadBalancerVIPDelayLoop() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "DelayLoop",
+		Type: meta.TypeStringNumber,
+		Tags: &dsl.FieldTags{
+			Validate: "min=0,max=10000",
+			MapConv:  ",default=10",
+		},
+		DefaultValue: "10",
+	}
+}
+
+func (f *fieldsDef) LoadBalancerVIPSorryServer() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "SorryServer",
+		Type: meta.TypeString,
+		Tags: &dsl.FieldTags{
+			Validate: "omitempty,ipv4",
+		},
+	}
+}
+
+func (f *fieldsDef) LoadBalancerServerIPAddress() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "IPAddress",
+		Type: meta.TypeString,
+		Tags: &dsl.FieldTags{
+			Validate: "ipv4",
+		},
+	}
+}
+func (f *fieldsDef) LoadBalancerServerPort() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "Port",
+		Type: meta.TypeStringNumber,
+		Tags: &dsl.FieldTags{
+			Validate: "min=1,max=65535",
+		},
+	}
+}
+func (f *fieldsDef) LoadBalancerServerEnabled() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "Enabled",
+		Type: meta.TypeStringFlag,
+	}
+}
+func (f *fieldsDef) LoadBalancerServerHealthCheck() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "HealthCheck",
+		Type: &dsl.Model{
+			Name: "LoadBalancerServerHealthCheck",
+			Fields: []*dsl.FieldDesc{
+				{
+					Name: "Protocol",
+					Type: meta.Static(types.ELoadBalancerHealthCheckProtocol("")),
+					Tags: &dsl.FieldTags{
+						Validate: "oneof=http https ping tcp",
+					},
+				},
+				{
+					Name: "Path",
+					Type: meta.TypeString,
+				},
+				{
+					Name: "ResponseCode",
+					Type: meta.TypeStringNumber,
+					Tags: &dsl.FieldTags{
+						MapConv: "Status",
+					},
+				},
+			},
+		},
+		Tags: &dsl.FieldTags{
+			MapConv: "HealthCheck,recursive",
+		},
+	}
+}
+
+func (f *fieldsDef) LoadBalancerVIPServers() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "Servers",
+		Type: &dsl.Model{
+			Name:  "LoadBalancerServer",
+			Alias: "LoadBalancerServers",
+			Fields: []*dsl.FieldDesc{
+				f.LoadBalancerServerIPAddress(),
+				f.LoadBalancerServerPort(),
+				f.LoadBalancerServerEnabled(),
+				f.LoadBalancerServerHealthCheck(),
+			},
+		},
+	}
+}
+
+func (f *fieldsDef) LoadBalancerVIPVirtualIPAddress() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "VirtualIPAddress",
+		Type: meta.TypeString,
+		Tags: &dsl.FieldTags{
+			Validate: "ipv4",
+		},
+	}
+}
+
 func (f *fieldsDef) LoadBalancerVIP() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "VirtualIPAddresses",
 		Type: &dsl.Model{
-			Name:    "LoadBalancerVirtualIPAddress",
-			IsArray: true,
+			Name:  "LoadBalancerVirtualIPAddress",
+			Alias: "LoadBalancerVirtualIPAddresses",
 			Fields: []*dsl.FieldDesc{
-				{
-					Name: "VirtualIPAddress",
-					Type: meta.TypeString,
-					Tags: &dsl.FieldTags{
-						Validate: "ipv4",
-					},
-				},
-				{
-					Name: "Port",
-					Type: meta.TypeStringNumber,
-				},
-				{
-					Name: "DelayLoop",
-					Type: meta.TypeStringNumber,
-					Tags: &dsl.FieldTags{
-						Validate: "min=0,max=10000",
-						MapConv:  ",default=10",
-					},
-					DefaultValue: "10",
-				},
-				{
-					Name: "SorryServer",
-					Type: meta.TypeString,
-					Tags: &dsl.FieldTags{
-						Validate: "ipv4",
-					},
-				},
+				f.LoadBalancerVIPVirtualIPAddress(),
+				f.LoadBalancerVIPPort(),
+				f.LoadBalancerVIPDelayLoop(),
+				f.LoadBalancerVIPSorryServer(),
 				f.Description(),
-				{
-					Name: "Servers",
-					Type: &dsl.Model{
-						Name:    "LoadBalancerServer",
-						IsArray: true,
-						Fields: []*dsl.FieldDesc{
-							{
-								Name: "IPAddress",
-								Type: meta.TypeString,
-								Tags: &dsl.FieldTags{
-									Validate: "ipv4",
-								},
-							},
-							{
-								Name: "Port",
-								Type: meta.TypeStringNumber,
-								Tags: &dsl.FieldTags{
-									Validate: "min=1,max=65535",
-								},
-							},
-							{
-								Name: "Enabled",
-								Type: meta.TypeStringFlag,
-							},
-							{
-								Name: "HealthCheck",
-								Type: &dsl.Model{
-									Name: "LoadBalancerServerHealthCheck",
-									Fields: []*dsl.FieldDesc{
-										{
-											Name: "Protocol",
-											Type: meta.Static(types.ELoadBalancerHealthCheckProtocol("")),
-											Tags: &dsl.FieldTags{
-												Validate: "oneof=http https ping tcp",
-											},
-										},
-										{
-											Name: "Path",
-											Type: meta.TypeString,
-										},
-										{
-											Name: "ResponseCode",
-											Type: meta.TypeStringNumber,
-											Tags: &dsl.FieldTags{
-												MapConv: "Status",
-											},
-										},
-									},
-								},
-								Tags: &dsl.FieldTags{
-									MapConv: "HealthCheck,recursive",
-								},
-							},
-						},
-					},
-					Tags: &dsl.FieldTags{
-						MapConv:  ",recursive",
-						Validate: "min=0,max=40",
-					},
-				},
+				f.LoadBalancerVIPServers(),
 			},
 		},
 		Tags: &dsl.FieldTags{
@@ -844,8 +895,8 @@ func (f *fieldsDef) GSLBDestinationServers() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "DestinationServers",
 		Type: &dsl.Model{
-			Name:    "GSLBServer",
-			IsArray: true,
+			Name:  "GSLBServer",
+			Alias: "GSLBServers",
 			Fields: []*dsl.FieldDesc{
 				{
 					Name: "IPAddress",
@@ -945,8 +996,8 @@ func (f *fieldsDef) DNSRecords() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "Records",
 		Type: &dsl.Model{
-			Name:    "DNSRecord",
-			IsArray: true,
+			Name:  "DNSRecord",
+			Alias: "DNSRecords",
 			Fields: []*dsl.FieldDesc{
 				{
 					Name: "Name",
@@ -2177,6 +2228,13 @@ func (f *fieldsDef) FTPServer() *dsl.FieldDesc {
 		Tags: &dsl.FieldTags{
 			JSON: ",omitempty",
 		},
+	}
+}
+
+func (f *fieldsDef) FTPServerChangePassword() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "ChangePassword",
+		Type: meta.TypeFlag,
 	}
 }
 

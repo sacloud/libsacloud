@@ -245,6 +245,7 @@ var diskAPI = &dsl.Resource{
 
 		// monitor
 		ops.Monitor(diskAPIName, monitorParameter, monitors.diskModel()),
+		ops.MonitorChild(diskAPIName, "Disk", "", monitorParameter, monitors.diskModel()),
 	},
 }
 

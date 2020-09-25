@@ -57,16 +57,13 @@ func (r Resources) Models() Models {
 	return ms.UniqByName()
 }
 
-// OperationsDefineFunc リソースに対するオペレーション定義用Func
-type OperationsDefineFunc func(r *Resource) []*Operation
-
 // Resource APIで操作する対象のリソース
 type Resource struct {
-	Name       string       // リソース名 e.g.: Server
-	PathName   string       // リソースのパス名 APIのURLで利用される e.g.: server 省略した場合はNameを小文字にしたものとなる
-	PathSuffix string       // APIのURLで利用されるプレフィックス e.g.: api/cloud/1.1
-	IsGlobal   bool         // 全ゾーンで共通リソース(グローバルリソース)
-	Operations []*Operation // このリソースに対する操作、OperationsDefineFuncが設定されている場合はそちらを呼び出して設定される
+	Name       string     // リソース名 e.g.: Server
+	PathName   string     // リソースのパス名 APIのURLで利用される e.g.: server 省略した場合はNameを小文字にしたものとなる
+	PathSuffix string     // APIのURLで利用されるプレフィックス e.g.: api/cloud/1.1
+	IsGlobal   bool       // 全ゾーンで共通リソース(グローバルリソース)
+	Operations Operations // このリソースに対する操作
 }
 
 // GetPathName リソースのパス名 APIのエンドポイントURLの算出で利用される 例: server
@@ -90,6 +87,19 @@ func (r *Resource) GetPathSuffix() string {
 // FileSafeName スネークケースにしたResourceの名前、コード生成時の保存先ファイル名に利用される
 func (r *Resource) FileSafeName() string {
 	return toSnakeCaseName(r.Name)
+}
+
+// FileSafeServicePath Nameを全て小文字にしたもの、サービスコード生成時の保存先ディレクトリ名に利用される
+func (r *Resource) FileSafeServicePath() string {
+	v := toLower(r.Name)
+	switch v {
+	case "switch":
+		return "swytch"
+	case "interface":
+		return "iface"
+	default:
+		return v
+	}
 }
 
 // TypeName 型名を返す、コード生成時の型定義などで利用される

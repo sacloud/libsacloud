@@ -27,7 +27,7 @@ import (
 )
 
 func TestDiskOp_BlankDiskCRUD(t *testing.T) {
-	testutil.Run(t, &testutil.CRUDTestCase{
+	testutil.RunCRUD(t, &testutil.CRUDTestCase{
 		Parallel: true,
 
 		SetupAPICallerFunc: singletonAPICaller,
@@ -159,7 +159,7 @@ func TestDiskOp_Config(t *testing.T) {
 	// source archive
 	var archiveID types.ID
 
-	testutil.Run(t, &testutil.CRUDTestCase{
+	testutil.RunCRUD(t, &testutil.CRUDTestCase{
 		Parallel:           true,
 		SetupAPICallerFunc: singletonAPICaller,
 		Setup: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {

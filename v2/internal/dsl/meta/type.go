@@ -35,6 +35,8 @@ type Type interface {
 	ZeroInitializeSourceCode() string
 	// ZeroValueSourceCode 型に応じたzero値コード
 	ZeroValueSourceCode() string
+	// ToPtrType ポインタ型への変換
+	ToPtrType() Type
 }
 
 // StaticType あらかじめ静的参照できる型
@@ -92,6 +94,8 @@ func (t *StaticType) ZeroInitializeSourceCode() string {
 		return fmt.Sprintf(format, "&"+t.goType+"{}")
 	case reflect.String:
 		return fmt.Sprintf(format, `""`)
+	case reflect.Ptr:
+		return fmt.Sprintf(format, `nil`)
 	default:
 		log.Panicf("unsupported Kind: %s", t.reflectKind)
 		return ""
@@ -119,7 +123,7 @@ func (t *StaticType) ZeroValueSourceCode() string {
 		return fmt.Sprintf(format, "float32(0)")
 	case reflect.Float64:
 		return fmt.Sprintf(format, "float64(0)")
-	case reflect.Interface, reflect.Map, reflect.Slice, reflect.Struct:
+	case reflect.Interface, reflect.Map, reflect.Slice, reflect.Struct, reflect.Ptr:
 		if t.goType == "time.Time" {
 			return fmt.Sprintf(format, t.goType+"{}")
 		}
@@ -129,6 +133,15 @@ func (t *StaticType) ZeroValueSourceCode() string {
 	default:
 		log.Panicf("unsupported Kind: %s", t.reflectKind)
 		return ""
+	}
+}
+
+func (t *StaticType) ToPtrType() Type {
+	return &StaticType{
+		goType:       "*" + t.goType,
+		goPkg:        t.goPkg,
+		goImportPath: t.goImportPath,
+		reflectKind:  reflect.Ptr,
 	}
 }
 
@@ -146,6 +159,9 @@ func Static(v interface{}) *StaticType {
 		reflect.Float32, reflect.Float64, reflect.Interface,
 		reflect.Map, reflect.Slice, reflect.Struct, reflect.String:
 		// noop
+	case reflect.Ptr:
+		// TODO どう実装する？
+		//return Static(reflect.ValueOf(v).Elem().Interface())
 	default:
 		log.Panicf("unsupported Kind: %s", t.Kind())
 		return nil
@@ -157,3 +173,17 @@ func Static(v interface{}) *StaticType {
 		reflectKind:  t.Kind(),
 	}
 }
+
+//
+//func ToPtr(t Type) *StaticType {
+//	st, ok := t.(*StaticType)
+//	if !ok {
+//		log.Fatal("unsupported Type", t)
+//	}
+//	return &StaticType{
+//		goType:       "*" + st.goType,
+//		goPkg:        st.goPkg,
+//		goImportPath: st.goImportPath,
+//		reflectKind:  reflect.Ptr,
+//	}
+//}

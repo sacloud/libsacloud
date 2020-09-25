@@ -1134,6 +1134,12 @@ type DiskMonitorStubResult struct {
 	Err          error
 }
 
+// DiskMonitorDiskStubResult is expected values of the MonitorDisk operation
+type DiskMonitorDiskStubResult struct {
+	DiskActivity *sacloud.DiskActivity
+	Err          error
+}
+
 // DiskStub is for trace DiskOp operations
 type DiskStub struct {
 	FindStubResult                 *DiskFindStubResult
@@ -1149,6 +1155,7 @@ type DiskStub struct {
 	UpdateStubResult               *DiskUpdateStubResult
 	DeleteStubResult               *DiskDeleteStubResult
 	MonitorStubResult              *DiskMonitorStubResult
+	MonitorDiskStubResult          *DiskMonitorDiskStubResult
 }
 
 // NewDiskStub creates new DiskStub instance
@@ -1258,6 +1265,14 @@ func (s *DiskStub) Monitor(ctx context.Context, zone string, id types.ID, condit
 		log.Fatal("DiskStub.MonitorStubResult is not set")
 	}
 	return s.MonitorStubResult.DiskActivity, s.MonitorStubResult.Err
+}
+
+// MonitorDisk is API call with trace log
+func (s *DiskStub) MonitorDisk(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.DiskActivity, error) {
+	if s.MonitorDiskStubResult == nil {
+		log.Fatal("DiskStub.MonitorDiskStubResult is not set")
+	}
+	return s.MonitorDiskStubResult.DiskActivity, s.MonitorDiskStubResult.Err
 }
 
 /*************************************************
@@ -1828,6 +1843,12 @@ type InternetMonitorStubResult struct {
 	Err            error
 }
 
+// InternetMonitorRouterStubResult is expected values of the MonitorRouter operation
+type InternetMonitorRouterStubResult struct {
+	RouterActivity *sacloud.RouterActivity
+	Err            error
+}
+
 // InternetEnableIPv6StubResult is expected values of the EnableIPv6 operation
 type InternetEnableIPv6StubResult struct {
 	IPv6Net *sacloud.IPv6NetInfo
@@ -1851,6 +1872,7 @@ type InternetStub struct {
 	UpdateSubnetStubResult    *InternetUpdateSubnetStubResult
 	DeleteSubnetStubResult    *InternetDeleteSubnetStubResult
 	MonitorStubResult         *InternetMonitorStubResult
+	MonitorRouterStubResult   *InternetMonitorRouterStubResult
 	EnableIPv6StubResult      *InternetEnableIPv6StubResult
 	DisableIPv6StubResult     *InternetDisableIPv6StubResult
 }
@@ -1938,6 +1960,14 @@ func (s *InternetStub) Monitor(ctx context.Context, zone string, id types.ID, co
 		log.Fatal("InternetStub.MonitorStubResult is not set")
 	}
 	return s.MonitorStubResult.RouterActivity, s.MonitorStubResult.Err
+}
+
+// MonitorRouter is API call with trace log
+func (s *InternetStub) MonitorRouter(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.RouterActivity, error) {
+	if s.MonitorRouterStubResult == nil {
+		log.Fatal("InternetStub.MonitorRouterStubResult is not set")
+	}
+	return s.MonitorRouterStubResult.RouterActivity, s.MonitorRouterStubResult.Err
 }
 
 // EnableIPv6 is API call with trace log
@@ -2067,6 +2097,12 @@ type IPv6NetListStubResult struct {
 	Err    error
 }
 
+// IPv6NetFindStubResult is expected values of the Find operation
+type IPv6NetFindStubResult struct {
+	Values *sacloud.IPv6NetFindResult
+	Err    error
+}
+
 // IPv6NetReadStubResult is expected values of the Read operation
 type IPv6NetReadStubResult struct {
 	IPv6Net *sacloud.IPv6Net
@@ -2076,6 +2112,7 @@ type IPv6NetReadStubResult struct {
 // IPv6NetStub is for trace IPv6NetOp operations
 type IPv6NetStub struct {
 	ListStubResult *IPv6NetListStubResult
+	FindStubResult *IPv6NetFindStubResult
 	ReadStubResult *IPv6NetReadStubResult
 }
 
@@ -2090,6 +2127,14 @@ func (s *IPv6NetStub) List(ctx context.Context, zone string) (*sacloud.IPv6NetLi
 		log.Fatal("IPv6NetStub.ListStubResult is not set")
 	}
 	return s.ListStubResult.Values, s.ListStubResult.Err
+}
+
+// Find is API call with trace log
+func (s *IPv6NetStub) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.IPv6NetFindResult, error) {
+	if s.FindStubResult == nil {
+		log.Fatal("IPv6NetStub.FindStubResult is not set")
+	}
+	return s.FindStubResult.Values, s.FindStubResult.Err
 }
 
 // Read is API call with trace log
@@ -2719,7 +2764,7 @@ type MobileGatewaySetDNSStubResult struct {
 
 // MobileGatewayGetSIMRoutesStubResult is expected values of the GetSIMRoutes operation
 type MobileGatewayGetSIMRoutesStubResult struct {
-	SIMRoutes []*sacloud.MobileGatewaySIMRoute
+	SIMRoutes sacloud.MobileGatewaySIMRoutes
 	Err       error
 }
 
@@ -2730,7 +2775,7 @@ type MobileGatewaySetSIMRoutesStubResult struct {
 
 // MobileGatewayListSIMStubResult is expected values of the ListSIM operation
 type MobileGatewayListSIMStubResult struct {
-	SIM []*sacloud.MobileGatewaySIMInfo
+	SIM sacloud.MobileGatewaySIMs
 	Err error
 }
 
@@ -2925,7 +2970,7 @@ func (s *MobileGatewayStub) SetDNS(ctx context.Context, zone string, id types.ID
 }
 
 // GetSIMRoutes is API call with trace log
-func (s *MobileGatewayStub) GetSIMRoutes(ctx context.Context, zone string, id types.ID) ([]*sacloud.MobileGatewaySIMRoute, error) {
+func (s *MobileGatewayStub) GetSIMRoutes(ctx context.Context, zone string, id types.ID) (sacloud.MobileGatewaySIMRoutes, error) {
 	if s.GetSIMRoutesStubResult == nil {
 		log.Fatal("MobileGatewayStub.GetSIMRoutesStubResult is not set")
 	}
@@ -2941,7 +2986,7 @@ func (s *MobileGatewayStub) SetSIMRoutes(ctx context.Context, zone string, id ty
 }
 
 // ListSIM is API call with trace log
-func (s *MobileGatewayStub) ListSIM(ctx context.Context, zone string, id types.ID) ([]*sacloud.MobileGatewaySIMInfo, error) {
+func (s *MobileGatewayStub) ListSIM(ctx context.Context, zone string, id types.ID) (sacloud.MobileGatewaySIMs, error) {
 	if s.ListSIMStubResult == nil {
 		log.Fatal("MobileGatewayStub.ListSIMStubResult is not set")
 	}
@@ -3330,7 +3375,7 @@ func (s *PacketFilterStub) Read(ctx context.Context, zone string, id types.ID) (
 }
 
 // Update is API call with trace log
-func (s *PacketFilterStub) Update(ctx context.Context, zone string, id types.ID, param *sacloud.PacketFilterUpdateRequest) (*sacloud.PacketFilter, error) {
+func (s *PacketFilterStub) Update(ctx context.Context, zone string, id types.ID, updateParam *sacloud.PacketFilterUpdateRequest, originalExpressionHash string) (*sacloud.PacketFilter, error) {
 	if s.UpdateStubResult == nil {
 		log.Fatal("PacketFilterStub.UpdateStubResult is not set")
 	}
@@ -3809,6 +3854,12 @@ type ServerMonitorStubResult struct {
 	Err             error
 }
 
+// ServerMonitorCPUStubResult is expected values of the MonitorCPU operation
+type ServerMonitorCPUStubResult struct {
+	CPUTimeActivity *sacloud.CPUTimeActivity
+	Err             error
+}
+
 // ServerStub is for trace ServerOp operations
 type ServerStub struct {
 	FindStubResult            *ServerFindStubResult
@@ -3826,6 +3877,7 @@ type ServerStub struct {
 	SendKeyStubResult         *ServerSendKeyStubResult
 	GetVNCProxyStubResult     *ServerGetVNCProxyStubResult
 	MonitorStubResult         *ServerMonitorStubResult
+	MonitorCPUStubResult      *ServerMonitorCPUStubResult
 }
 
 // NewServerStub creates new ServerStub instance
@@ -3951,6 +4003,14 @@ func (s *ServerStub) Monitor(ctx context.Context, zone string, id types.ID, cond
 		log.Fatal("ServerStub.MonitorStubResult is not set")
 	}
 	return s.MonitorStubResult.CPUTimeActivity, s.MonitorStubResult.Err
+}
+
+// MonitorCPU is API call with trace log
+func (s *ServerStub) MonitorCPU(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.CPUTimeActivity, error) {
+	if s.MonitorCPUStubResult == nil {
+		log.Fatal("ServerStub.MonitorCPUStubResult is not set")
+	}
+	return s.MonitorCPUStubResult.CPUTimeActivity, s.MonitorCPUStubResult.Err
 }
 
 /*************************************************

@@ -23,7 +23,7 @@ import (
 )
 
 func TestSwitchOp_CRUD(t *testing.T) {
-	testutil.Run(t, &testutil.CRUDTestCase{
+	testutil.RunCRUD(t, &testutil.CRUDTestCase{
 		Parallel: true,
 
 		SetupAPICallerFunc: singletonAPICaller,
@@ -143,7 +143,7 @@ func TestSwitchOp_BridgeConnection(t *testing.T) {
 
 	var bridgeID types.ID
 
-	testutil.Run(t, &testutil.CRUDTestCase{
+	testutil.RunCRUD(t, &testutil.CRUDTestCase{
 		Parallel:           true,
 		SetupAPICallerFunc: singletonAPICaller,
 		Create: &testutil.CRUDTestFunc{

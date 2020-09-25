@@ -1904,6 +1904,49 @@ func (o *DiskOp) transformMonitorResults(data []byte) (*diskMonitorResult, error
 	return results, nil
 }
 
+func (o *DiskOp) transformMonitorDiskArgs(id types.ID, condition *MonitorCondition) (*diskMonitorDiskRequestEnvelope, error) {
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	var arg0 interface{} = id
+	if v, ok := arg0.(argumentDefaulter); ok {
+		arg0 = v.setDefaults()
+	}
+	if condition == nil {
+		condition = &MonitorCondition{}
+	}
+	var arg1 interface{} = condition
+	if v, ok := arg1.(argumentDefaulter); ok {
+		arg1 = v.setDefaults()
+	}
+	args := &struct {
+		Arg0 interface{}
+		Arg1 interface{} `mapconv:",squash"`
+	}{
+		Arg0: arg0,
+		Arg1: arg1,
+	}
+
+	v := &diskMonitorDiskRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	return v, nil
+}
+
+func (o *DiskOp) transformMonitorDiskResults(data []byte) (*diskMonitorDiskResult, error) {
+	nakedResponse := &diskMonitorDiskResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &diskMonitorDiskResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
+}
+
 func (o *DiskPlanOp) transformFindArgs(conditions *FindCondition) (*diskPlanFindRequestEnvelope, error) {
 	if conditions == nil {
 		conditions = &FindCondition{}
@@ -2881,6 +2924,49 @@ func (o *InternetOp) transformMonitorResults(data []byte) (*internetMonitorResul
 	return results, nil
 }
 
+func (o *InternetOp) transformMonitorRouterArgs(id types.ID, condition *MonitorCondition) (*internetMonitorRouterRequestEnvelope, error) {
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	var arg0 interface{} = id
+	if v, ok := arg0.(argumentDefaulter); ok {
+		arg0 = v.setDefaults()
+	}
+	if condition == nil {
+		condition = &MonitorCondition{}
+	}
+	var arg1 interface{} = condition
+	if v, ok := arg1.(argumentDefaulter); ok {
+		arg1 = v.setDefaults()
+	}
+	args := &struct {
+		Arg0 interface{}
+		Arg1 interface{} `mapconv:",squash"`
+	}{
+		Arg0: arg0,
+		Arg1: arg1,
+	}
+
+	v := &internetMonitorRouterRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	return v, nil
+}
+
+func (o *InternetOp) transformMonitorRouterResults(data []byte) (*internetMonitorRouterResult, error) {
+	nakedResponse := &internetMonitorRouterResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &internetMonitorRouterResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
+}
+
 func (o *InternetOp) transformEnableIPv6Results(data []byte) (*internetEnableIPv6Result, error) {
 	nakedResponse := &internetEnableIPv6ResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
@@ -3017,6 +3103,40 @@ func (o *IPv6NetOp) transformListResults(data []byte) (*IPv6NetListResult, error
 	}
 
 	results := &IPv6NetListResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
+}
+
+func (o *IPv6NetOp) transformFindArgs(conditions *FindCondition) (*iPv6NetFindRequestEnvelope, error) {
+	if conditions == nil {
+		conditions = &FindCondition{}
+	}
+	var arg0 interface{} = conditions
+	if v, ok := arg0.(argumentDefaulter); ok {
+		arg0 = v.setDefaults()
+	}
+	args := &struct {
+		Arg0 interface{} `mapconv:",squash"`
+	}{
+		Arg0: arg0,
+	}
+
+	v := &iPv6NetFindRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	return v, nil
+}
+
+func (o *IPv6NetOp) transformFindResults(data []byte) (*IPv6NetFindResult, error) {
+	nakedResponse := &iPv6NetFindResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &IPv6NetFindResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}
@@ -4699,7 +4819,7 @@ func (o *PacketFilterOp) transformReadResults(data []byte) (*packetFilterReadRes
 	return results, nil
 }
 
-func (o *PacketFilterOp) transformUpdateArgs(id types.ID, param *PacketFilterUpdateRequest) (*packetFilterUpdateRequestEnvelope, error) {
+func (o *PacketFilterOp) transformUpdateArgs(id types.ID, updateParam *PacketFilterUpdateRequest, originalExpressionHash string) (*packetFilterUpdateRequestEnvelope, error) {
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
 	}
@@ -4707,19 +4827,28 @@ func (o *PacketFilterOp) transformUpdateArgs(id types.ID, param *PacketFilterUpd
 	if v, ok := arg0.(argumentDefaulter); ok {
 		arg0 = v.setDefaults()
 	}
-	if param == nil {
-		param = &PacketFilterUpdateRequest{}
+	if updateParam == nil {
+		updateParam = &PacketFilterUpdateRequest{}
 	}
-	var arg1 interface{} = param
+	var arg1 interface{} = updateParam
 	if v, ok := arg1.(argumentDefaulter); ok {
 		arg1 = v.setDefaults()
+	}
+	if originalExpressionHash == "" {
+		originalExpressionHash = ""
+	}
+	var arg2 interface{} = originalExpressionHash
+	if v, ok := arg2.(argumentDefaulter); ok {
+		arg2 = v.setDefaults()
 	}
 	args := &struct {
 		Arg0 interface{}
 		Arg1 interface{} `mapconv:"PacketFilter,recursive"`
+		Arg2 interface{} `mapconv:"OriginalExpressionHash"`
 	}{
 		Arg0: arg0,
 		Arg1: arg1,
+		Arg2: arg2,
 	}
 
 	v := &packetFilterUpdateRequestEnvelope{}
@@ -5649,6 +5778,49 @@ func (o *ServerOp) transformMonitorResults(data []byte) (*serverMonitorResult, e
 	}
 
 	results := &serverMonitorResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
+}
+
+func (o *ServerOp) transformMonitorCPUArgs(id types.ID, condition *MonitorCondition) (*serverMonitorCPURequestEnvelope, error) {
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	var arg0 interface{} = id
+	if v, ok := arg0.(argumentDefaulter); ok {
+		arg0 = v.setDefaults()
+	}
+	if condition == nil {
+		condition = &MonitorCondition{}
+	}
+	var arg1 interface{} = condition
+	if v, ok := arg1.(argumentDefaulter); ok {
+		arg1 = v.setDefaults()
+	}
+	args := &struct {
+		Arg0 interface{}
+		Arg1 interface{} `mapconv:",squash"`
+	}{
+		Arg0: arg0,
+		Arg1: arg1,
+	}
+
+	v := &serverMonitorCPURequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	return v, nil
+}
+
+func (o *ServerOp) transformMonitorCPUResults(data []byte) (*serverMonitorCPUResult, error) {
+	nakedResponse := &serverMonitorCPUResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &serverMonitorCPUResult{}
 	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
 		return nil, err
 	}

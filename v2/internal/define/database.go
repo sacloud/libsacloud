@@ -92,8 +92,6 @@ var databaseAPI = &dsl.Resource{
 				},
 			},
 		},
-
-		// TODO ログやバックアップはクライアントからの利用頻度低(usacloudのみ)なため、現状非対応とする。
 	},
 }
 

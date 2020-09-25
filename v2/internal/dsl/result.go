@@ -104,3 +104,8 @@ func (r *Result) ZeroInitializeSourceCode() string {
 func (r *Result) ZeroValueSourceCode() string {
 	return r.Model.ZeroValueSourceCode()
 }
+
+// ToPtrType ポインタ型への変換
+func (r *Result) ToPtrType() meta.Type {
+	return nil // not use
+}
