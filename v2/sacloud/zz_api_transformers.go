@@ -2161,6 +2161,229 @@ func (o *DNSOp) transformUpdateSettingsResults(data []byte) (*dNSUpdateSettingsR
 	return results, nil
 }
 
+func (o *ESMEOp) transformFindArgs(conditions *FindCondition) (*eSMEFindRequestEnvelope, error) {
+	if conditions == nil {
+		conditions = &FindCondition{}
+	}
+	var arg0 interface{} = conditions
+	if v, ok := arg0.(argumentDefaulter); ok {
+		arg0 = v.setDefaults()
+	}
+	args := &struct {
+		Arg0 interface{} `mapconv:",squash"`
+	}{
+		Arg0: arg0,
+	}
+
+	v := &eSMEFindRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	return v, nil
+}
+
+func (o *ESMEOp) transformFindResults(data []byte) (*ESMEFindResult, error) {
+	nakedResponse := &eSMEFindResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &ESMEFindResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
+}
+
+func (o *ESMEOp) transformCreateArgs(param *ESMECreateRequest) (*eSMECreateRequestEnvelope, error) {
+	if param == nil {
+		param = &ESMECreateRequest{}
+	}
+	var arg0 interface{} = param
+	if v, ok := arg0.(argumentDefaulter); ok {
+		arg0 = v.setDefaults()
+	}
+	args := &struct {
+		Arg0 interface{} `mapconv:"CommonServiceItem,recursive"`
+	}{
+		Arg0: arg0,
+	}
+
+	v := &eSMECreateRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	return v, nil
+}
+
+func (o *ESMEOp) transformCreateResults(data []byte) (*eSMECreateResult, error) {
+	nakedResponse := &eSMECreateResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &eSMECreateResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
+}
+
+func (o *ESMEOp) transformReadResults(data []byte) (*eSMEReadResult, error) {
+	nakedResponse := &eSMEReadResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &eSMEReadResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
+}
+
+func (o *ESMEOp) transformUpdateArgs(id types.ID, param *ESMEUpdateRequest) (*eSMEUpdateRequestEnvelope, error) {
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	var arg0 interface{} = id
+	if v, ok := arg0.(argumentDefaulter); ok {
+		arg0 = v.setDefaults()
+	}
+	if param == nil {
+		param = &ESMEUpdateRequest{}
+	}
+	var arg1 interface{} = param
+	if v, ok := arg1.(argumentDefaulter); ok {
+		arg1 = v.setDefaults()
+	}
+	args := &struct {
+		Arg0 interface{}
+		Arg1 interface{} `mapconv:"CommonServiceItem,recursive"`
+	}{
+		Arg0: arg0,
+		Arg1: arg1,
+	}
+
+	v := &eSMEUpdateRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	return v, nil
+}
+
+func (o *ESMEOp) transformUpdateResults(data []byte) (*eSMEUpdateResult, error) {
+	nakedResponse := &eSMEUpdateResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &eSMEUpdateResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
+}
+
+func (o *ESMEOp) transformSendMessageWithGeneratedOTPArgs(id types.ID, param *ESMESendMessageWithGeneratedOTPRequest) (*eSMESendMessageWithGeneratedOTPRequestEnvelope, error) {
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	var arg0 interface{} = id
+	if v, ok := arg0.(argumentDefaulter); ok {
+		arg0 = v.setDefaults()
+	}
+	if param == nil {
+		param = &ESMESendMessageWithGeneratedOTPRequest{}
+	}
+	var arg1 interface{} = param
+	if v, ok := arg1.(argumentDefaulter); ok {
+		arg1 = v.setDefaults()
+	}
+	args := &struct {
+		Arg0 interface{}
+		Arg1 interface{} `mapconv:"ESME,recursive"`
+	}{
+		Arg0: arg0,
+		Arg1: arg1,
+	}
+
+	v := &eSMESendMessageWithGeneratedOTPRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	return v, nil
+}
+
+func (o *ESMEOp) transformSendMessageWithGeneratedOTPResults(data []byte) (*eSMESendMessageWithGeneratedOTPResult, error) {
+	nakedResponse := &eSMESendMessageWithGeneratedOTPResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &eSMESendMessageWithGeneratedOTPResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
+}
+
+func (o *ESMEOp) transformSendMessageWithInputtedOTPArgs(id types.ID, param *ESMESendMessageWithInputtedOTPRequest) (*eSMESendMessageWithInputtedOTPRequestEnvelope, error) {
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	var arg0 interface{} = id
+	if v, ok := arg0.(argumentDefaulter); ok {
+		arg0 = v.setDefaults()
+	}
+	if param == nil {
+		param = &ESMESendMessageWithInputtedOTPRequest{}
+	}
+	var arg1 interface{} = param
+	if v, ok := arg1.(argumentDefaulter); ok {
+		arg1 = v.setDefaults()
+	}
+	args := &struct {
+		Arg0 interface{}
+		Arg1 interface{} `mapconv:"ESME,recursive"`
+	}{
+		Arg0: arg0,
+		Arg1: arg1,
+	}
+
+	v := &eSMESendMessageWithInputtedOTPRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	return v, nil
+}
+
+func (o *ESMEOp) transformSendMessageWithInputtedOTPResults(data []byte) (*eSMESendMessageWithInputtedOTPResult, error) {
+	nakedResponse := &eSMESendMessageWithInputtedOTPResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &eSMESendMessageWithInputtedOTPResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
+}
+
+func (o *ESMEOp) transformLogsResults(data []byte) (*eSMELogsResult, error) {
+	nakedResponse := &eSMELogsResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &eSMELogsResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
+}
+
 func (o *GSLBOp) transformFindArgs(conditions *FindCondition) (*gSLBFindRequestEnvelope, error) {
 	if conditions == nil {
 		conditions = &FindCondition{}

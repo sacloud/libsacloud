@@ -29,6 +29,7 @@ func ResourceFieldName(resourceName string, form dsl.PayloadForm) string {
 	case form.IsPlural():
 		switch {
 		case
+			resourceName == "ESME",
 			resourceName == "NFS",
 			resourceName == "DNS",
 			resourceName == "Internet",

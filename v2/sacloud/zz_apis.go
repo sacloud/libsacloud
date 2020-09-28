@@ -203,6 +203,22 @@ type DNSAPI interface {
 }
 
 /*************************************************
+* ESMEAPI
+*************************************************/
+
+// ESMEAPI is interface for operate ESME resource
+type ESMEAPI interface {
+	Find(ctx context.Context, conditions *FindCondition) (*ESMEFindResult, error)
+	Create(ctx context.Context, param *ESMECreateRequest) (*ESME, error)
+	Read(ctx context.Context, id types.ID) (*ESME, error)
+	Update(ctx context.Context, id types.ID, param *ESMEUpdateRequest) (*ESME, error)
+	Delete(ctx context.Context, id types.ID) error
+	SendMessageWithGeneratedOTP(ctx context.Context, id types.ID, param *ESMESendMessageWithGeneratedOTPRequest) (*ESMESendMessageResult, error)
+	SendMessageWithInputtedOTP(ctx context.Context, id types.ID, param *ESMESendMessageWithInputtedOTPRequest) (*ESMESendMessageResult, error)
+	Logs(ctx context.Context, id types.ID) ([]*ESMELogs, error)
+}
+
+/*************************************************
 * GSLBAPI
 *************************************************/
 

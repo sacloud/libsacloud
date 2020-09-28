@@ -63,6 +63,9 @@ func AddClientFactoryHooks() {
 	sacloud.AddClientFacotyHookFunc("DNS", func(in interface{}) interface{} {
 		return NewDNSTracer(in.(sacloud.DNSAPI))
 	})
+	sacloud.AddClientFacotyHookFunc("ESME", func(in interface{}) interface{} {
+		return NewESMETracer(in.(sacloud.ESMEAPI))
+	})
 	sacloud.AddClientFacotyHookFunc("GSLB", func(in interface{}) interface{} {
 		return NewGSLBTracer(in.(sacloud.GSLBAPI))
 	})
@@ -3115,6 +3118,274 @@ func (t *DNSTracer) Delete(ctx context.Context, id types.ID) error {
 	}
 
 	return err
+}
+
+/*************************************************
+* ESMETracer
+*************************************************/
+
+// ESMETracer is for trace ESMEOp operations
+type ESMETracer struct {
+	Internal sacloud.ESMEAPI
+}
+
+// NewESMETracer creates new ESMETracer instance
+func NewESMETracer(in sacloud.ESMEAPI) sacloud.ESMEAPI {
+	return &ESMETracer{
+		Internal: in,
+	}
+}
+
+// Find is API call with trace log
+func (t *ESMETracer) Find(ctx context.Context, conditions *sacloud.FindCondition) (*sacloud.ESMEFindResult, error) {
+	log.Println("[TRACE] ESMEAPI.Find start")
+	targetArguments := struct {
+		Argconditions *sacloud.FindCondition `json:"conditions"`
+	}{
+		Argconditions: conditions,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] ESMEAPI.Find end")
+	}()
+
+	result, err := t.Internal.Find(ctx, conditions)
+	targetResults := struct {
+		Result *sacloud.ESMEFindResult
+		Error  error
+	}{
+		Result: result,
+		Error:  err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return result, err
+}
+
+// Create is API call with trace log
+func (t *ESMETracer) Create(ctx context.Context, param *sacloud.ESMECreateRequest) (*sacloud.ESME, error) {
+	log.Println("[TRACE] ESMEAPI.Create start")
+	targetArguments := struct {
+		Argparam *sacloud.ESMECreateRequest `json:"param"`
+	}{
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] ESMEAPI.Create end")
+	}()
+
+	resultESME, err := t.Internal.Create(ctx, param)
+	targetResults := struct {
+		ESME  *sacloud.ESME
+		Error error
+	}{
+		ESME:  resultESME,
+		Error: err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultESME, err
+}
+
+// Read is API call with trace log
+func (t *ESMETracer) Read(ctx context.Context, id types.ID) (*sacloud.ESME, error) {
+	log.Println("[TRACE] ESMEAPI.Read start")
+	targetArguments := struct {
+		Argid types.ID `json:"id"`
+	}{
+		Argid: id,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] ESMEAPI.Read end")
+	}()
+
+	resultESME, err := t.Internal.Read(ctx, id)
+	targetResults := struct {
+		ESME  *sacloud.ESME
+		Error error
+	}{
+		ESME:  resultESME,
+		Error: err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultESME, err
+}
+
+// Update is API call with trace log
+func (t *ESMETracer) Update(ctx context.Context, id types.ID, param *sacloud.ESMEUpdateRequest) (*sacloud.ESME, error) {
+	log.Println("[TRACE] ESMEAPI.Update start")
+	targetArguments := struct {
+		Argid    types.ID                   `json:"id"`
+		Argparam *sacloud.ESMEUpdateRequest `json:"param"`
+	}{
+		Argid:    id,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] ESMEAPI.Update end")
+	}()
+
+	resultESME, err := t.Internal.Update(ctx, id, param)
+	targetResults := struct {
+		ESME  *sacloud.ESME
+		Error error
+	}{
+		ESME:  resultESME,
+		Error: err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultESME, err
+}
+
+// Delete is API call with trace log
+func (t *ESMETracer) Delete(ctx context.Context, id types.ID) error {
+	log.Println("[TRACE] ESMEAPI.Delete start")
+	targetArguments := struct {
+		Argid types.ID `json:"id"`
+	}{
+		Argid: id,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] ESMEAPI.Delete end")
+	}()
+
+	err := t.Internal.Delete(ctx, id)
+	targetResults := struct {
+		Error error
+	}{
+		Error: err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return err
+}
+
+// SendMessageWithGeneratedOTP is API call with trace log
+func (t *ESMETracer) SendMessageWithGeneratedOTP(ctx context.Context, id types.ID, param *sacloud.ESMESendMessageWithGeneratedOTPRequest) (*sacloud.ESMESendMessageResult, error) {
+	log.Println("[TRACE] ESMEAPI.SendMessageWithGeneratedOTP start")
+	targetArguments := struct {
+		Argid    types.ID                                        `json:"id"`
+		Argparam *sacloud.ESMESendMessageWithGeneratedOTPRequest `json:"param"`
+	}{
+		Argid:    id,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] ESMEAPI.SendMessageWithGeneratedOTP end")
+	}()
+
+	resultESMESendMessageResult, err := t.Internal.SendMessageWithGeneratedOTP(ctx, id, param)
+	targetResults := struct {
+		ESMESendMessageResult *sacloud.ESMESendMessageResult
+		Error                 error
+	}{
+		ESMESendMessageResult: resultESMESendMessageResult,
+		Error:                 err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultESMESendMessageResult, err
+}
+
+// SendMessageWithInputtedOTP is API call with trace log
+func (t *ESMETracer) SendMessageWithInputtedOTP(ctx context.Context, id types.ID, param *sacloud.ESMESendMessageWithInputtedOTPRequest) (*sacloud.ESMESendMessageResult, error) {
+	log.Println("[TRACE] ESMEAPI.SendMessageWithInputtedOTP start")
+	targetArguments := struct {
+		Argid    types.ID                                       `json:"id"`
+		Argparam *sacloud.ESMESendMessageWithInputtedOTPRequest `json:"param"`
+	}{
+		Argid:    id,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] ESMEAPI.SendMessageWithInputtedOTP end")
+	}()
+
+	resultESMESendMessageResult, err := t.Internal.SendMessageWithInputtedOTP(ctx, id, param)
+	targetResults := struct {
+		ESMESendMessageResult *sacloud.ESMESendMessageResult
+		Error                 error
+	}{
+		ESMESendMessageResult: resultESMESendMessageResult,
+		Error:                 err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultESMESendMessageResult, err
+}
+
+// Logs is API call with trace log
+func (t *ESMETracer) Logs(ctx context.Context, id types.ID) ([]*sacloud.ESMELogs, error) {
+	log.Println("[TRACE] ESMEAPI.Logs start")
+	targetArguments := struct {
+		Argid types.ID `json:"id"`
+	}{
+		Argid: id,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] ESMEAPI.Logs end")
+	}()
+
+	resultLogs, err := t.Internal.Logs(ctx, id)
+	targetResults := struct {
+		Logs  []*sacloud.ESMELogs
+		Error error
+	}{
+		Logs:  resultLogs,
+		Error: err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultLogs, err
 }
 
 /*************************************************

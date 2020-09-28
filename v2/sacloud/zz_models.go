@@ -8584,6 +8584,635 @@ func (o *DNSUpdateSettingsRequest) SetSettingsHash(v string) {
 }
 
 /*************************************************
+* ESME
+*************************************************/
+
+// ESME represents API parameter/response structure
+type ESME struct {
+	ID           types.ID
+	Name         string `validate:"required"`
+	Description  string `validate:"min=0,max=512"`
+	Tags         types.Tags
+	Availability types.EAvailability
+	IconID       types.ID `mapconv:"Icon.ID"`
+	CreatedAt    time.Time
+	ModifiedAt   time.Time
+}
+
+// Validate validates by field tags
+func (o *ESME) Validate() error {
+	return validate.Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *ESME) setDefaults() interface{} {
+	return &struct {
+		ID           types.ID
+		Name         string `validate:"required"`
+		Description  string `validate:"min=0,max=512"`
+		Tags         types.Tags
+		Availability types.EAvailability
+		IconID       types.ID `mapconv:"Icon.ID"`
+		CreatedAt    time.Time
+		ModifiedAt   time.Time
+	}{
+		ID:           o.GetID(),
+		Name:         o.GetName(),
+		Description:  o.GetDescription(),
+		Tags:         o.GetTags(),
+		Availability: o.GetAvailability(),
+		IconID:       o.GetIconID(),
+		CreatedAt:    o.GetCreatedAt(),
+		ModifiedAt:   o.GetModifiedAt(),
+	}
+}
+
+// GetID returns value of ID
+func (o *ESME) GetID() types.ID {
+	return o.ID
+}
+
+// SetID sets value to ID
+func (o *ESME) SetID(v types.ID) {
+	o.ID = v
+}
+
+// SetStringID .
+func (o *ESME) SetStringID(id string) {
+	accessor.SetStringID(o, id)
+}
+
+// GetStringID .
+func (o *ESME) GetStringID() string {
+	return accessor.GetStringID(o)
+}
+
+// SetInt64ID .
+func (o *ESME) SetInt64ID(id int64) {
+	accessor.SetInt64ID(o, id)
+}
+
+// GetInt64ID .
+func (o *ESME) GetInt64ID() int64 {
+	return accessor.GetInt64ID(o)
+}
+
+// GetName returns value of Name
+func (o *ESME) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *ESME) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *ESME) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *ESME) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetTags returns value of Tags
+func (o *ESME) GetTags() types.Tags {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *ESME) SetTags(v types.Tags) {
+	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *ESME) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *ESME) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *ESME) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *ESME) ClearTags() {
+	accessor.ClearTags(o)
+}
+
+// GetAvailability returns value of Availability
+func (o *ESME) GetAvailability() types.EAvailability {
+	return o.Availability
+}
+
+// SetAvailability sets value to Availability
+func (o *ESME) SetAvailability(v types.EAvailability) {
+	o.Availability = v
+}
+
+// GetIconID returns value of IconID
+func (o *ESME) GetIconID() types.ID {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *ESME) SetIconID(v types.ID) {
+	o.IconID = v
+}
+
+// GetCreatedAt returns value of CreatedAt
+func (o *ESME) GetCreatedAt() time.Time {
+	return o.CreatedAt
+}
+
+// SetCreatedAt sets value to CreatedAt
+func (o *ESME) SetCreatedAt(v time.Time) {
+	o.CreatedAt = v
+}
+
+// GetModifiedAt returns value of ModifiedAt
+func (o *ESME) GetModifiedAt() time.Time {
+	return o.ModifiedAt
+}
+
+// SetModifiedAt sets value to ModifiedAt
+func (o *ESME) SetModifiedAt(v time.Time) {
+	o.ModifiedAt = v
+}
+
+/*************************************************
+* ESMECreateRequest
+*************************************************/
+
+// ESMECreateRequest represents API parameter/response structure
+type ESMECreateRequest struct {
+	Name        string `validate:"required"`
+	Description string `validate:"min=0,max=512"`
+	Tags        types.Tags
+	IconID      types.ID `mapconv:"Icon.ID"`
+}
+
+// Validate validates by field tags
+func (o *ESMECreateRequest) Validate() error {
+	return validate.Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *ESMECreateRequest) setDefaults() interface{} {
+	return &struct {
+		Name        string `validate:"required"`
+		Description string `validate:"min=0,max=512"`
+		Tags        types.Tags
+		IconID      types.ID `mapconv:"Icon.ID"`
+		Class       string   `mapconv:"Provider.Class"`
+	}{
+		Name:        o.GetName(),
+		Description: o.GetDescription(),
+		Tags:        o.GetTags(),
+		IconID:      o.GetIconID(),
+		Class:       "esme",
+	}
+}
+
+// GetName returns value of Name
+func (o *ESMECreateRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *ESMECreateRequest) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *ESMECreateRequest) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *ESMECreateRequest) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetTags returns value of Tags
+func (o *ESMECreateRequest) GetTags() types.Tags {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *ESMECreateRequest) SetTags(v types.Tags) {
+	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *ESMECreateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *ESMECreateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *ESMECreateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *ESMECreateRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
+// GetIconID returns value of IconID
+func (o *ESMECreateRequest) GetIconID() types.ID {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *ESMECreateRequest) SetIconID(v types.ID) {
+	o.IconID = v
+}
+
+/*************************************************
+* ESMEUpdateRequest
+*************************************************/
+
+// ESMEUpdateRequest represents API parameter/response structure
+type ESMEUpdateRequest struct {
+	Name        string `validate:"required"`
+	Description string `validate:"min=0,max=512"`
+	Tags        types.Tags
+	IconID      types.ID `mapconv:"Icon.ID"`
+}
+
+// Validate validates by field tags
+func (o *ESMEUpdateRequest) Validate() error {
+	return validate.Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *ESMEUpdateRequest) setDefaults() interface{} {
+	return &struct {
+		Name        string `validate:"required"`
+		Description string `validate:"min=0,max=512"`
+		Tags        types.Tags
+		IconID      types.ID `mapconv:"Icon.ID"`
+	}{
+		Name:        o.GetName(),
+		Description: o.GetDescription(),
+		Tags:        o.GetTags(),
+		IconID:      o.GetIconID(),
+	}
+}
+
+// GetName returns value of Name
+func (o *ESMEUpdateRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *ESMEUpdateRequest) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *ESMEUpdateRequest) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *ESMEUpdateRequest) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetTags returns value of Tags
+func (o *ESMEUpdateRequest) GetTags() types.Tags {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *ESMEUpdateRequest) SetTags(v types.Tags) {
+	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *ESMEUpdateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *ESMEUpdateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *ESMEUpdateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *ESMEUpdateRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
+// GetIconID returns value of IconID
+func (o *ESMEUpdateRequest) GetIconID() types.ID {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *ESMEUpdateRequest) SetIconID(v types.ID) {
+	o.IconID = v
+}
+
+/*************************************************
+* ESMESendMessageResult
+*************************************************/
+
+// ESMESendMessageResult represents API parameter/response structure
+type ESMESendMessageResult struct {
+	MessageID string
+	Status    string
+	OTP       string
+}
+
+// Validate validates by field tags
+func (o *ESMESendMessageResult) Validate() error {
+	return validate.Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *ESMESendMessageResult) setDefaults() interface{} {
+	return &struct {
+		MessageID string
+		Status    string
+		OTP       string
+	}{
+		MessageID: o.GetMessageID(),
+		Status:    o.GetStatus(),
+		OTP:       o.GetOTP(),
+	}
+}
+
+// GetMessageID returns value of MessageID
+func (o *ESMESendMessageResult) GetMessageID() string {
+	return o.MessageID
+}
+
+// SetMessageID sets value to MessageID
+func (o *ESMESendMessageResult) SetMessageID(v string) {
+	o.MessageID = v
+}
+
+// GetStatus returns value of Status
+func (o *ESMESendMessageResult) GetStatus() string {
+	return o.Status
+}
+
+// SetStatus sets value to Status
+func (o *ESMESendMessageResult) SetStatus(v string) {
+	o.Status = v
+}
+
+// GetOTP returns value of OTP
+func (o *ESMESendMessageResult) GetOTP() string {
+	return o.OTP
+}
+
+// SetOTP sets value to OTP
+func (o *ESMESendMessageResult) SetOTP(v string) {
+	o.OTP = v
+}
+
+/*************************************************
+* ESMESendMessageWithGeneratedOTPRequest
+*************************************************/
+
+// ESMESendMessageWithGeneratedOTPRequest represents API parameter/response structure
+type ESMESendMessageWithGeneratedOTPRequest struct {
+	Destination string
+	Sender      string
+}
+
+// Validate validates by field tags
+func (o *ESMESendMessageWithGeneratedOTPRequest) Validate() error {
+	return validate.Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *ESMESendMessageWithGeneratedOTPRequest) setDefaults() interface{} {
+	return &struct {
+		Destination  string
+		Sender       string
+		OTPOperation types.EOTPOperation
+	}{
+		Destination:  o.GetDestination(),
+		Sender:       o.GetSender(),
+		OTPOperation: "generate",
+	}
+}
+
+// GetDestination returns value of Destination
+func (o *ESMESendMessageWithGeneratedOTPRequest) GetDestination() string {
+	return o.Destination
+}
+
+// SetDestination sets value to Destination
+func (o *ESMESendMessageWithGeneratedOTPRequest) SetDestination(v string) {
+	o.Destination = v
+}
+
+// GetSender returns value of Sender
+func (o *ESMESendMessageWithGeneratedOTPRequest) GetSender() string {
+	return o.Sender
+}
+
+// SetSender sets value to Sender
+func (o *ESMESendMessageWithGeneratedOTPRequest) SetSender(v string) {
+	o.Sender = v
+}
+
+/*************************************************
+* ESMESendMessageWithInputtedOTPRequest
+*************************************************/
+
+// ESMESendMessageWithInputtedOTPRequest represents API parameter/response structure
+type ESMESendMessageWithInputtedOTPRequest struct {
+	Destination string
+	Sender      string
+	OTP         string
+}
+
+// Validate validates by field tags
+func (o *ESMESendMessageWithInputtedOTPRequest) Validate() error {
+	return validate.Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *ESMESendMessageWithInputtedOTPRequest) setDefaults() interface{} {
+	return &struct {
+		Destination  string
+		Sender       string
+		OTP          string
+		OTPOperation types.EOTPOperation
+	}{
+		Destination:  o.GetDestination(),
+		Sender:       o.GetSender(),
+		OTP:          o.GetOTP(),
+		OTPOperation: "input",
+	}
+}
+
+// GetDestination returns value of Destination
+func (o *ESMESendMessageWithInputtedOTPRequest) GetDestination() string {
+	return o.Destination
+}
+
+// SetDestination sets value to Destination
+func (o *ESMESendMessageWithInputtedOTPRequest) SetDestination(v string) {
+	o.Destination = v
+}
+
+// GetSender returns value of Sender
+func (o *ESMESendMessageWithInputtedOTPRequest) GetSender() string {
+	return o.Sender
+}
+
+// SetSender sets value to Sender
+func (o *ESMESendMessageWithInputtedOTPRequest) SetSender(v string) {
+	o.Sender = v
+}
+
+// GetOTP returns value of OTP
+func (o *ESMESendMessageWithInputtedOTPRequest) GetOTP() string {
+	return o.OTP
+}
+
+// SetOTP sets value to OTP
+func (o *ESMESendMessageWithInputtedOTPRequest) SetOTP(v string) {
+	o.OTP = v
+}
+
+/*************************************************
+* ESMELogs
+*************************************************/
+
+// ESMELogs represents API parameter/response structure
+type ESMELogs struct {
+	MessageID   string
+	Status      string
+	OTP         string
+	Destination string
+	SentAt      time.Time
+	DoneAt      time.Time
+	RetryCount  int
+}
+
+// Validate validates by field tags
+func (o *ESMELogs) Validate() error {
+	return validate.Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *ESMELogs) setDefaults() interface{} {
+	return &struct {
+		MessageID   string
+		Status      string
+		OTP         string
+		Destination string
+		SentAt      time.Time
+		DoneAt      time.Time
+		RetryCount  int
+	}{
+		MessageID:   o.GetMessageID(),
+		Status:      o.GetStatus(),
+		OTP:         o.GetOTP(),
+		Destination: o.GetDestination(),
+		SentAt:      o.GetSentAt(),
+		DoneAt:      o.GetDoneAt(),
+		RetryCount:  o.GetRetryCount(),
+	}
+}
+
+// GetMessageID returns value of MessageID
+func (o *ESMELogs) GetMessageID() string {
+	return o.MessageID
+}
+
+// SetMessageID sets value to MessageID
+func (o *ESMELogs) SetMessageID(v string) {
+	o.MessageID = v
+}
+
+// GetStatus returns value of Status
+func (o *ESMELogs) GetStatus() string {
+	return o.Status
+}
+
+// SetStatus sets value to Status
+func (o *ESMELogs) SetStatus(v string) {
+	o.Status = v
+}
+
+// GetOTP returns value of OTP
+func (o *ESMELogs) GetOTP() string {
+	return o.OTP
+}
+
+// SetOTP sets value to OTP
+func (o *ESMELogs) SetOTP(v string) {
+	o.OTP = v
+}
+
+// GetDestination returns value of Destination
+func (o *ESMELogs) GetDestination() string {
+	return o.Destination
+}
+
+// SetDestination sets value to Destination
+func (o *ESMELogs) SetDestination(v string) {
+	o.Destination = v
+}
+
+// GetSentAt returns value of SentAt
+func (o *ESMELogs) GetSentAt() time.Time {
+	return o.SentAt
+}
+
+// SetSentAt sets value to SentAt
+func (o *ESMELogs) SetSentAt(v time.Time) {
+	o.SentAt = v
+}
+
+// GetDoneAt returns value of DoneAt
+func (o *ESMELogs) GetDoneAt() time.Time {
+	return o.DoneAt
+}
+
+// SetDoneAt sets value to DoneAt
+func (o *ESMELogs) SetDoneAt(v time.Time) {
+	o.DoneAt = v
+}
+
+// GetRetryCount returns value of RetryCount
+func (o *ESMELogs) GetRetryCount() int {
+	return o.RetryCount
+}
+
+// SetRetryCount sets value to RetryCount
+func (o *ESMELogs) SetRetryCount(v int) {
+	o.RetryCount = v
+}
+
+/*************************************************
 * GSLB
 *************************************************/
 
