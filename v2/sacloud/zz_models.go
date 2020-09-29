@@ -2325,13 +2325,16 @@ func (o *Bill) SetPaymentClassID(v types.ID) {
 
 // BillDetail represents API parameter/response structure
 type BillDetail struct {
-	ID             types.ID
-	Amount         int64
-	Description    string `validate:"min=0,max=512"`
-	ServiceClassID types.ID
-	Usage          int64
-	Zone           string
-	ContractEndAt  time.Time
+	ID               types.ID
+	Amount           int64
+	Description      string `validate:"min=0,max=512"`
+	ServiceClassID   types.ID
+	ServiceClassPath string
+	Usage            int64
+	FormattedUsage   string
+	ServiceUsagePath string
+	Zone             string
+	ContractEndAt    time.Time
 }
 
 // Validate validates by field tags
@@ -2342,21 +2345,27 @@ func (o *BillDetail) Validate() error {
 // setDefaults implements sacloud.argumentDefaulter
 func (o *BillDetail) setDefaults() interface{} {
 	return &struct {
-		ID             types.ID
-		Amount         int64
-		Description    string `validate:"min=0,max=512"`
-		ServiceClassID types.ID
-		Usage          int64
-		Zone           string
-		ContractEndAt  time.Time
+		ID               types.ID
+		Amount           int64
+		Description      string `validate:"min=0,max=512"`
+		ServiceClassID   types.ID
+		ServiceClassPath string
+		Usage            int64
+		FormattedUsage   string
+		ServiceUsagePath string
+		Zone             string
+		ContractEndAt    time.Time
 	}{
-		ID:             o.GetID(),
-		Amount:         o.GetAmount(),
-		Description:    o.GetDescription(),
-		ServiceClassID: o.GetServiceClassID(),
-		Usage:          o.GetUsage(),
-		Zone:           o.GetZone(),
-		ContractEndAt:  o.GetContractEndAt(),
+		ID:               o.GetID(),
+		Amount:           o.GetAmount(),
+		Description:      o.GetDescription(),
+		ServiceClassID:   o.GetServiceClassID(),
+		ServiceClassPath: o.GetServiceClassPath(),
+		Usage:            o.GetUsage(),
+		FormattedUsage:   o.GetFormattedUsage(),
+		ServiceUsagePath: o.GetServiceUsagePath(),
+		Zone:             o.GetZone(),
+		ContractEndAt:    o.GetContractEndAt(),
 	}
 }
 
@@ -2420,6 +2429,16 @@ func (o *BillDetail) SetServiceClassID(v types.ID) {
 	o.ServiceClassID = v
 }
 
+// GetServiceClassPath returns value of ServiceClassPath
+func (o *BillDetail) GetServiceClassPath() string {
+	return o.ServiceClassPath
+}
+
+// SetServiceClassPath sets value to ServiceClassPath
+func (o *BillDetail) SetServiceClassPath(v string) {
+	o.ServiceClassPath = v
+}
+
 // GetUsage returns value of Usage
 func (o *BillDetail) GetUsage() int64 {
 	return o.Usage
@@ -2428,6 +2447,26 @@ func (o *BillDetail) GetUsage() int64 {
 // SetUsage sets value to Usage
 func (o *BillDetail) SetUsage(v int64) {
 	o.Usage = v
+}
+
+// GetFormattedUsage returns value of FormattedUsage
+func (o *BillDetail) GetFormattedUsage() string {
+	return o.FormattedUsage
+}
+
+// SetFormattedUsage sets value to FormattedUsage
+func (o *BillDetail) SetFormattedUsage(v string) {
+	o.FormattedUsage = v
+}
+
+// GetServiceUsagePath returns value of ServiceUsagePath
+func (o *BillDetail) GetServiceUsagePath() string {
+	return o.ServiceUsagePath
+}
+
+// SetServiceUsagePath sets value to ServiceUsagePath
+func (o *BillDetail) SetServiceUsagePath(v string) {
+	o.ServiceUsagePath = v
 }
 
 // GetZone returns value of Zone
