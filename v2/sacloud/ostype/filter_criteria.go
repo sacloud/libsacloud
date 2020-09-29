@@ -36,6 +36,9 @@ var ArchiveCriteria = map[ArchiveOSType]search.Filter{
 	Ubuntu: {
 		search.Key(keys.Tags): search.TagsAndEqual("current-stable", "distro-ubuntu"),
 	},
+	Ubuntu2004: {
+		search.Key(keys.Tags): search.TagsAndEqual("ubuntu-20.04-latest"),
+	},
 	Ubuntu1804: {
 		search.Key(keys.Tags): search.TagsAndEqual("ubuntu-18.04-latest"),
 	},
