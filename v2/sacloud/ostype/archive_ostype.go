@@ -35,6 +35,8 @@ const (
 
 	// Ubuntu OS種別:Ubuntu
 	Ubuntu
+	// Ubuntu1804 OS種別:Ubuntu(Focal Fossa)
+	Ubuntu2004
 	// Ubuntu1804 OS種別:Ubuntu(Bionic)
 	Ubuntu1804
 	// Ubuntu1604 OS種別:Ubuntu(Xenial)
@@ -116,6 +118,7 @@ var ArchiveOSTypes = []ArchiveOSType{
 	CentOS7,
 	CentOS6,
 	Ubuntu,
+	Ubuntu2004,
 	Ubuntu1804,
 	Ubuntu1604,
 	Debian,
@@ -151,7 +154,7 @@ var ArchiveOSTypes = []ArchiveOSType{
 // OSTypeShortNames OSTypeとして利用できる文字列のリスト
 var OSTypeShortNames = []string{
 	"centos", "centos8", "centos7", "centos6",
-	"ubuntu", "ubuntu1804", "ubuntu1604",
+	"ubuntu", "ubuntu2004", "ubuntu1804", "ubuntu1604",
 	"debian", "debian10", "debian9",
 	"coreos", "rancheros", "k3os", "kusanagi", "freebsd",
 	"windows2016", "windows2016-rds", "windows2016-rds-office",
@@ -186,7 +189,7 @@ func (o ArchiveOSType) IsWindows() bool {
 func (o ArchiveOSType) IsSupportDiskEdit() bool {
 	switch o {
 	case CentOS, CentOS8, CentOS7, CentOS6,
-		Ubuntu, Ubuntu1804, Ubuntu1604,
+		Ubuntu, Ubuntu2004, Ubuntu1804, Ubuntu1604,
 		Debian, Debian10, Debian9,
 		CoreOS, RancherOS, K3OS, Kusanagi, FreeBSD:
 		return true
@@ -208,6 +211,8 @@ func StrToOSType(osType string) ArchiveOSType {
 		return CentOS6
 	case "ubuntu":
 		return Ubuntu
+	case "ubuntu2004":
+		return Ubuntu2004
 	case "ubuntu1804":
 		return Ubuntu1804
 	case "ubuntu1604":
