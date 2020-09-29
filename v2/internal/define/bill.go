@@ -235,7 +235,10 @@ var (
 			billFields.Amount(),
 			fields.Description(),
 			billFields.ServiceClassID(),
+			billFields.ServiceClassPath(),
 			billFields.Usage(),
+			billFields.FormattedUsage(),
+			billFields.ServiceUsagePath(),
 			billFields.Zone(),
 			billFields.ContractEndAt(),
 		},
@@ -316,10 +319,31 @@ func (f *billFieldsDef) ServiceClassID() *dsl.FieldDesc {
 	}
 }
 
+func (f *billFieldsDef) ServiceClassPath() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "ServiceClassPath",
+		Type: meta.TypeString,
+	}
+}
+
 func (f *billFieldsDef) Usage() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "Usage",
 		Type: meta.TypeInt64,
+	}
+}
+
+func (f *billFieldsDef) FormattedUsage() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "FormattedUsage",
+		Type: meta.TypeString,
+	}
+}
+
+func (f *billFieldsDef) ServiceUsagePath() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "ServiceUsagePath",
+		Type: meta.TypeString,
 	}
 }
 
