@@ -358,6 +358,7 @@ var (
 			{
 				VirtualIPAddress: "192.168.0.111",
 				Port:             80,
+				Servers:          sacloud.LoadBalancerServers{},
 			},
 		},
 	}
@@ -375,21 +376,24 @@ var (
 				VirtualIPAddress: "192.168.0.111",
 				Port:             80,
 				DelayLoop:        10, // default value
+				Servers:          []*sacloud.LoadBalancerServer{},
 			},
 		},
 	}
 	updateLoadBalancerToMin2Param = &sacloud.LoadBalancerUpdateRequest{
-		Name: testutil.ResourceName("lb-to-min2"),
+		Name:               testutil.ResourceName("lb-to-min2"),
+		VirtualIPAddresses: sacloud.LoadBalancerVirtualIPAddresses{},
 	}
 	updateLoadBalancerToMin2Expected = &sacloud.LoadBalancer{
-		Name:           updateLoadBalancerToMin2Param.Name,
-		Availability:   types.Availabilities.Available,
-		PlanID:         createLoadBalancerParam.PlanID,
-		InstanceStatus: types.ServerInstanceStatuses.Up,
-		DefaultRoute:   createLoadBalancerParam.DefaultRoute,
-		NetworkMaskLen: createLoadBalancerParam.NetworkMaskLen,
-		IPAddresses:    createLoadBalancerParam.IPAddresses,
-		VRID:           createLoadBalancerParam.VRID,
+		Name:               updateLoadBalancerToMin2Param.Name,
+		Availability:       types.Availabilities.Available,
+		PlanID:             createLoadBalancerParam.PlanID,
+		InstanceStatus:     types.ServerInstanceStatuses.Up,
+		DefaultRoute:       createLoadBalancerParam.DefaultRoute,
+		NetworkMaskLen:     createLoadBalancerParam.NetworkMaskLen,
+		IPAddresses:        createLoadBalancerParam.IPAddresses,
+		VRID:               createLoadBalancerParam.VRID,
+		VirtualIPAddresses: sacloud.LoadBalancerVirtualIPAddresses{},
 	}
 )
 
