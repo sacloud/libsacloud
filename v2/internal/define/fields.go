@@ -702,6 +702,10 @@ func (f *fieldsDef) LoadBalancerVIPServers() *dsl.FieldDesc {
 				f.LoadBalancerServerHealthCheck(),
 			},
 		},
+		Tags: &dsl.FieldTags{
+			MapConv:  "[]Servers,recursive",
+			Validate: "min=0,max=40",
+		},
 	}
 }
 
