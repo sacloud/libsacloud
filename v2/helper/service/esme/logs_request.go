@@ -12,16 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package subnet
+package esme
 
-import "github.com/sacloud/libsacloud/v2/sacloud"
+import (
+	"github.com/sacloud/libsacloud/v2/helper/validate"
+	"github.com/sacloud/libsacloud/v2/sacloud/types"
+)
 
-// Service provides a high-level API of for Subnet
-type Service struct {
-	caller sacloud.APICaller
+type LogsRequest struct {
+	ID types.ID `request:"-" validate:"required"`
 }
 
-// New returns new service instance of Subnet
-func New(caller sacloud.APICaller) *Service {
-	return &Service{caller: caller}
+func (req *LogsRequest) Validate() error {
+	return validate.Struct(req)
 }

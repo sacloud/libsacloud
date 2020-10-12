@@ -259,6 +259,7 @@ var jsonResourceTypeMap = map[string]func() interface{}{
 	ResourceDisk:              func() interface{} { return &sacloud.Disk{} },
 	ResourceDiskPlan:          func() interface{} { return &sacloud.DiskPlan{} },
 	ResourceDNS:               func() interface{} { return &sacloud.DNS{} },
+	ResourceESME:              func() interface{} { return &sacloud.ESME{} },
 	ResourceGSLB:              func() interface{} { return &sacloud.GSLB{} },
 	ResourceIcon:              func() interface{} { return &sacloud.Icon{} },
 	ResourceInterface:         func() interface{} { return &sacloud.Interface{} },
@@ -292,6 +293,7 @@ var jsonResourceTypeMap = map[string]func() interface{}{
 
 	valuePoolResourceKey:         func() interface{} { return &valuePool{} },
 	"BillDetails":                func() interface{} { return &[]*sacloud.BillDetail{} },
+	"ESMELogs":                   func() interface{} { return &[]*sacloud.ESMELogs{} },
 	"MobileGatewayDNS":           func() interface{} { return &sacloud.MobileGatewayDNSSetting{} },
 	"MobileGatewaySIMRoutes":     func() interface{} { return &[]*sacloud.MobileGatewaySIMRoute{} },
 	"MobileGatewaySIMs":          func() interface{} { return &[]*sacloud.MobileGatewaySIMInfo{} },

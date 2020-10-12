@@ -12,16 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package subnet
+package esme
 
 import "github.com/sacloud/libsacloud/v2/sacloud"
 
-// Service provides a high-level API of for Subnet
+// Service provides a high-level API of for ESME
 type Service struct {
 	caller sacloud.APICaller
 }
 
-// New returns new service instance of Subnet
+// New returns new service instance of ESME
 func New(caller sacloud.APICaller) *Service {
 	return &Service{caller: caller}
 }
