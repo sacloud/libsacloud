@@ -12,16 +12,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package subnet
+package esme
 
-import "github.com/sacloud/libsacloud/v2/sacloud"
+import (
+	"context"
 
-// Service provides a high-level API of for Subnet
-type Service struct {
-	caller sacloud.APICaller
+	"github.com/sacloud/libsacloud/v2/sacloud"
+)
+
+func (s *Service) Create(req *CreateRequest) (*sacloud.ESME, error) {
+	return s.CreateWithContext(context.Background(), req)
 }
 
-// New returns new service instance of Subnet
-func New(caller sacloud.APICaller) *Service {
-	return &Service{caller: caller}
+func (s *Service) CreateWithContext(ctx context.Context, req *CreateRequest) (*sacloud.ESME, error) {
+	if err := req.Validate(); err != nil {
+		return nil, err
+	}
+
+	params, err := req.ToRequestParameter()
+	if err != nil {
+		return nil, err
+	}
+
+	client := sacloud.NewESMEOp(s.caller)
+	return client.Create(ctx, params)
 }
