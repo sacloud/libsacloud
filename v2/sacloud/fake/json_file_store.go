@@ -271,6 +271,7 @@ var jsonResourceTypeMap = map[string]func() interface{}{
 	ResourceLicense:           func() interface{} { return &sacloud.License{} },
 	ResourceLicenseInfo:       func() interface{} { return &sacloud.LicenseInfo{} },
 	ResourceLoadBalancer:      func() interface{} { return &sacloud.LoadBalancer{} },
+	ResourceLocalRouter:       func() interface{} { return &sacloud.LocalRouter{} },
 	ResourceMobileGateway:     func() interface{} { return &sacloud.MobileGateway{} },
 	ResourceNFS:               func() interface{} { return &sacloud.NFS{} },
 	ResourceNote:              func() interface{} { return &sacloud.Note{} },
@@ -293,7 +294,9 @@ var jsonResourceTypeMap = map[string]func() interface{}{
 
 	valuePoolResourceKey:         func() interface{} { return &valuePool{} },
 	"BillDetails":                func() interface{} { return &[]*sacloud.BillDetail{} },
+	"ContainerRegistryUsers":     func() interface{} { return &[]*sacloud.ContainerRegistryUser{} },
 	"ESMELogs":                   func() interface{} { return &[]*sacloud.ESMELogs{} },
+	"LocalRouterStatus":          func() interface{} { return &sacloud.LocalRouterHealth{} },
 	"MobileGatewayDNS":           func() interface{} { return &sacloud.MobileGatewayDNSSetting{} },
 	"MobileGatewaySIMRoutes":     func() interface{} { return &[]*sacloud.MobileGatewaySIMRoute{} },
 	"MobileGatewaySIMs":          func() interface{} { return &[]*sacloud.MobileGatewaySIMInfo{} },
