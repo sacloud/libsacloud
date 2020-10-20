@@ -39,7 +39,7 @@ func getSetupOption() *builder.RetryableSetupParameter {
 	}
 }
 
-func TestBuilder_Build(t *testing.T) {
+func TestDatabaseBuilder_Build(t *testing.T) {
 	var switchID types.ID
 	var testZone = testutil.TestZone()
 
