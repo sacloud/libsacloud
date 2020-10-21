@@ -17,6 +17,8 @@ package sacloud
 import (
 	"testing"
 
+	"github.com/stretchr/testify/require"
+
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
@@ -50,3 +52,98 @@ func TestTransformer_transformLoadBalancerCreateArgs(t *testing.T) {
 		t.Fatal("unexpected value:", v)
 	}
 }
+
+func TestTransformer_transformSIMReadResults(t *testing.T) {
+	op := &SIMOp{}
+	data := []string{simJSONWithString, simJSONWithNumber}
+	for _, d := range data {
+		result, err := op.transformReadResults([]byte(d))
+		require.NoError(t, err)
+		require.Equal(t, int64(10101010), result.SIM.Info.TrafficBytesOfCurrentMonth.UplinkBytes)
+		require.Equal(t, int64(20202020), result.SIM.Info.TrafficBytesOfCurrentMonth.DownlinkBytes)
+	}
+}
+
+const simJSONWithString = `
+{
+  "CommonServiceItem": {
+    "ID": 123456789012,
+    "Name": "dummy",
+    "Description": "dummy",
+    "Settings": null,
+    "SettingsHash": null,
+    "Status": {
+      "ICCID": "1111111111111111111",
+      "sim": {
+        "iccid": "1111111111111111111",
+        "session_status": "DOWN",
+        "imei_lock": false,
+        "registered": true,
+        "activated": true,
+        "resource_id": "123456789012",
+        "registered_date": "2020-10-01T05:39:17+00:00",
+        "activated_date": "2020-10-01T05:39:17+00:00",
+        "deactivated_date": "2020-10-01T04:48:39+00:00",
+        "traffic_bytes_of_current_month": {
+          "uplink_bytes": "10101010",
+          "downlink_bytes": "20202020"
+        }
+      }
+    },
+    "ServiceClass": "cloud/sim/1",
+    "Availability": "available",
+    "CreatedAt": "2020-10-01T14:39:17+09:00",
+    "ModifiedAt": "2020-10-01T14:39:17+09:00",
+    "Provider": {
+      "ID": 8000001,
+      "Class": "sim",
+      "Name": "sakura-sim",
+      "ServiceClass": "cloud/sim"
+    },
+    "Icon": null
+  },
+  "is_ok": true
+}
+`
+
+const simJSONWithNumber = `
+{
+  "CommonServiceItem": {
+    "ID": 123456789012,
+    "Name": "dummy",
+    "Description": "dummy",
+    "Settings": null,
+    "SettingsHash": null,
+    "Status": {
+      "ICCID": "1111111111111111111",
+      "sim": {
+        "iccid": "1111111111111111111",
+        "session_status": "DOWN",
+        "imei_lock": false,
+        "registered": true,
+        "activated": true,
+        "resource_id": "123456789012",
+        "registered_date": "2020-10-01T05:39:17+00:00",
+        "activated_date": "2020-10-01T05:39:17+00:00",
+        "deactivated_date": "2020-10-01T04:48:39+00:00",
+        "traffic_bytes_of_current_month": {
+          "uplink_bytes": 10101010,
+          "downlink_bytes": 20202020
+        }
+      }
+    },
+    "ServiceClass": "cloud/sim/1",
+    "Availability": "available",
+    "CreatedAt": "2020-10-01T14:39:17+09:00",
+    "ModifiedAt": "2020-10-01T14:39:17+09:00",
+    "Provider": {
+      "ID": 8000001,
+      "Class": "sim",
+      "Name": "sakura-sim",
+      "ServiceClass": "cloud/sim"
+    },
+    "Icon": null
+  },
+  "is_ok": true
+}
+`
