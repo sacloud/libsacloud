@@ -26,12 +26,13 @@ import (
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
-func TestBuilder_Build(t *testing.T) {
+func TestSIMBuilder_Build(t *testing.T) {
 	testutil.PreCheckEnvsFunc("SAKURACLOUD_SIM_ICCID", "SAKURACLOUD_SIM_PASSCODE")(t)
 
 	iccid := os.Getenv("SAKURACLOUD_SIM_ICCID")
 	passcode := os.Getenv("SAKURACLOUD_SIM_PASSCODE")
 	imei := "123456789012345"
+	imeiUpd := "123456789012346"
 
 	testutil.RunCRUD(t, &testutil.CRUDTestCase{
 		SetupAPICallerFunc: func() sacloud.APICaller {
@@ -73,6 +74,64 @@ func TestBuilder_Build(t *testing.T) {
 					testutil.AssertTrueFunc(t, sim.Info.Activated, "SIM.Info.Activated"),
 					testutil.AssertTrueFunc(t, sim.Info.IMEILock, "SIM.Info.IMEILock"),
 				)
+			},
+		},
+		Updates: []*testutil.CRUDTestFunc{
+			{
+				Func: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+					sim := ctx.LastValue.(*sacloud.SIM)
+					builder := &Builder{
+						Name:        sim.Name,
+						Description: sim.Description,
+						Tags:        sim.Tags,
+						ICCID:       iccid,
+						PassCode:    passcode,
+						Activate:    true,
+						IMEI:        imeiUpd,
+						Carrier: []*sacloud.SIMNetworkOperatorConfig{
+							{
+								Allow: true,
+								Name:  types.SIMOperators.SoftBank.String(),
+							},
+						},
+						Client: NewAPIClient(caller),
+					}
+					return builder.Update(ctx, sim.ID)
+				},
+				CheckFunc: func(t testutil.TestT, ctx *testutil.CRUDTestContext, value interface{}) error {
+					sim := value.(*sacloud.SIM)
+					return testutil.DoAsserts(
+						testutil.AssertTrueFunc(t, sim.Info.IMEILock, "SIM.Info.IMEILock"),
+					)
+				},
+			},
+			{
+				Func: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+					sim := ctx.LastValue.(*sacloud.SIM)
+					builder := &Builder{
+						Name:        sim.Name,
+						Description: sim.Description,
+						Tags:        sim.Tags,
+						ICCID:       iccid,
+						PassCode:    passcode,
+						Activate:    true,
+						IMEI:        "",
+						Carrier: []*sacloud.SIMNetworkOperatorConfig{
+							{
+								Allow: true,
+								Name:  types.SIMOperators.SoftBank.String(),
+							},
+						},
+						Client: NewAPIClient(caller),
+					}
+					return builder.Update(ctx, sim.ID)
+				},
+				CheckFunc: func(t testutil.TestT, ctx *testutil.CRUDTestContext, value interface{}) error {
+					sim := value.(*sacloud.SIM)
+					return testutil.DoAsserts(
+						testutil.AssertFalseFunc(t, sim.Info.IMEILock, "SIM.Info.IMEILock"),
+					)
+				},
 			},
 		},
 		Delete: &testutil.CRUDTestDeleteFunc{
