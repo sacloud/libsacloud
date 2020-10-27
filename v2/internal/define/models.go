@@ -1274,6 +1274,7 @@ func (m *modelsDef) simInfoFields() []*dsl.FieldDesc {
 	return []*dsl.FieldDesc{
 		fields.Def("ICCID", meta.TypeString),
 		fields.Def("IMSI", meta.TypeStringSlice),
+		fields.Def("IMEI", meta.TypeString),
 		fields.Def("IP", meta.TypeString),
 		fields.Def("SessionStatus", meta.TypeString),
 		fields.Def("IMEILock", meta.TypeFlag),
