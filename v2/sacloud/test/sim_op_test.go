@@ -111,6 +111,7 @@ func TestSIMOpCRUD(t *testing.T) {
 					simInfo := v.(*sacloud.SIMInfo)
 					return testutil.DoAsserts(
 						testutil.AssertTrueFunc(t, simInfo.IMEILock, "SIMInfo.IMEILock"),
+						testutil.AssertEqualFunc(t, "123456789012345", simInfo.IMEI, "SIMInfo.IMEI"),
 					)
 				},
 				SkipExtractID: true,
@@ -128,6 +129,7 @@ func TestSIMOpCRUD(t *testing.T) {
 					simInfo := v.(*sacloud.SIMInfo)
 					return testutil.DoAsserts(
 						testutil.AssertFalseFunc(t, simInfo.IMEILock, "SIMInfo.IMEILock"),
+						testutil.AssertEqualFunc(t, "", simInfo.IMEI, "SIMInfo.IMEI"),
 					)
 				},
 				SkipExtractID: true,
