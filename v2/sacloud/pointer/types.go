@@ -16,8 +16,11 @@ package pointer
 
 import "github.com/sacloud/libsacloud/v2/sacloud/types"
 
-// NewID returns a pointer to the given tags value
+// NewID returns a pointer to the given value
 func NewID(id types.ID) *types.ID { return &id }
+
+// NewIDSlice returns a pointer to the given value
+func NewIDSlice(ids []types.ID) *[]types.ID { return &ids }
 
 // NewTags returns a pointer to the given tags value
 func NewTags(tags types.Tags) *types.Tags { return &tags }
