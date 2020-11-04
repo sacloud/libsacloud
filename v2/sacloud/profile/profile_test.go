@@ -685,3 +685,62 @@ func TestList(t *testing.T) {
 		require.EqualValues(t, "test2", profiles[2])
 	})
 }
+
+func TestConfigValue_TraceMode(t *testing.T) {
+	cases := []struct {
+		in                *ConfigValue
+		expectHTTPEnabled bool
+		expectAPIEnabled  bool
+	}{
+		{
+			in:                &ConfigValue{},
+			expectHTTPEnabled: false,
+			expectAPIEnabled:  false,
+		},
+		{
+			in:                &ConfigValue{TraceMode: " "},
+			expectHTTPEnabled: false,
+			expectAPIEnabled:  false,
+		},
+		{
+			in:                &ConfigValue{TraceMode: "api"},
+			expectHTTPEnabled: false,
+			expectAPIEnabled:  true,
+		},
+		{
+			in:                &ConfigValue{TraceMode: "API"},
+			expectHTTPEnabled: false,
+			expectAPIEnabled:  true,
+		},
+		{
+			in:                &ConfigValue{TraceMode: "aPi"},
+			expectHTTPEnabled: false,
+			expectAPIEnabled:  true,
+		},
+		{
+			in:                &ConfigValue{TraceMode: "http"},
+			expectHTTPEnabled: true,
+			expectAPIEnabled:  false,
+		},
+		{
+			in:                &ConfigValue{TraceMode: "HTTP"},
+			expectHTTPEnabled: true,
+			expectAPIEnabled:  false,
+		},
+		{
+			in:                &ConfigValue{TraceMode: "HtTp"},
+			expectHTTPEnabled: true,
+			expectAPIEnabled:  false,
+		},
+		{
+			in:                &ConfigValue{TraceMode: "1"},
+			expectHTTPEnabled: true,
+			expectAPIEnabled:  true,
+		},
+	}
+
+	for _, tc := range cases {
+		require.Equal(t, tc.expectHTTPEnabled, tc.in.EnableHTTPTrace(), tc.in)
+		require.Equal(t, tc.expectAPIEnabled, tc.in.EnableAPITrace(), tc.in)
+	}
+}
