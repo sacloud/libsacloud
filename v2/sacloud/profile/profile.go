@@ -155,6 +155,9 @@ type ConfigValue struct {
 	// APIRootURL APIのルートURL
 	APIRootURL string `json:",omitempty"`
 
+	// DefaultZone グローバルリソースAPIを呼ぶ際に指定するゾーン
+	DefaultZone string `json:",omitempty"`
+
 	// TraceMode トレースモード
 	TraceMode string `json:",omitempty"`
 	// FakeMode フェイクモード有効化
