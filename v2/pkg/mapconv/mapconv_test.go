@@ -15,9 +15,13 @@
 package mapconv
 
 import (
+	"errors"
+	"strconv"
+	"strings"
 	"testing"
 	"time"
 
+	"github.com/sacloud/libsacloud/v2/sacloud/types"
 	"github.com/stretchr/testify/require"
 )
 
@@ -471,5 +475,131 @@ func TestSquash(t *testing.T) {
 		source := &sourceSquash{}
 		err = ConvertFrom(tt.output, source)
 		require.Error(t, err)
+	}
+}
+
+func testDecoder() *Decoder {
+	strToNumFilter := func(v interface{}) (interface{}, error) {
+		return strconv.ParseInt(v.(string), 10, 64)
+	}
+	toUpperFilter := func(v interface{}) (interface{}, error) {
+		// to upper
+		return strings.ToUpper(v.(string)), nil
+	}
+	numToIDFilter := func(v interface{}) (interface{}, error) {
+		return types.ID(v.(int64)), nil
+	}
+	errorFilter := func(v interface{}) (interface{}, error) {
+		return nil, errors.New("foobar")
+	}
+
+	return &Decoder{Config: &DecoderConfig{
+		TagName: DefaultMapConvTag,
+		FilterFuncs: map[string]FilterFunc{
+			"toUpper":  toUpperFilter,
+			"strToNum": strToNumFilter,
+			"numToID":  numToIDFilter,
+			"error":    errorFilter,
+		},
+	}}
+}
+
+func TestFiltersWithConvertTo(t *testing.T) {
+	decoder := testDecoder()
+
+	cases := []struct {
+		in     interface{}
+		dest   interface{}
+		expect interface{}
+		err    error
+	}{
+		{
+			in: &struct {
+				Field string `mapconv:",filters=toUpper"`
+			}{Field: "foo"},
+			dest:   &struct{ Field string }{},
+			expect: &struct{ Field string }{Field: "FOO"},
+		},
+		{
+			in: &struct {
+				Field string `mapconv:",filters=strToNum numToID"`
+			}{Field: "1"},
+			dest:   &struct{ Field types.ID }{},
+			expect: &struct{ Field types.ID }{Field: types.ID(1)},
+		},
+		{
+			in: &struct {
+				Field string `mapconv:",filters=error"`
+			}{Field: "1"},
+			dest: &struct{ Field types.ID }{},
+			err:  errors.New("failed to apply the filter: foobar"),
+		},
+		{
+			in: &struct {
+				Field string `mapconv:",filters=strToNum numToID error"`
+			}{Field: "1"},
+			dest: &struct{ Field types.ID }{},
+			err:  errors.New("failed to apply the filter: foobar"),
+		},
+	}
+
+	for _, tc := range cases {
+		err := decoder.ConvertTo(tc.in, tc.dest)
+		require.Equal(t, tc.err, err)
+		if err == nil {
+			require.EqualValues(t, tc.expect, tc.dest)
+		}
+	}
+}
+
+func TestFiltersWithConvertFrom(t *testing.T) {
+	decoder := testDecoder()
+
+	cases := []struct {
+		in     interface{}
+		dest   interface{}
+		expect interface{}
+		err    error
+	}{
+		{
+			in: &struct{ Field string }{Field: "foo"},
+			dest: &struct {
+				Field string `mapconv:",filters=toUpper"`
+			}{},
+			expect: &struct {
+				Field string `mapconv:",filters=toUpper"`
+			}{Field: "FOO"},
+		},
+		{
+			in: &struct{ Field string }{Field: "1"},
+			dest: &struct {
+				Field types.ID `mapconv:",filters=strToNum numToID"`
+			}{},
+			expect: &struct {
+				Field types.ID `mapconv:",filters=strToNum numToID"`
+			}{Field: types.ID(1)},
+		},
+		{
+			in: &struct{ Field string }{Field: "1"},
+			dest: &struct {
+				Field types.ID `mapconv:",filters=error"`
+			}{},
+			err: errors.New("failed to apply the filter: foobar"),
+		},
+		{
+			in: &struct{ Field string }{Field: "1"},
+			dest: &struct {
+				Field types.ID `mapconv:",filters=strToNum numToID error"`
+			}{},
+			err: errors.New("failed to apply the filter: foobar"),
+		},
+	}
+
+	for _, tc := range cases {
+		err := decoder.ConvertFrom(tc.in, tc.dest)
+		require.Equal(t, tc.err, err)
+		if err == nil {
+			require.EqualValues(t, tc.expect, tc.dest)
+		}
 	}
 }
