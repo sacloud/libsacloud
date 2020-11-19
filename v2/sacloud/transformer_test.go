@@ -147,3 +147,36 @@ const simJSONWithNumber = `
   "is_ok": true
 }
 `
+
+func TestTransformer_transformSetCertificatesArgs(t *testing.T) {
+	op := &ProxyLBOp{}
+
+	cert := &ProxyLBPrimaryCert{
+		ServerCertificate:       "aaa",
+		IntermediateCertificate: "bbb",
+		PrivateKey:              "ccc",
+	}
+
+	ret, err := op.transformSetCertificatesArgs(types.ID(1),
+		&ProxyLBSetCertificatesRequest{
+			PrimaryCerts:    cert,
+			AdditionalCerts: []*ProxyLBAdditionalCert{},
+		},
+	)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if ret.ProxyLB.PrimaryCert == nil {
+		t.Fatal("ProxyLB.PrimaryCert is nil")
+	}
+	if ret.ProxyLB.PrimaryCert.ServerCertificate != cert.ServerCertificate {
+		t.Fatal("ProxyLB.PrimaryCert has unexpected value: ServerCertificate")
+	}
+	if ret.ProxyLB.PrimaryCert.IntermediateCertificate != cert.IntermediateCertificate {
+		t.Fatal("ProxyLB.PrimaryCert has unexpected value: IntermediateCertificate")
+	}
+	if ret.ProxyLB.PrimaryCert.PrivateKey != cert.PrivateKey {
+		t.Fatal("ProxyLB.PrimaryCert has unexpected value: PrivateKey")
+	}
+}

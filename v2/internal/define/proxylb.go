@@ -341,6 +341,9 @@ var (
 				fields.Def("PrivateKey", meta.TypeString),
 			},
 		},
+		Tags: &dsl.FieldTags{
+			MapConv: "PrimaryCert",
+		},
 	}
 
 	proxyLBAdditionalCerts = &dsl.FieldDesc{
