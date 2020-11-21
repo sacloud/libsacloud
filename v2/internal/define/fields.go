@@ -2319,7 +2319,6 @@ func (f *fieldsDef) MonitorTime() *dsl.FieldDesc {
 		Type: meta.TypeTime,
 		Tags: &dsl.FieldTags{
 			MapConv: ",omitempty",
-			JSON:    ",omitempty",
 		},
 	}
 }
@@ -2330,7 +2329,6 @@ func (f *fieldsDef) MonitorCPUTime() *dsl.FieldDesc {
 		Type: meta.TypeFloat64,
 		Tags: &dsl.FieldTags{
 			MapConv: ",omitempty",
-			JSON:    ",omitempty",
 		},
 	}
 }
@@ -2341,7 +2339,6 @@ func (f *fieldsDef) MonitorDiskRead() *dsl.FieldDesc {
 		Type: meta.TypeFloat64,
 		Tags: &dsl.FieldTags{
 			MapConv: ",omitempty",
-			JSON:    ",omitempty",
 		},
 	}
 }
@@ -2352,7 +2349,6 @@ func (f *fieldsDef) MonitorDiskWrite() *dsl.FieldDesc {
 		Type: meta.TypeFloat64,
 		Tags: &dsl.FieldTags{
 			MapConv: ",omitempty",
-			JSON:    ",omitempty",
 		},
 	}
 }
@@ -2363,7 +2359,6 @@ func (f *fieldsDef) MonitorRouterIn() *dsl.FieldDesc {
 		Type: meta.TypeFloat64,
 		Tags: &dsl.FieldTags{
 			MapConv: ",omitempty",
-			JSON:    ",omitempty",
 		},
 	}
 }
@@ -2374,7 +2369,6 @@ func (f *fieldsDef) MonitorRouterOut() *dsl.FieldDesc {
 		Type: meta.TypeFloat64,
 		Tags: &dsl.FieldTags{
 			MapConv: ",omitempty",
-			JSON:    ",omitempty",
 		},
 	}
 }
@@ -2385,7 +2379,6 @@ func (f *fieldsDef) MonitorInterfaceSend() *dsl.FieldDesc {
 		Type: meta.TypeFloat64,
 		Tags: &dsl.FieldTags{
 			MapConv: ",omitempty",
-			JSON:    ",omitempty",
 		},
 	}
 }
@@ -2396,7 +2389,6 @@ func (f *fieldsDef) MonitorInterfaceReceive() *dsl.FieldDesc {
 		Type: meta.TypeFloat64,
 		Tags: &dsl.FieldTags{
 			MapConv: ",omitempty",
-			JSON:    ",omitempty",
 		},
 	}
 }
@@ -2407,7 +2399,6 @@ func (f *fieldsDef) MonitorFreeDiskSize() *dsl.FieldDesc {
 		Type: meta.TypeFloat64,
 		Tags: &dsl.FieldTags{
 			MapConv: ",omitempty",
-			JSON:    ",omitempty",
 		},
 	}
 }
@@ -2418,7 +2409,6 @@ func (f *fieldsDef) MonitorDatabaseTotalMemorySize() *dsl.FieldDesc {
 		Type: meta.TypeFloat64,
 		Tags: &dsl.FieldTags{
 			MapConv: ",omitempty",
-			JSON:    ",omitempty",
 		},
 	}
 }
@@ -2429,7 +2419,6 @@ func (f *fieldsDef) MonitorDatabaseUsedMemorySize() *dsl.FieldDesc {
 		Type: meta.TypeFloat64,
 		Tags: &dsl.FieldTags{
 			MapConv: ",omitempty",
-			JSON:    ",omitempty",
 		},
 	}
 }
@@ -2440,7 +2429,6 @@ func (f *fieldsDef) MonitorDatabaseTotalDisk1Size() *dsl.FieldDesc {
 		Type: meta.TypeFloat64,
 		Tags: &dsl.FieldTags{
 			MapConv: ",omitempty",
-			JSON:    ",omitempty",
 		},
 	}
 }
@@ -2451,7 +2439,6 @@ func (f *fieldsDef) MonitorDatabaseUsedDisk1Size() *dsl.FieldDesc {
 		Type: meta.TypeFloat64,
 		Tags: &dsl.FieldTags{
 			MapConv: ",omitempty",
-			JSON:    ",omitempty",
 		},
 	}
 }
@@ -2462,7 +2449,6 @@ func (f *fieldsDef) MonitorDatabaseTotalDisk2Size() *dsl.FieldDesc {
 		Type: meta.TypeFloat64,
 		Tags: &dsl.FieldTags{
 			MapConv: ",omitempty",
-			JSON:    ",omitempty",
 		},
 	}
 }
@@ -2473,7 +2459,6 @@ func (f *fieldsDef) MonitorDatabaseUsedDisk2Size() *dsl.FieldDesc {
 		Type: meta.TypeFloat64,
 		Tags: &dsl.FieldTags{
 			MapConv: ",omitempty",
-			JSON:    ",omitempty",
 		},
 	}
 }
@@ -2484,7 +2469,6 @@ func (f *fieldsDef) MonitorDatabaseBinlogUsedSizeKiB() *dsl.FieldDesc {
 		Type: meta.TypeFloat64,
 		Tags: &dsl.FieldTags{
 			MapConv: ",omitempty",
-			JSON:    ",omitempty",
 		},
 	}
 }
@@ -2495,7 +2479,6 @@ func (f *fieldsDef) MonitorDatabaseDelayTimeSec() *dsl.FieldDesc {
 		Type: meta.TypeFloat64,
 		Tags: &dsl.FieldTags{
 			MapConv: ",omitempty",
-			JSON:    ",omitempty",
 		},
 	}
 }
@@ -2506,7 +2489,6 @@ func (f *fieldsDef) MonitorResponseTimeSec() *dsl.FieldDesc {
 		Type: meta.TypeFloat64,
 		Tags: &dsl.FieldTags{
 			MapConv: ",omitempty",
-			JSON:    ",omitempty",
 		},
 	}
 }
@@ -2517,7 +2499,6 @@ func (f *fieldsDef) MonitorUplinkBPS() *dsl.FieldDesc {
 		Type: meta.TypeFloat64,
 		Tags: &dsl.FieldTags{
 			MapConv: ",omitempty",
-			JSON:    ",omitempty",
 		},
 	}
 }
@@ -2528,7 +2509,6 @@ func (f *fieldsDef) MonitorDownlinkBPS() *dsl.FieldDesc {
 		Type: meta.TypeFloat64,
 		Tags: &dsl.FieldTags{
 			MapConv: ",omitempty",
-			JSON:    ",omitempty",
 		},
 	}
 }
@@ -2539,7 +2519,6 @@ func (f *fieldsDef) MonitorActiveConnections() *dsl.FieldDesc {
 		Type: meta.TypeFloat64,
 		Tags: &dsl.FieldTags{
 			MapConv: ",omitempty",
-			JSON:    ",omitempty",
 		},
 	}
 }
@@ -2550,7 +2529,6 @@ func (f *fieldsDef) MonitorConnectionsPerSec() *dsl.FieldDesc {
 		Type: meta.TypeFloat64,
 		Tags: &dsl.FieldTags{
 			MapConv: ",omitempty",
-			JSON:    ",omitempty",
 		},
 	}
 }
@@ -2561,7 +2539,6 @@ func (f *fieldsDef) MonitorLocalRouterReceiveBytesPerSec() *dsl.FieldDesc {
 		Type: meta.TypeFloat64,
 		Tags: &dsl.FieldTags{
 			MapConv: ",omitempty",
-			JSON:    ",omitempty",
 		},
 	}
 }
@@ -2572,7 +2549,6 @@ func (f *fieldsDef) MonitorLocalRouterSendBytesPerSec() *dsl.FieldDesc {
 		Type: meta.TypeFloat64,
 		Tags: &dsl.FieldTags{
 			MapConv: ",omitempty",
-			JSON:    ",omitempty",
 		},
 	}
 }
