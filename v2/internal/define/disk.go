@@ -279,6 +279,7 @@ var (
 			fields.BundleInfo(),
 			fields.Storage(),
 			fields.ServerID(),
+			fields.ServerName(),
 			fields.IconID(),
 			fields.CreatedAt(),
 			fields.ModifiedAt(),

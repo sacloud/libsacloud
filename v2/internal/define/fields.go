@@ -460,6 +460,16 @@ func (f *fieldsDef) ServerID() *dsl.FieldDesc {
 	}
 }
 
+func (f *fieldsDef) ServerName() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "ServerName",
+		Tags: &dsl.FieldTags{
+			MapConv: "Server.Name,omitempty",
+		},
+		Type: meta.TypeString,
+	}
+}
+
 func (f *fieldsDef) PrivateHostHostName() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "HostName",
