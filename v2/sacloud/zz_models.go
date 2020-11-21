@@ -6723,6 +6723,7 @@ type Disk struct {
 	BundleInfo                *BundleInfo         `json:",omitempty" mapconv:",omitempty,recursive"`
 	Storage                   *Storage            `json:",omitempty" mapconv:",omitempty,recursive"`
 	ServerID                  types.ID            `mapconv:"Server.ID,omitempty"`
+	ServerName                string              `mapconv:"Server.Name,omitempty"`
 	IconID                    types.ID            `mapconv:"Icon.ID"`
 	CreatedAt                 time.Time
 	ModifiedAt                time.Time
@@ -6757,6 +6758,7 @@ func (o *Disk) setDefaults() interface{} {
 		BundleInfo                *BundleInfo         `json:",omitempty" mapconv:",omitempty,recursive"`
 		Storage                   *Storage            `json:",omitempty" mapconv:",omitempty,recursive"`
 		ServerID                  types.ID            `mapconv:"Server.ID,omitempty"`
+		ServerName                string              `mapconv:"Server.Name,omitempty"`
 		IconID                    types.ID            `mapconv:"Icon.ID"`
 		CreatedAt                 time.Time
 		ModifiedAt                time.Time
@@ -6782,6 +6784,7 @@ func (o *Disk) setDefaults() interface{} {
 		BundleInfo:                o.GetBundleInfo(),
 		Storage:                   o.GetStorage(),
 		ServerID:                  o.GetServerID(),
+		ServerName:                o.GetServerName(),
 		IconID:                    o.GetIconID(),
 		CreatedAt:                 o.GetCreatedAt(),
 		ModifiedAt:                o.GetModifiedAt(),
@@ -7051,6 +7054,16 @@ func (o *Disk) GetServerID() types.ID {
 // SetServerID sets value to ServerID
 func (o *Disk) SetServerID(v types.ID) {
 	o.ServerID = v
+}
+
+// GetServerName returns value of ServerName
+func (o *Disk) GetServerName() string {
+	return o.ServerName
+}
+
+// SetServerName sets value to ServerName
+func (o *Disk) SetServerName(v string) {
+	o.ServerName = v
 }
 
 // GetIconID returns value of IconID
