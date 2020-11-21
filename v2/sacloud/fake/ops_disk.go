@@ -46,6 +46,11 @@ func (o *DiskOp) Create(ctx context.Context, zone string, param *sacloud.DiskCre
 	copySameNameField(param, result)
 	fill(result, fillID, fillCreatedAt, fillDiskPlan)
 
+	result.Storage = &sacloud.Storage{
+		ID:   types.ID(123456789012),
+		Name: "dummy",
+	}
+
 	if result.Connection == types.EDiskConnection("") {
 		result.Connection = types.DiskConnections.VirtIO
 	}
