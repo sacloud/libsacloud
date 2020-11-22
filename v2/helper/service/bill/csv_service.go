@@ -46,7 +46,7 @@ func (s *Service) CsvWithContext(ctx context.Context, req *CsvRequest) (*sacloud
 	}
 
 	// get latest bill ID if empty
-	billID := req.BillID
+	billID := req.ID
 	if billID.IsEmpty() {
 		bills, err := billOp.ByContract(ctx, auth.AccountID)
 		if err != nil {

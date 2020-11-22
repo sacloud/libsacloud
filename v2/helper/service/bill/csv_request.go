@@ -20,7 +20,7 @@ import (
 )
 
 type CsvRequest struct {
-	BillID types.ID
+	ID types.ID
 }
 
 func (req *CsvRequest) Validate() error {
