@@ -50,7 +50,7 @@ func (s *Service) CreateWithContext(ctx context.Context, req *CreateRequest) (*s
 
 	client := sacloud.NewCDROMOp(s.caller)
 	cdrom, ftpServer, err := client.Create(ctx, req.Zone, &sacloud.CDROMCreateRequest{
-		SizeMB:      req.SizeGB * size.MiB,
+		SizeMB:      req.SizeGB * size.GiB,
 		Name:        req.Name,
 		Description: req.Description,
 		Tags:        req.Tags,
