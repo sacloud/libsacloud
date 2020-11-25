@@ -64,6 +64,16 @@ func TestFilter(t *testing.T) {
 			},
 			expect: `{"field":"value1%20value2"}`,
 		},
+		// escape query string
+		{
+			conditions: []*inputKeyValue{
+				{
+					key:       Key("field"),
+					condition: AndEqual("00:00:5E:00:53:00", "00:00:5E:00:53:01"),
+				},
+			},
+			expect: `{"field":"00:00:5E:00:53:00%2000:00:5E:00:53:01"}`,
+		},
 		// multiple keys(AND)
 		{
 			conditions: []*inputKeyValue{
