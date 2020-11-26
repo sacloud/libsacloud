@@ -16,9 +16,13 @@ package mobilegateway
 
 import (
 	"context"
+	"fmt"
 
+	"github.com/sacloud/libsacloud/v2/helper/cleanup"
 	"github.com/sacloud/libsacloud/v2/helper/service"
+	"github.com/sacloud/libsacloud/v2/helper/wait"
 	"github.com/sacloud/libsacloud/v2/sacloud"
+	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
 func (s *Service) Delete(req *DeleteRequest) error {
@@ -31,8 +35,38 @@ func (s *Service) DeleteWithContext(ctx context.Context, req *DeleteRequest) err
 	}
 
 	client := sacloud.NewMobileGatewayOp(s.caller)
-	if err := client.Delete(ctx, req.Zone, req.ID); err != nil {
+	target, err := client.Read(ctx, req.Zone, req.ID)
+	if err != nil {
 		return service.HandleNotFoundError(err, !req.FailIfNotFound)
 	}
+
+	if !req.Force && target.InstanceStatus.IsUp() {
+		return fmt.Errorf("target %s:%q has not yet shut down", req.Zone, req.ID)
+	}
+
+	if target.InstanceStatus.IsUp() {
+		if err := client.Shutdown(ctx, req.Zone, req.ID, &sacloud.ShutdownOption{Force: true}); err != nil {
+			return err
+		}
+	}
+
+	// 元の状態がUnknownでなければwait
+	if target.InstanceStatus != types.ServerInstanceStatuses.Unknown {
+		if _, err := wait.UntilMobileGatewayIsDown(ctx, client, req.Zone, req.ID); err != nil {
+			return err
+		}
+	}
+
+	if req.Force {
+		simOp := sacloud.NewSIMOp(s.caller)
+		if err := cleanup.DeleteMobileGateway(ctx, client, simOp, req.Zone, req.ID); err != nil {
+			return service.HandleNotFoundError(err, !req.FailIfNotFound)
+		}
+	} else {
+		if err := client.Delete(ctx, req.Zone, req.ID); err != nil {
+			return service.HandleNotFoundError(err, !req.FailIfNotFound)
+		}
+	}
+
 	return nil
 }

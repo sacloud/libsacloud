@@ -24,6 +24,7 @@ type DeleteRequest struct {
 	ID   types.ID `request:"-" validate:"required"`
 
 	FailIfNotFound bool `request:"-"`
+	Force          bool `request:"-"` // trueの場合は電源OFF(強制終了)し、SIMルートやSIMの登録を削除してからDeleteする
 }
 
 func (req *DeleteRequest) Validate() error {
