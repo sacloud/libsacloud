@@ -22,7 +22,7 @@ import (
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
-func TestBuilder_Build(t *testing.T) {
+func TestLocalRouterBuilder_Build(t *testing.T) {
 	var testZone = testutil.TestZone()
 	var peerLocalRouter *sacloud.LocalRouter
 	var sw *sacloud.Switch
@@ -107,6 +107,42 @@ func TestBuilder_Build(t *testing.T) {
 				}
 				sacloud.NewSwitchOp(caller).Delete(ctx, testZone, sw.ID) // nolint
 				return nil
+			},
+		},
+	})
+}
+
+func TestLocalRouterBuilder_minimum(t *testing.T) {
+	testutil.RunCRUD(t, &testutil.CRUDTestCase{
+		SetupAPICallerFunc: func() sacloud.APICaller {
+			return testutil.SingletonAPICaller()
+		},
+		Parallel:          true,
+		IgnoreStartupWait: true,
+		Create: &testutil.CRUDTestFunc{
+			Func: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+				builder := &Builder{
+					Name:   testutil.ResourceName("local-router-builder"),
+					Client: NewAPIClient(caller),
+				}
+				return builder.Build(ctx)
+			},
+		},
+		Read: &testutil.CRUDTestFunc{
+			Func: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+				return sacloud.NewLocalRouterOp(caller).Read(ctx, ctx.ID)
+			},
+			CheckFunc: func(t testutil.TestT, ctx *testutil.CRUDTestContext, value interface{}) error {
+				lr := value.(*sacloud.LocalRouter)
+				return testutil.DoAsserts(
+					testutil.AssertNotNilFunc(t, lr, "LocalRouter"),
+				)
+			},
+		},
+		Delete: &testutil.CRUDTestDeleteFunc{
+			Func: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {
+				lrOp := sacloud.NewLocalRouterOp(caller)
+				return lrOp.Delete(ctx, ctx.ID)
 			},
 		},
 	})
