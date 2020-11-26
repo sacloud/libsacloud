@@ -59,11 +59,14 @@ func (s *Service) DeleteWithContext(ctx context.Context, req *DeleteRequest) err
 
 	if req.Force {
 		simOp := sacloud.NewSIMOp(s.caller)
-		return cleanup.DeleteMobileGateway(ctx, client, simOp, req.Zone, req.ID)
+		if err := cleanup.DeleteMobileGateway(ctx, client, simOp, req.Zone, req.ID); err != nil {
+			return service.HandleNotFoundError(err, !req.FailIfNotFound)
+		}
+	} else {
+		if err := client.Delete(ctx, req.Zone, req.ID); err != nil {
+			return service.HandleNotFoundError(err, !req.FailIfNotFound)
+		}
 	}
 
-	if err := client.Delete(ctx, req.Zone, req.ID); err != nil {
-		return service.HandleNotFoundError(err, !req.FailIfNotFound)
-	}
 	return nil
 }
