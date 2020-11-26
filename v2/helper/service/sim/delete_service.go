@@ -16,9 +16,14 @@ package sim
 
 import (
 	"context"
+	"time"
+
+	"github.com/sacloud/libsacloud/v2/sacloud"
+
+	"github.com/sacloud/libsacloud/v2/helper/cleanup"
+	"github.com/sacloud/libsacloud/v2/helper/query"
 
 	"github.com/sacloud/libsacloud/v2/helper/service"
-	"github.com/sacloud/libsacloud/v2/sacloud"
 )
 
 func (s *Service) Delete(req *DeleteRequest) error {
@@ -30,9 +35,19 @@ func (s *Service) DeleteWithContext(ctx context.Context, req *DeleteRequest) err
 		return err
 	}
 
-	client := sacloud.NewSIMOp(s.caller)
-	if err := client.Delete(ctx, req.ID); err != nil {
-		return service.HandleNotFoundError(err, !req.FailIfNotFound)
+	if req.WaitForRelease {
+		opt := query.CheckReferencedOption{
+			Timeout: time.Duration(req.WaitForReleaseTimeout) * time.Second,
+			Tick:    time.Duration(req.WaitForReleaseTick) * time.Second,
+		}
+		if err := cleanup.DeleteSIMWithReferencedCheck(ctx, s.caller, req.Zones, req.ID, opt); err != nil {
+			return service.HandleNotFoundError(err, !req.FailIfNotFound)
+		}
+	} else {
+		client := sacloud.NewSIMOp(s.caller)
+		if err := cleanup.DeleteSIM(ctx, client, req.ID); err != nil {
+			return service.HandleNotFoundError(err, !req.FailIfNotFound)
+		}
 	}
 	return nil
 }

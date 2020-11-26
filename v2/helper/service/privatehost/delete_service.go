@@ -16,6 +16,10 @@ package privatehost
 
 import (
 	"context"
+	"time"
+
+	"github.com/sacloud/libsacloud/v2/helper/cleanup"
+	"github.com/sacloud/libsacloud/v2/helper/query"
 
 	"github.com/sacloud/libsacloud/v2/helper/service"
 	"github.com/sacloud/libsacloud/v2/sacloud"
@@ -30,9 +34,19 @@ func (s *Service) DeleteWithContext(ctx context.Context, req *DeleteRequest) err
 		return err
 	}
 
-	client := sacloud.NewPrivateHostOp(s.caller)
-	if err := client.Delete(ctx, req.Zone, req.ID); err != nil {
-		return service.HandleNotFoundError(err, !req.FailIfNotFound)
+	if req.WaitForRelease {
+		opt := query.CheckReferencedOption{
+			Timeout: time.Duration(req.WaitForReleaseTimeout) * time.Second,
+			Tick:    time.Duration(req.WaitForReleaseTick) * time.Second,
+		}
+		if err := cleanup.DeletePrivateHost(ctx, s.caller, req.Zone, req.ID, opt); err != nil {
+			return service.HandleNotFoundError(err, !req.FailIfNotFound)
+		}
+	} else {
+		client := sacloud.NewPrivateHostOp(s.caller)
+		if err := client.Delete(ctx, req.Zone, req.ID); err != nil {
+			return service.HandleNotFoundError(err, !req.FailIfNotFound)
+		}
 	}
 	return nil
 }
