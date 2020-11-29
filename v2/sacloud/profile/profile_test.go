@@ -17,6 +17,7 @@
 package profile
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -427,6 +428,41 @@ func Test_Save(t *testing.T) {
 
 		require.True(t, fileExists(filepath.Dir(path)))
 		require.True(t, fileExists(path))
+	})
+	t.Run("Merge extended config value when saving config value", func(t *testing.T) {
+		defer cleanupProfile(testProfileName)
+
+		val := &extendedConfigValue{
+			ConfigValue: ConfigValue{
+				AccessToken:       "test-token",
+				AccessTokenSecret: "test-secret",
+			},
+			Added: "added",
+		}
+		err := Save(testProfileName, val)
+		require.NoError(t, err)
+
+		val2 := &ConfigValue{
+			AccessToken:       "test-token",
+			AccessTokenSecret: "test-secret",
+		}
+		err = Save(testProfileName, val2)
+		require.NoError(t, err)
+
+		targetFile, err := ConfigFilePath(testProfileName)
+		require.NoError(t, err)
+
+		data, err := ioutil.ReadFile(targetFile)
+		require.NoError(t, err)
+
+		var mapData map[string]interface{}
+		err = json.Unmarshal(data, &mapData)
+		require.NoError(t, err)
+
+		// check extended fields
+		got, ok := mapData["Added"]
+		require.True(t, ok)
+		require.Equal(t, "added", got.(string))
 	})
 	t.Run("Invalid profile name", func(t *testing.T) {
 		defer cleanupProfile(testProfileName)
