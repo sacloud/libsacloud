@@ -15,37 +15,48 @@
 package database
 
 import (
+	"context"
+
 	"github.com/sacloud/libsacloud/v2/helper/service"
+
 	"github.com/sacloud/libsacloud/v2/helper/validate"
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
 type UpdateRequest struct {
-	Zone string   `request:"-" validate:"required"`
-	ID   types.ID `request:"-" validate:"required"`
+	Zone string   `validate:"required"`
+	ID   types.ID `validate:"required"`
 
-	Name               *string                             `request:",omitempty" validate:"omitempty,min=1"`
-	Description        *string                             `request:",omitempty" validate:"omitempty,min=1,max=512"`
-	Tags               *types.Tags                         `request:",omitempty"`
-	IconID             *types.ID                           `request:",omitempty"`
-	CommonSetting      *sacloud.DatabaseSettingCommon      `request:",omitempty"`
-	BackupSetting      *sacloud.DatabaseSettingBackup      `request:",omitempty"`
-	ReplicationSetting *sacloud.DatabaseReplicationSetting `request:",omitempty"`
-	SettingsHash       string
+	Name        *string     `request:",omitempty" validate:"omitempty,min=1"`
+	Description *string     `request:",omitempty" validate:"omitempty,min=1,max=512"`
+	Tags        *types.Tags `request:",omitempty"`
+	IconID      *types.ID   `request:",omitempty"`
+
+	SourceNetwork         *[]string                   `request:",omitempty" validate:"omitempty,dive,cidrv4"`
+	EnableReplication     *bool                       `request:",omitempty"`
+	ReplicaUserPassword   *string                     `request:",omitempty" validate:"required_with=EnableReplication"`
+	EnableWebUI           *bool                       `request:",omitempty"`
+	EnableBackup          *bool                       `request:",omitempty"`
+	BackupWeekdays        *[]types.EBackupSpanWeekday `request:",omitempty" validate:"required_with=EnableBackup,max=7"`
+	BackupStartTimeHour   *int                        `request:",omitempty" validate:"omitempty,min=0,max=23"`
+	BackupStartTimeMinute *int                        `request:",omitempty" validate:"omitempty,oneof=0 15 30 45"`
+
+	SettingsHash string
+	NoWait       bool
 }
 
 func (req *UpdateRequest) Validate() error {
 	return validate.Struct(req)
 }
 
-func (req *UpdateRequest) ToRequestParameter(current *sacloud.Database) (*sacloud.DatabaseUpdateRequest, error) {
-	r := &sacloud.DatabaseUpdateRequest{}
-	if err := service.RequestConvertTo(current, r); err != nil {
+func (req *UpdateRequest) Builder(ctx context.Context, caller sacloud.APICaller) (*Builder, error) {
+	builder, err := BuilderFromResource(ctx, caller, req.Zone, req.ID)
+	if err != nil {
 		return nil, err
 	}
-	if err := service.RequestConvertTo(req, r); err != nil {
+	if err := service.RequestConvertTo(req, builder); err != nil {
 		return nil, err
 	}
-	return r, nil
+	return builder, nil
 }
