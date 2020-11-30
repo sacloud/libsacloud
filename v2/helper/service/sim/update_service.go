@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/sacloud/libsacloud/v2/helper/query"
 	"github.com/sacloud/libsacloud/v2/sacloud"
 )
 
@@ -41,5 +42,9 @@ func (s *Service) UpdateWithContext(ctx context.Context, req *UpdateRequest) (*s
 		return nil, fmt.Errorf("processing request parameter failed: %s", err)
 	}
 
-	return client.Update(ctx, req.ID, params)
+	updated, err := client.Update(ctx, req.ID, params)
+	if err != nil {
+		return updated, err
+	}
+	return query.FindSIMByID(ctx, client, updated.ID)
 }
