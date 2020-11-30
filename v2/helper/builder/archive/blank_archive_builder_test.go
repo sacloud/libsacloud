@@ -16,12 +16,28 @@ package archive
 
 import (
 	"bytes"
+	"context"
 	"testing"
+
+	"github.com/stretchr/testify/require"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/testutil"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
+
+func TestBlankArchiveBuilder_Validate(t *testing.T) {
+	builder := &BlankArchiveBuilder{
+		Name:         "test",
+		SizeGB:       20,
+		SourceReader: bytes.NewBufferString(""),
+		NoWait:       true,
+		Client:       NewAPIClient(testutil.SingletonAPICaller()),
+	}
+
+	err := builder.Validate(context.Background(), testutil.TestZone())
+	require.EqualError(t, err, "NoWait=true is not supported when uploading files and creating archives")
+}
 
 func TestBlankArchiveBuilder_Build(t *testing.T) {
 	if !testutil.IsAccTest() {

@@ -29,11 +29,10 @@ func (s *Service) CreateWithContext(ctx context.Context, req *CreateRequest) (*s
 		return nil, err
 	}
 
-	params, err := req.ToRequestParameter()
+	builder, err := req.Builder(s.caller)
 	if err != nil {
 		return nil, err
 	}
 
-	client := sacloud.NewDatabaseOp(s.caller)
-	return client.Create(ctx, req.Zone, params)
+	return builder.Build(ctx)
 }
