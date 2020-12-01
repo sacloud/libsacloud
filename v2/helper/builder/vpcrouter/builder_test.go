@@ -172,15 +172,13 @@ func TestBuilder_BuildWithRouter(t *testing.T) {
 					NICSetting: &PremiumNICSetting{
 						SwitchID:         routerSwitchID,
 						VirtualIPAddress: addresses[0],
-						IPAddress1:       addresses[1],
-						IPAddress2:       addresses[2],
+						IPAddresses:      []string{addresses[1], addresses[2]},
 						IPAliases:        []string{addresses[3], addresses[4]},
 					},
 					AdditionalNICSettings: []AdditionalNICSettingHolder{
 						&AdditionalPremiumNICSetting{
 							SwitchID:         switchID,
-							IPAddress1:       "192.168.0.11",
-							IPAddress2:       "192.168.0.12",
+							IPAddresses:      []string{"192.168.0.11", "192.168.0.12"},
 							VirtualIPAddress: "192.168.0.1",
 							NetworkMaskLen:   24,
 							Index:            2,
@@ -234,16 +232,14 @@ func TestBuilder_BuildWithRouter(t *testing.T) {
 						NICSetting: &PremiumNICSetting{
 							SwitchID:         routerSwitchID,
 							VirtualIPAddress: addresses[0],
-							IPAddress1:       addresses[1],
-							IPAddress2:       addresses[2],
+							IPAddresses:      []string{addresses[1], addresses[2]},
 							IPAliases:        []string{addresses[3], addresses[4]},
 						},
 						AdditionalNICSettings: []AdditionalNICSettingHolder{
 							&AdditionalPremiumNICSetting{
 								SwitchID:         updSwitchID,
 								VirtualIPAddress: "192.168.0.5",
-								IPAddress1:       "192.168.0.6",
-								IPAddress2:       "192.168.0.7",
+								IPAddresses:      []string{"192.168.0.6", "192.168.0.7"},
 								NetworkMaskLen:   28,
 								Index:            3,
 							},

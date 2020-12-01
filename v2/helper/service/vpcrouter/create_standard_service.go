@@ -20,11 +20,11 @@ import (
 	"github.com/sacloud/libsacloud/v2/sacloud"
 )
 
-func (s *Service) Create(req *CreateRequest) (*sacloud.VPCRouter, error) {
-	return s.CreateWithContext(context.Background(), req)
+func (s *Service) CreateStandard(req *CreateStandardRequest) (*sacloud.VPCRouter, error) {
+	return s.CreateStandardWithContext(context.Background(), req)
 }
 
-func (s *Service) CreateWithContext(ctx context.Context, req *CreateRequest) (*sacloud.VPCRouter, error) {
+func (s *Service) CreateStandardWithContext(ctx context.Context, req *CreateStandardRequest) (*sacloud.VPCRouter, error) {
 	if err := req.Validate(); err != nil {
 		return nil, err
 	}
