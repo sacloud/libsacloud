@@ -74,8 +74,10 @@ func (req *ApplyRequest) Validate() error {
 }
 
 func (req *ApplyRequest) Builder(caller sacloud.APICaller) (diskBuilder.Builder, error) {
-	editParameter := &diskBuilder.EditRequest{}
+	var editParameter *diskBuilder.EditRequest
+
 	if req.EditParameter != nil {
+		editParameter = &diskBuilder.EditRequest{}
 		if err := service.RequestConvertTo(req.EditParameter, editParameter); err != nil {
 			return nil, err
 		}

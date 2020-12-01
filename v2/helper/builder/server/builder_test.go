@@ -330,6 +330,7 @@ type dummyDiskBuilder struct {
 	updateResult *disk.UpdateResult
 	diskID       types.ID
 	updateLevel  builder.UpdateLevel
+	noWait       bool
 	err          error
 }
 
@@ -358,6 +359,10 @@ func (d *dummyDiskBuilder) DiskID() types.ID {
 
 func (d *dummyDiskBuilder) UpdateLevel(ctx context.Context, zone string, disk *sacloud.Disk) builder.UpdateLevel {
 	return d.updateLevel
+}
+
+func (d *dummyDiskBuilder) NoWaitFlag() bool {
+	return d.noWait
 }
 
 func TestBuilder_Build_BlackBox(t *testing.T) {
