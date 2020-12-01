@@ -29,11 +29,15 @@ func (s *Service) CreateWithContext(ctx context.Context, req *CreateRequest) (*s
 		return nil, err
 	}
 
-	params, err := req.ToRequestParameter(ctx, s.caller)
+	builder, err := req.Builder(s.caller)
 	if err != nil {
 		return nil, err
 	}
 
-	client := sacloud.NewDiskOp(s.caller)
-	return client.Create(ctx, req.Zone, params, req.DistantFrom)
+	result, err := builder.Build(ctx, req.Zone, req.ServerID)
+	if err != nil {
+		return nil, err
+	}
+
+	return sacloud.NewDiskOp(s.caller).Read(ctx, req.Zone, result.DiskID)
 }

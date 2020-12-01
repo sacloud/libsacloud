@@ -15,10 +15,10 @@
 package disk
 
 import (
-	"context"
 	"fmt"
 
-	"github.com/sacloud/libsacloud/v2/helper/query"
+	diskBuilder "github.com/sacloud/libsacloud/v2/helper/builder/disk"
+
 	"github.com/sacloud/libsacloud/v2/helper/service"
 	"github.com/sacloud/libsacloud/v2/helper/validate"
 	"github.com/sacloud/libsacloud/v2/sacloud"
@@ -42,6 +42,9 @@ type CreateRequest struct {
 	SizeGB          int `request:"SizeMB,filters=gb_to_mb"`
 	DistantFrom     []types.ID
 	OSType          ostype.ArchiveOSType
+	EditParameter   *EditParameter
+
+	NoWait bool
 }
 
 func (req *CreateRequest) Validate() error {
@@ -53,18 +56,29 @@ func (req *CreateRequest) Validate() error {
 	return validate.Struct(req)
 }
 
-func (req *CreateRequest) ToRequestParameter(ctx context.Context, caller sacloud.APICaller) (*sacloud.DiskCreateRequest, error) {
-	if req.OSType != ostype.Custom {
-		archive, err := query.FindArchiveByOSType(ctx, sacloud.NewArchiveOp(caller), req.Zone, req.OSType)
-		if err != nil {
+func (req *CreateRequest) Builder(caller sacloud.APICaller) (diskBuilder.Builder, error) {
+	editParameter := &diskBuilder.EditRequest{}
+	if req.EditParameter != nil {
+		if err := service.RequestConvertTo(req.EditParameter, editParameter); err != nil {
 			return nil, err
 		}
-		req.SourceArchiveID = archive.ID
 	}
 
-	params := &sacloud.DiskCreateRequest{}
-	if err := service.RequestConvertTo(req, params); err != nil {
-		return nil, err
+	director := &diskBuilder.Director{
+		OSType:          req.OSType,
+		Name:            req.Name,
+		SizeGB:          req.SizeGB,
+		DistantFrom:     req.DistantFrom,
+		PlanID:          req.DiskPlanID,
+		Connection:      req.Connection,
+		Description:     req.Description,
+		Tags:            req.Tags,
+		IconID:          req.IconID,
+		SourceDiskID:    req.SourceDiskID,
+		SourceArchiveID: req.SourceArchiveID,
+		EditParameter:   editParameter,
+		NoWait:          req.NoWait,
+		Client:          diskBuilder.NewBuildersAPIClient(caller),
 	}
-	return params, nil
+	return director.Builder(), nil
 }
