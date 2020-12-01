@@ -16,18 +16,24 @@ package vpcrouter
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
 )
 
-func (s *Service) Create(req *CreateRequest) (*sacloud.VPCRouter, error) {
-	return s.CreateWithContext(context.Background(), req)
+func (s *Service) UpdateStandard(req *UpdateStandardRequest) (*sacloud.VPCRouter, error) {
+	return s.UpdateStandardWithContext(context.Background(), req)
 }
 
-func (s *Service) CreateWithContext(ctx context.Context, req *CreateRequest) (*sacloud.VPCRouter, error) {
+func (s *Service) UpdateStandardWithContext(ctx context.Context, req *UpdateStandardRequest) (*sacloud.VPCRouter, error) {
 	if err := req.Validate(); err != nil {
 		return nil, err
 	}
 
-	return s.ApplyWithContext(ctx, req.ApplyRequest())
+	applyRequest, err := req.ApplyRequest(ctx, s.caller)
+	if err != nil {
+		return nil, fmt.Errorf("processing request parameter failed: %s", err)
+	}
+
+	return s.ApplyWithContext(ctx, applyRequest)
 }
