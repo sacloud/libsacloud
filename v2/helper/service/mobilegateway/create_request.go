@@ -15,6 +15,7 @@
 package mobilegateway
 
 import (
+	mobileGatewayBuilder "github.com/sacloud/libsacloud/v2/helper/builder/mobilegateway"
 	"github.com/sacloud/libsacloud/v2/helper/service"
 	"github.com/sacloud/libsacloud/v2/helper/validate"
 	"github.com/sacloud/libsacloud/v2/sacloud"
@@ -28,19 +29,26 @@ type CreateRequest struct {
 	Description                     string `validate:"min=0,max=512"`
 	Tags                            types.Tags
 	IconID                          types.ID
+	PrivateInterface                *PrivateInterfaceSetting `validate:"omitempty"`
 	StaticRoutes                    []*sacloud.MobileGatewayStaticRoute
-	InternetConnectionEnabled       types.StringFlag
-	InterDeviceCommunicationEnabled types.StringFlag
+	SimRoutes                       []*SIMRouteSetting
+	InternetConnectionEnabled       bool
+	InterDeviceCommunicationEnabled bool
+	DNS                             *sacloud.MobileGatewayDNSSetting
+	SIMs                            []*SIMSetting
+	TrafficConfig                   *sacloud.MobileGatewayTrafficControl
+
+	NoWait bool
 }
 
 func (req *CreateRequest) Validate() error {
 	return validate.Struct(req)
 }
 
-func (req *CreateRequest) ToRequestParameter() (*sacloud.MobileGatewayCreateRequest, error) {
-	params := &sacloud.MobileGatewayCreateRequest{}
-	if err := service.RequestConvertTo(req, params); err != nil {
+func (req *CreateRequest) Builder(caller sacloud.APICaller) (*mobileGatewayBuilder.Builder, error) {
+	builder := &mobileGatewayBuilder.Builder{Client: mobileGatewayBuilder.NewAPIClient(caller)}
+	if err := service.RequestConvertTo(req, builder); err != nil {
 		return nil, err
 	}
-	return params, nil
+	return builder, nil
 }

@@ -31,11 +31,14 @@ type ApplyRequest struct {
 	PrivateInterface                *PrivateInterfaceSetting `validate:"omitempty"`
 	StaticRoutes                    []*sacloud.MobileGatewayStaticRoute
 	SimRoutes                       []*SIMRouteSetting
-	InternetConnectionEnabled       types.StringFlag
-	InterDeviceCommunicationEnabled types.StringFlag
+	InternetConnectionEnabled       bool
+	InterDeviceCommunicationEnabled bool
 	DNS                             *sacloud.MobileGatewayDNSSetting
 	SIMs                            []*SIMSetting
 	TrafficConfig                   *sacloud.MobileGatewayTrafficControl
+
+	SettingsHash string
+	NoWait       bool
 }
 
 func (req *ApplyRequest) Validate() error {
@@ -45,7 +48,7 @@ func (req *ApplyRequest) Validate() error {
 // PrivateInterfaceSetting represents API parameter/response structure
 type PrivateInterfaceSetting struct {
 	SwitchID       types.ID
-	IPAddress      []string `validate:"ipv4"`
+	IPAddress      string `validate:"ipv4"`
 	NetworkMaskLen int
 }
 
