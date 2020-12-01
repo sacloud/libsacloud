@@ -36,6 +36,7 @@ type Builder interface {
 	Update(ctx context.Context, zone string) (*UpdateResult, error)
 	DiskID() types.ID
 	UpdateLevel(ctx context.Context, zone string, disk *sacloud.Disk) builder.UpdateLevel
+	NoWaitFlag() bool
 }
 
 // BuildResult ディスク構築結果
@@ -178,7 +179,7 @@ func (d *FromUnixBuilder) createDiskParameter(ctx context.Context, client *APICl
 	return createReq, editReq, nil
 }
 
-func (d *FromUnixBuilder) noWait() bool {
+func (d *FromUnixBuilder) NoWaitFlag() bool {
 	return d.NoWait
 }
 
@@ -273,7 +274,7 @@ func (d *FromFixedArchiveBuilder) createDiskParameter(ctx context.Context, clien
 	return createReq, nil, nil
 }
 
-func (d *FromFixedArchiveBuilder) noWait() bool {
+func (d *FromFixedArchiveBuilder) NoWaitFlag() bool {
 	return d.NoWait
 }
 
@@ -370,7 +371,7 @@ func (d *FromWindowsBuilder) createDiskParameter(ctx context.Context, client *AP
 	return createReq, editReq, nil
 }
 
-func (d *FromWindowsBuilder) noWait() bool {
+func (d *FromWindowsBuilder) NoWaitFlag() bool {
 	return d.NoWait
 }
 
@@ -509,7 +510,7 @@ func (d *FromDiskOrArchiveBuilder) createDiskParameter(ctx context.Context, clie
 	return createReq, editReq, nil
 }
 
-func (d *FromDiskOrArchiveBuilder) noWait() bool {
+func (d *FromDiskOrArchiveBuilder) NoWaitFlag() bool {
 	return d.NoWait
 }
 
@@ -586,7 +587,7 @@ func (d *BlankBuilder) createDiskParameter(ctx context.Context, client *APIClien
 	return createReq, nil, nil
 }
 
-func (d *BlankBuilder) noWait() bool {
+func (d *BlankBuilder) NoWaitFlag() bool {
 	return d.NoWait
 }
 
@@ -704,7 +705,7 @@ func (d *ConnectedDiskBuilder) createDiskParameter(
 	return nil, nil, nil
 }
 
-func (d *ConnectedDiskBuilder) noWait() bool {
+func (d *ConnectedDiskBuilder) NoWaitFlag() bool {
 	return d.NoWait
 }
 
@@ -717,7 +718,7 @@ type diskBuilder interface {
 	) (*sacloud.DiskCreateRequest, *sacloud.DiskEditRequest, error)
 	updateDiskParameter() *sacloud.DiskUpdateRequest
 	DiskID() types.ID
-	noWait() bool
+	NoWaitFlag() bool
 }
 
 func build(ctx context.Context, client *APIClient, zone string, serverID types.ID, distantFrom []types.ID, builder diskBuilder) (*BuildResult, error) {
@@ -746,7 +747,7 @@ func build(ctx context.Context, client *APIClient, zone string, serverID types.I
 		return nil, err
 	}
 
-	if builder.noWait() {
+	if builder.NoWaitFlag() {
 		return &BuildResult{DiskID: disk.ID}, nil
 	}
 
@@ -798,7 +799,7 @@ func update(ctx context.Context, client *APIClient, zone string, builder diskBui
 		}
 	}
 
-	if builder.noWait() {
+	if builder.NoWaitFlag() {
 		return &UpdateResult{Disk: disk}, nil
 	}
 
