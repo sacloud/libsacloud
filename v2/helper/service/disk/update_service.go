@@ -30,16 +30,14 @@ func (s *Service) UpdateWithContext(ctx context.Context, req *UpdateRequest) (*s
 		return nil, err
 	}
 
-	client := sacloud.NewDiskOp(s.caller)
-	current, err := client.Read(ctx, req.Zone, req.ID)
-	if err != nil {
-		return nil, fmt.Errorf("reading Disk[%s] failed: %s", req.ID, err)
-	}
-
-	params, err := req.ToRequestParameter(current)
+	builder, err := req.Builder(ctx, s.caller)
 	if err != nil {
 		return nil, fmt.Errorf("processing request parameter failed: %s", err)
 	}
 
-	return client.Update(ctx, req.Zone, req.ID, params)
+	result, err := builder.Update(ctx, req.Zone)
+	if err != nil {
+		return nil, err
+	}
+	return result.Disk, nil
 }
