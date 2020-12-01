@@ -29,7 +29,7 @@ import (
 
 func TestDatabaseService_convertToBuilder(t *testing.T) {
 	if testutil.IsAccTest() {
-		t.Skip("This test runs only with TESTACC=1")
+		t.Skip("This test runs only without TESTACC=1")
 	}
 	ctx := context.Background()
 	zone := testutil.TestZone()

@@ -15,6 +15,9 @@
 package mobilegateway
 
 import (
+	"context"
+
+	mobileGatewayBuilder "github.com/sacloud/libsacloud/v2/helper/builder/mobilegateway"
 	"github.com/sacloud/libsacloud/v2/helper/service"
 	"github.com/sacloud/libsacloud/v2/helper/validate"
 	"github.com/sacloud/libsacloud/v2/sacloud"
@@ -22,31 +25,37 @@ import (
 )
 
 type UpdateRequest struct {
-	Zone string   `request:"-" validate:"required"`
-	ID   types.ID `request:"-" validate:"required"`
+	Zone string   `validate:"required"`
+	ID   types.ID `validate:"required"`
 
-	Name                            *string                                   `request:",omitempty" validate:"omitempty,min=1"`
-	Description                     *string                                   `request:",omitempty" validate:"omitempty,min=1,max=512"`
-	Tags                            *types.Tags                               `request:",omitempty"`
-	IconID                          *types.ID                                 `request:",omitempty"`
-	InterfaceSettings               *[]*sacloud.MobileGatewayInterfaceSetting `validate:"omitempty"`
-	StaticRoutes                    *[]*sacloud.MobileGatewayStaticRoute      `validate:"omitempty"`
-	InternetConnectionEnabled       *bool                                     `validate:"omitempty"`
-	InterDeviceCommunicationEnabled *bool                                     `validate:"omitempty"`
-	SettingsHash                    string
+	Name                            *string                              `request:",omitempty"`
+	Description                     *string                              `request:",omitempty" validate:"min=0,max=512"`
+	Tags                            *types.Tags                          `request:",omitempty"`
+	IconID                          *types.ID                            `request:",omitempty"`
+	PrivateInterface                *PrivateInterfaceSetting             `request:",omitempty"`
+	StaticRoutes                    *[]*sacloud.MobileGatewayStaticRoute `request:",omitempty"`
+	SimRoutes                       *[]*SIMRouteSetting                  `request:",omitempty"`
+	InternetConnectionEnabled       *bool                                `request:",omitempty"`
+	InterDeviceCommunicationEnabled *bool                                `request:",omitempty"`
+	DNS                             *sacloud.MobileGatewayDNSSetting     `request:",omitempty"`
+	SIMs                            *[]*SIMSetting                       `request:",omitempty"`
+	TrafficConfig                   *sacloud.MobileGatewayTrafficControl `request:",omitempty"`
+
+	SettingsHash string
+	NoWait       bool
 }
 
 func (req *UpdateRequest) Validate() error {
 	return validate.Struct(req)
 }
 
-func (req *UpdateRequest) ToRequestParameter(current *sacloud.MobileGateway) (*sacloud.MobileGatewayUpdateRequest, error) {
-	r := &sacloud.MobileGatewayUpdateRequest{}
-	if err := service.RequestConvertTo(current, r); err != nil {
+func (req *UpdateRequest) Builder(ctx context.Context, caller sacloud.APICaller) (*mobileGatewayBuilder.Builder, error) {
+	builder, err := mobileGatewayBuilder.BuilderFromResource(ctx, caller, req.Zone, req.ID)
+	if err != nil {
 		return nil, err
 	}
-	if err := service.RequestConvertTo(req, r); err != nil {
+	if err := service.RequestConvertTo(req, builder); err != nil {
 		return nil, err
 	}
-	return r, nil
+	return builder, nil
 }
