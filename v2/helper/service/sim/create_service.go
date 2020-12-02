@@ -17,7 +17,6 @@ package sim
 import (
 	"context"
 
-	"github.com/sacloud/libsacloud/v2/helper/query"
 	"github.com/sacloud/libsacloud/v2/sacloud"
 )
 
@@ -30,15 +29,5 @@ func (s *Service) CreateWithContext(ctx context.Context, req *CreateRequest) (*s
 		return nil, err
 	}
 
-	params, err := req.ToRequestParameter()
-	if err != nil {
-		return nil, err
-	}
-
-	client := sacloud.NewSIMOp(s.caller)
-	created, err := client.Create(ctx, params)
-	if err != nil {
-		return created, err
-	}
-	return query.FindSIMByID(ctx, client, created.ID)
+	return s.ApplyWithContext(ctx, req.ApplyRequest())
 }
