@@ -20,18 +20,15 @@ import (
 	"github.com/sacloud/libsacloud/v2/sacloud"
 )
 
-func (s *Service) Update(req *UpdateRequest) (*sacloud.NFS, error) {
-	return s.UpdateWithContext(context.Background(), req)
+func (s *Service) Apply(req *ApplyRequest) (*sacloud.NFS, error) {
+	return s.ApplyWithContext(context.Background(), req)
 }
 
-func (s *Service) UpdateWithContext(ctx context.Context, req *UpdateRequest) (*sacloud.NFS, error) {
+func (s *Service) ApplyWithContext(ctx context.Context, req *ApplyRequest) (*sacloud.NFS, error) {
 	if err := req.Validate(); err != nil {
 		return nil, err
 	}
 
-	applyRequest, err := req.ApplyRequest(ctx, s.caller)
-	if err != nil {
-		return nil, err
-	}
-	return s.ApplyWithContext(ctx, applyRequest)
+	builder := req.Builder(s.caller)
+	return builder.Build(ctx)
 }
