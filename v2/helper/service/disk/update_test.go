@@ -18,7 +18,6 @@ import (
 	"context"
 	"testing"
 
-	diskBuilder "github.com/sacloud/libsacloud/v2/helper/builder/disk"
 	"github.com/sacloud/libsacloud/v2/pkg/size"
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/testutil"
@@ -60,9 +59,9 @@ func TestDiskService_convertUpdateRequest(t *testing.T) {
 		diskOp.Delete(context.Background(), zone, disk.ID) // nolint
 	}()
 
-	cases := []struct {
+	var cases = []struct {
 		in     *UpdateRequest
-		expect diskBuilder.Builder
+		expect *ApplyRequest
 	}{
 		{
 			in: &UpdateRequest{
@@ -75,25 +74,30 @@ func TestDiskService_convertUpdateRequest(t *testing.T) {
 				},
 				NoWait: true,
 			},
-			expect: &diskBuilder.ConnectedDiskBuilder{
-				Name:        name + "-upd",
-				Connection:  disk.Connection,
-				Description: disk.Description,
-				Tags:        disk.Tags,
-				IconID:      disk.IconID,
-				EditParameter: &diskBuilder.UnixEditRequest{
+			expect: &ApplyRequest{
+				Zone:            zone,
+				ID:              disk.ID,
+				Name:            name + "-upd",
+				Description:     disk.Description,
+				Tags:            disk.Tags,
+				IconID:          disk.IconID,
+				DiskPlanID:      disk.DiskPlanID,
+				Connection:      disk.Connection,
+				SourceDiskID:    disk.SourceDiskID,
+				SourceArchiveID: disk.SourceArchiveID,
+				ServerID:        disk.ServerID,
+				SizeGB:          disk.GetSizeGB(),
+				EditParameter: &EditParameter{
 					HostName: "hostname",
 					Password: "password",
 				},
-				Client: diskBuilder.NewBuildersAPIClient(caller),
 				NoWait: true,
-				ID:     disk.ID,
 			},
 		},
 	}
 	for _, tc := range cases {
-		builder, err := tc.in.Builder(context.Background(), caller)
+		req, err := tc.in.ApplyRequest(context.Background(), caller)
 		require.NoError(t, err)
-		require.EqualValues(t, tc.expect, builder)
+		require.EqualValues(t, tc.expect, req)
 	}
 }

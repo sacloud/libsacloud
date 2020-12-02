@@ -18,50 +18,15 @@ import (
 	"testing"
 
 	"github.com/sacloud/libsacloud/v2/sacloud/ostype"
-
-	diskBuilder "github.com/sacloud/libsacloud/v2/helper/builder/disk"
-	"github.com/sacloud/libsacloud/v2/sacloud/testutil"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 	"github.com/stretchr/testify/require"
 )
 
-func TestDiskService_convertCreateParameter(t *testing.T) {
-	caller := testutil.SingletonAPICaller()
-
+func TestDiskService_convertCreateRequest(t *testing.T) {
 	cases := []struct {
 		in     *CreateRequest
-		expect diskBuilder.Builder
+		expect *ApplyRequest
 	}{
-		// blank
-		{
-			in: &CreateRequest{
-				Zone:          "is1a",
-				Name:          "test",
-				Description:   "description",
-				Tags:          types.Tags{"tag1", "tag2"},
-				IconID:        types.ID(1),
-				ServerID:      types.ID(2),
-				DiskPlanID:    types.DiskPlans.SSD,
-				Connection:    types.DiskConnections.VirtIO,
-				SizeGB:        20,
-				DistantFrom:   nil,
-				OSType:        0,
-				EditParameter: nil,
-				NoWait:        true,
-			},
-			expect: &diskBuilder.BlankBuilder{
-				Name:        "test",
-				Description: "description",
-				Tags:        types.Tags{"tag1", "tag2"},
-				IconID:      types.ID(1),
-				SizeGB:      20,
-				PlanID:      types.DiskPlans.SSD,
-				Connection:  types.DiskConnections.VirtIO,
-				Client:      diskBuilder.NewBuildersAPIClient(caller),
-				NoWait:      true,
-			},
-		},
-		// linux
 		{
 			in: &CreateRequest{
 				Zone:       "is1a",
@@ -76,56 +41,23 @@ func TestDiskService_convertCreateParameter(t *testing.T) {
 				},
 				NoWait: true,
 			},
-			expect: &diskBuilder.FromUnixBuilder{
-				OSType:     ostype.Ubuntu,
+			expect: &ApplyRequest{
+				Zone:       "is1a",
 				Name:       "test",
-				SizeGB:     20,
-				PlanID:     types.DiskPlans.SSD,
+				DiskPlanID: types.DiskPlans.SSD,
 				Connection: types.DiskConnections.VirtIO,
-				EditParameter: &diskBuilder.UnixEditRequest{
-					HostName: "hostname",
-					Password: "password",
-				},
-				Client: diskBuilder.NewBuildersAPIClient(caller),
-				NoWait: true,
-				ID:     0,
-			},
-		},
-		// source disk
-		{
-			in: &CreateRequest{
-				Zone:         "is1a",
-				Name:         "test",
-				DiskPlanID:   types.DiskPlans.SSD,
-				Connection:   types.DiskConnections.VirtIO,
-				SourceDiskID: types.ID(1),
-				SizeGB:       20,
+				SizeGB:     20,
+				OSType:     ostype.Ubuntu,
 				EditParameter: &EditParameter{
 					HostName: "hostname",
 					Password: "password",
 				},
 				NoWait: true,
 			},
-			expect: &diskBuilder.FromDiskOrArchiveBuilder{
-				Name:         "test",
-				SizeGB:       20,
-				PlanID:       types.DiskPlans.SSD,
-				Connection:   types.DiskConnections.VirtIO,
-				SourceDiskID: types.ID(1),
-				EditParameter: &diskBuilder.UnixEditRequest{
-					HostName: "hostname",
-					Password: "password",
-				},
-				Client: diskBuilder.NewBuildersAPIClient(caller),
-				NoWait: true,
-				ID:     0,
-			},
 		},
 	}
 
 	for _, tc := range cases {
-		builder, err := tc.in.Builder(caller)
-		require.NoError(t, err)
-		require.EqualValues(t, tc.expect, builder)
+		require.EqualValues(t, tc.expect, tc.in.ApplyRequest())
 	}
 }

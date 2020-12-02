@@ -17,11 +17,7 @@ package disk
 import (
 	"fmt"
 
-	diskBuilder "github.com/sacloud/libsacloud/v2/helper/builder/disk"
-
-	"github.com/sacloud/libsacloud/v2/helper/service"
 	"github.com/sacloud/libsacloud/v2/helper/validate"
-	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/ostype"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
@@ -56,29 +52,22 @@ func (req *CreateRequest) Validate() error {
 	return validate.Struct(req)
 }
 
-func (req *CreateRequest) Builder(caller sacloud.APICaller) (diskBuilder.Builder, error) {
-	editParameter := &diskBuilder.EditRequest{}
-	if req.EditParameter != nil {
-		if err := service.RequestConvertTo(req.EditParameter, editParameter); err != nil {
-			return nil, err
-		}
-	}
-
-	director := &diskBuilder.Director{
-		OSType:          req.OSType,
+func (req *CreateRequest) ApplyRequest() *ApplyRequest {
+	return &ApplyRequest{
+		Zone:            req.Zone,
 		Name:            req.Name,
-		SizeGB:          req.SizeGB,
-		DistantFrom:     req.DistantFrom,
-		PlanID:          req.DiskPlanID,
-		Connection:      req.Connection,
 		Description:     req.Description,
 		Tags:            req.Tags,
 		IconID:          req.IconID,
-		SourceDiskID:    req.SourceDiskID,
+		DiskPlanID:      req.DiskPlanID,
+		Connection:      req.Connection,
+		SourceDiskID:    req.SourceArchiveID,
 		SourceArchiveID: req.SourceArchiveID,
-		EditParameter:   editParameter,
+		ServerID:        req.ServerID,
+		SizeGB:          req.SizeGB,
+		DistantFrom:     req.DistantFrom,
+		OSType:          req.OSType,
+		EditParameter:   req.EditParameter,
 		NoWait:          req.NoWait,
-		Client:          diskBuilder.NewBuildersAPIClient(caller),
 	}
-	return director.Builder(), nil
 }

@@ -17,10 +17,8 @@ package disk
 import (
 	"context"
 
-	diskBuilder "github.com/sacloud/libsacloud/v2/helper/builder/disk"
 	"github.com/sacloud/libsacloud/v2/helper/service"
 	"github.com/sacloud/libsacloud/v2/helper/validate"
-	"github.com/sacloud/libsacloud/v2/pkg/size"
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
@@ -34,7 +32,7 @@ type UpdateRequest struct {
 	Tags          *types.Tags            `request:",omitempty"`
 	IconID        *types.ID              `request:",omitempty"`
 	Connection    *types.EDiskConnection `request:",omitempty"`
-	EditParameter *EditParameter         `request:"-"`
+	EditParameter *EditParameter         `request:",omitempty"`
 
 	NoWait bool
 }
@@ -43,36 +41,30 @@ func (req *UpdateRequest) Validate() error {
 	return validate.Struct(req)
 }
 
-func (req *UpdateRequest) Builder(ctx context.Context, caller sacloud.APICaller) (diskBuilder.Builder, error) {
-	disk, err := sacloud.NewDiskOp(caller).Read(ctx, req.Zone, req.ID)
+func (req *UpdateRequest) ApplyRequest(ctx context.Context, caller sacloud.APICaller) (*ApplyRequest, error) {
+	current, err := sacloud.NewDiskOp(caller).Read(ctx, req.Zone, req.ID)
 	if err != nil {
 		return nil, err
 	}
 
-	editParameter := &diskBuilder.EditRequest{}
-	if req.EditParameter != nil {
-		if err := service.RequestConvertTo(req.EditParameter, editParameter); err != nil {
-			return nil, err
-		}
+	applyRequest := &ApplyRequest{
+		Zone:            req.Zone,
+		ID:              req.ID,
+		Name:            current.Name,
+		Description:     current.Description,
+		Tags:            current.Tags,
+		IconID:          current.IconID,
+		DiskPlanID:      current.DiskPlanID,
+		Connection:      current.Connection,
+		SourceDiskID:    current.SourceDiskID,
+		SourceArchiveID: current.SourceArchiveID,
+		ServerID:        current.ServerID,
+		SizeGB:          current.GetSizeGB(),
+		NoWait:          req.NoWait,
 	}
 
-	director := &diskBuilder.Director{
-		DiskID:        req.ID,
-		Name:          disk.Name,
-		SizeGB:        size.MiBToGiB(disk.SizeMB),
-		PlanID:        disk.DiskPlanID,
-		Connection:    disk.Connection,
-		Description:   disk.Description,
-		Tags:          disk.Tags,
-		IconID:        disk.IconID,
-		EditParameter: editParameter,
-		NoWait:        req.NoWait,
-		Client:        diskBuilder.NewBuildersAPIClient(caller),
-	}
-	builder := director.Builder()
-
-	if err := service.RequestConvertTo(req, builder); err != nil {
+	if err := service.RequestConvertTo(req, applyRequest); err != nil {
 		return nil, err
 	}
-	return builder, err
+	return applyRequest, nil
 }
