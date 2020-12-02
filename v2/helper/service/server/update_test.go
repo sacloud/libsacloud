@@ -70,10 +70,10 @@ func TestServerService_convertUpdateRequest(t *testing.T) {
 				DiskPlanID:  types.DiskPlans.SSD,
 				Connection:  types.DiskConnections.VirtIO,
 				SizeGB:      20,
-				NoWait:      true,
+				NoWait:      false,
 			},
 		},
-		NoWait: true,
+		NoWait: false,
 	})
 	if err != nil {
 		t.Fatal(err)

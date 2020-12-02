@@ -18,6 +18,8 @@ import (
 	"context"
 	"testing"
 
+	"github.com/sacloud/libsacloud/v2/helper/wait"
+
 	"github.com/sacloud/libsacloud/v2/pkg/size"
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/testutil"
@@ -41,6 +43,7 @@ func TestDiskUpdateRequest_Update(t *testing.T) {
 }
 
 func TestDiskService_convertUpdateRequest(t *testing.T) {
+	ctx := context.Background()
 	caller := testutil.SingletonAPICaller()
 	name := testutil.ResourceName("disk-service-update")
 	zone := testutil.TestZone()
@@ -55,6 +58,12 @@ func TestDiskService_convertUpdateRequest(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	v, err := wait.UntilDiskIsReady(ctx, diskOp, zone, disk.ID)
+	if err != nil {
+		t.Fatal(err)
+	}
+	disk = v
+
 	defer func() {
 		diskOp.Delete(context.Background(), zone, disk.ID) // nolint
 	}()
@@ -72,7 +81,7 @@ func TestDiskService_convertUpdateRequest(t *testing.T) {
 					HostName: "hostname",
 					Password: "password",
 				},
-				NoWait: true,
+				NoWait: false,
 			},
 			expect: &ApplyRequest{
 				Zone:            zone,
@@ -91,7 +100,7 @@ func TestDiskService_convertUpdateRequest(t *testing.T) {
 					HostName: "hostname",
 					Password: "password",
 				},
-				NoWait: true,
+				NoWait: false,
 			},
 		},
 	}

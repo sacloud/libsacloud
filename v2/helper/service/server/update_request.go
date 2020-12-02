@@ -16,6 +16,7 @@ package server
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/sacloud/libsacloud/v2/helper/service"
 	diskService "github.com/sacloud/libsacloud/v2/helper/service/disk"
@@ -64,6 +65,9 @@ func (req *UpdateRequest) applyRequestFromResource(ctx context.Context, caller s
 	current, err := serverOp.Read(ctx, req.Zone, req.ID)
 	if err != nil {
 		return nil, err
+	}
+	if current.Availability != types.Availabilities.Available {
+		return nil, fmt.Errorf("target has invalid Availability: Zone=%s ID=%s Availability=%v", req.Zone, req.ID.String(), current.Availability)
 	}
 
 	var nics []*NetworkInterface

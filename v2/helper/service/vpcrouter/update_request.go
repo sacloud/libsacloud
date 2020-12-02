@@ -52,10 +52,10 @@ func (req *UpdateRequest) ApplyRequest(ctx context.Context, caller sacloud.APICa
 	}
 
 	if current.PlanID == types.VPCRouterPlans.Standard {
-		return nil, fmt.Errorf("target VPCRouter(Zone=%s ID=%q) is not a premium or higher plan", req.Zone, req.ID)
+		return nil, fmt.Errorf("target is not a premium or higher plan: Zone=%s ID=%s", req.Zone, req.ID)
 	}
 	if current.Availability != types.Availabilities.Available {
-		return nil, fmt.Errorf("target VPCRouter has invalid Availability: %v", current.Availability)
+		return nil, fmt.Errorf("target has invalid Availability: Zone=%s ID=%s Availability=%v", req.Zone, req.ID.String(), current.Availability)
 	}
 
 	var additionalNICs []AdditionalNICSettingHolder

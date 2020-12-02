@@ -16,6 +16,7 @@ package database
 
 import (
 	"context"
+	"fmt"
 	"strconv"
 	"strings"
 
@@ -57,6 +58,10 @@ func (req *UpdateRequest) ApplyRequest(ctx context.Context, caller sacloud.APICa
 	current, err := dbOp.Read(ctx, req.Zone, req.ID)
 	if err != nil {
 		return nil, err
+	}
+
+	if current.Availability != types.Availabilities.Available {
+		return nil, fmt.Errorf("target has invalid Availability: Zone=%s ID=%s Availability=%v", req.Zone, req.ID.String(), current.Availability)
 	}
 
 	var bkHour, bkMinute int

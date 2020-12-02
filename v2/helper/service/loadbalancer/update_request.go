@@ -16,6 +16,7 @@ package loadbalancer
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/sacloud/libsacloud/v2/helper/service"
 	"github.com/sacloud/libsacloud/v2/helper/validate"
@@ -46,6 +47,9 @@ func (req *UpdateRequest) ApplyRequest(ctx context.Context, caller sacloud.APICa
 	current, err := client.Read(ctx, req.Zone, req.ID)
 	if err != nil {
 		return nil, err
+	}
+	if current.Availability != types.Availabilities.Available {
+		return nil, fmt.Errorf("target has invalid Availability: Zone=%s ID=%s Availability=%v", req.Zone, req.ID.String(), current.Availability)
 	}
 
 	applyRequest := &ApplyRequest{
