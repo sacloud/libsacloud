@@ -27,29 +27,44 @@ type UpdateRequest struct {
 	Zone string   `request:"-" validate:"required"`
 	ID   types.ID `request:"-" validate:"required"`
 
-	Name               *string                                `request:",omitempty" validate:"omitempty,min=1"`
-	Description        *string                                `request:",omitempty" validate:"omitempty,min=1,max=512"`
-	Tags               *types.Tags                            `request:",omitempty"`
-	IconID             *types.ID                              `request:",omitempty"`
-	VirtualIPAddresses sacloud.LoadBalancerVirtualIPAddresses `request:",omitempty"`
-	SettingsHash       string
+	Name               *string                                 `request:",omitempty" validate:"omitempty,min=1"`
+	Description        *string                                 `request:",omitempty" validate:"omitempty,min=1,max=512"`
+	Tags               *types.Tags                             `request:",omitempty"`
+	IconID             *types.ID                               `request:",omitempty"`
+	VirtualIPAddresses *sacloud.LoadBalancerVirtualIPAddresses `request:",omitempty"`
+
+	SettingsHash string
+	NoWait       bool
 }
 
 func (req *UpdateRequest) Validate() error {
 	return validate.Struct(req)
 }
 
-func (req *UpdateRequest) Builder(ctx context.Context, caller sacloud.APICaller) (*Builder, error) {
-	current, err := BuilderFromResource(ctx, caller, req.Zone, req.ID)
+func (req *UpdateRequest) ApplyRequest(ctx context.Context, caller sacloud.APICaller) (*ApplyRequest, error) {
+	client := sacloud.NewLoadBalancerOp(caller)
+	current, err := client.Read(ctx, req.Zone, req.ID)
 	if err != nil {
 		return nil, err
 	}
-	builder := &Builder{Client: sacloud.NewLoadBalancerOp(caller)}
-	if err := service.RequestConvertTo(current, builder); err != nil {
+
+	applyRequest := &ApplyRequest{
+		ID:                 req.ID,
+		Zone:               req.Zone,
+		Name:               current.Name,
+		Description:        current.Description,
+		Tags:               current.Tags,
+		IconID:             current.IconID,
+		SwitchID:           current.SwitchID,
+		PlanID:             current.PlanID,
+		VRID:               current.VRID,
+		IPAddresses:        current.IPAddresses,
+		NetworkMaskLen:     current.NetworkMaskLen,
+		DefaultRoute:       current.DefaultRoute,
+		VirtualIPAddresses: current.VirtualIPAddresses,
+	}
+	if err := service.RequestConvertTo(req, applyRequest); err != nil {
 		return nil, err
 	}
-	if err := service.RequestConvertTo(req, builder); err != nil {
-		return nil, err
-	}
-	return builder, nil
+	return applyRequest, nil
 }
