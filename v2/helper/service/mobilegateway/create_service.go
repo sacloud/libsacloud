@@ -28,10 +28,5 @@ func (s *Service) CreateWithContext(ctx context.Context, req *CreateRequest) (*s
 	if err := req.Validate(); err != nil {
 		return nil, err
 	}
-
-	builder, err := req.Builder(s.caller)
-	if err != nil {
-		return nil, err
-	}
-	return builder.Build(ctx, req.Zone)
+	return s.ApplyWithContext(ctx, req.ApplyRequest())
 }

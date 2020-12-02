@@ -16,6 +16,9 @@ package database
 
 import (
 	"context"
+	"fmt"
+	"strconv"
+	"strings"
 
 	"github.com/sacloud/libsacloud/v2/helper/service"
 
@@ -50,13 +53,68 @@ func (req *UpdateRequest) Validate() error {
 	return validate.Struct(req)
 }
 
-func (req *UpdateRequest) Builder(ctx context.Context, caller sacloud.APICaller) (*Builder, error) {
-	builder, err := BuilderFromResource(ctx, caller, req.Zone, req.ID)
+func (req *UpdateRequest) ApplyRequest(ctx context.Context, caller sacloud.APICaller) (*ApplyRequest, error) {
+	dbOp := sacloud.NewDatabaseOp(caller)
+	current, err := dbOp.Read(ctx, req.Zone, req.ID)
 	if err != nil {
 		return nil, err
 	}
-	if err := service.RequestConvertTo(req, builder); err != nil {
+
+	if current.Availability != types.Availabilities.Available {
+		return nil, fmt.Errorf("target has invalid Availability: Zone=%s ID=%s Availability=%v", req.Zone, req.ID.String(), current.Availability)
+	}
+
+	var bkHour, bkMinute int
+	var bkWeekdays []types.EBackupSpanWeekday
+	if current.BackupSetting != nil {
+		bkWeekdays = current.BackupSetting.DayOfWeek
+		if current.BackupSetting.Time != "" {
+			timeStrings := strings.Split(current.BackupSetting.Time, ":")
+			if len(timeStrings) == 2 {
+				hour, err := strconv.ParseInt(timeStrings[0], 10, 64)
+				if err != nil {
+					return nil, err
+				}
+				bkHour = int(hour)
+
+				minute, err := strconv.ParseInt(timeStrings[1], 10, 64)
+				if err != nil {
+					return nil, err
+				}
+				bkMinute = int(minute)
+			}
+		}
+	}
+
+	applyRequest := &ApplyRequest{
+		Zone:                  req.Zone,
+		ID:                    req.ID,
+		Name:                  current.Name,
+		Description:           current.Description,
+		Tags:                  current.Tags,
+		IconID:                current.IconID,
+		PlanID:                current.PlanID,
+		SwitchID:              current.SwitchID,
+		IPAddresses:           current.IPAddresses,
+		NetworkMaskLen:        current.NetworkMaskLen,
+		DefaultRoute:          current.DefaultRoute,
+		Port:                  current.CommonSetting.ServicePort,
+		SourceNetwork:         current.CommonSetting.SourceNetwork,
+		DatabaseType:          current.Conf.DatabaseName,
+		Username:              current.CommonSetting.DefaultUser,
+		Password:              current.CommonSetting.UserPassword,
+		EnableReplication:     current.ReplicationSetting != nil,
+		ReplicaUserPassword:   current.CommonSetting.ReplicaPassword,
+		EnableWebUI:           current.CommonSetting.WebUI.Bool(),
+		EnableBackup:          current.BackupSetting != nil,
+		BackupWeekdays:        bkWeekdays,
+		BackupStartTimeHour:   bkHour,
+		BackupStartTimeMinute: bkMinute,
+		NoWait:                false,
+	}
+
+	if err := service.RequestConvertTo(req, applyRequest); err != nil {
 		return nil, err
 	}
-	return builder, nil
+	return applyRequest, nil
 }

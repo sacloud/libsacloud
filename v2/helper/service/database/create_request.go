@@ -15,10 +15,7 @@
 package database
 
 import (
-	"github.com/sacloud/libsacloud/v2/pkg/mapconv"
-
 	"github.com/sacloud/libsacloud/v2/helper/validate"
-	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
@@ -54,10 +51,30 @@ func (req *CreateRequest) Validate() error {
 	return validate.Struct(req)
 }
 
-func (req *CreateRequest) Builder(caller sacloud.APICaller) (*Builder, error) {
-	builder := &Builder{Caller: caller}
-	if err := mapconv.ConvertTo(req, builder); err != nil {
-		return nil, err
+func (req *CreateRequest) ApplyRequest() *ApplyRequest {
+	return &ApplyRequest{
+		Zone:                  req.Zone,
+		Name:                  req.Name,
+		Description:           req.Description,
+		Tags:                  req.Tags,
+		IconID:                req.IconID,
+		PlanID:                req.PlanID,
+		SwitchID:              req.SwitchID,
+		IPAddresses:           req.IPAddresses,
+		NetworkMaskLen:        req.NetworkMaskLen,
+		DefaultRoute:          req.DefaultRoute,
+		Port:                  req.Port,
+		SourceNetwork:         req.SourceNetwork,
+		DatabaseType:          req.DatabaseType,
+		Username:              req.Username,
+		Password:              req.Password,
+		EnableReplication:     req.EnableBackup,
+		ReplicaUserPassword:   req.ReplicaUserPassword,
+		EnableWebUI:           req.EnableWebUI,
+		EnableBackup:          req.EnableBackup,
+		BackupWeekdays:        req.BackupWeekdays,
+		BackupStartTimeHour:   req.BackupStartTimeHour,
+		BackupStartTimeMinute: req.BackupStartTimeMinute,
+		NoWait:                req.NoWait,
 	}
-	return builder, nil
 }

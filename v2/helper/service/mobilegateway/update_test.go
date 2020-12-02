@@ -62,7 +62,7 @@ func TestMobileGatewayService_convertUpdateRequest(t *testing.T) {
 	// test
 	cases := []struct {
 		in     *UpdateRequest
-		expect *mobileGatewayBuilder.Builder
+		expect *ApplyRequest
 	}{
 		{
 			in: &UpdateRequest{
@@ -95,11 +95,13 @@ func TestMobileGatewayService_convertUpdateRequest(t *testing.T) {
 				},
 				NoWait: true,
 			},
-			expect: &mobileGatewayBuilder.Builder{
+			expect: &ApplyRequest{
+				ID:          mgw.ID,
+				Zone:        zone,
 				Name:        name + "-upd",
 				Description: "description",
 				Tags:        types.Tags{"tag1", "tag2"},
-				PrivateInterface: &mobileGatewayBuilder.PrivateInterfaceSetting{
+				PrivateInterface: &PrivateInterfaceSetting{
 					SwitchID:       sw.ID,
 					IPAddress:      "192.168.0.1",
 					NetworkMaskLen: 24,
@@ -124,14 +126,13 @@ func TestMobileGatewayService_convertUpdateRequest(t *testing.T) {
 					AutoTrafficShaping:   true,
 				},
 				NoWait: true,
-				Client: mobileGatewayBuilder.NewAPIClient(caller),
 			},
 		},
 	}
 
 	for _, tc := range cases {
-		builder, err := tc.in.Builder(ctx, caller)
+		req, err := tc.in.ApplyRequest(ctx, caller)
 		require.NoError(t, err)
-		require.EqualValues(t, tc.expect, builder)
+		require.EqualValues(t, tc.expect, req)
 	}
 }

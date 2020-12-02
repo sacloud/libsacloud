@@ -17,21 +17,18 @@ package database
 import (
 	"testing"
 
-	"github.com/sacloud/libsacloud/v2/sacloud/testutil"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 	"github.com/stretchr/testify/require"
 )
 
-func TestDatabaseService_CreateParameterToBuilder(t *testing.T) {
-	caller := testutil.SingletonAPICaller()
-
+func TestDatabaseService_convertCreateRequest(t *testing.T) {
 	cases := []struct {
 		in     *CreateRequest
-		expect *Builder
+		expect *ApplyRequest
 	}{
 		{
 			in:     &CreateRequest{},
-			expect: &Builder{Caller: caller},
+			expect: &ApplyRequest{},
 		},
 		{
 			in: &CreateRequest{
@@ -59,7 +56,7 @@ func TestDatabaseService_CreateParameterToBuilder(t *testing.T) {
 				BackupStartTimeMinute: 0,
 				NoWait:                true,
 			},
-			expect: &Builder{
+			expect: &ApplyRequest{
 				ID:                    0,
 				Zone:                  "is1a",
 				Name:                  "name",
@@ -84,14 +81,11 @@ func TestDatabaseService_CreateParameterToBuilder(t *testing.T) {
 				BackupStartTimeHour:   10,
 				BackupStartTimeMinute: 0,
 				NoWait:                true,
-				Caller:                caller,
 			},
 		},
 	}
 
 	for _, tc := range cases {
-		got, err := tc.in.Builder(caller)
-		require.NoError(t, err)
-		require.EqualValues(t, tc.expect, got)
+		require.EqualValues(t, tc.expect, tc.in.ApplyRequest())
 	}
 }

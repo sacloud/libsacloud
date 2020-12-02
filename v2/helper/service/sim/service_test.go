@@ -18,6 +18,8 @@ import (
 	"os"
 	"testing"
 
+	"github.com/sacloud/libsacloud/v2/sacloud/types"
+
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/pointer"
 	"github.com/sacloud/libsacloud/v2/sacloud/testutil"
@@ -42,6 +44,9 @@ func TestSIMService_CRUD(t *testing.T) {
 					Name:     name,
 					ICCID:    iccid,
 					PassCode: passcode,
+					Carriers: []*sacloud.SIMNetworkOperatorConfig{
+						{Allow: true, Name: types.SIMOperators.SoftBank.String()},
+					},
 				})
 			},
 			CheckFunc: func(t testutil.TestT, ctx *testutil.CRUDTestContext, v interface{}) error {

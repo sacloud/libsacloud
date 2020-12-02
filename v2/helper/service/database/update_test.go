@@ -27,7 +27,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestDatabaseService_convertToBuilder(t *testing.T) {
+func TestDatabaseService_convertUpdateRequest(t *testing.T) {
 	if testutil.IsAccTest() {
 		t.Skip("This test runs only without TESTACC=1")
 	}
@@ -97,7 +97,7 @@ func TestDatabaseService_convertToBuilder(t *testing.T) {
 
 	cases := []struct {
 		in     *UpdateRequest
-		expect *Builder
+		expect *ApplyRequest
 	}{
 		{
 			in: &UpdateRequest{
@@ -106,7 +106,7 @@ func TestDatabaseService_convertToBuilder(t *testing.T) {
 				Name:   pointer.NewString(db.Name + "-upd"),
 				NoWait: true,
 			},
-			expect: &Builder{
+			expect: &ApplyRequest{
 				Zone:                  zone,
 				ID:                    db.ID,
 				Name:                  db.Name + "-upd",
@@ -130,7 +130,6 @@ func TestDatabaseService_convertToBuilder(t *testing.T) {
 				BackupStartTimeHour:   10,
 				BackupStartTimeMinute: 0,
 				NoWait:                true,
-				Caller:                caller,
 			},
 		},
 		{
@@ -141,7 +140,7 @@ func TestDatabaseService_convertToBuilder(t *testing.T) {
 				EnableBackup:      pointer.NewBool(false),
 				NoWait:            true,
 			},
-			expect: &Builder{
+			expect: &ApplyRequest{
 				Zone:                  zone,
 				ID:                    db.ID,
 				Name:                  db.Name,
@@ -165,13 +164,12 @@ func TestDatabaseService_convertToBuilder(t *testing.T) {
 				BackupStartTimeHour:   10,
 				BackupStartTimeMinute: 0,
 				NoWait:                true,
-				Caller:                caller,
 			},
 		},
 	}
 
 	for _, tc := range cases {
-		got, err := tc.in.Builder(ctx, caller)
+		got, err := tc.in.ApplyRequest(ctx, caller)
 		require.NoError(t, err)
 		require.EqualValues(t, tc.expect, got)
 	}

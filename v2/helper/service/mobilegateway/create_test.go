@@ -18,7 +18,6 @@ import (
 	"context"
 	"testing"
 
-	mobileGatewayBuilder "github.com/sacloud/libsacloud/v2/helper/builder/mobilegateway"
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/testutil"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
@@ -44,7 +43,7 @@ func TestMobileGatewayService_convertCreateRequest(t *testing.T) {
 	// test
 	cases := []struct {
 		in     *CreateRequest
-		expect *mobileGatewayBuilder.Builder
+		expect *ApplyRequest
 	}{
 		{
 			in: &CreateRequest{
@@ -76,13 +75,15 @@ func TestMobileGatewayService_convertCreateRequest(t *testing.T) {
 					EmailNotifyEnabled:   true,
 					AutoTrafficShaping:   true,
 				},
-				NoWait: true,
+				NoWait:          false,
+				BootAfterCreate: true,
 			},
-			expect: &mobileGatewayBuilder.Builder{
+			expect: &ApplyRequest{
+				Zone:        zone,
 				Name:        name,
 				Description: "description",
 				Tags:        types.Tags{"tag1", "tag2"},
-				PrivateInterface: &mobileGatewayBuilder.PrivateInterfaceSetting{
+				PrivateInterface: &PrivateInterfaceSetting{
 					SwitchID:       sw.ID,
 					IPAddress:      "192.168.0.1",
 					NetworkMaskLen: 24,
@@ -106,16 +107,13 @@ func TestMobileGatewayService_convertCreateRequest(t *testing.T) {
 					EmailNotifyEnabled:   true,
 					AutoTrafficShaping:   true,
 				},
-				NoWait:       true,
-				SetupOptions: nil,
-				Client:       mobileGatewayBuilder.NewAPIClient(caller),
+				NoWait:          false,
+				BootAfterCreate: true,
 			},
 		},
 	}
 
 	for _, tc := range cases {
-		builder, err := tc.in.Builder(caller)
-		require.NoError(t, err)
-		require.EqualValues(t, tc.expect, builder)
+		require.EqualValues(t, tc.expect, tc.in.ApplyRequest())
 	}
 }

@@ -20,8 +20,9 @@ import (
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
-type CreateRequest struct {
-	Zone string `request:"-" validate:"required"`
+type ApplyRequest struct {
+	ID   types.ID // for update
+	Zone string   `request:"-" validate:"required"`
 
 	Name           string `validate:"required"`
 	Description    string `validate:"min=0,max=512"`
@@ -33,15 +34,17 @@ type CreateRequest struct {
 	IPAddresses    []string       `validate:"required,min=1,max=2,dive,ipv4"`
 	NetworkMaskLen int            `validate:"required"`
 	DefaultRoute   string         `validate:"omitempty,ipv4"`
-	NoWait         bool
+
+	NoWait bool
 }
 
-func (req *CreateRequest) Validate() error {
+func (req *ApplyRequest) Validate() error {
 	return validate.Struct(req)
 }
 
-func (req *CreateRequest) Builder(caller sacloud.APICaller) *Builder {
+func (req *ApplyRequest) Builder(caller sacloud.APICaller) *Builder {
 	return &Builder{
+		ID:             req.ID,
 		Zone:           req.Zone,
 		Name:           req.Name,
 		Description:    req.Description,
