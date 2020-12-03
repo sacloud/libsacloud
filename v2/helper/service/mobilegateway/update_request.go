@@ -28,7 +28,7 @@ type UpdateRequest struct {
 	ID   types.ID `validate:"required"`
 
 	Name                            *string                              `request:",omitempty"`
-	Description                     *string                              `request:",omitempty" validate:"min=0,max=512"`
+	Description                     *string                              `request:",omitempty" validate:"omitempty,min=0,max=512"`
 	Tags                            *types.Tags                          `request:",omitempty"`
 	IconID                          *types.ID                            `request:",omitempty"`
 	PrivateInterface                *PrivateInterfaceSetting             `request:",omitempty"`
