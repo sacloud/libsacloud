@@ -329,8 +329,8 @@ type recursiveSource struct {
 }
 
 type recursiveSourceChild struct {
-	Field1 string `mapconv:"Dest1"`
-	Field2 string `mapconv:"Dest2"`
+	Field1 string `mapconv:"Dest1,omitempty"`
+	Field2 string `mapconv:"Dest2,omitempty"`
 }
 
 type recursiveDest struct {
@@ -429,6 +429,57 @@ func TestRecursiveSlice(t *testing.T) {
 		err = ConvertFrom(tt.output, source)
 		require.NoError(t, err)
 		require.Equal(t, tt.input, source)
+	}
+}
+
+func TestRecursiveSliceMerging(t *testing.T) {
+	tests := []struct {
+		src    *recursiveSourceSlice
+		dest   *recursiveDestSlice
+		expect *recursiveDestSlice
+	}{
+		{
+			src: &recursiveSourceSlice{
+				Fields: []*recursiveSourceChild{
+					{
+						Field1: "value1-upd",
+					},
+					{
+						Field2: "value4-upd",
+					},
+				},
+			},
+			dest: &recursiveDestSlice{
+				Slice: []*recursiveDestChild{
+					{
+						Dest1: "value1",
+						Dest2: "value2",
+					},
+					{
+						Dest1: "value3",
+						Dest2: "value4",
+					},
+				},
+			},
+			expect: &recursiveDestSlice{
+				Slice: []*recursiveDestChild{
+					{
+						Dest1: "value1-upd",
+						Dest2: "value2",
+					},
+					{
+						Dest1: "value3",
+						Dest2: "value4-upd",
+					},
+				},
+			},
+		},
+	}
+
+	for _, tc := range tests {
+		err := ConvertTo(tc.src, tc.dest)
+		require.NoError(t, err)
+		require.EqualValues(t, tc.expect, tc.dest)
 	}
 }
 
@@ -601,5 +652,78 @@ func TestFiltersWithConvertFrom(t *testing.T) {
 		if err == nil {
 			require.EqualValues(t, tc.expect, tc.dest)
 		}
+	}
+}
+
+type recursiveMerge struct {
+	Nest *recursiveMergeNest `mapconv:",recursive"`
+}
+
+type recursiveMergeNest struct {
+	Field1 string `mapconv:",omitempty"`
+	Field2 string `mapconv:",omitempty"`
+}
+
+func TestOverwrite(t *testing.T) {
+	cases := []struct {
+		src    *recursiveMergeNest
+		dest   *recursiveMergeNest
+		expect *recursiveMergeNest
+	}{
+		{
+			src: &recursiveMergeNest{
+				Field1: "field1-upd",
+				Field2: "",
+			},
+			dest: &recursiveMergeNest{
+				Field1: "field1",
+				Field2: "field2",
+			},
+			expect: &recursiveMergeNest{
+				Field1: "field1-upd",
+				Field2: "field2",
+			},
+		},
+	}
+	for _, tc := range cases {
+		if err := ConvertTo(tc.src, tc.dest); err != nil {
+			t.Fatal(err)
+		}
+		require.EqualValues(t, tc.expect, tc.dest)
+	}
+}
+
+func TestRecursiveMerge(t *testing.T) {
+	cases := []struct {
+		src    *recursiveMerge
+		dest   *recursiveMerge
+		expect *recursiveMerge
+	}{
+		{
+			src: &recursiveMerge{
+				Nest: &recursiveMergeNest{
+					Field1: "field1-upd",
+					Field2: "",
+				},
+			},
+			dest: &recursiveMerge{
+				Nest: &recursiveMergeNest{
+					Field1: "field1",
+					Field2: "field2",
+				},
+			},
+			expect: &recursiveMerge{
+				Nest: &recursiveMergeNest{
+					Field1: "field1-upd",
+					Field2: "field2",
+				},
+			},
+		},
+	}
+	for _, tc := range cases {
+		if err := ConvertTo(tc.src, tc.dest); err != nil {
+			t.Fatal(err)
+		}
+		require.EqualValues(t, tc.expect, tc.dest)
 	}
 }
