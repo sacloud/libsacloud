@@ -38,7 +38,7 @@ type UpdateRequest struct {
 	InterDeviceCommunicationEnabled *bool                                `request:",omitempty"`
 	DNS                             *DNSSettingUpdate                    `request:",omitempty,recursive"`
 	SIMs                            *[]*SIMSetting                       `request:",omitempty"`
-	TrafficConfig                   *TrafficConfigUpdate                 `request:",omitempty,recursice"`
+	TrafficConfig                   *TrafficConfigUpdate                 `request:",omitempty,recursive"`
 
 	SettingsHash string
 	NoWait       bool

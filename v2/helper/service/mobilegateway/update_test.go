@@ -93,6 +93,9 @@ func TestMobileGatewayService_convertUpdateRequest(t *testing.T) {
 		InternetConnectionEnabled:       true,
 		InterDeviceCommunicationEnabled: true,
 		Client:                          mobileGatewayBuilder.NewAPIClient(caller),
+		TrafficConfig: &sacloud.MobileGatewayTrafficControl{
+			TrafficQuotaInMB: 1,
+		},
 	}
 	mgw, err := builder.Build(ctx, zone)
 	if err != nil {
@@ -133,7 +136,6 @@ func TestMobileGatewayService_convertUpdateRequest(t *testing.T) {
 				},
 				SIMs: nil,
 				TrafficConfig: &TrafficConfigUpdate{
-					TrafficQuotaInMB:     pointer.NewInt(10),
 					BandWidthLimitInKbps: pointer.NewInt(128),
 					EmailNotifyEnabled:   pointer.NewBool(true),
 					AutoTrafficShaping:   pointer.NewBool(true),
@@ -165,7 +167,7 @@ func TestMobileGatewayService_convertUpdateRequest(t *testing.T) {
 				},
 				SIMs: nil,
 				TrafficConfig: &TrafficConfig{
-					TrafficQuotaInMB:     10,
+					TrafficQuotaInMB:     1,
 					BandWidthLimitInKbps: 128,
 					EmailNotifyEnabled:   true,
 					AutoTrafficShaping:   true,
