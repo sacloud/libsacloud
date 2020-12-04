@@ -18,15 +18,60 @@ import (
 	"context"
 	"testing"
 
-	"github.com/sacloud/libsacloud/v2/helper/cleanup"
-	"github.com/sacloud/libsacloud/v2/sacloud/pointer"
-
 	mobileGatewayBuilder "github.com/sacloud/libsacloud/v2/helper/builder/mobilegateway"
+	"github.com/sacloud/libsacloud/v2/helper/cleanup"
 	"github.com/sacloud/libsacloud/v2/sacloud"
+	"github.com/sacloud/libsacloud/v2/sacloud/pointer"
 	"github.com/sacloud/libsacloud/v2/sacloud/testutil"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 	"github.com/stretchr/testify/require"
 )
+
+func TestMobileGatewayService_validate(t *testing.T) {
+	cases := []struct {
+		in          *UpdateRequest
+		errorExists bool // 有無だけチェック
+	}{
+		{
+			in:          &UpdateRequest{},
+			errorExists: true,
+		},
+		{
+			in: &UpdateRequest{
+				Zone: "tk1a",
+				ID:   1,
+			},
+			errorExists: false,
+		},
+		{
+			in: &UpdateRequest{
+				Zone: "tk1a",
+				ID:   1,
+				DNS: &DNSSettingUpdate{
+					DNS1: pointer.NewString("8.8.8.8"),
+					DNS2: nil,
+				},
+			},
+			errorExists: true,
+		},
+		{
+			in: &UpdateRequest{
+				Zone: "tk1a",
+				ID:   1,
+				DNS: &DNSSettingUpdate{
+					DNS1: pointer.NewString("8.8.8.8"),
+					DNS2: pointer.NewString("8.8.4.4"),
+				},
+			},
+			errorExists: false,
+		},
+	}
+
+	for _, tc := range cases {
+		err := tc.in.Validate()
+		require.EqualValues(t, tc.errorExists, err != nil, "in: %#+v error: %s", tc.in, err)
+	}
+}
 
 func TestMobileGatewayService_convertUpdateRequest(t *testing.T) {
 	ctx := context.Background()
@@ -69,10 +114,10 @@ func TestMobileGatewayService_convertUpdateRequest(t *testing.T) {
 				ID:   mgw.ID,
 				Zone: zone,
 				Name: pointer.NewString(name + "-upd"),
-				PrivateInterface: &PrivateInterfaceSetting{
-					SwitchID:       sw.ID,
-					IPAddress:      "192.168.0.1",
-					NetworkMaskLen: 24,
+				PrivateInterface: &PrivateInterfaceSettingUpdate{
+					SwitchID:       &sw.ID,
+					IPAddress:      pointer.NewString("192.168.0.1"),
+					NetworkMaskLen: pointer.NewInt(24),
 				},
 				StaticRoutes: &[]*sacloud.MobileGatewayStaticRoute{
 					{
@@ -82,16 +127,16 @@ func TestMobileGatewayService_convertUpdateRequest(t *testing.T) {
 				},
 				InternetConnectionEnabled:       pointer.NewBool(false),
 				InterDeviceCommunicationEnabled: pointer.NewBool(false),
-				DNS: &sacloud.MobileGatewayDNSSetting{
-					DNS1: "8.8.8.8",
-					DNS2: "8.8.4.4",
+				DNS: &DNSSettingUpdate{
+					DNS1: pointer.NewString("8.8.8.8"),
+					DNS2: pointer.NewString("8.8.4.4"),
 				},
 				SIMs: nil,
-				TrafficConfig: &sacloud.MobileGatewayTrafficControl{
-					TrafficQuotaInMB:     10,
-					BandWidthLimitInKbps: 128,
-					EmailNotifyEnabled:   true,
-					AutoTrafficShaping:   true,
+				TrafficConfig: &TrafficConfigUpdate{
+					TrafficQuotaInMB:     pointer.NewInt(10),
+					BandWidthLimitInKbps: pointer.NewInt(128),
+					EmailNotifyEnabled:   pointer.NewBool(true),
+					AutoTrafficShaping:   pointer.NewBool(true),
 				},
 				NoWait: true,
 			},
@@ -114,12 +159,12 @@ func TestMobileGatewayService_convertUpdateRequest(t *testing.T) {
 				},
 				InternetConnectionEnabled:       false,
 				InterDeviceCommunicationEnabled: false,
-				DNS: &sacloud.MobileGatewayDNSSetting{
+				DNS: &DNSSetting{
 					DNS1: "8.8.8.8",
 					DNS2: "8.8.4.4",
 				},
 				SIMs: nil,
-				TrafficConfig: &sacloud.MobileGatewayTrafficControl{
+				TrafficConfig: &TrafficConfig{
 					TrafficQuotaInMB:     10,
 					BandWidthLimitInKbps: 128,
 					EmailNotifyEnabled:   true,

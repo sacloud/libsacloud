@@ -64,12 +64,12 @@ func TestMobileGatewayService_convertCreateRequest(t *testing.T) {
 				},
 				InternetConnectionEnabled:       true,
 				InterDeviceCommunicationEnabled: true,
-				DNS: &sacloud.MobileGatewayDNSSetting{
+				DNS: &DNSSetting{
 					DNS1: "8.8.8.8",
 					DNS2: "8.8.4.4",
 				},
 				SIMs: nil,
-				TrafficConfig: &sacloud.MobileGatewayTrafficControl{
+				TrafficConfig: &TrafficConfig{
 					TrafficQuotaInMB:     10,
 					BandWidthLimitInKbps: 128,
 					EmailNotifyEnabled:   true,
@@ -96,12 +96,12 @@ func TestMobileGatewayService_convertCreateRequest(t *testing.T) {
 				},
 				InternetConnectionEnabled:       true,
 				InterDeviceCommunicationEnabled: true,
-				DNS: &sacloud.MobileGatewayDNSSetting{
+				DNS: &DNSSetting{
 					DNS1: "8.8.8.8",
 					DNS2: "8.8.4.4",
 				},
 				SIMs: nil,
-				TrafficConfig: &sacloud.MobileGatewayTrafficControl{
+				TrafficConfig: &TrafficConfig{
 					TrafficQuotaInMB:     10,
 					BandWidthLimitInKbps: 128,
 					EmailNotifyEnabled:   true,
