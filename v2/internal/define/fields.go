@@ -81,9 +81,6 @@ func (f *fieldsDef) Name() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "Name",
 		Type: meta.TypeString,
-		Tags: &dsl.FieldTags{
-			Validate: "required",
-		},
 	}
 }
 
@@ -605,8 +602,7 @@ func (f *fieldsDef) ApplianceIPAddresses() *dsl.FieldDesc {
 		Name: "IPAddresses",
 		Type: meta.TypeStringSlice,
 		Tags: &dsl.FieldTags{
-			MapConv:  "Remark.[]Servers.IPAddress",
-			Validate: "min=1,max=2,dive,ipv4",
+			MapConv: "Remark.[]Servers.IPAddress",
 		},
 	}
 }
@@ -615,9 +611,6 @@ func (f *fieldsDef) LoadBalancerVIPPort() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "Port",
 		Type: meta.TypeStringNumber,
-		Tags: &dsl.FieldTags{
-			Validate: "min=1,max=65535",
-		},
 	}
 }
 
@@ -626,8 +619,7 @@ func (f *fieldsDef) LoadBalancerVIPDelayLoop() *dsl.FieldDesc {
 		Name: "DelayLoop",
 		Type: meta.TypeStringNumber,
 		Tags: &dsl.FieldTags{
-			Validate: "min=0,max=10000",
-			MapConv:  ",default=10",
+			MapConv: ",default=10",
 		},
 		DefaultValue: "10",
 	}
@@ -637,9 +629,6 @@ func (f *fieldsDef) LoadBalancerVIPSorryServer() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "SorryServer",
 		Type: meta.TypeString,
-		Tags: &dsl.FieldTags{
-			Validate: "omitempty,ipv4",
-		},
 	}
 }
 
@@ -647,18 +636,12 @@ func (f *fieldsDef) LoadBalancerServerIPAddress() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "IPAddress",
 		Type: meta.TypeString,
-		Tags: &dsl.FieldTags{
-			Validate: "ipv4",
-		},
 	}
 }
 func (f *fieldsDef) LoadBalancerServerPort() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "Port",
 		Type: meta.TypeStringNumber,
-		Tags: &dsl.FieldTags{
-			Validate: "min=1,max=65535",
-		},
 	}
 }
 func (f *fieldsDef) LoadBalancerServerEnabled() *dsl.FieldDesc {
@@ -676,9 +659,6 @@ func (f *fieldsDef) LoadBalancerServerHealthCheck() *dsl.FieldDesc {
 				{
 					Name: "Protocol",
 					Type: meta.Static(types.ELoadBalancerHealthCheckProtocol("")),
-					Tags: &dsl.FieldTags{
-						Validate: "oneof=http https ping tcp",
-					},
 				},
 				{
 					Name: "Path",
@@ -713,8 +693,7 @@ func (f *fieldsDef) LoadBalancerVIPServers() *dsl.FieldDesc {
 			},
 		},
 		Tags: &dsl.FieldTags{
-			MapConv:  "[]Servers,recursive",
-			Validate: "min=0,max=40",
+			MapConv: "[]Servers,recursive",
 		},
 	}
 }
@@ -723,9 +702,6 @@ func (f *fieldsDef) LoadBalancerVIPVirtualIPAddress() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "VirtualIPAddress",
 		Type: meta.TypeString,
-		Tags: &dsl.FieldTags{
-			Validate: "ipv4",
-		},
 	}
 }
 
@@ -745,8 +721,7 @@ func (f *fieldsDef) LoadBalancerVIP() *dsl.FieldDesc {
 			},
 		},
 		Tags: &dsl.FieldTags{
-			MapConv:  "Settings.[]LoadBalancer,recursive",
-			Validate: "min=0,max=10",
+			MapConv: "Settings.[]LoadBalancer,recursive",
 		},
 	}
 }
@@ -807,8 +782,7 @@ func (f *fieldsDef) SIMICCID() *dsl.FieldDesc {
 		Name: "ICCID",
 		Type: meta.TypeString,
 		Tags: &dsl.FieldTags{
-			MapConv:  "Status.ICCID",
-			Validate: "numeric",
+			MapConv: "Status.ICCID",
 		},
 	}
 }
@@ -843,9 +817,6 @@ func (f *fieldsDef) GSLBHealthCheck() *dsl.FieldDesc {
 				{
 					Name: "Protocol",
 					Type: meta.Static(types.EGSLBHealthCheckProtocol("")),
-					Tags: &dsl.FieldTags{
-						Validate: "oneof=http https ping tcp",
-					},
 				},
 				{
 					Name: "HostHeader",
@@ -888,8 +859,7 @@ func (f *fieldsDef) GSLBDelayLoop() *dsl.FieldDesc {
 		Name: "DelayLoop",
 		Type: meta.TypeInt,
 		Tags: &dsl.FieldTags{
-			Validate: "min=10,max=60",
-			MapConv:  "Settings.GSLB.DelayLoop",
+			MapConv: "Settings.GSLB.DelayLoop",
 		},
 		DefaultValue: "10",
 	}
@@ -915,9 +885,6 @@ func (f *fieldsDef) GSLBDestinationServers() *dsl.FieldDesc {
 				{
 					Name: "IPAddress",
 					Type: meta.TypeString,
-					Tags: &dsl.FieldTags{
-						Validate: "ipv4",
-					},
 				},
 				{
 					Name: "Enabled",
@@ -930,8 +897,7 @@ func (f *fieldsDef) GSLBDestinationServers() *dsl.FieldDesc {
 			},
 		},
 		Tags: &dsl.FieldTags{
-			MapConv:  "Settings.GSLB.[]Servers,recursive",
-			Validate: "min=0,max=12",
+			MapConv: "Settings.GSLB.[]Servers,recursive",
 		},
 	}
 }
@@ -1032,8 +998,7 @@ func (f *fieldsDef) DNSRecords() *dsl.FieldDesc {
 			},
 		},
 		Tags: &dsl.FieldTags{
-			MapConv:  "Settings.DNS.[]ResourceRecordSets,recursive",
-			Validate: "min=0,max=1000",
+			MapConv: "Settings.DNS.[]ResourceRecordSets,recursive",
 		},
 	}
 }
@@ -1073,8 +1038,7 @@ func (f *fieldsDef) SimpleMonitorDelayLoop() *dsl.FieldDesc {
 		Name: "DelayLoop",
 		Type: meta.TypeInt,
 		Tags: &dsl.FieldTags{
-			Validate: "min=60,max=3600",
-			MapConv:  "Settings.SimpleMonitor.DelayLoop",
+			MapConv: "Settings.SimpleMonitor.DelayLoop",
 		},
 		DefaultValue: "60",
 	}
@@ -1085,8 +1049,7 @@ func (f *fieldsDef) SimpleMonitorNotifyInterval() *dsl.FieldDesc {
 		Name: "NotifyInterval",
 		Type: meta.TypeInt,
 		Tags: &dsl.FieldTags{
-			Validate: "min=3600,max=259200", // 1-72時間
-			MapConv:  "Settings.SimpleMonitor.NotifyInterval",
+			MapConv: "Settings.SimpleMonitor.NotifyInterval",
 		},
 		DefaultValue: "7200",
 	}
@@ -1308,16 +1271,12 @@ func (f *fieldsDef) ProxyLBSorryServer() *dsl.FieldDesc {
 				{
 					Name: "IPAddress",
 					Type: meta.TypeString,
-					Tags: &dsl.FieldTags{
-						Validate: "ipv4",
-					},
 				},
 				{
 					Name: "Port",
 					Type: meta.TypeInt,
 					Tags: &dsl.FieldTags{
-						Validate: "min=0,max=65535",
-						MapConv:  ",omitempty",
+						MapConv: ",omitempty",
 					},
 				},
 			},
@@ -1342,9 +1301,6 @@ func (f *fieldsDef) ProxyLBBindPorts() *dsl.FieldDesc {
 				{
 					Name: "Port",
 					Type: meta.TypeInt,
-					Tags: &dsl.FieldTags{
-						Validate: "min=0,max=65535",
-					},
 				},
 				{
 					Name: "RedirectToHTTPS",
@@ -1386,16 +1342,10 @@ func (f *fieldsDef) ProxyLBServers() *dsl.FieldDesc {
 				{
 					Name: "IPAddress",
 					Type: meta.TypeString,
-					Tags: &dsl.FieldTags{
-						Validate: "ipv4",
-					},
 				},
 				{
 					Name: "Port",
 					Type: meta.TypeInt,
-					Tags: &dsl.FieldTags{
-						Validate: "min=0,max=65535",
-					},
 				},
 				{
 					Name: "ServerGroup",
@@ -1491,11 +1441,8 @@ func (f *fieldsDef) ProxyLBTimeout() *dsl.FieldDesc {
 			Name: "ProxyLBTimeout",
 			Fields: []*dsl.FieldDesc{
 				{
-					Name: "InactiveSec",
-					Type: meta.TypeInt,
-					Tags: &dsl.FieldTags{
-						Validate: "min=10,max=600",
-					},
+					Name:         "InactiveSec",
+					Type:         meta.TypeInt,
 					DefaultValue: `10`,
 				},
 			},
@@ -1819,9 +1766,6 @@ func (f *fieldsDef) Description() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "Description",
 		Type: meta.TypeString,
-		Tags: &dsl.FieldTags{
-			Validate: "min=0,max=512",
-		},
 	}
 }
 
@@ -1910,9 +1854,6 @@ func (f *fieldsDef) DefaultRoute() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "DefaultRoute",
 		Type: meta.TypeString,
-		Tags: &dsl.FieldTags{
-			Validate: "ipv4",
-		},
 	}
 }
 
@@ -1924,9 +1865,6 @@ func (f *fieldsDef) NextHop() *dsl.FieldDesc {
 			スイッチ+ルータでの追加IPアドレスブロックを示すSubnetの中でのみ設定される項目。
 			この場合DefaultRouteの値は設定されないためNextHopを代用する。
 			StaticRouteと同じ値が設定される。`,
-		Tags: &dsl.FieldTags{
-			Validate: "ipv4",
-		},
 	}
 }
 
@@ -1938,9 +1876,6 @@ func (f *fieldsDef) StaticRoute() *dsl.FieldDesc {
 			スイッチ+ルータでの追加IPアドレスブロックを示すSubnetの中でのみ設定される項目。
 			この場合DefaultRouteの値は設定されないためNextHopを代用する。
 			NextHopと同じ値が設定される。`,
-		Tags: &dsl.FieldTags{
-			Validate: "ipv4",
-		},
 	}
 }
 
@@ -1948,9 +1883,6 @@ func (f *fieldsDef) NetworkMaskLen() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "NetworkMaskLen",
 		Type: meta.TypeInt,
-		Tags: &dsl.FieldTags{
-			Validate: "min=24,max=28",
-		},
 	}
 }
 
@@ -1958,9 +1890,6 @@ func (f *fieldsDef) NetworkAddress() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "NetworkAddress",
 		Type: meta.TypeString,
-		Tags: &dsl.FieldTags{
-			Validate: "ipv4",
-		},
 	}
 }
 
@@ -1969,8 +1898,7 @@ func (f *fieldsDef) UserSubnetNetworkMaskLen() *dsl.FieldDesc {
 		Name: "NetworkMaskLen",
 		Type: meta.TypeInt,
 		Tags: &dsl.FieldTags{
-			Validate: "min=1,max=32",
-			MapConv:  "UserSubnet.NetworkMaskLen",
+			MapConv: "UserSubnet.NetworkMaskLen",
 		},
 	}
 }
@@ -1980,8 +1908,7 @@ func (f *fieldsDef) UserSubnetDefaultRoute() *dsl.FieldDesc {
 		Name: "DefaultRoute",
 		Type: meta.TypeString,
 		Tags: &dsl.FieldTags{
-			Validate: "ipv4",
-			MapConv:  "UserSubnet.DefaultRoute",
+			MapConv: "UserSubnet.DefaultRoute",
 		},
 	}
 }
@@ -1991,8 +1918,7 @@ func (f *fieldsDef) RemarkNetworkMaskLen() *dsl.FieldDesc {
 		Name: "NetworkMaskLen",
 		Type: meta.TypeInt,
 		Tags: &dsl.FieldTags{
-			Validate: "min=1,max=32",
-			MapConv:  "Remark.Network.NetworkMaskLen",
+			MapConv: "Remark.Network.NetworkMaskLen",
 		},
 	}
 }
@@ -2012,8 +1938,7 @@ func (f *fieldsDef) RemarkDefaultRoute() *dsl.FieldDesc {
 		Name: "DefaultRoute",
 		Type: meta.TypeString,
 		Tags: &dsl.FieldTags{
-			Validate: "ipv4",
-			MapConv:  "Remark.Network.DefaultRoute",
+			MapConv: "Remark.Network.DefaultRoute",
 		},
 	}
 }
