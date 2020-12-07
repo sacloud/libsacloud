@@ -118,9 +118,8 @@ func (m *modelsDef) diskEdit() *dsl.Model {
 			Name: "NetworkMaskLen",
 			Type: meta.TypeInt,
 			Tags: &dsl.FieldTags{
-				MapConv:  ",omitempty",
-				Validate: "min=0,max=32",
-				JSON:     ",omitempty",
+				MapConv: ",omitempty",
+				JSON:    ",omitempty",
 			},
 		},
 	}
@@ -931,16 +930,14 @@ func (m *modelsDef) vpcRouterStaticNAT() *dsl.Model {
 				Name: "GlobalAddress",
 				Type: meta.TypeString,
 				Tags: &dsl.FieldTags{
-					MapConv:  "GlobalAddress",
-					Validate: "ipv4",
+					MapConv: "GlobalAddress",
 				},
 			},
 			{
 				Name: "PrivateAddress",
 				Type: meta.TypeString,
 				Tags: &dsl.FieldTags{
-					MapConv:  "PrivateAddress",
-					Validate: "ipv4",
+					MapConv: "PrivateAddress",
 				},
 			},
 			{
@@ -969,8 +966,7 @@ func (m *modelsDef) vpcRouterPortForwarding() *dsl.Model {
 				Name: "PrivateAddress",
 				Type: meta.TypeString,
 				Tags: &dsl.FieldTags{
-					MapConv:  "PrivateAddress",
-					Validate: "ipv4",
+					MapConv: "PrivateAddress",
 				},
 			},
 			{
@@ -1061,23 +1057,14 @@ func (m *modelsDef) vpcRouterDHCPServer() *dsl.Model {
 			{
 				Name: "RangeStart",
 				Type: meta.TypeString,
-				Tags: &dsl.FieldTags{
-					Validate: "ipv4",
-				},
 			},
 			{
 				Name: "RangeStop",
 				Type: meta.TypeString,
-				Tags: &dsl.FieldTags{
-					Validate: "ipv4",
-				},
 			},
 			{
 				Name: "DNSServers",
 				Type: meta.TypeStringSlice,
-				Tags: &dsl.FieldTags{
-					Validate: "dive,ipv4",
-				},
 			},
 		},
 	}
@@ -1096,9 +1083,6 @@ func (m *modelsDef) vpcRouterDHCPStaticMapping() *dsl.Model {
 			{
 				Name: "IPAddress",
 				Type: meta.TypeString,
-				Tags: &dsl.FieldTags{
-					Validate: "ipv4",
-				},
 			},
 		},
 	}
@@ -1112,16 +1096,10 @@ func (m *modelsDef) vpcRouterPPTPServer() *dsl.Model {
 			{
 				Name: "RangeStart",
 				Type: meta.TypeString,
-				Tags: &dsl.FieldTags{
-					Validate: "ipv4",
-				},
 			},
 			{
 				Name: "RangeStop",
 				Type: meta.TypeString,
-				Tags: &dsl.FieldTags{
-					Validate: "ipv4",
-				},
 			},
 		},
 	}
@@ -1135,16 +1113,10 @@ func (m *modelsDef) vpcRouterL2TPIPsecServer() *dsl.Model {
 			{
 				Name: "RangeStart",
 				Type: meta.TypeString,
-				Tags: &dsl.FieldTags{
-					Validate: "ipv4",
-				},
 			},
 			{
 				Name: "RangeStop",
 				Type: meta.TypeString,
-				Tags: &dsl.FieldTags{
-					Validate: "ipv4",
-				},
 			},
 			{
 				Name: "PreSharedSecret",

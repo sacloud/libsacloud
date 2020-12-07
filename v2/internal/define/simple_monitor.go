@@ -119,8 +119,7 @@ var (
 				Name: "Target",
 				Type: meta.TypeString,
 				Tags: &dsl.FieldTags{
-					Validate: "required",
-					MapConv:  "Name/Status.Target", // NameとStatus.Targetに同じ値を設定
+					MapConv: "Name/Status.Target", // NameとStatus.Targetに同じ値を設定
 				},
 			},
 
