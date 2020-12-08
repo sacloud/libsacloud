@@ -18,15 +18,14 @@ import (
 	"fmt"
 	"log"
 	"math/rand"
-	"net/http"
 	"os"
 	"sync"
 	"time"
 
+	"github.com/sacloud/libsacloud/v2/helper/api"
+
 	"github.com/sacloud/libsacloud/v2"
 	"github.com/sacloud/libsacloud/v2/sacloud"
-	"github.com/sacloud/libsacloud/v2/sacloud/fake"
-	"github.com/sacloud/libsacloud/v2/sacloud/trace"
 )
 
 func init() {
@@ -73,8 +72,7 @@ func RandomName(strlen int, charSet string) string {
 	return string(result)
 }
 
-var apiCaller *sacloud.Client
-var httpTrace bool
+var apiCaller sacloud.APICaller
 
 var accTestOnce sync.Once
 var accTestMu sync.Mutex
@@ -84,20 +82,17 @@ func SingletonAPICaller() sacloud.APICaller {
 	accTestMu.Lock()
 	defer accTestMu.Unlock()
 	accTestOnce.Do(func() {
+		caller := api.NewCaller(&api.CallerOptions{
+			UserAgent:      fmt.Sprintf("test-libsacloud/%s", libsacloud.Version),
+			AcceptLanguage: "en-US,en;q=0.9",
+			RetryMax:       20,
+			TraceAPI:       IsEnableTrace() || IsEnableAPITrace(),
+			TraceHTTP:      IsEnableTrace() || IsEnableHTTPTrace(),
+			FakeMode:       !IsAccTest(),
+		})
 		if !IsAccTest() {
-			sacloud.DefaultStatePollingInterval = 100 * time.Millisecond
-			sacloud.DefaultDBStatusPollingInterval = 10 * time.Millisecond
-			fake.SwitchFactoryFuncToFake()
 			os.Setenv("SAKURACLOUD_ACCESS_TOKEN", "dummy")
 			os.Setenv("SAKURACLOUD_ACCESS_TOKEN_SECRET", "dummy")
-		}
-
-		if IsEnableTrace() || IsEnableAPITrace() {
-			trace.AddClientFactoryHooks()
-		}
-
-		if IsEnableTrace() || IsEnableHTTPTrace() {
-			httpTrace = true
 		}
 
 		//環境変数にトークン/シークレットがある場合のみテスト実施
@@ -108,21 +103,7 @@ func SingletonAPICaller() sacloud.APICaller {
 			log.Println("Please Set ENV 'SAKURACLOUD_ACCESS_TOKEN' and 'SAKURACLOUD_ACCESS_TOKEN_SECRET'")
 			os.Exit(0) // exit normal
 		}
-		client := sacloud.NewClient(accessToken, accessTokenSecret)
-		client.UserAgent = fmt.Sprintf("test-libsacloud/%s", libsacloud.Version)
-		client.AcceptLanguage = "en-US,en;q=0.9"
-
-		client.RetryMax = 20
-		client.HTTPClient = &http.Client{
-			Transport: &sacloud.RateLimitRoundTripper{RateLimitPerSec: 1},
-		}
-		if httpTrace {
-			client.HTTPClient.Transport = &sacloud.TracingRoundTripper{
-				Transport: client.HTTPClient.Transport,
-			}
-		}
-
-		apiCaller = client
+		apiCaller = caller
 	})
 	return apiCaller
 }
