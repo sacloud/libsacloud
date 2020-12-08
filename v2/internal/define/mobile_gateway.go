@@ -354,6 +354,13 @@ var (
 			fields.MobileGatewayInterfaces(),
 			// remark
 			fields.RemarkZoneID(),
+			{
+				Name: "GlobalAddress",
+				Type: meta.TypeString,
+				Tags: &dsl.FieldTags{
+					MapConv: "Remark.MobileGateway.GlobalAddress",
+				},
+			},
 			// settings
 			{
 				Name: "InterfaceSettings",
