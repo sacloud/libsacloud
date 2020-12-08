@@ -470,7 +470,7 @@ func MonitorChild(resourceName, funcNameSuffix, childResourceName string, monito
 
 // MonitorChildBy アプライアンスなどでの内部リソースインデックスを持つアクティビティモニタ取得操作を定義
 func MonitorChildBy(resourceName, funcNameSuffix, childResourceName string, monitorParam, result *dsl.Model) *dsl.Operation {
-	pathSuffix := childResourceName + "/{{if eq .index 0}}{{.index}}{{end}}/monitor"
+	pathSuffix := childResourceName + "{{if ne .index 0}}/{{.index}}{{end}}/monitor"
 	return &dsl.Operation{
 		ResourceName:    resourceName,
 		Name:            "Monitor" + funcNameSuffix,
