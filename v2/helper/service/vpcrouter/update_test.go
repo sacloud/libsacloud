@@ -114,6 +114,21 @@ func TestVPCRouterService_convertUpdateRequest(t *testing.T) {
 				Zone:   zone,
 				Name:   pointer.NewString(name + "-upd"),
 				NoWait: true,
+
+				NICSetting: &PremiumNICSettingUpdate{
+					IPAddresses:      &[]string{sw.Subnets[0].GetAssignedIPAddresses()[1], sw.Subnets[0].GetAssignedIPAddresses()[2]},
+					VirtualIPAddress: &sw.Subnets[0].GetAssignedIPAddresses()[3],
+					IPAliases:        &[]string{sw.Subnets[0].GetAssignedIPAddresses()[4]},
+				},
+				AdditionalNICSettings: &[]*AdditionalPremiumNICSettingUpdate{
+					{
+						SwitchID:         &additionalSwitch.ID,
+						IPAddresses:      &[]string{"192.168.0.101", "192.168.0.102"},
+						VirtualIPAddress: pointer.NewString("192.168.0.11"),
+						NetworkMaskLen:   pointer.NewInt(24),
+						Index:            2,
+					},
+				},
 			},
 			expect: &ApplyRequest{
 				ID:          vpcRouter.ID,
@@ -124,9 +139,9 @@ func TestVPCRouterService_convertUpdateRequest(t *testing.T) {
 				PlanID:      types.VPCRouterPlans.Premium,
 				NICSetting: &PremiumNICSetting{
 					SwitchID:         sw.ID,
-					IPAddresses:      []string{sw.Subnets[0].GetAssignedIPAddresses()[0], sw.Subnets[0].GetAssignedIPAddresses()[1]},
-					VirtualIPAddress: sw.Subnets[0].GetAssignedIPAddresses()[2],
-					IPAliases:        []string{sw.Subnets[0].GetAssignedIPAddresses()[3]},
+					IPAddresses:      []string{sw.Subnets[0].GetAssignedIPAddresses()[1], sw.Subnets[0].GetAssignedIPAddresses()[2]},
+					VirtualIPAddress: sw.Subnets[0].GetAssignedIPAddresses()[3],
+					IPAliases:        []string{sw.Subnets[0].GetAssignedIPAddresses()[4]},
 				},
 				AdditionalNICSettings: []AdditionalNICSettingHolder{
 					&AdditionalPremiumNICSetting{
@@ -134,7 +149,7 @@ func TestVPCRouterService_convertUpdateRequest(t *testing.T) {
 						IPAddresses:      []string{"192.168.0.101", "192.168.0.102"},
 						VirtualIPAddress: "192.168.0.11",
 						NetworkMaskLen:   24,
-						Index:            1,
+						Index:            2,
 					},
 				},
 				RouterSetting: &RouterSetting{
