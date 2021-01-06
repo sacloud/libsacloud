@@ -20,13 +20,22 @@ import (
 	"context"
 	"encoding/json"
 	"log"
+	"sync"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
+var initOnce sync.Once
+
 // AddClientFactoryHooks add client factory hooks
 func AddClientFactoryHooks() {
+	initOnce.Do(func() {
+		addClientFactoryHooks()
+	})
+}
+
+func addClientFactoryHooks() {
 	sacloud.AddClientFacotyHookFunc("Archive", func(in interface{}) interface{} {
 		return NewArchiveTracer(in.(sacloud.ArchiveAPI))
 	})

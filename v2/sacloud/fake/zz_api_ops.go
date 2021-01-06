@@ -17,11 +17,21 @@
 package fake
 
 import (
+	"sync"
+
 	"github.com/sacloud/libsacloud/v2/sacloud"
 )
 
+var switchOnce sync.Once
+
 // SwitchFactoryFuncToFake switches sacloud.xxxAPI's factory methods to use fake client
 func SwitchFactoryFuncToFake() {
+	switchOnce.Do(func() {
+		switchFactoryFuncToFake()
+	})
+}
+
+func switchFactoryFuncToFake() {
 	sacloud.SetClientFactoryFunc(ResourceArchive, func(caller sacloud.APICaller) interface{} {
 		return NewArchiveOp()
 	})
