@@ -15,4 +15,4 @@
 package libsacloud
 
 // Version バージョン
-const Version = "2.9.4"
+const Version = "2.9.5"
