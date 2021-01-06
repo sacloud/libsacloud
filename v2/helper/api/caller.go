@@ -18,12 +18,10 @@ import (
 	"fmt"
 	"net/http"
 	"strings"
-	"sync"
 	"time"
 
-	"github.com/sacloud/libsacloud/v2/helper/defaults"
-
 	"github.com/sacloud/libsacloud/v2"
+	"github.com/sacloud/libsacloud/v2/helper/defaults"
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/fake"
 	"github.com/sacloud/libsacloud/v2/sacloud/trace"
@@ -56,17 +54,9 @@ type CallerOptions struct {
 	FakeStorePath string
 }
 
-var clientOnce sync.Once
-var cachedCaller sacloud.APICaller
-
 // NewCaller 指定のオプションでsacloud.APICallerを構築して返す
-// sacloud.APICallerはプロセス中はキャッシュされる(NewCallerを用いてオプションの違うCallerは取得不可)
 func NewCaller(opts *CallerOptions) sacloud.APICaller {
-	clientOnce.Do(func() {
-		cachedCaller = newCaller(opts)
-	})
-
-	return cachedCaller
+	return newCaller(opts)
 }
 
 func newCaller(opts *CallerOptions) sacloud.APICaller {

@@ -81,4 +81,20 @@ func TestNewCaller(t *testing.T) {
 		require.Equal(t, time.Second*4, client.HTTPClient.Timeout)
 		require.EqualValues(t, 5, client.HTTPClient.Transport.(*sacloud.RateLimitRoundTripper).RateLimitPerSec)
 	})
+
+	t.Run("multiple-call", func(t *testing.T) {
+		caller1 := newCaller(&CallerOptions{
+			AccessToken:       "1",
+			AccessTokenSecret: "1",
+		})
+		require.NotNil(t, caller1)
+
+		caller2 := newCaller(&CallerOptions{
+			AccessToken:       "2",
+			AccessTokenSecret: "2",
+		})
+		require.NotNil(t, caller2)
+
+		require.NotEqual(t, caller1, caller2)
+	})
 }
