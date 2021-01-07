@@ -47,6 +47,8 @@ package otel
 
 import (
 	"github.com/sacloud/libsacloud/v2"
+	"go.opentelemetry.io/contrib/instrumentation/net/http/httptrace/otelhttptrace"
+	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/codes"
 	"go.opentelemetry.io/otel/label"
@@ -97,6 +99,8 @@ func (t *{{ $typeName }}Tracer) {{ .MethodName }}(ctx context.Context{{if not $r
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	{{range .ResultsTypeInfo}}{{.VarName}}, {{end}}err := t.Internal.{{ .MethodName }}(ctx{{if not $resource.IsGlobal}}, zone{{end}}{{ range .Arguments }}, {{ .ArgName }}{{ end }})
 
 	if err != nil {
