@@ -18,9 +18,11 @@ package otel
 
 import (
 	"context"
+	"net/http/httptrace"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
+	"go.opentelemetry.io/contrib/instrumentation/net/http/httptrace/otelhttptrace"
 	"go.opentelemetry.io/otel/codes"
 	"go.opentelemetry.io/otel/label"
 	"go.opentelemetry.io/otel/trace"
@@ -191,6 +193,8 @@ func (t *ArchiveTracer) Find(ctx context.Context, zone string, conditions *saclo
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	result, err := t.Internal.Find(ctx, zone, conditions)
 
 	if err != nil {
@@ -215,6 +219,8 @@ func (t *ArchiveTracer) Create(ctx context.Context, zone string, param *sacloud.
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultArchive, err := t.Internal.Create(ctx, zone, param)
 
 	if err != nil {
@@ -239,6 +245,8 @@ func (t *ArchiveTracer) CreateBlank(ctx context.Context, zone string, param *sac
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultArchive, resultFTPServer, err := t.Internal.CreateBlank(ctx, zone, param)
 
 	if err != nil {
@@ -264,6 +272,8 @@ func (t *ArchiveTracer) Read(ctx context.Context, zone string, id types.ID) (*sa
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultArchive, err := t.Internal.Read(ctx, zone, id)
 
 	if err != nil {
@@ -289,6 +299,8 @@ func (t *ArchiveTracer) Update(ctx context.Context, zone string, id types.ID, pa
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultArchive, err := t.Internal.Update(ctx, zone, id, param)
 
 	if err != nil {
@@ -313,6 +325,8 @@ func (t *ArchiveTracer) Delete(ctx context.Context, zone string, id types.ID) er
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.Delete(ctx, zone, id)
 
 	if err != nil {
@@ -337,6 +351,8 @@ func (t *ArchiveTracer) OpenFTP(ctx context.Context, zone string, id types.ID, o
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultFTPServer, err := t.Internal.OpenFTP(ctx, zone, id, openOption)
 
 	if err != nil {
@@ -361,6 +377,8 @@ func (t *ArchiveTracer) CloseFTP(ctx context.Context, zone string, id types.ID) 
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.CloseFTP(ctx, zone, id)
 
 	if err != nil {
@@ -384,6 +402,8 @@ func (t *ArchiveTracer) Share(ctx context.Context, zone string, id types.ID) (*s
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultArchiveShareInfo, err := t.Internal.Share(ctx, zone, id)
 
 	if err != nil {
@@ -410,6 +430,8 @@ func (t *ArchiveTracer) CreateFromShared(ctx context.Context, zone string, sourc
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultArchive, err := t.Internal.CreateFromShared(ctx, zone, sourceArchiveID, destZoneID, param)
 
 	if err != nil {
@@ -436,6 +458,8 @@ func (t *ArchiveTracer) Transfer(ctx context.Context, zone string, sourceArchive
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultArchive, err := t.Internal.Transfer(ctx, zone, sourceArchiveID, destZoneID, param)
 
 	if err != nil {
@@ -475,6 +499,8 @@ func (t *AuthStatusTracer) Read(ctx context.Context) (*sacloud.AuthStatus, error
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultAuthStatus, err := t.Internal.Read(ctx)
 
 	if err != nil {
@@ -517,6 +543,8 @@ func (t *AutoBackupTracer) Find(ctx context.Context, zone string, conditions *sa
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	result, err := t.Internal.Find(ctx, zone, conditions)
 
 	if err != nil {
@@ -541,6 +569,8 @@ func (t *AutoBackupTracer) Create(ctx context.Context, zone string, param *saclo
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultAutoBackup, err := t.Internal.Create(ctx, zone, param)
 
 	if err != nil {
@@ -565,6 +595,8 @@ func (t *AutoBackupTracer) Read(ctx context.Context, zone string, id types.ID) (
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultAutoBackup, err := t.Internal.Read(ctx, zone, id)
 
 	if err != nil {
@@ -590,6 +622,8 @@ func (t *AutoBackupTracer) Update(ctx context.Context, zone string, id types.ID,
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultAutoBackup, err := t.Internal.Update(ctx, zone, id, param)
 
 	if err != nil {
@@ -615,6 +649,8 @@ func (t *AutoBackupTracer) UpdateSettings(ctx context.Context, zone string, id t
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultAutoBackup, err := t.Internal.UpdateSettings(ctx, zone, id, param)
 
 	if err != nil {
@@ -639,6 +675,8 @@ func (t *AutoBackupTracer) Delete(ctx context.Context, zone string, id types.ID)
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.Delete(ctx, zone, id)
 
 	if err != nil {
@@ -679,6 +717,8 @@ func (t *BillTracer) ByContract(ctx context.Context, accountID types.ID) (*saclo
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	result, err := t.Internal.ByContract(ctx, accountID)
 
 	if err != nil {
@@ -703,6 +743,8 @@ func (t *BillTracer) ByContractYear(ctx context.Context, accountID types.ID, yea
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	result, err := t.Internal.ByContractYear(ctx, accountID, year)
 
 	if err != nil {
@@ -728,6 +770,8 @@ func (t *BillTracer) ByContractYearMonth(ctx context.Context, accountID types.ID
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	result, err := t.Internal.ByContractYearMonth(ctx, accountID, year, month)
 
 	if err != nil {
@@ -751,6 +795,8 @@ func (t *BillTracer) Read(ctx context.Context, id types.ID) (*sacloud.BillReadRe
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	result, err := t.Internal.Read(ctx, id)
 
 	if err != nil {
@@ -775,6 +821,8 @@ func (t *BillTracer) Details(ctx context.Context, MemberCode string, id types.ID
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	result, err := t.Internal.Details(ctx, MemberCode, id)
 
 	if err != nil {
@@ -799,6 +847,8 @@ func (t *BillTracer) DetailsCSV(ctx context.Context, MemberCode string, id types
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultBillDetailCSV, err := t.Internal.DetailsCSV(ctx, MemberCode, id)
 
 	if err != nil {
@@ -841,6 +891,8 @@ func (t *BridgeTracer) Find(ctx context.Context, zone string, conditions *saclou
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	result, err := t.Internal.Find(ctx, zone, conditions)
 
 	if err != nil {
@@ -865,6 +917,8 @@ func (t *BridgeTracer) Create(ctx context.Context, zone string, param *sacloud.B
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultBridge, err := t.Internal.Create(ctx, zone, param)
 
 	if err != nil {
@@ -889,6 +943,8 @@ func (t *BridgeTracer) Read(ctx context.Context, zone string, id types.ID) (*sac
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultBridge, err := t.Internal.Read(ctx, zone, id)
 
 	if err != nil {
@@ -914,6 +970,8 @@ func (t *BridgeTracer) Update(ctx context.Context, zone string, id types.ID, par
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultBridge, err := t.Internal.Update(ctx, zone, id, param)
 
 	if err != nil {
@@ -938,6 +996,8 @@ func (t *BridgeTracer) Delete(ctx context.Context, zone string, id types.ID) err
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.Delete(ctx, zone, id)
 
 	if err != nil {
@@ -979,6 +1039,8 @@ func (t *CDROMTracer) Find(ctx context.Context, zone string, conditions *sacloud
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	result, err := t.Internal.Find(ctx, zone, conditions)
 
 	if err != nil {
@@ -1003,6 +1065,8 @@ func (t *CDROMTracer) Create(ctx context.Context, zone string, param *sacloud.CD
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultCDROM, resultFTPServer, err := t.Internal.Create(ctx, zone, param)
 
 	if err != nil {
@@ -1028,6 +1092,8 @@ func (t *CDROMTracer) Read(ctx context.Context, zone string, id types.ID) (*sacl
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultCDROM, err := t.Internal.Read(ctx, zone, id)
 
 	if err != nil {
@@ -1053,6 +1119,8 @@ func (t *CDROMTracer) Update(ctx context.Context, zone string, id types.ID, para
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultCDROM, err := t.Internal.Update(ctx, zone, id, param)
 
 	if err != nil {
@@ -1077,6 +1145,8 @@ func (t *CDROMTracer) Delete(ctx context.Context, zone string, id types.ID) erro
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.Delete(ctx, zone, id)
 
 	if err != nil {
@@ -1101,6 +1171,8 @@ func (t *CDROMTracer) OpenFTP(ctx context.Context, zone string, id types.ID, ope
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultFTPServer, err := t.Internal.OpenFTP(ctx, zone, id, openOption)
 
 	if err != nil {
@@ -1125,6 +1197,8 @@ func (t *CDROMTracer) CloseFTP(ctx context.Context, zone string, id types.ID) er
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.CloseFTP(ctx, zone, id)
 
 	if err != nil {
@@ -1165,6 +1239,8 @@ func (t *ContainerRegistryTracer) Find(ctx context.Context, conditions *sacloud.
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	result, err := t.Internal.Find(ctx, conditions)
 
 	if err != nil {
@@ -1188,6 +1264,8 @@ func (t *ContainerRegistryTracer) Create(ctx context.Context, param *sacloud.Con
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultContainerRegistry, err := t.Internal.Create(ctx, param)
 
 	if err != nil {
@@ -1211,6 +1289,8 @@ func (t *ContainerRegistryTracer) Read(ctx context.Context, id types.ID) (*saclo
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultContainerRegistry, err := t.Internal.Read(ctx, id)
 
 	if err != nil {
@@ -1235,6 +1315,8 @@ func (t *ContainerRegistryTracer) Update(ctx context.Context, id types.ID, param
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultContainerRegistry, err := t.Internal.Update(ctx, id, param)
 
 	if err != nil {
@@ -1259,6 +1341,8 @@ func (t *ContainerRegistryTracer) UpdateSettings(ctx context.Context, id types.I
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultContainerRegistry, err := t.Internal.UpdateSettings(ctx, id, param)
 
 	if err != nil {
@@ -1282,6 +1366,8 @@ func (t *ContainerRegistryTracer) Delete(ctx context.Context, id types.ID) error
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.Delete(ctx, id)
 
 	if err != nil {
@@ -1304,6 +1390,8 @@ func (t *ContainerRegistryTracer) ListUsers(ctx context.Context, id types.ID) (*
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultContainerRegistryUsers, err := t.Internal.ListUsers(ctx, id)
 
 	if err != nil {
@@ -1328,6 +1416,8 @@ func (t *ContainerRegistryTracer) AddUser(ctx context.Context, id types.ID, para
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.AddUser(ctx, id, param)
 
 	if err != nil {
@@ -1352,6 +1442,8 @@ func (t *ContainerRegistryTracer) UpdateUser(ctx context.Context, id types.ID, u
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.UpdateUser(ctx, id, username, param)
 
 	if err != nil {
@@ -1375,6 +1467,8 @@ func (t *ContainerRegistryTracer) DeleteUser(ctx context.Context, id types.ID, u
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.DeleteUser(ctx, id, username)
 
 	if err != nil {
@@ -1415,6 +1509,8 @@ func (t *CouponTracer) Find(ctx context.Context, accountID types.ID) (*sacloud.C
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	result, err := t.Internal.Find(ctx, accountID)
 
 	if err != nil {
@@ -1457,6 +1553,8 @@ func (t *DatabaseTracer) Find(ctx context.Context, zone string, conditions *sacl
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	result, err := t.Internal.Find(ctx, zone, conditions)
 
 	if err != nil {
@@ -1481,6 +1579,8 @@ func (t *DatabaseTracer) Create(ctx context.Context, zone string, param *sacloud
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultDatabase, err := t.Internal.Create(ctx, zone, param)
 
 	if err != nil {
@@ -1505,6 +1605,8 @@ func (t *DatabaseTracer) Read(ctx context.Context, zone string, id types.ID) (*s
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultDatabase, err := t.Internal.Read(ctx, zone, id)
 
 	if err != nil {
@@ -1530,6 +1632,8 @@ func (t *DatabaseTracer) Update(ctx context.Context, zone string, id types.ID, p
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultDatabase, err := t.Internal.Update(ctx, zone, id, param)
 
 	if err != nil {
@@ -1555,6 +1659,8 @@ func (t *DatabaseTracer) UpdateSettings(ctx context.Context, zone string, id typ
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultDatabase, err := t.Internal.UpdateSettings(ctx, zone, id, param)
 
 	if err != nil {
@@ -1579,6 +1685,8 @@ func (t *DatabaseTracer) Delete(ctx context.Context, zone string, id types.ID) e
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.Delete(ctx, zone, id)
 
 	if err != nil {
@@ -1602,6 +1710,8 @@ func (t *DatabaseTracer) Config(ctx context.Context, zone string, id types.ID) e
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.Config(ctx, zone, id)
 
 	if err != nil {
@@ -1625,6 +1735,8 @@ func (t *DatabaseTracer) Boot(ctx context.Context, zone string, id types.ID) err
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.Boot(ctx, zone, id)
 
 	if err != nil {
@@ -1649,6 +1761,8 @@ func (t *DatabaseTracer) Shutdown(ctx context.Context, zone string, id types.ID,
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.Shutdown(ctx, zone, id, shutdownOption)
 
 	if err != nil {
@@ -1672,6 +1786,8 @@ func (t *DatabaseTracer) Reset(ctx context.Context, zone string, id types.ID) er
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.Reset(ctx, zone, id)
 
 	if err != nil {
@@ -1696,6 +1812,8 @@ func (t *DatabaseTracer) MonitorCPU(ctx context.Context, zone string, id types.I
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultCPUTimeActivity, err := t.Internal.MonitorCPU(ctx, zone, id, condition)
 
 	if err != nil {
@@ -1721,6 +1839,8 @@ func (t *DatabaseTracer) MonitorDisk(ctx context.Context, zone string, id types.
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultDiskActivity, err := t.Internal.MonitorDisk(ctx, zone, id, condition)
 
 	if err != nil {
@@ -1746,6 +1866,8 @@ func (t *DatabaseTracer) MonitorInterface(ctx context.Context, zone string, id t
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultInterfaceActivity, err := t.Internal.MonitorInterface(ctx, zone, id, condition)
 
 	if err != nil {
@@ -1771,6 +1893,8 @@ func (t *DatabaseTracer) MonitorDatabase(ctx context.Context, zone string, id ty
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultDatabaseActivity, err := t.Internal.MonitorDatabase(ctx, zone, id, condition)
 
 	if err != nil {
@@ -1795,6 +1919,8 @@ func (t *DatabaseTracer) Status(ctx context.Context, zone string, id types.ID) (
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultDatabaseStatus, err := t.Internal.Status(ctx, zone, id)
 
 	if err != nil {
@@ -1837,6 +1963,8 @@ func (t *DiskTracer) Find(ctx context.Context, zone string, conditions *sacloud.
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	result, err := t.Internal.Find(ctx, zone, conditions)
 
 	if err != nil {
@@ -1862,6 +1990,8 @@ func (t *DiskTracer) Create(ctx context.Context, zone string, createParam *saclo
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultDisk, err := t.Internal.Create(ctx, zone, createParam, distantFrom)
 
 	if err != nil {
@@ -1887,6 +2017,8 @@ func (t *DiskTracer) Config(ctx context.Context, zone string, id types.ID, edit 
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.Config(ctx, zone, id, edit)
 
 	if err != nil {
@@ -1913,6 +2045,8 @@ func (t *DiskTracer) CreateWithConfig(ctx context.Context, zone string, createPa
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultDisk, err := t.Internal.CreateWithConfig(ctx, zone, createParam, editParam, bootAtAvailable, distantFrom)
 
 	if err != nil {
@@ -1937,6 +2071,8 @@ func (t *DiskTracer) ToBlank(ctx context.Context, zone string, id types.ID) erro
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.ToBlank(ctx, zone, id)
 
 	if err != nil {
@@ -1961,6 +2097,8 @@ func (t *DiskTracer) ResizePartition(ctx context.Context, zone string, id types.
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.ResizePartition(ctx, zone, id, param)
 
 	if err != nil {
@@ -1985,6 +2123,8 @@ func (t *DiskTracer) ConnectToServer(ctx context.Context, zone string, id types.
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.ConnectToServer(ctx, zone, id, serverID)
 
 	if err != nil {
@@ -2008,6 +2148,8 @@ func (t *DiskTracer) DisconnectFromServer(ctx context.Context, zone string, id t
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.DisconnectFromServer(ctx, zone, id)
 
 	if err != nil {
@@ -2033,6 +2175,8 @@ func (t *DiskTracer) Install(ctx context.Context, zone string, id types.ID, inst
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultDisk, err := t.Internal.Install(ctx, zone, id, installParam, distantFrom)
 
 	if err != nil {
@@ -2057,6 +2201,8 @@ func (t *DiskTracer) Read(ctx context.Context, zone string, id types.ID) (*saclo
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultDisk, err := t.Internal.Read(ctx, zone, id)
 
 	if err != nil {
@@ -2082,6 +2228,8 @@ func (t *DiskTracer) Update(ctx context.Context, zone string, id types.ID, param
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultDisk, err := t.Internal.Update(ctx, zone, id, param)
 
 	if err != nil {
@@ -2106,6 +2254,8 @@ func (t *DiskTracer) Delete(ctx context.Context, zone string, id types.ID) error
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.Delete(ctx, zone, id)
 
 	if err != nil {
@@ -2130,6 +2280,8 @@ func (t *DiskTracer) Monitor(ctx context.Context, zone string, id types.ID, cond
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultDiskActivity, err := t.Internal.Monitor(ctx, zone, id, condition)
 
 	if err != nil {
@@ -2155,6 +2307,8 @@ func (t *DiskTracer) MonitorDisk(ctx context.Context, zone string, id types.ID, 
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultDiskActivity, err := t.Internal.MonitorDisk(ctx, zone, id, condition)
 
 	if err != nil {
@@ -2197,6 +2351,8 @@ func (t *DiskPlanTracer) Find(ctx context.Context, zone string, conditions *sacl
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	result, err := t.Internal.Find(ctx, zone, conditions)
 
 	if err != nil {
@@ -2221,6 +2377,8 @@ func (t *DiskPlanTracer) Read(ctx context.Context, zone string, id types.ID) (*s
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultDiskPlan, err := t.Internal.Read(ctx, zone, id)
 
 	if err != nil {
@@ -2262,6 +2420,8 @@ func (t *DNSTracer) Find(ctx context.Context, conditions *sacloud.FindCondition)
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	result, err := t.Internal.Find(ctx, conditions)
 
 	if err != nil {
@@ -2285,6 +2445,8 @@ func (t *DNSTracer) Create(ctx context.Context, param *sacloud.DNSCreateRequest)
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultDNS, err := t.Internal.Create(ctx, param)
 
 	if err != nil {
@@ -2308,6 +2470,8 @@ func (t *DNSTracer) Read(ctx context.Context, id types.ID) (*sacloud.DNS, error)
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultDNS, err := t.Internal.Read(ctx, id)
 
 	if err != nil {
@@ -2332,6 +2496,8 @@ func (t *DNSTracer) Update(ctx context.Context, id types.ID, param *sacloud.DNSU
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultDNS, err := t.Internal.Update(ctx, id, param)
 
 	if err != nil {
@@ -2356,6 +2522,8 @@ func (t *DNSTracer) UpdateSettings(ctx context.Context, id types.ID, param *sacl
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultDNS, err := t.Internal.UpdateSettings(ctx, id, param)
 
 	if err != nil {
@@ -2379,6 +2547,8 @@ func (t *DNSTracer) Delete(ctx context.Context, id types.ID) error {
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.Delete(ctx, id)
 
 	if err != nil {
@@ -2419,6 +2589,8 @@ func (t *ESMETracer) Find(ctx context.Context, conditions *sacloud.FindCondition
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	result, err := t.Internal.Find(ctx, conditions)
 
 	if err != nil {
@@ -2442,6 +2614,8 @@ func (t *ESMETracer) Create(ctx context.Context, param *sacloud.ESMECreateReques
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultESME, err := t.Internal.Create(ctx, param)
 
 	if err != nil {
@@ -2465,6 +2639,8 @@ func (t *ESMETracer) Read(ctx context.Context, id types.ID) (*sacloud.ESME, erro
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultESME, err := t.Internal.Read(ctx, id)
 
 	if err != nil {
@@ -2489,6 +2665,8 @@ func (t *ESMETracer) Update(ctx context.Context, id types.ID, param *sacloud.ESM
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultESME, err := t.Internal.Update(ctx, id, param)
 
 	if err != nil {
@@ -2512,6 +2690,8 @@ func (t *ESMETracer) Delete(ctx context.Context, id types.ID) error {
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.Delete(ctx, id)
 
 	if err != nil {
@@ -2535,6 +2715,8 @@ func (t *ESMETracer) SendMessageWithGeneratedOTP(ctx context.Context, id types.I
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultESMESendMessageResult, err := t.Internal.SendMessageWithGeneratedOTP(ctx, id, param)
 
 	if err != nil {
@@ -2559,6 +2741,8 @@ func (t *ESMETracer) SendMessageWithInputtedOTP(ctx context.Context, id types.ID
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultESMESendMessageResult, err := t.Internal.SendMessageWithInputtedOTP(ctx, id, param)
 
 	if err != nil {
@@ -2582,6 +2766,8 @@ func (t *ESMETracer) Logs(ctx context.Context, id types.ID) ([]*sacloud.ESMELogs
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultLogs, err := t.Internal.Logs(ctx, id)
 
 	if err != nil {
@@ -2623,6 +2809,8 @@ func (t *GSLBTracer) Find(ctx context.Context, conditions *sacloud.FindCondition
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	result, err := t.Internal.Find(ctx, conditions)
 
 	if err != nil {
@@ -2646,6 +2834,8 @@ func (t *GSLBTracer) Create(ctx context.Context, param *sacloud.GSLBCreateReques
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultGSLB, err := t.Internal.Create(ctx, param)
 
 	if err != nil {
@@ -2669,6 +2859,8 @@ func (t *GSLBTracer) Read(ctx context.Context, id types.ID) (*sacloud.GSLB, erro
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultGSLB, err := t.Internal.Read(ctx, id)
 
 	if err != nil {
@@ -2693,6 +2885,8 @@ func (t *GSLBTracer) Update(ctx context.Context, id types.ID, param *sacloud.GSL
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultGSLB, err := t.Internal.Update(ctx, id, param)
 
 	if err != nil {
@@ -2717,6 +2911,8 @@ func (t *GSLBTracer) UpdateSettings(ctx context.Context, id types.ID, param *sac
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultGSLB, err := t.Internal.UpdateSettings(ctx, id, param)
 
 	if err != nil {
@@ -2740,6 +2936,8 @@ func (t *GSLBTracer) Delete(ctx context.Context, id types.ID) error {
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.Delete(ctx, id)
 
 	if err != nil {
@@ -2780,6 +2978,8 @@ func (t *IconTracer) Find(ctx context.Context, conditions *sacloud.FindCondition
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	result, err := t.Internal.Find(ctx, conditions)
 
 	if err != nil {
@@ -2803,6 +3003,8 @@ func (t *IconTracer) Create(ctx context.Context, param *sacloud.IconCreateReques
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultIcon, err := t.Internal.Create(ctx, param)
 
 	if err != nil {
@@ -2826,6 +3028,8 @@ func (t *IconTracer) Read(ctx context.Context, id types.ID) (*sacloud.Icon, erro
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultIcon, err := t.Internal.Read(ctx, id)
 
 	if err != nil {
@@ -2850,6 +3054,8 @@ func (t *IconTracer) Update(ctx context.Context, id types.ID, param *sacloud.Ico
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultIcon, err := t.Internal.Update(ctx, id, param)
 
 	if err != nil {
@@ -2873,6 +3079,8 @@ func (t *IconTracer) Delete(ctx context.Context, id types.ID) error {
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.Delete(ctx, id)
 
 	if err != nil {
@@ -2914,6 +3122,8 @@ func (t *InterfaceTracer) Find(ctx context.Context, zone string, conditions *sac
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	result, err := t.Internal.Find(ctx, zone, conditions)
 
 	if err != nil {
@@ -2938,6 +3148,8 @@ func (t *InterfaceTracer) Create(ctx context.Context, zone string, param *saclou
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultInterface, err := t.Internal.Create(ctx, zone, param)
 
 	if err != nil {
@@ -2962,6 +3174,8 @@ func (t *InterfaceTracer) Read(ctx context.Context, zone string, id types.ID) (*
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultInterface, err := t.Internal.Read(ctx, zone, id)
 
 	if err != nil {
@@ -2987,6 +3201,8 @@ func (t *InterfaceTracer) Update(ctx context.Context, zone string, id types.ID, 
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultInterface, err := t.Internal.Update(ctx, zone, id, param)
 
 	if err != nil {
@@ -3011,6 +3227,8 @@ func (t *InterfaceTracer) Delete(ctx context.Context, zone string, id types.ID) 
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.Delete(ctx, zone, id)
 
 	if err != nil {
@@ -3035,6 +3253,8 @@ func (t *InterfaceTracer) Monitor(ctx context.Context, zone string, id types.ID,
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultInterfaceActivity, err := t.Internal.Monitor(ctx, zone, id, condition)
 
 	if err != nil {
@@ -3059,6 +3279,8 @@ func (t *InterfaceTracer) ConnectToSharedSegment(ctx context.Context, zone strin
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.ConnectToSharedSegment(ctx, zone, id)
 
 	if err != nil {
@@ -3083,6 +3305,8 @@ func (t *InterfaceTracer) ConnectToSwitch(ctx context.Context, zone string, id t
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.ConnectToSwitch(ctx, zone, id, switchID)
 
 	if err != nil {
@@ -3106,6 +3330,8 @@ func (t *InterfaceTracer) DisconnectFromSwitch(ctx context.Context, zone string,
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.DisconnectFromSwitch(ctx, zone, id)
 
 	if err != nil {
@@ -3130,6 +3356,8 @@ func (t *InterfaceTracer) ConnectToPacketFilter(ctx context.Context, zone string
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.ConnectToPacketFilter(ctx, zone, id, packetFilterID)
 
 	if err != nil {
@@ -3153,6 +3381,8 @@ func (t *InterfaceTracer) DisconnectFromPacketFilter(ctx context.Context, zone s
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.DisconnectFromPacketFilter(ctx, zone, id)
 
 	if err != nil {
@@ -3194,6 +3424,8 @@ func (t *InternetTracer) Find(ctx context.Context, zone string, conditions *sacl
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	result, err := t.Internal.Find(ctx, zone, conditions)
 
 	if err != nil {
@@ -3218,6 +3450,8 @@ func (t *InternetTracer) Create(ctx context.Context, zone string, param *sacloud
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultInternet, err := t.Internal.Create(ctx, zone, param)
 
 	if err != nil {
@@ -3242,6 +3476,8 @@ func (t *InternetTracer) Read(ctx context.Context, zone string, id types.ID) (*s
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultInternet, err := t.Internal.Read(ctx, zone, id)
 
 	if err != nil {
@@ -3267,6 +3503,8 @@ func (t *InternetTracer) Update(ctx context.Context, zone string, id types.ID, p
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultInternet, err := t.Internal.Update(ctx, zone, id, param)
 
 	if err != nil {
@@ -3291,6 +3529,8 @@ func (t *InternetTracer) Delete(ctx context.Context, zone string, id types.ID) e
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.Delete(ctx, zone, id)
 
 	if err != nil {
@@ -3315,6 +3555,8 @@ func (t *InternetTracer) UpdateBandWidth(ctx context.Context, zone string, id ty
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultInternet, err := t.Internal.UpdateBandWidth(ctx, zone, id, param)
 
 	if err != nil {
@@ -3340,6 +3582,8 @@ func (t *InternetTracer) AddSubnet(ctx context.Context, zone string, id types.ID
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultSubnet, err := t.Internal.AddSubnet(ctx, zone, id, param)
 
 	if err != nil {
@@ -3366,6 +3610,8 @@ func (t *InternetTracer) UpdateSubnet(ctx context.Context, zone string, id types
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultSubnet, err := t.Internal.UpdateSubnet(ctx, zone, id, subnetID, param)
 
 	if err != nil {
@@ -3391,6 +3637,8 @@ func (t *InternetTracer) DeleteSubnet(ctx context.Context, zone string, id types
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.DeleteSubnet(ctx, zone, id, subnetID)
 
 	if err != nil {
@@ -3415,6 +3663,8 @@ func (t *InternetTracer) Monitor(ctx context.Context, zone string, id types.ID, 
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultRouterActivity, err := t.Internal.Monitor(ctx, zone, id, condition)
 
 	if err != nil {
@@ -3440,6 +3690,8 @@ func (t *InternetTracer) MonitorRouter(ctx context.Context, zone string, id type
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultRouterActivity, err := t.Internal.MonitorRouter(ctx, zone, id, condition)
 
 	if err != nil {
@@ -3464,6 +3716,8 @@ func (t *InternetTracer) EnableIPv6(ctx context.Context, zone string, id types.I
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultIPv6Net, err := t.Internal.EnableIPv6(ctx, zone, id)
 
 	if err != nil {
@@ -3489,6 +3743,8 @@ func (t *InternetTracer) DisableIPv6(ctx context.Context, zone string, id types.
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.DisableIPv6(ctx, zone, id, ipv6netID)
 
 	if err != nil {
@@ -3530,6 +3786,8 @@ func (t *InternetPlanTracer) Find(ctx context.Context, zone string, conditions *
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	result, err := t.Internal.Find(ctx, zone, conditions)
 
 	if err != nil {
@@ -3554,6 +3812,8 @@ func (t *InternetPlanTracer) Read(ctx context.Context, zone string, id types.ID)
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultInternetPlan, err := t.Internal.Read(ctx, zone, id)
 
 	if err != nil {
@@ -3595,6 +3855,8 @@ func (t *IPAddressTracer) List(ctx context.Context, zone string) (*sacloud.IPAdd
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	result, err := t.Internal.List(ctx, zone)
 
 	if err != nil {
@@ -3619,6 +3881,8 @@ func (t *IPAddressTracer) Read(ctx context.Context, zone string, ipAddress strin
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultIPAddress, err := t.Internal.Read(ctx, zone, ipAddress)
 
 	if err != nil {
@@ -3644,6 +3908,8 @@ func (t *IPAddressTracer) UpdateHostName(ctx context.Context, zone string, ipAdd
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultIPAddress, err := t.Internal.UpdateHostName(ctx, zone, ipAddress, hostName)
 
 	if err != nil {
@@ -3685,6 +3951,8 @@ func (t *IPv6NetTracer) List(ctx context.Context, zone string) (*sacloud.IPv6Net
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	result, err := t.Internal.List(ctx, zone)
 
 	if err != nil {
@@ -3709,6 +3977,8 @@ func (t *IPv6NetTracer) Find(ctx context.Context, zone string, conditions *saclo
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	result, err := t.Internal.Find(ctx, zone, conditions)
 
 	if err != nil {
@@ -3733,6 +4003,8 @@ func (t *IPv6NetTracer) Read(ctx context.Context, zone string, id types.ID) (*sa
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultIPv6Net, err := t.Internal.Read(ctx, zone, id)
 
 	if err != nil {
@@ -3775,6 +4047,8 @@ func (t *IPv6AddrTracer) Find(ctx context.Context, zone string, conditions *sacl
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	result, err := t.Internal.Find(ctx, zone, conditions)
 
 	if err != nil {
@@ -3799,6 +4073,8 @@ func (t *IPv6AddrTracer) Create(ctx context.Context, zone string, param *sacloud
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultIPv6Addr, err := t.Internal.Create(ctx, zone, param)
 
 	if err != nil {
@@ -3823,6 +4099,8 @@ func (t *IPv6AddrTracer) Read(ctx context.Context, zone string, ipv6addr string)
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultIPv6Addr, err := t.Internal.Read(ctx, zone, ipv6addr)
 
 	if err != nil {
@@ -3848,6 +4126,8 @@ func (t *IPv6AddrTracer) Update(ctx context.Context, zone string, ipv6addr strin
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultIPv6Addr, err := t.Internal.Update(ctx, zone, ipv6addr, param)
 
 	if err != nil {
@@ -3872,6 +4152,8 @@ func (t *IPv6AddrTracer) Delete(ctx context.Context, zone string, ipv6addr strin
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.Delete(ctx, zone, ipv6addr)
 
 	if err != nil {
@@ -3912,6 +4194,8 @@ func (t *LicenseTracer) Find(ctx context.Context, conditions *sacloud.FindCondit
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	result, err := t.Internal.Find(ctx, conditions)
 
 	if err != nil {
@@ -3935,6 +4219,8 @@ func (t *LicenseTracer) Create(ctx context.Context, param *sacloud.LicenseCreate
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultLicense, err := t.Internal.Create(ctx, param)
 
 	if err != nil {
@@ -3958,6 +4244,8 @@ func (t *LicenseTracer) Read(ctx context.Context, id types.ID) (*sacloud.License
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultLicense, err := t.Internal.Read(ctx, id)
 
 	if err != nil {
@@ -3982,6 +4270,8 @@ func (t *LicenseTracer) Update(ctx context.Context, id types.ID, param *sacloud.
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultLicense, err := t.Internal.Update(ctx, id, param)
 
 	if err != nil {
@@ -4005,6 +4295,8 @@ func (t *LicenseTracer) Delete(ctx context.Context, id types.ID) error {
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.Delete(ctx, id)
 
 	if err != nil {
@@ -4045,6 +4337,8 @@ func (t *LicenseInfoTracer) Find(ctx context.Context, conditions *sacloud.FindCo
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	result, err := t.Internal.Find(ctx, conditions)
 
 	if err != nil {
@@ -4068,6 +4362,8 @@ func (t *LicenseInfoTracer) Read(ctx context.Context, id types.ID) (*sacloud.Lic
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultLicenseInfo, err := t.Internal.Read(ctx, id)
 
 	if err != nil {
@@ -4110,6 +4406,8 @@ func (t *LoadBalancerTracer) Find(ctx context.Context, zone string, conditions *
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	result, err := t.Internal.Find(ctx, zone, conditions)
 
 	if err != nil {
@@ -4134,6 +4432,8 @@ func (t *LoadBalancerTracer) Create(ctx context.Context, zone string, param *sac
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultLoadBalancer, err := t.Internal.Create(ctx, zone, param)
 
 	if err != nil {
@@ -4158,6 +4458,8 @@ func (t *LoadBalancerTracer) Read(ctx context.Context, zone string, id types.ID)
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultLoadBalancer, err := t.Internal.Read(ctx, zone, id)
 
 	if err != nil {
@@ -4183,6 +4485,8 @@ func (t *LoadBalancerTracer) Update(ctx context.Context, zone string, id types.I
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultLoadBalancer, err := t.Internal.Update(ctx, zone, id, param)
 
 	if err != nil {
@@ -4208,6 +4512,8 @@ func (t *LoadBalancerTracer) UpdateSettings(ctx context.Context, zone string, id
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultLoadBalancer, err := t.Internal.UpdateSettings(ctx, zone, id, param)
 
 	if err != nil {
@@ -4232,6 +4538,8 @@ func (t *LoadBalancerTracer) Delete(ctx context.Context, zone string, id types.I
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.Delete(ctx, zone, id)
 
 	if err != nil {
@@ -4255,6 +4563,8 @@ func (t *LoadBalancerTracer) Config(ctx context.Context, zone string, id types.I
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.Config(ctx, zone, id)
 
 	if err != nil {
@@ -4278,6 +4588,8 @@ func (t *LoadBalancerTracer) Boot(ctx context.Context, zone string, id types.ID)
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.Boot(ctx, zone, id)
 
 	if err != nil {
@@ -4302,6 +4614,8 @@ func (t *LoadBalancerTracer) Shutdown(ctx context.Context, zone string, id types
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.Shutdown(ctx, zone, id, shutdownOption)
 
 	if err != nil {
@@ -4325,6 +4639,8 @@ func (t *LoadBalancerTracer) Reset(ctx context.Context, zone string, id types.ID
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.Reset(ctx, zone, id)
 
 	if err != nil {
@@ -4349,6 +4665,8 @@ func (t *LoadBalancerTracer) MonitorInterface(ctx context.Context, zone string, 
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultInterfaceActivity, err := t.Internal.MonitorInterface(ctx, zone, id, condition)
 
 	if err != nil {
@@ -4373,6 +4691,8 @@ func (t *LoadBalancerTracer) Status(ctx context.Context, zone string, id types.I
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	result, err := t.Internal.Status(ctx, zone, id)
 
 	if err != nil {
@@ -4414,6 +4734,8 @@ func (t *LocalRouterTracer) Find(ctx context.Context, conditions *sacloud.FindCo
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	result, err := t.Internal.Find(ctx, conditions)
 
 	if err != nil {
@@ -4437,6 +4759,8 @@ func (t *LocalRouterTracer) Create(ctx context.Context, param *sacloud.LocalRout
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultLocalRouter, err := t.Internal.Create(ctx, param)
 
 	if err != nil {
@@ -4460,6 +4784,8 @@ func (t *LocalRouterTracer) Read(ctx context.Context, id types.ID) (*sacloud.Loc
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultLocalRouter, err := t.Internal.Read(ctx, id)
 
 	if err != nil {
@@ -4484,6 +4810,8 @@ func (t *LocalRouterTracer) Update(ctx context.Context, id types.ID, param *sacl
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultLocalRouter, err := t.Internal.Update(ctx, id, param)
 
 	if err != nil {
@@ -4508,6 +4836,8 @@ func (t *LocalRouterTracer) UpdateSettings(ctx context.Context, id types.ID, par
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultLocalRouter, err := t.Internal.UpdateSettings(ctx, id, param)
 
 	if err != nil {
@@ -4531,6 +4861,8 @@ func (t *LocalRouterTracer) Delete(ctx context.Context, id types.ID) error {
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.Delete(ctx, id)
 
 	if err != nil {
@@ -4553,6 +4885,8 @@ func (t *LocalRouterTracer) HealthStatus(ctx context.Context, id types.ID) (*sac
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultLocalRouterHealth, err := t.Internal.HealthStatus(ctx, id)
 
 	if err != nil {
@@ -4577,6 +4911,8 @@ func (t *LocalRouterTracer) MonitorLocalRouter(ctx context.Context, id types.ID,
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultLocalRouterActivity, err := t.Internal.MonitorLocalRouter(ctx, id, condition)
 
 	if err != nil {
@@ -4619,6 +4955,8 @@ func (t *MobileGatewayTracer) Find(ctx context.Context, zone string, conditions 
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	result, err := t.Internal.Find(ctx, zone, conditions)
 
 	if err != nil {
@@ -4643,6 +4981,8 @@ func (t *MobileGatewayTracer) Create(ctx context.Context, zone string, param *sa
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultMobileGateway, err := t.Internal.Create(ctx, zone, param)
 
 	if err != nil {
@@ -4667,6 +5007,8 @@ func (t *MobileGatewayTracer) Read(ctx context.Context, zone string, id types.ID
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultMobileGateway, err := t.Internal.Read(ctx, zone, id)
 
 	if err != nil {
@@ -4692,6 +5034,8 @@ func (t *MobileGatewayTracer) Update(ctx context.Context, zone string, id types.
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultMobileGateway, err := t.Internal.Update(ctx, zone, id, param)
 
 	if err != nil {
@@ -4717,6 +5061,8 @@ func (t *MobileGatewayTracer) UpdateSettings(ctx context.Context, zone string, i
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultMobileGateway, err := t.Internal.UpdateSettings(ctx, zone, id, param)
 
 	if err != nil {
@@ -4741,6 +5087,8 @@ func (t *MobileGatewayTracer) Delete(ctx context.Context, zone string, id types.
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.Delete(ctx, zone, id)
 
 	if err != nil {
@@ -4764,6 +5112,8 @@ func (t *MobileGatewayTracer) Config(ctx context.Context, zone string, id types.
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.Config(ctx, zone, id)
 
 	if err != nil {
@@ -4787,6 +5137,8 @@ func (t *MobileGatewayTracer) Boot(ctx context.Context, zone string, id types.ID
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.Boot(ctx, zone, id)
 
 	if err != nil {
@@ -4811,6 +5163,8 @@ func (t *MobileGatewayTracer) Shutdown(ctx context.Context, zone string, id type
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.Shutdown(ctx, zone, id, shutdownOption)
 
 	if err != nil {
@@ -4834,6 +5188,8 @@ func (t *MobileGatewayTracer) Reset(ctx context.Context, zone string, id types.I
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.Reset(ctx, zone, id)
 
 	if err != nil {
@@ -4858,6 +5214,8 @@ func (t *MobileGatewayTracer) ConnectToSwitch(ctx context.Context, zone string, 
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.ConnectToSwitch(ctx, zone, id, switchID)
 
 	if err != nil {
@@ -4881,6 +5239,8 @@ func (t *MobileGatewayTracer) DisconnectFromSwitch(ctx context.Context, zone str
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.DisconnectFromSwitch(ctx, zone, id)
 
 	if err != nil {
@@ -4904,6 +5264,8 @@ func (t *MobileGatewayTracer) GetDNS(ctx context.Context, zone string, id types.
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultSIMGroup, err := t.Internal.GetDNS(ctx, zone, id)
 
 	if err != nil {
@@ -4929,6 +5291,8 @@ func (t *MobileGatewayTracer) SetDNS(ctx context.Context, zone string, id types.
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.SetDNS(ctx, zone, id, param)
 
 	if err != nil {
@@ -4952,6 +5316,8 @@ func (t *MobileGatewayTracer) GetSIMRoutes(ctx context.Context, zone string, id 
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultSIMRoutes, err := t.Internal.GetSIMRoutes(ctx, zone, id)
 
 	if err != nil {
@@ -4977,6 +5343,8 @@ func (t *MobileGatewayTracer) SetSIMRoutes(ctx context.Context, zone string, id 
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.SetSIMRoutes(ctx, zone, id, param)
 
 	if err != nil {
@@ -5000,6 +5368,8 @@ func (t *MobileGatewayTracer) ListSIM(ctx context.Context, zone string, id types
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultSIM, err := t.Internal.ListSIM(ctx, zone, id)
 
 	if err != nil {
@@ -5025,6 +5395,8 @@ func (t *MobileGatewayTracer) AddSIM(ctx context.Context, zone string, id types.
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.AddSIM(ctx, zone, id, param)
 
 	if err != nil {
@@ -5049,6 +5421,8 @@ func (t *MobileGatewayTracer) DeleteSIM(ctx context.Context, zone string, id typ
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.DeleteSIM(ctx, zone, id, simID)
 
 	if err != nil {
@@ -5072,6 +5446,8 @@ func (t *MobileGatewayTracer) Logs(ctx context.Context, zone string, id types.ID
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultLogs, err := t.Internal.Logs(ctx, zone, id)
 
 	if err != nil {
@@ -5096,6 +5472,8 @@ func (t *MobileGatewayTracer) GetTrafficConfig(ctx context.Context, zone string,
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultTrafficMonitoring, err := t.Internal.GetTrafficConfig(ctx, zone, id)
 
 	if err != nil {
@@ -5121,6 +5499,8 @@ func (t *MobileGatewayTracer) SetTrafficConfig(ctx context.Context, zone string,
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.SetTrafficConfig(ctx, zone, id, param)
 
 	if err != nil {
@@ -5144,6 +5524,8 @@ func (t *MobileGatewayTracer) DeleteTrafficConfig(ctx context.Context, zone stri
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.DeleteTrafficConfig(ctx, zone, id)
 
 	if err != nil {
@@ -5167,6 +5549,8 @@ func (t *MobileGatewayTracer) TrafficStatus(ctx context.Context, zone string, id
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultTrafficStatus, err := t.Internal.TrafficStatus(ctx, zone, id)
 
 	if err != nil {
@@ -5193,6 +5577,8 @@ func (t *MobileGatewayTracer) MonitorInterface(ctx context.Context, zone string,
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultInterfaceActivity, err := t.Internal.MonitorInterface(ctx, zone, id, index, condition)
 
 	if err != nil {
@@ -5235,6 +5621,8 @@ func (t *NFSTracer) Find(ctx context.Context, zone string, conditions *sacloud.F
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	result, err := t.Internal.Find(ctx, zone, conditions)
 
 	if err != nil {
@@ -5259,6 +5647,8 @@ func (t *NFSTracer) Create(ctx context.Context, zone string, param *sacloud.NFSC
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultNFS, err := t.Internal.Create(ctx, zone, param)
 
 	if err != nil {
@@ -5283,6 +5673,8 @@ func (t *NFSTracer) Read(ctx context.Context, zone string, id types.ID) (*saclou
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultNFS, err := t.Internal.Read(ctx, zone, id)
 
 	if err != nil {
@@ -5308,6 +5700,8 @@ func (t *NFSTracer) Update(ctx context.Context, zone string, id types.ID, param 
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultNFS, err := t.Internal.Update(ctx, zone, id, param)
 
 	if err != nil {
@@ -5332,6 +5726,8 @@ func (t *NFSTracer) Delete(ctx context.Context, zone string, id types.ID) error 
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.Delete(ctx, zone, id)
 
 	if err != nil {
@@ -5355,6 +5751,8 @@ func (t *NFSTracer) Boot(ctx context.Context, zone string, id types.ID) error {
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.Boot(ctx, zone, id)
 
 	if err != nil {
@@ -5379,6 +5777,8 @@ func (t *NFSTracer) Shutdown(ctx context.Context, zone string, id types.ID, shut
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.Shutdown(ctx, zone, id, shutdownOption)
 
 	if err != nil {
@@ -5402,6 +5802,8 @@ func (t *NFSTracer) Reset(ctx context.Context, zone string, id types.ID) error {
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.Reset(ctx, zone, id)
 
 	if err != nil {
@@ -5426,6 +5828,8 @@ func (t *NFSTracer) MonitorFreeDiskSize(ctx context.Context, zone string, id typ
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultFreeDiskSizeActivity, err := t.Internal.MonitorFreeDiskSize(ctx, zone, id, condition)
 
 	if err != nil {
@@ -5451,6 +5855,8 @@ func (t *NFSTracer) MonitorInterface(ctx context.Context, zone string, id types.
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultInterfaceActivity, err := t.Internal.MonitorInterface(ctx, zone, id, condition)
 
 	if err != nil {
@@ -5492,6 +5898,8 @@ func (t *NoteTracer) Find(ctx context.Context, conditions *sacloud.FindCondition
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	result, err := t.Internal.Find(ctx, conditions)
 
 	if err != nil {
@@ -5515,6 +5923,8 @@ func (t *NoteTracer) Create(ctx context.Context, param *sacloud.NoteCreateReques
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultNote, err := t.Internal.Create(ctx, param)
 
 	if err != nil {
@@ -5538,6 +5948,8 @@ func (t *NoteTracer) Read(ctx context.Context, id types.ID) (*sacloud.Note, erro
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultNote, err := t.Internal.Read(ctx, id)
 
 	if err != nil {
@@ -5562,6 +5974,8 @@ func (t *NoteTracer) Update(ctx context.Context, id types.ID, param *sacloud.Not
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultNote, err := t.Internal.Update(ctx, id, param)
 
 	if err != nil {
@@ -5585,6 +5999,8 @@ func (t *NoteTracer) Delete(ctx context.Context, id types.ID) error {
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.Delete(ctx, id)
 
 	if err != nil {
@@ -5626,6 +6042,8 @@ func (t *PacketFilterTracer) Find(ctx context.Context, zone string, conditions *
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	result, err := t.Internal.Find(ctx, zone, conditions)
 
 	if err != nil {
@@ -5650,6 +6068,8 @@ func (t *PacketFilterTracer) Create(ctx context.Context, zone string, param *sac
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultPacketFilter, err := t.Internal.Create(ctx, zone, param)
 
 	if err != nil {
@@ -5674,6 +6094,8 @@ func (t *PacketFilterTracer) Read(ctx context.Context, zone string, id types.ID)
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultPacketFilter, err := t.Internal.Read(ctx, zone, id)
 
 	if err != nil {
@@ -5700,6 +6122,8 @@ func (t *PacketFilterTracer) Update(ctx context.Context, zone string, id types.I
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultPacketFilter, err := t.Internal.Update(ctx, zone, id, updateParam, originalExpressionHash)
 
 	if err != nil {
@@ -5724,6 +6148,8 @@ func (t *PacketFilterTracer) Delete(ctx context.Context, zone string, id types.I
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.Delete(ctx, zone, id)
 
 	if err != nil {
@@ -5765,6 +6191,8 @@ func (t *PrivateHostTracer) Find(ctx context.Context, zone string, conditions *s
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	result, err := t.Internal.Find(ctx, zone, conditions)
 
 	if err != nil {
@@ -5789,6 +6217,8 @@ func (t *PrivateHostTracer) Create(ctx context.Context, zone string, param *sacl
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultPrivateHost, err := t.Internal.Create(ctx, zone, param)
 
 	if err != nil {
@@ -5813,6 +6243,8 @@ func (t *PrivateHostTracer) Read(ctx context.Context, zone string, id types.ID) 
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultPrivateHost, err := t.Internal.Read(ctx, zone, id)
 
 	if err != nil {
@@ -5838,6 +6270,8 @@ func (t *PrivateHostTracer) Update(ctx context.Context, zone string, id types.ID
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultPrivateHost, err := t.Internal.Update(ctx, zone, id, param)
 
 	if err != nil {
@@ -5862,6 +6296,8 @@ func (t *PrivateHostTracer) Delete(ctx context.Context, zone string, id types.ID
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.Delete(ctx, zone, id)
 
 	if err != nil {
@@ -5903,6 +6339,8 @@ func (t *PrivateHostPlanTracer) Find(ctx context.Context, zone string, condition
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	result, err := t.Internal.Find(ctx, zone, conditions)
 
 	if err != nil {
@@ -5927,6 +6365,8 @@ func (t *PrivateHostPlanTracer) Read(ctx context.Context, zone string, id types.
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultPrivateHostPlan, err := t.Internal.Read(ctx, zone, id)
 
 	if err != nil {
@@ -5968,6 +6408,8 @@ func (t *ProxyLBTracer) Find(ctx context.Context, conditions *sacloud.FindCondit
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	result, err := t.Internal.Find(ctx, conditions)
 
 	if err != nil {
@@ -5991,6 +6433,8 @@ func (t *ProxyLBTracer) Create(ctx context.Context, param *sacloud.ProxyLBCreate
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultProxyLB, err := t.Internal.Create(ctx, param)
 
 	if err != nil {
@@ -6014,6 +6458,8 @@ func (t *ProxyLBTracer) Read(ctx context.Context, id types.ID) (*sacloud.ProxyLB
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultProxyLB, err := t.Internal.Read(ctx, id)
 
 	if err != nil {
@@ -6038,6 +6484,8 @@ func (t *ProxyLBTracer) Update(ctx context.Context, id types.ID, param *sacloud.
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultProxyLB, err := t.Internal.Update(ctx, id, param)
 
 	if err != nil {
@@ -6062,6 +6510,8 @@ func (t *ProxyLBTracer) UpdateSettings(ctx context.Context, id types.ID, param *
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultProxyLB, err := t.Internal.UpdateSettings(ctx, id, param)
 
 	if err != nil {
@@ -6085,6 +6535,8 @@ func (t *ProxyLBTracer) Delete(ctx context.Context, id types.ID) error {
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.Delete(ctx, id)
 
 	if err != nil {
@@ -6108,6 +6560,8 @@ func (t *ProxyLBTracer) ChangePlan(ctx context.Context, id types.ID, param *sacl
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultProxyLB, err := t.Internal.ChangePlan(ctx, id, param)
 
 	if err != nil {
@@ -6131,6 +6585,8 @@ func (t *ProxyLBTracer) GetCertificates(ctx context.Context, id types.ID) (*sacl
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultProxyLBCertificates, err := t.Internal.GetCertificates(ctx, id)
 
 	if err != nil {
@@ -6155,6 +6611,8 @@ func (t *ProxyLBTracer) SetCertificates(ctx context.Context, id types.ID, param 
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultProxyLBCertificates, err := t.Internal.SetCertificates(ctx, id, param)
 
 	if err != nil {
@@ -6178,6 +6636,8 @@ func (t *ProxyLBTracer) DeleteCertificates(ctx context.Context, id types.ID) err
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.DeleteCertificates(ctx, id)
 
 	if err != nil {
@@ -6200,6 +6660,8 @@ func (t *ProxyLBTracer) RenewLetsEncryptCert(ctx context.Context, id types.ID) e
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.RenewLetsEncryptCert(ctx, id)
 
 	if err != nil {
@@ -6222,6 +6684,8 @@ func (t *ProxyLBTracer) HealthStatus(ctx context.Context, id types.ID) (*sacloud
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultProxyLBHealth, err := t.Internal.HealthStatus(ctx, id)
 
 	if err != nil {
@@ -6246,6 +6710,8 @@ func (t *ProxyLBTracer) MonitorConnection(ctx context.Context, id types.ID, cond
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultConnectionActivity, err := t.Internal.MonitorConnection(ctx, id, condition)
 
 	if err != nil {
@@ -6287,6 +6753,8 @@ func (t *RegionTracer) Find(ctx context.Context, conditions *sacloud.FindConditi
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	result, err := t.Internal.Find(ctx, conditions)
 
 	if err != nil {
@@ -6310,6 +6778,8 @@ func (t *RegionTracer) Read(ctx context.Context, id types.ID) (*sacloud.Region, 
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultRegion, err := t.Internal.Read(ctx, id)
 
 	if err != nil {
@@ -6352,6 +6822,8 @@ func (t *ServerTracer) Find(ctx context.Context, zone string, conditions *saclou
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	result, err := t.Internal.Find(ctx, zone, conditions)
 
 	if err != nil {
@@ -6376,6 +6848,8 @@ func (t *ServerTracer) Create(ctx context.Context, zone string, param *sacloud.S
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultServer, err := t.Internal.Create(ctx, zone, param)
 
 	if err != nil {
@@ -6400,6 +6874,8 @@ func (t *ServerTracer) Read(ctx context.Context, zone string, id types.ID) (*sac
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultServer, err := t.Internal.Read(ctx, zone, id)
 
 	if err != nil {
@@ -6425,6 +6901,8 @@ func (t *ServerTracer) Update(ctx context.Context, zone string, id types.ID, par
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultServer, err := t.Internal.Update(ctx, zone, id, param)
 
 	if err != nil {
@@ -6449,6 +6927,8 @@ func (t *ServerTracer) Delete(ctx context.Context, zone string, id types.ID) err
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.Delete(ctx, zone, id)
 
 	if err != nil {
@@ -6473,6 +6953,8 @@ func (t *ServerTracer) DeleteWithDisks(ctx context.Context, zone string, id type
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.DeleteWithDisks(ctx, zone, id, disks)
 
 	if err != nil {
@@ -6497,6 +6979,8 @@ func (t *ServerTracer) ChangePlan(ctx context.Context, zone string, id types.ID,
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultServer, err := t.Internal.ChangePlan(ctx, zone, id, plan)
 
 	if err != nil {
@@ -6522,6 +7006,8 @@ func (t *ServerTracer) InsertCDROM(ctx context.Context, zone string, id types.ID
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.InsertCDROM(ctx, zone, id, insertParam)
 
 	if err != nil {
@@ -6546,6 +7032,8 @@ func (t *ServerTracer) EjectCDROM(ctx context.Context, zone string, id types.ID,
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.EjectCDROM(ctx, zone, id, ejectParam)
 
 	if err != nil {
@@ -6569,6 +7057,8 @@ func (t *ServerTracer) Boot(ctx context.Context, zone string, id types.ID) error
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.Boot(ctx, zone, id)
 
 	if err != nil {
@@ -6593,6 +7083,8 @@ func (t *ServerTracer) Shutdown(ctx context.Context, zone string, id types.ID, s
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.Shutdown(ctx, zone, id, shutdownOption)
 
 	if err != nil {
@@ -6616,6 +7108,8 @@ func (t *ServerTracer) Reset(ctx context.Context, zone string, id types.ID) erro
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.Reset(ctx, zone, id)
 
 	if err != nil {
@@ -6640,6 +7134,8 @@ func (t *ServerTracer) SendKey(ctx context.Context, zone string, id types.ID, ke
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.SendKey(ctx, zone, id, keyboardParam)
 
 	if err != nil {
@@ -6663,6 +7159,8 @@ func (t *ServerTracer) GetVNCProxy(ctx context.Context, zone string, id types.ID
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultVNCProxyInfo, err := t.Internal.GetVNCProxy(ctx, zone, id)
 
 	if err != nil {
@@ -6688,6 +7186,8 @@ func (t *ServerTracer) Monitor(ctx context.Context, zone string, id types.ID, co
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultCPUTimeActivity, err := t.Internal.Monitor(ctx, zone, id, condition)
 
 	if err != nil {
@@ -6713,6 +7213,8 @@ func (t *ServerTracer) MonitorCPU(ctx context.Context, zone string, id types.ID,
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultCPUTimeActivity, err := t.Internal.MonitorCPU(ctx, zone, id, condition)
 
 	if err != nil {
@@ -6755,6 +7257,8 @@ func (t *ServerPlanTracer) Find(ctx context.Context, zone string, conditions *sa
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	result, err := t.Internal.Find(ctx, zone, conditions)
 
 	if err != nil {
@@ -6779,6 +7283,8 @@ func (t *ServerPlanTracer) Read(ctx context.Context, zone string, id types.ID) (
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultServerPlan, err := t.Internal.Read(ctx, zone, id)
 
 	if err != nil {
@@ -6821,6 +7327,8 @@ func (t *ServiceClassTracer) Find(ctx context.Context, zone string, conditions *
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	result, err := t.Internal.Find(ctx, zone, conditions)
 
 	if err != nil {
@@ -6862,6 +7370,8 @@ func (t *SIMTracer) Find(ctx context.Context, conditions *sacloud.FindCondition)
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	result, err := t.Internal.Find(ctx, conditions)
 
 	if err != nil {
@@ -6885,6 +7395,8 @@ func (t *SIMTracer) Create(ctx context.Context, param *sacloud.SIMCreateRequest)
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultSIM, err := t.Internal.Create(ctx, param)
 
 	if err != nil {
@@ -6908,6 +7420,8 @@ func (t *SIMTracer) Read(ctx context.Context, id types.ID) (*sacloud.SIM, error)
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultSIM, err := t.Internal.Read(ctx, id)
 
 	if err != nil {
@@ -6932,6 +7446,8 @@ func (t *SIMTracer) Update(ctx context.Context, id types.ID, param *sacloud.SIMU
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultSIM, err := t.Internal.Update(ctx, id, param)
 
 	if err != nil {
@@ -6955,6 +7471,8 @@ func (t *SIMTracer) Delete(ctx context.Context, id types.ID) error {
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.Delete(ctx, id)
 
 	if err != nil {
@@ -6977,6 +7495,8 @@ func (t *SIMTracer) Activate(ctx context.Context, id types.ID) error {
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.Activate(ctx, id)
 
 	if err != nil {
@@ -6999,6 +7519,8 @@ func (t *SIMTracer) Deactivate(ctx context.Context, id types.ID) error {
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.Deactivate(ctx, id)
 
 	if err != nil {
@@ -7022,6 +7544,8 @@ func (t *SIMTracer) AssignIP(ctx context.Context, id types.ID, param *sacloud.SI
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.AssignIP(ctx, id, param)
 
 	if err != nil {
@@ -7044,6 +7568,8 @@ func (t *SIMTracer) ClearIP(ctx context.Context, id types.ID) error {
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.ClearIP(ctx, id)
 
 	if err != nil {
@@ -7067,6 +7593,8 @@ func (t *SIMTracer) IMEILock(ctx context.Context, id types.ID, param *sacloud.SI
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.IMEILock(ctx, id, param)
 
 	if err != nil {
@@ -7089,6 +7617,8 @@ func (t *SIMTracer) IMEIUnlock(ctx context.Context, id types.ID) error {
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.IMEIUnlock(ctx, id)
 
 	if err != nil {
@@ -7111,6 +7641,8 @@ func (t *SIMTracer) Logs(ctx context.Context, id types.ID) (*sacloud.SIMLogsResu
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	result, err := t.Internal.Logs(ctx, id)
 
 	if err != nil {
@@ -7134,6 +7666,8 @@ func (t *SIMTracer) GetNetworkOperator(ctx context.Context, id types.ID) ([]*sac
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultConfigs, err := t.Internal.GetNetworkOperator(ctx, id)
 
 	if err != nil {
@@ -7158,6 +7692,8 @@ func (t *SIMTracer) SetNetworkOperator(ctx context.Context, id types.ID, configs
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.SetNetworkOperator(ctx, id, configs)
 
 	if err != nil {
@@ -7181,6 +7717,8 @@ func (t *SIMTracer) MonitorSIM(ctx context.Context, id types.ID, condition *sacl
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultLinkActivity, err := t.Internal.MonitorSIM(ctx, id, condition)
 
 	if err != nil {
@@ -7204,6 +7742,8 @@ func (t *SIMTracer) Status(ctx context.Context, id types.ID) (*sacloud.SIMInfo, 
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultSIM, err := t.Internal.Status(ctx, id)
 
 	if err != nil {
@@ -7245,6 +7785,8 @@ func (t *SimpleMonitorTracer) Find(ctx context.Context, conditions *sacloud.Find
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	result, err := t.Internal.Find(ctx, conditions)
 
 	if err != nil {
@@ -7268,6 +7810,8 @@ func (t *SimpleMonitorTracer) Create(ctx context.Context, param *sacloud.SimpleM
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultSimpleMonitor, err := t.Internal.Create(ctx, param)
 
 	if err != nil {
@@ -7291,6 +7835,8 @@ func (t *SimpleMonitorTracer) Read(ctx context.Context, id types.ID) (*sacloud.S
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultSimpleMonitor, err := t.Internal.Read(ctx, id)
 
 	if err != nil {
@@ -7315,6 +7861,8 @@ func (t *SimpleMonitorTracer) Update(ctx context.Context, id types.ID, param *sa
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultSimpleMonitor, err := t.Internal.Update(ctx, id, param)
 
 	if err != nil {
@@ -7339,6 +7887,8 @@ func (t *SimpleMonitorTracer) UpdateSettings(ctx context.Context, id types.ID, p
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultSimpleMonitor, err := t.Internal.UpdateSettings(ctx, id, param)
 
 	if err != nil {
@@ -7362,6 +7912,8 @@ func (t *SimpleMonitorTracer) Delete(ctx context.Context, id types.ID) error {
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.Delete(ctx, id)
 
 	if err != nil {
@@ -7385,6 +7937,8 @@ func (t *SimpleMonitorTracer) MonitorResponseTime(ctx context.Context, id types.
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultResponseTimeSecActivity, err := t.Internal.MonitorResponseTime(ctx, id, condition)
 
 	if err != nil {
@@ -7408,6 +7962,8 @@ func (t *SimpleMonitorTracer) HealthStatus(ctx context.Context, id types.ID) (*s
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultSimpleMonitorHealthStatus, err := t.Internal.HealthStatus(ctx, id)
 
 	if err != nil {
@@ -7449,6 +8005,8 @@ func (t *SSHKeyTracer) Find(ctx context.Context, conditions *sacloud.FindConditi
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	result, err := t.Internal.Find(ctx, conditions)
 
 	if err != nil {
@@ -7472,6 +8030,8 @@ func (t *SSHKeyTracer) Create(ctx context.Context, param *sacloud.SSHKeyCreateRe
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultSSHKey, err := t.Internal.Create(ctx, param)
 
 	if err != nil {
@@ -7495,6 +8055,8 @@ func (t *SSHKeyTracer) Generate(ctx context.Context, param *sacloud.SSHKeyGenera
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultSSHKeyGenerated, err := t.Internal.Generate(ctx, param)
 
 	if err != nil {
@@ -7518,6 +8080,8 @@ func (t *SSHKeyTracer) Read(ctx context.Context, id types.ID) (*sacloud.SSHKey, 
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultSSHKey, err := t.Internal.Read(ctx, id)
 
 	if err != nil {
@@ -7542,6 +8106,8 @@ func (t *SSHKeyTracer) Update(ctx context.Context, id types.ID, param *sacloud.S
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultSSHKey, err := t.Internal.Update(ctx, id, param)
 
 	if err != nil {
@@ -7565,6 +8131,8 @@ func (t *SSHKeyTracer) Delete(ctx context.Context, id types.ID) error {
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.Delete(ctx, id)
 
 	if err != nil {
@@ -7606,6 +8174,8 @@ func (t *SubnetTracer) Find(ctx context.Context, zone string, conditions *saclou
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	result, err := t.Internal.Find(ctx, zone, conditions)
 
 	if err != nil {
@@ -7630,6 +8200,8 @@ func (t *SubnetTracer) Read(ctx context.Context, zone string, id types.ID) (*sac
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultSubnet, err := t.Internal.Read(ctx, zone, id)
 
 	if err != nil {
@@ -7672,6 +8244,8 @@ func (t *SwitchTracer) Find(ctx context.Context, zone string, conditions *saclou
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	result, err := t.Internal.Find(ctx, zone, conditions)
 
 	if err != nil {
@@ -7696,6 +8270,8 @@ func (t *SwitchTracer) Create(ctx context.Context, zone string, param *sacloud.S
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultSwitch, err := t.Internal.Create(ctx, zone, param)
 
 	if err != nil {
@@ -7720,6 +8296,8 @@ func (t *SwitchTracer) Read(ctx context.Context, zone string, id types.ID) (*sac
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultSwitch, err := t.Internal.Read(ctx, zone, id)
 
 	if err != nil {
@@ -7745,6 +8323,8 @@ func (t *SwitchTracer) Update(ctx context.Context, zone string, id types.ID, par
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultSwitch, err := t.Internal.Update(ctx, zone, id, param)
 
 	if err != nil {
@@ -7769,6 +8349,8 @@ func (t *SwitchTracer) Delete(ctx context.Context, zone string, id types.ID) err
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.Delete(ctx, zone, id)
 
 	if err != nil {
@@ -7793,6 +8375,8 @@ func (t *SwitchTracer) ConnectToBridge(ctx context.Context, zone string, id type
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.ConnectToBridge(ctx, zone, id, bridgeID)
 
 	if err != nil {
@@ -7816,6 +8400,8 @@ func (t *SwitchTracer) DisconnectFromBridge(ctx context.Context, zone string, id
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.DisconnectFromBridge(ctx, zone, id)
 
 	if err != nil {
@@ -7839,6 +8425,8 @@ func (t *SwitchTracer) GetServers(ctx context.Context, zone string, id types.ID)
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	result, err := t.Internal.GetServers(ctx, zone, id)
 
 	if err != nil {
@@ -7881,6 +8469,8 @@ func (t *VPCRouterTracer) Find(ctx context.Context, zone string, conditions *sac
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	result, err := t.Internal.Find(ctx, zone, conditions)
 
 	if err != nil {
@@ -7905,6 +8495,8 @@ func (t *VPCRouterTracer) Create(ctx context.Context, zone string, param *saclou
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultVPCRouter, err := t.Internal.Create(ctx, zone, param)
 
 	if err != nil {
@@ -7929,6 +8521,8 @@ func (t *VPCRouterTracer) Read(ctx context.Context, zone string, id types.ID) (*
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultVPCRouter, err := t.Internal.Read(ctx, zone, id)
 
 	if err != nil {
@@ -7954,6 +8548,8 @@ func (t *VPCRouterTracer) Update(ctx context.Context, zone string, id types.ID, 
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultVPCRouter, err := t.Internal.Update(ctx, zone, id, param)
 
 	if err != nil {
@@ -7979,6 +8575,8 @@ func (t *VPCRouterTracer) UpdateSettings(ctx context.Context, zone string, id ty
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultVPCRouter, err := t.Internal.UpdateSettings(ctx, zone, id, param)
 
 	if err != nil {
@@ -8003,6 +8601,8 @@ func (t *VPCRouterTracer) Delete(ctx context.Context, zone string, id types.ID) 
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.Delete(ctx, zone, id)
 
 	if err != nil {
@@ -8026,6 +8626,8 @@ func (t *VPCRouterTracer) Config(ctx context.Context, zone string, id types.ID) 
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.Config(ctx, zone, id)
 
 	if err != nil {
@@ -8049,6 +8651,8 @@ func (t *VPCRouterTracer) Boot(ctx context.Context, zone string, id types.ID) er
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.Boot(ctx, zone, id)
 
 	if err != nil {
@@ -8073,6 +8677,8 @@ func (t *VPCRouterTracer) Shutdown(ctx context.Context, zone string, id types.ID
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.Shutdown(ctx, zone, id, shutdownOption)
 
 	if err != nil {
@@ -8096,6 +8702,8 @@ func (t *VPCRouterTracer) Reset(ctx context.Context, zone string, id types.ID) e
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.Reset(ctx, zone, id)
 
 	if err != nil {
@@ -8121,6 +8729,8 @@ func (t *VPCRouterTracer) ConnectToSwitch(ctx context.Context, zone string, id t
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.ConnectToSwitch(ctx, zone, id, nicIndex, switchID)
 
 	if err != nil {
@@ -8145,6 +8755,8 @@ func (t *VPCRouterTracer) DisconnectFromSwitch(ctx context.Context, zone string,
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.DisconnectFromSwitch(ctx, zone, id, nicIndex)
 
 	if err != nil {
@@ -8170,6 +8782,8 @@ func (t *VPCRouterTracer) MonitorInterface(ctx context.Context, zone string, id 
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultInterfaceActivity, err := t.Internal.MonitorInterface(ctx, zone, id, index, condition)
 
 	if err != nil {
@@ -8194,6 +8808,8 @@ func (t *VPCRouterTracer) Status(ctx context.Context, zone string, id types.ID) 
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultVPCRouterStatus, err := t.Internal.Status(ctx, zone, id)
 
 	if err != nil {
@@ -8233,6 +8849,8 @@ func (t *WebAccelTracer) List(ctx context.Context) (*sacloud.WebAccelListResult,
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	result, err := t.Internal.List(ctx)
 
 	if err != nil {
@@ -8256,6 +8874,8 @@ func (t *WebAccelTracer) Read(ctx context.Context, id types.ID) (*sacloud.WebAcc
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultWebAccel, err := t.Internal.Read(ctx, id)
 
 	if err != nil {
@@ -8279,6 +8899,8 @@ func (t *WebAccelTracer) ReadCertificate(ctx context.Context, id types.ID) (*sac
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultCertificate, err := t.Internal.ReadCertificate(ctx, id)
 
 	if err != nil {
@@ -8303,6 +8925,8 @@ func (t *WebAccelTracer) CreateCertificate(ctx context.Context, id types.ID, par
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultCertificate, err := t.Internal.CreateCertificate(ctx, id, param)
 
 	if err != nil {
@@ -8327,6 +8951,8 @@ func (t *WebAccelTracer) UpdateCertificate(ctx context.Context, id types.ID, par
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultCertificate, err := t.Internal.UpdateCertificate(ctx, id, param)
 
 	if err != nil {
@@ -8350,6 +8976,8 @@ func (t *WebAccelTracer) DeleteCertificate(ctx context.Context, id types.ID) err
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.DeleteCertificate(ctx, id)
 
 	if err != nil {
@@ -8372,6 +9000,8 @@ func (t *WebAccelTracer) DeleteAllCache(ctx context.Context, param *sacloud.WebA
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.DeleteAllCache(ctx, param)
 
 	if err != nil {
@@ -8394,6 +9024,8 @@ func (t *WebAccelTracer) DeleteCache(ctx context.Context, param *sacloud.WebAcce
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultResults, err := t.Internal.DeleteCache(ctx, param)
 
 	if err != nil {
@@ -8435,6 +9067,8 @@ func (t *ZoneTracer) Find(ctx context.Context, conditions *sacloud.FindCondition
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	result, err := t.Internal.Find(ctx, conditions)
 
 	if err != nil {
@@ -8458,6 +9092,8 @@ func (t *ZoneTracer) Read(ctx context.Context, id types.ID) (*sacloud.Zone, erro
 		span.End()
 	}()
 
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	resultZone, err := t.Internal.Read(ctx, id)
 
 	if err != nil {

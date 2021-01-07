@@ -14,6 +14,8 @@ require (
 	github.com/sacloud/ftps v1.1.0
 	github.com/stretchr/testify v1.6.1
 	github.com/uber-go/atomic v1.4.0 // indirect
+	go.opentelemetry.io/contrib/instrumentation/net/http/httptrace/otelhttptrace v0.15.1
+	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.15.1
 	go.opentelemetry.io/otel v0.15.0
 	go.opentelemetry.io/otel/exporters/stdout v0.15.0
 	go.opentelemetry.io/otel/exporters/trace/jaeger v0.15.0

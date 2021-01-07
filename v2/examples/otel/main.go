@@ -17,13 +17,12 @@ package main
 import (
 	"context"
 	"log"
+	"net/http"
 	"os"
 
 	"github.com/sacloud/libsacloud/v2/helper/api"
-
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/ostype"
-	"github.com/sacloud/libsacloud/v2/sacloud/trace/otel"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 	"go.opentelemetry.io/otel/exporters/trace/jaeger"
 	"go.opentelemetry.io/otel/label"
@@ -64,12 +63,11 @@ func initTracer() func() {
 }
 
 func op(ctx context.Context) {
-	// set factory func
-	otel.Initialize()
-
 	caller := api.NewCaller(&api.CallerOptions{
 		AccessToken:       os.Getenv("SAKURACLOUD_ACCESS_TOKEN"),
 		AccessTokenSecret: os.Getenv("SAKURACLOUD_ACCESS_TOKEN_SECRET"),
+		HTTPClient:        &http.Client{},
+		OpenTelemetry:     true, // enable tracing
 	})
 	archiveOp := sacloud.NewArchiveOp(caller)
 
