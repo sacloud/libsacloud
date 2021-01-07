@@ -16,8 +16,9 @@ require (
 	github.com/uber-go/atomic v1.4.0 // indirect
 	go.opentelemetry.io/otel v0.15.0
 	go.opentelemetry.io/otel/exporters/stdout v0.15.0
+	go.opentelemetry.io/otel/exporters/trace/jaeger v0.15.0
 	go.opentelemetry.io/otel/sdk v0.15.0
 	go.uber.org/atomic v1.4.0 // indirect
 	go.uber.org/ratelimit v0.0.0-20180316092928-c15da0234277
-	golang.org/x/crypto v0.0.0-20190701094942-4def268fd1a4
+	golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9
 )

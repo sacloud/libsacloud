@@ -53,21 +53,10 @@ import (
 	"go.opentelemetry.io/otel/trace"
 )
 
-var tracer = otel.GetTracerProvider().Tracer("libsacloud", trace.WithInstrumentationVersion(libsacloud.Version))
-
-var initOnce sync.Once
-
-// AddClientFactoryHooks add client factory hooks
-func AddClientFactoryHooks() {
-	initOnce.Do(func(){
-		addClientFactoryHooks()
-	})
-}
-
-func addClientFactoryHooks() {
+func addClientFactoryHooks(cnf *config) {
 {{ range . -}} 
 	sacloud.AddClientFacotyHookFunc("{{.TypeName}}", func(in interface{}) interface{} {
-		return New{{.TypeName}}Tracer(in.(sacloud.{{.TypeName}}API))
+		return new{{.TypeName}}Tracer(in.(sacloud.{{.TypeName}}API), cnf)
 	})
 {{ end -}}
 }
@@ -80,12 +69,14 @@ func addClientFactoryHooks() {
 // {{ $typeName }}Tracer is for trace {{ $typeName }}Op operations
 type {{ $typeName }}Tracer struct {
 	Internal sacloud.{{$typeName}}API
+	config *config
 }
 
 // New{{ $typeName}}Tracer creates new {{ $typeName}}Tracer instance
-func New{{ $typeName}}Tracer(in sacloud.{{$typeName}}API) sacloud.{{$typeName}}API {
+func new{{ $typeName}}Tracer(in sacloud.{{$typeName}}API, cnf *config) sacloud.{{$typeName}}API {
 	return &{{ $typeName}}Tracer {
 		Internal: in,
+		config: cnf,
 	}
 }
 
@@ -93,15 +84,15 @@ func New{{ $typeName}}Tracer(in sacloud.{{$typeName}}API) sacloud.{{$typeName}}A
 // {{ .MethodName }} is API call with trace log
 func (t *{{ $typeName }}Tracer) {{ .MethodName }}(ctx context.Context{{if not $resource.IsGlobal}}, zone string{{end}}{{ range .Arguments }}, {{ .ArgName }} {{ .TypeName }}{{ end }}) {{.ResultsStatement}} {
 	var span trace.Span
-	ctx, span = tracer.Start(ctx, "ArchiveAPI.Find", trace.WithAttributes(
+	options := append(t.config.SpanStartOptions, trace.WithAttributes(
 {{if not $resource.IsGlobal -}}
-		label.String("zone", zone),
+		label.String("libsacloud.api.arguments.zone", zone),
 {{ end -}}
 {{ range .Arguments -}}
-		label.Any("{{.ArgName}}", {{.ArgName}}),
+		label.Any("libsacloud.api.arguments.{{.ArgName}}", {{.ArgName}}),
 {{ end -}}
-	
 	))
+	ctx, span = t.config.Tracer.Start(ctx, "{{ $typeName }}API.{{ .MethodName }}", options...)
 	defer func() {
 		span.End()
 	}()
@@ -112,10 +103,9 @@ func (t *{{ $typeName }}Tracer) {{ .MethodName }}(ctx context.Context{{if not $r
 		span.SetStatus(codes.Error, err.Error())
 	}else {
 		span.SetStatus(codes.Ok, "")
-		{{range .ResultsTypeInfo}}span.SetAttributes(label.Any("{{.VarName}}", {{.VarName}}))
+		{{range .ResultsTypeInfo}}span.SetAttributes(label.Any("libsacloud.api.results.{{.VarName}}", {{.VarName}}))
 {{ end }}
 	}
-
 	return {{range .ResultsTypeInfo}}{{.VarName}}, {{end}}err
 }
 {{- end -}}

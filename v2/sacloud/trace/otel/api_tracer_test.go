@@ -44,7 +44,7 @@ func TestTracer(t *testing.T) {
 	defer cleanup()
 
 	// set factory func
-	AddClientFactoryHooks()
+	Initialize()
 	// enable fake mode
 	fake.SwitchFactoryFuncToFake()
 
@@ -61,7 +61,7 @@ func TestTracer(t *testing.T) {
 	sp := spanData[0]
 
 	require.EqualValues(t, instrumentation.Library{
-		Name:    "libsacloud",
+		Name:    "github.com/sacloud/libsacloud",
 		Version: libsacloud.Version,
 	}, sp.InstrumentationLibrary)
 
