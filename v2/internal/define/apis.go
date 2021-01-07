@@ -20,6 +20,7 @@
 //go:generate go run ../tools/gen-api-transformer/
 //go:generate go run ../tools/gen-api-op/
 //go:generate go run ../tools/gen-api-tracer/
+//go:generate go run ../tools/gen-otel-tracer/
 //go:generate go run ../tools/gen-api-stub/
 //go:generate go run ../tools/gen-api-meta/
 //go:generate go run ../tools/gen-api-fake-store/
