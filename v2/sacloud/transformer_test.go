@@ -180,3 +180,100 @@ func TestTransformer_transformSetCertificatesArgs(t *testing.T) {
 		t.Fatal("ProxyLB.PrimaryCert has unexpected value: PrivateKey")
 	}
 }
+
+func TestTransformer_transformDatabaseGetParameterResult(t *testing.T) {
+	op := &DatabaseOp{}
+	results, err := op.transformGetParameterResults([]byte(databaseParameterJSON))
+	if err != nil {
+		t.Fatal(err)
+	}
+	v := results.DatabaseParameter
+	require.EqualValues(t, map[string]interface{}{
+		"MariaDB/server.cnf/mysqld/event_scheduler": float64(100),
+	}, v.Settings)
+	require.Len(t, v.MetaInfo, 1)
+	require.EqualValues(t, "string", v.MetaInfo[0].Type)
+	require.EqualValues(t, "MariaDB/server.cnf/mysqld/event_scheduler", v.MetaInfo[0].Name)
+	require.EqualValues(t, "event_scheduler", v.MetaInfo[0].Label)
+	require.EqualValues(t, "65536", v.MetaInfo[0].Example)
+	require.EqualValues(t, 1024, v.MetaInfo[0].Min)
+	require.EqualValues(t, 2147483647, v.MetaInfo[0].Max)
+	require.EqualValues(t, 10, v.MetaInfo[0].MaxLen)
+	require.EqualValues(t, "dynamic", v.MetaInfo[0].Reboot)
+}
+
+func TestTransformer_transformDatabaseGetParameterResult_minimum(t *testing.T) {
+	op := &DatabaseOp{}
+	results, err := op.transformGetParameterResults([]byte(databaseParameterJSONMinimum))
+	if err != nil {
+		t.Fatal(err)
+	}
+	v := results.DatabaseParameter
+	require.Empty(t, v.Settings)
+	require.Empty(t, v.MetaInfo)
+}
+
+const (
+	databaseParameterJSON = `
+{
+  "Database": {
+    "Parameter": {
+      "NoteID": "123456789012",
+      "Attr": {
+			"MariaDB/server.cnf/mysqld/event_scheduler": 100
+		}
+    },
+    "Remark": {
+      "Settings": [],
+      "Form": [
+        {
+          "type": "radios",
+          "name": "MariaDB/server.cnf/mysqld/event_scheduler",
+          "label": "event_scheduler",
+          "options": {
+            "ex": "65536",
+            "min": 1024,
+            "max": 2147483647,
+            "maxlen": 10,
+            "text": "イベントスケジュールの有効無効を設定します。",
+            "reboot": "dynamic",
+            "type": "string"
+          },
+          "items": [
+            ["ON","ON"],
+            ["OFF","OFF"]
+          ]
+        }
+      ]
+    }
+  }
+}
+`
+	databaseParameterJSONMinimum = `
+{
+  "Database": {
+    "Parameter": {
+      "NoteID": "123456789012",
+      "Attr":[]
+    },
+    "Remark": {
+      "Settings": [],
+      "Form": []
+    }
+  }
+}
+`
+)
+
+func TestTransformer_transformDatabaseSetParameterArgs(t *testing.T) {
+	op := &DatabaseOp{}
+	result, err := op.transformSetParameterArgs(types.ID(0), map[string]interface{}{
+		"foo": "bar",
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	require.NotNil(t, result.Parameter)
+	require.NotEmpty(t, result.Parameter.Attr)
+	require.EqualValues(t, "bar", result.Parameter.Attr["foo"])
+}

@@ -6697,6 +6697,189 @@ func (o *DatabaseBackupHistory) SetSize(v int64) {
 }
 
 /*************************************************
+* DatabaseParameter
+*************************************************/
+
+// DatabaseParameter represents API parameter/response structure
+type DatabaseParameter struct {
+	Settings map[string]interface{}   `mapconv:"Parameter.Attr"`
+	MetaInfo []*DatabaseParameterMeta `mapconv:"Remark.[]Form,recursive"`
+}
+
+// Validate validates by field tags
+func (o *DatabaseParameter) Validate() error {
+	return validate.Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *DatabaseParameter) setDefaults() interface{} {
+	return &struct {
+		Settings map[string]interface{}   `mapconv:"Parameter.Attr"`
+		MetaInfo []*DatabaseParameterMeta `mapconv:"Remark.[]Form,recursive"`
+	}{
+		Settings: o.GetSettings(),
+		MetaInfo: o.GetMetaInfo(),
+	}
+}
+
+// GetSettings returns value of Settings
+func (o *DatabaseParameter) GetSettings() map[string]interface{} {
+	return o.Settings
+}
+
+// SetSettings sets value to Settings
+func (o *DatabaseParameter) SetSettings(v map[string]interface{}) {
+	o.Settings = v
+}
+
+// GetMetaInfo returns value of MetaInfo
+func (o *DatabaseParameter) GetMetaInfo() []*DatabaseParameterMeta {
+	return o.MetaInfo
+}
+
+// SetMetaInfo sets value to MetaInfo
+func (o *DatabaseParameter) SetMetaInfo(v []*DatabaseParameterMeta) {
+	o.MetaInfo = v
+}
+
+/*************************************************
+* DatabaseParameterMeta
+*************************************************/
+
+// DatabaseParameterMeta represents API parameter/response structure
+type DatabaseParameterMeta struct {
+	Type    string `mapconv:"Options.Type"`
+	Name    string
+	Label   string
+	Size    int64
+	Example string  `mapconv:"Options.Example"`
+	Min     float64 `mapconv:"Options.Min"`
+	Max     float64 `mapconv:"Options.Max"`
+	MaxLen  int     `mapconv:"Options.MaxLen"`
+	Reboot  string  `mapconv:"Options.Reboot"`
+}
+
+// Validate validates by field tags
+func (o *DatabaseParameterMeta) Validate() error {
+	return validate.Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *DatabaseParameterMeta) setDefaults() interface{} {
+	return &struct {
+		Type    string `mapconv:"Options.Type"`
+		Name    string
+		Label   string
+		Size    int64
+		Example string  `mapconv:"Options.Example"`
+		Min     float64 `mapconv:"Options.Min"`
+		Max     float64 `mapconv:"Options.Max"`
+		MaxLen  int     `mapconv:"Options.MaxLen"`
+		Reboot  string  `mapconv:"Options.Reboot"`
+	}{
+		Type:    o.GetType(),
+		Name:    o.GetName(),
+		Label:   o.GetLabel(),
+		Size:    o.GetSize(),
+		Example: o.GetExample(),
+		Min:     o.GetMin(),
+		Max:     o.GetMax(),
+		MaxLen:  o.GetMaxLen(),
+		Reboot:  o.GetReboot(),
+	}
+}
+
+// GetType returns value of Type
+func (o *DatabaseParameterMeta) GetType() string {
+	return o.Type
+}
+
+// SetType sets value to Type
+func (o *DatabaseParameterMeta) SetType(v string) {
+	o.Type = v
+}
+
+// GetName returns value of Name
+func (o *DatabaseParameterMeta) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *DatabaseParameterMeta) SetName(v string) {
+	o.Name = v
+}
+
+// GetLabel returns value of Label
+func (o *DatabaseParameterMeta) GetLabel() string {
+	return o.Label
+}
+
+// SetLabel sets value to Label
+func (o *DatabaseParameterMeta) SetLabel(v string) {
+	o.Label = v
+}
+
+// GetSize returns value of Size
+func (o *DatabaseParameterMeta) GetSize() int64 {
+	return o.Size
+}
+
+// SetSize sets value to Size
+func (o *DatabaseParameterMeta) SetSize(v int64) {
+	o.Size = v
+}
+
+// GetExample returns value of Example
+func (o *DatabaseParameterMeta) GetExample() string {
+	return o.Example
+}
+
+// SetExample sets value to Example
+func (o *DatabaseParameterMeta) SetExample(v string) {
+	o.Example = v
+}
+
+// GetMin returns value of Min
+func (o *DatabaseParameterMeta) GetMin() float64 {
+	return o.Min
+}
+
+// SetMin sets value to Min
+func (o *DatabaseParameterMeta) SetMin(v float64) {
+	o.Min = v
+}
+
+// GetMax returns value of Max
+func (o *DatabaseParameterMeta) GetMax() float64 {
+	return o.Max
+}
+
+// SetMax sets value to Max
+func (o *DatabaseParameterMeta) SetMax(v float64) {
+	o.Max = v
+}
+
+// GetMaxLen returns value of MaxLen
+func (o *DatabaseParameterMeta) GetMaxLen() int {
+	return o.MaxLen
+}
+
+// SetMaxLen sets value to MaxLen
+func (o *DatabaseParameterMeta) SetMaxLen(v int) {
+	o.MaxLen = v
+}
+
+// GetReboot returns value of Reboot
+func (o *DatabaseParameterMeta) GetReboot() string {
+	return o.Reboot
+}
+
+// SetReboot sets value to Reboot
+func (o *DatabaseParameterMeta) SetReboot(v string) {
+	o.Reboot = v
+}
+
+/*************************************************
 * Disk
 *************************************************/
 

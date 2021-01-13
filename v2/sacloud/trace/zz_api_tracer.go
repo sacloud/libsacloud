@@ -2353,6 +2353,72 @@ func (t *DatabaseTracer) Status(ctx context.Context, zone string, id types.ID) (
 	return resultDatabaseStatus, err
 }
 
+// GetParameter is API call with trace log
+func (t *DatabaseTracer) GetParameter(ctx context.Context, zone string, id types.ID) (*sacloud.DatabaseParameter, error) {
+	log.Println("[TRACE] DatabaseAPI.GetParameter start")
+	targetArguments := struct {
+		Argzone string
+		Argid   types.ID `json:"id"`
+	}{
+		Argzone: zone,
+		Argid:   id,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] DatabaseAPI.GetParameter end")
+	}()
+
+	resultDatabaseParameter, err := t.Internal.GetParameter(ctx, zone, id)
+	targetResults := struct {
+		DatabaseParameter *sacloud.DatabaseParameter
+		Error             error
+	}{
+		DatabaseParameter: resultDatabaseParameter,
+		Error:             err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultDatabaseParameter, err
+}
+
+// SetParameter is API call with trace log
+func (t *DatabaseTracer) SetParameter(ctx context.Context, zone string, id types.ID, param map[string]interface{}) error {
+	log.Println("[TRACE] DatabaseAPI.SetParameter start")
+	targetArguments := struct {
+		Argzone  string
+		Argid    types.ID               `json:"id"`
+		Argparam map[string]interface{} `json:"param"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] DatabaseAPI.SetParameter end")
+	}()
+
+	err := t.Internal.SetParameter(ctx, zone, id, param)
+	targetResults := struct {
+		Error error
+	}{
+		Error: err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return err
+}
+
 /*************************************************
 * DiskTracer
 *************************************************/

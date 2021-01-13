@@ -1555,6 +1555,49 @@ func (o *DatabaseOp) transformStatusResults(data []byte) (*databaseStatusResult,
 	return results, nil
 }
 
+func (o *DatabaseOp) transformGetParameterResults(data []byte) (*databaseGetParameterResult, error) {
+	nakedResponse := &databaseGetParameterResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &databaseGetParameterResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
+}
+
+func (o *DatabaseOp) transformSetParameterArgs(id types.ID, param map[string]interface{}) (*databaseSetParameterRequestEnvelope, error) {
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	var arg0 interface{} = id
+	if v, ok := arg0.(argumentDefaulter); ok {
+		arg0 = v.setDefaults()
+	}
+	if param == nil {
+		param = map[string]interface{}{}
+	}
+	var arg1 interface{} = param
+	if v, ok := arg1.(argumentDefaulter); ok {
+		arg1 = v.setDefaults()
+	}
+	args := &struct {
+		Arg0 interface{}
+		Arg1 interface{} `mapconv:"Parameter.Attr"`
+	}{
+		Arg0: arg0,
+		Arg1: arg1,
+	}
+
+	v := &databaseSetParameterRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	return v, nil
+}
+
 func (o *DiskOp) transformFindArgs(conditions *FindCondition) (*diskFindRequestEnvelope, error) {
 	if conditions == nil {
 		conditions = &FindCondition{}

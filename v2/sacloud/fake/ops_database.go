@@ -289,3 +289,32 @@ func (o *DatabaseOp) Status(ctx context.Context, zone string, id types.ID) (*sac
 		},
 	}, nil
 }
+
+func (o *DatabaseOp) GetParameter(ctx context.Context, zone string, id types.ID) (*sacloud.DatabaseParameter, error) {
+	_, err := o.Read(ctx, zone, id)
+	if err != nil {
+		return nil, err
+	}
+	return &sacloud.DatabaseParameter{
+		Settings: map[string]interface{}{
+			"foo": "bar",
+		},
+		MetaInfo: []*sacloud.DatabaseParameterMeta{
+			{
+				Type:    "string",
+				Name:    "foo",
+				Label:   "foo",
+				Size:    0,
+				Example: "example for foo",
+				Min:     0,
+				Max:     0,
+				MaxLen:  0,
+				Reboot:  "dynamic",
+			},
+		},
+	}, nil
+}
+
+func (o *DatabaseOp) SetParameter(ctx context.Context, zone string, id types.ID, param map[string]interface{}) error {
+	return nil
+}
