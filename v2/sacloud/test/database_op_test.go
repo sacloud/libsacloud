@@ -90,9 +90,6 @@ func TestDatabaseOpCRUD(t *testing.T) {
 			// parameter settings
 			{
 				Func: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
-					if !testutil.IsAccTest() {
-						return nil, nil
-					}
 					dbOp := sacloud.NewDatabaseOp(caller)
 					err := dbOp.SetParameter(ctx, testZone, ctx.ID, map[string]interface{}{
 						"MariaDB/server.cnf/mysqld/max_connections": 50,
@@ -103,9 +100,6 @@ func TestDatabaseOpCRUD(t *testing.T) {
 					return dbOp.GetParameter(ctx, testZone, ctx.ID)
 				},
 				CheckFunc: func(t testutil.TestT, ctx *testutil.CRUDTestContext, v interface{}) error {
-					if !testutil.IsAccTest() {
-						return nil
-					}
 					param := v.(*sacloud.DatabaseParameter)
 					return testutil.DoAsserts(
 						testutil.AssertLenFunc(t, param.Settings, 1, "Settings"),
@@ -117,9 +111,6 @@ func TestDatabaseOpCRUD(t *testing.T) {
 			// reset parameter
 			{
 				Func: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
-					if !testutil.IsAccTest() {
-						return nil, nil
-					}
 					dbOp := sacloud.NewDatabaseOp(caller)
 					err := dbOp.SetParameter(ctx, testZone, ctx.ID, map[string]interface{}{
 						"MariaDB/server.cnf/mysqld/max_connections": nil,
@@ -130,9 +121,6 @@ func TestDatabaseOpCRUD(t *testing.T) {
 					return dbOp.GetParameter(ctx, testZone, ctx.ID)
 				},
 				CheckFunc: func(t testutil.TestT, ctx *testutil.CRUDTestContext, v interface{}) error {
-					if !testutil.IsAccTest() {
-						return nil
-					}
 					param := v.(*sacloud.DatabaseParameter)
 					return testutil.DoAsserts(
 						testutil.AssertLenFunc(t, param.Settings, 0, "Settings"),
