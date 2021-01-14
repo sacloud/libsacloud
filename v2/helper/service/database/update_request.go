@@ -44,7 +44,7 @@ type UpdateRequest struct {
 	BackupWeekdays        *[]types.EBackupSpanWeekday `request:",omitempty" validate:"omitempty,required_with=EnableBackup,max=7"`
 	BackupStartTimeHour   *int                        `request:",omitempty" validate:"omitempty,min=0,max=23"`
 	BackupStartTimeMinute *int                        `request:",omitempty" validate:"omitempty,oneof=0 15 30 45"`
-	Parameter             *map[string]interface{}     `request:",omitempty"`
+	Parameters            *map[string]interface{}     `request:",omitempty"`
 
 	SettingsHash string
 	NoWait       bool
@@ -115,7 +115,7 @@ func (req *UpdateRequest) ApplyRequest(ctx context.Context, caller sacloud.APICa
 		BackupWeekdays:        bkWeekdays,
 		BackupStartTimeHour:   bkHour,
 		BackupStartTimeMinute: bkMinute,
-		Parameter:             parameter.Settings,
+		Parameters:            parameter.Settings,
 		NoWait:                false,
 	}
 
