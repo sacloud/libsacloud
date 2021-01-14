@@ -2942,35 +2942,6 @@ func (o *DiskOp) CreateWithConfig(ctx context.Context, zone string, createParam 
 	return results.Disk, nil
 }
 
-// ToBlank is API call
-func (o *DiskOp) ToBlank(ctx context.Context, zone string, id types.ID) error {
-	// build request URL
-	pathBuildParameter := map[string]interface{}{
-		"rootURL":    SakuraCloudAPIRoot,
-		"pathSuffix": o.PathSuffix,
-		"pathName":   o.PathName,
-		"zone":       zone,
-		"id":         id,
-	}
-
-	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/to/blank", pathBuildParameter)
-	if err != nil {
-		return err
-	}
-	// build request body
-	var body interface{}
-
-	// do request
-	_, err = o.Client.Do(ctx, "PUT", url, body)
-	if err != nil {
-		return err
-	}
-
-	// build results
-
-	return nil
-}
-
 // ResizePartition is API call
 func (o *DiskOp) ResizePartition(ctx context.Context, zone string, id types.ID, param *DiskResizePartitionRequest) error {
 	// build request URL
@@ -3063,45 +3034,6 @@ func (o *DiskOp) DisconnectFromServer(ctx context.Context, zone string, id types
 	// build results
 
 	return nil
-}
-
-// Install is API call
-func (o *DiskOp) Install(ctx context.Context, zone string, id types.ID, installParam *DiskInstallRequest, distantFrom []types.ID) (*Disk, error) {
-	// build request URL
-	pathBuildParameter := map[string]interface{}{
-		"rootURL":      SakuraCloudAPIRoot,
-		"pathSuffix":   o.PathSuffix,
-		"pathName":     o.PathName,
-		"zone":         zone,
-		"id":           id,
-		"installParam": installParam,
-		"distantFrom":  distantFrom,
-	}
-
-	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/install", pathBuildParameter)
-	if err != nil {
-		return nil, err
-	}
-	// build request body
-	var body interface{}
-	v, err := o.transformInstallArgs(id, installParam, distantFrom)
-	if err != nil {
-		return nil, err
-	}
-	body = v
-
-	// do request
-	data, err := o.Client.Do(ctx, "PUT", url, body)
-	if err != nil {
-		return nil, err
-	}
-
-	// build results
-	results, err := o.transformInstallResults(data)
-	if err != nil {
-		return nil, err
-	}
-	return results.Disk, nil
 }
 
 // Read is API call

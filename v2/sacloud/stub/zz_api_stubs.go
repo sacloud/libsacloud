@@ -1114,11 +1114,6 @@ type DiskCreateWithConfigStubResult struct {
 	Err  error
 }
 
-// DiskToBlankStubResult is expected values of the ToBlank operation
-type DiskToBlankStubResult struct {
-	Err error
-}
-
 // DiskResizePartitionStubResult is expected values of the ResizePartition operation
 type DiskResizePartitionStubResult struct {
 	Err error
@@ -1132,12 +1127,6 @@ type DiskConnectToServerStubResult struct {
 // DiskDisconnectFromServerStubResult is expected values of the DisconnectFromServer operation
 type DiskDisconnectFromServerStubResult struct {
 	Err error
-}
-
-// DiskInstallStubResult is expected values of the Install operation
-type DiskInstallStubResult struct {
-	Disk *sacloud.Disk
-	Err  error
 }
 
 // DiskReadStubResult is expected values of the Read operation
@@ -1175,11 +1164,9 @@ type DiskStub struct {
 	CreateStubResult               *DiskCreateStubResult
 	ConfigStubResult               *DiskConfigStubResult
 	CreateWithConfigStubResult     *DiskCreateWithConfigStubResult
-	ToBlankStubResult              *DiskToBlankStubResult
 	ResizePartitionStubResult      *DiskResizePartitionStubResult
 	ConnectToServerStubResult      *DiskConnectToServerStubResult
 	DisconnectFromServerStubResult *DiskDisconnectFromServerStubResult
-	InstallStubResult              *DiskInstallStubResult
 	ReadStubResult                 *DiskReadStubResult
 	UpdateStubResult               *DiskUpdateStubResult
 	DeleteStubResult               *DiskDeleteStubResult
@@ -1224,14 +1211,6 @@ func (s *DiskStub) CreateWithConfig(ctx context.Context, zone string, createPara
 	return s.CreateWithConfigStubResult.Disk, s.CreateWithConfigStubResult.Err
 }
 
-// ToBlank is API call with trace log
-func (s *DiskStub) ToBlank(ctx context.Context, zone string, id types.ID) error {
-	if s.ToBlankStubResult == nil {
-		log.Fatal("DiskStub.ToBlankStubResult is not set")
-	}
-	return s.ToBlankStubResult.Err
-}
-
 // ResizePartition is API call with trace log
 func (s *DiskStub) ResizePartition(ctx context.Context, zone string, id types.ID, param *sacloud.DiskResizePartitionRequest) error {
 	if s.ResizePartitionStubResult == nil {
@@ -1254,14 +1233,6 @@ func (s *DiskStub) DisconnectFromServer(ctx context.Context, zone string, id typ
 		log.Fatal("DiskStub.DisconnectFromServerStubResult is not set")
 	}
 	return s.DisconnectFromServerStubResult.Err
-}
-
-// Install is API call with trace log
-func (s *DiskStub) Install(ctx context.Context, zone string, id types.ID, installParam *sacloud.DiskInstallRequest, distantFrom []types.ID) (*sacloud.Disk, error) {
-	if s.InstallStubResult == nil {
-		log.Fatal("DiskStub.InstallStubResult is not set")
-	}
-	return s.InstallStubResult.Disk, s.InstallStubResult.Err
 }
 
 // Read is API call with trace log

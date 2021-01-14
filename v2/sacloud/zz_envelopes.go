@@ -700,20 +700,6 @@ type diskResizePartitionRequestEnvelope struct {
 	Background bool `json:",omitempty"`
 }
 
-// diskInstallRequestEnvelope is envelop of API request
-type diskInstallRequestEnvelope struct {
-	Disk        *naked.Disk `json:",omitempty"`
-	DistantFrom []types.ID  `json:",omitempty"`
-}
-
-// diskInstallResponseEnvelope is envelop of API response
-type diskInstallResponseEnvelope struct {
-	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
-	Success types.APIResult `json:",omitempty"`      // success項目
-
-	Disk *naked.Disk `json:",omitempty"`
-}
-
 // diskReadResponseEnvelope is envelop of API response
 type diskReadResponseEnvelope struct {
 	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目

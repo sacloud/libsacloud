@@ -401,13 +401,6 @@ type diskCreateWithConfigResult struct {
 	Disk *Disk `json:",omitempty" mapconv:"Disk,omitempty,recursive"`
 }
 
-// diskInstallResult represents the Result of API
-type diskInstallResult struct {
-	IsOk bool `json:",omitempty"` // is_ok
-
-	Disk *Disk `json:",omitempty" mapconv:"Disk,omitempty,recursive"`
-}
-
 // diskReadResult represents the Result of API
 type diskReadResult struct {
 	IsOk bool `json:",omitempty"` // is_ok

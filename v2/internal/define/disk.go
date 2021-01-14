@@ -153,9 +153,6 @@ var diskAPI = &dsl.Resource{
 			},
 		},
 
-		// to blank
-		ops.WithIDAction(diskAPIName, "ToBlank", http.MethodPut, "to/blank"),
-
 		// resize partition
 		{
 			ResourceName: diskAPIName,
@@ -190,49 +187,6 @@ var diskAPI = &dsl.Resource{
 
 		// disconnect from server
 		ops.WithIDAction(diskAPIName, "DisconnectFromServer", http.MethodDelete, "to/server"),
-
-		// install
-		{
-			ResourceName: diskAPIName,
-			Name:         "Install",
-			PathFormat:   dsl.IDAndSuffixPathFormat("install"),
-			Method:       http.MethodPut,
-			RequestEnvelope: dsl.RequestEnvelope(
-				&dsl.EnvelopePayloadDesc{
-					Type: diskNakedType,
-					Name: "Disk",
-				},
-				&dsl.EnvelopePayloadDesc{
-					Type: diskDistantFromType,
-					Name: "DistantFrom",
-				},
-			),
-			ResponseEnvelope: dsl.ResponseEnvelope(&dsl.EnvelopePayloadDesc{
-				Type: diskNakedType,
-				Name: "Disk",
-			}),
-			Arguments: dsl.Arguments{
-				dsl.ArgumentID,
-				{
-					Name:       "installParam",
-					MapConvTag: "Disk,recursive",
-					Type:       diskInstallParam,
-				},
-				{
-					Name:       "distantFrom",
-					MapConvTag: "DistantFrom",
-					Type:       diskDistantFromType,
-				},
-			},
-			Results: dsl.Results{
-				{
-					SourceField: "Disk",
-					DestField:   diskModel.Name,
-					IsPlural:    false,
-					Model:       diskModel,
-				},
-			},
-		},
 
 		// read
 		ops.Read(diskAPIName, diskNakedType, diskModel),
@@ -316,14 +270,4 @@ var (
 	}
 
 	diskEditParam = models.diskEdit()
-
-	diskInstallParam = &dsl.Model{
-		Name: "DiskInstallRequest",
-		Fields: []*dsl.FieldDesc{
-			fields.SourceDiskID(),
-			fields.SourceArchiveID(),
-			fields.SizeMB(),
-		},
-		NakedType: diskNakedType,
-	}
 )
