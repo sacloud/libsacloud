@@ -86,10 +86,6 @@ func (req *UpdateRequest) ApplyRequest(ctx context.Context, caller sacloud.APICa
 			}
 		}
 	}
-	parameter, err := dbOp.GetParameter(ctx, req.Zone, req.ID)
-	if err != nil {
-		return nil, err
-	}
 
 	applyRequest := &ApplyRequest{
 		Zone:                  req.Zone,
@@ -115,12 +111,40 @@ func (req *UpdateRequest) ApplyRequest(ctx context.Context, caller sacloud.APICa
 		BackupWeekdays:        bkWeekdays,
 		BackupStartTimeHour:   bkHour,
 		BackupStartTimeMinute: bkMinute,
-		Parameters:            parameter.Settings,
 		NoWait:                false,
 	}
 
 	if err := service.RequestConvertTo(req, applyRequest); err != nil {
 		return nil, err
 	}
+
+	// パラメータは手動マージ
+	parameter, err := dbOp.GetParameter(ctx, req.Zone, req.ID)
+	if err != nil {
+		return nil, err
+	}
+	// パラメータ設定をLabelをキーにするように正規化
+	ps := make(map[string]interface{})
+	for k, v := range parameter.Settings {
+		for _, meta := range parameter.MetaInfo {
+			if meta.Name == k {
+				ps[meta.Label] = v
+			}
+		}
+	}
+	if req.Parameters != nil {
+		for k, v := range *req.Parameters {
+			key := k
+			for _, meta := range parameter.MetaInfo {
+				if meta.Name == key {
+					key = meta.Label
+					break
+				}
+			}
+			ps[key] = v
+		}
+	}
+	applyRequest.Parameters = ps
+
 	return applyRequest, nil
 }

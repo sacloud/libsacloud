@@ -74,7 +74,10 @@ func TestDatabaseService_convertUpdateRequest(t *testing.T) {
 		Tags:         types.Tags{"tag1", "tag2"},
 		SettingsHash: "",
 		NoWait:       false,
-		Client:       databaseBuilder.NewAPIClient(caller),
+		Parameters: map[string]interface{}{
+			"max_connections": float64(100),
+		},
+		Client: databaseBuilder.NewAPIClient(caller),
 	}
 	db, err := builder.Build(ctx, zone)
 	if err != nil {
@@ -129,7 +132,10 @@ func TestDatabaseService_convertUpdateRequest(t *testing.T) {
 				BackupWeekdays:        []types.EBackupSpanWeekday{types.BackupSpanWeekdays.Monday},
 				BackupStartTimeHour:   10,
 				BackupStartTimeMinute: 0,
-				NoWait:                true,
+				Parameters: map[string]interface{}{
+					"max_connections": float64(100),
+				},
+				NoWait: true,
 			},
 		},
 		{
@@ -138,7 +144,10 @@ func TestDatabaseService_convertUpdateRequest(t *testing.T) {
 				ID:                db.ID,
 				EnableReplication: pointer.NewBool(false),
 				EnableBackup:      pointer.NewBool(false),
-				NoWait:            true,
+				Parameters: &map[string]interface{}{
+					"work_mem": float64(4096),
+				},
+				NoWait: true,
 			},
 			expect: &ApplyRequest{
 				Zone:                  zone,
@@ -163,7 +172,11 @@ func TestDatabaseService_convertUpdateRequest(t *testing.T) {
 				BackupWeekdays:        []types.EBackupSpanWeekday{types.BackupSpanWeekdays.Monday},
 				BackupStartTimeHour:   10,
 				BackupStartTimeMinute: 0,
-				NoWait:                true,
+				Parameters: map[string]interface{}{
+					"max_connections": float64(100),
+					"work_mem":        float64(4096),
+				},
+				NoWait: true,
 			},
 		},
 	}
