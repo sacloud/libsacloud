@@ -45,6 +45,7 @@ func (s *Service) ListParameterWithContext(ctx context.Context, req *ListParamet
 		results = append(results, &Parameter{
 			Key:   p.Label,
 			Value: setting,
+			Meta:  p,
 		})
 	}
 	return results, nil

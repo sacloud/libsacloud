@@ -365,7 +365,11 @@ var (
 			},
 			fields.Def("Name", meta.TypeString),
 			fields.Def("Label", meta.TypeString),
-			fields.Def("Size", meta.TypeInt64),
+			{
+				Name: "Text",
+				Type: meta.TypeString,
+				Tags: mapConvTag("Options.Text"),
+			},
 			{
 				Name: "Example",
 				Type: meta.TypeString,

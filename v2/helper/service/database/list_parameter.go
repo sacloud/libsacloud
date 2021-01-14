@@ -14,7 +14,10 @@
 
 package database
 
+import "github.com/sacloud/libsacloud/v2/sacloud"
+
 type Parameter struct {
 	Key   string
 	Value interface{}
+	Meta  *sacloud.DatabaseParameterMeta
 }

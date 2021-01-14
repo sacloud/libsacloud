@@ -6751,7 +6751,7 @@ type DatabaseParameterMeta struct {
 	Type    string `mapconv:"Options.Type"`
 	Name    string
 	Label   string
-	Size    int64
+	Text    string  `mapconv:"Options.Text"`
 	Example string  `mapconv:"Options.Example"`
 	Min     float64 `mapconv:"Options.Min"`
 	Max     float64 `mapconv:"Options.Max"`
@@ -6770,7 +6770,7 @@ func (o *DatabaseParameterMeta) setDefaults() interface{} {
 		Type    string `mapconv:"Options.Type"`
 		Name    string
 		Label   string
-		Size    int64
+		Text    string  `mapconv:"Options.Text"`
 		Example string  `mapconv:"Options.Example"`
 		Min     float64 `mapconv:"Options.Min"`
 		Max     float64 `mapconv:"Options.Max"`
@@ -6780,7 +6780,7 @@ func (o *DatabaseParameterMeta) setDefaults() interface{} {
 		Type:    o.GetType(),
 		Name:    o.GetName(),
 		Label:   o.GetLabel(),
-		Size:    o.GetSize(),
+		Text:    o.GetText(),
 		Example: o.GetExample(),
 		Min:     o.GetMin(),
 		Max:     o.GetMax(),
@@ -6819,14 +6819,14 @@ func (o *DatabaseParameterMeta) SetLabel(v string) {
 	o.Label = v
 }
 
-// GetSize returns value of Size
-func (o *DatabaseParameterMeta) GetSize() int64 {
-	return o.Size
+// GetText returns value of Text
+func (o *DatabaseParameterMeta) GetText() string {
+	return o.Text
 }
 
-// SetSize sets value to Size
-func (o *DatabaseParameterMeta) SetSize(v int64) {
-	o.Size = v
+// SetText sets value to Text
+func (o *DatabaseParameterMeta) SetText(v string) {
+	o.Text = v
 }
 
 // GetExample returns value of Example
