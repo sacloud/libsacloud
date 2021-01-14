@@ -88,11 +88,14 @@ func TestDatabaseBuilder_Build(t *testing.T) {
 						DayOfWeek: []types.EBackupSpanWeekday{types.BackupSpanWeekdays.Monday},
 					},
 					ReplicationSetting: &sacloud.DatabaseReplicationSetting{},
-					Name:               testutil.ResourceName("database-builder"),
-					Description:        "description",
-					Tags:               types.Tags{"tag1", "tag2"},
-					SetupOptions:       getSetupOption(),
-					Client:             NewAPIClient(caller),
+					Parameters: map[string]interface{}{
+						"max_connections": 50,
+					},
+					Name:         testutil.ResourceName("database-builder"),
+					Description:  "description",
+					Tags:         types.Tags{"tag1", "tag2"},
+					SetupOptions: getSetupOption(),
+					Client:       NewAPIClient(caller),
 				}
 				return builder.Build(ctx, testZone)
 			},

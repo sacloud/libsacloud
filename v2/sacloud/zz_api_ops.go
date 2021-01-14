@@ -2706,6 +2706,73 @@ func (o *DatabaseOp) Status(ctx context.Context, zone string, id types.ID) (*Dat
 	return results.DatabaseStatus, nil
 }
 
+// GetParameter is API call
+func (o *DatabaseOp) GetParameter(ctx context.Context, zone string, id types.ID) (*DatabaseParameter, error) {
+	// build request URL
+	pathBuildParameter := map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+	}
+
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/database/parameter", pathBuildParameter)
+	if err != nil {
+		return nil, err
+	}
+	// build request body
+	var body interface{}
+
+	// do request
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	// build results
+	results, err := o.transformGetParameterResults(data)
+	if err != nil {
+		return nil, err
+	}
+	return results.DatabaseParameter, nil
+}
+
+// SetParameter is API call
+func (o *DatabaseOp) SetParameter(ctx context.Context, zone string, id types.ID, param map[string]interface{}) error {
+	// build request URL
+	pathBuildParameter := map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+		"param":      param,
+	}
+
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/database/parameter", pathBuildParameter)
+	if err != nil {
+		return err
+	}
+	// build request body
+	var body interface{}
+	v, err := o.transformSetParameterArgs(id, param)
+	if err != nil {
+		return err
+	}
+	body = v
+
+	// do request
+	_, err = o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return err
+	}
+
+	// build results
+
+	return nil
+}
+
 /*************************************************
 * DiskOp
 *************************************************/

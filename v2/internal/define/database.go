@@ -92,6 +92,46 @@ var databaseAPI = &dsl.Resource{
 				},
 			},
 		},
+		// Parameter
+		{
+			ResourceName: databaseAPIName,
+			Name:         "GetParameter",
+			PathFormat:   dsl.IDAndSuffixPathFormat("database/parameter"),
+			Method:       http.MethodGet,
+			Arguments: dsl.Arguments{
+				dsl.ArgumentID,
+			},
+			ResponseEnvelope: dsl.ResponseEnvelope(&dsl.EnvelopePayloadDesc{
+				Type: databaseParameterNakedType,
+				Name: "Database",
+			}),
+			Results: dsl.Results{
+				{
+					SourceField: "Database",
+					DestField:   databaseParameterView.Name,
+					IsPlural:    false,
+					Model:       databaseParameterView,
+				},
+			},
+		},
+		{
+			ResourceName: databaseAPIName,
+			Name:         "SetParameter",
+			PathFormat:   dsl.IDAndSuffixPathFormat("database/parameter"),
+			Method:       http.MethodPut,
+			RequestEnvelope: dsl.RequestEnvelope(&dsl.EnvelopePayloadDesc{
+				Type: meta.Static(naked.DatabaseParameterSetting{}),
+				Name: "Parameter",
+			}),
+			Arguments: dsl.Arguments{
+				dsl.ArgumentID,
+				{
+					Name:       "param",
+					Type:       meta.Static(map[string]interface{}{}),
+					MapConvTag: "Parameter.Attr",
+				},
+			},
+		},
 	},
 }
 
@@ -99,6 +139,7 @@ var (
 	databaseNakedType               = meta.Static(naked.Database{})
 	databaseUpdateSettingsNakedType = meta.Static(naked.DatabaseSettingsUpdate{})
 	databaseStatusNakedType         = meta.Static(naked.DatabaseStatus{})
+	databaseParameterNakedType      = meta.Static(naked.DatabaseParameter{})
 
 	databaseView = &dsl.Model{
 		Name:      databaseAPIName,
@@ -288,6 +329,72 @@ var (
 			fields.Def("Availability", meta.TypeString),
 			fields.Def("RecoveredAt", meta.TypeTime),
 			fields.Def("Size", meta.TypeInt64),
+		},
+	}
+
+	databaseParameterView = &dsl.Model{
+		Name:      "DatabaseParameter",
+		NakedType: databaseParameterNakedType,
+		Fields: []*dsl.FieldDesc{
+			{
+				Name: "Settings",
+				Type: meta.Static(map[string]interface{}{}),
+				Tags: &dsl.FieldTags{
+					MapConv: "Parameter.Attr",
+				},
+			},
+			{
+				Name: "MetaInfo",
+				Type: databaseParameterMeta,
+				Tags: &dsl.FieldTags{
+					MapConv: "Remark.[]Form,recursive",
+				},
+			},
+		},
+	}
+
+	databaseParameterMeta = &dsl.Model{
+		Name:      "DatabaseParameterMeta",
+		NakedType: meta.Static(naked.DatabaseParameterFormMeta{}),
+		IsArray:   true,
+		Fields: []*dsl.FieldDesc{
+			{
+				Name: "Type",
+				Type: meta.TypeString,
+				Tags: mapConvTag("Options.Type"),
+			},
+			fields.Def("Name", meta.TypeString),
+			fields.Def("Label", meta.TypeString),
+			{
+				Name: "Text",
+				Type: meta.TypeString,
+				Tags: mapConvTag("Options.Text"),
+			},
+			{
+				Name: "Example",
+				Type: meta.TypeString,
+				Tags: mapConvTag("Options.Example"),
+			},
+			{
+				Name: "Min",
+				Type: meta.TypeFloat64,
+				Tags: mapConvTag("Options.Min"),
+			},
+			{
+				Name: "Max",
+				Type: meta.TypeFloat64,
+				Tags: mapConvTag("Options.Max"),
+			},
+			{
+				Name: "MaxLen",
+				Type: meta.TypeInt,
+				Tags: mapConvTag("Options.MaxLen"),
+			},
+			{
+				Name: "Reboot",
+				Type: meta.TypeString,
+				Tags: mapConvTag("Options.Reboot"),
+			},
 		},
 	}
 )

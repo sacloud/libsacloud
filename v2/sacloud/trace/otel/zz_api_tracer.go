@@ -1933,6 +1933,58 @@ func (t *DatabaseTracer) Status(ctx context.Context, zone string, id types.ID) (
 	return resultDatabaseStatus, err
 }
 
+// GetParameter is API call with trace log
+func (t *DatabaseTracer) GetParameter(ctx context.Context, zone string, id types.ID) (*sacloud.DatabaseParameter, error) {
+	var span trace.Span
+	options := append(t.config.SpanStartOptions, trace.WithAttributes(
+		label.String("libsacloud.api.arguments.zone", zone),
+		label.Any("libsacloud.api.arguments.id", id),
+	))
+	ctx, span = t.config.Tracer.Start(ctx, "DatabaseAPI.GetParameter", options...)
+	defer func() {
+		span.End()
+	}()
+
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
+	resultDatabaseParameter, err := t.Internal.GetParameter(ctx, zone, id)
+
+	if err != nil {
+		span.SetStatus(codes.Error, err.Error())
+	} else {
+		span.SetStatus(codes.Ok, "")
+		span.SetAttributes(label.Any("libsacloud.api.results.resultDatabaseParameter", resultDatabaseParameter))
+
+	}
+	return resultDatabaseParameter, err
+}
+
+// SetParameter is API call with trace log
+func (t *DatabaseTracer) SetParameter(ctx context.Context, zone string, id types.ID, param map[string]interface{}) error {
+	var span trace.Span
+	options := append(t.config.SpanStartOptions, trace.WithAttributes(
+		label.String("libsacloud.api.arguments.zone", zone),
+		label.Any("libsacloud.api.arguments.id", id),
+		label.Any("libsacloud.api.arguments.param", param),
+	))
+	ctx, span = t.config.Tracer.Start(ctx, "DatabaseAPI.SetParameter", options...)
+	defer func() {
+		span.End()
+	}()
+
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
+	err := t.Internal.SetParameter(ctx, zone, id, param)
+
+	if err != nil {
+		span.SetStatus(codes.Error, err.Error())
+	} else {
+		span.SetStatus(codes.Ok, "")
+
+	}
+	return err
+}
+
 /*************************************************
 * DiskTracer
 *************************************************/

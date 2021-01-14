@@ -87,6 +87,47 @@ func TestDatabaseOpCRUD(t *testing.T) {
 					IgnoreFields: ignoreDatabaseFields,
 				}),
 			},
+			// parameter settings
+			{
+				Func: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+					dbOp := sacloud.NewDatabaseOp(caller)
+					err := dbOp.SetParameter(ctx, testZone, ctx.ID, map[string]interface{}{
+						"MariaDB/server.cnf/mysqld/max_connections": 50,
+					})
+					if err != nil {
+						return nil, err
+					}
+					return dbOp.GetParameter(ctx, testZone, ctx.ID)
+				},
+				CheckFunc: func(t testutil.TestT, ctx *testutil.CRUDTestContext, v interface{}) error {
+					param := v.(*sacloud.DatabaseParameter)
+					return testutil.DoAsserts(
+						testutil.AssertLenFunc(t, param.Settings, 1, "Settings"),
+						testutil.AssertEqualFunc(t, float64(50), param.Settings["MariaDB/server.cnf/mysqld/max_connections"], "Settings.Value"),
+					)
+				},
+				SkipExtractID: true,
+			},
+			// reset parameter
+			{
+				Func: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) (interface{}, error) {
+					dbOp := sacloud.NewDatabaseOp(caller)
+					err := dbOp.SetParameter(ctx, testZone, ctx.ID, map[string]interface{}{
+						"MariaDB/server.cnf/mysqld/max_connections": nil,
+					})
+					if err != nil {
+						return nil, err
+					}
+					return dbOp.GetParameter(ctx, testZone, ctx.ID)
+				},
+				CheckFunc: func(t testutil.TestT, ctx *testutil.CRUDTestContext, v interface{}) error {
+					param := v.(*sacloud.DatabaseParameter)
+					return testutil.DoAsserts(
+						testutil.AssertLenFunc(t, param.Settings, 0, "Settings"),
+					)
+				},
+				SkipExtractID: true,
+			},
 		},
 		Shutdown: func(ctx *testutil.CRUDTestContext, caller sacloud.APICaller) error {
 			client := sacloud.NewDatabaseOp(caller)

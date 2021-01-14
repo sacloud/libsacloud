@@ -618,6 +618,19 @@ type databaseStatusResponseEnvelope struct {
 	Appliance *naked.DatabaseStatusResponse `json:",omitempty"`
 }
 
+// databaseGetParameterResponseEnvelope is envelop of API response
+type databaseGetParameterResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Database *naked.DatabaseParameter `json:",omitempty"`
+}
+
+// databaseSetParameterRequestEnvelope is envelop of API request
+type databaseSetParameterRequestEnvelope struct {
+	Parameter *naked.DatabaseParameterSetting `json:",omitempty"`
+}
+
 // diskFindRequestEnvelope is envelop of API request
 type diskFindRequestEnvelope struct {
 	Count   int             `mapconv:",omitempty"`

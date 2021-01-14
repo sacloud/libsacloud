@@ -914,6 +914,17 @@ type DatabaseStatusStubResult struct {
 	Err            error
 }
 
+// DatabaseGetParameterStubResult is expected values of the GetParameter operation
+type DatabaseGetParameterStubResult struct {
+	DatabaseParameter *sacloud.DatabaseParameter
+	Err               error
+}
+
+// DatabaseSetParameterStubResult is expected values of the SetParameter operation
+type DatabaseSetParameterStubResult struct {
+	Err error
+}
+
 // DatabaseStub is for trace DatabaseOp operations
 type DatabaseStub struct {
 	FindStubResult             *DatabaseFindStubResult
@@ -931,6 +942,8 @@ type DatabaseStub struct {
 	MonitorInterfaceStubResult *DatabaseMonitorInterfaceStubResult
 	MonitorDatabaseStubResult  *DatabaseMonitorDatabaseStubResult
 	StatusStubResult           *DatabaseStatusStubResult
+	GetParameterStubResult     *DatabaseGetParameterStubResult
+	SetParameterStubResult     *DatabaseSetParameterStubResult
 }
 
 // NewDatabaseStub creates new DatabaseStub instance
@@ -1056,6 +1069,22 @@ func (s *DatabaseStub) Status(ctx context.Context, zone string, id types.ID) (*s
 		log.Fatal("DatabaseStub.StatusStubResult is not set")
 	}
 	return s.StatusStubResult.DatabaseStatus, s.StatusStubResult.Err
+}
+
+// GetParameter is API call with trace log
+func (s *DatabaseStub) GetParameter(ctx context.Context, zone string, id types.ID) (*sacloud.DatabaseParameter, error) {
+	if s.GetParameterStubResult == nil {
+		log.Fatal("DatabaseStub.GetParameterStubResult is not set")
+	}
+	return s.GetParameterStubResult.DatabaseParameter, s.GetParameterStubResult.Err
+}
+
+// SetParameter is API call with trace log
+func (s *DatabaseStub) SetParameter(ctx context.Context, zone string, id types.ID, param map[string]interface{}) error {
+	if s.SetParameterStubResult == nil {
+		log.Fatal("DatabaseStub.SetParameterStubResult is not set")
+	}
+	return s.SetParameterStubResult.Err
 }
 
 /*************************************************
