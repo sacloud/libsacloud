@@ -1796,58 +1796,6 @@ func (o *DiskOp) transformResizePartitionArgs(id types.ID, param *DiskResizePart
 	return v, nil
 }
 
-func (o *DiskOp) transformInstallArgs(id types.ID, installParam *DiskInstallRequest, distantFrom []types.ID) (*diskInstallRequestEnvelope, error) {
-	if id == types.ID(int64(0)) {
-		id = types.ID(int64(0))
-	}
-	var arg0 interface{} = id
-	if v, ok := arg0.(argumentDefaulter); ok {
-		arg0 = v.setDefaults()
-	}
-	if installParam == nil {
-		installParam = &DiskInstallRequest{}
-	}
-	var arg1 interface{} = installParam
-	if v, ok := arg1.(argumentDefaulter); ok {
-		arg1 = v.setDefaults()
-	}
-	if distantFrom == nil {
-		distantFrom = []types.ID{}
-	}
-	var arg2 interface{} = distantFrom
-	if v, ok := arg2.(argumentDefaulter); ok {
-		arg2 = v.setDefaults()
-	}
-	args := &struct {
-		Arg0 interface{}
-		Arg1 interface{} `mapconv:"Disk,recursive"`
-		Arg2 interface{} `mapconv:"DistantFrom"`
-	}{
-		Arg0: arg0,
-		Arg1: arg1,
-		Arg2: arg2,
-	}
-
-	v := &diskInstallRequestEnvelope{}
-	if err := mapconv.ConvertTo(args, v); err != nil {
-		return nil, err
-	}
-	return v, nil
-}
-
-func (o *DiskOp) transformInstallResults(data []byte) (*diskInstallResult, error) {
-	nakedResponse := &diskInstallResponseEnvelope{}
-	if err := json.Unmarshal(data, nakedResponse); err != nil {
-		return nil, err
-	}
-
-	results := &diskInstallResult{}
-	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
-		return nil, err
-	}
-	return results, nil
-}
-
 func (o *DiskOp) transformReadResults(data []byte) (*diskReadResult, error) {
 	nakedResponse := &diskReadResponseEnvelope{}
 	if err := json.Unmarshal(data, nakedResponse); err != nil {
