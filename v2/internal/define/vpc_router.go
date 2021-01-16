@@ -127,6 +127,8 @@ var (
 			fields.CreatedAt(),
 			// plan
 			fields.AppliancePlanID(),
+			// version
+			fields.ApplianceVPCRouterVersion(),
 			// settings
 			{
 				Name: "Settings",
@@ -184,6 +186,9 @@ var (
 
 			// TODO remarkとsettings.Interfaces両方に設定する必要がある。うまい方法が思いつかないため当面は利用者側で両方に設定する方法としておく
 			fields.ApplianceIPAddresses(),
+
+			// version
+			fields.ApplianceVPCRouterVersion(),
 
 			{
 				Name: "Settings",
