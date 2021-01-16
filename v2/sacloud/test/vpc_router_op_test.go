@@ -111,6 +111,7 @@ var (
 		Availability:   types.Availabilities.Available,
 		InstanceStatus: types.ServerInstanceStatuses.Up,
 		PlanID:         createVPCRouterParam.PlanID,
+		Version:        2,
 		Settings:       createVPCRouterParam.Settings,
 	}
 	updateVPCRouterParam = &sacloud.VPCRouterUpdateRequest{
@@ -126,6 +127,7 @@ var (
 		Availability:   types.Availabilities.Available,
 		InstanceStatus: types.ServerInstanceStatuses.Up,
 		PlanID:         createVPCRouterParam.PlanID,
+		Version:        2,
 	}
 )
 
@@ -430,6 +432,7 @@ var (
 		Availability:   types.Availabilities.Available,
 		InstanceStatus: types.ServerInstanceStatuses.Up,
 		PlanID:         withRouterCreateVPCRouterParam.PlanID,
+		Version:        2,
 		Settings:       withRouterCreateVPCRouterParam.Settings,
 	}
 	withRouterUpdateVPCRouterParam = &sacloud.VPCRouterUpdateRequest{
@@ -446,6 +449,7 @@ var (
 		Availability:   types.Availabilities.Available,
 		InstanceStatus: types.ServerInstanceStatuses.Up,
 		PlanID:         withRouterCreateVPCRouterParam.PlanID,
+		Version:        2,
 		Settings:       withRouterUpdateVPCRouterParam.Settings,
 		IconID:         testIconID,
 	}
@@ -458,6 +462,7 @@ var (
 		Availability:   types.Availabilities.Available,
 		InstanceStatus: types.ServerInstanceStatuses.Up,
 		PlanID:         withRouterCreateVPCRouterParam.PlanID,
+		Version:        2,
 		Settings:       withRouterUpdateVPCRouterToMinParam.Settings,
 	}
 )

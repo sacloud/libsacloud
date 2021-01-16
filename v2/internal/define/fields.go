@@ -577,6 +577,17 @@ func (f *fieldsDef) AppliancePlanID() *dsl.FieldDesc {
 	}
 }
 
+func (f *fieldsDef) ApplianceVPCRouterVersion() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "Version",
+		Tags: &dsl.FieldTags{
+			MapConv: "Remark.Router.VPCRouterVersion",
+		},
+		Type:         meta.TypeInt,
+		DefaultValue: `2`,
+	}
+}
+
 func (f *fieldsDef) ApplianceSwitchID() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "SwitchID",

@@ -35,6 +35,7 @@ func TestVPCRouterService_convertCreateRequest(t *testing.T) {
 				Tags:        types.Tags{"tag1", "tag2"},
 				IconID:      101,
 				PlanID:      types.VPCRouterPlans.Premium,
+				Version:     1,
 				NICSetting: &PremiumNICSetting{
 					SwitchID:         102,
 					IPAddresses:      []string{"192.168.0.101", "192.168.0.102"},
@@ -75,6 +76,7 @@ func TestVPCRouterService_convertCreateRequest(t *testing.T) {
 				Tags:        types.Tags{"tag1", "tag2"},
 				IconID:      101,
 				PlanID:      types.VPCRouterPlans.Premium,
+				Version:     1,
 				NICSetting: &PremiumNICSetting{
 					SwitchID:         102,
 					IPAddresses:      []string{"192.168.0.101", "192.168.0.102"},

@@ -34,6 +34,7 @@ func TestVPCRouterService_convertCreateStandardRequest(t *testing.T) {
 				Description: "desc",
 				Tags:        types.Tags{"tag1", "tag2"},
 				IconID:      101,
+				Version:     2,
 				AdditionalNICSettings: []*AdditionalStandardNICSetting{
 					{
 						SwitchID:       103,
@@ -67,6 +68,7 @@ func TestVPCRouterService_convertCreateStandardRequest(t *testing.T) {
 				Tags:        types.Tags{"tag1", "tag2"},
 				IconID:      101,
 				PlanID:      types.VPCRouterPlans.Standard,
+				Version:     2,
 				NICSetting:  &StandardNICSetting{},
 				AdditionalNICSettings: []AdditionalNICSettingHolder{
 					&AdditionalStandardNICSetting{

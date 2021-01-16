@@ -66,6 +66,7 @@ func TestBuilder_Build(t *testing.T) {
 					Description: "description",
 					Tags:        types.Tags{"tag1", "tag2"},
 					PlanID:      types.VPCRouterPlans.Standard,
+					Version:     1,
 					NICSetting:  &StandardNICSetting{},
 					AdditionalNICSettings: []AdditionalNICSettingHolder{
 						&AdditionalStandardNICSetting{
