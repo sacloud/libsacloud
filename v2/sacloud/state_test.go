@@ -22,6 +22,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/sacloud/libsacloud/v2/sacloud/types"
+
 	"github.com/stretchr/testify/require"
 )
 
@@ -38,7 +40,7 @@ func testStateCheckFunc(target interface{}) (bool, error) {
 	return state.state != nil, state.err
 }
 
-func TestStatePollingWaiter(t *testing.T) {
+func TestStatePollingWaiter_withStateCheckFunc(t *testing.T) {
 	t.Run("timeout", func(t *testing.T) {
 		waiter := &StatePollingWaiter{
 			ReadFunc: func() (interface{}, error) {
@@ -137,5 +139,103 @@ func TestStatePollingWaiter(t *testing.T) {
 
 		require.Error(t, err)
 		require.EqualError(t, err, "dummy")
+	})
+}
+
+type dummyInstanceStatus struct {
+	status       string
+	availability string
+}
+
+func (d *dummyInstanceStatus) GetInstanceStatus() types.EServerInstanceStatus {
+	return types.EServerInstanceStatus(d.status)
+}
+
+func (d *dummyInstanceStatus) SetInstanceStatus(s types.EServerInstanceStatus) {
+	d.status = string(s)
+}
+func (d *dummyInstanceStatus) GetAvailability() types.EAvailability {
+	return types.EAvailability(d.availability)
+}
+func (d *dummyInstanceStatus) SetAvailability(a types.EAvailability) {
+	d.availability = string(a)
+}
+
+func TestStatePollingWaiter_withTargetStates(t *testing.T) {
+	t.Run("ReadFunc got unknown state with RaiseErrorWithUnknownState=false", func(t *testing.T) {
+		counter := 0
+		max := 3
+		waiter := &StatePollingWaiter{
+			ReadFunc: func() (interface{}, error) {
+				counter++
+				status := ""
+				if counter > max {
+					status = string(types.ServerInstanceStatuses.Up)
+				}
+				return &dummyInstanceStatus{status: status}, nil
+			},
+			TargetInstanceStatus: []types.EServerInstanceStatus{types.ServerInstanceStatuses.Up},
+			Timeout:              10 * time.Millisecond,
+			PollingInterval:      1 * time.Millisecond,
+		}
+		ctx := context.Background()
+		_, err := waiter.WaitForState(ctx)
+
+		require.NoError(t, err)
+	})
+	t.Run("ReadFunc got unknown state with RaiseErrorWithUnknownState=true", func(t *testing.T) {
+		waiter := &StatePollingWaiter{
+			ReadFunc: func() (interface{}, error) {
+				return &dummyInstanceStatus{status: "unknown-instance-status"}, nil
+			},
+			TargetInstanceStatus:       []types.EServerInstanceStatus{types.ServerInstanceStatuses.Up},
+			Timeout:                    10 * time.Millisecond,
+			PollingInterval:            1 * time.Millisecond,
+			RaiseErrorWithUnknownState: true,
+		}
+		ctx := context.Background()
+		_, err := waiter.WaitForState(ctx)
+
+		require.Error(t, err)
+		require.EqualError(t, err, `got unexpected value of InstanceState: got "unknown-instance-status"`)
+	})
+
+	t.Run("ReadFunc got unknown availability with RaiseErrorWithUnknownState=false", func(t *testing.T) {
+		counter := 0
+		max := 3
+		waiter := &StatePollingWaiter{
+			ReadFunc: func() (interface{}, error) {
+				counter++
+				availability := ""
+				if counter > max {
+					availability = string(types.Availabilities.Available)
+				}
+				return &dummyInstanceStatus{availability: availability}, nil
+			},
+			TargetAvailability: []types.EAvailability{types.Availabilities.Available},
+			Timeout:            10 * time.Millisecond,
+			PollingInterval:    1 * time.Millisecond,
+		}
+		ctx := context.Background()
+		_, err := waiter.WaitForState(ctx)
+
+		require.NoError(t, err)
+	})
+
+	t.Run("ReadFunc got unknown availability with RaiseErrorWithUnknownState=true", func(t *testing.T) {
+		waiter := &StatePollingWaiter{
+			ReadFunc: func() (interface{}, error) {
+				return &dummyInstanceStatus{availability: "unknown-availability"}, nil
+			},
+			TargetAvailability:         []types.EAvailability{types.Availabilities.Available},
+			Timeout:                    10 * time.Millisecond,
+			PollingInterval:            1 * time.Millisecond,
+			RaiseErrorWithUnknownState: true,
+		}
+		ctx := context.Background()
+		_, err := waiter.WaitForState(ctx)
+
+		require.Error(t, err)
+		require.EqualError(t, err, `got unexpected value of Availability: got "unknown-availability"`)
 	})
 }
