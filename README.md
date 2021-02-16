@@ -1,6 +1,6 @@
 # libsacloud
 
-[![GoDoc](https://godoc.org/github.com/sacloud/libsacloud?status.svg)](https://godoc.org/github.com/sacloud/libsacloud)
+[![Go Reference](https://pkg.go.dev/badge/github.com/sacloud/libsacloud/v2.svg)](https://pkg.go.dev/github.com/sacloud/libsacloud/v2)
 ![Tests](https://github.com/sacloud/libsacloud/workflows/Tests/badge.svg)
 [![Go Report Card](https://goreportcard.com/badge/github.com/sacloud/libsacloud)](https://goreportcard.com/report/github.com/sacloud/libsacloud)
 
