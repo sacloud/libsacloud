@@ -19,7 +19,7 @@ linters:
 #    - interfacer
     - nakedret
     - misspell
-    - staticcheck
+#    - staticcheck
     - structcheck
     - typecheck
     - unused

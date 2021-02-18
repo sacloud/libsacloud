@@ -28,7 +28,7 @@ import (
 func TestMain(m *testing.M) {
 	testZone = testutil.TestZone()
 
-	ret := m.Run()
+	m.Run()
 
 	skipCleanup := os.Getenv("SKIP_CLEANUP")
 	if skipCleanup == "" {
@@ -36,8 +36,6 @@ func TestMain(m *testing.M) {
 			panic(err)
 		}
 	}
-
-	os.Exit(ret)
 }
 
 var testZone string

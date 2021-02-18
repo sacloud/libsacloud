@@ -18,7 +18,6 @@ import (
 	"bytes"
 	"go/build"
 	"go/format"
-	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
@@ -56,7 +55,7 @@ func WriteFileWithTemplate(config *TemplateConfig) bool {
 	}
 
 	// write to file
-	if err := ioutil.WriteFile(config.OutputPath, Sformat(buf.Bytes()), 0644); err != nil {
+	if err := os.WriteFile(config.OutputPath, Sformat(buf.Bytes()), 0644); err != nil {
 		log.Fatalf("writing output: %s", err)
 	}
 	return true

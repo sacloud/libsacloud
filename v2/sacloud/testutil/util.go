@@ -16,7 +16,6 @@ package testutil
 
 import (
 	"fmt"
-	"log"
 	"math/rand"
 	"os"
 	"sync"
@@ -82,15 +81,15 @@ func SingletonAPICaller() sacloud.APICaller {
 	accTestMu.Lock()
 	defer accTestMu.Unlock()
 	accTestOnce.Do(func() {
-		//環境変数にトークン/シークレットがある場合のみテスト実施
+		if !IsAccTest() {
+			os.Setenv("SAKURACLOUD_ACCESS_TOKEN", "dummy")
+			os.Setenv("SAKURACLOUD_ACCESS_TOKEN_SECRET", "dummy")
+		}
+
 		accessToken := os.Getenv("SAKURACLOUD_ACCESS_TOKEN")
 		accessTokenSecret := os.Getenv("SAKURACLOUD_ACCESS_TOKEN_SECRET")
 
-		if accessToken == "" || accessTokenSecret == "" {
-			log.Println("Please Set ENV 'SAKURACLOUD_ACCESS_TOKEN' and 'SAKURACLOUD_ACCESS_TOKEN_SECRET'")
-			os.Exit(0) // exit normal
-		}
-		caller := api.NewCaller(&api.CallerOptions{
+		apiCaller = api.NewCaller(&api.CallerOptions{
 			AccessToken:       accessToken,
 			AccessTokenSecret: accessTokenSecret,
 			UserAgent:         fmt.Sprintf("test-libsacloud/%s", libsacloud.Version),
@@ -100,12 +99,6 @@ func SingletonAPICaller() sacloud.APICaller {
 			TraceHTTP:         IsEnableTrace() || IsEnableHTTPTrace(),
 			FakeMode:          !IsAccTest(),
 		})
-		if !IsAccTest() {
-			os.Setenv("SAKURACLOUD_ACCESS_TOKEN", "dummy")
-			os.Setenv("SAKURACLOUD_ACCESS_TOKEN_SECRET", "dummy")
-		}
-
-		apiCaller = caller
 	})
 	return apiCaller
 }
