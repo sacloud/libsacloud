@@ -19,7 +19,6 @@ package profile
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
@@ -245,7 +244,7 @@ func initConfigFiles() func() {
 		if err := os.MkdirAll(filepath.Dir(p), 0755); err != nil {
 			panic(err)
 		}
-		if err := ioutil.WriteFile(p, []byte(prof.body), 0600); err != nil {
+		if err := os.WriteFile(p, []byte(prof.body), 0600); err != nil {
 			panic(err)
 		}
 	}
@@ -285,7 +284,7 @@ func Test_CurrentName(t *testing.T) {
 
 	t.Run("Should use profile file", func(t *testing.T) {
 		// create profile name
-		if err := ioutil.WriteFile(profNameFile, []byte("usacloud-unit-test1"), 0600); err != nil {
+		if err := os.WriteFile(profNameFile, []byte("usacloud-unit-test1"), 0600); err != nil {
 			panic(err)
 		}
 		n, err := CurrentName()
@@ -295,14 +294,14 @@ func Test_CurrentName(t *testing.T) {
 
 	t.Run("Invalid name in profile file", func(t *testing.T) {
 		// - with filepath.Separator
-		if err := ioutil.WriteFile(profNameFile, []byte("test"+string([]rune{filepath.Separator})+"test"), 0600); err != nil {
+		if err := os.WriteFile(profNameFile, []byte("test"+string([]rune{filepath.Separator})+"test"), 0600); err != nil {
 			panic(err)
 		}
 		_, err := CurrentName()
 		require.Error(t, err)
 
 		// - with filepath.ListSeparator
-		if err := ioutil.WriteFile(profNameFile, []byte("test"+string([]rune{filepath.ListSeparator})+"test"), 0600); err != nil {
+		if err := os.WriteFile(profNameFile, []byte("test"+string([]rune{filepath.ListSeparator})+"test"), 0600); err != nil {
 			panic(err)
 		}
 		_, err = CurrentName()
@@ -336,7 +335,7 @@ func Test_SetCurrentName(t *testing.T) {
 		err = SetCurrentName("default")
 		require.NoError(t, err)
 
-		data, err := ioutil.ReadFile(profNameFile)
+		data, err := os.ReadFile(profNameFile)
 		require.NoError(t, err)
 		require.Equal(t, "default", string(data))
 	})
@@ -347,7 +346,7 @@ func Test_SetCurrentName(t *testing.T) {
 		err = SetCurrentName("for-usacloud-unit-test1")
 		require.NoError(t, err)
 
-		data, err := ioutil.ReadFile(profNameFile)
+		data, err := os.ReadFile(profNameFile)
 		require.NoError(t, err)
 		require.Equal(t, "for-usacloud-unit-test1", string(data))
 	})
@@ -361,7 +360,7 @@ func Test_SetCurrentName(t *testing.T) {
 		err = SetCurrentName("not-exists")
 		require.Error(t, err)
 
-		data, err := ioutil.ReadFile(profNameFile)
+		data, err := os.ReadFile(profNameFile)
 		require.NoError(t, err)
 		require.Equal(t, "for-usacloud-unit-test1", string(data))
 	})
@@ -452,7 +451,7 @@ func Test_Save(t *testing.T) {
 		targetFile, err := ConfigFilePath(testProfileName)
 		require.NoError(t, err)
 
-		data, err := ioutil.ReadFile(targetFile)
+		data, err := os.ReadFile(targetFile)
 		require.NoError(t, err)
 
 		var mapData map[string]interface{}
@@ -545,7 +544,7 @@ func Test_Remove(t *testing.T) {
 		require.NoError(t, err)
 
 		testOtherFile := filepath.Join(filepath.Dir(path), "test")
-		err = ioutil.WriteFile(testOtherFile, []byte{}, 0600)
+		err = os.WriteFile(testOtherFile, []byte{}, 0600)
 		if err != nil {
 			panic(err)
 		}
