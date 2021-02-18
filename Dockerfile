@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-FROM golang:1.12
+FROM golang:1.16
 LABEL maintainer="Kazumichi Yamamoto <yamamoto.febc@gmail.com>"
 
 ENV SRC=$GOPATH/src/github.com/sacloud/libsacloud/
