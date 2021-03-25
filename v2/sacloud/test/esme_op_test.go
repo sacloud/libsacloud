@@ -71,6 +71,7 @@ func TestESMEOpCRUD(t *testing.T) {
 					_, err := client.SendMessageWithGeneratedOTP(ctx, ctx.ID, &sacloud.ESMESendMessageWithGeneratedOTPRequest{
 						Destination: destination,
 						Sender:      "libsacloud-test",
+						DomainName:  "www.example.com",
 					})
 					return nil, err
 				},
@@ -93,6 +94,7 @@ func TestESMEOpCRUD(t *testing.T) {
 					_, err := client.SendMessageWithInputtedOTP(ctx, ctx.ID, &sacloud.ESMESendMessageWithInputtedOTPRequest{
 						Destination: destination,
 						Sender:      "libsacloud-test",
+						DomainName:  "www.example.com",
 						OTP:         "397397",
 					})
 					return nil, err
