@@ -668,6 +668,24 @@ func TestBuilder_IsNeedShutdown(t *testing.T) {
 			},
 		},
 		{
+			msg:    "changed: Commitment",
+			expect: true,
+			err:    nil,
+			in: &Builder{
+				ServerID: types.ID(1),
+				CPU:      1,
+				Client: &APIClient{
+					Server: &dummyCreateServerHandler{
+						server: &sacloud.Server{
+							ID:                   types.ID(1),
+							CPU:                  1,
+							ServerPlanCommitment: types.Commitments.DedicatedCPU,
+						},
+					},
+				},
+			},
+		},
+		{
 			msg:    "changed: add NIC",
 			expect: true,
 			err:    nil,

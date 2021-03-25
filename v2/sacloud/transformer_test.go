@@ -15,6 +15,7 @@
 package sacloud
 
 import (
+	"reflect"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -276,4 +277,76 @@ func TestTransformer_transformDatabaseSetParameterArgs(t *testing.T) {
 	require.NotNil(t, result.Parameter)
 	require.NotEmpty(t, result.Parameter.Attr)
 	require.EqualValues(t, "bar", result.Parameter.Attr["foo"])
+}
+
+func TestServerOp_transformChangePlanArgs(t *testing.T) {
+	type fields struct {
+		Client     APICaller
+		PathSuffix string
+		PathName   string
+	}
+	type args struct {
+		id   types.ID
+		plan *ServerChangePlanRequest
+	}
+	tests := []struct {
+		name    string
+		fields  fields
+		args    args
+		want    *serverChangePlanRequestEnvelope
+		wantErr bool
+	}{
+		{
+			name: "standard",
+			args: args{
+				id: 1,
+				plan: &ServerChangePlanRequest{
+					CPU:      2,
+					MemoryMB: 4,
+				},
+			},
+			want: &serverChangePlanRequestEnvelope{
+				CPU:                  2,
+				MemoryMB:             4,
+				ServerPlanCommitment: types.Commitments.Standard,
+			},
+			wantErr: false,
+		},
+		{
+			name: "dedicated-cpu",
+			args: args{
+				id: 1,
+				plan: &ServerChangePlanRequest{
+					CPU:                  2,
+					MemoryMB:             4,
+					ServerPlanGeneration: types.PlanGenerations.G200,
+					ServerPlanCommitment: types.Commitments.DedicatedCPU,
+				},
+			},
+			want: &serverChangePlanRequestEnvelope{
+				CPU:                  2,
+				MemoryMB:             4,
+				ServerPlanGeneration: types.PlanGenerations.G200,
+				ServerPlanCommitment: types.Commitments.DedicatedCPU,
+			},
+			wantErr: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			o := &ServerOp{
+				Client:     tt.fields.Client,
+				PathSuffix: tt.fields.PathSuffix,
+				PathName:   tt.fields.PathName,
+			}
+			got, err := o.transformChangePlanArgs(tt.args.id, tt.args.plan)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("transformChangePlanArgs() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("transformChangePlanArgs() got = %v, want %v", got, tt.want)
+			}
+		})
+	}
 }

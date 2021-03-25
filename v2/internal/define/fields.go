@@ -183,6 +183,9 @@ func (f *fieldsDef) MemoryMB() *dsl.FieldDesc {
 func (f *fieldsDef) Generation() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "ServerPlanGeneration",
+		Tags: &dsl.FieldTags{
+			JSON: "Generation,omitempty",
+		},
 		Type: meta.TypePlanGeneration,
 	}
 }
@@ -191,7 +194,7 @@ func (f *fieldsDef) Commitment() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "ServerPlanCommitment",
 		Tags: &dsl.FieldTags{
-			MapConv: "Commitment",
+			JSON: "Commitment,omitempty",
 		},
 		Type:         meta.TypeCommitment,
 		DefaultValue: "types.Commitments.Standard",

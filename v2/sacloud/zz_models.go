@@ -21748,8 +21748,8 @@ func (o *ServerDeleteWithDisksRequest) SetIDs(v []types.ID) {
 type ServerChangePlanRequest struct {
 	CPU                  int
 	MemoryMB             int
-	ServerPlanGeneration types.EPlanGeneration
-	ServerPlanCommitment types.ECommitment `json:",omitempty" mapconv:"ServerPlan.Commitment"`
+	ServerPlanGeneration types.EPlanGeneration `json:"Generation,omitempty"`
+	ServerPlanCommitment types.ECommitment     `json:"Commitment,omitempty"`
 }
 
 // Validate validates by field tags
@@ -21762,8 +21762,8 @@ func (o *ServerChangePlanRequest) setDefaults() interface{} {
 	return &struct {
 		CPU                  int
 		MemoryMB             int
-		ServerPlanGeneration types.EPlanGeneration
-		ServerPlanCommitment types.ECommitment `json:",omitempty" mapconv:"ServerPlan.Commitment"`
+		ServerPlanGeneration types.EPlanGeneration `json:"Generation,omitempty"`
+		ServerPlanCommitment types.ECommitment     `json:"Commitment,omitempty"`
 	}{
 		CPU:                  o.GetCPU(),
 		MemoryMB:             o.GetMemoryMB(),
