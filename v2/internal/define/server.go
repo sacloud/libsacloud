@@ -358,7 +358,7 @@ var (
 			fields.CPU(),
 			fields.MemoryMB(),
 			fields.Generation(),
-			fields.ServerPlanCommitment(),
+			fields.Commitment(),
 		},
 		NakedType: meta.Static(naked.ServerPlan{}),
 	}
