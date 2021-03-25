@@ -197,6 +197,7 @@ var (
 			// common fields
 			fields.Def("Destination", meta.TypeString), // 宛先 81開始
 			fields.Def("Sender", meta.TypeString),
+			fields.Def("DomainName", meta.TypeString),
 		},
 	}
 
@@ -214,6 +215,7 @@ var (
 			// common fields
 			fields.Def("Destination", meta.TypeString), // 宛先 81開始
 			fields.Def("Sender", meta.TypeString),
+			fields.Def("DomainName", meta.TypeString),
 			fields.Def("OTP", meta.TypeString),
 		},
 	}
