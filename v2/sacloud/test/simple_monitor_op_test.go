@@ -135,6 +135,7 @@ var (
 			Host:              "libsacloud-test-upd.usacloud.jp",
 			BasicAuthUsername: "username-upd",
 			BasicAuthPassword: "password-upd",
+			HTTP2:             true,
 		},
 		NotifyEmailEnabled: types.StringFalse,
 		NotifyEmailHTML:    types.StringFalse,
