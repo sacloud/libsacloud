@@ -167,6 +167,9 @@ var serverAPI = &dsl.Resource{
 			RequestEnvelope: dsl.RequestEnvelopeFromModel(serverSendKeyParam),
 		},
 
+		// send NMI
+		ops.WithIDAction(serverAPIName, "SendNMI", http.MethodPut, "qemu/nmi"),
+
 		// get vnc proxy
 		{
 			ResourceName: serverAPIName,

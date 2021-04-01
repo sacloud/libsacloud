@@ -3974,6 +3974,11 @@ type ServerSendKeyStubResult struct {
 	Err error
 }
 
+// ServerSendNMIStubResult is expected values of the SendNMI operation
+type ServerSendNMIStubResult struct {
+	Err error
+}
+
 // ServerGetVNCProxyStubResult is expected values of the GetVNCProxy operation
 type ServerGetVNCProxyStubResult struct {
 	VNCProxyInfo *sacloud.VNCProxyInfo
@@ -4007,6 +4012,7 @@ type ServerStub struct {
 	ShutdownStubResult        *ServerShutdownStubResult
 	ResetStubResult           *ServerResetStubResult
 	SendKeyStubResult         *ServerSendKeyStubResult
+	SendNMIStubResult         *ServerSendNMIStubResult
 	GetVNCProxyStubResult     *ServerGetVNCProxyStubResult
 	MonitorStubResult         *ServerMonitorStubResult
 	MonitorCPUStubResult      *ServerMonitorCPUStubResult
@@ -4119,6 +4125,14 @@ func (s *ServerStub) SendKey(ctx context.Context, zone string, id types.ID, keyb
 		log.Fatal("ServerStub.SendKeyStubResult is not set")
 	}
 	return s.SendKeyStubResult.Err
+}
+
+// SendNMI is API call with trace log
+func (s *ServerStub) SendNMI(ctx context.Context, zone string, id types.ID) error {
+	if s.SendNMIStubResult == nil {
+		log.Fatal("ServerStub.SendNMIStubResult is not set")
+	}
+	return s.SendNMIStubResult.Err
 }
 
 // GetVNCProxy is API call with trace log
