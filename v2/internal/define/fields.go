@@ -1181,6 +1181,10 @@ func (f *fieldsDef) SimpleMonitorHealthCheck() *dsl.FieldDesc {
 					Name: "RemainingDays",
 					Type: meta.TypeInt,
 				},
+				{
+					Name: "HTTP2",
+					Type: meta.TypeStringFlag,
+				},
 			},
 		},
 		Tags: &dsl.FieldTags{
