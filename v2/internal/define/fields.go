@@ -1158,6 +1158,10 @@ func (f *fieldsDef) SimpleMonitorHealthCheck() *dsl.FieldDesc {
 					Type: meta.TypeString,
 				},
 				{
+					Name: "ContainsString",
+					Type: meta.TypeString,
+				},
+				{
 					Name: "QName",
 					Type: meta.TypeString,
 				},

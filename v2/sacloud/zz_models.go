@@ -23769,6 +23769,7 @@ type SimpleMonitorHealthCheck struct {
 	Host              string
 	BasicAuthUsername string
 	BasicAuthPassword string
+	ContainsString    string
 	QName             string
 	ExpectedData      string
 	Community         string
@@ -23794,6 +23795,7 @@ func (o *SimpleMonitorHealthCheck) setDefaults() interface{} {
 		Host              string
 		BasicAuthUsername string
 		BasicAuthPassword string
+		ContainsString    string
 		QName             string
 		ExpectedData      string
 		Community         string
@@ -23810,6 +23812,7 @@ func (o *SimpleMonitorHealthCheck) setDefaults() interface{} {
 		Host:              o.GetHost(),
 		BasicAuthUsername: o.GetBasicAuthUsername(),
 		BasicAuthPassword: o.GetBasicAuthPassword(),
+		ContainsString:    o.GetContainsString(),
 		QName:             o.GetQName(),
 		ExpectedData:      o.GetExpectedData(),
 		Community:         o.GetCommunity(),
@@ -23898,6 +23901,16 @@ func (o *SimpleMonitorHealthCheck) GetBasicAuthPassword() string {
 // SetBasicAuthPassword sets value to BasicAuthPassword
 func (o *SimpleMonitorHealthCheck) SetBasicAuthPassword(v string) {
 	o.BasicAuthPassword = v
+}
+
+// GetContainsString returns value of ContainsString
+func (o *SimpleMonitorHealthCheck) GetContainsString() string {
+	return o.ContainsString
+}
+
+// SetContainsString sets value to ContainsString
+func (o *SimpleMonitorHealthCheck) SetContainsString(v string) {
+	o.ContainsString = v
 }
 
 // GetQName returns value of QName
