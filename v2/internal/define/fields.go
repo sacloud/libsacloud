@@ -1456,6 +1456,24 @@ func (f *fieldsDef) ProxyLBStickySession() *dsl.FieldDesc {
 	}
 }
 
+func (f *fieldsDef) ProxyLBGzip() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "Gzip",
+		Type: &dsl.Model{
+			Name: "ProxyLBGzip",
+			Fields: []*dsl.FieldDesc{
+				{
+					Name: "Enabled",
+					Type: meta.TypeFlag,
+				},
+			},
+		},
+		Tags: &dsl.FieldTags{
+			MapConv: "Settings.ProxyLB.Gzip,recursive",
+		},
+	}
+}
+
 func (f *fieldsDef) ProxyLBTimeout() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "Timeout",

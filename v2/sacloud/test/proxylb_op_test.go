@@ -184,6 +184,9 @@ func initProxyLBVariables() {
 			Method:  "cookie",
 			Enabled: true,
 		},
+		Gzip: &sacloud.ProxyLBGzip{
+			Enabled: true,
+		},
 		Timeout: &sacloud.ProxyLBTimeout{
 			InactiveSec: 30,
 		},
@@ -204,6 +207,7 @@ func initProxyLBVariables() {
 		Rules:          createProxyLBParam.Rules,
 		LetsEncrypt:    createProxyLBParam.LetsEncrypt,
 		StickySession:  createProxyLBParam.StickySession,
+		Gzip:           createProxyLBParam.Gzip,
 		Timeout:        createProxyLBParam.Timeout,
 		UseVIPFailover: createProxyLBParam.UseVIPFailover,
 		Region:         createProxyLBParam.Region,
@@ -265,6 +269,9 @@ func initProxyLBVariables() {
 			Enabled: false,
 		},
 		StickySession: &sacloud.ProxyLBStickySession{
+			Enabled: false,
+		},
+		Gzip: &sacloud.ProxyLBGzip{
 			Enabled: false,
 		},
 		Timeout: &sacloud.ProxyLBTimeout{
