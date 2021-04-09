@@ -131,7 +131,7 @@ func TestStatePollingWaiter_withStateCheckFunc(t *testing.T) {
 				return &dummyState{}, errors.New("dummy")
 			},
 			StateCheckFunc:  testStateCheckFunc,
-			Timeout:         10 * time.Millisecond,
+			Timeout:         100 * time.Millisecond,
 			PollingInterval: 1 * time.Millisecond,
 		}
 		ctx := context.Background()
@@ -175,7 +175,7 @@ func TestStatePollingWaiter_withTargetStates(t *testing.T) {
 				return &dummyInstanceStatus{status: status}, nil
 			},
 			TargetInstanceStatus: []types.EServerInstanceStatus{types.ServerInstanceStatuses.Up},
-			Timeout:              10 * time.Millisecond,
+			Timeout:              100 * time.Millisecond,
 			PollingInterval:      1 * time.Millisecond,
 		}
 		ctx := context.Background()
@@ -189,7 +189,7 @@ func TestStatePollingWaiter_withTargetStates(t *testing.T) {
 				return &dummyInstanceStatus{status: "unknown-instance-status"}, nil
 			},
 			TargetInstanceStatus:       []types.EServerInstanceStatus{types.ServerInstanceStatuses.Up},
-			Timeout:                    10 * time.Millisecond,
+			Timeout:                    100 * time.Millisecond,
 			PollingInterval:            1 * time.Millisecond,
 			RaiseErrorWithUnknownState: true,
 		}
@@ -213,7 +213,7 @@ func TestStatePollingWaiter_withTargetStates(t *testing.T) {
 				return &dummyInstanceStatus{availability: availability}, nil
 			},
 			TargetAvailability: []types.EAvailability{types.Availabilities.Available},
-			Timeout:            10 * time.Millisecond,
+			Timeout:            100 * time.Millisecond,
 			PollingInterval:    1 * time.Millisecond,
 		}
 		ctx := context.Background()
@@ -228,7 +228,7 @@ func TestStatePollingWaiter_withTargetStates(t *testing.T) {
 				return &dummyInstanceStatus{availability: "unknown-availability"}, nil
 			},
 			TargetAvailability:         []types.EAvailability{types.Availabilities.Available},
-			Timeout:                    10 * time.Millisecond,
+			Timeout:                    100 * time.Millisecond,
 			PollingInterval:            1 * time.Millisecond,
 			RaiseErrorWithUnknownState: true,
 		}
