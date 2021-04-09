@@ -183,6 +183,7 @@ var (
 			fields.ProxyLBRules(),
 			fields.ProxyLBLetsEncrypt(),
 			fields.ProxyLBStickySession(),
+			fields.ProxyLBGzip(),
 			fields.ProxyLBTimeout(),
 			fields.SettingsHash(),
 
@@ -221,6 +222,7 @@ var (
 			fields.ProxyLBLetsEncrypt(),
 			fields.ProxyLBStickySession(),
 			fields.ProxyLBTimeout(),
+			fields.ProxyLBGzip(),
 
 			// status
 			fields.ProxyLBUseVIPFailover(),
@@ -248,6 +250,7 @@ var (
 			fields.ProxyLBLetsEncrypt(),
 			fields.ProxyLBStickySession(),
 			fields.ProxyLBTimeout(),
+			fields.ProxyLBGzip(),
 			// settings hash
 			fields.SettingsHash(),
 
@@ -272,6 +275,7 @@ var (
 			fields.ProxyLBLetsEncrypt(),
 			fields.ProxyLBStickySession(),
 			fields.ProxyLBTimeout(),
+			fields.ProxyLBGzip(),
 			// settings hash
 			fields.SettingsHash(),
 		},
