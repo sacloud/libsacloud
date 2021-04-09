@@ -100,6 +100,7 @@ var (
 			Host:              "libsacloud-test.usacloud.jp",
 			BasicAuthUsername: "username",
 			BasicAuthPassword: "password",
+			ContainsString:    "foobar",
 		},
 		NotifyEmailEnabled: types.StringTrue,
 		NotifyEmailHTML:    types.StringTrue,
