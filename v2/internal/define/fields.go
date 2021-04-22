@@ -1426,6 +1426,10 @@ func (f *fieldsDef) ProxyLBLetsEncrypt() *dsl.FieldDesc {
 					Name: "Enabled",
 					Type: meta.TypeFlag,
 				},
+				{
+					Name: "SubjectAltNames",
+					Type: meta.TypeStringSlice,
+				},
 			},
 		},
 		Tags: &dsl.FieldTags{
