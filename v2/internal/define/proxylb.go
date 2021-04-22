@@ -303,6 +303,7 @@ var (
 						fields.Def("PrivateKey", meta.TypeString),
 						fields.Def("CertificateEndDate", meta.TypeTime),
 						fields.Def("CertificateCommonName", meta.TypeString),
+						fields.Def("CertificateAltNames", meta.TypeString),
 					},
 				},
 			},
@@ -317,6 +318,7 @@ var (
 						fields.Def("PrivateKey", meta.TypeString),
 						fields.Def("CertificateEndDate", meta.TypeTime),
 						fields.Def("CertificateCommonName", meta.TypeString),
+						fields.Def("CertificateAltNames", meta.TypeString),
 					},
 				},
 				Tags: &dsl.FieldTags{

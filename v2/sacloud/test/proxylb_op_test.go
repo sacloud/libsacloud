@@ -505,8 +505,9 @@ func initProxyLBVariables() {
 			},
 		},
 		LetsEncrypt: &sacloud.ProxyLBACMESetting{
-			CommonName: os.Getenv("SAKURACLOUD_PROXYLB_COMMON_NAME"),
-			Enabled:    true,
+			CommonName:      os.Getenv("SAKURACLOUD_PROXYLB_COMMON_NAME"),
+			Enabled:         true,
+			SubjectAltNames: []string{os.Getenv("SAKURACLOUD_PROXYLB_ALT_NAME")},
 		},
 		Timeout: &sacloud.ProxyLBTimeout{
 			InactiveSec: 10,
@@ -562,16 +563,22 @@ func TestProxyLBOpLetsEncryptAndHealth(t *testing.T) {
 		"SAKURACLOUD_PROXYLB_SERVER0",
 		"SAKURACLOUD_PROXYLB_SERVER1",
 		"SAKURACLOUD_PROXYLB_COMMON_NAME",
+		"SAKURACLOUD_PROXYLB_ALT_NAME",
 		"SAKURACLOUD_PROXYLB_ZONE_NAME",
 	)(t)
 
 	// prepare variables
 	commonName := os.Getenv("SAKURACLOUD_PROXYLB_COMMON_NAME")
+	altName := os.Getenv("SAKURACLOUD_PROXYLB_ALT_NAME")
 	zoneName := os.Getenv("SAKURACLOUD_PROXYLB_ZONE_NAME")
 	if !strings.HasSuffix(commonName, zoneName) {
 		t.Fatal("$SAKURACLOUD_PROXYLB_COMMON_NAME does not have suffix $SAKURACLOUD_PROXYLB_ZONE_NAME")
 	}
-	recordName := strings.Replace(commonName, "."+zoneName, "", -1)
+	if !strings.HasSuffix(altName, zoneName) {
+		t.Fatal("$SAKURACLOUD_PROXYLB_ALT_NAME does not have suffix $SAKURACLOUD_PROXYLB_ZONE_NAME")
+	}
+	recordName1 := strings.Replace(commonName, "."+zoneName, "", -1)
+	recordName2 := strings.Replace(altName, "."+zoneName, "", -1)
 
 	ctx := context.Background()
 	proxyLBOp := sacloud.NewProxyLBOp(singletonAPICaller())
@@ -592,7 +599,13 @@ func TestProxyLBOpLetsEncryptAndHealth(t *testing.T) {
 	}
 
 	dns.Records = append(dns.Records, &sacloud.DNSRecord{
-		Name:  recordName,
+		Name:  recordName1,
+		Type:  types.DNSRecordTypes.CNAME,
+		RData: fmt.Sprintf("%s.", proxyLB.FQDN),
+		TTL:   10,
+	})
+	dns.Records = append(dns.Records, &sacloud.DNSRecord{
+		Name:  recordName2,
 		Type:  types.DNSRecordTypes.CNAME,
 		RData: fmt.Sprintf("%s.", proxyLB.FQDN),
 		TTL:   10,
@@ -609,7 +622,7 @@ func TestProxyLBOpLetsEncryptAndHealth(t *testing.T) {
 	defer func() {
 		var records []*sacloud.DNSRecord
 		for i, r := range dns.Records {
-			if r.Name != recordName {
+			if r.Name != recordName1 && r.Name != recordName2 {
 				records = append(records, dns.Records[i])
 			}
 		}
@@ -657,6 +670,7 @@ func TestProxyLBOpLetsEncryptAndHealth(t *testing.T) {
 	assert.NotEmpty(t, certs.PrimaryCert.IntermediateCertificate)
 	assert.NotEmpty(t, certs.PrimaryCert.PrivateKey)
 	assert.NotEmpty(t, certs.PrimaryCert.CertificateCommonName)
+	assert.NotEmpty(t, certs.PrimaryCert.CertificateAltNames)
 	assert.NotEmpty(t, certs.PrimaryCert.CertificateEndDate)
 
 	// check health status
