@@ -21,35 +21,22 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/sacloud/libsacloud/v2/helper/defaults"
+
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/accessor"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
-const (
-	// DefaultBootRetrySpan BootRetrySpanのデフォルト値
-	DefaultBootRetrySpan = 20 * time.Second
-	// DefaultShutdownRetrySpan ShutdownRetrySpanのデフォルト値
-	DefaultShutdownRetrySpan = 20 * time.Second
-	// DefaultInitialRequestTimeout InitialRequestTimeoutのデフォルト値
-	DefaultInitialRequestTimeout = 30 * time.Second
-	// DefaultInitialRequestRetrySpan InitialRequestRetrySpanのデフォルト値
-	DefaultInitialRequestRetrySpan = 20 * time.Second
-)
-
-// TODO defaultsへの切り出し
 var (
 	// BootRetrySpan 起動APIをコールしてからリトライするまでの待機時間
-	BootRetrySpan = DefaultBootRetrySpan
-
+	BootRetrySpan time.Duration
 	// ShutdownRetrySpan シャットダウンAPIをコールしてからリトライするまでの待機時間
-	ShutdownRetrySpan = DefaultShutdownRetrySpan
-
+	ShutdownRetrySpan time.Duration
 	// InitialRequestTimeout 初回のBoot/Shutdownリクエストが受け入れられるまでのタイムアウト時間
-	InitialRequestTimeout = DefaultInitialRequestTimeout
-
+	InitialRequestTimeout time.Duration
 	// InitialRequestRetrySpan 初回のBoot/Shutdownリクエストをリトライする場合のリトライ間隔
-	InitialRequestRetrySpan = DefaultInitialRequestRetrySpan
+	InitialRequestRetrySpan time.Duration
 )
 
 /************************************************
@@ -202,7 +189,24 @@ type handler interface {
 	read() (interface{}, error)
 }
 
+func initDefaults() {
+	if BootRetrySpan == 0 {
+		BootRetrySpan = defaults.DefaultPowerHelperBootRetrySpan
+	}
+	if ShutdownRetrySpan == 0 {
+		ShutdownRetrySpan = defaults.DefaultPowerHelperShutdownRetrySpan
+	}
+	if InitialRequestTimeout == 0 {
+		InitialRequestTimeout = defaults.DefaultPowerHelperInitialRequestTimeout
+	}
+	if InitialRequestRetrySpan == 0 {
+		InitialRequestRetrySpan = defaults.DefaultPowerHelperInitialRequestRetrySpan
+	}
+}
+
 func boot(ctx context.Context, h handler) error {
+	initDefaults()
+
 	// 初回リクエスト、409+still_creatingの場合は一定期間リトライする
 	if err := powerRequestWithRetry(ctx, h.boot); err != nil {
 		return err
@@ -249,6 +253,8 @@ func boot(ctx context.Context, h handler) error {
 }
 
 func shutdown(ctx context.Context, h handler, force bool) error {
+	initDefaults()
+
 	// 初回リクエスト、409+still_creatingの場合は一定期間リトライする
 	if err := powerRequestWithRetry(ctx, func() error { return h.shutdown(force) }); err != nil {
 		return err

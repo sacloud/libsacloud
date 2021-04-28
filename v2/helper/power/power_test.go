@@ -36,8 +36,8 @@ func TestPowerHandler(t *testing.T) {
 	ShutdownRetrySpan = time.Millisecond
 	defer func() {
 		sacloud.DefaultStatePollingInterval = defaultInterval
-		BootRetrySpan = DefaultBootRetrySpan
-		ShutdownRetrySpan = DefaultShutdownRetrySpan
+		BootRetrySpan = 0
+		ShutdownRetrySpan = 0
 	}()
 
 	ctx := context.Background()
@@ -120,7 +120,6 @@ func (d *dummyPowerHandler) SetInstanceStatus(v types.EServerInstanceStatus) {
 }
 
 func TestPower_powerRequestWithRetry(t *testing.T) {
-	// TODO 後でdefaultsに切り出す
 	InitialRequestRetrySpan = 1 * time.Millisecond
 	InitialRequestTimeout = 100 * time.Millisecond
 
