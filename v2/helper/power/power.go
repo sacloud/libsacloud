@@ -17,6 +17,7 @@ package power
 import (
 	"context"
 	"errors"
+	"fmt"
 	"net/http"
 	"time"
 
@@ -30,14 +31,25 @@ const (
 	DefaultBootRetrySpan = 20 * time.Second
 	// DefaultShutdownRetrySpan ShutdownRetrySpanのデフォルト値
 	DefaultShutdownRetrySpan = 20 * time.Second
+	// DefaultInitialRequestTimeout InitialRequestTimeoutのデフォルト値
+	DefaultInitialRequestTimeout = 30 * time.Second
+	// DefaultInitialRequestRetrySpan InitialRequestRetrySpanのデフォルト値
+	DefaultInitialRequestRetrySpan = 20 * time.Second
 )
 
+// TODO defaultsへの切り出し
 var (
 	// BootRetrySpan 起動APIをコールしてからリトライするまでの待機時間
 	BootRetrySpan = DefaultBootRetrySpan
 
 	// ShutdownRetrySpan シャットダウンAPIをコールしてからリトライするまでの待機時間
 	ShutdownRetrySpan = DefaultShutdownRetrySpan
+
+	// InitialRequestTimeout 初回のBoot/Shutdownリクエストが受け入れられるまでのタイムアウト時間
+	InitialRequestTimeout = DefaultInitialRequestTimeout
+
+	// InitialRequestRetrySpan 初回のBoot/Shutdownリクエストをリトライする場合のリトライ間隔
+	InitialRequestRetrySpan = DefaultInitialRequestRetrySpan
 )
 
 /************************************************
@@ -191,7 +203,8 @@ type handler interface {
 }
 
 func boot(ctx context.Context, h handler) error {
-	if err := h.boot(); err != nil {
+	// 初回リクエスト、409+still_creatingの場合は一定期間リトライする
+	if err := powerRequestWithRetry(ctx, h.boot); err != nil {
 		return err
 	}
 
@@ -220,6 +233,7 @@ func boot(ctx context.Context, h handler) error {
 			if state != nil && state.(accessor.InstanceStatus).GetInstanceStatus().IsDown() {
 				if err := h.boot(); err != nil {
 					if err, ok := err.(sacloud.APIError); ok {
+						// 初回リクエスト以降で409を受け取った場合はAPI側で受け入れ済とみなしこれ以上リトライしない
 						if err.ResponseCode() == http.StatusConflict {
 							inProcess = true
 							continue
@@ -235,7 +249,8 @@ func boot(ctx context.Context, h handler) error {
 }
 
 func shutdown(ctx context.Context, h handler, force bool) error {
-	if err := h.shutdown(force); err != nil {
+	// 初回リクエスト、409+still_creatingの場合は一定期間リトライする
+	if err := powerRequestWithRetry(ctx, func() error { return h.shutdown(force) }); err != nil {
 		return err
 	}
 
@@ -262,6 +277,7 @@ func shutdown(ctx context.Context, h handler, force bool) error {
 			if state != nil && state.(accessor.InstanceStatus).GetInstanceStatus().IsUp() {
 				if err := h.shutdown(force); err != nil {
 					if err, ok := err.(sacloud.APIError); ok {
+						// 初回リクエスト以降で409を受け取った場合はAPI側で受け入れ済とみなしこれ以上リトライしない
 						if err.ResponseCode() == http.StatusConflict {
 							inProcess = true
 							continue
@@ -272,6 +288,34 @@ func shutdown(ctx context.Context, h handler, force bool) error {
 			}
 		case err := <-errCh:
 			return err
+		}
+	}
+}
+
+func powerRequestWithRetry(ctx context.Context, fn func() error) error {
+	ctx, cancel := context.WithTimeout(ctx, InitialRequestTimeout)
+	defer cancel()
+
+	retryTimer := time.NewTicker(InitialRequestRetrySpan)
+	defer retryTimer.Stop()
+
+	for {
+		select {
+		case <-ctx.Done():
+			err := ctx.Err()
+			if err != nil {
+				return fmt.Errorf("powerRequestWithRetry: timed out: %s", err)
+			}
+			return nil
+		case <-retryTimer.C:
+			err := fn()
+			if err != nil {
+				if sacloud.IsStillCreatingError(err) {
+					continue
+				}
+				return err
+			}
+			return nil
 		}
 	}
 }
