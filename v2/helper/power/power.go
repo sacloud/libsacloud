@@ -19,6 +19,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"sync"
 	"time"
 
 	"github.com/sacloud/libsacloud/v2/helper/defaults"
@@ -189,7 +190,12 @@ type handler interface {
 	read() (interface{}, error)
 }
 
+var mu sync.Mutex
+
 func initDefaults() {
+	mu.Lock()
+	defer mu.Unlock()
+
 	if BootRetrySpan == 0 {
 		BootRetrySpan = defaults.DefaultPowerHelperBootRetrySpan
 	}

@@ -165,5 +165,5 @@ func SetupFakeDefaults() {
 	defaults.DefaultPowerHelperBootRetrySpan = defaultInterval
 	defaults.DefaultPowerHelperShutdownRetrySpan = defaultInterval
 	defaults.DefaultPowerHelperInitialRequestRetrySpan = defaultInterval
-	defaults.DefaultPowerHelperInitialRequestTimeout = defaultInterval * 10
+	defaults.DefaultPowerHelperInitialRequestTimeout = defaultInterval * 100
 }
