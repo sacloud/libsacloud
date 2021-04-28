@@ -21,6 +21,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/sacloud/libsacloud/v2/helper/api"
 	"github.com/sacloud/libsacloud/v2/helper/builder"
 	"github.com/sacloud/libsacloud/v2/helper/builder/disk"
 	"github.com/sacloud/libsacloud/v2/helper/power"
@@ -28,10 +29,15 @@ import (
 	"github.com/sacloud/libsacloud/v2/sacloud/ostype"
 	"github.com/sacloud/libsacloud/v2/sacloud/testutil"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
-	"golang.org/x/crypto/ssh"
-
 	"github.com/stretchr/testify/require"
+	"golang.org/x/crypto/ssh"
 )
+
+func init() {
+	if !testutil.IsAccTest() {
+		api.SetupFakeDefaults()
+	}
+}
 
 func TestBuilder_setDefaults(t *testing.T) {
 	in := &Builder{}

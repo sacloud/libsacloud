@@ -36,8 +36,8 @@ func TestPowerHandler(t *testing.T) {
 	ShutdownRetrySpan = time.Millisecond
 	defer func() {
 		sacloud.DefaultStatePollingInterval = defaultInterval
-		BootRetrySpan = DefaultBootRetrySpan
-		ShutdownRetrySpan = DefaultShutdownRetrySpan
+		BootRetrySpan = 0
+		ShutdownRetrySpan = 0
 	}()
 
 	ctx := context.Background()
@@ -117,4 +117,63 @@ func (d *dummyPowerHandler) GetInstanceStatus() types.EServerInstanceStatus {
 // SetInstanceStatus .
 func (d *dummyPowerHandler) SetInstanceStatus(v types.EServerInstanceStatus) {
 	d.instanceStatus = v
+}
+
+func TestPower_powerRequestWithRetry(t *testing.T) {
+	InitialRequestRetrySpan = 1 * time.Millisecond
+	InitialRequestTimeout = 100 * time.Millisecond
+
+	// 最初のシャットダウンが受け入れられる(エラーにならない)まで409-still_creating時にリトライする
+	// エラーなしの場合は即時return nilする
+	t.Run("retry when received 409 and still_creating response", func(t *testing.T) {
+		retried := 0
+		maxRetry := 3
+		err := powerRequestWithRetry(context.Background(), func() error {
+			if retried < maxRetry {
+				retried++
+				return sacloud.NewAPIError("GET", nil, "", http.StatusConflict, &sacloud.APIErrorResponse{
+					IsFatal:      true,
+					Serial:       "xxx",
+					Status:       "409 Conflict",
+					ErrorCode:    "still_creating",
+					ErrorMessage: "xxx",
+				})
+			}
+			return nil
+		})
+
+		if err != nil {
+			t.Fatalf("got unexpected error: %s", err)
+		}
+		if retried != maxRetry {
+			t.Fatalf("powerRequest was not retried: expected: %d, actual: %d", maxRetry, retried)
+		}
+	})
+	// 409時のリトライにはタイムアウトを設定する
+	t.Run("retry when received 409 and still_creating should be timed out", func(t *testing.T) {
+		err := powerRequestWithRetry(context.Background(), func() error {
+			return sacloud.NewAPIError("GET", nil, "", http.StatusConflict, &sacloud.APIErrorResponse{
+				IsFatal:      true,
+				Serial:       "xxx",
+				Status:       "409 Conflict",
+				ErrorCode:    "still_creating",
+				ErrorMessage: "xxx",
+			})
+		})
+
+		require.EqualError(t, err, "powerRequestWithRetry: timed out: context deadline exceeded")
+	})
+	// その他のエラーは即時returnする
+	t.Run("force return error when received unexpected error", func(t *testing.T) {
+		expected := sacloud.NewAPIError("GET", nil, "", http.StatusNotFound, &sacloud.APIErrorResponse{
+			IsFatal:      true,
+			Serial:       "xxx",
+			Status:       "404 NotFound",
+			ErrorCode:    "not_found",
+			ErrorMessage: "xxx",
+		})
+		err := powerRequestWithRetry(context.Background(), func() error { return expected })
+
+		require.EqualValues(t, expected, err)
+	})
 }
