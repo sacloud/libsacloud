@@ -1403,6 +1403,58 @@ func (f *fieldsDef) ProxyLBRules() *dsl.FieldDesc {
 				{
 					Name: "ServerGroup",
 					Type: meta.TypeString,
+					Tags: &dsl.FieldTags{
+						MapConv: ",omitempty",
+						JSON:    ",omitempty",
+					},
+				},
+				{
+					Name: "Action",
+					Type: meta.Static(types.EProxyLBRuleAction("")),
+					Tags: &dsl.FieldTags{
+						MapConv: ",omitempty",
+						JSON:    ",omitempty",
+					},
+				},
+				{
+					Name: "RedirectLocation",
+					Type: meta.TypeString,
+					Tags: &dsl.FieldTags{
+						MapConv: ",omitempty",
+						JSON:    ",omitempty",
+					},
+				},
+				{
+					Name: "RedirectStatusCode",
+					Type: meta.Static(types.EProxyLBRedirectStatusCode(0)),
+					Tags: &dsl.FieldTags{
+						MapConv: ",omitempty",
+						JSON:    ",omitempty",
+					},
+				},
+				{
+					Name: "FixedStatusCode",
+					Type: meta.Static(types.EProxyLBFixedStatusCode(0)),
+					Tags: &dsl.FieldTags{
+						MapConv: ",omitempty",
+						JSON:    ",omitempty",
+					},
+				},
+				{
+					Name: "FixedContentType",
+					Type: meta.Static(types.EProxyLBFixedContentType("")),
+					Tags: &dsl.FieldTags{
+						MapConv: ",omitempty",
+						JSON:    ",omitempty",
+					},
+				},
+				{
+					Name: "FixedMessageBody",
+					Type: meta.TypeString,
+					Tags: &dsl.FieldTags{
+						MapConv: ",omitempty",
+						JSON:    ",omitempty",
+					},
 				},
 			},
 		},
@@ -1429,6 +1481,10 @@ func (f *fieldsDef) ProxyLBLetsEncrypt() *dsl.FieldDesc {
 				{
 					Name: "SubjectAltNames",
 					Type: meta.TypeStringSlice,
+					Tags: &dsl.FieldTags{
+						MapConv: ",omitempty",
+						JSON:    ",omitempty",
+					},
 				},
 			},
 		},

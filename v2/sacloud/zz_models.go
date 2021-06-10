@@ -19252,9 +19252,15 @@ func (o *ProxyLBServer) SetEnabled(v bool) {
 
 // ProxyLBRule represents API parameter/response structure
 type ProxyLBRule struct {
-	Host        string
-	Path        string
-	ServerGroup string
+	Host               string
+	Path               string
+	ServerGroup        string                           `json:",omitempty" mapconv:",omitempty"`
+	Action             types.EProxyLBRuleAction         `json:",omitempty" mapconv:",omitempty"`
+	RedirectLocation   string                           `json:",omitempty" mapconv:",omitempty"`
+	RedirectStatusCode types.EProxyLBRedirectStatusCode `json:",omitempty" mapconv:",omitempty"`
+	FixedStatusCode    types.EProxyLBFixedStatusCode    `json:",omitempty" mapconv:",omitempty"`
+	FixedContentType   types.EProxyLBFixedContentType   `json:",omitempty" mapconv:",omitempty"`
+	FixedMessageBody   string                           `json:",omitempty" mapconv:",omitempty"`
 }
 
 // Validate validates by field tags
@@ -19265,13 +19271,25 @@ func (o *ProxyLBRule) Validate() error {
 // setDefaults implements sacloud.argumentDefaulter
 func (o *ProxyLBRule) setDefaults() interface{} {
 	return &struct {
-		Host        string
-		Path        string
-		ServerGroup string
+		Host               string
+		Path               string
+		ServerGroup        string                           `json:",omitempty" mapconv:",omitempty"`
+		Action             types.EProxyLBRuleAction         `json:",omitempty" mapconv:",omitempty"`
+		RedirectLocation   string                           `json:",omitempty" mapconv:",omitempty"`
+		RedirectStatusCode types.EProxyLBRedirectStatusCode `json:",omitempty" mapconv:",omitempty"`
+		FixedStatusCode    types.EProxyLBFixedStatusCode    `json:",omitempty" mapconv:",omitempty"`
+		FixedContentType   types.EProxyLBFixedContentType   `json:",omitempty" mapconv:",omitempty"`
+		FixedMessageBody   string                           `json:",omitempty" mapconv:",omitempty"`
 	}{
-		Host:        o.GetHost(),
-		Path:        o.GetPath(),
-		ServerGroup: o.GetServerGroup(),
+		Host:               o.GetHost(),
+		Path:               o.GetPath(),
+		ServerGroup:        o.GetServerGroup(),
+		Action:             o.GetAction(),
+		RedirectLocation:   o.GetRedirectLocation(),
+		RedirectStatusCode: o.GetRedirectStatusCode(),
+		FixedStatusCode:    o.GetFixedStatusCode(),
+		FixedContentType:   o.GetFixedContentType(),
+		FixedMessageBody:   o.GetFixedMessageBody(),
 	}
 }
 
@@ -19305,6 +19323,66 @@ func (o *ProxyLBRule) SetServerGroup(v string) {
 	o.ServerGroup = v
 }
 
+// GetAction returns value of Action
+func (o *ProxyLBRule) GetAction() types.EProxyLBRuleAction {
+	return o.Action
+}
+
+// SetAction sets value to Action
+func (o *ProxyLBRule) SetAction(v types.EProxyLBRuleAction) {
+	o.Action = v
+}
+
+// GetRedirectLocation returns value of RedirectLocation
+func (o *ProxyLBRule) GetRedirectLocation() string {
+	return o.RedirectLocation
+}
+
+// SetRedirectLocation sets value to RedirectLocation
+func (o *ProxyLBRule) SetRedirectLocation(v string) {
+	o.RedirectLocation = v
+}
+
+// GetRedirectStatusCode returns value of RedirectStatusCode
+func (o *ProxyLBRule) GetRedirectStatusCode() types.EProxyLBRedirectStatusCode {
+	return o.RedirectStatusCode
+}
+
+// SetRedirectStatusCode sets value to RedirectStatusCode
+func (o *ProxyLBRule) SetRedirectStatusCode(v types.EProxyLBRedirectStatusCode) {
+	o.RedirectStatusCode = v
+}
+
+// GetFixedStatusCode returns value of FixedStatusCode
+func (o *ProxyLBRule) GetFixedStatusCode() types.EProxyLBFixedStatusCode {
+	return o.FixedStatusCode
+}
+
+// SetFixedStatusCode sets value to FixedStatusCode
+func (o *ProxyLBRule) SetFixedStatusCode(v types.EProxyLBFixedStatusCode) {
+	o.FixedStatusCode = v
+}
+
+// GetFixedContentType returns value of FixedContentType
+func (o *ProxyLBRule) GetFixedContentType() types.EProxyLBFixedContentType {
+	return o.FixedContentType
+}
+
+// SetFixedContentType sets value to FixedContentType
+func (o *ProxyLBRule) SetFixedContentType(v types.EProxyLBFixedContentType) {
+	o.FixedContentType = v
+}
+
+// GetFixedMessageBody returns value of FixedMessageBody
+func (o *ProxyLBRule) GetFixedMessageBody() string {
+	return o.FixedMessageBody
+}
+
+// SetFixedMessageBody sets value to FixedMessageBody
+func (o *ProxyLBRule) SetFixedMessageBody(v string) {
+	o.FixedMessageBody = v
+}
+
 /*************************************************
 * ProxyLBACMESetting
 *************************************************/
@@ -19313,7 +19391,7 @@ func (o *ProxyLBRule) SetServerGroup(v string) {
 type ProxyLBACMESetting struct {
 	CommonName      string
 	Enabled         bool
-	SubjectAltNames []string
+	SubjectAltNames []string `json:",omitempty" mapconv:",omitempty"`
 }
 
 // Validate validates by field tags
@@ -19326,7 +19404,7 @@ func (o *ProxyLBACMESetting) setDefaults() interface{} {
 	return &struct {
 		CommonName      string
 		Enabled         bool
-		SubjectAltNames []string
+		SubjectAltNames []string `json:",omitempty" mapconv:",omitempty"`
 	}{
 		CommonName:      o.GetCommonName(),
 		Enabled:         o.GetEnabled(),
