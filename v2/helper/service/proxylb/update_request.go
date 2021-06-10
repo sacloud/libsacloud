@@ -28,7 +28,7 @@ type UpdateRequest struct {
 	Description   *string                       `request:",omitempty" validate:"omitempty,min=1,max=512"`
 	Tags          *types.Tags                   `request:",omitempty"`
 	IconID        *types.ID                     `request:",omitempty"`
-	Plan          *types.EProxyLBPlan           `request:",omitempty" validate:"omitempty,oneof=100 500 1000 5000 10000 50000 100000"`
+	Plan          *types.EProxyLBPlan           `request:",omitempty" validate:"omitempty,oneof=100 500 1000 5000 10000 50000 100000 400000"`
 	HealthCheck   *sacloud.ProxyLBHealthCheck   `request:",omitempty"`
 	SorryServer   *sacloud.ProxyLBSorryServer   `request:",omitempty"`
 	BindPorts     *[]*sacloud.ProxyLBBindPort   `request:",omitempty"`
