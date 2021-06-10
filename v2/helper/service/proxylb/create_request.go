@@ -26,7 +26,7 @@ type CreateRequest struct {
 	Description    string `validate:"min=0,max=512"`
 	Tags           types.Tags
 	IconID         types.ID
-	Plan           types.EProxyLBPlan `validate:"required,oneof=100 500 1000 5000 10000 50000 100000"`
+	Plan           types.EProxyLBPlan `validate:"required,oneof=100 500 1000 5000 10000 50000 100000 400000"`
 	HealthCheck    *sacloud.ProxyLBHealthCheck
 	SorryServer    *sacloud.ProxyLBSorryServer
 	BindPorts      []*sacloud.ProxyLBBindPort
