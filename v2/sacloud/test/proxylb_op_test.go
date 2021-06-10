@@ -170,11 +170,28 @@ func initProxyLBVariables() {
 				Host:        "www.usacloud.jp",
 				Path:        "/path1",
 				ServerGroup: "group1",
+				Action:      types.ProxyLBRuleActions.Forward,
 			},
 			{
 				Host:        "www.usacloud.jp",
 				Path:        "/path2",
 				ServerGroup: "group2",
+				Action:      types.ProxyLBRuleActions.Forward,
+			},
+			{
+				Host:             "www.usacloud.jp",
+				Path:             "/fixed-response",
+				Action:           types.ProxyLBRuleActions.Fixed,
+				FixedStatusCode:  types.ProxyLBFixedStatusCodes.OK,
+				FixedContentType: types.ProxyLBFixedContentTypes.Plain,
+				FixedMessageBody: "foobar",
+			},
+			{
+				Host:               "www.usacloud.jp",
+				Path:               "/redirect",
+				Action:             types.ProxyLBRuleActions.Redirect,
+				RedirectLocation:   "https://redirect.usacloud.jp",
+				RedirectStatusCode: types.ProxyLBRedirectStatusCodes.Found,
 			},
 		},
 		LetsEncrypt: &sacloud.ProxyLBACMESetting{
@@ -257,11 +274,28 @@ func initProxyLBVariables() {
 				Host:        "www-upd.usacloud.jp",
 				Path:        "/path1-upd",
 				ServerGroup: "group1upd",
+				Action:      types.ProxyLBRuleActions.Forward,
 			},
 			{
 				Host:        "www-upd.usacloud.jp",
 				Path:        "/path2-upd",
 				ServerGroup: "group2upd",
+				Action:      types.ProxyLBRuleActions.Forward,
+			},
+			{
+				Host:             "www-upd.usacloud.jp",
+				Path:             "/fixed-response-upd",
+				Action:           types.ProxyLBRuleActions.Fixed,
+				FixedStatusCode:  types.ProxyLBFixedStatusCodes.Forbidden,
+				FixedContentType: types.ProxyLBFixedContentTypes.HTML,
+				FixedMessageBody: "foobar-upd",
+			},
+			{
+				Host:               "www-upd.usacloud.jp",
+				Path:               "/redirect-upd",
+				Action:             types.ProxyLBRuleActions.Redirect,
+				RedirectLocation:   "https://redirect.usacloud.jp/upd",
+				RedirectStatusCode: types.ProxyLBRedirectStatusCodes.MovedPermanently,
 			},
 		},
 		// LetsEncryptのテストはA or CNAMEレコードの登録が必要なため別ケースで行う
@@ -295,6 +329,7 @@ func initProxyLBVariables() {
 		Timeout: &sacloud.ProxyLBTimeout{
 			InactiveSec: 10,
 		},
+		Gzip:           updateProxyLBParam.Gzip,
 		UseVIPFailover: createProxyLBParam.UseVIPFailover,
 		Region:         createProxyLBParam.Region,
 	}
@@ -315,6 +350,7 @@ func initProxyLBVariables() {
 		Timeout: &sacloud.ProxyLBTimeout{
 			InactiveSec: 10,
 		},
+		Gzip:           updateProxyLBParam.Gzip,
 		UseVIPFailover: createProxyLBParam.UseVIPFailover,
 		Region:         createProxyLBParam.Region,
 	}
@@ -357,11 +393,13 @@ func initProxyLBVariables() {
 				Host:        "www-upd2.usacloud.jp",
 				Path:        "/path1-upd2",
 				ServerGroup: "group1upd2",
+				Action:      types.ProxyLBRuleActions.Forward,
 			},
 			{
 				Host:        "www-upd2.usacloud.jp",
 				Path:        "/path2-upd2",
 				ServerGroup: "group2upd2",
+				Action:      types.ProxyLBRuleActions.Forward,
 			},
 		},
 		// LetsEncryptのテストはA or CNAMEレコードの登録が必要なため別ケースで行う
@@ -374,6 +412,9 @@ func initProxyLBVariables() {
 		},
 		Timeout: &sacloud.ProxyLBTimeout{
 			InactiveSec: 10,
+		},
+		Gzip: &sacloud.ProxyLBGzip{
+			Enabled: false,
 		},
 	}
 	updateProxyLBSettingsExpected = &sacloud.ProxyLB{
@@ -393,6 +434,7 @@ func initProxyLBVariables() {
 		Timeout: &sacloud.ProxyLBTimeout{
 			InactiveSec: 10,
 		},
+		Gzip:           updateProxyLBSettingsParam.Gzip,
 		UseVIPFailover: createProxyLBParam.UseVIPFailover,
 		Region:         createProxyLBParam.Region,
 	}
@@ -412,6 +454,12 @@ func initProxyLBVariables() {
 		Timeout: &sacloud.ProxyLBTimeout{
 			InactiveSec: 10,
 		},
+		Gzip: &sacloud.ProxyLBGzip{
+			Enabled: false,
+		},
+		BindPorts: []*sacloud.ProxyLBBindPort{},
+		Rules:     []*sacloud.ProxyLBRule{},
+		Servers:   []*sacloud.ProxyLBServer{},
 	}
 	updateProxyLBToMinExpected = &sacloud.ProxyLB{
 		Name:         updateProxyLBToMinParam.Name,
@@ -428,6 +476,10 @@ func initProxyLBVariables() {
 		Timeout: &sacloud.ProxyLBTimeout{
 			InactiveSec: 10,
 		},
+		BindPorts:      updateProxyLBToMinParam.BindPorts,
+		Rules:          updateProxyLBToMinParam.Rules,
+		Servers:        updateProxyLBToMinParam.Servers,
+		Gzip:           updateProxyLBToMinParam.Gzip,
 		UseVIPFailover: createProxyLBParam.UseVIPFailover,
 		Region:         createProxyLBParam.Region,
 	}
