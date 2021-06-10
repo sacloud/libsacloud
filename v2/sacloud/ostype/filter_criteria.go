@@ -42,9 +42,6 @@ var ArchiveCriteria = map[ArchiveOSType]search.Filter{
 	Ubuntu1804: {
 		search.Key(keys.Tags): search.TagsAndEqual("ubuntu-18.04-latest"),
 	},
-	Ubuntu1604: {
-		search.Key(keys.Tags): search.TagsAndEqual("ubuntu-16.04-latest"),
-	},
 	Debian: {
 		search.Key(keys.Tags): search.TagsAndEqual("current-stable", "distro-debian"),
 	},

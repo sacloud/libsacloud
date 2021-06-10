@@ -39,8 +39,6 @@ const (
 	Ubuntu2004
 	// Ubuntu1804 OS種別:Ubuntu(Bionic)
 	Ubuntu1804
-	// Ubuntu1604 OS種別:Ubuntu(Xenial)
-	Ubuntu1604
 
 	// Debian OS種別:Debian
 	Debian
@@ -120,7 +118,6 @@ var ArchiveOSTypes = []ArchiveOSType{
 	Ubuntu,
 	Ubuntu2004,
 	Ubuntu1804,
-	Ubuntu1604,
 	Debian,
 	Debian10,
 	Debian9,
@@ -189,7 +186,7 @@ func (o ArchiveOSType) IsWindows() bool {
 func (o ArchiveOSType) IsSupportDiskEdit() bool {
 	switch o {
 	case CentOS, CentOS8Stream, CentOS8, CentOS7,
-		Ubuntu, Ubuntu2004, Ubuntu1804, Ubuntu1604,
+		Ubuntu, Ubuntu2004, Ubuntu1804,
 		Debian, Debian10, Debian9,
 		CoreOS, RancherOS, K3OS, Kusanagi, FreeBSD:
 		return true
@@ -215,8 +212,6 @@ func StrToOSType(osType string) ArchiveOSType {
 		return Ubuntu2004
 	case "ubuntu1804":
 		return Ubuntu1804
-	case "ubuntu1604":
-		return Ubuntu1604
 	case "debian":
 		return Debian
 	case "debian10":
