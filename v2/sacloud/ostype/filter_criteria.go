@@ -33,6 +33,12 @@ var ArchiveCriteria = map[ArchiveOSType]search.Filter{
 	CentOS7: {
 		search.Key(keys.Tags): search.TagsAndEqual("centos-7-latest"),
 	},
+	AlmaLinux: {
+		search.Key(keys.Tags): search.TagsAndEqual("current-stable", "distro-alma"),
+	},
+	RockyLinux: {
+		search.Key(keys.Tags): search.TagsAndEqual("current-stable", "distro-rocky"),
+	},
 	Ubuntu: {
 		search.Key(keys.Tags): search.TagsAndEqual("current-stable", "distro-ubuntu"),
 	},
@@ -47,9 +53,6 @@ var ArchiveCriteria = map[ArchiveOSType]search.Filter{
 	},
 	Debian10: {
 		search.Key(keys.Tags): search.TagsAndEqual("debian-10-latest"),
-	},
-	Debian9: {
-		search.Key(keys.Tags): search.TagsAndEqual("debian-9-latest"),
 	},
 	CoreOS: {
 		search.Key(keys.Tags): search.TagsAndEqual("current-stable", "distro-coreos"),
