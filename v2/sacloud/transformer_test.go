@@ -18,6 +18,8 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/sacloud/libsacloud/v2/sacloud/naked"
+
 	"github.com/stretchr/testify/require"
 
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
@@ -347,6 +349,82 @@ func TestServerOp_transformChangePlanArgs(t *testing.T) {
 			if !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("transformChangePlanArgs() got = %v, want %v", got, tt.want)
 			}
+		})
+	}
+}
+
+func TestVPCRouterOp_transformCreateArgs(t *testing.T) {
+	type args struct {
+		param *VPCRouterCreateRequest
+	}
+	tests := []struct {
+		name    string
+		args    args
+		want    *vPCRouterCreateRequestEnvelope
+		wantErr bool
+	}{
+		{
+			name: "transform WireGuard Peers",
+			args: args{
+				param: &VPCRouterCreateRequest{
+					Settings: &VPCRouterSetting{
+						WireGuard: &VPCRouterWireGuard{
+							IPAddress: "192.168.1.1",
+							Peers: []*VPCRouterWireGuardPeer{
+								{
+									Name:      "name",
+									IPAddress: "192.168.11.1",
+									PublicKey: "xxx",
+								},
+							},
+						},
+						WireGuardEnabled: true,
+					},
+				},
+			},
+			want: &vPCRouterCreateRequestEnvelope{
+				Appliance: &naked.VPCRouter{
+					Class: "vpcrouter",
+					Plan: &naked.AppliancePlan{
+						ID: 0,
+					},
+					Settings: &naked.VPCRouterSettings{
+						Router: &naked.VPCRouterSetting{
+							WireGuard: &naked.VPCRouterWireGuard{
+								Config: &naked.VPCRouterWireGuardConfig{
+									IPAddress: "192.168.1.1",
+									Peers: []*naked.VPCRouterWireGuardPeer{
+										{
+											Name:      "name",
+											IPAddress: "192.168.11.1",
+											PublicKey: "xxx",
+										},
+									},
+								},
+								Enabled: true,
+							},
+						},
+					},
+					Remark: &naked.ApplianceRemark{
+						Router: &naked.ApplianceRemarkRouter{
+							VPCRouterVersion: 2,
+						},
+					},
+					Icon: &naked.Icon{},
+				},
+			},
+			wantErr: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			o := &VPCRouterOp{}
+			got, err := o.transformCreateArgs(tt.args.param)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("transformCreateArgs() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			require.EqualValues(t, tt.want, got)
 		})
 	}
 }
