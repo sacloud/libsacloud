@@ -859,6 +859,20 @@ func (m *modelsDef) vpcRouterSetting() *dsl.Model {
 				},
 			},
 			{
+				Name: "WireGuard",
+				Type: m.vpcRouterWireGuard(),
+				Tags: &dsl.FieldTags{
+					MapConv: "Router.WireGuard.Config,omitempty,recursive",
+				},
+			},
+			{
+				Name: "WireGuardEnabled",
+				Type: meta.TypeStringFlag,
+				Tags: &dsl.FieldTags{
+					MapConv: "Router.WireGuard.Enabled,omitempty",
+				},
+			},
+			{
 				Name: "RemoteAccessUsers",
 				Type: m.vpcRouterRemoteAccessUser(),
 				Tags: &dsl.FieldTags{
@@ -1120,6 +1134,48 @@ func (m *modelsDef) vpcRouterL2TPIPsecServer() *dsl.Model {
 			},
 			{
 				Name: "PreSharedSecret",
+				Type: meta.TypeString,
+			},
+		},
+	}
+}
+
+func (m *modelsDef) vpcRouterWireGuard() *dsl.Model {
+	return &dsl.Model{
+		Name:      "VPCRouterWireGuard",
+		NakedType: meta.Static(naked.VPCRouterWireGuardConfig{}),
+		Fields: []*dsl.FieldDesc{
+			{
+				Name: "IPAddress",
+				Type: meta.TypeString,
+			},
+			{
+				Name: "Peer",
+				Tags: &dsl.FieldTags{
+					MapConv: "[]Peer,omitempty,recursive",
+				},
+				Type: m.vpcRouterWireGuardPeer(),
+			},
+		},
+	}
+}
+
+func (m *modelsDef) vpcRouterWireGuardPeer() *dsl.Model {
+	return &dsl.Model{
+		Name:      "VPCRouterWireGuardPeer",
+		NakedType: meta.Static(naked.VPCRouterWireGuardPeer{}),
+		IsArray:   true,
+		Fields: []*dsl.FieldDesc{
+			{
+				Name: "Name",
+				Type: meta.TypeString,
+			},
+			{
+				Name: "IPAddress",
+				Type: meta.TypeString,
+			},
+			{
+				Name: "PublicKey",
 				Type: meta.TypeString,
 			},
 		},

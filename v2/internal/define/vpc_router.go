@@ -245,6 +245,15 @@ var (
 			fields.Def("VPNLogs", meta.TypeStringSlice),
 			fields.Def("SessionCount", meta.TypeInt),
 			{
+				Name: "WireGuard",
+				Type: &dsl.Model{
+					Name: "WireGuardStatus",
+					Fields: []*dsl.FieldDesc{
+						fields.Def("PublicKey", meta.TypeString),
+					},
+				},
+			},
+			{
 				Name: "DHCPServerLeases",
 				Type: &dsl.Model{
 					Name:    "VPCRouterDHCPServerLease",
