@@ -338,7 +338,7 @@ func TestVPCRouterOp_WithRouterCRUD(t *testing.T) {
 						L2TPIPsecServerEnabled: true,
 						WireGuard: &sacloud.VPCRouterWireGuard{
 							IPAddress: "192.168.3.1/24",
-							Peer: []*sacloud.VPCRouterWireGuardPeer{
+							Peers: []*sacloud.VPCRouterWireGuardPeer{
 								{
 									Name:      "foobar",
 									IPAddress: "192.168.3.11",

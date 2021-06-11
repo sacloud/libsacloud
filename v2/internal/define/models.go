@@ -1150,9 +1150,9 @@ func (m *modelsDef) vpcRouterWireGuard() *dsl.Model {
 				Type: meta.TypeString,
 			},
 			{
-				Name: "Peer",
+				Name: "Peers",
 				Tags: &dsl.FieldTags{
-					MapConv: "[]Peer,omitempty,recursive",
+					MapConv: "[]Peers,omitempty,recursive",
 				},
 				Type: m.vpcRouterWireGuardPeer(),
 			},
