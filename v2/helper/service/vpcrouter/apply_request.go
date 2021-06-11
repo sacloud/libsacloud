@@ -59,6 +59,7 @@ type RouterSetting struct {
 	DHCPStaticMapping         []*sacloud.VPCRouterDHCPStaticMapping
 	PPTPServer                *sacloud.VPCRouterPPTPServer
 	L2TPIPsecServer           *sacloud.VPCRouterL2TPIPsecServer
+	WireGuard                 *sacloud.VPCRouterWireGuard
 	RemoteAccessUsers         []*sacloud.VPCRouterRemoteAccessUser
 	SiteToSiteIPsecVPN        []*sacloud.VPCRouterSiteToSiteIPsecVPN
 	StaticRoute               []*sacloud.VPCRouterStaticRoute
@@ -99,6 +100,7 @@ func (req *ApplyRequest) routerSetting() *vpcRouterBuilder.RouterSetting {
 		DHCPStaticMapping:         req.RouterSetting.DHCPStaticMapping,
 		PPTPServer:                req.RouterSetting.PPTPServer,
 		L2TPIPsecServer:           req.RouterSetting.L2TPIPsecServer,
+		WireGuard:                 req.RouterSetting.WireGuard,
 		RemoteAccessUsers:         req.RouterSetting.RemoteAccessUsers,
 		SiteToSiteIPsecVPN:        req.RouterSetting.SiteToSiteIPsecVPN,
 		StaticRoute:               req.RouterSetting.StaticRoute,

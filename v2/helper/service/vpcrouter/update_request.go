@@ -64,6 +64,7 @@ type RouterSettingUpdate struct {
 	DHCPStaticMapping         *[]*sacloud.VPCRouterDHCPStaticMapping  `request:",omitempty,recursive"`
 	PPTPServer                *sacloud.VPCRouterPPTPServer            `request:",omitempty,recursive"`
 	L2TPIPsecServer           *sacloud.VPCRouterL2TPIPsecServer       `request:",omitempty,recursive"`
+	WireGuard                 *sacloud.VPCRouterWireGuard             `request:",omitempty,recursive"`
 	RemoteAccessUsers         *[]*sacloud.VPCRouterRemoteAccessUser   `request:",omitempty,recursive"`
 	SiteToSiteIPsecVPN        *[]*sacloud.VPCRouterSiteToSiteIPsecVPN `request:",omitempty,recursive"`
 	StaticRoute               *[]*sacloud.VPCRouterStaticRoute        `request:",omitempty,recursive"`
