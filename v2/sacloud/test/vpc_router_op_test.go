@@ -171,6 +171,8 @@ func testVPCRouterDelete(ctx *testutil.CRUDTestContext, caller sacloud.APICaller
 	return client.Delete(ctx, testZone, ctx.ID)
 }
 
+var fakeWireGuardPublicKey = `fqxOlS2X0Jtg4P9zVf8D3BAUtJmrp+z2mjzUmgxxxxx=`
+
 func TestVPCRouterOp_WithRouterCRUD(t *testing.T) {
 	testutil.RunCRUD(t, &testutil.CRUDTestCase{
 		Parallel:           true,
@@ -334,6 +336,17 @@ func TestVPCRouterOp_WithRouterCRUD(t *testing.T) {
 							PreSharedSecret: "presharedsecret",
 						},
 						L2TPIPsecServerEnabled: true,
+						WireGuard: &sacloud.VPCRouterWireGuard{
+							IPAddress: "192.168.3.1/24",
+							Peer: []*sacloud.VPCRouterWireGuardPeer{
+								{
+									Name:      "foobar",
+									IPAddress: "192.168.3.11",
+									PublicKey: fakeWireGuardPublicKey,
+								},
+							},
+						},
+						WireGuardEnabled: true,
 						RemoteAccessUsers: []*sacloud.VPCRouterRemoteAccessUser{
 							{
 								UserName: "user1",
