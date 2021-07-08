@@ -203,6 +203,20 @@ type DNSAPI interface {
 }
 
 /*************************************************
+* EnhancedDBAPI
+*************************************************/
+
+// EnhancedDBAPI is interface for operate EnhancedDB resource
+type EnhancedDBAPI interface {
+	Find(ctx context.Context, conditions *FindCondition) (*EnhancedDBFindResult, error)
+	Create(ctx context.Context, param *EnhancedDBCreateRequest) (*EnhancedDB, error)
+	Read(ctx context.Context, id types.ID) (*EnhancedDB, error)
+	Update(ctx context.Context, id types.ID, param *EnhancedDBUpdateRequest) (*EnhancedDB, error)
+	Delete(ctx context.Context, id types.ID) error
+	SetPassword(ctx context.Context, id types.ID, param *EnhancedDBSetPasswordRequest) error
+}
+
+/*************************************************
 * ESMEAPI
 *************************************************/
 

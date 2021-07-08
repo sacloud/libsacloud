@@ -65,6 +65,9 @@ func addClientFactoryHooks(cnf *config) {
 	sacloud.AddClientFacotyHookFunc("DNS", func(in interface{}) interface{} {
 		return newDNSTracer(in.(sacloud.DNSAPI), cnf)
 	})
+	sacloud.AddClientFacotyHookFunc("EnhancedDB", func(in interface{}) interface{} {
+		return newEnhancedDBTracer(in.(sacloud.EnhancedDBAPI), cnf)
+	})
 	sacloud.AddClientFacotyHookFunc("ESME", func(in interface{}) interface{} {
 		return newESMETracer(in.(sacloud.ESMEAPI), cnf)
 	})
@@ -2549,6 +2552,174 @@ func (t *DNSTracer) Delete(ctx context.Context, id types.ID) error {
 	// for http trace
 	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.Delete(ctx, id)
+
+	if err != nil {
+		span.SetStatus(codes.Error, err.Error())
+	} else {
+		span.SetStatus(codes.Ok, "")
+
+	}
+	return err
+}
+
+/*************************************************
+* EnhancedDBTracer
+*************************************************/
+
+// EnhancedDBTracer is for trace EnhancedDBOp operations
+type EnhancedDBTracer struct {
+	Internal sacloud.EnhancedDBAPI
+	config   *config
+}
+
+// NewEnhancedDBTracer creates new EnhancedDBTracer instance
+func newEnhancedDBTracer(in sacloud.EnhancedDBAPI, cnf *config) sacloud.EnhancedDBAPI {
+	return &EnhancedDBTracer{
+		Internal: in,
+		config:   cnf,
+	}
+}
+
+// Find is API call with trace log
+func (t *EnhancedDBTracer) Find(ctx context.Context, conditions *sacloud.FindCondition) (*sacloud.EnhancedDBFindResult, error) {
+	var span trace.Span
+	options := append(t.config.SpanStartOptions, trace.WithAttributes(
+		label.Any("libsacloud.api.arguments.conditions", conditions),
+	))
+	ctx, span = t.config.Tracer.Start(ctx, "EnhancedDBAPI.Find", options...)
+	defer func() {
+		span.End()
+	}()
+
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
+	result, err := t.Internal.Find(ctx, conditions)
+
+	if err != nil {
+		span.SetStatus(codes.Error, err.Error())
+	} else {
+		span.SetStatus(codes.Ok, "")
+		span.SetAttributes(label.Any("libsacloud.api.results.result", result))
+
+	}
+	return result, err
+}
+
+// Create is API call with trace log
+func (t *EnhancedDBTracer) Create(ctx context.Context, param *sacloud.EnhancedDBCreateRequest) (*sacloud.EnhancedDB, error) {
+	var span trace.Span
+	options := append(t.config.SpanStartOptions, trace.WithAttributes(
+		label.Any("libsacloud.api.arguments.param", param),
+	))
+	ctx, span = t.config.Tracer.Start(ctx, "EnhancedDBAPI.Create", options...)
+	defer func() {
+		span.End()
+	}()
+
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
+	resultEnhancedDB, err := t.Internal.Create(ctx, param)
+
+	if err != nil {
+		span.SetStatus(codes.Error, err.Error())
+	} else {
+		span.SetStatus(codes.Ok, "")
+		span.SetAttributes(label.Any("libsacloud.api.results.resultEnhancedDB", resultEnhancedDB))
+
+	}
+	return resultEnhancedDB, err
+}
+
+// Read is API call with trace log
+func (t *EnhancedDBTracer) Read(ctx context.Context, id types.ID) (*sacloud.EnhancedDB, error) {
+	var span trace.Span
+	options := append(t.config.SpanStartOptions, trace.WithAttributes(
+		label.Any("libsacloud.api.arguments.id", id),
+	))
+	ctx, span = t.config.Tracer.Start(ctx, "EnhancedDBAPI.Read", options...)
+	defer func() {
+		span.End()
+	}()
+
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
+	resultEnhancedDB, err := t.Internal.Read(ctx, id)
+
+	if err != nil {
+		span.SetStatus(codes.Error, err.Error())
+	} else {
+		span.SetStatus(codes.Ok, "")
+		span.SetAttributes(label.Any("libsacloud.api.results.resultEnhancedDB", resultEnhancedDB))
+
+	}
+	return resultEnhancedDB, err
+}
+
+// Update is API call with trace log
+func (t *EnhancedDBTracer) Update(ctx context.Context, id types.ID, param *sacloud.EnhancedDBUpdateRequest) (*sacloud.EnhancedDB, error) {
+	var span trace.Span
+	options := append(t.config.SpanStartOptions, trace.WithAttributes(
+		label.Any("libsacloud.api.arguments.id", id),
+		label.Any("libsacloud.api.arguments.param", param),
+	))
+	ctx, span = t.config.Tracer.Start(ctx, "EnhancedDBAPI.Update", options...)
+	defer func() {
+		span.End()
+	}()
+
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
+	resultEnhancedDB, err := t.Internal.Update(ctx, id, param)
+
+	if err != nil {
+		span.SetStatus(codes.Error, err.Error())
+	} else {
+		span.SetStatus(codes.Ok, "")
+		span.SetAttributes(label.Any("libsacloud.api.results.resultEnhancedDB", resultEnhancedDB))
+
+	}
+	return resultEnhancedDB, err
+}
+
+// Delete is API call with trace log
+func (t *EnhancedDBTracer) Delete(ctx context.Context, id types.ID) error {
+	var span trace.Span
+	options := append(t.config.SpanStartOptions, trace.WithAttributes(
+		label.Any("libsacloud.api.arguments.id", id),
+	))
+	ctx, span = t.config.Tracer.Start(ctx, "EnhancedDBAPI.Delete", options...)
+	defer func() {
+		span.End()
+	}()
+
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
+	err := t.Internal.Delete(ctx, id)
+
+	if err != nil {
+		span.SetStatus(codes.Error, err.Error())
+	} else {
+		span.SetStatus(codes.Ok, "")
+
+	}
+	return err
+}
+
+// SetPassword is API call with trace log
+func (t *EnhancedDBTracer) SetPassword(ctx context.Context, id types.ID, param *sacloud.EnhancedDBSetPasswordRequest) error {
+	var span trace.Span
+	options := append(t.config.SpanStartOptions, trace.WithAttributes(
+		label.Any("libsacloud.api.arguments.id", id),
+		label.Any("libsacloud.api.arguments.param", param),
+	))
+	ctx, span = t.config.Tracer.Start(ctx, "EnhancedDBAPI.SetPassword", options...)
+	defer func() {
+		span.End()
+	}()
+
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
+	err := t.Internal.SetPassword(ctx, id, param)
 
 	if err != nil {
 		span.SetStatus(codes.Error, err.Error())

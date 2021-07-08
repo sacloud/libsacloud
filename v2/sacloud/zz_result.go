@@ -482,6 +482,36 @@ type dNSUpdateSettingsResult struct {
 	DNS *DNS `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
 }
 
+// EnhancedDBFindResult represents the Result of API
+type EnhancedDBFindResult struct {
+	Total int `json:",omitempty"` // Total count of target resources
+	From  int `json:",omitempty"` // Current page number
+	Count int `json:",omitempty"` // Count of current page
+
+	EnhancedDBs []*EnhancedDB `json:",omitempty" mapconv:"[]CommonServiceItems,omitempty,recursive"`
+}
+
+// enhancedDBCreateResult represents the Result of API
+type enhancedDBCreateResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	EnhancedDB *EnhancedDB `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
+}
+
+// enhancedDBReadResult represents the Result of API
+type enhancedDBReadResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	EnhancedDB *EnhancedDB `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
+}
+
+// enhancedDBUpdateResult represents the Result of API
+type enhancedDBUpdateResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	EnhancedDB *EnhancedDB `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
+}
+
 // ESMEFindResult represents the Result of API
 type ESMEFindResult struct {
 	Total int `json:",omitempty"` // Total count of target resources

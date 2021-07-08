@@ -266,6 +266,7 @@ var jsonResourceTypeMap = map[string]func() interface{}{
 	ResourceDisk:              func() interface{} { return &sacloud.Disk{} },
 	ResourceDiskPlan:          func() interface{} { return &sacloud.DiskPlan{} },
 	ResourceDNS:               func() interface{} { return &sacloud.DNS{} },
+	ResourceEnhancedDB:        func() interface{} { return &sacloud.EnhancedDB{} },
 	ResourceESME:              func() interface{} { return &sacloud.ESME{} },
 	ResourceGSLB:              func() interface{} { return &sacloud.GSLB{} },
 	ResourceIcon:              func() interface{} { return &sacloud.Icon{} },

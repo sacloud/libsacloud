@@ -41,6 +41,8 @@ const (
 	ResourceDiskPlan = "DiskPlan"
 	// ResourceDNS is resource key of fake store
 	ResourceDNS = "DNS"
+	// ResourceEnhancedDB is resource key of fake store
+	ResourceEnhancedDB = "EnhancedDB"
 	// ResourceESME is resource key of fake store
 	ResourceESME = "ESME"
 	// ResourceGSLB is resource key of fake store
