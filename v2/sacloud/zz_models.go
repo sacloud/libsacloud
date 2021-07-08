@@ -19084,6 +19084,7 @@ type ProxyLB struct {
 	LetsEncrypt      *ProxyLBACMESetting   `mapconv:"Settings.ProxyLB.LetsEncrypt,recursive"`
 	StickySession    *ProxyLBStickySession `mapconv:"Settings.ProxyLB.StickySession,recursive"`
 	Gzip             *ProxyLBGzip          `mapconv:"Settings.ProxyLB.Gzip,recursive"`
+	Syslog           *ProxyLBSyslog        `mapconv:"Settings.ProxyLB.Syslog,recursive"`
 	Timeout          *ProxyLBTimeout       `json:",omitempty" mapconv:"Settings.ProxyLB.Timeout,recursive,omitempty"`
 	SettingsHash     string                `json:",omitempty" mapconv:",omitempty"`
 	UseVIPFailover   bool                  `mapconv:"Status.UseVIPFailover"`
@@ -19118,6 +19119,7 @@ func (o *ProxyLB) setDefaults() interface{} {
 		LetsEncrypt      *ProxyLBACMESetting   `mapconv:"Settings.ProxyLB.LetsEncrypt,recursive"`
 		StickySession    *ProxyLBStickySession `mapconv:"Settings.ProxyLB.StickySession,recursive"`
 		Gzip             *ProxyLBGzip          `mapconv:"Settings.ProxyLB.Gzip,recursive"`
+		Syslog           *ProxyLBSyslog        `mapconv:"Settings.ProxyLB.Syslog,recursive"`
 		Timeout          *ProxyLBTimeout       `json:",omitempty" mapconv:"Settings.ProxyLB.Timeout,recursive,omitempty"`
 		SettingsHash     string                `json:",omitempty" mapconv:",omitempty"`
 		UseVIPFailover   bool                  `mapconv:"Status.UseVIPFailover"`
@@ -19143,6 +19145,7 @@ func (o *ProxyLB) setDefaults() interface{} {
 		LetsEncrypt:      o.GetLetsEncrypt(),
 		StickySession:    o.GetStickySession(),
 		Gzip:             o.GetGzip(),
+		Syslog:           o.GetSyslog(),
 		Timeout:          o.GetTimeout(),
 		SettingsHash:     o.GetSettingsHash(),
 		UseVIPFailover:   o.GetUseVIPFailover(),
@@ -19361,6 +19364,16 @@ func (o *ProxyLB) GetGzip() *ProxyLBGzip {
 // SetGzip sets value to Gzip
 func (o *ProxyLB) SetGzip(v *ProxyLBGzip) {
 	o.Gzip = v
+}
+
+// GetSyslog returns value of Syslog
+func (o *ProxyLB) GetSyslog() *ProxyLBSyslog {
+	return o.Syslog
+}
+
+// SetSyslog sets value to Syslog
+func (o *ProxyLB) SetSyslog(v *ProxyLBSyslog) {
+	o.Syslog = v
 }
 
 // GetTimeout returns value of Timeout
@@ -20043,6 +20056,52 @@ func (o *ProxyLBGzip) SetEnabled(v bool) {
 }
 
 /*************************************************
+* ProxyLBSyslog
+*************************************************/
+
+// ProxyLBSyslog represents API parameter/response structure
+type ProxyLBSyslog struct {
+	Server string
+	Port   int
+}
+
+// Validate validates by field tags
+func (o *ProxyLBSyslog) Validate() error {
+	return validate.Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *ProxyLBSyslog) setDefaults() interface{} {
+	return &struct {
+		Server string
+		Port   int
+	}{
+		Server: o.GetServer(),
+		Port:   o.GetPort(),
+	}
+}
+
+// GetServer returns value of Server
+func (o *ProxyLBSyslog) GetServer() string {
+	return o.Server
+}
+
+// SetServer sets value to Server
+func (o *ProxyLBSyslog) SetServer(v string) {
+	o.Server = v
+}
+
+// GetPort returns value of Port
+func (o *ProxyLBSyslog) GetPort() int {
+	return o.Port
+}
+
+// SetPort sets value to Port
+func (o *ProxyLBSyslog) SetPort(v int) {
+	o.Port = v
+}
+
+/*************************************************
 * ProxyLBTimeout
 *************************************************/
 
@@ -20094,6 +20153,7 @@ type ProxyLBCreateRequest struct {
 	StickySession  *ProxyLBStickySession `mapconv:"Settings.ProxyLB.StickySession,recursive"`
 	Timeout        *ProxyLBTimeout       `json:",omitempty" mapconv:"Settings.ProxyLB.Timeout,recursive,omitempty"`
 	Gzip           *ProxyLBGzip          `mapconv:"Settings.ProxyLB.Gzip,recursive"`
+	Syslog         *ProxyLBSyslog        `mapconv:"Settings.ProxyLB.Syslog,recursive"`
 	UseVIPFailover bool                  `mapconv:"Status.UseVIPFailover"`
 	Region         types.EProxyLBRegion  `mapconv:"Status.Region"`
 	Name           string
@@ -20120,6 +20180,7 @@ func (o *ProxyLBCreateRequest) setDefaults() interface{} {
 		StickySession  *ProxyLBStickySession `mapconv:"Settings.ProxyLB.StickySession,recursive"`
 		Timeout        *ProxyLBTimeout       `json:",omitempty" mapconv:"Settings.ProxyLB.Timeout,recursive,omitempty"`
 		Gzip           *ProxyLBGzip          `mapconv:"Settings.ProxyLB.Gzip,recursive"`
+		Syslog         *ProxyLBSyslog        `mapconv:"Settings.ProxyLB.Syslog,recursive"`
 		UseVIPFailover bool                  `mapconv:"Status.UseVIPFailover"`
 		Region         types.EProxyLBRegion  `mapconv:"Status.Region"`
 		Name           string
@@ -20138,6 +20199,7 @@ func (o *ProxyLBCreateRequest) setDefaults() interface{} {
 		StickySession:  o.GetStickySession(),
 		Timeout:        o.GetTimeout(),
 		Gzip:           o.GetGzip(),
+		Syslog:         o.GetSyslog(),
 		UseVIPFailover: o.GetUseVIPFailover(),
 		Region:         o.GetRegion(),
 		Name:           o.GetName(),
@@ -20248,6 +20310,16 @@ func (o *ProxyLBCreateRequest) SetGzip(v *ProxyLBGzip) {
 	o.Gzip = v
 }
 
+// GetSyslog returns value of Syslog
+func (o *ProxyLBCreateRequest) GetSyslog() *ProxyLBSyslog {
+	return o.Syslog
+}
+
+// SetSyslog sets value to Syslog
+func (o *ProxyLBCreateRequest) SetSyslog(v *ProxyLBSyslog) {
+	o.Syslog = v
+}
+
 // GetUseVIPFailover returns value of UseVIPFailover
 func (o *ProxyLBCreateRequest) GetUseVIPFailover() bool {
 	return o.UseVIPFailover
@@ -20343,6 +20415,7 @@ type ProxyLBUpdateRequest struct {
 	StickySession *ProxyLBStickySession `mapconv:"Settings.ProxyLB.StickySession,recursive"`
 	Timeout       *ProxyLBTimeout       `json:",omitempty" mapconv:"Settings.ProxyLB.Timeout,recursive,omitempty"`
 	Gzip          *ProxyLBGzip          `mapconv:"Settings.ProxyLB.Gzip,recursive"`
+	Syslog        *ProxyLBSyslog        `mapconv:"Settings.ProxyLB.Syslog,recursive"`
 	SettingsHash  string                `json:",omitempty" mapconv:",omitempty"`
 	Name          string
 	Description   string
@@ -20367,6 +20440,7 @@ func (o *ProxyLBUpdateRequest) setDefaults() interface{} {
 		StickySession *ProxyLBStickySession `mapconv:"Settings.ProxyLB.StickySession,recursive"`
 		Timeout       *ProxyLBTimeout       `json:",omitempty" mapconv:"Settings.ProxyLB.Timeout,recursive,omitempty"`
 		Gzip          *ProxyLBGzip          `mapconv:"Settings.ProxyLB.Gzip,recursive"`
+		Syslog        *ProxyLBSyslog        `mapconv:"Settings.ProxyLB.Syslog,recursive"`
 		SettingsHash  string                `json:",omitempty" mapconv:",omitempty"`
 		Name          string
 		Description   string
@@ -20382,6 +20456,7 @@ func (o *ProxyLBUpdateRequest) setDefaults() interface{} {
 		StickySession: o.GetStickySession(),
 		Timeout:       o.GetTimeout(),
 		Gzip:          o.GetGzip(),
+		Syslog:        o.GetSyslog(),
 		SettingsHash:  o.GetSettingsHash(),
 		Name:          o.GetName(),
 		Description:   o.GetDescription(),
@@ -20480,6 +20555,16 @@ func (o *ProxyLBUpdateRequest) SetGzip(v *ProxyLBGzip) {
 	o.Gzip = v
 }
 
+// GetSyslog returns value of Syslog
+func (o *ProxyLBUpdateRequest) GetSyslog() *ProxyLBSyslog {
+	return o.Syslog
+}
+
+// SetSyslog sets value to Syslog
+func (o *ProxyLBUpdateRequest) SetSyslog(v *ProxyLBSyslog) {
+	o.Syslog = v
+}
+
 // GetSettingsHash returns value of SettingsHash
 func (o *ProxyLBUpdateRequest) GetSettingsHash() string {
 	return o.SettingsHash
@@ -20565,6 +20650,7 @@ type ProxyLBUpdateSettingsRequest struct {
 	StickySession *ProxyLBStickySession `mapconv:"Settings.ProxyLB.StickySession,recursive"`
 	Timeout       *ProxyLBTimeout       `json:",omitempty" mapconv:"Settings.ProxyLB.Timeout,recursive,omitempty"`
 	Gzip          *ProxyLBGzip          `mapconv:"Settings.ProxyLB.Gzip,recursive"`
+	Syslog        *ProxyLBSyslog        `mapconv:"Settings.ProxyLB.Syslog,recursive"`
 	SettingsHash  string                `json:",omitempty" mapconv:",omitempty"`
 }
 
@@ -20585,6 +20671,7 @@ func (o *ProxyLBUpdateSettingsRequest) setDefaults() interface{} {
 		StickySession *ProxyLBStickySession `mapconv:"Settings.ProxyLB.StickySession,recursive"`
 		Timeout       *ProxyLBTimeout       `json:",omitempty" mapconv:"Settings.ProxyLB.Timeout,recursive,omitempty"`
 		Gzip          *ProxyLBGzip          `mapconv:"Settings.ProxyLB.Gzip,recursive"`
+		Syslog        *ProxyLBSyslog        `mapconv:"Settings.ProxyLB.Syslog,recursive"`
 		SettingsHash  string                `json:",omitempty" mapconv:",omitempty"`
 	}{
 		HealthCheck:   o.GetHealthCheck(),
@@ -20596,6 +20683,7 @@ func (o *ProxyLBUpdateSettingsRequest) setDefaults() interface{} {
 		StickySession: o.GetStickySession(),
 		Timeout:       o.GetTimeout(),
 		Gzip:          o.GetGzip(),
+		Syslog:        o.GetSyslog(),
 		SettingsHash:  o.GetSettingsHash(),
 	}
 }
@@ -20688,6 +20776,16 @@ func (o *ProxyLBUpdateSettingsRequest) GetGzip() *ProxyLBGzip {
 // SetGzip sets value to Gzip
 func (o *ProxyLBUpdateSettingsRequest) SetGzip(v *ProxyLBGzip) {
 	o.Gzip = v
+}
+
+// GetSyslog returns value of Syslog
+func (o *ProxyLBUpdateSettingsRequest) GetSyslog() *ProxyLBSyslog {
+	return o.Syslog
+}
+
+// SetSyslog sets value to Syslog
+func (o *ProxyLBUpdateSettingsRequest) SetSyslog(v *ProxyLBSyslog) {
+	o.Syslog = v
 }
 
 // GetSettingsHash returns value of SettingsHash
