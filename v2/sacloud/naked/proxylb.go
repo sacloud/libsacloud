@@ -94,6 +94,7 @@ type ProxyLBSetting struct {
 	StickySession ProxyLBStickySession `yaml:"sticky_session"`                                                // StickySession
 	Timeout       ProxyLBTimeout       `json:",omitempty" yaml:"timeout,omitempty" structs:",omitempty"`      // タイムアウト
 	Gzip          ProxyLBGzip          `yaml:"gzip"`                                                          // Gzip
+	Syslog        ProxyLBSyslog        `yaml:"syslog"`
 }
 
 // MarshalJSON nullの場合に空配列を出力するための実装
@@ -217,6 +218,12 @@ type ProxyLBStickySession struct {
 // ProxyLBGzip Gzip圧縮設定
 type ProxyLBGzip struct {
 	Enabled bool `yaml:"enabled"`
+}
+
+// ProxyLBSyslog Syslog設定
+type ProxyLBSyslog struct {
+	Server string `yaml:"server"`
+	Port   int    `yaml:"port"`
 }
 
 // ProxyLBTimeout 実サーバの通信タイムアウト
