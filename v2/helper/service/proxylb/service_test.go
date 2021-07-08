@@ -54,6 +54,10 @@ func TestProxyLBService_CRUD(t *testing.T) {
 						Method:  "cookie",
 					},
 					UseVIPFailover: false,
+					Syslog: &sacloud.ProxyLBSyslog{
+						Server: "",
+						Port:   514,
+					},
 					Timeout: &sacloud.ProxyLBTimeout{
 						InactiveSec: 10,
 					},
