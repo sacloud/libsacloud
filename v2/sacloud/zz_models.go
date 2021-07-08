@@ -19562,6 +19562,7 @@ type ProxyLBBindPort struct {
 	RedirectToHTTPS   bool
 	SupportHTTP2      bool
 	AddResponseHeader []*ProxyLBResponseHeader `mapconv:"[]AddResponseHeader,recursive"`
+	SSLPolicy         string
 }
 
 // Validate validates by field tags
@@ -19577,12 +19578,14 @@ func (o *ProxyLBBindPort) setDefaults() interface{} {
 		RedirectToHTTPS   bool
 		SupportHTTP2      bool
 		AddResponseHeader []*ProxyLBResponseHeader `mapconv:"[]AddResponseHeader,recursive"`
+		SSLPolicy         string
 	}{
 		ProxyMode:         o.GetProxyMode(),
 		Port:              o.GetPort(),
 		RedirectToHTTPS:   o.GetRedirectToHTTPS(),
 		SupportHTTP2:      o.GetSupportHTTP2(),
 		AddResponseHeader: o.GetAddResponseHeader(),
+		SSLPolicy:         o.GetSSLPolicy(),
 	}
 }
 
@@ -19634,6 +19637,16 @@ func (o *ProxyLBBindPort) GetAddResponseHeader() []*ProxyLBResponseHeader {
 // SetAddResponseHeader sets value to AddResponseHeader
 func (o *ProxyLBBindPort) SetAddResponseHeader(v []*ProxyLBResponseHeader) {
 	o.AddResponseHeader = v
+}
+
+// GetSSLPolicy returns value of SSLPolicy
+func (o *ProxyLBBindPort) GetSSLPolicy() string {
+	return o.SSLPolicy
+}
+
+// SetSSLPolicy sets value to SSLPolicy
+func (o *ProxyLBBindPort) SetSSLPolicy(v string) {
+	o.SSLPolicy = v
 }
 
 /*************************************************

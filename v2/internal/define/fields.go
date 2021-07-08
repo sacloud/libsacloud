@@ -1346,6 +1346,10 @@ func (f *fieldsDef) ProxyLBBindPorts() *dsl.FieldDesc {
 						MapConv: "[]AddResponseHeader,recursive",
 					},
 				},
+				{
+					Name: "SSLPolicy",
+					Type: meta.TypeString,
+				},
 			},
 		},
 		Tags: &dsl.FieldTags{

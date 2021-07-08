@@ -149,6 +149,7 @@ func initProxyLBVariables() {
 				ProxyMode:    types.ProxyLBProxyModes.HTTPS,
 				Port:         443,
 				SupportHTTP2: true,
+				SSLPolicy:    "TLS-1-3-2021-06",
 			},
 		},
 		Servers: []*sacloud.ProxyLBServer{
@@ -253,6 +254,7 @@ func initProxyLBVariables() {
 				ProxyMode:    types.ProxyLBProxyModes.HTTPS,
 				Port:         8443,
 				SupportHTTP2: true,
+				SSLPolicy:    "TLS-1-3-2021-06",
 			},
 		},
 		Servers: []*sacloud.ProxyLBServer{
@@ -372,6 +374,7 @@ func initProxyLBVariables() {
 				ProxyMode:    types.ProxyLBProxyModes.HTTPS,
 				Port:         8443,
 				SupportHTTP2: true,
+				SSLPolicy:    "TLS-1-3-2021-06",
 			},
 		},
 		Servers: []*sacloud.ProxyLBServer{
