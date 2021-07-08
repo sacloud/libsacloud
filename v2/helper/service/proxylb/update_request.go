@@ -37,8 +37,6 @@ type UpdateRequest struct {
 	LetsEncrypt   *sacloud.ProxyLBACMESetting   `request:",omitempty"`
 	StickySession *sacloud.ProxyLBStickySession `request:",omitempty"`
 	Gzip          *sacloud.ProxyLBGzip          `request:",omitempty"`
-	SyslogServer  *string                       `request:",omitempty"`
-	SyslogPort    *int                          `request:",omitempty"`
 	Timeout       *sacloud.ProxyLBTimeout       `request:",omitempty"`
 	SettingsHash  string
 }
