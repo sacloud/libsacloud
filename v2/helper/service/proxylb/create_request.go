@@ -35,8 +35,6 @@ type CreateRequest struct {
 	LetsEncrypt    *sacloud.ProxyLBACMESetting
 	StickySession  *sacloud.ProxyLBStickySession
 	Gzip           *sacloud.ProxyLBGzip
-	SyslogServer   string
-	SyslogPort     int
 	Timeout        *sacloud.ProxyLBTimeout
 	UseVIPFailover bool
 	Region         types.EProxyLBRegion

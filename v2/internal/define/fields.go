@@ -1538,28 +1538,6 @@ func (f *fieldsDef) ProxyLBGzip() *dsl.FieldDesc {
 	}
 }
 
-func (f *fieldsDef) ProxyLBSyslog() *dsl.FieldDesc {
-	return &dsl.FieldDesc{
-		Name: "Syslog",
-		Type: &dsl.Model{
-			Name: "ProxyLBSyslog",
-			Fields: []*dsl.FieldDesc{
-				{
-					Name: "Server",
-					Type: meta.TypeString,
-				},
-				{
-					Name: "Port",
-					Type: meta.TypeInt,
-				},
-			},
-		},
-		Tags: &dsl.FieldTags{
-			MapConv: "Settings.ProxyLB.Syslog,recursive",
-		},
-	}
-}
-
 func (f *fieldsDef) ProxyLBTimeout() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "Timeout",
