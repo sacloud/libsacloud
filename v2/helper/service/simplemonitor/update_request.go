@@ -35,6 +35,7 @@ type UpdateRequest struct {
 	NotifySlackEnabled *types.StringFlag                 `request:",omitempty"`
 	SlackWebhooksURL   *string                           `request:",omitempty"`
 	NotifyInterval     *int                              `request:",omitempty"`
+	Timeout            *int                              `request:",omitempty"`
 	SettingsHash       string
 }
 

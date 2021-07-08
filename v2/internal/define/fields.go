@@ -1069,6 +1069,16 @@ func (f *fieldsDef) SimpleMonitorNotifyInterval() *dsl.FieldDesc {
 	}
 }
 
+func (f *fieldsDef) SimpleMonitorTimeout() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "Timeout",
+		Type: meta.TypeInt,
+		Tags: &dsl.FieldTags{
+			MapConv: "Settings.SimpleMonitor.Timeout",
+		},
+	}
+}
+
 func (f *fieldsDef) SimpleMonitorEnabled() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "Enabled",

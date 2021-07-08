@@ -24287,6 +24287,7 @@ type SimpleMonitor struct {
 	NotifySlackEnabled types.StringFlag          `mapconv:"Settings.SimpleMonitor.NotifySlack.Enabled"`
 	SlackWebhooksURL   string                    `mapconv:"Settings.SimpleMonitor.NotifySlack.IncomingWebhooksURL"`
 	NotifyInterval     int                       `mapconv:"Settings.SimpleMonitor.NotifyInterval"`
+	Timeout            int                       `mapconv:"Settings.SimpleMonitor.Timeout"`
 	SettingsHash       string                    `json:",omitempty" mapconv:",omitempty"`
 }
 
@@ -24316,6 +24317,7 @@ func (o *SimpleMonitor) setDefaults() interface{} {
 		NotifySlackEnabled types.StringFlag          `mapconv:"Settings.SimpleMonitor.NotifySlack.Enabled"`
 		SlackWebhooksURL   string                    `mapconv:"Settings.SimpleMonitor.NotifySlack.IncomingWebhooksURL"`
 		NotifyInterval     int                       `mapconv:"Settings.SimpleMonitor.NotifyInterval"`
+		Timeout            int                       `mapconv:"Settings.SimpleMonitor.Timeout"`
 		SettingsHash       string                    `json:",omitempty" mapconv:",omitempty"`
 	}{
 		ID:                 o.GetID(),
@@ -24336,6 +24338,7 @@ func (o *SimpleMonitor) setDefaults() interface{} {
 		NotifySlackEnabled: o.GetNotifySlackEnabled(),
 		SlackWebhooksURL:   o.GetSlackWebhooksURL(),
 		NotifyInterval:     o.GetNotifyInterval(),
+		Timeout:            o.GetTimeout(),
 		SettingsHash:       o.GetSettingsHash(),
 	}
 }
@@ -24564,6 +24567,16 @@ func (o *SimpleMonitor) GetNotifyInterval() int {
 // SetNotifyInterval sets value to NotifyInterval
 func (o *SimpleMonitor) SetNotifyInterval(v int) {
 	o.NotifyInterval = v
+}
+
+// GetTimeout returns value of Timeout
+func (o *SimpleMonitor) GetTimeout() int {
+	return o.Timeout
+}
+
+// SetTimeout sets value to Timeout
+func (o *SimpleMonitor) SetTimeout(v int) {
+	o.Timeout = v
 }
 
 // GetSettingsHash returns value of SettingsHash
@@ -24819,6 +24832,7 @@ type SimpleMonitorCreateRequest struct {
 	NotifySlackEnabled types.StringFlag          `mapconv:"Settings.SimpleMonitor.NotifySlack.Enabled"`
 	SlackWebhooksURL   string                    `mapconv:"Settings.SimpleMonitor.NotifySlack.IncomingWebhooksURL"`
 	NotifyInterval     int                       `mapconv:"Settings.SimpleMonitor.NotifyInterval"`
+	Timeout            int                       `mapconv:"Settings.SimpleMonitor.Timeout"`
 	Description        string
 	Tags               types.Tags
 	IconID             types.ID `mapconv:"Icon.ID"`
@@ -24841,6 +24855,7 @@ func (o *SimpleMonitorCreateRequest) setDefaults() interface{} {
 		NotifySlackEnabled types.StringFlag          `mapconv:"Settings.SimpleMonitor.NotifySlack.Enabled"`
 		SlackWebhooksURL   string                    `mapconv:"Settings.SimpleMonitor.NotifySlack.IncomingWebhooksURL"`
 		NotifyInterval     int                       `mapconv:"Settings.SimpleMonitor.NotifyInterval"`
+		Timeout            int                       `mapconv:"Settings.SimpleMonitor.Timeout"`
 		Description        string
 		Tags               types.Tags
 		IconID             types.ID `mapconv:"Icon.ID"`
@@ -24855,6 +24870,7 @@ func (o *SimpleMonitorCreateRequest) setDefaults() interface{} {
 		NotifySlackEnabled: o.GetNotifySlackEnabled(),
 		SlackWebhooksURL:   o.GetSlackWebhooksURL(),
 		NotifyInterval:     o.GetNotifyInterval(),
+		Timeout:            o.GetTimeout(),
 		Description:        o.GetDescription(),
 		Tags:               o.GetTags(),
 		IconID:             o.GetIconID(),
@@ -24958,6 +24974,16 @@ func (o *SimpleMonitorCreateRequest) SetNotifyInterval(v int) {
 	o.NotifyInterval = v
 }
 
+// GetTimeout returns value of Timeout
+func (o *SimpleMonitorCreateRequest) GetTimeout() int {
+	return o.Timeout
+}
+
+// SetTimeout sets value to Timeout
+func (o *SimpleMonitorCreateRequest) SetTimeout(v int) {
+	o.Timeout = v
+}
+
 // GetDescription returns value of Description
 func (o *SimpleMonitorCreateRequest) GetDescription() string {
 	return o.Description
@@ -25025,6 +25051,7 @@ type SimpleMonitorUpdateRequest struct {
 	NotifySlackEnabled types.StringFlag          `mapconv:"Settings.SimpleMonitor.NotifySlack.Enabled"`
 	SlackWebhooksURL   string                    `mapconv:"Settings.SimpleMonitor.NotifySlack.IncomingWebhooksURL"`
 	NotifyInterval     int                       `mapconv:"Settings.SimpleMonitor.NotifyInterval"`
+	Timeout            int                       `mapconv:"Settings.SimpleMonitor.Timeout"`
 	SettingsHash       string                    `json:",omitempty" mapconv:",omitempty"`
 }
 
@@ -25047,6 +25074,7 @@ func (o *SimpleMonitorUpdateRequest) setDefaults() interface{} {
 		NotifySlackEnabled types.StringFlag          `mapconv:"Settings.SimpleMonitor.NotifySlack.Enabled"`
 		SlackWebhooksURL   string                    `mapconv:"Settings.SimpleMonitor.NotifySlack.IncomingWebhooksURL"`
 		NotifyInterval     int                       `mapconv:"Settings.SimpleMonitor.NotifyInterval"`
+		Timeout            int                       `mapconv:"Settings.SimpleMonitor.Timeout"`
 		SettingsHash       string                    `json:",omitempty" mapconv:",omitempty"`
 	}{
 		Description:        o.GetDescription(),
@@ -25060,6 +25088,7 @@ func (o *SimpleMonitorUpdateRequest) setDefaults() interface{} {
 		NotifySlackEnabled: o.GetNotifySlackEnabled(),
 		SlackWebhooksURL:   o.GetSlackWebhooksURL(),
 		NotifyInterval:     o.GetNotifyInterval(),
+		Timeout:            o.GetTimeout(),
 		SettingsHash:       o.GetSettingsHash(),
 	}
 }
@@ -25200,6 +25229,16 @@ func (o *SimpleMonitorUpdateRequest) SetNotifyInterval(v int) {
 	o.NotifyInterval = v
 }
 
+// GetTimeout returns value of Timeout
+func (o *SimpleMonitorUpdateRequest) GetTimeout() int {
+	return o.Timeout
+}
+
+// SetTimeout sets value to Timeout
+func (o *SimpleMonitorUpdateRequest) SetTimeout(v int) {
+	o.Timeout = v
+}
+
 // GetSettingsHash returns value of SettingsHash
 func (o *SimpleMonitorUpdateRequest) GetSettingsHash() string {
 	return o.SettingsHash
@@ -25224,6 +25263,7 @@ type SimpleMonitorUpdateSettingsRequest struct {
 	NotifySlackEnabled types.StringFlag          `mapconv:"Settings.SimpleMonitor.NotifySlack.Enabled"`
 	SlackWebhooksURL   string                    `mapconv:"Settings.SimpleMonitor.NotifySlack.IncomingWebhooksURL"`
 	NotifyInterval     int                       `mapconv:"Settings.SimpleMonitor.NotifyInterval"`
+	Timeout            int                       `mapconv:"Settings.SimpleMonitor.Timeout"`
 	SettingsHash       string                    `json:",omitempty" mapconv:",omitempty"`
 }
 
@@ -25243,6 +25283,7 @@ func (o *SimpleMonitorUpdateSettingsRequest) setDefaults() interface{} {
 		NotifySlackEnabled types.StringFlag          `mapconv:"Settings.SimpleMonitor.NotifySlack.Enabled"`
 		SlackWebhooksURL   string                    `mapconv:"Settings.SimpleMonitor.NotifySlack.IncomingWebhooksURL"`
 		NotifyInterval     int                       `mapconv:"Settings.SimpleMonitor.NotifyInterval"`
+		Timeout            int                       `mapconv:"Settings.SimpleMonitor.Timeout"`
 		SettingsHash       string                    `json:",omitempty" mapconv:",omitempty"`
 	}{
 		DelayLoop:          o.GetDelayLoop(),
@@ -25253,6 +25294,7 @@ func (o *SimpleMonitorUpdateSettingsRequest) setDefaults() interface{} {
 		NotifySlackEnabled: o.GetNotifySlackEnabled(),
 		SlackWebhooksURL:   o.GetSlackWebhooksURL(),
 		NotifyInterval:     o.GetNotifyInterval(),
+		Timeout:            o.GetTimeout(),
 		SettingsHash:       o.GetSettingsHash(),
 	}
 }
@@ -25341,6 +25383,16 @@ func (o *SimpleMonitorUpdateSettingsRequest) GetNotifyInterval() int {
 // SetNotifyInterval sets value to NotifyInterval
 func (o *SimpleMonitorUpdateSettingsRequest) SetNotifyInterval(v int) {
 	o.NotifyInterval = v
+}
+
+// GetTimeout returns value of Timeout
+func (o *SimpleMonitorUpdateSettingsRequest) GetTimeout() int {
+	return o.Timeout
+}
+
+// SetTimeout sets value to Timeout
+func (o *SimpleMonitorUpdateSettingsRequest) SetTimeout(v int) {
+	o.Timeout = v
 }
 
 // GetSettingsHash returns value of SettingsHash

@@ -106,6 +106,7 @@ var (
 		NotifyEmailHTML:    types.StringTrue,
 		NotifySlackEnabled: types.StringFalse,
 		NotifyInterval:     2 * 60 * 60,
+		Timeout:            10,
 		SlackWebhooksURL:   "",
 	}
 	createSimpleMonitorExpected = &sacloud.SimpleMonitor{
@@ -121,6 +122,7 @@ var (
 		NotifySlackEnabled: createSimpleMonitorParam.NotifySlackEnabled,
 		NotifyInterval:     createSimpleMonitorParam.NotifyInterval,
 		SlackWebhooksURL:   createSimpleMonitorParam.SlackWebhooksURL,
+		Timeout:            createSimpleMonitorParam.Timeout,
 		Availability:       types.Availabilities.Available,
 	}
 	updateSimpleMonitorParam = &sacloud.SimpleMonitorUpdateRequest{
@@ -143,6 +145,7 @@ var (
 		NotifySlackEnabled: types.StringTrue,
 		SlackWebhooksURL:   "https://hooks.slack.com/services/XXXXXXXXX/XXXXXXXXX/XXXXXXXXXXXXXXXXXXXXXXXX",
 		NotifyInterval:     3 * 60 * 60,
+		Timeout:            20,
 		IconID:             testIconID,
 	}
 	updateSimpleMonitorExpected = &sacloud.SimpleMonitor{
@@ -157,6 +160,7 @@ var (
 		NotifyEmailHTML:    updateSimpleMonitorParam.NotifyEmailHTML,
 		NotifySlackEnabled: updateSimpleMonitorParam.NotifySlackEnabled,
 		NotifyInterval:     updateSimpleMonitorParam.NotifyInterval,
+		Timeout:            updateSimpleMonitorParam.Timeout,
 		SlackWebhooksURL:   updateSimpleMonitorParam.SlackWebhooksURL,
 		Availability:       types.Availabilities.Available,
 		IconID:             testIconID,
@@ -178,6 +182,7 @@ var (
 		NotifySlackEnabled: types.StringTrue,
 		SlackWebhooksURL:   "https://hooks.slack.com/services/XXXXXXXXX/XXXXXXXXX/XXXXXXXXXXXXXXXXXXXXXXXX",
 		NotifyInterval:     3 * 60 * 60,
+		Timeout:            30,
 	}
 	updateSimpleMonitorSettingsExpected = &sacloud.SimpleMonitor{
 		Name:               createSimpleMonitorParam.Target,
@@ -191,6 +196,7 @@ var (
 		NotifyEmailHTML:    updateSimpleMonitorSettingsParam.NotifyEmailHTML,
 		NotifySlackEnabled: updateSimpleMonitorSettingsParam.NotifySlackEnabled,
 		NotifyInterval:     updateSimpleMonitorSettingsParam.NotifyInterval,
+		Timeout:            updateSimpleMonitorSettingsParam.Timeout,
 		SlackWebhooksURL:   updateSimpleMonitorSettingsParam.SlackWebhooksURL,
 		Availability:       types.Availabilities.Available,
 		IconID:             testIconID,
