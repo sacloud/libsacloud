@@ -72,6 +72,9 @@ func addClientFactoryHooks() {
 	sacloud.AddClientFacotyHookFunc("DNS", func(in interface{}) interface{} {
 		return NewDNSTracer(in.(sacloud.DNSAPI))
 	})
+	sacloud.AddClientFacotyHookFunc("EnhancedDB", func(in interface{}) interface{} {
+		return NewEnhancedDBTracer(in.(sacloud.EnhancedDBAPI))
+	})
 	sacloud.AddClientFacotyHookFunc("ESME", func(in interface{}) interface{} {
 		return NewESMETracer(in.(sacloud.ESMEAPI))
 	})
@@ -3115,6 +3118,208 @@ func (t *DNSTracer) Delete(ctx context.Context, id types.ID) error {
 	}()
 
 	err := t.Internal.Delete(ctx, id)
+	targetResults := struct {
+		Error error
+	}{
+		Error: err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return err
+}
+
+/*************************************************
+* EnhancedDBTracer
+*************************************************/
+
+// EnhancedDBTracer is for trace EnhancedDBOp operations
+type EnhancedDBTracer struct {
+	Internal sacloud.EnhancedDBAPI
+}
+
+// NewEnhancedDBTracer creates new EnhancedDBTracer instance
+func NewEnhancedDBTracer(in sacloud.EnhancedDBAPI) sacloud.EnhancedDBAPI {
+	return &EnhancedDBTracer{
+		Internal: in,
+	}
+}
+
+// Find is API call with trace log
+func (t *EnhancedDBTracer) Find(ctx context.Context, conditions *sacloud.FindCondition) (*sacloud.EnhancedDBFindResult, error) {
+	log.Println("[TRACE] EnhancedDBAPI.Find start")
+	targetArguments := struct {
+		Argconditions *sacloud.FindCondition `json:"conditions"`
+	}{
+		Argconditions: conditions,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] EnhancedDBAPI.Find end")
+	}()
+
+	result, err := t.Internal.Find(ctx, conditions)
+	targetResults := struct {
+		Result *sacloud.EnhancedDBFindResult
+		Error  error
+	}{
+		Result: result,
+		Error:  err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return result, err
+}
+
+// Create is API call with trace log
+func (t *EnhancedDBTracer) Create(ctx context.Context, param *sacloud.EnhancedDBCreateRequest) (*sacloud.EnhancedDB, error) {
+	log.Println("[TRACE] EnhancedDBAPI.Create start")
+	targetArguments := struct {
+		Argparam *sacloud.EnhancedDBCreateRequest `json:"param"`
+	}{
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] EnhancedDBAPI.Create end")
+	}()
+
+	resultEnhancedDB, err := t.Internal.Create(ctx, param)
+	targetResults := struct {
+		EnhancedDB *sacloud.EnhancedDB
+		Error      error
+	}{
+		EnhancedDB: resultEnhancedDB,
+		Error:      err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultEnhancedDB, err
+}
+
+// Read is API call with trace log
+func (t *EnhancedDBTracer) Read(ctx context.Context, id types.ID) (*sacloud.EnhancedDB, error) {
+	log.Println("[TRACE] EnhancedDBAPI.Read start")
+	targetArguments := struct {
+		Argid types.ID `json:"id"`
+	}{
+		Argid: id,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] EnhancedDBAPI.Read end")
+	}()
+
+	resultEnhancedDB, err := t.Internal.Read(ctx, id)
+	targetResults := struct {
+		EnhancedDB *sacloud.EnhancedDB
+		Error      error
+	}{
+		EnhancedDB: resultEnhancedDB,
+		Error:      err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultEnhancedDB, err
+}
+
+// Update is API call with trace log
+func (t *EnhancedDBTracer) Update(ctx context.Context, id types.ID, param *sacloud.EnhancedDBUpdateRequest) (*sacloud.EnhancedDB, error) {
+	log.Println("[TRACE] EnhancedDBAPI.Update start")
+	targetArguments := struct {
+		Argid    types.ID                         `json:"id"`
+		Argparam *sacloud.EnhancedDBUpdateRequest `json:"param"`
+	}{
+		Argid:    id,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] EnhancedDBAPI.Update end")
+	}()
+
+	resultEnhancedDB, err := t.Internal.Update(ctx, id, param)
+	targetResults := struct {
+		EnhancedDB *sacloud.EnhancedDB
+		Error      error
+	}{
+		EnhancedDB: resultEnhancedDB,
+		Error:      err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultEnhancedDB, err
+}
+
+// Delete is API call with trace log
+func (t *EnhancedDBTracer) Delete(ctx context.Context, id types.ID) error {
+	log.Println("[TRACE] EnhancedDBAPI.Delete start")
+	targetArguments := struct {
+		Argid types.ID `json:"id"`
+	}{
+		Argid: id,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] EnhancedDBAPI.Delete end")
+	}()
+
+	err := t.Internal.Delete(ctx, id)
+	targetResults := struct {
+		Error error
+	}{
+		Error: err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return err
+}
+
+// SetPassword is API call with trace log
+func (t *EnhancedDBTracer) SetPassword(ctx context.Context, id types.ID, param *sacloud.EnhancedDBSetPasswordRequest) error {
+	log.Println("[TRACE] EnhancedDBAPI.SetPassword start")
+	targetArguments := struct {
+		Argid    types.ID                              `json:"id"`
+		Argparam *sacloud.EnhancedDBSetPasswordRequest `json:"param"`
+	}{
+		Argid:    id,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] EnhancedDBAPI.SetPassword end")
+	}()
+
+	err := t.Internal.SetPassword(ctx, id, param)
 	targetResults := struct {
 		Error error
 	}{

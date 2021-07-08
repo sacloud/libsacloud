@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package containerregistry
+package enhanceddb
 
 import (
 	"github.com/sacloud/libsacloud/v2/helper/validate"
@@ -23,14 +23,12 @@ import (
 type ApplyRequest struct {
 	ID types.ID `request:"-"`
 
-	Name           string `validate:"required"`
-	Description    string `validate:"min=0,max=512"`
-	Tags           types.Tags
-	IconID         types.ID
-	AccessLevel    types.EContainerRegistryAccessLevel
-	VirtualDomain  string
-	SubDomainLabel string
-	Users          []*User
+	Name         string `validate:"required"`
+	Description  string `validate:"min=0,max=512"`
+	Tags         types.Tags
+	IconID       types.ID
+	DatabaseName string
+	Password     string
 
 	SettingsHash string
 }
@@ -41,16 +39,14 @@ func (req *ApplyRequest) Validate() error {
 
 func (req *ApplyRequest) Builder(caller sacloud.APICaller) (*Builder, error) {
 	return &Builder{
-		ID:             req.ID,
-		Name:           req.Name,
-		Description:    req.Description,
-		Tags:           req.Tags,
-		IconID:         req.IconID,
-		AccessLevel:    req.AccessLevel,
-		VirtualDomain:  req.VirtualDomain,
-		SubDomainLabel: req.SubDomainLabel,
-		Users:          req.Users,
-		SettingsHash:   req.SettingsHash,
-		Client:         sacloud.NewContainerRegistryOp(caller),
+		ID:           req.ID,
+		Name:         req.Name,
+		Description:  req.Description,
+		Tags:         req.Tags,
+		IconID:       req.IconID,
+		DatabaseName: req.DatabaseName,
+		Password:     req.Password,
+		SettingsHash: req.SettingsHash,
+		Client:       sacloud.NewEnhancedDBOp(caller),
 	}, nil
 }

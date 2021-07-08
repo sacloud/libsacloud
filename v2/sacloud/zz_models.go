@@ -8750,6 +8750,514 @@ func (o *DNSUpdateSettingsRequest) SetSettingsHash(v string) {
 }
 
 /*************************************************
+* EnhancedDB
+*************************************************/
+
+// EnhancedDB represents API parameter/response structure
+type EnhancedDB struct {
+	ID             types.ID
+	Name           string
+	Description    string
+	Tags           types.Tags
+	Availability   types.EAvailability
+	IconID         types.ID `mapconv:"Icon.ID"`
+	CreatedAt      time.Time
+	ModifiedAt     time.Time
+	SettingsHash   string `json:",omitempty" mapconv:",omitempty"`
+	MaxConnections int    `mapconv:"Settings.EnhancedDB.MaxConnections"`
+	DatabaseName   string `mapconv:"Status.DatabaseName"`
+	DatabaseType   string `mapconv:"Status.DatabaseType"`
+	Region         string `mapconv:"Status.Region"`
+	HostName       string `mapconv:"Status.HostName"`
+	Port           int    `mapconv:"Status.Port"`
+}
+
+// Validate validates by field tags
+func (o *EnhancedDB) Validate() error {
+	return validate.Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *EnhancedDB) setDefaults() interface{} {
+	return &struct {
+		ID             types.ID
+		Name           string
+		Description    string
+		Tags           types.Tags
+		Availability   types.EAvailability
+		IconID         types.ID `mapconv:"Icon.ID"`
+		CreatedAt      time.Time
+		ModifiedAt     time.Time
+		SettingsHash   string `json:",omitempty" mapconv:",omitempty"`
+		MaxConnections int    `mapconv:"Settings.EnhancedDB.MaxConnections"`
+		DatabaseName   string `mapconv:"Status.DatabaseName"`
+		DatabaseType   string `mapconv:"Status.DatabaseType"`
+		Region         string `mapconv:"Status.Region"`
+		HostName       string `mapconv:"Status.HostName"`
+		Port           int    `mapconv:"Status.Port"`
+	}{
+		ID:             o.GetID(),
+		Name:           o.GetName(),
+		Description:    o.GetDescription(),
+		Tags:           o.GetTags(),
+		Availability:   o.GetAvailability(),
+		IconID:         o.GetIconID(),
+		CreatedAt:      o.GetCreatedAt(),
+		ModifiedAt:     o.GetModifiedAt(),
+		SettingsHash:   o.GetSettingsHash(),
+		MaxConnections: o.GetMaxConnections(),
+		DatabaseName:   o.GetDatabaseName(),
+		DatabaseType:   o.GetDatabaseType(),
+		Region:         o.GetRegion(),
+		HostName:       o.GetHostName(),
+		Port:           o.GetPort(),
+	}
+}
+
+// GetID returns value of ID
+func (o *EnhancedDB) GetID() types.ID {
+	return o.ID
+}
+
+// SetID sets value to ID
+func (o *EnhancedDB) SetID(v types.ID) {
+	o.ID = v
+}
+
+// SetStringID .
+func (o *EnhancedDB) SetStringID(id string) {
+	accessor.SetStringID(o, id)
+}
+
+// GetStringID .
+func (o *EnhancedDB) GetStringID() string {
+	return accessor.GetStringID(o)
+}
+
+// SetInt64ID .
+func (o *EnhancedDB) SetInt64ID(id int64) {
+	accessor.SetInt64ID(o, id)
+}
+
+// GetInt64ID .
+func (o *EnhancedDB) GetInt64ID() int64 {
+	return accessor.GetInt64ID(o)
+}
+
+// GetName returns value of Name
+func (o *EnhancedDB) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *EnhancedDB) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *EnhancedDB) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *EnhancedDB) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetTags returns value of Tags
+func (o *EnhancedDB) GetTags() types.Tags {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *EnhancedDB) SetTags(v types.Tags) {
+	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *EnhancedDB) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *EnhancedDB) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *EnhancedDB) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *EnhancedDB) ClearTags() {
+	accessor.ClearTags(o)
+}
+
+// GetAvailability returns value of Availability
+func (o *EnhancedDB) GetAvailability() types.EAvailability {
+	return o.Availability
+}
+
+// SetAvailability sets value to Availability
+func (o *EnhancedDB) SetAvailability(v types.EAvailability) {
+	o.Availability = v
+}
+
+// GetIconID returns value of IconID
+func (o *EnhancedDB) GetIconID() types.ID {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *EnhancedDB) SetIconID(v types.ID) {
+	o.IconID = v
+}
+
+// GetCreatedAt returns value of CreatedAt
+func (o *EnhancedDB) GetCreatedAt() time.Time {
+	return o.CreatedAt
+}
+
+// SetCreatedAt sets value to CreatedAt
+func (o *EnhancedDB) SetCreatedAt(v time.Time) {
+	o.CreatedAt = v
+}
+
+// GetModifiedAt returns value of ModifiedAt
+func (o *EnhancedDB) GetModifiedAt() time.Time {
+	return o.ModifiedAt
+}
+
+// SetModifiedAt sets value to ModifiedAt
+func (o *EnhancedDB) SetModifiedAt(v time.Time) {
+	o.ModifiedAt = v
+}
+
+// GetSettingsHash returns value of SettingsHash
+func (o *EnhancedDB) GetSettingsHash() string {
+	return o.SettingsHash
+}
+
+// SetSettingsHash sets value to SettingsHash
+func (o *EnhancedDB) SetSettingsHash(v string) {
+	o.SettingsHash = v
+}
+
+// GetMaxConnections returns value of MaxConnections
+func (o *EnhancedDB) GetMaxConnections() int {
+	return o.MaxConnections
+}
+
+// SetMaxConnections sets value to MaxConnections
+func (o *EnhancedDB) SetMaxConnections(v int) {
+	o.MaxConnections = v
+}
+
+// GetDatabaseName returns value of DatabaseName
+func (o *EnhancedDB) GetDatabaseName() string {
+	return o.DatabaseName
+}
+
+// SetDatabaseName sets value to DatabaseName
+func (o *EnhancedDB) SetDatabaseName(v string) {
+	o.DatabaseName = v
+}
+
+// GetDatabaseType returns value of DatabaseType
+func (o *EnhancedDB) GetDatabaseType() string {
+	return o.DatabaseType
+}
+
+// SetDatabaseType sets value to DatabaseType
+func (o *EnhancedDB) SetDatabaseType(v string) {
+	o.DatabaseType = v
+}
+
+// GetRegion returns value of Region
+func (o *EnhancedDB) GetRegion() string {
+	return o.Region
+}
+
+// SetRegion sets value to Region
+func (o *EnhancedDB) SetRegion(v string) {
+	o.Region = v
+}
+
+// GetHostName returns value of HostName
+func (o *EnhancedDB) GetHostName() string {
+	return o.HostName
+}
+
+// SetHostName sets value to HostName
+func (o *EnhancedDB) SetHostName(v string) {
+	o.HostName = v
+}
+
+// GetPort returns value of Port
+func (o *EnhancedDB) GetPort() int {
+	return o.Port
+}
+
+// SetPort sets value to Port
+func (o *EnhancedDB) SetPort(v int) {
+	o.Port = v
+}
+
+/*************************************************
+* EnhancedDBCreateRequest
+*************************************************/
+
+// EnhancedDBCreateRequest represents API parameter/response structure
+type EnhancedDBCreateRequest struct {
+	Name         string
+	Description  string
+	Tags         types.Tags
+	IconID       types.ID `mapconv:"Icon.ID"`
+	DatabaseName string   `mapconv:"Status.DatabaseName"`
+}
+
+// Validate validates by field tags
+func (o *EnhancedDBCreateRequest) Validate() error {
+	return validate.Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *EnhancedDBCreateRequest) setDefaults() interface{} {
+	return &struct {
+		Name           string
+		Description    string
+		Tags           types.Tags
+		IconID         types.ID `mapconv:"Icon.ID"`
+		DatabaseName   string   `mapconv:"Status.DatabaseName"`
+		Class          string   `mapconv:"Provider.Class"`
+		Region         string   `mapconv:"Status.Region"`
+		DatabaseType   string   `mapconv:"Status.DatabaseType"`
+		MaxConnections int      `mapconv:"Settings.EnhancedDB.MaxConnections"`
+	}{
+		Name:           o.GetName(),
+		Description:    o.GetDescription(),
+		Tags:           o.GetTags(),
+		IconID:         o.GetIconID(),
+		DatabaseName:   o.GetDatabaseName(),
+		Class:          "enhanceddb",
+		Region:         "is1",
+		DatabaseType:   "tidb",
+		MaxConnections: 50,
+	}
+}
+
+// GetName returns value of Name
+func (o *EnhancedDBCreateRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *EnhancedDBCreateRequest) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *EnhancedDBCreateRequest) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *EnhancedDBCreateRequest) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetTags returns value of Tags
+func (o *EnhancedDBCreateRequest) GetTags() types.Tags {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *EnhancedDBCreateRequest) SetTags(v types.Tags) {
+	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *EnhancedDBCreateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *EnhancedDBCreateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *EnhancedDBCreateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *EnhancedDBCreateRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
+// GetIconID returns value of IconID
+func (o *EnhancedDBCreateRequest) GetIconID() types.ID {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *EnhancedDBCreateRequest) SetIconID(v types.ID) {
+	o.IconID = v
+}
+
+// GetDatabaseName returns value of DatabaseName
+func (o *EnhancedDBCreateRequest) GetDatabaseName() string {
+	return o.DatabaseName
+}
+
+// SetDatabaseName sets value to DatabaseName
+func (o *EnhancedDBCreateRequest) SetDatabaseName(v string) {
+	o.DatabaseName = v
+}
+
+/*************************************************
+* EnhancedDBUpdateRequest
+*************************************************/
+
+// EnhancedDBUpdateRequest represents API parameter/response structure
+type EnhancedDBUpdateRequest struct {
+	Name         string
+	Description  string
+	Tags         types.Tags
+	IconID       types.ID `mapconv:"Icon.ID"`
+	SettingsHash string   `json:",omitempty" mapconv:",omitempty"`
+}
+
+// Validate validates by field tags
+func (o *EnhancedDBUpdateRequest) Validate() error {
+	return validate.Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *EnhancedDBUpdateRequest) setDefaults() interface{} {
+	return &struct {
+		Name           string
+		Description    string
+		Tags           types.Tags
+		IconID         types.ID `mapconv:"Icon.ID"`
+		SettingsHash   string   `json:",omitempty" mapconv:",omitempty"`
+		MaxConnections int      `mapconv:"Settings.EnhancedDB.MaxConnections"`
+	}{
+		Name:           o.GetName(),
+		Description:    o.GetDescription(),
+		Tags:           o.GetTags(),
+		IconID:         o.GetIconID(),
+		SettingsHash:   o.GetSettingsHash(),
+		MaxConnections: 50,
+	}
+}
+
+// GetName returns value of Name
+func (o *EnhancedDBUpdateRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *EnhancedDBUpdateRequest) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *EnhancedDBUpdateRequest) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *EnhancedDBUpdateRequest) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetTags returns value of Tags
+func (o *EnhancedDBUpdateRequest) GetTags() types.Tags {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *EnhancedDBUpdateRequest) SetTags(v types.Tags) {
+	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *EnhancedDBUpdateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *EnhancedDBUpdateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *EnhancedDBUpdateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *EnhancedDBUpdateRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
+// GetIconID returns value of IconID
+func (o *EnhancedDBUpdateRequest) GetIconID() types.ID {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *EnhancedDBUpdateRequest) SetIconID(v types.ID) {
+	o.IconID = v
+}
+
+// GetSettingsHash returns value of SettingsHash
+func (o *EnhancedDBUpdateRequest) GetSettingsHash() string {
+	return o.SettingsHash
+}
+
+// SetSettingsHash sets value to SettingsHash
+func (o *EnhancedDBUpdateRequest) SetSettingsHash(v string) {
+	o.SettingsHash = v
+}
+
+/*************************************************
+* EnhancedDBSetPasswordRequest
+*************************************************/
+
+// EnhancedDBSetPasswordRequest represents API parameter/response structure
+type EnhancedDBSetPasswordRequest struct {
+	Password string `mapconv:"EnhancedDB.Password"`
+}
+
+// Validate validates by field tags
+func (o *EnhancedDBSetPasswordRequest) Validate() error {
+	return validate.Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *EnhancedDBSetPasswordRequest) setDefaults() interface{} {
+	return &struct {
+		Password string `mapconv:"EnhancedDB.Password"`
+	}{
+		Password: o.GetPassword(),
+	}
+}
+
+// GetPassword returns value of Password
+func (o *EnhancedDBSetPasswordRequest) GetPassword() string {
+	return o.Password
+}
+
+// SetPassword sets value to Password
+func (o *EnhancedDBSetPasswordRequest) SetPassword(v string) {
+	o.Password = v
+}
+
+/*************************************************
 * ESME
 *************************************************/
 

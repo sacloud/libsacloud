@@ -68,6 +68,9 @@ func switchFactoryFuncToFake() {
 	sacloud.SetClientFactoryFunc(ResourceDNS, func(caller sacloud.APICaller) interface{} {
 		return NewDNSOp()
 	})
+	sacloud.SetClientFactoryFunc(ResourceEnhancedDB, func(caller sacloud.APICaller) interface{} {
+		return NewEnhancedDBOp()
+	})
 	sacloud.SetClientFactoryFunc(ResourceESME, func(caller sacloud.APICaller) interface{} {
 		return NewESMEOp()
 	})
@@ -355,6 +358,22 @@ type DNSOp struct {
 func NewDNSOp() sacloud.DNSAPI {
 	return &DNSOp{
 		key: ResourceDNS,
+	}
+}
+
+/*************************************************
+* EnhancedDBOp
+*************************************************/
+
+// EnhancedDBOp is fake implementation of EnhancedDBAPI interface
+type EnhancedDBOp struct {
+	key string
+}
+
+// NewEnhancedDBOp creates new EnhancedDBOp instance
+func NewEnhancedDBOp() sacloud.EnhancedDBAPI {
+	return &EnhancedDBOp{
+		key: ResourceEnhancedDB,
 	}
 }
 

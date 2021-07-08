@@ -1674,6 +1674,66 @@ func (f *fieldsDef) LocalRouterStaticRoutes() *dsl.FieldDesc {
 	}
 }
 
+func (f *fieldsDef) EnhancedDBMaxConnections() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "MaxConnections",
+		Type: meta.TypeInt,
+		Tags: &dsl.FieldTags{
+			MapConv: "Settings.EnhancedDB.MaxConnections",
+		},
+	}
+}
+
+func (f *fieldsDef) EnhancedDBDatabaseName() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "DatabaseName",
+		Type: meta.TypeString,
+		Tags: &dsl.FieldTags{
+			MapConv: "Status.DatabaseName",
+		},
+	}
+}
+
+func (f *fieldsDef) EnhancedDBDatabaseType() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "DatabaseType",
+		Type: meta.TypeString,
+		Tags: &dsl.FieldTags{
+			MapConv: "Status.DatabaseType",
+		},
+	}
+}
+
+func (f *fieldsDef) EnhancedDBDatabaseRegion() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "Region",
+		Type: meta.TypeString,
+		Tags: &dsl.FieldTags{
+			MapConv: "Status.Region",
+		},
+	}
+}
+
+func (f *fieldsDef) EnhancedDBDatabaseHostName() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "HostName",
+		Type: meta.TypeString,
+		Tags: &dsl.FieldTags{
+			MapConv: "Status.HostName",
+		},
+	}
+}
+
+func (f *fieldsDef) EnhancedDBDatabasePort() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "Port",
+		Type: meta.TypeInt,
+		Tags: &dsl.FieldTags{
+			MapConv: "Status.Port",
+		},
+	}
+}
+
 func (f *fieldsDef) ContainerRegistrySubDomainLabel() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "SubDomainLabel",

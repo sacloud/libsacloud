@@ -1421,6 +1421,107 @@ func (s *DNSStub) Delete(ctx context.Context, id types.ID) error {
 }
 
 /*************************************************
+* EnhancedDBStub
+*************************************************/
+
+// EnhancedDBFindStubResult is expected values of the Find operation
+type EnhancedDBFindStubResult struct {
+	Values *sacloud.EnhancedDBFindResult
+	Err    error
+}
+
+// EnhancedDBCreateStubResult is expected values of the Create operation
+type EnhancedDBCreateStubResult struct {
+	EnhancedDB *sacloud.EnhancedDB
+	Err        error
+}
+
+// EnhancedDBReadStubResult is expected values of the Read operation
+type EnhancedDBReadStubResult struct {
+	EnhancedDB *sacloud.EnhancedDB
+	Err        error
+}
+
+// EnhancedDBUpdateStubResult is expected values of the Update operation
+type EnhancedDBUpdateStubResult struct {
+	EnhancedDB *sacloud.EnhancedDB
+	Err        error
+}
+
+// EnhancedDBDeleteStubResult is expected values of the Delete operation
+type EnhancedDBDeleteStubResult struct {
+	Err error
+}
+
+// EnhancedDBSetPasswordStubResult is expected values of the SetPassword operation
+type EnhancedDBSetPasswordStubResult struct {
+	Err error
+}
+
+// EnhancedDBStub is for trace EnhancedDBOp operations
+type EnhancedDBStub struct {
+	FindStubResult        *EnhancedDBFindStubResult
+	CreateStubResult      *EnhancedDBCreateStubResult
+	ReadStubResult        *EnhancedDBReadStubResult
+	UpdateStubResult      *EnhancedDBUpdateStubResult
+	DeleteStubResult      *EnhancedDBDeleteStubResult
+	SetPasswordStubResult *EnhancedDBSetPasswordStubResult
+}
+
+// NewEnhancedDBStub creates new EnhancedDBStub instance
+func NewEnhancedDBStub(caller sacloud.APICaller) sacloud.EnhancedDBAPI {
+	return &EnhancedDBStub{}
+}
+
+// Find is API call with trace log
+func (s *EnhancedDBStub) Find(ctx context.Context, conditions *sacloud.FindCondition) (*sacloud.EnhancedDBFindResult, error) {
+	if s.FindStubResult == nil {
+		log.Fatal("EnhancedDBStub.FindStubResult is not set")
+	}
+	return s.FindStubResult.Values, s.FindStubResult.Err
+}
+
+// Create is API call with trace log
+func (s *EnhancedDBStub) Create(ctx context.Context, param *sacloud.EnhancedDBCreateRequest) (*sacloud.EnhancedDB, error) {
+	if s.CreateStubResult == nil {
+		log.Fatal("EnhancedDBStub.CreateStubResult is not set")
+	}
+	return s.CreateStubResult.EnhancedDB, s.CreateStubResult.Err
+}
+
+// Read is API call with trace log
+func (s *EnhancedDBStub) Read(ctx context.Context, id types.ID) (*sacloud.EnhancedDB, error) {
+	if s.ReadStubResult == nil {
+		log.Fatal("EnhancedDBStub.ReadStubResult is not set")
+	}
+	return s.ReadStubResult.EnhancedDB, s.ReadStubResult.Err
+}
+
+// Update is API call with trace log
+func (s *EnhancedDBStub) Update(ctx context.Context, id types.ID, param *sacloud.EnhancedDBUpdateRequest) (*sacloud.EnhancedDB, error) {
+	if s.UpdateStubResult == nil {
+		log.Fatal("EnhancedDBStub.UpdateStubResult is not set")
+	}
+	return s.UpdateStubResult.EnhancedDB, s.UpdateStubResult.Err
+}
+
+// Delete is API call with trace log
+func (s *EnhancedDBStub) Delete(ctx context.Context, id types.ID) error {
+	if s.DeleteStubResult == nil {
+		log.Fatal("EnhancedDBStub.DeleteStubResult is not set")
+	}
+	return s.DeleteStubResult.Err
+}
+
+// SetPassword is API call with trace log
+func (s *EnhancedDBStub) SetPassword(ctx context.Context, id types.ID, param *sacloud.EnhancedDBSetPasswordRequest) error {
+	if s.SetPasswordStubResult == nil {
+		log.Fatal("EnhancedDBStub.SetPasswordStubResult is not set")
+	}
+	return s.SetPasswordStubResult.Err
+}
+
+/*************************************************
 * ESMEStub
 *************************************************/
 

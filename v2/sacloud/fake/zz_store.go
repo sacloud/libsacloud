@@ -358,6 +358,34 @@ func putDNS(zone string, value *sacloud.DNS) {
 	ds().Put(ResourceDNS, zone, 0, value)
 }
 
+func getEnhancedDB(zone string) []*sacloud.EnhancedDB {
+	values := ds().List(ResourceEnhancedDB, zone)
+	var ret []*sacloud.EnhancedDB
+	for _, v := range values {
+		if v, ok := v.(*sacloud.EnhancedDB); ok {
+			ret = append(ret, v)
+		}
+	}
+	return ret
+}
+
+func getEnhancedDBByID(zone string, id types.ID) *sacloud.EnhancedDB {
+	v := ds().Get(ResourceEnhancedDB, zone, id)
+	if v, ok := v.(*sacloud.EnhancedDB); ok {
+		return v
+	}
+	return nil
+}
+
+func putEnhancedDB(zone string, value *sacloud.EnhancedDB) {
+	var v interface{} = value
+	if id, ok := v.(accessor.ID); ok {
+		ds().Put(ResourceEnhancedDB, zone, id.GetID(), value)
+		return
+	}
+	ds().Put(ResourceEnhancedDB, zone, 0, value)
+}
+
 func getESME(zone string) []*sacloud.ESME {
 	values := ds().List(ResourceESME, zone)
 	var ret []*sacloud.ESME

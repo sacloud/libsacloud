@@ -842,6 +842,64 @@ type dNSUpdateSettingsResponseEnvelope struct {
 	CommonServiceItem *naked.DNS `json:",omitempty"`
 }
 
+// enhancedDBFindRequestEnvelope is envelop of API request
+type enhancedDBFindRequestEnvelope struct {
+	Count   int             `mapconv:",omitempty"`
+	From    int             `mapconv:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty" mapconv:",omitempty"`
+	Filter  search.Filter   `json:",omitempty" mapconv:",omitempty"`
+	Include []string        `json:",omitempty" mapconv:",omitempty"`
+	Exclude []string        `json:",omitempty" mapconv:",omitempty"`
+}
+
+// enhancedDBFindResponseEnvelope is envelop of API response
+type enhancedDBFindResponseEnvelope struct {
+	Total int `json:",omitempty"` // トータル件数
+	From  int `json:",omitempty"` // ページング開始ページ
+	Count int `json:",omitempty"` // 件数
+
+	CommonServiceItems []*naked.EnhancedDB `json:",omitempty"`
+}
+
+// enhancedDBCreateRequestEnvelope is envelop of API request
+type enhancedDBCreateRequestEnvelope struct {
+	CommonServiceItem *naked.EnhancedDB `json:",omitempty"`
+}
+
+// enhancedDBCreateResponseEnvelope is envelop of API response
+type enhancedDBCreateResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	CommonServiceItem *naked.EnhancedDB `json:",omitempty"`
+}
+
+// enhancedDBReadResponseEnvelope is envelop of API response
+type enhancedDBReadResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	CommonServiceItem *naked.EnhancedDB `json:",omitempty"`
+}
+
+// enhancedDBUpdateRequestEnvelope is envelop of API request
+type enhancedDBUpdateRequestEnvelope struct {
+	CommonServiceItem *naked.EnhancedDB `json:",omitempty"`
+}
+
+// enhancedDBUpdateResponseEnvelope is envelop of API response
+type enhancedDBUpdateResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	CommonServiceItem *naked.EnhancedDB `json:",omitempty"`
+}
+
+// enhancedDBSetPasswordRequestEnvelope is envelop of API request
+type enhancedDBSetPasswordRequestEnvelope struct {
+	CommonServiceItem *naked.EnhancedDBPasswordSettings `json:",omitempty"`
+}
+
 // eSMEFindRequestEnvelope is envelop of API request
 type eSMEFindRequestEnvelope struct {
 	Count   int             `mapconv:",omitempty"`
