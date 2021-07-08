@@ -134,6 +134,7 @@ type ProxyLBBindPorts struct {
 	RedirectToHTTPS   bool                     `json:"RedirectToHttps" yaml:"redirect_to_https"`                             // HTTPSへのリダイレクト(モードがhttpの場合のみ)
 	SupportHTTP2      bool                     `json:"SupportHttp2" yaml:"support_http2"`                                    // HTTP/2のサポート(モードがhttpsの場合のみ)
 	AddResponseHeader []*ProxyLBResponseHeader `json:",omitempty" yaml:"add_response_header,omitempty" structs:",omitempty"` // レスポンスヘッダ
+	SSLPolicy         string                   `json:",omitempty" yaml:"ssl_policy,omitempty" structs:",omitempty"`          // SSLポリシー
 }
 
 // ProxyLBResponseHeader ポートごとの追加レスポンスヘッダ
