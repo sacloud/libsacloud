@@ -64,7 +64,7 @@ type VPCRouterSetting struct {
 	DHCPStaticMapping  *VPCRouterDHCPStaticMappings `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
 	PPTPServer         *VPCRouterPPTPServer         `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
 	L2TPIPsecServer    *VPCRouterL2TPIPsecServer    `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
-	WireGuard          *VPCRouterWireGuard          `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
+	WireGuard          *VPCRouterWireGuard          `json:"WireGuardServer,omitempty" yaml:",omitempty" structs:",omitempty"`
 	RemoteAccessUsers  *VPCRouterRemoteAccessUsers  `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
 	SiteToSiteIPsecVPN *VPCRouterSiteToSiteIPsecVPN `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
 	StaticRoutes       *VPCRouterStaticRoutes       `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
