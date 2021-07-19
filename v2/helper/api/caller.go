@@ -72,8 +72,14 @@ func newCaller(opts *CallerOptions) sacloud.APICaller {
 	if opts.HTTPRequestTimeout > 0 {
 		httpClient.Timeout = time.Duration(opts.HTTPRequestTimeout) * time.Second
 	}
+	if opts.HTTPRequestTimeout == 0 {
+		httpClient.Timeout = 300 * time.Second // デフォルト値
+	}
 	if opts.HTTPRequestRateLimit > 0 {
 		httpClient.Transport = &sacloud.RateLimitRoundTripper{RateLimitPerSec: opts.HTTPRequestRateLimit}
+	}
+	if opts.HTTPRequestRateLimit == 0 {
+		httpClient.Transport = &sacloud.RateLimitRoundTripper{RateLimitPerSec: 10} // デフォルト値
 	}
 
 	retryMax := sacloud.APIDefaultRetryMax
