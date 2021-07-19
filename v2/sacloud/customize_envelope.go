@@ -184,6 +184,16 @@ func (s localRouterFindRequestEnvelope) MarshalJSON() ([]byte, error) {
 	return json.Marshal(tmp)
 }
 
+func (s enhancedDBFindRequestEnvelope) MarshalJSON() ([]byte, error) {
+	type alias enhancedDBFindRequestEnvelope
+	tmp := alias(s)
+	if tmp.Filter == nil {
+		tmp.Filter = search.Filter{}
+	}
+	tmp.Filter[search.Key("Provider.Class")] = "enhanceddb"
+	return json.Marshal(tmp)
+}
+
 func (s databaseFindRequestEnvelope) MarshalJSON() ([]byte, error) {
 	type alias databaseFindRequestEnvelope
 	tmp := alias(s)
