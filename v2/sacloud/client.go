@@ -47,7 +47,7 @@ var (
 	// APIDefaultAcceptLanguage デフォルトのAcceptLanguage
 	APIDefaultAcceptLanguage = ""
 	// APIDefaultRetryMax デフォルトのリトライ回数
-	APIDefaultRetryMax = 0
+	APIDefaultRetryMax = 10
 	// APIDefaultRetryWaitMin デフォルトのリトライ間隔(最小)
 	APIDefaultRetryWaitMin = 1 * time.Second
 	// APIDefaultRetryWaitMax デフォルトのリトライ間隔(最大)
