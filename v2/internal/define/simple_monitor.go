@@ -207,6 +207,7 @@ var (
 			fields.Def("LastCheckedAt", meta.TypeTime),
 			fields.Def("LastHealthChangedAt", meta.TypeTime),
 			fields.Def("Health", meta.Static(types.ESimpleMonitorHealth(""))),
+			fields.Def("LatestLogs", meta.TypeStringSlice),
 		},
 	}
 )

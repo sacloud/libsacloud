@@ -101,4 +101,5 @@ type SimpleMonitorHealthCheckStatus struct {
 	LastCheckedAt       *time.Time                 `json:",omitempty" yaml:"last_checked_at,omitempty" structs:",omitempty"`
 	LastHealthChangedAt *time.Time                 `json:",omitempty" yaml:"last_health_changed_at,omitempty" structs:",omitempty"`
 	Health              types.ESimpleMonitorHealth `json:",omitempty" yaml:"health,omitempty" structs:",omitempty"`
+	LatestLogs          []string                   `json:",omitempty" yaml:"latest_logs,omitempty" structs:",omitempty"`
 }

@@ -25493,6 +25493,7 @@ type SimpleMonitorHealthStatus struct {
 	LastCheckedAt       time.Time
 	LastHealthChangedAt time.Time
 	Health              types.ESimpleMonitorHealth
+	LatestLogs          []string
 }
 
 // Validate validates by field tags
@@ -25506,10 +25507,12 @@ func (o *SimpleMonitorHealthStatus) setDefaults() interface{} {
 		LastCheckedAt       time.Time
 		LastHealthChangedAt time.Time
 		Health              types.ESimpleMonitorHealth
+		LatestLogs          []string
 	}{
 		LastCheckedAt:       o.GetLastCheckedAt(),
 		LastHealthChangedAt: o.GetLastHealthChangedAt(),
 		Health:              o.GetHealth(),
+		LatestLogs:          o.GetLatestLogs(),
 	}
 }
 
@@ -25541,6 +25544,16 @@ func (o *SimpleMonitorHealthStatus) GetHealth() types.ESimpleMonitorHealth {
 // SetHealth sets value to Health
 func (o *SimpleMonitorHealthStatus) SetHealth(v types.ESimpleMonitorHealth) {
 	o.Health = v
+}
+
+// GetLatestLogs returns value of LatestLogs
+func (o *SimpleMonitorHealthStatus) GetLatestLogs() []string {
+	return o.LatestLogs
+}
+
+// SetLatestLogs sets value to LatestLogs
+func (o *SimpleMonitorHealthStatus) SetLatestLogs(v []string) {
+	o.LatestLogs = v
 }
 
 /*************************************************

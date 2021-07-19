@@ -286,6 +286,11 @@ func TestSimpleMonitorOp_StatusAndHealth(t *testing.T) {
 					if !assert.NotNil(t, healthStatus) {
 						return errors.New("unexpected state: SimpleMonitorHealthStatus")
 					}
+					if isAccTest() {
+						if !assert.NotEmpty(t, healthStatus.LatestLogs) {
+							return errors.New("unexpected state: SimpleMonitorHealthStatus.LatestLogs")
+						}
+					}
 					return nil
 				},
 			},
