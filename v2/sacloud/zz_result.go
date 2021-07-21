@@ -25,6 +25,15 @@ type ArchiveFindResult struct {
 	Archives []*Archive `json:",omitempty" mapconv:"[]Archives,omitempty,recursive"`
 }
 
+// Values returns find results
+func (r *ArchiveFindResult) Values() []interface{} {
+	var results []interface{}
+	for _, v := range r.Archives {
+		results = append(results, v)
+	}
+	return results
+}
+
 // archiveCreateResult represents the Result of API
 type archiveCreateResult struct {
 	IsOk bool `json:",omitempty"` // is_ok
@@ -98,6 +107,15 @@ type AutoBackupFindResult struct {
 	AutoBackups []*AutoBackup `json:",omitempty" mapconv:"[]CommonServiceItems,omitempty,recursive"`
 }
 
+// Values returns find results
+func (r *AutoBackupFindResult) Values() []interface{} {
+	var results []interface{}
+	for _, v := range r.AutoBackups {
+		results = append(results, v)
+	}
+	return results
+}
+
 // autoBackupCreateResult represents the Result of API
 type autoBackupCreateResult struct {
 	IsOk bool `json:",omitempty"` // is_ok
@@ -135,6 +153,15 @@ type BillByContractResult struct {
 	Bills []*Bill `json:",omitempty" mapconv:"[]Bills,omitempty,recursive"`
 }
 
+// Values returns find results
+func (r *BillByContractResult) Values() []interface{} {
+	var results []interface{}
+	for _, v := range r.Bills {
+		results = append(results, v)
+	}
+	return results
+}
+
 // BillByContractYearResult represents the Result of API
 type BillByContractYearResult struct {
 	Total int `json:",omitempty"` // Total count of target resources
@@ -142,6 +169,15 @@ type BillByContractYearResult struct {
 	Count int `json:",omitempty"` // Count of current page
 
 	Bills []*Bill `json:",omitempty" mapconv:"[]Bills,omitempty,recursive"`
+}
+
+// Values returns find results
+func (r *BillByContractYearResult) Values() []interface{} {
+	var results []interface{}
+	for _, v := range r.Bills {
+		results = append(results, v)
+	}
+	return results
 }
 
 // BillByContractYearMonthResult represents the Result of API
@@ -153,6 +189,15 @@ type BillByContractYearMonthResult struct {
 	Bills []*Bill `json:",omitempty" mapconv:"[]Bills,omitempty,recursive"`
 }
 
+// Values returns find results
+func (r *BillByContractYearMonthResult) Values() []interface{} {
+	var results []interface{}
+	for _, v := range r.Bills {
+		results = append(results, v)
+	}
+	return results
+}
+
 // BillReadResult represents the Result of API
 type BillReadResult struct {
 	Total int `json:",omitempty"` // Total count of target resources
@@ -162,6 +207,15 @@ type BillReadResult struct {
 	Bills []*Bill `json:",omitempty" mapconv:"[]Bills,omitempty,recursive"`
 }
 
+// Values returns find results
+func (r *BillReadResult) Values() []interface{} {
+	var results []interface{}
+	for _, v := range r.Bills {
+		results = append(results, v)
+	}
+	return results
+}
+
 // BillDetailsResult represents the Result of API
 type BillDetailsResult struct {
 	Total int `json:",omitempty"` // Total count of target resources
@@ -169,6 +223,15 @@ type BillDetailsResult struct {
 	Count int `json:",omitempty"` // Count of current page
 
 	BillDetails []*BillDetail `json:",omitempty" mapconv:"[]BillDetails,omitempty,recursive"`
+}
+
+// Values returns find results
+func (r *BillDetailsResult) Values() []interface{} {
+	var results []interface{}
+	for _, v := range r.BillDetails {
+		results = append(results, v)
+	}
+	return results
 }
 
 // billDetailsCSVResult represents the Result of API
@@ -185,6 +248,15 @@ type BridgeFindResult struct {
 	Count int `json:",omitempty"` // Count of current page
 
 	Bridges []*Bridge `json:",omitempty" mapconv:"[]Bridges,omitempty,recursive"`
+}
+
+// Values returns find results
+func (r *BridgeFindResult) Values() []interface{} {
+	var results []interface{}
+	for _, v := range r.Bridges {
+		results = append(results, v)
+	}
+	return results
 }
 
 // bridgeCreateResult represents the Result of API
@@ -215,6 +287,15 @@ type CDROMFindResult struct {
 	Count int `json:",omitempty"` // Count of current page
 
 	CDROMs []*CDROM `json:",omitempty" mapconv:"[]CDROMs,omitempty,recursive"`
+}
+
+// Values returns find results
+func (r *CDROMFindResult) Values() []interface{} {
+	var results []interface{}
+	for _, v := range r.CDROMs {
+		results = append(results, v)
+	}
+	return results
 }
 
 // cDROMCreateResult represents the Result of API
@@ -253,6 +334,15 @@ type ContainerRegistryFindResult struct {
 	Count int `json:",omitempty"` // Count of current page
 
 	ContainerRegistries []*ContainerRegistry `json:",omitempty" mapconv:"[]CommonServiceItems,omitempty,recursive"`
+}
+
+// Values returns find results
+func (r *ContainerRegistryFindResult) Values() []interface{} {
+	var results []interface{}
+	for _, v := range r.ContainerRegistries {
+		results = append(results, v)
+	}
+	return results
 }
 
 // containerRegistryCreateResult represents the Result of API
@@ -299,6 +389,15 @@ type CouponFindResult struct {
 	Coupons []*Coupon `json:",omitempty" mapconv:"[]Coupon,omitempty,recursive"`
 }
 
+// Values returns find results
+func (r *CouponFindResult) Values() []interface{} {
+	var results []interface{}
+	for _, v := range r.Coupons {
+		results = append(results, v)
+	}
+	return results
+}
+
 // DatabaseFindResult represents the Result of API
 type DatabaseFindResult struct {
 	Total int `json:",omitempty"` // Total count of target resources
@@ -306,6 +405,15 @@ type DatabaseFindResult struct {
 	Count int `json:",omitempty"` // Count of current page
 
 	Databases []*Database `json:",omitempty" mapconv:"[]Appliances,omitempty,recursive"`
+}
+
+// Values returns find results
+func (r *DatabaseFindResult) Values() []interface{} {
+	var results []interface{}
+	for _, v := range r.Databases {
+		results = append(results, v)
+	}
+	return results
 }
 
 // databaseCreateResult represents the Result of API
@@ -387,6 +495,15 @@ type DiskFindResult struct {
 	Disks []*Disk `json:",omitempty" mapconv:"[]Disks,omitempty,recursive"`
 }
 
+// Values returns find results
+func (r *DiskFindResult) Values() []interface{} {
+	var results []interface{}
+	for _, v := range r.Disks {
+		results = append(results, v)
+	}
+	return results
+}
+
 // diskCreateResult represents the Result of API
 type diskCreateResult struct {
 	IsOk bool `json:",omitempty"` // is_ok
@@ -438,6 +555,15 @@ type DiskPlanFindResult struct {
 	DiskPlans []*DiskPlan `json:",omitempty" mapconv:"[]DiskPlans,omitempty,recursive"`
 }
 
+// Values returns find results
+func (r *DiskPlanFindResult) Values() []interface{} {
+	var results []interface{}
+	for _, v := range r.DiskPlans {
+		results = append(results, v)
+	}
+	return results
+}
+
 // diskPlanReadResult represents the Result of API
 type diskPlanReadResult struct {
 	IsOk bool `json:",omitempty"` // is_ok
@@ -452,6 +578,15 @@ type DNSFindResult struct {
 	Count int `json:",omitempty"` // Count of current page
 
 	DNS []*DNS `json:",omitempty" mapconv:"[]CommonServiceItems,omitempty,recursive"`
+}
+
+// Values returns find results
+func (r *DNSFindResult) Values() []interface{} {
+	var results []interface{}
+	for _, v := range r.DNS {
+		results = append(results, v)
+	}
+	return results
 }
 
 // dNSCreateResult represents the Result of API
@@ -491,6 +626,15 @@ type EnhancedDBFindResult struct {
 	EnhancedDBs []*EnhancedDB `json:",omitempty" mapconv:"[]CommonServiceItems,omitempty,recursive"`
 }
 
+// Values returns find results
+func (r *EnhancedDBFindResult) Values() []interface{} {
+	var results []interface{}
+	for _, v := range r.EnhancedDBs {
+		results = append(results, v)
+	}
+	return results
+}
+
 // enhancedDBCreateResult represents the Result of API
 type enhancedDBCreateResult struct {
 	IsOk bool `json:",omitempty"` // is_ok
@@ -519,6 +663,15 @@ type ESMEFindResult struct {
 	Count int `json:",omitempty"` // Count of current page
 
 	ESME []*ESME `json:",omitempty" mapconv:"[]CommonServiceItems,omitempty,recursive"`
+}
+
+// Values returns find results
+func (r *ESMEFindResult) Values() []interface{} {
+	var results []interface{}
+	for _, v := range r.ESME {
+		results = append(results, v)
+	}
+	return results
 }
 
 // eSMECreateResult represents the Result of API
@@ -572,6 +725,15 @@ type GSLBFindResult struct {
 	GSLBs []*GSLB `json:",omitempty" mapconv:"[]CommonServiceItems,omitempty,recursive"`
 }
 
+// Values returns find results
+func (r *GSLBFindResult) Values() []interface{} {
+	var results []interface{}
+	for _, v := range r.GSLBs {
+		results = append(results, v)
+	}
+	return results
+}
+
 // gSLBCreateResult represents the Result of API
 type gSLBCreateResult struct {
 	IsOk bool `json:",omitempty"` // is_ok
@@ -609,6 +771,15 @@ type IconFindResult struct {
 	Icons []*Icon `json:",omitempty" mapconv:"[]Icons,omitempty,recursive"`
 }
 
+// Values returns find results
+func (r *IconFindResult) Values() []interface{} {
+	var results []interface{}
+	for _, v := range r.Icons {
+		results = append(results, v)
+	}
+	return results
+}
+
 // iconCreateResult represents the Result of API
 type iconCreateResult struct {
 	IsOk bool `json:",omitempty"` // is_ok
@@ -637,6 +808,15 @@ type InterfaceFindResult struct {
 	Count int `json:",omitempty"` // Count of current page
 
 	Interfaces []*Interface `json:",omitempty" mapconv:"[]Interfaces,omitempty,recursive"`
+}
+
+// Values returns find results
+func (r *InterfaceFindResult) Values() []interface{} {
+	var results []interface{}
+	for _, v := range r.Interfaces {
+		results = append(results, v)
+	}
+	return results
 }
 
 // interfaceCreateResult represents the Result of API
@@ -674,6 +854,15 @@ type InternetFindResult struct {
 	Count int `json:",omitempty"` // Count of current page
 
 	Internet []*Internet `json:",omitempty" mapconv:"[]Internet,omitempty,recursive"`
+}
+
+// Values returns find results
+func (r *InternetFindResult) Values() []interface{} {
+	var results []interface{}
+	for _, v := range r.Internet {
+		results = append(results, v)
+	}
+	return results
 }
 
 // internetCreateResult represents the Result of API
@@ -748,6 +937,15 @@ type InternetPlanFindResult struct {
 	InternetPlans []*InternetPlan `json:",omitempty" mapconv:"[]InternetPlans,omitempty,recursive"`
 }
 
+// Values returns find results
+func (r *InternetPlanFindResult) Values() []interface{} {
+	var results []interface{}
+	for _, v := range r.InternetPlans {
+		results = append(results, v)
+	}
+	return results
+}
+
 // internetPlanReadResult represents the Result of API
 type internetPlanReadResult struct {
 	IsOk bool `json:",omitempty"` // is_ok
@@ -762,6 +960,15 @@ type IPAddressListResult struct {
 	Count int `json:",omitempty"` // Count of current page
 
 	IPAddress []*IPAddress `json:",omitempty" mapconv:"[]IPAddress,omitempty,recursive"`
+}
+
+// Values returns find results
+func (r *IPAddressListResult) Values() []interface{} {
+	var results []interface{}
+	for _, v := range r.IPAddress {
+		results = append(results, v)
+	}
+	return results
 }
 
 // iPAddressReadResult represents the Result of API
@@ -787,6 +994,15 @@ type IPv6NetListResult struct {
 	IPv6Nets []*IPv6Net `json:",omitempty" mapconv:"[]IPv6Nets,omitempty,recursive"`
 }
 
+// Values returns find results
+func (r *IPv6NetListResult) Values() []interface{} {
+	var results []interface{}
+	for _, v := range r.IPv6Nets {
+		results = append(results, v)
+	}
+	return results
+}
+
 // IPv6NetFindResult represents the Result of API
 type IPv6NetFindResult struct {
 	Total int `json:",omitempty"` // Total count of target resources
@@ -794,6 +1010,15 @@ type IPv6NetFindResult struct {
 	Count int `json:",omitempty"` // Count of current page
 
 	IPv6Nets []*IPv6Net `json:",omitempty" mapconv:"[]IPv6Nets,omitempty,recursive"`
+}
+
+// Values returns find results
+func (r *IPv6NetFindResult) Values() []interface{} {
+	var results []interface{}
+	for _, v := range r.IPv6Nets {
+		results = append(results, v)
+	}
+	return results
 }
 
 // iPv6NetReadResult represents the Result of API
@@ -810,6 +1035,15 @@ type IPv6AddrFindResult struct {
 	Count int `json:",omitempty"` // Count of current page
 
 	IPv6Addrs []*IPv6Addr `json:",omitempty" mapconv:"[]IPv6Addrs,omitempty,recursive"`
+}
+
+// Values returns find results
+func (r *IPv6AddrFindResult) Values() []interface{} {
+	var results []interface{}
+	for _, v := range r.IPv6Addrs {
+		results = append(results, v)
+	}
+	return results
 }
 
 // iPv6AddrCreateResult represents the Result of API
@@ -842,6 +1076,15 @@ type LicenseFindResult struct {
 	Licenses []*License `json:",omitempty" mapconv:"[]Licenses,omitempty,recursive"`
 }
 
+// Values returns find results
+func (r *LicenseFindResult) Values() []interface{} {
+	var results []interface{}
+	for _, v := range r.Licenses {
+		results = append(results, v)
+	}
+	return results
+}
+
 // licenseCreateResult represents the Result of API
 type licenseCreateResult struct {
 	IsOk bool `json:",omitempty"` // is_ok
@@ -872,6 +1115,15 @@ type LicenseInfoFindResult struct {
 	LicenseInfo []*LicenseInfo `json:",omitempty" mapconv:"[]LicenseInfo,omitempty,recursive"`
 }
 
+// Values returns find results
+func (r *LicenseInfoFindResult) Values() []interface{} {
+	var results []interface{}
+	for _, v := range r.LicenseInfo {
+		results = append(results, v)
+	}
+	return results
+}
+
 // licenseInfoReadResult represents the Result of API
 type licenseInfoReadResult struct {
 	IsOk bool `json:",omitempty"` // is_ok
@@ -886,6 +1138,15 @@ type LoadBalancerFindResult struct {
 	Count int `json:",omitempty"` // Count of current page
 
 	LoadBalancers []*LoadBalancer `json:",omitempty" mapconv:"[]Appliances,omitempty,recursive"`
+}
+
+// Values returns find results
+func (r *LoadBalancerFindResult) Values() []interface{} {
+	var results []interface{}
+	for _, v := range r.LoadBalancers {
+		results = append(results, v)
+	}
+	return results
 }
 
 // loadBalancerCreateResult represents the Result of API
@@ -932,6 +1193,15 @@ type LoadBalancerStatusResult struct {
 	Status []*LoadBalancerStatus `json:",omitempty" mapconv:"[]LoadBalancer,omitempty,recursive"`
 }
 
+// Values returns find results
+func (r *LoadBalancerStatusResult) Values() []interface{} {
+	var results []interface{}
+	for _, v := range r.Status {
+		results = append(results, v)
+	}
+	return results
+}
+
 // LocalRouterFindResult represents the Result of API
 type LocalRouterFindResult struct {
 	Total int `json:",omitempty"` // Total count of target resources
@@ -939,6 +1209,15 @@ type LocalRouterFindResult struct {
 	Count int `json:",omitempty"` // Count of current page
 
 	LocalRouters []*LocalRouter `json:",omitempty" mapconv:"[]CommonServiceItems,omitempty,recursive"`
+}
+
+// Values returns find results
+func (r *LocalRouterFindResult) Values() []interface{} {
+	var results []interface{}
+	for _, v := range r.LocalRouters {
+		results = append(results, v)
+	}
+	return results
 }
 
 // localRouterCreateResult represents the Result of API
@@ -990,6 +1269,15 @@ type MobileGatewayFindResult struct {
 	Count int `json:",omitempty"` // Count of current page
 
 	MobileGateways []*MobileGateway `json:",omitempty" mapconv:"[]Appliances,omitempty,recursive"`
+}
+
+// Values returns find results
+func (r *MobileGatewayFindResult) Values() []interface{} {
+	var results []interface{}
+	for _, v := range r.MobileGateways {
+		results = append(results, v)
+	}
+	return results
 }
 
 // mobileGatewayCreateResult represents the Result of API
@@ -1078,6 +1366,15 @@ type NFSFindResult struct {
 	NFS []*NFS `json:",omitempty" mapconv:"[]Appliances,omitempty,recursive"`
 }
 
+// Values returns find results
+func (r *NFSFindResult) Values() []interface{} {
+	var results []interface{}
+	for _, v := range r.NFS {
+		results = append(results, v)
+	}
+	return results
+}
+
 // nFSCreateResult represents the Result of API
 type nFSCreateResult struct {
 	IsOk bool `json:",omitempty"` // is_ok
@@ -1122,6 +1419,15 @@ type NoteFindResult struct {
 	Notes []*Note `json:",omitempty" mapconv:"[]Notes,omitempty,recursive"`
 }
 
+// Values returns find results
+func (r *NoteFindResult) Values() []interface{} {
+	var results []interface{}
+	for _, v := range r.Notes {
+		results = append(results, v)
+	}
+	return results
+}
+
 // noteCreateResult represents the Result of API
 type noteCreateResult struct {
 	IsOk bool `json:",omitempty"` // is_ok
@@ -1150,6 +1456,15 @@ type PacketFilterFindResult struct {
 	Count int `json:",omitempty"` // Count of current page
 
 	PacketFilters []*PacketFilter `json:",omitempty" mapconv:"[]PacketFilters,omitempty,recursive"`
+}
+
+// Values returns find results
+func (r *PacketFilterFindResult) Values() []interface{} {
+	var results []interface{}
+	for _, v := range r.PacketFilters {
+		results = append(results, v)
+	}
+	return results
 }
 
 // packetFilterCreateResult represents the Result of API
@@ -1182,6 +1497,15 @@ type PrivateHostFindResult struct {
 	PrivateHosts []*PrivateHost `json:",omitempty" mapconv:"[]PrivateHosts,omitempty,recursive"`
 }
 
+// Values returns find results
+func (r *PrivateHostFindResult) Values() []interface{} {
+	var results []interface{}
+	for _, v := range r.PrivateHosts {
+		results = append(results, v)
+	}
+	return results
+}
+
 // privateHostCreateResult represents the Result of API
 type privateHostCreateResult struct {
 	IsOk bool `json:",omitempty"` // is_ok
@@ -1212,6 +1536,15 @@ type PrivateHostPlanFindResult struct {
 	PrivateHostPlans []*PrivateHostPlan `json:",omitempty" mapconv:"[]PrivateHostPlans,omitempty,recursive"`
 }
 
+// Values returns find results
+func (r *PrivateHostPlanFindResult) Values() []interface{} {
+	var results []interface{}
+	for _, v := range r.PrivateHostPlans {
+		results = append(results, v)
+	}
+	return results
+}
+
 // privateHostPlanReadResult represents the Result of API
 type privateHostPlanReadResult struct {
 	IsOk bool `json:",omitempty"` // is_ok
@@ -1226,6 +1559,15 @@ type ProxyLBFindResult struct {
 	Count int `json:",omitempty"` // Count of current page
 
 	ProxyLBs []*ProxyLB `json:",omitempty" mapconv:"[]CommonServiceItems,omitempty,recursive"`
+}
+
+// Values returns find results
+func (r *ProxyLBFindResult) Values() []interface{} {
+	var results []interface{}
+	for _, v := range r.ProxyLBs {
+		results = append(results, v)
+	}
+	return results
 }
 
 // proxyLBCreateResult represents the Result of API
@@ -1300,6 +1642,15 @@ type RegionFindResult struct {
 	Regions []*Region `json:",omitempty" mapconv:"[]Regions,omitempty,recursive"`
 }
 
+// Values returns find results
+func (r *RegionFindResult) Values() []interface{} {
+	var results []interface{}
+	for _, v := range r.Regions {
+		results = append(results, v)
+	}
+	return results
+}
+
 // regionReadResult represents the Result of API
 type regionReadResult struct {
 	IsOk bool `json:",omitempty"` // is_ok
@@ -1314,6 +1665,15 @@ type ServerFindResult struct {
 	Count int `json:",omitempty"` // Count of current page
 
 	Servers []*Server `json:",omitempty" mapconv:"[]Servers,omitempty,recursive"`
+}
+
+// Values returns find results
+func (r *ServerFindResult) Values() []interface{} {
+	var results []interface{}
+	for _, v := range r.Servers {
+		results = append(results, v)
+	}
+	return results
 }
 
 // serverCreateResult represents the Result of API
@@ -1374,6 +1734,15 @@ type ServerPlanFindResult struct {
 	ServerPlans []*ServerPlan `json:",omitempty" mapconv:"[]ServerPlans,omitempty,recursive"`
 }
 
+// Values returns find results
+func (r *ServerPlanFindResult) Values() []interface{} {
+	var results []interface{}
+	for _, v := range r.ServerPlans {
+		results = append(results, v)
+	}
+	return results
+}
+
 // serverPlanReadResult represents the Result of API
 type serverPlanReadResult struct {
 	IsOk bool `json:",omitempty"` // is_ok
@@ -1390,6 +1759,15 @@ type ServiceClassFindResult struct {
 	ServiceClasses []*ServiceClass `json:",omitempty" mapconv:"[]ServiceClasses,omitempty,recursive"`
 }
 
+// Values returns find results
+func (r *ServiceClassFindResult) Values() []interface{} {
+	var results []interface{}
+	for _, v := range r.ServiceClasses {
+		results = append(results, v)
+	}
+	return results
+}
+
 // SIMFindResult represents the Result of API
 type SIMFindResult struct {
 	Total int `json:",omitempty"` // Total count of target resources
@@ -1397,6 +1775,15 @@ type SIMFindResult struct {
 	Count int `json:",omitempty"` // Count of current page
 
 	SIMs []*SIM `json:",omitempty" mapconv:"[]CommonServiceItems,omitempty,recursive"`
+}
+
+// Values returns find results
+func (r *SIMFindResult) Values() []interface{} {
+	var results []interface{}
+	for _, v := range r.SIMs {
+		results = append(results, v)
+	}
+	return results
 }
 
 // sIMCreateResult represents the Result of API
@@ -1429,6 +1816,15 @@ type SIMLogsResult struct {
 	Logs []*SIMLog `json:",omitempty" mapconv:"[]Logs,omitempty,recursive"`
 }
 
+// Values returns find results
+func (r *SIMLogsResult) Values() []interface{} {
+	var results []interface{}
+	for _, v := range r.Logs {
+		results = append(results, v)
+	}
+	return results
+}
+
 // sIMGetNetworkOperatorResult represents the Result of API
 type sIMGetNetworkOperatorResult struct {
 	IsOk bool `json:",omitempty"` // is_ok
@@ -1457,6 +1853,15 @@ type SimpleMonitorFindResult struct {
 	Count int `json:",omitempty"` // Count of current page
 
 	SimpleMonitors []*SimpleMonitor `json:",omitempty" mapconv:"[]CommonServiceItems,omitempty,recursive"`
+}
+
+// Values returns find results
+func (r *SimpleMonitorFindResult) Values() []interface{} {
+	var results []interface{}
+	for _, v := range r.SimpleMonitors {
+		results = append(results, v)
+	}
+	return results
 }
 
 // simpleMonitorCreateResult represents the Result of API
@@ -1510,6 +1915,15 @@ type SSHKeyFindResult struct {
 	SSHKeys []*SSHKey `json:",omitempty" mapconv:"[]SSHKeys,omitempty,recursive"`
 }
 
+// Values returns find results
+func (r *SSHKeyFindResult) Values() []interface{} {
+	var results []interface{}
+	for _, v := range r.SSHKeys {
+		results = append(results, v)
+	}
+	return results
+}
+
 // sSHKeyCreateResult represents the Result of API
 type sSHKeyCreateResult struct {
 	IsOk bool `json:",omitempty"` // is_ok
@@ -1547,6 +1961,15 @@ type SubnetFindResult struct {
 	Subnets []*Subnet `json:",omitempty" mapconv:"[]Subnets,omitempty,recursive"`
 }
 
+// Values returns find results
+func (r *SubnetFindResult) Values() []interface{} {
+	var results []interface{}
+	for _, v := range r.Subnets {
+		results = append(results, v)
+	}
+	return results
+}
+
 // subnetReadResult represents the Result of API
 type subnetReadResult struct {
 	IsOk bool `json:",omitempty"` // is_ok
@@ -1561,6 +1984,15 @@ type SwitchFindResult struct {
 	Count int `json:",omitempty"` // Count of current page
 
 	Switches []*Switch `json:",omitempty" mapconv:"[]Switches,omitempty,recursive"`
+}
+
+// Values returns find results
+func (r *SwitchFindResult) Values() []interface{} {
+	var results []interface{}
+	for _, v := range r.Switches {
+		results = append(results, v)
+	}
+	return results
 }
 
 // switchCreateResult represents the Result of API
@@ -1593,6 +2025,15 @@ type SwitchGetServersResult struct {
 	Servers []*Server `json:",omitempty" mapconv:"[]Servers,omitempty,recursive"`
 }
 
+// Values returns find results
+func (r *SwitchGetServersResult) Values() []interface{} {
+	var results []interface{}
+	for _, v := range r.Servers {
+		results = append(results, v)
+	}
+	return results
+}
+
 // VPCRouterFindResult represents the Result of API
 type VPCRouterFindResult struct {
 	Total int `json:",omitempty"` // Total count of target resources
@@ -1600,6 +2041,15 @@ type VPCRouterFindResult struct {
 	Count int `json:",omitempty"` // Count of current page
 
 	VPCRouters []*VPCRouter `json:",omitempty" mapconv:"[]Appliances,omitempty,recursive"`
+}
+
+// Values returns find results
+func (r *VPCRouterFindResult) Values() []interface{} {
+	var results []interface{}
+	for _, v := range r.VPCRouters {
+		results = append(results, v)
+	}
+	return results
 }
 
 // vPCRouterCreateResult represents the Result of API
@@ -1653,6 +2103,15 @@ type WebAccelListResult struct {
 	WebAccels []*WebAccel `json:",omitempty" mapconv:"[]Sites,omitempty,recursive"`
 }
 
+// Values returns find results
+func (r *WebAccelListResult) Values() []interface{} {
+	var results []interface{}
+	for _, v := range r.WebAccels {
+		results = append(results, v)
+	}
+	return results
+}
+
 // webAccelReadResult represents the Result of API
 type webAccelReadResult struct {
 	IsOk bool `json:",omitempty"` // is_ok
@@ -1695,6 +2154,15 @@ type ZoneFindResult struct {
 	Count int `json:",omitempty"` // Count of current page
 
 	Zones []*Zone `json:",omitempty" mapconv:"[]Zones,omitempty,recursive"`
+}
+
+// Values returns find results
+func (r *ZoneFindResult) Values() []interface{} {
+	var results []interface{}
+	for _, v := range r.Zones {
+		results = append(results, v)
+	}
+	return results
 }
 
 // zoneReadResult represents the Result of API

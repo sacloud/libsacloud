@@ -66,6 +66,18 @@ type {{ .ResultTypeName }} struct {
 	{{- end }}
 {{ end }}
 }
+
+{{ if .IsResponsePlural }}{{ if eq (len .Results) 1 }}
+// Values returns find results
+func (r *{{ .ResultTypeName }}) Values() []interface{} {
+	var results []interface{}
+	for _ , v := range r.{{ (index .Results 0).DestField }} {
+		results = append(results, v)
+	}
+	return results
+}
+{{ end }}{{ end }}
+
 {{ end }}
 
 {{- end -}}
