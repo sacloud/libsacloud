@@ -376,14 +376,43 @@ type VPCRouterL2TPIPsecServerConfig struct {
 
 // VPCRouterWireGuard WireGuardサーバ
 type VPCRouterWireGuard struct {
-	Config  *VPCRouterWireGuardConfig `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
+	Config  *VPCRouterWireGuardConfig `yaml:"config"`
 	Enabled types.StringFlag          `yaml:"enabled"`
+}
+
+// MarshalJSON Configが一つ以上ある場合にEnabledをtrueに設定する
+func (f *VPCRouterWireGuard) MarshalJSON() ([]byte, error) {
+	if f == nil {
+		return nil, nil
+	}
+	if f.Config == nil {
+		f.Config = &VPCRouterWireGuardConfig{}
+	}
+	if f.Config.IPAddress != "" {
+		f.Enabled = types.StringTrue
+	}
+	type alias VPCRouterWireGuard
+	a := alias(*f)
+	return json.Marshal(&a)
 }
 
 // VPCRouterWireGuardConfig WireGuardサーバコンフィグ
 type VPCRouterWireGuardConfig struct {
-	IPAddress string                    `json:",omitempty" yaml:",omitempty" structs:",omitempty"` // xxx.xxx.xxx.xxx/nn
+	IPAddress string                    `yaml:"ip_address"` // xxx.xxx.xxx.xxx/nn
 	Peers     []*VPCRouterWireGuardPeer `yaml:"peers"`
+}
+
+// MarshalJSON Peersがnullを許容しないため代わりに[]を設定する
+func (f *VPCRouterWireGuardConfig) MarshalJSON() ([]byte, error) {
+	if f == nil {
+		return nil, nil
+	}
+	if f.Peers == nil {
+		f.Peers = []*VPCRouterWireGuardPeer{}
+	}
+	type alias VPCRouterWireGuardConfig
+	a := alias(*f)
+	return json.Marshal(&a)
 }
 
 // VPCRouterWireGuardPeer ピアの設定
