@@ -108,6 +108,10 @@ func (s ProxyLBSetting) MarshalJSON() ([]byte, error) {
 	if s.Rules == nil {
 		s.Rules = make([]ProxyLBRule, 0)
 	}
+	// syslogは値がないと400エラーになるため両方空の場合はポートのデフォルト値だけ設定しておく
+	if s.Syslog.Server == "" && s.Syslog.Port == 0 {
+		s.Syslog.Port = 514
+	}
 
 	type alias ProxyLBSetting
 	tmp := alias(s)

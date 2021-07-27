@@ -16,7 +16,6 @@ package query
 
 import (
 	"context"
-	"os"
 	"testing"
 
 	internetBuilder "github.com/sacloud/libsacloud/v2/helper/builder/internet"
@@ -119,8 +118,6 @@ func TestReadRouter(t *testing.T) {
 }
 
 func TestReadProxyLB(t *testing.T) {
-	testutil.PreCheckEnvsFunc("SAKURACLOUD_PROXYLB_SERVER0")(t)
-
 	ctx := context.Background()
 	caller := testutil.SingletonAPICaller()
 
@@ -135,10 +132,6 @@ func TestReadProxyLB(t *testing.T) {
 		},
 		Timeout: &sacloud.ProxyLBTimeout{
 			InactiveSec: 10,
-		},
-		Syslog: &sacloud.ProxyLBSyslog{
-			Server: os.Getenv("SAKURACLOUD_PROXYLB_SERVER0"),
-			Port:   514,
 		},
 	})
 	if err != nil {
