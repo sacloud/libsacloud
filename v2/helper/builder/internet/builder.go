@@ -19,6 +19,7 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/sacloud/libsacloud/v2/helper/plans"
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
@@ -121,6 +122,17 @@ func (b *Builder) Update(ctx context.Context, zone string, id types.ID) (*saclou
 		return nil, fmt.Errorf("unsupported operation: NetworkMaskLen is changed: current: %d new: %d", internet.NetworkMaskLen, b.NetworkMaskLen)
 	}
 
+	if internet.BandWidthMbps != b.BandWidthMbps {
+		b.Tags = plans.AppendPreviousIDTagIfAbsent(b.Tags, internet.ID)
+		// 成功するとIDが変更となる
+		internet, err = b.Client.Internet.UpdateBandWidth(ctx, zone, internet.ID, &sacloud.InternetUpdateBandWidthRequest{
+			BandWidthMbps: b.BandWidthMbps,
+		})
+		if err != nil {
+			return nil, err
+		}
+	}
+
 	internet, err = b.Client.Internet.Update(ctx, zone, internet.ID, &sacloud.InternetUpdateRequest{
 		Name:        b.Name,
 		Description: b.Description,
@@ -129,16 +141,6 @@ func (b *Builder) Update(ctx context.Context, zone string, id types.ID) (*saclou
 	})
 	if err != nil {
 		return nil, err
-	}
-
-	if internet.BandWidthMbps != b.BandWidthMbps {
-		// 成功するとIDが変更となる
-		internet, err = b.Client.Internet.UpdateBandWidth(ctx, zone, internet.ID, &sacloud.InternetUpdateBandWidthRequest{
-			BandWidthMbps: b.BandWidthMbps,
-		})
-		if err != nil {
-			return nil, err
-		}
 	}
 
 	currentIPv6Enabled := len(internet.Switch.IPv6Nets) > 0

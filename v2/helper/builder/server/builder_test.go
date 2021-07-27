@@ -24,6 +24,7 @@ import (
 	"github.com/sacloud/libsacloud/v2/helper/api"
 	"github.com/sacloud/libsacloud/v2/helper/builder"
 	"github.com/sacloud/libsacloud/v2/helper/builder/disk"
+	"github.com/sacloud/libsacloud/v2/helper/plans"
 	"github.com/sacloud/libsacloud/v2/helper/power"
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/ostype"
@@ -762,5 +763,56 @@ func TestBuilder_IsNeedShutdown(t *testing.T) {
 		got, err := tc.in.IsNeedShutdown(context.Background(), testutil.TestZone())
 		require.Equal(t, tc.err, err, tc.msg)
 		require.Equal(t, tc.expect, got, tc.msg)
+	}
+}
+
+func TestBuilder_UpdateWithPreviousID(t *testing.T) {
+	ctx := context.Background()
+	builder := &Builder{
+		Name:            testutil.ResourceName("server-builder"),
+		CPU:             1,
+		MemoryGB:        1,
+		Commitment:      types.Commitments.Standard,
+		Generation:      types.PlanGenerations.Default,
+		Tags:            types.Tags{"tag1", "tag2"},
+		BootAfterCreate: false,
+		Client:          NewBuildersAPIClient(testutil.SingletonAPICaller()),
+		ForceShutdown:   true,
+	}
+	createResult, err := builder.Build(ctx, testutil.TestZone())
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	serverOp := sacloud.NewServerOp(testutil.SingletonAPICaller())
+	server, err := serverOp.Read(ctx, testutil.TestZone(), createResult.ServerID)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	require.EqualValues(t, builder.Tags, server.Tags)
+
+	// プラン変更
+	builder.ServerID = server.ID
+	builder.CPU = 2
+	builder.MemoryGB = 4
+
+	updateResult, err := builder.Update(ctx, testutil.TestZone())
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	// IDが変更されているはず
+	require.True(t, createResult.ServerID != updateResult.ServerID)
+	updated, err := serverOp.Read(ctx, testutil.TestZone(), updateResult.ServerID)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	require.EqualValues(t, plans.AppendPreviousIDTagIfAbsent(server.Tags, server.ID), updated.Tags)
+
+	// cleanup
+	if err := serverOp.Delete(ctx, testutil.TestZone(), updated.ID); err != nil {
+		t.Fatal(err)
 	}
 }

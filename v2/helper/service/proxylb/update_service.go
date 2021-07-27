@@ -18,9 +18,8 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/sacloud/libsacloud/v2/helper/plans"
 	"github.com/sacloud/libsacloud/v2/pkg/util"
-	"github.com/sacloud/libsacloud/v2/sacloud/types"
-
 	"github.com/sacloud/libsacloud/v2/sacloud"
 )
 
@@ -50,9 +49,7 @@ func (s *Service) UpdateWithContext(ctx context.Context, req *UpdateRequest) (*s
 	}
 
 	if !util.IsEmpty(req.Plan) && updated.Plan != *req.Plan {
-		return client.ChangePlan(ctx, req.ID, &sacloud.ProxyLBChangePlanRequest{
-			ServiceClass: types.ProxyLBServiceClass(*req.Plan, updated.Region),
-		})
+		return plans.ChangeProxyLBPlan(ctx, s.caller, updated.ID, req.Plan.Int())
 	}
 
 	return updated, err
