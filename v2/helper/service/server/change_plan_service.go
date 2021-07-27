@@ -18,9 +18,9 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/sacloud/libsacloud/v2/sacloud/types"
-
+	"github.com/sacloud/libsacloud/v2/helper/plans"
 	"github.com/sacloud/libsacloud/v2/sacloud"
+	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
 func (s *Service) ChangePlan(req *ChangePlanRequest) (*sacloud.Server, error) {
@@ -60,5 +60,7 @@ func (s *Service) ChangePlanWithContext(ctx context.Context, req *ChangePlanRequ
 		changeReq.ServerPlanCommitment = req.ServerPlanCommitment
 	}
 
-	return client.ChangePlan(ctx, req.Zone, req.ID, changeReq)
+	return plans.ChangeServerPlan(ctx, s.caller, req.Zone, req.ID,
+		changeReq.CPU, changeReq.GetMemoryGB(),
+		changeReq.ServerPlanCommitment, changeReq.ServerPlanGeneration)
 }

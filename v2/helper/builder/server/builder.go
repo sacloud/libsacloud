@@ -22,6 +22,7 @@ import (
 
 	"github.com/sacloud/libsacloud/v2/helper/builder"
 	"github.com/sacloud/libsacloud/v2/helper/builder/disk"
+	"github.com/sacloud/libsacloud/v2/helper/plans"
 	"github.com/sacloud/libsacloud/v2/helper/power"
 	"github.com/sacloud/libsacloud/v2/helper/query"
 	"github.com/sacloud/libsacloud/v2/pkg/size"
@@ -347,7 +348,8 @@ func (b *Builder) Update(ctx context.Context, zone string) (*BuildResult, error)
 	}
 
 	// shutdown
-	if isNeedShutdown && server.InstanceStatus.IsUp() {
+	running := server.InstanceStatus.IsUp()
+	if isNeedShutdown && running {
 		if b.NoWait {
 			return nil, errors.New("NoWait option is not available due to the need to shut down")
 		}
@@ -368,6 +370,7 @@ func (b *Builder) Update(ctx context.Context, zone string) (*BuildResult, error)
 
 	// plan
 	if b.isPlanChanged(server) {
+		b.Tags = plans.AppendPreviousIDTagIfAbsent(b.Tags, server.ID)
 		updated, err := b.Client.Server.ChangePlan(ctx, zone, server.ID, &sacloud.ServerChangePlanRequest{
 			CPU:                  b.CPU,
 			MemoryMB:             b.MemoryGB * size.GiB,
@@ -407,8 +410,8 @@ func (b *Builder) Update(ctx context.Context, zone string) (*BuildResult, error)
 		}
 	}
 
-	// bool
-	if isNeedShutdown && server.InstanceStatus.IsDown() {
+	// boot
+	if isNeedShutdown && running && server.InstanceStatus.IsDown() {
 		if err := power.BootServer(ctx, b.Client.Server, zone, server.ID); err != nil {
 			return result, err
 		}
