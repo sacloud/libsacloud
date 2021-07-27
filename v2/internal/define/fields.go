@@ -1559,8 +1559,9 @@ func (f *fieldsDef) ProxyLBSyslog() *dsl.FieldDesc {
 					Type: meta.TypeString,
 				},
 				{
-					Name: "Port",
-					Type: meta.TypeInt,
+					Name:         "Port",
+					Type:         meta.TypeInt,
+					DefaultValue: `514`,
 				},
 			},
 		},

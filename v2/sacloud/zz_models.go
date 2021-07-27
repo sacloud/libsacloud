@@ -20093,6 +20093,9 @@ func (o *ProxyLBSyslog) SetServer(v string) {
 
 // GetPort returns value of Port
 func (o *ProxyLBSyslog) GetPort() int {
+	if o.Port == 0 {
+		return 514
+	}
 	return o.Port
 }
 
