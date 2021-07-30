@@ -1248,6 +1248,24 @@ func (m *modelsDef) vpcRouterStaticRoute() *dsl.Model {
 	}
 }
 
+func (m *modelsDef) vpcRouterSessionAnalyticsValue() *dsl.Model {
+	return &dsl.Model{
+		Name:      "VPCRouterStatisticsValue",
+		NakedType: meta.Static(naked.VPCRouterStatisticsValue{}),
+		IsArray:   true,
+		Fields: []*dsl.FieldDesc{
+			{
+				Name: "Name",
+				Type: meta.TypeString,
+			},
+			{
+				Name: "Count",
+				Type: meta.TypeInt,
+			},
+		},
+	}
+}
+
 //******************************************************************************
 // Mobile Gateway
 //******************************************************************************

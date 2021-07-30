@@ -28979,6 +28979,7 @@ type VPCRouterStatus struct {
 	L2TPIPsecServerSessions []*VPCRouterL2TPIPsecServerSession `mapconv:"[]L2TPIPsecServerSessions,recursive"`
 	PPTPServerSessions      []*VPCRouterPPTPServerSession      `mapconv:"[]PPTPServerSessions,recursive"`
 	SiteToSiteIPsecVPNPeers []*VPCRouterSiteToSiteIPsecVPNPeer `mapconv:"[]SiteToSiteIPsecVPNPeers,recursive"`
+	SessionAnalysis         *VPCRouterSessionAnalysis
 }
 
 // Validate validates by field tags
@@ -28998,6 +28999,7 @@ func (o *VPCRouterStatus) setDefaults() interface{} {
 		L2TPIPsecServerSessions []*VPCRouterL2TPIPsecServerSession `mapconv:"[]L2TPIPsecServerSessions,recursive"`
 		PPTPServerSessions      []*VPCRouterPPTPServerSession      `mapconv:"[]PPTPServerSessions,recursive"`
 		SiteToSiteIPsecVPNPeers []*VPCRouterSiteToSiteIPsecVPNPeer `mapconv:"[]SiteToSiteIPsecVPNPeers,recursive"`
+		SessionAnalysis         *VPCRouterSessionAnalysis
 	}{
 		FirewallReceiveLogs:     o.GetFirewallReceiveLogs(),
 		FirewallSendLogs:        o.GetFirewallSendLogs(),
@@ -29008,6 +29010,7 @@ func (o *VPCRouterStatus) setDefaults() interface{} {
 		L2TPIPsecServerSessions: o.GetL2TPIPsecServerSessions(),
 		PPTPServerSessions:      o.GetPPTPServerSessions(),
 		SiteToSiteIPsecVPNPeers: o.GetSiteToSiteIPsecVPNPeers(),
+		SessionAnalysis:         o.GetSessionAnalysis(),
 	}
 }
 
@@ -29099,6 +29102,16 @@ func (o *VPCRouterStatus) GetSiteToSiteIPsecVPNPeers() []*VPCRouterSiteToSiteIPs
 // SetSiteToSiteIPsecVPNPeers sets value to SiteToSiteIPsecVPNPeers
 func (o *VPCRouterStatus) SetSiteToSiteIPsecVPNPeers(v []*VPCRouterSiteToSiteIPsecVPNPeer) {
 	o.SiteToSiteIPsecVPNPeers = v
+}
+
+// GetSessionAnalysis returns value of SessionAnalysis
+func (o *VPCRouterStatus) GetSessionAnalysis() *VPCRouterSessionAnalysis {
+	return o.SessionAnalysis
+}
+
+// SetSessionAnalysis sets value to SessionAnalysis
+func (o *VPCRouterStatus) SetSessionAnalysis(v *VPCRouterSessionAnalysis) {
+	o.SessionAnalysis = v
 }
 
 /*************************************************
@@ -29342,6 +29355,124 @@ func (o *VPCRouterSiteToSiteIPsecVPNPeer) GetPeer() string {
 // SetPeer sets value to Peer
 func (o *VPCRouterSiteToSiteIPsecVPNPeer) SetPeer(v string) {
 	o.Peer = v
+}
+
+/*************************************************
+* VPCRouterSessionAnalysis
+*************************************************/
+
+// VPCRouterSessionAnalysis represents API parameter/response structure
+type VPCRouterSessionAnalysis struct {
+	SourceAndDestination []*VPCRouterStatisticsValue
+	DestinationAddress   []*VPCRouterStatisticsValue
+	DestinationPort      []*VPCRouterStatisticsValue
+	SourceAddress        []*VPCRouterStatisticsValue
+}
+
+// Validate validates by field tags
+func (o *VPCRouterSessionAnalysis) Validate() error {
+	return validate.Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *VPCRouterSessionAnalysis) setDefaults() interface{} {
+	return &struct {
+		SourceAndDestination []*VPCRouterStatisticsValue
+		DestinationAddress   []*VPCRouterStatisticsValue
+		DestinationPort      []*VPCRouterStatisticsValue
+		SourceAddress        []*VPCRouterStatisticsValue
+	}{
+		SourceAndDestination: o.GetSourceAndDestination(),
+		DestinationAddress:   o.GetDestinationAddress(),
+		DestinationPort:      o.GetDestinationPort(),
+		SourceAddress:        o.GetSourceAddress(),
+	}
+}
+
+// GetSourceAndDestination returns value of SourceAndDestination
+func (o *VPCRouterSessionAnalysis) GetSourceAndDestination() []*VPCRouterStatisticsValue {
+	return o.SourceAndDestination
+}
+
+// SetSourceAndDestination sets value to SourceAndDestination
+func (o *VPCRouterSessionAnalysis) SetSourceAndDestination(v []*VPCRouterStatisticsValue) {
+	o.SourceAndDestination = v
+}
+
+// GetDestinationAddress returns value of DestinationAddress
+func (o *VPCRouterSessionAnalysis) GetDestinationAddress() []*VPCRouterStatisticsValue {
+	return o.DestinationAddress
+}
+
+// SetDestinationAddress sets value to DestinationAddress
+func (o *VPCRouterSessionAnalysis) SetDestinationAddress(v []*VPCRouterStatisticsValue) {
+	o.DestinationAddress = v
+}
+
+// GetDestinationPort returns value of DestinationPort
+func (o *VPCRouterSessionAnalysis) GetDestinationPort() []*VPCRouterStatisticsValue {
+	return o.DestinationPort
+}
+
+// SetDestinationPort sets value to DestinationPort
+func (o *VPCRouterSessionAnalysis) SetDestinationPort(v []*VPCRouterStatisticsValue) {
+	o.DestinationPort = v
+}
+
+// GetSourceAddress returns value of SourceAddress
+func (o *VPCRouterSessionAnalysis) GetSourceAddress() []*VPCRouterStatisticsValue {
+	return o.SourceAddress
+}
+
+// SetSourceAddress sets value to SourceAddress
+func (o *VPCRouterSessionAnalysis) SetSourceAddress(v []*VPCRouterStatisticsValue) {
+	o.SourceAddress = v
+}
+
+/*************************************************
+* VPCRouterStatisticsValue
+*************************************************/
+
+// VPCRouterStatisticsValue represents API parameter/response structure
+type VPCRouterStatisticsValue struct {
+	Name  string
+	Count int
+}
+
+// Validate validates by field tags
+func (o *VPCRouterStatisticsValue) Validate() error {
+	return validate.Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *VPCRouterStatisticsValue) setDefaults() interface{} {
+	return &struct {
+		Name  string
+		Count int
+	}{
+		Name:  o.GetName(),
+		Count: o.GetCount(),
+	}
+}
+
+// GetName returns value of Name
+func (o *VPCRouterStatisticsValue) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *VPCRouterStatisticsValue) SetName(v string) {
+	o.Name = v
+}
+
+// GetCount returns value of Count
+func (o *VPCRouterStatisticsValue) GetCount() int {
+	return o.Count
+}
+
+// SetCount sets value to Count
+func (o *VPCRouterStatisticsValue) SetCount(v int) {
+	o.Count = v
 }
 
 /*************************************************

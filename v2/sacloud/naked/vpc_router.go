@@ -527,4 +527,16 @@ type VPCRouterStatus struct {
 		Status string
 		Peer   string
 	} `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
+	SessionAnalysis *struct {
+		SourceAndDestination []*VPCRouterStatisticsValue `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
+		DestinationAddress   []*VPCRouterStatisticsValue `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
+		DestinationPort      []*VPCRouterStatisticsValue `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
+		SourceAddress        []*VPCRouterStatisticsValue `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
+	} `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
+}
+
+// VPCRouterStatisticsValue VPCルータのセッション統計情報
+type VPCRouterStatisticsValue struct {
+	Name  string `json:"name,omitempty" yaml:"name,omitempty" structs:",omitempty"`
+	Count int    `json:"count,omitempty" yaml:"count,omitempty" structs:",omitempty"`
 }
