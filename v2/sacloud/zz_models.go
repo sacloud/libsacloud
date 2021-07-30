@@ -19786,15 +19786,19 @@ func (o *ProxyLBServer) SetEnabled(v bool) {
 
 // ProxyLBRule represents API parameter/response structure
 type ProxyLBRule struct {
-	Host               string
-	Path               string
-	ServerGroup        string                           `json:",omitempty" mapconv:",omitempty"`
-	Action             types.EProxyLBRuleAction         `json:",omitempty" mapconv:",omitempty"`
-	RedirectLocation   string                           `json:",omitempty" mapconv:",omitempty"`
-	RedirectStatusCode types.EProxyLBRedirectStatusCode `json:",omitempty" mapconv:",omitempty"`
-	FixedStatusCode    types.EProxyLBFixedStatusCode    `json:",omitempty" mapconv:",omitempty"`
-	FixedContentType   types.EProxyLBFixedContentType   `json:",omitempty" mapconv:",omitempty"`
-	FixedMessageBody   string                           `json:",omitempty" mapconv:",omitempty"`
+	Host                         string
+	Path                         string
+	RequestHeaderName            string
+	RequestHeaderValue           string
+	RequestHeaderValueIgnoreCase bool
+	RequestHeaderValueNotMatch   bool
+	ServerGroup                  string                           `json:",omitempty" mapconv:",omitempty"`
+	Action                       types.EProxyLBRuleAction         `json:",omitempty" mapconv:",omitempty"`
+	RedirectLocation             string                           `json:",omitempty" mapconv:",omitempty"`
+	RedirectStatusCode           types.EProxyLBRedirectStatusCode `json:",omitempty" mapconv:",omitempty"`
+	FixedStatusCode              types.EProxyLBFixedStatusCode    `json:",omitempty" mapconv:",omitempty"`
+	FixedContentType             types.EProxyLBFixedContentType   `json:",omitempty" mapconv:",omitempty"`
+	FixedMessageBody             string                           `json:",omitempty" mapconv:",omitempty"`
 }
 
 // Validate validates by field tags
@@ -19805,25 +19809,33 @@ func (o *ProxyLBRule) Validate() error {
 // setDefaults implements sacloud.argumentDefaulter
 func (o *ProxyLBRule) setDefaults() interface{} {
 	return &struct {
-		Host               string
-		Path               string
-		ServerGroup        string                           `json:",omitempty" mapconv:",omitempty"`
-		Action             types.EProxyLBRuleAction         `json:",omitempty" mapconv:",omitempty"`
-		RedirectLocation   string                           `json:",omitempty" mapconv:",omitempty"`
-		RedirectStatusCode types.EProxyLBRedirectStatusCode `json:",omitempty" mapconv:",omitempty"`
-		FixedStatusCode    types.EProxyLBFixedStatusCode    `json:",omitempty" mapconv:",omitempty"`
-		FixedContentType   types.EProxyLBFixedContentType   `json:",omitempty" mapconv:",omitempty"`
-		FixedMessageBody   string                           `json:",omitempty" mapconv:",omitempty"`
+		Host                         string
+		Path                         string
+		RequestHeaderName            string
+		RequestHeaderValue           string
+		RequestHeaderValueIgnoreCase bool
+		RequestHeaderValueNotMatch   bool
+		ServerGroup                  string                           `json:",omitempty" mapconv:",omitempty"`
+		Action                       types.EProxyLBRuleAction         `json:",omitempty" mapconv:",omitempty"`
+		RedirectLocation             string                           `json:",omitempty" mapconv:",omitempty"`
+		RedirectStatusCode           types.EProxyLBRedirectStatusCode `json:",omitempty" mapconv:",omitempty"`
+		FixedStatusCode              types.EProxyLBFixedStatusCode    `json:",omitempty" mapconv:",omitempty"`
+		FixedContentType             types.EProxyLBFixedContentType   `json:",omitempty" mapconv:",omitempty"`
+		FixedMessageBody             string                           `json:",omitempty" mapconv:",omitempty"`
 	}{
-		Host:               o.GetHost(),
-		Path:               o.GetPath(),
-		ServerGroup:        o.GetServerGroup(),
-		Action:             o.GetAction(),
-		RedirectLocation:   o.GetRedirectLocation(),
-		RedirectStatusCode: o.GetRedirectStatusCode(),
-		FixedStatusCode:    o.GetFixedStatusCode(),
-		FixedContentType:   o.GetFixedContentType(),
-		FixedMessageBody:   o.GetFixedMessageBody(),
+		Host:                         o.GetHost(),
+		Path:                         o.GetPath(),
+		RequestHeaderName:            o.GetRequestHeaderName(),
+		RequestHeaderValue:           o.GetRequestHeaderValue(),
+		RequestHeaderValueIgnoreCase: o.GetRequestHeaderValueIgnoreCase(),
+		RequestHeaderValueNotMatch:   o.GetRequestHeaderValueNotMatch(),
+		ServerGroup:                  o.GetServerGroup(),
+		Action:                       o.GetAction(),
+		RedirectLocation:             o.GetRedirectLocation(),
+		RedirectStatusCode:           o.GetRedirectStatusCode(),
+		FixedStatusCode:              o.GetFixedStatusCode(),
+		FixedContentType:             o.GetFixedContentType(),
+		FixedMessageBody:             o.GetFixedMessageBody(),
 	}
 }
 
@@ -19845,6 +19857,46 @@ func (o *ProxyLBRule) GetPath() string {
 // SetPath sets value to Path
 func (o *ProxyLBRule) SetPath(v string) {
 	o.Path = v
+}
+
+// GetRequestHeaderName returns value of RequestHeaderName
+func (o *ProxyLBRule) GetRequestHeaderName() string {
+	return o.RequestHeaderName
+}
+
+// SetRequestHeaderName sets value to RequestHeaderName
+func (o *ProxyLBRule) SetRequestHeaderName(v string) {
+	o.RequestHeaderName = v
+}
+
+// GetRequestHeaderValue returns value of RequestHeaderValue
+func (o *ProxyLBRule) GetRequestHeaderValue() string {
+	return o.RequestHeaderValue
+}
+
+// SetRequestHeaderValue sets value to RequestHeaderValue
+func (o *ProxyLBRule) SetRequestHeaderValue(v string) {
+	o.RequestHeaderValue = v
+}
+
+// GetRequestHeaderValueIgnoreCase returns value of RequestHeaderValueIgnoreCase
+func (o *ProxyLBRule) GetRequestHeaderValueIgnoreCase() bool {
+	return o.RequestHeaderValueIgnoreCase
+}
+
+// SetRequestHeaderValueIgnoreCase sets value to RequestHeaderValueIgnoreCase
+func (o *ProxyLBRule) SetRequestHeaderValueIgnoreCase(v bool) {
+	o.RequestHeaderValueIgnoreCase = v
+}
+
+// GetRequestHeaderValueNotMatch returns value of RequestHeaderValueNotMatch
+func (o *ProxyLBRule) GetRequestHeaderValueNotMatch() bool {
+	return o.RequestHeaderValueNotMatch
+}
+
+// SetRequestHeaderValueNotMatch sets value to RequestHeaderValueNotMatch
+func (o *ProxyLBRule) SetRequestHeaderValueNotMatch(v bool) {
+	o.RequestHeaderValueNotMatch = v
 }
 
 // GetServerGroup returns value of ServerGroup
