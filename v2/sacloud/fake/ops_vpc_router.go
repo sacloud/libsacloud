@@ -328,6 +328,20 @@ func (o *VPCRouterOp) Status(ctx context.Context, zone string, id types.ID) (*sa
 			WireGuard: &sacloud.WireGuardStatus{
 				PublicKey: "fake-public-key",
 			},
+			SessionAnalysis: &sacloud.VPCRouterSessionAnalysis{
+				SourceAndDestination: []*sacloud.VPCRouterStatisticsValue{
+					{Name: "UDP src:127.0.0.1 dst:127.0.0.1:53", Count: 1},
+				},
+				DestinationAddress: []*sacloud.VPCRouterStatisticsValue{
+					{Name: "127.0.0.1", Count: 1},
+				},
+				DestinationPort: []*sacloud.VPCRouterStatisticsValue{
+					{Name: "UDP:53", Count: 1},
+				},
+				SourceAddress: []*sacloud.VPCRouterStatisticsValue{
+					{Name: "127.0.0.1", Count: 1},
+				},
+			},
 		}, nil
 	}
 	return &sacloud.VPCRouterStatus{}, nil

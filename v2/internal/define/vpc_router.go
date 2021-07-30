@@ -311,6 +311,18 @@ var (
 					MapConv: "[]SiteToSiteIPsecVPNPeers,recursive",
 				},
 			},
+			{
+				Name: "SessionAnalysis",
+				Type: &dsl.Model{
+					Name: "VPCRouterSessionAnalysis",
+					Fields: []*dsl.FieldDesc{
+						fields.Def("SourceAndDestination", models.vpcRouterSessionAnalyticsValue()),
+						fields.Def("DestinationAddress", models.vpcRouterSessionAnalyticsValue()),
+						fields.Def("DestinationPort", models.vpcRouterSessionAnalyticsValue()),
+						fields.Def("SourceAddress", models.vpcRouterSessionAnalyticsValue()),
+					},
+				},
+			},
 		},
 	}
 )
