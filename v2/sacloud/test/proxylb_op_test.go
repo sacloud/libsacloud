@@ -180,6 +180,14 @@ func initProxyLBVariables() {
 				Action:      types.ProxyLBRuleActions.Forward,
 			},
 			{
+				RequestHeaderName:            "User-Agent",
+				RequestHeaderValue:           "*badbot",
+				RequestHeaderValueIgnoreCase: false,
+				RequestHeaderValueNotMatch:   false,
+				ServerGroup:                  "group1",
+				Action:                       types.ProxyLBRuleActions.Forward,
+			},
+			{
 				Host:             "www.usacloud.jp",
 				Path:             "/fixed-response",
 				Action:           types.ProxyLBRuleActions.Fixed,
@@ -288,6 +296,14 @@ func initProxyLBVariables() {
 				Path:        "/path2-upd",
 				ServerGroup: "group2upd",
 				Action:      types.ProxyLBRuleActions.Forward,
+			},
+			{
+				RequestHeaderName:            "User-Agent",
+				RequestHeaderValue:           "*badbot",
+				RequestHeaderValueIgnoreCase: false,
+				RequestHeaderValueNotMatch:   false,
+				ServerGroup:                  "group1upd",
+				Action:                       types.ProxyLBRuleActions.Forward,
 			},
 			{
 				Host:             "www-upd.usacloud.jp",

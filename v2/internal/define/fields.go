@@ -1415,6 +1415,22 @@ func (f *fieldsDef) ProxyLBRules() *dsl.FieldDesc {
 					Type: meta.TypeString,
 				},
 				{
+					Name: "RequestHeaderName",
+					Type: meta.TypeString,
+				},
+				{
+					Name: "RequestHeaderValue",
+					Type: meta.TypeString,
+				},
+				{
+					Name: "RequestHeaderValueIgnoreCase",
+					Type: meta.TypeFlag,
+				},
+				{
+					Name: "RequestHeaderValueNotMatch",
+					Type: meta.TypeFlag,
+				},
+				{
 					Name: "ServerGroup",
 					Type: meta.TypeString,
 					Tags: &dsl.FieldTags{

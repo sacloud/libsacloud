@@ -158,15 +158,25 @@ type ProxyLBServer struct {
 
 // ProxyLBRule ProxyLBの振り分けルール
 type ProxyLBRule struct {
-	Host               string                         `json:",omitempty" yaml:"host,omitempty" structs:",omitempty"` // ホストヘッダのパターン(ワイルドカードとして?と*が利用可能)
-	Path               string                         `json:",omitempty" yaml:"path,omitempty" structs:",omitempty"` // パス
-	ServerGroup        string                         `json:",omitempty" yaml:"server_group,omitempty" structs:",omitempty"`
-	Action             types.EProxyLBRuleAction       `json:",omitempty" yaml:"action,omitempty" structs:",omitempty"` // forward(実サーバへ転送) | redirect | fixed(固定レスポンス)
-	RedirectLocation   string                         `json:",omitempty" yaml:"redirect_location,omitempty" structs:",omitempty"`
-	RedirectStatusCode string                         `json:",omitempty" yaml:"redirect_status_code,omitempty" structs:",omitempty"` // 301 | 302
-	FixedStatusCode    string                         `json:",omitempty" yaml:"fixed_status_code,omitempty" structs:",omitempty"`
-	FixedContentType   types.EProxyLBFixedContentType `json:",omitempty" yaml:"fixed_content_type,omitempty" structs:",omitempty"`
-	FixedMessageBody   string                         `json:",omitempty" yaml:"fixed_message_body,omitempty" structs:",omitempty"`
+	// 条件部
+	Host string `json:",omitempty" yaml:"host,omitempty" structs:",omitempty"` // ホストヘッダのパターン(ワイルドカードとして?と*が利用可能)
+	Path string `json:",omitempty" yaml:"path,omitempty" structs:",omitempty"` // パス
+
+	RequestHeaderName            string `json:",omitempty" yaml:"request_header_name,omitempty" structs:",omitempty"`
+	RequestHeaderValue           string `json:",omitempty" yaml:"request_header_value,omitempty" structs:",omitempty"`
+	RequestHeaderValueIgnoreCase bool   `yaml:"request_header_value_ignore_case"`
+	RequestHeaderValueNotMatch   bool   `yaml:"request_header_value_not_match"`
+
+	// アクション部
+	Action      types.EProxyLBRuleAction `json:",omitempty" yaml:"action,omitempty" structs:",omitempty"` // forward(実サーバへ転送) | redirect | fixed(固定レスポンス)
+	ServerGroup string                   `json:",omitempty" yaml:"server_group,omitempty" structs:",omitempty"`
+
+	RedirectLocation   string `json:",omitempty" yaml:"redirect_location,omitempty" structs:",omitempty"`
+	RedirectStatusCode string `json:",omitempty" yaml:"redirect_status_code,omitempty" structs:",omitempty"` // 301 | 302
+
+	FixedStatusCode  string                         `json:",omitempty" yaml:"fixed_status_code,omitempty" structs:",omitempty"`
+	FixedContentType types.EProxyLBFixedContentType `json:",omitempty" yaml:"fixed_content_type,omitempty" structs:",omitempty"`
+	FixedMessageBody string                         `json:",omitempty" yaml:"fixed_message_body,omitempty" structs:",omitempty"`
 }
 
 // ProxyLBACMESetting Let's Encryptでの証明書取得設定
