@@ -60,3 +60,20 @@ type MouseRequestButtons struct {
 type DeleteServerWithDiskParameter struct {
 	WithDisk []types.ID
 }
+
+// ServerBootParameter サーバ起動時に指定可能なパラメータ
+type ServerBootParameter struct {
+	UserBootVariables *ServerBootVariables
+}
+
+// ServerBootVariables サーバ起動時に指定可能なパラメータ、現時点ではcloud-initにのみ対応
+type ServerBootVariables struct {
+	CloudInit *CloudInitParameter
+}
+
+// CloudInitParameter cloud-initに渡すUserData
+//
+// Note: libsacloudレベルではUserData(cloud-config)は文字列として扱い中身までは関知しない
+type CloudInitParameter struct {
+	UserData string
+}

@@ -552,6 +552,7 @@ type ServerAPI interface {
 	Boot(ctx context.Context, zone string, id types.ID) error
 	Shutdown(ctx context.Context, zone string, id types.ID, shutdownOption *ShutdownOption) error
 	Reset(ctx context.Context, zone string, id types.ID) error
+	BootWithVariables(ctx context.Context, zone string, id types.ID, param *ServerBootVariables) error
 	SendKey(ctx context.Context, zone string, id types.ID, keyboardParam *SendKeyRequest) error
 	SendNMI(ctx context.Context, zone string, id types.ID) error
 	GetVNCProxy(ctx context.Context, zone string, id types.ID) (*VNCProxyInfo, error)

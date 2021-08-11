@@ -508,6 +508,23 @@ func (m *modelsDef) vncProxyModel() *dsl.Model {
 	}
 }
 
+func (m *modelsDef) serverBootVariables() *dsl.Model {
+	return &dsl.Model{
+		Name:      "ServerBootVariables",
+		NakedType: meta.Static(naked.ServerBootParameter{}),
+		Fields: []*dsl.FieldDesc{
+			{
+				Name: "UserData",
+				Type: meta.TypeString,
+				Tags: &dsl.FieldTags{
+					MapConv: "CloudInit.UserData,omitempty",
+					JSON:    ",omitempty",
+				},
+			},
+		},
+	}
+}
+
 func (m *modelsDef) sourceArchiveInfo() *dsl.Model {
 	return &dsl.Model{
 		Name: "SourceArchiveInfo",

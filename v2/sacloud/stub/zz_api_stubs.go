@@ -4070,6 +4070,11 @@ type ServerResetStubResult struct {
 	Err error
 }
 
+// ServerBootWithVariablesStubResult is expected values of the BootWithVariables operation
+type ServerBootWithVariablesStubResult struct {
+	Err error
+}
+
 // ServerSendKeyStubResult is expected values of the SendKey operation
 type ServerSendKeyStubResult struct {
 	Err error
@@ -4100,23 +4105,24 @@ type ServerMonitorCPUStubResult struct {
 
 // ServerStub is for trace ServerOp operations
 type ServerStub struct {
-	FindStubResult            *ServerFindStubResult
-	CreateStubResult          *ServerCreateStubResult
-	ReadStubResult            *ServerReadStubResult
-	UpdateStubResult          *ServerUpdateStubResult
-	DeleteStubResult          *ServerDeleteStubResult
-	DeleteWithDisksStubResult *ServerDeleteWithDisksStubResult
-	ChangePlanStubResult      *ServerChangePlanStubResult
-	InsertCDROMStubResult     *ServerInsertCDROMStubResult
-	EjectCDROMStubResult      *ServerEjectCDROMStubResult
-	BootStubResult            *ServerBootStubResult
-	ShutdownStubResult        *ServerShutdownStubResult
-	ResetStubResult           *ServerResetStubResult
-	SendKeyStubResult         *ServerSendKeyStubResult
-	SendNMIStubResult         *ServerSendNMIStubResult
-	GetVNCProxyStubResult     *ServerGetVNCProxyStubResult
-	MonitorStubResult         *ServerMonitorStubResult
-	MonitorCPUStubResult      *ServerMonitorCPUStubResult
+	FindStubResult              *ServerFindStubResult
+	CreateStubResult            *ServerCreateStubResult
+	ReadStubResult              *ServerReadStubResult
+	UpdateStubResult            *ServerUpdateStubResult
+	DeleteStubResult            *ServerDeleteStubResult
+	DeleteWithDisksStubResult   *ServerDeleteWithDisksStubResult
+	ChangePlanStubResult        *ServerChangePlanStubResult
+	InsertCDROMStubResult       *ServerInsertCDROMStubResult
+	EjectCDROMStubResult        *ServerEjectCDROMStubResult
+	BootStubResult              *ServerBootStubResult
+	ShutdownStubResult          *ServerShutdownStubResult
+	ResetStubResult             *ServerResetStubResult
+	BootWithVariablesStubResult *ServerBootWithVariablesStubResult
+	SendKeyStubResult           *ServerSendKeyStubResult
+	SendNMIStubResult           *ServerSendNMIStubResult
+	GetVNCProxyStubResult       *ServerGetVNCProxyStubResult
+	MonitorStubResult           *ServerMonitorStubResult
+	MonitorCPUStubResult        *ServerMonitorCPUStubResult
 }
 
 // NewServerStub creates new ServerStub instance
@@ -4218,6 +4224,14 @@ func (s *ServerStub) Reset(ctx context.Context, zone string, id types.ID) error 
 		log.Fatal("ServerStub.ResetStubResult is not set")
 	}
 	return s.ResetStubResult.Err
+}
+
+// BootWithVariables is API call with trace log
+func (s *ServerStub) BootWithVariables(ctx context.Context, zone string, id types.ID, param *sacloud.ServerBootVariables) error {
+	if s.BootWithVariablesStubResult == nil {
+		log.Fatal("ServerStub.BootWithVariablesStubResult is not set")
+	}
+	return s.BootWithVariablesStubResult.Err
 }
 
 // SendKey is API call with trace log

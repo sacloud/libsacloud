@@ -6066,6 +6066,36 @@ func (o *ServerOp) transformShutdownArgs(id types.ID, shutdownOption *ShutdownOp
 	return v, nil
 }
 
+func (o *ServerOp) transformBootWithVariablesArgs(id types.ID, param *ServerBootVariables) (*serverBootWithVariablesRequestEnvelope, error) {
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	var arg0 interface{} = id
+	if v, ok := arg0.(argumentDefaulter); ok {
+		arg0 = v.setDefaults()
+	}
+	if param == nil {
+		param = &ServerBootVariables{}
+	}
+	var arg1 interface{} = param
+	if v, ok := arg1.(argumentDefaulter); ok {
+		arg1 = v.setDefaults()
+	}
+	args := &struct {
+		Arg0 interface{}
+		Arg1 interface{} `mapconv:"UserBootVariables,recursive"`
+	}{
+		Arg0: arg0,
+		Arg1: arg1,
+	}
+
+	v := &serverBootWithVariablesRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	return v, nil
+}
+
 func (o *ServerOp) transformSendKeyArgs(id types.ID, keyboardParam *SendKeyRequest) (*serverSendKeyRequestEnvelope, error) {
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))

@@ -2374,6 +2374,11 @@ type serverShutdownRequestEnvelope struct {
 	Force bool `json:",omitempty"`
 }
 
+// serverBootWithVariablesRequestEnvelope is envelop of API request
+type serverBootWithVariablesRequestEnvelope struct {
+	UserBootVariables *naked.ServerBootVariables `json:",omitempty"`
+}
+
 // serverSendKeyRequestEnvelope is envelop of API request
 type serverSendKeyRequestEnvelope struct {
 	Key  string   `json:",omitempty"`

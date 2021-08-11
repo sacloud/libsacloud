@@ -22808,6 +22808,39 @@ func (o *EjectCDROMRequest) GetInt64ID() int64 {
 }
 
 /*************************************************
+* ServerBootVariables
+*************************************************/
+
+// ServerBootVariables represents API parameter/response structure
+type ServerBootVariables struct {
+	UserData string `json:",omitempty" mapconv:"CloudInit.UserData,omitempty"`
+}
+
+// Validate validates by field tags
+func (o *ServerBootVariables) Validate() error {
+	return validate.Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *ServerBootVariables) setDefaults() interface{} {
+	return &struct {
+		UserData string `json:",omitempty" mapconv:"CloudInit.UserData,omitempty"`
+	}{
+		UserData: o.GetUserData(),
+	}
+}
+
+// GetUserData returns value of UserData
+func (o *ServerBootVariables) GetUserData() string {
+	return o.UserData
+}
+
+// SetUserData sets value to UserData
+func (o *ServerBootVariables) SetUserData(v string) {
+	o.UserData = v
+}
+
+/*************************************************
 * SendKeyRequest
 *************************************************/
 
