@@ -16,6 +16,7 @@ package power
 
 import (
 	"context"
+	"strings"
 
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
@@ -25,17 +26,23 @@ import (
 type ServerAPI interface {
 	Read(ctx context.Context, zone string, id types.ID) (*sacloud.Server, error)
 	Boot(ctx context.Context, zone string, id types.ID) error
+	BootWithVariables(ctx context.Context, zone string, id types.ID, param *sacloud.ServerBootVariables) error
 	Shutdown(ctx context.Context, zone string, id types.ID, shutdownOption *sacloud.ShutdownOption) error
 }
 
 type serverHandler struct {
-	ctx    context.Context
-	client ServerAPI
-	zone   string
-	id     types.ID
+	ctx       context.Context
+	client    ServerAPI
+	zone      string
+	id        types.ID
+	variables []string
 }
 
 func (h *serverHandler) boot() error {
+	if len(h.variables) > 0 {
+		userData := strings.Join(h.variables, "\n")
+		return h.client.BootWithVariables(h.ctx, h.zone, h.id, &sacloud.ServerBootVariables{UserData: userData})
+	}
 	return h.client.Boot(h.ctx, h.zone, h.id)
 }
 

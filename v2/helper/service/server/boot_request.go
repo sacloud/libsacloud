@@ -23,6 +23,8 @@ type BootRequest struct {
 	Zone string   `request:"-" validate:"required"`
 	ID   types.ID `request:"-" validate:"required"`
 
+	UserData string `request:"-"`
+
 	NoWait bool `request:"-"`
 }
 

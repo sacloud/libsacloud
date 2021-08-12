@@ -45,12 +45,16 @@ var (
  ***********************************************/
 
 // BootServer 起動
-func BootServer(ctx context.Context, client ServerAPI, zone string, id types.ID) error {
+//
+// variablesが指定された場合、PUT /server/:id/powerのCloudInit用のパラメータとして渡される
+// variablesが複数指定された場合は改行で結合される
+func BootServer(ctx context.Context, client ServerAPI, zone string, id types.ID, variables ...string) error {
 	return boot(ctx, &serverHandler{
-		ctx:    ctx,
-		client: client,
-		zone:   zone,
-		id:     id,
+		ctx:       ctx,
+		client:    client,
+		zone:      zone,
+		id:        id,
+		variables: variables,
 	})
 }
 

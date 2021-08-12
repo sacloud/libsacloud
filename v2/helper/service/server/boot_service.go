@@ -29,10 +29,18 @@ func (s *Service) BootWithContext(ctx context.Context, req *BootRequest) error {
 	if err := req.Validate(); err != nil {
 		return err
 	}
-
 	client := sacloud.NewServerOp(s.caller)
+
 	if req.NoWait {
+		if req.UserData != "" {
+			return client.BootWithVariables(ctx, req.Zone, req.ID, &sacloud.ServerBootVariables{UserData: req.UserData})
+		}
 		return client.Boot(ctx, req.Zone, req.ID)
 	}
-	return power.BootServer(ctx, client, req.Zone, req.ID)
+
+	var userData []string
+	if req.UserData != "" {
+		userData = []string{req.UserData}
+	}
+	return power.BootServer(ctx, client, req.Zone, req.ID, userData...)
 }

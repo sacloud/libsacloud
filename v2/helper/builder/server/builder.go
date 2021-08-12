@@ -48,6 +48,8 @@ type Builder struct {
 	AdditionalNICs  []AdditionalNICSettingHolder
 	DiskBuilders    []disk.Builder
 
+	UserData string
+
 	Client *APIClient
 
 	NoWait bool
@@ -260,7 +262,7 @@ func (b *Builder) Build(ctx context.Context, zone string) (*BuildResult, error) 
 
 	// bool
 	if !b.NoWait && b.BootAfterCreate {
-		if err := power.BootServer(ctx, b.Client.Server, zone, server.ID); err != nil {
+		if err := power.BootServer(ctx, b.Client.Server, zone, server.ID, b.userData()...); err != nil {
 			return result, err
 		}
 	}
@@ -278,6 +280,10 @@ func (b *Builder) IsNeedShutdown(ctx context.Context, zone string) (bool, error)
 	server, err := b.Client.Server.Read(ctx, zone, b.ServerID)
 	if err != nil {
 		return false, err
+	}
+
+	if b.UserData != "" {
+		return true, nil
 	}
 
 	current := b.currentState(server)
@@ -412,7 +418,7 @@ func (b *Builder) Update(ctx context.Context, zone string) (*BuildResult, error)
 
 	// boot
 	if isNeedShutdown && running && server.InstanceStatus.IsDown() {
-		if err := power.BootServer(ctx, b.Client.Server, zone, server.ID); err != nil {
+		if err := power.BootServer(ctx, b.Client.Server, zone, server.ID, b.userData()...); err != nil {
 			return result, err
 		}
 	}
@@ -783,4 +789,11 @@ func (b *Builder) isPlanChanged(server *sacloud.Server) bool {
 		b.Commitment != server.ServerPlanCommitment ||
 		(b.Generation != types.PlanGenerations.Default && b.Generation != server.ServerPlanGeneration)
 	//b.Generation != server.ServerPlanGeneration
+}
+
+func (b *Builder) userData() []string {
+	if b.UserData == "" {
+		return nil
+	}
+	return []string{b.UserData}
 }
