@@ -133,6 +133,10 @@ func (d *dummyCreateServerHandler) Boot(ctx context.Context, zone string, id typ
 	return d.bootErr
 }
 
+func (d *dummyCreateServerHandler) BootWithVariables(ctx context.Context, zone string, id types.ID, param *sacloud.ServerBootVariables) error {
+	return d.bootErr
+}
+
 func (d *dummyCreateServerHandler) Shutdown(ctx context.Context, zone string, id types.ID, shutdownOption *sacloud.ShutdownOption) error {
 	return d.shutdownErr
 }

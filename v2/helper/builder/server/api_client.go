@@ -68,6 +68,7 @@ type CreateServerHandler interface {
 	InsertCDROM(ctx context.Context, zone string, id types.ID, insertParam *sacloud.InsertCDROMRequest) error
 	EjectCDROM(ctx context.Context, zone string, id types.ID, ejectParam *sacloud.EjectCDROMRequest) error
 	Boot(ctx context.Context, zone string, id types.ID) error
+	BootWithVariables(ctx context.Context, zone string, id types.ID, param *sacloud.ServerBootVariables) error
 	Shutdown(ctx context.Context, zone string, id types.ID, shutdownOption *sacloud.ShutdownOption) error
 	ChangePlan(ctx context.Context, zone string, id types.ID, plan *sacloud.ServerChangePlanRequest) (*sacloud.Server, error)
 }

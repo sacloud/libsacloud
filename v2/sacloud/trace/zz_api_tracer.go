@@ -8936,6 +8936,39 @@ func (t *ServerTracer) Reset(ctx context.Context, zone string, id types.ID) erro
 	return err
 }
 
+// BootWithVariables is API call with trace log
+func (t *ServerTracer) BootWithVariables(ctx context.Context, zone string, id types.ID, param *sacloud.ServerBootVariables) error {
+	log.Println("[TRACE] ServerAPI.BootWithVariables start")
+	targetArguments := struct {
+		Argzone  string
+		Argid    types.ID                     `json:"id"`
+		Argparam *sacloud.ServerBootVariables `json:"param"`
+	}{
+		Argzone:  zone,
+		Argid:    id,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] ServerAPI.BootWithVariables end")
+	}()
+
+	err := t.Internal.BootWithVariables(ctx, zone, id, param)
+	targetResults := struct {
+		Error error
+	}{
+		Error: err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return err
+}
+
 // SendKey is API call with trace log
 func (t *ServerTracer) SendKey(ctx context.Context, zone string, id types.ID, keyboardParam *sacloud.SendKeyRequest) error {
 	log.Println("[TRACE] ServerAPI.SendKey start")

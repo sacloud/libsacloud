@@ -9780,6 +9780,47 @@ func (o *ServerOp) Reset(ctx context.Context, zone string, id types.ID) error {
 	return nil
 }
 
+// BootWithVariables is API call
+func (o *ServerOp) BootWithVariables(ctx context.Context, zone string, id types.ID, param *ServerBootVariables) error {
+	// build request URL
+	pathBuildParameter := map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+		"param":      param,
+	}
+
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/power", pathBuildParameter)
+	if err != nil {
+		return err
+	}
+	lockKey, err := buildURL("GlobalLock", pathBuildParameter)
+	if err != nil {
+		return err
+	}
+	apiLocker.Lock(lockKey)
+	defer apiLocker.Unlock(lockKey)
+	// build request body
+	var body interface{}
+	v, err := o.transformBootWithVariablesArgs(id, param)
+	if err != nil {
+		return err
+	}
+	body = v
+
+	// do request
+	_, err = o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return err
+	}
+
+	// build results
+
+	return nil
+}
+
 // SendKey is API call
 func (o *ServerOp) SendKey(ctx context.Context, zone string, id types.ID, keyboardParam *SendKeyRequest) error {
 	// build request URL

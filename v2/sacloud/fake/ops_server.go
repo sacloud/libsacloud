@@ -312,6 +312,11 @@ func (o *ServerOp) Boot(ctx context.Context, zone string, id types.ID) error {
 	return err
 }
 
+// BootWithVariables is fake implementation
+func (o *ServerOp) BootWithVariables(ctx context.Context, zone string, id types.ID, param *sacloud.ServerBootVariables) error {
+	return o.Boot(ctx, zone, id) // paramは非対応
+}
+
 // Shutdown is fake implementation
 func (o *ServerOp) Shutdown(ctx context.Context, zone string, id types.ID, shutdownOption *sacloud.ShutdownOption) error {
 	value, err := o.Read(ctx, zone, id)

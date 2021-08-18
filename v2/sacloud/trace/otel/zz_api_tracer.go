@@ -7291,6 +7291,32 @@ func (t *ServerTracer) Reset(ctx context.Context, zone string, id types.ID) erro
 	return err
 }
 
+// BootWithVariables is API call with trace log
+func (t *ServerTracer) BootWithVariables(ctx context.Context, zone string, id types.ID, param *sacloud.ServerBootVariables) error {
+	var span trace.Span
+	options := append(t.config.SpanStartOptions, trace.WithAttributes(
+		label.String("libsacloud.api.arguments.zone", zone),
+		label.Any("libsacloud.api.arguments.id", id),
+		label.Any("libsacloud.api.arguments.param", param),
+	))
+	ctx, span = t.config.Tracer.Start(ctx, "ServerAPI.BootWithVariables", options...)
+	defer func() {
+		span.End()
+	}()
+
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
+	err := t.Internal.BootWithVariables(ctx, zone, id, param)
+
+	if err != nil {
+		span.SetStatus(codes.Error, err.Error())
+	} else {
+		span.SetStatus(codes.Ok, "")
+
+	}
+	return err
+}
+
 // SendKey is API call with trace log
 func (t *ServerTracer) SendKey(ctx context.Context, zone string, id types.ID, keyboardParam *sacloud.SendKeyRequest) error {
 	var span trace.Span

@@ -154,6 +154,25 @@ var serverAPI = &dsl.Resource{
 		ops.Shutdown(serverAPIName),
 		ops.Reset(serverAPIName),
 
+		// cloud-init(Bootにパラメータを追加したもの)
+		{
+			ResourceName: serverAPIName,
+			Name:         "BootWithVariables",
+			PathFormat:   dsl.IDAndSuffixPathFormat("power"),
+			Method:       http.MethodPut,
+			LockLevel:    dsl.LockLevelGlobal,
+			RequestEnvelope: dsl.RequestEnvelope(
+				&dsl.EnvelopePayloadDesc{
+					Type: meta.Static(naked.ServerBootVariables{}),
+					Name: "UserBootVariables",
+				},
+			),
+			Arguments: dsl.Arguments{
+				dsl.ArgumentID,
+				dsl.MappableArgument("param", models.serverBootVariables(), "UserBootVariables"),
+			},
+		},
+
 		// send key
 		{
 			ResourceName: serverAPIName,
