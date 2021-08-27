@@ -137,6 +137,7 @@ func ChangeProxyLBPlan(
 			StickySession: elb.StickySession,
 			Timeout:       elb.Timeout,
 			Gzip:          elb.Gzip,
+			ProxyProtocol: elb.ProxyProtocol,
 			Syslog:        elb.Syslog,
 			SettingsHash:  elb.SettingsHash,
 			Name:          elb.Name,

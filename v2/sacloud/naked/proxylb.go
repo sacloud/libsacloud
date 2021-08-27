@@ -94,6 +94,7 @@ type ProxyLBSetting struct {
 	StickySession ProxyLBStickySession `yaml:"sticky_session"`                                                // StickySession
 	Timeout       ProxyLBTimeout       `json:",omitempty" yaml:"timeout,omitempty" structs:",omitempty"`      // タイムアウト
 	Gzip          ProxyLBGzip          `yaml:"gzip"`                                                          // Gzip
+	ProxyProtocol ProxyLBProxyProtocol `yaml:"proxy_protocol"`
 	Syslog        ProxyLBSyslog        `yaml:"syslog"`
 }
 
@@ -231,6 +232,11 @@ type ProxyLBStickySession struct {
 
 // ProxyLBGzip Gzip圧縮設定
 type ProxyLBGzip struct {
+	Enabled bool `yaml:"enabled"`
+}
+
+// ProxyLBProxyProtocol ProxyProtocol(v2)の有効設定
+type ProxyLBProxyProtocol struct {
 	Enabled bool `yaml:"enabled"`
 }
 
