@@ -213,6 +213,9 @@ func initProxyLBVariables() {
 		Gzip: &sacloud.ProxyLBGzip{
 			Enabled: true,
 		},
+		ProxyProtocol: &sacloud.ProxyLBProxyProtocol{
+			Enabled: true,
+		},
 		Syslog: &sacloud.ProxyLBSyslog{
 			Server: "133.242.0.1",
 			Port:   514,
@@ -238,6 +241,7 @@ func initProxyLBVariables() {
 		LetsEncrypt:    createProxyLBParam.LetsEncrypt,
 		StickySession:  createProxyLBParam.StickySession,
 		Gzip:           createProxyLBParam.Gzip,
+		ProxyProtocol:  createProxyLBParam.ProxyProtocol,
 		Syslog:         createProxyLBParam.Syslog,
 		Timeout:        createProxyLBParam.Timeout,
 		UseVIPFailover: createProxyLBParam.UseVIPFailover,
@@ -331,6 +335,9 @@ func initProxyLBVariables() {
 		Gzip: &sacloud.ProxyLBGzip{
 			Enabled: false,
 		},
+		ProxyProtocol: &sacloud.ProxyLBProxyProtocol{
+			Enabled: false,
+		},
 		Syslog: &sacloud.ProxyLBSyslog{
 			Server: "",
 			Port:   514,
@@ -357,6 +364,7 @@ func initProxyLBVariables() {
 			InactiveSec: 10,
 		},
 		Gzip:           updateProxyLBParam.Gzip,
+		ProxyProtocol:  updateProxyLBParam.ProxyProtocol,
 		Syslog:         updateProxyLBParam.Syslog,
 		UseVIPFailover: createProxyLBParam.UseVIPFailover,
 		Region:         createProxyLBParam.Region,
@@ -379,6 +387,7 @@ func initProxyLBVariables() {
 			InactiveSec: 10,
 		},
 		Gzip:           updateProxyLBParam.Gzip,
+		ProxyProtocol:  updateProxyLBParam.ProxyProtocol,
 		Syslog:         updateProxyLBParam.Syslog,
 		UseVIPFailover: createProxyLBParam.UseVIPFailover,
 		Region:         createProxyLBParam.Region,
@@ -446,6 +455,9 @@ func initProxyLBVariables() {
 		Gzip: &sacloud.ProxyLBGzip{
 			Enabled: false,
 		},
+		ProxyProtocol: &sacloud.ProxyLBProxyProtocol{
+			Enabled: false,
+		},
 		Syslog: &sacloud.ProxyLBSyslog{
 			Server: "",
 			Port:   514,
@@ -469,6 +481,7 @@ func initProxyLBVariables() {
 			InactiveSec: 10,
 		},
 		Gzip:           updateProxyLBSettingsParam.Gzip,
+		ProxyProtocol:  updateProxyLBSettingsParam.ProxyProtocol,
 		Syslog:         updateProxyLBSettingsParam.Syslog,
 		UseVIPFailover: createProxyLBParam.UseVIPFailover,
 		Region:         createProxyLBParam.Region,
@@ -490,6 +503,9 @@ func initProxyLBVariables() {
 			InactiveSec: 10,
 		},
 		Gzip: &sacloud.ProxyLBGzip{
+			Enabled: false,
+		},
+		ProxyProtocol: &sacloud.ProxyLBProxyProtocol{
 			Enabled: false,
 		},
 		Syslog: &sacloud.ProxyLBSyslog{
@@ -519,6 +535,7 @@ func initProxyLBVariables() {
 		Rules:          updateProxyLBToMinParam.Rules,
 		Servers:        updateProxyLBToMinParam.Servers,
 		Gzip:           updateProxyLBToMinParam.Gzip,
+		ProxyProtocol:  updateProxyLBToMinParam.ProxyProtocol,
 		Syslog:         updateProxyLBToMinParam.Syslog,
 		UseVIPFailover: createProxyLBParam.UseVIPFailover,
 		Region:         createProxyLBParam.Region,
