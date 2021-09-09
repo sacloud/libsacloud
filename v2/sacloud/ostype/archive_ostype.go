@@ -49,6 +49,8 @@ const (
 	Debian
 	// Debian10 OS種別:Debian10
 	Debian10
+	// Debian11 OS種別:Debian11
+	Debian11
 
 	// CoreOS OS種別:CoreOS
 	CoreOS
@@ -125,6 +127,7 @@ var ArchiveOSTypes = []ArchiveOSType{
 	Ubuntu1804,
 	Debian,
 	Debian10,
+	Debian11,
 	CoreOS,
 	RancherOS,
 	K3OS,
@@ -193,7 +196,7 @@ func (o ArchiveOSType) IsSupportDiskEdit() bool {
 	case CentOS, CentOS8Stream, CentOS8, CentOS7,
 		AlmaLinux, RockyLinux,
 		Ubuntu, Ubuntu2004, Ubuntu1804,
-		Debian, Debian10,
+		Debian, Debian10, Debian11,
 		CoreOS, RancherOS, K3OS, Kusanagi, FreeBSD:
 		return true
 	default:
@@ -226,6 +229,8 @@ func StrToOSType(osType string) ArchiveOSType {
 		return Debian
 	case "debian10":
 		return Debian10
+	case "debian11":
+		return Debian11
 	case "coreos":
 		return CoreOS
 	case "rancheros":
