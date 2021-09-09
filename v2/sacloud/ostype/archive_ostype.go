@@ -160,7 +160,7 @@ var OSTypeShortNames = []string{
 	"centos", "centos8stream", "centos8", "centos7",
 	"almalinux", "rockylinux",
 	"ubuntu", "ubuntu2004", "ubuntu1804",
-	"debian", "debian10",
+	"debian", "debian10", "debian11",
 	"coreos", "rancheros", "k3os", "kusanagi", "freebsd",
 	"windows2016", "windows2016-rds", "windows2016-rds-office",
 	"windows2016-sql-web", "windows2016-sql-standard", "windows2016-sql-standard-all",
