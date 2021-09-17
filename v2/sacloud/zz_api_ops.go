@@ -75,6 +75,14 @@ func init() {
 		}
 	})
 
+	SetClientFactoryFunc("CertificateAuthority", func(caller APICaller) interface{} {
+		return &CertificateAuthorityOp{
+			Client:     caller,
+			PathSuffix: "api/cloud/1.1",
+			PathName:   "commonserviceitem",
+		}
+	})
+
 	SetClientFactoryFunc("ContainerRegistry", func(caller APICaller) interface{} {
 		return &ContainerRegistryOp{
 			Client:     caller,
@@ -1737,6 +1745,646 @@ func (o *CDROMOp) CloseFTP(ctx context.Context, zone string, id types.ID) error 
 
 	// do request
 	_, err = o.Client.Do(ctx, "DELETE", url, body)
+	if err != nil {
+		return err
+	}
+
+	// build results
+
+	return nil
+}
+
+/*************************************************
+* CertificateAuthorityOp
+*************************************************/
+
+// CertificateAuthorityOp implements CertificateAuthorityAPI interface
+type CertificateAuthorityOp struct {
+	// Client APICaller
+	Client APICaller
+	// PathSuffix is used when building URL
+	PathSuffix string
+	// PathName is used when building URL
+	PathName string
+}
+
+// NewCertificateAuthorityOp creates new CertificateAuthorityOp instance
+func NewCertificateAuthorityOp(caller APICaller) CertificateAuthorityAPI {
+	return GetClientFactoryFunc("CertificateAuthority")(caller).(CertificateAuthorityAPI)
+}
+
+// Find is API call
+func (o *CertificateAuthorityOp) Find(ctx context.Context, conditions *FindCondition) (*CertificateAuthorityFindResult, error) {
+	// build request URL
+	pathBuildParameter := map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       APIDefaultZone,
+		"conditions": conditions,
+	}
+
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", pathBuildParameter)
+	if err != nil {
+		return nil, err
+	}
+	// build request body
+	var body interface{}
+	v, err := o.transformFindArgs(conditions)
+	if err != nil {
+		return nil, err
+	}
+	body = v
+
+	// do request
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	// build results
+	results, err := o.transformFindResults(data)
+	if err != nil {
+		return nil, err
+	}
+	return results, err
+}
+
+// Create is API call
+func (o *CertificateAuthorityOp) Create(ctx context.Context, param *CertificateAuthorityCreateRequest) (*CertificateAuthority, error) {
+	// build request URL
+	pathBuildParameter := map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       APIDefaultZone,
+		"param":      param,
+	}
+
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}", pathBuildParameter)
+	if err != nil {
+		return nil, err
+	}
+	// build request body
+	var body interface{}
+	v, err := o.transformCreateArgs(param)
+	if err != nil {
+		return nil, err
+	}
+	body = v
+
+	// do request
+	data, err := o.Client.Do(ctx, "POST", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	// build results
+	results, err := o.transformCreateResults(data)
+	if err != nil {
+		return nil, err
+	}
+	return results.CertificateAuthority, nil
+}
+
+// Read is API call
+func (o *CertificateAuthorityOp) Read(ctx context.Context, id types.ID) (*CertificateAuthority, error) {
+	// build request URL
+	pathBuildParameter := map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       APIDefaultZone,
+		"id":         id,
+	}
+
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", pathBuildParameter)
+	if err != nil {
+		return nil, err
+	}
+	// build request body
+	var body interface{}
+
+	// do request
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	// build results
+	results, err := o.transformReadResults(data)
+	if err != nil {
+		return nil, err
+	}
+	return results.CertificateAuthority, nil
+}
+
+// Update is API call
+func (o *CertificateAuthorityOp) Update(ctx context.Context, id types.ID, param *CertificateAuthorityUpdateRequest) (*CertificateAuthority, error) {
+	// build request URL
+	pathBuildParameter := map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       APIDefaultZone,
+		"id":         id,
+		"param":      param,
+	}
+
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", pathBuildParameter)
+	if err != nil {
+		return nil, err
+	}
+	// build request body
+	var body interface{}
+	v, err := o.transformUpdateArgs(id, param)
+	if err != nil {
+		return nil, err
+	}
+	body = v
+
+	// do request
+	data, err := o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	// build results
+	results, err := o.transformUpdateResults(data)
+	if err != nil {
+		return nil, err
+	}
+	return results.CertificateAuthority, nil
+}
+
+// Delete is API call
+func (o *CertificateAuthorityOp) Delete(ctx context.Context, id types.ID) error {
+	// build request URL
+	pathBuildParameter := map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       APIDefaultZone,
+		"id":         id,
+	}
+
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}", pathBuildParameter)
+	if err != nil {
+		return err
+	}
+	// build request body
+	var body interface{}
+
+	// do request
+	_, err = o.Client.Do(ctx, "DELETE", url, body)
+	if err != nil {
+		return err
+	}
+
+	// build results
+
+	return nil
+}
+
+// Detail is API call
+func (o *CertificateAuthorityOp) Detail(ctx context.Context, id types.ID) (*CertificateAuthorityDetail, error) {
+	// build request URL
+	pathBuildParameter := map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       APIDefaultZone,
+		"id":         id,
+	}
+
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/certificateauthority", pathBuildParameter)
+	if err != nil {
+		return nil, err
+	}
+	// build request body
+	var body interface{}
+
+	// do request
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	// build results
+	results, err := o.transformDetailResults(data)
+	if err != nil {
+		return nil, err
+	}
+	return results.CertificateAuthority, nil
+}
+
+// AddClient is API call
+func (o *CertificateAuthorityOp) AddClient(ctx context.Context, id types.ID, param *CertificateAuthorityAddClientParam) (*CertificateAuthorityAddClientOrServerResult, error) {
+	// build request URL
+	pathBuildParameter := map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       APIDefaultZone,
+		"id":         id,
+		"param":      param,
+	}
+
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/certificateauthority/clients", pathBuildParameter)
+	if err != nil {
+		return nil, err
+	}
+	// build request body
+	var body interface{}
+	v, err := o.transformAddClientArgs(id, param)
+	if err != nil {
+		return nil, err
+	}
+	body = v
+
+	// do request
+	data, err := o.Client.Do(ctx, "POST", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	// build results
+	results, err := o.transformAddClientResults(data)
+	if err != nil {
+		return nil, err
+	}
+	return results.CertificateAuthority, nil
+}
+
+// ListClients is API call
+func (o *CertificateAuthorityOp) ListClients(ctx context.Context, id types.ID) (*CertificateAuthorityListClientsResult, error) {
+	// build request URL
+	pathBuildParameter := map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       APIDefaultZone,
+		"id":         id,
+	}
+
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/certificateauthority/clients", pathBuildParameter)
+	if err != nil {
+		return nil, err
+	}
+	// build request body
+	var body interface{}
+
+	// do request
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	// build results
+	results, err := o.transformListClientsResults(data)
+	if err != nil {
+		return nil, err
+	}
+	return results, err
+}
+
+// ReadClient is API call
+func (o *CertificateAuthorityOp) ReadClient(ctx context.Context, id types.ID, clientID string) (*CertificateAuthorityClient, error) {
+	// build request URL
+	pathBuildParameter := map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       APIDefaultZone,
+		"id":         id,
+		"clientID":   clientID,
+	}
+
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/certificateauthority/clients/{{.clientID}}", pathBuildParameter)
+	if err != nil {
+		return nil, err
+	}
+	// build request body
+	var body interface{}
+
+	// do request
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	// build results
+	results, err := o.transformReadClientResults(data)
+	if err != nil {
+		return nil, err
+	}
+	return results.CertificateAuthority, nil
+}
+
+// RevokeClient is API call
+func (o *CertificateAuthorityOp) RevokeClient(ctx context.Context, id types.ID, clientID string) error {
+	// build request URL
+	pathBuildParameter := map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       APIDefaultZone,
+		"id":         id,
+		"clientID":   clientID,
+	}
+
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/certificateauthority/clients/{{.clientID}}/revoke", pathBuildParameter)
+	if err != nil {
+		return err
+	}
+	// build request body
+	var body interface{}
+
+	// do request
+	_, err = o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return err
+	}
+
+	// build results
+
+	return nil
+}
+
+// HoldClient is API call
+func (o *CertificateAuthorityOp) HoldClient(ctx context.Context, id types.ID, clientID string) error {
+	// build request URL
+	pathBuildParameter := map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       APIDefaultZone,
+		"id":         id,
+		"clientID":   clientID,
+	}
+
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/certificateauthority/clients/{{.clientID}}/hold", pathBuildParameter)
+	if err != nil {
+		return err
+	}
+	// build request body
+	var body interface{}
+
+	// do request
+	_, err = o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return err
+	}
+
+	// build results
+
+	return nil
+}
+
+// ResumeClient is API call
+func (o *CertificateAuthorityOp) ResumeClient(ctx context.Context, id types.ID, clientID string) error {
+	// build request URL
+	pathBuildParameter := map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       APIDefaultZone,
+		"id":         id,
+		"clientID":   clientID,
+	}
+
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/certificateauthority/clients/{{.clientID}}/resume", pathBuildParameter)
+	if err != nil {
+		return err
+	}
+	// build request body
+	var body interface{}
+
+	// do request
+	_, err = o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return err
+	}
+
+	// build results
+
+	return nil
+}
+
+// DenyClient is API call
+func (o *CertificateAuthorityOp) DenyClient(ctx context.Context, id types.ID, clientID string) error {
+	// build request URL
+	pathBuildParameter := map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       APIDefaultZone,
+		"id":         id,
+		"clientID":   clientID,
+	}
+
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/certificateauthority/clients/{{.clientID}}/deny", pathBuildParameter)
+	if err != nil {
+		return err
+	}
+	// build request body
+	var body interface{}
+
+	// do request
+	_, err = o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return err
+	}
+
+	// build results
+
+	return nil
+}
+
+// AddServer is API call
+func (o *CertificateAuthorityOp) AddServer(ctx context.Context, id types.ID, param *CertificateAuthorityAddServerParam) (*CertificateAuthorityAddClientOrServerResult, error) {
+	// build request URL
+	pathBuildParameter := map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       APIDefaultZone,
+		"id":         id,
+		"param":      param,
+	}
+
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/certificateauthority/servers", pathBuildParameter)
+	if err != nil {
+		return nil, err
+	}
+	// build request body
+	var body interface{}
+	v, err := o.transformAddServerArgs(id, param)
+	if err != nil {
+		return nil, err
+	}
+	body = v
+
+	// do request
+	data, err := o.Client.Do(ctx, "POST", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	// build results
+	results, err := o.transformAddServerResults(data)
+	if err != nil {
+		return nil, err
+	}
+	return results.CertificateAuthority, nil
+}
+
+// ListServers is API call
+func (o *CertificateAuthorityOp) ListServers(ctx context.Context, id types.ID) (*CertificateAuthorityListServersResult, error) {
+	// build request URL
+	pathBuildParameter := map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       APIDefaultZone,
+		"id":         id,
+	}
+
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/certificateauthority/servers", pathBuildParameter)
+	if err != nil {
+		return nil, err
+	}
+	// build request body
+	var body interface{}
+
+	// do request
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	// build results
+	results, err := o.transformListServersResults(data)
+	if err != nil {
+		return nil, err
+	}
+	return results, err
+}
+
+// ReadServer is API call
+func (o *CertificateAuthorityOp) ReadServer(ctx context.Context, id types.ID, serverID string) (*CertificateAuthorityServer, error) {
+	// build request URL
+	pathBuildParameter := map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       APIDefaultZone,
+		"id":         id,
+		"serverID":   serverID,
+	}
+
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/certificateauthority/servers/{{.serverID}}", pathBuildParameter)
+	if err != nil {
+		return nil, err
+	}
+	// build request body
+	var body interface{}
+
+	// do request
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	// build results
+	results, err := o.transformReadServerResults(data)
+	if err != nil {
+		return nil, err
+	}
+	return results.CertificateAuthority, nil
+}
+
+// RevokeServer is API call
+func (o *CertificateAuthorityOp) RevokeServer(ctx context.Context, id types.ID, serverID string) error {
+	// build request URL
+	pathBuildParameter := map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       APIDefaultZone,
+		"id":         id,
+		"serverID":   serverID,
+	}
+
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/certificateauthority/servers/{{.serverID}}/revoke", pathBuildParameter)
+	if err != nil {
+		return err
+	}
+	// build request body
+	var body interface{}
+
+	// do request
+	_, err = o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return err
+	}
+
+	// build results
+
+	return nil
+}
+
+// HoldServer is API call
+func (o *CertificateAuthorityOp) HoldServer(ctx context.Context, id types.ID, serverID string) error {
+	// build request URL
+	pathBuildParameter := map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       APIDefaultZone,
+		"id":         id,
+		"serverID":   serverID,
+	}
+
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/certificateauthority/servers/{{.serverID}}/hold", pathBuildParameter)
+	if err != nil {
+		return err
+	}
+	// build request body
+	var body interface{}
+
+	// do request
+	_, err = o.Client.Do(ctx, "PUT", url, body)
+	if err != nil {
+		return err
+	}
+
+	// build results
+
+	return nil
+}
+
+// ResumeServer is API call
+func (o *CertificateAuthorityOp) ResumeServer(ctx context.Context, id types.ID, serverID string) error {
+	// build request URL
+	pathBuildParameter := map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       APIDefaultZone,
+		"id":         id,
+		"serverID":   serverID,
+	}
+
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/certificateauthority/servers/{{.serverID}}/resume", pathBuildParameter)
+	if err != nil {
+		return err
+	}
+	// build request body
+	var body interface{}
+
+	// do request
+	_, err = o.Client.Do(ctx, "PUT", url, body)
 	if err != nil {
 		return err
 	}

@@ -639,6 +639,296 @@ func (s *CDROMStub) CloseFTP(ctx context.Context, zone string, id types.ID) erro
 }
 
 /*************************************************
+* CertificateAuthorityStub
+*************************************************/
+
+// CertificateAuthorityFindStubResult is expected values of the Find operation
+type CertificateAuthorityFindStubResult struct {
+	Values *sacloud.CertificateAuthorityFindResult
+	Err    error
+}
+
+// CertificateAuthorityCreateStubResult is expected values of the Create operation
+type CertificateAuthorityCreateStubResult struct {
+	CertificateAuthority *sacloud.CertificateAuthority
+	Err                  error
+}
+
+// CertificateAuthorityReadStubResult is expected values of the Read operation
+type CertificateAuthorityReadStubResult struct {
+	CertificateAuthority *sacloud.CertificateAuthority
+	Err                  error
+}
+
+// CertificateAuthorityUpdateStubResult is expected values of the Update operation
+type CertificateAuthorityUpdateStubResult struct {
+	CertificateAuthority *sacloud.CertificateAuthority
+	Err                  error
+}
+
+// CertificateAuthorityDeleteStubResult is expected values of the Delete operation
+type CertificateAuthorityDeleteStubResult struct {
+	Err error
+}
+
+// CertificateAuthorityDetailStubResult is expected values of the Detail operation
+type CertificateAuthorityDetailStubResult struct {
+	CertificateAuthority *sacloud.CertificateAuthorityDetail
+	Err                  error
+}
+
+// CertificateAuthorityAddClientStubResult is expected values of the AddClient operation
+type CertificateAuthorityAddClientStubResult struct {
+	CertificateAuthority *sacloud.CertificateAuthorityAddClientOrServerResult
+	Err                  error
+}
+
+// CertificateAuthorityListClientsStubResult is expected values of the ListClients operation
+type CertificateAuthorityListClientsStubResult struct {
+	Values *sacloud.CertificateAuthorityListClientsResult
+	Err    error
+}
+
+// CertificateAuthorityReadClientStubResult is expected values of the ReadClient operation
+type CertificateAuthorityReadClientStubResult struct {
+	CertificateAuthority *sacloud.CertificateAuthorityClient
+	Err                  error
+}
+
+// CertificateAuthorityRevokeClientStubResult is expected values of the RevokeClient operation
+type CertificateAuthorityRevokeClientStubResult struct {
+	Err error
+}
+
+// CertificateAuthorityHoldClientStubResult is expected values of the HoldClient operation
+type CertificateAuthorityHoldClientStubResult struct {
+	Err error
+}
+
+// CertificateAuthorityResumeClientStubResult is expected values of the ResumeClient operation
+type CertificateAuthorityResumeClientStubResult struct {
+	Err error
+}
+
+// CertificateAuthorityDenyClientStubResult is expected values of the DenyClient operation
+type CertificateAuthorityDenyClientStubResult struct {
+	Err error
+}
+
+// CertificateAuthorityAddServerStubResult is expected values of the AddServer operation
+type CertificateAuthorityAddServerStubResult struct {
+	CertificateAuthority *sacloud.CertificateAuthorityAddClientOrServerResult
+	Err                  error
+}
+
+// CertificateAuthorityListServersStubResult is expected values of the ListServers operation
+type CertificateAuthorityListServersStubResult struct {
+	Values *sacloud.CertificateAuthorityListServersResult
+	Err    error
+}
+
+// CertificateAuthorityReadServerStubResult is expected values of the ReadServer operation
+type CertificateAuthorityReadServerStubResult struct {
+	CertificateAuthority *sacloud.CertificateAuthorityServer
+	Err                  error
+}
+
+// CertificateAuthorityRevokeServerStubResult is expected values of the RevokeServer operation
+type CertificateAuthorityRevokeServerStubResult struct {
+	Err error
+}
+
+// CertificateAuthorityHoldServerStubResult is expected values of the HoldServer operation
+type CertificateAuthorityHoldServerStubResult struct {
+	Err error
+}
+
+// CertificateAuthorityResumeServerStubResult is expected values of the ResumeServer operation
+type CertificateAuthorityResumeServerStubResult struct {
+	Err error
+}
+
+// CertificateAuthorityStub is for trace CertificateAuthorityOp operations
+type CertificateAuthorityStub struct {
+	FindStubResult         *CertificateAuthorityFindStubResult
+	CreateStubResult       *CertificateAuthorityCreateStubResult
+	ReadStubResult         *CertificateAuthorityReadStubResult
+	UpdateStubResult       *CertificateAuthorityUpdateStubResult
+	DeleteStubResult       *CertificateAuthorityDeleteStubResult
+	DetailStubResult       *CertificateAuthorityDetailStubResult
+	AddClientStubResult    *CertificateAuthorityAddClientStubResult
+	ListClientsStubResult  *CertificateAuthorityListClientsStubResult
+	ReadClientStubResult   *CertificateAuthorityReadClientStubResult
+	RevokeClientStubResult *CertificateAuthorityRevokeClientStubResult
+	HoldClientStubResult   *CertificateAuthorityHoldClientStubResult
+	ResumeClientStubResult *CertificateAuthorityResumeClientStubResult
+	DenyClientStubResult   *CertificateAuthorityDenyClientStubResult
+	AddServerStubResult    *CertificateAuthorityAddServerStubResult
+	ListServersStubResult  *CertificateAuthorityListServersStubResult
+	ReadServerStubResult   *CertificateAuthorityReadServerStubResult
+	RevokeServerStubResult *CertificateAuthorityRevokeServerStubResult
+	HoldServerStubResult   *CertificateAuthorityHoldServerStubResult
+	ResumeServerStubResult *CertificateAuthorityResumeServerStubResult
+}
+
+// NewCertificateAuthorityStub creates new CertificateAuthorityStub instance
+func NewCertificateAuthorityStub(caller sacloud.APICaller) sacloud.CertificateAuthorityAPI {
+	return &CertificateAuthorityStub{}
+}
+
+// Find is API call with trace log
+func (s *CertificateAuthorityStub) Find(ctx context.Context, conditions *sacloud.FindCondition) (*sacloud.CertificateAuthorityFindResult, error) {
+	if s.FindStubResult == nil {
+		log.Fatal("CertificateAuthorityStub.FindStubResult is not set")
+	}
+	return s.FindStubResult.Values, s.FindStubResult.Err
+}
+
+// Create is API call with trace log
+func (s *CertificateAuthorityStub) Create(ctx context.Context, param *sacloud.CertificateAuthorityCreateRequest) (*sacloud.CertificateAuthority, error) {
+	if s.CreateStubResult == nil {
+		log.Fatal("CertificateAuthorityStub.CreateStubResult is not set")
+	}
+	return s.CreateStubResult.CertificateAuthority, s.CreateStubResult.Err
+}
+
+// Read is API call with trace log
+func (s *CertificateAuthorityStub) Read(ctx context.Context, id types.ID) (*sacloud.CertificateAuthority, error) {
+	if s.ReadStubResult == nil {
+		log.Fatal("CertificateAuthorityStub.ReadStubResult is not set")
+	}
+	return s.ReadStubResult.CertificateAuthority, s.ReadStubResult.Err
+}
+
+// Update is API call with trace log
+func (s *CertificateAuthorityStub) Update(ctx context.Context, id types.ID, param *sacloud.CertificateAuthorityUpdateRequest) (*sacloud.CertificateAuthority, error) {
+	if s.UpdateStubResult == nil {
+		log.Fatal("CertificateAuthorityStub.UpdateStubResult is not set")
+	}
+	return s.UpdateStubResult.CertificateAuthority, s.UpdateStubResult.Err
+}
+
+// Delete is API call with trace log
+func (s *CertificateAuthorityStub) Delete(ctx context.Context, id types.ID) error {
+	if s.DeleteStubResult == nil {
+		log.Fatal("CertificateAuthorityStub.DeleteStubResult is not set")
+	}
+	return s.DeleteStubResult.Err
+}
+
+// Detail is API call with trace log
+func (s *CertificateAuthorityStub) Detail(ctx context.Context, id types.ID) (*sacloud.CertificateAuthorityDetail, error) {
+	if s.DetailStubResult == nil {
+		log.Fatal("CertificateAuthorityStub.DetailStubResult is not set")
+	}
+	return s.DetailStubResult.CertificateAuthority, s.DetailStubResult.Err
+}
+
+// AddClient is API call with trace log
+func (s *CertificateAuthorityStub) AddClient(ctx context.Context, id types.ID, param *sacloud.CertificateAuthorityAddClientParam) (*sacloud.CertificateAuthorityAddClientOrServerResult, error) {
+	if s.AddClientStubResult == nil {
+		log.Fatal("CertificateAuthorityStub.AddClientStubResult is not set")
+	}
+	return s.AddClientStubResult.CertificateAuthority, s.AddClientStubResult.Err
+}
+
+// ListClients is API call with trace log
+func (s *CertificateAuthorityStub) ListClients(ctx context.Context, id types.ID) (*sacloud.CertificateAuthorityListClientsResult, error) {
+	if s.ListClientsStubResult == nil {
+		log.Fatal("CertificateAuthorityStub.ListClientsStubResult is not set")
+	}
+	return s.ListClientsStubResult.Values, s.ListClientsStubResult.Err
+}
+
+// ReadClient is API call with trace log
+func (s *CertificateAuthorityStub) ReadClient(ctx context.Context, id types.ID, clientID string) (*sacloud.CertificateAuthorityClient, error) {
+	if s.ReadClientStubResult == nil {
+		log.Fatal("CertificateAuthorityStub.ReadClientStubResult is not set")
+	}
+	return s.ReadClientStubResult.CertificateAuthority, s.ReadClientStubResult.Err
+}
+
+// RevokeClient is API call with trace log
+func (s *CertificateAuthorityStub) RevokeClient(ctx context.Context, id types.ID, clientID string) error {
+	if s.RevokeClientStubResult == nil {
+		log.Fatal("CertificateAuthorityStub.RevokeClientStubResult is not set")
+	}
+	return s.RevokeClientStubResult.Err
+}
+
+// HoldClient is API call with trace log
+func (s *CertificateAuthorityStub) HoldClient(ctx context.Context, id types.ID, clientID string) error {
+	if s.HoldClientStubResult == nil {
+		log.Fatal("CertificateAuthorityStub.HoldClientStubResult is not set")
+	}
+	return s.HoldClientStubResult.Err
+}
+
+// ResumeClient is API call with trace log
+func (s *CertificateAuthorityStub) ResumeClient(ctx context.Context, id types.ID, clientID string) error {
+	if s.ResumeClientStubResult == nil {
+		log.Fatal("CertificateAuthorityStub.ResumeClientStubResult is not set")
+	}
+	return s.ResumeClientStubResult.Err
+}
+
+// DenyClient is API call with trace log
+func (s *CertificateAuthorityStub) DenyClient(ctx context.Context, id types.ID, clientID string) error {
+	if s.DenyClientStubResult == nil {
+		log.Fatal("CertificateAuthorityStub.DenyClientStubResult is not set")
+	}
+	return s.DenyClientStubResult.Err
+}
+
+// AddServer is API call with trace log
+func (s *CertificateAuthorityStub) AddServer(ctx context.Context, id types.ID, param *sacloud.CertificateAuthorityAddServerParam) (*sacloud.CertificateAuthorityAddClientOrServerResult, error) {
+	if s.AddServerStubResult == nil {
+		log.Fatal("CertificateAuthorityStub.AddServerStubResult is not set")
+	}
+	return s.AddServerStubResult.CertificateAuthority, s.AddServerStubResult.Err
+}
+
+// ListServers is API call with trace log
+func (s *CertificateAuthorityStub) ListServers(ctx context.Context, id types.ID) (*sacloud.CertificateAuthorityListServersResult, error) {
+	if s.ListServersStubResult == nil {
+		log.Fatal("CertificateAuthorityStub.ListServersStubResult is not set")
+	}
+	return s.ListServersStubResult.Values, s.ListServersStubResult.Err
+}
+
+// ReadServer is API call with trace log
+func (s *CertificateAuthorityStub) ReadServer(ctx context.Context, id types.ID, serverID string) (*sacloud.CertificateAuthorityServer, error) {
+	if s.ReadServerStubResult == nil {
+		log.Fatal("CertificateAuthorityStub.ReadServerStubResult is not set")
+	}
+	return s.ReadServerStubResult.CertificateAuthority, s.ReadServerStubResult.Err
+}
+
+// RevokeServer is API call with trace log
+func (s *CertificateAuthorityStub) RevokeServer(ctx context.Context, id types.ID, serverID string) error {
+	if s.RevokeServerStubResult == nil {
+		log.Fatal("CertificateAuthorityStub.RevokeServerStubResult is not set")
+	}
+	return s.RevokeServerStubResult.Err
+}
+
+// HoldServer is API call with trace log
+func (s *CertificateAuthorityStub) HoldServer(ctx context.Context, id types.ID, serverID string) error {
+	if s.HoldServerStubResult == nil {
+		log.Fatal("CertificateAuthorityStub.HoldServerStubResult is not set")
+	}
+	return s.HoldServerStubResult.Err
+}
+
+// ResumeServer is API call with trace log
+func (s *CertificateAuthorityStub) ResumeServer(ctx context.Context, id types.ID, serverID string) error {
+	if s.ResumeServerStubResult == nil {
+		log.Fatal("CertificateAuthorityStub.ResumeServerStubResult is not set")
+	}
+	return s.ResumeServerStubResult.Err
+}
+
+/*************************************************
 * ContainerRegistryStub
 *************************************************/
 

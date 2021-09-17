@@ -190,6 +190,34 @@ func putCDROM(zone string, value *sacloud.CDROM) {
 	ds().Put(ResourceCDROM, zone, 0, value)
 }
 
+func getCertificateAuthority(zone string) []*sacloud.CertificateAuthority {
+	values := ds().List(ResourceCertificateAuthority, zone)
+	var ret []*sacloud.CertificateAuthority
+	for _, v := range values {
+		if v, ok := v.(*sacloud.CertificateAuthority); ok {
+			ret = append(ret, v)
+		}
+	}
+	return ret
+}
+
+func getCertificateAuthorityByID(zone string, id types.ID) *sacloud.CertificateAuthority {
+	v := ds().Get(ResourceCertificateAuthority, zone, id)
+	if v, ok := v.(*sacloud.CertificateAuthority); ok {
+		return v
+	}
+	return nil
+}
+
+func putCertificateAuthority(zone string, value *sacloud.CertificateAuthority) {
+	var v interface{} = value
+	if id, ok := v.(accessor.ID); ok {
+		ds().Put(ResourceCertificateAuthority, zone, id.GetID(), value)
+		return
+	}
+	ds().Put(ResourceCertificateAuthority, zone, 0, value)
+}
+
 func getContainerRegistry(zone string) []*sacloud.ContainerRegistry {
 	values := ds().List(ResourceContainerRegistry, zone)
 	var ret []*sacloud.ContainerRegistry

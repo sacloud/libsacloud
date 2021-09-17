@@ -38,6 +38,8 @@ func ResourceFieldName(resourceName string, form dsl.PayloadForm) string {
 			return resourceName
 		case resourceName == "ContainerRegistry":
 			return "ContainerRegistries"
+		case resourceName == "CertificateAuthority":
+			return "CertificateAuthorities"
 		case
 			strings.HasSuffix(resourceName, "ch"),
 			strings.HasSuffix(resourceName, "ss"):

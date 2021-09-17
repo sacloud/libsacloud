@@ -3533,6 +3533,1133 @@ func (o *CDROMUpdateRequest) SetIconID(v types.ID) {
 }
 
 /*************************************************
+* CertificateAuthority
+*************************************************/
+
+// CertificateAuthority represents API parameter/response structure
+type CertificateAuthority struct {
+	ID               types.ID
+	Name             string
+	Description      string
+	Tags             types.Tags
+	Availability     types.EAvailability
+	IconID           types.ID `mapconv:"Icon.ID"`
+	CreatedAt        time.Time
+	ModifiedAt       time.Time
+	Country          string    `mapconv:"Status.Country"`
+	Organization     string    `mapconv:"Status.Organization"`
+	OrganizationUnit []string  `mapconv:"Status.OrganizationUnit"`
+	CommonName       string    `mapconv:"Status.CommonName"`
+	NotAfter         time.Time `mapconv:"Status.NotAfter"`
+	Subject          string    `mapconv:"Status.Subject"`
+}
+
+// Validate validates by field tags
+func (o *CertificateAuthority) Validate() error {
+	return validate.Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *CertificateAuthority) setDefaults() interface{} {
+	return &struct {
+		ID               types.ID
+		Name             string
+		Description      string
+		Tags             types.Tags
+		Availability     types.EAvailability
+		IconID           types.ID `mapconv:"Icon.ID"`
+		CreatedAt        time.Time
+		ModifiedAt       time.Time
+		Country          string    `mapconv:"Status.Country"`
+		Organization     string    `mapconv:"Status.Organization"`
+		OrganizationUnit []string  `mapconv:"Status.OrganizationUnit"`
+		CommonName       string    `mapconv:"Status.CommonName"`
+		NotAfter         time.Time `mapconv:"Status.NotAfter"`
+		Subject          string    `mapconv:"Status.Subject"`
+	}{
+		ID:               o.GetID(),
+		Name:             o.GetName(),
+		Description:      o.GetDescription(),
+		Tags:             o.GetTags(),
+		Availability:     o.GetAvailability(),
+		IconID:           o.GetIconID(),
+		CreatedAt:        o.GetCreatedAt(),
+		ModifiedAt:       o.GetModifiedAt(),
+		Country:          o.GetCountry(),
+		Organization:     o.GetOrganization(),
+		OrganizationUnit: o.GetOrganizationUnit(),
+		CommonName:       o.GetCommonName(),
+		NotAfter:         o.GetNotAfter(),
+		Subject:          o.GetSubject(),
+	}
+}
+
+// GetID returns value of ID
+func (o *CertificateAuthority) GetID() types.ID {
+	return o.ID
+}
+
+// SetID sets value to ID
+func (o *CertificateAuthority) SetID(v types.ID) {
+	o.ID = v
+}
+
+// SetStringID .
+func (o *CertificateAuthority) SetStringID(id string) {
+	accessor.SetStringID(o, id)
+}
+
+// GetStringID .
+func (o *CertificateAuthority) GetStringID() string {
+	return accessor.GetStringID(o)
+}
+
+// SetInt64ID .
+func (o *CertificateAuthority) SetInt64ID(id int64) {
+	accessor.SetInt64ID(o, id)
+}
+
+// GetInt64ID .
+func (o *CertificateAuthority) GetInt64ID() int64 {
+	return accessor.GetInt64ID(o)
+}
+
+// GetName returns value of Name
+func (o *CertificateAuthority) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *CertificateAuthority) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *CertificateAuthority) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *CertificateAuthority) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetTags returns value of Tags
+func (o *CertificateAuthority) GetTags() types.Tags {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *CertificateAuthority) SetTags(v types.Tags) {
+	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *CertificateAuthority) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *CertificateAuthority) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *CertificateAuthority) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *CertificateAuthority) ClearTags() {
+	accessor.ClearTags(o)
+}
+
+// GetAvailability returns value of Availability
+func (o *CertificateAuthority) GetAvailability() types.EAvailability {
+	return o.Availability
+}
+
+// SetAvailability sets value to Availability
+func (o *CertificateAuthority) SetAvailability(v types.EAvailability) {
+	o.Availability = v
+}
+
+// GetIconID returns value of IconID
+func (o *CertificateAuthority) GetIconID() types.ID {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *CertificateAuthority) SetIconID(v types.ID) {
+	o.IconID = v
+}
+
+// GetCreatedAt returns value of CreatedAt
+func (o *CertificateAuthority) GetCreatedAt() time.Time {
+	return o.CreatedAt
+}
+
+// SetCreatedAt sets value to CreatedAt
+func (o *CertificateAuthority) SetCreatedAt(v time.Time) {
+	o.CreatedAt = v
+}
+
+// GetModifiedAt returns value of ModifiedAt
+func (o *CertificateAuthority) GetModifiedAt() time.Time {
+	return o.ModifiedAt
+}
+
+// SetModifiedAt sets value to ModifiedAt
+func (o *CertificateAuthority) SetModifiedAt(v time.Time) {
+	o.ModifiedAt = v
+}
+
+// GetCountry returns value of Country
+func (o *CertificateAuthority) GetCountry() string {
+	return o.Country
+}
+
+// SetCountry sets value to Country
+func (o *CertificateAuthority) SetCountry(v string) {
+	o.Country = v
+}
+
+// GetOrganization returns value of Organization
+func (o *CertificateAuthority) GetOrganization() string {
+	return o.Organization
+}
+
+// SetOrganization sets value to Organization
+func (o *CertificateAuthority) SetOrganization(v string) {
+	o.Organization = v
+}
+
+// GetOrganizationUnit returns value of OrganizationUnit
+func (o *CertificateAuthority) GetOrganizationUnit() []string {
+	return o.OrganizationUnit
+}
+
+// SetOrganizationUnit sets value to OrganizationUnit
+func (o *CertificateAuthority) SetOrganizationUnit(v []string) {
+	o.OrganizationUnit = v
+}
+
+// GetCommonName returns value of CommonName
+func (o *CertificateAuthority) GetCommonName() string {
+	return o.CommonName
+}
+
+// SetCommonName sets value to CommonName
+func (o *CertificateAuthority) SetCommonName(v string) {
+	o.CommonName = v
+}
+
+// GetNotAfter returns value of NotAfter
+func (o *CertificateAuthority) GetNotAfter() time.Time {
+	return o.NotAfter
+}
+
+// SetNotAfter sets value to NotAfter
+func (o *CertificateAuthority) SetNotAfter(v time.Time) {
+	o.NotAfter = v
+}
+
+// GetSubject returns value of Subject
+func (o *CertificateAuthority) GetSubject() string {
+	return o.Subject
+}
+
+// SetSubject sets value to Subject
+func (o *CertificateAuthority) SetSubject(v string) {
+	o.Subject = v
+}
+
+/*************************************************
+* CertificateAuthorityCreateRequest
+*************************************************/
+
+// CertificateAuthorityCreateRequest represents API parameter/response structure
+type CertificateAuthorityCreateRequest struct {
+	Name             string
+	Description      string
+	Tags             types.Tags
+	IconID           types.ID  `mapconv:"Icon.ID"`
+	Country          string    `mapconv:"Status.Country"`
+	Organization     string    `mapconv:"Status.Organization"`
+	OrganizationUnit []string  `mapconv:"Status.OrganizationUnit"`
+	CommonName       string    `mapconv:"Status.CommonName"`
+	NotAfter         time.Time `mapconv:"Status.NotAfter"`
+}
+
+// Validate validates by field tags
+func (o *CertificateAuthorityCreateRequest) Validate() error {
+	return validate.Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *CertificateAuthorityCreateRequest) setDefaults() interface{} {
+	return &struct {
+		Name             string
+		Description      string
+		Tags             types.Tags
+		IconID           types.ID  `mapconv:"Icon.ID"`
+		Country          string    `mapconv:"Status.Country"`
+		Organization     string    `mapconv:"Status.Organization"`
+		OrganizationUnit []string  `mapconv:"Status.OrganizationUnit"`
+		CommonName       string    `mapconv:"Status.CommonName"`
+		NotAfter         time.Time `mapconv:"Status.NotAfter"`
+		Class            string    `mapconv:"Provider.Class"`
+	}{
+		Name:             o.GetName(),
+		Description:      o.GetDescription(),
+		Tags:             o.GetTags(),
+		IconID:           o.GetIconID(),
+		Country:          o.GetCountry(),
+		Organization:     o.GetOrganization(),
+		OrganizationUnit: o.GetOrganizationUnit(),
+		CommonName:       o.GetCommonName(),
+		NotAfter:         o.GetNotAfter(),
+		Class:            "certificateauthority",
+	}
+}
+
+// GetName returns value of Name
+func (o *CertificateAuthorityCreateRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *CertificateAuthorityCreateRequest) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *CertificateAuthorityCreateRequest) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *CertificateAuthorityCreateRequest) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetTags returns value of Tags
+func (o *CertificateAuthorityCreateRequest) GetTags() types.Tags {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *CertificateAuthorityCreateRequest) SetTags(v types.Tags) {
+	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *CertificateAuthorityCreateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *CertificateAuthorityCreateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *CertificateAuthorityCreateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *CertificateAuthorityCreateRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
+// GetIconID returns value of IconID
+func (o *CertificateAuthorityCreateRequest) GetIconID() types.ID {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *CertificateAuthorityCreateRequest) SetIconID(v types.ID) {
+	o.IconID = v
+}
+
+// GetCountry returns value of Country
+func (o *CertificateAuthorityCreateRequest) GetCountry() string {
+	return o.Country
+}
+
+// SetCountry sets value to Country
+func (o *CertificateAuthorityCreateRequest) SetCountry(v string) {
+	o.Country = v
+}
+
+// GetOrganization returns value of Organization
+func (o *CertificateAuthorityCreateRequest) GetOrganization() string {
+	return o.Organization
+}
+
+// SetOrganization sets value to Organization
+func (o *CertificateAuthorityCreateRequest) SetOrganization(v string) {
+	o.Organization = v
+}
+
+// GetOrganizationUnit returns value of OrganizationUnit
+func (o *CertificateAuthorityCreateRequest) GetOrganizationUnit() []string {
+	return o.OrganizationUnit
+}
+
+// SetOrganizationUnit sets value to OrganizationUnit
+func (o *CertificateAuthorityCreateRequest) SetOrganizationUnit(v []string) {
+	o.OrganizationUnit = v
+}
+
+// GetCommonName returns value of CommonName
+func (o *CertificateAuthorityCreateRequest) GetCommonName() string {
+	return o.CommonName
+}
+
+// SetCommonName sets value to CommonName
+func (o *CertificateAuthorityCreateRequest) SetCommonName(v string) {
+	o.CommonName = v
+}
+
+// GetNotAfter returns value of NotAfter
+func (o *CertificateAuthorityCreateRequest) GetNotAfter() time.Time {
+	return o.NotAfter
+}
+
+// SetNotAfter sets value to NotAfter
+func (o *CertificateAuthorityCreateRequest) SetNotAfter(v time.Time) {
+	o.NotAfter = v
+}
+
+/*************************************************
+* CertificateAuthorityUpdateRequest
+*************************************************/
+
+// CertificateAuthorityUpdateRequest represents API parameter/response structure
+type CertificateAuthorityUpdateRequest struct {
+	Name        string
+	Description string
+	Tags        types.Tags
+	IconID      types.ID `mapconv:"Icon.ID"`
+}
+
+// Validate validates by field tags
+func (o *CertificateAuthorityUpdateRequest) Validate() error {
+	return validate.Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *CertificateAuthorityUpdateRequest) setDefaults() interface{} {
+	return &struct {
+		Name        string
+		Description string
+		Tags        types.Tags
+		IconID      types.ID `mapconv:"Icon.ID"`
+	}{
+		Name:        o.GetName(),
+		Description: o.GetDescription(),
+		Tags:        o.GetTags(),
+		IconID:      o.GetIconID(),
+	}
+}
+
+// GetName returns value of Name
+func (o *CertificateAuthorityUpdateRequest) GetName() string {
+	return o.Name
+}
+
+// SetName sets value to Name
+func (o *CertificateAuthorityUpdateRequest) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns value of Description
+func (o *CertificateAuthorityUpdateRequest) GetDescription() string {
+	return o.Description
+}
+
+// SetDescription sets value to Description
+func (o *CertificateAuthorityUpdateRequest) SetDescription(v string) {
+	o.Description = v
+}
+
+// GetTags returns value of Tags
+func (o *CertificateAuthorityUpdateRequest) GetTags() types.Tags {
+	return o.Tags
+}
+
+// SetTags sets value to Tags
+func (o *CertificateAuthorityUpdateRequest) SetTags(v types.Tags) {
+	o.Tags = v
+}
+
+// HasTag 指定のタグが存在する場合trueを返す
+func (o *CertificateAuthorityUpdateRequest) HasTag(tag string) bool {
+	return accessor.HasTag(o, tag)
+}
+
+// AppendTag 指定のタグを追加
+func (o *CertificateAuthorityUpdateRequest) AppendTag(tag string) {
+	accessor.AppendTag(o, tag)
+}
+
+// RemoveTag 指定のタグを削除
+func (o *CertificateAuthorityUpdateRequest) RemoveTag(tag string) {
+	accessor.RemoveTag(o, tag)
+}
+
+// ClearTags タグを全クリア
+func (o *CertificateAuthorityUpdateRequest) ClearTags() {
+	accessor.ClearTags(o)
+}
+
+// GetIconID returns value of IconID
+func (o *CertificateAuthorityUpdateRequest) GetIconID() types.ID {
+	return o.IconID
+}
+
+// SetIconID sets value to IconID
+func (o *CertificateAuthorityUpdateRequest) SetIconID(v types.ID) {
+	o.IconID = v
+}
+
+/*************************************************
+* CertificateAuthorityDetail
+*************************************************/
+
+// CertificateAuthorityDetail represents API parameter/response structure
+type CertificateAuthorityDetail struct {
+	Subject         string
+	CertificateData *CertificateData `mapconv:",recursive"`
+}
+
+// Validate validates by field tags
+func (o *CertificateAuthorityDetail) Validate() error {
+	return validate.Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *CertificateAuthorityDetail) setDefaults() interface{} {
+	return &struct {
+		Subject         string
+		CertificateData *CertificateData `mapconv:",recursive"`
+	}{
+		Subject:         o.GetSubject(),
+		CertificateData: o.GetCertificateData(),
+	}
+}
+
+// GetSubject returns value of Subject
+func (o *CertificateAuthorityDetail) GetSubject() string {
+	return o.Subject
+}
+
+// SetSubject sets value to Subject
+func (o *CertificateAuthorityDetail) SetSubject(v string) {
+	o.Subject = v
+}
+
+// GetCertificateData returns value of CertificateData
+func (o *CertificateAuthorityDetail) GetCertificateData() *CertificateData {
+	return o.CertificateData
+}
+
+// SetCertificateData sets value to CertificateData
+func (o *CertificateAuthorityDetail) SetCertificateData(v *CertificateData) {
+	o.CertificateData = v
+}
+
+/*************************************************
+* CertificateData
+*************************************************/
+
+// CertificateData represents API parameter/response structure
+type CertificateData struct {
+	CertificatePEM string
+	Subject        string
+	SerialNumber   string
+	NotBefore      time.Time
+	NotAfter       time.Time
+}
+
+// Validate validates by field tags
+func (o *CertificateData) Validate() error {
+	return validate.Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *CertificateData) setDefaults() interface{} {
+	return &struct {
+		CertificatePEM string
+		Subject        string
+		SerialNumber   string
+		NotBefore      time.Time
+		NotAfter       time.Time
+	}{
+		CertificatePEM: o.GetCertificatePEM(),
+		Subject:        o.GetSubject(),
+		SerialNumber:   o.GetSerialNumber(),
+		NotBefore:      o.GetNotBefore(),
+		NotAfter:       o.GetNotAfter(),
+	}
+}
+
+// GetCertificatePEM returns value of CertificatePEM
+func (o *CertificateData) GetCertificatePEM() string {
+	return o.CertificatePEM
+}
+
+// SetCertificatePEM sets value to CertificatePEM
+func (o *CertificateData) SetCertificatePEM(v string) {
+	o.CertificatePEM = v
+}
+
+// GetSubject returns value of Subject
+func (o *CertificateData) GetSubject() string {
+	return o.Subject
+}
+
+// SetSubject sets value to Subject
+func (o *CertificateData) SetSubject(v string) {
+	o.Subject = v
+}
+
+// GetSerialNumber returns value of SerialNumber
+func (o *CertificateData) GetSerialNumber() string {
+	return o.SerialNumber
+}
+
+// SetSerialNumber sets value to SerialNumber
+func (o *CertificateData) SetSerialNumber(v string) {
+	o.SerialNumber = v
+}
+
+// GetNotBefore returns value of NotBefore
+func (o *CertificateData) GetNotBefore() time.Time {
+	return o.NotBefore
+}
+
+// SetNotBefore sets value to NotBefore
+func (o *CertificateData) SetNotBefore(v time.Time) {
+	o.NotBefore = v
+}
+
+// GetNotAfter returns value of NotAfter
+func (o *CertificateData) GetNotAfter() time.Time {
+	return o.NotAfter
+}
+
+// SetNotAfter sets value to NotAfter
+func (o *CertificateData) SetNotAfter(v time.Time) {
+	o.NotAfter = v
+}
+
+/*************************************************
+* CertificateAuthorityAddClientOrServerResult
+*************************************************/
+
+// CertificateAuthorityAddClientOrServerResult represents API parameter/response structure
+type CertificateAuthorityAddClientOrServerResult struct {
+	ID string
+}
+
+// Validate validates by field tags
+func (o *CertificateAuthorityAddClientOrServerResult) Validate() error {
+	return validate.Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *CertificateAuthorityAddClientOrServerResult) setDefaults() interface{} {
+	return &struct {
+		ID string
+	}{
+		ID: o.GetID(),
+	}
+}
+
+// GetID returns value of ID
+func (o *CertificateAuthorityAddClientOrServerResult) GetID() string {
+	return o.ID
+}
+
+// SetID sets value to ID
+func (o *CertificateAuthorityAddClientOrServerResult) SetID(v string) {
+	o.ID = v
+}
+
+/*************************************************
+* CertificateAuthorityAddClientParam
+*************************************************/
+
+// CertificateAuthorityAddClientParam represents API parameter/response structure
+type CertificateAuthorityAddClientParam struct {
+	Country                   string
+	Organization              string
+	OrganizationUnit          []string
+	CommonName                string
+	NotAfter                  time.Time
+	IssuanceMethod            string
+	EMail                     string
+	CertificateSigningRequest string
+	PublicKey                 string
+}
+
+// Validate validates by field tags
+func (o *CertificateAuthorityAddClientParam) Validate() error {
+	return validate.Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *CertificateAuthorityAddClientParam) setDefaults() interface{} {
+	return &struct {
+		Country                   string
+		Organization              string
+		OrganizationUnit          []string
+		CommonName                string
+		NotAfter                  time.Time
+		IssuanceMethod            string
+		EMail                     string
+		CertificateSigningRequest string
+		PublicKey                 string
+	}{
+		Country:                   o.GetCountry(),
+		Organization:              o.GetOrganization(),
+		OrganizationUnit:          o.GetOrganizationUnit(),
+		CommonName:                o.GetCommonName(),
+		NotAfter:                  o.GetNotAfter(),
+		IssuanceMethod:            o.GetIssuanceMethod(),
+		EMail:                     o.GetEMail(),
+		CertificateSigningRequest: o.GetCertificateSigningRequest(),
+		PublicKey:                 o.GetPublicKey(),
+	}
+}
+
+// GetCountry returns value of Country
+func (o *CertificateAuthorityAddClientParam) GetCountry() string {
+	return o.Country
+}
+
+// SetCountry sets value to Country
+func (o *CertificateAuthorityAddClientParam) SetCountry(v string) {
+	o.Country = v
+}
+
+// GetOrganization returns value of Organization
+func (o *CertificateAuthorityAddClientParam) GetOrganization() string {
+	return o.Organization
+}
+
+// SetOrganization sets value to Organization
+func (o *CertificateAuthorityAddClientParam) SetOrganization(v string) {
+	o.Organization = v
+}
+
+// GetOrganizationUnit returns value of OrganizationUnit
+func (o *CertificateAuthorityAddClientParam) GetOrganizationUnit() []string {
+	return o.OrganizationUnit
+}
+
+// SetOrganizationUnit sets value to OrganizationUnit
+func (o *CertificateAuthorityAddClientParam) SetOrganizationUnit(v []string) {
+	o.OrganizationUnit = v
+}
+
+// GetCommonName returns value of CommonName
+func (o *CertificateAuthorityAddClientParam) GetCommonName() string {
+	return o.CommonName
+}
+
+// SetCommonName sets value to CommonName
+func (o *CertificateAuthorityAddClientParam) SetCommonName(v string) {
+	o.CommonName = v
+}
+
+// GetNotAfter returns value of NotAfter
+func (o *CertificateAuthorityAddClientParam) GetNotAfter() time.Time {
+	return o.NotAfter
+}
+
+// SetNotAfter sets value to NotAfter
+func (o *CertificateAuthorityAddClientParam) SetNotAfter(v time.Time) {
+	o.NotAfter = v
+}
+
+// GetIssuanceMethod returns value of IssuanceMethod
+func (o *CertificateAuthorityAddClientParam) GetIssuanceMethod() string {
+	return o.IssuanceMethod
+}
+
+// SetIssuanceMethod sets value to IssuanceMethod
+func (o *CertificateAuthorityAddClientParam) SetIssuanceMethod(v string) {
+	o.IssuanceMethod = v
+}
+
+// GetEMail returns value of EMail
+func (o *CertificateAuthorityAddClientParam) GetEMail() string {
+	return o.EMail
+}
+
+// SetEMail sets value to EMail
+func (o *CertificateAuthorityAddClientParam) SetEMail(v string) {
+	o.EMail = v
+}
+
+// GetCertificateSigningRequest returns value of CertificateSigningRequest
+func (o *CertificateAuthorityAddClientParam) GetCertificateSigningRequest() string {
+	return o.CertificateSigningRequest
+}
+
+// SetCertificateSigningRequest sets value to CertificateSigningRequest
+func (o *CertificateAuthorityAddClientParam) SetCertificateSigningRequest(v string) {
+	o.CertificateSigningRequest = v
+}
+
+// GetPublicKey returns value of PublicKey
+func (o *CertificateAuthorityAddClientParam) GetPublicKey() string {
+	return o.PublicKey
+}
+
+// SetPublicKey sets value to PublicKey
+func (o *CertificateAuthorityAddClientParam) SetPublicKey(v string) {
+	o.PublicKey = v
+}
+
+/*************************************************
+* CertificateAuthorityClient
+*************************************************/
+
+// CertificateAuthorityClient represents API parameter/response structure
+type CertificateAuthorityClient struct {
+	ID              string
+	Subject         string
+	EMail           string
+	IssuanceMethod  string
+	IssueState      string
+	URL             string
+	CertificateData *CertificateData `mapconv:",recursive"`
+}
+
+// Validate validates by field tags
+func (o *CertificateAuthorityClient) Validate() error {
+	return validate.Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *CertificateAuthorityClient) setDefaults() interface{} {
+	return &struct {
+		ID              string
+		Subject         string
+		EMail           string
+		IssuanceMethod  string
+		IssueState      string
+		URL             string
+		CertificateData *CertificateData `mapconv:",recursive"`
+	}{
+		ID:              o.GetID(),
+		Subject:         o.GetSubject(),
+		EMail:           o.GetEMail(),
+		IssuanceMethod:  o.GetIssuanceMethod(),
+		IssueState:      o.GetIssueState(),
+		URL:             o.GetURL(),
+		CertificateData: o.GetCertificateData(),
+	}
+}
+
+// GetID returns value of ID
+func (o *CertificateAuthorityClient) GetID() string {
+	return o.ID
+}
+
+// SetID sets value to ID
+func (o *CertificateAuthorityClient) SetID(v string) {
+	o.ID = v
+}
+
+// GetSubject returns value of Subject
+func (o *CertificateAuthorityClient) GetSubject() string {
+	return o.Subject
+}
+
+// SetSubject sets value to Subject
+func (o *CertificateAuthorityClient) SetSubject(v string) {
+	o.Subject = v
+}
+
+// GetEMail returns value of EMail
+func (o *CertificateAuthorityClient) GetEMail() string {
+	return o.EMail
+}
+
+// SetEMail sets value to EMail
+func (o *CertificateAuthorityClient) SetEMail(v string) {
+	o.EMail = v
+}
+
+// GetIssuanceMethod returns value of IssuanceMethod
+func (o *CertificateAuthorityClient) GetIssuanceMethod() string {
+	return o.IssuanceMethod
+}
+
+// SetIssuanceMethod sets value to IssuanceMethod
+func (o *CertificateAuthorityClient) SetIssuanceMethod(v string) {
+	o.IssuanceMethod = v
+}
+
+// GetIssueState returns value of IssueState
+func (o *CertificateAuthorityClient) GetIssueState() string {
+	return o.IssueState
+}
+
+// SetIssueState sets value to IssueState
+func (o *CertificateAuthorityClient) SetIssueState(v string) {
+	o.IssueState = v
+}
+
+// GetURL returns value of URL
+func (o *CertificateAuthorityClient) GetURL() string {
+	return o.URL
+}
+
+// SetURL sets value to URL
+func (o *CertificateAuthorityClient) SetURL(v string) {
+	o.URL = v
+}
+
+// GetCertificateData returns value of CertificateData
+func (o *CertificateAuthorityClient) GetCertificateData() *CertificateData {
+	return o.CertificateData
+}
+
+// SetCertificateData sets value to CertificateData
+func (o *CertificateAuthorityClient) SetCertificateData(v *CertificateData) {
+	o.CertificateData = v
+}
+
+/*************************************************
+* CertificateAuthorityAddServerParam
+*************************************************/
+
+// CertificateAuthorityAddServerParam represents API parameter/response structure
+type CertificateAuthorityAddServerParam struct {
+	Country                   string
+	Organization              string
+	OrganizationUnit          []string
+	CommonName                string
+	NotAfter                  time.Time
+	SANs                      []string
+	CertificateSigningRequest string
+	PublicKey                 string
+}
+
+// Validate validates by field tags
+func (o *CertificateAuthorityAddServerParam) Validate() error {
+	return validate.Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *CertificateAuthorityAddServerParam) setDefaults() interface{} {
+	return &struct {
+		Country                   string
+		Organization              string
+		OrganizationUnit          []string
+		CommonName                string
+		NotAfter                  time.Time
+		SANs                      []string
+		CertificateSigningRequest string
+		PublicKey                 string
+	}{
+		Country:                   o.GetCountry(),
+		Organization:              o.GetOrganization(),
+		OrganizationUnit:          o.GetOrganizationUnit(),
+		CommonName:                o.GetCommonName(),
+		NotAfter:                  o.GetNotAfter(),
+		SANs:                      o.GetSANs(),
+		CertificateSigningRequest: o.GetCertificateSigningRequest(),
+		PublicKey:                 o.GetPublicKey(),
+	}
+}
+
+// GetCountry returns value of Country
+func (o *CertificateAuthorityAddServerParam) GetCountry() string {
+	return o.Country
+}
+
+// SetCountry sets value to Country
+func (o *CertificateAuthorityAddServerParam) SetCountry(v string) {
+	o.Country = v
+}
+
+// GetOrganization returns value of Organization
+func (o *CertificateAuthorityAddServerParam) GetOrganization() string {
+	return o.Organization
+}
+
+// SetOrganization sets value to Organization
+func (o *CertificateAuthorityAddServerParam) SetOrganization(v string) {
+	o.Organization = v
+}
+
+// GetOrganizationUnit returns value of OrganizationUnit
+func (o *CertificateAuthorityAddServerParam) GetOrganizationUnit() []string {
+	return o.OrganizationUnit
+}
+
+// SetOrganizationUnit sets value to OrganizationUnit
+func (o *CertificateAuthorityAddServerParam) SetOrganizationUnit(v []string) {
+	o.OrganizationUnit = v
+}
+
+// GetCommonName returns value of CommonName
+func (o *CertificateAuthorityAddServerParam) GetCommonName() string {
+	return o.CommonName
+}
+
+// SetCommonName sets value to CommonName
+func (o *CertificateAuthorityAddServerParam) SetCommonName(v string) {
+	o.CommonName = v
+}
+
+// GetNotAfter returns value of NotAfter
+func (o *CertificateAuthorityAddServerParam) GetNotAfter() time.Time {
+	return o.NotAfter
+}
+
+// SetNotAfter sets value to NotAfter
+func (o *CertificateAuthorityAddServerParam) SetNotAfter(v time.Time) {
+	o.NotAfter = v
+}
+
+// GetSANs returns value of SANs
+func (o *CertificateAuthorityAddServerParam) GetSANs() []string {
+	return o.SANs
+}
+
+// SetSANs sets value to SANs
+func (o *CertificateAuthorityAddServerParam) SetSANs(v []string) {
+	o.SANs = v
+}
+
+// GetCertificateSigningRequest returns value of CertificateSigningRequest
+func (o *CertificateAuthorityAddServerParam) GetCertificateSigningRequest() string {
+	return o.CertificateSigningRequest
+}
+
+// SetCertificateSigningRequest sets value to CertificateSigningRequest
+func (o *CertificateAuthorityAddServerParam) SetCertificateSigningRequest(v string) {
+	o.CertificateSigningRequest = v
+}
+
+// GetPublicKey returns value of PublicKey
+func (o *CertificateAuthorityAddServerParam) GetPublicKey() string {
+	return o.PublicKey
+}
+
+// SetPublicKey sets value to PublicKey
+func (o *CertificateAuthorityAddServerParam) SetPublicKey(v string) {
+	o.PublicKey = v
+}
+
+/*************************************************
+* CertificateAuthorityServer
+*************************************************/
+
+// CertificateAuthorityServer represents API parameter/response structure
+type CertificateAuthorityServer struct {
+	ID              string
+	Subject         string
+	SANs            []string
+	EMail           string
+	IssueState      string
+	CertificateData *CertificateData `mapconv:",recursive"`
+}
+
+// Validate validates by field tags
+func (o *CertificateAuthorityServer) Validate() error {
+	return validate.Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *CertificateAuthorityServer) setDefaults() interface{} {
+	return &struct {
+		ID              string
+		Subject         string
+		SANs            []string
+		EMail           string
+		IssueState      string
+		CertificateData *CertificateData `mapconv:",recursive"`
+	}{
+		ID:              o.GetID(),
+		Subject:         o.GetSubject(),
+		SANs:            o.GetSANs(),
+		EMail:           o.GetEMail(),
+		IssueState:      o.GetIssueState(),
+		CertificateData: o.GetCertificateData(),
+	}
+}
+
+// GetID returns value of ID
+func (o *CertificateAuthorityServer) GetID() string {
+	return o.ID
+}
+
+// SetID sets value to ID
+func (o *CertificateAuthorityServer) SetID(v string) {
+	o.ID = v
+}
+
+// GetSubject returns value of Subject
+func (o *CertificateAuthorityServer) GetSubject() string {
+	return o.Subject
+}
+
+// SetSubject sets value to Subject
+func (o *CertificateAuthorityServer) SetSubject(v string) {
+	o.Subject = v
+}
+
+// GetSANs returns value of SANs
+func (o *CertificateAuthorityServer) GetSANs() []string {
+	return o.SANs
+}
+
+// SetSANs sets value to SANs
+func (o *CertificateAuthorityServer) SetSANs(v []string) {
+	o.SANs = v
+}
+
+// GetEMail returns value of EMail
+func (o *CertificateAuthorityServer) GetEMail() string {
+	return o.EMail
+}
+
+// SetEMail sets value to EMail
+func (o *CertificateAuthorityServer) SetEMail(v string) {
+	o.EMail = v
+}
+
+// GetIssueState returns value of IssueState
+func (o *CertificateAuthorityServer) GetIssueState() string {
+	return o.IssueState
+}
+
+// SetIssueState sets value to IssueState
+func (o *CertificateAuthorityServer) SetIssueState(v string) {
+	o.IssueState = v
+}
+
+// GetCertificateData returns value of CertificateData
+func (o *CertificateAuthorityServer) GetCertificateData() *CertificateData {
+	return o.CertificateData
+}
+
+// SetCertificateData sets value to CertificateData
+func (o *CertificateAuthorityServer) SetCertificateData(v *CertificateData) {
+	o.CertificateData = v
+}
+
+/*************************************************
 * ContainerRegistry
 *************************************************/
 

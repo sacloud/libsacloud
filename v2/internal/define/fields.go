@@ -1037,6 +1037,65 @@ func (f *fieldsDef) DNSNameServers() *dsl.FieldDesc {
 	}
 }
 
+func (f *fieldsDef) CAStatusCountry() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "Country",
+		Type: meta.TypeString,
+		Tags: &dsl.FieldTags{
+			MapConv: "Status.Country",
+		},
+	}
+}
+
+func (f *fieldsDef) CAStatusOrganization() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "Organization",
+		Type: meta.TypeString,
+		Tags: &dsl.FieldTags{
+			MapConv: "Status.Organization",
+		},
+	}
+}
+
+func (f *fieldsDef) CAStatusOrganizationUnit() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "OrganizationUnit",
+		Type: meta.TypeStringSlice,
+		Tags: &dsl.FieldTags{
+			MapConv: "Status.OrganizationUnit",
+		},
+	}
+}
+
+func (f *fieldsDef) CAStatusCommonName() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "CommonName",
+		Type: meta.TypeString,
+		Tags: &dsl.FieldTags{
+			MapConv: "Status.CommonName",
+		},
+	}
+}
+func (f *fieldsDef) CAStatusNotAfter() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "NotAfter",
+		Type: meta.TypeTime,
+		Tags: &dsl.FieldTags{
+			MapConv: "Status.NotAfter",
+		},
+	}
+}
+
+func (f *fieldsDef) CAStatusSubject() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "Subject",
+		Type: meta.TypeString,
+		Tags: &dsl.FieldTags{
+			MapConv: "Status.Subject",
+		},
+	}
+}
+
 func (f *fieldsDef) SimpleMonitorTarget() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "Target",
