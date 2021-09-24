@@ -47,6 +47,9 @@ func addClientFactoryHooks(cnf *config) {
 	sacloud.AddClientFacotyHookFunc("CDROM", func(in interface{}) interface{} {
 		return newCDROMTracer(in.(sacloud.CDROMAPI), cnf)
 	})
+	sacloud.AddClientFacotyHookFunc("CertificateAuthority", func(in interface{}) interface{} {
+		return newCertificateAuthorityTracer(in.(sacloud.CertificateAuthorityAPI), cnf)
+	})
 	sacloud.AddClientFacotyHookFunc("ContainerRegistry", func(in interface{}) interface{} {
 		return newContainerRegistryTracer(in.(sacloud.ContainerRegistryAPI), cnf)
 	})
@@ -1203,6 +1206,503 @@ func (t *CDROMTracer) CloseFTP(ctx context.Context, zone string, id types.ID) er
 	// for http trace
 	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
 	err := t.Internal.CloseFTP(ctx, zone, id)
+
+	if err != nil {
+		span.SetStatus(codes.Error, err.Error())
+	} else {
+		span.SetStatus(codes.Ok, "")
+
+	}
+	return err
+}
+
+/*************************************************
+* CertificateAuthorityTracer
+*************************************************/
+
+// CertificateAuthorityTracer is for trace CertificateAuthorityOp operations
+type CertificateAuthorityTracer struct {
+	Internal sacloud.CertificateAuthorityAPI
+	config   *config
+}
+
+// NewCertificateAuthorityTracer creates new CertificateAuthorityTracer instance
+func newCertificateAuthorityTracer(in sacloud.CertificateAuthorityAPI, cnf *config) sacloud.CertificateAuthorityAPI {
+	return &CertificateAuthorityTracer{
+		Internal: in,
+		config:   cnf,
+	}
+}
+
+// Find is API call with trace log
+func (t *CertificateAuthorityTracer) Find(ctx context.Context, conditions *sacloud.FindCondition) (*sacloud.CertificateAuthorityFindResult, error) {
+	var span trace.Span
+	options := append(t.config.SpanStartOptions, trace.WithAttributes(
+		label.Any("libsacloud.api.arguments.conditions", conditions),
+	))
+	ctx, span = t.config.Tracer.Start(ctx, "CertificateAuthorityAPI.Find", options...)
+	defer func() {
+		span.End()
+	}()
+
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
+	result, err := t.Internal.Find(ctx, conditions)
+
+	if err != nil {
+		span.SetStatus(codes.Error, err.Error())
+	} else {
+		span.SetStatus(codes.Ok, "")
+		span.SetAttributes(label.Any("libsacloud.api.results.result", result))
+
+	}
+	return result, err
+}
+
+// Create is API call with trace log
+func (t *CertificateAuthorityTracer) Create(ctx context.Context, param *sacloud.CertificateAuthorityCreateRequest) (*sacloud.CertificateAuthority, error) {
+	var span trace.Span
+	options := append(t.config.SpanStartOptions, trace.WithAttributes(
+		label.Any("libsacloud.api.arguments.param", param),
+	))
+	ctx, span = t.config.Tracer.Start(ctx, "CertificateAuthorityAPI.Create", options...)
+	defer func() {
+		span.End()
+	}()
+
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
+	resultCertificateAuthority, err := t.Internal.Create(ctx, param)
+
+	if err != nil {
+		span.SetStatus(codes.Error, err.Error())
+	} else {
+		span.SetStatus(codes.Ok, "")
+		span.SetAttributes(label.Any("libsacloud.api.results.resultCertificateAuthority", resultCertificateAuthority))
+
+	}
+	return resultCertificateAuthority, err
+}
+
+// Read is API call with trace log
+func (t *CertificateAuthorityTracer) Read(ctx context.Context, id types.ID) (*sacloud.CertificateAuthority, error) {
+	var span trace.Span
+	options := append(t.config.SpanStartOptions, trace.WithAttributes(
+		label.Any("libsacloud.api.arguments.id", id),
+	))
+	ctx, span = t.config.Tracer.Start(ctx, "CertificateAuthorityAPI.Read", options...)
+	defer func() {
+		span.End()
+	}()
+
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
+	resultCertificateAuthority, err := t.Internal.Read(ctx, id)
+
+	if err != nil {
+		span.SetStatus(codes.Error, err.Error())
+	} else {
+		span.SetStatus(codes.Ok, "")
+		span.SetAttributes(label.Any("libsacloud.api.results.resultCertificateAuthority", resultCertificateAuthority))
+
+	}
+	return resultCertificateAuthority, err
+}
+
+// Update is API call with trace log
+func (t *CertificateAuthorityTracer) Update(ctx context.Context, id types.ID, param *sacloud.CertificateAuthorityUpdateRequest) (*sacloud.CertificateAuthority, error) {
+	var span trace.Span
+	options := append(t.config.SpanStartOptions, trace.WithAttributes(
+		label.Any("libsacloud.api.arguments.id", id),
+		label.Any("libsacloud.api.arguments.param", param),
+	))
+	ctx, span = t.config.Tracer.Start(ctx, "CertificateAuthorityAPI.Update", options...)
+	defer func() {
+		span.End()
+	}()
+
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
+	resultCertificateAuthority, err := t.Internal.Update(ctx, id, param)
+
+	if err != nil {
+		span.SetStatus(codes.Error, err.Error())
+	} else {
+		span.SetStatus(codes.Ok, "")
+		span.SetAttributes(label.Any("libsacloud.api.results.resultCertificateAuthority", resultCertificateAuthority))
+
+	}
+	return resultCertificateAuthority, err
+}
+
+// Delete is API call with trace log
+func (t *CertificateAuthorityTracer) Delete(ctx context.Context, id types.ID) error {
+	var span trace.Span
+	options := append(t.config.SpanStartOptions, trace.WithAttributes(
+		label.Any("libsacloud.api.arguments.id", id),
+	))
+	ctx, span = t.config.Tracer.Start(ctx, "CertificateAuthorityAPI.Delete", options...)
+	defer func() {
+		span.End()
+	}()
+
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
+	err := t.Internal.Delete(ctx, id)
+
+	if err != nil {
+		span.SetStatus(codes.Error, err.Error())
+	} else {
+		span.SetStatus(codes.Ok, "")
+
+	}
+	return err
+}
+
+// Detail is API call with trace log
+func (t *CertificateAuthorityTracer) Detail(ctx context.Context, id types.ID) (*sacloud.CertificateAuthorityDetail, error) {
+	var span trace.Span
+	options := append(t.config.SpanStartOptions, trace.WithAttributes(
+		label.Any("libsacloud.api.arguments.id", id),
+	))
+	ctx, span = t.config.Tracer.Start(ctx, "CertificateAuthorityAPI.Detail", options...)
+	defer func() {
+		span.End()
+	}()
+
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
+	resultCertificateAuthority, err := t.Internal.Detail(ctx, id)
+
+	if err != nil {
+		span.SetStatus(codes.Error, err.Error())
+	} else {
+		span.SetStatus(codes.Ok, "")
+		span.SetAttributes(label.Any("libsacloud.api.results.resultCertificateAuthority", resultCertificateAuthority))
+
+	}
+	return resultCertificateAuthority, err
+}
+
+// AddClient is API call with trace log
+func (t *CertificateAuthorityTracer) AddClient(ctx context.Context, id types.ID, param *sacloud.CertificateAuthorityAddClientParam) (*sacloud.CertificateAuthorityAddClientOrServerResult, error) {
+	var span trace.Span
+	options := append(t.config.SpanStartOptions, trace.WithAttributes(
+		label.Any("libsacloud.api.arguments.id", id),
+		label.Any("libsacloud.api.arguments.param", param),
+	))
+	ctx, span = t.config.Tracer.Start(ctx, "CertificateAuthorityAPI.AddClient", options...)
+	defer func() {
+		span.End()
+	}()
+
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
+	resultCertificateAuthority, err := t.Internal.AddClient(ctx, id, param)
+
+	if err != nil {
+		span.SetStatus(codes.Error, err.Error())
+	} else {
+		span.SetStatus(codes.Ok, "")
+		span.SetAttributes(label.Any("libsacloud.api.results.resultCertificateAuthority", resultCertificateAuthority))
+
+	}
+	return resultCertificateAuthority, err
+}
+
+// ListClients is API call with trace log
+func (t *CertificateAuthorityTracer) ListClients(ctx context.Context, id types.ID) (*sacloud.CertificateAuthorityListClientsResult, error) {
+	var span trace.Span
+	options := append(t.config.SpanStartOptions, trace.WithAttributes(
+		label.Any("libsacloud.api.arguments.id", id),
+	))
+	ctx, span = t.config.Tracer.Start(ctx, "CertificateAuthorityAPI.ListClients", options...)
+	defer func() {
+		span.End()
+	}()
+
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
+	result, err := t.Internal.ListClients(ctx, id)
+
+	if err != nil {
+		span.SetStatus(codes.Error, err.Error())
+	} else {
+		span.SetStatus(codes.Ok, "")
+		span.SetAttributes(label.Any("libsacloud.api.results.result", result))
+
+	}
+	return result, err
+}
+
+// ReadClient is API call with trace log
+func (t *CertificateAuthorityTracer) ReadClient(ctx context.Context, id types.ID, clientID string) (*sacloud.CertificateAuthorityClient, error) {
+	var span trace.Span
+	options := append(t.config.SpanStartOptions, trace.WithAttributes(
+		label.Any("libsacloud.api.arguments.id", id),
+		label.Any("libsacloud.api.arguments.clientID", clientID),
+	))
+	ctx, span = t.config.Tracer.Start(ctx, "CertificateAuthorityAPI.ReadClient", options...)
+	defer func() {
+		span.End()
+	}()
+
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
+	resultCertificateAuthority, err := t.Internal.ReadClient(ctx, id, clientID)
+
+	if err != nil {
+		span.SetStatus(codes.Error, err.Error())
+	} else {
+		span.SetStatus(codes.Ok, "")
+		span.SetAttributes(label.Any("libsacloud.api.results.resultCertificateAuthority", resultCertificateAuthority))
+
+	}
+	return resultCertificateAuthority, err
+}
+
+// RevokeClient is API call with trace log
+func (t *CertificateAuthorityTracer) RevokeClient(ctx context.Context, id types.ID, clientID string) error {
+	var span trace.Span
+	options := append(t.config.SpanStartOptions, trace.WithAttributes(
+		label.Any("libsacloud.api.arguments.id", id),
+		label.Any("libsacloud.api.arguments.clientID", clientID),
+	))
+	ctx, span = t.config.Tracer.Start(ctx, "CertificateAuthorityAPI.RevokeClient", options...)
+	defer func() {
+		span.End()
+	}()
+
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
+	err := t.Internal.RevokeClient(ctx, id, clientID)
+
+	if err != nil {
+		span.SetStatus(codes.Error, err.Error())
+	} else {
+		span.SetStatus(codes.Ok, "")
+
+	}
+	return err
+}
+
+// HoldClient is API call with trace log
+func (t *CertificateAuthorityTracer) HoldClient(ctx context.Context, id types.ID, clientID string) error {
+	var span trace.Span
+	options := append(t.config.SpanStartOptions, trace.WithAttributes(
+		label.Any("libsacloud.api.arguments.id", id),
+		label.Any("libsacloud.api.arguments.clientID", clientID),
+	))
+	ctx, span = t.config.Tracer.Start(ctx, "CertificateAuthorityAPI.HoldClient", options...)
+	defer func() {
+		span.End()
+	}()
+
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
+	err := t.Internal.HoldClient(ctx, id, clientID)
+
+	if err != nil {
+		span.SetStatus(codes.Error, err.Error())
+	} else {
+		span.SetStatus(codes.Ok, "")
+
+	}
+	return err
+}
+
+// ResumeClient is API call with trace log
+func (t *CertificateAuthorityTracer) ResumeClient(ctx context.Context, id types.ID, clientID string) error {
+	var span trace.Span
+	options := append(t.config.SpanStartOptions, trace.WithAttributes(
+		label.Any("libsacloud.api.arguments.id", id),
+		label.Any("libsacloud.api.arguments.clientID", clientID),
+	))
+	ctx, span = t.config.Tracer.Start(ctx, "CertificateAuthorityAPI.ResumeClient", options...)
+	defer func() {
+		span.End()
+	}()
+
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
+	err := t.Internal.ResumeClient(ctx, id, clientID)
+
+	if err != nil {
+		span.SetStatus(codes.Error, err.Error())
+	} else {
+		span.SetStatus(codes.Ok, "")
+
+	}
+	return err
+}
+
+// DenyClient is API call with trace log
+func (t *CertificateAuthorityTracer) DenyClient(ctx context.Context, id types.ID, clientID string) error {
+	var span trace.Span
+	options := append(t.config.SpanStartOptions, trace.WithAttributes(
+		label.Any("libsacloud.api.arguments.id", id),
+		label.Any("libsacloud.api.arguments.clientID", clientID),
+	))
+	ctx, span = t.config.Tracer.Start(ctx, "CertificateAuthorityAPI.DenyClient", options...)
+	defer func() {
+		span.End()
+	}()
+
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
+	err := t.Internal.DenyClient(ctx, id, clientID)
+
+	if err != nil {
+		span.SetStatus(codes.Error, err.Error())
+	} else {
+		span.SetStatus(codes.Ok, "")
+
+	}
+	return err
+}
+
+// AddServer is API call with trace log
+func (t *CertificateAuthorityTracer) AddServer(ctx context.Context, id types.ID, param *sacloud.CertificateAuthorityAddServerParam) (*sacloud.CertificateAuthorityAddClientOrServerResult, error) {
+	var span trace.Span
+	options := append(t.config.SpanStartOptions, trace.WithAttributes(
+		label.Any("libsacloud.api.arguments.id", id),
+		label.Any("libsacloud.api.arguments.param", param),
+	))
+	ctx, span = t.config.Tracer.Start(ctx, "CertificateAuthorityAPI.AddServer", options...)
+	defer func() {
+		span.End()
+	}()
+
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
+	resultCertificateAuthority, err := t.Internal.AddServer(ctx, id, param)
+
+	if err != nil {
+		span.SetStatus(codes.Error, err.Error())
+	} else {
+		span.SetStatus(codes.Ok, "")
+		span.SetAttributes(label.Any("libsacloud.api.results.resultCertificateAuthority", resultCertificateAuthority))
+
+	}
+	return resultCertificateAuthority, err
+}
+
+// ListServers is API call with trace log
+func (t *CertificateAuthorityTracer) ListServers(ctx context.Context, id types.ID) (*sacloud.CertificateAuthorityListServersResult, error) {
+	var span trace.Span
+	options := append(t.config.SpanStartOptions, trace.WithAttributes(
+		label.Any("libsacloud.api.arguments.id", id),
+	))
+	ctx, span = t.config.Tracer.Start(ctx, "CertificateAuthorityAPI.ListServers", options...)
+	defer func() {
+		span.End()
+	}()
+
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
+	result, err := t.Internal.ListServers(ctx, id)
+
+	if err != nil {
+		span.SetStatus(codes.Error, err.Error())
+	} else {
+		span.SetStatus(codes.Ok, "")
+		span.SetAttributes(label.Any("libsacloud.api.results.result", result))
+
+	}
+	return result, err
+}
+
+// ReadServer is API call with trace log
+func (t *CertificateAuthorityTracer) ReadServer(ctx context.Context, id types.ID, serverID string) (*sacloud.CertificateAuthorityServer, error) {
+	var span trace.Span
+	options := append(t.config.SpanStartOptions, trace.WithAttributes(
+		label.Any("libsacloud.api.arguments.id", id),
+		label.Any("libsacloud.api.arguments.serverID", serverID),
+	))
+	ctx, span = t.config.Tracer.Start(ctx, "CertificateAuthorityAPI.ReadServer", options...)
+	defer func() {
+		span.End()
+	}()
+
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
+	resultCertificateAuthority, err := t.Internal.ReadServer(ctx, id, serverID)
+
+	if err != nil {
+		span.SetStatus(codes.Error, err.Error())
+	} else {
+		span.SetStatus(codes.Ok, "")
+		span.SetAttributes(label.Any("libsacloud.api.results.resultCertificateAuthority", resultCertificateAuthority))
+
+	}
+	return resultCertificateAuthority, err
+}
+
+// RevokeServer is API call with trace log
+func (t *CertificateAuthorityTracer) RevokeServer(ctx context.Context, id types.ID, serverID string) error {
+	var span trace.Span
+	options := append(t.config.SpanStartOptions, trace.WithAttributes(
+		label.Any("libsacloud.api.arguments.id", id),
+		label.Any("libsacloud.api.arguments.serverID", serverID),
+	))
+	ctx, span = t.config.Tracer.Start(ctx, "CertificateAuthorityAPI.RevokeServer", options...)
+	defer func() {
+		span.End()
+	}()
+
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
+	err := t.Internal.RevokeServer(ctx, id, serverID)
+
+	if err != nil {
+		span.SetStatus(codes.Error, err.Error())
+	} else {
+		span.SetStatus(codes.Ok, "")
+
+	}
+	return err
+}
+
+// HoldServer is API call with trace log
+func (t *CertificateAuthorityTracer) HoldServer(ctx context.Context, id types.ID, serverID string) error {
+	var span trace.Span
+	options := append(t.config.SpanStartOptions, trace.WithAttributes(
+		label.Any("libsacloud.api.arguments.id", id),
+		label.Any("libsacloud.api.arguments.serverID", serverID),
+	))
+	ctx, span = t.config.Tracer.Start(ctx, "CertificateAuthorityAPI.HoldServer", options...)
+	defer func() {
+		span.End()
+	}()
+
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
+	err := t.Internal.HoldServer(ctx, id, serverID)
+
+	if err != nil {
+		span.SetStatus(codes.Error, err.Error())
+	} else {
+		span.SetStatus(codes.Ok, "")
+
+	}
+	return err
+}
+
+// ResumeServer is API call with trace log
+func (t *CertificateAuthorityTracer) ResumeServer(ctx context.Context, id types.ID, serverID string) error {
+	var span trace.Span
+	options := append(t.config.SpanStartOptions, trace.WithAttributes(
+		label.Any("libsacloud.api.arguments.id", id),
+		label.Any("libsacloud.api.arguments.serverID", serverID),
+	))
+	ctx, span = t.config.Tracer.Start(ctx, "CertificateAuthorityAPI.ResumeServer", options...)
+	defer func() {
+		span.End()
+	}()
+
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
+	err := t.Internal.ResumeServer(ctx, id, serverID)
 
 	if err != nil {
 		span.SetStatus(codes.Error, err.Error())

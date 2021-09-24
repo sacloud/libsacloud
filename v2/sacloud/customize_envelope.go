@@ -21,6 +21,16 @@ import (
 	"github.com/sacloud/libsacloud/v2/sacloud/search"
 )
 
+// Note: sacloud/配下でのUnmarshalJSONの実装
+//
+// v2/internal/dslではAPIからの戻り値が以下のようにラップされていることを期待している
+// {
+//    "<API名>": {},
+//    "is_ok": true
+// }
+//
+// この形式に沿っていないAPIについてはレスポンスのエンベロープ(struct xxxResponseEnvelope)でUnmarshalJSONを実装する必要がある
+
 // UnmarshalJSON APIからの戻り値でレスポンスボディ直下にデータを持つことへの対応
 func (a *authStatusReadResponseEnvelope) UnmarshalJSON(data []byte) error {
 	type alias authStatusReadResponseEnvelope
@@ -55,6 +65,48 @@ func (b *billDetailsCSVResponseEnvelope) UnmarshalJSON(data []byte) error {
 	tmp.CSV = &nakedBillDetailCSV
 
 	*b = billDetailsCSVResponseEnvelope(tmp)
+	return nil
+}
+
+// UnmarshalJSON APIからの戻り値でレスポンスボディ直下にデータを持つことへの対応
+func (a *certificateAuthorityAddClientResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type alias certificateAuthorityAddClientResponseEnvelope
+
+	// is_okなどの共通的な項目
+	var tmp alias
+	if err := json.Unmarshal(data, &tmp); err != nil {
+		return err
+	}
+
+	// ラッパーが省略されている、レスポンスボディの直下にある項目
+	var result naked.CertificateAuthorityAddClientOrServerResult
+	if err := json.Unmarshal(data, &result); err != nil {
+		return err
+	}
+	tmp.CertificateAuthority = &result
+
+	*a = certificateAuthorityAddClientResponseEnvelope(tmp)
+	return nil
+}
+
+// UnmarshalJSON APIからの戻り値でレスポンスボディ直下にデータを持つことへの対応
+func (a *certificateAuthorityAddServerResponseEnvelope) UnmarshalJSON(data []byte) error {
+	type alias certificateAuthorityAddServerResponseEnvelope
+
+	// is_okなどの共通的な項目
+	var tmp alias
+	if err := json.Unmarshal(data, &tmp); err != nil {
+		return err
+	}
+
+	// ラッパーが省略されている、レスポンスボディの直下にある項目
+	var result naked.CertificateAuthorityAddClientOrServerResult
+	if err := json.Unmarshal(data, &result); err != nil {
+		return err
+	}
+	tmp.CertificateAuthority = &result
+
+	*a = certificateAuthorityAddServerResponseEnvelope(tmp)
 	return nil
 }
 
@@ -101,6 +153,16 @@ func (s autoBackupFindRequestEnvelope) MarshalJSON() ([]byte, error) {
 		tmp.Filter = search.Filter{}
 	}
 	tmp.Filter[search.Key("Provider.Class")] = "autobackup"
+	return json.Marshal(tmp)
+}
+
+func (s certificateAuthorityFindRequestEnvelope) MarshalJSON() ([]byte, error) {
+	type alias certificateAuthorityFindRequestEnvelope
+	tmp := alias(s)
+	if tmp.Filter == nil {
+		tmp.Filter = search.Filter{}
+	}
+	tmp.Filter[search.Key("Provider.Class")] = "certificateauthority"
 	return json.Marshal(tmp)
 }
 

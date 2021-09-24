@@ -911,6 +911,281 @@ func (o *CDROMOp) transformOpenFTPResults(data []byte) (*cDROMOpenFTPResult, err
 	return results, nil
 }
 
+func (o *CertificateAuthorityOp) transformFindArgs(conditions *FindCondition) (*certificateAuthorityFindRequestEnvelope, error) {
+	if conditions == nil {
+		conditions = &FindCondition{}
+	}
+	var arg0 interface{} = conditions
+	if v, ok := arg0.(argumentDefaulter); ok {
+		arg0 = v.setDefaults()
+	}
+	args := &struct {
+		Arg0 interface{} `mapconv:",squash"`
+	}{
+		Arg0: arg0,
+	}
+
+	v := &certificateAuthorityFindRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	return v, nil
+}
+
+func (o *CertificateAuthorityOp) transformFindResults(data []byte) (*CertificateAuthorityFindResult, error) {
+	nakedResponse := &certificateAuthorityFindResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &CertificateAuthorityFindResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
+}
+
+func (o *CertificateAuthorityOp) transformCreateArgs(param *CertificateAuthorityCreateRequest) (*certificateAuthorityCreateRequestEnvelope, error) {
+	if param == nil {
+		param = &CertificateAuthorityCreateRequest{}
+	}
+	var arg0 interface{} = param
+	if v, ok := arg0.(argumentDefaulter); ok {
+		arg0 = v.setDefaults()
+	}
+	args := &struct {
+		Arg0 interface{} `mapconv:"CommonServiceItem,recursive"`
+	}{
+		Arg0: arg0,
+	}
+
+	v := &certificateAuthorityCreateRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	return v, nil
+}
+
+func (o *CertificateAuthorityOp) transformCreateResults(data []byte) (*certificateAuthorityCreateResult, error) {
+	nakedResponse := &certificateAuthorityCreateResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &certificateAuthorityCreateResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
+}
+
+func (o *CertificateAuthorityOp) transformReadResults(data []byte) (*certificateAuthorityReadResult, error) {
+	nakedResponse := &certificateAuthorityReadResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &certificateAuthorityReadResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
+}
+
+func (o *CertificateAuthorityOp) transformUpdateArgs(id types.ID, param *CertificateAuthorityUpdateRequest) (*certificateAuthorityUpdateRequestEnvelope, error) {
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	var arg0 interface{} = id
+	if v, ok := arg0.(argumentDefaulter); ok {
+		arg0 = v.setDefaults()
+	}
+	if param == nil {
+		param = &CertificateAuthorityUpdateRequest{}
+	}
+	var arg1 interface{} = param
+	if v, ok := arg1.(argumentDefaulter); ok {
+		arg1 = v.setDefaults()
+	}
+	args := &struct {
+		Arg0 interface{}
+		Arg1 interface{} `mapconv:"CommonServiceItem,recursive"`
+	}{
+		Arg0: arg0,
+		Arg1: arg1,
+	}
+
+	v := &certificateAuthorityUpdateRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	return v, nil
+}
+
+func (o *CertificateAuthorityOp) transformUpdateResults(data []byte) (*certificateAuthorityUpdateResult, error) {
+	nakedResponse := &certificateAuthorityUpdateResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &certificateAuthorityUpdateResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
+}
+
+func (o *CertificateAuthorityOp) transformDetailResults(data []byte) (*certificateAuthorityDetailResult, error) {
+	nakedResponse := &certificateAuthorityDetailResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &certificateAuthorityDetailResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
+}
+
+func (o *CertificateAuthorityOp) transformAddClientArgs(id types.ID, param *CertificateAuthorityAddClientParam) (*certificateAuthorityAddClientRequestEnvelope, error) {
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	var arg0 interface{} = id
+	if v, ok := arg0.(argumentDefaulter); ok {
+		arg0 = v.setDefaults()
+	}
+	if param == nil {
+		param = &CertificateAuthorityAddClientParam{}
+	}
+	var arg1 interface{} = param
+	if v, ok := arg1.(argumentDefaulter); ok {
+		arg1 = v.setDefaults()
+	}
+	args := &struct {
+		Arg0 interface{}
+		Arg1 interface{} `mapconv:"CertificateAuthority.Status,recursive"`
+	}{
+		Arg0: arg0,
+		Arg1: arg1,
+	}
+
+	v := &certificateAuthorityAddClientRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	return v, nil
+}
+
+func (o *CertificateAuthorityOp) transformAddClientResults(data []byte) (*certificateAuthorityAddClientResult, error) {
+	nakedResponse := &certificateAuthorityAddClientResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &certificateAuthorityAddClientResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
+}
+
+func (o *CertificateAuthorityOp) transformListClientsResults(data []byte) (*CertificateAuthorityListClientsResult, error) {
+	nakedResponse := &certificateAuthorityListClientsResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &CertificateAuthorityListClientsResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
+}
+
+func (o *CertificateAuthorityOp) transformReadClientResults(data []byte) (*certificateAuthorityReadClientResult, error) {
+	nakedResponse := &certificateAuthorityReadClientResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &certificateAuthorityReadClientResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
+}
+
+func (o *CertificateAuthorityOp) transformAddServerArgs(id types.ID, param *CertificateAuthorityAddServerParam) (*certificateAuthorityAddServerRequestEnvelope, error) {
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	var arg0 interface{} = id
+	if v, ok := arg0.(argumentDefaulter); ok {
+		arg0 = v.setDefaults()
+	}
+	if param == nil {
+		param = &CertificateAuthorityAddServerParam{}
+	}
+	var arg1 interface{} = param
+	if v, ok := arg1.(argumentDefaulter); ok {
+		arg1 = v.setDefaults()
+	}
+	args := &struct {
+		Arg0 interface{}
+		Arg1 interface{} `mapconv:"CertificateAuthority.Status,recursive"`
+	}{
+		Arg0: arg0,
+		Arg1: arg1,
+	}
+
+	v := &certificateAuthorityAddServerRequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	return v, nil
+}
+
+func (o *CertificateAuthorityOp) transformAddServerResults(data []byte) (*certificateAuthorityAddServerResult, error) {
+	nakedResponse := &certificateAuthorityAddServerResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &certificateAuthorityAddServerResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
+}
+
+func (o *CertificateAuthorityOp) transformListServersResults(data []byte) (*CertificateAuthorityListServersResult, error) {
+	nakedResponse := &certificateAuthorityListServersResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &CertificateAuthorityListServersResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
+}
+
+func (o *CertificateAuthorityOp) transformReadServerResults(data []byte) (*certificateAuthorityReadServerResult, error) {
+	nakedResponse := &certificateAuthorityReadServerResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &certificateAuthorityReadServerResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
+}
+
 func (o *ContainerRegistryOp) transformFindArgs(conditions *FindCondition) (*containerRegistryFindRequestEnvelope, error) {
 	if conditions == nil {
 		conditions = &FindCondition{}

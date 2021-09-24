@@ -327,6 +327,116 @@ type cDROMOpenFTPResult struct {
 	FTPServer *FTPServer `json:",omitempty" mapconv:"FTPServer,omitempty,recursive"`
 }
 
+// CertificateAuthorityFindResult represents the Result of API
+type CertificateAuthorityFindResult struct {
+	Total int `json:",omitempty"` // Total count of target resources
+	From  int `json:",omitempty"` // Current page number
+	Count int `json:",omitempty"` // Count of current page
+
+	CertificateAuthorities []*CertificateAuthority `json:",omitempty" mapconv:"[]CommonServiceItems,omitempty,recursive"`
+}
+
+// Values returns find results
+func (r *CertificateAuthorityFindResult) Values() []interface{} {
+	var results []interface{}
+	for _, v := range r.CertificateAuthorities {
+		results = append(results, v)
+	}
+	return results
+}
+
+// certificateAuthorityCreateResult represents the Result of API
+type certificateAuthorityCreateResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	CertificateAuthority *CertificateAuthority `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
+}
+
+// certificateAuthorityReadResult represents the Result of API
+type certificateAuthorityReadResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	CertificateAuthority *CertificateAuthority `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
+}
+
+// certificateAuthorityUpdateResult represents the Result of API
+type certificateAuthorityUpdateResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	CertificateAuthority *CertificateAuthority `json:",omitempty" mapconv:"CommonServiceItem,omitempty,recursive"`
+}
+
+// certificateAuthorityDetailResult represents the Result of API
+type certificateAuthorityDetailResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	CertificateAuthority *CertificateAuthorityDetail `json:",omitempty" mapconv:"CertificateAuthority,omitempty,recursive"`
+}
+
+// certificateAuthorityAddClientResult represents the Result of API
+type certificateAuthorityAddClientResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	CertificateAuthority *CertificateAuthorityAddClientOrServerResult `json:",omitempty" mapconv:"CertificateAuthority,omitempty,recursive"`
+}
+
+// CertificateAuthorityListClientsResult represents the Result of API
+type CertificateAuthorityListClientsResult struct {
+	Total int `json:",omitempty"` // Total count of target resources
+	From  int `json:",omitempty"` // Current page number
+	Count int `json:",omitempty"` // Count of current page
+
+	CertificateAuthority []*CertificateAuthorityClient `json:",omitempty" mapconv:"[]CertificateAuthority,omitempty,recursive"`
+}
+
+// Values returns find results
+func (r *CertificateAuthorityListClientsResult) Values() []interface{} {
+	var results []interface{}
+	for _, v := range r.CertificateAuthority {
+		results = append(results, v)
+	}
+	return results
+}
+
+// certificateAuthorityReadClientResult represents the Result of API
+type certificateAuthorityReadClientResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	CertificateAuthority *CertificateAuthorityClient `json:",omitempty" mapconv:"CertificateAuthority,omitempty,recursive"`
+}
+
+// certificateAuthorityAddServerResult represents the Result of API
+type certificateAuthorityAddServerResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	CertificateAuthority *CertificateAuthorityAddClientOrServerResult `json:",omitempty" mapconv:"CertificateAuthority,omitempty,recursive"`
+}
+
+// CertificateAuthorityListServersResult represents the Result of API
+type CertificateAuthorityListServersResult struct {
+	Total int `json:",omitempty"` // Total count of target resources
+	From  int `json:",omitempty"` // Current page number
+	Count int `json:",omitempty"` // Count of current page
+
+	CertificateAuthority []*CertificateAuthorityServer `json:",omitempty" mapconv:"[]CertificateAuthority,omitempty,recursive"`
+}
+
+// Values returns find results
+func (r *CertificateAuthorityListServersResult) Values() []interface{} {
+	var results []interface{}
+	for _, v := range r.CertificateAuthority {
+		results = append(results, v)
+	}
+	return results
+}
+
+// certificateAuthorityReadServerResult represents the Result of API
+type certificateAuthorityReadServerResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	CertificateAuthority *CertificateAuthorityServer `json:",omitempty" mapconv:"CertificateAuthority,omitempty,recursive"`
+}
+
 // ContainerRegistryFindResult represents the Result of API
 type ContainerRegistryFindResult struct {
 	Total int `json:",omitempty"` // Total count of target resources

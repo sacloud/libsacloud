@@ -107,6 +107,33 @@ type CDROMAPI interface {
 }
 
 /*************************************************
+* CertificateAuthorityAPI
+*************************************************/
+
+// CertificateAuthorityAPI is interface for operate CertificateAuthority resource
+type CertificateAuthorityAPI interface {
+	Find(ctx context.Context, conditions *FindCondition) (*CertificateAuthorityFindResult, error)
+	Create(ctx context.Context, param *CertificateAuthorityCreateRequest) (*CertificateAuthority, error)
+	Read(ctx context.Context, id types.ID) (*CertificateAuthority, error)
+	Update(ctx context.Context, id types.ID, param *CertificateAuthorityUpdateRequest) (*CertificateAuthority, error)
+	Delete(ctx context.Context, id types.ID) error
+	Detail(ctx context.Context, id types.ID) (*CertificateAuthorityDetail, error)
+	AddClient(ctx context.Context, id types.ID, param *CertificateAuthorityAddClientParam) (*CertificateAuthorityAddClientOrServerResult, error)
+	ListClients(ctx context.Context, id types.ID) (*CertificateAuthorityListClientsResult, error)
+	ReadClient(ctx context.Context, id types.ID, clientID string) (*CertificateAuthorityClient, error)
+	RevokeClient(ctx context.Context, id types.ID, clientID string) error
+	HoldClient(ctx context.Context, id types.ID, clientID string) error
+	ResumeClient(ctx context.Context, id types.ID, clientID string) error
+	DenyClient(ctx context.Context, id types.ID, clientID string) error
+	AddServer(ctx context.Context, id types.ID, param *CertificateAuthorityAddServerParam) (*CertificateAuthorityAddClientOrServerResult, error)
+	ListServers(ctx context.Context, id types.ID) (*CertificateAuthorityListServersResult, error)
+	ReadServer(ctx context.Context, id types.ID, serverID string) (*CertificateAuthorityServer, error)
+	RevokeServer(ctx context.Context, id types.ID, serverID string) error
+	HoldServer(ctx context.Context, id types.ID, serverID string) error
+	ResumeServer(ctx context.Context, id types.ID, serverID string) error
+}
+
+/*************************************************
 * ContainerRegistryAPI
 *************************************************/
 

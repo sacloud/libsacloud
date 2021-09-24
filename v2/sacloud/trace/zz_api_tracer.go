@@ -54,6 +54,9 @@ func addClientFactoryHooks() {
 	sacloud.AddClientFacotyHookFunc("CDROM", func(in interface{}) interface{} {
 		return NewCDROMTracer(in.(sacloud.CDROMAPI))
 	})
+	sacloud.AddClientFacotyHookFunc("CertificateAuthority", func(in interface{}) interface{} {
+		return NewCertificateAuthorityTracer(in.(sacloud.CertificateAuthorityAPI))
+	})
 	sacloud.AddClientFacotyHookFunc("ContainerRegistry", func(in interface{}) interface{} {
 		return NewContainerRegistryTracer(in.(sacloud.ContainerRegistryAPI))
 	})
@@ -1452,6 +1455,619 @@ func (t *CDROMTracer) CloseFTP(ctx context.Context, zone string, id types.ID) er
 	}()
 
 	err := t.Internal.CloseFTP(ctx, zone, id)
+	targetResults := struct {
+		Error error
+	}{
+		Error: err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return err
+}
+
+/*************************************************
+* CertificateAuthorityTracer
+*************************************************/
+
+// CertificateAuthorityTracer is for trace CertificateAuthorityOp operations
+type CertificateAuthorityTracer struct {
+	Internal sacloud.CertificateAuthorityAPI
+}
+
+// NewCertificateAuthorityTracer creates new CertificateAuthorityTracer instance
+func NewCertificateAuthorityTracer(in sacloud.CertificateAuthorityAPI) sacloud.CertificateAuthorityAPI {
+	return &CertificateAuthorityTracer{
+		Internal: in,
+	}
+}
+
+// Find is API call with trace log
+func (t *CertificateAuthorityTracer) Find(ctx context.Context, conditions *sacloud.FindCondition) (*sacloud.CertificateAuthorityFindResult, error) {
+	log.Println("[TRACE] CertificateAuthorityAPI.Find start")
+	targetArguments := struct {
+		Argconditions *sacloud.FindCondition `json:"conditions"`
+	}{
+		Argconditions: conditions,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] CertificateAuthorityAPI.Find end")
+	}()
+
+	result, err := t.Internal.Find(ctx, conditions)
+	targetResults := struct {
+		Result *sacloud.CertificateAuthorityFindResult
+		Error  error
+	}{
+		Result: result,
+		Error:  err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return result, err
+}
+
+// Create is API call with trace log
+func (t *CertificateAuthorityTracer) Create(ctx context.Context, param *sacloud.CertificateAuthorityCreateRequest) (*sacloud.CertificateAuthority, error) {
+	log.Println("[TRACE] CertificateAuthorityAPI.Create start")
+	targetArguments := struct {
+		Argparam *sacloud.CertificateAuthorityCreateRequest `json:"param"`
+	}{
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] CertificateAuthorityAPI.Create end")
+	}()
+
+	resultCertificateAuthority, err := t.Internal.Create(ctx, param)
+	targetResults := struct {
+		CertificateAuthority *sacloud.CertificateAuthority
+		Error                error
+	}{
+		CertificateAuthority: resultCertificateAuthority,
+		Error:                err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultCertificateAuthority, err
+}
+
+// Read is API call with trace log
+func (t *CertificateAuthorityTracer) Read(ctx context.Context, id types.ID) (*sacloud.CertificateAuthority, error) {
+	log.Println("[TRACE] CertificateAuthorityAPI.Read start")
+	targetArguments := struct {
+		Argid types.ID `json:"id"`
+	}{
+		Argid: id,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] CertificateAuthorityAPI.Read end")
+	}()
+
+	resultCertificateAuthority, err := t.Internal.Read(ctx, id)
+	targetResults := struct {
+		CertificateAuthority *sacloud.CertificateAuthority
+		Error                error
+	}{
+		CertificateAuthority: resultCertificateAuthority,
+		Error:                err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultCertificateAuthority, err
+}
+
+// Update is API call with trace log
+func (t *CertificateAuthorityTracer) Update(ctx context.Context, id types.ID, param *sacloud.CertificateAuthorityUpdateRequest) (*sacloud.CertificateAuthority, error) {
+	log.Println("[TRACE] CertificateAuthorityAPI.Update start")
+	targetArguments := struct {
+		Argid    types.ID                                   `json:"id"`
+		Argparam *sacloud.CertificateAuthorityUpdateRequest `json:"param"`
+	}{
+		Argid:    id,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] CertificateAuthorityAPI.Update end")
+	}()
+
+	resultCertificateAuthority, err := t.Internal.Update(ctx, id, param)
+	targetResults := struct {
+		CertificateAuthority *sacloud.CertificateAuthority
+		Error                error
+	}{
+		CertificateAuthority: resultCertificateAuthority,
+		Error:                err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultCertificateAuthority, err
+}
+
+// Delete is API call with trace log
+func (t *CertificateAuthorityTracer) Delete(ctx context.Context, id types.ID) error {
+	log.Println("[TRACE] CertificateAuthorityAPI.Delete start")
+	targetArguments := struct {
+		Argid types.ID `json:"id"`
+	}{
+		Argid: id,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] CertificateAuthorityAPI.Delete end")
+	}()
+
+	err := t.Internal.Delete(ctx, id)
+	targetResults := struct {
+		Error error
+	}{
+		Error: err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return err
+}
+
+// Detail is API call with trace log
+func (t *CertificateAuthorityTracer) Detail(ctx context.Context, id types.ID) (*sacloud.CertificateAuthorityDetail, error) {
+	log.Println("[TRACE] CertificateAuthorityAPI.Detail start")
+	targetArguments := struct {
+		Argid types.ID `json:"id"`
+	}{
+		Argid: id,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] CertificateAuthorityAPI.Detail end")
+	}()
+
+	resultCertificateAuthority, err := t.Internal.Detail(ctx, id)
+	targetResults := struct {
+		CertificateAuthority *sacloud.CertificateAuthorityDetail
+		Error                error
+	}{
+		CertificateAuthority: resultCertificateAuthority,
+		Error:                err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultCertificateAuthority, err
+}
+
+// AddClient is API call with trace log
+func (t *CertificateAuthorityTracer) AddClient(ctx context.Context, id types.ID, param *sacloud.CertificateAuthorityAddClientParam) (*sacloud.CertificateAuthorityAddClientOrServerResult, error) {
+	log.Println("[TRACE] CertificateAuthorityAPI.AddClient start")
+	targetArguments := struct {
+		Argid    types.ID                                    `json:"id"`
+		Argparam *sacloud.CertificateAuthorityAddClientParam `json:"param"`
+	}{
+		Argid:    id,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] CertificateAuthorityAPI.AddClient end")
+	}()
+
+	resultCertificateAuthority, err := t.Internal.AddClient(ctx, id, param)
+	targetResults := struct {
+		CertificateAuthority *sacloud.CertificateAuthorityAddClientOrServerResult
+		Error                error
+	}{
+		CertificateAuthority: resultCertificateAuthority,
+		Error:                err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultCertificateAuthority, err
+}
+
+// ListClients is API call with trace log
+func (t *CertificateAuthorityTracer) ListClients(ctx context.Context, id types.ID) (*sacloud.CertificateAuthorityListClientsResult, error) {
+	log.Println("[TRACE] CertificateAuthorityAPI.ListClients start")
+	targetArguments := struct {
+		Argid types.ID `json:"id"`
+	}{
+		Argid: id,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] CertificateAuthorityAPI.ListClients end")
+	}()
+
+	result, err := t.Internal.ListClients(ctx, id)
+	targetResults := struct {
+		Result *sacloud.CertificateAuthorityListClientsResult
+		Error  error
+	}{
+		Result: result,
+		Error:  err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return result, err
+}
+
+// ReadClient is API call with trace log
+func (t *CertificateAuthorityTracer) ReadClient(ctx context.Context, id types.ID, clientID string) (*sacloud.CertificateAuthorityClient, error) {
+	log.Println("[TRACE] CertificateAuthorityAPI.ReadClient start")
+	targetArguments := struct {
+		Argid       types.ID `json:"id"`
+		ArgclientID string   `json:"clientID"`
+	}{
+		Argid:       id,
+		ArgclientID: clientID,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] CertificateAuthorityAPI.ReadClient end")
+	}()
+
+	resultCertificateAuthority, err := t.Internal.ReadClient(ctx, id, clientID)
+	targetResults := struct {
+		CertificateAuthority *sacloud.CertificateAuthorityClient
+		Error                error
+	}{
+		CertificateAuthority: resultCertificateAuthority,
+		Error:                err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultCertificateAuthority, err
+}
+
+// RevokeClient is API call with trace log
+func (t *CertificateAuthorityTracer) RevokeClient(ctx context.Context, id types.ID, clientID string) error {
+	log.Println("[TRACE] CertificateAuthorityAPI.RevokeClient start")
+	targetArguments := struct {
+		Argid       types.ID `json:"id"`
+		ArgclientID string   `json:"clientID"`
+	}{
+		Argid:       id,
+		ArgclientID: clientID,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] CertificateAuthorityAPI.RevokeClient end")
+	}()
+
+	err := t.Internal.RevokeClient(ctx, id, clientID)
+	targetResults := struct {
+		Error error
+	}{
+		Error: err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return err
+}
+
+// HoldClient is API call with trace log
+func (t *CertificateAuthorityTracer) HoldClient(ctx context.Context, id types.ID, clientID string) error {
+	log.Println("[TRACE] CertificateAuthorityAPI.HoldClient start")
+	targetArguments := struct {
+		Argid       types.ID `json:"id"`
+		ArgclientID string   `json:"clientID"`
+	}{
+		Argid:       id,
+		ArgclientID: clientID,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] CertificateAuthorityAPI.HoldClient end")
+	}()
+
+	err := t.Internal.HoldClient(ctx, id, clientID)
+	targetResults := struct {
+		Error error
+	}{
+		Error: err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return err
+}
+
+// ResumeClient is API call with trace log
+func (t *CertificateAuthorityTracer) ResumeClient(ctx context.Context, id types.ID, clientID string) error {
+	log.Println("[TRACE] CertificateAuthorityAPI.ResumeClient start")
+	targetArguments := struct {
+		Argid       types.ID `json:"id"`
+		ArgclientID string   `json:"clientID"`
+	}{
+		Argid:       id,
+		ArgclientID: clientID,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] CertificateAuthorityAPI.ResumeClient end")
+	}()
+
+	err := t.Internal.ResumeClient(ctx, id, clientID)
+	targetResults := struct {
+		Error error
+	}{
+		Error: err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return err
+}
+
+// DenyClient is API call with trace log
+func (t *CertificateAuthorityTracer) DenyClient(ctx context.Context, id types.ID, clientID string) error {
+	log.Println("[TRACE] CertificateAuthorityAPI.DenyClient start")
+	targetArguments := struct {
+		Argid       types.ID `json:"id"`
+		ArgclientID string   `json:"clientID"`
+	}{
+		Argid:       id,
+		ArgclientID: clientID,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] CertificateAuthorityAPI.DenyClient end")
+	}()
+
+	err := t.Internal.DenyClient(ctx, id, clientID)
+	targetResults := struct {
+		Error error
+	}{
+		Error: err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return err
+}
+
+// AddServer is API call with trace log
+func (t *CertificateAuthorityTracer) AddServer(ctx context.Context, id types.ID, param *sacloud.CertificateAuthorityAddServerParam) (*sacloud.CertificateAuthorityAddClientOrServerResult, error) {
+	log.Println("[TRACE] CertificateAuthorityAPI.AddServer start")
+	targetArguments := struct {
+		Argid    types.ID                                    `json:"id"`
+		Argparam *sacloud.CertificateAuthorityAddServerParam `json:"param"`
+	}{
+		Argid:    id,
+		Argparam: param,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] CertificateAuthorityAPI.AddServer end")
+	}()
+
+	resultCertificateAuthority, err := t.Internal.AddServer(ctx, id, param)
+	targetResults := struct {
+		CertificateAuthority *sacloud.CertificateAuthorityAddClientOrServerResult
+		Error                error
+	}{
+		CertificateAuthority: resultCertificateAuthority,
+		Error:                err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultCertificateAuthority, err
+}
+
+// ListServers is API call with trace log
+func (t *CertificateAuthorityTracer) ListServers(ctx context.Context, id types.ID) (*sacloud.CertificateAuthorityListServersResult, error) {
+	log.Println("[TRACE] CertificateAuthorityAPI.ListServers start")
+	targetArguments := struct {
+		Argid types.ID `json:"id"`
+	}{
+		Argid: id,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] CertificateAuthorityAPI.ListServers end")
+	}()
+
+	result, err := t.Internal.ListServers(ctx, id)
+	targetResults := struct {
+		Result *sacloud.CertificateAuthorityListServersResult
+		Error  error
+	}{
+		Result: result,
+		Error:  err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return result, err
+}
+
+// ReadServer is API call with trace log
+func (t *CertificateAuthorityTracer) ReadServer(ctx context.Context, id types.ID, serverID string) (*sacloud.CertificateAuthorityServer, error) {
+	log.Println("[TRACE] CertificateAuthorityAPI.ReadServer start")
+	targetArguments := struct {
+		Argid       types.ID `json:"id"`
+		ArgserverID string   `json:"serverID"`
+	}{
+		Argid:       id,
+		ArgserverID: serverID,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] CertificateAuthorityAPI.ReadServer end")
+	}()
+
+	resultCertificateAuthority, err := t.Internal.ReadServer(ctx, id, serverID)
+	targetResults := struct {
+		CertificateAuthority *sacloud.CertificateAuthorityServer
+		Error                error
+	}{
+		CertificateAuthority: resultCertificateAuthority,
+		Error:                err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultCertificateAuthority, err
+}
+
+// RevokeServer is API call with trace log
+func (t *CertificateAuthorityTracer) RevokeServer(ctx context.Context, id types.ID, serverID string) error {
+	log.Println("[TRACE] CertificateAuthorityAPI.RevokeServer start")
+	targetArguments := struct {
+		Argid       types.ID `json:"id"`
+		ArgserverID string   `json:"serverID"`
+	}{
+		Argid:       id,
+		ArgserverID: serverID,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] CertificateAuthorityAPI.RevokeServer end")
+	}()
+
+	err := t.Internal.RevokeServer(ctx, id, serverID)
+	targetResults := struct {
+		Error error
+	}{
+		Error: err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return err
+}
+
+// HoldServer is API call with trace log
+func (t *CertificateAuthorityTracer) HoldServer(ctx context.Context, id types.ID, serverID string) error {
+	log.Println("[TRACE] CertificateAuthorityAPI.HoldServer start")
+	targetArguments := struct {
+		Argid       types.ID `json:"id"`
+		ArgserverID string   `json:"serverID"`
+	}{
+		Argid:       id,
+		ArgserverID: serverID,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] CertificateAuthorityAPI.HoldServer end")
+	}()
+
+	err := t.Internal.HoldServer(ctx, id, serverID)
+	targetResults := struct {
+		Error error
+	}{
+		Error: err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return err
+}
+
+// ResumeServer is API call with trace log
+func (t *CertificateAuthorityTracer) ResumeServer(ctx context.Context, id types.ID, serverID string) error {
+	log.Println("[TRACE] CertificateAuthorityAPI.ResumeServer start")
+	targetArguments := struct {
+		Argid       types.ID `json:"id"`
+		ArgserverID string   `json:"serverID"`
+	}{
+		Argid:       id,
+		ArgserverID: serverID,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] CertificateAuthorityAPI.ResumeServer end")
+	}()
+
+	err := t.Internal.ResumeServer(ctx, id, serverID)
 	targetResults := struct {
 		Error error
 	}{

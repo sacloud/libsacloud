@@ -390,6 +390,127 @@ type cDROMOpenFTPResponseEnvelope struct {
 	FTPServer *naked.OpeningFTPServer `json:",omitempty"`
 }
 
+// certificateAuthorityFindRequestEnvelope is envelop of API request
+type certificateAuthorityFindRequestEnvelope struct {
+	Count   int             `mapconv:",omitempty"`
+	From    int             `mapconv:",omitempty"`
+	Sort    search.SortKeys `json:",omitempty" mapconv:",omitempty"`
+	Filter  search.Filter   `json:",omitempty" mapconv:",omitempty"`
+	Include []string        `json:",omitempty" mapconv:",omitempty"`
+	Exclude []string        `json:",omitempty" mapconv:",omitempty"`
+}
+
+// certificateAuthorityFindResponseEnvelope is envelop of API response
+type certificateAuthorityFindResponseEnvelope struct {
+	Total int `json:",omitempty"` // トータル件数
+	From  int `json:",omitempty"` // ページング開始ページ
+	Count int `json:",omitempty"` // 件数
+
+	CommonServiceItems []*naked.CertificateAuthority `json:",omitempty"`
+}
+
+// certificateAuthorityCreateRequestEnvelope is envelop of API request
+type certificateAuthorityCreateRequestEnvelope struct {
+	CommonServiceItem *naked.CertificateAuthority `json:",omitempty"`
+}
+
+// certificateAuthorityCreateResponseEnvelope is envelop of API response
+type certificateAuthorityCreateResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	CommonServiceItem *naked.CertificateAuthority `json:",omitempty"`
+}
+
+// certificateAuthorityReadResponseEnvelope is envelop of API response
+type certificateAuthorityReadResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	CommonServiceItem *naked.CertificateAuthority `json:",omitempty"`
+}
+
+// certificateAuthorityUpdateRequestEnvelope is envelop of API request
+type certificateAuthorityUpdateRequestEnvelope struct {
+	CommonServiceItem *naked.CertificateAuthority `json:",omitempty"`
+}
+
+// certificateAuthorityUpdateResponseEnvelope is envelop of API response
+type certificateAuthorityUpdateResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	CommonServiceItem *naked.CertificateAuthority `json:",omitempty"`
+}
+
+// certificateAuthorityDetailResponseEnvelope is envelop of API response
+type certificateAuthorityDetailResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	CertificateAuthority *naked.CertificateAuthorityDetail `json:",omitempty"`
+}
+
+// certificateAuthorityAddClientRequestEnvelope is envelop of API request
+type certificateAuthorityAddClientRequestEnvelope struct {
+	CertificateAuthority *naked.CertificateAuthorityAddClientParameter `json:",omitempty"`
+}
+
+// certificateAuthorityAddClientResponseEnvelope is envelop of API response
+type certificateAuthorityAddClientResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	CertificateAuthority *naked.CertificateAuthorityAddClientOrServerResult `json:",omitempty"`
+}
+
+// certificateAuthorityListClientsResponseEnvelope is envelop of API response
+type certificateAuthorityListClientsResponseEnvelope struct {
+	Total int `json:",omitempty"` // トータル件数
+	From  int `json:",omitempty"` // ページング開始ページ
+	Count int `json:",omitempty"` // 件数
+
+	CertificateAuthority []*naked.CertificateAuthorityClientDetail `json:",omitempty"`
+}
+
+// certificateAuthorityReadClientResponseEnvelope is envelop of API response
+type certificateAuthorityReadClientResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	CertificateAuthority *naked.CertificateAuthorityClientDetail `json:",omitempty"`
+}
+
+// certificateAuthorityAddServerRequestEnvelope is envelop of API request
+type certificateAuthorityAddServerRequestEnvelope struct {
+	CertificateAuthority *naked.CertificateAuthorityAddServerParameter `json:",omitempty"`
+}
+
+// certificateAuthorityAddServerResponseEnvelope is envelop of API response
+type certificateAuthorityAddServerResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	CertificateAuthority *naked.CertificateAuthorityAddClientOrServerResult `json:",omitempty"`
+}
+
+// certificateAuthorityListServersResponseEnvelope is envelop of API response
+type certificateAuthorityListServersResponseEnvelope struct {
+	Total int `json:",omitempty"` // トータル件数
+	From  int `json:",omitempty"` // ページング開始ページ
+	Count int `json:",omitempty"` // 件数
+
+	CertificateAuthority []*naked.CertificateAuthorityServerDetail `json:",omitempty"`
+}
+
+// certificateAuthorityReadServerResponseEnvelope is envelop of API response
+type certificateAuthorityReadServerResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	CertificateAuthority *naked.CertificateAuthorityServerDetail `json:",omitempty"`
+}
+
 // containerRegistryFindRequestEnvelope is envelop of API request
 type containerRegistryFindRequestEnvelope struct {
 	Count   int             `mapconv:",omitempty"`
