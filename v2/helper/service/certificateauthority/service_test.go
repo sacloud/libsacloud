@@ -44,19 +44,19 @@ func TestCertificateAuthorityService_CRUD(t *testing.T) {
 					Tags:             types.Tags{"tag1", "tag2"},
 					Country:          "JP",
 					Organization:     "usacloud",
-					OrganizationUnit: []string{"ou1","ou2"},
+					OrganizationUnit: []string{"ou1", "ou2"},
 					CommonName:       "www.usacloud.jp",
 					NotAfter:         time.Now().Add(365 * 24 * time.Hour),
-					Clients:          []*ClientCert{
+					Clients: []*ClientCert{
 						{
-							Country:                   "JP",
-							Organization:              "usacloud",
-							CommonName:                "client.usacloud.jp",
-							NotAfter:                  time.Now().Add(365 * 24 * time.Hour),
-							IssuanceMethod:            "url",
+							Country:        "JP",
+							Organization:   "usacloud",
+							CommonName:     "client.usacloud.jp",
+							NotAfter:       time.Now().Add(365 * 24 * time.Hour),
+							IssuanceMethod: "url",
 						},
 					},
-					WaitDuration:     0,
+					WaitDuration: 0,
 				})
 			},
 		},
