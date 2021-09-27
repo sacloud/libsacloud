@@ -44,6 +44,8 @@ var SimpleMonitorProtocols = struct {
 	SNMP ESimpleMonitorProtocol
 	// SSLCertificate sslcertificate
 	SSLCertificate ESimpleMonitorProtocol
+	// FTP ftp
+	FTP ESimpleMonitorProtocol
 }{
 	HTTP:           ESimpleMonitorProtocol("http"),
 	HTTPS:          ESimpleMonitorProtocol("https"),
@@ -55,6 +57,7 @@ var SimpleMonitorProtocols = struct {
 	POP3:           ESimpleMonitorProtocol("pop3"),
 	SNMP:           ESimpleMonitorProtocol("snmp"),
 	SSLCertificate: ESimpleMonitorProtocol("sslcertificate"),
+	FTP:            ESimpleMonitorProtocol("ftp"),
 }
 
 // SimpleMonitorProtocolStrings シンプル監視プロトコルの文字列リスト
@@ -69,4 +72,5 @@ var SimpleMonitorProtocolStrings = []string{
 	SimpleMonitorProtocols.POP3.String(),
 	SimpleMonitorProtocols.SNMP.String(),
 	SimpleMonitorProtocols.SSLCertificate.String(),
+	SimpleMonitorProtocols.FTP.String(),
 }
