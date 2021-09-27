@@ -4200,7 +4200,7 @@ type CertificateAuthorityAddClientParam struct {
 	OrganizationUnit          []string
 	CommonName                string
 	NotAfter                  time.Time
-	IssuanceMethod            string
+	IssuanceMethod            types.ECertificateAuthorityIssuanceMethod
 	EMail                     string
 	CertificateSigningRequest string
 	PublicKey                 string
@@ -4219,7 +4219,7 @@ func (o *CertificateAuthorityAddClientParam) setDefaults() interface{} {
 		OrganizationUnit          []string
 		CommonName                string
 		NotAfter                  time.Time
-		IssuanceMethod            string
+		IssuanceMethod            types.ECertificateAuthorityIssuanceMethod
 		EMail                     string
 		CertificateSigningRequest string
 		PublicKey                 string
@@ -4287,12 +4287,12 @@ func (o *CertificateAuthorityAddClientParam) SetNotAfter(v time.Time) {
 }
 
 // GetIssuanceMethod returns value of IssuanceMethod
-func (o *CertificateAuthorityAddClientParam) GetIssuanceMethod() string {
+func (o *CertificateAuthorityAddClientParam) GetIssuanceMethod() types.ECertificateAuthorityIssuanceMethod {
 	return o.IssuanceMethod
 }
 
 // SetIssuanceMethod sets value to IssuanceMethod
-func (o *CertificateAuthorityAddClientParam) SetIssuanceMethod(v string) {
+func (o *CertificateAuthorityAddClientParam) SetIssuanceMethod(v types.ECertificateAuthorityIssuanceMethod) {
 	o.IssuanceMethod = v
 }
 
@@ -4335,7 +4335,7 @@ type CertificateAuthorityClient struct {
 	ID              string
 	Subject         string
 	EMail           string
-	IssuanceMethod  string
+	IssuanceMethod  types.ECertificateAuthorityIssuanceMethod
 	IssueState      string
 	URL             string
 	CertificateData *CertificateData `mapconv:",recursive"`
@@ -4352,7 +4352,7 @@ func (o *CertificateAuthorityClient) setDefaults() interface{} {
 		ID              string
 		Subject         string
 		EMail           string
-		IssuanceMethod  string
+		IssuanceMethod  types.ECertificateAuthorityIssuanceMethod
 		IssueState      string
 		URL             string
 		CertificateData *CertificateData `mapconv:",recursive"`
@@ -4398,12 +4398,12 @@ func (o *CertificateAuthorityClient) SetEMail(v string) {
 }
 
 // GetIssuanceMethod returns value of IssuanceMethod
-func (o *CertificateAuthorityClient) GetIssuanceMethod() string {
+func (o *CertificateAuthorityClient) GetIssuanceMethod() types.ECertificateAuthorityIssuanceMethod {
 	return o.IssuanceMethod
 }
 
 // SetIssuanceMethod sets value to IssuanceMethod
-func (o *CertificateAuthorityClient) SetIssuanceMethod(v string) {
+func (o *CertificateAuthorityClient) SetIssuanceMethod(v types.ECertificateAuthorityIssuanceMethod) {
 	o.IssuanceMethod = v
 }
 
