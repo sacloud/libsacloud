@@ -83,13 +83,13 @@ type CertificateAuthorityServerDetail struct {
 // GET /commonserviceitem/:id/certificateauthority/clientsの戻り値を構成する
 // (実際にはFind系のラッパーがある)
 type CertificateAuthorityClientDetail struct {
-	ID              string           `json:"id,omitempty" yaml:"id,omitempty" structs:",omitempty"`
-	Subject         string           `json:"subject,omitempty" yaml:"subject,omitempty" structs:",omitempty"`
-	EMail           string           `json:"email,omitempty" yaml:"email,omitempty" structs:",omitempty"`
-	IssuanceMethod  string           `json:"issuance_method,omitempty" yaml:"issuance_method,omitempty" structs:",omitempty"`
-	IssueState      string           `json:"issue_state,omitempty" yaml:"issue_state,omitempty" structs:",omitempty"`
-	CertificateData *CertificateData `json:"certificate_data,omitempty" yaml:"certificate_data,omitempty" structs:",omitempty"`
-	URL             string           `json:"url,omitempty" yaml:"url,omitempty" structs:",omitempty"`
+	ID              string                                    `json:"id,omitempty" yaml:"id,omitempty" structs:",omitempty"`
+	Subject         string                                    `json:"subject,omitempty" yaml:"subject,omitempty" structs:",omitempty"`
+	EMail           string                                    `json:"email,omitempty" yaml:"email,omitempty" structs:",omitempty"`
+	IssuanceMethod  types.ECertificateAuthorityIssuanceMethod `json:"issuance_method,omitempty" yaml:"issuance_method,omitempty" structs:",omitempty"`
+	IssueState      string                                    `json:"issue_state,omitempty" yaml:"issue_state,omitempty" structs:",omitempty"`
+	CertificateData *CertificateData                          `json:"certificate_data,omitempty" yaml:"certificate_data,omitempty" structs:",omitempty"`
+	URL             string                                    `json:"url,omitempty" yaml:"url,omitempty" structs:",omitempty"`
 }
 
 // CertificateData CA/クライアント/サーバの各証明書の情報
@@ -106,15 +106,15 @@ type CertificateAuthorityAddClientParameter struct {
 }
 
 type CertificateAuthorityAddClientParameterBody struct {
-	Country                   string    `json:"country,omitempty" yaml:"country,omitempty" structs:",omitempty"`
-	Organization              string    `json:"organization,omitempty" yaml:"organization,omitempty" structs:",omitempty"`
-	OrganizationUnit          []string  `json:"organization_unit,omitempty" yaml:"organization_unit,omitempty" structs:",omitempty"`
-	CommonName                string    `json:"common_name,omitempty" yaml:"common_name,omitempty" structs:",omitempty"`
-	NotAfter                  time.Time `json:"not_after,omitempty" yaml:"not_after,omitempty" structs:",omitempty"`
-	EMail                     string    `json:"email,omitempty" yaml:"email,omitempty" structs:",omitempty"`
-	IssuanceMethod            string    `json:"issuance_method,omitempty" yaml:"issuance_method,omitempty" structs:",omitempty"`
-	CertificateSigningRequest string    `json:"certificate_signing_request,omitempty" yaml:"certificate_signing_request,omitempty" structs:",omitempty"`
-	PublicKey                 string    `json:"public_key,omitempty" yaml:"public_key,omitempty" structs:",omitempty"`
+	Country                   string                                    `json:"country,omitempty" yaml:"country,omitempty" structs:",omitempty"`
+	Organization              string                                    `json:"organization,omitempty" yaml:"organization,omitempty" structs:",omitempty"`
+	OrganizationUnit          []string                                  `json:"organization_unit,omitempty" yaml:"organization_unit,omitempty" structs:",omitempty"`
+	CommonName                string                                    `json:"common_name,omitempty" yaml:"common_name,omitempty" structs:",omitempty"`
+	NotAfter                  time.Time                                 `json:"not_after,omitempty" yaml:"not_after,omitempty" structs:",omitempty"`
+	EMail                     string                                    `json:"email,omitempty" yaml:"email,omitempty" structs:",omitempty"`
+	IssuanceMethod            types.ECertificateAuthorityIssuanceMethod `json:"issuance_method,omitempty" yaml:"issuance_method,omitempty" structs:",omitempty"`
+	CertificateSigningRequest string                                    `json:"certificate_signing_request,omitempty" yaml:"certificate_signing_request,omitempty" structs:",omitempty"`
+	PublicKey                 string                                    `json:"public_key,omitempty" yaml:"public_key,omitempty" structs:",omitempty"`
 }
 
 type CertificateAuthorityAddServerParameter struct {

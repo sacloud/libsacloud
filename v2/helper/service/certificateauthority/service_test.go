@@ -53,7 +53,7 @@ func TestCertificateAuthorityService_CRUD(t *testing.T) {
 							Organization:   "usacloud",
 							CommonName:     "client.usacloud.jp",
 							NotAfter:       time.Now().Add(365 * 24 * time.Hour),
-							IssuanceMethod: "url",
+							IssuanceMethod: types.CertificateAuthorityIssuanceMethods.URL,
 						},
 					},
 					WaitDuration: 0,

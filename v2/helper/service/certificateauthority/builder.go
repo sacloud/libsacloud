@@ -53,7 +53,7 @@ type ClientCert struct {
 	OrganizationUnit          []string
 	CommonName                string
 	NotAfter                  time.Time
-	IssuanceMethod            string
+	IssuanceMethod            types.ECertificateAuthorityIssuanceMethod
 	EMail                     string
 	CertificateSigningRequest string
 	PublicKey                 string
@@ -110,7 +110,8 @@ func (b *Builder) create(ctx context.Context) (*CertificateAuthority, error) {
 	shouldWait := false
 	for _, cc := range b.Clients {
 		// URLまたはeメールの場合は待つ必要なし
-		if cc.IssuanceMethod == "public_key" || cc.IssuanceMethod == "csr" {
+		if cc.IssuanceMethod == types.CertificateAuthorityIssuanceMethods.PublicKey ||
+			cc.IssuanceMethod == types.CertificateAuthorityIssuanceMethods.CSR {
 			shouldWait = true
 		}
 		_, err := b.Client.AddClient(ctx, created.ID, &sacloud.CertificateAuthorityAddClientParam{
@@ -170,7 +171,8 @@ func (b *Builder) update(ctx context.Context) (*CertificateAuthority, error) {
 			continue
 		}
 		// URLまたはeメールの場合は待つ必要なし
-		if cc.IssuanceMethod == "public_key" || cc.IssuanceMethod == "csr" {
+		if cc.IssuanceMethod == types.CertificateAuthorityIssuanceMethods.PublicKey ||
+			cc.IssuanceMethod == types.CertificateAuthorityIssuanceMethods.CSR {
 			shouldWait = true
 		}
 		_, err := b.Client.AddClient(ctx, updated.ID, &sacloud.CertificateAuthorityAddClientParam{

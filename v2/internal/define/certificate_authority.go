@@ -17,6 +17,8 @@ package define
 import (
 	"net/http"
 
+	"github.com/sacloud/libsacloud/v2/sacloud/types"
+
 	"github.com/sacloud/libsacloud/v2/internal/define/names"
 	"github.com/sacloud/libsacloud/v2/internal/define/ops"
 	"github.com/sacloud/libsacloud/v2/internal/dsl"
@@ -431,7 +433,7 @@ var (
 			fields.Def("OrganizationUnit", meta.TypeStringSlice),
 			fields.Def("CommonName", meta.TypeString),
 			fields.Def("NotAfter", meta.TypeTime),
-			fields.Def("IssuanceMethod", meta.TypeString),
+			fields.Def("IssuanceMethod", meta.Static(types.ECertificateAuthorityIssuanceMethod(""))),
 
 			fields.Def("EMail", meta.TypeString),
 			fields.Def("CertificateSigningRequest", meta.TypeString),
@@ -446,7 +448,7 @@ var (
 			fields.Def("ID", meta.TypeString),
 			fields.Def("Subject", meta.TypeString),
 			fields.Def("EMail", meta.TypeString),
-			fields.Def("IssuanceMethod", meta.TypeString),
+			fields.Def("IssuanceMethod", meta.Static(types.ECertificateAuthorityIssuanceMethod(""))),
 			fields.Def("IssueState", meta.TypeString),
 			fields.Def("URL", meta.TypeString),
 			fields.Def("CertificateData", certificateAuthorityCertificateData, &dsl.FieldTags{MapConv: ",recursive"}),
