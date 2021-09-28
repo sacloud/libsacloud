@@ -107,13 +107,7 @@ func (b *Builder) create(ctx context.Context) (*CertificateAuthority, error) {
 		return nil, err
 	}
 
-	shouldWait := false
 	for _, cc := range b.Clients {
-		// URLまたはeメールの場合は待つ必要なし
-		if cc.IssuanceMethod == types.CertificateAuthorityIssuanceMethods.PublicKey ||
-			cc.IssuanceMethod == types.CertificateAuthorityIssuanceMethods.CSR {
-			shouldWait = true
-		}
 		_, err := b.Client.AddClient(ctx, created.ID, &sacloud.CertificateAuthorityAddClientParam{
 			Country:                   cc.Country,
 			Organization:              cc.Organization,
@@ -130,8 +124,6 @@ func (b *Builder) create(ctx context.Context) (*CertificateAuthority, error) {
 		}
 	}
 	for _, sc := range b.Servers {
-		shouldWait = true
-
 		_, err := b.Client.AddServer(ctx, created.ID, &sacloud.CertificateAuthorityAddServerParam{
 			Country:                   sc.Country,
 			Organization:              sc.Organization,
@@ -147,10 +139,7 @@ func (b *Builder) create(ctx context.Context) (*CertificateAuthority, error) {
 		}
 	}
 
-	if shouldWait {
-		b.wait(ctx)
-	}
-
+	b.wait(ctx) // create時はCAの証明書発行待ちが必要
 	return read(ctx, b.Client, created.ID)
 }
 
