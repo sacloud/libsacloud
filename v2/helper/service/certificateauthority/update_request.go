@@ -35,7 +35,8 @@ type UpdateRequest struct {
 	Clients []*ClientCert `request:",omitempty"` // Note: API的に証明書の削除はできないため、指定した以上の証明書が存在する可能性がある
 	Servers []*ServerCert `request:",omitempty"` // Note: API的に証明書の削除はできないため、指定した以上の証明書が存在する可能性がある
 
-	WaitDuration time.Duration // 証明書発行待ち時間、省略した場合10秒
+	PollingTimeout  time.Duration // 証明書発行待ちのタイムアウト
+	PollingInterval time.Duration // 証明書発行待ちのポーリング間隔
 }
 
 func (req *UpdateRequest) Validate() error {
@@ -56,9 +57,10 @@ func (req *UpdateRequest) ApplyRequest(ctx context.Context, caller sacloud.APICa
 		Tags:        current.Tags,
 		IconID:      current.IconID,
 
-		Clients:      req.Clients,
-		Servers:      req.Servers,
-		WaitDuration: req.WaitDuration,
+		Clients:         req.Clients,
+		Servers:         req.Servers,
+		PollingTimeout:  req.PollingTimeout,
+		PollingInterval: req.PollingInterval,
 	}
 
 	if err := service.RequestConvertTo(req, applyRequest); err != nil {

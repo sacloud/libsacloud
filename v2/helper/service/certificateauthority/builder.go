@@ -18,6 +18,8 @@ import (
 	"context"
 	"time"
 
+	"github.com/sacloud/libsacloud/v2/helper/wait"
+
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
@@ -37,11 +39,13 @@ type Builder struct {
 	CommonName       string
 	NotAfter         time.Time
 
-	Clients []*ClientCert // Note: API的に証明書の削除はできないため、指定した以上の証明書が存在する可能性がある
-	Servers []*ServerCert // Note: API的に証明書の削除はできないため、指定した以上の証明書が存在する可能性がある
+	Clients []*ClientCert // Note: ここに指定しなかったものはRevokeされる
+	Servers []*ServerCert // Note: ここに指定しなかったものはRevokeされる
 
-	Client       sacloud.CertificateAuthorityAPI
-	WaitDuration time.Duration // 証明書発行待ち時間、省略した場合10秒
+	Client sacloud.CertificateAuthorityAPI
+
+	PollingTimeout  time.Duration // 証明書発行待ちのタイムアウト
+	PollingInterval time.Duration // 証明書発行待ちのポーリング間隔
 }
 
 // ClientCert クライアント証明書のリクエストパラメータ
@@ -57,6 +61,8 @@ type ClientCert struct {
 	EMail                     string
 	CertificateSigningRequest string
 	PublicKey                 string
+
+	Hold bool // 一時停止する時はTrue
 }
 
 // ServerCert サーバ証明書のリクエストパラメータ
@@ -71,6 +77,8 @@ type ServerCert struct {
 	SANs                      []string
 	CertificateSigningRequest string
 	PublicKey                 string
+
+	Hold bool // 一時停止する時はTrue
 }
 
 // CertificateAuthority sacloud/CertificateAuthorityのラッパー
@@ -106,40 +114,24 @@ func (b *Builder) create(ctx context.Context) (*CertificateAuthority, error) {
 	if err != nil {
 		return nil, err
 	}
-
-	for _, cc := range b.Clients {
-		_, err := b.Client.AddClient(ctx, created.ID, &sacloud.CertificateAuthorityAddClientParam{
-			Country:                   cc.Country,
-			Organization:              cc.Organization,
-			OrganizationUnit:          cc.OrganizationUnit,
-			CommonName:                cc.CommonName,
-			NotAfter:                  cc.NotAfter,
-			IssuanceMethod:            cc.IssuanceMethod,
-			EMail:                     cc.EMail,
-			CertificateSigningRequest: cc.CertificateSigningRequest,
-			PublicKey:                 cc.PublicKey,
-		})
+	err = b.wait(ctx, func() (bool, error) {
+		detail, err := b.Client.Detail(ctx, created.ID)
 		if err != nil {
-			return nil, err
+			return false, err
 		}
-	}
-	for _, sc := range b.Servers {
-		_, err := b.Client.AddServer(ctx, created.ID, &sacloud.CertificateAuthorityAddServerParam{
-			Country:                   sc.Country,
-			Organization:              sc.Organization,
-			OrganizationUnit:          sc.OrganizationUnit,
-			CommonName:                sc.CommonName,
-			NotAfter:                  sc.NotAfter,
-			SANs:                      sc.SANs,
-			CertificateSigningRequest: sc.CertificateSigningRequest,
-			PublicKey:                 sc.PublicKey,
-		})
-		if err != nil {
-			return nil, err
-		}
+		return detail.CertificateData != nil, nil // CA自体の証明書が発行されるまでCertificateDataは空のことがある
+	})
+	if err != nil {
+		return nil, err
 	}
 
-	b.wait(ctx) // create時はCAの証明書発行待ちが必要
+	if err := b.reconcileClients(ctx, created.ID); err != nil {
+		return nil, err
+	}
+	if err := b.reconcileServers(ctx, created.ID); err != nil {
+		return nil, err
+	}
+
 	return read(ctx, b.Client, created.ID)
 }
 
@@ -154,97 +146,275 @@ func (b *Builder) update(ctx context.Context) (*CertificateAuthority, error) {
 		return nil, err
 	}
 
-	shouldWait := false
-	for _, cc := range b.Clients {
-		if cc.ID != "" {
-			continue
-		}
-		// URLまたはeメールの場合は待つ必要なし
-		if cc.IssuanceMethod == types.CertificateAuthorityIssuanceMethods.PublicKey ||
-			cc.IssuanceMethod == types.CertificateAuthorityIssuanceMethods.CSR {
-			shouldWait = true
-		}
-		_, err := b.Client.AddClient(ctx, updated.ID, &sacloud.CertificateAuthorityAddClientParam{
-			Country:                   cc.Country,
-			Organization:              cc.Organization,
-			OrganizationUnit:          cc.OrganizationUnit,
-			CommonName:                cc.CommonName,
-			NotAfter:                  cc.NotAfter,
-			IssuanceMethod:            cc.IssuanceMethod,
-			EMail:                     cc.EMail,
-			CertificateSigningRequest: cc.CertificateSigningRequest,
-			PublicKey:                 cc.PublicKey,
-		})
-		if err != nil {
-			return nil, err
-		}
+	if err := b.reconcileClients(ctx, updated.ID); err != nil {
+		return nil, err
 	}
-	for _, sc := range b.Servers {
-		if sc.ID != "" {
-			continue
-		}
-
-		shouldWait = true
-
-		_, err := b.Client.AddServer(ctx, updated.ID, &sacloud.CertificateAuthorityAddServerParam{
-			Country:                   sc.Country,
-			Organization:              sc.Organization,
-			OrganizationUnit:          sc.OrganizationUnit,
-			CommonName:                sc.CommonName,
-			NotAfter:                  sc.NotAfter,
-			SANs:                      sc.SANs,
-			CertificateSigningRequest: sc.CertificateSigningRequest,
-			PublicKey:                 sc.PublicKey,
-		})
-		if err != nil {
-			return nil, err
-		}
-	}
-
-	if shouldWait {
-		b.wait(ctx)
+	if err := b.reconcileServers(ctx, updated.ID); err != nil {
+		return nil, err
 	}
 
 	return read(ctx, b.Client, updated.ID)
 }
 
-func (b *Builder) wait(ctx context.Context) {
-	// Note: 本来はクライアント/サーバ証明書ごとに状態を確認し証明書の発行が行われたか待つべきだが
-	// 実装が煩雑となる & 現状だと数秒程度で発行されるため、数秒スリープすることで代わりとする
-	wait := 10 * time.Second
-	if b.WaitDuration > 0 {
-		wait = b.WaitDuration
+func (b *Builder) reconcileClients(ctx context.Context, id types.ID) error {
+	currentCerts, err := b.Client.ListClients(ctx, id)
+	if err != nil {
+		return err
 	}
-	time.Sleep(wait)
+
+	if currentCerts != nil {
+		// delete
+		for _, target := range b.deletedClients(currentCerts.CertificateAuthority) {
+			switch target.IssueState {
+			case "available":
+				if err := b.Client.RevokeClient(ctx, id, target.ID); err != nil {
+					return err
+				}
+			case "approved":
+				if err := b.Client.DenyClient(ctx, id, target.ID); err != nil {
+					return err
+				}
+			}
+		}
+
+		// update
+		for _, target := range b.updatedClients(currentCerts.CertificateAuthority) {
+			if target.Hold {
+				if err := b.Client.HoldClient(ctx, id, target.ID); err != nil {
+					return err
+				}
+			} else {
+				if err := b.Client.ResumeClient(ctx, id, target.ID); err != nil {
+					return err
+				}
+			}
+		}
+	}
+	// create
+	for _, target := range b.createdClients() {
+		if err := b.addClient(ctx, id, target); err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
 
-func read(ctx context.Context, apiClient sacloud.CertificateAuthorityAPI, id types.ID) (*CertificateAuthority, error) {
-	current, err := apiClient.Read(ctx, id)
-	if err != nil {
-		return nil, err
+func (b *Builder) deletedClients(currentClients []*sacloud.CertificateAuthorityClient) []*sacloud.CertificateAuthorityClient {
+	var results []*sacloud.CertificateAuthorityClient
+	for _, current := range currentClients {
+		exists := false
+		for _, desired := range b.Clients {
+			if current.ID == "" || current.ID == desired.ID {
+				exists = true
+				break
+			}
+		}
+		if !exists {
+			results = append(results, current)
+		}
 	}
-	ca := &CertificateAuthority{CertificateAuthority: *current}
+	return results
+}
 
-	// detail
-	detail, err := apiClient.Detail(ctx, id)
-	if err != nil {
-		return nil, err
+func (b *Builder) updatedClients(currentClients []*sacloud.CertificateAuthorityClient) []*ClientCert {
+	var results []*ClientCert
+	for _, current := range currentClients {
+		for _, desired := range b.Clients {
+			if current.ID == desired.ID {
+				if (desired.Hold && current.IssueState == "available") || (!desired.Hold && current.IssueState == "hold") {
+					results = append(results, desired)
+				}
+				break
+			}
+		}
 	}
-	ca.Detail = detail
+	return results
+}
 
-	// clients
-	clients, err := apiClient.ListClients(ctx, id)
-	if err != nil {
-		return nil, err
+func (b *Builder) createdClients() []*ClientCert {
+	var results []*ClientCert
+	for _, created := range b.Clients {
+		if created.ID == "" {
+			results = append(results, created)
+		}
 	}
-	ca.Clients = clients.CertificateAuthority
+	return results
+}
 
-	// servers
-	servers, err := apiClient.ListServers(ctx, id)
+func (b *Builder) addClient(ctx context.Context, id types.ID, cc *ClientCert) error {
+	cert, err := b.Client.AddClient(ctx, id, &sacloud.CertificateAuthorityAddClientParam{
+		Country:                   cc.Country,
+		Organization:              cc.Organization,
+		OrganizationUnit:          cc.OrganizationUnit,
+		CommonName:                cc.CommonName,
+		NotAfter:                  cc.NotAfter,
+		IssuanceMethod:            cc.IssuanceMethod,
+		EMail:                     cc.EMail,
+		CertificateSigningRequest: cc.CertificateSigningRequest,
+		PublicKey:                 cc.PublicKey,
+	})
 	if err != nil {
-		return nil, err
+		return err
 	}
-	ca.Servers = servers.CertificateAuthority
+	cc.ID = cert.ID // 発行されたIDをBuilderに書き戻しておく
 
-	return ca, nil
+	// 証明書発行待ち、URLまたはEMailの場合は待たなくても良い(任意のURLにアクセスしWASMで.p12を発行するため)
+	switch cc.IssuanceMethod {
+	case types.CertificateAuthorityIssuanceMethods.CSR, types.CertificateAuthorityIssuanceMethods.PublicKey:
+		err = b.wait(ctx, func() (bool, error) {
+			c, err := b.Client.ReadClient(ctx, id, cert.ID)
+			if err != nil {
+				return false, err
+			}
+			return c.CertificateData != nil, nil
+		})
+		if err != nil {
+			return err
+		}
+	}
+
+	if cc.Hold {
+		if err := b.Client.HoldClient(ctx, id, cert.ID); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func (b *Builder) reconcileServers(ctx context.Context, id types.ID) error {
+	currentCerts, err := b.Client.ListServers(ctx, id)
+	if err != nil {
+		return err
+	}
+
+	if currentCerts != nil {
+		// delete
+		for _, target := range b.deletedServers(currentCerts.CertificateAuthority) {
+			switch target.IssueState {
+			case "available":
+				if err := b.Client.RevokeServer(ctx, id, target.ID); err != nil {
+					return err
+				}
+			}
+		}
+
+		// update
+		for _, target := range b.updatedServers(currentCerts.CertificateAuthority) {
+			if target.Hold {
+				if err := b.Client.HoldServer(ctx, id, target.ID); err != nil {
+					return err
+				}
+			} else {
+				if err := b.Client.ResumeServer(ctx, id, target.ID); err != nil {
+					return err
+				}
+			}
+		}
+	}
+	// create
+	for _, target := range b.createdServers() {
+		if err := b.addServer(ctx, id, target); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (b *Builder) deletedServers(currentServers []*sacloud.CertificateAuthorityServer) []*sacloud.CertificateAuthorityServer {
+	var results []*sacloud.CertificateAuthorityServer
+	for _, current := range currentServers {
+		exists := false
+		for _, desired := range b.Servers {
+			if current.ID == "" || current.ID == desired.ID {
+				exists = true
+				break
+			}
+		}
+		if !exists {
+			results = append(results, current)
+		}
+	}
+	return results
+}
+
+func (b *Builder) updatedServers(currentServers []*sacloud.CertificateAuthorityServer) []*ServerCert {
+	var results []*ServerCert
+	for _, current := range currentServers {
+		for _, desired := range b.Servers {
+			if current.ID == desired.ID {
+				if (desired.Hold && current.IssueState == "available") || (!desired.Hold && current.IssueState == "hold") {
+					results = append(results, desired)
+				}
+				break
+			}
+		}
+	}
+	return results
+}
+
+func (b *Builder) createdServers() []*ServerCert {
+	var results []*ServerCert
+	for _, created := range b.Servers {
+		if created.ID == "" {
+			results = append(results, created)
+		}
+	}
+	return results
+}
+
+func (b *Builder) addServer(ctx context.Context, id types.ID, sc *ServerCert) error {
+	cert, err := b.Client.AddServer(ctx, id, &sacloud.CertificateAuthorityAddServerParam{
+		Country:                   sc.Country,
+		Organization:              sc.Organization,
+		OrganizationUnit:          sc.OrganizationUnit,
+		CommonName:                sc.CommonName,
+		NotAfter:                  sc.NotAfter,
+		SANs:                      sc.SANs,
+		CertificateSigningRequest: sc.CertificateSigningRequest,
+		PublicKey:                 sc.PublicKey,
+	})
+	if err != nil {
+		return err
+	}
+	sc.ID = cert.ID // 発行されたIDをBuilderに書き戻しておく
+
+	err = b.wait(ctx, func() (bool, error) {
+		c, err := b.Client.ReadServer(ctx, id, cert.ID)
+		if err != nil {
+			return false, err
+		}
+		return c.CertificateData != nil, nil
+	})
+	if err != nil {
+		return err
+	}
+
+	if sc.Hold {
+		if err := b.Client.HoldServer(ctx, id, cert.ID); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func (b *Builder) wait(ctx context.Context, readStateFunc wait.ReadStateFunc) error {
+	timeout := b.PollingTimeout
+	if timeout == time.Duration(0) {
+		timeout = time.Minute // デフォルト: 5分
+	}
+	interval := b.PollingInterval
+	if interval == time.Duration(0) {
+		interval = 5 * time.Second
+	}
+
+	waiter := &wait.SimpleStateWaiter{
+		ReadStateFunc:   readStateFunc,
+		Timeout:         timeout,
+		PollingInterval: interval,
+	}
+
+	_, err := waiter.WaitForState(ctx)
+	return err
 }
