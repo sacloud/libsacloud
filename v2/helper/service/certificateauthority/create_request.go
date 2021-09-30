@@ -36,7 +36,8 @@ type CreateRequest struct {
 	Clients []*ClientCert // Note: API的に証明書の削除はできないため、指定した以上の証明書が存在する可能性がある
 	Servers []*ServerCert // Note: API的に証明書の削除はできないため、指定した以上の証明書が存在する可能性がある
 
-	WaitDuration time.Duration // 証明書発行待ち時間、省略した場合10秒
+	PollingTimeout  time.Duration // 証明書発行待ちのタイムアウト
+	PollingInterval time.Duration // 証明書発行待ちのポーリング間隔
 }
 
 func (req *CreateRequest) Validate() error {
@@ -56,6 +57,7 @@ func (req *CreateRequest) ApplyRequest() *ApplyRequest {
 		NotAfter:         req.NotAfter,
 		Clients:          req.Clients,
 		Servers:          req.Servers,
-		WaitDuration:     req.WaitDuration,
+		PollingTimeout:   req.PollingTimeout,
+		PollingInterval:  req.PollingInterval,
 	}
 }

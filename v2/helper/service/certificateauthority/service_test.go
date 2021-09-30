@@ -56,7 +56,6 @@ func TestCertificateAuthorityService_CRUD(t *testing.T) {
 							IssuanceMethod: types.CertificateAuthorityIssuanceMethods.URL,
 						},
 					},
-					WaitDuration: 0,
 				})
 			},
 		},
