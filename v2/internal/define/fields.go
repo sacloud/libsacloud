@@ -146,6 +146,13 @@ func (f *fieldsDef) CPU() *dsl.FieldDesc {
 	}
 }
 
+func (f *fieldsDef) GPU() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "GPU",
+		Type: meta.TypeInt,
+	}
+}
+
 /*
 func (f *fieldsDef) ServerPlanCPU() *schema.FieldDesc {
 	return &schema.FieldDesc{
@@ -244,6 +251,16 @@ func (f *fieldsDef) ServerPlanMemoryMB() *dsl.FieldDesc {
 				ResultTypes: []meta.Type{meta.TypeInt},
 			},
 		},
+	}
+}
+
+func (f *fieldsDef) ServerPlanGPU() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "GPU",
+		Tags: &dsl.FieldTags{
+			MapConv: "ServerPlan.GPU",
+		},
+		Type: meta.TypeInt,
 	}
 }
 

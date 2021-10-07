@@ -36,6 +36,7 @@ type ApplyRequest struct {
 	IconID          types.ID
 	CPU             int
 	MemoryGB        int
+	GPU             int
 	Commitment      types.ECommitment
 	Generation      types.EPlanGeneration
 	InterfaceDriver types.EInterfaceDriver
@@ -99,6 +100,7 @@ func (req *ApplyRequest) Builder(caller sacloud.APICaller) (*serverBuilder.Build
 		Name:            req.Name,
 		CPU:             req.CPU,
 		MemoryGB:        req.MemoryGB,
+		GPU:             req.GPU,
 		Commitment:      req.Commitment,
 		Generation:      req.Generation,
 		InterfaceDriver: req.InterfaceDriver,

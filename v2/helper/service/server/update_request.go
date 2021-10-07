@@ -35,6 +35,7 @@ type UpdateRequest struct {
 	IconID          *types.ID               `request:",omitempty"`
 	CPU             *int                    `request:",omitempty"`
 	MemoryGB        *int                    `request:",omitempty"`
+	GPU             *int                    `request:",omitempty"`
 	Commitment      *types.ECommitment      `request:",omitempty"`
 	Generation      *types.EPlanGeneration  `request:",omitempty"`
 	InterfaceDriver *types.EInterfaceDriver `request:",omitempty"`
@@ -121,6 +122,7 @@ func (req *UpdateRequest) applyRequestFromResource(ctx context.Context, caller s
 		IconID:            current.IconID,
 		CPU:               current.CPU,
 		MemoryGB:          current.GetMemoryGB(),
+		GPU:               current.GPU,
 		Commitment:        current.ServerPlanCommitment,
 		Generation:        current.ServerPlanGeneration,
 		InterfaceDriver:   current.InterfaceDriver,

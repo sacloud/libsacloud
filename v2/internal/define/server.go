@@ -239,6 +239,7 @@ var (
 			fields.ServerPlanName(),
 			fields.ServerPlanCPU(),
 			fields.ServerPlanMemoryMB(),
+			fields.ServerPlanGPU(),
 			fields.ServerPlanCommitment(),
 			fields.ServerPlanGeneration(),
 			// zone
@@ -331,6 +332,7 @@ var (
 			// server plan
 			fields.ServerPlanCPU(),
 			fields.ServerPlanMemoryMB(),
+			fields.ServerPlanGPU(),
 			fields.ServerPlanCommitment(),
 			fields.ServerPlanGeneration(),
 			fields.ServerConnectedSwitch(),
@@ -379,6 +381,7 @@ var (
 		Fields: []*dsl.FieldDesc{
 			fields.CPU(),
 			fields.MemoryMB(),
+			fields.GPU(),
 			fields.Generation(),
 			fields.Commitment(),
 		},

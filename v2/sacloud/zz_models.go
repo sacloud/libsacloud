@@ -22567,6 +22567,7 @@ type Server struct {
 	ServerPlanName          string                      `mapconv:"ServerPlan.Name"`
 	CPU                     int                         `mapconv:"ServerPlan.CPU"`
 	MemoryMB                int                         `mapconv:"ServerPlan.MemoryMB"`
+	GPU                     int                         `mapconv:"ServerPlan.GPU"`
 	ServerPlanCommitment    types.ECommitment           `json:",omitempty" mapconv:"ServerPlan.Commitment"`
 	ServerPlanGeneration    types.EPlanGeneration       `mapconv:"ServerPlan.Generation"`
 	Zone                    *ZoneInfo                   `json:",omitempty" mapconv:",omitempty,recursive"`
@@ -22607,6 +22608,7 @@ func (o *Server) setDefaults() interface{} {
 		ServerPlanName          string                      `mapconv:"ServerPlan.Name"`
 		CPU                     int                         `mapconv:"ServerPlan.CPU"`
 		MemoryMB                int                         `mapconv:"ServerPlan.MemoryMB"`
+		GPU                     int                         `mapconv:"ServerPlan.GPU"`
 		ServerPlanCommitment    types.ECommitment           `json:",omitempty" mapconv:"ServerPlan.Commitment"`
 		ServerPlanGeneration    types.EPlanGeneration       `mapconv:"ServerPlan.Generation"`
 		Zone                    *ZoneInfo                   `json:",omitempty" mapconv:",omitempty,recursive"`
@@ -22638,6 +22640,7 @@ func (o *Server) setDefaults() interface{} {
 		ServerPlanName:          o.GetServerPlanName(),
 		CPU:                     o.GetCPU(),
 		MemoryMB:                o.GetMemoryMB(),
+		GPU:                     o.GetGPU(),
 		ServerPlanCommitment:    o.GetServerPlanCommitment(),
 		ServerPlanGeneration:    o.GetServerPlanGeneration(),
 		Zone:                    o.GetZone(),
@@ -22816,6 +22819,16 @@ func (o *Server) SetMemoryMB(v int) {
 // GetMemoryGB .
 func (o *Server) GetMemoryGB() int {
 	return accessor.GetMemoryGB(o)
+}
+
+// GetGPU returns value of GPU
+func (o *Server) GetGPU() int {
+	return o.GPU
+}
+
+// SetGPU sets value to GPU
+func (o *Server) SetGPU(v int) {
+	o.GPU = v
 }
 
 // GetServerPlanCommitment returns value of ServerPlanCommitment
@@ -23409,6 +23422,7 @@ func (o *ServerConnectedDisk) SetStorage(v *Storage) {
 type ServerCreateRequest struct {
 	CPU                  int                   `mapconv:"ServerPlan.CPU"`
 	MemoryMB             int                   `mapconv:"ServerPlan.MemoryMB"`
+	GPU                  int                   `mapconv:"ServerPlan.GPU"`
 	ServerPlanCommitment types.ECommitment     `json:",omitempty" mapconv:"ServerPlan.Commitment"`
 	ServerPlanGeneration types.EPlanGeneration `mapconv:"ServerPlan.Generation"`
 	ConnectedSwitches    []*ConnectedSwitch    `json:",omitempty" mapconv:"[]ConnectedSwitches,recursive"`
@@ -23431,6 +23445,7 @@ func (o *ServerCreateRequest) setDefaults() interface{} {
 	return &struct {
 		CPU                  int                   `mapconv:"ServerPlan.CPU"`
 		MemoryMB             int                   `mapconv:"ServerPlan.MemoryMB"`
+		GPU                  int                   `mapconv:"ServerPlan.GPU"`
 		ServerPlanCommitment types.ECommitment     `json:",omitempty" mapconv:"ServerPlan.Commitment"`
 		ServerPlanGeneration types.EPlanGeneration `mapconv:"ServerPlan.Generation"`
 		ConnectedSwitches    []*ConnectedSwitch    `json:",omitempty" mapconv:"[]ConnectedSwitches,recursive"`
@@ -23444,6 +23459,7 @@ func (o *ServerCreateRequest) setDefaults() interface{} {
 	}{
 		CPU:                  o.GetCPU(),
 		MemoryMB:             o.GetMemoryMB(),
+		GPU:                  o.GetGPU(),
 		ServerPlanCommitment: o.GetServerPlanCommitment(),
 		ServerPlanGeneration: o.GetServerPlanGeneration(),
 		ConnectedSwitches:    o.GetConnectedSwitches(),
@@ -23480,6 +23496,16 @@ func (o *ServerCreateRequest) SetMemoryMB(v int) {
 // GetMemoryGB .
 func (o *ServerCreateRequest) GetMemoryGB() int {
 	return accessor.GetMemoryGB(o)
+}
+
+// GetGPU returns value of GPU
+func (o *ServerCreateRequest) GetGPU() int {
+	return o.GPU
+}
+
+// SetGPU sets value to GPU
+func (o *ServerCreateRequest) SetGPU(v int) {
+	o.GPU = v
 }
 
 // GetServerPlanCommitment returns value of ServerPlanCommitment
@@ -23836,6 +23862,7 @@ func (o *ServerDeleteWithDisksRequest) SetIDs(v []types.ID) {
 type ServerChangePlanRequest struct {
 	CPU                  int
 	MemoryMB             int
+	GPU                  int
 	ServerPlanGeneration types.EPlanGeneration `json:"Generation,omitempty"`
 	ServerPlanCommitment types.ECommitment     `json:"Commitment,omitempty"`
 }
@@ -23850,11 +23877,13 @@ func (o *ServerChangePlanRequest) setDefaults() interface{} {
 	return &struct {
 		CPU                  int
 		MemoryMB             int
+		GPU                  int
 		ServerPlanGeneration types.EPlanGeneration `json:"Generation,omitempty"`
 		ServerPlanCommitment types.ECommitment     `json:"Commitment,omitempty"`
 	}{
 		CPU:                  o.GetCPU(),
 		MemoryMB:             o.GetMemoryMB(),
+		GPU:                  o.GetGPU(),
 		ServerPlanGeneration: o.GetServerPlanGeneration(),
 		ServerPlanCommitment: o.GetServerPlanCommitment(),
 	}
@@ -23888,6 +23917,16 @@ func (o *ServerChangePlanRequest) GetMemoryGB() int {
 // SetMemoryGB .
 func (o *ServerChangePlanRequest) SetMemoryGB(memory int) {
 	accessor.SetMemoryGB(o, memory)
+}
+
+// GetGPU returns value of GPU
+func (o *ServerChangePlanRequest) GetGPU() int {
+	return o.GPU
+}
+
+// SetGPU sets value to GPU
+func (o *ServerChangePlanRequest) SetGPU(v int) {
+	o.GPU = v
 }
 
 // GetServerPlanGeneration returns value of ServerPlanGeneration
@@ -24206,6 +24245,7 @@ type ServerPlan struct {
 	Name         string
 	CPU          int
 	MemoryMB     int
+	GPU          int
 	Commitment   types.ECommitment
 	Generation   types.EPlanGeneration
 	Availability types.EAvailability
@@ -24223,6 +24263,7 @@ func (o *ServerPlan) setDefaults() interface{} {
 		Name         string
 		CPU          int
 		MemoryMB     int
+		GPU          int
 		Commitment   types.ECommitment
 		Generation   types.EPlanGeneration
 		Availability types.EAvailability
@@ -24231,6 +24272,7 @@ func (o *ServerPlan) setDefaults() interface{} {
 		Name:         o.GetName(),
 		CPU:          o.GetCPU(),
 		MemoryMB:     o.GetMemoryMB(),
+		GPU:          o.GetGPU(),
 		Commitment:   o.GetCommitment(),
 		Generation:   o.GetGeneration(),
 		Availability: o.GetAvailability(),
@@ -24305,6 +24347,16 @@ func (o *ServerPlan) GetMemoryGB() int {
 // SetMemoryGB .
 func (o *ServerPlan) SetMemoryGB(memory int) {
 	accessor.SetMemoryGB(o, memory)
+}
+
+// GetGPU returns value of GPU
+func (o *ServerPlan) GetGPU() int {
+	return o.GPU
+}
+
+// SetGPU sets value to GPU
+func (o *ServerPlan) SetGPU(v int) {
+	o.GPU = v
 }
 
 // GetCommitment returns value of Commitment

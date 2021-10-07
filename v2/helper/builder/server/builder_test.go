@@ -816,3 +816,37 @@ func TestBuilder_UpdateWithPreviousID(t *testing.T) {
 		t.Fatal(err)
 	}
 }
+
+func TestBuilder_GPUPlan(t *testing.T) {
+	if !testutil.IsAccTest() {
+		t.Skip("TestBuilder_GPUPlan only exec when running an Acceptance Test")
+	}
+
+	ctx := context.Background()
+	zone := "is1a"
+	builder := &Builder{
+		Name:            testutil.ResourceName("server-builder"),
+		CPU:             4,
+		MemoryGB:        56,
+		GPU:             1,
+		BootAfterCreate: false,
+		Client:          NewBuildersAPIClient(testutil.SingletonAPICaller()),
+		ForceShutdown:   true,
+	}
+	withGPU, err := builder.Build(ctx, zone)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	// for update
+	builder.ServerID = withGPU.ServerID
+	builder.GPU = 0
+	_, err = builder.Update(ctx, zone)
+	require.Error(t, err, "server plan not found")
+
+	// cleanup
+	serverOp := sacloud.NewServerOp(testutil.SingletonAPICaller())
+	if err := serverOp.Delete(ctx, zone, withGPU.ServerID); err != nil {
+		t.Fatal(err)
+	}
+}
