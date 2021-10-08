@@ -35,6 +35,7 @@ type Builder struct {
 	Name            string
 	CPU             int
 	MemoryGB        int
+	GPU             int
 	Commitment      types.ECommitment
 	Generation      types.EPlanGeneration
 	InterfaceDriver types.EInterfaceDriver
@@ -125,6 +126,7 @@ func BuilderFromResource(ctx context.Context, caller sacloud.APICaller, zone str
 		Name:            current.Name,
 		CPU:             current.CPU,
 		MemoryGB:        current.MemoryMB * size.GiB,
+		GPU:             current.GPU,
 		Commitment:      current.ServerPlanCommitment,
 		Generation:      current.ServerPlanGeneration,
 		InterfaceDriver: current.InterfaceDriver,
@@ -152,6 +154,7 @@ type BuildResult struct {
 var (
 	defaultCPU             = 1
 	defaultMemoryGB        = 1
+	defaultGPU             = 0
 	defaultCommitment      = types.Commitments.Standard
 	defaultGeneration      = types.PlanGenerations.Default
 	defaultInterfaceDriver = types.InterfaceDrivers.VirtIO
@@ -196,6 +199,7 @@ func (b *Builder) Validate(ctx context.Context, zone string) error {
 	_, err := query.FindServerPlan(ctx, b.Client.ServerPlan, zone, &query.FindServerPlanRequest{
 		CPU:        b.CPU,
 		MemoryGB:   b.MemoryGB,
+		GPU:        b.GPU,
 		Commitment: b.Commitment,
 		Generation: b.Generation,
 	})
@@ -380,6 +384,7 @@ func (b *Builder) Update(ctx context.Context, zone string) (*BuildResult, error)
 		updated, err := b.Client.Server.ChangePlan(ctx, zone, server.ID, &sacloud.ServerChangePlanRequest{
 			CPU:                  b.CPU,
 			MemoryMB:             b.MemoryGB * size.GiB,
+			GPU:                  b.GPU,
 			ServerPlanGeneration: b.Generation,
 			ServerPlanCommitment: b.Commitment,
 		})
@@ -434,6 +439,9 @@ func (b *Builder) setDefaults() {
 	if b.MemoryGB == 0 {
 		b.MemoryGB = defaultMemoryGB
 	}
+	if b.GPU == 0 {
+		b.GPU = defaultGPU
+	}
 	if b.Commitment == types.ECommitment("") {
 		b.Commitment = defaultCommitment
 	}
@@ -450,6 +458,7 @@ type serverState struct {
 	interfaceDriver types.EInterfaceDriver
 	memoryGB        int
 	cpu             int
+	gpu             int
 	commitment      types.ECommitment
 	nic             *nicState   // hash
 	additionalNICs  []*nicState // hash
@@ -471,6 +480,7 @@ func (b *Builder) desiredState() *serverState {
 		interfaceDriver: b.InterfaceDriver,
 		memoryGB:        b.MemoryGB,
 		cpu:             b.CPU,
+		gpu:             b.GPU,
 		commitment:      b.Commitment,
 		nic:             nic,
 		additionalNICs:  additionalNICs,
@@ -524,6 +534,7 @@ func (b *Builder) currentState(server *sacloud.Server) *serverState {
 		interfaceDriver: server.InterfaceDriver,
 		memoryGB:        server.GetMemoryGB(),
 		cpu:             server.CPU,
+		gpu:             server.GPU,
 		commitment:      server.ServerPlanCommitment,
 		nic:             nic,
 		additionalNICs:  additionalNICs,
@@ -536,6 +547,7 @@ func (b *Builder) createServer(ctx context.Context, zone string) (*sacloud.Serve
 	param := &sacloud.ServerCreateRequest{
 		CPU:                  b.CPU,
 		MemoryMB:             b.MemoryGB * size.GiB,
+		GPU:                  b.GPU,
 		ServerPlanCommitment: b.Commitment,
 		ServerPlanGeneration: b.Generation,
 		InterfaceDriver:      b.InterfaceDriver,
@@ -786,6 +798,7 @@ func (b *Builder) reconcileInterfaces(ctx context.Context, zone string, server *
 func (b *Builder) isPlanChanged(server *sacloud.Server) bool {
 	return b.CPU != server.CPU ||
 		b.MemoryGB != server.GetMemoryGB() ||
+		b.GPU != server.GPU ||
 		b.Commitment != server.ServerPlanCommitment ||
 		(b.Generation != types.PlanGenerations.Default && b.Generation != server.ServerPlanGeneration)
 	//b.Generation != server.ServerPlanGeneration

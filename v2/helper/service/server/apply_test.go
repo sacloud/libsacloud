@@ -42,6 +42,7 @@ func TestServerService_convertApplyRequest(t *testing.T) {
 				IconID:          102,
 				CPU:             2,
 				MemoryGB:        4,
+				GPU:             0,
 				Commitment:      types.Commitments.DedicatedCPU,
 				Generation:      types.PlanGenerations.Default,
 				InterfaceDriver: types.InterfaceDrivers.VirtIO,

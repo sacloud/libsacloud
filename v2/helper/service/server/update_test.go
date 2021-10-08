@@ -131,6 +131,7 @@ func TestServerService_convertUpdateRequest(t *testing.T) {
 				Tags:            types.Tags{"tag1-upd", "tag2-upd"},
 				CPU:             2,
 				MemoryGB:        4,
+				GPU:             0,
 				Commitment:      types.Commitments.DedicatedCPU,
 				Generation:      types.PlanGenerations.G200,
 				InterfaceDriver: types.InterfaceDrivers.E1000,

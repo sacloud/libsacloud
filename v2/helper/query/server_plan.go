@@ -28,6 +28,7 @@ import (
 type FindServerPlanRequest struct {
 	CPU        int
 	MemoryGB   int
+	GPU        int
 	Commitment types.ECommitment
 	Generation types.EPlanGeneration
 }
@@ -48,6 +49,9 @@ func (f *FindServerPlanRequest) findCondition() *sacloud.FindCondition {
 	if f.MemoryGB > 0 {
 		cond.Filter[search.Key("MemoryMB")] = size.GiBToMiB(f.MemoryGB)
 	}
+
+	cond.Filter[search.Key("GPU")] = f.GPU
+
 	if f.Generation != types.PlanGenerations.Default {
 		cond.Filter[search.Key("Generation")] = f.Generation
 	}
