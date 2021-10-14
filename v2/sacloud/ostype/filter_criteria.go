@@ -39,6 +39,9 @@ var ArchiveCriteria = map[ArchiveOSType]search.Filter{
 	RockyLinux: {
 		search.Key(keys.Tags): search.TagsAndEqual("current-stable", "distro-rocky"),
 	},
+	MiracleLinux: {
+		search.Key(keys.Tags): search.TagsAndEqual("current-stable", "distro-miracle"),
+	},
 	Ubuntu: {
 		search.Key(keys.Tags): search.TagsAndEqual("current-stable", "distro-ubuntu"),
 	},

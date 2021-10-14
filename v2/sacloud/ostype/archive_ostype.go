@@ -37,6 +37,8 @@ const (
 	AlmaLinux
 	// RockyLinux OS種別: Rocky Linux
 	RockyLinux
+	// MiracleLinux OS種別: MIRACLE LINUX
+	MiracleLinux
 
 	// Ubuntu OS種別:Ubuntu
 	Ubuntu
@@ -122,6 +124,7 @@ var ArchiveOSTypes = []ArchiveOSType{
 	CentOS7,
 	AlmaLinux,
 	RockyLinux,
+	MiracleLinux,
 	Ubuntu,
 	Ubuntu2004,
 	Ubuntu1804,
@@ -158,7 +161,7 @@ var ArchiveOSTypes = []ArchiveOSType{
 // OSTypeShortNames OSTypeとして利用できる文字列のリスト
 var OSTypeShortNames = []string{
 	"centos", "centos8stream", "centos8", "centos7",
-	"almalinux", "rockylinux",
+	"almalinux", "rockylinux", "miracle", "miraclelinux",
 	"ubuntu", "ubuntu2004", "ubuntu1804",
 	"debian", "debian10", "debian11",
 	"coreos", "rancheros", "k3os", "kusanagi", "freebsd",
@@ -194,7 +197,7 @@ func (o ArchiveOSType) IsWindows() bool {
 func (o ArchiveOSType) IsSupportDiskEdit() bool {
 	switch o {
 	case CentOS, CentOS8Stream, CentOS8, CentOS7,
-		AlmaLinux, RockyLinux,
+		AlmaLinux, RockyLinux, MiracleLinux,
 		Ubuntu, Ubuntu2004, Ubuntu1804,
 		Debian, Debian10, Debian11,
 		CoreOS, RancherOS, K3OS, Kusanagi, FreeBSD:
@@ -219,6 +222,8 @@ func StrToOSType(osType string) ArchiveOSType {
 		return AlmaLinux
 	case "rockylinux":
 		return RockyLinux
+	case "miracle", "miraclelinux":
+		return MiracleLinux
 	case "ubuntu":
 		return Ubuntu
 	case "ubuntu2004":
