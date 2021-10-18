@@ -14830,9 +14830,11 @@ func (o *LoadBalancerServer) SetHealthCheck(v *LoadBalancerServerHealthCheck) {
 
 // LoadBalancerServerHealthCheck represents API parameter/response structure
 type LoadBalancerServerHealthCheck struct {
-	Protocol     types.ELoadBalancerHealthCheckProtocol
-	Path         string
-	ResponseCode types.StringNumber `mapconv:"Status"`
+	Protocol       types.ELoadBalancerHealthCheckProtocol
+	Path           string
+	ResponseCode   types.StringNumber `mapconv:"Status"`
+	Retry          types.StringNumber
+	ConnectTimeout types.StringNumber
 }
 
 // Validate validates by field tags
@@ -14843,13 +14845,17 @@ func (o *LoadBalancerServerHealthCheck) Validate() error {
 // setDefaults implements sacloud.argumentDefaulter
 func (o *LoadBalancerServerHealthCheck) setDefaults() interface{} {
 	return &struct {
-		Protocol     types.ELoadBalancerHealthCheckProtocol
-		Path         string
-		ResponseCode types.StringNumber `mapconv:"Status"`
+		Protocol       types.ELoadBalancerHealthCheckProtocol
+		Path           string
+		ResponseCode   types.StringNumber `mapconv:"Status"`
+		Retry          types.StringNumber
+		ConnectTimeout types.StringNumber
 	}{
-		Protocol:     o.GetProtocol(),
-		Path:         o.GetPath(),
-		ResponseCode: o.GetResponseCode(),
+		Protocol:       o.GetProtocol(),
+		Path:           o.GetPath(),
+		ResponseCode:   o.GetResponseCode(),
+		Retry:          o.GetRetry(),
+		ConnectTimeout: o.GetConnectTimeout(),
 	}
 }
 
@@ -14881,6 +14887,26 @@ func (o *LoadBalancerServerHealthCheck) GetResponseCode() types.StringNumber {
 // SetResponseCode sets value to ResponseCode
 func (o *LoadBalancerServerHealthCheck) SetResponseCode(v types.StringNumber) {
 	o.ResponseCode = v
+}
+
+// GetRetry returns value of Retry
+func (o *LoadBalancerServerHealthCheck) GetRetry() types.StringNumber {
+	return o.Retry
+}
+
+// SetRetry sets value to Retry
+func (o *LoadBalancerServerHealthCheck) SetRetry(v types.StringNumber) {
+	o.Retry = v
+}
+
+// GetConnectTimeout returns value of ConnectTimeout
+func (o *LoadBalancerServerHealthCheck) GetConnectTimeout() types.StringNumber {
+	return o.ConnectTimeout
+}
+
+// SetConnectTimeout sets value to ConnectTimeout
+func (o *LoadBalancerServerHealthCheck) SetConnectTimeout(v types.StringNumber) {
+	o.ConnectTimeout = v
 }
 
 /*************************************************

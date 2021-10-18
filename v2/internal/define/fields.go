@@ -702,6 +702,8 @@ func (f *fieldsDef) LoadBalancerServerHealthCheck() *dsl.FieldDesc {
 						MapConv: "Status",
 					},
 				},
+				{Name: "Retry", Type: meta.TypeStringNumber},
+				{Name: "ConnectTimeout", Type: meta.TypeStringNumber},
 			},
 		},
 		Tags: &dsl.FieldTags{
@@ -843,7 +845,7 @@ func (f *fieldsDef) GSLBHealthCheck() *dsl.FieldDesc {
 		Name: "HealthCheck",
 		Type: &dsl.Model{
 			Name:      "GSLBHealthCheck",
-			NakedType: meta.Static(naked.HealthCheck{}),
+			NakedType: meta.Static(naked.GSLBHealthCheck{}),
 			Fields: []*dsl.FieldDesc{
 				{
 					Name: "Protocol",
