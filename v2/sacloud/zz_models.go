@@ -22419,7 +22419,7 @@ func (o *ProxyLBSetCertificatesRequest) SetAdditionalCerts(v []*ProxyLBAdditiona
 // ProxyLBHealth represents API parameter/response structure
 type ProxyLBHealth struct {
 	ActiveConn int
-	CPS        int
+	CPS        float64
 	CurrentVIP string
 	Servers    []*LoadBalancerServerStatus `mapconv:"[]Servers,recursive"`
 }
@@ -22433,7 +22433,7 @@ func (o *ProxyLBHealth) Validate() error {
 func (o *ProxyLBHealth) setDefaults() interface{} {
 	return &struct {
 		ActiveConn int
-		CPS        int
+		CPS        float64
 		CurrentVIP string
 		Servers    []*LoadBalancerServerStatus `mapconv:"[]Servers,recursive"`
 	}{
@@ -22455,12 +22455,12 @@ func (o *ProxyLBHealth) SetActiveConn(v int) {
 }
 
 // GetCPS returns value of CPS
-func (o *ProxyLBHealth) GetCPS() int {
+func (o *ProxyLBHealth) GetCPS() float64 {
 	return o.CPS
 }
 
 // SetCPS sets value to CPS
-func (o *ProxyLBHealth) SetCPS(v int) {
+func (o *ProxyLBHealth) SetCPS(v float64) {
 	o.CPS = v
 }
 
