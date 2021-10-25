@@ -379,7 +379,7 @@ var (
 		Name: "ProxyLBHealth",
 		Fields: []*dsl.FieldDesc{
 			fields.Def("ActiveConn", meta.TypeInt),
-			fields.Def("CPS", meta.TypeInt),
+			fields.Def("CPS", meta.TypeFloat64),
 			fields.Def("CurrentVIP", meta.TypeString),
 			{
 				Name: "Servers",
@@ -391,7 +391,7 @@ var (
 						fields.Def("Status", meta.TypeInstanceStatus),
 						fields.Def("IPAddress", meta.TypeString),
 						fields.Def("Port", meta.TypeStringNumber),
-						fields.Def("CPS", meta.TypeInt),
+						fields.Def("CPS", meta.TypeFloat64),
 					},
 				},
 				Tags: &dsl.FieldTags{

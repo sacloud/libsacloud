@@ -332,7 +332,7 @@ func (p *ProxyLBCertificate) UnmarshalJSON(data []byte) error {
 // ProxyLBHealth ProxyLBのヘルスチェック戻り値
 type ProxyLBHealth struct {
 	ActiveConn int                    `json:",omitempty" yaml:"active_conn,omitempty" structs:",omitempty"` // アクティブなコネクション数
-	CPS        int                    `json:",omitempty" yaml:"cps,omitempty" structs:",omitempty"`         // 秒あたりコネクション数
+	CPS        float64                `json:",omitempty" yaml:"cps,omitempty" structs:",omitempty"`         // 秒あたりコネクション数
 	Servers    []*ProxyLBHealthServer `json:",omitempty" yaml:"servers,omitempty" structs:",omitempty"`     // 実サーバのステータス
 	CurrentVIP string                 `json:",omitempty" yaml:"current_vip,omitempty" structs:",omitempty"` // 現在のVIP
 }
@@ -343,5 +343,5 @@ type ProxyLBHealthServer struct {
 	Status     types.EServerInstanceStatus `json:",omitempty" yaml:"status,omitempty" structs:",omitempty"`      // ステータス(UP or DOWN)
 	IPAddress  string                      `json:",omitempty" yaml:"ip_address,omitempty" structs:",omitempty"`  // IPアドレス
 	Port       string                      `json:",omitempty" yaml:"port,omitempty" structs:",omitempty"`        // ポート
-	CPS        int                         `json:",omitempty" yaml:"cps,omitempty" structs:",omitempty"`         // 秒あたりコネクション数
+	CPS        float64                     `json:",omitempty" yaml:"cps,omitempty" structs:",omitempty"`         // 秒あたりコネクション数
 }
