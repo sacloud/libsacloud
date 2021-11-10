@@ -98,12 +98,11 @@ type APIError interface {
 }
 
 // NewAPIError APIコール時のエラー情報
-func NewAPIError(requestMethod string, requestURL *url.URL, requestBody string, responseCode int, err *APIErrorResponse) APIError {
+func NewAPIError(requestMethod string, requestURL *url.URL, responseCode int, err *APIErrorResponse) APIError {
 	return &apiError{
 		responseCode: responseCode,
 		method:       requestMethod,
 		url:          requestURL,
-		body:         requestBody,
 		origErr:      err,
 	}
 }
@@ -112,7 +111,6 @@ type apiError struct {
 	responseCode int
 	method       string
 	url          *url.URL
-	body         string
 	origErr      *APIErrorResponse
 }
 

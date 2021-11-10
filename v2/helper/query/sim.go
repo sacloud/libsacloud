@@ -39,7 +39,7 @@ func FindSIMByID(ctx context.Context, client sacloud.SIMAPI, id types.ID) (*sacl
 		}
 	}
 	if sim == nil {
-		return nil, sacloud.NewAPIError(http.MethodGet, nil, "", http.StatusNotFound, nil)
+		return nil, sacloud.NewAPIError(http.MethodGet, nil, http.StatusNotFound, nil)
 	}
 	return sim, nil
 }

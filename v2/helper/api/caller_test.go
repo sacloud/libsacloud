@@ -20,6 +20,7 @@ import (
 	"testing"
 	"time"
 
+	sacloudhttp "github.com/sacloud/go-http"
 	"github.com/sacloud/libsacloud/v2"
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/stretchr/testify/require"
@@ -41,9 +42,6 @@ func TestNewCaller(t *testing.T) {
 			AccessTokenSecret: "secret",
 			UserAgent:         fmt.Sprintf("libsacloud/%s", libsacloud.Version),
 			AcceptLanguage:    "",
-			RetryMax:          sacloud.APIDefaultRetryMax,
-			RetryWaitMin:      sacloud.APIDefaultRetryWaitMin,
-			RetryWaitMax:      sacloud.APIDefaultRetryWaitMax,
 			HTTPClient:        http.DefaultClient,
 		}
 		require.EqualValues(t, expected, client)
@@ -79,7 +77,7 @@ func TestNewCaller(t *testing.T) {
 		}
 		require.EqualValues(t, expected, client)
 		require.Equal(t, time.Second*4, client.HTTPClient.Timeout)
-		require.EqualValues(t, 5, client.HTTPClient.Transport.(*sacloud.RateLimitRoundTripper).RateLimitPerSec)
+		require.EqualValues(t, 5, client.HTTPClient.Transport.(*sacloudhttp.RateLimitRoundTripper).RateLimitPerSec)
 	})
 
 	t.Run("multiple-call", func(t *testing.T) {

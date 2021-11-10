@@ -38,7 +38,7 @@ func random(max int) int {
 }
 
 func newErrorNotFound(resourceKey string, id interface{}) error {
-	return sacloud.NewAPIError("", nil, "", http.StatusNotFound, &sacloud.APIErrorResponse{
+	return sacloud.NewAPIError("", nil, http.StatusNotFound, &sacloud.APIErrorResponse{
 		IsFatal:      true,
 		Serial:       "",
 		Status:       "404 NotFound",
@@ -48,7 +48,7 @@ func newErrorNotFound(resourceKey string, id interface{}) error {
 }
 
 func newErrorBadRequest(resourceKey string, id interface{}, msgs ...string) error {
-	return sacloud.NewAPIError("", nil, "", http.StatusBadRequest, &sacloud.APIErrorResponse{
+	return sacloud.NewAPIError("", nil, http.StatusBadRequest, &sacloud.APIErrorResponse{
 		IsFatal:      true,
 		Serial:       "",
 		Status:       "400 BadRequest",
@@ -58,7 +58,7 @@ func newErrorBadRequest(resourceKey string, id interface{}, msgs ...string) erro
 }
 
 func newErrorConflict(resourceKey string, id interface{}, msgs ...string) error {
-	return sacloud.NewAPIError("", nil, "", http.StatusConflict, &sacloud.APIErrorResponse{
+	return sacloud.NewAPIError("", nil, http.StatusConflict, &sacloud.APIErrorResponse{
 		IsFatal:      true,
 		Serial:       "",
 		Status:       "409 Conflict",
@@ -68,7 +68,7 @@ func newErrorConflict(resourceKey string, id interface{}, msgs ...string) error 
 }
 
 func newInternalServerError(resourceKey string, id interface{}, msgs ...string) error {
-	return sacloud.NewAPIError("", nil, "", http.StatusInternalServerError, &sacloud.APIErrorResponse{
+	return sacloud.NewAPIError("", nil, http.StatusInternalServerError, &sacloud.APIErrorResponse{
 		IsFatal:      true,
 		Serial:       "",
 		Status:       "500 Internal Server Error",

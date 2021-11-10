@@ -22,9 +22,10 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"runtime"
 	"time"
 
-	"github.com/hashicorp/go-retryablehttp"
+	sacloudhttp "github.com/sacloud/go-http"
 	"github.com/sacloud/libsacloud/v2"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
@@ -40,18 +41,14 @@ var (
 var (
 	// APIDefaultZone デフォルトゾーン、グローバルリソースなどで利用される
 	APIDefaultZone = "is1a"
-	// APIDefaultTimeoutDuration デフォルトのタイムアウト
-	APIDefaultTimeoutDuration = 20 * time.Minute
-	//APIDefaultUserAgent デフォルトのユーザーエージェント
-	APIDefaultUserAgent = fmt.Sprintf("libsacloud/%s", libsacloud.Version)
-	// APIDefaultAcceptLanguage デフォルトのAcceptLanguage
-	APIDefaultAcceptLanguage = ""
-	// APIDefaultRetryMax デフォルトのリトライ回数
-	APIDefaultRetryMax = 10
-	// APIDefaultRetryWaitMin デフォルトのリトライ間隔(最小)
-	APIDefaultRetryWaitMin = 1 * time.Second
-	// APIDefaultRetryWaitMax デフォルトのリトライ間隔(最大)
-	APIDefaultRetryWaitMax = 64 * time.Second
+	//DefaultUserAgent デフォルトのユーザーエージェント
+	DefaultUserAgent = fmt.Sprintf(
+		"libsacloud/v%s (%s/%s; +https://github.com/sacloud/libsacloud) %s",
+		libsacloud.Version,
+		runtime.GOOS,
+		runtime.GOARCH,
+		sacloudhttp.DefaultUserAgent,
+	)
 )
 
 const (
@@ -81,6 +78,8 @@ type Client struct {
 	UserAgent string
 	// Accept-Language
 	AcceptLanguage string
+	// Gzip有効化
+	Gzip bool
 	// 423/503エラー時のリトライ回数
 	RetryMax int
 	// 423/503エラー時のリトライ待ち時間(最小)
@@ -96,11 +95,7 @@ func NewClient(token, secret string) *Client {
 	c := &Client{
 		AccessToken:       token,
 		AccessTokenSecret: secret,
-		UserAgent:         APIDefaultUserAgent,
-		AcceptLanguage:    APIDefaultAcceptLanguage,
-		RetryMax:          APIDefaultRetryMax,
-		RetryWaitMin:      APIDefaultRetryWaitMin,
-		RetryWaitMax:      APIDefaultRetryWaitMax,
+		UserAgent:         DefaultUserAgent,
 	}
 	return c
 }
@@ -129,42 +124,13 @@ func (c *Client) isOkStatus(code int) bool {
 	return ok
 }
 
-func (c *Client) httpClient() *retryablehttp.Client {
-	return &retryablehttp.Client{
-		HTTPClient:   c.HTTPClient,
-		RetryWaitMin: c.RetryWaitMin,
-		RetryWaitMax: c.RetryWaitMax,
-		RetryMax:     c.RetryMax,
-		CheckRetry: func(ctx context.Context, resp *http.Response, err error) (bool, error) {
-			if ctx.Err() != nil {
-				return false, ctx.Err()
-			}
-			if err != nil {
-				return retryablehttp.DefaultRetryPolicy(ctx, resp, err)
-			}
-			if resp.StatusCode == 0 || resp.StatusCode == http.StatusServiceUnavailable || resp.StatusCode == http.StatusLocked {
-				return true, nil
-			}
-			return false, nil
-		},
-		Backoff: retryablehttp.DefaultBackoff,
-	}
-}
-
-// Do APIコール実施
-func (c *Client) Do(ctx context.Context, method, uri string, body interface{}) ([]byte, error) {
-	var (
-		client  = c.httpClient()
-		err     error
-		strBody string
-	)
-
+func (c *Client) newRequest(ctx context.Context, method, uri string, body interface{}) (*http.Request, error) {
 	// setup url and body
 	var url = uri
 	var bodyReader io.ReadSeeker
 	if body != nil {
 		var bodyJSON []byte
-		bodyJSON, err = json.Marshal(body)
+		bodyJSON, err := json.Marshal(body)
 		if err != nil {
 			return nil, err
 		}
@@ -174,23 +140,34 @@ func (c *Client) Do(ctx context.Context, method, uri string, body interface{}) (
 			bodyReader = bytes.NewReader(bodyJSON)
 		}
 	}
-	req, err := retryablehttp.NewRequest(method, url, bodyReader)
-	if err != nil {
-		return nil, fmt.Errorf("error with request: %v - %q", url, err)
-	}
-	req = req.WithContext(ctx)
+	return http.NewRequestWithContext(ctx, method, url, bodyReader)
+}
 
-	// set headers
-	req.SetBasicAuth(c.AccessToken, c.AccessTokenSecret)
-	req.Header.Add("X-Sakura-Bigint-As-Int", "1") //Use BigInt on resource ids.
-	req.Header.Add("User-Agent", c.UserAgent)
-	if c.AcceptLanguage != "" {
-		req.Header.Add("Accept-Language", c.AcceptLanguage)
+func (c *Client) apiClient() *sacloudhttp.Client {
+	return &sacloudhttp.Client{
+		AccessToken:       c.AccessToken,
+		AccessTokenSecret: c.AccessTokenSecret,
+		UserAgent:         c.UserAgent,
+		AcceptLanguage:    c.AcceptLanguage,
+		Gzip:              c.Gzip,
+		CheckRetryFunc:    nil,
+		RetryMax:          c.RetryMax,
+		RetryWaitMin:      c.RetryWaitMin,
+		RetryWaitMax:      c.RetryWaitMax,
+		HTTPClient:        c.HTTPClient,
+		RequestCustomizer: nil,
 	}
-	req.Method = method
+}
+
+// Do APIコール実施
+func (c *Client) Do(ctx context.Context, method, uri string, body interface{}) ([]byte, error) {
+	req, err := c.newRequest(ctx, method, uri, body)
+	if err != nil {
+		return nil, err
+	}
 
 	// API call
-	resp, err := client.Do(req)
+	resp, err := c.apiClient().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -207,7 +184,7 @@ func (c *Client) Do(ctx context.Context, method, uri string, body interface{}) (
 		if err != nil {
 			return nil, fmt.Errorf("error in response: %s", string(data))
 		}
-		return nil, NewAPIError(req.Method, req.URL, strBody, resp.StatusCode, errResponse)
+		return nil, NewAPIError(req.Method, req.URL, resp.StatusCode, errResponse)
 	}
 
 	return data, nil

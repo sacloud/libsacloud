@@ -79,7 +79,7 @@ func (r *dummyServerReader) Read(ctx context.Context, zone string, id types.ID) 
 			return s, nil
 		}
 	}
-	return nil, sacloud.NewAPIError(http.MethodGet, nil, "", http.StatusNotFound, nil)
+	return nil, sacloud.NewAPIError(http.MethodGet, nil, http.StatusNotFound, nil)
 }
 
 type dummyArchiveReader struct {
@@ -96,7 +96,7 @@ func (r *dummyArchiveReader) Read(ctx context.Context, zone string, id types.ID)
 			return a, nil
 		}
 	}
-	return nil, sacloud.NewAPIError(http.MethodGet, nil, "", http.StatusNotFound, nil)
+	return nil, sacloud.NewAPIError(http.MethodGet, nil, http.StatusNotFound, nil)
 }
 
 type dummyDiskReader struct {
@@ -113,5 +113,5 @@ func (r *dummyDiskReader) Read(ctx context.Context, zone string, id types.ID) (*
 			return d, nil
 		}
 	}
-	return nil, sacloud.NewAPIError(http.MethodGet, nil, "", http.StatusNotFound, nil)
+	return nil, sacloud.NewAPIError(http.MethodGet, nil, http.StatusNotFound, nil)
 }
