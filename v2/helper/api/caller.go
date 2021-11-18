@@ -20,6 +20,7 @@ import (
 	"strings"
 	"time"
 
+	sacloudhttp "github.com/sacloud/go-http"
 	"github.com/sacloud/libsacloud/v2"
 	"github.com/sacloud/libsacloud/v2/helper/defaults"
 	"github.com/sacloud/libsacloud/v2/sacloud"
@@ -76,23 +77,23 @@ func newCaller(opts *CallerOptions) sacloud.APICaller {
 		httpClient.Timeout = 300 * time.Second // デフォルト値
 	}
 	if opts.HTTPRequestRateLimit > 0 {
-		httpClient.Transport = &sacloud.RateLimitRoundTripper{RateLimitPerSec: opts.HTTPRequestRateLimit}
+		httpClient.Transport = &sacloudhttp.RateLimitRoundTripper{RateLimitPerSec: opts.HTTPRequestRateLimit}
 	}
 	if opts.HTTPRequestRateLimit == 0 {
-		httpClient.Transport = &sacloud.RateLimitRoundTripper{RateLimitPerSec: 10} // デフォルト値
+		httpClient.Transport = &sacloudhttp.RateLimitRoundTripper{RateLimitPerSec: 10} // デフォルト値
 	}
 
-	retryMax := sacloud.APIDefaultRetryMax
+	retryMax := 0
 	if opts.RetryMax > 0 {
 		retryMax = opts.RetryMax
 	}
 
-	retryWaitMax := sacloud.APIDefaultRetryWaitMax
+	retryWaitMax := time.Duration(0)
 	if opts.RetryWaitMax > 0 {
 		retryWaitMax = time.Duration(opts.RetryWaitMax) * time.Second
 	}
 
-	retryWaitMin := sacloud.APIDefaultRetryWaitMin
+	retryWaitMin := time.Duration(0)
 	if opts.RetryWaitMin > 0 {
 		retryWaitMin = time.Duration(opts.RetryWaitMin) * time.Second
 	}
@@ -119,7 +120,7 @@ func newCaller(opts *CallerOptions) sacloud.APICaller {
 		trace.AddClientFactoryHooks()
 	}
 	if opts.TraceHTTP {
-		caller.HTTPClient.Transport = &sacloud.TracingRoundTripper{
+		caller.HTTPClient.Transport = &sacloudhttp.TracingRoundTripper{
 			Transport: caller.HTTPClient.Transport,
 		}
 	}

@@ -22,8 +22,6 @@ import (
 	"time"
 
 	"github.com/sacloud/libsacloud/v2/helper/api"
-
-	"github.com/sacloud/libsacloud/v2"
 	"github.com/sacloud/libsacloud/v2/sacloud"
 )
 
@@ -92,7 +90,7 @@ func SingletonAPICaller() sacloud.APICaller {
 		apiCaller = api.NewCaller(&api.CallerOptions{
 			AccessToken:       accessToken,
 			AccessTokenSecret: accessTokenSecret,
-			UserAgent:         fmt.Sprintf("test-libsacloud/%s", libsacloud.Version),
+			UserAgent:         "test-" + sacloud.DefaultUserAgent,
 			AcceptLanguage:    "en-US,en;q=0.9",
 			RetryMax:          20,
 			TraceAPI:          IsEnableTrace() || IsEnableAPITrace(),

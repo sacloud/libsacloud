@@ -75,7 +75,7 @@ func (d *dummyPowerHandler) boot() error {
 	d.bootCount++
 	if d.bootCount > d.ignoreBootCount {
 		go d.toggleInstanceStatus()
-		return sacloud.NewAPIError("DUMMY", nil, "dummy", http.StatusConflict, nil)
+		return sacloud.NewAPIError("DUMMY", nil, http.StatusConflict, nil)
 	}
 	return nil
 }
@@ -83,7 +83,7 @@ func (d *dummyPowerHandler) shutdown(force bool) error {
 	d.shutdownCount++
 	if d.shutdownCount > d.ignoreShutdownCount {
 		go d.toggleInstanceStatus()
-		return sacloud.NewAPIError("DUMMY", nil, "dummy", http.StatusConflict, nil)
+		return sacloud.NewAPIError("DUMMY", nil, http.StatusConflict, nil)
 	}
 	return nil
 }
@@ -131,7 +131,7 @@ func TestPower_powerRequestWithRetry(t *testing.T) {
 		err := powerRequestWithRetry(context.Background(), func() error {
 			if retried < maxRetry {
 				retried++
-				return sacloud.NewAPIError("GET", nil, "", http.StatusConflict, &sacloud.APIErrorResponse{
+				return sacloud.NewAPIError("GET", nil, http.StatusConflict, &sacloud.APIErrorResponse{
 					IsFatal:      true,
 					Serial:       "xxx",
 					Status:       "409 Conflict",
@@ -152,7 +152,7 @@ func TestPower_powerRequestWithRetry(t *testing.T) {
 	// 409時のリトライにはタイムアウトを設定する
 	t.Run("retry when received 409 and still_creating should be timed out", func(t *testing.T) {
 		err := powerRequestWithRetry(context.Background(), func() error {
-			return sacloud.NewAPIError("GET", nil, "", http.StatusConflict, &sacloud.APIErrorResponse{
+			return sacloud.NewAPIError("GET", nil, http.StatusConflict, &sacloud.APIErrorResponse{
 				IsFatal:      true,
 				Serial:       "xxx",
 				Status:       "409 Conflict",
@@ -165,7 +165,7 @@ func TestPower_powerRequestWithRetry(t *testing.T) {
 	})
 	// その他のエラーは即時returnする
 	t.Run("force return error when received unexpected error", func(t *testing.T) {
-		expected := sacloud.NewAPIError("GET", nil, "", http.StatusNotFound, &sacloud.APIErrorResponse{
+		expected := sacloud.NewAPIError("GET", nil, http.StatusNotFound, &sacloud.APIErrorResponse{
 			IsFatal:      true,
 			Serial:       "xxx",
 			Status:       "404 NotFound",
