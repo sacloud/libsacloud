@@ -4,7 +4,7 @@ go 1.17
 
 require (
 	github.com/fatih/structs v1.1.0
-	github.com/fsnotify/fsnotify v1.4.7
+	github.com/fsnotify/fsnotify v1.5.1
 	github.com/go-playground/validator/v10 v10.2.0
 	github.com/hashicorp/go-multierror v1.0.1-0.20190722213833-bdca7bb83f60
 	github.com/huandu/xstrings v1.2.0
@@ -38,7 +38,7 @@ require (
 	go.opentelemetry.io/contrib v0.15.1 // indirect
 	go.uber.org/ratelimit v0.2.0 // indirect
 	golang.org/x/sync v0.0.0-20200625203802-6e8e738ad208 // indirect
-	golang.org/x/sys v0.0.0-20200905004654-be1d3432aa8f // indirect
+	golang.org/x/sys v0.0.0-20210630005230-0f9fa26af87c // indirect
 	google.golang.org/api v0.32.0 // indirect
 	gopkg.in/yaml.v3 v3.0.0-20200313102051-9f266ea9e77c // indirect
 )
