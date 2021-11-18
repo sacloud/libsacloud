@@ -11,7 +11,7 @@ require (
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/mitchellh/mapstructure v1.3.2
 	github.com/sacloud/ftps v1.1.0
-	github.com/sacloud/go-http v0.0.2
+	github.com/sacloud/go-http v0.0.3
 	github.com/stretchr/testify v1.6.1
 	go.opentelemetry.io/contrib/instrumentation/net/http/httptrace/otelhttptrace v0.15.1
 	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.15.1
@@ -19,6 +19,5 @@ require (
 	go.opentelemetry.io/otel/exporters/stdout v0.15.0
 	go.opentelemetry.io/otel/exporters/trace/jaeger v0.15.0
 	go.opentelemetry.io/otel/sdk v0.15.0
-	go.uber.org/ratelimit v0.2.0
 	golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9
 )

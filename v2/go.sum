@@ -156,8 +156,8 @@ github.com/prometheus/client_model v0.0.0-20190812154241-14fe0d1b01d4/go.mod h1:
 github.com/rogpeppe/go-internal v1.3.0/go.mod h1:M8bDsm7K2OlrFYOpmOWEs/qY81heoFRclV5y23lUDJ4=
 github.com/sacloud/ftps v1.1.0 h1:cYv+b6qhrIT8msfx64XXRJzbv5S+Dqwb/rXa5Y641XA=
 github.com/sacloud/ftps v1.1.0/go.mod h1:h4awhOi3PEyhKLj1FpXjoVV5yVkmRUU+d5L95EwX2JU=
-github.com/sacloud/go-http v0.0.2 h1:85467Zw1dwb6Chu58FUO8K5ED1Ngypai6voOnMX9LwU=
-github.com/sacloud/go-http v0.0.2/go.mod h1:OoIrSShwQSYT9p0AdnJ6hZ3rlhLf8tDvg5DjIu5YjxI=
+github.com/sacloud/go-http v0.0.3 h1:D0RDrPZnsvZ0coNWQYEVJfy/ar5/Pb3vMuV8pUxSC3E=
+github.com/sacloud/go-http v0.0.3/go.mod h1:OoIrSShwQSYT9p0AdnJ6hZ3rlhLf8tDvg5DjIu5YjxI=
 github.com/stretchr/objx v0.1.0 h1:4G4v2dO3VZwixGIRoQ5Lfboy6nUhCyYzaqnIAPPhYs4=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
 github.com/stretchr/testify v1.2.2/go.mod h1:a8OnRcib4nhh0OaRAV+Yts87kKdq0PP7pXfy6kDkUVs=
