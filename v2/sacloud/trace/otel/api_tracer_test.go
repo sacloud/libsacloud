@@ -20,19 +20,20 @@ import (
 	"encoding/json"
 	"log"
 	"testing"
+	"time"
 
 	"github.com/sacloud/libsacloud/v2"
+	"go.opentelemetry.io/otel/attribute"
+	"go.opentelemetry.io/otel/codes"
+	"go.opentelemetry.io/otel/sdk/instrumentation"
+	"go.opentelemetry.io/otel/sdk/resource"
+	"go.opentelemetry.io/otel/trace"
+
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/fake"
 	"github.com/stretchr/testify/require"
 	"go.opentelemetry.io/otel"
-	"go.opentelemetry.io/otel/codes"
-	"go.opentelemetry.io/otel/exporters/stdout"
-	export "go.opentelemetry.io/otel/sdk/export/trace"
-	"go.opentelemetry.io/otel/sdk/instrumentation"
-	"go.opentelemetry.io/otel/sdk/metric/controller/push"
-	"go.opentelemetry.io/otel/sdk/metric/processor/basic"
-	"go.opentelemetry.io/otel/sdk/metric/selector/simple"
+	"go.opentelemetry.io/otel/exporters/stdout/stdouttrace"
 	sdktrace "go.opentelemetry.io/otel/sdk/trace"
 )
 
@@ -53,52 +54,58 @@ func TestTracer(t *testing.T) {
 	archiveOp.Find(context.Background(), "is1a", nil) // nolint
 	require.NotEmpty(t, t, outputBuf.String())
 
-	var spanData []*SpanData
-	if err := json.Unmarshal(outputBuf.Bytes(), &spanData); err != nil {
+	var sp SpanData
+	if err := json.Unmarshal(outputBuf.Bytes(), &sp); err != nil {
 		t.Fatal(err)
 	}
-	require.Len(t, spanData, 1)
-	sp := spanData[0]
-
 	require.EqualValues(t, instrumentation.Library{
 		Name:    "github.com/sacloud/libsacloud",
 		Version: libsacloud.Version,
 	}, sp.InstrumentationLibrary)
 
-	require.EqualValues(t, codes.Ok, sp.StatusCode)
-	require.EqualValues(t, "", sp.StatusMessage)
+	require.EqualValues(t, codes.Ok, sp.Status.Code)
+	require.EqualValues(t, "", sp.Status.Description)
 	require.Len(t, sp.Attributes, 3) // arguments(zone, condition) + results = 3
 }
 
+// SpanData from: https://github.com/open-telemetry/opentelemetry-go/blob/ece1879fae1bcea6d32f94fd8f6d174c3e118a6b/sdk/trace/tracetest/span.go#L56-L74
 type SpanData struct {
-	SpanContext  map[string]interface{}
-	ParentSpanID interface{}
-	export.SpanData
+	Name                   string
+	SpanContext            trace.SpanContext
+	Parent                 trace.SpanContext
+	SpanKind               trace.SpanKind
+	StartTime              time.Time
+	EndTime                time.Time
+	Attributes             []attribute.KeyValue
+	Events                 []sdktrace.Event
+	Links                  []sdktrace.Link
+	Status                 sdktrace.Status
+	DroppedAttributes      int
+	DroppedEvents          int
+	DroppedLinks           int
+	ChildSpanCount         int
+	Resources              []*resource.Resource
+	InstrumentationLibrary instrumentation.Library
 }
 
 func setupTracer() func() {
 	outputBuf.Reset()
 
-	exporter, err := stdout.NewExporter(
-		stdout.WithPrettyPrint(),
-		stdout.WithWriter(outputBuf),
-		stdout.WithoutMetricExport(),
+	exporter, err := stdouttrace.New(
+		stdouttrace.WithPrettyPrint(),
+		stdouttrace.WithWriter(outputBuf),
 	)
 	if err != nil {
 		log.Fatalf("failed to initialize stdout export pipeline: %v", err)
 	}
 
 	bsp := sdktrace.NewSimpleSpanProcessor(exporter)
-	tp := sdktrace.NewTracerProvider(sdktrace.WithSpanProcessor(bsp), sdktrace.WithConfig(sdktrace.Config{DefaultSampler: sdktrace.AlwaysSample()}))
-	defer func() { _ = tp.Shutdown(context.Background()) }()
-	pusher := push.New(
-		basic.New(
-			simple.NewWithExactDistribution(),
-			exporter,
-		),
-		exporter,
-	)
-	pusher.Start()
+	tp := sdktrace.NewTracerProvider(sdktrace.WithSpanProcessor(bsp), sdktrace.WithSampler(sdktrace.AlwaysSample()))
 	otel.SetTracerProvider(tp)
-	return pusher.Stop
+
+	return func() {
+		if err := tp.Shutdown(context.Background()); err != nil {
+			log.Fatalf("stopping tracer provider: %v", err)
+		}
+	}
 }
