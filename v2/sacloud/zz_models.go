@@ -25990,6 +25990,7 @@ type SimpleMonitorHealthCheck struct {
 	RemainingDays     int
 	HTTP2             types.StringFlag
 	FTPS              types.ESimpleMonitorFTPS
+	VerifySNI         types.StringFlag
 }
 
 // Validate validates by field tags
@@ -26017,6 +26018,7 @@ func (o *SimpleMonitorHealthCheck) setDefaults() interface{} {
 		RemainingDays     int
 		HTTP2             types.StringFlag
 		FTPS              types.ESimpleMonitorFTPS
+		VerifySNI         types.StringFlag
 	}{
 		Protocol:          o.GetProtocol(),
 		Port:              o.GetPort(),
@@ -26035,6 +26037,7 @@ func (o *SimpleMonitorHealthCheck) setDefaults() interface{} {
 		RemainingDays:     o.GetRemainingDays(),
 		HTTP2:             o.GetHTTP2(),
 		FTPS:              o.GetFTPS(),
+		VerifySNI:         o.GetVerifySNI(),
 	}
 }
 
@@ -26206,6 +26209,16 @@ func (o *SimpleMonitorHealthCheck) GetFTPS() types.ESimpleMonitorFTPS {
 // SetFTPS sets value to FTPS
 func (o *SimpleMonitorHealthCheck) SetFTPS(v types.ESimpleMonitorFTPS) {
 	o.FTPS = v
+}
+
+// GetVerifySNI returns value of VerifySNI
+func (o *SimpleMonitorHealthCheck) GetVerifySNI() types.StringFlag {
+	return o.VerifySNI
+}
+
+// SetVerifySNI sets value to VerifySNI
+func (o *SimpleMonitorHealthCheck) SetVerifySNI(v types.StringFlag) {
+	o.VerifySNI = v
 }
 
 /*************************************************
