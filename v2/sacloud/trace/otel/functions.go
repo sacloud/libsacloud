@@ -15,6 +15,8 @@
 package otel
 
 import (
+	"encoding/json"
+	"fmt"
 	"sync"
 )
 
@@ -30,4 +32,22 @@ func Initialize(opts ...Option) {
 
 func initialize(cnf *config) {
 	addClientFactoryHooks(cnf)
+}
+
+func forceString(v interface{}) string {
+	if v == nil {
+		return "<nil>"
+	}
+	switch v := v.(type) {
+	case string:
+		return v
+	case fmt.Stringer:
+		return v.String()
+	default:
+		data, err := json.Marshal(v)
+		if err != nil {
+			return ""
+		}
+		return string(data)
+	}
 }

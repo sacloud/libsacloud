@@ -23,8 +23,8 @@ import (
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
 	"go.opentelemetry.io/contrib/instrumentation/net/http/httptrace/otelhttptrace"
+	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/codes"
-	"go.opentelemetry.io/otel/label"
 	"go.opentelemetry.io/otel/trace"
 )
 
@@ -191,8 +191,8 @@ func newArchiveTracer(in sacloud.ArchiveAPI, cnf *config) sacloud.ArchiveAPI {
 func (t *ArchiveTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.ArchiveFindResult, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.conditions", conditions),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.conditions", forceString(conditions)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "ArchiveAPI.Find", options...)
 	defer func() {
@@ -207,7 +207,7 @@ func (t *ArchiveTracer) Find(ctx context.Context, zone string, conditions *saclo
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.result", result))
+		span.SetAttributes(attribute.String("libsacloud.api.results.result", forceString(result)))
 
 	}
 	return result, err
@@ -217,8 +217,8 @@ func (t *ArchiveTracer) Find(ctx context.Context, zone string, conditions *saclo
 func (t *ArchiveTracer) Create(ctx context.Context, zone string, param *sacloud.ArchiveCreateRequest) (*sacloud.Archive, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "ArchiveAPI.Create", options...)
 	defer func() {
@@ -233,7 +233,7 @@ func (t *ArchiveTracer) Create(ctx context.Context, zone string, param *sacloud.
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultArchive", resultArchive))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultArchive", forceString(resultArchive)))
 
 	}
 	return resultArchive, err
@@ -243,8 +243,8 @@ func (t *ArchiveTracer) Create(ctx context.Context, zone string, param *sacloud.
 func (t *ArchiveTracer) CreateBlank(ctx context.Context, zone string, param *sacloud.ArchiveCreateBlankRequest) (*sacloud.Archive, *sacloud.FTPServer, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "ArchiveAPI.CreateBlank", options...)
 	defer func() {
@@ -259,8 +259,8 @@ func (t *ArchiveTracer) CreateBlank(ctx context.Context, zone string, param *sac
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultArchive", resultArchive))
-		span.SetAttributes(label.Any("libsacloud.api.results.resultFTPServer", resultFTPServer))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultArchive", forceString(resultArchive)))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultFTPServer", forceString(resultFTPServer)))
 
 	}
 	return resultArchive, resultFTPServer, err
@@ -270,8 +270,8 @@ func (t *ArchiveTracer) CreateBlank(ctx context.Context, zone string, param *sac
 func (t *ArchiveTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Archive, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "ArchiveAPI.Read", options...)
 	defer func() {
@@ -286,7 +286,7 @@ func (t *ArchiveTracer) Read(ctx context.Context, zone string, id types.ID) (*sa
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultArchive", resultArchive))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultArchive", forceString(resultArchive)))
 
 	}
 	return resultArchive, err
@@ -296,9 +296,9 @@ func (t *ArchiveTracer) Read(ctx context.Context, zone string, id types.ID) (*sa
 func (t *ArchiveTracer) Update(ctx context.Context, zone string, id types.ID, param *sacloud.ArchiveUpdateRequest) (*sacloud.Archive, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "ArchiveAPI.Update", options...)
 	defer func() {
@@ -313,7 +313,7 @@ func (t *ArchiveTracer) Update(ctx context.Context, zone string, id types.ID, pa
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultArchive", resultArchive))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultArchive", forceString(resultArchive)))
 
 	}
 	return resultArchive, err
@@ -323,8 +323,8 @@ func (t *ArchiveTracer) Update(ctx context.Context, zone string, id types.ID, pa
 func (t *ArchiveTracer) Delete(ctx context.Context, zone string, id types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "ArchiveAPI.Delete", options...)
 	defer func() {
@@ -348,9 +348,9 @@ func (t *ArchiveTracer) Delete(ctx context.Context, zone string, id types.ID) er
 func (t *ArchiveTracer) OpenFTP(ctx context.Context, zone string, id types.ID, openOption *sacloud.OpenFTPRequest) (*sacloud.FTPServer, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.openOption", openOption),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.openOption", forceString(openOption)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "ArchiveAPI.OpenFTP", options...)
 	defer func() {
@@ -365,7 +365,7 @@ func (t *ArchiveTracer) OpenFTP(ctx context.Context, zone string, id types.ID, o
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultFTPServer", resultFTPServer))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultFTPServer", forceString(resultFTPServer)))
 
 	}
 	return resultFTPServer, err
@@ -375,8 +375,8 @@ func (t *ArchiveTracer) OpenFTP(ctx context.Context, zone string, id types.ID, o
 func (t *ArchiveTracer) CloseFTP(ctx context.Context, zone string, id types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "ArchiveAPI.CloseFTP", options...)
 	defer func() {
@@ -400,8 +400,8 @@ func (t *ArchiveTracer) CloseFTP(ctx context.Context, zone string, id types.ID) 
 func (t *ArchiveTracer) Share(ctx context.Context, zone string, id types.ID) (*sacloud.ArchiveShareInfo, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "ArchiveAPI.Share", options...)
 	defer func() {
@@ -416,7 +416,7 @@ func (t *ArchiveTracer) Share(ctx context.Context, zone string, id types.ID) (*s
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultArchiveShareInfo", resultArchiveShareInfo))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultArchiveShareInfo", forceString(resultArchiveShareInfo)))
 
 	}
 	return resultArchiveShareInfo, err
@@ -426,10 +426,10 @@ func (t *ArchiveTracer) Share(ctx context.Context, zone string, id types.ID) (*s
 func (t *ArchiveTracer) CreateFromShared(ctx context.Context, zone string, sourceArchiveID types.ID, destZoneID types.ID, param *sacloud.ArchiveCreateRequestFromShared) (*sacloud.Archive, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.sourceArchiveID", sourceArchiveID),
-		label.Any("libsacloud.api.arguments.destZoneID", destZoneID),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.sourceArchiveID", forceString(sourceArchiveID)),
+		attribute.String("libsacloud.api.arguments.destZoneID", forceString(destZoneID)),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "ArchiveAPI.CreateFromShared", options...)
 	defer func() {
@@ -444,7 +444,7 @@ func (t *ArchiveTracer) CreateFromShared(ctx context.Context, zone string, sourc
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultArchive", resultArchive))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultArchive", forceString(resultArchive)))
 
 	}
 	return resultArchive, err
@@ -454,10 +454,10 @@ func (t *ArchiveTracer) CreateFromShared(ctx context.Context, zone string, sourc
 func (t *ArchiveTracer) Transfer(ctx context.Context, zone string, sourceArchiveID types.ID, destZoneID types.ID, param *sacloud.ArchiveTransferRequest) (*sacloud.Archive, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.sourceArchiveID", sourceArchiveID),
-		label.Any("libsacloud.api.arguments.destZoneID", destZoneID),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.sourceArchiveID", forceString(sourceArchiveID)),
+		attribute.String("libsacloud.api.arguments.destZoneID", forceString(destZoneID)),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "ArchiveAPI.Transfer", options...)
 	defer func() {
@@ -472,7 +472,7 @@ func (t *ArchiveTracer) Transfer(ctx context.Context, zone string, sourceArchive
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultArchive", resultArchive))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultArchive", forceString(resultArchive)))
 
 	}
 	return resultArchive, err
@@ -513,7 +513,7 @@ func (t *AuthStatusTracer) Read(ctx context.Context) (*sacloud.AuthStatus, error
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultAuthStatus", resultAuthStatus))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultAuthStatus", forceString(resultAuthStatus)))
 
 	}
 	return resultAuthStatus, err
@@ -541,8 +541,8 @@ func newAutoBackupTracer(in sacloud.AutoBackupAPI, cnf *config) sacloud.AutoBack
 func (t *AutoBackupTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.AutoBackupFindResult, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.conditions", conditions),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.conditions", forceString(conditions)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "AutoBackupAPI.Find", options...)
 	defer func() {
@@ -557,7 +557,7 @@ func (t *AutoBackupTracer) Find(ctx context.Context, zone string, conditions *sa
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.result", result))
+		span.SetAttributes(attribute.String("libsacloud.api.results.result", forceString(result)))
 
 	}
 	return result, err
@@ -567,8 +567,8 @@ func (t *AutoBackupTracer) Find(ctx context.Context, zone string, conditions *sa
 func (t *AutoBackupTracer) Create(ctx context.Context, zone string, param *sacloud.AutoBackupCreateRequest) (*sacloud.AutoBackup, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "AutoBackupAPI.Create", options...)
 	defer func() {
@@ -583,7 +583,7 @@ func (t *AutoBackupTracer) Create(ctx context.Context, zone string, param *saclo
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultAutoBackup", resultAutoBackup))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultAutoBackup", forceString(resultAutoBackup)))
 
 	}
 	return resultAutoBackup, err
@@ -593,8 +593,8 @@ func (t *AutoBackupTracer) Create(ctx context.Context, zone string, param *saclo
 func (t *AutoBackupTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.AutoBackup, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "AutoBackupAPI.Read", options...)
 	defer func() {
@@ -609,7 +609,7 @@ func (t *AutoBackupTracer) Read(ctx context.Context, zone string, id types.ID) (
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultAutoBackup", resultAutoBackup))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultAutoBackup", forceString(resultAutoBackup)))
 
 	}
 	return resultAutoBackup, err
@@ -619,9 +619,9 @@ func (t *AutoBackupTracer) Read(ctx context.Context, zone string, id types.ID) (
 func (t *AutoBackupTracer) Update(ctx context.Context, zone string, id types.ID, param *sacloud.AutoBackupUpdateRequest) (*sacloud.AutoBackup, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "AutoBackupAPI.Update", options...)
 	defer func() {
@@ -636,7 +636,7 @@ func (t *AutoBackupTracer) Update(ctx context.Context, zone string, id types.ID,
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultAutoBackup", resultAutoBackup))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultAutoBackup", forceString(resultAutoBackup)))
 
 	}
 	return resultAutoBackup, err
@@ -646,9 +646,9 @@ func (t *AutoBackupTracer) Update(ctx context.Context, zone string, id types.ID,
 func (t *AutoBackupTracer) UpdateSettings(ctx context.Context, zone string, id types.ID, param *sacloud.AutoBackupUpdateSettingsRequest) (*sacloud.AutoBackup, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "AutoBackupAPI.UpdateSettings", options...)
 	defer func() {
@@ -663,7 +663,7 @@ func (t *AutoBackupTracer) UpdateSettings(ctx context.Context, zone string, id t
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultAutoBackup", resultAutoBackup))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultAutoBackup", forceString(resultAutoBackup)))
 
 	}
 	return resultAutoBackup, err
@@ -673,8 +673,8 @@ func (t *AutoBackupTracer) UpdateSettings(ctx context.Context, zone string, id t
 func (t *AutoBackupTracer) Delete(ctx context.Context, zone string, id types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "AutoBackupAPI.Delete", options...)
 	defer func() {
@@ -716,7 +716,7 @@ func newBillTracer(in sacloud.BillAPI, cnf *config) sacloud.BillAPI {
 func (t *BillTracer) ByContract(ctx context.Context, accountID types.ID) (*sacloud.BillByContractResult, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.accountID", accountID),
+		attribute.String("libsacloud.api.arguments.accountID", forceString(accountID)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "BillAPI.ByContract", options...)
 	defer func() {
@@ -731,7 +731,7 @@ func (t *BillTracer) ByContract(ctx context.Context, accountID types.ID) (*saclo
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.result", result))
+		span.SetAttributes(attribute.String("libsacloud.api.results.result", forceString(result)))
 
 	}
 	return result, err
@@ -741,8 +741,8 @@ func (t *BillTracer) ByContract(ctx context.Context, accountID types.ID) (*saclo
 func (t *BillTracer) ByContractYear(ctx context.Context, accountID types.ID, year int) (*sacloud.BillByContractYearResult, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.accountID", accountID),
-		label.Any("libsacloud.api.arguments.year", year),
+		attribute.String("libsacloud.api.arguments.accountID", forceString(accountID)),
+		attribute.String("libsacloud.api.arguments.year", forceString(year)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "BillAPI.ByContractYear", options...)
 	defer func() {
@@ -757,7 +757,7 @@ func (t *BillTracer) ByContractYear(ctx context.Context, accountID types.ID, yea
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.result", result))
+		span.SetAttributes(attribute.String("libsacloud.api.results.result", forceString(result)))
 
 	}
 	return result, err
@@ -767,9 +767,9 @@ func (t *BillTracer) ByContractYear(ctx context.Context, accountID types.ID, yea
 func (t *BillTracer) ByContractYearMonth(ctx context.Context, accountID types.ID, year int, month int) (*sacloud.BillByContractYearMonthResult, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.accountID", accountID),
-		label.Any("libsacloud.api.arguments.year", year),
-		label.Any("libsacloud.api.arguments.month", month),
+		attribute.String("libsacloud.api.arguments.accountID", forceString(accountID)),
+		attribute.String("libsacloud.api.arguments.year", forceString(year)),
+		attribute.String("libsacloud.api.arguments.month", forceString(month)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "BillAPI.ByContractYearMonth", options...)
 	defer func() {
@@ -784,7 +784,7 @@ func (t *BillTracer) ByContractYearMonth(ctx context.Context, accountID types.ID
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.result", result))
+		span.SetAttributes(attribute.String("libsacloud.api.results.result", forceString(result)))
 
 	}
 	return result, err
@@ -794,7 +794,7 @@ func (t *BillTracer) ByContractYearMonth(ctx context.Context, accountID types.ID
 func (t *BillTracer) Read(ctx context.Context, id types.ID) (*sacloud.BillReadResult, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "BillAPI.Read", options...)
 	defer func() {
@@ -809,7 +809,7 @@ func (t *BillTracer) Read(ctx context.Context, id types.ID) (*sacloud.BillReadRe
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.result", result))
+		span.SetAttributes(attribute.String("libsacloud.api.results.result", forceString(result)))
 
 	}
 	return result, err
@@ -819,8 +819,8 @@ func (t *BillTracer) Read(ctx context.Context, id types.ID) (*sacloud.BillReadRe
 func (t *BillTracer) Details(ctx context.Context, MemberCode string, id types.ID) (*sacloud.BillDetailsResult, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.MemberCode", MemberCode),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.MemberCode", forceString(MemberCode)),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "BillAPI.Details", options...)
 	defer func() {
@@ -835,7 +835,7 @@ func (t *BillTracer) Details(ctx context.Context, MemberCode string, id types.ID
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.result", result))
+		span.SetAttributes(attribute.String("libsacloud.api.results.result", forceString(result)))
 
 	}
 	return result, err
@@ -845,8 +845,8 @@ func (t *BillTracer) Details(ctx context.Context, MemberCode string, id types.ID
 func (t *BillTracer) DetailsCSV(ctx context.Context, MemberCode string, id types.ID) (*sacloud.BillDetailCSV, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.MemberCode", MemberCode),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.MemberCode", forceString(MemberCode)),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "BillAPI.DetailsCSV", options...)
 	defer func() {
@@ -861,7 +861,7 @@ func (t *BillTracer) DetailsCSV(ctx context.Context, MemberCode string, id types
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultBillDetailCSV", resultBillDetailCSV))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultBillDetailCSV", forceString(resultBillDetailCSV)))
 
 	}
 	return resultBillDetailCSV, err
@@ -889,8 +889,8 @@ func newBridgeTracer(in sacloud.BridgeAPI, cnf *config) sacloud.BridgeAPI {
 func (t *BridgeTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.BridgeFindResult, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.conditions", conditions),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.conditions", forceString(conditions)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "BridgeAPI.Find", options...)
 	defer func() {
@@ -905,7 +905,7 @@ func (t *BridgeTracer) Find(ctx context.Context, zone string, conditions *saclou
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.result", result))
+		span.SetAttributes(attribute.String("libsacloud.api.results.result", forceString(result)))
 
 	}
 	return result, err
@@ -915,8 +915,8 @@ func (t *BridgeTracer) Find(ctx context.Context, zone string, conditions *saclou
 func (t *BridgeTracer) Create(ctx context.Context, zone string, param *sacloud.BridgeCreateRequest) (*sacloud.Bridge, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "BridgeAPI.Create", options...)
 	defer func() {
@@ -931,7 +931,7 @@ func (t *BridgeTracer) Create(ctx context.Context, zone string, param *sacloud.B
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultBridge", resultBridge))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultBridge", forceString(resultBridge)))
 
 	}
 	return resultBridge, err
@@ -941,8 +941,8 @@ func (t *BridgeTracer) Create(ctx context.Context, zone string, param *sacloud.B
 func (t *BridgeTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Bridge, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "BridgeAPI.Read", options...)
 	defer func() {
@@ -957,7 +957,7 @@ func (t *BridgeTracer) Read(ctx context.Context, zone string, id types.ID) (*sac
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultBridge", resultBridge))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultBridge", forceString(resultBridge)))
 
 	}
 	return resultBridge, err
@@ -967,9 +967,9 @@ func (t *BridgeTracer) Read(ctx context.Context, zone string, id types.ID) (*sac
 func (t *BridgeTracer) Update(ctx context.Context, zone string, id types.ID, param *sacloud.BridgeUpdateRequest) (*sacloud.Bridge, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "BridgeAPI.Update", options...)
 	defer func() {
@@ -984,7 +984,7 @@ func (t *BridgeTracer) Update(ctx context.Context, zone string, id types.ID, par
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultBridge", resultBridge))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultBridge", forceString(resultBridge)))
 
 	}
 	return resultBridge, err
@@ -994,8 +994,8 @@ func (t *BridgeTracer) Update(ctx context.Context, zone string, id types.ID, par
 func (t *BridgeTracer) Delete(ctx context.Context, zone string, id types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "BridgeAPI.Delete", options...)
 	defer func() {
@@ -1037,8 +1037,8 @@ func newCDROMTracer(in sacloud.CDROMAPI, cnf *config) sacloud.CDROMAPI {
 func (t *CDROMTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.CDROMFindResult, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.conditions", conditions),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.conditions", forceString(conditions)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "CDROMAPI.Find", options...)
 	defer func() {
@@ -1053,7 +1053,7 @@ func (t *CDROMTracer) Find(ctx context.Context, zone string, conditions *sacloud
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.result", result))
+		span.SetAttributes(attribute.String("libsacloud.api.results.result", forceString(result)))
 
 	}
 	return result, err
@@ -1063,8 +1063,8 @@ func (t *CDROMTracer) Find(ctx context.Context, zone string, conditions *sacloud
 func (t *CDROMTracer) Create(ctx context.Context, zone string, param *sacloud.CDROMCreateRequest) (*sacloud.CDROM, *sacloud.FTPServer, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "CDROMAPI.Create", options...)
 	defer func() {
@@ -1079,8 +1079,8 @@ func (t *CDROMTracer) Create(ctx context.Context, zone string, param *sacloud.CD
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultCDROM", resultCDROM))
-		span.SetAttributes(label.Any("libsacloud.api.results.resultFTPServer", resultFTPServer))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultCDROM", forceString(resultCDROM)))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultFTPServer", forceString(resultFTPServer)))
 
 	}
 	return resultCDROM, resultFTPServer, err
@@ -1090,8 +1090,8 @@ func (t *CDROMTracer) Create(ctx context.Context, zone string, param *sacloud.CD
 func (t *CDROMTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.CDROM, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "CDROMAPI.Read", options...)
 	defer func() {
@@ -1106,7 +1106,7 @@ func (t *CDROMTracer) Read(ctx context.Context, zone string, id types.ID) (*sacl
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultCDROM", resultCDROM))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultCDROM", forceString(resultCDROM)))
 
 	}
 	return resultCDROM, err
@@ -1116,9 +1116,9 @@ func (t *CDROMTracer) Read(ctx context.Context, zone string, id types.ID) (*sacl
 func (t *CDROMTracer) Update(ctx context.Context, zone string, id types.ID, param *sacloud.CDROMUpdateRequest) (*sacloud.CDROM, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "CDROMAPI.Update", options...)
 	defer func() {
@@ -1133,7 +1133,7 @@ func (t *CDROMTracer) Update(ctx context.Context, zone string, id types.ID, para
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultCDROM", resultCDROM))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultCDROM", forceString(resultCDROM)))
 
 	}
 	return resultCDROM, err
@@ -1143,8 +1143,8 @@ func (t *CDROMTracer) Update(ctx context.Context, zone string, id types.ID, para
 func (t *CDROMTracer) Delete(ctx context.Context, zone string, id types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "CDROMAPI.Delete", options...)
 	defer func() {
@@ -1168,9 +1168,9 @@ func (t *CDROMTracer) Delete(ctx context.Context, zone string, id types.ID) erro
 func (t *CDROMTracer) OpenFTP(ctx context.Context, zone string, id types.ID, openOption *sacloud.OpenFTPRequest) (*sacloud.FTPServer, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.openOption", openOption),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.openOption", forceString(openOption)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "CDROMAPI.OpenFTP", options...)
 	defer func() {
@@ -1185,7 +1185,7 @@ func (t *CDROMTracer) OpenFTP(ctx context.Context, zone string, id types.ID, ope
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultFTPServer", resultFTPServer))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultFTPServer", forceString(resultFTPServer)))
 
 	}
 	return resultFTPServer, err
@@ -1195,8 +1195,8 @@ func (t *CDROMTracer) OpenFTP(ctx context.Context, zone string, id types.ID, ope
 func (t *CDROMTracer) CloseFTP(ctx context.Context, zone string, id types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "CDROMAPI.CloseFTP", options...)
 	defer func() {
@@ -1238,7 +1238,7 @@ func newCertificateAuthorityTracer(in sacloud.CertificateAuthorityAPI, cnf *conf
 func (t *CertificateAuthorityTracer) Find(ctx context.Context, conditions *sacloud.FindCondition) (*sacloud.CertificateAuthorityFindResult, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.conditions", conditions),
+		attribute.String("libsacloud.api.arguments.conditions", forceString(conditions)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "CertificateAuthorityAPI.Find", options...)
 	defer func() {
@@ -1253,7 +1253,7 @@ func (t *CertificateAuthorityTracer) Find(ctx context.Context, conditions *saclo
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.result", result))
+		span.SetAttributes(attribute.String("libsacloud.api.results.result", forceString(result)))
 
 	}
 	return result, err
@@ -1263,7 +1263,7 @@ func (t *CertificateAuthorityTracer) Find(ctx context.Context, conditions *saclo
 func (t *CertificateAuthorityTracer) Create(ctx context.Context, param *sacloud.CertificateAuthorityCreateRequest) (*sacloud.CertificateAuthority, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "CertificateAuthorityAPI.Create", options...)
 	defer func() {
@@ -1278,7 +1278,7 @@ func (t *CertificateAuthorityTracer) Create(ctx context.Context, param *sacloud.
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultCertificateAuthority", resultCertificateAuthority))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultCertificateAuthority", forceString(resultCertificateAuthority)))
 
 	}
 	return resultCertificateAuthority, err
@@ -1288,7 +1288,7 @@ func (t *CertificateAuthorityTracer) Create(ctx context.Context, param *sacloud.
 func (t *CertificateAuthorityTracer) Read(ctx context.Context, id types.ID) (*sacloud.CertificateAuthority, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "CertificateAuthorityAPI.Read", options...)
 	defer func() {
@@ -1303,7 +1303,7 @@ func (t *CertificateAuthorityTracer) Read(ctx context.Context, id types.ID) (*sa
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultCertificateAuthority", resultCertificateAuthority))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultCertificateAuthority", forceString(resultCertificateAuthority)))
 
 	}
 	return resultCertificateAuthority, err
@@ -1313,8 +1313,8 @@ func (t *CertificateAuthorityTracer) Read(ctx context.Context, id types.ID) (*sa
 func (t *CertificateAuthorityTracer) Update(ctx context.Context, id types.ID, param *sacloud.CertificateAuthorityUpdateRequest) (*sacloud.CertificateAuthority, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "CertificateAuthorityAPI.Update", options...)
 	defer func() {
@@ -1329,7 +1329,7 @@ func (t *CertificateAuthorityTracer) Update(ctx context.Context, id types.ID, pa
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultCertificateAuthority", resultCertificateAuthority))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultCertificateAuthority", forceString(resultCertificateAuthority)))
 
 	}
 	return resultCertificateAuthority, err
@@ -1339,7 +1339,7 @@ func (t *CertificateAuthorityTracer) Update(ctx context.Context, id types.ID, pa
 func (t *CertificateAuthorityTracer) Delete(ctx context.Context, id types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "CertificateAuthorityAPI.Delete", options...)
 	defer func() {
@@ -1363,7 +1363,7 @@ func (t *CertificateAuthorityTracer) Delete(ctx context.Context, id types.ID) er
 func (t *CertificateAuthorityTracer) Detail(ctx context.Context, id types.ID) (*sacloud.CertificateAuthorityDetail, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "CertificateAuthorityAPI.Detail", options...)
 	defer func() {
@@ -1378,7 +1378,7 @@ func (t *CertificateAuthorityTracer) Detail(ctx context.Context, id types.ID) (*
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultCertificateAuthority", resultCertificateAuthority))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultCertificateAuthority", forceString(resultCertificateAuthority)))
 
 	}
 	return resultCertificateAuthority, err
@@ -1388,8 +1388,8 @@ func (t *CertificateAuthorityTracer) Detail(ctx context.Context, id types.ID) (*
 func (t *CertificateAuthorityTracer) AddClient(ctx context.Context, id types.ID, param *sacloud.CertificateAuthorityAddClientParam) (*sacloud.CertificateAuthorityAddClientOrServerResult, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "CertificateAuthorityAPI.AddClient", options...)
 	defer func() {
@@ -1404,7 +1404,7 @@ func (t *CertificateAuthorityTracer) AddClient(ctx context.Context, id types.ID,
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultCertificateAuthority", resultCertificateAuthority))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultCertificateAuthority", forceString(resultCertificateAuthority)))
 
 	}
 	return resultCertificateAuthority, err
@@ -1414,7 +1414,7 @@ func (t *CertificateAuthorityTracer) AddClient(ctx context.Context, id types.ID,
 func (t *CertificateAuthorityTracer) ListClients(ctx context.Context, id types.ID) (*sacloud.CertificateAuthorityListClientsResult, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "CertificateAuthorityAPI.ListClients", options...)
 	defer func() {
@@ -1429,7 +1429,7 @@ func (t *CertificateAuthorityTracer) ListClients(ctx context.Context, id types.I
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.result", result))
+		span.SetAttributes(attribute.String("libsacloud.api.results.result", forceString(result)))
 
 	}
 	return result, err
@@ -1439,8 +1439,8 @@ func (t *CertificateAuthorityTracer) ListClients(ctx context.Context, id types.I
 func (t *CertificateAuthorityTracer) ReadClient(ctx context.Context, id types.ID, clientID string) (*sacloud.CertificateAuthorityClient, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.clientID", clientID),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.clientID", forceString(clientID)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "CertificateAuthorityAPI.ReadClient", options...)
 	defer func() {
@@ -1455,7 +1455,7 @@ func (t *CertificateAuthorityTracer) ReadClient(ctx context.Context, id types.ID
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultCertificateAuthority", resultCertificateAuthority))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultCertificateAuthority", forceString(resultCertificateAuthority)))
 
 	}
 	return resultCertificateAuthority, err
@@ -1465,8 +1465,8 @@ func (t *CertificateAuthorityTracer) ReadClient(ctx context.Context, id types.ID
 func (t *CertificateAuthorityTracer) RevokeClient(ctx context.Context, id types.ID, clientID string) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.clientID", clientID),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.clientID", forceString(clientID)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "CertificateAuthorityAPI.RevokeClient", options...)
 	defer func() {
@@ -1490,8 +1490,8 @@ func (t *CertificateAuthorityTracer) RevokeClient(ctx context.Context, id types.
 func (t *CertificateAuthorityTracer) HoldClient(ctx context.Context, id types.ID, clientID string) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.clientID", clientID),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.clientID", forceString(clientID)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "CertificateAuthorityAPI.HoldClient", options...)
 	defer func() {
@@ -1515,8 +1515,8 @@ func (t *CertificateAuthorityTracer) HoldClient(ctx context.Context, id types.ID
 func (t *CertificateAuthorityTracer) ResumeClient(ctx context.Context, id types.ID, clientID string) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.clientID", clientID),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.clientID", forceString(clientID)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "CertificateAuthorityAPI.ResumeClient", options...)
 	defer func() {
@@ -1540,8 +1540,8 @@ func (t *CertificateAuthorityTracer) ResumeClient(ctx context.Context, id types.
 func (t *CertificateAuthorityTracer) DenyClient(ctx context.Context, id types.ID, clientID string) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.clientID", clientID),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.clientID", forceString(clientID)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "CertificateAuthorityAPI.DenyClient", options...)
 	defer func() {
@@ -1565,8 +1565,8 @@ func (t *CertificateAuthorityTracer) DenyClient(ctx context.Context, id types.ID
 func (t *CertificateAuthorityTracer) AddServer(ctx context.Context, id types.ID, param *sacloud.CertificateAuthorityAddServerParam) (*sacloud.CertificateAuthorityAddClientOrServerResult, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "CertificateAuthorityAPI.AddServer", options...)
 	defer func() {
@@ -1581,7 +1581,7 @@ func (t *CertificateAuthorityTracer) AddServer(ctx context.Context, id types.ID,
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultCertificateAuthority", resultCertificateAuthority))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultCertificateAuthority", forceString(resultCertificateAuthority)))
 
 	}
 	return resultCertificateAuthority, err
@@ -1591,7 +1591,7 @@ func (t *CertificateAuthorityTracer) AddServer(ctx context.Context, id types.ID,
 func (t *CertificateAuthorityTracer) ListServers(ctx context.Context, id types.ID) (*sacloud.CertificateAuthorityListServersResult, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "CertificateAuthorityAPI.ListServers", options...)
 	defer func() {
@@ -1606,7 +1606,7 @@ func (t *CertificateAuthorityTracer) ListServers(ctx context.Context, id types.I
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.result", result))
+		span.SetAttributes(attribute.String("libsacloud.api.results.result", forceString(result)))
 
 	}
 	return result, err
@@ -1616,8 +1616,8 @@ func (t *CertificateAuthorityTracer) ListServers(ctx context.Context, id types.I
 func (t *CertificateAuthorityTracer) ReadServer(ctx context.Context, id types.ID, serverID string) (*sacloud.CertificateAuthorityServer, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.serverID", serverID),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.serverID", forceString(serverID)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "CertificateAuthorityAPI.ReadServer", options...)
 	defer func() {
@@ -1632,7 +1632,7 @@ func (t *CertificateAuthorityTracer) ReadServer(ctx context.Context, id types.ID
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultCertificateAuthority", resultCertificateAuthority))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultCertificateAuthority", forceString(resultCertificateAuthority)))
 
 	}
 	return resultCertificateAuthority, err
@@ -1642,8 +1642,8 @@ func (t *CertificateAuthorityTracer) ReadServer(ctx context.Context, id types.ID
 func (t *CertificateAuthorityTracer) RevokeServer(ctx context.Context, id types.ID, serverID string) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.serverID", serverID),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.serverID", forceString(serverID)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "CertificateAuthorityAPI.RevokeServer", options...)
 	defer func() {
@@ -1667,8 +1667,8 @@ func (t *CertificateAuthorityTracer) RevokeServer(ctx context.Context, id types.
 func (t *CertificateAuthorityTracer) HoldServer(ctx context.Context, id types.ID, serverID string) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.serverID", serverID),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.serverID", forceString(serverID)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "CertificateAuthorityAPI.HoldServer", options...)
 	defer func() {
@@ -1692,8 +1692,8 @@ func (t *CertificateAuthorityTracer) HoldServer(ctx context.Context, id types.ID
 func (t *CertificateAuthorityTracer) ResumeServer(ctx context.Context, id types.ID, serverID string) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.serverID", serverID),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.serverID", forceString(serverID)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "CertificateAuthorityAPI.ResumeServer", options...)
 	defer func() {
@@ -1735,7 +1735,7 @@ func newContainerRegistryTracer(in sacloud.ContainerRegistryAPI, cnf *config) sa
 func (t *ContainerRegistryTracer) Find(ctx context.Context, conditions *sacloud.FindCondition) (*sacloud.ContainerRegistryFindResult, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.conditions", conditions),
+		attribute.String("libsacloud.api.arguments.conditions", forceString(conditions)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "ContainerRegistryAPI.Find", options...)
 	defer func() {
@@ -1750,7 +1750,7 @@ func (t *ContainerRegistryTracer) Find(ctx context.Context, conditions *sacloud.
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.result", result))
+		span.SetAttributes(attribute.String("libsacloud.api.results.result", forceString(result)))
 
 	}
 	return result, err
@@ -1760,7 +1760,7 @@ func (t *ContainerRegistryTracer) Find(ctx context.Context, conditions *sacloud.
 func (t *ContainerRegistryTracer) Create(ctx context.Context, param *sacloud.ContainerRegistryCreateRequest) (*sacloud.ContainerRegistry, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "ContainerRegistryAPI.Create", options...)
 	defer func() {
@@ -1775,7 +1775,7 @@ func (t *ContainerRegistryTracer) Create(ctx context.Context, param *sacloud.Con
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultContainerRegistry", resultContainerRegistry))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultContainerRegistry", forceString(resultContainerRegistry)))
 
 	}
 	return resultContainerRegistry, err
@@ -1785,7 +1785,7 @@ func (t *ContainerRegistryTracer) Create(ctx context.Context, param *sacloud.Con
 func (t *ContainerRegistryTracer) Read(ctx context.Context, id types.ID) (*sacloud.ContainerRegistry, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "ContainerRegistryAPI.Read", options...)
 	defer func() {
@@ -1800,7 +1800,7 @@ func (t *ContainerRegistryTracer) Read(ctx context.Context, id types.ID) (*saclo
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultContainerRegistry", resultContainerRegistry))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultContainerRegistry", forceString(resultContainerRegistry)))
 
 	}
 	return resultContainerRegistry, err
@@ -1810,8 +1810,8 @@ func (t *ContainerRegistryTracer) Read(ctx context.Context, id types.ID) (*saclo
 func (t *ContainerRegistryTracer) Update(ctx context.Context, id types.ID, param *sacloud.ContainerRegistryUpdateRequest) (*sacloud.ContainerRegistry, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "ContainerRegistryAPI.Update", options...)
 	defer func() {
@@ -1826,7 +1826,7 @@ func (t *ContainerRegistryTracer) Update(ctx context.Context, id types.ID, param
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultContainerRegistry", resultContainerRegistry))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultContainerRegistry", forceString(resultContainerRegistry)))
 
 	}
 	return resultContainerRegistry, err
@@ -1836,8 +1836,8 @@ func (t *ContainerRegistryTracer) Update(ctx context.Context, id types.ID, param
 func (t *ContainerRegistryTracer) UpdateSettings(ctx context.Context, id types.ID, param *sacloud.ContainerRegistryUpdateSettingsRequest) (*sacloud.ContainerRegistry, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "ContainerRegistryAPI.UpdateSettings", options...)
 	defer func() {
@@ -1852,7 +1852,7 @@ func (t *ContainerRegistryTracer) UpdateSettings(ctx context.Context, id types.I
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultContainerRegistry", resultContainerRegistry))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultContainerRegistry", forceString(resultContainerRegistry)))
 
 	}
 	return resultContainerRegistry, err
@@ -1862,7 +1862,7 @@ func (t *ContainerRegistryTracer) UpdateSettings(ctx context.Context, id types.I
 func (t *ContainerRegistryTracer) Delete(ctx context.Context, id types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "ContainerRegistryAPI.Delete", options...)
 	defer func() {
@@ -1886,7 +1886,7 @@ func (t *ContainerRegistryTracer) Delete(ctx context.Context, id types.ID) error
 func (t *ContainerRegistryTracer) ListUsers(ctx context.Context, id types.ID) (*sacloud.ContainerRegistryUsers, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "ContainerRegistryAPI.ListUsers", options...)
 	defer func() {
@@ -1901,7 +1901,7 @@ func (t *ContainerRegistryTracer) ListUsers(ctx context.Context, id types.ID) (*
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultContainerRegistryUsers", resultContainerRegistryUsers))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultContainerRegistryUsers", forceString(resultContainerRegistryUsers)))
 
 	}
 	return resultContainerRegistryUsers, err
@@ -1911,8 +1911,8 @@ func (t *ContainerRegistryTracer) ListUsers(ctx context.Context, id types.ID) (*
 func (t *ContainerRegistryTracer) AddUser(ctx context.Context, id types.ID, param *sacloud.ContainerRegistryUserCreateRequest) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "ContainerRegistryAPI.AddUser", options...)
 	defer func() {
@@ -1936,9 +1936,9 @@ func (t *ContainerRegistryTracer) AddUser(ctx context.Context, id types.ID, para
 func (t *ContainerRegistryTracer) UpdateUser(ctx context.Context, id types.ID, username string, param *sacloud.ContainerRegistryUserUpdateRequest) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.username", username),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.username", forceString(username)),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "ContainerRegistryAPI.UpdateUser", options...)
 	defer func() {
@@ -1962,8 +1962,8 @@ func (t *ContainerRegistryTracer) UpdateUser(ctx context.Context, id types.ID, u
 func (t *ContainerRegistryTracer) DeleteUser(ctx context.Context, id types.ID, username string) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.username", username),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.username", forceString(username)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "ContainerRegistryAPI.DeleteUser", options...)
 	defer func() {
@@ -2005,7 +2005,7 @@ func newCouponTracer(in sacloud.CouponAPI, cnf *config) sacloud.CouponAPI {
 func (t *CouponTracer) Find(ctx context.Context, accountID types.ID) (*sacloud.CouponFindResult, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.accountID", accountID),
+		attribute.String("libsacloud.api.arguments.accountID", forceString(accountID)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "CouponAPI.Find", options...)
 	defer func() {
@@ -2020,7 +2020,7 @@ func (t *CouponTracer) Find(ctx context.Context, accountID types.ID) (*sacloud.C
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.result", result))
+		span.SetAttributes(attribute.String("libsacloud.api.results.result", forceString(result)))
 
 	}
 	return result, err
@@ -2048,8 +2048,8 @@ func newDatabaseTracer(in sacloud.DatabaseAPI, cnf *config) sacloud.DatabaseAPI 
 func (t *DatabaseTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.DatabaseFindResult, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.conditions", conditions),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.conditions", forceString(conditions)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "DatabaseAPI.Find", options...)
 	defer func() {
@@ -2064,7 +2064,7 @@ func (t *DatabaseTracer) Find(ctx context.Context, zone string, conditions *sacl
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.result", result))
+		span.SetAttributes(attribute.String("libsacloud.api.results.result", forceString(result)))
 
 	}
 	return result, err
@@ -2074,8 +2074,8 @@ func (t *DatabaseTracer) Find(ctx context.Context, zone string, conditions *sacl
 func (t *DatabaseTracer) Create(ctx context.Context, zone string, param *sacloud.DatabaseCreateRequest) (*sacloud.Database, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "DatabaseAPI.Create", options...)
 	defer func() {
@@ -2090,7 +2090,7 @@ func (t *DatabaseTracer) Create(ctx context.Context, zone string, param *sacloud
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultDatabase", resultDatabase))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultDatabase", forceString(resultDatabase)))
 
 	}
 	return resultDatabase, err
@@ -2100,8 +2100,8 @@ func (t *DatabaseTracer) Create(ctx context.Context, zone string, param *sacloud
 func (t *DatabaseTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Database, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "DatabaseAPI.Read", options...)
 	defer func() {
@@ -2116,7 +2116,7 @@ func (t *DatabaseTracer) Read(ctx context.Context, zone string, id types.ID) (*s
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultDatabase", resultDatabase))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultDatabase", forceString(resultDatabase)))
 
 	}
 	return resultDatabase, err
@@ -2126,9 +2126,9 @@ func (t *DatabaseTracer) Read(ctx context.Context, zone string, id types.ID) (*s
 func (t *DatabaseTracer) Update(ctx context.Context, zone string, id types.ID, param *sacloud.DatabaseUpdateRequest) (*sacloud.Database, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "DatabaseAPI.Update", options...)
 	defer func() {
@@ -2143,7 +2143,7 @@ func (t *DatabaseTracer) Update(ctx context.Context, zone string, id types.ID, p
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultDatabase", resultDatabase))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultDatabase", forceString(resultDatabase)))
 
 	}
 	return resultDatabase, err
@@ -2153,9 +2153,9 @@ func (t *DatabaseTracer) Update(ctx context.Context, zone string, id types.ID, p
 func (t *DatabaseTracer) UpdateSettings(ctx context.Context, zone string, id types.ID, param *sacloud.DatabaseUpdateSettingsRequest) (*sacloud.Database, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "DatabaseAPI.UpdateSettings", options...)
 	defer func() {
@@ -2170,7 +2170,7 @@ func (t *DatabaseTracer) UpdateSettings(ctx context.Context, zone string, id typ
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultDatabase", resultDatabase))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultDatabase", forceString(resultDatabase)))
 
 	}
 	return resultDatabase, err
@@ -2180,8 +2180,8 @@ func (t *DatabaseTracer) UpdateSettings(ctx context.Context, zone string, id typ
 func (t *DatabaseTracer) Delete(ctx context.Context, zone string, id types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "DatabaseAPI.Delete", options...)
 	defer func() {
@@ -2205,8 +2205,8 @@ func (t *DatabaseTracer) Delete(ctx context.Context, zone string, id types.ID) e
 func (t *DatabaseTracer) Config(ctx context.Context, zone string, id types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "DatabaseAPI.Config", options...)
 	defer func() {
@@ -2230,8 +2230,8 @@ func (t *DatabaseTracer) Config(ctx context.Context, zone string, id types.ID) e
 func (t *DatabaseTracer) Boot(ctx context.Context, zone string, id types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "DatabaseAPI.Boot", options...)
 	defer func() {
@@ -2255,9 +2255,9 @@ func (t *DatabaseTracer) Boot(ctx context.Context, zone string, id types.ID) err
 func (t *DatabaseTracer) Shutdown(ctx context.Context, zone string, id types.ID, shutdownOption *sacloud.ShutdownOption) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.shutdownOption", shutdownOption),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.shutdownOption", forceString(shutdownOption)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "DatabaseAPI.Shutdown", options...)
 	defer func() {
@@ -2281,8 +2281,8 @@ func (t *DatabaseTracer) Shutdown(ctx context.Context, zone string, id types.ID,
 func (t *DatabaseTracer) Reset(ctx context.Context, zone string, id types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "DatabaseAPI.Reset", options...)
 	defer func() {
@@ -2306,9 +2306,9 @@ func (t *DatabaseTracer) Reset(ctx context.Context, zone string, id types.ID) er
 func (t *DatabaseTracer) MonitorCPU(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.CPUTimeActivity, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.condition", condition),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.condition", forceString(condition)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "DatabaseAPI.MonitorCPU", options...)
 	defer func() {
@@ -2323,7 +2323,7 @@ func (t *DatabaseTracer) MonitorCPU(ctx context.Context, zone string, id types.I
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultCPUTimeActivity", resultCPUTimeActivity))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultCPUTimeActivity", forceString(resultCPUTimeActivity)))
 
 	}
 	return resultCPUTimeActivity, err
@@ -2333,9 +2333,9 @@ func (t *DatabaseTracer) MonitorCPU(ctx context.Context, zone string, id types.I
 func (t *DatabaseTracer) MonitorDisk(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.DiskActivity, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.condition", condition),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.condition", forceString(condition)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "DatabaseAPI.MonitorDisk", options...)
 	defer func() {
@@ -2350,7 +2350,7 @@ func (t *DatabaseTracer) MonitorDisk(ctx context.Context, zone string, id types.
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultDiskActivity", resultDiskActivity))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultDiskActivity", forceString(resultDiskActivity)))
 
 	}
 	return resultDiskActivity, err
@@ -2360,9 +2360,9 @@ func (t *DatabaseTracer) MonitorDisk(ctx context.Context, zone string, id types.
 func (t *DatabaseTracer) MonitorInterface(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.InterfaceActivity, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.condition", condition),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.condition", forceString(condition)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "DatabaseAPI.MonitorInterface", options...)
 	defer func() {
@@ -2377,7 +2377,7 @@ func (t *DatabaseTracer) MonitorInterface(ctx context.Context, zone string, id t
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultInterfaceActivity", resultInterfaceActivity))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultInterfaceActivity", forceString(resultInterfaceActivity)))
 
 	}
 	return resultInterfaceActivity, err
@@ -2387,9 +2387,9 @@ func (t *DatabaseTracer) MonitorInterface(ctx context.Context, zone string, id t
 func (t *DatabaseTracer) MonitorDatabase(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.DatabaseActivity, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.condition", condition),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.condition", forceString(condition)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "DatabaseAPI.MonitorDatabase", options...)
 	defer func() {
@@ -2404,7 +2404,7 @@ func (t *DatabaseTracer) MonitorDatabase(ctx context.Context, zone string, id ty
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultDatabaseActivity", resultDatabaseActivity))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultDatabaseActivity", forceString(resultDatabaseActivity)))
 
 	}
 	return resultDatabaseActivity, err
@@ -2414,8 +2414,8 @@ func (t *DatabaseTracer) MonitorDatabase(ctx context.Context, zone string, id ty
 func (t *DatabaseTracer) Status(ctx context.Context, zone string, id types.ID) (*sacloud.DatabaseStatus, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "DatabaseAPI.Status", options...)
 	defer func() {
@@ -2430,7 +2430,7 @@ func (t *DatabaseTracer) Status(ctx context.Context, zone string, id types.ID) (
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultDatabaseStatus", resultDatabaseStatus))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultDatabaseStatus", forceString(resultDatabaseStatus)))
 
 	}
 	return resultDatabaseStatus, err
@@ -2440,8 +2440,8 @@ func (t *DatabaseTracer) Status(ctx context.Context, zone string, id types.ID) (
 func (t *DatabaseTracer) GetParameter(ctx context.Context, zone string, id types.ID) (*sacloud.DatabaseParameter, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "DatabaseAPI.GetParameter", options...)
 	defer func() {
@@ -2456,7 +2456,7 @@ func (t *DatabaseTracer) GetParameter(ctx context.Context, zone string, id types
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultDatabaseParameter", resultDatabaseParameter))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultDatabaseParameter", forceString(resultDatabaseParameter)))
 
 	}
 	return resultDatabaseParameter, err
@@ -2466,9 +2466,9 @@ func (t *DatabaseTracer) GetParameter(ctx context.Context, zone string, id types
 func (t *DatabaseTracer) SetParameter(ctx context.Context, zone string, id types.ID, param map[string]interface{}) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "DatabaseAPI.SetParameter", options...)
 	defer func() {
@@ -2510,8 +2510,8 @@ func newDiskTracer(in sacloud.DiskAPI, cnf *config) sacloud.DiskAPI {
 func (t *DiskTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.DiskFindResult, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.conditions", conditions),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.conditions", forceString(conditions)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "DiskAPI.Find", options...)
 	defer func() {
@@ -2526,7 +2526,7 @@ func (t *DiskTracer) Find(ctx context.Context, zone string, conditions *sacloud.
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.result", result))
+		span.SetAttributes(attribute.String("libsacloud.api.results.result", forceString(result)))
 
 	}
 	return result, err
@@ -2536,9 +2536,9 @@ func (t *DiskTracer) Find(ctx context.Context, zone string, conditions *sacloud.
 func (t *DiskTracer) Create(ctx context.Context, zone string, createParam *sacloud.DiskCreateRequest, distantFrom []types.ID) (*sacloud.Disk, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.createParam", createParam),
-		label.Any("libsacloud.api.arguments.distantFrom", distantFrom),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.createParam", forceString(createParam)),
+		attribute.String("libsacloud.api.arguments.distantFrom", forceString(distantFrom)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "DiskAPI.Create", options...)
 	defer func() {
@@ -2553,7 +2553,7 @@ func (t *DiskTracer) Create(ctx context.Context, zone string, createParam *saclo
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultDisk", resultDisk))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultDisk", forceString(resultDisk)))
 
 	}
 	return resultDisk, err
@@ -2563,9 +2563,9 @@ func (t *DiskTracer) Create(ctx context.Context, zone string, createParam *saclo
 func (t *DiskTracer) Config(ctx context.Context, zone string, id types.ID, edit *sacloud.DiskEditRequest) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.edit", edit),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.edit", forceString(edit)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "DiskAPI.Config", options...)
 	defer func() {
@@ -2589,11 +2589,11 @@ func (t *DiskTracer) Config(ctx context.Context, zone string, id types.ID, edit 
 func (t *DiskTracer) CreateWithConfig(ctx context.Context, zone string, createParam *sacloud.DiskCreateRequest, editParam *sacloud.DiskEditRequest, bootAtAvailable bool, distantFrom []types.ID) (*sacloud.Disk, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.createParam", createParam),
-		label.Any("libsacloud.api.arguments.editParam", editParam),
-		label.Any("libsacloud.api.arguments.bootAtAvailable", bootAtAvailable),
-		label.Any("libsacloud.api.arguments.distantFrom", distantFrom),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.createParam", forceString(createParam)),
+		attribute.String("libsacloud.api.arguments.editParam", forceString(editParam)),
+		attribute.String("libsacloud.api.arguments.bootAtAvailable", forceString(bootAtAvailable)),
+		attribute.String("libsacloud.api.arguments.distantFrom", forceString(distantFrom)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "DiskAPI.CreateWithConfig", options...)
 	defer func() {
@@ -2608,7 +2608,7 @@ func (t *DiskTracer) CreateWithConfig(ctx context.Context, zone string, createPa
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultDisk", resultDisk))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultDisk", forceString(resultDisk)))
 
 	}
 	return resultDisk, err
@@ -2618,9 +2618,9 @@ func (t *DiskTracer) CreateWithConfig(ctx context.Context, zone string, createPa
 func (t *DiskTracer) ResizePartition(ctx context.Context, zone string, id types.ID, param *sacloud.DiskResizePartitionRequest) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "DiskAPI.ResizePartition", options...)
 	defer func() {
@@ -2644,9 +2644,9 @@ func (t *DiskTracer) ResizePartition(ctx context.Context, zone string, id types.
 func (t *DiskTracer) ConnectToServer(ctx context.Context, zone string, id types.ID, serverID types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.serverID", serverID),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.serverID", forceString(serverID)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "DiskAPI.ConnectToServer", options...)
 	defer func() {
@@ -2670,8 +2670,8 @@ func (t *DiskTracer) ConnectToServer(ctx context.Context, zone string, id types.
 func (t *DiskTracer) DisconnectFromServer(ctx context.Context, zone string, id types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "DiskAPI.DisconnectFromServer", options...)
 	defer func() {
@@ -2695,8 +2695,8 @@ func (t *DiskTracer) DisconnectFromServer(ctx context.Context, zone string, id t
 func (t *DiskTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Disk, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "DiskAPI.Read", options...)
 	defer func() {
@@ -2711,7 +2711,7 @@ func (t *DiskTracer) Read(ctx context.Context, zone string, id types.ID) (*saclo
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultDisk", resultDisk))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultDisk", forceString(resultDisk)))
 
 	}
 	return resultDisk, err
@@ -2721,9 +2721,9 @@ func (t *DiskTracer) Read(ctx context.Context, zone string, id types.ID) (*saclo
 func (t *DiskTracer) Update(ctx context.Context, zone string, id types.ID, param *sacloud.DiskUpdateRequest) (*sacloud.Disk, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "DiskAPI.Update", options...)
 	defer func() {
@@ -2738,7 +2738,7 @@ func (t *DiskTracer) Update(ctx context.Context, zone string, id types.ID, param
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultDisk", resultDisk))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultDisk", forceString(resultDisk)))
 
 	}
 	return resultDisk, err
@@ -2748,8 +2748,8 @@ func (t *DiskTracer) Update(ctx context.Context, zone string, id types.ID, param
 func (t *DiskTracer) Delete(ctx context.Context, zone string, id types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "DiskAPI.Delete", options...)
 	defer func() {
@@ -2773,9 +2773,9 @@ func (t *DiskTracer) Delete(ctx context.Context, zone string, id types.ID) error
 func (t *DiskTracer) Monitor(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.DiskActivity, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.condition", condition),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.condition", forceString(condition)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "DiskAPI.Monitor", options...)
 	defer func() {
@@ -2790,7 +2790,7 @@ func (t *DiskTracer) Monitor(ctx context.Context, zone string, id types.ID, cond
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultDiskActivity", resultDiskActivity))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultDiskActivity", forceString(resultDiskActivity)))
 
 	}
 	return resultDiskActivity, err
@@ -2800,9 +2800,9 @@ func (t *DiskTracer) Monitor(ctx context.Context, zone string, id types.ID, cond
 func (t *DiskTracer) MonitorDisk(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.DiskActivity, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.condition", condition),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.condition", forceString(condition)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "DiskAPI.MonitorDisk", options...)
 	defer func() {
@@ -2817,7 +2817,7 @@ func (t *DiskTracer) MonitorDisk(ctx context.Context, zone string, id types.ID, 
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultDiskActivity", resultDiskActivity))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultDiskActivity", forceString(resultDiskActivity)))
 
 	}
 	return resultDiskActivity, err
@@ -2845,8 +2845,8 @@ func newDiskPlanTracer(in sacloud.DiskPlanAPI, cnf *config) sacloud.DiskPlanAPI 
 func (t *DiskPlanTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.DiskPlanFindResult, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.conditions", conditions),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.conditions", forceString(conditions)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "DiskPlanAPI.Find", options...)
 	defer func() {
@@ -2861,7 +2861,7 @@ func (t *DiskPlanTracer) Find(ctx context.Context, zone string, conditions *sacl
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.result", result))
+		span.SetAttributes(attribute.String("libsacloud.api.results.result", forceString(result)))
 
 	}
 	return result, err
@@ -2871,8 +2871,8 @@ func (t *DiskPlanTracer) Find(ctx context.Context, zone string, conditions *sacl
 func (t *DiskPlanTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.DiskPlan, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "DiskPlanAPI.Read", options...)
 	defer func() {
@@ -2887,7 +2887,7 @@ func (t *DiskPlanTracer) Read(ctx context.Context, zone string, id types.ID) (*s
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultDiskPlan", resultDiskPlan))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultDiskPlan", forceString(resultDiskPlan)))
 
 	}
 	return resultDiskPlan, err
@@ -2915,7 +2915,7 @@ func newDNSTracer(in sacloud.DNSAPI, cnf *config) sacloud.DNSAPI {
 func (t *DNSTracer) Find(ctx context.Context, conditions *sacloud.FindCondition) (*sacloud.DNSFindResult, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.conditions", conditions),
+		attribute.String("libsacloud.api.arguments.conditions", forceString(conditions)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "DNSAPI.Find", options...)
 	defer func() {
@@ -2930,7 +2930,7 @@ func (t *DNSTracer) Find(ctx context.Context, conditions *sacloud.FindCondition)
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.result", result))
+		span.SetAttributes(attribute.String("libsacloud.api.results.result", forceString(result)))
 
 	}
 	return result, err
@@ -2940,7 +2940,7 @@ func (t *DNSTracer) Find(ctx context.Context, conditions *sacloud.FindCondition)
 func (t *DNSTracer) Create(ctx context.Context, param *sacloud.DNSCreateRequest) (*sacloud.DNS, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "DNSAPI.Create", options...)
 	defer func() {
@@ -2955,7 +2955,7 @@ func (t *DNSTracer) Create(ctx context.Context, param *sacloud.DNSCreateRequest)
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultDNS", resultDNS))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultDNS", forceString(resultDNS)))
 
 	}
 	return resultDNS, err
@@ -2965,7 +2965,7 @@ func (t *DNSTracer) Create(ctx context.Context, param *sacloud.DNSCreateRequest)
 func (t *DNSTracer) Read(ctx context.Context, id types.ID) (*sacloud.DNS, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "DNSAPI.Read", options...)
 	defer func() {
@@ -2980,7 +2980,7 @@ func (t *DNSTracer) Read(ctx context.Context, id types.ID) (*sacloud.DNS, error)
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultDNS", resultDNS))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultDNS", forceString(resultDNS)))
 
 	}
 	return resultDNS, err
@@ -2990,8 +2990,8 @@ func (t *DNSTracer) Read(ctx context.Context, id types.ID) (*sacloud.DNS, error)
 func (t *DNSTracer) Update(ctx context.Context, id types.ID, param *sacloud.DNSUpdateRequest) (*sacloud.DNS, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "DNSAPI.Update", options...)
 	defer func() {
@@ -3006,7 +3006,7 @@ func (t *DNSTracer) Update(ctx context.Context, id types.ID, param *sacloud.DNSU
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultDNS", resultDNS))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultDNS", forceString(resultDNS)))
 
 	}
 	return resultDNS, err
@@ -3016,8 +3016,8 @@ func (t *DNSTracer) Update(ctx context.Context, id types.ID, param *sacloud.DNSU
 func (t *DNSTracer) UpdateSettings(ctx context.Context, id types.ID, param *sacloud.DNSUpdateSettingsRequest) (*sacloud.DNS, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "DNSAPI.UpdateSettings", options...)
 	defer func() {
@@ -3032,7 +3032,7 @@ func (t *DNSTracer) UpdateSettings(ctx context.Context, id types.ID, param *sacl
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultDNS", resultDNS))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultDNS", forceString(resultDNS)))
 
 	}
 	return resultDNS, err
@@ -3042,7 +3042,7 @@ func (t *DNSTracer) UpdateSettings(ctx context.Context, id types.ID, param *sacl
 func (t *DNSTracer) Delete(ctx context.Context, id types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "DNSAPI.Delete", options...)
 	defer func() {
@@ -3084,7 +3084,7 @@ func newEnhancedDBTracer(in sacloud.EnhancedDBAPI, cnf *config) sacloud.Enhanced
 func (t *EnhancedDBTracer) Find(ctx context.Context, conditions *sacloud.FindCondition) (*sacloud.EnhancedDBFindResult, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.conditions", conditions),
+		attribute.String("libsacloud.api.arguments.conditions", forceString(conditions)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "EnhancedDBAPI.Find", options...)
 	defer func() {
@@ -3099,7 +3099,7 @@ func (t *EnhancedDBTracer) Find(ctx context.Context, conditions *sacloud.FindCon
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.result", result))
+		span.SetAttributes(attribute.String("libsacloud.api.results.result", forceString(result)))
 
 	}
 	return result, err
@@ -3109,7 +3109,7 @@ func (t *EnhancedDBTracer) Find(ctx context.Context, conditions *sacloud.FindCon
 func (t *EnhancedDBTracer) Create(ctx context.Context, param *sacloud.EnhancedDBCreateRequest) (*sacloud.EnhancedDB, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "EnhancedDBAPI.Create", options...)
 	defer func() {
@@ -3124,7 +3124,7 @@ func (t *EnhancedDBTracer) Create(ctx context.Context, param *sacloud.EnhancedDB
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultEnhancedDB", resultEnhancedDB))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultEnhancedDB", forceString(resultEnhancedDB)))
 
 	}
 	return resultEnhancedDB, err
@@ -3134,7 +3134,7 @@ func (t *EnhancedDBTracer) Create(ctx context.Context, param *sacloud.EnhancedDB
 func (t *EnhancedDBTracer) Read(ctx context.Context, id types.ID) (*sacloud.EnhancedDB, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "EnhancedDBAPI.Read", options...)
 	defer func() {
@@ -3149,7 +3149,7 @@ func (t *EnhancedDBTracer) Read(ctx context.Context, id types.ID) (*sacloud.Enha
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultEnhancedDB", resultEnhancedDB))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultEnhancedDB", forceString(resultEnhancedDB)))
 
 	}
 	return resultEnhancedDB, err
@@ -3159,8 +3159,8 @@ func (t *EnhancedDBTracer) Read(ctx context.Context, id types.ID) (*sacloud.Enha
 func (t *EnhancedDBTracer) Update(ctx context.Context, id types.ID, param *sacloud.EnhancedDBUpdateRequest) (*sacloud.EnhancedDB, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "EnhancedDBAPI.Update", options...)
 	defer func() {
@@ -3175,7 +3175,7 @@ func (t *EnhancedDBTracer) Update(ctx context.Context, id types.ID, param *saclo
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultEnhancedDB", resultEnhancedDB))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultEnhancedDB", forceString(resultEnhancedDB)))
 
 	}
 	return resultEnhancedDB, err
@@ -3185,7 +3185,7 @@ func (t *EnhancedDBTracer) Update(ctx context.Context, id types.ID, param *saclo
 func (t *EnhancedDBTracer) Delete(ctx context.Context, id types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "EnhancedDBAPI.Delete", options...)
 	defer func() {
@@ -3209,8 +3209,8 @@ func (t *EnhancedDBTracer) Delete(ctx context.Context, id types.ID) error {
 func (t *EnhancedDBTracer) SetPassword(ctx context.Context, id types.ID, param *sacloud.EnhancedDBSetPasswordRequest) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "EnhancedDBAPI.SetPassword", options...)
 	defer func() {
@@ -3252,7 +3252,7 @@ func newESMETracer(in sacloud.ESMEAPI, cnf *config) sacloud.ESMEAPI {
 func (t *ESMETracer) Find(ctx context.Context, conditions *sacloud.FindCondition) (*sacloud.ESMEFindResult, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.conditions", conditions),
+		attribute.String("libsacloud.api.arguments.conditions", forceString(conditions)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "ESMEAPI.Find", options...)
 	defer func() {
@@ -3267,7 +3267,7 @@ func (t *ESMETracer) Find(ctx context.Context, conditions *sacloud.FindCondition
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.result", result))
+		span.SetAttributes(attribute.String("libsacloud.api.results.result", forceString(result)))
 
 	}
 	return result, err
@@ -3277,7 +3277,7 @@ func (t *ESMETracer) Find(ctx context.Context, conditions *sacloud.FindCondition
 func (t *ESMETracer) Create(ctx context.Context, param *sacloud.ESMECreateRequest) (*sacloud.ESME, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "ESMEAPI.Create", options...)
 	defer func() {
@@ -3292,7 +3292,7 @@ func (t *ESMETracer) Create(ctx context.Context, param *sacloud.ESMECreateReques
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultESME", resultESME))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultESME", forceString(resultESME)))
 
 	}
 	return resultESME, err
@@ -3302,7 +3302,7 @@ func (t *ESMETracer) Create(ctx context.Context, param *sacloud.ESMECreateReques
 func (t *ESMETracer) Read(ctx context.Context, id types.ID) (*sacloud.ESME, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "ESMEAPI.Read", options...)
 	defer func() {
@@ -3317,7 +3317,7 @@ func (t *ESMETracer) Read(ctx context.Context, id types.ID) (*sacloud.ESME, erro
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultESME", resultESME))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultESME", forceString(resultESME)))
 
 	}
 	return resultESME, err
@@ -3327,8 +3327,8 @@ func (t *ESMETracer) Read(ctx context.Context, id types.ID) (*sacloud.ESME, erro
 func (t *ESMETracer) Update(ctx context.Context, id types.ID, param *sacloud.ESMEUpdateRequest) (*sacloud.ESME, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "ESMEAPI.Update", options...)
 	defer func() {
@@ -3343,7 +3343,7 @@ func (t *ESMETracer) Update(ctx context.Context, id types.ID, param *sacloud.ESM
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultESME", resultESME))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultESME", forceString(resultESME)))
 
 	}
 	return resultESME, err
@@ -3353,7 +3353,7 @@ func (t *ESMETracer) Update(ctx context.Context, id types.ID, param *sacloud.ESM
 func (t *ESMETracer) Delete(ctx context.Context, id types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "ESMEAPI.Delete", options...)
 	defer func() {
@@ -3377,8 +3377,8 @@ func (t *ESMETracer) Delete(ctx context.Context, id types.ID) error {
 func (t *ESMETracer) SendMessageWithGeneratedOTP(ctx context.Context, id types.ID, param *sacloud.ESMESendMessageWithGeneratedOTPRequest) (*sacloud.ESMESendMessageResult, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "ESMEAPI.SendMessageWithGeneratedOTP", options...)
 	defer func() {
@@ -3393,7 +3393,7 @@ func (t *ESMETracer) SendMessageWithGeneratedOTP(ctx context.Context, id types.I
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultESMESendMessageResult", resultESMESendMessageResult))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultESMESendMessageResult", forceString(resultESMESendMessageResult)))
 
 	}
 	return resultESMESendMessageResult, err
@@ -3403,8 +3403,8 @@ func (t *ESMETracer) SendMessageWithGeneratedOTP(ctx context.Context, id types.I
 func (t *ESMETracer) SendMessageWithInputtedOTP(ctx context.Context, id types.ID, param *sacloud.ESMESendMessageWithInputtedOTPRequest) (*sacloud.ESMESendMessageResult, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "ESMEAPI.SendMessageWithInputtedOTP", options...)
 	defer func() {
@@ -3419,7 +3419,7 @@ func (t *ESMETracer) SendMessageWithInputtedOTP(ctx context.Context, id types.ID
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultESMESendMessageResult", resultESMESendMessageResult))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultESMESendMessageResult", forceString(resultESMESendMessageResult)))
 
 	}
 	return resultESMESendMessageResult, err
@@ -3429,7 +3429,7 @@ func (t *ESMETracer) SendMessageWithInputtedOTP(ctx context.Context, id types.ID
 func (t *ESMETracer) Logs(ctx context.Context, id types.ID) ([]*sacloud.ESMELogs, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "ESMEAPI.Logs", options...)
 	defer func() {
@@ -3444,7 +3444,7 @@ func (t *ESMETracer) Logs(ctx context.Context, id types.ID) ([]*sacloud.ESMELogs
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultLogs", resultLogs))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultLogs", forceString(resultLogs)))
 
 	}
 	return resultLogs, err
@@ -3472,7 +3472,7 @@ func newGSLBTracer(in sacloud.GSLBAPI, cnf *config) sacloud.GSLBAPI {
 func (t *GSLBTracer) Find(ctx context.Context, conditions *sacloud.FindCondition) (*sacloud.GSLBFindResult, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.conditions", conditions),
+		attribute.String("libsacloud.api.arguments.conditions", forceString(conditions)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "GSLBAPI.Find", options...)
 	defer func() {
@@ -3487,7 +3487,7 @@ func (t *GSLBTracer) Find(ctx context.Context, conditions *sacloud.FindCondition
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.result", result))
+		span.SetAttributes(attribute.String("libsacloud.api.results.result", forceString(result)))
 
 	}
 	return result, err
@@ -3497,7 +3497,7 @@ func (t *GSLBTracer) Find(ctx context.Context, conditions *sacloud.FindCondition
 func (t *GSLBTracer) Create(ctx context.Context, param *sacloud.GSLBCreateRequest) (*sacloud.GSLB, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "GSLBAPI.Create", options...)
 	defer func() {
@@ -3512,7 +3512,7 @@ func (t *GSLBTracer) Create(ctx context.Context, param *sacloud.GSLBCreateReques
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultGSLB", resultGSLB))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultGSLB", forceString(resultGSLB)))
 
 	}
 	return resultGSLB, err
@@ -3522,7 +3522,7 @@ func (t *GSLBTracer) Create(ctx context.Context, param *sacloud.GSLBCreateReques
 func (t *GSLBTracer) Read(ctx context.Context, id types.ID) (*sacloud.GSLB, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "GSLBAPI.Read", options...)
 	defer func() {
@@ -3537,7 +3537,7 @@ func (t *GSLBTracer) Read(ctx context.Context, id types.ID) (*sacloud.GSLB, erro
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultGSLB", resultGSLB))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultGSLB", forceString(resultGSLB)))
 
 	}
 	return resultGSLB, err
@@ -3547,8 +3547,8 @@ func (t *GSLBTracer) Read(ctx context.Context, id types.ID) (*sacloud.GSLB, erro
 func (t *GSLBTracer) Update(ctx context.Context, id types.ID, param *sacloud.GSLBUpdateRequest) (*sacloud.GSLB, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "GSLBAPI.Update", options...)
 	defer func() {
@@ -3563,7 +3563,7 @@ func (t *GSLBTracer) Update(ctx context.Context, id types.ID, param *sacloud.GSL
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultGSLB", resultGSLB))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultGSLB", forceString(resultGSLB)))
 
 	}
 	return resultGSLB, err
@@ -3573,8 +3573,8 @@ func (t *GSLBTracer) Update(ctx context.Context, id types.ID, param *sacloud.GSL
 func (t *GSLBTracer) UpdateSettings(ctx context.Context, id types.ID, param *sacloud.GSLBUpdateSettingsRequest) (*sacloud.GSLB, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "GSLBAPI.UpdateSettings", options...)
 	defer func() {
@@ -3589,7 +3589,7 @@ func (t *GSLBTracer) UpdateSettings(ctx context.Context, id types.ID, param *sac
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultGSLB", resultGSLB))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultGSLB", forceString(resultGSLB)))
 
 	}
 	return resultGSLB, err
@@ -3599,7 +3599,7 @@ func (t *GSLBTracer) UpdateSettings(ctx context.Context, id types.ID, param *sac
 func (t *GSLBTracer) Delete(ctx context.Context, id types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "GSLBAPI.Delete", options...)
 	defer func() {
@@ -3641,7 +3641,7 @@ func newIconTracer(in sacloud.IconAPI, cnf *config) sacloud.IconAPI {
 func (t *IconTracer) Find(ctx context.Context, conditions *sacloud.FindCondition) (*sacloud.IconFindResult, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.conditions", conditions),
+		attribute.String("libsacloud.api.arguments.conditions", forceString(conditions)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "IconAPI.Find", options...)
 	defer func() {
@@ -3656,7 +3656,7 @@ func (t *IconTracer) Find(ctx context.Context, conditions *sacloud.FindCondition
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.result", result))
+		span.SetAttributes(attribute.String("libsacloud.api.results.result", forceString(result)))
 
 	}
 	return result, err
@@ -3666,7 +3666,7 @@ func (t *IconTracer) Find(ctx context.Context, conditions *sacloud.FindCondition
 func (t *IconTracer) Create(ctx context.Context, param *sacloud.IconCreateRequest) (*sacloud.Icon, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "IconAPI.Create", options...)
 	defer func() {
@@ -3681,7 +3681,7 @@ func (t *IconTracer) Create(ctx context.Context, param *sacloud.IconCreateReques
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultIcon", resultIcon))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultIcon", forceString(resultIcon)))
 
 	}
 	return resultIcon, err
@@ -3691,7 +3691,7 @@ func (t *IconTracer) Create(ctx context.Context, param *sacloud.IconCreateReques
 func (t *IconTracer) Read(ctx context.Context, id types.ID) (*sacloud.Icon, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "IconAPI.Read", options...)
 	defer func() {
@@ -3706,7 +3706,7 @@ func (t *IconTracer) Read(ctx context.Context, id types.ID) (*sacloud.Icon, erro
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultIcon", resultIcon))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultIcon", forceString(resultIcon)))
 
 	}
 	return resultIcon, err
@@ -3716,8 +3716,8 @@ func (t *IconTracer) Read(ctx context.Context, id types.ID) (*sacloud.Icon, erro
 func (t *IconTracer) Update(ctx context.Context, id types.ID, param *sacloud.IconUpdateRequest) (*sacloud.Icon, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "IconAPI.Update", options...)
 	defer func() {
@@ -3732,7 +3732,7 @@ func (t *IconTracer) Update(ctx context.Context, id types.ID, param *sacloud.Ico
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultIcon", resultIcon))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultIcon", forceString(resultIcon)))
 
 	}
 	return resultIcon, err
@@ -3742,7 +3742,7 @@ func (t *IconTracer) Update(ctx context.Context, id types.ID, param *sacloud.Ico
 func (t *IconTracer) Delete(ctx context.Context, id types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "IconAPI.Delete", options...)
 	defer func() {
@@ -3784,8 +3784,8 @@ func newInterfaceTracer(in sacloud.InterfaceAPI, cnf *config) sacloud.InterfaceA
 func (t *InterfaceTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.InterfaceFindResult, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.conditions", conditions),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.conditions", forceString(conditions)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "InterfaceAPI.Find", options...)
 	defer func() {
@@ -3800,7 +3800,7 @@ func (t *InterfaceTracer) Find(ctx context.Context, zone string, conditions *sac
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.result", result))
+		span.SetAttributes(attribute.String("libsacloud.api.results.result", forceString(result)))
 
 	}
 	return result, err
@@ -3810,8 +3810,8 @@ func (t *InterfaceTracer) Find(ctx context.Context, zone string, conditions *sac
 func (t *InterfaceTracer) Create(ctx context.Context, zone string, param *sacloud.InterfaceCreateRequest) (*sacloud.Interface, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "InterfaceAPI.Create", options...)
 	defer func() {
@@ -3826,7 +3826,7 @@ func (t *InterfaceTracer) Create(ctx context.Context, zone string, param *saclou
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultInterface", resultInterface))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultInterface", forceString(resultInterface)))
 
 	}
 	return resultInterface, err
@@ -3836,8 +3836,8 @@ func (t *InterfaceTracer) Create(ctx context.Context, zone string, param *saclou
 func (t *InterfaceTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Interface, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "InterfaceAPI.Read", options...)
 	defer func() {
@@ -3852,7 +3852,7 @@ func (t *InterfaceTracer) Read(ctx context.Context, zone string, id types.ID) (*
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultInterface", resultInterface))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultInterface", forceString(resultInterface)))
 
 	}
 	return resultInterface, err
@@ -3862,9 +3862,9 @@ func (t *InterfaceTracer) Read(ctx context.Context, zone string, id types.ID) (*
 func (t *InterfaceTracer) Update(ctx context.Context, zone string, id types.ID, param *sacloud.InterfaceUpdateRequest) (*sacloud.Interface, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "InterfaceAPI.Update", options...)
 	defer func() {
@@ -3879,7 +3879,7 @@ func (t *InterfaceTracer) Update(ctx context.Context, zone string, id types.ID, 
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultInterface", resultInterface))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultInterface", forceString(resultInterface)))
 
 	}
 	return resultInterface, err
@@ -3889,8 +3889,8 @@ func (t *InterfaceTracer) Update(ctx context.Context, zone string, id types.ID, 
 func (t *InterfaceTracer) Delete(ctx context.Context, zone string, id types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "InterfaceAPI.Delete", options...)
 	defer func() {
@@ -3914,9 +3914,9 @@ func (t *InterfaceTracer) Delete(ctx context.Context, zone string, id types.ID) 
 func (t *InterfaceTracer) Monitor(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.InterfaceActivity, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.condition", condition),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.condition", forceString(condition)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "InterfaceAPI.Monitor", options...)
 	defer func() {
@@ -3931,7 +3931,7 @@ func (t *InterfaceTracer) Monitor(ctx context.Context, zone string, id types.ID,
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultInterfaceActivity", resultInterfaceActivity))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultInterfaceActivity", forceString(resultInterfaceActivity)))
 
 	}
 	return resultInterfaceActivity, err
@@ -3941,8 +3941,8 @@ func (t *InterfaceTracer) Monitor(ctx context.Context, zone string, id types.ID,
 func (t *InterfaceTracer) ConnectToSharedSegment(ctx context.Context, zone string, id types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "InterfaceAPI.ConnectToSharedSegment", options...)
 	defer func() {
@@ -3966,9 +3966,9 @@ func (t *InterfaceTracer) ConnectToSharedSegment(ctx context.Context, zone strin
 func (t *InterfaceTracer) ConnectToSwitch(ctx context.Context, zone string, id types.ID, switchID types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.switchID", switchID),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.switchID", forceString(switchID)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "InterfaceAPI.ConnectToSwitch", options...)
 	defer func() {
@@ -3992,8 +3992,8 @@ func (t *InterfaceTracer) ConnectToSwitch(ctx context.Context, zone string, id t
 func (t *InterfaceTracer) DisconnectFromSwitch(ctx context.Context, zone string, id types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "InterfaceAPI.DisconnectFromSwitch", options...)
 	defer func() {
@@ -4017,9 +4017,9 @@ func (t *InterfaceTracer) DisconnectFromSwitch(ctx context.Context, zone string,
 func (t *InterfaceTracer) ConnectToPacketFilter(ctx context.Context, zone string, id types.ID, packetFilterID types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.packetFilterID", packetFilterID),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.packetFilterID", forceString(packetFilterID)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "InterfaceAPI.ConnectToPacketFilter", options...)
 	defer func() {
@@ -4043,8 +4043,8 @@ func (t *InterfaceTracer) ConnectToPacketFilter(ctx context.Context, zone string
 func (t *InterfaceTracer) DisconnectFromPacketFilter(ctx context.Context, zone string, id types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "InterfaceAPI.DisconnectFromPacketFilter", options...)
 	defer func() {
@@ -4086,8 +4086,8 @@ func newInternetTracer(in sacloud.InternetAPI, cnf *config) sacloud.InternetAPI 
 func (t *InternetTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.InternetFindResult, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.conditions", conditions),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.conditions", forceString(conditions)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "InternetAPI.Find", options...)
 	defer func() {
@@ -4102,7 +4102,7 @@ func (t *InternetTracer) Find(ctx context.Context, zone string, conditions *sacl
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.result", result))
+		span.SetAttributes(attribute.String("libsacloud.api.results.result", forceString(result)))
 
 	}
 	return result, err
@@ -4112,8 +4112,8 @@ func (t *InternetTracer) Find(ctx context.Context, zone string, conditions *sacl
 func (t *InternetTracer) Create(ctx context.Context, zone string, param *sacloud.InternetCreateRequest) (*sacloud.Internet, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "InternetAPI.Create", options...)
 	defer func() {
@@ -4128,7 +4128,7 @@ func (t *InternetTracer) Create(ctx context.Context, zone string, param *sacloud
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultInternet", resultInternet))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultInternet", forceString(resultInternet)))
 
 	}
 	return resultInternet, err
@@ -4138,8 +4138,8 @@ func (t *InternetTracer) Create(ctx context.Context, zone string, param *sacloud
 func (t *InternetTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Internet, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "InternetAPI.Read", options...)
 	defer func() {
@@ -4154,7 +4154,7 @@ func (t *InternetTracer) Read(ctx context.Context, zone string, id types.ID) (*s
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultInternet", resultInternet))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultInternet", forceString(resultInternet)))
 
 	}
 	return resultInternet, err
@@ -4164,9 +4164,9 @@ func (t *InternetTracer) Read(ctx context.Context, zone string, id types.ID) (*s
 func (t *InternetTracer) Update(ctx context.Context, zone string, id types.ID, param *sacloud.InternetUpdateRequest) (*sacloud.Internet, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "InternetAPI.Update", options...)
 	defer func() {
@@ -4181,7 +4181,7 @@ func (t *InternetTracer) Update(ctx context.Context, zone string, id types.ID, p
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultInternet", resultInternet))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultInternet", forceString(resultInternet)))
 
 	}
 	return resultInternet, err
@@ -4191,8 +4191,8 @@ func (t *InternetTracer) Update(ctx context.Context, zone string, id types.ID, p
 func (t *InternetTracer) Delete(ctx context.Context, zone string, id types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "InternetAPI.Delete", options...)
 	defer func() {
@@ -4216,9 +4216,9 @@ func (t *InternetTracer) Delete(ctx context.Context, zone string, id types.ID) e
 func (t *InternetTracer) UpdateBandWidth(ctx context.Context, zone string, id types.ID, param *sacloud.InternetUpdateBandWidthRequest) (*sacloud.Internet, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "InternetAPI.UpdateBandWidth", options...)
 	defer func() {
@@ -4233,7 +4233,7 @@ func (t *InternetTracer) UpdateBandWidth(ctx context.Context, zone string, id ty
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultInternet", resultInternet))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultInternet", forceString(resultInternet)))
 
 	}
 	return resultInternet, err
@@ -4243,9 +4243,9 @@ func (t *InternetTracer) UpdateBandWidth(ctx context.Context, zone string, id ty
 func (t *InternetTracer) AddSubnet(ctx context.Context, zone string, id types.ID, param *sacloud.InternetAddSubnetRequest) (*sacloud.InternetSubnetOperationResult, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "InternetAPI.AddSubnet", options...)
 	defer func() {
@@ -4260,7 +4260,7 @@ func (t *InternetTracer) AddSubnet(ctx context.Context, zone string, id types.ID
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultSubnet", resultSubnet))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultSubnet", forceString(resultSubnet)))
 
 	}
 	return resultSubnet, err
@@ -4270,10 +4270,10 @@ func (t *InternetTracer) AddSubnet(ctx context.Context, zone string, id types.ID
 func (t *InternetTracer) UpdateSubnet(ctx context.Context, zone string, id types.ID, subnetID types.ID, param *sacloud.InternetUpdateSubnetRequest) (*sacloud.InternetSubnetOperationResult, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.subnetID", subnetID),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.subnetID", forceString(subnetID)),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "InternetAPI.UpdateSubnet", options...)
 	defer func() {
@@ -4288,7 +4288,7 @@ func (t *InternetTracer) UpdateSubnet(ctx context.Context, zone string, id types
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultSubnet", resultSubnet))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultSubnet", forceString(resultSubnet)))
 
 	}
 	return resultSubnet, err
@@ -4298,9 +4298,9 @@ func (t *InternetTracer) UpdateSubnet(ctx context.Context, zone string, id types
 func (t *InternetTracer) DeleteSubnet(ctx context.Context, zone string, id types.ID, subnetID types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.subnetID", subnetID),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.subnetID", forceString(subnetID)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "InternetAPI.DeleteSubnet", options...)
 	defer func() {
@@ -4324,9 +4324,9 @@ func (t *InternetTracer) DeleteSubnet(ctx context.Context, zone string, id types
 func (t *InternetTracer) Monitor(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.RouterActivity, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.condition", condition),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.condition", forceString(condition)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "InternetAPI.Monitor", options...)
 	defer func() {
@@ -4341,7 +4341,7 @@ func (t *InternetTracer) Monitor(ctx context.Context, zone string, id types.ID, 
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultRouterActivity", resultRouterActivity))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultRouterActivity", forceString(resultRouterActivity)))
 
 	}
 	return resultRouterActivity, err
@@ -4351,9 +4351,9 @@ func (t *InternetTracer) Monitor(ctx context.Context, zone string, id types.ID, 
 func (t *InternetTracer) MonitorRouter(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.RouterActivity, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.condition", condition),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.condition", forceString(condition)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "InternetAPI.MonitorRouter", options...)
 	defer func() {
@@ -4368,7 +4368,7 @@ func (t *InternetTracer) MonitorRouter(ctx context.Context, zone string, id type
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultRouterActivity", resultRouterActivity))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultRouterActivity", forceString(resultRouterActivity)))
 
 	}
 	return resultRouterActivity, err
@@ -4378,8 +4378,8 @@ func (t *InternetTracer) MonitorRouter(ctx context.Context, zone string, id type
 func (t *InternetTracer) EnableIPv6(ctx context.Context, zone string, id types.ID) (*sacloud.IPv6NetInfo, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "InternetAPI.EnableIPv6", options...)
 	defer func() {
@@ -4394,7 +4394,7 @@ func (t *InternetTracer) EnableIPv6(ctx context.Context, zone string, id types.I
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultIPv6Net", resultIPv6Net))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultIPv6Net", forceString(resultIPv6Net)))
 
 	}
 	return resultIPv6Net, err
@@ -4404,9 +4404,9 @@ func (t *InternetTracer) EnableIPv6(ctx context.Context, zone string, id types.I
 func (t *InternetTracer) DisableIPv6(ctx context.Context, zone string, id types.ID, ipv6netID types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.ipv6netID", ipv6netID),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.ipv6netID", forceString(ipv6netID)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "InternetAPI.DisableIPv6", options...)
 	defer func() {
@@ -4448,8 +4448,8 @@ func newInternetPlanTracer(in sacloud.InternetPlanAPI, cnf *config) sacloud.Inte
 func (t *InternetPlanTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.InternetPlanFindResult, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.conditions", conditions),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.conditions", forceString(conditions)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "InternetPlanAPI.Find", options...)
 	defer func() {
@@ -4464,7 +4464,7 @@ func (t *InternetPlanTracer) Find(ctx context.Context, zone string, conditions *
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.result", result))
+		span.SetAttributes(attribute.String("libsacloud.api.results.result", forceString(result)))
 
 	}
 	return result, err
@@ -4474,8 +4474,8 @@ func (t *InternetPlanTracer) Find(ctx context.Context, zone string, conditions *
 func (t *InternetPlanTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.InternetPlan, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "InternetPlanAPI.Read", options...)
 	defer func() {
@@ -4490,7 +4490,7 @@ func (t *InternetPlanTracer) Read(ctx context.Context, zone string, id types.ID)
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultInternetPlan", resultInternetPlan))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultInternetPlan", forceString(resultInternetPlan)))
 
 	}
 	return resultInternetPlan, err
@@ -4518,7 +4518,7 @@ func newIPAddressTracer(in sacloud.IPAddressAPI, cnf *config) sacloud.IPAddressA
 func (t *IPAddressTracer) List(ctx context.Context, zone string) (*sacloud.IPAddressListResult, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.zone", zone),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "IPAddressAPI.List", options...)
 	defer func() {
@@ -4533,7 +4533,7 @@ func (t *IPAddressTracer) List(ctx context.Context, zone string) (*sacloud.IPAdd
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.result", result))
+		span.SetAttributes(attribute.String("libsacloud.api.results.result", forceString(result)))
 
 	}
 	return result, err
@@ -4543,8 +4543,8 @@ func (t *IPAddressTracer) List(ctx context.Context, zone string) (*sacloud.IPAdd
 func (t *IPAddressTracer) Read(ctx context.Context, zone string, ipAddress string) (*sacloud.IPAddress, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.ipAddress", ipAddress),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.ipAddress", forceString(ipAddress)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "IPAddressAPI.Read", options...)
 	defer func() {
@@ -4559,7 +4559,7 @@ func (t *IPAddressTracer) Read(ctx context.Context, zone string, ipAddress strin
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultIPAddress", resultIPAddress))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultIPAddress", forceString(resultIPAddress)))
 
 	}
 	return resultIPAddress, err
@@ -4569,9 +4569,9 @@ func (t *IPAddressTracer) Read(ctx context.Context, zone string, ipAddress strin
 func (t *IPAddressTracer) UpdateHostName(ctx context.Context, zone string, ipAddress string, hostName string) (*sacloud.IPAddress, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.ipAddress", ipAddress),
-		label.Any("libsacloud.api.arguments.hostName", hostName),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.ipAddress", forceString(ipAddress)),
+		attribute.String("libsacloud.api.arguments.hostName", forceString(hostName)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "IPAddressAPI.UpdateHostName", options...)
 	defer func() {
@@ -4586,7 +4586,7 @@ func (t *IPAddressTracer) UpdateHostName(ctx context.Context, zone string, ipAdd
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultIPAddress", resultIPAddress))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultIPAddress", forceString(resultIPAddress)))
 
 	}
 	return resultIPAddress, err
@@ -4614,7 +4614,7 @@ func newIPv6NetTracer(in sacloud.IPv6NetAPI, cnf *config) sacloud.IPv6NetAPI {
 func (t *IPv6NetTracer) List(ctx context.Context, zone string) (*sacloud.IPv6NetListResult, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.zone", zone),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "IPv6NetAPI.List", options...)
 	defer func() {
@@ -4629,7 +4629,7 @@ func (t *IPv6NetTracer) List(ctx context.Context, zone string) (*sacloud.IPv6Net
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.result", result))
+		span.SetAttributes(attribute.String("libsacloud.api.results.result", forceString(result)))
 
 	}
 	return result, err
@@ -4639,8 +4639,8 @@ func (t *IPv6NetTracer) List(ctx context.Context, zone string) (*sacloud.IPv6Net
 func (t *IPv6NetTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.IPv6NetFindResult, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.conditions", conditions),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.conditions", forceString(conditions)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "IPv6NetAPI.Find", options...)
 	defer func() {
@@ -4655,7 +4655,7 @@ func (t *IPv6NetTracer) Find(ctx context.Context, zone string, conditions *saclo
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.result", result))
+		span.SetAttributes(attribute.String("libsacloud.api.results.result", forceString(result)))
 
 	}
 	return result, err
@@ -4665,8 +4665,8 @@ func (t *IPv6NetTracer) Find(ctx context.Context, zone string, conditions *saclo
 func (t *IPv6NetTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.IPv6Net, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "IPv6NetAPI.Read", options...)
 	defer func() {
@@ -4681,7 +4681,7 @@ func (t *IPv6NetTracer) Read(ctx context.Context, zone string, id types.ID) (*sa
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultIPv6Net", resultIPv6Net))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultIPv6Net", forceString(resultIPv6Net)))
 
 	}
 	return resultIPv6Net, err
@@ -4709,8 +4709,8 @@ func newIPv6AddrTracer(in sacloud.IPv6AddrAPI, cnf *config) sacloud.IPv6AddrAPI 
 func (t *IPv6AddrTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.IPv6AddrFindResult, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.conditions", conditions),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.conditions", forceString(conditions)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "IPv6AddrAPI.Find", options...)
 	defer func() {
@@ -4725,7 +4725,7 @@ func (t *IPv6AddrTracer) Find(ctx context.Context, zone string, conditions *sacl
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.result", result))
+		span.SetAttributes(attribute.String("libsacloud.api.results.result", forceString(result)))
 
 	}
 	return result, err
@@ -4735,8 +4735,8 @@ func (t *IPv6AddrTracer) Find(ctx context.Context, zone string, conditions *sacl
 func (t *IPv6AddrTracer) Create(ctx context.Context, zone string, param *sacloud.IPv6AddrCreateRequest) (*sacloud.IPv6Addr, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "IPv6AddrAPI.Create", options...)
 	defer func() {
@@ -4751,7 +4751,7 @@ func (t *IPv6AddrTracer) Create(ctx context.Context, zone string, param *sacloud
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultIPv6Addr", resultIPv6Addr))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultIPv6Addr", forceString(resultIPv6Addr)))
 
 	}
 	return resultIPv6Addr, err
@@ -4761,8 +4761,8 @@ func (t *IPv6AddrTracer) Create(ctx context.Context, zone string, param *sacloud
 func (t *IPv6AddrTracer) Read(ctx context.Context, zone string, ipv6addr string) (*sacloud.IPv6Addr, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.ipv6addr", ipv6addr),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.ipv6addr", forceString(ipv6addr)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "IPv6AddrAPI.Read", options...)
 	defer func() {
@@ -4777,7 +4777,7 @@ func (t *IPv6AddrTracer) Read(ctx context.Context, zone string, ipv6addr string)
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultIPv6Addr", resultIPv6Addr))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultIPv6Addr", forceString(resultIPv6Addr)))
 
 	}
 	return resultIPv6Addr, err
@@ -4787,9 +4787,9 @@ func (t *IPv6AddrTracer) Read(ctx context.Context, zone string, ipv6addr string)
 func (t *IPv6AddrTracer) Update(ctx context.Context, zone string, ipv6addr string, param *sacloud.IPv6AddrUpdateRequest) (*sacloud.IPv6Addr, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.ipv6addr", ipv6addr),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.ipv6addr", forceString(ipv6addr)),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "IPv6AddrAPI.Update", options...)
 	defer func() {
@@ -4804,7 +4804,7 @@ func (t *IPv6AddrTracer) Update(ctx context.Context, zone string, ipv6addr strin
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultIPv6Addr", resultIPv6Addr))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultIPv6Addr", forceString(resultIPv6Addr)))
 
 	}
 	return resultIPv6Addr, err
@@ -4814,8 +4814,8 @@ func (t *IPv6AddrTracer) Update(ctx context.Context, zone string, ipv6addr strin
 func (t *IPv6AddrTracer) Delete(ctx context.Context, zone string, ipv6addr string) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.ipv6addr", ipv6addr),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.ipv6addr", forceString(ipv6addr)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "IPv6AddrAPI.Delete", options...)
 	defer func() {
@@ -4857,7 +4857,7 @@ func newLicenseTracer(in sacloud.LicenseAPI, cnf *config) sacloud.LicenseAPI {
 func (t *LicenseTracer) Find(ctx context.Context, conditions *sacloud.FindCondition) (*sacloud.LicenseFindResult, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.conditions", conditions),
+		attribute.String("libsacloud.api.arguments.conditions", forceString(conditions)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "LicenseAPI.Find", options...)
 	defer func() {
@@ -4872,7 +4872,7 @@ func (t *LicenseTracer) Find(ctx context.Context, conditions *sacloud.FindCondit
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.result", result))
+		span.SetAttributes(attribute.String("libsacloud.api.results.result", forceString(result)))
 
 	}
 	return result, err
@@ -4882,7 +4882,7 @@ func (t *LicenseTracer) Find(ctx context.Context, conditions *sacloud.FindCondit
 func (t *LicenseTracer) Create(ctx context.Context, param *sacloud.LicenseCreateRequest) (*sacloud.License, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "LicenseAPI.Create", options...)
 	defer func() {
@@ -4897,7 +4897,7 @@ func (t *LicenseTracer) Create(ctx context.Context, param *sacloud.LicenseCreate
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultLicense", resultLicense))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultLicense", forceString(resultLicense)))
 
 	}
 	return resultLicense, err
@@ -4907,7 +4907,7 @@ func (t *LicenseTracer) Create(ctx context.Context, param *sacloud.LicenseCreate
 func (t *LicenseTracer) Read(ctx context.Context, id types.ID) (*sacloud.License, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "LicenseAPI.Read", options...)
 	defer func() {
@@ -4922,7 +4922,7 @@ func (t *LicenseTracer) Read(ctx context.Context, id types.ID) (*sacloud.License
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultLicense", resultLicense))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultLicense", forceString(resultLicense)))
 
 	}
 	return resultLicense, err
@@ -4932,8 +4932,8 @@ func (t *LicenseTracer) Read(ctx context.Context, id types.ID) (*sacloud.License
 func (t *LicenseTracer) Update(ctx context.Context, id types.ID, param *sacloud.LicenseUpdateRequest) (*sacloud.License, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "LicenseAPI.Update", options...)
 	defer func() {
@@ -4948,7 +4948,7 @@ func (t *LicenseTracer) Update(ctx context.Context, id types.ID, param *sacloud.
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultLicense", resultLicense))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultLicense", forceString(resultLicense)))
 
 	}
 	return resultLicense, err
@@ -4958,7 +4958,7 @@ func (t *LicenseTracer) Update(ctx context.Context, id types.ID, param *sacloud.
 func (t *LicenseTracer) Delete(ctx context.Context, id types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "LicenseAPI.Delete", options...)
 	defer func() {
@@ -5000,7 +5000,7 @@ func newLicenseInfoTracer(in sacloud.LicenseInfoAPI, cnf *config) sacloud.Licens
 func (t *LicenseInfoTracer) Find(ctx context.Context, conditions *sacloud.FindCondition) (*sacloud.LicenseInfoFindResult, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.conditions", conditions),
+		attribute.String("libsacloud.api.arguments.conditions", forceString(conditions)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "LicenseInfoAPI.Find", options...)
 	defer func() {
@@ -5015,7 +5015,7 @@ func (t *LicenseInfoTracer) Find(ctx context.Context, conditions *sacloud.FindCo
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.result", result))
+		span.SetAttributes(attribute.String("libsacloud.api.results.result", forceString(result)))
 
 	}
 	return result, err
@@ -5025,7 +5025,7 @@ func (t *LicenseInfoTracer) Find(ctx context.Context, conditions *sacloud.FindCo
 func (t *LicenseInfoTracer) Read(ctx context.Context, id types.ID) (*sacloud.LicenseInfo, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "LicenseInfoAPI.Read", options...)
 	defer func() {
@@ -5040,7 +5040,7 @@ func (t *LicenseInfoTracer) Read(ctx context.Context, id types.ID) (*sacloud.Lic
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultLicenseInfo", resultLicenseInfo))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultLicenseInfo", forceString(resultLicenseInfo)))
 
 	}
 	return resultLicenseInfo, err
@@ -5068,8 +5068,8 @@ func newLoadBalancerTracer(in sacloud.LoadBalancerAPI, cnf *config) sacloud.Load
 func (t *LoadBalancerTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.LoadBalancerFindResult, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.conditions", conditions),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.conditions", forceString(conditions)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "LoadBalancerAPI.Find", options...)
 	defer func() {
@@ -5084,7 +5084,7 @@ func (t *LoadBalancerTracer) Find(ctx context.Context, zone string, conditions *
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.result", result))
+		span.SetAttributes(attribute.String("libsacloud.api.results.result", forceString(result)))
 
 	}
 	return result, err
@@ -5094,8 +5094,8 @@ func (t *LoadBalancerTracer) Find(ctx context.Context, zone string, conditions *
 func (t *LoadBalancerTracer) Create(ctx context.Context, zone string, param *sacloud.LoadBalancerCreateRequest) (*sacloud.LoadBalancer, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "LoadBalancerAPI.Create", options...)
 	defer func() {
@@ -5110,7 +5110,7 @@ func (t *LoadBalancerTracer) Create(ctx context.Context, zone string, param *sac
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultLoadBalancer", resultLoadBalancer))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultLoadBalancer", forceString(resultLoadBalancer)))
 
 	}
 	return resultLoadBalancer, err
@@ -5120,8 +5120,8 @@ func (t *LoadBalancerTracer) Create(ctx context.Context, zone string, param *sac
 func (t *LoadBalancerTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.LoadBalancer, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "LoadBalancerAPI.Read", options...)
 	defer func() {
@@ -5136,7 +5136,7 @@ func (t *LoadBalancerTracer) Read(ctx context.Context, zone string, id types.ID)
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultLoadBalancer", resultLoadBalancer))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultLoadBalancer", forceString(resultLoadBalancer)))
 
 	}
 	return resultLoadBalancer, err
@@ -5146,9 +5146,9 @@ func (t *LoadBalancerTracer) Read(ctx context.Context, zone string, id types.ID)
 func (t *LoadBalancerTracer) Update(ctx context.Context, zone string, id types.ID, param *sacloud.LoadBalancerUpdateRequest) (*sacloud.LoadBalancer, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "LoadBalancerAPI.Update", options...)
 	defer func() {
@@ -5163,7 +5163,7 @@ func (t *LoadBalancerTracer) Update(ctx context.Context, zone string, id types.I
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultLoadBalancer", resultLoadBalancer))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultLoadBalancer", forceString(resultLoadBalancer)))
 
 	}
 	return resultLoadBalancer, err
@@ -5173,9 +5173,9 @@ func (t *LoadBalancerTracer) Update(ctx context.Context, zone string, id types.I
 func (t *LoadBalancerTracer) UpdateSettings(ctx context.Context, zone string, id types.ID, param *sacloud.LoadBalancerUpdateSettingsRequest) (*sacloud.LoadBalancer, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "LoadBalancerAPI.UpdateSettings", options...)
 	defer func() {
@@ -5190,7 +5190,7 @@ func (t *LoadBalancerTracer) UpdateSettings(ctx context.Context, zone string, id
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultLoadBalancer", resultLoadBalancer))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultLoadBalancer", forceString(resultLoadBalancer)))
 
 	}
 	return resultLoadBalancer, err
@@ -5200,8 +5200,8 @@ func (t *LoadBalancerTracer) UpdateSettings(ctx context.Context, zone string, id
 func (t *LoadBalancerTracer) Delete(ctx context.Context, zone string, id types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "LoadBalancerAPI.Delete", options...)
 	defer func() {
@@ -5225,8 +5225,8 @@ func (t *LoadBalancerTracer) Delete(ctx context.Context, zone string, id types.I
 func (t *LoadBalancerTracer) Config(ctx context.Context, zone string, id types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "LoadBalancerAPI.Config", options...)
 	defer func() {
@@ -5250,8 +5250,8 @@ func (t *LoadBalancerTracer) Config(ctx context.Context, zone string, id types.I
 func (t *LoadBalancerTracer) Boot(ctx context.Context, zone string, id types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "LoadBalancerAPI.Boot", options...)
 	defer func() {
@@ -5275,9 +5275,9 @@ func (t *LoadBalancerTracer) Boot(ctx context.Context, zone string, id types.ID)
 func (t *LoadBalancerTracer) Shutdown(ctx context.Context, zone string, id types.ID, shutdownOption *sacloud.ShutdownOption) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.shutdownOption", shutdownOption),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.shutdownOption", forceString(shutdownOption)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "LoadBalancerAPI.Shutdown", options...)
 	defer func() {
@@ -5301,8 +5301,8 @@ func (t *LoadBalancerTracer) Shutdown(ctx context.Context, zone string, id types
 func (t *LoadBalancerTracer) Reset(ctx context.Context, zone string, id types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "LoadBalancerAPI.Reset", options...)
 	defer func() {
@@ -5326,9 +5326,9 @@ func (t *LoadBalancerTracer) Reset(ctx context.Context, zone string, id types.ID
 func (t *LoadBalancerTracer) MonitorInterface(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.InterfaceActivity, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.condition", condition),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.condition", forceString(condition)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "LoadBalancerAPI.MonitorInterface", options...)
 	defer func() {
@@ -5343,7 +5343,7 @@ func (t *LoadBalancerTracer) MonitorInterface(ctx context.Context, zone string, 
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultInterfaceActivity", resultInterfaceActivity))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultInterfaceActivity", forceString(resultInterfaceActivity)))
 
 	}
 	return resultInterfaceActivity, err
@@ -5353,8 +5353,8 @@ func (t *LoadBalancerTracer) MonitorInterface(ctx context.Context, zone string, 
 func (t *LoadBalancerTracer) Status(ctx context.Context, zone string, id types.ID) (*sacloud.LoadBalancerStatusResult, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "LoadBalancerAPI.Status", options...)
 	defer func() {
@@ -5369,7 +5369,7 @@ func (t *LoadBalancerTracer) Status(ctx context.Context, zone string, id types.I
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.result", result))
+		span.SetAttributes(attribute.String("libsacloud.api.results.result", forceString(result)))
 
 	}
 	return result, err
@@ -5397,7 +5397,7 @@ func newLocalRouterTracer(in sacloud.LocalRouterAPI, cnf *config) sacloud.LocalR
 func (t *LocalRouterTracer) Find(ctx context.Context, conditions *sacloud.FindCondition) (*sacloud.LocalRouterFindResult, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.conditions", conditions),
+		attribute.String("libsacloud.api.arguments.conditions", forceString(conditions)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "LocalRouterAPI.Find", options...)
 	defer func() {
@@ -5412,7 +5412,7 @@ func (t *LocalRouterTracer) Find(ctx context.Context, conditions *sacloud.FindCo
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.result", result))
+		span.SetAttributes(attribute.String("libsacloud.api.results.result", forceString(result)))
 
 	}
 	return result, err
@@ -5422,7 +5422,7 @@ func (t *LocalRouterTracer) Find(ctx context.Context, conditions *sacloud.FindCo
 func (t *LocalRouterTracer) Create(ctx context.Context, param *sacloud.LocalRouterCreateRequest) (*sacloud.LocalRouter, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "LocalRouterAPI.Create", options...)
 	defer func() {
@@ -5437,7 +5437,7 @@ func (t *LocalRouterTracer) Create(ctx context.Context, param *sacloud.LocalRout
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultLocalRouter", resultLocalRouter))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultLocalRouter", forceString(resultLocalRouter)))
 
 	}
 	return resultLocalRouter, err
@@ -5447,7 +5447,7 @@ func (t *LocalRouterTracer) Create(ctx context.Context, param *sacloud.LocalRout
 func (t *LocalRouterTracer) Read(ctx context.Context, id types.ID) (*sacloud.LocalRouter, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "LocalRouterAPI.Read", options...)
 	defer func() {
@@ -5462,7 +5462,7 @@ func (t *LocalRouterTracer) Read(ctx context.Context, id types.ID) (*sacloud.Loc
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultLocalRouter", resultLocalRouter))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultLocalRouter", forceString(resultLocalRouter)))
 
 	}
 	return resultLocalRouter, err
@@ -5472,8 +5472,8 @@ func (t *LocalRouterTracer) Read(ctx context.Context, id types.ID) (*sacloud.Loc
 func (t *LocalRouterTracer) Update(ctx context.Context, id types.ID, param *sacloud.LocalRouterUpdateRequest) (*sacloud.LocalRouter, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "LocalRouterAPI.Update", options...)
 	defer func() {
@@ -5488,7 +5488,7 @@ func (t *LocalRouterTracer) Update(ctx context.Context, id types.ID, param *sacl
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultLocalRouter", resultLocalRouter))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultLocalRouter", forceString(resultLocalRouter)))
 
 	}
 	return resultLocalRouter, err
@@ -5498,8 +5498,8 @@ func (t *LocalRouterTracer) Update(ctx context.Context, id types.ID, param *sacl
 func (t *LocalRouterTracer) UpdateSettings(ctx context.Context, id types.ID, param *sacloud.LocalRouterUpdateSettingsRequest) (*sacloud.LocalRouter, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "LocalRouterAPI.UpdateSettings", options...)
 	defer func() {
@@ -5514,7 +5514,7 @@ func (t *LocalRouterTracer) UpdateSettings(ctx context.Context, id types.ID, par
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultLocalRouter", resultLocalRouter))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultLocalRouter", forceString(resultLocalRouter)))
 
 	}
 	return resultLocalRouter, err
@@ -5524,7 +5524,7 @@ func (t *LocalRouterTracer) UpdateSettings(ctx context.Context, id types.ID, par
 func (t *LocalRouterTracer) Delete(ctx context.Context, id types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "LocalRouterAPI.Delete", options...)
 	defer func() {
@@ -5548,7 +5548,7 @@ func (t *LocalRouterTracer) Delete(ctx context.Context, id types.ID) error {
 func (t *LocalRouterTracer) HealthStatus(ctx context.Context, id types.ID) (*sacloud.LocalRouterHealth, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "LocalRouterAPI.HealthStatus", options...)
 	defer func() {
@@ -5563,7 +5563,7 @@ func (t *LocalRouterTracer) HealthStatus(ctx context.Context, id types.ID) (*sac
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultLocalRouterHealth", resultLocalRouterHealth))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultLocalRouterHealth", forceString(resultLocalRouterHealth)))
 
 	}
 	return resultLocalRouterHealth, err
@@ -5573,8 +5573,8 @@ func (t *LocalRouterTracer) HealthStatus(ctx context.Context, id types.ID) (*sac
 func (t *LocalRouterTracer) MonitorLocalRouter(ctx context.Context, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.LocalRouterActivity, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.condition", condition),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.condition", forceString(condition)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "LocalRouterAPI.MonitorLocalRouter", options...)
 	defer func() {
@@ -5589,7 +5589,7 @@ func (t *LocalRouterTracer) MonitorLocalRouter(ctx context.Context, id types.ID,
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultLocalRouterActivity", resultLocalRouterActivity))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultLocalRouterActivity", forceString(resultLocalRouterActivity)))
 
 	}
 	return resultLocalRouterActivity, err
@@ -5617,8 +5617,8 @@ func newMobileGatewayTracer(in sacloud.MobileGatewayAPI, cnf *config) sacloud.Mo
 func (t *MobileGatewayTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.MobileGatewayFindResult, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.conditions", conditions),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.conditions", forceString(conditions)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "MobileGatewayAPI.Find", options...)
 	defer func() {
@@ -5633,7 +5633,7 @@ func (t *MobileGatewayTracer) Find(ctx context.Context, zone string, conditions 
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.result", result))
+		span.SetAttributes(attribute.String("libsacloud.api.results.result", forceString(result)))
 
 	}
 	return result, err
@@ -5643,8 +5643,8 @@ func (t *MobileGatewayTracer) Find(ctx context.Context, zone string, conditions 
 func (t *MobileGatewayTracer) Create(ctx context.Context, zone string, param *sacloud.MobileGatewayCreateRequest) (*sacloud.MobileGateway, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "MobileGatewayAPI.Create", options...)
 	defer func() {
@@ -5659,7 +5659,7 @@ func (t *MobileGatewayTracer) Create(ctx context.Context, zone string, param *sa
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultMobileGateway", resultMobileGateway))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultMobileGateway", forceString(resultMobileGateway)))
 
 	}
 	return resultMobileGateway, err
@@ -5669,8 +5669,8 @@ func (t *MobileGatewayTracer) Create(ctx context.Context, zone string, param *sa
 func (t *MobileGatewayTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.MobileGateway, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "MobileGatewayAPI.Read", options...)
 	defer func() {
@@ -5685,7 +5685,7 @@ func (t *MobileGatewayTracer) Read(ctx context.Context, zone string, id types.ID
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultMobileGateway", resultMobileGateway))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultMobileGateway", forceString(resultMobileGateway)))
 
 	}
 	return resultMobileGateway, err
@@ -5695,9 +5695,9 @@ func (t *MobileGatewayTracer) Read(ctx context.Context, zone string, id types.ID
 func (t *MobileGatewayTracer) Update(ctx context.Context, zone string, id types.ID, param *sacloud.MobileGatewayUpdateRequest) (*sacloud.MobileGateway, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "MobileGatewayAPI.Update", options...)
 	defer func() {
@@ -5712,7 +5712,7 @@ func (t *MobileGatewayTracer) Update(ctx context.Context, zone string, id types.
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultMobileGateway", resultMobileGateway))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultMobileGateway", forceString(resultMobileGateway)))
 
 	}
 	return resultMobileGateway, err
@@ -5722,9 +5722,9 @@ func (t *MobileGatewayTracer) Update(ctx context.Context, zone string, id types.
 func (t *MobileGatewayTracer) UpdateSettings(ctx context.Context, zone string, id types.ID, param *sacloud.MobileGatewayUpdateSettingsRequest) (*sacloud.MobileGateway, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "MobileGatewayAPI.UpdateSettings", options...)
 	defer func() {
@@ -5739,7 +5739,7 @@ func (t *MobileGatewayTracer) UpdateSettings(ctx context.Context, zone string, i
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultMobileGateway", resultMobileGateway))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultMobileGateway", forceString(resultMobileGateway)))
 
 	}
 	return resultMobileGateway, err
@@ -5749,8 +5749,8 @@ func (t *MobileGatewayTracer) UpdateSettings(ctx context.Context, zone string, i
 func (t *MobileGatewayTracer) Delete(ctx context.Context, zone string, id types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "MobileGatewayAPI.Delete", options...)
 	defer func() {
@@ -5774,8 +5774,8 @@ func (t *MobileGatewayTracer) Delete(ctx context.Context, zone string, id types.
 func (t *MobileGatewayTracer) Config(ctx context.Context, zone string, id types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "MobileGatewayAPI.Config", options...)
 	defer func() {
@@ -5799,8 +5799,8 @@ func (t *MobileGatewayTracer) Config(ctx context.Context, zone string, id types.
 func (t *MobileGatewayTracer) Boot(ctx context.Context, zone string, id types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "MobileGatewayAPI.Boot", options...)
 	defer func() {
@@ -5824,9 +5824,9 @@ func (t *MobileGatewayTracer) Boot(ctx context.Context, zone string, id types.ID
 func (t *MobileGatewayTracer) Shutdown(ctx context.Context, zone string, id types.ID, shutdownOption *sacloud.ShutdownOption) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.shutdownOption", shutdownOption),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.shutdownOption", forceString(shutdownOption)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "MobileGatewayAPI.Shutdown", options...)
 	defer func() {
@@ -5850,8 +5850,8 @@ func (t *MobileGatewayTracer) Shutdown(ctx context.Context, zone string, id type
 func (t *MobileGatewayTracer) Reset(ctx context.Context, zone string, id types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "MobileGatewayAPI.Reset", options...)
 	defer func() {
@@ -5875,9 +5875,9 @@ func (t *MobileGatewayTracer) Reset(ctx context.Context, zone string, id types.I
 func (t *MobileGatewayTracer) ConnectToSwitch(ctx context.Context, zone string, id types.ID, switchID types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.switchID", switchID),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.switchID", forceString(switchID)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "MobileGatewayAPI.ConnectToSwitch", options...)
 	defer func() {
@@ -5901,8 +5901,8 @@ func (t *MobileGatewayTracer) ConnectToSwitch(ctx context.Context, zone string, 
 func (t *MobileGatewayTracer) DisconnectFromSwitch(ctx context.Context, zone string, id types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "MobileGatewayAPI.DisconnectFromSwitch", options...)
 	defer func() {
@@ -5926,8 +5926,8 @@ func (t *MobileGatewayTracer) DisconnectFromSwitch(ctx context.Context, zone str
 func (t *MobileGatewayTracer) GetDNS(ctx context.Context, zone string, id types.ID) (*sacloud.MobileGatewayDNSSetting, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "MobileGatewayAPI.GetDNS", options...)
 	defer func() {
@@ -5942,7 +5942,7 @@ func (t *MobileGatewayTracer) GetDNS(ctx context.Context, zone string, id types.
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultSIMGroup", resultSIMGroup))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultSIMGroup", forceString(resultSIMGroup)))
 
 	}
 	return resultSIMGroup, err
@@ -5952,9 +5952,9 @@ func (t *MobileGatewayTracer) GetDNS(ctx context.Context, zone string, id types.
 func (t *MobileGatewayTracer) SetDNS(ctx context.Context, zone string, id types.ID, param *sacloud.MobileGatewayDNSSetting) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "MobileGatewayAPI.SetDNS", options...)
 	defer func() {
@@ -5978,8 +5978,8 @@ func (t *MobileGatewayTracer) SetDNS(ctx context.Context, zone string, id types.
 func (t *MobileGatewayTracer) GetSIMRoutes(ctx context.Context, zone string, id types.ID) (sacloud.MobileGatewaySIMRoutes, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "MobileGatewayAPI.GetSIMRoutes", options...)
 	defer func() {
@@ -5994,7 +5994,7 @@ func (t *MobileGatewayTracer) GetSIMRoutes(ctx context.Context, zone string, id 
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultSIMRoutes", resultSIMRoutes))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultSIMRoutes", forceString(resultSIMRoutes)))
 
 	}
 	return resultSIMRoutes, err
@@ -6004,9 +6004,9 @@ func (t *MobileGatewayTracer) GetSIMRoutes(ctx context.Context, zone string, id 
 func (t *MobileGatewayTracer) SetSIMRoutes(ctx context.Context, zone string, id types.ID, param []*sacloud.MobileGatewaySIMRouteParam) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "MobileGatewayAPI.SetSIMRoutes", options...)
 	defer func() {
@@ -6030,8 +6030,8 @@ func (t *MobileGatewayTracer) SetSIMRoutes(ctx context.Context, zone string, id 
 func (t *MobileGatewayTracer) ListSIM(ctx context.Context, zone string, id types.ID) (sacloud.MobileGatewaySIMs, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "MobileGatewayAPI.ListSIM", options...)
 	defer func() {
@@ -6046,7 +6046,7 @@ func (t *MobileGatewayTracer) ListSIM(ctx context.Context, zone string, id types
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultSIM", resultSIM))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultSIM", forceString(resultSIM)))
 
 	}
 	return resultSIM, err
@@ -6056,9 +6056,9 @@ func (t *MobileGatewayTracer) ListSIM(ctx context.Context, zone string, id types
 func (t *MobileGatewayTracer) AddSIM(ctx context.Context, zone string, id types.ID, param *sacloud.MobileGatewayAddSIMRequest) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "MobileGatewayAPI.AddSIM", options...)
 	defer func() {
@@ -6082,9 +6082,9 @@ func (t *MobileGatewayTracer) AddSIM(ctx context.Context, zone string, id types.
 func (t *MobileGatewayTracer) DeleteSIM(ctx context.Context, zone string, id types.ID, simID types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.simID", simID),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.simID", forceString(simID)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "MobileGatewayAPI.DeleteSIM", options...)
 	defer func() {
@@ -6108,8 +6108,8 @@ func (t *MobileGatewayTracer) DeleteSIM(ctx context.Context, zone string, id typ
 func (t *MobileGatewayTracer) Logs(ctx context.Context, zone string, id types.ID) ([]*sacloud.MobileGatewaySIMLogs, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "MobileGatewayAPI.Logs", options...)
 	defer func() {
@@ -6124,7 +6124,7 @@ func (t *MobileGatewayTracer) Logs(ctx context.Context, zone string, id types.ID
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultLogs", resultLogs))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultLogs", forceString(resultLogs)))
 
 	}
 	return resultLogs, err
@@ -6134,8 +6134,8 @@ func (t *MobileGatewayTracer) Logs(ctx context.Context, zone string, id types.ID
 func (t *MobileGatewayTracer) GetTrafficConfig(ctx context.Context, zone string, id types.ID) (*sacloud.MobileGatewayTrafficControl, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "MobileGatewayAPI.GetTrafficConfig", options...)
 	defer func() {
@@ -6150,7 +6150,7 @@ func (t *MobileGatewayTracer) GetTrafficConfig(ctx context.Context, zone string,
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultTrafficMonitoring", resultTrafficMonitoring))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultTrafficMonitoring", forceString(resultTrafficMonitoring)))
 
 	}
 	return resultTrafficMonitoring, err
@@ -6160,9 +6160,9 @@ func (t *MobileGatewayTracer) GetTrafficConfig(ctx context.Context, zone string,
 func (t *MobileGatewayTracer) SetTrafficConfig(ctx context.Context, zone string, id types.ID, param *sacloud.MobileGatewayTrafficControl) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "MobileGatewayAPI.SetTrafficConfig", options...)
 	defer func() {
@@ -6186,8 +6186,8 @@ func (t *MobileGatewayTracer) SetTrafficConfig(ctx context.Context, zone string,
 func (t *MobileGatewayTracer) DeleteTrafficConfig(ctx context.Context, zone string, id types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "MobileGatewayAPI.DeleteTrafficConfig", options...)
 	defer func() {
@@ -6211,8 +6211,8 @@ func (t *MobileGatewayTracer) DeleteTrafficConfig(ctx context.Context, zone stri
 func (t *MobileGatewayTracer) TrafficStatus(ctx context.Context, zone string, id types.ID) (*sacloud.MobileGatewayTrafficStatus, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "MobileGatewayAPI.TrafficStatus", options...)
 	defer func() {
@@ -6227,7 +6227,7 @@ func (t *MobileGatewayTracer) TrafficStatus(ctx context.Context, zone string, id
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultTrafficStatus", resultTrafficStatus))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultTrafficStatus", forceString(resultTrafficStatus)))
 
 	}
 	return resultTrafficStatus, err
@@ -6237,10 +6237,10 @@ func (t *MobileGatewayTracer) TrafficStatus(ctx context.Context, zone string, id
 func (t *MobileGatewayTracer) MonitorInterface(ctx context.Context, zone string, id types.ID, index int, condition *sacloud.MonitorCondition) (*sacloud.InterfaceActivity, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.index", index),
-		label.Any("libsacloud.api.arguments.condition", condition),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.index", forceString(index)),
+		attribute.String("libsacloud.api.arguments.condition", forceString(condition)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "MobileGatewayAPI.MonitorInterface", options...)
 	defer func() {
@@ -6255,7 +6255,7 @@ func (t *MobileGatewayTracer) MonitorInterface(ctx context.Context, zone string,
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultInterfaceActivity", resultInterfaceActivity))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultInterfaceActivity", forceString(resultInterfaceActivity)))
 
 	}
 	return resultInterfaceActivity, err
@@ -6283,8 +6283,8 @@ func newNFSTracer(in sacloud.NFSAPI, cnf *config) sacloud.NFSAPI {
 func (t *NFSTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.NFSFindResult, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.conditions", conditions),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.conditions", forceString(conditions)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "NFSAPI.Find", options...)
 	defer func() {
@@ -6299,7 +6299,7 @@ func (t *NFSTracer) Find(ctx context.Context, zone string, conditions *sacloud.F
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.result", result))
+		span.SetAttributes(attribute.String("libsacloud.api.results.result", forceString(result)))
 
 	}
 	return result, err
@@ -6309,8 +6309,8 @@ func (t *NFSTracer) Find(ctx context.Context, zone string, conditions *sacloud.F
 func (t *NFSTracer) Create(ctx context.Context, zone string, param *sacloud.NFSCreateRequest) (*sacloud.NFS, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "NFSAPI.Create", options...)
 	defer func() {
@@ -6325,7 +6325,7 @@ func (t *NFSTracer) Create(ctx context.Context, zone string, param *sacloud.NFSC
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultNFS", resultNFS))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultNFS", forceString(resultNFS)))
 
 	}
 	return resultNFS, err
@@ -6335,8 +6335,8 @@ func (t *NFSTracer) Create(ctx context.Context, zone string, param *sacloud.NFSC
 func (t *NFSTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.NFS, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "NFSAPI.Read", options...)
 	defer func() {
@@ -6351,7 +6351,7 @@ func (t *NFSTracer) Read(ctx context.Context, zone string, id types.ID) (*saclou
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultNFS", resultNFS))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultNFS", forceString(resultNFS)))
 
 	}
 	return resultNFS, err
@@ -6361,9 +6361,9 @@ func (t *NFSTracer) Read(ctx context.Context, zone string, id types.ID) (*saclou
 func (t *NFSTracer) Update(ctx context.Context, zone string, id types.ID, param *sacloud.NFSUpdateRequest) (*sacloud.NFS, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "NFSAPI.Update", options...)
 	defer func() {
@@ -6378,7 +6378,7 @@ func (t *NFSTracer) Update(ctx context.Context, zone string, id types.ID, param 
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultNFS", resultNFS))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultNFS", forceString(resultNFS)))
 
 	}
 	return resultNFS, err
@@ -6388,8 +6388,8 @@ func (t *NFSTracer) Update(ctx context.Context, zone string, id types.ID, param 
 func (t *NFSTracer) Delete(ctx context.Context, zone string, id types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "NFSAPI.Delete", options...)
 	defer func() {
@@ -6413,8 +6413,8 @@ func (t *NFSTracer) Delete(ctx context.Context, zone string, id types.ID) error 
 func (t *NFSTracer) Boot(ctx context.Context, zone string, id types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "NFSAPI.Boot", options...)
 	defer func() {
@@ -6438,9 +6438,9 @@ func (t *NFSTracer) Boot(ctx context.Context, zone string, id types.ID) error {
 func (t *NFSTracer) Shutdown(ctx context.Context, zone string, id types.ID, shutdownOption *sacloud.ShutdownOption) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.shutdownOption", shutdownOption),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.shutdownOption", forceString(shutdownOption)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "NFSAPI.Shutdown", options...)
 	defer func() {
@@ -6464,8 +6464,8 @@ func (t *NFSTracer) Shutdown(ctx context.Context, zone string, id types.ID, shut
 func (t *NFSTracer) Reset(ctx context.Context, zone string, id types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "NFSAPI.Reset", options...)
 	defer func() {
@@ -6489,9 +6489,9 @@ func (t *NFSTracer) Reset(ctx context.Context, zone string, id types.ID) error {
 func (t *NFSTracer) MonitorFreeDiskSize(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.FreeDiskSizeActivity, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.condition", condition),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.condition", forceString(condition)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "NFSAPI.MonitorFreeDiskSize", options...)
 	defer func() {
@@ -6506,7 +6506,7 @@ func (t *NFSTracer) MonitorFreeDiskSize(ctx context.Context, zone string, id typ
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultFreeDiskSizeActivity", resultFreeDiskSizeActivity))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultFreeDiskSizeActivity", forceString(resultFreeDiskSizeActivity)))
 
 	}
 	return resultFreeDiskSizeActivity, err
@@ -6516,9 +6516,9 @@ func (t *NFSTracer) MonitorFreeDiskSize(ctx context.Context, zone string, id typ
 func (t *NFSTracer) MonitorInterface(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.InterfaceActivity, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.condition", condition),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.condition", forceString(condition)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "NFSAPI.MonitorInterface", options...)
 	defer func() {
@@ -6533,7 +6533,7 @@ func (t *NFSTracer) MonitorInterface(ctx context.Context, zone string, id types.
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultInterfaceActivity", resultInterfaceActivity))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultInterfaceActivity", forceString(resultInterfaceActivity)))
 
 	}
 	return resultInterfaceActivity, err
@@ -6561,7 +6561,7 @@ func newNoteTracer(in sacloud.NoteAPI, cnf *config) sacloud.NoteAPI {
 func (t *NoteTracer) Find(ctx context.Context, conditions *sacloud.FindCondition) (*sacloud.NoteFindResult, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.conditions", conditions),
+		attribute.String("libsacloud.api.arguments.conditions", forceString(conditions)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "NoteAPI.Find", options...)
 	defer func() {
@@ -6576,7 +6576,7 @@ func (t *NoteTracer) Find(ctx context.Context, conditions *sacloud.FindCondition
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.result", result))
+		span.SetAttributes(attribute.String("libsacloud.api.results.result", forceString(result)))
 
 	}
 	return result, err
@@ -6586,7 +6586,7 @@ func (t *NoteTracer) Find(ctx context.Context, conditions *sacloud.FindCondition
 func (t *NoteTracer) Create(ctx context.Context, param *sacloud.NoteCreateRequest) (*sacloud.Note, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "NoteAPI.Create", options...)
 	defer func() {
@@ -6601,7 +6601,7 @@ func (t *NoteTracer) Create(ctx context.Context, param *sacloud.NoteCreateReques
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultNote", resultNote))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultNote", forceString(resultNote)))
 
 	}
 	return resultNote, err
@@ -6611,7 +6611,7 @@ func (t *NoteTracer) Create(ctx context.Context, param *sacloud.NoteCreateReques
 func (t *NoteTracer) Read(ctx context.Context, id types.ID) (*sacloud.Note, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "NoteAPI.Read", options...)
 	defer func() {
@@ -6626,7 +6626,7 @@ func (t *NoteTracer) Read(ctx context.Context, id types.ID) (*sacloud.Note, erro
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultNote", resultNote))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultNote", forceString(resultNote)))
 
 	}
 	return resultNote, err
@@ -6636,8 +6636,8 @@ func (t *NoteTracer) Read(ctx context.Context, id types.ID) (*sacloud.Note, erro
 func (t *NoteTracer) Update(ctx context.Context, id types.ID, param *sacloud.NoteUpdateRequest) (*sacloud.Note, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "NoteAPI.Update", options...)
 	defer func() {
@@ -6652,7 +6652,7 @@ func (t *NoteTracer) Update(ctx context.Context, id types.ID, param *sacloud.Not
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultNote", resultNote))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultNote", forceString(resultNote)))
 
 	}
 	return resultNote, err
@@ -6662,7 +6662,7 @@ func (t *NoteTracer) Update(ctx context.Context, id types.ID, param *sacloud.Not
 func (t *NoteTracer) Delete(ctx context.Context, id types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "NoteAPI.Delete", options...)
 	defer func() {
@@ -6704,8 +6704,8 @@ func newPacketFilterTracer(in sacloud.PacketFilterAPI, cnf *config) sacloud.Pack
 func (t *PacketFilterTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.PacketFilterFindResult, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.conditions", conditions),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.conditions", forceString(conditions)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "PacketFilterAPI.Find", options...)
 	defer func() {
@@ -6720,7 +6720,7 @@ func (t *PacketFilterTracer) Find(ctx context.Context, zone string, conditions *
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.result", result))
+		span.SetAttributes(attribute.String("libsacloud.api.results.result", forceString(result)))
 
 	}
 	return result, err
@@ -6730,8 +6730,8 @@ func (t *PacketFilterTracer) Find(ctx context.Context, zone string, conditions *
 func (t *PacketFilterTracer) Create(ctx context.Context, zone string, param *sacloud.PacketFilterCreateRequest) (*sacloud.PacketFilter, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "PacketFilterAPI.Create", options...)
 	defer func() {
@@ -6746,7 +6746,7 @@ func (t *PacketFilterTracer) Create(ctx context.Context, zone string, param *sac
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultPacketFilter", resultPacketFilter))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultPacketFilter", forceString(resultPacketFilter)))
 
 	}
 	return resultPacketFilter, err
@@ -6756,8 +6756,8 @@ func (t *PacketFilterTracer) Create(ctx context.Context, zone string, param *sac
 func (t *PacketFilterTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.PacketFilter, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "PacketFilterAPI.Read", options...)
 	defer func() {
@@ -6772,7 +6772,7 @@ func (t *PacketFilterTracer) Read(ctx context.Context, zone string, id types.ID)
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultPacketFilter", resultPacketFilter))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultPacketFilter", forceString(resultPacketFilter)))
 
 	}
 	return resultPacketFilter, err
@@ -6782,10 +6782,10 @@ func (t *PacketFilterTracer) Read(ctx context.Context, zone string, id types.ID)
 func (t *PacketFilterTracer) Update(ctx context.Context, zone string, id types.ID, updateParam *sacloud.PacketFilterUpdateRequest, originalExpressionHash string) (*sacloud.PacketFilter, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.updateParam", updateParam),
-		label.Any("libsacloud.api.arguments.originalExpressionHash", originalExpressionHash),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.updateParam", forceString(updateParam)),
+		attribute.String("libsacloud.api.arguments.originalExpressionHash", forceString(originalExpressionHash)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "PacketFilterAPI.Update", options...)
 	defer func() {
@@ -6800,7 +6800,7 @@ func (t *PacketFilterTracer) Update(ctx context.Context, zone string, id types.I
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultPacketFilter", resultPacketFilter))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultPacketFilter", forceString(resultPacketFilter)))
 
 	}
 	return resultPacketFilter, err
@@ -6810,8 +6810,8 @@ func (t *PacketFilterTracer) Update(ctx context.Context, zone string, id types.I
 func (t *PacketFilterTracer) Delete(ctx context.Context, zone string, id types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "PacketFilterAPI.Delete", options...)
 	defer func() {
@@ -6853,8 +6853,8 @@ func newPrivateHostTracer(in sacloud.PrivateHostAPI, cnf *config) sacloud.Privat
 func (t *PrivateHostTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.PrivateHostFindResult, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.conditions", conditions),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.conditions", forceString(conditions)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "PrivateHostAPI.Find", options...)
 	defer func() {
@@ -6869,7 +6869,7 @@ func (t *PrivateHostTracer) Find(ctx context.Context, zone string, conditions *s
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.result", result))
+		span.SetAttributes(attribute.String("libsacloud.api.results.result", forceString(result)))
 
 	}
 	return result, err
@@ -6879,8 +6879,8 @@ func (t *PrivateHostTracer) Find(ctx context.Context, zone string, conditions *s
 func (t *PrivateHostTracer) Create(ctx context.Context, zone string, param *sacloud.PrivateHostCreateRequest) (*sacloud.PrivateHost, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "PrivateHostAPI.Create", options...)
 	defer func() {
@@ -6895,7 +6895,7 @@ func (t *PrivateHostTracer) Create(ctx context.Context, zone string, param *sacl
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultPrivateHost", resultPrivateHost))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultPrivateHost", forceString(resultPrivateHost)))
 
 	}
 	return resultPrivateHost, err
@@ -6905,8 +6905,8 @@ func (t *PrivateHostTracer) Create(ctx context.Context, zone string, param *sacl
 func (t *PrivateHostTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.PrivateHost, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "PrivateHostAPI.Read", options...)
 	defer func() {
@@ -6921,7 +6921,7 @@ func (t *PrivateHostTracer) Read(ctx context.Context, zone string, id types.ID) 
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultPrivateHost", resultPrivateHost))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultPrivateHost", forceString(resultPrivateHost)))
 
 	}
 	return resultPrivateHost, err
@@ -6931,9 +6931,9 @@ func (t *PrivateHostTracer) Read(ctx context.Context, zone string, id types.ID) 
 func (t *PrivateHostTracer) Update(ctx context.Context, zone string, id types.ID, param *sacloud.PrivateHostUpdateRequest) (*sacloud.PrivateHost, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "PrivateHostAPI.Update", options...)
 	defer func() {
@@ -6948,7 +6948,7 @@ func (t *PrivateHostTracer) Update(ctx context.Context, zone string, id types.ID
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultPrivateHost", resultPrivateHost))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultPrivateHost", forceString(resultPrivateHost)))
 
 	}
 	return resultPrivateHost, err
@@ -6958,8 +6958,8 @@ func (t *PrivateHostTracer) Update(ctx context.Context, zone string, id types.ID
 func (t *PrivateHostTracer) Delete(ctx context.Context, zone string, id types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "PrivateHostAPI.Delete", options...)
 	defer func() {
@@ -7001,8 +7001,8 @@ func newPrivateHostPlanTracer(in sacloud.PrivateHostPlanAPI, cnf *config) saclou
 func (t *PrivateHostPlanTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.PrivateHostPlanFindResult, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.conditions", conditions),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.conditions", forceString(conditions)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "PrivateHostPlanAPI.Find", options...)
 	defer func() {
@@ -7017,7 +7017,7 @@ func (t *PrivateHostPlanTracer) Find(ctx context.Context, zone string, condition
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.result", result))
+		span.SetAttributes(attribute.String("libsacloud.api.results.result", forceString(result)))
 
 	}
 	return result, err
@@ -7027,8 +7027,8 @@ func (t *PrivateHostPlanTracer) Find(ctx context.Context, zone string, condition
 func (t *PrivateHostPlanTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.PrivateHostPlan, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "PrivateHostPlanAPI.Read", options...)
 	defer func() {
@@ -7043,7 +7043,7 @@ func (t *PrivateHostPlanTracer) Read(ctx context.Context, zone string, id types.
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultPrivateHostPlan", resultPrivateHostPlan))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultPrivateHostPlan", forceString(resultPrivateHostPlan)))
 
 	}
 	return resultPrivateHostPlan, err
@@ -7071,7 +7071,7 @@ func newProxyLBTracer(in sacloud.ProxyLBAPI, cnf *config) sacloud.ProxyLBAPI {
 func (t *ProxyLBTracer) Find(ctx context.Context, conditions *sacloud.FindCondition) (*sacloud.ProxyLBFindResult, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.conditions", conditions),
+		attribute.String("libsacloud.api.arguments.conditions", forceString(conditions)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "ProxyLBAPI.Find", options...)
 	defer func() {
@@ -7086,7 +7086,7 @@ func (t *ProxyLBTracer) Find(ctx context.Context, conditions *sacloud.FindCondit
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.result", result))
+		span.SetAttributes(attribute.String("libsacloud.api.results.result", forceString(result)))
 
 	}
 	return result, err
@@ -7096,7 +7096,7 @@ func (t *ProxyLBTracer) Find(ctx context.Context, conditions *sacloud.FindCondit
 func (t *ProxyLBTracer) Create(ctx context.Context, param *sacloud.ProxyLBCreateRequest) (*sacloud.ProxyLB, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "ProxyLBAPI.Create", options...)
 	defer func() {
@@ -7111,7 +7111,7 @@ func (t *ProxyLBTracer) Create(ctx context.Context, param *sacloud.ProxyLBCreate
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultProxyLB", resultProxyLB))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultProxyLB", forceString(resultProxyLB)))
 
 	}
 	return resultProxyLB, err
@@ -7121,7 +7121,7 @@ func (t *ProxyLBTracer) Create(ctx context.Context, param *sacloud.ProxyLBCreate
 func (t *ProxyLBTracer) Read(ctx context.Context, id types.ID) (*sacloud.ProxyLB, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "ProxyLBAPI.Read", options...)
 	defer func() {
@@ -7136,7 +7136,7 @@ func (t *ProxyLBTracer) Read(ctx context.Context, id types.ID) (*sacloud.ProxyLB
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultProxyLB", resultProxyLB))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultProxyLB", forceString(resultProxyLB)))
 
 	}
 	return resultProxyLB, err
@@ -7146,8 +7146,8 @@ func (t *ProxyLBTracer) Read(ctx context.Context, id types.ID) (*sacloud.ProxyLB
 func (t *ProxyLBTracer) Update(ctx context.Context, id types.ID, param *sacloud.ProxyLBUpdateRequest) (*sacloud.ProxyLB, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "ProxyLBAPI.Update", options...)
 	defer func() {
@@ -7162,7 +7162,7 @@ func (t *ProxyLBTracer) Update(ctx context.Context, id types.ID, param *sacloud.
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultProxyLB", resultProxyLB))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultProxyLB", forceString(resultProxyLB)))
 
 	}
 	return resultProxyLB, err
@@ -7172,8 +7172,8 @@ func (t *ProxyLBTracer) Update(ctx context.Context, id types.ID, param *sacloud.
 func (t *ProxyLBTracer) UpdateSettings(ctx context.Context, id types.ID, param *sacloud.ProxyLBUpdateSettingsRequest) (*sacloud.ProxyLB, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "ProxyLBAPI.UpdateSettings", options...)
 	defer func() {
@@ -7188,7 +7188,7 @@ func (t *ProxyLBTracer) UpdateSettings(ctx context.Context, id types.ID, param *
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultProxyLB", resultProxyLB))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultProxyLB", forceString(resultProxyLB)))
 
 	}
 	return resultProxyLB, err
@@ -7198,7 +7198,7 @@ func (t *ProxyLBTracer) UpdateSettings(ctx context.Context, id types.ID, param *
 func (t *ProxyLBTracer) Delete(ctx context.Context, id types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "ProxyLBAPI.Delete", options...)
 	defer func() {
@@ -7222,8 +7222,8 @@ func (t *ProxyLBTracer) Delete(ctx context.Context, id types.ID) error {
 func (t *ProxyLBTracer) ChangePlan(ctx context.Context, id types.ID, param *sacloud.ProxyLBChangePlanRequest) (*sacloud.ProxyLB, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "ProxyLBAPI.ChangePlan", options...)
 	defer func() {
@@ -7238,7 +7238,7 @@ func (t *ProxyLBTracer) ChangePlan(ctx context.Context, id types.ID, param *sacl
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultProxyLB", resultProxyLB))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultProxyLB", forceString(resultProxyLB)))
 
 	}
 	return resultProxyLB, err
@@ -7248,7 +7248,7 @@ func (t *ProxyLBTracer) ChangePlan(ctx context.Context, id types.ID, param *sacl
 func (t *ProxyLBTracer) GetCertificates(ctx context.Context, id types.ID) (*sacloud.ProxyLBCertificates, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "ProxyLBAPI.GetCertificates", options...)
 	defer func() {
@@ -7263,7 +7263,7 @@ func (t *ProxyLBTracer) GetCertificates(ctx context.Context, id types.ID) (*sacl
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultProxyLBCertificates", resultProxyLBCertificates))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultProxyLBCertificates", forceString(resultProxyLBCertificates)))
 
 	}
 	return resultProxyLBCertificates, err
@@ -7273,8 +7273,8 @@ func (t *ProxyLBTracer) GetCertificates(ctx context.Context, id types.ID) (*sacl
 func (t *ProxyLBTracer) SetCertificates(ctx context.Context, id types.ID, param *sacloud.ProxyLBSetCertificatesRequest) (*sacloud.ProxyLBCertificates, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "ProxyLBAPI.SetCertificates", options...)
 	defer func() {
@@ -7289,7 +7289,7 @@ func (t *ProxyLBTracer) SetCertificates(ctx context.Context, id types.ID, param 
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultProxyLBCertificates", resultProxyLBCertificates))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultProxyLBCertificates", forceString(resultProxyLBCertificates)))
 
 	}
 	return resultProxyLBCertificates, err
@@ -7299,7 +7299,7 @@ func (t *ProxyLBTracer) SetCertificates(ctx context.Context, id types.ID, param 
 func (t *ProxyLBTracer) DeleteCertificates(ctx context.Context, id types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "ProxyLBAPI.DeleteCertificates", options...)
 	defer func() {
@@ -7323,7 +7323,7 @@ func (t *ProxyLBTracer) DeleteCertificates(ctx context.Context, id types.ID) err
 func (t *ProxyLBTracer) RenewLetsEncryptCert(ctx context.Context, id types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "ProxyLBAPI.RenewLetsEncryptCert", options...)
 	defer func() {
@@ -7347,7 +7347,7 @@ func (t *ProxyLBTracer) RenewLetsEncryptCert(ctx context.Context, id types.ID) e
 func (t *ProxyLBTracer) HealthStatus(ctx context.Context, id types.ID) (*sacloud.ProxyLBHealth, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "ProxyLBAPI.HealthStatus", options...)
 	defer func() {
@@ -7362,7 +7362,7 @@ func (t *ProxyLBTracer) HealthStatus(ctx context.Context, id types.ID) (*sacloud
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultProxyLBHealth", resultProxyLBHealth))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultProxyLBHealth", forceString(resultProxyLBHealth)))
 
 	}
 	return resultProxyLBHealth, err
@@ -7372,8 +7372,8 @@ func (t *ProxyLBTracer) HealthStatus(ctx context.Context, id types.ID) (*sacloud
 func (t *ProxyLBTracer) MonitorConnection(ctx context.Context, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.ConnectionActivity, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.condition", condition),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.condition", forceString(condition)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "ProxyLBAPI.MonitorConnection", options...)
 	defer func() {
@@ -7388,7 +7388,7 @@ func (t *ProxyLBTracer) MonitorConnection(ctx context.Context, id types.ID, cond
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultConnectionActivity", resultConnectionActivity))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultConnectionActivity", forceString(resultConnectionActivity)))
 
 	}
 	return resultConnectionActivity, err
@@ -7416,7 +7416,7 @@ func newRegionTracer(in sacloud.RegionAPI, cnf *config) sacloud.RegionAPI {
 func (t *RegionTracer) Find(ctx context.Context, conditions *sacloud.FindCondition) (*sacloud.RegionFindResult, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.conditions", conditions),
+		attribute.String("libsacloud.api.arguments.conditions", forceString(conditions)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "RegionAPI.Find", options...)
 	defer func() {
@@ -7431,7 +7431,7 @@ func (t *RegionTracer) Find(ctx context.Context, conditions *sacloud.FindConditi
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.result", result))
+		span.SetAttributes(attribute.String("libsacloud.api.results.result", forceString(result)))
 
 	}
 	return result, err
@@ -7441,7 +7441,7 @@ func (t *RegionTracer) Find(ctx context.Context, conditions *sacloud.FindConditi
 func (t *RegionTracer) Read(ctx context.Context, id types.ID) (*sacloud.Region, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "RegionAPI.Read", options...)
 	defer func() {
@@ -7456,7 +7456,7 @@ func (t *RegionTracer) Read(ctx context.Context, id types.ID) (*sacloud.Region, 
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultRegion", resultRegion))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultRegion", forceString(resultRegion)))
 
 	}
 	return resultRegion, err
@@ -7484,8 +7484,8 @@ func newServerTracer(in sacloud.ServerAPI, cnf *config) sacloud.ServerAPI {
 func (t *ServerTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.ServerFindResult, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.conditions", conditions),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.conditions", forceString(conditions)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "ServerAPI.Find", options...)
 	defer func() {
@@ -7500,7 +7500,7 @@ func (t *ServerTracer) Find(ctx context.Context, zone string, conditions *saclou
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.result", result))
+		span.SetAttributes(attribute.String("libsacloud.api.results.result", forceString(result)))
 
 	}
 	return result, err
@@ -7510,8 +7510,8 @@ func (t *ServerTracer) Find(ctx context.Context, zone string, conditions *saclou
 func (t *ServerTracer) Create(ctx context.Context, zone string, param *sacloud.ServerCreateRequest) (*sacloud.Server, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "ServerAPI.Create", options...)
 	defer func() {
@@ -7526,7 +7526,7 @@ func (t *ServerTracer) Create(ctx context.Context, zone string, param *sacloud.S
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultServer", resultServer))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultServer", forceString(resultServer)))
 
 	}
 	return resultServer, err
@@ -7536,8 +7536,8 @@ func (t *ServerTracer) Create(ctx context.Context, zone string, param *sacloud.S
 func (t *ServerTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Server, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "ServerAPI.Read", options...)
 	defer func() {
@@ -7552,7 +7552,7 @@ func (t *ServerTracer) Read(ctx context.Context, zone string, id types.ID) (*sac
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultServer", resultServer))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultServer", forceString(resultServer)))
 
 	}
 	return resultServer, err
@@ -7562,9 +7562,9 @@ func (t *ServerTracer) Read(ctx context.Context, zone string, id types.ID) (*sac
 func (t *ServerTracer) Update(ctx context.Context, zone string, id types.ID, param *sacloud.ServerUpdateRequest) (*sacloud.Server, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "ServerAPI.Update", options...)
 	defer func() {
@@ -7579,7 +7579,7 @@ func (t *ServerTracer) Update(ctx context.Context, zone string, id types.ID, par
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultServer", resultServer))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultServer", forceString(resultServer)))
 
 	}
 	return resultServer, err
@@ -7589,8 +7589,8 @@ func (t *ServerTracer) Update(ctx context.Context, zone string, id types.ID, par
 func (t *ServerTracer) Delete(ctx context.Context, zone string, id types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "ServerAPI.Delete", options...)
 	defer func() {
@@ -7614,9 +7614,9 @@ func (t *ServerTracer) Delete(ctx context.Context, zone string, id types.ID) err
 func (t *ServerTracer) DeleteWithDisks(ctx context.Context, zone string, id types.ID, disks *sacloud.ServerDeleteWithDisksRequest) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.disks", disks),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.disks", forceString(disks)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "ServerAPI.DeleteWithDisks", options...)
 	defer func() {
@@ -7640,9 +7640,9 @@ func (t *ServerTracer) DeleteWithDisks(ctx context.Context, zone string, id type
 func (t *ServerTracer) ChangePlan(ctx context.Context, zone string, id types.ID, plan *sacloud.ServerChangePlanRequest) (*sacloud.Server, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.plan", plan),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.plan", forceString(plan)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "ServerAPI.ChangePlan", options...)
 	defer func() {
@@ -7657,7 +7657,7 @@ func (t *ServerTracer) ChangePlan(ctx context.Context, zone string, id types.ID,
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultServer", resultServer))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultServer", forceString(resultServer)))
 
 	}
 	return resultServer, err
@@ -7667,9 +7667,9 @@ func (t *ServerTracer) ChangePlan(ctx context.Context, zone string, id types.ID,
 func (t *ServerTracer) InsertCDROM(ctx context.Context, zone string, id types.ID, insertParam *sacloud.InsertCDROMRequest) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.insertParam", insertParam),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.insertParam", forceString(insertParam)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "ServerAPI.InsertCDROM", options...)
 	defer func() {
@@ -7693,9 +7693,9 @@ func (t *ServerTracer) InsertCDROM(ctx context.Context, zone string, id types.ID
 func (t *ServerTracer) EjectCDROM(ctx context.Context, zone string, id types.ID, ejectParam *sacloud.EjectCDROMRequest) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.ejectParam", ejectParam),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.ejectParam", forceString(ejectParam)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "ServerAPI.EjectCDROM", options...)
 	defer func() {
@@ -7719,8 +7719,8 @@ func (t *ServerTracer) EjectCDROM(ctx context.Context, zone string, id types.ID,
 func (t *ServerTracer) Boot(ctx context.Context, zone string, id types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "ServerAPI.Boot", options...)
 	defer func() {
@@ -7744,9 +7744,9 @@ func (t *ServerTracer) Boot(ctx context.Context, zone string, id types.ID) error
 func (t *ServerTracer) Shutdown(ctx context.Context, zone string, id types.ID, shutdownOption *sacloud.ShutdownOption) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.shutdownOption", shutdownOption),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.shutdownOption", forceString(shutdownOption)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "ServerAPI.Shutdown", options...)
 	defer func() {
@@ -7770,8 +7770,8 @@ func (t *ServerTracer) Shutdown(ctx context.Context, zone string, id types.ID, s
 func (t *ServerTracer) Reset(ctx context.Context, zone string, id types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "ServerAPI.Reset", options...)
 	defer func() {
@@ -7795,9 +7795,9 @@ func (t *ServerTracer) Reset(ctx context.Context, zone string, id types.ID) erro
 func (t *ServerTracer) BootWithVariables(ctx context.Context, zone string, id types.ID, param *sacloud.ServerBootVariables) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "ServerAPI.BootWithVariables", options...)
 	defer func() {
@@ -7821,9 +7821,9 @@ func (t *ServerTracer) BootWithVariables(ctx context.Context, zone string, id ty
 func (t *ServerTracer) SendKey(ctx context.Context, zone string, id types.ID, keyboardParam *sacloud.SendKeyRequest) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.keyboardParam", keyboardParam),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.keyboardParam", forceString(keyboardParam)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "ServerAPI.SendKey", options...)
 	defer func() {
@@ -7847,8 +7847,8 @@ func (t *ServerTracer) SendKey(ctx context.Context, zone string, id types.ID, ke
 func (t *ServerTracer) SendNMI(ctx context.Context, zone string, id types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "ServerAPI.SendNMI", options...)
 	defer func() {
@@ -7872,8 +7872,8 @@ func (t *ServerTracer) SendNMI(ctx context.Context, zone string, id types.ID) er
 func (t *ServerTracer) GetVNCProxy(ctx context.Context, zone string, id types.ID) (*sacloud.VNCProxyInfo, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "ServerAPI.GetVNCProxy", options...)
 	defer func() {
@@ -7888,7 +7888,7 @@ func (t *ServerTracer) GetVNCProxy(ctx context.Context, zone string, id types.ID
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultVNCProxyInfo", resultVNCProxyInfo))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultVNCProxyInfo", forceString(resultVNCProxyInfo)))
 
 	}
 	return resultVNCProxyInfo, err
@@ -7898,9 +7898,9 @@ func (t *ServerTracer) GetVNCProxy(ctx context.Context, zone string, id types.ID
 func (t *ServerTracer) Monitor(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.CPUTimeActivity, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.condition", condition),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.condition", forceString(condition)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "ServerAPI.Monitor", options...)
 	defer func() {
@@ -7915,7 +7915,7 @@ func (t *ServerTracer) Monitor(ctx context.Context, zone string, id types.ID, co
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultCPUTimeActivity", resultCPUTimeActivity))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultCPUTimeActivity", forceString(resultCPUTimeActivity)))
 
 	}
 	return resultCPUTimeActivity, err
@@ -7925,9 +7925,9 @@ func (t *ServerTracer) Monitor(ctx context.Context, zone string, id types.ID, co
 func (t *ServerTracer) MonitorCPU(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.CPUTimeActivity, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.condition", condition),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.condition", forceString(condition)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "ServerAPI.MonitorCPU", options...)
 	defer func() {
@@ -7942,7 +7942,7 @@ func (t *ServerTracer) MonitorCPU(ctx context.Context, zone string, id types.ID,
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultCPUTimeActivity", resultCPUTimeActivity))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultCPUTimeActivity", forceString(resultCPUTimeActivity)))
 
 	}
 	return resultCPUTimeActivity, err
@@ -7970,8 +7970,8 @@ func newServerPlanTracer(in sacloud.ServerPlanAPI, cnf *config) sacloud.ServerPl
 func (t *ServerPlanTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.ServerPlanFindResult, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.conditions", conditions),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.conditions", forceString(conditions)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "ServerPlanAPI.Find", options...)
 	defer func() {
@@ -7986,7 +7986,7 @@ func (t *ServerPlanTracer) Find(ctx context.Context, zone string, conditions *sa
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.result", result))
+		span.SetAttributes(attribute.String("libsacloud.api.results.result", forceString(result)))
 
 	}
 	return result, err
@@ -7996,8 +7996,8 @@ func (t *ServerPlanTracer) Find(ctx context.Context, zone string, conditions *sa
 func (t *ServerPlanTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.ServerPlan, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "ServerPlanAPI.Read", options...)
 	defer func() {
@@ -8012,7 +8012,7 @@ func (t *ServerPlanTracer) Read(ctx context.Context, zone string, id types.ID) (
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultServerPlan", resultServerPlan))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultServerPlan", forceString(resultServerPlan)))
 
 	}
 	return resultServerPlan, err
@@ -8040,8 +8040,8 @@ func newServiceClassTracer(in sacloud.ServiceClassAPI, cnf *config) sacloud.Serv
 func (t *ServiceClassTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.ServiceClassFindResult, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.conditions", conditions),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.conditions", forceString(conditions)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "ServiceClassAPI.Find", options...)
 	defer func() {
@@ -8056,7 +8056,7 @@ func (t *ServiceClassTracer) Find(ctx context.Context, zone string, conditions *
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.result", result))
+		span.SetAttributes(attribute.String("libsacloud.api.results.result", forceString(result)))
 
 	}
 	return result, err
@@ -8084,7 +8084,7 @@ func newSIMTracer(in sacloud.SIMAPI, cnf *config) sacloud.SIMAPI {
 func (t *SIMTracer) Find(ctx context.Context, conditions *sacloud.FindCondition) (*sacloud.SIMFindResult, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.conditions", conditions),
+		attribute.String("libsacloud.api.arguments.conditions", forceString(conditions)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "SIMAPI.Find", options...)
 	defer func() {
@@ -8099,7 +8099,7 @@ func (t *SIMTracer) Find(ctx context.Context, conditions *sacloud.FindCondition)
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.result", result))
+		span.SetAttributes(attribute.String("libsacloud.api.results.result", forceString(result)))
 
 	}
 	return result, err
@@ -8109,7 +8109,7 @@ func (t *SIMTracer) Find(ctx context.Context, conditions *sacloud.FindCondition)
 func (t *SIMTracer) Create(ctx context.Context, param *sacloud.SIMCreateRequest) (*sacloud.SIM, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "SIMAPI.Create", options...)
 	defer func() {
@@ -8124,7 +8124,7 @@ func (t *SIMTracer) Create(ctx context.Context, param *sacloud.SIMCreateRequest)
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultSIM", resultSIM))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultSIM", forceString(resultSIM)))
 
 	}
 	return resultSIM, err
@@ -8134,7 +8134,7 @@ func (t *SIMTracer) Create(ctx context.Context, param *sacloud.SIMCreateRequest)
 func (t *SIMTracer) Read(ctx context.Context, id types.ID) (*sacloud.SIM, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "SIMAPI.Read", options...)
 	defer func() {
@@ -8149,7 +8149,7 @@ func (t *SIMTracer) Read(ctx context.Context, id types.ID) (*sacloud.SIM, error)
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultSIM", resultSIM))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultSIM", forceString(resultSIM)))
 
 	}
 	return resultSIM, err
@@ -8159,8 +8159,8 @@ func (t *SIMTracer) Read(ctx context.Context, id types.ID) (*sacloud.SIM, error)
 func (t *SIMTracer) Update(ctx context.Context, id types.ID, param *sacloud.SIMUpdateRequest) (*sacloud.SIM, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "SIMAPI.Update", options...)
 	defer func() {
@@ -8175,7 +8175,7 @@ func (t *SIMTracer) Update(ctx context.Context, id types.ID, param *sacloud.SIMU
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultSIM", resultSIM))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultSIM", forceString(resultSIM)))
 
 	}
 	return resultSIM, err
@@ -8185,7 +8185,7 @@ func (t *SIMTracer) Update(ctx context.Context, id types.ID, param *sacloud.SIMU
 func (t *SIMTracer) Delete(ctx context.Context, id types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "SIMAPI.Delete", options...)
 	defer func() {
@@ -8209,7 +8209,7 @@ func (t *SIMTracer) Delete(ctx context.Context, id types.ID) error {
 func (t *SIMTracer) Activate(ctx context.Context, id types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "SIMAPI.Activate", options...)
 	defer func() {
@@ -8233,7 +8233,7 @@ func (t *SIMTracer) Activate(ctx context.Context, id types.ID) error {
 func (t *SIMTracer) Deactivate(ctx context.Context, id types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "SIMAPI.Deactivate", options...)
 	defer func() {
@@ -8257,8 +8257,8 @@ func (t *SIMTracer) Deactivate(ctx context.Context, id types.ID) error {
 func (t *SIMTracer) AssignIP(ctx context.Context, id types.ID, param *sacloud.SIMAssignIPRequest) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "SIMAPI.AssignIP", options...)
 	defer func() {
@@ -8282,7 +8282,7 @@ func (t *SIMTracer) AssignIP(ctx context.Context, id types.ID, param *sacloud.SI
 func (t *SIMTracer) ClearIP(ctx context.Context, id types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "SIMAPI.ClearIP", options...)
 	defer func() {
@@ -8306,8 +8306,8 @@ func (t *SIMTracer) ClearIP(ctx context.Context, id types.ID) error {
 func (t *SIMTracer) IMEILock(ctx context.Context, id types.ID, param *sacloud.SIMIMEILockRequest) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "SIMAPI.IMEILock", options...)
 	defer func() {
@@ -8331,7 +8331,7 @@ func (t *SIMTracer) IMEILock(ctx context.Context, id types.ID, param *sacloud.SI
 func (t *SIMTracer) IMEIUnlock(ctx context.Context, id types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "SIMAPI.IMEIUnlock", options...)
 	defer func() {
@@ -8355,7 +8355,7 @@ func (t *SIMTracer) IMEIUnlock(ctx context.Context, id types.ID) error {
 func (t *SIMTracer) Logs(ctx context.Context, id types.ID) (*sacloud.SIMLogsResult, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "SIMAPI.Logs", options...)
 	defer func() {
@@ -8370,7 +8370,7 @@ func (t *SIMTracer) Logs(ctx context.Context, id types.ID) (*sacloud.SIMLogsResu
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.result", result))
+		span.SetAttributes(attribute.String("libsacloud.api.results.result", forceString(result)))
 
 	}
 	return result, err
@@ -8380,7 +8380,7 @@ func (t *SIMTracer) Logs(ctx context.Context, id types.ID) (*sacloud.SIMLogsResu
 func (t *SIMTracer) GetNetworkOperator(ctx context.Context, id types.ID) ([]*sacloud.SIMNetworkOperatorConfig, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "SIMAPI.GetNetworkOperator", options...)
 	defer func() {
@@ -8395,7 +8395,7 @@ func (t *SIMTracer) GetNetworkOperator(ctx context.Context, id types.ID) ([]*sac
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultConfigs", resultConfigs))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultConfigs", forceString(resultConfigs)))
 
 	}
 	return resultConfigs, err
@@ -8405,8 +8405,8 @@ func (t *SIMTracer) GetNetworkOperator(ctx context.Context, id types.ID) ([]*sac
 func (t *SIMTracer) SetNetworkOperator(ctx context.Context, id types.ID, configs []*sacloud.SIMNetworkOperatorConfig) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.configs", configs),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.configs", forceString(configs)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "SIMAPI.SetNetworkOperator", options...)
 	defer func() {
@@ -8430,8 +8430,8 @@ func (t *SIMTracer) SetNetworkOperator(ctx context.Context, id types.ID, configs
 func (t *SIMTracer) MonitorSIM(ctx context.Context, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.LinkActivity, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.condition", condition),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.condition", forceString(condition)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "SIMAPI.MonitorSIM", options...)
 	defer func() {
@@ -8446,7 +8446,7 @@ func (t *SIMTracer) MonitorSIM(ctx context.Context, id types.ID, condition *sacl
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultLinkActivity", resultLinkActivity))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultLinkActivity", forceString(resultLinkActivity)))
 
 	}
 	return resultLinkActivity, err
@@ -8456,7 +8456,7 @@ func (t *SIMTracer) MonitorSIM(ctx context.Context, id types.ID, condition *sacl
 func (t *SIMTracer) Status(ctx context.Context, id types.ID) (*sacloud.SIMInfo, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "SIMAPI.Status", options...)
 	defer func() {
@@ -8471,7 +8471,7 @@ func (t *SIMTracer) Status(ctx context.Context, id types.ID) (*sacloud.SIMInfo, 
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultSIM", resultSIM))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultSIM", forceString(resultSIM)))
 
 	}
 	return resultSIM, err
@@ -8499,7 +8499,7 @@ func newSimpleMonitorTracer(in sacloud.SimpleMonitorAPI, cnf *config) sacloud.Si
 func (t *SimpleMonitorTracer) Find(ctx context.Context, conditions *sacloud.FindCondition) (*sacloud.SimpleMonitorFindResult, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.conditions", conditions),
+		attribute.String("libsacloud.api.arguments.conditions", forceString(conditions)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "SimpleMonitorAPI.Find", options...)
 	defer func() {
@@ -8514,7 +8514,7 @@ func (t *SimpleMonitorTracer) Find(ctx context.Context, conditions *sacloud.Find
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.result", result))
+		span.SetAttributes(attribute.String("libsacloud.api.results.result", forceString(result)))
 
 	}
 	return result, err
@@ -8524,7 +8524,7 @@ func (t *SimpleMonitorTracer) Find(ctx context.Context, conditions *sacloud.Find
 func (t *SimpleMonitorTracer) Create(ctx context.Context, param *sacloud.SimpleMonitorCreateRequest) (*sacloud.SimpleMonitor, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "SimpleMonitorAPI.Create", options...)
 	defer func() {
@@ -8539,7 +8539,7 @@ func (t *SimpleMonitorTracer) Create(ctx context.Context, param *sacloud.SimpleM
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultSimpleMonitor", resultSimpleMonitor))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultSimpleMonitor", forceString(resultSimpleMonitor)))
 
 	}
 	return resultSimpleMonitor, err
@@ -8549,7 +8549,7 @@ func (t *SimpleMonitorTracer) Create(ctx context.Context, param *sacloud.SimpleM
 func (t *SimpleMonitorTracer) Read(ctx context.Context, id types.ID) (*sacloud.SimpleMonitor, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "SimpleMonitorAPI.Read", options...)
 	defer func() {
@@ -8564,7 +8564,7 @@ func (t *SimpleMonitorTracer) Read(ctx context.Context, id types.ID) (*sacloud.S
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultSimpleMonitor", resultSimpleMonitor))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultSimpleMonitor", forceString(resultSimpleMonitor)))
 
 	}
 	return resultSimpleMonitor, err
@@ -8574,8 +8574,8 @@ func (t *SimpleMonitorTracer) Read(ctx context.Context, id types.ID) (*sacloud.S
 func (t *SimpleMonitorTracer) Update(ctx context.Context, id types.ID, param *sacloud.SimpleMonitorUpdateRequest) (*sacloud.SimpleMonitor, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "SimpleMonitorAPI.Update", options...)
 	defer func() {
@@ -8590,7 +8590,7 @@ func (t *SimpleMonitorTracer) Update(ctx context.Context, id types.ID, param *sa
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultSimpleMonitor", resultSimpleMonitor))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultSimpleMonitor", forceString(resultSimpleMonitor)))
 
 	}
 	return resultSimpleMonitor, err
@@ -8600,8 +8600,8 @@ func (t *SimpleMonitorTracer) Update(ctx context.Context, id types.ID, param *sa
 func (t *SimpleMonitorTracer) UpdateSettings(ctx context.Context, id types.ID, param *sacloud.SimpleMonitorUpdateSettingsRequest) (*sacloud.SimpleMonitor, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "SimpleMonitorAPI.UpdateSettings", options...)
 	defer func() {
@@ -8616,7 +8616,7 @@ func (t *SimpleMonitorTracer) UpdateSettings(ctx context.Context, id types.ID, p
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultSimpleMonitor", resultSimpleMonitor))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultSimpleMonitor", forceString(resultSimpleMonitor)))
 
 	}
 	return resultSimpleMonitor, err
@@ -8626,7 +8626,7 @@ func (t *SimpleMonitorTracer) UpdateSettings(ctx context.Context, id types.ID, p
 func (t *SimpleMonitorTracer) Delete(ctx context.Context, id types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "SimpleMonitorAPI.Delete", options...)
 	defer func() {
@@ -8650,8 +8650,8 @@ func (t *SimpleMonitorTracer) Delete(ctx context.Context, id types.ID) error {
 func (t *SimpleMonitorTracer) MonitorResponseTime(ctx context.Context, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.ResponseTimeSecActivity, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.condition", condition),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.condition", forceString(condition)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "SimpleMonitorAPI.MonitorResponseTime", options...)
 	defer func() {
@@ -8666,7 +8666,7 @@ func (t *SimpleMonitorTracer) MonitorResponseTime(ctx context.Context, id types.
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultResponseTimeSecActivity", resultResponseTimeSecActivity))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultResponseTimeSecActivity", forceString(resultResponseTimeSecActivity)))
 
 	}
 	return resultResponseTimeSecActivity, err
@@ -8676,7 +8676,7 @@ func (t *SimpleMonitorTracer) MonitorResponseTime(ctx context.Context, id types.
 func (t *SimpleMonitorTracer) HealthStatus(ctx context.Context, id types.ID) (*sacloud.SimpleMonitorHealthStatus, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "SimpleMonitorAPI.HealthStatus", options...)
 	defer func() {
@@ -8691,7 +8691,7 @@ func (t *SimpleMonitorTracer) HealthStatus(ctx context.Context, id types.ID) (*s
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultSimpleMonitorHealthStatus", resultSimpleMonitorHealthStatus))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultSimpleMonitorHealthStatus", forceString(resultSimpleMonitorHealthStatus)))
 
 	}
 	return resultSimpleMonitorHealthStatus, err
@@ -8719,7 +8719,7 @@ func newSSHKeyTracer(in sacloud.SSHKeyAPI, cnf *config) sacloud.SSHKeyAPI {
 func (t *SSHKeyTracer) Find(ctx context.Context, conditions *sacloud.FindCondition) (*sacloud.SSHKeyFindResult, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.conditions", conditions),
+		attribute.String("libsacloud.api.arguments.conditions", forceString(conditions)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "SSHKeyAPI.Find", options...)
 	defer func() {
@@ -8734,7 +8734,7 @@ func (t *SSHKeyTracer) Find(ctx context.Context, conditions *sacloud.FindConditi
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.result", result))
+		span.SetAttributes(attribute.String("libsacloud.api.results.result", forceString(result)))
 
 	}
 	return result, err
@@ -8744,7 +8744,7 @@ func (t *SSHKeyTracer) Find(ctx context.Context, conditions *sacloud.FindConditi
 func (t *SSHKeyTracer) Create(ctx context.Context, param *sacloud.SSHKeyCreateRequest) (*sacloud.SSHKey, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "SSHKeyAPI.Create", options...)
 	defer func() {
@@ -8759,7 +8759,7 @@ func (t *SSHKeyTracer) Create(ctx context.Context, param *sacloud.SSHKeyCreateRe
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultSSHKey", resultSSHKey))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultSSHKey", forceString(resultSSHKey)))
 
 	}
 	return resultSSHKey, err
@@ -8769,7 +8769,7 @@ func (t *SSHKeyTracer) Create(ctx context.Context, param *sacloud.SSHKeyCreateRe
 func (t *SSHKeyTracer) Generate(ctx context.Context, param *sacloud.SSHKeyGenerateRequest) (*sacloud.SSHKeyGenerated, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "SSHKeyAPI.Generate", options...)
 	defer func() {
@@ -8784,7 +8784,7 @@ func (t *SSHKeyTracer) Generate(ctx context.Context, param *sacloud.SSHKeyGenera
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultSSHKeyGenerated", resultSSHKeyGenerated))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultSSHKeyGenerated", forceString(resultSSHKeyGenerated)))
 
 	}
 	return resultSSHKeyGenerated, err
@@ -8794,7 +8794,7 @@ func (t *SSHKeyTracer) Generate(ctx context.Context, param *sacloud.SSHKeyGenera
 func (t *SSHKeyTracer) Read(ctx context.Context, id types.ID) (*sacloud.SSHKey, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "SSHKeyAPI.Read", options...)
 	defer func() {
@@ -8809,7 +8809,7 @@ func (t *SSHKeyTracer) Read(ctx context.Context, id types.ID) (*sacloud.SSHKey, 
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultSSHKey", resultSSHKey))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultSSHKey", forceString(resultSSHKey)))
 
 	}
 	return resultSSHKey, err
@@ -8819,8 +8819,8 @@ func (t *SSHKeyTracer) Read(ctx context.Context, id types.ID) (*sacloud.SSHKey, 
 func (t *SSHKeyTracer) Update(ctx context.Context, id types.ID, param *sacloud.SSHKeyUpdateRequest) (*sacloud.SSHKey, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "SSHKeyAPI.Update", options...)
 	defer func() {
@@ -8835,7 +8835,7 @@ func (t *SSHKeyTracer) Update(ctx context.Context, id types.ID, param *sacloud.S
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultSSHKey", resultSSHKey))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultSSHKey", forceString(resultSSHKey)))
 
 	}
 	return resultSSHKey, err
@@ -8845,7 +8845,7 @@ func (t *SSHKeyTracer) Update(ctx context.Context, id types.ID, param *sacloud.S
 func (t *SSHKeyTracer) Delete(ctx context.Context, id types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "SSHKeyAPI.Delete", options...)
 	defer func() {
@@ -8887,8 +8887,8 @@ func newSubnetTracer(in sacloud.SubnetAPI, cnf *config) sacloud.SubnetAPI {
 func (t *SubnetTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.SubnetFindResult, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.conditions", conditions),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.conditions", forceString(conditions)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "SubnetAPI.Find", options...)
 	defer func() {
@@ -8903,7 +8903,7 @@ func (t *SubnetTracer) Find(ctx context.Context, zone string, conditions *saclou
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.result", result))
+		span.SetAttributes(attribute.String("libsacloud.api.results.result", forceString(result)))
 
 	}
 	return result, err
@@ -8913,8 +8913,8 @@ func (t *SubnetTracer) Find(ctx context.Context, zone string, conditions *saclou
 func (t *SubnetTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Subnet, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "SubnetAPI.Read", options...)
 	defer func() {
@@ -8929,7 +8929,7 @@ func (t *SubnetTracer) Read(ctx context.Context, zone string, id types.ID) (*sac
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultSubnet", resultSubnet))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultSubnet", forceString(resultSubnet)))
 
 	}
 	return resultSubnet, err
@@ -8957,8 +8957,8 @@ func newSwitchTracer(in sacloud.SwitchAPI, cnf *config) sacloud.SwitchAPI {
 func (t *SwitchTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.SwitchFindResult, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.conditions", conditions),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.conditions", forceString(conditions)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "SwitchAPI.Find", options...)
 	defer func() {
@@ -8973,7 +8973,7 @@ func (t *SwitchTracer) Find(ctx context.Context, zone string, conditions *saclou
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.result", result))
+		span.SetAttributes(attribute.String("libsacloud.api.results.result", forceString(result)))
 
 	}
 	return result, err
@@ -8983,8 +8983,8 @@ func (t *SwitchTracer) Find(ctx context.Context, zone string, conditions *saclou
 func (t *SwitchTracer) Create(ctx context.Context, zone string, param *sacloud.SwitchCreateRequest) (*sacloud.Switch, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "SwitchAPI.Create", options...)
 	defer func() {
@@ -8999,7 +8999,7 @@ func (t *SwitchTracer) Create(ctx context.Context, zone string, param *sacloud.S
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultSwitch", resultSwitch))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultSwitch", forceString(resultSwitch)))
 
 	}
 	return resultSwitch, err
@@ -9009,8 +9009,8 @@ func (t *SwitchTracer) Create(ctx context.Context, zone string, param *sacloud.S
 func (t *SwitchTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.Switch, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "SwitchAPI.Read", options...)
 	defer func() {
@@ -9025,7 +9025,7 @@ func (t *SwitchTracer) Read(ctx context.Context, zone string, id types.ID) (*sac
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultSwitch", resultSwitch))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultSwitch", forceString(resultSwitch)))
 
 	}
 	return resultSwitch, err
@@ -9035,9 +9035,9 @@ func (t *SwitchTracer) Read(ctx context.Context, zone string, id types.ID) (*sac
 func (t *SwitchTracer) Update(ctx context.Context, zone string, id types.ID, param *sacloud.SwitchUpdateRequest) (*sacloud.Switch, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "SwitchAPI.Update", options...)
 	defer func() {
@@ -9052,7 +9052,7 @@ func (t *SwitchTracer) Update(ctx context.Context, zone string, id types.ID, par
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultSwitch", resultSwitch))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultSwitch", forceString(resultSwitch)))
 
 	}
 	return resultSwitch, err
@@ -9062,8 +9062,8 @@ func (t *SwitchTracer) Update(ctx context.Context, zone string, id types.ID, par
 func (t *SwitchTracer) Delete(ctx context.Context, zone string, id types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "SwitchAPI.Delete", options...)
 	defer func() {
@@ -9087,9 +9087,9 @@ func (t *SwitchTracer) Delete(ctx context.Context, zone string, id types.ID) err
 func (t *SwitchTracer) ConnectToBridge(ctx context.Context, zone string, id types.ID, bridgeID types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.bridgeID", bridgeID),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.bridgeID", forceString(bridgeID)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "SwitchAPI.ConnectToBridge", options...)
 	defer func() {
@@ -9113,8 +9113,8 @@ func (t *SwitchTracer) ConnectToBridge(ctx context.Context, zone string, id type
 func (t *SwitchTracer) DisconnectFromBridge(ctx context.Context, zone string, id types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "SwitchAPI.DisconnectFromBridge", options...)
 	defer func() {
@@ -9138,8 +9138,8 @@ func (t *SwitchTracer) DisconnectFromBridge(ctx context.Context, zone string, id
 func (t *SwitchTracer) GetServers(ctx context.Context, zone string, id types.ID) (*sacloud.SwitchGetServersResult, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "SwitchAPI.GetServers", options...)
 	defer func() {
@@ -9154,7 +9154,7 @@ func (t *SwitchTracer) GetServers(ctx context.Context, zone string, id types.ID)
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.result", result))
+		span.SetAttributes(attribute.String("libsacloud.api.results.result", forceString(result)))
 
 	}
 	return result, err
@@ -9182,8 +9182,8 @@ func newVPCRouterTracer(in sacloud.VPCRouterAPI, cnf *config) sacloud.VPCRouterA
 func (t *VPCRouterTracer) Find(ctx context.Context, zone string, conditions *sacloud.FindCondition) (*sacloud.VPCRouterFindResult, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.conditions", conditions),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.conditions", forceString(conditions)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "VPCRouterAPI.Find", options...)
 	defer func() {
@@ -9198,7 +9198,7 @@ func (t *VPCRouterTracer) Find(ctx context.Context, zone string, conditions *sac
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.result", result))
+		span.SetAttributes(attribute.String("libsacloud.api.results.result", forceString(result)))
 
 	}
 	return result, err
@@ -9208,8 +9208,8 @@ func (t *VPCRouterTracer) Find(ctx context.Context, zone string, conditions *sac
 func (t *VPCRouterTracer) Create(ctx context.Context, zone string, param *sacloud.VPCRouterCreateRequest) (*sacloud.VPCRouter, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "VPCRouterAPI.Create", options...)
 	defer func() {
@@ -9224,7 +9224,7 @@ func (t *VPCRouterTracer) Create(ctx context.Context, zone string, param *saclou
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultVPCRouter", resultVPCRouter))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultVPCRouter", forceString(resultVPCRouter)))
 
 	}
 	return resultVPCRouter, err
@@ -9234,8 +9234,8 @@ func (t *VPCRouterTracer) Create(ctx context.Context, zone string, param *saclou
 func (t *VPCRouterTracer) Read(ctx context.Context, zone string, id types.ID) (*sacloud.VPCRouter, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "VPCRouterAPI.Read", options...)
 	defer func() {
@@ -9250,7 +9250,7 @@ func (t *VPCRouterTracer) Read(ctx context.Context, zone string, id types.ID) (*
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultVPCRouter", resultVPCRouter))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultVPCRouter", forceString(resultVPCRouter)))
 
 	}
 	return resultVPCRouter, err
@@ -9260,9 +9260,9 @@ func (t *VPCRouterTracer) Read(ctx context.Context, zone string, id types.ID) (*
 func (t *VPCRouterTracer) Update(ctx context.Context, zone string, id types.ID, param *sacloud.VPCRouterUpdateRequest) (*sacloud.VPCRouter, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "VPCRouterAPI.Update", options...)
 	defer func() {
@@ -9277,7 +9277,7 @@ func (t *VPCRouterTracer) Update(ctx context.Context, zone string, id types.ID, 
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultVPCRouter", resultVPCRouter))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultVPCRouter", forceString(resultVPCRouter)))
 
 	}
 	return resultVPCRouter, err
@@ -9287,9 +9287,9 @@ func (t *VPCRouterTracer) Update(ctx context.Context, zone string, id types.ID, 
 func (t *VPCRouterTracer) UpdateSettings(ctx context.Context, zone string, id types.ID, param *sacloud.VPCRouterUpdateSettingsRequest) (*sacloud.VPCRouter, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "VPCRouterAPI.UpdateSettings", options...)
 	defer func() {
@@ -9304,7 +9304,7 @@ func (t *VPCRouterTracer) UpdateSettings(ctx context.Context, zone string, id ty
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultVPCRouter", resultVPCRouter))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultVPCRouter", forceString(resultVPCRouter)))
 
 	}
 	return resultVPCRouter, err
@@ -9314,8 +9314,8 @@ func (t *VPCRouterTracer) UpdateSettings(ctx context.Context, zone string, id ty
 func (t *VPCRouterTracer) Delete(ctx context.Context, zone string, id types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "VPCRouterAPI.Delete", options...)
 	defer func() {
@@ -9339,8 +9339,8 @@ func (t *VPCRouterTracer) Delete(ctx context.Context, zone string, id types.ID) 
 func (t *VPCRouterTracer) Config(ctx context.Context, zone string, id types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "VPCRouterAPI.Config", options...)
 	defer func() {
@@ -9364,8 +9364,8 @@ func (t *VPCRouterTracer) Config(ctx context.Context, zone string, id types.ID) 
 func (t *VPCRouterTracer) Boot(ctx context.Context, zone string, id types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "VPCRouterAPI.Boot", options...)
 	defer func() {
@@ -9389,9 +9389,9 @@ func (t *VPCRouterTracer) Boot(ctx context.Context, zone string, id types.ID) er
 func (t *VPCRouterTracer) Shutdown(ctx context.Context, zone string, id types.ID, shutdownOption *sacloud.ShutdownOption) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.shutdownOption", shutdownOption),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.shutdownOption", forceString(shutdownOption)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "VPCRouterAPI.Shutdown", options...)
 	defer func() {
@@ -9415,8 +9415,8 @@ func (t *VPCRouterTracer) Shutdown(ctx context.Context, zone string, id types.ID
 func (t *VPCRouterTracer) Reset(ctx context.Context, zone string, id types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "VPCRouterAPI.Reset", options...)
 	defer func() {
@@ -9440,10 +9440,10 @@ func (t *VPCRouterTracer) Reset(ctx context.Context, zone string, id types.ID) e
 func (t *VPCRouterTracer) ConnectToSwitch(ctx context.Context, zone string, id types.ID, nicIndex int, switchID types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.nicIndex", nicIndex),
-		label.Any("libsacloud.api.arguments.switchID", switchID),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.nicIndex", forceString(nicIndex)),
+		attribute.String("libsacloud.api.arguments.switchID", forceString(switchID)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "VPCRouterAPI.ConnectToSwitch", options...)
 	defer func() {
@@ -9467,9 +9467,9 @@ func (t *VPCRouterTracer) ConnectToSwitch(ctx context.Context, zone string, id t
 func (t *VPCRouterTracer) DisconnectFromSwitch(ctx context.Context, zone string, id types.ID, nicIndex int) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.nicIndex", nicIndex),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.nicIndex", forceString(nicIndex)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "VPCRouterAPI.DisconnectFromSwitch", options...)
 	defer func() {
@@ -9493,10 +9493,10 @@ func (t *VPCRouterTracer) DisconnectFromSwitch(ctx context.Context, zone string,
 func (t *VPCRouterTracer) MonitorInterface(ctx context.Context, zone string, id types.ID, index int, condition *sacloud.MonitorCondition) (*sacloud.InterfaceActivity, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.index", index),
-		label.Any("libsacloud.api.arguments.condition", condition),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.index", forceString(index)),
+		attribute.String("libsacloud.api.arguments.condition", forceString(condition)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "VPCRouterAPI.MonitorInterface", options...)
 	defer func() {
@@ -9511,7 +9511,7 @@ func (t *VPCRouterTracer) MonitorInterface(ctx context.Context, zone string, id 
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultInterfaceActivity", resultInterfaceActivity))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultInterfaceActivity", forceString(resultInterfaceActivity)))
 
 	}
 	return resultInterfaceActivity, err
@@ -9521,8 +9521,8 @@ func (t *VPCRouterTracer) MonitorInterface(ctx context.Context, zone string, id 
 func (t *VPCRouterTracer) Status(ctx context.Context, zone string, id types.ID) (*sacloud.VPCRouterStatus, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.String("libsacloud.api.arguments.zone", zone),
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "VPCRouterAPI.Status", options...)
 	defer func() {
@@ -9537,7 +9537,7 @@ func (t *VPCRouterTracer) Status(ctx context.Context, zone string, id types.ID) 
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultVPCRouterStatus", resultVPCRouterStatus))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultVPCRouterStatus", forceString(resultVPCRouterStatus)))
 
 	}
 	return resultVPCRouterStatus, err
@@ -9578,7 +9578,7 @@ func (t *WebAccelTracer) List(ctx context.Context) (*sacloud.WebAccelListResult,
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.result", result))
+		span.SetAttributes(attribute.String("libsacloud.api.results.result", forceString(result)))
 
 	}
 	return result, err
@@ -9588,7 +9588,7 @@ func (t *WebAccelTracer) List(ctx context.Context) (*sacloud.WebAccelListResult,
 func (t *WebAccelTracer) Read(ctx context.Context, id types.ID) (*sacloud.WebAccel, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "WebAccelAPI.Read", options...)
 	defer func() {
@@ -9603,7 +9603,7 @@ func (t *WebAccelTracer) Read(ctx context.Context, id types.ID) (*sacloud.WebAcc
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultWebAccel", resultWebAccel))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultWebAccel", forceString(resultWebAccel)))
 
 	}
 	return resultWebAccel, err
@@ -9613,7 +9613,7 @@ func (t *WebAccelTracer) Read(ctx context.Context, id types.ID) (*sacloud.WebAcc
 func (t *WebAccelTracer) ReadCertificate(ctx context.Context, id types.ID) (*sacloud.WebAccelCerts, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "WebAccelAPI.ReadCertificate", options...)
 	defer func() {
@@ -9628,7 +9628,7 @@ func (t *WebAccelTracer) ReadCertificate(ctx context.Context, id types.ID) (*sac
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultCertificate", resultCertificate))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultCertificate", forceString(resultCertificate)))
 
 	}
 	return resultCertificate, err
@@ -9638,8 +9638,8 @@ func (t *WebAccelTracer) ReadCertificate(ctx context.Context, id types.ID) (*sac
 func (t *WebAccelTracer) CreateCertificate(ctx context.Context, id types.ID, param *sacloud.WebAccelCertRequest) (*sacloud.WebAccelCerts, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "WebAccelAPI.CreateCertificate", options...)
 	defer func() {
@@ -9654,7 +9654,7 @@ func (t *WebAccelTracer) CreateCertificate(ctx context.Context, id types.ID, par
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultCertificate", resultCertificate))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultCertificate", forceString(resultCertificate)))
 
 	}
 	return resultCertificate, err
@@ -9664,8 +9664,8 @@ func (t *WebAccelTracer) CreateCertificate(ctx context.Context, id types.ID, par
 func (t *WebAccelTracer) UpdateCertificate(ctx context.Context, id types.ID, param *sacloud.WebAccelCertRequest) (*sacloud.WebAccelCerts, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "WebAccelAPI.UpdateCertificate", options...)
 	defer func() {
@@ -9680,7 +9680,7 @@ func (t *WebAccelTracer) UpdateCertificate(ctx context.Context, id types.ID, par
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultCertificate", resultCertificate))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultCertificate", forceString(resultCertificate)))
 
 	}
 	return resultCertificate, err
@@ -9690,7 +9690,7 @@ func (t *WebAccelTracer) UpdateCertificate(ctx context.Context, id types.ID, par
 func (t *WebAccelTracer) DeleteCertificate(ctx context.Context, id types.ID) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "WebAccelAPI.DeleteCertificate", options...)
 	defer func() {
@@ -9714,7 +9714,7 @@ func (t *WebAccelTracer) DeleteCertificate(ctx context.Context, id types.ID) err
 func (t *WebAccelTracer) DeleteAllCache(ctx context.Context, param *sacloud.WebAccelDeleteAllCacheRequest) error {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "WebAccelAPI.DeleteAllCache", options...)
 	defer func() {
@@ -9738,7 +9738,7 @@ func (t *WebAccelTracer) DeleteAllCache(ctx context.Context, param *sacloud.WebA
 func (t *WebAccelTracer) DeleteCache(ctx context.Context, param *sacloud.WebAccelDeleteCacheRequest) ([]*sacloud.WebAccelDeleteCacheResult, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.param", param),
+		attribute.String("libsacloud.api.arguments.param", forceString(param)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "WebAccelAPI.DeleteCache", options...)
 	defer func() {
@@ -9753,7 +9753,7 @@ func (t *WebAccelTracer) DeleteCache(ctx context.Context, param *sacloud.WebAcce
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultResults", resultResults))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultResults", forceString(resultResults)))
 
 	}
 	return resultResults, err
@@ -9781,7 +9781,7 @@ func newZoneTracer(in sacloud.ZoneAPI, cnf *config) sacloud.ZoneAPI {
 func (t *ZoneTracer) Find(ctx context.Context, conditions *sacloud.FindCondition) (*sacloud.ZoneFindResult, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.conditions", conditions),
+		attribute.String("libsacloud.api.arguments.conditions", forceString(conditions)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "ZoneAPI.Find", options...)
 	defer func() {
@@ -9796,7 +9796,7 @@ func (t *ZoneTracer) Find(ctx context.Context, conditions *sacloud.FindCondition
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.result", result))
+		span.SetAttributes(attribute.String("libsacloud.api.results.result", forceString(result)))
 
 	}
 	return result, err
@@ -9806,7 +9806,7 @@ func (t *ZoneTracer) Find(ctx context.Context, conditions *sacloud.FindCondition
 func (t *ZoneTracer) Read(ctx context.Context, id types.ID) (*sacloud.Zone, error) {
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
-		label.Any("libsacloud.api.arguments.id", id),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "ZoneAPI.Read", options...)
 	defer func() {
@@ -9821,7 +9821,7 @@ func (t *ZoneTracer) Read(ctx context.Context, id types.ID) (*sacloud.Zone, erro
 		span.SetStatus(codes.Error, err.Error())
 	} else {
 		span.SetStatus(codes.Ok, "")
-		span.SetAttributes(label.Any("libsacloud.api.results.resultZone", resultZone))
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultZone", forceString(resultZone)))
 
 	}
 	return resultZone, err

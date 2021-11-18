@@ -51,7 +51,7 @@ import (
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/codes"
-	"go.opentelemetry.io/otel/label"
+	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/trace"
 )
 
@@ -88,10 +88,10 @@ func (t *{{ $typeName }}Tracer) {{ .MethodName }}(ctx context.Context{{if not $r
 	var span trace.Span
 	options := append(t.config.SpanStartOptions, trace.WithAttributes(
 {{if not $resource.IsGlobal -}}
-		label.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.zone", zone),
 {{ end -}}
 {{ range .Arguments -}}
-		label.Any("libsacloud.api.arguments.{{.ArgName}}", {{.ArgName}}),
+		attribute.String("libsacloud.api.arguments.{{.ArgName}}", forceString({{.ArgName}})),
 {{ end -}}
 	))
 	ctx, span = t.config.Tracer.Start(ctx, "{{ $typeName }}API.{{ .MethodName }}", options...)
@@ -107,7 +107,7 @@ func (t *{{ $typeName }}Tracer) {{ .MethodName }}(ctx context.Context{{if not $r
 		span.SetStatus(codes.Error, err.Error())
 	}else {
 		span.SetStatus(codes.Ok, "")
-		{{range .ResultsTypeInfo}}span.SetAttributes(label.Any("libsacloud.api.results.{{.VarName}}", {{.VarName}}))
+		{{range .ResultsTypeInfo}}span.SetAttributes(attribute.String("libsacloud.api.results.{{.VarName}}", forceString({{.VarName}})))
 {{ end }}
 	}
 	return {{range .ResultsTypeInfo}}{{.VarName}}, {{end}}err

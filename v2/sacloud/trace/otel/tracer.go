@@ -23,7 +23,7 @@ import (
 type config struct {
 	Tracer           trace.Tracer
 	TracerProvider   trace.TracerProvider
-	SpanStartOptions []trace.SpanOption
+	SpanStartOptions []trace.SpanStartOption
 }
 
 type Option interface {
@@ -57,7 +57,7 @@ func WithTracerProvider(provider trace.TracerProvider) Option {
 	})
 }
 
-func WithSpanOptions(opts ...trace.SpanOption) Option {
+func WithSpanOptions(opts ...trace.SpanStartOption) Option {
 	return OptionFunc(func(c *config) {
 		c.SpanStartOptions = append(c.SpanStartOptions, opts...)
 	})

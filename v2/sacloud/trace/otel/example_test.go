@@ -18,26 +18,50 @@ import (
 	"context"
 	"log"
 	"os"
+	"time"
 
 	"github.com/sacloud/libsacloud/v2/helper/api"
-
 	"github.com/sacloud/libsacloud/v2/sacloud"
 	"github.com/sacloud/libsacloud/v2/sacloud/ostype"
-	"github.com/sacloud/libsacloud/v2/sacloud/trace/otel"
+	traceotel "github.com/sacloud/libsacloud/v2/sacloud/trace/otel"
 	"github.com/sacloud/libsacloud/v2/sacloud/types"
-	"go.opentelemetry.io/otel/exporters/trace/jaeger"
-	"go.opentelemetry.io/otel/label"
-	sdktrace "go.opentelemetry.io/otel/sdk/trace"
+	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/attribute"
+	"go.opentelemetry.io/otel/exporters/jaeger"
+	"go.opentelemetry.io/otel/sdk/resource"
+	tracesdk "go.opentelemetry.io/otel/sdk/trace"
+	semconv "go.opentelemetry.io/otel/semconv/v1.7.0"
 )
 
-// ref: https://github.com/open-telemetry/opentelemetry-go/tree/v0.15.0/example/jaeger
+// ref: https://github.com/open-telemetry/opentelemetry-go/blob/a65d50a4c6412ebaf4b8a5ffeed8eae2a9417ef1/example/jaeger/main.go
 
 // Example ローカルのJaegerを利用する例
 func Example() {
-	ctx := context.Background()
+	tp, err := tracerProvider("http://localhost:14268/api/traces")
+	if err != nil {
+		log.Fatal(err)
+	}
 
-	flush := initTracer()
-	defer flush()
+	// Register our TracerProvider as the global so any imported
+	// instrumentation in the future will default to using it.
+	otel.SetTracerProvider(tp)
+
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
+	// Cleanly shutdown and flush telemetry when the application exits.
+	defer func(ctx context.Context) {
+		// Do not make the application hang when it is shutdown.
+		ctx, cancel = context.WithTimeout(ctx, time.Second*5)
+		defer cancel()
+		if err := tp.Shutdown(ctx); err != nil {
+			log.Fatal(err)
+		}
+	}(ctx)
+
+	tr := tp.Tracer("component-main")
+	ctx, span := tr.Start(ctx, "foo")
+	defer span.End()
 
 	// サンプルAPIリクエスト
 	op(ctx)
@@ -45,27 +69,33 @@ func Example() {
 	// Jaeger UI( http://localhost:16686/search など)を開くとトレースが確認できるはず
 }
 
-func initTracer() func() {
-	flush, err := jaeger.InstallNewPipeline(
-		jaeger.WithCollectorEndpoint("http://localhost:14268/api/traces"),
-		jaeger.WithProcess(jaeger.Process{
-			ServiceName: "libsacloud",
-			Tags: []label.KeyValue{
-				label.String("exporter", "jaeger"),
-				label.Float64("float", 312.23),
-			},
-		}),
-		jaeger.WithSDK(&sdktrace.Config{DefaultSampler: sdktrace.AlwaysSample()}),
-	)
+// tracerProvider returns an OpenTelemetry TracerProvider configured to use
+// the Jaeger exporter that will send spans to the provided url. The returned
+// TracerProvider will also use a Resource configured with all the information
+// about the application.
+func tracerProvider(url string) (*tracesdk.TracerProvider, error) {
+	// Create the Jaeger exporter
+	exp, err := jaeger.New(jaeger.WithCollectorEndpoint(jaeger.WithEndpoint(url)))
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
-	return flush
+	tp := tracesdk.NewTracerProvider(
+		// Always be sure to batch in production.
+		tracesdk.WithBatcher(exp),
+		// Record information about this application in an Resource.
+		tracesdk.WithResource(resource.NewWithAttributes(
+			semconv.SchemaURL,
+			semconv.ServiceNameKey.String("libsacloud"),
+			attribute.String("exporter", "jaeger"),
+			attribute.Int64("ID", 1),
+		)),
+	)
+	return tp, nil
 }
 
 func op(ctx context.Context) {
 	// set factory func
-	otel.Initialize()
+	traceotel.Initialize()
 
 	caller := api.NewCaller(&api.CallerOptions{
 		AccessToken:       os.Getenv("SAKURACLOUD_ACCESS_TOKEN"),
