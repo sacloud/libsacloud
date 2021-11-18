@@ -78,6 +78,7 @@ type SimpleMonitorHealthCheck struct {
 	RemainingDays     int                          `json:",omitempty" yaml:"remaining_days,omitempty" structs:",omitempty"`      // SSL証明書 有効残日数
 	HTTP2             types.StringFlag             `yaml:"http2"`                                                                // HTTPS監視の場合にHTTP/2を利用するか
 	FTPS              types.ESimpleMonitorFTPS     `yaml:"ftps"`                                                                 // FTP監視の場合のFTPS接続のimplicit/explicit,値は空になり得る
+	VerifySNI         types.StringFlag             `yaml:"verify_sni"`
 }
 
 // SimpleMonitorNotifyEmail Eメールでの通知設定

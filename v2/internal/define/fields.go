@@ -1281,6 +1281,10 @@ func (f *fieldsDef) SimpleMonitorHealthCheck() *dsl.FieldDesc {
 					Name: "FTPS",
 					Type: meta.Static(types.ESimpleMonitorFTPS("")),
 				},
+				{
+					Name: "VerifySNI",
+					Type: meta.TypeStringFlag,
+				},
 			},
 		},
 		Tags: &dsl.FieldTags{
