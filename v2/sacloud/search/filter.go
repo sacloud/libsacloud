@@ -83,7 +83,7 @@ func escapeFilterString(s string) string {
 	// http://qiita.com/shibukawa/items/c0730092371c0e243f62
 	//
 	// UPDATE: https://github.com/sacloud/libsacloud/issues/657#issuecomment-733467472
-	// (&url.URL{Path:s}).String()だと、MADAddressが"./00:00:5E:00:53:00"のようになってしまう。
+	// (&url.URL{Path:s}).String()だと、MACAddressが"./00:00:5E:00:53:00"のようになってしまう。
 	// このためurl.PathEscapeを利用する。
 	return url.PathEscape(s)
 }
