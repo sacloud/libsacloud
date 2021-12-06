@@ -21,7 +21,7 @@ import (
 )
 
 // StringNumber 数値型を文字列で表す型
-type StringNumber int64
+type StringNumber float64
 
 // MarshalJSON implements json.Marshaler
 func (n *StringNumber) MarshalJSON() ([]byte, error) {
@@ -42,7 +42,7 @@ func (n *StringNumber) UnmarshalJSON(b []byte) error {
 	if err := json.Unmarshal(b, &num); err != nil {
 		return err
 	}
-	number, err := num.Int64()
+	number, err := num.Float64()
 	if err != nil {
 		return err
 	}
@@ -55,7 +55,7 @@ func (n StringNumber) String() string {
 	if n.Int64() == 0 {
 		return ""
 	}
-	return fmt.Sprintf("%d", n)
+	return strconv.FormatFloat(n.Float64(), 'f', -1, 64)
 }
 
 // Int returns the number as an int.
@@ -66,6 +66,11 @@ func (n StringNumber) Int() int {
 // Int64 returns the number as an int64.
 func (n StringNumber) Int64() int64 {
 	return int64(n)
+}
+
+// Float64 returns the number as an float64.
+func (n StringNumber) Float64() float64 {
+	return float64(n)
 }
 
 // ParseStringNumber 文字列からStringNumberへの変換

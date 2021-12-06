@@ -30,6 +30,7 @@ func TestStringNumber(t *testing.T) {
 		{input: `"1"`, expect: StringNumber(1)},
 		{input: `0`, expect: StringNumber(0)},
 		{input: `1`, expect: StringNumber(1)},
+		{input: `1.1`, expect: StringNumber(1.1)},
 	}
 
 	for _, tc := range expects {
