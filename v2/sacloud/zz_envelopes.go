@@ -1720,6 +1720,20 @@ type loadBalancerShutdownRequestEnvelope struct {
 	Force bool `json:",omitempty"`
 }
 
+// loadBalancerMonitorCPURequestEnvelope is envelop of API request
+type loadBalancerMonitorCPURequestEnvelope struct {
+	Start time.Time `json:",omitempty"`
+	End   time.Time `json:",omitempty"`
+}
+
+// loadBalancerMonitorCPUResponseEnvelope is envelop of API response
+type loadBalancerMonitorCPUResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Data *naked.MonitorValues `json:",omitempty"`
+}
+
 // loadBalancerMonitorInterfaceRequestEnvelope is envelop of API request
 type loadBalancerMonitorInterfaceRequestEnvelope struct {
 	Start time.Time `json:",omitempty"`
@@ -2040,6 +2054,20 @@ type nFSUpdateResponseEnvelope struct {
 // nFSShutdownRequestEnvelope is envelop of API request
 type nFSShutdownRequestEnvelope struct {
 	Force bool `json:",omitempty"`
+}
+
+// nFSMonitorCPURequestEnvelope is envelop of API request
+type nFSMonitorCPURequestEnvelope struct {
+	Start time.Time `json:",omitempty"`
+	End   time.Time `json:",omitempty"`
+}
+
+// nFSMonitorCPUResponseEnvelope is envelop of API response
+type nFSMonitorCPUResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Data *naked.MonitorValues `json:",omitempty"`
 }
 
 // nFSMonitorFreeDiskSizeRequestEnvelope is envelop of API request
@@ -3008,6 +3036,20 @@ type vPCRouterUpdateSettingsResponseEnvelope struct {
 // vPCRouterShutdownRequestEnvelope is envelop of API request
 type vPCRouterShutdownRequestEnvelope struct {
 	Force bool `json:",omitempty"`
+}
+
+// vPCRouterMonitorCPURequestEnvelope is envelop of API request
+type vPCRouterMonitorCPURequestEnvelope struct {
+	Start time.Time `json:",omitempty"`
+	End   time.Time `json:",omitempty"`
+}
+
+// vPCRouterMonitorCPUResponseEnvelope is envelop of API response
+type vPCRouterMonitorCPUResponseEnvelope struct {
+	IsOk    bool            `json:"is_ok,omitempty"` // is_ok項目
+	Success types.APIResult `json:",omitempty"`      // success項目
+
+	Data *naked.MonitorValues `json:",omitempty"`
 }
 
 // vPCRouterMonitorInterfaceRequestEnvelope is envelop of API request

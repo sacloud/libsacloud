@@ -4291,6 +4291,49 @@ func (o *LoadBalancerOp) transformShutdownArgs(id types.ID, shutdownOption *Shut
 	return v, nil
 }
 
+func (o *LoadBalancerOp) transformMonitorCPUArgs(id types.ID, condition *MonitorCondition) (*loadBalancerMonitorCPURequestEnvelope, error) {
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	var arg0 interface{} = id
+	if v, ok := arg0.(argumentDefaulter); ok {
+		arg0 = v.setDefaults()
+	}
+	if condition == nil {
+		condition = &MonitorCondition{}
+	}
+	var arg1 interface{} = condition
+	if v, ok := arg1.(argumentDefaulter); ok {
+		arg1 = v.setDefaults()
+	}
+	args := &struct {
+		Arg0 interface{}
+		Arg1 interface{} `mapconv:",squash"`
+	}{
+		Arg0: arg0,
+		Arg1: arg1,
+	}
+
+	v := &loadBalancerMonitorCPURequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	return v, nil
+}
+
+func (o *LoadBalancerOp) transformMonitorCPUResults(data []byte) (*loadBalancerMonitorCPUResult, error) {
+	nakedResponse := &loadBalancerMonitorCPUResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &loadBalancerMonitorCPUResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
+}
+
 func (o *LoadBalancerOp) transformMonitorInterfaceArgs(id types.ID, condition *MonitorCondition) (*loadBalancerMonitorInterfaceRequestEnvelope, error) {
 	if id == types.ID(int64(0)) {
 		id = types.ID(int64(0))
@@ -5169,6 +5212,49 @@ func (o *NFSOp) transformShutdownArgs(id types.ID, shutdownOption *ShutdownOptio
 		return nil, err
 	}
 	return v, nil
+}
+
+func (o *NFSOp) transformMonitorCPUArgs(id types.ID, condition *MonitorCondition) (*nFSMonitorCPURequestEnvelope, error) {
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	var arg0 interface{} = id
+	if v, ok := arg0.(argumentDefaulter); ok {
+		arg0 = v.setDefaults()
+	}
+	if condition == nil {
+		condition = &MonitorCondition{}
+	}
+	var arg1 interface{} = condition
+	if v, ok := arg1.(argumentDefaulter); ok {
+		arg1 = v.setDefaults()
+	}
+	args := &struct {
+		Arg0 interface{}
+		Arg1 interface{} `mapconv:",squash"`
+	}{
+		Arg0: arg0,
+		Arg1: arg1,
+	}
+
+	v := &nFSMonitorCPURequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	return v, nil
+}
+
+func (o *NFSOp) transformMonitorCPUResults(data []byte) (*nFSMonitorCPUResult, error) {
+	nakedResponse := &nFSMonitorCPUResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &nFSMonitorCPUResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
 }
 
 func (o *NFSOp) transformMonitorFreeDiskSizeArgs(id types.ID, condition *MonitorCondition) (*nFSMonitorFreeDiskSizeRequestEnvelope, error) {
@@ -7637,6 +7723,49 @@ func (o *VPCRouterOp) transformShutdownArgs(id types.ID, shutdownOption *Shutdow
 		return nil, err
 	}
 	return v, nil
+}
+
+func (o *VPCRouterOp) transformMonitorCPUArgs(id types.ID, condition *MonitorCondition) (*vPCRouterMonitorCPURequestEnvelope, error) {
+	if id == types.ID(int64(0)) {
+		id = types.ID(int64(0))
+	}
+	var arg0 interface{} = id
+	if v, ok := arg0.(argumentDefaulter); ok {
+		arg0 = v.setDefaults()
+	}
+	if condition == nil {
+		condition = &MonitorCondition{}
+	}
+	var arg1 interface{} = condition
+	if v, ok := arg1.(argumentDefaulter); ok {
+		arg1 = v.setDefaults()
+	}
+	args := &struct {
+		Arg0 interface{}
+		Arg1 interface{} `mapconv:",squash"`
+	}{
+		Arg0: arg0,
+		Arg1: arg1,
+	}
+
+	v := &vPCRouterMonitorCPURequestEnvelope{}
+	if err := mapconv.ConvertTo(args, v); err != nil {
+		return nil, err
+	}
+	return v, nil
+}
+
+func (o *VPCRouterOp) transformMonitorCPUResults(data []byte) (*vPCRouterMonitorCPUResult, error) {
+	nakedResponse := &vPCRouterMonitorCPUResponseEnvelope{}
+	if err := json.Unmarshal(data, nakedResponse); err != nil {
+		return nil, err
+	}
+
+	results := &vPCRouterMonitorCPUResult{}
+	if err := mapconv.ConvertFrom(nakedResponse, results); err != nil {
+		return nil, err
+	}
+	return results, nil
 }
 
 func (o *VPCRouterOp) transformMonitorInterfaceArgs(id types.ID, index int, condition *MonitorCondition) (*vPCRouterMonitorInterfaceRequestEnvelope, error) {

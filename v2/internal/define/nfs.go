@@ -53,6 +53,8 @@ var nfsAPI = &dsl.Resource{
 		ops.Reset(nfsAPIName),
 
 		// monitor
+		ops.MonitorChild(nfsAPIName, "CPU", "cpu",
+			monitorParameter, monitors.cpuTimeModel()),
 		ops.MonitorChild(nfsAPIName, "FreeDiskSize", "database",
 			monitorParameter, monitors.freeDiskSizeModel()),
 		ops.MonitorChild(nfsAPIName, "Interface", "interface",

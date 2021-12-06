@@ -2944,6 +2944,12 @@ type LoadBalancerResetStubResult struct {
 	Err error
 }
 
+// LoadBalancerMonitorCPUStubResult is expected values of the MonitorCPU operation
+type LoadBalancerMonitorCPUStubResult struct {
+	CPUTimeActivity *sacloud.CPUTimeActivity
+	Err             error
+}
+
 // LoadBalancerMonitorInterfaceStubResult is expected values of the MonitorInterface operation
 type LoadBalancerMonitorInterfaceStubResult struct {
 	InterfaceActivity *sacloud.InterfaceActivity
@@ -2968,6 +2974,7 @@ type LoadBalancerStub struct {
 	BootStubResult             *LoadBalancerBootStubResult
 	ShutdownStubResult         *LoadBalancerShutdownStubResult
 	ResetStubResult            *LoadBalancerResetStubResult
+	MonitorCPUStubResult       *LoadBalancerMonitorCPUStubResult
 	MonitorInterfaceStubResult *LoadBalancerMonitorInterfaceStubResult
 	StatusStubResult           *LoadBalancerStatusStubResult
 }
@@ -3055,6 +3062,14 @@ func (s *LoadBalancerStub) Reset(ctx context.Context, zone string, id types.ID) 
 		log.Fatal("LoadBalancerStub.ResetStubResult is not set")
 	}
 	return s.ResetStubResult.Err
+}
+
+// MonitorCPU is API call with trace log
+func (s *LoadBalancerStub) MonitorCPU(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.CPUTimeActivity, error) {
+	if s.MonitorCPUStubResult == nil {
+		log.Fatal("LoadBalancerStub.MonitorCPUStubResult is not set")
+	}
+	return s.MonitorCPUStubResult.CPUTimeActivity, s.MonitorCPUStubResult.Err
 }
 
 // MonitorInterface is API call with trace log
@@ -3628,6 +3643,12 @@ type NFSResetStubResult struct {
 	Err error
 }
 
+// NFSMonitorCPUStubResult is expected values of the MonitorCPU operation
+type NFSMonitorCPUStubResult struct {
+	CPUTimeActivity *sacloud.CPUTimeActivity
+	Err             error
+}
+
 // NFSMonitorFreeDiskSizeStubResult is expected values of the MonitorFreeDiskSize operation
 type NFSMonitorFreeDiskSizeStubResult struct {
 	FreeDiskSizeActivity *sacloud.FreeDiskSizeActivity
@@ -3650,6 +3671,7 @@ type NFSStub struct {
 	BootStubResult                *NFSBootStubResult
 	ShutdownStubResult            *NFSShutdownStubResult
 	ResetStubResult               *NFSResetStubResult
+	MonitorCPUStubResult          *NFSMonitorCPUStubResult
 	MonitorFreeDiskSizeStubResult *NFSMonitorFreeDiskSizeStubResult
 	MonitorInterfaceStubResult    *NFSMonitorInterfaceStubResult
 }
@@ -3721,6 +3743,14 @@ func (s *NFSStub) Reset(ctx context.Context, zone string, id types.ID) error {
 		log.Fatal("NFSStub.ResetStubResult is not set")
 	}
 	return s.ResetStubResult.Err
+}
+
+// MonitorCPU is API call with trace log
+func (s *NFSStub) MonitorCPU(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.CPUTimeActivity, error) {
+	if s.MonitorCPUStubResult == nil {
+		log.Fatal("NFSStub.MonitorCPUStubResult is not set")
+	}
+	return s.MonitorCPUStubResult.CPUTimeActivity, s.MonitorCPUStubResult.Err
 }
 
 // MonitorFreeDiskSize is API call with trace log
@@ -5356,6 +5386,12 @@ type VPCRouterDisconnectFromSwitchStubResult struct {
 	Err error
 }
 
+// VPCRouterMonitorCPUStubResult is expected values of the MonitorCPU operation
+type VPCRouterMonitorCPUStubResult struct {
+	CPUTimeActivity *sacloud.CPUTimeActivity
+	Err             error
+}
+
 // VPCRouterMonitorInterfaceStubResult is expected values of the MonitorInterface operation
 type VPCRouterMonitorInterfaceStubResult struct {
 	InterfaceActivity *sacloud.InterfaceActivity
@@ -5382,6 +5418,7 @@ type VPCRouterStub struct {
 	ResetStubResult                *VPCRouterResetStubResult
 	ConnectToSwitchStubResult      *VPCRouterConnectToSwitchStubResult
 	DisconnectFromSwitchStubResult *VPCRouterDisconnectFromSwitchStubResult
+	MonitorCPUStubResult           *VPCRouterMonitorCPUStubResult
 	MonitorInterfaceStubResult     *VPCRouterMonitorInterfaceStubResult
 	StatusStubResult               *VPCRouterStatusStubResult
 }
@@ -5485,6 +5522,14 @@ func (s *VPCRouterStub) DisconnectFromSwitch(ctx context.Context, zone string, i
 		log.Fatal("VPCRouterStub.DisconnectFromSwitchStubResult is not set")
 	}
 	return s.DisconnectFromSwitchStubResult.Err
+}
+
+// MonitorCPU is API call with trace log
+func (s *VPCRouterStub) MonitorCPU(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.CPUTimeActivity, error) {
+	if s.MonitorCPUStubResult == nil {
+		log.Fatal("VPCRouterStub.MonitorCPUStubResult is not set")
+	}
+	return s.MonitorCPUStubResult.CPUTimeActivity, s.MonitorCPUStubResult.Err
 }
 
 // MonitorInterface is API call with trace log

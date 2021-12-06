@@ -1287,6 +1287,13 @@ type loadBalancerUpdateSettingsResult struct {
 	LoadBalancer *LoadBalancer `json:",omitempty" mapconv:"Appliance,omitempty,recursive"`
 }
 
+// loadBalancerMonitorCPUResult represents the Result of API
+type loadBalancerMonitorCPUResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	CPUTimeActivity *CPUTimeActivity `json:",omitempty" mapconv:"Data,omitempty,recursive"`
+}
+
 // loadBalancerMonitorInterfaceResult represents the Result of API
 type loadBalancerMonitorInterfaceResult struct {
 	IsOk bool `json:",omitempty"` // is_ok
@@ -1504,6 +1511,13 @@ type nFSUpdateResult struct {
 	IsOk bool `json:",omitempty"` // is_ok
 
 	NFS *NFS `json:",omitempty" mapconv:"Appliance,omitempty,recursive"`
+}
+
+// nFSMonitorCPUResult represents the Result of API
+type nFSMonitorCPUResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	CPUTimeActivity *CPUTimeActivity `json:",omitempty" mapconv:"Data,omitempty,recursive"`
 }
 
 // nFSMonitorFreeDiskSizeResult represents the Result of API
@@ -2188,6 +2202,13 @@ type vPCRouterUpdateSettingsResult struct {
 	IsOk bool `json:",omitempty"` // is_ok
 
 	VPCRouter *VPCRouter `json:",omitempty" mapconv:"Appliance,omitempty,recursive"`
+}
+
+// vPCRouterMonitorCPUResult represents the Result of API
+type vPCRouterMonitorCPUResult struct {
+	IsOk bool `json:",omitempty"` // is_ok
+
+	CPUTimeActivity *CPUTimeActivity `json:",omitempty" mapconv:"Data,omitempty,recursive"`
 }
 
 // vPCRouterMonitorInterfaceResult represents the Result of API

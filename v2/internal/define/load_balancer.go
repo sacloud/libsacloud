@@ -58,6 +58,8 @@ var loadBalancerAPI = &dsl.Resource{
 		ops.Reset(loadBalancerAPIName),
 
 		// monitor
+		ops.MonitorChild(loadBalancerAPIName, "CPU", "cpu",
+			monitorParameter, monitors.cpuTimeModel()),
 		ops.MonitorChild(loadBalancerAPIName, "Interface", "interface",
 			monitorParameter, monitors.interfaceModel()),
 

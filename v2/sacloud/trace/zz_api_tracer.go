@@ -6505,6 +6505,41 @@ func (t *LoadBalancerTracer) Reset(ctx context.Context, zone string, id types.ID
 	return err
 }
 
+// MonitorCPU is API call with trace log
+func (t *LoadBalancerTracer) MonitorCPU(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.CPUTimeActivity, error) {
+	log.Println("[TRACE] LoadBalancerAPI.MonitorCPU start")
+	targetArguments := struct {
+		Argzone      string
+		Argid        types.ID                  `json:"id"`
+		Argcondition *sacloud.MonitorCondition `json:"condition"`
+	}{
+		Argzone:      zone,
+		Argid:        id,
+		Argcondition: condition,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] LoadBalancerAPI.MonitorCPU end")
+	}()
+
+	resultCPUTimeActivity, err := t.Internal.MonitorCPU(ctx, zone, id, condition)
+	targetResults := struct {
+		CPUTimeActivity *sacloud.CPUTimeActivity
+		Error           error
+	}{
+		CPUTimeActivity: resultCPUTimeActivity,
+		Error:           err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultCPUTimeActivity, err
+}
+
 // MonitorInterface is API call with trace log
 func (t *LoadBalancerTracer) MonitorInterface(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.InterfaceActivity, error) {
 	log.Println("[TRACE] LoadBalancerAPI.MonitorInterface start")
@@ -7952,6 +7987,41 @@ func (t *NFSTracer) Reset(ctx context.Context, zone string, id types.ID) error {
 	}
 
 	return err
+}
+
+// MonitorCPU is API call with trace log
+func (t *NFSTracer) MonitorCPU(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.CPUTimeActivity, error) {
+	log.Println("[TRACE] NFSAPI.MonitorCPU start")
+	targetArguments := struct {
+		Argzone      string
+		Argid        types.ID                  `json:"id"`
+		Argcondition *sacloud.MonitorCondition `json:"condition"`
+	}{
+		Argzone:      zone,
+		Argid:        id,
+		Argcondition: condition,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] NFSAPI.MonitorCPU end")
+	}()
+
+	resultCPUTimeActivity, err := t.Internal.MonitorCPU(ctx, zone, id, condition)
+	targetResults := struct {
+		CPUTimeActivity *sacloud.CPUTimeActivity
+		Error           error
+	}{
+		CPUTimeActivity: resultCPUTimeActivity,
+		Error:           err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultCPUTimeActivity, err
 }
 
 // MonitorFreeDiskSize is API call with trace log
@@ -11627,6 +11697,41 @@ func (t *VPCRouterTracer) DisconnectFromSwitch(ctx context.Context, zone string,
 	}
 
 	return err
+}
+
+// MonitorCPU is API call with trace log
+func (t *VPCRouterTracer) MonitorCPU(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.CPUTimeActivity, error) {
+	log.Println("[TRACE] VPCRouterAPI.MonitorCPU start")
+	targetArguments := struct {
+		Argzone      string
+		Argid        types.ID                  `json:"id"`
+		Argcondition *sacloud.MonitorCondition `json:"condition"`
+	}{
+		Argzone:      zone,
+		Argid:        id,
+		Argcondition: condition,
+	}
+	if d, err := json.Marshal(targetArguments); err == nil {
+		log.Printf("[TRACE] \targs: %s\n", string(d))
+	}
+
+	defer func() {
+		log.Println("[TRACE] VPCRouterAPI.MonitorCPU end")
+	}()
+
+	resultCPUTimeActivity, err := t.Internal.MonitorCPU(ctx, zone, id, condition)
+	targetResults := struct {
+		CPUTimeActivity *sacloud.CPUTimeActivity
+		Error           error
+	}{
+		CPUTimeActivity: resultCPUTimeActivity,
+		Error:           err,
+	}
+	if d, err := json.Marshal(targetResults); err == nil {
+		log.Printf("[TRACE] \tresults: %s\n", string(d))
+	}
+
+	return resultCPUTimeActivity, err
 }
 
 // MonitorInterface is API call with trace log
