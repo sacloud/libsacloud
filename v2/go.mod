@@ -11,7 +11,7 @@ require (
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/mitchellh/mapstructure v1.4.2
 	github.com/sacloud/ftps v1.1.0
-	github.com/sacloud/go-http v0.0.3
+	github.com/sacloud/go-http v0.0.4
 	github.com/stretchr/testify v1.7.0
 	go.opentelemetry.io/contrib/instrumentation/net/http/httptrace/otelhttptrace v0.27.0
 	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.27.0
