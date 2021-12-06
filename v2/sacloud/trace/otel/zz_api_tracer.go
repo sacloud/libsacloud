@@ -5322,6 +5322,33 @@ func (t *LoadBalancerTracer) Reset(ctx context.Context, zone string, id types.ID
 	return err
 }
 
+// MonitorCPU is API call with trace log
+func (t *LoadBalancerTracer) MonitorCPU(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.CPUTimeActivity, error) {
+	var span trace.Span
+	options := append(t.config.SpanStartOptions, trace.WithAttributes(
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.condition", forceString(condition)),
+	))
+	ctx, span = t.config.Tracer.Start(ctx, "LoadBalancerAPI.MonitorCPU", options...)
+	defer func() {
+		span.End()
+	}()
+
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
+	resultCPUTimeActivity, err := t.Internal.MonitorCPU(ctx, zone, id, condition)
+
+	if err != nil {
+		span.SetStatus(codes.Error, err.Error())
+	} else {
+		span.SetStatus(codes.Ok, "")
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultCPUTimeActivity", forceString(resultCPUTimeActivity)))
+
+	}
+	return resultCPUTimeActivity, err
+}
+
 // MonitorInterface is API call with trace log
 func (t *LoadBalancerTracer) MonitorInterface(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.InterfaceActivity, error) {
 	var span trace.Span
@@ -6483,6 +6510,33 @@ func (t *NFSTracer) Reset(ctx context.Context, zone string, id types.ID) error {
 
 	}
 	return err
+}
+
+// MonitorCPU is API call with trace log
+func (t *NFSTracer) MonitorCPU(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.CPUTimeActivity, error) {
+	var span trace.Span
+	options := append(t.config.SpanStartOptions, trace.WithAttributes(
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.condition", forceString(condition)),
+	))
+	ctx, span = t.config.Tracer.Start(ctx, "NFSAPI.MonitorCPU", options...)
+	defer func() {
+		span.End()
+	}()
+
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
+	resultCPUTimeActivity, err := t.Internal.MonitorCPU(ctx, zone, id, condition)
+
+	if err != nil {
+		span.SetStatus(codes.Error, err.Error())
+	} else {
+		span.SetStatus(codes.Ok, "")
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultCPUTimeActivity", forceString(resultCPUTimeActivity)))
+
+	}
+	return resultCPUTimeActivity, err
 }
 
 // MonitorFreeDiskSize is API call with trace log
@@ -9487,6 +9541,33 @@ func (t *VPCRouterTracer) DisconnectFromSwitch(ctx context.Context, zone string,
 
 	}
 	return err
+}
+
+// MonitorCPU is API call with trace log
+func (t *VPCRouterTracer) MonitorCPU(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.CPUTimeActivity, error) {
+	var span trace.Span
+	options := append(t.config.SpanStartOptions, trace.WithAttributes(
+		attribute.String("libsacloud.api.arguments.zone", zone),
+		attribute.String("libsacloud.api.arguments.id", forceString(id)),
+		attribute.String("libsacloud.api.arguments.condition", forceString(condition)),
+	))
+	ctx, span = t.config.Tracer.Start(ctx, "VPCRouterAPI.MonitorCPU", options...)
+	defer func() {
+		span.End()
+	}()
+
+	// for http trace
+	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
+	resultCPUTimeActivity, err := t.Internal.MonitorCPU(ctx, zone, id, condition)
+
+	if err != nil {
+		span.SetStatus(codes.Error, err.Error())
+	} else {
+		span.SetStatus(codes.Ok, "")
+		span.SetAttributes(attribute.String("libsacloud.api.results.resultCPUTimeActivity", forceString(resultCPUTimeActivity)))
+
+	}
+	return resultCPUTimeActivity, err
 }
 
 // MonitorInterface is API call with trace log

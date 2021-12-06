@@ -346,3 +346,27 @@ func (o *VPCRouterOp) Status(ctx context.Context, zone string, id types.ID) (*sa
 	}
 	return &sacloud.VPCRouterStatus{}, nil
 }
+
+// MonitorCPU is fake implementation
+func (o *VPCRouterOp) MonitorCPU(ctx context.Context, zone string, id types.ID, condition *sacloud.MonitorCondition) (*sacloud.CPUTimeActivity, error) {
+	_, err := o.Read(ctx, zone, id)
+	if err != nil {
+		return nil, err
+	}
+
+	now := time.Now().Truncate(time.Second)
+	m := now.Minute() % 5
+	if m != 0 {
+		now.Add(time.Duration(m) * time.Minute)
+	}
+
+	res := &sacloud.CPUTimeActivity{}
+	for i := 0; i < 5; i++ {
+		res.Values = append(res.Values, &sacloud.MonitorCPUTimeValue{
+			Time:    now.Add(time.Duration(i*-5) * time.Minute),
+			CPUTime: float64(random(1000)),
+		})
+	}
+
+	return res, nil
+}

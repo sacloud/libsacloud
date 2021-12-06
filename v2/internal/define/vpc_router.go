@@ -83,6 +83,8 @@ var vpcRouterAPI = &dsl.Resource{
 		),
 
 		// monitor
+		ops.MonitorChild(vpcRouterAPIName, "CPU", "cpu",
+			monitorParameter, monitors.cpuTimeModel()),
 		ops.MonitorChildBy(vpcRouterAPIName, "Interface", "interface",
 			monitorParameter, monitors.interfaceModel()),
 

@@ -7155,6 +7155,44 @@ func (o *LoadBalancerOp) Reset(ctx context.Context, zone string, id types.ID) er
 	return nil
 }
 
+// MonitorCPU is API call
+func (o *LoadBalancerOp) MonitorCPU(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*CPUTimeActivity, error) {
+	// build request URL
+	pathBuildParameter := map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+		"condition":  condition,
+	}
+
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/cpu/monitor", pathBuildParameter)
+	if err != nil {
+		return nil, err
+	}
+	// build request body
+	var body interface{}
+	v, err := o.transformMonitorCPUArgs(id, condition)
+	if err != nil {
+		return nil, err
+	}
+	body = v
+
+	// do request
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	// build results
+	results, err := o.transformMonitorCPUResults(data)
+	if err != nil {
+		return nil, err
+	}
+	return results.CPUTimeActivity, nil
+}
+
 // MonitorInterface is API call
 func (o *LoadBalancerOp) MonitorInterface(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*InterfaceActivity, error) {
 	// build request URL
@@ -8685,6 +8723,44 @@ func (o *NFSOp) Reset(ctx context.Context, zone string, id types.ID) error {
 	// build results
 
 	return nil
+}
+
+// MonitorCPU is API call
+func (o *NFSOp) MonitorCPU(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*CPUTimeActivity, error) {
+	// build request URL
+	pathBuildParameter := map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+		"condition":  condition,
+	}
+
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/cpu/monitor", pathBuildParameter)
+	if err != nil {
+		return nil, err
+	}
+	// build request body
+	var body interface{}
+	v, err := o.transformMonitorCPUArgs(id, condition)
+	if err != nil {
+		return nil, err
+	}
+	body = v
+
+	// do request
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	// build results
+	results, err := o.transformMonitorCPUResults(data)
+	if err != nil {
+		return nil, err
+	}
+	return results.CPUTimeActivity, nil
 }
 
 // MonitorFreeDiskSize is API call
@@ -12661,6 +12737,44 @@ func (o *VPCRouterOp) DisconnectFromSwitch(ctx context.Context, zone string, id 
 	// build results
 
 	return nil
+}
+
+// MonitorCPU is API call
+func (o *VPCRouterOp) MonitorCPU(ctx context.Context, zone string, id types.ID, condition *MonitorCondition) (*CPUTimeActivity, error) {
+	// build request URL
+	pathBuildParameter := map[string]interface{}{
+		"rootURL":    SakuraCloudAPIRoot,
+		"pathSuffix": o.PathSuffix,
+		"pathName":   o.PathName,
+		"zone":       zone,
+		"id":         id,
+		"condition":  condition,
+	}
+
+	url, err := buildURL("{{.rootURL}}/{{.zone}}/{{.pathSuffix}}/{{.pathName}}/{{.id}}/cpu/monitor", pathBuildParameter)
+	if err != nil {
+		return nil, err
+	}
+	// build request body
+	var body interface{}
+	v, err := o.transformMonitorCPUArgs(id, condition)
+	if err != nil {
+		return nil, err
+	}
+	body = v
+
+	// do request
+	data, err := o.Client.Do(ctx, "GET", url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	// build results
+	results, err := o.transformMonitorCPUResults(data)
+	if err != nil {
+		return nil, err
+	}
+	return results.CPUTimeActivity, nil
 }
 
 // MonitorInterface is API call
