@@ -14711,7 +14711,7 @@ func (o *LoadBalancerVirtualIPAddress) SetPort(v types.StringNumber) {
 
 // GetDelayLoop returns value of DelayLoop
 func (o *LoadBalancerVirtualIPAddress) GetDelayLoop() types.StringNumber {
-	if o.DelayLoop == types.StringNumber(int64(0)) {
+	if o.DelayLoop == types.StringNumber(float64(0)) {
 		return 10
 	}
 	return o.DelayLoop
@@ -30375,6 +30375,7 @@ type VPCRouterStatus struct {
 	FirewallSendLogs        []string
 	VPNLogs                 []string
 	SessionCount            int
+	PercentageOfMemoryFree  []types.StringNumber
 	WireGuard               *WireGuardStatus
 	DHCPServerLeases        []*VPCRouterDHCPServerLease        `mapconv:"[]DHCPServerLeases,recursive"`
 	L2TPIPsecServerSessions []*VPCRouterL2TPIPsecServerSession `mapconv:"[]L2TPIPsecServerSessions,recursive"`
@@ -30395,6 +30396,7 @@ func (o *VPCRouterStatus) setDefaults() interface{} {
 		FirewallSendLogs        []string
 		VPNLogs                 []string
 		SessionCount            int
+		PercentageOfMemoryFree  []types.StringNumber
 		WireGuard               *WireGuardStatus
 		DHCPServerLeases        []*VPCRouterDHCPServerLease        `mapconv:"[]DHCPServerLeases,recursive"`
 		L2TPIPsecServerSessions []*VPCRouterL2TPIPsecServerSession `mapconv:"[]L2TPIPsecServerSessions,recursive"`
@@ -30406,6 +30408,7 @@ func (o *VPCRouterStatus) setDefaults() interface{} {
 		FirewallSendLogs:        o.GetFirewallSendLogs(),
 		VPNLogs:                 o.GetVPNLogs(),
 		SessionCount:            o.GetSessionCount(),
+		PercentageOfMemoryFree:  o.GetPercentageOfMemoryFree(),
 		WireGuard:               o.GetWireGuard(),
 		DHCPServerLeases:        o.GetDHCPServerLeases(),
 		L2TPIPsecServerSessions: o.GetL2TPIPsecServerSessions(),
@@ -30453,6 +30456,16 @@ func (o *VPCRouterStatus) GetSessionCount() int {
 // SetSessionCount sets value to SessionCount
 func (o *VPCRouterStatus) SetSessionCount(v int) {
 	o.SessionCount = v
+}
+
+// GetPercentageOfMemoryFree returns value of PercentageOfMemoryFree
+func (o *VPCRouterStatus) GetPercentageOfMemoryFree() []types.StringNumber {
+	return o.PercentageOfMemoryFree
+}
+
+// SetPercentageOfMemoryFree sets value to PercentageOfMemoryFree
+func (o *VPCRouterStatus) SetPercentageOfMemoryFree(v []types.StringNumber) {
+	o.PercentageOfMemoryFree = v
 }
 
 // GetWireGuard returns value of WireGuard
