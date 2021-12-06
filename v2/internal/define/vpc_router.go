@@ -22,6 +22,7 @@ import (
 	"github.com/sacloud/libsacloud/v2/internal/dsl"
 	"github.com/sacloud/libsacloud/v2/internal/dsl/meta"
 	"github.com/sacloud/libsacloud/v2/sacloud/naked"
+	"github.com/sacloud/libsacloud/v2/sacloud/types"
 )
 
 const (
@@ -244,6 +245,7 @@ var (
 			fields.Def("FirewallSendLogs", meta.TypeStringSlice),
 			fields.Def("VPNLogs", meta.TypeStringSlice),
 			fields.Def("SessionCount", meta.TypeInt),
+			fields.Def("PercentageOfMemoryFree", meta.Static([]types.StringNumber{})),
 			{
 				Name: "WireGuard",
 				Type: &dsl.Model{

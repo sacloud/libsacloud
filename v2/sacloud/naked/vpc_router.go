@@ -502,11 +502,12 @@ type VPCRouterStaticRouteConfig struct {
 
 // VPCRouterStatus ステータス
 type VPCRouterStatus struct {
-	FirewallReceiveLogs []string `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
-	FirewallSendLogs    []string `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
-	VPNLogs             []string `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
-	SessionCount        int      `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
-	DHCPServerLeases    []struct {
+	FirewallReceiveLogs    []string             `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
+	FirewallSendLogs       []string             `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
+	VPNLogs                []string             `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
+	SessionCount           int                  `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
+	PercentageOfMemoryFree []types.StringNumber `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
+	DHCPServerLeases       []struct {
 		IPAddress  string
 		MACAddress string
 	} `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
