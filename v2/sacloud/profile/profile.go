@@ -174,12 +174,20 @@ type ConfigValue struct {
 	FakeStorePath string
 }
 
-func (o *ConfigValue) traceModeValue() string {
-	return strings.ToLower(strings.TrimSpace(o.TraceMode))
+func (o *ConfigValue) EnableHTTPTrace() bool {
+	return EnableHTTPTrace(o.TraceMode)
 }
 
-func (o *ConfigValue) EnableHTTPTrace() bool {
-	traceMode := o.traceModeValue()
+func (o *ConfigValue) EnableAPITrace() bool {
+	return EnableAPITrace(o.TraceMode)
+}
+
+func traceModeValue(strTraceMode string) string {
+	return strings.ToLower(strings.TrimSpace(strTraceMode))
+}
+
+func EnableHTTPTrace(strTraceMode string) bool {
+	traceMode := traceModeValue(strTraceMode)
 	if traceMode == "" {
 		return false
 	}
@@ -191,8 +199,8 @@ func (o *ConfigValue) EnableHTTPTrace() bool {
 	return true
 }
 
-func (o *ConfigValue) EnableAPITrace() bool {
-	traceMode := o.traceModeValue()
+func EnableAPITrace(strTraceMode string) bool {
+	traceMode := traceModeValue(strTraceMode)
 	if traceMode == "" {
 		return false
 	}

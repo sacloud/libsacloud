@@ -30,38 +30,18 @@ import (
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 )
 
-// CallerOptions sacloud.APICallerを作成する際のオプション
-type CallerOptions struct {
-	AccessToken       string
-	AccessTokenSecret string
-
-	APIRootURL     string
-	DefaultZone    string
-	AcceptLanguage string
-
-	HTTPClient *http.Client
-
-	HTTPRequestTimeout   int
-	HTTPRequestRateLimit int
-
-	RetryMax     int
-	RetryWaitMax int
-	RetryWaitMin int
-
-	UserAgent string
-
-	TraceAPI             bool
-	TraceHTTP            bool
-	OpenTelemetry        bool
-	OpenTelemetryOptions []otel.Option
-
-	FakeMode      bool
-	FakeStorePath string
-}
-
 // NewCaller 指定のオプションでsacloud.APICallerを構築して返す
 func NewCaller(opts *CallerOptions) sacloud.APICaller {
 	return newCaller(opts)
+}
+
+// NewDefaultCaller デフォルトのオプションでsacloud.APICallerを構築して返す
+func NewDefaultCaller() (sacloud.APICaller, error) {
+	opts, err := DefaultOption()
+	if err != nil {
+		return nil, err
+	}
+	return NewCaller(opts), nil
 }
 
 func newCaller(opts *CallerOptions) sacloud.APICaller {
