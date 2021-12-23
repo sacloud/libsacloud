@@ -22,13 +22,10 @@ import (
 // ArchiveCriteria OSTypeごとのアーカイブ検索条件
 var ArchiveCriteria = map[ArchiveOSType]search.Filter{
 	CentOS: {
-		search.Key(keys.Tags): search.TagsAndEqual("current-stable", "distro-centos"),
+		search.Key(keys.Tags): search.TagsAndEqual("distro-centos"),
 	},
 	CentOS8Stream: {
 		search.Key(keys.Tags): search.TagsAndEqual("distro-ver-8-stream", "distro-centos"),
-	},
-	CentOS8: {
-		search.Key(keys.Tags): search.TagsAndEqual("centos-8-latest"),
 	},
 	CentOS7: {
 		search.Key(keys.Tags): search.TagsAndEqual("centos-7-latest"),
