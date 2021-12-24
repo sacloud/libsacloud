@@ -54,6 +54,7 @@ type RouterSetting struct {
 	Firewall                  []*sacloud.VPCRouterFirewall
 	DHCPServer                []*sacloud.VPCRouterDHCPServer
 	DHCPStaticMapping         []*sacloud.VPCRouterDHCPStaticMapping
+	DNSForwarding             *sacloud.VPCRouterDNSForwarding
 	PPTPServer                *sacloud.VPCRouterPPTPServer
 	L2TPIPsecServer           *sacloud.VPCRouterL2TPIPsecServer
 	WireGuard                 *sacloud.VPCRouterWireGuard
@@ -224,6 +225,7 @@ func (b *Builder) Build(ctx context.Context, zone string) (*sacloud.VPCRouter, e
 					Firewall:                  b.RouterSetting.Firewall,
 					DHCPServer:                b.RouterSetting.DHCPServer,
 					DHCPStaticMapping:         b.RouterSetting.DHCPStaticMapping,
+					DNSForwarding:             b.RouterSetting.DNSForwarding,
 					PPTPServer:                b.RouterSetting.PPTPServer,
 					PPTPServerEnabled:         b.RouterSetting.PPTPServer != nil,
 					L2TPIPsecServer:           b.RouterSetting.L2TPIPsecServer,
@@ -363,6 +365,7 @@ func (b *Builder) Update(ctx context.Context, zone string, id types.ID) (*saclou
 			Firewall:                  b.RouterSetting.Firewall,
 			DHCPServer:                b.RouterSetting.DHCPServer,
 			DHCPStaticMapping:         b.RouterSetting.DHCPStaticMapping,
+			DNSForwarding:             b.RouterSetting.DNSForwarding,
 			PPTPServer:                b.RouterSetting.PPTPServer,
 			PPTPServerEnabled:         b.RouterSetting.PPTPServer != nil,
 			L2TPIPsecServer:           b.RouterSetting.L2TPIPsecServer,

@@ -848,6 +848,13 @@ func (m *modelsDef) vpcRouterSetting() *dsl.Model {
 				},
 			},
 			{
+				Name: "DNSForwarding",
+				Type: m.vpcRouterDNSForwarding(),
+				Tags: &dsl.FieldTags{
+					MapConv: "Router.DNSForwarding,omitempty,recursive",
+				},
+			},
+			{
 				Name: "PPTPServer",
 				Type: m.vpcRouterPPTPServer(),
 				Tags: &dsl.FieldTags{
@@ -1114,6 +1121,23 @@ func (m *modelsDef) vpcRouterDHCPStaticMapping() *dsl.Model {
 			{
 				Name: "IPAddress",
 				Type: meta.TypeString,
+			},
+		},
+	}
+}
+
+func (m *modelsDef) vpcRouterDNSForwarding() *dsl.Model {
+	return &dsl.Model{
+		Name:      "VPCRouterDNSForwarding",
+		NakedType: meta.Static(naked.VPCRouterDNSForwarding{}),
+		Fields: []*dsl.FieldDesc{
+			{
+				Name: "Interface",
+				Type: meta.TypeString,
+			},
+			{
+				Name: "DNSServers",
+				Type: meta.TypeStringSlice,
 			},
 		},
 	}

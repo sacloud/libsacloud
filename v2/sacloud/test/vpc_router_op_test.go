@@ -325,6 +325,10 @@ func TestVPCRouterOp_WithRouterCRUD(t *testing.T) {
 								IPAddress:  "192.168.2.21",
 							},
 						},
+						DNSForwarding: &sacloud.VPCRouterDNSForwarding{
+							Interface:  "eth2",
+							DNSServers: []string{"133.242.0.3", "133.242.0.4"},
+						},
 						PPTPServer: &sacloud.VPCRouterPPTPServer{
 							RangeStart: "192.168.2.61",
 							RangeStop:  "192.168.2.70",

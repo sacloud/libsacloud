@@ -62,6 +62,7 @@ type VPCRouterSetting struct {
 	Firewall           *VPCRouterFirewall           `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
 	DHCPServer         *VPCRouterDHCPServer         `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
 	DHCPStaticMapping  *VPCRouterDHCPStaticMappings `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
+	DNSForwarding      *VPCRouterDNSForwarding      `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
 	PPTPServer         *VPCRouterPPTPServer         `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
 	L2TPIPsecServer    *VPCRouterL2TPIPsecServer    `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
 	WireGuard          *VPCRouterWireGuard          `json:"WireGuardServer,omitempty" yaml:",omitempty" structs:",omitempty"`
@@ -347,6 +348,26 @@ func (f *VPCRouterDHCPStaticMappings) MarshalJSON() ([]byte, error) {
 type VPCRouterDHCPStaticMappingConfig struct {
 	MACAddress string `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
 	IPAddress  string `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
+}
+
+// VPCRouterDNSForwarding DNSフォワーディング
+type VPCRouterDNSForwarding struct {
+	Interface  string `json:",omitempty" yaml:",omitempty" structs:",omitempty"`
+	DNSServers []string
+	Enabled    types.StringFlag `yaml:"enabled"`
+}
+
+// MarshalJSON Configが一つ以上ある場合にEnabledをtrueに設定する
+func (f *VPCRouterDNSForwarding) MarshalJSON() ([]byte, error) {
+	if f == nil {
+		return nil, nil
+	}
+	if f.Interface != "" || len(f.DNSServers) > 0 {
+		f.Enabled = types.StringTrue
+	}
+	type alias VPCRouterDNSForwarding
+	a := alias(*f)
+	return json.Marshal(&a)
 }
 
 // VPCRouterPPTPServer PPTP

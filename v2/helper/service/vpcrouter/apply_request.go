@@ -57,6 +57,7 @@ type RouterSetting struct {
 	Firewall                  []*sacloud.VPCRouterFirewall
 	DHCPServer                []*sacloud.VPCRouterDHCPServer
 	DHCPStaticMapping         []*sacloud.VPCRouterDHCPStaticMapping
+	DNSForwarding             *sacloud.VPCRouterDNSForwarding
 	PPTPServer                *sacloud.VPCRouterPPTPServer
 	L2TPIPsecServer           *sacloud.VPCRouterL2TPIPsecServer
 	WireGuard                 *sacloud.VPCRouterWireGuard
@@ -98,6 +99,7 @@ func (req *ApplyRequest) routerSetting() *vpcRouterBuilder.RouterSetting {
 		Firewall:                  req.RouterSetting.Firewall,
 		DHCPServer:                req.RouterSetting.DHCPServer,
 		DHCPStaticMapping:         req.RouterSetting.DHCPStaticMapping,
+		DNSForwarding:             req.RouterSetting.DNSForwarding,
 		PPTPServer:                req.RouterSetting.PPTPServer,
 		L2TPIPsecServer:           req.RouterSetting.L2TPIPsecServer,
 		WireGuard:                 req.RouterSetting.WireGuard,
