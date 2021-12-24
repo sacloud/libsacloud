@@ -144,6 +144,7 @@ func (req *UpdateRequest) ApplyRequest(ctx context.Context, caller sacloud.APICa
 			Firewall:                  current.Settings.Firewall,
 			DHCPServer:                current.Settings.DHCPServer,
 			DHCPStaticMapping:         current.Settings.DHCPStaticMapping,
+			DNSForwarding:             current.Settings.DNSForwarding,
 			PPTPServer:                current.Settings.PPTPServer,
 			L2TPIPsecServer:           current.Settings.L2TPIPsecServer,
 			RemoteAccessUsers:         current.Settings.RemoteAccessUsers,

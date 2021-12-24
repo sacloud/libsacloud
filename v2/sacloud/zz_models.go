@@ -28657,6 +28657,7 @@ type VPCRouterSetting struct {
 	Firewall                  []*VPCRouterFirewall           `mapconv:"Router.Firewall.[]Config,omitempty,recursive"`
 	DHCPServer                []*VPCRouterDHCPServer         `mapconv:"Router.DHCPServer.[]Config,omitempty,recursive"`
 	DHCPStaticMapping         []*VPCRouterDHCPStaticMapping  `mapconv:"Router.DHCPStaticMapping.[]Config,omitempty,recursive"`
+	DNSForwarding             *VPCRouterDNSForwarding        `mapconv:"Router.DNSForwarding,omitempty,recursive"`
 	PPTPServer                *VPCRouterPPTPServer           `mapconv:"Router.PPTPServer.Config,omitempty,recursive"`
 	PPTPServerEnabled         types.StringFlag               `mapconv:"Router.PPTPServer.Enabled,omitempty"`
 	L2TPIPsecServer           *VPCRouterL2TPIPsecServer      `mapconv:"Router.L2TPIPsecServer.Config,omitempty,recursive"`
@@ -28685,6 +28686,7 @@ func (o *VPCRouterSetting) setDefaults() interface{} {
 		Firewall                  []*VPCRouterFirewall           `mapconv:"Router.Firewall.[]Config,omitempty,recursive"`
 		DHCPServer                []*VPCRouterDHCPServer         `mapconv:"Router.DHCPServer.[]Config,omitempty,recursive"`
 		DHCPStaticMapping         []*VPCRouterDHCPStaticMapping  `mapconv:"Router.DHCPStaticMapping.[]Config,omitempty,recursive"`
+		DNSForwarding             *VPCRouterDNSForwarding        `mapconv:"Router.DNSForwarding,omitempty,recursive"`
 		PPTPServer                *VPCRouterPPTPServer           `mapconv:"Router.PPTPServer.Config,omitempty,recursive"`
 		PPTPServerEnabled         types.StringFlag               `mapconv:"Router.PPTPServer.Enabled,omitempty"`
 		L2TPIPsecServer           *VPCRouterL2TPIPsecServer      `mapconv:"Router.L2TPIPsecServer.Config,omitempty,recursive"`
@@ -28704,6 +28706,7 @@ func (o *VPCRouterSetting) setDefaults() interface{} {
 		Firewall:                  o.GetFirewall(),
 		DHCPServer:                o.GetDHCPServer(),
 		DHCPStaticMapping:         o.GetDHCPStaticMapping(),
+		DNSForwarding:             o.GetDNSForwarding(),
 		PPTPServer:                o.GetPPTPServer(),
 		PPTPServerEnabled:         o.GetPPTPServerEnabled(),
 		L2TPIPsecServer:           o.GetL2TPIPsecServer(),
@@ -28795,6 +28798,16 @@ func (o *VPCRouterSetting) GetDHCPStaticMapping() []*VPCRouterDHCPStaticMapping 
 // SetDHCPStaticMapping sets value to DHCPStaticMapping
 func (o *VPCRouterSetting) SetDHCPStaticMapping(v []*VPCRouterDHCPStaticMapping) {
 	o.DHCPStaticMapping = v
+}
+
+// GetDNSForwarding returns value of DNSForwarding
+func (o *VPCRouterSetting) GetDNSForwarding() *VPCRouterDNSForwarding {
+	return o.DNSForwarding
+}
+
+// SetDNSForwarding sets value to DNSForwarding
+func (o *VPCRouterSetting) SetDNSForwarding(v *VPCRouterDNSForwarding) {
+	o.DNSForwarding = v
 }
 
 // GetPPTPServer returns value of PPTPServer
@@ -29425,6 +29438,52 @@ func (o *VPCRouterDHCPStaticMapping) GetIPAddress() string {
 // SetIPAddress sets value to IPAddress
 func (o *VPCRouterDHCPStaticMapping) SetIPAddress(v string) {
 	o.IPAddress = v
+}
+
+/*************************************************
+* VPCRouterDNSForwarding
+*************************************************/
+
+// VPCRouterDNSForwarding represents API parameter/response structure
+type VPCRouterDNSForwarding struct {
+	Interface  string
+	DNSServers []string
+}
+
+// Validate validates by field tags
+func (o *VPCRouterDNSForwarding) Validate() error {
+	return validate.Struct(o)
+}
+
+// setDefaults implements sacloud.argumentDefaulter
+func (o *VPCRouterDNSForwarding) setDefaults() interface{} {
+	return &struct {
+		Interface  string
+		DNSServers []string
+	}{
+		Interface:  o.GetInterface(),
+		DNSServers: o.GetDNSServers(),
+	}
+}
+
+// GetInterface returns value of Interface
+func (o *VPCRouterDNSForwarding) GetInterface() string {
+	return o.Interface
+}
+
+// SetInterface sets value to Interface
+func (o *VPCRouterDNSForwarding) SetInterface(v string) {
+	o.Interface = v
+}
+
+// GetDNSServers returns value of DNSServers
+func (o *VPCRouterDNSForwarding) GetDNSServers() []string {
+	return o.DNSServers
+}
+
+// SetDNSServers sets value to DNSServers
+func (o *VPCRouterDNSForwarding) SetDNSServers(v []string) {
+	o.DNSServers = v
 }
 
 /*************************************************
