@@ -84,6 +84,8 @@ var (
 
 			// settings
 			fields.SimpleMonitorDelayLoop(),
+			fields.SimpleMonitorMaxCheckAttempts(),
+			fields.SimpleMonitorRetryInterval(),
 			fields.SimpleMonitorEnabled(),
 			// settings - health check
 			fields.SimpleMonitorHealthCheck(),
@@ -126,6 +128,8 @@ var (
 			},
 
 			// settings
+			fields.SimpleMonitorMaxCheckAttempts(),
+			fields.SimpleMonitorRetryInterval(),
 			fields.SimpleMonitorDelayLoop(),
 			fields.SimpleMonitorEnabled(),
 			// settings - health check
@@ -153,6 +157,8 @@ var (
 		NakedType: simpleMonitorNakedType,
 		Fields: []*dsl.FieldDesc{
 			// settings
+			fields.SimpleMonitorMaxCheckAttempts(),
+			fields.SimpleMonitorRetryInterval(),
 			fields.SimpleMonitorDelayLoop(),
 			fields.SimpleMonitorEnabled(),
 			// settings - health check
@@ -181,6 +187,8 @@ var (
 			fields.IconID(),
 
 			// settings
+			fields.SimpleMonitorMaxCheckAttempts(),
+			fields.SimpleMonitorRetryInterval(),
 			fields.SimpleMonitorDelayLoop(),
 			fields.SimpleMonitorEnabled(),
 			// settings - health check

@@ -52,6 +52,12 @@ func (o *SimpleMonitorOp) Create(ctx context.Context, param *sacloud.SimpleMonit
 	if result.DelayLoop == 0 {
 		result.DelayLoop = 60
 	}
+	if result.MaxCheckAttempts == 0 {
+		result.MaxCheckAttempts = 3
+	}
+	if result.RetryInterval == 0 {
+		result.RetryInterval = 10
+	}
 	if result.NotifyInterval == 0 {
 		result.NotifyInterval = 7200
 	}
@@ -81,6 +87,12 @@ func (o *SimpleMonitorOp) Update(ctx context.Context, id types.ID, param *saclou
 	fill(value, fillModifiedAt)
 	if value.DelayLoop == 0 {
 		value.DelayLoop = 60
+	}
+	if value.MaxCheckAttempts == 0 {
+		value.MaxCheckAttempts = 3
+	}
+	if value.RetryInterval == 0 {
+		value.RetryInterval = 10
 	}
 	if value.NotifyInterval == 0 {
 		value.NotifyInterval = 7200

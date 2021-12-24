@@ -25658,6 +25658,8 @@ type SimpleMonitor struct {
 	Class              string
 	Target             string                    `mapconv:"Status.Target"`
 	DelayLoop          int                       `mapconv:"Settings.SimpleMonitor.DelayLoop"`
+	MaxCheckAttempts   int                       `mapconv:"Settings.SimpleMonitor.MaxCheckAttempts"`
+	RetryInterval      int                       `mapconv:"Settings.SimpleMonitor.RetryInterval"`
 	Enabled            types.StringFlag          `mapconv:"Settings.SimpleMonitor.Enabled"`
 	HealthCheck        *SimpleMonitorHealthCheck `mapconv:"Settings.SimpleMonitor.HealthCheck,recursive"`
 	NotifyEmailEnabled types.StringFlag          `mapconv:"Settings.SimpleMonitor.NotifyEmail.Enabled"`
@@ -25688,6 +25690,8 @@ func (o *SimpleMonitor) setDefaults() interface{} {
 		Class              string
 		Target             string                    `mapconv:"Status.Target"`
 		DelayLoop          int                       `mapconv:"Settings.SimpleMonitor.DelayLoop"`
+		MaxCheckAttempts   int                       `mapconv:"Settings.SimpleMonitor.MaxCheckAttempts"`
+		RetryInterval      int                       `mapconv:"Settings.SimpleMonitor.RetryInterval"`
 		Enabled            types.StringFlag          `mapconv:"Settings.SimpleMonitor.Enabled"`
 		HealthCheck        *SimpleMonitorHealthCheck `mapconv:"Settings.SimpleMonitor.HealthCheck,recursive"`
 		NotifyEmailEnabled types.StringFlag          `mapconv:"Settings.SimpleMonitor.NotifyEmail.Enabled"`
@@ -25709,6 +25713,8 @@ func (o *SimpleMonitor) setDefaults() interface{} {
 		Class:              o.GetClass(),
 		Target:             o.GetTarget(),
 		DelayLoop:          o.GetDelayLoop(),
+		MaxCheckAttempts:   o.GetMaxCheckAttempts(),
+		RetryInterval:      o.GetRetryInterval(),
 		Enabled:            o.GetEnabled(),
 		HealthCheck:        o.GetHealthCheck(),
 		NotifyEmailEnabled: o.GetNotifyEmailEnabled(),
@@ -25872,6 +25878,32 @@ func (o *SimpleMonitor) GetDelayLoop() int {
 // SetDelayLoop sets value to DelayLoop
 func (o *SimpleMonitor) SetDelayLoop(v int) {
 	o.DelayLoop = v
+}
+
+// GetMaxCheckAttempts returns value of MaxCheckAttempts
+func (o *SimpleMonitor) GetMaxCheckAttempts() int {
+	if o.MaxCheckAttempts == 0 {
+		return 3
+	}
+	return o.MaxCheckAttempts
+}
+
+// SetMaxCheckAttempts sets value to MaxCheckAttempts
+func (o *SimpleMonitor) SetMaxCheckAttempts(v int) {
+	o.MaxCheckAttempts = v
+}
+
+// GetRetryInterval returns value of RetryInterval
+func (o *SimpleMonitor) GetRetryInterval() int {
+	if o.RetryInterval == 0 {
+		return 10
+	}
+	return o.RetryInterval
+}
+
+// SetRetryInterval sets value to RetryInterval
+func (o *SimpleMonitor) SetRetryInterval(v int) {
+	o.RetryInterval = v
 }
 
 // GetEnabled returns value of Enabled
@@ -26228,6 +26260,8 @@ func (o *SimpleMonitorHealthCheck) SetVerifySNI(v types.StringFlag) {
 // SimpleMonitorCreateRequest represents API parameter/response structure
 type SimpleMonitorCreateRequest struct {
 	Target             string                    `mapconv:"Name/Status.Target"`
+	MaxCheckAttempts   int                       `mapconv:"Settings.SimpleMonitor.MaxCheckAttempts"`
+	RetryInterval      int                       `mapconv:"Settings.SimpleMonitor.RetryInterval"`
 	DelayLoop          int                       `mapconv:"Settings.SimpleMonitor.DelayLoop"`
 	Enabled            types.StringFlag          `mapconv:"Settings.SimpleMonitor.Enabled"`
 	HealthCheck        *SimpleMonitorHealthCheck `mapconv:"Settings.SimpleMonitor.HealthCheck,recursive"`
@@ -26251,6 +26285,8 @@ func (o *SimpleMonitorCreateRequest) Validate() error {
 func (o *SimpleMonitorCreateRequest) setDefaults() interface{} {
 	return &struct {
 		Target             string                    `mapconv:"Name/Status.Target"`
+		MaxCheckAttempts   int                       `mapconv:"Settings.SimpleMonitor.MaxCheckAttempts"`
+		RetryInterval      int                       `mapconv:"Settings.SimpleMonitor.RetryInterval"`
 		DelayLoop          int                       `mapconv:"Settings.SimpleMonitor.DelayLoop"`
 		Enabled            types.StringFlag          `mapconv:"Settings.SimpleMonitor.Enabled"`
 		HealthCheck        *SimpleMonitorHealthCheck `mapconv:"Settings.SimpleMonitor.HealthCheck,recursive"`
@@ -26266,6 +26302,8 @@ func (o *SimpleMonitorCreateRequest) setDefaults() interface{} {
 		Class              string   `mapconv:"Provider.Class"`
 	}{
 		Target:             o.GetTarget(),
+		MaxCheckAttempts:   o.GetMaxCheckAttempts(),
+		RetryInterval:      o.GetRetryInterval(),
 		DelayLoop:          o.GetDelayLoop(),
 		Enabled:            o.GetEnabled(),
 		HealthCheck:        o.GetHealthCheck(),
@@ -26290,6 +26328,32 @@ func (o *SimpleMonitorCreateRequest) GetTarget() string {
 // SetTarget sets value to Target
 func (o *SimpleMonitorCreateRequest) SetTarget(v string) {
 	o.Target = v
+}
+
+// GetMaxCheckAttempts returns value of MaxCheckAttempts
+func (o *SimpleMonitorCreateRequest) GetMaxCheckAttempts() int {
+	if o.MaxCheckAttempts == 0 {
+		return 3
+	}
+	return o.MaxCheckAttempts
+}
+
+// SetMaxCheckAttempts sets value to MaxCheckAttempts
+func (o *SimpleMonitorCreateRequest) SetMaxCheckAttempts(v int) {
+	o.MaxCheckAttempts = v
+}
+
+// GetRetryInterval returns value of RetryInterval
+func (o *SimpleMonitorCreateRequest) GetRetryInterval() int {
+	if o.RetryInterval == 0 {
+		return 10
+	}
+	return o.RetryInterval
+}
+
+// SetRetryInterval sets value to RetryInterval
+func (o *SimpleMonitorCreateRequest) SetRetryInterval(v int) {
+	o.RetryInterval = v
 }
 
 // GetDelayLoop returns value of DelayLoop
@@ -26447,6 +26511,8 @@ type SimpleMonitorUpdateRequest struct {
 	Description        string
 	Tags               types.Tags
 	IconID             types.ID                  `mapconv:"Icon.ID"`
+	MaxCheckAttempts   int                       `mapconv:"Settings.SimpleMonitor.MaxCheckAttempts"`
+	RetryInterval      int                       `mapconv:"Settings.SimpleMonitor.RetryInterval"`
 	DelayLoop          int                       `mapconv:"Settings.SimpleMonitor.DelayLoop"`
 	Enabled            types.StringFlag          `mapconv:"Settings.SimpleMonitor.Enabled"`
 	HealthCheck        *SimpleMonitorHealthCheck `mapconv:"Settings.SimpleMonitor.HealthCheck,recursive"`
@@ -26470,6 +26536,8 @@ func (o *SimpleMonitorUpdateRequest) setDefaults() interface{} {
 		Description        string
 		Tags               types.Tags
 		IconID             types.ID                  `mapconv:"Icon.ID"`
+		MaxCheckAttempts   int                       `mapconv:"Settings.SimpleMonitor.MaxCheckAttempts"`
+		RetryInterval      int                       `mapconv:"Settings.SimpleMonitor.RetryInterval"`
 		DelayLoop          int                       `mapconv:"Settings.SimpleMonitor.DelayLoop"`
 		Enabled            types.StringFlag          `mapconv:"Settings.SimpleMonitor.Enabled"`
 		HealthCheck        *SimpleMonitorHealthCheck `mapconv:"Settings.SimpleMonitor.HealthCheck,recursive"`
@@ -26484,6 +26552,8 @@ func (o *SimpleMonitorUpdateRequest) setDefaults() interface{} {
 		Description:        o.GetDescription(),
 		Tags:               o.GetTags(),
 		IconID:             o.GetIconID(),
+		MaxCheckAttempts:   o.GetMaxCheckAttempts(),
+		RetryInterval:      o.GetRetryInterval(),
 		DelayLoop:          o.GetDelayLoop(),
 		Enabled:            o.GetEnabled(),
 		HealthCheck:        o.GetHealthCheck(),
@@ -26545,6 +26615,32 @@ func (o *SimpleMonitorUpdateRequest) GetIconID() types.ID {
 // SetIconID sets value to IconID
 func (o *SimpleMonitorUpdateRequest) SetIconID(v types.ID) {
 	o.IconID = v
+}
+
+// GetMaxCheckAttempts returns value of MaxCheckAttempts
+func (o *SimpleMonitorUpdateRequest) GetMaxCheckAttempts() int {
+	if o.MaxCheckAttempts == 0 {
+		return 3
+	}
+	return o.MaxCheckAttempts
+}
+
+// SetMaxCheckAttempts sets value to MaxCheckAttempts
+func (o *SimpleMonitorUpdateRequest) SetMaxCheckAttempts(v int) {
+	o.MaxCheckAttempts = v
+}
+
+// GetRetryInterval returns value of RetryInterval
+func (o *SimpleMonitorUpdateRequest) GetRetryInterval() int {
+	if o.RetryInterval == 0 {
+		return 10
+	}
+	return o.RetryInterval
+}
+
+// SetRetryInterval sets value to RetryInterval
+func (o *SimpleMonitorUpdateRequest) SetRetryInterval(v int) {
+	o.RetryInterval = v
 }
 
 // GetDelayLoop returns value of DelayLoop
@@ -26659,6 +26755,8 @@ func (o *SimpleMonitorUpdateRequest) SetSettingsHash(v string) {
 
 // SimpleMonitorUpdateSettingsRequest represents API parameter/response structure
 type SimpleMonitorUpdateSettingsRequest struct {
+	MaxCheckAttempts   int                       `mapconv:"Settings.SimpleMonitor.MaxCheckAttempts"`
+	RetryInterval      int                       `mapconv:"Settings.SimpleMonitor.RetryInterval"`
 	DelayLoop          int                       `mapconv:"Settings.SimpleMonitor.DelayLoop"`
 	Enabled            types.StringFlag          `mapconv:"Settings.SimpleMonitor.Enabled"`
 	HealthCheck        *SimpleMonitorHealthCheck `mapconv:"Settings.SimpleMonitor.HealthCheck,recursive"`
@@ -26679,6 +26777,8 @@ func (o *SimpleMonitorUpdateSettingsRequest) Validate() error {
 // setDefaults implements sacloud.argumentDefaulter
 func (o *SimpleMonitorUpdateSettingsRequest) setDefaults() interface{} {
 	return &struct {
+		MaxCheckAttempts   int                       `mapconv:"Settings.SimpleMonitor.MaxCheckAttempts"`
+		RetryInterval      int                       `mapconv:"Settings.SimpleMonitor.RetryInterval"`
 		DelayLoop          int                       `mapconv:"Settings.SimpleMonitor.DelayLoop"`
 		Enabled            types.StringFlag          `mapconv:"Settings.SimpleMonitor.Enabled"`
 		HealthCheck        *SimpleMonitorHealthCheck `mapconv:"Settings.SimpleMonitor.HealthCheck,recursive"`
@@ -26690,6 +26790,8 @@ func (o *SimpleMonitorUpdateSettingsRequest) setDefaults() interface{} {
 		Timeout            int                       `mapconv:"Settings.SimpleMonitor.Timeout"`
 		SettingsHash       string                    `json:",omitempty" mapconv:",omitempty"`
 	}{
+		MaxCheckAttempts:   o.GetMaxCheckAttempts(),
+		RetryInterval:      o.GetRetryInterval(),
 		DelayLoop:          o.GetDelayLoop(),
 		Enabled:            o.GetEnabled(),
 		HealthCheck:        o.GetHealthCheck(),
@@ -26701,6 +26803,32 @@ func (o *SimpleMonitorUpdateSettingsRequest) setDefaults() interface{} {
 		Timeout:            o.GetTimeout(),
 		SettingsHash:       o.GetSettingsHash(),
 	}
+}
+
+// GetMaxCheckAttempts returns value of MaxCheckAttempts
+func (o *SimpleMonitorUpdateSettingsRequest) GetMaxCheckAttempts() int {
+	if o.MaxCheckAttempts == 0 {
+		return 3
+	}
+	return o.MaxCheckAttempts
+}
+
+// SetMaxCheckAttempts sets value to MaxCheckAttempts
+func (o *SimpleMonitorUpdateSettingsRequest) SetMaxCheckAttempts(v int) {
+	o.MaxCheckAttempts = v
+}
+
+// GetRetryInterval returns value of RetryInterval
+func (o *SimpleMonitorUpdateSettingsRequest) GetRetryInterval() int {
+	if o.RetryInterval == 0 {
+		return 10
+	}
+	return o.RetryInterval
+}
+
+// SetRetryInterval sets value to RetryInterval
+func (o *SimpleMonitorUpdateSettingsRequest) SetRetryInterval(v int) {
+	o.RetryInterval = v
 }
 
 // GetDelayLoop returns value of DelayLoop

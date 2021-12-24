@@ -86,11 +86,13 @@ var (
 		"SettingsHash",
 	}
 	createSimpleMonitorParam = &sacloud.SimpleMonitorCreateRequest{
-		Target:      testutil.ResourceName("simple-monitor.usacloud.jp"),
-		Description: "desc",
-		Tags:        []string{"tag1", "tag2"},
-		DelayLoop:   60,
-		Enabled:     types.StringTrue,
+		Target:           testutil.ResourceName("simple-monitor.usacloud.jp"),
+		Description:      "desc",
+		Tags:             []string{"tag1", "tag2"},
+		MaxCheckAttempts: 5,
+		RetryInterval:    20,
+		DelayLoop:        60,
+		Enabled:          types.StringTrue,
 		HealthCheck: &sacloud.SimpleMonitorHealthCheck{
 			Protocol:          types.SimpleMonitorProtocols.HTTP,
 			Port:              types.StringNumber(80),
@@ -115,6 +117,8 @@ var (
 		Description:        createSimpleMonitorParam.Description,
 		Tags:               createSimpleMonitorParam.Tags,
 		Target:             createSimpleMonitorParam.Target,
+		MaxCheckAttempts:   createSimpleMonitorParam.MaxCheckAttempts,
+		RetryInterval:      createSimpleMonitorParam.RetryInterval,
 		DelayLoop:          createSimpleMonitorParam.DelayLoop,
 		Enabled:            createSimpleMonitorParam.Enabled,
 		HealthCheck:        createSimpleMonitorParam.HealthCheck,
@@ -127,9 +131,11 @@ var (
 		Availability:       types.Availabilities.Available,
 	}
 	updateSimpleMonitorParam = &sacloud.SimpleMonitorUpdateRequest{
-		Description: "desc-upd",
-		Tags:        []string{"tag1-upd", "tag2-upd"},
-		DelayLoop:   120,
+		Description:      "desc-upd",
+		Tags:             []string{"tag1-upd", "tag2-upd"},
+		MaxCheckAttempts: 10,
+		RetryInterval:    100,
+		DelayLoop:        120,
 		HealthCheck: &sacloud.SimpleMonitorHealthCheck{
 			Protocol:          types.SimpleMonitorProtocols.HTTPS,
 			Port:              types.StringNumber(443),
@@ -155,6 +161,8 @@ var (
 		Description:        updateSimpleMonitorParam.Description,
 		Tags:               updateSimpleMonitorParam.Tags,
 		Target:             createSimpleMonitorParam.Target,
+		MaxCheckAttempts:   updateSimpleMonitorParam.MaxCheckAttempts,
+		RetryInterval:      updateSimpleMonitorParam.RetryInterval,
 		DelayLoop:          updateSimpleMonitorParam.DelayLoop,
 		Enabled:            updateSimpleMonitorParam.Enabled,
 		HealthCheck:        updateSimpleMonitorParam.HealthCheck,
@@ -168,7 +176,9 @@ var (
 		IconID:             testIconID,
 	}
 	updateSimpleMonitorSettingsParam = &sacloud.SimpleMonitorUpdateSettingsRequest{
-		DelayLoop: 120,
+		MaxCheckAttempts: 10,
+		RetryInterval:    100,
+		DelayLoop:        120,
 		HealthCheck: &sacloud.SimpleMonitorHealthCheck{
 			Protocol:          types.SimpleMonitorProtocols.HTTP,
 			Port:              types.StringNumber(80),
@@ -192,6 +202,8 @@ var (
 		Description:        updateSimpleMonitorParam.Description,
 		Tags:               updateSimpleMonitorParam.Tags,
 		Target:             createSimpleMonitorParam.Target,
+		MaxCheckAttempts:   updateSimpleMonitorSettingsParam.MaxCheckAttempts,
+		RetryInterval:      updateSimpleMonitorSettingsParam.RetryInterval,
 		DelayLoop:          updateSimpleMonitorSettingsParam.DelayLoop,
 		Enabled:            updateSimpleMonitorSettingsParam.Enabled,
 		HealthCheck:        updateSimpleMonitorSettingsParam.HealthCheck,
@@ -216,6 +228,8 @@ var (
 	updateSimpleMonitorToMinExpected = &sacloud.SimpleMonitor{
 		Name:               createSimpleMonitorParam.Target,
 		Target:             createSimpleMonitorParam.Target,
+		MaxCheckAttempts:   3,  // default value
+		RetryInterval:      10, // default value
 		DelayLoop:          60, // default value
 		Enabled:            updateSimpleMonitorToMinParam.Enabled,
 		HealthCheck:        updateSimpleMonitorToMinParam.HealthCheck,
