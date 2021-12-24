@@ -28,8 +28,6 @@ const (
 	CentOS
 	// CentOS8Stream OS種別:CentOS8Stream
 	CentOS8Stream
-	// CentOS8 OS種別:CentOS8
-	CentOS8
 	// CentOS7 OS種別:CentOS7
 	CentOS7
 
@@ -120,7 +118,6 @@ const (
 var ArchiveOSTypes = []ArchiveOSType{
 	CentOS,
 	CentOS8Stream,
-	CentOS8,
 	CentOS7,
 	AlmaLinux,
 	RockyLinux,
@@ -160,7 +157,7 @@ var ArchiveOSTypes = []ArchiveOSType{
 
 // OSTypeShortNames OSTypeとして利用できる文字列のリスト
 var OSTypeShortNames = []string{
-	"centos", "centos8stream", "centos8", "centos7",
+	"centos", "centos8stream", "centos7",
 	"almalinux", "rockylinux", "miracle", "miraclelinux",
 	"ubuntu", "ubuntu2004", "ubuntu1804",
 	"debian", "debian10", "debian11",
@@ -196,7 +193,7 @@ func (o ArchiveOSType) IsWindows() bool {
 // IsSupportDiskEdit ディスクの修正機能をフルサポートしているか(Windowsは一部サポートのためfalseを返す)
 func (o ArchiveOSType) IsSupportDiskEdit() bool {
 	switch o {
-	case CentOS, CentOS8Stream, CentOS8, CentOS7,
+	case CentOS, CentOS8Stream, CentOS7,
 		AlmaLinux, RockyLinux, MiracleLinux,
 		Ubuntu, Ubuntu2004, Ubuntu1804,
 		Debian, Debian10, Debian11,
@@ -214,8 +211,6 @@ func StrToOSType(osType string) ArchiveOSType {
 		return CentOS
 	case "centos8stream":
 		return CentOS8Stream
-	case "centos8":
-		return CentOS8
 	case "centos7":
 		return CentOS7
 	case "almalinux":
