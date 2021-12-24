@@ -27,6 +27,8 @@ type UpdateRequest struct {
 	Description        *string                           `request:",omitempty" validate:"omitempty,min=1,max=512"`
 	Tags               *types.Tags                       `request:",omitempty"`
 	IconID             *types.ID                         `request:",omitempty"`
+	MaxCheckAttempts   *int                              `request:",omitempty"`
+	RetryInterval      *int                              `request:",omitempty"`
 	DelayLoop          *int                              `request:",omitempty"`
 	Enabled            *types.StringFlag                 `request:",omitempty"`
 	HealthCheck        *sacloud.SimpleMonitorHealthCheck `request:",omitempty"`

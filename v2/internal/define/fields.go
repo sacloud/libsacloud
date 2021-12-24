@@ -1125,6 +1125,28 @@ func (f *fieldsDef) SimpleMonitorTarget() *dsl.FieldDesc {
 	}
 }
 
+func (f *fieldsDef) SimpleMonitorMaxCheckAttempts() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "MaxCheckAttempts",
+		Type: meta.TypeInt,
+		Tags: &dsl.FieldTags{
+			MapConv: "Settings.SimpleMonitor.MaxCheckAttempts",
+		},
+		DefaultValue: "3",
+	}
+}
+
+func (f *fieldsDef) SimpleMonitorRetryInterval() *dsl.FieldDesc {
+	return &dsl.FieldDesc{
+		Name: "RetryInterval",
+		Type: meta.TypeInt,
+		Tags: &dsl.FieldTags{
+			MapConv: "Settings.SimpleMonitor.RetryInterval",
+		},
+		DefaultValue: "10",
+	}
+}
+
 func (f *fieldsDef) SimpleMonitorDelayLoop() *dsl.FieldDesc {
 	return &dsl.FieldDesc{
 		Name: "DelayLoop",

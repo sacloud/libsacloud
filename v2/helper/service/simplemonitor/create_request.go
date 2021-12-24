@@ -26,6 +26,8 @@ type CreateRequest struct {
 	Description        string `validate:"min=0,max=512"`
 	Tags               types.Tags
 	IconID             types.ID
+	MaxCheckAttempts   int                               `mapconv:"Settings.SimpleMonitor.MaxCheckAttempts" validate:"min=1,max=10"`
+	RetryInterval      int                               `mapconv:"Settings.SimpleMonitor.RetryInterval" validate:"min=10,max=3600"`
 	DelayLoop          int                               `mapconv:"Settings.SimpleMonitor.DelayLoop" validate:"min=60,max=3600"`
 	Enabled            types.StringFlag                  `mapconv:"Settings.SimpleMonitor.Enabled"`
 	HealthCheck        *sacloud.SimpleMonitorHealthCheck `mapconv:"Settings.SimpleMonitor.HealthCheck,recursive"`
