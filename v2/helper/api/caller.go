@@ -31,8 +31,8 @@ import (
 )
 
 // NewCaller 指定のオプションでsacloud.APICallerを構築して返す
-func NewCaller(opts *CallerOptions) sacloud.APICaller {
-	return newCaller(opts)
+func NewCaller(opts ...*CallerOptions) sacloud.APICaller {
+	return newCaller(MergeOptions(opts...))
 }
 
 // NewCallerWithDefaults 指定のオプション+環境変数/プロファイルを用いてsacloud.APICallerを構築して返す
@@ -43,7 +43,7 @@ func NewCallerWithDefaults(opts *CallerOptions) (sacloud.APICaller, error) {
 	if err != nil {
 		return nil, err
 	}
-	return NewCaller(MergeOptions(defaultOpts, opts)), nil
+	return NewCaller(defaultOpts, opts), nil
 }
 
 func newCaller(opts *CallerOptions) sacloud.APICaller {

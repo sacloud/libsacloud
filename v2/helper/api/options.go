@@ -62,7 +62,18 @@ type CallerOptions struct {
 // 未指定の場合は通常のプロファイル処理(~/.usacloud/currentファイルから読み込み)される。
 // 同じ項目を複数箇所で指定していた場合、環境変数->プロファイルの順で上書きされたものが返される
 func DefaultOption() (*CallerOptions, error) {
-	profileName := stringFromEnvMulti([]string{"SAKURACLOUD_PROFILE", "USACLOUD_PROFILE"}, "")
+	return DefaultOptionWithProfile("")
+}
+
+// DefaultOptionWithProfile 環境変数、プロファイルからCallerOptionsを組み立てて返す
+//
+// プロファイルは引数を優先し、空の場合は環境変数`SAKURACLOUD_PROFILE`または`USACLOUD_PROFILE`が利用され、
+// それも空の場合は通常のプロファイル処理(~/.usacloud/currentファイルから読み込み)される。
+// 同じ項目を複数箇所で指定していた場合、環境変数->プロファイルの順で上書きされたものが返される
+func DefaultOptionWithProfile(profileName string) (*CallerOptions, error) {
+	if profileName == "" {
+		profileName = stringFromEnvMulti([]string{"SAKURACLOUD_PROFILE", "USACLOUD_PROFILE"}, "")
+	}
 	fromProfile, err := OptionsFromProfile(profileName)
 	if err != nil {
 		return nil, err
