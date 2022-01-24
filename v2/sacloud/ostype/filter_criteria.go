@@ -57,9 +57,6 @@ var ArchiveCriteria = map[ArchiveOSType]search.Filter{
 	Debian11: {
 		search.Key(keys.Tags): search.TagsAndEqual("debian-11-latest"),
 	},
-	CoreOS: {
-		search.Key(keys.Tags): search.TagsAndEqual("current-stable", "distro-coreos"),
-	},
 	RancherOS: {
 		search.Key(keys.Tags): search.TagsAndEqual("current-stable", "distro-rancheros"),
 	},
@@ -68,9 +65,6 @@ var ArchiveCriteria = map[ArchiveOSType]search.Filter{
 	},
 	Kusanagi: {
 		search.Key(keys.Tags): search.TagsAndEqual("current-stable", "pkg-kusanagi"),
-	},
-	FreeBSD: {
-		search.Key(keys.Tags): search.TagsAndEqual("current-stable", "distro-freebsd"),
 	},
 	Windows2016: {
 		search.Key(keys.Tags): search.TagsAndEqual("os-windows", "distro-ver-2016"),

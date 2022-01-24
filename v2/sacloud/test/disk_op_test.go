@@ -166,7 +166,7 @@ func TestDiskOp_Config(t *testing.T) {
 			client := sacloud.NewArchiveOp(singletonAPICaller())
 			searched, err := client.Find(ctx, testZone, &sacloud.FindCondition{
 				Filter: search.Filter{
-					search.Key("Tags.Name"): search.TagsAndEqual("current-stable", "distro-centos"),
+					search.Key("Tags.Name"): search.TagsAndEqual("current-stable", "distro-ubuntu"),
 				},
 			})
 			if !assert.NoError(t, err) {

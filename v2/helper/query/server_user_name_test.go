@@ -175,41 +175,6 @@ func TestGetDefaultUserName(t *testing.T) {
 			expectedErr:   nil,
 		},
 		{
-			msg: "from coreos(container linux)",
-			id:  1,
-			reader: &ServerSourceReader{
-				ServerReader: &dummyServerReader{
-					servers: []*sacloud.Server{
-						{
-							ID: 1,
-							Disks: []*sacloud.ServerConnectedDisk{
-								{ID: 2},
-							},
-						},
-					},
-				},
-				DiskReader: &dummyDiskReader{
-					disks: []*sacloud.Disk{
-						{
-							ID:              2,
-							SourceArchiveID: 3,
-						},
-					},
-				},
-				ArchiveReader: &dummyArchiveReader{
-					archives: []*sacloud.Archive{
-						{
-							ID:    3,
-							Scope: types.Scopes.Shared,
-							Tags:  types.Tags{"distro-coreos"},
-						},
-					},
-				},
-			},
-			expectedValue: "core",
-			expectedErr:   nil,
-		},
-		{
 			msg: "from rancheros",
 			id:  1,
 			reader: &ServerSourceReader{

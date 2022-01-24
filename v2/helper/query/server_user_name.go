@@ -51,20 +51,14 @@ func getSSHDefaultUserNameDiskRec(ctx context.Context, zone string, reader *Serv
 }
 
 func getSSHDefaultUserNameArchiveRec(ctx context.Context, zone string, reader *ServerSourceReader, archiveID types.ID) (string, error) {
-	// read archive
 	archive, err := reader.ArchiveReader.Read(ctx, zone, archiveID)
 	if err != nil {
 		return "", err
 	}
 
 	if archive.Scope == types.Scopes.Shared {
-		// has ubuntu/coreos tag?
 		if archive.HasTag("distro-ubuntu") {
 			return "ubuntu", nil
-		}
-
-		if archive.HasTag("distro-coreos") {
-			return "core", nil
 		}
 
 		if archive.HasTag("distro-rancheros") {
