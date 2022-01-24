@@ -52,9 +52,6 @@ const (
 	// Debian11 OS種別:Debian11
 	Debian11
 
-	// CoreOS OS種別:CoreOS
-	CoreOS
-
 	// RancherOS OS種別:RancherOS
 	RancherOS
 	// K3OS OS種別: k3OS
@@ -62,9 +59,6 @@ const (
 
 	// Kusanagi OS種別:Kusanagi(CentOS)
 	Kusanagi
-
-	// FreeBSD OS種別:FreeBSD
-	FreeBSD
 
 	// Windows2016 OS種別:Windows Server 2016 Datacenter Edition
 	Windows2016
@@ -128,11 +122,9 @@ var ArchiveOSTypes = []ArchiveOSType{
 	Debian,
 	Debian10,
 	Debian11,
-	CoreOS,
 	RancherOS,
 	K3OS,
 	Kusanagi,
-	FreeBSD,
 	Windows2016,
 	Windows2016RDS,
 	Windows2016RDSOffice,
@@ -161,7 +153,7 @@ var OSTypeShortNames = []string{
 	"almalinux", "rockylinux", "miracle", "miraclelinux",
 	"ubuntu", "ubuntu2004", "ubuntu1804",
 	"debian", "debian10", "debian11",
-	"coreos", "rancheros", "k3os", "kusanagi", "freebsd",
+	"rancheros", "k3os", "kusanagi",
 	"windows2016", "windows2016-rds", "windows2016-rds-office",
 	"windows2016-sql-web", "windows2016-sql-standard", "windows2016-sql-standard-all",
 	"windows2016-sql2017-standard", "windows2016-sql2017-enterprise", "windows2016-sql2017-standard-all",
@@ -197,7 +189,7 @@ func (o ArchiveOSType) IsSupportDiskEdit() bool {
 		AlmaLinux, RockyLinux, MiracleLinux,
 		Ubuntu, Ubuntu2004, Ubuntu1804,
 		Debian, Debian10, Debian11,
-		CoreOS, RancherOS, K3OS, Kusanagi, FreeBSD:
+		RancherOS, K3OS, Kusanagi:
 		return true
 	default:
 		return false
@@ -231,16 +223,12 @@ func StrToOSType(osType string) ArchiveOSType {
 		return Debian10
 	case "debian11":
 		return Debian11
-	case "coreos":
-		return CoreOS
 	case "rancheros":
 		return RancherOS
 	case "k3os":
 		return K3OS
 	case "kusanagi":
 		return Kusanagi
-	case "freebsd":
-		return FreeBSD
 	case "windows2016":
 		return Windows2016
 	case "windows2016-rds":
