@@ -39,7 +39,7 @@ type serverHandler struct {
 }
 
 func (h *serverHandler) boot() error {
-	if len(h.variables) > 0 {
+	if len(h.variables) > 0 && strings.Join(h.variables, "") != "" {
 		userData := strings.Join(h.variables, "\n")
 		return h.client.BootWithVariables(h.ctx, h.zone, h.id, &sacloud.ServerBootVariables{UserData: userData})
 	}
