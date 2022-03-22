@@ -135,6 +135,10 @@ func newCaller(opts *CallerOptions) sacloud.APICaller {
 		}
 		sacloud.SakuraCloudAPIRoot = opts.APIRootURL
 	}
+
+	if len(opts.Zones) > 0 {
+		sacloud.SakuraCloudZones = opts.Zones
+	}
 	return caller
 }
 
