@@ -6,13 +6,16 @@
 
 Library for SakuraCloud API
 
-:bulb: 現在次期バージョンの開発が進められています。  
+
+:bulb: [Deprecated]現在次期バージョンの開発が進められています。  
 次期バージョンは以下2つのリポジトリに分割されます。
 
-- [sacloud/sacloud-go](https://github.com/sacloud/sacloud-go): 高レベルAPI(libsacloudの`helper`パッケージなど)
+- [sacloud/iaas-serviced-go](https://github.com/sacloud/iaas-service-go): 高レベルAPI(libsacloudの`helper`パッケージなど)
 - [sacloud/iaas-api-go](https://github.com/sacloud/iaas-api-go): IaaS関連API(libsacloudの`sacloud`パッケージなど)
 
-これらのリリース後、sacloud配下の主要プロダクトがlibsacloudから移行完了するまでlibsacloudの開発は継続されます。
+また、IaaSに依存しない機能は以下のリポジトリに切り出されています。
+
+- [sacloud/packages-go](https://github.com/sacloud/packages-go)
 
 ## Installation
 
